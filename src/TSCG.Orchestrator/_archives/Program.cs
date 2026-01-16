@@ -25,7 +25,7 @@ namespace TSCG.Orchestrator
 
         [JsonPropertyName("generationConfig")]
         public GenerationConfig? Config { get; set; }
-    } // End of GeminiRequest class
+    }
 
     public class Content
     {
@@ -34,19 +34,19 @@ namespace TSCG.Orchestrator
 
         [JsonPropertyName("parts")]
         public List<Part> Parts { get; set; } = new List<Part>();
-    } // End of Content class
+    }
 
     public class Part
     {
         [JsonPropertyName("text")]
         public string? Text { get; set; }
-    } // End of Part class
+    }
 
     public class GenerationConfig
     {
         [JsonPropertyName("temperature")]
         public float Temperature { get; set; } = 0.7f;
-    } // End of GenerationConfig class
+    }
 
     public class GeminiResponse
     {
@@ -55,13 +55,13 @@ namespace TSCG.Orchestrator
         
         [JsonPropertyName("error")]
         public ApiError? Error { get; set; }
-    } // End of GeminiResponse class
+    }
 
     public class Candidate
     {
         [JsonPropertyName("content")]
         public Content? Content { get; set; }
-    } // End of Candidate class
+    }
 
     public class ApiError
     {
@@ -71,14 +71,14 @@ namespace TSCG.Orchestrator
         public string? Message { get; set; }
         [JsonPropertyName("status")]
         public string? Status { get; set; }
-    } // End of ApiError class
+    }
     
     // Pour lister les modèles (Diagnostic)
     public class ModelListResponse
     {
         [JsonPropertyName("models")]
         public List<ModelInfo>? Models { get; set; }
-    } // End of ModelListResponse class
+    }
 
     public class ModelInfo
     {
@@ -86,7 +86,7 @@ namespace TSCG.Orchestrator
         public string? Name { get; set; }
         [JsonPropertyName("displayName")]
         public string? DisplayName { get; set; }
-    } // End of ModelInfo class
+    }
 
 
     // ==========================================
@@ -104,7 +104,7 @@ namespace TSCG.Orchestrator
             if (File.Exists(Path.Combine(candidatePath, "Program.cs")))
             {
                 path = candidatePath;
-            } // End of if
+            }
 
             var sb = new StringBuilder();
             sb.AppendLine("Context: The following are the source code files of the application running this query.");
@@ -116,11 +116,11 @@ namespace TSCG.Orchestrator
                 sb.AppendLine($"\n--- FILE: {Path.GetFileName(file)} ---");
                 sb.AppendLine(File.ReadAllText(file));
                 sb.AppendLine("--- END FILE ---");
-            } // End of foreach
+            }
 
             return sb.ToString();
-        } // End of LoadCurrentDirectoryContext method
-    } // End of RepositoryLoader class
+        }
+    }
 
     // ==========================================
     // SECTION 3: Agent & Orchestrator Logic
@@ -147,7 +147,7 @@ namespace TSCG.Orchestrator
             _apiKey = apiKey;
             _httpClient = httpClient;
             _history = new List<Content>();
-        } // End of AgentSession constructor
+        }
 
         public async Task<string> SendMessageAsync(string userMessage)
         {
@@ -184,9 +184,9 @@ namespace TSCG.Orchestrator
                     if (geminiResponse?.Error != null)
                     {
                          return $"[API ERROR]: {geminiResponse.Error.Message} (Status: {geminiResponse.Error.Status})\n(URL: {url})";
-                    } // End of if
+                    }
                     return $"[HTTP ERROR {response.StatusCode}]: {responseString}";
-                } // End of if
+                }
 
                 string? aiText = geminiResponse?.Candidates?.FirstOrDefault()?.Content?.Parts?.FirstOrDefault()?.Text;
 
@@ -203,9 +203,9 @@ namespace TSCG.Orchestrator
             catch (Exception ex)
             {
                 return $"[EXCEPTION]: {ex.Message}";
-            } // End of try-catch
-        } // End of SendMessageAsync method
-    } // End of AgentSession class
+            }
+        }
+    }
 
     public class Orchestrator
     {
@@ -218,13 +218,13 @@ namespace TSCG.Orchestrator
             _apiKey = apiKey;
             _httpClient = new HttpClient();
             _agents = new Dictionary<string, AgentSession>();
-        } // End of Orchestrator constructor
+        }
 
         public void RegisterAgent(string name, string role)
         {
             _agents[name] = new AgentSession(name, role, _apiKey, _httpClient);
             Console.WriteLine($"[Orchestrator]: Agent '{name}' registered.");
-        } // End of RegisterAgent method
+        }
 
         public async Task<string> AskAgentAsync(string name, string message)
         {
@@ -241,7 +241,7 @@ namespace TSCG.Orchestrator
             Console.ResetColor();
 
             return response;
-        } // End of AskAgentAsync method
+        }
 
         public async Task ListAvailableModels()
         {
@@ -262,15 +262,15 @@ namespace TSCG.Orchestrator
                 else 
                 {
                     Console.WriteLine("Warning: Could not parse model list.");
-                } // End of if-else
+                }
             }
             catch(Exception ex)
             {
                 Console.WriteLine("Diagnostic failed: " + ex.Message);
-            } // End of try-catch
+            }
             Console.WriteLine("--------------------------------------------------------------\n");
-        } // End of ListAvailableModels method
-    } // End of Orchestrator class
+        }
+    }
 
     // ==========================================
     // SECTION 4: Main Program & Utils
@@ -316,96 +316,27 @@ namespace TSCG.Orchestrator
             Console.WriteLine("\n=== DEMO COMPLETE ===");
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
-        } // End of Main method
+        }
 
         private static string GetApiKey()
         {
-            // Priority 1: Try to read from .api_key file
-            string apiKeyFilePath = ".api_key";
-            
-            // Check in current directory and parent directories (for bin/Debug/net10.0 scenario)
-            string currentPath = Directory.GetCurrentDirectory();
-            string? foundPath = FindApiKeyFile(currentPath);
-            
-            if (foundPath != null)
-            {
-                try
-                {
-                    string fileKey = File.ReadAllText(foundPath).Trim();
-                    if (!string.IsNullOrWhiteSpace(fileKey))
-                    {
-                        Console.WriteLine($"[System]: API Key loaded from file: {foundPath}");
-                        return fileKey;
-                    } // End of if
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[Warning]: Could not read .api_key file: {ex.Message}");
-                } // End of try-catch
-            } // End of if
-
-            // Priority 2: Try environment variable
             string? envKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
             if (!string.IsNullOrWhiteSpace(envKey))
             {
                 Console.WriteLine("[System]: API Key loaded from environment variable.");
                 return envKey;
-            } // End of if
+            }
 
-            // Priority 3: Ask user for input
             Console.WriteLine("Please enter your Google AI Studio API Key (Input is masked):");
             StringBuilder password = new StringBuilder();
             while (true)
             {
                 ConsoleKeyInfo key = Console.ReadKey(true);
-                if (key.Key == ConsoleKey.Enter) 
-                { 
-                    Console.WriteLine(); 
-                    break; 
-                } // End of if
-                else if (key.Key == ConsoleKey.Backspace) 
-                { 
-                    if (password.Length > 0) 
-                    { 
-                        password.Remove(password.Length - 1, 1); 
-                        Console.Write("\b \b"); 
-                    } // End of if
-                } // End of else if
-                else if (!char.IsControl(key.KeyChar)) 
-                { 
-                    password.Append(key.KeyChar); 
-                    Console.Write("*"); 
-                } // End of else if
-            } // End of while
+                if (key.Key == ConsoleKey.Enter) { Console.WriteLine(); break; }
+                else if (key.Key == ConsoleKey.Backspace) { if (password.Length > 0) { password.Remove(password.Length - 1, 1); Console.Write("\b \b"); } }
+                else if (!char.IsControl(key.KeyChar)) { password.Append(key.KeyChar); Console.Write("*"); }
+            }
             return password.ToString();
-        } // End of GetApiKey method
-
-        private static string? FindApiKeyFile(string startPath)
-        {
-            // Check current directory
-            string filePath = Path.Combine(startPath, ".api_key");
-            if (File.Exists(filePath))
-            {
-                return filePath;
-            } // End of if
-
-            // Check up to 3 parent directories (for bin/Debug/net10.0 scenario)
-            string currentDir = startPath;
-            for (int i = 0; i < 3; i++)
-            {
-                string? parentDir = Directory.GetParent(currentDir)?.FullName;
-                if (parentDir == null) break;
-
-                filePath = Path.Combine(parentDir, ".api_key");
-                if (File.Exists(filePath))
-                {
-                    return filePath;
-                } // End of if
-
-                currentDir = parentDir;
-            } // End of for
-
-            return null;
-        } // End of FindApiKeyFile method
-    } // End of Program class
-} // End of TSCG.Orchestrator namespace
+        }
+    }
+}
