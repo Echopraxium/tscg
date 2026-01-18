@@ -1,0 +1,515 @@
+{
+  "@context": {
+    "m0": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_RGB_Additive.jsonld#",
+    "m1": "https://github.com/Echopraxium/tscg/blob/main/ontology/M1_extensions/optics/M1_Optics.jsonld#",
+    "m2": "https://github.com/Echopraxium/tscg/blob/main/ontology/TSCG_M2_MetaConcepts_Ontology.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "m0:RGB_Additive",
+      "@type": "owl:NamedIndividual",
+      "rdf:type": "m0:Poclet",
+      "rdfs:label": "RGB Additive Color Synthesis",
+      "rdfs:comment": "Additive color synthesis using Red, Green, Blue light primaries. Each channel is a SIGNAL (m2:Signal) carrying intensity information. The three signals undergo COMPOSITION (m2:Composition) to produce emergent perceived color. Canonical model for displays and light-emitting devices.",
+      "dcterms:created": "2026-01-17",
+      "dcterms:creator": "Echopraxium with collaboration of Claude AI Pro",
+      "m0:pocletType": "Composite (Specialized)",
+      "m0:partOfFederation": {
+        "@id": "m0:ColorSynthesisFederated",
+        "file": "./M0_ColorSynthesis_Federated.jsonld"
+      },
+      "m0:domain": "Optics / Color Science",
+      "m0:principle": "Additive Synthesis (Light Emission + Superposition)",
+      "m0:physicalBasis": "Electromagnetic wave superposition (visible spectrum 380-740 nm)",
+      "m0:components": [
+        {
+          "@id": "m0:RedChannel",
+          "@type": "m2:Signal",
+          "rdfs:label": "Red Channel (R)",
+          "m0:metaconceptInstantiation": "m2:Signal",
+          "m0:signalType": "Intensity signal (light flux)",
+          "m0:role": "Information carrier for long-wavelength primary",
+          "m0:function": "Encodes intensity of red light (~620-750 nm)",
+          "m0:physicalCorrelate": "Photon flux at ~700 nm wavelength",
+          "m0:biologicalTarget": "L-cones (long-wavelength photoreceptors in human retina)",
+          "m0:rangeAnalog": "[0.0, 1.0] (normalized intensity)",
+          "m0:rangeDigital": "[0, 255] (8-bit quantization)",
+          "m0:tensorFormula": "I⊗F (Information × Flow)",
+          "m0:asfidContribution": {
+            "I": "Signal information (intensity value 0-255)",
+            "F": "Photon flux (light flow from source)"
+          },
+          "m0:examples": [
+            "LED red subpixel at intensity 200/255",
+            "Red laser at 50% power",
+            "RGB(255, 0, 0) = pure red signal"
+          ]
+        },
+        {
+          "@id": "m0:GreenChannel",
+          "@type": "m2:Signal",
+          "rdfs:label": "Green Channel (G)",
+          "m0:metaconceptInstantiation": "m2:Signal",
+          "m0:signalType": "Intensity signal (light flux)",
+          "m0:role": "Information carrier for medium-wavelength primary",
+          "m0:function": "Encodes intensity of green light (~495-570 nm)",
+          "m0:physicalCorrelate": "Photon flux at ~546 nm wavelength",
+          "m0:biologicalTarget": "M-cones (medium-wavelength photoreceptors)",
+          "m0:rangeAnalog": "[0.0, 1.0] (normalized intensity)",
+          "m0:rangeDigital": "[0, 255] (8-bit quantization)",
+          "m0:tensorFormula": "I⊗F (Information × Flow)",
+          "m0:asfidContribution": {
+            "I": "Signal information (intensity value 0-255)",
+            "F": "Photon flux (light flow from source)"
+          },
+          "m0:examples": [
+            "LED green subpixel at intensity 128/255",
+            "Green laser at 25% power",
+            "RGB(0, 255, 0) = pure green signal"
+          ]
+        },
+        {
+          "@id": "m0:BlueChannel",
+          "@type": "m2:Signal",
+          "rdfs:label": "Blue Channel (B)",
+          "m0:metaconceptInstantiation": "m2:Signal",
+          "m0:signalType": "Intensity signal (light flux)",
+          "m0:role": "Information carrier for short-wavelength primary",
+          "m0:function": "Encodes intensity of blue light (~450-495 nm)",
+          "m0:physicalCorrelate": "Photon flux at ~435 nm wavelength",
+          "m0:biologicalTarget": "S-cones (short-wavelength photoreceptors)",
+          "m0:rangeAnalog": "[0.0, 1.0] (normalized intensity)",
+          "m0:rangeDigital": "[0, 255] (8-bit quantization)",
+          "m0:tensorFormula": "I⊗F (Information × Flow)",
+          "m0:asfidContribution": {
+            "I": "Signal information (intensity value 0-255)",
+            "F": "Photon flux (light flow from source)"
+          },
+          "m0:examples": [
+            "LED blue subpixel at intensity 64/255",
+            "Blue laser at 10% power",
+            "RGB(0, 0, 255) = pure blue signal"
+          ]
+        }
+      ],
+      "m0:fusionPrinciple": {
+        "metaconcept": "m2:Fusion",
+        "aspect": "Fusion (merging entities)",
+        "formula": "S⊗F⊗D",
+        "description": "Three light signals (R, G, B) fuse through electromagnetic wave superposition into unified perceived color",
+        "operation": "R_wave ⊕ G_wave ⊕ B_wave → FUSION → Perceived_Color",
+        "emergentProperty": "Perceived color (qualia)",
+        "nonLinearity": "R + G + B ≠ 3 separate lights, but unified color percept through wave superposition",
+        "physicalMechanism": "Electromagnetic wave superposition (additive interference) + neural integration",
+        "example": "RGB(255, 0, 0) + RGB(0, 255, 0) + RGB(0, 0, 255) → White",
+        "syntheticColors": [
+          {
+            "name": "White",
+            "composition": "R(max) ⊕ G(max) ⊕ B(max)",
+            "RGB": "(255, 255, 255)",
+            "result": "All cones stimulated equally → achromatic white"
+          },
+          {
+            "name": "Yellow",
+            "composition": "R(max) ⊕ G(max) ⊕ B(min)",
+            "RGB": "(255, 255, 0)",
+            "result": "L+M cones stimulated → yellow percept (no yellow wavelength!)"
+          },
+          {
+            "name": "Cyan",
+            "composition": "R(min) ⊕ G(max) ⊕ B(max)",
+            "RGB": "(0, 255, 255)",
+            "result": "M+S cones stimulated → cyan percept"
+          },
+          {
+            "name": "Magenta",
+            "composition": "R(max) ⊕ G(min) ⊕ B(max)",
+            "RGB": "(255, 0, 255)",
+            "result": "L+S cones stimulated → magenta percept (non-spectral!)"
+          },
+          {
+            "name": "Gray",
+            "composition": "R(mid) ⊕ G(mid) ⊕ B(mid)",
+            "RGB": "(128, 128, 128)",
+            "result": "All cones partially stimulated → achromatic gray"
+          }
+        ]
+      },
+      "m0:fissionPrinciple": {
+        "metaconcept": "m2:Fusion (fission aspect)",
+        "formula": "S⊗F⊗D",
+        "description": "Perceived color can be separated (fission) into three channel components through analysis",
+        "operation": "Perceived_Color → FISSION → (R_channel, G_channel, B_channel)",
+        "application": "Color analysis, spectral decomposition, image processing",
+        "example": "Orange color → FISSION → RGB(255, 165, 0) = R:max + G:mid + B:min",
+        "tools": ["Spectrophotometer", "Prism (wavelength separation)", "Color picker", "Image analysis software"],
+        "reverseProcess": "Inverse of fusion - separates unified percept into constituent channels"
+      },
+      "m0:signalProcessing": {
+        "encoding": {
+          "description": "Light intensity encoded as numerical signal",
+          "mechanism": "Photodiode converts photon flux → voltage → digital value (ADC)",
+          "quantization": "Continuous intensity → Discrete levels (0-255 for 8-bit)",
+          "colorDepth": {
+            "8bit": "256 levels per channel → 16.7 million colors total",
+            "10bit": "1024 levels per channel → 1.07 billion colors",
+            "12bit": "4096 levels per channel → 68.7 billion colors",
+            "16bit": "65536 levels per channel → 281 trillion colors"
+          }
+        },
+        "transmission": {
+          "description": "Signals transmitted through display pipeline",
+          "pathway": "CPU/GPU → Display controller → LED drivers → Subpixel emission",
+          "bandwidth": "High (60-144 Hz refresh rate typical)"
+        },
+        "decoding": {
+          "description": "Biological decoding by human visual system",
+          "mechanism": "Photon absorption → Photoreceptor activation → Neural signal → Color perception",
+          "stages": [
+            "Retinal processing (cones → bipolar → ganglion cells)",
+            "LGN (Lateral Geniculate Nucleus) relay",
+            "V1 (Primary Visual Cortex) feature detection",
+            "V4 (Color processing area) → Conscious color percept"
+          ]
+        }
+      },
+      "m0:territorySpace": {
+        "description": "Perceived color as phenomenon (Territory)",
+        "observer": "Human with trichromatic vision",
+        "phenomenon": "Subjective color experience (qualia)",
+        "physicalBasis": "Electromagnetic radiation stimulating photoreceptors",
+        "asfidState": {
+          "A": 0.70,
+          "S": 0.85,
+          "F": 0.90,
+          "I": 0.95,
+          "D": 0.40
+        },
+        "stateVector": "|Ω_color⟩ = 0.70|A⟩ + 0.85|S⟩ + 0.90|F⟩ + 0.95|I⟩ + 0.40|D⟩",
+        "justification": {
+          "A": "Moderate attractor (color constancy under varying illumination)",
+          "S": "High structure (3-cone mosaic, neural pathways)",
+          "F": "Very high flow (photon flux from light source)",
+          "I": "Very high information (spectral + spatial information)",
+          "D": "Low dynamics (stable percept, not rapidly changing)"
+        },
+        "observables": [
+          "Hue (qualitative color: red, green, blue, yellow, etc.)",
+          "Saturation (color purity vs grayness)",
+          "Brightness (perceived intensity)",
+          "Color constancy (object color stable despite illumination changes)"
+        ]
+      },
+      "m0:mapSpace": {
+        "description": "RGB color model as representation (Map)",
+        "observer": "Engineer / Designer / Scientist",
+        "model": "RGB color cube (3D coordinate system)",
+        "asfidState": {
+          "A": 0.80,
+          "S": 0.95,
+          "F": 0.60,
+          "I": 0.90,
+          "D": 0.30
+        },
+        "stateVector": "|M_RGB⟩ = 0.80|A⟩ + 0.95|S⟩ + 0.60|F⟩ + 0.90|I⟩ + 0.30|D⟩",
+        "justification": {
+          "A": "Strong attractor (standard color space, widely adopted)",
+          "S": "Very high structure (perfect cube geometry, orthogonal axes)",
+          "F": "Moderate flow (digital signal processing)",
+          "I": "Very high information (3×8 bits = 24 bits per pixel)",
+          "D": "Low dynamics (static model, not temporal)"
+        },
+        "representation": {
+          "geometry": "Unit cube in 3D Euclidean space",
+          "axes": {
+            "R": "Red axis (0 to 255)",
+            "G": "Green axis (0 to 255)",
+            "B": "Blue axis (0 to 255)"
+          },
+          "vertices": {
+            "(0,0,0)": "Black",
+            "(255,0,0)": "Red",
+            "(0,255,0)": "Green",
+            "(0,0,255)": "Blue",
+            "(255,255,0)": "Yellow",
+            "(255,0,255)": "Magenta",
+            "(0,255,255)": "Cyan",
+            "(255,255,255)": "White"
+          },
+          "diagonal": {
+            "from": "(0,0,0) Black",
+            "to": "(255,255,255) White",
+            "property": "Achromatic axis (grayscale: R=G=B)"
+          }
+        }
+      },
+      "m0:epistemicGap": {
+        "formula": "ΔΘ = ‖|Ω_color⟩ - |M_RGB⟩‖",
+        "deltaVector": "(-0.10, -0.10, +0.30, +0.05, +0.10)",
+        "norm": "≈ 0.35",
+        "interpretation": "Small gap (ΔΘ < 0.4) - RGB is good model for perceived color",
+        "assessment": "RGB captures color well but simplifies continuous spectrum to discrete channels",
+        "majorDivergences": [
+          {
+            "dimension": "F (Flow)",
+            "divergence": "+0.30",
+            "reason": "Territory has massive photon flux; Map is discrete numerical values"
+          },
+          {
+            "dimension": "S (Structure)",
+            "divergence": "-0.10",
+            "reason": "Map has perfect cube structure; Territory has biological complexity"
+          }
+        ],
+        "limitations": [
+          "Perceptual non-uniformity (equal RGB distance ≠ equal perceived difference)",
+          "Gamut limitations (not all visible colors representable)",
+          "Device dependence (RGB values depend on display calibration)",
+          "Metamerism ignored (different spectra can produce same RGB)"
+        ]
+      },
+      "m0:oriveAnalysis": {
+        "description": "Sphinx Eye evaluation of RGB Map quality (ORIVE Map-Space)",
+        "perspective": "Philosophical interpretation using ORIVE basis",
+        "oriveState": {
+          "O": 0.90,
+          "R": 0.95,
+          "I": 0.95,
+          "V": 0.90,
+          "E": 0.90
+        },
+        "stateVector": "|M_RGB⟩_ORIVE = 0.90|O⟩ + 0.95|R⟩ + 0.95|I⟩ + 0.90|V⟩ + 0.90|E⟩",
+        "dimensionInterpretations": [
+          {
+            "dimension": "O (Observability)",
+            "coefficient": 0.90,
+            "interpretation": "RGB model is directly observable on screens - we literally SEE the model in action. Every pixel displays RGB values. Very high observability as both concept and implementation.",
+            "evidence": "RGB sliders in software, pixel inspection tools, display technology visibility"
+          },
+          {
+            "dimension": "R (Representability)",
+            "coefficient": 0.95,
+            "interpretation": "Perfectly representable as (R,G,B) triplets. Mathematical notation simple and precise. Color spaces well-defined. Formulas for mixing clear (linear superposition).",
+            "evidence": "Hexadecimal notation (#FF5733), decimal triplets (255,128,0), standardized in CSS, SVG, image formats"
+          },
+          {
+            "dimension": "I (Interoperability)",
+            "coefficient": 0.95,
+            "interpretation": "Universally shareable - RGB is THE international standard for digital color. Identical values produce identical colors (device-calibrated). Cross-platform, cross-language compatibility.",
+            "evidence": "sRGB standard (IEC 61966), Adobe RGB, all modern displays use RGB, software interoperability"
+          },
+          {
+            "dimension": "V (Verifiability)",
+            "coefficient": 0.90,
+            "interpretation": "Highly testable - can measure wavelengths (R≈700nm, G≈546nm, B≈435nm), verify additive synthesis empirically, test gamut boundaries. Some subjectivity in perception but physics is measurable.",
+            "evidence": "Spectrophotometers measure wavelengths, colorimeters verify RGB output, reproducible experiments"
+          },
+          {
+            "dimension": "E (Evolvability)",
+            "coefficient": 0.90,
+            "interpretation": "Very evolvable - RGB has spawned variants (sRGB, Adobe RGB, ProPhoto RGB), transformations to other spaces (HSL, HSV, LAB), extensions (RGBA with alpha). Model adapts to new needs.",
+            "evidence": "RGB → sRGB (1996), RGB → HSL (perceptual), RGB → wide-gamut variants, backwards compatible evolution"
+          }
+        ],
+        "overallAssessment": "Exceptional Map - Near-perfect ORIVE scores. RGB is arguably the most successful color model in history due to alignment with trichromatic vision + digital implementation.",
+        "mapQuality": "ORIVE_mean = 0.92 → Excellent Map quality",
+        "sphinxInsight": {
+          "question": "Why does RGB work so well?",
+          "answer": "Biological constraint (human trichromacy) → Engineering solution (3 primaries) → Universal standard (sRGB). Map succeeds because it mirrors Territory structure (3 cone types → 3 channels).",
+          "korzybskiPrinciple": "Map follows Territory structure - RGB isn't arbitrary but grounded in physiology"
+        }
+      },
+      "m0:metaconceptsMobilized": {
+        "total": 15,
+        "critical": [
+          {
+            "metaconcept": "m2:Signal",
+            "formula": "I⊗F",
+            "role": "R, G, B channels as information carriers",
+            "instantiation": "Intensity signals (0-255 values)",
+            "physical": "Photon flux modulated by intensity"
+          },
+          {
+            "metaconcept": "m2:Fusion",
+            "formula": "S⊗F⊗D (fusion/fission)",
+            "aspect": "Fusion (merging) + Fission (separation)",
+            "role": "Three light waves fuse into perceived color; color can be separated into channels",
+            "fusionExample": "R + G + B waves → FUSION → Yellow percept",
+            "fissionExample": "Orange percept → FISSION → RGB(255, 165, 0)",
+            "duality": "Bidirectional: Fusion (synthesis) ↔ Fission (analysis)"
+          },
+          {
+            "metaconcept": "m2:Component",
+            "formula": "S⊗I",
+            "role": "R, G, B as elementary parts",
+            "distinction": "Components are the channels; Signals are what they carry"
+          },
+          {
+            "metaconcept": "m2:Synergy",
+            "formula": "A⊗S⊗I",
+            "role": "Trichromatic integration creates emergent color",
+            "example": "Yellow from R+G (no yellow wavelength in stimulus!)"
+          },
+          {
+            "metaconcept": "m2:Code",
+            "formula": "I⊗S⊗D (bidirectional)",
+            "aspect": "Encoding (Territory → Map)",
+            "role": "Color percept encoded as (R,G,B) triplet",
+            "format": "Hexadecimal (#FF0000), Decimal (255,0,0), Normalized (1.0, 0.0, 0.0)"
+          },
+          {
+            "metaconcept": "m2:Representation",
+            "formula": "I⊗S",
+            "role": "RGB cube as representation of color space",
+            "medium": "3D geometric model"
+          },
+          {
+            "metaconcept": "m2:Space",
+            "formula": "S⊗I",
+            "role": "RGB color space (unit cube in ℝ³)",
+            "properties": "Euclidean, orthogonal axes, bounded [0,255]³"
+          },
+          {
+            "metaconcept": "m2:Constraint",
+            "formula": "S⊗I",
+            "role": "Value bounds and clipping",
+            "constraints": [
+              "0 ≤ R ≤ 255",
+              "0 ≤ G ≤ 255",
+              "0 ≤ B ≤ 255",
+              "Overflow clipping (values > 255 → 255)"
+            ]
+          },
+          {
+            "metaconcept": "m2:Threshold",
+            "formula": "A⊗I",
+            "role": "Perceptual thresholds (JND - Just Noticeable Difference)",
+            "example": "~2-3 levels difference needed for perception (not all 256 levels distinguishable)"
+          },
+          {
+            "metaconcept": "m2:Transformation",
+            "formula": "D⊗I⊗S",
+            "role": "Color space conversions (RGB ↔ HSL, RGB ↔ CMYK)",
+            "reversibility": "RGB ↔ HSL: lossless; RGB ↔ CMYK: approximate"
+          },
+          {
+            "metaconcept": "m2:Invariant",
+            "formula": "S⊗A",
+            "role": "Structural invariants of RGB space",
+            "invariants": [
+              "Cube topology (8 vertices, 12 edges, 6 faces)",
+              "Achromatic diagonal (R=G=B)",
+              "Complementary colors (opposite vertices sum to white)"
+            ]
+          },
+          {
+            "metaconcept": "m2:Symmetry",
+            "formula": "S",
+            "role": "Cubic symmetry (rotations, reflections)",
+            "symmetries": "RGB cube has octahedral symmetry group"
+          },
+          {
+            "metaconcept": "m2:Topology",
+            "formula": "S⊗I",
+            "role": "Topological properties of RGB space",
+            "properties": "Compact, connected, simply-connected (no holes)"
+          },
+          {
+            "metaconcept": "m2:Language",
+            "formula": "I⊗S⊗F",
+            "role": "Color naming and communication",
+            "vocabulary": "Hexadecimal (#FF5733), Named colors ('crimson'), RGB notation"
+          },
+          {
+            "metaconcept": "m2:Signature",
+            "formula": "I⊗A",
+            "role": "Unique color identity",
+            "example": "Brand colors (Coca-Cola red = RGB(244, 0, 0))"
+          }
+        ],
+        "byCategory": {
+          "Structural": ["Component", "Space", "Topology", "Symmetry", "Invariant"],
+          "Informational": ["Signal", "Code", "Representation", "Language", "Signature"],
+          "Regulatory": ["Constraint", "Threshold"],
+          "Dynamic": ["Transformation", "Fusion"],
+          "Relational": ["Synergy"]
+        }
+      },
+      "m0:constraints": [
+        {
+          "type": "Range",
+          "parameter": "Channel values",
+          "condition": "0 ≤ R, G, B ≤ 255 (8-bit)",
+          "enforcement": "Clipping (out-of-range values truncated)"
+        },
+        {
+          "type": "Additivity",
+          "parameter": "Color mixing",
+          "condition": "R+G+B (sum may exceed 255 → white saturation)",
+          "note": "Additive primaries: max all → white, min all → black"
+        },
+        {
+          "type": "Independence",
+          "parameter": "Channel orthogonality",
+          "condition": "R, G, B channels are independent (no cross-talk in ideal case)",
+          "practical": "Real displays may have spectral overlap"
+        },
+        {
+          "type": "Gamut",
+          "parameter": "Representable colors",
+          "condition": "RGB gamut ⊂ Visible spectrum (not all colors representable)",
+          "limitation": "Highly saturated colors near spectral locus unreachable"
+        }
+      ],
+      "m0:applications": [
+        "Computer monitors and displays (LCD, OLED, CRT)",
+        "Digital cameras and scanners",
+        "Image processing and computer graphics",
+        "Web design (CSS colors, HTML)",
+        "Video production and editing",
+        "LED lighting and signage",
+        "Projectors and virtual reality headsets"
+      ],
+      "m0:historicalContext": {
+        "origin": "Trichromatic theory (Young-Helmholtz, 19th century)",
+        "standardization": "CIE RGB (1931), sRGB (1996 - current web standard)",
+        "evolution": "Analog TV (PAL, NTSC) → Digital displays → HDR (wider gamuts)"
+      },
+      "m0:validation": {
+        "asfidCompleteness": "All 5 dimensions present ✅",
+        "metaconceptCoverage": "15 metaconcepts (29%) ✅",
+        "minimality": "Exactly 3 components (irreducible for trichromatic vision) ✅",
+        "emergence": "Perceived color emerges from signal fusion ✅",
+        "signalIntegration": "Signal metaconcept central to model ✅",
+        "fusionPrinciple": "Fusion metaconcept explains wave superposition ✅"
+      },
+      "rdfs:seeAlso": [
+        {
+          "@id": "m0:ColorSynthesisFederated",
+          "file": "./M0_ColorSynthesis_Federated.jsonld"
+        },
+        {
+          "@id": "m0:HSL_Additive",
+          "file": "./M0_HSL_Additive.jsonld",
+          "note": "Alternative perceptual representation of same RGB space"
+        },
+        {
+          "@id": "m0:CMY_Subtractive",
+          "file": "./M0_CMY_Subtractive.jsonld",
+          "note": "Complementary subtractive synthesis"
+        }
+      ],
+      "dcterms:references": [
+        "Poynton, C. (2003). Digital Video and HD: Algorithms and Interfaces",
+        "Fairchild, M. D. (2013). Color Appearance Models (3rd ed.)",
+        "ITU-R BT.709 (HDTV color primaries and transfer characteristics)",
+        "sRGB IEC 61966-2-1:1999 (standard RGB color space for web)"
+      ]
+    }
+  ]
+}
