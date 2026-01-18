@@ -1,0 +1,372 @@
+{
+  "@context": {
+    "m1": "https://github.com/Echopraxium/tscg/blob/main/ontology/M1_extensions/chemistry/M1_Chemistry.jsonld#",
+    "m2": "https://github.com/Echopraxium/tscg/blob/main/ontology/TSCG_M2_MetaConcepts_Ontology.jsonld#",
+    "m3": "https://github.com/Echopraxium/tscg/blob/main/ontology/M3_Genesis_Space.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "m1:M1_Chemistry_Ontology",
+      "@type": "owl:Ontology",
+      "dcterms:title": "TSCG M1 Extension: Chemistry",
+      "dcterms:description": "Domain-specific instantiation of M2 metaconcepts for chemistry. Defines chemical processes, reactions, substances, and transformations using TSCG M2 metaconcepts as foundation.",
+      "dcterms:creator": "TSCG Project",
+      "dcterms:created": "2026-01-17",
+      "dcterms:modified": "2026-01-17",
+      "owl:versionInfo": "1.0.0",
+      "owl:imports": [
+        "https://github.com/Echopraxium/tscg/blob/main/ontology/TSCG_M2_MetaConcepts_Ontology.jsonld"
+      ],
+      "m1:domain": "Chemistry",
+      "m1:functor": "F_instantiate : M2 → M1_Chemistry",
+      "rdfs:comment": "This M1 extension specializes M2 metaconcepts for chemical systems. Key principles: (1) Inherit M2 tensor formulas, (2) Add chemistry-specific properties, (3) Maintain ASFID foundation.",
+      "m1:scope": [
+        "Chemical reactions and processes",
+        "Molecular structure and bonding",
+        "Thermochemistry and kinetics",
+        "Chemical equilibria and dynamics",
+        "Catalysis and reaction mechanisms"
+      ],
+      "m1:examplePoclets": [
+        "Fire Triangle (Combustion)",
+        "Water Electrolysis",
+        "Photosynthesis",
+        "Enzyme Catalysis",
+        "Acid-Base Neutralization"
+      ]
+    },
+    {
+      "@id": "m1:ChemicalReaction",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:Process",
+      "rdfs:label": "Chemical Reaction",
+      "skos:altLabel": ["Reaction", "Chemical Transformation"],
+      "rdfs:comment": "Process involving transformation of chemical species through bond breaking and formation, with associated energy changes. Instantiates M2:Process with chemistry-specific semantics.",
+      "m1:instantiatesMetaconcept": [
+        "m2:Process",
+        "m2:Transformation",
+        "m2:Event"
+      ],
+      "m1:asfidSignature": "D⊗F (high dynamics, high flow)",
+      "m1:properties": {
+        "m1:reactants": {
+          "type": "m1:ChemicalSpecies",
+          "cardinality": "1..*",
+          "role": "Input substances consumed"
+        },
+        "m1:products": {
+          "type": "m1:ChemicalSpecies",
+          "cardinality": "1..*",
+          "role": "Output substances produced"
+        },
+        "m1:energyBalance": {
+          "type": "xsd:string",
+          "enum": ["Exothermic", "Endothermic", "Isothermal"],
+          "role": "Net energy change"
+        },
+        "m1:catalyst": {
+          "type": "m1:ChemicalSpecies",
+          "cardinality": "0..1",
+          "role": "Optional species enabling reaction without being consumed"
+        },
+        "m1:mechanism": {
+          "type": "xsd:string",
+          "role": "Step-by-step process description"
+        },
+        "m1:rateConstant": {
+          "type": "xsd:float",
+          "unit": "varies (mol/L·s, s⁻¹, etc.)",
+          "role": "Kinetic parameter"
+        }
+      },
+      "m1:constraints": [
+        "Conservation of mass (atoms)",
+        "Conservation of charge",
+        "Energy conservation (1st law thermodynamics)"
+      ],
+      "m1:examples": [
+        "H₂ + O₂ → H₂O (water formation)",
+        "CaCO₃ → CaO + CO₂ (thermal decomposition)",
+        "CH₄ + 2O₂ → CO₂ + 2H₂O (methane combustion)"
+      ]
+    },
+    {
+      "@id": "m1:Combustion",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m1:ChemicalReaction",
+      "rdfs:label": "Combustion",
+      "skos:altLabel": ["Burning", "Fire"],
+      "rdfs:comment": "Exothermic chemical reaction between a fuel and an oxidizer, producing heat, light, and combustion products. Canonical example: Fire Triangle (Fuel + O₂ + Heat → Flame).",
+      "m1:instantiatesMetaconcept": [
+        "m2:Process",
+        "m2:Dissipation",
+        "m2:Synergy",
+        "m2:Composition",
+        "m2:Trigger",
+        "m2:Threshold",
+        "m2:Feedback"
+      ],
+      "m1:asfidSignature": "High A, Medium S, High F, Medium I, High D",
+      "m1:requiredComponents": [
+        {
+          "name": "Fuel",
+          "type": "m1:ChemicalSpecies",
+          "role": "Energy source (typically hydrocarbon or organic matter)",
+          "examples": ["Wood", "Gasoline", "Methane", "Coal"]
+        },
+        {
+          "name": "Oxidizer",
+          "type": "m1:ChemicalSpecies",
+          "role": "Electron acceptor (typically O₂, but can be other oxidizers)",
+          "examples": ["O₂ (atmospheric)", "Cl₂", "NO₃⁻", "ClO₄⁻"]
+        },
+        {
+          "name": "ActivationEnergy",
+          "type": "Energy",
+          "role": "Initial heat to reach ignition temperature",
+          "examples": ["Spark", "Flame", "Hot surface"]
+        }
+      ],
+      "m1:properties": {
+        "m1:energyBalance": "Exothermic (always)",
+        "m1:products": {
+          "typical": ["Heat", "Light", "CO₂", "H₂O", "Smoke"],
+          "note": "Products vary by fuel composition"
+        },
+        "m1:ignitionTemperature": {
+          "type": "xsd:float",
+          "unit": "Kelvin or Celsius",
+          "role": "Threshold temperature for self-sustaining combustion",
+          "examples": {
+            "Wood": "300°C",
+            "Gasoline": "-43°C",
+            "Methane": "580°C"
+          }
+        },
+        "m1:flameStructure": {
+          "zones": ["Preheat zone", "Combustion zone", "Post-combustion zone"],
+          "note": "Spatial organization of combustion process"
+        },
+        "m1:flameColor": {
+          "type": "xsd:string",
+          "examples": {
+            "Complete combustion": "Blue (high temp)",
+            "Incomplete combustion": "Yellow-orange (soot emission)"
+          }
+        }
+      },
+      "m1:constraints": [
+        {
+          "parameter": "Fuel concentration",
+          "condition": "> LEL (Lower Explosive Limit)",
+          "note": "Below LEL, mixture too lean to sustain combustion"
+        },
+        {
+          "parameter": "O₂ concentration",
+          "condition": "> 16% (typical for air)",
+          "note": "Below this, combustion slows or stops"
+        },
+        {
+          "parameter": "Temperature",
+          "condition": "> T_ignition (fuel-specific)",
+          "note": "Must overcome activation energy barrier"
+        },
+        {
+          "parameter": "Mixing",
+          "condition": "Proper fuel-oxidizer ratio (stoichiometry)",
+          "note": "Affects completeness and efficiency"
+        }
+      ],
+      "m1:subTypes": [
+        {
+          "name": "Complete Combustion",
+          "condition": "Excess O₂",
+          "products": "CO₂ + H₂O only",
+          "efficiency": "High (max energy release)"
+        },
+        {
+          "name": "Incomplete Combustion",
+          "condition": "Limited O₂",
+          "products": "CO + C (soot) + H₂O",
+          "efficiency": "Lower (partial oxidation)"
+        },
+        {
+          "name": "Spontaneous Combustion",
+          "trigger": "Self-heating (no external ignition)",
+          "examples": ["Hay piles", "Coal stockpiles", "Oily rags"]
+        }
+      ],
+      "m1:fireTrianglePrinciple": {
+        "description": "Removal of ANY component stops combustion",
+        "extinguishmentStrategies": [
+          {
+            "component": "Fuel",
+            "method": "Fuel removal or dilution",
+            "examples": ["Clear brush", "Close gas valve"]
+          },
+          {
+            "component": "Oxidizer",
+            "method": "O₂ exclusion (smothering)",
+            "examples": ["Fire blanket", "CO₂ extinguisher", "Foam"]
+          },
+          {
+            "component": "Heat",
+            "method": "Cooling below ignition temperature",
+            "examples": ["Water spray", "Heat-absorbing powder"]
+          }
+        ]
+      },
+      "m1:feedbackLoop": {
+        "type": "Positive feedback (self-sustaining)",
+        "mechanism": "Heat produced → Fuel vaporization → More combustion → More heat",
+        "consequence": "Self-propagating once ignited (until resource exhaustion)"
+      },
+      "m1:examples": [
+        {
+          "name": "Wood fire",
+          "fuel": "Cellulose (C₆H₁₀O₅)ₙ",
+          "products": "CO₂ + H₂O + Ash",
+          "T_ignition": "~300°C"
+        },
+        {
+          "name": "Methane combustion",
+          "reaction": "CH₄ + 2O₂ → CO₂ + 2H₂O",
+          "ΔH": "-890 kJ/mol (exothermic)",
+          "T_ignition": "580°C"
+        },
+        {
+          "name": "Candle flame",
+          "fuel": "Paraffin wax (CₙH₂ₙ₊₂)",
+          "mechanism": "Wax melts → Wicks → Vaporizes → Burns",
+          "selfSustaining": "Yes (heat melts more wax)"
+        }
+      ],
+      "rdfs:seeAlso": [
+        "m1:Oxidation",
+        "m1:Pyrolysis",
+        "m1:Deflagration"
+      ]
+    },
+    {
+      "@id": "m1:Oxidation",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m1:ChemicalReaction",
+      "rdfs:label": "Oxidation",
+      "skos:altLabel": ["Electron Loss", "Oxygen Gain"],
+      "rdfs:comment": "Reaction involving electron loss or oxygen gain. Combustion is a rapid oxidation; corrosion (rust) is slow oxidation.",
+      "m1:instantiatesMetaconcept": [
+        "m2:Process",
+        "m2:Transformation"
+      ],
+      "m1:properties": {
+        "m1:electronTransfer": "Loss of electrons",
+        "m1:oxidationState": "Increase in oxidation number",
+        "m1:coupledReaction": "Always paired with Reduction (redox)"
+      },
+      "m1:examples": [
+        "2Fe + O₂ → 2FeO (iron rusting - slow oxidation)",
+        "C + O₂ → CO₂ (carbon combustion - fast oxidation)",
+        "Fe²⁺ → Fe³⁺ + e⁻ (electron loss)"
+      ],
+      "rdfs:seeAlso": [
+        "m1:Reduction",
+        "m1:Combustion",
+        "m1:Corrosion"
+      ]
+    },
+    {
+      "@id": "m1:Reduction",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m1:ChemicalReaction",
+      "rdfs:label": "Reduction",
+      "skos:altLabel": ["Electron Gain", "Oxygen Loss"],
+      "rdfs:comment": "Reaction involving electron gain or oxygen loss. Always coupled with Oxidation in redox reactions.",
+      "m1:instantiatesMetaconcept": [
+        "m2:Process",
+        "m2:Transformation"
+      ],
+      "m1:properties": {
+        "m1:electronTransfer": "Gain of electrons",
+        "m1:oxidationState": "Decrease in oxidation number",
+        "m1:coupledReaction": "Always paired with Oxidation (redox)"
+      },
+      "m1:examples": [
+        "Cu²⁺ + 2e⁻ → Cu (copper plating)",
+        "Fe₂O₃ + 3CO → 2Fe + 3CO₂ (iron smelting)",
+        "O₂ + 4e⁻ → 2O²⁻ (oxygen reduction)"
+      ],
+      "rdfs:seeAlso": "m1:Oxidation"
+    },
+    {
+      "@id": "m1:ChemicalSpecies",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:Component",
+      "rdfs:label": "Chemical Species",
+      "skos:altLabel": ["Molecule", "Compound", "Element", "Ion"],
+      "rdfs:comment": "Identifiable chemical entity with specific molecular formula and properties. Instantiates M2:Component in chemistry domain.",
+      "m1:instantiatesMetaconcept": "m2:Component",
+      "m1:properties": {
+        "m1:molecularFormula": "Chemical composition (e.g., H₂O, CO₂, C₆H₁₂O₆)",
+        "m1:molecularMass": "Mass in g/mol or Da",
+        "m1:phase": ["Solid", "Liquid", "Gas", "Plasma"],
+        "m1:structure": "3D arrangement of atoms (if applicable)"
+      },
+      "m1:subTypes": [
+        "m1:Element",
+        "m1:Compound",
+        "m1:Ion",
+        "m1:Radical"
+      ],
+      "m1:examples": [
+        "H₂O (water)",
+        "O₂ (dioxygen)",
+        "CH₄ (methane)",
+        "NaCl (sodium chloride)",
+        "H⁺ (proton)"
+      ]
+    },
+    {
+      "@id": "m1:Catalyst",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m1:ChemicalSpecies",
+      "rdfs:label": "Catalyst",
+      "rdfs:comment": "Chemical species that increases reaction rate without being consumed. Instantiates M2:Catalysis and M2:Mediator.",
+      "m1:instantiatesMetaconcept": [
+        "m2:Catalysis",
+        "m2:Mediator"
+      ],
+      "m1:properties": {
+        "m1:mechanism": "Lowers activation energy barrier",
+        "m1:specificity": "Often selective for particular reactions",
+        "m1:regeneration": "Recovered unchanged after reaction"
+      },
+      "m1:examples": [
+        "Platinum (catalytic converter)",
+        "Enzymes (biological catalysts)",
+        "H₂SO₄ (acid catalyst in esterification)"
+      ]
+    },
+    {
+      "@id": "m1:ReactionMechanism",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:Process",
+      "rdfs:label": "Reaction Mechanism",
+      "rdfs:comment": "Step-by-step sequence of elementary reactions constituting overall chemical transformation.",
+      "m1:instantiatesMetaconcept": [
+        "m2:Process",
+        "m2:Path"
+      ],
+      "m1:properties": {
+        "m1:elementarySteps": "List of individual reaction steps",
+        "m1:intermediates": "Transient species formed and consumed",
+        "m1:rateDeterminingStep": "Slowest step controlling overall rate"
+      }
+    }
+  ]
+}

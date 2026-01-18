@@ -1,0 +1,452 @@
+{
+  "@context": {
+    "m0": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_HSL_Additive.jsonld#",
+    "m1": "https://github.com/Echopraxium/tscg/blob/main/ontology/M1_extensions/optics/M1_Optics.jsonld#",
+    "m2": "https://github.com/Echopraxium/tscg/blob/main/ontology/TSCG_M2_MetaConcepts_Ontology.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "m0:HSL_Additive",
+      "@type": "owl:NamedIndividual",
+      "rdf:type": "m0:Poclet",
+      "rdfs:label": "HSL Additive Color Synthesis",
+      "rdfs:comment": "Perceptual additive color synthesis using Hue, Saturation, Lightness channels. Alternative representation of RGB space organized around perceptual dimensions. HSL is bijective transformation of RGB - same Territory (color perception), different Map (cylindrical vs cubic coordinates).",
+      "dcterms:created": "2026-01-17",
+      "dcterms:creator": "Echopraxium with collaboration of Claude AI Pro",
+      "m0:pocletType": "Composite (Specialized)",
+      "m0:partOfFederation": {
+        "@id": "m0:ColorSynthesisFederated",
+        "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_ColorSynthesis_Federated.jsonld",
+        "dcterms:documentation": {
+          "@id": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_ColorSynthesis_Federated.jsonld",
+          "dcterms:format": "application/ld+json",
+          "dcterms:type": "Ontology"
+        }
+      },
+      "m0:domain": "Optics / Color Science",
+      "m0:principle": "Additive Synthesis (Perceptual Representation)",
+      "m0:physicalBasis": "Same as RGB - electromagnetic wave superposition, represented in perceptual coordinates",
+      "m0:relationToRGB": {
+        "type": "Bijective transformation (lossless)",
+        "geometry": "RGB cube → HSL cylinder",
+        "reversible": true,
+        "note": "HSL is alternative REPRESENTATION of RGB, not different color space"
+      },
+      "m0:channels": [
+        {
+          "@id": "m0:HueChannel",
+          "@type": "m2:Channel",
+          "rdfs:label": "Hue Channel (H)",
+          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:channelType": "Perceptual dimension (color type)",
+          "m0:role": "Encodes qualitative color attribute - the 'kind' of color",
+          "m0:function": "Dominant wavelength / color family",
+          "m0:representation": "Angular (position on color wheel)",
+          "m0:rangeAnalog": "[0°, 360°) circular, wraps around",
+          "m0:rangeDigital": "[0, 360] degrees or [0.0, 1.0] normalized",
+          "m0:tensorFormula": "S⊗I⊗F",
+          "m0:signalCarried": {
+            "@type": "m2:Signal",
+            "description": "Angular position on color wheel",
+            "formula": "I⊗F",
+            "physicalCorrelate": "Dominant wavelength in RGB mix"
+          },
+          "m0:colorWheel": {
+            "0°": "Red",
+            "60°": "Yellow",
+            "120°": "Green",
+            "180°": "Cyan",
+            "240°": "Blue",
+            "300°": "Magenta",
+            "360°": "Red (wrap)"
+          },
+          "m0:examples": [
+            "H=0° → Red",
+            "H=120° → Green",
+            "H=240° → Blue"
+          ]
+        },
+        {
+          "@id": "m0:SaturationChannel",
+          "@type": "m2:Channel",
+          "rdfs:label": "Saturation Channel (S)",
+          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:channelType": "Perceptual dimension (color purity)",
+          "m0:role": "Encodes chromatic intensity - purity vs grayness",
+          "m0:function": "Distance from achromatic axis (gray)",
+          "m0:representation": "Radial (distance from center)",
+          "m0:rangeAnalog": "[0.0, 1.0] where 0=gray, 1=pure",
+          "m0:rangeDigital": "[0%, 100%]",
+          "m0:tensorFormula": "S⊗I⊗F",
+          "m0:signalCarried": {
+            "@type": "m2:Signal",
+            "description": "Chromatic purity level",
+            "formula": "I⊗F"
+          },
+          "m0:extremes": {
+            "0%": "Achromatic (gray)",
+            "100%": "Fully saturated (pure spectral color)"
+          },
+          "m0:examples": [
+            "S=0% → Gray",
+            "S=50% → Pastel",
+            "S=100% → Vivid"
+          ]
+        },
+        {
+          "@id": "m0:LightnessChannel",
+          "@type": "m2:Channel",
+          "rdfs:label": "Lightness Channel (L)",
+          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:channelType": "Perceptual dimension (brightness)",
+          "m0:role": "Encodes perceived brightness",
+          "m0:function": "Vertical position (dark to light)",
+          "m0:representation": "Vertical axis",
+          "m0:rangeAnalog": "[0.0, 1.0] where 0=black, 1=white",
+          "m0:rangeDigital": "[0%, 100%]",
+          "m0:tensorFormula": "S⊗I⊗F",
+          "m0:signalCarried": {
+            "@type": "m2:Signal",
+            "description": "Brightness level",
+            "formula": "I⊗F"
+          },
+          "m0:extremes": {
+            "0%": "Black",
+            "50%": "Pure hue (max saturation)",
+            "100%": "White"
+          },
+          "m0:examples": [
+            "L=0% → Black",
+            "L=50% → Pure color",
+            "L=100% → White"
+          ]
+        }
+      ],
+      "m0:fusionPrinciple": {
+        "metaconcept": "m2:Fusion",
+        "aspect": "Fusion (perceptual integration via RGB transformation)",
+        "formula": "S⊗F⊗D",
+        "description": "Three perceptual channels (H, S, L) fuse through transformation to RGB, then electromagnetic wave superposition produces perceived color",
+        "operation": "HSL → Transform_to_RGB → R_wave ⊕ G_wave ⊕ B_wave → FUSION → Perceived_Color",
+        "emergentProperty": "Perceived color (qualia)",
+        "physicalMechanism": "Same as RGB (wave superposition), but specified in perceptual coordinates",
+        "perceptualAdvantage": "More intuitive for humans than RGB primaries",
+        "syntheticColors": [
+          {
+            "name": "Pure Red",
+            "fusion": "H(0°) ⊕ S(100%) ⊕ L(50%)",
+            "HSL": "(0°, 100%, 50%)",
+            "RGB_equivalent": "(255, 0, 0)",
+            "result": "Fully saturated red at mid-lightness"
+          },
+          {
+            "name": "Pink",
+            "fusion": "H(0°) ⊕ S(100%) ⊕ L(75%)",
+            "HSL": "(0°, 100%, 75%)",
+            "RGB_equivalent": "(255, 128, 128)",
+            "result": "Red hue with high lightness"
+          },
+          {
+            "name": "Olive",
+            "fusion": "H(60°) ⊕ S(100%) ⊕ L(25%)",
+            "HSL": "(60°, 100%, 25%)",
+            "RGB_equivalent": "(128, 128, 0)",
+            "result": "Yellow hue with low lightness"
+          },
+          {
+            "name": "Gray",
+            "fusion": "H(any) ⊕ S(0%) ⊕ L(50%)",
+            "HSL": "(—, 0%, 50%)",
+            "RGB_equivalent": "(128, 128, 128)",
+            "result": "Achromatic (hue irrelevant when S=0)"
+          }
+        ]
+      },
+      "m0:fissionPrinciple": {
+        "metaconcept": "m2:Fusion (fission aspect)",
+        "formula": "S⊗F⊗D",
+        "description": "Perceived color separated into perceptual dimensions",
+        "operation": "Perceived_Color → FISSION → (H_angle, S_purity, L_brightness)",
+        "application": "Color picking, artistic manipulation, color grading",
+        "tools": ["Color picker UI", "HSL sliders", "Hue rotation filters"]
+      },
+      "m0:transformationToRGB": {
+        "metaconcept": "m2:Transformation",
+        "formula": "D⊗I⊗S",
+        "reversible": true,
+        "lossless": true,
+        "algorithm": {
+          "HSL_to_RGB": [
+            "C = (1 - |2L - 1|) × S  // Chroma",
+            "X = C × (1 - |(H/60°) mod 2 - 1|)",
+            "m = L - C/2",
+            "(R',G',B') depends on H sector (0-60°, 60-120°, etc.)",
+            "(R,G,B) = ((R'+m)×255, (G'+m)×255, (B'+m)×255)"
+          ],
+          "RGB_to_HSL": [
+            "Normalize: R'=R/255, G'=G/255, B'=B/255",
+            "M = max(R',G',B'), m = min(R',G',B')",
+            "L = (M + m)/2",
+            "If M=m: H undefined, S=0 (achromatic)",
+            "Else: S = (M-m)/(1-|2L-1|)",
+            "H from which channel is max"
+          ]
+        }
+      },
+      "m0:territorySpace": {
+        "description": "Perceived color - same Territory as RGB",
+        "observer": "Human with trichromatic vision",
+        "phenomenon": "Color perception (qualia)",
+        "asfidState": {
+          "A": 0.70,
+          "S": 0.85,
+          "F": 0.90,
+          "I": 0.95,
+          "D": 0.40
+        },
+        "stateVector": "|Ω_color⟩ = 0.70|A⟩ + 0.85|S⟩ + 0.90|F⟩ + 0.95|I⟩ + 0.40|D⟩",
+        "note": "IDENTICAL to RGB Territory - same physical light, same perception"
+      },
+      "m0:mapSpace": {
+        "description": "HSL cylinder as perceptual Map",
+        "observer": "Designer / Artist / UI developer",
+        "model": "HSL cylinder (cylindrical coordinates)",
+        "asfidState": {
+          "A": 0.75,
+          "S": 0.90,
+          "F": 0.55,
+          "I": 0.85,
+          "D": 0.35
+        },
+        "stateVector": "|M_HSL⟩ = 0.75|A⟩ + 0.90|S⟩ + 0.55|F⟩ + 0.85|I⟩ + 0.35|D⟩",
+        "justification": {
+          "A": "Strong attractor (perceptually intuitive)",
+          "S": "Very high structure (cylindrical geometry)",
+          "F": "Moderate flow (derived from RGB)",
+          "I": "High information (3 perceptual dimensions)",
+          "D": "Low dynamics (static model)"
+        },
+        "geometry": {
+          "shape": "Cylinder",
+          "axes": {
+            "H": "Angular (0°-360°)",
+            "S": "Radial (0-100%)",
+            "L": "Vertical (0-100%)"
+          }
+        }
+      },
+      "m0:epistemicGap": {
+        "formula": "ΔΘ = ‖|Ω_color⟩ - |M_HSL⟩‖",
+        "deltaVector": "(-0.05, -0.05, +0.35, +0.10, +0.05)",
+        "norm": "≈ 0.37",
+        "interpretation": "Small gap - HSL is good perceptual model",
+        "comparisonToRGB": "ΔΘ_HSL ≈ ΔΘ_RGB (similar quality)",
+        "assessment": "HSL more intuitive for humans, mathematically equivalent to RGB",
+        "limitations": [
+          "Not perceptually uniform (equal HSL distance ≠ equal perceived difference)",
+          "H undefined at gray axis (S=0 singularity)",
+          "Derived from RGB (not direct physical measurement)"
+        ]
+      },
+      "m0:oriveAnalysis": {
+        "description": "Sphinx Eye evaluation of HSL Map quality (ORIVE Map-Space)",
+        "perspective": "Philosophical interpretation using ORIVE basis",
+        "oriveState": {
+          "O": 0.85,
+          "R": 0.90,
+          "I": 0.90,
+          "V": 0.85,
+          "E": 0.95
+        },
+        "stateVector": "|M_HSL⟩_ORIVE = 0.85|O⟩ + 0.90|R⟩ + 0.90|I⟩ + 0.85|V⟩ + 0.95|E⟩",
+        "dimensionInterpretations": [
+          {
+            "dimension": "O (Observability)",
+            "coefficient": 0.85,
+            "interpretation": "HSL is observable in color pickers and UI tools (sliders for H, S, L). Slightly less direct than RGB (requires transformation from physical primaries). Still highly visible in practice.",
+            "evidence": "HSL color pickers in Photoshop, CSS, design software - standard UI element"
+          },
+          {
+            "dimension": "R (Representability)",
+            "coefficient": 0.90,
+            "interpretation": "Excellently representable - (H°, S%, L%) notation intuitive. Hue as angle (color wheel), Saturation as purity, Lightness as brightness. Matches human perceptual language better than RGB.",
+            "evidence": "Natural language: 'bright red' (H≈0°, S=100%, L=50%), 'pastel blue' (H≈210°, S=30%, L=80%)"
+          },
+          {
+            "dimension": "I (Interoperability)",
+            "coefficient": 0.90,
+            "interpretation": "Highly shareable - HSL standard in web/design. Bijective transformation with RGB ensures interoperability. Designers share HSL values as easily as RGB. CSS supports both.",
+            "evidence": "CSS3 hsl() function, conversion formulas well-known, design tool compatibility"
+          },
+          {
+            "dimension": "V (Verifiability)",
+            "coefficient": 0.85,
+            "interpretation": "Testable via RGB conversion - HSL values can be verified by transforming to RGB and measuring. Not directly measurable (derived), but reproducible. Perceptual uniformity claims partially testable.",
+            "evidence": "HSL↔RGB bijection ensures verification path, though perception varies by observer"
+          },
+          {
+            "dimension": "E (Evolvability)",
+            "coefficient": 0.95,
+            "interpretation": "Extremely evolvable - HSL spawned HSV, HSI variants. Easy transformation to/from RGB. Model adapted from RGB specifically to improve usability. Demonstrates high adaptability.",
+            "evidence": "RGB (1960s) → HSL (1970s) → HSV variant → HSI variant. Perceptual improvements ongoing (CIE LAB, LCH)"
+          }
+        ],
+        "overallAssessment": "Excellent Map - High ORIVE especially E (evolvability). HSL exemplifies Map evolution: derived from RGB to match human perception better.",
+        "mapQuality": "ORIVE_mean = 0.89 → Excellent Map quality (slightly lower than RGB due to derived nature)",
+        "sphinxInsight": {
+          "question": "Why create HSL if RGB already works?",
+          "answer": "Different purpose - RGB for machines (display hardware), HSL for humans (perception/intuition). Same Territory (color), different Map optimized for different observer (silicon vs. wetware).",
+          "evolvabilityExample": "RGB→HSL demonstrates Map adaptation without changing Territory"
+        }
+      },
+      "m0:metaconceptsMobilized": {
+        "total": 14,
+        "critical": [
+          {
+            "metaconcept": "m2:Channel",
+            "formula": "S⊗I⊗F",
+            "role": "H, S, L as perceptual transmission dimensions",
+            "instances": ["Hue channel", "Saturation channel", "Lightness channel"]
+          },
+          {
+            "metaconcept": "m2:Signal",
+            "formula": "I⊗F",
+            "role": "Perceptual attributes as signals",
+            "instances": ["Angle (0-360°)", "Purity (0-100%)", "Brightness (0-100%)"]
+          },
+          {
+            "metaconcept": "m2:Fusion",
+            "formula": "S⊗F⊗D",
+            "role": "Channels fuse (via RGB) into perceived color",
+            "mechanism": "HSL → RGB → Light waves → Perception"
+          },
+          {
+            "metaconcept": "m2:Transformation",
+            "formula": "D⊗I⊗S",
+            "role": "Bijective HSL ↔ RGB conversion",
+            "properties": "Lossless, reversible"
+          },
+          {
+            "metaconcept": "m2:Space",
+            "formula": "S⊗I",
+            "role": "HSL cylindrical color space",
+            "geometry": "Cylinder (H angular, S radial, L vertical)"
+          },
+          {
+            "metaconcept": "m2:Representation",
+            "formula": "I⊗S",
+            "role": "Perceptual representation of RGB",
+            "advantage": "Human-friendly"
+          },
+          {
+            "metaconcept": "m2:Code",
+            "formula": "I⊗S⊗D",
+            "role": "Color encoding as HSL triplet",
+            "formats": ["HSL(120°, 100%, 50%)", "hsl(120, 100%, 50%) CSS"]
+          },
+          {
+            "metaconcept": "m2:Invariant",
+            "formula": "S⊗A",
+            "role": "Properties preserved under transformation",
+            "invariants": ["Perceived color (HSL ↔ RGB)", "Cylindrical symmetry"]
+          },
+          {
+            "metaconcept": "m2:Constraint",
+            "formula": "S⊗I",
+            "role": "Value bounds and singularities",
+            "constraints": [
+              "0° ≤ H < 360°",
+              "0% ≤ S ≤ 100%",
+              "0% ≤ L ≤ 100%",
+              "H undefined when S=0"
+            ]
+          },
+          {
+            "metaconcept": "m2:Topology",
+            "formula": "S⊗I",
+            "role": "Cylindrical topology",
+            "properties": "S¹ × [0,1] × [0,1]"
+          },
+          {
+            "metaconcept": "m2:Symmetry",
+            "formula": "S",
+            "role": "Cylindrical symmetry",
+            "symmetries": "Rotational around L axis"
+          },
+          {
+            "metaconcept": "m2:Synergy",
+            "formula": "A⊗S⊗I",
+            "role": "Three dimensions combine into unified color",
+            "example": "H=0°, S=100%, L=50% → Pure red"
+          }
+        ],
+        "byCategory": {
+          "Structural": ["Space", "Topology", "Symmetry", "Invariant"],
+          "Informational": ["Channel", "Signal", "Code", "Representation"],
+          "Regulatory": ["Constraint"],
+          "Dynamic": ["Transformation", "Fusion"],
+          "Relational": ["Synergy"]
+        }
+      },
+      "m0:applications": [
+        "Color pickers (Photoshop, Illustrator, GIMP)",
+        "CSS color specification (web design)",
+        "User interfaces (more intuitive than RGB)",
+        "Image processing (hue rotation, saturation adjustment)",
+        "Color harmony (complementary, analogous, triadic)"
+      ],
+      "m0:advantages": [
+        "Perceptually intuitive (hue = color type)",
+        "Separates dimensions (adjust independently)",
+        "Matches artistic color theory",
+        "Better for UI/UX"
+      ],
+      "m0:disadvantages": [
+        "Not perceptually uniform (unlike Lab)",
+        "Singular at gray axis (H undefined)",
+        "Computational overhead (transform to/from RGB)",
+        "Device-dependent (inherits from RGB)"
+      ],
+      "m0:validation": {
+        "asfidCompleteness": "All 5 dimensions present ✅",
+        "metaconceptCoverage": "14 metaconcepts ✅",
+        "minimality": "3 channels (perceptual triplet) ✅",
+        "emergence": "Color from perceptual channel fusion ✅",
+        "channelConcept": "Channel metaconcept used ✅",
+        "fusionPrinciple": "Fusion via RGB transformation ✅",
+        "bijectiveToRGB": "Lossless HSL ↔ RGB ✅"
+      },
+      "rdfs:seeAlso": [
+        {
+          "@id": "m0:ColorSynthesisFederated",
+          "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_ColorSynthesis_Federated.jsonld",
+          "dcterms:documentation": {
+            "@id": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_ColorSynthesis_Federated.jsonld",
+            "dcterms:format": "application/ld+json",
+            "dcterms:type": "Ontology"
+          }
+        },
+        {
+          "@id": "m0:RGB_Additive",
+          "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_RGB_Additive.jsonld",
+          "dcterms:documentation": {
+            "@id": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_RGB_Additive.jsonld",
+            "dcterms:format": "application/ld+json",
+            "dcterms:type": "Ontology"
+          },
+          "note": "HSL is bijective transformation of RGB"
+        }
+      ],
+      "dcterms:references": [
+        "Smith, A. R. (1978). Color Gamut Transform Pairs. SIGGRAPH",
+        "Joblove, G. H., & Greenberg, D. (1978). Color spaces for computer graphics. SIGGRAPH",
+        "W3C CSS Color Module Level 3 (HSL specification)"
+      ]
+    }
+  ]
+}
