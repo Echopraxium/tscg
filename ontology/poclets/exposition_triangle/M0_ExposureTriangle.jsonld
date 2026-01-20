@@ -1,0 +1,562 @@
+{
+  "@context": {
+    "m0": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/exposure_triangle/M0_ExposureTriangle.jsonld#",
+    "m1": "https://github.com/Echopraxium/tscg/blob/main/ontology/M1_extensions/photography/M1_Photography.jsonld#",
+    "m2": "https://github.com/Echopraxium/tscg/blob/main/ontology/TSCG_M2_MetaConcepts_Ontology.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "m0:ExposureTriangle",
+      "@type": "owl:NamedIndividual",
+      "rdf:type": "m0:Poclet",
+      "rdfs:label": "Exposure Triangle (Photography)",
+      "rdfs:comment": "Fundamental photographic system demonstrating BALANCE (Territory) between three parameters: ISO, Aperture, Shutter Speed. Photographers make conscious TRADE-OFFs (Map) between competing image qualities: depth of field, motion blur, grain/noise. Canonical pedagogical model in photography, analogous to Fire Triangle in combustion.",
+      "dcterms:created": "2026-01-20",
+      "dcterms:creator": "Echopraxium with collaboration of Claude AI Pro",
+      "owl:versionInfo": "1.0.0",
+      "m0:pocletType": "Canonical (Pedagogical Triangle)",
+      "m0:domain": "Photography / Optics / Image Formation",
+      "m0:principle": "Balanced Exposure via Compensatory Parameter Adjustment",
+      "m0:physicalBasis": "Light capture governed by multiplicative relationship: Exposure ∝ ISO × Aperture_Area × Time",
+      "m0:pedagogicalRole": "Universal teaching model for photographic exposure control (equivalent to Fire Triangle for combustion)",
+      "m0:components": [
+        {
+          "@id": "m0:ISO_Sensitivity",
+          "@type": "m2:Component",
+          "rdfs:label": "ISO Sensitivity (Sensor Gain)",
+          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:role": "Sensor amplification factor - determines sensitivity to light",
+          "m0:function": "Amplifies electrical signal from photons hitting sensor/film",
+          "m0:physicalCorrelate": "Analog: Film grain size / silver halide concentration. Digital: Sensor gain (voltage amplification)",
+          "m0:rangeTypical": "[100, 6400] (consumer cameras), [50, 204800] (professional)",
+          "m0:rangeLog": "log₂(ISO) - Each doubling = +1 stop",
+          "m0:tensorFormula": "S⊗I (Structure × Information)",
+          "m0:asfidContribution": {
+            "S": "Sensor structure (pixel architecture, grain distribution)",
+            "I": "Information amplification (signal gain)"
+          },
+          "m0:imageQualityEffect": {
+            "positive": "Higher ISO → Brighter image in low light",
+            "negative": "Higher ISO → More grain/noise (degraded image quality)",
+            "tradeoff": "Sensitivity ↔ Image Quality"
+          },
+          "m0:examples": [
+            "ISO 100: Bright sunlight, minimal noise (professional landscape)",
+            "ISO 400: Overcast, moderate noise (general purpose)",
+            "ISO 1600: Indoor/evening, visible noise (event photography)",
+            "ISO 6400+: Very low light, significant noise (astrophotography, concert)"
+          ],
+          "m0:filmVsDigital": {
+            "film": "Fixed per roll - must choose ISO before shooting (ISO 100, 400, 800, 1600)",
+            "digital": "Variable per shot - can adjust ISO frame-by-frame (ISO 100-25600+)",
+            "evolution": "Digital cameras dramatically improved high-ISO performance (reduced trade-off severity)"
+          }
+        },
+        {
+          "@id": "m0:Aperture_Opening",
+          "@type": "m2:Component",
+          "rdfs:label": "Aperture (f-number / f-stop)",
+          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:role": "Lens opening size - controls light flux entering camera",
+          "m0:function": "Regulates amount of light per unit time reaching sensor",
+          "m0:physicalCorrelate": "Iris diaphragm diameter: Area ∝ (1/f-number)²",
+          "m0:notation": "f/N where N = Focal_Length / Aperture_Diameter",
+          "m0:rangeTypical": "f/1.4 to f/22 (lens dependent)",
+          "m0:rangeLog": "log₂(N²) - Each doubling of N² = +1 stop darker",
+          "m0:tensorFormula": "S⊗F (Structure × Flow)",
+          "m0:asfidContribution": {
+            "S": "Physical aperture structure (iris blades, opening geometry)",
+            "F": "Light flux control (photons/second entering lens)"
+          },
+          "m0:imageQualityEffect": {
+            "depthOfField": {
+              "wide_aperture": "f/1.4-f/2.8 → Shallow DoF (subject sharp, background blurred)",
+              "narrow_aperture": "f/11-f/22 → Deep DoF (foreground to background sharp)"
+            },
+            "diffraction": "f/16+ → Diffraction softens image (physics limit)",
+            "tradeoff": "Light gathering (wide) ↔ Depth of field (narrow)"
+          },
+          "m0:examples": [
+            "f/1.4: Portrait with creamy bokeh (shallow DoF)",
+            "f/5.6: Street photography (moderate DoF)",
+            "f/11: Landscape (deep DoF, foreground + background sharp)",
+            "f/22: Macro (maximize DoF for tiny subjects)"
+          ],
+          "m0:stopScale": {
+            "full_stops": "f/1.4, f/2, f/2.8, f/4, f/5.6, f/8, f/11, f/16, f/22, f/32",
+            "relationship": "Each stop = √2 increase in f-number = 2× less light",
+            "area_formula": "Light ∝ π(D/2)² = π(f/2N)² ∝ 1/N²"
+          }
+        },
+        {
+          "@id": "m0:ShutterSpeed_Duration",
+          "@type": "m2:Component",
+          "rdfs:label": "Shutter Speed (Exposure Time)",
+          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:role": "Duration sensor is exposed to light - controls temporal integration",
+          "m0:function": "Determines how long light accumulates on sensor/film",
+          "m0:physicalCorrelate": "Mechanical curtain or electronic shutter opening duration",
+          "m0:notation": "1/N seconds (e.g., 1/250s) or Ts (e.g., 2s)",
+          "m0:rangeTypical": "30s to 1/8000s (camera dependent), Bulb mode for longer",
+          "m0:rangeLog": "log₂(T) - Each doubling = +1 stop brighter",
+          "m0:tensorFormula": "F⊗D (Flow × Dynamics)",
+          "m0:asfidContribution": {
+            "F": "Temporal flux (photon accumulation over time)",
+            "D": "Temporal dynamics (rate of change, motion during exposure)"
+          },
+          "m0:imageQualityEffect": {
+            "motionBlur": {
+              "fast_shutter": "1/1000s+ → Freezes motion (sports, wildlife)",
+              "slow_shutter": "1/30s- → Motion blur (creative, light trails, waterfalls)"
+            },
+            "cameraShake": {
+              "handheld_rule": "T ≥ 1/Focal_Length (avoid shake)",
+              "example": "50mm lens → 1/50s minimum, 200mm lens → 1/200s minimum"
+            },
+            "tradeoff": "Motion freeze (fast) ↔ Light gathering (slow)"
+          },
+          "m0:examples": [
+            "1/8000s: Freeze hummingbird wings, water droplet splash",
+            "1/250s: General purpose, handheld with 50mm lens",
+            "1/30s: Low light handheld limit (with stabilization)",
+            "2s: Milky Way stars (star trails start ~20s)",
+            "30s+: Light painting, astrophotography trails"
+          ],
+          "m0:creativeUses": {
+            "freezing": "Fast shutter captures instant (decisive moment)",
+            "blur": "Slow shutter shows motion (panning, waterfalls, traffic trails)",
+            "longExposure": "Minutes/hours for star trails, smooth water, ghost cities"
+          }
+        }
+      ],
+      "m0:balancePrinciple": {
+        "metaconcept": "m2:Balance",
+        "formula": "A⊗S⊗F",
+        "description": "Correct exposure achieved when three parameters balance: ISO × Aperture_Area × Time = Constant (scene-dependent)",
+        "equation": "log₂(ISO) + log₂(Aperture⁻²) + log₂(Time) = log₂(Scene_Luminance) + K",
+        "stopArithmetic": {
+          "principle": "Each parameter measured in 'stops' (doublings/halvings)",
+          "compensation": "+1 stop ISO compensates -1 stop Aperture (or Shutter)",
+          "example": "ISO 400, f/4, 1/250s → ISO 800 (+1), f/5.6 (-1), 1/250s → same exposure"
+        },
+        "reciprocityLaw": {
+          "classical": "Exposure = Illuminance × Time (film era, with reciprocity failure at extremes)",
+          "modern": "E = (Scene_Lux × Time × Aperture_Area) / (ISO_Gain) [simplified]",
+          "practical": "Infinite combinations yield same total exposure (but different image qualities)"
+        },
+        "equilibriumState": {
+          "target": "18% gray card reflects as middle gray on histogram",
+          "underexposed": "Histogram shifted left (dark), ΔE < 0",
+          "overexposed": "Histogram shifted right (bright), ΔE > 0",
+          "balanced": "Histogram centered, ΔE ≈ 0"
+        },
+        "compensationExamples": [
+          {
+            "change": "ISO 200 → ISO 400 (+1 stop)",
+            "compensate_aperture": "f/4 → f/5.6 (-1 stop)",
+            "compensate_shutter": "1/250s → 1/500s (-1 stop)",
+            "result": "Same exposure, different DoF or motion blur"
+          },
+          {
+            "change": "Aperture f/2.8 → f/8 (-3 stops)",
+            "compensate_ISO": "ISO 100 → ISO 800 (+3 stops)",
+            "result": "Deep DoF but noisier image"
+          },
+          {
+            "change": "Shutter 1/60s → 1/500s (-3 stops)",
+            "compensate_aperture": "f/8 → f/2.8 (+3 stops)",
+            "result": "Frozen motion but shallow DoF"
+          }
+        ]
+      },
+      "m0:tradeoffPrinciple": {
+        "metaconcept": "m2:Trade-off",
+        "oriveFormula": "R⊗V⊗E (primary)",
+        "asfidFormula": "A⊗I (fallback)",
+        "description": "Photographer cannot simultaneously maximize all desirable image qualities. Must choose preferred balance point on Pareto frontier.",
+        "conflictingObjectives": {
+          "maximizeDoF": "Deep DoF (all sharp) → Narrow aperture (f/16) → Need slow shutter OR high ISO",
+          "freezeMotion": "Fast shutter (1/1000s) → Need wide aperture OR high ISO",
+          "minimizeNoise": "Low ISO (100) → Need wide aperture OR slow shutter"
+        },
+        "paretoFrontier": "Cannot simultaneously achieve: (DoF=max, Motion_Freeze=max, Grain=min) given exposure constraint",
+        "decisionContexts": [
+          {
+            "scenario": "Portrait Photography",
+            "priority": "Shallow DoF (subject isolation)",
+            "choice": "Wide aperture (f/1.8-f/2.8)",
+            "accept": "Limited DoF (background out of focus)",
+            "benefit": "Creamy bokeh, subject pops"
+          },
+          {
+            "scenario": "Landscape Photography",
+            "priority": "Deep DoF (foreground to infinity sharp)",
+            "choice": "Narrow aperture (f/11-f/16)",
+            "accept": "Slow shutter (need tripod) or higher ISO (some noise)",
+            "benefit": "Everything sharp"
+          },
+          {
+            "scenario": "Sports/Wildlife",
+            "priority": "Freeze motion",
+            "choice": "Fast shutter (1/1000s+)",
+            "accept": "Wide aperture (shallow DoF) or high ISO (noise)",
+            "benefit": "Sharp action, no motion blur"
+          },
+          {
+            "scenario": "Low-light Concert",
+            "priority": "Handheld + adequate exposure",
+            "choice": "High ISO (3200-6400), wide aperture (f/2.8)",
+            "accept": "Visible noise, shallow DoF",
+            "benefit": "Usable image without tripod"
+          },
+          {
+            "scenario": "Astro Photography",
+            "priority": "Capture faint stars",
+            "choice": "Wide aperture (f/2.8), high ISO (3200), long exposure (20s)",
+            "accept": "Some noise, star trails if too long",
+            "benefit": "Milky Way visible"
+          }
+        ],
+        "technologyEvolution": {
+          "film_era": "ISO fixed per roll → severe constraint (carry multiple film stocks)",
+          "early_digital": "ISO 100-1600 usable, >1600 very noisy",
+          "modern_digital": "ISO 100-12800+ usable, computational noise reduction",
+          "impact": "Trade-off severity reduced but NOT eliminated (physics still constrains)"
+        },
+        "optimizationStrategies": {
+          "AutoISO": "Camera adjusts ISO to maintain minimum shutter speed (reduces user cognitive load)",
+          "AperturePriority": "User sets aperture (DoF control), camera adjusts shutter+ISO",
+          "ShutterPriority": "User sets shutter (motion control), camera adjusts aperture+ISO",
+          "Manual": "User controls all three (full creative control, requires expertise)"
+        }
+      },
+      "m0:territorySpace": {
+        "description": "Physical exposure phenomenon (light captured on sensor)",
+        "observer": "Camera sensor or film emulsion",
+        "phenomenon": "Photon accumulation creating latent image",
+        "physicalLaw": "E = ∫∫∫ L(λ,x,y) · R(λ) · A(x,y) dλ dx dy dt",
+        "asfidState": {
+          "A": 0.80,
+          "S": 0.85,
+          "F": 0.95,
+          "I": 0.75,
+          "D": 0.60
+        },
+        "stateVector": "|Ω_exposure⟩ = 0.80|A⟩ + 0.85|S⟩ + 0.95|F⟩ + 0.75|I⟩ + 0.60|D⟩",
+        "justification": {
+          "A": "High attractor - system seeks correct exposure (metering feedback)",
+          "S": "High structure - 3-parameter coupling (ISO × Aperture × Time)",
+          "F": "Very high flow - massive photon flux (10¹⁵-10¹⁸ photons/exposure typical)",
+          "I": "Moderate-high information - spatial+spectral information in captured light",
+          "D": "Moderate dynamics - exposure happens over milliseconds to seconds (not instantaneous, not glacial)"
+        },
+        "observables": [
+          "Total light energy captured (exposure value EV)",
+          "Histogram distribution (tonal range)",
+          "Signal-to-noise ratio (SNR)",
+          "Depth of field (circle of confusion)",
+          "Motion blur (pixel displacement during exposure)"
+        ]
+      },
+      "m0:mapSpace": {
+        "description": "Exposure Triangle pedagogical model",
+        "observer": "Photographer / Photography student",
+        "model": "Triangular diagram with ISO, Aperture, Shutter as vertices",
+        "asfidState": {
+          "A": 0.85,
+          "S": 0.95,
+          "F": 0.70,
+          "I": 0.85,
+          "D": 0.50
+        },
+        "stateVector": "|M_triangle⟩ = 0.85|A⟩ + 0.95|S⟩ + 0.70|F⟩ + 0.85|I⟩ + 0.50|D⟩",
+        "justification": {
+          "A": "Strong attractor - model teaches correct exposure (pedagogical goal)",
+          "S": "Very high structure - perfect triangular geometry, 3 vertices",
+          "F": "Moderate flow - conceptual, not actual photon flow",
+          "I": "High information - encodes 3 parameters + trade-offs",
+          "D": "Low dynamics - static diagram (not temporal model)"
+        },
+        "representation": {
+          "geometry": "Equilateral triangle (symbolic, not scale-accurate)",
+          "vertices": {
+            "ISO": "Top vertex (sensor sensitivity)",
+            "Aperture": "Bottom-left vertex (lens opening)",
+            "Shutter": "Bottom-right vertex (time duration)"
+          },
+          "edges": "Represent trade-offs between parameters",
+          "center": "Balanced exposure state"
+        }
+      },
+      "m0:epistemicGap": {
+        "formula": "ΔΘ = ‖|Ω_exposure⟩ - |M_triangle⟩‖",
+        "deltaVector": "(-0.05, -0.10, +0.25, +0.10, +0.10)",
+        "norm": "≈ 0.32",
+        "interpretation": "Moderate gap (ΔΘ ≈ 0.3) - Triangle is good pedagogical model but simplifies physics",
+        "assessment": "Triangle captures essential relationships but omits scene luminance, metering, optical physics",
+        "majorDivergences": [
+          {
+            "dimension": "F (Flow)",
+            "divergence": "+0.25",
+            "reason": "Territory has massive photon flux (10¹⁸ photons); Map is abstract diagram (no actual flow)"
+          },
+          {
+            "dimension": "S (Structure)",
+            "divergence": "-0.10",
+            "reason": "Territory has complex sensor/lens physics; Map is simplified triangle"
+          }
+        ],
+        "limitations": [
+          "Omits scene luminance (ambient light level)",
+          "Ignores metering systems (how camera measures light)",
+          "Simplifies optical physics (diffraction, lens aberrations)",
+          "Doesn't model reciprocity failure (film limitation)",
+          "Static model - doesn't show dynamic adjustment process"
+        ],
+        "pedagogicalStrength": "Despite limitations, Triangle is excellent teaching tool (like Fire Triangle for combustion)"
+      },
+      "m0:oriveAnalysis": {
+        "description": "Sphinx Eye evaluation of Exposure Triangle Map quality",
+        "perspective": "Philosophical interpretation using ORIVE basis",
+        "oriveState": {
+          "O": 0.95,
+          "R": 0.95,
+          "I": 0.90,
+          "V": 0.95,
+          "E": 0.85
+        },
+        "stateVector": "|M_triangle⟩_ORIVE = 0.95|O⟩ + 0.95|R⟩ + 0.90|I⟩ + 0.95|V⟩ + 0.85|E⟩",
+        "dimensionInterpretations": [
+          {
+            "dimension": "O (Observability)",
+            "coefficient": 0.95,
+            "interpretation": "Extremely observable - Triangle diagram appears in every photography textbook, online tutorial, camera manual. Photographers internalize it through practice (muscle memory).",
+            "evidence": "Universal pedagogical tool since 1970s, taught in Photography 101 globally"
+          },
+          {
+            "dimension": "R (Representability)",
+            "coefficient": 0.95,
+            "interpretation": "Perfectly representable - Simple triangular diagram with 3 labeled vertices. Stop arithmetic (±1, ±2, ±3 stops) is intuitive. Mathematical formula: log₂(ISO) + log₂(1/f²) + log₂(T) = const.",
+            "evidence": "Ubiquitous diagrams, apps, infographics. Photographers say 'I need +2 stops' (shared language)"
+          },
+          {
+            "dimension": "I (Interoperability)",
+            "coefficient": 0.90,
+            "interpretation": "Highly shareable - Triangle is lingua franca of photography. Works across film/digital, all camera brands. EXIF metadata stores ISO/Aperture/Shutter universally.",
+            "evidence": "EXIF standard (ISO 12234), camera settings transferable across brands"
+          },
+          {
+            "dimension": "V (Verifiability)",
+            "coefficient": 0.95,
+            "interpretation": "Extremely verifiable - Predictions testable immediately. Change any parameter → instant visual feedback (too dark/bright, blurred/sharp, noisy/clean). Millions of photographers validate daily.",
+            "evidence": "Histogram verification, test shots, bracketing experiments reproducible"
+          },
+          {
+            "dimension": "E (Evolvability)",
+            "coefficient": 0.85,
+            "interpretation": "Good evolvability - Triangle adapted from film to digital (ISO now variable per shot). Computational photography (HDR, focus stacking) extends but doesn't obsolete Triangle. May evolve with computational imaging.",
+            "evidence": "Film → Digital → Computational (HDR merges multiple exposures, but Triangle still foundation)"
+          }
+        ],
+        "overallAssessment": "Exceptional Map - ORIVE_mean = 0.92 (matches RGB color model!). Triangle is one of photography's most successful pedagogical models.",
+        "mapQuality": "ORIVE_mean = 0.92 → Excellent Map quality",
+        "sphinxInsight": {
+          "question": "Why does Exposure Triangle work so well as teaching tool?",
+          "answer": "Three reasons: (1) Reduces complex physics to 3 intuitive parameters, (2) Immediate visual feedback reinforces learning, (3) Trade-offs are universal human experience (no free lunch). Analogous to Fire Triangle's success.",
+          "korzybskiPrinciple": "Map simplifies Territory (omits scene luminance, optics) but captures essential structure for practical decision-making."
+        }
+      },
+      "m0:metaconceptsMobilized": {
+        "total": 18,
+        "newMetaconcepts": [
+          {
+            "metaconcept": "m2:Balance",
+            "formula": "A⊗S⊗F",
+            "role": "Equilibrium state where ISO × Aperture × Shutter yields correct exposure",
+            "instantiation": "Compensatory adjustment: +1 stop one parameter compensated by -1 stop another",
+            "discovery": "First identified in Exposure Triangle poclet analysis"
+          },
+          {
+            "metaconcept": "m2:Trade-off",
+            "formula": "R⊗V⊗E (ORIVE), A⊗I (ASFID fallback)",
+            "role": "Photographer's decision-making: Cannot maximize DoF, freeze motion, minimize noise simultaneously",
+            "instantiation": "Pareto frontier of image quality objectives under exposure constraint",
+            "discovery": "First identified in Exposure Triangle poclet analysis"
+          }
+        ],
+        "existingMetaconcepts": [
+          {
+            "metaconcept": "m2:Component",
+            "formula": "S⊗I",
+            "role": "ISO, Aperture, Shutter as elementary constitutive parts",
+            "instantiation": "Three parameters with distinct roles (sensitivity, flux, duration)"
+          },
+          {
+            "metaconcept": "m2:Synergy",
+            "formula": "A⊗S⊗I",
+            "role": "Multiplicative interaction: E ∝ ISO × A × T (not additive)",
+            "instantiation": "Three parameters synergistically determine exposure outcome"
+          },
+          {
+            "metaconcept": "m2:Constraint",
+            "formula": "S⊗I",
+            "role": "Physical limits and rules",
+            "instantiation": "ISO range [100-25600], Aperture range [f/1.4-f/22], Shutter [1/8000-30s], Reciprocity law"
+          },
+          {
+            "metaconcept": "m2:Threshold",
+            "formula": "A⊗I",
+            "role": "Critical values triggering qualitative change",
+            "instantiation": "1/focal_length rule (camera shake), ISO >1600 (visible noise), f/16 (diffraction)"
+          },
+          {
+            "metaconcept": "m2:Regulation",
+            "formula": "A⊗S⊗F",
+            "role": "Auto-exposure systems (AE, Av, Tv modes)",
+            "instantiation": "Camera automatically adjusts parameters to maintain target exposure"
+          },
+          {
+            "metaconcept": "m2:Signal",
+            "formula": "I⊗F",
+            "role": "Light as information carrier",
+            "instantiation": "Photon flux encodes scene luminance, color, spatial information"
+          },
+          {
+            "metaconcept": "m2:Code",
+            "formula": "I⊗S⊗D",
+            "role": "EXIF encoding of camera settings",
+            "instantiation": "ISO, aperture, shutter encoded as metadata in image file"
+          },
+          {
+            "metaconcept": "m2:Representation",
+            "formula": "I⊗S",
+            "role": "Triangle diagram as visual representation",
+            "instantiation": "Geometric model mapping parameters to vertices"
+          },
+          {
+            "metaconcept": "m2:Space",
+            "formula": "S⊗I",
+            "role": "3D exposure parameter space",
+            "instantiation": "Coordinate system (ISO, Aperture, Shutter) defining all possible settings"
+          },
+          {
+            "metaconcept": "m2:Invariant",
+            "formula": "S⊗A",
+            "role": "Exposure value (EV) remains constant across equivalent settings",
+            "instantiation": "EV = log₂(ISO × A² / T) invariant for same scene luminance"
+          },
+          {
+            "metaconcept": "m2:Transformation",
+            "formula": "D⊗I⊗S",
+            "role": "Conversions between settings maintaining exposure",
+            "instantiation": "ISO 400, f/4, 1/250 ↔ ISO 800, f/5.6, 1/250 (equivalent exposure, different image qualities)"
+          },
+          {
+            "metaconcept": "m2:Process",
+            "formula": "D⊗F",
+            "role": "Exposure as temporal process",
+            "instantiation": "Light accumulation from shutter open to close"
+          },
+          {
+            "metaconcept": "m2:Event",
+            "formula": "D⊗I",
+            "role": "Shutter actuation as discrete event",
+            "instantiation": "Moment of capture (click)"
+          },
+          {
+            "metaconcept": "m2:Memory",
+            "formula": "∫(D - F)dτ",
+            "role": "Photographer's learned exposure intuition",
+            "instantiation": "Pattern recognition from thousands of shots (muscle memory for settings)"
+          },
+          {
+            "metaconcept": "m2:Adaptation",
+            "formula": "I⊗F⊗D",
+            "role": "Adjusting settings to changing light conditions",
+            "instantiation": "ISO ramp from ISO 100 (noon) → ISO 6400 (dusk)"
+          },
+          {
+            "metaconcept": "m2:Language",
+            "formula": "I⊗S⊗F",
+            "role": "Photographer jargon and notation",
+            "instantiation": "'Stop down to f/8', '1/250 at f/5.6', 'Push 2 stops'"
+          }
+        ],
+        "byCategory": {
+          "Structural": ["Component", "Space", "Representation"],
+          "Informational": ["Signal", "Code", "Language"],
+          "Regulatory": ["Balance (NEW)", "Trade-off (NEW)", "Regulation", "Constraint", "Threshold"],
+          "Dynamic": ["Process", "Event", "Transformation", "Adaptation"],
+          "Adaptive": ["Memory"],
+          "Relational": ["Synergy", "Invariant"]
+        }
+      },
+      "m0:analogyToFireTriangle": {
+        "structuralSimilarity": {
+          "both": "3-component synergistic systems",
+          "FireTriangle": "Fuel ⊗ O₂ ⊗ Heat → Fire",
+          "ExposureTriangle": "ISO ⊗ Aperture ⊗ Shutter → Correct Exposure"
+        },
+        "removalTest": {
+          "FireTriangle": "Remove ANY component → Fire stops (all necessary)",
+          "ExposureTriangle": "Set ANY parameter to extreme → No usable image (ISO=0, f/∞, T=0)"
+        },
+        "balanceVsSynergy": {
+          "FireTriangle": "Synergy dominant (emergent fire from chemical reaction)",
+          "ExposureTriangle": "Balance dominant (equilibrium of light capture parameters)"
+        },
+        "pedagogy": {
+          "both": "Universal teaching tools in their domains",
+          "FireTriangle": "Fire safety training worldwide",
+          "ExposureTriangle": "Photography education worldwide"
+        },
+        "mapTerritory": {
+          "both": "Simple Maps of complex Territory",
+          "FireTriangle": "Omits chain reaction → Fire Tetrahedron (evolved)",
+          "ExposureTriangle": "Omits scene luminance, metering → Could extend to Square/Pentagon"
+        }
+      },
+      "m0:validation": {
+        "asfidCompleteness": "All 5 dimensions present ✅",
+        "metaconceptCoverage": "18 metaconcepts (34%) including 2 NEW ✅",
+        "minimality": "Exactly 3 components (irreducible for exposure control) ✅",
+        "emergence": "Correct exposure emerges from parameter balance ✅",
+        "newMetaconceptsJustified": "Balance and Trade-off essential to model ✅",
+        "transdisciplinaryPotential": "Balance and Trade-off apply across domains ✅"
+      },
+      "m0:futureExtensions": {
+        "exposureSquare": {
+          "add": "Scene Luminance (ambient light) as 4th parameter",
+          "justification": "Makes explicit what Triangle assumes (lighting conditions)"
+        },
+        "computationalPhotography": {
+          "HDR": "Merge multiple exposures (balance trade-offs computationally)",
+          "focusStacking": "Overcome DoF trade-off (multiple shots at different focus distances)",
+          "NoiseReduction": "Post-processing reduces ISO noise trade-off severity"
+        },
+        "advancedModels": {
+          "exposedToTheRight": "ETTR technique (deliberate overexposure for better SNR)",
+          "zonalSystem": "Ansel Adams' zone system (10-zone tonal mapping)"
+        }
+      },
+      "rdfs:seeAlso": [
+        {
+          "@id": "m0:FireTriangle",
+          "note": "Structural analogy - both are 3-component synergistic pedagogical models"
+        }
+      ],
+      "dcterms:references": [
+        "Adams, A. (1981). The Negative (The Ansel Adams Photography Series)",
+        "Freeman, M. (2007). The Photographer's Eye: Composition and Design",
+        "Peterson, B. (2016). Understanding Exposure (4th ed.)",
+        "Langford, M. (2010). Langford's Basic Photography (9th ed.)",
+        "ISO 12232:2019 (Photography - Digital still cameras - Determination of exposure index)"
+      ]
+    }
+  ]
+}
