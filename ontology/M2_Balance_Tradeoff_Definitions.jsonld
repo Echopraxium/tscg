@@ -1,0 +1,233 @@
+{
+  "@context": {
+    "m2": "https://github.com/Echopraxium/tscg/blob/main/ontology/TSCG_M2_MetaConcepts_Ontology.jsonld#",
+    "m3eagle": "https://github.com/Echopraxium/tscg/blob/main/ontology/M3_Eagle_Eye.jsonld#",
+    "m3sphinx": "https://github.com/Echopraxium/tscg/blob/main/ontology/M3_Sphinx_Eye.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "m2:Balance",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaConcept"
+      ],
+      "rdfs:label": "Balance",
+      "rdfs:comment": "State of equilibrium between multiple interacting factors where variations compensate to maintain system stability. Distinct from Homeostasis (dynamic regulation) - Balance is a static equilibrium state achieved through mutual compensation of parameters.",
+      "m2:hasCategory": "m2:Regulatory",
+      "m2:hasTensorFormula": "A⊗S⊗F",
+      "m2:hasDominantM3": [
+        "m3eagle:Attractor",
+        "m3eagle:Structure",
+        "m3eagle:Flow"
+      ],
+      "m2:hasEpistemicGap": 0.20,
+      "m2:hasPolarity": "neutral",
+      "m2:hasExample": [
+        "Photographic exposure: ISO ⊗ Aperture ⊗ Shutter Speed → correct exposure",
+        "Chemical equilibrium: Reactants ⇌ Products at constant concentrations",
+        "Energy balance: Heat input = Heat output (steady state)",
+        "Work-life balance: Professional commitments ⊗ Personal time",
+        "Tonal balance in audio: Bass ⊗ Mid ⊗ Treble frequencies",
+        "Nutritional balance: Proteins ⊗ Carbohydrates ⊗ Fats",
+        "Accounting balance: Assets = Liabilities + Equity"
+      ],
+      "m2:perspective": "territory",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "A⊗S⊗F",
+        "role": "Measure observable equilibrium phenomenon",
+        "status": "IMMUTABLE",
+        "interpretation": {
+          "A": "Attractor toward equilibrium state (system seeks balance point)",
+          "S": "Structural organization of compensating factors (3+ parameters in relation)",
+          "F": "Flow through system maintains balance (energy/matter/information exchange)",
+          "rationale": "Balance requires: (1) Attraction to equilibrium (A), (2) Multiple structured factors (S), (3) Continuous flows that compensate (F). When one factor increases, others adjust to restore equilibrium."
+        },
+        "measurement": {
+          "balanceIndex": "β = 1 - |Σ(deviations)| / Σ(ranges)",
+          "where": "β ∈ [0,1], β=1 perfect balance, β=0 complete imbalance",
+          "photographic": "β = 1 when (ISO × Aperture × Time) = Target_Exposure"
+        }
+      },
+      "m2:distinctionFromRelated": {
+        "vs_Homeostasis": {
+          "difference": "Balance is STATIC equilibrium (parameters mutually compensate at fixed point); Homeostasis is DYNAMIC regulation (active correction over time)",
+          "example_balance": "Photo exposure: Change ISO +1 stop → compensate Aperture -1 stop → balanced",
+          "example_homeostasis": "Body temperature: External cold → shivering activated → warmth restored (active feedback)"
+        },
+        "vs_Regulation": {
+          "difference": "Balance is STATE of equilibrium; Regulation is MECHANISM of control",
+          "relation": "Regulation can ACHIEVE Balance, but Balance can exist without active regulation (e.g., chemical equilibrium)"
+        },
+        "vs_Symmetry": {
+          "difference": "Balance is equilibrium of FORCES/FLOWS; Symmetry is invariance under TRANSFORMATION",
+          "example_balance": "Seesaw balanced when torques equal (force × distance)",
+          "example_symmetry": "Square has 4-fold rotational symmetry (invariant under 90° rotation)"
+        },
+        "vs_Constraint": {
+          "difference": "Balance is ACHIEVED state; Constraint is IMPOSED limitation",
+          "example": "Budget constraint: Income ≥ Expenses (imposed rule); Budget balance: Income = Expenses (achieved equilibrium)"
+        }
+      },
+      "m2:transdisciplinaryValidation": {
+        "domains": [
+          "Photography (Exposure Triangle)",
+          "Chemistry (Chemical Equilibrium)",
+          "Thermodynamics (Energy Balance)",
+          "Economics (Trade Balance)",
+          "Ecology (Predator-Prey Balance)",
+          "Audio Engineering (Frequency Balance)",
+          "Nutrition (Macronutrient Balance)",
+          "Accounting (Balance Sheet)"
+        ],
+        "count": 8,
+        "discoveredFrom": "Exposure Triangle poclet (M0_ExposureTriangle)"
+      },
+      "m2:physicalInterpretation": {
+        "equilibriumCondition": "∂E/∂x₁ = ∂E/∂x₂ = ... = ∂E/∂xₙ = 0",
+        "compensationPrinciple": "Δx₁ · k₁ + Δx₂ · k₂ + ... + Δxₙ · kₙ = 0",
+        "stability": "Balance is stable if second derivative test positive (convex minimum)",
+        "examples": {
+          "photography": "log₂(ISO) + log₂(Aperture⁻²) + log₂(Time) = log₂(Scene_Luminance) + const",
+          "chemistry": "K_eq = [Products] / [Reactants] at equilibrium",
+          "energy": "Q_in = Q_out + Q_stored (first law of thermodynamics)"
+        }
+      },
+      "m2:emergenceConditions": {
+        "minimum_factors": 2,
+        "typical_factors": 3,
+        "necessity": [
+          "Multiple interacting parameters",
+          "Compensatory relationships (one up → another down)",
+          "Target state or constraint to satisfy",
+          "Measurable deviation from equilibrium"
+        ],
+        "note": "Balance often involves 3+ factors forming a 'triangle' or 'tripod' (Exposure Triangle, Nutritional Triangle, etc.)"
+      },
+      "dcterms:created": "2026-01-20",
+      "dcterms:creator": "Echopraxium with collaboration of Claude AI Pro",
+      "m2:discoveryContext": "Identified during analysis of Exposure Triangle poclet as fundamental metaconcept distinct from existing Homeostasis and Regulation"
+    },
+    {
+      "@id": "m2:Trade-off",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaConcept"
+      ],
+      "rdfs:label": "Trade-off",
+      "rdfs:comment": "Deliberate exchange where improving one desirable property necessarily degrades another due to inherent constraints. A conscious decision-making concept in model/map space where observer accepts losses in one dimension to gain in another. Fundamental to optimization under constraints.",
+      "m2:hasCategory": "m2:Regulatory",
+      "m2:hasTensorFormula": "A⊗I (fallback)",
+      "m2:hasDominantM3": [
+        "m3eagle:Attractor",
+        "m3eagle:Information"
+      ],
+      "m2:hasEpistemicGap": 0.30,
+      "m2:hasPolarity": "neutral",
+      "m2:hasExample": [
+        "Photography: Shallow DoF (artistic blur) ↔ Deep DoF (all sharp) via aperture",
+        "Machine Learning: Bias ↔ Variance (underfitting ↔ overfitting)",
+        "Engineering: Speed ↔ Precision (fast but rough ↔ slow but accurate)",
+        "Project Management: Cost ↔ Quality ↔ Time (iron triangle)",
+        "Economics: Inflation ↔ Unemployment (Phillips curve)",
+        "Computer Science: Time complexity ↔ Space complexity",
+        "Biology: r-strategy ↔ K-strategy (many offspring vs few cared-for)",
+        "Reinforcement Learning: Exploration ↔ Exploitation"
+      ],
+      "m2:perspective": "map",
+      "m2:sphinxView": {
+        "formulaPrimary": {
+          "basis": "ORIVE",
+          "formula": "R⊗V⊗E",
+          "role": "Evaluate map perspective on trade-offs",
+          "status": "PROPOSITION (validation in progress)",
+          "interpretation": {
+            "R": "Trade-offs are representable as Pareto frontiers, decision trees, constraint spaces",
+            "V": "Trade-off consequences are verifiable empirically (test different parameter settings)",
+            "E": "Trade-off strategies evolve with technology (film→digital changed ISO trade-offs)",
+            "rationale": "Trade-off is a MAP concept - observer's interpretation of constraints. Same Territory can have different trade-off Maps depending on observer goals and available technology."
+          }
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "A⊗I",
+          "role": "Guaranteed measurement if ORIVE fails",
+          "status": "GUARANTEED",
+          "interpretation": {
+            "A": "Optimization toward preferred attractor (accept trade-off to reach goal)",
+            "I": "Information about multiple competing objectives",
+            "rationale": "Trade-off involves choosing which attractor to prioritize when multiple goals compete, based on information about consequences."
+          }
+        }
+      },
+      "m2:philosophicalInterpretation": {
+        "paretoOptimality": "Trade-off creates Pareto frontier: cannot improve one objective without degrading another",
+        "noFreeLunch": "Trade-offs embody 'No Free Lunch' theorem - no universally optimal solution",
+        "contextDependence": "Optimal trade-off depends on observer's values, goals, constraints",
+        "evolution": "Trade-offs change with technology (digital photography reduced ISO-grain trade-off)",
+        "examples": {
+          "photography": "Film era: ISO 100 (fine grain) ↔ ISO 3200 (visible grain). Digital era: ISO 100 ↔ ISO 25600 (less severe trade-off)",
+          "ML": "Deep networks: representational power ↑, interpretability ↓",
+          "economics": "Free market: efficiency ↑, equality ↓ (debated)"
+        }
+      },
+      "m2:distinctionFromRelated": {
+        "vs_Balance": {
+          "difference": "Balance is EQUILIBRIUM STATE (observable); Trade-off is DECISION CONCEPT (interpretative)",
+          "balance": "Exposure Triangle: Parameters balanced to achieve correct exposure (Territory)",
+          "tradeoff": "Photographer chooses f/2.8 (shallow DoF) over f/16 (deep DoF) - accepts trade-off (Map)"
+        },
+        "vs_Constraint": {
+          "difference": "Constraint is HARD LIMIT (cannot violate); Trade-off is SOFT CHOICE (can choose different points on frontier)",
+          "constraint": "Shutter speed ≥ 1/focal_length (avoid camera shake) - cannot violate",
+          "tradeoff": "Faster shutter (freeze motion) ↔ Slower shutter (motion blur) - can choose"
+        },
+        "vs_Synergy": {
+          "difference": "Synergy is POSITIVE (1+1>2); Trade-off is NEGATIVE (improve A → degrade B)",
+          "synergy": "Autofocus + Image Stabilization → sharper photos (both help)",
+          "tradeoff": "Wide aperture → shallow DoF (one up, other down - inverse relationship)"
+        }
+      },
+      "m2:transdisciplinaryValidation": {
+        "domains": [
+          "Photography (DoF, Grain, Motion Blur trade-offs)",
+          "Machine Learning (Bias-Variance, Precision-Recall)",
+          "Engineering (Speed-Accuracy, Cost-Quality)",
+          "Economics (Inflation-Unemployment, Efficiency-Equity)",
+          "Project Management (Cost-Quality-Time)",
+          "Computer Science (Time-Space complexity)",
+          "Biology (r-K selection)",
+          "Reinforcement Learning (Exploration-Exploitation)"
+        ],
+        "count": 8,
+        "discoveredFrom": "Exposure Triangle poclet - photographer's decision-making analysis"
+      },
+      "m2:mathematicalFormulation": {
+        "paretoFrontier": "P = {x : ∄y such that f_i(y) ≥ f_i(x) ∀i and f_j(y) > f_j(x) for some j}",
+        "multiObjectiveOptimization": "min/max F(x) = [f₁(x), f₂(x), ..., fₙ(x)] subject to constraints",
+        "scalarization": "Weighted sum: F(x) = w₁f₁(x) + w₂f₂(x) + ... where Σwᵢ = 1",
+        "photography_example": {
+          "objectives": "Maximize [DoF, Motion_Freeze, Low_Grain]",
+          "constraints": "Correct_Exposure = ISO × Aperture⁻² × Time",
+          "tradeoff": "Cannot simultaneously maximize all three given exposure constraint"
+        }
+      },
+      "m2:emergenceConditions": {
+        "necessity": [
+          "Multiple desirable objectives that conflict",
+          "Resource or physical constraints prevent simultaneous optimization",
+          "Observer must choose preferred balance point",
+          "Decision consequences are measurable"
+        ],
+        "note": "Trade-off is observer-relative - same system may have different trade-off interpretations depending on goals. Photographer prioritizes DoF; Videographer prioritizes motion freeze."
+      },
+      "dcterms:created": "2026-01-20",
+      "dcterms:creator": "Echopraxium with collaboration of Claude AI Pro",
+      "m2:discoveryContext": "Identified during analysis of Exposure Triangle poclet as fundamental Map-space metaconcept capturing photographer's decision-making under constraints"
+    }
+  ]
+}
