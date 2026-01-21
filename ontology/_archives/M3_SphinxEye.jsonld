@@ -1,13 +1,27 @@
 {
   "@context": {
-    "@vocab": "https://tscg.org/vocab#",
+    "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
+    "m3genesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "tscg": "https://tscg.org/"
+    "dcterms": "http://purl.org/dc/terms/"
   },
-  "@id": "M3_SphinxEye",
-  "@type": "OrthogonalBasis",
+  "@id": "m3sphinx:M3_SphinxEye",
+  "@type": "owl:Ontology",
+  
+  "owl:versionInfo": "2.0.0",
+  "dcterms:created": "2026-01-21",
+  "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+  "dcterms:description": "ORIVE basis (Observer, Recurse, Interact, Vary, Emerge) for Map construction through synthetic composition of conceptual models",
+  
+  "owl:imports": [
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld"
+  ],
+  
+  "rdfs:label": "Sphinx Eye - ORIVE Basis for Map Construction",
+  "rdfs:comment": "Orthonormal basis providing synthetic perspective on models-as-maps. Sphinx Eye constructs, composes, and poses riddles about understanding.",
   
   "metadata": {
     "layer": "M3",
@@ -19,7 +33,7 @@
   },
   
   "parent_ontology": {
-    "@id": "M3_GenesisSpace",
+    "@id": "m3genesis:M3_GenesisSpace",
     "relationship": "component_of",
     "description": "Sphinx Eye is the ORIVE component of M3 Genesis Space, providing the synthetic perspective on systems"
   },
@@ -29,8 +43,9 @@
     "expansion": "Observer, Recurse, Interact, Vary, Emerge",
     "dimensions": 5,
     "orthonormality": "verified",
-    "completeness": "partial (completes with ASFID)",
-    "role": "Map construction"
+    "completeness": "partial (completes with ASFID from Eagle Eye)",
+    "role": "Map construction",
+    "hilbert_space": "ℂ⁵"
   },
   
   "metaphor": {
@@ -38,192 +53,180 @@
     "wisdom": "Enigmatic knowledge that constructs understanding",
     "action": "Constructs, synthesizes, composes",
     "domain": "Map (Model)",
-    "perspective": "From within, participatory view"
+    "perspective": "From within, participatory view",
+    "symbolic_nature": "Half-human (reason) half-lion (instinct)"
   },
   
   "dual_axes_position": {
     "model_reality_axis": "Model",
     "analysis_synthesis_axis": "Synthesis",
-    "quadrant": "Synthesis of Model"
+    "quadrant": "Synthesis of Model (Map)"
   },
   
   "dimensions": [
     {
-      "index": 0,
-      "symbol": "O",
-      "name": "Observer",
-      "description": "The observing agent and its perspective within or upon the system",
-      "mathematical_form": "Observer frame, measurement basis, epistemic position",
-      "examples": [
-        "Scientist designing experiment",
-        "Manager setting KPIs",
-        "Artist choosing perspective"
-      ],
-      "questions_answered": [
-        "Who is observing?",
-        "From what perspective?",
-        "What is the observational stance?"
-      ],
-      "constructive_role": "Establishes the frame of reference for Map construction"
+      "@id": "m3sphinx:Observer",
+      "@type": ["owl:NamedIndividual", "m3sphinx:M3Dimension"],
+      "rdfs:label": "Observer",
+      "m3sphinx:symbol": "|O⟩",
+      "m3sphinx:index": 1,
+      "rdfs:comment": "Observer stance and perspective. Who observes, from what viewpoint, with what goals?",
+      "m3sphinx:philosophicalInterpretation": "Subject-position, epistemological stance, intentionality",
+      "m3sphinx:rangeProposed": "[0,1] where 0=fully objective, 1=fully subjective",
+      "m3sphinx:examples": [
+        "Scientist (objective stance, O≈0.2)",
+        "Artist (subjective stance, O≈0.8)",
+        "Engineer (pragmatic stance, O≈0.5)"
+      ]
     },
     {
-      "index": 1,
-      "symbol": "R",
-      "name": "Recurse",
-      "description": "Self-referential and iterative processes that create patterns through repetition",
-      "mathematical_form": "Fixed-point equations, recursive definitions, strange loops",
-      "examples": [
-        "Fractal generation",
-        "Self-improving AI",
-        "Organizational learning cycles"
-      ],
-      "questions_answered": [
-        "What patterns repeat?",
-        "How does the system reference itself?",
-        "What iterative processes exist?"
-      ],
-      "constructive_role": "Builds complex patterns from simple recursive rules"
+      "@id": "m3sphinx:Recurse",
+      "@type": ["owl:NamedIndividual", "m3sphinx:M3Dimension"],
+      "rdfs:label": "Recurse",
+      "m3sphinx:symbol": "|R⟩",
+      "m3sphinx:index": 2,
+      "rdfs:comment": "Self-reference and recursion. Model includes itself, observer observes observation, meta-levels.",
+      "m3sphinx:philosophicalInterpretation": "Self-reference, reflexivity, strange loops, meta-cognition",
+      "m3sphinx:rangeProposed": "[0,1] where 0=no self-reference, 1=full reflexivity",
+      "m3sphinx:examples": [
+        "Simple lookup table (R≈0.1 - no recursion)",
+        "Self-modifying code (R≈0.7)",
+        "Consciousness (R≈0.9 - aware of awareness)"
+      ]
     },
     {
-      "index": 2,
-      "symbol": "I",
-      "name": "Interact",
-      "description": "Coupling and mutual influence between components or systems",
-      "mathematical_form": "Interaction terms, coupling constants, correlation functions",
-      "examples": [
-        "Predator-prey dynamics",
-        "Market participant interactions",
-        "Molecular bonding"
-      ],
-      "questions_answered": [
-        "How do components influence each other?",
-        "What are the coupling mechanisms?",
-        "Where are the interaction sites?"
-      ],
-      "constructive_role": "Weaves connections between elements to create integrated wholes"
+      "@id": "m3sphinx:Interact",
+      "@type": ["owl:NamedIndividual", "m3sphinx:M3Dimension"],
+      "rdfs:label": "Interact",
+      "m3sphinx:symbol": "|I⟩",
+      "m3sphinx:index": 3,
+      "rdfs:comment": "Participatory coupling. Observer and observed mutually influence each other.",
+      "m3sphinx:philosophicalInterpretation": "Observer effect, quantum measurement, enaction, participatory epistemology",
+      "m3sphinx:rangeProposed": "[0,1] where 0=passive observation, 1=full entanglement",
+      "m3sphinx:examples": [
+        "Telescope astronomy (I≈0.1 - minimal observer effect)",
+        "Social science interview (I≈0.6 - observer influences subject)",
+        "Quantum measurement (I≈0.9 - measurement creates outcome)"
+      ]
     },
     {
-      "index": 3,
-      "symbol": "V",
-      "name": "Vary",
-      "description": "Parameter space exploration, variation, and degrees of freedom",
-      "mathematical_form": "Phase space, parameter manifolds, variation operators",
-      "examples": [
-        "Genetic mutation and variation",
-        "Design space exploration",
-        "Strategic option generation"
-      ],
-      "questions_answered": [
-        "What can be varied?",
-        "What is the design space?",
-        "What degrees of freedom exist?"
-      ],
-      "constructive_role": "Generates diversity and explores possibility space"
+      "@id": "m3sphinx:Vary",
+      "@type": ["owl:NamedIndividual", "m3sphinx:M3Dimension"],
+      "rdfs:label": "Vary",
+      "m3sphinx:symbol": "|V⟩",
+      "m3sphinx:index": 4,
+      "rdfs:comment": "Multiplicity of representations. How many viable maps exist for same territory?",
+      "m3sphinx:philosophicalInterpretation": "Perspectivism, model plurality, Rashomon effect, interpretative freedom",
+      "m3sphinx:rangeProposed": "[0,1] where 0=unique map, 1=infinite maps",
+      "m3sphinx:examples": [
+        "Physical constants (V≈0.1 - unique value)",
+        "Historical event (V≈0.7 - multiple valid narratives)",
+        "Art interpretation (V≈0.9 - endless readings)"
+      ]
     },
     {
-      "index": 4,
-      "symbol": "E",
-      "name": "Emerge",
-      "description": "Novel properties arising from composition that transcend components",
-      "mathematical_form": "Emergence operators, order parameters, collective variables",
-      "examples": [
-        "Consciousness from neurons",
-        "Market behavior from individual trades",
-        "Life from chemistry"
-      ],
-      "questions_answered": [
-        "What new properties arise?",
-        "What is irreducible to parts?",
-        "What collective behaviors emerge?"
-      ],
-      "constructive_role": "Synthesizes wholes that transcend their parts"
+      "@id": "m3sphinx:Emerge",
+      "@type": ["owl:NamedIndividual", "m3sphinx:M3Dimension"],
+      "rdfs:label": "Emerge",
+      "m3sphinx:symbol": "|E⟩",
+      "m3sphinx:index": 5,
+      "rdfs:comment": "Generativity and emergent properties. Map creates new phenomena not in territory alone.",
+      "m3sphinx:philosophicalInterpretation": "Emergence, creative construction, novelty generation, performativity",
+      "m3sphinx:rangeProposed": "[0,1] where 0=pure copy, 1=radical creation",
+      "m3sphinx:examples": [
+        "Photograph (E≈0.2 - mostly faithful)",
+        "Scientific theory (E≈0.6 - predicts unobserved phenomena)",
+        "Fiction (E≈0.9 - creates new worlds)"
+      ]
     }
   ],
   
-  "orthogonality_matrix": {
-    "description": "Inner products between ORIVE dimensions",
-    "matrix": [
-      [1, 0, 0, 0, 0],
-      [0, 1, 0, 0, 0],
-      [0, 0, 1, 0, 0],
-      [0, 0, 0, 1, 0],
-      [0, 0, 0, 0, 1]
-    ],
-    "interpretation": "ORIVE dimensions are orthonormal"
+  "mathematical_formulation": {
+    "state_vector": "|M⟩ = o|O⟩ + r|R⟩ + i|I⟩ + v|V⟩ + e|E⟩",
+    "coefficient_range": "[0,1]⁵ (proposed)",
+    "orthonormality": "⟨k|j⟩ = δ_kj for all k,j ∈ {O,R,I,V,E} (to be validated)",
+    "completeness": "∑|k⟩⟨k| = 𝟙 (to be validated)",
+    "hilbert_space": "ℂ⁵"
   },
   
-  "constructive_operations": {
-    "description": "ORIVE as operations for Map construction",
-    "observer_operation": "Choose frame of reference and observational stance",
-    "recurse_operation": "Apply iterative transformation: f(f(f(...)))",
-    "interact_operation": "Compose elements through coupling: A ⊗ B",
-    "vary_operation": "Explore parameter space: {x : x ∈ design_space}",
-    "emerge_operation": "Synthesize collective behavior: ∑ parts → whole"
+  "validation_status": {
+    "theoretical_foundation": "Strong (grounded in epistemology)",
+    "empirical_validation": "In progress (7 poclets analyzed)",
+    "orthonormality": "To be verified through poclet corpus",
+    "predictive_power": "To be assessed",
+    "note": "ORIVE is PROPOSITION until empirically validated across 20+ poclets"
   },
   
-  "derived_layers": [
+  "construction_capabilities": {
+    "interpretation": "Extract meaning and significance from ORIVE measurements",
+    "contextualization": "Situate Maps within broader epistemological frameworks",
+    "purpose_identification": "Understand WHY and WHAT FOR Maps exist",
+    "limitation_analysis": "Identify what Maps cannot capture",
+    "riddle_posing": "Ask fundamental questions revealing deeper understanding"
+  },
+  
+  "epistemological_foundations": [
     {
-      "@id": "https://tscg.org/M2_MetaConcepts.jsonld",
-      "relationship": "constructs_from",
-      "description": "ORIVE basis constructs M2 pattern space",
-      "mechanism": "ORIVE operations compose M2 metaconcepts into domain-specific patterns through synthetic construction",
-      "formula": "Σ_Sphinx: ORIVE × M2 → M2_patterns",
-      "example": "Pattern 'Homeostatic Control' = Observer(set-point) ∘ Recurse(feedback) ∘ Interact(sensor-actuator) ∘ Vary(parameters) ∘ Emerge(stability)"
+      "philosopher": "Korzybski",
+      "principle": "Map ≠ Territory",
+      "orive_connection": "Vary dimension captures map plurality"
+    },
+    {
+      "philosopher": "Popper",
+      "principle": "Falsifiability",
+      "orive_connection": "Interact dimension (can test predictions?)"
+    },
+    {
+      "philosopher": "von Glasersfeld",
+      "principle": "Radical constructivism - viability over truth",
+      "orive_connection": "Emerge dimension (map creates new possibilities)"
+    },
+    {
+      "philosopher": "Varela & Maturana",
+      "principle": "Enaction - cognition as action",
+      "orive_connection": "Interact dimension (observer-observed coupling)"
     }
   ],
   
-  "validation": {
-    "poclet_coverage": [
-      "Fire Triangle (validated)",
-      "Exposure Triangle (validated)",
-      "Business Model Canvas (validated)",
-      "Game Design Patterns (validated)",
-      "Evolutionary Systems (validated)"
-    ],
-    "orthogonality_with_ASFID": {
-      "status": "validated",
-      "method": "Cross-product analysis",
-      "result": "⟨ORIVE, ASFID⟩ ≈ 0"
-    }
+  "complementary_perspective": {
+    "@id": "m3eagle:M3_EagleEye",
+    "relationship": "orthogonal_complement",
+    "description": "Eagle Eye provides ASFID basis for Territory measurement, complementing Sphinx's Map construction"
   },
   
-  "epistemological_stance": {
-    "constructivism": "strong - Maps are constructed not discovered",
-    "subjectivity": "acknowledged - Observer shapes what is observed",
-    "pragmatism": "high - utility over correspondence",
-    "cybernetics": "second-order - observer included in observation"
-  },
-  
-  "typical_use_cases": [
-    "System design and synthesis",
-    "Creating new models and representations (Map)",
-    "Generative and creative tasks",
-    "Strategy formulation",
-    "Innovation and invention"
+  "strengths": [
+    "Meaning and significance (WHY questions)",
+    "Contextual sensitivity",
+    "Holistic understanding",
+    "Human relevance",
+    "Flexibility (accommodates ambiguity)",
+    "Epistemological depth"
   ],
   
-  "complementary_to_eagle": {
-    "sphinx_constructs": "Eagle measures",
-    "sphinx_synthesizes": "Eagle analyzes",
-    "sphinx_builds_model": "Eagle observes_reality",
-    "sphinx_composes": "Eagle decomposes",
-    "sphinx_asks_what_could_be": "Eagle asks_what_is"
-  },
+  "limitations": [
+    "Subjectivity (ORIVE assessments vary)",
+    "Non-reproducibility",
+    "Verbosity (harder to communicate than numbers)",
+    "Non-computable by machines",
+    "Slower (requires reflection)",
+    "Validation still in progress"
+  ],
   
-  "orive_formula_development": {
-    "status": "in_progress",
-    "goal": "Develop algebraic formulas for ORIVE operations applicable across domains",
-    "current_examples": [
-      {
-        "domain": "Optical Systems",
-        "formula": "Lens_Power = Observer(viewpoint) ∘ Vary(focal_length) ∘ Interact(light_matter) ∘ Emerge(image_formation)",
-        "validation": "pending"
-      }
+  "research_agenda": {
+    "immediate": [
+      "Validate ORIVE on 20+ diverse poclets",
+      "Test orthonormality empirically",
+      "Characterize mapping F: ASFID ↔ ORIVE"
     ],
-    "next_steps": [
-      "Formalize operation semantics",
-      "Define composition rules",
-      "Validate across multiple domains"
+    "short_term": [
+      "Refine ORIVE dimensions if needed",
+      "Develop ORIVE assessment protocols",
+      "Create ORIVE calculation tools"
+    ],
+    "long_term": [
+      "Integrate ORIVE into M2 metaconcepts",
+      "Publish ORIVE validation study",
+      "Extend to M1 domain ontologies"
     ]
   }
 }
