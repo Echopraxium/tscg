@@ -1,30 +1,14 @@
 {
   "@context": {
-    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
-    "m3genesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
-    "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
-    "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
+    "@vocab": "https://tscg.org/vocab#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "tscg": "https://tscg.org/",
+    "owl": "http://www.w3.org/2002/07/owl#"
   },
-  "@id": "m3genesis:M3_GenesisSpace",
-  "@type": "owl:Ontology",
-  
-  "owl:versionInfo": "2.0.0",
-  "dcterms:created": "2026-01-21",
-  "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-  "dcterms:description": "Complete orthogonal basis for the TSCG framework, consisting of two complementary perspectives: Eagle Eye (ASFID) for Territory measurement and Sphinx Eye (ORIVE) for Map construction",
-  
-  "owl:imports": [
-    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld",
-    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld"
-  ],
-  
-  "rdfs:label": "Genesis Space - Complete Bicephalous Basis",
-  "rdfs:comment": "M3 Genesis Space provides the complete orthonormal basis for TSCG through dual complementary perspectives: Eagle Eye (ASFID - analytical decomposition of Territory) and Sphinx Eye (ORIVE - synthetic construction of Maps)",
+  "@id": "M3_GenesisSpace",
+  "@type": "HilbertSpaceOntology",
   
   "metadata": {
     "layer": "M3",
@@ -52,7 +36,8 @@
     "rationale": "Territory-Map distinction requires both observation (Eagle) and construction (Sphinx)",
     
     "eagle_eye": {
-      "@id": "m3eagle:M3_EagleEye",
+      "@id": "M3_EagleEye",
+      "@type": "owl:imports",
       "basis": "ASFID",
       "basis_expansion": "Attractor, Structure, Flow, Information, Dynamics",
       "dimensions": 5,
@@ -60,12 +45,12 @@
       "perspective": "Analysis",
       "orientation": "Model → Reality",
       "operation": "Observation and decomposition",
-      "metaphor": "Eagle sees the Territory from above with penetrating vision",
-      "rdfs:seeAlso": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld"
+      "metaphor": "Eagle sees the Territory from above with penetrating vision"
     },
     
     "sphinx_eye": {
-      "@id": "m3sphinx:M3_SphinxEye",
+      "@id": "M3_SphinxEye",
+      "@type": "owl:imports",
       "basis": "ORIVE",
       "basis_expansion": "Observer, Recurse, Interact, Vary, Emerge",
       "dimensions": 5,
@@ -73,8 +58,7 @@
       "perspective": "Synthesis",
       "orientation": "Reality → Model",
       "operation": "Integration and construction",
-      "metaphor": "Sphinx poses riddles and constructs Maps through enigmatic wisdom",
-      "rdfs:seeAlso": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld"
+      "metaphor": "Sphinx poses riddles and constructs Maps through enigmatic wisdom"
     },
     
     "complementarity": {
@@ -110,19 +94,19 @@
   
   "derived_layers": [
     {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld",
+      "@id": "https://tscg.org/M2_MetaConcepts.jsonld",
       "layer": "M2",
       "relationship": "foundation_of",
       "description": "M3 Hilbert space projects onto M2 tensor space via dual mechanisms",
       "mechanisms": [
         {
-          "source": "m3eagle:M3_EagleEye",
+          "source": "eagle_eye",
           "operation": "projects_onto",
           "formula": "Π_Eagle: M3 → M2",
           "description": "Each ASFID dimension projects onto all M2 metaconcepts, creating 5D analytical perspective on each metaconcept"
         },
         {
-          "source": "m3sphinx:M3_SphinxEye",
+          "source": "sphinx_eye",
           "operation": "constructs_from",
           "formula": "Σ_Sphinx: ORIVE × M2 → M2_patterns",
           "description": "ORIVE operations compose M2 metaconcepts into domain-specific patterns through synthetic construction"

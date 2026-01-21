@@ -1,13 +1,27 @@
 {
   "@context": {
-    "@vocab": "https://tscg.org/vocab#",
+    "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
+    "m3genesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "tscg": "https://tscg.org/"
+    "dcterms": "http://purl.org/dc/terms/"
   },
-  "@id": "M3_EagleEye",
-  "@type": "OrthogonalBasis",
+  "@id": "m3eagle:M3_EagleEye",
+  "@type": "owl:Ontology",
+  
+  "owl:versionInfo": "2.0.0",
+  "dcterms:created": "2026-01-21",
+  "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+  "dcterms:description": "ASFID basis (Attractor, Structure, Flow, Information, Dynamics) for Territory measurement through analytical decomposition of observable phenomena",
+  
+  "owl:imports": [
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld"
+  ],
+  
+  "rdfs:label": "Eagle Eye - ASFID Basis for Territory Measurement",
+  "rdfs:comment": "Orthonormal basis providing analytical perspective on reality-as-territory. Eagle Eye observes, measures, and decomposes phenomena into fundamental dimensions.",
   
   "metadata": {
     "layer": "M3",
@@ -19,7 +33,7 @@
   },
   
   "parent_ontology": {
-    "@id": "M3_GenesisSpace",
+    "@id": "m3genesis:M3_GenesisSpace",
     "relationship": "component_of",
     "description": "Eagle Eye is the ASFID component of M3 Genesis Space, providing the analytical perspective on systems"
   },
@@ -29,8 +43,9 @@
     "expansion": "Attractor, Structure, Flow, Information, Dynamics",
     "dimensions": 5,
     "orthonormality": "verified",
-    "completeness": "partial (completes with ORIVE)",
-    "role": "Territory measurement"
+    "completeness": "partial (completes with ORIVE from Sphinx Eye)",
+    "role": "Territory measurement",
+    "hilbert_space": "ℂ⁵"
   },
   
   "metaphor": {
@@ -38,161 +53,149 @@
     "vision": "Penetrating sight that perceives reality as-is",
     "action": "Observes, measures, analyzes",
     "domain": "Territory (Reality)",
-    "perspective": "From above, comprehensive view"
+    "perspective": "From above, comprehensive view",
+    "visual_acuity": "8× human vision - precision at distance"
   },
   
   "dual_axes_position": {
     "model_reality_axis": "Reality",
     "analysis_synthesis_axis": "Analysis",
-    "quadrant": "Analysis of Reality"
+    "quadrant": "Analysis of Reality (Territory)"
   },
   
   "dimensions": [
     {
-      "index": 0,
-      "symbol": "A",
-      "name": "Attractor",
-      "description": "Stable states and equilibria toward which systems evolve",
-      "mathematical_form": "Basin of attraction, fixed points, limit cycles",
-      "examples": [
-        "Homeostasis in biological systems",
-        "Market equilibrium in economics",
-        "Stable orbits in celestial mechanics"
-      ],
-      "questions_answered": [
-        "What are the system's stable states?",
-        "Where does the system naturally tend to go?",
-        "What equilibria exist?"
+      "@id": "m3eagle:Attractor",
+      "@type": ["owl:NamedIndividual", "m3eagle:M3Dimension"],
+      "rdfs:label": "Attractor",
+      "m3eagle:symbol": "|A⟩",
+      "m3eagle:index": 1,
+      "rdfs:comment": "Asymptotic convergence tendency. Measures stability landscape and equilibrium attraction.",
+      "m3eagle:physicalInterpretation": "Stability basin, attractor state, homeostatic set-point",
+      "m3eagle:rangeAnalog": "[0,1] where 0=chaos/instability, 1=perfect stability",
+      "m3eagle:examples": [
+        "Thermostat set-point (high A)",
+        "Strange attractor in chaos (low A)",
+        "Biological homeostasis (medium-high A)"
       ]
     },
     {
-      "index": 1,
-      "symbol": "S",
-      "name": "Structure",
-      "description": "Organized arrangement of components and their relationships",
-      "mathematical_form": "Graphs, networks, topologies, hierarchies",
-      "examples": [
-        "Organizational chart",
-        "Molecular structure",
-        "Network topology"
-      ],
-      "questions_answered": [
-        "How are components arranged?",
-        "What is the system's architecture?",
-        "What are the structural relationships?"
+      "@id": "m3eagle:Structure",
+      "@type": ["owl:NamedIndividual", "m3eagle:M3Dimension"],
+      "rdfs:label": "Structure",
+      "m3eagle:symbol": "|S⟩",
+      "m3eagle:index": 2,
+      "rdfs:comment": "Topological organization and connectivity. Measures internal arrangement and relational patterns.",
+      "m3eagle:physicalInterpretation": "Network topology, crystalline order, organizational hierarchy",
+      "m3eagle:rangeAnalog": "[0,1] where 0=gas (no structure), 1=crystal (perfect lattice)",
+      "m3eagle:examples": [
+        "Gas molecules (S≈0.1)",
+        "Liquid water (S≈0.4)",
+        "Biological cell (S≈0.7)",
+        "Diamond crystal (S≈0.95)"
       ]
     },
     {
-      "index": 2,
-      "symbol": "F",
-      "name": "Flow",
-      "description": "Movement of matter, energy, or information through the system",
-      "mathematical_form": "Vector fields, flux, continuity equations",
-      "examples": [
-        "Blood circulation",
-        "Cash flow in business",
-        "Data streams in networks"
-      ],
-      "questions_answered": [
-        "What moves through the system?",
-        "How do resources circulate?",
-        "What are the flow patterns?"
+      "@id": "m3eagle:Flow",
+      "@type": ["owl:NamedIndividual", "m3eagle:M3Dimension"],
+      "rdfs:label": "Flow",
+      "m3eagle:symbol": "|F⟩",
+      "m3eagle:index": 3,
+      "rdfs:comment": "Exchange rate with environment. Measures openness and dissipation. AXIOM: F ≥ 0.1 (Universal Openness).",
+      "m3eagle:physicalInterpretation": "Matter/energy/information flux across boundary",
+      "m3eagle:rangeAnalog": "[0.1,1] where 0.1=quasi-closed, 1=maximally dissipative",
+      "m3eagle:criticalAxiom": "F ≥ 0.1 (no perfectly isolated system exists)",
+      "m3eagle:examples": [
+        "Thermos flask (F≈0.15 - quasi-closed)",
+        "Human body (F≈0.6 - moderate exchange)",
+        "Tornado (F≈0.95 - highly dissipative)"
       ]
     },
     {
-      "index": 3,
-      "symbol": "I",
-      "name": "Information",
-      "description": "Meaningful patterns that reduce uncertainty and enable coordination",
-      "mathematical_form": "Shannon entropy, mutual information, channel capacity",
-      "examples": [
-        "Genetic code in DNA",
-        "Market signals in prices",
-        "Neural firing patterns"
-      ],
-      "questions_answered": [
-        "What information does the system encode?",
-        "How is knowledge represented?",
-        "What signals coordinate behavior?"
+      "@id": "m3eagle:Information",
+      "@type": ["owl:NamedIndividual", "m3eagle:M3Dimension"],
+      "rdfs:label": "Information",
+      "m3eagle:symbol": "|I⟩",
+      "m3eagle:index": 4,
+      "rdfs:comment": "State complexity (synchronic). Measures variety, diversity, Shannon entropy at fixed time.",
+      "m3eagle:physicalInterpretation": "Configurational entropy, state-space volume, variety",
+      "m3eagle:rangeAnalog": "[0,1] where 0=trivial/simple, 1=maximally complex",
+      "m3eagle:examples": [
+        "Single atom (I≈0.05)",
+        "Binary switch (I≈0.1)",
+        "Human genome (I≈0.8)",
+        "Brain neural state (I≈0.9)"
       ]
     },
     {
-      "index": 4,
-      "symbol": "D",
-      "name": "Dynamics",
-      "description": "Time evolution and change processes in the system",
-      "mathematical_form": "Differential equations, state transitions, temporal evolution",
-      "examples": [
-        "Population dynamics",
-        "Chemical reaction kinetics",
-        "Climate change over time"
-      ],
-      "questions_answered": [
-        "How does the system change over time?",
-        "What are the rates of change?",
-        "What temporal patterns exist?"
+      "@id": "m3eagle:Dynamics",
+      "@type": ["owl:NamedIndividual", "m3eagle:M3Dimension"],
+      "rdfs:label": "Dynamics",
+      "m3eagle:symbol": "|D⟩",
+      "m3eagle:index": 5,
+      "rdfs:comment": "Rate of internal change. Measures temporal derivative of state (diachronic evolution speed).",
+      "m3eagle:physicalInterpretation": "Velocity in state-space, rate of transformation",
+      "m3eagle:rangeAnalog": "[0,1] where 0=static, 1=explosive/catastrophic change",
+      "m3eagle:examples": [
+        "Geological rock (D≈0.01)",
+        "Heartbeat (D≈0.3)",
+        "Chemical explosion (D≈0.95)",
+        "Nuclear reaction (D≈0.99)"
       ]
     }
   ],
   
-  "orthogonality_matrix": {
-    "description": "Inner products between ASFID dimensions",
-    "matrix": [
-      [1, 0, 0, 0, 0],
-      [0, 1, 0, 0, 0],
-      [0, 0, 1, 0, 0],
-      [0, 0, 0, 1, 0],
-      [0, 0, 0, 0, 1]
-    ],
-    "interpretation": "ASFID dimensions are orthonormal"
+  "mathematical_formulation": {
+    "state_vector": "|Ω⟩ = a|A⟩ + s|S⟩ + f|F⟩ + i|I⟩ + d|D⟩",
+    "coefficient_range": "[0,1]⁵ with constraint f ≥ 0.1",
+    "orthonormality": "⟨k|j⟩ = δ_kj for all k,j ∈ {A,S,F,I,D}",
+    "completeness": "∑|k⟩⟨k| = 𝟙 (identity operator)",
+    "hilbert_space": "ℂ⁵"
   },
   
-  "derived_layers": [
-    {
-      "@id": "https://tscg.org/M2_MetaConcepts.jsonld",
-      "relationship": "projects_onto",
-      "description": "ASFID basis projects onto M2 tensor space",
-      "mechanism": "Each ASFID dimension projects onto all M2 metaconcepts, creating 5D analytical perspective on each metaconcept",
-      "formula": "Π_Eagle: M3_Eagle → M2",
-      "example": "Metaconcept 'Feedback' has projections: A(attractor loops), S(feedback structure), F(return flows), I(error signals), D(correction dynamics)"
-    }
-  ],
-  
-  "validation": {
-    "poclet_coverage": [
-      "Fire Triangle (validated)",
-      "Exposure Triangle (validated)",
-      "Business Model Canvas (validated)",
-      "Thermodynamic Systems (validated)",
-      "Ecological Systems (validated)"
-    ],
-    "orthogonality_with_ORIVE": {
-      "status": "validated",
-      "method": "Cross-product analysis",
-      "result": "⟨ASFID, ORIVE⟩ ≈ 0"
+  "critical_axioms": {
+    "orthonormality": {
+      "formula": "All 10 pairs orthogonal",
+      "status": "IMMUTABLE"
+    },
+    "universal_openness": {
+      "formula": "F ≥ 0.1 for all physical systems",
+      "rationale": "No perfectly isolated system exists",
+      "status": "PHYSICAL LAW"
+    },
+    "order_fixed": {
+      "sequence": "A → S → F → I → D",
+      "rationale": "Avoid AIDS/SIDA acronym",
+      "status": "IMMUTABLE"
     }
   },
   
-  "epistemological_stance": {
-    "realism": "moderate - assumes observable Territory",
-    "objectivity": "strong - measurements aim to be observer-independent",
-    "empiricism": "high - grounded in measurable phenomena",
-    "cybernetics": "first-order - observes system from outside"
+  "measurement_capabilities": {
+    "quantification": "Assign numerical ASFID coefficients to system states",
+    "formalization": "Express concepts as mathematical structures (tensors, vectors)",
+    "calculation": "Compute derived quantities (norms, distances, gaps)",
+    "comparison": "Quantitative analysis of system similarity"
   },
   
-  "typical_use_cases": [
-    "System analysis and decomposition",
-    "Measuring existing systems (Territory)",
-    "Diagnostic investigations",
-    "Scientific observation and measurement",
-    "Performance assessment"
+  "complementary_perspective": {
+    "@id": "m3sphinx:M3_SphinxEye",
+    "relationship": "orthogonal_complement",
+    "description": "Sphinx Eye provides ORIVE basis for Map construction, complementing Eagle's Territory measurement"
+  },
+  
+  "strengths": [
+    "Precision and exactness",
+    "Reproducibility",
+    "Scalability",
+    "Interoperability (ASFID universal)",
+    "Automation (machine-computable)"
   ],
   
-  "complementary_to_sphinx": {
-    "eagle_measures": "Sphinx constructs",
-    "eagle_analyzes": "Sphinx synthesizes",
-    "eagle_observes_reality": "Sphinx builds_model",
-    "eagle_decomposes": "Sphinx composes",
-    "eagle_asks_what_is": "Sphinx asks_what_could_be"
-  }
+  "limitations": [
+    "Loses qualitative richness",
+    "Requires measurable observables",
+    "Observer-dependent measurement",
+    "Context-insensitive",
+    "Cannot answer WHY questions"
+  ]
 }
