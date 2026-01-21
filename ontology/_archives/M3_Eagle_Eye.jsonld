@@ -11,14 +11,16 @@
     {
       "@id": "m3:EagleEye",
       "@type": "owl:Ontology",
-      "dcterms:title": "TSCG M3 - Eagle Eye (Mathematical Perspective)",
-      "dcterms:description": "Mathematical / Quantitative perspective of the bicephalous architecture. The Eagle eye provides precise measurement, formalization, calculation and objective analysis. Focuses on HOW systems work (mechanisms, formulas, metrics).",
+      "dcterms:title": "TSCG M3 - Eagle Eye (ASFID Territory-Space + Mathematical Perspective)",
+      "dcterms:description": "Eagle Eye defines the ASFID basis (Attractor, Structure, Flow, Information, Dynamics) for measuring Territory (observed phenomena) with mathematical precision. Provides quantification, formalization, calculation. First head of bicephalous architecture.",
       "dcterms:creator": "Echopraxium with collaboration of Claude AI Pro",
       "dcterms:created": "2026-01-17",
       "dcterms:modified": "2026-01-17",
-      "owl:versionInfo": "1.0.0",
-      "m3:metaphor": "Eagle - Bird of prey with exceptional visual acuity (can see small prey from kilometers away). Represents precision, distance, measurement.",
-      "m3:role": "Quantification, Formalization, Measurement, Calculation",
+      "owl:versionInfo": "2.0.0",
+      "m3:role": "Territory-Space Measurement + Mathematical Quantification",
+      "m3:metaphor": "Eagle - Bird of prey with exceptional visual acuity (8× human vision). Represents precision, distance, measurement, calculation.",
+      "m3:basisType": "ASFID (Territory-Space)",
+      "m3:hilbertSpace": "ℂ⁵",
       "m3:complementaryTo": {
         "@id": "m3:SphinxEye",
         "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/M3_Sphinx_Eye.jsonld",
@@ -28,191 +30,305 @@
           "dcterms:type": "Ontology"
         }
       },
-      "m3:characteristics": {
-        "precision": "High - focuses on exact values, measurements, coefficients",
-        "abstraction": "High - uses mathematical formalisms (tensors, vectors, equations)",
-        "objectivity": "Maximum - aims for observer-independent quantification",
-        "scope": "Analytical - decomposes systems into measurable components",
-        "output": "Numbers, formulas, metrics, coefficients, equations"
-      },
-      "m3:capabilities": [
-        {
-          "capability": "Measurement",
-          "description": "Quantify system properties with numerical precision",
-          "examples": [
-            "ASFID coefficients (A=0.70, S=0.85, F=0.90, I=0.95, D=0.40)",
-            "Epistemic gap ΔΘ = ‖|Ω⟩ - |M⟩‖ ≈ 0.35",
-            "RGB values (255, 128, 64)",
-            "Temperature (298.15 K)",
-            "Reaction rate constant k = 2.3 × 10⁻⁴ s⁻¹"
-          ]
+      "m3:versionHistory": {
+        "v1.0.0": {
+          "date": "2026-01-17",
+          "note": "Initial Eagle Eye with Mathematical perspective only"
         },
-        {
-          "capability": "Formalization",
+        "v2.0.0": {
+          "date": "2026-01-17",
+          "note": "Eagle Eye absorbs ASFID basis from M3_Genesis_Space.jsonld. Now complete Territory-Space + Mathematical perspective. Truly bicephalous with Sphinx Eye (ORIVE Map-Space)."
+        }
+      }
+    },
+    {
+      "@id": "m3:ASFID_Basis",
+      "@type": "owl:Class",
+      "rdfs:label": "ASFID Basis (Territory-Space)",
+      "rdfs:comment": "Orthonormal basis {|A⟩, |S⟩, |F⟩, |I⟩, |D⟩} in Hilbert space ℂ⁵ for measuring Territory (observed phenomena). Eagle Eye uses this basis for quantification.",
+      "m3:dimensionality": 5,
+      "m3:orthonormality": "⟨k|j⟩ = δ_kj for all k,j ∈ {A,S,F,I,D}",
+      "m3:completeness": "∑|k⟩⟨k| = 𝟙 (identity operator)",
+      "m3:stateVector": "|Ω⟩ = a|A⟩ + s|S⟩ + f|F⟩ + i|I⟩ + d|D⟩",
+      "m3:coefficientRange": "[0,1]⁵ with constraint f ≥ 0.1"
+    },
+    {
+      "@id": "m3:Attractor",
+      "@type": [
+        "owl:NamedIndividual",
+        "m3:M3Dimension"
+      ],
+      "rdfs:label": "Attractor (|A⟩)",
+      "m3:symbol": "|A⟩",
+      "m3:index": 1,
+      "rdfs:comment": "Asymptotic convergence tendency. Measures stability landscape and equilibrium attraction.",
+      "m3:physicalInterpretation": "Stability basin, attractor state, homeostatic set-point",
+      "m3:rangeAnalog": "[0,1] where 0=chaos/instability, 1=perfect stability",
+      "m3:rangeDigital": "[0.0, 1.0] floating point",
+      "m3:examples": [
+        "Thermostat set-point (high A)",
+        "Strange attractor in chaos (low A)",
+        "Biological homeostasis (medium-high A)",
+        "Market equilibrium (variable A)"
+      ],
+      "m3:mathematicalFormulation": {
+        "eigenvalue": "λ < 0 for stable attractor",
+        "lyapunovExponent": "negative for attracting orbits",
+        "potentialWell": "V(x) with local minimum"
+      }
+    },
+    {
+      "@id": "m3:Structure",
+      "@type": [
+        "owl:NamedIndividual",
+        "m3:M3Dimension"
+      ],
+      "rdfs:label": "Structure (|S⟩)",
+      "m3:symbol": "|S⟩",
+      "m3:index": 2,
+      "rdfs:comment": "Topological organization and connectivity. Measures internal arrangement and relational patterns.",
+      "m3:physicalInterpretation": "Network topology, crystalline order, organizational hierarchy",
+      "m3:rangeAnalog": "[0,1] where 0=gas (no structure), 1=crystal (perfect lattice)",
+      "m3:rangeDigital": "[0.0, 1.0] floating point",
+      "m3:examples": [
+        "Gas molecules (S≈0.1)",
+        "Liquid water (S≈0.4)",
+        "Biological cell (S≈0.7)",
+        "Diamond crystal (S≈0.95)"
+      ],
+      "m3:mathematicalFormulation": {
+        "graphTheory": "Connectivity, clustering coefficient",
+        "topology": "Euler characteristic, genus",
+        "orderParameter": "φ ∈ [0,1] (Landau theory)"
+      }
+    },
+    {
+      "@id": "m3:Flow",
+      "@type": [
+        "owl:NamedIndividual",
+        "m3:M3Dimension"
+      ],
+      "rdfs:label": "Flow (|F⟩)",
+      "m3:symbol": "|F⟩",
+      "m3:index": 3,
+      "rdfs:comment": "Exchange rate with environment. Measures openness and dissipation. AXIOM: F ≥ 0.1 (Universal Openness).",
+      "m3:physicalInterpretation": "Matter/energy/information flux across boundary",
+      "m3:rangeAnalog": "[0.1,1] where 0.1=quasi-closed, 1=maximally dissipative",
+      "m3:rangeDigital": "[0.1, 1.0] floating point",
+      "m3:criticalAxiom": "F ≥ 0.1 (no perfectly isolated system exists)",
+      "m3:examples": [
+        "Thermos flask (F≈0.15 - quasi-closed)",
+        "Human body (F≈0.6 - moderate exchange)",
+        "Tornado (F≈0.95 - highly dissipative)",
+        "Open flame (F≈0.9)"
+      ],
+      "m3:mathematicalFormulation": {
+        "flux": "J = -D∇φ (diffusion)",
+        "throughput": "dN/dt (flow rate)",
+        "dissipation": "σ = dS/dt ≥ 0 (entropy production)"
+      }
+    },
+    {
+      "@id": "m3:Information",
+      "@type": [
+        "owl:NamedIndividual",
+        "m3:M3Dimension"
+      ],
+      "rdfs:label": "Information (|I⟩)",
+      "m3:symbol": "|I⟩",
+      "m3:index": 4,
+      "rdfs:comment": "State complexity (synchronic). Measures variety, diversity, Shannon entropy at fixed time.",
+      "m3:physicalInterpretation": "Configurational entropy, state-space volume, variety",
+      "m3:rangeAnalog": "[0,1] where 0=trivial/simple, 1=maximally complex",
+      "m3:rangeDigital": "[0.0, 1.0] floating point",
+      "m3:examples": [
+        "Single atom (I≈0.05)",
+        "Binary switch (I≈0.1)",
+        "Human genome (I≈0.8)",
+        "Brain neural state (I≈0.9)"
+      ],
+      "m3:mathematicalFormulation": {
+        "shannon": "H = -∑ p_i log₂(p_i)",
+        "kolmogorov": "K(x) = min{|p| : U(p) = x}",
+        "variety": "V = |X| (Ashby's Law of Requisite Variety)"
+      }
+    },
+    {
+      "@id": "m3:Dynamics",
+      "@type": [
+        "owl:NamedIndividual",
+        "m3:M3Dimension"
+      ],
+      "rdfs:label": "Dynamics (|D⟩)",
+      "m3:symbol": "|D⟩",
+      "m3:index": 5,
+      "rdfs:comment": "Rate of internal change. Measures temporal derivative of state (diachronic evolution speed).",
+      "m3:physicalInterpretation": "Velocity in state-space, rate of transformation",
+      "m3:rangeAnalog": "[0,1] where 0=static, 1=explosive/catastrophic change",
+      "m3:rangeDigital": "[0.0, 1.0] floating point",
+      "m3:examples": [
+        "Geological rock (D≈0.01)",
+        "Heartbeat (D≈0.3)",
+        "Chemical explosion (D≈0.95)",
+        "Nuclear reaction (D≈0.99)"
+      ],
+      "m3:mathematicalFormulation": {
+        "velocity": "v = d|Ω⟩/dt in state-space",
+        "changeRate": "‖ΔΩ‖/Δt",
+        "phasePlot": "trajectory in (Ω, dΩ/dt) space"
+      }
+    },
+    {
+      "@id": "m3:CriticalAxioms",
+      "@type": "owl:Class",
+      "rdfs:label": "ASFID Critical Axioms",
+      "rdfs:comment": "Fundamental constraints on ASFID basis",
+      "m3:axioms": {
+        "orthonormality": {
+          "formula": "⟨A|S⟩ = ⟨A|F⟩ = ⟨A|I⟩ = ⟨A|D⟩ = ⟨S|F⟩ = ⟨S|I⟩ = ⟨S|D⟩ = ⟨F|I⟩ = ⟨F|D⟩ = ⟨I|D⟩ = 0",
+          "verified": "2026-01-14 (10/10 pairs)",
+          "status": "IMMUTABLE"
+        },
+        "normalization": {
+          "formula": "⟨A|A⟩ = ⟨S|S⟩ = ⟨F|F⟩ = ⟨I|I⟩ = ⟨D|D⟩ = 1",
+          "status": "FIXED"
+        },
+        "completeness": {
+          "formula": "∑_{k∈{A,S,F,I,D}} |k⟩⟨k| = 𝟙",
+          "meaning": "Any system state can be expressed in ASFID basis",
+          "status": "REQUIRED"
+        },
+        "universalOpenness": {
+          "formula": "F ≥ 0.1 for all physical systems",
+          "rationale": "No perfectly isolated system exists (quantum tunneling, cosmic radiation, gravity)",
+          "status": "PHYSICAL LAW"
+        },
+        "timeExternal": {
+          "formula": "|Ω(t)⟩ where t is parameter",
+          "meaning": "Time is NOT 6th dimension, but evolution parameter",
+          "status": "CRITICAL DESIGN DECISION"
+        },
+        "orderFixed": {
+          "sequence": "A → S → F → I → D (alphabetical except ASFID acronym)",
+          "rationale": "Avoid AIDS/SIDA acronym",
+          "status": "IMMUTABLE (never change)"
+        }
+      }
+    },
+    {
+      "@id": "m3:MathematicalPerspective",
+      "@type": "owl:Class",
+      "rdfs:label": "Eagle Eye Mathematical Perspective",
+      "rdfs:comment": "How Eagle Eye uses ASFID for quantification, formalization, calculation",
+      "m3:capabilities": {
+        "measurement": {
+          "description": "Quantify system state with numerical precision",
+          "formula": "|Ω⟩ = (a, s, f, i, d) ∈ [0,1]⁵",
+          "output": "ASFID coefficient vector"
+        },
+        "formalization": {
           "description": "Express concepts as mathematical structures",
           "examples": [
-            "Tensor formulas: S⊗I⊗F, A⊗S⊗I, D⊗I⊗S",
+            "Tensor formulas: S⊗I⊗F, A⊗S⊗I",
             "State vectors: |Ω⟩ = 0.70|A⟩ + 0.85|S⟩ + ...",
-            "Transformation matrices: RGB ↔ HSL conversion",
-            "Differential equations: dN/dt = rN(1 - N/K)"
+            "Hilbert space: H = ℂ⁵"
           ]
         },
-        {
-          "capability": "Calculation",
+        "calculation": {
           "description": "Compute derived quantities from measurements",
-          "examples": [
-            "Gap norm: √(Σᵢ(Ωᵢ - Mᵢ)²)",
-            "Color distance: ΔE = √((L₁-L₂)² + (a₁-a₂)² + (b₁-b₂)²)",
-            "Shannon capacity: C = B log₂(1 + SNR)",
-            "Gibbs free energy: ΔG = ΔH - TΔS"
+          "formulas": [
+            "Norm: ‖Ω‖ = √(a² + s² + f² + i² + d²)",
+            "Inner product: ⟨Ω₁|Ω₂⟩ = a₁a₂ + s₁s₂ + f₁f₂ + i₁i₂ + d₁d₂",
+            "Distance: d(Ω₁,Ω₂) = ‖Ω₁ - Ω₂‖"
           ]
         },
-        {
-          "capability": "Comparison",
-          "description": "Quantitative comparison between systems",
-          "examples": [
-            "ΔΘ_RGB = 0.35 vs ΔΘ_HSL = 0.37 (similar quality)",
-            "Gamut size: RGB > CMYK",
-            "Information content: CMYK (32-bit) > RGB (24-bit)",
-            "Efficiency: K channel reduces ink cost by 40%"
-          ]
-        },
-        {
-          "capability": "Validation",
-          "description": "Verify system properties through calculation",
-          "examples": [
-            "Energy conservation: E_in = E_out + E_dissipated",
-            "Mass conservation: Reactants mass = Products mass",
-            "RGB cube vertices: 2³ = 8 colors",
-            "Total ink coverage: TAC ≤ 400%"
-          ]
-        }
-      ],
-      "m3:methodologies": [
-        {
-          "methodology": "ASFID State Quantification",
-          "description": "Measure system state across 5 dimensions",
-          "procedure": [
-            "1. Identify observables for each dimension (A, S, F, I, D)",
-            "2. Assign numerical coefficients [0.0, 1.0]",
-            "3. Construct state vector |Ω⟩ or |M⟩",
-            "4. Calculate norms and distances"
-          ],
-          "output": "ASFID signature: (A, S, F, I, D)"
-        },
-        {
-          "methodology": "Epistemic Gap Calculation",
+        "epistemicGap": {
           "description": "Quantify Map-Territory divergence",
-          "procedure": [
-            "1. Measure Territory state: |Ω⟩",
-            "2. Measure Map state: |M⟩",
-            "3. Calculate difference: Δ = |Ω⟩ - |M⟩",
-            "4. Compute norm: ΔΘ = ‖Δ‖",
-            "5. Interpret gap magnitude"
-          ],
-          "output": "Gap metric ΔΘ ∈ [0, ∞)"
-        },
-        {
-          "methodology": "Tensor Formula Assignment",
-          "description": "Map metaconcepts to tensor products",
-          "procedure": [
-            "1. Identify dominant M3 dimensions",
-            "2. Construct tensor product (e.g., S⊗I⊗F)",
-            "3. Validate formula against examples",
-            "4. Document formula in metaconcept"
-          ],
-          "output": "Tensor formula (e.g., A⊗S⊗I for Synergy)"
-        },
-        {
-          "methodology": "Transformation Specification",
-          "description": "Define mathematical transformations between representations",
-          "procedure": [
-            "1. Identify source and target spaces",
-            "2. Specify transformation function f: X → Y",
-            "3. Determine properties (bijective, continuous, etc.)",
-            "4. Provide algorithm or formula"
-          ],
-          "output": "Transformation specification + algorithm"
+          "formula": "ΔΘ = ‖|Ω⟩_Territory - F⁻¹(|M⟩_Map)‖",
+          "note": "Requires mapping F from ORIVE (Sphinx) to ASFID (Eagle)"
         }
+      }
+    },
+    {
+      "@id": "m3:TerritoryMeasurement",
+      "@type": "owl:Class",
+      "rdfs:label": "Territory Measurement Protocol",
+      "rdfs:comment": "How to measure Territory (observed phenomenon) using ASFID",
+      "m3:protocol": [
+        "1. Identify phenomenon to observe (fire, color, economic system, etc.)",
+        "2. Choose observer perspective (human, instrument, ant, etc.)",
+        "3. For each ASFID dimension, ask:",
+        "   - A: How stable/convergent is it? → a ∈ [0,1]",
+        "   - S: How organized/structured? → s ∈ [0,1]",
+        "   - F: How open to environment? → f ∈ [0.1,1]",
+        "   - I: How complex/varied? → i ∈ [0,1]",
+        "   - D: How fast changing? → d ∈ [0,1]",
+        "4. Construct state vector: |Ω⟩ = a|A⟩ + s|S⟩ + f|F⟩ + i|I⟩ + d|D⟩",
+        "5. Validate: Check f ≥ 0.1, all coefficients in [0,1]"
       ],
-      "m3:tools": [
-        "Linear algebra (vectors, matrices, tensors)",
-        "Calculus (derivatives, integrals, differential equations)",
-        "Statistics (mean, variance, correlation, distributions)",
-        "Information theory (entropy, mutual information, channel capacity)",
-        "Graph theory (networks, paths, connectivity)",
-        "Set theory (unions, intersections, cardinality)",
-        "Topology (continuity, compactness, connectedness)",
-        "Geometry (distances, angles, symmetries)"
-      ],
-      "m3:strengths": [
-        "Precision and exactness (no ambiguity)",
+      "m3:examples": [
+        {
+          "phenomenon": "Fire (human observer)",
+          "ASFID": "(0.85, 0.70, 0.90, 0.65, 0.75)",
+          "interpretation": "High A (self-sustaining), moderate S, very open F, moderate I, high D (rapid reactions)"
+        },
+        {
+          "phenomenon": "RGB color perception",
+          "ASFID": "(0.70, 0.85, 0.90, 0.95, 0.40)",
+          "interpretation": "Moderate A (stable percept), high S (3 primaries), high F (light input), very high I (16M colors), low D (static image)"
+        }
+      ]
+    },
+    {
+      "@id": "m3:BiceptualMapping",
+      "@type": "owl:Class",
+      "rdfs:label": "Eagle ↔ Sphinx Mapping",
+      "rdfs:comment": "Transformation F between ASFID (Territory-Space, Eagle) and ORIVE (Map-Space, Sphinx). To be determined empirically through poclet validation.",
+      "m3:formula": "|M⟩_ORIVE = F(|Ω⟩_ASFID)",
+      "m3:inverse": "|Ω⟩_ASFID ≈ F⁻¹(|M⟩_ORIVE)",
+      "m3:properties": {
+        "linearity": "Unknown - to be determined",
+        "bijectivity": "Unlikely - many Maps can represent same Territory",
+        "dimensionality": "Both 5D (ℂ⁵) but bases differ",
+        "determination": "Empirical via poclet analysis"
+      },
+      "m3:epistemicGapFormula": {
+        "withMapping": "ΔΘ = ‖|Ω⟩ - F⁻¹(|M⟩)‖",
+        "withoutMapping": "Cannot directly compare ASFID and ORIVE without F"
+      },
+      "m3:status": "Proposition - Mapping F to be discovered through practice",
+      "m3:note": "Not necessarily dimension-by-dimension (A→O, S→R, etc.). Could be complex transformation involving multiple ORIVE dimensions for each ASFID dimension."
+    },
+    {
+      "@id": "m3:Strengths",
+      "@type": "owl:Class",
+      "rdfs:label": "Eagle Eye Strengths",
+      "m3:advantages": [
+        "Precision and exactness (no ambiguity in numbers)",
         "Reproducibility (same input → same output)",
         "Scalability (works for large/complex systems)",
-        "Interoperability (mathematical language universal)",
-        "Automation (computable by machines)"
-      ],
-      "m3:limitations": [
+        "Interoperability (ASFID universal across domains)",
+        "Automation (computable by machines)",
+        "Objectivity (aims for observer-independent measurement)",
+        "Validation (numerical predictions testable)"
+      ]
+    },
+    {
+      "@id": "m3:Limitations",
+      "@type": "owl:Class",
+      "rdfs:label": "Eagle Eye Limitations",
+      "m3:disadvantages": [
         "Loses qualitative richness (numbers don't convey meaning)",
         "Requires measurable observables (not all concepts quantifiable)",
-        "Observer-dependent measurement (what to measure?)",
+        "Observer-dependent measurement (what to measure? how?)",
         "Context-insensitive (formula doesn't know application domain)",
-        "Cannot answer WHY questions (only HOW and HOW MUCH)"
+        "Cannot answer WHY questions (only HOW and HOW MUCH)",
+        "Reductionist bias (may miss emergent wholes)",
+        "Measurement precision limited by observer capabilities"
       ],
-      "m3:examplesInTSCG": [
-        {
-          "context": "Fire Triangle Territory",
-          "eagleView": "ASFID state = (0.85, 0.70, 0.90, 0.65, 0.75)",
-          "calculation": "High flow (F=0.90) due to O₂ flux + heat dissipation",
-          "output": "Quantitative characterization of combustion system"
-        },
-        {
-          "context": "RGB Color Space",
-          "eagleView": "RGB(255, 128, 0) = Orange",
-          "calculation": "Hue H = arctan2(√3(G-B), 2R-G-B) ≈ 30°",
-          "output": "Precise color specification"
-        },
-        {
-          "context": "Map-Territory Gap",
-          "eagleView": "ΔΘ_RGB = ‖(0.70,0.85,0.90,0.95,0.40) - (0.80,0.95,0.60,0.90,0.30)‖",
-          "calculation": "ΔΘ = √(0.01+0.01+0.09+0.0025+0.01) ≈ 0.35",
-          "output": "Quantified epistemic gap"
-        },
-        {
-          "context": "CMYK Ink Savings",
-          "eagleView": "GCR: K = min(C,M,Y); Total_ink_before = C+M+Y; Total_ink_after = (C-K)+(M-K)+(Y-K)+K = C+M+Y-2K",
-          "calculation": "Savings = 2K / (C+M+Y) × 100%",
-          "output": "Quantified cost reduction (e.g., 40%)"
-        }
-      ],
-      "m3:bicephalousIntegration": {
-        "description": "Eagle Eye provides QUANTIFICATION; Sphinx Eye provides INTERPRETATION",
-        "synergy": "Together, they create depth perception (epistemic gap as distance)",
-        "workflow": [
-          "1. Eagle measures (ASFID coefficients, gap ΔΘ)",
-          "2. Sphinx interprets (What does ΔΘ=0.35 mean? Good model? Limitations?)",
-          "3. Binocular synthesis (Quantified understanding)"
-        ],
-        "analogy": "Eagle sees HOW MUCH (measurements); Sphinx sees WHY and WHAT FOR (meaning, purpose, context)"
-      },
-      "m3:relatedConcepts": [
-        {
-          "concept": "Positivism",
-          "relation": "Eagle aligns with positivist emphasis on measurement and empirical validation"
-        },
-        {
-          "concept": "Reductionism",
-          "relation": "Eagle decomposes systems into measurable components"
-        },
-        {
-          "concept": "Pythagorean tradition",
-          "relation": "'All is number' - mathematical structures as foundation of reality"
-        },
-        {
-          "concept": "Information theory (Shannon)",
-          "relation": "Quantification of information, channel capacity, entropy"
-        }
-      ],
+      "m3:complementNeed": "Requires Sphinx Eye for interpretation, meaning, context, purpose"
+    },
+    {
       "rdfs:seeAlso": [
         {
           "@id": "m3:SphinxEye",
@@ -222,22 +338,13 @@
             "dcterms:format": "application/ld+json",
             "dcterms:type": "Ontology"
           }
-        },
-        {
-          "@id": "m3:GenesisSpace",
-          "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/M3_Genesis_Space.jsonld",
-          "dcterms:documentation": {
-            "@id": "https://github.com/Echopraxium/tscg/blob/main/ontology/M3_Genesis_Space.jsonld",
-            "dcterms:format": "application/ld+json",
-            "dcterms:type": "Ontology"
-          }
         }
       ],
       "dcterms:references": [
-        "Galileo (1623). The Assayer - 'Mathematics is the language of nature'",
-        "Newton (1687). Principia Mathematica - Mathematical physics",
-        "Shannon (1948). A Mathematical Theory of Communication",
-        "Hilbert (1900). Mathematical Problems - Formalization program"
+        "Hilbert, D. (1900). Mathematical Problems",
+        "von Neumann, J. (1932). Mathematical Foundations of Quantum Mechanics",
+        "Shannon, C. (1948). A Mathematical Theory of Communication",
+        "Ashby, W. R. (1956). An Introduction to Cybernetics"
       ]
     }
   ]
