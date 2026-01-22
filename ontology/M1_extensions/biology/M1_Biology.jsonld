@@ -1,7 +1,10 @@
 {
   "@context": {
-    "m1bio": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld#",
-    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1:biology": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld#",
+    "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m3:genesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m3:eagle_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
+    "m3:sphinx_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -11,7 +14,7 @@
   },
   "@graph": [
     {
-      "@id": "m1bio:M1_Biology",
+      "@id": "m1:biology:M1_Biology",
       "@type": "owl:Ontology",
       "rdfs:label": "TSCG M1 Biology Extension",
       "rdfs:comment": "Domain-specific biological concepts for TSCG framework. Contains patterns and concepts specific to biological systems (cellular, physiological, developmental).",
@@ -26,18 +29,18 @@
       ]
     },
     {
-      "@id": "m1bio:CellularCommunication",
+      "@id": "m1:biology:CellularCommunication",
       "@type": "owl:Class",
       "rdfs:label": "Cellular Communication",
       "rdfs:comment": "General pattern for intercellular signaling and information exchange. Foundation for all cell-cell communication modes.",
-      "rdfs:subClassOf": "m1:CommunicationPattern",
-      "m1bio:m2Basis": [
+      "rdfs:subClassOf": "m1:core:CommunicationPattern",
+      "m1:biology:m2Basis": [
         "m2:Signal",
         "m2:Channel",
         "m2:Information"
       ],
-      "m1bio:tensorFormula": "S⊗I⊗F",
-      "m1bio:domains": [
+      "m1:biology:tensorFormula": "S⊗I⊗F",
+      "m1:biology:domains": [
         "Endocrinology",
         "Neuroscience",
         "Immunology",
@@ -45,30 +48,30 @@
       ]
     },
     {
-      "@id": "m1bio:AutocrineSignaling",
+      "@id": "m1:biology:AutocrineSignaling",
       "@type": "owl:Class",
       "rdfs:label": "Autocrine Signaling",
       "rdfs:comment": "Self-signaling pattern where a cell responds to signals it secretes itself. Used for feedback regulation and autonomous cell behavior.",
-      "rdfs:subClassOf": "m1bio:CellularCommunication",
-      "m1bio:spatialRange": "Intracellular to immediate cell surface (~1-10 µm)",
-      "m1bio:temporalRange": "Milliseconds to seconds",
-      "m1bio:mechanism": "Local concentration gradient around secreting cell",
-      "m1bio:examples": [
+      "rdfs:subClassOf": "m1:biology:CellularCommunication",
+      "m1:biology:spatialRange": "Intracellular to immediate cell surface (~1-10 µm)",
+      "m1:biology:temporalRange": "Milliseconds to seconds",
+      "m1:biology:mechanism": "Local concentration gradient around secreting cell",
+      "m1:biology:examples": [
         "T-cell IL-2 autocrine loops",
         "Cancer cell growth factor self-stimulation",
         "Neurotransmitter autoreceptors"
       ]
     },
     {
-      "@id": "m1bio:ParacrineSignaling",
+      "@id": "m1:biology:ParacrineSignaling",
       "@type": "owl:Class",
       "rdfs:label": "Paracrine Signaling",
       "rdfs:comment": "Local neighborhood signaling pattern where signals diffuse through extracellular space to affect nearby cells. Coordinates tissue-level activity.",
-      "rdfs:subClassOf": "m1bio:CellularCommunication",
-      "m1bio:spatialRange": "Local tissue microenvironment (~10 µm - 1 mm)",
-      "m1bio:temporalRange": "Seconds to minutes",
-      "m1bio:mechanism": "Fick's law diffusion through extracellular matrix",
-      "m1bio:examples": [
+      "rdfs:subClassOf": "m1:biology:CellularCommunication",
+      "m1:biology:spatialRange": "Local tissue microenvironment (~10 µm - 1 mm)",
+      "m1:biology:temporalRange": "Seconds to minutes",
+      "m1:biology:mechanism": "Fick's law diffusion through extracellular matrix",
+      "m1:biology:examples": [
         "Prostaglandins in inflammation",
         "Nitric oxide vasodilation",
         "Neurotransmitters at synapses",
@@ -76,15 +79,15 @@
       ]
     },
     {
-      "@id": "m1bio:NeuroendocrineSignaling",
+      "@id": "m1:biology:NeuroendocrineSignaling",
       "@type": "owl:Class",
       "rdfs:label": "Neuroendocrine Signaling",
       "rdfs:comment": "Hybrid signaling pattern combining neural speed with endocrine range. Neurons secrete hormones into bloodstream for systemic distribution.",
-      "rdfs:subClassOf": "m1bio:CellularCommunication",
-      "m1bio:spatialRange": "Systemic (entire organism via bloodstream)",
-      "m1bio:temporalRange": "Seconds (neural trigger) → Minutes to hours (hormonal effect)",
-      "m1bio:mechanism": "Neural activation triggers hormone secretion into circulation",
-      "m1bio:examples": [
+      "rdfs:subClassOf": "m1:biology:CellularCommunication",
+      "m1:biology:spatialRange": "Systemic (entire organism via bloodstream)",
+      "m1:biology:temporalRange": "Seconds (neural trigger) → Minutes to hours (hormonal effect)",
+      "m1:biology:mechanism": "Neural activation triggers hormone secretion into circulation",
+      "m1:biology:examples": [
         "Hypothalamic-pituitary axis",
         "Adrenal medulla catecholamine release",
         "Oxytocin release in lactation",
@@ -92,15 +95,15 @@
       ]
     },
     {
-      "@id": "m1bio:EndocrineSignaling",
+      "@id": "m1:biology:EndocrineSignaling",
       "@type": "owl:Class",
       "rdfs:label": "Endocrine Signaling",
       "rdfs:comment": "Systemic signaling pattern where specialized glands secrete hormones into bloodstream for organism-wide coordination. Classic long-range hormonal communication.",
-      "rdfs:subClassOf": "m1bio:CellularCommunication",
-      "m1bio:spatialRange": "Systemic (entire organism)",
-      "m1bio:temporalRange": "Minutes to hours (hormone half-life dependent)",
-      "m1bio:mechanism": "Convective transport via cardiovascular system",
-      "m1bio:examples": [
+      "rdfs:subClassOf": "m1:biology:CellularCommunication",
+      "m1:biology:spatialRange": "Systemic (entire organism)",
+      "m1:biology:temporalRange": "Minutes to hours (hormone half-life dependent)",
+      "m1:biology:mechanism": "Convective transport via cardiovascular system",
+      "m1:biology:examples": [
         "Insulin glucose regulation",
         "Thyroid hormone metabolic control",
         "Growth hormone",
@@ -109,47 +112,47 @@
       ]
     },
     {
-      "@id": "m1bio:Hormone",
+      "@id": "m1:biology:Hormone",
       "@type": "owl:Class",
       "rdfs:label": "Hormone",
       "rdfs:comment": "Signaling molecule secreted by cells that travels through body fluids to target cells expressing specific receptors.",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Signal",
         "m2:Agent",
         "m2:Mediator"
       ],
-      "m1bio:categories": {
+      "m1:biology:categories": {
         "peptide": "Insulin, Growth hormone, Oxytocin (hydrophilic)",
         "steroid": "Cortisol, Estrogen, Testosterone (lipophilic)",
         "amino-acid-derived": "Thyroxine, Adrenaline, Melatonin"
       }
     },
     {
-      "@id": "m1bio:Receptor",
+      "@id": "m1:biology:Receptor",
       "@type": "owl:Class",
       "rdfs:label": "Receptor",
       "rdfs:comment": "Molecular structure that binds specific signaling molecules and transduces signal into cellular response.",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Interface",
         "m2:Transducer",
         "m2:Switch"
       ],
-      "m1bio:types": {
+      "m1:biology:types": {
         "membrane": "G-protein coupled receptors (GPCRs), Receptor tyrosine kinases (RTKs), Ion channels",
         "intracellular": "Nuclear receptors (steroid hormones), Cytoplasmic receptors"
       }
     },
     {
-      "@id": "m1bio:SignalTransduction",
+      "@id": "m1:biology:SignalTransduction",
       "@type": "owl:Class",
       "rdfs:label": "Signal Transduction",
       "rdfs:comment": "Process by which extracellular signal is converted into intracellular response through cascade of molecular interactions.",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Process",
         "m2:Cascade",
         "m2:Amplification"
       ],
-      "m1bio:components": [
+      "m1:biology:components": [
         "Ligand-receptor binding",
         "Second messenger systems (cAMP, Ca²⁺, IP₃)",
         "Protein kinase cascades",
@@ -157,17 +160,17 @@
       ]
     },
     {
-      "@id": "m1bio:Homeostasis",
+      "@id": "m1:biology:Homeostasis",
       "@type": "owl:Class",
       "rdfs:label": "Homeostasis",
       "rdfs:comment": "Maintenance of stable internal conditions despite external fluctuations. Achieved through negative feedback regulation.",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Balance",
         "m2:Regulation",
         "m2:Feedback",
         "m2:Attractor"
       ],
-      "m1bio:parameters": [
+      "m1:biology:parameters": [
         "Blood glucose (~5 mM)",
         "Body temperature (37°C)",
         "Blood pH (7.35-7.45)",
@@ -176,48 +179,48 @@
       ]
     },
     {
-      "@id": "m1bio:FeedbackLoop",
+      "@id": "m1:biology:FeedbackLoop",
       "@type": "owl:Class",
       "rdfs:label": "Feedback Loop",
       "rdfs:comment": "Regulatory circuit where output influences input. Can be negative (stabilizing) or positive (amplifying).",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Feedback",
         "m2:Loop",
         "m2:Regulation"
       ],
-      "m1bio:types": {
+      "m1:biology:types": {
         "negative": "Thermostat-like stabilization (insulin-glucose, thyroid hormone)",
         "positive": "Explosive amplification (oxytocin in labor, blood clotting)"
       }
     },
     {
-      "@id": "m1bio:DiffusionGradient",
+      "@id": "m1:biology:DiffusionGradient",
       "@type": "owl:Class",
       "rdfs:label": "Diffusion Gradient",
       "rdfs:comment": "Spatial concentration pattern driving molecular movement from high to low concentration. Governed by Fick's laws.",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Gradient",
         "m2:Flow",
         "m2:Field"
       ],
-      "m1bio:physics": {
+      "m1:biology:physics": {
         "fickFirstLaw": "J = -D∇C (flux proportional to gradient)",
         "fickSecondLaw": "∂C/∂t = D∇²C (concentration evolution)",
         "diffusionCoefficient": "D ~ 10⁻¹⁰ m²/s for proteins in extracellular matrix"
       }
     },
     {
-      "@id": "m1bio:Morphogen",
+      "@id": "m1:biology:Morphogen",
       "@type": "owl:Class",
       "rdfs:label": "Morphogen",
       "rdfs:comment": "Signaling molecule that forms concentration gradient and specifies cell fate in developing tissue. Position in gradient determines cell identity.",
-      "rdfs:subClassOf": "m1bio:Hormone",
-      "m1bio:m2Basis": [
+      "rdfs:subClassOf": "m1:biology:Hormone",
+      "m1:biology:m2Basis": [
         "m2:Gradient",
         "m2:Information",
         "m2:Pattern"
       ],
-      "m1bio:examples": [
+      "m1:biology:examples": [
         "Hedgehog (vertebrate neural tube patterning)",
         "BMP (bone morphogenetic protein)",
         "Wnt (embryonic axis formation)",
@@ -225,103 +228,103 @@
       ]
     },
     {
-      "@id": "m1bio:HypothalamusPituitaryAxis",
+      "@id": "m1:biology:HypothalamusPituitaryAxis",
       "@type": "owl:Class",
       "rdfs:label": "Hypothalamus-Pituitary Axis",
       "rdfs:comment": "Master neuroendocrine structure coordinating hormone secretion. Hypothalamus integrates neural signals and controls pituitary hormone release.",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Hierarchy",
         "m2:Hub",
         "m2:Control"
       ],
-      "m1bio:axes": [
+      "m1:biology:axes": [
         "HPA axis (stress): CRH → ACTH → Cortisol",
         "HPG axis (reproduction): GnRH → LH/FSH → Sex steroids",
         "HPT axis (metabolism): TRH → TSH → Thyroid hormones"
       ]
     },
     {
-      "@id": "m1bio:Cell",
+      "@id": "m1:biology:Cell",
       "@type": "owl:Class",
       "rdfs:label": "Cell",
       "rdfs:comment": "Fundamental unit of life. Bounded compartment capable of metabolism, growth, and reproduction.",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Component",
         "m2:Agent",
         "m2:System"
       ]
     },
     {
-      "@id": "m1bio:Tissue",
+      "@id": "m1:biology:Tissue",
       "@type": "owl:Class",
       "rdfs:label": "Tissue",
       "rdfs:comment": "Organized ensemble of cells performing coordinated function. Level between cell and organ in biological hierarchy.",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Composition",
         "m2:Network",
         "m2:Layer"
       ]
     },
     {
-      "@id": "m1bio:Organ",
+      "@id": "m1:biology:Organ",
       "@type": "owl:Class",
       "rdfs:label": "Organ",
       "rdfs:comment": "Structural unit composed of multiple tissue types performing specific physiological function.",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Modularity",
         "m2:Function",
         "m2:Hierarchy"
       ]
     },
     {
-      "@id": "m1bio:BloodCirculation",
+      "@id": "m1:biology:BloodCirculation",
       "@type": "owl:Class",
       "rdfs:label": "Blood Circulation",
       "rdfs:comment": "Cardiovascular transport system distributing nutrients, gases, hormones, and immune cells throughout organism.",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Flow",
         "m2:Network",
         "m2:Transport"
       ],
-      "m1bio:parameters": {
+      "m1:biology:parameters": {
         "cardiacOutput": "~5 L/min at rest",
         "circulationTime": "~60 seconds complete circuit",
         "pressure": "120/80 mmHg (systolic/diastolic)"
       }
     },
     {
-      "@id": "m1bio:Metabolism",
+      "@id": "m1:biology:Metabolism",
       "@type": "owl:Class",
       "rdfs:label": "Metabolism",
       "rdfs:comment": "Sum of all chemical reactions maintaining life. Includes catabolism (breakdown) and anabolism (synthesis).",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Process",
         "m2:Flow",
         "m2:Transformation"
       ]
     },
     {
-      "@id": "m1bio:GeneExpression",
+      "@id": "m1:biology:GeneExpression",
       "@type": "owl:Class",
       "rdfs:label": "Gene Expression",
       "rdfs:comment": "Process by which genetic information (DNA) is converted to functional product (protein). Central dogma: DNA → RNA → Protein.",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Information",
         "m2:Code",
         "m2:Process"
       ]
     },
     {
-      "@id": "m1bio:Inflammation",
+      "@id": "m1:biology:Inflammation",
       "@type": "owl:Class",
       "rdfs:label": "Inflammation",
       "rdfs:comment": "Complex biological response to harmful stimuli (pathogens, damaged cells, irritants). Involves immune cell recruitment and tissue repair.",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Response",
         "m2:Cascade",
         "m2:Emergence"
       ],
-      "m1bio:characteristics": [
+      "m1:biology:characteristics": [
         "Rubor (redness)",
         "Calor (heat)",
         "Tumor (swelling)",
@@ -330,22 +333,22 @@
       ]
     },
     {
-      "@id": "m1bio:Synapse",
+      "@id": "m1:biology:Synapse",
       "@type": "owl:Class",
       "rdfs:label": "Synapse",
       "rdfs:comment": "Specialized junction between neurons enabling signal transmission. Can be chemical (neurotransmitter) or electrical (gap junction).",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Interface",
         "m2:Channel",
         "m2:Signal"
       ]
     },
     {
-      "@id": "m1bio:ImmuneResponse",
+      "@id": "m1:biology:ImmuneResponse",
       "@type": "owl:Class",
       "rdfs:label": "Immune Response",
       "rdfs:comment": "Coordinated reaction of immune system to foreign antigens. Involves innate (immediate) and adaptive (specific, memory) components.",
-      "m1bio:m2Basis": [
+      "m1:biology:m2Basis": [
         "m2:Response",
         "m2:Recognition",
         "m2:Memory"
