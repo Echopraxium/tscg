@@ -1,0 +1,270 @@
+{
+  "@context": {
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
+    "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "m1:TSCG_M1_CoreConcepts_Ontology",
+      "@type": "owl:Ontology",
+      "dcterms:title": "TSCG M1 Core Concepts Ontology",
+      "dcterms:description": "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Philosophy, etc.).",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-01-22",
+      "dcterms:modified": "2026-01-22",
+      "owl:versionInfo": "1.0.0",
+      
+      "m1:layerPosition": {
+        "above": "M0 (Poclets - concrete instantiations)",
+        "below": "M2 (Metaconcepts - universal patterns)",
+        "role": "Domain-specific reusable concepts bridging universal (M2) and particular (M0)"
+      },
+      
+      "m1:architecturalPrinciple": {
+        "description": "M1 layer uses EXTENSION MECHANISM: M1_CoreConcepts (base) is extended by domain-specific M1 ontologies",
+        "baseOntology": "M1_CoreConcepts.jsonld (this file) - Generic transdisciplinary concepts",
+        "extensionOntologies": "M1_[Domain].jsonld files (specific to disciplines)",
+        "importMechanism": "owl:imports from M1_CoreConcepts + domain-specific additions",
+        "namespaceStrategy": "Each M1 extension has own namespace (m1optics:, m1photo:, m1phil:, etc.)"
+      },
+      
+      "m1:extensionOntologies": {
+        "description": "Domain-specific M1 ontologies extending M1_CoreConcepts",
+        "current": [
+          {
+            "ontology": "M1_Optics.jsonld",
+            "namespace": "m1optics:",
+            "domain": "Optics / Color Theory / Light Physics",
+            "patterns": 8,
+            "status": "Active"
+          },
+          {
+            "ontology": "M1_Photography.jsonld",
+            "namespace": "m1photo:",
+            "domain": "Photography / Camera Technology / Exposure Control",
+            "patterns": 10,
+            "status": "Active"
+          }
+        ],
+        "proposed": [
+          {
+            "ontology": "M1_Philosophy.jsonld",
+            "namespace": "m1phil:",
+            "domain": "Philosophy / Ethics / Value Systems",
+            "patterns": "TBD",
+            "status": "Proposed (needed for Magic Color Wheel)"
+          },
+          {
+            "ontology": "M1_Chemistry.jsonld",
+            "namespace": "m1chem:",
+            "domain": "Chemistry / Thermodynamics / Reactions",
+            "patterns": "TBD",
+            "status": "Proposed (needed for Fire Triangle extension)"
+          },
+          {
+            "ontology": "M1_Biology.jsonld",
+            "namespace": "m1bio:",
+            "domain": "Biology / Ecology / Cellular Systems",
+            "patterns": "TBD",
+            "status": "Proposed (needed for Cell Signaling, Predator-Prey)"
+          },
+          {
+            "ontology": "M1_Economics.jsonld",
+            "namespace": "m1econ:",
+            "domain": "Economics / Market Theory / Trade",
+            "patterns": "TBD",
+            "status": "Proposed"
+          },
+          {
+            "ontology": "M1_PoliticalScience.jsonld",
+            "namespace": "m1polisci:",
+            "domain": "Political Science / Governance / Power",
+            "patterns": "TBD",
+            "status": "Proposed (needed for Political Compass)"
+          }
+        ]
+      },
+      
+      "m1:coreConceptCategories": {
+        "description": "Generic transdisciplinary concept categories in M1_CoreConcepts (base layer)",
+        "categories": [
+          {
+            "category": "Generic Mechanisms",
+            "description": "Reusable operational patterns (Oscillator, Amplifier, Filter, Switch)",
+            "examples": ["Oscillator", "Amplifier", "Filter", "Modulator", "Rectifier"],
+            "transdisciplinary": true,
+            "status": "To be populated"
+          },
+          {
+            "category": "Structural Templates",
+            "description": "Common architectural patterns (Loop, Cascade, Feedback, Hierarchy)",
+            "examples": ["Loop", "Cascade", "Bifurcation", "Mesh", "Tree"],
+            "transdisciplinary": true,
+            "status": "To be populated"
+          },
+          {
+            "category": "Relational Patterns",
+            "description": "Generic relationship types (Competition, Cooperation, Parasitism)",
+            "examples": ["Competition", "Cooperation", "Mutualism", "Commensalism"],
+            "transdisciplinary": true,
+            "status": "To be populated"
+          },
+          {
+            "category": "Process Archetypes",
+            "description": "Generic transformational processes (Growth, Decay, Oscillation)",
+            "examples": ["Growth", "Decay", "Saturation", "Regeneration"],
+            "transdisciplinary": true,
+            "status": "To be populated"
+          }
+        ]
+      },
+      
+      "owl:imports": [
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld"
+      ],
+      
+      "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/docs/TSCG_M1_Architecture.md",
+      
+      "rdfs:comment": "M1_CoreConcepts is the BASE ontology for M1 layer. It contains generic transdisciplinary concepts applicable across multiple domains. Domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Philosophy, etc.) import M1_CoreConcepts and add specialized patterns. This architecture allows: (1) Sharing common concepts, (2) Domain specialization, (3) Modular extension, (4) Clear namespace separation.",
+      
+      "m1:developmentStrategy": {
+        "phase1": "Populate M1_CoreConcepts with generic mechanisms (Oscillator, Filter, etc.)",
+        "phase2": "Develop domain-specific M1 extensions as needed by poclets",
+        "phase3": "Identify patterns that should be promoted from domain-specific to core",
+        "phase4": "Refine boundaries between M1_Core and M1_Domain extensions"
+      },
+      
+      "m1:conceptDiscoveryProcess": {
+        "description": "How M1 concepts are discovered and validated",
+        "steps": [
+          "1. Analyze poclets (M0) to identify recurring domain-specific patterns",
+          "2. Check if pattern already exists in M2 (universal) - if yes, instantiate directly",
+          "3. Check if pattern already exists in M1_Core or M1_Domain - if yes, reuse",
+          "4. If novel, create M1 concept with: M2 basis, domain scope, examples, validation",
+          "5. After 3+ poclets use same concept, consider it validated",
+          "6. If concept appears in 3+ different domains, consider promoting to M1_Core or even M2"
+        ]
+      },
+      
+      "m1:validationStatus": {
+        "m1:conceptsDefined": 0,
+        "m1:conceptsValidated": 0,
+        "m1:domainExtensions": 2,
+        "m1:totalConceptsAcrossExtensions": 18,
+        "m1:note": "M1_CoreConcepts base is intentionally sparse. Concepts live in domain extensions."
+      },
+      
+      "m1:changelog": {
+        "v1.0.0": {
+          "date": "2026-01-22",
+          "changes": [
+            "INITIAL RELEASE: M1_CoreConcepts base ontology",
+            "Defined extension architecture for M1 layer",
+            "Documented namespace strategy (m1optics:, m1photo:, m1phil:, etc.)",
+            "Identified 4 core concept categories: Mechanisms, Templates, Relations, Processes",
+            "Established concept discovery and validation process",
+            "Created framework for domain-specific M1 ontologies",
+            "Current extensions: M1_Optics (8 patterns), M1_Photography (10 patterns)",
+            "Proposed extensions: M1_Philosophy, M1_Chemistry, M1_Biology, M1_Economics, M1_PoliticalScience",
+            "Version 1.0.0 marks architectural foundation - content to be populated incrementally"
+          ]
+        }
+      }
+    },
+    
+    {
+      "@id": "m1:CoreConcept",
+      "@type": "owl:Class",
+      "rdfs:label": "M1 Core Concept",
+      "rdfs:comment": "A domain-bounded but transdisciplinary concept that instantiates one or more M2 metaconcepts. Core concepts are reusable patterns that appear across multiple domains but don't achieve the full universality of M2 metaconcepts. Examples: Oscillator (appears in physics, biology, economics), Filter (appears in signal processing, chemistry, information theory).",
+      "rdfs:subClassOf": "owl:Thing",
+      "m1:properties": [
+        "m1:M2_basis - Which M2 metaconcepts does this instantiate?",
+        "m1:domainScope - Which domains does this apply to?",
+        "m1:principle - Core operational principle",
+        "m1:examples - Concrete examples from different domains",
+        "m1:validatedPoclets - How many poclets validate this concept?"
+      ]
+    },
+    
+    {
+      "@id": "m1:DomainPattern",
+      "@type": "owl:Class",
+      "rdfs:label": "Domain-Specific Pattern",
+      "rdfs:comment": "A pattern specific to a particular domain (e.g., Additive Color Synthesis in optics, Compensatory Triplet in photography). Lives in domain-specific M1 extensions (M1_Optics, M1_Photography, etc.) rather than M1_CoreConcepts.",
+      "rdfs:subClassOf": "m1:CoreConcept",
+      "m1:note": "Domain patterns extend CoreConcept but are defined in M1_[Domain].jsonld files, not here."
+    },
+    
+    {
+      "@id": "m1:GenericMechanism",
+      "@type": "owl:Class",
+      "rdfs:label": "Generic Mechanism",
+      "rdfs:comment": "Reusable operational mechanism appearing across multiple domains. Examples: Oscillator (pendulum, AC current, predator-prey cycles, business cycles), Amplifier (electronic amplifier, biological cascade, social amplification).",
+      "rdfs:subClassOf": "m1:CoreConcept",
+      "skos:note": "To be populated with specific mechanisms as they are discovered through poclet analysis."
+    },
+    
+    {
+      "@id": "m1:StructuralTemplate",
+      "@type": "owl:Class",
+      "rdfs:label": "Structural Template",
+      "rdfs:comment": "Common architectural pattern for system organization. Examples: Feedback Loop (control systems, ecosystems, markets), Cascade (signal transduction, waterfall, information flow), Hierarchy (organizational charts, taxonomies, file systems).",
+      "rdfs:subClassOf": "m1:CoreConcept",
+      "skos:note": "To be populated with specific templates as they are discovered through poclet analysis."
+    },
+    
+    {
+      "@id": "m1:RelationalPattern",
+      "@type": "owl:Class",
+      "rdfs:label": "Relational Pattern",
+      "rdfs:comment": "Generic type of relationship between entities. Examples: Competition (species, companies, ideas), Cooperation (mutualism, trade, collaboration), Parasitism (biological, economic extraction).",
+      "rdfs:subClassOf": "m1:CoreConcept",
+      "skos:note": "To be populated with specific patterns as they are discovered through poclet analysis."
+    },
+    
+    {
+      "@id": "m1:ProcessArchetype",
+      "@type": "owl:Class",
+      "rdfs:label": "Process Archetype",
+      "rdfs:comment": "Generic transformational process. Examples: Growth (population, economic, crystal), Decay (radioactive, ecological succession, market correction), Saturation (carrying capacity, market saturation, chemical equilibrium).",
+      "rdfs:subClassOf": "m1:CoreConcept",
+      "skos:note": "To be populated with specific archetypes as they are discovered through poclet analysis."
+    },
+    
+    {
+      "@id": "m1:ExampleCoreConceptPlaceholder",
+      "@type": [
+        "owl:NamedIndividual",
+        "m1:GenericMechanism"
+      ],
+      "rdfs:label": "Oscillator (Example - To Be Formalized)",
+      "rdfs:comment": "PLACEHOLDER: Generic oscillator mechanism. Appears in: mechanical (pendulum), electrical (LC circuit), biological (circadian rhythm), ecological (predator-prey), economic (business cycle). This is an EXAMPLE of what a core concept entry would look like. To be formalized when discovered through poclet analysis.",
+      "m1:M2_basis": [
+        "m2:Dynamics (D) - Temporal evolution",
+        "m2:Attractor (A) - Stable orbits",
+        "m2:Flow (F) - Energy/matter exchange"
+      ],
+      "m1:principle": "Periodic alternation between two states through restoring force/feedback",
+      "m1:formula": "Generic: d²x/dt² + ω²x = 0 (harmonic oscillator)",
+      "m1:domainScope": "Physics, Biology, Ecology, Economics, Social Systems",
+      "m1:examplesCrossDomain": [
+        "Physics: Pendulum, LC circuit, mass-spring system",
+        "Biology: Circadian rhythms, heartbeat, breathing",
+        "Ecology: Predator-prey (Lotka-Volterra)",
+        "Economics: Business cycles, boom-bust",
+        "Social: Fashion cycles, political swings"
+      ],
+      "m1:validatedPoclets": 0,
+      "m1:status": "PLACEHOLDER - To be properly formalized"
+    }
+  ]
+}

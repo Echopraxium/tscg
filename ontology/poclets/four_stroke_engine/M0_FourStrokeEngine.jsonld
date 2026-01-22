@@ -1,0 +1,511 @@
+{
+  "@context": {
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/four_stroke_engine/M0_FourStrokeEngine.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
+    "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "m0:FourStrokeEnginePoclet",
+      "@type": "owl:NamedIndividual",
+      "rdf:type": "m0:Poclet",
+      "rdfs:label": "Four-Stroke Engine (Poclet)",
+      "rdfs:comment": "Minimal yet complete system representation of the thermodynamic cycle powering internal combustion engines. Demonstrates all 5 ASFID dimensions through 4 sequential strokes and mobilizes 20 M2 metaconcepts. Canonical example for cyclic processes and energy transformation.",
+      "dcterms:created": "2026-01-22",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m0:pocletType": "Cyclic",
+      "m0:domain": "Thermodynamics",
+      "m0:completeness": "All ASFID dimensions present",
+      "m0:minimality": "Exactly 4 strokes (irreducible for complete cycle)",
+      "m0:pedagogy": "Universal teaching tool for thermodynamics and mechanical engineering",
+      "m0:observer": "Human (engineering/scientific perspective)",
+      "m0:version": "1.0.0",
+      
+      "m0:components": [
+        {
+          "@id": "m0:IntakeStroke",
+          "@type": "m0:Stroke",
+          "rdfs:label": "Intake Stroke",
+          "m0:sequenceNumber": 1,
+          "m0:role": "Air-fuel mixture induction",
+          "m0:pistonMotion": "Downward (TDC → BDC)",
+          "m0:intakeValve": "Open",
+          "m0:exhaustValve": "Closed",
+          "m0:volumeChange": "V_min → V_max (expansion)",
+          "m0:pressureChange": "Atmospheric pressure maintained",
+          "m0:energyTransfer": "Minimal (suction work)",
+          "m0:asfidContribution": {
+            "S": "Piston-cylinder geometry during expansion",
+            "F": "Air-fuel flow into cylinder",
+            "I": "Valve timing information"
+          }
+        },
+        {
+          "@id": "m0:CompressionStroke",
+          "@type": "m0:Stroke",
+          "rdfs:label": "Compression Stroke",
+          "m0:sequenceNumber": 2,
+          "m0:role": "Adiabatic compression of air-fuel mixture",
+          "m0:pistonMotion": "Upward (BDC → TDC)",
+          "m0:intakeValve": "Closed",
+          "m0:exhaustValve": "Closed",
+          "m0:volumeChange": "V_max → V_min (compression)",
+          "m0:pressureChange": "P_1 → P_2 (increase by factor r^γ)",
+          "m0:temperatureChange": "T_1 → T_2 (increase)",
+          "m0:compressionRatio": "r = V_max / V_min (typically 8:1 to 12:1)",
+          "m0:workInput": "Negative (crankshaft does work on gas)",
+          "m0:asfidContribution": {
+            "S": "Volume reduction through piston motion",
+            "D": "Pressure and temperature increase dynamics",
+            "I": "Thermodynamic state (P, V, T) information"
+          }
+        },
+        {
+          "@id": "m0:PowerStroke",
+          "@type": "m0:Stroke",
+          "rdfs:label": "Power Stroke (Combustion)",
+          "m0:sequenceNumber": 3,
+          "m0:role": "Conversion of chemical energy to mechanical work",
+          "m0:pistonMotion": "Downward (TDC → BDC)",
+          "m0:intakeValve": "Closed",
+          "m0:exhaustValve": "Closed",
+          "m0:trigger": "Spark plug ignition",
+          "m0:combustion": "Rapid oxidation of fuel (bifurcation event)",
+          "m0:pressureChange": "P_2 → P_3 (rapid spike) → P_4 (expansion)",
+          "m0:volumeChange": "V_min → V_max (expansion)",
+          "m0:workOutput": "Positive (gas does work on piston)",
+          "m0:energyTransformation": "Chemical (fuel) → Thermal (combustion) → Mechanical (piston motion)",
+          "m0:asfidContribution": {
+            "A": "Target state: maximum work extraction",
+            "F": "Energy flow from combustion to crankshaft",
+            "D": "Rapid combustion dynamics (bifurcation)"
+          }
+        },
+        {
+          "@id": "m0:ExhaustStroke",
+          "@type": "m0:Stroke",
+          "rdfs:label": "Exhaust Stroke",
+          "m0:sequenceNumber": 4,
+          "m0:role": "Expulsion of combustion products",
+          "m0:pistonMotion": "Upward (BDC → TDC)",
+          "m0:intakeValve": "Closed",
+          "m0:exhaustValve": "Open",
+          "m0:volumeChange": "V_max → V_min (compression)",
+          "m0:massFlow": "Combustion gases expelled to atmosphere",
+          "m0:pressureChange": "P_4 → P_atm (return to atmospheric)",
+          "m0:cycleReset": "Returns to initial state for next cycle",
+          "m0:asfidContribution": {
+            "F": "Mass flow of exhaust gases out",
+            "D": "Valve timing dynamics",
+            "A": "Return to initial attractor state"
+          }
+        }
+      ],
+      
+      "m0:mechanicalAssembly": {
+        "@id": "m0:PistonCrankshaftSystem",
+        "rdfs:label": "Piston-Connecting Rod-Crankshaft Assembly",
+        "m0:components": [
+          {
+            "@id": "m0:Piston",
+            "rdfs:label": "Piston",
+            "m0:function": "Converts gas pressure to linear motion",
+            "m0:motion": "Reciprocating (up/down)",
+            "m0:bore": "Cylinder diameter (typically 70-100mm)",
+            "m0:stroke": "Travel distance TDC↔BDC (typically 80-110mm)"
+          },
+          {
+            "@id": "m0:ConnectingRod",
+            "rdfs:label": "Connecting Rod (Conrod)",
+            "m0:function": "Converts linear motion to rotational motion",
+            "m0:connection": "Piston (small end) ↔ Crankshaft (big end)"
+          },
+          {
+            "@id": "m0:Crankshaft",
+            "rdfs:label": "Crankshaft",
+            "m0:function": "Converts reciprocating motion to continuous rotation",
+            "m0:output": "Rotational kinetic energy (torque × RPM)",
+            "m0:revolutions": "2 full rotations per 4-stroke cycle"
+          },
+          {
+            "@id": "m0:Camshaft",
+            "rdfs:label": "Camshaft",
+            "m0:function": "Controls valve timing via cam lobes",
+            "m0:synchronization": "Driven by crankshaft (timing belt/chain)",
+            "m0:ratio": "1:2 (1 camshaft rotation per 2 crankshaft rotations)"
+          }
+        ]
+      },
+      
+      "m0:asfidAnalysis": {
+        "m0:attractor": {
+          "A": 0.85,
+          "description": "Steady-state rotation at target RPM",
+          "goalState": "Continuous conversion of chemical energy → mechanical work",
+          "equilibrium": "Power input (fuel) = Work output + Heat losses",
+          "stability": "Self-sustaining once started (via flywheel momentum)"
+        },
+        "m0:structure": {
+          "S": 0.90,
+          "description": "Piston-cylinder assembly with valves and crankshaft linkage",
+          "topology": "Cyclic (4-stroke sequence repeats)",
+          "geometry": "Cylindrical symmetry",
+          "modularity": "Multi-cylinder engines (I4, V6, V8, etc.)"
+        },
+        "m0:flow": {
+          "F": 0.95,
+          "description": "Air-fuel intake → Combustion gases exhaust + Energy flow",
+          "massFlow": "Air + Fuel (in) → CO₂ + H₂O + N₂ (out)",
+          "energyFlow": "Chemical (fuel) → Thermal (combustion) → Mechanical (crankshaft)",
+          "momentumFlow": "Gas pressure → Piston force → Crankshaft torque"
+        },
+        "m0:information": {
+          "I": 0.80,
+          "description": "Valve timing, ignition timing, compression ratio, thermodynamic state",
+          "controlSignals": "Spark timing, fuel injection timing, valve lift profiles",
+          "stateVariables": "Pressure P(t), Volume V(t), Temperature T(t)",
+          "constraints": "r (compression ratio), γ (heat capacity ratio)"
+        },
+        "m0:dynamics": {
+          "D": 0.85,
+          "description": "Sequential 4-stroke cycle, 720° crankshaft rotation per cycle",
+          "timeScale": "~10-100 ms per cycle (600-6000 RPM)",
+          "bifurcation": "Combustion event (rapid P, T increase)",
+          "periodicity": "Strict 4-phase sequence repetition",
+          "nonlinearity": "PV^γ = constant (adiabatic process)"
+        },
+        "m0:vectorASFID": "(0.85, 0.90, 0.95, 0.80, 0.85)",
+        "m0:norm": "||ASFID|| = √(0.85² + 0.90² + 0.95² + 0.80² + 0.85²) ≈ 1.97"
+      },
+      
+      "m0:bicephalousAnalysis": {
+        "description": "Dual perspective analysis - Eagle (measurement) + Sphinx (construction)",
+        
+        "eagleEye": {
+          "@id": "m3eagle:EagleEye",
+          "rdfs:seeAlso": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld",
+          "perspective": "Territory (observable physical system)",
+          "basis": "ASFID",
+          "measurements": [
+            "Territory ASFID: (0.85, 0.90, 0.95, 0.80, 0.85)",
+            "Attractor: Steady-state rotation (RPM control)",
+            "Structure: Piston-cylinder-crankshaft assembly",
+            "Flow: Air/fuel in, exhaust out, energy transformation",
+            "Information: P-V-T state, valve/ignition timing",
+            "Dynamics: 4-stroke sequence, combustion bifurcation"
+          ],
+          "observations": [
+            "Physical components: Metal piston, cylinder walls, valves",
+            "Measurable quantities: RPM, torque, cylinder pressure, temperature",
+            "Observable phenomena: Piston reciprocation, valve motion, exhaust emissions",
+            "Energy dissipation: Heat loss through cooling system (~70% of fuel energy)"
+          ]
+        },
+        
+        "sphinxEye": {
+          "@id": "m3sphinx:SphinxEye",
+          "rdfs:seeAlso": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld",
+          "perspective": "Map (theoretical model)",
+          "basis": "ORIVE",
+          
+          "oriveAnalysis": {
+            "O_observability": {
+              "score": 0.90,
+              "instruments": ["Pressure transducers", "Thermocouples", "Crankshaft position sensors", "Airflow meters"],
+              "visualizations": ["P-V diagrams", "Indicator diagrams", "Animation of piston motion"]
+            },
+            "R_reproducibility": {
+              "score": 0.95,
+              "model": "Otto Cycle (idealized thermodynamic model)",
+              "equations": [
+                "Isentropic compression: P₂/P₁ = r^γ",
+                "Constant volume combustion: P₃/P₂ = Q_in/(m·c_v·T₂)",
+                "Isentropic expansion: P₄/P₃ = (1/r)^γ",
+                "Efficiency: η = 1 - (1/r^(γ-1))"
+              ],
+              "predictability": "Highly reproducible cycle-to-cycle under steady-state conditions"
+            },
+            "I_interoperability": {
+              "score": 0.85,
+              "modularity": "Single-cylinder design scales to multi-cylinder (I3, I4, I5, I6, V6, V8, V10, V12)",
+              "fuelFlexibility": ["Gasoline", "E10/E15/E85 (ethanol blends)", "Methanol", "Propane (LPG)"],
+              "applications": ["Automotive", "Marine", "Industrial generators", "Lawn equipment"]
+            },
+            "V_validity": {
+              "score": 0.90,
+              "theoreticalBasis": "Thermodynamics (First & Second Laws)",
+              "empiricalValidation": "150+ years of engineering refinement (1876-present)",
+              "accuracy": "Otto cycle predicts real efficiency within ~5-10% (accounting for friction, heat loss)"
+            },
+            "E_expressiveness": {
+              "score": 0.85,
+              "representations": [
+                "P-V diagram (pressure-volume)",
+                "T-s diagram (temperature-entropy)",
+                "Crank angle diagram (timing)",
+                "3D animations of mechanical motion"
+              ],
+              "pedagogicalValue": "Taught universally in thermodynamics and mechanical engineering curricula"
+            },
+            "vectorORIVE": "(0.90, 0.95, 0.85, 0.90, 0.85)",
+            "norm": "||ORIVE|| = √(0.90² + 0.95² + 0.85² + 0.90² + 0.85²) ≈ 2.01"
+          },
+          
+          "theoreticalModel": {
+            "idealizedCycle": "Otto Cycle (1876)",
+            "assumptions": [
+              "Reversible processes (no entropy generation)",
+              "Adiabatic compression/expansion (no heat transfer)",
+              "Instantaneous combustion (isochoric heat addition)",
+              "Complete combustion (all fuel converts to heat)",
+              "Ideal gas behavior (PV = nRT)"
+            ],
+            "deviationsFromReality": [
+              "Real combustion takes finite time (~10-20° crank angle)",
+              "Heat loss through cylinder walls (~30-40% of fuel energy)",
+              "Friction losses (piston rings, bearings) ~10-15%",
+              "Incomplete combustion ~5-10%",
+              "Pumping losses (valve flow resistance) ~5%"
+            ]
+          },
+          
+          "epistemicGap": {
+            "deltaTheta": 0.16,
+            "calculation": "ΔΘ = ||ASFID - ORIVE|| = ||(−0.05, −0.05, 0.10, −0.10, 0.00)|| = √0.025 ≈ 0.16",
+            "interpretation": "EXCELLENT - Small gap indicates high-fidelity model",
+            "significance": "Otto cycle is a remarkably accurate map of real engine behavior",
+            "comparison": "ΔΘ(Fire Triangle) = 0.47 vs ΔΘ(Four-Stroke) = 0.16 → Engine model is more precise"
+          },
+          
+          "sphinxRiddle": {
+            "question": "What breathes without lungs, works without rest, converts fire to motion, yet has no life of its own?",
+            "answer": "Four-Stroke Engine - Cyclic intake/exhaust mimics breathing, continuous operation, combustion → rotation, but it's a machine, not organism",
+            "tradition": "Sphinx tradition of revealing truth through enigma"
+          }
+        },
+        
+        "binocularSynthesis": {
+          "depthPerception": "Gap ΔΘ=0.16 = 'Excellent' alignment between phenomenon and model",
+          "workflow": [
+            "Sphinx: Otto Cycle provides theoretical framework (WHY: engineering design)",
+            "Eagle: ΔΘ=0.16 (quantified gap), real engine ~25-30% efficient vs ideal ~60%",
+            "Sphinx: Gap acceptable for design but necessitates corrections (friction, heat loss)",
+            "Synthesis: Use Otto cycle for initial design, then apply empirical corrections for real performance"
+          ],
+          "insight": "Small epistemic gap validates thermodynamic theory AND engineering practice"
+        }
+      },
+      
+      "m0:metaconceptsMobilized": {
+        "total": 20,
+        "percentage": "38% of M2",
+        "byCategory": {
+          "Structural": [
+            "Component (S⊗I) - 4 strokes as parts",
+            "Composition (S⊗I⊗A) - Piston+rod+crankshaft assembly",
+            "Symmetry (S) - Cylindrical geometry",
+            "Modularity (S⊗I) - Multi-cylinder scaling"
+          ],
+          "Dynamic": [
+            "Process (D⊗F) - Each stroke as subprocess",
+            "Cycle (D⊗A) - Periodic return to initial state",
+            "Sequence (D⊗I) - Strict 4-stroke ordering",
+            "Bifurcation (D⊗A) - Combustion event",
+            "Transformation (D⊗F) - Chemical→Heat→Work"
+          ],
+          "Regulatory": [
+            "Constraint (I⊗S) - Compression ratio r",
+            "Threshold (I⊗D) - Ignition timing",
+            "Trigger (D⊗I) - Spark initiates combustion",
+            "Synchronization (D⊗I) - Multi-cylinder timing"
+          ],
+          "Energetic": [
+            "Flow (F) - Air/fuel/exhaust/energy flows",
+            "Dissipation (F⊗D) - Heat loss (cooling)",
+            "Gradient (F⊗D) - Pressure gradient drives piston"
+          ],
+          "Teleonomic": [
+            "Efficiency (A⊗F) - η = 1 - (1/r^(γ-1))",
+            "Trade-off - Compression↑ → Efficiency↑ BUT Knock risk↑",
+            "Balance - Valve/ignition/piston synchronization",
+            "Emergence - Continuous rotation from discrete strokes"
+          ]
+        },
+        "criticalMetaconcepts": [
+          {
+            "name": "Cycle",
+            "role": "Defines 4-stroke periodicity",
+            "formula": "D⊗A",
+            "significance": "Cycle completion requires all 4 strokes"
+          },
+          {
+            "name": "Sequence",
+            "role": "Enforces strict ordering (Intake→Compression→Power→Exhaust)",
+            "formula": "D⊗I",
+            "significance": "Wrong order destroys functionality"
+          },
+          {
+            "name": "Transformation",
+            "role": "Chemical energy → Thermal → Mechanical work",
+            "formula": "D⊗F",
+            "significance": "Core purpose of engine"
+          },
+          {
+            "name": "Bifurcation",
+            "role": "Rapid combustion transition (spark → pressure spike)",
+            "formula": "D⊗A",
+            "significance": "Critical event in power stroke"
+          },
+          {
+            "name": "Emergence",
+            "role": "Continuous rotation emerges from discrete strokes",
+            "formula": "A⊗S⊗I",
+            "significance": "Whole > sum of parts (smooth motion from jerky strokes)"
+          }
+        ]
+      },
+      
+      "m0:transdisciplinaryValidation": {
+        "patternName": "4-Phase Cycle",
+        "domains": [
+          {
+            "field": "Cardiology",
+            "example": "Cardiac Cycle",
+            "phases": ["Atrial diastole", "Atrial systole", "Ventricular diastole", "Ventricular systole"],
+            "similarity": "Sequential phases with flow reversal (blood in/out)"
+          },
+          {
+            "field": "Economics",
+            "example": "Business Cycle",
+            "phases": ["Expansion", "Peak", "Contraction", "Trough"],
+            "similarity": "Cyclic pattern with growth/decline phases"
+          },
+          {
+            "field": "Biochemistry",
+            "example": "Na⁺/K⁺-ATPase Ion Pump",
+            "phases": ["E1 (Na⁺ binding)", "E1-P (phosphorylation)", "E2-P (conformational change)", "E2 (K⁺ release)"],
+            "similarity": "4 conformational states in energy-driven cycle"
+          },
+          {
+            "field": "Climatology",
+            "example": "Seasonal Cycle",
+            "phases": ["Spring", "Summer", "Fall", "Winter"],
+            "similarity": "Annual periodic cycle driven by solar energy"
+          }
+        ],
+        "insight": "4-phase cycles are a universal pattern for energy transformation and state transition"
+      },
+      
+      "m0:m1Contributions": {
+        "description": "Domain-specific concepts for M1_Thermodynamics.jsonld",
+        "concepts": [
+          {
+            "name": "Stroke",
+            "definition": "A phase in an engine cycle (Intake, Compression, Power, Exhaust)",
+            "m2Basis": "Component + Process",
+            "example": "Power stroke converts combustion energy to work"
+          },
+          {
+            "name": "Compression Ratio",
+            "definition": "r = V_max / V_min - geometric parameter determining efficiency",
+            "m2Basis": "Constraint",
+            "formula": "r = (V_clearance + V_displacement) / V_clearance",
+            "typical": "8:1 to 12:1 for gasoline engines"
+          },
+          {
+            "name": "Otto Cycle",
+            "definition": "Idealized thermodynamic cycle for 4-stroke spark-ignition engines",
+            "m2Basis": "Cycle + Transformation",
+            "processes": ["Isentropic compression", "Isochoric heat addition", "Isentropic expansion", "Isochoric heat rejection"]
+          },
+          {
+            "name": "Valve Timing",
+            "definition": "Precise control of intake/exhaust valve opening/closing relative to crankshaft position",
+            "m2Basis": "Synchronization + Constraint",
+            "modern": "Variable Valve Timing (VVT) optimizes for RPM/load"
+          },
+          {
+            "name": "Ignition Timing",
+            "definition": "Crankshaft angle at which spark plug fires (typically 5-15° BTDC)",
+            "m2Basis": "Trigger + Threshold",
+            "optimization": "Advanced timing → higher efficiency, Retarded timing → lower NOx emissions"
+          },
+          {
+            "name": "Bore and Stroke",
+            "definition": "Bore = cylinder diameter, Stroke = piston travel distance",
+            "m2Basis": "Structure (geometric parameters)",
+            "ratio": "Oversquare (bore > stroke) → high RPM, Undersquare (stroke > bore) → high torque"
+          },
+          {
+            "name": "Displacement",
+            "definition": "Total volume swept by all pistons in one stroke",
+            "formula": "V_d = (π/4) × bore² × stroke × number_of_cylinders",
+            "units": "Liters (L) or cubic inches (cu in)",
+            "example": "2.0L I4 engine = 500cc per cylinder"
+          }
+        ]
+      },
+      
+      "m0:thermodynamicEfficiency": {
+        "idealOttoEfficiency": {
+          "formula": "η = 1 - (1 / r^(γ-1))",
+          "variables": {
+            "η": "Thermal efficiency",
+            "r": "Compression ratio",
+            "γ": "Heat capacity ratio (C_p/C_v ≈ 1.4 for air)"
+          },
+          "example": "r = 10:1 → η = 1 - (1/10^0.4) ≈ 0.60 (60% ideal efficiency)"
+        },
+        "realWorldEfficiency": {
+          "typical": "25-30% (brake thermal efficiency)",
+          "losses": {
+            "heatTransfer": "30-40% (cooling system, exhaust)",
+            "friction": "10-15% (piston rings, bearings)",
+            "incompleteCombustion": "5-10%",
+            "pumpingLosses": "5% (valve flow resistance)",
+            "other": "5-10% (accessories, parasitic loads)"
+          },
+          "bestModernEngines": "~40% (Toyota Dynamic Force, Mazda Skyactiv-X)"
+        },
+        "tradeoffs": [
+          "Higher r → Higher η BUT increased knock (pre-ignition) risk",
+          "Advanced ignition timing → Higher power BUT higher NOx emissions",
+          "Leaner mixture → Higher η BUT higher combustion temperature → more NOx"
+        ]
+      },
+      
+      "m0:validation": {
+        "asfidCompleteness": "All 5 dimensions present (A, S, F, I, D) ✅",
+        "metaconceptCoverage": "20/52 metaconcepts mobilized (38%) ✅",
+        "minimality": "Exactly 4 strokes (irreducible for complete cycle) ✅",
+        "emergence": "Continuous rotation emerges from discrete strokes ✅",
+        "pedagogicalValue": "Universally taught in engineering curricula ✅",
+        "empiricalValidity": "150+ years of validation (1876-present) ✅",
+        "frameworkFit": "Perfect M3→M2→M1→M0 instantiation ✅",
+        "epistemicGap": "ΔΘ = 0.16 (excellent Territory-Map alignment) ✅",
+        "transdisciplinaryPattern": "4-phase cycle appears across domains ✅"
+      },
+      
+      "rdfs:seeAlso": [
+        "m2:Cycle",
+        "m2:Sequence",
+        "m2:Transformation",
+        "m2:Component",
+        "m2:Emergence"
+      ],
+      
+      "dcterms:references": [
+        "Otto, N. A. (1876). Four-Stroke Internal Combustion Engine (Patent)",
+        "Heywood, J. B. (1988). Internal Combustion Engine Fundamentals. McGraw-Hill",
+        "Taylor, C. F. (1985). The Internal Combustion Engine in Theory and Practice. MIT Press",
+        "SAE International. Engine Technology Standards (J1349, J1995)"
+      ]
+    }
+  ]
+}
