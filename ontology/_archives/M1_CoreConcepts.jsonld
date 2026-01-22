@@ -1,9 +1,9 @@
 {
   "@context": {
-    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
-    "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
-    "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
+    "m3:eagle_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
+    "m3:sphinx_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
@@ -13,7 +13,7 @@
   },
   "@graph": [
     {
-      "@id": "m1:M1_CoreConcepts_Ontology",
+      "@id": "m1:core:M1_CoreConcepts_Ontology",
       "@type": "owl:Ontology",
       "dcterms:title": "TSCG M1 Core Concepts Ontology",
       "dcterms:description": "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Philosophy, etc.).",
@@ -181,7 +181,7 @@
     },
     
     {
-      "@id": "m1:CoreConcept",
+      "@id": "m1:core:CoreConcept",
       "@type": "owl:Class",
       "rdfs:label": "M1 Core Concept",
       "rdfs:comment": "A domain-bounded but transdisciplinary concept that instantiates one or more M2 metaconcepts. Core concepts are reusable patterns that appear across multiple domains but don't achieve the full universality of M2 metaconcepts. Examples: Oscillator (appears in physics, biology, economics), Filter (appears in signal processing, chemistry, information theory).",
@@ -196,52 +196,52 @@
     },
     
     {
-      "@id": "m1:DomainPattern",
+      "@id": "m1:core:DomainPattern",
       "@type": "owl:Class",
       "rdfs:label": "Domain-Specific Pattern",
       "rdfs:comment": "A pattern specific to a particular domain (e.g., Additive Color Synthesis in optics, Compensatory Triplet in photography). Lives in domain-specific M1 extensions (M1_Optics, M1_Photography, etc.) rather than M1_CoreConcepts.",
-      "rdfs:subClassOf": "m1:CoreConcept",
+      "rdfs:subClassOf": "m1:core:CoreConcept",
       "m1:note": "Domain patterns extend CoreConcept but are defined in M1_[Domain].jsonld files, not here."
     },
     
     {
-      "@id": "m1:GenericMechanism",
+      "@id": "m1:core:GenericMechanism",
       "@type": "owl:Class",
       "rdfs:label": "Generic Mechanism",
       "rdfs:comment": "Reusable operational mechanism appearing across multiple domains. Examples: Oscillator (pendulum, AC current, predator-prey cycles, business cycles), Amplifier (electronic amplifier, biological cascade, social amplification).",
-      "rdfs:subClassOf": "m1:CoreConcept",
+      "rdfs:subClassOf": "m1:core:CoreConcept",
       "skos:note": "To be populated with specific mechanisms as they are discovered through poclet analysis."
     },
     
     {
-      "@id": "m1:StructuralTemplate",
+      "@id": "m1:core:StructuralTemplate",
       "@type": "owl:Class",
       "rdfs:label": "Structural Template",
       "rdfs:comment": "Common architectural pattern for system organization. Examples: Feedback Loop (control systems, ecosystems, markets), Cascade (signal transduction, waterfall, information flow), Hierarchy (organizational charts, taxonomies, file systems).",
-      "rdfs:subClassOf": "m1:CoreConcept",
+      "rdfs:subClassOf": "m1:core:CoreConcept",
       "skos:note": "To be populated with specific templates as they are discovered through poclet analysis."
     },
     
     {
-      "@id": "m1:RelationalPattern",
+      "@id": "m1:core:RelationalPattern",
       "@type": "owl:Class",
       "rdfs:label": "Relational Pattern",
       "rdfs:comment": "Generic type of relationship between entities. Examples: Competition (species, companies, ideas), Cooperation (mutualism, trade, collaboration), Parasitism (biological, economic extraction).",
-      "rdfs:subClassOf": "m1:CoreConcept",
+      "rdfs:subClassOf": "m1:core:CoreConcept",
       "skos:note": "To be populated with specific patterns as they are discovered through poclet analysis."
     },
     
     {
-      "@id": "m1:ProcessArchetype",
+      "@id": "m1:core:ProcessArchetype",
       "@type": "owl:Class",
       "rdfs:label": "Process Archetype",
       "rdfs:comment": "Generic transformational process. Examples: Growth (population, economic, crystal), Decay (radioactive, ecological succession, market correction), Saturation (carrying capacity, market saturation, chemical equilibrium).",
-      "rdfs:subClassOf": "m1:CoreConcept",
+      "rdfs:subClassOf": "m1:core:CoreConcept",
       "skos:note": "To be populated with specific archetypes as they are discovered through poclet analysis."
     },
     
     {
-      "@id": "m1:ExampleCoreConceptPlaceholder",
+      "@id": "m1:core:ExampleCoreConceptPlaceholder",
       "@type": [
         "owl:NamedIndividual",
         "m1:GenericMechanism"
@@ -254,7 +254,7 @@
         "m2:Flow (F) - Energy/matter exchange"
       ],
       "m1:principle": "Periodic alternation between two states through restoring force/feedback",
-      "m1:formula": "Generic: d²x/dt² + ω²x = 0 (harmonic oscillator)",
+      "m1:formula": "Generic: dÂ²x/dtÂ² + Ï‰Â²x = 0 (harmonic oscillator)",
       "m1:domainScope": "Physics, Biology, Ecology, Economics, Social Systems",
       "m1:examplesCrossDomain": [
         "Physics: Pendulum, LC circuit, mass-spring system",
