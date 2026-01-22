@@ -1,0 +1,766 @@
+{
+  "@context": {
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/complex_chemical_synapse/M0_ComplexChemicalSynapse.jsonld#",
+    "m1core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1bio": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "m0:ComplexChemicalSynapse",
+      "@type": "owl:NamedIndividual",
+      "rdf:type": "m0:Poclet",
+      "rdfs:label": "Complex Chemical Synapse (5-Pole Model)",
+      "rdfs:comment": "Precise, rapid, and temporally controlled synaptic transmission enabling information processing through chemical signaling between neurons. This 5-pole model extends simpler neuromuscular junction models by incorporating neuromodulation and feedback complexity. Demonstrates high-dimensional interdependence where each pole is absolutely required for function.",
+      "dcterms:created": "2026-01-22",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "owl:versionInfo": "1.0.0",
+      "m0:pocletType": "5-Pole Interdependent System",
+      "m0:domain": "Neurobiology / Cellular Communication / Neuroscience",
+      "m0:principle": "Sequential Chemical Signal Transduction with Feedback Control",
+      "m0:physicalBasis": "Neurotransmitter synthesis, storage, release, reception, and termination enabling neural communication",
+      "m0:pedagogicalRole": "Comprehensive model for understanding synaptic pharmacology and neurological disease",
+      "m0:alternativeNames": [
+        "Central Nervous System Synapse",
+        "Chemical Synapse (Extended Model)",
+        "5-Stage Synaptic Transmission Model"
+      ],
+      "m0:spatialScale": "Nanoscale to microscale (20 nm cleft to 1 μm active zone)",
+      "m0:temporalScale": "Milliseconds (0.5-5 ms transmission time)",
+      "m0:poles": [
+        {
+          "@id": "m0:Pole1_NTSynthesis",
+          "@type": "m2:Process",
+          "rdfs:label": "Pole 1: Neurotransmitter (NT) Synthesis",
+          "m0:metaconceptInstantiation": "m2:Process",
+          "m0:location": "Presynaptic neuron cytoplasm",
+          "m0:function": "Produce neurotransmitter molecules from precursors",
+          "m0:requirements": {
+            "enzymes": "Specific biosynthetic enzymes for each NT class",
+            "precursors": "Molecular building blocks (amino acids, acetyl-CoA, etc.)",
+            "energy": "ATP for enzymatic reactions",
+            "cofactors": "Vitamins (B6, B12), metal ions (Fe, Cu)"
+          },
+          "m0:examples": [
+            {
+              "NT": "Acetylcholine (ACh)",
+              "enzyme": "Choline acetyltransferase (ChAT)",
+              "reaction": "Acetyl-CoA + Choline → ACh + CoA"
+            },
+            {
+              "NT": "Dopamine",
+              "pathway": "Tyrosine → L-DOPA (tyrosine hydroxylase) → Dopamine (DOPA decarboxylase)"
+            },
+            {
+              "NT": "Serotonin (5-HT)",
+              "pathway": "Tryptophan → 5-HTP (tryptophan hydroxylase) → 5-HT (aromatic amino acid decarboxylase)"
+            },
+            {
+              "NT": "GABA",
+              "enzyme": "Glutamic acid decarboxylase (GAD)",
+              "reaction": "Glutamate → GABA + CO₂"
+            },
+            {
+              "NT": "Glutamate",
+              "source": "Krebs cycle intermediates, glucose metabolism"
+            }
+          ],
+          "m0:regulation": {
+            "feedback": "End-product inhibition (NT levels regulate synthesis)",
+            "transcriptional": "Gene expression of synthetic enzymes",
+            "substrate": "Availability of precursors (e.g., dietary tryptophan for serotonin)"
+          },
+          "m0:tensorFormula": "D⊗F⊗I (Dynamics × Flow × Information)",
+          "m0:asfidContribution": {
+            "D": "Dynamic enzymatic reactions (timescale: seconds to minutes)",
+            "F": "Metabolic flow (precursors → NT)",
+            "I": "Genetic/metabolic information controlling synthesis rates"
+          },
+          "m0:clinicalRelevance": {
+            "L-DOPA": "Precursor therapy for Parkinson's disease (crosses BBB, converted to dopamine)",
+            "alphaMetylParaTyrosine": "Tyrosine hydroxylase inhibitor (reduces catecholamine synthesis)",
+            "dietaryModulation": "Tryptophan loading can increase 5-HT synthesis"
+          },
+          "m0:interdependence": {
+            "towardsPole2": "No synthesis → no NT to store",
+            "feedback": "Pole 5 (reuptake) provides recycled NT, reducing synthesis demand"
+          }
+        },
+        {
+          "@id": "m0:Pole2_VesicularStorage",
+          "@type": "m2:Component",
+          "rdfs:label": "Pole 2: Vesicular Storage",
+          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:location": "Synaptic vesicles in presynaptic terminal",
+          "m0:function": "Concentrate and protect NT from enzymatic degradation, enable quantal release",
+          "m0:structure": {
+            "vesicleType": "Small synaptic vesicles (~40-50 nm diameter)",
+            "concentration": "High intravesicular [NT] (~100-500 mM)",
+            "quantity": "~200-300 vesicles per active zone, ~10,000 per terminal"
+          },
+          "m0:vesicularTransporters": [
+            {
+              "transporter": "VMAT1/VMAT2",
+              "substrates": "Dopamine, norepinephrine, serotonin, histamine",
+              "mechanism": "H⁺ antiport (exchanges 2H⁺ out for 1 NT in)",
+              "energetics": "Driven by V-ATPase proton pump (pH gradient)"
+            },
+            {
+              "transporter": "VAChT",
+              "substrate": "Acetylcholine",
+              "mechanism": "H⁺ antiport",
+              "stoichiometry": "1 ACh in : 2 H⁺ out"
+            },
+            {
+              "transporter": "VGLUT1/2/3",
+              "substrate": "Glutamate",
+              "mechanism": "Cl⁻ antiport + ΔΨ",
+              "notes": "Also requires membrane potential"
+            },
+            {
+              "transporter": "VGAT (VIAAT)",
+              "substrates": "GABA, Glycine",
+              "mechanism": "H⁺ antiport"
+            }
+          ],
+          "m0:vesiclePool": {
+            "readilyReleasablePool": "~5-20 vesicles docked at active zone, immediately fusible",
+            "recyclingPool": "~50-100 vesicles, mobilized during moderate activity",
+            "reservePool": "~1000s vesicles, recruited during intense activity"
+          },
+          "m0:tensorFormula": "S⊗I⊗A (Structure × Information × Attractor)",
+          "m0:asfidContribution": {
+            "S": "Vesicular membrane structure, transporter organization",
+            "I": "NT identity and quantity information (quantal content)",
+            "A": "Electrochemical gradient attractor (pH ~5.5, ΔΨ ~50 mV)"
+          },
+          "m0:protection": {
+            "mechanism": "Membrane barrier prevents enzymatic degradation by cytoplasmic enzymes",
+            "example": "Dopamine protected from MAO (monoamine oxidase) in cytoplasm"
+          },
+          "m0:quantalRelease": {
+            "quantalSize": "~7000-10000 NT molecules per vesicle (ACh at NMJ), variable for CNS",
+            "significance": "Vesicular packaging enables digital signaling (quantal increments)"
+          },
+          "m0:clinicalRelevance": {
+            "reserpine": "VMAT2 inhibitor, depletes vesicular monoamines (historical antipsychotic)",
+            "tetrabenazine": "VMAT2 inhibitor (Huntington's chorea treatment)",
+            "vesamicol": "VAChT inhibitor (research tool, not clinical)"
+          },
+          "m0:interdependence": {
+            "fromPole1": "Depends on NT synthesis for substrate",
+            "towardsPole3": "No vesicles → no quantal release",
+            "fromPole5": "Vesicle recycling after exocytosis (endocytosis)"
+          }
+        },
+        {
+          "@id": "m0:Pole3_ExocytoticRelease",
+          "@type": "m2:Process",
+          "rdfs:label": "Pole 3: Exocytotic Release",
+          "m0:metaconceptInstantiation": "m2:Process",
+          "m0:location": "Presynaptic membrane active zone",
+          "m0:function": "Release NT into synaptic cleft in response to presynaptic depolarization",
+          "m0:trigger": {
+            "event": "Action potential arrival",
+            "mechanism": "Membrane depolarization opens voltage-gated Ca²⁺ channels (VGCC)",
+            "timing": "Ca²⁺ influx within 0.2 ms of depolarization"
+          },
+          "m0:calciumChannels": {
+            "types": "N-type (CaV2.2), P/Q-type (CaV2.1), R-type (CaV2.3)",
+            "location": "Clustered at active zones, near docked vesicles",
+            "influx": "~1-10 μM local [Ca²⁺] (from ~100 nM baseline)",
+            "nanodomains": "Ca²⁺ nanodomains (<100 nm) couple channels to vesicles"
+          },
+          "m0:SNAREmachinery": {
+            "vSNARE": "Synaptobrevin/VAMP (vesicle membrane)",
+            "tSNAREs": "Syntaxin-1, SNAP-25 (target/plasma membrane)",
+            "complex": "4-helix bundle brings membranes together",
+            "energy": "SNARE zippering provides ~35 kBT energy for fusion"
+          },
+          "m0:calciumSensor": {
+            "protein": "Synaptotagmin (Syt1, Syt2)",
+            "mechanism": "C2 domains bind Ca²⁺ → membrane insertion → fusion triggering",
+            "cooperativity": "~3-5 Ca²⁺ ions required (steep cooperativity)",
+            "speed": "Fusion within 60-200 μs of Ca²⁺ binding"
+          },
+          "m0:regulatoryProteins": {
+            "complexin": "Clamps SNARE complex, prevents spontaneous fusion",
+            "munc18": "Chaperones syntaxin, essential for fusion",
+            "munc13": "Primes vesicles (MUN domain opens syntaxin)",
+            "synapsins": "Regulate reserve pool mobilization (phosphorylation-dependent)"
+          },
+          "m0:releaseProcess": {
+            "step1": "Action potential → VGCCs open",
+            "step2": "Ca²⁺ influx (~0.2 ms)",
+            "step3": "Ca²⁺ binds synaptotagmin",
+            "step4": "SNARE complex completes zippering",
+            "step5": "Membrane fusion → pore formation",
+            "step6": "NT diffuses into cleft",
+            "totalTime": "~0.5-1 ms from AP to NT in cleft"
+          },
+          "m0:releaseProbability": {
+            "P_r": "0.1 - 0.9 (synapse-dependent)",
+            "factors": "Ca²⁺ sensitivity, readily releasable pool size, release site occupancy",
+            "plasticity": "Short-term facilitation/depression modulate P_r"
+          },
+          "m0:tensorFormula": "D⊗I⊗F⊗A (Dynamics × Information × Flow × Attractor)",
+          "m0:asfidContribution": {
+            "D": "Rapid fusion dynamics (sub-millisecond)",
+            "I": "Ca²⁺ signal encodes AP timing and frequency",
+            "F": "Ca²⁺ influx, NT release flow",
+            "A": "Ca²⁺ nanodomains as transient attractors"
+          },
+          "m0:clinicalRelevance": {
+            "botulinumToxin": "Cleaves SNARE proteins (synaptobrevin, SNAP-25, syntaxin) → blocks release. Uses: Cosmetic (Botox), dystonia, migraine, spasticity",
+            "tetanusToxin": "Cleaves synaptobrevin at inhibitory synapses → disinhibition → spastic paralysis",
+            "omegaConotoxin": "Blocks N-type Ca²⁺ channels → reduces release (ziconotide for chronic pain)",
+            "baclofen": "GABA_B agonist → inhibits presynaptic Ca²⁺ channels → reduces release"
+          },
+          "m0:interdependence": {
+            "fromPole2": "No vesicles → no release",
+            "towardsPole4": "No release → no postsynaptic signal",
+            "feedback": "Autoreceptors (Pole 4 variant) modulate Pole 3 via Ca²⁺ channels"
+          }
+        },
+        {
+          "@id": "m0:Pole4_PostsynapticReception",
+          "@type": "m2:Transducer",
+          "rdfs:label": "Pole 4: Postsynaptic Reception",
+          "m0:metaconceptInstantiation": "m2:Transducer",
+          "m0:location": "Postsynaptic membrane",
+          "m0:function": "Detect NT and transduce chemical signal into electrical/biochemical response",
+          "m0:receptorTypes": {
+            "ionotropic": {
+              "description": "Ligand-gated ion channels - fast transmission",
+              "timescale": "0.5-5 ms",
+              "mechanism": "NT binding → conformational change → channel opening → ion flux",
+              "examples": [
+                {
+                  "receptor": "AMPA receptors",
+                  "NT": "Glutamate",
+                  "ion": "Na⁺ (primarily), K⁺",
+                  "effect": "Depolarization (EPSP)",
+                  "kinetics": "Fast (~1 ms rise, ~5 ms decay)"
+                },
+                {
+                  "receptor": "NMDA receptors",
+                  "NT": "Glutamate",
+                  "ion": "Ca²⁺, Na⁺, K⁺",
+                  "unique": "Voltage-dependent Mg²⁺ block, coincidence detector",
+                  "effect": "Slow EPSP + Ca²⁺ influx (plasticity trigger)"
+                },
+                {
+                  "receptor": "GABA_A receptors",
+                  "NT": "GABA",
+                  "ion": "Cl⁻",
+                  "effect": "Hyperpolarization (IPSP)",
+                  "kinetics": "Fast (~10-50 ms decay)"
+                },
+                {
+                  "receptor": "Glycine receptors",
+                  "NT": "Glycine",
+                  "ion": "Cl⁻",
+                  "effect": "Hyperpolarization (IPSP)",
+                  "location": "Spinal cord, brainstem"
+                },
+                {
+                  "receptor": "Nicotinic AChR",
+                  "NT": "Acetylcholine",
+                  "ion": "Na⁺, K⁺, (Ca²⁺)",
+                  "effect": "Depolarization (EPSP)",
+                  "subtypes": "Muscle-type (NMJ), neuronal (α4β2, α7)"
+                },
+                {
+                  "receptor": "5-HT3 receptors",
+                  "NT": "Serotonin",
+                  "ion": "Na⁺, K⁺",
+                  "effect": "Depolarization",
+                  "unique": "Only ionotropic 5-HT receptor"
+                }
+              ]
+            },
+            "metabotropic": {
+              "description": "G-protein coupled receptors (GPCRs) - slow, modulatory",
+              "timescale": "100 ms - seconds",
+              "mechanism": "NT binding → G-protein activation → second messenger cascades",
+              "examples": [
+                {
+                  "receptor": "mGluR1/5 (Group I)",
+                  "NT": "Glutamate",
+                  "pathway": "Gq → PLC → IP3/DAG → Ca²⁺ release, PKC activation",
+                  "effect": "Slow depolarization, increased excitability"
+                },
+                {
+                  "receptor": "mGluR2/3 (Group II)",
+                  "NT": "Glutamate",
+                  "pathway": "Gi/o → ↓cAMP",
+                  "effect": "Presynaptic inhibition (autoreceptors)"
+                },
+                {
+                  "receptor": "GABA_B receptors",
+                  "NT": "GABA",
+                  "pathway": "Gi/o → ↓cAMP, ↑K⁺ channels (GIRK)",
+                  "effect": "Slow hyperpolarization, presynaptic inhibition"
+                },
+                {
+                  "receptor": "D1 receptors",
+                  "NT": "Dopamine",
+                  "pathway": "Gs → ↑cAMP → PKA activation",
+                  "effect": "Modulation of excitability, gene expression"
+                },
+                {
+                  "receptor": "D2 receptors",
+                  "NT": "Dopamine",
+                  "pathway": "Gi/o → ↓cAMP",
+                  "effect": "Presynaptic/postsynaptic inhibition",
+                  "clinical": "Target of antipsychotics"
+                },
+                {
+                  "receptor": "5-HT1A receptors",
+                  "NT": "Serotonin",
+                  "pathway": "Gi/o → ↓cAMP, ↑K⁺ channels",
+                  "effect": "Hyperpolarization, anxiolytic effects"
+                },
+                {
+                  "receptor": "5-HT2A receptors",
+                  "NT": "Serotonin",
+                  "pathway": "Gq → PLC",
+                  "effect": "Excitation, hallucinogenic effects (LSD)",
+                  "clinical": "Target of atypical antipsychotics"
+                },
+                {
+                  "receptor": "α2 adrenergic",
+                  "NT": "Norepinephrine",
+                  "pathway": "Gi/o → ↓cAMP",
+                  "effect": "Presynaptic inhibition (autoreceptor)",
+                  "clinical": "Clonidine (α2 agonist) for ADHD, hypertension"
+                },
+                {
+                  "receptor": "β adrenergic",
+                  "NT": "Norepinephrine",
+                  "pathway": "Gs → ↑cAMP",
+                  "effect": "Increased alertness, memory consolidation"
+                },
+                {
+                  "receptor": "Muscarinic (M1-M5)",
+                  "NT": "Acetylcholine",
+                  "pathways": "M1/M3/M5 (Gq), M2/M4 (Gi/o)",
+                  "effects": "Diverse - cognition, autonomic function",
+                  "clinical": "Anticholinergics (atropine), cholinesterase inhibitors"
+                }
+              ]
+            }
+          },
+          "m0:postsynapticPotentials": {
+            "EPSP": {
+              "name": "Excitatory PostSynaptic Potential",
+              "mechanism": "Cation influx (Na⁺, Ca²⁺) or Cl⁻ efflux",
+              "effect": "Depolarization (brings membrane potential toward threshold)",
+              "amplitude": "0.1-5 mV (miniature to unitary)",
+              "duration": "5-50 ms (AMPA-type)"
+            },
+            "IPSP": {
+              "name": "Inhibitory PostSynaptic Potential",
+              "mechanism": "Cl⁻ influx or K⁺ efflux",
+              "effect": "Hyperpolarization (moves away from threshold)",
+              "amplitude": "0.5-2 mV",
+              "duration": "10-100 ms"
+            },
+            "integration": {
+              "temporal": "Successive PSPs summate if arriving within ~10-20 ms",
+              "spatial": "PSPs from different synapses summate across dendrite",
+              "location": "Axon hillock integrates all PSPs → AP initiation if threshold reached"
+            }
+          },
+          "m0:postsynapticDensity": {
+            "structure": "Protein-rich region ~300-400 nm thick opposite active zone",
+            "components": "Receptors, scaffolding proteins (PSD-95, Homer, Shank), signaling enzymes",
+            "function": "Organize receptor clusters, anchor signaling complexes, enable plasticity"
+          },
+          "m0:synapticPlasticity": {
+            "LTP": {
+              "name": "Long-Term Potentiation",
+              "mechanism": "NMDA receptor Ca²⁺ influx → CaMKII activation → AMPA receptor insertion",
+              "effect": "Increased synaptic strength (learning)",
+              "duration": "Hours to days",
+              "location": "Hippocampus (memory), cortex, other regions"
+            },
+            "LTD": {
+              "name": "Long-Term Depression",
+              "mechanism": "Low-level Ca²⁺ → phosphatases → AMPA receptor endocytosis",
+              "effect": "Decreased synaptic strength (forgetting, refinement)",
+              "duration": "Hours to days"
+            },
+            "homeostasis": {
+              "mechanism": "Synaptic scaling (global adjustment of receptor numbers)",
+              "function": "Maintain network stability despite plasticity"
+            }
+          },
+          "m0:tensorFormula": "S⊗I⊗A⊗D (Structure × Information × Attractor × Dynamics)",
+          "m0:asfidContribution": {
+            "S": "Receptor structure, postsynaptic density organization",
+            "I": "NT concentration encodes presynaptic activity",
+            "A": "Membrane potential attractors (resting ~-70 mV, threshold ~-55 mV)",
+            "D": "PSP dynamics (rise/decay kinetics)"
+          },
+          "m0:clinicalRelevance": {
+            "antipsychotics": "D2 receptor antagonists (schizophrenia) - haloperidol, risperidone, olanzapine",
+            "benzodiazepines": "GABA_A positive allosteric modulators (anxiety, sedation) - diazepam, alprazolam, lorazepam",
+            "ketamine": "NMDA receptor antagonist (anesthesia, depression treatment)",
+            "LSD": "5-HT2A agonist (hallucinogen)",
+            "naloxone": "μ-opioid antagonist (opioid overdose reversal)",
+            "atropine": "Muscarinic antagonist (anticholinergic)",
+            "curare": "Nicotinic antagonist (muscle relaxant during surgery)",
+            "memantine": "NMDA receptor antagonist (Alzheimer's disease)"
+          },
+          "m0:interdependence": {
+            "fromPole3": "No NT release → no receptor activation",
+            "towardsPole5": "Receptor activation must be terminated for temporal precision",
+            "autoreceptors": "Variant of Pole 4 on presynaptic terminal, modulates Pole 3"
+          }
+        },
+        {
+          "@id": "m0:Pole5_SignalTermination",
+          "@type": "m2:Regulation",
+          "rdfs:label": "Pole 5: Signal Termination",
+          "m0:metaconceptInstantiation": "m2:Regulation",
+          "m0:location": "Synaptic cleft + presynaptic/postsynaptic membranes",
+          "m0:function": "Rapidly remove NT from cleft to enable temporal precision and prevent receptor desensitization",
+          "m0:mechanisms": [
+            {
+              "type": "Reuptake (Primary mechanism for most NTs)",
+              "location": "Presynaptic membrane (primarily), glial cells (astrocytes)",
+              "transporters": [
+                {
+                  "name": "SERT (5-HTT)",
+                  "substrate": "Serotonin",
+                  "mechanism": "Na⁺/Cl⁻ cotransport (symport)",
+                  "stoichiometry": "1 5-HT : 1 Na⁺ : 1 Cl⁻",
+                  "drugs": "SSRIs (fluoxetine, sertraline, paroxetine, citalopram, escitalopram)"
+                },
+                {
+                  "name": "DAT",
+                  "substrate": "Dopamine",
+                  "mechanism": "Na⁺/Cl⁻ cotransport",
+                  "stoichiometry": "1 DA : 2 Na⁺ : 1 Cl⁻",
+                  "drugs": "Cocaine (blocker), amphetamine (reverses transporter), methylphenidate (blocker, ADHD)"
+                },
+                {
+                  "name": "NET",
+                  "substrate": "Norepinephrine",
+                  "mechanism": "Na⁺/Cl⁻ cotransport",
+                  "drugs": "SNRIs (duloxetine, venlafaxine), tricyclics (imipramine)"
+                },
+                {
+                  "name": "GAT-1, GAT-2, GAT-3",
+                  "substrate": "GABA",
+                  "mechanism": "Na⁺/Cl⁻ cotransport",
+                  "drugs": "Tiagabine (GAT-1 blocker, antiepileptic)"
+                },
+                {
+                  "name": "EAAT1-5",
+                  "substrate": "Glutamate",
+                  "mechanism": "Na⁺/K⁺/H⁺ cotransport",
+                  "location": "Astrocytes (EAAT1/2), neurons (EAAT3/4)",
+                  "importance": "Critical - prevents excitotoxicity"
+                },
+                {
+                  "name": "No specific transporter for ACh",
+                  "note": "Acetylcholine is degraded enzymatically (see below)"
+                }
+              ]
+            },
+            {
+              "type": "Enzymatic Degradation",
+              "examples": [
+                {
+                  "enzyme": "Acetylcholinesterase (AChE)",
+                  "substrate": "Acetylcholine",
+                  "location": "Synaptic cleft (anchored to basal lamina at NMJ)",
+                  "reaction": "ACh → Acetate + Choline",
+                  "speed": "~10,000 molecules/second (one of fastest enzymes)",
+                  "drugs": "Donepezil, rivastigmine, galantamine (Alzheimer's), neostigmine (myasthenia gravis), sarin/VX (nerve agents)"
+                },
+                {
+                  "enzyme": "Monoamine Oxidase (MAO-A, MAO-B)",
+                  "substrates": "Serotonin, dopamine, norepinephrine, tyramine",
+                  "location": "Mitochondrial outer membrane (intracellular, not cleft)",
+                  "reaction": "Monoamine → Aldehyde + NH3 + H2O2",
+                  "drugs": "MAOIs - phenelzine, tranylcypromine (irreversible), selegiline (MAO-B selective, Parkinson's), moclobemide (MAO-A reversible)"
+                },
+                {
+                  "enzyme": "COMT (Catechol-O-Methyltransferase)",
+                  "substrates": "Dopamine, norepinephrine, epinephrine",
+                  "location": "Postsynaptic neurons, glial cells",
+                  "drugs": "Entacapone, tolcapone (Parkinson's, augment L-DOPA)"
+                }
+              ]
+            },
+            {
+              "type": "Diffusion Away",
+              "mechanism": "NT diffuses out of synaptic cleft into extracellular space",
+              "significance": "Tertiary mechanism, slower than reuptake/degradation",
+              "relevance": "More important for volume transmission (e.g., dopamine in striatum)"
+            }
+          ],
+          "m0:kinetics": {
+            "reuptake": "~1-10 ms (fast, primary termination)",
+            "enzymaticDegradation": "~1-5 ms (AChE at NMJ, extremely fast)",
+            "diffusion": "~10-100 ms (slower, contributes to tail of NT clearance)"
+          },
+          "m0:importance": {
+            "temporalPrecision": "Rapid termination enables millisecond-resolution signaling",
+            "preventSaturation": "Avoids receptor desensitization, maintains dynamic range",
+            "feedback": "Reuptake recycles NT (reduces Pole 1 synthesis demand)",
+            "energyEfficiency": "Recycling is more efficient than de novo synthesis"
+          },
+          "m0:tensorFormula": "F⊗D⊗A (Flow × Dynamics × Attractor)",
+          "m0:asfidContribution": {
+            "F": "NT clearance flow (reuptake, diffusion)",
+            "D": "Termination dynamics (time constants)",
+            "A": "Baseline [NT] attractor (~0 in cleft between transmissions)"
+          },
+          "m0:clinicalRelevance": {
+            "SSRIs": "Serotonin reuptake inhibitors (depression, anxiety) - fluoxetine (Prozac), sertraline (Zoloft), escitalopram (Lexapro)",
+            "SNRIs": "Serotonin-norepinephrine reuptake inhibitors (depression, pain) - duloxetine (Cymbalta), venlafaxine (Effexor)",
+            "cocaine": "Dopamine/norepinephrine reuptake inhibitor (stimulant, highly addictive)",
+            "amphetamine": "Reverses DAT, increases dopamine release (ADHD, narcolepsy)",
+            "methylphenidate": "DAT blocker (ADHD) - Ritalin, Concerta",
+            "donepezil": "Acetylcholinesterase inhibitor (Alzheimer's disease) - Aricept",
+            "rivastigmine": "AChE and butyrylcholinesterase inhibitor (Alzheimer's, Parkinson's dementia) - Exelon",
+            "galantamine": "AChE inhibitor (Alzheimer's) - Razadyne",
+            "MAOIs": "Prevent NT degradation (depression, older class) - phenelzine, tranylcypromine",
+            "selegiline": "MAO-B inhibitor (Parkinson's disease)",
+            "tricyclics": "Reuptake inhibition + receptor blockade (depression) - imipramine, amitriptyline"
+          },
+          "m0:interdependence": {
+            "fromPole4": "Receptor activation precedes need for termination",
+            "towardsPole1": "Reuptake provides recycled NT, reducing synthesis load",
+            "towardsPole3": "Rapid termination enables next release cycle"
+          }
+        }
+      ],
+      "m0:interdependenceNetwork": {
+        "description": "Quintessential high-coupling system - removing ANY pole destroys function",
+        "sequentialDependencies": {
+          "chain": "Pole1 → Pole2 → Pole3 → Pole4 → Pole5",
+          "forward": "Each pole depends on previous pole's output",
+          "cyclical": "Pole5 → Pole1 (feedback: reuptake reduces synthesis demand)"
+        },
+        "criticalCouplings": [
+          {
+            "coupling": "Pole1 → Pole2",
+            "nature": "No synthesis → no NT to store",
+            "strength": "Absolute (necessary)"
+          },
+          {
+            "coupling": "Pole2 → Pole3",
+            "nature": "No vesicles → no quantal release",
+            "strength": "Absolute (necessary)"
+          },
+          {
+            "coupling": "Pole3 → Pole4",
+            "nature": "No release → no signal",
+            "strength": "Absolute (necessary)"
+          },
+          {
+            "coupling": "Pole4 → Pole5",
+            "nature": "No termination → prolonged activation, saturation, loss of temporal precision",
+            "strength": "Absolute (necessary for function)"
+          },
+          {
+            "coupling": "Pole5 → Pole3",
+            "nature": "Autoreceptors provide negative feedback",
+            "strength": "Regulatory (modulatory)"
+          },
+          {
+            "coupling": "Pole5 → Pole1",
+            "nature": "Reuptake reduces synthesis demand",
+            "strength": "Regulatory (efficiency)"
+          }
+        ],
+        "emergentProperties": {
+          "precision": "Millisecond temporal resolution",
+          "reliability": "High-fidelity transmission (though probabilistic)",
+          "plasticity": "Activity-dependent modification (LTP/LTD)",
+          "modularity": "Each pole = druggable target"
+        }
+      },
+      "m0:territorySpace": {
+        "description": "Complex chemical synapse as observed neurobiological phenomenon",
+        "observer": "Neuroscientist with electrophysiology, microscopy, pharmacology",
+        "asfidState": {
+          "A": 0.65,
+          "S": 0.75,
+          "F": 0.90,
+          "I": 0.70,
+          "D": 0.80
+        },
+        "stateVector": "|Ω_synapse⟩ = 0.65|A⟩ + 0.75|S⟩ + 0.90|F⟩ + 0.70|I⟩ + 0.80|D⟩",
+        "asfidMean": 0.76,
+        "norm": 1.65,
+        "interpretation": "Good Territory accessibility - measurable with modern neuroscience tools",
+        "observables": [
+          "NT synthesis rates (enzyme assays)",
+          "Vesicle trafficking (fluorescence imaging)",
+          "Ca²⁺ transients (calcium imaging)",
+          "NT release (amperometry, FM dyes)",
+          "Postsynaptic currents (patch clamp)",
+          "NT clearance (HPLC, microdialysis)"
+        ]
+      },
+      "m0:mapSpace": {
+        "description": "5-Pole Chemical Synapse Model",
+        "observer": "Neuroscience educator, pharmacologist",
+        "oriveState": {
+          "O": 0.85,
+          "R": 0.90,
+          "I": 0.88,
+          "V": 0.90,
+          "E": 0.85
+        },
+        "stateVector": "|M_synapse⟩_ORIVE = 0.85|O⟩ + 0.90|R⟩ + 0.88|I⟩ + 0.90|V⟩ + 0.85|E⟩",
+        "oriveMean": 0.876,
+        "interpretation": "Excellent Map - highly validated, predictive, actionable",
+        "representation": {
+          "structure": "5 sequential poles with feedback loops",
+          "schematic": "Linear sequence: Synthesis → Storage → Release → Reception → Termination ⤸",
+          "abstraction": "Each pole = discrete functional module"
+        }
+      },
+      "m0:epistemicGap": {
+        "description": "Difference between Territory (physical synapse) and Map (5-pole model)",
+        "calculation": "ΔΘ approximated from ASFID vs ORIVE discrepancy",
+        "estimatedGap": 0.25,
+        "interpretation": "Small gap (0 < ΔΘ < 0.5) - model captures ~75% of complexity",
+        "assessment": "Model is quite good but omits some biological complexity",
+        "missingElements": [
+          "Glial cells (astrocytes: glutamate uptake, K⁺ buffering, gliotransmitters)",
+          "Nanodomains (Ca²⁺ channel-vesicle coupling)",
+          "Non-canonical pathways (GPCR transactivation, retrograde signaling)",
+          "Structural plasticity (spine morphology, receptor trafficking details)",
+          "Stochastic variability (probabilistic release, channel noise)"
+        ]
+      },
+      "m0:metaconceptsMobilized": {
+        "total": 22,
+        "percentage": 0.38,
+        "byCategory": {
+          "Structural": ["Component", "Architecture", "Modularity", "Interface"],
+          "Dynamic": ["Process", "Dynamics", "Cascade", "Trigger"],
+          "Informational": ["Signal", "Code", "Information", "Encoding"],
+          "Regulatory": ["Regulation", "Feedback", "Balance", "Homeostasis", "Trade-off"],
+          "Relational": ["Interdependence", "Synergy", "Coupling"],
+          "Transformational": ["Transducer"]
+        },
+        "criticalMetaconcepts": [
+          {
+            "name": "Interdependence",
+            "role": "Quintessential - removing any pole destroys function",
+            "validation": "Confirmed by pharmacology (block any pole → no transmission)"
+          },
+          {
+            "name": "Process",
+            "role": "Each pole is a distinct process in sequence",
+            "formula": "D⊗F"
+          },
+          {
+            "name": "Synergy",
+            "role": "Five poles together create emergent transmission capability",
+            "formula": "A⊗S⊗I"
+          },
+          {
+            "name": "Feedback",
+            "role": "Pole 5 → Pole 3 (autoreceptors), Pole 5 → Pole 1 (reuptake)",
+            "formula": "F⊗D⊗I"
+          },
+          {
+            "name": "Balance",
+            "role": "E-I balance, synaptic homeostasis",
+            "formula": "A⊗S⊗F"
+          },
+          {
+            "name": "Trade-off",
+            "role": "Speed vs. reliability vs. energy efficiency",
+            "formula": "R⊗V⊗E (ORIVE)"
+          },
+          {
+            "name": "Transducer",
+            "role": "Pole 4 converts chemical signal to electrical signal",
+            "formula": "S⊗I⊗F"
+          }
+        ]
+      },
+      "m0:clinicalSignificance": {
+        "overview": "Nearly all psychotropic drugs act on one of the 5 poles",
+        "drugsByPole": {
+          "Pole1": "L-DOPA (Parkinson's), α-methyl-p-tyrosine (research)",
+          "Pole2": "Reserpine (historical), tetrabenazine (Huntington's), vesamicol (research)",
+          "Pole3": "Botulinum toxin (cosmetic, dystonia), tetanus toxin (pathogen), Ca²⁺ channel blockers (ziconotide), baclofen (spasticity)",
+          "Pole4": "Antipsychotics (D2 antagonists), benzodiazepines (GABA_A modulators), ketamine (NMDA antagonist), LSD (5-HT2A agonist), naloxone (opioid antagonist), atropine (muscarinic antagonist), curare (nicotinic antagonist)",
+          "Pole5": "SSRIs (depression), SNRIs (depression/pain), cocaine (addictive), amphetamine (ADHD), methylphenidate (ADHD), donepezil/rivastigmine/galantamine (Alzheimer's), MAOIs (depression), tricyclics (depression)"
+        },
+        "validation": "100+ drugs validated clinically across all 5 poles, billions of patient-years of data"
+      },
+      "m0:evolutionaryOptimization": {
+        "question": "Why 5 poles?",
+        "answer": "TSCG analysis reveals: Maximum controllability + minimal redundancy",
+        "tradeoffs": {
+          "speed": "Fast transmission (0.5-5 ms) requires rapid termination (Pole 5)",
+          "reliability": "Vesicular storage (Pole 2) ensures quantal release",
+          "energyEfficiency": "Reuptake (Pole 5) recycles NT, reducing synthesis load (Pole 1)",
+          "plasticity": "Postsynaptic mechanisms (Pole 4) enable LTP/LTD without changing presynaptic structure",
+          "modularity": "Each pole independently druggable, enables fine-grained pharmacological control"
+        },
+        "conservedAcrossSpecies": "Core 5-pole structure present from C. elegans to humans (~500 My conservation)"
+      },
+      "m0:validation": {
+        "asfidCompleteness": "All 5 dimensions present (A, S, F, I, D) ✅",
+        "metaconceptCoverage": "22/58 metaconcepts mobilized (38%) ✅",
+        "interdependence": "Quintessential - validated by pharmacology ✅",
+        "emergence": "Synaptic transmission emerges from 5-pole interaction ✅",
+        "pedagogicalValue": "Universally taught in neuroscience, pharmacology ✅",
+        "empiricalValidity": "Century of data, molecular mechanisms confirmed ✅",
+        "clinicalValidity": "100+ drugs, billions of patient-years ✅",
+        "frameworkFit": "Perfect M3→M2→M1bio→M0 instantiation ✅"
+      },
+      "m0:futureExtensions": {
+        "6PoleModel": {
+          "addPole": "Pole 6: Glial Modulation",
+          "components": "Astrocytes (glutamate uptake, K⁺ buffering, gliotransmitters), Microglia (synaptic pruning)",
+          "prediction": "Would increase ORIVE (more explanatory power) but also complexity"
+        },
+        "multiScaleModel": {
+          "nanoscale": "Liquid-liquid phase separation, single-molecule tracking",
+          "mesoscale": "Synaptic plasticity, spine dynamics, receptor trafficking",
+          "networkScale": "Circuit dynamics, oscillations, synchronization"
+        }
+      },
+      "rdfs:seeAlso": [
+        "m1bio:Synapse",
+        "m1bio:SignalTransduction",
+        "m1bio:Neurotransmitter",
+        "m2:Process",
+        "m2:Interdependence",
+        "m2:Synergy",
+        "m2:Feedback",
+        "m2:Balance",
+        "m2:Trade-off"
+      ],
+      "dcterms:references": [
+        "Loewi, O. (1921). Über humorale Übertragbarkeit der Herznervenwirkung. Pflügers Archiv, 189(1), 239-242.",
+        "Katz, B. (1969). The Release of Neural Transmitter Substances. Liverpool University Press.",
+        "Südhof, T.C. (2013). Neurotransmitter release: The last millisecond in the life of a synaptic vesicle. Neuron, 80(3), 675-690.",
+        "Rothman, J.E. (2014). The principle of membrane fusion in the cell. Nature Medicine, 20(2), 129-135.",
+        "Kandel, E.R., et al. (2021). Principles of Neural Science (6th ed.). McGraw-Hill.",
+        "Nestler, E.J., Hyman, S.E., Malenka, R.C. (2015). Molecular Neuropharmacology: A Foundation for Clinical Neuroscience (3rd ed.). McGraw-Hill.",
+        "Stahl, S.M. (2021). Stahl's Essential Psychopharmacology (5th ed.). Cambridge University Press."
+      ]
+    }
+  ]
+}
