@@ -38,6 +38,8 @@ tscg/
 │   │   └── Multi-Conversation_Orchestration_Guide.md
 │   │
 │   ├── project_ref_documents/
+│   │   ├── Domain_Hybrid_Tensor_Product_5D_README.md ⭐ NEW
+│   │   ├── Namespace_Refactoring_Summary.md
 │   │   ├── poclet_terminology.md
 │   │   ├── TSCG_File_Tree.md
 │   │   ├── M1_CoreConcepts.jsonld
@@ -52,6 +54,7 @@ tscg/
 │   │   ├── 00_Map_Territory_v1.2_Update_Summary.md
 │   │   ├── 00_TSCG_M3_Bicephalous_Architecture.md
 │   │   ├── 00_TSCG_Map_Territory_Theoretical_Foundation.md
+│   │   ├── Domain_Hybrid_Tensor_Product_5D_README.md ⭐ NEW
 │   │   ├── poclet_terminology.md
 │   │   ├── 00_M3_Philosophical_Basis_Sketch.jsonld
 │   │   ├── macros.txt
@@ -78,9 +81,10 @@ tscg/
 │           └── 00_M3_Philosophical_Basis_Sketch.jsonld
 │
 ├── ontology/
+│   ├── Cyclic_Tension_Validation_Analysis.md ⭐ NEW
 │   ├── Namespace_Refactoring_Summary.md
 │   ├── M1_CoreConcepts.jsonld
-│   ├── M2_MetaConcepts.jsonld
+│   ├── M2_MetaConcepts.jsonld (v14.1.0 - 61 metaconcepts) ⭐ UPDATED
 │   ├── M3_EagleEye.jsonld
 │   ├── M3_GenesisSpace.jsonld
 │   ├── M3_SphinxEye.jsonld
@@ -117,6 +121,10 @@ tscg/
 │   │   ├── chemistry/
 │   │   │   └── M1_Chemistry.jsonld
 │   │   │
+│   │   ├── mythology/ ⭐ NEW
+│   │   │   ├── M1_Mythology_README.md
+│   │   │   └── M1_Mythology.jsonld
+│   │   │
 │   │   ├── optics/
 │   │   │   └── M1_Optics.jsonld
 │   │   │
@@ -129,9 +137,13 @@ tscg/
 │       │   ├── minimal_systems_engineering_frameworks.md
 │       │   └── poclet_terminology.md
 │       │
+│       ├── blood_pressure_control/ ⭐ NEW
+│       │   ├── M0_BloodPressureControl_README.md
+│       │   └── M0_BloodPressureControl.jsonld
+│       │
 │       ├── cell_signaling/
-│       │   ├── M0_CellSignalingModes.jsonld
-│       │   └── M0_CellSignalingModes_README.md
+│       │   ├── M0_CellSignalingModes_README.md
+│       │   └── M0_CellSignalingModes.jsonld
 │       │
 │       ├── color_synthesis/
 │       │   ├── ORIVE_Poclets_Application_Summary.md
@@ -145,28 +157,33 @@ tscg/
 │       │       └── ColorSynthesis_Final_Summary.md
 │       │
 │       ├── complex_chemical_synapse/
-│       │   ├── M0_ComplexChemicalSynapse.jsonld
-│       │   └── M0_ComplexChemicalSynapse_README.md
+│       │   ├── M0_ComplexChemicalSynapse_README.md
+│       │   └── M0_ComplexChemicalSynapse.jsonld
 │       │
 │       ├── exposition_triangle/
-│       │   ├── M0_ExposureTriangle.jsonld
-│       │   └── Balance_Tradeoff_ExposureTriangle_Summary.md
+│       │   ├── Balance_Tradeoff_ExposureTriangle_Summary.md
+│       │   └── M0_ExposureTriangle.jsonld
 │       │
 │       ├── fire_triangle/
-│       │   ├── M0_FireTriangle.jsonld
-│       │   └── M0_FireTriangle_README.md
+│       │   ├── M0_FireTriangle_README.md
+│       │   └── M0_FireTriangle.jsonld
 │       │
 │       ├── four_stroke_engine/
-│       │   ├── M0_FourStrokeEngine.jsonld
-│       │   └── M0_FourStrokeEngine_README.md
+│       │   ├── M0_FourStrokeEngine_README.md
+│       │   └── M0_FourStrokeEngine.jsonld
 │       │
 │       ├── mtg_color_wheel/
 │       │   └── M0_MTG_ColorWheel.jsonld
 │       │
-│       └── tpack/
-│           ├── M0_TPACK.jsonld
-│           ├── TPACK_ORIVE_Validation_Analysis.md
-│           └── TPACK_README.md
+│       ├── tpack/
+│       │   ├── TPACK_ORIVE_Validation_Analysis.md
+│       │   ├── TPACK_README.md
+│       │   └── M0_TPACK.jsonld
+│       │
+│       └── yggdrasil/ ⭐ NEW
+│           ├── M0_Yggdrasil_README.md
+│           ├── M0_Yggdrasil.jsonld
+│           └── yggdrasil_7_poles.txt
 │
 └── src/
     └── TSCG.Orchestrator/
@@ -209,18 +226,19 @@ Command-line interface utilities and PowerShell scripts for project operations.
 Complete project documentation organized by domain:
 - **methodology/**: Framework methodologies and integration guides
 - **Orchestration/**: Multi-conversation orchestration documentation
-- **project_ref_documents/**: Core reference documents (ontology copies, file tree, terminology)
+- **project_ref_documents/**: Core reference documents (ontology copies, file tree, terminology, Domain hybrid tensor product documentation)
 - **reboot-kit/**: Core theoretical foundations and smart prompts
 - **research-paper/**: Academic paper drafts and supporting materials
 
 ### `/ontology/`
 Core TSCG ontological framework:
 - **M1_CoreConcepts.jsonld**: Base layer for domain-specific concepts
-- **M2_MetaConcepts.jsonld**: Fundamental metaconcepts (59 validated)
+- **M2_MetaConcepts.jsonld**: Fundamental metaconcepts (61 validated - v14.1.0)
 - **M3_*.jsonld**: Bicephalous architecture components (EagleEye, SphinxEye, GenesisSpace)
-- **M1_extensions/**: Domain-specific concept extensions (biology, chemistry, optics, photography)
-- **poclets/**: Practical examples across multiple domains (8 poclets)
+- **M1_extensions/**: Domain-specific concept extensions (biology, chemistry, mythology, optics, photography)
+- **poclets/**: Practical examples across multiple domains (11 poclets)
 - **docs/**: Technical specifications and architectural documentation
+- **Cyclic_Tension_Validation_Analysis.md**: Analysis of cyclic tension patterns
 
 ### `/src/`
 Source code for the TSCG Orchestrator application (C# .NET 10.0):
@@ -232,9 +250,9 @@ Source code for the TSCG Orchestrator application (C# .NET 10.0):
 ## Key File Categories
 
 ### Ontology Files (`.jsonld`)
-- **M0_*.jsonld**: Poclet instances (practical examples - 8 poclets)
-- **M1_*.jsonld**: Domain-specific concept extensions (4 domains)
-- **M2_MetaConcepts.jsonld**: Fundamental metaconcepts layer (59 metaconcepts)
+- **M0_*.jsonld**: Poclet instances (practical examples - 11 poclets)
+- **M1_*.jsonld**: Domain-specific concept extensions (5 domains)
+- **M2_MetaConcepts.jsonld**: Fundamental metaconcepts layer (61 metaconcepts - v14.1.0)
 - **M3_*.jsonld**: Bicephalous architecture components (Genesis Space, Eagle Eye, Sphinx Eye)
 
 ### Documentation Files (`.md`)
@@ -243,6 +261,7 @@ Source code for the TSCG Orchestrator application (C# .NET 10.0):
 - Architecture specifications and update summaries
 - Smart prompts for framework application
 - Namespace refactoring documentation
+- Domain hybrid tensor product theoretical foundation
 
 ### Automation Scripts (`.bat`)
 - Build and test automation
@@ -254,24 +273,30 @@ Source code for the TSCG Orchestrator application (C# .NET 10.0):
 
 ## M1 Extensions Summary
 
-The TSCG framework now includes **4 domain-specific M1 extensions**:
+The TSCG framework now includes **5 domain-specific M1 extensions**:
 
 1. **M1_Biology.jsonld** (`m1:biology:`)
    - Cell signaling patterns (Autocrine, Paracrine, Endocrine, Juxtacrine)
    - Communication modes and biological signaling
+   - Homeostatic mechanisms
 
 2. **M1_Chemistry.jsonld** (`m1:chemistry:`)
    - Chemical reaction patterns
    - Combustion, catalysis, equilibrium concepts
    - Activation energy, reactants, products
 
-3. **M1_Optics.jsonld** (`m1:optics:`)
+3. **M1_Mythology.jsonld** (`m1:mythology:`) ⭐ **NEW**
+   - Mythological structures and cosmological frameworks
+   - World tree patterns (Yggdrasil)
+   - Multi-pole cosmological systems
+
+4. **M1_Optics.jsonld** (`m1:optics:`)
    - 8 optical patterns
    - Additive/Subtractive color synthesis
    - Channel multiplexing
    - Spectral decomposition
 
-4. **M1_Photography.jsonld** (`m1:photography:`)
+5. **M1_Photography.jsonld** (`m1:photography:`)
    - 10 photography patterns
    - Compensatory triplet (exposure triangle)
    - Logarithmic scaling (stops system)
@@ -279,7 +304,30 @@ The TSCG framework now includes **4 domain-specific M1 extensions**:
 
 ---
 
-## Poclet Portfolio (8 validated)
+## M2 Metaconcepts Update (v14.1.0)
+
+### Latest additions:
+- **v14.1.0** (2026-01-23): **Pole** metaconcept (#61)
+  - Formula: S⊗I⊗A (Structure, Information, Attractor)
+  - Category: Ontological
+  - Elementary constituent of Polarity systems
+  - Transdisciplinary: physics, philosophy, psychology, geography, mathematics
+
+- **v14.0.0** (2026-01-23): **Domain** metaconcept (#60)
+  - Hybrid tensor product ASFID⊗ORIVE
+  - First metaconcept requiring bicephalous fusion
+  - 5D decomposition via SVD
+  - Epistemic depth metric
+
+- **v13.0.0** (2026-01-22): **Polarity** metaconcept (#59)
+  - N-ary polarity framework (N ∈ {1,2,3,4,5,...})
+  - Paradigm shift from binary restriction
+
+**Total**: 61 metaconcepts (53 neutral, 6 dual, 1 N-ary, 1 hybrid)
+
+---
+
+## Poclet Portfolio (11 validated)
 
 1. **Fire Triangle** - Combustion fundamentals
 2. **RGB/HSL/CMY/CMYK** - Color synthesis (federated)
@@ -289,6 +337,9 @@ The TSCG framework now includes **4 domain-specific M1 extensions**:
 6. **TPACK** - Educational technology framework
 7. **Four-Stroke Engine** - Mechanical engineering cycles
 8. **MTG Color Wheel** - Game design value system (pentagonal N-ary polarity)
+9. **Blood Pressure Control** ⭐ **NEW** - Cardiovascular homeostasis
+10. **Yggdrasil** ⭐ **NEW** - Norse cosmological world tree (7-pole system)
+11. **Total poclet count**: 11 (was 8)
 
 ---
 
@@ -298,12 +349,12 @@ All files are accessible via GitHub raw URLs:
 
 ### Root Level Files
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/README.md
-- https://raw.githubusercontent.com/Echopraxium/tscg/main/files.txt
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/generate_file_list_URIs.bat
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/_00_run_Orchestrator.bat
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/_01_Rebuild_Solution.bat
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/_02_Test_Solution.bat
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/_open_cmd_window.bat
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/files.txt
 
 ### CLI Tools
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/cli_tools/_00_run_Doc2B64z.bat
@@ -325,6 +376,8 @@ All files are accessible via GitHub raw URLs:
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/Orchestration/Multi-Conversation_Orchestration_Guide.md
 
 ### Documentation - Project Reference Documents
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/project_ref_documents/Domain_Hybrid_Tensor_Product_5D_README.md ⭐ NEW
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/project_ref_documents/Namespace_Refactoring_Summary.md
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/project_ref_documents/poclet_terminology.md
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/project_ref_documents/TSCG_File_Tree.md
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/project_ref_documents/M1_CoreConcepts.jsonld
@@ -339,6 +392,7 @@ All files are accessible via GitHub raw URLs:
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/00_Map_Territory_v1.2_Update_Summary.md
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/00_TSCG_M3_Bicephalous_Architecture.md
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/00_TSCG_Map_Territory_Theoretical_Foundation.md
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/Domain_Hybrid_Tensor_Product_5D_README.md ⭐ NEW
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/poclet_terminology.md
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/00_M3_Philosophical_Basis_Sketch.jsonld
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/macros.txt
@@ -365,6 +419,7 @@ All files are accessible via GitHub raw URLs:
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/research-paper/inputs/00_M3_Philosophical_Basis_Sketch.jsonld
 
 ### Ontology - Root Level
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/Cyclic_Tension_Validation_Analysis.md ⭐ NEW
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/Namespace_Refactoring_Summary.md
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld
@@ -400,6 +455,8 @@ All files are accessible via GitHub raw URLs:
 ### Ontology - M1 Extensions
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/chemistry/M1_Chemistry.jsonld
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology_README.md ⭐ NEW
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology.jsonld ⭐ NEW
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/optics/M1_Optics.jsonld
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/photography/M1_Photography.jsonld
 
@@ -407,9 +464,13 @@ All files are accessible via GitHub raw URLs:
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/docs/minimal_systems_engineering_frameworks.md
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/docs/poclet_terminology.md
 
+### Ontology - Poclets: Blood Pressure Control ⭐ NEW
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/blood_pressure_control/M0_BloodPressureControl_README.md
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld
+
 ### Ontology - Poclets: Cell Signaling
-- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/cell_signaling/M0_CellSignalingModes.jsonld
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/cell_signaling/M0_CellSignalingModes_README.md
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/cell_signaling/M0_CellSignalingModes.jsonld
 
 ### Ontology - Poclets: Color Synthesis
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/color_synthesis/ORIVE_Poclets_Application_Summary.md
@@ -421,28 +482,33 @@ All files are accessible via GitHub raw URLs:
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/color_synthesis/docs/ColorSynthesis_Final_Summary.md
 
 ### Ontology - Poclets: Complex Chemical Synapse
-- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/complex_chemical_synapse/M0_ComplexChemicalSynapse.jsonld
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/complex_chemical_synapse/M0_ComplexChemicalSynapse_README.md
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/complex_chemical_synapse/M0_ComplexChemicalSynapse.jsonld
 
 ### Ontology - Poclets: Exposure Triangle
-- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/exposition_triangle/M0_ExposureTriangle.jsonld
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/exposition_triangle/Balance_Tradeoff_ExposureTriangle_Summary.md
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/exposition_triangle/M0_ExposureTriangle.jsonld
 
 ### Ontology - Poclets: Fire Triangle
-- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/fire_triangle/M0_FireTriangle.jsonld
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/fire_triangle/M0_FireTriangle_README.md
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/fire_triangle/M0_FireTriangle.jsonld
 
 ### Ontology - Poclets: Four-Stroke Engine
-- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/four_stroke_engine/M0_FourStrokeEngine.jsonld
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/four_stroke_engine/M0_FourStrokeEngine_README.md
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/four_stroke_engine/M0_FourStrokeEngine.jsonld
 
 ### Ontology - Poclets: MTG Color Wheel
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/mtg_color_wheel/M0_MTG_ColorWheel.jsonld
 
 ### Ontology - Poclets: TPACK
-- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/tpack/M0_TPACK.jsonld
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/tpack/TPACK_ORIVE_Validation_Analysis.md
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/tpack/TPACK_README.md
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/tpack/M0_TPACK.jsonld
+
+### Ontology - Poclets: Yggdrasil ⭐ NEW
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/yggdrasil/M0_Yggdrasil_README.md
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/yggdrasil/M0_Yggdrasil.jsonld
+- https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/yggdrasil/yggdrasil_7_poles.txt
 
 ### Source Code - Orchestrator
 - https://raw.githubusercontent.com/Echopraxium/tscg/main/src/TSCG.Orchestrator/Program.cs
@@ -479,18 +545,62 @@ https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology
 
 ## Project Statistics
 
-- **Total Files**: 127 files tracked
+- **Total Files**: 135 files tracked (+8 from previous version)
 - **Ontology Files**: 
   - M3 Layer: 3 files (Genesis Space, Eagle Eye, Sphinx Eye)
-  - M2 Layer: 1 file (59 metaconcepts)
-  - M1 Layer: 5 files (Core + 4 domain extensions)
-  - M0 Layer: 14 files (8 poclet families)
-- **Documentation Files**: 67 markdown files
+  - M2 Layer: 1 file (61 metaconcepts - v14.1.0) ⭐ **+2 metaconcepts**
+  - M1 Layer: 6 files (Core + 5 domain extensions) ⭐ **+1 domain (Mythology)**
+  - M0 Layer: 17 files (11 poclet families) ⭐ **+3 poclets**
+- **Documentation Files**: 71 markdown files (+4)
 - **Source Code Files**: 14 files (C# .NET 10.0)
 - **Automation Scripts**: 10 batch scripts
 
+### New Additions Summary
+
+**M1 Extensions** (+1):
+- M1_Mythology.jsonld (mythology domain)
+
+**Poclets** (+3):
+- Blood Pressure Control (cardiovascular homeostasis)
+- Yggdrasil (Norse cosmological world tree, 7-pole system)
+- Total: 8 → 11 poclets
+
+**M2 Metaconcepts** (+2):
+- Domain (v14.0.0) - Hybrid ASFID⊗ORIVE tensor product
+- Pole (v14.1.0) - Elementary constituent of Polarity systems
+- Total: 59 → 61 metaconcepts
+
+**Documentation** (+2):
+- Domain_Hybrid_Tensor_Product_5D_README.md (theoretical foundation)
+- Cyclic_Tension_Validation_Analysis.md (pattern analysis)
+
 ---
 
-**Last Updated**: January 22, 2026  
-**Framework Version**: TSCG v13.0.1  
-**Document Version**: 2.0
+## Recent Framework Evolution
+
+### v14.1.0 (2026-01-23) - Pole Metaconcept
+- Added Pole as element of Polarity systems
+- Completed polarity framework: Polarity (container) + Pole (element)
+- Analogous to Network/Node relationship
+- Validated across 10+ transdisciplinary domains
+
+### v14.0.0 (2026-01-23) - Domain Metaconcept
+- First hybrid ASFID⊗ORIVE metaconcept
+- 5D decomposition via SVD
+- Epistemic depth metric introduced
+- Bicephalous fusion (Territory + Map)
+- Conceptual stereopsis formalized
+
+### v13.0.0 (2026-01-22) - N-ary Polarity
+- Paradigm shift from binary restriction to N-ary polarity
+- Polarity metaconcept supports N ∈ {1,2,3,4,5,...} poles
+- Validated by Magic Color Wheel (N=5), Political Compass (N=4)
+
+---
+
+**Last Updated**: January 23, 2026  
+**Framework Version**: TSCG v14.1.0  
+**Document Version**: 3.0  
+**Metaconcepts**: 61 (53 neutral, 6 dual, 1 N-ary, 1 hybrid)  
+**M1 Domains**: 5 (Biology, Chemistry, Mythology, Optics, Photography)  
+**Poclets**: 11 validated
