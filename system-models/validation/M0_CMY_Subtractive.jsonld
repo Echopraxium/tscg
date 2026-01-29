@@ -1,0 +1,474 @@
+{
+  "@context": {
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m0:color_synthesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/poclets/color_synthesis/M0_CMY_Subtractive.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m0:CMY_Subtractive",
+      "@type": "owl:NamedIndividual",
+      "rdf:type": "m0:Poclet",
+      "rdfs:label": "CMY Subtractive Color Synthesis",
+      "rdfs:comment": "Subtractive color synthesis using Cyan, Magenta, Yellow pigment primaries. Theoretical model for pigment/ink mixing. Each channel is a SIGNAL (m2:Signal) carrying absorption/filtering information. The three signals undergo FUSION (m2:Fusion) through spectral filtering to produce perceived color.",
+      "dcterms:created": "2026-01-17",
+      "dcterms:creator": "Echopraxium with collaboration of Claude AI Pro",
+      "m0:pocletType": "Composite (Specialized)",
+      "m0:partOfFederation": {
+        "@id": "m0:ColorSynthesisFederated",
+        "file": "./M0_ColorSynthesis_Federated.jsonld"
+      },
+      "m0:domain": "Optics / Color Science / Printing",
+      "m0:principle": "Subtractive Synthesis (Pigment Mixing / Spectral Filtering)",
+      "m0:physicalBasis": "Wavelength-selective absorption by pigments (removes colors from white light)",
+      "m0:complementaryTo": "RGB Additive",
+      "m0:channels": [
+        {
+          "@id": "m0:CyanChannel",
+          "@type": "m2:Channel",
+          "rdfs:label": "Cyan Channel (C)",
+          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:channelType": "Absorption filter (removes red)",
+          "m0:role": "Absorbs red light (~620-750 nm), transmits cyan (~480-520 nm)",
+          "m0:function": "Subtractive primary - removes red component",
+          "m0:physicalCorrelate": "Cyan pigment concentration",
+          "m0:absorbs": "Red wavelengths",
+          "m0:transmits": "Green + Blue (perceived as Cyan)",
+          "m0:complementaryTo": "Red (RGB)",
+          "m0:rangeAnalog": "[0%, 100%] (absorption percentage)",
+          "m0:rangeDigital": "[0, 100] percent",
+          "m0:tensorFormula": "S⊗I⊗F",
+          "m0:signalCarried": {
+            "@type": "m2:Signal",
+            "description": "Absorption level (0%=no cyan, 100%=full cyan)",
+            "formula": "I⊗F"
+          },
+          "m0:examples": [
+            "C=0% → No filtering (white if M=Y=0)",
+            "C=100% → Removes all red (cyan if M=Y=0)"
+          ]
+        },
+        {
+          "@id": "m0:MagentaChannel",
+          "@type": "m2:Channel",
+          "rdfs:label": "Magenta Channel (M)",
+          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:channelType": "Absorption filter (removes green)",
+          "m0:role": "Absorbs green light (~495-570 nm), transmits magenta",
+          "m0:function": "Subtractive primary - removes green component",
+          "m0:physicalCorrelate": "Magenta pigment concentration",
+          "m0:absorbs": "Green wavelengths",
+          "m0:transmits": "Red + Blue (perceived as Magenta)",
+          "m0:complementaryTo": "Green (RGB)",
+          "m0:rangeAnalog": "[0%, 100%] (absorption percentage)",
+          "m0:rangeDigital": "[0, 100] percent",
+          "m0:tensorFormula": "S⊗I⊗F",
+          "m0:signalCarried": {
+            "@type": "m2:Signal",
+            "description": "Absorption level (0%=no magenta, 100%=full magenta)",
+            "formula": "I⊗F"
+          },
+          "m0:examples": [
+            "M=0% → No filtering (white if C=Y=0)",
+            "M=100% → Removes all green (magenta if C=Y=0)"
+          ]
+        },
+        {
+          "@id": "m0:YellowChannel",
+          "@type": "m2:Channel",
+          "rdfs:label": "Yellow Channel (Y)",
+          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:channelType": "Absorption filter (removes blue)",
+          "m0:role": "Absorbs blue light (~450-495 nm), transmits yellow (~570-590 nm)",
+          "m0:function": "Subtractive primary - removes blue component",
+          "m0:physicalCorrelate": "Yellow pigment concentration",
+          "m0:absorbs": "Blue wavelengths",
+          "m0:transmits": "Red + Green (perceived as Yellow)",
+          "m0:complementaryTo": "Blue (RGB)",
+          "m0:rangeAnalog": "[0%, 100%] (absorption percentage)",
+          "m0:rangeDigital": "[0, 100] percent",
+          "m0:tensorFormula": "S⊗I⊗F",
+          "m0:signalCarried": {
+            "@type": "m2:Signal",
+            "description": "Absorption level (0%=no yellow, 100%=full yellow)",
+            "formula": "I⊗F"
+          },
+          "m0:examples": [
+            "Y=0% → No filtering (white if C=M=0)",
+            "Y=100% → Removes all blue (yellow if C=M=0)"
+          ]
+        }
+      ],
+      "m0:fusionPrinciple": {
+        "metaconcept": "m2:Fusion",
+        "aspect": "Fusion (subtractive mixing)",
+        "formula": "S⊗F⊗D",
+        "description": "Three pigment filters fuse through cumulative spectral absorption. Light passes through all filters sequentially.",
+        "operation": "White_light → C_filter → M_filter → Y_filter → Transmitted_spectrum → Perceived_color",
+        "emergentProperty": "Perceived color from spectral subtraction",
+        "physicalMechanism": "Multiple wavelength-selective absorption (spectral filtering)",
+        "nonLinearity": "C + M + Y ≠ 3 separate pigments, but unified color through cumulative filtering",
+        "syntheticColors": [
+          {
+            "name": "Black (theoretical)",
+            "composition": "C(max) ⊕ M(max) ⊕ Y(max)",
+            "CMY": "(100%, 100%, 100%)",
+            "result": "All wavelengths absorbed → black (theoretical, not perfect in practice)"
+          },
+          {
+            "name": "Red",
+            "composition": "C(min) ⊕ M(max) ⊕ Y(max)",
+            "CMY": "(0%, 100%, 100%)",
+            "result": "Magenta + Yellow absorb green+blue → red transmitted"
+          },
+          {
+            "name": "Green",
+            "composition": "C(max) ⊕ M(min) ⊕ Y(max)",
+            "CMY": "(100%, 0%, 100%)",
+            "result": "Cyan + Yellow absorb red+blue → green transmitted"
+          },
+          {
+            "name": "Blue",
+            "composition": "C(max) ⊕ M(max) ⊕ Y(min)",
+            "CMY": "(100%, 100%, 0%)",
+            "result": "Cyan + Magenta absorb red+green → blue transmitted"
+          },
+          {
+            "name": "White",
+            "composition": "C(min) ⊕ M(min) ⊕ Y(min)",
+            "CMY": "(0%, 0%, 0%)",
+            "result": "No absorption → white (paper color shows through)"
+          }
+        ]
+      },
+      "m0:fissionPrinciple": {
+        "metaconcept": "m2:Fusion (fission aspect)",
+        "formula": "S⊗F⊗D",
+        "description": "Perceived pigment color can be separated (fission) into three absorption components",
+        "operation": "Pigment_color → FISSION → (C_absorption, M_absorption, Y_absorption)",
+        "application": "Color matching, ink formulation, paint mixing",
+        "tools": [
+          "Densitometer",
+          "Spectrophotometer",
+          "Color matching software"
+        ]
+      },
+      "m0:relationshipToRGB": {
+        "principle": "CMY are complements of RGB",
+        "transformationApproximate": {
+          "formula": "C = 1-R, M = 1-G, Y = 1-B (simplified)",
+          "note": "Ideal theoretical relationship (real pigments more complex)",
+          "reversible": "Approximate (gamut differences, non-ideal pigments)"
+        },
+        "gamutDifferences": {
+          "RGB": "Larger gamut (light emission)",
+          "CMY": "Smaller gamut (pigment absorption)",
+          "implication": "Not all RGB colors achievable with CMY, and vice versa"
+        }
+      },
+      "m0:territorySpace": {
+        "description": "Perceived pigment color as phenomenon (Territory)",
+        "observer": "Human viewing pigmented surface under white illumination",
+        "phenomenon": "Color from reflected light after pigment absorption",
+        "asfidState": {
+          "A": 0.65,
+          "S": 0.75,
+          "F": 0.7,
+          "I": 0.8,
+          "D": 0.3
+        },
+        "stateVector": "|Ω_pigment⟩ = 0.65|A⟩ + 0.75|S⟩ + 0.70|F⟩ + 0.80|I⟩ + 0.30|D⟩",
+        "justification": {
+          "A": "Moderate attractor (color stability under illumination)",
+          "S": "High structure (pigment particle organization, surface texture)",
+          "F": "High flow (incident white light, reflected spectrum)",
+          "I": "High information (spectral absorption profile)",
+          "D": "Low dynamics (pigments stable, not changing)"
+        },
+        "observables": [
+          "Reflected color (perceived hue)",
+          "Color purity (saturation depends on pigment quality)",
+          "Surface texture (affects appearance)"
+        ]
+      },
+      "m0:mapSpace": {
+        "description": "CMY color cube as representation (Map)",
+        "observer": "Printer / Artist / Color technician",
+        "model": "CMY color cube (3D coordinate system)",
+        "asfidState": {
+          "A": 0.7,
+          "S": 0.9,
+          "F": 0.5,
+          "I": 0.75,
+          "D": 0.25
+        },
+        "stateVector": "|M_CMY⟩ = 0.70|A⟩ + 0.90|S⟩ + 0.50|F⟩ + 0.75|I⟩ + 0.25|D⟩",
+        "justification": {
+          "A": "Moderate attractor (theoretical model, less standardized than RGB)",
+          "S": "Very high structure (cube geometry, orthogonal axes)",
+          "F": "Moderate flow (absorption process)",
+          "I": "High information (3 absorption dimensions)",
+          "D": "Low dynamics (static model)"
+        },
+        "representation": {
+          "geometry": "Unit cube in 3D Euclidean space",
+          "axes": {
+            "C": "Cyan axis (0% to 100%)",
+            "M": "Magenta axis (0% to 100%)",
+            "Y": "Yellow axis (0% to 100%)"
+          },
+          "vertices": {
+            "(0,0,0)": "White (no pigment)",
+            "(100,0,0)": "Cyan",
+            "(0,100,0)": "Magenta",
+            "(0,0,100)": "Yellow",
+            "(100,100,0)": "Blue (C+M)",
+            "(100,0,100)": "Green (C+Y)",
+            "(0,100,100)": "Red (M+Y)",
+            "(100,100,100)": "Black (theoretical)"
+          },
+          "diagonal": {
+            "from": "(0,0,0) White",
+            "to": "(100,100,100) Black",
+            "property": "Neutral axis (C=M=Y → gray)"
+          }
+        }
+      },
+      "m0:epistemicGap": {
+        "formula": "ΔΘ = ‖|Ω_pigment⟩ - |M_CMY⟩‖",
+        "deltaVector": "(-0.05, -0.15, +0.20, +0.05, +0.05)",
+        "norm": "≈ 0.28",
+        "interpretation": "Small gap (ΔΘ < 0.3) - CMY is reasonable theoretical model",
+        "assessment": "CMY captures subtractive mixing principle but real pigments deviate",
+        "majorDivergences": [
+          {
+            "dimension": "F (Flow)",
+            "divergence": "+0.20",
+            "reason": "Territory has complex light scattering; Map is simple absorption"
+          },
+          {
+            "dimension": "S (Structure)",
+            "divergence": "-0.15",
+            "reason": "Map has perfect cube; Territory has pigment imperfections"
+          }
+        ],
+        "limitations": [
+          "Real pigments not ideal (spectral impurity)",
+          "CMY primaries not perfectly complementary to RGB",
+          "Black (100,100,100) is muddy brown in practice (→ CMYK adds K)",
+          "Gamut smaller than RGB (not all colors achievable)",
+          "Illumination-dependent (color changes with light source)"
+        ]
+      },
+      "m0:oriveAnalysis": {
+        "description": "Sphinx Eye evaluation of CMY Map quality (ORIVE Map-Space)",
+        "perspective": "Philosophical interpretation using ORIVE basis",
+        "oriveState": {
+          "O": 0.7,
+          "R": 0.85,
+          "I": 0.8,
+          "V": 0.75,
+          "E": 0.6
+        },
+        "stateVector": "|M_CMY⟩_ORIVE = 0.70|O⟩ + 0.85|R⟩ + 0.80|I⟩ + 0.75|V⟩ + 0.60|E⟩",
+        "dimensionInterpretations": [
+          {
+            "dimension": "O (Observability)",
+            "coefficient": 0.7,
+            "interpretation": "CMY less directly observable than RGB - requires pigments/inks to see. Theoretical purity (ideal C,M,Y) not achievable with real materials. We observe imperfect approximations.",
+            "evidence": "CMY visible only through printing/painting, not direct light emission. Real CMY never perfectly saturated."
+          },
+          {
+            "dimension": "R (Representability)",
+            "coefficient": 0.85,
+            "interpretation": "Well representable as (C%, M%, Y%) triplets. Subtractive principle expressible (absorption vs. emission). Formulas clear but complexity in real implementation.",
+            "evidence": "Standard notation in color theory textbooks, painting/printing contexts"
+          },
+          {
+            "dimension": "I (Interoperability)",
+            "coefficient": 0.8,
+            "interpretation": "Moderately shareable - CMY understood in art/printing communities but less universal than RGB. Conversion CMY↔RGB possible but device-dependent (pigment variability).",
+            "evidence": "Used in color theory education, painting instruction, but largely superseded by CMYK in professional printing"
+          },
+          {
+            "dimension": "V (Verifiability)",
+            "coefficient": 0.75,
+            "interpretation": "Partially testable - subtractive principle verifiable (overlap cyan+yellow=green pigments). However, ideal CMY prediction fails in practice: (100,100,100) ≠ black. Requires CMYK correction.",
+            "evidence": "Mixing paints validates subtractive principle, but CMY→black failure led to CMYK adoption"
+          },
+          {
+            "dimension": "E (Evolvability)",
+            "coefficient": 0.6,
+            "interpretation": "Low evolvability - CMY largely replaced by CMYK for practical use. Theoretical model doesn't adapt well to real-world pigment limitations. Evolution required adding 4th channel (K) rather than refining CMY.",
+            "evidence": "CMY (theory) → CMYK (practice) represents model abandonment more than evolution. CMY persists only in pedagogy."
+          }
+        ],
+        "overallAssessment": "Good theoretical Map with practical limitations. CMY demonstrates gap between theoretical elegance and real-world implementation. ORIVE reveals why CMYK superseded it.",
+        "mapQuality": "ORIVE_mean = 0.74 → Good Map theoretically, poor Map practically",
+        "sphinxInsight": {
+          "question": "Why did CMY 'fail' despite theoretical correctness?",
+          "answer": "Map was correct for ideal pigments (Territory) but real pigments (actual Territory) have impurities. CMY=Map of ideal world; CMYK=Map of real world. Falsification (black test) forced evolution.",
+          "popperLesson": "CMY made testable prediction (100,100,100)=black. Test failed → model refined (CMYK). Science in action."
+        }
+      },
+      "m0:metaconceptsMobilized": {
+        "total": 13,
+        "critical": [
+          {
+            "metaconcept": "m2:Channel",
+            "formula": "S⊗I⊗F",
+            "role": "C, M, Y as absorption filter dimensions",
+            "instances": [
+              "Cyan channel",
+              "Magenta channel",
+              "Yellow channel"
+            ]
+          },
+          {
+            "metaconcept": "m2:Signal",
+            "formula": "I⊗F",
+            "role": "Absorption levels encoded as signals",
+            "instances": [
+              "Cyan absorption %",
+              "Magenta absorption %",
+              "Yellow absorption %"
+            ]
+          },
+          {
+            "metaconcept": "m2:Fusion",
+            "formula": "S⊗F⊗D",
+            "role": "Pigments fuse through cumulative spectral absorption",
+            "mechanism": "C_filter + M_filter + Y_filter → Transmitted spectrum"
+          },
+          {
+            "metaconcept": "m2:Filter",
+            "formula": "S⊗I⊗F",
+            "role": "Each pigment acts as wavelength-selective filter",
+            "mechanism": "Absorbs specific wavelengths, transmits others"
+          },
+          {
+            "metaconcept": "m2:Transformation",
+            "formula": "D⊗I⊗S",
+            "role": "Approximate conversion CMY ↔ RGB",
+            "properties": "Not exact (gamut differences, non-ideal pigments)"
+          },
+          {
+            "metaconcept": "m2:Space",
+            "formula": "S⊗I",
+            "role": "CMY color cube",
+            "geometry": "Unit cube [0,100]³"
+          },
+          {
+            "metaconcept": "m2:Constraint",
+            "formula": "S⊗I",
+            "role": "Absorption bounds",
+            "constraints": [
+              "0% ≤ C, M, Y ≤ 100%",
+              "Total absorption ≤ 100% per wavelength",
+              "Physical pigment limitations (purity, stability)"
+            ]
+          },
+          {
+            "metaconcept": "m2:Synergy",
+            "formula": "A⊗S⊗I",
+            "role": "Three absorption filters combine into unified color",
+            "example": "M + Y → Red (synergy of magenta+yellow absorption)"
+          },
+          {
+            "metaconcept": "m2:Representation",
+            "formula": "I⊗S",
+            "role": "CMY cube as subtractive color model",
+            "medium": "Theoretical pigment mixing"
+          },
+          {
+            "metaconcept": "m2:Dissipation",
+            "formula": "F⊗D",
+            "role": "Light energy absorbed (converted to heat)",
+            "mechanism": "Wavelengths absorbed by pigments → thermal energy"
+          }
+        ],
+        "byCategory": {
+          "Structural": [
+            "Space"
+          ],
+          "Informational": [
+            "Channel",
+            "Signal",
+            "Representation"
+          ],
+          "Regulatory": [
+            "Constraint",
+            "Filter"
+          ],
+          "Dynamic": [
+            "Transformation",
+            "Fusion"
+          ],
+          "Energetic": [
+            "Dissipation"
+          ],
+          "Relational": [
+            "Synergy"
+          ]
+        }
+      },
+      "m0:applications": [
+        "Theoretical color mixing (art education)",
+        "Paint mixing (approximation)",
+        "Color theory (complementary colors)",
+        "Basis for CMYK (practical printing model)"
+      ],
+      "m0:whyCMYK": {
+        "problem": "CMY(100,100,100) produces muddy brown, not black",
+        "causes": [
+          "Real pigments not spectrally pure",
+          "Incomplete absorption (some wavelengths leak through)",
+          "Scattering and surface effects"
+        ],
+        "solution": "Add K (Key/Black) channel → CMYK",
+        "benefits": [
+          "True black (better contrast)",
+          "Ink savings (K cheaper than C+M+Y)",
+          "Reduced ink bleeding (less liquid)"
+        ]
+      },
+      "m0:validation": {
+        "asfidCompleteness": "All 5 dimensions present ✅",
+        "metaconceptCoverage": "13 metaconcepts ✅",
+        "minimality": "3 channels (theoretical primaries) ✅",
+        "emergence": "Color from spectral fusion (absorption) ✅",
+        "channelConcept": "Channel metaconcept correctly used ✅",
+        "fusionPrinciple": "Fusion through absorption ✅",
+        "subtractiveNature": "Subtractive synthesis validated ✅"
+      },
+      "rdfs:seeAlso": [
+        {
+          "@id": "m0:ColorSynthesisFederated",
+          "file": "./M0_ColorSynthesis_Federated.jsonld"
+        },
+        {
+          "@id": "m0:RGB_Additive",
+          "file": "./M0_RGB_Additive.jsonld",
+          "note": "CMY is complement of RGB"
+        },
+        {
+          "@id": "m0:CMYK_Subtractive",
+          "file": "./M0_CMYK_Subtractive.jsonld",
+          "note": "CMYK extends CMY with Key (black) channel"
+        }
+      ],
+      "dcterms:references": [
+        "Kuehni, R. G. (2005). Color: An Introduction to Practice and Principles",
+        "Pointer, M. R. (1980). The Gamut of Real Surface Colours",
+        "Hunt, R. W. G. (2004). The Reproduction of Colour (6th ed.)"
+      ]
+    }
+  ]
+}

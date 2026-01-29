@@ -1,4 +1,4 @@
-# The Transdisciplinary System Construction Game (TSCG): A Bicephalous Framework for Universal System Modeling
+# The Transdisciplinary System Construction Game (TSCG): A Bicephalous Framework for Transdisciplinary System Modeling
 
 **Authors**: Michel Kern (aka Echopraxium) with the collaboration of Claude AI  
 **Date**: January 2026  
@@ -184,7 +184,7 @@ S = Q = (1/2m) Σᵢⱼ [Aᵢⱼ - kᵢkⱼ/2m] δ(cᵢ,cⱼ)
 where m is edge count, k is degree, and c indicates community membership.
 
 **|F⟩ - Flow** (Exchange with environment)  
-Quantifies openness to external flows of matter, energy, or information. Range: [0.1, 1] with axiom F ≥ 0.1 (Universal Openness Axiom—no completely closed systems).
+Quantifies openness to external flows of matter, energy, or information. Range: [0.1, 1] with axiom F ≥ 0.1 (TRansdisciplinary Openness Axiom—no completely closed systems).
 
 *Mathematical formalization*: For system with internal energy E and boundary flux Φ:
 ```
@@ -275,7 +275,7 @@ This completeness property ensures that TSCG can represent any system aspect: if
 
 ---
 
-## 4. M2 Metaconcept Layer: Universal Systemic Patterns
+## 4. M2 Metaconcept Layer: Transdisciplinary Systemic Patterns
 
 ### 4.1 Tensor Product Generation
 
@@ -546,7 +546,7 @@ Score: [0,1] based on organizational complexity
 
 **Step 3**: Quantify Flow (F)  
 What exchanges occur with the environment?  
-Score: [0.1,1] ensuring Universal Openness Axiom
+Score: [0.1,1] ensuring TRansdisciplinary Openness Axiom
 
 **Step 4**: Measure Information (I)  
 What variety or complexity exists in system states?  
@@ -1181,7 +1181,7 @@ ontology/
 1. Measure boundary flux Φ
 2. Measure internal energy E
 3. Compute: F = Φ/(Φ + E/τ)
-4. Ensure F ≥ 0.1 (Universal Openness Axiom)
+4. Ensure F ≥ 0.1 (Transdisciplinary Openness Axiom)
 
 **Information (I)**:
 1. Identify state space with N states
@@ -1239,7 +1239,7 @@ ontology/
 
 **Genesis Space**: Complete 10-dimensional Hilbert space ℋ_M3 = ℋ_ASFID ⊕ ℋ_ORIVE serving as mathematical foundation for TSCG.
 
-**Metaconcept**: Universal systemic pattern (M2 layer) emerging from tensor products of M3 dimensions, applicable across all domains.
+**Metaconcept**: Transdisciplinary Metaconcepts (M2 layer) emerging from tensor products of M3 dimensions, applicable across all domains.
 
 **Poclet**: Minimal yet complete system representation serving triple role: framework validation, metaconcept discovery, and core concept identification.
 

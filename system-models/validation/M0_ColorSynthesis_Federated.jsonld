@@ -1,0 +1,426 @@
+{
+  "@context": {
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m0:color_synthesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/poclets/color_synthesis/M0_ColorSynthesis_Federated.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m0:ColorSynthesisFederated",
+      "@type": "owl:Ontology",
+      "dcterms:title": "Color Synthesis - Federated Poclet Ontology",
+      "dcterms:description": "Federating ontology for color synthesis models. References four specialized poclets: RGB (additive), HSL (additive), CMY (subtractive), CMYK (subtractive). Demonstrates multiple modeling approaches for same phenomenon (perceived color).",
+      "dcterms:creator": "TSCG Project - Michel Favre",
+      "dcterms:created": "2026-01-17",
+      "dcterms:modified": "2026-01-17",
+      "owl:versionInfo": "1.0.0",
+      "m0:pocletType": "Federated",
+      "m0:domain": "Optics / Color Science",
+      "m0:phenomenon": "Color Perception and Synthesis",
+      "m0:numberOfVariants": 4,
+      "m0:federatedInstances": [
+        {
+          "@id": "m0:RGB_Additive",
+          "rdfs:label": "RGB Additive Color Synthesis",
+          "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_RGB_Additive.jsonld",
+          "dcterms:documentation": {
+            "@id": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_RGB_Additive.jsonld",
+            "dcterms:format": "application/ld+json",
+            "dcterms:type": "Ontology"
+          },
+          "m0:principle": "Additive (light-based)",
+          "m0:components": 3,
+          "m0:medium": "Light emission (screens, projectors)",
+          "m0:primaries": [
+            "Red",
+            "Green",
+            "Blue"
+          ]
+        },
+        {
+          "@id": "m0:HSL_Additive",
+          "rdfs:label": "HSL Additive Color Synthesis",
+          "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_HSL_Additive.jsonld",
+          "dcterms:documentation": {
+            "@id": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_HSL_Additive.jsonld",
+            "dcterms:format": "application/ld+json",
+            "dcterms:type": "Ontology"
+          },
+          "m0:principle": "Additive (light-based, perceptual)",
+          "m0:components": 3,
+          "m0:medium": "Light emission (alternative representation)",
+          "m0:primaries": [
+            "Hue",
+            "Saturation",
+            "Lightness"
+          ]
+        },
+        {
+          "@id": "m0:CMY_Subtractive",
+          "rdfs:label": "CMY Subtractive Color Synthesis",
+          "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_CMY_Subtractive.jsonld",
+          "dcterms:documentation": {
+            "@id": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_CMY_Subtractive.jsonld",
+            "dcterms:format": "application/ld+json",
+            "dcterms:type": "Ontology"
+          },
+          "m0:principle": "Subtractive (pigment-based)",
+          "m0:components": 3,
+          "m0:medium": "Pigments (theoretical model)",
+          "m0:primaries": [
+            "Cyan",
+            "Magenta",
+            "Yellow"
+          ]
+        },
+        {
+          "@id": "m0:CMYK_Subtractive",
+          "rdfs:label": "CMYK Subtractive Color Synthesis",
+          "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_CMYK_Subtractive.jsonld",
+          "dcterms:documentation": {
+            "@id": "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_CMYK_Subtractive.jsonld",
+            "dcterms:format": "application/ld+json",
+            "dcterms:type": "Ontology"
+          },
+          "m0:principle": "Subtractive (pigment-based, practical)",
+          "m0:components": 4,
+          "m0:medium": "Inks (printing industry)",
+          "m0:primaries": [
+            "Cyan",
+            "Magenta",
+            "Yellow",
+            "Key (Black)"
+          ]
+        }
+      ],
+      "m0:comparisonDimensions": {
+        "physicalPrinciple": {
+          "additive": [
+            "RGB",
+            "HSL"
+          ],
+          "subtractive": [
+            "CMY",
+            "CMYK"
+          ],
+          "description": "Additive = light emission (sum); Subtractive = light absorption (filtering)"
+        },
+        "numberOfComponents": {
+          "threeComponents": [
+            "RGB",
+            "HSL",
+            "CMY"
+          ],
+          "fourComponents": [
+            "CMYK"
+          ],
+          "description": "CMYK adds Key (black) for practical printing reasons"
+        },
+        "representationType": {
+          "directPrimaries": [
+            "RGB",
+            "CMY",
+            "CMYK"
+          ],
+          "perceptualSpace": [
+            "HSL"
+          ],
+          "description": "HSL is perceptual transformation of RGB"
+        },
+        "applicationDomain": {
+          "screens": [
+            "RGB",
+            "HSL"
+          ],
+          "printing": [
+            "CMY",
+            "CMYK"
+          ],
+          "description": "Different media require different models"
+        }
+      },
+      "m0:transdisciplinaryPrinciple": {
+        "pattern": "Multiple models for same phenomenon",
+        "observation": "Color (Territory) can be modeled differently depending on medium and purpose (Map)",
+        "mapTerritoryInsight": "Same Territory (perceived color), multiple Maps (RGB, HSL, CMY, CMYK)",
+        "korzybskiPrinciple": "Map ≠ Territory - each model captures different aspects of color"
+      },
+      "m0:metaconceptsShared": {
+        "description": "Metaconcepts common to all 4 variants",
+        "common": [
+          {
+            "metaconcept": "Component",
+            "role": "Color channels (R/G/B, H/S/L, C/M/Y, C/M/Y/K)",
+            "formula": "S⊗I"
+          },
+          {
+            "metaconcept": "Channel",
+            "role": "Transmission dimensions for color signals",
+            "formula": "S⊗I⊗F"
+          },
+          {
+            "metaconcept": "Fusion",
+            "role": "Synthesis operation - merging channels into perceived color (additive or subtractive)",
+            "formula": "S⊗F⊗D",
+            "fusionAspect": "R+G+B → Color (additive) or C+M+Y → Color (subtractive)",
+            "fissionAspect": "Color → (R,G,B) analysis or Color → (C,M,Y) separation"
+          },
+          {
+            "metaconcept": "Synergy",
+            "role": "Emergence of perceived color from channel fusion",
+            "formula": "A⊗S⊗I"
+          },
+          {
+            "metaconcept": "Representation",
+            "role": "Encoding of color information",
+            "formula": "I⊗S"
+          },
+          {
+            "metaconcept": "Code",
+            "role": "Numerical encoding (e.g., #FF0000 for red)",
+            "formula": "I⊗S⊗D"
+          },
+          {
+            "metaconcept": "Space",
+            "role": "Color space (RGB cube, HSL cylinder, CMY cube)",
+            "formula": "S⊗I"
+          },
+          {
+            "metaconcept": "Transformation",
+            "role": "Conversions between color spaces (RGB↔HSL, RGB↔CMY)",
+            "formula": "D⊗I⊗S"
+          }
+        ]
+      },
+      "m0:metaconceptsDistinct": {
+        "description": "Metaconcepts that differ between variants",
+        "differences": [
+          {
+            "dimension": "Fusion Type",
+            "additive": {
+              "variants": [
+                "RGB",
+                "HSL"
+              ],
+              "metaconcept": "Fusion (additive superposition)",
+              "mechanism": "Light wave addition (R + G + B → White)",
+              "formula": "S⊗F⊗D",
+              "physicalBasis": "Electromagnetic wave superposition (constructive interference)"
+            },
+            "subtractive": {
+              "variants": [
+                "CMY",
+                "CMYK"
+              ],
+              "metaconcept": "Fusion (subtractive mixing)",
+              "mechanism": "Pigment absorption (C + M + Y → Black)",
+              "formula": "S⊗F⊗D",
+              "physicalBasis": "Spectral filtering (wavelength-selective absorption)"
+            }
+          },
+          {
+            "dimension": "Constraint",
+            "additive": {
+              "constraint": "Sum ≤ Max (overflow clipping)",
+              "range": "[0, 255] per channel (8-bit)"
+            },
+            "subtractive": {
+              "constraint": "Absorption ≤ 100% (cannot absorb more than available)",
+              "range": "[0%, 100%] per channel"
+            }
+          }
+        ]
+      },
+      "m0:transformationNetwork": {
+        "description": "Relationships and conversions between color models",
+        "transformations": [
+          {
+            "from": "RGB",
+            "to": "HSL",
+            "type": "Bijective (lossless)",
+            "formula": "Standard RGB→HSL algorithm",
+            "reversible": true,
+            "note": "HSL is alternative representation of RGB (same color space)"
+          },
+          {
+            "from": "RGB",
+            "to": "CMY",
+            "type": "Approximate (gamut differences)",
+            "formula": "C = 1-R, M = 1-G, Y = 1-B (simplified)",
+            "reversible": "Approximate",
+            "note": "Different physical principles - not exact inverse"
+          },
+          {
+            "from": "CMY",
+            "to": "CMYK",
+            "type": "Augmentation (add K channel)",
+            "formula": "K = min(C,M,Y); C'=C-K, M'=M-K, Y'=Y-K",
+            "reversible": true,
+            "note": "K replaces common CMY component for practical printing"
+          },
+          {
+            "from": "RGB",
+            "to": "CMYK",
+            "type": "Complex (multi-step via CMY)",
+            "formula": "RGB → CMY → CMYK",
+            "reversible": "Approximate",
+            "note": "Involves gamut mapping and black generation"
+          }
+        ]
+      },
+      "m0:territoryVsMapAnalysis": {
+        "territory": {
+          "description": "Perceived color (phenomenological)",
+          "observer": "Human visual system",
+          "nature": "Electromagnetic radiation spectrum (380-740 nm) interpreted by cones",
+          "complexity": "Continuous spectrum → Discrete trichromatic perception",
+          "asfidCharacteristic": "High I (spectral information), Medium S (wavelength structure)"
+        },
+        "maps": {
+          "count": 4,
+          "diversity": "Multiple models for same Territory",
+          "reason": "Different physical media (light vs pigment) and applications (screen vs print)",
+          "observation": "No single 'correct' Map - each optimized for specific use case",
+          "epistemicGaps": {
+            "RGB": "Simplifies continuous spectrum to 3 discrete channels",
+            "HSL": "More perceptually uniform but still discrete",
+            "CMY": "Approximates subtractive mixing (real pigments more complex)",
+            "CMYK": "Adds practical K channel (non-physical optimization)"
+          }
+        },
+        "multipleMapsPrinciple": {
+          "observation": "Same phenomenon, different optimal representations",
+          "analogy": "Geographic maps: Political vs Topographic vs Climate (same Earth, different Maps)",
+          "TSCGinsight": "Framework allows multiple Maps for same Territory - validates observer-relativity"
+        }
+      },
+      "m0:pedagogicalValue": {
+        "demonstration": [
+          "Map-Territory distinction (multiple Maps possible)",
+          "Observer-dependence (screen designer vs printer)",
+          "Representation choice (direct primaries vs perceptual space)",
+          "Physical principles (additive vs subtractive)",
+          "Practical optimization (CMY → CMYK for cost/quality)"
+        ],
+        "transdisciplinaryConnections": [
+          {
+            "poclet": "Fire Triangle",
+            "similarity": "3-component synergistic systems (RGB, HSL, CMY)",
+            "difference": "Fire = emergent process; Color = emergent perception"
+          },
+          {
+            "domain": "Signal Processing",
+            "concept": "Basis transformation (RGB ↔ HSL like Fourier transform)"
+          },
+          {
+            "domain": "Economics",
+            "concept": "Multiple models for same market (supply-demand, game theory, behavioral)"
+          }
+        ]
+      },
+      "m0:implementationConsiderations": {
+        "softwareLibraries": [
+          "PIL/Pillow (Python): RGB, HSL, CMYK conversions",
+          "OpenCV: RGB, HSV, Lab color spaces",
+          "Adobe libraries: CMYK for professional printing"
+        ],
+        "standards": [
+          "sRGB (standard RGB for web and displays)",
+          "Adobe RGB (wider gamut for professional work)",
+          "SWOP CMYK (standard for offset printing)"
+        ],
+        "challenges": [
+          "Gamut mapping (RGB gamut ≠ CMYK gamut)",
+          "Color management (ICC profiles)",
+          "Perceptual uniformity (HSL ≠ perceptually uniform; Lab/Luv better)"
+        ]
+      },
+      "m0:futureExtensions": {
+        "additionalColorModels": [
+          {
+            "name": "Lab (CIELAB)",
+            "type": "Perceptually uniform",
+            "components": [
+              "L* (Lightness)",
+              "a* (green-red)",
+              "b* (blue-yellow)"
+            ]
+          },
+          {
+            "name": "HSV (Hue-Saturation-Value)",
+            "type": "Alternative perceptual (similar to HSL)",
+            "components": [
+              "Hue",
+              "Saturation",
+              "Value"
+            ]
+          },
+          {
+            "name": "XYZ (CIE 1931)",
+            "type": "Device-independent",
+            "components": [
+              "X",
+              "Y",
+              "Z"
+            ]
+          }
+        ],
+        "domainExtensions": [
+          "Spectral color (full wavelength distribution)",
+          "Metameric colors (different spectra, same perception)",
+          "Color appearance models (CIECAM02)"
+        ]
+      },
+      "m0:summary": {
+        "concept": "Color Synthesis as federating poclet",
+        "variants": 4,
+        "principle": "Multiple representations for same phenomenon",
+        "primaryDistinction": "Additive (light) vs Subtractive (pigment)",
+        "secondaryDistinction": "Direct primaries vs Perceptual space (HSL)",
+        "practicalDistinction": "Theoretical (CMY) vs Practical (CMYK)",
+        "TSCGvalidation": "Demonstrates Map-Territory with multiple Maps for single Territory",
+        "pedagogicalStrength": "Clear, visual, universally known domain"
+      },
+      "rdfs:seeAlso": [
+        {
+          "@id": "m0:RGB_Additive",
+          "file": "./M0_RGB_Additive.jsonld"
+        },
+        {
+          "@id": "m0:HSL_Additive",
+          "file": "./M0_HSL_Additive.jsonld"
+        },
+        {
+          "@id": "m0:CMY_Subtractive",
+          "file": "./M0_CMY_Subtractive.jsonld"
+        },
+        {
+          "@id": "m0:CMYK_Subtractive",
+          "file": "./M0_CMYK_Subtractive.jsonld"
+        },
+        {
+          "@id": "m0:FireTriangle",
+          "file": "../fire_triangle/M0_FireTriangle.jsonld",
+          "note": "Analogous 3-component synergistic system"
+        }
+      ],
+      "dcterms:references": [
+        "Poynton, C. (2003). Digital Video and HD: Algorithms and Interfaces",
+        "Fairchild, M. D. (2013). Color Appearance Models (3rd ed.)",
+        "Adobe (2000). PostScript Language Reference (3rd ed.) - CMYK color model",
+        "CIE (Commission Internationale de l'Éclairage) standards"
+      ],
+      "owl:imports": [
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld"
+      ]
+    }
+  ]
+}

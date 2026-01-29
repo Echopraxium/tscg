@@ -1,0 +1,437 @@
+{
+  "@context": {
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1:biology": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/M1_Biology.jsonld#",
+    "m0:complex_chemical_synapse": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/poclets/complex_chemical_synapse/M0_ComplexChemicalSynapse.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m0:blood_pressure_control:BloodPressureControl_Ontology",
+      "@type": "owl:Ontology",
+      "dcterms:title": "Blood Pressure Control Poclet - TSCG M0 Layer",
+      "dcterms:description": "Poclet modeling long-term arterial blood pressure regulation through 5 physiological effector systems: RAAS, Sympathetic NS, ADH, Natriuretic Peptides, and Cardiac Output/Volemia. Demonstrates multi-scale homeostatic control (seconds to days).",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-01-22",
+      "dcterms:modified": "2026-01-22",
+      "owl:versionInfo": "1.0.0",
+      "owl:imports": [
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/M1_Biology.jsonld"
+      ],
+      "rdfs:seeAlso": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/blood_pressure_control/M0_BloodPressureControl_README.md",
+      "rdfs:comment": "This poclet captures the coordinated action of 5 parallel regulatory systems maintaining arterial blood pressure homeostasis. It is the first physiological poclet in TSCG and demonstrates the highest effector count (5 vs 3-4 in other poclets). Validated against Guyton's quantitative model (1972) and clinical evidence from antihypertensive drug trials.",
+      "m0:pocletType": "Physiological Homeostasis",
+      "m0:domain": "Cardiovascular Physiology / Renal Physiology / Endocrinology",
+      "m0:complexity": "High (5 effectors, 3 timescales)",
+      "m0:clinicalRelevance": "Maximal (hypertension affects 30-40% of adults worldwide)"
+    },
+    {
+      "@id": "m0:blood_pressure_control:BloodPressureControl",
+      "@type": [
+        "owl:NamedIndividual",
+        "m1:core:Poclet"
+      ],
+      "rdfs:label": "Blood Pressure Homeostasis (5-Effector System)",
+      "rdfs:comment": "Long-term regulation of arterial blood pressure through coordinated action of RAAS, Sympathetic NS, ADH, Natriuretic Peptides, and Cardiac Output. Set-point: ~120/80 mmHg in humans. Pathology: Chronic hypertension from dysregulation.",
+      "m0:phenomenon": {
+        "name": "Long-term Blood Pressure Regulation",
+        "description": "Maintenance of stable arterial pressure through multi-scale feedback loops",
+        "timescale": "Seconds (neural) to days (renal)",
+        "setpoint": "120/80 mmHg (systolic/diastolic in humans)",
+        "controlled_variable": "Mean arterial pressure (MAP)",
+        "pathology": "Chronic hypertension (>140/90 mmHg) from effector dysregulation"
+      },
+      "m0:effector_count": 5,
+      "m0:effectors": [
+        {
+          "@id": "m0:blood_pressure_control:RAAS"
+        },
+        {
+          "@id": "m0:blood_pressure_control:Sympathetic"
+        },
+        {
+          "@id": "m0:blood_pressure_control:ADH"
+        },
+        {
+          "@id": "m0:blood_pressure_control:NatriureticPeptides"
+        },
+        {
+          "@id": "m0:blood_pressure_control:CardiacOutput"
+        }
+      ],
+      "m0:asfid_analysis": {
+        "m3:A": {
+          "value": 0.85,
+          "interpretation": "Strong homeostatic attractor at ~120/80 mmHg. Multiple negative feedback loops (baroreceptor reflex, RAAS, ANP) stabilize pressure. Pathological attractor in hypertension (vascular remodeling creates new stable state).",
+          "formula": "A = Σ(Feedback_strength × Attractor_depth)",
+          "manifestation": "Set-point with basin of attraction (~100-140 mmHg systolic)"
+        },
+        "m3:S": {
+          "value": 0.8,
+          "interpretation": "5-effector parallel network with hierarchical organization (fast neural, medium hormonal, slow renal). Anatomical components: heart, kidneys, vessels, adrenal glands, baroreceptors.",
+          "formula": "S = Network_complexity × Hierarchical_depth",
+          "manifestation": "Convergent topology (5 → 1 controlled variable)"
+        },
+        "m3:F": {
+          "value": 0.9,
+          "interpretation": "Multiple flows: Blood (5 L/min cardiac output), hormones (renin, angiotensin, aldosterone, ADH, ANP), renal filtrate (180 L/day). Intercompartmental fluid shifts (vascular ↔ interstitial ↔ intracellular).",
+          "formula": "F = Σ(Flux_rates) × Exchange_surface",
+          "manifestation": "High exchange across compartments"
+        },
+        "m3:I": {
+          "value": 0.85,
+          "interpretation": "Rich information processing. Primary signal: arterial pressure (baroreceptors). Hormonal cascades (RAAS), neural signals (sympathetic), feedback loops (ANP response to volume overload).",
+          "formula": "I = Shannon_entropy(signals) × Feedback_loop_count",
+          "manifestation": "Frequency-coded (neural) + concentration-coded (hormonal) signals"
+        },
+        "m3:D": {
+          "value": 0.75,
+          "interpretation": "Multi-scale dynamics: Fast (seconds - baroreceptor reflex), Medium (minutes-hours - RAAS/ADH), Slow (hours-days - renal excretion). Pathological bifurcation: normotension → hypertension.",
+          "formula": "D = Σ(dState/dt) across all timescales",
+          "manifestation": "Three distinct kinetic regimes"
+        },
+        "completeness": "FULL - All 5 ASFID dimensions present and non-trivial"
+      },
+      "m0:orive_analysis": {
+        "m3:O": {
+          "value": 0.85,
+          "interpretation": "Highly observable. Direct pressure measurement (sphygmomanometer, arterial catheter), cardiac output (echocardiography), hormones (blood sampling). Some components harder to observe (neural activity, local paracrine signaling).",
+          "limitations": "Baroreceptor firing requires invasive recording"
+        },
+        "m3:R": {
+          "value": 0.8,
+          "interpretation": "Excellent reproducibility. Universal mechanism in mammals. Validated experimental models (Goldblatt hypertension, DOCA-salt). Guyton's mathematical model (1972) quantitatively reproduced.",
+          "limitations": "Individual variability (genetics, age, comorbidities)"
+        },
+        "m3:I": {
+          "value": 0.9,
+          "interpretation": "Outstanding interoperability. Links cardiovascular + renal + endocrine + neural physiology. Applicable across species (human, rat, dog). Compatible with homeostasis, cybernetics, systems biology frameworks.",
+          "strengths": "Central hub connecting multiple physiological domains"
+        },
+        "m3:V": {
+          "value": 0.9,
+          "interpretation": "Highly validated. Decades of empirical research. Quantitative predictions (Guyton's pressure-natriuresis curve). Clinical validation through antihypertensive drugs (ACE inhibitors, beta-blockers, diuretics all work as predicted).",
+          "strengths": "Molecular targets identified (AT1 receptor, β1-adrenergic receptor)"
+        },
+        "m3:E": {
+          "value": 0.75,
+          "interpretation": "Good expressiveness. Extensible (can add kallikrein-kinin, endothelin, NO systems). Detail-oriented (RAAS expandable to Ang(1-7)/Mas axis). Applicable to pathologies (heart failure, CKD).",
+          "limitations": "Complexity explosion when adding fine details"
+        },
+        "global_score": 0.84,
+        "interpretation": "High-quality Map - Strong empirical grounding, excellent interoperability, well-validated"
+      },
+      "m0:epistemic_gap": {
+        "value": 0.16,
+        "calculation": "Δε = 1 - ORIVE_global = 1 - 0.84 = 0.16",
+        "interpretation": "Low epistemic gap - Excellent Territory-Map alignment. The conceptual model (Map) closely matches observable physiology (Territory).",
+        "quality": "High alignment"
+      },
+      "m0:bicephalous_perspective": {
+        "dominant": "Territory (Eagle Eye)",
+        "rationale": "Strongly rooted in observable physiological phenomena. Quantitative experimental data abundant. Mathematical models validated (Guyton's ODEs). Parameters measurable.",
+        "map_quality": "Strong (ORIVE = 0.84)",
+        "verdict": "Territory-Dominant Poclet with High-Quality Map"
+      },
+      "m0:m2_metaconcepts_mobilized": [
+        {
+          "@id": "m2:Homeostasis",
+          "role": "CENTRAL - Core regulatory principle",
+          "formula": "A⊗S⊗F",
+          "manifestation": "Multi-effector system maintaining pressure within narrow range"
+        },
+        {
+          "@id": "m2:Balance",
+          "role": "CENTRAL - Equilibrium between opposing forces",
+          "formula": "A⊗S⊗F",
+          "manifestation": "Vasoconstriction ↔ Vasodilation, Retention ↔ Excretion"
+        },
+        {
+          "@id": "m2:Regulation",
+          "role": "CENTRAL - Active control mechanisms",
+          "formula": "A⊗S⊗F",
+          "manifestation": "Neural, hormonal, renal control loops"
+        },
+        {
+          "@id": "m2:Network",
+          "role": "Distributed architecture",
+          "formula": "S⊗I⊗F",
+          "manifestation": "5 parallel effectors converging on arterial pressure"
+        },
+        {
+          "@id": "m2:Feedback",
+          "role": "Self-regulation",
+          "formula": "A⊗I⊗D",
+          "manifestation": "Baroreceptor reflex, ANP response to volume overload"
+        },
+        {
+          "@id": "m2:Trade-off",
+          "role": "Conflicting optimization criteria",
+          "formula": "R⊗V⊗E / A⊗I",
+          "manifestation": "Speed vs Robustness (sympathetic fast but unstable, renal slow but robust)"
+        },
+        {
+          "@id": "m2:Hierarchy",
+          "role": "Levels of control",
+          "formula": "S⊗A",
+          "manifestation": "Tier 1: Neural (seconds), Tier 2: Hormonal (minutes-hours), Tier 3: Renal (hours-days)"
+        },
+        {
+          "@id": "m2:Cascade",
+          "role": "Sequential signal amplification",
+          "formula": "S⊗I⊗D",
+          "manifestation": "RAAS enzymatic cascade (Renin → Angiotensinogen → Ang I → Ang II → Aldosterone)"
+        },
+        {
+          "@id": "m2:Threshold",
+          "role": "Switching behavior",
+          "formula": "A⊗I",
+          "manifestation": "Baroreceptor firing threshold (~60-180 mmHg), ANP secretion threshold"
+        },
+        {
+          "@id": "m2:Dynamics",
+          "role": "Temporal evolution",
+          "formula": "D⊗F",
+          "manifestation": "Multi-scale kinetics (fast neural, medium hormonal, slow renal)"
+        },
+        {
+          "@id": "m2:Bifurcation",
+          "role": "Qualitative state transition",
+          "formula": "∂D/∂F",
+          "manifestation": "Normotension → Hypertension (irreversible via vascular remodeling)"
+        },
+        {
+          "@id": "m2:Memory",
+          "role": "System retains past states",
+          "formula": "∫(D-F)dτ",
+          "manifestation": "Vascular remodeling, baroreceptor resetting in chronic hypertension"
+        }
+      ],
+      "m0:m1_concepts_used": {
+        "m1:biology:Paracrine": "Local angiotensin II in kidneys and vessels",
+        "m1:biology:Endocrine": "Circulating aldosterone, ADH, ANP",
+        "m1:physio:BaroreflexArc": "PROPOSED - Baroreceptors → Vasomotor center → Sympathetic output",
+        "m1:physio:RenalAutoregulation": "PROPOSED - Myogenic + tubuloglomerular feedback",
+        "m1:physio:CardiacOutput": "PROPOSED - CO = HR × SV",
+        "m1:physio:PressureNatriuresis": "PROPOSED - Intrinsic renal pressure-dependent sodium excretion"
+      },
+      "m0:gamification_potential": {
+        "score": 5,
+        "modes": [
+          {
+            "name": "Physiologist",
+            "objective": "Maintain BP at 120/80 mmHg for 24h",
+            "mechanics": "5 sliders to modulate effectors, random perturbations (stress, exercise)",
+            "learning": "Multi-scale dynamics, trade-offs, redundancy"
+          },
+          {
+            "name": "Clinician",
+            "objective": "Treat hypertensive patient (160/100) with minimal side effects",
+            "mechanics": "Prescribe drugs (ACE inhibitor, beta-blocker, diuretic), manage contraindications",
+            "learning": "Drug mechanisms, side effects, combination therapy"
+          },
+          {
+            "name": "Pathology Explorer",
+            "objective": "Investigate how lesions cause hypertension",
+            "scenarios": [
+              "Renal artery stenosis → ↑ RAAS",
+              "Heart failure → ↑ RAAS + ↑ Sympathetic",
+              "Pheochromocytoma → ↑↑ Sympathetic"
+            ],
+            "learning": "Pathophysiology, root cause vs symptoms"
+          },
+          {
+            "name": "Research Lab",
+            "objective": "Virtual experiments to test hypotheses",
+            "examples": [
+              "Is RAAS necessary? → Block completely, observe",
+              "Remove baroreceptors → Increased BP variability",
+              "ANP alone sufficient? → Disable others, test"
+            ],
+            "learning": "Scientific method, systems thinking, historical studies"
+          }
+        ]
+      },
+      "m0:scientific_validation": {
+        "key_references": [
+          {
+            "author": "Guyton, A.C.",
+            "year": 1972,
+            "title": "Arterial Pressure and Hypertension",
+            "contribution": "Quantitative model of long-term BP regulation (pressure-natriuresis curve)"
+          },
+          {
+            "author": "Laragh, J.H.",
+            "year": 1985,
+            "title": "The renin system and four lines of hypertension research",
+            "contribution": "RAAS central role in hypertension pathophysiology"
+          },
+          {
+            "author": "Cowley, A.W.",
+            "year": 1992,
+            "title": "Long-term control of arterial blood pressure",
+            "contribution": "Integration of neural, hormonal, and renal mechanisms"
+          }
+        ],
+        "clinical_validation": {
+          "ACE_inhibitors": "Reduce BP by blocking Ang II formation - VALIDATED",
+          "Beta_blockers": "Reduce BP by blocking sympathetic drive - VALIDATED",
+          "Diuretics": "Reduce BP by decreasing volemia - VALIDATED",
+          "note": "All 5 effectors targetable by FDA-approved drugs"
+        }
+      },
+      "m0:future_extensions": [
+        "Add endothelial regulation (NO, endothelin)",
+        "Model circadian variation (BP dipping at night)",
+        "Include genetic polymorphisms (renin, ACE, angiotensinogen genes)",
+        "Link to chronic kidney disease (bidirectional causality)",
+        "Separate poclets: Cardiac Output (Starling curve), RAAS Cascade, Baroreceptor Reflex"
+      ]
+    },
+    {
+      "@id": "m0:blood_pressure_control:RAAS",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Renin-Angiotensin-Aldosterone System (RAAS)",
+      "rdfs:comment": "Hormonal cascade controlling volemia and vasoconstriction. Initiated by renin secretion from juxtaglomerular cells in response to decreased renal perfusion. Cascade: Renin → Angiotensinogen → Ang I → ACE → Ang II → Aldosterone.",
+      "m0:effector_type": "Hormonal cascade",
+      "m0:primary_action": "↑ Volemia (aldosterone → Na/H2O retention) + ↑ Vasoconstriction (Ang II)",
+      "m0:timescale": "Minutes to hours",
+      "m0:trigger": "↓ Renal perfusion pressure (sensed by juxtaglomerular apparatus)",
+      "m0:cascade_steps": [
+        "Renin (kidney) cleaves angiotensinogen → Angiotensin I",
+        "ACE (lung endothelium) cleaves Ang I → Angiotensin II",
+        "Ang II stimulates aldosterone secretion (adrenal cortex)",
+        "Aldosterone → ↑ Na reabsorption (distal tubule) → ↑ H2O retention → ↑ Volemia",
+        "Ang II → Vasoconstriction (AT1 receptors on smooth muscle)"
+      ],
+      "m0:pharmacological_targets": [
+        "ACE inhibitors (e.g., enalapril) - block Ang I → Ang II",
+        "AT1 receptor blockers (e.g., losartan) - block Ang II binding",
+        "Renin inhibitors (e.g., aliskiren) - block angiotensinogen cleavage",
+        "Aldosterone antagonists (e.g., spironolactone) - block mineralocorticoid receptor"
+      ],
+      "m0:m2_metaconcepts": [
+        "m2:Cascade (S⊗I⊗D) - Sequential enzymatic amplification",
+        "m2:Regulation (A⊗S⊗F) - Hormonal control mechanism",
+        "m2:Signal (I⊗F) - Hormonal information carrier"
+      ],
+      "m0:pathology": "Hyperactivation in renovascular hypertension (renal artery stenosis), heart failure, cirrhosis"
+    },
+    {
+      "@id": "m0:blood_pressure_control:Sympathetic",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Sympathetic Nervous System",
+      "rdfs:comment": "Rapid neural reflex controlling heart rate and vascular tone. Baroreceptor arc: Aortic/carotid baroreceptors → Vasomotor center (medulla) → Sympathetic efferents → Norepinephrine release.",
+      "m0:effector_type": "Neural reflex",
+      "m0:primary_action": "↑ Heart Rate (β1-adrenergic) + ↑ Vasoconstriction (α1-adrenergic)",
+      "m0:timescale": "Seconds",
+      "m0:trigger": "↓ Arterial pressure detected by baroreceptors",
+      "m0:reflex_arc": [
+        "Baroreceptors (aortic arch, carotid sinus) sense ↓ BP → ↓ firing rate",
+        "↓ Afferent signal to vasomotor center (NTS in medulla)",
+        "Vasomotor center → ↑ Sympathetic outflow (RVLM activation)",
+        "Sympathetic efferents → Norepinephrine release at heart and vessels",
+        "β1 receptors (heart) → ↑ HR + ↑ Contractility → ↑ Cardiac Output",
+        "α1 receptors (vessels) → Vasoconstriction → ↑ Total Peripheral Resistance"
+      ],
+      "m0:pharmacological_targets": [
+        "Beta-blockers (e.g., metoprolol) - block β1 receptors",
+        "Alpha-blockers (e.g., doxazosin) - block α1 receptors",
+        "Centrally-acting agents (e.g., clonidine) - reduce sympathetic outflow from brainstem"
+      ],
+      "m0:m2_metaconcepts": [
+        "m2:Feedback (A⊗I⊗D) - Negative feedback loop (↑BP → ↓Sympathetic)",
+        "m2:Threshold (A⊗I) - Baroreceptor firing threshold (~60-180 mmHg)",
+        "m2:Dynamics (D⊗F) - Fastest effector (seconds timescale)"
+      ],
+      "m0:pathology": "Overactivation in heart failure (compensatory response becomes maladaptive)"
+    },
+    {
+      "@id": "m0:blood_pressure_control:ADH",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Anti-Diuretic Hormone (ADH / Vasopressin)",
+      "rdfs:comment": "Peptide hormone secreted by posterior pituitary. Primary role: water retention via V2 receptors in kidney collecting duct. Secondary role: vasoconstriction via V1 receptors in vascular smooth muscle.",
+      "m0:effector_type": "Hormonal (peptide)",
+      "m0:primary_action": "↑ Water Retention (V2 receptors → aquaporin-2 insertion) + Vasoconstriction (V1 receptors)",
+      "m0:timescale": "Minutes to hours",
+      "m0:trigger": "↑ Plasma osmolality (detected by hypothalamic osmoreceptors) OR ↓ Blood volume (detected by atrial stretch receptors)",
+      "m0:mechanism": [
+        "Osmoreceptors (hypothalamus) sense ↑ osmolality → Stimulate ADH secretion",
+        "ADH circulates to kidneys",
+        "V2 receptors (collecting duct) → ↑ Aquaporin-2 expression → ↑ Water reabsorption",
+        "↑ Water retention → ↑ Blood volume → ↑ BP",
+        "V1 receptors (vascular smooth muscle) → Vasoconstriction → ↑ TPR → ↑ BP"
+      ],
+      "m0:pharmacological_targets": [
+        "V2 agonists (e.g., desmopressin) - treat diabetes insipidus",
+        "V2 antagonists (e.g., tolvaptan) - treat hyponatremia, heart failure"
+      ],
+      "m0:m2_metaconcepts": [
+        "m2:Signal (I⊗F) - Hormonal information carrier",
+        "m2:Flow (F) - Regulates water flux across collecting duct",
+        "m2:Regulation (A⊗S⊗F) - Osmotic/volumetric control"
+      ],
+      "m0:pathology": "Excessive secretion (SIADH - syndrome of inappropriate ADH) causes hyponatremia"
+    },
+    {
+      "@id": "m0:blood_pressure_control:NatriureticPeptides",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Natriuretic Peptides (ANP, BNP)",
+      "rdfs:comment": "Counter-regulatory hormones secreted by heart in response to volume/pressure overload. ANP (atrial natriuretic peptide) from atria, BNP (brain natriuretic peptide) from ventricles. Action: ↑ Sodium/water excretion + vasodilation → ↓ BP.",
+      "m0:effector_type": "Hormonal counter-regulation",
+      "m0:primary_action": "↑ Na/Water Excretion (kidney) + Vasodilation → ↓ Blood Pressure",
+      "m0:timescale": "Hours",
+      "m0:trigger": "↑ Atrial/ventricular stretch (volume overload or pressure overload)",
+      "m0:mechanism": [
+        "Atrial/ventricular myocytes sense stretch → Secrete ANP/BNP",
+        "ANP/BNP bind NPR-A receptors (kidney, vessels)",
+        "Kidney: ↑ GFR + ↓ Sodium reabsorption (inhibit aldosterone) → ↑ Natriuresis/diuresis",
+        "Vessels: Vasodilation (via cGMP pathway) → ↓ TPR",
+        "Net effect: ↓ Blood volume + ↓ TPR → ↓ BP"
+      ],
+      "m0:pharmacological_targets": [
+        "Neprilysin inhibitors (e.g., sacubitril) - prevent ANP/BNP degradation, used in heart failure"
+      ],
+      "m0:m2_metaconcepts": [
+        "m2:Balance (A⊗S⊗F) - Counter-balances RAAS/Sympathetic vasoconstriction",
+        "m2:Feedback (A⊗I⊗D) - Negative feedback (↑Volume → ↑ANP → ↓Volume)",
+        "m2:Homeostasis (A⊗S⊗F) - Maintains fluid/pressure homeostasis"
+      ],
+      "m0:pathology": "Resistance in heart failure (blunted natriuretic response despite high ANP/BNP levels)"
+    },
+    {
+      "@id": "m0:blood_pressure_control:CardiacOutput",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Cardiac Output & Volemia",
+      "rdfs:comment": "Downstream hemodynamic parameters controlled by effectors 1-4. Cardiac Output (CO) = Heart Rate × Stroke Volume. Blood volume (volemia) determines venous return and preload (Starling mechanism). MAP = CO × Total Peripheral Resistance.",
+      "m0:effector_type": "Hemodynamic parameter (downstream controlled variable)",
+      "m0:formula": "CO = HR × SV (Heart Rate × Stroke Volume)",
+      "m0:blood_pressure_equation": "MAP = CO × TPR (Mean Arterial Pressure = Cardiac Output × Total Peripheral Resistance)",
+      "m0:controlled_by": [
+        "Heart Rate: Sympathetic (↑ via β1) + Parasympathetic (↓ via muscarinic M2)",
+        "Stroke Volume: Preload (volemia via Starling curve) + Contractility (sympathetic β1) + Afterload (TPR)",
+        "Volemia: RAAS (↑), ADH (↑), ANP (↓), Renal excretion"
+      ],
+      "m0:starling_mechanism": "↑ Venous return → ↑ End-diastolic volume (preload) → ↑ Stroke Volume (within physiological limits)",
+      "m0:m2_metaconcepts": [
+        "m2:Flow (F) - Blood flow (5 L/min in resting human)",
+        "m2:State (I) - Hemodynamic state (CO, SV, HR as state variables)",
+        "m2:Dynamics (D⊗F) - Temporal evolution of cardiac output"
+      ],
+      "m0:clinical_measurement": [
+        "Cardiac Output: Echocardiography (Doppler), thermodilution (Swan-Ganz catheter)",
+        "Blood volume: Indicator dilution techniques, estimated from hematocrit",
+        "Stroke Volume: Echocardiography (EDV - ESV)"
+      ]
+    }
+  ]
+}
