@@ -68,7 +68,7 @@ M3 (Genesis Space) - 10D Bicephalous Basis
     ├─ Eagle Eye (ASFID): 5D Territory measurement
     └─ Sphinx Eye (ORIVE): 5D Map construction
     ↓
-M2 (Metaconcepts) - 60 Universal Patterns
+M2 (Metaconcepts) - 61 Transdisplinary Patterns
     ├─ Territory formulas (pure ASFID)
     ├─ Map formulas (ORIVE + ASFID fallback)
     └─ Hybrid formulas (ASFID⊗ORIVE)
@@ -79,6 +79,8 @@ M1 (Domain Concepts) - Domain-Specific Extensions
     ↓
 M0 (Poclets) - 11+ Validated Minimal Systems
     └─ Proof-of-concept instances across disciplines
+M0 (SystemicFrameworks) - 1 Validated Systemic Framework
+    └─ Proof-of-concept mapping of existing Systemic Frameworks
 ```
 
 ### M3: Genesis Space (Bicephalous Basis)
@@ -97,7 +99,7 @@ Analytical perspective measuring observable phenomena:
 | **I**nformation | \|I⟩ | State complexity | [0,1] |
 | **D**ynamics | \|D⟩ | Rate of internal change | [0,1] |
 
-*Universal Openness Axiom: F≥0.1 (no perfectly closed systems)
+*Transdisciplinary Openness Axiom: F≥0.1 (no perfectly closed systems)
 
 **Mathematical Properties**:
 - Hilbert space: ℋ_ASFID = ℂ⁵

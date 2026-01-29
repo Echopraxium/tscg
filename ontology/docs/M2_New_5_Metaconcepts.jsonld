@@ -1,0 +1,312 @@
+{
+  "@context": {
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts_Ontology.jsonld#",
+    "m3:eagle_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
+    "m3:sphinx_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m2:Behavior",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaConcept"
+      ],
+      "rdfs:label": "Behavior",
+      "rdfs:comment": "Network of coordinated Steps that can be decomposed and analyzed. Represents structured operational pattern observable in Territory and modelable in Map. Distinct from Process (pure temporal sequence) by adding structural decomposability.",
+      "m2:hasCategory": "m2:Dynamic",
+      "m2:hasTensorFormula": "S⊗D⊗F",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Structure",
+        "m3:eagle_eye:Dynamics",
+        "m3:eagle_eye:Flow"
+      ],
+      "m2:hasEpistemicGap": 0.2,
+      "m2:hasPolarity": "dual",
+      "m2:polarityDescription": {
+        "territory": "Observable network of Steps with measured execution",
+        "map": "Modeled network of Steps with predicted execution"
+      },
+      "m2:hasExample": [
+        "Predator hunting sequence (stalk-chase-capture pattern)",
+        "HTTP request handling (receive-parse-process-respond pattern)",
+        "Photosynthesis (light-water-CO2 coordination pattern)",
+        "Learning algorithm (initialize-iterate-converge pattern)"
+      ],
+      "m2:perspective": "dual",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "S⊗D⊗F",
+        "role": "Measure observable behavioral phenomenon as structured network",
+        "status": "PRIMARY"
+      },
+      "m2:sphinxView": {
+        "basis": "ORIVE (via ASFID fallback)",
+        "formula": "S⊗D⊗F",
+        "role": "Model behavioral pattern as conceptual network",
+        "status": "EXPERIMENTAL"
+      },
+      "m2:decompositionProperty": {
+        "rdfs:comment": "Behavior decomposes into Steps",
+        "m2:componentType": "m2:Step",
+        "m2:cardinalityMin": 1,
+        "m2:relationProperty": "m2:decomposedInto"
+      },
+      "m2:distinctionFromRelated": {
+        "vs_Process": "Process is pure temporal sequence (D⊗F); Behavior adds structural decomposability (S⊗D⊗F)",
+        "vs_Workflow": "Workflow prescribes Process implementation; Behavior describes observable pattern",
+        "vs_Network": "Network is structural topology; Behavior is temporal network with dynamics"
+      },
+      "dcterms:created": "2026-01-28",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:discoveryContext": "Emerged from need to model sequential yet decomposable patterns in poclets (Butterfly metamorphosis, Blood pressure control). Bridges Process (pure temporal) and Network (pure structural) by fusing both aspects."
+    },
+    {
+      "@id": "m2:Tropism",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaConcept"
+      ],
+      "rdfs:label": "Tropism",
+      "rdfs:comment": "Specialized Behavior directed by external gradient stimulus. Orientation or movement towards (positive) or away from (negative) an Attractor source. Inherits network decomposability from Behavior while adding directional constraint.",
+      "rdfs:subClassOf": "m2:Behavior",
+      "m2:hasCategory": "m2:Dynamic",
+      "m2:hasTensorFormula": "A⊗S⊗D⊗F",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Attractor",
+        "m3:eagle_eye:Structure",
+        "m3:eagle_eye:Dynamics",
+        "m3:eagle_eye:Flow"
+      ],
+      "m2:hasEpistemicGap": 0.18,
+      "m2:hasPolarity": "dual",
+      "m2:polarityDescription": {
+        "bicephalous": {
+          "territory": "Observable gradient-directed phenomenon",
+          "map": "Modeled gradient-directed behavior"
+        },
+        "directional": {
+          "positive": "Attraction towards stimulus source",
+          "negative": "Repulsion away from stimulus source"
+        }
+      },
+      "m2:hasExample": [
+        "Phototropism (plant stem towards light source)",
+        "Chemotaxis (bacteria towards nutrient gradient)",
+        "Geotropism (plant roots towards gravity)",
+        "Thermotaxis (organism towards optimal temperature)",
+        "Negative phototropism (roots away from light)"
+      ],
+      "m2:perspective": "dual",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "A⊗S⊗D⊗F",
+        "role": "Measure observable gradient-directed phenomenon",
+        "status": "PRIMARY"
+      },
+      "m2:sphinxView": {
+        "basis": "ORIVE (via ASFID fallback)",
+        "formula": "A⊗S⊗D⊗F",
+        "role": "Model gradient-directed behavior",
+        "status": "EXPERIMENTAL"
+      },
+      "m2:inheritedFrom": "m2:Behavior",
+      "m2:specialization": {
+        "dimension_added": "Attractor (A)",
+        "constraint": "Movement/orientation constrained by external gradient",
+        "polarity_extension": "Adds directional polarity (positive/negative) to bicephalous polarity"
+      },
+      "m2:gradientProperty": {
+        "rdfs:comment": "Tropism is directed by an Attractor gradient",
+        "m2:sourceType": "m3:eagle_eye:Attractor",
+        "m2:relationProperty": "m2:hasGradient"
+      },
+      "m2:distinctionFromRelated": {
+        "vs_Behavior": "Behavior is general pattern; Tropism is gradient-constrained Behavior",
+        "vs_Regulation": "Regulation maintains setpoint; Tropism follows external gradient"
+      },
+      "dcterms:created": "2026-01-28",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:discoveryContext": "Recognized as specialized Behavior pattern prevalent in biological systems (phototropism, chemotaxis, geotropism). Extends Behavior by adding Attractor dimension to capture directional constraint."
+    },
+    {
+      "@id": "m2:Workflow",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaConcept"
+      ],
+      "rdfs:label": "Workflow",
+      "rdfs:comment": "Structured network implementation of a Process. Prescriptive representation (Map-oriented) of how a Process should be executed, distinct from Behavior (descriptive observation of what occurs). Can be simulated or prescribed.",
+      "m2:hasCategory": "m2:Structural",
+      "m2:hasTensorFormula": "S⊗D⊗F",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Structure",
+        "m3:eagle_eye:Dynamics",
+        "m3:eagle_eye:Flow"
+      ],
+      "m2:hasEpistemicGap": 0.22,
+      "m2:hasPolarity": "dual",
+      "m2:polarityDescription": {
+        "structural": "Static representation as network topology",
+        "executory": "Dynamic simulation or execution trace"
+      },
+      "m2:hasExample": [
+        "Manufacturing process workflow (assembly steps)",
+        "Software CI/CD pipeline (build-test-deploy sequence)",
+        "Clinical protocol (diagnosis-treatment-followup procedure)",
+        "Recipe (cooking steps with dependencies)"
+      ],
+      "m2:perspective": "dual",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "S⊗D⊗F",
+        "role": "Measure observed workflow execution",
+        "status": "SECONDARY"
+      },
+      "m2:sphinxView": {
+        "basis": "ORIVE (via ASFID fallback)",
+        "formula": "S⊗D⊗F",
+        "role": "Model prescribed workflow structure",
+        "status": "PRIMARY"
+      },
+      "m2:implementationProperty": {
+        "rdfs:comment": "Workflow implements Process",
+        "m2:targetType": "m2:Process",
+        "m2:relationProperty": "m2:implementsProcess",
+        "m2:semantics": "One Process can have multiple Workflow implementations"
+      },
+      "m2:distinctionFromRelated": {
+        "vs_Process": "Process is abstract temporal sequence; Workflow is concrete structured implementation",
+        "vs_Behavior": "Behavior describes what is observed; Workflow prescribes what should occur",
+        "vs_Network": "Network is pure structure; Workflow adds temporal execution semantics"
+      },
+      "dcterms:created": "2026-01-28",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:discoveryContext": "Needed to distinguish prescriptive models (Workflow) from descriptive observations (Behavior). Both are structured networks of Steps, but serve different epistemic roles."
+    },
+    {
+      "@id": "m2:Step",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaConcept"
+      ],
+      "rdfs:label": "Step",
+      "rdfs:comment": "Node specialized for sequential/temporal contexts. Elementary unit in Behavior or Workflow network. Extends Node by adding temporal/sequential semantics and capability to trigger Actions.",
+      "rdfs:subClassOf": "m2:Node",
+      "m2:hasCategory": "m2:Structural",
+      "m2:hasTensorFormula": "S⊗I⊗D",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Structure",
+        "m3:eagle_eye:Information",
+        "m3:eagle_eye:Dynamics"
+      ],
+      "m2:hasEpistemicGap": 0.2,
+      "m2:hasPolarity": "dual",
+      "m2:polarityDescription": {
+        "territory": "Observable step in actual execution",
+        "map": "Modeled step in prescribed workflow"
+      },
+      "m2:hasExample": [
+        "Butterfly egg stage (triggers cell division actions)",
+        "Recipe step 'make roux' (triggers heat, stir, add actions)",
+        "HTTP parse step (triggers tokenize, validate actions)",
+        "Learning epoch (triggers forward, backward, update actions)"
+      ],
+      "m2:perspective": "dual",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "S⊗I⊗D",
+        "role": "Measure observable step in sequence",
+        "status": "PRIMARY"
+      },
+      "m2:sphinxView": {
+        "basis": "ORIVE (via ASFID fallback)",
+        "formula": "S⊗I⊗D",
+        "role": "Model conceptual step in workflow",
+        "status": "EXPERIMENTAL"
+      },
+      "m2:inheritedFrom": "m2:Node",
+      "m2:specialization": {
+        "dimension_added": "Dynamics (D)",
+        "constraint": "Node with temporal/sequential context",
+        "capability": "Can trigger Actions (unlike generic Node)"
+      },
+      "m2:triggerProperty": {
+        "rdfs:comment": "Step triggers one or more Actions",
+        "m2:targetType": "m2:Action",
+        "m2:cardinalityMin": 1,
+        "m2:relationProperty": "m2:triggers"
+      },
+      "m2:containerProperty": {
+        "rdfs:comment": "Step is component of Behavior or Workflow",
+        "m2:containerTypes": ["m2:Behavior", "m2:Workflow"],
+        "m2:relationProperty": "m2:componentOf"
+      },
+      "m2:distinctionFromRelated": {
+        "vs_Node": "Node is generic network element; Step adds temporal/sequential semantics",
+        "vs_State": "State is condition/configuration; Step is operational unit in sequence",
+        "vs_Event": "Event is discrete occurrence; Step is structured unit that triggers Actions"
+      },
+      "dcterms:created": "2026-01-28",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:discoveryContext": "Emerged from analysis of sequential systems (Butterfly lifecycle, Blood pressure control). Needed specialized Node type for temporal contexts that can trigger atomic Actions."
+    },
+    {
+      "@id": "m2:Action",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaConcept"
+      ],
+      "rdfs:label": "Action",
+      "rdfs:comment": "Atomic operation triggered by a Step. Elementary executable unit with informational content. Represents indivisible operation in behavioral or workflow context.",
+      "m2:hasCategory": "m2:Dynamic",
+      "m2:hasTensorFormula": "D⊗I",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Dynamics",
+        "m3:eagle_eye:Information"
+      ],
+      "m2:hasEpistemicGap": 0.15,
+      "m2:hasPolarity": "dual",
+      "m2:polarityDescription": {
+        "territory": "Measured atomic operation",
+        "map": "Modeled atomic operation"
+      },
+      "m2:hasExample": [
+        "Cell division (triggered by egg stage step)",
+        "Heat butter (triggered by make roux step)",
+        "HTTP tokenize (triggered by parse step)",
+        "Gradient descent update (triggered by training step)",
+        "Baroreceptor activation (triggered by sense step)"
+      ],
+      "m2:perspective": "dual",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "D⊗I",
+        "role": "Measure observable atomic operation",
+        "status": "PRIMARY"
+      },
+      "m2:sphinxView": {
+        "basis": "ORIVE (via ASFID fallback)",
+        "formula": "D⊗I",
+        "role": "Model conceptual atomic operation",
+        "status": "EXPERIMENTAL"
+      },
+      "m2:triggeringProperty": {
+        "rdfs:comment": "Action is triggered by Step",
+        "m2:triggerSource": "m2:Step",
+        "m2:relationProperty": "m2:triggeredBy"
+      },
+      "m2:atomicity": {
+        "rdfs:comment": "Action is atomic - not further decomposable in behavioral context",
+        "m2:granularity": "Elementary operational unit"
+      },
+      "m2:distinctionFromRelated": {
+        "vs_Event": "Event is discrete occurrence; Action is triggered operation",
+        "vs_Operation": "Operation is general transformation; Action is atomic in behavioral context",
+        "vs_Function": "Function is abstract mapping; Action is concrete execution unit"
+      },
+      "dcterms:created": "2026-01-28",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:discoveryContext": "Identified as atomic operational unit in behavioral decomposition. Represents finest-grained executable element triggered by Steps in Behavior/Workflow networks."
+    }
+  ]
+}

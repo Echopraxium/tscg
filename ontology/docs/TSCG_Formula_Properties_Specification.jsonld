@@ -1,0 +1,141 @@
+{
+  "@context": {
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "m2:tensorFormulaTeX",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Tensor Formula (LaTeX)",
+      "rdfs:comment": "LaTeX representation of tensor formula using \\otimes operator. Guaranteed ASCII-only encoding for scientific publications and documentation.",
+      "rdfs:domain": [
+        "m2:MetaConcept",
+        "owl:Thing"
+      ],
+      "rdfs:range": "xsd:string",
+      "owl:functionalProperty": true,
+      "dcterms:description": "LaTeX format ensures zero encoding issues. Use \\otimes for tensor product. Example: A \\otimes S \\otimes F",
+      "m2:encodingGuarantee": "Pure ASCII (7-bit)",
+      "m2:usageContext": [
+        "Scientific publications",
+        "LaTeX/PDF export",
+        "Academic documentation",
+        "Mathematical typesetting"
+      ],
+      "m2:example": [
+        "A \\otimes S \\otimes F",
+        "O \\otimes R \\otimes I \\otimes V \\otimes E",
+        "(A \\otimes S \\otimes F \\otimes I \\otimes D) \\otimes (O \\otimes R \\otimes I \\otimes V \\otimes E)"
+      ]
+    },
+    {
+      "@id": "m2:tensorFormulaASCII",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Tensor Formula (ASCII Safe)",
+      "rdfs:comment": "ASCII-safe representation of tensor formula using (x) for tensor product. Guaranteed compatibility with all systems including legacy terminals and logs.",
+      "rdfs:domain": [
+        "m2:MetaConcept",
+        "owl:Thing"
+      ],
+      "rdfs:range": "xsd:string",
+      "owl:functionalProperty": true,
+      "dcterms:description": "Ultra-safe ASCII format. Use (x) to represent ⊗. Readable in any environment including plain text logs, terminals, and legacy systems.",
+      "m2:encodingGuarantee": "Pure ASCII (7-bit)",
+      "m2:usageContext": [
+        "Log files",
+        "Command-line interfaces",
+        "Legacy systems",
+        "Debug output",
+        "README files",
+        "Email communication"
+      ],
+      "m2:example": [
+        "A (x) S (x) F",
+        "O (x) R (x) I (x) V (x) E",
+        "(ASFID) (x) (ORIVE)"
+      ]
+    },
+    {
+      "@id": "m2:hasTensorFormula",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Tensor Formula (Unicode)",
+      "rdfs:comment": "PRIMARY tensor formula representation using proper Unicode ⊗ (U+2297 CIRCLED TIMES) symbol. Human-readable display format.",
+      "rdfs:domain": "m2:MetaConcept",
+      "rdfs:range": "xsd:string",
+      "owl:functionalProperty": true,
+      "dcterms:description": "Unicode UTF-8 format with proper ⊗ symbol. Use this as PRIMARY representation for human-readable display in web interfaces and modern documentation. MUST be accompanied by tensorFormulaTeX and tensorFormulaASCII variants.",
+      "m2:encodingGuarantee": "UTF-8 with U+2297",
+      "m2:symbol": "⊗",
+      "m2:symbolUnicode": "U+2297 CIRCLED TIMES",
+      "m2:symbolName": "Tensor Product / Kronecker Product",
+      "m2:usageContext": [
+        "Web interfaces",
+        "Modern documentation",
+        "Visual display",
+        "Semantic web applications"
+      ],
+      "m2:encodingWarning": "May be corrupted in non-UTF-8 environments. Always provide tensorFormulaTeX and tensorFormulaASCII as fallbacks.",
+      "m2:example": [
+        "A⊗S⊗F",
+        "O⊗R⊗I⊗V⊗E",
+        "(A⊗S⊗F⊗I⊗D)⊗(O⊗R⊗I⊗V⊊E)"
+      ]
+    },
+    {
+      "@id": "m2:FormulaRepresentationPattern",
+      "@type": "owl:Class",
+      "rdfs:label": "Formula Representation Pattern",
+      "rdfs:comment": "Design pattern for triple formula representation in TSCG metaconcepts.",
+      "m2:principle": "Every tensor formula MUST have three representations for robustness and interoperability",
+      "m2:mandatoryProperties": [
+        "m2:hasTensorFormula (Unicode ⊗)",
+        "m2:tensorFormulaTeX (LaTeX \\otimes)",
+        "m2:tensorFormulaASCII (ASCII (x))"
+      ],
+      "m2:conversionRules": {
+        "unicode_to_tex": "Replace '⊗' with ' \\otimes '",
+        "unicode_to_ascii": "Replace '⊗' with ' (x) '",
+        "tex_to_unicode": "Replace '\\otimes' with '⊗'",
+        "ascii_to_unicode": "Replace '(x)' with '⊗'"
+      },
+      "m2:validationRule": "All three properties MUST be semantically equivalent",
+      "m2:exampleUsage": {
+        "unicode": "A⊗S⊗F",
+        "tex": "A \\otimes S \\otimes F",
+        "ascii": "A (x) S (x) F",
+        "note": "All represent the same tensor formula"
+      }
+    },
+    {
+      "@id": "m2:formulaTeX",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Formula (LaTeX) - Nested",
+      "rdfs:comment": "LaTeX formula representation in nested contexts (eagleView, sphinxView, etc.)",
+      "rdfs:domain": "owl:Thing",
+      "rdfs:range": "xsd:string",
+      "owl:functionalProperty": true,
+      "dcterms:description": "Use in eagleView.formulaTeX, sphinxView.formulaPrimary.formulaTeX, etc."
+    },
+    {
+      "@id": "m2:formulaASCII",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Formula (ASCII) - Nested",
+      "rdfs:comment": "ASCII-safe formula representation in nested contexts (eagleView, sphinxView, etc.)",
+      "rdfs:domain": "owl:Thing",
+      "rdfs:range": "xsd:string",
+      "owl:functionalProperty": true,
+      "dcterms:description": "Use in eagleView.formulaASCII, sphinxView.formulaPrimary.formulaASCII, etc."
+    }
+  ],
+  "dcterms:title": "TSCG Formula Encoding Specification",
+  "dcterms:description": "OWL specification for triple tensor formula representation (Unicode/LaTeX/ASCII) in TSCG ontologies",
+  "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+  "dcterms:created": "2026-01-29",
+  "owl:versionInfo": "1.0.0",
+  "rdfs:comment": "This specification solves encoding issues with tensor formulas by mandating three parallel representations. Every formula appears in Unicode (⊗), LaTeX (\\otimes), and ASCII ((x)) formats to guarantee display across all systems."
+}

@@ -1,0 +1,829 @@
+{
+  "@context": {
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m0:cell_signaling_modes": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/poclets/cell_signaling_modes/M0_CellSignalingModes.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m0:CellSignalingModes",
+      "@type": "owl:NamedIndividual",
+      "rdf:type": "m0:Poclet",
+      "rdfs:label": "Cell Signaling Modes (Hormonal Communication)",
+      "rdfs:comment": "Fundamental biological system demonstrating BALANCE (Territory) between four modes of cellular communication: Autocrine, Paracrine, Neuroendocrine, and Endocrine. The system exhibits TRADE-OFFs (Map) between signal transmission speed and spatial range. Canonical pedagogical model in endocrinology and cell biology, analogous to Fire Triangle in combustion and Exposure Triangle in photography.",
+      "dcterms:created": "2026-01-20",
+      "dcterms:creator": "Echopraxium with collaboration of Claude AI Pro",
+      "owl:versionInfo": "1.0.0",
+      "m0:pocletType": "Canonical (Pedagogical 4-Component System)",
+      "m0:domain": "Endocrinology / Cell Biology / Physiology",
+      "m0:principle": "Distance-Dependent Signal Transmission",
+      "m0:physicalBasis": "Molecular diffusion and blood circulation as transport mechanisms for hormonal signals",
+      "m0:pedagogicalRole": "Universal teaching model for intercellular communication modes",
+      "m0:alternativeNames": [
+        "Modes of Intercellular Communication",
+        "Hormonal Signaling Pathways",
+        "Cell-Cell Communication Types"
+      ],
+      "m0:components": [
+        {
+          "@id": "m0:AutocrineSignaling",
+          "@type": "m2:Component",
+          "rdfs:label": "Autocrine Signaling",
+          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:role": "Self-signaling - cell responds to its own secreted signals",
+          "m0:function": "Local feedback regulation and cell growth control",
+          "m0:physicalCorrelate": "Hormone binds to receptors on same cell that secreted it",
+          "m0:spatialRange": "Intracellular to immediate cell surface (~1-10 µm)",
+          "m0:temporalRange": "Milliseconds to seconds",
+          "m0:diffusionMechanism": "Local concentration gradient around secreting cell",
+          "m0:tensorFormula": "S⊗I⊗F (Structure × Information × Flow)",
+          "m0:asfidContribution": {
+            "S": "Receptor-ligand structure on same cell",
+            "I": "Self-regulatory information (feedback)",
+            "F": "Minimal flow (local diffusion)"
+          },
+          "m0:examples": [
+            "Growth factors in cancer cells (self-stimulation)",
+            "T-cell activation via IL-2 (immune response)",
+            "Neurotransmitter autoreceptors (synaptic modulation)",
+            "Prostaglandins in smooth muscle (local control)"
+          ],
+          "m0:physiologicalContexts": {
+            "development": "Embryonic tissue patterning",
+            "immunity": "T-cell clonal expansion",
+            "pathology": "Tumor cell proliferation (autocrine loops)",
+            "neuroscience": "Neurotransmitter feedback inhibition"
+          },
+          "m0:tradeoffProfile": {
+            "speed": "ULTRA-FAST (milliseconds)",
+            "range": "ULTRA-LOCAL (µm)",
+            "specificity": "HIGHEST (same cell)",
+            "energyCost": "LOWEST (minimal diffusion)"
+          }
+        },
+        {
+          "@id": "m0:ParacrineSignaling",
+          "@type": "m2:Component",
+          "rdfs:label": "Paracrine Signaling",
+          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:role": "Local neighborhood signaling - affects nearby cells",
+          "m0:function": "Coordinate activity of cell populations in tissue microenvironment",
+          "m0:physicalCorrelate": "Hormone diffuses through extracellular fluid to neighboring cells",
+          "m0:spatialRange": "Local tissue microenvironment (~10 µm - 1 mm)",
+          "m0:temporalRange": "Seconds to minutes",
+          "m0:diffusionMechanism": "Concentration gradient in interstitial fluid (Fick's laws)",
+          "m0:tensorFormula": "S⊗I⊗F⊗∇ (Structure × Information × Flow × Gradient)",
+          "m0:asfidContribution": {
+            "S": "Tissue architecture enabling local diffusion",
+            "I": "Neighborhood coordination information",
+            "F": "Local flow through extracellular matrix",
+            "Gradient": "Concentration gradient drives diffusion (∇C)"
+          },
+          "m0:examples": [
+            "Prostaglandins in inflammation (local vasodilation)",
+            "Nitric oxide (NO) in blood vessels (vasodilation)",
+            "Neurotrophic factors in brain (neuron survival)",
+            "Growth factors in wound healing (fibroblast activation)"
+          ],
+          "m0:physiologicalContexts": {
+            "inflammation": "Cytokines recruit immune cells locally",
+            "neuroscience": "Synaptic transmission (neurotransmitters)",
+            "development": "Morphogen gradients (Hedgehog, BMP)",
+            "homeostasis": "Gap junctions (direct cell-cell coupling)"
+          },
+          "m0:tradeoffProfile": {
+            "speed": "FAST (seconds)",
+            "range": "LOCAL (mm)",
+            "specificity": "HIGH (neighbors only)",
+            "energyCost": "LOW (passive diffusion)"
+          },
+          "m0:gradientDynamics": {
+            "fickFirstLaw": "J = -D∇C (diffusion flux)",
+            "fickSecondLaw": "∂C/∂t = D∇²C (concentration evolution)",
+            "diffusionCoefficient": "D ~ 10⁻¹⁰ m²/s (proteins in ECM)",
+            "characteristicLength": "λ = √(Dt) ~ 100 µm for t=1s"
+          }
+        },
+        {
+          "@id": "m0:NeuroendocrineSignaling",
+          "@type": "m2:Component",
+          "rdfs:label": "Neuroendocrine Signaling",
+          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:role": "Neural-to-systemic bridge - neurons secrete hormones into bloodstream",
+          "m0:function": "Rapid neural trigger with sustained systemic endocrine effect",
+          "m0:physicalCorrelate": "Hypothalamic neurons release hormones into posterior pituitary → circulation",
+          "m0:spatialRange": "Systemic (entire body via bloodstream)",
+          "m0:temporalRange": "Seconds (neural) → Minutes to hours (endocrine)",
+          "m0:hybridNature": "Combines neural speed with endocrine range",
+          "m0:tensorFormula": "S⊗I⊗F⊗D (Structure × Information × Flow × Dynamics)",
+          "m0:asfidContribution": {
+            "S": "Hypothalamus-pituitary axis structure",
+            "I": "Neural information converted to hormonal signal",
+            "F": "Blood circulation distributes hormone systemically",
+            "D": "Rapid dynamics (neural trigger) + sustained dynamics (hormone half-life)"
+          },
+          "m0:examples": [
+            "Oxytocin release (childbirth, lactation, social bonding)",
+            "ADH/Vasopressin (water retention, blood pressure)",
+            "Adrenaline/Noradrenaline from adrenal medulla (fight-or-flight)",
+            "Growth hormone-releasing hormone (GHRH → GH)"
+          ],
+          "m0:physiologicalContexts": {
+            "stress": "HPA axis (CRH → ACTH → Cortisol)",
+            "reproduction": "GnRH → LH/FSH → sex steroids",
+            "lactation": "Suckling reflex → Oxytocin release",
+            "circadianRhythm": "SCN → Melatonin (pineal gland)"
+          },
+          "m0:tradeoffProfile": {
+            "speed": "HYBRID (seconds neural, minutes hormonal)",
+            "range": "SYSTEMIC (whole body)",
+            "specificity": "MODERATE (receptor-dependent)",
+            "energyCost": "MODERATE (neural + circulatory)"
+          },
+          "m0:uniqueFeatures": {
+            "neuralPrecision": "Targeted neural control (conscious/unconscious)",
+            "endocrineDuration": "Sustained effect via hormone half-life",
+            "bestOfBothWorlds": "Speed of neural + range of endocrine",
+            "evolutionaryAdvantage": "Rapid adaptation to environmental challenges"
+          }
+        },
+        {
+          "@id": "m0:EndocrineSignaling",
+          "@type": "m2:Component",
+          "rdfs:label": "Endocrine Signaling (Classic)",
+          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:role": "Systemic signaling - hormone travels through bloodstream to distant targets",
+          "m0:function": "Coordinate physiology across entire organism (metabolism, growth, reproduction)",
+          "m0:physicalCorrelate": "Endocrine gland secretes hormone → blood → target organs with receptors",
+          "m0:spatialRange": "Systemic (entire organism)",
+          "m0:temporalRange": "Minutes to hours (hormone half-life dependent)",
+          "m0:transportMechanism": "Blood circulation (convective transport, not diffusion)",
+          "m0:tensorFormula": "S⊗I⊗F⊗A (Structure × Information × Flow × Attractor)",
+          "m0:asfidContribution": {
+            "S": "Endocrine glands + vascular system + target organ receptors",
+            "I": "Systemic physiological information (glucose level, stress, growth)",
+            "F": "High flow via cardiovascular system (5 L/min cardiac output)",
+            "A": "Homeostatic attractors (glucose setpoint, temperature, pH)"
+          },
+          "m0:examples": [
+            "Insulin from pancreas (glucose homeostasis)",
+            "Thyroxine (T4) from thyroid (metabolic rate)",
+            "Cortisol from adrenal cortex (stress, metabolism)",
+            "Growth hormone from pituitary (growth, metabolism)",
+            "Estrogen/Testosterone from gonads (sexual characteristics)"
+          ],
+          "m0:physiologicalContexts": {
+            "metabolism": "Insulin/Glucagon (glucose), Thyroid hormones (BMR)",
+            "growth": "GH, IGF-1, Thyroid hormones",
+            "reproduction": "Sex steroids (E2, T), LH, FSH, Prolactin",
+            "stress": "Cortisol, Adrenaline",
+            "calcium": "PTH, Calcitonin, Vitamin D"
+          },
+          "m0:tradeoffProfile": {
+            "speed": "SLOW (minutes to hours)",
+            "range": "MAXIMAL (whole organism)",
+            "specificity": "VARIABLE (receptor distribution)",
+            "energyCost": "HIGHEST (synthesis, secretion, circulation)"
+          },
+          "m0:feedbackControl": {
+            "negativeLoops": "Insulin ↓ glucose → ↓ insulin secretion",
+            "positiveLoops": "Oxytocin in labor (Ferguson reflex)",
+            "hierarchical": "Hypothalamus → Pituitary → Target gland → Hormone",
+            "setpoints": "Glucose ~5 mM, Ca²⁺ ~2.5 mM, T4 ~100 nM"
+          }
+        }
+      ],
+      "m0:balancePrinciple": {
+        "metaconcept": "m2:Balance",
+        "formula": "A⊗S⊗F",
+        "description": "Physiological equilibrium achieved through context-dependent mixture of the four signaling modes. No single mode dominates universally - balance shifts according to physiological need.",
+        "contextualBalance": {
+          "baselineHomeostasis": {
+            "autocrine": "5-10% (basal cell maintenance)",
+            "paracrine": "10-20% (tissue coordination)",
+            "neuroendocrine": "10-15% (circadian, autonomic)",
+            "endocrine": "60-75% (metabolic setpoints)"
+          },
+          "acuteInflammation": {
+            "autocrine": "10% (immune cell activation)",
+            "paracrine": "70-80% (cytokines, prostaglandins dominate)",
+            "neuroendocrine": "5% (sympathetic support)",
+            "endocrine": "10% (cortisol anti-inflammatory)"
+          },
+          "acuteStress": {
+            "autocrine": "5%",
+            "paracrine": "10%",
+            "neuroendocrine": "50-60% (adrenaline, CRH→ACTH)",
+            "endocrine": "30-40% (cortisol sustained response)"
+          },
+          "woundHealing": {
+            "autocrine": "15% (fibroblast proliferation)",
+            "paracrine": "50-60% (growth factors, angiogenesis)",
+            "neuroendocrine": "5%",
+            "endocrine": "20-25% (GH, insulin support)"
+          },
+          "reproduction": {
+            "autocrine": "5%",
+            "paracrine": "15% (ovarian follicle development)",
+            "neuroendocrine": "30% (GnRH pulses)",
+            "endocrine": "50% (LH, FSH, E2, P4, T)"
+          }
+        },
+        "dynamicRebalancing": {
+          "principle": "Balance shifts within minutes (neuroendocrine) to hours (endocrine) based on physiological demand",
+          "example": "Exercise: Neuroendocrine ↑ (adrenaline) → Endocrine ↑ (cortisol, GH) → Recovery: Endocrine ↑ (insulin, IGF-1)"
+        },
+        "compensatoryMechanisms": {
+          "redundancy": "Multiple modes can achieve same goal (glucose ↑: Paracrine glucagon + Endocrine cortisol + Neuroendocrine adrenaline)",
+          "backup": "If one mode fails, others compensate (e.g., diabetes: Endocrine insulin ↓ → Paracrine GLP-1 therapies)",
+          "synergy": "Modes often work together (Neuroendocrine triggers → Endocrine sustains)"
+        }
+      },
+      "m0:tradeoffPrinciple": {
+        "metaconcept": "m2:Trade-off",
+        "oriveFormula": "R⊗V⊗E (primary)",
+        "asfidFormula": "A⊗I (fallback)",
+        "description": "Fundamental biophysical constraint: Cannot simultaneously maximize signal transmission SPEED and SPATIAL RANGE. Four modes represent optimal solutions on Pareto frontier.",
+        "fundamentalConstraint": {
+          "speedRangeLaw": "Signal transmission time ∝ (Distance)² / Diffusion_coefficient",
+          "diffusionLimit": "τ = L² / D where L=distance, D=diffusion coefficient (~10⁻¹⁰ m²/s for proteins)",
+          "implication": "To signal 1 cm (heart to brain) via diffusion alone would take ~3 hours. Blood circulation bypasses diffusion limit."
+        },
+        "paretoFrontier": "Cannot simultaneously achieve: (Speed=max, Range=max, Specificity=max, Energy_cost=min)",
+        "fourOptimalRegimes": [
+          {
+            "mode": "Autocrine",
+            "optimization": "Maximize SPEED + Specificity, Minimize Range + Energy",
+            "pareto": "Ultra-fast (ms), ultra-local (µm), ultra-specific (self)",
+            "use_case": "Rapid feedback (T-cell activation, neurotransmitter autoreceptors)"
+          },
+          {
+            "mode": "Paracrine",
+            "optimization": "Maximize Local coordination, Balance Speed/Range",
+            "pareto": "Fast (seconds), local (mm), high specificity (neighbors)",
+            "use_case": "Tissue coordination (inflammation, wound healing, synaptic transmission)"
+          },
+          {
+            "mode": "Neuroendocrine",
+            "optimization": "Maximize Speed + Range (hybrid solution)",
+            "pareto": "Fast trigger (seconds) + sustained effect (minutes-hours), systemic range",
+            "use_case": "Rapid systemic response (stress, fight-or-flight, childbirth)"
+          },
+          {
+            "mode": "Endocrine",
+            "optimization": "Maximize RANGE + Duration, Accept slow Speed",
+            "pareto": "Slow (minutes-hours), maximal range (whole body), variable specificity",
+            "use_case": "Long-term regulation (metabolism, growth, reproduction)"
+          }
+        ],
+        "decisionContexts": [
+          {
+            "scenario": "Acute Stress (Predator encounter)",
+            "priority": "Rapid systemic mobilization",
+            "choice": "Neuroendocrine dominant (Adrenaline via sympathetic-adrenal axis)",
+            "accept": "Cannot fine-tune at cellular level (systemic, broad effect)",
+            "benefit": "Immediate fight-or-flight (seconds)"
+          },
+          {
+            "scenario": "Inflammation (Tissue injury)",
+            "priority": "Local containment and repair",
+            "choice": "Paracrine dominant (Prostaglandins, Cytokines)",
+            "accept": "Limited to injury site, cannot coordinate distant organs",
+            "benefit": "Precise local control, minimal systemic side effects"
+          },
+          {
+            "scenario": "Glucose Homeostasis",
+            "priority": "Sustained whole-body metabolic regulation",
+            "choice": "Endocrine dominant (Insulin, Glucagon)",
+            "accept": "Slow response (minutes), cannot handle acute spikes well",
+            "benefit": "Coordinated multi-organ response (liver, muscle, adipose)"
+          },
+          {
+            "scenario": "Cancer Cell Proliferation",
+            "priority": "Self-sustained growth (pathological)",
+            "choice": "Autocrine loops (IGF, TGF-β)",
+            "accept": "No systemic coordination (tumor ignores body signals)",
+            "benefit": "Independence from external growth signals (pathological advantage)"
+          }
+        ],
+        "evolutionaryPerspective": {
+          "unicellular": "Autocrine/Paracrine only (bacteria, yeast quorum sensing)",
+          "simpleMulticellular": "Paracrine coordination (Cnidaria, early metazoans)",
+          "complexMetazoans": "Endocrine systems emerge (insects, vertebrates)",
+          "vertebrates": "Neuroendocrine integration (hypothalamus-pituitary axis)",
+          "innovation": "Neuroendocrine is evolutionary hack - combines pre-existing neural and endocrine systems"
+        },
+        "pathologyWhenImbalanced": {
+          "autocrine_excess": "Cancer (autocrine growth factor loops bypass regulation)",
+          "paracrine_excess": "Chronic inflammation (cytokine storms, sepsis)",
+          "neuroendocrine_dysregulation": "PTSD, anxiety disorders (HPA axis dysfunction)",
+          "endocrine_deficiency": "Diabetes (insulin), Hypothyroidism (T4), Growth disorders (GH)"
+        }
+      },
+      "m0:territorySpace": {
+        "description": "Cellular signaling as physical phenomenon (molecular transport and receptor binding)",
+        "observer": "Cells with receptors, tissues, organism",
+        "phenomenon": "Hormone/signal molecule diffusion, blood transport, receptor-ligand binding, signal transduction",
+        "physicalLaws": [
+          "Fick's laws of diffusion: J = -D∇C, ∂C/∂t = D∇²C",
+          "Mass action kinetics: d[HR]/dt = k_on[H][R] - k_off[HR]",
+          "Blood flow: Q = ΔP/R (cardiac output ~5 L/min)",
+          "Receptor saturation: Response = (R_max × [H]) / (K_d + [H])"
+        ],
+        "asfidState": {
+          "A": 0.75,
+          "S": 0.8,
+          "F": 0.9,
+          "I": 0.85,
+          "D": 0.7
+        },
+        "stateVector": "|Ω_signaling⟩ = 0.75|A⟩ + 0.80|S⟩ + 0.90|F⟩ + 0.85|I⟩ + 0.70|D⟩",
+        "justification": {
+          "A": "Moderate-high attractor - homeostatic setpoints (glucose, Ca²⁺, hormones) maintained",
+          "S": "High structure - complex multi-level organization (glands, circulation, receptors, signaling cascades)",
+          "F": "Very high flow - massive molecular flux (blood flow 5 L/min, diffusion 10¹⁰-10¹² molecules/s)",
+          "I": "High information - hormonal codes (concentration, pattern, receptor specificity, crosstalk)",
+          "D": "Moderate dynamics - timescales range from ms (autocrine) to hours (endocrine)"
+        },
+        "observables": [
+          "Hormone concentrations in blood/tissue (nM to µM range)",
+          "Receptor occupancy (% bound)",
+          "Downstream signaling (phosphorylation, gene expression)",
+          "Physiological responses (glucose level, heart rate, growth rate)",
+          "Spatial gradients (morphogen gradients in development)"
+        ]
+      },
+      "m0:mapSpace": {
+        "description": "Four-modes pedagogical model of cell signaling",
+        "observer": "Biologist / Medical student / Physiologist",
+        "model": "Categorical classification: Autocrine, Paracrine, Neuroendocrine, Endocrine",
+        "asfidState": {
+          "A": 0.8,
+          "S": 0.9,
+          "F": 0.65,
+          "I": 0.85,
+          "D": 0.55
+        },
+        "stateVector": "|M_4modes⟩ = 0.80|A⟩ + 0.90|S⟩ + 0.65|F⟩ + 0.85|I⟩ + 0.55|D⟩",
+        "justification": {
+          "A": "Strong attractor - model teaches homeostatic regulation",
+          "S": "Very high structure - 4 discrete categories with clear spatial organization (self → local → systemic)",
+          "F": "Moderate flow - conceptual, not actual molecular flow",
+          "I": "High information - encodes 4 modes + trade-offs + physiological contexts",
+          "D": "Moderate-low dynamics - static classification (doesn't show temporal evolution)"
+        },
+        "representation": {
+          "geometry": "Spectrum or Square (4 vertices)",
+          "organization": "Distance-based: Autocrine (µm) → Paracrine (mm) → Neuroendocrine (systemic, fast) → Endocrine (systemic, slow)",
+          "axes": {
+            "spatial": "Self → Local → Systemic",
+            "temporal": "Milliseconds → Seconds → Minutes → Hours"
+          }
+        }
+      },
+      "m0:epistemicGap": {
+        "formula": "ΔΘ = ‖|Ω_signaling⟩ - |M_4modes⟩‖",
+        "deltaVector": "(-0.05, -0.10, +0.25, 0.00, +0.15)",
+        "norm": "≈ 0.30",
+        "interpretation": "Moderate gap (ΔΘ ≈ 0.3) - Four-modes model is good pedagogical simplification but omits complexity",
+        "assessment": "Model captures essential distance-dependent organization but simplifies molecular mechanisms and crosstalk",
+        "majorDivergences": [
+          {
+            "dimension": "F (Flow)",
+            "divergence": "+0.25",
+            "reason": "Territory has massive molecular flux (10¹² molecules/s, 5 L/min blood); Map is abstract categories"
+          },
+          {
+            "dimension": "D (Dynamics)",
+            "divergence": "+0.15",
+            "reason": "Territory has continuous temporal dynamics; Map is static classification"
+          }
+        ],
+        "limitations": [
+          "Omits hybrid modes (e.g., juxtacrine - membrane-bound signals)",
+          "Ignores crosstalk between modes (e.g., paracrine cytokines inducing endocrine cortisol)",
+          "Simplifies receptor diversity (hundreds of GPCRs, receptor tyrosine kinases, nuclear receptors)",
+          "Doesn't model signal integration (multiple hormones converging on same pathway)",
+          "Static - doesn't show temporal evolution (pulsatile secretion, circadian rhythms)",
+          "Omits negative/positive feedback complexity"
+        ],
+        "pedagogicalStrength": "Despite limitations, excellent teaching tool - simple, memorable, transdisciplinary"
+      },
+      "m0:oriveAnalysis": {
+        "description": "Sphinx Eye evaluation of Four-Modes Model quality",
+        "perspective": "Philosophical interpretation using ORIVE basis",
+        "oriveState": {
+          "O": 0.9,
+          "R": 0.95,
+          "I": 0.85,
+          "V": 0.9,
+          "E": 0.8
+        },
+        "stateVector": "|M_4modes⟩_ORIVE = 0.90|O⟩ + 0.95|R⟩ + 0.85|I⟩ + 0.90|V⟩ + 0.80|E⟩",
+        "dimensionInterpretations": [
+          {
+            "dimension": "O (Observability)",
+            "coefficient": 0.9,
+            "interpretation": "Highly observable - Hormones measurable via immunoassays (ELISA, RIA), receptor expression via immunohistochemistry. Clinical diagnostics routinely measure insulin, cortisol, thyroid hormones. Modes visible in textbooks, research papers.",
+            "evidence": "Blood tests for hormone levels, receptor imaging (PET scans), universal in medical education"
+          },
+          {
+            "dimension": "R (Representability)",
+            "coefficient": 0.95,
+            "interpretation": "Excellently representable - Simple 4-category classification. Diagrams ubiquitous (cell with autocrine loop, paracrine diffusion arrows, endocrine gland→blood→target). Mathematical: Diffusion equations (paracrine), pharmacokinetics (endocrine).",
+            "evidence": "Standard diagrams in all physiology textbooks (Guyton, Boron & Boulpaep), clear verbal descriptions"
+          },
+          {
+            "dimension": "I (Interoperability)",
+            "coefficient": 0.85,
+            "interpretation": "Highly shareable - Classification used across disciplines (endocrinology, neuroscience, immunology, oncology). Terminology standardized globally. Research papers specify mode when describing signaling.",
+            "evidence": "PubMed searches: 'autocrine' (50k+ papers), 'paracrine' (80k+), 'endocrine' (500k+). WHO/medical standards."
+          },
+          {
+            "dimension": "V (Verifiability)",
+            "coefficient": 0.9,
+            "interpretation": "Highly verifiable - Testable via experiments: Autocrine (anti-receptor antibodies block self-signaling), Paracrine (diffusion gradients measurable), Endocrine (ablate gland → distant effect lost). Thousands of validations in literature.",
+            "evidence": "Classic experiments: Insulin injection (endocrine), NO diffusion (paracrine), cancer autocrine loops, neuroendocrine denervation studies"
+          },
+          {
+            "dimension": "E (Evolvability)",
+            "coefficient": 0.8,
+            "interpretation": "Good evolvability - Model extended: Intracrine (inside cell), Juxtacrine (membrane-bound), Exocrine (ducts, not blood). Adapted to new contexts (immune system cytokines, growth factors). Integrates with systems biology (network models).",
+            "evidence": "Intracrine androgens (prostate), Notch signaling (juxtacrine), cytokine networks (autocrine+paracrine+endocrine crosstalk)"
+          }
+        ],
+        "overallAssessment": "Excellent Map - ORIVE_mean = 0.88. Four-modes model is foundational in biology/medicine, comparable to Fire Triangle (0.85) and approaching Exposure Triangle (0.92).",
+        "mapQuality": "ORIVE_mean = 0.88 → Excellent Map quality",
+        "sphinxInsight": {
+          "question": "Why does Four-Modes model succeed as organizing framework?",
+          "answer": "Three reasons: (1) Maps cleanly onto spatial scale (self → local → systemic), aligning with human intuition. (2) Captures fundamental biophysical constraint (Speed ↔ Range trade-off). (3) Evolutionarily grounded - modes emerged sequentially (autocrine/paracrine in bacteria → endocrine in metazoans → neuroendocrine in vertebrates).",
+          "korzybskiPrinciple": "Map simplifies Territory (omits crosstalk, receptor diversity) but captures essential organizational principle (distance-dependent signaling)."
+        }
+      },
+      "m0:metaconceptsMobilized": {
+        "total": 20,
+        "critical": [
+          {
+            "metaconcept": "m2:Balance",
+            "formula": "A⊗S⊗F",
+            "role": "Physiological equilibrium between 4 modes (context-dependent mixture)",
+            "instantiation": "Inflammation: Paracrine 70% + Endocrine 20% + Autocrine 10%. Stress: Neuroendocrine 60% + Endocrine 40%.",
+            "discovery": "Validated in Cell Signaling poclet (3rd poclet after Fire + Exposure Triangle)"
+          },
+          {
+            "metaconcept": "m2:Trade-off",
+            "formula": "R⊗V⊗E (ORIVE), A⊗I (ASFID fallback)",
+            "role": "Fundamental constraint: Speed ↔ Range. Four modes are Pareto-optimal solutions.",
+            "instantiation": "Autocrine: Max speed, min range. Endocrine: Max range, min speed. Neuroendocrine: Hybrid (best of both).",
+            "discovery": "Validated in Cell Signaling poclet"
+          },
+          {
+            "metaconcept": "m2:Gradient",
+            "formula": "∇F or ∇I",
+            "role": "Concentration gradient drives paracrine diffusion (Fick's laws: J = -D∇C)",
+            "instantiation": "Morphogen gradients (Hedgehog, BMP) in development. Chemokine gradients in immune cell recruitment.",
+            "centralRole": "Paracrine mode fundamentally depends on spatial gradient"
+          },
+          {
+            "metaconcept": "m2:Component",
+            "formula": "S⊗I",
+            "role": "Four modes as elementary constitutive parts of cellular signaling",
+            "instantiation": "Autocrine, Paracrine, Neuroendocrine, Endocrine - each with distinct function"
+          },
+          {
+            "metaconcept": "m2:Signal",
+            "formula": "I⊗F",
+            "role": "Hormones as information carriers",
+            "instantiation": "Insulin signal (glucose ↓), Adrenaline signal (danger), Oxytocin signal (bonding)"
+          },
+          {
+            "metaconcept": "m2:Channel",
+            "formula": "S⊗I⊗F",
+            "role": "Blood vessels as systemic signaling channels (endocrine)",
+            "instantiation": "Cardiovascular system distributes hormones (5 L/min cardiac output)"
+          },
+          {
+            "metaconcept": "m2:Code",
+            "formula": "I⊗S⊗D",
+            "role": "Hormonal code (concentration, pattern, timing)",
+            "instantiation": "GnRH pulsatile secretion (frequency code: fast pulses → LH, slow → FSH)"
+          },
+          {
+            "metaconcept": "m2:Threshold",
+            "formula": "A⊗I",
+            "role": "Receptor activation threshold, dose-response curves",
+            "instantiation": "Insulin: EC50 ~0.1 nM. Cortisol: Threshold for stress response ~300 nM."
+          },
+          {
+            "metaconcept": "m2:Trigger",
+            "formula": "D⊗I",
+            "role": "Stimulus initiating hormonal response",
+            "instantiation": "Hypoglycemia → Glucagon release. Stress → CRH release. Suckling → Oxytocin release."
+          },
+          {
+            "metaconcept": "m2:Regulation",
+            "formula": "A⊗S⊗F",
+            "role": "Negative/positive feedback loops maintaining homeostasis",
+            "instantiation": "HPA axis: Cortisol ⊣ CRH/ACTH (negative feedback). Oxytocin in labor: Stretch → Oxytocin ↑ (positive feedback)."
+          },
+          {
+            "metaconcept": "m2:Homeostasis",
+            "formula": "A⊗S⊗F",
+            "role": "Stable internal state despite external perturbations",
+            "instantiation": "Glucose 4-6 mM (insulin/glucagon). Ca²⁺ 2.2-2.6 mM (PTH/calcitonin). Temp 37°C (thyroid)."
+          },
+          {
+            "metaconcept": "m2:Synergy",
+            "formula": "A⊗S⊗I",
+            "role": "Multiple hormones cooperating (effect > sum of parts)",
+            "instantiation": "GH + IGF-1 (growth). Insulin + cortisol (metabolism). E2 + P4 (menstrual cycle)."
+          },
+          {
+            "metaconcept": "m2:Network",
+            "formula": "S⊗I⊗F",
+            "role": "Signaling pathways as networks (crosstalk, feedback loops)",
+            "instantiation": "HPA axis network, Insulin signaling cascade (IRS → PI3K → Akt), Cytokine networks (immune)."
+          },
+          {
+            "metaconcept": "m2:Space",
+            "formula": "S⊗I",
+            "role": "Spatial domains (intracellular, extracellular, systemic)",
+            "instantiation": "Autocrine: Cell surface. Paracrine: ECM. Endocrine: Vascular space."
+          },
+          {
+            "metaconcept": "m2:Constraint",
+            "formula": "S⊗I",
+            "role": "Physical limits (diffusion rate, blood flow, receptor affinity)",
+            "instantiation": "Diffusion: L²/D ~ hours for cm scale. Blood flow: 5 L/min max. Receptor Kd: 0.1 nM - 1 µM."
+          },
+          {
+            "metaconcept": "m2:Transformation",
+            "formula": "D⊗I⊗S",
+            "role": "Hormone metabolism (pro-hormone → active → inactive)",
+            "instantiation": "T4 → T3 (thyroid). Testosterone → DHT (5α-reductase). Cortisone → Cortisol (11β-HSD)."
+          },
+          {
+            "metaconcept": "m2:Process",
+            "formula": "D⊗F",
+            "role": "Signaling as temporal process (secretion → transport → binding → response)",
+            "instantiation": "Insulin secretion → blood → muscle glucose uptake (minutes). GH → IGF-1 → growth (hours-days)."
+          },
+          {
+            "metaconcept": "m2:Event",
+            "formula": "D⊗I",
+            "role": "Discrete hormonal events (spikes, pulses)",
+            "instantiation": "LH surge (ovulation). Cortisol awakening response. Oxytocin pulses (labor contractions)."
+          },
+          {
+            "metaconcept": "m2:Memory",
+            "formula": "∫(D - F)dτ",
+            "role": "Long-term hormonal effects (gene expression changes, receptor desensitization)",
+            "instantiation": "Puberty (permanent developmental changes via sex steroids). Receptor downregulation after chronic stimulation."
+          },
+          {
+            "metaconcept": "m2:Language",
+            "formula": "I⊗S⊗F",
+            "role": "Hormonal vocabulary and notation",
+            "instantiation": "'Autocrine loop', 'Paracrine factor', 'Endocrine axis', 'Neuroendocrine reflex'. Abbreviations: GH, ACTH, T4, E2."
+          }
+        ],
+        "byCategory": {
+          "Structural": [
+            "Component",
+            "Network",
+            "Space"
+          ],
+          "Informational": [
+            "Signal",
+            "Channel",
+            "Code",
+            "Language"
+          ],
+          "Regulatory": [
+            "Balance (NEW)",
+            "Trade-off (NEW)",
+            "Regulation",
+            "Homeostasis",
+            "Constraint",
+            "Threshold",
+            "Trigger"
+          ],
+          "Dynamic": [
+            "Process",
+            "Event",
+            "Transformation",
+            "Memory"
+          ],
+          "Relational": [
+            "Synergy"
+          ],
+          "Ontological": [
+            "Gradient (CENTRAL)"
+          ]
+        }
+      },
+      "m0:analogyToFireAndExposureTriangles": {
+        "structuralComparison": {
+          "components": {
+            "FireTriangle": "3 (Fuel, O₂, Heat)",
+            "ExposureTriangle": "3 (ISO, Aperture, Shutter)",
+            "CellSignaling": "4 (Autocrine, Paracrine, Neuroendocrine, Endocrine)"
+          },
+          "geometry": {
+            "FireTriangle": "Triangle (3 vertices)",
+            "ExposureTriangle": "Triangle (3 vertices)",
+            "CellSignaling": "Square/Spectrum (4 vertices, linear distance ordering)"
+          },
+          "organizingPrinciple": {
+            "FireTriangle": "Chemical reaction requirements (all 3 necessary)",
+            "ExposureTriangle": "Light capture parameters (compensatory balance)",
+            "CellSignaling": "Distance-dependent signaling (spatial scale)"
+          }
+        },
+        "metaconceptComparison": {
+          "Balance": {
+            "FireTriangle": "Implicit (fuel/O₂ ratio for complete combustion)",
+            "ExposureTriangle": "Explicit (ISO × Aperture × Shutter = const)",
+            "CellSignaling": "Explicit (context-dependent mode mixture)"
+          },
+          "Trade-off": {
+            "FireTriangle": "Not prominent",
+            "ExposureTriangle": "Central (DoF ↔ Grain ↔ Motion Blur)",
+            "CellSignaling": "Central (Speed ↔ Range)"
+          },
+          "Synergy": {
+            "FireTriangle": "Central (fire emerges from chemical reaction)",
+            "ExposureTriangle": "Present (exposure emerges from parameter product)",
+            "CellSignaling": "Present (modes cooperate: neuroendocrine triggers + endocrine sustains)"
+          }
+        },
+        "oriveComparison": {
+          "FireTriangle": "0.85 (Excellent)",
+          "ExposureTriangle": "0.92 (Exceptional)",
+          "CellSignaling": "0.88 (Excellent)"
+        },
+        "pedagogy": {
+          "all": "Universal teaching tools in their respective domains",
+          "FireTriangle": "Fire safety worldwide",
+          "ExposureTriangle": "Photography education worldwide",
+          "CellSignaling": "Endocrinology/physiology education worldwide"
+        },
+        "evolution": {
+          "FireTriangle": "Triangle → Tetrahedron (+ chain reaction)",
+          "ExposureTriangle": "Triangle → Square? (+ scene luminance)",
+          "CellSignaling": "4-modes → 6-modes? (+ Intracrine, Juxtacrine already proposed)"
+        }
+      },
+      "m0:transdisciplinaryAnalogies": {
+        "totalDomains": 8,
+        "analogies": [
+          {
+            "domain": "Neuroscience",
+            "system": "Neurotransmission modes",
+            "components": {
+              "autocrine": "Autoreceptor feedback (same neuron)",
+              "paracrine": "Synaptic transmission (neuron → neuron)",
+              "neuroendocrine": "Neurohormones (hypothalamus → blood)",
+              "volume_transmission": "Non-synaptic diffusion (like paracrine)"
+            },
+            "tradeoff": "Precision ↔ Broadcast (synapse vs volume transmission)"
+          },
+          {
+            "domain": "Immunology",
+            "system": "Immune cell communication",
+            "components": {
+              "autocrine": "IL-2 autocrine loop (T-cell self-stimulation)",
+              "paracrine": "Cytokines between immune cells (IL-1, TNF-α)",
+              "neuroendocrine": "Sympathetic nervous system → immune modulation",
+              "endocrine": "Cortisol systemic immunosuppression"
+            },
+            "tradeoff": "Local inflammation control ↔ Systemic immune response"
+          },
+          {
+            "domain": "Social Networks",
+            "system": "Information diffusion",
+            "components": {
+              "autocrine": "Self-talk, private notes (individual reflection)",
+              "paracrine": "Direct messages, mentions (peer-to-peer)",
+              "neuroendocrine": "Influencer amplification (rapid → viral)",
+              "endocrine": "Broadcast media (TV, radio, mass distribution)"
+            },
+            "tradeoff": "Privacy + Control ↔ Reach + Influence"
+          },
+          {
+            "domain": "Telecommunications",
+            "system": "Network communication layers",
+            "components": {
+              "autocrine": "Localhost, loopback (127.0.0.1)",
+              "paracrine": "LAN (Local Area Network)",
+              "neuroendocrine": "WAN with CDN (fast edge nodes → global)",
+              "endocrine": "Internet backbone (global routing)"
+            },
+            "tradeoff": "Latency ↔ Coverage (local vs global network)"
+          },
+          {
+            "domain": "Ecology",
+            "system": "Chemical signaling in organisms",
+            "components": {
+              "autocrine": "Quorum sensing (bacteria sense own population density)",
+              "paracrine": "Pheromones within colony (ants trail markers)",
+              "neuroendocrine": "Alarm pheromones (rapid dissemination)",
+              "endocrine": "Interspecies chemical signals (plants → insects)"
+            },
+            "tradeoff": "Specificity ↔ Range (intraspecies vs interspecies)"
+          },
+          {
+            "domain": "Computer Science",
+            "system": "Inter-Process Communication (IPC)",
+            "components": {
+              "autocrine": "Thread-local storage (same process)",
+              "paracrine": "Shared memory, pipes (local processes)",
+              "neuroendocrine": "Message queues (async, potentially distributed)",
+              "endocrine": "REST APIs, microservices (network-wide)"
+            },
+            "tradeoff": "Performance ↔ Scalability (local vs distributed)"
+          },
+          {
+            "domain": "Urban Planning",
+            "system": "Transportation modes",
+            "components": {
+              "autocrine": "Walking within building (self-contained)",
+              "paracrine": "Cycling in neighborhood (local, short-range)",
+              "neuroendocrine": "Cars on highways (fast, city-wide)",
+              "endocrine": "Trains, planes (long-distance, systemic)"
+            },
+            "tradeoff": "Speed ↔ Flexibility (walking vs trains)"
+          },
+          {
+            "domain": "Economics",
+            "system": "Market structures",
+            "components": {
+              "autocrine": "Self-consumption (subsistence farming)",
+              "paracrine": "Local markets, C2C (peer trade)",
+              "neuroendocrine": "B2C e-commerce (fast digital → physical delivery)",
+              "endocrine": "Global supply chains, B2B (systemic trade)"
+            },
+            "tradeoff": "Transaction cost ↔ Market access (local vs global trade)"
+          }
+        ]
+      },
+      "m0:validation": {
+        "asfidCompleteness": "All 5 dimensions present ✅",
+        "metaconceptCoverage": "20 metaconcepts (36%) including Balance + Trade-off + Gradient ✅",
+        "minimality": "Four components (irreducible for distance-dependent signaling classification) ✅",
+        "emergence": "Physiological coordination emerges from mode balance ✅",
+        "balanceValidated": "Third poclet validating Balance (after Fire + Exposure) ✅",
+        "tradeoffValidated": "Speed ↔ Range fundamental biophysical constraint ✅",
+        "gradientCentral": "Gradient metaconcept (M2) plays central role in paracrine mode ✅",
+        "transdisciplinaryPotential": "8 domains with analogous communication modes ✅"
+      },
+      "m0:futureExtensions": {
+        "additionalModes": {
+          "intracrine": "Hormone acts inside cell that produced it (e.g., intracellular steroid receptors)",
+          "juxtacrine": "Membrane-bound signals (e.g., Notch-Delta, cell-cell contact required)",
+          "exocrine": "Secretion via ducts, not blood (e.g., digestive enzymes, sweat)"
+        },
+        "molecularDetail": {
+          "receptors": "GPCRs, Receptor Tyrosine Kinases, Nuclear Receptors, Ion channels",
+          "secondMessengers": "cAMP, Ca²⁺, IP3, DAG (intracellular signaling cascades)",
+          "geneExpression": "Transcription factors (CREB, NF-κB, STATs)"
+        },
+        "systemsBiology": {
+          "networks": "Signaling pathway networks (KEGG, Reactome databases)",
+          "modeling": "ODE models, agent-based models, spatial-temporal PDE models",
+          "crosstalk": "Multi-hormone integration (insulin + cortisol + GH → metabolism)"
+        },
+        "pathology": {
+          "cancer": "Autocrine growth factor loops (EGFR, IGF-1R)",
+          "diabetes": "Insulin resistance (endocrine dysfunction)",
+          "autoimmune": "Cytokine dysregulation (paracrine + endocrine imbalance)"
+        }
+      },
+      "rdfs:seeAlso": [
+        {
+          "@id": "m0:FireTriangle",
+          "note": "Analogous pedagogical triangle (3 components, synergy dominant)"
+        },
+        {
+          "@id": "m0:ExposureTriangle",
+          "note": "Analogous pedagogical triangle (3 components, balance + trade-off dominant)"
+        }
+      ],
+      "dcterms:references": [
+        "Guyton, A. C., & Hall, J. E. (2015). Textbook of Medical Physiology (13th ed.)",
+        "Boron, W. F., & Boulpaep, E. L. (2016). Medical Physiology (3rd ed.)",
+        "Alberts, B., et al. (2014). Molecular Biology of the Cell (6th ed.) - Chapter 15: Cell Signaling",
+        "Lodish, H., et al. (2016). Molecular Cell Biology (8th ed.) - Chapter 16: Signaling Pathways",
+        "Norris, D. O., & Carr, J. A. (2013). Vertebrate Endocrinology (5th ed.)",
+        "Hadley, M. E., & Levine, J. E. (2006). Endocrinology (6th ed.)"
+      ]
+    }
+  ]
+}
