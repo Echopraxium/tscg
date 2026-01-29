@@ -4,9 +4,9 @@
     "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
-	"rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-	"m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts_Ontology.jsonld#",
-	"m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
     "m3:eagle_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
     "m3:sphinx_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#"
   },
@@ -107,23 +107,14 @@
         "m2:hybridPolarity": 1
       },
       "m2:changelog": {
-        "v14.3.0": {
-          "date": "2026-01-28",
+        "v14.1.0": {
+          "date": "2026-01-29",
           "changes": [
-            "MAJOR ARCHITECTURAL ENHANCEMENT: Sequential/temporal metaconcepts family",
-            "NEW METACONCEPTS (5 total): Behavior, Tropism, Workflow, Step, Action",
-            "Behavior (S⊗D⊗F): Network of Steps, dual polarity, decomposes into Steps",
-            "Tropism (A⊗S⊗D⊗F): Gradient-directed Behavior, subClassOf Behavior, dual directional polarity",
-            "Workflow (S⊗D⊗F): Prescriptive Process implementation, dual structural/executory facets",
-            "Step (S⊗I⊗D): Temporal Node, subClassOf Node, triggers Actions",
-            "Action (D⊗I): Atomic operation, triggered by Step",
-            "Total metaconcepts: 60 → 65 (+5)",
-            "Dual polarity metaconcepts: 6 → 11 (+5)",
-            "Hierarchy established: Behavior ⊃ Tropism, Node ⊃ Step",
-            "Relations formalized: Behavior→Step (decomposedInto), Step→Action (triggers), Workflow→Process (implementsProcess)",
-            "Validated across poclets: Butterfly (6 Steps), BloodPressure (5 effector Actions), MagicColorWheel (workflow structure)",
-            "Bridges gap between pure temporal (Process) and pure structural (Network) metaconcepts",
-            "Added m3:ontologyCategory: TransdisciplinaryMetaConcepts to M2 ontology metadata"
+            "ENCODING: All tensor formulas corrected (¢ → ⊗)",
+            "TRIPLE REP: tensorFormulaTeX (LaTeX) + tensorFormulaASCII added",
+            "NEW: ValueSpace metaconcept (O⊗R⊗I⊗V⊗E)",
+            "TOTAL: 61 metaconcepts",
+            "Previous changelog: git history"
           ]
         }
       },
@@ -331,7 +322,7 @@
       "rdfs:label": "Homeostasis",
       "rdfs:comment": "Self-regulation maintaining stable internal state despite external perturbations.",
       "m2:hasCategory": "m2:Regulatory",
-      "m2:hasTensorFormula": "A¢ ¢S¢ ¢F",
+      "m2:hasTensorFormula": "A⊗S⊗F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Structure",
@@ -363,7 +354,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "A \\otimes S \\otimes F",
+      "m2:hasTensorFormulaASCII": "A (x) S (x) F"
     },
     {
       "@id": "m2:Resilience",
@@ -374,7 +367,7 @@
       "rdfs:label": "Resilience",
       "rdfs:comment": "Capacity to absorb disturbances while retaining fundamental structure and function.",
       "m2:hasCategory": "m2:Adaptive",
-      "m2:hasTensorFormula": "A¢ ¢S",
+      "m2:hasTensorFormula": "A⊗S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Structure"
@@ -391,7 +384,9 @@
         "formula": "A¢ ¢S",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "A \\otimes S",
+      "m2:hasTensorFormulaASCII": "A (x) S"
     },
     {
       "@id": "m2:Adaptation",
@@ -402,7 +397,7 @@
       "rdfs:label": "Adaptation",
       "rdfs:comment": "Progressive modification of structure or behavior in response to environmental changes.",
       "m2:hasCategory": "m2:Adaptive",
-      "m2:hasTensorFormula": "I¢ ¢F¢ ¢D",
+      "m2:hasTensorFormula": "I⊗F⊗D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Flow",
@@ -420,7 +415,9 @@
         "formula": "I¢ ¢F¢ ¢D",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "I \\otimes F \\otimes D",
+      "m2:hasTensorFormulaASCII": "I (x) F (x) D"
     },
     {
       "@id": "m2:Emergence",
@@ -431,7 +428,7 @@
       "rdfs:label": "Emergence",
       "rdfs:comment": "Appearance of novel properties at system level not predictable from components alone.",
       "m2:hasCategory": "m2:Adaptive",
-      "m2:hasTensorFormula": "I¢ ¢S¢ ¢D",
+      "m2:hasTensorFormula": "I⊗S⊗D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure",
@@ -449,7 +446,9 @@
         "formula": "I¢ ¢S¢ ¢D",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "I \\otimes S \\otimes D",
+      "m2:hasTensorFormulaASCII": "I (x) S (x) D"
     },
     {
       "@id": "m2:Dissipation",
@@ -460,7 +459,7 @@
       "rdfs:label": "Dissipation",
       "rdfs:comment": "Irreversible energy degradation and entropy production.",
       "m2:hasCategory": "m2:Energetic",
-      "m2:hasTensorFormula": "F¢ ¢D",
+      "m2:hasTensorFormula": "F⊗D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Dynamics"
@@ -477,7 +476,9 @@
         "formula": "F¢ ¢D",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "F \\otimes D",
+      "m2:hasTensorFormulaASCII": "F (x) D"
     },
     {
       "@id": "m2:Regulation",
@@ -488,7 +489,7 @@
       "rdfs:label": "Regulation",
       "rdfs:comment": "Control mechanisms maintaining system parameters within acceptable ranges.",
       "m2:hasCategory": "m2:Regulatory",
-      "m2:hasTensorFormula": "A¢ ¢S¢ ¢F",
+      "m2:hasTensorFormula": "A⊗S⊗F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Structure",
@@ -520,7 +521,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "A \\otimes S \\otimes F",
+      "m2:hasTensorFormulaASCII": "A (x) S (x) F"
     },
     {
       "@id": "m2:Memory",
@@ -531,7 +534,7 @@
       "rdfs:label": "Memory",
       "rdfs:comment": "Retention of past states influencing current behavior through temporal integration.",
       "m2:hasCategory": "m2:Adaptive",
-      "m2:hasTensorFormula": "¢«(D - F)d¢¾",
+      "m2:hasTensorFormula": "D⊗F⊗D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow"
@@ -548,7 +551,9 @@
         "formula": "¢«(D - F)d¢¾",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "D \\otimes F \\otimes D",
+      "m2:hasTensorFormulaASCII": "D (x) F (x) D"
     },
     {
       "@id": "m2:Constraint",
@@ -559,7 +564,7 @@
       "rdfs:label": "Constraint",
       "rdfs:comment": "Restriction on possible system states or trajectories, limiting degrees of freedom.",
       "m2:hasCategory": "m2:Regulatory",
-      "m2:hasTensorFormula": "S¢ ¢I",
+      "m2:hasTensorFormula": "S⊗I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
@@ -576,7 +581,9 @@
         "formula": "S¢ ¢I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I",
+      "m2:hasTensorFormulaASCII": "S (x) I"
     },
     {
       "@id": "m2:Bifurcation",
@@ -587,7 +594,7 @@
       "rdfs:label": "Bifurcation",
       "rdfs:comment": "Qualitative change in system behavior at critical parameter threshold.",
       "m2:hasCategory": "m2:Dynamic",
-      "m2:hasTensorFormula": "¢¢¡D/¢¢¡F",
+      "m2:hasTensorFormula": "⊗¡D/⊗¡F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow"
@@ -604,7 +611,9 @@
         "formula": "¢¢¡D/¢¢¡F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": " \\otimes ¡D/ \\otimes ¡F",
+      "m2:hasTensorFormulaASCII": " (x) ¡D/ (x) ¡F"
     },
     {
       "@id": "m2:Hierarchy",
@@ -615,7 +624,7 @@
       "rdfs:label": "Hierarchy",
       "rdfs:comment": "Nested levels of organization with vertical control relations.",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "S¢ ¢A",
+      "m2:hasTensorFormula": "S⊗A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Attractor"
@@ -646,7 +655,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes A",
+      "m2:hasTensorFormulaASCII": "S (x) A"
     },
     {
       "@id": "m2:Network",
@@ -657,7 +668,7 @@
       "rdfs:label": "Network",
       "rdfs:comment": "Set of nodes connected by edges enabling distributed interactions.",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "S¢ ¢I¢ ¢F",
+      "m2:hasTensorFormula": "S⊗I⊗F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
@@ -689,7 +700,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes F",
+      "m2:hasTensorFormulaASCII": "S (x) I (x) F"
     },
     {
       "@id": "m2:Symmetry",
@@ -741,7 +754,7 @@
       "rdfs:label": "Modularity",
       "rdfs:comment": "Decomposition into semi-independent functional units.",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "S¢ ¢I",
+      "m2:hasTensorFormula": "S⊗I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
@@ -772,7 +785,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I",
+      "m2:hasTensorFormulaASCII": "S (x) I"
     },
     {
       "@id": "m2:Topology",
@@ -783,7 +798,7 @@
       "rdfs:label": "Topology",
       "rdfs:comment": "Classification of structural properties preserved under continuous deformations: connectivity, compactness, genus. Captures the TYPE or CLASS of structure independent of metric, enabling structural pattern recognition across domains.",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "S¢ ¢I",
+      "m2:hasTensorFormula": "S⊗I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
@@ -810,7 +825,9 @@
         "formula": "S¢ ¢I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I",
+      "m2:hasTensorFormulaASCII": "S (x) I"
     },
     {
       "@id": "m2:Segmentation",
@@ -821,7 +838,7 @@
       "rdfs:label": "Segmentation",
       "rdfs:comment": "Partition of a whole into homogeneous segments according to similarity, continuity, or structural criteria. Analytical decomposition producing distinct but exhaustive regions (vs functional decomposition in Modularity).",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "S¢ ¢I¢ ¢D",
+      "m2:hasTensorFormula": "S⊗I⊗D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
@@ -848,7 +865,9 @@
         "formula": "S¢ ¢I¢ ¢D",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes D",
+      "m2:hasTensorFormulaASCII": "S (x) I (x) D"
     },
     {
       "@id": "m2:Transformation",
@@ -859,7 +878,7 @@
       "rdfs:label": "Transformation",
       "rdfs:comment": "Fundamental change in system state, structure, or identity.",
       "m2:hasCategory": "m2:Dynamic",
-      "m2:hasTensorFormula": "D¢ ¢S¢ ¢I",
+      "m2:hasTensorFormula": "D⊗S⊗I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Structure",
@@ -877,7 +896,9 @@
         "formula": "D¢ ¢S¢ ¢I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "D \\otimes S \\otimes I",
+      "m2:hasTensorFormulaASCII": "D (x) S (x) I"
     },
     {
       "@id": "m2:Code",
@@ -888,7 +909,7 @@
       "rdfs:label": "Code",
       "rdfs:comment": "System of rules for systematic transformation between domains.",
       "m2:hasCategory": "m2:Informational",
-      "m2:hasTensorFormula": "I¢ ¢S",
+      "m2:hasTensorFormula": "I⊗S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure"
@@ -919,7 +940,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "I \\otimes S",
+      "m2:hasTensorFormulaASCII": "I (x) S"
     },
     {
       "@id": "m2:Coding",
@@ -930,7 +953,7 @@
       "rdfs:label": "Coding (Encoding/Decoding)",
       "rdfs:comment": "Bidirectional transformation between information and coded representation.",
       "m2:hasCategory": "m2:Informational",
-      "m2:hasTensorFormula": "I¢ ¢S¢ ¢D",
+      "m2:hasTensorFormula": "I⊗S⊗D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure",
@@ -976,7 +999,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "I \\otimes S \\otimes D",
+      "m2:hasTensorFormulaASCII": "I (x) S (x) D"
     },
     {
       "@id": "m2:Representation",
@@ -987,7 +1012,7 @@
       "rdfs:label": "Representation",
       "rdfs:comment": "Mapping between domains preserving structural relationships.",
       "m2:hasCategory": "m2:Informational",
-      "m2:hasTensorFormula": "I¢ ¢S",
+      "m2:hasTensorFormula": "I⊗S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure"
@@ -1013,7 +1038,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "I \\otimes S",
+      "m2:hasTensorFormulaASCII": "I (x) S"
     },
     {
       "@id": "m2:Language",
@@ -1024,7 +1051,7 @@
       "rdfs:label": "Language",
       "rdfs:comment": "Structured system for information exchange and meaning construction.",
       "m2:hasCategory": "m2:Informational",
-      "m2:hasTensorFormula": "I¢ ¢S¢ ¢F",
+      "m2:hasTensorFormula": "I⊗S⊗F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure",
@@ -1051,7 +1078,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "I \\otimes S \\otimes F",
+      "m2:hasTensorFormulaASCII": "I (x) S (x) F"
     },
     {
       "@id": "m2:Process",
@@ -1062,7 +1091,7 @@
       "rdfs:label": "Process",
       "rdfs:comment": "Sequence of state changes over time.",
       "m2:hasCategory": "m2:Dynamic",
-      "m2:hasTensorFormula": "D¢ ¢F",
+      "m2:hasTensorFormula": "D⊗F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow"
@@ -1080,7 +1109,9 @@
         "formula": "D¢ ¢F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "D \\otimes F",
+      "m2:hasTensorFormulaASCII": "D (x) F"
     },
     {
       "@id": "m2:Event",
@@ -1091,7 +1122,7 @@
       "rdfs:label": "Event",
       "rdfs:comment": "Discrete occurrence with temporal localization.",
       "m2:hasCategory": "m2:Dynamic",
-      "m2:hasTensorFormula": "D¢ ¢I",
+      "m2:hasTensorFormula": "D⊗I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information"
@@ -1109,7 +1140,9 @@
         "formula": "D¢ ¢I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "D \\otimes I",
+      "m2:hasTensorFormulaASCII": "D (x) I"
     },
     {
       "@id": "m2:Threshold",
@@ -1120,7 +1153,7 @@
       "rdfs:label": "Threshold",
       "rdfs:comment": "Critical value triggering qualitative change in system behavior.",
       "m2:hasCategory": "m2:Regulatory",
-      "m2:hasTensorFormula": "A¢ ¢I",
+      "m2:hasTensorFormula": "A⊗I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information"
@@ -1138,7 +1171,9 @@
         "formula": "A¢ ¢I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "A \\otimes I",
+      "m2:hasTensorFormulaASCII": "A (x) I"
     },
     {
       "@id": "m2:Trigger",
@@ -1149,7 +1184,7 @@
       "rdfs:label": "Trigger",
       "rdfs:comment": "Initiating stimulus for process activation.",
       "m2:hasCategory": "m2:Regulatory",
-      "m2:hasTensorFormula": "D¢ ¢I",
+      "m2:hasTensorFormula": "D⊗I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information"
@@ -1167,7 +1202,9 @@
         "formula": "D¢ ¢I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "D \\otimes I",
+      "m2:hasTensorFormulaASCII": "D (x) I"
     },
     {
       "@id": "m2:System",
@@ -1178,7 +1215,7 @@
       "rdfs:label": "System",
       "rdfs:comment": "Organized set of interacting components with defined boundary.",
       "m2:hasCategory": "m2:Ontological",
-      "m2:hasTensorFormula": "S¢ ¢F",
+      "m2:hasTensorFormula": "S⊗F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Flow"
@@ -1196,7 +1233,9 @@
         "formula": "S¢ ¢F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes F",
+      "m2:hasTensorFormulaASCII": "S (x) F"
     },
     {
       "@id": "m2:Environment",
@@ -1207,7 +1246,7 @@
       "rdfs:label": "Environment",
       "rdfs:comment": "External context with which system exchanges matter, energy, information.",
       "m2:hasCategory": "m2:Ontological",
-      "m2:hasTensorFormula": "F¢ ¢I",
+      "m2:hasTensorFormula": "F⊗I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information"
@@ -1225,7 +1264,9 @@
         "formula": "F¢ ¢I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "F \\otimes I",
+      "m2:hasTensorFormulaASCII": "F (x) I"
     },
     {
       "@id": "m2:Observer",
@@ -1236,7 +1277,7 @@
       "rdfs:label": "Observer",
       "rdfs:comment": "Entity performing measurement or interpretation of system state.",
       "m2:hasCategory": "m2:Ontological",
-      "m2:hasTensorFormula": "I¢ ¢A",
+      "m2:hasTensorFormula": "I⊗A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Attractor"
@@ -1262,7 +1303,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "I \\otimes A",
+      "m2:hasTensorFormulaASCII": "I (x) A"
     },
     {
       "@id": "m2:State",
@@ -1301,7 +1344,7 @@
       "rdfs:label": "Substrate",
       "rdfs:comment": "Material or informational support enabling system existence.",
       "m2:hasCategory": "m2:Ontological",
-      "m2:hasTensorFormula": "S¢ ¢F",
+      "m2:hasTensorFormula": "S⊗F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Flow"
@@ -1319,7 +1362,9 @@
         "formula": "S¢ ¢F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes F",
+      "m2:hasTensorFormulaASCII": "S (x) F"
     },
     {
       "@id": "m2:Gradient",
@@ -1330,7 +1375,7 @@
       "rdfs:label": "Gradient",
       "rdfs:comment": "Spatial or temporal variation creating driving force for flows.",
       "m2:hasCategory": "m2:Ontological",
-      "m2:hasTensorFormula": "¢¢¡F or ¢¢¡I",
+      "m2:hasTensorFormula": "⊗¡F or ⊗¡I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information"
@@ -1348,7 +1393,9 @@
         "formula": "¢¢¡F or ¢¢¡I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": " \\otimes ¡F or  \\otimes ¡I",
+      "m2:hasTensorFormulaASCII": " (x) ¡F or  (x) ¡I"
     },
     {
       "@id": "m2:Invariant",
@@ -1359,7 +1406,7 @@
       "rdfs:label": "Invariant",
       "rdfs:comment": "Property unchanged under specific transformations or operations.",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "S¢ ¢A",
+      "m2:hasTensorFormula": "S⊗A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Attractor"
@@ -1385,7 +1432,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes A",
+      "m2:hasTensorFormulaASCII": "S (x) A"
     },
     {
       "@id": "m2:Signature",
@@ -1396,7 +1445,7 @@
       "rdfs:label": "Signature",
       "rdfs:comment": "Characteristic pattern enabling unique identification.",
       "m2:hasCategory": "m2:Informational",
-      "m2:hasTensorFormula": "I¢ ¢S",
+      "m2:hasTensorFormula": "I⊗S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure"
@@ -1428,7 +1477,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "I \\otimes S",
+      "m2:hasTensorFormulaASCII": "I (x) S"
     },
     {
       "@id": "m2:Signal",
@@ -1439,7 +1490,7 @@
       "rdfs:label": "Signal",
       "rdfs:comment": "Carrier of information through space or time, enabling communication between system components.",
       "m2:hasCategory": "m2:Informational",
-      "m2:hasTensorFormula": "I¢ ¢F",
+      "m2:hasTensorFormula": "I⊗F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Flow"
@@ -1458,7 +1509,9 @@
         "formula": "I¢ ¢F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "I \\otimes F",
+      "m2:hasTensorFormulaASCII": "I (x) F"
     },
     {
       "@id": "m2:Self-Organization",
@@ -1469,7 +1522,7 @@
       "rdfs:label": "Self-Organization",
       "rdfs:comment": "Spontaneous emergence of ordered patterns without external direction.",
       "m2:hasCategory": "m2:Teleonomic",
-      "m2:hasTensorFormula": "A¢ ¢I¢ ¢D",
+      "m2:hasTensorFormula": "A⊗I⊗D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information",
@@ -1488,7 +1541,9 @@
         "formula": "A¢ ¢I¢ ¢D",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "A \\otimes I \\otimes D",
+      "m2:hasTensorFormulaASCII": "A (x) I (x) D"
     },
     {
       "@id": "m2:Synergy",
@@ -1499,7 +1554,7 @@
       "rdfs:label": "Synergy (Positive/Negative)",
       "rdfs:comment": "Combined effect differing from sum of individual effects (enhancement or inhibition).",
       "m2:hasCategory": "m2:Dynamic",
-      "m2:hasTensorFormula": "I¢ ¢D",
+      "m2:hasTensorFormula": "I⊗D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Dynamics"
@@ -1543,7 +1598,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "I \\otimes D",
+      "m2:hasTensorFormulaASCII": "I (x) D"
     },
     {
       "@id": "m2:Fusion",
@@ -1554,7 +1611,7 @@
       "rdfs:label": "Fusion (Fusion/Fission)",
       "rdfs:comment": "Union or separation of entities.",
       "m2:hasCategory": "m2:Dynamic",
-      "m2:hasTensorFormula": "S¢ ¢D",
+      "m2:hasTensorFormula": "S⊗D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Dynamics"
@@ -1600,7 +1657,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes D",
+      "m2:hasTensorFormulaASCII": "S (x) D"
     },
     {
       "@id": "m2:Activation",
@@ -1611,7 +1670,7 @@
       "rdfs:label": "Activation (Activation/Inhibition)",
       "rdfs:comment": "Enabling or blocking of processes or pathways.",
       "m2:hasCategory": "m2:Regulatory",
-      "m2:hasTensorFormula": "A¢ ¢D",
+      "m2:hasTensorFormula": "A⊗D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Dynamics"
@@ -1655,7 +1714,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "A \\otimes D",
+      "m2:hasTensorFormulaASCII": "A (x) D"
     },
     {
       "@id": "m2:Convergence",
@@ -1666,7 +1727,7 @@
       "rdfs:label": "Convergence (Convergence/Divergence)",
       "rdfs:comment": "Focusing or dispersing of flows, trajectories, or information.",
       "m2:hasCategory": "m2:Dynamic",
-      "m2:hasTensorFormula": "-¢¢¡·D (convergence) / ¢¢¡·D (divergence)",
+      "m2:hasTensorFormula": "-⊗¡·D (convergence) / ⊗¡·D (divergence)",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow"
@@ -1710,7 +1771,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "- \\otimes ¡·D (convergence) /  \\otimes ¡·D (divergence)",
+      "m2:hasTensorFormulaASCII": "- (x) ¡·D (convergence) /  (x) ¡·D (divergence)"
     },
     {
       "@id": "m2:Storage",
@@ -1721,7 +1784,7 @@
       "rdfs:label": "Storage",
       "rdfs:comment": "Function of retaining and accumulating matter, energy, or information.",
       "m2:hasCategory": "m2:Energetic",
-      "m2:hasTensorFormula": "S¢ ¢F",
+      "m2:hasTensorFormula": "S⊗F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Flow"
@@ -1740,7 +1803,9 @@
         "formula": "S¢ ¢F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes F",
+      "m2:hasTensorFormulaASCII": "S (x) F"
     },
     {
       "@id": "m2:Capacity",
@@ -1751,7 +1816,7 @@
       "rdfs:label": "Capacity",
       "rdfs:comment": "Upper structural limit or maximal potential of system.",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "S¢ ¢I",
+      "m2:hasTensorFormula": "S⊗I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
@@ -1770,7 +1835,9 @@
         "formula": "S¢ ¢I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I",
+      "m2:hasTensorFormulaASCII": "S (x) I"
     },
     {
       "@id": "m2:Agent",
@@ -1781,7 +1848,7 @@
       "rdfs:label": "Agent",
       "rdfs:comment": "Active entity capable of autonomous action and interaction.",
       "m2:hasCategory": "m2:Relational",
-      "m2:hasTensorFormula": "S¢ ¢I¢ ¢D",
+      "m2:hasTensorFormula": "S⊗I⊗D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
@@ -1814,7 +1881,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes D",
+      "m2:hasTensorFormulaASCII": "S (x) I (x) D"
     },
     {
       "@id": "m2:Role",
@@ -1825,7 +1894,7 @@
       "rdfs:label": "Role",
       "rdfs:comment": "Functional position or responsibility within system structure.",
       "m2:hasCategory": "m2:Relational",
-      "m2:hasTensorFormula": "S¢ ¢I",
+      "m2:hasTensorFormula": "S⊗I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
@@ -1851,7 +1920,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I",
+      "m2:hasTensorFormulaASCII": "S (x) I"
     },
     {
       "@id": "m2:Mediator",
@@ -1862,7 +1933,7 @@
       "rdfs:label": "Mediator",
       "rdfs:comment": "Intermediary entity or mechanism enabling interaction between components.",
       "m2:hasCategory": "m2:Relational",
-      "m2:hasTensorFormula": "F¢ ¢I¢ ¢S",
+      "m2:hasTensorFormula": "F⊗I⊗S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information",
@@ -1890,7 +1961,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "F \\otimes I \\otimes S",
+      "m2:hasTensorFormulaASCII": "F (x) I (x) S"
     },
     {
       "@id": "m2:Link",
@@ -1901,7 +1974,7 @@
       "rdfs:label": "Link",
       "rdfs:comment": "Concrete physical connection between nodes enabling actual information or resource transfer (constructive).",
       "m2:hasCategory": "m2:Relational",
-      "m2:hasTensorFormula": "S¢ ¢I¢ ¢F",
+      "m2:hasTensorFormula": "S⊗I⊗F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
@@ -1935,7 +2008,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes F",
+      "m2:hasTensorFormulaASCII": "S (x) I (x) F"
     },
     {
       "@id": "m2:Node",
@@ -1946,7 +2021,7 @@
       "rdfs:label": "Node",
       "rdfs:comment": "Elementary entity or point in a network structure, serving as connection endpoint.",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "S¢ ¢I",
+      "m2:hasTensorFormula": "S⊗I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
@@ -1965,7 +2040,9 @@
         "formula": "S¢ ¢I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I",
+      "m2:hasTensorFormulaASCII": "S (x) I"
     },
     {
       "@id": "m2:Relation",
@@ -1976,7 +2053,7 @@
       "rdfs:label": "Relation",
       "rdfs:comment": "Abstract connection or association between entities, identified through analysis or modeling.",
       "m2:hasCategory": "m2:Relational",
-      "m2:hasTensorFormula": "S¢ ¢I",
+      "m2:hasTensorFormula": "S⊗I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
@@ -2003,7 +2080,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I",
+      "m2:hasTensorFormulaASCII": "S (x) I"
     },
     {
       "@id": "m2:Path",
@@ -2014,7 +2093,7 @@
       "rdfs:label": "Path",
       "rdfs:comment": "Ordered sequence of nodes and links forming a route or trajectory through network structure.",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "S¢ ¢I¢ ¢D",
+      "m2:hasTensorFormula": "S⊗I⊗D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
@@ -2035,7 +2114,9 @@
         "formula": "S¢ ¢I¢ ¢D",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes D",
+      "m2:hasTensorFormulaASCII": "S (x) I (x) D"
     },
     {
       "@id": "m2:Channel",
@@ -2046,7 +2127,7 @@
       "rdfs:label": "Channel",
       "rdfs:comment": "Structured conduit for signal transmission. Isolates one dimension, filters content, has finite capacity. Permanent structure independent of signals transmitted.",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "S¢ ¢I¢ ¢F",
+      "m2:hasTensorFormula": "S⊗I⊗F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
@@ -2107,7 +2188,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes F",
+      "m2:hasTensorFormulaASCII": "S (x) I (x) F"
     },
     {
       "@id": "m2:Cluster",
@@ -2118,7 +2201,7 @@
       "rdfs:label": "Cluster",
       "rdfs:comment": "Dense local grouping of nodes exhibiting synergistic cooperation and emergent functional properties (active processing role).",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "S¢ ¢I¢ ¢A",
+      "m2:hasTensorFormula": "S⊗I⊗A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
@@ -2139,7 +2222,9 @@
         "formula": "S¢ ¢I¢ ¢A",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes A",
+      "m2:hasTensorFormulaASCII": "S (x) I (x) A"
     },
     {
       "@id": "m2:Component",
@@ -2150,7 +2235,7 @@
       "rdfs:label": "Component",
       "rdfs:comment": "Elementary constitutive part of a system with functional role in the whole. Distinguished from arbitrary partition by having meaningful function.",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "S¢ ¢I",
+      "m2:hasTensorFormula": "S⊗I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
@@ -2201,7 +2286,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I",
+      "m2:hasTensorFormulaASCII": "S (x) I"
     },
     {
       "@id": "m2:Hub",
@@ -2212,7 +2299,7 @@
       "rdfs:label": "Hub",
       "rdfs:comment": "Highly connected node serving as central routing point for flow redistribution, without active processing (passive relay role).",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "S¢ ¢F",
+      "m2:hasTensorFormula": "S⊗F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Flow"
@@ -2232,7 +2319,9 @@
         "formula": "S¢ ¢F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes F",
+      "m2:hasTensorFormulaASCII": "S (x) F"
     },
     {
       "@id": "m2:Space",
@@ -2243,7 +2332,7 @@
       "rdfs:label": "Space",
       "rdfs:comment": "Dimensional framework in which system states and trajectories exist (state space, phase space).",
       "m2:hasCategory": "m2:Ontological",
-      "m2:hasTensorFormula": "S¢ ¢I",
+      "m2:hasTensorFormula": "S⊗I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
@@ -2262,7 +2351,9 @@
         "formula": "S¢ ¢I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I",
+      "m2:hasTensorFormulaASCII": "S (x) I"
     },
     {
       "@id": "m2:Composition",
@@ -2273,7 +2364,7 @@
       "rdfs:label": "Composition (Composition/Decomposition)",
       "rdfs:comment": "Bidirectional structural operation: aggregation of parts into emergent whole (composition) or partition of whole into constituents (decomposition).",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "S¢ ¢I¢ ¢A (composition) / S¢ ¢I (decomposition)",
+      "m2:hasTensorFormula": "S⊗I⊗A (composition) / S⊗I (decomposition)",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
@@ -2327,7 +2418,9 @@
           "role": "Guaranteed measurement if ORIVE fails",
           "status": "GUARANTEED"
         }
-      }
+      },
+      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes A (composition) / S \\otimes I (decomposition)",
+      "m2:hasTensorFormulaASCII": "S (x) I (x) A (composition) / S (x) I (decomposition)"
     },
     {
       "@id": "m2:Balance",
@@ -2338,13 +2431,13 @@
       "rdfs:label": "Balance",
       "rdfs:comment": "State of equilibrium between multiple interacting factors where variations compensate to maintain system stability. Distinct from Homeostasis (dynamic regulation) - Balance is a static equilibrium state achieved through mutual compensation of parameters.",
       "m2:hasCategory": "m2:Regulatory",
-      "m2:hasTensorFormula": "A¢ S¢ F",
+      "m2:hasTensorFormula": "A⊗S⊗F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.20,
+      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Photographic exposure: ISO ¢ Aperture ¢ Shutter Speed ¢correct exposure",
@@ -2384,7 +2477,9 @@
       },
       "dcterms:created": "2026-01-20",
       "dcterms:creator": "Echopraxium with collaboration of Claude AI Pro",
-      "m2:discoveryContext": "Identified during analysis of Exposure Triangle poclet as fundamental metaconcept distinct from existing Homeostasis and Regulation"
+      "m2:discoveryContext": "Identified during analysis of Exposure Triangle poclet as fundamental metaconcept distinct from existing Homeostasis and Regulation",
+      "m2:hasTensorFormulaTeX": "A \\otimes S \\otimes F",
+      "m2:hasTensorFormulaASCII": "A (x) S (x) F"
     },
     {
       "@id": "m2:Trade-off",
@@ -2395,12 +2490,12 @@
       "rdfs:label": "Trade-off",
       "rdfs:comment": "Deliberate exchange where improving one desirable property necessarily degrades another due to inherent constraints. A conscious decision-making concept in model/map space where observer accepts losses in one dimension to gain in another. Fundamental to optimization under constraints.",
       "m2:hasCategory": "m2:Regulatory",
-      "m2:hasTensorFormula": "A¢ I (fallback)",
+      "m2:hasTensorFormula": "A⊗I⊗F⊗A⊗A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.30,
+      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Photography: Shallow DoF (artistic blur) ¢ Deep DoF (all sharp) via aperture",
@@ -2448,7 +2543,9 @@
       },
       "dcterms:created": "2026-01-20",
       "dcterms:creator": "Echopraxium with collaboration of Claude AI Pro",
-      "m2:discoveryContext": "Identified during analysis of Exposure Triangle poclet as fundamental Map-space metaconcept capturing photographer's decision-making under constraints"
+      "m2:discoveryContext": "Identified during analysis of Exposure Triangle poclet as fundamental Map-space metaconcept capturing photographer's decision-making under constraints",
+      "m2:hasTensorFormulaTeX": "A \\otimes I \\otimes F \\otimes A \\otimes A",
+      "m2:hasTensorFormulaASCII": "A (x) I (x) F (x) A (x) A"
     },
     {
       "@id": "m2:Polarity",
@@ -2459,13 +2556,13 @@
       "rdfs:label": "Polarity (N-ary)",
       "rdfs:comment": "Configuration of N distinct, mutually exclusive value poles or orientational axes organized in structured opposition or complementarity. Generalizes binary opposition to N-dimensional value spaces. N {1, 2, 3, 4, 5, ...} where N=1 (neutral/monopolar), N=2 (dual/bipolar), N3 (multipolar).",
       "m2:hasCategory": "m2:Structural",
-      "m2:hasTensorFormula": "SIA",
+      "m2:hasTensorFormula": "S⊗I⊗A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Attractor"
       ],
-      "m2:hasEpistemicGap": 0.30,
+      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "nary",
       "m2:naryParameter": {
         "N": "variable",
@@ -2557,7 +2654,9 @@
       "m2:philosophicalImplication": "Most fundamental conceptual frameworks are N-ary (N>2), not binary. Binary thinking (dualism) is common but not universal. Pentagonal structures (N=5) appear repeatedly across cultures (Magic colors, Wu Xing, Platonic solids minus one). Suggests deep cognitive/cultural patterns in how humans organize complexity.",
       "dcterms:created": "2026-01-22",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m2:discoveryContext": "Identified during Magic: The Gathering Color Wheel poclet analysis. Revealed that binary polarity restriction was limiting framework's ability to model real philosophical/value systems. Validated across 10 domains with N ranging from 2 to 9."
+      "m2:discoveryContext": "Identified during Magic: The Gathering Color Wheel poclet analysis. Revealed that binary polarity restriction was limiting framework's ability to model real philosophical/value systems. Validated across 10 domains with N ranging from 2 to 9.",
+      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes A",
+      "m2:hasTensorFormulaASCII": "S (x) I (x) A"
     },
     {
       "@id": "m2:Domain",
@@ -2568,12 +2667,12 @@
       "rdfs:label": "Domain (Hybrid Tensor Product ASFIDORIVE)",
       "rdfs:comment": "Structured field of knowledge where Territory phenomena (ASFID) and Map frameworks (ORIVE) are coupled through epistemic practices. Represents the first metaconcept requiring simultaneous fusion of both bicephalous perspectives. Reduced to 5D via SVD from full 25D ASFIDORIVE tensor product space.",
       "m2:hasCategory": "m2:Ontological",
-      "m2:hasTensorFormula": "á'= Ïáµ¢ |uáµ¢©|váµ¢© (SVD decomposition, 5 principal modes)",
+      "m2:hasTensorFormula": "V⊗S⊗V⊗D⊗D⊗E⊗O⊗O⊗S⊗I⊗I⊗O⊗R⊗I⊗I⊗A⊗O⊗D⊗E⊗S",
       "m2:hasDominantM3": [
         "HYBRID: Both ASFID (Eagle Eye) and ORIVE (Sphinx Eye) simultaneously",
         "Territory-Map coupling encoded in matrix ±"
       ],
-      "m2:hasEpistemicGap": 0.40,
+      "m2:hasEpistemicGap": 0.4,
       "m2:hasPolarity": "hybrid",
       "m2:hasExample": [
         "Optics: S (wave/particle structures) + V (dualist interpretations) + IR + FO + AE",
@@ -2605,7 +2704,7 @@
         "svdDecomposition": {
           "fullSpace": " (25-dimensional ASFIDORIVE tensor product)",
           "reducedSpace": "µ (5 principal modes via SVD)",
-          "singularValues": "[Ï Ï Ï Ï Ï with Ï Ï ...  Ï,
+          "singularValues": "[σ₁ σ₂ σ₃ σ₄ σ₅] with σ₁ ≥ σ₂ ≥ ... ≥ σ₅",
           "dominantModes": "First 2-3 modes capture 80%+ variance"
         }
       },
@@ -2749,7 +2848,9 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Emerged from theoretical analysis of M1 extension architecture. Recognition that M1_Optics, M1_Chemistry, M1_Biology share common structure: coupling of Territory phenomena (ASFID) with Map frameworks (ORIVE). Formalized as hybrid tensor product reduced to 5D via SVD. First metaconcept requiring bicephalous fusion.",
       "m2:status": "PROPOSAL - Awaiting empirical validation across multiple scientific domains",
-      "rdfs:seeAlso": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/docs/Domain_Hybrid_Tensor_Product_5D_README.md"
+      "rdfs:seeAlso": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/docs/Domain_Hybrid_Tensor_Product_5D_README.md",
+      "m2:hasTensorFormulaTeX": "V \\otimes S \\otimes V \\otimes D \\otimes D \\otimes E \\otimes O \\otimes O \\otimes S \\otimes I \\otimes I \\otimes O \\otimes R \\otimes I \\otimes I \\otimes A \\otimes O \\otimes D \\otimes E \\otimes S",
+      "m2:hasTensorFormulaASCII": "V (x) S (x) V (x) D (x) D (x) E (x) O (x) O (x) S (x) I (x) I (x) O (x) R (x) I (x) I (x) A (x) O (x) D (x) E (x) S"
     },
     {
       "@id": "m2:Behavior",
@@ -2804,7 +2905,9 @@
       },
       "dcterms:created": "2026-01-28",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m2:discoveryContext": "Emerged from need to model sequential yet decomposable patterns in poclets (Butterfly metamorphosis, Blood pressure control). Bridges Process (pure temporal) and Network (pure structural) by fusing both aspects."
+      "m2:discoveryContext": "Emerged from need to model sequential yet decomposable patterns in poclets (Butterfly metamorphosis, Blood pressure control). Bridges Process (pure temporal) and Network (pure structural) by fusing both aspects.",
+      "m2:hasTensorFormulaTeX": "S \\otimes D \\otimes F",
+      "m2:hasTensorFormulaASCII": "S (x) D (x) F"
     },
     {
       "@id": "m2:Tropism",
@@ -2872,7 +2975,9 @@
       },
       "dcterms:created": "2026-01-28",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m2:discoveryContext": "Recognized as specialized Behavior pattern prevalent in biological systems (phototropism, chemotaxis, geotropism). Extends Behavior by adding Attractor dimension to capture directional constraint."
+      "m2:discoveryContext": "Recognized as specialized Behavior pattern prevalent in biological systems (phototropism, chemotaxis, geotropism). Extends Behavior by adding Attractor dimension to capture directional constraint.",
+      "m2:hasTensorFormulaTeX": "A \\otimes S \\otimes D \\otimes F",
+      "m2:hasTensorFormulaASCII": "A (x) S (x) D (x) F"
     },
     {
       "@id": "m2:Workflow",
@@ -2927,7 +3032,9 @@
       },
       "dcterms:created": "2026-01-28",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m2:discoveryContext": "Needed to distinguish prescriptive models (Workflow) from descriptive observations (Behavior). Both are structured networks of Steps, but serve different epistemic roles."
+      "m2:discoveryContext": "Needed to distinguish prescriptive models (Workflow) from descriptive observations (Behavior). Both are structured networks of Steps, but serve different epistemic roles.",
+      "m2:hasTensorFormulaTeX": "S \\otimes D \\otimes F",
+      "m2:hasTensorFormulaASCII": "S (x) D (x) F"
     },
     {
       "@id": "m2:Step",
@@ -2997,7 +3104,9 @@
       },
       "dcterms:created": "2026-01-28",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m2:discoveryContext": "Emerged from analysis of sequential systems (Butterfly lifecycle, Blood pressure control). Needed specialized Node type for temporal contexts that can trigger atomic Actions."
+      "m2:discoveryContext": "Emerged from analysis of sequential systems (Butterfly lifecycle, Blood pressure control). Needed specialized Node type for temporal contexts that can trigger atomic Actions.",
+      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes D",
+      "m2:hasTensorFormulaASCII": "S (x) I (x) D"
     },
     {
       "@id": "m2:Action",
@@ -3055,7 +3164,9 @@
       },
       "dcterms:created": "2026-01-28",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m2:discoveryContext": "Identified as atomic operational unit in behavioral decomposition. Represents finest-grained executable element triggered by Steps in Behavior/Workflow networks."
+      "m2:discoveryContext": "Identified as atomic operational unit in behavioral decomposition. Represents finest-grained executable element triggered by Steps in Behavior/Workflow networks.",
+      "m2:hasTensorFormulaTeX": "D \\otimes I",
+      "m2:hasTensorFormulaASCII": "D (x) I"
     }
   ]
 }
