@@ -12,5 +12,6 @@ pip install langchain langchain-community langchain-openai chromadb unstructured
 pip install -U langchain-google-genai
 pip install -U langchain-chroma
 pip install -U google-generativeai
+pip install -U langchain-google-genai google-generativeai
 
 python create_rag.py
