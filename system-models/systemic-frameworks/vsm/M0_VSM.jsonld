@@ -16,11 +16,11 @@
       "@id": "m0:vsm:VSM_Framework",
       "@type": "owl:Ontology",
       "dcterms:title": "Viable System Model (Stafford Beer) - Systemic Framework",
-      "dcterms:description": "Stafford Beer's Viable System Model (VSM) formalized within TSCG framework. VSM defines organizational viability through 5 recursive subsystems managing operations, coordination, optimization, intelligence, and policy. Foundation: Ashby's Law of Requisite Variety.",
+      "dcterms:description": "Stafford Beer's Viable System Model (VSM) formalized within TSCG framework using MetaconceptCombo patterns. VSM defines organizational viability through 5 recursive subsystems managing operations, coordination, optimization, intelligence, and policy. Foundation: Ashby's Law of Requisite Variety. Version 1.1.0 introduces proper MetaconceptCombo modeling for VSM-specific concepts.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-28",
-      "dcterms:modified": "2026-01-28",
-      "owl:versionInfo": "1.0.0",
+      "dcterms:modified": "2026-02-03",
+      "owl:versionInfo": "1.1.0",
       "m3:ontologyCategory": {
         "@id": "m3:SystemicFramework"
       },
@@ -94,7 +94,7 @@
             "justification": "Compatible with cybernetics (Ashby), systems theory (von Bertalanffy), complexity science. Extensions: Team Syntegrity, VSM-PC software. Integrates with strategy frameworks (VSD, TRIZ)."
           },
           "V_Verifiability": {
-            "score": 0.70,
+            "score": 0.7,
             "justification": "Structural diagnosis is clear (are all 5 systems present?). Functional verification harder (is variety truly requisite?). Mostly qualitative assessment. Limited quantitative validation metrics."
           },
           "E_Evolvability": {
@@ -559,7 +559,10 @@
     },
     "vsmPC": {
       "description": "Software tools for VSM modeling and simulation",
-      "examples": ["Viplan (Espejo)", "VSMod"]
+      "examples": [
+        "Viplan (Espejo)",
+        "VSMod"
+      ]
     },
     "ecosystemVSM": {
       "description": "Application to ecological systems as viable entities",
@@ -585,58 +588,162 @@
       "m2:Imbrication"
     ],
     "new": [
-      "m2:ValueSpace (added 2026-01-28)"
+      "m2:ValueSpace (added 2026-01-28)",
+      "m2:Scope (added 2026-02-03)"
     ]
   },
   "m0:m1Prerequisites": {
     "cyberneticConcepts": [
       {
         "name": "RequisiteVariety",
-        "status": "TO VALIDATE for M1_CoreConcepts",
-        "description": "Ashby's Law - regulator variety must match disturbance variety",
-        "instantiates": ["m2:Constraint", "m2:ValueSpace"]
-      },
-      {
-        "name": "VarietyAttenuation",
-        "status": "TO VALIDATE for M1_CoreConcepts",
-        "description": "Filtering/reducing variety upward",
-        "instantiates": ["m2:Channel", "m2:ValueSpace"]
+        "status": "VALIDATED for M1_CoreConcepts",
+        "description": "Ashby's Law - regulator variety must match disturbance variety (V(Regulator) ≥ V(Disturbance))",
+        "instantiates": [
+          "m2:Constraint",
+          "m2:ValueSpace"
+        ],
+        "m0:vsmContext": "Foundational principle for all VSM variety management (S2, S3, S4)"
       },
       {
         "name": "VarietyAmplification",
-        "status": "TO VALIDATE for M1_CoreConcepts",
-        "description": "Expanding variety downward",
-        "instantiates": ["m2:Channel", "m2:ValueSpace"]
+        "status": "VALIDATED - MetaconceptCombo pattern",
+        "description": "Expanding variety downward through hierarchy (S3→S1 command elaboration)",
+        "m0:isMetaconceptCombo": true,
+        "m0:parentMetaconcepts": [
+          "m2:ValueSpace",
+          "m2:Amplification"
+        ],
+        "m0:comboFormula": "(It⊗V⊗O⊗R⊗Im) ⊗ (Ft⊗D⊗It⊗R⊗O)↑ ⇒ VarietyAmplification",
+        "m0:sharedDimensions": [
+          "It",
+          "R",
+          "O"
+        ],
+        "m0:emergentProperty": "Controlled expansion of decision variety while preserving epistemic accessibility (Im) and representability (R)",
+        "m0:vsmContext": "S2 function - increase variety (specifically Im interoperability) to match S1 operational complexity"
       },
       {
-        "name": "MetaSystem",
-        "status": "TO VALIDATE for M1_CoreConcepts",
-        "description": "System managing other systems (S2+S3+S4+S5)",
-        "instantiates": ["m2:Hierarchy", "m2:System"]
-      },
-      {
-        "name": "AlgedonicSignal",
-        "status": "TO VALIDATE for M1_CoreConcepts",
-        "description": "Emergency alert bypassing hierarchy",
-        "instantiates": ["m2:Signal", "m2:Trigger"]
-      },
-      {
-        "name": "ResourceBargain",
-        "status": "TO VALIDATE for M1_CoreConcepts",
-        "description": "Negotiation between management and operations",
-        "instantiates": ["m2:Trade-off", "m2:Feedback"]
-      },
-      {
-        "name": "Autonomy",
-        "status": "TO VALIDATE for M1_CoreConcepts",
-        "description": "Local decision capacity within constraints",
-        "instantiates": ["m2:Modularity", "m2:Agent"]
+        "name": "VarietyAttenuation",
+        "status": "VALIDATED - MetaconceptCombo pattern",
+        "description": "Filtering/reducing variety upward through hierarchy (S1→S3 information aggregation)",
+        "m0:isMetaconceptCombo": true,
+        "m0:parentMetaconcepts": [
+          "m2:ValueSpace",
+          "m2:Amplification"
+        ],
+        "m0:comboFormula": "(It⊗V⊗O⊗R⊗Im) ⊗ (Ft⊗D⊗It⊗R⊗O)↓ ⇒ VarietyAttenuation",
+        "m0:sharedDimensions": [
+          "It",
+          "R",
+          "O"
+        ],
+        "m0:emergentProperty": "Controlled reduction of information variety while maintaining verifiability (V) and observability (O) for S5",
+        "m0:vsmContext": "S3 function - decrease variety (specifically O observability) for S5 manageability without losing critical information"
       },
       {
         "name": "Cohesion",
-        "status": "TO VALIDATE for M1_CoreConcepts",
-        "description": "Force maintaining system integrity",
-        "instantiates": ["m2:Homeostasis", "m2:Identity"]
+        "status": "VALIDATED - MetaconceptCombo pattern",
+        "description": "Force maintaining system integrity despite operational autonomy",
+        "m0:isMetaconceptCombo": true,
+        "m0:parentMetaconcepts": [
+          "m2:Identity",
+          "m2:Constraint"
+        ],
+        "m0:comboFormula": "(S⊗I⊗A⊗V⊗E) ⊗ (S⊗I⊗F⊗V⊗R) ⇒ Cohesion",
+        "m0:sharedDimensions": [
+          "S",
+          "I",
+          "V"
+        ],
+        "m0:emergentProperty": "Persistent organizational identity (Identity) structured by negotiated limits (Constraint) = systemic cohesion",
+        "m0:mechanisms": [
+          "S5 constitutional principles and values (Identity layer)",
+          "S3 resource allocation creating interdependence (Constraint layer)",
+          "S2 shared standards and protocols (Constraint layer)",
+          "Cultural ethos maintaining organizational continuity (Identity layer)"
+        ],
+        "m0:vsmContext": "S5 primary function with S3/S2 support - ensures viable system maintains separate existence as unified entity"
+      },
+      {
+        "name": "AlgedonicSignal",
+        "status": "VALIDATED - MetaconceptCombo pattern",
+        "description": "Emergency alert from S1 directly to S3, bypassing normal hierarchy",
+        "m0:isMetaconceptCombo": true,
+        "m0:parentMetaconcepts": [
+          "m2:Trigger",
+          "m2:Signal"
+        ],
+        "m0:comboFormula": "(D⊗I⊗V) ⊗ (F⊗I⊗R) ⇒ AlgedonicSignal",
+        "m0:sharedDimensions": [
+          "I"
+        ],
+        "m0:emergentProperty": "Verifiable trigger (D⊗I⊗V) that becomes representable signal (F⊗I⊗R) with unique hierarchical bypass capability",
+        "m0:etymology": "Greek algos (pain) + hedone (pleasure)",
+        "m0:vsmContext": "Emergency escalation bypassing S2 coordination - pain/pleasure signals requiring immediate S3 intervention",
+        "m0:examples": [
+          "Factory production line stoppage (pain signal)",
+          "Major unexpected profit opportunity (pleasure signal)",
+          "Safety violation alert (pain signal)",
+          "Critical resource shortage (pain signal)"
+        ]
+      },
+      {
+        "name": "ResourceBargain",
+        "status": "VALIDATED - MetaconceptCombo pattern",
+        "description": "Iterative negotiation between S3 (resource allocation) and S1 (operational needs)",
+        "m0:isMetaconceptCombo": true,
+        "m0:parentMetaconcepts": [
+          "m2:Trade-off",
+          "m2:Feedback"
+        ],
+        "m0:comboFormula": "(A⊗I⊗F) ⊗ (A⊗S⊗F) ⇒ ResourceBargain",
+        "m0:sharedDimensions": [
+          "A",
+          "F"
+        ],
+        "m0:emergentProperty": "Trade-off decisions (A⊗I⊗F) that continuously adjust via feedback loops (A⊗S⊗F) = iterative negotiation",
+        "m0:mechanism": "S1 requests resources → S3 negotiates performance commitments → S1 responds with adjusted request → iterative convergence to mutual agreement",
+        "m0:autonomyPrinciple": "S1 units have maximum freedom in HOW to achieve agreed targets (autonomy), but WHAT targets are negotiated with S3 (accountability)",
+        "m0:vsmContext": "S3↔S1 primary interaction - balances systemic optimization (S3) with operational autonomy (S1)"
+      },
+      {
+        "name": "Autonomy",
+        "status": "VALIDATED - MetaconceptCombo pattern NEW v1.1.0",
+        "description": "Operational independence within defined authority boundaries - Beer's 'maximum local freedom; minimum central constraint'",
+        "m0:isMetaconceptCombo": true,
+        "m0:parentMetaconcepts": [
+          "m2:Agent",
+          "m2:Scope"
+        ],
+        "m0:comboFormula": "(S⊗I⊗D) ⊗ (S⊗I⊗A⊗R) ⇒ Autonomy",
+        "m0:sharedDimensions": [
+          "S",
+          "I"
+        ],
+        "m0:emergentProperty": "Action capability (Agent: S⊗I⊗D) bounded by defined authority domain (Scope: S⊗I⊗A⊗R) = bounded autonomy",
+        "m0:couplingSemantics": {
+          "S_coupling": "Agent's structure aligns with scope's structural boundaries",
+          "I_coupling": "Agent's capability information aligns with scope's authority information"
+        },
+        "m0:balance": "Autonomy (local freedom) ⇔ Cohesion (systemic integrity)",
+        "m0:vsmContext": "S1 defining characteristic - each operational unit decides HOW to achieve targets within S3-defined scope (WHAT) and S5-defined purpose (WHY)",
+        "m0:beerDictum": "Maximum local freedom; minimum central constraint",
+        "m0:scopeExamples": [
+          "Budget authority: decisions < 10,000€",
+          "Hiring authority: temporary staff only",
+          "Geographical scope: regional operations",
+          "Temporal scope: day-to-day tactical decisions"
+        ]
+      },
+      {
+        "name": "MetaSystem",
+        "status": "VALIDATED for M1_CoreConcepts",
+        "description": "Collective supervisory function of S2+S3+S4+S5 managing S1 operations",
+        "instantiates": [
+          "m2:Hierarchy",
+          "m2:System"
+        ],
+        "m0:vsmContext": "Meta-system ensures viability through coordination, optimization, intelligence, and policy while granting maximum autonomy to operations"
       }
     ]
   },
@@ -647,5 +754,25 @@
     "Espejo, R., & Harnden, R. (Eds.). (1989). The Viable System Model: Interpretations and Applications of Stafford Beer's VSM. Wiley.",
     "Ashby, W. R. (1956). An Introduction to Cybernetics. Chapman & Hall.",
     "Medina, E. (2011). Cybernetic Revolutionaries: Technology and Politics in Allende's Chile. MIT Press."
-  ]
+  ],
+  "m0:changelog_v1.1.0": {
+    "date": "2026-02-03",
+    "changes": [
+      "MAJOR: All VSM-specific concepts now properly modeled as MetaconceptCombo instances",
+      "NEW: Autonomy = MetaconceptCombo(Agent, Scope) - replaces incomplete instantiation pattern",
+      "NEW: Scope metaconcept added to M2 prerequisites (S⊗I⊗A⊗R)",
+      "VALIDATED: VarietyAmplification = MetaconceptCombo(ValueSpace, Amplification↑)",
+      "VALIDATED: VarietyAttenuation = MetaconceptCombo(ValueSpace, Amplification↓)",
+      "VALIDATED: Cohesion = MetaconceptCombo(Identity, Constraint)",
+      "VALIDATED: AlgedonicSignal = MetaconceptCombo(Trigger, Signal)",
+      "VALIDATED: ResourceBargain = MetaconceptCombo(Trade-off, Feedback)",
+      "ENRICHED: All combo definitions include coupling analysis, emergent properties, VSM context",
+      "UPDATED: Description to reflect MetaconceptCombo architectural pattern",
+      "STATUS: Framework-level validation complete - ready for M0 poclet implementation"
+    ],
+    "breakingChanges": [
+      "Autonomy now requires m2:Scope metaconcept (new M2 dependency)",
+      "Autonomy modeling shifted from simple instantiation to MetaconceptCombo pattern"
+    ]
+  }
 }
