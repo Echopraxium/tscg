@@ -1,7 +1,0 @@
-# À exécuter dans le dossier racine de ton repo TSCG
-Get-ChildItem -Path . -Include "*.cs","*.fs","*.md","*.csproj","*.fsproj","*.jsonld" -Recurse | 
-    Where-Object { $_.FullName -notmatch '\\(bin|obj|\.vs|\.git|packages)\\' } |
-    ForEach-Object { $_.FullName.Substring((Get-Location).Path.Length + 1).Replace('\', '/') } |
-    Out-File -FilePath "files.txt" -Encoding UTF8
-
-Write-Host "Fichier file-list.txt généré !"
