@@ -12,18 +12,15 @@
     "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#"
   },
-  
   "@graph": [
     {
       "@id": "m1:mythology:M1_Mythology_Ontology",
       "@type": "owl:Ontology",
-      
       "dcterms:title": "TSCG M1 Mythology Extension",
-      "dcterms:description": "Domain-specific M1 extension for mythology, cosmology, and spiritual systems. Defines reusable patterns discovered through analysis of mythological poclets (Yggdrasil, etc.). Extends M1_CoreConcepts with domain-bounded but cross-applicable mythological concepts.",
-      
+      "dcterms:description": "Domain-specific M1 ontology for mythology, cosmology, and spiritual systems. Defines transdisciplinary patterns (Deity, MythicalCreature, Trickster, Gatekeeper) and mythology-specific concepts reusable across cultures (Norse, Greek, Egyptian, Hindu, etc.). Extends M1_CoreConcepts with domain-bounded but cross-cultural mythology patterns.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-01-22",
+      "dcterms:created": "2026-02-04",
+      "dcterms:modified": "2026-02-04",
       "owl:versionInfo": "1.0.0",
       
       "owl:imports": [
@@ -31,390 +28,461 @@
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld"
       ],
       
-      "rdfs:seeAlso": [
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/yggdrasil/M0_Yggdrasil.jsonld"
-      ],
-      
-      "m1:domainScope": {
-        "primary": "Mythology, Cosmology, Spiritual Systems",
-        "secondary": "Comparative Religion, Symbolic Systems, Esoteric Philosophy",
-        "crossDisciplinary": "Anthropology, Psychology (Jungian), Semiotics"
-      },
+      "m1:domainScope": "Mythology, Cosmology, Comparative Religion, Spiritual Systems, Folklore",
       
       "m1:conceptCategories": {
-        "structuralPatterns": 2,
-        "dynamicPatterns": 2,
-        "totalPatterns": 4
+        "entityTypes": ["Deity", "MythicalCreature", "PrimordialBeing", "CosmicForce", "MythicalArtifact", "MythicalPlace"],
+        "patterns": ["Trickster", "Gatekeeper", "CosmologicalAxis", "PrimordialOpposition", "MessengerEntity"],
+        "archetypes": ["Hero", "ShadowFigure", "DivineFeminine", "WiseOldMan"]
       },
+      
+      "m1:culturalCoverage": ["Norse", "Greek", "Roman", "Egyptian", "Hindu", "Buddhist", "Mayan", "Aztec", "Mesopotamian", "Chinese", "Japanese", "Celtic", "Slavic", "African", "Native American"],
       
       "m1:validationStatus": {
-        "patternsDefined": 4,
-        "patternsValidated": 4,
-        "validatedPoclets": 1,
-        "validatingPoclet": "Yggdrasil (M0_Yggdrasil.jsonld)",
-        "additionalPocletsNeeded": 2,
-        "note": "All 4 patterns discovered through Yggdrasil analysis. Require 2+ additional mythological poclets for full validation (e.g., Kabbale, Chakras, Greek Pantheon)."
-      },
-      
-      "m1:discoveryContext": {
-        "sourcePoclet": "Yggdrasil - Norse World Tree",
-        "analysisDate": "2026-01-22",
-        "discoveryMethod": "ASFID/ORIVE analysis of 7-pole cosmological system",
-        "keyInsight": "Mythological systems exhibit recurring structural and dynamic patterns that instantiate M2 metaconcepts in culturally-specific symbolic forms."
-      },
-      
-      "m1:importantNote": {
-        "ratatosk": "Ratatosk (squirrel) in Yggdrasil is NOT a new M1 pattern but an instance of existing M2:Mediator metaconcept. Mediator (F⊗I⊗S) = 'Intermediary entity enabling interaction between components'. Ratatosk facilitates productive tension between Nídhögg (roots) and Eagle (crown) through message circulation."
+        "conceptsDefined": 19,
+        "patternsDefined": 2,
+        "poclets": 1,
+        "note": "M1_Mythology v1.0 validated through M0_Yggdrasil poclet"
       },
       
       "m1:changelog": {
         "v1.0.0": {
-          "date": "2026-01-22",
+          "date": "2026-02-04",
           "changes": [
-            "INITIAL RELEASE: M1_Mythology extension ontology",
-            "4 patterns discovered via Yggdrasil poclet analysis",
-            "STRUCTURAL PATTERNS: Cosmological Axis (S⊗A⊗I), Root-Feeder Cycle (S⊗F⊗I)",
-            "DYNAMIC PATTERNS: Primordial Opposition (D⊗S⊗I), Perpetual Restoration (D⊗A⊗F)",
-            "Each pattern instantiates M2 metaconcepts in mythology-specific ways",
-            "Cross-cultural validation: Norse, Greek, Hindu, Kabbalistic, Chinese cosmologies",
-            "CORRECTION: Ratatosk identified as M2:Mediator instance (not new M1 pattern)",
-            "Namespace m1:mythology: established",
-            "Version 1.0.0 marks first mythology-specific M1 extension in TSCG"
+            "INITIAL RELEASE: M1_Mythology domain extension",
+            "ENTITY TYPES: 6 core classes (Deity, MythicalCreature, PrimordialBeing, CosmicForce, MythicalArtifact, MythicalPlace)",
+            "DEITY: 5 sub-types (Supreme, Major, Minor, Chthonian, Deified)",
+            "CREATURE: 8 sub-types (Dragon, Serpent, Wolf, Hybrid, Giant, Bird, Messenger, Guardian)",
+            "PATTERNS: 2 validated (Trickster, Gatekeeper)",
+            "VALIDATION: M0_Yggdrasil poclet (Norse mythology)",
+            "FOUNDATION: Ready for extension to Greek, Egyptian, Hindu mythologies"
           ]
         }
       }
     },
     
     {
-      "@id": "m1:mythology:MythologicalPattern",
+      "@id": "m1:mythology:MythologicalEntity",
       "@type": "owl:Class",
-      "rdfs:label": "Mythological Pattern",
-      "rdfs:comment": "Domain-specific pattern appearing in mythological/cosmological systems. Instantiates M2 metaconcepts (Structure, Flow, Dynamics, Polarity, etc.) in culturally-specific symbolic forms. Unlike M1_CoreConcepts (transdisciplinary), these patterns are bounded to mythology domain but transferable across cultures.",
-      "rdfs:subClassOf": "m1:core:DomainPattern",
-      
-      "m1:domainBoundedness": "Mythology / Cosmology / Spiritual Systems",
-      "m1:culturalTransferability": "High - patterns appear across cultures with local symbolic variations",
-      "m1:symbolicNature": "Patterns operate through symbolic/metaphorical mechanisms rather than physical causation"
+      "rdfs:label": "Mythological Entity",
+      "rdfs:comment": "Root abstract class for all entities appearing in mythological systems. Encompasses deities, creatures, artifacts, places, and abstract forces. All instances instantiate one or more M2 metaconcepts (typically Agent, Identity, Role) and have cultural origin, symbolic meaning, and appear in documented myths.",
+      "rdfs:subClassOf": "owl:Thing",
+      "m1:properties": [
+        "m1:hasCulturalOrigin - Which mythology (Norse, Greek, etc.)",
+        "m1:hasSymbolicRole - What it represents symbolically",
+        "m1:appearsInMyths - References to source myths",
+        "m1:instantiatesM2 - Which M2 metaconcepts",
+        "m1:associatedSymbols - Visual/conceptual symbols"
+      ]
     },
     
     {
-      "@id": "m1:mythology:CosmologicalAxis",
-      "@type": [
-        "owl:NamedIndividual",
-        "m1:mythology:MythologicalPattern"
-      ],
-      "rdfs:label": "Cosmological Axis",
-      "skos:altLabel": ["Axis Mundi", "World Axis", "Vertical Hierarchy"],
+      "@id": "m1:mythology:Deity",
+      "@type": "owl:Class",
+      "rdfs:label": "Deity (God/Goddess)",
+      "rdfs:comment": "Agent with supernatural powers, persistent identity, and cosmic role. Transcends mortal limits but remains subject to cosmic laws (fate, cycles, apocalypse). Instantiates Agent (autonomy), Identity (persistence), and Role (function). Distinguished from MythicalCreature by: worship potential, cosmic governance role, immortality (typically), and higher agency.",
+      "rdfs:subClassOf": "m1:mythology:MythologicalEntity",
       
-      "rdfs:comment": "Vertical hierarchical structure organizing cosmological realms from lowest (underworld/origins) through middle (manifest world) to highest (heaven/transcendence). Establishes ontological stratification and enables vertical movement/communication between realms. Embodied as world tree, cosmic mountain, pillar, or ladder.",
-      
-      "m1:m2Basis": [
-        "m2:Hierarchy (S⊗A) - Vertical ordering with dominance relations",
-        "m2:Structure (S) - Spatial organization along vertical axis",
-        "m2:Space (S⊗I) - Dimensional framework for cosmological levels"
+      "m1:M2_basis": [
+        "m2:Agent (S⊗I⊗D⊗A⊗E) - Autonomy, goals, actions",
+        "m2:Identity (S⊗I⊗A⊗V⊗E) - Persistence through transformations",
+        "m2:Role (S⊗I⊗F⊗O⊗R) - Function in cosmic system"
       ],
       
-      "m1:tensorFormula": "S⊗A⊗I (Structure × Attractor × Information)",
-      
-      "m1:principle": "Cosmological realms are organized vertically with ontological significance: lower = primordial/material/unconscious, middle = manifest/experiential/conscious, upper = ideal/spiritual/superconscious. Vertical axis enables flow (souls, messages, energies, visions) between stratified ontological levels.",
-      
-      "m1:minimalStructure": {
-        "minimumLevels": 3,
-        "typicalLevels": "3-10",
-        "archetypalTriad": "Underworld - Earth - Heaven",
-        "embodiment": "Tree, mountain, pillar, ladder, rainbow bridge, cosmic serpent"
-      },
-      
-      "m1:functionalProperties": {
-        "ontologicalGradient": "Material density decreases, spiritual refinement increases with altitude",
-        "accessibilityGradient": "Lower accessible to all; upper restricted (enlightenment, death, divine status)",
-        "communicationChannels": "Vertical axis enables soul travel, divine descent, shamanic journeying, prayer ascent",
-        "symbolicCorrespondences": "Roots=origins/unconscious, Trunk=present/conscious, Crown=destiny/superconscious"
-      },
-      
-      "m1:examplesCrossCultural": [
-        "Norse Yggdrasil: Niflheim (roots/underworld) - Midgard (trunk/earth) - Ásgard (branches/heaven)",
-        "Kabbale Tree of Life: Malkuth (Kingdom/earth) - Tiferet (Beauty/heart) - Keter (Crown/divine) + 7 intermediate Sefirot",
-        "Hindu/Buddhist Mount Meru: Patala (underworld) - Bhumi (earth) - Svarga (heaven realms)",
-        "Greek: Tartarus (underworld prison) - Earth (Gaia) - Mount Olympus (divine abode)",
-        "Chinese: Yellow Springs (underworld) - Middle Kingdom (earth) - Jade Emperor's Heaven",
-        "Mesoamerican: Xibalba (9 underworld levels) - Earth - 13 celestial levels",
-        "Shamanic: Lower World (animal spirits) - Middle World (ordinary reality) - Upper World (celestial guides)",
-        "Christian: Hell - Earth - Heaven (with Purgatory as intermediate)",
-        "Egyptian: Duat (underworld) - Earth - Sky goddess Nut"
-      ],
-      
-      "m1:yggdrasilManifestation": "Vertical integration: Niflheim/Hel (roots, memory, origins) → Midgard (horizontal trunk, present) → Ásgard/Vanaheim (branches, divine order) → Tree Crown/Eagle (ultimate height, omniscient perspective). Bifröst rainbow bridge enables vertical travel.",
-      
-      "m1:psychologicalCorrespondence": "Jungian: Vertical axis = individuation process. Lower World = shadow/unconscious, Middle World = ego/persona, Upper World = Self/transcendent function. Shamanic journey = psychological integration.",
-      
-      "m1:validatedPoclets": 1,
-      "m1:validatingPoclet": "Yggdrasil",
-      "m1:transdisciplinaryPotential": "Medium - specific to cosmologies, but vertical hierarchy pattern generalizes to: organizational charts, biological taxonomy, Maslow's hierarchy, chakra systems",
-      
-      "m1:distinctionFromRelated": {
-        "vs_Hierarchy_M2": "Hierarchy (M2) is generic vertical ordering; Cosmological Axis adds ontological/spiritual stratification and symbolic embodiment",
-        "vs_MultipolarNetwork": "Multipolar Network is lateral/horizontal equivalence; Cosmological Axis is vertical dominance ordering"
-      },
-      
-      "dcterms:created": "2026-01-22",
-      "dcterms:source": "Yggdrasil poclet analysis"
-    },
-    
-    {
-      "@id": "m1:mythology:PrimordialOpposition",
-      "@type": [
-        "owl:NamedIndividual",
-        "m1:mythology:MythologicalPattern"
-      ],
-      "rdfs:label": "Primordial Opposition",
-      "skos:altLabel": ["Cosmogonic Duality", "Generative Opposition"],
-      
-      "rdfs:comment": "Fundamental generative duality of opposed elemental/metaphysical principles (hot-cold, light-dark, chaos-order, etc.) whose tension/interaction creates manifest cosmos. Unlike static polarity, primordial opposition is actively cosmogonic - reality emerges from the dynamic gap/interplay between poles. Often precedes creation of differentiated world.",
-      
-      "m1:m2Basis": [
-        "m2:Polarity (S⊗I⊗A, N=2) - Dual opposition of principles",
-        "m2:Emergence (I⊗S⊗D) - Cosmos arises from opposition",
-        "m2:Dynamics (D) - Tension drives cosmogenesis"
-      ],
-      
-      "m1:tensorFormula": "D⊗S⊗I (Dynamics × Structure × Information)",
-      
-      "m1:principle": "Cosmos created not from primordial unity but from tension between opposed principles. The 'gap' or interaction zone between opposites (often called void, chaos, abyss) is generative - manifest reality crystallizes from this dynamic opposition. Opposites mutually define, require, and generate each other.",
-      
-      "m1:archetypalOppositions": {
-        "thermal": "Fire ↔ Ice (heat ↔ cold)",
-        "luminous": "Light ↔ Darkness",
-        "structural": "Order ↔ Chaos",
-        "temporal": "Eternity ↔ Becoming",
-        "spatial": "Expansion ↔ Contraction",
-        "existential": "Being ↔ Non-Being",
-        "ethical": "Good ↔ Evil",
-        "metaphysical": "Spirit ↔ Matter"
-      },
-      
-      "m1:generativeZone": {
-        "name": "The Gap / Void / Abyss",
-        "examples": "Ginnungagap (Norse), Chaos (Greek), Wuji (Chinese), Tehom (Hebrew)",
-        "function": "Space 'between' opposites where cosmos crystallizes",
-        "nature": "Neither pole but potential for both; pregnant void"
-      },
-      
-      "m1:examplesCrossCultural": [
-        "Norse Yggdrasil: Niflheim (primordial ice/cold/stasis) ↔ Muspellheim (primordial fire/heat/expansion) → Ginnungagap (gap) → Ymir (first giant) → cosmos",
-        "Chinese: Yin (passive, dark, cold, feminine, earth) ↔ Yang (active, bright, hot, masculine, heaven) → Taiji (supreme ultimate) → 10,000 things",
-        "Zoroastrian: Ahura Mazda (light, truth, good) ↔ Angra Mainyu (darkness, lie, evil) → perpetual cosmic struggle",
-        "Egyptian: Ma'at (cosmic order, truth, justice) ↔ Isfet (chaos, falsehood, disorder) → pharaoh maintains balance",
-        "Greek: Apollonian (order, reason, light, form) ↔ Dionysian (chaos, ecstasy, dark, formlessness) → Greek culture",
-        "Kabbale: Chesed (mercy, expansion, giving) ↔ Gevurah (severity, contraction, judgment) → Tiferet (beauty, balance)",
-        "Gnostic: Pleroma (fullness, light, spirit) ↔ Kenoma (emptiness, darkness, matter) → material world as fallen mixture",
-        "Hindu: Purusha (consciousness, eternal, unchanging) ↔ Prakriti (matter, temporal, changing) → manifest universe",
-        "Manichean: Light ↔ Darkness (absolute dualism, ongoing cosmic battle)"
-      ],
-      
-      "m1:yggdrasilManifestation": "Niflheim (north pole: frozen rivers, primordial ice, Hvergelmir source) ↔ Muspellheim (south pole: fire realm, heat, Surtr the fire giant). Their meeting in Ginnungagap (yawning void) melts ice → water drops → Ymir (hermaphroditic giant) → from Ymir's body cosmos created.",
-      
-      "m1:dynamicPatterns": {
-        "perpetualStruggle": "Zoroastrian, Manichean - opposites in eternal conflict",
-        "dialecticalSynthesis": "Chinese Yin-Yang - opposites generate third term (Taiji)",
-        "cyclicDominance": "Egyptian Ma'at-Isfet - periodic restoration of order",
-        "eschatologicalResolution": "Some cosmologies: final victory of one pole (Ragnarök, Apocalypse)"
-      },
-      
-      "m1:philosophicalImplications": {
-        "ontology": "Being arises from tension, not from unity",
-        "epistemology": "Knowledge emerges from dialectic, not from single perspective",
-        "ethics": "Good defined by opposition to evil (co-dependent)",
-        "cosmology": "Creation is perpetual process, not one-time event"
-      },
-      
-      "m1:validatedPoclets": 1,
-      "m1:validatingPoclet": "Yggdrasil (Niflheim-Muspellheim cosmogonic opposition)",
-      "m1:transdisciplinaryPotential": "High - appears in: dialectical philosophy (Hegel), thermodynamics (entropy-negentropy), biology (anabolism-catabolism), economics (supply-demand), psychology (conscious-unconscious)",
-      
-      "m1:distinctionFromRelated": {
-        "vs_Polarity_M2": "Polarity (M2) is static binary pattern; Primordial Opposition is actively generative (creates cosmos)",
-        "vs_Duality": "Philosophical duality may be static categories; Primordial Opposition is dynamic and cosmogonic",
-        "vs_CyclicTension": "Cyclic Tension maintains existing system; Primordial Opposition generates new cosmos"
-      },
-      
-      "dcterms:created": "2026-01-22",
-      "dcterms:source": "Yggdrasil poclet analysis"
-    },
-    
-    {
-      "@id": "m1:mythology:RootFeederCycle",
-      "@type": [
-        "owl:NamedIndividual",
-        "m1:mythology:MythologicalPattern"
-      ],
-      "rdfs:label": "Root-Feeder Cycle",
-      "skos:altLabel": ["Triple Root System", "Source-Sustenance Pattern"],
-      
-      "rdfs:comment": "Structural pattern where cosmological system draws sustenance from multiple distinct sources (wells, springs, primordial elements) via functional conduits (roots, rivers, pillars). Each source provides qualitatively different essential resource (memory, wisdom, fate, vitality). System viability requires access to all sources - loss of any source → systemic degradation.",
-      
-      "m1:m2Basis": [
-        "m2:Structure (S) - Spatial organization of root conduits",
-        "m2:Flow (F) - Resource extraction and circulation from sources",
-        "m2:Storage (S⊗F) - Wells/springs as primordial reservoirs"
-      ],
-      
-      "m1:tensorFormula": "S⊗F⊗I (Structure × Flow × Information)",
-      
-      "m1:principle": "Cosmological systems sustained by extracting resources (water, knowledge, energy, destiny) from multiple geographically/ontologically separated sources. Each source provides unique qualitative sustenance; system health depends on maintaining access to ALL sources. Roots/conduits are functional infrastructure enabling continuous resource extraction and circulation.",
-      
-      "m1:archetypalStructure": {
-        "minimumSources": 3,
-        "typicalNumber": "3-4 (triadic or quaternary foundation)",
-        "sourceTypes": {
-          "primordial": "Memory, origins, chaos (past)",
-          "wisdom": "Knowledge, ancient learning, oracle (eternal)",
-          "fate": "Destiny, future, prophecy (future)",
-          "vitality": "Energy, life-force, power (present)"
-        },
-        "geometricSignificance": "3 = minimum stable polygon (triangle); 4 = cardinal directions"
-      },
-      
-      "m1:functionalProperties": {
-        "resourceDifferentiation": "Each source qualitatively unique (not just quantity)",
-        "systemDependency": "System requires ALL sources for full function (not redundant)",
-        "cyclicReplenishment": "Sources typically self-renewing (inexhaustible wells/springs)",
-        "guardianship": "Sources often protected by entities (dragons, serpents, spirits, deities)",
-        "symbolicMapping": "Sources correspond to psychological/spiritual faculties"
-      },
-      
-      "m1:examplesCrossCultural": [
-        "Norse Yggdrasil: 3 roots → 3 wells: (1) Hvergelmir (Niflheim: primordial chaos, memory, Nídhögg gnaws), (2) Mímisbrunnr (Jötunheim: wisdom, Odin sacrificed eye), (3) Urðarbrunnr (Ásgard: fate, Nornes water tree)",
-        "Kabbale: Tree of Life draws from Ein Sof (infinite source) through 10 Sefirot (divine emanations/channels)",
-        "Hindu Mount Meru: 4 sacred rivers flow from peak to 4 cardinal directions (Ganges, Indus, Oxus, Sita)",
-        "Christian Eden: Tree of Life watered by 4 rivers (Pishon, Gihon, Tigris, Euphrates) from single source",
-        "Chinese Kunlun Mountains: 4 celestial rivers originating from cosmic axis",
-        "Celtic Bile (sacred tree): Rooted in 5 provinces, draws from otherworld sources (Tír na nÓg)",
-        "Mesopotamian: Abzu (primordial freshwater abyss) feeds all rivers and springs",
-        "Mayan World Tree: Roots in Xibalba (underworld), trunk on earth, branches in heaven - 3-level sustenance"
-      ],
-      
-      "m1:yggdrasilManifestation": {
-        "root1": {
-          "destination": "Niflheim/Hvergelmir",
-          "source": "Hvergelmir (boiling/roaring spring)",
-          "quality": "Primordial memory, chaotic origins",
-          "guardian": "Nídhögg (dragon perpetually gnaws root)",
-          "symbolism": "Unconscious, past, material origins"
-        },
-        "root2": {
-          "destination": "Jötunheim/Mímisbrunnr",
-          "source": "Mímisbrunnr (Mímir's well)",
-          "quality": "Ancient wisdom, cosmic knowledge",
-          "guardian": "Mímir (decapitated head, oracle)",
-          "symbolism": "Deep knowledge, timeless wisdom, Odin sacrificed eye here"
-        },
-        "root3": {
-          "destination": "Ásgard/Urðarbrunnr",
-          "source": "Urðarbrunnr (Well of Fate)",
-          "quality": "Woven destiny, future, cosmic law",
-          "guardian": "Nornes (Urd, Verdandi, Skuld - Fates)",
-          "symbolism": "Destiny, divine order, Nornes draw water to restore tree"
-        }
-      },
-      
-      "m1:triplicitySignificance": "3 roots = minimum geometrically stable foundation (cf. Fire Triangle 3 components, tripod 3 legs). Echoes broader mythological preference for triadic structures: 3 Fates (Greek), 3 Graces, Holy Trinity (Christian), Trimurti (Hindu: Brahma-Vishnu-Shiva), 3 Worlds (shamanic).",
-      
-      "m1:validatedPoclets": 1,
-      "m1:validatingPoclet": "Yggdrasil (3 roots → 3 distinct wells)",
-      "m1:transdisciplinaryPotential": "Medium-High - generalizes to: three-legged stool (engineering stability), tripartite government (separation of powers), triple bottom line (business: profit-people-planet), three pillars of sustainability",
-      
-      "m1:distinctionFromRelated": {
-        "vs_Network_M2": "Network is general connectivity; Root-Feeder emphasizes sustenance extraction infrastructure with source differentiation",
-        "vs_Flow_M3": "Flow (M3) is generic transfer; Root-Feeder specifies multiple-source diversity requirement",
-        "vs_Hierarchy_M2": "Hierarchy has vertical dominance; Root-Feeder has horizontal/lateral sustenance supply"
-      },
-      
-      "dcterms:created": "2026-01-22",
-      "dcterms:source": "Yggdrasil poclet analysis"
-    },
-    
-    {
-      "@id": "m1:mythology:PerpetualRestoration",
-      "@type": [
-        "owl:NamedIndividual",
-        "m1:mythology:MythologicalPattern"
-      ],
-      "rdfs:label": "Perpetual Restoration",
-      "skos:altLabel": ["Eternal Maintenance", "Cosmic Upkeep", "Divine Labor"],
-      
-      "rdfs:comment": "Dynamic pattern where cosmic system requires continuous active maintenance (watering, feeding, sacrifice, ritual) to counteract perpetual degradation forces. Cosmic order is NOT self-sustaining - it demands ongoing restorative labor by divine/semi-divine agents. Failure of restoration → systemic collapse (Ragnarök, Kali Yuga end, cosmic entropy). Often involves human ritual participation.",
-      
-      "m1:m2Basis": [
-        "m2:Process (D⊗F) - Temporal evolution requiring intervention",
-        "m2:Homeostasis (A⊗S⊗F) - Maintenance of stable cosmic state",
-        "m2:Regulation (A⊗S⊗F) - Control mechanisms preventing collapse",
-        "m1:core:CyclicTension (D⊗A⊗F) - Underlying degradation ↔ restoration opposition"
-      ],
-      
-      "m1:tensorFormula": "D⊗A⊗F (Dynamics × Attractor × Flow)",
-      
-      "m1:principle": "Cosmic order is fragile, not eternal - it requires perpetual care. Degradation forces (entropy, chaos agents, time's erosion, evil) constantly threaten system integrity. Restoration agents (gods, spirits, priests, rituals) maintain viability through daily/seasonal/cyclical actions. Without restoration → cosmic degradation accelerates → eschatological collapse.",
+      "m1:formula": "Agent + Identity + Role + SupernaturalPower",
       
       "m1:characteristicProperties": {
-        "temporality": "Perpetual (no final resolution except eschatological)",
-        "agency": "Requires active divine/semi-divine/priestly intervention",
-        "actionType": "Ritual, cyclical (daily watering, seasonal sacrifice, yearly festival)",
-        "consequence": "Failure → systemic degradation or apocalyptic collapse",
-        "humanRole": "Often includes mandatory human participation (rituals sustaining cosmos)",
-        "eschatology": "Perpetual restoration may eventually fail → end of cosmic cycle"
+        "immortality": "Typically immortal or very long-lived (temporal transcendence)",
+        "supernaturalPower": "Abilities beyond natural laws (control elements, shapeshift, etc.)",
+        "cosmicRole": "Function in world order (war, wisdom, fertility, death, etc.)",
+        "worshipability": "Can be venerated (cult, prayers, sacrifices, temples)",
+        "identityPersistence": "Remains self across myths and time"
+      },
+      
+      "m1:optionalProperties": {
+        "omnipotence": "Not all deities are all-powerful",
+        "omniscience": "Not all know everything (Odin seeks knowledge)",
+        "benevolence": "Many deities are morally ambiguous",
+        "incorporeality": "Many have physical bodies"
       },
       
       "m1:examplesCrossCultural": [
-        "Norse Yggdrasil: Nornes (Urd, Verdandi, Skuld) water tree daily from Urðarbrunnr to counteract Nídhögg's gnawing. Without this → tree withers → Ragnarök",
-        "Egyptian: Ra's nightly journey through Duat (underworld), battling Apophis (chaos serpent) to ensure sunrise. Priests perform rituals to aid Ra.",
-        "Aztec: Blood sacrifice required to sustain sun's motion. Without human sacrifice → sun stops → cosmic stasis/death",
-        "Hindu: Vishnu's periodic avatars (10 incarnations) to restore dharma when adharma (disorder) threatens cosmic order",
-        "Greek: Horae (goddesses of seasons) maintain cosmic cycle. Vestal Virgins keep sacred fire of Rome (if extinguished → Rome falls)",
-        "Babylonian: Annual Akitu festival re-enacts Marduk's defeat of Tiamat (chaos). Ritual sustains cosmic order for next year",
-        "Chinese: Emperor performs rituals to sustain Mandate of Heaven. Neglect → natural disasters → dynastic collapse",
-        "Mayan: Calendar rituals at cycle endings prevent cosmic collapse",
-        "Jewish: Daily temple sacrifices maintain covenant (destroyed temple → diaspora)"
+        "Norse: Odin (wisdom), Thor (thunder), Freyja (love/war)",
+        "Greek: Zeus (sky), Athena (wisdom), Poseidon (sea)",
+        "Egyptian: Ra (sun), Osiris (afterlife), Isis (magic)",
+        "Hindu: Brahma (creation), Vishnu (preservation), Shiva (destruction)",
+        "Mayan: Itzamna (sky), Chaac (rain), Kukulkan (wind/knowledge)"
       ],
       
-      "m1:yggdrasilManifestation": {
-        "degradationAgent": "Nídhögg (dragon) perpetually gnaws at Yggdrasil roots (Hvergelmir)",
-        "restorationAgents": "Nornes (3 Fates: Urd=Past, Verdandi=Present, Skuld=Future)",
-        "restorationAction": "Draw water from Urðarbrunnr (Well of Fate) daily, sprinkle on tree roots",
-        "consequence": "Tree remains viable, cosmos stable. Without restoration → tree withers → Ragnarök inevitable",
-        "cyclicity": "Daily cycle (Nornes' labor is perpetual, not one-time)",
-        "eschatology": "Ragnarök = moment when restoration can no longer match degradation"
+      "m1:distinctionFromRelated": {
+        "vs_MythicalCreature": "Deity: worshiped, cosmic role, high agency. Creature: not worshiped, specific function, variable agency.",
+        "vs_Human": "Deity: supernatural powers, immortal, cosmic scope. Human: natural limits, mortal, earthly scope.",
+        "vs_CosmicForce": "Deity: personal (has identity, goals). CosmicForce: impersonal (Fate, Karma - principles not persons)."
+      }
+    },
+    
+    {
+      "@id": "m1:mythology:SupremeDeity",
+      "@type": "owl:Class",
+      "rdfs:label": "Supreme Deity",
+      "rdfs:comment": "Highest-ranking deity in pantheon. Ruler of gods, cosmic authority, often creator or sky father. Examples: Odin (Norse), Zeus (Greek), Ra (Egyptian), Brahma (Hindu).",
+      "rdfs:subClassOf": "m1:mythology:Deity",
+      "skos:note": "Not always omnipotent - supreme within pantheon hierarchy but subject to fate/cosmic law."
+    },
+    
+    {
+      "@id": "m1:mythology:MajorDeity",
+      "@type": "owl:Class",
+      "rdfs:label": "Major Deity",
+      "rdfs:comment": "Significant deity with important cosmic role and widespread worship. Examples: Thor, Athena, Osiris, Vishnu. Not supreme ruler but essential to pantheon function.",
+      "rdfs:subClassOf": "m1:mythology:Deity"
+    },
+    
+    {
+      "@id": "m1:mythology:MinorDeity",
+      "@type": "owl:Class",
+      "rdfs:label": "Minor Deity",
+      "rdfs:comment": "Lesser deity with localized or specific function. Examples: Nymphs, household gods, river deities. Limited cosmic role but still divine.",
+      "rdfs:subClassOf": "m1:mythology:Deity"
+    },
+    
+    {
+      "@id": "m1:mythology:ChthonianDeity",
+      "@type": "owl:Class",
+      "rdfs:label": "Chthonian Deity",
+      "rdfs:comment": "Underworld or earth deity. Rules over dead, subterranean forces, or darker aspects of existence. Examples: Hel (Norse), Hades (Greek), Ereshkigal (Mesopotamian).",
+      "rdfs:subClassOf": "m1:mythology:Deity"
+    },
+    
+    {
+      "@id": "m1:mythology:DeifiedMortal",
+      "@type": "owl:Class",
+      "rdfs:label": "Deified Mortal",
+      "rdfs:comment": "Human who achieved divine status through exceptional deeds. Examples: Heracles (Greek), Baldr after rebirth (Norse), emperors (Roman). Started mortal but transformed.",
+      "rdfs:subClassOf": "m1:mythology:Deity"
+    },
+    
+    {
+      "@id": "m1:mythology:MythicalCreature",
+      "@type": "owl:Class",
+      "rdfs:label": "Mythical Creature",
+      "rdfs:comment": "Non-human being with extraordinary properties (unique morphology, supernatural powers, symbolic role). Distinguished from deities by: not worshiped, often mortal or limited, specific function rather than cosmic governance. Instantiates Entity (if passive) or Agent (if autonomous) plus Identity (unique morphology).",
+      "rdfs:subClassOf": "m1:mythology:MythologicalEntity",
+      
+      "m1:M2_basis": [
+        "m2:Agent (if autonomous) OR m2:Entity (if passive)",
+        "m2:Identity (S⊗I⊗A⊗V⊗E) - Unique recognizable morphology",
+        "m2:Role (optional) - Specific system function"
+      ],
+      
+      "m1:formula": "Entity + Identity + ExtraordinaryProperty",
+      
+      "m1:characteristicProperties": {
+        "extraordinaryMorphology": "Unique/impossible form (8 legs, giant serpent, dragon)",
+        "nonHuman": "Not simply enhanced human",
+        "uniqueIdentity": "Individually recognizable (not generic species)",
+        "mythologicalOrigin": "Created by supernatural forces"
       },
       
-      "m1:ritualDimension": {
-        "humanParticipation": "Mortals often required to participate in cosmic maintenance",
-        "examples": "Aztec sacrifice, Egyptian temple rituals, Vedic fire ceremonies, Jewish temple service",
-        "anthropologicalView": "Ritual as 'cosmological maintenance work' (Eliade)",
-        "socialFunction": "Rituals bind community to cosmic order, give humans cosmic purpose"
+      "m1:optionalProperties": {
+        "supernaturalPowers": "Some yes (Nidhogg gnaws root), some no",
+        "intelligence": "Varies (Fenrir intelligent, some dragons not)",
+        "mortality": "Some mortal (Fenrir killed), some eternal (Jormungandr)",
+        "benevolence": "Many ambiguous or hostile"
       },
       
-      "m1:philosophicalImplications": {
-        "ontology": "Being is not self-sustaining but requires active maintenance",
-        "cosmology": "Cosmos tends toward chaos (entropy), order requires work",
-        "theology": "Gods are not omnipotent observers but active cosmic laborers",
-        "anthropology": "Humans are co-creators/co-maintainers of cosmic order (not passive)",
-        "eschatology": "Time is linear (toward eventual failure) or cyclical (perpetual renewal)"
+      "m1:examplesCrossCultural": [
+        "Dragons: Nidhogg (Norse), Ladon (Greek), Vritra (Hindu), Long (Chinese)",
+        "Serpents: Jormungandr (Norse), Python (Greek), Apep (Egyptian), Shesha (Hindu)",
+        "Hybrid: Sleipnir 8-legged (Norse), Pegasus winged (Greek), Sphinx (Egyptian)",
+        "Giants: Ymir (Norse), Titans (Greek), Asuras (Hindu)"
+      ]
+    },
+    
+    {
+      "@id": "m1:mythology:Dragon",
+      "@type": "owl:Class",
+      "rdfs:label": "Dragon",
+      "rdfs:comment": "Reptilian creature with extraordinary powers. Often guards treasure, hoards knowledge, or embodies chaos. Examples: Nidhogg, Fafnir, Ladon, Smaug.",
+      "rdfs:subClassOf": "m1:mythology:MythicalCreature"
+    },
+    
+    {
+      "@id": "m1:mythology:Serpent",
+      "@type": "owl:Class",
+      "rdfs:label": "Serpent",
+      "rdfs:comment": "Giant snake with cosmic significance. Often world-encircling or primordial chaos force. Examples: Jormungandr, Python, Apep, Vritra.",
+      "rdfs:subClassOf": "m1:mythology:MythicalCreature"
+    },
+    
+    {
+      "@id": "m1:mythology:MonstrousWolf",
+      "@type": "owl:Class",
+      "rdfs:label": "Monstrous Wolf",
+      "rdfs:comment": "Gigantic wolf with supernatural strength. Often represents uncontrollable wild nature. Examples: Fenrir, Garmr.",
+      "rdfs:subClassOf": "m1:mythology:MythicalCreature"
+    },
+    
+    {
+      "@id": "m1:mythology:HybridCreature",
+      "@type": "owl:Class",
+      "rdfs:label": "Hybrid Creature",
+      "rdfs:comment": "Combination of multiple animal/human features. Impossible anatomy. Examples: Sleipnir (8 legs), Pegasus (winged horse), Chimera (multiple heads).",
+      "rdfs:subClassOf": "m1:mythology:MythicalCreature"
+    },
+    
+    {
+      "@id": "m1:mythology:GiantBeast",
+      "@type": "owl:Class",
+      "rdfs:label": "Giant Beast",
+      "rdfs:comment": "Enormous primordial being. Often world-creating or cosmos-structuring. Examples: Ymir (Norse), Titans (Greek), Jotunn.",
+      "rdfs:subClassOf": "m1:mythology:MythicalCreature"
+    },
+    
+    {
+      "@id": "m1:mythology:MagicalBird",
+      "@type": "owl:Class",
+      "rdfs:label": "Magical Bird",
+      "rdfs:comment": "Avian with supernatural abilities. Often omniscient observer or messenger. Examples: Eagle at Yggdrasil crown, Phoenix, Garuda, Hugin/Munin.",
+      "rdfs:subClassOf": "m1:mythology:MythicalCreature"
+    },
+    
+    {
+      "@id": "m1:mythology:Messenger",
+      "@type": "owl:Class",
+      "rdfs:label": "Messenger Creature",
+      "rdfs:comment": "Entity specializing in information transport between realms/entities. Examples: Ratatosk (squirrel), Hermes in animal form, Sleipnir.",
+      "rdfs:subClassOf": "m1:mythology:MythicalCreature"
+    },
+    
+    {
+      "@id": "m1:mythology:Guardian",
+      "@type": "owl:Class",
+      "rdfs:label": "Guardian Creature",
+      "rdfs:comment": "Entity protecting boundary, treasure, or sacred place. Examples: Cerberus (Hades gate), Sphinx (riddle guardian), Fu Dogs.",
+      "rdfs:subClassOf": "m1:mythology:MythicalCreature"
+    },
+    
+    {
+      "@id": "m1:mythology:PrimordialBeing",
+      "@type": "owl:Class",
+      "rdfs:label": "Primordial Being",
+      "rdfs:comment": "Ancient entity predating current cosmic order. Neither fully deity nor creature - exists in liminal category. Often giants or titans. Examples: Jotunn (Norse), Titans (Greek), Asuras (Hindu). Some worshiped (Mimir), most not.",
+      "rdfs:subClassOf": "m1:mythology:MythologicalEntity",
+      "skos:note": "Borderline cases between Deity and Creature. Often adversaries of gods but possess god-like attributes."
+    },
+    
+    {
+      "@id": "m1:mythology:CosmicForce",
+      "@type": "owl:Class",
+      "rdfs:label": "Cosmic Force",
+      "rdfs:comment": "Impersonal principle or abstract entity governing cosmic function. Not individual agents but forces/concepts. Examples: Nornes (Fate weavers), Moirai (Greek Fates), Karma (Hindu principle), Wyrd (Fate itself).",
+      "rdfs:subClassOf": "m1:mythology:MythologicalEntity",
+      "skos:note": "Often personified but fundamentally impersonal. Operate mechanically rather than through personal will."
+    },
+    
+    {
+      "@id": "m1:mythology:MythicalArtifact",
+      "@type": "owl:Class",
+      "rdfs:label": "Mythical Artifact",
+      "rdfs:comment": "Object with supernatural properties and persistent identity. Often divine weapons, tools, or cosmic structures. Instantiates Identity (persistence) and may have Power. Examples: Mjolnir, Gungnir, Excalibur, Vajra.",
+      "rdfs:subClassOf": "m1:mythology:MythologicalEntity",
+      "m1:M2_basis": ["m2:Identity (S⊗I⊗A⊗V⊗E) - Persistent artifact identity"]
+    },
+    
+    {
+      "@id": "m1:mythology:MythicalPlace",
+      "@type": "owl:Class",
+      "rdfs:label": "Mythical Place",
+      "rdfs:comment": "Location with cosmic significance. Underworlds, paradises, sacred sites, wells. Examples: Valhalla, Hades, Elysium, Urdarbrunnr, Mount Meru.",
+      "rdfs:subClassOf": "m1:mythology:MythologicalEntity"
+    },
+    
+    {
+      "@id": "m1:mythology:Trickster",
+      "@type": [
+        "owl:NamedIndividual",
+        "m1:mythology:MythologicalPattern"
+      ],
+      "rdfs:label": "Trickster Archetype",
+      "rdfs:comment": "Agent specialized in manipulating Representation (perception, truth, identity) rather than direct Territory transformation. Uses deception, shapeshifting, and illusion to achieve goals. Boundary-crossing figure operating between categories (realms, species, genders, moral alignments). Embodies necessary chaos testing and strengthening system through violation.",
+      
+      "m1:M2_basis": [
+        "m2:Agent (autonomous actor with goals)",
+        "m2:Transformation (change operator)",
+        "m2:Representation (map being manipulated)"
+      ],
+      
+      "m1:formula": "Agent ⊗ Transformation(Representation)",
+      
+      "m1:characteristicProperties": {
+        "boundaryViolator": "Crosses established categories (species, realms, genders, roles)",
+        "chaosAgent": "Disrupts order without destroying system entirely",
+        "ambiguousMorality": "Neither purely good nor purely evil - morally complex",
+        "representationMaster": "Controls how reality is perceived by others",
+        "survivalAdaptation": "Uses deception/transformation as survival strategy"
       },
       
-      "m1:relationToCyclicTension": "Perpetual Restoration is mythological instantiation of m1:core:CyclicTension. Degradation pole (Nídhögg, Apophis, entropy) opposed by restoration pole (Nornes, Ra, ritual). Both poles essential - without degradation, no need for divine labor; without restoration, cosmic collapse.",
+      "m1:operationalMechanisms": {
+        "shapeshifting": "Physical representation transformation (Loki becomes mare, salmon, giantess)",
+        "deception": "Conceptual representation distortion (lies, misleading information)",
+        "illusion": "Temporary false representations",
+        "reframing": "Changes meaning without changing underlying facts"
+      },
       
-      "m1:validatedPoclets": 1,
-      "m1:validatingPoclet": "Yggdrasil (Nídhögg gnawing ↔ Nornes watering perpetual cycle)",
-      "m1:transdisciplinaryPotential": "High - generalizes to: system maintenance (engineering), immune system (biology), monetary policy (economics), cultural preservation (sociology), ecosystem management (ecology)",
+      "m1:examplesCrossCultural": [
+        {
+          "culture": "Norse",
+          "trickster": "Loki",
+          "mechanisms": ["Shapeshifting (mare, salmon, giantess)", "Deception (wall-builder, Baldr death)", "Boundary violation (Aesir/Jotunn hybrid)"]
+        },
+        {
+          "culture": "Greek",
+          "trickster": "Hermes",
+          "mechanisms": ["Messenger (transforms information between realms)", "Thief (redistributes without permission)", "Psychopomp (crosses life/death boundary)"]
+        },
+        {
+          "culture": "West African",
+          "trickster": "Anansi",
+          "mechanisms": ["Stories that reframe reality", "Weak spider defeats powerful via cunning", "Owns all stories (controls narrative)"]
+        },
+        {
+          "culture": "Native American",
+          "trickster": "Coyote",
+          "mechanisms": ["Shapeshifter across species", "Rule breaker (violates natural laws)", "Creator through mistakes"]
+        },
+        {
+          "culture": "Egyptian",
+          "trickster": "Set",
+          "mechanisms": ["Deceives Osiris", "Chaos agent in ordered cosmos", "Ambiguous (protector of Ra, murderer of Osiris)"]
+        }
+      ],
+      
+      "m1:systemFunction": {
+        "negative": "Disrupts established order, creates instability, causes problems",
+        "positive": "Forces adaptation, prevents stagnation, reveals hidden truths through violation",
+        "paradox": "Necessary chaos that strengthens system by testing limits"
+      },
       
       "m1:distinctionFromRelated": {
-        "vs_CyclicTension_M1core": "Cyclic Tension (M1 core) is generic degradation-restoration; Perpetual Restoration emphasizes divine agency, ritual, and cosmological necessity",
-        "vs_Homeostasis_M2": "Homeostasis is automatic self-regulation; Perpetual Restoration requires active external intervention",
-        "vs_Process_M2": "Process is generic temporal evolution; Perpetual Restoration is specific maintenance imperative with eschatological stakes"
+        "vs_Mediator": "Mediator enables interaction neutrally. Trickster manipulates for own agenda.",
+        "vs_Warrior": "Warrior transforms Territory directly (physical combat). Trickster transforms Map/perception.",
+        "vs_Sage": "Sage reveals true Representation. Trickster obscures/distorts it.",
+        "vs_Destroyer": "Destroyer eliminates. Trickster reconfigures without destroying."
       },
       
-      "dcterms:created": "2026-01-22",
-      "dcterms:source": "Yggdrasil poclet analysis"
+      "m1:philosophicalImplication": "Trickster embodies danger of Representation manipulation. If one controls the Map (how reality is perceived), one controls actions, even if Territory remains unchanged. Relevant to: misinformation, deepfakes, gaslighting, propaganda.",
+      
+      "m1:validatedInstances": ["m0:yggdrasil:Loki"],
+      
+      "dcterms:created": "2026-02-04",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    
+    {
+      "@id": "m1:mythology:Gatekeeper",
+      "@type": [
+        "owl:NamedIndividual",
+        "m1:mythology:MythologicalPattern"
+      ],
+      "rdfs:label": "Gatekeeper Archetype",
+      "rdfs:comment": "Agent implementing Constrained Interface at critical system boundary. Enables legitimate passage while blocking threats. Combines Interface (connection) with Constraint (selectivity) through active Agent enforcement. Not passive barrier nor neutral mediator - intelligent selective gateway.",
+      
+      "m1:instantiatesMetaconcept": "m2:MetaconceptCombo",
+      
+      "m1:metaconceptComboStructure": {
+        "parentA": "m2:Interface",
+        "parentB": "m2:Constraint",
+        "additionalComponent": "m2:Agent",
+        "formula": "(Interface ⊗ Constraint) + Agent"
+      },
+      
+      "m1:M2_basis": [
+        "m2:Interface (S⊗I⊗F⊗V⊗R) - Connection enabler",
+        "m2:Constraint (S⊗I⊗F⊗V⊗R) - Access restrictor",
+        "m2:Agent (S⊗I⊗D⊗A⊗E) - Active enforcer"
+      ],
+      
+      "m1:characteristicProperties": {
+        "boundaryPosition": "Located at critical system interface/threshold",
+        "dualFunction": "Enables legitimate traffic AND blocks threats (selective permeability)",
+        "selectivity": "Not binary (pass/block) but intelligent filtering based on criteria",
+        "vigilance": "Constant monitoring (Heimdall never sleeps, Cerberus always watches)",
+        "authentication": "Verifies identity/credentials/worthiness before passage",
+        "asymmetry": "Often different rules for inbound vs outbound traffic"
+      },
+      
+      "m1:operationalMechanisms": {
+        "sensing": "Enhanced perception at boundary (Heimdall sees 100 leagues, hears grass grow)",
+        "decision": "Evaluate threat vs legitimacy",
+        "enforcement": "Physical blocking, combat, or alarm",
+        "communication": "Signal normal state vs boundary violation (Gjallarhorn)"
+      },
+      
+      "m1:examplesCrossCultural": [
+        {
+          "culture": "Norse",
+          "gatekeeper": "Heimdall",
+          "boundary": "Bifrost (Midgard ↔ Asgard)",
+          "interface": "Rainbow bridge enables passage",
+          "constraint": "Gods pass freely, giants never, humans rarely",
+          "agent": "Heimdall actively guards, decides, signals via Gjallarhorn"
+        },
+        {
+          "culture": "Greek",
+          "gatekeeper": "Cerberus",
+          "boundary": "Gates of Hades (Living ↔ Dead)",
+          "interface": "Allows entry to underworld",
+          "constraint": "Three-headed dog prevents exit of dead",
+          "agent": "Guards actively, attacks escapees"
+        },
+        {
+          "culture": "Egyptian",
+          "gatekeeper": "Anubis (at judgment)",
+          "boundary": "Hall of Maat (Life ↔ Afterlife)",
+          "interface": "Weighing of heart ceremony",
+          "constraint": "Heavy heart (sin) → devoured by Ammit",
+          "agent": "Anubis conducts judgment ritual"
+        },
+        {
+          "culture": "Chinese",
+          "gatekeeper": "Door Gods (Menshen)",
+          "boundary": "Home entrance (Outside ↔ Inside)",
+          "interface": "Doorway allows passage",
+          "constraint": "Evil spirits blocked",
+          "agent": "Guardian deities actively protect"
+        },
+        {
+          "culture": "Christian",
+          "gatekeeper": "St. Peter",
+          "boundary": "Pearly Gates (Earth ↔ Heaven)",
+          "interface": "Entry point to paradise",
+          "constraint": "Judgment determines passage",
+          "agent": "Peter holds keys, decides entry based on criteria"
+        }
+      ],
+      
+      "m1:systemFunction": {
+        "protection": "Defends valuable resources/realm from external threats",
+        "regulation": "Controls flow rate and composition at critical boundary",
+        "authentication": "Ensures only authorized entities cross threshold",
+        "signaling": "Alerts system to boundary violations or exceptional events",
+        "asymmetry": "Different rules for entry vs exit (e.g., Cerberus blocks exit, not entry)"
+      },
+      
+      "m1:distinctionFromRelated": {
+        "vs_PureInterface": "Pure Interface (bridge alone) allows all traffic. Gatekeeper adds intelligent selectivity.",
+        "vs_PureConstraint": "Pure Constraint (wall) blocks all traffic. Gatekeeper enables legitimate passage.",
+        "vs_Mediator": "Mediator facilitates interaction neutrally. Gatekeeper judges, filters, and enforces rules.",
+        "vs_Guardian": "Guardian only protects (purely defensive). Gatekeeper also enables (bidirectional function)."
+      },
+      
+      "m1:philosophicalImplication": "Gatekeeper represents necessary selectivity in open systems. Total openness → vulnerability. Total closure → isolation. Selective permeability via intelligent gatekeeping → system protection while maintaining essential connectivity.",
+      
+      "m1:validatedInstances": ["m0:yggdrasil:Heimdall"],
+      
+      "dcterms:created": "2026-02-04",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     }
   ]
 }
