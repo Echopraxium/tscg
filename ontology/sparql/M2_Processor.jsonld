@@ -1,0 +1,231 @@
+{
+  "@context": {
+    "@vocab": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m2:Processor",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaConcept",
+        "m2:MetaconceptCombo"
+      ],
+      "rdfs:label": "Processor",
+      "rdfs:comment": "Generic system with inputs and outputs that transforms/processes incoming resources, signals, or matter into outputs. Dual synergistic combinations: Territory (Transformation ⊗ Flow ⊗ Resource) provides empirical processing dynamics, Map (Transformation ⊗ Representation ⊗ Interoperability) provides conceptual interface model. Distinct from pure Transformation (abstract process) by being a concrete entity that IMPLEMENTS transformations while managing flows and interfacing with environment.",
+      "m2:hasCategory": "m2:Ontological",
+      "m2:hasTensorFormula": "⊗⇒_Territory(Transformation, Flow, Resource) × ⊗⇒_Map(Transformation, Representation, Interoperability)",
+      "m2:hasTensorFormulaExpanded_Territory": "S⊗I⊗D⊗F⊗V⊗Resource",
+      "m2:hasTensorFormulaExpanded_Map": "S⊗I⊗D⊗F⊗V⊗R⊗Im",
+      "m2:hasEpistemicGap": 0.15,
+      "m2:hasPolarity": "dual",
+      "rdfs:subClassOf": {
+        "@id": "m2:System"
+      },
+      "m2:bicephalousArchitecture": {
+        "territory": {
+          "formula": "Transformation ⊗ Flow ⊗ Resource",
+          "expanded": "S⊗I⊗D⊗F⊗V ⊗ F⊗I⊗R (simplified fusion)",
+          "parents": [
+            {
+              "@id": "m2:Transformation",
+              "formula": "S⊗I⊗D⊗F⊗V",
+              "contribution": "Processing mechanism - conversion of inputs to outputs with state changes"
+            },
+            {
+              "@id": "m2:Flow",
+              "formula": "F",
+              "contribution": "Movement of matter/energy/information through the processor (input→process→output)"
+            },
+            {
+              "@id": "m2:Resource",
+              "formula": "F⊗I⊗R",
+              "contribution": "Materials, data, energy being consumed (inputs) and produced (outputs)"
+            }
+          ],
+          "sharedDimensions": {
+            "F": "Shared by all three parents - flow coupling through processor",
+            "I": "Shared by Transformation and Resource - information about state and content"
+          },
+          "dimensionSemantics": {
+            "S": "Structure - internal organization of processing stages/components",
+            "I": "Information - data/state encoded in inputs, internal states, and outputs",
+            "D": "Dynamics - temporal evolution of processing (input→transformation→output)",
+            "F": "Flow - movement of resources through the processor",
+            "V": "Verifiability - measurable input/output relationships",
+            "R": "Representability - encodability of processed content"
+          }
+        },
+        "map": {
+          "formula": "Transformation ⊗ Representation ⊗ Interoperability",
+          "expanded": "S⊗I⊗D⊗F⊗V ⊗ S⊗I⊗V⊗R ⊗ S⊗I⊗F⊗V⊗E (simplified fusion)",
+          "parents": [
+            {
+              "@id": "m2:Transformation",
+              "formula": "S⊗I⊗D⊗F⊗V",
+              "contribution": "Abstract conversion rules - specifies HOW inputs map to outputs"
+            },
+            {
+              "@id": "m2:Representation",
+              "formula": "S⊗I⊗V⊗R",
+              "contribution": "Model of processor - defines structure, state space, and semantic encoding"
+            },
+            {
+              "@id": "m2:Interoperability",
+              "formula": "S⊗I⊗F⊗V⊗E",
+              "contribution": "Interface compatibility - ensures inputs/outputs match environmental protocols/standards"
+            }
+          ],
+          "sharedDimensions": {
+            "S": "Shared by all three parents - structural interface coupling",
+            "I": "Shared by all three parents - informational compatibility",
+            "V": "Shared by all three parents - verifiability of interface contracts",
+            "F": "Shared by Transformation and Interoperability - flow protocol coupling"
+          },
+          "dimensionSemantics": {
+            "S": "Structure - interface architecture and component organization",
+            "I": "Information - format specifications and encoding schemes",
+            "D": "Dynamics - state transition rules",
+            "F": "Flow - protocol for data/signal exchange",
+            "V": "Verifiability - testability of interface contracts",
+            "R": "Representability - semantic decodability of inputs/outputs",
+            "E": "Evolvability - adaptability to new input/output formats",
+            "Im": "Interoperability - standards compliance and compatibility"
+          }
+        }
+      },
+      "m2:hasAttribute": {
+        "Input": {
+          "@type": "m2:NaryAttribute",
+          "m2:arity": "variable",
+          "rdfs:comment": "Input channels, streams, or materials processed by the system. Arity ≥ 1 (at least one input required for processing). ValueSpace defined in M1 domain extensions or M0 poclets.",
+          "m2:examples": {
+            "Biology": ["nutrients", "oxygen", "hormones", "blood"],
+            "Electronics": ["digital_signal", "analog_signal", "power"],
+            "Computing": ["source_code", "data", "commands"]
+          }
+        },
+        "Output": {
+          "@type": "m2:NaryAttribute",
+          "m2:arity": "variable",
+          "rdfs:comment": "Output products, results, or signals produced by the system. Arity ≥ 1 (at least one output required). ValueSpace defined in M1 domain extensions or M0 poclets.",
+          "m2:examples": {
+            "Biology": ["waste", "carbon_dioxide", "processed_nutrients", "filtered_blood"],
+            "Electronics": ["amplified_signal", "switched_output"],
+            "Computing": ["executable", "processed_data", "results"]
+          }
+        }
+      },
+      "m2:hasExample": [
+        "Digestive System: Inputs=[food, enzymes], Outputs=[nutrients, waste] - biological matter processor",
+        "Lungs: Inputs=[air, blood], Outputs=[oxygenated_blood, CO2] - gas exchange processor",
+        "Kidneys: Inputs=[blood, water], Outputs=[filtered_blood, urine] - filtration processor",
+        "Microprocessor: Inputs=[instructions, data], Outputs=[computed_results, signals] - digital processor",
+        "Transistor: Inputs=[base_current, collector_voltage], Outputs=[collector_current] - electrical signal processor",
+        "Compiler: Inputs=[source_code], Outputs=[executable, errors] - code transformation processor",
+        "Filter: Inputs=[unfiltered_signal], Outputs=[filtered_signal] - signal conditioning processor",
+        "Engine: Inputs=[fuel, air], Outputs=[mechanical_power, exhaust] - energy conversion processor"
+      ],
+      "m2:perspective": "dual",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "Transformation ⊗ Flow ⊗ Resource",
+        "role": "Measure observable processor in Territory - empirical input/output dynamics",
+        "hybridFormula": "hybrid_processor_territory",
+        "status": "IMMUTABLE"
+      },
+      "m2:sphinxView": {
+        "formulaPrimary": {
+          "basis": "REVOI",
+          "formula": "Transformation ⊗ Representation ⊗ Interoperability",
+          "role": "Evaluate processor map - interface model quality and compatibility",
+          "hybridFormula": "hybrid_processor_map",
+          "status": "PROPOSITION (validation required)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "Transformation ⊗ Flow ⊗ Resource",
+          "role": "Guaranteed measurement if REVOI validation fails",
+          "status": "GUARANTEED"
+        }
+      },
+      "m2:distinctionFromRelated": {
+        "vs_Transformation": "Transformation is abstract process; Processor is concrete ENTITY that implements transformations",
+        "vs_Flow": "Flow is movement of something; Processor is entity that CAUSES and CONTROLS flows",
+        "vs_Resource": "Resource is what is available/consumed; Processor is what CONSUMES and PRODUCES resources",
+        "vs_System": "System is generic whole; Processor is specialized System with explicit input/output architecture",
+        "vs_Mediator": "Mediator enables interaction; Processor actively TRANSFORMS content while mediating",
+        "vs_Filter": "Filter (M1 concept) is specific type of Processor (selecting/blocking); Processor is broader pattern"
+      },
+      "m2:transdisciplinaryValidation": {
+        "domains": [
+          {
+            "domain": "Biology",
+            "examples": [
+              "Digestive System (food → nutrients + waste)",
+              "Lungs (air + blood → oxygenated blood + CO2)",
+              "Kidneys (blood → filtered blood + urine)",
+              "Liver (toxins + nutrients → detoxified compounds + metabolites)"
+            ]
+          },
+          {
+            "domain": "Electronics",
+            "examples": [
+              "Microprocessor (instructions + data → results)",
+              "Transistor (input signal → amplified/switched output)",
+              "Op-Amp (differential input → amplified output)",
+              "ADC (analog signal → digital values)"
+            ]
+          },
+          {
+            "domain": "Computing",
+            "examples": [
+              "Compiler (source code → executable + errors)",
+              "Database (query → result set)",
+              "Neural Network (input vector → prediction)",
+              "Parser (text → AST)"
+            ]
+          },
+          {
+            "domain": "Engineering",
+            "examples": [
+              "Engine (fuel + air → power + exhaust)",
+              "Filter (unfiltered → filtered)",
+              "Pump (low pressure → high pressure fluid)",
+              "Heat exchanger (hot fluid + cold fluid → tempered outputs)"
+            ]
+          },
+          {
+            "domain": "Chemistry",
+            "examples": [
+              "Catalyst (reactants → products at faster rate)",
+              "Reactor vessel (inputs → chemical products)",
+              "Chromatography column (mixture → separated components)"
+            ]
+          }
+        ]
+      },
+      "m2:mathematicalNote": "Ternary hybrid formulas enable complete coverage: Territory formula captures empirical processing dynamics (S⊗I⊗D⊗F⊗V⊗R estimated ~0.85 ASFID), Map formula captures interface model (R⊗E⊗V⊗O⊗I estimated ~0.88 REVOI). Interoperability addition critical for processor's environmental compatibility.",
+      "m2:designRationale": "Processor required TWO ternary formulas because: (1) Territory needs Transformation+Flow+Resource to capture empirical input→process→output dynamics, (2) Map needs Transformation+Representation+Interoperability to capture interface compatibility which is ESSENTIAL for processors (microprocessor bus protocols, digestive enzyme compatibility, compiler language standards). Unlike Cascade which has asymmetric formulas (3+2), Processor has symmetric formulas (3+3) reflecting balanced empirical/conceptual nature.",
+      "m2:versionHistory": {
+        "v15.0.0_2026-02-07": "Initial creation with bicephalous ternary hybrid formulas. Subclass of System. N-ary Input/Output attributes."
+      }
+    }
+  ],
+  "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_Processor.jsonld",
+  "rdfs:label": "TSCG M2 Processor Metaconcept",
+  "rdfs:comment": "Defines the Processor metaconcept as a generic input-output system with dual bicephalous architecture using ternary hybrid formulas for Territory (Transformation⊗Flow⊗Resource) and Map (Transformation⊗Representation⊗Interoperability).",
+  "owl:versionInfo": "15.0.0",
+  "owl:imports": [
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld",
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld"
+  ],
+  "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+  "dcterms:created": "2026-02-07",
+  "dcterms:modified": "2026-02-07"
+}

@@ -1,0 +1,349 @@
+{
+  "@context": {
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclets.jsonld#",
+    "m1bio": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Biology.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
+    "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "m0:Kidneys",
+      "@type": [
+        "m0:Poclet",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Kidneys - Renal Filtration System",
+      "rdfs:comment": "Kidneys as biological Processor: Input (blood + water) → Filtration + Reabsorption + Secretion → Output (filtered blood + urine). First poclet validating Processor metaconcept with dual N-ary inputs/outputs and bicephalous ternary hybrid formulas. Demonstrates processor's ability to simultaneously purify and regulate (homeostatic processing).",
+      "dcterms:created": "2026-02-07",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "owl:versionInfo": "15.0.0",
+      "m0:domain": "Biology",
+      "m0:subdomains": [
+        "Renal Physiology",
+        "Nephrology",
+        "Homeostasis"
+      ],
+      "m0:primaryMetaconcept": "m2:Processor",
+      "m0:validatesMetaconcepts": [
+        "m2:Processor (ternary hybrid formulas - NEW)",
+        "m2:Transformation",
+        "m2:Flow",
+        "m2:Resource",
+        "m2:Representation",
+        "m2:Interoperability",
+        "m2:Regulation",
+        "m2:Homeostasis",
+        "m2:Filter",
+        "m2:Gradient",
+        "m2:Process"
+      ],
+      "m0:validatesM1Concepts": [
+        "m1bio:Organ",
+        "m1bio:BloodCirculation",
+        "m1bio:Metabolism",
+        "m1bio:Homeostasis"
+      ],
+      "m0:processorArchitecture": {
+        "inputs": [
+          {
+            "@id": "m0:Kidneys/input/blood",
+            "rdfs:label": "Blood (Renal Artery)",
+            "m0:valueSpace": "fluid",
+            "m0:flowRate": "~1200 mL/min (20-25% of cardiac output)",
+            "m0:composition": [
+              "water",
+              "electrolytes (Na+, K+, Cl-, HCO3-)",
+              "waste (urea, creatinine, uric acid)",
+              "glucose",
+              "amino acids",
+              "proteins",
+              "cells"
+            ],
+            "m0:pressure": "~100 mmHg (arterial)"
+          },
+          {
+            "@id": "m0:Kidneys/input/water",
+            "rdfs:label": "Water (from blood plasma)",
+            "m0:valueSpace": "fluid",
+            "m0:volume": "~180 L/day filtered",
+            "m0:role": "Medium for filtration and solute transport"
+          }
+        ],
+        "outputs": [
+          {
+            "@id": "m0:Kidneys/output/filtered_blood",
+            "rdfs:label": "Filtered Blood (Renal Vein)",
+            "m0:valueSpace": "fluid",
+            "m0:flowRate": "~1200 mL/min",
+            "m0:composition": [
+              "water",
+              "electrolytes (balanced)",
+              "glucose (reabsorbed)",
+              "amino acids (reabsorbed)",
+              "proteins (retained)",
+              "cells (retained)",
+              "waste (reduced by ~99%)"
+            ],
+            "m0:pressure": "~8 mmHg (venous)"
+          },
+          {
+            "@id": "m0:Kidneys/output/urine",
+            "rdfs:label": "Urine (to bladder)",
+            "m0:valueSpace": "fluid",
+            "m0:volume": "~1.5 L/day (0.8% of filtered water)",
+            "m0:composition": [
+              "water (95%)",
+              "urea (~9 g/L)",
+              "creatinine (~0.8 g/L)",
+              "uric acid (~0.4 g/L)",
+              "electrolytes (excess Na+, K+, Cl-)",
+              "H+ ions (pH regulation)"
+            ],
+            "m0:osmolality": "50-1200 mOsm/kg (variable concentration)"
+          }
+        ],
+        "processingStages": [
+          {
+            "@id": "m0:Kidneys/stage/glomerular_filtration",
+            "rdfs:label": "Glomerular Filtration",
+            "m0:mechanism": "Passive filtration through glomerular capillaries",
+            "m0:rate": "~125 mL/min (GFR - Glomerular Filtration Rate)",
+            "m0:selectivity": "Size-based: passes molecules <70 kDa, retains proteins and cells",
+            "m0:m2basis": "m2:Filter"
+          },
+          {
+            "@id": "m0:Kidneys/stage/tubular_reabsorption",
+            "rdfs:label": "Tubular Reabsorption",
+            "m0:mechanism": "Active and passive transport from tubule → blood",
+            "m0:recovered": "99% water, 100% glucose, 100% amino acids, variable electrolytes",
+            "m0:location": "Proximal tubule (65%), Loop of Henle (25%), Distal tubule (8%), Collecting duct (2%)",
+            "m0:m2basis": "m2:Resource"
+          },
+          {
+            "@id": "m0:Kidneys/stage/tubular_secretion",
+            "rdfs:label": "Tubular Secretion",
+            "m0:mechanism": "Active transport from blood → tubule",
+            "m0:secreted": "H+ ions, K+, organic acids, drugs, toxins",
+            "m0:role": "Fine-tune composition, eliminate drugs/toxins",
+            "m0:m2basis": "m2:Transformation"
+          }
+        ]
+      },
+      "m0:processorFormulas": {
+        "territory": {
+          "formula": "Transformation ⊗ Flow ⊗ Resource",
+          "hybridFormulaRef": "hybrid_processor_territory",
+          "justification": "Empirical filtration dynamics with resource recovery and flow control",
+          "dimensions": {
+            "Transformation": "Chemical/physical conversion (filtration, reabsorption, secretion)",
+            "Flow": "Blood flow through nephrons (1200 mL/min sustained)",
+            "Resource": "Water and solutes as consumed/produced materials"
+          }
+        },
+        "map": {
+          "formula": "Transformation ⊗ Representation ⊗ Interoperability",
+          "hybridFormulaRef": "hybrid_processor_map",
+          "justification": "Conceptual model emphasizing blood-kidney interface compatibility",
+          "dimensions": {
+            "Transformation": "Abstract filtration rules and selectivity criteria",
+            "Representation": "Nephron architecture and filtration model",
+            "Interoperability": "Blood-kidney interface (pressure, osmolality, pH compatibility with circulatory system)"
+          }
+        }
+      },
+      "m0:asfidScores": {
+        "A": 0.9,
+        "A_justification": "Strong attractors: osmolality homeostasis (280-300 mOsm/kg), pH (7.35-7.45), electrolyte balance",
+        "S": 0.85,
+        "S_justification": "Complex structure: 1M nephrons/kidney, 3-stage processing (glomerulus, tubule, collecting duct)",
+        "F": 0.95,
+        "F_justification": "Continuous blood flow (1200 mL/min), urine production (1 mL/min), sustained 24/7",
+        "I": 0.8,
+        "I_justification": "Hormonal control (ADH, aldosterone, ANP), sensor feedback (osmoreceptors, baroreceptors)",
+        "D": 0.85,
+        "D_justification": "Dynamic regulation: GFR varies with BP, reabsorption varies with hormones, circadian rhythm",
+        "mean": 0.87
+      },
+      "m0:revoiScores": {
+        "R": 0.9,
+        "R_justification": "Well-characterized model: clearance formulas, filtration coefficients, Starling forces",
+        "E": 0.7,
+        "E_justification": "Moderate evolvability: adaptation to hydration status, limited regeneration after damage",
+        "V": 0.95,
+        "V_justification": "Highly verifiable: GFR measurement (creatinine clearance), urine analysis, blood tests",
+        "O": 0.85,
+        "O_justification": "Observable via: urine output, blood chemistry, imaging (ultrasound, CT), biopsy",
+        "I": 0.9,
+        "I_justification": "Strong interoperability: interfaces with circulatory, endocrine, nervous systems via standardized biochemical signals",
+        "mean": 0.86
+      },
+      "m0:epistemicGap": 0.01,
+      "m0:epistemicGap_comment": "Excellent map-territory alignment: kidneys are one of the best-understood organs in physiology. Low gap reflects centuries of clinical and experimental validation.",
+      "m0:homeostasis": {
+        "@type": "m2:Homeostasis",
+        "m0:regulated_variables": [
+          {
+            "variable": "Blood pH",
+            "setpoint": "7.40 ± 0.05",
+            "mechanism": "H+ secretion and HCO3- reabsorption"
+          },
+          {
+            "variable": "Blood osmolality",
+            "setpoint": "280-300 mOsm/kg",
+            "mechanism": "Water reabsorption (ADH-regulated)"
+          },
+          {
+            "variable": "Electrolyte balance",
+            "setpoint": "Na+ 135-145 mM, K+ 3.5-5 mM",
+            "mechanism": "Selective reabsorption and secretion"
+          },
+          {
+            "variable": "Blood volume",
+            "setpoint": "~5 L",
+            "mechanism": "Water retention/excretion (RAAS, ADH)"
+          },
+          {
+            "variable": "Waste removal",
+            "setpoint": "Urea <7 mM, Creatinine <120 μM",
+            "mechanism": "Filtration + limited reabsorption"
+          }
+        ],
+        "m0:feedback_type": "Negative (stabilizing)",
+        "m0:control_type": "Proportional (concentration-dependent reabsorption)",
+        "m0:m2basis": [
+          "m2:Regulation",
+          "m2:Homeostasis"
+        ]
+      },
+      "m0:processorAttributes": {
+        "process": {
+          "@type": "m2:Process",
+          "time_discretization": "Continuous",
+          "reversibility": "Irreversible",
+          "rationale": "Filtration runs continuously; thermodynamically irreversible (waste elimination, energy dissipation)"
+        },
+        "signal": {
+          "@type": "m2:Signal",
+          "signal_type": "Analog",
+          "rationale": "Hormonal concentrations (ADH, aldosterone) are continuous analog signals"
+        },
+        "threshold": {
+          "@type": "m2:Threshold",
+          "threshold_behavior": "Smooth",
+          "rationale": "Reabsorption responds gradually to hormone concentration (no sharp cutoff)"
+        },
+        "gradient": {
+          "@type": "m2:Gradient",
+          "gradient_type": "Exponential",
+          "rationale": "Osmotic gradient in Loop of Henle increases exponentially from cortex (300) to medulla (1200 mOsm/kg)"
+        }
+      },
+      "m0:interoperability": {
+        "interfaces": [
+          {
+            "system": "Cardiovascular (Blood Circulation)",
+            "protocol": "Pressure/flow coupling",
+            "compatibility": "Renal autoregulation maintains GFR despite BP fluctuations (80-180 mmHg)"
+          },
+          {
+            "system": "Endocrine (Hormonal)",
+            "protocol": "Receptor-ligand signaling",
+            "compatibility": "ADH receptors (V2), Aldosterone receptors (MR), ANP receptors (NPR-A)"
+          },
+          {
+            "system": "Nervous (Sympathetic)",
+            "protocol": "Neurotransmitter release (norepinephrine)",
+            "compatibility": "α1 receptors → vasoconstriction, reduced GFR during stress"
+          },
+          {
+            "system": "RAAS Cascade",
+            "protocol": "Enzymatic signaling",
+            "compatibility": "Renin secretion by juxtaglomerular cells integrates into RAAS cascade"
+          }
+        ],
+        "m0:m2basis": "m2:Interoperability"
+      },
+      "m0:clinicalRelevance": {
+        "diseases": [
+          "Chronic Kidney Disease (CKD): progressive loss of GFR",
+          "Acute Kidney Injury (AKI): sudden GFR drop",
+          "Diabetic Nephropathy: hyperglycemia damages glomeruli",
+          "Hypertensive Nephrosclerosis: chronic BP damage",
+          "Polycystic Kidney Disease: cyst proliferation"
+        ],
+        "diagnostics": [
+          "GFR estimation (eGFR from serum creatinine)",
+          "Urinalysis (protein, blood, glucose, pH)",
+          "Blood chemistry (BUN, creatinine, electrolytes)",
+          "Kidney biopsy (histopathology)"
+        ],
+        "therapeutics": [
+          "Dialysis (hemodialysis, peritoneal dialysis): artificial processor replacement",
+          "Kidney transplant: processor replacement",
+          "ACE inhibitors/ARBs: reduce glomerular pressure",
+          "Diuretics: modulate tubular reabsorption"
+        ]
+      },
+      "m0:transdisciplinaryValidation": {
+        "analogousProcessors": [
+          {
+            "domain": "Engineering",
+            "example": "Water Treatment Plant",
+            "inputs": ["contaminated water"],
+            "outputs": ["clean water", "sludge"],
+            "processingStages": ["coagulation", "filtration", "disinfection"],
+            "similarity": "Multi-stage filtration and selective retention/removal"
+          },
+          {
+            "domain": "Computing",
+            "example": "Database Query Processor",
+            "inputs": ["query", "raw data"],
+            "outputs": ["result set", "logs"],
+            "processingStages": ["parsing", "optimization", "execution"],
+            "similarity": "Selective data extraction with transformation"
+          },
+          {
+            "domain": "Chemistry",
+            "example": "Chromatography Column",
+            "inputs": ["mixture"],
+            "outputs": ["separated compounds"],
+            "processingStages": ["adsorption", "elution", "detection"],
+            "similarity": "Selective separation based on affinity differences"
+          }
+        ]
+      },
+      "m0:keyInsights": [
+        "Kidneys validate Processor as biological implementation: dual N-ary inputs (blood, water) and outputs (filtered blood, urine)",
+        "Interoperability dimension critical: kidneys interface with cardiovascular, endocrine, nervous systems via standardized biochemical protocols",
+        "Processor enables homeostasis: regulation through processing (not just feedback control)",
+        "Multi-stage processing (filtration → reabsorption → secretion) demonstrates transformation complexity",
+        "Excellent ASFID/REVOI scores (0.87/0.86) with minimal epistemic gap (0.01) validate well-understood biological processor",
+        "Clinical relevance: processor failure (kidney disease) requires artificial replacement (dialysis) or transplant"
+      ],
+      "m0:notes": [
+        "First biological poclet validating new Processor metaconcept (v15.0.0)",
+        "Demonstrates processor's dual nature: empirical processing (Territory) + conceptual interface model (Map)",
+        "Ternary hybrid formulas necessary: Territory needs Flow+Resource, Map needs Interoperability",
+        "Kidneys exemplify 'intelligent processor': not just filtering, but adaptive regulation (hormone-responsive)",
+        "Relationship to RAAS: kidneys are BOTH a processor (filtration) AND cascade initiator (renin secretion)"
+      ]
+    }
+  ],
+  "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Kidneys.jsonld",
+  "rdfs:label": "TSCG M0 Poclet - Kidneys",
+  "rdfs:comment": "Kidneys as biological Processor validating ternary hybrid formulas with N-ary inputs/outputs. First poclet for Processor metaconcept (v15.0.0).",
+  "owl:versionInfo": "15.0.0",
+  "owl:imports": [
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_Processor.jsonld",
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld",
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Biology.jsonld",
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld"
+  ],
+  "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+  "dcterms:created": "2026-02-07"
+}

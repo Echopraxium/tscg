@@ -1,0 +1,356 @@
+{
+  "@context": {
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclets.jsonld#",
+    "m1elec": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Electronics.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
+    "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "m0:Transistor_BJT",
+      "@type": [
+        "m0:Poclet",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Bipolar Junction Transistor (BJT) - NPN Configuration",
+      "rdfs:comment": "BJT as electronic Processor: Input (base current, collector voltage) → Amplification/Switching → Output (collector current). Minimal complete semiconductor processor demonstrating dual modes (linear amplification vs digital switching). Validates Processor metaconcept with continuous analog inputs/outputs and transformation via charge carrier control.",
+      "dcterms:created": "2026-02-07",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "owl:versionInfo": "15.0.0",
+      "m0:domain": "Electronics",
+      "m0:subdomains": [
+        "Semiconductor Physics",
+        "Analog Electronics",
+        "Digital Electronics",
+        "Signal Processing"
+      ],
+      "m0:primaryMetaconcept": "m2:Processor",
+      "m0:validatesMetaconcepts": [
+        "m2:Processor (ternary hybrid formulas)",
+        "m2:Transformation",
+        "m2:Flow",
+        "m2:Resource",
+        "m2:Representation",
+        "m2:Interoperability",
+        "m2:Amplification",
+        "m2:Signal",
+        "m2:Threshold",
+        "m2:Mode"
+      ],
+      "m0:processorArchitecture": {
+        "deviceType": "Three-terminal active semiconductor device",
+        "configuration": "NPN BJT (n-type emitter/collector, p-type base)",
+        "inputs": [
+          {
+            "@id": "m0:Transistor/input/base_current",
+            "rdfs:label": "Base Current (I_B)",
+            "m0:valueSpace": "electric_current",
+            "m0:typicalRange": "0-100 μA (small signal)",
+            "m0:role": "Control signal - modulates collector current",
+            "m0:physicalMechanism": "Injects minority carriers into base region"
+          },
+          {
+            "@id": "m0:Transistor/input/collector_voltage",
+            "rdfs:label": "Collector-Emitter Voltage (V_CE)",
+            "m0:valueSpace": "electric_potential",
+            "m0:typicalRange": "0-40 V (power transistor), 0-10 V (small signal)",
+            "m0:role": "Energy source - establishes electric field",
+            "m0:physicalMechanism": "Reverse-biases collector-base junction"
+          },
+          {
+            "@id": "m0:Transistor/input/emitter_reference",
+            "rdfs:label": "Emitter (ground reference)",
+            "m0:valueSpace": "electric_potential",
+            "m0:typicalValue": "0 V (common emitter configuration)",
+            "m0:role": "Reference potential for current flow"
+          }
+        ],
+        "outputs": [
+          {
+            "@id": "m0:Transistor/output/collector_current",
+            "rdfs:label": "Collector Current (I_C)",
+            "m0:valueSpace": "electric_current",
+            "m0:typicalRange": "0-10 A (power transistor), 0-100 mA (small signal)",
+            "m0:relationship": "I_C ≈ β × I_B (linear region) where β = 50-500 (current gain)",
+            "m0:physicalMechanism": "Majority carrier flow from emitter through base to collector"
+          }
+        ],
+        "processingMechanism": {
+          "@id": "m0:Transistor/transformation",
+          "rdfs:label": "Charge Carrier Control",
+          "m0:principle": "Small base current controls large collector current via minority carrier injection and recombination",
+          "m0:currentGain": "β (beta) = I_C / I_B ≈ 100 (typical)",
+          "m0:voltageGain": "A_v = -β × (R_C / R_E) (with external resistors)",
+          "m0:powerGain": "A_p = A_v × β (can exceed 10,000)",
+          "m0:operatingRegions": [
+            {
+              "region": "Cutoff",
+              "condition": "V_BE < 0.6 V",
+              "behavior": "I_C ≈ 0 (transistor OFF)",
+              "use": "Digital logic LOW state"
+            },
+            {
+              "region": "Active (Linear)",
+              "condition": "V_BE ≈ 0.7 V, V_CE > V_CE(sat)",
+              "behavior": "I_C = β × I_B (proportional amplification)",
+              "use": "Analog amplification"
+            },
+            {
+              "region": "Saturation",
+              "condition": "V_BE ≈ 0.8 V, V_CE ≈ 0.2 V",
+              "behavior": "I_C at maximum (transistor fully ON)",
+              "use": "Digital logic HIGH state"
+            }
+          ]
+        }
+      },
+      "m0:processorFormulas": {
+        "territory": {
+          "formula": "Transformation ⊗ Flow ⊗ Resource",
+          "hybridFormulaRef": "hybrid_processor_territory",
+          "justification": "Empirical semiconductor physics: charge carrier transformation with electron flow and energy consumption",
+          "dimensions": {
+            "Transformation": "I_B → I_C conversion via minority carrier injection (β gain)",
+            "Flow": "Electron/hole flow through semiconductor junctions (drift + diffusion currents)",
+            "Resource": "Electrical energy consumed from V_CE power supply, dissipated as heat (P = V_CE × I_C)"
+          }
+        },
+        "map": {
+          "formula": "Transformation ⊗ Representation ⊗ Interoperability",
+          "hybridFormulaRef": "hybrid_processor_map",
+          "justification": "Circuit model emphasizing symbol standardization and interface compatibility",
+          "dimensions": {
+            "Transformation": "Abstract current gain formula (I_C = β × I_B) and voltage relationships",
+            "Representation": "Circuit symbol (3 terminals: B, C, E with arrow), Ebers-Moll model, hybrid-π equivalent circuit",
+            "Interoperability": "Standardized pinout (TO-92, SOT-23), voltage/current compatibility with TTL/CMOS logic, impedance matching"
+          }
+        }
+      },
+      "m0:dualModes": {
+        "linearMode": {
+          "@id": "m0:Transistor/mode/linear_amplifier",
+          "rdfs:label": "Linear Amplification Mode",
+          "m0:region": "Active region",
+          "m0:operation": "Proportional I_C = β × I_B",
+          "m0:applications": [
+            "Audio amplifiers (pre-amp, power amp)",
+            "RF amplifiers (radio receivers/transmitters)",
+            "Operational amplifier input stages",
+            "Sensor signal conditioning"
+          ],
+          "m0:amplification": {
+            "@type": "m2:Amplification",
+            "direction": "Amplifying",
+            "rationale": "Current gain β = 50-500, power gain up to 40 dB"
+          }
+        },
+        "digitalMode": {
+          "@id": "m0:Transistor/mode/digital_switch",
+          "rdfs:label": "Digital Switching Mode",
+          "m0:regions": "Cutoff ↔ Saturation",
+          "m0:operation": "Binary ON (saturated) / OFF (cutoff)",
+          "m0:applications": [
+            "Logic gates (TTL, RTL)",
+            "Inverters and buffers",
+            "Motor drivers and relays",
+            "Power switching (DC-DC converters)"
+          ],
+          "m0:threshold": {
+            "@type": "m2:Threshold",
+            "threshold_behavior": "Sharp",
+            "rationale": "Exponential I_C(V_BE) creates abrupt cutoff-to-saturation transition at V_BE ≈ 0.65-0.7 V"
+          }
+        }
+      },
+      "m0:asfidScores": {
+        "A": 0.7,
+        "A_justification": "Moderate attractor: Operating point (Q-point) stabilized by bias network, not strict homeostasis",
+        "S": 0.9,
+        "S_justification": "Well-defined structure: 3 terminals (B, C, E), 2 PN junctions, depletion/neutral regions",
+        "F": 0.95,
+        "F_justification": "Continuous electron/hole flow (drift + diffusion currents), high bandwidth (MHz-GHz)",
+        "I": 0.85,
+        "I_justification": "Current/voltage relationships encoded in Ebers-Moll equations, I_C = f(I_B, V_CE)",
+        "D": 0.8,
+        "D_justification": "Dynamic behavior: switching speed (ns-μs), frequency response (f_T cutoff), transient response",
+        "mean": 0.85
+      },
+      "m0:revoiScores": {
+        "R": 0.95,
+        "R_justification": "Excellent representability: standardized symbols, SPICE models, datasheets (β, V_BE, I_C)",
+        "E": 0.6,
+        "E_justification": "Limited evolvability: fixed β at manufacture, aging degrades parameters, no adaptation",
+        "V": 0.9,
+        "V_justification": "Highly verifiable: curve tracer measurements, I-V characteristics, β testing",
+        "O": 0.9,
+        "O_justification": "Observable via: oscilloscope (waveforms), multimeter (DC currents/voltages), thermal imaging (heat)",
+        "I": 0.95,
+        "I_justification": "Excellent interoperability: industry-standard pinouts (TO-92, SOT-23), TTL/CMOS compatible, universal circuit integration",
+        "mean": 0.86
+      },
+      "m0:epistemicGap": 0.01,
+      "m0:epistemicGap_comment": "Transistor physics is one of the most thoroughly understood domains in engineering. Ebers-Moll model provides complete analytical prediction. Minimal gap reflects 75+ years of semiconductor theory and industrial optimization.",
+      "m0:processorAttributes": {
+        "signal": {
+          "input": {
+            "@type": "m2:Signal",
+            "signal_type": "Analog",
+            "rationale": "I_B is continuous current (analog modulation)"
+          },
+          "output": {
+            "@type": "m2:Signal",
+            "signal_type": "Analog",
+            "rationale": "I_C is continuous current (though can be used digitally)"
+          }
+        },
+        "process": {
+          "@type": "m2:Process",
+          "time_discretization": "Continuous",
+          "reversibility": "Irreversible",
+          "rationale": "Charge carrier recombination dissipates energy as heat (entropy increase)"
+        },
+        "threshold": {
+          "@type": "m2:Threshold",
+          "threshold_behavior": "Sharp",
+          "rationale": "Exponential I_C(V_BE) relationship: I_C ∝ exp(V_BE / V_T) where V_T ≈ 26 mV at 300K"
+        }
+      },
+      "m0:interoperability": {
+        "interfaces": [
+          {
+            "system": "Digital Logic (TTL, CMOS)",
+            "protocol": "Voltage levels (0V/5V or 0V/3.3V)",
+            "compatibility": "BJT saturation voltage (V_CE(sat) ≈ 0.2 V) compatible with logic LOW, cutoff compatible with HIGH"
+          },
+          {
+            "system": "Power Supply",
+            "protocol": "V_CC rail (typically +5V, +12V, +15V)",
+            "compatibility": "Collector tied to V_CC through load resistor R_C"
+          },
+          {
+            "system": "Analog Circuits",
+            "protocol": "Impedance matching (input impedance h_ie ≈ 1-10 kΩ)",
+            "compatibility": "AC coupling via capacitors, bias networks set Q-point"
+          },
+          {
+            "system": "Microcontroller GPIO",
+            "protocol": "Current sinking/sourcing (typically 20-40 mA max)",
+            "compatibility": "MCU pin → base resistor → BJT base (current-limited I_B)"
+          }
+        ],
+        "m0:m2basis": "m2:Interoperability"
+      },
+      "m0:physicsValidation": {
+        "semiconductorTheory": {
+          "carrierDynamics": "Minority carrier injection (electrons from emitter → p-type base → collector)",
+          "driftDiffusion": "Drift current (electric field) + diffusion current (concentration gradient)",
+          "recombination": "Base recombination losses reduce β (β = I_C / I_B < ideal)",
+          "temperatureDependence": "V_BE decreases ~2 mV/°C, β increases ~0.5%/°C"
+        },
+        "keyEquations": {
+          "shockley": "I_C = I_S × exp(V_BE / V_T) where I_S ≈ 10^-14 A (saturation current)",
+          "currentGain": "β = I_C / I_B (DC gain), β_AC = dI_C / dI_B (AC gain)",
+          "earlyEffect": "I_C = I_S × exp(V_BE / V_T) × (1 + V_CE / V_A) where V_A ≈ 50-100 V (Early voltage)",
+          "powerDissipation": "P_D = V_CE × I_C + V_BE × I_B ≈ V_CE × I_C (heat generation)"
+        }
+      },
+      "m0:engineeringApplications": {
+        "amplifiers": [
+          "Common emitter (voltage gain, phase inversion)",
+          "Common collector (emitter follower, buffer, current gain)",
+          "Common base (high frequency, no phase inversion)",
+          "Differential pair (op-amp input, ADC comparator)"
+        ],
+        "switches": [
+          "Logic inverter (NOT gate)",
+          "Transistor-transistor logic (TTL)",
+          "Motor driver (H-bridge)",
+          "Relay driver (inductive load switching)"
+        ],
+        "oscillators": [
+          "Colpitts oscillator (LC tank circuit)",
+          "Phase-shift oscillator (RC network)",
+          "Astable multivibrator (square wave generator)"
+        ],
+        "regulators": [
+          "Linear voltage regulator (pass transistor)",
+          "Current source/sink (active load)"
+        ]
+      },
+      "m0:transdisciplinaryValidation": {
+        "analogousProcessors": [
+          {
+            "domain": "Biology",
+            "example": "Neuron (biological amplifier)",
+            "inputs": ["synaptic currents (I_syn)", "membrane potential (V_m)"],
+            "outputs": ["action potential (spike train)"],
+            "processingMechanism": "Ion channel gating (Na+/K+ flows)",
+            "similarity": "Small input current triggers large output current, threshold behavior (spike initiation), amplification via positive feedback"
+          },
+          {
+            "domain": "Hydraulics",
+            "example": "Valve Amplifier (servo valve)",
+            "inputs": ["control current (solenoid)", "supply pressure"],
+            "outputs": ["hydraulic flow (to actuator)"],
+            "processingMechanism": "Pilot stage controls main spool position",
+            "similarity": "Small electrical signal controls large hydraulic power, proportional amplification in linear region"
+          },
+          {
+            "domain": "Acoustics",
+            "example": "Electret Microphone (with FET buffer)",
+            "inputs": ["sound pressure (acoustic)", "bias voltage"],
+            "outputs": ["audio signal (electrical)"],
+            "processingMechanism": "Capacitance variation → voltage change → FET amplification",
+            "similarity": "Transduction + amplification, signal conditioning, impedance transformation"
+          }
+        ]
+      },
+      "m0:keyInsights": [
+        "Transistor validates Processor in electronics: dual N-ary inputs (I_B, V_CE) → single output (I_C)",
+        "Dual-mode operation (linear vs digital) demonstrates Mode metaconcept instantiation",
+        "Amplification dimension critical: β = 50-500 current gain, power gain >10,000",
+        "Interoperability essential: standardized symbols (IEEE), pinouts (JEDEC), models (SPICE) enable universal circuit integration",
+        "Threshold sharpness (exponential I-V) enables digital switching despite continuous physics",
+        "Excellent REVOI (0.86) reflects mature semiconductor theory and 75+ years industrial standardization",
+        "Minimal epistemic gap (0.01) - one of best-understood processors in any domain"
+      ],
+      "m0:historicalContext": {
+        "invention": "1947 - Point-contact transistor (Bardeen, Brattain, Shockley at Bell Labs)",
+        "firstBJT": "1948 - Bipolar junction transistor (Shockley)",
+        "nobelPrize": "1956 - Physics Nobel for transistor invention",
+        "impact": "Enabled microelectronics revolution: computers, telecommunications, consumer electronics",
+        "evolution": "BJT → JFET → MOSFET → FinFET (modern dominant technology)"
+      },
+      "m0:limitations": {
+        "thermal": "V_BE temperature dependence requires bias compensation",
+        "noise": "Shot noise (I_B, I_C), flicker noise (1/f) at low frequencies",
+        "frequency": "β decreases at high frequency (f_T cutoff), parasitic capacitances limit bandwidth",
+        "power": "Static power dissipation in saturation (V_CE(sat) × I_C), heat management required",
+        "manufacturing": "β variation (±50%) between units, requires circuit design robustness"
+      },
+      "m0:notes": [
+        "Second electronic poclet validating Processor metaconcept (after M0_Kidneys biology)",
+        "Demonstrates minimal complete semiconductor processor: 3 terminals, 2 junctions, complete signal processing",
+        "Ternary hybrid formulas validated: Territory (charge physics) distinct from Map (circuit model)",
+        "Sharp threshold despite continuous physics enables digital computing foundation",
+        "Interoperability dimension justifies inclusion: standardization critical for transistor ubiquity (>10^21 manufactured)"
+      ]
+    }
+  ],
+  "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Transistor.jsonld",
+  "rdfs:label": "TSCG M0 Poclet - Bipolar Junction Transistor",
+  "rdfs:comment": "BJT as minimal electronic Processor with dual-mode operation (amplification/switching). Validates Processor ternary hybrid formulas in semiconductor domain.",
+  "owl:versionInfo": "15.0.0",
+  "owl:imports": [
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_Processor.jsonld",
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld",
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld"
+  ],
+  "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+  "dcterms:created": "2026-02-07"
+}
