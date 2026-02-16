@@ -1,0 +1,39 @@
+{
+  "@context": {
+    "m1energy": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/energy/M1_EnergyGenerators.jsonld#",
+    "m1core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "m1energy:M1_EnergyGenerators",
+      "@type": "owl:Ontology",
+      "dcterms:title": "TSCG M1 Energy Generators Extension",
+      "dcterms:description": "Domain extension for energy generation systems. Nuclear reactors fully modeled (9 types), fossil/renewable planned.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-02-10",
+      "owl:versionInfo": "1.0.0",
+      "owl:imports": [
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld"
+      ]
+    },
+    {
+      "@id": "m1energy:EnergyGenerator",
+      "@type": "owl:Class",
+      "rdfs:label": "Energy Generator",
+      "rdfs:comment": "Abstract base class for all power generation systems. Subclass of m2:Processor.",
+      "rdfs:subClassOf": "m2:Processor"
+    },
+    {
+      "@id": "m1energy:NuclearReactor",
+      "@type": "owl:Class",
+      "rdfs:label": "Nuclear Reactor",
+      "rdfs:comment": "Power generation via controlled nuclear fission. See M0_NuclearReactorTypology for 9 reactor types.",
+      "rdfs:subClassOf": "m1energy:EnergyGenerator"
+    }
+  ]
+}

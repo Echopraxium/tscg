@@ -15,9 +15,9 @@
     {
       "@id": "m3:genesis_space:GenesisSpace",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "3.0.0",
+      "owl:versionInfo": "2.4.1",
       "dcterms:created": "2026-01-21",
-      "dcterms:modified": "2026-02-10",
+      "dcterms:modified": "2026-01-27",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Genesis Space - Complete Bicephalous Basis",
       "dcterms:description": "Complete orthogonal basis for the TSCG framework, consisting of two complementary perspectives: Eagle Eye (ASFID) for Territory measurement and Sphinx Eye (REVOI) for Map construction",
@@ -33,23 +33,22 @@
       "metadata": {
         "layer": "M3",
         "name": "Genesis Space - Complete Bicephalous Basis",
-        "version": "3.0.0",
+        "version": "2.4.1",
         "architecture": "bicephalous",
         "date_created": "2026-01-21",
-        "date_modified": "2026-02-10",
+        "date_modified": "2026-01-27",
         "authors": [
           "Echopraxium with the collaboration of Claude AI"
         ],
         "description": "Complete orthogonal basis for the TSCG framework, consisting of two complementary perspectives: Eagle Eye (ASFID) for Territory measurement and Sphinx Eye (REVOI) for Map construction",
         "changelog": {
-          "v2.0.1": "Namespace refactoring: m3genesis â†’ m3:genesis_space, m3eagle â†’ m3:eagle_eye, m3sphinx â†’ m3:sphinx_eye",
+          "v2.0.1": "Namespace refactoring: m3genesis → m3:genesis_space, m3eagle → m3:eagle_eye, m3sphinx → m3:sphinx_eye",
           "v2.1.0": "Added m3:ontologyCategory property definition and applied to self. Corrected @context order (W3C alphabetical first). Converted to @graph structure for consistency.",
           "v2.2.0": "Migrated m3:ontologyCategory from xsd:string to skos:ConceptScheme with controlled vocabulary using skos:Concept instances. More semantic and extensible.",
-          "v2.3.0": "Added m3:GenesisExtension category for Eagle Eye and Sphinx Eye as extensions of Genesis Space. Total categories: 6 â†’ 7.",
-          "v2.3.1": "CRITICAL FIX: Corrected REVOI expansion - Validityâ†’Verifiability. Ensured consistency with M3_SphinxEye v2.2.0 corrections.",
-          "v2.4.0": "Added m3:SystemicFramework category for mapping established frameworks (TRIZ, VSD, etc.) into TSCG. Total categories: 7 â†’ 8. Enables cross-framework analysis and validation.",
-          "v2.4.1": "Renamed m3:TransdisciplinaryPattern to m3:TransdisciplinaryMetaConcepts for clarity and precision. This better reflects that M2 contains metaconcepts, not just patterns.",
-          "v3.0.0": "MAJOR UPDATE: (1) REVOI simplification - Changed dimension names from -ability to -able forms (Representability→Representable, etc.) for grammatical consistency. (2) Feedback Loop formalization - Added Σ coupling matrix, Φ and Ψ operators, dynamic interpretation. Territory ↔ Map bidirectional feedback now explicit."
+          "v2.3.0": "Added m3:GenesisExtension category for Eagle Eye and Sphinx Eye as extensions of Genesis Space. Total categories: 6 → 7.",
+          "v2.3.1": "CRITICAL FIX: Corrected REVOI expansion - Validity→Verifiability. Ensured consistency with M3_SphinxEye v2.2.0 corrections.",
+          "v2.4.0": "Added m3:SystemicFramework category for mapping established frameworks (TRIZ, VSD, etc.) into TSCG. Total categories: 7 → 8. Enables cross-framework analysis and validation.",
+          "v2.4.1": "Renamed m3:TransdisciplinaryPattern to m3:TransdisciplinaryMetaConcepts for clarity and precision. This better reflects that M2 contains metaconcepts, not just patterns."
         }
       },
       "mathematical_properties": {
@@ -60,17 +59,7 @@
         "basis_decomposition": "ASFID(5D) ⊕ REVOI(5D)",
         "inner_product": "defined",
         "norm": "induced_from_inner_product",
-        "spanning_property": "Any system representation in TSCG ∈ span(ASFID ∪ REVOI)",
-        "coupling_structure": {
-          "operator": "Σ (5×5 singular values matrix)",
-          "role": "Bidirectional feedback Territory ↔ Map",
-          "description": "Σ encodes coupling strengths between ASFID dimensions (Territory) and REVOI dimensions (Map)",
-          "feedback_operators": {
-            "Phi": "Φ: ASFID → REVOI (observation: Territory → Map)",
-            "Psi": "Ψ: REVOI → ASFID (interpretation: Map → Territory)"
-          },
-          "see_also": "m3:FeedbackLoop class for detailed formalization"
-        }
+        "spanning_property": "Any system representation in TSCG ∈ span(ASFID âˆª REVOI)"
       },
       "bicephalous_architecture": {
         "description": "Dual complementary perspectives forming complete basis",
@@ -90,7 +79,7 @@
         "sphinx_eye": {
           "@id": "m3:sphinx_eye:SphinxEye",
           "basis": "REVOI",
-          "basis_expansion": "Representable, Evolvable, Verifiable, Observable, Interoperable",
+          "basis_expansion": "Observability, Representability, Interoperability, Verifiability, Evolvability",
           "dimensions": 5,
           "role": "Map construction",
           "perspective": "Synthesis",
@@ -101,19 +90,12 @@
         },
         "complementarity": {
           "relationship": "orthogonal_union",
-		  "orthogonality_proof": "⟨ASFID, REVOI⟩ = 0 (validated)",
-          "completeness_theorem": "∀s ∈ System: s = α·ASFID + β·REVOI for unique α,β"
+          "orthogonality_proof": "⟨ASFID, REVOI⟩ = 0 (validated)",
+          "completeness_theorem": "∀s ∈ System: s = α·ASFID + β·REVOI for unique α,β",
           "duality": {
             "territory_map": "Eagle observes Territory, Sphinx constructs Map",
             "analysis_synthesis": "Eagle decomposes, Sphinx composes",
             "model_reality": "Eagle measures Reality, Sphinx builds Model"
-          },
-          "feedback_loop": {
-            "forward": "Φ: ASFID → REVOI (observation)",
-            "backward": "Ψ: REVOI → ASFID (interpretation)",
-            "iteration": "v_T^(n+1) = v_T^(n) + α·Ψ(Φ(v_T^(n)))",
-            "convergence": "Fixed point represents epistemic equilibrium",
-            "korzybski_principle": "Map influences how we observe Territory, Territory observations refine Map"
           }
         }
       },
@@ -367,7 +349,7 @@
         "M3 Layer",
         "Hilbert Space Basis"
       ],
-      "skos:definition": "Foundational mathematical basis providing the complete orthonormal 10D Hilbert space (ASFID âŠ• REVOI) upon which all other TSCG layers are built.",
+      "skos:definition": "Foundational mathematical basis providing the complete orthonormal 10D Hilbert space (ASFID ⊕ REVOI) upon which all other TSCG layers are built.",
       "rdfs:comment": "M3 layer ontologies that define the bicephalous architecture: Eagle Eye (ASFID - Territory measurement) and Sphinx Eye (REVOI - Map construction). These ontologies have zero dependencies.",
       "skos:notation": "M3",
       "skos:example": [
@@ -428,12 +410,12 @@
         "Tensor Product"
       ],
       "skos:definition": "Universal patterns derived as tensor products of M3 basis dimensions, validated across multiple scientific disciplines and applicable regardless of domain.",
-      "rdfs:comment": "M2 layer ontologies containing metaconcepts - abstract patterns that transcend disciplinary boundaries. Each metaconcept is expressible as a tensor formula combining M3 dimensions (e.g., Homeostasis = AâŠ—SâŠ—F).",
+      "rdfs:comment": "M2 layer ontologies containing metaconcepts - abstract patterns that transcend disciplinary boundaries. Each metaconcept is expressible as a tensor formula combining M3 dimensions (e.g., Homeostasis = A⊗S⊗F).",
       "skos:notation": "M2",
       "skos:example": [
         "M2_MetaConcepts.jsonld (currently 62 metaconcepts including Step, Node, Homeostasis, etc.)"
       ],
-      "skos:scopeNote": "Typically 1 ontology containing 72+ metaconcepts. May grow as new transdisciplinary patterns are discovered.",
+      "skos:scopeNote": "Typically 1 ontology containing 60-70 metaconcepts. May grow as new transdisciplinary patterns are discovered.",
       "m3:expectedCount": 1,
       "m3:layerOrder": 2,
       "skos:broader": {
@@ -456,7 +438,7 @@
         "Domain Instance"
       ],
       "skos:definition": "Domain-specific ontologies that specialize M2 metaconcepts for particular scientific or professional fields. Each is an instance of the m2:Domain metaconcept with specific 5D tensor structure.",
-      "rdfs:comment": "M1 layer ontologies that bridge transdisciplinary metaconcepts (M2) with concrete systems (M0). Examples include Biology, Chemistry, Optics, Photography, Mythology. Each domain has characteristic ASFIDâŠ—REVOI coupling.",
+      "rdfs:comment": "M1 layer ontologies that bridge transdisciplinary metaconcepts (M2) with concrete systems (M0). Examples include Biology, Chemistry, Optics, Photography, Mythology. Each domain has characteristic ASFID⊗REVOI coupling.",
       "skos:notation": "M1",
       "skos:example": [
         "M1_CoreConcepts.jsonld (transdisciplinary foundation)",
@@ -492,11 +474,11 @@
       "rdfs:comment": "Systemic Frameworks are existing theories, methodologies, or analytical frameworks that have been formalized within TSCG's ontological structure. They serve as validation of TSCG's expressiveness and enable practitioners to leverage familiar frameworks within TSCG's rigorous formalism.",
       "skos:notation": "M1_Framework",
       "skos:example": [
-        "M0_TRIZ.jsonld (Theory of Inventive Problem Solving)",
-        "M0_VSD.jsonld (Value-Sensitive Design)",
-        "M0_TPACK.jsonld (Technological Pedagogical Content Knowledge)",
-        "M0_SystemsThinking.jsonld (General Systems Theory)",
-        "M0_DesignThinking.jsonld (Design Thinking methodology)"
+        "M1_TRIZ.jsonld (Theory of Inventive Problem Solving)",
+        "M1_VSD.jsonld (Value-Sensitive Design)",
+        "M1_TPACK.jsonld (Technological Pedagogical Content Knowledge)",
+        "M1_SystemsThinking.jsonld (General Systems Theory)",
+        "M1_DesignThinking.jsonld (Design Thinking methodology)"
       ],
       "skos:scopeNote": "Open-ended set. Any established framework with systemic structure can be mapped. Typically 10-20 major frameworks. Distinct from DomainExtension (which are disciplinary) and from Poclet (which are minimal instances).",
       "m3:expectedCount": "5-20",
@@ -636,45 +618,6 @@
           "@id": "m3:CaseStudy"
         }
       ]
-    },
-    {
-      "@id": "m3:CouplingStructure",
-      "@type": "owl:Class",
-      "rdfs:label": "Coupling Structure (Σ Matrix)",
-      "rdfs:comment": "5×5 matrix encoding bidirectional feedback between Territory (ASFID) and Map (REVOI). Represented as singular values in Domain SVD decomposition.",
-      "skos:definition": "σᵢⱼ represents coupling strength between ASFID dimension i and REVOI dimension j",
-      "m3:mathematicalForm": "Σ ∈ ℝ^(5×5), diagonal in SVD coordinates",
-      "m3:role": "Encodes Territory ↔ Map feedback loop strength"
-    },
-    {
-      "@id": "m3:FeedbackLoop",
-      "@type": "owl:Class",
-      "rdfs:label": "Territory ↔ Map Feedback Loop",
-      "rdfs:comment": "Bidirectional iterative process where Territory observations inform Map construction, and Map models guide Territory measurement strategies",
-      "skos:definition": "Dynamic coupling between empirical observations (Territory/ASFID) and conceptual representations (Map/REVOI)",
-      "m3:operators": {
-        "Phi": {
-          "symbol": "Φ",
-          "signature": "Φ: H_ASFID → H_REVOI",
-          "description": "Observation operator - transforms Territory data into Map representations"
-        },
-        "Psi": {
-          "symbol": "Ψ",
-          "signature": "Ψ: H_REVOI → H_ASFID",
-          "description": "Interpretation operator - Map predictions guide Territory measurement strategies"
-        }
-      },
-      "m3:iteration": "v_T^(n+1) = v_T^(n) + α·Ψ(Φ(v_T^(n)))"
-    },
-    {
-      "@id": "m3:KorzybskiPrinciple",
-      "@type": "owl:Class",
-      "rdfs:label": "Korzybski Principle Formalization",
-      "rdfs:comment": "Mathematical formalization of 'The map is not the territory' extended to 'The map influences how we observe the territory'",
-      "skos:definition": "Epistemological principle recognizing Map and Territory as distinct yet mutually influential through bidirectional coupling Σ",
-      "m3:classicStatement": "The map is not the territory (Alfred Korzybski, 1933)",
-      "m3:tscgExtension": "The map influences how we observe the territory, and observations refine the map",
-      "m3:formalization": "Bidirectional coupling Σ between H_ASFID (Territory) and H_REVOI (Map)"
     }
   ]
 }

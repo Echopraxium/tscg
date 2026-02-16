@@ -3,7 +3,7 @@
 
 **Version**: 14.1.0  
 **Authors**: Echopraxium with the collaboration of Claude AI  
-**License**: BSD 3-Clause "New" or "Revised" License  
+**License**: BSD 3-Clause "Clear" License  
 **Repository**: https://github.com/Echopraxium/tscg
 
 ---

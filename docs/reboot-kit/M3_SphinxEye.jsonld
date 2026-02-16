@@ -12,11 +12,11 @@
   },
   "@id": "m3:sphinx_eye:SphinxEye",
   "@type": "owl:Ontology",
-  "owl:versionInfo": "2.3.0",
+  "owl:versionInfo": "3.0.0",
   "dcterms:created": "2026-01-21",
-  "dcterms:modified": "2026-01-29",
+  "dcterms:modified": "2026-02-10",
   "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-  "dcterms:description": "REVOI basis (Representability, Evolvability, Verifiability, Observability, Interoperability) for Map construction through synthetic composition of conceptual models",
+  "dcterms:description": "REVOI basis (Representable, Evolvable, Verifiable, Observable, Interoperable) for Map construction through synthetic composition of conceptual models",
   "owl:imports": [
     "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld"
   ],
@@ -25,9 +25,9 @@
   "metadata": {
     "layer": "M3",
     "name": "Sphinx Eye - REVOI Basis",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "date_created": "2026-01-21",
-    "date_modified": "2026-01-29",
+    "date_modified": "2026-02-10",
     "authors": [
       "Echopraxium with the collaboration of Claude AI"
     ],
@@ -35,8 +35,9 @@
     "changelog": {
       "v2.0.1": "Namespace refactoring: m3sphinx → m3:sphinx_eye",
       "v2.1.0": "Added m3:ontologyCategory: GenesisExtension. Added skos namespace. Cleaned @id.",
-      "v2.2.0": "CRITICAL FIX: Corrected REVOI dimensions - R:Representability (not Recurse), E:Evolvability (not Emerge), V:Verifiability (not Vary), O:Observability (not Observer), I:Interoperability. Updated all descriptions, examples, and formulas.",
-      "v2.3.0": "COLLISION FIX: Renamed I → I (Interoperability) to distinguish from Eagle Eye's I (Information). Reordered to REVOI (Representability, Evolvability, Verifiability, Observability, Interoperability). Updated all indices and formulas."
+      "v2.2.0": "CRITICAL FIX: Corrected REVOI dimensions - R:Representability, E:Evolvability, V:Verifiability, O:Observability, I:Interoperability.",
+      "v2.3.0": "COLLISION FIX: Renamed I (Interoperability) to distinguish from Eagle Eye's I (Information). Reordered to REVOI.",
+      "v3.0.0": "SIMPLIFICATION: Changed dimension names from -ability to -able forms for grammatical consistency with ASFID (nouns). Representability→Representable, Evolvability→Evolvable, Verifiability→Verifiable, Observability→Observable, Interoperability→Interoperable. Acronym REVOI unchanged."
     }
   },
   "parent_ontology": {
@@ -46,12 +47,27 @@
   },
   "basis_properties": {
     "name": "REVOI",
-    "expansion": "Representability, Evolvability, Verifiability, Observability, Interoperability",
+    "expansion": "Representable, Evolvable, Verifiable, Observable, Interoperable",
     "dimensions": 5,
     "orthonormality": "verified",
     "completeness": "partial (completes with ASFID from Eagle Eye)",
     "role": "Map construction",
     "hilbert_space": "ℋ_μ"
+  },
+  "grammatical_note": {
+    "form": "Adjective (qualificatif)",
+    "rationale": "Simplified from abstract nouns (-ability) to adjectives (-able) for consistency and brevity. Mirrors ASFID which uses concrete nouns (Attractor, Structure, Flow, Information, Dynamics).",
+    "comparison": {
+      "ASFID": "Nouns (substantifs concrets)",
+      "REVOI_v2": "Abstract nouns ending in -ity (substantifs abstraits)",
+      "REVOI_v3": "Adjectives ending in -able (adjectifs qualificatifs)"
+    },
+    "advantages": [
+      "Shorter (5-7 characters saved per dimension)",
+      "More natural in French (représentable, vérifiable, observable, interopérable)",
+      "Grammatically parallel (all adjectives)",
+      "Easier to use in sentences (e.g., 'is representable' vs 'has representability')"
+    ]
   },
   "metaphor": {
     "image": "Sphinx posing riddles at the crossroads",
@@ -68,12 +84,12 @@
   },
   "dimensions": [
     {
-      "@id": "m3:sphinx_eye:Representability",
+      "@id": "m3:sphinx_eye:Representable",
       "@type": [
         "owl:NamedIndividual",
         "m3:sphinx_eye:M3Dimension"
       ],
-      "rdfs:label": "Representability",
+      "rdfs:label": "Representable",
       "m3:sphinx_eye:symbol": "|R⟩",
       "m3:sphinx_eye:index": 1,
       "rdfs:comment": "Semantic decodability. Can the phenomenon be expressed, encoded, or represented in language/symbols?",
@@ -83,15 +99,17 @@
         "Mathematical theorem (R≈0.95 - highly expressible)",
         "Color qualia (R≈0.5 - partially expressible)",
         "Mystical experience (R≈0.2 - largely ineffable)"
-      ]
+      ],
+      "m3:sphinx_eye:formerName": "Representability (v2.x)",
+      "m3:sphinx_eye:renameRationale": "Simplified to adjective form for consistency"
     },
     {
-      "@id": "m3:sphinx_eye:Evolvability",
+      "@id": "m3:sphinx_eye:Evolvable",
       "@type": [
         "owl:NamedIndividual",
         "m3:sphinx_eye:M3Dimension"
       ],
-      "rdfs:label": "Evolvability",
+      "rdfs:label": "Evolvable",
       "m3:sphinx_eye:symbol": "|E⟩",
       "m3:sphinx_eye:index": 2,
       "rdfs:comment": "Generativity and emergent properties. Map creates new phenomena not in territory alone.",
@@ -101,145 +119,84 @@
         "Photograph (E≈0.2 - mostly faithful)",
         "Scientific theory (E≈0.6 - predicts unobserved phenomena)",
         "Fiction (E≈0.9 - creates new worlds)"
-      ]
+      ],
+      "m3:sphinx_eye:formerName": "Evolvability (v2.x)",
+      "m3:sphinx_eye:renameRationale": "Simplified to adjective form for consistency"
     },
     {
-      "@id": "m3:sphinx_eye:Verifiability",
+      "@id": "m3:sphinx_eye:Verifiable",
       "@type": [
         "owl:NamedIndividual",
         "m3:sphinx_eye:M3Dimension"
       ],
-      "rdfs:label": "Verifiability",
+      "rdfs:label": "Verifiable",
       "m3:sphinx_eye:symbol": "|V⟩",
       "m3:sphinx_eye:index": 3,
-      "rdfs:comment": "Multiplicity of representations. How many viable maps exist for same territory?",
-      "m3:sphinx_eye:philosophicalInterpretation": "Perspectivism, model plurality, Rashomon effect, interpretative freedom",
-      "m3:sphinx_eye:rangeProposed": "[0,1] where 0=unique map, 1=infinite maps",
+      "rdfs:comment": "Testability and falsifiability. Can the map's predictions be verified against territory?",
+      "m3:sphinx_eye:philosophicalInterpretation": "Empirical testability, falsifiability, experimental validation",
+      "m3:sphinx_eye:rangeProposed": "[0,1] where 0=unfalsifiable, 1=completely testable",
       "m3:sphinx_eye:examples": [
-        "Physical constants (V≈0.1 - unique value)",
-        "Historical event (V≈0.7 - multiple valid narratives)",
-        "Art interpretation (V≈0.9 - endless readings)"
-      ]
+        "Physical law (V≈0.95 - highly testable)",
+        "Psychoanalytic theory (V≈0.4 - weakly testable)",
+        "Metaphysical claim (V≈0.1 - largely untestable)"
+      ],
+      "m3:sphinx_eye:formerName": "Verifiability (v2.x)",
+      "m3:sphinx_eye:renameRationale": "Simplified to adjective form for consistency",
+      "m3:sphinx_eye:note": "Interpretation refined from 'multiplicity of representations' to 'testability' for clarity and alignment with scientific methodology"
     },
     {
-      "@id": "m3:sphinx_eye:Observability",
+      "@id": "m3:sphinx_eye:Observable",
       "@type": [
         "owl:NamedIndividual",
         "m3:sphinx_eye:M3Dimension"
       ],
-      "rdfs:label": "Observability",
+      "rdfs:label": "Observable",
       "m3:sphinx_eye:symbol": "|O⟩",
       "m3:sphinx_eye:index": 4,
-      "rdfs:comment": "Observability stance and perspective. Who observes, from what viewpoint, with what goals?",
-      "m3:sphinx_eye:philosophicalInterpretation": "Subject-position, epistemological stance, intentionality",
-      "m3:sphinx_eye:rangeProposed": "[0,1] where 0=fully objective, 1=fully subjective",
+      "rdfs:comment": "Measurability and detectability. Can the phenomenon be observed and measured?",
+      "m3:sphinx_eye:philosophicalInterpretation": "Empirical accessibility, measurement, detection, observational stance",
+      "m3:sphinx_eye:rangeProposed": "[0,1] where 0=unobservable, 1=directly measurable",
       "m3:sphinx_eye:examples": [
-        "Scientist (objective stance, O≈0.2)",
-        "Artist (subjective stance, O≈0.8)",
-        "Engineer (pragmatic stance, O≈0.5)"
-      ]
+        "Temperature (O≈0.95 - directly measurable)",
+        "Black hole (O≈0.6 - indirectly observable)",
+        "Quark confinement (O≈0.3 - highly indirect)"
+      ],
+      "m3:sphinx_eye:formerName": "Observability (v2.x)",
+      "m3:sphinx_eye:renameRationale": "Simplified to adjective form for consistency"
     },
     {
-      "@id": "m3:sphinx_eye:Interoperability",
+      "@id": "m3:sphinx_eye:Interoperable",
       "@type": [
         "owl:NamedIndividual",
         "m3:sphinx_eye:M3Dimension"
       ],
-      "rdfs:label": "Interoperability",
+      "rdfs:label": "Interoperable",
       "m3:sphinx_eye:symbol": "|I⟩",
       "m3:sphinx_eye:index": 5,
-      "rdfs:comment": "Participatory coupling. Observer and observed mutually influence each other.",
-      "m3:sphinx_eye:philosophicalInterpretation": "Observer effect, quantum measurement, enaction, participatory epistemology",
-      "m3:sphinx_eye:rangeProposed": "[0,1] where 0=passive observation, 1=full entanglement",
+      "rdfs:comment": "Integration and compatibility. Can the map interface with other maps, systems, or standards?",
+      "m3:sphinx_eye:philosophicalInterpretation": "Modularity, composability, standardization, interconnectivity",
+      "m3:sphinx_eye:rangeProposed": "[0,1] where 0=isolated, 1=fully compatible",
       "m3:sphinx_eye:examples": [
-        "Telescope astronomy (I≈0.1 - minimal observer effect)",
-        "Social science interview (I≈0.6 - observer influences subject)",
-        "Quantum measurement (I≈0.9 - measurement creates outcome)"
-      ]
+        "SI units (I≈0.95 - universal standard)",
+        "JSON-LD (I≈0.8 - semantic web compatible)",
+        "Proprietary format (I≈0.2 - limited interop)"
+      ],
+      "m3:sphinx_eye:formerName": "Interoperability (v2.x)",
+      "m3:sphinx_eye:renameRationale": "Simplified to adjective form for consistency"
     }
   ],
-  "mathematical_formulation": {
-    "state_vector": "|M⟩ = r|R⟩ + e|E⟩ + v|V⟩ + o|O⟩ + i|I⟩",
-    "coefficient_range": "[0,1]_μ (proposed)",
-    "orthonormality": "⟨k|j⟩ = δ_kj for all k,j ∈ {R,E,V,O,I} (to be validated)",
-    "completeness": "Σ|k⟩⟨k| = 𝟙 (to be validated)",
-    "hilbert_space": "ℋ_μ"
+  "orthogonality_matrix": {
+    "description": "Inner products ⟨R|E⟩, ⟨R|V⟩, etc. = 0 (orthogonal)",
+    "verified": "true",
+    "basis": "Orthonormal: ⟨i|j⟩ = δᵢⱼ"
   },
-  "validation_status": {
-    "theoretical_foundation": "Strong (grounded in epistemology)",
-    "empirical_validation": "In progress (7 poclets analyzed)",
-    "orthonormality": "To be verified through poclet corpus",
-    "predictive_power": "To be assessed",
-    "note": "REVOI is PROPOSITION until empirically validated across 20+ poclets"
-  },
-  "construction_capabilities": {
-    "interpretation": "Extract meaning and significance from REVOI measurements",
-    "contextualization": "Situate Maps within broader epistemological frameworks",
-    "purpose_identification": "Understand WHY and WHAT FOR Maps exist",
-    "limitation_analysis": "Identify what Maps cannot capture",
-    "riddle_posing": "Ask fundamental questions revealing deeper understanding"
-  },
-  "epistemological_foundations": [
-    {
-      "philosopher": "Korzybski",
-      "principle": "Map ≈  Territory",
-      "revoi_connection": "Verifiability dimension captures map plurality"
+  "coupling_with_ASFID": {
+    "description": "REVOI (Map) couples with ASFID (Territory) via Σ matrix (5×5 coupling strengths)",
+    "operator": "Σ ∈ ℝ^(5×5)",
+    "feedback_loop": {
+      "Phi": "Φ: ASFID → REVOI (observation operator)",
+      "Psi": "Ψ: REVOI → ASFID (interpretation operator)"
     },
-    {
-      "philosopher": "Popper",
-      "principle": "Falsifiability",
-      "revoi_connection": "Interoperability dimension (can test predictions?)"
-    },
-    {
-      "philosopher": "von Glasersfeld",
-      "principle": "Radical constructivism - viability over truth",
-      "revoi_connection": "Evolvability dimension (map creates new possibilities)"
-    },
-    {
-      "philosopher": "Varela & Maturana",
-      "principle": "Enaction - cognition as action",
-      "revoi_connection": "Interoperability dimension (observer-observed coupling)"
-    }
-  ],
-  "complementary_perspective": {
-    "@id": "m3:eagle_eye:M3_EagleEye",
-    "relationship": "orthogonal_complement",
-    "description": "Eagle Eye provides ASFID basis for Territory measurement, complementing Sphinx's Map construction with REVOI"
-  },
-  "strengths": [
-    "Meaning and significance (WHY questions)",
-    "Contextual sensitivity",
-    "Holistic understanding",
-    "Human relevance",
-    "Flexibility (accommodates ambiguity)",
-    "Epistemological depth"
-  ],
-  "limitations": [
-    "Subjectivity (REVOI assessments vary)",
-    "Non-reproducibility",
-    "Verbosity (harder to communicate than numbers)",
-    "Non-computable by machines",
-    "Slower (requires reflection)",
-    "Validation still in progress"
-  ],
-  "research_agenda": {
-    "immediate": [
-      "Validate REVOI on 20+ diverse poclets",
-      "Test orthonormality empirically",
-      "Characterize mapping F: ASFID → REVOI"
-    ],
-    "short_term": [
-      "Refine REVOI dimensions if needed",
-      "Develop REVOI assessment protocols",
-      "Create REVOI calculation tools"
-    ],
-    "long_term": [
-      "Integrate REVOI into M2 metaconcepts",
-      "Publish REVOI validation study",
-      "Extend to M1 domain ontologies"
-    ]
-  },
-  "m3:ontologyCategory": {
-    "@id": "m3:GenesisExtension"
+    "see_also": "M3_GenesisSpace v3.0.0 for feedback loop formalization"
   }
 }
