@@ -1,0 +1,182 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <m1:photography:> .
+@prefix ns2: <m1:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:BokehQuality a ns1:PhotographyPattern ;
+    rdfs:label "Bokeh Quality (Out-of-Focus Rendering)" ;
+    rdfs:comment "Aesthetic quality of out-of-focus areas (blur). Affected by aperture shape (blade count), lens design, aperture size. Subjective but recognizable." ;
+    ns2:M2_basis "m2:Code (I⊗S) - Encoding of blur pattern",
+        "m2:Emergence (I⊗S⊗D) - Aesthetic quality emerges from optical structure",
+        "m2:Structure (S) - Aperture blade geometry" ;
+    ns1:aestheticQualities [ ] ;
+    ns1:culturalContext "Japanese aesthetic term ('ボケ' = blur); highly valued in portrait/macro" ;
+    ns1:factors "Aperture blade count: More blades → rounder bokeh (5-9 typical)",
+        "Aperture size: Wider (lower f-number) → more bokeh",
+        "Distance relationships: Background distance affects blur strength",
+        "Lens aberrations: Spherical aberration affects bokeh character" ;
+    ns1:principle "Out-of-focus point sources rendered as aperture shape" ;
+    ns1:validatedPoclets 0 .
+
+ns1:CompensatoryTriplet a ns1:PhotographyPattern ;
+    rdfs:label "Compensatory Triplet (Exposure Control)" ;
+    rdfs:comment "Pattern where three parameters (ISO, Aperture, Shutter Speed) must balance to achieve correct exposure. Adjusting one requires compensating with others. Multiplicative relationship: Exposure ∝ ISO × Area × Time." ;
+    ns2:M2_basis "m2:Balance (A⊗S⊗F, Territory) - Equilibrium state of light capture",
+        "m2:Component (S⊗I) - ISO, Aperture, Shutter as distinct elements",
+        "m2:Constraint (S⊗I) - Physical/technical limits on each parameter",
+        "m2:Trade-off (R⊗V⊗E / A⊗I, Map) - Deliberate exchange between parameters" ;
+    ns1:compensationRules [ ] ;
+    ns1:components [ ],
+        [ ],
+        [ ] ;
+    ns1:examples [ ] ;
+    ns1:formula "Exposure = ISO × (π(D/2)²) × t where D=aperture diameter, t=shutter time" ;
+    ns1:logFormula "log₂(Exposure) = log₂(ISO) + log₂(1/N²) + log₂(t) [in stops]" ;
+    ns1:principle "Balanced exposure achieved through compensatory parameter adjustment" ;
+    ns1:transdisciplinaryAnalogy "Fire Triangle (Fuel ⊗ O₂ ⊗ Heat → Fire)" ;
+    ns1:validatedPoclets 1 .
+
+ns1:CreativeExposureModes a ns1:PhotographyPattern ;
+    rdfs:label "Creative Exposure Modes (PASM)" ;
+    rdfs:comment "Camera operating modes giving photographer control over exposure parameters. P (Program), A/Av (Aperture Priority), S/Tv (Shutter Priority), M (Manual)." ;
+    ns2:M2_basis "m2:Agency (I⊗D) - Distribution of control (human vs camera)",
+        "m2:Mode (S⊗I⊗A) - Discrete operational states",
+        "m2:Switch (A⊗D⊗I) - Transition between modes" ;
+    ns1:autoISOInteraction "Modern cameras: Auto-ISO works in A, S, M modes (acts as 'safety net')" ;
+    ns1:modes [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:principle "Graduated control from full-auto to full-manual" ;
+    ns1:validatedPoclets 1 .
+
+ns1:DepthOfFieldControl a ns1:PhotographyPattern ;
+    rdfs:label "Depth of Field Control" ;
+    rdfs:comment "Range of distances appearing acceptably sharp in image. Controlled primarily by aperture, with secondary effects from focal length and subject distance." ;
+    ns2:M2_basis "m2:Constraint (S⊗I) - Optical physics limits",
+        "m2:Mode (S⊗I⊗A) - Shallow vs Deep DoF modes",
+        "m2:Trade-off (R⊗V⊗E / A⊗I) - Light gathering vs DoF" ;
+    ns1:formula "DoF ≈ 2 × u² × N × c / f² where u=subject distance, N=f-number, c=circle of confusion, f=focal length" ;
+    ns1:modes [ ] ;
+    ns1:primaryControl "Aperture (f-number)" ;
+    ns1:principle "Aperture size inversely affects depth of field" ;
+    ns1:relationships [ ] ;
+    ns1:tradeoff "Light gathering (wide aperture) ↔ Depth of field (narrow aperture)" ;
+    ns1:validatedPoclets 1 .
+
+ns1:DynamicRangeCapture a ns1:PhotographyPattern ;
+    rdfs:label "Dynamic Range Capture" ;
+    rdfs:comment "Camera/sensor ability to capture detail in both shadows and highlights simultaneously. Limited by sensor technology. Extended via HDR (High Dynamic Range) techniques." ;
+    ns2:M2_basis "m2:Capacity (S⊗I) - Range of recordable luminance",
+        "m2:Composition (S⊗I⊗A) - HDR merging multiple exposures",
+        "m2:Constraint (S⊗I) - Physical sensor limits" ;
+    ns1:limitation "Scene luminance range often exceeds sensor capability → Trade-off required" ;
+    ns1:measurement "Stops of dynamic range (e.g., 12 stops = 2^12 = 4096:1 ratio)" ;
+    ns1:principle "Sensor can capture finite range of luminance values" ;
+    ns1:techniques [ ] ;
+    ns1:typicalRanges [ ] ;
+    ns1:validatedPoclets 0 .
+
+ns1:ExposureCompensation a ns1:PhotographyPattern ;
+    rdfs:label "Exposure Compensation" ;
+    rdfs:comment "Deliberate override of camera's automatic exposure metering. Allows photographer to bias exposure lighter (+EV) or darker (-EV) by specified stops." ;
+    ns2:M2_basis "m2:Adaptation (I⊗F⊗D) - Compensating for metering errors",
+        "m2:Agent (I⊗D) - Photographer as active controller",
+        "m2:Regulation (A⊗S⊗F) - Feedback control of exposure" ;
+    ns1:commonUseCases "Backlit subjects: +1 to +1.5 EV (expose for subject not background)",
+        "High-key portraits: +1 to +2 EV (bright, airy look)",
+        "Low-key portraits: -1 to -2 EV (dark, moody look)",
+        "Silhouettes: -2 to -3 EV (intentional underexposure)",
+        "Snow scenes: +1 to +2 EV (prevent underexposure of bright scene)" ;
+    ns1:mechanism "Camera adjusts one/more parameters (ISO/Aperture/Shutter) to shift exposure" ;
+    ns1:meteringModes [ ] ;
+    ns1:principle "Manual override of automatic exposure calculation" ;
+    ns1:range "Typically ±3 to ±5 stops (±3 EV to ±5 EV)" ;
+    ns1:units "EV (Exposure Value) or stops" ;
+    ns1:validatedPoclets 0 .
+
+ns1:ExposureLatitude a ns1:PhotographyPattern ;
+    rdfs:label "Exposure Latitude (Forgiveness)" ;
+    rdfs:comment "Tolerance of capture medium to exposure errors. High latitude (film negative) → forgiving; low latitude (slide film, digital highlights) → unforgiving." ;
+    ns2:M2_basis "m2:Constraint (S⊗I) - Medium's tolerance range",
+        "m2:Robustness (proposed) - Resilience to parameter variation" ;
+    ns1:bestPractice "Expose to the right (ETTR) for digital - maximize signal, avoid highlight clipping" ;
+    ns1:mediaComparison [ ] ;
+    ns1:principle "Different media have different tolerance to exposure errors" ;
+    ns1:validatedPoclets 0 .
+
+ns1:LogarithmicScaling a ns1:PhotographyPattern ;
+    rdfs:label "Logarithmic Scaling (Stop System)" ;
+    rdfs:comment "Photographic parameters scaled logarithmically base-2. Each 'stop' represents doubling/halving of light. Aligns with Weber-Fechner law of perception." ;
+    ns2:M2_basis "m2:Code (I⊗S) - Stop encoding system",
+        "m2:Scale (proposed) - Magnitude representation",
+        "m2:Transform (D⊗S⊗I) - Linear → Log transformation" ;
+    ns1:advantage "Uniform additive arithmetic: ΔStops_total = ΔStops_ISO + ΔStops_Aperture + ΔStops_Shutter" ;
+    ns1:examples "1/1000s → 1/500s → 1/250s → 1/125s: +1 stop each",
+        "ISO 100 → 200 → 400 → 800 → 1600: +1 stop each",
+        "f/1.4 → f/2 → f/2.8 → f/4 → f/5.6: -1 stop each (N increases by √2)" ;
+    ns1:formula "Stops = log₂(Value / Reference)" ;
+    ns1:perceptualBasis "Weber-Fechner law: Perceived intensity ∝ log(Physical intensity)" ;
+    ns1:principle "Perceptual uniformity through logarithmic encoding" ;
+    ns1:stopDefinitions [ ] ;
+    ns1:validatedPoclets 1 .
+
+ns1:MotionBlurControl a ns1:PhotographyPattern ;
+    rdfs:label "Motion Blur Control" ;
+    rdfs:comment "Degree of blur from subject/camera motion during exposure. Controlled by shutter speed. Can be aesthetic choice (motion blur) or technical requirement (freeze motion)." ;
+    ns2:M2_basis "m2:Dynamics (D) - Temporal motion capture",
+        "m2:Mode (S⊗I⊗A) - Freeze vs Blur modes",
+        "m2:Trade-off (R⊗V⊗E / A⊗I) - Light time vs Motion freeze" ;
+    ns1:formula "Blur_distance = Velocity × Shutter_time" ;
+    ns1:handheldRule "Minimum shutter ≈ 1/focal_length (e.g., 50mm lens → 1/60s minimum)" ;
+    ns1:modes [ ] ;
+    ns1:primaryControl "Shutter Speed (exposure duration)" ;
+    ns1:principle "Shutter speed determines motion capture" ;
+    ns1:relationship "↓Shutter time → ↓Motion blur (freeze motion)" ;
+    ns1:tradeoff "Light accumulation (slow shutter) ↔ Motion freeze (fast shutter)" ;
+    ns1:validatedPoclets 1 .
+
+ns1:NoiseGrainControl a ns1:PhotographyPattern ;
+    rdfs:label "Noise/Grain Control (ISO)" ;
+    rdfs:comment "Image degradation from sensor amplification (digital noise) or film grain. Controlled by ISO sensitivity. Trade-off between low-light capability and image quality." ;
+    ns2:M2_basis "m2:Constraint (S⊗I) - Signal-to-noise ratio limits",
+        "m2:Emergence (I⊗S⊗D) - Noise emerges from amplification",
+        "m2:Trade-off (R⊗V⊗E / A⊗I) - Sensitivity vs Quality" ;
+    ns1:mitigationStrategies "Expose to the right (ETTR) - maximize signal",
+        "In-camera noise reduction (may soften details)",
+        "Post-processing noise reduction (Lightroom, DxO)",
+        "Sensor technology improvements (larger pixels, better amplifiers)" ;
+    ns1:modes [ ] ;
+    ns1:physicalBasis [ ] ;
+    ns1:principle "ISO sensitivity inversely affects image quality" ;
+    ns1:relationship "↑ISO → ↑Brightness but ↑Noise/Grain (degraded quality)" ;
+    ns1:tradeoff "Low-light capability (high ISO) ↔ Image quality (low ISO)" ;
+    ns1:validatedPoclets 1 .
+
+ns1:Photography_Domain a owl:Ontology ;
+    dcterms:created "2026-01-22" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Domain-specific patterns for photography, camera operation, exposure control, and image quality trade-offs. M1 layer instantiates M2 metaconcepts into concrete photographic patterns." ;
+    dcterms:title "M1 Photography - Photographic Techniques and Exposure Control" ;
+    rdfs:comment "M1 Photography bridges abstract M2 metaconcepts to concrete photographic practice. Core patterns include exposure control, compensatory triplets, logarithmic scaling, and image quality trade-offs." ;
+    owl:versionInfo "1.0.0" ;
+    ns1:childInstances [ ] ;
+    ns1:domain "Photography / Camera Technology / Image Formation / Exposure Control" ;
+    ns1:parentLayers [ ] ;
+    ns1:patternCount 10 .
+
+ns1:ValidationSummary a owl:Class ;
+    rdfs:label "M1 Photography Patterns - Validation Summary" ;
+    ns2:M2_metaconcepts_discovered "Balance (Territory) - discovered via Exposure Triangle",
+        "Trade-off (Map) - discovered via Exposure Triangle" ;
+    ns1:nextSteps "Create M1 patterns for other photography domains (Lighting, Composition, Post-Processing)",
+        "Cross-reference with M1_Optics (lens design, aberrations, diffraction limits)",
+        "Develop additional poclets: HDR Bracketing, Focus Stacking, Long Exposure",
+        "Expand to related domains: Cinematography (24fps shutter angle), Astrophotography (tracking, stacking)" ;
+    ns1:patternStatus [ ] ;
+    ns1:pocletsUsed "M0_ExposureTriangle.jsonld" ;
+    ns1:totalPatterns 10 ;
+    ns1:validatedPatterns 6 .
+

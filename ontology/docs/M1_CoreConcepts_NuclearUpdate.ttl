@@ -1,0 +1,187 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m1core: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+m1core:CascadeAmplification a owl:Class ;
+    rdfs:label "Cascade Amplification" ;
+    rdfs:comment "Sequential multi-stage process where each stage has gain > 1, resulting in exponential amplification. Combines Cascade (staged sequence) with Amplification (gain). Examples: neutron multiplication, transistor amplifiers, MAPK signaling, photomultiplier tubes." ;
+    skos:definition "Multi-stage process where signal, energy, or population is amplified at each stage (Gᵢ > 1), producing overall gain = ∏ᵢ Gᵢ >> 1. Subset of Cascade metaconcept with specific amplification requirement." ;
+    skos:related "m1core:SelfSustainingReaction",
+        "m2:Amplification",
+        "m2:Cascade" ;
+    m1core:controlChallenges "Exponential growth difficult to control (small perturbations → large effects)",
+        "Latency issues (cascade takes time, feedback delayed)",
+        "Negative feedback essential (prevent runaway)",
+        "Requires precise regulation (nuclear: k=1.000, not 1.001)" ;
+    m1core:designConsiderations "Feedback: Negative feedback essential for stable operation",
+        "Gain per stage (Gᵢ): Higher gain → fewer stages needed but stability issues",
+        "Saturation: Each stage has maximum output (nonlinearity)",
+        "Stage count (n): More stages → higher total gain but longer latency" ;
+    m1core:discoveryContext "Nuclear fission neutron multiplication (cascade with gain >1) revealed universal pattern of sequential amplification across domains." ;
+    m1core:m2Basis "m2:Amplification",
+        "m2:Cascade" ;
+    m1core:mathematicalModel [ ] ;
+    m1core:tensorFormula "Cascade ⊗ Amplification (gain > 1 per stage)" ;
+    m1core:transdisciplinaryExamples [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    m1core:validationCount 6 .
+
+m1core:CriticalityRegime a owl:Class ;
+    rdfs:label "Criticality Regime" ;
+    rdfs:comment "System state relative to self-sustaining threshold. Three regimes: subcritical (process dies), critical (self-sustaining equilibrium), supercritical (exponential growth). Universal pattern appearing when process products enable continuation of process." ;
+    skos:definition "Classification of system state based on relationship to critical threshold where process becomes self-sustaining (reproduction number = 1, multiplication factor k = 1, percolation probability p = p_c)." ;
+    skos:related "m1core:SelfSustainingReaction",
+        "m2:Bifurcation",
+        "m2:Threshold" ;
+    m1core:discoveryContext "Emerged from Nuclear Reactor Typology poclet analysis. Pattern recognized as universal across all self-sustaining processes with threshold behavior." ;
+    m1core:m2Basis "m2:Bifurcation",
+        "m2:Homeostasis",
+        "m2:Threshold" ;
+    m1core:mathematicalStructure [ ] ;
+    m1core:regimes [ ] ;
+    m1core:tensorFormula "Threshold ⊗ SelfSustainingReaction ⊗ Amplification" ;
+    m1core:transdisciplinaryDomains "Chemistry (autocatalytic reactions)",
+        "Ecology (population dynamics)",
+        "Economics (growth/decay rates)",
+        "Epidemiology (disease reproduction number R₀)",
+        "Nuclear Engineering (fission criticality)",
+        "Percolation Theory (bond/site probability)",
+        "Phase Transitions (temperature vs T_critical)",
+        "Social Networks (viral spread)" ;
+    m1core:validationCount 8 .
+
+m1core:DualCircuitArchitecture a owl:Class ;
+    rdfs:label "Dual Circuit Architecture" ;
+    rdfs:comment "System design with separated primary and secondary circuits connected via interface/barrier. Function: isolation (safety, contamination), efficiency (heat exchange), or voltage transformation. Examples: PWR reactor (radioactive primary, clean secondary), HVAC (refrigerant/air), electrical transformer (high/low voltage)." ;
+    skos:definition "Architectural pattern with two distinct circuits separated by barrier, enabling transfer (energy, information, material) while maintaining isolation (safety, pressure, voltage)." ;
+    skos:related "m2:Flow",
+        "m2:Interface",
+        "m2:Structure" ;
+    m1core:architecturalComponents [ ] ;
+    m1core:designAdvantages "Efficiency (optimize each circuit independently)",
+        "Maintenance (secondary circuit accessible, primary sealed)",
+        "Pressure decoupling (different operating pressures)",
+        "Safety (contamination/radiation contained in primary)" ;
+    m1core:discoveryContext "PWR nuclear reactor primary/secondary circuit separation revealed universal architectural pattern for safe energy transfer." ;
+    m1core:keyProperties "Barrier interface (heat exchanger, transformer, membrane)",
+        "Isolation guarantee (safety, contamination prevention)",
+        "Physical separation (two distinct circuits)",
+        "Transfer mechanism (thermal, electrical, chemical)" ;
+    m1core:m2Basis "m2:Flow",
+        "m2:Interface",
+        "m2:Structure" ;
+    m1core:tensorFormula "Structure ⊗ Interface ⊗ Isolation" ;
+    m1core:transdisciplinaryExamples [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    m1core:validationCount 6 .
+
+m1core:M1_CoreConcepts_NuclearUpdate a owl:Ontology ;
+    dcterms:created "2026-02-10" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Update to M1_CoreConcepts.jsonld adding 6 transdisciplinary concepts discovered through Nuclear Reactor Typology poclet analysis. These concepts validated across 6+ domains (nuclear engineering, chemistry, biology, electronics, economics, social systems)." ;
+    dcterms:title "M1 Core Concepts - Nuclear Reactor Typology Update" ;
+    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld" ;
+    owl:versionInfo "1.2.0" ;
+    m1core:changelog [ ] ;
+    m1core:updateSummary [ ] .
+
+m1core:ModeratorMechanism a owl:Class ;
+    rdfs:label "Moderator Mechanism" ;
+    rdfs:comment "Component or process that slows, controls, or stabilizes a rapid/intense process. Function: energy reduction, rate control, stabilization. Examples: neutron moderator (nuclear), enzyme inhibitor (biology), damper (mechanics), low-pass filter (electronics)." ;
+    skos:definition "Regulatory element that reduces process intensity or rate without stopping it entirely. Acts as intermediate control between full activity and complete shutdown." ;
+    skos:related "m1core:SelfSustainingReaction",
+        "m2:Amplification",
+        "m2:Regulation" ;
+    m1core:designPrinciples "Continuous action (not binary on/off)",
+        "Energy dissipation or transfer",
+        "Negative feedback (stabilizing)",
+        "Partial control (reduce, not eliminate)" ;
+    m1core:discoveryContext "Nuclear reactor moderator (water, graphite) slowing fast neutrons revealed universal pattern of rate control in rapid processes." ;
+    m1core:m2Basis "m2:Amplification (direction: attenuating)",
+        "m2:Homeostasis",
+        "m2:Regulation" ;
+    m1core:primaryFunctions "Bandwidth limiting (filter high frequencies)",
+        "Energy reduction (fast → slow)",
+        "Rate control (limit reaction speed)",
+        "Stabilization (prevent runaway)" ;
+    m1core:tensorFormula "Regulation ⊗ Attenuation ⊗ Stabilization" ;
+    m1core:transdisciplinaryExamples [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    m1core:validationCount 7 .
+
+m1core:PassiveSafety a owl:Class ;
+    rdfs:label "Passive Safety" ;
+    rdfs:comment "Safety mechanism requiring NO external power or human intervention. Relies on physics (gravity, natural circulation), material properties (melting points), or fail-safe design. Examples: HTR natural cooling, MSR freeze plug, automotive crumple zones, dead man's switch." ;
+    skos:definition "Design philosophy where safe state is achieved through inherent physical principles (gravity, thermodynamics, material properties) rather than active systems requiring power or operator action. Fail-safe by default." ;
+    skos:related "m1core:ModeratorMechanism",
+        "m2:Constraint",
+        "m2:Resilience" ;
+    m1core:contrastWithActiveSafety [ ] ;
+    m1core:designPrinciples "Fail-safe (safe state is default, requires no energy)",
+        "Inherent property (not added feature)",
+        "No external power needed",
+        "No operator action required",
+        "Physics-based (gravity, natural circulation, material limits)" ;
+    m1core:discoveryContext "HTR and MSR passive safety features revealed universal design pattern of physics-based fail-safe mechanisms." ;
+    m1core:m2Basis "m2:Constraint",
+        "m2:Resilience",
+        "m2:Structure" ;
+    m1core:nuclearSafetyExample [ ] ;
+    m1core:tensorFormula "Constraint ⊗ Resilience ⊗ InherentProperty" ;
+    m1core:transdisciplinaryExamples [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    m1core:validationCount 7 .
+
+m1core:SelfSustainingReaction a owl:Class ;
+    rdfs:label "Self-Sustaining Reaction" ;
+    rdfs:comment "Process where products enable continuation of process (output → input positive feedback loop). Requires critical mass/threshold to initiate. Examples: fission chain reaction, combustion, autocatalysis, viral spread." ;
+    skos:definition "Dynamic process characterized by positive feedback where reaction products trigger new reactions, creating potential for exponential growth if unregulated. Always exhibits threshold behavior (critical point)." ;
+    skos:related "m1core:CriticalityRegime",
+        "m1core:ModeratorMechanism",
+        "m2:Amplification",
+        "m2:Cycle" ;
+    m1core:controlStrategies "Negative feedback (homeostasis)",
+        "Product removal (interrupt cycle)",
+        "Rate reduction (moderator mechanism)",
+        "Threshold maintenance (critical point)" ;
+    m1core:discoveryContext "Nuclear fission chain reaction analysis revealed universal pattern of output → input positive feedback with threshold behavior." ;
+    m1core:keyCharacteristic "Output → Input (positive feedback creates self-reinforcing loop)" ;
+    m1core:m2Basis "m2:Amplification",
+        "m2:Cycle",
+        "m2:Process",
+        "m2:Threshold" ;
+    m1core:requiredConditions "Amplification (gain ≥ 1 per cycle)",
+        "Initial trigger (seed, spark, catalyst)",
+        "Positive feedback mechanism (output → input)",
+        "Threshold (critical point for self-sustaining)" ;
+    m1core:tensorFormula "Process ⊗ Cycle ⊗ Amplification (gain ≥ 1)" ;
+    m1core:transdisciplinaryExamples [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    m1core:validationCount 6 .
+

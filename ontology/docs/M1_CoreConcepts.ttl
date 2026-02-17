@@ -1,0 +1,88 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m1: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+m1:CoreConcept a owl:Class ;
+    rdfs:label "M1 Core Concept" ;
+    rdfs:comment "A domain-bounded but transdisciplinary concept that instantiates one or more M2 metaconcepts. Core concepts are reusable patterns that appear across multiple domains but don't achieve the full universality of M2 metaconcepts. Examples: Oscillator (appears in physics, biology, economics), Filter (appears in signal processing, chemistry, information theory)." ;
+    rdfs:subClassOf "owl:Thing" ;
+    m1:properties "m1:M2_basis - Which M2 metaconcepts does this instantiate?",
+        "m1:domainScope - Which domains does this apply to?",
+        "m1:examples - Concrete examples from different domains",
+        "m1:principle - Core operational principle",
+        "m1:validatedPoclets - How many poclets validate this concept?" .
+
+m1:DomainPattern a owl:Class ;
+    rdfs:label "Domain-Specific Pattern" ;
+    rdfs:comment "A pattern specific to a particular domain (e.g., Additive Color Synthesis in optics, Compensatory Triplet in photography). Lives in domain-specific M1 extensions (M1_Optics, M1_Photography, etc.) rather than M1_CoreConcepts." ;
+    rdfs:subClassOf "m1:CoreConcept" ;
+    m1:note "Domain patterns extend CoreConcept but are defined in M1_[Domain].jsonld files, not here." .
+
+m1:ExampleCoreConceptPlaceholder a owl:NamedIndividual,
+        m1:GenericMechanism ;
+    rdfs:label "Oscillator (Example - To Be Formalized)" ;
+    rdfs:comment "PLACEHOLDER: Generic oscillator mechanism. Appears in: mechanical (pendulum), electrical (LC circuit), biological (circadian rhythm), ecological (predator-prey), economic (business cycle). This is an EXAMPLE of what a core concept entry would look like. To be formalized when discovered through poclet analysis." ;
+    m1:M2_basis "m2:Attractor (A) - Stable orbits",
+        "m2:Dynamics (D) - Temporal evolution",
+        "m2:Flow (F) - Energy/matter exchange" ;
+    m1:domainScope "Physics, Biology, Ecology, Economics, Social Systems" ;
+    m1:examplesCrossDomain "Biology: Circadian rhythms, heartbeat, breathing",
+        "Ecology: Predator-prey (Lotka-Volterra)",
+        "Economics: Business cycles, boom-bust",
+        "Physics: Pendulum, LC circuit, mass-spring system",
+        "Social: Fashion cycles, political swings" ;
+    m1:formula "Generic: d²x/dt² + ω²x = 0 (harmonic oscillator)" ;
+    m1:principle "Periodic alternation between two states through restoring force/feedback" ;
+    m1:status "PLACEHOLDER - To be properly formalized" ;
+    m1:validatedPoclets 0 .
+
+m1:ProcessArchetype a owl:Class ;
+    rdfs:label "Process Archetype" ;
+    rdfs:comment "Generic transformational process. Examples: Growth (population, economic, crystal), Decay (radioactive, ecological succession, market correction), Saturation (carrying capacity, market saturation, chemical equilibrium)." ;
+    rdfs:subClassOf "m1:CoreConcept" ;
+    skos:note "To be populated with specific archetypes as they are discovered through poclet analysis." .
+
+m1:RelationalPattern a owl:Class ;
+    rdfs:label "Relational Pattern" ;
+    rdfs:comment "Generic type of relationship between entities. Examples: Competition (species, companies, ideas), Cooperation (mutualism, trade, collaboration), Parasitism (biological, economic extraction)." ;
+    rdfs:subClassOf "m1:CoreConcept" ;
+    skos:note "To be populated with specific patterns as they are discovered through poclet analysis." .
+
+m1:StructuralTemplate a owl:Class ;
+    rdfs:label "Structural Template" ;
+    rdfs:comment "Common architectural pattern for system organization. Examples: Feedback Loop (control systems, ecosystems, markets), Cascade (signal transduction, waterfall, information flow), Hierarchy (organizational charts, taxonomies, file systems)." ;
+    rdfs:subClassOf "m1:CoreConcept" ;
+    skos:note "To be populated with specific templates as they are discovered through poclet analysis." .
+
+m1:TSCG_M1_CoreConcepts_Ontology a owl:Ontology ;
+    dcterms:created "2026-01-22" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Philosophy, etc.)." ;
+    dcterms:modified "2026-01-22" ;
+    dcterms:title "TSCG M1 Core Concepts Ontology" ;
+    rdfs:comment "M1_CoreConcepts is the BASE ontology for M1 layer. It contains generic transdisciplinary concepts applicable across multiple domains. Domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Philosophy, etc.) import M1_CoreConcepts and add specialized patterns. This architecture allows: (1) Sharing common concepts, (2) Domain specialization, (3) Modular extension, (4) Clear namespace separation." ;
+    rdfs:seeAlso "https://github.com/Echopraxium/tscg/blob/main/ontology/docs/TSCG_M1_Architecture.md" ;
+    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld" ;
+    owl:versionInfo "1.0.0" ;
+    m1:architecturalPrinciple [ ] ;
+    m1:changelog [ ] ;
+    m1:conceptDiscoveryProcess [ ] ;
+    m1:coreConceptCategories [ ] ;
+    m1:developmentStrategy [ ] ;
+    m1:extensionOntologies [ ] ;
+    m1:layerPosition [ ] ;
+    m1:validationStatus [ m1:conceptsDefined 0 ;
+            m1:conceptsValidated 0 ;
+            m1:domainExtensions 2 ;
+            m1:note "M1_CoreConcepts base is intentionally sparse. Concepts live in domain extensions." ;
+            m1:totalConceptsAcrossExtensions 18 ] .
+
+m1:GenericMechanism a owl:Class ;
+    rdfs:label "Generic Mechanism" ;
+    rdfs:comment "Reusable operational mechanism appearing across multiple domains. Examples: Oscillator (pendulum, AC current, predator-prey cycles, business cycles), Amplifier (electronic amplifier, biological cascade, social amplification)." ;
+    rdfs:subClassOf "m1:CoreConcept" ;
+    skos:note "To be populated with specific mechanisms as they are discovered through poclet analysis." .
+

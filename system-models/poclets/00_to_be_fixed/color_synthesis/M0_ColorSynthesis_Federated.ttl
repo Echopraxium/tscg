@@ -1,0 +1,98 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#> .
+@prefix ns1: <m0:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:ColorSynthesisFederated a owl:Ontology ;
+    dcterms:created "2026-01-17" ;
+    dcterms:creator "TSCG Project - Michel Favre" ;
+    dcterms:description "Federating ontology for color synthesis models. References four specialized poclets: RGB (additive), HSL (additive), CMY (subtractive), CMYK (subtractive). Demonstrates multiple modeling approaches for same phenomenon (perceived color)." ;
+    dcterms:modified "2026-01-17" ;
+    dcterms:references "Adobe (2000). PostScript Language Reference (3rd ed.) - CMYK color model",
+        "CIE (Commission Internationale de l'Éclairage) standards",
+        "Fairchild, M. D. (2013). Color Appearance Models (3rd ed.)",
+        "Poynton, C. (2003). Digital Video and HD: Algorithms and Interfaces" ;
+    dcterms:title "Color Synthesis - Federated Poclet Ontology" ;
+    rdfs:seeAlso ns1:CMYK_Subtractive,
+        ns1:CMY_Subtractive,
+        ns1:FireTriangle,
+        ns1:HSL_Additive,
+        ns1:RGB_Additive ;
+    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld" ;
+    owl:versionInfo "1.0.0" ;
+    m2:ontologyCategory "Poclet" ;
+    ns1:comparisonDimensions [ ] ;
+    ns1:domain "Optics / Color Science" ;
+    ns1:federatedInstances ns1:CMYK_Subtractive,
+        ns1:CMY_Subtractive,
+        ns1:HSL_Additive,
+        ns1:RGB_Additive ;
+    ns1:futureExtensions [ ] ;
+    ns1:implementationConsiderations [ ] ;
+    ns1:metaconceptsDistinct [ ] ;
+    ns1:metaconceptsShared [ ] ;
+    ns1:numberOfVariants 4 ;
+    ns1:pedagogicalValue [ ] ;
+    ns1:phenomenon "Color Perception and Synthesis" ;
+    ns1:pocletType "Federated" ;
+    ns1:summary [ ] ;
+    ns1:territoryVsMapAnalysis [ ] ;
+    ns1:transdisciplinaryPrinciple [ ] ;
+    ns1:transformationNetwork [ ] .
+
+<https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_CMYK_Subtractive.jsonld> dcterms:format "application/ld+json" ;
+    dcterms:type "Ontology" .
+
+<https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_CMY_Subtractive.jsonld> dcterms:format "application/ld+json" ;
+    dcterms:type "Ontology" .
+
+<https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_HSL_Additive.jsonld> dcterms:format "application/ld+json" ;
+    dcterms:type "Ontology" .
+
+<https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_RGB_Additive.jsonld> dcterms:format "application/ld+json" ;
+    dcterms:type "Ontology" .
+
+ns1:CMYK_Subtractive rdfs:label "CMYK Subtractive Color Synthesis" ;
+    dcterms:documentation <https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_CMYK_Subtractive.jsonld> ;
+    rdfs:seeAlso "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_CMYK_Subtractive.jsonld" ;
+    ns1:components 4 ;
+    ns1:medium "Inks (printing industry)" ;
+    ns1:primaries "Cyan",
+        "Key (Black)",
+        "Magenta",
+        "Yellow" ;
+    ns1:principle "Subtractive (pigment-based, practical)" .
+
+ns1:CMY_Subtractive rdfs:label "CMY Subtractive Color Synthesis" ;
+    dcterms:documentation <https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_CMY_Subtractive.jsonld> ;
+    rdfs:seeAlso "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_CMY_Subtractive.jsonld" ;
+    ns1:components 3 ;
+    ns1:medium "Pigments (theoretical model)" ;
+    ns1:primaries "Cyan",
+        "Magenta",
+        "Yellow" ;
+    ns1:principle "Subtractive (pigment-based)" .
+
+ns1:HSL_Additive rdfs:label "HSL Additive Color Synthesis" ;
+    dcterms:documentation <https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_HSL_Additive.jsonld> ;
+    rdfs:seeAlso "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_HSL_Additive.jsonld" ;
+    ns1:components 3 ;
+    ns1:medium "Light emission (alternative representation)" ;
+    ns1:primaries "Hue",
+        "Lightness",
+        "Saturation" ;
+    ns1:principle "Additive (light-based, perceptual)" .
+
+ns1:RGB_Additive rdfs:label "RGB Additive Color Synthesis" ;
+    dcterms:documentation <https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_RGB_Additive.jsonld> ;
+    rdfs:seeAlso "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_RGB_Additive.jsonld" ;
+    ns1:components 3 ;
+    ns1:medium "Light emission (screens, projectors)" ;
+    ns1:primaries "Blue",
+        "Green",
+        "Red" ;
+    ns1:principle "Additive (light-based)" .
+

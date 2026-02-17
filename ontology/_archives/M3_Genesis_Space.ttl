@@ -1,0 +1,271 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m3: <https://github.com/Echopraxium/tscg/blob/main/ontology/M3_Genesis_Space.jsonld#> .
+@prefix ns1: <skos:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+m3:Attractor a owl:Class,
+        m3:M3Dimension ;
+    rdfs:label "Attractor (A)" ;
+    rdfs:comment "Tendency of the system toward stable asymptotic states. Measures convergence to attractors in phase space." ;
+    rdfs:subClassOf "m3:M3Dimension" ;
+    m3:examples [ m3:justification "Regulated temperature, pH" ;
+            m3:system "Body homeostasis" ;
+            m3:value 8e-01 ],
+        [ m3:justification "Converges to rest position" ;
+            m3:system "Damped pendulum" ;
+            m3:value 9e-01 ],
+        [ m3:justification "Strange attractor, sensitive dependence" ;
+            m3:system "Atmospheric turbulence" ;
+            m3:value 2e-01 ] ;
+    m3:index 1 ;
+    m3:interpretation [ m3:measurement "Lyapunov exponents, recurrence analysis" ;
+            m3:physicalMeaning "Stability landscape, basin of attraction" ;
+            m3:range [ m3:max 1 ;
+                    m3:maxMeaning "Strong convergence toward fixed point" ;
+                    m3:midMeaning "Oscillations around attractors" ;
+                    m3:min 0 ;
+                    m3:minMeaning "Chaotic behavior, no convergence" ] ] ;
+    m3:ketNotation "|A⟩" ;
+    m3:orthogonalTo "m3:Dynamics",
+        "m3:Flow",
+        "m3:Information",
+        "m3:Structure" ;
+    m3:orthogonalityJustification [ m3:vsDynamics "Asymptote ≠ Speed: Equilibrium (high A, low D) vs damped oscillations (medium A and D)" ;
+            m3:vsFlow "Stability ≠ Openness: Homeostasis (high A) requires medium F" ;
+            m3:vsInformation "Convergence ≠ Complexity: Crystal (high A, low I) vs stable ecosystem (high A and I)" ;
+            m3:vsStructure "Attractor ≠ Topology: Gas (low S) can have attractor (high A in convection)" ] ;
+    m3:symbol "A" .
+
+m3:CriticalDecisions a owl:Class ;
+    rdfs:label "Critical Modeling Decisions" ;
+    rdfs:comment "Immutable design choices that define M3 Genesis" ;
+    m3:decisions [ m3:decisionId "ASFID_Order" ;
+            m3:rationale "Avoid AIDS/SIDA acronym" ;
+            m3:rejectedAlternatives "DASIF",
+                "FISAD",
+                "SIDAF" ;
+            m3:status "IMMUTABLE" ],
+        [ m3:axiom "F ≥ 0.1" ;
+            m3:decisionId "Flow_Is_M3" ;
+            m3:rationale "Fundamental dimension, not metaconcept. Universal openness principle" ;
+            m3:status "IMMUTABLE" ],
+        [ m3:decisionId "Time_External" ;
+            m3:formula "|Ω(t)⟩ where t ∈ ℝ" ;
+            m3:rationale "Time is parameter, not 6th dimension. Avoids redundancy with D" ;
+            m3:status "IMMUTABLE" ],
+        [ m3:constraint "a,s,f,i,d ≥ 0" ;
+            m3:decisionId "Positive_Coefficients" ;
+            m3:rationale "Interpretability, no negative values. Polarities handled in M2" ;
+            m3:status "IMMUTABLE" ] .
+
+m3:Dynamics a owl:Class,
+        m3:M3Dimension ;
+    rdfs:label "Dynamics Dimension" ;
+    rdfs:subClassOf "m3:M3Dimension" ;
+    m3:clarification "Measures internal change (∂|Ω⟩/∂t), not external exchanges (Flow)" ;
+    m3:examples [ m3:justification "Active growth and differentiation" ;
+            m3:system "Developing embryo" ;
+            m3:value 7e-01 ],
+        [ m3:justification "Rapid chemical transformation" ;
+            m3:system "Combustion reaction" ;
+            m3:value 9e-01 ],
+        [ m3:justification "Geological timescale change" ;
+            m3:system "Metamorphic rock" ;
+            m3:value 1e-02 ] ;
+    m3:index 5 ;
+    m3:interpretation [ m3:measurement "Time derivatives, phase velocity, reaction kinetics" ;
+            m3:physicalMeaning "Temporal derivative, reaction rate, growth velocity" ;
+            m3:range [ m3:max 1 ;
+                    m3:maxMeaning "Explosive transformation" ;
+                    m3:midMeaning "Moderate evolution" ;
+                    m3:min 0 ;
+                    m3:minMeaning "Static (no evolution)" ] ] ;
+    m3:ketNotation "|D⟩" ;
+    m3:orthogonalTo "m3:Attractor",
+        "m3:Flow",
+        "m3:Information",
+        "m3:Structure" ;
+    m3:orthogonalityJustification [ m3:vsAttractor "Speed ≠ Convergence: See Attractor justification" ;
+            m3:vsFlow "Change ≠ Openness: See Flow justification" ;
+            m3:vsInformation "Speed ≠ Complexity: See Information justification" ;
+            m3:vsStructure "Rate ≠ Organization: See Structure justification" ] ;
+    m3:symbol "D" ;
+    ns1:definition "Rate of internal change, evolution speed. Measures how quickly the system's internal state transforms over time." ;
+    ns1:prefLabel "Dynamics (D)" .
+
+m3:Flow a owl:Class,
+        m3:M3Dimension ;
+    rdfs:label "Flow Dimension" ;
+    rdfs:subClassOf "m3:M3Dimension" ;
+    m3:axiom "Universal Openness: F ≥ 0.1 (no real system is totally closed)" ;
+    m3:examples [ m3:justification "Active metabolism with controlled exchanges" ;
+            m3:system "Living cell" ;
+            m3:value 7e-01 ],
+        [ m3:justification "Thermal insulation, minimal heat transfer" ;
+            m3:system "Thermos flask" ;
+            m3:value 1.5e-01 ],
+        [ m3:justification "Intense energy dissipation" ;
+            m3:system "Tornado" ;
+            m3:value 9.5e-01 ] ;
+    m3:index 3 ;
+    m3:interpretation [ m3:measurement "Entropy production, flux analysis" ;
+            m3:physicalMeaning "Thermodynamic openness, metabolic throughput" ;
+            m3:range [ m3:max 1 ;
+                    m3:maxMeaning "Totally dissipative (maximal flow)" ;
+                    m3:midMeaning "Balance between exchange and autonomy" ;
+                    m3:min 1e-01 ;
+                    m3:minMeaning "Quasi-closed (ideal isolated system impossible)" ] ] ;
+    m3:ketNotation "|F⟩" ;
+    m3:orthogonalTo "m3:Attractor",
+        "m3:Dynamics",
+        "m3:Information",
+        "m3:Structure" ;
+    m3:orthogonalityJustification [ m3:vsAttractor "Openness ≠ Stability: See Attractor justification" ;
+            m3:vsDynamics "Openness ≠ Change: Dissipation (high F) can maintain stable state (low D)" ;
+            m3:vsInformation "Flow ≠ Memory: Constant flux (high F) with weak or strong memory" ;
+            m3:vsStructure "Exchange ≠ Topology: See Structure justification" ] ;
+    m3:symbol "F" ;
+    ns1:definition "Exchanges with environment, thermodynamic openness. Measures the intensity of matter/energy/information flows across system boundaries." ;
+    ns1:prefLabel "Flow (F)" .
+
+m3:Information a owl:Class,
+        m3:M3Dimension ;
+    rdfs:label "Information Dimension" ;
+    rdfs:subClassOf "m3:M3Dimension" ;
+    m3:clarification "Measures state diversity, not uncertainty (entropy)" ;
+    m3:examples [ m3:justification "3 billion base pairs, high information content" ;
+            m3:system "Human genome" ;
+            m3:value 8.5e-01 ],
+        [ m3:justification "Repetitive regular pattern" ;
+            m3:system "Salt crystal" ;
+            m3:value 1e-01 ],
+        [ m3:justification "Few quantum states" ;
+            m3:system "Hydrogen atom" ;
+            m3:value 5e-02 ] ;
+    m3:index 4 ;
+    m3:interpretation [ m3:measurement "Shannon entropy, Kolmogorov complexity, dimensional analysis" ;
+            m3:physicalMeaning "State space dimensionality, configurational diversity" ;
+            m3:range [ m3:max 1 ;
+                    m3:maxMeaning "Maximal admissible complexity" ;
+                    m3:midMeaning "Moderate complexity" ;
+                    m3:min 0 ;
+                    m3:minMeaning "Simple state (few bits)" ] ] ;
+    m3:ketNotation "|I⟩" ;
+    m3:orthogonalTo "m3:Attractor",
+        "m3:Dynamics",
+        "m3:Flow",
+        "m3:Structure" ;
+    m3:orthogonalityJustification [ m3:vsAttractor "Complexity ≠ Convergence: See Attractor justification" ;
+            m3:vsDynamics "Complexity ≠ Speed: Complex system (high I) can be static (low D)" ;
+            m3:vsFlow "Memory ≠ Exchange: See Flow justification" ;
+            m3:vsStructure "Complexity ≠ Topology: See Structure justification" ] ;
+    m3:symbol "I" ;
+    ns1:definition "Internal state complexity (synchronic). Measures the diversity and richness of possible system states at a given moment." ;
+    ns1:prefLabel "Information (I)" .
+
+m3:M3_Genesis_Space a owl:Ontology ;
+    dcterms:created "2026-01-14" ;
+    dcterms:creator "TSCG Project" ;
+    dcterms:description "Foundational 5-dimensional orthonormal basis (ASFID) for transdisciplinary system modeling in the TSCG framework" ;
+    dcterms:documentation <https://github.com/Echopraxium/tscg/blob/main/ontology/docs/M3_Genesis_Space_README.md> ;
+    dcterms:modified "2026-01-15" ;
+    dcterms:title "TSCG M3 Genesis Ontology" ;
+    rdfs:comment "M3 defines the elementary 'bricks' of the TSCG LEGO-like system construction framework. It establishes a Hilbert space ℂ⁵ with 5 orthonormal dimensions: Attractor, Structure, Flow, Information, Dynamics." ;
+    rdfs:seeAlso "https://github.com/Echopraxium/tscg/blob/main/ontology/docs/M3_Genesis_Space_README.md" ;
+    owl:versionInfo "5.1.0" ;
+    m3:completenessAxiom "∑|k⟩⟨k| = 𝟙 (identity operator)" ;
+    m3:mathematicalBasis "Hilbert space ℂ⁵ with orthonormal basis {|A⟩, |S⟩, |F⟩, |I⟩, |D⟩}" ;
+    m3:orthonormalityAxiom "⟨k|j⟩ = δ_kj (Kronecker delta)" ;
+    m3:universalOpennessAxiom "F ≥ 0.1 (no system is totally closed)" ;
+    m3:validationResult [ m3:orthogonalityVerified true ;
+            m3:pairsTested 10 ;
+            m3:pairsValidated 10 ;
+            m3:validationDate "2026-01-14" ] .
+
+m3:StateVector a owl:Class ;
+    rdfs:label "M3 State Vector" ;
+    m3:coefficientConstraints [ m3:flowConstraint "f ≥ 0.1 (Universal Openness Axiom)" ;
+            m3:generalRange "[0,1] for all coefficients" ;
+            m3:positivity "All coefficients non-negative (no negative values)" ] ;
+    m3:formula "|Ω⟩ = a|A⟩ + s|S⟩ + f|F⟩ + i|I⟩ + d|D⟩" ;
+    ns1:definition "A vector |Ω⟩ in ℂ⁵ representing a system's state as a linear combination of the 5 M3 dimensions" .
+
+m3:Structure a owl:Class,
+        m3:M3Dimension ;
+    rdfs:label "Structure (S)" ;
+    rdfs:comment "Topological organization and connectivity of system components. Measures the degree of structural order." ;
+    rdfs:subClassOf "m3:M3Dimension" ;
+    m3:examples [ m3:justification "Highly stable molecular structure" ;
+            m3:system "DNA double helix" ;
+            m3:value 9.5e-01 ],
+        [ m3:justification "Defined communities with variable ties" ;
+            m3:system "Social network" ;
+            m3:value 6e-01 ],
+        [ m3:justification "Minimal spatial organization" ;
+            m3:system "Plasma" ;
+            m3:value 1e-01 ] ;
+    m3:index 2 ;
+    m3:interpretation [ m3:measurement "Graph theory, adjacency matrices, topological invariants" ;
+            m3:physicalMeaning "Network topology, spatial organization" ;
+            m3:range [ m3:max 1 ;
+                    m3:maxMeaning "Crystal (maximal rigid structure)" ;
+                    m3:midMeaning "Liquid (temporary local structure)" ;
+                    m3:min 0 ;
+                    m3:minMeaning "Gas (no persistent structure)" ] ] ;
+    m3:ketNotation "|S⟩" ;
+    m3:orthogonalTo "m3:Attractor",
+        "m3:Dynamics",
+        "m3:Flow",
+        "m3:Information" ;
+    m3:orthogonalityJustification [ m3:vsAttractor "Topology ≠ Stability: See Attractor justification" ;
+            m3:vsDynamics "Organization ≠ Rate: Stable structure (high S) can evolve rapidly (high D)" ;
+            m3:vsFlow "Graph ≠ Exchange: Rigid network (high S) can be open (high F) or isolated (low F)" ;
+            m3:vsInformation "Topology ≠ Complexity: DNA (high S and I) vs crystal (high S, low I)" ] ;
+    m3:symbol "S" .
+
+m3:hasAttractorComponent a owl:DatatypeProperty ;
+    rdfs:label "has Attractor component" ;
+    rdfs:domain "m3:StateVector" ;
+    rdfs:range "xsd:float" ;
+    m3:constraint "value ∈ [0,1]" .
+
+m3:hasDynamicsComponent a owl:DatatypeProperty ;
+    rdfs:label "has Dynamics component" ;
+    rdfs:domain "m3:StateVector" ;
+    rdfs:range "xsd:float" ;
+    m3:constraint "value ∈ [0,1]" .
+
+m3:hasFlowComponent a owl:DatatypeProperty ;
+    rdfs:label "has Flow component" ;
+    rdfs:domain "m3:StateVector" ;
+    rdfs:range "xsd:float" ;
+    m3:constraint "value ∈ [0.1,1] (Universal Openness)" .
+
+m3:hasInformationComponent a owl:DatatypeProperty ;
+    rdfs:label "has Information component" ;
+    rdfs:domain "m3:StateVector" ;
+    rdfs:range "xsd:float" ;
+    m3:constraint "value ∈ [0,1]" .
+
+m3:hasStructureComponent a owl:DatatypeProperty ;
+    rdfs:label "has Structure component" ;
+    rdfs:domain "m3:StateVector" ;
+    rdfs:range "xsd:float" ;
+    m3:constraint "value ∈ [0,1]" .
+
+m3:orthogonalTo a owl:ObjectProperty ;
+    rdfs:label "orthogonal to" ;
+    rdfs:domain "m3:M3Dimension" ;
+    rdfs:range "m3:M3Dimension" ;
+    owl:propertyType "owl:SymmetricProperty" ;
+    ns1:definition "Indicates that two dimensions are orthogonal: ⟨i|j⟩ = 0" .
+
+<https://github.com/Echopraxium/tscg/blob/main/ontology/docs/M3_Genesis_Space_README.md> dcterms:format "text/markdown" ;
+    dcterms:type "Documentation" .
+
+m3:M3Dimension a owl:Class ;
+    rdfs:label "M3 Dimension" ;
+    rdfs:comment "Abstract class representing one of the 5 orthonormal dimensions of the M3 basis. A basis vector in the ℂ⁵ Hilbert space, verifying orthonormality and completeness axioms." .
+

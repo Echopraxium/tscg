@@ -1,0 +1,348 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m0: <https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#> .
+@prefix m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:AlgedonicSignal> a owl:Class ;
+    rdfs:label "Algedonic Signal" ;
+    rdfs:comment "Emergency alert from S1 directly to S3, bypassing normal hierarchy. 'Algedonic' = pleasure/pain signal indicating extreme deviation requiring immediate intervention." ;
+    rdfs:subClassOf "m2:Signal" ;
+    m0:etymology "Greek algos (pain) + hedone (pleasure)" ;
+    m0:examples "Factory production line stoppage",
+        "Municipal infrastructure failure",
+        "Pain receptor firing to spinal cord",
+        "University financial crisis alert" ;
+    m0:function "Immediate escalation of critical problems bypassing S2 coordination" ;
+    m0:instantiatesM2 "m2:Signal",
+        "m2:Threshold",
+        "m2:Trigger" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:Autonomy> a owl:Class ;
+    rdfs:label "Operational Autonomy" ;
+    rdfs:comment "Principle that S1 operational units have maximum decision-making freedom compatible with systemic cohesion. Beer's dictum: 'Maximum local freedom; minimum central constraint.'" ;
+    rdfs:subClassOf "m2:Constraint" ;
+    m0:balance "Autonomy (local freedom) vs Cohesion (systemic integrity)" ;
+    m0:instantiatesM2 "m2:Agent",
+        "m2:Modularity" ;
+    m0:mechanism "S1 decides HOW to achieve targets; S3 negotiates WHAT targets are needed; S5 defines WHY (purpose/values)" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:Cohesion> a owl:Class ;
+    rdfs:label "Systemic Cohesion" ;
+    rdfs:comment "Force maintaining system integrity despite operational autonomy. Provided by S5 ethos, S3 resource integration, S2 coordination, and shared identity/purpose." ;
+    rdfs:subClassOf "m2:Homeostasis" ;
+    m0:instantiatesM2 "m2:Constraint",
+        "m2:Homeostasis",
+        "m2:Identity" ;
+    m0:mechanisms "Cultural ethos and organizational identity",
+        "S2 shared standards and protocols",
+        "S3 resource allocation creating interdependence",
+        "S5 constitutional principles and values" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:Environment> a owl:Class ;
+    rdfs:label "Operational Environment" ;
+    rdfs:comment "External context within which viable system operates. Provides resources, constraints, opportunities, and threats. System 1 interfaces directly; System 4 monitors and models." ;
+    rdfs:subClassOf "m2:Environment" ;
+    m0:characteristics [ ] .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:MetaSystem> a owl:Class ;
+    rdfs:label "Meta-system" ;
+    rdfs:comment "Collective supervisory function of S2, S3, S4, S5 managing and regulating operational units (S1). The meta-system ensures viability through coordination, optimization, intelligence, and policy while granting maximum autonomy to operations." ;
+    rdfs:subClassOf "m2:Hierarchy" ;
+    m0:composition "m0:vsm:System2",
+        "m0:vsm:System3",
+        "m0:vsm:System4",
+        "m0:vsm:System5" ;
+    m0:instantiatesM2 "m2:Control",
+        "m2:Hierarchy",
+        "m2:Regulation" ;
+    m0:purpose "Supervise, coordinate, and regulate S1 operations while maintaining systemic viability" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:OperationalUnit> a owl:Class ;
+    rdfs:label "Operational Unit" ;
+    rdfs:comment "Individual autonomous component within System 1. Each operational unit is itself a complete viable system with recursive S1-S5 structure at smaller scale." ;
+    rdfs:subClassOf "m0:vsm:System1",
+        "m0:vsm:ViableSystem" ;
+    m0:recursiveProperty "Contains own System1, System2, System3, System4, System5 at lower hierarchical level" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:RecursiveViability> a owl:Class ;
+    rdfs:label "Recursive Viability" ;
+    rdfs:comment "Fundamental VSM architectural principle: every viable system contains viable subsystems, each with complete S1-S5 structure. Recursion continues until atomic operational level." ;
+    rdfs:subClassOf "m2:Imbrication" ;
+    m0:examples "Corporation → Division → Department → Team → Individual",
+        "Nation → Province → City → District → Neighborhood",
+        "Organism → Organ system → Organ → Tissue → Cell" ;
+    m0:instantiatesM2 "m2:Hierarchy",
+        "m2:Imbrication",
+        "m2:Modularity" ;
+    m0:recursionDepth "N levels - stops when further decomposition loses operational meaning" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:RequisiteVariety> a owl:Class ;
+    rdfs:label "Requisite Variety Principle" ;
+    rdfs:comment "Ashby's Law applied to VSM: a regulator must have variety at least equal to the variety of disturbances it aims to control. Fundamental constraint on viable system design." ;
+    rdfs:subClassOf "m2:Constraint" ;
+    m0:formalization "V(Regulator) ≥ V(Disturbance)" ;
+    m0:implications "S2 coordination variety must match inter-S1 conflict variety",
+        "S3 management variety must match S1 operational variety",
+        "S4 intelligence variety must match environmental variety",
+        "Variety amplification required for downward flow (provide detail)",
+        "Variety attenuation required for upward flow (avoid overload)" ;
+    m0:instantiatesM2 "m2:Constraint",
+        "m2:ValueSpace" ;
+    m0:reference "W. Ross Ashby, An Introduction to Cybernetics (1956), Chapter 11" ;
+    m0:valueSpaceFormalization "V(Regulator) ≥ V(Disturbance) where V = cardinality of ValueSpace (It dimension). Managed via VarietyAmplification (↓ flow) and VarietyAttenuation (↑ flow)." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:ResourceBargain> a owl:Class ;
+    rdfs:label "Resource Bargain" ;
+    rdfs:comment "Negotiation process between S3 (resource allocation) and S1 (operational needs). Balances systemic optimization with operational autonomy through iterative resource-for-performance exchanges." ;
+    rdfs:subClassOf "m2:Trade-off" ;
+    m0:autonomyPrinciple "S1 units have maximum freedom in HOW to achieve agreed targets (autonomy), but WHAT targets are negotiated with S3 (accountability)" ;
+    m0:instantiatesM2 "m2:Balance",
+        "m2:Feedback",
+        "m2:Trade-off" ;
+    m0:mechanism "S1 requests resources; S3 negotiates performance commitments; iterative adjustment until mutual agreement" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:System1> a owl:Class ;
+    rdfs:label "System 1 - Operations" ;
+    rdfs:comment "Primary activities that implement the viable system's raison d'être. Composed of multiple autonomous operational units, each itself a viable system. Directly interacts with environment to deliver products/services." ;
+    rdfs:subClassOf "m0:vsm:ViableSystem",
+        "m2:Node" ;
+    m0:characteristics [ ] ;
+    m0:examples "Departments in university",
+        "Local branches of government agency",
+        "Manufacturing plants in corporation",
+        "Organs in biological organism" ;
+    m0:externalRelations "Coordinated by S2 (conflict resolution)",
+        "Receives commands from S3 (resource allocation, performance targets)",
+        "Sends algedonic signals to S3 (emergencies)",
+        "Sends performance data to S3* (audit)" ;
+    m0:instantiatesM2 "m2:Agent",
+        "m2:Modularity",
+        "m2:Node",
+        "m2:Process" ;
+    m0:vsmMetaphor "Hands doing the work" ;
+    m0:vsmRole "Implementation" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:System2> a owl:Class ;
+    rdfs:label "System 2 - Coordination" ;
+    rdfs:comment "Anti-oscillatory function that coordinates activities between S1 units to prevent destructive conflicts. Implements regulatory mechanisms ensuring S1 units don't interfere with each other while maintaining operational harmony." ;
+    rdfs:subClassOf "m2:Regulation" ;
+    m0:characteristics [ ] ;
+    m0:coordinationMechanisms "Common standards and protocols",
+        "Communication channels between S1 units",
+        "Conflict resolution procedures",
+        "Resource allocation rules",
+        "Shared calendars/schedules" ;
+    m0:examples "Production scheduling in factory",
+        "Spinal cord coordination of muscles",
+        "Traffic light synchronization",
+        "University timetabling office" ;
+    m0:instantiatesM2 "m2:Constraint",
+        "m2:Coordination",
+        "m2:Mediator",
+        "m2:Regulation" ;
+    m0:vsmMetaphor "Damping oscillations between parts" ;
+    m0:vsmRole "Coordination" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:System3> a owl:Class ;
+    rdfs:label "System 3 - Optimization (Inside & Now)" ;
+    rdfs:comment "Internal optimization managing resource allocation, performance monitoring, and synergy maximization across S1 operations. Focuses on here-and-now operational efficiency. Includes S3* (audit channel) for sporadic inspection." ;
+    rdfs:subClassOf "m2:Homeostasis" ;
+    m0:characteristics [ ] ;
+    m0:examples "Brainstem homeostatic regulation",
+        "Corporate operations director",
+        "Municipal resource allocation office",
+        "University operations management" ;
+    m0:instantiatesM2 "m2:Balance",
+        "m2:Control",
+        "m2:Homeostasis",
+        "m2:Optimization",
+        "m2:Trade-off" ;
+    m0:s3Functions "Allocate resources to S1 units",
+        "Create synergies between S1 units",
+        "Handle algedonic signals (emergencies)",
+        "Monitor operational performance",
+        "Negotiate resource bargains with S1" ;
+    m0:s3star [ ] ;
+    m0:vsmMetaphor "Internal management - optimizing current operations" ;
+    m0:vsmRole "Optimization" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:System4> a owl:Class ;
+    rdfs:label "System 4 - Intelligence (Outside & Then)" ;
+    rdfs:comment "Strategic intelligence monitoring external environment and future possibilities. Provides forward-looking adaptation by scanning for threats/opportunities and developing strategic options. Balances external environmental demands with internal operational capabilities." ;
+    rdfs:subClassOf "m2:Adaptation" ;
+    m0:characteristics [ ] ;
+    m0:examples "Cerebral cortex cognitive planning",
+        "Corporate strategy department",
+        "Government foresight units",
+        "University strategic planning office" ;
+    m0:instantiatesM2 "m2:Adaptation",
+        "m2:Environment",
+        "m2:Observer",
+        "m2:Strategy" ;
+    m0:s3s4Homeostat [ ] ;
+    m0:s4Functions "Environmental scanning (competitors, technology, regulation, society)",
+        "External stakeholder relations",
+        "Innovation and R&D coordination",
+        "Simulation and modeling",
+        "Strategic option development",
+        "Trend analysis and forecasting" ;
+    m0:vsmMetaphor "Looking outward and forward - strategic planning" ;
+    m0:vsmRole "Intelligence & Adaptation" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:System5> a owl:Class ;
+    rdfs:label "System 5 - Policy (Identity & Ethos)" ;
+    rdfs:comment "Provides identity, values, and ultimate authority. Defines organizational purpose and resolves conflicts between S3 (internal optimization) and S4 (external adaptation). Creates constitutional framework and cultural ethos ensuring systemic closure." ;
+    rdfs:subClassOf "m2:Observer" ;
+    m0:characteristics [ ] ;
+    m0:examples "Board of directors, CEO office",
+        "Constitutional court, head of state",
+        "Frontal lobe executive function",
+        "University senate, president" ;
+    m0:instantiatesM2 "m2:Constraint",
+        "m2:Goal",
+        "m2:Identity",
+        "m2:Observer" ;
+    m0:s5Functions "Arbitrate S3 vs S4 deadlocks",
+        "Create and maintain organizational culture",
+        "Define mission, vision, values",
+        "Ensure ethical governance",
+        "Establish constitutional ground rules",
+        "Monitor systemic health and viability" ;
+    m0:vsmMetaphor "The ultimate authority - defining who we are" ;
+    m0:vsmRole "Policy & Identity" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:VSM_Framework> a owl:Ontology ;
+    dcterms:created "2026-01-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Stafford Beer's Viable System Model (VSM) formalized within TSCG framework. VSM defines organizational viability through 5 recursive subsystems managing operations, coordination, optimization, intelligence, and policy. Foundation: Ashby's Law of Requisite Variety." ;
+    dcterms:modified "2026-02-01" ;
+    dcterms:source [ ] ;
+    dcterms:title "Viable System Model (Stafford Beer) - Systemic Framework" ;
+    rdfs:seeAlso "https://en.wikipedia.org/wiki/Viable_system_model",
+        "https://www.kybernetik.ch/en/fs_cybsyn.html" ;
+    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld" ;
+    owl:versionInfo "1.1.0" ;
+    m3:ontologyCategory m3:SystemicFramework ;
+    m0:bicephalousAnalysis [ ] ;
+    m0:historicalContext [ ] ;
+    m0:vsmPrinciples [ ] .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:VarietyAmplification> a owl:Class ;
+    rdfs:label "Variety Amplification" ;
+    rdfs:comment "MetaconceptCombo instance: MetaconceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification. Synergistic combination of ValueSpace (It⊗V⊗O⊗R⊗Im) and Amplification↑ (Ft⊗D⊗It⊗R⊗O, Gain > 1). Implements VSM S2 coordination — increases Im (interoperability) of variety flowing downward from metasystem to S1 operational units. Shared dimensions {It, R, O} couple rather than duplicate, producing a reduced emergent subspace." ;
+    rdfs:subClassOf "m2:Amplification" ;
+    m0:examples "S3 'reduce costs 10%' → S1: specific supplier renegotiations, process optimizations, headcount freezes",
+        "S4 'enter Asian market' → S1: market research tasks, product localization specs, logistics setup",
+        "S5 'maintain quality ethos' → S2 standards → S1: specific quality checkpoints per production line",
+        "Software: architectural decision → team-level sprint tasks (variety amplified through decomposition)" ;
+    m0:gainProfile [ ] ;
+    m0:instantiatesM2 "m2:Amplification",
+        "m2:MetaconceptCombo",
+        "m2:ValueSpace" ;
+    m0:metaconceptCombo [ ] ;
+    m0:pathologyIfAbsent "S1 receives abstract directives without operational detail → drift, misalignment, or costly misinterpretation of metasystem intent" ;
+    m0:vsmFunction [ ] ;
+    m0:vsmRole "S2 Coordination — Variety Amplification (downward flow)" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:VarietyAttenuation> a owl:Class ;
+    rdfs:label "Variety Attenuation" ;
+    rdfs:comment "MetaconceptCombo instance: MetaconceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation. Synergistic combination of ValueSpace (It⊗V⊗O⊗R⊗Im) and Amplification↓ (Ft⊗D⊗It⊗R⊗O, 0 < Gain < 1). Implements VSM S3 optimization — decreases O (observability) of variety flowing upward from S1 to metasystem, while preserving V (verifiability) for S3* audit integrity. Shared dimensions {It, R, O} couple rather than duplicate, producing a reduced emergent subspace." ;
+    rdfs:subClassOf "m2:Amplification" ;
+    m0:examples "S1 detailed project timelines → S3: milestone-level status (hierarchical filtering)",
+        "S1 individual transaction logs → S3: aggregated KPI summary (statistical process control)",
+        "S1 raw production data → S3: exception-based dashboard (only deviations reported)",
+        "S1 sensor readings → S3: trend alerts with confidence intervals (statistical attenuation)",
+        "Software: microservice logs → ops dashboard: error rate, latency percentiles" ;
+    m0:gainProfile [ ] ;
+    m0:instantiatesM2 "m2:Amplification",
+        "m2:MetaconceptCombo",
+        "m2:ValueSpace" ;
+    m0:metaconceptCombo [ ] ;
+    m0:pathologyIfAbsent "S3 receives unfiltered S1 variety → cognitive overload, decision paralysis, inability to distinguish signal from noise (the 'variety overload' pathology)" ;
+    m0:relationToS3star "S3* audit channel bypasses VarietyAttenuation selectively — when S3* suspects attenuation has hidden critical info, it accesses S1 directly at full variety. This is the V-preservation mechanism in action." ;
+    m0:vsmFunction [ ] ;
+    m0:vsmRole "S3 Optimization — Variety Attenuation (upward flow)" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:VarietyEngineering> a owl:Class ;
+    rdfs:label "Variety Engineering" ;
+    rdfs:comment "Beer's practice of deliberately managing organizational variety through attenuation (filtering upward) and amplification (elaborating downward). Core VSM design methodology." ;
+    m0:examples "S3 command: Amplify 'reduce costs 10%' into detailed S1 operational changes",
+        "S3* audit: Attenuate S1 variety via sampling instead of exhaustive monitoring",
+        "S4 strategy: Amplify vision into S1-actionable projects" ;
+    m0:instantiatesM2 "m2:Amplification",
+        "m2:MetaconceptCombo",
+        "m2:ValueSpace" ;
+    m0:metaconceptCombos [ ] ;
+    m0:techniques [ ] .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:ViableSystem> a owl:Class ;
+    rdfs:label "Viable System" ;
+    rdfs:comment "A system capable of maintaining separate existence through adaptation to changing environment. Contains 5 recursive subsystems (S1-S5) managing operations, coordination, optimization, intelligence, and policy." ;
+    rdfs:subClassOf "m2:System" ;
+    m0:hasProperty "m0:vsm:operationalAutonomy",
+        "m0:vsm:recursiveViability",
+        "m0:vsm:requisiteVariety" ;
+    m0:hasStructuralComponents "m0:vsm:System1",
+        "m0:vsm:System2",
+        "m0:vsm:System3",
+        "m0:vsm:System4",
+        "m0:vsm:System5" ;
+    m0:instantiatesM2 "m2:Adaptation",
+        "m2:Hierarchy",
+        "m2:Homeostasis",
+        "m2:Imbrication",
+        "m2:Resilience",
+        "m2:System" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:amplifiesVariety> a owl:ObjectProperty ;
+    rdfs:label "amplifies variety" ;
+    rdfs:comment "Expanding variety flowing downward through hierarchy. Example: S3 command amplified into detailed S1 operational actions." ;
+    rdfs:domain "owl:Thing" ;
+    rdfs:range "owl:Thing" ;
+    m0:instantiatesM2 "m2:Amplification",
+        "m2:MetaconceptCombo",
+        "m2:ValueSpace" ;
+    m0:mechanism "Elaboration, specification, contextualization, local adaptation" ;
+    m0:metaconceptCombo [ ] .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:attenuatesVariety> a owl:ObjectProperty ;
+    rdfs:label "attenuates variety" ;
+    rdfs:comment "Filtering/reducing variety flowing upward through hierarchy. Example: S3* audit filters S1 data before presenting to S3." ;
+    rdfs:domain "owl:Thing" ;
+    rdfs:range "owl:Thing" ;
+    m0:instantiatesM2 "m2:Amplification",
+        "m2:MetaconceptCombo",
+        "m2:ValueSpace" ;
+    m0:mechanism "Filtering, aggregation, summarization, exception-based reporting" ;
+    m0:metaconceptCombo [ ] .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#vsm:hasVariety> a owl:DatatypeProperty ;
+    rdfs:label "has variety" ;
+    rdfs:comment "Quantifies the number of distinguishable states a VSM component can exhibit (Ashby's variety). Foundation of requisite variety matching." ;
+    rdfs:domain "owl:Thing" ;
+    rdfs:range "xsd:nonNegativeInteger" ;
+    m0:ashbyLaw "V(Regulator) ≥ V(Disturbance)" ;
+    m0:instantiatesM2 "m2:ValueSpace" ;
+    m0:valueSpaceRole "Quantifies the cardinality of the value-space (Ashby variety = number of distinguishable states). Foundation for MetaconceptCombo(ValueSpace, Amplification↑/↓) gain calculations." .
+
+[] dcterms:bibliographicCitation "Ashby, W. R. (1956). An Introduction to Cybernetics. Chapman & Hall.",
+        "Beer, S. (1972). Brain of the Firm. Wiley.",
+        "Beer, S. (1979). The Heart of Enterprise. Wiley.",
+        "Beer, S. (1985). Diagnosing the System for Organizations. Wiley.",
+        "Espejo, R., & Harnden, R. (Eds.). (1989). The Viable System Model: Interpretations and Applications of Stafford Beer's VSM. Wiley.",
+        "Medina, E. (2011). Cybernetic Revolutionaries: Technology and Politics in Allende's Chile. MIT Press." ;
+    m0:m1Prerequisites [ ] ;
+    m0:m2Prerequisites [ ] ;
+    m0:vsmApplicationDomains "Ecosystems (ecological viability)",
+        "Education (university administration)",
+        "Government (Project Cybersyn Chile 1971-73)",
+        "Healthcare (hospital management)",
+        "Manufacturing (original Beer context)",
+        "Social movements (distributed organizing)",
+        "Software systems (microservices architecture)",
+        "Supply chains (network coordination)" ;
+    m0:vsmDiagnostics [ ] ;
+    m0:vsmExtensions [ ] .
+

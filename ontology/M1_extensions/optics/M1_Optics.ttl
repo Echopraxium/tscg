@@ -1,0 +1,165 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <m1:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:MapTerritory_Optics a <m1:optics:OpticsPattern> ;
+    rdfs:label "Map-Territory Distinction (Optics)" ;
+    rdfs:comment "One Territory (perceived color) â†’ Multiple Maps (RGB, HSL, CMY, CMYK). Maps differ in ORIVE quality despite representing same Territory." ;
+    ns1:M0_instance "M0_ColorSynthesis_Federated.jsonld" ;
+    ns1:M2_basis "m2:Environment (FâŠ—I) - Territory: Light wavelengths in scene",
+        "m2:Observer (IâŠ—A) - Human or device perceiving color",
+        "m2:Representation (IâŠ—S) - Map: Color models" ;
+    ns1:caseStudy_ColorSynthesis [ ] ;
+    ns1:epistemicGap "Î”Î˜ = â€–Territory_ASFID - Map_ORIVEâ€– quantifies model limitation" ;
+    ns1:principle "Map â‰  Territory (Korzybski 1933). Territory is phenomenon, Map is model." ;
+    ns1:validatedPoclets 1 .
+
+<m1:optics:AdditiveColorSynthesis> a <m1:optics:OpticsPattern> ;
+    rdfs:label "Additive Color Synthesis" ;
+    rdfs:comment "Pattern where colored lights combine to produce resultant color. Adding all primaries â†’ white. Used in displays (RGB)." ;
+    ns1:M2_basis "m2:Channel (SâŠ—IâŠ—F) - Independent color channels",
+        "m2:Component (SâŠ—I) - R, G, B primaries",
+        "m2:Fusion (SâŠ—FâŠ—D) - Light waves merge" ;
+    ns1:contrastedWith "m1:SubtractiveColorSynthesis (pigments absorb light)" ;
+    ns1:examples [ ] ;
+    ns1:formula "C_result = C_R + C_G + C_B (vector addition in color space)" ;
+    ns1:perceptualBasis "Trichromatic vision (3 cone types in human retina)" ;
+    ns1:physicalBasis "Electromagnetic waves superposition (constructive interference)" ;
+    ns1:primaries "Blue (~435nm)",
+        "Green (~546nm)",
+        "Red (~700nm)" ;
+    ns1:principle "Light addition: R + G + B â†’ White" ;
+    ns1:validatedPoclets 2 .
+
+<m1:optics:ChannelMultiplexing> a <m1:optics:OpticsPattern> ;
+    rdfs:label "Channel Multiplexing (RGB/CMYK Channels)" ;
+    rdfs:comment "Independent channels carry orthogonal information dimensions. Each channel isolates one component, filters content, has finite capacity." ;
+    ns1:M0_instances "M0_CMYK_Subtractive.jsonld",
+        "M0_RGB_Additive.jsonld" ;
+    ns1:M2_basis "m2:Channel (SâŠ—IâŠ—F) - Structured conduit for signals",
+        "m2:Component (SâŠ—I) - Independent components per channel",
+        "m2:Modularity (SâŠ—I) - Channels as semi-independent modules" ;
+    ns1:examples [ ] ;
+    ns1:principle "Orthogonal decomposition: Signal = âˆ‘ Channeláµ¢ (ideally independent)" ;
+    ns1:properties [ ] ;
+    ns1:transdisciplinary "Audio stereo (Left/Right channels)",
+        "Biology (ion channels: Naâº, Kâº, CaÂ²âº)",
+        "Economics (distribution channels)",
+        "Telecommunications (frequency multiplexing)" ;
+    ns1:validatedDomains 6 .
+
+<m1:optics:ColorSpaceTransformation> a <m1:optics:OpticsPattern> ;
+    rdfs:label "Color Space Transformation" ;
+    rdfs:comment "Invertible mapping between different color representations preserving perceived color. Different spaces optimize for different purposes." ;
+    ns1:M0_instance "M0_ColorSynthesis_Federated.jsonld" ;
+    ns1:M2_basis "m2:Coding (IâŠ—SâŠ—D) - Encoding color in different representations",
+        "m2:Representation (IâŠ—S) - Alternative ways to represent same color",
+        "m2:Transformation (DâŠ—SâŠ—I) - Conversion process" ;
+    ns1:principle "Same perceptual color â†’ multiple mathematical representations" ;
+    ns1:purposeDriven "No 'best' color space - depends on application (display, print, editing)" ;
+    ns1:transformations [ ] ;
+    ns1:validatedPoclets 1 .
+
+<m1:optics:CompensatoryTriplet> a <m1:optics:OpticsPattern> ;
+    rdfs:label "Compensatory Triplet (Exposure Triangle)" ;
+    rdfs:comment "Pattern where three parameters maintain constant output through reciprocal balance. Changing one requires adjusting others. Contrast with Synergistic Triplet (Fire Triangle)." ;
+    ns1:M0_instance "M0_ExposureTriangle_Photography.jsonld" ;
+    ns1:M2_basis "m2:Balance (AâŠ—I) - Territory: Inverse coupling Pâ‚ Ã— Pâ‚‚ Ã— Pâ‚ƒ = constant",
+        "m2:Component (SâŠ—I) - Three functional parameters",
+        "m2:Regulation (AâŠ—SâŠ—F) - Maintain constant exposure" ;
+    ns1:ORIVE 8.9e-01 ;
+    ns1:contrastedWith [ ] ;
+    ns1:example "ISO 100â†’200 (+1 stop) + Shutter 1/125â†’1/250 (-1 stop) = same exposure" ;
+    ns1:formula "E = (L Ã— t Ã— A) / (NÂ² Ã— S) where E=constant requires compensation" ;
+    ns1:interactionMode "COMPENSATORY (not synergistic)" ;
+    ns1:parameters [ ] ;
+    ns1:principle "Reciprocal balance: Aperture Ã— Shutter Ã— ISO = Exposure (constant)" ;
+    ns1:validatedPoclets 1 .
+
+<m1:optics:LogarithmicScaling> a <m1:optics:OpticsPattern> ;
+    rdfs:label "Logarithmic Scaling Pattern (Photographic Stops)" ;
+    rdfs:comment "Parameters scaled logarithmically (doubling/halving) to match human perception. Each 'stop' represents 2Ã— change in physical quantity but equal perceptual step." ;
+    ns1:M0_instance "M0_ExposureTriangle_Photography.jsonld" ;
+    ns1:M2_basis "m2:Information (I) - Perceptual encoding",
+        "m2:Representation (IâŠ—S) - How parameters are expressed",
+        "m2:Signal (IâŠ—F) - Light signal encoding" ;
+    ns1:advantage "Equal control adjustments â†’ equal perceptual changes" ;
+    ns1:formula "Î”Perception = k Ã— log(Stimulusâ‚‚ / Stimulusâ‚)" ;
+    ns1:principle "Weber-Fechner Law: Perceived intensity âˆ log(stimulus)" ;
+    ns1:scales [ ] ;
+    ns1:transdisciplinary "Astronomical magnitude (stellar brightness)",
+        "Decibels (sound intensity)",
+        "Richter scale (earthquake energy)",
+        "pH scale (acidity)" ;
+    ns1:validatedPoclets 1 .
+
+<m1:optics:Optics_Domain> a owl:Ontology ;
+    dcterms:created "2026-01-20" ;
+    dcterms:creator "Echopraxium with collaboration of Claude AI Pro" ;
+    dcterms:description "Domain-specific patterns for optics, color theory, photography, and visual perception. M1 layer instantiates M2 metaconcepts into concrete optical/photographic patterns." ;
+    dcterms:title "M1 Narratives - Optics Domain" ;
+    rdfs:comment "M1 layer bridges abstract M2 metaconcepts to concrete M0 instances. Optics domain demonstrates color synthesis, exposure control, channel multiplexing, and perceptual scaling patterns." ;
+    owl:versionInfo "1.0.0" ;
+    ns1:childInstances [ ] ;
+    ns1:domain "Optics / Photography / Color Theory / Visual Perception" ;
+    ns1:parentLayers [ ] ;
+    ns1:patternCount 8 .
+
+<m1:optics:PerceptualNonlinearity> a <m1:optics:OpticsPattern> ;
+    rdfs:label "Perceptual Non-linearity (Gamma Correction)" ;
+    rdfs:comment "Human perception is non-linear in light intensity. Displays/encodings apply gamma to match perception." ;
+    ns1:M0_relevance "RGB, HSL models use gamma-corrected values, not linear light" ;
+    ns1:M2_basis "m2:Adaptation (IâŠ—FâŠ—D) - Human visual adaptation",
+        "m2:Code (IâŠ—S) - Encoding for efficiency",
+        "m2:Transformation (DâŠ—SâŠ—I) - Non-linear transform" ;
+    ns1:formula [ ] ;
+    ns1:gammaValues [ ] ;
+    ns1:principle "Perceived brightness âˆ Intensity^(1/Î³) where Î³ â‰ˆ 2.2" ;
+    ns1:purpose "More encoding bits for shadows (perceptually sensitive) vs highlights" ;
+    ns1:validatedPoclets 0 .
+
+<m1:optics:SideEffectCoupling> a <m1:optics:OpticsPattern> ;
+    rdfs:label "Side Effect Coupling (Photography)" ;
+    rdfs:comment "Primary parameter function coupled with unintended secondary effects. Mastery = using side effects creatively." ;
+    ns1:M0_instance "M0_ExposureTriangle_Photography.jsonld" ;
+    ns1:M2_basis "m2:Emergence (IâŠ—SâŠ—D) - Secondary effects emerge from primary parameters",
+        "m2:Trade-off (Map: ORIVE VâŠ—EâŠ—I, fallback IâŠ—AâŠ—D) - Cannot optimize primary + eliminate side effect simultaneously" ;
+    ns1:couplings [ ] ;
+    ns1:mastery "Expert photographers use side effects as creative tools, not obstacles" ;
+    ns1:principle "Control(Primary) â†’ Triggers(SideEffect) unavoidably" ;
+    ns1:validatedPoclets 1 .
+
+<m1:optics:SubtractiveColorSynthesis> a <m1:optics:OpticsPattern> ;
+    rdfs:label "Subtractive Color Synthesis" ;
+    rdfs:comment "Pattern where pigments/filters absorb wavelengths from white light. Subtracting all primaries â†’ black. Used in printing (CMYK)." ;
+    ns1:M2_basis "m2:Channel (SâŠ—IâŠ—F) - Independent ink channels",
+        "m2:Component (SâŠ—I) - C, M, Y primaries (+K)",
+        "m2:Filter (subset of Constraint SâŠ—I) - Each pigment filters wavelengths" ;
+    ns1:contrastedWith "m1:AdditiveColorSynthesis (lights add)" ;
+    ns1:examples [ ] ;
+    ns1:formula "C_result = White - (C_absorbed + M_absorbed + Y_absorbed)" ;
+    ns1:physicalBasis "Selective absorption of wavelengths by molecular pigments" ;
+    ns1:practicalChallenge "Pigment impurity â†’ CMY mix doesn't yield true black" ;
+    ns1:primaries "Cyan (absorbs Red)",
+        "Magenta (absorbs Green)",
+        "Yellow (absorbs Blue)" ;
+    ns1:principle "Light absorption: C + M + Y â†’ Black (theoretically)" ;
+    ns1:validatedPoclets 2 .
+
+<m1:optics:ValidationSummary> a owl:Class ;
+    rdfs:label "M1 Optics Patterns - Validation Summary" ;
+    ns1:nextSteps "Create M1 patterns for other domains (Chemistry, Economics, Biology)",
+        "Expand Compensatory Triplet to other domains (thermodynamics, economics)",
+        "Test PerceptualNonlinearity with gamma correction poclet" ;
+    ns1:patternStatus [ ] ;
+    ns1:pocletsUsed "M0_CMYK_Subtractive.jsonld",
+        "M0_CMY_Subtractive.jsonld",
+        "M0_ColorSynthesis_Federated.jsonld",
+        "M0_ExposureTriangle_Photography.jsonld",
+        "M0_HSL_Additive.jsonld",
+        "M0_RGB_Additive.jsonld" ;
+    ns1:totalPatterns 8 ;
+    ns1:validatedPatterns 6 .
+

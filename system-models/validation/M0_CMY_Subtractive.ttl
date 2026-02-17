@@ -1,0 +1,93 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#> .
+@prefix ns1: <m0:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ns1:CMY_Subtractive a owl:NamedIndividual,
+        "m0:Poclet" ;
+    rdfs:label "CMY Subtractive Color Synthesis" ;
+    dcterms:created "2026-01-17" ;
+    dcterms:creator "Echopraxium with collaboration of Claude AI Pro" ;
+    dcterms:references "Hunt, R. W. G. (2004). The Reproduction of Colour (6th ed.)",
+        "Kuehni, R. G. (2005). Color: An Introduction to Practice and Principles",
+        "Pointer, M. R. (1980). The Gamut of Real Surface Colours" ;
+    rdfs:comment "Subtractive color synthesis using Cyan, Magenta, Yellow pigment primaries. Theoretical model for pigment/ink mixing. Each channel is a SIGNAL (m2:Signal) carrying absorption/filtering information. The three signals undergo FUSION (m2:Fusion) through spectral filtering to produce perceived color." ;
+    rdfs:seeAlso ns1:CMYK_Subtractive,
+        ns1:ColorSynthesisFederated,
+        ns1:RGB_Additive ;
+    ns1:applications "Basis for CMYK (practical printing model)",
+        "Color theory (complementary colors)",
+        "Paint mixing (approximation)",
+        "Theoretical color mixing (art education)" ;
+    ns1:channels ns1:CyanChannel,
+        ns1:MagentaChannel,
+        ns1:YellowChannel ;
+    ns1:complementaryTo "RGB Additive" ;
+    ns1:domain "Optics / Color Science / Printing" ;
+    ns1:epistemicGap [ ] ;
+    ns1:fissionPrinciple [ ] ;
+    ns1:fusionPrinciple [ ] ;
+    ns1:mapSpace [ ] ;
+    ns1:metaconceptsMobilized [ ] ;
+    ns1:oriveAnalysis [ ] ;
+    ns1:partOfFederation ns1:ColorSynthesisFederated ;
+    ns1:physicalBasis "Wavelength-selective absorption by pigments (removes colors from white light)" ;
+    ns1:pocletType "Composite (Specialized)" ;
+    ns1:principle "Subtractive Synthesis (Pigment Mixing / Spectral Filtering)" ;
+    ns1:relationshipToRGB [ ] ;
+    ns1:territorySpace [ ] ;
+    ns1:validation [ ] ;
+    ns1:whyCMYK [ ] .
+
+ns1:CyanChannel a m2:Channel ;
+    rdfs:label "Cyan Channel (C)" ;
+    ns1:absorbs "Red wavelengths" ;
+    ns1:channelType "Absorption filter (removes red)" ;
+    ns1:complementaryTo "Red (RGB)" ;
+    ns1:examples "C=0% → No filtering (white if M=Y=0)",
+        "C=100% → Removes all red (cyan if M=Y=0)" ;
+    ns1:function "Subtractive primary - removes red component" ;
+    ns1:metaconceptInstantiation "m2:Channel" ;
+    ns1:physicalCorrelate "Cyan pigment concentration" ;
+    ns1:rangeAnalog "[0%, 100%] (absorption percentage)" ;
+    ns1:rangeDigital "[0, 100] percent" ;
+    ns1:role "Absorbs red light (~620-750 nm), transmits cyan (~480-520 nm)" ;
+    ns1:signalCarried [ a m2:Signal ] ;
+    ns1:tensorFormula "S⊗I⊗F" ;
+    ns1:transmits "Green + Blue (perceived as Cyan)" .
+
+ns1:MagentaChannel a m2:Channel ;
+    rdfs:label "Magenta Channel (M)" ;
+    ns1:absorbs "Green wavelengths" ;
+    ns1:channelType "Absorption filter (removes green)" ;
+    ns1:complementaryTo "Green (RGB)" ;
+    ns1:examples "M=0% → No filtering (white if C=Y=0)",
+        "M=100% → Removes all green (magenta if C=Y=0)" ;
+    ns1:function "Subtractive primary - removes green component" ;
+    ns1:metaconceptInstantiation "m2:Channel" ;
+    ns1:physicalCorrelate "Magenta pigment concentration" ;
+    ns1:rangeAnalog "[0%, 100%] (absorption percentage)" ;
+    ns1:rangeDigital "[0, 100] percent" ;
+    ns1:role "Absorbs green light (~495-570 nm), transmits magenta" ;
+    ns1:signalCarried [ a m2:Signal ] ;
+    ns1:tensorFormula "S⊗I⊗F" ;
+    ns1:transmits "Red + Blue (perceived as Magenta)" .
+
+ns1:YellowChannel a m2:Channel ;
+    rdfs:label "Yellow Channel (Y)" ;
+    ns1:absorbs "Blue wavelengths" ;
+    ns1:channelType "Absorption filter (removes blue)" ;
+    ns1:complementaryTo "Blue (RGB)" ;
+    ns1:examples "Y=0% → No filtering (white if C=M=0)",
+        "Y=100% → Removes all blue (yellow if C=M=0)" ;
+    ns1:function "Subtractive primary - removes blue component" ;
+    ns1:metaconceptInstantiation "m2:Channel" ;
+    ns1:physicalCorrelate "Yellow pigment concentration" ;
+    ns1:rangeAnalog "[0%, 100%] (absorption percentage)" ;
+    ns1:rangeDigital "[0, 100] percent" ;
+    ns1:role "Absorbs blue light (~450-495 nm), transmits yellow (~570-590 nm)" ;
+    ns1:signalCarried [ a m2:Signal ] ;
+    ns1:tensorFormula "S⊗I⊗F" ;
+    ns1:transmits "Red + Green (perceived as Yellow)" .
+

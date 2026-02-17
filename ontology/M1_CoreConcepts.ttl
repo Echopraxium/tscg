@@ -1,0 +1,295 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <m1core:> .
+@prefix ns2: <m1:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<m1:core:CoreConcept> a owl:Class ;
+    rdfs:label "M1 Core Concept" ;
+    rdfs:comment "A domain-bounded but transdisciplinary concept that instantiates one or more M2 metaconcepts. Core concepts are reusable patterns that appear across multiple domains but don't achieve the full universality of M2 metaconcepts. Examples: Oscillator (appears in physics, biology, economics), Multipolar Network (appears in mythology, game design, education)." ;
+    rdfs:subClassOf "owl:Thing" ;
+    ns2:properties "m1:M2_basis - Which M2 metaconcepts does this instantiate?",
+        "m1:domainScope - Which domains does this apply to?",
+        "m1:examples - Concrete examples from different domains",
+        "m1:principle - Core operational principle",
+        "m1:validatedPoclets - How many poclets validate this concept?" .
+
+<m1:core:CyclicTension> a owl:NamedIndividual,
+        <m1:core:ProcessArchetype> ;
+    rdfs:label "Cyclic Tension" ;
+    dcterms:created "2026-01-22" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "Perpetual alternation between opposing processes (typically destruction/degradation â†” restoration/construction) maintaining system viability through dynamic equilibrium. Unlike simple oscillation (periodic without degradation) or homeostasis (static equilibrium), cyclic tension involves genuine wear-and-repair cycles essential to system persistence. The 'stress' is not pathological but constitutive - the system exists *because* of this tension, not despite it." ;
+    ns2:M2_basis "m2:Attractor (A) - Equilibrium maintained through opposition",
+        "m2:Dynamics (D) - Temporal evolution of wear-repair cycle",
+        "m2:Flow (F) - Energy/matter exchange during degradation and restoration" ;
+    ns2:biologicalParadigm "Cellular autophagy-synthesis cycle, apoptosis-proliferation balance, immune surveillance-tolerance" ;
+    ns2:characteristicProperties [ ] ;
+    ns2:discoveryContext [ ] ;
+    ns2:distinctionFromRelated [ ] ;
+    ns2:domainScope "Biology, Mythology, Economics, Physics, Ecology, Engineering" ;
+    ns2:examplesCrossDomain "Biology: Cellular maintenance (protein degradation â†” synthesis), bone remodeling (osteoclasts â†” osteoblasts)",
+        "Ecology: Succession (disturbance â†” recovery), predator-prey cycles",
+        "Economics: Market cycles (expansion â†” contraction), creative destruction",
+        "Engineering: Fatigue-maintenance cycles in infrastructure",
+        "Mythology: Yggdrasil (NÃ­dhÃ¶gg gnaws roots â†” Nornes water/restore tree)",
+        "Physics: Thermodynamic cycles (energy dispersal â†” concentration)" ;
+    ns2:mathematicalProperties [ ] ;
+    ns2:principle "System viability maintained through perpetual opposition of degradative and restorative processes, where neither can permanently dominate. Equilibrium is dynamic, not static - the system is never 'finished' but perpetually in process." ;
+    ns2:status "VALIDATED - Discovered through Yggdrasil analysis, recognized in biological systems" ;
+    ns2:tensorFormula "DâŠ—AâŠ—F" ;
+    ns2:validatedPoclets 1 ;
+    ns2:validatedPocletsDetails "Yggdrasil (NÃ­dhÃ¶gg-Nornes cycle) - Mythology" .
+
+<m1:core:DomainPattern> a owl:Class ;
+    rdfs:label "Domain-Specific Pattern" ;
+    rdfs:comment "A pattern specific to a particular domain (e.g., Additive Color Synthesis in optics, Compensatory Triplet in photography). Lives in domain-specific M1 extensions (M1_Optics, M1_Photography, etc.) rather than M1_CoreConcepts." ;
+    rdfs:subClassOf "m1:core:CoreConcept" ;
+    ns2:note "Domain patterns extend CoreConcept but are defined in M1_[Domain].jsonld files, not here." .
+
+<m1:core:GenericMechanism> a owl:Class ;
+    rdfs:label "Generic Mechanism" ;
+    rdfs:comment "Reusable operational mechanism appearing across multiple domains. Examples: Oscillator (pendulum, AC current, predator-prey cycles, business cycles), Amplifier (electronic amplifier, biological cascade, social amplification)." ;
+    rdfs:subClassOf "m1:core:CoreConcept" ;
+    skos:note "To be populated with specific mechanisms as they are discovered through poclet analysis." .
+
+<m1:core:M1_CoreConcepts_Ontology> a owl:Ontology ;
+    dcterms:created "2026-01-22" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.)." ;
+    dcterms:modified "2026-02-10" ;
+    dcterms:title "TSCG M1 Core Concepts Ontology" ;
+    rdfs:comment "M1_CoreConcepts is the BASE ontology for M1 layer. It contains generic transdisciplinary concepts applicable across multiple domains. Domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.) import M1_CoreConcepts and add specialized patterns. This architecture allows: (1) Sharing common concepts, (2) Domain specialization, (3) Modular extension, (4) Clear namespace separation." ;
+    rdfs:seeAlso "https://github.com/Echopraxium/tscg/blob/main/ontology/docs/TSCG_M1_Architecture.md" ;
+    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld" ;
+    owl:versionInfo "1.2.0" ;
+    ns2:architecturalPrinciple [ ] ;
+    ns2:changelog [ ] ;
+    ns2:conceptDiscoveryProcess [ ] ;
+    ns2:coreConceptCategories [ ] ;
+    ns2:developmentStrategy [ ] ;
+    ns2:extensionOntologies [ ] ;
+    ns2:layerPosition [ ] ;
+    ns2:validationStatus [ ns2:conceptsDefined 2 ;
+            ns2:conceptsValidated 2 ;
+            ns2:domainExtensions 2 ;
+            ns2:note "M1_CoreConcepts now contains 2 validated transdisciplinary concepts discovered through Yggdrasil poclet analysis." ;
+            ns2:totalConceptsAcrossExtensions 20 ] .
+
+<m1:core:MultipolarNetwork> a owl:NamedIndividual,
+        <m1:core:StructuralTemplate> ;
+    rdfs:label "Multipolar Network" ;
+    dcterms:created "2026-01-22" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "System organized around N â‰¥ 3 distinct poles (nodes, centers, principles) with interdependent relationships forming a coherent whole. Unlike bipolar systems (duality) or hierarchies (tree), multipolar networks distribute significance across multiple equivalent or complementary poles without central dominance. Each pole contributes essential function; removing any pole destabilizes the entire system." ;
+    ns2:M2_basis "m2:Attractor (A) - System equilibrium across poles",
+        "m2:Information (I) - Distinctions between pole identities",
+        "m2:Structure (S) - Topological organization of N poles" ;
+    ns2:characteristicProperties [ ] ;
+    ns2:discoveryContext [ ] ;
+    ns2:distinctionFromRelated [ ] ;
+    ns2:domainScope "Mythology, Game Design, Education, Political Science, Ethics, Complex Systems Theory" ;
+    ns2:examplesCrossDomain "Complex Systems: Multi-agent systems, distributed networks",
+        "Education: TPACK (N=7 knowledge domains)",
+        "Ethics: Moral Foundations Theory (N=6 foundations)",
+        "Game Design: Magic Color Wheel (N=5 colors), Rock-Paper-Scissors (N=3)",
+        "Mythology: Yggdrasil (N=7 worlds), Greek Pantheon (N=12 Olympians)",
+        "Political Science: Political Compass (N=4 quadrants), Tripartite Government (N=3 branches)" ;
+    ns2:mathematicalProperties [ ] ;
+    ns2:principle "Distributed equilibrium across N â‰¥ 3 interdependent poles where each pole is irreducible and contributes unique function to system stability" ;
+    ns2:status "VALIDATED - Discovered through Yggdrasil analysis, confirmed in Magic Color Wheel and TPACK" ;
+    ns2:tensorFormula "SâŠ—IâŠ—A" ;
+    ns2:validatedPoclets 3 ;
+    ns2:validatedPocletsDetails "Magic Color Wheel (N=5) - Game Design / Philosophy",
+        "TPACK (N=7) - Education",
+        "Yggdrasil (N=7) - Mythology" .
+
+<m1:core:RelationalPattern> a owl:Class ;
+    rdfs:label "Relational Pattern" ;
+    rdfs:comment "Generic type of relationship between entities. Examples: Competition (species, companies, ideas), Cooperation (mutualism, trade, collaboration), Parasitism (biological, economic extraction)." ;
+    rdfs:subClassOf "m1:core:CoreConcept" ;
+    skos:note "To be populated with specific patterns as they are discovered through poclet analysis." .
+
+ns1:CascadeAmplification a owl:Class ;
+    rdfs:label "Cascade Amplification" ;
+    rdfs:comment "Sequential multi-stage process where each stage has gain > 1, resulting in exponential amplification. Combines Cascade (staged sequence) with Amplification (gain). Examples: neutron multiplication, transistor amplifiers, MAPK signaling, photomultiplier tubes." ;
+    skos:definition "Multi-stage process where signal, energy, or population is amplified at each stage (Gᵢ > 1), producing overall gain = ∏ᵢ Gᵢ >> 1. Subset of Cascade metaconcept with specific amplification requirement." ;
+    skos:related "m1core:SelfSustainingReaction",
+        "m2:Amplification",
+        "m2:Cascade" ;
+    ns1:controlChallenges "Exponential growth difficult to control (small perturbations → large effects)",
+        "Latency issues (cascade takes time, feedback delayed)",
+        "Negative feedback essential (prevent runaway)",
+        "Requires precise regulation (nuclear: k=1.000, not 1.001)" ;
+    ns1:designConsiderations "Feedback: Negative feedback essential for stable operation",
+        "Gain per stage (Gᵢ): Higher gain → fewer stages needed but stability issues",
+        "Saturation: Each stage has maximum output (nonlinearity)",
+        "Stage count (n): More stages → higher total gain but longer latency" ;
+    ns1:discoveryContext "Nuclear fission neutron multiplication (cascade with gain >1) revealed universal pattern of sequential amplification across domains." ;
+    ns1:m2Basis "m2:Amplification",
+        "m2:Cascade" ;
+    ns1:mathematicalModel [ ] ;
+    ns1:tensorFormula "Cascade ⊗ Amplification (gain > 1 per stage)" ;
+    ns1:transdisciplinaryExamples [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:validationCount 6 .
+
+ns1:CriticalityRegime a owl:Class ;
+    rdfs:label "Criticality Regime" ;
+    rdfs:comment "System state relative to self-sustaining threshold. Three regimes: subcritical (process dies), critical (self-sustaining equilibrium), supercritical (exponential growth). Universal pattern appearing when process products enable continuation of process." ;
+    skos:definition "Classification of system state based on relationship to critical threshold where process becomes self-sustaining (reproduction number = 1, multiplication factor k = 1, percolation probability p = p_c)." ;
+    skos:related "m1core:SelfSustainingReaction",
+        "m2:Bifurcation",
+        "m2:Threshold" ;
+    ns1:discoveryContext "Emerged from Nuclear Reactor Typology poclet analysis. Pattern recognized as universal across all self-sustaining processes with threshold behavior." ;
+    ns1:m2Basis "m2:Bifurcation",
+        "m2:Homeostasis",
+        "m2:Threshold" ;
+    ns1:mathematicalStructure [ ] ;
+    ns1:regimes [ ] ;
+    ns1:tensorFormula "Threshold ⊗ SelfSustainingReaction ⊗ Amplification" ;
+    ns1:transdisciplinaryDomains "Chemistry (autocatalytic reactions)",
+        "Ecology (population dynamics)",
+        "Economics (growth/decay rates)",
+        "Epidemiology (disease reproduction number R₀)",
+        "Nuclear Engineering (fission criticality)",
+        "Percolation Theory (bond/site probability)",
+        "Phase Transitions (temperature vs T_critical)",
+        "Social Networks (viral spread)" ;
+    ns1:validationCount 8 .
+
+ns1:DualCircuitArchitecture a owl:Class ;
+    rdfs:label "Dual Circuit Architecture" ;
+    rdfs:comment "System design with separated primary and secondary circuits connected via interface/barrier. Function: isolation (safety, contamination), efficiency (heat exchange), or voltage transformation. Examples: PWR reactor (radioactive primary, clean secondary), HVAC (refrigerant/air), electrical transformer (high/low voltage)." ;
+    skos:definition "Architectural pattern with two distinct circuits separated by barrier, enabling transfer (energy, information, material) while maintaining isolation (safety, pressure, voltage)." ;
+    skos:related "m2:Flow",
+        "m2:Interface",
+        "m2:Structure" ;
+    ns1:architecturalComponents [ ] ;
+    ns1:designAdvantages "Efficiency (optimize each circuit independently)",
+        "Maintenance (secondary circuit accessible, primary sealed)",
+        "Pressure decoupling (different operating pressures)",
+        "Safety (contamination/radiation contained in primary)" ;
+    ns1:discoveryContext "PWR nuclear reactor primary/secondary circuit separation revealed universal architectural pattern for safe energy transfer." ;
+    ns1:keyProperties "Barrier interface (heat exchanger, transformer, membrane)",
+        "Isolation guarantee (safety, contamination prevention)",
+        "Physical separation (two distinct circuits)",
+        "Transfer mechanism (thermal, electrical, chemical)" ;
+    ns1:m2Basis "m2:Flow",
+        "m2:Interface",
+        "m2:Structure" ;
+    ns1:tensorFormula "Structure ⊗ Interface ⊗ Isolation" ;
+    ns1:transdisciplinaryExamples [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:validationCount 6 .
+
+ns1:ModeratorMechanism a owl:Class ;
+    rdfs:label "Moderator Mechanism" ;
+    rdfs:comment "Component or process that slows, controls, or stabilizes a rapid/intense process. Function: energy reduction, rate control, stabilization. Examples: neutron moderator (nuclear), enzyme inhibitor (biology), damper (mechanics), low-pass filter (electronics)." ;
+    skos:definition "Regulatory element that reduces process intensity or rate without stopping it entirely. Acts as intermediate control between full activity and complete shutdown." ;
+    skos:related "m1core:SelfSustainingReaction",
+        "m2:Amplification",
+        "m2:Regulation" ;
+    ns1:designPrinciples "Continuous action (not binary on/off)",
+        "Energy dissipation or transfer",
+        "Negative feedback (stabilizing)",
+        "Partial control (reduce, not eliminate)" ;
+    ns1:discoveryContext "Nuclear reactor moderator (water, graphite) slowing fast neutrons revealed universal pattern of rate control in rapid processes." ;
+    ns1:m2Basis "m2:Amplification (direction: attenuating)",
+        "m2:Homeostasis",
+        "m2:Regulation" ;
+    ns1:primaryFunctions "Bandwidth limiting (filter high frequencies)",
+        "Energy reduction (fast → slow)",
+        "Rate control (limit reaction speed)",
+        "Stabilization (prevent runaway)" ;
+    ns1:tensorFormula "Regulation ⊗ Attenuation ⊗ Stabilization" ;
+    ns1:transdisciplinaryExamples [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:validationCount 7 .
+
+ns1:PassiveSafety a owl:Class ;
+    rdfs:label "Passive Safety" ;
+    rdfs:comment "Safety mechanism requiring NO external power or human intervention. Relies on physics (gravity, natural circulation), material properties (melting points), or fail-safe design. Examples: HTR natural cooling, MSR freeze plug, automotive crumple zones, dead man's switch." ;
+    skos:definition "Design philosophy where safe state is achieved through inherent physical principles (gravity, thermodynamics, material properties) rather than active systems requiring power or operator action. Fail-safe by default." ;
+    skos:related "m1core:ModeratorMechanism",
+        "m2:Constraint",
+        "m2:Resilience" ;
+    ns1:contrastWithActiveSafety [ ] ;
+    ns1:designPrinciples "Fail-safe (safe state is default, requires no energy)",
+        "Inherent property (not added feature)",
+        "No external power needed",
+        "No operator action required",
+        "Physics-based (gravity, natural circulation, material limits)" ;
+    ns1:discoveryContext "HTR and MSR passive safety features revealed universal design pattern of physics-based fail-safe mechanisms." ;
+    ns1:m2Basis "m2:Constraint",
+        "m2:Resilience",
+        "m2:Structure" ;
+    ns1:nuclearSafetyExample [ ] ;
+    ns1:tensorFormula "Constraint ⊗ Resilience ⊗ InherentProperty" ;
+    ns1:transdisciplinaryExamples [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:validationCount 7 .
+
+ns1:SelfSustainingReaction a owl:Class ;
+    rdfs:label "Self-Sustaining Reaction" ;
+    rdfs:comment "Process where products enable continuation of process (output → input positive feedback loop). Requires critical mass/threshold to initiate. Examples: fission chain reaction, combustion, autocatalysis, viral spread." ;
+    skos:definition "Dynamic process characterized by positive feedback where reaction products trigger new reactions, creating potential for exponential growth if unregulated. Always exhibits threshold behavior (critical point)." ;
+    skos:related "m1core:CriticalityRegime",
+        "m1core:ModeratorMechanism",
+        "m2:Amplification",
+        "m2:Cycle" ;
+    ns1:controlStrategies "Negative feedback (homeostasis)",
+        "Product removal (interrupt cycle)",
+        "Rate reduction (moderator mechanism)",
+        "Threshold maintenance (critical point)" ;
+    ns1:discoveryContext "Nuclear fission chain reaction analysis revealed universal pattern of output → input positive feedback with threshold behavior." ;
+    ns1:keyCharacteristic "Output → Input (positive feedback creates self-reinforcing loop)" ;
+    ns1:m2Basis "m2:Amplification",
+        "m2:Cycle",
+        "m2:Process",
+        "m2:Threshold" ;
+    ns1:requiredConditions "Amplification (gain ≥ 1 per cycle)",
+        "Initial trigger (seed, spark, catalyst)",
+        "Positive feedback mechanism (output → input)",
+        "Threshold (critical point for self-sustaining)" ;
+    ns1:tensorFormula "Process ⊗ Cycle ⊗ Amplification (gain ≥ 1)" ;
+    ns1:transdisciplinaryExamples [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:validationCount 6 .
+
+<m1:core:ProcessArchetype> a owl:Class ;
+    rdfs:label "Process Archetype" ;
+    rdfs:comment "Generic transformational process. Examples: Growth (population, economic, crystal), Decay (radioactive, ecological succession, market correction), Saturation (carrying capacity, market saturation, chemical equilibrium), Cyclic Tension (Yggdrasil wear-repair, cell maintenance, market corrections)." ;
+    rdfs:subClassOf "m1:core:CoreConcept" ;
+    skos:note "Now includes 1 validated concept: Cyclic Tension. Additional archetypes to be populated through poclet analysis." .
+
+<m1:core:StructuralTemplate> a owl:Class ;
+    rdfs:label "Structural Template" ;
+    rdfs:comment "Common architectural pattern for system organization. Examples: Feedback Loop (control systems, ecosystems, markets), Cascade (signal transduction, waterfall, information flow), Hierarchy (organizational charts, taxonomies, file systems), Multipolar Network (Yggdrasil, Magic Color Wheel, TPACK)." ;
+    rdfs:subClassOf "m1:core:CoreConcept" ;
+    skos:note "Now includes 1 validated concept: Multipolar Network. Additional templates to be populated through poclet analysis." .
+

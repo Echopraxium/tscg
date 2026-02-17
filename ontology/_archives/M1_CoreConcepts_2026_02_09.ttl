@@ -1,0 +1,125 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <m1:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<m1:core:CoreConcept> a owl:Class ;
+    rdfs:label "M1 Core Concept" ;
+    rdfs:comment "A domain-bounded but transdisciplinary concept that instantiates one or more M2 metaconcepts. Core concepts are reusable patterns that appear across multiple domains but don't achieve the full universality of M2 metaconcepts. Examples: Oscillator (appears in physics, biology, economics), Multipolar Network (appears in mythology, game design, education)." ;
+    rdfs:subClassOf "owl:Thing" ;
+    ns1:properties "m1:M2_basis - Which M2 metaconcepts does this instantiate?",
+        "m1:domainScope - Which domains does this apply to?",
+        "m1:examples - Concrete examples from different domains",
+        "m1:principle - Core operational principle",
+        "m1:validatedPoclets - How many poclets validate this concept?" .
+
+<m1:core:CyclicTension> a owl:NamedIndividual,
+        <m1:core:ProcessArchetype> ;
+    rdfs:label "Cyclic Tension" ;
+    dcterms:created "2026-01-22" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "Perpetual alternation between opposing processes (typically destruction/degradation ↔ restoration/construction) maintaining system viability through dynamic equilibrium. Unlike simple oscillation (periodic without degradation) or homeostasis (static equilibrium), cyclic tension involves genuine wear-and-repair cycles essential to system persistence. The 'stress' is not pathological but constitutive - the system exists *because* of this tension, not despite it." ;
+    ns1:M2_basis "m2:Attractor (A) - Equilibrium maintained through opposition",
+        "m2:Dynamics (D) - Temporal evolution of wear-repair cycle",
+        "m2:Flow (F) - Energy/matter exchange during degradation and restoration" ;
+    ns1:biologicalParadigm "Cellular autophagy-synthesis cycle, apoptosis-proliferation balance, immune surveillance-tolerance" ;
+    ns1:characteristicProperties [ ] ;
+    ns1:discoveryContext [ ] ;
+    ns1:distinctionFromRelated [ ] ;
+    ns1:domainScope "Biology, Mythology, Economics, Physics, Ecology, Engineering" ;
+    ns1:examplesCrossDomain "Biology: Cellular maintenance (protein degradation ↔ synthesis), bone remodeling (osteoclasts ↔ osteoblasts)",
+        "Ecology: Succession (disturbance ↔ recovery), predator-prey cycles",
+        "Economics: Market cycles (expansion ↔ contraction), creative destruction",
+        "Engineering: Fatigue-maintenance cycles in infrastructure",
+        "Mythology: Yggdrasil (Nídhögg gnaws roots ↔ Nornes water/restore tree)",
+        "Physics: Thermodynamic cycles (energy dispersal ↔ concentration)" ;
+    ns1:mathematicalProperties [ ] ;
+    ns1:principle "System viability maintained through perpetual opposition of degradative and restorative processes, where neither can permanently dominate. Equilibrium is dynamic, not static - the system is never 'finished' but perpetually in process." ;
+    ns1:status "VALIDATED - Discovered through Yggdrasil analysis, recognized in biological systems" ;
+    ns1:tensorFormula "D⊗A⊗F" ;
+    ns1:validatedPoclets 1 ;
+    ns1:validatedPocletsDetails "Yggdrasil (Nídhögg-Nornes cycle) - Mythology" .
+
+<m1:core:DomainPattern> a owl:Class ;
+    rdfs:label "Domain-Specific Pattern" ;
+    rdfs:comment "A pattern specific to a particular domain (e.g., Additive Color Synthesis in optics, Compensatory Triplet in photography). Lives in domain-specific M1 extensions (M1_Optics, M1_Photography, etc.) rather than M1_CoreConcepts." ;
+    rdfs:subClassOf "m1:core:CoreConcept" ;
+    ns1:note "Domain patterns extend CoreConcept but are defined in M1_[Domain].jsonld files, not here." .
+
+<m1:core:GenericMechanism> a owl:Class ;
+    rdfs:label "Generic Mechanism" ;
+    rdfs:comment "Reusable operational mechanism appearing across multiple domains. Examples: Oscillator (pendulum, AC current, predator-prey cycles, business cycles), Amplifier (electronic amplifier, biological cascade, social amplification)." ;
+    rdfs:subClassOf "m1:core:CoreConcept" ;
+    skos:note "To be populated with specific mechanisms as they are discovered through poclet analysis." .
+
+<m1:core:M1_CoreConcepts_Ontology> a owl:Ontology ;
+    dcterms:created "2026-01-22" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.)." ;
+    dcterms:modified "2026-01-22" ;
+    dcterms:title "TSCG M1 Core Concepts Ontology" ;
+    rdfs:comment "M1_CoreConcepts is the BASE ontology for M1 layer. It contains generic transdisciplinary concepts applicable across multiple domains. Domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.) import M1_CoreConcepts and add specialized patterns. This architecture allows: (1) Sharing common concepts, (2) Domain specialization, (3) Modular extension, (4) Clear namespace separation." ;
+    rdfs:seeAlso "https://github.com/Echopraxium/tscg/blob/main/ontology/docs/TSCG_M1_Architecture.md" ;
+    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld" ;
+    owl:versionInfo "1.1.0" ;
+    ns1:architecturalPrinciple [ ] ;
+    ns1:changelog [ ] ;
+    ns1:conceptDiscoveryProcess [ ] ;
+    ns1:coreConceptCategories [ ] ;
+    ns1:developmentStrategy [ ] ;
+    ns1:extensionOntologies [ ] ;
+    ns1:layerPosition [ ] ;
+    ns1:validationStatus [ ns1:conceptsDefined 2 ;
+            ns1:conceptsValidated 2 ;
+            ns1:domainExtensions 2 ;
+            ns1:note "M1_CoreConcepts now contains 2 validated transdisciplinary concepts discovered through Yggdrasil poclet analysis." ;
+            ns1:totalConceptsAcrossExtensions 20 ] .
+
+<m1:core:MultipolarNetwork> a owl:NamedIndividual,
+        <m1:core:StructuralTemplate> ;
+    rdfs:label "Multipolar Network" ;
+    dcterms:created "2026-01-22" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "System organized around N ≥ 3 distinct poles (nodes, centers, principles) with interdependent relationships forming a coherent whole. Unlike bipolar systems (duality) or hierarchies (tree), multipolar networks distribute significance across multiple equivalent or complementary poles without central dominance. Each pole contributes essential function; removing any pole destabilizes the entire system." ;
+    ns1:M2_basis "m2:Attractor (A) - System equilibrium across poles",
+        "m2:Information (I) - Distinctions between pole identities",
+        "m2:Structure (S) - Topological organization of N poles" ;
+    ns1:characteristicProperties [ ] ;
+    ns1:discoveryContext [ ] ;
+    ns1:distinctionFromRelated [ ] ;
+    ns1:domainScope "Mythology, Game Design, Education, Political Science, Ethics, Complex Systems Theory" ;
+    ns1:examplesCrossDomain "Complex Systems: Multi-agent systems, distributed networks",
+        "Education: TPACK (N=7 knowledge domains)",
+        "Ethics: Moral Foundations Theory (N=6 foundations)",
+        "Game Design: Magic Color Wheel (N=5 colors), Rock-Paper-Scissors (N=3)",
+        "Mythology: Yggdrasil (N=7 worlds), Greek Pantheon (N=12 Olympians)",
+        "Political Science: Political Compass (N=4 quadrants), Tripartite Government (N=3 branches)" ;
+    ns1:mathematicalProperties [ ] ;
+    ns1:principle "Distributed equilibrium across N ≥ 3 interdependent poles where each pole is irreducible and contributes unique function to system stability" ;
+    ns1:status "VALIDATED - Discovered through Yggdrasil analysis, confirmed in Magic Color Wheel and TPACK" ;
+    ns1:tensorFormula "S⊗I⊗A" ;
+    ns1:validatedPoclets 3 ;
+    ns1:validatedPocletsDetails "Magic Color Wheel (N=5) - Game Design / Philosophy",
+        "TPACK (N=7) - Education",
+        "Yggdrasil (N=7) - Mythology" .
+
+<m1:core:RelationalPattern> a owl:Class ;
+    rdfs:label "Relational Pattern" ;
+    rdfs:comment "Generic type of relationship between entities. Examples: Competition (species, companies, ideas), Cooperation (mutualism, trade, collaboration), Parasitism (biological, economic extraction)." ;
+    rdfs:subClassOf "m1:core:CoreConcept" ;
+    skos:note "To be populated with specific patterns as they are discovered through poclet analysis." .
+
+<m1:core:ProcessArchetype> a owl:Class ;
+    rdfs:label "Process Archetype" ;
+    rdfs:comment "Generic transformational process. Examples: Growth (population, economic, crystal), Decay (radioactive, ecological succession, market correction), Saturation (carrying capacity, market saturation, chemical equilibrium), Cyclic Tension (Yggdrasil wear-repair, cell maintenance, market corrections)." ;
+    rdfs:subClassOf "m1:core:CoreConcept" ;
+    skos:note "Now includes 1 validated concept: Cyclic Tension. Additional archetypes to be populated through poclet analysis." .
+
+<m1:core:StructuralTemplate> a owl:Class ;
+    rdfs:label "Structural Template" ;
+    rdfs:comment "Common architectural pattern for system organization. Examples: Feedback Loop (control systems, ecosystems, markets), Cascade (signal transduction, waterfall, information flow), Hierarchy (organizational charts, taxonomies, file systems), Multipolar Network (Yggdrasil, Magic Color Wheel, TPACK)." ;
+    rdfs:subClassOf "m1:core:CoreConcept" ;
+    skos:note "Now includes 1 validated concept: Multipolar Network. Additional templates to be populated through poclet analysis." .
+

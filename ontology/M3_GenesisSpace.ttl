@@ -1,0 +1,459 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m3: <M3_GenesisSpace.jsonld#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Adjunction> a owl:Class ;
+    rdfs:label "Adjunction" ;
+    m3:components [ ] ;
+    m3:formalDefinition "F ⊣ G iff Mor_D(F(A),B) ≅ Mor_C(A,G(B)) naturally in A,B" ;
+    m3:tscgAdjunctions [ ] ;
+    rdfs:comment "A relationship between two functors F: C → D and G: D → C where F is left adjoint to G (F ⊣ G). Adjunctions capture the idea of 'best approximation'. In TSCG: observation-interpretation duality (Φ ⊣ Ψ), free-forgetful pairs." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Cat_M3_ASFID> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#MathematicalCategory> ;
+    rdfs:label "Category of ASFID Dimensions" ;
+    m3:categoryName "Cat_M3_ASFID" ;
+    m3:objects "Attractor",
+        "Dynamics",
+        "Flow",
+        "Information",
+        "Structure" ;
+    rdfs:comment "Category whose objects are ASFID dimensions and morphisms are tensor products." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Cat_M3_REVOI> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#MathematicalCategory> ;
+    rdfs:label "Category of REVOI Dimensions" ;
+    m3:categoryName "Cat_M3_REVOI" ;
+    m3:objects "Evolvable",
+        "Interoperable",
+        "Observable",
+        "Representable",
+        "Verifiable" ;
+    rdfs:comment "Category whose objects are REVOI dimensions and morphisms are tensor products." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Cat_TSCG> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#MathematicalCategory> ;
+    rdfs:label "Category of TSCG Layers" ;
+    m3:categoryName "Cat_TSCG" ;
+    m3:morphisms "F_concretize: M1→M0",
+        "F_inst: M2→M1",
+        "F_⊗: M3→M2" ;
+    m3:objects "M0",
+        "M1",
+        "M2",
+        "M3" ;
+    rdfs:comment "The category whose objects are TSCG layers {M3, M2, M1, M0} and morphisms are functors between them." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#CategoryObject> a owl:Class ;
+    rdfs:label "Category Object" ;
+    m3:formalDefinition "An element A ∈ Ob(C) for some category C" ;
+    m3:properties "Every object has an identity morphism id_A: A → A",
+        "Objects are sources and targets of morphisms",
+        "Objects themselves have no internal structure in category theory",
+        "Structure comes from morphisms TO and FROM the object" ;
+    m3:tscgReification [ ] ;
+    rdfs:comment "An object within a mathematical category. Objects are the 'things' in a category; morphisms are the 'relationships' between them. In TSCG: Chemistry is an object in Cat_KnowledgeField, Link is an object in Cat_M2, ASFID is an object in Cat_M3." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#CouplingStructure> a owl:Class ;
+    rdfs:label "Coupling Structure (Σ Matrix)" ;
+    m3:mathematicalForm "Σ ∈ ℝ^(5×5), diagonal in SVD coordinates" ;
+    m3:role "Encodes Territory ↔ Map feedback loop strength" ;
+    rdfs:comment "5×5 matrix encoding bidirectional feedback between Territory (ASFID) and Map (REVOI). Represented as singular values in Domain SVD decomposition." ;
+    skos:definition "σᵢⱼ represents coupling strength between ASFID dimension i and REVOI dimension j" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#F_instantiation> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Functor> ;
+    rdfs:label "Instantiation Functor" ;
+    m3:examples "F_inst(Component) = MechanicalComponent (in Mechanics)",
+        "F_inst(Link) = ChemicalLink (in Chemistry)",
+        "F_inst(Processor) = BiologicalProcessor (in Biology)" ;
+    m3:functorType "covariant" ;
+    m3:signature "F_inst: Cat_M2 → Cat_M1" ;
+    rdfs:comment "Functor mapping M2 metaconcepts to M1 domain-specific concepts." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#F_tensorization> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Functor> ;
+    rdfs:label "Tensorization Functor" ;
+    m3:examples "F_⊗(A ⊗ S ⊗ F) = Reservoir",
+        "F_⊗(S ⊗ F) = Link",
+        "F_⊗(S ⊗ I ⊗ D ⊗ F ⊗ V) = Processor" ;
+    m3:functorSourceCategory "m3:Cat_M3_ASFID" ;
+    m3:functorType "covariant" ;
+    m3:signature "F_⊗: Cat_M3 → Cat_M2" ;
+    rdfs:comment "Functor mapping M3 dimensions to M2 metaconcepts via tensor products." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#FeedbackLoop> a owl:Class ;
+    rdfs:label "Territory ↔ Map Feedback Loop" ;
+    m3:iteration "v_T^(n+1) = v_T^(n) + α·Ψ(Φ(v_T^(n)))" ;
+    m3:operators [ ] ;
+    rdfs:comment "Bidirectional iterative process where Territory observations inform Map construction, and Map models guide Territory measurement strategies" ;
+    skos:definition "Dynamic coupling between empirical observations (Territory/ASFID) and conceptual representations (Map/REVOI)" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#KorzybskiPrinciple> a owl:Class ;
+    rdfs:label "Korzybski Principle Formalization" ;
+    m3:classicStatement "The map is not the territory (Alfred Korzybski, 1933)" ;
+    m3:formalization "Bidirectional coupling Σ between H_ASFID (Territory) and H_REVOI (Map)" ;
+    m3:tscgExtension "The map influences how we observe the territory, and observations refine the map" ;
+    rdfs:comment "Mathematical formalization of 'The map is not the territory' extended to 'The map influences how we observe the territory'" ;
+    skos:definition "Epistemological principle recognizing Map and Territory as distinct yet mutually influential through bidirectional coupling Σ" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#M3Dimension> a owl:Class ;
+    rdfs:label "M3 Dimension" ;
+    dcterms:created "2026-02-16" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A fundamental dimension of the M3 Hilbert space basis. Each M3 dimension is an orthonormal basis vector in the 10-dimensional Genesis Space, belonging to either the ASFID basis (Territory measurement via Eagle Eye) or REVOI basis (Map construction via Sphinx Eye)." ;
+    rdfs:subClassOf "owl:Thing" ;
+    skos:definition "Fundamental orthonormal basis vector in the 10-dimensional M3 Genesis Space (ℋ₁₀ = ℋ_ASFID ⊕ ℋ_REVOI). Each dimension satisfies orthonormality: ⟨i|j⟩ = δᵢⱼ" ;
+    skos:example "m3:eagle_eye:Attractor (ASFID/Territory)",
+        "m3:eagle_eye:Structure (ASFID/Territory)",
+        "m3:sphinx_eye:Representable (REVOI/Map)",
+        "m3:sphinx_eye:Verifiable (REVOI/Map)" ;
+    skos:scopeNote "This class has exactly 10 instances: 5 ASFID dimensions (Attractor, Structure, Flow, Information, Dynamics) defined in M3_EagleEye.jsonld, and 5 REVOI dimensions (Representable, Evolvable, Verifiable, Observable, Interoperable) defined in M3_SphinxEye.jsonld." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Morphism> a owl:Class ;
+    rdfs:label "Category Morphism" ;
+    m3:formalDefinition "An element f ∈ Mor(A,B) for objects A,B ∈ Ob(C)" ;
+    m3:morphismTypes [ ] ;
+    m3:notation [ ] ;
+    m3:tscgMorphisms [ ] ;
+    rdfs:comment "An arrow (morphism) between category objects. Morphisms represent structure-preserving transformations. In TSCG: tensorization (M3→M2), instantiation (M2→M1), concept application (M1→M0), knowledge transfer between domains." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#NaturalTransformation> a owl:Class ;
+    rdfs:label "Natural Transformation" ;
+    m3:formalDefinition "η: F ⇒ G is a family η_A: F(A) → G(A) for each A ∈ Ob(C)" ;
+    m3:naturality [ ] ;
+    m3:tscgApplications "Knowledge transfer: translation between disciplines",
+        "Observer transformations: different perspectives on same territory",
+        "Representation changes: different encodings of same concept" ;
+    rdfs:comment "A morphism between functors. Natural transformations relate two functors F,G: C → D via a family of morphisms. In TSCG: transformations between different observer perspectives (human vs AI), translations between knowledge representations." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#belongsToCategory> a owl:ObjectProperty ;
+    rdfs:label "belongs to category" ;
+    rdfs:comment "Relates an object to the category it belongs to. Example: Chemistry belongsToCategory Cat_KnowledgeField." ;
+    rdfs:domain "m3:CategoryObject" ;
+    rdfs:range "m3:MathematicalCategory" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#categoryName> a owl:DatatypeProperty ;
+    rdfs:label "category name" ;
+    rdfs:comment "Name of the category (e.g., 'Cat_M2', 'Cat_KnowledgeField')." ;
+    rdfs:domain "m3:MathematicalCategory" ;
+    rdfs:range "xsd:string" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#composedWith> a owl:ObjectProperty ;
+    rdfs:label "composed with" ;
+    rdfs:comment "Morphism composition: if f: A→B and g: B→C, then f composedWith g yields g∘f: A→C." ;
+    rdfs:domain "m3:Morphism" ;
+    rdfs:range "m3:Morphism" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#dimensionExamples> a owl:DatatypeProperty ;
+    rdfs:label "Dimension Examples" ;
+    dcterms:created "2026-02-16" ;
+    rdfs:comment "Concrete system instances illustrating the dimension with typical measurement or quality values" ;
+    rdfs:domain "m3:M3Dimension" ;
+    rdfs:range "xsd:string" ;
+    skos:definition "Real-world examples showing how the dimension applies across different domains and scales (for ASFID) or different types of Maps and representations (for REVOI)" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#dimensionIndex> a owl:DatatypeProperty ;
+    rdfs:label "Dimension Index" ;
+    dcterms:created "2026-02-16" ;
+    rdfs:comment "Numerical index of the dimension within its basis (1-5 for ASFID, 1-5 for REVOI)" ;
+    rdfs:domain "m3:M3Dimension" ;
+    rdfs:range "xsd:integer" ;
+    skos:definition "Position index within the basis set, used for matrix representations and tensor calculations. Values range from 1 to 5 within each basis." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#dimensionSymbol> a owl:DatatypeProperty ;
+    rdfs:label "Dimension Symbol" ;
+    dcterms:created "2026-02-16" ;
+    rdfs:comment "Dirac notation symbol for a M3 dimension basis vector" ;
+    rdfs:domain "m3:M3Dimension" ;
+    rdfs:range "xsd:string" ;
+    skos:definition "Mathematical symbol in bra-ket notation (e.g., |A⟩, |S⟩, |R⟩, |V⟩) representing the dimension as a Hilbert space basis vector" ;
+    skos:example "|A⟩ for Attractor (ASFID)",
+        "|R⟩ for Representable (REVOI)",
+        "|S⟩ for Structure (ASFID)",
+        "|V⟩ for Verifiable (REVOI)" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#functorSourceCategory> a owl:ObjectProperty ;
+    rdfs:label "functor source category" ;
+    rdfs:comment "The source category of a functor." ;
+    rdfs:domain "m3:Functor" ;
+    rdfs:range "m3:MathematicalCategory" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#functorTargetCategory> a owl:ObjectProperty ;
+    rdfs:label "functor target category" ;
+    rdfs:comment "The target category of a functor." ;
+    rdfs:domain "m3:Functor" ;
+    rdfs:range "m3:MathematicalCategory" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#functorType> a owl:DatatypeProperty ;
+    rdfs:label "functor type" ;
+    rdfs:comment "Type classification of functor (covariant, contravariant, endofunctor, etc.)." ;
+    rdfs:domain "m3:Functor" ;
+    rdfs:range "xsd:string" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#genesis_space:GenesisSpace> a owl:Ontology ;
+    rdfs:label "Genesis Space - Complete Bicephalous Basis" ;
+    m3:ontologyCategory <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Genesis> ;
+    dcterms:created "2026-01-21" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Complete orthogonal basis for the TSCG framework, consisting of two complementary perspectives: Eagle Eye (ASFID) for Territory measurement and Sphinx Eye (REVOI) for Map construction. Integrates Category Theory formalization as mathematical foundation (definitions included in this file) for functors, morphisms, and categorical structure of TSCG layers." ;
+    dcterms:modified "2026-02-17" ;
+    dcterms:title "TSCG M3 Genesis Space - Complete Bicephalous Basis" ;
+    rdfs:comment "M3 Genesis Space provides the complete orthonormal basis for TSCG through dual complementary perspectives: Eagle Eye (ASFID - analytical decomposition of Territory) and Sphinx Eye (REVOI - synthetic construction of Maps)" ;
+    owl:imports "M3_EagleEye.jsonld",
+        "M3_SphinxEye.jsonld" ;
+    owl:versionInfo "3.1.0" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#hasMorphism> a owl:ObjectProperty ;
+    rdfs:label "has morphism" ;
+    rdfs:comment "Relates a category to one of its morphisms." ;
+    rdfs:domain "m3:MathematicalCategory" ;
+    rdfs:range "m3:Morphism" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#mapsMorphismTo> a owl:ObjectProperty ;
+    rdfs:label "maps morphism to" ;
+    rdfs:comment "How a functor maps morphisms. F mapsMorphismTo F(f) for morphism f." ;
+    rdfs:domain "m3:Functor" ;
+    rdfs:range "m3:Morphism" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#mapsObjectTo> a owl:ObjectProperty ;
+    rdfs:label "maps object to" ;
+    rdfs:comment "How a functor maps objects. F mapsObjectTo F(A) for object A." ;
+    rdfs:domain "m3:Functor" ;
+    rdfs:range "m3:CategoryObject" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#morphismSource> a owl:ObjectProperty ;
+    rdfs:label "morphism source" ;
+    rdfs:comment "The source (domain) object of a morphism." ;
+    rdfs:domain "m3:Morphism" ;
+    rdfs:range "m3:CategoryObject" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#morphismTarget> a owl:ObjectProperty ;
+    rdfs:label "morphism target" ;
+    rdfs:comment "The target (codomain) object of a morphism." ;
+    rdfs:domain "m3:Morphism" ;
+    rdfs:range "m3:CategoryObject" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#morphismType> a owl:DatatypeProperty ;
+    rdfs:label "morphism type" ;
+    rdfs:comment "Type classification of morphism (identity, isomorphism, inclusion, etc.)." ;
+    rdfs:domain "m3:Morphism" ;
+    rdfs:range "xsd:string" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#ontologyCategory> a owl:ObjectProperty ;
+    rdfs:label "Ontology Category" ;
+    dcterms:created "2026-01-27" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:modified "2026-01-27" ;
+    rdfs:comment "Categorizes ontologies by their architectural role in the TSCG framework hierarchy using a controlled SKOS vocabulary. This foundational metadata property enables systematic organization and querying of the entire framework structure across all layers (M3, M2, M1, M0)." ;
+    rdfs:domain "owl:Ontology" ;
+    rdfs:range <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> ;
+    owl:functionalProperty true ;
+    skos:changeNote "v2.2.0: Changed from owl:DatatypeProperty (xsd:string) to owl:ObjectProperty (skos:Concept references) for better semantic web integration." ;
+    skos:definition "A framework-level architectural property that specifies the position and role of an ontology within the TSCG metamodel hierarchy through reference to a controlled vocabulary defined as a skos:ConceptScheme." ;
+    skos:editorialNote "Defined in M3 (Genesis Space) because it is a foundational metamodel property needed by all layers. M3 has no dependencies, ensuring m3:ontologyCategory is always available without creating circular dependencies." ;
+    skos:example "M0_Yggdrasil.jsonld uses m3:Poclet",
+        "M1_Biology.jsonld uses m3:DomainExtension",
+        "M2_MetaConcepts.jsonld uses m3:TransdisciplinaryPattern",
+        "M3_GenesisSpace.jsonld uses m3:Genesis" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#GenesisExtension> a skos:Concept ;
+    m3:expectedCount 2 ;
+    m3:layerOrder 1 ;
+    rdfs:comment "M3 layer ontologies that are parts of the complete bicephalous architecture. While m3:Genesis represents the unified 10D space, m3:GenesisExtension represents its constituent 5D perspectives (ASFID and REVOI)." ;
+    skos:altLabel "Basis Component",
+        "Bicephalous Head",
+        "M3 Component" ;
+    skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Genesis> ;
+    skos:definition "Component ontologies of the Genesis Space that define the bicephalous perspectives: Eagle Eye (ASFID - Territory) and Sphinx Eye (REVOI - Map). These extend the foundational Genesis Space with specific dimensional bases." ;
+    skos:example "M3_EagleEye.jsonld (ASFID - Territory measurement)",
+        "M3_SphinxEye.jsonld (REVOI - Map construction)" ;
+    skos:inScheme <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> ;
+    skos:notation "M3_Ext" ;
+    skos:prefLabel "Genesis Extension" ;
+    skos:related <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Genesis> ;
+    skos:scopeNote "Exactly 2 ontologies in this category: EagleEye and SphinxEye. Closed set forming the bicephalous architecture." ;
+    skos:topConceptOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#SystemicFramework> a skos:Concept ;
+    m3:distinguishingFeatures [ ] ;
+    m3:expectedCount "5-20" ;
+    m3:integrationGuidelines [ ] ;
+    m3:layerOrder 3 ;
+    rdfs:comment "Systemic Frameworks are existing theories, methodologies, or analytical frameworks that have been formalized within TSCG's ontological structure. They serve as validation of TSCG's expressiveness and enable practitioners to leverage familiar frameworks within TSCG's rigorous formalism." ;
+    skos:altLabel "External Framework Mapping",
+        "Framework Integration",
+        "Theoretical Framework Bridge" ;
+    skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryMetaConcepts> ;
+    skos:definition "Ontologies that map established systemic/theoretical frameworks (TRIZ, VSD, TPACK, etc.) into TSCG formalism. These provide bridges between TSCG and existing methodologies, enabling cross-framework analysis and integration." ;
+    skos:example "M0_DesignThinking.jsonld (Design Thinking methodology)",
+        "M0_SystemsThinking.jsonld (General Systems Theory)",
+        "M0_TPACK.jsonld (Technological Pedagogical Content Knowledge)",
+        "M0_TRIZ.jsonld (Theory of Inventive Problem Solving)",
+        "M0_VSD.jsonld (Value-Sensitive Design)" ;
+    skos:inScheme <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> ;
+    skos:notation "M1_Framework" ;
+    skos:prefLabel "Systemic Framework" ;
+    skos:related <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#DomainExtension>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Poclet> ;
+    skos:scopeNote "Open-ended set. Any established framework with systemic structure can be mapped. Typically 10-20 major frameworks. Distinct from DomainExtension (which are disciplinary) and from Poclet (which are minimal instances)." ;
+    skos:topConceptOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Functor> a owl:Class ;
+    rdfs:label "Functor" ;
+    m3:formalDefinition "F: C → D mapping Ob(C) → Ob(D) and Mor(C) → Mor(D)" ;
+    m3:functorLaws "Composition preservation: F(g∘f) = F(g)∘F(f)",
+        "Identity preservation: F(id_A) = id_F(A)",
+        "Morphism mapping: F: Mor_C(A,B) → Mor_D(F(A),F(B))",
+        "Object mapping: F: Ob(C) → Ob(D)" ;
+    m3:functorTypes [ ] ;
+    m3:tscgFunctors [ ] ;
+    rdfs:comment "A structure-preserving map between categories. Functors map objects to objects and morphisms to morphisms, preserving identity and composition. In TSCG: F_⊗ (tensorization M3→M2), F_inst (instantiation M2→M1), domain projection functors." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#RealWorldSystem> a skos:Concept ;
+    m3:expectedCount "0 (future)" ;
+    m3:layerOrder 4 ;
+    rdfs:comment "Real-World Systems demonstrate TSCG applied to production environments. May be complex (non-minimal) and evolving. Used to validate TSCG scalability beyond simple examples." ;
+    skos:altLabel "M0 Layer",
+        "Operational Ontology",
+        "Production Application" ;
+    skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#DomainExtension> ;
+    skos:definition "M0 ontologies representing actual deployed systems analyzed using TSCG framework. These are not pedagogical examples but real applications with stakeholders." ;
+    skos:example "M0_HospitalERWorkflow.jsonld (hypothetical)",
+        "M0_ManufacturingSupplyChain.jsonld (hypothetical)" ;
+    skos:inScheme <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> ;
+    skos:notation "M0_Real" ;
+    skos:prefLabel "Real-World System" ;
+    skos:related <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#CaseStudy>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Poclet> ;
+    skos:scopeNote "Future category. Not yet populated. Requires TSCG maturity and adoption." ;
+    skos:topConceptOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#CaseStudy> a skos:Concept ;
+    m3:expectedCount "variable" ;
+    m3:layerOrder 4 ;
+    rdfs:comment "Case Studies demonstrate TSCG application without the rigor required of Poclets. They serve pedagogical or experimental roles and may evolve into full Poclets after validation." ;
+    skos:altLabel "Application Demonstration",
+        "Educational Example",
+        "M0 Layer" ;
+    skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#DomainExtension> ;
+    skos:definition "M0 ontologies created primarily for educational, illustrative, or exploratory purposes. Unlike Poclets, Case Studies may be incomplete (missing ASFID dimensions) or over-specified (non-minimal)." ;
+    skos:example "M0_SocialMediaEcosystem.jsonld (hypothetical)",
+        "M0_UrbanTrafficFlow.jsonld (hypothetical)" ;
+    skos:inScheme <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> ;
+    skos:notation "M0_Case" ;
+    skos:prefLabel "Case Study" ;
+    skos:related <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Poclet> ;
+    skos:scopeNote "Optional category. Not required for framework validation. May grow based on educational needs." ;
+    skos:topConceptOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#MathematicalCategory> a owl:Class ;
+    rdfs:label "Mathematical Category" ;
+    m3:categoryAxioms "Associativity: (h∘g)∘f = h∘(g∘f)",
+        "Composition: ∀f ∈ Mor(A,B), g ∈ Mor(B,C), ∃ g∘f ∈ Mor(A,C)",
+        "Identity: ∀A ∈ Ob(C), ∃ id_A ∈ Mor(A,A)",
+        "Unit law: f∘id_A = f, id_B∘f = f" ;
+    m3:structure [ ] ;
+    m3:tscgExamples "Cat_KnowledgeField: Ob = {Chemistry, Biology, Optics...}, Mor = knowledge transfers",
+        "Cat_M2: Ob = {Link, Processor, Component...}, Mor = metaconcept inclusions",
+        "Cat_M3_ASFID: Ob = {A, S, F, I, D}, Mor = tensor products",
+        "Cat_TSCG: Ob = {M3, M2, M1, M0}, Mor = functors F_⊗, F_inst" ;
+    rdfs:comment "A category in the mathematical sense: a collection of objects (Ob(C)) and morphisms (Mor(C)) between them, satisfying identity and associativity axioms. In TSCG: Cat_M3 (ASFID dimensions), Cat_M2 (metaconcepts), Cat_M1 (concepts), Cat_KnowledgeField (Chemistry, Biology, Optics...)." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryMetaConcepts> a skos:Concept ;
+    m3:expectedCount 1 ;
+    m3:layerOrder 2 ;
+    rdfs:comment "M2 layer ontologies containing metaconcepts - abstract patterns that transcend disciplinary boundaries. Each metaconcept is expressible as a tensor formula combining M3 dimensions (e.g., Homeostasis = A⊗S⊗F)." ;
+    skos:altLabel "M2 Layer",
+        "Metaconcept",
+        "Tensor Product",
+        "Universal Pattern" ;
+    skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Genesis> ;
+    skos:definition "Universal patterns derived as tensor products of M3 basis dimensions, validated across multiple scientific disciplines and applicable regardless of domain." ;
+    skos:example "M2_MetaConcepts.jsonld (currently 62 metaconcepts including Step, Node, Homeostasis, etc.)" ;
+    skos:inScheme <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> ;
+    skos:notation "M2" ;
+    skos:prefLabel "Transdisciplinary MetaConcepts" ;
+    skos:scopeNote "Typically 1 ontology containing 72+ metaconcepts. May grow as new transdisciplinary patterns are discovered." ;
+    skos:topConceptOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Poclet> a skos:Concept ;
+    m3:expectedCount "16+" ;
+    m3:layerOrder 4 ;
+    rdfs:comment "M0 layer ontologies representing concrete, well-understood systems used to validate TSCG framework. Must be minimal (no unnecessary components) yet complete (all ASFID dimensions present). Examples: Fire Triangle, Butterfly Metamorphosis, Four-Stroke Engine." ;
+    skos:altLabel "M0 Layer",
+        "Minimal Complete System",
+        "Proof of Concept",
+        "Validation Instance" ;
+    skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#DomainExtension> ;
+    skos:definition "Minimal yet complete system instances that serve the triple role of (1) framework proof-of-concept, (2) M2 metaconcept identification, and (3) M1 core concept population." ;
+    skos:example "M0_ButterflyMetamorphosis.jsonld",
+        "M0_ExposureTriangle.jsonld",
+        "M0_FireTriangle.jsonld",
+        "M0_FourStrokeEngine.jsonld",
+        "M0_Yggdrasil.jsonld" ;
+    skos:inScheme <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> ;
+    skos:notation "M0_Poclet" ;
+    skos:prefLabel "Poclet" ;
+    skos:related <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#CaseStudy>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#RealWorldSystem> ;
+    skos:scopeNote "Open-ended set. Goal is 20+ poclets spanning 10+ domains. Currently ~16 validated poclets." ;
+    skos:topConceptOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#DomainExtension> a skos:Concept ;
+    m3:expectedCount "6+" ;
+    m3:layerOrder 3 ;
+    rdfs:comment "M1 layer ontologies that bridge transdisciplinary metaconcepts (M2) with concrete systems (M0). Examples include Biology, Chemistry, Optics, Photography, Mythology. Each domain has characteristic ASFID⊗REVOI coupling." ;
+    skos:altLabel "Domain Instance",
+        "M1 Layer",
+        "Specialized Ontology" ;
+    skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryMetaConcepts> ;
+    skos:definition "Domain-specific ontologies that specialize M2 metaconcepts for particular scientific or professional fields. Each is an instance of the m2:Domain metaconcept with specific 5D tensor structure." ;
+    skos:example "M1_Biology.jsonld",
+        "M1_Chemistry.jsonld",
+        "M1_CoreConcepts.jsonld (transdisciplinary foundation)",
+        "M1_Mythology.jsonld",
+        "M1_Optics.jsonld",
+        "M1_Photography.jsonld" ;
+    skos:inScheme <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> ;
+    skos:notation "M1" ;
+    skos:prefLabel "Domain Extension" ;
+    skos:scopeNote "Open-ended set. New domains can be added as framework expands. Currently ~6 active domain extensions." ;
+    skos:topConceptOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Genesis> a skos:Concept ;
+    m3:expectedCount 3 ;
+    m3:layerOrder 1 ;
+    rdfs:comment "M3 layer ontologies that define the bicephalous architecture: Eagle Eye (ASFID - Territory measurement) and Sphinx Eye (REVOI - Map construction). These ontologies have zero dependencies." ;
+    skos:altLabel "Foundational Basis",
+        "Hilbert Space Basis",
+        "M3 Layer" ;
+    skos:definition "Foundational mathematical basis providing the complete orthonormal 10D Hilbert space (ASFID ⊕ REVOI) upon which all other TSCG layers are built." ;
+    skos:example "M3_EagleEye.jsonld",
+        "M3_GenesisSpace.jsonld",
+        "M3_SphinxEye.jsonld" ;
+    skos:inScheme <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> ;
+    skos:notation "M3" ;
+    skos:prefLabel "Genesis" ;
+    skos:scopeNote "Exactly 3 ontologies in this category. Closed set." ;
+    skos:topConceptOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#OntologyCategoryScheme> a skos:ConceptScheme ;
+    rdfs:label "TSCG Ontology Category Scheme" ;
+    dcterms:created "2026-01-27" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "Controlled vocabulary defining the architectural layers of the TSCG framework metamodel" ;
+    skos:definition "A hierarchical classification scheme organizing TSCG ontologies by their metamodel layer and architectural role. The scheme provides six distinct categories spanning from foundational mathematical basis (Genesis) to concrete real-world instantiations (RealWorldSystem)." ;
+    skos:hasTopConcept <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#CaseStudy>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#DomainExtension>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Genesis>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#GenesisExtension>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Poclet>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#RealWorldSystem>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#SystemicFramework>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryMetaConcepts> ;
+    skos:scopeNote "This scheme is closed (not extensible without framework revision). The six categories represent fundamental architectural distinctions in the TSCG metamodel." .
+

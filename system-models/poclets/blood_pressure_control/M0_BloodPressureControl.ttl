@@ -1,0 +1,309 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#> .
+@prefix m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#> .
+@prefix ns1: <tscg:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<m0:blood_pressure_control:ADH_Effector> a ns1:EffectorSystem ;
+    rdfs:label "Anti-Diuretic Hormone (Vasopressin)" ;
+    rdfs:comment "Water retention and vasoconstriction via hypothalamic-pituitary axis" ;
+    ns1:feedbackLoop "Negative (volume expansion inhibits ADH release)" ;
+    ns1:keyComponents "Hypothalamic osmoreceptors and baroreceptors",
+        "Posterior pituitary (ADH release)",
+        "V1 receptors (vascular smooth muscle - vasoconstriction)",
+        "V2 receptors (renal collecting duct - aquaporin-2 insertion)" ;
+    ns1:mechanismType "hormonal" ;
+    ns1:pathologicalRole "SIADH (inappropriate ADH secretion) causes water retention and hyponatremia" ;
+    ns1:primaryAction "Water reabsorption and vasoconstriction" ;
+    ns1:therapeuticTargets "Desmopressin (synthetic ADH for diabetes insipidus)",
+        "V2 antagonists (vaptans - for hypervolemia)" ;
+    ns1:timescale "minutes to hours" .
+
+<m0:blood_pressure_control:ANP_Effector> a ns1:EffectorSystem ;
+    rdfs:label "Atrial Natriuretic Peptide (ANP/BNP)" ;
+    rdfs:comment "Counter-regulatory hormones promoting sodium and water excretion" ;
+    ns1:counterRegulatory "Balances RAAS/ADH effects" ;
+    ns1:feedbackLoop "Negative (ANP opposes RAAS and ADH; volume expansion triggers ANP release)" ;
+    ns1:keyComponents "ANP (from atrial myocytes)",
+        "Atrial stretch receptors",
+        "BNP (from ventricular myocytes)",
+        "NPR-A receptors (kidney, blood vessels)",
+        "cGMP second messenger pathway" ;
+    ns1:mechanismType "hormonal" ;
+    ns1:pathologicalRole "ANP resistance in heart failure; used as biomarker (BNP levels)" ;
+    ns1:primaryAction "Natriuresis, diuresis, and vasodilation" ;
+    ns1:therapeuticTargets "Neprilysin inhibitors (prevent ANP/BNP degradation)",
+        "Synthetic natriuretic peptides (nesiritide for acute heart failure)" ;
+    ns1:timescale "minutes to hours" .
+
+<m0:blood_pressure_control:Adaptation_Baroreceptor> a m2:Adaptation ;
+    rdfs:label "Baroreceptor Resetting in Chronic Hypertension" ;
+    rdfs:comment "Baroreceptors adapt their operating range in sustained high pressure" ;
+    ns1:adaptationType "Receptor desensitization" ;
+    ns1:consequence "Loss of reflex buffering → hypertension becomes self-sustaining" ;
+    ns1:mechanism "Chronic high pressure → reduced baroreceptor firing rate at given pressure" ;
+    ns1:reversibility "Partially reversible with prolonged BP normalization (e.g., via drug therapy)" ;
+    ns1:timescale "Days to weeks" .
+
+<m0:blood_pressure_control:Attractor_Homeostatic> a m2:Attractor ;
+    rdfs:label "Homeostatic Blood Pressure Set-Point" ;
+    rdfs:comment "Stable attractor at ~120/80 mmHg maintained by multiple negative feedback loops" ;
+    m3:asfid_dimension "Attractor" ;
+    ns1:basinOfAttraction "100-140 mmHg systolic (homeostatic zone)" ;
+    ns1:bifurcation "Transition from normotension to hypertension via positive feedback (vascular remodeling, baroreceptor resetting)" ;
+    ns1:multipleAttractors "Exercise state (~160/90 mmHg - transient)",
+        "Hypertensive state (>140/90 mmHg - pathological stable state)",
+        "Resting state (~120/80 mmHg)",
+        "Stress state (~140/85 mmHg)" ;
+    ns1:setValue "120/80 mmHg (normotensive state)" ;
+    ns1:stabilityMechanism "ANP counter-regulation",
+        "Baroreceptor reflex (neural)",
+        "Pressure-natriuresis curve (renal)",
+        "RAAS negative feedback" .
+
+<m0:blood_pressure_control:BloodPressureControl> a owl:Ontology ;
+    rdfs:label "Blood Pressure Homeostasis (5-Effector System)" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "TSCG M0 poclet modeling long-term regulation of arterial blood pressure through five parallel physiological effector systems" ;
+    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld" ;
+    owl:versionInfo "1.0.0" ;
+    m2:ontologyCategory "Poclet" ;
+    ns1:authors "Echopraxium with the collaboration of Claude AI" ;
+    ns1:dateCreated "2026-01-22" ;
+    ns1:domain "Physiology / Cardiovascular System" ;
+    ns1:namespace "m0:blood_pressure_control:" ;
+    ns1:primaryPhenomenon "Maintenance of stable arterial blood pressure (~120/80 mmHg) through coordinated multi-system feedback loops" .
+
+<m0:blood_pressure_control:CardiacOutput_Effector> a ns1:EffectorSystem ;
+    rdfs:label "Cardiac Output & Blood Volume" ;
+    rdfs:comment "Hemodynamic downstream parameters integrating effects of effectors 1-4" ;
+    ns1:guytonModel "Long-term BP regulation via pressure-natriuresis relationship" ;
+    ns1:hemodynamicEquation "MAP = CO × TPR, where CO = Heart Rate × Stroke Volume" ;
+    ns1:keyComponents "Blood volume (regulated by kidney - pressure-natriuresis curve)",
+        "Heart (contractility, heart rate - Starling mechanism)",
+        "Total peripheral resistance (vascular tone)",
+        "Venous return (Frank-Starling law)" ;
+    ns1:mechanismType "hemodynamic" ;
+    ns1:pathologicalRole "High cardiac output in early hypertension; increased resistance in established hypertension" ;
+    ns1:primaryAction "Blood pressure = Cardiac Output × Total Peripheral Resistance" ;
+    ns1:therapeuticTargets "Diuretics (reduce blood volume)",
+        "Inotropes (modify contractility)",
+        "Vasodilators (reduce peripheral resistance)" ;
+    ns1:timescale "seconds to days" .
+
+<m0:blood_pressure_control:Convergence_5to1> a m2:Convergence ;
+    rdfs:label "5-to-1 Effector Convergence" ;
+    rdfs:comment "Five parallel systems converge on single output (arterial pressure)" ;
+    ns1:advantage "Redundancy - failure of one system partially compensated by others" ;
+    ns1:clinicalEvidence "Single drug class (e.g., ACE inhibitor alone) only partially controls BP; combination therapy often needed" ;
+    ns1:convergencePoint "Arterial Blood Pressure" ;
+    ns1:inputCount 5 ;
+    ns1:outputCount 1 .
+
+<m0:blood_pressure_control:Dynamics_Multi> a m2:Timescale ;
+    rdfs:label "Multi-Timescale Dynamics" ;
+    rdfs:comment "Regulatory mechanisms operating from seconds (neural) to days (renal)" ;
+    m3:asfid_dimension "Dynamics" ;
+    ns1:adaptation "Chronic baroreceptor desensitization in sustained hypertension (loss of reflex buffering)" ;
+    ns1:fastDynamics [ ] ;
+    ns1:mediumDynamics [ ] ;
+    ns1:pathologicalTransition "Normotension → hypertension (bifurcation via vascular stiffening, baroreceptor resetting)" ;
+    ns1:slowDynamics [ ] ;
+    ns1:transientResponse "Overshoot/undershoot during rapid pressure perturbations (exercise, stress)" .
+
+<m0:blood_pressure_control:Emergence_MAP> a m2:Emergence ;
+    rdfs:label "Mean Arterial Pressure as Emergent Property" ;
+    rdfs:comment "MAP emerges from integration of 5 parallel regulatory systems" ;
+    ns1:componentSystems "ADH (water retention, vasoconstriction)",
+        "ANP (counter-regulation)",
+        "Cardiac output / TPR",
+        "RAAS (volume, vasoconstriction)",
+        "Sympathetic (heart rate, vascular tone)" ;
+    ns1:emergentProperty "Mean Arterial Pressure" ;
+    ns1:nonLinearity "Pressure = f(CO, TPR, Volume) - complex nonlinear interactions" ;
+    ns1:systemLevelProperty "Stable pressure cannot be attributed to single effector (distributed control)" .
+
+<m0:blood_pressure_control:Feedback_Baroreceptor> a m2:Feedback ;
+    rdfs:label "Baroreceptor Reflex Arc" ;
+    rdfs:comment "Neural negative feedback: high pressure reduces sympathetic output" ;
+    ns1:adaptation "Baroreceptor resetting in chronic hypertension (reduced sensitivity)" ;
+    ns1:effector "Sympathetic nervous system (heart rate, vascular tone)" ;
+    ns1:feedbackType "Negative" ;
+    ns1:integrator "Medullary cardiovascular centers" ;
+    ns1:pathway "Pressure ↑ → Baroreceptor firing ↑ → Sympathetic ↓ → Heart rate ↓, Vasodilation → Pressure ↓" ;
+    ns1:sensor "Baroreceptors (aortic arch, carotid sinus)" ;
+    ns1:timeConstant "Seconds" .
+
+<m0:blood_pressure_control:Feedback_RAAS> a m2:Feedback ;
+    rdfs:label "RAAS Negative Feedback Loop" ;
+    rdfs:comment "Angiotensin II inhibits renin secretion (short-loop feedback)" ;
+    ns1:effector "Renin secretion" ;
+    ns1:feedbackType "Negative" ;
+    ns1:pathology "Renovascular stenosis breaks feedback (↓ renal perfusion → ↑ renin despite ↑ Ang II)" ;
+    ns1:pathway "Ang II ↑ → Renin ↓ → Ang I ↓ → Ang II ↓ (stabilization)" ;
+    ns1:sensor "Juxtaglomerular cells (detect Ang II concentration)" ;
+    ns1:timeConstant "Minutes to hours" .
+
+<m0:blood_pressure_control:Flow_Multi> a m2:Flow ;
+    rdfs:label "Multi-Scale Flows in BP Control" ;
+    rdfs:comment "Blood flow, hormonal flux, renal filtration, and intercompartmental fluid exchange" ;
+    m3:asfid_dimension "Flow" ;
+    ns1:bloodFlow [ ] ;
+    ns1:energyFlow "ATP consumption for cardiac work, ion pumps (Na-K-ATPase)" ;
+    ns1:hormonalFlux "ADH (hypothalamus → kidney, vessels)",
+        "ANP/BNP (heart → kidney, vessels)",
+        "Aldosterone (adrenal → kidney)",
+        "Angiotensin II (systemic vasoconstrictor)",
+        "Renin circulation (renal → systemic)" ;
+    ns1:intercompartmentalExchange "Interstitial ↔ Intracellular (osmosis)",
+        "Vascular ↔ Interstitial (Starling forces)" ;
+    ns1:renalFlux [ ] .
+
+<m0:blood_pressure_control:Hierarchy_Temporal> a m2:Hierarchy ;
+    rdfs:label "Temporal Hierarchy of Control Mechanisms" ;
+    rdfs:comment "Three-tier hierarchy based on response timescales" ;
+    ns1:dominance "Slow mechanisms (renal) dominate long-term BP control (Guyton's thesis)" ;
+    ns1:hierarchyType "Temporal" ;
+    ns1:tier1_fast [ ] ;
+    ns1:tier2_medium [ ] ;
+    ns1:tier3_slow [ ] .
+
+<m0:blood_pressure_control:Homeostasis_BP> a m2:Homeostasis ;
+    rdfs:label "Blood Pressure Homeostasis" ;
+    rdfs:comment "Maintenance of stable arterial pressure despite internal/external perturbations" ;
+    ns1:controlledVariable "Mean Arterial Pressure (MAP)" ;
+    ns1:pathology "Homeostatic failure → hypertension (new stable state at higher set-point)" ;
+    ns1:perturbations "Dehydration",
+        "Exercise",
+        "Hemorrhage",
+        "Posture changes",
+        "Sodium intake variations",
+        "Stress (cortisol, catecholamines)" ;
+    ns1:regulatoryMechanisms "Fast buffering: Baroreceptor reflex",
+        "Intermediate: RAAS, ADH, ANP",
+        "Long-term: Renal pressure-natriuresis" ;
+    ns1:setPoint "~93 mmHg (MAP = diastolic + 1/3 pulse pressure)" .
+
+<m0:blood_pressure_control:Information_Multi> a m2:Signal ;
+    rdfs:label "Multi-Modal Information Flow" ;
+    rdfs:comment "Neural, hormonal, and mechanical signaling for blood pressure regulation" ;
+    m3:asfid_dimension "Information" ;
+    ns1:feedbackLoopCount 5 ;
+    ns1:feedbackTypes "Negative: ANP response (volume ↑ → ANP ↑ → natriuresis ↑)",
+        "Negative: Ang II on renin (Ang II ↑ → renin ↓)",
+        "Negative: Baroreceptor reflex (pressure ↑ → sympathetic ↓)",
+        "Positive (pathological): Vascular remodeling (pressure ↑ → stiffness ↑ → pressure ↑)" ;
+    ns1:hormonalSignaling [ ] ;
+    ns1:mechanicalSignaling "Atrial stretch (triggers ANP release)",
+        "Baroreceptor stretch (pressure transduction)",
+        "Renal afferent arteriole stretch (triggers renin secretion)" ;
+    ns1:neuralSignaling [ ] ;
+    ns1:primarySignal "Arterial pressure (sensed by baroreceptors)" .
+
+<m0:blood_pressure_control:RAAS_Effector> a ns1:EffectorSystem ;
+    rdfs:label "Renin-Angiotensin-Aldosterone System (RAAS)" ;
+    rdfs:comment "Hormonal cascade controlling blood volume and vasoconstriction" ;
+    ns1:clinicalSignificance "Primary target for antihypertensive therapy" ;
+    ns1:feedbackLoop "Negative (Ang II inhibits renin secretion)" ;
+    ns1:keyComponents "AT1 receptors (vascular, renal)",
+        "Aldosterone (from adrenal cortex)",
+        "Angiotensinogen → Angiotensin I → Angiotensin II",
+        "Renin (from juxtaglomerular cells)" ;
+    ns1:mechanismType "hormonal" ;
+    ns1:pathologicalRole "Hyperactivity causes hypertension (renovascular hypertension model)" ;
+    ns1:primaryAction "Volume regulation and vasoconstriction" ;
+    ns1:therapeuticTargets "ACE inhibitors (block Ang I → Ang II)",
+        "AT1 receptor blockers (ARBs)",
+        "Aldosterone antagonists" ;
+    ns1:timescale "minutes to hours" .
+
+<m0:blood_pressure_control:Redundancy_System> a m2:Redundancy ;
+    rdfs:label "Multi-Effector Redundancy" ;
+    rdfs:comment "Five parallel systems provide robustness against component failure" ;
+    ns1:clinicalImplication "Therapeutic blockade of one system often incompletely controls BP (need combination therapy)" ;
+    ns1:evolutionaryAdvantage "Ensures survival even with partial system dysfunction" ;
+    ns1:functionalOverlap "Multiple systems affect same target parameters (e.g., vascular tone modulated by Sympathetic, Ang II, ADH)" ;
+    ns1:redundancyLevel "High" ;
+    ns1:redundantComponents "ADH",
+        "ANP",
+        "Direct hemodynamic",
+        "RAAS",
+        "Sympathetic" .
+
+<m0:blood_pressure_control:Structure_Network> a m2:Network ;
+    rdfs:label "5-Effector Convergent Network" ;
+    rdfs:comment "Parallel effector systems converging on single controlled variable (arterial pressure)" ;
+    m3:asfid_dimension "Structure" ;
+    ns1:anatomicalComponents "Adrenal glands (hormones)",
+        "Baroreceptors (sensory)",
+        "Blood vessels (resistance)",
+        "Heart (cardiac output)",
+        "Hypothalamus (ADH, sympathetic control)",
+        "Kidneys (volume regulation)" ;
+    ns1:emergentProperty "Blood pressure emerges from integration of all 5 systems" ;
+    ns1:hierarchicalOrganization [ ] ;
+    ns1:networkTopology "5 → 1 convergent" ;
+    ns1:redundancyLevel "High (5 parallel systems provide robustness)" .
+
+<m0:blood_pressure_control:Sympathetic_Effector> a ns1:EffectorSystem ;
+    rdfs:label "Sympathetic Nervous System" ;
+    rdfs:comment "Rapid neural reflex modulating heart rate and vascular tone" ;
+    ns1:adaptation "Baroreceptor resetting in chronic hypertension (loss of reflex buffering)" ;
+    ns1:feedbackLoop "Negative (baroreceptor reflex: high pressure → reduced sympathetic output)" ;
+    ns1:keyComponents "Alpha-1 adrenergic receptors (blood vessels)",
+        "Baroreceptors (aortic arch, carotid sinus)",
+        "Beta-1 adrenergic receptors (heart)",
+        "Medullary cardiovascular centers",
+        "Sympathetic efferents (norepinephrine release)" ;
+    ns1:mechanismType "neural" ;
+    ns1:pathologicalRole "Chronic activation contributes to hypertension and heart failure" ;
+    ns1:primaryAction "Heart rate control and vasoconstriction" ;
+    ns1:therapeuticTargets "Alpha-blockers (block α1 receptors)",
+        "Beta-blockers (block β1 receptors)",
+        "Central sympatholytics" ;
+    ns1:timescale "seconds" .
+
+<m0:blood_pressure_control:System> a ns1:Poclet ;
+    rdfs:label "Blood Pressure Control System" ;
+    rdfs:comment "5-effector homeostatic system regulating arterial pressure" ;
+    ns1:asfidScore [ ns1:asfidTotal 8.3e-01 ;
+            ns1:attractorScore 8.5e-01 ;
+            ns1:dynamicsScore 7.5e-01 ;
+            ns1:flowScore 9e-01 ;
+            ns1:informationScore 8.5e-01 ;
+            ns1:structureScore 8e-01 ] ;
+    ns1:bicephalousBalance "Eagle Eye dominant (strong empirical grounding), Sphinx Eye strong (ORIVE=0.84)" ;
+    ns1:controlledVariable "Arterial Blood Pressure" ;
+    ns1:effectorCount 5 ;
+    ns1:epistemicGap 1.6e-01 ;
+    ns1:hasEffector "m0:blood_pressure_control:ADH_Effector",
+        "m0:blood_pressure_control:ANP_Effector",
+        "m0:blood_pressure_control:CardiacOutput_Effector",
+        "m0:blood_pressure_control:RAAS_Effector",
+        "m0:blood_pressure_control:Sympathetic_Effector" ;
+    ns1:mobilizesMetaconcept "m2:Adaptation",
+        "m2:Attractor",
+        "m2:Convergence",
+        "m2:Emergence",
+        "m2:Feedback",
+        "m2:Flow",
+        "m2:Hierarchy",
+        "m2:Homeostasis",
+        "m2:Network",
+        "m2:Redundancy",
+        "m2:Signal",
+        "m2:Timescale" ;
+    ns1:oriveScore [ ns1:expressivenessScore 7.5e-01 ;
+            ns1:interoperabilityScore 9e-01 ;
+            ns1:observabilityScore 8.5e-01 ;
+            ns1:oriveTotal 8.4e-01 ;
+            ns1:reproducibilityScore 8e-01 ;
+            ns1:validityScore 9e-01 ] ;
+    ns1:setPoint "120/80 mmHg (systolic/diastolic)" ;
+    ns1:timescaleRange "seconds to days" .
+

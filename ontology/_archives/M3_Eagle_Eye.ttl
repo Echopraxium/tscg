@@ -1,0 +1,174 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m3: <https://github.com/Echopraxium/tscg/blob/main/ontology/M3_Eagle_Eye.jsonld#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+m3:ASFID_Basis a owl:Class ;
+    rdfs:label "ASFID Basis (Territory-Space)" ;
+    rdfs:comment "Orthonormal basis {|A⟩, |S⟩, |F⟩, |I⟩, |D⟩} in Hilbert space ℂ⁵ for measuring Territory (observed phenomena). Eagle Eye uses this basis for quantification." ;
+    m3:coefficientRange "[0,1]⁵ with constraint f ≥ 0.1" ;
+    m3:completeness "∑|k⟩⟨k| = 𝟙 (identity operator)" ;
+    m3:dimensionality 5 ;
+    m3:orthonormality "⟨k|j⟩ = δ_kj for all k,j ∈ {A,S,F,I,D}" ;
+    m3:stateVector "|Ω⟩ = a|A⟩ + s|S⟩ + f|F⟩ + i|I⟩ + d|D⟩" .
+
+m3:Attractor a owl:NamedIndividual,
+        m3:M3Dimension ;
+    rdfs:label "Attractor (|A⟩)" ;
+    rdfs:comment "Asymptotic convergence tendency. Measures stability landscape and equilibrium attraction." ;
+    m3:examples "Biological homeostasis (medium-high A)",
+        "Market equilibrium (variable A)",
+        "Strange attractor in chaos (low A)",
+        "Thermostat set-point (high A)" ;
+    m3:index 1 ;
+    m3:mathematicalFormulation [ ] ;
+    m3:physicalInterpretation "Stability basin, attractor state, homeostatic set-point" ;
+    m3:rangeAnalog "[0,1] where 0=chaos/instability, 1=perfect stability" ;
+    m3:rangeDigital "[0.0, 1.0] floating point" ;
+    m3:symbol "|A⟩" .
+
+m3:BiceptualMapping a owl:Class ;
+    rdfs:label "Eagle ↔ Sphinx Mapping" ;
+    rdfs:comment "Transformation F between ASFID (Territory-Space, Eagle) and ORIVE (Map-Space, Sphinx). To be determined empirically through poclet validation." ;
+    m3:epistemicGapFormula [ ] ;
+    m3:formula "|M⟩_ORIVE = F(|Ω⟩_ASFID)" ;
+    m3:inverse "|Ω⟩_ASFID ≈ F⁻¹(|M⟩_ORIVE)" ;
+    m3:note "Not necessarily dimension-by-dimension (A→O, S→R, etc.). Could be complex transformation involving multiple ORIVE dimensions for each ASFID dimension." ;
+    m3:properties [ ] ;
+    m3:status "Proposition - Mapping F to be discovered through practice" .
+
+m3:CriticalAxioms a owl:Class ;
+    rdfs:label "ASFID Critical Axioms" ;
+    rdfs:comment "Fundamental constraints on ASFID basis" ;
+    m3:axioms [ ] .
+
+m3:Dynamics a owl:NamedIndividual,
+        m3:M3Dimension ;
+    rdfs:label "Dynamics (|D⟩)" ;
+    rdfs:comment "Rate of internal change. Measures temporal derivative of state (diachronic evolution speed)." ;
+    m3:examples "Chemical explosion (D≈0.95)",
+        "Geological rock (D≈0.01)",
+        "Heartbeat (D≈0.3)",
+        "Nuclear reaction (D≈0.99)" ;
+    m3:index 5 ;
+    m3:mathematicalFormulation [ ] ;
+    m3:physicalInterpretation "Velocity in state-space, rate of transformation" ;
+    m3:rangeAnalog "[0,1] where 0=static, 1=explosive/catastrophic change" ;
+    m3:rangeDigital "[0.0, 1.0] floating point" ;
+    m3:symbol "|D⟩" .
+
+m3:EagleEye a owl:Ontology ;
+    dcterms:created "2026-01-17" ;
+    dcterms:creator "Echopraxium with collaboration of Claude AI Pro" ;
+    dcterms:description "Eagle Eye defines the ASFID basis (Attractor, Structure, Flow, Information, Dynamics) for measuring Territory (observed phenomena) with mathematical precision. Provides quantification, formalization, calculation. First head of bicephalous architecture." ;
+    dcterms:modified "2026-01-17" ;
+    dcterms:title "TSCG M3 - Eagle Eye (ASFID Territory-Space + Mathematical Perspective)" ;
+    owl:versionInfo "2.0.0" ;
+    m3:basisType "ASFID (Territory-Space)" ;
+    m3:complementaryTo m3:SphinxEye ;
+    m3:hilbertSpace "ℂ⁵" ;
+    m3:metaphor "Eagle - Bird of prey with exceptional visual acuity (8× human vision). Represents precision, distance, measurement, calculation." ;
+    m3:role "Territory-Space Measurement + Mathematical Quantification" ;
+    m3:versionHistory [ ] .
+
+m3:Flow a owl:NamedIndividual,
+        m3:M3Dimension ;
+    rdfs:label "Flow (|F⟩)" ;
+    rdfs:comment "Exchange rate with environment. Measures openness and dissipation. AXIOM: F ≥ 0.1 (Universal Openness)." ;
+    m3:criticalAxiom "F ≥ 0.1 (no perfectly isolated system exists)" ;
+    m3:examples "Human body (F≈0.6 - moderate exchange)",
+        "Open flame (F≈0.9)",
+        "Thermos flask (F≈0.15 - quasi-closed)",
+        "Tornado (F≈0.95 - highly dissipative)" ;
+    m3:index 3 ;
+    m3:mathematicalFormulation [ ] ;
+    m3:physicalInterpretation "Matter/energy/information flux across boundary" ;
+    m3:rangeAnalog "[0.1,1] where 0.1=quasi-closed, 1=maximally dissipative" ;
+    m3:rangeDigital "[0.1, 1.0] floating point" ;
+    m3:symbol "|F⟩" .
+
+m3:Information a owl:NamedIndividual,
+        m3:M3Dimension ;
+    rdfs:label "Information (|I⟩)" ;
+    rdfs:comment "State complexity (synchronic). Measures variety, diversity, Shannon entropy at fixed time." ;
+    m3:examples "Binary switch (I≈0.1)",
+        "Brain neural state (I≈0.9)",
+        "Human genome (I≈0.8)",
+        "Single atom (I≈0.05)" ;
+    m3:index 4 ;
+    m3:mathematicalFormulation [ ] ;
+    m3:physicalInterpretation "Configurational entropy, state-space volume, variety" ;
+    m3:rangeAnalog "[0,1] where 0=trivial/simple, 1=maximally complex" ;
+    m3:rangeDigital "[0.0, 1.0] floating point" ;
+    m3:symbol "|I⟩" .
+
+m3:Limitations a owl:Class ;
+    rdfs:label "Eagle Eye Limitations" ;
+    m3:complementNeed "Requires Sphinx Eye for interpretation, meaning, context, purpose" ;
+    m3:disadvantages "Cannot answer WHY questions (only HOW and HOW MUCH)",
+        "Context-insensitive (formula doesn't know application domain)",
+        "Loses qualitative richness (numbers don't convey meaning)",
+        "Measurement precision limited by observer capabilities",
+        "Observer-dependent measurement (what to measure? how?)",
+        "Reductionist bias (may miss emergent wholes)",
+        "Requires measurable observables (not all concepts quantifiable)" .
+
+m3:MathematicalPerspective a owl:Class ;
+    rdfs:label "Eagle Eye Mathematical Perspective" ;
+    rdfs:comment "How Eagle Eye uses ASFID for quantification, formalization, calculation" ;
+    m3:capabilities [ ] .
+
+m3:Strengths a owl:Class ;
+    rdfs:label "Eagle Eye Strengths" ;
+    m3:advantages "Automation (computable by machines)",
+        "Interoperability (ASFID universal across domains)",
+        "Objectivity (aims for observer-independent measurement)",
+        "Precision and exactness (no ambiguity in numbers)",
+        "Reproducibility (same input → same output)",
+        "Scalability (works for large/complex systems)",
+        "Validation (numerical predictions testable)" .
+
+m3:Structure a owl:NamedIndividual,
+        m3:M3Dimension ;
+    rdfs:label "Structure (|S⟩)" ;
+    rdfs:comment "Topological organization and connectivity. Measures internal arrangement and relational patterns." ;
+    m3:examples "Biological cell (S≈0.7)",
+        "Diamond crystal (S≈0.95)",
+        "Gas molecules (S≈0.1)",
+        "Liquid water (S≈0.4)" ;
+    m3:index 2 ;
+    m3:mathematicalFormulation [ ] ;
+    m3:physicalInterpretation "Network topology, crystalline order, organizational hierarchy" ;
+    m3:rangeAnalog "[0,1] where 0=gas (no structure), 1=crystal (perfect lattice)" ;
+    m3:rangeDigital "[0.0, 1.0] floating point" ;
+    m3:symbol "|S⟩" .
+
+m3:TerritoryMeasurement a owl:Class ;
+    rdfs:label "Territory Measurement Protocol" ;
+    rdfs:comment "How to measure Territory (observed phenomenon) using ASFID" ;
+    m3:examples [ ],
+        [ ] ;
+    m3:protocol "   - A: How stable/convergent is it? → a ∈ [0,1]",
+        "   - D: How fast changing? → d ∈ [0,1]",
+        "   - F: How open to environment? → f ∈ [0.1,1]",
+        "   - I: How complex/varied? → i ∈ [0,1]",
+        "   - S: How organized/structured? → s ∈ [0,1]",
+        "1. Identify phenomenon to observe (fire, color, economic system, etc.)",
+        "2. Choose observer perspective (human, instrument, ant, etc.)",
+        "3. For each ASFID dimension, ask:",
+        "4. Construct state vector: |Ω⟩ = a|A⟩ + s|S⟩ + f|F⟩ + i|I⟩ + d|D⟩",
+        "5. Validate: Check f ≥ 0.1, all coefficients in [0,1]" .
+
+<https://github.com/Echopraxium/tscg/blob/main/ontology/M3_Sphinx_Eye.jsonld> dcterms:format "application/ld+json" ;
+    dcterms:type "Ontology" .
+
+m3:SphinxEye dcterms:documentation <https://github.com/Echopraxium/tscg/blob/main/ontology/M3_Sphinx_Eye.jsonld> ;
+    rdfs:seeAlso "https://github.com/Echopraxium/tscg/blob/main/ontology/M3_Sphinx_Eye.jsonld" .
+
+[] dcterms:references "Ashby, W. R. (1956). An Introduction to Cybernetics",
+        "Hilbert, D. (1900). Mathematical Problems",
+        "Shannon, C. (1948). A Mathematical Theory of Communication",
+        "von Neumann, J. (1932). Mathematical Foundations of Quantum Mechanics" ;
+    rdfs:seeAlso m3:SphinxEye .
+

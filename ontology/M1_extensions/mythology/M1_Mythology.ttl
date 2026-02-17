@@ -1,0 +1,211 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <m1:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<m1:mythology:ChthonianDeity> a owl:Class ;
+    rdfs:label "Chthonian Deity" ;
+    rdfs:comment "Underworld or earth deity. Rules over dead, subterranean forces, or darker aspects of existence. Examples: Hel (Norse), Hades (Greek), Ereshkigal (Mesopotamian)." ;
+    rdfs:subClassOf "m1:mythology:Deity" .
+
+<m1:mythology:CosmicForce> a owl:Class ;
+    rdfs:label "Cosmic Force" ;
+    rdfs:comment "Impersonal principle or abstract entity governing cosmic function. Not individual agents but forces/concepts. Examples: Nornes (Fate weavers), Moirai (Greek Fates), Karma (Hindu principle), Wyrd (Fate itself)." ;
+    rdfs:subClassOf "m1:mythology:MythologicalEntity" ;
+    skos:note "Often personified but fundamentally impersonal. Operate mechanically rather than through personal will." .
+
+<m1:mythology:DeifiedMortal> a owl:Class ;
+    rdfs:label "Deified Mortal" ;
+    rdfs:comment "Human who achieved divine status through exceptional deeds. Examples: Heracles (Greek), Baldr after rebirth (Norse), emperors (Roman). Started mortal but transformed." ;
+    rdfs:subClassOf "m1:mythology:Deity" .
+
+<m1:mythology:Deity> a owl:Class ;
+    rdfs:label "Deity (God/Goddess)" ;
+    rdfs:comment "Agent with supernatural powers, persistent identity, and cosmic role. Transcends mortal limits but remains subject to cosmic laws (fate, cycles, apocalypse). Instantiates Agent (autonomy), Identity (persistence), and Role (function). Distinguished from MythicalCreature by: worship potential, cosmic governance role, immortality (typically), and higher agency." ;
+    rdfs:subClassOf "m1:mythology:MythologicalEntity" ;
+    ns1:M2_basis "m2:Agent (S⊗I⊗D⊗A⊗E) - Autonomy, goals, actions",
+        "m2:Identity (S⊗I⊗A⊗V⊗E) - Persistence through transformations",
+        "m2:Role (S⊗I⊗F⊗O⊗R) - Function in cosmic system" ;
+    ns1:characteristicProperties [ ] ;
+    ns1:distinctionFromRelated [ ] ;
+    ns1:examplesCrossCultural "Egyptian: Ra (sun), Osiris (afterlife), Isis (magic)",
+        "Greek: Zeus (sky), Athena (wisdom), Poseidon (sea)",
+        "Hindu: Brahma (creation), Vishnu (preservation), Shiva (destruction)",
+        "Mayan: Itzamna (sky), Chaac (rain), Kukulkan (wind/knowledge)",
+        "Norse: Odin (wisdom), Thor (thunder), Freyja (love/war)" ;
+    ns1:formula "Agent + Identity + Role + SupernaturalPower" ;
+    ns1:optionalProperties [ ] .
+
+<m1:mythology:Dragon> a owl:Class ;
+    rdfs:label "Dragon" ;
+    rdfs:comment "Reptilian creature with extraordinary powers. Often guards treasure, hoards knowledge, or embodies chaos. Examples: Nidhogg, Fafnir, Ladon, Smaug." ;
+    rdfs:subClassOf "m1:mythology:MythicalCreature" .
+
+<m1:mythology:Gatekeeper> a owl:NamedIndividual,
+        <m1:mythology:MythologicalPattern> ;
+    rdfs:label "Gatekeeper Archetype" ;
+    dcterms:created "2026-02-04" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "Agent implementing Constrained Interface at critical system boundary. Enables legitimate passage while blocking threats. Combines Interface (connection) with Constraint (selectivity) through active Agent enforcement. Not passive barrier nor neutral mediator - intelligent selective gateway." ;
+    ns1:M2_basis "m2:Agent (S⊗I⊗D⊗A⊗E) - Active enforcer",
+        "m2:Constraint (S⊗I⊗F⊗V⊗R) - Access restrictor",
+        "m2:Interface (S⊗I⊗F⊗V⊗R) - Connection enabler" ;
+    ns1:characteristicProperties [ ] ;
+    ns1:distinctionFromRelated [ ] ;
+    ns1:examplesCrossCultural [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:instantiatesMetaconcept "m2:MetaconceptCombo" ;
+    ns1:metaconceptComboStructure [ ] ;
+    ns1:operationalMechanisms [ ] ;
+    ns1:philosophicalImplication "Gatekeeper represents necessary selectivity in open systems. Total openness → vulnerability. Total closure → isolation. Selective permeability via intelligent gatekeeping → system protection while maintaining essential connectivity." ;
+    ns1:systemFunction [ ] ;
+    ns1:validatedInstances "m0:yggdrasil:Heimdall" .
+
+<m1:mythology:GiantBeast> a owl:Class ;
+    rdfs:label "Giant Beast" ;
+    rdfs:comment "Enormous primordial being. Often world-creating or cosmos-structuring. Examples: Ymir (Norse), Titans (Greek), Jotunn." ;
+    rdfs:subClassOf "m1:mythology:MythicalCreature" .
+
+<m1:mythology:Guardian> a owl:Class ;
+    rdfs:label "Guardian Creature" ;
+    rdfs:comment "Entity protecting boundary, treasure, or sacred place. Examples: Cerberus (Hades gate), Sphinx (riddle guardian), Fu Dogs." ;
+    rdfs:subClassOf "m1:mythology:MythicalCreature" .
+
+<m1:mythology:HybridCreature> a owl:Class ;
+    rdfs:label "Hybrid Creature" ;
+    rdfs:comment "Combination of multiple animal/human features. Impossible anatomy. Examples: Sleipnir (8 legs), Pegasus (winged horse), Chimera (multiple heads)." ;
+    rdfs:subClassOf "m1:mythology:MythicalCreature" .
+
+<m1:mythology:M1_Mythology_Ontology> a owl:Ontology ;
+    dcterms:created "2026-02-04" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Domain-specific M1 ontology for mythology, cosmology, and spiritual systems. Defines transdisciplinary patterns (Deity, MythicalCreature, Trickster, Gatekeeper) and mythology-specific concepts reusable across cultures (Norse, Greek, Egyptian, Hindu, etc.). Extends M1_CoreConcepts with domain-bounded but cross-cultural mythology patterns." ;
+    dcterms:modified "2026-02-04" ;
+    dcterms:title "TSCG M1 Mythology Extension" ;
+    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld" ;
+    owl:versionInfo "1.0.0" ;
+    ns1:changelog [ ] ;
+    ns1:conceptCategories [ ] ;
+    ns1:culturalCoverage "African",
+        "Aztec",
+        "Buddhist",
+        "Celtic",
+        "Chinese",
+        "Egyptian",
+        "Greek",
+        "Hindu",
+        "Japanese",
+        "Mayan",
+        "Mesopotamian",
+        "Native American",
+        "Norse",
+        "Roman",
+        "Slavic" ;
+    ns1:domainScope "Mythology, Cosmology, Comparative Religion, Spiritual Systems, Folklore" ;
+    ns1:validationStatus [ ] .
+
+<m1:mythology:MagicalBird> a owl:Class ;
+    rdfs:label "Magical Bird" ;
+    rdfs:comment "Avian with supernatural abilities. Often omniscient observer or messenger. Examples: Eagle at Yggdrasil crown, Phoenix, Garuda, Hugin/Munin." ;
+    rdfs:subClassOf "m1:mythology:MythicalCreature" .
+
+<m1:mythology:MajorDeity> a owl:Class ;
+    rdfs:label "Major Deity" ;
+    rdfs:comment "Significant deity with important cosmic role and widespread worship. Examples: Thor, Athena, Osiris, Vishnu. Not supreme ruler but essential to pantheon function." ;
+    rdfs:subClassOf "m1:mythology:Deity" .
+
+<m1:mythology:Messenger> a owl:Class ;
+    rdfs:label "Messenger Creature" ;
+    rdfs:comment "Entity specializing in information transport between realms/entities. Examples: Ratatosk (squirrel), Hermes in animal form, Sleipnir." ;
+    rdfs:subClassOf "m1:mythology:MythicalCreature" .
+
+<m1:mythology:MinorDeity> a owl:Class ;
+    rdfs:label "Minor Deity" ;
+    rdfs:comment "Lesser deity with localized or specific function. Examples: Nymphs, household gods, river deities. Limited cosmic role but still divine." ;
+    rdfs:subClassOf "m1:mythology:Deity" .
+
+<m1:mythology:MonstrousWolf> a owl:Class ;
+    rdfs:label "Monstrous Wolf" ;
+    rdfs:comment "Gigantic wolf with supernatural strength. Often represents uncontrollable wild nature. Examples: Fenrir, Garmr." ;
+    rdfs:subClassOf "m1:mythology:MythicalCreature" .
+
+<m1:mythology:MythicalArtifact> a owl:Class ;
+    rdfs:label "Mythical Artifact" ;
+    rdfs:comment "Object with supernatural properties and persistent identity. Often divine weapons, tools, or cosmic structures. Instantiates Identity (persistence) and may have Power. Examples: Mjolnir, Gungnir, Excalibur, Vajra." ;
+    rdfs:subClassOf "m1:mythology:MythologicalEntity" ;
+    ns1:M2_basis "m2:Identity (S⊗I⊗A⊗V⊗E) - Persistent artifact identity" .
+
+<m1:mythology:MythicalCreature> a owl:Class ;
+    rdfs:label "Mythical Creature" ;
+    rdfs:comment "Non-human being with extraordinary properties (unique morphology, supernatural powers, symbolic role). Distinguished from deities by: not worshiped, often mortal or limited, specific function rather than cosmic governance. Instantiates Entity (if passive) or Agent (if autonomous) plus Identity (unique morphology)." ;
+    rdfs:subClassOf "m1:mythology:MythologicalEntity" ;
+    ns1:M2_basis "m2:Agent (if autonomous) OR m2:Entity (if passive)",
+        "m2:Identity (S⊗I⊗A⊗V⊗E) - Unique recognizable morphology",
+        "m2:Role (optional) - Specific system function" ;
+    ns1:characteristicProperties [ ] ;
+    ns1:examplesCrossCultural "Dragons: Nidhogg (Norse), Ladon (Greek), Vritra (Hindu), Long (Chinese)",
+        "Giants: Ymir (Norse), Titans (Greek), Asuras (Hindu)",
+        "Hybrid: Sleipnir 8-legged (Norse), Pegasus winged (Greek), Sphinx (Egyptian)",
+        "Serpents: Jormungandr (Norse), Python (Greek), Apep (Egyptian), Shesha (Hindu)" ;
+    ns1:formula "Entity + Identity + ExtraordinaryProperty" ;
+    ns1:optionalProperties [ ] .
+
+<m1:mythology:MythicalPlace> a owl:Class ;
+    rdfs:label "Mythical Place" ;
+    rdfs:comment "Location with cosmic significance. Underworlds, paradises, sacred sites, wells. Examples: Valhalla, Hades, Elysium, Urdarbrunnr, Mount Meru." ;
+    rdfs:subClassOf "m1:mythology:MythologicalEntity" .
+
+<m1:mythology:MythologicalEntity> a owl:Class ;
+    rdfs:label "Mythological Entity" ;
+    rdfs:comment "Root abstract class for all entities appearing in mythological systems. Encompasses deities, creatures, artifacts, places, and abstract forces. All instances instantiate one or more M2 metaconcepts (typically Agent, Identity, Role) and have cultural origin, symbolic meaning, and appear in documented myths." ;
+    rdfs:subClassOf "owl:Thing" ;
+    ns1:properties "m1:appearsInMyths - References to source myths",
+        "m1:associatedSymbols - Visual/conceptual symbols",
+        "m1:hasCulturalOrigin - Which mythology (Norse, Greek, etc.)",
+        "m1:hasSymbolicRole - What it represents symbolically",
+        "m1:instantiatesM2 - Which M2 metaconcepts" .
+
+<m1:mythology:PrimordialBeing> a owl:Class ;
+    rdfs:label "Primordial Being" ;
+    rdfs:comment "Ancient entity predating current cosmic order. Neither fully deity nor creature - exists in liminal category. Often giants or titans. Examples: Jotunn (Norse), Titans (Greek), Asuras (Hindu). Some worshiped (Mimir), most not." ;
+    rdfs:subClassOf "m1:mythology:MythologicalEntity" ;
+    skos:note "Borderline cases between Deity and Creature. Often adversaries of gods but possess god-like attributes." .
+
+<m1:mythology:Serpent> a owl:Class ;
+    rdfs:label "Serpent" ;
+    rdfs:comment "Giant snake with cosmic significance. Often world-encircling or primordial chaos force. Examples: Jormungandr, Python, Apep, Vritra." ;
+    rdfs:subClassOf "m1:mythology:MythicalCreature" .
+
+<m1:mythology:SupremeDeity> a owl:Class ;
+    rdfs:label "Supreme Deity" ;
+    rdfs:comment "Highest-ranking deity in pantheon. Ruler of gods, cosmic authority, often creator or sky father. Examples: Odin (Norse), Zeus (Greek), Ra (Egyptian), Brahma (Hindu)." ;
+    rdfs:subClassOf "m1:mythology:Deity" ;
+    skos:note "Not always omnipotent - supreme within pantheon hierarchy but subject to fate/cosmic law." .
+
+<m1:mythology:Trickster> a owl:NamedIndividual,
+        <m1:mythology:MythologicalPattern> ;
+    rdfs:label "Trickster Archetype" ;
+    dcterms:created "2026-02-04" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "Agent specialized in manipulating Representation (perception, truth, identity) rather than direct Territory transformation. Uses deception, shapeshifting, and illusion to achieve goals. Boundary-crossing figure operating between categories (realms, species, genders, moral alignments). Embodies necessary chaos testing and strengthening system through violation." ;
+    ns1:M2_basis "m2:Agent (autonomous actor with goals)",
+        "m2:Representation (map being manipulated)",
+        "m2:Transformation (change operator)" ;
+    ns1:characteristicProperties [ ] ;
+    ns1:distinctionFromRelated [ ] ;
+    ns1:examplesCrossCultural [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:formula "Agent ⊗ Transformation(Representation)" ;
+    ns1:operationalMechanisms [ ] ;
+    ns1:philosophicalImplication "Trickster embodies danger of Representation manipulation. If one controls the Map (how reality is perceived), one controls actions, even if Territory remains unchanged. Relevant to: misinformation, deepfakes, gaslighting, propaganda." ;
+    ns1:systemFunction [ ] ;
+    ns1:validatedInstances "m0:yggdrasil:Loki" .
+

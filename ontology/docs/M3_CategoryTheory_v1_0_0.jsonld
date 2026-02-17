@@ -1,0 +1,363 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m3": "M3_GenesisSpace.jsonld#",
+    "m3:category_theory": "M3_CategoryTheory.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m3:category_theory:CategoryTheory",
+      "@type": "owl:Ontology",
+      "owl:versionInfo": "1.0.0",
+      "dcterms:created": "2026-02-17",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:title": "TSCG M3 Category Theory - Mathematical Foundation",
+      "dcterms:description": "Formal ontology encoding Category Theory as the mathematical foundation for TSCG. Defines categories, objects, morphisms, functors, and natural transformations. Provides the categorical structure underlying TSCG's layered architecture (M3→M2→M1→M0) and enables formal reasoning about transformations, compositions, and reifications.",
+      "rdfs:label": "Category Theory - Mathematical Foundation",
+      "rdfs:comment": "M3 Category Theory provides the mathematical vocabulary for TSCG's categorical structure. This is the most fundamental layer (M3) as Category Theory describes the architecture of the entire framework. Imported by other TSCG ontologies to annotate their categorical properties.",
+      "m3:category_theory:ontologyCategory": {
+        "@id": "m3:category_theory:MathematicalFoundation"
+      },
+      "metadata": {
+        "layer": "M3",
+        "name": "Category Theory",
+        "version": "1.0.0",
+        "date_created": "2026-02-17",
+        "authors": ["Echopraxium with the collaboration of Claude AI"],
+        "description": "Mathematical foundation encoding Category Theory concepts for TSCG framework",
+        "purpose": [
+          "Formalize categorical structure of TSCG (M3→M2→M1→M0 as functors)",
+          "Enable reasoning about morphisms and transformations",
+          "Provide vocabulary for reification (KnowledgeField objects)",
+          "Support composition laws and categorical diagrams"
+        ]
+      },
+      "rdfs:seeAlso": [
+        "https://ncatlab.org/nlab/show/category+theory",
+        "https://en.wikipedia.org/wiki/Category_theory"
+      ]
+    },
+
+    {
+      "@id": "m3:category_theory:MathematicalCategory",
+      "@type": "owl:Class",
+      "rdfs:label": "Mathematical Category",
+      "rdfs:comment": "A category in the mathematical sense: a collection of objects (Ob(C)) and morphisms (Mor(C)) between them, satisfying identity and associativity axioms. In TSCG: Cat_M3 (ASFID dimensions), Cat_M2 (metaconcepts), Cat_M1 (concepts), Cat_KnowledgeField (Chemistry, Biology, Optics...).",
+      "m3:category_theory:structure": {
+        "objects": "Collection Ob(C) of category objects",
+        "morphisms": "Collection Mor(C) of arrows between objects",
+        "identity": "For each object A ∈ Ob(C), exists id_A: A → A",
+        "composition": "For f: A → B and g: B → C, exists g∘f: A → C",
+        "associativity": "(h∘g)∘f = h∘(g∘f)",
+        "identity_law": "f∘id_A = f = id_B∘f for f: A → B"
+      },
+      "m3:category_theory:categoryAxioms": [
+        "Identity: ∀A ∈ Ob(C), ∃ id_A ∈ Mor(A,A)",
+        "Composition: ∀f ∈ Mor(A,B), g ∈ Mor(B,C), ∃ g∘f ∈ Mor(A,C)",
+        "Associativity: (h∘g)∘f = h∘(g∘f)",
+        "Unit law: f∘id_A = f, id_B∘f = f"
+      ],
+      "m3:category_theory:tscgExamples": [
+        "Cat_KnowledgeField: Ob = {Chemistry, Biology, Optics...}, Mor = knowledge transfers",
+        "Cat_M2: Ob = {Link, Processor, Component...}, Mor = metaconcept inclusions",
+        "Cat_M3_ASFID: Ob = {A, S, F, I, D}, Mor = tensor products",
+        "Cat_TSCG: Ob = {M3, M2, M1, M0}, Mor = functors F_⊗, F_inst"
+      ]
+    },
+
+    {
+      "@id": "m3:category_theory:CategoryObject",
+      "@type": "owl:Class",
+      "rdfs:label": "Category Object",
+      "rdfs:comment": "An object within a mathematical category. Objects are the 'things' in a category; morphisms are the 'relationships' between them. In TSCG: Chemistry is an object in Cat_KnowledgeField, Link is an object in Cat_M2, ASFID is an object in Cat_M3.",
+      "m3:category_theory:formalDefinition": "An element A ∈ Ob(C) for some category C",
+      "m3:category_theory:properties": [
+        "Every object has an identity morphism id_A: A → A",
+        "Objects are sources and targets of morphisms",
+        "Objects themselves have no internal structure in category theory",
+        "Structure comes from morphisms TO and FROM the object"
+      ],
+      "m3:category_theory:tscgReification": {
+        "description": "In TSCG, metaconcepts (M2) are reified as Category Objects when viewed categorically",
+        "example": "KnowledgeField (M2 metaconcept) IS ALSO a mathematical category with Chemistry, Biology... as objects",
+        "doubleRole": "Chemistry is BOTH an object in Cat_KnowledgeField AND potentially a category itself (Cat_Chemistry with subconcepts as objects)"
+      }
+    },
+
+    {
+      "@id": "m3:category_theory:Morphism",
+      "@type": "owl:Class",
+      "rdfs:label": "Category Morphism",
+      "rdfs:comment": "An arrow (morphism) between category objects. Morphisms represent structure-preserving transformations. In TSCG: tensorization (M3→M2), instantiation (M2→M1), concept application (M1→M0), knowledge transfer between domains.",
+      "m3:category_theory:formalDefinition": "An element f ∈ Mor(A,B) for objects A,B ∈ Ob(C)",
+      "m3:category_theory:notation": {
+        "arrow": "f: A → B",
+        "source": "dom(f) = A (domain)",
+        "target": "cod(f) = B (codomain)",
+        "composition": "g∘f for f: A → B, g: B → C"
+      },
+      "m3:category_theory:morphismTypes": {
+        "identity": "id_A: A → A (trivial morphism)",
+        "isomorphism": "f: A → B with inverse f⁻¹: B → A",
+        "monomorphism": "injective morphism",
+        "epimorphism": "surjective morphism",
+        "endomorphism": "f: A → A (same source and target)",
+        "automorphism": "isomorphic endomorphism"
+      },
+      "m3:category_theory:tscgMorphisms": {
+        "inclusion": "↪ (e.g., Homeostasis ↪ Regulation)",
+        "composition": "∘ (e.g., Learning = Memory ∘ Adaptation)",
+        "duality": "op (e.g., Divergence = Convergence^op)",
+        "emergence": "⇒ (e.g., MetaconceptCombo: M_A ⊗ M_B ⇒ M_C)",
+        "tensorization": "⊗ (combination of objects)",
+        "instantiation": "inst (M2 concept → M1 concept → M0 instance)"
+      }
+    },
+
+    {
+      "@id": "m3:category_theory:Functor",
+      "@type": "owl:Class",
+      "rdfs:label": "Functor",
+      "rdfs:comment": "A structure-preserving map between categories. Functors map objects to objects and morphisms to morphisms, preserving identity and composition. In TSCG: F_⊗ (tensorization M3→M2), F_inst (instantiation M2→M1), domain projection functors.",
+      "m3:category_theory:formalDefinition": "F: C → D mapping Ob(C) → Ob(D) and Mor(C) → Mor(D)",
+      "m3:category_theory:functorLaws": [
+        "Object mapping: F: Ob(C) → Ob(D)",
+        "Morphism mapping: F: Mor_C(A,B) → Mor_D(F(A),F(B))",
+        "Identity preservation: F(id_A) = id_F(A)",
+        "Composition preservation: F(g∘f) = F(g)∘F(f)"
+      ],
+      "m3:category_theory:functorTypes": {
+        "covariant": "Preserves direction of morphisms",
+        "contravariant": "Reverses direction of morphisms",
+        "endofunctor": "F: C → C (same category)",
+        "identity_functor": "Id_C: C → C (trivial functor)",
+        "forgetful": "Forgets structure (e.g., from algebra to set)",
+        "free": "Builds free structure (left adjoint to forgetful)"
+      },
+      "m3:category_theory:tscgFunctors": {
+        "F_tensorization": {
+          "signature": "F_⊗: Cat_M3 → Cat_M2",
+          "description": "Maps ASFID dimensions to metaconcepts via tensor products",
+          "example": "F_⊗(S ⊗ F) = Link (metaconcept from tensor product of Structure and Flow)"
+        },
+        "F_instantiation": {
+          "signature": "F_inst: Cat_M2 → Cat_M1",
+          "description": "Maps metaconcepts to domain-specific concepts",
+          "example": "F_inst(Link) = ChemicalLink (in Chemistry domain)"
+        },
+        "F_domain_projection": {
+          "signature": "F_proj: Cat_M1 → Cat_KnowledgeField",
+          "description": "Projects M1 concepts onto their parent knowledge field",
+          "example": "F_proj(ChemicalLink) = Chemistry"
+        }
+      }
+    },
+
+    {
+      "@id": "m3:category_theory:NaturalTransformation",
+      "@type": "owl:Class",
+      "rdfs:label": "Natural Transformation",
+      "rdfs:comment": "A morphism between functors. Natural transformations relate two functors F,G: C → D via a family of morphisms. In TSCG: transformations between different observer perspectives (human vs AI), translations between knowledge representations.",
+      "m3:category_theory:formalDefinition": "η: F ⇒ G is a family η_A: F(A) → G(A) for each A ∈ Ob(C)",
+      "m3:category_theory:naturality": {
+        "description": "Naturality square commutes",
+        "diagram": "For f: A → B, the square F(A) →^η_A G(A), F(B) →^η_B G(B) commutes",
+        "law": "η_B ∘ F(f) = G(f) ∘ η_A"
+      },
+      "m3:category_theory:tscgApplications": [
+        "Observer transformations: different perspectives on same territory",
+        "Knowledge transfer: translation between disciplines",
+        "Representation changes: different encodings of same concept"
+      ]
+    },
+
+    {
+      "@id": "m3:category_theory:Adjunction",
+      "@type": "owl:Class",
+      "rdfs:label": "Adjunction",
+      "rdfs:comment": "A relationship between two functors F: C → D and G: D → C where F is left adjoint to G (F ⊣ G). Adjunctions capture the idea of 'best approximation'. In TSCG: observation-interpretation duality (Φ ⊣ Ψ), free-forgetful pairs.",
+      "m3:category_theory:formalDefinition": "F ⊣ G iff Mor_D(F(A),B) ≅ Mor_C(A,G(B)) naturally in A,B",
+      "m3:category_theory:components": {
+        "unit": "η: Id_C ⇒ G∘F",
+        "counit": "ε: F∘G ⇒ Id_D"
+      },
+      "m3:category_theory:tscgAdjunctions": {
+        "observation_interpretation": {
+          "description": "Φ (Territory→Map) ⊣ Ψ (Map→Territory)",
+          "interpretation": "Best map given territory ↔ Best territory interpretation given map"
+        }
+      }
+    },
+
+    {
+      "@id": "m3:category_theory:belongsToCategory",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "belongs to category",
+      "rdfs:domain": "m3:category_theory:CategoryObject",
+      "rdfs:range": "m3:category_theory:MathematicalCategory",
+      "rdfs:comment": "Relates an object to the category it belongs to. Example: Chemistry belongsToCategory Cat_KnowledgeField."
+    },
+
+    {
+      "@id": "m3:category_theory:hasMorphism",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "has morphism",
+      "rdfs:domain": "m3:category_theory:MathematicalCategory",
+      "rdfs:range": "m3:category_theory:Morphism",
+      "rdfs:comment": "Relates a category to one of its morphisms."
+    },
+
+    {
+      "@id": "m3:category_theory:morphismSource",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "morphism source",
+      "rdfs:domain": "m3:category_theory:Morphism",
+      "rdfs:range": "m3:category_theory:CategoryObject",
+      "rdfs:comment": "The source (domain) object of a morphism."
+    },
+
+    {
+      "@id": "m3:category_theory:morphismTarget",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "morphism target",
+      "rdfs:domain": "m3:category_theory:Morphism",
+      "rdfs:range": "m3:category_theory:CategoryObject",
+      "rdfs:comment": "The target (codomain) object of a morphism."
+    },
+
+    {
+      "@id": "m3:category_theory:composedWith",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "composed with",
+      "rdfs:domain": "m3:category_theory:Morphism",
+      "rdfs:range": "m3:category_theory:Morphism",
+      "rdfs:comment": "Morphism composition: if f: A→B and g: B→C, then f composedWith g yields g∘f: A→C."
+    },
+
+    {
+      "@id": "m3:category_theory:functorSourceCategory",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "functor source category",
+      "rdfs:domain": "m3:category_theory:Functor",
+      "rdfs:range": "m3:category_theory:MathematicalCategory",
+      "rdfs:comment": "The source category of a functor."
+    },
+
+    {
+      "@id": "m3:category_theory:functorTargetCategory",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "functor target category",
+      "rdfs:domain": "m3:category_theory:Functor",
+      "rdfs:range": "m3:category_theory:MathematicalCategory",
+      "rdfs:comment": "The target category of a functor."
+    },
+
+    {
+      "@id": "m3:category_theory:mapsObjectTo",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "maps object to",
+      "rdfs:domain": "m3:category_theory:Functor",
+      "rdfs:range": "m3:category_theory:CategoryObject",
+      "rdfs:comment": "How a functor maps objects. F mapsObjectTo F(A) for object A."
+    },
+
+    {
+      "@id": "m3:category_theory:mapsMorphismTo",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "maps morphism to",
+      "rdfs:domain": "m3:category_theory:Functor",
+      "rdfs:range": "m3:category_theory:Morphism",
+      "rdfs:comment": "How a functor maps morphisms. F mapsMorphismTo F(f) for morphism f."
+    },
+
+    {
+      "@id": "m3:category_theory:morphismType",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "morphism type",
+      "rdfs:domain": "m3:category_theory:Morphism",
+      "rdfs:range": "xsd:string",
+      "rdfs:comment": "Type classification of morphism (identity, isomorphism, inclusion, etc.)."
+    },
+
+    {
+      "@id": "m3:category_theory:functorType",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "functor type",
+      "rdfs:domain": "m3:category_theory:Functor",
+      "rdfs:range": "xsd:string",
+      "rdfs:comment": "Type classification of functor (covariant, contravariant, endofunctor, etc.)."
+    },
+
+    {
+      "@id": "m3:category_theory:categoryName",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "category name",
+      "rdfs:domain": "m3:category_theory:MathematicalCategory",
+      "rdfs:range": "xsd:string",
+      "rdfs:comment": "Name of the category (e.g., 'Cat_M2', 'Cat_KnowledgeField')."
+    },
+
+    {
+      "@id": "m3:category_theory:Cat_TSCG",
+      "@type": ["owl:NamedIndividual", "m3:category_theory:MathematicalCategory"],
+      "rdfs:label": "Category of TSCG Layers",
+      "rdfs:comment": "The category whose objects are TSCG layers {M3, M2, M1, M0} and morphisms are functors between them.",
+      "m3:category_theory:categoryName": "Cat_TSCG",
+      "m3:category_theory:objects": ["M3", "M2", "M1", "M0"],
+      "m3:category_theory:morphisms": ["F_⊗: M3→M2", "F_inst: M2→M1", "F_concretize: M1→M0"]
+    },
+
+    {
+      "@id": "m3:category_theory:Cat_M3_ASFID",
+      "@type": ["owl:NamedIndividual", "m3:category_theory:MathematicalCategory"],
+      "rdfs:label": "Category of ASFID Dimensions",
+      "rdfs:comment": "Category whose objects are ASFID dimensions and morphisms are tensor products.",
+      "m3:category_theory:categoryName": "Cat_M3_ASFID",
+      "m3:category_theory:objects": ["Attractor", "Structure", "Flow", "Information", "Dynamics"]
+    },
+
+    {
+      "@id": "m3:category_theory:Cat_M3_REVOI",
+      "@type": ["owl:NamedIndividual", "m3:category_theory:MathematicalCategory"],
+      "rdfs:label": "Category of REVOI Dimensions",
+      "rdfs:comment": "Category whose objects are REVOI dimensions and morphisms are tensor products.",
+      "m3:category_theory:categoryName": "Cat_M3_REVOI",
+      "m3:category_theory:objects": ["Representable", "Evolvable", "Verifiable", "Observable", "Interoperable"]
+    },
+
+    {
+      "@id": "m3:category_theory:F_tensorization",
+      "@type": ["owl:NamedIndividual", "m3:category_theory:Functor"],
+      "rdfs:label": "Tensorization Functor",
+      "rdfs:comment": "Functor mapping M3 dimensions to M2 metaconcepts via tensor products.",
+      "m3:category_theory:functorType": "covariant",
+      "m3:category_theory:functorSourceCategory": "m3:category_theory:Cat_M3_ASFID",
+      "m3:category_theory:signature": "F_⊗: Cat_M3 → Cat_M2",
+      "m3:category_theory:examples": [
+        "F_⊗(S ⊗ F) = Link",
+        "F_⊗(A ⊗ S ⊗ F) = Reservoir",
+        "F_⊗(S ⊗ I ⊗ D ⊗ F ⊗ V) = Processor"
+      ]
+    },
+
+    {
+      "@id": "m3:category_theory:F_instantiation",
+      "@type": ["owl:NamedIndividual", "m3:category_theory:Functor"],
+      "rdfs:label": "Instantiation Functor",
+      "rdfs:comment": "Functor mapping M2 metaconcepts to M1 domain-specific concepts.",
+      "m3:category_theory:functorType": "covariant",
+      "m3:category_theory:signature": "F_inst: Cat_M2 → Cat_M1",
+      "m3:category_theory:examples": [
+        "F_inst(Link) = ChemicalLink (in Chemistry)",
+        "F_inst(Processor) = BiologicalProcessor (in Biology)",
+        "F_inst(Component) = MechanicalComponent (in Mechanics)"
+      ]
+    }
+  ]
+}

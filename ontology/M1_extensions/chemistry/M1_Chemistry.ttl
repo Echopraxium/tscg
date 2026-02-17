@@ -1,0 +1,172 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <m1:chemistry:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+ns1:Catalyst a owl:Class ;
+    rdfs:label "Catalyst" ;
+    rdfs:comment "Chemical species that increases reaction rate without being consumed. Instantiates M2:Catalysis and M2:Mediator." ;
+    rdfs:subClassOf "m1:ChemicalSpecies" ;
+    ns1:examples "Enzymes (biological catalysts)",
+        "H₂SO₄ (acid catalyst in esterification)",
+        "Platinum (catalytic converter)" ;
+    ns1:instantiatesMetaconcept "m2:Catalysis",
+        "m2:Mediator" ;
+    ns1:properties [ ns1:mechanism "Lowers activation energy barrier" ;
+            ns1:regeneration "Recovered unchanged after reaction" ;
+            ns1:specificity "Often selective for particular reactions" ] .
+
+ns1:ChemicalReaction a owl:Class ;
+    rdfs:label "Chemical Reaction" ;
+    rdfs:comment "Process involving transformation of chemical species through bond breaking and formation, with associated energy changes. Instantiates M2:Process with chemistry-specific semantics." ;
+    rdfs:subClassOf "m2:Process" ;
+    skos:altLabel "Chemical Transformation",
+        "Reaction" ;
+    ns1:asfidSignature "D⊗F (high dynamics, high flow)" ;
+    ns1:constraints "Conservation of charge",
+        "Conservation of mass (atoms)",
+        "Energy conservation (1st law thermodynamics)" ;
+    ns1:examples "CH₄ + 2O₂ → CO₂ + 2H₂O (methane combustion)",
+        "CaCO₃ → CaO + CO₂ (thermal decomposition)",
+        "H₂ + O₂ → H₂O (water formation)" ;
+    ns1:instantiatesMetaconcept "m2:Event",
+        "m2:Process",
+        "m2:Transformation" ;
+    ns1:properties [ ns1:catalyst [ ] ;
+            ns1:energyBalance [ ] ;
+            ns1:mechanism [ ] ;
+            ns1:products [ ] ;
+            ns1:rateConstant [ ] ;
+            ns1:reactants [ ] ] .
+
+ns1:ChemicalSpecies a owl:Class ;
+    rdfs:label "Chemical Species" ;
+    rdfs:comment "Identifiable chemical entity with specific molecular formula and properties. Instantiates M2:Component in chemistry domain." ;
+    rdfs:subClassOf "m2:Component" ;
+    skos:altLabel "Compound",
+        "Element",
+        "Ion",
+        "Molecule" ;
+    ns1:examples "CH₄ (methane)",
+        "H⁺ (proton)",
+        "H₂O (water)",
+        "NaCl (sodium chloride)",
+        "O₂ (dioxygen)" ;
+    ns1:instantiatesMetaconcept "m2:Component" ;
+    ns1:properties [ ns1:molecularFormula "Chemical composition (e.g., H₂O, CO₂, C₆H₁₂O₆)" ;
+            ns1:molecularMass "Mass in g/mol or Da" ;
+            ns1:phase "Gas",
+                "Liquid",
+                "Plasma",
+                "Solid" ;
+            ns1:structure "3D arrangement of atoms (if applicable)" ] ;
+    ns1:subTypes "m1:Compound",
+        "m1:Element",
+        "m1:Ion",
+        "m1:Radical" .
+
+ns1:Combustion a owl:Class ;
+    rdfs:label "Combustion" ;
+    rdfs:comment "Exothermic chemical reaction between a fuel and an oxidizer, producing heat, light, and combustion products. Canonical example: Fire Triangle (Fuel + O₂ + Heat → Flame)." ;
+    rdfs:seeAlso "m1:Deflagration",
+        "m1:Oxidation",
+        "m1:Pyrolysis" ;
+    rdfs:subClassOf "m1:ChemicalReaction" ;
+    skos:altLabel "Burning",
+        "Fire" ;
+    ns1:asfidSignature "High A, Medium S, High F, Medium I, High D" ;
+    ns1:constraints [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:examples [ ],
+        [ ],
+        [ ] ;
+    ns1:feedbackLoop [ ] ;
+    ns1:fireTrianglePrinciple [ ] ;
+    ns1:instantiatesMetaconcept "m2:Composition",
+        "m2:Dissipation",
+        "m2:Feedback",
+        "m2:Process",
+        "m2:Synergy",
+        "m2:Threshold",
+        "m2:Trigger" ;
+    ns1:properties [ ns1:energyBalance "Exothermic (always)" ;
+            ns1:flameColor [ ] ;
+            ns1:flameStructure [ ] ;
+            ns1:ignitionTemperature [ ] ;
+            ns1:products [ ] ] ;
+    ns1:requiredComponents [ ],
+        [ ],
+        [ ] ;
+    ns1:subTypes [ ],
+        [ ],
+        [ ] .
+
+ns1:M1_Chemistry_Ontology a owl:Ontology ;
+    dcterms:created "2026-01-17" ;
+    dcterms:creator "TSCG Project" ;
+    dcterms:description "Domain-specific instantiation of M2 metaconcepts for chemistry. Defines chemical processes, reactions, substances, and transformations using TSCG M2 metaconcepts as foundation." ;
+    dcterms:modified "2026-01-17" ;
+    dcterms:title "TSCG M1 Extension: Chemistry" ;
+    rdfs:comment "This M1 extension specializes M2 metaconcepts for chemical systems. Key principles: (1) Inherit M2 tensor formulas, (2) Add chemistry-specific properties, (3) Maintain ASFID foundation." ;
+    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/TSCG_M2_MetaConcepts_Ontology.jsonld" ;
+    owl:versionInfo "1.0.0" ;
+    ns1:domain "Chemistry" ;
+    ns1:examplePoclets "Acid-Base Neutralization",
+        "Enzyme Catalysis",
+        "Fire Triangle (Combustion)",
+        "Photosynthesis",
+        "Water Electrolysis" ;
+    ns1:functor "F_instantiate : M2 → M1_Chemistry" ;
+    ns1:scope "Catalysis and reaction mechanisms",
+        "Chemical equilibria and dynamics",
+        "Chemical reactions and processes",
+        "Molecular structure and bonding",
+        "Thermochemistry and kinetics" .
+
+ns1:Oxidation a owl:Class ;
+    rdfs:label "Oxidation" ;
+    rdfs:comment "Reaction involving electron loss or oxygen gain. Combustion is a rapid oxidation; corrosion (rust) is slow oxidation." ;
+    rdfs:seeAlso "m1:Combustion",
+        "m1:Corrosion",
+        "m1:Reduction" ;
+    rdfs:subClassOf "m1:ChemicalReaction" ;
+    skos:altLabel "Electron Loss",
+        "Oxygen Gain" ;
+    ns1:examples "2Fe + O₂ → 2FeO (iron rusting - slow oxidation)",
+        "C + O₂ → CO₂ (carbon combustion - fast oxidation)",
+        "Fe²⁺ → Fe³⁺ + e⁻ (electron loss)" ;
+    ns1:instantiatesMetaconcept "m2:Process",
+        "m2:Transformation" ;
+    ns1:properties [ ns1:coupledReaction "Always paired with Reduction (redox)" ;
+            ns1:electronTransfer "Loss of electrons" ;
+            ns1:oxidationState "Increase in oxidation number" ] .
+
+ns1:ReactionMechanism a owl:Class ;
+    rdfs:label "Reaction Mechanism" ;
+    rdfs:comment "Step-by-step sequence of elementary reactions constituting overall chemical transformation." ;
+    rdfs:subClassOf "m2:Process" ;
+    ns1:instantiatesMetaconcept "m2:Path",
+        "m2:Process" ;
+    ns1:properties [ ns1:elementarySteps "List of individual reaction steps" ;
+            ns1:intermediates "Transient species formed and consumed" ;
+            ns1:rateDeterminingStep "Slowest step controlling overall rate" ] .
+
+ns1:Reduction a owl:Class ;
+    rdfs:label "Reduction" ;
+    rdfs:comment "Reaction involving electron gain or oxygen loss. Always coupled with Oxidation in redox reactions." ;
+    rdfs:seeAlso "m1:Oxidation" ;
+    rdfs:subClassOf "m1:ChemicalReaction" ;
+    skos:altLabel "Electron Gain",
+        "Oxygen Loss" ;
+    ns1:examples "Cu²⁺ + 2e⁻ → Cu (copper plating)",
+        "Fe₂O₃ + 3CO → 2Fe + 3CO₂ (iron smelting)",
+        "O₂ + 4e⁻ → 2O²⁻ (oxygen reduction)" ;
+    ns1:instantiatesMetaconcept "m2:Process",
+        "m2:Transformation" ;
+    ns1:properties [ ns1:coupledReaction "Always paired with Oxidation (redox)" ;
+            ns1:electronTransfer "Gain of electrons" ;
+            ns1:oxidationState "Decrease in oxidation number" ] .
+

@@ -1,0 +1,100 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#> .
+@prefix ns1: <m0:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ns1:CMYK_Subtractive a owl:NamedIndividual,
+        "m0:Poclet" ;
+    rdfs:label "CMYK Subtractive Color Synthesis" ;
+    dcterms:created "2026-01-17" ;
+    dcterms:creator "Echopraxium with collaboration of Claude AI Pro" ;
+    dcterms:references "Adobe (2001). PostScript Language Reference Manual - CMYK color model",
+        "ISO 12647:2013 - Graphic technology standard",
+        "Kipphan, H. (2001). Handbook of Print Media",
+        "Sharma, G. (2003). Digital Color Imaging Handbook" ;
+    rdfs:comment "Practical subtractive color synthesis using Cyan, Magenta, Yellow, Key (Black) inks. Industry-standard model for commercial printing. FOUR channels (C, M, Y, K) where K compensates for imperfect CMY black. Each channel is a SIGNAL (m2:Signal) carrying ink coverage information. The four signals undergo FUSION (m2:Fusion) through spectral filtering to produce printed color." ;
+    rdfs:seeAlso ns1:CMY_Subtractive,
+        ns1:ColorSynthesisFederated,
+        ns1:RGB_Additive ;
+    ns1:applications "Commercial offset printing (magazines, brochures)",
+        "Digital printing (laser, inkjet)",
+        "Fine art reproduction",
+        "Large format printing (posters, banners)",
+        "Newspapers (newsprint)",
+        "Packaging (labels, boxes)" ;
+    ns1:blackGenerationStrategies [ ] ;
+    ns1:channels ns1:CyanChannel_CMYK,
+        ns1:KeyChannel,
+        ns1:MagentaChannel_CMYK,
+        ns1:YellowChannel_CMYK ;
+    ns1:domain "Printing / Commercial Graphics" ;
+    ns1:epistemicGap [ ] ;
+    ns1:extendsModel "CMY (adds Key channel for practical reasons)" ;
+    ns1:fusionPrinciple [ ] ;
+    ns1:halftoning [ ] ;
+    ns1:mapSpace [ ] ;
+    ns1:metaconceptsMobilized [ ] ;
+    ns1:oriveAnalysis [ ] ;
+    ns1:partOfFederation ns1:ColorSynthesisFederated ;
+    ns1:physicalBasis "Wavelength-selective absorption by inks + opaque black ink for contrast" ;
+    ns1:pocletType "Composite (Specialized, Extended)" ;
+    ns1:principle "Subtractive Synthesis (Ink Layering) + Practical Optimization (K channel)" ;
+    ns1:standards [ ] ;
+    ns1:territorySpace [ ] ;
+    ns1:validation [ ] .
+
+ns1:CyanChannel_CMYK a m2:Channel ;
+    rdfs:label "Cyan Channel (C)" ;
+    ns1:channelType "Ink coverage (absorption filter)" ;
+    ns1:function "Cyan ink coverage percentage" ;
+    ns1:metaconceptInstantiation "m2:Channel" ;
+    ns1:physicalCorrelate "Cyan ink dot density on paper" ;
+    ns1:rangeAnalog "[0%, 100%] (coverage)" ;
+    ns1:rangeDigital "[0, 100] percent" ;
+    ns1:role "Absorbs red light, transmits cyan" ;
+    ns1:signalCarried [ a m2:Signal ] ;
+    ns1:tensorFormula "S⊗I⊗F" .
+
+ns1:KeyChannel a m2:Channel ;
+    rdfs:label "Key Channel (K) - Black" ;
+    ns1:channelType "Opaque black ink (non-spectral)" ;
+    ns1:function "Black ink coverage percentage" ;
+    ns1:metaconceptInstantiation "m2:Channel" ;
+    ns1:physicalCorrelate "Black ink dot density on paper" ;
+    ns1:practicalReasons "Better text legibility (sharp black text)",
+        "CMY(100,100,100) = muddy brown (pigment impurity)",
+        "Cost savings (K cheaper than C+M+Y)",
+        "K provides true deep black",
+        "Less ink volume (reduces bleeding, drying time)" ;
+    ns1:rangeAnalog "[0%, 100%] (coverage)" ;
+    ns1:rangeDigital "[0, 100] percent" ;
+    ns1:role "Provides true black, enhances contrast, saves ink" ;
+    ns1:signalCarried [ a m2:Signal ] ;
+    ns1:tensorFormula "S⊗I⊗F" ;
+    ns1:whyKey "K = Key plate (keystone), or blacK to avoid confusion with Blue" .
+
+ns1:MagentaChannel_CMYK a m2:Channel ;
+    rdfs:label "Magenta Channel (M)" ;
+    ns1:channelType "Ink coverage (absorption filter)" ;
+    ns1:function "Magenta ink coverage percentage" ;
+    ns1:metaconceptInstantiation "m2:Channel" ;
+    ns1:physicalCorrelate "Magenta ink dot density on paper" ;
+    ns1:rangeAnalog "[0%, 100%] (coverage)" ;
+    ns1:rangeDigital "[0, 100] percent" ;
+    ns1:role "Absorbs green light, transmits magenta" ;
+    ns1:signalCarried [ a m2:Signal ] ;
+    ns1:tensorFormula "S⊗I⊗F" .
+
+ns1:YellowChannel_CMYK a m2:Channel ;
+    rdfs:label "Yellow Channel (Y)" ;
+    ns1:channelType "Ink coverage (absorption filter)" ;
+    ns1:function "Yellow ink coverage percentage" ;
+    ns1:metaconceptInstantiation "m2:Channel" ;
+    ns1:physicalCorrelate "Yellow ink dot density on paper" ;
+    ns1:rangeAnalog "[0%, 100%] (coverage)" ;
+    ns1:rangeDigital "[0, 100] percent" ;
+    ns1:role "Absorbs blue light, transmits yellow" ;
+    ns1:signalCarried [ a m2:Signal ] ;
+    ns1:tensorFormula "S⊗I⊗F" .
+

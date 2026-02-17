@@ -1,0 +1,203 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <M3_GenesisSpace.jsonld#category_theory:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:Adjunction> a owl:Class ;
+    rdfs:label "Adjunction" ;
+    ns1:components [ ] ;
+    ns1:formalDefinition "F ⊣ G iff Mor_D(F(A),B) ≅ Mor_C(A,G(B)) naturally in A,B" ;
+    ns1:tscgAdjunctions [ ] ;
+    rdfs:comment "A relationship between two functors F: C → D and G: D → C where F is left adjoint to G (F ⊣ G). Adjunctions capture the idea of 'best approximation'. In TSCG: observation-interpretation duality (Φ ⊣ Ψ), free-forgetful pairs." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:Cat_M3_ASFID> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:MathematicalCategory> ;
+    rdfs:label "Category of ASFID Dimensions" ;
+    ns1:categoryName "Cat_M3_ASFID" ;
+    ns1:objects "Attractor",
+        "Dynamics",
+        "Flow",
+        "Information",
+        "Structure" ;
+    rdfs:comment "Category whose objects are ASFID dimensions and morphisms are tensor products." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:Cat_M3_REVOI> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:MathematicalCategory> ;
+    rdfs:label "Category of REVOI Dimensions" ;
+    ns1:categoryName "Cat_M3_REVOI" ;
+    ns1:objects "Evolvable",
+        "Interoperable",
+        "Observable",
+        "Representable",
+        "Verifiable" ;
+    rdfs:comment "Category whose objects are REVOI dimensions and morphisms are tensor products." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:Cat_TSCG> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:MathematicalCategory> ;
+    rdfs:label "Category of TSCG Layers" ;
+    ns1:categoryName "Cat_TSCG" ;
+    ns1:morphisms "F_concretize: M1→M0",
+        "F_inst: M2→M1",
+        "F_⊗: M3→M2" ;
+    ns1:objects "M0",
+        "M1",
+        "M2",
+        "M3" ;
+    rdfs:comment "The category whose objects are TSCG layers {M3, M2, M1, M0} and morphisms are functors between them." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:CategoryObject> a owl:Class ;
+    rdfs:label "Category Object" ;
+    ns1:formalDefinition "An element A ∈ Ob(C) for some category C" ;
+    ns1:properties "Every object has an identity morphism id_A: A → A",
+        "Objects are sources and targets of morphisms",
+        "Objects themselves have no internal structure in category theory",
+        "Structure comes from morphisms TO and FROM the object" ;
+    ns1:tscgReification [ ] ;
+    rdfs:comment "An object within a mathematical category. Objects are the 'things' in a category; morphisms are the 'relationships' between them. In TSCG: Chemistry is an object in Cat_KnowledgeField, Link is an object in Cat_M2, ASFID is an object in Cat_M3." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:CategoryTheory> a owl:Ontology ;
+    rdfs:label "Category Theory - Mathematical Foundation" ;
+    ns1:ontologyCategory <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:MathematicalFoundation> ;
+    dcterms:created "2026-02-17" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Formal ontology encoding Category Theory as the mathematical foundation for TSCG. Defines categories, objects, morphisms, functors, and natural transformations. Provides the categorical structure underlying TSCG's layered architecture (M3→M2→M1→M0) and enables formal reasoning about transformations, compositions, and reifications." ;
+    dcterms:title "TSCG M3 Category Theory - Mathematical Foundation" ;
+    rdfs:comment "M3 Category Theory provides the mathematical vocabulary for TSCG's categorical structure. This is the most fundamental layer (M3) as Category Theory describes the architecture of the entire framework. Imported by other TSCG ontologies to annotate their categorical properties." ;
+    rdfs:seeAlso "https://en.wikipedia.org/wiki/Category_theory",
+        "https://ncatlab.org/nlab/show/category+theory" ;
+    owl:versionInfo "1.0.0" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:F_instantiation> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:Functor> ;
+    rdfs:label "Instantiation Functor" ;
+    ns1:examples "F_inst(Component) = MechanicalComponent (in Mechanics)",
+        "F_inst(Link) = ChemicalLink (in Chemistry)",
+        "F_inst(Processor) = BiologicalProcessor (in Biology)" ;
+    ns1:functorType "covariant" ;
+    ns1:signature "F_inst: Cat_M2 → Cat_M1" ;
+    rdfs:comment "Functor mapping M2 metaconcepts to M1 domain-specific concepts." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:F_tensorization> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:Functor> ;
+    rdfs:label "Tensorization Functor" ;
+    ns1:examples "F_⊗(A ⊗ S ⊗ F) = Reservoir",
+        "F_⊗(S ⊗ F) = Link",
+        "F_⊗(S ⊗ I ⊗ D ⊗ F ⊗ V) = Processor" ;
+    ns1:functorSourceCategory "m3:category_theory:Cat_M3_ASFID" ;
+    ns1:functorType "covariant" ;
+    ns1:signature "F_⊗: Cat_M3 → Cat_M2" ;
+    rdfs:comment "Functor mapping M3 dimensions to M2 metaconcepts via tensor products." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:Morphism> a owl:Class ;
+    rdfs:label "Category Morphism" ;
+    ns1:formalDefinition "An element f ∈ Mor(A,B) for objects A,B ∈ Ob(C)" ;
+    ns1:morphismTypes [ ] ;
+    ns1:notation [ ] ;
+    ns1:tscgMorphisms [ ] ;
+    rdfs:comment "An arrow (morphism) between category objects. Morphisms represent structure-preserving transformations. In TSCG: tensorization (M3→M2), instantiation (M2→M1), concept application (M1→M0), knowledge transfer between domains." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:NaturalTransformation> a owl:Class ;
+    rdfs:label "Natural Transformation" ;
+    ns1:formalDefinition "η: F ⇒ G is a family η_A: F(A) → G(A) for each A ∈ Ob(C)" ;
+    ns1:naturality [ ] ;
+    ns1:tscgApplications "Knowledge transfer: translation between disciplines",
+        "Observer transformations: different perspectives on same territory",
+        "Representation changes: different encodings of same concept" ;
+    rdfs:comment "A morphism between functors. Natural transformations relate two functors F,G: C → D via a family of morphisms. In TSCG: transformations between different observer perspectives (human vs AI), translations between knowledge representations." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:belongsToCategory> a owl:ObjectProperty ;
+    rdfs:label "belongs to category" ;
+    rdfs:comment "Relates an object to the category it belongs to. Example: Chemistry belongsToCategory Cat_KnowledgeField." ;
+    rdfs:domain "m3:category_theory:CategoryObject" ;
+    rdfs:range "m3:category_theory:MathematicalCategory" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:categoryName> a owl:DatatypeProperty ;
+    rdfs:label "category name" ;
+    rdfs:comment "Name of the category (e.g., 'Cat_M2', 'Cat_KnowledgeField')." ;
+    rdfs:domain "m3:category_theory:MathematicalCategory" ;
+    rdfs:range "xsd:string" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:composedWith> a owl:ObjectProperty ;
+    rdfs:label "composed with" ;
+    rdfs:comment "Morphism composition: if f: A→B and g: B→C, then f composedWith g yields g∘f: A→C." ;
+    rdfs:domain "m3:category_theory:Morphism" ;
+    rdfs:range "m3:category_theory:Morphism" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:functorSourceCategory> a owl:ObjectProperty ;
+    rdfs:label "functor source category" ;
+    rdfs:comment "The source category of a functor." ;
+    rdfs:domain "m3:category_theory:Functor" ;
+    rdfs:range "m3:category_theory:MathematicalCategory" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:functorTargetCategory> a owl:ObjectProperty ;
+    rdfs:label "functor target category" ;
+    rdfs:comment "The target category of a functor." ;
+    rdfs:domain "m3:category_theory:Functor" ;
+    rdfs:range "m3:category_theory:MathematicalCategory" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:functorType> a owl:DatatypeProperty ;
+    rdfs:label "functor type" ;
+    rdfs:comment "Type classification of functor (covariant, contravariant, endofunctor, etc.)." ;
+    rdfs:domain "m3:category_theory:Functor" ;
+    rdfs:range "xsd:string" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:hasMorphism> a owl:ObjectProperty ;
+    rdfs:label "has morphism" ;
+    rdfs:comment "Relates a category to one of its morphisms." ;
+    rdfs:domain "m3:category_theory:MathematicalCategory" ;
+    rdfs:range "m3:category_theory:Morphism" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:mapsMorphismTo> a owl:ObjectProperty ;
+    rdfs:label "maps morphism to" ;
+    rdfs:comment "How a functor maps morphisms. F mapsMorphismTo F(f) for morphism f." ;
+    rdfs:domain "m3:category_theory:Functor" ;
+    rdfs:range "m3:category_theory:Morphism" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:mapsObjectTo> a owl:ObjectProperty ;
+    rdfs:label "maps object to" ;
+    rdfs:comment "How a functor maps objects. F mapsObjectTo F(A) for object A." ;
+    rdfs:domain "m3:category_theory:Functor" ;
+    rdfs:range "m3:category_theory:CategoryObject" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:morphismSource> a owl:ObjectProperty ;
+    rdfs:label "morphism source" ;
+    rdfs:comment "The source (domain) object of a morphism." ;
+    rdfs:domain "m3:category_theory:Morphism" ;
+    rdfs:range "m3:category_theory:CategoryObject" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:morphismTarget> a owl:ObjectProperty ;
+    rdfs:label "morphism target" ;
+    rdfs:comment "The target (codomain) object of a morphism." ;
+    rdfs:domain "m3:category_theory:Morphism" ;
+    rdfs:range "m3:category_theory:CategoryObject" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:morphismType> a owl:DatatypeProperty ;
+    rdfs:label "morphism type" ;
+    rdfs:comment "Type classification of morphism (identity, isomorphism, inclusion, etc.)." ;
+    rdfs:domain "m3:category_theory:Morphism" ;
+    rdfs:range "xsd:string" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:Functor> a owl:Class ;
+    rdfs:label "Functor" ;
+    ns1:formalDefinition "F: C → D mapping Ob(C) → Ob(D) and Mor(C) → Mor(D)" ;
+    ns1:functorLaws "Composition preservation: F(g∘f) = F(g)∘F(f)",
+        "Identity preservation: F(id_A) = id_F(A)",
+        "Morphism mapping: F: Mor_C(A,B) → Mor_D(F(A),F(B))",
+        "Object mapping: F: Ob(C) → Ob(D)" ;
+    ns1:functorTypes [ ] ;
+    ns1:tscgFunctors [ ] ;
+    rdfs:comment "A structure-preserving map between categories. Functors map objects to objects and morphisms to morphisms, preserving identity and composition. In TSCG: F_⊗ (tensorization M3→M2), F_inst (instantiation M2→M1), domain projection functors." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#category_theory:MathematicalCategory> a owl:Class ;
+    rdfs:label "Mathematical Category" ;
+    ns1:categoryAxioms "Associativity: (h∘g)∘f = h∘(g∘f)",
+        "Composition: ∀f ∈ Mor(A,B), g ∈ Mor(B,C), ∃ g∘f ∈ Mor(A,C)",
+        "Identity: ∀A ∈ Ob(C), ∃ id_A ∈ Mor(A,A)",
+        "Unit law: f∘id_A = f, id_B∘f = f" ;
+    ns1:structure [ ] ;
+    ns1:tscgExamples "Cat_KnowledgeField: Ob = {Chemistry, Biology, Optics...}, Mor = knowledge transfers",
+        "Cat_M2: Ob = {Link, Processor, Component...}, Mor = metaconcept inclusions",
+        "Cat_M3_ASFID: Ob = {A, S, F, I, D}, Mor = tensor products",
+        "Cat_TSCG: Ob = {M3, M2, M1, M0}, Mor = functors F_⊗, F_inst" ;
+    rdfs:comment "A category in the mathematical sense: a collection of objects (Ob(C)) and morphisms (Mor(C)) between them, satisfying identity and associativity axioms. In TSCG: Cat_M3 (ASFID dimensions), Cat_M2 (metaconcepts), Cat_M1 (concepts), Cat_KnowledgeField (Chemistry, Biology, Optics...)." .
+

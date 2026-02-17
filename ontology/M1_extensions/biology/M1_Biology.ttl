@@ -1,0 +1,224 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <m1:biology:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ns1:AutocrineSignaling a owl:Class ;
+    rdfs:label "Autocrine Signaling" ;
+    rdfs:comment "Self-signaling pattern where a cell responds to signals it secretes itself. Used for feedback regulation and autonomous cell behavior." ;
+    rdfs:subClassOf "m1:biology:CellularCommunication" ;
+    ns1:examples "Cancer cell growth factor self-stimulation",
+        "Neurotransmitter autoreceptors",
+        "T-cell IL-2 autocrine loops" ;
+    ns1:mechanism "Local concentration gradient around secreting cell" ;
+    ns1:spatialRange "Intracellular to immediate cell surface (~1-10 µm)" ;
+    ns1:temporalRange "Milliseconds to seconds" .
+
+ns1:BloodCirculation a owl:Class ;
+    rdfs:label "Blood Circulation" ;
+    rdfs:comment "Cardiovascular transport system distributing nutrients, gases, hormones, and immune cells throughout organism." ;
+    ns1:m2Basis "m2:Flow",
+        "m2:Network",
+        "m2:Transport" ;
+    ns1:parameters [ ] .
+
+ns1:Cell a owl:Class ;
+    rdfs:label "Cell" ;
+    rdfs:comment "Fundamental unit of life. Bounded compartment capable of metabolism, growth, and reproduction." ;
+    ns1:m2Basis "m2:Agent",
+        "m2:Component",
+        "m2:System" .
+
+ns1:CellularCommunication a owl:Class ;
+    rdfs:label "Cellular Communication" ;
+    rdfs:comment "General pattern for intercellular signaling and information exchange. Foundation for all cell-cell communication modes." ;
+    rdfs:subClassOf "m1:core:CommunicationPattern" ;
+    ns1:domains "Developmental Biology",
+        "Endocrinology",
+        "Immunology",
+        "Neuroscience" ;
+    ns1:m2Basis "m2:Channel",
+        "m2:Information",
+        "m2:Signal" ;
+    ns1:tensorFormula "S⊗I⊗F" .
+
+ns1:DiffusionGradient a owl:Class ;
+    rdfs:label "Diffusion Gradient" ;
+    rdfs:comment "Spatial concentration pattern driving molecular movement from high to low concentration. Governed by Fick's laws." ;
+    ns1:m2Basis "m2:Field",
+        "m2:Flow",
+        "m2:Gradient" ;
+    ns1:physics [ ] .
+
+ns1:EndocrineSignaling a owl:Class ;
+    rdfs:label "Endocrine Signaling" ;
+    rdfs:comment "Systemic signaling pattern where specialized glands secrete hormones into bloodstream for organism-wide coordination. Classic long-range hormonal communication." ;
+    rdfs:subClassOf "m1:biology:CellularCommunication" ;
+    ns1:examples "Cortisol stress response",
+        "Growth hormone",
+        "Insulin glucose regulation",
+        "Sex steroids (estrogen, testosterone)",
+        "Thyroid hormone metabolic control" ;
+    ns1:mechanism "Convective transport via cardiovascular system" ;
+    ns1:spatialRange "Systemic (entire organism)" ;
+    ns1:temporalRange "Minutes to hours (hormone half-life dependent)" .
+
+ns1:FeedbackLoop a owl:Class ;
+    rdfs:label "Feedback Loop" ;
+    rdfs:comment "Regulatory circuit where output influences input. Can be negative (stabilizing) or positive (amplifying)." ;
+    ns1:m2Basis "m2:Feedback",
+        "m2:Loop",
+        "m2:Regulation" ;
+    ns1:types [ ] .
+
+ns1:GeneExpression a owl:Class ;
+    rdfs:label "Gene Expression" ;
+    rdfs:comment "Process by which genetic information (DNA) is converted to functional product (protein). Central dogma: DNA → RNA → Protein." ;
+    ns1:m2Basis "m2:Code",
+        "m2:Information",
+        "m2:Process" .
+
+ns1:Homeostasis a owl:Class ;
+    rdfs:label "Homeostasis" ;
+    rdfs:comment "Maintenance of stable internal conditions despite external fluctuations. Achieved through negative feedback regulation." ;
+    ns1:m2Basis "m2:Attractor",
+        "m2:Balance",
+        "m2:Feedback",
+        "m2:Regulation" ;
+    ns1:parameters "Blood glucose (~5 mM)",
+        "Blood pH (7.35-7.45)",
+        "Blood pressure (120/80 mmHg)",
+        "Body temperature (37°C)",
+        "Calcium concentration (~2.5 mM)" .
+
+ns1:Hormone a owl:Class ;
+    rdfs:label "Hormone" ;
+    rdfs:comment "Signaling molecule secreted by cells that travels through body fluids to target cells expressing specific receptors." ;
+    ns1:categories [ ] ;
+    ns1:m2Basis "m2:Agent",
+        "m2:Mediator",
+        "m2:Signal" .
+
+ns1:HypothalamusPituitaryAxis a owl:Class ;
+    rdfs:label "Hypothalamus-Pituitary Axis" ;
+    rdfs:comment "Master neuroendocrine structure coordinating hormone secretion. Hypothalamus integrates neural signals and controls pituitary hormone release." ;
+    ns1:axes "HPA axis (stress): CRH → ACTH → Cortisol",
+        "HPG axis (reproduction): GnRH → LH/FSH → Sex steroids",
+        "HPT axis (metabolism): TRH → TSH → Thyroid hormones" ;
+    ns1:m2Basis "m2:Control",
+        "m2:Hierarchy",
+        "m2:Hub" .
+
+ns1:ImmuneResponse a owl:Class ;
+    rdfs:label "Immune Response" ;
+    rdfs:comment "Coordinated reaction of immune system to foreign antigens. Involves innate (immediate) and adaptive (specific, memory) components." ;
+    ns1:m2Basis "m2:Memory",
+        "m2:Recognition",
+        "m2:Response" .
+
+ns1:Inflammation a owl:Class ;
+    rdfs:label "Inflammation" ;
+    rdfs:comment "Complex biological response to harmful stimuli (pathogens, damaged cells, irritants). Involves immune cell recruitment and tissue repair." ;
+    ns1:characteristics "Calor (heat)",
+        "Dolor (pain)",
+        "Functio laesa (loss of function)",
+        "Rubor (redness)",
+        "Tumor (swelling)" ;
+    ns1:m2Basis "m2:Cascade",
+        "m2:Emergence",
+        "m2:Response" .
+
+ns1:M1_Biology a owl:Ontology ;
+    rdfs:label "TSCG M1 Biology Extension" ;
+    dcterms:created "2026-01-22" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Extension of TSCG framework with biology-specific concepts including cellular communication, signal transduction, homeostasis, and physiological regulation." ;
+    dcterms:title "TSCG M1 Biology - Domain-Specific Biological Concepts" ;
+    rdfs:comment "Domain-specific biological concepts for TSCG framework. Contains patterns and concepts specific to biological systems (cellular, physiological, developmental)." ;
+    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:Metabolism a owl:Class ;
+    rdfs:label "Metabolism" ;
+    rdfs:comment "Sum of all chemical reactions maintaining life. Includes catabolism (breakdown) and anabolism (synthesis)." ;
+    ns1:m2Basis "m2:Flow",
+        "m2:Process",
+        "m2:Transformation" .
+
+ns1:Morphogen a owl:Class ;
+    rdfs:label "Morphogen" ;
+    rdfs:comment "Signaling molecule that forms concentration gradient and specifies cell fate in developing tissue. Position in gradient determines cell identity." ;
+    rdfs:subClassOf "m1:biology:Hormone" ;
+    ns1:examples "BMP (bone morphogenetic protein)",
+        "Hedgehog (vertebrate neural tube patterning)",
+        "Retinoic acid (limb development)",
+        "Wnt (embryonic axis formation)" ;
+    ns1:m2Basis "m2:Gradient",
+        "m2:Information",
+        "m2:Pattern" .
+
+ns1:NeuroendocrineSignaling a owl:Class ;
+    rdfs:label "Neuroendocrine Signaling" ;
+    rdfs:comment "Hybrid signaling pattern combining neural speed with endocrine range. Neurons secrete hormones into bloodstream for systemic distribution." ;
+    rdfs:subClassOf "m1:biology:CellularCommunication" ;
+    ns1:examples "ADH/Vasopressin water regulation",
+        "Adrenal medulla catecholamine release",
+        "Hypothalamic-pituitary axis",
+        "Oxytocin release in lactation" ;
+    ns1:mechanism "Neural activation triggers hormone secretion into circulation" ;
+    ns1:spatialRange "Systemic (entire organism via bloodstream)" ;
+    ns1:temporalRange "Seconds (neural trigger) → Minutes to hours (hormonal effect)" .
+
+ns1:Organ a owl:Class ;
+    rdfs:label "Organ" ;
+    rdfs:comment "Structural unit composed of multiple tissue types performing specific physiological function." ;
+    ns1:m2Basis "m2:Function",
+        "m2:Hierarchy",
+        "m2:Modularity" .
+
+ns1:ParacrineSignaling a owl:Class ;
+    rdfs:label "Paracrine Signaling" ;
+    rdfs:comment "Local neighborhood signaling pattern where signals diffuse through extracellular space to affect nearby cells. Coordinates tissue-level activity." ;
+    rdfs:subClassOf "m1:biology:CellularCommunication" ;
+    ns1:examples "Morphogen gradients in development",
+        "Neurotransmitters at synapses",
+        "Nitric oxide vasodilation",
+        "Prostaglandins in inflammation" ;
+    ns1:mechanism "Fick's law diffusion through extracellular matrix" ;
+    ns1:spatialRange "Local tissue microenvironment (~10 µm - 1 mm)" ;
+    ns1:temporalRange "Seconds to minutes" .
+
+ns1:Receptor a owl:Class ;
+    rdfs:label "Receptor" ;
+    rdfs:comment "Molecular structure that binds specific signaling molecules and transduces signal into cellular response." ;
+    ns1:m2Basis "m2:Interface",
+        "m2:Switch",
+        "m2:Transducer" ;
+    ns1:types [ ] .
+
+ns1:SignalTransduction a owl:Class ;
+    rdfs:label "Signal Transduction" ;
+    rdfs:comment "Process by which extracellular signal is converted into intracellular response through cascade of molecular interactions." ;
+    ns1:components "Gene expression modulation",
+        "Ligand-receptor binding",
+        "Protein kinase cascades",
+        "Second messenger systems (cAMP, Ca²⁺, IP₃)" ;
+    ns1:m2Basis "m2:Amplification",
+        "m2:Cascade",
+        "m2:Process" .
+
+ns1:Synapse a owl:Class ;
+    rdfs:label "Synapse" ;
+    rdfs:comment "Specialized junction between neurons enabling signal transmission. Can be chemical (neurotransmitter) or electrical (gap junction)." ;
+    ns1:m2Basis "m2:Channel",
+        "m2:Interface",
+        "m2:Signal" .
+
+ns1:Tissue a owl:Class ;
+    rdfs:label "Tissue" ;
+    rdfs:comment "Organized ensemble of cells performing coordinated function. Level between cell and organ in biological hierarchy." ;
+    ns1:m2Basis "m2:Composition",
+        "m2:Layer",
+        "m2:Network" .
+

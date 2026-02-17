@@ -1,0 +1,210 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m3:genesis_space: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#genesis_space:GenesisSpace> a owl:Ontology ;
+    rdfs:label "Genesis Space - Complete Bicephalous Basis" ;
+    dcterms:created "2026-01-21" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Complete orthogonal basis for the TSCG framework, consisting of two complementary perspectives: Eagle Eye (ASFID) for Territory measurement and Sphinx Eye (ORIVE) for Map construction" ;
+    dcterms:modified "2026-01-27" ;
+    dcterms:title "TSCG M3 Genesis Space - Complete Bicephalous Basis" ;
+    rdfs:comment "M3 Genesis Space provides the complete orthonormal basis for TSCG through dual complementary perspectives: Eagle Eye (ASFID - analytical decomposition of Territory) and Sphinx Eye (ORIVE - synthetic construction of Maps)" ;
+    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld" ;
+    owl:versionInfo "2.4.1" ;
+    m3:genesis_space:ontologyCategory m3:genesis_space:Genesis .
+
+m3:genesis_space:ontologyCategory a owl:ObjectProperty ;
+    rdfs:label "Ontology Category" ;
+    dcterms:created "2026-01-27" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:modified "2026-01-27" ;
+    rdfs:comment "Categorizes ontologies by their architectural role in the TSCG framework hierarchy using a controlled SKOS vocabulary. This foundational metadata property enables systematic organization and querying of the entire framework structure across all layers (M3, M2, M1, M0)." ;
+    rdfs:domain "owl:Ontology" ;
+    rdfs:range m3:genesis_space:OntologyCategoryScheme ;
+    owl:functionalProperty true ;
+    skos:changeNote "v2.2.0: Changed from owl:DatatypeProperty (xsd:string) to owl:ObjectProperty (skos:Concept references) for better semantic web integration." ;
+    skos:definition "A framework-level architectural property that specifies the position and role of an ontology within the TSCG metamodel hierarchy through reference to a controlled vocabulary defined as a skos:ConceptScheme." ;
+    skos:editorialNote "Defined in M3 (Genesis Space) because it is a foundational metamodel property needed by all layers. M3 has no dependencies, ensuring m3:ontologyCategory is always available without creating circular dependencies." ;
+    skos:example "M0_Yggdrasil.jsonld uses m3:Poclet",
+        "M1_Biology.jsonld uses m3:DomainExtension",
+        "M2_MetaConcepts.jsonld uses m3:TransdisciplinaryPattern",
+        "M3_GenesisSpace.jsonld uses m3:Genesis" .
+
+m3:genesis_space:GenesisExtension a skos:Concept ;
+    rdfs:comment "M3 layer ontologies that are parts of the complete bicephalous architecture. While m3:Genesis represents the unified 10D space, m3:GenesisExtension represents its constituent 5D perspectives (ASFID and ORIVE)." ;
+    skos:altLabel "Basis Component",
+        "Bicephalous Head",
+        "M3 Component" ;
+    skos:broader m3:genesis_space:Genesis ;
+    skos:definition "Component ontologies of the Genesis Space that define the bicephalous perspectives: Eagle Eye (ASFID - Territory) and Sphinx Eye (ORIVE - Map). These extend the foundational Genesis Space with specific dimensional bases." ;
+    skos:example "M3_EagleEye.jsonld (ASFID - Territory measurement)",
+        "M3_SphinxEye.jsonld (ORIVE - Map construction)" ;
+    skos:inScheme m3:genesis_space:OntologyCategoryScheme ;
+    skos:notation "M3_Ext" ;
+    skos:prefLabel "Genesis Extension" ;
+    skos:related m3:genesis_space:Genesis ;
+    skos:scopeNote "Exactly 2 ontologies in this category: EagleEye and SphinxEye. Closed set forming the bicephalous architecture." ;
+    skos:topConceptOf m3:genesis_space:OntologyCategoryScheme ;
+    m3:genesis_space:expectedCount 2 ;
+    m3:genesis_space:layerOrder 1 .
+
+m3:genesis_space:SystemicFramework a skos:Concept ;
+    rdfs:comment "Systemic Frameworks are existing theories, methodologies, or analytical frameworks that have been formalized within TSCG's ontological structure. They serve as validation of TSCG's expressiveness and enable practitioners to leverage familiar frameworks within TSCG's rigorous formalism." ;
+    skos:altLabel "External Framework Mapping",
+        "Framework Integration",
+        "Theoretical Framework Bridge" ;
+    skos:broader m3:genesis_space:TransdisciplinaryMetaConcepts ;
+    skos:definition "Ontologies that map established systemic/theoretical frameworks (TRIZ, VSD, TPACK, etc.) into TSCG formalism. These provide bridges between TSCG and existing methodologies, enabling cross-framework analysis and integration." ;
+    skos:example "M1_DesignThinking.jsonld (Design Thinking methodology)",
+        "M1_SystemsThinking.jsonld (General Systems Theory)",
+        "M1_TPACK.jsonld (Technological Pedagogical Content Knowledge)",
+        "M1_TRIZ.jsonld (Theory of Inventive Problem Solving)",
+        "M1_VSD.jsonld (Value-Sensitive Design)" ;
+    skos:inScheme m3:genesis_space:OntologyCategoryScheme ;
+    skos:notation "M1_Framework" ;
+    skos:prefLabel "Systemic Framework" ;
+    skos:related m3:genesis_space:DomainExtension,
+        m3:genesis_space:Poclet ;
+    skos:scopeNote "Open-ended set. Any established framework with systemic structure can be mapped. Typically 10-20 major frameworks. Distinct from DomainExtension (which are disciplinary) and from Poclet (which are minimal instances)." ;
+    skos:topConceptOf m3:genesis_space:OntologyCategoryScheme ;
+    m3:genesis_space:distinguishingFeatures [ ] ;
+    m3:genesis_space:expectedCount "5-20" ;
+    m3:genesis_space:integrationGuidelines [ ] ;
+    m3:genesis_space:layerOrder 3 .
+
+m3:genesis_space:RealWorldSystem a skos:Concept ;
+    rdfs:comment "Real-World Systems demonstrate TSCG applied to production environments. May be complex (non-minimal) and evolving. Used to validate TSCG scalability beyond simple examples." ;
+    skos:altLabel "M0 Layer",
+        "Operational Ontology",
+        "Production Application" ;
+    skos:broader m3:genesis_space:DomainExtension ;
+    skos:definition "M0 ontologies representing actual deployed systems analyzed using TSCG framework. These are not pedagogical examples but real applications with stakeholders." ;
+    skos:example "M0_HospitalERWorkflow.jsonld (hypothetical)",
+        "M0_ManufacturingSupplyChain.jsonld (hypothetical)" ;
+    skos:inScheme m3:genesis_space:OntologyCategoryScheme ;
+    skos:notation "M0_Real" ;
+    skos:prefLabel "Real-World System" ;
+    skos:related m3:genesis_space:CaseStudy,
+        m3:genesis_space:Poclet ;
+    skos:scopeNote "Future category. Not yet populated. Requires TSCG maturity and adoption." ;
+    skos:topConceptOf m3:genesis_space:OntologyCategoryScheme ;
+    m3:genesis_space:expectedCount "0 (future)" ;
+    m3:genesis_space:layerOrder 4 .
+
+m3:genesis_space:CaseStudy a skos:Concept ;
+    rdfs:comment "Case Studies demonstrate TSCG application without the rigor required of Poclets. They serve pedagogical or experimental roles and may evolve into full Poclets after validation." ;
+    skos:altLabel "Application Demonstration",
+        "Educational Example",
+        "M0 Layer" ;
+    skos:broader m3:genesis_space:DomainExtension ;
+    skos:definition "M0 ontologies created primarily for educational, illustrative, or exploratory purposes. Unlike Poclets, Case Studies may be incomplete (missing ASFID dimensions) or over-specified (non-minimal)." ;
+    skos:example "M0_SocialMediaEcosystem.jsonld (hypothetical)",
+        "M0_UrbanTrafficFlow.jsonld (hypothetical)" ;
+    skos:inScheme m3:genesis_space:OntologyCategoryScheme ;
+    skos:notation "M0_Case" ;
+    skos:prefLabel "Case Study" ;
+    skos:related m3:genesis_space:Poclet ;
+    skos:scopeNote "Optional category. Not required for framework validation. May grow based on educational needs." ;
+    skos:topConceptOf m3:genesis_space:OntologyCategoryScheme ;
+    m3:genesis_space:expectedCount "variable" ;
+    m3:genesis_space:layerOrder 4 .
+
+m3:genesis_space:TransdisciplinaryMetaConcepts a skos:Concept ;
+    rdfs:comment "M2 layer ontologies containing metaconcepts - abstract patterns that transcend disciplinary boundaries. Each metaconcept is expressible as a tensor formula combining M3 dimensions (e.g., Homeostasis = A⊗S⊗F)." ;
+    skos:altLabel "M2 Layer",
+        "Metaconcept",
+        "Tensor Product",
+        "Universal Pattern" ;
+    skos:broader m3:genesis_space:Genesis ;
+    skos:definition "Universal patterns derived as tensor products of M3 basis dimensions, validated across multiple scientific disciplines and applicable regardless of domain." ;
+    skos:example "M2_MetaConcepts.jsonld (currently 62 metaconcepts including Step, Node, Homeostasis, etc.)" ;
+    skos:inScheme m3:genesis_space:OntologyCategoryScheme ;
+    skos:notation "M2" ;
+    skos:prefLabel "Transdisciplinary MetaConcepts" ;
+    skos:scopeNote "Typically 1 ontology containing 60-70 metaconcepts. May grow as new transdisciplinary patterns are discovered." ;
+    skos:topConceptOf m3:genesis_space:OntologyCategoryScheme ;
+    m3:genesis_space:expectedCount 1 ;
+    m3:genesis_space:layerOrder 2 .
+
+m3:genesis_space:Poclet a skos:Concept ;
+    rdfs:comment "M0 layer ontologies representing concrete, well-understood systems used to validate TSCG framework. Must be minimal (no unnecessary components) yet complete (all ASFID dimensions present). Examples: Fire Triangle, Butterfly Metamorphosis, Four-Stroke Engine." ;
+    skos:altLabel "M0 Layer",
+        "Minimal Complete System",
+        "Proof of Concept",
+        "Validation Instance" ;
+    skos:broader m3:genesis_space:DomainExtension ;
+    skos:definition "Minimal yet complete system instances that serve the triple role of (1) framework proof-of-concept, (2) M2 metaconcept identification, and (3) M1 core concept population." ;
+    skos:example "M0_ButterflyMetamorphosis.jsonld",
+        "M0_ExposureTriangle.jsonld",
+        "M0_FireTriangle.jsonld",
+        "M0_FourStrokeEngine.jsonld",
+        "M0_Yggdrasil.jsonld" ;
+    skos:inScheme m3:genesis_space:OntologyCategoryScheme ;
+    skos:notation "M0_Poclet" ;
+    skos:prefLabel "Poclet" ;
+    skos:related m3:genesis_space:CaseStudy,
+        m3:genesis_space:RealWorldSystem ;
+    skos:scopeNote "Open-ended set. Goal is 20+ poclets spanning 10+ domains. Currently ~16 validated poclets." ;
+    skos:topConceptOf m3:genesis_space:OntologyCategoryScheme ;
+    m3:genesis_space:expectedCount "16+" ;
+    m3:genesis_space:layerOrder 4 .
+
+m3:genesis_space:DomainExtension a skos:Concept ;
+    rdfs:comment "M1 layer ontologies that bridge transdisciplinary metaconcepts (M2) with concrete systems (M0). Examples include Biology, Chemistry, Optics, Photography, Mythology. Each domain has characteristic ASFID⊗ORIVE coupling." ;
+    skos:altLabel "Domain Instance",
+        "M1 Layer",
+        "Specialized Ontology" ;
+    skos:broader m3:genesis_space:TransdisciplinaryMetaConcepts ;
+    skos:definition "Domain-specific ontologies that specialize M2 metaconcepts for particular scientific or professional fields. Each is an instance of the m2:Domain metaconcept with specific 5D tensor structure." ;
+    skos:example "M1_Biology.jsonld",
+        "M1_Chemistry.jsonld",
+        "M1_CoreConcepts.jsonld (transdisciplinary foundation)",
+        "M1_Mythology.jsonld",
+        "M1_Optics.jsonld",
+        "M1_Photography.jsonld" ;
+    skos:inScheme m3:genesis_space:OntologyCategoryScheme ;
+    skos:notation "M1" ;
+    skos:prefLabel "Domain Extension" ;
+    skos:scopeNote "Open-ended set. New domains can be added as framework expands. Currently ~6 active domain extensions." ;
+    skos:topConceptOf m3:genesis_space:OntologyCategoryScheme ;
+    m3:genesis_space:expectedCount "6+" ;
+    m3:genesis_space:layerOrder 3 .
+
+m3:genesis_space:Genesis a skos:Concept ;
+    rdfs:comment "M3 layer ontologies that define the bicephalous architecture: Eagle Eye (ASFID - Territory measurement) and Sphinx Eye (ORIVE - Map construction). These ontologies have zero dependencies." ;
+    skos:altLabel "Foundational Basis",
+        "Hilbert Space Basis",
+        "M3 Layer" ;
+    skos:definition "Foundational mathematical basis providing the complete orthonormal 10D Hilbert space (ASFID ⊕ ORIVE) upon which all other TSCG layers are built." ;
+    skos:example "M3_EagleEye.jsonld",
+        "M3_GenesisSpace.jsonld",
+        "M3_SphinxEye.jsonld" ;
+    skos:inScheme m3:genesis_space:OntologyCategoryScheme ;
+    skos:notation "M3" ;
+    skos:prefLabel "Genesis" ;
+    skos:scopeNote "Exactly 3 ontologies in this category. Closed set." ;
+    skos:topConceptOf m3:genesis_space:OntologyCategoryScheme ;
+    m3:genesis_space:expectedCount 3 ;
+    m3:genesis_space:layerOrder 1 .
+
+m3:genesis_space:OntologyCategoryScheme a skos:ConceptScheme ;
+    rdfs:label "TSCG Ontology Category Scheme" ;
+    dcterms:created "2026-01-27" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "Controlled vocabulary defining the architectural layers of the TSCG framework metamodel" ;
+    skos:definition "A hierarchical classification scheme organizing TSCG ontologies by their metamodel layer and architectural role. The scheme provides six distinct categories spanning from foundational mathematical basis (Genesis) to concrete real-world instantiations (RealWorldSystem)." ;
+    skos:hasTopConcept m3:genesis_space:CaseStudy,
+        m3:genesis_space:DomainExtension,
+        m3:genesis_space:Genesis,
+        m3:genesis_space:GenesisExtension,
+        m3:genesis_space:Poclet,
+        m3:genesis_space:RealWorldSystem,
+        m3:genesis_space:SystemicFramework,
+        m3:genesis_space:TransdisciplinaryMetaConcepts ;
+    skos:scopeNote "This scheme is closed (not extensible without framework revision). The six categories represent fundamental architectural distinctions in the TSCG metamodel." .
+

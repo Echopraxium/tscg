@@ -1,0 +1,109 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#> .
+@prefix ns1: <m0:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ns1:HSL_Additive a owl:NamedIndividual,
+        "m0:Poclet" ;
+    rdfs:label "HSL Additive Color Synthesis" ;
+    dcterms:created "2026-01-17" ;
+    dcterms:creator "Echopraxium with collaboration of Claude AI Pro" ;
+    dcterms:references "Joblove, G. H., & Greenberg, D. (1978). Color spaces for computer graphics. SIGGRAPH",
+        "Smith, A. R. (1978). Color Gamut Transform Pairs. SIGGRAPH",
+        "W3C CSS Color Module Level 3 (HSL specification)" ;
+    rdfs:comment "Perceptual additive color synthesis using Hue, Saturation, Lightness channels. Alternative representation of RGB space organized around perceptual dimensions. HSL is bijective transformation of RGB - same Territory (color perception), different Map (cylindrical vs cubic coordinates)." ;
+    rdfs:seeAlso ns1:ColorSynthesisFederated,
+        ns1:RGB_Additive ;
+    ns1:advantages "Better for UI/UX",
+        "Matches artistic color theory",
+        "Perceptually intuitive (hue = color type)",
+        "Separates dimensions (adjust independently)" ;
+    ns1:applications "CSS color specification (web design)",
+        "Color harmony (complementary, analogous, triadic)",
+        "Color pickers (Photoshop, Illustrator, GIMP)",
+        "Image processing (hue rotation, saturation adjustment)",
+        "User interfaces (more intuitive than RGB)" ;
+    ns1:channels ns1:HueChannel,
+        ns1:LightnessChannel,
+        ns1:SaturationChannel ;
+    ns1:disadvantages "Computational overhead (transform to/from RGB)",
+        "Device-dependent (inherits from RGB)",
+        "Not perceptually uniform (unlike Lab)",
+        "Singular at gray axis (H undefined)" ;
+    ns1:domain "Optics / Color Science" ;
+    ns1:epistemicGap [ ] ;
+    ns1:fissionPrinciple [ ] ;
+    ns1:fusionPrinciple [ ] ;
+    ns1:mapSpace [ ] ;
+    ns1:metaconceptsMobilized [ ] ;
+    ns1:oriveAnalysis [ ] ;
+    ns1:partOfFederation ns1:ColorSynthesisFederated ;
+    ns1:physicalBasis "Same as RGB - electromagnetic wave superposition, represented in perceptual coordinates" ;
+    ns1:pocletType "Composite (Specialized)" ;
+    ns1:principle "Additive Synthesis (Perceptual Representation)" ;
+    ns1:relationToRGB [ ] ;
+    ns1:territorySpace [ ] ;
+    ns1:transformationToRGB [ ] ;
+    ns1:validation [ ] .
+
+<https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_ColorSynthesis_Federated.jsonld> dcterms:format "application/ld+json" ;
+    dcterms:type "Ontology" .
+
+<https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_RGB_Additive.jsonld> dcterms:format "application/ld+json" ;
+    dcterms:type "Ontology" .
+
+ns1:HueChannel a m2:Channel ;
+    rdfs:label "Hue Channel (H)" ;
+    ns1:channelType "Perceptual dimension (color type)" ;
+    ns1:colorWheel [ ] ;
+    ns1:examples "H=0° → Red",
+        "H=120° → Green",
+        "H=240° → Blue" ;
+    ns1:function "Dominant wavelength / color family" ;
+    ns1:metaconceptInstantiation "m2:Channel" ;
+    ns1:rangeAnalog "[0°, 360°) circular, wraps around" ;
+    ns1:rangeDigital "[0, 360] degrees or [0.0, 1.0] normalized" ;
+    ns1:representation "Angular (position on color wheel)" ;
+    ns1:role "Encodes qualitative color attribute - the 'kind' of color" ;
+    ns1:signalCarried [ a m2:Signal ] ;
+    ns1:tensorFormula "S⊗I⊗F" .
+
+ns1:LightnessChannel a m2:Channel ;
+    rdfs:label "Lightness Channel (L)" ;
+    ns1:channelType "Perceptual dimension (brightness)" ;
+    ns1:examples "L=0% → Black",
+        "L=100% → White",
+        "L=50% → Pure color" ;
+    ns1:extremes [ ] ;
+    ns1:function "Vertical position (dark to light)" ;
+    ns1:metaconceptInstantiation "m2:Channel" ;
+    ns1:rangeAnalog "[0.0, 1.0] where 0=black, 1=white" ;
+    ns1:rangeDigital "[0%, 100%]" ;
+    ns1:representation "Vertical axis" ;
+    ns1:role "Encodes perceived brightness" ;
+    ns1:signalCarried [ a m2:Signal ] ;
+    ns1:tensorFormula "S⊗I⊗F" .
+
+ns1:RGB_Additive dcterms:documentation <https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_RGB_Additive.jsonld> ;
+    rdfs:seeAlso "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_RGB_Additive.jsonld" .
+
+ns1:SaturationChannel a m2:Channel ;
+    rdfs:label "Saturation Channel (S)" ;
+    ns1:channelType "Perceptual dimension (color purity)" ;
+    ns1:examples "S=0% → Gray",
+        "S=100% → Vivid",
+        "S=50% → Pastel" ;
+    ns1:extremes [ ] ;
+    ns1:function "Distance from achromatic axis (gray)" ;
+    ns1:metaconceptInstantiation "m2:Channel" ;
+    ns1:rangeAnalog "[0.0, 1.0] where 0=gray, 1=pure" ;
+    ns1:rangeDigital "[0%, 100%]" ;
+    ns1:representation "Radial (distance from center)" ;
+    ns1:role "Encodes chromatic intensity - purity vs grayness" ;
+    ns1:signalCarried [ a m2:Signal ] ;
+    ns1:tensorFormula "S⊗I⊗F" .
+
+ns1:ColorSynthesisFederated dcterms:documentation <https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_ColorSynthesis_Federated.jsonld> ;
+    rdfs:seeAlso "https://github.com/Echopraxium/tscg/blob/main/ontology/poclets/color_synthesis/M0_ColorSynthesis_Federated.jsonld" .
+

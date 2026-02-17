@@ -1,0 +1,97 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#> .
+@prefix ns1: <m0:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ns1:RGB_Additive a owl:NamedIndividual,
+        "m0:Poclet" ;
+    rdfs:label "RGB Additive Color Synthesis" ;
+    dcterms:created "2026-01-17" ;
+    dcterms:creator "Echopraxium with collaboration of Claude AI Pro" ;
+    dcterms:references "Fairchild, M. D. (2013). Color Appearance Models (3rd ed.)",
+        "ITU-R BT.709 (HDTV color primaries and transfer characteristics)",
+        "Poynton, C. (2003). Digital Video and HD: Algorithms and Interfaces",
+        "sRGB IEC 61966-2-1:1999 (standard RGB color space for web)" ;
+    rdfs:comment "Additive color synthesis using Red, Green, Blue light primaries. Each channel is a SIGNAL (m2:Signal) carrying intensity information. The three signals undergo COMPOSITION (m2:Composition) to produce emergent perceived color. Canonical model for displays and light-emitting devices." ;
+    rdfs:seeAlso ns1:CMY_Subtractive,
+        ns1:ColorSynthesisFederated,
+        ns1:HSL_Additive ;
+    ns1:applications "Computer monitors and displays (LCD, OLED, CRT)",
+        "Digital cameras and scanners",
+        "Image processing and computer graphics",
+        "LED lighting and signage",
+        "Projectors and virtual reality headsets",
+        "Video production and editing",
+        "Web design (CSS colors, HTML)" ;
+    ns1:components ns1:BlueChannel,
+        ns1:GreenChannel,
+        ns1:RedChannel ;
+    ns1:constraints [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:domain "Optics / Color Science" ;
+    ns1:epistemicGap [ ] ;
+    ns1:fissionPrinciple [ ] ;
+    ns1:fusionPrinciple [ ] ;
+    ns1:historicalContext [ ] ;
+    ns1:mapSpace [ ] ;
+    ns1:metaconceptsMobilized [ ] ;
+    ns1:oriveAnalysis [ ] ;
+    ns1:partOfFederation ns1:ColorSynthesisFederated ;
+    ns1:physicalBasis "Electromagnetic wave superposition (visible spectrum 380-740 nm)" ;
+    ns1:pocletType "Composite (Specialized)" ;
+    ns1:principle "Additive Synthesis (Light Emission + Superposition)" ;
+    ns1:signalProcessing [ ] ;
+    ns1:territorySpace [ ] ;
+    ns1:validation [ ] .
+
+ns1:BlueChannel a m2:Signal ;
+    rdfs:label "Blue Channel (B)" ;
+    ns1:asfidContribution [ ] ;
+    ns1:biologicalTarget "S-cones (short-wavelength photoreceptors)" ;
+    ns1:examples "Blue laser at 10% power",
+        "LED blue subpixel at intensity 64/255",
+        "RGB(0, 0, 255) = pure blue signal" ;
+    ns1:function "Encodes intensity of blue light (~450-495 nm)" ;
+    ns1:metaconceptInstantiation "m2:Signal" ;
+    ns1:physicalCorrelate "Photon flux at ~435 nm wavelength" ;
+    ns1:rangeAnalog "[0.0, 1.0] (normalized intensity)" ;
+    ns1:rangeDigital "[0, 255] (8-bit quantization)" ;
+    ns1:role "Information carrier for short-wavelength primary" ;
+    ns1:signalType "Intensity signal (light flux)" ;
+    ns1:tensorFormula "I⊗F (Information × Flow)" .
+
+ns1:GreenChannel a m2:Signal ;
+    rdfs:label "Green Channel (G)" ;
+    ns1:asfidContribution [ ] ;
+    ns1:biologicalTarget "M-cones (medium-wavelength photoreceptors)" ;
+    ns1:examples "Green laser at 25% power",
+        "LED green subpixel at intensity 128/255",
+        "RGB(0, 255, 0) = pure green signal" ;
+    ns1:function "Encodes intensity of green light (~495-570 nm)" ;
+    ns1:metaconceptInstantiation "m2:Signal" ;
+    ns1:physicalCorrelate "Photon flux at ~546 nm wavelength" ;
+    ns1:rangeAnalog "[0.0, 1.0] (normalized intensity)" ;
+    ns1:rangeDigital "[0, 255] (8-bit quantization)" ;
+    ns1:role "Information carrier for medium-wavelength primary" ;
+    ns1:signalType "Intensity signal (light flux)" ;
+    ns1:tensorFormula "I⊗F (Information × Flow)" .
+
+ns1:RedChannel a m2:Signal ;
+    rdfs:label "Red Channel (R)" ;
+    ns1:asfidContribution [ ] ;
+    ns1:biologicalTarget "L-cones (long-wavelength photoreceptors in human retina)" ;
+    ns1:examples "LED red subpixel at intensity 200/255",
+        "RGB(255, 0, 0) = pure red signal",
+        "Red laser at 50% power" ;
+    ns1:function "Encodes intensity of red light (~620-750 nm)" ;
+    ns1:metaconceptInstantiation "m2:Signal" ;
+    ns1:physicalCorrelate "Photon flux at ~700 nm wavelength" ;
+    ns1:rangeAnalog "[0.0, 1.0] (normalized intensity)" ;
+    ns1:rangeDigital "[0, 255] (8-bit quantization)" ;
+    ns1:role "Information carrier for long-wavelength primary" ;
+    ns1:signalType "Intensity signal (light flux)" ;
+    ns1:tensorFormula "I⊗F (Information × Flow)" .
+

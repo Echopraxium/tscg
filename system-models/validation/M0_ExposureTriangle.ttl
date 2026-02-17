@@ -1,0 +1,92 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#> .
+@prefix ns1: <m0:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ns1:ExposureTriangle a owl:NamedIndividual,
+        "m0:Poclet" ;
+    rdfs:label "Exposure Triangle (Photography)" ;
+    dcterms:created "2026-01-20" ;
+    dcterms:creator "Echopraxium with collaboration of Claude AI Pro" ;
+    dcterms:references "Adams, A. (1981). The Negative (The Ansel Adams Photography Series)",
+        "Freeman, M. (2007). The Photographer's Eye: Composition and Design",
+        "ISO 12232:2019 (Photography - Digital still cameras - Determination of exposure index)",
+        "Langford, M. (2010). Langford's Basic Photography (9th ed.)",
+        "Peterson, B. (2016). Understanding Exposure (4th ed.)" ;
+    rdfs:comment "Fundamental photographic system demonstrating BALANCE (Territory) between three parameters: ISO, Aperture, Shutter Speed. Photographers make conscious TRADE-OFFs (Map) between competing image qualities: depth of field, motion blur, grain/noise. Canonical pedagogical model in photography, analogous to Fire Triangle in combustion." ;
+    rdfs:seeAlso ns1:FireTriangle ;
+    owl:versionInfo "1.0.0" ;
+    ns1:analogyToFireTriangle [ ] ;
+    ns1:balancePrinciple [ ] ;
+    ns1:components ns1:Aperture_Opening,
+        ns1:ISO_Sensitivity,
+        ns1:ShutterSpeed_Duration ;
+    ns1:domain "Photography / Optics / Image Formation" ;
+    ns1:epistemicGap [ ] ;
+    ns1:futureExtensions [ ] ;
+    ns1:mapSpace [ ] ;
+    ns1:metaconceptsMobilized [ ] ;
+    ns1:oriveAnalysis [ ] ;
+    ns1:pedagogicalRole "Universal teaching model for photographic exposure control (equivalent to Fire Triangle for combustion)" ;
+    ns1:physicalBasis "Light capture governed by multiplicative relationship: Exposure ∝ ISO × Aperture_Area × Time" ;
+    ns1:pocletType "Canonical (Pedagogical Triangle)" ;
+    ns1:principle "Balanced Exposure via Compensatory Parameter Adjustment" ;
+    ns1:territorySpace [ ] ;
+    ns1:tradeoffPrinciple [ ] ;
+    ns1:validation [ ] .
+
+ns1:Aperture_Opening a m2:Component ;
+    rdfs:label "Aperture (f-number / f-stop)" ;
+    ns1:asfidContribution [ ] ;
+    ns1:examples "f/1.4: Portrait with creamy bokeh (shallow DoF)",
+        "f/11: Landscape (deep DoF, foreground + background sharp)",
+        "f/22: Macro (maximize DoF for tiny subjects)",
+        "f/5.6: Street photography (moderate DoF)" ;
+    ns1:function "Regulates amount of light per unit time reaching sensor" ;
+    ns1:imageQualityEffect [ ] ;
+    ns1:metaconceptInstantiation "m2:Component" ;
+    ns1:notation "f/N where N = Focal_Length / Aperture_Diameter" ;
+    ns1:physicalCorrelate "Iris diaphragm diameter: Area ∝ (1/f-number)²" ;
+    ns1:rangeLog "log₂(N²) - Each doubling of N² = +1 stop darker" ;
+    ns1:rangeTypical "f/1.4 to f/22 (lens dependent)" ;
+    ns1:role "Lens opening size - controls light flux entering camera" ;
+    ns1:stopScale [ ] ;
+    ns1:tensorFormula "S⊗F (Structure × Flow)" .
+
+ns1:ISO_Sensitivity a m2:Component ;
+    rdfs:label "ISO Sensitivity (Sensor Gain)" ;
+    ns1:asfidContribution [ ] ;
+    ns1:examples "ISO 100: Bright sunlight, minimal noise (professional landscape)",
+        "ISO 1600: Indoor/evening, visible noise (event photography)",
+        "ISO 400: Overcast, moderate noise (general purpose)",
+        "ISO 6400+: Very low light, significant noise (astrophotography, concert)" ;
+    ns1:filmVsDigital [ ] ;
+    ns1:function "Amplifies electrical signal from photons hitting sensor/film" ;
+    ns1:imageQualityEffect [ ] ;
+    ns1:metaconceptInstantiation "m2:Component" ;
+    ns1:physicalCorrelate "Analog: Film grain size / silver halide concentration. Digital: Sensor gain (voltage amplification)" ;
+    ns1:rangeLog "log₂(ISO) - Each doubling = +1 stop" ;
+    ns1:rangeTypical "[100, 6400] (consumer cameras), [50, 204800] (professional)" ;
+    ns1:role "Sensor amplification factor - determines sensitivity to light" ;
+    ns1:tensorFormula "S⊗I (Structure × Information)" .
+
+ns1:ShutterSpeed_Duration a m2:Component ;
+    rdfs:label "Shutter Speed (Exposure Time)" ;
+    ns1:asfidContribution [ ] ;
+    ns1:creativeUses [ ] ;
+    ns1:examples "1/250s: General purpose, handheld with 50mm lens",
+        "1/30s: Low light handheld limit (with stabilization)",
+        "1/8000s: Freeze hummingbird wings, water droplet splash",
+        "2s: Milky Way stars (star trails start ~20s)",
+        "30s+: Light painting, astrophotography trails" ;
+    ns1:function "Determines how long light accumulates on sensor/film" ;
+    ns1:imageQualityEffect [ ] ;
+    ns1:metaconceptInstantiation "m2:Component" ;
+    ns1:notation "1/N seconds (e.g., 1/250s) or Ts (e.g., 2s)" ;
+    ns1:physicalCorrelate "Mechanical curtain or electronic shutter opening duration" ;
+    ns1:rangeLog "log₂(T) - Each doubling = +1 stop brighter" ;
+    ns1:rangeTypical "30s to 1/8000s (camera dependent), Bulb mode for longer" ;
+    ns1:role "Duration sensor is exposed to light - controls temporal integration" ;
+    ns1:tensorFormula "F⊗D (Flow × Dynamics)" .
+

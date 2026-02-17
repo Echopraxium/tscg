@@ -1,0 +1,127 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <m0:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:FourStrokeEnginePoclet a owl:NamedIndividual,
+        "m0:Poclet" ;
+    rdfs:label "Four-Stroke Engine (Poclet)" ;
+    dcterms:created "2026-01-22" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:references "Heywood, J. B. (1988). Internal Combustion Engine Fundamentals. McGraw-Hill",
+        "Otto, N. A. (1876). Four-Stroke Internal Combustion Engine (Patent)",
+        "SAE International. Engine Technology Standards (J1349, J1995)",
+        "Taylor, C. F. (1985). The Internal Combustion Engine in Theory and Practice. MIT Press" ;
+    rdfs:comment "Minimal yet complete system representation of the thermodynamic cycle powering internal combustion engines. Demonstrates all 5 ASFID dimensions through 4 sequential strokes and mobilizes 20 M2 metaconcepts. Canonical example for cyclic processes and energy transformation." ;
+    rdfs:seeAlso "m2:Component",
+        "m2:Cycle",
+        "m2:Emergence",
+        "m2:Sequence",
+        "m2:Transformation" ;
+    ns1:asfidAnalysis [ ns1:attractor [ ] ;
+            ns1:dynamics [ ] ;
+            ns1:flow [ ] ;
+            ns1:information [ ] ;
+            ns1:norm "||ASFID|| = √(0.85² + 0.90² + 0.95² + 0.80² + 0.85²) ≈ 1.97" ;
+            ns1:structure [ ] ;
+            ns1:vectorASFID "(0.85, 0.90, 0.95, 0.80, 0.85)" ] ;
+    ns1:bicephalousAnalysis [ ] ;
+    ns1:completeness "All ASFID dimensions present" ;
+    ns1:components ns1:CompressionStroke,
+        ns1:ExhaustStroke,
+        ns1:IntakeStroke,
+        ns1:PowerStroke ;
+    ns1:domain "Thermodynamics" ;
+    ns1:m1Contributions [ ] ;
+    ns1:mechanicalAssembly ns1:PistonCrankshaftSystem ;
+    ns1:metaconceptsMobilized [ ] ;
+    ns1:minimality "Exactly 4 strokes (irreducible for complete cycle)" ;
+    ns1:observer "Human (engineering/scientific perspective)" ;
+    ns1:pedagogy "Universal teaching tool for thermodynamics and mechanical engineering" ;
+    ns1:pocletType "Cyclic" ;
+    ns1:thermodynamicEfficiency [ ] ;
+    ns1:transdisciplinaryValidation [ ] ;
+    ns1:validation [ ] ;
+    ns1:version "1.0.0" .
+
+ns1:Camshaft rdfs:label "Camshaft" ;
+    ns1:function "Controls valve timing via cam lobes" ;
+    ns1:ratio "1:2 (1 camshaft rotation per 2 crankshaft rotations)" ;
+    ns1:synchronization "Driven by crankshaft (timing belt/chain)" .
+
+ns1:CompressionStroke a ns1:Stroke ;
+    rdfs:label "Compression Stroke" ;
+    ns1:asfidContribution [ ] ;
+    ns1:compressionRatio "r = V_max / V_min (typically 8:1 to 12:1)" ;
+    ns1:exhaustValve "Closed" ;
+    ns1:intakeValve "Closed" ;
+    ns1:pistonMotion "Upward (BDC → TDC)" ;
+    ns1:pressureChange "P_1 → P_2 (increase by factor r^γ)" ;
+    ns1:role "Adiabatic compression of air-fuel mixture" ;
+    ns1:sequenceNumber 2 ;
+    ns1:temperatureChange "T_1 → T_2 (increase)" ;
+    ns1:volumeChange "V_max → V_min (compression)" ;
+    ns1:workInput "Negative (crankshaft does work on gas)" .
+
+ns1:ConnectingRod rdfs:label "Connecting Rod (Conrod)" ;
+    ns1:connection "Piston (small end) ↔ Crankshaft (big end)" ;
+    ns1:function "Converts linear motion to rotational motion" .
+
+ns1:Crankshaft rdfs:label "Crankshaft" ;
+    ns1:function "Converts reciprocating motion to continuous rotation" ;
+    ns1:output "Rotational kinetic energy (torque × RPM)" ;
+    ns1:revolutions "2 full rotations per 4-stroke cycle" .
+
+ns1:ExhaustStroke a ns1:Stroke ;
+    rdfs:label "Exhaust Stroke" ;
+    ns1:asfidContribution [ ] ;
+    ns1:cycleReset "Returns to initial state for next cycle" ;
+    ns1:exhaustValve "Open" ;
+    ns1:intakeValve "Closed" ;
+    ns1:massFlow "Combustion gases expelled to atmosphere" ;
+    ns1:pistonMotion "Upward (BDC → TDC)" ;
+    ns1:pressureChange "P_4 → P_atm (return to atmospheric)" ;
+    ns1:role "Expulsion of combustion products" ;
+    ns1:sequenceNumber 4 ;
+    ns1:volumeChange "V_max → V_min (compression)" .
+
+ns1:IntakeStroke a ns1:Stroke ;
+    rdfs:label "Intake Stroke" ;
+    ns1:asfidContribution [ ] ;
+    ns1:energyTransfer "Minimal (suction work)" ;
+    ns1:exhaustValve "Closed" ;
+    ns1:intakeValve "Open" ;
+    ns1:pistonMotion "Downward (TDC → BDC)" ;
+    ns1:pressureChange "Atmospheric pressure maintained" ;
+    ns1:role "Air-fuel mixture induction" ;
+    ns1:sequenceNumber 1 ;
+    ns1:volumeChange "V_min → V_max (expansion)" .
+
+ns1:Piston rdfs:label "Piston" ;
+    ns1:bore "Cylinder diameter (typically 70-100mm)" ;
+    ns1:function "Converts gas pressure to linear motion" ;
+    ns1:motion "Reciprocating (up/down)" ;
+    ns1:stroke "Travel distance TDC↔BDC (typically 80-110mm)" .
+
+ns1:PistonCrankshaftSystem rdfs:label "Piston-Connecting Rod-Crankshaft Assembly" ;
+    ns1:components ns1:Camshaft,
+        ns1:ConnectingRod,
+        ns1:Crankshaft,
+        ns1:Piston .
+
+ns1:PowerStroke a ns1:Stroke ;
+    rdfs:label "Power Stroke (Combustion)" ;
+    ns1:asfidContribution [ ] ;
+    ns1:combustion "Rapid oxidation of fuel (bifurcation event)" ;
+    ns1:energyTransformation "Chemical (fuel) → Thermal (combustion) → Mechanical (piston motion)" ;
+    ns1:exhaustValve "Closed" ;
+    ns1:intakeValve "Closed" ;
+    ns1:pistonMotion "Downward (TDC → BDC)" ;
+    ns1:pressureChange "P_2 → P_3 (rapid spike) → P_4 (expansion)" ;
+    ns1:role "Conversion of chemical energy to mechanical work" ;
+    ns1:sequenceNumber 3 ;
+    ns1:trigger "Spark plug ignition" ;
+    ns1:volumeChange "V_min → V_max (expansion)" ;
+    ns1:workOutput "Positive (gas does work on piston)" .
+
