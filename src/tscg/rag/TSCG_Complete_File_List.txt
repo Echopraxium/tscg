@@ -1,0 +1,189 @@
+TSCG Framework - Complete File List
+====================================
+
+Author: Echopraxium with the collaboration of Claude AI
+Date: February 12, 2026
+Version: 0.1.0
+
+Total Python Files: 44
+
+ENGINE MODULE (tscg.engine)
+---------------------------
+
+Core (5 files):
+  src/tscg/engine/__init__.py
+  src/tscg/engine/core/__init__.py
+  src/tscg/engine/core/models.py
+  src/tscg/engine/core/ontology_loader.py
+
+Analysis (5 files):
+  src/tscg/engine/analysis/__init__.py
+  src/tscg/engine/analysis/sparql/__init__.py
+  src/tscg/engine/analysis/sparql/executor.py
+  src/tscg/engine/analysis/metrics/__init__.py
+  src/tscg/engine/analysis/metrics/orthogonality.py
+
+Exporters (2 files):
+  src/tscg/engine/exporters/__init__.py
+  src/tscg/engine/exporters/turtle_exporter.py
+
+Facade - PUBLIC API (6 files):
+  src/tscg/engine/facade/__init__.py
+  src/tscg/engine/facade/ontology.py
+  src/tscg/engine/facade/query.py
+  src/tscg/engine/facade/metrics.py
+  src/tscg/engine/facade/export.py
+  src/tscg/engine/facade/rag.py
+
+RAG - SEMANTIC SEARCH ⭐ (5 files):
+  src/tscg/engine/rag/__init__.py
+  src/tscg/engine/rag/embeddings.py         # TSCGEmbedder
+  src/tscg/engine/rag/vector_store.py       # VectorStore
+  src/tscg/engine/rag/retrieval.py          # Retrievers
+  src/tscg/engine/rag/segmentation.py       # Intelligent segmentation ⭐ NEW
+
+Math - Future (4 files):
+  src/tscg/engine/math/__init__.py
+  src/tscg/engine/math/category/__init__.py
+  src/tscg/engine/math/tensor/__init__.py
+  src/tscg/engine/math/spaces/__init__.py
+
+Reasoner - Future (1 file):
+  src/tscg/engine/reasoner/__init__.py
+
+CLI MODULE (tscg.cli)
+---------------------
+
+REPL (7 files):
+  src/tscg/cli/__init__.py
+  src/tscg/cli/repl/__init__.py
+  src/tscg/cli/repl/interpreter.py
+  src/tscg/cli/repl/context.py
+  src/tscg/cli/batch/__init__.py
+  src/tscg/cli/utils/__init__.py
+
+WEBAPI MODULE (tscg.webapi) - Phase 2
+--------------------------------------
+
+REST API Stubs (4 files):
+  src/tscg/webapi/__init__.py
+  src/tscg/webapi/routes/__init__.py
+  src/tscg/webapi/schemas/__init__.py
+  src/tscg/webapi/middleware/__init__.py
+
+DEMOS (4 files)
+---------------
+  src/tscg/demos/__init__.py
+  src/tscg/demos/basic_usage.py
+  src/tscg/demos/rag_demo.py
+  src/tscg/demos/rag_advanced_demo.py       ⭐ NEW - Shows segmentation
+
+TESTS (2 files)
+---------------
+  src/tscg/tests/__init__.py
+  src/tscg/tests/test_facades.py
+
+ROOT NAMESPACE (1 file)
+-----------------------
+  src/tscg/__init__.py
+
+
+CONFIGURATION FILES
+===================
+
+pyproject.toml          - Poetry configuration
+requirements.txt        - Pip dependencies
+.gitignore             - Git ignore rules
+
+
+DOCUMENTATION FILES
+===================
+
+README.md              - Main documentation
+ARCHITECTURE.md        - Architecture guide
+STRUCTURE.md           - Structure explanation
+SEGMENTATION_GUIDE.md  - RAG segmentation guide ⭐ NEW
+
+
+KEY FILES BREAKDOWN
+===================
+
+RAG Module (NEW):
+-----------------
+✅ embeddings.py        - Generate embeddings for text, metaconcepts, scores
+✅ vector_store.py      - Store and search embeddings (cosine similarity)
+✅ retrieval.py         - OntologyRetriever, MetaconceptRetriever, DocumentRetriever
+✅ segmentation.py      - Intelligent chunking by file type ⭐ CRITICAL
+
+Segmentation Strategies:
+  • JSON-LD    → By ontology entries (@graph)
+  • Markdown   → By sections (headers)
+  • Code       → By functions/classes
+  • Plain text → By paragraphs with overlap
+
+
+FACADES (Public API)
+====================
+
+1. OntologyFacade   - Load and manage ontologies
+2. QueryFacade      - Execute SPARQL queries
+3. MetricsFacade    - Compute metrics (orthogonality, etc.)
+4. ExportFacade     - Export to Turtle, RDF/XML
+5. RAGFacade        - Semantic search ⭐
+
+
+USAGE EXAMPLES
+==============
+
+Import RAG Module:
+------------------
+from tscg.engine.facade import RAGFacade
+
+rag = RAGFacade()
+rag.index_directory("/mnt/project")
+results = rag.search_documents("feedback control")
+
+Segmentation:
+-------------
+from tscg.engine.rag.segmentation import TSCGSegmenter
+
+segmenter = TSCGSegmenter()
+segments = segmenter.segment_file("M2_MetaConcepts.jsonld")
+
+for seg in segments:
+    print(f"{seg.segment_id}: {seg.char_length} chars")
+
+
+STATISTICS
+==========
+
+Total Files:          44 Python files
+Engine:               28 files (core, analysis, facades, rag, math, reasoner)
+CLI:                  7 files
+WebAPI:               4 files (stubs)
+Demos:                4 files
+Tests:                2 files
+
+Lines of Code:        ~4500 lines
+RAG Module:           ~1500 lines ⭐
+
+Archive Size:         38 KB (compressed)
+
+
+INSTALLATION
+============
+
+tar -xzf tscg_with_advanced_rag.tar.gz
+cd tscg_final
+pip install -e .[full]
+
+
+VERIFY RAG MODULE
+=================
+
+python -c "from tscg.engine.rag import TSCGSegmenter, DocumentRetriever; print('✓ RAG module OK')"
+
+
+====================================
+All files present and accounted for!
+====================================
