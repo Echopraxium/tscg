@@ -22,7 +22,18 @@
       "dcterms:description": "Extension of TSCG framework with biology-specific concepts including cellular communication, signal transduction, homeostasis, and physiological regulation.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "owl:versionInfo": "1.0.0",
+      "owl:versionInfo": "1.1.0",
+      "m1:changelog": {
+        "v1.1.0": {
+          "date": "2026-02-18",
+          "changes": [
+            "UPDATE: m1:biology:FeedbackLoop now properly instantiates m2:FeedbackLoop (new M2 metaconcept v14.5.0)",
+            "FORMULA: m2:Process ⊗ m2:Alignment ⊗ m2:Homeostasis (= A⊗S⊗F⊗I⊗D full ASFID coverage)",
+            "ENRICHED: Added biologicalComponents (sensor/comparator/effector), typed examples (negative/positive)",
+            "ARCHITECTURE: Clear separation - m1:biology:FeedbackLoop is domain instantiation; m3:AlignmentLoop is TSCG epistemological mechanism"
+          ]
+        }
+      },
       "owl:imports": [
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld"
@@ -181,16 +192,31 @@
     {
       "@id": "m1:biology:FeedbackLoop",
       "@type": "owl:Class",
-      "rdfs:label": "Feedback Loop",
-      "rdfs:comment": "Regulatory circuit where output influences input. Can be negative (stabilizing) or positive (amplifying).",
-      "m1:biology:m2Basis": [
-        "m2:Feedback",
-        "m2:Loop",
-        "m2:Regulation"
-      ],
-      "m1:biology:types": {
-        "negative": "Thermostat-like stabilization (insulin-glucose, thyroid hormone)",
-        "positive": "Explosive amplification (oxytocin in labor, blood clotting)"
+      "rdfs:label": "Biological Feedback Loop",
+      "rdfs:comment": "Domain-specific instantiation of m2:FeedbackLoop in biological systems. A cyclic regulatory circuit where a physiological output (e.g. hormone concentration, blood pressure) is sensed, compared to a set point (Homeostasis), and corrected via an effector mechanism (Alignment→Process). Can be negative (stabilizing) or positive (amplifying).",
+      "m1:biology:m2Basis": "m2:FeedbackLoop",
+      "m1:biology:tensorFormula": "m2:Process ⊗ m2:Alignment ⊗ m2:Homeostasis",
+      "m1:biology:feedback_polarity": {
+        "values": ["Negative", "Positive", "Mixed"],
+        "description": "Negative: stabilizing (insulin-glucose, thyroid hormone, RAAS). Positive: amplifying (oxytocin in labor, blood clotting cascade)."
+      },
+      "m1:biology:examples": {
+        "negative": [
+          "Insulin-glucose homeostasis",
+          "Thyroid hormone regulation (HPT axis)",
+          "RAAS blood pressure control",
+          "Core body temperature regulation"
+        ],
+        "positive": [
+          "Oxytocin positive feedback during labor",
+          "Blood clotting cascade amplification",
+          "Action potential depolarization (Na⁺ influx)"
+        ]
+      },
+      "m1:biology:biologicalComponents": {
+        "sensor": "Receptor or sensory organ detecting current state (e.g. JGA cells for blood pressure)",
+        "comparator": "Integration center comparing state to set point (e.g. hypothalamus)",
+        "effector": "Organ or cell type producing corrective response (e.g. adrenal gland)"
       }
     },
     {

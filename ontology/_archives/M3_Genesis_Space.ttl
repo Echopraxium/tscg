@@ -10,12 +10,12 @@ m3:Attractor a owl:Class,
     rdfs:label "Attractor (A)" ;
     rdfs:comment "Tendency of the system toward stable asymptotic states. Measures convergence to attractors in phase space." ;
     rdfs:subClassOf "m3:M3Dimension" ;
-    m3:examples [ m3:justification "Regulated temperature, pH" ;
-            m3:system "Body homeostasis" ;
-            m3:value 8e-01 ],
-        [ m3:justification "Converges to rest position" ;
+    m3:examples [ m3:justification "Converges to rest position" ;
             m3:system "Damped pendulum" ;
             m3:value 9e-01 ],
+        [ m3:justification "Regulated temperature, pH" ;
+            m3:system "Body homeostasis" ;
+            m3:value 8e-01 ],
         [ m3:justification "Strange attractor, sensitive dependence" ;
             m3:system "Atmospheric turbulence" ;
             m3:value 2e-01 ] ;
@@ -41,11 +41,9 @@ m3:Attractor a owl:Class,
 m3:CriticalDecisions a owl:Class ;
     rdfs:label "Critical Modeling Decisions" ;
     rdfs:comment "Immutable design choices that define M3 Genesis" ;
-    m3:decisions [ m3:decisionId "ASFID_Order" ;
-            m3:rationale "Avoid AIDS/SIDA acronym" ;
-            m3:rejectedAlternatives "DASIF",
-                "FISAD",
-                "SIDAF" ;
+    m3:decisions [ m3:constraint "a,s,f,i,d ≥ 0" ;
+            m3:decisionId "Positive_Coefficients" ;
+            m3:rationale "Interpretability, no negative values. Polarities handled in M2" ;
             m3:status "IMMUTABLE" ],
         [ m3:axiom "F ≥ 0.1" ;
             m3:decisionId "Flow_Is_M3" ;
@@ -55,9 +53,11 @@ m3:CriticalDecisions a owl:Class ;
             m3:formula "|Ω(t)⟩ where t ∈ ℝ" ;
             m3:rationale "Time is parameter, not 6th dimension. Avoids redundancy with D" ;
             m3:status "IMMUTABLE" ],
-        [ m3:constraint "a,s,f,i,d ≥ 0" ;
-            m3:decisionId "Positive_Coefficients" ;
-            m3:rationale "Interpretability, no negative values. Polarities handled in M2" ;
+        [ m3:decisionId "ASFID_Order" ;
+            m3:rationale "Avoid AIDS/SIDA acronym" ;
+            m3:rejectedAlternatives "DASIF",
+                "FISAD",
+                "SIDAF" ;
             m3:status "IMMUTABLE" ] .
 
 m3:Dynamics a owl:Class,
@@ -65,15 +65,15 @@ m3:Dynamics a owl:Class,
     rdfs:label "Dynamics Dimension" ;
     rdfs:subClassOf "m3:M3Dimension" ;
     m3:clarification "Measures internal change (∂|Ω⟩/∂t), not external exchanges (Flow)" ;
-    m3:examples [ m3:justification "Active growth and differentiation" ;
-            m3:system "Developing embryo" ;
-            m3:value 7e-01 ],
-        [ m3:justification "Rapid chemical transformation" ;
+    m3:examples [ m3:justification "Rapid chemical transformation" ;
             m3:system "Combustion reaction" ;
             m3:value 9e-01 ],
         [ m3:justification "Geological timescale change" ;
             m3:system "Metamorphic rock" ;
-            m3:value 1e-02 ] ;
+            m3:value 1e-02 ],
+        [ m3:justification "Active growth and differentiation" ;
+            m3:system "Developing embryo" ;
+            m3:value 7e-01 ] ;
     m3:index 5 ;
     m3:interpretation [ m3:measurement "Time derivatives, phase velocity, reaction kinetics" ;
             m3:physicalMeaning "Temporal derivative, reaction rate, growth velocity" ;
@@ -100,15 +100,15 @@ m3:Flow a owl:Class,
     rdfs:label "Flow Dimension" ;
     rdfs:subClassOf "m3:M3Dimension" ;
     m3:axiom "Universal Openness: F ≥ 0.1 (no real system is totally closed)" ;
-    m3:examples [ m3:justification "Active metabolism with controlled exchanges" ;
-            m3:system "Living cell" ;
-            m3:value 7e-01 ],
-        [ m3:justification "Thermal insulation, minimal heat transfer" ;
+    m3:examples [ m3:justification "Thermal insulation, minimal heat transfer" ;
             m3:system "Thermos flask" ;
             m3:value 1.5e-01 ],
         [ m3:justification "Intense energy dissipation" ;
             m3:system "Tornado" ;
-            m3:value 9.5e-01 ] ;
+            m3:value 9.5e-01 ],
+        [ m3:justification "Active metabolism with controlled exchanges" ;
+            m3:system "Living cell" ;
+            m3:value 7e-01 ] ;
     m3:index 3 ;
     m3:interpretation [ m3:measurement "Entropy production, flux analysis" ;
             m3:physicalMeaning "Thermodynamic openness, metabolic throughput" ;
@@ -135,12 +135,12 @@ m3:Information a owl:Class,
     rdfs:label "Information Dimension" ;
     rdfs:subClassOf "m3:M3Dimension" ;
     m3:clarification "Measures state diversity, not uncertainty (entropy)" ;
-    m3:examples [ m3:justification "3 billion base pairs, high information content" ;
-            m3:system "Human genome" ;
-            m3:value 8.5e-01 ],
-        [ m3:justification "Repetitive regular pattern" ;
+    m3:examples [ m3:justification "Repetitive regular pattern" ;
             m3:system "Salt crystal" ;
             m3:value 1e-01 ],
+        [ m3:justification "3 billion base pairs, high information content" ;
+            m3:system "Human genome" ;
+            m3:value 8.5e-01 ],
         [ m3:justification "Few quantum states" ;
             m3:system "Hydrogen atom" ;
             m3:value 5e-02 ] ;
@@ -200,12 +200,12 @@ m3:Structure a owl:Class,
     m3:examples [ m3:justification "Highly stable molecular structure" ;
             m3:system "DNA double helix" ;
             m3:value 9.5e-01 ],
-        [ m3:justification "Defined communities with variable ties" ;
-            m3:system "Social network" ;
-            m3:value 6e-01 ],
         [ m3:justification "Minimal spatial organization" ;
             m3:system "Plasma" ;
-            m3:value 1e-01 ] ;
+            m3:value 1e-01 ],
+        [ m3:justification "Defined communities with variable ties" ;
+            m3:system "Social network" ;
+            m3:value 6e-01 ] ;
     m3:index 2 ;
     m3:interpretation [ m3:measurement "Graph theory, adjacency matrices, topological invariants" ;
             m3:physicalMeaning "Network topology, spatial organization" ;

@@ -131,12 +131,14 @@ class JSONLDToTurtleConverter:
                 self.logger.warning(f"Directory not found: {target_dir}")
                 continue
             
-            # Recursive glob for .jsonld files
+            # Recursive glob for .jsonld files (excluding _archives directories)
             pattern = "**/*.jsonld"
             for file_path in target_dir.glob(pattern):
-                if file_path.is_file():
+                if file_path.is_file() and "_archives" not in file_path.parts:
                     jsonld_files.append(file_path)
                     self.logger.debug(f"Found: {file_path.relative_to(self.root_dir)}")
+                elif file_path.is_file() and "_archives" in file_path.parts:
+                    self.logger.debug(f"Skipped (_archives): {file_path.relative_to(self.root_dir)}")
         
         return sorted(jsonld_files)
     
@@ -273,7 +275,7 @@ class JSONLDToTurtleConverter:
             self.logger.info("ERRORS ENCOUNTERED:")
             self.logger.info("-"*70)
             for file_path, error_msg in self.errors:
-                self.logger.info(f"  {file_path.name}")
+                self.logger.info(f"  {file_path}")
                 self.logger.info(f"    → {error_msg}")
         
         self.logger.info("="*70)

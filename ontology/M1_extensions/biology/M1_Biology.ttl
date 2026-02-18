@@ -1,5 +1,6 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix ns1: <m1:biology:> .
+@prefix ns2: <m1:> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
@@ -64,12 +65,13 @@ ns1:EndocrineSignaling a owl:Class ;
     ns1:temporalRange "Minutes to hours (hormone half-life dependent)" .
 
 ns1:FeedbackLoop a owl:Class ;
-    rdfs:label "Feedback Loop" ;
-    rdfs:comment "Regulatory circuit where output influences input. Can be negative (stabilizing) or positive (amplifying)." ;
-    ns1:m2Basis "m2:Feedback",
-        "m2:Loop",
-        "m2:Regulation" ;
-    ns1:types [ ] .
+    rdfs:label "Biological Feedback Loop" ;
+    rdfs:comment "Domain-specific instantiation of m2:FeedbackLoop in biological systems. A cyclic regulatory circuit where a physiological output (e.g. hormone concentration, blood pressure) is sensed, compared to a set point (Homeostasis), and corrected via an effector mechanism (Alignment→Process). Can be negative (stabilizing) or positive (amplifying)." ;
+    ns1:biologicalComponents [ ] ;
+    ns1:examples [ ] ;
+    ns1:feedback_polarity [ ] ;
+    ns1:m2Basis "m2:FeedbackLoop" ;
+    ns1:tensorFormula "m2:Process ⊗ m2:Alignment ⊗ m2:Homeostasis" .
 
 ns1:GeneExpression a owl:Class ;
     rdfs:label "Gene Expression" ;
@@ -137,7 +139,8 @@ ns1:M1_Biology a owl:Ontology ;
     rdfs:comment "Domain-specific biological concepts for TSCG framework. Contains patterns and concepts specific to biological systems (cellular, physiological, developmental)." ;
     owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld" ;
-    owl:versionInfo "1.0.0" .
+    owl:versionInfo "1.1.0" ;
+    ns2:changelog [ ] .
 
 ns1:Metabolism a owl:Class ;
     rdfs:label "Metabolism" ;

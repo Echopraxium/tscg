@@ -1,205 +1,246 @@
 {
   "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
     "dcterms": "http://purl.org/dc/terms/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
-    "m3:eagle_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
-    "m3:genesis_space": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#"
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m3": "M3_GenesisSpace.jsonld#"
   },
-  "@id": "m3:eagle_eye:EagleEye",
-  "@type": "owl:Ontology",
-  "owl:versionInfo": "2.2.0",
-  "dcterms:created": "2026-01-21",
-  "dcterms:modified": "2026-02-10",
-  "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-  "dcterms:description": "ASFID basis (Attractor, Structure, Flow, Information, Dynamics) for Territory measurement through analytical decomposition of observable phenomena",
-  "owl:imports": [
-    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld"
-  ],
-  "rdfs:label": "Eagle Eye - ASFID Basis for Territory Measurement",
-  "rdfs:comment": "Orthonormal basis providing analytical perspective on reality-as-territory. Eagle Eye observes, measures, and decomposes phenomena into fundamental dimensions.",
-  "metadata": {
-    "layer": "M3",
-    "name": "Eagle Eye - ASFID Basis",
-    "version": "2.2.0",
-    "date_created": "2026-01-21",
-    "date_modified": "2026-02-10",
-    "authors": [
-      "Echopraxium with the collaboration of Claude AI"
-    ],
-    "description": "ASFID basis for Territory measurement through analytical decomposition",
-    "changelog": {
-      "v2.0.1": "Namespace refactoring: m3eagle → m3:eagle_eye",
-      "v2.1.0": "Added m3:ontologyCategory: GenesisExtension. Added skos namespace. Cleaned @id.",
-      "v2.2.0": "CRITICAL FIX: Corrected ORIVE → REVOI (proper Sphinx Eye basis name). Added coupling_with_REVOI section referencing feedback loop from M3_GenesisSpace v3.0.0."
-    }
-  },
-  "parent_ontology": {
-    "@id": "m3:genesis_space:M3_GenesisSpace",
-    "relationship": "component_of",
-    "description": "Eagle Eye is the ASFID component of M3 Genesis Space, providing the analytical perspective on systems"
-  },
-  "basis_properties": {
-    "name": "ASFID",
-    "expansion": "Attractor, Structure, Flow, Information, Dynamics",
-    "dimensions": 5,
-    "orthonormality": "verified",
-    "completeness": "partial (completes with REVOI from Sphinx Eye)",
-    "role": "Territory measurement",
-    "hilbert_space": "ℋ_μ"
-  },
-  "coupling_with_REVOI": {
-    "description": "ASFID (Eagle Eye/Territory) couples with REVOI (Sphinx Eye/Map) through bidirectional feedback loop formalized in M3_GenesisSpace v3.0.0",
-    "coupling_matrix": {
-      "symbol": "Σ",
-      "dimension": "5×5",
-      "role": "Encodes interaction strength between ASFID dimensions (Territory) and REVOI dimensions (Map)",
-      "interpretation": "σᵢⱼ = coupling coefficient between ASFID_i and REVOI_j"
-    },
-    "feedback_operators": {
-      "Phi": {
-        "symbol": "Φ",
-        "signature": "Φ: H_ASFID → H_REVOI",
-        "formula": "Φ = V Σ U^T",
-        "role": "Observation operator - Territory measurements inform Map construction",
-        "example": "Nuclear reactor: Neutron flux measurements (ASFID) → Diffusion model coefficients (REVOI)"
+  "@graph": [
+    {
+      "@id": "m3:eagle_eye:EagleEye",
+      "@type": "owl:Ontology",
+      "owl:versionInfo": "2.3.0",
+      "dcterms:created": "2026-01-21",
+      "dcterms:modified": "2026-02-16",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:description": "ASFID basis (Attractor, Structure, Flow, Information, Dynamics) for Territory measurement through analytical decomposition of observable phenomena",
+      "m3:ontologyCategory": {
+        "@id": "m3:GenesisExtension"
       },
-      "Psi": {
-        "symbol": "Ψ",
-        "signature": "Ψ: H_REVOI → H_ASFID",
-        "formula": "Ψ = U Σ^T V^T",
-        "role": "Interpretation operator - Map predictions guide Territory measurement strategies",
-        "example": "Nuclear reactor: Xenon oscillation model (REVOI) → Install in-core detectors (ASFID)"
+      "owl:imports": [ "M3_GenesisSpace.jsonld" ],
+      "rdfs:label": "Eagle Eye - ASFID Basis for Territory Measurement",
+      "rdfs:comment": "Orthonormal basis providing analytical perspective on reality-as-territory. Eagle Eye observes, measures, and decomposes phenomena into fundamental dimensions.",
+      "metadata": {
+        "layer": "M3",
+        "name": "Eagle Eye - ASFID Basis",
+        "version": "2.3.0",
+        "date_created": "2026-01-21",
+        "date_modified": "2026-02-16",
+        "authors": [
+          "Echopraxium with the collaboration of Claude AI"
+        ],
+        "description": "ASFID basis for Territory measurement through analytical decomposition",
+        "changelog": {
+          "v2.0.1": "Namespace refactoring: m3eagle → m3:eagle_eye",
+          "v2.1.0": "Added m3:ontologyCategory: GenesisExtension. Added skos namespace. Cleaned @id.",
+          "v2.2.0": "CRITICAL FIX: Corrected ORIVE → REVOI (proper Sphinx Eye basis name). Added coupling_with_REVOI section referencing feedback loop from M3_GenesisSpace v3.0.0.",
+          "v2.2.1": "Added @graph envelope for structural consistency with M3_GenesisSpace.jsonld. Added m3:ontologyCategory property reference.",
+          "v2.2.2": "Added formal OWL Class definition for m3:eagle_eye:M3Dimension with rdfs:subClassOf and properties definitions.",
+          "v2.2.3": "Cleaned @context: removed redundant namespace prefixes (m3:genesis_space, m3:eagle_eye). Single m3 prefix now resolves all M3 layer IRIs.",
+          "v2.3.0": "REFACTORING: Removed m3:eagle_eye:M3Dimension class (now m3:M3Dimension in GenesisSpace). Removed common properties (symbol, index, examples - now m3:dimensionSymbol, m3:dimensionIndex, m3:dimensionExamples in GenesisSpace). Kept ASFID-specific properties (physicalInterpretation, rangeAnalog, criticalAxiom)."
+        }
+      },
+      "parent_ontology": {
+        "@id": "m3:genesis_space:GenesisSpace",
+        "relationship": "component_of",
+        "description": "Eagle Eye is the ASFID component of M3 Genesis Space, providing the analytical perspective on systems"
+      },
+      "basis_properties": {
+        "name": "ASFID",
+        "expansion": "Attractor, Structure, Flow, Information, Dynamics",
+        "dimensions": 5,
+        "orthonormality": "verified",
+        "completeness": "partial (completes with REVOI from Sphinx Eye)",
+        "role": "Territory measurement",
+        "hilbert_space": "ℋ_μ"
+      },
+      "coupling_with_REVOI": {
+        "description": "ASFID (Eagle Eye/Territory) couples with REVOI (Sphinx Eye/Map) through bidirectional feedback loop formalized in M3_GenesisSpace v3.0.0",
+        "coupling_matrix": {
+          "symbol": "Σ",
+          "dimension": "5×5",
+          "role": "Encodes interaction strength between ASFID dimensions (Territory) and REVOI dimensions (Map)",
+          "interpretation": "σᵢⱼ = coupling coefficient between ASFID_i and REVOI_j"
+        },
+        "feedback_operators": {
+          "Phi": {
+            "symbol": "Φ",
+            "signature": "Φ: H_ASFID → H_REVOI",
+            "formula": "Φ = V Σ U^T",
+            "role": "Observation operator - Territory measurements inform Map construction",
+            "example": "Nuclear reactor: Neutron flux measurements (ASFID) → Diffusion model coefficients (REVOI)"
+          },
+          "Psi": {
+            "symbol": "Ψ",
+            "signature": "Ψ: H_REVOI → H_ASFID",
+            "formula": "Ψ = U Σ^T V^T",
+            "role": "Interpretation operator - Map predictions guide Territory measurement strategies",
+            "example": "Nuclear reactor: Xenon oscillation model (REVOI) → Install in-core detectors (ASFID)"
+          }
+        },
+        "iterative_refinement": {
+          "formula": "v_T^(n+1) = v_T^(n) + α·Ψ(Φ(v_T^(n)))",
+          "interpretation": "Territory state vector iteratively refined through Map feedback",
+          "convergence": "Fixed point represents epistemic equilibrium (mature Domain)"
+        },
+        "see_also": "M3_GenesisSpace.jsonld v3.0.0 for complete feedback loop formalization and Korzybski principle extension"
+      },
+      "metaphor": {
+        "image": "Eagle soaring above the territory",
+        "vision": "Penetrating sight that perceives reality as-is",
+        "action": "Observes, measures, analyzes",
+        "domain": "Territory (Reality)",
+        "perspective": "From above, comprehensive view",
+        "visual_acuity": "8× human vision - precision at distance"
+      },
+      "dual_axes_position": {
+        "model_reality_axis": "Reality",
+        "analysis_synthesis_axis": "Analysis",
+        "quadrant": "Analysis of Reality (Territory)"
+      },
+      "dimensions": [
+        {
+          "@id": "m3:eagle_eye:Attractor",
+          "@type": [
+            "owl:NamedIndividual",
+            "m3:M3Dimension"
+          ],
+          "rdfs:label": "Attractor",
+          "m3:dimensionSymbol": "|A⟩",
+          "m3:dimensionIndex": 1,
+          "rdfs:comment": "Asymptotic convergence tendency. Measures stability landscape and equilibrium attraction.",
+          "m3:eagle_eye:physicalInterpretation": "Stability basin, attractor state, homeostatic set-point",
+          "m3:eagle_eye:rangeAnalog": "[0,1] where 0=chaos/instability, 1=perfect stability",
+          "m3:dimensionExamples": [
+            "Thermostat set-point (high A)",
+            "Strange attractor in chaos (low A)",
+            "Biological homeostasis (medium-high A)"
+          ]
+        },
+        {
+          "@id": "m3:eagle_eye:Structure",
+          "@type": [
+            "owl:NamedIndividual",
+            "m3:M3Dimension"
+          ],
+          "rdfs:label": "Structure",
+          "m3:dimensionSymbol": "|S⟩",
+          "m3:dimensionIndex": 2,
+          "rdfs:comment": "Topological organization and connectivity. Measures internal arrangement and relational patterns.",
+          "m3:eagle_eye:physicalInterpretation": "Network topology, crystalline order, organizational hierarchy",
+          "m3:eagle_eye:rangeAnalog": "[0,1] where 0=gas (no structure), 1=crystal (perfect lattice)",
+          "m3:dimensionExamples": [
+            "Gas molecules (S≈0.1)",
+            "Liquid water (S≈0.4)",
+            "Biological cell (S≈0.7)",
+            "Diamond crystal (S≈0.95)"
+          ]
+        },
+        {
+          "@id": "m3:eagle_eye:Flow",
+          "@type": [
+            "owl:NamedIndividual",
+            "m3:M3Dimension"
+          ],
+          "rdfs:label": "Flow",
+          "m3:dimensionSymbol": "|F⟩",
+          "m3:dimensionIndex": 3,
+          "rdfs:comment": "Exchange rate with environment. Measures openness and dissipation. AXIOM: F ≥ 0.1 (Universal Openness).",
+          "m3:eagle_eye:physicalInterpretation": "Matter/energy/information flux across boundary",
+          "m3:eagle_eye:rangeAnalog": "[0.1,1] where 0.1=quasi-closed, 1=maximally dissipative",
+          "m3:eagle_eye:criticalAxiom": "F ≥ 0.1 (no perfectly isolated system exists)",
+          "m3:dimensionExamples": [
+            "Thermos flask (F≈0.15 - quasi-closed)",
+            "Human body (F≈0.6 - moderate exchange)",
+            "Tornado (F≈0.95 - highly dissipative)"
+          ]
+        },
+        {
+          "@id": "m3:eagle_eye:Information",
+          "@type": [
+            "owl:NamedIndividual",
+            "m3:M3Dimension"
+          ],
+          "rdfs:label": "Information",
+          "m3:dimensionSymbol": "|I⟩",
+          "m3:dimensionIndex": 4,
+          "rdfs:comment": "State complexity (synchronic). Measures variety, diversity, Shannon entropy at fixed time.",
+          "m3:eagle_eye:physicalInterpretation": "Configurational entropy, state-space volume, variety",
+          "m3:eagle_eye:rangeAnalog": "[0,1] where 0=trivial/simple, 1=maximally complex",
+          "m3:dimensionExamples": [
+            "Single atom (I≈0.05)",
+            "Binary switch (I≈0.1)",
+            "Human genome (I≈0.8)",
+            "Brain neural state (I≈0.9)"
+          ]
+        },
+        {
+          "@id": "m3:eagle_eye:Dynamics",
+          "@type": [
+            "owl:NamedIndividual",
+            "m3:M3Dimension"
+          ],
+          "rdfs:label": "Dynamics",
+          "m3:dimensionSymbol": "|D⟩",
+          "m3:dimensionIndex": 5,
+          "rdfs:comment": "State evolution (diachronic). Measures temporal change and transformation rate.",
+          "m3:eagle_eye:physicalInterpretation": "Phase velocity, reaction rate, evolutionary trajectory",
+          "m3:eagle_eye:rangeAnalog": "[0,1] where 0=static/frozen, 1=rapid change",
+          "m3:dimensionExamples": [
+            "Geological processes (D≈0.1 - slow)",
+            "Chemical reactions (D≈0.5 - moderate)",
+            "Neural firing (D≈0.9 - rapid)"
+          ]
+        }
+      ],
+      "orthogonality_matrix": {
+        "description": "Inner products ⟨A|S⟩, ⟨A|F⟩, etc. = 0 (orthogonal)",
+        "verified": "true",
+        "basis": "Orthonormal: ⟨i|j⟩ = δᵢⱼ"
+      },
+      "complementary_basis": {
+        "@id": "m3:sphinx_eye:SphinxEye",
+        "description": "Sphinx Eye provides REVOI basis for Map construction, complementing Eagle's Territory measurement",
+        "relationship": "orthogonal_complement",
+        "complete_space": "M3 Genesis Space = ASFID ⊕ REVOI (10D Hilbert space)"
       }
     },
-    "iterative_refinement": {
-      "formula": "v_T^(n+1) = v_T^(n) + α·Ψ(Φ(v_T^(n)))",
-      "interpretation": "Territory state vector iteratively refined through Map feedback",
-      "convergence": "Fixed point represents epistemic equilibrium (mature Domain)"
-    },
-    "see_also": "M3_GenesisSpace.jsonld v3.0.0 for complete feedback loop formalization and Korzybski principle extension"
-  },
-  "metaphor": {
-    "image": "Eagle soaring above the territory",
-    "vision": "Penetrating sight that perceives reality as-is",
-    "action": "Observes, measures, analyzes",
-    "domain": "Territory (Reality)",
-    "perspective": "From above, comprehensive view",
-    "visual_acuity": "8× human vision - precision at distance"
-  },
-  "dual_axes_position": {
-    "model_reality_axis": "Reality",
-    "analysis_synthesis_axis": "Analysis",
-    "quadrant": "Analysis of Reality (Territory)"
-  },
-  "dimensions": [
     {
-      "@id": "m3:eagle_eye:Attractor",
-      "@type": [
-        "owl:NamedIndividual",
-        "m3:eagle_eye:M3Dimension"
-      ],
-      "rdfs:label": "Attractor",
-      "m3:eagle_eye:symbol": "|A⟩",
-      "m3:eagle_eye:index": 1,
-      "rdfs:comment": "Asymptotic convergence tendency. Measures stability landscape and equilibrium attraction.",
-      "m3:eagle_eye:physicalInterpretation": "Stability basin, attractor state, homeostatic set-point",
-      "m3:eagle_eye:rangeAnalog": "[0,1] where 0=chaos/instability, 1=perfect stability",
-      "m3:eagle_eye:examples": [
-        "Thermostat set-point (high A)",
-        "Strange attractor in chaos (low A)",
-        "Biological homeostasis (medium-high A)"
-      ]
+      "@id": "m3:eagle_eye:physicalInterpretation",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Physical Interpretation (ASFID)",
+      "rdfs:comment": "Concrete physical manifestations or analogues of the ASFID dimension in Territory",
+      "rdfs:domain": "m3:M3Dimension",
+      "rdfs:range": "xsd:string",
+      "skos:definition": "Description of how the ASFID dimension manifests in physical, biological, or social systems as observable Territory phenomena",
+      "skos:example": "Attractor → Stability basin, homeostatic set-point",
+      "dcterms:created": "2026-02-16"
     },
     {
-      "@id": "m3:eagle_eye:Structure",
-      "@type": [
-        "owl:NamedIndividual",
-        "m3:eagle_eye:M3Dimension"
-      ],
-      "rdfs:label": "Structure",
-      "m3:eagle_eye:symbol": "|S⟩",
-      "m3:eagle_eye:index": 2,
-      "rdfs:comment": "Topological organization and connectivity. Measures internal arrangement and relational patterns.",
-      "m3:eagle_eye:physicalInterpretation": "Network topology, crystalline order, organizational hierarchy",
-      "m3:eagle_eye:rangeAnalog": "[0,1] where 0=gas (no structure), 1=crystal (perfect lattice)",
-      "m3:eagle_eye:examples": [
-        "Gas molecules (S≈0.1)",
-        "Liquid water (S≈0.4)",
-        "Biological cell (S≈0.7)",
-        "Diamond crystal (S≈0.95)"
-      ]
+      "@id": "m3:eagle_eye:rangeAnalog",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Range Analog (ASFID)",
+      "rdfs:comment": "Typical measurement range and interpretation scale for ASFID dimension in Territory",
+      "rdfs:domain": "m3:M3Dimension",
+      "rdfs:range": "xsd:string",
+      "skos:definition": "Normalized scale [0,1] with semantic anchors describing extreme and typical values for Territory measurements",
+      "skos:example": "Structure: [0,1] where 0=gas (no structure), 1=crystal (perfect lattice)",
+      "dcterms:created": "2026-02-16"
     },
     {
-      "@id": "m3:eagle_eye:Flow",
-      "@type": [
-        "owl:NamedIndividual",
-        "m3:eagle_eye:M3Dimension"
-      ],
-      "rdfs:label": "Flow",
-      "m3:eagle_eye:symbol": "|F⟩",
-      "m3:eagle_eye:index": 3,
-      "rdfs:comment": "Exchange rate with environment. Measures openness and dissipation. AXIOM: F ≥ 0.1 (Universal Openness).",
-      "m3:eagle_eye:physicalInterpretation": "Matter/energy/information flux across boundary",
-      "m3:eagle_eye:rangeAnalog": "[0.1,1] where 0.1=quasi-closed, 1=maximally dissipative",
-      "m3:eagle_eye:criticalAxiom": "F ≥ 0.1 (no perfectly isolated system exists)",
-      "m3:eagle_eye:examples": [
-        "Thermos flask (F≈0.15 - quasi-closed)",
-        "Human body (F≈0.6 - moderate exchange)",
-        "Tornado (F≈0.95 - highly dissipative)"
-      ]
-    },
-    {
-      "@id": "m3:eagle_eye:Information",
-      "@type": [
-        "owl:NamedIndividual",
-        "m3:eagle_eye:M3Dimension"
-      ],
-      "rdfs:label": "Information",
-      "m3:eagle_eye:symbol": "|I⟩",
-      "m3:eagle_eye:index": 4,
-      "rdfs:comment": "State complexity (synchronic). Measures variety, diversity, Shannon entropy at fixed time.",
-      "m3:eagle_eye:physicalInterpretation": "Configurational entropy, state-space volume, variety",
-      "m3:eagle_eye:rangeAnalog": "[0,1] where 0=trivial/simple, 1=maximally complex",
-      "m3:eagle_eye:examples": [
-        "Single atom (I≈0.05)",
-        "Binary switch (I≈0.1)",
-        "Human genome (I≈0.8)",
-        "Brain neural state (I≈0.9)"
-      ]
-    },
-    {
-      "@id": "m3:eagle_eye:Dynamics",
-      "@type": [
-        "owl:NamedIndividual",
-        "m3:eagle_eye:M3Dimension"
-      ],
-      "rdfs:label": "Dynamics",
-      "m3:eagle_eye:symbol": "|D⟩",
-      "m3:eagle_eye:index": 5,
-      "rdfs:comment": "State evolution (diachronic). Measures temporal change and transformation rate.",
-      "m3:eagle_eye:physicalInterpretation": "Phase velocity, reaction rate, evolutionary trajectory",
-      "m3:eagle_eye:rangeAnalog": "[0,1] where 0=static/frozen, 1=rapid change",
-      "m3:eagle_eye:examples": [
-        "Geological processes (D≈0.1 - slow)",
-        "Chemical reactions (D≈0.5 - moderate)",
-        "Neural firing (D≈0.9 - rapid)"
-      ]
+      "@id": "m3:eagle_eye:criticalAxiom",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Critical Axiom (ASFID)",
+      "rdfs:comment": "Fundamental constraint or axiom that applies to this ASFID dimension",
+      "rdfs:domain": "m3:M3Dimension",
+      "rdfs:range": "xsd:string",
+      "skos:definition": "Theoretical or empirical constraint that must be satisfied in Territory measurements (e.g., Flow ≥ 0.1 Universal Openness axiom)",
+      "skos:example": "F ≥ 0.1 (no perfectly isolated system exists)",
+      "dcterms:created": "2026-02-16"
     }
-  ],
-  "orthogonality_matrix": {
-    "description": "Inner products ⟨A|S⟩, ⟨A|F⟩, etc. = 0 (orthogonal)",
-    "verified": "true",
-    "basis": "Orthonormal: ⟨i|j⟩ = δᵢⱼ"
-  },
-  "complementary_basis": {
-    "@id": "m3:sphinx_eye:SphinxEye",
-    "description": "Sphinx Eye provides REVOI basis for Map construction, complementing Eagle's Territory measurement",
-    "relationship": "orthogonal_complement",
-    "complete_space": "M3 Genesis Space = ASFID ⊕ REVOI (10D Hilbert space)"
-  }
+  ]
 }
