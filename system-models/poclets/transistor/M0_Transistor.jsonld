@@ -1,20 +1,23 @@
 {
   "@context": {
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclets.jsonld#",
-    "m1elec": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Electronics.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
-    "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
-    "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
+    "@base": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/",
+    "sm": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/",
+    "m0": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/transistor/M0_Transistor.jsonld#",
+    "m1elec": "M1_Electronics.jsonld#",
+    "m2": "M2_MetaConcepts.jsonld#",
+    "m3eagle": "M3_EagleEye.jsonld#",
+    "m3sphinx": "M3_SphinxEye.jsonld#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "dcterms": "http://purl.org/dc/terms/",
-    "xsd": "http://www.w3.org/2001/XMLSchema#"
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "m3": "M3_GenesisSpace.jsonld#"
   },
   "@graph": [
     {
       "@id": "m0:Transistor_BJT",
       "@type": [
-        "m0:Poclet",
         "owl:NamedIndividual"
       ],
       "rdfs:label": "Bipolar Junction Transistor (BJT) - NPN Configuration",
@@ -287,24 +290,39 @@
           {
             "domain": "Biology",
             "example": "Neuron (biological amplifier)",
-            "inputs": ["synaptic currents (I_syn)", "membrane potential (V_m)"],
-            "outputs": ["action potential (spike train)"],
+            "inputs": [
+              "synaptic currents (I_syn)",
+              "membrane potential (V_m)"
+            ],
+            "outputs": [
+              "action potential (spike train)"
+            ],
             "processingMechanism": "Ion channel gating (Na+/K+ flows)",
             "similarity": "Small input current triggers large output current, threshold behavior (spike initiation), amplification via positive feedback"
           },
           {
             "domain": "Hydraulics",
             "example": "Valve Amplifier (servo valve)",
-            "inputs": ["control current (solenoid)", "supply pressure"],
-            "outputs": ["hydraulic flow (to actuator)"],
+            "inputs": [
+              "control current (solenoid)",
+              "supply pressure"
+            ],
+            "outputs": [
+              "hydraulic flow (to actuator)"
+            ],
             "processingMechanism": "Pilot stage controls main spool position",
             "similarity": "Small electrical signal controls large hydraulic power, proportional amplification in linear region"
           },
           {
             "domain": "Acoustics",
             "example": "Electret Microphone (with FET buffer)",
-            "inputs": ["sound pressure (acoustic)", "bias voltage"],
-            "outputs": ["audio signal (electrical)"],
+            "inputs": [
+              "sound pressure (acoustic)",
+              "bias voltage"
+            ],
+            "outputs": [
+              "audio signal (electrical)"
+            ],
             "processingMechanism": "Capacitance variation → voltage change → FET amplification",
             "similarity": "Transduction + amplification, signal conditioning, impedance transformation"
           }
@@ -339,17 +357,24 @@
         "Ternary hybrid formulas validated: Territory (charge physics) distinct from Map (circuit model)",
         "Sharp threshold despite continuous physics enables digital computing foundation",
         "Interoperability dimension justifies inclusion: standardization critical for transistor ubiquity (>10^21 manufactured)"
+      ],
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
+      "owl:imports": [
+        "M2_MetaConcepts.jsonld",
+        "M1_CoreConcepts.jsonld"
       ]
     }
   ],
-  "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Transistor.jsonld",
+  "@id": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M0_Transistor.jsonld",
   "rdfs:label": "TSCG M0 Poclet - Bipolar Junction Transistor",
   "rdfs:comment": "BJT as minimal electronic Processor with dual-mode operation (amplification/switching). Validates Processor ternary hybrid formulas in semiconductor domain.",
   "owl:versionInfo": "15.0.0",
   "owl:imports": [
-    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_Processor.jsonld",
-    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld",
-    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld"
+    "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_Processor.jsonld",
+    "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld",
+    "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace.jsonld"
   ],
   "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
   "dcterms:created": "2026-02-07"

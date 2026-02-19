@@ -1,20 +1,23 @@
 {
   "@context": {
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclets.jsonld#",
-    "m1bio": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Biology.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
-    "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
-    "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
+    "@base": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/",
+    "sm": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/",
+    "m0": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/kidneys/M0_Kidneys.jsonld#",
+    "m1bio": "M1_extensions/biology/M1_Biology.jsonld#",
+    "m2": "M2_MetaConcepts.jsonld#",
+    "m3eagle": "M3_EagleEye.jsonld#",
+    "m3sphinx": "M3_SphinxEye.jsonld#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "dcterms": "http://purl.org/dc/terms/",
-    "xsd": "http://www.w3.org/2001/XMLSchema#"
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "m3": "M3_GenesisSpace.jsonld#"
   },
   "@graph": [
     {
       "@id": "m0:Kidneys",
       "@type": [
-        "m0:Poclet",
         "owl:NamedIndividual"
       ],
       "rdfs:label": "Kidneys - Renal Filtration System",
@@ -294,25 +297,52 @@
           {
             "domain": "Engineering",
             "example": "Water Treatment Plant",
-            "inputs": ["contaminated water"],
-            "outputs": ["clean water", "sludge"],
-            "processingStages": ["coagulation", "filtration", "disinfection"],
+            "inputs": [
+              "contaminated water"
+            ],
+            "outputs": [
+              "clean water",
+              "sludge"
+            ],
+            "processingStages": [
+              "coagulation",
+              "filtration",
+              "disinfection"
+            ],
             "similarity": "Multi-stage filtration and selective retention/removal"
           },
           {
             "domain": "Computing",
             "example": "Database Query Processor",
-            "inputs": ["query", "raw data"],
-            "outputs": ["result set", "logs"],
-            "processingStages": ["parsing", "optimization", "execution"],
+            "inputs": [
+              "query",
+              "raw data"
+            ],
+            "outputs": [
+              "result set",
+              "logs"
+            ],
+            "processingStages": [
+              "parsing",
+              "optimization",
+              "execution"
+            ],
             "similarity": "Selective data extraction with transformation"
           },
           {
             "domain": "Chemistry",
             "example": "Chromatography Column",
-            "inputs": ["mixture"],
-            "outputs": ["separated compounds"],
-            "processingStages": ["adsorption", "elution", "detection"],
+            "inputs": [
+              "mixture"
+            ],
+            "outputs": [
+              "separated compounds"
+            ],
+            "processingStages": [
+              "adsorption",
+              "elution",
+              "detection"
+            ],
             "similarity": "Selective separation based on affinity differences"
           }
         ]
@@ -331,18 +361,26 @@
         "Ternary hybrid formulas necessary: Territory needs Flow+Resource, Map needs Interoperability",
         "Kidneys exemplify 'intelligent processor': not just filtering, but adaptive regulation (hormone-responsive)",
         "Relationship to RAAS: kidneys are BOTH a processor (filtration) AND cascade initiator (renin secretion)"
+      ],
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
+      "owl:imports": [
+        "M2_MetaConcepts.jsonld",
+        "M1_CoreConcepts.jsonld",
+        "M1_extensions/biology/M1_Biology.jsonld"
       ]
     }
   ],
-  "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Kidneys.jsonld",
+  "@id": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M0_Kidneys.jsonld",
   "rdfs:label": "TSCG M0 Poclet - Kidneys",
   "rdfs:comment": "Kidneys as biological Processor validating ternary hybrid formulas with N-ary inputs/outputs. First poclet for Processor metaconcept (v15.0.0).",
   "owl:versionInfo": "15.0.0",
   "owl:imports": [
-    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_Processor.jsonld",
-    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld",
-    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Biology.jsonld",
-    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld"
+    "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_Processor.jsonld",
+    "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld",
+    "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_Biology.jsonld",
+    "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace.jsonld"
   ],
   "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
   "dcterms:created": "2026-02-07"

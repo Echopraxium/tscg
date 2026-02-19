@@ -5,15 +5,13 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Action> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Action> a owl:Class ;
     rdfs:label "Action" ;
     m2:atomicity [ m2:granularity "Elementary operational unit" ;
             rdfs:comment "Action is atomic - not further decomposable in behavioral context" ] ;
     m2:discoveryContext "Identified as atomic operational unit in behavioral decomposition. Represents finest-grained executable element triggered by Steps in Behavior/Workflow networks." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Dynamic" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information" ;
     m2:hasEpistemicGap 1.5e-01 ;
@@ -23,7 +21,7 @@
         "HTTP tokenize (triggered by parse step)",
         "Heat butter (triggered by make roux step)" ;
     m2:hasPolarity "dual" ;
-    m2:hasTensorFormula "D⊗I" ;
+    m2:hasTensorFormula "D ⊗ I" ;
     m2:hasTensorFormulaASCII "D (x) I" ;
     m2:hasTensorFormulaTeX "D \\otimes I" ;
     m2:perspective "dual" ;
@@ -34,15 +32,18 @@
             rdfs:comment "Action is triggered by Step" ] ;
     dcterms:created "2026-01-28" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Atomic operation triggered by a Step. Elementary executable unit with informational content. Represents indivisible operation in behavioral or workflow context." .
+    rdfs:comment "Atomic operation triggered by a Step. Elementary executable unit with informational content. Represents indivisible operation in behavioral or workflow context." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Activation> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Activation> a owl:Class ;
     rdfs:label "Activation (Activation/Inhibition)" ;
     m2:dualAspects [ ] ;
     m2:eagleView [ ] ;
-    m2:fullName "Activation / Inhibition" ;
-    m2:hasCategory "m2:Regulatory" ;
+    m2:expression "(-1)^{p} (A ⊗ D)" ;
+    m2:expressionASCII "(-1)^p * (A (x) D)" ;
+    m2:expressionTeX "(-1)^{p} (A \\otimes D)" ;
+    m2:fullName "Activation (Inhibition)" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Dynamics" ;
     m2:hasEpistemicGap 2e-01 ;
@@ -50,19 +51,22 @@
         "Enzyme activation/inhibition",
         "Neural excitation/inhibition" ;
     m2:hasPolarity "dual" ;
-    m2:hasTensorFormula "A⊗D" ;
-    m2:hasTensorFormulaASCII "A (x) D" ;
-    m2:hasTensorFormulaTeX "A \\otimes D" ;
+    m2:hasTensorFormula "→ see m2:expression and m2:poleMapping" ;
+    m2:hasTensorFormulaASCII "→ see m2:expressionASCII and m2:poleMapping" ;
+    m2:hasTensorFormulaTeX "→ see m2:expressionTeX and m2:poleMapping" ;
     m2:perspective "dual" ;
+    m2:poleMapping [ ] ;
     m2:shortName "Activation" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Enabling or blocking of processes or pathways." .
+    rdfs:comment "Enabling or blocking of processes or pathways." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:MetaconceptPair",
+        "m2:Regulatory",
+        "m2:SignPair" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Adaptation> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Adaptation> a owl:Class ;
     rdfs:label "Adaptation" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Adaptive" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information" ;
@@ -70,23 +74,23 @@
     m2:hasExample "Bacterial antibiotic resistance",
         "Neural plasticity" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "I⊗F⊗D" ;
+    m2:hasTensorFormula "I ⊗ F ⊗ D" ;
     m2:hasTensorFormulaASCII "I (x) F (x) D" ;
     m2:hasTensorFormulaTeX "I \\otimes F \\otimes D" ;
     m2:perspective "territory" ;
-    rdfs:comment "Progressive modification of structure or behavior in response to environmental changes." .
+    rdfs:comment "Progressive modification of structure or behavior in response to environmental changes." ;
+    rdfs:subClassOf "m2:Adaptive",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Adaptive> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Category> ;
-    rdfs:label "Adaptive Category" ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Adaptive> a owl:Class ;
+    rdfs:label "Adaptive Family" ;
     m2:metaconceptCount 4 ;
-    rdfs:comment "Learning, evolution, environmental response. High I, medium F." .
+    rdfs:comment "Learning, evolution, environmental response. High I, medium F." ;
+    rdfs:subClassOf "m2:MetaconceptFamily" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Agent> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Agent> a owl:Class ;
     rdfs:label "Agent" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Relational" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -95,56 +99,20 @@
         "Economic actor",
         "Software agent" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I⊗D" ;
+    m2:hasTensorFormula "S ⊗ I ⊗ D" ;
     m2:hasTensorFormulaASCII "S (x) I (x) D" ;
     m2:hasTensorFormulaTeX "S \\otimes I \\otimes D" ;
     m2:perspective "dual" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Active entity capable of autonomous action and interaction." .
+    rdfs:comment "Active entity capable of autonomous action and interaction." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Relational" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Amplification> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
-    rdfs:label "Amplification (Amplification/Attenuation)" ;
-    m2:ashbyRelevance [ ] ;
-    m2:discoveryContext "Required for VSM modeling of variety management (S2 amplification, S3 attenuation). Emerges as fundamental dual operation for controlling flow magnitude. Observable in Territory (Ft → D → It: measurable flux, dynamics, information) AND representable in Map (R → O: symbolizable, observable stages). Essential prerequisite for M1_VSM concepts VarietyAmplification and VarietyAttenuation which combine with ValueSpace. Third hybrid metaconcept after Domain and ValueSpace." ;
-    m2:distinctionFromRelated [ ] ;
-    m2:dualAspects [ ] ;
-    m2:eagleView [ ] ;
-    m2:fullName "Amplification / Attenuation" ;
-    m2:hasAttribute [ ] ;
-    m2:hasCategory "m2:Dynamic" ;
-    m2:hasDominantM3 "HYBRID: Ft → D → It from ASFID (Eagle Eye) + R → O from REVOI (Sphinx Eye)" ;
-    m2:hasEpistemicGap 2e-01 ;
-    m2:hasExample "Acoustics: Speaker/microphone / Soundproofing material",
-        "Biology: Enzymatic cascade → Competitive inhibition",
-        "Cybernetics: VSM S2 variety amplification / S3 variety attenuation",
-        "Economics: Credit expansion / Fiscal contraction",
-        "Electronics: Op-amp (amplification) / Resistor network (attenuation)",
-        "Immunology: Antibody production / Immune suppression",
-        "Optics: Lens magnification / Neutral density filter",
-        "Signal Processing: Gain stage / Low-pass filter" ;
-    m2:hasPolarity "hybrid" ;
-    m2:hasTensorFormula "Ft → D → It → R → O" ;
-    m2:hasTensorFormulaASCII "F_t (x) D (x) I_t (x) R (x) O" ;
-    m2:hasTensorFormulaTeX "F_t \\otimes D \\otimes I_t \\otimes R \\otimes O" ;
-    m2:hybridView [ ] ;
-    m2:mathematicalProperties [ ] ;
-    m2:perspective "hybrid" ;
-    m2:polarityDescription [ ] ;
-    m2:shortName "Amplification" ;
-    m2:sphinxView [ ] ;
-    m2:transdisciplinaryValidation [ ] ;
-    dcterms:created "2026-01-31" ;
-    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Bidirectional process: increase (amplification) or decrease (attenuation) of signal, flow, quantity, or variety. Fundamental cybernetic operation for gain control and variety management. Characterized by measurable flux/dynamics/information (Territory) and representability/observability in models (Map). Direction (Amplifying/Attenuating/Unity) specified via direction attribute." .
-
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Balance> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Balance> a owl:Class ;
     rdfs:label "Balance" ;
     m2:discoveryContext "Identified during analysis of Exposure Triangle poclet as fundamental metaconcept distinct from existing Homeostasis and Regulation" ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Regulatory" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Structure" ;
@@ -157,17 +125,18 @@
         "Tonal balance in audio: Bass → Mid → Treble frequencies",
         "Work-life balance: Professional commitments → Personal time" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "A⊗S⊗F" ;
+    m2:hasTensorFormula "A ⊗ S ⊗ F" ;
     m2:hasTensorFormulaASCII "A (x) S (x) F" ;
     m2:hasTensorFormulaTeX "A \\otimes S \\otimes F" ;
     m2:perspective "territory" ;
     m2:transdisciplinaryValidation [ ] ;
     dcterms:created "2026-01-20" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "State of equilibrium between multiple interacting factors where variations compensate to maintain system stability. Distinct from Homeostasis (dynamic regulation) - Balance is a static equilibrium state achieved through mutual compensation of parameters." .
+    rdfs:comment "State of equilibrium between multiple interacting factors where variations compensate to maintain system stability. Distinct from Homeostasis (dynamic regulation) - Balance is a static equilibrium state achieved through mutual compensation of parameters." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Regulatory" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Behavior> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Behavior> a owl:Class ;
     rdfs:label "Behavior" ;
     m2:decompositionProperty [ m2:cardinalityMin 1 ;
             m2:componentType "m2:Step" ;
@@ -176,7 +145,6 @@
     m2:discoveryContext "Emerged from need to model sequential yet decomposable patterns in poclets (Butterfly metamorphosis, Blood pressure control). Bridges Process (pure temporal) and Network (pure structural) by fusing both aspects." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Dynamic" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Structure" ;
@@ -186,7 +154,7 @@
         "Photosynthesis (light-water-CO2 coordination pattern)",
         "Predator hunting sequence (stalk-chase-capture pattern)" ;
     m2:hasPolarity "dual" ;
-    m2:hasTensorFormula "S⊗D⊗F" ;
+    m2:hasTensorFormula "S ⊗ D ⊗ F" ;
     m2:hasTensorFormulaASCII "S (x) D (x) F" ;
     m2:hasTensorFormulaTeX "S \\otimes D \\otimes F" ;
     m2:perspective "dual" ;
@@ -194,14 +162,14 @@
     m2:sphinxView [ ] ;
     dcterms:created "2026-01-28" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Network of coordinated Steps that can be decomposed and analyzed. Represents structured operational pattern observable in Territory and modelable in Map. Distinct from Process (pure temporal sequence) by adding structural decomposability." .
+    rdfs:comment "Network of coordinated Steps that can be decomposed and analyzed. Represents structured operational pattern observable in Territory and modelable in Map. Distinct from Process (pure temporal sequence) by adding structural decomposability." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Bifurcation> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Bifurcation> a owl:Class ;
     rdfs:label "Bifurcation" ;
     m2:eagleView [ ] ;
     m2:hasAttribute [ ] ;
-    m2:hasCategory "m2:Dynamic" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow" ;
     m2:hasEpistemicGap 4e-01 ;
@@ -212,13 +180,13 @@
     m2:hasTensorFormulaASCII "dD/dF" ;
     m2:hasTensorFormulaTeX "\\partial D / \\partial F" ;
     m2:perspective "territory" ;
-    rdfs:comment "Qualitative change in system behavior at critical parameter threshold." .
+    rdfs:comment "Qualitative change in system behavior at critical parameter threshold." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Capacity> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Capacity> a owl:Class ;
     rdfs:label "Capacity" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2.5e-01 ;
@@ -227,24 +195,23 @@
         "Memory size",
         "Throughput" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I" ;
+    m2:hasTensorFormula "S ⊗ I" ;
     m2:hasTensorFormulaASCII "S (x) I" ;
     m2:hasTensorFormulaTeX "S \\otimes I" ;
     m2:perspective "territory" ;
-    rdfs:comment "Upper structural limit or maximal potential of system." .
+    rdfs:comment "Upper structural limit or maximal potential of system." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Cascade> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept>,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaconceptCombo> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Cascade> a owl:Class ;
     rdfs:label "Cascade" ;
     m2:cascadeTypes [ ] ;
     m2:couplingExplanation "Dynamics (D) creates triplet coupling: temporal evolution (Process) + sequential ordering (Step) + goal-directed progression (Trajectory). Flow (F) couples material/energy transfer (Process) with state-space navigation (Trajectory). Result is a staged temporal evolution toward goal state." ;
     m2:dimensionSemantics [ ] ;
-    m2:discoveryContext "Identified during RAAS analysis (poclet). Initially proposed as binary Process⊗Step (v14.3.5), lacking Attractor dimension. Michel identified need for Trajectory component to capture goal-directed evolution. Led to generalization of MetaconceptCombo to N-ary (N≥2) and first ternary metaconcept combo. Cascade now covers all 5 ASFID dimensions (S⊗I⊗A⊗D⊗F), making it the most complete MetaconceptCombo in M2." ;
+    m2:discoveryContext "Identified during RAAS analysis (poclet). Initially proposed as binary Process ⊗ Step (v14.3.5), lacking Attractor dimension. Michel identified need for Trajectory component to capture goal-directed evolution. Led to generalization of MetaconceptCombo to N-ary (N≥2) and first ternary metaconcept combo. Cascade now covers all 5 ASFID dimensions (S ⊗ I ⊗ A ⊗ D ⊗ F), making it the most complete MetaconceptCombo in M2." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
     m2:hasAttribute [ ] ;
-    m2:hasCategory "m2:Dynamic" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow",
@@ -262,7 +229,7 @@
     m2:hasPolarity "dual" ;
     m2:hasTensorFormula "⊗⇒(Process, Step, Trajectory)" ;
     m2:hasTensorFormulaASCII "S (x) I (x) A (x) D (x) F" ;
-    m2:hasTensorFormulaExpanded "S⊗I⊗A⊗D⊗F" ;
+    m2:hasTensorFormulaExpanded "S ⊗ I ⊗ A ⊗ D ⊗ F" ;
     m2:hasTensorFormulaTeX "S \\otimes I \\otimes A \\otimes D \\otimes F" ;
     m2:mathematicalProperties [ ] ;
     m2:parentMetaconcepts <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Process>,
@@ -276,14 +243,14 @@
     dcterms:created "2024-11-15" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
     dcterms:modified "2026-02-06" ;
-    rdfs:comment "Sequential multi-stage process where output of each step becomes input of next step, following a trajectory toward goal state. Synergistic ternary combination: Process (temporal evolution with flow) + Step (structured stages with information transfer) + Trajectory (goal-directed path through state space). Covers ALL five ASFID dimensions. Distinguished from binary Process⊗Step by addition of Attractor dimension, enabling goal-directed cascades (e.g., homeostatic regulation, development toward mature state). May or may not include amplification at each stage." .
+    rdfs:comment "Sequential multi-stage process where output of each step becomes input of next step, following a trajectory toward goal state. Synergistic ternary combination: Process (temporal evolution with flow) + Step (structured stages with information transfer) + Trajectory (goal-directed path through state space). Covers ALL five ASFID dimensions. Distinguished from binary Process ⊗ Step by addition of Attractor dimension, enabling goal-directed cascades (e.g., homeostatic regulation, development toward mature state). May or may not include amplification at each stage." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Channel> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Channel> a owl:Class ;
     rdfs:label "Channel" ;
     m2:distinction [ ] ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -295,20 +262,20 @@
         "Ion channels in cell membranes (Na+, K+, Ca2+)",
         "RGB color channels (Red, Green, Blue in displays)" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I⊗F" ;
+    m2:hasTensorFormula "S ⊗ I ⊗ F" ;
     m2:hasTensorFormulaASCII "S (x) I (x) F" ;
     m2:hasTensorFormulaTeX "S \\otimes I \\otimes F" ;
     m2:perspective "dual" ;
     m2:properties [ ] ;
     m2:sphinxView [ ] ;
     m2:transdisciplinaryValidation [ ] ;
-    rdfs:comment "Structured conduit for signal transmission. Isolates one dimension, filters content, has finite capacity. Permanent structure independent of signals transmitted." .
+    rdfs:comment "Structured conduit for signal transmission. Isolates one dimension, filters content, has finite capacity. Permanent structure independent of signals transmitted." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Cluster> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Cluster> a owl:Class ;
     rdfs:label "Cluster" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -319,37 +286,37 @@
         "Microglia clusters in neuroinflammation",
         "Protein complexes in biochemistry" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I⊗A" ;
+    m2:hasTensorFormula "S ⊗ I ⊗ A" ;
     m2:hasTensorFormulaASCII "S (x) I (x) A" ;
     m2:hasTensorFormulaTeX "S \\otimes I \\otimes A" ;
     m2:perspective "territory" ;
-    rdfs:comment "Dense local grouping of nodes exhibiting synergistic cooperation and emergent functional properties (active processing role)." .
+    rdfs:comment "Dense local grouping of nodes exhibiting synergistic cooperation and emergent functional properties (active processing role)." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Code> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Code> a owl:Class ;
     rdfs:label "Code" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Informational" ;
     m2:hasDominantM3 "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2e-01 ;
     m2:hasExample "Genetic code",
         "Morse code" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "I⊗S" ;
+    m2:hasTensorFormula "I ⊗ S" ;
     m2:hasTensorFormulaASCII "I (x) S" ;
     m2:hasTensorFormulaTeX "I \\otimes S" ;
     m2:perspective "dual" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "System of rules for systematic transformation between domains." .
+    rdfs:comment "System of rules for systematic transformation between domains." ;
+    rdfs:subClassOf "m2:Informational",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Coding> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Coding> a owl:Class ;
     rdfs:label "Coding (Encoding/Decoding)" ;
     m2:dualAspects [ ] ;
     m2:eagleView [ ] ;
-    m2:fullName "Encoding/Decoding" ;
-    m2:hasCategory "m2:Informational" ;
+    m2:fullName "Coding (Encoding / Decoding)" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -357,20 +324,24 @@
     m2:hasExample "DNA transcription/translation",
         "Encryption/Decryption" ;
     m2:hasPolarity "dual" ;
-    m2:hasTensorFormula "I⊗S⊗D" ;
+    m2:hasTensorFormula "I ⊗ S ⊗ D" ;
     m2:hasTensorFormulaASCII "I (x) S (x) D" ;
     m2:hasTensorFormulaTeX "I \\otimes S \\otimes D" ;
+    m2:pairType "DirectionReversal" ;
     m2:perspective "dual" ;
+    m2:poleMapping [ ] ;
     m2:shortName "Coding" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Bidirectional transformation between information and coded representation." .
+    rdfs:comment "Bidirectional transformation between information and coded representation." ;
+    rdfs:subClassOf "m2:Informational",
+        "m2:MetaConcept",
+        "m2:MetaconceptPair",
+        "m2:StructuralPair" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Component> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Component> a owl:Class ;
     rdfs:label "Component" ;
     m2:distinction [ ] ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 1e-01 ;
@@ -380,68 +351,86 @@
         "RGB color: Red, Green, Blue primaries",
         "Water molecule: 2 H atoms + 1 O atom" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I" ;
+    m2:hasTensorFormula "S ⊗ I" ;
     m2:hasTensorFormulaASCII "S (x) I" ;
     m2:hasTensorFormulaTeX "S \\otimes I" ;
     m2:perspective "dual" ;
     m2:relationToSynergy "Components combine through Synergy (A → S → I) to create emergent whole. Removal of any component may destroy system (Fire Triangle: remove any → fire stops)." ;
     m2:sphinxView [ ] ;
     m2:transdisciplinaryValidation [ ] ;
-    rdfs:comment "Elementary constitutive part of a system with functional role in the whole. Distinguished from arbitrary partition by having meaningful function." .
+    rdfs:comment "Elementary constitutive part of a system with functional role in the whole. Distinguished from arbitrary partition by having meaningful function." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Composition> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Composition> a owl:Class ;
     rdfs:label "Composition (Composition/Decomposition)" ;
-    m2:dualAspects [ ] ;
+    m2:couplingExplanation "Structure (S) defines which parts exist and how they are arranged. Information (I) encodes the interfaces that bind parts together. Attractor (A) is the emergent outcome of the assembly — the property that 'the whole is more than the sum of its parts'. In Decomposition, S and I suffice to identify the parts, but A cannot be extracted since it is a property of the assembled whole." ;
+    m2:dimensionSemantics [ ] ;
+    m2:discoveryContext "Fundamental structural operation identified during TSCG framework design. The asymmetric dual nature (Composition gains A, Decomposition loses A) distinguishes it from simple bidirectional Transformation. Corrected in v15.3.2: formula split from single concatenated string 'S ⊗ I ⊗ A (composition) / S ⊗ I (decomposition)' into proper m2:polaritySemantics structure with separate pole1/pole2 formulas." ;
+    m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
-    m2:fullName "Composition/Decomposition" ;
-    m2:hasCategory "m2:Structural" ;
+    m2:expression "S ⊗ I ⊗ A^{p}" ;
+    m2:expressionASCII "S (x) I (x) A^p" ;
+    m2:expressionTeX "S \\otimes I \\otimes A^{p}" ;
+    m2:fullName "Composition (Decomposition)" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2.5e-01 ;
     m2:hasExample "Composition: Atoms → molecule (H₂ + O → H₂O)",
-        "Composition: Fuel + O₂ + Heat → Flame",
-        "Composition: LEGO bricks → construction",
-        "Composition: R + G + B → Color",
-        "Decomposition: Color → (R, G, B) triplet",
-        "Decomposition: Construction → LEGO bricks",
+        "Composition: Fuel + O₂ + Heat → Flame (combustion dynamics emerge)",
+        "Composition: LEGO bricks → construction (emergent form)",
+        "Composition: R + G + B → Color percept (visual qualia emerges)",
+        "Decomposition: Color → (R, G, B) triplet (spectral analysis)",
+        "Decomposition: Construction → LEGO bricks (form lost)",
         "Decomposition: Flame → Fuel, O₂, Heat (forensics)",
         "Decomposition: Molecule → atoms (H₂O → H₂ + O)" ;
     m2:hasPolarity "dual" ;
-    m2:hasTensorFormula "S⊗I⊗A (composition) / S⊗I (decomposition)" ;
-    m2:hasTensorFormulaASCII "S (x) I (x) A (composition) / S (x) I (decomposition)" ;
-    m2:hasTensorFormulaTeX "S \\otimes I \\otimes A (composition) / S \\otimes I (decomposition)" ;
+    m2:hasTensorFormula "→ see m2:expression and m2:poleMapping" ;
+    m2:hasTensorFormulaASCII "→ see m2:expressionASCII and m2:poleMapping" ;
+    m2:hasTensorFormulaExpanded "Structure ⊗ Information ⊗ Attractor" ;
+    m2:hasTensorFormulaNote "Decomposition pole: S ⊗ I — see m2:polaritySemantics" ;
+    m2:hasTensorFormulaTeX "→ see m2:expressionTeX and m2:poleMapping" ;
     m2:perspective "dual" ;
+    m2:polaritySemantics [ ] ;
+    m2:poleMapping [ ] ;
     m2:shortName "Composition" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Bidirectional structural operation: aggregation of parts into emergent whole (composition) or partition of whole into constituents (decomposition)." .
+    m2:versionHistory [ ] ;
+    dcterms:created "2026-01-14" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "Bidirectional structural operation forming the fundamental duality of assembly and disassembly. Composition (bottom-up): aggregation of elementary parts into an emergent whole — the whole acquires properties (Attractor) absent from parts alone (S ⊗ I ⊗ A). Decomposition (top-down): partition of a whole into its elementary constituents — the Attractor (emergent property) dissolves, leaving only structure and interfaces (S ⊗ I). The asymmetry between the two poles is ontological: composition requires an Attractor (emergent property that justifies the assembly), while decomposition loses it." ;
+    rdfs:subClassOf "m2:DimensionPair",
+        "m2:MetaConcept",
+        "m2:MetaconceptPair",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Constraint> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Constraint> a owl:Class ;
     rdfs:label "Constraint" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Regulatory" ;
     m2:hasDominantM3 "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2.5e-01 ;
     m2:hasExample "Budget limits",
         "Physical conservation laws" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I" ;
+    m2:hasTensorFormula "S ⊗ I" ;
     m2:hasTensorFormulaASCII "S (x) I" ;
     m2:hasTensorFormulaTeX "S \\otimes I" ;
     m2:perspective "territory" ;
-    rdfs:comment "Restriction on possible system states or trajectories, limiting degrees of freedom." .
+    rdfs:comment "Restriction on possible system states or trajectories, limiting degrees of freedom." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Regulatory" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Convergence> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Convergence> a owl:Class ;
     rdfs:label "Convergence (Convergence/Divergence)" ;
     m2:dualAspects [ ] ;
     m2:eagleView [ ] ;
-    m2:fullName "Convergence / Divergence" ;
+    m2:expression "(-1)^{p} ∇·D" ;
+    m2:expressionASCII "(-1)^p * nabla.D" ;
+    m2:expressionTeX "(-1)^{p} \\nabla \\cdot D" ;
+    m2:fullName "Convergence (Divergence)" ;
     m2:hasAttribute [ ] ;
-    m2:hasCategory "m2:Dynamic" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow" ;
     m2:hasEpistemicGap 3e-01 ;
@@ -449,41 +438,53 @@
         "Convergent/divergent evolution",
         "Opinion polarization" ;
     m2:hasPolarity "dual" ;
-    m2:hasTensorFormula "-∇·D (convergence) / ∇·D (divergence)" ;
-    m2:hasTensorFormulaASCII "-∇·D (convergence) / ∇·D (divergence)" ;
-    m2:hasTensorFormulaTeX "- \\nabla \\cdot D (convergence) / \\nabla \\cdot D (divergence)" ;
+    m2:hasTensorFormula "→ see m2:expression and m2:poleMapping" ;
+    m2:hasTensorFormulaASCII "→ see m2:expressionASCII and m2:poleMapping" ;
+    m2:hasTensorFormulaTeX "→ see m2:expressionTeX and m2:poleMapping" ;
     m2:perspective "dual" ;
+    m2:poleMapping [ ] ;
     m2:shortName "Convergence" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Focusing or dispersing of flows, trajectories, or information." .
+    rdfs:comment "Focusing or dispersing of flows, trajectories, or information." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept",
+        "m2:MetaconceptPair",
+        "m2:SignPair" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Dissipation> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#DimensionPair> a owl:Class ;
+    rdfs:label "Dimension Pair" ;
+    m2:convention "p=1: dimension present (richer pole); p=0: dimension absent (A⁰=1 neutral)" ;
+    m2:parametricOperator "A^{p}, p ∈ {0,1}" ;
+    dcterms:created "2026-02-18" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A MetaconceptPair where the two poles differ by the PRESENCE or ABSENCE of one ASFID dimension, formalized as A^p (p=1: dimension present; p=0: A⁰=1, neutral tensor element, dimension absent). The pole with p=1 has strictly more expressive power than the pole with p=0. Example: Composition (S ⊗ I ⊗ A^p): p=1 → Composition (emergent property A present), p=0 → Decomposition (A dissolved, only S ⊗ I remains)." ;
+    rdfs:subClassOf "m2:MetaconceptPair" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Dissipation> a owl:Class ;
     rdfs:label "Dissipation" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Energetic" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow" ;
     m2:hasEpistemicGap 1.5e-01 ;
     m2:hasExample "Friction",
         "Heat loss in engines" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "F⊗D" ;
+    m2:hasTensorFormula "F ⊗ D" ;
     m2:hasTensorFormulaASCII "F (x) D" ;
     m2:hasTensorFormulaTeX "F \\otimes D" ;
     m2:perspective "territory" ;
-    rdfs:comment "Irreversible energy degradation and entropy production." .
+    rdfs:comment "Irreversible energy degradation and entropy production." ;
+    rdfs:subClassOf "m2:Energetic",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Domain> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
-    rdfs:label "Domain (Hybrid Tensor Product ASFID⊗REVOI)" ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Domain> a owl:Class ;
+    rdfs:label "Domain (Hybrid Tensor Product ASFID ⊗ REVOI)" ;
     m2:5DDecomposition [ ] ;
     m2:conceptualStereopsis [ ] ;
     m2:distinctionFromRelated [ ] ;
     m2:domainExamples [ ] ;
     m2:domainMaturity [ ] ;
     m2:emergentProperties [ ] ;
-    m2:hasCategory "m2:Ontological" ;
     m2:hasDominantM3 "HYBRID: Both ASFID (Eagle Eye) and REVOI (Sphinx Eye) simultaneously",
         "Territory-Map coupling encoded in matrix Σ with bidirectional feedback operators Φ and Ψ" ;
     m2:hasEpistemicGap 4e-01 ;
@@ -494,7 +495,7 @@
         "Optics: S (wave/particle) + V (dualism) + IR + FO + AE, σ_mean=0.80 (mature)",
         "Physics: A (attractors/equilibria) + O (observer dependence) + SV + FR + DE, σ_mean=0.90 (very mature)" ;
     m2:hasPolarity "hybrid" ;
-    m2:hasTensorFormula "∑ᵢ σᵢ |uᵢ⟩⊗|vᵢ⟩ (5D SVD, ASFID ↔ REVOI)" ;
+    m2:hasTensorFormula "∑ᵢ σᵢ |uᵢ⟩ ⊗ |vᵢ⟩ (5D SVD, ASFID ↔ REVOI)" ;
     m2:historicalContext [ ] ;
     m2:hybridView [ ] ;
     m2:korzybskiPrinciple [ ] ;
@@ -505,19 +506,19 @@
     m2:relationToPoclets [ ] ;
     m2:transdisciplinarity [ ] ;
     m2:validationRoadmap [ ] ;
-    rdfs:comment "Structured field of knowledge where Territory phenomena (ASFID) and Map frameworks (REVOI) are coupled through epistemic practices and bidirectional feedback. Represents the first metaconcept requiring simultaneous fusion of both bicephalous perspectives. Reduced to 5D via SVD from full 25D ASFID⊗REVOI tensor product space." .
+    rdfs:comment "Structured field of knowledge where Territory phenomena (ASFID) and Map frameworks (REVOI) are coupled through epistemic practices and bidirectional feedback. Represents the first metaconcept requiring simultaneous fusion of both bicephalous perspectives. Reduced to 5D via SVD from full 25D ASFID ⊗ REVOI tensor product space." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Ontological" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Dynamic> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Category> ;
-    rdfs:label "Dynamic Category" ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Dynamic> a owl:Class ;
+    rdfs:label "Dynamic Family" ;
     m2:metaconceptCount 8 ;
-    rdfs:comment "Processes, transformations, temporal evolution. High D." .
+    rdfs:comment "Processes, transformations, temporal evolution. High D." ;
+    rdfs:subClassOf "m2:MetaconceptFamily" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Emergence> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Emergence> a owl:Class ;
     rdfs:label "Emergence" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Adaptive" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -525,23 +526,23 @@
     m2:hasExample "Consciousness from neural interactions",
         "Traffic jams from individual drivers" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "I⊗S⊗D" ;
+    m2:hasTensorFormula "I ⊗ S ⊗ D" ;
     m2:hasTensorFormulaASCII "I (x) S (x) D" ;
     m2:hasTensorFormulaTeX "I \\otimes S \\otimes D" ;
     m2:perspective "territory" ;
-    rdfs:comment "Appearance of novel properties at system level not predictable from components alone." .
+    rdfs:comment "Appearance of novel properties at system level not predictable from components alone." ;
+    rdfs:subClassOf "m2:Adaptive",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Energetic> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Category> ;
-    rdfs:label "Energetic Category" ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Energetic> a owl:Class ;
+    rdfs:label "Energetic Family" ;
     m2:metaconceptCount 2 ;
-    rdfs:comment "Energy, matter, information flows. High F, high D." .
+    rdfs:comment "Energy, matter, information flows. High F, high D." ;
+    rdfs:subClassOf "m2:MetaconceptFamily" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Environment> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Environment> a owl:Class ;
     rdfs:label "Environment" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Ontological" ;
     m2:hasDominantM3 "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information" ;
     m2:hasEpistemicGap 2.5e-01 ;
@@ -549,17 +550,17 @@
         "Market context",
         "Operating system environment" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "F⊗I" ;
+    m2:hasTensorFormula "F ⊗ I" ;
     m2:hasTensorFormulaASCII "F (x) I" ;
     m2:hasTensorFormulaTeX "F \\otimes I" ;
     m2:perspective "territory" ;
-    rdfs:comment "External context with which system exchanges matter, energy, information." .
+    rdfs:comment "External context with which system exchanges matter, energy, information." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Ontological" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Event> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Event> a owl:Class ;
     rdfs:label "Event" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Dynamic" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information" ;
     m2:hasEpistemicGap 2.5e-01 ;
@@ -567,23 +568,26 @@
         "Mutation",
         "Transaction" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "D⊗I" ;
+    m2:hasTensorFormula "D ⊗ I" ;
     m2:hasTensorFormulaASCII "D (x) I" ;
     m2:hasTensorFormulaTeX "D \\otimes I" ;
     m2:perspective "territory" ;
-    rdfs:comment "Discrete occurrence with temporal localization." .
+    rdfs:comment "Discrete occurrence with temporal localization." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#FeedbackLoop> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept>,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaconceptCombo> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#FeedbackLoop> a owl:Class ;
     rdfs:label "Feedback Loop" ;
     m2:architecturalNote "m2:FeedbackLoop models systemic regulatory circuits across all domains. Distinct from m3:AlignmentLoop which is the epistemological Territory↔Map alignment mechanism intrinsic to TSCG architecture (see M3_GenesisSpace)." ;
     m2:componentMetaconcepts <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Alignment>,
         <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Homeostasis>,
         <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Process> ;
     m2:dualAspects [ ] ;
+    m2:expression "(-1)^{p} · k · (Process ⊗ Alignment ⊗ Homeostasis)" ;
+    m2:expressionASCII "(-1)^p * k * (Process (x) Alignment (x) Homeostasis)" ;
+    m2:expressionTeX "(-1)^{p} \\cdot k \\cdot (\\text{Process} \\otimes \\text{Alignment} \\otimes \\text{Homeostasis})" ;
     m2:feedback_polarity [ ] ;
-    m2:hasCategory "m2:Dynamic" ;
+    m2:fullName "Feedback Loop (Negative / Positive)" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow",
@@ -598,19 +602,24 @@
         "Supply-demand price regulation (economics)",
         "Thermostat (engineering)" ;
     m2:hasPolarity "dual" ;
-    m2:hasTensorFormula "m2:Process ⊗ m2:Alignment ⊗ m2:Homeostasis" ;
+    m2:hasTensorFormula "→ see m2:expression and m2:poleMapping" ;
+    m2:hasTensorFormulaASCII "→ see m2:expressionASCII and m2:poleMapping" ;
+    m2:hasTensorFormulaTeX "→ see m2:expressionTeX and m2:poleMapping" ;
     m2:perspective "dual" ;
-    m2:tensorExpansion "(D⊗F) ⊗ (I⊗A⊗S) ⊗ (A⊗S⊗F) = A⊗S⊗F⊗I⊗D" ;
+    m2:poleMapping [ ] ;
+    m2:tensorExpansion "(D ⊗ F) ⊗ (I ⊗ A ⊗ S) ⊗ (A ⊗ S ⊗ F) = A ⊗ S ⊗ F ⊗ I ⊗ D" ;
     m2:tensorNote "Expanded formula covers all 5 ASFID dimensions, reflecting that a feedback loop engages the full phenomenology of a system: Attractor (set point), Structure (circuit), Flow (signal), Information (error signal), Dynamics (temporal evolution)." ;
-    rdfs:comment "Cyclic regulatory process where a system compares its current state to a target (Homeostasis), reduces the discrepancy (Alignment), and evolves over time (Process). Encompasses both negative feedback (stabilizing, error-correcting) and positive feedback (amplifying, self-reinforcing). Universal systemic pattern found across biology, engineering, economics, ecology and social systems." .
+    rdfs:comment "Cyclic regulatory process where a system compares its current state to a target (Homeostasis), reduces the discrepancy (Alignment), and evolves over time (Process). Encompasses both negative feedback (stabilizing, error-correcting) and positive feedback (amplifying, self-reinforcing). Universal systemic pattern found across biology, engineering, economics, ecology and social systems." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept",
+        "m2:MetaconceptPair",
+        "m2:SignPair" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Fusion> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Fusion> a owl:Class ;
     rdfs:label "Fusion (Fusion/Fission)" ;
     m2:dualAspects [ ] ;
     m2:eagleView [ ] ;
-    m2:fullName "Fusion / Fission" ;
-    m2:hasCategory "m2:Dynamic" ;
+    m2:fullName "Fusion (Fission)" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2.5e-01 ;
@@ -618,20 +627,35 @@
         "Company merger/spinoff",
         "Nuclear fusion/fission" ;
     m2:hasPolarity "dual" ;
-    m2:hasTensorFormula "S⊗D" ;
+    m2:hasTensorFormula "S ⊗ D" ;
     m2:hasTensorFormulaASCII "S (x) D" ;
     m2:hasTensorFormulaTeX "S \\otimes D" ;
+    m2:pairType "CardinalityReversal" ;
     m2:perspective "dual" ;
+    m2:poleMapping [ ] ;
     m2:shortName "Fusion" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Union or separation of entities." .
+    rdfs:comment "Union or separation of entities." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept",
+        "m2:MetaconceptPair",
+        "m2:StructuralPair" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Gradient> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#GainPair> a owl:Class ;
+    rdfs:label "Gain Pair" ;
+    m2:convention "p=0: amplification pole (G > 1); p=1: attenuation pole (G^{-1} = 1/G < 1)" ;
+    m2:distinctionFromSignPair "SignPair uses (-1)^p as a prefix multiplier → sign reversal (positive/negative). GainPair uses G^{(-1)^p} as a scalar multiplier → gain inversion (amplify/attenuate). GainPair values are always positive; SignPair values change sign." ;
+    m2:neutralElement "G = 1 (unity gain — neither amplification nor attenuation)" ;
+    m2:parametricOperator "G^{(-1)^p}, G > 1, p ∈ {0,1}" ;
+    dcterms:created "2026-02-18" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A MetaconceptPair where the two poles differ by a GAIN INVERSION: the base formula is scaled by G^{(-1)^p} where G > 1. p=0 → G^1 = G > 1 (amplification, gain pole); p=1 → G^{-1} = 1/G < 1 (attenuation, reduction pole). Distinct from SignPair ((-1)^p prefix — sign reversal) because: (1) gain G is always strictly positive (no negative gain); (2) the two poles are not sign-symmetric — Attenuation is not the 'opposite' of Amplification in the additive sense but its reciprocal. The neutral element is G=1 (unity gain), not G=0. Example: Amplification/Attenuation = G^{(-1)^p} · (Ft → D → It → R → O)." ;
+    rdfs:subClassOf "m2:MetaconceptPair" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Gradient> a owl:Class ;
     rdfs:label "Gradient" ;
     m2:eagleView [ ] ;
     m2:hasAttribute [ ] ;
-    m2:hasCategory "m2:Ontological" ;
     m2:hasDominantM3 "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information" ;
     m2:hasEpistemicGap 2e-01 ;
@@ -639,35 +663,35 @@
         "Potential difference",
         "Temperature gradient" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "⊗₂F or ⊗₂I" ;
+    m2:hasTensorFormula "⊗ ₂F or ⊗ ₂I" ;
     m2:hasTensorFormulaASCII "⊗₂F or ⊗₂I" ;
     m2:hasTensorFormulaTeX "\\otimes_2 F \\text{ ou } \\otimes_2 I" ;
     m2:perspective "territory" ;
-    rdfs:comment "Spatial or temporal variation creating driving force for flows." .
+    rdfs:comment "Spatial or temporal variation creating driving force for flows." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Ontological" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Hierarchy> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Hierarchy> a owl:Class ;
     rdfs:label "Hierarchy" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 3e-01 ;
-    m2:hasExample "Biological organization (atoms⊗→ molecules⊗⊗cells)",
+    m2:hasExample "Biological organization (atoms ⊗ → molecules ⊗ ⊗ cells)",
         "Corporate org chart" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗A" ;
+    m2:hasTensorFormula "S ⊗ A" ;
     m2:hasTensorFormulaASCII "S (x) A" ;
     m2:hasTensorFormulaTeX "S \\otimes A" ;
     m2:perspective "dual" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Nested levels of organization with vertical control relations." .
+    rdfs:comment "Nested levels of organization with vertical control relations." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Hub> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Hub> a owl:Class ;
     rdfs:label "Hub" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Flow",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2e-01 ;
@@ -677,20 +701,20 @@
         "Network router/switch",
         "Train central station" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗F" ;
+    m2:hasTensorFormula "S ⊗ F" ;
     m2:hasTensorFormulaASCII "S (x) F" ;
     m2:hasTensorFormulaTeX "S \\otimes F" ;
     m2:perspective "territory" ;
-    rdfs:comment "Highly connected node serving as central routing point for flow redistribution, without active processing (passive relay role)." .
+    rdfs:comment "Highly connected node serving as central routing point for flow redistribution, without active processing (passive relay role)." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Identity> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Identity> a owl:Class ;
     rdfs:label "Identity" ;
     m2:discoveryContext "Identified during M0_VSM (Viable System Model) validation. Cohesion concept required a metaconcept capturing 'shared organizational thread persisting despite S1 autonomy'. No existing M2 covered the combination of persistence (vs Invariant), uniqueness (vs Signature), and self-restoration (A). TRIZ validates Identity as a foundational principle (conserved property under transformation). Formalized as hybrid S → I → A → V → E to distinguish from Pattern (same Eagle base, divergent Map question)." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
     m2:fullName "Entity Identity (Persistence / Uniqueness)" ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure",
@@ -717,15 +741,15 @@
     m2:transdisciplinaryValidation [ ] ;
     dcterms:created "2026-02-01" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Persistent property that makes an entity distinguishable and self-restoring across transformations. An entity remains itself despite internal changes: its structure persists (S), its distinguishing information is maintained (I), and it returns to its characteristic state after perturbation (A). Identity is intrinsic it is not external recognition (vs Signature) nor a generic conserved quantity (vs Invariant), but the singular property binding persistence, uniqueness, and self-restoration into one coherent entity." .
+    rdfs:comment "Persistent property that makes an entity distinguishable and self-restoring across transformations. An entity remains itself despite internal changes: its structure persists (S), its distinguishing information is maintained (I), and it returns to its characteristic state after perturbation (A). Identity is intrinsic it is not external recognition (vs Signature) nor a generic conserved quantity (vs Invariant), but the singular property binding persistence, uniqueness, and self-restoration into one coherent entity." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Imbrication> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Imbrication> a owl:Class ;
     rdfs:label "Imbrication (Nesting)" ;
     m2:discoveryContext "Emerged from VSM analysis where recursive viability is fundamental architectural principle. Generalizes to any system exhibiting structural self-similarity across scales." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Ontological" ;
     m2:hasDominantM3 "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 3e-01 ;
     m2:hasExample "Architecture: Matryoshka dolls (physical nesting)",
@@ -748,18 +772,18 @@
     m2:vsmContext [ ] ;
     dcterms:created "2026-01-30" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Structural relation where a system contains subsystems that reproduce the parent system's structure. Principle of self-similarity across hierarchical levels. Fundamental to VSM where each operational unit is itself a complete viable system." .
+    rdfs:comment "Structural relation where a system contains subsystems that reproduce the parent system's structure. Principle of self-similarity across hierarchical levels. Fundamental to VSM where each operational unit is itself a complete viable system." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Ontological" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Informational> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Category> ;
-    rdfs:label "Informational Category" ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Informational> a owl:Class ;
+    rdfs:label "Informational Family" ;
     m2:metaconceptCount 6 ;
-    rdfs:comment "Data, representation, communication. High I." .
+    rdfs:comment "Data, representation, communication. High I." ;
+    rdfs:subClassOf "m2:MetaconceptFamily" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Invariant> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Invariant> a owl:Class ;
     rdfs:label "Invariant" ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2e-01 ;
@@ -767,24 +791,24 @@
         "System constants",
         "Topological invariants" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗A" ;
+    m2:hasTensorFormula "S ⊗ A" ;
     m2:hasTensorFormulaASCII "S (x) A" ;
     m2:hasTensorFormulaTeX "S \\otimes A" ;
     m2:perspective "map" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Property unchanged under specific transformations or operations." .
+    rdfs:comment "Property unchanged under specific transformations or operations." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#KnowledgeField> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
-    rdfs:label "KnowledgeField (Hybrid Tensor Product ASFID⊗REVOI)" ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#KnowledgeField> a owl:Class ;
+    rdfs:label "KnowledgeField (Hybrid Tensor Product ASFID ⊗ REVOI)" ;
     m2:5DDecomposition [ ] ;
     m2:conceptualStereopsis [ ] ;
-    m2:discoveryContext "Evolved from m2:Domain metaconcept. Renamed to KnowledgeField to clarify dual role: (1) NOUN instances for complete epistemic fields with full ASFID⊗REVOI theory, (2) ADJECTIVE instances as disciplinary tags for KnowledgeFieldMetaCombo pattern. Prevents semantic confusion between epistemic fields (Chemistry) and disciplinary qualifiers (Chemical)." ;
+    m2:discoveryContext "Evolved from m2:Domain metaconcept. Renamed to KnowledgeField to clarify dual role: (1) NOUN instances for complete epistemic fields with full ASFID ⊗ REVOI theory, (2) ADJECTIVE instances as disciplinary tags for KnowledgeFieldMetaCombo pattern. Prevents semantic confusion between epistemic fields (Chemistry) and disciplinary qualifiers (Chemical)." ;
     m2:distinctionFromRelated [ ] ;
     m2:domainMaturity [ ] ;
     m2:dualRole [ ] ;
     m2:emergentProperties [ ] ;
-    m2:hasCategory "m2:Ontological" ;
     m2:hasDominantM3 "HYBRID: Both ASFID (Eagle Eye) and REVOI (Sphinx Eye) simultaneously",
         "Territory-Map coupling encoded in matrix α" ;
     m2:hasEpistemicGap 4e-01 ;
@@ -793,7 +817,7 @@
         "Mechanics: F (forces/motion) + R (laws of motion) + SA + DI + VO",
         "Optics: S (wave/particle structures) + V (dualist interpretations) + IR + FO + AE" ;
     m2:hasPolarity "hybrid" ;
-    m2:hasTensorFormula "∑ᵢ σᵢ |uᵢ⟩⊗|vᵢ⟩ (5D SVD, ASFID ⊗ REVOI)" ;
+    m2:hasTensorFormula "∑ᵢ σᵢ |uᵢ⟩ ⊗ |vᵢ⟩ (5D SVD, ASFID ⊗ REVOI)" ;
     m2:hasTensorFormulaASCII "sum_i sigma_i |u_i> (x) |v_i> (5D SVD, ASFID (x) REVOI)" ;
     m2:hasTensorFormulaTeX "\\sum_{i=1}^{5} \\sigma_i |u_i\\rangle \\otimes |v_i\\rangle \\quad (\\text{5D SVD}, \\; ASFID \\otimes REVOI)" ;
     m2:hybridNotation [ ] ;
@@ -808,12 +832,13 @@
     m2:transdisciplinarity [ ] ;
     dcterms:created "2026-02-17" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Structured field of knowledge where Territory phenomena (ASFID) and Map frameworks (REVOI) are coupled through epistemic practices. Dual role: (1) NOUN instances (Chemistry, Biology, Optics...) represent complete epistemic fields with full ASFID⊗REVOI theory - defined in M1 extensions; (2) ADJECTIVE instances (Chemical, Biological, Optical...) serve as disciplinary tags for domain-specific metaconcept specialization - defined in M1 extensions. Reduced to 5D via SVD from full 25D ASFID⊗REVOI tensor product space." ;
+    rdfs:comment "Structured field of knowledge where Territory phenomena (ASFID) and Map frameworks (REVOI) are coupled through epistemic practices. Dual role: (1) NOUN instances (Chemistry, Biology, Optics...) represent complete epistemic fields with full ASFID ⊗ REVOI theory - defined in M1 extensions; (2) ADJECTIVE instances (Chemical, Biological, Optical...) serve as disciplinary tags for domain-specific metaconcept specialization - defined in M1 extensions. Reduced to 5D via SVD from full 25D ASFID ⊗ REVOI tensor product space." ;
     rdfs:seeAlso "docs/Domain_Hybrid_Tensor_Product_5D_README.md",
-        "docs/KnowledgeField_Dual_Role_README.md" .
+        "docs/KnowledgeField_Dual_Role_README.md" ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Ontological" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#KnowledgeFieldMetaCombo> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#KnowledgeFieldMetaCombo> a owl:Class ;
     rdfs:label "KnowledgeFieldMetaCombo (Disciplinary Specialization)" ;
     m2:cascadeInstantiation [ ] ;
     m2:combinationFormula [ ] ;
@@ -827,7 +852,6 @@
         [ ],
         [ ] ;
     m2:hasAttribute [ ] ;
-    m2:hasCategory "m2:Compositional" ;
     m2:hasDominantM3 "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 3e-01 ;
@@ -843,13 +867,13 @@
     m2:status "ACTIVE - New in v15.2.0" ;
     dcterms:created "2026-02-17" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Factorization metaconcept coupling a KnowledgeField (disciplinary tag, ADJECTIVE form) with one or more universal Metaconcepts to create domain-specific specializations. Prevents M2 pollution by defining domain-specific concept variants only once at M2 level, with concrete instantiation deferred to M1 extensions. Uses qualification operator (⊙) rather than tensor product (⊗) - the result preserves the metaconcept's dimensions while adding disciplinary context. Critical constraint: can ONLY be instantiated in M1 domain extensions, NEVER directly in M2." ;
-    rdfs:seeAlso "docs/KnowledgeFieldMetaCombo_Pattern_README.md" .
+    rdfs:comment "Factorization metaconcept coupling a KnowledgeField (disciplinary tag, ADJECTIVE form) with one or more universal Metaconcepts to create domain-specific specializations. Prevents M2 pollution by defining domain-specific concept variants only once at M2 level, with concrete instantiation deferred to M1 extensions. Uses qualification operator (⊙) rather than tensor product ( ⊗ ) - the result preserves the metaconcept's dimensions while adding disciplinary context. Critical constraint: can ONLY be instantiated in M1 domain extensions, NEVER directly in M2." ;
+    rdfs:seeAlso "docs/KnowledgeFieldMetaCombo_Pattern_README.md" ;
+    rdfs:subClassOf "m2:Compositional",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Language> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Language> a owl:Class ;
     rdfs:label "Language" ;
-    m2:hasCategory "m2:Informational" ;
     m2:hasDominantM3 "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -858,18 +882,18 @@
         "Natural language",
         "Programming language" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "I⊗S⊗F" ;
+    m2:hasTensorFormula "I ⊗ S ⊗ F" ;
     m2:hasTensorFormulaASCII "I (x) S (x) F" ;
     m2:hasTensorFormulaTeX "I \\otimes S \\otimes F" ;
     m2:perspective "map" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Structured system for information exchange and meaning construction." .
+    rdfs:comment "Structured system for information exchange and meaning construction." ;
+    rdfs:subClassOf "m2:Informational",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Link> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Link> a owl:Class ;
     rdfs:label "Link" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Relational" ;
     m2:hasDominantM3 "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -879,18 +903,20 @@
         "Network edge",
         "Synaptic connection" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I⊗F" ;
+    m2:hasTensorFormula "S ⊗ I ⊗ F" ;
     m2:hasTensorFormulaASCII "S (x) I (x) F" ;
     m2:hasTensorFormulaTeX "S \\otimes I \\otimes F" ;
     m2:perspective "dual" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Concrete physical connection between nodes enabling actual information or resource transfer (constructive)." .
+    rdfs:comment "Concrete physical connection between nodes enabling actual information or resource transfer (constructive)." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Relational" .
 
 <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#M2_MetaConcepts> a owl:Ontology ;
     m2:bicephalousArchitecture [ ] ;
     m2:bicephalousStrategy [ ] ;
     m2:categoryTheory [ m2:functor_instantiation "F_inst: Cat_M2 → Cat_M1" ;
-            m2:functor_tensorization "F_⊗: Cat_M3 → Cat_M2" ;
+            m2:functor_tensorization "F_ ⊗ : Cat_M3 → Cat_M2" ;
             m2:morphism_composition "∘ (e.g., Learning = Memory ∘ Adaptation)" ;
             m2:morphism_duality "op (e.g., Divergence = Convergence^op)" ;
             m2:morphism_emergence "⇒ (e.g., multiple ⇒ emergent)" ;
@@ -922,24 +948,22 @@
             m2:metaconceptsTotal 71 ;
             m2:naryPolarity 1 ;
             m2:neutralPolarity 51 ] ;
-    m2:tensorSpace "T_M2 = ⨂_{k=1}^3 H_M3^{⊗k}" ;
+    m2:tensorSpace "T_M2 = ⨂_{k=1}^3 H_M3^{ ⊗ k}" ;
     m2:totalComponents 155 ;
     m3:ontologyCategory <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryMetaConcepts> ;
     dcterms:created "2026-01-14" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    dcterms:description "Second layer of the TSCG framework. Defines 69 systemic patterns emerging from tensor products of M3 ASFID dimensions. Introduces N-ary polarity framework and hybrid tensor products (ASFID → REVOI) for Domain, ValueSpace, Amplification, Identity, Pattern, Constraint, Capacity, and Scope metaconcepts." ;
+    dcterms:description "Second layer of the TSCG framework. Defines 69 systemic patterns emerging from tensor products of M3 ASFID dimensions. Introduces N-ary polarity framework and hybrid tensor products (ASFID → REVOI) for Domain, ValueSpace, Amplification, Identity, Pattern, Constraint, Capacity, and Scope metaconcepts. Adds LocalActivationLateralInhibition (LALI) and ButterflyEffect as structural dual MetaconceptCombos emerging from Turing morphogenesis analysis." ;
     dcterms:documentation <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/docs/M2_MetaConcepts_README.md> ;
-    dcterms:modified "2026-02-18" ;
+    dcterms:modified "2026-02-19" ;
     dcterms:title "TSCG M2 Metaconcepts Ontology" ;
     rdfs:comment "M2 layer constructs metaconcepts through tensorization of M3 ASFID dimensions from Eagle Eye (Territory-Space). Bicephalous architecture: Eagle Eye measures phenomena (ASFID), Sphinx Eye interprets models (REVOI proposed). Each metaconcept is characterized by its tensor formula, category, epistemic gap, and polarity." ;
     rdfs:seeAlso "docs/M2_MetaConcepts_README.md" ;
     owl:imports "M3_GenesisSpace.jsonld" ;
-    owl:versionInfo "15.3.0" .
+    owl:versionInfo "15.3.8" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Mediator> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Mediator> a owl:Class ;
     rdfs:label "Mediator" ;
-    m2:hasCategory "m2:Relational" ;
     m2:hasDominantM3 "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -949,54 +973,106 @@
         "Message broker",
         "Translator" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "F⊗I⊗S" ;
+    m2:hasTensorFormula "F ⊗ I ⊗ S" ;
     m2:hasTensorFormulaASCII "F (x) I (x) S" ;
     m2:hasTensorFormulaTeX "F \\otimes I \\otimes S" ;
     m2:perspective "map" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Intermediary entity or mechanism enabling interaction between components." .
+    rdfs:comment "Intermediary entity or mechanism enabling interaction between components." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Relational" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Memory> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Memory> a owl:Class ;
     rdfs:label "Memory" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Adaptive" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow" ;
     m2:hasEpistemicGap 3e-01 ;
     m2:hasExample "Material hysteresis",
         "Neural synaptic weights" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "D⊗F⊗D" ;
-    m2:hasTensorFormulaASCII "D (x) F (x) D" ;
-    m2:hasTensorFormulaTeX "D \\otimes F \\otimes D" ;
+    m2:hasTensorFormula "∫(D−F)dτ" ;
+    m2:hasTensorFormulaASCII "integral(D - F, dtau)" ;
+    m2:hasTensorFormulaTeX "\\int (D - F)\\,d\\tau" ;
     m2:perspective "territory" ;
-    rdfs:comment "Retention of past states influencing current behavior through temporal integration." .
+    rdfs:comment "Retention of past states influencing current behavior through temporal integration." ;
+    rdfs:subClassOf "m2:Adaptive",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Modularity> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> a owl:Class ;
+    rdfs:label "M2 Metaconcept" ;
+    rdfs:comment "A systemic pattern emerging from tensor product of M3 dimensions. Represents a recognizable organizational motif found across multiple domains." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaconceptCombo> a owl:Class ;
+    rdfs:label "MetaconceptCombo (Synergistic Combination)" ;
+    m2:couplingRule [ ] ;
+    m2:discoveryContext "Emerged from VSM modeling requirement: VarietyAmplification and VarietyAttenuation each combine two existing M2 metaconcepts (ValueSpace + Amplification) into a new capability that neither parent provides alone. The pattern is general - any directed synergistic fusion of multiple metaconcepts follows the same structural rule ( ⊗ ⁿ⇒). Formalized as M2 metaconcept to enable systematic instantiation in M1 domain extensions. Originally noted in TO_DO as M1 - corrected to M2 as the generic mechanism belongs at the universal pattern level, while domain-specific instances belong in M1. N-ary generalization (n ≥ 2) added 2026-02-06 to remove artificial binary restriction and enable ternary/higher-order combinations observed in complex adaptive systems." ;
+    m2:distinctionFromRelated [ ] ;
+    m2:formulaSemantics [ ] ;
+    m2:hasDominantM3 "m3:eagle_eye:Attractor",
+        "m3:eagle_eye:Information",
+        "m3:eagle_eye:Structure" ;
+    m2:hasEpistemicGap 4e-01 ;
+    m2:hasExample "AdaptiveRegulatedLearning (n=3, hypothetical) = MetaconceptCombo(Regulation, Adaptation, Memory) - feedback-controlled learning with historical context",
+        "CompositePattern (n=2, Software) = MetaconceptCombo(Modularity, Imbrication) - recursive component trees",
+        "EnzymeRegulationCascade (n=2, Biology) = MetaconceptCombo(Regulation, Amplification) - gain-controlled feedback loops",
+        "MonetaryPolicy (n=2, Economics) = MetaconceptCombo(ValueSpace, Amplification) - credit expansion within bounded value space",
+        "RecursiveViability (n=2, M1_VSM) = MetaconceptCombo(Imbrication, Autonomy) - each nested level maintains operational independence",
+        "ResilientModularEvolution (n=3, hypothetical) = MetaconceptCombo(Resilience, Modularity, Evolution) - fault-tolerant systems that adapt structure over time",
+        "VarietyAmplification (n=2, M1_VSM) = MetaconceptCombo(ValueSpace, Amplification) - amplifies variety while preserving epistemic accessibility (VSM S2)",
+        "VarietyAttenuation (n=2, M1_VSM) = MetaconceptCombo(ValueSpace, Amplification) - attenuates variety while maintaining verifiability (VSM S3)" ;
+    m2:hasPolarity "neutral" ;
+    m2:hasTensorFormula "⊗ ᵢ₌₁ⁿ Mᵢ ⇒ M_result" ;
+    m2:hasTensorFormulaASCII "(x)_i=1^n M_i => M_result" ;
+    m2:hasTensorFormulaTeX "\\bigotimes_{i=1}^{n} M_i \\Rightarrow M_{result}" ;
+    m2:mathematicalNote [ ] ;
+    m2:nArityCoupling [ ] ;
+    m2:perspective "map" ;
+    m2:relationToCategoryTheoryMorphisms [ ] ;
+    m2:sphinxView [ ] ;
+    m2:transdisciplinaryValidation [ ] ;
+    m2:versionHistory [ ] ;
+    dcterms:created "2026-01-31" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:modified "2026-02-06" ;
+    rdfs:comment "Parameterized metaconcept produced by synergistic combination of N parent metaconcepts (N ≥ 2) via n-ary tensor assembly and emergence morphism ( ⊗ ⁿ⇒). The result is a new metaconcept whose semantic identity cannot be reduced to any subset of parents - shared dimensions between parents create multi-way epistemic coupling rather than simple concatenation. First metaconcept in M2 whose tensor formula is structural (parameterized) rather than fixed. Most practical instances use N=2 or N=3 for tractability. Instances are domain-specific and belong to M1 extensions via functor_instantiation." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Ontological" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaconceptFamily> a owl:Class ;
+    rdfs:label "Metaconcept Family" ;
+    rdfs:comment "A family grouping of metaconcepts based on dominant M3 dimensions and functional role in system behavior. Renamed from Category to MetaconceptFamily to avoid confusion with Category Theory (mathematical category theory)." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaconceptPair> a owl:Class ;
+    rdfs:label "Metaconcept Pair" ;
+    dcterms:created "2026-02-18" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A metaconcept whose semantics are constituted by two named, structurally opposed poles sharing the same base tensor formula. The two poles are related by a parametric operator (p ∈ {0,1}) or by a structural reversal (direction, cardinality). Subclasses: DimensionPair (dimension present/absent via A^p), SignPair (sign reversal via (-1)^p), StructuralPair (direction or cardinality reversal). Distinct from m2:dualCounterpart which links two DIFFERENT metaconcepts (e.g. LALI ↔ ButterflyEffect sharing a parent but with different structures)." ;
+    rdfs:seeAlso "m2:DimensionPair, m2:SignPair, m2:StructuralPair" ;
+    rdfs:subClassOf "m2:MetaConcept" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Modularity> a owl:Class ;
     rdfs:label "Modularity" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 3e-01 ;
     m2:hasExample "Organ systems",
         "Software modules" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I" ;
+    m2:hasTensorFormula "S ⊗ I" ;
     m2:hasTensorFormulaASCII "S (x) I" ;
     m2:hasTensorFormulaTeX "S \\otimes I" ;
     m2:perspective "dual" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Decomposition into semi-independent functional units." .
+    rdfs:comment "Decomposition into semi-independent functional units." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Network> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Network> a owl:Class ;
     rdfs:label "Network" ;
     m2:eagleView [ ] ;
     m2:hasAttribute [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -1004,18 +1080,18 @@
     m2:hasExample "Internet",
         "Neural networks" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I⊗F" ;
+    m2:hasTensorFormula "S ⊗ I ⊗ F" ;
     m2:hasTensorFormulaASCII "S (x) I (x) F" ;
     m2:hasTensorFormulaTeX "S \\otimes I \\otimes F" ;
     m2:perspective "dual" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Set of nodes connected by edges enabling distributed interactions." .
+    rdfs:comment "Set of nodes connected by edges enabling distributed interactions." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Node> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Node> a owl:Class ;
     rdfs:label "Node" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2e-01 ;
@@ -1024,16 +1100,16 @@
         "Server in network topology",
         "Vertex in graph theory" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I" ;
+    m2:hasTensorFormula "S ⊗ I" ;
     m2:hasTensorFormulaASCII "S (x) I" ;
     m2:hasTensorFormulaTeX "S \\otimes I" ;
     m2:perspective "territory" ;
-    rdfs:comment "Elementary entity or point in a network structure, serving as connection endpoint." .
+    rdfs:comment "Elementary entity or point in a network structure, serving as connection endpoint." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Observer> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Observer> a owl:Class ;
     rdfs:label "Observer" ;
-    m2:hasCategory "m2:Ontological" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information" ;
     m2:hasEpistemicGap 3.5e-01 ;
@@ -1041,24 +1117,24 @@
         "Scientific measurement apparatus",
         "Sensor" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "I⊗A" ;
+    m2:hasTensorFormula "I ⊗ A" ;
     m2:hasTensorFormulaASCII "I (x) A" ;
     m2:hasTensorFormulaTeX "I \\otimes A" ;
     m2:perspective "map" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Entity performing measurement or interpretation of system state." .
+    rdfs:comment "Entity performing measurement or interpretation of system state." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Ontological" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Ontological> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Category> ;
-    rdfs:label "Ontological Category" ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Ontological> a owl:Class ;
+    rdfs:label "Ontological Family" ;
     m2:metaconceptCount 8 ;
-    rdfs:comment "Fundamental system entities and boundaries. S → F patterns." .
+    rdfs:comment "Fundamental system entities and boundaries. S → F patterns." ;
+    rdfs:subClassOf "m2:MetaconceptFamily" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Path> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Path> a owl:Class ;
     rdfs:label "Path" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -1069,20 +1145,20 @@
         "Signal path on circuit schematic - design map",
         "User journey map - UX design diagram" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I⊗D" ;
+    m2:hasTensorFormula "S ⊗ I ⊗ D" ;
     m2:hasTensorFormulaASCII "S (x) I (x) D" ;
     m2:hasTensorFormulaTeX "S \\otimes I \\otimes D" ;
     m2:perspective "map" ;
-    rdfs:comment "Planned or conceptual route through network structure. Represents paths on maps/models (graphs, diagrams, schematics), distinct from Trajectory (observed evolution in territory)." .
+    rdfs:comment "Planned or conceptual route through network structure. Represents paths on maps/models (graphs, diagrams, schematics), distinct from Trajectory (observed evolution in territory)." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Pattern> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Pattern> a owl:Class ;
     rdfs:label "Pattern (Recognition / Reuse)" ;
     m2:discoveryContext "Identified as missing metaconcept during TO_DO review. Pattern occupies a unique niche: it bridges observation (Territory) and reuse (Map) through structural recurrence. No existing metaconcept captured both the recurring regularity aspect and the cross-domain template reusability in a single concept." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
     m2:fullName "Pattern Recognition / Pattern Reuse" ;
-    m2:hasCategory "m2:Informational" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -1106,16 +1182,16 @@
     m2:transdisciplinaryValidation [ ] ;
     dcterms:created "2026-01-31" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Recurring structural motif identifiable across instances and reusable as a template. Exists as an observable regularity in Territory (Eagle Eye) and as a reusable archetype in Map (Sphinx Eye). The key discriminator vs related concepts is the combination of recurrence (vs Signature) and cross-domain reusability (vs Representation)." .
+    rdfs:comment "Recurring structural motif identifiable across instances and reusable as a template. Exists as an observable regularity in Territory (Eagle Eye) and as a reusable archetype in Map (Sphinx Eye). The key discriminator vs related concepts is the combination of recurrence (vs Signature) and cross-domain reusability (vs Representation)." ;
+    rdfs:subClassOf "m2:Informational",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Polarity> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Polarity> a owl:Class ;
     rdfs:label "Polarity (N-ary)" ;
     m2:discoveryContext "Identified during Magic: The Gathering Color Wheel poclet analysis. Revealed that binary polarity restriction was limiting framework's ability to model real philosophical/value systems. Validated across 10 domains with N ranging from 2 to 9." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
     m2:formalDefinition [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -1131,7 +1207,7 @@
         "Political Compass (N=4: Authoritarian-Libertarian Left-Right)",
         "pH scale (N=3 effective: Acidic-Neutral-Basic)" ;
     m2:hasPolarity "nary" ;
-    m2:hasTensorFormula "S⊗I⊗A" ;
+    m2:hasTensorFormula "S ⊗ I ⊗ A" ;
     m2:hasTensorFormulaASCII "S (x) I (x) A" ;
     m2:hasTensorFormulaTeX "S \\otimes I \\otimes A" ;
     m2:historicalNote [ ] ;
@@ -1143,18 +1219,17 @@
     m2:transdisciplinaryValidation [ ] ;
     dcterms:created "2026-01-22" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Configuration of N distinct, mutually exclusive value poles or orientational axes organized in structured opposition or complementarity. Generalizes binary opposition to N-dimensional value spaces. N {1, 2, 3, 4, 5, ...} where N=1 (neutral/monopolar), N=2 (dual/bipolar), N3 (multipolar)." .
+    rdfs:comment "Configuration of N distinct, mutually exclusive value poles or orientational axes organized in structured opposition or complementarity. Generalizes binary opposition to N-dimensional value spaces. N {1, 2, 3, 4, 5, ...} where N=1 (neutral/monopolar), N=2 (dual/bipolar), N3 (multipolar)." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Processor> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept>,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaconceptCombo> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Processor> a owl:Class ;
     rdfs:label "Processor" ;
     m2:bicephalousArchitecture [ ] ;
     m2:designRationale "Processor required TWO ternary formulas because: (1) Territory needs Transformation+Flow+Resource to capture empirical input→process→output dynamics, (2) Map needs Transformation+Representation+Interoperability to capture interface compatibility which is ESSENTIAL for processors (microprocessor bus protocols, digestive enzyme compatibility, compiler language standards). Unlike Cascade which has asymmetric formulas (3+2), Processor has symmetric formulas (3+3) reflecting balanced empirical/conceptual nature." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
     m2:hasAttribute [ ] ;
-    m2:hasCategory "m2:Ontological" ;
     m2:hasEpistemicGap 1.5e-01 ;
     m2:hasExample "Compiler: Inputs=[source_code], Outputs=[executable, errors] - code transformation processor",
         "Digestive System: Inputs=[food, enzymes], Outputs=[nutrients, waste] - biological matter processor",
@@ -1166,46 +1241,25 @@
         "Transistor: Inputs=[base_current, collector_voltage], Outputs=[collector_current] - electrical signal processor" ;
     m2:hasPolarity "dual" ;
     m2:hasTensorFormula "⊗⇒_Territory(Transformation, Flow, Resource) × ⊗⇒_Map(Transformation, Representation, Interoperability)" ;
-    m2:hasTensorFormulaExpanded_Map "S⊗I⊗D⊗F⊗V⊗R⊗Im" ;
-    m2:hasTensorFormulaExpanded_Territory "S⊗I⊗D⊗F⊗V⊗Resource" ;
-    m2:mathematicalNote "Ternary hybrid formulas enable complete coverage: Territory formula captures empirical processing dynamics (S⊗I⊗D⊗F⊗V⊗R estimated ~0.85 ASFID), Map formula captures interface model (R⊗E⊗V⊗O⊗I estimated ~0.88 REVOI). Interoperability addition critical for processor's environmental compatibility." ;
+    m2:hasTensorFormulaExpanded_Map "S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ R ⊗ Im" ;
+    m2:hasTensorFormulaExpanded_Territory "S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ Resource" ;
+    m2:mathematicalNote "Ternary hybrid formulas enable complete coverage: Territory formula captures empirical processing dynamics (S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ R estimated ~0.85 ASFID), Map formula captures interface model (R ⊗ E ⊗ V ⊗ O ⊗ I estimated ~0.88 REVOI). Interoperability addition critical for processor's environmental compatibility." ;
     m2:perspective "dual" ;
     m2:sphinxView [ ] ;
     m2:transdisciplinaryValidation [ ] ;
     m2:versionHistory [ ] ;
     rdfs:comment "Generic system with inputs and outputs that transforms/processes incoming resources, signals, or matter into outputs. Dual synergistic combinations: Territory (Transformation ⊗ Flow ⊗ Resource) provides empirical processing dynamics, Map (Transformation ⊗ Representation ⊗ Interoperability) provides conceptual interface model. Distinct from pure Transformation (abstract process) by being a concrete entity that IMPLEMENTS transformations while managing flows and interfacing with environment." ;
-    rdfs:subClassOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#System> .
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Ontological" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Regulation> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
-    rdfs:label "Regulation" ;
-    m2:eagleView [ ] ;
-    m2:hasAttribute [ ] ;
-    m2:hasCategory "m2:Regulatory" ;
-    m2:hasDominantM3 "m3:eagle_eye:Attractor",
-        "m3:eagle_eye:Flow",
-        "m3:eagle_eye:Structure" ;
-    m2:hasEpistemicGap 3.5e-01 ;
-    m2:hasExample "Hormonal feedback loops",
-        "Traffic light systems" ;
-    m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "A⊗S⊗F" ;
-    m2:hasTensorFormulaASCII "A (x) S (x) F" ;
-    m2:hasTensorFormulaTeX "A \\otimes S \\otimes F" ;
-    m2:perspective "dual" ;
-    m2:sphinxView [ ] ;
-    rdfs:comment "Control mechanisms maintaining system parameters within acceptable ranges. Feedback polarity (Negative/Positive/Mixed) specified via feedback_polarity attribute." .
-
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Regulatory> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Category> ;
-    rdfs:label "Regulatory Category" ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Regulatory> a owl:Class ;
+    rdfs:label "Regulatory Family" ;
     m2:metaconceptCount 7 ;
-    rdfs:comment "Control, stabilization, constraint. High A, tensor couplings." .
+    rdfs:comment "Control, stabilization, constraint. High A, tensor couplings." ;
+    rdfs:subClassOf "m2:MetaconceptFamily" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Relation> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Relation> a owl:Class ;
     rdfs:label "Relation" ;
-    m2:hasCategory "m2:Relational" ;
     m2:hasDominantM3 "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2.5e-01 ;
@@ -1214,23 +1268,23 @@
         "Parent-child relation in database",
         "Semantic relation in ontology" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I" ;
+    m2:hasTensorFormula "S ⊗ I" ;
     m2:hasTensorFormulaASCII "S (x) I" ;
     m2:hasTensorFormulaTeX "S \\otimes I" ;
     m2:perspective "map" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Abstract connection or association between entities, identified through analysis or modeling." .
+    rdfs:comment "Abstract connection or association between entities, identified through analysis or modeling." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Relational" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Relational> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Category> ;
-    rdfs:label "Relational Category" ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Relational> a owl:Class ;
+    rdfs:label "Relational Family" ;
     m2:metaconceptCount 5 ;
-    rdfs:comment "Interactions between entities and roles. S → I patterns." .
+    rdfs:comment "Interactions between entities and roles. S → I patterns." ;
+    rdfs:subClassOf "m2:MetaconceptFamily" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Representation> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Representation> a owl:Class ;
     rdfs:label "Representation" ;
-    m2:hasCategory "m2:Informational" ;
     m2:hasDominantM3 "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2.5e-01 ;
@@ -1238,34 +1292,34 @@
         "Mathematical models",
         "Mental schemas" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "I⊗S" ;
+    m2:hasTensorFormula "I ⊗ S" ;
     m2:hasTensorFormulaASCII "I (x) S" ;
     m2:hasTensorFormulaTeX "I \\otimes S" ;
     m2:perspective "map" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Mapping between domains preserving structural relationships." .
+    rdfs:comment "Mapping between domains preserving structural relationships." ;
+    rdfs:subClassOf "m2:Informational",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Resilience> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Resilience> a owl:Class ;
     rdfs:label "Resilience" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Adaptive" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2.5e-01 ;
     m2:hasExample "Bridge withstanding earthquake",
         "Ecosystem recovery after wildfire" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "A⊗S" ;
+    m2:hasTensorFormula "A ⊗ S" ;
     m2:hasTensorFormulaASCII "A (x) S" ;
     m2:hasTensorFormulaTeX "A \\otimes S" ;
     m2:perspective "territory" ;
-    rdfs:comment "Capacity to absorb disturbances while retaining fundamental structure and function." .
+    rdfs:comment "Capacity to absorb disturbances while retaining fundamental structure and function." ;
+    rdfs:subClassOf "m2:Adaptive",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Role> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Role> a owl:Class ;
     rdfs:label "Role" ;
-    m2:hasCategory "m2:Relational" ;
     m2:hasDominantM3 "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2.5e-01 ;
@@ -1273,19 +1327,19 @@
         "Server/client role",
         "Social role" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I" ;
+    m2:hasTensorFormula "S ⊗ I" ;
     m2:hasTensorFormulaASCII "S (x) I" ;
     m2:hasTensorFormulaTeX "S \\otimes I" ;
     m2:perspective "map" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Functional position or responsibility within system structure." .
+    rdfs:comment "Functional position or responsibility within system structure." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Relational" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Scope> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Scope> a owl:Class ;
     rdfs:label "Scope" ;
     m2:discoveryContext "Identified during VSM M0 modeling refinement. Required to properly model Autonomy as MetaconceptCombo(Agent, Scope) where Agent provides action capability and Scope provides bounded domain of authority. Fills semantic gap between Constraint (prohibition) and Domain (entire field). Essential for authorization, delegation, and jurisdictional concepts." ;
     m2:distinctionFromRelated [ ] ;
-    m2:hasCategory "m2:Regulatory" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure",
@@ -1310,14 +1364,14 @@
     m2:transdisciplinaryValidation [ ] ;
     dcterms:created "2026-02-03" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Domain of validity or applicability where an entity, rule, or authority has effect. Defines a positive boundary of what is permitted or possible, in contrast to Constraint (which defines what is prohibited). Fundamental to autonomy, jurisdiction, and authorization concepts across multiple domains." .
+    rdfs:comment "Domain of validity or applicability where an entity, rule, or authority has effect. Defines a positive boundary of what is permitted or possible, in contrast to Constraint (which defines what is prohibited). Fundamental to autonomy, jurisdiction, and authorization concepts across multiple domains." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Regulatory" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Segmentation> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Segmentation> a owl:Class ;
     rdfs:label "Segmentation" ;
     m2:distinctionNote "Segmentation partitions by structural/similarity criteria (homogeneous regions sharing properties), while Modularity decomposes by functional criteria (autonomous units with specific roles). Both are decomposition operations but differ in their partitioning logic." ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -1329,19 +1383,19 @@
         "Phonetic segmentation (speech-to-text) - linguistics",
         "Territorial segmentation (zoning) - urban planning" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I⊗D" ;
+    m2:hasTensorFormula "S ⊗ I ⊗ D" ;
     m2:hasTensorFormulaASCII "S (x) I (x) D" ;
     m2:hasTensorFormulaTeX "S \\otimes I \\otimes D" ;
     m2:perspective "territory" ;
     rdfs:comment "Partition of a whole into homogeneous segments according to similarity, continuity, or structural criteria. Analytical decomposition producing distinct but exhaustive regions (vs functional decomposition in Modularity)." ;
     rdfs:seeAlso "m2:Cluster",
-        "m2:Modularity" .
+        "m2:Modularity" ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Self-Organization> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Self-Organization> a owl:Class ;
     rdfs:label "Self-Organization" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Teleonomic" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information" ;
@@ -1350,18 +1404,27 @@
         "Dissipative structures",
         "Flocking behavior" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "A⊗I⊗D" ;
+    m2:hasTensorFormula "A ⊗ I ⊗ D" ;
     m2:hasTensorFormulaASCII "A (x) I (x) D" ;
     m2:hasTensorFormulaTeX "A \\otimes I \\otimes D" ;
     m2:perspective "territory" ;
-    rdfs:comment "Spontaneous emergence of ordered patterns without external direction." .
+    rdfs:comment "Spontaneous emergence of ordered patterns without external direction." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Teleonomic" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Signal> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#SignPair> a owl:Class ;
+    rdfs:label "Sign Pair" ;
+    m2:convention "p=0: positive pole (enabling/amplifying); p=1: negative pole (inhibiting/attenuating)" ;
+    m2:parametricOperator "(-1)^{p}, p ∈ {0,1}" ;
+    dcterms:created "2026-02-18" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A MetaconceptPair where the two poles differ by a SIGN REVERSAL on the base formula, formalized as (-1)^p · F(ASFID) where F is the shared base formula. p=0 → positive pole (enabling, amplifying, constructive); p=1 → negative pole (inhibiting, attenuating, destructive). Examples: Activation/Inhibition = (-1)^p (A ⊗ D); Convergence/Divergence = (-1)^p ∇·D; Synergy+/Synergy− = (-1)^p (I ⊗ D)." ;
+    rdfs:subClassOf "m2:MetaconceptPair" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Signal> a owl:Class ;
     rdfs:label "Signal" ;
     m2:eagleView [ ] ;
     m2:hasAttribute [ ] ;
-    m2:hasCategory "m2:Informational" ;
     m2:hasDominantM3 "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information" ;
     m2:hasEpistemicGap 2e-01 ;
@@ -1370,17 +1433,17 @@
         "Neural action potential",
         "Radio wave transmission" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "I⊗F" ;
+    m2:hasTensorFormula "I ⊗ F" ;
     m2:hasTensorFormulaASCII "I (x) F" ;
     m2:hasTensorFormulaTeX "I \\otimes F" ;
     m2:perspective "territory" ;
-    rdfs:comment "Carrier of information through space or time, enabling communication between system components." .
+    rdfs:comment "Carrier of information through space or time, enabling communication between system components." ;
+    rdfs:subClassOf "m2:Informational",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Signature> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Signature> a owl:Class ;
     rdfs:label "Signature" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Informational" ;
     m2:hasDominantM3 "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2e-01 ;
@@ -1388,18 +1451,18 @@
         "Fingerprint",
         "Spectral signature" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "I⊗S" ;
+    m2:hasTensorFormula "I ⊗ S" ;
     m2:hasTensorFormulaASCII "I (x) S" ;
     m2:hasTensorFormulaTeX "I \\otimes S" ;
     m2:perspective "dual" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Characteristic pattern enabling unique identification." .
+    rdfs:comment "Characteristic pattern enabling unique identification." ;
+    rdfs:subClassOf "m2:Informational",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Space> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Space> a owl:Class ;
     rdfs:label "Space" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Ontological" ;
     m2:hasDominantM3 "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2.5e-01 ;
@@ -1408,17 +1471,17 @@
         "Phase space",
         "State space" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I" ;
+    m2:hasTensorFormula "S ⊗ I" ;
     m2:hasTensorFormulaASCII "S (x) I" ;
     m2:hasTensorFormulaTeX "S \\otimes I" ;
     m2:perspective "territory" ;
-    rdfs:comment "Dimensional framework in which system states and trajectories exist (state space, phase space)." .
+    rdfs:comment "Dimensional framework in which system states and trajectories exist (state space, phase space)." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Ontological" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#State> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#State> a owl:Class ;
     rdfs:label "State" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Ontological" ;
     m2:hasDominantM3 "m3:eagle_eye:Information" ;
     m2:hasEpistemicGap 1.5e-01 ;
     m2:hasExample "Configuration",
@@ -1429,13 +1492,13 @@
     m2:hasTensorFormulaASCII "I" ;
     m2:hasTensorFormulaTeX "I" ;
     m2:perspective "territory" ;
-    rdfs:comment "Instantaneous configuration of system variables." .
+    rdfs:comment "Instantaneous configuration of system variables." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Ontological" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Storage> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Storage> a owl:Class ;
     rdfs:label "Storage" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Energetic" ;
     m2:hasDominantM3 "m3:eagle_eye:Flow",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2e-01 ;
@@ -1444,23 +1507,31 @@
         "Data warehouse",
         "Reservoir" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗F" ;
+    m2:hasTensorFormula "S ⊗ F" ;
     m2:hasTensorFormulaASCII "S (x) F" ;
     m2:hasTensorFormulaTeX "S \\otimes F" ;
     m2:perspective "territory" ;
-    rdfs:comment "Function of retaining and accumulating matter, energy, or information." .
+    rdfs:comment "Function of retaining and accumulating matter, energy, or information." ;
+    rdfs:subClassOf "m2:Energetic",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Structural> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Category> ;
-    rdfs:label "Structural Category" ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Structural> a owl:Class ;
+    rdfs:label "Structural Family" ;
     m2:metaconceptCount 12 ;
-    rdfs:comment "Topology, organization, spatial arrangement. High S, low D." .
+    rdfs:comment "Topology, organization, spatial arrangement. High S, low D." ;
+    rdfs:subClassOf "m2:MetaconceptFamily" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Substrate> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#StructuralPair> a owl:Class ;
+    rdfs:label "Structural Pair" ;
+    m2:parametricOperator "None (structural reversal: direction or cardinality)" ;
+    dcterms:created "2026-02-18" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A MetaconceptPair where the two poles differ by a STRUCTURAL REVERSAL that cannot be reduced to a scalar parametric operator (dimension presence or sign). Two subtypes: (1) Direction reversal: same dimensions, opposite flow direction (e.g. Encoding I_src→I_coded vs Decoding I_coded→I_src). (2) Cardinality reversal: N:1 vs 1:N structural aggregation (e.g. Fusion {S₁⊗...⊗Sₙ}→S vs Fission S→{S₁⊗...⊗Sₙ}). In both cases m2:expression is replaced by explicit m2:poleMapping with pole1/pole2 formulas." ;
+    rdfs:subClassOf "m2:MetaconceptPair" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Substrate> a owl:Class ;
     rdfs:label "Substrate" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Ontological" ;
     m2:hasDominantM3 "m3:eagle_eye:Flow",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2e-01 ;
@@ -1468,18 +1539,18 @@
         "Hardware platform",
         "Physical medium" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗F" ;
+    m2:hasTensorFormula "S ⊗ F" ;
     m2:hasTensorFormulaASCII "S (x) F" ;
     m2:hasTensorFormulaTeX "S \\otimes F" ;
     m2:perspective "territory" ;
-    rdfs:comment "Material or informational support enabling system existence." .
+    rdfs:comment "Material or informational support enabling system existence." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Ontological" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Symmetry> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Symmetry> a owl:Class ;
     rdfs:label "Symmetry" ;
     m2:eagleView [ ] ;
     m2:hasAttribute [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2e-01 ;
     m2:hasExample "Conservation laws (Noether)",
@@ -1490,15 +1561,18 @@
     m2:hasTensorFormulaTeX "S" ;
     m2:perspective "dual" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Invariance under transformation." .
+    rdfs:comment "Invariance under transformation." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Synergy> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Synergy> a owl:Class ;
     rdfs:label "Synergy (Positive/Negative)" ;
     m2:dualAspects [ ] ;
     m2:eagleView [ ] ;
-    m2:fullName "Positive Synergy / Negative Synergy" ;
-    m2:hasCategory "m2:Dynamic" ;
+    m2:expression "(-1)^{p} (I ⊗ D)" ;
+    m2:expressionASCII "(-1)^p * (I (x) D)" ;
+    m2:expressionTeX "(-1)^{p} (I \\otimes D)" ;
+    m2:fullName "Synergy (Positive / Negative)" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information" ;
     m2:hasEpistemicGap 3e-01 ;
@@ -1506,26 +1580,47 @@
         "Interference patterns",
         "Team synergy" ;
     m2:hasPolarity "dual" ;
-    m2:hasTensorFormula "I⊗D" ;
-    m2:hasTensorFormulaASCII "I (x) D" ;
-    m2:hasTensorFormulaTeX "I \\otimes D" ;
+    m2:hasTensorFormula "→ see m2:expression and m2:poleMapping" ;
+    m2:hasTensorFormulaASCII "→ see m2:expressionASCII and m2:poleMapping" ;
+    m2:hasTensorFormulaTeX "→ see m2:expressionTeX and m2:poleMapping" ;
     m2:perspective "dual" ;
+    m2:poleMapping [ ] ;
     m2:shortName "Synergy" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Combined effect differing from sum of individual effects (enhancement or inhibition)." .
+    rdfs:comment "Combined effect differing from sum of individual effects (enhancement or inhibition)." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept",
+        "m2:MetaconceptPair",
+        "m2:SignPair" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Teleonomic> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Category> ;
-    rdfs:label "Teleonomic Category" ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#System> a owl:Class ;
+    rdfs:label "System" ;
+    m2:eagleView [ ] ;
+    m2:hasDominantM3 "m3:eagle_eye:Flow",
+        "m3:eagle_eye:Structure" ;
+    m2:hasEpistemicGap 3e-01 ;
+    m2:hasExample "Computer system",
+        "Living cell",
+        "Solar system" ;
+    m2:hasPolarity "neutral" ;
+    m2:hasTensorFormula "S ⊗ F" ;
+    m2:hasTensorFormulaASCII "S (x) F" ;
+    m2:hasTensorFormulaTeX "S \\otimes F" ;
+    m2:perspective "territory" ;
+    rdfs:comment "Organized set of interacting components with defined boundary." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Ontological" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Teleonomic> a owl:Class ;
+    rdfs:label "Teleonomic Family" ;
     m2:metaconceptCount 1 ;
-    rdfs:comment "Goal-directedness, purpose, optimization. High A." .
+    rdfs:comment "Goal-directedness, purpose, optimization. High A." ;
+    rdfs:subClassOf "m2:MetaconceptFamily" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Threshold> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Threshold> a owl:Class ;
     rdfs:label "Threshold" ;
     m2:eagleView [ ] ;
     m2:hasAttribute [ ] ;
-    m2:hasCategory "m2:Regulatory" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information" ;
     m2:hasEpistemicGap 2e-01 ;
@@ -1533,18 +1628,18 @@
         "Percolation threshold",
         "Tipping point" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "A⊗I" ;
+    m2:hasTensorFormula "A ⊗ I" ;
     m2:hasTensorFormulaASCII "A (x) I" ;
     m2:hasTensorFormulaTeX "A \\otimes I" ;
     m2:perspective "territory" ;
-    rdfs:comment "Critical value triggering qualitative change in system behavior." .
+    rdfs:comment "Critical value triggering qualitative change in system behavior." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Regulatory" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Topology> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Topology> a owl:Class ;
     rdfs:label "Topology" ;
     m2:distinctionNote "Topology classifies structures by connectivity properties (model-theoretic abstraction), while Network represents concrete structural instances (reality-theoretic). Structure (M3) is the raw arrangement, Topology extracts its invariant equivalence class." ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
     m2:hasEpistemicGap 2e-01 ;
@@ -1555,22 +1650,24 @@
         "Social network structure patterns - sociology",
         "Topological invariants (genus, Euler characteristic) - mathematics" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗I" ;
+    m2:hasTensorFormula "S ⊗ I" ;
     m2:hasTensorFormulaASCII "S (x) I" ;
     m2:hasTensorFormulaTeX "S \\otimes I" ;
     m2:perspective "territory" ;
     rdfs:comment "Classification of structural properties preserved under continuous deformations: connectivity, compactness, genus. Captures the TYPE or CLASS of structure independent of metric, enabling structural pattern recognition across domains." ;
     rdfs:seeAlso "m2:Invariant",
         "m2:Network",
-        "m2:Symmetry" .
+        "m2:Symmetry" ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Trade-off> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Trade-off> a owl:Class ;
     rdfs:label "Trade-off" ;
+    m2:changeLog [ ] ;
     m2:discoveryContext "Identified during analysis of Exposure Triangle poclet as fundamental Map-space metaconcept capturing photographer's decision-making under constraints" ;
     m2:distinctionFromRelated [ ] ;
-    m2:hasCategory "m2:Regulatory" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
+        "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information" ;
     m2:hasEpistemicGap 3e-01 ;
     m2:hasExample "Biology: r-strategy → K-strategy (many offspring vs few cared-for)",
@@ -1581,22 +1678,24 @@
         "Photography: Shallow DoF (artistic blur) ⊗ Deep DoF (all sharp) via aperture",
         "Project Management: Cost → Quality → Time (iron triangle)",
         "Reinforcement Learning: Exploration → Exploitation" ;
+    m2:hasOntologicalNature "ModelSpace" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "A⊗I⊗F⊗A⊗A" ;
-    m2:hasTensorFormulaASCII "A (x) I (x) F (x) A (x) A" ;
-    m2:hasTensorFormulaTeX "A \\otimes I \\otimes F \\otimes A \\otimes A" ;
+    m2:hasTensorFormula "A ⊗ I ⊗ F" ;
+    m2:hasTensorFormulaASCII "A (x) I (x) F" ;
+    m2:hasTensorFormulaTeX "A \\otimes I \\otimes F" ;
     m2:perspective "map" ;
     m2:sphinxView [ ] ;
     m2:transdisciplinaryValidation [ ] ;
     dcterms:created "2026-01-20" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Deliberate exchange where improving one desirable property necessarily degrades another due to inherent constraints. A conscious decision-making concept in model/map space where observer accepts losses in one dimension to gain in another. Fundamental to optimization under constraints." .
+    dcterms:modified "2026-02-18" ;
+    rdfs:comment "Deliberate exchange where improving one desirable property necessarily degrades another due to inherent constraints. A conscious decision-making concept in model/map space where observer accepts losses in one dimension to gain in another. Fundamental to optimization under constraints." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Regulatory" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Transformation> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Transformation> a owl:Class ;
     rdfs:label "Transformation" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Dynamic" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -1604,17 +1703,17 @@
     m2:hasExample "Chemical reactions",
         "Metamorphosis" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "D⊗S⊗I" ;
+    m2:hasTensorFormula "D ⊗ S ⊗ I" ;
     m2:hasTensorFormulaASCII "D (x) S (x) I" ;
     m2:hasTensorFormulaTeX "D \\otimes S \\otimes I" ;
     m2:perspective "territory" ;
-    rdfs:comment "Fundamental change in system state, structure, or identity." .
+    rdfs:comment "Fundamental change in system state, structure, or identity." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Trigger> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Trigger> a owl:Class ;
     rdfs:label "Trigger" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Regulatory" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information" ;
     m2:hasEpistemicGap 2.5e-01 ;
@@ -1622,14 +1721,15 @@
         "Reflex stimulus",
         "Signal transduction trigger" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "D⊗I" ;
+    m2:hasTensorFormula "D ⊗ I" ;
     m2:hasTensorFormulaASCII "D (x) I" ;
     m2:hasTensorFormulaTeX "D \\otimes I" ;
     m2:perspective "territory" ;
-    rdfs:comment "Initiating stimulus for process activation." .
+    rdfs:comment "Initiating stimulus for process activation." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Regulatory" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Tropism> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Tropism> a owl:Class ;
     rdfs:label "Tropism" ;
     m2:discoveryContext "Recognized as specialized Behavior pattern prevalent in biological systems (phototropism, chemotaxis, geotropism). Extends Behavior by adding Attractor dimension to capture directional constraint." ;
     m2:distinctionFromRelated [ ] ;
@@ -1637,7 +1737,6 @@
     m2:gradientProperty [ m2:relationProperty "m2:hasGradient" ;
             m2:sourceType "m3:eagle_eye:Attractor" ;
             rdfs:comment "Tropism is directed by an Attractor gradient" ] ;
-    m2:hasCategory "m2:Dynamic" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow",
@@ -1649,7 +1748,7 @@
         "Phototropism (plant stem towards light source)",
         "Thermotaxis (organism towards optimal temperature)" ;
     m2:hasPolarity "dual" ;
-    m2:hasTensorFormula "A⊗S⊗D⊗F" ;
+    m2:hasTensorFormula "A ⊗ S ⊗ D ⊗ F" ;
     m2:hasTensorFormulaASCII "A (x) S (x) D (x) F" ;
     m2:hasTensorFormulaTeX "A \\otimes S \\otimes D \\otimes F" ;
     m2:inheritedFrom "m2:Behavior" ;
@@ -1660,15 +1759,14 @@
     dcterms:created "2026-01-28" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
     rdfs:comment "Specialized Behavior directed by external gradient stimulus. Orientation or movement towards (positive) or away from (negative) an Attractor source. Inherits network decomposability from Behavior while adding directional constraint." ;
-    rdfs:subClassOf "m2:Behavior" .
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#ValueSpace> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#ValueSpace> a owl:Class ;
     rdfs:label "ValueSpace (Hybrid Variety Model)" ;
     m2:ashbyPrinciple [ ] ;
     m2:discoveryContext "Required for VSM modeling to formalize Ashby's Law of Requisite Variety. Emerged from need to represent value/state spaces with bicephalous perspective: Territory (what values exist - It) AND Map (how we model them - VORI). The ItVORIm mnemonic order provides epistemic progression where subscripts t/m explicitly mark the Territory/Map boundary. Generalizes beyond system states to any property's value domain (scalar, vector, tensor, symbolic, hybrid). Essential for variety amplification (S2) and attenuation (S3) in VSM." ;
     m2:distinctionFromRelated [ ] ;
-    m2:hasCategory "m2:Informational" ;
     m2:hasDominantM3 "HYBRID: It from ASFID (Eagle Eye) + V → O → R → Im from REVOI (Sphinx Eye)" ;
     m2:hasEpistemicGap 2.5e-01 ;
     m2:hasExample "Cybernetics: S1 operational variety in VSM (It=state count, VORI=model quality)",
@@ -1689,15 +1787,15 @@
     m2:valueSpaceTypes [ ] ;
     dcterms:created "2026-01-31" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Space of possible values for a property or object. Can be scalar (e.g., temperature range), vector (e.g., RGB 3D color components), tensor product (e.g., 5D ASFID metaconcept formulas), or symbolic (e.g., alphabet symbols). Values can be discrete or continuous. Characterized both by intrinsic information content (Territory) and epistemic model quality (Map). Foundation for Ashby's Law of Requisite Variety in cybernetics. Mnemonic: ItVORIm (subscripts t/m mark Territory/Map boundary)." .
+    rdfs:comment "Space of possible values for a property or object. Can be scalar (e.g., temperature range), vector (e.g., RGB 3D color components), tensor product (e.g., 5D ASFID metaconcept formulas), or symbolic (e.g., alphabet symbols). Values can be discrete or continuous. Characterized both by intrinsic information content (Territory) and epistemic model quality (Map). Foundation for Ashby's Law of Requisite Variety in cybernetics. Mnemonic: ItVORIm (subscripts t/m mark Territory/Map boundary)." ;
+    rdfs:subClassOf "m2:Informational",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Workflow> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Workflow> a owl:Class ;
     rdfs:label "Workflow" ;
     m2:discoveryContext "Needed to distinguish prescriptive models (Workflow) from descriptive observations (Behavior). Both are structured networks of Steps, but serve different epistemic roles." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Structure" ;
@@ -1707,7 +1805,7 @@
         "Recipe (cooking steps with dependencies)",
         "Software CI/CD pipeline (build-test-deploy sequence)" ;
     m2:hasPolarity "dual" ;
-    m2:hasTensorFormula "S⊗D⊗F" ;
+    m2:hasTensorFormula "S ⊗ D ⊗ F" ;
     m2:hasTensorFormulaASCII "S (x) D (x) F" ;
     m2:hasTensorFormulaTeX "S \\otimes D \\otimes F" ;
     m2:implementationProperty [ m2:relationProperty "m2:implementsProcess" ;
@@ -1719,7 +1817,9 @@
     m2:sphinxView [ ] ;
     dcterms:created "2026-01-28" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Structured network implementation of a Process. Prescriptive representation (Map-oriented) of how a Process should be executed, distinct from Behavior (descriptive observation of what occurs). Can be simulated or prescribed." .
+    rdfs:comment "Structured network implementation of a Process. Prescriptive representation (Map-oriented) of how a Process should be executed, distinct from Behavior (descriptive observation of what occurs). Can be simulated or prescribed." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
 <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#dualAspects> a owl:ObjectProperty ;
     rdfs:label "dual aspects" ;
@@ -1729,12 +1829,6 @@
     rdfs:label "full name" ;
     rdfs:domain "m2:MetaConcept" ;
     rdfs:range "xsd:string" ;
-    owl:functionalProperty true .
-
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#hasCategory> a owl:ObjectProperty ;
-    rdfs:label "has category" ;
-    rdfs:domain "m2:MetaConcept" ;
-    rdfs:range "m2:Category" ;
     owl:functionalProperty true .
 
 <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#hasDominantM3> a owl:ObjectProperty ;
@@ -1752,6 +1846,13 @@
     rdfs:label "has example" ;
     rdfs:domain "m2:MetaConcept" ;
     rdfs:range "xsd:string" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#hasFamily> a owl:ObjectProperty ;
+    rdfs:label "has family" ;
+    rdfs:comment "Associates a metaconcept with its MetaconceptFamily. Renamed from hasCategory to hasFamily to align with the renaming of m2:Category to m2:MetaconceptFamily." ;
+    rdfs:domain "m2:MetaConcept" ;
+    rdfs:range "m2:MetaconceptFamily" ;
+    owl:functionalProperty true .
 
 <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#hasPolarity> a owl:DatatypeProperty ;
     rdfs:label "has polarity" ;
@@ -1773,13 +1874,11 @@
     rdfs:range "xsd:string" ;
     owl:functionalProperty true .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Alignment> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Alignment> a owl:Class ;
     rdfs:label "Alignment" ;
     m2:distinctFrom [ m2:Balance "Balance is a static equilibrium state; Alignment is an active process toward coherence" ;
             m2:Convergence "Convergence concerns geometric focusing of trajectories; Alignment concerns structural/semantic correspondence between entities" ;
             m2:Representation "Representation is a static structural mapping (A→B); Alignment is an iterative bidirectional process reducing discrepancy (A↔B)" ] ;
-    m2:hasCategory "m2:Dynamic" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -1791,15 +1890,51 @@
         "Territory↔Map alignment via Φ/Ψ operators (TSCG - see m3:AlignmentLoop)",
         "Wheel alignment (mechanics)" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "I⊗A⊗S" ;
+    m2:hasTensorFormula "I ⊗ A ⊗ S" ;
     m2:perspective "dual" ;
-    rdfs:comment "Bidirectional dynamic process by which two entities, representations, or systems progressively reduce their mutual discrepancy toward a coherent correspondence. Distinct from Representation (static mapping A→B), Balance (static equilibrium), and Convergence (geometric focusing of trajectories): Alignment is an active, iterative, bidirectional reconciliation process." .
+    rdfs:comment "Bidirectional dynamic process by which two entities, representations, or systems progressively reduce their mutual discrepancy toward a coherent correspondence. Distinct from Representation (static mapping A→B), Balance (static equilibrium), and Convergence (geometric focusing of trajectories): Alignment is an active, iterative, bidirectional reconciliation process." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Homeostasis> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#ButterflyEffect> a owl:Class ;
+    rdfs:label "ButterflyEffect (Sensitive Dependence on Initial Conditions)" ;
+    m2:canonicalPoclet <m0:LorenzSystem> ;
+    m2:chaoticAttractor [ ] ;
+    m2:couplingExplanation "Dynamics (D) creates the coupling between Amplification (exponential growth of δ in time) and Trajectory (chaotic evolution in time). Flow (F) links the perturbation propagation (Amplification) with the state-space trajectory geometry (strange attractor). Result: bounded deterministic unpredictability - the system explores the attractor exhaustively but unpredictably." ;
+    m2:discoveryContext "Identified as structural dual of LALI during TSCG analysis of Turing morphogenesis (M0_TuringMorphogenesis poclet, 2026-02-18). The question 'Is LALI related to the Butterfly Effect?' revealed a deep structural duality: both metaconcepts share the Amplification parent but diverge on whether a lateral Regulation constraint is present. This duality illuminates the fundamental bifurcation between self-organization (LALI → order) and chaos (ButterflyEffect → disorder) in complex systems." ;
+    m2:distinctionFromRelated [ ] ;
+    m2:dualCounterpart <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#LocalActivationLateralInhibition> ;
+    m2:eagleView [ ] ;
+    m2:emergentProperties [ ] ;
+    m2:epistemicGapAnalysis [ ] ;
+    m2:hasDominantM3 "m3:eagle_eye:Attractor",
+        "m3:eagle_eye:Dynamics",
+        "m3:eagle_eye:Flow",
+        "m3:eagle_eye:Information" ;
+    m2:hasEpistemicGap 8.5e-01 ;
+    m2:hasPolarity "dual" ;
+    m2:hasTensorFormula "⊗⇒(Amplification, Trajectory) | trajectoryShape=Chaotic ∧ λ > 0" ;
+    m2:hasTensorFormulaASCII "(x)=>(Amplification, Trajectory) | trajectoryShape=Chaotic AND lambda > 0" ;
+    m2:hasTensorFormulaTeX "\\otimes\\Rightarrow(\\text{Amplification}, \\text{Trajectory}) \\;|\\; \\text{trajectoryShape}=\\text{Chaotic} \\wedge \\lambda > 0" ;
+    m2:historicalNotes [ ] ;
+    m2:parentMetaconcepts <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Amplification>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Trajectory> ;
+    m2:perspective "territory" ;
+    m2:polaritySemantics [ ] ;
+    m2:sharedDimensions [ ] ;
+    m2:status "ACTIVE - New in v15.3.1" ;
+    m2:structuralConstraint [ ] ;
+    m2:transdisciplinaryValidation [ ] ;
+    m2:versionHistory [ ] ;
+    dcterms:created "2026-02-18" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "Binary MetaconceptCombo in which unconstrained local positive feedback (Amplification) is coupled with a chaotic system trajectory (Trajectory with trajectoryShape=Chaotic and Lyapunov exponent λ > 0), producing exponential divergence of initially nearby system trajectories and intrinsic long-term unpredictability. The essential structural property is the ABSENCE of a lateral Regulation constraint: amplification is unbounded in its range. Named after Lorenz (1963) sensitivity observation: a butterfly flapping its wings in Brazil could set off a tornado in Texas. The abstract pattern appears wherever unconstrained positive feedback operates within a nonlinear deterministic system. Structural dual of LALI: both share Amplification, but LALI adds lateral Regulation (range constraint) → order; ButterflyEffect lacks this constraint → chaos." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Homeostasis> a owl:Class ;
     rdfs:label "Homeostasis" ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Regulatory" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Structure" ;
@@ -1807,15 +1942,70 @@
     m2:hasExample "Body temperature regulation",
         "pH balance in cells" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "A⊗S⊗F" ;
+    m2:hasTensorFormula "A ⊗ S ⊗ F" ;
     m2:hasTensorFormulaASCII "A (x) S (x) F" ;
     m2:hasTensorFormulaTeX "A \\otimes S \\otimes F" ;
     m2:perspective "dual" ;
     m2:sphinxView [ ] ;
-    rdfs:comment "Self-regulation maintaining stable internal state despite external perturbations." .
+    rdfs:comment "Self-regulation maintaining stable internal state despite external perturbations." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Regulatory" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Step> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#LocalActivationLateralInhibition> a owl:Class ;
+    rdfs:label "LocalActivationLateralInhibition (LALI)" ;
+    m2:canonicalPoclet <m0:TuringMorphogenesis> ;
+    m2:couplingExplanation "Flow (F) is the shared dimension that physically instantiates the range asymmetry: F_A diffuses slowly (short range), F_R diffuses rapidly (long range). This asymmetry is the irreducible structural constraint that transforms Amplification+Regulation co-presence into a self-organizing pattern-forming system." ;
+    m2:discoveryContext "Identified during TSCG analysis of Turing morphogenesis (M0_TuringMorphogenesis poclet, 2026-02-18). Abstracted as transdisciplinary pattern after validation across 8 domains including 3 non-physical (Schelling segregation, industrial clusters, gentrification). Named after the core mechanism identified by Gierer & Meinhardt (1972) generalizing Turing's original formulation. Structural dual ButterflyEffect identified simultaneously via the question: 'Is LALI related to the Butterfly Effect?'" ;
+    m2:distinctionFromRelated [ ] ;
+    m2:dualCounterpart <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#ButterflyEffect> ;
+    m2:eagleView [ ] ;
+    m2:emergentProperties [ ] ;
+    m2:epistemicGapAnalysis [ ] ;
+    m2:hasDominantM3 "m3:eagle_eye:Attractor",
+        "m3:eagle_eye:Dynamics",
+        "m3:eagle_eye:Flow",
+        "m3:eagle_eye:Structure" ;
+    m2:hasEpistemicGap 2e-01 ;
+    m2:hasPolarity "dual" ;
+    m2:hasTensorFormula "⊗⇒(Amplification, Regulation) | range(F_A) << range(F_R)" ;
+    m2:hasTensorFormulaASCII "(x)=>(Amplification, Regulation) | range(F_A) << range(F_R)" ;
+    m2:hasTensorFormulaTeX "\\otimes\\Rightarrow(\\text{Amplification}, \\text{Regulation}) \\;|\\; \\|\\text{range}(F_A)\\| \\ll \\|\\text{range}(F_R)\\|" ;
+    m2:parentMetaconcepts <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Amplification>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Regulation> ;
+    m2:perspective "territory" ;
+    m2:polaritySemantics [ ] ;
+    m2:sharedDimensions [ ] ;
+    m2:status "ACTIVE - New in v15.3.1" ;
+    m2:structuralConstraint [ ] ;
+    m2:transdisciplinaryValidation [ ] ;
+    m2:versionHistory [ ] ;
+    dcterms:created "2026-02-18" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "Binary MetaconceptCombo in which a local self-reinforcing process (Amplification, short range) is structurally coupled to a longer-range inhibitory process (Regulation), producing stable periodic spatial or functional patterns from an initially homogeneous state. The essential and irreducible structural constraint is the range asymmetry: range(F_Amplification) << range(F_Regulation). Without this asymmetry the combination reduces to simple Amplification+Regulation co-presence without emergent pattern formation. LALI explains spontaneous symmetry breaking into ordered patterns across 8+ disciplines. First identified in Turing reaction-diffusion systems (1952); the abstract principle recognized as transdisciplinary. Structural dual counterpart: ButterflyEffect (Amplification without lateral Regulation constraint → chaos instead of order)." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Regulation> a owl:Class ;
+    rdfs:label "Regulation" ;
+    m2:eagleView [ ] ;
+    m2:hasAttribute [ ] ;
+    m2:hasDominantM3 "m3:eagle_eye:Attractor",
+        "m3:eagle_eye:Flow",
+        "m3:eagle_eye:Structure" ;
+    m2:hasEpistemicGap 3.5e-01 ;
+    m2:hasExample "Hormonal feedback loops",
+        "Traffic light systems" ;
+    m2:hasPolarity "neutral" ;
+    m2:hasTensorFormula "A ⊗ S ⊗ F" ;
+    m2:hasTensorFormulaASCII "A (x) S (x) F" ;
+    m2:hasTensorFormulaTeX "A \\otimes S \\otimes F" ;
+    m2:perspective "dual" ;
+    m2:sphinxView [ ] ;
+    rdfs:comment "Control mechanisms maintaining system parameters within acceptable ranges. Feedback polarity (Negative/Positive/Mixed) specified via feedback_polarity attribute." ;
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Regulatory" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Step> a owl:Class ;
     rdfs:label "Step" ;
     m2:containerProperty [ m2:containerTypes "m2:Behavior",
                 "m2:Workflow" ;
@@ -1824,7 +2014,6 @@
     m2:discoveryContext "Emerged from analysis of sequential systems (Butterfly lifecycle, Blood pressure control). Needed specialized Node type for temporal contexts that can trigger atomic Actions." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Structural" ;
     m2:hasDominantM3 "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure" ;
@@ -1834,7 +2023,7 @@
         "Learning epoch (triggers forward, backward, update actions)",
         "Recipe step 'make roux' (triggers heat, stir, add actions)" ;
     m2:hasPolarity "dual" ;
-    m2:hasTensorFormula "S⊗I⊗D" ;
+    m2:hasTensorFormula "S ⊗ I ⊗ D" ;
     m2:hasTensorFormulaASCII "S (x) I (x) D" ;
     m2:hasTensorFormulaTeX "S \\otimes I \\otimes D" ;
     m2:inheritedFrom "m2:Node" ;
@@ -1849,34 +2038,79 @@
     dcterms:created "2026-01-28" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
     rdfs:comment "Node specialized for sequential/temporal contexts. Elementary unit in Behavior or Workflow network. Extends Node by adding temporal/sequential semantics and capability to trigger Actions." ;
-    rdfs:subClassOf "m2:Node" .
+    rdfs:subClassOf "m2:MetaConcept",
+        "m2:Structural" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#System> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
-    rdfs:label "System" ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/docs/M2_MetaConcepts_README.md> dcterms:format "text/markdown" ;
+    dcterms:type "Documentation" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Amplification> a owl:Class ;
+    rdfs:label "Amplification (Amplification/Attenuation)" ;
+    m2:ashbyRelevance [ ] ;
+    m2:discoveryContext "Required for VSM modeling of variety management (S2 amplification, S3 attenuation). Emerges as fundamental dual operation for controlling flow magnitude. Observable in Territory (Ft → D → It: measurable flux, dynamics, information) AND representable in Map (R → O: symbolizable, observable stages). Essential prerequisite for M1_VSM concepts VarietyAmplification and VarietyAttenuation which combine with ValueSpace. Third hybrid metaconcept after Domain and ValueSpace." ;
+    m2:distinctionFromRelated [ ] ;
+    m2:dualAspects [ ] ;
     m2:eagleView [ ] ;
-    m2:hasCategory "m2:Ontological" ;
-    m2:hasDominantM3 "m3:eagle_eye:Flow",
-        "m3:eagle_eye:Structure" ;
-    m2:hasEpistemicGap 3e-01 ;
-    m2:hasExample "Computer system",
-        "Living cell",
-        "Solar system" ;
-    m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "S⊗F" ;
-    m2:hasTensorFormulaASCII "S (x) F" ;
-    m2:hasTensorFormulaTeX "S \\otimes F" ;
-    m2:perspective "territory" ;
-    rdfs:comment "Organized set of interacting components with defined boundary." .
+    m2:expression "G^{(-1)^p} · (Ft → D → It → R → O)" ;
+    m2:expressionASCII "G^((-1)^p) * (Ft -> D -> It -> R -> O)" ;
+    m2:expressionTeX "G^{(-1)^{p}} \\cdot (F_t \\to D \\to I_t \\to R \\to O)" ;
+    m2:fullName "Amplification (Attenuation)" ;
+    m2:hasAttribute [ ] ;
+    m2:hasDominantM3 "HYBRID: Ft → D → It from ASFID (Eagle Eye) + R → O from REVOI (Sphinx Eye)" ;
+    m2:hasEpistemicGap 2e-01 ;
+    m2:hasExample "Acoustics: Speaker/microphone / Soundproofing material",
+        "Biology: Enzymatic cascade → Competitive inhibition",
+        "Cybernetics: VSM S2 variety amplification / S3 variety attenuation",
+        "Economics: Credit expansion / Fiscal contraction",
+        "Electronics: Op-amp (amplification) / Resistor network (attenuation)",
+        "Immunology: Antibody production / Immune suppression",
+        "Optics: Lens magnification / Neutral density filter",
+        "Signal Processing: Gain stage / Low-pass filter" ;
+    m2:hasPolarity "hybrid" ;
+    m2:hasTensorFormula "→ see m2:expression and m2:poleMapping" ;
+    m2:hasTensorFormulaASCII "→ see m2:expressionASCII and m2:poleMapping" ;
+    m2:hasTensorFormulaTeX "→ see m2:expressionTeX and m2:poleMapping" ;
+    m2:hybridView [ ] ;
+    m2:mathematicalProperties [ ] ;
+    m2:perspective "hybrid" ;
+    m2:polarityDescription [ ] ;
+    m2:poleMapping [ ] ;
+    m2:shortName "Amplification" ;
+    m2:sphinxView [ ] ;
+    m2:transdisciplinaryValidation [ ] ;
+    dcterms:created "2026-01-31" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "Bidirectional process: increase (amplification) or decrease (attenuation) of signal, flow, quantity, or variety. Fundamental cybernetic operation for gain control and variety management. Characterized by measurable flux/dynamics/information (Territory) and representability/observability in models (Map). Direction (Amplifying/Attenuating/Unity) specified via direction attribute." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:GainPair",
+        "m2:MetaConcept",
+        "m2:MetaconceptPair" .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Trajectory> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Process> a owl:Class ;
+    rdfs:label "Process" ;
+    m2:eagleView [ ] ;
+    m2:hasAttribute [ ] ;
+    m2:hasDominantM3 "m3:eagle_eye:Dynamics",
+        "m3:eagle_eye:Flow" ;
+    m2:hasEpistemicGap 2e-01 ;
+    m2:hasExample "Manufacturing process",
+        "Metabolic pathway",
+        "Workflow" ;
+    m2:hasPolarity "neutral" ;
+    m2:hasTensorFormula "D ⊗ F" ;
+    m2:hasTensorFormulaASCII "D (x) F" ;
+    m2:hasTensorFormulaTeX "D \\otimes F" ;
+    m2:perspective "territory" ;
+    rdfs:comment "Sequence of state changes over time. Time discretization (Continuous/Discrete/Hybrid) specified via time_discretization attribute." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Trajectory> a owl:Class ;
     rdfs:label "Trajectory" ;
     m2:discoveryContext "Identified during RAAS analysis when distinguishing between biochemical pathway diagrams (Path on map) and actual blood pressure evolution over time (Trajectory in territory). Resolves Map-Territory confusion in Path metaconcept." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
     m2:hasAttribute [ ] ;
-    m2:hasCategory "m2:Dynamic" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow" ;
@@ -1889,78 +2123,14 @@
         "Population trajectory in Lotka-Volterra dynamics",
         "Projectile trajectory - observed ballistic motion" ;
     m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "A⊗D⊗F" ;
+    m2:hasTensorFormula "A ⊗ D ⊗ F" ;
     m2:hasTensorFormulaASCII "A (x) D (x) F" ;
     m2:hasTensorFormulaTeX "A \\otimes D \\otimes F" ;
     m2:perspective "territory" ;
     m2:transdisciplinaryValidation [ ] ;
     dcterms:created "2026-02-05" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Observable path through state space traced by system evolution over time. Empirical, measured evolution in territory - what actually happens. Distinguished from Path (planned route on conceptual map). Trajectory shape (linear, circular, spiral, etc.) can be specified via shape attribute." .
-
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/docs/M2_MetaConcepts_README.md> dcterms:format "text/markdown" ;
-    dcterms:type "Documentation" .
-
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Process> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
-    rdfs:label "Process" ;
-    m2:eagleView [ ] ;
-    m2:hasAttribute [ ] ;
-    m2:hasCategory "m2:Dynamic" ;
-    m2:hasDominantM3 "m3:eagle_eye:Dynamics",
-        "m3:eagle_eye:Flow" ;
-    m2:hasEpistemicGap 2e-01 ;
-    m2:hasExample "Manufacturing process",
-        "Metabolic pathway",
-        "Workflow" ;
-    m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "D⊗F" ;
-    m2:hasTensorFormulaASCII "D (x) F" ;
-    m2:hasTensorFormulaTeX "D \\otimes F" ;
-    m2:perspective "territory" ;
-    rdfs:comment "Sequence of state changes over time. Time discretization (Continuous/Discrete/Hybrid) specified via time_discretization attribute." .
-
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaconceptCombo> a owl:NamedIndividual,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> ;
-    rdfs:label "MetaconceptCombo (Synergistic Combination)" ;
-    m2:couplingRule [ ] ;
-    m2:discoveryContext "Emerged from VSM modeling requirement: VarietyAmplification and VarietyAttenuation each combine two existing M2 metaconcepts (ValueSpace + Amplification) into a new capability that neither parent provides alone. The pattern is general - any directed synergistic fusion of multiple metaconcepts follows the same structural rule (⊗ⁿ⇒). Formalized as M2 metaconcept to enable systematic instantiation in M1 domain extensions. Originally noted in TO_DO as M1 - corrected to M2 as the generic mechanism belongs at the universal pattern level, while domain-specific instances belong in M1. N-ary generalization (n ≥ 2) added 2026-02-06 to remove artificial binary restriction and enable ternary/higher-order combinations observed in complex adaptive systems." ;
-    m2:distinctionFromRelated [ ] ;
-    m2:formulaSemantics [ ] ;
-    m2:hasCategory "m2:Ontological" ;
-    m2:hasDominantM3 "m3:eagle_eye:Attractor",
-        "m3:eagle_eye:Information",
-        "m3:eagle_eye:Structure" ;
-    m2:hasEpistemicGap 4e-01 ;
-    m2:hasExample "AdaptiveRegulatedLearning (n=3, hypothetical) = MetaconceptCombo(Regulation, Adaptation, Memory) - feedback-controlled learning with historical context",
-        "CompositePattern (n=2, Software) = MetaconceptCombo(Modularity, Imbrication) - recursive component trees",
-        "EnzymeRegulationCascade (n=2, Biology) = MetaconceptCombo(Regulation, Amplification) - gain-controlled feedback loops",
-        "MonetaryPolicy (n=2, Economics) = MetaconceptCombo(ValueSpace, Amplification) - credit expansion within bounded value space",
-        "RecursiveViability (n=2, M1_VSM) = MetaconceptCombo(Imbrication, Autonomy) - each nested level maintains operational independence",
-        "ResilientModularEvolution (n=3, hypothetical) = MetaconceptCombo(Resilience, Modularity, Evolution) - fault-tolerant systems that adapt structure over time",
-        "VarietyAmplification (n=2, M1_VSM) = MetaconceptCombo(ValueSpace, Amplification) - amplifies variety while preserving epistemic accessibility (VSM S2)",
-        "VarietyAttenuation (n=2, M1_VSM) = MetaconceptCombo(ValueSpace, Amplification) - attenuates variety while maintaining verifiability (VSM S3)" ;
-    m2:hasPolarity "neutral" ;
-    m2:hasTensorFormula "⊗ᵢ₌₁ⁿ Mᵢ ⇒ M_result" ;
-    m2:hasTensorFormulaASCII "(x)_i=1^n M_i => M_result" ;
-    m2:hasTensorFormulaTeX "\\bigotimes_{i=1}^{n} M_i \\Rightarrow M_{result}" ;
-    m2:mathematicalNote [ ] ;
-    m2:nArityCoupling [ ] ;
-    m2:perspective "map" ;
-    m2:relationToCategoryTheoryMorphisms [ ] ;
-    m2:sphinxView [ ] ;
-    m2:transdisciplinaryValidation [ ] ;
-    m2:versionHistory [ ] ;
-    dcterms:created "2026-01-31" ;
-    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    dcterms:modified "2026-02-06" ;
-    rdfs:comment "Parameterized metaconcept produced by synergistic combination of N parent metaconcepts (N ≥ 2) via n-ary tensor assembly and emergence morphism (⊗ⁿ⇒). The result is a new metaconcept whose semantic identity cannot be reduced to any subset of parents - shared dimensions between parents create multi-way epistemic coupling rather than simple concatenation. First metaconcept in M2 whose tensor formula is structural (parameterized) rather than fixed. Most practical instances use N=2 or N=3 for tractability. Instances are domain-specific and belong to M1 extensions via functor_instantiation." .
-
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Category> a owl:Class ;
-    rdfs:label "Metaconcept Category" ;
-    rdfs:comment "A taxonomic grouping of metaconcepts based on dominant M3 dimensions and functional role in system behavior." .
-
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#MetaConcept> a owl:Class ;
-    rdfs:label "M2 Metaconcept" ;
-    rdfs:comment "A systemic pattern emerging from tensor product of M3 dimensions. Represents a recognizable organizational motif found across multiple domains." .
+    rdfs:comment "Observable path through state space traced by system evolution over time. Empirical, measured evolution in territory - what actually happens. Distinguished from Path (planned route on conceptual map). Trajectory shape (linear, circular, spiral, etc.) can be specified via shape attribute." ;
+    rdfs:subClassOf "m2:Dynamic",
+        "m2:MetaConcept" .
 
