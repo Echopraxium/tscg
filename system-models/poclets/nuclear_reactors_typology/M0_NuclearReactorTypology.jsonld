@@ -1,30 +1,35 @@
 {
   "@context": {
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclets.jsonld#",
-    "m1energy": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/energy/M1_EnergyGenerators.jsonld#",
-    "m1core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
-    "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
-    "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
+    "@base": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/",
+    "sm": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/",
+    "m0": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/nuclear_reactors_typology/M0_NuclearReactorTypology.jsonld#",
+    "m1energy": "M1_extensions/energy_generators/M1_EnergyGenerators.jsonld#",
+    "m1core": "M1_CoreConcepts.jsonld#",
+    "m2": "M2_MetaConcepts.jsonld#",
+    "m3eagle": "M3_EagleEye.jsonld#",
+    "m3sphinx": "M3_SphinxEye.jsonld#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "dcterms": "http://purl.org/dc/terms/",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "m3": "M3_GenesisSpace.jsonld#"
   },
   "@graph": [
     {
       "@id": "m0:NuclearReactorTypology",
-      "@type": ["owl:Ontology"],
+      "@type": [
+        "owl:Ontology"
+      ],
       "dcterms:title": "TSCG M0 Nuclear Reactor Typology Poclet",
       "dcterms:description": "Nine-pole classification of nuclear reactor types demonstrating enneagram-like multipolar structure. Validates TSCG framework through Processor metaconcept (dual bicephalous architecture), Polarity N=9, and Trade-offs between safety, performance, cost, and waste. Each reactor type is a distinct instantiation of Processor with specific Input/Output configurations, moderator/coolant choices, and neutron spectrum characteristics.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-10",
       "owl:versionInfo": "1.0.0",
       "owl:imports": [
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/energy/M1_EnergyGenerators.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld"
+        "M1_extensions/energy/M1_EnergyGenerators.jsonld",
+        "M1_CoreConcepts.jsonld",
+        "M2_MetaConcepts.jsonld"
       ],
       "m0:pocletMetadata": {
         "pocletType": "Industrial Energy System - Multipolar Taxonomy",
@@ -91,26 +96,31 @@
       },
       "m0:asfidScores": {
         "A": 0.95,
-        "S": 0.90,
-        "F": 0.90,
+        "S": 0.9,
+        "F": 0.9,
         "I": 0.85,
-        "D": 0.90,
-        "mean": 0.90
+        "D": 0.9,
+        "mean": 0.9
       },
       "m0:revoiScores": {
         "R": 0.95,
         "E": 0.85,
-        "V": 0.90,
-        "O": 0.90,
+        "V": 0.9,
+        "O": 0.9,
         "I": 0.85,
         "mean": 0.89
       },
-      "m0:epistemicGap": 0.01
+      "m0:epistemicGap": 0.01,
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      }
     },
-    
     {
       "@id": "m0:PWR_Reactor",
-      "@type": ["m1energy:NuclearReactor", "m2:Processor"],
+      "@type": [
+        "m1energy:NuclearReactor",
+        "m2:Processor"
+      ],
       "rdfs:label": "Pressurized Water Reactor (PWR/REP)",
       "rdfs:comment": "Le Précurseur rigoureux - Most common reactor type worldwide. Water moderated and cooled under high pressure (155 bar). Proven, safe, standardized design.",
       "m0:poleNumber": 1,
@@ -160,10 +170,12 @@
       "m0:historicalLineage": "Generation II/III/III+",
       "m0:geographicDeployment": "France (56), USA (65), China (30+), Russia (20+)"
     },
-    
     {
       "@id": "m0:BWR_Reactor",
-      "@type": ["m1energy:NuclearReactor", "m2:Processor"],
+      "@type": [
+        "m1energy:NuclearReactor",
+        "m2:Processor"
+      ],
       "rdfs:label": "Boiling Water Reactor (BWR/REB)",
       "rdfs:comment": "L'Économe efficace - Water boils directly in reactor core. Simpler design (fewer components) but radioactivity throughout steam system.",
       "m0:poleNumber": 2,
@@ -213,10 +225,12 @@
       "m0:historicalLineage": "Generation II/III",
       "m0:geographicDeployment": "Japan (20+), USA (32), Sweden/Finland (10)"
     },
-    
     {
       "@id": "m0:FNR_Reactor",
-      "@type": ["m1energy:NuclearReactor", "m2:Processor"],
+      "@type": [
+        "m1energy:NuclearReactor",
+        "m2:Processor"
+      ],
       "rdfs:label": "Fast Neutron Reactor (FNR/RNR)",
       "rdfs:comment": "L'Innovant performant - No moderator, fast neutrons. Breeder capability (produces more fuel than consumes). Long-term sustainability solution.",
       "m0:poleNumber": 3,
@@ -267,10 +281,12 @@
       "m0:historicalLineage": "Generation IV",
       "m0:geographicDeployment": "Russia (2 operational), India (PFBR under construction)"
     },
-    
     {
       "@id": "m0:PHWR_Reactor",
-      "@type": ["m1energy:NuclearReactor", "m2:Processor"],
+      "@type": [
+        "m1energy:NuclearReactor",
+        "m2:Processor"
+      ],
       "rdfs:label": "Pressurized Heavy Water Reactor (PHWR/CANDU)",
       "rdfs:comment": "Le Lourd robuste - Heavy water (D₂O) moderator. Uses natural uranium fuel. Energy independence (no enrichment needed).",
       "m0:poleNumber": 4,
@@ -321,10 +337,12 @@
       "m0:historicalLineage": "Generation II/III",
       "m0:geographicDeployment": "Canada (19), India (18), South Korea (4), China (2)"
     },
-    
     {
       "@id": "m0:RBMK_Reactor",
-      "@type": ["m1energy:NuclearReactor", "m2:Processor"],
+      "@type": [
+        "m1energy:NuclearReactor",
+        "m2:Processor"
+      ],
       "rdfs:label": "Graphite-Moderated Reactor (RBMK/UNGG/Magnox)",
       "rdfs:comment": "Le Graphité ancestral - Graphite moderator, gas or water cooled. Historical design. Online refueling possible (RBMK). Chernobyl legacy.",
       "m0:poleNumber": 5,
@@ -374,10 +392,12 @@
       "m0:historicalLineage": "Generation I (Magnox/UNGG) / Generation II (RBMK)",
       "m0:geographicDeployment": "Russia (10 RBMK remaining, to be phased out by 2034)"
     },
-    
     {
       "@id": "m0:HTR_Reactor",
-      "@type": ["m1energy:NuclearReactor", "m2:Processor"],
+      "@type": [
+        "m1energy:NuclearReactor",
+        "m2:Processor"
+      ],
       "rdfs:label": "High-Temperature Reactor (HTR/HTGR)",
       "rdfs:comment": "Le Sûr résilient - Graphite moderated, helium cooled. TRISO fuel particles (ultra-safe). Passive safety, high efficiency (850-950°C).",
       "m0:poleNumber": 6,
@@ -428,10 +448,12 @@
       "m0:historicalLineage": "Generation IV",
       "m0:geographicDeployment": "China (HTR-PM operational), Japan (HTTR research)"
     },
-    
     {
       "@id": "m0:SMR_Reactor",
-      "@type": ["m1energy:NuclearReactor", "m2:Processor"],
+      "@type": [
+        "m1energy:NuclearReactor",
+        "m2:Processor"
+      ],
       "rdfs:label": "Small Modular Reactor (SMR)",
       "rdfs:comment": "Le Compact mobile - Small power (10-300 MWe). Factory-built modules. Flexibility, decarbonization, off-grid deployment.",
       "m0:poleNumber": 7,
@@ -482,10 +504,12 @@
       "m0:historicalLineage": "Generation III+/IV",
       "m0:geographicDeployment": "Under development (USA, UK, Canada, Argentina, China)"
     },
-    
     {
       "@id": "m0:MSR_Reactor",
-      "@type": ["m1energy:NuclearReactor", "m2:Processor"],
+      "@type": [
+        "m1energy:NuclearReactor",
+        "m2:Processor"
+      ],
       "rdfs:label": "Molten Salt Reactor (MSR)",
       "rdfs:comment": "Le Visionnaire radical - Fuel dissolved in liquid fluoride salt. Passive drainage safety. High temperature. Waste incineration potential.",
       "m0:poleNumber": 8,
@@ -536,10 +560,12 @@
       "m0:historicalLineage": "Generation IV",
       "m0:geographicDeployment": "Under development (China, USA, Europe)"
     },
-    
     {
       "@id": "m0:AGR_Reactor",
-      "@type": ["m1energy:NuclearReactor", "m2:Processor"],
+      "@type": [
+        "m1energy:NuclearReactor",
+        "m2:Processor"
+      ],
       "rdfs:label": "Advanced Gas-Cooled Reactor (AGR)",
       "rdfs:comment": "Le Fiable éprouvé - Graphite moderated, CO₂ cooled. Good thermal efficiency, robust design. UK heritage (operational since 1976).",
       "m0:poleNumber": 9,
@@ -589,7 +615,6 @@
       "m0:historicalLineage": "Generation II",
       "m0:geographicDeployment": "UK only (6 AGR stations, all decommissioning by 2030)"
     },
-    
     {
       "@id": "m0:ReactorTypology_Relationships",
       "@type": "owl:NamedIndividual",
@@ -647,28 +672,73 @@
       ],
       "m0:tradeOffAxes": {
         "Safety_vs_Performance": {
-          "high_safety": ["HTR (6)", "SMR (7)", "MSR (8)"],
-          "high_performance": ["FNR (3)", "RBMK (5)"],
-          "balanced": ["PWR (1)", "BWR (2)", "AGR (9)"]
+          "high_safety": [
+            "HTR (6)",
+            "SMR (7)",
+            "MSR (8)"
+          ],
+          "high_performance": [
+            "FNR (3)",
+            "RBMK (5)"
+          ],
+          "balanced": [
+            "PWR (1)",
+            "BWR (2)",
+            "AGR (9)"
+          ]
         },
         "Simplicity_vs_Efficiency": {
-          "simple": ["BWR (2)", "PHWR (4)"],
-          "complex_efficient": ["FNR (3)", "MSR (8)", "HTR (6)"],
-          "moderate": ["PWR (1)", "AGR (9)"]
+          "simple": [
+            "BWR (2)",
+            "PHWR (4)"
+          ],
+          "complex_efficient": [
+            "FNR (3)",
+            "MSR (8)",
+            "HTR (6)"
+          ],
+          "moderate": [
+            "PWR (1)",
+            "AGR (9)"
+          ]
         },
         "Proven_vs_Innovative": {
-          "proven": ["PWR (1)", "BWR (2)", "PHWR (4)", "AGR (9)"],
-          "transitional": ["RBMK (5) - obsolete", "SMR (7) - emerging"],
-          "innovative": ["FNR (3)", "HTR (6)", "MSR (8)"]
+          "proven": [
+            "PWR (1)",
+            "BWR (2)",
+            "PHWR (4)",
+            "AGR (9)"
+          ],
+          "transitional": [
+            "RBMK (5) - obsolete",
+            "SMR (7) - emerging"
+          ],
+          "innovative": [
+            "FNR (3)",
+            "HTR (6)",
+            "MSR (8)"
+          ]
         },
         "Cost_vs_Sustainability": {
-          "low_cost": ["PWR (1)", "BWR (2)"],
-          "high_sustainability": ["FNR (3)", "MSR (8)", "HTR (6)"],
-          "balanced": ["PHWR (4)", "SMR (7)"]
+          "low_cost": [
+            "PWR (1)",
+            "BWR (2)"
+          ],
+          "high_sustainability": [
+            "FNR (3)",
+            "MSR (8)",
+            "HTR (6)"
+          ],
+          "balanced": [
+            "PHWR (4)",
+            "SMR (7)"
+          ]
         }
+      },
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
       }
     },
-    
     {
       "@id": "m0:Poclet_Summary",
       "@type": "owl:NamedIndividual",
@@ -724,7 +794,10 @@
         "Fusion reactors (ITER, tokamak, stellarator)",
         "Energy storage systems (batteries, pumped hydro, thermal)",
         "Hybrid systems (cogeneration, integrated energy)"
-      ]
+      ],
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      }
     }
   ]
 }

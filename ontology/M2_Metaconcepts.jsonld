@@ -17,8 +17,8 @@
       "dcterms:description": "Second layer of the TSCG framework. Defines 69 systemic patterns emerging from tensor products of M3 ASFID dimensions. Introduces N-ary polarity framework and hybrid tensor products (ASFID → REVOI) for Domain, ValueSpace, Amplification, Identity, Pattern, Constraint, Capacity, and Scope metaconcepts. Adds LocalActivationLateralInhibition (LALI) and ButterflyEffect as structural dual MetaconceptCombos emerging from Turing morphogenesis analysis.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
-      "dcterms:modified": "2026-02-18",
-      "owl:versionInfo": "15.3.2",
+      "dcterms:modified": "2026-02-19",
+      "owl:versionInfo": "15.3.8",
       "owl:imports": [
         "M3_GenesisSpace.jsonld"
       ],
@@ -215,6 +215,30 @@
         "v15_3_2": {
           "date": "2026-02-18",
           "description": "Refactoring: (1) Renamed OWL class m2:Category → m2:MetaconceptFamily to avoid semantic confusion with mathematical Category Theory. All family individual @type references updated. (2) Renamed property m2:hasCategory → m2:hasFamily (79 occurrences). (3) Added spaces around ⊗ operator in all tensor formulas for readability (e.g., \"A⊗S⊗F\" → \"A ⊗ S ⊗ F\"). TeX and ASCII formula fields unchanged."
+        },
+        "v15_3_3": {
+          "date": "2026-02-18",
+          "description": "Added MetaconceptPair class hierarchy: MetaconceptPair (abstract) → DimensionPair (A^p operator) | SignPair ((-1)^p operator) | StructuralPair (direction or cardinality reversal). Classified and patched 7 genuine MetaconceptPairs: Composition (DimensionPair), Convergence/Activation/Synergy/FeedbackLoop (SignPair), Fusion/Coding (StructuralPair). Added m2:expression and m2:poleMapping to each pair. Pattern, Identity, Imbrication: remain dual but NOT MetaconceptPair (aspects, not opposite poles). LALI/ButterflyEffect: remain m2:dualCounterpart only (different parents, per design decision)."
+        },
+        "v15_3_4": {
+          "date": "2026-02-18",
+          "description": "Cleanup: for all parametric MetaconceptPairs (DimensionPair + SignPair), m2:hasTensorFormula / TeX / ASCII replaced by \"→ see m2:expression and m2:poleMapping\" to eliminate redundancy and avoid confusion between old concatenated notation and new parametric notation. StructuralPairs (Fusion, Coding) unchanged — they have no m2:expression."
+        },
+        "v15_3_5": {
+          "date": "2026-02-18",
+          "description": "Added m2:expressionASCII to all DimensionPair and SignPair entries. Corrected hasTensorFormula/TeX/ASCII redirect strings to reference their specific counterpart field: hasTensorFormula → m2:expression, hasTensorFormulaTeX → m2:expressionTeX, hasTensorFormulaASCII → m2:expressionASCII."
+        },
+        "v15_3_6": {
+          "date": "2026-02-18",
+          "description": "Added m2:GainPair class (subClassOf m2:MetaconceptPair): parametric operator G^{(-1)^p} with G>1. Distinct from SignPair (sign reversal) because gain is always positive and the inverse is reciprocal (1/G), not negation. Classified m2:Amplification as GainPair: p=0 → Amplification (G>1), p=1 → Attenuation (1/G<1), neutral G=1. Total MetaconceptPairs: 8 (1 DimensionPair, 4 SignPairs, 1 GainPair, 2 StructuralPairs)."
+        },
+        "v15_3_7": {
+          "date": "2026-02-19",
+          "description": "Major architectural migration: all owl:NamedIndividual metaconcepts converted to owl:Class with rdfs:subClassOf. MetaconceptFamily instances (m2:Dynamic, m2:Structural, etc.) now owl:Class subClassOf m2:MetaconceptFamily. Metaconcepts now owl:Class with rdfs:subClassOf = [m2:MetaConcept, family, pair_types...]. m2:hasFamily property assertions removed (superseded by rdfs:subClassOf). Full class hierarchy now visible in Protégé class tree."
+        },
+        "v15_3_8": {
+          "date": "2026-02-19",
+          "description": "Fixed all M1 extension paths: added correct subdirectory prefixes (M1_extensions/biology/, chemistry/, energy_generators/, mythology/, optics/, photography/). Renamed all M1_Engineering references to M1_EnergyGenerators (correct name as defined during NuclearReactorTypology poclet analysis)."
         }
       },
       "m2:bicephalousStrategy": {
@@ -253,6 +277,61 @@
       "@type": "owl:Class",
       "rdfs:label": "Metaconcept Family",
       "rdfs:comment": "A family grouping of metaconcepts based on dominant M3 dimensions and functional role in system behavior. Renamed from Category to MetaconceptFamily to avoid confusion with Category Theory (mathematical category theory)."
+    },
+    {
+      "@id": "m2:MetaconceptPair",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:MetaConcept",
+      "rdfs:label": "Metaconcept Pair",
+      "rdfs:comment": "A metaconcept whose semantics are constituted by two named, structurally opposed poles sharing the same base tensor formula. The two poles are related by a parametric operator (p ∈ {0,1}) or by a structural reversal (direction, cardinality). Subclasses: DimensionPair (dimension present/absent via A^p), SignPair (sign reversal via (-1)^p), StructuralPair (direction or cardinality reversal). Distinct from m2:dualCounterpart which links two DIFFERENT metaconcepts (e.g. LALI ↔ ButterflyEffect sharing a parent but with different structures).",
+      "rdfs:seeAlso": "m2:DimensionPair, m2:SignPair, m2:StructuralPair",
+      "dcterms:created": "2026-02-18",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m2:DimensionPair",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:MetaconceptPair",
+      "rdfs:label": "Dimension Pair",
+      "rdfs:comment": "A MetaconceptPair where the two poles differ by the PRESENCE or ABSENCE of one ASFID dimension, formalized as A^p (p=1: dimension present; p=0: A⁰=1, neutral tensor element, dimension absent). The pole with p=1 has strictly more expressive power than the pole with p=0. Example: Composition (S ⊗ I ⊗ A^p): p=1 → Composition (emergent property A present), p=0 → Decomposition (A dissolved, only S ⊗ I remains).",
+      "m2:parametricOperator": "A^{p}, p ∈ {0,1}",
+      "m2:convention": "p=1: dimension present (richer pole); p=0: dimension absent (A⁰=1 neutral)",
+      "dcterms:created": "2026-02-18",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m2:SignPair",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:MetaconceptPair",
+      "rdfs:label": "Sign Pair",
+      "rdfs:comment": "A MetaconceptPair where the two poles differ by a SIGN REVERSAL on the base formula, formalized as (-1)^p · F(ASFID) where F is the shared base formula. p=0 → positive pole (enabling, amplifying, constructive); p=1 → negative pole (inhibiting, attenuating, destructive). Examples: Activation/Inhibition = (-1)^p (A ⊗ D); Convergence/Divergence = (-1)^p ∇·D; Synergy+/Synergy− = (-1)^p (I ⊗ D).",
+      "m2:parametricOperator": "(-1)^{p}, p ∈ {0,1}",
+      "m2:convention": "p=0: positive pole (enabling/amplifying); p=1: negative pole (inhibiting/attenuating)",
+      "dcterms:created": "2026-02-18",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m2:GainPair",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:MetaconceptPair",
+      "rdfs:label": "Gain Pair",
+      "rdfs:comment": "A MetaconceptPair where the two poles differ by a GAIN INVERSION: the base formula is scaled by G^{(-1)^p} where G > 1. p=0 → G^1 = G > 1 (amplification, gain pole); p=1 → G^{-1} = 1/G < 1 (attenuation, reduction pole). Distinct from SignPair ((-1)^p prefix — sign reversal) because: (1) gain G is always strictly positive (no negative gain); (2) the two poles are not sign-symmetric — Attenuation is not the 'opposite' of Amplification in the additive sense but its reciprocal. The neutral element is G=1 (unity gain), not G=0. Example: Amplification/Attenuation = G^{(-1)^p} · (Ft → D → It → R → O).",
+      "m2:parametricOperator": "G^{(-1)^p}, G > 1, p ∈ {0,1}",
+      "m2:convention": "p=0: amplification pole (G > 1); p=1: attenuation pole (G^{-1} = 1/G < 1)",
+      "m2:neutralElement": "G = 1 (unity gain — neither amplification nor attenuation)",
+      "m2:distinctionFromSignPair": "SignPair uses (-1)^p as a prefix multiplier → sign reversal (positive/negative). GainPair uses G^{(-1)^p} as a scalar multiplier → gain inversion (amplify/attenuate). GainPair values are always positive; SignPair values change sign.",
+      "dcterms:created": "2026-02-18",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m2:StructuralPair",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:MetaconceptPair",
+      "rdfs:label": "Structural Pair",
+      "rdfs:comment": "A MetaconceptPair where the two poles differ by a STRUCTURAL REVERSAL that cannot be reduced to a scalar parametric operator (dimension presence or sign). Two subtypes: (1) Direction reversal: same dimensions, opposite flow direction (e.g. Encoding I_src→I_coded vs Decoding I_coded→I_src). (2) Cardinality reversal: N:1 vs 1:N structural aggregation (e.g. Fusion {S₁⊗...⊗Sₙ}→S vs Fission S→{S₁⊗...⊗Sₙ}). In both cases m2:expression is replaced by explicit m2:poleMapping with pole1/pole2 formulas.",
+      "m2:parametricOperator": "None (structural reversal: direction or cardinality)",
+      "dcterms:created": "2026-02-18",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
     {
       "@id": "m2:hasFamily",
@@ -329,103 +408,81 @@
     },
     {
       "@id": "m2:Structural",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaconceptFamily"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Structural Family",
       "rdfs:comment": "Topology, organization, spatial arrangement. High S, low D.",
-      "m2:metaconceptCount": 12
+      "m2:metaconceptCount": 12,
+      "rdfs:subClassOf": "m2:MetaconceptFamily"
     },
     {
       "@id": "m2:Dynamic",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaconceptFamily"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Dynamic Family",
       "rdfs:comment": "Processes, transformations, temporal evolution. High D.",
-      "m2:metaconceptCount": 8
+      "m2:metaconceptCount": 8,
+      "rdfs:subClassOf": "m2:MetaconceptFamily"
     },
     {
       "@id": "m2:Regulatory",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaconceptFamily"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Regulatory Family",
       "rdfs:comment": "Control, stabilization, constraint. High A, tensor couplings.",
-      "m2:metaconceptCount": 7
+      "m2:metaconceptCount": 7,
+      "rdfs:subClassOf": "m2:MetaconceptFamily"
     },
     {
       "@id": "m2:Adaptive",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaconceptFamily"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Adaptive Family",
       "rdfs:comment": "Learning, evolution, environmental response. High I, medium F.",
-      "m2:metaconceptCount": 4
+      "m2:metaconceptCount": 4,
+      "rdfs:subClassOf": "m2:MetaconceptFamily"
     },
     {
       "@id": "m2:Energetic",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaconceptFamily"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Energetic Family",
       "rdfs:comment": "Energy, matter, information flows. High F, high D.",
-      "m2:metaconceptCount": 2
+      "m2:metaconceptCount": 2,
+      "rdfs:subClassOf": "m2:MetaconceptFamily"
     },
     {
       "@id": "m2:Informational",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaconceptFamily"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Informational Family",
       "rdfs:comment": "Data, representation, communication. High I.",
-      "m2:metaconceptCount": 6
+      "m2:metaconceptCount": 6,
+      "rdfs:subClassOf": "m2:MetaconceptFamily"
     },
     {
       "@id": "m2:Ontological",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaconceptFamily"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Ontological Family",
       "rdfs:comment": "Fundamental system entities and boundaries. S → F patterns.",
-      "m2:metaconceptCount": 8
+      "m2:metaconceptCount": 8,
+      "rdfs:subClassOf": "m2:MetaconceptFamily"
     },
     {
       "@id": "m2:Teleonomic",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaconceptFamily"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Teleonomic Family",
       "rdfs:comment": "Goal-directedness, purpose, optimization. High A.",
-      "m2:metaconceptCount": 1
+      "m2:metaconceptCount": 1,
+      "rdfs:subClassOf": "m2:MetaconceptFamily"
     },
     {
       "@id": "m2:Relational",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaconceptFamily"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Relational Family",
       "rdfs:comment": "Interactions between entities and roles. S → I patterns.",
-      "m2:metaconceptCount": 5
+      "m2:metaconceptCount": 5,
+      "rdfs:subClassOf": "m2:MetaconceptFamily"
     },
     {
       "@id": "m2:Homeostasis",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Homeostasis",
       "rdfs:comment": "Self-regulation maintaining stable internal state despite external perturbations.",
-      "m2:hasFamily": "m2:Regulatory",
       "m2:hasTensorFormula": "A ⊗ S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
@@ -460,17 +517,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "A \\otimes S \\otimes F",
-      "m2:hasTensorFormulaASCII": "A (x) S (x) F"
+      "m2:hasTensorFormulaASCII": "A (x) S (x) F",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Regulatory"
+      ]
     },
     {
       "@id": "m2:Resilience",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Resilience",
       "rdfs:comment": "Capacity to absorb disturbances while retaining fundamental structure and function.",
-      "m2:hasFamily": "m2:Adaptive",
       "m2:hasTensorFormula": "A ⊗ S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
@@ -490,17 +547,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "A \\otimes S",
-      "m2:hasTensorFormulaASCII": "A (x) S"
+      "m2:hasTensorFormulaASCII": "A (x) S",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Adaptive"
+      ]
     },
     {
       "@id": "m2:Adaptation",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Adaptation",
       "rdfs:comment": "Progressive modification of structure or behavior in response to environmental changes.",
-      "m2:hasFamily": "m2:Adaptive",
       "m2:hasTensorFormula": "I ⊗ F ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
@@ -521,17 +578,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "I \\otimes F \\otimes D",
-      "m2:hasTensorFormulaASCII": "I (x) F (x) D"
+      "m2:hasTensorFormulaASCII": "I (x) F (x) D",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Adaptive"
+      ]
     },
     {
       "@id": "m2:Emergence",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Emergence",
       "rdfs:comment": "Appearance of novel properties at system level not predictable from components alone.",
-      "m2:hasFamily": "m2:Adaptive",
       "m2:hasTensorFormula": "I ⊗ S ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
@@ -552,17 +609,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "I \\otimes S \\otimes D",
-      "m2:hasTensorFormulaASCII": "I (x) S (x) D"
+      "m2:hasTensorFormulaASCII": "I (x) S (x) D",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Adaptive"
+      ]
     },
     {
       "@id": "m2:Dissipation",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Dissipation",
       "rdfs:comment": "Irreversible energy degradation and entropy production.",
-      "m2:hasFamily": "m2:Energetic",
       "m2:hasTensorFormula": "F ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
@@ -582,17 +639,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "F \\otimes D",
-      "m2:hasTensorFormulaASCII": "F (x) D"
+      "m2:hasTensorFormulaASCII": "F (x) D",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Energetic"
+      ]
     },
     {
       "@id": "m2:Regulation",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Regulation",
       "rdfs:comment": "Control mechanisms maintaining system parameters within acceptable ranges. Feedback polarity (Negative/Positive/Mixed) specified via feedback_polarity attribute.",
-      "m2:hasFamily": "m2:Regulatory",
       "m2:hasTensorFormula": "A ⊗ S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
@@ -805,44 +862,47 @@
           "m2:default": "Proportional",
           "m2:usageGuidelines": "PID is the industrial standard for most applications. Use Bang-bang for simple on/off systems (HVAC). Use Adaptive/MPC for complex or time-varying systems. RAAS uses biological equivalent of negative feedback (closest to Proportional)."
         }
-      }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Regulatory"
+      ]
     },
-	{
-	  "@id": "m2:Memory",
-	  "@type": ["owl:NamedIndividual", "m2:MetaConcept"],
-	  "rdfs:label": "Memory",
-	  "rdfs:comment": "Retention of past states influencing current behavior through temporal integration.",
-	  "m2:hasFamily": "m2:Adaptive",
-	  "m2:hasTensorFormula": "∫(D−F)dτ",
-	  "m2:hasTensorFormulaTeX": "\\int (D - F)\\,d\\tau",
-	  "m2:hasTensorFormulaASCII": "integral(D - F, dtau)",
-	  "m2:hasDominantM3": [
-		"m3:eagle_eye:Dynamics",
-		"m3:eagle_eye:Flow"
-	  ],
-	  "m2:hasEpistemicGap": 0.3,
-	  "m2:hasPolarity": "neutral",
-	  "m2:hasExample": [
-		"Neural synaptic weights",
-		"Material hysteresis"
-	  ],
-	  "m2:perspective": "territory",
-	  "m2:eagleView": {
-		"basis": "ASFID",
-		"formula": "∫(D − F)dτ",
-		"role": "Measure observable phenomenon",
-		"status": "IMMUTABLE"
-	  }
-	},	
+    {
+      "@id": "m2:Memory",
+      "@type": "owl:Class",
+      "rdfs:label": "Memory",
+      "rdfs:comment": "Retention of past states influencing current behavior through temporal integration.",
+      "m2:hasTensorFormula": "∫(D−F)dτ",
+      "m2:hasTensorFormulaTeX": "\\int (D - F)\\,d\\tau",
+      "m2:hasTensorFormulaASCII": "integral(D - F, dtau)",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Dynamics",
+        "m3:eagle_eye:Flow"
+      ],
+      "m2:hasEpistemicGap": 0.3,
+      "m2:hasPolarity": "neutral",
+      "m2:hasExample": [
+        "Neural synaptic weights",
+        "Material hysteresis"
+      ],
+      "m2:perspective": "territory",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "∫(D − F)dτ",
+        "role": "Measure observable phenomenon",
+        "status": "IMMUTABLE"
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Adaptive"
+      ]
+    },
     {
       "@id": "m2:Constraint",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Constraint",
       "rdfs:comment": "Restriction on possible system states or trajectories, limiting degrees of freedom.",
-      "m2:hasFamily": "m2:Regulatory",
       "m2:hasTensorFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -862,17 +922,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I",
-      "m2:hasTensorFormulaASCII": "S (x) I"
+      "m2:hasTensorFormulaASCII": "S (x) I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Regulatory"
+      ]
     },
     {
       "@id": "m2:Scope",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Scope",
       "rdfs:comment": "Domain of validity or applicability where an entity, rule, or authority has effect. Defines a positive boundary of what is permitted or possible, in contrast to Constraint (which defines what is prohibited). Fundamental to autonomy, jurisdiction, and authorization concepts across multiple domains.",
-      "m2:hasFamily": "m2:Regulatory",
       "m2:hasTensorFormula": "S → I → A → R",
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes A \\otimes R",
       "m2:hasTensorFormulaASCII": "S (x) I (x) A (x) R",
@@ -935,17 +995,17 @@
       },
       "dcterms:created": "2026-02-03",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m2:discoveryContext": "Identified during VSM M0 modeling refinement. Required to properly model Autonomy as MetaconceptCombo(Agent, Scope) where Agent provides action capability and Scope provides bounded domain of authority. Fills semantic gap between Constraint (prohibition) and Domain (entire field). Essential for authorization, delegation, and jurisdictional concepts."
+      "m2:discoveryContext": "Identified during VSM M0 modeling refinement. Required to properly model Autonomy as MetaconceptCombo(Agent, Scope) where Agent provides action capability and Scope provides bounded domain of authority. Fills semantic gap between Constraint (prohibition) and Domain (entire field). Essential for authorization, delegation, and jurisdictional concepts.",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Regulatory"
+      ]
     },
     {
       "@id": "m2:Bifurcation",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Bifurcation",
       "rdfs:comment": "Qualitative change in system behavior at critical parameter threshold.",
-      "m2:hasFamily": "m2:Dynamic",
       "m2:hasTensorFormula": "∂D/∂F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
@@ -1097,17 +1157,17 @@
           "m2:usageGuidelines": "Saddle-node for catastrophic transitions (tipping points). Hopf for oscillation onset (RAAS pathological oscillations would be Hopf). Pitchfork for symmetry-breaking. Period-doubling for route to chaos.",
           "m2:mathematicalContext": "Bifurcation theory studies how dynamical system structure changes as parameters vary. Codimension indicates number of parameters needed to observe bifurcation generically."
         }
-      }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic"
+      ]
     },
     {
       "@id": "m2:Hierarchy",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Hierarchy",
       "rdfs:comment": "Nested levels of organization with vertical control relations.",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -1141,17 +1201,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "S \\otimes A",
-      "m2:hasTensorFormulaASCII": "S (x) A"
+      "m2:hasTensorFormulaASCII": "S (x) A",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Network",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Network",
       "rdfs:comment": "Set of nodes connected by edges enabling distributed interactions.",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ I ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -1367,17 +1427,17 @@
             "modularity": "Q = strength of division into modules"
           }
         }
-      }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Symmetry",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Symmetry",
       "rdfs:comment": "Invariance under transformation.",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure"
@@ -1554,17 +1614,17 @@
           "m2:noether_theorem": "Continuous symmetries → conservation laws (Noether). Translation→momentum, Rotation→angular momentum, Time→energy, Gauge→charge.",
           "m2:spontaneous_breaking": "System Lagrangian has symmetry, but ground state doesn't (Higgs mechanism, ferromagnetism)"
         }
-      }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Modularity",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Modularity",
       "rdfs:comment": "Decomposition into semi-independent functional units.",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -1598,17 +1658,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I",
-      "m2:hasTensorFormulaASCII": "S (x) I"
+      "m2:hasTensorFormulaASCII": "S (x) I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Topology",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Topology",
       "rdfs:comment": "Classification of structural properties preserved under continuous deformations: connectivity, compactness, genus. Captures the TYPE or CLASS of structure independent of metric, enabling structural pattern recognition across domains.",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -1638,17 +1698,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I",
-      "m2:hasTensorFormulaASCII": "S (x) I"
+      "m2:hasTensorFormulaASCII": "S (x) I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Segmentation",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Segmentation",
       "rdfs:comment": "Partition of a whole into homogeneous segments according to similarity, continuity, or structural criteria. Analytical decomposition producing distinct but exhaustive regions (vs functional decomposition in Modularity).",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ I ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -1678,17 +1738,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes D",
-      "m2:hasTensorFormulaASCII": "S (x) I (x) D"
+      "m2:hasTensorFormulaASCII": "S (x) I (x) D",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Transformation",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Transformation",
       "rdfs:comment": "Fundamental change in system state, structure, or identity.",
-      "m2:hasFamily": "m2:Dynamic",
       "m2:hasTensorFormula": "D ⊗ S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
@@ -1709,17 +1769,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "D \\otimes S \\otimes I",
-      "m2:hasTensorFormulaASCII": "D (x) S (x) I"
+      "m2:hasTensorFormulaASCII": "D (x) S (x) I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic"
+      ]
     },
     {
       "@id": "m2:Code",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Code",
       "rdfs:comment": "System of rules for systematic transformation between domains.",
-      "m2:hasFamily": "m2:Informational",
       "m2:hasTensorFormula": "I ⊗ S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
@@ -1753,17 +1813,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "I \\otimes S",
-      "m2:hasTensorFormulaASCII": "I (x) S"
+      "m2:hasTensorFormulaASCII": "I (x) S",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Informational"
+      ]
     },
     {
       "@id": "m2:Coding",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Coding (Encoding/Decoding)",
       "rdfs:comment": "Bidirectional transformation between information and coded representation.",
-      "m2:hasFamily": "m2:Informational",
       "m2:hasTensorFormula": "I ⊗ S ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
@@ -1773,7 +1833,7 @@
       "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Coding",
-      "m2:fullName": "Encoding/Decoding",
+      "m2:fullName": "Coding (Encoding / Decoding)",
       "m2:dualAspects": {
         "compositionAspect": {
           "name": "Encoding",
@@ -1812,17 +1872,33 @@
         }
       },
       "m2:hasTensorFormulaTeX": "I \\otimes S \\otimes D",
-      "m2:hasTensorFormulaASCII": "I (x) S (x) D"
+      "m2:hasTensorFormulaASCII": "I (x) S (x) D",
+      "m2:expression": null,
+      "m2:pairType": "DirectionReversal",
+      "m2:poleMapping": {
+        "pole1": {
+          "name": "Encoding",
+          "formula": "I_source → I_coded",
+          "semantics": "Source information transformed into coded representation (S ⊗ D applied forward)"
+        },
+        "pole2": {
+          "name": "Decoding",
+          "formula": "I_coded → I_source",
+          "semantics": "Coded representation restored to source information (S ⊗ D applied in reverse)"
+        }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Informational",
+        "m2:MetaconceptPair",
+        "m2:StructuralPair"
+      ]
     },
     {
       "@id": "m2:Representation",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Representation",
       "rdfs:comment": "Mapping between domains preserving structural relationships.",
-      "m2:hasFamily": "m2:Informational",
       "m2:hasTensorFormula": "I ⊗ S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
@@ -1851,17 +1927,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "I \\otimes S",
-      "m2:hasTensorFormulaASCII": "I (x) S"
+      "m2:hasTensorFormulaASCII": "I (x) S",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Informational"
+      ]
     },
     {
       "@id": "m2:Language",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Language",
       "rdfs:comment": "Structured system for information exchange and meaning construction.",
-      "m2:hasFamily": "m2:Informational",
       "m2:hasTensorFormula": "I ⊗ S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
@@ -1891,17 +1967,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "I \\otimes S \\otimes F",
-      "m2:hasTensorFormulaASCII": "I (x) S (x) F"
+      "m2:hasTensorFormulaASCII": "I (x) S (x) F",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Informational"
+      ]
     },
     {
       "@id": "m2:Pattern",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Pattern (Recognition / Reuse)",
       "rdfs:comment": "Recurring structural motif identifiable across instances and reusable as a template. Exists as an observable regularity in Territory (Eagle Eye) and as a reusable archetype in Map (Sphinx Eye). The key discriminator vs related concepts is the combination of recurrence (vs Signature) and cross-domain reusability (vs Representation).",
-      "m2:hasFamily": "m2:Informational",
       "m2:hasTensorFormula": "S → I → A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -1973,17 +2049,17 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified as missing metaconcept during TO_DO review. Pattern occupies a unique niche: it bridges observation (Territory) and reuse (Map) through structural recurrence. No existing metaconcept captured both the recurring regularity aspect and the cross-domain template reusability in a single concept.",
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes A",
-      "m2:hasTensorFormulaASCII": "S (x) I (x) A"
+      "m2:hasTensorFormulaASCII": "S (x) I (x) A",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Informational"
+      ]
     },
     {
       "@id": "m2:Process",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Process",
       "rdfs:comment": "Sequence of state changes over time. Time discretization (Continuous/Discrete/Hybrid) specified via time_discretization attribute.",
-      "m2:hasFamily": "m2:Dynamic",
       "m2:hasTensorFormula": "D ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
@@ -2119,17 +2195,17 @@
           "m2:physicalPrinciple": "2nd Law of Thermodynamics: Isolated systems evolve toward maximum entropy (irreversibility is fundamental to nature)",
           "m2:timeArrow": "Irreversibility provides arrow of time: we remember past, not future; aging occurs; heat flows hot→cold"
         }
-      }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic"
+      ]
     },
     {
       "@id": "m2:Trajectory",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Trajectory",
       "rdfs:comment": "Observable path through state space traced by system evolution over time. Empirical, measured evolution in territory - what actually happens. Distinguished from Path (planned route on conceptual map). Trajectory shape (linear, circular, spiral, etc.) can be specified via shape attribute.",
-      "m2:hasFamily": "m2:Dynamic",
       "m2:hasTensorFormula": "A ⊗ D ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
@@ -2280,17 +2356,17 @@
           "m2:default": "Linear",
           "m2:usageGuidelines": "Select based on observed or modeled state-space geometry. For RAAS blood pressure: Linear (convergence to setpoint). For oscillating system: Circular or Spiral. For stochastic system: Random."
         }
-      }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic"
+      ]
     },
     {
       "@id": "m2:Event",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Event",
       "rdfs:comment": "Discrete occurrence with temporal localization.",
-      "m2:hasFamily": "m2:Dynamic",
       "m2:hasTensorFormula": "D ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
@@ -2311,17 +2387,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "D \\otimes I",
-      "m2:hasTensorFormulaASCII": "D (x) I"
+      "m2:hasTensorFormulaASCII": "D (x) I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic"
+      ]
     },
     {
       "@id": "m2:Threshold",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Threshold",
       "rdfs:comment": "Critical value triggering qualitative change in system behavior.",
-      "m2:hasFamily": "m2:Regulatory",
       "m2:hasTensorFormula": "A ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
@@ -2452,17 +2528,17 @@
             "Stochastic": "Probabilistic, ensemble, intrinsic noise"
           }
         }
-      }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Regulatory"
+      ]
     },
     {
       "@id": "m2:Trigger",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Trigger",
       "rdfs:comment": "Initiating stimulus for process activation.",
-      "m2:hasFamily": "m2:Regulatory",
       "m2:hasTensorFormula": "D ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
@@ -2483,17 +2559,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "D \\otimes I",
-      "m2:hasTensorFormulaASCII": "D (x) I"
+      "m2:hasTensorFormulaASCII": "D (x) I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Regulatory"
+      ]
     },
     {
       "@id": "m2:System",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "System",
       "rdfs:comment": "Organized set of interacting components with defined boundary.",
-      "m2:hasFamily": "m2:Ontological",
       "m2:hasTensorFormula": "S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -2514,17 +2590,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "S \\otimes F",
-      "m2:hasTensorFormulaASCII": "S (x) F"
+      "m2:hasTensorFormulaASCII": "S (x) F",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Ontological"
+      ]
     },
     {
       "@id": "m2:Environment",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Environment",
       "rdfs:comment": "External context with which system exchanges matter, energy, information.",
-      "m2:hasFamily": "m2:Ontological",
       "m2:hasTensorFormula": "F ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
@@ -2545,17 +2621,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "F \\otimes I",
-      "m2:hasTensorFormulaASCII": "F (x) I"
+      "m2:hasTensorFormulaASCII": "F (x) I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Ontological"
+      ]
     },
     {
       "@id": "m2:Observer",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Observer",
       "rdfs:comment": "Entity performing measurement or interpretation of system state.",
-      "m2:hasFamily": "m2:Ontological",
       "m2:hasTensorFormula": "I ⊗ A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
@@ -2584,17 +2660,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "I \\otimes A",
-      "m2:hasTensorFormulaASCII": "I (x) A"
+      "m2:hasTensorFormulaASCII": "I (x) A",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Ontological"
+      ]
     },
     {
       "@id": "m2:State",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "State",
       "rdfs:comment": "Instantaneous configuration of system variables.",
-      "m2:hasFamily": "m2:Ontological",
       "m2:hasTensorFormula": "I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information"
@@ -2614,17 +2690,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaASCII": "I",
-      "m2:hasTensorFormulaTeX": "I"
+      "m2:hasTensorFormulaTeX": "I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Ontological"
+      ]
     },
     {
       "@id": "m2:Substrate",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Substrate",
       "rdfs:comment": "Material or informational support enabling system existence.",
-      "m2:hasFamily": "m2:Ontological",
       "m2:hasTensorFormula": "S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -2645,17 +2721,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "S \\otimes F",
-      "m2:hasTensorFormulaASCII": "S (x) F"
+      "m2:hasTensorFormulaASCII": "S (x) F",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Ontological"
+      ]
     },
     {
       "@id": "m2:Gradient",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Gradient",
       "rdfs:comment": "Spatial or temporal variation creating driving force for flows.",
-      "m2:hasFamily": "m2:Ontological",
       "m2:hasTensorFormula": "⊗ ₂F or ⊗ ₂I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
@@ -2800,17 +2876,17 @@
           "m2:default": "Linear",
           "m2:usageGuidelines": "Linear for uniform gradients (diffusion). Exponential for decay/growth processes. Sigmoid for transitions with saturation (dose-response, RAAS receptor saturation). Step for idealized thresholds. RAAS receptor activation: Sigmoid (saturates at high [Ang II], smooth response curve)"
         }
-      }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Ontological"
+      ]
     },
     {
       "@id": "m2:Invariant",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Invariant",
       "rdfs:comment": "Property unchanged under specific transformations or operations.",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -2839,17 +2915,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "S \\otimes A",
-      "m2:hasTensorFormulaASCII": "S (x) A"
+      "m2:hasTensorFormulaASCII": "S (x) A",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Signature",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Signature",
       "rdfs:comment": "Characteristic pattern enabling unique identification.",
-      "m2:hasFamily": "m2:Informational",
       "m2:hasTensorFormula": "I ⊗ S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
@@ -2884,17 +2960,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "I \\otimes S",
-      "m2:hasTensorFormulaASCII": "I (x) S"
+      "m2:hasTensorFormulaASCII": "I (x) S",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Informational"
+      ]
     },
     {
       "@id": "m2:Signal",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Signal",
       "rdfs:comment": "Carrier of information through space or time, enabling communication between system components.",
-      "m2:hasFamily": "m2:Informational",
       "m2:hasTensorFormula": "I ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
@@ -3016,17 +3092,17 @@
           "m2:default": "Analog",
           "m2:usageGuidelines": "Biological systems (RAAS) are typically Analog (continuous hormone concentrations) or Discrete-event (neuronal spikes). Digital for computer/communications. Hybrid for cyberphysical systems (sensors + digital control). Information Theory: analog_capacity C = B·log₂(1 + SNR) bits/sec (Shannon-Hartley); digital_reliability Error rates < 10^(-12) with coding; event_based_efficiency Only transmit when change occurs (sparse)."
         }
-      }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Informational"
+      ]
     },
     {
       "@id": "m2:Self-Organization",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Self-Organization",
       "rdfs:comment": "Spontaneous emergence of ordered patterns without external direction.",
-      "m2:hasFamily": "m2:Teleonomic",
       "m2:hasTensorFormula": "A ⊗ I ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
@@ -3048,18 +3124,18 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "A \\otimes I \\otimes D",
-      "m2:hasTensorFormulaASCII": "A (x) I (x) D"
+      "m2:hasTensorFormulaASCII": "A (x) I (x) D",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Teleonomic"
+      ]
     },
     {
       "@id": "m2:Synergy",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Synergy (Positive/Negative)",
       "rdfs:comment": "Combined effect differing from sum of individual effects (enhancement or inhibition).",
-      "m2:hasFamily": "m2:Dynamic",
-      "m2:hasTensorFormula": "I ⊗ D",
+      "m2:hasTensorFormula": "→ see m2:expression and m2:poleMapping",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Dynamics"
@@ -3067,7 +3143,7 @@
       "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Synergy",
-      "m2:fullName": "Positive Synergy / Negative Synergy",
+      "m2:fullName": "Synergy (Positive / Negative)",
       "m2:dualAspects": {
         "positiveAspect": {
           "name": "Positive Synergy",
@@ -3104,18 +3180,35 @@
           "status": "GUARANTEED"
         }
       },
-      "m2:hasTensorFormulaTeX": "I \\otimes D",
-      "m2:hasTensorFormulaASCII": "I (x) D"
+      "m2:hasTensorFormulaTeX": "→ see m2:expressionTeX and m2:poleMapping",
+      "m2:hasTensorFormulaASCII": "→ see m2:expressionASCII and m2:poleMapping",
+      "m2:expression": "(-1)^{p} (I ⊗ D)",
+      "m2:expressionTeX": "(-1)^{p} (I \\otimes D)",
+      "m2:poleMapping": {
+        "p=0": {
+          "name": "Positive Synergy",
+          "formula": "+(I ⊗ D)",
+          "semantics": "Combined effect > sum of parts: 1+1 > 2 (enhancement, amplification)"
+        },
+        "p=1": {
+          "name": "Negative Synergy",
+          "formula": "-(I ⊗ D)",
+          "semantics": "Combined effect < sum of parts: 1+1 < 2 (antagonism, inhibition)"
+        }
+      },
+      "m2:expressionASCII": "(-1)^p * (I (x) D)",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic",
+        "m2:MetaconceptPair",
+        "m2:SignPair"
+      ]
     },
     {
       "@id": "m2:Fusion",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Fusion (Fusion/Fission)",
       "rdfs:comment": "Union or separation of entities.",
-      "m2:hasFamily": "m2:Dynamic",
       "m2:hasTensorFormula": "S ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -3124,7 +3217,7 @@
       "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Fusion",
-      "m2:fullName": "Fusion / Fission",
+      "m2:fullName": "Fusion (Fission)",
       "m2:dualAspects": {
         "compositionAspect": {
           "name": "Fusion",
@@ -3164,18 +3257,36 @@
         }
       },
       "m2:hasTensorFormulaTeX": "S \\otimes D",
-      "m2:hasTensorFormulaASCII": "S (x) D"
+      "m2:hasTensorFormulaASCII": "S (x) D",
+      "m2:expression": null,
+      "m2:pairType": "CardinalityReversal",
+      "m2:poleMapping": {
+        "pole1": {
+          "name": "Fusion",
+          "formula": "{S₁ ⊗ ... ⊗ Sₙ} → S",
+          "cardinality": "N:1",
+          "semantics": "N distinct entities merge into one unified entity (identity lost)"
+        },
+        "pole2": {
+          "name": "Fission",
+          "formula": "S → {S₁ ⊗ ... ⊗ Sₙ}",
+          "cardinality": "1:N",
+          "semantics": "One entity splits into N distinct entities"
+        }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic",
+        "m2:MetaconceptPair",
+        "m2:StructuralPair"
+      ]
     },
     {
       "@id": "m2:Activation",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Activation (Activation/Inhibition)",
       "rdfs:comment": "Enabling or blocking of processes or pathways.",
-      "m2:hasFamily": "m2:Regulatory",
-      "m2:hasTensorFormula": "A ⊗ D",
+      "m2:hasTensorFormula": "→ see m2:expression and m2:poleMapping",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Dynamics"
@@ -3183,7 +3294,7 @@
       "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Activation",
-      "m2:fullName": "Activation / Inhibition",
+      "m2:fullName": "Activation (Inhibition)",
       "m2:dualAspects": {
         "positiveAspect": {
           "name": "Activation",
@@ -3220,19 +3331,36 @@
           "status": "GUARANTEED"
         }
       },
-      "m2:hasTensorFormulaTeX": "A \\otimes D",
-      "m2:hasTensorFormulaASCII": "A (x) D"
+      "m2:hasTensorFormulaTeX": "→ see m2:expressionTeX and m2:poleMapping",
+      "m2:hasTensorFormulaASCII": "→ see m2:expressionASCII and m2:poleMapping",
+      "m2:expression": "(-1)^{p} (A ⊗ D)",
+      "m2:expressionTeX": "(-1)^{p} (A \\otimes D)",
+      "m2:poleMapping": {
+        "p=0": {
+          "name": "Activation",
+          "formula": "+(A ⊗ D)",
+          "semantics": "Positive gain: enables process, opens pathway"
+        },
+        "p=1": {
+          "name": "Inhibition",
+          "formula": "-(A ⊗ D)",
+          "semantics": "Negative gain: blocks process, closes pathway"
+        }
+      },
+      "m2:expressionASCII": "(-1)^p * (A (x) D)",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Regulatory",
+        "m2:MetaconceptPair",
+        "m2:SignPair"
+      ]
     },
     {
       "@id": "m2:Convergence",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Convergence (Convergence/Divergence)",
       "rdfs:comment": "Focusing or dispersing of flows, trajectories, or information.",
-      "m2:hasFamily": "m2:Dynamic",
-      "m2:hasTensorFormula": "-∇·D (convergence) / ∇·D (divergence)",
+      "m2:hasTensorFormula": "→ see m2:expression and m2:poleMapping",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow"
@@ -3240,7 +3368,7 @@
       "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Convergence",
-      "m2:fullName": "Convergence / Divergence",
+      "m2:fullName": "Convergence (Divergence)",
       "m2:dualAspects": {
         "convergenceAspect": {
           "name": "Convergence",
@@ -3277,8 +3405,8 @@
           "status": "GUARANTEED"
         }
       },
-      "m2:hasTensorFormulaTeX": "- \\nabla \\cdot D (convergence) / \\nabla \\cdot D (divergence)",
-      "m2:hasTensorFormulaASCII": "-∇·D (convergence) / ∇·D (divergence)",
+      "m2:hasTensorFormulaTeX": "→ see m2:expressionTeX and m2:poleMapping",
+      "m2:hasTensorFormulaASCII": "→ see m2:expressionASCII and m2:poleMapping",
       "m2:hasAttribute": {
         "convergence_pattern": {
           "@type": "m2:ValueSpace",
@@ -3366,17 +3494,34 @@
           "m2:default": "Monotonic",
           "m2:usageGuidelines": "Most homeostatic biological systems (like RAAS) exhibit Monotonic convergence. Use Oscillatory for systems with inertia/capacitance. Use Critical for optimized control systems. Undamped/Divergent indicate lack of stability."
         }
-      }
+      },
+      "m2:expression": "(-1)^{p} ∇·D",
+      "m2:expressionTeX": "(-1)^{p} \\nabla \\cdot D",
+      "m2:poleMapping": {
+        "p=1": {
+          "name": "Convergence",
+          "formula": "-∇·D",
+          "semantics": "Negative divergence: flows/trajectories focus toward attractor"
+        },
+        "p=0": {
+          "name": "Divergence",
+          "formula": "∇·D",
+          "semantics": "Positive divergence: flows/trajectories disperse away from repeller"
+        }
+      },
+      "m2:expressionASCII": "(-1)^p * nabla.D",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic",
+        "m2:MetaconceptPair",
+        "m2:SignPair"
+      ]
     },
     {
       "@id": "m2:Storage",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Storage",
       "rdfs:comment": "Function of retaining and accumulating matter, energy, or information.",
-      "m2:hasFamily": "m2:Energetic",
       "m2:hasTensorFormula": "S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -3398,17 +3543,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "S \\otimes F",
-      "m2:hasTensorFormulaASCII": "S (x) F"
+      "m2:hasTensorFormulaASCII": "S (x) F",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Energetic"
+      ]
     },
     {
       "@id": "m2:Capacity",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Capacity",
       "rdfs:comment": "Upper structural limit or maximal potential of system.",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -3430,17 +3575,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I",
-      "m2:hasTensorFormulaASCII": "S (x) I"
+      "m2:hasTensorFormulaASCII": "S (x) I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Agent",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Agent",
       "rdfs:comment": "Active entity capable of autonomous action and interaction.",
-      "m2:hasFamily": "m2:Relational",
       "m2:hasTensorFormula": "S ⊗ I ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -3476,17 +3621,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes D",
-      "m2:hasTensorFormulaASCII": "S (x) I (x) D"
+      "m2:hasTensorFormulaASCII": "S (x) I (x) D",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Relational"
+      ]
     },
     {
       "@id": "m2:Role",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Role",
       "rdfs:comment": "Functional position or responsibility within system structure.",
-      "m2:hasFamily": "m2:Relational",
       "m2:hasTensorFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -3515,17 +3660,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I",
-      "m2:hasTensorFormulaASCII": "S (x) I"
+      "m2:hasTensorFormulaASCII": "S (x) I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Relational"
+      ]
     },
     {
       "@id": "m2:Mediator",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Mediator",
       "rdfs:comment": "Intermediary entity or mechanism enabling interaction between components.",
-      "m2:hasFamily": "m2:Relational",
       "m2:hasTensorFormula": "F ⊗ I ⊗ S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
@@ -3556,17 +3701,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "F \\otimes I \\otimes S",
-      "m2:hasTensorFormulaASCII": "F (x) I (x) S"
+      "m2:hasTensorFormulaASCII": "F (x) I (x) S",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Relational"
+      ]
     },
     {
       "@id": "m2:Link",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Link",
       "rdfs:comment": "Concrete physical connection between nodes enabling actual information or resource transfer (constructive).",
-      "m2:hasFamily": "m2:Relational",
       "m2:hasTensorFormula": "S ⊗ I ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -3603,17 +3748,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes F",
-      "m2:hasTensorFormulaASCII": "S (x) I (x) F"
+      "m2:hasTensorFormulaASCII": "S (x) I (x) F",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Relational"
+      ]
     },
     {
       "@id": "m2:Node",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Node",
       "rdfs:comment": "Elementary entity or point in a network structure, serving as connection endpoint.",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -3635,17 +3780,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I",
-      "m2:hasTensorFormulaASCII": "S (x) I"
+      "m2:hasTensorFormulaASCII": "S (x) I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Relation",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Relation",
       "rdfs:comment": "Abstract connection or association between entities, identified through analysis or modeling.",
-      "m2:hasFamily": "m2:Relational",
       "m2:hasTensorFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -3675,17 +3820,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I",
-      "m2:hasTensorFormulaASCII": "S (x) I"
+      "m2:hasTensorFormulaASCII": "S (x) I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Relational"
+      ]
     },
     {
       "@id": "m2:Path",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Path",
       "rdfs:comment": "Planned or conceptual route through network structure. Represents paths on maps/models (graphs, diagrams, schematics), distinct from Trajectory (observed evolution in territory).",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ I ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -3709,17 +3854,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes D",
-      "m2:hasTensorFormulaASCII": "S (x) I (x) D"
+      "m2:hasTensorFormulaASCII": "S (x) I (x) D",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Channel",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Channel",
       "rdfs:comment": "Structured conduit for signal transmission. Isolates one dimension, filters content, has finite capacity. Permanent structure independent of signals transmitted.",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ I ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -3783,17 +3928,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes F",
-      "m2:hasTensorFormulaASCII": "S (x) I (x) F"
+      "m2:hasTensorFormulaASCII": "S (x) I (x) F",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Cluster",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Cluster",
       "rdfs:comment": "Dense local grouping of nodes exhibiting synergistic cooperation and emergent functional properties (active processing role).",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ I ⊗ A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -3817,17 +3962,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes A",
-      "m2:hasTensorFormulaASCII": "S (x) I (x) A"
+      "m2:hasTensorFormulaASCII": "S (x) I (x) A",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Component",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Component",
       "rdfs:comment": "Elementary constitutive part of a system with functional role in the whole. Distinguished from arbitrary partition by having meaningful function.",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -3881,17 +4026,17 @@
         }
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I",
-      "m2:hasTensorFormulaASCII": "S (x) I"
+      "m2:hasTensorFormulaASCII": "S (x) I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Hub",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Hub",
       "rdfs:comment": "Highly connected node serving as central routing point for flow redistribution, without active processing (passive relay role).",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -3914,17 +4059,17 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "S \\otimes F",
-      "m2:hasTensorFormulaASCII": "S (x) F"
+      "m2:hasTensorFormulaASCII": "S (x) F",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Space",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Space",
       "rdfs:comment": "Dimensional framework in which system states and trajectories exist (state space, phase space).",
-      "m2:hasFamily": "m2:Ontological",
       "m2:hasTensorFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -3946,18 +4091,22 @@
         "status": "IMMUTABLE"
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I",
-      "m2:hasTensorFormulaASCII": "S (x) I"
+      "m2:hasTensorFormulaASCII": "S (x) I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Ontological"
+      ]
     },
     {
       "@id": "m2:Composition",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Composition (Composition/Decomposition)",
-      "rdfs:comment": "Bidirectional structural operation: aggregation of parts into emergent whole (composition) or partition of whole into constituents (decomposition).",
-      "m2:hasFamily": "m2:Structural",
-      "m2:hasTensorFormula": "S ⊗ I ⊗ A (composition) / S ⊗ I (decomposition)",
+      "rdfs:comment": "Bidirectional structural operation forming the fundamental duality of assembly and disassembly. Composition (bottom-up): aggregation of elementary parts into an emergent whole — the whole acquires properties (Attractor) absent from parts alone (S ⊗ I ⊗ A). Decomposition (top-down): partition of a whole into its elementary constituents — the Attractor (emergent property) dissolves, leaving only structure and interfaces (S ⊗ I). The asymmetry between the two poles is ontological: composition requires an Attractor (emergent property that justifies the assembly), while decomposition loses it.",
+      "m2:hasTensorFormula": "→ see m2:expression and m2:poleMapping",
+      "m2:hasTensorFormulaNote": "Decomposition pole: S ⊗ I — see m2:polaritySemantics",
+      "m2:hasTensorFormulaExpanded": "Structure ⊗ Information ⊗ Attractor",
+      "m2:hasTensorFormulaTeX": "→ see m2:expressionTeX and m2:poleMapping",
+      "m2:hasTensorFormulaASCII": "→ see m2:expressionASCII and m2:poleMapping",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
@@ -3965,65 +4114,124 @@
       ],
       "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "dual",
-      "m2:dualAspects": {
-        "compositionAspect": {
+      "m2:polaritySemantics": {
+        "pole1": {
           "name": "Composition",
-          "direction": "Bottom-up",
-          "formula": "S → I → A",
-          "comment": "Aggregation of elementary parts into emergent whole"
+          "direction": "Bottom-up (parts → whole)",
+          "formula": "S ⊗ I ⊗ A",
+          "formulaTeX": "S \\otimes I \\otimes A",
+          "dimensionSemantics": {
+            "S": "Structural arrangement of parts in the assembly",
+            "I": "Interfaces and binding information between parts",
+            "A": "Emergent property of the whole — absent from isolated parts"
+          },
+          "examples": [
+            "LEGO bricks (S) + joints (I) → construction with form (A)",
+            "H₂ + O (S, I) → H₂O with new chemical properties (A)",
+            "R + G + B channels (S, I) → Color percept (A)",
+            "Fuel + O₂ + Heat (S, I) → Flame with combustion dynamics (A)"
+          ]
         },
-        "decompositionAspect": {
+        "pole2": {
           "name": "Decomposition",
-          "direction": "Top-down",
-          "formula": "S → I",
-          "comment": "Partition of whole into elementary constituents"
-        }
+          "direction": "Top-down (whole → parts)",
+          "formula": "S ⊗ I",
+          "formulaTeX": "S \\otimes I",
+          "dimensionSemantics": {
+            "S": "Structural inventory of recovered parts",
+            "I": "Interface/bond information needed to identify parts"
+          },
+          "note": "Attractor (A) is absent from the Decomposition pole: the emergent property dissolves when the whole is partitioned. This asymmetry — Composition gains A, Decomposition loses A — is what distinguishes Composition from a mere bidirectional Transformation.",
+          "examples": [
+            "Construction → LEGO bricks (structure recovered, form lost)",
+            "H₂O → H₂ + O (molecular structure recovered, liquid properties lost)",
+            "Color → (R, G, B) triplet (channels recovered, percept lost)",
+            "Flame → Fuel, O₂, Heat (forensics: components identified, combustion ceased)"
+          ]
+        },
+        "dualityTension": "The asymmetry of the dual is ontological, not merely directional: Composition requires A (the emergent whole justifies the assembly); Decomposition loses A (no emergent property remains once the whole is partitioned). This makes Composition strictly irreversible in information terms: A cannot be reconstructed from S ⊗ I alone without re-performing the assembly."
       },
-      "m2:hasExample": [
-        "Composition: LEGO bricks → construction",
-        "Decomposition: Construction → LEGO bricks",
-        "Composition: Atoms → molecule (H₂ + O → H₂O)",
-        "Decomposition: Molecule → atoms (H₂O → H₂ + O)",
-        "Composition: Fuel + O₂ + Heat → Flame",
-        "Decomposition: Flame → Fuel, O₂, Heat (forensics)",
-        "Composition: R + G + B → Color",
-        "Decomposition: Color → (R, G, B) triplet"
-      ],
-      "m2:shortName": "Composition",
-      "m2:fullName": "Composition/Decomposition",
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S → I → A (composition) / S → I (decomposition)",
-        "role": "Measure territory perspective",
+        "formulaComposition": "S ⊗ I ⊗ A",
+        "formulaDecomposition": "S ⊗ I",
+        "role": "Measure structural assembly (composition) or disassembly (decomposition) in Territory",
         "status": "IMMUTABLE"
       },
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
           "formula": "R → I → V",
-          "role": "Evaluate map perspective",
+          "role": "Evaluate Map: is the assembled whole Representable (R), are interfaces Interoperable (I), is the composition Verifiable (V)?",
           "status": "PROPOSITION (validation in progress)"
         },
         "formulaFallback": {
           "basis": "ASFID",
-          "formula": "S → I → A (composition) / S → I (decomposition)",
+          "formulaComposition": "S ⊗ I ⊗ A",
+          "formulaDecomposition": "S ⊗ I",
           "role": "Guaranteed measurement if REVOI fails",
           "status": "GUARANTEED"
         }
       },
-      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes A (composition) / S \\otimes I (decomposition)",
-      "m2:hasTensorFormulaASCII": "S (x) I (x) A (composition) / S (x) I (decomposition)"
+      "m2:dimensionSemantics": {
+        "S": "Structure — spatial/topological arrangement of components",
+        "I": "Information — interfaces, bonds, binding protocols between parts",
+        "A": "Attractor — emergent property of the whole (present in Composition, absent in Decomposition)"
+      },
+      "m2:couplingExplanation": "Structure (S) defines which parts exist and how they are arranged. Information (I) encodes the interfaces that bind parts together. Attractor (A) is the emergent outcome of the assembly — the property that 'the whole is more than the sum of its parts'. In Decomposition, S and I suffice to identify the parts, but A cannot be extracted since it is a property of the assembled whole.",
+      "m2:distinctionFromRelated": {
+        "vs_MetaconceptCombo": "MetaconceptCombo fuses metaconcepts (ontological level); Composition assembles structural PARTS into a whole (object level in Territory).",
+        "vs_Imbrication": "Imbrication (S → S) = homothetic nesting of identical structures (self-similarity). Composition = assembly of HETEROGENEOUS parts into an emergent whole with distinct properties.",
+        "vs_Modularity": "Modularity (S ⊗ I) = decomposition criterion for system design (how to partition). Composition includes the Attractor: WHY parts are assembled (emergent goal or property). Modularity ⊂ Composition (Modularity = Decomposition pole of Composition without the A dimension).",
+        "vs_Transformation": "Transformation (S ⊗ F ⊗ D) = change of form/state over time. Composition = structural aggregation/partition — time (D) and flow (F) are not primary.",
+        "vs_Hierarchy": "Hierarchy (S ⊗ A) = vertical control structure with levels. Composition = assembly operation (process); Hierarchy = the resulting structural relation (state)."
+      },
+      "m2:hasExample": [
+        "Composition: LEGO bricks → construction (emergent form)",
+        "Decomposition: Construction → LEGO bricks (form lost)",
+        "Composition: Atoms → molecule (H₂ + O → H₂O)",
+        "Decomposition: Molecule → atoms (H₂O → H₂ + O)",
+        "Composition: Fuel + O₂ + Heat → Flame (combustion dynamics emerge)",
+        "Decomposition: Flame → Fuel, O₂, Heat (forensics)",
+        "Composition: R + G + B → Color percept (visual qualia emerges)",
+        "Decomposition: Color → (R, G, B) triplet (spectral analysis)"
+      ],
+      "m2:shortName": "Composition",
+      "m2:fullName": "Composition (Decomposition)",
+      "dcterms:created": "2026-01-14",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:discoveryContext": "Fundamental structural operation identified during TSCG framework design. The asymmetric dual nature (Composition gains A, Decomposition loses A) distinguishes it from simple bidirectional Transformation. Corrected in v15.3.2: formula split from single concatenated string 'S ⊗ I ⊗ A (composition) / S ⊗ I (decomposition)' into proper m2:polaritySemantics structure with separate pole1/pole2 formulas.",
+      "m2:versionHistory": {
+        "v15_3_2_2026-02-18": "FORMAT CORRECTION: m2:hasTensorFormula was incorrectly encoding two pole formulas as a single concatenated string. Restructured using m2:polaritySemantics (pole1: S ⊗ I ⊗ A / pole2: S ⊗ I). Primary m2:hasTensorFormula now holds the Composition pole (S ⊗ I ⊗ A) as canonical reference. m2:eagleView and m2:sphinxView updated consistently."
+      },
+      "m2:expression": "S ⊗ I ⊗ A^{p}",
+      "m2:expressionTeX": "S \\otimes I \\otimes A^{p}",
+      "m2:poleMapping": {
+        "p=1": {
+          "name": "Composition",
+          "formula": "S ⊗ I ⊗ A",
+          "semantics": "A present: assembly produces emergent property absent from parts alone"
+        },
+        "p=0": {
+          "name": "Decomposition",
+          "formula": "S ⊗ I",
+          "semantics": "A⁰ = 1 (neutral tensor element): emergent property dissolves, parts recovered"
+        }
+      },
+      "m2:expressionASCII": "S (x) I (x) A^p",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural",
+        "m2:MetaconceptPair",
+        "m2:DimensionPair"
+      ]
     },
     {
       "@id": "m2:Balance",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Balance",
       "rdfs:comment": "State of equilibrium between multiple interacting factors where variations compensate to maintain system stability. Distinct from Homeostasis (dynamic regulation) - Balance is a static equilibrium state achieved through mutual compensation of parameters.",
-      "m2:hasFamily": "m2:Regulatory",
       "m2:hasTensorFormula": "A ⊗ S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
@@ -4072,98 +4280,98 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified during analysis of Exposure Triangle poclet as fundamental metaconcept distinct from existing Homeostasis and Regulation",
       "m2:hasTensorFormulaTeX": "A \\otimes S \\otimes F",
-      "m2:hasTensorFormulaASCII": "A (x) S (x) F"
-    },	
-	{
-	  "@id": "m2:Trade-off",
-	  "@type": [
-		"owl:NamedIndividual",
-		"m2:MetaConcept"
-	  ],
-	  "rdfs:label": "Trade-off",
-	  "rdfs:comment": "Deliberate exchange where improving one desirable property necessarily degrades another due to inherent constraints. A conscious decision-making concept in model/map space where observer accepts losses in one dimension to gain in another. Fundamental to optimization under constraints.",
-	  "m2:hasFamily": "m2:Regulatory",
-	  "m2:hasOntologicalNature": "ModelSpace",
-	  "m2:hasTensorFormula": "A ⊗ I ⊗ F",
-	  "m2:hasTensorFormulaTeX": "A \\otimes I \\otimes F",
-	  "m2:hasTensorFormulaASCII": "A (x) I (x) F",
-	  "m2:hasDominantM3": [
-		"m3:eagle_eye:Attractor",
-		"m3:eagle_eye:Information",
-		"m3:eagle_eye:Flow"
-	  ],
-	  "m2:hasEpistemicGap": 0.3,
-	  "m2:hasPolarity": "neutral",
-	  "m2:hasExample": [
-		"Photography: Shallow DoF (artistic blur) ⊗ Deep DoF (all sharp) via aperture",
-		"Machine Learning: Bias → Variance (underfitting → overfitting)",
-		"Engineering: Speed → Precision (fast but rough → slow but accurate)",
-		"Project Management: Cost → Quality → Time (iron triangle)",
-		"Economics: Inflation → Unemployment (Phillips curve)",
-		"Computer Science: Time complexity → Space complexity",
-		"Biology: r-strategy → K-strategy (many offspring vs few cared-for)",
-		"Reinforcement Learning: Exploration → Exploitation"
-	  ],
-	  "m2:perspective": "map",
-	  "m2:sphinxView": {
-		"formulaPrimary": {
-		  "basis": "REVOI",
-		  "formula": "R → V → E",
-		  "role": "Evaluate map perspective on trade-offs",
-		  "status": "PROPOSITION (validation in progress)"
-		},
-		"formulaFallback": {
-		  "basis": "ASFID",
-		  "formula": "A → I",
-		  "role": "Guaranteed measurement if REVOI fails",
-		  "status": "GUARANTEED"
-		}
-	  },
-	  "m2:distinctionFromRelated": {
-		"vs_Balance": "Balance is EQUILIBRIUM STATE (observable); Trade-off is DECISION CONCEPT (interpretative)",
-		"vs_Constraint": "Constraint is HARD LIMIT (cannot violate); Trade-off is SOFT CHOICE (can choose different points on frontier)",
-		"vs_Synergy": "Synergy is POSITIVE (1+1>2); Trade-off is NEGATIVE (improve A → degrade B)"
-	  },
-	  "m2:transdisciplinaryValidation": {
-		"domains": [
-		  "Photography (DoF, Grain, Motion Blur trade-offs)",
-		  "Machine Learning (Bias-Variance, Precision-Recall)",
-		  "Engineering (Speed-Accuracy, Cost-Quality)",
-		  "Economics (Inflation-Unemployment, Efficiency-Equity)",
-		  "Project Management (Cost-Quality-Time)",
-		  "Computer Science (Time-Space complexity)",
-		  "Biology (r-K selection)",
-		  "Reinforcement Learning (Exploration-Exploitation)"
-		],
-		"count": 8,
-		"discoveredFrom": "Exposure Triangle poclet - photographer's decision-making analysis"
-	  },
-	  "m2:discoveryContext": "Identified during analysis of Exposure Triangle poclet as fundamental Map-space metaconcept capturing photographer's decision-making under constraints",
-	  "dcterms:created": "2026-01-20",
-	  "dcterms:modified": "2026-02-18",
-	  "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-	  "m2:changeLog": {
-		"v1": {
-		  "date": "2026-01-20",
-		  "formula": "A ⊗ I ⊗ F ⊗ A ⊗ A",
-		  "issue": "Repetition of A has no tensor semantics — A cannot encode multiple competing attractors by repetition"
-		},
-		"v2": {
-		  "date": "2026-02-18",
-		  "formula": "A ⊗ I ⊗ F",
-		  "rationale": "A=target objective, I=knowledge of options and costs, F=resource allocation flux. Removes redundant A repetitions while preserving semantic intent."
-		}
-	  }
-	},
+      "m2:hasTensorFormulaASCII": "A (x) S (x) F",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Regulatory"
+      ]
+    },
+    {
+      "@id": "m2:Trade-off",
+      "@type": "owl:Class",
+      "rdfs:label": "Trade-off",
+      "rdfs:comment": "Deliberate exchange where improving one desirable property necessarily degrades another due to inherent constraints. A conscious decision-making concept in model/map space where observer accepts losses in one dimension to gain in another. Fundamental to optimization under constraints.",
+      "m2:hasOntologicalNature": "ModelSpace",
+      "m2:hasTensorFormula": "A ⊗ I ⊗ F",
+      "m2:hasTensorFormulaTeX": "A \\otimes I \\otimes F",
+      "m2:hasTensorFormulaASCII": "A (x) I (x) F",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Attractor",
+        "m3:eagle_eye:Information",
+        "m3:eagle_eye:Flow"
+      ],
+      "m2:hasEpistemicGap": 0.3,
+      "m2:hasPolarity": "neutral",
+      "m2:hasExample": [
+        "Photography: Shallow DoF (artistic blur) ⊗ Deep DoF (all sharp) via aperture",
+        "Machine Learning: Bias → Variance (underfitting → overfitting)",
+        "Engineering: Speed → Precision (fast but rough → slow but accurate)",
+        "Project Management: Cost → Quality → Time (iron triangle)",
+        "Economics: Inflation → Unemployment (Phillips curve)",
+        "Computer Science: Time complexity → Space complexity",
+        "Biology: r-strategy → K-strategy (many offspring vs few cared-for)",
+        "Reinforcement Learning: Exploration → Exploitation"
+      ],
+      "m2:perspective": "map",
+      "m2:sphinxView": {
+        "formulaPrimary": {
+          "basis": "REVOI",
+          "formula": "R → V → E",
+          "role": "Evaluate map perspective on trade-offs",
+          "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "A → I",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
+        }
+      },
+      "m2:distinctionFromRelated": {
+        "vs_Balance": "Balance is EQUILIBRIUM STATE (observable); Trade-off is DECISION CONCEPT (interpretative)",
+        "vs_Constraint": "Constraint is HARD LIMIT (cannot violate); Trade-off is SOFT CHOICE (can choose different points on frontier)",
+        "vs_Synergy": "Synergy is POSITIVE (1+1>2); Trade-off is NEGATIVE (improve A → degrade B)"
+      },
+      "m2:transdisciplinaryValidation": {
+        "domains": [
+          "Photography (DoF, Grain, Motion Blur trade-offs)",
+          "Machine Learning (Bias-Variance, Precision-Recall)",
+          "Engineering (Speed-Accuracy, Cost-Quality)",
+          "Economics (Inflation-Unemployment, Efficiency-Equity)",
+          "Project Management (Cost-Quality-Time)",
+          "Computer Science (Time-Space complexity)",
+          "Biology (r-K selection)",
+          "Reinforcement Learning (Exploration-Exploitation)"
+        ],
+        "count": 8,
+        "discoveredFrom": "Exposure Triangle poclet - photographer's decision-making analysis"
+      },
+      "m2:discoveryContext": "Identified during analysis of Exposure Triangle poclet as fundamental Map-space metaconcept capturing photographer's decision-making under constraints",
+      "dcterms:created": "2026-01-20",
+      "dcterms:modified": "2026-02-18",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:changeLog": {
+        "v1": {
+          "date": "2026-01-20",
+          "formula": "A ⊗ I ⊗ F ⊗ A ⊗ A",
+          "issue": "Repetition of A has no tensor semantics — A cannot encode multiple competing attractors by repetition"
+        },
+        "v2": {
+          "date": "2026-02-18",
+          "formula": "A ⊗ I ⊗ F",
+          "rationale": "A=target objective, I=knowledge of options and costs, F=resource allocation flux. Removes redundant A repetitions while preserving semantic intent."
+        }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Regulatory"
+      ]
+    },
     {
       "@id": "m2:Polarity",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Polarity (N-ary)",
       "rdfs:comment": "Configuration of N distinct, mutually exclusive value poles or orientational axes organized in structured opposition or complementarity. Generalizes binary opposition to N-dimensional value spaces. N {1, 2, 3, 4, 5, ...} where N=1 (neutral/monopolar), N=2 (dual/bipolar), N3 (multipolar).",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ I ⊗ A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -4264,17 +4472,17 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified during Magic: The Gathering Color Wheel poclet analysis. Revealed that binary polarity restriction was limiting framework's ability to model real philosophical/value systems. Validated across 10 domains with N ranging from 2 to 9.",
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes A",
-      "m2:hasTensorFormulaASCII": "S (x) I (x) A"
+      "m2:hasTensorFormulaASCII": "S (x) I (x) A",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Imbrication",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Imbrication (Nesting)",
       "rdfs:comment": "Structural relation where a system contains subsystems that reproduce the parent system's structure. Principle of self-similarity across hierarchical levels. Fundamental to VSM where each operational unit is itself a complete viable system.",
-      "m2:hasFamily": "m2:Ontological",
       "m2:hasTensorFormula": "S → S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -4354,17 +4562,17 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Emerged from VSM analysis where recursive viability is fundamental architectural principle. Generalizes to any system exhibiting structural self-similarity across scales.",
       "m2:hasTensorFormulaTeX": "S \\otimes S",
-      "m2:hasTensorFormulaASCII": "S (x) S"
+      "m2:hasTensorFormulaASCII": "S (x) S",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Ontological"
+      ]
     },
     {
       "@id": "m2:Domain",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Domain (Hybrid Tensor Product ASFID ⊗ REVOI)",
       "rdfs:comment": "Structured field of knowledge where Territory phenomena (ASFID) and Map frameworks (REVOI) are coupled through epistemic practices and bidirectional feedback. Represents the first metaconcept requiring simultaneous fusion of both bicephalous perspectives. Reduced to 5D via SVD from full 25D ASFID ⊗ REVOI tensor product space.",
-      "m2:hasFamily": "m2:Ontological",
       "m2:hasTensorFormula": "∑ᵢ σᵢ |uᵢ⟩ ⊗ |vᵢ⟩ (5D SVD, ASFID ↔ REVOI)",
       "m2:hasDominantM3": [
         "HYBRID: Both ASFID (Eagle Eye) and REVOI (Sphinx Eye) simultaneously",
@@ -4568,7 +4776,7 @@
           "sigma_mean": 0.86,
           "epistemicDepth": "Very High (θ≈5°)",
           "epistemic_gap": 0.01,
-          "M1_extension": "M1_EnergyGenerators.jsonld",
+          "M1_extension": "M1_extensions/energy_generators/M1_EnergyGenerators.jsonld",
           "feedback_iterations": {
             "iteration_1": {
               "year": "1950s",
@@ -4595,21 +4803,21 @@
           "couplingMatrix_rank": "~5-6 (maturing domain)",
           "sigma_mean": 0.75,
           "epistemicDepth": "Medium-High (θ≈30°)",
-          "M1_extension": "M1_Biology.jsonld"
+          "M1_extension": "M1_extensions/biology/M1_Biology.jsonld"
         },
         "Optics": {
           "decomposition": "S (structures: waves/particles) + V (interpretations: dualism) + IR + FO + AE",
           "couplingMatrix_rank": "~6-7 (mature domain)",
           "sigma_mean": 0.8,
           "epistemicDepth": "High (θ≈20°)",
-          "M1_extension": "M1_Optics.jsonld"
+          "M1_extension": "M1_extensions/optics/M1_Optics.jsonld"
         },
         "Chemistry": {
           "decomposition": "S (molecular structures) + R (reproducible laws) + DE + FI + AV",
           "couplingMatrix_rank": "~7-8 (very mature)",
           "sigma_mean": 0.85,
           "epistemicDepth": "Very High (θ≈10°)",
-          "M1_extension": "M1_Chemistry.jsonld"
+          "M1_extension": "M1_extensions/chemistry/M1_Chemistry.jsonld"
         },
         "Economics": {
           "decomposition": "F (market flows) + O (schools of thought) + IV + DE + AR",
@@ -4716,17 +4924,17 @@
           "Varela/Maturana (1980): Enaction couples organism and environment → Domain as enacted coupling through Φ/Ψ feedback"
         ],
         "tscg_contribution": "First mathematical formalization combining all four perspectives: map-territory distinction (Korzybski), paradigm structure (Kuhn), epistemic space (Foucault), and enacted coupling (Varela/Maturana) in unified framework with quantitative maturity metric (σ_mean)"
-      }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Ontological"
+      ]
     },
     {
       "@id": "m2:Identity",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Identity",
       "rdfs:comment": "Persistent property that makes an entity distinguishable and self-restoring across transformations. An entity remains itself despite internal changes: its structure persists (S), its distinguishing information is maintained (I), and it returns to its characteristic state after perturbation (A). Identity is intrinsic it is not external recognition (vs Signature) nor a generic conserved quantity (vs Invariant), but the singular property binding persistence, uniqueness, and self-restoration into one coherent entity.",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S → I → A → V → E",
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes A \\otimes V \\otimes E",
       "m2:hasTensorFormulaASCII": "S (x) I (x) A (x) V (x) E",
@@ -4802,17 +5010,17 @@
       },
       "dcterms:created": "2026-02-01",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m2:discoveryContext": "Identified during M0_VSM (Viable System Model) validation. Cohesion concept required a metaconcept capturing 'shared organizational thread persisting despite S1 autonomy'. No existing M2 covered the combination of persistence (vs Invariant), uniqueness (vs Signature), and self-restoration (A). TRIZ validates Identity as a foundational principle (conserved property under transformation). Formalized as hybrid S → I → A → V → E to distinguish from Pattern (same Eagle base, divergent Map question)."
+      "m2:discoveryContext": "Identified during M0_VSM (Viable System Model) validation. Cohesion concept required a metaconcept capturing 'shared organizational thread persisting despite S1 autonomy'. No existing M2 covered the combination of persistence (vs Invariant), uniqueness (vs Signature), and self-restoration (A). TRIZ validates Identity as a foundational principle (conserved property under transformation). Formalized as hybrid S → I → A → V → E to distinguish from Pattern (same Eagle base, divergent Map question).",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:MetaconceptCombo",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "MetaconceptCombo (Synergistic Combination)",
       "rdfs:comment": "Parameterized metaconcept produced by synergistic combination of N parent metaconcepts (N ≥ 2) via n-ary tensor assembly and emergence morphism ( ⊗ ⁿ⇒). The result is a new metaconcept whose semantic identity cannot be reduced to any subset of parents - shared dimensions between parents create multi-way epistemic coupling rather than simple concatenation. First metaconcept in M2 whose tensor formula is structural (parameterized) rather than fixed. Most practical instances use N=2 or N=3 for tractability. Instances are domain-specific and belong to M1 extensions via functor_instantiation.",
-      "m2:hasFamily": "m2:Ontological",
       "m2:hasTensorFormula": "⊗ ᵢ₌₁ⁿ Mᵢ ⇒ M_result",
       "m2:hasTensorFormulaTeX": "\\bigotimes_{i=1}^{n} M_i \\Rightarrow M_{result}",
       "m2:hasTensorFormulaASCII": "(x)_i=1^n M_i => M_result",
@@ -4953,18 +5161,17 @@
       "m2:versionHistory": {
         "v1_2026-01-31": "Initial binary formulation (n=2 only)",
         "v2_2026-02-06": "Generalized to n-ary combination (n ≥ 2), added ternary examples, formalized coupling complexity, updated mathematical note for multi-way contraction"
-      }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Ontological"
+      ]
     },
     {
       "@id": "m2:Cascade",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept",
-        "m2:MetaconceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Cascade",
       "rdfs:comment": "Sequential multi-stage process where output of each step becomes input of next step, following a trajectory toward goal state. Synergistic ternary combination: Process (temporal evolution with flow) + Step (structured stages with information transfer) + Trajectory (goal-directed path through state space). Covers ALL five ASFID dimensions. Distinguished from binary Process ⊗ Step by addition of Attractor dimension, enabling goal-directed cascades (e.g., homeostatic regulation, development toward mature state). May or may not include amplification at each stage.",
-      "m2:hasFamily": "m2:Dynamic",
       "m2:hasTensorFormula": "⊗⇒(Process, Step, Trajectory)",
       "m2:hasTensorFormulaExpanded": "S ⊗ I ⊗ A ⊗ D ⊗ F",
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes A \\otimes D \\otimes F",
@@ -5159,17 +5366,17 @@
       "dcterms:modified": "2026-02-06",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified during RAAS analysis (poclet). Initially proposed as binary Process ⊗ Step (v14.3.5), lacking Attractor dimension. Michel identified need for Trajectory component to capture goal-directed evolution. Led to generalization of MetaconceptCombo to N-ary (N≥2) and first ternary metaconcept combo. Cascade now covers all 5 ASFID dimensions (S ⊗ I ⊗ A ⊗ D ⊗ F), making it the most complete MetaconceptCombo in M2.",
-      "m2:significance": "First MetaconceptCombo to achieve full ASFID coverage (5D). Demonstrates power of N-ary composition. Validates that ternary combinations can produce emergent metaconcepts with properties that no binary combination provides."
+      "m2:significance": "First MetaconceptCombo to achieve full ASFID coverage (5D). Demonstrates power of N-ary composition. Validates that ternary combinations can produce emergent metaconcepts with properties that no binary combination provides.",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic"
+      ]
     },
     {
       "@id": "m2:Behavior",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Behavior",
       "rdfs:comment": "Network of coordinated Steps that can be decomposed and analyzed. Represents structured operational pattern observable in Territory and modelable in Map. Distinct from Process (pure temporal sequence) by adding structural decomposability.",
-      "m2:hasFamily": "m2:Dynamic",
       "m2:hasTensorFormula": "S ⊗ D ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -5216,18 +5423,21 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Emerged from need to model sequential yet decomposable patterns in poclets (Butterfly metamorphosis, Blood pressure control). Bridges Process (pure temporal) and Network (pure structural) by fusing both aspects.",
       "m2:hasTensorFormulaTeX": "S \\otimes D \\otimes F",
-      "m2:hasTensorFormulaASCII": "S (x) D (x) F"
+      "m2:hasTensorFormulaASCII": "S (x) D (x) F",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic"
+      ]
     },
     {
       "@id": "m2:Tropism",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Tropism",
       "rdfs:comment": "Specialized Behavior directed by external gradient stimulus. Orientation or movement towards (positive) or away from (negative) an Attractor source. Inherits network decomposability from Behavior while adding directional constraint.",
-      "rdfs:subClassOf": "m2:Behavior",
-      "m2:hasFamily": "m2:Dynamic",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic"
+      ],
       "m2:hasTensorFormula": "A ⊗ S ⊗ D ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
@@ -5290,13 +5500,9 @@
     },
     {
       "@id": "m2:Workflow",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Workflow",
       "rdfs:comment": "Structured network implementation of a Process. Prescriptive representation (Map-oriented) of how a Process should be executed, distinct from Behavior (descriptive observation of what occurs). Can be simulated or prescribed.",
-      "m2:hasFamily": "m2:Structural",
       "m2:hasTensorFormula": "S ⊗ D ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -5343,18 +5549,21 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Needed to distinguish prescriptive models (Workflow) from descriptive observations (Behavior). Both are structured networks of Steps, but serve different epistemic roles.",
       "m2:hasTensorFormulaTeX": "S \\otimes D \\otimes F",
-      "m2:hasTensorFormulaASCII": "S (x) D (x) F"
+      "m2:hasTensorFormulaASCII": "S (x) D (x) F",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ]
     },
     {
       "@id": "m2:Step",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Step",
       "rdfs:comment": "Node specialized for sequential/temporal contexts. Elementary unit in Behavior or Workflow network. Extends Node by adding temporal/sequential semantics and capability to trigger Actions.",
-      "rdfs:subClassOf": "m2:Node",
-      "m2:hasFamily": "m2:Structural",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Structural"
+      ],
       "m2:hasTensorFormula": "S ⊗ I ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -5419,13 +5628,9 @@
     },
     {
       "@id": "m2:Action",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Action",
       "rdfs:comment": "Atomic operation triggered by a Step. Elementary executable unit with informational content. Represents indivisible operation in behavioral or workflow context.",
-      "m2:hasFamily": "m2:Dynamic",
       "m2:hasTensorFormula": "D ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
@@ -5475,17 +5680,17 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified as atomic operational unit in behavioral decomposition. Represents finest-grained executable element triggered by Steps in Behavior/Workflow networks.",
       "m2:hasTensorFormulaTeX": "D \\otimes I",
-      "m2:hasTensorFormulaASCII": "D (x) I"
+      "m2:hasTensorFormulaASCII": "D (x) I",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic"
+      ]
     },
     {
       "@id": "m2:ValueSpace",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "ValueSpace (Hybrid Variety Model)",
       "rdfs:comment": "Space of possible values for a property or object. Can be scalar (e.g., temperature range), vector (e.g., RGB 3D color components), tensor product (e.g., 5D ASFID metaconcept formulas), or symbolic (e.g., alphabet symbols). Values can be discrete or continuous. Characterized both by intrinsic information content (Territory) and epistemic model quality (Map). Foundation for Ashby's Law of Requisite Variety in cybernetics. Mnemonic: ItVORIm (subscripts t/m mark Territory/Map boundary).",
-      "m2:hasFamily": "m2:Informational",
       "m2:hasTensorFormula": "It → V → O → R → Im",
       "m2:hasTensorFormulaTeX": "I_t \\otimes V \\otimes O \\otimes R \\otimes I_m",
       "m2:hasTensorFormulaASCII": "I_t (x) V (x) O (x) R (x) I_m",
@@ -5638,26 +5843,26 @@
       },
       "dcterms:created": "2026-01-31",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m2:discoveryContext": "Required for VSM modeling to formalize Ashby's Law of Requisite Variety. Emerged from need to represent value/state spaces with bicephalous perspective: Territory (what values exist - It) AND Map (how we model them - VORI). The ItVORIm mnemonic order provides epistemic progression where subscripts t/m explicitly mark the Territory/Map boundary. Generalizes beyond system states to any property's value domain (scalar, vector, tensor, symbolic, hybrid). Essential for variety amplification (S2) and attenuation (S3) in VSM."
+      "m2:discoveryContext": "Required for VSM modeling to formalize Ashby's Law of Requisite Variety. Emerged from need to represent value/state spaces with bicephalous perspective: Territory (what values exist - It) AND Map (how we model them - VORI). The ItVORIm mnemonic order provides epistemic progression where subscripts t/m explicitly mark the Territory/Map boundary. Generalizes beyond system states to any property's value domain (scalar, vector, tensor, symbolic, hybrid). Essential for variety amplification (S2) and attenuation (S3) in VSM.",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Informational"
+      ]
     },
     {
       "@id": "m2:Processor",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept",
-        "m2:MetaconceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Processor",
       "rdfs:comment": "Generic system with inputs and outputs that transforms/processes incoming resources, signals, or matter into outputs. Dual synergistic combinations: Territory (Transformation ⊗ Flow ⊗ Resource) provides empirical processing dynamics, Map (Transformation ⊗ Representation ⊗ Interoperability) provides conceptual interface model. Distinct from pure Transformation (abstract process) by being a concrete entity that IMPLEMENTS transformations while managing flows and interfacing with environment.",
-      "m2:hasFamily": "m2:Ontological",
       "m2:hasTensorFormula": "⊗⇒_Territory(Transformation, Flow, Resource) × ⊗⇒_Map(Transformation, Representation, Interoperability)",
       "m2:hasTensorFormulaExpanded_Territory": "S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ Resource",
       "m2:hasTensorFormulaExpanded_Map": "S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ R ⊗ Im",
       "m2:hasEpistemicGap": 0.15,
       "m2:hasPolarity": "dual",
-      "rdfs:subClassOf": {
-        "@id": "m2:System"
-      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Ontological"
+      ],
       "m2:bicephalousArchitecture": {
         "territory": {
           "formula": "Transformation ⊗ Flow ⊗ Resource",
@@ -5874,16 +6079,12 @@
     },
     {
       "@id": "m2:Amplification",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Amplification (Amplification/Attenuation)",
       "rdfs:comment": "Bidirectional process: increase (amplification) or decrease (attenuation) of signal, flow, quantity, or variety. Fundamental cybernetic operation for gain control and variety management. Characterized by measurable flux/dynamics/information (Territory) and representability/observability in models (Map). Direction (Amplifying/Attenuating/Unity) specified via direction attribute.",
-      "m2:hasFamily": "m2:Dynamic",
-      "m2:hasTensorFormula": "Ft → D → It → R → O",
-      "m2:hasTensorFormulaTeX": "F_t \\otimes D \\otimes I_t \\otimes R \\otimes O",
-      "m2:hasTensorFormulaASCII": "F_t (x) D (x) I_t (x) R (x) O",
+      "m2:hasTensorFormula": "→ see m2:expression and m2:poleMapping",
+      "m2:hasTensorFormulaTeX": "→ see m2:expressionTeX and m2:poleMapping",
+      "m2:hasTensorFormulaASCII": "→ see m2:expressionASCII and m2:poleMapping",
       "m2:hasDominantM3": [
         "HYBRID: Ft → D → It from ASFID (Eagle Eye) + R → O from REVOI (Sphinx Eye)"
       ],
@@ -5895,7 +6096,7 @@
         "dual_aspects": "Amplification (gain>1, →‘) vs Attenuation (gain<1, →“)"
       },
       "m2:shortName": "Amplification",
-      "m2:fullName": "Amplification / Attenuation",
+      "m2:fullName": "Amplification (Attenuation)",
       "m2:dualAspects": {
         "amplificationAspect": {
           "name": "Amplification",
@@ -6091,17 +6292,42 @@
           "m2:default": "Amplifying",
           "m2:usageGuidelines": "Select based on gain magnitude. Use Amplifying for RAAS enzymatic stages (G>1), Attenuating for inhibitory pathways (G<1)."
         }
-      }
+      },
+      "m2:expression": "G^{(-1)^p} · (Ft → D → It → R → O)",
+      "m2:expressionTeX": "G^{(-1)^{p}} \\cdot (F_t \\to D \\to I_t \\to R \\to O)",
+      "m2:expressionASCII": "G^((-1)^p) * (Ft -> D -> It -> R -> O)",
+      "m2:poleMapping": {
+        "p=0": {
+          "name": "Amplification",
+          "formula": "G · (Ft → D → It → R → O)",
+          "gainCondition": "G > 1",
+          "semantics": "Gain greater than unity — output magnitude exceeds input (flux increase, information increase)"
+        },
+        "p=1": {
+          "name": "Attenuation",
+          "formula": "(1/G) · (Ft → D → It → R → O)",
+          "gainCondition": "0 < 1/G < 1",
+          "semantics": "Gain less than unity — output magnitude less than input (flux reduction, information loss)"
+        },
+        "neutral": {
+          "name": "Unity Gain",
+          "formula": "1 · (Ft → D → It → R → O)",
+          "gainCondition": "G = 1",
+          "semantics": "Neutral element: no amplification nor attenuation"
+        }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic",
+        "m2:MetaconceptPair",
+        "m2:GainPair"
+      ]
     },
     {
       "@id": "m2:Alignment",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Alignment",
       "rdfs:comment": "Bidirectional dynamic process by which two entities, representations, or systems progressively reduce their mutual discrepancy toward a coherent correspondence. Distinct from Representation (static mapping A→B), Balance (static equilibrium), and Convergence (geometric focusing of trajectories): Alignment is an active, iterative, bidirectional reconciliation process.",
-      "m2:hasFamily": "m2:Dynamic",
       "m2:hasTensorFormula": "I ⊗ A ⊗ S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
@@ -6123,19 +6349,18 @@
         "m2:Representation": "Representation is a static structural mapping (A→B); Alignment is an iterative bidirectional process reducing discrepancy (A↔B)",
         "m2:Balance": "Balance is a static equilibrium state; Alignment is an active process toward coherence",
         "m2:Convergence": "Convergence concerns geometric focusing of trajectories; Alignment concerns structural/semantic correspondence between entities"
-      }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic"
+      ]
     },
     {
       "@id": "m2:FeedbackLoop",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept",
-        "m2:MetaconceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Feedback Loop",
       "rdfs:comment": "Cyclic regulatory process where a system compares its current state to a target (Homeostasis), reduces the discrepancy (Alignment), and evolves over time (Process). Encompasses both negative feedback (stabilizing, error-correcting) and positive feedback (amplifying, self-reinforcing). Universal systemic pattern found across biology, engineering, economics, ecology and social systems.",
-      "m2:hasFamily": "m2:Dynamic",
-      "m2:hasTensorFormula": "m2:Process ⊗ m2:Alignment ⊗ m2:Homeostasis",
+      "m2:hasTensorFormula": "→ see m2:expression and m2:poleMapping",
       "m2:tensorExpansion": "(D ⊗ F) ⊗ (I ⊗ A ⊗ S) ⊗ (A ⊗ S ⊗ F) = A ⊗ S ⊗ F ⊗ I ⊗ D",
       "m2:tensorNote": "Expanded formula covers all 5 ASFID dimensions, reflecting that a feedback loop engages the full phenomenology of a system: Attractor (set point), Structure (circuit), Flow (signal), Information (error signal), Dynamics (temporal evolution).",
       "m2:componentMetaconcepts": [
@@ -6205,17 +6430,37 @@
         "default": "Negative",
         "description": "Polarity of the feedback: Negative (stabilizing/corrective), Positive (amplifying/reinforcing), Mixed (context-dependent)"
       },
-      "m2:architecturalNote": "m2:FeedbackLoop models systemic regulatory circuits across all domains. Distinct from m3:AlignmentLoop which is the epistemological Territory↔Map alignment mechanism intrinsic to TSCG architecture (see M3_GenesisSpace)."
+      "m2:architecturalNote": "m2:FeedbackLoop models systemic regulatory circuits across all domains. Distinct from m3:AlignmentLoop which is the epistemological Territory↔Map alignment mechanism intrinsic to TSCG architecture (see M3_GenesisSpace).",
+      "m2:fullName": "Feedback Loop (Negative / Positive)",
+      "m2:expression": "(-1)^{p} · k · (Process ⊗ Alignment ⊗ Homeostasis)",
+      "m2:expressionTeX": "(-1)^{p} \\cdot k \\cdot (\\text{Process} \\otimes \\text{Alignment} \\otimes \\text{Homeostasis})",
+      "m2:poleMapping": {
+        "p=1": {
+          "name": "Negative Feedback",
+          "formula": "-k · (Process ⊗ Alignment ⊗ Homeostasis)",
+          "semantics": "k < 0: output opposes deviation from setpoint — error-correcting, stabilizing"
+        },
+        "p=0": {
+          "name": "Positive Feedback",
+          "formula": "+k · (Process ⊗ Alignment ⊗ Homeostasis)",
+          "semantics": "k > 0: output reinforces deviation — self-amplifying, destabilizing"
+        }
+      },
+      "m2:hasTensorFormulaASCII": "→ see m2:expressionASCII and m2:poleMapping",
+      "m2:hasTensorFormulaTeX": "→ see m2:expressionTeX and m2:poleMapping",
+      "m2:expressionASCII": "(-1)^p * k * (Process (x) Alignment (x) Homeostasis)",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic",
+        "m2:MetaconceptPair",
+        "m2:SignPair"
+      ]
     },
     {
       "@id": "m2:KnowledgeField",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "KnowledgeField (Hybrid Tensor Product ASFID ⊗ REVOI)",
       "rdfs:comment": "Structured field of knowledge where Territory phenomena (ASFID) and Map frameworks (REVOI) are coupled through epistemic practices. Dual role: (1) NOUN instances (Chemistry, Biology, Optics...) represent complete epistemic fields with full ASFID ⊗ REVOI theory - defined in M1 extensions; (2) ADJECTIVE instances (Chemical, Biological, Optical...) serve as disciplinary tags for domain-specific metaconcept specialization - defined in M1 extensions. Reduced to 5D via SVD from full 25D ASFID ⊗ REVOI tensor product space.",
-      "m2:hasFamily": "m2:Ontological",
       "m2:hasTensorFormula": "∑ᵢ σᵢ |uᵢ⟩ ⊗ |vᵢ⟩ (5D SVD, ASFID ⊗ REVOI)",
       "m2:hasTensorFormulaTeX": "\\sum_{i=1}^{5} \\sigma_i |u_i\\rangle \\otimes |v_i\\rangle \\quad (\\text{5D SVD}, \\; ASFID \\otimes REVOI)",
       "m2:hasTensorFormulaASCII": "sum_i sigma_i |u_i> (x) |v_i> (5D SVD, ASFID (x) REVOI)",
@@ -6238,7 +6483,7 @@
             "Physics",
             "Electronics"
           ],
-          "location": "M1 extensions (M1_Chemistry.jsonld, M1_Biology.jsonld, M1_Optics.jsonld...)",
+          "location": "M1 extensions (M1_extensions/chemistry/M1_Chemistry.jsonld, M1_extensions/biology/M1_Biology.jsonld, M1_extensions/optics/M1_Optics.jsonld...)",
           "theory": "Full ASFID ⊗ REVOI coupling, SVD decomposition, epistemic depth, domain maturity metrics",
           "tensorFormula": "∑ᵢ σᵢ |uᵢ⟩ ⊗ |vᵢ⟩",
           "stateVector": "α_T |Territory⟩ + α_M |Map⟩ + ∑ᵢ σᵢ|ASFID_i ⊗ REVOI_i⟩",
@@ -6317,7 +6562,7 @@
           "couplingMatrix_rank": "~6-7 (mature field)",
           "sigma_mean": 0.8,
           "epistemicDepth": "High (θ≈20°)",
-          "M1_extension": "M1_Optics.jsonld",
+          "M1_extension": "M1_extensions/optics/M1_Optics.jsonld",
           "derivedAdjective": "Optical (used in KnowledgeFieldMetaCombo)"
         },
         "Biology": {
@@ -6326,7 +6571,7 @@
           "couplingMatrix_rank": "~5-6 (maturing field)",
           "sigma_mean": 0.75,
           "epistemicDepth": "Medium-High (θ≈30°)",
-          "M1_extension": "M1_Biology.jsonld",
+          "M1_extension": "M1_extensions/biology/M1_Biology.jsonld",
           "derivedAdjective": "Biological (used in KnowledgeFieldMetaCombo)"
         },
         "Chemistry": {
@@ -6335,7 +6580,7 @@
           "couplingMatrix_rank": "~7-8 (very mature)",
           "sigma_mean": 0.85,
           "epistemicDepth": "Very High (θ≈10°)",
-          "M1_extension": "M1_Chemistry.jsonld",
+          "M1_extension": "M1_extensions/chemistry/M1_Chemistry.jsonld",
           "derivedAdjective": "Chemical (used in KnowledgeFieldMetaCombo)"
         },
         "Mechanics": {
@@ -6344,7 +6589,7 @@
           "couplingMatrix_rank": "~8-9 (extremely mature)",
           "sigma_mean": 0.9,
           "epistemicDepth": "Very High (θ≈5°)",
-          "M1_extension": "M1_Engineering.jsonld (proposed)",
+          "M1_extension": "M1_extensions/energy_generators/M1_EnergyGenerators.jsonld (proposed)",
           "derivedAdjective": "Mechanical (used in KnowledgeFieldMetaCombo)"
         },
         "Electronics": {
@@ -6416,7 +6661,7 @@
         "M1_Chemistry": "Instance of KnowledgeField metaconcept: Chemistry (epistemic field)",
         "M1_Biology": "Instance of KnowledgeField metaconcept: Biology (epistemic field)",
         "M1_Photography": "Instance of KnowledgeField metaconcept: Photography (epistemic field)",
-        "M1_Engineering": "Instance of KnowledgeField metaconcept: Mechanics (epistemic field)",
+        "M1_EnergyGenerators": "Instance of KnowledgeField metaconcept: Mechanics (epistemic field)",
         "generalization": "All M1_[X].jsonld files instantiate m2:KnowledgeField with field-specific parameters"
       },
       "m2:relationToM1Tags": {
@@ -6485,17 +6730,17 @@
       "rdfs:seeAlso": [
         "docs/Domain_Hybrid_Tensor_Product_5D_README.md",
         "docs/KnowledgeField_Dual_Role_README.md"
+      ],
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Ontological"
       ]
     },
     {
       "@id": "m2:KnowledgeFieldMetaCombo",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "KnowledgeFieldMetaCombo (Disciplinary Specialization)",
       "rdfs:comment": "Factorization metaconcept coupling a KnowledgeField (disciplinary tag, ADJECTIVE form) with one or more universal Metaconcepts to create domain-specific specializations. Prevents M2 pollution by defining domain-specific concept variants only once at M2 level, with concrete instantiation deferred to M1 extensions. Uses qualification operator (⊙) rather than tensor product ( ⊗ ) - the result preserves the metaconcept's dimensions while adding disciplinary context. Critical constraint: can ONLY be instantiated in M1 domain extensions, NEVER directly in M2.",
-      "m2:hasFamily": "m2:Compositional",
       "m2:hasTensorFormula": "KnowledgeField ⊙ Metaconcept(s)",
       "m2:hasTensorFormulaTeX": "\\text{KnowledgeField} \\odot \\bigotimes_{i=1}^{n} M_i",
       "m2:hasTensorFormulaASCII": "KnowledgeField (o) (x)_i=1^n M_i",
@@ -6547,7 +6792,7 @@
       "m2:instantiationConstraint": {
         "level": "M1 extensions ONLY",
         "rationale": "KnowledgeFieldMetaCombo is abstract factorization pattern defined in M2. Concrete instances (ChemicalLink, BiologicalProcessor, MechanicalComponent) can ONLY be created within appropriate M1 domain extensions to prevent M2 pollution with domain-specific variants.",
-        "enforcement": "M2 contains ONLY the abstract KnowledgeFieldMetaCombo pattern; M1_Chemistry, M1_Biology, M1_Engineering... contain concrete Concept instances",
+        "enforcement": "M2 contains ONLY the abstract KnowledgeFieldMetaCombo pattern; M1_Chemistry, M1_Biology, M1_EnergyGenerators... contain concrete Concept instances",
         "violation_example": "Creating ChemicalLink directly in M2 would pollute the universal metaconcept layer with chemistry-specific details",
         "correct_pattern": "M2 defines KnowledgeFieldMetaCombo pattern → M1_Chemistry instantiates ChemicalLink using pattern"
       },
@@ -6556,7 +6801,7 @@
           "m2_pattern": "KnowledgeFieldMetaCombo",
           "m1_instance": "ChemicalLink",
           "decomposition": "Chemical ⊙ Link",
-          "defined_in": "M1_Chemistry.jsonld",
+          "defined_in": "M1_extensions/chemistry/M1_Chemistry.jsonld",
           "knowledgeField_NOUN": "Chemistry (complete epistemic field)",
           "knowledgeField_ADJECTIVE": "Chemical (disciplinary tag)",
           "combinedMetaconcept": "Link (S ⊗ F)",
@@ -6572,7 +6817,7 @@
           "m2_pattern": "KnowledgeFieldMetaCombo",
           "m1_instance": "BiologicalProcessor",
           "decomposition": "Biological ⊙ Processor",
-          "defined_in": "M1_Biology.jsonld",
+          "defined_in": "M1_extensions/biology/M1_Biology.jsonld",
           "knowledgeField_NOUN": "Biology (complete epistemic field)",
           "knowledgeField_ADJECTIVE": "Biological (disciplinary tag)",
           "combinedMetaconcept": "Processor (S ⊗ I ⊗ D ⊗ F ⊗ V)",
@@ -6588,7 +6833,7 @@
           "m2_pattern": "KnowledgeFieldMetaCombo",
           "m1_instance": "MechanicalComponent",
           "decomposition": "Mechanical ⊙ Component",
-          "defined_in": "M1_Engineering.jsonld",
+          "defined_in": "M1_extensions/energy_generators/M1_EnergyGenerators.jsonld",
           "knowledgeField_NOUN": "Mechanics (complete epistemic field)",
           "knowledgeField_ADJECTIVE": "Mechanical (disciplinary tag)",
           "combinedMetaconcept": "Component (S ⊗ A)",
@@ -6621,7 +6866,7 @@
           "m2_pattern": "KnowledgeFieldMetaCombo",
           "m1_instance": "OpticalTransformation",
           "decomposition": "Optical ⊙ Transformation",
-          "defined_in": "M1_Optics.jsonld",
+          "defined_in": "M1_extensions/optics/M1_Optics.jsonld",
           "knowledgeField_NOUN": "Optics (complete epistemic field)",
           "knowledgeField_ADJECTIVE": "Optical (disciplinary tag)",
           "combinedMetaconcept": "Transformation (S ⊗ I ⊗ D ⊗ F ⊗ V)",
@@ -6724,9 +6969,9 @@
           "content": "ChemicalLink, BiologicalProcessor, MechanicalComponent (domain concepts)",
           "status": "First instantiation - creates domain-specific Concepts",
           "files": [
-            "M1_Chemistry.jsonld",
-            "M1_Biology.jsonld",
-            "M1_Engineering.jsonld"
+            "M1_extensions/chemistry/M1_Chemistry.jsonld",
+            "M1_extensions/biology/M1_Biology.jsonld",
+            "M1_extensions/energy_generators/M1_EnergyGenerators.jsonld"
           ],
           "example": "ChemicalLink instantiates KnowledgeFieldMetaCombo with (Chemical ⊙ Link)"
         },
@@ -6752,18 +6997,17 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Required for systematic modeling of domain-specific concept variants across poclets. Identified during analysis of chemical bonds, biological organs, mechanical linkages, electronic circuits - all following same pattern (universal metaconcept + domain context) but requiring disciplinary qualification to prevent ambiguity. Evolved from earlier 'DomainSpecificCombo' concept, renamed to make explicit relationship with KnowledgeField metaconcept.",
       "m2:status": "ACTIVE - New in v15.2.0",
-      "rdfs:seeAlso": "docs/KnowledgeFieldMetaCombo_Pattern_README.md"
+      "rdfs:seeAlso": "docs/KnowledgeFieldMetaCombo_Pattern_README.md",
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Compositional"
+      ]
     },
     {
       "@id": "m2:LocalActivationLateralInhibition",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept",
-        "m2:MetaconceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "LocalActivationLateralInhibition (LALI)",
       "rdfs:comment": "Binary MetaconceptCombo in which a local self-reinforcing process (Amplification, short range) is structurally coupled to a longer-range inhibitory process (Regulation), producing stable periodic spatial or functional patterns from an initially homogeneous state. The essential and irreducible structural constraint is the range asymmetry: range(F_Amplification) << range(F_Regulation). Without this asymmetry the combination reduces to simple Amplification+Regulation co-presence without emergent pattern formation. LALI explains spontaneous symmetry breaking into ordered patterns across 8+ disciplines. First identified in Turing reaction-diffusion systems (1952); the abstract principle recognized as transdisciplinary. Structural dual counterpart: ButterflyEffect (Amplification without lateral Regulation constraint → chaos instead of order).",
-      "m2:hasFamily": "m2:Dynamic",
       "m2:hasTensorFormula": "⊗⇒(Amplification, Regulation) | range(F_A) << range(F_R)",
       "m2:hasTensorFormulaTeX": "\\otimes\\Rightarrow(\\text{Amplification}, \\text{Regulation}) \\;|\\; \\|\\text{range}(F_A)\\| \\ll \\|\\text{range}(F_R)\\|",
       "m2:hasTensorFormulaASCII": "(x)=>(Amplification, Regulation) | range(F_A) << range(F_R)",
@@ -6945,18 +7189,17 @@
       "m2:status": "ACTIVE - New in v15.3.1",
       "m2:versionHistory": {
         "v1_2026-02-18": "Initial formulation as M2 metaconcept. Transdisciplinary validation complete (8 domains). Range asymmetry structural constraint formalized. Dual relationship with ButterflyEffect established."
-      }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic"
+      ]
     },
     {
       "@id": "m2:ButterflyEffect",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:MetaConcept",
-        "m2:MetaconceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "ButterflyEffect (Sensitive Dependence on Initial Conditions)",
       "rdfs:comment": "Binary MetaconceptCombo in which unconstrained local positive feedback (Amplification) is coupled with a chaotic system trajectory (Trajectory with trajectoryShape=Chaotic and Lyapunov exponent λ > 0), producing exponential divergence of initially nearby system trajectories and intrinsic long-term unpredictability. The essential structural property is the ABSENCE of a lateral Regulation constraint: amplification is unbounded in its range. Named after Lorenz (1963) sensitivity observation: a butterfly flapping its wings in Brazil could set off a tornado in Texas. The abstract pattern appears wherever unconstrained positive feedback operates within a nonlinear deterministic system. Structural dual of LALI: both share Amplification, but LALI adds lateral Regulation (range constraint) → order; ButterflyEffect lacks this constraint → chaos.",
-      "m2:hasFamily": "m2:Dynamic",
       "m2:hasTensorFormula": "⊗⇒(Amplification, Trajectory) | trajectoryShape=Chaotic ∧ λ > 0",
       "m2:hasTensorFormulaTeX": "\\otimes\\Rightarrow(\\text{Amplification}, \\text{Trajectory}) \\;|\\; \\text{trajectoryShape}=\\text{Chaotic} \\wedge \\lambda > 0",
       "m2:hasTensorFormulaASCII": "(x)=>(Amplification, Trajectory) | trajectoryShape=Chaotic AND lambda > 0",
@@ -7159,7 +7402,11 @@
       "m2:status": "ACTIVE - New in v15.3.1",
       "m2:versionHistory": {
         "v1_2026-02-18": "Initial formulation as M2 metaconcept. Identified as structural dual of LALI. Transdisciplinary validation complete (8 domains). Lyapunov positivity formalized as structural constraint. Duality with LALI documented."
-      }
+      },
+      "rdfs:subClassOf": [
+        "m2:MetaConcept",
+        "m2:Dynamic"
+      ]
     }
   ]
 }

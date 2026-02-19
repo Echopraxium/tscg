@@ -18,6 +18,12 @@ import json
 from pathlib import Path
 from typing import List, Dict
 
+# Force UTF-8 output so emoji characters render correctly on Windows terminals
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
 # ==============================================================================
 # CONFIGURATION
 # ==============================================================================
@@ -86,6 +92,12 @@ INTERACTIVE MODE:
         "--filter-type",
         help="Filter by segment type (e.g., jsonld_entry, markdown_section)"
     )
+
+    parser.add_argument(
+        "--ontology-docs-only",
+        action="store_true",
+        help="Restrict results to authoritative ontology/docs markdown files"
+    )
     
     parser.add_argument(
         "--verbose",
@@ -99,10 +111,30 @@ INTERACTIVE MODE:
 # DATABASE LOADING
 # ==============================================================================
 
+def decompress_db_if_needed(db_path: str) -> bool:
+    """Decompress .tar.gz archive if the db directory is absent. Returns True if ready to use."""
+    import tarfile
+    db = Path(db_path)
+    archive = db.parent / f"{db.name}.tar.gz"
+
+    if db.exists():
+        return True
+
+    if not archive.exists():
+        return False
+
+    print(f"📦 Decompressing {archive.name} ...")
+    with tarfile.open(archive, "r:gz") as tar:
+        tar.extractall(db.parent)
+    print(f"✓ Decompressed to {db_path}")
+    return True
+
+
 def load_database(db_path: str, verbose: bool = False):
     """Load ChromaDB database"""
-    if not Path(db_path).exists():
+    if not decompress_db_if_needed(db_path):
         print(f"❌ Database not found: {db_path}")
+        print(f"   Neither '{Path(db_path).name}/' nor '{Path(db_path).name}.tar.gz' exists.")
         print(f"   Create it first with: python create_tscg_rag.py local")
         return None, None
     
@@ -186,28 +218,56 @@ def get_embedder(mode: str, verbose: bool = False):
 # QUERY FUNCTIONS
 # ==============================================================================
 
-def search(collection, embedder, query: str, top_k: int = 5, filter_type: str = None, metadata_info: Dict = None):
-    """Search the database"""
+def search(collection, embedder, query: str, top_k: int = 5, filter_type: str = None, metadata_info: Dict = None, ontology_docs_only: bool = False):
+    """Search the database, deduplicating results with identical content."""
+    import hashlib
+
     # Generate query embedding
     embedding_mode = metadata_info.get('embedding_model', 'local') if metadata_info else 'local'
-    
+
     if 'MiniLM' in embedding_mode or embedding_mode == 'local':
         query_embedding = embedder.encode([query])[0].tolist()
     else:
         query_embedding = embedder.embed_query(query)
-    
+
     # Build filter
     where_filter = None
-    if filter_type:
+    if filter_type and ontology_docs_only:
+        where_filter = {"$and": [{"type": filter_type}, {"ontology_doc": True}]}
+    elif filter_type:
         where_filter = {"type": filter_type}
-    
-    # Query
+    elif ontology_docs_only:
+        where_filter = {"ontology_doc": True}
+
+    # Fetch extra candidates to absorb duplicates after dedup
+    fetch_k = top_k * 3
     results = collection.query(
         query_embeddings=[query_embedding],
-        n_results=top_k,
+        n_results=fetch_k,
         where=where_filter
     )
-    
+
+    # Deduplicate by content hash, keeping highest-scored copy
+    seen = set()
+    dedup_docs, dedup_metas, dedup_dists = [], [], []
+    for doc, meta, dist in zip(
+        results['documents'][0],
+        results['metadatas'][0],
+        results['distances'][0],
+    ):
+        content_hash = hashlib.md5(doc.encode()).hexdigest()
+        if content_hash not in seen:
+            seen.add(content_hash)
+            dedup_docs.append(doc)
+            dedup_metas.append(meta)
+            dedup_dists.append(dist)
+        if len(dedup_docs) == top_k:
+            break
+
+    results['documents'][0] = dedup_docs
+    results['metadatas'][0] = dedup_metas
+    results['distances'][0] = dedup_dists
+
     return results
 
 def display_results(results, show_text: bool = False, verbose: bool = False):
@@ -328,9 +388,9 @@ def interactive_mode(collection, embedder, metadata, args):
             
             # Search
             print(f"\n🔍 Searching...")
-            results = search(collection, embedder, query, args.top_k, args.filter_type, metadata)
+            results = search(collection, embedder, query, args.top_k, args.filter_type, metadata, args.ontology_docs_only)
             display_results(results, args.show_text, args.verbose)
-        
+
         except KeyboardInterrupt:
             print("\n\n⚠️  Interrupted. Type 'exit' to quit.")
         except Exception as e:
@@ -373,7 +433,7 @@ def main():
     if args.filter_type:
         print(f"   Filter: {args.filter_type}")
     
-    results = search(collection, embedder, args.query, args.top_k, args.filter_type, metadata)
+    results = search(collection, embedder, args.query, args.top_k, args.filter_type, metadata, args.ontology_docs_only)
     display_results(results, args.show_text, args.verbose)
     
     print()

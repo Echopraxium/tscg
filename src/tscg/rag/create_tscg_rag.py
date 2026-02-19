@@ -20,9 +20,16 @@ import os
 import sys
 import argparse
 import json
+import hashlib
 from pathlib import Path
 from typing import List, Dict, Optional
 import datetime
+
+# Force UTF-8 output so emoji characters render correctly on Windows terminals
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
 
 # ==============================================================================
 # CONFIGURATION
@@ -31,7 +38,11 @@ import datetime
 DEFAULT_EXTENSIONS = ['md', 'jsonld', 'txt', 'py', 'cs', 'fs']
 IGNORED_PATTERNS = ['bin/', 'obj/', '.git/', '__pycache__/', 'node_modules/']
 DEFAULT_DB_PATH = './db_tscg_rag'
-DEFAULT_REPO_PATH = '..'
+
+# Script lives at <repo_root>/src/tscg/rag/create_tscg_rag.py
+# Walk up: rag/ -> tscg/ -> src/ -> repo_root/
+_REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+DEFAULT_REPO_PATH = str(_REPO_ROOT)
 
 # Chunking configuration
 CHUNK_SIZE = 1500
@@ -124,7 +135,13 @@ NOTES:
         action="store_true",
         help="Update existing database (incremental)"
     )
-    
+
+    parser.add_argument(
+        "--no-compress",
+        action="store_true",
+        help="Skip compressing the database to .tar.gz after creation"
+    )
+
     return parser.parse_args()
 
 # ==============================================================================
@@ -147,6 +164,113 @@ class Segment:
     @property
     def word_count(self):
         return len(self.text.split())
+
+
+def _source_prefix(source: str) -> str:
+    """Return a globally unique prefix for segment IDs: stem + 6-char path hash."""
+    path_hash = hashlib.md5(source.encode()).hexdigest()[:6]
+    return f"{Path(source).stem}_{path_hash}"
+
+
+# OWL/RDF infrastructure types that carry no RAG value as standalone segments
+_SKIP_TYPES = {
+    "owl:ObjectProperty", "owl:DatatypeProperty", "owl:AnnotationProperty",
+    "owl:TransitiveProperty", "owl:SymmetricProperty", "owl:FunctionalProperty",
+    "owl:Ontology", "skos:ConceptScheme", "rdf:Property",
+}
+
+
+def _entry_to_text(entry: dict, layer: str) -> str | None:
+    """
+    Convert a JSON-LD @graph entry to a natural-language summary for embedding.
+    Returns None for OWL infrastructure entries that should be skipped.
+    """
+    # Normalise @type to a set of strings
+    raw_type = entry.get("@type", "")
+    types = set(raw_type if isinstance(raw_type, list) else [raw_type])
+
+    # Skip pure OWL/RDF infrastructure
+    if types & _SKIP_TYPES:
+        return None
+
+    parts = []
+
+    # ── Name ──────────────────────────────────────────────────────────────────
+    label = entry.get("rdfs:label", "")
+    if isinstance(label, dict):
+        label = label.get("@value", "")
+    if not label:
+        entry_id = entry.get("@id", "")
+        label = entry_id.split(":")[-1].replace("_", " ") if entry_id else ""
+    if not label:
+        return None
+
+    # ── Family / perspective (M2) ─────────────────────────────────────────────
+    subclass = entry.get("rdfs:subClassOf", "")
+    families = []
+    for s in (subclass if isinstance(subclass, list) else [subclass]):
+        if isinstance(s, str) and s not in ("m2:MetaConcept", "m2:MetaconceptPair",
+                                             "m2:MetaconceptCombo", ""):
+            families.append(s.split(":")[-1])
+    perspective = entry.get("m2:perspective", "")
+
+    header = f"{label} [{layer}"
+    if families:
+        header += f" / {families[0]}"
+    if perspective:
+        header += f" / {perspective}"
+    header += "]"
+    parts.append(header)
+
+    # ── Tensor formula ────────────────────────────────────────────────────────
+    formula = (entry.get("m2:hasTensorFormula")
+               or entry.get("m3:tensorFormula")
+               or entry.get("tscg:tensorFormula", ""))
+    if formula:
+        dominant = entry.get("m2:hasDominantM3", [])
+        if isinstance(dominant, str):
+            dominant = [dominant]
+        dim_names = [d.split(":")[-1] for d in dominant if isinstance(d, str)]
+        if dim_names:
+            parts.append(f"Tensor formula: {formula} ({', '.join(dim_names)})")
+        else:
+            parts.append(f"Tensor formula: {formula}")
+
+    # ── Definition ────────────────────────────────────────────────────────────
+    comment = entry.get("rdfs:comment") or entry.get("dcterms:description", "")
+    if isinstance(comment, dict):
+        comment = comment.get("@value", "")
+    if comment:
+        parts.append(f"Definition: {comment}")
+
+    # ── Polarity / epistemic gap ──────────────────────────────────────────────
+    polarity = entry.get("m2:hasPolarity", "")
+    gap = entry.get("m2:hasEpistemicGap", "")
+    meta = []
+    if polarity:
+        meta.append(f"Polarity: {polarity}")
+    if gap != "":
+        meta.append(f"Epistemic gap: {gap:.2f}" if isinstance(gap, float) else f"Epistemic gap: {gap}")
+    if meta:
+        parts.append(" | ".join(meta))
+
+    # ── Examples ─────────────────────────────────────────────────────────────
+    examples = entry.get("m2:hasExample", []) or entry.get("m3:dimensionExamples", [])
+    if isinstance(examples, str):
+        examples = [examples]
+    if examples:
+        parts.append(f"Examples: {'; '.join(str(e) for e in examples[:4])}")
+
+    # ── M3 dimension symbol ───────────────────────────────────────────────────
+    symbol = entry.get("m3:dimensionSymbol", "")
+    if symbol:
+        parts.append(f"Symbol: {symbol}")
+
+    # Need at least a definition or formula to be worth indexing
+    if len(parts) < 2:
+        return None
+
+    return "\n".join(parts)
 
 
 class TSCGSegmenter:
@@ -197,117 +321,142 @@ class TSCGSegmenter:
             return self._segment_plain(text, str(path))
     
     def _segment_jsonld(self, text: str, source: str) -> List[Segment]:
-        """Segment JSON-LD by ontology entries"""
+        """Segment JSON-LD by ontology entries, converting each to natural language."""
         import json
-        
+
         segments = []
-        
+
+        # Infer TSCG layer from filename prefix (M0_, M1_, M2_, M3_)
+        stem = Path(source).stem.upper()
+        layer = "M2"  # default
+        for prefix in ("M3_", "M2_", "M1_", "M0_"):
+            if stem.startswith(prefix):
+                layer = prefix.rstrip("_")
+                break
+
         try:
             data = json.loads(text)
-            
+
             if isinstance(data, dict) and '@graph' in data:
-                # Segment each graph entry
                 for i, entry in enumerate(data['@graph']):
-                    entry_text = json.dumps(entry, indent=2, ensure_ascii=False)
-                    
+                    # Convert to natural language; skip OWL infrastructure entries
+                    nl_text = _entry_to_text(entry, layer)
+                    if nl_text is None:
+                        continue
+
                     label = entry.get('rdfs:label', {})
                     if isinstance(label, dict):
                         label = label.get('@value', f'entry_{i}')
-                    
+
                     segment = Segment(
-                        text=entry_text,
+                        text=nl_text,
                         metadata={
                             'source': source,
                             'type': 'jsonld_entry',
                             'label': str(label),
                             'uri': entry.get('@id', f'entry_{i}'),
-                            'entry_index': i
+                            'entry_index': i,
+                            'layer': layer,
                         },
                         start_char=0,
-                        end_char=len(entry_text),
-                        segment_id=f"{Path(source).stem}_entry_{i}"
+                        end_char=len(nl_text),
+                        segment_id=f"{_source_prefix(source)}_entry_{i}"
                     )
-                    
                     segments.append(segment)
             else:
-                # Single object - one segment
+                # Single object — one segment
+                nl_text = _entry_to_text(data, layer) or json.dumps(data, indent=2, ensure_ascii=False)
                 segment = Segment(
-                    text=text,
-                    metadata={
-                        'source': source,
-                        'type': 'jsonld_document'
-                    },
+                    text=nl_text,
+                    metadata={'source': source, 'type': 'jsonld_document', 'layer': layer},
                     start_char=0,
-                    end_char=len(text),
-                    segment_id=f"{Path(source).stem}_full"
+                    end_char=len(nl_text),
+                    segment_id=f"{_source_prefix(source)}_full"
                 )
                 segments.append(segment)
-        
+
         except json.JSONDecodeError:
-            # Fallback to plain text
             segments = self._segment_plain(text, source)
-        
+
         return segments
     
     def _segment_markdown(self, text: str, source: str) -> List[Segment]:
-        """Segment markdown by sections"""
+        """Segment markdown by sections, preserving parent-header breadcrumb."""
         import re
-        
+
         segments = []
         lines = text.split('\n')
         current_section = []
         current_header = None
         current_start = 0
         char_pos = 0
-        
-        header_pattern = re.compile(r'^#{1,6}\s+(.+)$')
-        
+
+        # Track header hierarchy: level (1-6) -> header text
+        header_stack: dict = {}
+
+        # Tag files under ontology/docs as authoritative ontology documentation
+        source_path = Path(source)
+        is_ontology_doc = 'ontology' in source_path.parts and 'docs' in source_path.parts
+
+        header_pattern = re.compile(r'^(#{1,6})\s+(.+)$')
+
+        def breadcrumb() -> str:
+            """Return 'GrandParent > Parent > Current' from the header stack."""
+            return ' > '.join(header_stack[lvl] for lvl in sorted(header_stack))
+
+        def flush(section_lines, header, start, end):
+            if not section_lines:
+                return
+            section_text = '\n'.join(section_lines)
+            if len(section_text) < self.min_chunk_size:
+                return
+            crumb = breadcrumb()
+            meta = {
+                'source': source,
+                'type': 'markdown_section',
+                'header': header or 'intro',
+                'breadcrumb': crumb,
+            }
+            if is_ontology_doc:
+                meta['ontology_doc'] = True
+            # Prepend breadcrumb to text when it adds context
+            if crumb and crumb != (header or ''):
+                full_text = f"[{crumb}]\n{section_text}"
+            else:
+                full_text = section_text
+            segments.append(Segment(
+                text=full_text,
+                metadata=meta,
+                start_char=start,
+                end_char=end,
+                segment_id=f"{_source_prefix(source)}_sec_{len(segments)}"
+            ))
+
         for line in lines:
             line_length = len(line) + 1
             header_match = header_pattern.match(line)
-            
+
             if header_match:
-                # Save previous section
-                if current_section and len('\n'.join(current_section)) >= self.min_chunk_size:
-                    section_text = '\n'.join(current_section)
-                    segment = Segment(
-                        text=section_text,
-                        metadata={
-                            'source': source,
-                            'type': 'markdown_section',
-                            'header': current_header or 'intro'
-                        },
-                        start_char=current_start,
-                        end_char=char_pos,
-                        segment_id=f"{Path(source).stem}_sec_{len(segments)}"
-                    )
-                    segments.append(segment)
-                
-                # Start new section
+                flush(current_section, current_header, current_start, char_pos)
+
+                level = len(header_match.group(1))
+                current_header = header_match.group(2).strip()
+
+                # Drop all headers at same level or deeper, then set current
+                for lvl in list(header_stack.keys()):
+                    if lvl >= level:
+                        del header_stack[lvl]
+                header_stack[level] = current_header
+
                 current_section = [line]
-                current_header = header_match.group(1).strip()
                 current_start = char_pos
             else:
                 current_section.append(line)
-            
+
             char_pos += line_length
-        
-        # Add last section
-        if current_section and len('\n'.join(current_section)) >= self.min_chunk_size:
-            section_text = '\n'.join(current_section)
-            segment = Segment(
-                text=section_text,
-                metadata={
-                    'source': source,
-                    'type': 'markdown_section',
-                    'header': current_header or 'conclusion'
-                },
-                start_char=current_start,
-                end_char=char_pos,
-                segment_id=f"{Path(source).stem}_sec_{len(segments)}"
-            )
-            segments.append(segment)
-        
+
+        flush(current_section, current_header, current_start, char_pos)
+
         return segments if segments else self._segment_plain(text, source)
     
     def _segment_code(self, text: str, source: str, language: str) -> List[Segment]:
@@ -347,7 +496,7 @@ class TSCGSegmenter:
                             },
                             start_char=current_start,
                             end_char=char_pos,
-                            segment_id=f"{Path(source).stem}_{current_type}_{len(segments)}"
+                            segment_id=f"{_source_prefix(source)}_{current_type}_{len(segments)}"
                         )
                         segments.append(segment)
                     
@@ -374,7 +523,7 @@ class TSCGSegmenter:
                 },
                 start_char=current_start,
                 end_char=char_pos,
-                segment_id=f"{Path(source).stem}_{current_type or 'code'}_{len(segments)}"
+                segment_id=f"{_source_prefix(source)}_{current_type or 'code'}_{len(segments)}"
             )
             segments.append(segment)
         
@@ -409,7 +558,7 @@ class TSCGSegmenter:
                     },
                     start_char=current_start,
                     end_char=char_pos,
-                    segment_id=f"{Path(source).stem}_chunk_{len(segments)}"
+                    segment_id=f"{_source_prefix(source)}_chunk_{len(segments)}"
                 )
                 segments.append(segment)
                 
@@ -439,10 +588,10 @@ class TSCGSegmenter:
                 },
                 start_char=current_start,
                 end_char=char_pos,
-                segment_id=f"{Path(source).stem}_chunk_{len(segments)}"
+                segment_id=f"{_source_prefix(source)}_chunk_{len(segments)}"
             )
             segments.append(segment)
-        
+
         return segments
 
 # ==============================================================================
@@ -498,6 +647,22 @@ def get_embeddings(mode: str, api_key_path: Optional[str] = None, verbose: bool 
 # ==============================================================================
 # DOCUMENT COLLECTION
 # ==============================================================================
+
+def compress_db(db_path: str, verbose: bool = False) -> tuple:
+    """Compress the ChromaDB directory to a .tar.gz archive for git storage."""
+    import tarfile
+    db = Path(db_path).resolve()
+    archive_path = db.parent / f"{db.name}.tar.gz"
+
+    if verbose:
+        print(f"  Compressing {db.name}/ → {archive_path.name} ...")
+
+    with tarfile.open(archive_path, "w:gz") as tar:
+        tar.add(db, arcname=db.name)
+
+    size_mb = archive_path.stat().st_size / (1024 * 1024)
+    return str(archive_path), size_mb
+
 
 def collect_files(repo_path: str, extensions: List[str], ignored_patterns: List[str], verbose: bool = False) -> List[str]:
     """Collect all files to index"""
@@ -581,7 +746,21 @@ def main():
             continue
     
     print(f"\n✓ Created {len(all_segments)} segments from {len(files)} files")
-    print(f"  Average: {len(all_segments)/len(files):.1f} segments/file")
+
+    # Deduplicate segments with identical content (same file in multiple directories)
+    seen_hashes = set()
+    unique_segments = []
+    for seg in all_segments:
+        h = hashlib.md5(seg.text.encode()).hexdigest()
+        if h not in seen_hashes:
+            seen_hashes.add(h)
+            unique_segments.append(seg)
+    duplicates_removed = len(all_segments) - len(unique_segments)
+    if duplicates_removed:
+        print(f"  Removed {duplicates_removed} duplicate segments (same content, different paths)")
+    all_segments = unique_segments
+
+    print(f"  Unique segments: {len(all_segments)} | Average: {len(all_segments)/len(files):.1f} segments/file")
     
     # 4. Initialize embeddings
     print("\n🧠 Initializing embeddings...")
@@ -666,7 +845,16 @@ def main():
     with open(f"{args.db}/metadata.json", "w") as f:
         json.dump(metadata, f, indent=2)
     
-    # 8. Summary
+    # 8. Compress database (default: on)
+    archive_info = ""
+    if not args.no_compress:
+        print("\n🗜️  Compressing database for git storage...")
+        archive_path, size_mb = compress_db(args.db, args.verbose)
+        archive_info = f"  Archive: {archive_path} ({size_mb:.1f} MB)"
+        print(f"✓ Compressed → {Path(archive_path).name} ({size_mb:.1f} MB)")
+        print(f"  Tip: add '{Path(args.db).name}/' to .gitignore and commit the .tar.gz")
+
+    # 9. Summary
     print("\n" + "="*70)
     print("  ✅ TSCG RAG Database Created Successfully!")
     print("="*70)
@@ -676,6 +864,8 @@ def main():
     print(f"  Average segments/file: {len(all_segments)/len(files):.1f}")
     print(f"  Database path: {args.db}")
     print(f"  Embedding mode: {args.mode.upper()}")
+    if archive_info:
+        print(archive_info)
     print("\n💡 Next steps:")
     print(f"  1. Query the database with query_tscg_rag.py")
     print(f"  2. Integrate with your application")
