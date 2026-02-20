@@ -1,12 +1,12 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#> .
-@prefix m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#> .
+@prefix m2: <M2_MetaConcepts.jsonld#> .
+@prefix m3: <M3_GenesisSpace.jsonld#> .
 @prefix ns1: <tscg:> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<m0:blood_pressure_control:ADH_Effector> a ns1:EffectorSystem ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:ADH_Effector> a ns1:EffectorSystem ;
     rdfs:label "Anti-Diuretic Hormone (Vasopressin)" ;
     rdfs:comment "Water retention and vasoconstriction via hypothalamic-pituitary axis" ;
     ns1:feedbackLoop "Negative (volume expansion inhibits ADH release)" ;
@@ -21,7 +21,7 @@
         "V2 antagonists (vaptans - for hypervolemia)" ;
     ns1:timescale "minutes to hours" .
 
-<m0:blood_pressure_control:ANP_Effector> a ns1:EffectorSystem ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:ANP_Effector> a ns1:EffectorSystem ;
     rdfs:label "Atrial Natriuretic Peptide (ANP/BNP)" ;
     rdfs:comment "Counter-regulatory hormones promoting sodium and water excretion" ;
     ns1:counterRegulatory "Balances RAAS/ADH effects" ;
@@ -38,7 +38,7 @@
         "Synthetic natriuretic peptides (nesiritide for acute heart failure)" ;
     ns1:timescale "minutes to hours" .
 
-<m0:blood_pressure_control:Adaptation_Baroreceptor> a m2:Adaptation ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:Adaptation_Baroreceptor> a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Adaptation> ;
     rdfs:label "Baroreceptor Resetting in Chronic Hypertension" ;
     rdfs:comment "Baroreceptors adapt their operating range in sustained high pressure" ;
     ns1:adaptationType "Receptor desensitization" ;
@@ -47,10 +47,10 @@
     ns1:reversibility "Partially reversible with prolonged BP normalization (e.g., via drug therapy)" ;
     ns1:timescale "Days to weeks" .
 
-<m0:blood_pressure_control:Attractor_Homeostatic> a m2:Attractor ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:Attractor_Homeostatic> a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Attractor> ;
     rdfs:label "Homeostatic Blood Pressure Set-Point" ;
-    rdfs:comment "Stable attractor at ~120/80 mmHg maintained by multiple negative feedback loops" ;
     m3:asfid_dimension "Attractor" ;
+    rdfs:comment "Stable attractor at ~120/80 mmHg maintained by multiple negative feedback loops" ;
     ns1:basinOfAttraction "100-140 mmHg systolic (homeostatic zone)" ;
     ns1:bifurcation "Transition from normotension to hypertension via positive feedback (vascular remodeling, baroreceptor resetting)" ;
     ns1:multipleAttractors "Exercise state (~160/90 mmHg - transient)",
@@ -63,23 +63,24 @@
         "Pressure-natriuresis curve (renal)",
         "RAAS negative feedback" .
 
-<m0:blood_pressure_control:BloodPressureControl> a owl:Ontology ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:BloodPressureControl> a owl:Ontology ;
     rdfs:label "Blood Pressure Homeostasis (5-Effector System)" ;
+    m2:ontologyCategory "Poclet" ;
+    m3:ontologyType <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace.jsonld#Poclet> ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
     rdfs:comment "TSCG M0 poclet modeling long-term regulation of arterial blood pressure through five parallel physiological effector systems" ;
-    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld" ;
+    owl:imports "M1_CoreConcepts.jsonld",
+        "M1_extensions/biology/M1_Biology.jsonld",
+        "M2_MetaConcepts.jsonld",
+        "M3_GenesisSpace.jsonld" ;
     owl:versionInfo "1.0.0" ;
-    m2:ontologyCategory "Poclet" ;
     ns1:authors "Echopraxium with the collaboration of Claude AI" ;
     ns1:dateCreated "2026-01-22" ;
     ns1:domain "Physiology / Cardiovascular System" ;
     ns1:namespace "m0:blood_pressure_control:" ;
     ns1:primaryPhenomenon "Maintenance of stable arterial blood pressure (~120/80 mmHg) through coordinated multi-system feedback loops" .
 
-<m0:blood_pressure_control:CardiacOutput_Effector> a ns1:EffectorSystem ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:CardiacOutput_Effector> a ns1:EffectorSystem ;
     rdfs:label "Cardiac Output & Blood Volume" ;
     rdfs:comment "Hemodynamic downstream parameters integrating effects of effectors 1-4" ;
     ns1:guytonModel "Long-term BP regulation via pressure-natriuresis relationship" ;
@@ -96,7 +97,7 @@
         "Vasodilators (reduce peripheral resistance)" ;
     ns1:timescale "seconds to days" .
 
-<m0:blood_pressure_control:Convergence_5to1> a m2:Convergence ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:Convergence_5to1> a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Convergence> ;
     rdfs:label "5-to-1 Effector Convergence" ;
     rdfs:comment "Five parallel systems converge on single output (arterial pressure)" ;
     ns1:advantage "Redundancy - failure of one system partially compensated by others" ;
@@ -105,10 +106,10 @@
     ns1:inputCount 5 ;
     ns1:outputCount 1 .
 
-<m0:blood_pressure_control:Dynamics_Multi> a m2:Timescale ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:Dynamics_Multi> a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Timescale> ;
     rdfs:label "Multi-Timescale Dynamics" ;
-    rdfs:comment "Regulatory mechanisms operating from seconds (neural) to days (renal)" ;
     m3:asfid_dimension "Dynamics" ;
+    rdfs:comment "Regulatory mechanisms operating from seconds (neural) to days (renal)" ;
     ns1:adaptation "Chronic baroreceptor desensitization in sustained hypertension (loss of reflex buffering)" ;
     ns1:fastDynamics [ ] ;
     ns1:mediumDynamics [ ] ;
@@ -116,7 +117,7 @@
     ns1:slowDynamics [ ] ;
     ns1:transientResponse "Overshoot/undershoot during rapid pressure perturbations (exercise, stress)" .
 
-<m0:blood_pressure_control:Emergence_MAP> a m2:Emergence ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:Emergence_MAP> a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Emergence> ;
     rdfs:label "Mean Arterial Pressure as Emergent Property" ;
     rdfs:comment "MAP emerges from integration of 5 parallel regulatory systems" ;
     ns1:componentSystems "ADH (water retention, vasoconstriction)",
@@ -128,7 +129,7 @@
     ns1:nonLinearity "Pressure = f(CO, TPR, Volume) - complex nonlinear interactions" ;
     ns1:systemLevelProperty "Stable pressure cannot be attributed to single effector (distributed control)" .
 
-<m0:blood_pressure_control:Feedback_Baroreceptor> a m2:Feedback ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:Feedback_Baroreceptor> a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Feedback> ;
     rdfs:label "Baroreceptor Reflex Arc" ;
     rdfs:comment "Neural negative feedback: high pressure reduces sympathetic output" ;
     ns1:adaptation "Baroreceptor resetting in chronic hypertension (reduced sensitivity)" ;
@@ -139,7 +140,7 @@
     ns1:sensor "Baroreceptors (aortic arch, carotid sinus)" ;
     ns1:timeConstant "Seconds" .
 
-<m0:blood_pressure_control:Feedback_RAAS> a m2:Feedback ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:Feedback_RAAS> a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Feedback> ;
     rdfs:label "RAAS Negative Feedback Loop" ;
     rdfs:comment "Angiotensin II inhibits renin secretion (short-loop feedback)" ;
     ns1:effector "Renin secretion" ;
@@ -149,10 +150,10 @@
     ns1:sensor "Juxtaglomerular cells (detect Ang II concentration)" ;
     ns1:timeConstant "Minutes to hours" .
 
-<m0:blood_pressure_control:Flow_Multi> a m2:Flow ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:Flow_Multi> a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Flow> ;
     rdfs:label "Multi-Scale Flows in BP Control" ;
-    rdfs:comment "Blood flow, hormonal flux, renal filtration, and intercompartmental fluid exchange" ;
     m3:asfid_dimension "Flow" ;
+    rdfs:comment "Blood flow, hormonal flux, renal filtration, and intercompartmental fluid exchange" ;
     ns1:bloodFlow [ ] ;
     ns1:energyFlow "ATP consumption for cardiac work, ion pumps (Na-K-ATPase)" ;
     ns1:hormonalFlux "ADH (hypothalamus → kidney, vessels)",
@@ -164,7 +165,7 @@
         "Vascular ↔ Interstitial (Starling forces)" ;
     ns1:renalFlux [ ] .
 
-<m0:blood_pressure_control:Hierarchy_Temporal> a m2:Hierarchy ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:Hierarchy_Temporal> a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Hierarchy> ;
     rdfs:label "Temporal Hierarchy of Control Mechanisms" ;
     rdfs:comment "Three-tier hierarchy based on response timescales" ;
     ns1:dominance "Slow mechanisms (renal) dominate long-term BP control (Guyton's thesis)" ;
@@ -173,7 +174,7 @@
     ns1:tier2_medium [ ] ;
     ns1:tier3_slow [ ] .
 
-<m0:blood_pressure_control:Homeostasis_BP> a m2:Homeostasis ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:Homeostasis_BP> a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Homeostasis> ;
     rdfs:label "Blood Pressure Homeostasis" ;
     rdfs:comment "Maintenance of stable arterial pressure despite internal/external perturbations" ;
     ns1:controlledVariable "Mean Arterial Pressure (MAP)" ;
@@ -189,10 +190,10 @@
         "Long-term: Renal pressure-natriuresis" ;
     ns1:setPoint "~93 mmHg (MAP = diastolic + 1/3 pulse pressure)" .
 
-<m0:blood_pressure_control:Information_Multi> a m2:Signal ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:Information_Multi> a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Signal> ;
     rdfs:label "Multi-Modal Information Flow" ;
-    rdfs:comment "Neural, hormonal, and mechanical signaling for blood pressure regulation" ;
     m3:asfid_dimension "Information" ;
+    rdfs:comment "Neural, hormonal, and mechanical signaling for blood pressure regulation" ;
     ns1:feedbackLoopCount 5 ;
     ns1:feedbackTypes "Negative: ANP response (volume ↑ → ANP ↑ → natriuresis ↑)",
         "Negative: Ang II on renin (Ang II ↑ → renin ↓)",
@@ -205,7 +206,7 @@
     ns1:neuralSignaling [ ] ;
     ns1:primarySignal "Arterial pressure (sensed by baroreceptors)" .
 
-<m0:blood_pressure_control:RAAS_Effector> a ns1:EffectorSystem ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:RAAS_Effector> a ns1:EffectorSystem ;
     rdfs:label "Renin-Angiotensin-Aldosterone System (RAAS)" ;
     rdfs:comment "Hormonal cascade controlling blood volume and vasoconstriction" ;
     ns1:clinicalSignificance "Primary target for antihypertensive therapy" ;
@@ -222,7 +223,7 @@
         "Aldosterone antagonists" ;
     ns1:timescale "minutes to hours" .
 
-<m0:blood_pressure_control:Redundancy_System> a m2:Redundancy ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:Redundancy_System> a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Redundancy> ;
     rdfs:label "Multi-Effector Redundancy" ;
     rdfs:comment "Five parallel systems provide robustness against component failure" ;
     ns1:clinicalImplication "Therapeutic blockade of one system often incompletely controls BP (need combination therapy)" ;
@@ -235,10 +236,10 @@
         "RAAS",
         "Sympathetic" .
 
-<m0:blood_pressure_control:Structure_Network> a m2:Network ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:Structure_Network> a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Network> ;
     rdfs:label "5-Effector Convergent Network" ;
-    rdfs:comment "Parallel effector systems converging on single controlled variable (arterial pressure)" ;
     m3:asfid_dimension "Structure" ;
+    rdfs:comment "Parallel effector systems converging on single controlled variable (arterial pressure)" ;
     ns1:anatomicalComponents "Adrenal glands (hormones)",
         "Baroreceptors (sensory)",
         "Blood vessels (resistance)",
@@ -250,7 +251,7 @@
     ns1:networkTopology "5 → 1 convergent" ;
     ns1:redundancyLevel "High (5 parallel systems provide robustness)" .
 
-<m0:blood_pressure_control:Sympathetic_Effector> a ns1:EffectorSystem ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:Sympathetic_Effector> a ns1:EffectorSystem ;
     rdfs:label "Sympathetic Nervous System" ;
     rdfs:comment "Rapid neural reflex modulating heart rate and vascular tone" ;
     ns1:adaptation "Baroreceptor resetting in chronic hypertension (loss of reflex buffering)" ;
@@ -268,7 +269,7 @@
         "Central sympatholytics" ;
     ns1:timescale "seconds" .
 
-<m0:blood_pressure_control:System> a ns1:Poclet ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld#blood_pressure_control:System> a ns1:Poclet ;
     rdfs:label "Blood Pressure Control System" ;
     rdfs:comment "5-effector homeostatic system regulating arterial pressure" ;
     ns1:asfidScore [ ns1:asfidTotal 8.3e-01 ;

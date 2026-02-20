@@ -1,57 +1,59 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#> .
+@prefix m2: <M2_MetaConcepts.jsonld#> .
+@prefix m3: <M3_GenesisSpace.jsonld#> .
 @prefix ns1: <m1:core:> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<m0:adaptive_immune_response:AdaptiveImmuneResponse> a owl:Ontology,
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:AdaptiveImmuneResponse> a owl:Ontology,
         ns1:Poclet ;
     rdfs:label "Adaptive Immune Response Poclet" ;
+    m2:ontologyCategory "Poclet" ;
+    m3:ontologyType <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace.jsonld#Poclet> ;
     dcterms:created "2026-01-24" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
     rdfs:comment "TSCG analysis of adaptive immune system as Network with Orchestrator pattern. Features 4-pole cellular architecture, rich mediator layer (cytokines, antibodies, complement), and spatial organization via lymphoid environment." ;
-    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld" ;
+    owl:imports "M1_CoreConcepts.jsonld",
+        "M1_extensions/biology/M1_Biology.jsonld",
+        "M2_MetaConcepts.jsonld",
+        "M3_GenesisSpace.jsonld" ;
     owl:versionInfo "1.0.0" ;
-    m2:ontologyCategory "Poclet" ;
     ns1:asfidScoring [ ] ;
     ns1:pocletCharacteristics [ ] .
 
-<m0:adaptive_immune_response:AdaptiveImmuneSystem> a owl:NamedIndividual,
-        m2:System ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:AdaptiveImmuneSystem> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#System> ;
     rdfs:label "Adaptive Immune System" ;
-    rdfs:comment "The focal system - vertebrate adaptive immunity with antigen specificity and memory" ;
     m2:hasBoundary "m0:adaptive_immune_response:InnateBoundary" ;
     m2:hasEnvironment "m0:adaptive_immune_response:LymphoidOrgans" ;
-    m2:hasTensorFormula "S⊗F" .
+    m2:hasTensorFormula "S⊗F" ;
+    rdfs:comment "The focal system - vertebrate adaptive immunity with antigen specificity and memory" .
 
-<m0:adaptive_immune_response:CellularNetwork> a owl:NamedIndividual,
-        m2:Network ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:CellularNetwork> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Network> ;
     rdfs:label "Immune Cell Interaction Network" ;
-    rdfs:comment "Network structure of cellular poles with T CD4+ as central orchestrator hub" ;
     m2:hasNode "m0:adaptive_immune_response:Pole_APC",
         "m0:adaptive_immune_response:Pole_BCell",
         "m0:adaptive_immune_response:Pole_TCD4",
         "m0:adaptive_immune_response:Pole_TCD8" ;
     m2:hasTensorFormula "S⊗I⊗F" ;
     m2:hasTopology "Star topology with CD4+ as hub" ;
-    m2:orchestrator "m0:adaptive_immune_response:Pole_TCD4" .
+    m2:orchestrator "m0:adaptive_immune_response:Pole_TCD4" ;
+    rdfs:comment "Network structure of cellular poles with T CD4+ as central orchestrator hub" .
 
-<m0:adaptive_immune_response:InnateBoundary> a owl:NamedIndividual,
-        m2:Boundary ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:InnateBoundary> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Boundary> ;
     rdfs:label "Boundary: Innate-Adaptive Interface" ;
-    rdfs:comment "Conceptual boundary distinguishing adaptive from innate immunity. Complement system mediates this interface." ;
     m2:boundaryType "Functional distinction" ;
     m2:distinguishingFeatures "Adaptive: Antigen specificity via clonal selection",
         "Adaptive: Immunological memory",
         "Innate: Germline-encoded pattern recognition",
         "Innate: No memory (immediate response)" ;
-    m2:interfaceMechanism "Complement system (Mediator 4) bridges both systems" .
+    m2:interfaceMechanism "Complement system (Mediator 4) bridges both systems" ;
+    rdfs:comment "Conceptual boundary distinguishing adaptive from innate immunity. Complement system mediates this interface." .
 
-<m0:adaptive_immune_response:KeyInsights> a owl:NamedIndividual ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:KeyInsights> a owl:NamedIndividual ;
     rdfs:label "Key TSCG Insights" ;
     m2:insights "Cascade Amplification: Complement mediator provides exponential signal amplification",
         "Environment as Enabler: Lymphoid organs are not functional poles but probability amplifiers for rare interactions",
@@ -59,12 +61,12 @@
         "Mediator-Rich: System relies on indirect communication - no direct pole-to-pole contact in most cases",
         "Orchestrator Pattern: CD4+ T cell is not just another pole but THE coordination hub - HIV/AIDS validates this",
         "Two-Signal Paradigm: Safety mechanism (prevents autoimmunity) modeled as Threshold metaconcept" ;
-    m2:validationStrength "Very strong - CD4+ essentiality demonstrated by real pathology (AIDS), not theoretical speculation" .
+    m2:validationStrength "Very strong - CD4+ essentiality demonstrated by real pathology (AIDS), not theoretical speculation" ;
+    m3:ontologyType <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace.jsonld#Poclet> .
 
-<m0:adaptive_immune_response:LymphoidOrgans> a owl:NamedIndividual,
-        m2:Environment ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:LymphoidOrgans> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Environment> ;
     rdfs:label "Environment: Lymphoid Organs" ;
-    rdfs:comment "Spatial coordination platform providing organized microenvironments for rare cell-cell interactions. NOT a functional pole but an enabling structure." ;
     m2:criticalFunction "Increases probability of rare APC-T cell encounters (1 in 10^5 cells specific for given antigen)" ;
     m2:fiDecomposition [ ] ;
     m2:hasTensorFormula "F⊗I" ;
@@ -75,12 +77,12 @@
     m2:organExamples "Lymph nodes (secondary lymphoid organs)",
         "Peyer's patches (gut-associated lymphoid tissue)",
         "Spleen (filters blood-borne antigens)",
-        "Thymus (T cell maturation, primary lymphoid)" .
+        "Thymus (T cell maturation, primary lymphoid)" ;
+    rdfs:comment "Spatial coordination platform providing organized microenvironments for rare cell-cell interactions. NOT a functional pole but an enabling structure." .
 
-<m0:adaptive_immune_response:Mediator_Antibodies> a owl:NamedIndividual,
-        m2:Mediator ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:Mediator_Antibodies> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Mediator> ;
     rdfs:label "Mediator 3: Antibodies (Immunoglobulins)" ;
-    rdfs:comment "B cell products mediating pathogen neutralization and immune effector recruitment" ;
     m2:fisDecomposition [ ] ;
     m2:functions "ADCC (antibody-dependent cellular cytotoxicity)",
         "Complement activation",
@@ -92,12 +94,12 @@
         "IgG (secondary response, most abundant)",
         "IgM (primary response, pentameric)" ;
     m2:mediatorType "Secreted recognition molecules" ;
-    m2:producer "m0:adaptive_immune_response:Pole_BCell" .
+    m2:producer "m0:adaptive_immune_response:Pole_BCell" ;
+    rdfs:comment "B cell products mediating pathogen neutralization and immune effector recruitment" .
 
-<m0:adaptive_immune_response:Mediator_Complement> a owl:NamedIndividual,
-        m2:Mediator ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:Mediator_Complement> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Mediator> ;
     rdfs:label "Mediator 4: Complement System" ;
-    rdfs:comment "Cascade amplification system bridging innate and adaptive immunity. Proteins C1-C9 forming enzymatic cascade." ;
     m2:dualRole [ ] ;
     m2:fisDecomposition [ ] ;
     m2:functions "Direct lysis via MAC formation",
@@ -108,12 +110,12 @@
     m2:mediatorType "Enzymatic cascade amplifier" ;
     m2:pathways "Alternative (direct pathogen surface)",
         "Classical (antibody-activated)",
-        "Lectin (mannose-binding lectin)" .
+        "Lectin (mannose-binding lectin)" ;
+    rdfs:comment "Cascade amplification system bridging innate and adaptive immunity. Proteins C1-C9 forming enzymatic cascade." .
 
-<m0:adaptive_immune_response:Mediator_Cytokines> a owl:NamedIndividual,
-        m2:Mediator ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:Mediator_Cytokines> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Mediator> ;
     rdfs:label "Mediator 1: Cytokines" ;
-    rdfs:comment "Primary communication molecules - enable indirect signaling between cellular poles. Predominantly secreted by CD4+ T orchestrator." ;
     m2:examples "IFN-γ (Th1 activation, macrophage activation)",
         "IL-10 (anti-inflammatory, Treg)",
         "IL-2 (T cell proliferation)",
@@ -122,50 +124,51 @@
     m2:fisDecomposition [ ] ;
     m2:hasTensorFormula "F⊗I⊗S" ;
     m2:mediatorType "Soluble molecular messengers" ;
-    m2:primarySource "m0:adaptive_immune_response:Pole_TCD4" .
+    m2:primarySource "m0:adaptive_immune_response:Pole_TCD4" ;
+    rdfs:comment "Primary communication molecules - enable indirect signaling between cellular poles. Predominantly secreted by CD4+ T orchestrator." .
 
-<m0:adaptive_immune_response:Mediator_MHCTCR> a owl:NamedIndividual,
-        m2:Mediator ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:Mediator_MHCTCR> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Mediator> ;
     rdfs:label "Mediator 2: MHC-TCR Interface" ;
-    rdfs:comment "Molecular interface enabling APC-T cell communication via antigen presentation" ;
     m2:activationModel "Two-signal paradigm: Signal 1 (TCR-MHC) + Signal 2 (co-stimulation B7-CD28)" ;
     m2:fisDecomposition [ ] ;
     m2:hasTensorFormula "F⊗I⊗S" ;
     m2:interactionPairs "MHC-I-peptide → TCR (CD8+ T cells)",
         "MHC-II-peptide → TCR (CD4+ T cells)" ;
-    m2:mediatorType "Molecular recognition interface" .
+    m2:mediatorType "Molecular recognition interface" ;
+    rdfs:comment "Molecular interface enabling APC-T cell communication via antigen presentation" .
 
-<m0:adaptive_immune_response:MetaconceptInventory> a owl:NamedIndividual ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:MetaconceptInventory> a owl:NamedIndividual ;
     rdfs:label "Metaconcept Mobilization Summary" ;
     m2:architecturalPattern "Network with Central Orchestrator + Rich Mediator Layer + Spatial Environment" ;
     m2:metaconceptUsage [ ] ;
-    m2:totalMetaconcepts 8 .
+    m2:totalMetaconcepts 8 ;
+    m3:ontologyType <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace.jsonld#Poclet> .
 
-<m0:adaptive_immune_response:Pole_APC> a owl:NamedIndividual,
-        m2:Pole ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:Pole_APC> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Pole> ;
     rdfs:label "Pole 1: Antigen-Presenting Cell (APC)" ;
-    rdfs:comment "Initiating pole - captures, processes, presents antigen via MHC. Examples: macrophages, dendritic cells." ;
     m2:asfidDecomposition [ ] ;
     m2:cellularExamples "B cells (can also present)",
         "Dendritic cells (professional APCs)",
         "Macrophages" ;
     m2:hasTensorFormula "S⊗I⊗A" ;
-    m2:poleRole "Initiation and information presentation" .
+    m2:poleRole "Initiation and information presentation" ;
+    rdfs:comment "Initiating pole - captures, processes, presents antigen via MHC. Examples: macrophages, dendritic cells." .
 
-<m0:adaptive_immune_response:Pole_BCell> a owl:NamedIndividual,
-        m2:Pole ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:Pole_BCell> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Pole> ;
     rdfs:label "Pole 4: B Lymphocyte" ;
-    rdfs:comment "Humoral immunity pole - produces neutralizing and opsonizing antibodies. Requires T helper assistance for most antigens." ;
     m2:activationDependency "T-dependent antigens require CD4+ T cell help; T-independent antigens bypass this" ;
     m2:asfidDecomposition [ ] ;
     m2:effectorProduct "Antibodies (immunoglobulins)" ;
     m2:hasTensorFormula "S⊗I⊗A" ;
-    m2:poleRole "Antibody production (humoral immunity)" .
+    m2:poleRole "Antibody production (humoral immunity)" ;
+    rdfs:comment "Humoral immunity pole - produces neutralizing and opsonizing antibodies. Requires T helper assistance for most antigens." .
 
-<m0:adaptive_immune_response:Pole_TCD4> a owl:NamedIndividual,
-        m2:Pole ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:Pole_TCD4> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Pole> ;
     rdfs:label "Pole 2: Helper T Lymphocyte (CD4+) - ORCHESTRATOR" ;
-    rdfs:comment "Central coordination pole. Orchestrates entire adaptive response via cytokine secretion patterns. Absolute essentiality demonstrated by HIV/AIDS." ;
     m2:asfidDecomposition [ ] ;
     m2:criticalEssentiality [ ] ;
     m2:hasTensorFormula "S⊗I⊗A" ;
@@ -174,49 +177,50 @@
     m2:subtypes "Th1 (cellular immunity, IFN-γ production)",
         "Th17 (inflammatory response, IL-17 production)",
         "Th2 (humoral immunity, IL-4 production)",
-        "Treg (regulatory, IL-10/TGF-β production)" .
+        "Treg (regulatory, IL-10/TGF-β production)" ;
+    rdfs:comment "Central coordination pole. Orchestrates entire adaptive response via cytokine secretion patterns. Absolute essentiality demonstrated by HIV/AIDS." .
 
-<m0:adaptive_immune_response:Pole_TCD8> a owl:NamedIndividual,
-        m2:Pole ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:Pole_TCD8> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Pole> ;
     rdfs:label "Pole 3: Cytotoxic T Lymphocyte (CD8+)" ;
-    rdfs:comment "Cellular destruction pole - eliminates infected or cancerous cells. Often activated via T helper coordination." ;
     m2:activationDependency "Often requires CD4+ T cell help for full activation" ;
     m2:asfidDecomposition [ ] ;
     m2:hasTensorFormula "S⊗I⊗A" ;
-    m2:poleRole "Cell-mediated cytotoxicity" .
+    m2:poleRole "Cell-mediated cytotoxicity" ;
+    rdfs:comment "Cellular destruction pole - eliminates infected or cancerous cells. Often activated via T helper coordination." .
 
-<m0:adaptive_immune_response:Trigger_APC_Recognition> a owl:NamedIndividual,
-        m2:Trigger ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:Trigger_APC_Recognition> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Trigger> ;
     rdfs:label "Trigger 1: Antigen Recognition by APC" ;
-    rdfs:comment "Initiating event - APC captures pathogen or antigen" ;
     m2:diDecomposition [ ] ;
     m2:hasTensorFormula "D⊗I" ;
     m2:receptors "C-type lectin receptors",
         "Scavenger receptors",
-        "TLRs (Toll-like receptors)" .
+        "TLRs (Toll-like receptors)" ;
+    rdfs:comment "Initiating event - APC captures pathogen or antigen" .
 
-<m0:adaptive_immune_response:Trigger_BCR_Engagement> a owl:NamedIndividual,
-        m2:Trigger ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:Trigger_BCR_Engagement> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Trigger> ;
     rdfs:label "Trigger 3: B Cell Receptor Engagement" ;
-    rdfs:comment "B cell activation via antigen binding to BCR" ;
     m2:diDecomposition [ ] ;
     m2:hasTensorFormula "D⊗I" ;
     m2:mechanismTypes "T-dependent activation (requires CD4+ T cell help)",
-        "T-independent activation (polysaccharide antigens, no T help needed)" .
+        "T-independent activation (polysaccharide antigens, no T help needed)" ;
+    rdfs:comment "B cell activation via antigen binding to BCR" .
 
-<m0:adaptive_immune_response:Trigger_Complement_Initiation> a owl:NamedIndividual,
-        m2:Trigger ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:Trigger_Complement_Initiation> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Trigger> ;
     rdfs:label "Trigger 4: Complement Cascade Initiation" ;
-    rdfs:comment "Activation of complement system via classical pathway" ;
     m2:diDecomposition [ ] ;
     m2:hasTensorFormula "D⊗I" ;
-    m2:note "Also alternative and lectin pathways, but classical is most relevant for adaptive immunity" .
+    m2:note "Also alternative and lectin pathways, but classical is most relevant for adaptive immunity" ;
+    rdfs:comment "Activation of complement system via classical pathway" .
 
-<m0:adaptive_immune_response:Trigger_TCR_Activation> a owl:NamedIndividual,
-        m2:Trigger ;
+<https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld#adaptive_immune_response:Trigger_TCR_Activation> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Trigger> ;
     rdfs:label "Trigger 2: TCR Activation" ;
-    rdfs:comment "T cell activation via MHC-antigen complex recognition" ;
     m2:activationModel [ ] ;
     m2:diDecomposition [ ] ;
-    m2:hasTensorFormula "D⊗I" .
+    m2:hasTensorFormula "D⊗I" ;
+    rdfs:comment "T cell activation via MHC-antigen complex recognition" .
 

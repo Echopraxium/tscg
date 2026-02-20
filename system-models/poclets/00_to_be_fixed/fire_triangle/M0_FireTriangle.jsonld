@@ -26,7 +26,12 @@
       "rdfs:label": "Fire Triangle (Poclet)",
       "rdfs:comment": "Minimal yet complete system representation of combustion. Demonstrates all 5 ASFID dimensions and mobilizes 22 M2 metaconcepts. Canonical example for TSCG framework validation.",
       "dcterms:created": "2026-01-17",
-      "dcterms:creator": "Echopraxium with collaboration of Claude AI Pro",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:changelog": [
+        "2026-02-20: Fixed dcterms:creator label; standardized oriveAnalysis → revoi; corrected Heat @type (m0:Energy → m1:chemistry:Energy); fixed mapSpace to use REVOI basis; corrected metaconcept count to 22/58",
+        "2026-01-17: Added ASFID/REVOI epistemic gap analysis and alternative observer perspectives",
+        "2026-01-17: Initial creation of M0_FireTriangle poclet with full TSCG framework integration"
+      ],
       "m0:fire_triangle:pocletType": "Composite",
       "m0:fire_triangle:domain": "Chemistry",
       "m0:fire_triangle:completeness": "All ASFID dimensions present",
@@ -60,22 +65,22 @@
           "rdfs:label": "Oxidizer (Comburant)",
           "m0:fire_triangle:role": "Electron acceptor",
           "m0:fire_triangle:function": "Enables oxidation reaction",
-          "m0:fire_triangle:primaryExample": "Oâ‚‚ (atmospheric oxygen)",
+          "m0:fire_triangle:primaryExample": "O\u2082 (atmospheric oxygen)",
           "m0:fire_triangle:alternativeOxidizers": [
-            "Clâ‚‚",
-            "Fâ‚‚",
-            "ClOâ‚„â»",
-            "NOâ‚ƒâ»"
+            "Cl\u2082",
+            "F\u2082",
+            "ClO\u2084\u207b",
+            "NO\u2083\u207b"
           ],
           "m0:fire_triangle:concentration": "Typically > 16% in air for sustained combustion",
           "m0:fire_triangle:asfidContribution": {
-            "F": "Oâ‚‚ flow from environment",
+            "F": "O\u2082 flow from environment",
             "D": "Reaction dynamics (oxidation rate)"
           }
         },
         {
           "@id": "m0:fire_triangle:Heat",
-          "@type": "m0:Energy",
+          "@type": "m1:chemistry:Energy",
           "rdfs:label": "Heat (Activation Energy)",
           "m0:fire_triangle:role": "Activation threshold",
           "m0:fire_triangle:function": "Initiates and sustains reaction above ignition temperature",
@@ -95,10 +100,10 @@
         }
       ],
       "m0:fire_triangle:synergyPrinciple": {
-        "formula": "Fuel âŠ• Oâ‚‚ âŠ• Heat â†’ Fire (emergent)",
+        "formula": "Fuel \u2295 O\u2082 \u2295 Heat \u2192 Fire (emergent)",
         "description": "All three components required simultaneously",
         "emergentProperty": "Flame (self-sustaining exothermic reaction)",
-        "nonLinearity": "1 + 1 + 1 â‰  3, but = Fire (qualitative emergence)",
+        "nonLinearity": "1 + 1 + 1 \u2260 3, but = Fire (qualitative emergence)",
         "removal": "Eliminating ANY component stops combustion"
       },
       "m0:fire_triangle:constraints": [
@@ -109,7 +114,7 @@
         },
         {
           "type": "Concentration",
-          "parameter": "Oâ‚‚",
+          "parameter": "O\u2082",
           "condition": "> 16% (typical for air)"
         },
         {
@@ -127,20 +132,21 @@
         "name": "Combustion",
         "type": "m1:chemistry:Combustion",
         "trigger": "Heat exceeds ignition threshold (m2:Trigger)",
-        "mechanism": "Fuel vaporization â†’ Mixing with Oâ‚‚ â†’ Oxidation â†’ Heat + Light + Products",
+        "mechanism": "Fuel vaporization \u2192 Mixing with O\u2082 \u2192 Oxidation \u2192 Heat + Light + Products",
         "products": [
-          "COâ‚‚",
-          "Hâ‚‚O",
+          "CO\u2082",
+          "H\u2082O",
           "Heat",
           "Light",
           "Ash/Smoke (incomplete combustion)"
         ],
-        "energyBalance": "Exothermic (Î”H < 0)",
+        "energyBalance": "Exothermic (\u0394H < 0)",
         "selfSustaining": "Yes (positive feedback loop)"
       },
       "m0:fire_triangle:territorySpace": {
         "description": "Fire as observed phenomenon",
         "observer": "Human with standard scientific instrumentation",
+        "basis": "ASFID (Eagle Eye)",
         "asfidState": {
           "A": 0.85,
           "S": 0.7,
@@ -148,49 +154,50 @@
           "I": 0.65,
           "D": 0.75
         },
-        "stateVector": "|Î©_fireâŸ© = 0.85|AâŸ© + 0.70|SâŸ© + 0.90|FâŸ© + 0.65|IâŸ© + 0.75|DâŸ©",
-        "norm": 1.62,
+        "stateVector": "|\u03a9_fire\u27e9 = 0.85|A\u27e9 + 0.70|S\u27e9 + 0.90|F\u27e9 + 0.65|I\u27e9 + 0.75|D\u27e9",
+        "norm": 1.734,
         "observables": [
           "Flame (visible light emission)",
           "Heat (IR radiation, temperature gradient)",
           "Sound (crackling, roaring)",
-          "Gases (COâ‚‚, Hâ‚‚O, smoke)",
+          "Gases (CO\u2082, H\u2082O, smoke)",
           "Consumption (fuel disappearance)"
         ]
       },
       "m0:fire_triangle:mapSpace": {
         "description": "Fire Triangle as theoretical model",
         "observer": "Western scientist (modern)",
-        "asfidState": {
-          "A": 0.75,
-          "S": 0.9,
-          "F": 0.6,
-          "I": 0.8,
-          "D": 0.5
+        "basis": "REVOI (Sphinx Eye)",
+        "reviState": {
+          "R": 0.9,
+          "E": 0.7,
+          "V": 0.95,
+          "O": 0.8,
+          "I": 0.9
         },
-        "stateVector": "|M_triangleâŸ© = 0.75|AâŸ© + 0.90|SâŸ© + 0.60|FâŸ© + 0.80|IâŸ© + 0.50|DâŸ©",
-        "norm": 1.56,
+        "stateVector": "|M_triangle\u27e9_REVOI = 0.90|R\u27e9 + 0.70|E\u27e9 + 0.95|V\u27e9 + 0.80|O\u27e9 + 0.90|I\u27e9",
+        "norm": 1.911,
         "representation": {
           "geometry": "Equilateral triangle (ideal)",
           "vertices": [
             "Fuel",
-            "Oâ‚‚",
+            "O\u2082",
             "Heat"
           ],
           "edges": [
-            "Fuel-Oâ‚‚ interaction",
-            "Oâ‚‚-Heat interaction",
+            "Fuel-O\u2082 interaction",
+            "O\u2082-Heat interaction",
             "Heat-Fuel interaction"
           ],
           "center": "Fire (emergent)"
         },
-        "symbolism": "3-sided shape = 3 essential factors (remove any â†’ no fire)"
+        "symbolism": "3-sided shape = 3 essential factors (remove any \u2192 no fire)"
       },
       "m0:fire_triangle:epistemicGap": {
-        "formula": "Î”Î˜ = â€–|Î©_fireâŸ© - |M_triangleâŸ©â€–",
+        "formula": "\u0394\u0398 = \u2016|\u03a9_fire\u27e9 - |M_triangle\u27e9\u2016",
         "deltaVector": "(+0.10, -0.20, +0.30, -0.15, +0.25)",
         "norm": 0.474,
-        "interpretation": "Moderate gap (0 < Î”Î˜ < 0.5)",
+        "interpretation": "Moderate gap (0 < \u0394\u0398 < 0.5)",
         "assessment": "Model reasonably good - captures essence but simplifies reality",
         "majorDivergences": [
           {
@@ -200,27 +207,27 @@
           },
           {
             "dimension": "F (Flow)",
-            "divergence": "+0.30",
+            "divergence": 0.3,
             "reason": "Real fire = massive flows (gases, heat); Model = conceptual flows"
           },
           {
             "dimension": "D (Dynamics)",
-            "divergence": "+0.25",
+            "divergence": 0.25,
             "reason": "Real fire = rapid, chaotic dynamics; Model = static representation"
           }
         ]
       },
-      "m0:fire_triangle:oriveAnalysis": {
-        "description": "Sphinx Eye evaluation of Fire Triangle Map quality (ORIVE Map-Space)",
-        "perspective": "Philosophical interpretation using ORIVE basis",
-        "oriveState": {
-          "O": 0.8,
+      "m0:fire_triangle:revoi": {
+        "description": "Sphinx Eye evaluation of Fire Triangle Map quality (REVOI Map-Space)",
+        "perspective": "Philosophical interpretation using REVOI basis",
+        "reviState": {
           "R": 0.9,
-          "I": 0.9,
+          "E": 0.7,
           "V": 0.95,
-          "E": 0.7
+          "O": 0.8,
+          "I": 0.9
         },
-        "stateVector": "|M_triangleâŸ©_ORIVE = 0.80|OâŸ© + 0.90|RâŸ© + 0.90|IâŸ© + 0.95|VâŸ© + 0.70|EâŸ©",
+        "stateVector": "|M_triangle\u27e9_REVOI = 0.90|R\u27e9 + 0.70|E\u27e9 + 0.95|V\u27e9 + 0.80|O\u27e9 + 0.90|I\u27e9",
         "dimensionInterpretations": [
           {
             "dimension": "O (Observability)",
@@ -243,27 +250,27 @@
           {
             "dimension": "V (Verifiability)",
             "coefficient": 0.95,
-            "interpretation": "Extremely verifiable - Popper gold standard. Falsifiable prediction: 'Remove ANY component â†’ fire stops.' Testable experimentally in seconds. Has been verified millions of times.",
-            "evidence": "Fire extinguisher mechanisms (remove Oâ‚‚, Heat, or Fuel), controlled experiments, everyday observation (blow out candle â†’ remove Oâ‚‚ â†’ fire stops)"
+            "interpretation": "Extremely verifiable - Popper gold standard. Falsifiable prediction: 'Remove ANY component \u2192 fire stops.' Testable experimentally in seconds. Has been verified millions of times.",
+            "evidence": "Fire extinguisher mechanisms (remove O\u2082, Heat, or Fuel), controlled experiments, everyday observation (blow out candle \u2192 remove O\u2082 \u2192 fire stops)"
           },
           {
             "dimension": "E (Evolvability)",
             "coefficient": 0.7,
             "interpretation": "Moderately evolvable - Model has been extended to Fire Tetrahedron (added 4th component: Chain Reaction) for more complete combustion theory. However, Triangle remains dominant in pedagogy due to simplicity.",
-            "evidence": "Triangle â†’ Tetrahedron evolution demonstrates revisability, but Triangle persists in basic training"
+            "evidence": "Triangle \u2192 Tetrahedron evolution demonstrates revisability, but Triangle persists in basic training"
           }
         ],
-        "overallAssessment": "Excellent Map - High ORIVE across all dimensions. Fire Triangle is paradigmatic example of effective scientific model: observable, representable, shareable, testable, and evolvable.",
-        "mapQuality": "ORIVE_mean = 0.85 â†’ Very high-quality Map",
+        "overallAssessment": "Excellent Map - High REVOI across all dimensions. Fire Triangle is paradigmatic example of effective scientific model: observable, representable, shareable, testable, and evolvable.",
+        "mapQuality": "REVOI_mean = 0.85 \u2192 Very high-quality Map",
         "comparisonToASFID": {
-          "note": "ASFID measures Territory (fire phenomenon), ORIVE measures Map (Triangle model). Both high values but different spaces.",
-          "territoryASFID": "(0.85, 0.70, 0.90, 0.65, 0.75) - Physical fire",
-          "mapORIVE": "(0.80, 0.90, 0.90, 0.95, 0.70) - Triangle model",
-          "mappingF": "Unknown - relationship between ASFID and ORIVE to be explored empirically"
+          "note": "ASFID measures Territory (fire phenomenon), REVOI measures Map (Triangle model). Both high values but different spaces.",
+          "territoryASFID": "(A:0.85, S:0.70, F:0.90, I:0.65, D:0.75) - Physical fire",
+          "mapREVOI": "(R:0.90, E:0.70, V:0.95, O:0.80, I:0.90) - Triangle model",
+          "mappingF": "Unknown - relationship between ASFID and REVOI to be explored empirically"
         },
         "sphinxRiddle": {
           "question": "What has three legs but cannot walk, three sides but is not a shape, and dies when you remove any one of its parts?",
-          "answer": "Fire Triangle - A model that represents a process, not a geometric object. Remove Fuel, Oâ‚‚, or Heat â†’ fire stops (system collapses).",
+          "answer": "Fire Triangle - A model that represents a process, not a geometric object. Remove Fuel, O\u2082, or Heat \u2192 fire stops (system collapses).",
           "tradition": "Sphinx tradition of revealing truth through enigma"
         }
       },
@@ -309,30 +316,30 @@
         "criticalMetaconcepts": [
           {
             "name": "Component",
-            "role": "Identifies Fuel, Oâ‚‚, Heat as elementary parts",
-            "formula": "SâŠ—I",
+            "role": "Identifies Fuel, O\u2082, Heat as elementary parts",
+            "formula": "S\u2297I",
             "status": "Required addition to M2 (gap identified)"
           },
           {
             "name": "Synergy",
             "role": "Explains emergence (1+1+1 = Fire, not 3)",
-            "formula": "AâŠ—SâŠ—I",
+            "formula": "A\u2297S\u2297I",
             "aspect": "Positive (enhancement)"
           },
           {
             "name": "Composition",
             "role": "Bottom-up assembly of components into system",
-            "formula": "SâŠ—IâŠ—A"
+            "formula": "S\u2297I\u2297A"
           },
           {
             "name": "Trigger",
             "role": "Heat initiates process when threshold crossed",
-            "formula": "DâŠ—I"
+            "formula": "D\u2297I"
           },
           {
             "name": "Process",
             "role": "Combustion as dynamic transformation",
-            "formula": "DâŠ—F"
+            "formula": "D\u2297F"
           }
         ]
       },
@@ -351,10 +358,10 @@
           },
           {
             "target": "Oxidizer",
-            "action": "Oâ‚‚ exclusion (smothering)",
+            "action": "O\u2082 exclusion (smothering)",
             "examples": [
               "Fire blanket",
-              "COâ‚‚ extinguisher",
+              "CO\u2082 extinguisher",
               "Foam",
               "Sand"
             ],
@@ -376,6 +383,7 @@
         {
           "observer": "Ant",
           "perspective": "Heat gradient danger, chemical threat",
+          "basis": "ASFID (Eagle Eye)",
           "asfidState": {
             "A": 0.9,
             "S": 0.3,
@@ -383,12 +391,13 @@
             "I": 0.4,
             "D": 0.7
           },
-          "stateVector": "|Î©_fire_antâŸ© = 0.90|AâŸ© + 0.30|SâŸ© + 0.85|FâŸ© + 0.40|IâŸ© + 0.70|DâŸ©",
+          "stateVector": "|\u03a9_fire_ant\u27e9 = 0.90|A\u27e9 + 0.30|S\u27e9 + 0.85|F\u27e9 + 0.40|I\u27e9 + 0.70|D\u27e9",
           "differences": "Higher A (danger), lower S (scale), lower I (complexity)"
         },
         {
           "observer": "IR Sensor",
           "perspective": "Thermal radiation spectrum",
+          "basis": "ASFID (Eagle Eye)",
           "asfidState": {
             "A": 0.6,
             "S": 0.4,
@@ -396,21 +405,22 @@
             "I": 0.9,
             "D": 0.5
           },
-          "stateVector": "|Î©_fire_IRâŸ© = 0.60|AâŸ© + 0.40|SâŸ© + 0.95|FâŸ© + 0.90|IâŸ© + 0.50|DâŸ©",
+          "stateVector": "|\u03a9_fire_IR\u27e9 = 0.60|A\u27e9 + 0.40|S\u27e9 + 0.95|F\u27e9 + 0.90|I\u27e9 + 0.50|D\u27e9",
           "differences": "Very high F (radiative flux), high I (spectral info), lower D (static)"
         },
         {
           "observer": "Firefighter",
           "perspective": "Operational threat model",
-          "mapState": {
-            "A": 0.85,
-            "S": 0.8,
-            "F": 0.7,
-            "I": 0.6,
-            "D": 0.75
+          "basis": "REVOI (Sphinx Eye)",
+          "reviState": {
+            "R": 0.8,
+            "E": 0.75,
+            "V": 0.85,
+            "O": 0.85,
+            "I": 0.6
           },
-          "stateVector": "|M_firefighterâŸ© = 0.85|AâŸ© + 0.80|SâŸ© + 0.70|FâŸ© + 0.60|IâŸ© + 0.75|DâŸ©",
-          "differences": "Higher A (danger), higher D (spread dynamics), less I (action-focused)"
+          "stateVector": "|M_firefighter\u27e9_REVOI = 0.80|R\u27e9 + 0.75|E\u27e9 + 0.85|V\u27e9 + 0.85|O\u27e9 + 0.60|I\u27e9",
+          "differences": "Higher A (danger focus), higher D (spread dynamics), less I (action-focused)"
         }
       ],
       "m0:fire_triangle:historicalContext": {
@@ -423,7 +433,7 @@
         "fireTetrahedron": {
           "additionalComponent": "Chemical Chain Reaction",
           "rationale": "Some fires (e.g., metal fires) sustain through radical propagation",
-          "example": "Magnesium can burn in COâ‚‚ (no Oâ‚‚ needed)"
+          "example": "Magnesium can burn in CO\u2082 (no O\u2082 needed)"
         },
         "fireSquare": {
           "additionalComponent": "Uninhibited Chemical Reaction",
@@ -466,13 +476,13 @@
         ]
       },
       "m0:fire_triangle:validation": {
-        "asfidCompleteness": "All 5 dimensions present (A, S, F, I, D) âœ…",
-        "metaconceptCoverage": "22/51 metaconcepts mobilized (43%) âœ…",
-        "minimality": "Exactly 3 components (irreducible) âœ…",
-        "emergence": "Fire is emergent property (> sum of parts) âœ…",
-        "pedagogicalValue": "Universally taught, easily understood âœ…",
-        "empiricalValidity": "Matches real combustion phenomenon âœ…",
-        "frameworkFit": "Perfect M3â†’M2â†’M1â†’M0 instantiation âœ…"
+        "asfidCompleteness": "All 5 dimensions present (A, S, F, I, D) \u2705",
+        "metaconceptCoverage": "22/58 metaconcepts mobilized (38%) \u2705",
+        "minimality": "Exactly 3 components (irreducible) \u2705",
+        "emergence": "Fire is emergent property (> sum of parts) \u2705",
+        "pedagogicalValue": "Universally taught, easily understood \u2705",
+        "empiricalValidity": "Matches real combustion phenomenon \u2705",
+        "frameworkFit": "Perfect M3\u2192M2\u2192M1\u2192M0 instantiation \u2705"
       },
       "rdfs:seeAlso": [
         "m1:chemistry:Combustion",
