@@ -1,0 +1,1042 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/",
+    "sm": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/",
+    "m0": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/symbolic-grammars/M0_IChing.jsonld#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m3": "M3_GenesisSpace.jsonld#",
+    "m2": "M2_MetaConcepts.jsonld#",
+    "m1:core": "M1_CoreConcepts.jsonld#",
+    "m1:myth": "M1_extensions/mythology/M1_Mythology.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m0:IChing",
+      "@type": [
+        "owl:Ontology"
+      ],
+      "dcterms:title": "I Ching — Book of Changes",
+      "dcterms:description": "Formal ontology of the I Ching as a SymbolicSystemGrammar. Models the binary grammar (Yin/Yang) that generates 8 trigram archetypes and 64 hexagrams via a systematic combinatorial grammar. Captures the four semantic layers (Judgment, Image, Line texts, Ten Wings) and the changing-line transformation mechanism. First instance of m3:SymbolicSystemGrammar in the TSCG framework.",
+      "dcterms:created": "2026-02-20",
+      "dcterms:modified": "2026-02-20",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "owl:versionInfo": "1.1.0",
+      "owl:imports": [
+        "M3_GenesisSpace.jsonld",
+        "M2_MetaConcepts.jsonld",
+        "M1_CoreConcepts.jsonld",
+        "M1_extensions/mythology/M1_Mythology.jsonld"
+      ],
+      "rdfs:label": "I Ching (易經) — Symbolic System Grammar",
+      "rdfs:comment": "The I Ching is a 3000-year-old Chinese divination and philosophical system. Its power lies in a minimal binary grammar (2 primitives: Yin and Yang) that generates 8 trigram archetypes and 64 hexagrams via systematic stacking. Each hexagram is a unique symbolic signature of a situation, admitting multiple legitimate interpretations. The changing-line mechanism encodes temporal dynamics — the transformation from one hexagram to another.",
+      "m3:ontologyType": {
+        "@id": "m3:SymbolicSystemGrammar"
+      },
+      "m3:semanticSignature": "finite_primitives(Yin,Yang) + combination_rules(trigram_stacking) + multiple_legitimate_interpretations(symbolic_arbitration)",
+      "m0:domain": "Symbolic divination, Chinese cosmology, comparative mythology, decision theory",
+      "m0:status": "VALIDATED",
+      "m0:grammarLevel": 3,
+      "m0:primitiveCount": 2,
+      "m0:archetypeCount": 8,
+      "m0:combinationCount": 64,
+      "m0:dynamicMechanism": "changing lines (动爻) → hexagram transformation",
+      "m0:asfidMean": 0.83,
+      "m0:revoiMean": 0.8,
+      "m0:epistemicGap": 0.38,
+      "m0:changelog": {
+        "v1.0.0": "Initial release. Full grammar specification with 2 primitives, 8 trigram archetypes, 64 hexagram combinatorial space, ASFID and REVOI analyses, M2 metaconcept activation.",
+        "v1.1.0": "Reclassified M2 candidates: (1) SymbolicArbitration → m2:Observer.validationMode attribute; (2) GenerativeExhaustion → m2:Representation.spaceCoverage=1.0 special case (M2_MetaConcepts v15.4.0). Added spaceCoverage ValueSpace reference to m0:m2_composition."
+      }
+    },
+    {
+      "@id": "m0:GrammarLevel",
+      "@type": "owl:Class",
+      "rdfs:label": "Grammar Level",
+      "rdfs:comment": "Hierarchical level within the I Ching generative grammar. Level 0 = primitives (2), Level 1 = trigrams (8), Level 2 = hexagrams (64)."
+    },
+    {
+      "@id": "m0:Primitive",
+      "@type": "owl:Class",
+      "rdfs:label": "Primitive (Elementary Line)",
+      "rdfs:comment": "The two indivisible atomic elements of the I Ching grammar: Yang (undivided line) and Yin (divided line). All higher structures are composed exclusively from these two primitives via stacking rules."
+    },
+    {
+      "@id": "m0:primitive_yang",
+      "@type": [
+        "m0:Primitive"
+      ],
+      "rdfs:label": "Yang — Undivided Line (⚊)",
+      "m0:grammarLevel": 0,
+      "m0:symbol": "⚊",
+      "m0:chineseName": "陽",
+      "m0:binaryValue": "1",
+      "m0:nature": "solid, undivided, active, creative, light",
+      "m0:cosmologicalCorrespondences": [
+        "Heaven",
+        "Sun",
+        "Fire",
+        "Male",
+        "Strength"
+      ],
+      "m0:youngForm": "Young Yang (少陽) — stable, non-changing",
+      "m0:oldForm": "Old Yang (老陽, marked ×) — unstable, changes to Yin",
+      "rdfs:comment": "Yang is the active, bright, creative primitive. In divinatory practice, coins/yarrow stalks generate Young Yang (stable) or Old Yang (changing → Yin). Old Yang marks the dynamic tension of maximum yang about to invert."
+    },
+    {
+      "@id": "m0:primitive_yin",
+      "@type": [
+        "m0:Primitive"
+      ],
+      "rdfs:label": "Yin — Divided Line (⚋)",
+      "m0:grammarLevel": 0,
+      "m0:symbol": "⚋",
+      "m0:chineseName": "陰",
+      "m0:binaryValue": "0",
+      "m0:nature": "broken, divided, receptive, yielding, dark",
+      "m0:cosmologicalCorrespondences": [
+        "Earth",
+        "Moon",
+        "Water",
+        "Female",
+        "Receptivity"
+      ],
+      "m0:youngForm": "Young Yin (少陰) — stable, non-changing",
+      "m0:oldForm": "Old Yin (老陰, marked ×) — unstable, changes to Yang",
+      "rdfs:comment": "Yin is the receptive, dark, yielding primitive. Old Yin carries the maximum yin tension about to invert into Yang, encoding the cyclical cosmology where opposites generate each other."
+    },
+    {
+      "@id": "m0:GrammarRule",
+      "@type": "owl:Class",
+      "rdfs:label": "Grammar Rule",
+      "rdfs:comment": "Formal combinatorial rule governing the construction of higher symbolic structures from lower-level elements."
+    },
+    {
+      "@id": "m0:rule_trigram_formation",
+      "@type": [
+        "m0:GrammarRule"
+      ],
+      "rdfs:label": "Trigram Formation Rule",
+      "m0:rule": "Stack 3 primitives (bottom → middle → top) to form a trigram",
+      "m0:formula": "{Yin, Yang}³ → 2³ = 8 distinct trigrams",
+      "m0:readingOrder": "bottom line first (line 1), then middle (line 2), then top (line 3)",
+      "m0:resultCount": 8,
+      "rdfs:comment": "A trigram (卦 gua) is an ordered triple of Yin/Yang lines read bottom-to-top. The 8 trigrams are the named archetypes of the I Ching grammar, each corresponding to a natural phenomenon and family role."
+    },
+    {
+      "@id": "m0:rule_hexagram_formation",
+      "@type": [
+        "m0:GrammarRule"
+      ],
+      "rdfs:label": "Hexagram Formation Rule (Main Grammar Rule)",
+      "m0:rule": "Stack 2 trigrams (lower inner + upper outer) to form a hexagram",
+      "m0:formula": "Hexagram = Trigram_lower ⊗ Trigram_upper",
+      "m0:formalExpression": "H(i,j) = T_i ⊗ T_j where i,j ∈ {1..8}, resulting in 8×8 = 64 unique hexagrams",
+      "m0:resultCount": 64,
+      "m0:coverageProperty": "exhaustive — the 64 hexagrams partition the entire 6-bit binary space {0,1}⁶",
+      "m0:readingOrder": "lower trigram = inner situation (lines 1-3), upper trigram = outer situation (lines 4-6)",
+      "m0:symmetryNote": "H(i,j) ≠ H(j,i) in general — order matters (lower=inner, upper=outer)",
+      "rdfs:comment": "The central grammar rule: any situation is representable as a combination of two trigrams. The lower trigram encodes the inner/hidden/subjective dimension; the upper trigram encodes the outer/manifest/objective dimension. This inner-outer duality is the semantic engine of hexagram interpretation."
+    },
+    {
+      "@id": "m0:rule_changing_lines",
+      "@type": [
+        "m0:GrammarRule"
+      ],
+      "rdfs:label": "Changing Lines Rule (Dynamic Transformation)",
+      "m0:rule": "Old Yang (×) → Young Yin; Old Yin (×) → Young Yang",
+      "m0:formula": "H_primary →(changing lines)→ H_derived",
+      "m0:semantics": "The primary hexagram describes the present situation; the derived hexagram describes the emerging future state",
+      "m0:tscgMapping": "δΘ(H_primary, H_derived) = epistemic gap between present Map and future Territory",
+      "m0:interpretationLayers": {
+        "zero_changing_lines": "Pure stable state — situation fully crystallized",
+        "one_changing_line": "Subtle shift — single line of tension",
+        "six_changing_lines": "Total inversion — complete transformation (special case: read derived hexagram only)"
+      },
+      "rdfs:comment": "The changing-line mechanism is the dynamic grammar of the I Ching. It transforms the static hexagram into a trajectory — from present to future — making the I Ching not just a taxonomy of 64 situations but a grammar of 64×64 = 4096 possible transitions."
+    },
+    {
+      "@id": "m0:Trigram",
+      "@type": "owl:Class",
+      "rdfs:label": "Trigram (Archetype)",
+      "rdfs:comment": "One of the 8 fundamental symbolic archetypes of the I Ching. Each trigram is a named 3-line pattern corresponding to a natural phenomenon, a family role, a body part, a compass direction, and a quality of energy. Trigrams are the reusable building blocks (archetypes) that combine to form all 64 hexagrams."
+    },
+    {
+      "@id": "m0:trigram_qian",
+      "@type": [
+        "m0:Trigram"
+      ],
+      "rdfs:label": "☰ Qian — Heaven / Creative",
+      "m0:grammarLevel": 1,
+      "m0:chineseName": "乾",
+      "m0:pinyin": "Qián",
+      "m0:symbol": "☰",
+      "m0:binaryCode": "111",
+      "m0:lines": {
+        "bottom": "⚊ Yang",
+        "middle": "⚊ Yang",
+        "top": "⚊ Yang"
+      },
+      "m0:naturalImage": "Heaven, Sky",
+      "m0:quality": "Creative, Strong, Persistent",
+      "m0:familyRole": "Father",
+      "m0:bodyPart": "Head",
+      "m0:direction": "Northwest (Fu Xi arrangement)",
+      "m0:season": "Late Autumn",
+      "m0:yangYinProfile": "pure_yang (3×Yang)",
+      "m0:archetype": "Primordial creative force, initiation, leadership, divine will",
+      "rdfs:comment": "Qian is maximum Yang — three undivided lines. Archetype of pure creative energy, heaven, the cosmic ordering principle. As inner trigram: inner strength and initiative. As outer trigram: powerful external circumstances."
+    },
+    {
+      "@id": "m0:trigram_kun",
+      "@type": [
+        "m0:Trigram"
+      ],
+      "rdfs:label": "☷ Kun — Earth / Receptive",
+      "m0:grammarLevel": 1,
+      "m0:chineseName": "坤",
+      "m0:pinyin": "Kūn",
+      "m0:symbol": "☷",
+      "m0:binaryCode": "000",
+      "m0:lines": {
+        "bottom": "⚋ Yin",
+        "middle": "⚋ Yin",
+        "top": "⚋ Yin"
+      },
+      "m0:naturalImage": "Earth, Ground",
+      "m0:quality": "Receptive, Yielding, Nourishing",
+      "m0:familyRole": "Mother",
+      "m0:bodyPart": "Abdomen",
+      "m0:direction": "Southwest",
+      "m0:season": "Late Summer",
+      "m0:yangYinProfile": "pure_yin (3×Yin)",
+      "m0:archetype": "Primordial receptive force, support, nurturing, completion through yielding",
+      "rdfs:comment": "Kun is maximum Yin — three divided lines. Archetype of pure receptive energy, earth, the cosmic sustaining principle. Complementary pole to Qian: where Qian initiates, Kun completes."
+    },
+    {
+      "@id": "m0:trigram_zhen",
+      "@type": [
+        "m0:Trigram"
+      ],
+      "rdfs:label": "☳ Zhen — Thunder / Arousing",
+      "m0:grammarLevel": 1,
+      "m0:chineseName": "震",
+      "m0:pinyin": "Zhèn",
+      "m0:symbol": "☳",
+      "m0:binaryCode": "001",
+      "m0:lines": {
+        "bottom": "⚊ Yang",
+        "middle": "⚋ Yin",
+        "top": "⚋ Yin"
+      },
+      "m0:naturalImage": "Thunder, Lightning",
+      "m0:quality": "Arousing, Initiating, Shocking",
+      "m0:familyRole": "Eldest Son",
+      "m0:bodyPart": "Foot",
+      "m0:direction": "East",
+      "m0:yangYinProfile": "yang_below (single Yang at bottom — emerging energy)",
+      "m0:archetype": "Sudden awakening, shock that initiates movement, primordial energy breaking through",
+      "rdfs:comment": "Zhen: one Yang beneath two Yin — the archetype of initiation through shock. Yang energy just emerging from below, like thunder erupting. Encodes the moment of awakening, sudden movement, the first impulse."
+    },
+    {
+      "@id": "m0:trigram_xun",
+      "@type": [
+        "m0:Trigram"
+      ],
+      "rdfs:label": "☴ Xun — Wind / Gentle",
+      "m0:grammarLevel": 1,
+      "m0:chineseName": "巽",
+      "m0:pinyin": "Xùn",
+      "m0:symbol": "☴",
+      "m0:binaryCode": "110",
+      "m0:lines": {
+        "bottom": "⚋ Yin",
+        "middle": "⚊ Yang",
+        "top": "⚊ Yang"
+      },
+      "m0:naturalImage": "Wind, Wood",
+      "m0:quality": "Gentle, Penetrating, Gradual",
+      "m0:familyRole": "Eldest Daughter",
+      "m0:bodyPart": "Thigh",
+      "m0:direction": "Southeast",
+      "m0:yangYinProfile": "yin_below (single Yin at bottom — yielding entry)",
+      "m0:archetype": "Gradual penetration, influence through gentleness, sustained gentle pressure",
+      "rdfs:comment": "Xun: two Yang above one Yin — complementary to Zhen. Where Zhen shocks, Xun penetrates gradually and persistently, like wind bending wood. Encodes gradual influence, pervasiveness, flexibility."
+    },
+    {
+      "@id": "m0:trigram_kan",
+      "@type": [
+        "m0:Trigram"
+      ],
+      "rdfs:label": "☵ Kan — Water / Abysmal",
+      "m0:grammarLevel": 1,
+      "m0:chineseName": "坎",
+      "m0:pinyin": "Kǎn",
+      "m0:symbol": "☵",
+      "m0:binaryCode": "010",
+      "m0:lines": {
+        "bottom": "⚋ Yin",
+        "middle": "⚊ Yang",
+        "top": "⚋ Yin"
+      },
+      "m0:naturalImage": "Water, Moon",
+      "m0:quality": "Dangerous, Flowing, Perseverant through difficulty",
+      "m0:familyRole": "Middle Son",
+      "m0:bodyPart": "Ear",
+      "m0:direction": "North",
+      "m0:yangYinProfile": "yang_center (Yang enclosed by Yin — hidden strength)",
+      "m0:archetype": "Hidden danger, abyss, the ordeal that must be traversed, truth enclosed in difficulty",
+      "rdfs:comment": "Kan: Yang enclosed between two Yin — like water filling a gorge, or a strong spirit trapped in dangerous circumstances. Archetype of hidden strength in perilous conditions, perseverance through the ordeal, depth."
+    },
+    {
+      "@id": "m0:trigram_li",
+      "@type": [
+        "m0:Trigram"
+      ],
+      "rdfs:label": "☲ Li — Fire / Clinging",
+      "m0:grammarLevel": 1,
+      "m0:chineseName": "離",
+      "m0:pinyin": "Lí",
+      "m0:symbol": "☲",
+      "m0:binaryCode": "101",
+      "m0:lines": {
+        "bottom": "⚊ Yang",
+        "middle": "⚋ Yin",
+        "top": "⚊ Yang"
+      },
+      "m0:naturalImage": "Fire, Sun, Lightning",
+      "m0:quality": "Bright, Clinging, Illuminating, Dependent",
+      "m0:familyRole": "Middle Daughter",
+      "m0:bodyPart": "Eye",
+      "m0:direction": "South",
+      "m0:yangYinProfile": "yin_center (Yin enclosed by Yang — soft interior, luminous exterior)",
+      "m0:archetype": "Radiance that clings to its source, clarity, beauty, dependence, the brilliance of the present moment",
+      "rdfs:comment": "Li: Yin enclosed by two Yang — the hollow yet luminous archetype. Fire clings to wood; the eye to its object. Complementary to Kan: where Kan hides strength within danger, Li reveals beauty clinging to its source. Archetype of clarity, elegance, fleeting brilliance."
+    },
+    {
+      "@id": "m0:trigram_gen",
+      "@type": [
+        "m0:Trigram"
+      ],
+      "rdfs:label": "☶ Gen — Mountain / Keeping Still",
+      "m0:grammarLevel": 1,
+      "m0:chineseName": "艮",
+      "m0:pinyin": "Gèn",
+      "m0:symbol": "☶",
+      "m0:binaryCode": "100",
+      "m0:lines": {
+        "bottom": "⚋ Yin",
+        "middle": "⚋ Yin",
+        "top": "⚊ Yang"
+      },
+      "m0:naturalImage": "Mountain",
+      "m0:quality": "Stillness, Stopping, Meditation, Boundary",
+      "m0:familyRole": "Youngest Son",
+      "m0:bodyPart": "Hand",
+      "m0:direction": "Northeast",
+      "m0:yangYinProfile": "yang_above (Yang at apex — energy contained at summit)",
+      "m0:archetype": "Stillness that holds the summit, knowing when to stop, meditation, the boundary that defines",
+      "rdfs:comment": "Gen: two Yin below one Yang — the mountain archetype. Energy concentrated at the apex, immovable. Encodes deliberate stillness, the wisdom of pause, the boundary that gives form to what is enclosed."
+    },
+    {
+      "@id": "m0:trigram_dui",
+      "@type": [
+        "m0:Trigram"
+      ],
+      "rdfs:label": "☱ Dui — Lake / Joyous",
+      "m0:grammarLevel": 1,
+      "m0:chineseName": "兌",
+      "m0:pinyin": "Duì",
+      "m0:symbol": "☱",
+      "m0:binaryCode": "011",
+      "m0:lines": {
+        "bottom": "⚊ Yang",
+        "middle": "⚊ Yang",
+        "top": "⚋ Yin"
+      },
+      "m0:naturalImage": "Lake, Marsh",
+      "m0:quality": "Joyous, Expressing, Pleasing, Open",
+      "m0:familyRole": "Youngest Daughter",
+      "m0:bodyPart": "Mouth",
+      "m0:direction": "West",
+      "m0:yangYinProfile": "yin_above (Yin at summit — open surface above strength)",
+      "m0:archetype": "Joy expressed through openness, the lake's reflective surface, pleasure, speech, exchange",
+      "rdfs:comment": "Dui: two Yang below one Yin — complementary to Gen. Where Gen concentrates at the summit, Dui opens at the summit. The lake's surface is open and reflective above solid banks. Archetype of joyful expression, communication, the pleasure of exchange."
+    },
+    {
+      "@id": "m0:TrigramPolarities",
+      "@type": "owl:Class",
+      "rdfs:label": "Trigram Polarity Pairs",
+      "rdfs:comment": "The 8 trigrams form 4 polarity pairs (nuclear opposites). Each pair shares the same binary code inverted — maximal symbolic distance within the grammar."
+    },
+    {
+      "@id": "m0:polarity_heaven_earth",
+      "@type": [
+        "m0:TrigramPolarities"
+      ],
+      "rdfs:label": "Heaven ☰ / Earth ☷ — Primary Polarity",
+      "m0:pair": [
+        "m0:trigram_qian",
+        "m0:trigram_kun"
+      ],
+      "m0:binaryCodes": "111 / 000",
+      "m0:principle": "Creative force vs. receptive sustenance — the foundational polarity of all existence"
+    },
+    {
+      "@id": "m0:polarity_thunder_wind",
+      "@type": [
+        "m0:TrigramPolarities"
+      ],
+      "rdfs:label": "Thunder ☳ / Wind ☴ — Action Polarity",
+      "m0:pair": [
+        "m0:trigram_zhen",
+        "m0:trigram_xun"
+      ],
+      "m0:binaryCodes": "001 / 110",
+      "m0:principle": "Sudden initiation vs. gradual penetration — two modes of initiating change"
+    },
+    {
+      "@id": "m0:polarity_water_fire",
+      "@type": [
+        "m0:TrigramPolarities"
+      ],
+      "rdfs:label": "Water ☵ / Fire ☲ — Substance Polarity",
+      "m0:pair": [
+        "m0:trigram_kan",
+        "m0:trigram_li"
+      ],
+      "m0:binaryCodes": "010 / 101",
+      "m0:principle": "Hidden strength in danger vs. radiant beauty clinging to source — depth vs. brilliance"
+    },
+    {
+      "@id": "m0:polarity_mountain_lake",
+      "@type": [
+        "m0:TrigramPolarities"
+      ],
+      "rdfs:label": "Mountain ☶ / Lake ☱ — Repose Polarity",
+      "m0:pair": [
+        "m0:trigram_gen",
+        "m0:trigram_dui"
+      ],
+      "m0:binaryCodes": "100 / 011",
+      "m0:principle": "Containing stillness vs. joyful openness — inward summit vs. outward surface"
+    },
+    {
+      "@id": "m0:HexagramCombination",
+      "@type": "owl:Class",
+      "rdfs:label": "Hexagram (二卦) — Symbolic Combination",
+      "rdfs:comment": "A hexagram is a unique 6-line symbolic signature formed by stacking two trigrams. 64 hexagrams = 8 × 8 exhaustive combinations. Each hexagram occupies a unique position in the 6-dimensional binary space {Yin,Yang}⁶ and receives 4 layers of traditional interpretation."
+    },
+    {
+      "@id": "m0:hexagram_grammar_table",
+      "@type": [
+        "m0:HexagramCombination"
+      ],
+      "rdfs:label": "Hexagram Generation Table (8×8 Grammar Matrix)",
+      "m0:formula": "H(lower, upper) = T_lower ⊗ T_upper",
+      "m0:generativeStructure": {
+        "dimension_1_lower": "Inner trigram (lines 1-3): inner world, subjective situation, what is hidden",
+        "dimension_2_upper": "Outer trigram (lines 4-6): outer world, objective situation, what is manifest"
+      },
+      "m0:coverageProof": "64 hexagrams = 2⁶ = complete partition of all 6-bit binary strings → exhaustive representation of any situation",
+      "m0:orderProperty": "H(T_i, T_j) ≠ H(T_j, T_i) in general — inner/outer asymmetry is semantically significant",
+      "m0:selectedExamples": [
+        {
+          "number": 1,
+          "symbol": "䷀",
+          "name": "乾 Qian — The Creative",
+          "lower": "☰ Qian (Heaven)",
+          "upper": "☰ Qian (Heaven)",
+          "binary": "111111",
+          "semantics": "Pure creative force — maximum Yang energy, initiating potential, the archetype of all beginnings"
+        },
+        {
+          "number": 2,
+          "symbol": "䷁",
+          "name": "坤 Kun — The Receptive",
+          "lower": "☷ Kun (Earth)",
+          "upper": "☷ Kun (Earth)",
+          "binary": "000000",
+          "semantics": "Pure receptive force — maximum Yin energy, devoted sustenance, completes what Heaven initiates"
+        },
+        {
+          "number": 11,
+          "symbol": "䷊",
+          "name": "泰 Tai — Peace",
+          "lower": "☰ Qian (Heaven)",
+          "upper": "☷ Kun (Earth)",
+          "binary": "111000",
+          "semantics": "Heaven below, Earth above — the two forces flow toward each other, creating harmony and flourishing"
+        },
+        {
+          "number": 12,
+          "symbol": "䷋",
+          "name": "否 Pi — Standstill",
+          "lower": "☷ Kun (Earth)",
+          "upper": "☰ Qian (Heaven)",
+          "binary": "000111",
+          "semantics": "Earth below, Heaven above — the two forces retreat from each other, creating stagnation (inversion of Tai #11)"
+        },
+        {
+          "number": 29,
+          "symbol": "䷜",
+          "name": "坎 Kan — The Abysmal (Doubled Water)",
+          "lower": "☵ Kan (Water)",
+          "upper": "☵ Kan (Water)",
+          "binary": "010010",
+          "semantics": "Danger redoubled — perseverance through repeated ordeal is the only path. Faithfulness of heart maintains integrity."
+        },
+        {
+          "number": 30,
+          "symbol": "䷝",
+          "name": "離 Li — The Clinging (Doubled Fire)",
+          "lower": "☲ Li (Fire)",
+          "upper": "☲ Li (Fire)",
+          "binary": "101101",
+          "semantics": "Clarity redoubled — luminous intelligence that clings to what is true and nourishing"
+        },
+        {
+          "number": 63,
+          "symbol": "䷾",
+          "name": "既濟 Ji Ji — After Completion",
+          "lower": "☲ Li (Fire)",
+          "upper": "☵ Kan (Water)",
+          "binary": "101010",
+          "semantics": "Water over Fire: each line is in its correct position — a rare moment of perfect order, yet containing the seeds of the next cycle"
+        },
+        {
+          "number": 64,
+          "symbol": "䷿",
+          "name": "未濟 Wei Ji — Before Completion",
+          "lower": "☵ Kan (Water)",
+          "upper": "☲ Li (Fire)",
+          "binary": "010101",
+          "semantics": "Fire over Water: each line is out of position — dynamic tension before a new order is born. The book ends here: incompletion as creative potential."
+        }
+      ],
+      "m0:note": "Hexagrams #63 and #64 are the final pair: After Completion and Before Completion. The I Ching ends with Before Completion (#64) — a profound statement that the cycle is never finished, only transformed."
+    },
+    {
+      "@id": "m0:SemanticLayer",
+      "@type": "owl:Class",
+      "rdfs:label": "Semantic Layer (Interpretation Layer)",
+      "rdfs:comment": "One of the four traditional interpretive layers applied to each hexagram. Together they constitute the interpretive grammar — the rules for extracting meaning from symbolic combinations."
+    },
+    {
+      "@id": "m0:layer_judgment",
+      "@type": [
+        "m0:SemanticLayer"
+      ],
+      "rdfs:label": "Judgment (彖辞 Tuàn Cí)",
+      "m0:scope": "Entire hexagram",
+      "m0:function": "Overall appraisal of the situation — the oracular statement attributed to King Wen (c. 1000 BCE)",
+      "m0:example": "Hexagram 1 Judgment: 'The Creative works sublime success, furthering through perseverance.'"
+    },
+    {
+      "@id": "m0:layer_image",
+      "@type": [
+        "m0:SemanticLayer"
+      ],
+      "rdfs:label": "Image (象辞 Xiàng Cí)",
+      "m0:scope": "The natural scene formed by the two trigrams",
+      "m0:function": "Metaphorical evocation — translates the trigram combination into a natural image that guides action",
+      "m0:example": "Hexagram 11 Image: 'Heaven and Earth unite — this is Peace. The ruler divides and completes the proper course of Heaven and Earth.'"
+    },
+    {
+      "@id": "m0:layer_line_texts",
+      "@type": [
+        "m0:SemanticLayer"
+      ],
+      "rdfs:label": "Line Texts (爻辞 Yáo Cí)",
+      "m0:scope": "Each of the 6 individual lines",
+      "m0:function": "Fine-grained reading — each line receives its own text; changing lines select the relevant lines",
+      "m0:activation": "Active only for changing lines in a given reading — provides specificity within the general hexagram situation"
+    },
+    {
+      "@id": "m0:layer_ten_wings",
+      "@type": [
+        "m0:SemanticLayer"
+      ],
+      "rdfs:label": "Ten Wings (十翼 Shí Yì)",
+      "m0:scope": "The entire canonical text",
+      "m0:function": "Philosophical commentary attributed to Confucius — elevates the I Ching from divination tool to cosmological philosophy",
+      "m0:content": [
+        "Great Treatise (Dazhuan × 2)",
+        "Commentary on the Judgments (× 2)",
+        "Commentary on the Images (× 2)",
+        "Explanation of the Trigrams",
+        "Sequence of Hexagrams",
+        "Miscellaneous Notes",
+        "Discussion of the Gua"
+      ]
+    },
+    {
+      "@id": "m0:ASFIDAnalysis",
+      "@type": "owl:Class",
+      "rdfs:label": "ASFID Analysis (Eagle Eye — Territory Perspective)",
+      "rdfs:comment": "Five-dimensional measurement of the I Ching as an observable symbolic system: Attractor, Structure, Flow, Information, Dynamics."
+    },
+    {
+      "@id": "m0:asfid_attractor",
+      "@type": [
+        "m0:ASFIDAnalysis"
+      ],
+      "rdfs:label": "Attractor (A)",
+      "m0:score": 0.85,
+      "m0:dominantM3": "m3:Attractor",
+      "rdfs:comment": "Each hexagram functions as a local attractor — a named stable state that 'draws' interpretive energy around a recognizable situation. The 64 attractors form a discrete dynamic space covering the full range of human situations. Changing lines create trajectories between attractors, with the derived hexagram as the next attractor. No single global attractor: the system is cyclically ergodic (all 64 states reachable from any starting hexagram via transformation).",
+      "m0:localAttractors": "64 hexagrams as named, stable symbolic states",
+      "m0:globalAttractor": "None — cyclical ergodicity (Ji Ji #63 ↔ Wei Ji #64 cycle)",
+      "m0:attractor_topology": "Discrete lattice of 64 nodes with transformation edges (changing lines)",
+      "m0:cyclic_structure": "Yin→Yang→Yin cycles encoded at every scale (line, trigram, hexagram)",
+      "m0:m2_metaconcepts": [
+        "m2:Attractor",
+        "m2:State",
+        "m2:FeedbackLoop",
+        "m2:Trajectory"
+      ]
+    },
+    {
+      "@id": "m0:asfid_structure",
+      "@type": [
+        "m0:ASFIDAnalysis"
+      ],
+      "rdfs:label": "Structure (S)",
+      "m0:score": 0.97,
+      "m0:dominantM3": "m3:Structure",
+      "rdfs:comment": "Exceptionally clear 3-level hierarchical grammar with strict combinatorial rules. Level 0: 2 primitives (Yin/Yang binary alphabet). Level 1: 8 trigrams (3-line combinations, 2³ = 8 named archetypes). Level 2: 64 hexagrams (2-trigram combinations, 8² = 64 named states). Each level is fully enumerable. The binary encoding gives each hexagram a unique 6-bit address — the system is mathematically closed and exhaustive.",
+      "m0:hierarchyLevels": {
+        "level_0": "2 primitives: Yin (⚋, 0), Yang (⚊, 1)",
+        "level_1": "8 trigrams: 2³ ordered combinations of primitives",
+        "level_2": "64 hexagrams: 8² ordered stacking of trigrams"
+      },
+      "m0:binaryIsomorphism": "I Ching ≅ 6-bit binary space {0,1}⁶ — bijection between hexagrams and binary integers 0-63",
+      "m0:fourPolarityPairs": "8 trigrams = 4 polar pairs (Qian/Kun, Zhen/Xun, Kan/Li, Gen/Dui)",
+      "m0:structuralSymmetries": [
+        "Nuclear hexagram (inner 4 lines) → related hexagram",
+        "Inverse hexagram (all lines flipped) → polarity complement",
+        "Reversed hexagram (read upside down) → perspective inversion"
+      ],
+      "m0:m2_metaconcepts": [
+        "m2:Hierarchy",
+        "m2:Modularity",
+        "m2:Symmetry",
+        "m2:Code",
+        "m2:Composition"
+      ]
+    },
+    {
+      "@id": "m0:asfid_flow",
+      "@type": [
+        "m0:ASFIDAnalysis"
+      ],
+      "rdfs:label": "Flow (F)",
+      "m0:score": 0.72,
+      "m0:dominantM3": "m3:Flow",
+      "rdfs:comment": "Two distinct flows operate in the I Ching: (1) the divinatory flow — the procedural sequence by which a hexagram is generated (coin/yarrow stalk ritual → 6 line determinations → hexagram construction); (2) the transformative flow — the movement from primary to derived hexagram via changing lines, representing the temporal evolution of a situation. The flows are asymmetric: the divinatory flow is procedural/physical; the transformative flow is symbolic/temporal.",
+      "m0:divinationFlow": {
+        "yarrow_stalks": "49 stalks → 4 operations per line × 6 lines → hexagram",
+        "coin_method": "3 coins × 6 throws → 6 line values (6=old yin, 7=young yang, 8=young yin, 9=old yang)",
+        "result": "Determines each line as Young Yin, Young Yang, Old Yin (changing), or Old Yang (changing)"
+      },
+      "m0:transformativeFlow": "Primary hexagram → (changing lines) → Derived hexagram = symbolic trajectory",
+      "m0:flowAsymmetry": "Divination flow: random → structured (coins → hexagram). Transformative flow: structured → structured (hexagram → hexagram).",
+      "m0:m2_metaconcepts": [
+        "m2:Process",
+        "m2:Transformation",
+        "m2:Trigger",
+        "m2:Workflow"
+      ]
+    },
+    {
+      "@id": "m0:asfid_information",
+      "@type": [
+        "m0:ASFIDAnalysis"
+      ],
+      "rdfs:label": "Information (I)",
+      "m0:score": 0.91,
+      "m0:dominantM3": "m3:Information",
+      "rdfs:comment": "The I Ching carries information at four nested layers: (1) Binary code layer — 6-bit address (log₂(64) = 6 bits per hexagram, maximum Shannon entropy for 64 states); (2) Archetype layer — trigram names encode cultural semantic fields; (3) Judgment/Image layer — textual interpretive content attributed to King Wen; (4) Philosophical layer — the Ten Wings (Confucian commentary elevating the system to cosmological model). The information is not empirical but symbolic: the same hexagram legitimately generates multiple interpretations depending on context and reader.",
+      "m0:informationEntropy": "log₂(64) = 6 bits per hexagram — maximal for 64-state system",
+      "m0:semanticLayers": 4,
+      "m0:interpretiveMultiplicity": "Each hexagram: 1 Judgment + 1 Image + 6 Line texts + 10 Wings sections = ~18 interpretive channels per hexagram",
+      "m0:changingLineInformation": "Δ(H_primary → H_derived) = symbolic information delta encoding situational evolution",
+      "m0:crossDomainMapping": {
+        "Jungian_psychology": "Hexagrams as archetypes of the collective unconscious (Jung's Foreword to Wilhelm edition)",
+        "binary_mathematics": "Leibniz (1703): recognized I Ching as binary arithmetic precursor",
+        "complexity_theory": "64 hexagrams as phase space of situational complexity",
+        "quantum_informatics": "Bohr adopted Tai Chi as coat of arms; complementarity ↔ Yin/Yang"
+      },
+      "m0:m2_metaconcepts": [
+        "m2:Code",
+        "m2:Language",
+        "m2:Representation",
+        "m2:Pattern",
+        "m2:Signature"
+      ]
+    },
+    {
+      "@id": "m0:asfid_dynamics",
+      "@type": [
+        "m0:ASFIDAnalysis"
+      ],
+      "rdfs:label": "Dynamics (D)",
+      "m0:score": 0.8,
+      "m0:dominantM3": "m3:Dynamics",
+      "rdfs:comment": "The I Ching encodes dynamics through two mechanisms: (1) Line polarity dynamics — every line carries temporal polarity (Young = stable, Old = changing → inversion imminent); (2) Inter-hexagram dynamics — the 4096 possible transitions (64×64) via changing lines form a complete directed graph on the symbolic state space. The Book of Changes (易經) is fundamentally a system of change: the static hexagram is a snapshot; the changing lines make it a trajectory. The final two hexagrams (#63 After Completion, #64 Before Completion) encode the meta-dynamic: every completed state seeds the next incompleteness.",
+      "m0:dynamicMechanisms": {
+        "line_inversion": "Old Yang → Young Yin; Old Yin → Young Yang (line-level dynamics)",
+        "hexagram_transformation": "Primary hexagram → Derived hexagram (system-level dynamics)",
+        "cyclic_cosmology": "Yin→Yang→Yin at all scales — the fundamental dynamic law of the system"
+      },
+      "m0:stateSpaceDynamics": {
+        "nodes": 64,
+        "possible_transitions": "64 × 64 = 4096 (via changing line combinations)",
+        "transition_type": "Non-deterministic (multiple changing lines possible per reading)"
+      },
+      "m0:metaDynamic": "Hexagram #64 (Before Completion) as terminal state: the system never reaches final equilibrium — incompletion is the generative principle",
+      "m0:m2_metaconcepts": [
+        "m2:Transformation",
+        "m2:ButterflyEffect",
+        "m2:Trajectory",
+        "m2:Polarity",
+        "m2:FeedbackLoop"
+      ]
+    },
+    {
+      "@id": "m0:REVOIAnalysis",
+      "@type": "owl:Class",
+      "rdfs:label": "REVOI Analysis (Sphinx Eye — Map Perspective)",
+      "rdfs:comment": "Five-dimensional evaluation of the I Ching as a conceptual map: Representability, Evolvability, Verifiability, Observability, Interoperability."
+    },
+    {
+      "@id": "m0:revoi_representability",
+      "@type": [
+        "m0:REVOIAnalysis"
+      ],
+      "rdfs:label": "Representability (R)",
+      "m0:score": 0.95,
+      "m0:dominantM3": "m3:Representability",
+      "rdfs:comment": "The I Ching claims exhaustive representability: the 64 hexagrams cover all possible human situations. The 6-bit binary space is complete — no situation lies outside the 64-state symbolic universe. The grammar's minimality (2 primitives) combined with its depth (6 levels) achieves maximal expressiveness from minimal means. The four interpretive layers further amplify representability: the same hexagram generates radically different yet valid readings across temporal, psychological, strategic, and cosmological contexts.",
+      "m0:coverageClaim": "Exhaustive by construction: {Yin,Yang}⁶ = 2⁶ = 64 = complete binary space",
+      "m0:expressiveLevels": "Binary (formal) → Archetype (symbolic) → Judgment/Image (situational) → Philosophy (cosmological)",
+      "m0:representationStrength": "HIGH — any human situation can be mapped to one of 64 hexagrams; changing lines add temporal resolution",
+      "m0:m2_metaconcepts": [
+        "m2:Representation",
+        "m2:ValueSpace",
+        "m2:Scope"
+      ]
+    },
+    {
+      "@id": "m0:revoi_evolvability",
+      "@type": [
+        "m0:REVOIAnalysis"
+      ],
+      "rdfs:label": "Evolvability (E)",
+      "m0:score": 0.88,
+      "m0:dominantM3": "m3:Evolvability",
+      "rdfs:comment": "The I Ching is designed for evolvability. The changing-line mechanism is an intrinsic evolution engine: every reading generates not just the present state but the vector of change. The text has evolved over ~3000 years through accumulation of interpretive layers (Judgment → Image → Ten Wings → Neo-Confucian commentary → Jungian psychology → modern applications). The binary grammar is translation-invariant: the core combinatorial structure has survived 3 millennia of cultural change with zero structural modification.",
+      "m0:structuralEvolution": "Grammar frozen since ~800 BCE; interpretive layers continuously evolving",
+      "m0:builtInEvolutionMechanism": "Changing lines — every reading encodes its own transformation vector",
+      "m0:culturalEvolution": [
+        "~1000 BCE: King Wen — Judgments layer",
+        "~500 BCE: Confucius — Ten Wings layer",
+        "960-1279 CE: Neo-Confucians — philosophical systematization",
+        "1923 CE: Richard Wilhelm translation — Western diffusion",
+        "1949 CE: C.G. Jung — synchronicity and archetypal interpretation",
+        "1973 CE: Terence McKenna — Timewave Zero (mathematical extension)"
+      ],
+      "m0:m2_metaconcepts": [
+        "m2:Adaptation",
+        "m2:Memory",
+        "m2:Self-Organization"
+      ]
+    },
+    {
+      "@id": "m0:revoi_verifiability",
+      "@type": [
+        "m0:REVOIAnalysis"
+      ],
+      "rdfs:label": "Verifiability (V)",
+      "m0:score": 0.5,
+      "m0:dominantM3": "m3:Verifiability",
+      "rdfs:comment": "The I Ching occupies a unique epistemic position: low empirical verifiability, high internal consistency verifiability. The oracular claims (hexagram X predicts outcome Y) are not empirically falsifiable — interpretation is always retroactively validatable. The grammar itself is perfectly verifiable: the 64-hexagram space is mathematically proven exhaustive, the trigram combinations are formally derivable, the changing-line rules are deterministic. The symbolic arbitration clause defines the interpretive domain: verification belongs to symbolic coherence, not empirical prediction.",
+      "m0:formalVerifiability": "HIGH — binary grammar, trigram combinations, and 64-hexagram completeness are mathematically provable",
+      "m0:empiricalVerifiability": "LOW — oracular predictions not empirically testable (symbolic, not predictive)",
+      "m0:internalConsistency": "HIGH — 3000 years of commentary has built a dense web of cross-referencing interpretation",
+      "m0:epistemicStatus": "Symbolic truth: a reading is 'true' if it generates coherent, actionable insight — not if it matches measurable outcomes",
+      "m0:m2_metaconcepts": [
+        "m2:Invariant",
+        "m2:Constraint",
+        "m2:Signature"
+      ]
+    },
+    {
+      "@id": "m0:revoi_observability",
+      "@type": [
+        "m0:REVOIAnalysis"
+      ],
+      "rdfs:label": "Observability (O)",
+      "m0:score": 0.78,
+      "m0:dominantM3": "m3:Observability",
+      "rdfs:comment": "The I Ching has two observability modes: (1) Structural observability — HIGH: the 64 hexagrams, 8 trigrams, and binary grammar are fully explicit and enumerable; each hexagram has a unique visual form (6-line pattern), name, and number; (2) Interpretive observability — MEDIUM: the four semantic layers are textually defined but their application to a specific situation requires hermeneutic judgment; (3) Outcome observability — LOW: the transformation from primary to derived hexagram is observable as a formal operation, but whether the predicted transformation matches real events cannot be directly observed.",
+      "m0:structuralObservability": "HIGH — 64 hexagram symbols are fully enumerable and visually distinct",
+      "m0:interpretiveObservability": "MEDIUM — reading requires hermeneutic competence; same hexagram observed differently by different readers",
+      "m0:outcomeObservability": "LOW — the prophetic dimension is not directly observable",
+      "m0:m2_metaconcepts": [
+        "m2:Observer",
+        "m2:State",
+        "m2:Signal"
+      ]
+    },
+    {
+      "@id": "m0:revoi_interoperability",
+      "@type": [
+        "m0:REVOIAnalysis"
+      ],
+      "rdfs:label": "Interoperability (I)",
+      "m0:score": 0.9,
+      "m0:dominantM3": "m3:Interoperability",
+      "rdfs:comment": "The I Ching has achieved extraordinary cross-domain interoperability across 3 millennia, making it one of the most interoperable symbolic systems ever created. Its binary grammar maps directly to binary mathematics (Leibniz, 1703). Its Yin/Yang duality resonates with complementarity in quantum mechanics (Bohr), wave/particle duality, attractor/repellor pairs, and cybernetic feedback. The hexagram space has been applied to Jungian archetypes, Chinese medicine (Five Elements extension), feng shui, strategic management (I Ching as decision framework), software architecture (hexagonal architecture), and chaos theory.",
+      "m0:mathematicalInterop": "Leibniz: I Ching binary ↔ binary arithmetic; hexagram space ↔ 6-bit integers",
+      "m0:physicsInterop": "Bohr: Yin/Yang ↔ complementarity; Tai Chi as coat of arms",
+      "m0:psychologyInterop": "Jung: hexagrams as archetypes; synchronicity as non-causal connecting principle",
+      "m0:medicineInterop": "Chinese medicine: Yin/Yang ↔ physiological balance; trigrams ↔ organ systems",
+      "m0:systemsThinkingInterop": "Cybernetics: changing lines ↔ feedback; hexagram transformation ↔ state machine",
+      "m0:tscgInterop": {
+        "m2:Polarity": "Yin/Yang = archetypal N=2 polarity",
+        "m2:Composition": "hexagram = trigram ⊗ trigram (tensor composition)",
+        "m2:Hierarchy": "3-level grammar (primitive→trigram→hexagram)",
+        "m2:FeedbackLoop": "changing lines = transformative feedback",
+        "m2:Signature": "hexagram = unique 6-bit situational signature"
+      },
+      "m0:m2_metaconcepts": [
+        "m2:Language",
+        "m2:KnowledgeField",
+        "m2:Mediator"
+      ]
+    },
+    {
+      "@id": "m0:M2MetaconceptActivation",
+      "@type": "owl:Class",
+      "rdfs:label": "M2 Metaconcept Activation",
+      "rdfs:comment": "M2 metaconcepts instantiated or validated by the I Ching as SymbolicSystemGrammar."
+    },
+    {
+      "@id": "m0:m2_polarity",
+      "@type": [
+        "m0:M2MetaconceptActivation"
+      ],
+      "m0:metaconcept": {
+        "@id": "m2:Polarity"
+      },
+      "m0:dominance": 0.99,
+      "m0:tensorFormula": "S ⊗ I ⊗ A",
+      "rdfs:comment": "The I Ching is the archetype of N=2 polarity. Every element is defined by Yin/Yang opposition. The 8 trigrams form 4 polar pairs. The 64 hexagrams encode dynamic tension between inner and outer, past and future, stable and changing. Polarity here is not binary opposition but generative complementarity — each pole produces the other."
+    },
+    {
+      "@id": "m0:m2_composition",
+      "@type": [
+        "m0:M2MetaconceptActivation"
+      ],
+      "m0:metaconcept": {
+        "@id": "m2:Composition"
+      },
+      "m0:dominance": 0.98,
+      "m0:tensorFormula": "S ⊗ I (Composition/Decomposition)",
+      "rdfs:comment": "The core grammar rule IS Composition: hexagram = trigram ⊗ trigram. The I Ching demonstrates that a small alphabet (2 primitives) combined through systematic composition generates a complete symbolic universe (64 states). Decomposition is equally present: any hexagram can be decomposed into its constituent trigrams, revealing inner/outer dimensional structure.",
+      "m0:spaceCoverage": {
+        "@type": "m2:ValueSpace",
+        "m2:attribute": "m2:Representation.spaceCoverage",
+        "m2:value": 1.0,
+        "m2:interpretation": "Generative Exhaustion — 64 hexagrams = {Yin,Yang}⁶, complete partition of 6-bit binary space. No hexagram missing, no duplication. RSC = 1.0 by construction, not by enumeration.",
+        "m2:note": "Same RSC=1.0 achieved independently by DNA codons (4³=64), Boolean NAND completeness, and 12-tone chromatic scale — strong transdisciplinary validation of this limit case."
+      }
+    },
+    {
+      "@id": "m0:m2_hierarchy",
+      "@type": [
+        "m0:M2MetaconceptActivation"
+      ],
+      "m0:metaconcept": {
+        "@id": "m2:Hierarchy"
+      },
+      "m0:dominance": 0.95,
+      "m0:tensorFormula": "S ⊗ A",
+      "rdfs:comment": "Three-level strict hierarchy: primitive → trigram → hexagram. Each level is fully determined by the combination rules applied to the level below. The hierarchy is non-arbitrary: each level adds qualitatively new semantic content (a trigram is not just 3 lines — it is a named archetype; a hexagram is not just 2 trigrams — it is a situated context)."
+    },
+    {
+      "@id": "m0:m2_transformation",
+      "@type": [
+        "m0:M2MetaconceptActivation"
+      ],
+      "m0:metaconcept": {
+        "@id": "m2:Transformation"
+      },
+      "m0:dominance": 0.93,
+      "m0:tensorFormula": "D ⊗ S ⊗ I",
+      "rdfs:comment": "The changing-line mechanism is a formal transformation system: H_primary → H_derived. The Book of Changes encodes transformation as its central concern — not the 64 states as static entities but the 4096 possible transitions between them. Transformation is the grammar's dynamic dimension."
+    },
+    {
+      "@id": "m0:m2_signature",
+      "@type": [
+        "m0:M2MetaconceptActivation"
+      ],
+      "m0:metaconcept": {
+        "@id": "m2:Signature"
+      },
+      "m0:dominance": 0.97,
+      "m0:tensorFormula": "I ⊗ S",
+      "rdfs:comment": "Each hexagram is a unique situational signature: a 6-bit binary string that identifies a position in the full symbolic space. The hexagram name, number, trigram combination, and 6-line pattern together constitute a minimal sufficient identity — no two hexagrams share the same signature. The I Ching is a 64-element signature space for human situations."
+    },
+    {
+      "@id": "m0:m2_language",
+      "@type": [
+        "m0:M2MetaconceptActivation"
+      ],
+      "m0:metaconcept": {
+        "@id": "m2:Language"
+      },
+      "m0:dominance": 0.96,
+      "m0:tensorFormula": "I ⊗ S ⊗ F",
+      "rdfs:comment": "The I Ching is a complete symbolic language: alphabet (Yin/Yang), morphology (trigrams), syntax (hexagram stacking), semantics (interpretation layers), and pragmatics (divinatory application). It satisfies the criteria for a formal language: finite alphabet, explicit combination rules, generative grammar producing 64 well-formed expressions, each with assigned meaning."
+    },
+    {
+      "@id": "m0:m2_feedbackloop",
+      "@type": [
+        "m0:M2MetaconceptActivation"
+      ],
+      "m0:metaconcept": {
+        "@id": "m2:FeedbackLoop"
+      },
+      "m0:dominance": 0.82,
+      "m0:tensorFormula": "Process ⊗ Alignment ⊗ Homeostasis",
+      "rdfs:comment": "The I Ching divination process is a feedback loop: (1) Formulate question about current situation; (2) Generate hexagram via ritual (coins/stalks); (3) Interpret reading; (4) Take action; (5) Observe outcome → reformulate next question. The changing-line mechanism explicitly encodes positive/negative feedback: Yang at maximum (Old Yang) feeds back into Yin; Yin at maximum (Old Yin) feeds back into Yang."
+    },
+    {
+      "@id": "m0:m2_pattern",
+      "@type": [
+        "m0:M2MetaconceptActivation"
+      ],
+      "m0:metaconcept": {
+        "@id": "m2:Pattern"
+      },
+      "m0:dominance": 0.9,
+      "m0:tensorFormula": "S → I → A",
+      "rdfs:comment": "The 8 trigrams and 64 hexagrams are patterns in the strict TSCG sense: structural regularities that recur across domains and are reusable for recognition and categorization. The trigrams function as 8 universal pattern archetypes applicable across natural phenomena, psychological states, social situations, and strategic contexts."
+    },
+    {
+      "@id": "m0:M2Candidates",
+      "@type": "owl:Class",
+      "rdfs:label": "M2 Candidate Metaconcepts",
+      "rdfs:comment": "Potential new M2 metaconcepts identified through I Ching analysis, requiring cross-domain validation before M2 inclusion."
+    },
+    {
+      "@id": "m0:candidate_symbolic_arbitration",
+      "@type": [
+        "m0:M2Candidates"
+      ],
+      "rdfs:label": "NOTE: SymbolicArbitration → reclassified as m2:Observer attribute",
+      "m0:distinction": "Different from Verifiability (which concerns empirical checking) — Symbolic Arbitration describes the mode of validation itself: communal, contextual, hermeneutic",
+      "m0:status": "RECLASSIFIED — not a standalone M2 metaconcept. Belongs to the Map construction toolbox of m2:Observer as a validationMode attribute (empirical | symbolic | formal | consensual).",
+      "m0:rationale": "SymbolicArbitration describes how the Observer validates the Map, not a systemic phenomenon independent of the Observer. Architectural home: m2:Observer.validationMode = 'symbolic' or as ValueSpace enrichment of m2:Verifiability."
+    },
+    {
+      "@id": "m0:candidate_generative_exhaustion",
+      "@type": [
+        "m0:M2Candidates"
+      ],
+      "rdfs:label": "NOTE: Generative Exhaustion → reclassified as m2:Representation.spaceCoverage = 1.0",
+      "m0:distinction": "Different from Composition (which is the operation) — Generative Exhaustion describes the property of closure: the grammar generates precisely its intended universe",
+      "m0:status": "RECLASSIFIED — not a standalone M2 metaconcept. Integrated as special case (RSC=1.0) of the spaceCoverage ValueSpace attribute on m2:Representation (M2_MetaConcepts.jsonld v15.4.0).",
+      "m0:rationale": "GenerativeExhaustion is the limit case RSC=1.0 of RepresentationSpaceCoverage — a continuous attribute [0,1] of m2:Representation. The gradient formulation (RSC ∈ [0,1]) is architecturally richer than a binary M2 metaconcept."
+    },
+    {
+      "@id": "m0:BicephalousPerspective",
+      "@type": "owl:Class",
+      "rdfs:label": "Bicephalous Perspective Integration",
+      "rdfs:comment": "Synthesis of Eagle Eye (ASFID — Territory) and Sphinx Eye (REVOI — Map) perspectives for the I Ching as SymbolicSystemGrammar."
+    },
+    {
+      "@id": "m0:bicephalous_synthesis",
+      "@type": [
+        "m0:BicephalousPerspective"
+      ],
+      "rdfs:label": "Eagle-Sphinx Synthesis",
+      "m0:territoryStrength": 0.85,
+      "m0:mapStrength": 0.8,
+      "m0:epistemicGap": 0.38,
+      "rdfs:comment": "The I Ching presents a distinctive bicephalous profile: the Territory (ASFID) is strong on Structure (0.97) and Information (0.91) — the grammar is clear and the encoding is explicit. The Map (REVOI) is strongest on Representability (0.95) and Interoperability (0.90), but Verifiability is deliberately low (0.50) — this is not a flaw but the defining characteristic of symbolic arbitration. The epistemic gap (0.38) is higher than for empirical poclets precisely because the Territory→Map bridge is intentionally loose, enabling interpretive multiplicity.",
+      "m0:keyCouplings": [
+        "S ⊗ R: 0.97 (structural grammar is maximally representable)",
+        "I ⊗ I: 0.91 (information richness ↔ interoperability across domains)",
+        "S ⊗ O: 0.88 (structural observability — hexagrams are visually distinct)",
+        "D ⊗ E: 0.84 (dynamics well-served by built-in evolution mechanism)",
+        "A ⊗ V: 0.55 (attractors are not empirically verifiable — intentional)"
+      ],
+      "m0:distinctiveSSGFeature": "The epistemic gap is a FEATURE, not a bug: loose Territory→Map coupling enables the interpretive multiplicity that is the SSG's purpose. High Verifiability would constrain interpretation to a single reading — destroying the generative power.",
+      "m0:gapAnalysis": {
+        "lowGap": [
+          "Formal grammar structure (mathematically verifiable)",
+          "Hexagram enumeration (64 = complete)",
+          "Binary isomorphism (I Ching ↔ {0,1}⁶)"
+        ],
+        "highGap": [
+          "Divinatory outcomes (symbolic, not empirical)",
+          "Cross-reader interpretive consistency",
+          "Causal mechanism (synchronicity vs. randomness)"
+        ]
+      }
+    },
+    {
+      "@id": "m0:SSGValidation",
+      "@type": "owl:Class",
+      "rdfs:label": "SymbolicSystemGrammar Validation",
+      "rdfs:comment": "Validation of the I Ching's status as a SymbolicSystemGrammar instance: finite primitives, combination rules, multiple legitimate interpretations, symbolic arbitration."
+    },
+    {
+      "@id": "m0:ssg_validation_result",
+      "@type": [
+        "m0:SSGValidation"
+      ],
+      "rdfs:label": "SSG Validation Result",
+      "m0:criterion_finite_primitives": "VALIDATED — exactly 2 primitives (Yin, Yang), irreducible and exhaustive",
+      "m0:criterion_combination_rules": "VALIDATED — 2 explicit rules: (1) stack 3 primitives → trigram, (2) stack 2 trigrams → hexagram. Both rules are deterministic, enumerable, and closed.",
+      "m0:criterion_multiple_interpretations": "VALIDATED — 4 semantic layers (Judgment, Image, Line texts, Ten Wings) generate systematically distinct interpretations of the same hexagram. 3000 years of commentary demonstrates interpretive diversity without consensus collapse.",
+      "m0:criterion_symbolic_arbitration": "VALIDATED — interpretive validity is determined by symbolic coherence, cultural resonance, and contextual pertinence, never by empirical prediction. No physical law arbitrates between readings.",
+      "m0:distinctionFromPoclet": "The I Ching does NOT model an observable real-world system — it IS a symbolic universe. Where a Poclet validates an empirical system's ASFID dimensions, the I Ching generates the symbolic space within which any situation can be represented.",
+      "m0:distinctionFromSystemicFramework": "Unlike TRIZ or VSM, the I Ching does not converge toward a solution. It generates interpretive multiplicity — the same hexagram legitimately guides toward different actions depending on reader and context.",
+      "m0:contributions": {
+        "M2_validation": [
+          "m2:Polarity (archetypal binary polarity)",
+          "m2:Composition (trigram ⊗ trigram → hexagram)",
+          "m2:Hierarchy (primitive → trigram → hexagram)",
+          "m2:Transformation (changing lines)",
+          "m2:Signature (hexagram as 6-bit situational address)",
+          "m2:Language (complete formal symbolic language)",
+          "m2:Pattern (8 trigram archetypes as universal patterns)"
+        ],
+        "M2_candidates": [],
+        "M1_mythology_population": [
+          "Yin (archetypal receptive principle)",
+          "Yang (archetypal active principle)",
+          "Trigram (3-element symbolic archetype)",
+          "Hexagram (situational symbolic composite)",
+          "ChangingLine (transformation marker)"
+        ],
+        "M2_enrichments": [
+          "m2:Representation.spaceCoverage = 1.0 (Generative Exhaustion special case) — validated across 5 transdisciplinary domains"
+        ],
+        "M2_reclassified": [
+          "SymbolicArbitration → m2:Observer.validationMode attribute",
+          "GenerativeExhaustion → m2:Representation.spaceCoverage = 1.0 (limit case)"
+        ]
+      },
+      "m0:overallStatus": "VALIDATED — Canonical SymbolicSystemGrammar instance. ASFID: 0.85, REVOI: 0.80, δΘ: 0.38 (intentional gap = interpretive generativity)"
+    }
+  ]
+}

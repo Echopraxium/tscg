@@ -1,14 +1,30 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix m0: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclets.jsonld#> .
-@prefix m1energy: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld#> .
-@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#> .
+@prefix m0: <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/nuclear_reactors_typology/M0_NuclearReactorTypology.jsonld#> .
+@prefix m1energy: <M1_extensions/energy_generators/M1_EnergyGenerators.jsonld#> .
+@prefix m2: <M2_MetaConcepts.jsonld#> .
+@prefix m3: <M3_GenesisSpace.jsonld#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-m0:AGR_Reactor a m1energy:NuclearReactor,
-        m2:Processor ;
+m0:AGR_Reactor a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld#NuclearReactor>,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Processor> ;
     rdfs:label "Advanced Gas-Cooled Reactor (AGR)" ;
+    m1energy:coolantType "CO2_Gas" ;
+    m1energy:criticalityControl "Control rods" ;
+    m1energy:fuelEnrichment "2.5-3.5% U-235" ;
+    m1energy:moderatorType "Graphite" ;
+    m1energy:neutronSpectrum "Thermal" ;
+    m1energy:thermalEfficiency "41-42%" ;
+    m1energy:typicalPower "500-660 MWe" ;
+    m2:Processor_Input "CO₂ coolant (40 bar, 650°C)",
+        "Enriched_uranium (2.5-3.5%)",
+        "Graphite moderator",
+        "Stainless_steel_clad_fuel" ;
+    m2:Processor_Output "Fission_products",
+        "High_temp_CO₂ (650°C)",
+        "Steam (550°C)",
+        "Thermal_energy (1500-3000 MWth)" ;
     rdfs:comment "Le Fiable éprouvé - Graphite moderated, CO₂ cooled. Good thermal efficiency, robust design. UK heritage (operational since 1976)." ;
     m0:advantages "CO₂ chemically inert",
         "High thermal efficiency (41-42%)",
@@ -28,26 +44,26 @@ m0:AGR_Reactor a m1energy:NuclearReactor,
     m0:safetyFeatures "Concrete pressure vessel",
         "Large thermal inertia",
         "Online refueling",
-        "Redundant shutdown systems" ;
-    m1energy:coolantType "CO2_Gas" ;
-    m1energy:criticalityControl "Control rods" ;
-    m1energy:fuelEnrichment "2.5-3.5% U-235" ;
-    m1energy:moderatorType "Graphite" ;
-    m1energy:neutronSpectrum "Thermal" ;
-    m1energy:thermalEfficiency "41-42%" ;
-    m1energy:typicalPower "500-660 MWe" ;
-    m2:Processor_Input "CO₂ coolant (40 bar, 650°C)",
-        "Enriched_uranium (2.5-3.5%)",
-        "Graphite moderator",
-        "Stainless_steel_clad_fuel" ;
-    m2:Processor_Output "Fission_products",
-        "High_temp_CO₂ (650°C)",
-        "Steam (550°C)",
-        "Thermal_energy (1500-3000 MWth)" .
+        "Redundant shutdown systems" .
 
-m0:BWR_Reactor a m1energy:NuclearReactor,
-        m2:Processor ;
+m0:BWR_Reactor a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld#NuclearReactor>,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Processor> ;
     rdfs:label "Boiling Water Reactor (BWR/REB)" ;
+    m1energy:coolantType "Light_Water_Boiling" ;
+    m1energy:criticalityControl "Control rods + recirculation flow" ;
+    m1energy:fuelEnrichment "2.5-3.5% U-235" ;
+    m1energy:moderatorType "Light_Water" ;
+    m1energy:neutronSpectrum "Thermal" ;
+    m1energy:thermalEfficiency "33-34%" ;
+    m1energy:typicalPower "800-1400 MWe" ;
+    m2:Processor_Input "Control_rods (B4C)",
+        "Enriched_U235_fuel (2.5-3.5%)",
+        "Light_water moderator/coolant",
+        "Recirculation_pumps" ;
+    m2:Processor_Output "Fission_products",
+        "Radioactive_steam",
+        "Steam (directly to turbine)",
+        "Thermal_energy (~3000 MWth)" ;
     rdfs:comment "L'Économe efficace - Water boils directly in reactor core. Simpler design (fewer components) but radioactivity throughout steam system." ;
     m0:advantages "Direct cycle = higher efficiency potential",
         "Lower operating pressure (70 bar vs 155)",
@@ -67,26 +83,26 @@ m0:BWR_Reactor a m1energy:NuclearReactor,
     m0:safetyFeatures "Automatic depressurization",
         "Isolation condensers",
         "Negative void coefficient",
-        "Standby liquid control" ;
-    m1energy:coolantType "Light_Water_Boiling" ;
-    m1energy:criticalityControl "Control rods + recirculation flow" ;
-    m1energy:fuelEnrichment "2.5-3.5% U-235" ;
-    m1energy:moderatorType "Light_Water" ;
-    m1energy:neutronSpectrum "Thermal" ;
-    m1energy:thermalEfficiency "33-34%" ;
-    m1energy:typicalPower "800-1400 MWe" ;
-    m2:Processor_Input "Control_rods (B4C)",
-        "Enriched_U235_fuel (2.5-3.5%)",
-        "Light_water moderator/coolant",
-        "Recirculation_pumps" ;
-    m2:Processor_Output "Fission_products",
-        "Radioactive_steam",
-        "Steam (directly to turbine)",
-        "Thermal_energy (~3000 MWth)" .
+        "Standby liquid control" .
 
-m0:FNR_Reactor a m1energy:NuclearReactor,
-        m2:Processor ;
+m0:FNR_Reactor a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld#NuclearReactor>,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Processor> ;
     rdfs:label "Fast Neutron Reactor (FNR/RNR)" ;
+    m1energy:coolantType "Liquid_Sodium" ;
+    m1energy:criticalityControl "Control rods (B4C)" ;
+    m1energy:fuelEnrichment "20% Pu-239 or depleted U-238" ;
+    m1energy:moderatorType "None" ;
+    m1energy:neutronSpectrum "Fast" ;
+    m1energy:thermalEfficiency "40-42%" ;
+    m1energy:typicalPower "600-1500 MWe" ;
+    m2:Processor_Input "Blanket_U238 (breeding)",
+        "Liquid_sodium coolant",
+        "No_moderator (fast spectrum)",
+        "Plutonium_239 or U-238 fuel" ;
+    m2:Processor_Output "Actinide_transmutation_potential",
+        "Fission_products",
+        "New_Pu239 (breeding ratio >1)",
+        "Thermal_energy (1500-3500 MWth)" ;
     rdfs:comment "L'Innovant performant - No moderator, fast neutrons. Breeder capability (produces more fuel than consumes). Long-term sustainability solution." ;
     m0:advantages "Can use depleted uranium",
         "Closed fuel cycle potential",
@@ -107,26 +123,26 @@ m0:FNR_Reactor a m1energy:NuclearReactor,
     m0:safetyFeatures "Inherent shutdown mechanisms",
         "Negative temperature coefficient",
         "Passive decay heat removal",
-        "Pool-type design (some models)" ;
-    m1energy:coolantType "Liquid_Sodium" ;
-    m1energy:criticalityControl "Control rods (B4C)" ;
-    m1energy:fuelEnrichment "20% Pu-239 or depleted U-238" ;
-    m1energy:moderatorType "None" ;
-    m1energy:neutronSpectrum "Fast" ;
-    m1energy:thermalEfficiency "40-42%" ;
-    m1energy:typicalPower "600-1500 MWe" ;
-    m2:Processor_Input "Blanket_U238 (breeding)",
-        "Liquid_sodium coolant",
-        "No_moderator (fast spectrum)",
-        "Plutonium_239 or U-238 fuel" ;
-    m2:Processor_Output "Actinide_transmutation_potential",
-        "Fission_products",
-        "New_Pu239 (breeding ratio >1)",
-        "Thermal_energy (1500-3500 MWth)" .
+        "Pool-type design (some models)" .
 
-m0:HTR_Reactor a m1energy:NuclearReactor,
-        m2:Processor ;
+m0:HTR_Reactor a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld#NuclearReactor>,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Processor> ;
     rdfs:label "High-Temperature Reactor (HTR/HTGR)" ;
+    m1energy:coolantType "Helium_Gas" ;
+    m1energy:criticalityControl "Control rods + reactivity feedback" ;
+    m1energy:fuelEnrichment "8-20% U-235" ;
+    m1energy:moderatorType "Graphite" ;
+    m1energy:neutronSpectrum "Thermal" ;
+    m1energy:thermalEfficiency "45-50% (Brayton cycle)" ;
+    m1energy:typicalPower "100-300 MWe" ;
+    m2:Processor_Input "Graphite moderator",
+        "Helium coolant (40-60 bar)",
+        "Pebble_bed or Prismatic_blocks",
+        "TRISO_fuel_particles (U/Pu oxides)" ;
+    m2:Processor_Output "High_temp_helium (850-950°C)",
+        "Minimal_fission_products (TRISO containment)",
+        "Process_heat (H₂ production, desalination)",
+        "Thermal_energy (200-600 MWth)" ;
     rdfs:comment "Le Sûr résilient - Graphite moderated, helium cooled. TRISO fuel particles (ultra-safe). Passive safety, high efficiency (850-950°C)." ;
     m0:advantages "High thermal efficiency (>45%)",
         "Inherent safety (walk-away safe)",
@@ -147,26 +163,26 @@ m0:HTR_Reactor a m1energy:NuclearReactor,
     m0:safetyFeatures "Negative temperature coefficient",
         "No loss-of-coolant accident risk",
         "Passive decay heat removal",
-        "TRISO fuel (1600°C meltdown-proof)" ;
-    m1energy:coolantType "Helium_Gas" ;
-    m1energy:criticalityControl "Control rods + reactivity feedback" ;
-    m1energy:fuelEnrichment "8-20% U-235" ;
-    m1energy:moderatorType "Graphite" ;
-    m1energy:neutronSpectrum "Thermal" ;
-    m1energy:thermalEfficiency "45-50% (Brayton cycle)" ;
-    m1energy:typicalPower "100-300 MWe" ;
-    m2:Processor_Input "Graphite moderator",
-        "Helium coolant (40-60 bar)",
-        "Pebble_bed or Prismatic_blocks",
-        "TRISO_fuel_particles (U/Pu oxides)" ;
-    m2:Processor_Output "High_temp_helium (850-950°C)",
-        "Minimal_fission_products (TRISO containment)",
-        "Process_heat (H₂ production, desalination)",
-        "Thermal_energy (200-600 MWth)" .
+        "TRISO fuel (1600°C meltdown-proof)" .
 
-m0:MSR_Reactor a m1energy:NuclearReactor,
-        m2:Processor ;
+m0:MSR_Reactor a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld#NuclearReactor>,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Processor> ;
     rdfs:label "Molten Salt Reactor (MSR)" ;
+    m1energy:coolantType "Molten_Fluoride_Salt" ;
+    m1energy:criticalityControl "Fuel concentration + freeze plug" ;
+    m1energy:fuelEnrichment "Variable (can use Pu, U-233, Th)" ;
+    m1energy:moderatorType "Graphite or None (fast MSR)" ;
+    m1energy:neutronSpectrum "Thermal or Fast" ;
+    m1energy:thermalEfficiency "44-50%" ;
+    m1energy:typicalPower "100-1000 MWe (proposed)" ;
+    m2:Processor_Input "Graphite moderator (some designs)",
+        "Molten_salt_coolant (primary + secondary)",
+        "Online_fission_product_removal",
+        "UF₄ or ThF₄ dissolved in FLiBe salt" ;
+    m2:Processor_Output "Fission_products (continuously removed)",
+        "High_temp_salt (700-900°C)",
+        "Thermal_energy (600-3000 MWth)",
+        "U-233 (from Th-232 breeding)" ;
     rdfs:comment "Le Visionnaire radical - Fuel dissolved in liquid fluoride salt. Passive drainage safety. High temperature. Waste incineration potential." ;
     m0:advantages "Inherent safety (passive drainage)",
         "Thorium fuel cycle possible",
@@ -187,31 +203,17 @@ m0:MSR_Reactor a m1energy:NuclearReactor,
     m0:safetyFeatures "Low pressure operation (1-5 bar)",
         "Negative temperature coefficient",
         "No meltdown risk (fuel already liquid)",
-        "Passive freeze plug shutdown" ;
-    m1energy:coolantType "Molten_Fluoride_Salt" ;
-    m1energy:criticalityControl "Fuel concentration + freeze plug" ;
-    m1energy:fuelEnrichment "Variable (can use Pu, U-233, Th)" ;
-    m1energy:moderatorType "Graphite or None (fast MSR)" ;
-    m1energy:neutronSpectrum "Thermal or Fast" ;
-    m1energy:thermalEfficiency "44-50%" ;
-    m1energy:typicalPower "100-1000 MWe (proposed)" ;
-    m2:Processor_Input "Graphite moderator (some designs)",
-        "Molten_salt_coolant (primary + secondary)",
-        "Online_fission_product_removal",
-        "UF₄ or ThF₄ dissolved in FLiBe salt" ;
-    m2:Processor_Output "Fission_products (continuously removed)",
-        "High_temp_salt (700-900°C)",
-        "Thermal_energy (600-3000 MWth)",
-        "U-233 (from Th-232 breeding)" .
+        "Passive freeze plug shutdown" .
 
 m0:NuclearReactorTypology a owl:Ontology ;
+    m3:ontologyType <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace.jsonld#Poclet> ;
     dcterms:created "2026-02-10" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
     dcterms:description "Nine-pole classification of nuclear reactor types demonstrating enneagram-like multipolar structure. Validates TSCG framework through Processor metaconcept (dual bicephalous architecture), Polarity N=9, and Trade-offs between safety, performance, cost, and waste. Each reactor type is a distinct instantiation of Processor with specific Input/Output configurations, moderator/coolant choices, and neutron spectrum characteristics." ;
     dcterms:title "TSCG M0 Nuclear Reactor Typology Poclet" ;
-    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld" ;
+    owl:imports "M1_CoreConcepts.jsonld",
+        "M1_extensions/energy/M1_EnergyGenerators.jsonld",
+        "M2_MetaConcepts.jsonld" ;
     owl:versionInfo "1.0.0" ;
     m0:asfidCompleteness [ ] ;
     m0:asfidScores [ ] ;
@@ -221,9 +223,24 @@ m0:NuclearReactorTypology a owl:Ontology ;
     m0:systemArchitecture [ ] ;
     m0:validationStatus [ ] .
 
-m0:PHWR_Reactor a m1energy:NuclearReactor,
-        m2:Processor ;
+m0:PHWR_Reactor a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld#NuclearReactor>,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Processor> ;
     rdfs:label "Pressurized Heavy Water Reactor (PHWR/CANDU)" ;
+    m1energy:coolantType "Heavy_Water or Light_Water" ;
+    m1energy:criticalityControl "Control rods + liquid zone" ;
+    m1energy:fuelEnrichment "Natural (0.7% U-235)" ;
+    m1energy:moderatorType "Heavy_Water" ;
+    m1energy:neutronSpectrum "Thermal" ;
+    m1energy:thermalEfficiency "29-32%" ;
+    m1energy:typicalPower "600-900 MWe" ;
+    m2:Processor_Input "Control_rods + liquid zone control",
+        "Heavy_water (D₂O) moderator",
+        "Heavy_water or light_water coolant",
+        "Natural_uranium fuel (0.7% U-235)" ;
+    m2:Processor_Output "Fission_products",
+        "Plutonium_production (weapon-grade possible)",
+        "Thermal_energy (2000-3000 MWth)",
+        "Tritium_byproduct" ;
     rdfs:comment "Le Lourd robuste - Heavy water (D₂O) moderator. Uses natural uranium fuel. Energy independence (no enrichment needed)." ;
     m0:advantages "Fuel flexibility (can use Pu, Th)",
         "Lower uranium mining needs",
@@ -244,26 +261,26 @@ m0:PHWR_Reactor a m1energy:NuclearReactor,
     m0:safetyFeatures "Low excess reactivity",
         "Negative temperature coefficient",
         "Online refueling (high availability)",
-        "Passive moderator cooling" ;
-    m1energy:coolantType "Heavy_Water or Light_Water" ;
-    m1energy:criticalityControl "Control rods + liquid zone" ;
-    m1energy:fuelEnrichment "Natural (0.7% U-235)" ;
-    m1energy:moderatorType "Heavy_Water" ;
-    m1energy:neutronSpectrum "Thermal" ;
-    m1energy:thermalEfficiency "29-32%" ;
-    m1energy:typicalPower "600-900 MWe" ;
-    m2:Processor_Input "Control_rods + liquid zone control",
-        "Heavy_water (D₂O) moderator",
-        "Heavy_water or light_water coolant",
-        "Natural_uranium fuel (0.7% U-235)" ;
-    m2:Processor_Output "Fission_products",
-        "Plutonium_production (weapon-grade possible)",
-        "Thermal_energy (2000-3000 MWth)",
-        "Tritium_byproduct" .
+        "Passive moderator cooling" .
 
-m0:PWR_Reactor a m1energy:NuclearReactor,
-        m2:Processor ;
+m0:PWR_Reactor a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld#NuclearReactor>,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Processor> ;
     rdfs:label "Pressurized Water Reactor (PWR/REP)" ;
+    m1energy:coolantType "Light_Water_Pressurized" ;
+    m1energy:criticalityControl "Control rods + soluble boron" ;
+    m1energy:fuelEnrichment "3-5% U-235" ;
+    m1energy:moderatorType "Light_Water" ;
+    m1energy:neutronSpectrum "Thermal" ;
+    m1energy:thermalEfficiency "33-37%" ;
+    m1energy:typicalPower "1000-1650 MWe" ;
+    m2:Processor_Input "Control_rods (Ag-In-Cd)",
+        "Enriched_U235_fuel (3-5%)",
+        "Light_water (H₂O) moderator",
+        "Light_water coolant (155 bar, 325°C)" ;
+    m2:Processor_Output "Fission_products (spent fuel)",
+        "Heated_pressurized_water (primary circuit)",
+        "Neutron_radiation",
+        "Thermal_energy (~3000 MWth)" ;
     rdfs:comment "Le Précurseur rigoureux - Most common reactor type worldwide. Water moderated and cooled under high pressure (155 bar). Proven, safe, standardized design." ;
     m0:advantages "Compact core",
         "High power density",
@@ -283,25 +300,11 @@ m0:PWR_Reactor a m1energy:NuclearReactor,
     m0:safetyFeatures "Containment building",
         "Emergency core cooling system (ECCS)",
         "Negative temperature coefficient",
-        "Redundant shutdown systems" ;
-    m1energy:coolantType "Light_Water_Pressurized" ;
-    m1energy:criticalityControl "Control rods + soluble boron" ;
-    m1energy:fuelEnrichment "3-5% U-235" ;
-    m1energy:moderatorType "Light_Water" ;
-    m1energy:neutronSpectrum "Thermal" ;
-    m1energy:thermalEfficiency "33-37%" ;
-    m1energy:typicalPower "1000-1650 MWe" ;
-    m2:Processor_Input "Control_rods (Ag-In-Cd)",
-        "Enriched_U235_fuel (3-5%)",
-        "Light_water (H₂O) moderator",
-        "Light_water coolant (155 bar, 325°C)" ;
-    m2:Processor_Output "Fission_products (spent fuel)",
-        "Heated_pressurized_water (primary circuit)",
-        "Neutron_radiation",
-        "Thermal_energy (~3000 MWth)" .
+        "Redundant shutdown systems" .
 
 m0:Poclet_Summary a owl:NamedIndividual ;
     rdfs:label "Nuclear Reactor Typology Poclet - Summary" ;
+    m3:ontologyType <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace.jsonld#Poclet> ;
     m0:createsM1EnergyExtension "m1energy:CoolantType (enum: Water, HeavyWater, Sodium, Helium, CO2, MoltenSalt)",
         "m1energy:CriticalityControl",
         "m1energy:FissionProcess",
@@ -335,9 +338,24 @@ m0:Poclet_Summary a owl:NamedIndividual ;
         "m2:Threshold (critical mass)",
         "m2:Trade-off (Safety ↔ Performance ↔ Cost ↔ Waste)" .
 
-m0:RBMK_Reactor a m1energy:NuclearReactor,
-        m2:Processor ;
+m0:RBMK_Reactor a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld#NuclearReactor>,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Processor> ;
     rdfs:label "Graphite-Moderated Reactor (RBMK/UNGG/Magnox)" ;
+    m1energy:coolantType "Light_Water or CO2_Gas" ;
+    m1energy:criticalityControl "Control rods" ;
+    m1energy:fuelEnrichment "2% (RBMK) or Natural (Magnox)" ;
+    m1energy:moderatorType "Graphite" ;
+    m1energy:neutronSpectrum "Thermal" ;
+    m1energy:thermalEfficiency "31-33%" ;
+    m1energy:typicalPower "1000 MWe (RBMK)" ;
+    m2:Processor_Input "Control_rods",
+        "Graphite moderator",
+        "Light_water coolant (RBMK) or CO₂ (UNGG)",
+        "Low_enriched_uranium or Natural_U" ;
+    m2:Processor_Output "Fission_products",
+        "Steam",
+        "Thermal_energy (3000-4000 MWth)",
+        "Weapons_grade_Pu (RBMK capability)" ;
     rdfs:comment "Le Graphité ancestral - Graphite moderator, gas or water cooled. Historical design. Online refueling possible (RBMK). Chernobyl legacy." ;
     m0:advantages "Graphite stability at high temps",
         "Large power output",
@@ -357,25 +375,11 @@ m0:RBMK_Reactor a m1energy:NuclearReactor,
     m0:poleNumber 5 ;
     m0:safetyFeatures "Large core size (distributed fuel)",
         "Multiple coolant channels",
-        "Online refueling capability" ;
-    m1energy:coolantType "Light_Water or CO2_Gas" ;
-    m1energy:criticalityControl "Control rods" ;
-    m1energy:fuelEnrichment "2% (RBMK) or Natural (Magnox)" ;
-    m1energy:moderatorType "Graphite" ;
-    m1energy:neutronSpectrum "Thermal" ;
-    m1energy:thermalEfficiency "31-33%" ;
-    m1energy:typicalPower "1000 MWe (RBMK)" ;
-    m2:Processor_Input "Control_rods",
-        "Graphite moderator",
-        "Light_water coolant (RBMK) or CO₂ (UNGG)",
-        "Low_enriched_uranium or Natural_U" ;
-    m2:Processor_Output "Fission_products",
-        "Steam",
-        "Thermal_energy (3000-4000 MWth)",
-        "Weapons_grade_Pu (RBMK capability)" .
+        "Online refueling capability" .
 
 m0:ReactorTypology_Relationships a owl:NamedIndividual ;
     rdfs:label "Enneagram Connections Between Reactor Types" ;
+    m3:ontologyType <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace.jsonld#Poclet> ;
     rdfs:comment "Transformation pathways, evolution trajectories, and trade-off relationships between the 9 reactor poles." ;
     m0:tradeOffAxes [ ] ;
     m0:transformationPaths [ ],
@@ -387,9 +391,24 @@ m0:ReactorTypology_Relationships a owl:NamedIndividual ;
         [ ],
         [ ] .
 
-m0:SMR_Reactor a m1energy:NuclearReactor,
-        m2:Processor ;
+m0:SMR_Reactor a <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld#NuclearReactor>,
+        <https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld#Processor> ;
     rdfs:label "Small Modular Reactor (SMR)" ;
+    m1energy:coolantType "Light_Water or Liquid_Metal or Gas" ;
+    m1energy:criticalityControl "Passive systems + control rods" ;
+    m1energy:fuelEnrichment "5-20% U-235" ;
+    m1energy:moderatorType "Light_Water or Graphite" ;
+    m1energy:neutronSpectrum "Thermal or Fast" ;
+    m1energy:thermalEfficiency "33-45%" ;
+    m1energy:typicalPower "50-300 MWe" ;
+    m2:Processor_Input "Enriched_U235 (various enrichments)",
+        "Light_water or Molten_salt or Gas coolant",
+        "Modular_factory_built_components",
+        "Passive_safety_systems" ;
+    m2:Processor_Output "Desalination_capability",
+        "District_heating potential",
+        "Electricity (10-300 MWe)",
+        "Thermal_energy (30-1000 MWth)" ;
     rdfs:comment "Le Compact mobile - Small power (10-300 MWe). Factory-built modules. Flexibility, decarbonization, off-grid deployment." ;
     m0:advantages "Factory fabrication (cost/quality control)",
         "Passive safety features",
@@ -410,20 +429,5 @@ m0:SMR_Reactor a m1energy:NuclearReactor,
     m0:safetyFeatures "Integral primary system",
         "Long refueling intervals (5-30 years)",
         "Passive cooling (natural circulation)",
-        "Underground siting (some designs)" ;
-    m1energy:coolantType "Light_Water or Liquid_Metal or Gas" ;
-    m1energy:criticalityControl "Passive systems + control rods" ;
-    m1energy:fuelEnrichment "5-20% U-235" ;
-    m1energy:moderatorType "Light_Water or Graphite" ;
-    m1energy:neutronSpectrum "Thermal or Fast" ;
-    m1energy:thermalEfficiency "33-45%" ;
-    m1energy:typicalPower "50-300 MWe" ;
-    m2:Processor_Input "Enriched_U235 (various enrichments)",
-        "Light_water or Molten_salt or Gas coolant",
-        "Modular_factory_built_components",
-        "Passive_safety_systems" ;
-    m2:Processor_Output "Desalination_capability",
-        "District_heating potential",
-        "Electricity (10-300 MWe)",
-        "Thermal_energy (30-1000 MWth)" .
+        "Underground siting (some designs)" .
 
