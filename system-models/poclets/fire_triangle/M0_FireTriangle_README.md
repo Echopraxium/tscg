@@ -13,7 +13,7 @@
 The **Fire Triangle** is the canonical poclet for TSCG framework validation. It represents the minimal yet complete system for combustion, demonstrating that fire requires exactly three components simultaneously: **Fuel**, **Oxygen (Oxidizer)**, and **Heat**. Removing any one component immediately stops the fire.
 
 This poclet serves as:
-1. **Framework Validation**: Proof-of-concept for TSCG's ASFID/ORIVE analysis
+1. **Framework Validation**: Proof-of-concept for TSCG's ASFID/REVOI analysis
 2. **Metaconcept Discovery**: Helped identify Balance, Synergy, and Component metaconcepts
 3. **Pedagogical Tool**: Entry point for teaching systems theory and fire science
 
@@ -81,7 +81,7 @@ This poclet serves as:
 | **I** (Information) | 0.65 | Moderate information content (chemical signatures, spectral data) |
 | **D** (Dynamics) | 0.75 | Substantial dynamic behavior (rapid state changes, feedback loops) |
 
-**Norm**: 1.62
+**Norm**: 1.734
 
 **Observable Phenomena**:
 - Flame (visible light emission)
@@ -92,13 +92,13 @@ This poclet serves as:
 
 ---
 
-## ORIVE Analysis (Map Space - Sphinx Eye)
+## REVOI Analysis (Map Space - Sphinx Eye)
 
 ### Map: Fire Triangle as Theoretical Model
 
 **Observer**: Western scientist (modern perspective)
 
-**ORIVE State Vector**: `|M_triangle⟩_ORIVE = 0.80|O⟩ + 0.90|R⟩ + 0.90|I⟩ + 0.95|V⟩ + 0.70|E⟩`
+**REVOI State Vector**: `|M_triangle⟩_REVOI = 0.80|O⟩ + 0.90|R⟩ + 0.90|I⟩ + 0.95|V⟩ + 0.70|E⟩`
 
 | Dimension | Score | Interpretation |
 |-----------|-------|----------------|
@@ -108,18 +108,18 @@ This poclet serves as:
 | **V** (Verifiability) | 0.95 | Extremely verifiable - Popper gold standard. Falsifiable prediction: "Remove ANY component → fire stops." Testable experimentally. |
 | **E** (Evolvability) | 0.70 | Moderately evolvable - Model extended to Fire Tetrahedron (+Chain Reaction). Triangle remains dominant in pedagogy. |
 
-**ORIVE Mean**: **0.85** → Very high-quality Map
+**REVOI Mean**: **0.85** → Very high-quality Map
 
-**Overall Assessment**: Excellent Map - High ORIVE across all dimensions. Fire Triangle is paradigmatic example of effective scientific model: observable, representable, shareable, testable, and evolvable.
+**Overall Assessment**: Excellent Map - High REVOI across all dimensions. Fire Triangle is paradigmatic example of effective scientific model: observable, representable, shareable, testable, and evolvable.
 
 ### Comparison: Territory vs Map
 
-| Aspect | Territory (ASFID) | Map (ORIVE) |
+| Aspect | Territory (ASFID) | Map (REVOI) |
 |--------|-------------------|-------------|
 | **What is measured** | Physical fire phenomenon | Fire Triangle model |
 | **Perspective** | Eagle Eye | Sphinx Eye |
-| **State Vector** | (0.85, 0.70, 0.90, 0.65, 0.75) | (0.80, 0.90, 0.90, 0.95, 0.70) |
-| **Norm** | 1.62 | (calculated from ORIVE) |
+| **State Vector** | ASFID: (0.85, 0.70, 0.90, 0.65, 0.75) | REVOI: (0.90, 0.70, 0.95, 0.80, 0.90) · Map ASFID: (0.75, 0.90, 0.60, 0.80, 0.50) |
+| **Norm** | 1.734 | (calculated from REVOI) |
 | **Function** | Measure observable reality | Evaluate conceptual model quality |
 
 ---
@@ -159,6 +159,7 @@ This poclet serves as:
 - **Informational**: Code, Language, Representation, Signature
 - **Ontological**: System
 - **Teleonomic**: Autopoiesis
+- **Relational**: Synergy
 
 ### Critical Metaconcepts
 
@@ -208,9 +209,11 @@ This poclet serves as:
 - **Interpretation**: Thermal radiation spectrum analysis
 
 ### 3. Firefighter Perspective
-- **Map State**: (A:0.85, S:0.80, F:0.70, I:0.60, D:0.75)
-- **Differences**: Higher A (danger focus), higher D (spread dynamics), less I (action-focused)
-- **Interpretation**: Operational threat model
+- **Basis**: REVOI (Sphinx Eye) — Map perspective
+- **REVOI State**: (R:0.80, E:0.75, V:0.85, O:0.85, I:0.60)
+- **State Vector**: |M_firefighter⟩_REVOI = 0.80|R⟩ + 0.75|E⟩ + 0.85|V⟩ + 0.85|O⟩ + 0.60|I⟩
+- **Differences**: High O/V (threat visible and testable), lower I (action-focused, not a universal standard)
+- **Interpretation**: Operational threat model (Map quality, not Territory measurement)
 
 ---
 
@@ -258,7 +261,7 @@ This poclet serves as:
 | **Empirical Validity** | ✅ | Matches real combustion phenomenon |
 | **Framework Fit** | ✅ | Perfect M3→M2→M1→M0 instantiation |
 
-**Overall Score**: **ORIVE = 0.85** (Excellent)  
+**Overall Score**: **REVOI = 0.85** (Excellent)  
 **Epistemic Gap**: **ΔΘ = 0.474** (Moderate - acceptable)
 
 ---
@@ -323,7 +326,7 @@ Fuel vaporization → Mixing with O₂ → Oxidation → Heat + Light + Products
 ```
 M3 (Architecture)
   ├─ Eagle Eye (ASFID) → Measures Territory (physical fire)
-  └─ Sphinx Eye (ORIVE) → Evaluates Map (Triangle model)
+  └─ Sphinx Eye (REVOI) → Evaluates Map (Triangle model)
       ↓
 M2 (Metaconcepts)
   ├─ Synergy, Component, Composition, Trigger, Process
@@ -340,7 +343,7 @@ M0 (Poclet Instance)
 
 1. **Framework Validation** (Proof-of-Concept)
    - Demonstrates ASFID completeness
-   - Validates ORIVE scoring methodology
+   - Validates REVOI scoring methodology
    - Confirms bicephalous Territory-Map distinction
 
 2. **Metaconcept Discovery** (M2 Population)
@@ -359,7 +362,7 @@ M0 (Poclet Instance)
 
 ### For TSCG Framework Development
 - Use as reference example when validating new poclets
-- Compare ASFID/ORIVE scores to Fire Triangle benchmarks
+- Compare ASFID/REVOI scores to Fire Triangle benchmarks
 - Test new metaconcepts against Fire Triangle structure
 
 ### For Teaching Systems Theory
@@ -396,4 +399,4 @@ M0 (Poclet Instance)
 **File**: `M0_FireTriangle.jsonld`  
 **URI**: `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/fire_triangle/M0_FireTriangle.jsonld`  
 **Version**: 1.0  
-**Last Updated**: 2026-01-17
+**Last Updated**: 2026-02-20
