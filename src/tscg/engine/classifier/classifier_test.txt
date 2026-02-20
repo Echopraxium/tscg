@@ -1,0 +1,15 @@
+* CLI usage:
+  cd src/tscg/rag
+  python ../engine/classifier/metaconcept_classifier.py "A thermostat that maintains temperature via negative feedback"
+  python ../engine/classifier/metaconcept_classifier.py "The immune system neutralises pathogens" --top-k 8 --verbose
+  python ../engine/classifier/metaconcept_classifier.py "..." --json
+
+* Python API:
+  from tscg.engine.classifier import MetaconceptClassifier
+
+  clf = MetaconceptClassifier()
+  result = clf.classify("A thermostat maintains temperature via negative feedback")
+  clf.display(result)
+
+  # Or as structured data:
+  data = clf.to_dict(result)  # JSON-serialisable dict
