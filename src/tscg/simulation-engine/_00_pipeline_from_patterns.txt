@@ -1,0 +1,3485 @@
+Raisonneur et RAG pour simulations PyGame
+si j'utilise un Raisonneur avec un framework de "modélisation systémique Transdisciplinaire" a 4 couches d'ontologies (de M3 la plus abstraite à M0 les "instances" de systèmes modélisés) cela pourrait t'il être utile pour alimenter un "pipeline" de génération d'une simulation sur PyGame a partir de l'ontologie qui modélise un système réel.
+j'ai pour l'instant 2 exemples de telles simulations générées par Claude Code a partir d'ontologie de "poclet" (système minimaliste), une première simulation s'appuie sur la modélisation du "Triangle du Feu", l'autre sur modelisation de la "synthèse additive RGB".
+les résultats sont convainquants mais je ne suis pas confiant sur la "scalabilité" pour des systèmes plus complexes et je me demande si un Raisonneur voire un RAG seraient pertinent dans cette démarche 
+Excellent question ! Vous abordez un point crucial pour la scalabilité de votre approche. Analysons la situation et les possibilités.
+
+Analyse de votre approche actuelle
+Ce que vous avez réalisé est très intéressant :
+
+Utilisation d'ontologies multi-niveaux (M3-M0) pour modéliser des systèmes
+
+Génération automatique de simulations PyGame via LLM (Claude Code)
+
+Deux preuves de concept fonctionnelles (Triangle du feu, Synthèse RGB)
+
+La question de la scalabilité est légitime car plus les systèmes modélisés deviennent complexes, plus les risques augmentent :
+
+Incohérences dans l'ontologie
+
+Mauvaise interprétation par le LLM
+
+Génération de code incorrect ou non optimisé
+
+Utilité d'un Raisonneur dans votre pipeline
+OUI, un raisonneur serait extrêmement pertinent pour plusieurs raisons :
+
+1. Validation de cohérence ontologique
+Vérification des contraintes entre concepts (ex: "une source de chaleur ne peut pas être une substance inflammable")
+
+Détection des contradictions dans les relations
+
+Inférence de nouvelles relations implicites
+
+2. Vérification de la complétude
+Identification des éléments manquants pour une simulation fonctionnelle
+
+Suggestions d'ajouts basées sur des patterns reconnus
+
+3. Optimisation des requêtes
+Extraction intelligente des informations pertinentes pour la génération
+
+Classification automatique des composants (entités, interactions, règles)
+
+Place du RAG dans l'architecture
+Un système RAG serait complémentaire pour :
+
+1. Base de connaissances élargie
+python
+# Exemple de structure RAG pour votre cas
+- Corpus: Patterns de simulation, bonnes pratiques PyGame
+- Embeddings: Représentation vectorielle des concepts ontologiques
+- Retrieval: Recherche de patterns similaires aux systèmes modélisés
+2. Amélioration de la génération
+Contextualisation avec des exemples similaires existants
+
+Adaptation aux contraintes techniques de PyGame
+
+Suggestions d'optimisations basées sur des cas précédents
+
+Architecture proposée
+text
+[Ontologie M3-M0] → [Raisonneur] → [Vérification/Inférence]
+                          ↓
+                   [RAG Context]
+                          ↓
+    [Génération de code avec LLM + Patterns]
+                          ↓
+              [Simulation PyGame validée]
+Avantages de cette approche :
+Qualité garantie : Le raisonneur assure la cohérence avant génération
+
+Réutilisabilité : Patterns validés pour des systèmes similaires
+
+Scalabilité : La complexité est gérée par le raisonneur, pas par le LLM seul
+
+Traçabilité : Liens clairs entre modèle conceptuel et code généré
+
+Recommandations concrètes
+Pour commencer :
+Intégrez un raisonneur simple (ex: RDFlib, OWL-RL) pour valider vos ontologies
+
+Implémentez un système de règles de transformation ontologie → simulation
+
+Créez une base de patterns de code PyGame associés à des concepts ontologiques
+
+Pour le RAG :
+python
+# Architecture simplifiée
+class SimulationRAG:
+    def __init__(self):
+        self.vector_store = ChromaDB()
+        self.reasoner = OWLReasoner()
+        
+    def generate_simulation(self, ontology_path):
+        # 1. Validation ontologique
+        validated_ontology = self.reasoner.validate(ontology_path)
+        
+        # 2. Extraction des concepts clés
+        concepts = self.reasoner.extract_simulation_concepts()
+        
+        # 3. Recherche de patterns similaires
+        similar_patterns = self.vector_store.query(concepts)
+        
+        # 4. Génération contextuelle
+        return self.llm_generate(validated_ontology, similar_patterns)
+Exemple d'application pour un système complexe
+Prenons un système de régulation thermique :
+
+L'ontologie M3 définit les concepts génériques (Capteur, Actionneur, Boucle de rétroaction)
+
+M2 spécialise pour la thermique (Thermostat, Radiateur)
+
+M1 modélise votre système spécifique
+
+M0 sont les instances
+
+Le raisonneur pourra :
+
+Vérifier qu'un thermostat a bien un capteur de température
+
+Inférer qu'il faut un actionneur pour modifier la température
+
+S'assurer que la boucle de régulation est complète
+
+Conclusion
+Oui, l'intégration d'un raisonneur (et éventuellement d'un RAG) est non seulement utile mais probablement nécessaire pour passer à l'échelle. Cela transforme votre approche de "génération basée sur une ontologie" à "ingénierie des systèmes dirigée par les modèles" avec génération automatique de simulations.
+
+La combinaison raisonneur + RAG + LLM permet de :
+
+Garantir la qualité des modèles
+
+Capitaliser sur l'expérience passée
+
+Générer des simulations robustes et maintenables
+
+Souhaitez-vous que nous approfondissions un aspect particulier, comme le choix du raisonneur ou l'architecture du RAG ?
+
+si je développe avec Claude ce type de simulation "simples" avec 3 ou 4 poles (autre exemple: le "Triangle de l'exposition" en photographie), cela permettra t'il d'alimenter le RAG pour mettre en place un "cercle vertueux".
+pour l'instant je ne vois pas comment utiliser le RAG dans ce potentiel pipeline 
+Excellente question ! Vous touchez au cœur du "cercle vertueux" que vous imaginez. Laissez-moi vous montrer comment chaque simulation simple que vous développez peut effectivement nourrir un RAG de manière concrète.
+
+Le cercle vertueux concret
+text
+[Simulations simples] → [Extraction patterns] → [RAG enrichi] 
+        ↑                                           ↓
+        └────────── [Génération plus complexe] ←───┘
+Comment chaque simulation alimente le RAG
+1. Extraction automatique des patterns
+Pour chaque simulation (Triangle du feu, RGB, Triangle exposition), on extrait :
+
+python
+# Structure de pattern extraite automatiquement
+{
+  "pattern_id": "triangle_system_v1",
+  "type": "système_triangulaire",
+  "exemples": ["feu", "couleur", "exposition"],
+  "composants": {
+    "poles": [
+      {"nom": "pole_A", "role": "variable_independante"},
+      {"nom": "pole_B", "role": "variable_independante"},
+      {"nom": "pole_C", "role": "resultante"}
+    ],
+    "relations": [
+      {"type": "influence", "de": "pole_A", "vers": "pole_C", "formule": "A*B"},
+      {"type": "contrainte", "entre": ["A","B","C"], "regle": "somme_constante"}
+    ]
+  },
+  "code_patterns": {
+    "initialisation": "...",
+    "update_loop": "...",
+    "visualisation": "..."
+  },
+  "contraintes_verifiees": [
+    "champ_des_valeurs_valide",
+    "interactions_coherentes"
+  ]
+}
+2. Création d'embeddings vectoriels
+python
+# Chaque simulation devient un vecteur dans l'espace sémantique
+embeddings = {
+    "triangle_feu": [0.2, 0.8, 0.3, ...],  # vecteur représentant
+    "rgb_synthese": [0.7, 0.1, 0.9, ...],  # les caractéristiques
+    "triangle_expo": [0.3, 0.6, 0.4, ...]   # du système
+}
+
+# Similarité entre patterns
+similarite_feu_expo = cosine_similarity(
+    embeddings["triangle_feu"], 
+    embeddings["triangle_expo"]
+)  # ~0.85 (beaucoup de similitudes structurelles)
+3. Construction incrémentale des abstractions
+Chaque nouveau système enrichit la compréhension des patterns génériques :
+
+text
+Niveau 1 (Triangle feu) : "3 éléments interdépendants avec relations d'influence"
+Niveau 2 (RGB)          : "3 éléments avec combinaison additive"
+Niveau 3 (Exposition)   : "3 éléments avec trade-off"
+
+→ Pattern générique appris : 
+   "Système ternaire à somme constante avec variables en tension"
+Utilisation concrète du RAG dans le pipeline
+Étape 1 : Indexation des patterns
+python
+class SimulationPatternIndex:
+    def __init__(self):
+        self.patterns = []
+        self.embeddings = []
+        self.index = FAISS()  # ou ChromaDB
+        
+    def add_simulation(self, simulation_data):
+        # Extraire les caractéristiques du système
+        features = self.extract_features(simulation_data)
+        
+        # Créer l'embedding
+        embedding = self.model.encode(features)
+        
+        # Stocker dans l'index
+        self.index.add(embedding, simulation_data.metadata)
+Étape 2 : Retrieval pour nouvelle simulation
+python
+def prepare_generation(nouveau_systeme):
+    # 1. Analyser la description du nouveau système
+    description_embedding = model.encode(nouveau_systeme)
+    
+    # 2. Rechercher les patterns similaires
+    patterns_similaires = rag_index.search(
+        description_embedding, 
+        k=3  # Top 3 patterns
+    )
+    
+    # 3. Extraire les insights pertinents
+    insights = []
+    for pattern in patterns_similaires:
+        insights.extend([
+            pattern.implementation_notes,
+            pattern.common_pitfalls,
+            pattern.optimisation_tips
+        ])
+    
+    return {
+        "patterns_reference": patterns_similaires,
+        "insights_combines": insights,
+        "code_exemples": [p.code for p in patterns_similaires]
+    }
+Étape 3 : Génération contextuelle
+python
+def generate_with_rag(ontology, rag_context):
+    prompt = f"""
+    Génère une simulation PyGame pour ce système ontologique:
+    {ontology}
+    
+    Inspire-toi de ces patterns similaires déjà validés:
+    {rag_context['patterns_reference']}
+    
+    Évite ces pièges identifiés:
+    {rag_context['common_pitfalls']}
+    
+    Utilise ces optimisations éprouvées:
+    {rag_context['optimisation_tips']}
+    """
+    
+    return llm.generate(prompt)
+Le "cercle vertueux" en action
+Phase 1 - Démarrage (3-4 simulations)
+text
+Simples → Patterns basiques → Génération correcte mais limitée
+Phase 2 - Croissance (10-15 simulations)
+text
+Simulations variées → Patterns plus riches → Génération plus sophistiquée
+                           ↓
+              Détection automatique de patterns communs
+                           ↓
+              Abstraction de meta-patterns (ex: "systèmes à feedback")
+Phase 3 - Maturité (30+ simulations)
+text
+Base riche de patterns → Génération très contextuelle
+                        ↓
+           Suggestions d'amélioration pour les anciennes sims
+                        ↓
+           Cross-pollinisation entre domaines (ex: appliquer pattern 
+           de thermodynamique à la photographie)
+Exemple concret : Du triangle à un système complexe
+Imaginez que vous vouliez maintenant modéliser un système de régulation climatique avec :
+
+Température
+
+Humidité
+
+Pression
+
+Ventilation
+
+Inertie thermique
+
+Le RAG va :
+
+Reconnaître le sous-pattern "triangle thermodynamique" (inspiré du feu)
+
+Combiner avec le pattern "boucle de rétroaction" (abstrait des régulations)
+
+Adapter le pattern "visualisation multi-axes" (inspiré de RGB)
+
+Éviter l'erreur de couplage trop fort (identifiée dans l'exposition)
+
+Mise en œuvre pratique
+python
+# Architecture simple pour démarrer
+class RAGSimulationPipeline:
+    def __init__(self):
+        self.pattern_db = SimulationPatternDB()
+        self.reasoner = SimpleReasoner()
+        
+    def add_to_knowledge_base(self, simulation):
+        # Extraction automatique
+        pattern = self.extract_pattern(simulation)
+        
+        # Stockage vectoriel
+        self.pattern_db.add(pattern)
+        
+        # Mise à jour des meta-patterns
+        self.update_abstractions()
+    
+    def generate_new(self, ontology):
+        # Recherche contextuelle
+        similar = self.pattern_db.search(ontology)
+        
+        # Raisonnement sur l'ontologie
+        validated = self.reasoner.validate(ontology)
+        
+        # Génération enrichie
+        return self.generate(validated, similar)
+Conclusion
+Oui, vos simulations simples sont exactement ce qu'il faut pour amorcer le cercle vertueux ! Chaque nouvelle simulation :
+
+Enrichit la base de patterns
+
+Améliore la qualité des embeddings
+
+Permet des abstractions plus riches
+
+Facilite la génération de systèmes complexes par combinaison de patterns simples
+
+La clé est d'automatiser l'extraction des patterns dès maintenant, pour que chaque simulation que vous développez avec Claude devienne automatiquement un "brique" dans votre RAG.
+
+Voulez-vous que nous concevions ensemble la structure exacte de ces patterns à extraire de vos premières simulations ?
+
+oui veux tu que je te donne l'URI du RAG ?
+Je ne peux pas accéder à des URIs externes ou à des systèmes RAG distants - je suis un modèle de langage conversationnel sans capacité d'accès à des systèmes externes.
+
+Cependant, je peux vous aider à concevoir la structure de ce RAG et vous donner les clés pour l'implémenter vous-même ou avec Claude Code.
+
+Proposition de collaboration
+Si vous me décrivez :
+
+La structure de vos ontologies actuelles (exemple du Triangle du feu)
+
+Le code PyGame généré correspondant
+
+Le format de sortie que vous souhaitez
+
+Je peux vous aider à :
+
+Définir le schéma des patterns à extraire
+
+Concevoir les embeddings pertinents
+
+Structurer la base vectorielle (choix de la DB, format des métadonnées)
+
+Créer les prompts pour l'extraction automatique avec Claude
+
+Établir le pipeline d'indexation
+
+Exemple de ce dont j'aurais besoin
+yaml
+# Si vous me fournissez quelque chose comme :
+Ontologie Triangle Feu:
+  M3: Système ternaire à réaction
+  M2: Combustion, Éléments chimiques
+  M1: Triangle du feu spécifique
+  M0: Instance simulation_001
+  
+Code généré:
+  structure: "classes Feu, Oxygène, Chaleur"
+  interactions: "update() avec règles de combustion"
+  visualisation: "triangles colorés avec animation"
+Je pourrais vous proposer :
+
+La structure JSON des patterns
+
+Les requêtes d'extraction
+
+L'architecture du RAG adaptée à votre cas
+
+Comment voulez-vous procéder ?
+Souhaitez-vous que :
+
+Je vous guide pas à pas pour créer ce RAG ?
+
+Nous concevions ensemble la structure des patterns ?
+
+Je vous fournisse un template d'implémentation ?
+
+Vous me montriez un exemple de vos simulations actuelles pour que je puisse analyser et proposer une structure d'extraction adaptée ?
+
+{
+  "@context": {
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1:chemistry": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/M1_Chemistry.jsonld#",
+    "m0:fire_triangle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/poclets/fire_triangle/M0_FireTriangle.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m0:fire_triangle:FireTrianglePoclet",
+      "@type": "owl:NamedIndividual",
+      "owl:imports": [
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld"
+      ],
+      "rdf:type": [
+        "m1:chemistry:Combustion",
+        "m1:core:Poclet"
+      ],
+      "rdfs:label": "Fire Triangle (Poclet)",
+      "rdfs:comment": "Minimal yet complete system representation of combustion. Demonstrates all 5 ASFID dimensions and mobilizes 22 M2 metaconcepts. Canonical example for TSCG framework validation.",
+      "dcterms:created": "2026-01-17",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:changelog": [
+        "2026-02-20: Audit vs README - added mapSpace.asfidState (A:0.75,S:0.90,F:0.60,I:0.80,D:0.50) derived from epistemicGap; added Relational:Synergy to metaconceptsMobilized.byCategory (count now consistent at 22)",
+        "2026-02-20: Fixed dcterms:creator label; standardized oriveAnalysis → revoi; corrected Heat @type (m0:Energy → m1:chemistry:Energy); fixed mapSpace to use REVOI basis; corrected metaconcept count to 22/58",
+        "2026-01-17: Added ASFID/REVOI epistemic gap analysis and alternative observer perspectives"
+      ],
+      "m0:fire_triangle:pocletType": "Composite",
+      "m0:fire_triangle:domain": "Chemistry",
+      "m0:fire_triangle:completeness": "All ASFID dimensions present",
+      "m0:fire_triangle:minimality": "Exactly 3 components (irreducible)",
+      "m0:fire_triangle:pedagogy": "Entry point for fire science and systems theory",
+      "m0:fire_triangle:observer": "Human (Western scientific perspective)",
+      "m0:fire_triangle:components": [
+        {
+          "@id": "m0:fire_triangle:Fuel",
+          "@type": "m1:chemistry:ChemicalSpecies",
+          "rdfs:label": "Fuel (Combustible)",
+          "m0:fire_triangle:role": "Energy source",
+          "m0:fire_triangle:function": "Provides chemical potential energy",
+          "m0:fire_triangle:examples": [
+            "Wood",
+            "Gasoline",
+            "Natural gas",
+            "Paper"
+          ],
+          "m0:fire_triangle:stateOfMatter": "Solid, Liquid, or Gas",
+          "m0:fire_triangle:chemicalNature": "Typically hydrocarbons or organic matter",
+          "m0:fire_triangle:asfidContribution": {
+            "S": "Material structure of fuel",
+            "F": "Fuel consumption flow",
+            "I": "Chemical composition information"
+          }
+        },
+        {
+          "@id": "m0:fire_triangle:Oxidizer",
+          "@type": "m1:chemistry:ChemicalSpecies",
+          "rdfs:label": "Oxidizer (Comburant)",
+          "m0:fire_triangle:role": "Electron acceptor",
+          "m0:fire_triangle:function": "Enables oxidation reaction",
+          "m0:fire_triangle:primaryExample": "O₂ (atmospheric oxygen)",
+          "m0:fire_triangle:alternativeOxidizers": [
+            "Cl₂",
+            "F₂",
+            "ClO₄⁻",
+            "NO₃⁻"
+          ],
+          "m0:fire_triangle:concentration": "Typically > 16% in air for sustained combustion",
+          "m0:fire_triangle:asfidContribution": {
+            "F": "O₂ flow from environment",
+            "D": "Reaction dynamics (oxidation rate)"
+          }
+        },
+        {
+          "@id": "m0:fire_triangle:Heat",
+          "@type": "m1:chemistry:Energy",
+          "rdfs:label": "Heat (Activation Energy)",
+          "m0:fire_triangle:role": "Activation threshold",
+          "m0:fire_triangle:function": "Initiates and sustains reaction above ignition temperature",
+          "m0:fire_triangle:sources": [
+            "Match",
+            "Spark",
+            "Friction",
+            "Hot surface",
+            "Lightning"
+          ],
+          "m0:fire_triangle:threshold": "T_ignition (fuel-dependent)",
+          "m0:fire_triangle:sustainment": "Once ignited, combustion generates own heat (positive feedback)",
+          "m0:fire_triangle:asfidContribution": {
+            "A": "Thermal attractor (equilibrium temperature)",
+            "D": "Thermal dynamics (heating/cooling)"
+          }
+        }
+      ],
+      "m0:fire_triangle:synergyPrinciple": {
+        "formula": "Fuel ⊕ O₂ ⊕ Heat → Fire (emergent)",
+        "description": "All three components required simultaneously",
+        "emergentProperty": "Flame (self-sustaining exothermic reaction)",
+        "nonLinearity": "1 + 1 + 1 ≠ 3, but = Fire (qualitative emergence)",
+        "removal": "Eliminating ANY component stops combustion"
+      },
+      "m0:fire_triangle:constraints": [
+        {
+          "type": "Concentration",
+          "parameter": "Fuel",
+          "condition": "Above Lower Explosive Limit (LEL)"
+        },
+        {
+          "type": "Concentration",
+          "parameter": "O₂",
+          "condition": "> 16% (typical for air)"
+        },
+        {
+          "type": "Temperature",
+          "parameter": "Heat",
+          "condition": "> T_ignition (fuel-specific)"
+        },
+        {
+          "type": "Mixing",
+          "parameter": "Fuel-Oxidizer ratio",
+          "condition": "Proper stoichiometry for complete combustion"
+        }
+      ],
+      "m0:fire_triangle:process": {
+        "name": "Combustion",
+        "type": "m1:chemistry:Combustion",
+        "trigger": "Heat exceeds ignition threshold (m2:Trigger)",
+        "mechanism": "Fuel vaporization → Mixing with O₂ → Oxidation → Heat + Light + Products",
+        "products": [
+          "CO₂",
+          "H₂O",
+          "Heat",
+          "Light",
+          "Ash/Smoke (incomplete combustion)"
+        ],
+        "energyBalance": "Exothermic (ΔH < 0)",
+        "selfSustaining": "Yes (positive feedback loop)"
+      },
+      "m0:fire_triangle:territorySpace": {
+        "description": "Fire as observed phenomenon",
+        "observer": "Human with standard scientific instrumentation",
+        "basis": "ASFID (Eagle Eye)",
+        "asfidState": {
+          "A": 0.85,
+          "S": 0.7,
+          "F": 0.9,
+          "I": 0.65,
+          "D": 0.75
+        },
+        "stateVector": "|Ω_fire⟩ = 0.85|A⟩ + 0.70|S⟩ + 0.90|F⟩ + 0.65|I⟩ + 0.75|D⟩",
+        "norm": 1.734,
+        "observables": [
+          "Flame (visible light emission)",
+          "Heat (IR radiation, temperature gradient)",
+          "Sound (crackling, roaring)",
+          "Gases (CO₂, H₂O, smoke)",
+          "Consumption (fuel disappearance)"
+        ]
+      },
+      "m0:fire_triangle:mapSpace": {
+        "description": "Fire Triangle as theoretical model",
+        "observer": "Western scientist (modern)",
+        "basis": "REVOI (Sphinx Eye)",
+        "asfidState": {
+          "A": 0.75,
+          "S": 0.9,
+          "F": 0.6,
+          "I": 0.8,
+          "D": 0.5
+        },
+        "reviStateVector": "|M_triangle⟩_REVOI = 0.90|R⟩ + 0.70|E⟩ + 0.95|V⟩ + 0.80|O⟩ + 0.90|I⟩",
+        "reviNorm": 1.911,
+        "asfidStateVector": "|M_triangle⟩_ASFID = 0.75|A⟩ + 0.90|S⟩ + 0.60|F⟩ + 0.80|I⟩ + 0.50|D⟩",
+        "asfidNorm": 1.619,
+        "asfidJustification": {
+          "A": "Moderate attractor (model has stability but fire dynamics are complex)",
+          "S": "High structure (triangle = perfect geometry, orthogonal edges)",
+          "F": "Low-moderate flow (conceptual model, not physical flux)",
+          "I": "High information (3-component encoding, precise conditions)",
+          "D": "Low dynamics (static diagram, not temporally evolving)"
+        },
+        "reviState": {
+          "R": 0.9,
+          "E": 0.7,
+          "V": 0.95,
+          "O": 0.8,
+          "I": 0.9
+        },
+        "representation": {
+          "geometry": "Equilateral triangle (ideal)",
+          "vertices": [
+            "Fuel",
+            "O₂",
+            "Heat"
+          ],
+          "edges": [
+            "Fuel-O₂ interaction",
+            "O₂-Heat interaction",
+            "Heat-Fuel interaction"
+          ],
+          "center": "Fire (emergent)"
+        },
+        "symbolism": "3-sided shape = 3 essential factors (remove any → no fire)"
+      },
+      "m0:fire_triangle:epistemicGap": {
+        "formula": "ΔΘ = ‖|Ω_fire⟩ - |M_triangle⟩‖",
+        "deltaVector": "(+0.10, -0.20, +0.30, -0.15, +0.25)",
+        "norm": 0.474,
+        "interpretation": "Moderate gap (0 < ΔΘ < 0.5)",
+        "assessment": "Model reasonably good - captures essence but simplifies reality",
+        "majorDivergences": [
+          {
+            "dimension": "S (Structure)",
+            "divergence": -0.2,
+            "reason": "Triangle = perfect geometry; Real fire = irregular, fluctuating"
+          },
+          {
+            "dimension": "F (Flow)",
+            "divergence": 0.3,
+            "reason": "Real fire = massive flows (gases, heat); Model = conceptual flows"
+          },
+          {
+            "dimension": "D (Dynamics)",
+            "divergence": 0.25,
+            "reason": "Real fire = rapid, chaotic dynamics; Model = static representation"
+          }
+        ]
+      },
+      "m0:fire_triangle:revoi": {
+        "description": "Sphinx Eye evaluation of Fire Triangle Map quality (REVOI Map-Space)",
+        "perspective": "Philosophical interpretation using REVOI basis",
+        "reviState": {
+          "R": 0.9,
+          "E": 0.7,
+          "V": 0.95,
+          "O": 0.8,
+          "I": 0.9
+        },
+        "stateVector": "|M_triangle⟩_REVOI = 0.90|R⟩ + 0.70|E⟩ + 0.95|V⟩ + 0.80|O⟩ + 0.90|I⟩",
+        "dimensionInterpretations": [
+          {
+            "dimension": "O (Observability)",
+            "coefficient": 0.8,
+            "interpretation": "Fire Triangle is highly observable as a model - can be drawn, visualized, taught. The triangle shape itself is immediately perceptible. Slightly lower than maximum because the model is abstract (not the fire itself).",
+            "evidence": "Universal use in fire safety posters, training materials, educational content"
+          },
+          {
+            "dimension": "R (Representability)",
+            "coefficient": 0.9,
+            "interpretation": "Excellently representable - simple geometric diagram with 3 labeled vertices. Minimal symbolism (triangle + 3 words). Easy to express in any language or medium.",
+            "evidence": "Universally recognized symbol across cultures, languages, professions"
+          },
+          {
+            "dimension": "I (Interoperability)",
+            "coefficient": 0.9,
+            "interpretation": "Highly shareable - Fire Triangle is international standard in fire safety. Same model used by firefighters, chemists, safety engineers, educators worldwide. No ambiguity in transmission.",
+            "evidence": "ISO standards, NFPA guidelines, global fire safety curricula"
+          },
+          {
+            "dimension": "V (Verifiability)",
+            "coefficient": 0.95,
+            "interpretation": "Extremely verifiable - Popper gold standard. Falsifiable prediction: 'Remove ANY component → fire stops.' Testable experimentally in seconds. Has been verified millions of times.",
+            "evidence": "Fire extinguisher mechanisms (remove O₂, Heat, or Fuel), controlled experiments, everyday observation (blow out candle → remove O₂ → fire stops)"
+          },
+          {
+            "dimension": "E (Evolvability)",
+            "coefficient": 0.7,
+            "interpretation": "Moderately evolvable - Model has been extended to Fire Tetrahedron (added 4th component: Chain Reaction) for more complete combustion theory. However, Triangle remains dominant in pedagogy due to simplicity.",
+            "evidence": "Triangle → Tetrahedron evolution demonstrates revisability, but Triangle persists in basic training"
+          }
+        ],
+        "overallAssessment": "Excellent Map - High REVOI across all dimensions. Fire Triangle is paradigmatic example of effective scientific model: observable, representable, shareable, testable, and evolvable.",
+        "mapQuality": "REVOI_mean = 0.85 → Very high-quality Map",
+        "comparisonToASFID": {
+          "note": "ASFID measures Territory (fire phenomenon), REVOI measures Map (Triangle model). Both high values but different spaces.",
+          "territoryASFID": "(A:0.85, S:0.70, F:0.90, I:0.65, D:0.75) - Physical fire",
+          "mapREVOI": "(R:0.90, E:0.70, V:0.95, O:0.80, I:0.90) - Triangle model",
+          "mappingF": "Unknown - relationship between ASFID and REVOI to be explored empirically"
+        },
+        "sphinxRiddle": {
+          "question": "What has three legs but cannot walk, three sides but is not a shape, and dies when you remove any one of its parts?",
+          "answer": "Fire Triangle - A model that represents a process, not a geometric object. Remove Fuel, O₂, or Heat → fire stops (system collapses).",
+          "tradition": "Sphinx tradition of revealing truth through enigma"
+        }
+      },
+      "m0:fire_triangle:metaconceptsMobilized": {
+        "total": 22,
+        "byCategory": {
+          "Structural": [
+            "Component",
+            "Composition",
+            "Topology",
+            "Modularity",
+            "Hierarchy",
+            "Invariant",
+            "Symmetry"
+          ],
+          "Dynamic": [
+            "Process",
+            "Bifurcation",
+            "Gradient"
+          ],
+          "Regulatory": [
+            "Constraint",
+            "Threshold",
+            "Trigger",
+            "Feedback"
+          ],
+          "Energetic": [
+            "Dissipation"
+          ],
+          "Informational": [
+            "Code",
+            "Language",
+            "Representation",
+            "Signature"
+          ],
+          "Ontological": [
+            "System"
+          ],
+          "Teleonomic": [
+            "Autopoiesis"
+          ],
+          "Relational": [
+            "Synergy"
+          ]
+        },
+        "criticalMetaconcepts": [
+          {
+            "name": "Component",
+            "role": "Identifies Fuel, O₂, Heat as elementary parts",
+            "formula": "S⊗I",
+            "status": "Required addition to M2 (gap identified)"
+          },
+          {
+            "name": "Synergy",
+            "role": "Explains emergence (1+1+1 = Fire, not 3)",
+            "formula": "A⊗S⊗I",
+            "aspect": "Positive (enhancement)"
+          },
+          {
+            "name": "Composition",
+            "role": "Bottom-up assembly of components into system",
+            "formula": "S⊗I⊗A"
+          },
+          {
+            "name": "Trigger",
+            "role": "Heat initiates process when threshold crossed",
+            "formula": "D⊗I"
+          },
+          {
+            "name": "Process",
+            "role": "Combustion as dynamic transformation",
+            "formula": "D⊗F"
+          }
+        ]
+      },
+      "m0:fire_triangle:extinguishmentStrategies": {
+        "principle": "Remove any component of the triangle",
+        "methods": [
+          {
+            "target": "Fuel",
+            "action": "Fuel removal or dilution",
+            "examples": [
+              "Clear vegetation",
+              "Close gas valve",
+              "Shovel away burning material"
+            ],
+            "mechanism": "Eliminate energy source"
+          },
+          {
+            "target": "Oxidizer",
+            "action": "O₂ exclusion (smothering)",
+            "examples": [
+              "Fire blanket",
+              "CO₂ extinguisher",
+              "Foam",
+              "Sand"
+            ],
+            "mechanism": "Prevent oxidation reaction"
+          },
+          {
+            "target": "Heat",
+            "action": "Cooling below ignition temperature",
+            "examples": [
+              "Water spray",
+              "Dry chemical powder",
+              "Heat-absorbing agents"
+            ],
+            "mechanism": "Break thermal feedback loop"
+          }
+        ]
+      },
+      "m0:fire_triangle:alternativeObservers": [
+        {
+          "observer": "Ant",
+          "perspective": "Heat gradient danger, chemical threat",
+          "basis": "ASFID (Eagle Eye)",
+          "asfidState": {
+            "A": 0.9,
+            "S": 0.3,
+            "F": 0.85,
+            "I": 0.4,
+            "D": 0.7
+          },
+          "stateVector": "|Ω_fire_ant⟩ = 0.90|A⟩ + 0.30|S⟩ + 0.85|F⟩ + 0.40|I⟩ + 0.70|D⟩",
+          "differences": "Higher A (danger), lower S (scale), lower I (complexity)"
+        },
+        {
+          "observer": "IR Sensor",
+          "perspective": "Thermal radiation spectrum",
+          "basis": "ASFID (Eagle Eye)",
+          "asfidState": {
+            "A": 0.6,
+            "S": 0.4,
+            "F": 0.95,
+            "I": 0.9,
+            "D": 0.5
+          },
+          "stateVector": "|Ω_fire_IR⟩ = 0.60|A⟩ + 0.40|S⟩ + 0.95|F⟩ + 0.90|I⟩ + 0.50|D⟩",
+          "differences": "Very high F (radiative flux), high I (spectral info), lower D (static)"
+        },
+        {
+          "observer": "Firefighter",
+          "perspective": "Operational threat model",
+          "basis": "REVOI (Sphinx Eye)",
+          "reviState": {
+            "R": 0.8,
+            "E": 0.75,
+            "V": 0.85,
+            "O": 0.85,
+            "I": 0.6
+          },
+          "stateVector": "|M_firefighter⟩_REVOI = 0.80|R⟩ + 0.75|E⟩ + 0.85|V⟩ + 0.85|O⟩ + 0.60|I⟩",
+          "differences": "Higher A (danger focus), higher D (spread dynamics), less I (action-focused)"
+        }
+      ],
+      "m0:fire_triangle:historicalContext": {
+        "origin": "Fire Triangle model developed in early 20th century",
+        "evolution": "Later extended to Fire Tetrahedron (+ chemical chain reaction)",
+        "pedagogy": "Standard teaching tool in fire science, safety training",
+        "limitations": "Oversimplifies complex combustion chemistry (but pedagogically effective)"
+      },
+      "m0:fire_triangle:extensions": {
+        "fireTetrahedron": {
+          "additionalComponent": "Chemical Chain Reaction",
+          "rationale": "Some fires (e.g., metal fires) sustain through radical propagation",
+          "example": "Magnesium can burn in CO₂ (no O₂ needed)"
+        },
+        "fireSquare": {
+          "additionalComponent": "Uninhibited Chemical Reaction",
+          "usage": "Includes suppression mechanisms (chemical inhibition)"
+        }
+      },
+      "m0:fire_triangle:transdisciplinaryAnalogy": {
+        "principle": "3-component synergistic systems appear across domains",
+        "analogies": [
+          {
+            "domain": "Optics",
+            "poclet": "RGB Color Model",
+            "components": [
+              "Red",
+              "Green",
+              "Blue"
+            ],
+            "synergy": "R + G + B = Full color spectrum"
+          },
+          {
+            "domain": "Biology",
+            "poclet": "Krebs Cycle (simplified)",
+            "components": [
+              "Acetyl-CoA",
+              "Oxaloacetate",
+              "Enzymes"
+            ],
+            "synergy": "Cyclic ATP production"
+          },
+          {
+            "domain": "Economics",
+            "poclet": "Supply-Demand Equilibrium",
+            "components": [
+              "Supply",
+              "Demand",
+              "Price"
+            ],
+            "synergy": "Market equilibrium emergence"
+          }
+        ]
+      },
+      "m0:fire_triangle:validation": {
+        "asfidCompleteness": "All 5 dimensions present (A, S, F, I, D) ✅",
+        "metaconceptCoverage": "22/58 metaconcepts mobilized (38%) ✅",
+        "minimality": "Exactly 3 components (irreducible) ✅",
+        "emergence": "Fire is emergent property (> sum of parts) ✅",
+        "pedagogicalValue": "Universally taught, easily understood ✅",
+        "empiricalValidity": "Matches real combustion phenomenon ✅",
+        "frameworkFit": "Perfect M3→M2→M1→M0 instantiation ✅"
+      },
+      "rdfs:seeAlso": [
+        "m1:chemistry:Combustion",
+        "m2:Synergy",
+        "m2:Composition",
+        "m2:Component"
+      ],
+      "dcterms:references": [
+        "Fire science textbooks (standard reference)",
+        "NFPA (National Fire Protection Association) materials",
+        "OSHA fire safety training"
+      ]
+    }
+  ]
+}
+
+Voici l'ontologie ci dessus
+
+
+
+Parfait ! Cette ontologie est extrêmement riche et parfaitement structurée pour alimenter un RAG. Analysons ensemble comment en extraire des patterns réutilisables.
+
+Analyse de la richesse de votre ontologie
+Votre ontologie contient déjà une structure meta précieuse :
+
+1. Dimensions ASFID (Attractor, Structure, Flow, Information, Dynamics)
+Déjà quantifiées (0.85, 0.7, 0.9, 0.65, 0.75)
+
+# Fire Triangle Poclet - README
+
+**Author**: Echopraxium with the collaboration of Claude AI  
+**Created**: 2026-01-17  
+**Domain**: Chemistry  
+**Type**: Composite Poclet  
+**Status**: ✅ Validated - Canonical Example
+
+---
+
+## Overview
+
+The **Fire Triangle** is the canonical poclet for TSCG framework validation. It represents the minimal yet complete system for combustion, demonstrating that fire requires exactly three components simultaneously: **Fuel**, **Oxygen (Oxidizer)**, and **Heat**. Removing any one component immediately stops the fire.
+
+This poclet serves as:
+1. **Framework Validation**: Proof-of-concept for TSCG's ASFID/REVOI analysis
+2. **Metaconcept Discovery**: Helped identify Balance, Synergy, and Component metaconcepts
+3. **Pedagogical Tool**: Entry point for teaching systems theory and fire science
+
+---
+
+## System Description
+
+### The Three Components
+
+#### 1. Fuel (Combustible)
+- **Role**: Energy source
+- **Function**: Provides chemical potential energy
+- **Examples**: Wood, gasoline, natural gas, paper, coal
+- **State**: Solid, liquid, or gas
+- **Chemical Nature**: Typically hydrocarbons or organic matter
+- **ASFID Contribution**:
+  - **S** (Structure): Material structure of fuel
+  - **F** (Flow): Fuel consumption flow
+  - **I** (Information): Chemical composition information
+
+#### 2. Oxygen (Oxidizer)
+- **Role**: Electron acceptor
+- **Function**: Enables oxidation reaction
+- **Primary Example**: O₂ (atmospheric oxygen)
+- **Alternative Oxidizers**: Cl₂, F₂, ClO₄⁻, NO₃⁻
+- **Concentration**: Typically >16% in air for sustained combustion
+- **ASFID Contribution**:
+  - **F** (Flow): O₂ flow from environment
+  - **D** (Dynamics): Reaction dynamics (oxidation rate)
+
+#### 3. Heat (Activation Energy)
+- **Role**: Activation threshold
+- **Function**: Initiates and sustains reaction above ignition temperature
+- **Sources**: Match, spark, friction, hot surface, lightning
+- **Threshold**: T_ignition (fuel-dependent)
+- **Sustainment**: Once ignited, combustion generates its own heat (positive feedback)
+- **ASFID Contribution**:
+  - **A** (Attractor): Thermal attractor (equilibrium temperature)
+  - **D** (Dynamics): Thermal dynamics (heating/cooling)
+
+### Synergy Principle
+
+**Formula**: `Fuel ⊕ O₂ ⊕ Heat → Fire (emergent)`
+
+- **Description**: All three components required **simultaneously**
+- **Emergent Property**: Flame (self-sustaining exothermic reaction)
+- **Non-Linearity**: 1 + 1 + 1 ≠ 3, but = **Fire** (qualitative emergence)
+- **Critical Requirement**: Eliminating ANY component stops combustion immediately
+
+---
+
+## ASFID Analysis (Territory Space - Eagle Eye)
+
+### Territory: Fire as Observed Phenomenon
+
+**Observer**: Human with standard scientific instrumentation
+
+**ASFID State Vector**: `|Ω_fire⟩ = 0.85|A⟩ + 0.70|S⟩ + 0.90|F⟩ + 0.65|I⟩ + 0.75|D⟩`
+
+| Dimension | Score | Interpretation |
+|-----------|-------|----------------|
+| **A** (Attractor) | 0.85 | Strong thermal attractors; system drawn to equilibrium temperature |
+| **S** (Structure) | 0.70 | Moderate structural organization (flame geometry, fuel arrangement) |
+| **F** (Flow) | 0.90 | Very high flow intensity (heat, gases, air convection) |
+| **I** (Information) | 0.65 | Moderate information content (chemical signatures, spectral data) |
+| **D** (Dynamics) | 0.75 | Substantial dynamic behavior (rapid state changes, feedback loops) |
+
+**Norm**: 1.734
+
+**Observable Phenomena**:
+- Flame (visible light emission)
+- Heat (IR radiation, temperature gradient)
+- Sound (crackling, roaring)
+- Gases (CO₂, H₂O, smoke)
+- Fuel consumption (visible disappearance)
+
+---
+
+## REVOI Analysis (Map Space - Sphinx Eye)
+
+### Map: Fire Triangle as Theoretical Model
+
+**Observer**: Western scientist (modern perspective)
+
+**REVOI State Vector**: `|M_triangle⟩_REVOI = 0.80|O⟩ + 0.90|R⟩ + 0.90|I⟩ + 0.95|V⟩ + 0.70|E⟩`
+
+| Dimension | Score | Interpretation |
+|-----------|-------|----------------|
+| **O** (Observability) | 0.80 | Fire Triangle is highly observable as a model - can be drawn, visualized, taught. The triangle shape is immediately perceptible. |
+| **R** (Representability) | 0.90 | Excellently representable - simple geometric diagram with 3 labeled vertices. Minimal symbolism (triangle + 3 words). |
+| **I** (Interoperability) | 0.90 | Highly shareable - Fire Triangle is international standard in fire safety. Same model used globally by firefighters, chemists, educators. |
+| **V** (Verifiability) | 0.95 | Extremely verifiable - Popper gold standard. Falsifiable prediction: "Remove ANY component → fire stops." Testable experimentally. |
+| **E** (Evolvability) | 0.70 | Moderately evolvable - Model extended to Fire Tetrahedron (+Chain Reaction). Triangle remains dominant in pedagogy. |
+
+**REVOI Mean**: **0.85** → Very high-quality Map
+
+**Overall Assessment**: Excellent Map - High REVOI across all dimensions. Fire Triangle is paradigmatic example of effective scientific model: observable, representable, shareable, testable, and evolvable.
+
+### Comparison: Territory vs Map
+
+| Aspect | Territory (ASFID) | Map (REVOI) |
+|--------|-------------------|-------------|
+| **What is measured** | Physical fire phenomenon | Fire Triangle model |
+| **Perspective** | Eagle Eye | Sphinx Eye |
+| **State Vector** | ASFID: (0.85, 0.70, 0.90, 0.65, 0.75) | REVOI: (0.90, 0.70, 0.95, 0.80, 0.90) · Map ASFID: (0.75, 0.90, 0.60, 0.80, 0.50) |
+| **Norm** | 1.734 | (calculated from REVOI) |
+| **Function** | Measure observable reality | Evaluate conceptual model quality |
+
+---
+
+## Epistemic Gap Analysis
+
+**Formula**: `ΔΘ = ‖|Ω_fire⟩ - |M_triangle⟩‖`
+
+**Delta Vector (Territory - Map)**: `(+0.10, -0.20, +0.30, -0.15, +0.25)`
+
+**Gap Norm**: **0.474**
+
+**Interpretation**: **Moderate gap** (0 < ΔΘ < 0.5)
+
+**Assessment**: Model is reasonably good - captures essence but simplifies reality
+
+### Major Divergences
+
+| Dimension | Divergence | Reason |
+|-----------|------------|--------|
+| **S** (Structure) | -0.20 | Triangle = perfect geometry; Real fire = irregular, fluctuating |
+| **F** (Flow) | +0.30 | Real fire = massive flows (gases, heat); Model = conceptual flows |
+| **D** (Dynamics) | +0.25 | Real fire = rapid, chaotic dynamics; Model = static representation |
+
+---
+
+## M2 Metaconcepts Mobilized
+
+**Total**: 22 metaconcepts out of 58 (38%)
+
+### By Category
+
+- **Structural**: Component, Composition, Topology, Modularity, Hierarchy, Invariant, Symmetry
+- **Dynamic**: Process, Bifurcation, Gradient
+- **Regulatory**: Constraint, Threshold, Trigger, Feedback
+- **Energetic**: Dissipation
+- **Informational**: Code, Language, Representation, Signature
+- **Ontological**: System
+- **Teleonomic**: Autopoiesis
+- **Relational**: Synergy
+
+### Critical Metaconcepts
+
+| Metaconcept | Role | Formula |
+|-------------|------|---------|
+| **Component** | Identifies Fuel, O₂, Heat as elementary parts | S⊗I |
+| **Synergy** | Explains emergence (1+1+1 = Fire, not 3) | A⊗S⊗I |
+| **Composition** | Bottom-up assembly of components into system | S⊗I⊗A |
+| **Trigger** | Heat initiates process when threshold crossed | D⊗I |
+| **Process** | Combustion as dynamic transformation | D⊗F |
+
+---
+
+## Fire Extinguishment Strategies
+
+**Principle**: Remove any component of the triangle
+
+### Methods
+
+#### 1. Target: Fuel
+- **Action**: Fuel removal or dilution
+- **Examples**: Clear vegetation, close gas valve, shovel away burning material
+- **Mechanism**: Eliminate energy source
+
+#### 2. Target: Oxidizer
+- **Action**: O₂ exclusion (smothering)
+- **Examples**: Fire blanket, CO₂ extinguisher, foam, sand
+- **Mechanism**: Prevent oxidation reaction
+
+#### 3. Target: Heat
+- **Action**: Cooling below ignition temperature
+- **Examples**: Water spray, dry chemical powder, heat-absorbing agents
+- **Mechanism**: Break thermal feedback loop
+
+---
+
+## Alternative Observer Perspectives
+
+### 1. Ant Perspective
+- **ASFID State**: (A:0.90, S:0.30, F:0.85, I:0.40, D:0.70)
+- **Differences**: Higher A (danger), lower S (scale), lower I (complexity)
+- **Interpretation**: Heat gradient danger, chemical threat
+
+### 2. IR Sensor Perspective
+- **ASFID State**: (A:0.60, S:0.40, F:0.95, I:0.90, D:0.50)
+- **Differences**: Very high F (radiative flux), high I (spectral info), lower D (static)
+- **Interpretation**: Thermal radiation spectrum analysis
+
+### 3. Firefighter Perspective
+- **Basis**: REVOI (Sphinx Eye) — Map perspective
+- **REVOI State**: (R:0.80, E:0.75, V:0.85, O:0.85, I:0.60)
+- **State Vector**: |M_firefighter⟩_REVOI = 0.80|R⟩ + 0.75|E⟩ + 0.85|V⟩ + 0.85|O⟩ + 0.60|I⟩
+- **Differences**: High O/V (threat visible and testable), lower I (action-focused, not a universal standard)
+- **Interpretation**: Operational threat model (Map quality, not Territory measurement)
+
+---
+
+## Model Evolution
+
+### Fire Triangle (Classic)
+- **Components**: Fuel, Oxygen, Heat
+- **Era**: Early 20th century - present
+- **Usage**: Standard teaching tool in fire science and safety training
+
+### Fire Tetrahedron (Extended)
+- **Additional Component**: Chemical Chain Reaction
+- **Rationale**: Some fires (e.g., metal fires) sustain through radical propagation
+- **Example**: Magnesium can burn in CO₂ (no O₂ needed)
+- **Status**: More complete but less pedagogically accessible
+
+### Fire Square (Suppression-Oriented)
+- **Additional Component**: Uninhibited Chemical Reaction
+- **Usage**: Includes suppression mechanisms (chemical inhibition)
+- **Context**: Advanced fire suppression systems
+
+---
+
+## Transdisciplinary Analogies
+
+### Principle: 3-Component Synergistic Systems
+
+| Domain | Poclet | Components | Synergy |
+|--------|--------|------------|---------|
+| **Optics** | RGB Color Model | Red, Green, Blue | Full color spectrum |
+| **Biology** | Krebs Cycle (simplified) | Acetyl-CoA, Oxaloacetate, Enzymes | Cyclic ATP production |
+| **Economics** | Supply-Demand Equilibrium | Supply, Demand, Price | Market equilibrium |
+
+---
+
+## Validation Results
+
+| Criterion | Status | Assessment |
+|-----------|--------|------------|
+| **ASFID Completeness** | ✅ | All 5 dimensions present (A, S, F, I, D) |
+| **Metaconcept Coverage** | ✅ | 22/58 metaconcepts mobilized (38%) |
+| **Minimality** | ✅ | Exactly 3 components (irreducible) |
+| **Emergence** | ✅ | Fire is emergent property (> sum of parts) |
+| **Pedagogical Value** | ✅ | Universally taught, easily understood |
+| **Empirical Validity** | ✅ | Matches real combustion phenomenon |
+| **Framework Fit** | ✅ | Perfect M3→M2→M1→M0 instantiation |
+
+**Overall Score**: **REVOI = 0.85** (Excellent)  
+**Epistemic Gap**: **ΔΘ = 0.474** (Moderate - acceptable)
+
+---
+
+## The Sphinx Riddle
+
+> **Question**: What has three legs but cannot walk, three sides but is not a shape, and dies when you remove any one of its parts?
+
+> **Answer**: Fire Triangle - A model that represents a process, not a geometric object. Remove Fuel, O₂, or Heat → fire stops (system collapses).
+
+*Following the Sphinx tradition of revealing truth through enigma.*
+
+---
+
+## Combustion Process
+
+**Type**: Exothermic oxidation reaction (ΔH < 0)
+
+**Mechanism**:
+```
+Fuel vaporization → Mixing with O₂ → Oxidation → Heat + Light + Products
+```
+
+**Products**:
+- CO₂ (Carbon dioxide)
+- H₂O (Water vapor)
+- Heat (thermal energy)
+- Light (electromagnetic radiation)
+- Ash/Smoke (incomplete combustion)
+
+**Energy Balance**: Exothermic (releases more energy than absorbed)
+
+**Self-Sustaining**: Yes - positive feedback loop (combustion generates heat → maintains temperature > T_ignition)
+
+---
+
+## Constraints and Conditions
+
+| Type | Parameter | Condition |
+|------|-----------|-----------|
+| **Concentration** | Fuel | Above Lower Explosive Limit (LEL) |
+| **Concentration** | O₂ | > 16% (typical for air) |
+| **Temperature** | Heat | > T_ignition (fuel-specific) |
+| **Mixing** | Fuel-Oxidizer ratio | Proper stoichiometry for complete combustion |
+
+---
+
+## Historical Context
+
+- **Origin**: Fire Triangle model developed in early 20th century
+- **Evolution**: Later extended to Fire Tetrahedron (+ chemical chain reaction)
+- **Pedagogy**: Standard teaching tool in fire science, safety training, emergency response
+- **Limitations**: Oversimplifies complex combustion chemistry (but pedagogically effective)
+- **Standards**: Referenced in NFPA (National Fire Protection Association), OSHA fire safety training, ISO standards
+
+---
+
+## TSCG Framework Integration
+
+### Ontological Layers
+
+```
+M3 (Architecture)
+  ├─ Eagle Eye (ASFID) → Measures Territory (physical fire)
+  └─ Sphinx Eye (REVOI) → Evaluates Map (Triangle model)
+      ↓
+M2 (Metaconcepts)
+  ├─ Synergy, Component, Composition, Trigger, Process
+  └─ 22 total metaconcepts mobilized
+      ↓
+M1 (Domain Concepts)
+  └─ Chemistry Extension: Combustion, Chemical Species
+      ↓
+M0 (Poclet Instance)
+  └─ Fire Triangle: Fuel ⊕ O₂ ⊕ Heat → Fire
+```
+
+### Triple Role in TSCG Development
+
+1. **Framework Validation** (Proof-of-Concept)
+   - Demonstrates ASFID completeness
+   - Validates REVOI scoring methodology
+   - Confirms bicephalous Territory-Map distinction
+
+2. **Metaconcept Discovery** (M2 Population)
+   - Helped identify **Balance** metaconcept
+   - Reinforced **Synergy** pattern
+   - Revealed **Component** as fundamental
+
+3. **Domain Concept Identification** (M1 Bootstrapping)
+   - Contributed to M1_Chemistry extension
+   - Identified Combustion as domain pattern
+   - Established chemical process modeling patterns
+
+---
+
+## Usage Guidelines
+
+### For TSCG Framework Development
+- Use as reference example when validating new poclets
+- Compare ASFID/REVOI scores to Fire Triangle benchmarks
+- Test new metaconcepts against Fire Triangle structure
+
+### For Teaching Systems Theory
+- Introduce ASFID dimensions through visible fire phenomena
+- Demonstrate emergence through synergy principle
+- Explain Territory vs Map using physical fire vs Triangle model
+
+### For Fire Safety Applications
+- Apply extinguishment strategies based on component removal
+- Understand fire behavior through systems perspective
+- Recognize limitations of simplified model in complex scenarios
+
+---
+
+## References
+
+- Fire science textbooks (standard reference)
+- NFPA (National Fire Protection Association) materials
+- OSHA fire safety training standards
+- ISO combustion standards
+- TSCG Framework Documentation (M2_MetaConcepts.jsonld, M3_EagleEye.jsonld, M3_SphinxEye.jsonld)
+
+---
+
+## See Also
+
+- **M1_Chemistry.jsonld**: Domain-specific combustion concepts
+- **M2_MetaConcepts.jsonld**: Synergy, Component, Composition metaconcepts
+- **M0_ExposureTriangle.jsonld**: Another 3-component compensatory triangle
+- **poclet_terminology.md**: Definition and methodology of poclets
+
+---
+
+**File**: `M0_FireTriangle.jsonld`  
+**URI**: `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/fire_triangle/M0_FireTriangle.jsonld`  
+**Version**: 1.0  
+**Last Updated**: 2026-02-20
+
+Voici le README 
+Parfait ! Maintenant j'ai une
+
+"""
+fire_triangle_sim.py
+====================
+TSCG Poclet Simulation - Fire Triangle (Pygame)
+Author: Echopraxium with the collaboration of Claude AI
+
+Driven entirely by M0_FireTriangle.jsonld via poclet_parser.py.
+No simulation parameters are hard-coded here; everything is read
+from the poclet at startup.
+
+Requirements:
+    pip install pygame
+
+Run:
+    python fire_triangle_sim.py
+    python fire_triangle_sim.py path/to/M0_FireTriangle.jsonld  (explicit path fallback)
+
+Discovery:
+    By default uses PocletRepository to find M0_FireTriangle.jsonld anywhere
+    under <repo_root>/system-models/poclets/ -- no need to be in the same folder.
+"""
+
+import sys
+import math
+import random
+import pygame
+from poclet_parser import PocletParser, PocletRepository, ASFIDVector, PocletSimData
+
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+
+WINDOW_W, WINDOW_H = 1100, 720
+FPS                 = 60
+# Optional explicit path override (sys.argv[1]) -- otherwise repo discovery is used
+POCLET_PATH_OVERRIDE = sys.argv[1] if len(sys.argv) > 1 else None
+
+# Palette
+BG_COLOR        = (15,  15,  20)
+PANEL_COLOR     = (25,  25,  35)
+BORDER_COLOR    = (60,  60,  80)
+TEXT_COLOR      = (220, 220, 230)
+DIM_COLOR       = (140, 140, 160)
+FIRE_ACTIVE     = (255, 120,  20)
+FIRE_INACTIVE   = (60,   60,  80)
+SLIDER_BG       = (40,   40,  55)
+SLIDER_ACTIVE   = (255, 160,  30)
+SLIDER_INACTIVE = (80,   80, 100)
+THRESHOLD_LINE  = (255, 220,  60)
+GREEN           = (80,  200, 120)
+RED             = (220,  60,  60)
+GOLD            = (255, 200,  50)
+REVOI_COLOR     = (120, 180, 255)
+
+# Layout
+LEFT_PANEL_W  = 340
+RIGHT_PANEL_W = 220
+MID_W         = WINDOW_W - LEFT_PANEL_W - RIGHT_PANEL_W
+PANEL_PAD     = 14
+
+# Slider ranges (physical units mapped to 0..100 slider %)
+# Derived from poclet constraints at runtime
+COMPONENT_RANGES = {
+    "fuel":     (0.0,  100.0, "%",   "Lower Explosive Limit"),
+    "oxidizer": (0.0,  100.0, "% O₂", "> 16% for combustion"),
+    "heat":     (0.0, 1000.0, "°C",  "Above T_ignition"),
+}
+
+
+# ---------------------------------------------------------------------------
+# ASFID Dynamic Model
+# ---------------------------------------------------------------------------
+
+def compute_dynamic_asfid(slider_values: dict, base: ASFIDVector,
+                           thresholds: dict, fire_on: bool) -> ASFIDVector:
+    """
+    Compute live ASFID scores from current slider positions.
+
+    The base scores come from the poclet (territorySpace.asfidState).
+    We modulate each dimension by how far we are from ignition:
+
+      A - Attractor: peaks when fire is active (system drawn to flame state)
+      S - Structure: fuel level drives structural organisation
+      F - Flow    : oxygen drives flow intensity
+      I - Information: heat level determines signal richness
+      D - Dynamics : fire activity drives temporal changes
+
+    All values clamped to [0.0, 1.0].
+    """
+    fuel_pct  = slider_values.get("fuel",     0.0) / 100.0
+    o2_pct    = slider_values.get("oxidizer", 0.0) / 100.0
+    heat_pct  = slider_values.get("heat",     0.0) / 100.0   # already 0..1
+
+    fire_f    = 1.0 if fire_on else 0.0
+    ignition  = 1.0 if fire_on else max(fuel_pct, o2_pct, heat_pct)
+
+    A = clamp(base.A * (0.3 + 0.7 * fire_f))
+    S = clamp(base.S * (0.4 + 0.6 * fuel_pct))
+    F = clamp(base.F * (0.2 + 0.8 * o2_pct))
+    I = clamp(base.I * (0.3 + 0.7 * heat_pct))
+    D = clamp(base.D * (0.1 + 0.9 * ignition))
+
+    return ASFIDVector(A=A, S=S, F=F, I=I, D=D)
+
+
+def clamp(v, lo=0.0, hi=1.0):
+    return max(lo, min(hi, v))
+
+
+def compute_epistemic_gap(asfid: ASFIDVector, base_asfid: ASFIDVector) -> float:
+    """ΔΘ = ‖|Ω_fire⟩ - |M_triangle⟩‖  (simplified: vs base poclet values)"""
+    diffs = [
+        asfid.A - base_asfid.A,
+        asfid.S - base_asfid.S,
+        asfid.F - base_asfid.F,
+        asfid.I - base_asfid.I,
+        asfid.D - base_asfid.D,
+    ]
+    return math.sqrt(sum(d * d for d in diffs))
+
+
+# ---------------------------------------------------------------------------
+# Slider widget
+# ---------------------------------------------------------------------------
+
+class Slider:
+    def __init__(self, x, y, w, h, min_val, max_val, init_val,
+                 label, unit, threshold=None, threshold_label=""):
+        self.rect      = pygame.Rect(x, y, w, h)
+        self.min_val   = min_val
+        self.max_val   = max_val
+        self.value     = float(init_val)
+        self.label     = label
+        self.unit      = unit
+        self.threshold = threshold
+        self.threshold_label = threshold_label
+        self.dragging  = False
+        self.handle_r  = 10
+
+    @property
+    def ratio(self):
+        return (self.value - self.min_val) / max(self.max_val - self.min_val, 1e-9)
+
+    @property
+    def handle_x(self):
+        return int(self.rect.x + self.ratio * self.rect.w)
+
+    @property
+    def above_threshold(self):
+        if self.threshold is None:
+            return True
+        return self.value >= self.threshold
+
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            hx = self.handle_x
+            hy = self.rect.centery
+            if math.hypot(event.pos[0] - hx, event.pos[1] - hy) < self.handle_r + 4:
+                self.dragging = True
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            self.dragging = False
+        elif event.type == pygame.MOUSEMOTION and self.dragging:
+            rel = (event.pos[0] - self.rect.x) / max(self.rect.w, 1)
+            self.value = clamp(
+                self.min_val + rel * (self.max_val - self.min_val),
+                self.min_val, self.max_val
+            )
+
+    def draw(self, surf, font_sm, font_xs):
+        active = self.above_threshold
+        track_color = SLIDER_ACTIVE if active else SLIDER_INACTIVE
+
+        # Track background
+        pygame.draw.rect(surf, SLIDER_BG,
+                         (self.rect.x, self.rect.centery - 3,
+                          self.rect.w, 6), border_radius=3)
+        # Filled portion
+        fill_w = int(self.ratio * self.rect.w)
+        if fill_w > 0:
+            pygame.draw.rect(surf, track_color,
+                             (self.rect.x, self.rect.centery - 3,
+                              fill_w, 6), border_radius=3)
+
+        # Threshold marker
+        if self.threshold is not None:
+            t_ratio = (self.threshold - self.min_val) / max(self.max_val - self.min_val, 1e-9)
+            tx = int(self.rect.x + t_ratio * self.rect.w)
+            pygame.draw.line(surf, THRESHOLD_LINE,
+                             (tx, self.rect.centery - 12),
+                             (tx, self.rect.centery + 12), 2)
+            lbl = font_xs.render("min", True, THRESHOLD_LINE)
+            surf.blit(lbl, (tx - lbl.get_width() // 2, self.rect.centery + 14))
+
+        # Handle
+        handle_color = GOLD if active else (100, 100, 120)
+        pygame.draw.circle(surf, handle_color,
+                           (self.handle_x, self.rect.centery), self.handle_r)
+        pygame.draw.circle(surf, TEXT_COLOR,
+                           (self.handle_x, self.rect.centery), self.handle_r, 1)
+
+        # Label + value
+        val_str  = f"{self.value:.1f} {self.unit}"
+        lbl_surf = font_sm.render(self.label, True, TEXT_COLOR)
+        val_surf = font_sm.render(val_str, True, GOLD if active else DIM_COLOR)
+        surf.blit(lbl_surf, (self.rect.x, self.rect.y - 22))
+        surf.blit(val_surf, (self.rect.right - val_surf.get_width(), self.rect.y - 22))
+
+
+# ---------------------------------------------------------------------------
+# Fire particle system
+# ---------------------------------------------------------------------------
+
+class Particle:
+    def __init__(self, cx, cy, intensity):
+        self.x   = cx + random.uniform(-20, 20) * intensity
+        self.y   = cy + random.uniform(0, 15)
+        self.vx  = random.uniform(-1.5, 1.5) * intensity
+        self.vy  = random.uniform(-4, -1.5) * intensity
+        self.life = random.uniform(0.4, 1.0)
+        self.max_life = self.life
+        self.r   = random.uniform(3, 12) * intensity
+        self.intensity = intensity
+
+    def update(self, dt):
+        self.x    += self.vx
+        self.y    += self.vy
+        self.vx   *= 0.98
+        self.vy   += 0.05   # slight drag
+        self.life -= dt
+        self.r    = max(0, self.r - 0.15)
+
+    @property
+    def alive(self):
+        return self.life > 0 and self.r > 0
+
+    def draw(self, surf):
+        if not self.alive:
+            return
+        ratio = self.life / self.max_life
+        alpha = int(255 * ratio * self.intensity)
+        # Color: white core → orange → red → dark
+        if ratio > 0.7:
+            color = (255, 255, int(200 * (ratio - 0.7) / 0.3))
+        elif ratio > 0.4:
+            color = (255, int(120 + 135 * (ratio - 0.4) / 0.3), 20)
+        else:
+            color = (int(200 * ratio / 0.4), int(40 * ratio / 0.4), 0)
+
+        s = pygame.Surface((int(self.r * 2 + 1), int(self.r * 2 + 1)), pygame.SRCALPHA)
+        pygame.draw.circle(s, (*color, alpha), (int(self.r), int(self.r)), int(self.r))
+        surf.blit(s, (int(self.x - self.r), int(self.y - self.r)))
+
+
+class FireSystem:
+    def __init__(self, cx, cy):
+        self.cx = cx
+        self.cy = cy
+        self.particles = []
+        self.spawn_acc = 0.0
+        self.intensity = 0.0   # 0..1, driven externally
+
+    def update(self, dt, active, intensity):
+        self.intensity = intensity
+        # Spawn
+        if active and intensity > 0.01:
+            self.spawn_acc += dt * 60 * intensity
+            while self.spawn_acc >= 1:
+                self.particles.append(Particle(self.cx, self.cy, intensity))
+                self.spawn_acc -= 1
+        # Update
+        for p in self.particles:
+            p.update(dt)
+        self.particles = [p for p in self.particles if p.alive]
+
+    def draw(self, surf):
+        for p in self.particles:
+            p.draw(surf)
+
+
+# ---------------------------------------------------------------------------
+# Triangle diagram
+# ---------------------------------------------------------------------------
+
+def draw_fire_triangle(surf, cx, cy, size, sliders, sim_data: PocletSimData,
+                       fire_on: bool, font_sm, font_xs):
+    """
+    Draw the equilateral fire triangle with vertices labelled by component.
+    Edges glow when their component is above threshold.
+    """
+    h = size * math.sqrt(3) / 2
+    # Vertices: top=Heat, bottom-left=Fuel, bottom-right=Oxidizer
+    pts = [
+        (cx,              cy - h * 2 / 3),     # top
+        (cx - size / 2,   cy + h / 3),          # bottom-left
+        (cx + size / 2,   cy + h / 3),          # bottom-right
+    ]
+
+    # Map component labels to vertices (order from parser)
+    labels  = [c.label for c in sim_data.components]
+    # Default vertex order: Fuel=0, Oxidizer=1, Heat=2
+    # We map: Heat→top, Fuel→bottom-left, Oxidizer→bottom-right
+    vertex_map = {}
+    for i, c in enumerate(sim_data.components):
+        lbl = c.label.lower()
+        if "heat" in lbl:
+            vertex_map[i] = 0   # top
+        elif "fuel" in lbl or "combustible" in lbl:
+            vertex_map[i] = 1   # bottom-left
+        else:
+            vertex_map[i] = 2   # bottom-right
+
+    # Edge colors: lit when component above threshold
+    def comp_active(idx):
+        s = list(sliders.values())[idx]
+        return s.above_threshold
+
+    edge_colors = []
+    for i in range(len(sim_data.components)):
+        edge_colors.append(FIRE_ACTIVE if comp_active(i) else (50, 50, 70))
+
+    # Draw edges (triangle sides)
+    for i in range(3):
+        j = (i + 1) % 3
+        col = FIRE_ACTIVE if fire_on else (50, 50, 70)
+        # Glow
+        if fire_on:
+            for gw in range(6, 0, -2):
+                alpha_col = (col[0], col[1], col[2])
+                pygame.draw.line(surf, alpha_col, pts[i], pts[j], gw)
+        pygame.draw.line(surf, col, pts[i], pts[j], 2)
+
+    # Draw vertices
+    for i, c in enumerate(sim_data.components):
+        vi = vertex_map.get(i, i)
+        px, py = pts[vi]
+        active = comp_active(i)
+        vcol = FIRE_ACTIVE if active else (80, 80, 100)
+        pygame.draw.circle(surf, vcol, (int(px), int(py)), 8)
+        pygame.draw.circle(surf, TEXT_COLOR, (int(px), int(py)), 8, 1)
+
+        # Label
+        lbl_lines = c.label.split("(")
+        lbl_short = lbl_lines[0].strip()
+        lbl_surf = font_sm.render(lbl_short, True, TEXT_COLOR if active else DIM_COLOR)
+        # Position label outside vertex
+        dx = px - cx
+        dy = py - cy
+        lx = px + dx * 0.35 - lbl_surf.get_width() / 2
+        ly = py + dy * 0.35 - lbl_surf.get_height() / 2
+        surf.blit(lbl_surf, (lx, ly))
+
+    # Center: "FIRE" label
+    fire_col = GOLD if fire_on else (60, 60, 80)
+    txt = font_sm.render("FIRE" if fire_on else "—", True, fire_col)
+    surf.blit(txt, (cx - txt.get_width() // 2, cy - txt.get_height() // 2))
+
+
+# ---------------------------------------------------------------------------
+# Drawing helpers
+# ---------------------------------------------------------------------------
+
+def draw_panel(surf, rect, title, font_md, color=PANEL_COLOR, border=BORDER_COLOR):
+    pygame.draw.rect(surf, color, rect, border_radius=8)
+    pygame.draw.rect(surf, border, rect, 1, border_radius=8)
+    if title:
+        t = font_md.render(title, True, GOLD)
+        surf.blit(t, (rect.x + PANEL_PAD, rect.y + PANEL_PAD))
+    return rect.y + PANEL_PAD + (font_md.get_height() + 6 if title else 0)
+
+
+def draw_bar(surf, x, y, w, h, value, max_val, color, bg_color=SLIDER_BG, label="", font=None):
+    pygame.draw.rect(surf, bg_color, (x, y, w, h), border_radius=3)
+    fill = int(clamp(value / max(max_val, 1e-9)) * w)
+    if fill > 0:
+        pygame.draw.rect(surf, color, (x, y, fill, h), border_radius=3)
+    if label and font:
+        lbl = font.render(label, True, TEXT_COLOR)
+        surf.blit(lbl, (x, y - lbl.get_height() - 2))
+
+
+def draw_asfid_panel(surf, rect, asfid: ASFIDVector, base: ASFIDVector,
+                     font_md, font_sm, font_xs):
+    y0 = draw_panel(surf, rect, "ASFID  (Eagle Eye · Territory)", font_md)
+    y  = y0 + 4
+    x  = rect.x + PANEL_PAD
+    bar_w = rect.w - PANEL_PAD * 2 - 36
+
+    dims = [("A", asfid.A, base.A, (255, 180,  60)),
+            ("S", asfid.S, base.S, (100, 200, 255)),
+            ("F", asfid.F, base.F, ( 60, 200, 160)),
+            ("I", asfid.I, base.I, (200, 130, 255)),
+            ("D", asfid.D, base.D, (255, 100, 100))]
+
+    for dim, val, bval, col in dims:
+        lbl = font_sm.render(dim, True, col)
+        surf.blit(lbl, (x, y + 1))
+        draw_bar(surf, x + 22, y, bar_w, 14, val, 1.0, col)
+        # Base marker
+        bx = x + 22 + int(bval * bar_w)
+        pygame.draw.line(surf, (220, 220, 220),
+                         (bx, y), (bx, y + 14), 1)
+        val_lbl = font_xs.render(f"{val:.2f}", True, col)
+        surf.blit(val_lbl, (x + 22 + bar_w + 4, y))
+        y += 22
+
+    return y
+
+
+def draw_revoi_panel(surf, rect, revoi, font_md, font_sm, font_xs):
+    y0 = draw_panel(surf, rect, "REVOI  (Sphinx Eye · Map)", font_md)
+    y  = y0 + 4
+    x  = rect.x + PANEL_PAD
+    bar_w = rect.w - PANEL_PAD * 2 - 36
+
+    dims = [("R", revoi.R, (100, 180, 255)),
+            ("E", revoi.E, (180, 255, 120)),
+            ("V", revoi.V, (255, 220,  80)),
+            ("O", revoi.O, (255, 130, 200)),
+            ("I", revoi.I, (130, 220, 255))]
+
+    for dim, val, col in dims:
+        lbl = font_sm.render(dim, True, col)
+        surf.blit(lbl, (x, y + 1))
+        draw_bar(surf, x + 22, y, bar_w, 14, val, 1.0, col)
+        val_lbl = font_xs.render(f"{val:.2f}", True, col)
+        surf.blit(val_lbl, (x + 22 + bar_w + 4, y))
+        y += 22
+
+    mean_lbl = font_xs.render(f"mean = {revoi.mean():.2f}", True, REVOI_COLOR)
+    surf.blit(mean_lbl, (x, y + 2))
+    return y + 20
+
+
+def draw_status_box(surf, rect, fire_on, gap, sim_data, font_md, font_sm, font_xs):
+    y0 = draw_panel(surf, rect, "Status", font_md)
+    y  = y0 + 4
+    x  = rect.x + PANEL_PAD
+
+    # Fire state
+    state_col  = GREEN if fire_on else RED
+    state_txt  = "🔥 COMBUSTION ACTIVE" if fire_on else "💧 NO COMBUSTION"
+    state_surf = font_sm.render(state_txt, True, state_col)
+    surf.blit(state_surf, (x, y)); y += state_surf.get_height() + 6
+
+    # Epistemic gap ΔΘ
+    gap_col = GREEN if gap < 0.3 else (GOLD if gap < 0.5 else RED)
+    gap_txt = font_sm.render(f"ΔΘ = {gap:.3f}", True, gap_col)
+    surf.blit(gap_txt, (x, y)); y += gap_txt.get_height() + 2
+
+    interp = ("Good alignment" if gap < 0.3
+              else "Moderate gap" if gap < 0.5
+              else "Large gap")
+    interp_surf = font_xs.render(interp, True, DIM_COLOR)
+    surf.blit(interp_surf, (x, y)); y += interp_surf.get_height() + 10
+
+    # Synergy formula
+    syn_surf = font_xs.render("Synergy:", True, GOLD)
+    surf.blit(syn_surf, (x, y)); y += syn_surf.get_height() + 2
+    # Wrap formula
+    formula = sim_data.synergy_formula
+    f_surf = font_xs.render(formula, True, TEXT_COLOR)
+    surf.blit(f_surf, (x, y)); y += f_surf.get_height() + 10
+
+    # Metaconcepts
+    mc_lbl = font_xs.render(f"Metaconcepts: {sim_data.metaconcept_count}", True, DIM_COLOR)
+    surf.blit(mc_lbl, (x, y)); y += mc_lbl.get_height() + 4
+
+    for mc in sim_data.metaconcepts[:5]:
+        mc_surf = font_xs.render(f"  • {mc}", True, (150, 180, 220))
+        surf.blit(mc_surf, (x, y)); y += mc_surf.get_height() + 1
+
+
+# ---------------------------------------------------------------------------
+# Main simulation
+# ---------------------------------------------------------------------------
+
+def main():
+    # --- Load poclet via PocletRepository (auto-discovers repo root) ---
+    try:
+        if POCLET_PATH_OVERRIDE:
+            print(f"[TSCG] Loading poclet from explicit path: {POCLET_PATH_OVERRIDE}")
+            sim_data = PocletParser(POCLET_PATH_OVERRIDE).parse()
+        else:
+            repo = PocletRepository()
+            print(f"[TSCG] Repository root : {repo.root}")
+            print(f"[TSCG] Poclets found   : {repo.list()}")
+            sim_data = repo.load("FireTriangle")
+    except FileNotFoundError as e:
+        print(f"[ERROR] {e}")
+        print("  Tip: run from anywhere inside the tscg repository,")
+        print("  or pass an explicit path: python fire_triangle_sim.py path/to/M0_FireTriangle.jsonld")
+        sys.exit(1)
+    except Exception as e:
+        print(f"[ERROR] Failed to parse poclet: {e}")
+        raise
+
+    print(f"[TSCG] Poclet loaded: '{sim_data.label}'")
+    print(f"[TSCG] Components   : {[c.label for c in sim_data.components]}")
+    print(f"[TSCG] ASFID base   : {sim_data.asfid_base}")
+    print(f"[TSCG] REVOI        : {sim_data.revoi}")
+
+    # --- Pygame init ---
+    pygame.init()
+    screen  = pygame.display.set_mode((WINDOW_W, WINDOW_H))
+    pygame.display.set_caption(f"TSCG Simulation · {sim_data.label}")
+    clock   = pygame.time.Clock()
+
+    font_lg = pygame.font.SysFont("segoeui", 20, bold=True)
+    font_md = pygame.font.SysFont("segoeui", 15, bold=True)
+    font_sm = pygame.font.SysFont("segoeui", 13)
+    font_xs = pygame.font.SysFont("segoeui", 11)
+
+    # --- Build sliders from poclet components ---
+    # We position them in the left panel
+    lp_x  = PANEL_PAD
+    slider_keys = []
+    sliders = {}
+
+    # Physical defaults when poclet constraints are textual (no numeric value)
+    COMPONENT_DEFAULTS = {
+        "heat":     {"min": 0.0,  "max": 1000.0, "unit": "°C",   "init": 50.0,
+                     "threshold": 233.0, "threshold_label": "T_ignition paper ~233°C"},
+        "fuel":     {"min": 0.0,  "max": 100.0,  "unit": "%",    "init": 20.0,
+                     "threshold": 20.0,  "threshold_label": "Above LEL (~20%)"},
+        "oxidizer": {"min": 0.0,  "max": 100.0,  "unit": "% O₂", "init": 10.0,
+                     "threshold": 16.0,  "threshold_label": "> 16% for sustained combustion"},
+    }
+
+    for i, comp in enumerate(sim_data.components):
+        lbl_lower = comp.label.lower()
+        # Detect component type
+        if "heat" in lbl_lower:
+            ctype = "heat"
+        elif "fuel" in lbl_lower or "combustible" in lbl_lower:
+            ctype = "fuel"
+        else:
+            ctype = "oxidizer"
+
+        defaults = COMPONENT_DEFAULTS[ctype]
+        # Use poclet threshold if parser extracted one, else physical default
+        threshold       = comp.threshold if comp.threshold is not None else defaults["threshold"]
+        threshold_label = comp.threshold_label or defaults["threshold_label"]
+
+        key = ctype
+        slider_keys.append(key)
+        sliders[key] = Slider(
+            x=lp_x + PANEL_PAD,
+            y=120 + i * 90,
+            w=LEFT_PANEL_W - PANEL_PAD * 4,
+            h=20,
+            min_val=defaults["min"],
+            max_val=defaults["max"],
+            init_val=defaults["init"],
+            label=comp.label.split("(")[0].strip(),
+            unit=defaults["unit"],
+            threshold=threshold,
+            threshold_label=threshold_label,
+        )
+
+    # Fire system (center panel)
+    mid_cx = LEFT_PANEL_W + MID_W // 2
+    mid_cy = WINDOW_H // 2 + 20
+    fire_sys = FireSystem(mid_cx, mid_cy + 50)
+
+    # --- Main loop ---
+    running = True
+    while running:
+        dt = clock.tick(FPS) / 1000.0
+
+        # Events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                running = False
+            for s in sliders.values():
+                s.handle_event(event)
+
+        # Fire logic: all components above threshold?
+        fire_on = all(s.above_threshold for s in sliders.values())
+
+        # Intensity: how far above thresholds (0..1)
+        if fire_on:
+            scores = []
+            for s in sliders.values():
+                r = (s.value - (s.threshold or s.min_val)) / max(s.max_val - (s.threshold or s.min_val), 1e-9)
+                scores.append(clamp(r))
+            intensity = sum(scores) / len(scores)
+        else:
+            intensity = 0.0
+
+        # Dynamic ASFID
+        slider_norm = {}
+        for key, s in sliders.items():
+            if "heat" in key:
+                slider_norm[key] = s.value / s.max_val * 100.0
+            else:
+                slider_norm[key] = s.value
+        # Use simpler normalized values
+        sv = {}
+        for key, s in sliders.items():
+            sv[key] = (s.value - s.min_val) / max(s.max_val - s.min_val, 1e-9) * 100.0
+
+        asfid_live = compute_dynamic_asfid(sv, sim_data.asfid_base, {}, fire_on)
+        gap        = compute_epistemic_gap(asfid_live, sim_data.asfid_base)
+
+        # Update particles
+        fire_sys.update(dt, fire_on, intensity)
+
+        # --- Draw ---
+        screen.fill(BG_COLOR)
+
+        # ── Left panel: Controls ──────────────────────────────────────
+        lp_rect = pygame.Rect(0, 0, LEFT_PANEL_W, WINDOW_H)
+        draw_panel(screen, lp_rect, None, font_md)
+
+        # Title
+        title = font_lg.render("🔺 " + sim_data.label, True, GOLD)
+        screen.blit(title, (PANEL_PAD + 6, PANEL_PAD + 6))
+        domain_lbl = font_xs.render(f"Domain: {sim_data.domain}  |  Observer: {sim_data.observer}", True, DIM_COLOR)
+        screen.blit(domain_lbl, (PANEL_PAD + 6, PANEL_PAD + 6 + title.get_height() + 2))
+
+        # Sliders
+        sep_y = PANEL_PAD + 6 + title.get_height() + domain_lbl.get_height() + 16
+        pygame.draw.line(screen, BORDER_COLOR,
+                         (PANEL_PAD, sep_y), (LEFT_PANEL_W - PANEL_PAD, sep_y))
+        ctrl_lbl = font_md.render("Component Controls", True, TEXT_COLOR)
+        screen.blit(ctrl_lbl, (PANEL_PAD + 6, sep_y + 8))
+
+        for s in sliders.values():
+            s.draw(screen, font_sm, font_xs)
+
+        # Threshold legend
+        leg_y = list(sliders.values())[-1].rect.bottom + 20
+        pygame.draw.line(screen, THRESHOLD_LINE, (PANEL_PAD + 6, leg_y + 6),
+                         (PANEL_PAD + 22, leg_y + 6), 2)
+        leg_txt = font_xs.render("= ignition threshold (from poclet)", True, DIM_COLOR)
+        screen.blit(leg_txt, (PANEL_PAD + 26, leg_y))
+
+        # ── Center panel: Triangle + Fire ────────────────────────────
+        mid_rect = pygame.Rect(LEFT_PANEL_W, 0, MID_W, WINDOW_H)
+        pygame.draw.rect(screen, (18, 18, 26), mid_rect)
+
+        # Fire particles (behind triangle)
+        fire_sys.draw(screen)
+
+        # Triangle diagram
+        draw_fire_triangle(screen, mid_cx, mid_cy - 30, 160,
+                           sliders, sim_data, fire_on, font_sm, font_xs)
+
+        # Poclet source label
+        src_lbl = font_xs.render(f"Source: {sim_data.id.split(':')[-1]}", True, (60, 60, 80))
+        screen.blit(src_lbl, (LEFT_PANEL_W + 6, WINDOW_H - 18))
+
+        # Center title
+        ct = font_md.render("Territory Simulation", True, DIM_COLOR)
+        screen.blit(ct, (mid_cx - ct.get_width() // 2, 10))
+
+        # Emergent property label
+        if fire_on:
+            ep_lbl = font_sm.render(f"↑ {sim_data.synergy_emergent}", True, FIRE_ACTIVE)
+            screen.blit(ep_lbl, (mid_cx - ep_lbl.get_width() // 2, mid_cy + 115))
+
+        # ── Right panel: ASFID + REVOI + Status ──────────────────────
+        rp_x   = LEFT_PANEL_W + MID_W
+        rp_rect = pygame.Rect(rp_x, 0, RIGHT_PANEL_W, WINDOW_H)
+        pygame.draw.rect(screen, PANEL_COLOR, rp_rect)
+        pygame.draw.line(screen, BORDER_COLOR, (rp_x, 0), (rp_x, WINDOW_H))
+
+        asfid_rect = pygame.Rect(rp_x + 2, 4, RIGHT_PANEL_W - 4, 165)
+        y_after_asfid = draw_asfid_panel(screen, asfid_rect, asfid_live,
+                                          sim_data.asfid_base, font_md, font_sm, font_xs)
+
+        revoi_rect = pygame.Rect(rp_x + 2, asfid_rect.bottom + 6, RIGHT_PANEL_W - 4, 155)
+        draw_revoi_panel(screen, revoi_rect, sim_data.revoi, font_md, font_sm, font_xs)
+
+        status_rect = pygame.Rect(rp_x + 2, revoi_rect.bottom + 6,
+                                  RIGHT_PANEL_W - 4, WINDOW_H - revoi_rect.bottom - 10)
+        draw_status_box(screen, status_rect, fire_on, gap, sim_data,
+                        font_md, font_sm, font_xs)
+
+        # ── HUD: fps ──
+        fps_surf = font_xs.render(f"FPS: {int(clock.get_fps())}", True, (50, 50, 70))
+        screen.blit(fps_surf, (LEFT_PANEL_W + 4, WINDOW_H - 18))
+
+        pygame.display.flip()
+
+    pygame.quit()
+    print("[TSCG] Simulation ended.")
+
+
+if __name__ == "__main__":
+    main()
+
+le code python généré pour pygame
+Magnifique ! Vous avez une base extrêmement solide. Analysons ensemble comment structurer l'extraction de patterns pour votre RAG.
+
+1. Structure d'extraction automatique
+Voici comment chaque simulation peut être analysée pour générer des patterns :
+
+python
+# pattern_extractor.py
+class SimulationPatternExtractor:
+    def __init__(self, ontology_path, code_path):
+        self.ontology = self.load_ontology(ontology_path)
+        self.code = self.load_code(code_path)
+        
+    def extract_patterns(self):
+        return {
+            # Pattern structurel
+            "structural_pattern": self.extract_structural_pattern(),
+            
+            # Pattern dynamique
+            "dynamic_pattern": self.extract_dynamic_pattern(),
+            
+            # Pattern d'interaction
+            "interaction_pattern": self.extract_interaction_pattern(),
+            
+            # Pattern de visualisation
+            "visualization_pattern": self.extract_visualization_pattern(),
+            
+            # Pattern ASFID/REVOI
+            "asfid_revoi_pattern": self.extract_asfid_revoi_pattern(),
+            
+            # Métadonnées pour le RAG
+            "embeddings": self.generate_embeddings(),
+            "tags": self.extract_tags(),
+            "complexity": self.assess_complexity()
+        }
+2. Patterns spécifiques extraits de votre code
+2.1 Pattern Structurel (de l'ontologie vers le code)
+python
+{
+    "pattern_type": "ternary_synergistic_system",
+    "name": "Fire Triangle Pattern",
+    "signature": {
+        "components": 3,
+        "relations": "synergistic",
+        "emergence": "qualitative_jump",
+        "thresholds": "independent_per_component"
+    },
+    "mapping_rules": [
+        {
+            "ontological_element": "Component",
+            "code_element": "Slider class",
+            "transformation": "Each component becomes a UI slider with threshold"
+        },
+        {
+            "ontological_element": "Synergy",
+            "code_element": "fire_on = all(s.above_threshold)",
+            "transformation": "AND condition over all components"
+        },
+        {
+            "ontological_element": "Emergent property",
+            "code_element": "FireSystem particle effect",
+            "transformation": "Visual feedback when synergy achieved"
+        }
+    ],
+    "asfid_to_code": {
+        "A (Attractor)": "fire_sys.intensity based on component values",
+        "S (Structure)": "Triangle geometry in draw_fire_triangle()",
+        "F (Flow)": "Particle system motion",
+        "I (Information)": "ASFID/REVOI panels display",
+        "D (Dynamics)": "update() loop with dt parameter"
+    }
+}
+2.2 Pattern Dynamique (comportement temporel)
+python
+{
+    "pattern_type": "threshold_crossing_dynamics",
+    "name": "Fire Triangle Dynamics",
+    "state_machine": {
+        "states": ["INACTIVE", "ACTIVE"],
+        "transitions": {
+            "INACTIVE → ACTIVE": "all(s.above_threshold)",
+            "ACTIVE → INACTIVE": "any(not s.above_threshold)"
+        }
+    },
+    "continuous_dynamics": {
+        "intensity_calculation": "sum(scores) / len(scores)",
+        "particle_spawning": "dt * 60 * intensity",
+        "asfid_modulation": {
+            "A": "0.3 + 0.7 * fire_f",
+            "S": "0.4 + 0.6 * fuel_pct",
+            "F": "0.2 + 0.8 * o2_pct",
+            "I": "0.3 + 0.7 * heat_pct",
+            "D": "0.1 + 0.9 * ignition"
+        }
+    },
+    "time_scale": "dt parameter in update()",
+    "feedback_loops": [
+        "Heat → More combustion → More heat (positive)",
+        "Fuel consumption → Less fuel → Less combustion (negative)"
+    ]
+}
+2.3 Pattern d'Interaction UI
+python
+{
+    "pattern_type": "direct_manipulation_interface",
+    "name": "Fire Triangle UI Pattern",
+    "components": {
+        "sliders": {
+            "class": "Slider",
+            "properties": [
+                "min_val", "max_val", "value",
+                "threshold", "dragging"
+            ],
+            "events": ["MOUSEBUTTONDOWN", "MOUSEMOTION", "MOUSEBUTTONUP"],
+            "visual_feedback": [
+                "color changes above threshold",
+                "threshold line marker",
+                "value display"
+            ]
+        },
+        "visualization": {
+            "triangle": {
+                "vertices": "components",
+                "edges": "relations",
+                "center": "emergent property"
+            },
+            "particle_system": {
+                "class": "FireSystem",
+                "spawn_rate": "dt * 60 * intensity",
+                "particle_properties": ["position", "velocity", "life", "color"]
+            }
+        }
+    },
+    "layout": {
+        "left_panel": "controls",
+        "center_panel": "visualization",
+        "right_panel": "analytics (ASFID/REVOI)"
+    }
+}
+2.4 Pattern ASFID/REVOI Analytics
+python
+{
+    "pattern_type": "bicephalous_analytics_display",
+    "name": "ASFID-REVOI Dashboard Pattern",
+    "asfid": {
+        "computation": "compute_dynamic_asfid()",
+        "display": "bar charts with base markers",
+        "dimensions": ["A", "S", "F", "I", "D"],
+        "color_scheme": {
+            "A": (255, 180, 60),
+            "S": (100, 200, 255),
+            "F": (60, 200, 160),
+            "I": (200, 130, 255),
+            "D": (255, 100, 100)
+        }
+    },
+    "revoi": {
+        "source": "ontology (static)",
+        "display": "bar charts",
+        "dimensions": ["R", "E", "V", "O", "I"],
+        "color_scheme": {
+            "R": (100, 180, 255),
+            "E": (180, 255, 120),
+            "V": (255, 220, 80),
+            "O": (255, 130, 200),
+            "I": (130, 220, 255)
+        }
+    },
+    "epistemic_gap": {
+        "computation": "compute_epistemic_gap()",
+        "display": "ΔΘ value with color coding",
+        "thresholds": {
+            "good": "< 0.3",
+            "moderate": "0.3 - 0.5",
+            "large": "> 0.5"
+        }
+    }
+}
+3. Structure RAG pour stockage et retrieval
+python
+# rag_simulation_kb.py
+import json
+import numpy as np
+from sentence_transformers import SentenceTransformer
+import chromadb
+from chromadb.utils import embedding_functions
+
+class SimulationRAG:
+    def __init__(self, persist_directory="./simulation_rag_db"):
+        # Initialisation du modèle d'embeddings
+        self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+        
+        # Initialisation ChromaDB
+        self.chroma_client = chromadb.PersistentClient(path=persist_directory)
+        
+        # Collections pour différents types de patterns
+        self.structural_collection = self.chroma_client.get_or_create_collection(
+            name="structural_patterns",
+            embedding_function=embedding_functions.SentenceTransformerEmbeddingFunction()
+        )
+        
+        self.dynamic_collection = self.chroma_client.get_or_create_collection(
+            name="dynamic_patterns"
+        )
+        
+        self.ui_collection = self.chroma_client.get_or_create_collection(
+            name="ui_patterns"
+        )
+        
+        self.asfid_collection = self.chroma_client.get_or_create_collection(
+            name="asfid_patterns"
+        )
+        
+    def add_simulation_patterns(self, simulation_name, patterns):
+        """Ajoute tous les patterns d'une simulation à la base RAG"""
+        
+        # Créer un document composite pour le retrieval
+        composite_text = f"""
+        Simulation: {simulation_name}
+        Type: {patterns['structural_pattern']['pattern_type']}
+        Composants: {patterns['structural_pattern']['signature']['components']}
+        ASFID dimensions: {list(patterns['asfid_revoi_pattern']['asfid']['dimensions'])}
+        """
+        
+        # Embedding pour recherche sémantique
+        embedding = self.embedding_model.encode(composite_text)
+        
+        # Stockage dans les différentes collections
+        collection_map = {
+            self.structural_collection: patterns['structural_pattern'],
+            self.dynamic_collection: patterns['dynamic_pattern'],
+            self.ui_collection: patterns['interaction_pattern'],
+            self.asfid_collection: patterns['asfid_revoi_pattern']
+        }
+        
+        for collection, pattern_data in collection_map.items():
+            collection.add(
+                documents=[json.dumps(pattern_data)],
+                metadatas=[{
+                    "simulation": simulation_name,
+                    "pattern_type": pattern_data.get("pattern_type", "unknown"),
+                    "complexity": patterns.get("complexity", 1)
+                }],
+                ids=[f"{simulation_name}_{collection.name}"]
+            )
+    
+    def find_similar_patterns(self, query, pattern_type=None, n_results=3):
+        """Recherche des patterns similaires à une requête"""
+        
+        collection = self._get_collection(pattern_type)
+        results = collection.query(
+            query_texts=[query],
+            n_results=n_results
+        )
+        
+        return results
+    
+    def generate_context_for_new_simulation(self, ontology_description):
+        """Génère un contexte enrichi pour la création d'une nouvelle simulation"""
+        
+        # Recherche de patterns similaires
+        similar_structural = self.find_similar_patterns(
+            ontology_description, 
+            pattern_type="structural"
+        )
+        
+        similar_dynamic = self.find_similar_patterns(
+            ontology_description,
+            pattern_type="dynamic"
+        )
+        
+        # Construction du contexte
+        context = {
+            "similar_structural_patterns": similar_structural,
+            "similar_dynamic_patterns": similar_dynamic,
+            "suggested_ui_pattern": self._suggest_ui_pattern(ontology_description),
+            "asfid_mapping_suggestions": self._suggest_asfid_mappings(ontology_description),
+            "code_templates": self._get_relevant_templates(ontology_description)
+        }
+        
+        return context
+4. Pipeline d'extraction automatique
+python
+# pipeline.py
+class SimulationPipeline:
+    def __init__(self, rag_system):
+        self.rag = rag_system
+        self.extractor = SimulationPatternExtractor
+        
+    def process_new_simulation(self, ontology_path, code_path, simulation_name):
+        """Traite une nouvelle simulation et l'ajoute au RAG"""
+        
+        # 1. Extraire les patterns
+        extractor = self.extractor(ontology_path, code_path)
+        patterns = extractor.extract_patterns()
+        
+        # 2. Ajouter au RAG
+        self.rag.add_simulation_patterns(simulation_name, patterns)
+        
+        # 3. Générer un rapport d'analyse
+        report = self.generate_analysis_report(patterns)
+        
+        return patterns, report
+    
+    def generate_new_simulation(self, ontology_description):
+        """Génère une nouvelle simulation en utilisant le RAG"""
+        
+        # 1. Obtenir le contexte du RAG
+        context = self.rag.generate_context_for_new_simulation(ontology_description)
+        
+        # 2. Construire le prompt pour Claude
+        prompt = self.build_generation_prompt(ontology_description, context)
+        
+        # 3. Générer le code (avec Claude)
+        # (appel à Claude API ou Claude Code)
+        
+        return prompt
+    
+    def build_generation_prompt(self, ontology_description, context):
+        """Construit un prompt enrichi avec les patterns similaires"""
+        
+        prompt = f"""
+        Génère une simulation PyGame pour le système suivant:
+        
+        Description ontologique:
+        {ontology_description}
+        
+        Patterns similaires identifiés:
+        {json.dumps(context['similar_structural_patterns'], indent=2)}
+        
+        Suggestions de mapping ASFID:
+        {json.dumps(context['asfid_mapping_suggestions'], indent=2)}
+        
+        Templates de code pertinents:
+        {json.dumps(context['code_templates'], indent=2)}
+        
+        Instructions:
+        1. Utilise la structure à 3 panneaux (contrôles, visualisation, analytics)
+        2. Implémente les sliders avec thresholds
+        3. Intègre l'affichage ASFID/REVOI
+        4. Crée une visualisation adaptée au domaine
+        """
+        
+        return prompt
+5. Exemple d'utilisation pour votre prochaine simulation
+Imaginons que vous vouliez créer le "Triangle de l'exposition" en photographie :
+
+python
+# 1. Description ontologique
+exposure_description = """
+Système ternaire en photographie:
+- Composant: Ouverture (f-stop)
+- Composant: Temps d'exposition (vitesse)
+- Composant: ISO (sensibilité)
+Relation: Compensation (si un diminue, un autre doit augmenter)
+Émergence: Exposition correcte (image bien exposée)
+"""
+
+# 2. Le RAG va trouver des patterns similaires
+context = rag.generate_context_for_new_simulation(exposure_description)
+# → Va trouver le pattern "ternary_synergistic_system" du Triangle du feu
+# → Va adapter le pattern avec des différences (compensation vs synergie)
+
+# 3. Prompt enrichi pour Claude
+prompt = pipeline.build_generation_prompt(exposure_description, context)
+# → Claude génère le code avec les adaptations nécessaires
+6. Structure de fichiers recommandée
+text
+rag_simulation_system/
+├── extractors/
+│   ├── structural_extractor.py
+│   ├── dynamic_extractor.py
+│   ├── ui_extractor.py
+│   └── asfid_extractor.py
+├── rag/
+│   ├── simulation_rag.py
+│   ├── embeddings.py
+│   └── chromadb_data/
+├── patterns/
+│   ├── fire_triangle_patterns.json
+│   ├── rgb_patterns.json
+│   └── exposure_triangle_patterns.json (à venir)
+├── templates/
+│   ├── slider_template.py
+│   ├── particle_system_template.py
+│   └── asfid_display_template.py
+├── pipeline.py
+└── claude_integration.py
+Conclusion
+Avec cette structure, chaque nouvelle simulation que vous créez :
+
+Enrichit automatiquement la base de connaissances
+
+Améliore la qualité des générations futures
+
+Permet des abstractions de plus en plus sophistiquées
+
+Facilite la scalabilité vers des systèmes complexes
+
+Le cercle vertueux est ainsi établi : plus vous créez de simulations simples, plus le RAG devient capable de générer des simulations complexes par combinaison et adaptation des patterns appris.
+
+Voulez-vous que nous développions ensemble un extracteur spécifique pour votre prochaine simulation, ou que nous affinions un aspect particulier de cette architecture ?
+
+oui
+Parfait ! Commençons par développer ensemble un extracteur concret. Voici une implémentation pas-à-pas que vous pourrez utiliser avec Claude Code.
+
+Étape 1: Structure de base de l'extracteur
+python
+# pattern_extractor.py
+import json
+import ast
+import re
+from pathlib import Path
+from typing import Dict, List, Any
+import networkx as nx
+
+class TSGPatternExtractor:
+    """Extracteur de patterns pour simulations TSCG"""
+    
+    def __init__(self, ontology_path: str, code_path: str):
+        self.ontology_path = Path(ontology_path)
+        self.code_path = Path(code_path)
+        self.ontology = self._load_jsonld(ontology_path)
+        self.code_ast = self._parse_python(code_path)
+        
+        # Conteneurs pour les patterns extraits
+        self.patterns = {
+            "structural": {},
+            "dynamic": {},
+            "interaction": {},
+            "asfid_revoi": {},
+            "embeddings": {},
+            "metadata": {}
+        }
+        
+    def _load_jsonld(self, path):
+        """Charge et parse un fichier JSON-LD"""
+        with open(path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    
+    def _parse_python(self, path):
+        """Parse un fichier Python en AST"""
+        with open(path, 'r', encoding='utf-8') as f:
+            return ast.parse(f.read())
+Étape 2: Extraction des patterns structurels
+python
+    def extract_structural_pattern(self):
+        """Extrait la structure du système de l'ontologie"""
+        
+        # Chercher les composants dans l'ontologie
+        components = []
+        synergy = {}
+        
+        # Parcourir le graphe JSON-LD
+        for item in self.ontology.get('@graph', []):
+            # Chercher les composants
+            if 'm0:fire_triangle:components' in item:
+                for comp in item['m0:fire_triangle:components']:
+                    if isinstance(comp, dict):
+                        components.append({
+                            'name': comp.get('rdfs:label', 'Unknown'),
+                            'role': comp.get('m0:fire_triangle:role', ''),
+                            'function': comp.get('m0:fire_triangle:function', ''),
+                            'asfid_contrib': comp.get('m0:fire_triangle:asfidContribution', {})
+                        })
+            
+            # Chercher le principe de synergie
+            if 'm0:fire_triangle:synergyPrinciple' in item:
+                synergy = item['m0:fire_triangle:synergyPrinciple']
+        
+        # Analyser le code pour trouver la correspondance
+        class_names = self._extract_classes_from_code()
+        slider_count = len([c for c in class_names if 'Slider' in c])
+        
+        pattern = {
+            "pattern_type": "ternary_synergistic_system",
+            "name": self._extract_system_name(),
+            "signature": {
+                "components": len(components),
+                "component_names": [c['name'] for c in components],
+                "relations": "synergistic" if synergy else "unknown",
+                "has_emergence": bool(synergy.get('emergentProperty')),
+                "emergence_name": synergy.get('emergentProperty', ''),
+                "synergy_formula": synergy.get('formula', '')
+            },
+            "code_mapping": {
+                "sliders_found": slider_count,
+                "classes_implemented": class_names,
+                "threshold_logic": self._find_threshold_logic()
+            }
+        }
+        
+        return pattern
+    
+    def _extract_classes_from_code(self):
+        """Extrait les noms de classes du code AST"""
+        classes = []
+        for node in ast.walk(self.code_ast):
+            if isinstance(node, ast.ClassDef):
+                classes.append(node.name)
+        return classes
+    
+    def _extract_system_name(self):
+        """Extrait le nom du système de l'ontologie"""
+        for item in self.ontology.get('@graph', []):
+            if item.get('@type') == 'owl:NamedIndividual':
+                return item.get('rdfs:label', 'Unknown System')
+        return "Unknown"
+Étape 3: Extraction des patterns dynamiques
+python
+    def extract_dynamic_pattern(self):
+        """Extrait le comportement dynamique du code"""
+        
+        # Trouver la fonction de mise à jour
+        update_func = self._find_function('update')
+        
+        # Trouver la boucle principale
+        main_loop = self._find_main_loop()
+        
+        # Extraire les équations dynamiques
+        equations = self._extract_dynamic_equations()
+        
+        pattern = {
+            "pattern_type": "threshold_crossing_dynamics",
+            "state_machine": self._extract_state_machine(),
+            "continuous_dynamics": {
+                "equations": equations,
+                "time_step": "dt parameter in update()",
+                "particle_system": self._analyze_particle_system()
+            },
+            "feedback_loops": self._identify_feedback_loops(),
+            "code_location": {
+                "update_function": update_func,
+                "main_loop": main_loop
+            }
+        }
+        
+        return pattern
+    
+    def _find_function(self, func_name):
+        """Trouve une fonction dans l'AST"""
+        for node in ast.walk(self.code_ast):
+            if isinstance(node, ast.FunctionDef) and func_name in node.name:
+                return {
+                    'name': node.name,
+                    'line': node.lineno,
+                    'params': [arg.arg for arg in node.args.args]
+                }
+        return None
+    
+    def _extract_dynamic_equations(self):
+        """Extrait les équations de modulation ASFID"""
+        equations = {}
+        
+        # Chercher compute_dynamic_asfid
+        for node in ast.walk(self.code_ast):
+            if isinstance(node, ast.FunctionDef) and node.name == 'compute_dynamic_asfid':
+                for child in ast.walk(node):
+                    if isinstance(child, ast.Assign):
+                        # Extraire les équations comme 'A = clamp(base.A * (0.3 + 0.7 * fire_f))'
+                        if isinstance(child.targets[0], ast.Name):
+                            var_name = child.targets[0].id
+                            if var_name in ['A', 'S', 'F', 'I', 'D']:
+                                equations[var_name] = ast.unparse(child.value)
+        
+        return equations
+    
+    def _extract_state_machine(self):
+        """Extrait la machine à états du code"""
+        # Chercher la condition fire_on = all(s.above_threshold)
+        state_logic = []
+        
+        for node in ast.walk(self.code_ast):
+            if isinstance(node, ast.Assign):
+                for target in node.targets:
+                    if isinstance(target, ast.Name) and target.id == 'fire_on':
+                        state_logic.append({
+                            'state_var': 'fire_on',
+                            'condition': ast.unparse(node.value),
+                            'line': node.lineno
+                        })
+        
+        return {
+            "states": ["INACTIVE", "ACTIVE"],
+            "transition_condition": state_logic[0]['condition'] if state_logic else "unknown"
+        }
+Étape 4: Extraction des patterns d'interaction
+python
+    def extract_interaction_pattern(self):
+        """Extrait le pattern d'interface utilisateur"""
+        
+        # Analyser la classe Slider
+        slider_class = self._find_class('Slider')
+        
+        # Analyser le système de particules
+        particle_system = self._find_class('FireSystem')
+        
+        # Analyser la disposition
+        layout = self._extract_layout()
+        
+        pattern = {
+            "pattern_type": "direct_manipulation_interface",
+            "components": {
+                "sliders": self._analyze_slider_class(slider_class),
+                "visualization": {
+                    "triangle": self._find_triangle_drawing(),
+                    "particle_system": self._analyze_particle_system()
+                }
+            },
+            "layout": layout,
+            "color_scheme": self._extract_color_scheme(),
+            "event_handling": self._extract_event_handling()
+        }
+        
+        return pattern
+    
+    def _find_class(self, class_name):
+        """Trouve une classe dans l'AST"""
+        for node in ast.walk(self.code_ast):
+            if isinstance(node, ast.ClassDef) and class_name in node.name:
+                methods = []
+                for child in node.body:
+                    if isinstance(child, ast.FunctionDef):
+                        methods.append({
+                            'name': child.name,
+                            'params': [arg.arg for arg in child.args.args],
+                            'line': child.lineno
+                        })
+                
+                return {
+                    'name': node.name,
+                    'methods': methods,
+                    'line': node.lineno
+                }
+        return None
+    
+    def _analyze_slider_class(self, slider_class):
+        """Analyse en détail la classe Slider"""
+        if not slider_class:
+            return {}
+        
+        properties = []
+        events = []
+        
+        # Chercher dans l'AST les attributs et méthodes
+        for node in ast.walk(self.code_ast):
+            if isinstance(node, ast.ClassDef) and node.name == slider_class['name']:
+                for child in node.body:
+                    if isinstance(child, ast.FunctionDef):
+                        if 'event' in child.name or 'handle' in child.name:
+                            events.append(child.name)
+                    elif isinstance(child, ast.AnnAssign):
+                        if isinstance(child.target, ast.Name):
+                            properties.append(child.target.id)
+        
+        return {
+            "properties": properties,
+            "events": events,
+            "threshold_logic": "above_threshold property",
+            "visual_feedback": ["color change", "threshold marker", "value display"]
+        }
+    
+    def _extract_layout(self):
+        """Extrait la disposition des panneaux"""
+        layout = {
+            "left_panel": "controls",
+            "center_panel": "visualization", 
+            "right_panel": "analytics"
+        }
+        
+        # Chercher les constantes de dimensions
+        for node in ast.walk(self.code_ast):
+            if isinstance(node, ast.Assign):
+                for target in node.targets:
+                    if isinstance(target, ast.Name):
+                        if 'LEFT_PANEL_W' in target.id:
+                            layout['left_width'] = self._get_constant_value(node.value)
+                        elif 'RIGHT_PANEL_W' in target.id:
+                            layout['right_width'] = self._get_constant_value(node.value)
+        
+        return layout
+    
+    def _get_constant_value(self, node):
+        """Extrait la valeur d'une constante"""
+        if isinstance(node, ast.Constant):
+            return node.value
+        return None
+Étape 5: Extraction des patterns ASFID/REVOI
+python
+    def extract_asfid_revoi_pattern(self):
+        """Extrait le pattern d'analyse ASFID/REVOI"""
+        
+        # Extraire les valeurs ASFID de base de l'ontologie
+        base_asfid = self._extract_base_asfid()
+        
+        # Extraire REVOI de l'ontologie
+        revoi = self._extract_revoi()
+        
+        # Analyser l'implémentation dans le code
+        asfid_function = self._find_function('compute_dynamic_asfid')
+        gap_function = self._find_function('compute_epistemic_gap')
+        
+        pattern = {
+            "pattern_type": "bicephalous_analytics_display",
+            "asfid": {
+                "base_values": base_asfid,
+                "dimensions": ["A", "S", "F", "I", "D"],
+                "color_scheme": self._extract_asfid_colors(),
+                "computation": {
+                    "function": asfid_function['name'] if asfid_function else None,
+                    "modulation_factors": self._extract_modulation_factors()
+                }
+            },
+            "revoi": {
+                "values": revoi,
+                "dimensions": ["R", "E", "V", "O", "I"],
+                "color_scheme": self._extract_revoi_colors(),
+                "source": "ontology (static)"
+            },
+            "epistemic_gap": {
+                "computation": gap_function['name'] if gap_function else None,
+                "thresholds": {
+                    "good": "< 0.3",
+                    "moderate": "0.3 - 0.5", 
+                    "large": "> 0.5"
+                }
+            },
+            "display": {
+                "type": "bar_charts",
+                "with_base_markers": True,
+                "layout": "right_panel"
+            }
+        }
+        
+        return pattern
+    
+    def _extract_base_asfid(self):
+        """Extrait les valeurs ASFID de base de l'ontologie"""
+        for item in self.ontology.get('@graph', []):
+            if 'm0:fire_triangle:territorySpace' in item:
+                territory = item['m0:fire_triangle:territorySpace']
+                if 'asfidState' in territory:
+                    return territory['asfidState']
+        return {}
+    
+    def _extract_revoi(self):
+        """Extrait les valeurs REVOI de l'ontologie"""
+        for item in self.ontology.get('@graph', []):
+            if 'm0:fire_triangle:revoi' in item:
+                revoi = item['m0:fire_triangle:revoi']
+                if 'reviState' in revoi:
+                    return revoi['reviState']
+        return {}
+    
+    def _extract_modulation_factors(self):
+        """Extrait les facteurs de modulation des dimensions ASFID"""
+        factors = {}
+        
+        for node in ast.walk(self.code_ast):
+            if isinstance(node, ast.FunctionDef) and node.name == 'compute_dynamic_asfid':
+                for child in ast.walk(node):
+                    if isinstance(child, ast.Assign):
+                        if isinstance(child.targets[0], ast.Name):
+                            var = child.targets[0].id
+                            if var in ['A', 'S', 'F', 'I', 'D']:
+                                # Extraire les facteurs multiplicatifs
+                                factors[var] = ast.unparse(child.value)
+        
+        return factors
+Étape 6: Génération des embeddings et métadonnées
+python
+    def generate_embeddings(self):
+        """Génère des embeddings textuels pour le RAG"""
+        
+        # Créer une description composite du système
+        composite_description = self._create_composite_description()
+        
+        # Simuler des embeddings (à remplacer par un vrai modèle)
+        # Dans la pratique, utiliser sentence-transformers
+        mock_embedding = [hash(word) % 1000 / 1000 for word in composite_description.split()[:10]]
+        
+        # Compléter à 384 dimensions (taille standard all-MiniLM-L6-v2)
+        while len(mock_embedding) < 384:
+            mock_embedding.append(0.0)
+        mock_embedding = mock_embedding[:384]
+        
+        return {
+            "composite_text": composite_description,
+            "embedding": mock_embedding,
+            "dimensions": 384
+        }
+    
+    def _create_composite_description(self):
+        """Crée une description textuelle composite du système"""
+        desc_parts = []
+        
+        # Ajouter les informations structurelles
+        for item in self.ontology.get('@graph', []):
+            if 'rdfs:label' in item:
+                desc_parts.append(f"System: {item['rdfs:label']}")
+            if 'rdfs:comment' in item:
+                desc_parts.append(f"Description: {item['rdfs:comment']}")
+        
+        # Ajouter les composants
+        for item in self.ontology.get('@graph', []):
+            if 'm0:fire_triangle:components' in item:
+                for comp in item['m0:fire_triangle:components']:
+                    if isinstance(comp, dict):
+                        desc_parts.append(f"Component: {comp.get('rdfs:label', '')}")
+        
+        return " | ".join(desc_parts)
+    
+    def extract_metadata(self):
+        """Extrait les métadonnées de la simulation"""
+        
+        metadata = {
+            "simulation_name": self._extract_system_name(),
+            "domain": self._extract_domain(),
+            "observer": self._extract_observer(),
+            "complexity": self._assess_complexity(),
+            "tags": self._generate_tags(),
+            "validation_status": self._extract_validation_status(),
+            "metaconcept_count": self._extract_metaconcept_count()
+        }
+        
+        return metadata
+    
+    def _extract_domain(self):
+        """Extrait le domaine de l'ontologie"""
+        for item in self.ontology.get('@graph', []):
+            if 'm0:fire_triangle:domain' in item:
+                return item['m0:fire_triangle:domain']
+        return "Unknown"
+    
+    def _extract_observer(self):
+        """Extrait le type d'observateur"""
+        for item in self.ontology.get('@graph', []):
+            if 'm0:fire_triangle:observer' in item:
+                return item['m0:fire_triangle:observer']
+        return "Human"
+    
+    def _assess_complexity(self):
+        """Évalue la complexité de la simulation"""
+        score = 1  # Base
+        
+        # Nombre de composants
+        comp_count = 0
+        for item in self.ontology.get('@graph', []):
+            if 'm0:fire_triangle:components' in item:
+                comp_count = len(item['m0:fire_triangle:components'])
+        score += comp_count * 0.5
+        
+        # Nombre de classes dans le code
+        class_count = len(self._extract_classes_from_code())
+        score += class_count * 0.3
+        
+        return min(round(score, 1), 5)  # Max 5
+    
+    def _generate_tags(self):
+        """Génère des tags pour la recherche"""
+        tags = []
+        
+        # Tags structurels
+        comp_count = 0
+        for item in self.ontology.get('@graph', []):
+            if 'm0:fire_triangle:components' in item:
+                comp_count = len(item['m0:fire_triangle:components'])
+        
+        if comp_count == 3:
+            tags.append("ternary")
+        elif comp_count == 4:
+            tags.append("quaternary")
+        
+        # Tags de domaine
+        domain = self._extract_domain()
+        if domain:
+            tags.append(domain.lower())
+        
+        # Tags ASFID
+        tags.extend(["asfid", "revoi", "bicephalous"])
+        
+        return tags
+Étape 7: Méthode principale d'extraction
+python
+    def extract_all(self):
+        """Extrait tous les patterns et retourne le résultat complet"""
+        
+        print(f"🔍 Extraction des patterns pour {self.code_path.name}...")
+        
+        self.patterns["structural"] = self.extract_structural_pattern()
+        print(f"  ✅ Pattern structurel: {self.patterns['structural']['pattern_type']}")
+        
+        self.patterns["dynamic"] = self.extract_dynamic_pattern()
+        print(f"  ✅ Pattern dynamique: {self.patterns['dynamic']['pattern_type']}")
+        
+        self.patterns["interaction"] = self.extract_interaction_pattern()
+        print(f"  ✅ Pattern d'interaction: {self.patterns['interaction']['pattern_type']}")
+        
+        self.patterns["asfid_revoi"] = self.extract_asfid_revoi_pattern()
+        print(f"  ✅ Pattern ASFID/REVOI")
+        
+        self.patterns["embeddings"] = self.generate_embeddings()
+        print(f"  ✅ Embeddings générés ({len(self.patterns['embeddings']['embedding'])} dimensions)")
+        
+        self.patterns["metadata"] = self.extract_metadata()
+        print(f"  ✅ Métadonnées: {self.patterns['metadata']['tags']}")
+        
+        return self.patterns
+    
+    def save_to_file(self, output_path):
+        """Sauvegarde les patterns dans un fichier JSON"""
+        
+        # Convertir en format sérialisable
+        serializable = self._make_serializable(self.patterns)
+        
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(serializable, f, indent=2, ensure_ascii=False)
+        
+        print(f"💾 Patterns sauvegardés dans {output_path}")
+        
+        return output_path
+    
+    def _make_serializable(self, obj):
+        """Convertit les objets non sérialisables en types de base"""
+        if isinstance(obj, dict):
+            return {k: self._make_serializable(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [self._make_serializable(v) for v in obj]
+        elif hasattr(obj, '__dict__'):
+            return self._make_serializable(obj.__dict__)
+        else:
+            return obj
+Étape 8: Script d'utilisation
+python
+# run_extraction.py
+#!/usr/bin/env python3
+"""
+Script pour extraire les patterns d'une simulation TSCG
+"""
+
+import sys
+from pathlib import Path
+from pattern_extractor import TSGPatternExtractor
+
+def main():
+    if len(sys.argv) < 3:
+        print("Usage: python run_extraction.py <ontology.jsonld> <code.py> [output.json]")
+        sys.exit(1)
+    
+    ontology_path = sys.argv[1]
+    code_path = sys.argv[2]
+    output_path = sys.argv[3] if len(sys.argv) > 3 else "patterns_output.json"
+    
+    print("=" * 60)
+    print("🧩 TSCG Pattern Extractor")
+    print("=" * 60)
+    
+    # Créer l'extracteur
+    extractor = TSGPatternExtractor(ontology_path, code_path)
+    
+    # Extraire tous les patterns
+    patterns = extractor.extract_all()
+    
+    # Sauvegarder
+    extractor.save_to_file(output_path)
+    
+    # Afficher un résumé
+    print("\n📊 Résumé des patterns extraits:")
+    print(f"  • Système: {patterns['metadata']['simulation_name']}")
+    print(f"  • Domaine: {patterns['metadata']['domain']}")
+    print(f"  • Complexité: {patterns['metadata']['complexity']}/5")
+    print(f"  • Tags: {', '.join(patterns['metadata']['tags'])}")
+    print(f"  • ASFID base: {patterns['asfid_revoi']['asfid']['base_values']}")
+    print(f"  • REVOI: {patterns['asfid_revoi']['revoi']['values']}")
+    
+    print("\n✨ Extraction terminée!")
+
+if __name__ == "__main__":
+    main()
+Étape 9: Intégration avec Claude Code
+python
+# claude_integration.py
+import subprocess
+import json
+
+class ClaudeCodeIntegration:
+    """Intégration avec Claude Code pour la génération assistée"""
+    
+    def __init__(self, rag_system):
+        self.rag = rag_system
+        
+    def generate_with_claude(self, ontology_description, context):
+        """Utilise Claude Code pour générer une simulation"""
+        
+        # Construire le prompt
+        prompt = self.build_prompt(ontology_description, context)
+        
+        # Appeler Claude Code (à adapter selon votre setup)
+        # Exemple avec subprocess
+        result = subprocess.run(
+            ["claude", "code", prompt],
+            capture_output=True,
+            text=True
+        )
+        
+        return result.stdout
+    
+    def build_prompt(self, ontology_description, context):
+        """Construit un prompt optimisé pour Claude"""
+        
+        prompt = f"""
+        # Contexte TSCG - Génération de Simulation PyGame
+        
+        ## Description ontologique du système:
+        {ontology_description}
+        
+        ## Patterns similaires identifiés:
+        {json.dumps(context.get('similar_structural_patterns', {}), indent=2)[:500]}...
+        
+        ## Template de structure recommandé:
+        ```python
+        # Structure à 3 panneaux
+        - Panneau gauche: contrôles (sliders avec thresholds)
+        - Panneau centre: visualisation du système
+        - Panneau droit: analytics ASFID/REVOI
+        ```
+        
+        ## Règles de mapping:
+        1. Chaque composant de l'ontologie → un slider
+        2. La condition d'émergence → all(thresholds)
+        3. Les dimensions ASFID → barres dynamiques
+        4. Les valeurs REVOI → barres statiques
+        
+        ## Génère le code complet de la simulation PyGame:
+        """
+        
+        return prompt
+Utilisation concrète
+Pour votre prochaine simulation (ex: Triangle de l'exposition photo) :
+
+bash
+# 1. Extraire les patterns du Triangle du feu
+python run_extraction.py \
+    M0_FireTriangle.jsonld \
+    fire_triangle_sim.py \
+    patterns/fire_triangle_patterns.json
+
+# 2. Faire de même pour RGB
+python run_extraction.py \
+    M0_RGB.jsonld \
+    rgb_sim.py \
+    patterns/rgb_patterns.json
+
+# 3. Le RAG sera maintenant alimenté avec ces patterns
+# 4. Pour générer l'exposition photo:
+python generate_with_rag.py \
+    --ontology M0_ExposureTriangle.jsonld \
+    --context patterns/
+Voulez-vous que nous testions cet extracteur sur votre code actuel, ou que nous passions à l'étape suivante : l'intégration avec une vraie base vectorielle comme ChromaDB ?
+
+et ces "patterns" pourraient ils être enregistrés dans ce que j'appelle une "extension métier de la couche M1", en l'occurrence "M1_SimulationGame.jsonld" ?
+Excellente idée ! C'est même une utilisation parfaitement alignée avec l'architecture TSCG. Les patterns de simulation deviennent naturellement des concepts de niveau M1 (domaine spécifique) qui peuvent être réutilisés.
+
+Architecture M1 pour les patterns de simulation
+text
+M3 (Méta-méta) - GenesisSpace
+  ├─ Eagle Eye (ASFID) - Mesure du Territoire
+  └─ Sphinx Eye (REVOI) - Évaluation de la Carte
+      ↓
+M2 (Méta) - MetaConcepts
+  ├─ Component, Synergy, Composition, etc.
+  └─ [Patterns génériques de systèmes]
+      ↓
+M1 (Domaine) - Domain Concepts
+  ├─ M1_Chemistry.jsonld (concepts chimiques)
+  ├─ M1_Physics.jsonld (concepts physiques)
+  └─ M1_SimulationGame.jsonld (patterns de simulation) ← NOUVEAU
+      ↓
+M0 (Instances) - Poclets
+  ├─ Fire Triangle (utilise patterns M1_SimulationGame)
+  ├─ RGB Color (utilise patterns M1_SimulationGame)
+  └─ Exposure Triangle (utilisera patterns M1_SimulationGame)
+Structure de M1_SimulationGame.jsonld
+json
+{
+  "@context": {
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1:sim": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/M1_SimulationGame.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m1:sim:SimulationPattern",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": ["m1:core:Concept", "m2:Pattern"],
+      "rdfs:label": "Simulation Pattern",
+      "rdfs:comment": "A reusable pattern for generating PyGame simulations from ontologies",
+      "m2:metaconceptsMobilized": ["Pattern", "Composition", "Abstraction", "Reusability"]
+    },
+    {
+      "@id": "m1:sim:StructuralPattern",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": ["m1:sim:SimulationPattern"],
+      "rdfs:label": "Structural Pattern",
+      "rdfs:comment": "Pattern describing the component structure of a simulation",
+      "m2:asfidSignature": {"S": 0.9, "I": 0.8},
+      "m2:revoiQuality": {"R": 0.9, "I": 0.8}
+    },
+    {
+      "@id": "m1:sim:DynamicPattern",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": ["m1:sim:SimulationPattern"],
+      "rdfs:label": "Dynamic Pattern",
+      "rdfs:comment": "Pattern describing the temporal behavior of a simulation",
+      "m2:asfidSignature": {"D": 0.95, "F": 0.85},
+      "m2:revoiQuality": {"V": 0.95, "E": 0.7}
+    },
+    {
+      "@id": "m1:sim:InteractionPattern",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": ["m1:sim:SimulationPattern"],
+      "rdfs:label": "Interaction Pattern",
+      "rdfs:comment": "Pattern describing the user interface and controls",
+      "m2:asfidSignature": {"I": 0.85, "S": 0.7},
+      "m2:revoiQuality": {"O": 0.9, "R": 0.9}
+    }
+  ]
+}
+Instances concrètes des patterns
+json
+{
+  "@id": "m1:sim:TernarySynergisticSystem",
+  "@type": "owl:NamedIndividual",
+  "rdf:type": "m1:sim:StructuralPattern",
+  "rdfs:label": "Ternary Synergistic System Pattern",
+  "rdfs:comment": "Pattern for systems with exactly 3 components that work synergistically",
+  "m1:sim:signature": {
+    "components": 3,
+    "relations": "synergistic",
+    "hasEmergence": true,
+    "emergenceType": "qualitative_jump"
+  },
+  "m1:sim:instances": [
+    "m0:fire_triangle:FireTrianglePoclet",
+    "m0:rgb:RGBColorPoclet",
+    "m0:exposure:ExposureTrianglePoclet"
+  ],
+  "m1:sim:mappingRules": [
+    {
+      "ontologicalElement": "m2:Component",
+      "codeElement": "Slider",
+      "transformation": "Each component becomes a UI slider"
+    },
+    {
+      "ontologicalElement": "m2:Synergy",
+      "codeElement": "all(above_threshold)",
+      "transformation": "AND condition over all components"
+    },
+    {
+      "ontologicalElement": "m2:EmergentProperty",
+      "codeElement": "ParticleSystem",
+      "transformation": "Visual feedback when synergy achieved"
+    }
+  ],
+  "m1:sim:asfidMapping": {
+    "A": "fire_sys.intensity based on component values",
+    "S": "triangle geometry in visualization",
+    "F": "particle system motion",
+    "I": "ASFID/REVOI panels display",
+    "D": "update() loop with dt parameter"
+  },
+  "m2:asfidState": {
+    "A": 0.7,
+    "S": 0.85,
+    "F": 0.6,
+    "I": 0.8,
+    "D": 0.65
+  },
+  "m2:revoiState": {
+    "R": 0.9,
+    "E": 0.7,
+    "V": 0.8,
+    "O": 0.85,
+    "I": 0.8
+  },
+  "dcterms:created": "2026-02-21",
+  "dcterms:creator": "Extracted from Fire Triangle and RGB simulations"
+}
+json
+{
+  "@id": "m1:sim:ThresholdCrossingDynamics",
+  "@type": "owl:NamedIndividual",
+  "rdf:type": "m1:sim:DynamicPattern",
+  "rdfs:label": "Threshold Crossing Dynamics Pattern",
+  "rdfs:comment": "Pattern for systems with binary state based on threshold crossing",
+  "m1:sim:stateMachine": {
+    "states": ["INACTIVE", "ACTIVE"],
+    "transition": {
+      "INACTIVE→ACTIVE": "all(above_threshold)",
+      "ACTIVE→INACTIVE": "any(not above_threshold)"
+    }
+  },
+  "m1:sim:continuousDynamics": {
+    "intensityCalculation": "sum(scores)/len(scores)",
+    "particleSpawning": "dt * 60 * intensity",
+    "asfidModulation": {
+      "A": "base.A * (0.3 + 0.7 * fire_f)",
+      "S": "base.S * (0.4 + 0.6 * fuel_pct)",
+      "F": "base.F * (0.2 + 0.8 * o2_pct)",
+      "I": "base.I * (0.3 + 0.7 * heat_pct)",
+      "D": "base.D * (0.1 + 0.9 * ignition)"
+    }
+  },
+  "m1:sim:timeScale": "dt parameter",
+  "m1:sim:feedbackLoops": [
+    "Positive: activation → more activity → more activation",
+    "Negative: consumption → less fuel → less activity"
+  ],
+  "m2:asfidState": {
+    "A": 0.8,
+    "D": 0.9,
+    "F": 0.85
+  }
+}
+json
+{
+  "@id": "m1:sim:ThreePanelLayout",
+  "@type": "owl:NamedIndividual",
+  "rdf:type": "m1:sim:InteractionPattern",
+  "rdfs:label": "Three-Panel Layout Pattern",
+  "rdfs:comment": "UI pattern with left controls, center visualization, right analytics",
+  "m1:sim:layout": {
+    "leftPanel": {
+      "role": "controls",
+      "content": ["sliders", "thresholds"],
+      "width": 340
+    },
+    "centerPanel": {
+      "role": "visualization",
+      "content": ["system diagram", "particle effects"],
+      "width": "dynamic"
+    },
+    "rightPanel": {
+      "role": "analytics",
+      "content": ["ASFID bars", "REVOI bars", "epistemic gap"],
+      "width": 220
+    }
+  },
+  "m1:sim:sliderDesign": {
+    "class": "Slider",
+    "properties": ["min", "max", "value", "threshold"],
+    "events": ["drag", "click"],
+    "visualFeedback": ["color change above threshold", "threshold marker"]
+  },
+  "m1:sim:colorScheme": {
+    "asfid": {
+      "A": [255, 180, 60],
+      "S": [100, 200, 255],
+      "F": [60, 200, 160],
+      "I": [200, 130, 255],
+      "D": [255, 100, 100]
+    },
+    "revoi": {
+      "R": [100, 180, 255],
+      "E": [180, 255, 120],
+      "V": [255, 220, 80],
+      "O": [255, 130, 200],
+      "I": [130, 220, 255]
+    }
+  }
+}
+json
+{
+  "@id": "m1:sim:BicephalousAnalytics",
+  "@type": "owl:NamedIndividual",
+  "rdf:type": "m1:sim:SimulationPattern",
+  "rdfs:label": "Bicephalous Analytics Pattern",
+  "rdfs:comment": "Pattern for displaying both ASFID (dynamic) and REVOI (static) analytics",
+  "m1:sim:asfidDisplay": {
+    "type": "barChart",
+    "dimensions": ["A", "S", "F", "I", "D"],
+    "dynamic": true,
+    "baseMarkers": true,
+    "computation": "compute_dynamic_asfid()"
+  },
+  "m1:sim:revoiDisplay": {
+    "type": "barChart",
+    "dimensions": ["R", "E", "V", "O", "I"],
+    "dynamic": false,
+    "source": "ontology"
+  },
+  "m1:sim:epistemicGap": {
+    "computation": "ΔΘ = ‖|Ω⟩ - |M⟩‖",
+    "display": "numeric with color coding",
+    "thresholds": {
+      "good": 0.3,
+      "moderate": 0.5
+    }
+  }
+}
+Liens avec les patterns extraits
+json
+{
+  "@id": "m1:sim:FireTrianglePatternInstance",
+  "@type": "owl:NamedIndividual",
+  "rdfs:label": "Fire Triangle Pattern Set",
+  "rdfs:comment": "The complete set of patterns extracted from the Fire Triangle simulation",
+  "m1:sim:implements": [
+    "m1:sim:TernarySynergisticSystem",
+    "m1:sim:ThresholdCrossingDynamics",
+    "m1:sim:ThreePanelLayout",
+    "m1:sim:BicephalousAnalytics"
+  ],
+  "m1:sim:sourcePoclet": "m0:fire_triangle:FireTrianglePoclet",
+  "m1:sim:extractionDate": "2026-02-21",
+  "m1:sim:extractionMethod": "automated_pattern_extraction",
+  "m1:sim:quality": {
+    "completeness": 0.95,
+    "reusability": 0.9,
+    "abstractionLevel": "concrete"
+  },
+  "m1:sim:codeSnippets": {
+    "sliderClass": "fire_triangle_sim.py:Slider",
+    "particleSystem": "fire_triangle_sim.py:FireSystem",
+    "asfidComputation": "fire_triangle_sim.py:compute_dynamic_asfid"
+  }
+}
+Extension pour le RAG
+json
+{
+  "@id": "m1:sim:RAGContext",
+  "@type": "owl:Class",
+  "rdfs:subClassOf": "m1:sim:SimulationPattern",
+  "rdfs:label": "RAG Context Pattern",
+  "rdfs:comment": "Pattern for storing retrieval-augmented generation context",
+  "m1:sim:embeddings": {
+    "type": "vector",
+    "dimensions": 384,
+    "model": "all-MiniLM-L6-v2"
+  },
+  "m1:sim:similarityMetric": "cosine",
+  "m1:sim:retrievalStrategy": "semantic_search"
+}
+Intégration avec votre extracteur
+python
+class TSCGPatternExtractor:
+    # ... (code précédent)
+    
+    def save_as_m1_extension(self, output_path):
+        """Sauvegarde les patterns comme extension M1"""
+        
+        m1_graph = {
+            "@context": {
+                "dcterms": "http://purl.org/dc/terms/",
+                "owl": "http://www.w3.org/2002/07/owl#",
+                "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+                "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+                "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+                "m1:sim": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/M1_SimulationGame.jsonld#"
+            },
+            "@graph": []
+        }
+        
+        # Créer l'instance de pattern structurel
+        structural_instance = {
+            "@id": f"m1:sim:{self.patterns['metadata']['simulation_name'].replace(' ', '')}Structural",
+            "@type": "owl:NamedIndividual",
+            "rdf:type": "m1:sim:StructuralPattern",
+            "rdfs:label": f"{self.patterns['metadata']['simulation_name']} Structural Pattern",
+            "m1:sim:signature": self.patterns['structural']['signature'],
+            "m1:sim:mappingRules": self.patterns['structural'].get('mapping_rules', []),
+            "m2:asfidState": self.patterns['asfid_revoi']['asfid']['base_values'],
+            "m1:sim:sourcePoclet": str(self.ontology_path)
+        }
+        m1_graph["@graph"].append(structural_instance)
+        
+        # Créer l'instance de pattern dynamique
+        dynamic_instance = {
+            "@id": f"m1:sim:{self.patterns['metadata']['simulation_name'].replace(' ', '')}Dynamic",
+            "@type": "owl:NamedIndividual",
+            "rdf:type": "m1:sim:DynamicPattern",
+            "rdfs:label": f"{self.patterns['metadata']['simulation_name']} Dynamic Pattern",
+            "m1:sim:stateMachine": self.patterns['dynamic']['state_machine'],
+            "m1:sim:continuousDynamics": self.patterns['dynamic']['continuous_dynamics'],
+            "m2:asfidState": {
+                "D": self.patterns['asfid_revoi']['asfid']['base_values'].get('D', 0),
+                "F": self.patterns['asfid_revoi']['asfid']['base_values'].get('F', 0)
+            }
+        }
+        m1_graph["@graph"].append(dynamic_instance)
+        
+        # Sauvegarder
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(m1_graph, f, indent=2, ensure_ascii=False)
+        
+        return output_path
+Avantages de cette approche
+Cohérence architecturale : Les patterns s'intègrent parfaitement dans la hiérarchie M3→M2→M1→M0
+
+Réutilisabilité : Les patterns M1 peuvent être référencés par plusieurs poclets M0
+
+Traçabilité : Chaque pattern garde la trace de ses instances (Fire Triangle, RGB, etc.)
+
+Évolutivité : Nouveaux patterns = nouvelles instances dans M1_SimulationGame.jsonld
+
+Interopérabilité : Les patterns peuvent être utilisés par d'autres extensions M1 (chimie, physique, etc.)
+
+Utilisation dans le pipeline RAG
+python
+class RAGWithM1:
+    def __init__(self, m1_simulation_path):
+        self.m1_patterns = self._load_m1_patterns(m1_simulation_path)
+        
+    def _load_m1_patterns(self, path):
+        with open(path, 'r') as f:
+            return json.load(f)
+    
+    def find_patterns_for_new_system(self, system_description):
+        """Trouve les patterns M1 pertinents"""
+        matching_patterns = []
+        
+        for pattern in self.m1_patterns['@graph']:
+            if pattern.get('@type') == 'owl:NamedIndividual':
+                # Calculer similarité sémantique
+                similarity = self._compute_similarity(
+                    system_description,
+                    pattern.get('rdfs:label', '') + ' ' + pattern.get('rdfs:comment', '')
+                )
+                
+                if similarity > 0.6:
+                    matching_patterns.append({
+                        'pattern': pattern,
+                        'similarity': similarity
+                    })
+        
+        return sorted(matching_patterns, key=lambda x: x['similarity'], reverse=True)
+Cette approche transforme votre RAG en une véritable extension ontologique plutôt qu'un simple stockage vectoriel. Les patterns deviennent des citoyens de premier ordre dans votre framework TSCG !
+
+Voulez-vous que nous créions ensemble le fichier M1_SimulationGame.jsonld complet avec tous les patterns que nous avons identifiés ?

@@ -1,414 +1,56 @@
 {
   "@context": {
-    "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
-    "m3:eagle_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
-    "m3:sphinx_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
+    "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
     "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
-      "@id": "m1:core:M1_CoreConcepts_Ontology",
+      "@id": "m1core:M1_CoreConcepts_NuclearUpdate",
       "@type": "owl:Ontology",
-      "dcterms:title": "TSCG M1 Core Concepts Ontology",
-      "dcterms:description": "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.).",
+      "dcterms:title": "M1 Core Concepts - Nuclear Reactor Typology Update",
+      "dcterms:description": "Update to M1_CoreConcepts.jsonld adding 6 transdisciplinary concepts discovered through Nuclear Reactor Typology poclet analysis. These concepts validated across 6+ domains (nuclear engineering, chemistry, biology, electronics, economics, social systems).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-02-10",
-      "owl:versionInfo": "1.2.0",
-      "m1:layerPosition": {
-        "above": "M0 (Poclets - concrete instantiations)",
-        "below": "M2 (Metaconcepts - universal patterns)",
-        "role": "Domain-specific reusable concepts bridging universal (M2) and particular (M0)"
-      },
-      "m1:architecturalPrinciple": {
-        "description": "M1 layer uses EXTENSION MECHANISM: M1_CoreConcepts (base) is extended by domain-specific M1 ontologies",
-        "baseOntology": "M1_CoreConcepts.jsonld (this file) - Generic transdisciplinary concepts",
-        "extensionOntologies": "M1_[Domain].jsonld files (specific to disciplines)",
-        "importMechanism": "owl:imports from M1_CoreConcepts + domain-specific additions",
-        "namespaceStrategy": "Each M1 extension has own namespace (m1:optics:, m1:photo:, m1:mythology:, etc.)"
-      },
-      "m1:extensionOntologies": {
-        "description": "Domain-specific M1 ontologies extending M1_CoreConcepts",
-        "current": [
-          {
-            "ontology": "M1_Optics.jsonld",
-            "namespace": "m1:optics:",
-            "domain": "Optics / Color Theory / Light Physics",
-            "patterns": 8,
-            "status": "Active"
-          },
-          {
-            "ontology": "M1_Photography.jsonld",
-            "namespace": "m1:photo:",
-            "domain": "Photography / Camera Technology / Exposure Control",
-            "patterns": 10,
-            "status": "Active"
-          },
-          {
-            "ontology": "M1_EnergyGenerators.jsonld",
-            "namespace": "m1:energy:",
-            "domain": "Energy Systems / Power Generation / Industrial Engineering",
-            "patterns": 5,
-            "status": "Active"
-          }
-        ],
-        "proposed": [
-          {
-            "ontology": "M1_Mythology.jsonld",
-            "namespace": "m1:mythology:",
-            "domain": "Mythology / Cosmology / Spiritual Systems",
-            "patterns": 5,
-            "status": "Proposed (needed for Yggdrasil poclet)"
-          },
-          {
-            "ontology": "M1_Philosophy.jsonld",
-            "namespace": "m1:phil:",
-            "domain": "Philosophy / Ethics / Value Systems",
-            "patterns": "TBD",
-            "status": "Proposed (needed for Magic Color Wheel)"
-          },
-          {
-            "ontology": "M1_Chemistry.jsonld",
-            "namespace": "m1:chem:",
-            "domain": "Chemistry / Thermodynamics / Reactions",
-            "patterns": "TBD",
-            "status": "Proposed (needed for Fire Triangle extension)"
-          },
-          {
-            "ontology": "M1_Biology.jsonld",
-            "namespace": "m1:bio:",
-            "domain": "Biology / Ecology / Cellular Systems",
-            "patterns": "TBD",
-            "status": "Proposed (needed for Cell Signaling, Predator-Prey)"
-          },
-          {
-            "ontology": "M1_Economics.jsonld",
-            "namespace": "m1:econ:",
-            "domain": "Economics / Market Theory / Trade",
-            "patterns": "TBD",
-            "status": "Proposed"
-          },
-          {
-            "ontology": "M1_PoliticalScience.jsonld",
-            "namespace": "m1:polisci:",
-            "domain": "Political Science / Governance / Power",
-            "patterns": "TBD",
-            "status": "Proposed (needed for Political Compass)"
-          }
-        ]
-      },
-      "m1:coreConceptCategories": {
-        "description": "Generic transdisciplinary concept categories in M1_CoreConcepts (base layer)",
-        "categories": [
-          {
-            "category": "Generic Mechanisms",
-            "description": "Reusable operational patterns (Oscillator, Amplifier, Filter, Switch)",
-            "examples": [
-              "Oscillator",
-              "Amplifier",
-              "Filter",
-              "Modulator",
-              "Rectifier"
-            ],
-            "transdisciplinary": true,
-            "status": "Partially populated (0 concepts defined)"
-          },
-          {
-            "category": "Structural Templates",
-            "description": "Common architectural patterns (Loop, Cascade, Feedback, Hierarchy)",
-            "examples": [
-              "Loop",
-              "Cascade",
-              "Bifurcation",
-              "Mesh",
-              "Tree",
-              "Multipolar Network"
-            ],
-            "transdisciplinary": true,
-            "status": "Partially populated (1 concept: Multipolar Network)"
-          },
-          {
-            "category": "Relational Patterns",
-            "description": "Generic relationship types (Competition, Cooperation, Parasitism)",
-            "examples": [
-              "Competition",
-              "Cooperation",
-              "Mutualism",
-              "Commensalism"
-            ],
-            "transdisciplinary": true,
-            "status": "To be populated (0 concepts defined)"
-          },
-          {
-            "category": "Process Archetypes",
-            "description": "Generic transformational processes (Growth, Decay, Oscillation)",
-            "examples": [
-              "Growth",
-              "Decay",
-              "Saturation",
-              "Regeneration",
-              "Cyclic Tension"
-            ],
-            "transdisciplinary": true,
-            "status": "Partially populated (1 concept: Cyclic Tension)"
-          }
-        ]
-      },
+      "dcterms:created": "2026-02-10",
+      "owl:versionInfo": "1.2.0.p3",
       "owl:imports": [
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld"
       ],
-      "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/docs/TSCG_M1_Architecture.md",
-      "rdfs:comment": "M1_CoreConcepts is the BASE ontology for M1 layer. It contains generic transdisciplinary concepts applicable across multiple domains. Domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.) import M1_CoreConcepts and add specialized patterns. This architecture allows: (1) Sharing common concepts, (2) Domain specialization, (3) Modular extension, (4) Clear namespace separation.",
-      "m1:developmentStrategy": {
-        "phase1": "Populate M1_CoreConcepts with generic mechanisms (Oscillator, Filter, etc.)",
-        "phase2": "Develop domain-specific M1 extensions as needed by poclets",
-        "phase3": "Identify patterns that should be promoted from domain-specific to core",
-        "phase4": "Refine boundaries between M1_Core and M1_Domain extensions"
+      "m1core:updateSummary": {
+        "pocletSource": "M0_NuclearReactorTypology.jsonld",
+        "newConcepts": 6,
+        "totalM1CoreConcepts": 9,
+        "transdisciplinaryValidation": "Each concept validated in 6+ domains",
+        "significantContribution": "First M1 Core Concepts from industrial engineering domain"
       },
-      "m1:conceptDiscoveryProcess": {
-        "description": "How M1 concepts are discovered and validated",
-        "steps": [
-          "1. Analyze poclets (M0) to identify recurring domain-specific patterns",
-          "2. Check if pattern already exists in M2 (universal) - if yes, instantiate directly",
-          "3. Check if pattern already exists in M1_Core or M1_Domain - if yes, reuse",
-          "4. If novel, create M1 concept with: M2 basis, domain scope, examples, validation",
-          "5. After 3+ poclets use same concept, consider it validated",
-          "6. If concept appears in 3+ different domains, consider promoting to M1_Core or even M2"
-        ]
-      },
-      "m1:validationStatus": {
-        "m1:conceptsDefined": 2,
-        "m1:conceptsValidated": 2,
-        "m1:domainExtensions": 2,
-        "m1:totalConceptsAcrossExtensions": 20,
-        "m1:note": "M1_CoreConcepts now contains 2 validated transdisciplinary concepts discovered through Yggdrasil poclet analysis."
-      },
-      "m1:changelog": {
-        "v1.1.0": {
-          "date": "2026-01-22",
-          "changes": [
-            "YGGDRASIL DISCOVERY: Added 2 validated transdisciplinary M1 concepts",
-            "NEW CONCEPT: Multipolar Network (Structural Template) - SâŠ—IâŠ—A formula",
-            "NEW CONCEPT: Cyclic Tension (Process Archetype) - DâŠ—AâŠ—F formula",
-            "Both concepts discovered through Yggdrasil (N=7 pole system) analysis",
-            "Multipolar Network validated across: Mythology (Yggdrasil), Game Design (Magic Color Wheel), Education (TPACK)",
-            "Cyclic Tension validated across: Mythology (NÃ­dhÃ¶gg-Nornes cycle), Biology (wear-repair), Economics (market cycles)",
-            "Added M1_Mythology.jsonld to proposed extensions",
-            "Updated namespace examples to include m1:mythology:",
-            "Total M1 concepts: 0 â†’ 2 (+2 validated)",
-            "Version 1.1.0 marks first empirical content population"
-          ]
-        },
-        "v1.0.0": {
-          "date": "2026-01-22",
-          "changes": [
-            "INITIAL RELEASE: M1_CoreConcepts base ontology",
-            "Defined extension architecture for M1 layer",
-            "Documented namespace strategy (m1:optics:, m1:photo:, m1:phil:, etc.)",
-            "Identified 4 core concept categories: Mechanisms, Templates, Relations, Processes",
-            "Established concept discovery and validation process",
-            "Created framework for domain-specific M1 ontologies",
-            "Current extensions: M1_Optics (8 patterns), M1_Photography (10 patterns)",
-            "Proposed extensions: M1_Philosophy, M1_Chemistry, M1_Biology, M1_Economics, M1_PoliticalScience",
-            "Version 1.0.0 marks architectural foundation - content to be populated incrementally"
-          ]
-        },
+      "m1core:changelog": {
         "v1.2.0": {
           "date": "2026-02-10",
-          "source": "M0_NuclearReactorTypology.jsonld poclet analysis",
           "changes": [
-            "ADDED: 6 transdisciplinary concepts from Nuclear Reactor Typology",
-            "ADDED: DomainSpecificCombo (DSC) construction pattern",
-            "ADDED: M1_EnergyGenerators extension reference",
-            "VALIDATION: Each new concept validated in 6-8 domains",
-            "IMPACT: M1_CoreConcepts grows from 3 → 9 concepts (tripled)"
-          ],
-          "newConcepts": [
-            "CriticalityRegime (8 domains)",
-            "SelfSustainingReaction (6 domains)",
-            "ModeratorMechanism (7 domains)",
-            "DualCircuitArchitecture (6 domains)",
-            "PassiveSafety (7 domains)",
-            "CascadeAmplification (6 domains)"
+            "ADDED: CriticalityRegime (subcritical, critical, supercritical states)",
+            "ADDED: SelfSustainingReaction (output â†’ input positive feedback)",
+            "ADDED: ModeratorMechanism (rate control, stabilization)",
+            "ADDED: DualCircuitArchitecture (primary/secondary isolation)",
+            "ADDED: PassiveSafety (fail-safe, no external power)",
+            "ADDED: CascadeAmplification (sequential gain > 1)",
+            "VALIDATION: All 6 concepts validated across nuclear, chemistry, biology, electronics, economics, social domains"
           ]
         }
+      },
+      "dcterms:modified": "2026-02-24",
+      "m2:changelog": {
+        "p3_20260224": {
+          "date": "2026-02-24",
+          "description": "Phase 3 migration: (1) Non-standard @types converted to owl:Class. (2) rdfs:subClassOf m2:GenericConcept added to root concepts. (3) m2Basis fields unified → m2:characterizedBy. (4) Wrong IS-A to M2 classes moved to m2:characterizedBy. Renamed DomainConcept → KnowledgeFieldConcept throughout."
+        }
       }
-    },
-    {
-      "@id": "m1:core:CoreConcept",
-      "@type": "owl:Class",
-      "rdfs:label": "M1 Core Concept",
-      "rdfs:comment": "A domain-bounded but transdisciplinary concept that instantiates one or more M2 metaconcepts. Core concepts are reusable patterns that appear across multiple domains but don't achieve the full universality of M2 metaconcepts. Examples: Oscillator (appears in physics, biology, economics), Multipolar Network (appears in mythology, game design, education).",
-      "rdfs:subClassOf": "owl:Thing",
-      "m1:properties": [
-        "m1:M2_basis - Which M2 metaconcepts does this instantiate?",
-        "m1:domainScope - Which domains does this apply to?",
-        "m1:principle - Core operational principle",
-        "m1:examples - Concrete examples from different domains",
-        "m1:validatedPoclets - How many poclets validate this concept?"
-      ]
-    },
-    {
-      "@id": "m1:core:DomainPattern",
-      "@type": "owl:Class",
-      "rdfs:label": "Domain-Specific Pattern",
-      "rdfs:comment": "A pattern specific to a particular domain (e.g., Additive Color Synthesis in optics, Compensatory Triplet in photography). Lives in domain-specific M1 extensions (M1_Optics, M1_Photography, etc.) rather than M1_CoreConcepts.",
-      "rdfs:subClassOf": "m1:core:CoreConcept",
-      "m1:note": "Domain patterns extend CoreConcept but are defined in M1_[Domain].jsonld files, not here."
-    },
-    {
-      "@id": "m1:core:GenericMechanism",
-      "@type": "owl:Class",
-      "rdfs:label": "Generic Mechanism",
-      "rdfs:comment": "Reusable operational mechanism appearing across multiple domains. Examples: Oscillator (pendulum, AC current, predator-prey cycles, business cycles), Amplifier (electronic amplifier, biological cascade, social amplification).",
-      "rdfs:subClassOf": "m1:core:CoreConcept",
-      "skos:note": "To be populated with specific mechanisms as they are discovered through poclet analysis."
-    },
-    {
-      "@id": "m1:core:StructuralTemplate",
-      "@type": "owl:Class",
-      "rdfs:label": "Structural Template",
-      "rdfs:comment": "Common architectural pattern for system organization. Examples: Feedback Loop (control systems, ecosystems, markets), Cascade (signal transduction, waterfall, information flow), Hierarchy (organizational charts, taxonomies, file systems), Multipolar Network (Yggdrasil, Magic Color Wheel, TPACK).",
-      "rdfs:subClassOf": "m1:core:CoreConcept",
-      "skos:note": "Now includes 1 validated concept: Multipolar Network. Additional templates to be populated through poclet analysis."
-    },
-    {
-      "@id": "m1:core:RelationalPattern",
-      "@type": "owl:Class",
-      "rdfs:label": "Relational Pattern",
-      "rdfs:comment": "Generic type of relationship between entities. Examples: Competition (species, companies, ideas), Cooperation (mutualism, trade, collaboration), Parasitism (biological, economic extraction).",
-      "rdfs:subClassOf": "m1:core:CoreConcept",
-      "skos:note": "To be populated with specific patterns as they are discovered through poclet analysis."
-    },
-    {
-      "@id": "m1:core:ProcessArchetype",
-      "@type": "owl:Class",
-      "rdfs:label": "Process Archetype",
-      "rdfs:comment": "Generic transformational process. Examples: Growth (population, economic, crystal), Decay (radioactive, ecological succession, market correction), Saturation (carrying capacity, market saturation, chemical equilibrium), Cyclic Tension (Yggdrasil wear-repair, cell maintenance, market corrections).",
-      "rdfs:subClassOf": "m1:core:CoreConcept",
-      "skos:note": "Now includes 1 validated concept: Cyclic Tension. Additional archetypes to be populated through poclet analysis."
-    },
-    {
-      "@id": "m1:core:MultipolarNetwork",
-      "@type": [
-        "owl:NamedIndividual",
-        "m1:core:StructuralTemplate"
-      ],
-      "rdfs:label": "Multipolar Network",
-      "rdfs:comment": "System organized around N â‰¥ 3 distinct poles (nodes, centers, principles) with interdependent relationships forming a coherent whole. Unlike bipolar systems (duality) or hierarchies (tree), multipolar networks distribute significance across multiple equivalent or complementary poles without central dominance. Each pole contributes essential function; removing any pole destabilizes the entire system.",
-      "m1:M2_basis": [
-        "m2:Structure (S) - Topological organization of N poles",
-        "m2:Information (I) - Distinctions between pole identities",
-        "m2:Attractor (A) - System equilibrium across poles"
-      ],
-      "m1:tensorFormula": "SâŠ—IâŠ—A",
-      "m1:principle": "Distributed equilibrium across N â‰¥ 3 interdependent poles where each pole is irreducible and contributes unique function to system stability",
-      "m1:characteristicProperties": {
-        "minimumPolarity": "N â‰¥ 3 (below 3 reduces to simple duality)",
-        "poleEquivalence": "No pole is inherently superior; each essential",
-        "interdependence": "Poles mutually define and constrain each other",
-        "emergentStability": "System equilibrium arises from pole interactions, not individual pole properties",
-        "topologicalFlexibility": "Poles can be arranged linearly, circularly, hierarchically, or as general graph"
-      },
-      "m1:domainScope": "Mythology, Game Design, Education, Political Science, Ethics, Complex Systems Theory",
-      "m1:examplesCrossDomain": [
-        "Mythology: Yggdrasil (N=7 worlds), Greek Pantheon (N=12 Olympians)",
-        "Game Design: Magic Color Wheel (N=5 colors), Rock-Paper-Scissors (N=3)",
-        "Education: TPACK (N=7 knowledge domains)",
-        "Political Science: Political Compass (N=4 quadrants), Tripartite Government (N=3 branches)",
-        "Ethics: Moral Foundations Theory (N=6 foundations)",
-        "Complex Systems: Multi-agent systems, distributed networks"
-      ],
-      "m1:validatedPoclets": 3,
-      "m1:validatedPocletsDetails": [
-        "Yggdrasil (N=7) - Mythology",
-        "Magic Color Wheel (N=5) - Game Design / Philosophy",
-        "TPACK (N=7) - Education"
-      ],
-      "m1:distinctionFromRelated": {
-        "vs_Duality": "Duality (N=2) is special case; Multipolar Network requires N â‰¥ 3",
-        "vs_Hierarchy": "Hierarchy has vertical dominance ordering; Multipolar Network has lateral equivalence",
-        "vs_Network": "Network (M2) is generic connectivity; Multipolar Network specifies N pole architecture with equilibrium constraint",
-        "vs_Modularity": "Modularity decomposes into independent units; Multipolar poles are interdependent"
-      },
-      "m1:mathematicalProperties": {
-        "graphTheory": "Complete graph K_N or partial graph with minimum spanning tree ensuring connectivity",
-        "symmetry": "Often exhibits C_N rotational symmetry (cyclic group of order N)",
-        "stability": "Stable if removing any single pole causes system degradation; unstable if redundancy allows pole removal"
-      },
-      "m1:status": "VALIDATED - Discovered through Yggdrasil analysis, confirmed in Magic Color Wheel and TPACK",
-      "m1:discoveryContext": {
-        "source": "Yggdrasil poclet analysis (2026-01-22)",
-        "method": "Pattern recognition across N=7 pole cosmological system",
-        "validation": "Cross-validated with existing poclets (Magic N=5, TPACK N=7)",
-        "promotion": "Proposed M2 candidate if validated across 3+ additional domains"
-      },
-      "dcterms:created": "2026-01-22",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
-    },
-    {
-      "@id": "m1:core:CyclicTension",
-      "@type": [
-        "owl:NamedIndividual",
-        "m1:core:ProcessArchetype"
-      ],
-      "rdfs:label": "Cyclic Tension",
-      "rdfs:comment": "Perpetual alternation between opposing processes (typically destruction/degradation â†” restoration/construction) maintaining system viability through dynamic equilibrium. Unlike simple oscillation (periodic without degradation) or homeostasis (static equilibrium), cyclic tension involves genuine wear-and-repair cycles essential to system persistence. The 'stress' is not pathological but constitutive - the system exists *because* of this tension, not despite it.",
-      "m1:M2_basis": [
-        "m2:Dynamics (D) - Temporal evolution of wear-repair cycle",
-        "m2:Attractor (A) - Equilibrium maintained through opposition",
-        "m2:Flow (F) - Energy/matter exchange during degradation and restoration"
-      ],
-      "m1:tensorFormula": "DâŠ—AâŠ—F",
-      "m1:principle": "System viability maintained through perpetual opposition of degradative and restorative processes, where neither can permanently dominate. Equilibrium is dynamic, not static - the system is never 'finished' but perpetually in process.",
-      "m1:characteristicProperties": {
-        "bidirectionality": "Two opposed processes (not unidirectional decay or growth)",
-        "perpetuity": "Cycle continues as long as system exists (not transient phenomenon)",
-        "constructiveStress": "Tension is necessary for system health, not damage to be eliminated",
-        "dynamicEquilibrium": "Balance point constantly shifts but system remains viable",
-        "emergentStability": "Overall stability arises from ongoing instability at local scale"
-      },
-      "m1:domainScope": "Biology, Mythology, Economics, Physics, Ecology, Engineering",
-      "m1:examplesCrossDomain": [
-        "Mythology: Yggdrasil (NÃ­dhÃ¶gg gnaws roots â†” Nornes water/restore tree)",
-        "Biology: Cellular maintenance (protein degradation â†” synthesis), bone remodeling (osteoclasts â†” osteoblasts)",
-        "Economics: Market cycles (expansion â†” contraction), creative destruction",
-        "Physics: Thermodynamic cycles (energy dispersal â†” concentration)",
-        "Ecology: Succession (disturbance â†” recovery), predator-prey cycles",
-        "Engineering: Fatigue-maintenance cycles in infrastructure"
-      ],
-      "m1:validatedPoclets": 1,
-      "m1:validatedPocletsDetails": [
-        "Yggdrasil (NÃ­dhÃ¶gg-Nornes cycle) - Mythology"
-      ],
-      "m1:distinctionFromRelated": {
-        "vs_Oscillation": "Oscillation is periodic without degradation; Cyclic Tension involves genuine wear requiring active repair",
-        "vs_Homeostasis": "Homeostasis maintains static setpoint; Cyclic Tension accepts perpetual movement around equilibrium",
-        "vs_Bifurcation": "Bifurcation is qualitative state change at threshold; Cyclic Tension is ongoing process without phase transition",
-        "vs_Process": "Process (M2) is generic temporal evolution; Cyclic Tension specifies bidirectional opposition structure"
-      },
-      "m1:mathematicalProperties": {
-        "differentialEquations": "dS/dt = R(S) - D(S) where R=restoration rate, D=degradation rate",
-        "equilibrium": "R(S*) = D(S*) at stable equilibrium S*",
-        "limitCycle": "System may exhibit limit cycle (periodic orbit) in state space",
-        "phasingCondition": "R and D typically out of phase (when one peaks, other troughs)"
-      },
-      "m1:biologicalParadigm": "Cellular autophagy-synthesis cycle, apoptosis-proliferation balance, immune surveillance-tolerance",
-      "m1:status": "VALIDATED - Discovered through Yggdrasil analysis, recognized in biological systems",
-      "m1:discoveryContext": {
-        "source": "Yggdrasil poclet analysis (2026-01-22)",
-        "method": "Recognition of NÃ­dhÃ¶gg (degradation) â†” Nornes (restoration) as constitutive system property",
-        "validation": "Cross-domain verification in biology (cell maintenance), economics (market cycles)",
-        "promotion": "Candidate for M2 if validated across 2+ additional poclets"
-      },
-      "dcterms:created": "2026-01-22",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
     {
       "@id": "m1core:CriticalityRegime",
@@ -416,53 +58,48 @@
       "rdfs:label": "Criticality Regime",
       "rdfs:comment": "System state relative to self-sustaining threshold. Three regimes: subcritical (process dies), critical (self-sustaining equilibrium), supercritical (exponential growth). Universal pattern appearing when process products enable continuation of process.",
       "skos:definition": "Classification of system state based on relationship to critical threshold where process becomes self-sustaining (reproduction number = 1, multiplication factor k = 1, percolation probability p = p_c).",
-      "m1core:m2Basis": [
-        "m2:Threshold",
-        "m2:Bifurcation",
-        "m2:Homeostasis"
-      ],
-      "m1core:tensorFormula": "Threshold ⊗ SelfSustainingReaction ⊗ Amplification",
+      "m1core:tensorFormula": "Threshold âŠ— SelfSustainingReaction âŠ— Amplification",
       "m1core:regimes": {
         "subcritical": {
-          "condition": "λ < 1 (eigenvalue of propagation matrix)",
+          "condition": "Î» < 1 (eigenvalue of propagation matrix)",
           "behavior": "Process dies out naturally",
           "examples": [
             "Nuclear: k_eff < 1 (reactor shutdown)",
-            "Epidemiology: R₀ < 1 (disease dies out)",
+            "Epidemiology: Râ‚€ < 1 (disease dies out)",
             "Finance: r < 0 (investment decay)",
             "Social: Viral coefficient < 1 (content dies)"
           ]
         },
         "critical": {
-          "condition": "λ = 1 (exact threshold)",
+          "condition": "Î» = 1 (exact threshold)",
           "behavior": "Self-sustaining equilibrium (steady-state)",
           "examples": [
             "Nuclear: k_eff = 1.0 (steady power)",
-            "Epidemiology: R₀ = 1 (endemic equilibrium)",
+            "Epidemiology: Râ‚€ = 1 (endemic equilibrium)",
             "Finance: r = 0 (break-even)",
             "Percolation: p = p_c (spanning cluster)"
           ]
         },
         "supercritical": {
-          "condition": "λ > 1 (above threshold)",
+          "condition": "Î» > 1 (above threshold)",
           "behavior": "Exponential growth (runaway if uncontrolled)",
           "examples": [
             "Nuclear: k_eff > 1 (power increase)",
-            "Epidemiology: R₀ > 1 (epidemic)",
+            "Epidemiology: Râ‚€ > 1 (epidemic)",
             "Finance: r > 0 (compound growth)",
             "Social: Viral coefficient > 1 (viral spread)"
           ]
         }
       },
       "m1core:mathematicalStructure": {
-        "differential_equation": "dx/dt = (λ - 1) × x",
-        "solution_subcritical": "x(t) = x₀ × exp[-(1-λ)t] → 0 as t → ∞",
-        "solution_critical": "x(t) = x₀ (constant)",
-        "solution_supercritical": "x(t) = x₀ × exp[(λ-1)t] → ∞ as t → ∞"
+        "differential_equation": "dx/dt = (Î» - 1) Ã— x",
+        "solution_subcritical": "x(t) = xâ‚€ Ã— exp[-(1-Î»)t] â†’ 0 as t â†’ âˆž",
+        "solution_critical": "x(t) = xâ‚€ (constant)",
+        "solution_supercritical": "x(t) = xâ‚€ Ã— exp[(Î»-1)t] â†’ âˆž as t â†’ âˆž"
       },
       "m1core:transdisciplinaryDomains": [
         "Nuclear Engineering (fission criticality)",
-        "Epidemiology (disease reproduction number R₀)",
+        "Epidemiology (disease reproduction number Râ‚€)",
         "Chemistry (autocatalytic reactions)",
         "Percolation Theory (bond/site probability)",
         "Economics (growth/decay rates)",
@@ -476,27 +113,33 @@
         "m1core:SelfSustainingReaction",
         "m2:Threshold",
         "m2:Bifurcation"
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Threshold"
+        },
+        {
+          "@id": "m2:Bifurcation"
+        },
+        {
+          "@id": "m2:Homeostasis"
+        }
       ]
     },
     {
       "@id": "m1core:SelfSustainingReaction",
       "@type": "owl:Class",
       "rdfs:label": "Self-Sustaining Reaction",
-      "rdfs:comment": "Process where products enable continuation of process (output → input positive feedback loop). Requires critical mass/threshold to initiate. Examples: fission chain reaction, combustion, autocatalysis, viral spread.",
+      "rdfs:comment": "Process where products enable continuation of process (output â†’ input positive feedback loop). Requires critical mass/threshold to initiate. Examples: fission chain reaction, combustion, autocatalysis, viral spread.",
       "skos:definition": "Dynamic process characterized by positive feedback where reaction products trigger new reactions, creating potential for exponential growth if unregulated. Always exhibits threshold behavior (critical point).",
-      "m1core:m2Basis": [
-        "m2:Process",
-        "m2:Cycle",
-        "m2:Amplification",
-        "m2:Threshold"
-      ],
-      "m1core:tensorFormula": "Process ⊗ Cycle ⊗ Amplification (gain ≥ 1)",
-      "m1core:keyCharacteristic": "Output → Input (positive feedback creates self-reinforcing loop)",
+      "m1core:tensorFormula": "Process âŠ— Cycle âŠ— Amplification (gain â‰¥ 1)",
+      "m1core:keyCharacteristic": "Output â†’ Input (positive feedback creates self-reinforcing loop)",
       "m1core:transdisciplinaryExamples": [
         {
           "domain": "Nuclear Physics",
           "process": "Fission chain reaction",
-          "mechanism": "Neutron + U-235 → Fission Products + 2.5 neutrons → trigger new fissions",
+          "mechanism": "Neutron + U-235 â†’ Fission Products + 2.5 neutrons â†’ trigger new fissions",
           "threshold": "Critical mass (52 kg for bare U-235 sphere)",
           "control": "Control rods (neutron absorption)"
         },
@@ -537,8 +180,8 @@
         }
       ],
       "m1core:requiredConditions": [
-        "Positive feedback mechanism (output → input)",
-        "Amplification (gain ≥ 1 per cycle)",
+        "Positive feedback mechanism (output â†’ input)",
+        "Amplification (gain â‰¥ 1 per cycle)",
         "Threshold (critical point for self-sustaining)",
         "Initial trigger (seed, spark, catalyst)"
       ],
@@ -549,12 +192,27 @@
         "Threshold maintenance (critical point)"
       ],
       "m1core:validationCount": 6,
-      "m1core:discoveryContext": "Nuclear fission chain reaction analysis revealed universal pattern of output → input positive feedback with threshold behavior.",
+      "m1core:discoveryContext": "Nuclear fission chain reaction analysis revealed universal pattern of output â†’ input positive feedback with threshold behavior.",
       "skos:related": [
         "m1core:CriticalityRegime",
         "m1core:ModeratorMechanism",
         "m2:Amplification",
         "m2:Cycle"
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Process"
+        },
+        {
+          "@id": "m2:Cycle"
+        },
+        {
+          "@id": "m2:Amplification"
+        },
+        {
+          "@id": "m2:Threshold"
+        }
       ]
     },
     {
@@ -563,14 +221,9 @@
       "rdfs:label": "Moderator Mechanism",
       "rdfs:comment": "Component or process that slows, controls, or stabilizes a rapid/intense process. Function: energy reduction, rate control, stabilization. Examples: neutron moderator (nuclear), enzyme inhibitor (biology), damper (mechanics), low-pass filter (electronics).",
       "skos:definition": "Regulatory element that reduces process intensity or rate without stopping it entirely. Acts as intermediate control between full activity and complete shutdown.",
-      "m1core:m2Basis": [
-        "m2:Regulation",
-        "m2:Amplification (direction: attenuating)",
-        "m2:Homeostasis"
-      ],
-      "m1core:tensorFormula": "Regulation ⊗ Attenuation ⊗ Stabilization",
+      "m1core:tensorFormula": "Regulation âŠ— Attenuation âŠ— Stabilization",
       "m1core:primaryFunctions": [
-        "Energy reduction (fast → slow)",
+        "Energy reduction (fast â†’ slow)",
         "Rate control (limit reaction speed)",
         "Stabilization (prevent runaway)",
         "Bandwidth limiting (filter high frequencies)"
@@ -579,7 +232,7 @@
         {
           "domain": "Nuclear Engineering",
           "rapidProcess": "Fast neutrons (2 MeV kinetic energy)",
-          "moderator": "Light water (H₂O), heavy water (D₂O), or graphite (C)",
+          "moderator": "Light water (Hâ‚‚O), heavy water (Dâ‚‚O), or graphite (C)",
           "effect": "Thermalization to 0.025 eV (thermal neutrons)",
           "mechanism": "Elastic scattering collisions transfer neutron energy to moderator nuclei"
         },
@@ -638,6 +291,18 @@
         "m2:Regulation",
         "m2:Amplification",
         "m1core:SelfSustainingReaction"
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Regulation"
+        },
+        {
+          "@id": "m2:Amplification"
+        },
+        {
+          "@id": "m2:Homeostasis"
+        }
       ]
     },
     {
@@ -646,12 +311,7 @@
       "rdfs:label": "Dual Circuit Architecture",
       "rdfs:comment": "System design with separated primary and secondary circuits connected via interface/barrier. Function: isolation (safety, contamination), efficiency (heat exchange), or voltage transformation. Examples: PWR reactor (radioactive primary, clean secondary), HVAC (refrigerant/air), electrical transformer (high/low voltage).",
       "skos:definition": "Architectural pattern with two distinct circuits separated by barrier, enabling transfer (energy, information, material) while maintaining isolation (safety, pressure, voltage).",
-      "m1core:m2Basis": [
-        "m2:Structure",
-        "m2:Interface",
-        "m2:Flow"
-      ],
-      "m1core:tensorFormula": "Structure ⊗ Interface ⊗ Isolation",
+      "m1core:tensorFormula": "Structure âŠ— Interface âŠ— Isolation",
       "m1core:architecturalComponents": {
         "primaryCircuit": "High-energy, high-risk, or contaminated side",
         "secondaryCircuit": "Low-energy, safe, or clean side",
@@ -666,8 +326,8 @@
       "m1core:transdisciplinaryExamples": [
         {
           "domain": "Nuclear Engineering (PWR)",
-          "primaryCircuit": "Radioactive water (155 bar, 325°C, activated corrosion products)",
-          "secondaryCircuit": "Clean steam (70 bar, 280°C, drives turbine)",
+          "primaryCircuit": "Radioactive water (155 bar, 325Â°C, activated corrosion products)",
+          "secondaryCircuit": "Clean steam (70 bar, 280Â°C, drives turbine)",
           "interface": "Steam generator (U-tubes, Inconel 600/690)",
           "purpose": "Radiation containment, prevent radioactive steam reaching turbine"
         },
@@ -701,7 +361,7 @@
         },
         {
           "domain": "Automotive",
-          "primaryCircuit": "Engine coolant (ethylene glycol, 90-110°C)",
+          "primaryCircuit": "Engine coolant (ethylene glycol, 90-110Â°C)",
           "secondaryCircuit": "Cabin air (fresh or recirculated)",
           "interface": "Heater core (small radiator in dashboard)",
           "purpose": "Thermal comfort, coolant containment"
@@ -725,6 +385,18 @@
         "m2:Structure",
         "m2:Interface",
         "m2:Flow"
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Structure"
+        },
+        {
+          "@id": "m2:Interface"
+        },
+        {
+          "@id": "m2:Flow"
+        }
       ]
     },
     {
@@ -733,12 +405,7 @@
       "rdfs:label": "Passive Safety",
       "rdfs:comment": "Safety mechanism requiring NO external power or human intervention. Relies on physics (gravity, natural circulation), material properties (melting points), or fail-safe design. Examples: HTR natural cooling, MSR freeze plug, automotive crumple zones, dead man's switch.",
       "skos:definition": "Design philosophy where safe state is achieved through inherent physical principles (gravity, thermodynamics, material properties) rather than active systems requiring power or operator action. Fail-safe by default.",
-      "m1core:m2Basis": [
-        "m2:Constraint",
-        "m2:Resilience",
-        "m2:Structure"
-      ],
-      "m1core:tensorFormula": "Constraint ⊗ Resilience ⊗ InherentProperty",
+      "m1core:tensorFormula": "Constraint âŠ— Resilience âŠ— InherentProperty",
       "m1core:designPrinciples": [
         "Fail-safe (safe state is default, requires no energy)",
         "Physics-based (gravity, natural circulation, material limits)",
@@ -751,49 +418,49 @@
           "domain": "Nuclear Engineering (HTR)",
           "passiveMechanism": "Natural circulation cooling + TRISO fuel integrity",
           "activeAlternative": "Forced cooling pumps requiring power",
-          "failureMode": "Loss of power → natural convection maintains cooling, TRISO withstands 1600°C",
-          "physicalBasis": "Buoyancy (hot gas rises), ceramic fuel melting point (2800°C >> operational 950°C)"
+          "failureMode": "Loss of power â†’ natural convection maintains cooling, TRISO withstands 1600Â°C",
+          "physicalBasis": "Buoyancy (hot gas rises), ceramic fuel melting point (2800Â°C >> operational 950Â°C)"
         },
         {
           "domain": "Nuclear Engineering (MSR)",
-          "passiveMechanism": "Freeze plug (solid salt plug melts at 500°C)",
+          "passiveMechanism": "Freeze plug (solid salt plug melts at 500Â°C)",
           "activeAlternative": "Manual valve actuation",
-          "failureMode": "Loss of active cooling → plug melts → fuel drains to criticality-safe dump tanks",
+          "failureMode": "Loss of active cooling â†’ plug melts â†’ fuel drains to criticality-safe dump tanks",
           "physicalBasis": "Gravity drainage, phase transition temperature"
         },
         {
           "domain": "Automotive Safety",
           "passiveMechanism": "Crumple zones (controlled deformation)",
           "activeAlternative": "Airbags (explosive deployment requiring sensors)",
-          "failureMode": "Collision → material yields, absorbs kinetic energy",
+          "failureMode": "Collision â†’ material yields, absorbs kinetic energy",
           "physicalBasis": "Material plastic deformation, energy absorption"
         },
         {
           "domain": "Aviation",
           "passiveMechanism": "Ram Air Turbine (RAT, wind-driven emergency generator)",
           "activeAlternative": "APU (Auxiliary Power Unit, fuel-powered)",
-          "failureMode": "Total power loss → RAT deploys, windmilling generates emergency power",
+          "failureMode": "Total power loss â†’ RAT deploys, windmilling generates emergency power",
           "physicalBasis": "Airstream kinetic energy conversion"
         },
         {
           "domain": "Building Safety",
-          "passiveMechanism": "Fire doors with fusible link (melts at 74°C)",
+          "passiveMechanism": "Fire doors with fusible link (melts at 74Â°C)",
           "activeAlternative": "Powered sprinkler pumps",
-          "failureMode": "Fire heat → link melts → door closes automatically (gravity/spring)",
+          "failureMode": "Fire heat â†’ link melts â†’ door closes automatically (gravity/spring)",
           "physicalBasis": "Material melting point, gravity, spring tension"
         },
         {
           "domain": "Electronics",
           "passiveMechanism": "Fuse (overcurrent melting)",
           "activeAlternative": "Circuit breaker (electromechanical trip)",
-          "failureMode": "Overcurrent → fuse element melts → circuit open",
-          "physicalBasis": "Resistive heating (I²R), material melting point"
+          "failureMode": "Overcurrent â†’ fuse element melts â†’ circuit open",
+          "physicalBasis": "Resistive heating (IÂ²R), material melting point"
         },
         {
           "domain": "Mechanical",
           "passiveMechanism": "Dead man's switch (spring return to safe state)",
           "activeAlternative": "Emergency stop button (requires operator action)",
-          "failureMode": "Operator incapacitation → spring returns lever → power off",
+          "failureMode": "Operator incapacitation â†’ spring returns lever â†’ power off",
           "physicalBasis": "Spring potential energy, mechanical linkage"
         }
       ],
@@ -808,11 +475,11 @@
         "HTR": "Walk-away safe - operator can leave, reactor shuts down passively",
         "mechanism": [
           "Strong negative temperature coefficient (reactivity drops as temp rises)",
-          "TRISO fuel withstands 1600°C without failure (2800°C melting point)",
+          "TRISO fuel withstands 1600Â°C without failure (2800Â°C melting point)",
           "Natural circulation removes decay heat (no pumps needed)",
           "Graphite moderator absorbs decay heat (thermal mass)"
         ],
-        "result": "No operator action, no external power → reactor safe indefinitely"
+        "result": "No operator action, no external power â†’ reactor safe indefinitely"
       },
       "m1core:validationCount": 7,
       "m1core:discoveryContext": "HTR and MSR passive safety features revealed universal design pattern of physics-based fail-safe mechanisms.",
@@ -820,6 +487,18 @@
         "m2:Resilience",
         "m2:Constraint",
         "m1core:ModeratorMechanism"
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Constraint"
+        },
+        {
+          "@id": "m2:Resilience"
+        },
+        {
+          "@id": "m2:Structure"
+        }
       ]
     },
     {
@@ -827,83 +506,79 @@
       "@type": "owl:Class",
       "rdfs:label": "Cascade Amplification",
       "rdfs:comment": "Sequential multi-stage process where each stage has gain > 1, resulting in exponential amplification. Combines Cascade (staged sequence) with Amplification (gain). Examples: neutron multiplication, transistor amplifiers, MAPK signaling, photomultiplier tubes.",
-      "skos:definition": "Multi-stage process where signal, energy, or population is amplified at each stage (Gᵢ > 1), producing overall gain = ∏ᵢ Gᵢ >> 1. Subset of Cascade metaconcept with specific amplification requirement.",
-      "m1core:m2Basis": [
-        "m2:Cascade",
-        "m2:Amplification"
-      ],
-      "m1core:tensorFormula": "Cascade ⊗ Amplification (gain > 1 per stage)",
+      "skos:definition": "Multi-stage process where signal, energy, or population is amplified at each stage (Gáµ¢ > 1), producing overall gain = âˆáµ¢ Gáµ¢ >> 1. Subset of Cascade metaconcept with specific amplification requirement.",
+      "m1core:tensorFormula": "Cascade âŠ— Amplification (gain > 1 per stage)",
       "m1core:mathematicalModel": {
-        "sequential_stages": "Output_i = Gᵢ × Input_i; Input_{i+1} = Output_i",
-        "overall_gain": "G_total = G₁ × G₂ × ... × Gₙ = ∏ᵢ₌₁ⁿ Gᵢ",
-        "condition": "Gᵢ > 1 ∀i (amplification at each stage)",
-        "result": "Output_n = Input_0 × ∏ᵢ Gᵢ >> Input_0 (exponential amplification)"
+        "sequential_stages": "Output_i = Gáµ¢ Ã— Input_i; Input_{i+1} = Output_i",
+        "overall_gain": "G_total = Gâ‚ Ã— Gâ‚‚ Ã— ... Ã— Gâ‚™ = âˆáµ¢â‚Œâ‚â¿ Gáµ¢",
+        "condition": "Gáµ¢ > 1 âˆ€i (amplification at each stage)",
+        "result": "Output_n = Input_0 Ã— âˆáµ¢ Gáµ¢ >> Input_0 (exponential amplification)"
       },
       "m1core:transdisciplinaryExamples": [
         {
           "domain": "Nuclear Physics",
           "process": "Neutron multiplication (fission chain)",
           "input": "1 neutron",
-          "stages": "n₀ → 2.5n₁ → 6.25n₂ → 15.6n₃ → ...",
-          "gain_per_stage": "ν = 2.5 (average neutrons per fission)",
-          "total_gain": "After 80 generations: 2.5⁸⁰ ≈ 10³² (nuclear weapon timescale ~1 μs)",
+          "stages": "nâ‚€ â†’ 2.5nâ‚ â†’ 6.25nâ‚‚ â†’ 15.6nâ‚ƒ â†’ ...",
+          "gain_per_stage": "Î½ = 2.5 (average neutrons per fission)",
+          "total_gain": "After 80 generations: 2.5â¸â° â‰ˆ 10Â³Â² (nuclear weapon timescale ~1 Î¼s)",
           "control": "Absorb neutrons to maintain k_eff = 1.0 (steady-state)"
         },
         {
           "domain": "Electronics",
           "process": "Multistage transistor amplifier",
-          "input": "μV signal",
-          "stages": "Stage 1 (×100) → Stage 2 (×50) → Stage 3 (×20)",
-          "gain_per_stage": "G₁=100, G₂=50, G₃=20",
-          "total_gain": "100 × 50 × 20 = 100,000 (10⁵ or 100 dB)",
+          "input": "Î¼V signal",
+          "stages": "Stage 1 (Ã—100) â†’ Stage 2 (Ã—50) â†’ Stage 3 (Ã—20)",
+          "gain_per_stage": "Gâ‚=100, Gâ‚‚=50, Gâ‚ƒ=20",
+          "total_gain": "100 Ã— 50 Ã— 20 = 100,000 (10âµ or 100 dB)",
           "control": "Negative feedback (prevent saturation)"
         },
         {
           "domain": "Biology (Signal Transduction)",
-          "process": "MAPK cascade (Raf → MEK → ERK)",
+          "process": "MAPK cascade (Raf â†’ MEK â†’ ERK)",
           "input": "1 activated receptor",
-          "stages": "Raf (×10) → MEK (×10) → ERK (×10) → Gene expression",
+          "stages": "Raf (Ã—10) â†’ MEK (Ã—10) â†’ ERK (Ã—10) â†’ Gene expression",
           "gain_per_stage": "~10-100 fold amplification per kinase",
-          "total_gain": "10³ - 10⁶ (signal amplification)",
+          "total_gain": "10Â³ - 10â¶ (signal amplification)",
           "control": "Phosphatases (dephosphorylation, negative feedback)"
         },
         {
           "domain": "Optics (Photomultiplier Tube)",
           "process": "Electron avalanche (dynode chain)",
           "input": "1 photon",
-          "stages": "Photocathode → Dynode₁ (×4) → Dynode₂ (×4) → ... × Dynode₁₀ (×4)",
-          "gain_per_stage": "δ ≈ 4 (secondary emission coefficient)",
-          "total_gain": "4¹⁰ ≈ 10⁶ (million electrons from 1 photon)",
+          "stages": "Photocathode â†’ Dynodeâ‚ (Ã—4) â†’ Dynodeâ‚‚ (Ã—4) â†’ ... Ã— Dynodeâ‚â‚€ (Ã—4)",
+          "gain_per_stage": "Î´ â‰ˆ 4 (secondary emission coefficient)",
+          "total_gain": "4Â¹â° â‰ˆ 10â¶ (million electrons from 1 photon)",
           "control": "Voltage adjustment (dynode potential)"
         },
         {
           "domain": "Finance",
           "process": "Compound interest",
-          "input": "Principal P₀",
-          "stages": "Year 1: P₀(1+r) → Year 2: P₀(1+r)² → ... → Year n: P₀(1+r)ⁿ",
+          "input": "Principal Pâ‚€",
+          "stages": "Year 1: Pâ‚€(1+r) â†’ Year 2: Pâ‚€(1+r)Â² â†’ ... â†’ Year n: Pâ‚€(1+r)â¿",
           "gain_per_stage": "(1 + r) where r = interest rate",
-          "total_gain": "After 30 years at 7%: (1.07)³⁰ ≈ 7.6 (money grows 7.6×)",
+          "total_gain": "After 30 years at 7%: (1.07)Â³â° â‰ˆ 7.6 (money grows 7.6Ã—)",
           "control": "Taxation, consumption (withdraw gains)"
         },
         {
           "domain": "Social Networks",
           "process": "Viral cascade",
           "input": "1 original post",
-          "stages": "Gen 1: 10 shares → Gen 2: 100 shares → Gen 3: 1000 shares → ...",
+          "stages": "Gen 1: 10 shares â†’ Gen 2: 100 shares â†’ Gen 3: 1000 shares â†’ ...",
           "gain_per_stage": "Viral coefficient k (average shares per person)",
           "total_gain": "After n generations: k^n views (exponential if k > 1)",
           "control": "Algorithm suppression, engagement decay"
         }
       ],
       "m1core:controlChallenges": [
-        "Exponential growth difficult to control (small perturbations → large effects)",
+        "Exponential growth difficult to control (small perturbations â†’ large effects)",
         "Requires precise regulation (nuclear: k=1.000, not 1.001)",
         "Negative feedback essential (prevent runaway)",
         "Latency issues (cascade takes time, feedback delayed)"
       ],
       "m1core:designConsiderations": [
-        "Stage count (n): More stages → higher total gain but longer latency",
-        "Gain per stage (Gᵢ): Higher gain → fewer stages needed but stability issues",
+        "Stage count (n): More stages â†’ higher total gain but longer latency",
+        "Gain per stage (Gáµ¢): Higher gain â†’ fewer stages needed but stability issues",
         "Feedback: Negative feedback essential for stable operation",
         "Saturation: Each stage has maximum output (nonlinearity)"
       ],
@@ -913,6 +588,15 @@
         "m2:Cascade",
         "m2:Amplification",
         "m1core:SelfSustainingReaction"
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Cascade"
+        },
+        {
+          "@id": "m2:Amplification"
+        }
       ]
     }
   ]

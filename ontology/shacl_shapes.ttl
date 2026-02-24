@@ -1,0 +1,43 @@
+{
+  "@context": {
+    "sh": "http://www.w3.org/ns/shacl#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/m2#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/m3#",
+    "math": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/math#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "m2:MetaConceptShape",
+      "@type": "sh:NodeShape",
+      "sh:targetClass": "m2:MetaConcept",
+      "sh:property": [
+        {
+          "sh:path": "math:expression",
+          "sh:minCount": 1,
+          "sh:maxCount": 1,
+          "sh:datatype": "xsd:string"
+        },
+        {
+          "sh:path": "m2:polarity",
+          "sh:minCount": 0,
+          "sh:maxCount": 1,
+          "sh:in": [
+            "dual",
+            "neutral",
+            "hybrid",
+            "nary"
+          ]
+        },
+        {
+          "sh:path": "m2:epistemicGap",
+          "sh:minCount": 0,
+          "sh:maxCount": 1,
+          "sh:datatype": "xsd:decimal",
+          "sh:minInclusive": 0.0,
+          "sh:maxInclusive": 1.0
+        }
+      ]
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 # M0_Transistor - Bipolar Junction Transistor (BJT)
 ## Complete Poclet Analysis: BJT as Electronic Processor
 
-**Version**: 15.0.0  
-**Date**: 2026-02-07  
+**Version**: 15.2.0  
+**Date**: 2026-02-24  
 **Authors**: Echopraxium with the collaboration of Claude AI  
 **Domain**: Electronics (Semiconductor Physics, Analog/Digital Circuits)
 
@@ -42,7 +42,8 @@ This document presents the **first electronic validation of the Processor metaco
 10. [Engineering Applications](#10-engineering-applications)
 11. [Transdisciplinary Validation](#11-transdisciplinary-validation)
 12. [Key Insights](#12-key-insights)
-13. [References](#13-references)
+13. [Simulation (transistor_sim.py)](#13-simulation-transistor_simpy)
+14. [References](#14-references)
 
 ---
 
@@ -1364,9 +1365,80 @@ I_out = (V_BE - V_E) / R_E ≈ V_E / R_E  (if V_BE is fixed)
 
 ---
 
-## 13. References
+## 13. Simulation (transistor_sim.py) — v2.0
 
-### 13.1 Semiconductor Physics
+Interactive Pygame simulation with **device-selector tab** (BJT NPN / MOSFET NMOS). Both devices show their full operating mode table with live highlighting.
+
+### Device Selector
+
+A tab bar at the top of the centre panel switches between the two devices. All sliders, the I-V plane, the schematic, and the mode table update accordingly.
+
+---
+
+### BJT NPN — Four Operating Modes
+
+| # | Mode | Colour | B-E Junction | B-C Junction | State | Application |
+|---|------|--------|-------------|-------------|-------|-------------|
+| 1 | **Cutoff** | ⬜ Gray | Reverse | Reverse | **Open switch** | Digital LOW, relay OFF |
+| 2 | **Forward Active** | 🟦 Blue | Forward | Reverse | **Amplifier** | Audio amp, RF, op-amp |
+| 3 | **Saturation** | 🟧 Orange | Forward | Forward | **Closed switch** | Digital HIGH, LED ON |
+| 4 | **Reverse Active** | 🟪 Purple | Reverse | Forward | **Poor amplifier** | Legacy TTL (rare) |
+
+**Sliders**: I_B (0–100 μA) · V_CE (0–20 V) · β (50–500)
+
+**I-V plane**: Family of I_C vs V_CE curves for I_B ∈ {10, 20, 30, 40, 60, 80, 100 μA}. Q-point coloured by active mode.
+
+---
+
+### MOSFET NMOS — Three Operating Modes
+
+| # | Mode | Colour | Condition | State | Application |
+|---|------|--------|-----------|-------|-------------|
+| 1 | **Cutoff** | ⬜ Gray | V_GS < V_th | **Open switch** | CMOS logic OFF |
+| 2 | **Triode / Linear** | 🟩 Green | V_GS > V_th, V_DS < V_GS−V_th | **Voltage-ctrl. resistor** | Power switch ON |
+| 3 | **Saturation / Pinch-off** | 🟦 Blue | V_GS > V_th, V_DS ≥ V_GS−V_th | **Amplifier** | MOSFET amp, CMOS logic |
+
+**Sliders**: V_GS (0–5 V) · V_DS (0–10 V) · V_th (0.5–3 V)
+
+**I-V plane**: Family of I_D vs V_DS curves for V_GS above V_th. Triode/Saturation boundary parabola overlaid.
+
+---
+
+### ⚠ Naming Inversion Warning
+
+> **BJT "Saturation"** (switch fully ON) ≠ **MOSFET "Saturation"** (amplifier region)  
+> The simulation highlights this trap with a warning badge when both mode tables are compared.
+
+| Functional state | BJT name | MOSFET name |
+|-----------------|----------|-------------|
+| Switch fully ON | **Saturation** 🟧 | **Triode / Linear** 🟩 |
+| Amplifier | **Forward Active** 🟦 | **Saturation** 🟦 |
+| Switch OFF | **Cutoff** ⬜ | **Cutoff** ⬜ |
+
+The shared blue colour for both amplifier modes visually reinforces the functional equivalence.
+
+---
+
+### TSCG Connections
+
+- **m2:Mode** — the tab selector is the direct realisation of the Mode metaconcept: same physical device, different operating regime
+- **m2:Threshold** — the Cutoff→Active transition (BJT: V_BE ≈ 0.65 V; MOSFET: V_GS = V_th) is explicit in both I-V planes
+- **m2:Amplification** — peaks in the Active / MOSFET-Saturation region; ASFID-A bar drops outside it
+- **m2:Polarity** — the BJT Reverse Active mode demonstrates polarity inversion (B-E ↔ B-C roles swapped)
+
+### Requirements & Usage
+
+```bash
+pip install pygame numpy
+python transistor_sim.py
+python transistor_sim.py path/to/M0_Transistor.jsonld
+```
+
+---
+
+## 14. References
+
+### 14.1 Semiconductor Physics
 
 1. **Streetman & Banerjee** - Solid State Electronic Devices (7th ed.)
    - Chapters 5-6: Bipolar Junction Transistors
@@ -1377,7 +1449,7 @@ I_out = (V_BE - V_E) / R_E ≈ V_E / R_E  (if V_BE is fixed)
 3. **Neamen** - Semiconductor Physics and Devices (4th ed.)
    - Chapter 12: The Bipolar Transistor
 
-### 13.2 Circuit Design
+### 14.2 Circuit Design
 
 1. **Sedra & Smith** - Microelectronic Circuits (8th ed.)
    - Chapters 5-7: BJT circuits, amplifiers, frequency response
@@ -1388,85 +1460,20 @@ I_out = (V_BE - V_E) / R_E ≈ V_E / R_E  (if V_BE is fixed)
 3. **Gray & Meyer** - Analysis and Design of Analog Integrated Circuits (5th ed.)
    - Chapter 1: Models for Integrated-Circuit Active Devices
 
-### 13.3 Historical
+### 14.3 Historical
 
 1. **Riordan & Hoddeson** - Crystal Fire: The Invention of the Transistor
-   - History of Bell Labs invention
 
 2. **Shockley** - Electrons and Holes in Semiconductors (1950)
-   - Original theory publication
 
-### 13.4 TSCG Framework
+### 14.4 TSCG Framework
 
-1. **M2_Processor.jsonld** (v15.0.0)
-   - Processor metaconcept definition
-   - Hybrid formulas specification
-
-2. **M2_MetaConcepts.jsonld** (v15.0.0)
-   - Core metaconcept ontology
-   - Amplification, Mode, Threshold definitions
-
-3. **Poclet_Analysis_Methodology.md**
-   - Systematic poclet analysis approach
-
----
-
-## Appendix: Quantitative Summary
-
-### A.1 Key Specifications (2N3904 Small-Signal NPN)
-
-| Parameter | Symbol | Min | Typ | Max | Units |
-|-----------|--------|-----|-----|-----|-------|
-| Collector current | I_C | - | - | 200 | mA |
-| Collector-emitter voltage | V_CE | - | - | 40 | V |
-| Current gain | h_FE | 100 | 150 | 300 | - |
-| Base-emitter voltage | V_BE | - | 0.7 | 0.85 | V |
-| Saturation voltage | V_CE(sat) | - | 0.2 | 0.3 | V |
-| Cutoff frequency | f_T | - | 300 | - | MHz |
-| Power dissipation | P_D | - | - | 625 | mW |
-| Switching speed | t_on + t_off | - | 35 | - | ns |
-
-### A.2 TSCG Scores
-
-```
-ASFID (Territory): 0.85
-  A: 0.70  (Q-point stabilized by bias network)
-  S: 0.90  (3 terminals, 2 junctions, well-defined structure)
-  F: 0.95  (Continuous electron/hole flow, high bandwidth)
-  I: 0.85  (I-V relationships in Ebers-Moll equations)
-  D: 0.80  (Switching speed ns-μs, frequency response)
-
-REVOI (Map): 0.86
-  R: 0.95  (Standardized symbols, SPICE models, datasheets)
-  E: 0.60  (Limited: fixed β, aging, no adaptation)
-  V: 0.90  (Curve tracer, β testing, frequency response)
-  O: 0.90  (Oscilloscope, multimeter, thermal imaging)
-  I: 0.95  (Industry standards: pinouts, models, compatibility)
-
-Epistemic Gap: 0.01 ⭐⭐
-```
-
-### A.3 Metaconcepts Validated
-
-**Primary**: `m2:Processor`
-
-**Secondary**:
-- `m2:Transformation` (I_B → I_C conversion)
-- `m2:Flow` (electron/hole currents)
-- `m2:Resource` (electrical energy consumption)
-- `m2:Representation` (circuit symbols, SPICE models)
-- `m2:Interoperability` (standardized interfaces)
-- `m2:Amplification` (β gain, power gain)
-- `m2:Signal` (analog currents/voltages)
-- `m2:Threshold` (sharp exponential I_C(V_BE))
-- `m2:Mode` (linear vs digital operation)
-- `m2:Process` (continuous operation)
-
-**Total**: 11 metaconcepts
+1. **M2_MetaConcepts.jsonld** (v15.0.0)
+2. **Poclet_Analysis_Methodology.md**
 
 ---
 
 **End of M0_Transistor README**
 
 *Echopraxium with the collaboration of Claude AI*  
-*Version 15.0.0 - 2026-02-07*
+*Version 15.2.0 - 2026-02-24*

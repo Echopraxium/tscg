@@ -52,6 +52,36 @@ RED             = (220,  60,  60)
 GOLD            = (255, 200,  50)
 REVOI_COLOR     = (120, 180, 255)
 
+# ---------------------------------------------------------------------------
+# Flame color by temperature  (Dark Red → Red → Orange → Yellow → White)
+# Mirrors flameColorByTemperature in M0_FireTriangle.jsonld
+# ---------------------------------------------------------------------------
+FLAME_TEMP_COLORS = [
+    #  (min_C,  max_C,  RGB,               label)
+    #  Thresholds remapped to the slider range 0-1000°C.
+    #  Ignition of paper ~233°C → first visible glow starts there.
+    (  233,   400,  (139,   0,   0), "Dark Red"),
+    (  400,   550,  (255,  32,   0), "Red"),
+    (  550,   700,  (255, 140,   0), "Orange"),
+    (  700,   850,  (255, 224,   0), "Yellow"),
+    (  850,  9999,  (255, 255, 240), "White"),
+]
+
+
+def get_flame_color(temp_c: float):
+    """
+    Return (RGB tuple, label string) for a given temperature in °C.
+    Below ignition threshold returns None (no visible glow).
+    """
+    if temp_c < 233:
+        return None, "No visible glow"
+    for min_c, max_c, rgb, label in FLAME_TEMP_COLORS:
+        if min_c <= temp_c < max_c:
+            return rgb, label
+    # above last threshold
+    return FLAME_TEMP_COLORS[-1][2], FLAME_TEMP_COLORS[-1][3]
+
+
 # Layout
 LEFT_PANEL_W  = 340
 RIGHT_PANEL_W = 220
@@ -286,6 +316,7 @@ def draw_fire_triangle(surf, cx, cy, size, sliders, sim_data: PocletSimData,
     """
     Draw the equilateral fire triangle with vertices labelled by component.
     Edges glow when their component is above threshold.
+    Center shows flame color swatch keyed on Heat slider temperature.
     """
     h = size * math.sqrt(3) / 2
     # Vertices: top=Heat, bottom-left=Fuel, bottom-right=Oxidizer
@@ -314,22 +345,33 @@ def draw_fire_triangle(surf, cx, cy, size, sliders, sim_data: PocletSimData,
         s = list(sliders.values())[idx]
         return s.above_threshold
 
-    edge_colors = []
-    for i in range(len(sim_data.components)):
-        edge_colors.append(FIRE_ACTIVE if comp_active(i) else (50, 50, 70))
+    # ── Triangle fill + edges ────────────────────────────────────────────────
+    # Retrieve current heat temperature from slider
+    heat_temp = 0.0
+    if "heat" in sliders:
+        heat_temp = sliders["heat"].value
 
-    # Draw edges (triangle sides)
+    flame_rgb, flame_label = get_flame_color(heat_temp)
+
+    # 1) Filled interior with flame color (semi-transparent)
+    if fire_on and flame_rgb is not None:
+        fill_alpha = 160  # 0-255; keep some transparency so particles show through
+        fill_surf = pygame.Surface(surf.get_size(), pygame.SRCALPHA)
+        pygame.draw.polygon(fill_surf, (*flame_rgb, fill_alpha), pts)
+        surf.blit(fill_surf, (0, 0))
+
+    # 2) Edges — always FIRE_ACTIVE orange (or dim when inactive)
+    edge_col = FIRE_ACTIVE   # orange, regardless of flame fill color
+    inactive_col = (50, 50, 70)
     for i in range(3):
         j = (i + 1) % 3
-        col = FIRE_ACTIVE if fire_on else (50, 50, 70)
-        # Glow
+        col = edge_col if fire_on else inactive_col
         if fire_on:
             for gw in range(6, 0, -2):
-                alpha_col = (col[0], col[1], col[2])
-                pygame.draw.line(surf, alpha_col, pts[i], pts[j], gw)
+                pygame.draw.line(surf, col, pts[i], pts[j], gw)
         pygame.draw.line(surf, col, pts[i], pts[j], 2)
 
-    # Draw vertices
+    # 3) Vertex dots
     for i, c in enumerate(sim_data.components):
         vi = vertex_map.get(i, i)
         px, py = pts[vi]
@@ -339,20 +381,28 @@ def draw_fire_triangle(surf, cx, cy, size, sliders, sim_data: PocletSimData,
         pygame.draw.circle(surf, TEXT_COLOR, (int(px), int(py)), 8, 1)
 
         # Label
-        lbl_lines = c.label.split("(")
-        lbl_short = lbl_lines[0].strip()
+        lbl_short = c.label.split("(")[0].strip()
         lbl_surf = font_sm.render(lbl_short, True, TEXT_COLOR if active else DIM_COLOR)
-        # Position label outside vertex
         dx = px - cx
         dy = py - cy
         lx = px + dx * 0.35 - lbl_surf.get_width() / 2
         ly = py + dy * 0.35 - lbl_surf.get_height() / 2
         surf.blit(lbl_surf, (lx, ly))
 
-    # Center: "FIRE" label
-    fire_col = GOLD if fire_on else (60, 60, 80)
-    txt = font_sm.render("FIRE" if fire_on else "—", True, fire_col)
-    surf.blit(txt, (cx - txt.get_width() // 2, cy - txt.get_height() // 2))
+    # 4) Center label: color name + temperature
+    if fire_on and flame_rgb is not None:
+        # Text color: black on bright colors (yellow/white), white on dark
+        brightness = flame_rgb[0] * 0.299 + flame_rgb[1] * 0.587 + flame_rgb[2] * 0.114
+        txt_col = (20, 20, 20) if brightness > 160 else TEXT_COLOR
+
+        fire_txt = font_sm.render("FIRE", True, txt_col)
+        surf.blit(fire_txt, (cx - fire_txt.get_width() // 2, cy - fire_txt.get_height() - 2))
+
+        color_surf = font_xs.render(f"{flame_label}  ~{int(heat_temp)}°C", True, txt_col)
+        surf.blit(color_surf, (cx - color_surf.get_width() // 2, cy + 4))
+    else:
+        txt = font_sm.render("—", True, (60, 60, 80))
+        surf.blit(txt, (cx - txt.get_width() // 2, cy - txt.get_height() // 2))
 
 
 # ---------------------------------------------------------------------------
