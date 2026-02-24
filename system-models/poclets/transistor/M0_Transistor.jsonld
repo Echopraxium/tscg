@@ -1,18 +1,17 @@
 {
   "@context": {
-    "@base": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/",
-    "sm": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/",
-    "m0": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/transistor/M0_Transistor.jsonld#",
-    "m1elec": "M1_Electronics.jsonld#",
-    "m2": "M2_MetaConcepts.jsonld#",
-    "m3eagle": "M3_EagleEye.jsonld#",
-    "m3sphinx": "M3_SphinxEye.jsonld#",
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/poclets/transistor/M0_Transistor.jsonld#",
+    "m1elec": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Electronics.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
+    "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "dcterms": "http://purl.org/dc/terms/",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "m3": "M3_GenesisSpace.jsonld#"
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#"
   },
   "@graph": [
     {
@@ -24,7 +23,37 @@
       "rdfs:comment": "BJT as electronic Processor: Input (base current, collector voltage) → Amplification/Switching → Output (collector current). Minimal complete semiconductor processor demonstrating dual modes (linear amplification vs digital switching). Validates Processor metaconcept with continuous analog inputs/outputs and transformation via charge carrier control.",
       "dcterms:created": "2026-02-07",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "owl:versionInfo": "15.0.0",
+      "owl:versionInfo": "15.2.0",
+      "m2:changelog": [
+        "2026-02-24: v15.2.0 — Replaced m0:dualModes with comprehensive m0:operatingModes covering BJT (4 modes: Cutoff, Forward Active, Saturation, Reverse Active) and MOSFET NMOS (3 modes: Cutoff, Triode, Saturation). Added namingConventionNote on BJT/MOSFET Saturation inversion. Added comparativeTable (BJT↔MOSFET mode equivalences). Updated m0:simulation for new device-selector tab (BJT/MOSFET) and mode panel. versionInfo 15.1.0 → 15.2.0.",
+        "2026-02-24: v15.1.0 — Fixed @context URIs to canonical tscg GitHub raw path. Added m0:simulation property documenting transistor_sim.py (I-V characteristic curves, live operating-point display, ASFID/REVOI panels). Added m0:operatingRegionColors for simulation. versionInfo bumped 15.0.0 → 15.1.0.",
+        "2026-02-07: v15.0.0 — Initial creation. BJT as first electronic Processor poclet. Validates Processor ternary hybrid formulas (Territory: Transformation⊗Flow⊗Resource; Map: Transformation⊗Representation⊗Interoperability). 11 metaconcepts. ASFID=0.85, REVOI=0.86, ΔΘ=0.01."
+      ],
+      "m0:simulation": {
+        "filename": "transistor_sim.py",
+        "version": "2.0",
+        "description": "Interactive Pygame simulation with device-selector tab (BJT NPN / MOSFET NMOS). Each device shows its full operating mode table with the live mode highlighted, I-V characteristic curves, animated schematic, and ASFID/REVOI panels. Mode colors consistent with m0:operatingModes.",
+        "deviceTabs": ["BJT NPN", "MOSFET NMOS"],
+        "bjt": {
+          "sliders": [
+            {"id": "I_B",  "label": "Base Current (I_B)",               "unit": "μA", "range": [0.0, 100.0], "baseline": 40.0},
+            {"id": "V_CE", "label": "Collector-Emitter Voltage (V_CE)", "unit": "V",  "range": [0.0, 20.0],  "baseline": 5.0},
+            {"id": "beta", "label": "Current Gain (β)",                 "unit": "",   "range": [50.0, 500.0],"baseline": 150.0}
+          ],
+          "modes": ["Cutoff (gray)", "Forward Active (blue)", "Saturation (orange)", "Reverse Active (purple)"],
+          "ivCurves": "I_C vs V_CE for I_B ∈ {10,20,30,40,60,80,100 μA}"
+        },
+        "mosfet": {
+          "sliders": [
+            {"id": "V_GS", "label": "Gate-Source Voltage (V_GS)",  "unit": "V",  "range": [0.0, 5.0],  "baseline": 2.5},
+            {"id": "V_DS", "label": "Drain-Source Voltage (V_DS)", "unit": "V",  "range": [0.0, 10.0], "baseline": 3.0},
+            {"id": "V_th", "label": "Threshold Voltage (V_th)",    "unit": "V",  "range": [0.5, 3.0],  "baseline": 1.0}
+          ],
+          "modes": ["Cutoff (gray)", "Triode/Linear (green)", "Saturation/Amplifier (blue)"],
+          "ivCurves": "I_D vs V_DS for V_GS ∈ {1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0 V} above V_th"
+        },
+        "modePanelNote": "Mode table shown below schematic. Active mode row glows; inactive rows dimmed. Naming inversion warning shown when comparing BJT vs MOSFET Saturation."
+      },
       "m0:domain": "Electronics",
       "m0:subdomains": [
         "Semiconductor Physics",
@@ -134,40 +163,156 @@
           }
         }
       },
-      "m0:dualModes": {
-        "linearMode": {
-          "@id": "m0:Transistor/mode/linear_amplifier",
-          "rdfs:label": "Linear Amplification Mode",
-          "m0:region": "Active region",
-          "m0:operation": "Proportional I_C = β × I_B",
-          "m0:applications": [
-            "Audio amplifiers (pre-amp, power amp)",
-            "RF amplifiers (radio receivers/transmitters)",
-            "Operational amplifier input stages",
-            "Sensor signal conditioning"
+      "m0:operatingModes": {
+        "deviceType": "BJT NPN + MOSFET NMOS (comparative)",
+        "namingConventionNote": "CRITICAL: The term 'Saturation' has OPPOSITE meanings in BJT vs MOSFET. BJT Saturation = transistor fully ON (switch closed, V_CE ≈ 0.2V). MOSFET Saturation = constant-current amplification region (I_D independent of V_DS). This naming inversion is a well-known source of confusion in electronics education.",
+        "bjt": {
+          "deviceLabel": "Bipolar Junction Transistor (BJT) - NPN",
+          "controlMechanism": "Current-controlled (I_B controls I_C)",
+          "modes": [
+            {
+              "@id": "m0:BJT/mode/cutoff",
+              "rdfs:label": "Cutoff Mode",
+              "m0:index": 0,
+              "m0:analogySwitchState": "Open switch (faucet fully closed)",
+              "m0:junctionBE": "Reverse-biased",
+              "m0:junctionBC": "Reverse-biased",
+              "m0:condition": "V_BE < 0.6 V — no base current",
+              "m0:behavior": "I_C ≈ 0 (leakage current only, typically nA range)",
+              "m0:transistorState": "OFF",
+              "m0:primaryApplication": "Switching circuits (digital logic LOW state)",
+              "m0:examples": ["Logic gate output LOW", "Relay OFF", "LED OFF"],
+              "m0:metaconcept": "m2:Threshold (below activation threshold)",
+              "m0:simulationColor": {"hex": "#505070", "rgb": [80, 80, 112]}
+            },
+            {
+              "@id": "m0:BJT/mode/forward_active",
+              "rdfs:label": "Forward Active Mode (Linear / Amplification)",
+              "m0:index": 1,
+              "m0:analogySwitchState": "Faucet proportionally open",
+              "m0:junctionBE": "Forward-biased (V_BE ≈ 0.7 V)",
+              "m0:junctionBC": "Reverse-biased",
+              "m0:condition": "V_BE ≈ 0.7 V, V_CE > V_CE(sat) ≈ 0.2 V",
+              "m0:behavior": "I_C = β × I_B (proportional amplification, linear region)",
+              "m0:transistorState": "Amplifier (proportional control)",
+              "m0:primaryApplication": "Analog signal amplification",
+              "m0:examples": [
+                "Audio pre-amplifier",
+                "RF amplifier (radio receiver)",
+                "Op-amp input differential pair",
+                "Sensor signal conditioning"
+              ],
+              "m0:metaconcept": "m2:Amplification (primary) + m2:Transformation (I_B → I_C via β)",
+              "m0:simulationColor": {"hex": "#4080FF", "rgb": [64, 128, 255]}
+            },
+            {
+              "@id": "m0:BJT/mode/saturation",
+              "rdfs:label": "Saturation Mode",
+              "m0:index": 2,
+              "m0:analogySwitchState": "Faucet fully open",
+              "m0:junctionBE": "Forward-biased (V_BE ≈ 0.8 V)",
+              "m0:junctionBC": "Forward-biased (both junctions ON)",
+              "m0:condition": "V_BE ≈ 0.8 V, V_CE ≈ V_CE(sat) ≈ 0.2 V (collector 'flooded')",
+              "m0:behavior": "I_C at maximum for given circuit — transistor fully ON, I_C no longer proportional to I_B",
+              "m0:transistorState": "ON (closed switch, minimum V_CE drop)",
+              "m0:primaryApplication": "Digital switching (logic HIGH), power switching",
+              "m0:examples": [
+                "Logic gate output HIGH",
+                "Relay driver (relay ON)",
+                "Motor H-bridge switch",
+                "LED driver (LED fully ON)"
+              ],
+              "m0:metaconcept": "m2:Threshold (above saturation threshold) + m2:Mode",
+              "m0:simulationColor": {"hex": "#FF8C00", "rgb": [255, 140, 0]}
+            },
+            {
+              "@id": "m0:BJT/mode/reverse_active",
+              "rdfs:label": "Reverse Active Mode",
+              "m0:index": 3,
+              "m0:analogySwitchState": "Faucet run backwards (inefficient)",
+              "m0:junctionBE": "Reverse-biased",
+              "m0:junctionBC": "Forward-biased (inverted operation)",
+              "m0:condition": "V_BC ≈ 0.7 V (base-collector forward biased, base-emitter reverse biased)",
+              "m0:behavior": "Transistor conducts but with very low gain (β_reverse ≈ 0.1–5, much lower than β_forward)",
+              "m0:transistorState": "Poor amplifier (emitter and collector roles inverted)",
+              "m0:primaryApplication": "Rarely used — some legacy TTL integrated circuits to save chip area",
+              "m0:examples": [
+                "Early TTL gate design (to reduce transistor count on chip)",
+                "Intentional reverse conduction in certain logic families"
+              ],
+              "m0:metaconcept": "m2:Mode (degenerate case) + m2:Polarity (reversed bias polarity)",
+              "m0:simulationColor": {"hex": "#9040C0", "rgb": [144, 64, 192]}
+            }
+          ]
+        },
+        "mosfet": {
+          "deviceType": "MOSFET NMOS (N-channel Enhancement Mode)",
+          "deviceLabel": "Metal-Oxide-Semiconductor Field-Effect Transistor (NMOS)",
+          "controlMechanism": "Voltage-controlled (V_GS controls I_D — no gate current in steady state)",
+          "terminals": ["Gate (G)", "Drain (D)", "Source (S)"],
+          "keyAdvantageOverBJT": "Zero DC gate current → higher input impedance, lower power consumption, easier digital integration",
+          "modes": [
+            {
+              "@id": "m0:MOSFET/mode/cutoff",
+              "rdfs:label": "Cutoff Mode (Sub-threshold)",
+              "m0:index": 0,
+              "m0:analogySwitchState": "Open switch",
+              "m0:condition": "V_GS < V_th (threshold voltage, typically 0.5–3 V for NMOS)",
+              "m0:behavior": "I_D ≈ 0 (channel not formed — no inversion layer under gate oxide)",
+              "m0:transistorState": "OFF",
+              "m0:primaryApplication": "Digital logic OFF state, low-power standby",
+              "m0:examples": ["CMOS logic gate input LOW", "MOSFET switch OFF"],
+              "m0:metaconcept": "m2:Threshold (below V_th — no channel formed)",
+              "m0:simulationColor": {"hex": "#505070", "rgb": [80, 80, 112]}
+            },
+            {
+              "@id": "m0:MOSFET/mode/triode",
+              "rdfs:label": "Triode Mode (Linear / Ohmic)",
+              "m0:index": 1,
+              "m0:alternateNames": ["Linear mode", "Ohmic mode", "Resistive region"],
+              "m0:condition": "V_GS > V_th AND V_DS < (V_GS − V_th)",
+              "m0:behavior": "I_D ≈ k_n × [(V_GS − V_th) × V_DS − V_DS²/2] — channel pinch-off not yet reached; MOSFET acts as voltage-controlled resistor",
+              "m0:transistorState": "Voltage-controlled resistor (ON switch at low V_DS)",
+              "m0:primaryApplication": "Power switches (MOSFET fully ON), analog voltage-controlled resistors",
+              "m0:examples": [
+                "Power MOSFET in DC-DC converter (ON state)",
+                "CMOS logic switch (fully conducting)",
+                "Analog multiplexer/switch"
+              ],
+              "m0:metaconcept": "m2:Regulation (voltage-controlled resistance) + m2:Flow (channel current)",
+              "m0:simulationColor": {"hex": "#50C878", "rgb": [80, 200, 120]}
+            },
+            {
+              "@id": "m0:MOSFET/mode/saturation",
+              "rdfs:label": "Saturation Mode (Pinch-off / Amplification)",
+              "m0:index": 2,
+              "m0:alternateNames": ["Pinch-off region", "Active region (in MOSFET context)"],
+              "m0:condition": "V_GS > V_th AND V_DS ≥ (V_GS − V_th) — channel pinched off at drain end",
+              "m0:behavior": "I_D ≈ k_n/2 × (V_GS − V_th)² — drain current constant, independent of V_DS (voltage-controlled current source)",
+              "m0:transistorState": "Voltage-controlled current source (AMPLIFIER)",
+              "m0:primaryApplication": "Analog amplification — this is the MOSFET's amplifier region",
+              "m0:namingWarning": "OPPOSITE to BJT Saturation: BJT Saturation = switch fully ON; MOSFET Saturation = amplifier region. Same word, opposite function.",
+              "m0:examples": [
+                "MOSFET amplifier (common-source, common-gate, common-drain)",
+                "Op-amp CMOS input stage",
+                "Current mirror (active load)"
+              ],
+              "m0:metaconcept": "m2:Amplification (primary) + m2:Invariant (I_D independent of V_DS in saturation)",
+              "m0:simulationColor": {"hex": "#4080FF", "rgb": [64, 128, 255]}
+            }
           ],
-          "m0:amplification": {
-            "@type": "m2:Amplification",
-            "direction": "Amplifying",
-            "rationale": "Current gain β = 50-500, power gain up to 40 dB"
+          "keyEquations": {
+            "triode": "I_D = k_n × [(V_GS − V_th) × V_DS − V_DS²/2]",
+            "saturation": "I_D = k_n/2 × (V_GS − V_th)²",
+            "channelLength": "k_n = μ_n × C_ox × (W/L)  where W/L = width/length ratio",
+            "thresholdVoltage": "V_th ≈ 0.5–2.0 V (process-dependent, adjustable by doping)"
           }
         },
-        "digitalMode": {
-          "@id": "m0:Transistor/mode/digital_switch",
-          "rdfs:label": "Digital Switching Mode",
-          "m0:regions": "Cutoff ↔ Saturation",
-          "m0:operation": "Binary ON (saturated) / OFF (cutoff)",
-          "m0:applications": [
-            "Logic gates (TTL, RTL)",
-            "Inverters and buffers",
-            "Motor drivers and relays",
-            "Power switching (DC-DC converters)"
-          ],
-          "m0:threshold": {
-            "@type": "m2:Threshold",
-            "threshold_behavior": "Sharp",
-            "rationale": "Exponential I_C(V_BE) creates abrupt cutoff-to-saturation transition at V_BE ≈ 0.65-0.7 V"
-          }
+        "comparativeTable": {
+          "bjt_cutoff":         {"mosfet_equivalent": "Cutoff",     "transistorState": "OFF",       "application": "Digital LOW / Switch OFF"},
+          "bjt_forward_active": {"mosfet_equivalent": "Saturation", "transistorState": "Amplifier", "application": "Signal amplification"},
+          "bjt_saturation":     {"mosfet_equivalent": "Triode",     "transistorState": "ON switch",  "application": "Digital HIGH / Switch ON"},
+          "naming_trap": "BJT 'Saturation' ↔ MOSFET 'Triode' (both = switch ON). BJT 'Active' ↔ MOSFET 'Saturation' (both = amplifier). Naming is historically inconsistent."
         }
       },
       "m0:asfidScores": {
@@ -367,14 +512,13 @@
       ]
     }
   ],
-  "@id": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M0_Transistor.jsonld",
+  "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/poclets/transistor/M0_Transistor.jsonld",
   "rdfs:label": "TSCG M0 Poclet - Bipolar Junction Transistor",
   "rdfs:comment": "BJT as minimal electronic Processor with dual-mode operation (amplification/switching). Validates Processor ternary hybrid formulas in semiconductor domain.",
-  "owl:versionInfo": "15.0.0",
+  "owl:versionInfo": "15.2.0",
   "owl:imports": [
-    "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_Processor.jsonld",
-    "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_MetaConcepts.jsonld",
-    "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace.jsonld"
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld",
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld"
   ],
   "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
   "dcterms:created": "2026-02-07"

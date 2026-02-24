@@ -1,14 +1,14 @@
 @prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts_Ontology.jsonld#> .
-@prefix ns1: <dcterms:> .
-@prefix ns2: <rdfs:> .
+@prefix ns1: <rdfs:> .
+@prefix ns2: <dcterms:> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 m2:Action a m2:MetaConcept,
         <owl:NamedIndividual> ;
-    ns1:created "2026-01-28" ;
-    ns1:creator "Echopraxium with the collaboration of Claude AI" ;
+    ns2:created "2026-01-28" ;
+    ns2:creator "Echopraxium with the collaboration of Claude AI" ;
     m2:atomicity [ m2:granularity "Elementary operational unit" ;
-            ns2:comment "Action is atomic - not further decomposable in behavioral context" ] ;
+            ns1:comment "Action is atomic - not further decomposable in behavioral context" ] ;
     m2:discoveryContext "Identified as atomic operational unit in behavioral decomposition. Represents finest-grained executable element triggered by Steps in Behavior/Workflow networks." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
@@ -28,18 +28,18 @@ m2:Action a m2:MetaConcept,
     m2:sphinxView [ ] ;
     m2:triggeringProperty [ m2:relationProperty "m2:triggeredBy" ;
             m2:triggerSource "m2:Step" ;
-            ns2:comment "Action is triggered by Step" ] ;
-    ns2:comment "Atomic operation triggered by a Step. Elementary executable unit with informational content. Represents indivisible operation in behavioral or workflow context." ;
-    ns2:label "Action" .
+            ns1:comment "Action is triggered by Step" ] ;
+    ns1:comment "Atomic operation triggered by a Step. Elementary executable unit with informational content. Represents indivisible operation in behavioral or workflow context." ;
+    ns1:label "Action" .
 
 m2:Behavior a m2:MetaConcept,
         <owl:NamedIndividual> ;
-    ns1:created "2026-01-28" ;
-    ns1:creator "Echopraxium with the collaboration of Claude AI" ;
+    ns2:created "2026-01-28" ;
+    ns2:creator "Echopraxium with the collaboration of Claude AI" ;
     m2:decompositionProperty [ m2:cardinalityMin 1 ;
             m2:componentType "m2:Step" ;
             m2:relationProperty "m2:decomposedInto" ;
-            ns2:comment "Behavior decomposes into Steps" ] ;
+            ns1:comment "Behavior decomposes into Steps" ] ;
     m2:discoveryContext "Emerged from need to model sequential yet decomposable patterns in poclets (Butterfly metamorphosis, Blood pressure control). Bridges Process (pure temporal) and Network (pure structural) by fusing both aspects." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
@@ -57,17 +57,17 @@ m2:Behavior a m2:MetaConcept,
     m2:perspective "dual" ;
     m2:polarityDescription [ ] ;
     m2:sphinxView [ ] ;
-    ns2:comment "Network of coordinated Steps that can be decomposed and analyzed. Represents structured operational pattern observable in Territory and modelable in Map. Distinct from Process (pure temporal sequence) by adding structural decomposability." ;
-    ns2:label "Behavior" .
+    ns1:comment "Network of coordinated Steps that can be decomposed and analyzed. Represents structured operational pattern observable in Territory and modelable in Map. Distinct from Process (pure temporal sequence) by adding structural decomposability." ;
+    ns1:label "Behavior" .
 
 m2:Step a m2:MetaConcept,
         <owl:NamedIndividual> ;
-    ns1:created "2026-01-28" ;
-    ns1:creator "Echopraxium with the collaboration of Claude AI" ;
+    ns2:created "2026-01-28" ;
+    ns2:creator "Echopraxium with the collaboration of Claude AI" ;
     m2:containerProperty [ m2:containerTypes "m2:Behavior",
                 "m2:Workflow" ;
             m2:relationProperty "m2:componentOf" ;
-            ns2:comment "Step is component of Behavior or Workflow" ] ;
+            ns1:comment "Step is component of Behavior or Workflow" ] ;
     m2:discoveryContext "Emerged from analysis of sequential systems (Butterfly lifecycle, Blood pressure control). Needed specialized Node type for temporal contexts that can trigger atomic Actions." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
@@ -90,21 +90,21 @@ m2:Step a m2:MetaConcept,
     m2:triggerProperty [ m2:cardinalityMin 1 ;
             m2:relationProperty "m2:triggers" ;
             m2:targetType "m2:Action" ;
-            ns2:comment "Step triggers one or more Actions" ] ;
-    ns2:comment "Node specialized for sequential/temporal contexts. Elementary unit in Behavior or Workflow network. Extends Node by adding temporal/sequential semantics and capability to trigger Actions." ;
-    ns2:label "Step" ;
-    ns2:subClassOf "m2:Node" .
+            ns1:comment "Step triggers one or more Actions" ] ;
+    ns1:comment "Node specialized for sequential/temporal contexts. Elementary unit in Behavior or Workflow network. Extends Node by adding temporal/sequential semantics and capability to trigger Actions." ;
+    ns1:label "Step" ;
+    ns1:subClassOf "m2:Node" .
 
 m2:Tropism a m2:MetaConcept,
         <owl:NamedIndividual> ;
-    ns1:created "2026-01-28" ;
-    ns1:creator "Echopraxium with the collaboration of Claude AI" ;
+    ns2:created "2026-01-28" ;
+    ns2:creator "Echopraxium with the collaboration of Claude AI" ;
     m2:discoveryContext "Recognized as specialized Behavior pattern prevalent in biological systems (phototropism, chemotaxis, geotropism). Extends Behavior by adding Attractor dimension to capture directional constraint." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
     m2:gradientProperty [ m2:relationProperty "m2:hasGradient" ;
             m2:sourceType "m3:eagle_eye:Attractor" ;
-            ns2:comment "Tropism is directed by an Attractor gradient" ] ;
+            ns1:comment "Tropism is directed by an Attractor gradient" ] ;
     m2:hasCategory "m2:Dynamic" ;
     m2:hasDominantM3 "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Dynamics",
@@ -123,14 +123,14 @@ m2:Tropism a m2:MetaConcept,
     m2:polarityDescription [ ] ;
     m2:specialization [ ] ;
     m2:sphinxView [ ] ;
-    ns2:comment "Specialized Behavior directed by external gradient stimulus. Orientation or movement towards (positive) or away from (negative) an Attractor source. Inherits network decomposability from Behavior while adding directional constraint." ;
-    ns2:label "Tropism" ;
-    ns2:subClassOf "m2:Behavior" .
+    ns1:comment "Specialized Behavior directed by external gradient stimulus. Orientation or movement towards (positive) or away from (negative) an Attractor source. Inherits network decomposability from Behavior while adding directional constraint." ;
+    ns1:label "Tropism" ;
+    ns1:subClassOf "m2:Behavior" .
 
 m2:Workflow a m2:MetaConcept,
         <owl:NamedIndividual> ;
-    ns1:created "2026-01-28" ;
-    ns1:creator "Echopraxium with the collaboration of Claude AI" ;
+    ns2:created "2026-01-28" ;
+    ns2:creator "Echopraxium with the collaboration of Claude AI" ;
     m2:discoveryContext "Needed to distinguish prescriptive models (Workflow) from descriptive observations (Behavior). Both are structured networks of Steps, but serve different epistemic roles." ;
     m2:distinctionFromRelated [ ] ;
     m2:eagleView [ ] ;
@@ -148,10 +148,10 @@ m2:Workflow a m2:MetaConcept,
     m2:implementationProperty [ m2:relationProperty "m2:implementsProcess" ;
             m2:semantics "One Process can have multiple Workflow implementations" ;
             m2:targetType "m2:Process" ;
-            ns2:comment "Workflow implements Process" ] ;
+            ns1:comment "Workflow implements Process" ] ;
     m2:perspective "dual" ;
     m2:polarityDescription [ ] ;
     m2:sphinxView [ ] ;
-    ns2:comment "Structured network implementation of a Process. Prescriptive representation (Map-oriented) of how a Process should be executed, distinct from Behavior (descriptive observation of what occurs). Can be simulated or prescribed." ;
-    ns2:label "Workflow" .
+    ns1:comment "Structured network implementation of a Process. Prescriptive representation (Map-oriented) of how a Process should be executed, distinct from Behavior (descriptive observation of what occurs). Can be simulated or prescribed." ;
+    ns1:label "Workflow" .
 

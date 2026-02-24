@@ -54,6 +54,26 @@ This poclet serves as:
   - **A** (Attractor): Thermal attractor (equilibrium temperature)
   - **D** (Dynamics): Thermal dynamics (heating/cooling)
 
+---
+
+### Flame Color by Temperature
+
+The visible color of a flame directly encodes its temperature — a **spectral Signature** (metaconcept **I⊗F**) linking the Heat dimension to observable Information.
+
+| Temperature Range | Color | Typical Context |
+|-------------------|-------|-----------------|
+| 525 – 700 °C | 🔴 Dark Red | First glow; near lower limit of human vision |
+| 700 – 900 °C | 🔴 Red | Campfire base, cherry-red zone |
+| 900 – 1 100 °C | 🟠 Orange | Standard hydrocarbon flame, wood fire crown |
+| 1 100 – 1 400 °C | 🟡 Yellow | Candle tip, high-intensity torch |
+| > 1 400 °C | ⚪ White | Acetylene torch, thermite — near-blackbody |
+
+**Physical basis**: Planck blackbody radiation combined with spectral line emission from excited combustion intermediates (OH\*, CH\*, C₂\*).
+
+**TSCG link**: Flame color is an *observable* (Eagle Eye / ASFID-I) that encodes temperature information, illustrating the **Signature** metaconcept (I⊗F) — the system broadcasts its thermal state as a structured optical signal.
+
+> *Note*: Perceived color depends on the observer model (human photopic vision, camera CCD, spectrometer). The table above uses standard human vision as reference observer.
+
 ### Synergy Principle
 
 **Formula**: `Fuel ⊕ O₂ ⊕ Heat → Fire (emergent)`
@@ -398,5 +418,5 @@ M0 (Poclet Instance)
 
 **File**: `M0_FireTriangle.jsonld`  
 **URI**: `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/fire_triangle/M0_FireTriangle.jsonld`  
-**Version**: 1.0  
-**Last Updated**: 2026-02-20
+**Version**: 1.1  
+**Last Updated**: 2026-02-24

@@ -1,0 +1,178 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "m2": "M2_MetaConcepts.jsonld#",
+    "m3": "M3_GenesisSpace.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m2:SimplifiedView",
+      "@type": "owl:Ontology",
+      "rdfs:label": "TSCG M2 Metaconcepts - Simplified View",
+      "owl:versionInfo": "15.3.9",
+      "dcterms:created": "2026-02-23"
+    },
+    {
+      "@id": "m2:MetaConcept",
+      "@type": "owl:Class",
+      "rdfs:label": "M2 Metaconcept",
+      "rdfs:comment": "A systemic pattern emerging from tensor product of M3 dimensions"
+    },
+    {
+      "@id": "m2:MetaconceptFamily",
+      "@type": "owl:Class",
+      "rdfs:label": "Metaconcept Family",
+      "rdfs:comment": "A family grouping of metaconcepts based on dominant M3 dimensions"
+    },
+    {
+      "@id": "m2:MetaconceptPair",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:MetaConcept",
+      "rdfs:label": "Metaconcept Pair"
+    },
+    {
+      "@id": "m2:MetaconceptCombo",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:MetaConcept",
+      "rdfs:label": "Metaconcept Combo"
+    },
+    {
+      "@id": "m2:perspective",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "perspective",
+      "rdfs:domain": "m2:MetaConcept",
+      "rdfs:range": "xsd:string",
+      "rdfs:comment": "Bicephalous perspective: how the metaconcept relates to Territory and Map",
+      "m2:allowedValues": [
+        "territory",
+        "map",
+        "dual",
+        "hybrid"
+      ]
+    },
+    {
+      "@id": "m2:tensorFormula",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "tensor formula",
+      "rdfs:domain": "m2:MetaConcept",
+      "rdfs:range": "xsd:string",
+      "rdfs:comment": "Tensor product formula using ASFID and/or REVOI dimensions",
+      "owl:functionalProperty": true
+    },
+    {
+      "@id": "m2:hasFamily",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "has family",
+      "rdfs:domain": "m2:MetaConcept",
+      "rdfs:range": "m2:MetaconceptFamily",
+      "owl:functionalProperty": true
+    },
+    {
+      "@id": "m2:hasAttribute",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "has attribute",
+      "rdfs:domain": "m2:MetaConcept",
+      "rdfs:range": "owl:Thing"
+    },
+    {
+      "@id": "m2:parentMetaconcepts",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "parent metaconcepts",
+      "rdfs:domain": "m2:MetaconceptCombo",
+      "rdfs:range": "m2:MetaConcept",
+      "rdfs:comment": "Metaconcepts that combine to form this MetaconceptCombo"
+    },
+    {
+      "@id": "m2:dualCounterpart",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "dual counterpart",
+      "rdfs:domain": "m2:MetaConcept",
+      "rdfs:range": "m2:MetaConcept",
+      "rdfs:comment": "The structurally related dual metaconcept (e.g., LALI ↔ ButterflyEffect)"
+    },
+    {
+      "@id": "m2:Structural",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaconceptFamily"
+      ],
+      "rdfs:label": "Structural Family"
+    },
+    {
+      "@id": "m2:Dynamic",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaconceptFamily"
+      ],
+      "rdfs:label": "Dynamic Family"
+    },
+    {
+      "@id": "m2:Regulatory",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaconceptFamily"
+      ],
+      "rdfs:label": "Regulatory Family"
+    },
+    {
+      "@id": "m2:Adaptive",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaconceptFamily"
+      ],
+      "rdfs:label": "Adaptive Family"
+    },
+    {
+      "@id": "m2:Energetic",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaconceptFamily"
+      ],
+      "rdfs:label": "Energetic Family"
+    },
+    {
+      "@id": "m2:Informational",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaconceptFamily"
+      ],
+      "rdfs:label": "Informational Family"
+    },
+    {
+      "@id": "m2:Ontological",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaconceptFamily"
+      ],
+      "rdfs:label": "Ontological Family"
+    },
+    {
+      "@id": "m2:Teleonomic",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaconceptFamily"
+      ],
+      "rdfs:label": "Teleonomic Family"
+    },
+    {
+      "@id": "m2:Relational",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaconceptFamily"
+      ],
+      "rdfs:label": "Relational Family"
+    },
+    {
+      "@id": "m2:Compositional",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:MetaconceptFamily"
+      ],
+      "rdfs:label": "Compositional Family"
+    }
+  ]
+}

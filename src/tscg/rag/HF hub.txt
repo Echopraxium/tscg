@@ -1,1 +1,28 @@
-You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.> what does it means "You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads" and how to fix it
+
+● This warning comes from sentence-transformers when it contacts the HuggingFace Hub to check/download the all-MiniLM-L6-v2 model without an account token. It is cosmetic only in your   case — the model is already cached locally (you can see it loads instantly: "Loading weights: 100% | 103/103"). No actual download happens.
+                                                                                                                                                                                         What it means: Anonymous HF Hub requests are rate-limited. If you hit the limit, model downloads would slow down or fail. Since the model is already cached, you never actually hit
+  those limits.                                                                                                                                                                        
+  Three options to fix it:
+
+  Option 1 — Suppress the warning (simplest, no account needed)
+
+  Set the env variable to disable the nag:
+  set HF_HUB_DISABLE_IMPLICIT_TOKEN=1   # Windows cmd
+  # or
+  $env:HF_HUB_DISABLE_IMPLICIT_TOKEN=1  # PowerShell
+
+  Option 2 — Set a real token (proper fix)
+
+  1. Create a free account at https://huggingface.co
+  2. Go to Settings → Access Tokens → New token (read-only is sufficient)
+  3. Set it:
+  set HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxx   # Windows cmd
+  Or make it permanent via Windows System Properties → Environment Variables.
+
+  Option 3 — Use huggingface-cli (cleanest)
+  pip install huggingface_hub
+  huggingface-cli login
+  This stores the token in ~/.cache/huggingface/token and the warning disappears permanently.
+
+  For your workflow, Option 1 is the fastest fix since you're only using a locally-cached model and never need to re-download

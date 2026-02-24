@@ -341,28 +341,65 @@ class TSCGSegmenter:
                 for i, entry in enumerate(data['@graph']):
                     # Convert to natural language; skip OWL infrastructure entries
                     nl_text = _entry_to_text(entry, layer)
-                    if nl_text is None:
-                        continue
+                    if nl_text is not None:
+                        label = entry.get('rdfs:label', {})
+                        if isinstance(label, dict):
+                            label = label.get('@value', f'entry_{i}')
 
-                    label = entry.get('rdfs:label', {})
-                    if isinstance(label, dict):
-                        label = label.get('@value', f'entry_{i}')
+                        segment = Segment(
+                            text=nl_text,
+                            metadata={
+                                'source': source,
+                                'type': 'jsonld_entry',
+                                'label': str(label),
+                                'uri': entry.get('@id', f'entry_{i}'),
+                                'entry_index': i,
+                                'layer': layer,
+                            },
+                            start_char=0,
+                            end_char=len(nl_text),
+                            segment_id=f"{_source_prefix(source)}_entry_{i}"
+                        )
+                        segments.append(segment)
 
-                    segment = Segment(
-                        text=nl_text,
-                        metadata={
-                            'source': source,
-                            'type': 'jsonld_entry',
-                            'label': str(label),
-                            'uri': entry.get('@id', f'entry_{i}'),
-                            'entry_index': i,
-                            'layer': layer,
-                        },
-                        start_char=0,
-                        end_char=len(nl_text),
-                        segment_id=f"{_source_prefix(source)}_entry_{i}"
-                    )
-                    segments.append(segment)
+                    # Recurse into nested lists of objects (e.g., "dimensions" in M3_EagleEye)
+                    parent_label = entry.get('rdfs:label', '')
+                    if isinstance(parent_label, dict):
+                        parent_label = parent_label.get('@value', '')
+                    for key, value in entry.items():
+                        if key.startswith('@'):
+                            continue
+                        if isinstance(value, list):
+                            for j, nested in enumerate(value):
+                                if not isinstance(nested, dict):
+                                    continue
+                                if '@id' not in nested and 'rdfs:label' not in nested:
+                                    continue
+                                nested_text = _entry_to_text(nested, layer)
+                                if nested_text is None:
+                                    continue
+                                # Prepend parent context so "Eagle Eye" queries reach ASFID dims
+                                if parent_label:
+                                    nested_text = f"Context: {parent_label}\n{nested_text}"
+                                nested_label = nested.get('rdfs:label', {})
+                                if isinstance(nested_label, dict):
+                                    nested_label = nested_label.get('@value', f'nested_{i}_{j}')
+                                segments.append(Segment(
+                                    text=nested_text,
+                                    metadata={
+                                        'source': source,
+                                        'type': 'jsonld_entry',
+                                        'label': str(nested_label),
+                                        'uri': nested.get('@id', f'nested_{i}_{j}'),
+                                        'entry_index': i,
+                                        'nested_key': key,
+                                        'nested_index': j,
+                                        'layer': layer,
+                                    },
+                                    start_char=0,
+                                    end_char=len(nested_text),
+                                    segment_id=f"{_source_prefix(source)}_entry_{i}_{key}_{j}"
+                                ))
             else:
                 # Single object — one segment
                 nl_text = _entry_to_text(data, layer) or json.dumps(data, indent=2, ensure_ascii=False)
