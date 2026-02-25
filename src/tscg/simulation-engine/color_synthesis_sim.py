@@ -416,11 +416,36 @@ class Slider:
 # RGB Cube (isometric projection)
 # ---------------------------------------------------------------------------
 
-def iso_project(rx, gx, bx, cx, cy, scale=75):
-    """Map RGB (0-1 each) to isometric 2D. R=right, G=left, B=up."""
-    px = cx + (rx - gx) * scale * 0.866
-    py = cy - bx * scale + (rx + gx) * scale * 0.5
-    return int(px), int(py)
+def iso_project(rx, gx, bx, cx, cy, scale=206, az_deg=40, el_deg=28):
+    """
+    Orthographic projection of a point in RGB-cube space [0,1]^3 to 2D.
+
+    Uses explicit 3D rotation (azimuth=40 deg, elevation=28 deg) instead of
+    classic isometric angles (45 deg, 35.26 deg).  The classic angles cause a
+    mathematical degeneracy: White(1,1,1) and the cube centre (0.5,0.5,0.5)
+    both project to exactly (cx,cy), making the inner-cube marker invisible.
+    The off-symmetric angles below guarantee no two distinct lattice points
+    of the unit cube collapse onto the same pixel.
+
+    Axes in 3D: R->x, G->y, B->z(up).  Screen: x-right, y-down.
+    """
+    cos_az, sin_az = math.cos(math.radians(az_deg)), math.sin(math.radians(az_deg))
+    cos_el, sin_el = math.cos(math.radians(el_deg)), math.sin(math.radians(el_deg))
+
+    # Translate so cube is centred at origin
+    x = rx - 0.5
+    y = gx - 0.5
+    z = bx - 0.5
+
+    # Azimuth: rotate around vertical (Z) axis
+    x2 = x * cos_az - y * sin_az
+    y2 = x * sin_az + y * cos_az
+
+    # Elevation: orthographic projection
+    sx = cx + x2 * scale
+    sy = cy - (z * cos_el + y2 * sin_el) * scale
+
+    return int(sx), int(sy)
 
 CUBE_VERTICES = {
     "Black":   (0, 0, 0),
@@ -440,27 +465,96 @@ CUBE_EDGES = [
     ("Yellow","White"), ("Cyan","White"), ("Magenta","White"),
 ]
 
-def draw_rgb_cube(surf, cx, cy, r, g, b, font_xs, scale=75):
-    pts = {name: iso_project(vr, vg, vb, cx, cy, scale)
+def draw_inner_cube(surf, cx, cy, r, g, b, scale, az_deg=40, el_deg=28):
+    """Draw a smaller cube (≈50% volume → edge ≈79% of outer) centered at
+    the current color, with semi-transparent colored faces and white edges.
+    Replaces the old circle marker."""
+    r0, g0, b0 = r / 255, g / 255, b / 255
+
+    # Edge = outer_edge * 0.5^(1/3) ≈ 0.794  → half_h = 0.397
+    h = 0.32  # slightly smaller than theoretical so it stays readable
+
+    # Build the 8 vertices: keys = (r_sign, g_sign, b_sign), 0=minus 1=plus
+    v = {}
+    for ri, dr in [(0, -h), (1, h)]:
+        for gi, dg in [(0, -h), (1, h)]:
+            for bi, db in [(0, -h), (1, h)]:
+                vr = clamp(r0 + dr, 0.0, 1.0)
+                vg = clamp(g0 + dg, 0.0, 1.0)
+                vb = clamp(b0 + db, 0.0, 1.0)
+                v[(ri, gi, bi)] = iso_project(vr, vg, vb, cx, cy, scale, az_deg, el_deg)
+
+    # --- Semi-transparent colored faces -----------------------------------
+    face_surf = pygame.Surface(surf.get_size(), pygame.SRCALPHA)
+
+    # Three faces visible from the isometric viewpoint:
+    #  +R face  (high-R side) — slightly darker shade
+    #  +G face  (high-G side) — base color
+    #  +B face  (high-B side) — slightly brighter shade
+    alpha = 110
+    col_r = (max(0, r - 45), max(0, g - 45), max(0, b - 45), alpha)
+    col_g = (r, g, b, alpha)
+    col_b = (min(255, r + 35), min(255, g + 35), min(255, b + 35), alpha)
+
+    face_R = [v[(1,0,0)], v[(1,1,0)], v[(1,1,1)], v[(1,0,1)]]
+    face_G = [v[(0,1,0)], v[(1,1,0)], v[(1,1,1)], v[(0,1,1)]]
+    face_B = [v[(0,0,1)], v[(1,0,1)], v[(1,1,1)], v[(0,1,1)]]
+
+    pygame.draw.polygon(face_surf, col_r, face_R)
+    pygame.draw.polygon(face_surf, col_g, face_G)
+    pygame.draw.polygon(face_surf, col_b, face_B)
+    surf.blit(face_surf, (0, 0))
+
+    # --- White edges -------------------------------------------------------
+    inner_edges = [
+        # Bottom ring
+        ((0,0,0),(1,0,0)), ((0,0,0),(0,1,0)), ((1,0,0),(1,1,0)), ((0,1,0),(1,1,0)),
+        # Top ring
+        ((0,0,1),(1,0,1)), ((0,0,1),(0,1,1)), ((1,0,1),(1,1,1)), ((0,1,1),(1,1,1)),
+        # Verticals
+        ((0,0,0),(0,0,1)), ((1,0,0),(1,0,1)), ((0,1,0),(0,1,1)), ((1,1,0),(1,1,1)),
+    ]
+    for k1, k2 in inner_edges:
+        pygame.draw.line(surf, (255, 255, 255), v[k1], v[k2], 2)
+
+    # Small dot at the exact color position (visual anchor)
+    cp = iso_project(r0, g0, b0, cx, cy, scale, az_deg, el_deg)
+    pygame.draw.circle(surf, (255, 255, 255), cp, 3)
+
+
+def draw_rgb_cube(surf, cx, cy, r, g, b, font_xs, scale=206, az_deg=40, el_deg=28):
+    pts = {name: iso_project(vr, vg, vb, cx, cy, scale, az_deg, el_deg)
            for name, (vr, vg, vb) in CUBE_VERTICES.items()}
     # Edges
     for n1, n2 in CUBE_EDGES:
         pygame.draw.line(surf, (55, 55, 75), pts[n1], pts[n2], 1)
-    # Vertices
+    # Vertices — labels offset away from cube centre (direction-aware)
+    centre_pt = iso_project(0.5, 0.5, 0.5, cx, cy, scale, az_deg, el_deg)
+    MARGIN = 14   # px gap between circle edge and label
     for name, (vr, vg, vb) in CUBE_VERTICES.items():
         col = (int(vr*255), int(vg*255), int(vb*255))
-        pygame.draw.circle(surf, col, pts[name], 5)
-        pygame.draw.circle(surf, TEXT, pts[name], 5, 1)
-        lbl = font_xs.render(name, True, DIM)
-        surf.blit(lbl, (pts[name][0]+6, pts[name][1]-6))
-    # Current color marker
-    r0, g0, b0 = r/255, g/255, b/255
-    cp = iso_project(r0, g0, b0, cx, cy, scale)
-    pygame.draw.circle(surf, (r, g, b), cp, 9)
-    pygame.draw.circle(surf, (255, 255, 255), cp, 9, 2)
+        pygame.draw.circle(surf, col, pts[name], 8)
+        pygame.draw.circle(surf, TEXT, pts[name], 8, 1)
+        lbl = font_xs.render(name, True, (255, 255, 255))
+        # Vector from projected centre to this vertex
+        dx = pts[name][0] - centre_pt[0]
+        dy = pts[name][1] - centre_pt[1]
+        dist = math.hypot(dx, dy) or 1
+        ndx, ndy = dx / dist, dy / dist   # unit vector
+        # Place label so its closest edge is MARGIN px from the circle edge
+        lx = pts[name][0] + int(ndx * (8 + MARGIN))
+        ly = pts[name][1] + int(ndy * (8 + MARGIN))
+        # Anchor: if going left, right-align; if going up, bottom-align
+        if ndx < -0.1:
+            lx -= lbl.get_width()
+        if ndy < -0.1:
+            ly -= lbl.get_height()
+        surf.blit(lbl, (lx, ly))
+    # Inner cube (replaces old circle marker)
+    draw_inner_cube(surf, cx, cy, r, g, b, scale, az_deg, el_deg)
     # Achromatic diagonal
-    p0 = iso_project(0, 0, 0, cx, cy, scale)
-    p1 = iso_project(1, 1, 1, cx, cy, scale)
+    p0 = iso_project(0, 0, 0, cx, cy, scale, az_deg, el_deg)
+    p1 = iso_project(1, 1, 1, cx, cy, scale, az_deg, el_deg)
     pygame.draw.line(surf, (80, 80, 100), p0, p1, 1)
 
 
@@ -614,22 +708,40 @@ SYNTHETIC = [
 ]
 
 def draw_synthetic_colors(surf, x, y, w, r, g, b, font_xs):
-    cols = 5
-    sw = (w - PAD) // cols - 4
+    """Draw named-color buttons. Returns list of (pygame.Rect, (sr,sg,sb))
+    for click detection in the main loop."""
+    cols   = 5
+    sw, sh = 50, 38     # smaller squares: width x height
+    gap_x  = max(4, (w - cols * sw) // (cols + 1))  # even horizontal spacing
+    gap_y  = 4          # vertical gap between rows
+    lbl_h  = font_xs.get_height() + 2
+
+    button_rects = []
     for i, (name, (sr, sg, sb)) in enumerate(SYNTHETIC):
         col = i % cols
         row = i // cols
-        cx = x + col * (sw + 4)
-        cy = y + row * (sw + 18)
-        # Highlight if close to current
-        dist = math.sqrt((r-sr)**2 + (g-sg)**2 + (b-sb)**2)
-        border_col = GOLD if dist < 40 else BORDER
-        pygame.draw.rect(surf, (sr, sg, sb), (cx, cy, sw, sw), border_radius=4)
-        pygame.draw.rect(surf, border_col, (cx, cy, sw, sw), 2, border_radius=4)
-        nl = font_xs.render(name, True, TEXT if dist > 40 else GOLD)
-        surf.blit(nl, (cx, cy + sw + 2))
+        bx  = x + gap_x + col * (sw + gap_x)
+        by  = y + row * (sh + lbl_h + gap_y)
 
-    return y + 2 * (sw + 18) + 4
+        rect = pygame.Rect(bx, by, sw, sh)
+        button_rects.append((rect, (sr, sg, sb)))
+
+        dist = math.sqrt((r-sr)**2 + (g-sg)**2 + (b-sb)**2)
+        is_active   = dist < 20
+        border_col  = GOLD   if is_active else BORDER
+        border_w    = 3      if is_active else 1
+
+        # Subtle outer glow when active
+        if is_active:
+            glow = pygame.Rect(bx-2, by-2, sw+4, sh+4)
+            pygame.draw.rect(surf, GOLD, glow, 1, border_radius=5)
+
+        pygame.draw.rect(surf, (sr, sg, sb), rect, border_radius=4)
+        pygame.draw.rect(surf, border_col,   rect, border_w, border_radius=4)
+        nl = font_xs.render(name, True, GOLD if is_active else DIM)
+        surf.blit(nl, (bx + (sw - nl.get_width())//2, by + sh + 2))
+
+    return button_rects
 
 
 # ---------------------------------------------------------------------------
@@ -702,7 +814,7 @@ def make_sliders(model_key, r=128, g=128, b=128):
             (0, 100, ck, "Cyan",    "%", ( 60, 200, 200)),
             (0, 100, mk, "Magenta", "%", (220, 60,  180)),
             (0, 100, yk, "Yellow",  "%", (220, 200,  60)),
-            (0, 100, k,  "Key (K)", "%", (160, 160, 160)),
+            (0, 100, k,  "Black (K)", "%", (160, 160, 160)),
         ],
     }
     sliders = []
@@ -794,6 +906,33 @@ def main():
     prev_model  = tabs.active
     sliders     = make_sliders(tabs.active, r, g, b)
 
+    # --- Named-color buttons (rebuilt each frame in draw section) ---
+    synthetic_btns = []   # [(pygame.Rect, (sr,sg,sb)), ...]
+
+    # --- Mouse-drag cube rotation state --------------------------------
+    cube_az       = 40.0   # azimuth degrees  (horizontal)
+    cube_el       = 28.0   # elevation degrees (vertical, clamped -80..80)
+    cube_dragging = False
+    drag_last_pos = (0, 0)
+    DRAG_SENS_AZ  = 0.4   # degrees per pixel horizontal
+    DRAG_SENS_EL  = 0.3   # degrees per pixel vertical
+
+    # --- 70 / 30 vertical split for the center panel ----------------
+    #   Tabs end at approximately y=44
+    #   Remaining usable height: WINDOW_H - 44 - 20 (source label)
+    TABS_BOTTOM   = 44
+    USABLE_H      = WINDOW_H - TABS_BOTTOM - 20
+    CUBE_ZONE_H   = int(USABLE_H * 0.70)      # ~487 px
+    NAMED_ZONE_H  = USABLE_H - CUBE_ZONE_H    # ~210 px
+    CUBE_ZONE_END = TABS_BOTTOM + CUBE_ZONE_H  # y where cube zone ends
+    # Cube center: middle of cube zone with room for title (20px) + label (20px)
+    cube_cy       = TABS_BOTTOM + 20 + (CUBE_ZONE_H - 40) // 2   # ≈ 276
+    # Named colors section
+    named_title_y = CUBE_ZONE_END + 6
+    named_draw_y  = named_title_y + 20
+    # Rect covering the cube zone — used for drag hit-test
+    cube_zone_rect = pygame.Rect(LEFT_W, TABS_BOTTOM, MID_W, CUBE_ZONE_H)
+
     # --- Layout rects ---
     lp = pygame.Rect(0, 0, LEFT_W, WINDOW_H)
     mp = pygame.Rect(LEFT_W, 0, MID_W, WINDOW_H)
@@ -819,6 +958,25 @@ def main():
                 prev_model = tabs.active
             for s in sliders:
                 s.handle_event(event)
+
+            # --- Cube drag rotation ---
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if cube_zone_rect.collidepoint(event.pos):
+                    cube_dragging = True
+                    drag_last_pos = event.pos
+                # Named-color button clicks → set color & sync sliders
+                for btn_rect, (sr, sg, sb) in synthetic_btns:
+                    if btn_rect.collidepoint(event.pos):
+                        sync_sliders(tabs.active, sliders, sr, sg, sb)
+                        break
+            elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                cube_dragging = False
+            elif event.type == pygame.MOUSEMOTION and cube_dragging:
+                dx = event.pos[0] - drag_last_pos[0]
+                dy = event.pos[1] - drag_last_pos[1]
+                cube_az  = (cube_az + dx * DRAG_SENS_AZ) % 360
+                cube_el  = max(-80.0, min(80.0, cube_el - dy * DRAG_SENS_EL))
+                drag_last_pos = event.pos
 
         # Current RGB from active model sliders
         r, g, b = sliders_to_rgb(tabs.active, sliders)
@@ -895,21 +1053,27 @@ def main():
 
         # RGB Cube
         cube_cx = LEFT_W + MID_W // 2
-        cube_cy = 260
-        cube_title = font_md.render("RGB Color Cube", True, DIM)
+        cursor_hint = "  [drag to rotate]" if not cube_dragging else "  [rotating...]"
+        cube_title = font_md.render("RGB Color Cube" + cursor_hint, True, DIM)
         screen.blit(cube_title, (cube_cx - cube_title.get_width()//2, 44))
-        draw_rgb_cube(screen, cube_cx, cube_cy, r, g, b, font_xs, scale=72)
+        draw_rgb_cube(screen, cube_cx, cube_cy, r, g, b, font_xs, scale=206,
+                      az_deg=cube_az, el_deg=cube_el)
 
-        # Additive/subtractive note
+        # Additive/subtractive note  (just above the cube zone boundary)
         prin = "Additive (light)" if MODEL_ADDITIVE.get(tabs.active, True) else "Subtractive (pigment)"
         ps = font_xs.render(f"Principle: {prin}", True, DIM)
-        screen.blit(ps, (LEFT_W+PAD, cube_cy+85))
+        screen.blit(ps, (LEFT_W+PAD, CUBE_ZONE_END - 20))
 
-        # Synthetic colors
+        # Separator line between cube zone and named colors zone
+        pygame.draw.line(screen, BORDER,
+                         (LEFT_W + PAD, CUBE_ZONE_END),
+                         (LEFT_W + MID_W - PAD, CUBE_ZONE_END), 1)
+
+        # Synthetic colors (clickable buttons)
         sc_title = font_md.render("Named Colors", True, DIM)
-        screen.blit(sc_title, (LEFT_W+PAD, cube_cy+105))
-        draw_synthetic_colors(screen, LEFT_W+PAD, cube_cy+122,
-                              MID_W-PAD*2, r, g, b, font_xs)
+        screen.blit(sc_title, (LEFT_W+PAD, named_title_y))
+        synthetic_btns = draw_synthetic_colors(screen, LEFT_W+PAD, named_draw_y,
+                                               MID_W-PAD*2, r, g, b, font_xs)
 
         # Source label
         src = font_xs.render("Sources: M0_RGB/HSL/CMY/CMYK + M0_ColorSynthesis_Federated", True, (45,45,65))

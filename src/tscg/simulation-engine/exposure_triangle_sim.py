@@ -158,7 +158,7 @@ def build_exposure_surface(base_arr, iso, f_num, t_sec):
     blur_px    = int(clamp(blur_stops * 7.0, 0.0, 40.0))
     if blur_px > 1:
         ks  = blur_px
-        pad = np.pad(arr, ((ks // 2, ks - 1 - ks // 2), (0, 0), (0, 0)),
+        pad = np.pad(arr, ((ks // 2, ks - ks // 2), (0, 0), (0, 0)),
                      mode='edge')
         cs  = np.cumsum(pad, axis=0, dtype=np.float32)
         arr = (cs[ks:] - cs[:-ks]) / ks

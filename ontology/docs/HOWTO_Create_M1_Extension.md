@@ -190,7 +190,7 @@ tscg/ontology/M1_extensions/{domain}/
       "dcterms:created": "{YYYY-MM-DD}",
       "owl:versionInfo": "1.0.0",
       "owl:imports": [
-        "https://github.com/Echopraxium/tscg/blob/main/ontology/TSCG_M2_MetaConcepts_Ontology.jsonld"
+        "https://github.com/Echopraxium/tscg/blob/main/ontology/M2_GenericConcepts.jsonld"
       ],
       "m1:domain": "{domain}",
       "m1:functor": "F_instantiate : M2 → M1_{domain}",
