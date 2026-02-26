@@ -220,9 +220,9 @@ deltaTheta = ||ASFID_mean - REVOI_mean|| normalized
 
 ---
 
-## M2 Metaconcept Profile
+## M2 GenericConcept Profile
 
-### Global Metaconcepts (22 total — ~40% of M2 catalog)
+### Global GenericConcepts (22 total — ~40% of M2 catalog)
 
 **Structural Family**:
 - `Interdependence (S⊗I)` — dominant: removing any pole abolishes transmission
@@ -303,8 +303,8 @@ The 5-pole model is validated by the precise, predictable effects of targeting e
 **1. Proof of concept for TSCG itself**
 Demonstrates that the TSCG bicephalous analysis (Eagle Eye / Sphinx Eye) provides non-trivial insights beyond classical neuroscience framing: ASFID = 0.76 vs. REVOI = 0.87 reveals the Map is more mature than direct Territory observation.
 
-**2. M2 Metaconcept identification**
-The synapse poclet mobilizes 22 metaconcepts (~40% of M2 catalog). Particularly strong validators for:
+**2. M2 GenericConcept identification**
+The synapse poclet mobilizes 22 GenericConcepts (~40% of M2 catalog). Particularly strong validators for:
 - `Interdependence`: highest possible — any single pole failure abolishes function
 - `TradeOff`: speed/reliability/energy are genuinely in opposition (evolutionary optimization across 3 axes)
 - `Transduction`: cleanest biological example of format conversion (chemical → electrical)
@@ -339,7 +339,7 @@ The poclet operates at a single spatial scale (single synapse). TSCG could analy
 - Circuit scale: oscillations, synchronization, winner-take-all dynamics
 - Cognitive scale: learning, memory consolidation, attention
 
-Each scale would yield distinct ASFID/REVOI vectors and reveal different metaconcept dominance patterns.
+Each scale would yield distinct ASFID/REVOI vectors and reveal different GenericConcept dominance patterns.
 
 ### Towards a 6-Pole Model
 
@@ -366,7 +366,7 @@ Predicted additions:
 | REVOI I — Interoperability | 0.90 | Outstanding |
 | **REVOI mean** | **0.87** | **Excellent** |
 | **Epistemic Gap ΔΘ** | **0.24** | **Small** |
-| Metaconcepts mobilized | 22 | 40% of M2 catalog |
+| GenericConcepts mobilized | 22 | 40% of M2 catalog |
 | Pole count | 5 | Unusual (most: 3–4) |
 | Drugs validating model | 100+ | Maximum |
 | Perspective dominance | Territory-dominant | Physical phenomenon |
@@ -394,7 +394,7 @@ Predicted additions:
 - Purves, D., et al. (2018). *Neuroscience* (6th ed.). Sinauer Associates.
 
 ### TSCG Framework
-- Echopraxium (2026). *TSCG M2 Metaconcepts Ontology* (v15.1.0).
+- Echopraxium (2026). *TSCG M2 GenericConcepts Ontology* (v15.1.0).
 - Echopraxium (2026). *TSCG Bicephalous Architecture — Eagle Eye (ASFID) + Sphinx Eye (REVOI)*.
 
 ---

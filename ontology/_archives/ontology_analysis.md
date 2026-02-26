@@ -23,7 +23,7 @@
 M3_GenesisSpace.jsonld (Racine M3)
     ├── M3_EagleEye.jsonld (ASFID - Territory)
     ├── M3_SphinxEye.jsonld (ORIVE - Map)
-    └── [M2_MetaConcepts.jsonld] (dépend de M3_GenesisSpace)
+    └── [M2_GenericConcepts.jsonld] (dépend de M3_GenesisSpace)
 ```
 
 ---
@@ -37,7 +37,7 @@ M3_GenesisSpace.jsonld (Racine M3)
 https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/
 ```
 
-**Fichiers affectés**: TOUS (M3_GenesisSpace, M3_EagleEye, M3_SphinxEye, M2_MetaConcepts)
+**Fichiers affectés**: TOUS (M3_GenesisSpace, M3_EagleEye, M3_SphinxEye, M2_GenericConcepts)
 
 **Impact**: Les références croisées ne fonctionneront pas correctement.
 
@@ -58,7 +58,7 @@ https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/
 }
 ```
 
-**Problème**: Pas de namespace spécifique pour M3_EagleEye, M3_SphinxEye, M2_MetaConcepts.
+**Problème**: Pas de namespace spécifique pour M3_EagleEye, M3_SphinxEye, M2_GenericConcepts.
 
 ---
 
@@ -87,7 +87,7 @@ https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/
 
 ### 4. **Référence Mixte dans M2**
 
-**M2_MetaConcepts.jsonld** ligne 44:
+**M2_GenericConcepts.jsonld** ligne 44:
 ```json
 "source": {
     "@id": "https://tscg.org/M3_SphinxEye.jsonld",
@@ -110,7 +110,7 @@ https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/
     ├── M3_GenesisSpace.jsonld          [namespace: m3genesis]
     ├── M3_EagleEye.jsonld              [namespace: m3eagle]
     ├── M3_SphinxEye.jsonld             [namespace: m3sphinx]
-    └── M2_MetaConcepts.jsonld          [namespace: m2]
+    └── M2_GenericConcepts.jsonld          [namespace: m2]
 ```
 
 ---
@@ -230,12 +230,12 @@ https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/
 
 ---
 
-#### **4. M2_MetaConcepts.jsonld** (Tensor Space)
+#### **4. M2_GenericConcepts.jsonld** (Tensor Space)
 
 ```json
 {
   "@context": {
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3genesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
     "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
     "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
@@ -244,7 +244,7 @@ https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/
     "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#"
   },
-  "@id": "m2:M2_MetaConcepts",
+  "@id": "m2:M2_GenericConcepts",
   "@type": "owl:Ontology",
   
   "owl:imports": [
@@ -253,7 +253,7 @@ https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/
   
   "metadata": {
     "layer": "M2",
-    "name": "Tensor Space - Metaconcept Ontology",
+    "name": "Tensor Space - GenericConcept Ontology",
     "version": "1.0.0",
     "date_created": "2026-01-21",
     "authors": ["Echopraxium with the collaboration of Claude AI"]
@@ -268,7 +268,7 @@ https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/
 ```
 
 **Namespace**: `m2`  
-**Autoréférence**: `m2:M2_MetaConcepts`  
+**Autoréférence**: `m2:M2_GenericConcepts`  
 **Référence M3**: `m3genesis:M3_GenesisSpace` via `owl:imports`  
 **Accès Eagle**: `m3eagle:Attractor`, `m3eagle:Structure`, etc.  
 **Accès Sphinx**: `m3sphinx:Observer`, `m3sphinx:Recurse`, etc.
@@ -329,7 +329,7 @@ m3sphinx:  # Namespace pour ORIVE (Map)
 ```json
 {
   "@id": "m2:Homeostasis",
-  "@type": "m2:MetaConcept",
+  "@type": "m2:GenericConcept",
   "m2:tensorFormula": "A⊗S⊗F",
   "m2:asfidComponents": [
     {
@@ -353,7 +353,7 @@ m3sphinx:  # Namespace pour ORIVE (Map)
 ```json
 {
   "@id": "m2:Representation",
-  "@type": "m2:MetaConcept",
+  "@type": "m2:GenericConcept",
   "m2:oriveComponents": [
     {
       "@id": "m3sphinx:Observer",
@@ -391,9 +391,9 @@ m3sphinx:  # Namespace pour ORIVE (Map)
            └──────┬──────┘
                   │
          ┌────────▼────────────┐
-         │ M2_MetaConcepts.jsonld│
+         │ M2_GenericConcepts.jsonld│
          │ namespace: m2          │
-         │ @id: m2:M2_MetaConcepts│
+         │ @id: m2:M2_GenericConcepts│
          │                        │
          │ owl:imports:           │
          │   - M3_GenesisSpace    │
@@ -429,12 +429,12 @@ m3sphinx:  # Namespace pour ORIVE (Map)
 - [ ] Ajouter `owl:imports` de M3_GenesisSpace
 - [ ] Changer `@id` → `m3sphinx:M3_SphinxEye`
 
-### M2_MetaConcepts.jsonld
+### M2_GenericConcepts.jsonld
 - [ ] Corriger URI racine → `https://raw.githubusercontent.com/.../`
 - [ ] Ajouter autoréférence `m2:` dans @context
 - [ ] Ajouter namespaces `m3genesis:`, `m3eagle:`, `m3sphinx:` dans @context
 - [ ] Corriger ligne 44 : utiliser `m3sphinx:M3_SphinxEye` au lieu de URI absolue incorrecte
-- [ ] Changer `@id` → `m2:M2_MetaConcepts`
+- [ ] Changer `@id` → `m2:M2_GenericConcepts`
 
 ---
 

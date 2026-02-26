@@ -16,8 +16,8 @@
 3. [ASFID Analysis (Eagle Eye — Territory)](#3-asfid-analysis-eagle-eye--territory)
 4. [REVOI Analysis (Sphinx Eye — Map)](#4-revoi-analysis-sphinx-eye--map)
 5. [Epistemic Gap](#5-epistemic-gap)
-6. [Metaconcepts Mobilized (22)](#6-metaconcepts-mobilized-22)
-7. [M2 Metaconcepts Discovered from this Poclet](#7-m2-metaconcepts-discovered-from-this-poclet)
+6. [GenericConcepts Mobilized (22)](#6-GenericConcepts-mobilized-22)
+7. [M2 GenericConcepts Discovered from this Poclet](#7-m2-GenericConcepts-discovered-from-this-poclet)
 8. [Map–Territory Comparison](#8-mapterritory-comparison)
 9. [Analogy to the Fire Triangle](#9-analogy-to-the-fire-triangle)
 10. [Validation](#10-validation)
@@ -168,12 +168,12 @@ Deviation vector: `(−0.05, −0.10, +0.25, +0.10, +0.10)`
 
 ---
 
-## 6. Metaconcepts Mobilized (22)
+## 6. GenericConcepts Mobilized (22)
 
-**Coverage: 22 of 71 M2 metaconcepts (31%)**  
+**Coverage: 22 of 71 M2 GenericConcepts (31%)**  
 `m3:semanticSignature`: `light_balance_attractor + parameter_trade-off_map + photon_flow_amplification`
 
-| # | Metaconcept | Formula | Role in Exposure Triangle |
+| # | GenericConcept | Formula | Role in Exposure Triangle |
 |---|-------------|---------|---------------------------|
 | 1 | `m2:Balance` | `A ⊗ S ⊗ F` | Equilibrium: ISO × Aperture × Shutter → correct exposure via compensatory stops |
 | 2 | `m2:Trade-off` | `R ⊗ V ⊗ E` (REVOI) / `A ⊗ I` (fallback) | Cannot simultaneously maximize DoF, freeze motion, minimize noise — Pareto frontier |
@@ -200,7 +200,7 @@ Deviation vector: `(−0.05, −0.10, +0.25, +0.10, +0.10)`
 
 ### By Category
 
-| Category | Metaconcepts |
+| Category | GenericConcepts |
 |----------|-------------|
 | **Structural** | Component, Space, Representation |
 | **Informational** | Signal, Code, Language |
@@ -211,9 +211,9 @@ Deviation vector: `(−0.05, −0.10, +0.25, +0.10, +0.10)`
 
 ---
 
-## 7. M2 Metaconcepts Discovered from this Poclet
+## 7. M2 GenericConcepts Discovered from this Poclet
 
-The Exposure Triangle poclet served as the **discovery context** for two M2 metaconcepts that were subsequently validated across 8+ disciplines and promoted to established M2 status:
+The Exposure Triangle poclet served as the **discovery context** for two M2 GenericConcepts that were subsequently validated across 8+ disciplines and promoted to established M2 status:
 
 ### m2:Balance  `A ⊗ S ⊗ F`
 
@@ -231,7 +231,7 @@ The Exposure Triangle poclet served as the **discovery context** for two M2 meta
 
 **Validated in 8 domains:** Photography (DoF/Grain/Motion), Machine Learning (Bias-Variance), Engineering (Speed-Accuracy), Economics (Inflation-Unemployment), Project Management (Cost-Quality-Time), Computer Science (Time-Space complexity), Biology (r-K selection), Reinforcement Learning (Exploration-Exploitation).
 
-> **Architectural note:** `m2:Trade-off` has `m2:perspective: "map"` — it is a Map-space metaconcept (the photographer's decision model), not a Territory-space observable. This is why its primary formula uses REVOI dimensions (`R ⊗ V ⊗ E`) with ASFID as fallback (`A ⊗ I`).
+> **Architectural note:** `m2:Trade-off` has `m2:perspective: "map"` — it is a Map-space GenericConcept (the photographer's decision model), not a Territory-space observable. This is why its primary formula uses REVOI dimensions (`R ⊗ V ⊗ E`) with ASFID as fallback (`A ⊗ I`).
 
 ---
 
@@ -274,8 +274,8 @@ Both are **Canonical Pedagogical Triangle** poclets — the TSCG type `m3:TscgOn
 | Minimality (exactly 3 components, irreducible) | ✅ |
 | Emergence (correct exposure emerges from parameter balance) | ✅ |
 | Balance & Trade-off validated in M2 (v15.1.0, 8 domains each) | ✅ |
-| Metaconcept coverage (22 of 71 M2 = 31%) | ✅ |
-| New metaconcepts v1.1.0 (Amplification, FeedbackLoop, Polarity, Behavior) | ✅ |
+| GenericConcept coverage (22 of 71 M2 = 31%) | ✅ |
+| New GenericConcepts v1.1.0 (Amplification, FeedbackLoop, Polarity, Behavior) | ✅ |
 | spaceCoverage ValueSpace on m2:Representation (RSC ≈ 0.65) | ✅ |
 | REVOI analysis complete (Mean = 0.92) | ✅ |
 | JSON-LD encoding valid | ✅ |
@@ -329,7 +329,7 @@ The poclet is accompanied by an interactive Pygame simulation that applies **liv
 
 ### TSCG Connections
 
-- **I (Information) / ASFID**: The photograph *is* the encoded territory information — each pixel encodes scene luminance, colour, texture. The simulation makes the **Signature** metaconcept (I⊗F) visible: the image changes signature depending on capture parameters.
+- **I (Information) / ASFID**: The photograph *is* the encoded territory information — each pixel encodes scene luminance, colour, texture. The simulation makes the **Signature** GenericConcept (I⊗F) visible: the image changes signature depending on capture parameters.
 - **V (Verifiability) / REVOI**: Changing any slider immediately verifies the Triangle's prediction. The EV bar and trade-off panel make the Pareto frontier tangible.
 - **A (Attractor)**: The baseline settings form the stable attractor state — the image "wants" to look correctly exposed; any deviation is penalised by a visible artefact.
 
@@ -351,8 +351,8 @@ Place `photo_sample.jpg` in the **same folder** as `exposure_triangle_sim.py`.
 | Version | Date | Description |
 |---------|------|-------------|
 | **1.2.0** | 2026-02-24 | Added `m0:sampleImage` property (`photo_sample.jpg`). Documents baseline exposure (ISO 400 / f/5.6 / 1/250s) and simulation effects (ISO→noise, Aperture→vignette, Shutter→motion blur). Added `exposure_triangle_sim.py` Pygame simulation with live photo effects driven by poclet ASFID/REVOI data. |
-| **1.1.0** | 2026-02-21 | Synchronized with M2 v15.4.0 and M3 v3.5.0. Author corrected. ORIVE → REVOI throughout. Tensor formula spacing normalized. Balance and Trade-off no longer labeled '(NEW)'. Added 4 metaconcepts: `Amplification`, `FeedbackLoop`, `Polarity`, `Behavior`. Added `spaceCoverage` ValueSpace (RSC ≈ 0.65) on Representation. Added `m3:semanticSignature`. Total: 18 → 22 metaconcepts. |
-| **1.0.0** | 2026-01-20 | Initial creation. 18 metaconcepts (34%). First identification of `m2:Balance` and `m2:Trade-off` as new M2 metaconcepts from photography domain analysis. |
+| **1.1.0** | 2026-02-21 | Synchronized with M2 v15.4.0 and M3 v3.5.0. Author corrected. ORIVE → REVOI throughout. Tensor formula spacing normalized. Balance and Trade-off no longer labeled '(NEW)'. Added 4 GenericConcepts: `Amplification`, `FeedbackLoop`, `Polarity`, `Behavior`. Added `spaceCoverage` ValueSpace (RSC ≈ 0.65) on Representation. Added `m3:semanticSignature`. Total: 18 → 22 GenericConcepts. |
+| **1.0.0** | 2026-01-20 | Initial creation. 18 GenericConcepts (34%). First identification of `m2:Balance` and `m2:Trade-off` as new M2 GenericConcepts from photography domain analysis. |
 
 ---
 

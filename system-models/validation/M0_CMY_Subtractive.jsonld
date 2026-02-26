@@ -7,7 +7,7 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m0:color_synthesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/poclets/color_synthesis/M0_CMY_Subtractive.jsonld#"
   },
@@ -34,7 +34,7 @@
           "@id": "m0:CyanChannel",
           "@type": "m2:Channel",
           "rdfs:label": "Cyan Channel (C)",
-          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:GenericConceptInstantiation": "m2:Channel",
           "m0:channelType": "Absorption filter (removes red)",
           "m0:role": "Absorbs red light (~620-750 nm), transmits cyan (~480-520 nm)",
           "m0:function": "Subtractive primary - removes red component",
@@ -59,7 +59,7 @@
           "@id": "m0:MagentaChannel",
           "@type": "m2:Channel",
           "rdfs:label": "Magenta Channel (M)",
-          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:GenericConceptInstantiation": "m2:Channel",
           "m0:channelType": "Absorption filter (removes green)",
           "m0:role": "Absorbs green light (~495-570 nm), transmits magenta",
           "m0:function": "Subtractive primary - removes green component",
@@ -84,7 +84,7 @@
           "@id": "m0:YellowChannel",
           "@type": "m2:Channel",
           "rdfs:label": "Yellow Channel (Y)",
-          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:GenericConceptInstantiation": "m2:Channel",
           "m0:channelType": "Absorption filter (removes blue)",
           "m0:role": "Absorbs blue light (~450-495 nm), transmits yellow (~570-590 nm)",
           "m0:function": "Subtractive primary - removes blue component",
@@ -107,7 +107,7 @@
         }
       ],
       "m0:fusionPrinciple": {
-        "metaconcept": "m2:Fusion",
+        "GenericConcept": "m2:Fusion",
         "aspect": "Fusion (subtractive mixing)",
         "formula": "S⊗F⊗D",
         "description": "Three pigment filters fuse through cumulative spectral absorption. Light passes through all filters sequentially.",
@@ -149,7 +149,7 @@
         ]
       },
       "m0:fissionPrinciple": {
-        "metaconcept": "m2:Fusion (fission aspect)",
+        "GenericConcept": "m2:Fusion (fission aspect)",
         "formula": "S⊗F⊗D",
         "description": "Perceived pigment color can be separated (fission) into three absorption components",
         "operation": "Pigment_color → FISSION → (C_absorption, M_absorption, Y_absorption)",
@@ -318,11 +318,11 @@
           "popperLesson": "CMY made testable prediction (100,100,100)=black. Test failed → model refined (CMYK). Science in action."
         }
       },
-      "m0:metaconceptsMobilized": {
+      "m0:GenericConceptsMobilized": {
         "total": 13,
         "critical": [
           {
-            "metaconcept": "m2:Channel",
+            "GenericConcept": "m2:Channel",
             "formula": "S⊗I⊗F",
             "role": "C, M, Y as absorption filter dimensions",
             "instances": [
@@ -332,7 +332,7 @@
             ]
           },
           {
-            "metaconcept": "m2:Signal",
+            "GenericConcept": "m2:Signal",
             "formula": "I⊗F",
             "role": "Absorption levels encoded as signals",
             "instances": [
@@ -342,31 +342,31 @@
             ]
           },
           {
-            "metaconcept": "m2:Fusion",
+            "GenericConcept": "m2:Fusion",
             "formula": "S⊗F⊗D",
             "role": "Pigments fuse through cumulative spectral absorption",
             "mechanism": "C_filter + M_filter + Y_filter → Transmitted spectrum"
           },
           {
-            "metaconcept": "m2:Filter",
+            "GenericConcept": "m2:Filter",
             "formula": "S⊗I⊗F",
             "role": "Each pigment acts as wavelength-selective filter",
             "mechanism": "Absorbs specific wavelengths, transmits others"
           },
           {
-            "metaconcept": "m2:Transformation",
+            "GenericConcept": "m2:Transformation",
             "formula": "D⊗I⊗S",
             "role": "Approximate conversion CMY ↔ RGB",
             "properties": "Not exact (gamut differences, non-ideal pigments)"
           },
           {
-            "metaconcept": "m2:Space",
+            "GenericConcept": "m2:Space",
             "formula": "S⊗I",
             "role": "CMY color cube",
             "geometry": "Unit cube [0,100]³"
           },
           {
-            "metaconcept": "m2:Constraint",
+            "GenericConcept": "m2:Constraint",
             "formula": "S⊗I",
             "role": "Absorption bounds",
             "constraints": [
@@ -376,19 +376,19 @@
             ]
           },
           {
-            "metaconcept": "m2:Synergy",
+            "GenericConcept": "m2:Synergy",
             "formula": "A⊗S⊗I",
             "role": "Three absorption filters combine into unified color",
             "example": "M + Y → Red (synergy of magenta+yellow absorption)"
           },
           {
-            "metaconcept": "m2:Representation",
+            "GenericConcept": "m2:Representation",
             "formula": "I⊗S",
             "role": "CMY cube as subtractive color model",
             "medium": "Theoretical pigment mixing"
           },
           {
-            "metaconcept": "m2:Dissipation",
+            "GenericConcept": "m2:Dissipation",
             "formula": "F⊗D",
             "role": "Light energy absorbed (converted to heat)",
             "mechanism": "Wavelengths absorbed by pigments → thermal energy"
@@ -441,10 +441,10 @@
       },
       "m0:validation": {
         "asfidCompleteness": "All 5 dimensions present ✅",
-        "metaconceptCoverage": "13 metaconcepts ✅",
+        "GenericConceptCoverage": "13 GenericConcepts ✅",
         "minimality": "3 channels (theoretical primaries) ✅",
         "emergence": "Color from spectral fusion (absorption) ✅",
-        "channelConcept": "Channel metaconcept correctly used ✅",
+        "channelConcept": "Channel GenericConcept correctly used ✅",
         "fusionPrinciple": "Fusion through absorption ✅",
         "subtractiveNature": "Subtractive synthesis validated ✅"
       },

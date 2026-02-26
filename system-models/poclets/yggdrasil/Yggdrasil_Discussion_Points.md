@@ -14,7 +14,7 @@ Michel's directives:
 - **Q1 (Identity Scope)**: Yes but discuss together
 - **Q2 (Mediator Uniqueness)**: Yes but discuss together
 - **Q3 (9 Poles vs 9 Worlds)**: Model "World" as subcategory of Pole AND Environment
-- **Q4 (Ragnarök)**: Use MetaconceptCombo with Trigger and Transformation parameters
+- **Q4 (Ragnarök)**: Use GenericConceptCombo with Trigger and Transformation parameters
 
 ---
 
@@ -137,7 +137,7 @@ Pole_Synthesis → {Tree Crown/Urd's Well} (not a world, meta-level)
 
 1. **Which option** do you prefer: A (9 poles), B (7 poles/9 worlds), C (hybrid)?
 2. **Pole-World relationship**: Is it 1:1, N:M, or separate ontologies?
-3. **Environment metaconcept**: Should we use m2:Environment directly, or create m0:yggdrasil:NorseWorld?
+3. **Environment GenericConcept**: Should we use m2:Environment directly, or create m0:yggdrasil:NorseWorld?
 4. **Tree Crown status**: Is it Pole #7 or meta-level above all poles?
 
 ### Proposed Ontology (Option B - 7 Poles / 9 Worlds)
@@ -188,24 +188,24 @@ Pole_Synthesis → {Tree Crown/Urd's Well} (not a world, meta-level)
 
 ---
 
-## Q4: Ragnarök Modeling with MetaconceptCombo
+## Q4: Ragnarök Modeling with GenericConceptCombo
 
 ### Michel's Directive
-Use **MetaconceptCombo** with:
+Use **GenericConceptCombo** with:
 - **Trigger** parameter
 - **Transformation** parameter
 
 
-### MetaconceptCombo Structure (from M2)
+### GenericConceptCombo Structure (from M2)
 **Formula**: M_A ⊗ M_B ⇒ M_C  
-**Definition**: Synergistic combination of two parent metaconcepts producing emergent metaconcept
+**Definition**: Synergistic combination of two parent GenericConcepts producing emergent GenericConcept
 
 **Key Properties**:
 - ⊗ = Tensor assembly (shared dimensions COUPLE, not duplicate)
 - ⇒ = Emergence morphism (M_C semantically irreducible to parents)
 - Instances belong to M1 extensions (domain-specific)
 
-### Parent Metaconcepts for Ragnarök
+### Parent GenericConcepts for Ragnarök
 
 #### Trigger (D⊗I⊗V)
 **Definition**: Event or condition that initiates a state change  
@@ -223,11 +223,11 @@ Use **MetaconceptCombo** with:
 - **F**: Flow of energy/matter through transformation
 - **V**: Verifiable outcome
 
-### Ragnarök as MetaconceptCombo
+### Ragnarök as GenericConceptCombo
 
 **Construction**:
 ```
-Ragnarök = MetaconceptCombo(Trigger, Transformation)
+Ragnarök = GenericConceptCombo(Trigger, Transformation)
          = Trigger ⊗ Transformation ⇒ CatastrophicBifurcation
 ```
 
@@ -247,12 +247,12 @@ Ragnarök_Formula = D_trigger ⊗ I_threshold ⊗ V_condition ⊗ S_change ⊗ F
 ```json
 {
   "@id": "m0:yggdrasil:Ragnarok",
-  "@type": ["owl:NamedIndividual", "m0:yggdrasil:CosmicEvent", "m0:yggdrasil:MetaconceptComboInstance"],
+  "@type": ["owl:NamedIndividual", "m0:yggdrasil:CosmicEvent", "m0:yggdrasil:GenericConceptComboInstance"],
   "rdfs:label": "Ragnarök - Twilight of the Gods",
-  "rdfs:comment": "Catastrophic system transformation modeled as MetaconceptCombo(Trigger, Transformation). Ultimate expression of cyclic tension at cosmic scale.",
+  "rdfs:comment": "Catastrophic system transformation modeled as GenericConceptCombo(Trigger, Transformation). Ultimate expression of cyclic tension at cosmic scale.",
   
-  "m0:instantiatesMetaconcept": "m2:MetaconceptCombo",
-  "m0:metaconceptComboStructure": {
+  "m0:instantiatesGenericConcept": "m2:GenericConceptCombo",
+  "m0:GenericConceptComboStructure": {
     "parentA": "m2:Trigger",
     "parentB": "m2:Transformation",
     "emergentConcept": "CatastrophicBifurcation",
@@ -260,7 +260,7 @@ Ragnarök_Formula = D_trigger ⊗ I_threshold ⊗ V_condition ⊗ S_change ⊗ F
   },
   
   "m0:triggerPhase": {
-    "instantiatesMetaconcept": "m2:Trigger",
+    "instantiatesGenericConcept": "m2:Trigger",
     "formula": "D⊗I⊗V",
     "events": [
       {
@@ -298,7 +298,7 @@ Ragnarök_Formula = D_trigger ⊗ I_threshold ⊗ V_condition ⊗ S_change ⊗ F
   },
   
   "m0:transformationPhase": {
-    "instantiatesMetaconcept": "m2:Transformation",
+    "instantiatesGenericConcept": "m2:Transformation",
     "formula": "S⊗I⊗D⊗F⊗V",
     "processes": [
       {
@@ -385,12 +385,12 @@ Ragnarök_Formula = D_trigger ⊗ I_threshold ⊗ V_condition ⊗ S_change ⊗ F
 1. **Trigger logic**: Should all 5 triggers fire (AND), or any single one sufficient (OR)?
 2. **Transformation granularity**: Model as single macro-transformation or sequence of micro-transformations?
 3. **Cyclic vs Terminal**: Some sources suggest Ragnarök ends everything, others suggest rebirth. Which interpretation?
-4. **New M2 candidate**: Is "CatastrophicBifurcation" a valid M2 metaconcept distinct from Bifurcation alone?
+4. **New M2 candidate**: Is "CatastrophicBifurcation" a valid M2 GenericConcept distinct from Bifurcation alone?
 5. **Prophecy aspect**: Should we model Völva's prophecy (Information about future Ragnarök)?
 
 ### Ragnarök vs Other System Transformations
 
-| System | Transformation | Trigger | MetaconceptCombo? |
+| System | Transformation | Trigger | GenericConceptCombo? |
 |--------|---------------|---------|-------------------|
 | Yggdrasil | Ragnarök | 5 composite triggers | YES (Trigger ⊗ Transformation) |
 | Butterfly | Metamorphosis | Hormonal threshold | Possible (simpler) |
@@ -403,7 +403,7 @@ Ragnarök_Formula = D_trigger ⊗ I_threshold ⊗ V_condition ⊗ S_change ⊗ F
 
 ## Q1: Identity Scope - Which Entities Qualify?
 
-### Identity Metaconcept Criteria (Recap)
+### Identity GenericConcept Criteria (Recap)
 **Formula**: S⊗I⊗A⊗V⊗E (hybrid, 5D)
 - **S**: Structure persists across transformations
 - **I**: Information makes entity uniquely distinguishable
@@ -512,7 +512,7 @@ Ragnarök_Formula = D_trigger ⊗ I_threshold ⊗ V_condition ⊗ S_change ⊗ F
 
 ## Q2: Mediator Entities - Beyond Ratatosk
 
-### Mediator Metaconcept Criteria (Recap)
+### Mediator GenericConcept Criteria (Recap)
 **Formula**: F⊗I⊗S (territory perspective, 3D)
 - **F**: Flow - enables transfer between components
 - **I**: Information - carries/transforms messages
@@ -591,7 +591,7 @@ Ragnarök_Formula = D_trigger ⊗ I_threshold ⊗ V_condition ⊗ S_change ⊗ F
   "rdfs:label": "Mediator Entity",
   "rdfs:comment": "Entity that enables interaction between system components that would otherwise be disconnected or hostile.",
   "rdfs:subClassOf": "m0:yggdrasil:Entity",
-  "m0:instantiatesMetaconcept": "m2:Mediator",
+  "m0:instantiatesGenericConcept": "m2:Mediator",
   "m0:mediatorProperties": [
     "Flow capability (physical or informational)",
     "Information carrier/transformer",
@@ -662,7 +662,7 @@ Ragnarök_Formula = D_trigger ⊗ I_threshold ⊗ V_condition ⊗ S_change ⊗ F
 - [ ] Map 9 worlds to 7 poles (if option B)
 - [ ] Status of Tree Crown (pole or meta-level?)
 
-### Q4: Ragnarök MetaconceptCombo
+### Q4: Ragnarök GenericConceptCombo
 - [ ] Confirm Trigger ⊗ Transformation construction
 - [ ] Decide trigger logic (AND vs OR)
 - [ ] Choose cyclic vs terminal interpretation

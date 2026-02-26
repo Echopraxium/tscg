@@ -1,4 +1,4 @@
-# Analysis of Three Candidate Metaconcepts for M2
+# Analysis of Three Candidate GenericConcepts for M2
 **Layer, Switch, Mode**
 
 **Date**: January 21, 2026  
@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-This document analyzes three interconnected candidate metaconcepts for inclusion in M2_MetaConcepts.jsonld:
+This document analyzes three interconnected candidate GenericConcepts for inclusion in M2_GenericConcepts.jsonld:
 
 1. **Layer** - Stratification pattern (Structural)
 2. **Switch** - State transition mechanism (Dynamic/Regulatory)  
@@ -27,11 +27,11 @@ This document analyzes three interconnected candidate metaconcepts for inclusion
 
 ## 🎯 Validation Criteria (from TSCG Framework)
 
-Each metaconcept must demonstrate:
+Each GenericConcept must demonstrate:
 
 1. ✅ **Transdisciplinary universality** (≥5 domains)
 2. ✅ **Clear tensor formula** (ASFID basis)
-3. ✅ **Distinct from existing metaconcepts** (no redundancy)
+3. ✅ **Distinct from existing GenericConcepts** (no redundancy)
 4. ✅ **Category assignment** (Structural, Dynamic, Regulatory, etc.)
 5. ✅ **Bicephalous perspective** (Territory/Map classification)
 6. ✅ **Practical validation** (poclet evidence preferred)
@@ -76,9 +76,9 @@ Each metaconcept must demonstrate:
 
 **Validation Count**: 8 domains ✅
 
-### Distinction from Existing Metaconcepts
+### Distinction from Existing GenericConcepts
 
-| Metaconcept | Relationship | Distinction |
+| GenericConcept | Relationship | Distinction |
 |-------------|--------------|-------------|
 | **Hierarchy** | Related | Layer = HORIZONTAL stratification; Hierarchy = VERTICAL ordering |
 | **Imbrication** | Complementary | Imbrication = NESTING (containment); Layer = STACKING (adjacency) |
@@ -177,9 +177,9 @@ E (Emerge)   = 0.55 - Medium (abstraction emerges at each layer)
 
 **Polarity**: Neutral (N-ary is general; binary is special case where N=2)
 
-### Distinction from Existing Metaconcepts
+### Distinction from Existing GenericConcepts
 
-| Metaconcept | Relationship | Distinction |
+| GenericConcept | Relationship | Distinction |
 |-------------|--------------|-------------|
 | **Bifurcation** | Related | Bifurcation = CONTINUOUS parameter → qualitative change; Switch = DISCRETE triggered transition among finite states |
 | **Threshold** | Complementary | Threshold = CRITICAL VALUE; Switch = MECHANISM using threshold(s) for state transition |
@@ -214,7 +214,7 @@ where:
   C - Control signal/trigger set
 ```
 
-**IMPORTANT**: Binary is **special case** where |S| = 2, NOT the defining property of Switch metaconcept.
+**IMPORTANT**: Binary is **special case** where |S| = 2, NOT the defining property of Switch GenericConcept.
 
 ### Examples from Validated Poclets
 
@@ -280,9 +280,9 @@ E (Emerge)   = 0.55 - Medium (mode behavior emerges from switch state)
 
 **Validation Count**: 8 domains ✅
 
-### Distinction from Existing Metaconcepts
+### Distinction from Existing GenericConcepts
 
-| Metaconcept | Relationship | Distinction |
+| GenericConcept | Relationship | Distinction |
 |-------------|--------------|-------------|
 | **State** | Parent | Mode = QUALITATIVE operational class; State = QUANTITATIVE point in state-space |
 | **Configuration** | Synonym candidate | Mode emphasizes BEHAVIORAL difference; Configuration emphasizes PARAMETER settings |
@@ -380,11 +380,11 @@ Switch: Mᵢ → Mⱼ (state transition within or across layers)
 
 ---
 
-## 📊 Comparative Analysis with Existing M2 Metaconcepts
+## 📊 Comparative Analysis with Existing M2 GenericConcepts
 
 ### Structural Category (for Layer)
 
-| Metaconcept | Formula | Polarity | Key Feature | Distinction from Layer |
+| GenericConcept | Formula | Polarity | Key Feature | Distinction from Layer |
 |-------------|---------|----------|-------------|----------------------|
 | **Hierarchy** | S⊗A | Neutral | Vertical ordering | Tree structure vs linear stack |
 | **Imbrication** | S⊗I⊗A | Neutral | Nested containment | Nesting vs stacking |
@@ -396,7 +396,7 @@ Switch: Mᵢ → Mⱼ (state transition within or across layers)
 
 ### Regulatory Category (for Switch)
 
-| Metaconcept | Formula | Polarity | Key Feature | Distinction from Switch |
+| GenericConcept | Formula | Polarity | Key Feature | Distinction from Switch |
 |-------------|---------|----------|-------------|----------------------|
 | **Regulation** | A⊗S⊗F | Neutral | Control mechanism | Continuous control vs discrete switching |
 | **Threshold** | A⊗I | Neutral | Critical value | Passive boundary vs active transition |
@@ -408,7 +408,7 @@ Switch: Mᵢ → Mⱼ (state transition within or across layers)
 
 ### Ontological Category (for Mode)
 
-| Metaconcept | Formula | Polarity | Key Feature | Distinction from Mode |
+| GenericConcept | Formula | Polarity | Key Feature | Distinction from Mode |
 |-------------|---------|----------|-------------|----------------------|
 | **State** | I | Neutral | System configuration | Continuous state-space vs discrete modes |
 | **System** | S⊗F | Neutral | Organized whole | System identity vs operational mode |
@@ -433,7 +433,7 @@ Switch: Mᵢ → Mⱼ (state transition within or across layers)
 
 1. ✅ **Transdisciplinary Validation**: Each candidate validated across 8-10 domains
 2. ✅ **Clear Tensor Formulas**: ASFID decomposition well-justified
-3. ✅ **Distinct from Existing**: No redundancy with 55 existing metaconcepts
+3. ✅ **Distinct from Existing**: No redundancy with 55 existing GenericConcepts
 4. ✅ **Cohesive Triad**: Strong conceptual relationships (Layer ↔ Switch ↔ Mode)
 5. ✅ **Practical Utility**: Validated in real poclets (Exposure Triangle, ColorSynthesis)
 
@@ -457,7 +457,7 @@ Switch: Mᵢ → Mⱼ (state transition within or across layers)
 ```json
 {
   "@id": "m2:Switch",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept"],
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept"],
   "rdfs:label": "Switch",
   "rdfs:comment": "Mechanism enabling discrete state transition between operational modes (binary or N-ary), triggered by control signal or threshold crossing. Operates over finite discrete state set {S₁, S₂, ..., Sₙ}.",
   "m2:hasCategory": "m2:Regulatory",
@@ -508,7 +508,7 @@ Switch: Mᵢ → Mⱼ (state transition within or across layers)
 ```json
 {
   "@id": "m2:Mode",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept"],
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept"],
   "rdfs:label": "Mode",
   "rdfs:comment": "Discrete operational state or configuration determining system behavior, persistent until switched. Defines qualitative behavioral category, not just parameter values.",
   "m2:hasCategory": "m2:Ontological",
@@ -556,7 +556,7 @@ Switch: Mᵢ → Mⱼ (state transition within or across layers)
 ```json
 {
   "@id": "m2:Layer",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept"],
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept"],
   "rdfs:label": "Layer",
   "rdfs:comment": "Stratified organization where components are arranged in distinct, stacked levels with hierarchical dependencies and sequential processing. Horizontal stratification with vertical information flow.",
   "m2:hasCategory": "m2:Structural",
@@ -635,15 +635,15 @@ Switch: Mᵢ → Mⱼ (state transition within or across layers)
 
 ## ✨ Conclusion
 
-**Layer, Switch, and Mode** form a coherent triad of metaconcepts that fill genuine gaps in M2:
+**Layer, Switch, and Mode** form a coherent triad of GenericConcepts that fill genuine gaps in M2:
 
 1. **Layer** = Spatial/organizational stratification (missing from current Structural category)
 2. **Switch** = N-ary discrete state transition mechanism (missing from Regulatory)
 3. **Mode** = Discrete operational behavioral categories (missing from Ontological)
 
 **Impact on M2**:
-- Current: 55 metaconcepts
-- Proposed: 55 + 3 = **58 metaconcepts**
+- Current: 55 GenericConcepts
+- Proposed: 55 + 3 = **58 GenericConcepts**
 - Territory: 29 → 30 (+Layer)
 - Map: 8 (unchanged)
 - Dual: 18 → 20 (+Switch, +Mode)
@@ -651,7 +651,7 @@ Switch: Mᵢ → Mⱼ (state transition within or across layers)
 - Regulatory: 10 → 11 (+Switch)
 - Ontological: 7 → 8 (+Mode)
 
-**Recommendation**: ✅ **APPROVE all three metaconcepts** for integration into M2_MetaConcepts v12.0.0
+**Recommendation**: ✅ **APPROVE all three GenericConcepts** for integration into M2_GenericConcepts v12.0.0
 
 ---
 

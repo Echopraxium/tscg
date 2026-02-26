@@ -23,7 +23,7 @@ and is the primary member of the [Color Synthesis Federated Poclet](./M0_ColorSy
 | Physical basis | Electromagnetic wave superposition (380–740 nm) |
 | Components | 3 (R, G, B channels) |
 | Poclet type | Composite (Specialized) |
-| M2 Metaconcepts | 15 (29% coverage) |
+| M2 GenericConcepts | 15 (29% coverage) |
 
 ---
 
@@ -61,7 +61,7 @@ and is the primary member of the [Color Synthesis Federated Poclet](./M0_ColorSy
 
 ## Channels (Components)
 
-| Channel | Metaconcept | Tensor Formula | Wavelength | Biological Target |
+| Channel | GenericConcept | Tensor Formula | Wavelength | Biological Target |
 |---|---|---|---|---|
 | Red (R) | `m2:Signal` | `I⊗F` | ~620–750 nm | L-cones |
 | Green (G) | `m2:Signal` | `I⊗F` | ~495–570 nm | M-cones |
@@ -71,9 +71,9 @@ Digital range: `[0, 255]` (8-bit) — Analog range: `[0.0, 1.0]`
 
 ---
 
-## Metaconcepts Mobilized (15)
+## GenericConcepts Mobilized (15)
 
-| Category | Metaconcepts |
+| Category | GenericConcepts |
 |---|---|
 | Structural | Component · Space · Topology · Symmetry · Invariant |
 | Informational | Signal · Code · Representation · Language · Signature |
@@ -102,11 +102,11 @@ Fusion formula: `R_wave ⊕ G_wave ⊕ B_wave → Perceived Color`
 ## TSCG Validation
 
 - ✅ All 5 ASFID dimensions present  
-- ✅ 15 metaconcepts (29% coverage)  
+- ✅ 15 GenericConcepts (29% coverage)  
 - ✅ Minimality (3 channels — irreducible for trichromatic vision)  
 - ✅ Emergence (perceived color emerges from signal fusion)  
-- ✅ Signal metaconcept central to model  
-- ✅ Fusion metaconcept explains wave superposition
+- ✅ Signal GenericConcept central to model  
+- ✅ Fusion GenericConcept explains wave superposition
 
 ---
 
@@ -137,7 +137,7 @@ Fusion formula: `R_wave ⊕ G_wave ⊕ B_wave → Perceived Color`
 | Version | Date | Change |
 |---|---|---|
 | 1.1.0 | 2026-02-25 | Corrected `dcterms:creator`; renamed `oriveAnalysis` → `revoiAnalysis`; added `m2:changelog` |
-| 1.0.1 | 2026-01-20 | Minor corrections in `metaconceptsMobilized`; added `owl:versionInfo` |
+| 1.0.1 | 2026-01-20 | Minor corrections in `GenericConceptsMobilized`; added `owl:versionInfo` |
 | 1.0.0 | 2026-01-17 | Initial creation |
 
 ---

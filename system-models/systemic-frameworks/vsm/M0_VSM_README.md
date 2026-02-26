@@ -17,7 +17,7 @@
 6. [Prerequisites](#prerequisites)
 7. [VSM Components](#vsm-components)
 8. [Key Concepts](#key-concepts)
-9. [MetaconceptCombo Patterns](#metaconceptcombo-patterns)
+9. [GenericConceptCombo Patterns](#GenericConceptcombo-patterns)
 10. [Bicephalous Analysis](#bicephalous-analysis)
 11. [Applications](#applications)
 12. [References](#references)
@@ -32,7 +32,7 @@ The **Viable System Model (VSM)** is a management cybernetics framework develope
 
 **Theoretical Foundation:** W. Ross Ashby's **Law of Requisite Variety** - "Only variety can absorb variety."
 
-**TSCG Innovation:** VSM concepts formalized using **MetaconceptCombo** pattern - synergistic combinations of M2 metaconcepts via tensor coupling.
+**TSCG Innovation:** VSM concepts formalized using **GenericConceptCombo** pattern - synergistic combinations of M2 GenericConcepts via tensor coupling.
 
 ---
 
@@ -40,14 +40,14 @@ The **Viable System Model (VSM)** is a management cybernetics framework develope
 
 ### Major Updates
 
-✨ **MetaconceptCombo Architecture**
-- All 6 VSM-specific concepts now properly modeled as MetaconceptCombo instances
+✨ **GenericConceptCombo Architecture**
+- All 6 VSM-specific concepts now properly modeled as GenericConceptCombo instances
 - Complete coupling analysis with shared dimensions documented
-- Emergent properties explicitly derived from parent metaconcepts
+- Emergent properties explicitly derived from parent GenericConcepts
 
 🆕 **Autonomy = Agent ⊗ Scope** (NEW)
 - Replaces incomplete instantiation pattern
-- Requires new M2 metaconcept: **Scope** (S⊗I⊗A⊗R)
+- Requires new M2 GenericConcept: **Scope** (S⊗I⊗A⊗R)
 - Semantic completeness: action capability + bounded authority
 
 📊 **Validated Patterns**
@@ -61,8 +61,8 @@ The **Viable System Model (VSM)** is a management cybernetics framework develope
 ### Breaking Changes
 
 ⚠️ **New M2 Dependency**
-- `m2:Scope` metaconcept now required (added in M2 v14.3.3)
-- Autonomy modeling shifted from simple instantiation to MetaconceptCombo
+- `m2:Scope` GenericConcept now required (added in M2 v14.3.3)
+- Autonomy modeling shifted from simple instantiation to GenericConceptCombo
 
 ---
 
@@ -164,7 +164,7 @@ The **Viable System Model (VSM)** is a management cybernetics framework develope
 
 ```json
 "owl:imports": [
-  "M2_MetaConcepts.jsonld",
+  "M2_GenericConcepts.jsonld",
   "M1_CoreConcepts.jsonld"
 ]
 ```
@@ -173,7 +173,7 @@ The **Viable System Model (VSM)** is a management cybernetics framework develope
 
 ## 🧩 Prerequisites
 
-### M2 Metaconcepts (Existing)
+### M2 GenericConcepts (Existing)
 
 **Used by VSM (16 total):**
 - `m2:System`, `m2:Environment`, `m2:Homeostasis`
@@ -183,9 +183,9 @@ The **Viable System Model (VSM)** is a management cybernetics framework develope
 - `m2:Constraint`, `m2:Feedback`, `m2:Imbrication`
 - `m2:Trade-off`
 
-### M2 Metaconcepts (New - Required for v1.1.0)
+### M2 GenericConcepts (New - Required for v1.1.0)
 
-**Added for VSM MetaconceptCombo patterns:**
+**Added for VSM GenericConceptCombo patterns:**
 
 1. ✅ **`m2:ValueSpace`** (v14.1.0) - It⊗V⊗O⊗R⊗Im
    - Formalizes Ashby's "variety" (value domain)
@@ -242,9 +242,9 @@ m0:vsm:MetaSystem rdfs:subClassOf m2:Hierarchy .
 
 Each S1 operational unit is itself a complete viable system with its own S1-S5 structure at smaller scale.
 
-**TSCG Mapping:** Uses `m2:Imbrication` metaconcept (S⊗S).
+**TSCG Mapping:** Uses `m2:Imbrication` GenericConcept (S⊗S).
 
-**MetaconceptCombo (future):** RecursiveViability = Imbrication ⊗ Autonomy
+**GenericConceptCombo (future):** RecursiveViability = Imbrication ⊗ Autonomy
 
 ---
 
@@ -257,7 +257,7 @@ Each S1 operational unit is itself a complete viable system with its own S1-S5 s
 A control system must have **at least as much variety** as the disturbances it regulates.
 
 **TSCG Mapping:** 
-- Uses `m2:ValueSpace` metaconcept (It⊗V⊗O⊗R⊗Im)
+- Uses `m2:ValueSpace` GenericConcept (It⊗V⊗O⊗R⊗Im)
 - Formalized as `m0:RequisiteVariety` constraint
 
 ---
@@ -266,11 +266,11 @@ A control system must have **at least as much variety** as the disturbances it r
 
 **Variety Attenuation (Upward):** Filter information flowing up hierarchy
 - Mechanism: Aggregation, exception reporting, statistical control
-- **TSCG:** MetaconceptCombo(ValueSpace, Amplification↓)
+- **TSCG:** GenericConceptCombo(ValueSpace, Amplification↓)
 
 **Variety Amplification (Downward):** Elaborate commands flowing down
 - Mechanism: Policy → Strategy → Tactics → Operations cascade
-- **TSCG:** MetaconceptCombo(ValueSpace, Amplification↑)
+- **TSCG:** GenericConceptCombo(ValueSpace, Amplification↑)
 
 ---
 
@@ -279,12 +279,12 @@ A control system must have **at least as much variety** as the disturbances it r
 **Beer's Dictum:** *"Maximum local freedom; minimum central constraint"*
 
 **TSCG Formalization:**
-- **Autonomy** = MetaconceptCombo(Agent, Scope)
+- **Autonomy** = GenericConceptCombo(Agent, Scope)
   - Agent (S⊗I⊗D): Capability to act
   - Scope (S⊗I⊗A⊗R): Bounded authority domain
   - Emergence: "I can act freely WITHIN this defined domain"
 
-- **Cohesion** = MetaconceptCombo(Identity, Constraint)
+- **Cohesion** = GenericConceptCombo(Identity, Constraint)
   - Identity (S⊗I⊗A⊗V⊗E): Persistent organizational thread
   - Constraint (S⊗I⊗F⊗V⊗R): Structural limits
   - Emergence: "Shared identity maintained through negotiated boundaries"
@@ -299,7 +299,7 @@ A control system must have **at least as much variety** as the disturbances it r
 
 **Etymology:** Greek *algos* (pain) + *hedone* (pleasure)
 
-**TSCG Formalization:** MetaconceptCombo(Trigger, Signal)
+**TSCG Formalization:** GenericConceptCombo(Trigger, Signal)
 - Trigger (D⊗I⊗V): Verifiable initiating event
 - Signal (F⊗I⊗R): Representable information flow
 - Emergence: Hierarchical bypass capability for critical events
@@ -308,11 +308,11 @@ A control system must have **at least as much variety** as the disturbances it r
 
 ---
 
-## 🧬 MetaconceptCombo Patterns
+## 🧬 GenericConceptCombo Patterns
 
 ### Complete VSM Formalization
 
-| VSM Concept | MetaconceptCombo | Formula | Shared Dims | Emergent Property |
+| VSM Concept | GenericConceptCombo | Formula | Shared Dims | Emergent Property |
 |-------------|------------------|---------|-------------|-------------------|
 | **VarietyAmplification** | ValueSpace ⊗ Amplification↑ | (It⊗V⊗O⊗R⊗Im) ⊗ (Ft⊗D⊗It⊗R⊗O)↑ | {It,R,O} = 3 | Controlled variety expansion preserving epistemic quality |
 | **VarietyAttenuation** | ValueSpace ⊗ Amplification↓ | (It⊗V⊗O⊗R⊗Im) ⊗ (Ft⊗D⊗It⊗R⊗O)↓ | {It,R,O} = 3 | Controlled variety reduction maintaining verifiability |
@@ -341,7 +341,7 @@ Emergent Property:
    are aligned between action capability and permission boundary."
 ```
 
-### MetaconceptCombo vs Simple Instantiation
+### GenericConceptCombo vs Simple Instantiation
 
 **Before (v1.0.0 - incomplete):**
 ```json
@@ -357,8 +357,8 @@ Emergent Property:
 ```json
 {
   "@id": "m0:vsm:Autonomy",
-  "m0:isMetaconceptCombo": true,
-  "m0:parentMetaconcepts": ["m2:Agent", "m2:Scope"],
+  "m0:isGenericConceptCombo": true,
+  "m0:parentGenericConcepts": ["m2:Agent", "m2:Scope"],
   "m0:comboFormula": "(S⊗I⊗D) ⊗ (S⊗I⊗A⊗R) ⇒ Autonomy",
   "m0:sharedDimensions": ["S", "I"],
   "m0:emergentProperty": "Action capability bounded by authority domain"
@@ -438,10 +438,10 @@ This validates VSM as both scientifically grounded (Territory) and methodologica
 - [Variety (Cybernetics)](https://en.wikipedia.org/wiki/Variety_(cybernetics))
 
 ### TSCG Documentation
-- M2_MetaConcepts.jsonld v14.3.3 (includes Scope metaconcept)
-- M2_Scope_Metaconcept_Proposal.md (Scope design rationale)
+- M2_GenericConcepts.jsonld v14.3.3 (includes Scope GenericConcept)
+- M2_Scope_GenericConcept_Proposal.md (Scope design rationale)
 - TSCG_Smart_Prompt_v14_3_0.md (Framework overview)
-- MetaconceptCombo pattern documentation (M2)
+- GenericConceptCombo pattern documentation (M2)
 
 ---
 
@@ -454,20 +454,20 @@ This validates VSM as both scientifically grounded (Territory) and methodologica
 4. **Viability** - Composite of `m2:Resilience + Adaptation + Homeostasis`
 
 ### v1.1.0 (2026-02-03)
-1. **MetaconceptCombo Architecture** - All VSM concepts as proper combos
-2. **Scope Metaconcept** - New M2 requirement for Autonomy
+1. **GenericConceptCombo Architecture** - All VSM concepts as proper combos
+2. **Scope GenericConcept** - New M2 requirement for Autonomy
 3. **Coupling Analysis** - Shared dimensions explicitly documented
-4. **Emergent Properties** - Derived systematically from parent metaconcepts
+4. **Emergent Properties** - Derived systematically from parent GenericConcepts
 5. **Autonomy Completion** - Agent⊗Scope replaces incomplete instantiation
 
 ---
 
 ## 📝 Changelog
 
-### v1.1.0 (2026-02-03) - MetaconceptCombo Architecture
+### v1.1.0 (2026-02-03) - GenericConceptCombo Architecture
 
 **Added:**
-- MetaconceptCombo formalization for all 6 VSM-specific concepts
+- GenericConceptCombo formalization for all 6 VSM-specific concepts
 - Autonomy = Agent ⊗ Scope (NEW pattern)
 - m2:Scope prerequisite (S⊗I⊗A⊗R)
 - Complete coupling analysis with shared dimensions
@@ -475,12 +475,12 @@ This validates VSM as both scientifically grounded (Territory) and methodologica
 - VSM context for each combo
 
 **Changed:**
-- Autonomy modeling: instantiation → MetaconceptCombo
-- Description: Added MetaconceptCombo pattern mention
+- Autonomy modeling: instantiation → GenericConceptCombo
+- Description: Added GenericConceptCombo pattern mention
 - All concepts: enriched with coupling semantics
 
 **Breaking:**
-- Requires M2_MetaConcepts.jsonld v14.3.3+ (Scope dependency)
+- Requires M2_GenericConcepts.jsonld v14.3.3+ (Scope dependency)
 
 ### v1.0.0 (2026-01-28) - Initial Release
 
@@ -498,7 +498,7 @@ This validates VSM as both scientifically grounded (Territory) and methodologica
 
 **Framework Maturity:** ✅ Production-ready
 
-**MetaconceptCombo Validation:**
+**GenericConceptCombo Validation:**
 - VarietyAmplification: ✅ Validated (canonical example in M2)
 - VarietyAttenuation: ✅ Validated (canonical example in M2)
 - Cohesion: ✅ Validated (Identity⊗Constraint coupling proven)
@@ -524,7 +524,7 @@ This validates VSM as both scientifically grounded (Territory) and methodologica
 
 **Ontology URI:** `https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld`  
 **Version:** 1.1.0  
-**Status:** ✅ Validated - Production-ready with MetaconceptCombo architecture
+**Status:** ✅ Validated - Production-ready with GenericConceptCombo architecture
 
 ---
 

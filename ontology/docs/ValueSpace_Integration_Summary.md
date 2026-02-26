@@ -8,9 +8,9 @@
 
 ## ✅ INTÉGRATION RÉUSSIE
 
-### Metaconcept ValueSpace ajouté dans M2_MetaConcepts.jsonld
+### GenericConcept ValueSpace ajouté dans M2_GenericConcepts.jsonld
 
-**Position:** Metaconcept #65 (après Action)  
+**Position:** GenericConcept #65 (après Action)  
 **Catégorie:** m2:Informational  
 **Formule:** **It⊗V⊗O⊗R⊗Im**  
 **Mnémotechnique:** **ItVORIm**
@@ -20,12 +20,12 @@
 ## 📊 Statistiques Mises à Jour
 
 ### Avant (v14.3.0)
-- **Total metaconcepts:** 64
+- **Total GenericConcepts:** 64
 - **Hybrides:** 1 (Domain uniquement)
 - **Changelog:** Imbrication seulement
 
 ### Après (v14.3.1)
-- **Total metaconcepts:** 65 ✅
+- **Total GenericConcepts:** 65 ✅
 - **Hybrides:** 2 (Domain + ValueSpace) ✅
 - **Changelog:** Imbrication + ValueSpace ✅
 
@@ -88,13 +88,13 @@ Map: V_effective = V_T(It) × Q_M(V,O,R,Im)
 
 ## 📝 Changements Fichiers
 
-### M2_MetaConcepts.jsonld
+### M2_GenericConcepts.jsonld
 
 **Lignes ajoutées:** ~150 lignes (définition complète ValueSpace)
 
 **Modifications:**
 1. ✅ Ajout définition m2:ValueSpace (ligne ~3314)
-2. ✅ Compteur 64→65 metaconcepts
+2. ✅ Compteur 64→65 GenericConcepts
 3. ✅ Changelog v14.3.1 enrichi
 4. ✅ Description M2 mise à jour
 5. ✅ Compteur hybrides 1→2
@@ -177,7 +177,7 @@ Maintenant que ValueSpace est disponible, on peut :
 
 ## ✅ Checklist Validation
 
-- [x] ValueSpace défini dans M2_MetaConcepts.jsonld
+- [x] ValueSpace défini dans M2_GenericConcepts.jsonld
 - [x] Formule It⊗V⊗O⊗R⊗Im validée
 - [x] 5 types (scalaire/vectoriel/tensoriel/symbolique/hybride) documentés
 - [x] Ashby's Law intégré
@@ -195,7 +195,7 @@ Maintenant que ValueSpace est disponible, on peut :
 
 1. **ValueSpace_Hybrid_Proposal.md** (proposition détaillée)
 2. **ValueSpace_Integration_Summary.md** (ce fichier)
-3. **M2_MetaConcepts.jsonld** (modifié avec ValueSpace)
+3. **M2_GenericConcepts.jsonld** (modifié avec ValueSpace)
 
 ---
 
@@ -219,12 +219,12 @@ Maintenant que ValueSpace est disponible, on peut :
 
 ## 🎉 Résultat
 
-**ValueSpace est maintenant le 2ème metaconcept hybride TSCG** (après Domain)
+**ValueSpace est maintenant le 2ème GenericConcept hybride TSCG** (après Domain)
 
 **Permet de modéliser complètement VSM** avec :
 - Imbrication (récursivité fractale)
 - ValueSpace (variété d'Ashby)
-- + les 10 metaconcepts M2 existants
+- + les 10 GenericConcepts M2 existants
 
 **TSCG v14.3.1 est maintenant COMPLET pour VSM !** ✨
 

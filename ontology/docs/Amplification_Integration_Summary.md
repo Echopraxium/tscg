@@ -8,9 +8,9 @@
 
 ## ✅ INTÉGRATION RÉUSSIE
 
-### Metaconcept Amplification/Attenuation ajouté dans M2_MetaConcepts.jsonld
+### GenericConcept Amplification/Attenuation ajouté dans M2_GenericConcepts.jsonld
 
-**Position:** Metaconcept #66 (après ValueSpace)  
+**Position:** GenericConcept #66 (après ValueSpace)  
 **Catégorie:** m2:Dynamic  
 **Formule Hybride:** **Ft⊗D⊗It ⊗ R⊗O**  
 **Polarity:** hybrid (avec dual aspects: amplification ↑ / attenuation ↓)
@@ -20,11 +20,11 @@
 ## 📊 Statistiques Mises à Jour
 
 ### Avant
-- **Total metaconcepts:** 65
+- **Total GenericConcepts:** 65
 - **Hybrides:** 2 (Domain, ValueSpace)
 
 ### Après
-- **Total metaconcepts:** 66 ✅
+- **Total GenericConcepts:** 66 ✅
 - **Hybrides:** 3 (Domain, ValueSpace, Amplification) ✅
 
 ---
@@ -178,13 +178,13 @@ tout en maintenant V (verifiability)
 
 ## 📝 Changements Fichiers
 
-### M2_MetaConcepts.jsonld
+### M2_GenericConcepts.jsonld
 
 **Lignes ajoutées** : ~120 lignes (définition complète Amplification)
 
 **Modifications** :
 1. ✅ Ajout m2:Amplification (ligne ~3600)
-2. ✅ Compteur 65→66 metaconcepts
+2. ✅ Compteur 65→66 GenericConcepts
 3. ✅ Compteur hybrides 2→3
 4. ✅ Changelog v14.3.1 enrichi
 5. ✅ Description M2 mise à jour
@@ -194,7 +194,7 @@ tout en maintenant V (verifiability)
 
 ## ✅ Checklist Validation
 
-- [x] Amplification défini dans M2_MetaConcepts.jsonld
+- [x] Amplification défini dans M2_GenericConcepts.jsonld
 - [x] Formule hybride Ft⊗D⊗It ⊗ R⊗O validée
 - [x] Dual aspects amplification ↑ / attenuation ↓ documentés
 - [x] Territory (Ft⊗D⊗It) justifié
@@ -208,7 +208,7 @@ tout en maintenant V (verifiability)
 
 ---
 
-## 🎯 Les 3 Metaconcepts Hybrides TSCG
+## 🎯 Les 3 GenericConcepts Hybrides TSCG
 
 ```
 1. Domain (v14.0.0)

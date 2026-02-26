@@ -152,7 +152,7 @@ Pole_7_Synthesis (Synthèse & Destinée)
 ✅ **Respecte tradition nordique** : 9 mondes préservés  
 ✅ **Sépare préoccupations** : Fonction (pôle) vs Espace (monde)  
 ✅ **Permet double perspective** : Systémique ET narrative  
-✅ **Transdisciplinaire** : Monde ⊑ Environment (M2 metaconcept)  
+✅ **Transdisciplinaire** : Monde ⊑ Environment (M2 GenericConcept)  
 
 ---
 

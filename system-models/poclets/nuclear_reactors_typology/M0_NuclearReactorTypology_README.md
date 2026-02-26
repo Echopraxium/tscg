@@ -14,9 +14,9 @@
 2. [Poclet Overview](#poclet-overview)
 3. [ASFID Analysis](#asfid-analysis)
 4. [REVOI Analysis](#revoi-analysis)
-5. [Processor Metaconcept Validation](#processor-metaconcept-validation)
+5. [Processor GenericConcept Validation](#processor-GenericConcept-validation)
 6. [The Nine Reactor Poles](#the-nine-reactor-poles)
-7. [M2 Metaconcept Validation](#m2-metaconcept-validation)
+7. [M2 GenericConcept Validation](#m2-GenericConcept-validation)
 8. [M1 Core Concepts Discovery](#m1-core-concepts-discovery)
 9. [M1_EnergyGenerators Extension](#m1_energygenerators-extension)
 10. [Enneagram Structure Analysis](#enneagram-structure-analysis)
@@ -31,7 +31,7 @@
 
 The **Nuclear Reactor Typology** poclet is TSCG's first industrial energy system model, demonstrating:
 
-✅ **Processor metaconcept** - First validation in complex engineering domain  
+✅ **Processor GenericConcept** - First validation in complex engineering domain  
 ✅ **N=9 Polarity** - Second validation after Yggdrasil (mythological → industrial)  
 ✅ **Dual bicephalous architecture** - Territory (empirical fission dynamics) + Map (safety models, standards)  
 ✅ **6 M1 Core Concepts** - Transdisciplinary patterns (CriticalityRegime, SelfSustainingReaction, etc.)  
@@ -47,7 +47,7 @@ The **Nuclear Reactor Typology** poclet is TSCG's first industrial energy system
 
 ### Definition
 
-A **nuclear reactor** is a **Processor** (M2 metaconcept) that transforms nuclear fuel into thermal energy through controlled fission chain reactions, maintaining criticality (k_eff = 1) via regulation mechanisms.
+A **nuclear reactor** is a **Processor** (M2 GenericConcept) that transforms nuclear fuel into thermal energy through controlled fission chain reactions, maintaining criticality (k_eff = 1) via regulation mechanisms.
 
 ### Minimality Criterion
 
@@ -491,9 +491,9 @@ This is expected for **mature industrial technology** with:
 
 ---
 
-## Processor Metaconcept Validation
+## Processor GenericConcept Validation
 
-The **Processor** metaconcept (M2, v15.0.0) is defined as:
+The **Processor** GenericConcept (M2, v15.0.0) is defined as:
 
 > "Generic system with inputs and outputs that transforms/processes incoming resources, signals, or matter into outputs. **Dual bicephalous architecture**: Territory (Transformation ⊗ Flow ⊗ Resource) + Map (Transformation ⊗ Representation ⊗ Interoperability)."
 
@@ -823,9 +823,9 @@ Applied to reactors:
 
 ---
 
-## M2 Metaconcept Validation
+## M2 GenericConcept Validation
 
-The Nuclear Reactor Typology poclet **validates 10 M2 metaconcepts**:
+The Nuclear Reactor Typology poclet **validates 10 M2 GenericConcepts**:
 
 ### 1. Processor (Dual Bicephalous Architecture) ⭐
 
@@ -847,7 +847,7 @@ Map: Transformation ⊗ Representation ⊗ Interoperability
 
 ### 2. Polarity (N=9) ⭐
 
-**Formula**: Polarity is N-ary metaconcept (N ≥ 1)
+**Formula**: Polarity is N-ary GenericConcept (N ≥ 1)
 
 **Validation**: **Second N=9 validation** after Yggdrasil
 - Yggdrasil: Mythological (7 functional poles, 9 spatial worlds)
@@ -1849,7 +1849,7 @@ The Nuclear Reactor Typology poclet makes **5 major contributions** to TSCG:
 
 #### 2. Processor Validation ⭐⭐
 
-**Processor** (M2, v15.0.0) is **newest metaconcept** with dual bicephalous architecture.
+**Processor** (M2, v15.0.0) is **newest GenericConcept** with dual bicephalous architecture.
 
 **Previous validations**: Biology (digestive, kidneys, liver), electronics (transistor, op-amp)
 
@@ -2066,7 +2066,7 @@ Bifurcation point: λ = 1 (eigenvalue of propagation matrix)
 **Deliverables**:
 - Complete plant ASFID/REVOI analysis
 - Safety system Processor modeling
-- Control system Regulation metaconcept validation
+- Control system Regulation GenericConcept validation
 
 ---
 
@@ -2202,7 +2202,7 @@ Bifurcation point: λ = 1 (eigenvalue of propagation matrix)
 The **Nuclear Reactor Typology** poclet is a **landmark achievement** for TSCG:
 
 ✅ **First industrial energy system** modeled  
-✅ **Processor metaconcept** validated in complex engineering domain  
+✅ **Processor GenericConcept** validated in complex engineering domain  
 ✅ **N=9 Polarity** second validation (mythological → industrial)  
 ✅ **6 M1 Core Concepts** discovered (transdisciplinary patterns)  
 ✅ **M1_EnergyGenerators** extension created (foundation for all power generation)  

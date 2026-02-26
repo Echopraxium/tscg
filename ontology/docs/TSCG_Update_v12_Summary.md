@@ -2,23 +2,23 @@
 
 **Date**: January 21, 2026  
 **Version M2**: 11.0.0 → **12.0.0** ✅  
-**New Metaconcepts**: +3 (Layer, Switch, Mode)  
+**New GenericConcepts**: +3 (Layer, Switch, Mode)  
 **Status**: Ready for integration ✅
 
 ---
 
 ## 📊 Main Changes
 
-### M2 Metaconcepts Ontology
+### M2 GenericConcepts Ontology
 
 **Before (v11.0.0)**:
-- Total: 55 metaconcepts
+- Total: 55 GenericConcepts
 - Territory: 29
 - Map: 8
 - Dual: 18
 
 **After (v12.0.0)**:
-- Total: **58 metaconcepts** (+3)
+- Total: **58 GenericConcepts** (+3)
 - Territory: **30** (+1: Layer)
 - Map: 8 (unchanged)
 - Dual: **20** (+2: Switch, Mode)
@@ -32,7 +32,7 @@
 
 ---
 
-## 🆕 New Metaconcept 1: **Layer**
+## 🆕 New GenericConcept 1: **Layer**
 
 ### Identity
 - **ID**: `m2:Layer`
@@ -49,9 +49,9 @@ Stratified organization where system components are arranged in distinct, stacke
 |Layer⟩ = 0.85|S⟩ + 0.75|I⟩ + 0.70|A⟩ + 0.30|F⟩ + 0.20|D⟩
 ```
 
-### Distinction from Existing Metaconcepts
+### Distinction from Existing GenericConcepts
 
-| Metaconcept | Difference |
+| GenericConcept | Difference |
 |-------------|------------|
 | **Hierarchy** | Layer = HORIZONTAL stratification (stacked); Hierarchy = VERTICAL ordering (tree) |
 | **Imbrication** | Layer = STACKING (adjacency); Imbrication = NESTING (containment) |
@@ -74,7 +74,7 @@ Stratified organization where system components are arranged in distinct, stacke
 
 ---
 
-## 🆕 New Metaconcept 2: **Switch**
+## 🆕 New GenericConcept 2: **Switch**
 
 ### Identity
 - **ID**: `m2:Switch`
@@ -108,9 +108,9 @@ where:
 |Switch⟩ = 0.80|A⟩ + 0.75|D⟩ + 0.70|I⟩ + 0.40|S⟩ + 0.30|F⟩
 ```
 
-### Distinction from Existing Metaconcepts
+### Distinction from Existing GenericConcepts
 
-| Metaconcept | Difference |
+| GenericConcept | Difference |
 |-------------|------------|
 | **Bifurcation** | Bifurcation = CONTINUOUS parameter change; Switch = DISCRETE triggered transition |
 | **Threshold** | Threshold = CRITICAL VALUE; Switch = MECHANISM using threshold |
@@ -142,7 +142,7 @@ where:
 
 ---
 
-## 🆕 New Metaconcept 3: **Mode**
+## 🆕 New GenericConcept 3: **Mode**
 
 ### Identity
 - **ID**: `m2:Mode`
@@ -159,9 +159,9 @@ Discrete operational state or configuration determining system behavior, persist
 |Mode⟩ = 0.80|S⟩ + 0.75|I⟩ + 0.75|A⟩ + 0.40|F⟩ + 0.30|D⟩
 ```
 
-### Distinction from Existing Metaconcepts
+### Distinction from Existing GenericConcepts
 
-| Metaconcept | Difference |
+| GenericConcept | Difference |
 |-------------|------------|
 | **State** | Mode = QUALITATIVE class; State = QUANTITATIVE point in continuous space |
 | **Configuration** | Mode = BEHAVIORAL difference; Configuration = PARAMETER settings |
@@ -252,13 +252,13 @@ Switch: Mᵢ → Mⱼ (state transition within or across layers)
 ## 📊 Impact on M2 Structure
 
 ### Before v12.0.0
-- **Total**: 55 metaconcepts
+- **Total**: 55 GenericConcepts
 - **Structural**: 12
 - **Regulatory**: 10
 - **Ontological**: 7
 
 ### After v12.0.0
-- **Total**: **58 metaconcepts** (+3, +5.5%)
+- **Total**: **58 GenericConcepts** (+3, +5.5%)
 - **Structural**: **13** (+Layer)
 - **Regulatory**: **11** (+Switch)
 - **Ontological**: **8** (+Mode)
@@ -309,7 +309,7 @@ Switch: Mᵢ → Mⱼ (state transition within or across layers)
 - **N-ary is general form** (N ≥ 2)
 - **Most real-world switches are N-ary**: washing machines (8 cycles), cameras (6 modes), transmissions (5-8 gears)
 
-This generalization significantly strengthens the metaconcept's transdisciplinary applicability.
+This generalization significantly strengthens the GenericConcept's transdisciplinary applicability.
 
 ### 2. Cohesive Triad Pattern
 Layer, Switch, and Mode form a **coherent organizational triad**:
@@ -325,7 +325,7 @@ Strong complementarity between Switch and Mode:
 - **Switch without Mode**: Transitions with no destination
 - **Both together**: Complete state management pattern
 
-Example validation: Camera systems, washing machines, transmissions all exhibit both metaconcepts.
+Example validation: Camera systems, washing machines, transmissions all exhibit both GenericConcepts.
 
 ---
 
@@ -338,7 +338,7 @@ Example validation: Camera systems, washing machines, transmissions all exhibit 
 
 ### Suggested Documentation Updates
 
-1. Update M2 README to reflect 58 metaconcepts
+1. Update M2 README to reflect 58 GenericConcepts
 2. Add "Structured State Management" section showcasing Layer-Switch-Mode triad
 3. Emphasize N-ary nature of Switch in all documentation
 4. Create visual diagrams showing triad relationships
@@ -355,9 +355,9 @@ Example validation: Camera systems, washing machines, transmissions all exhibit 
 
 ## 📁 Deliverables
 
-### 1. **M2_Metaconcepts_v12.jsonld** (Complete)
+### 1. **M2_GenericConcepts_v12.jsonld** (Complete)
 Updated ontology with:
-- 58 metaconcepts (55→58)
+- 58 GenericConcepts (55→58)
 - Layer, Switch, Mode definitions
 - Full ASFID/ORIVE characterizations
 - Transdisciplinary validation
@@ -365,9 +365,9 @@ Updated ontology with:
 
 ### 2. **M2_Candidates_Analysis_Layer_Switch_Mode.md**
 Detailed analysis document with:
-- Individual metaconcept analysis
+- Individual GenericConcept analysis
 - Transdisciplinary validation tables
-- Distinction from existing metaconcepts
+- Distinction from existing GenericConcepts
 - JSON-LD skeletons
 - Triad coherence explanation
 
@@ -378,10 +378,10 @@ Executive summary of v12.0.0 update
 
 ## ✨ Conclusion
 
-**APPROVAL**: ✅ All three metaconcepts (Layer, Switch, Mode) validated and integrated into M2 v12.0.0
+**APPROVAL**: ✅ All three GenericConcepts (Layer, Switch, Mode) validated and integrated into M2 v12.0.0
 
 **Key Achievements**:
-1. ✅ Expanded M2 by 5.5% (55→58 metaconcepts)
+1. ✅ Expanded M2 by 5.5% (55→58 GenericConcepts)
 2. ✅ Filled genuine gaps in Structural, Regulatory, and Ontological categories
 3. ✅ Discovered cohesive triad pattern (Layer ↔ Switch ↔ Mode)
 4. ✅ **Corrected Switch to N-ary** (not binary-only)

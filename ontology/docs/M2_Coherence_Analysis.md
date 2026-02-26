@@ -8,18 +8,18 @@
 ## 📊 Executive Summary
 
 **Part_1.jsonld Status**: INCOMPLETE  
-- **Declared**: 34 metaconcepts (in metadata)  
-- **Actually defined**: 16 metaconcepts  
-- **Missing from validated list**: 18 metaconcepts  
-- **Candidates to evaluate**: 9 metaconcepts
+- **Declared**: 34 GenericConcepts (in metadata)  
+- **Actually defined**: 16 GenericConcepts  
+- **Missing from validated list**: 18 GenericConcepts  
+- **Candidates to evaluate**: 9 GenericConcepts
 
-**Action Required**: Add 18 validated + evaluate 9 candidates → Target: ~43-52 metaconcepts
+**Action Required**: Add 18 validated + evaluate 9 candidates → Target: ~43-52 GenericConcepts
 
 ---
 
-## ✅ Metaconcepts in Part_1 (16)
+## ✅ GenericConcepts in Part_1 (16)
 
-| # | Metaconcept | Category | Formula | Nature | Direction | Gap | Polarity |
+| # | GenericConcept | Category | Formula | Nature | Direction | Gap | Polarity |
 |---|-------------|----------|---------|--------|-----------|-----|----------|
 | 1 | Homeostasis | Regulatory | A⊗S⊗F | Reality | Constructive | 0.20 | neutral |
 | 2 | Resilience | Adaptive | A⊗S | Reality | Constructive | 0.25 | neutral |
@@ -160,7 +160,7 @@
 ### Priority 3: REJECT (2)
 
 8. **Space** 🔴
-   - Rationale: Space/spatiality is encoded in Structure (S), not separate metaconcept
+   - Rationale: Space/spatiality is encoded in Structure (S), not separate GenericConcept
    - Collision: HIGH - redundant with Structure, Topology implicit in S
    - Decision: **REJECT**
 
@@ -192,7 +192,7 @@ Gradient ↔ Flow (causal: gradient drives flow)
 
 ### Validated Distinctions
 
-| Metaconcept A | vs | Metaconcept B | Distinction |
+| GenericConcept A | vs | GenericConcept B | Distinction |
 |---------------|----|--------------| ------------|
 | Homeostasis | vs | Regulation | Specific vs general regulatory mechanism |
 | Constraint | vs | Threshold | Static limit vs dynamic trigger |
@@ -211,12 +211,12 @@ Gradient ↔ Flow (causal: gradient drives flow)
 
 ### Immediate Actions
 
-1. **Add 18 missing validated metaconcepts** to Part_1
+1. **Add 18 missing validated GenericConcepts** to Part_1
 2. **Accept 5 priority candidates**: Convergence/Divergence, Resource, Agent, Role, Mediator
-3. **Update metadata**: 16 → 39 metaconcepts (18 + 5 new)
+3. **Update metadata**: 16 → 39 GenericConcepts (18 + 5 new)
 4. **Reject 4 candidates**: Relation, Temporality, Space, Tropism
 
-### Target Composition (39 metaconcepts)
+### Target Composition (39 GenericConcepts)
 
 | Category | Count | Examples |
 |----------|-------|----------|
@@ -245,7 +245,7 @@ Gradient ↔ Flow (causal: gradient drives flow)
 
 **Capacity**: 128 max (64 Analytical + 64 Constructive)  
 **Current**: 39 (30% capacity)  
-**Room for growth**: 89 metaconcepts
+**Room for growth**: 89 GenericConcepts
 
 **Suggested future additions** (beyond 39):
 - Structural: Boundary, Interface, Component, Scale, Redundancy, Topology
@@ -259,11 +259,11 @@ Gradient ↔ Flow (causal: gradient drives flow)
 
 ## 🎯 Next Steps
 
-1. **Generate complete M2 ontology** with 39 metaconcepts
-2. **Validate tensor formulas** for 23 new metaconcepts (18 + 5)
+1. **Generate complete M2 ontology** with 39 GenericConcepts
+2. **Validate tensor formulas** for 23 new GenericConcepts (18 + 5)
 3. **Assign categories, axes, gaps** for all new entries
 4. **Check semantic consistency** and refine collision matrix
-5. **Update version** to 6.6.0 or 7.0.0 (breaking change: +23 metaconcepts)
+5. **Update version** to 6.6.0 or 7.0.0 (breaking change: +23 GenericConcepts)
 6. **Document changes** in changelog
 
 ---

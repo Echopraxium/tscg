@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-The **Adaptive Immune Response** poclet represents a highly sophisticated biological network exemplifying the **Network with Central Orchestrator** architectural pattern. This system demonstrates exceptional fit with TSCG metaconcepts **Pole**, **Mediator**, and **Trigger**, mobilizing 8 distinct M2 metaconcepts across 4 cellular poles, 4 mediator types, 4 trigger events, plus environmental and boundary components.
+The **Adaptive Immune Response** poclet represents a highly sophisticated biological network exemplifying the **Network with Central Orchestrator** architectural pattern. This system demonstrates exceptional fit with TSCG GenericConcepts **Pole**, **Mediator**, and **Trigger**, mobilizing 8 distinct M2 GenericConcepts across 4 cellular poles, 4 mediator types, 4 trigger events, plus environmental and boundary components.
 
 **Key Validation**: The critical role of CD4+ T cells as orchestrator is **empirically validated** by HIV/AIDS pathology, where selective destruction of this single pole causes complete system collapse despite intact other components.
 
@@ -51,9 +51,9 @@ Justification: Hierarchical structure with CD4+ as central hub, not symmetric po
 
 ---
 
-## 2. Metaconcept Mobilization Analysis
+## 2. GenericConcept Mobilization Analysis
 
-### 2.1 Pole Metaconcept (4 instances)
+### 2.1 Pole GenericConcept (4 instances)
 
 All poles follow formula **S⊗I⊗A**:
 
@@ -69,7 +69,7 @@ All poles follow formula **S⊗I⊗A**:
 - HIV/AIDS validates absolute essentiality
 - Failure → complete system paralysis
 
-### 2.2 Mediator Metaconcept (4 instances)
+### 2.2 Mediator GenericConcept (4 instances)
 
 All mediators follow formula **F⊗I⊗S**:
 
@@ -82,7 +82,7 @@ All mediators follow formula **F⊗I⊗S**:
 
 **Architectural insight**: System is **mediator-rich** - minimal direct pole-to-pole contact
 
-### 2.3 Trigger Metaconcept (4 instances)
+### 2.3 Trigger GenericConcept (4 instances)
 
 All triggers follow formula **D⊗I**:
 
@@ -95,7 +95,7 @@ All triggers follow formula **D⊗I**:
 
 **Pattern**: Multiple independent trigger points → system robustness
 
-### 2.4 Environment Metaconcept (1 instance)
+### 2.4 Environment GenericConcept (1 instance)
 
 **Lymphoid Organs (F⊗I)**:
 - **Flow**: Lymphatic circulation, chemokine-guided cell trafficking
@@ -104,7 +104,7 @@ All triggers follow formula **D⊗I**:
 
 **Critical insight**: Microarchitecture **enables** but does not **execute** immune function
 
-### 2.5 Additional Metaconcepts
+### 2.5 Additional GenericConcepts
 
 - **System (S⊗F)**: Adaptive immune system as bounded entity
 - **Network (S⊗I⊗F)**: Cellular interaction topology
@@ -159,7 +159,7 @@ Interpretation: This is a **well-characterized biological system** with decades 
 
 ### 4.4 Two-Signal Paradigm (Safety Mechanism)
 
-**Threshold Metaconcept Application**:
+**Threshold GenericConcept Application**:
 - Signal 1: TCR-MHC engagement (specificity)
 - Signal 2: Co-stimulation B7-CD28 (context validation)
 - **Both required** for T cell activation
@@ -184,7 +184,7 @@ Interpretation: This is a **well-characterized biological system** with decades 
 
 **Primary Domain**: **M1:biology** (Biology)  
 **Subdomain**: Immunology  
-**Relation to M2:Domain metaconcept**: Instance of Domain with specific 5D decomposition
+**Relation to M2:Domain GenericConcept**: Instance of Domain with specific 5D decomposition
 
 **Dominant ASFID**: Information (clonal selection, specificity)  
 **Dominant ORIVE**: Reproducibility (vaccination, immune memory)
@@ -212,13 +212,13 @@ Interpretation: This is a **well-characterized biological system** with decades 
 
 **Question**: Separate pole or subtype of CD4+?  
 **Current model**: Subtype (Th1/Th2/Th17/Treg all CD4+ variants)  
-**Alternative**: Could be modeled as **Feedback** metaconcept (regulatory control)
+**Alternative**: Could be modeled as **Feedback** GenericConcept (regulatory control)
 
 ### 7.2 Memory Formation
 
 **Question**: How to model immunological memory?  
 **Candidates**:
-- **Memory metaconcept (D⊗F)**: Temporal integration ∫(D⊗F)dt
+- **Memory GenericConcept (D⊗F)**: Temporal integration ∫(D⊗F)dt
 - **Attractor basin**: Memory cells as stable attractor state
 - **State transition**: Effector → Memory as phase change
 
@@ -243,11 +243,11 @@ Interpretation: This is a **well-characterized biological system** with decades 
 | **ASFID Completeness** | ✅ | All 5 dimensions present, measurable |
 | **Minimal System** | ✅ | Cannot remove any pole without collapse |
 | **Empirical Grounding** | ✅ | Decades of immunology research |
-| **Metaconcept Mobilization** | ✅ | 8 distinct M2 metaconcepts |
+| **GenericConcept Mobilization** | ✅ | 8 distinct M2 GenericConcepts |
 | **Real-World Validation** | ✅ | HIV/AIDS validates orchestrator essentiality |
 | **Transdisciplinary Pattern** | ⚠️ | Domain-specific, but Network+Orchestrator is general |
 
-**Overall Assessment**: **EXCELLENT poclet candidate** - High complexity, empirically validated, rich metaconcept mobilization
+**Overall Assessment**: **EXCELLENT poclet candidate** - High complexity, empirically validated, rich GenericConcept mobilization
 
 ---
 
@@ -257,13 +257,13 @@ Interpretation: This is a **well-characterized biological system** with decades 
 
 **Filename**: `M0_AdaptiveImmuneResponse.jsonld`  
 **Namespace**: `m0:adaptive_immune:`  
-**Imports**: M1_CoreConcepts, M1_Biology, M2_MetaConcepts, M3_EagleEye, M3_SphinxEye  
+**Imports**: M1_CoreConcepts, M1_Biology, M2_GenericConcepts, M3_EagleEye, M3_SphinxEye  
 **Version**: 1.0.0
 
 ### 9.2 Compatibility
 
 - ✅ TSCG Framework v14.1.0
-- ✅ M2 Metaconcepts v14.1.0 (Pole, Mediator, Trigger)
+- ✅ M2 GenericConcepts v14.1.0 (Pole, Mediator, Trigger)
 - ✅ M1:biology domain extension
 - ✅ Bicephalous architecture (Eagle Eye ASFID perspective)
 
@@ -286,7 +286,7 @@ Interpretation: This is a **well-characterized biological system** with decades 
 
 ### 10.2 TSCG Framework
 
-- M2_MetaConcepts.jsonld v14.1.0
+- M2_GenericConcepts.jsonld v14.1.0
 - M1_Biology.jsonld (domain extension)
 - TSCG_Map_Territory_Theoretical_Foundation.md
 - Bicephalous_Integration_Guide.md

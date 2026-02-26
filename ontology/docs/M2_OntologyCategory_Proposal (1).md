@@ -3,7 +3,7 @@
 **Version:** 1.0.0  
 **Date:** January 25, 2026  
 **Author:** Echopraxium with the collaboration of Claude AI  
-**Status:** Proposition pour intégration dans M2_MetaConcepts.jsonld
+**Status:** Proposition pour intégration dans M2_GenericConcepts.jsonld
 
 ---
 
@@ -51,7 +51,7 @@ Les identifiants d'ontologies incluent des suffixes redondants qui polluent la s
 
 ## 🎯 Définition de la Propriété
 
-### Ajout à M2_MetaConcepts.jsonld
+### Ajout à M2_GenericConcepts.jsonld
 
 ```json
 {
@@ -73,7 +73,7 @@ Les identifiants d'ontologies incluent des suffixes redondants qui polluent la s
     {
       "value": "UniversalPattern",
       "description": "M2 layer - Defines transdisciplinary systemic patterns from M3 tensor products",
-      "examples": ["M2_MetaConcepts"]
+      "examples": ["M2_GenericConcepts"]
     },
     {
       "value": "DomainExtension",
@@ -82,7 +82,7 @@ Les identifiants d'ontologies incluent des suffixes redondants qui polluent la s
     },
     {
       "value": "Poclet",
-      "description": "M0 layer - Proof-of-concept instances validating M2 metaconcepts through minimal complete systems",
+      "description": "M0 layer - Proof-of-concept instances validating M2 GenericConcepts through minimal complete systems",
       "examples": ["M0_Yggdrasil", "M0_FireTriangle", "M0_TPACK"]
     }
   ],
@@ -135,13 +135,13 @@ Les identifiants d'ontologies incluent des suffixes redondants qui polluent la s
 
 ### M2 Layer (Universal Patterns)
 
-**M2_MetaConcepts.jsonld:**
+**M2_GenericConcepts.jsonld:**
 ```json
 {
-  "@id": "m2:MetaConcepts",
+  "@id": "m2:GenericConcepts",
   "@type": "owl:Ontology",
   "m2:ontologyCategory": "UniversalPattern",
-  "dcterms:title": "TSCG M2 Metaconcepts",
+  "dcterms:title": "TSCG M2 GenericConcepts",
   ...
 }
 ```
@@ -201,7 +201,7 @@ Les identifiants d'ontologies incluent des suffixes redondants qui polluent la s
 ### Trouver tous les Poclets
 
 ```sparql
-PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#>
+PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
 SELECT ?ontology ?title
@@ -216,7 +216,7 @@ ORDER BY ?title
 ### Compter les ontologies par catégorie
 
 ```sparql
-PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#>
+PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
 SELECT ?category (COUNT(?ontology) AS ?count)
@@ -231,7 +231,7 @@ ORDER BY ?category
 ### Lister toutes les extensions de domaine
 
 ```sparql
-PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#>
+PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
 SELECT ?ontology ?title ?created
@@ -250,10 +250,10 @@ ORDER BY ?created
 
 ### Checklist pour Adoption
 
-- [ ] Ajouter la définition de `m2:ontologyCategory` dans M2_MetaConcepts.jsonld
+- [ ] Ajouter la définition de `m2:ontologyCategory` dans M2_GenericConcepts.jsonld
 - [ ] Mettre à jour le validateur TSCG pour vérifier cette propriété
 - [ ] Ajouter `m2:ontologyCategory` à tous les fichiers M3 existants
-- [ ] Ajouter `m2:ontologyCategory` à M2_MetaConcepts.jsonld
+- [ ] Ajouter `m2:ontologyCategory` à M2_GenericConcepts.jsonld
 - [ ] Ajouter `m2:ontologyCategory` à tous les fichiers M1 existants
 - [ ] Ajouter `m2:ontologyCategory` à tous les poclets M0 (✅ FAIT)
 - [ ] Mettre à jour les templates d'ontologies
@@ -284,7 +284,7 @@ ORDER BY ?created
 
 ### Étape 1 : Ajouter la Propriété à M2
 
-Insérer la définition complète de `m2:ontologyCategory` dans M2_MetaConcepts.jsonld.
+Insérer la définition complète de `m2:ontologyCategory` dans M2_GenericConcepts.jsonld.
 
 ### Étape 2 : Mettre à Jour les Ontologies Existantes
 
@@ -319,7 +319,7 @@ L'ajout de `m2:ontologyCategory` est une amélioration architecturale majeure qu
 - ✅ Renforce la cohérence du framework
 - ✅ Suit les best practices OWL/RDF
 
-**Recommandation : ADOPTER** cette propriété dans M2_MetaConcepts.jsonld.
+**Recommandation : ADOPTER** cette propriété dans M2_GenericConcepts.jsonld.
 
 ---
 

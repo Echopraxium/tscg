@@ -69,9 +69,9 @@ The same Territory is described by four distinct Maps, each optimized for a diff
 
 ---
 
-## Shared Metaconcepts (common to all 4 variants)
+## Shared GenericConcepts (common to all 4 variants)
 
-| Metaconcept | Formula | Role |
+| GenericConcept | Formula | Role |
 |---|---|---|
 | `m2:Component` / `m2:Channel` | `S⊗I` / `S⊗I⊗F` | Color channels as functional units |
 | `m2:Fusion` | `S⊗F⊗D` | Channels merge into perceived color |
@@ -128,7 +128,7 @@ The Color Synthesis federation provides exceptional pedagogical value for TSCG b
 
 - ✅ Demonstrates Map-Territory distinction with multiple Maps  
 - ✅ 4 federated instances (2 additive + 2 subtractive)  
-- ✅ Shared metaconcept identification across all variants  
+- ✅ Shared GenericConcept identification across all variants  
 - ✅ Transformation network between models documented  
 - ✅ Observer-relativity principle illustrated
 

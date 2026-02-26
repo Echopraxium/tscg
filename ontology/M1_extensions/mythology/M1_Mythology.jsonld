@@ -2,7 +2,7 @@
   "@context": {
     "m1:mythology": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology.jsonld#",
     "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3:eagle_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
     "m3:sphinx_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -24,7 +24,7 @@
       "owl:versionInfo": "1.0.0.p3",
       "owl:imports": [
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld"
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld"
       ],
       "m1:domainScope": "Mythology, Cosmology, Comparative Religion, Spiritual Systems, Folklore",
       "m1:conceptCategories": {
@@ -98,13 +98,13 @@
       "@id": "m1:mythology:MythologicalEntity",
       "@type": "owl:Class",
       "rdfs:label": "Mythological Entity",
-      "rdfs:comment": "Root abstract class for all entities appearing in mythological systems. Encompasses deities, creatures, artifacts, places, and abstract forces. All instances instantiate one or more M2 metaconcepts (typically Agent, Identity, Role) and have cultural origin, symbolic meaning, and appear in documented myths.",
+      "rdfs:comment": "Root abstract class for all entities appearing in mythological systems. Encompasses deities, creatures, artifacts, places, and abstract forces. All instances instantiate one or more M2 GenericConcepts (typically Agent, Identity, Role) and have cultural origin, symbolic meaning, and appear in documented myths.",
       "rdfs:subClassOf": "m2:GenericConcept",
       "m1:properties": [
         "m1:hasCulturalOrigin - Which mythology (Norse, Greek, etc.)",
         "m1:hasSymbolicRole - What it represents symbolically",
         "m1:appearsInMyths - References to source myths",
-        "m1:instantiatesM2 - Which M2 metaconcepts",
+        "m1:instantiatesM2 - Which M2 GenericConcepts",
         "m1:associatedSymbols - Visual/conceptual symbols"
       ]
     },
@@ -417,8 +417,8 @@
       "@type": "owl:Class",
       "rdfs:label": "Gatekeeper Archetype",
       "rdfs:comment": "Agent implementing Constrained Interface at critical system boundary. Enables legitimate passage while blocking threats. Combines Interface (connection) with Constraint (selectivity) through active Agent enforcement. Not passive barrier nor neutral mediator - intelligent selective gateway.",
-      "m1:instantiatesMetaconcept": "m2:MetaconceptCombo",
-      "m1:metaconceptComboStructure": {
+      "m1:instantiatesGenericConcept": "m2:GenericConceptCombo",
+      "m1:GenericConceptComboStructure": {
         "parentA": "m2:Interface",
         "parentB": "m2:Constraint",
         "additionalComponent": "m2:Agent",

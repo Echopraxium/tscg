@@ -179,12 +179,12 @@ The `m3:category_theory:` namespace is **preserved** in @context:
 
 ## Usage in Other Ontologies
 
-**M2_MetaConcepts.jsonld** can now reference Category Theory like this:
+**M2_GenericConcepts.jsonld** can now reference Category Theory like this:
 
 ```json
 {
   "@context": {
-    "m2": "https://.../M2_MetaConcepts.jsonld#",
+    "m2": "https://.../M2_GenericConcepts.jsonld#",
     "m3": "https://.../M3_GenesisSpace.jsonld#",
     "m3:category_theory": "https://.../M3_GenesisSpace.jsonld#"
   },
@@ -225,7 +225,7 @@ The `m3:category_theory:` namespace is **preserved** in @context:
    - M3_GenesisSpace_v3_1_0.jsonld
    - M3_GenesisSpace_v3_1_0_FINAL.jsonld
 
-2. **Update M2_MetaConcepts.jsonld:**
+2. **Update M2_GenericConcepts.jsonld:**
    - Context already has m3:category_theory namespace ✅
    - Can now use Category Theory annotations
 

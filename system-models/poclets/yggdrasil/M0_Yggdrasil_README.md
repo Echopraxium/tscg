@@ -37,7 +37,7 @@ The **Yggdrasil poclet** is a comprehensive TSCG analysis of Norse cosmology, ce
 
 **Triple Function**:
 1. **Proof-of-concept**: Validates TSCG framework applicability to mythology
-2. **M2 Identification**: Identifies metaconcept candidates (Identity, CyclicTension, CatastrophicBifurcation)
+2. **M2 Identification**: Identifies GenericConcept candidates (Identity, CyclicTension, CatastrophicBifurcation)
 3. **M1 Population**: Populates M1_Mythology with transdisciplinary patterns (Deity, MythicalCreature, Trickster, Gatekeeper)
 
 ### Primary Sources
@@ -63,9 +63,9 @@ The **Yggdrasil poclet** is a comprehensive TSCG analysis of Norse cosmology, ce
 └─────────────────────────────────────────────────────┘
                         ↓
 ┌─────────────────────────────────────────────────────┐
-│  M2: Metaconcepts                                    │
+│  M2: GenericConcepts                                    │
 │  Identity, Agent, Mediator, Bifurcation, Fission   │
-│  CyclicTension, MetaconceptCombo                    │
+│  CyclicTension, GenericConceptCombo                    │
 └─────────────────────────────────────────────────────┘
                         ↓
 ┌─────────────────────────────────────────────────────┐
@@ -313,7 +313,7 @@ Neither **Interface alone** (no selectivity) nor **Constraint alone** (no passag
 
 **Ragnarök** = `m1:core:CatastrophicBifurcation`
 
-**Formula**: CatastrophicBifurcation = MetaconceptCombo(Bifurcation, Fission)
+**Formula**: CatastrophicBifurcation = GenericConceptCombo(Bifurcation, Fission)
 
 - **Bifurcation** (M2): Qualitative state change at critical threshold
 - **Fission** (M2): Structural splitting/separation
@@ -394,9 +394,9 @@ Not contradiction but **nested cycles**:
 
 ## TSCG Framework Validation
 
-### M2 Metaconcepts Validated
+### M2 GenericConcepts Validated
 
-| Metaconcept | Yggdrasil Instance | Formula | Evidence |
+| GenericConcept | Yggdrasil Instance | Formula | Evidence |
 |-------------|-------------------|---------|----------|
 | **Identity** | 20 entities (deities, creatures, artifacts) | S⊗I⊗A⊗V⊗E | Mjölnir returns when thrown (A), Odin persistent across myths (V) |
 | **Agent** | All deities, some creatures (Fenrir, Loki, etc.) | S⊗I⊗D⊗A⊗E | Autonomous actors with goals |
@@ -414,7 +414,7 @@ Not contradiction but **nested cycles**:
 |------------|-------------------|---------|--------|
 | **MultipolarNetwork** | 7-pole system | S⊗I⊗A | **VALIDATED** (N=7 irreducible poles) |
 | **CyclicTension** | Níðhögg ↔ Nornes | D⊗A⊗F | **VALIDATED** (perpetual degradation ↔ restoration) |
-| **CatastrophicBifurcation** | Ragnarök | S⊗D⊗F | **VALIDATED** (1st MetaconceptCombo in M1) |
+| **CatastrophicBifurcation** | Ragnarök | S⊗D⊗F | **VALIDATED** (1st GenericConceptCombo in M1) |
 | **Deity** | 12 gods | Agent+Identity+Role | **VALIDATED** (transdisciplinary) |
 | **MythicalCreature** | 7 creatures | Entity+Identity | **VALIDATED** (transdisciplinary) |
 | **Trickster** | Loki | Agent⊗T(R) | **VALIDATED** (5+ cultures) |
@@ -450,7 +450,7 @@ Not contradiction but **nested cycles**:
 | **M0_Yggdrasil_README.md** | This file - comprehensive analysis |
 | **Loki_As_Representation_Transformer.md** | Trickster pattern analysis |
 | **Heimdall_Interface_Constraint_Analysis.md** | Gatekeeper pattern analysis |
-| **CatastrophicBifurcation_M1_Analysis.md** | Ragnarök as MetaconceptCombo |
+| **CatastrophicBifurcation_M1_Analysis.md** | Ragnarök as GenericConceptCombo |
 | **Yggdrasil_7_vs_9_Analysis.md** | Hybrid pole/world model justification |
 
 ### File Relationships
@@ -521,7 +521,7 @@ M0_Yggdrasil.jsonld (v2.0.0)
 **Not M2** because:
 - Composite (Bifurcation ⊗ Fission)
 - Transdisciplinary but not universal (4-6 domains, not 8-10)
-- Demonstrates MetaconceptCombo mechanism
+- Demonstrates GenericConceptCombo mechanism
 
 **Why Important**: First exemplar of M2⊗M2→M1 construction in TSCG. Opens path for other composite patterns.
 
@@ -634,16 +634,16 @@ M0_Yggdrasil.jsonld (v2.0.0)
 
 The **Yggdrasil poclet** successfully demonstrates TSCG framework applicability to mythological systems. Key achievements:
 
-✅ **Validated** M2 metaconcepts (Identity, Agent, Mediator, CyclicTension, MetaconceptCombo)  
+✅ **Validated** M2 GenericConcepts (Identity, Agent, Mediator, CyclicTension, GenericConceptCombo)  
 ✅ **Demonstrated** M1 patterns (MultipolarNetwork, Trickster, Gatekeeper, CatastrophicBifurcation)  
 ✅ **Populated** M1_Mythology with transdisciplinary entity types (Deity, MythicalCreature, etc.)  
 ✅ **Resolved** 7-pole vs 9-world tension via hybrid functional-spatial model  
-✅ **Modeled** catastrophic event (Ragnarök) as MetaconceptCombo  
+✅ **Modeled** catastrophic event (Ragnarök) as GenericConceptCombo  
 ✅ **Classified** 20 entities with formal Identity criteria  
 
 **Extensibility**: Foundation laid for Greek, Egyptian, Hindu, and other mythological poclets using same M1_Mythology ontology.
 
-**Theoretical Contribution**: First demonstration of **MetaconceptCombo** mechanism (Bifurcation ⊗ Fission → CatastrophicBifurcation) as formal pattern construction method.
+**Theoretical Contribution**: First demonstration of **GenericConceptCombo** mechanism (Bifurcation ⊗ Fission → CatastrophicBifurcation) as formal pattern construction method.
 
 ---
 
@@ -659,7 +659,7 @@ The **Yggdrasil poclet** successfully demonstrates TSCG framework applicability 
 
 ### TSCG Framework
 - **M3_GenesisSpace.jsonld** - Bicephalous architecture (ASFID ⊗ REVOI)
-- **M2_MetaConcepts.jsonld** - 68 universal metaconcepts
+- **M2_GenericConcepts.jsonld** - 68 universal GenericConcepts
 - **M1_CoreConcepts.jsonld** - Transdisciplinary patterns (v1.2.0 with CatastrophicBifurcation)
 - **M1_Mythology.jsonld** - Mythology domain extension (v1.0.0)
 

@@ -1,7 +1,7 @@
 # M2_KnowledgeField_README.md
 
-**Metaconcepts:** `m2:KnowledgeField` · `m2:KnowledgeFieldMetaCombo`  
-**Introduced in:** M2_MetaConcepts.jsonld v15.2.0 · **Date:** 2026-02-17  
+**GenericConcepts:** `m2:KnowledgeField` · `m2:KnowledgeFieldGenericCombo`  
+**Introduced in:** M2_GenericConcepts.jsonld v15.2.0 · **Date:** 2026-02-17  
 **Author:** Echopraxium with the collaboration of Claude AI  
 **Status:** ACTIVE — Replaces `m2:Domain` (deprecated in v15.2.0)
 
@@ -9,20 +9,20 @@
 
 ## Overview
 
-`KnowledgeField` and `KnowledgeFieldMetaCombo` are two complementary metaconcepts introduced in v15.2.0 that together solve the fundamental problem of **disciplinary specialization** in the TSCG framework: how to model domain-specific concepts (chemical bonds, biological organs, mechanical gears…) without polluting the universal M2 layer with domain-specific entries.
+`KnowledgeField` and `KnowledgeFieldGenericCombo` are two complementary GenericConcepts introduced in v15.2.0 that together solve the fundamental problem of **disciplinary specialization** in the TSCG framework: how to model domain-specific concepts (chemical bonds, biological organs, mechanical gears…) without polluting the universal M2 layer with domain-specific entries.
 
-| Metaconcept | Category | Formula | Role |
+| GenericConcept | Category | Formula | Role |
 |-------------|----------|---------|------|
 | `m2:KnowledgeField` | Ontological | `∑ᵢ σᵢ \|uᵢ⟩⊗\|vᵢ⟩` | Models complete epistemic fields (Sciences, Arts…) |
-| `m2:KnowledgeFieldMetaCombo` | Compositional | `KnowledgeField ⊙ Metaconcept(s)` | Creates domain-specific concept variants at M1 |
+| `m2:KnowledgeFieldGenericCombo` | Compositional | `KnowledgeField ⊙ GenericConcept(s)` | Creates domain-specific concept variants at M1 |
 
 ---
 
 ## Discovery Context
 
-`KnowledgeField` evolved from the earlier `m2:Domain` metaconcept (deprecated v15.2.0). The rename clarifies a crucial architectural distinction: a **knowledge field** is not merely a "domain" — it is a structured epistemic space where Territory phenomena (ASFID) and Map frameworks (REVOI) are **coupled** through the epistemic practices of a discipline.
+`KnowledgeField` evolved from the earlier `m2:Domain` GenericConcept (deprecated v15.2.0). The rename clarifies a crucial architectural distinction: a **knowledge field** is not merely a "domain" — it is a structured epistemic space where Territory phenomena (ASFID) and Map frameworks (REVOI) are **coupled** through the epistemic practices of a discipline.
 
-`KnowledgeFieldMetaCombo` was identified during the systematic analysis of poclets across disciplines (M1_Chemistry, M1_Biology, M1_Optics, M1_Engineering…). In every case, domain-specific concepts followed the same pattern: a universal metaconcept plus a disciplinary qualifier. Without an explicit factorization pattern, this would have required 200+ domain-specific entries in M2 — a direct violation of the M2 universality principle.
+`KnowledgeFieldGenericCombo` was identified during the systematic analysis of poclets across disciplines (M1_Chemistry, M1_Biology, M1_Optics, M1_Engineering…). In every case, domain-specific concepts followed the same pattern: a universal GenericConcept plus a disciplinary qualifier. Without an explicit factorization pattern, this would have required 200+ domain-specific entries in M2 — a direct violation of the M2 universality principle.
 
 ---
 
@@ -30,7 +30,7 @@
 
 ### Definition
 
-> A structured field of knowledge where Territory phenomena (ASFID) and Map frameworks (REVOI) are coupled through epistemic practices. KnowledgeField is the **first TSCG metaconcept requiring both Eagle Eye and Sphinx Eye simultaneously** — it is intrinsically bicephalous.
+> A structured field of knowledge where Territory phenomena (ASFID) and Map frameworks (REVOI) are coupled through epistemic practices. KnowledgeField is the **first TSCG GenericConcept requiring both Eagle Eye and Sphinx Eye simultaneously** — it is intrinsically bicephalous.
 
 ### Tensor Formula
 
@@ -77,17 +77,17 @@ Photography    →  M1_Photography.jsonld
 
 #### ADJECTIVE instances — Disciplinary Tags
 
-Lightweight projections derived from NOUN instances, used exclusively within the `KnowledgeFieldMetaCombo` pattern. Defined in M1 extensions as qualifiers.
+Lightweight projections derived from NOUN instances, used exclusively within the `KnowledgeFieldGenericCombo` pattern. Defined in M1 extensions as qualifiers.
 
 ```
-Chemistry   →  Chemical    (tag for KnowledgeFieldMetaCombo)
+Chemistry   →  Chemical    (tag for KnowledgeFieldGenericCombo)
 Biology     →  Biological
 Optics      →  Optical
 Mechanics   →  Mechanical
 Electronics →  Electronic
 ```
 
-> **Rule:** Always use the ADJECTIVE form in a KnowledgeFieldMetaCombo. `Chemical ⊙ Link`, never `Chemistry ⊙ Link`.
+> **Rule:** Always use the ADJECTIVE form in a KnowledgeFieldGenericCombo. `Chemical ⊙ Link`, never `Chemistry ⊙ Link`.
 
 ### Mathematical Formulation
 
@@ -200,9 +200,9 @@ Examples:
 - Chemistry ∩ Biology: Medium overlap (molecular, energetic concepts)
 - Economics ∩ Physics: Low overlap (analogical only)
 
-> M2 metaconcepts live in **ALL** knowledge fields — they are the universal intersection.
+> M2 GenericConcepts live in **ALL** knowledge fields — they are the universal intersection.
 
-### Distinction from Related Metaconcepts
+### Distinction from Related GenericConcepts
 
 | Concept | Distinction |
 |---------|------------|
@@ -210,20 +210,20 @@ Examples:
 | `m2:Environment` | External context of a system; KnowledgeField is structured knowledge space |
 | `m2:Representation` | Single Map; KnowledgeField couples ALL maps with Territory across a field |
 | `m2:Observer` | Measuring entity; KnowledgeField is the coupled space Observer operates within |
-| `m2:Domain` (deprecated) | Old metaconcept replaced by KnowledgeField — same mathematical foundation, clearer dual-role semantics |
+| `m2:Domain` (deprecated) | Old GenericConcept replaced by KnowledgeField — same mathematical foundation, clearer dual-role semantics |
 
 ---
 
-## m2:KnowledgeFieldMetaCombo
+## m2:KnowledgeFieldGenericCombo
 
 ### Definition
 
-> A factorization metaconcept coupling a KnowledgeField (ADJECTIVE form) with one or more universal Metaconcepts to create domain-specific specializations. Prevents M2 pollution by deferring concrete domain-specific instantiation to M1 extensions. Uses the qualification operator ⊙ rather than the tensor product ⊗.
+> A factorization GenericConcept coupling a KnowledgeField (ADJECTIVE form) with one or more universal GenericConcepts to create domain-specific specializations. Prevents M2 pollution by deferring concrete domain-specific instantiation to M1 extensions. Uses the qualification operator ⊙ rather than the tensor product ⊗.
 
 ### Formula
 
 ```
-KnowledgeFieldMetaCombo = KnowledgeField(adjective) ⊙ Metaconcept(s)
+KnowledgeFieldGenericCombo = KnowledgeField(adjective) ⊙ GenericConcept(s)
 ```
 
 **LaTeX:** `\text{KnowledgeField} \odot \bigotimes_{i=1}^{n} M_i`
@@ -243,7 +243,7 @@ KnowledgeFieldMetaCombo = KnowledgeField(adjective) ⊙ Metaconcept(s)
 The operator ⊙ is a **Disciplinary Qualification Operator** — fundamentally different from the tensor product ⊗:
 
 ```
-Formal definition: (KnowledgeField ⊙ Metaconcept)(x) = Metaconcept(x | context = KnowledgeField)
+Formal definition: (KnowledgeField ⊙ GenericConcept)(x) = GenericConcept(x | context = KnowledgeField)
 ```
 
 | Operator | Type | Dimensionality | Semantics |
@@ -255,29 +255,29 @@ Formal definition: (KnowledgeField ⊙ Metaconcept)(x) = Metaconcept(x | context
 
 ### Instantiation Constraint
 
-KnowledgeFieldMetaCombo can **only** be instantiated in M1 domain extensions — never directly in M2.
+KnowledgeFieldGenericCombo can **only** be instantiated in M1 domain extensions — never directly in M2.
 
 ```
 ✅ CORRECT:
-  M2_MetaConcepts.jsonld → defines KnowledgeFieldMetaCombo (abstract pattern)
-  M1_Chemistry.jsonld    → instantiates ChemicalLink using KnowledgeFieldMetaCombo
+  M2_GenericConcepts.jsonld → defines KnowledgeFieldGenericCombo (abstract pattern)
+  M1_Chemistry.jsonld    → instantiates ChemicalLink using KnowledgeFieldGenericCombo
 
 ❌ VIOLATION:
-  M2_MetaConcepts.jsonld → creates ChemicalLink directly (M2 pollution)
+  M2_GenericConcepts.jsonld → creates ChemicalLink directly (M2 pollution)
 ```
 
-**Rationale:** The universal layer M2 must remain free of domain-specific content. Every new M1 domain extension instantiates the KnowledgeFieldMetaCombo pattern for its own concepts — M2 stays clean.
+**Rationale:** The universal layer M2 must remain free of domain-specific content. Every new M1 domain extension instantiates the KnowledgeFieldGenericCombo pattern for its own concepts — M2 stays clean.
 
 ### Examples by Domain
 
 | M2 Pattern | M1 Instance | Decomposition | M1 File |
 |------------|-------------|---------------|---------|
-| KnowledgeFieldMetaCombo | `ChemicalLink` | `Chemical ⊙ Link` | M1_Chemistry.jsonld |
-| KnowledgeFieldMetaCombo | `BiologicalProcessor` | `Biological ⊙ Processor` | M1_Biology.jsonld |
-| KnowledgeFieldMetaCombo | `MechanicalComponent` | `Mechanical ⊙ Component` | M1_Engineering.jsonld |
-| KnowledgeFieldMetaCombo | `ElectronicTrigger` | `Electronic ⊙ Trigger` | M1_Electronics.jsonld |
-| KnowledgeFieldMetaCombo | `OpticalTransformation` | `Optical ⊙ Transformation` | M1_Optics.jsonld |
-| KnowledgeFieldMetaCombo | `ThermalReservoir` | `Thermal ⊙ Reservoir` | M1_Thermodynamics.jsonld |
+| KnowledgeFieldGenericCombo | `ChemicalLink` | `Chemical ⊙ Link` | M1_Chemistry.jsonld |
+| KnowledgeFieldGenericCombo | `BiologicalProcessor` | `Biological ⊙ Processor` | M1_Biology.jsonld |
+| KnowledgeFieldGenericCombo | `MechanicalComponent` | `Mechanical ⊙ Component` | M1_Engineering.jsonld |
+| KnowledgeFieldGenericCombo | `ElectronicTrigger` | `Electronic ⊙ Trigger` | M1_Electronics.jsonld |
+| KnowledgeFieldGenericCombo | `OpticalTransformation` | `Optical ⊙ Transformation` | M1_Optics.jsonld |
+| KnowledgeFieldGenericCombo | `ThermalReservoir` | `Thermal ⊙ Reservoir` | M1_Thermodynamics.jsonld |
 
 **Concrete M0 instances (second instantiation):**
 
@@ -290,29 +290,29 @@ ElectronicTrigger (M1)   → Transistor, Relay, SchmittTrigger, JKFlipFlop (M0)
 
 ### Parsimony Impact
 
-Without this pattern, every domain variant of every metaconcept would need to be defined in M2:
+Without this pattern, every domain variant of every GenericConcept would need to be defined in M2:
 
 | Scenario | M2 entries | Architecture |
 |----------|-----------|-------------|
-| **Without** KnowledgeFieldMetaCombo | 10 fields × 20 metaconcepts = **200+ entries** | M2 polluted with domain specifics |
-| **With** KnowledgeFieldMetaCombo | 1 pattern + 10 fields + 20 metaconcepts = **31 entries** | Clean separation M2/M1 |
+| **Without** KnowledgeFieldGenericCombo | 10 fields × 20 GenericConcepts = **200+ entries** | M2 polluted with domain specifics |
+| **With** KnowledgeFieldGenericCombo | 1 pattern + 10 fields + 20 GenericConcepts = **31 entries** | Clean separation M2/M1 |
 
 **Parsimony gain: ~6.5×**
 
-### Distinction from MetaconceptCombo
+### Distinction from GenericConceptCombo
 
 Both are compositional patterns, but they operate differently:
 
-| | MetaconceptCombo | KnowledgeFieldMetaCombo |
+| | GenericConceptCombo | KnowledgeFieldGenericCombo |
 |--|-----------------|------------------------|
-| **Formula** | `M₁ ⊗ M₂ ⇒ M_emergent` | `KnowledgeField ⊙ Metaconcept` |
+| **Formula** | `M₁ ⊗ M₂ ⇒ M_emergent` | `KnowledgeField ⊙ GenericConcept` |
 | **Operation** | Tensor fusion | Disciplinary qualification |
 | **Dimensionality** | 5D + 5D → emergent (richer) | 5D → 5D (preserved) |
-| **Result** | New metaconcept with emergent properties | Same metaconcept with domain context |
+| **Result** | New GenericConcept with emergent properties | Same GenericConcept with domain context |
 | **Example** | `FeedbackLoop = Process ⊗ Alignment ⊗ Homeostasis` | `ChemicalLink = Chemical ⊙ Link` |
 | **Location** | M2 (universal emergent pattern) | M1 (domain instantiation) |
 
-> MetaconceptCombo creates **new universal patterns**; KnowledgeFieldMetaCombo **specializes existing patterns** to domains. They are complementary, not competing.
+> GenericConceptCombo creates **new universal patterns**; KnowledgeFieldGenericCombo **specializes existing patterns** to domains. They are complementary, not competing.
 
 ---
 
@@ -321,7 +321,7 @@ Both are compositional patterns, but they operate differently:
 The full instantiation chain from abstract M2 pattern to concrete M0 instance:
 
 ```
-M2  →  KnowledgeFieldMetaCombo (abstract pattern, definition only)
+M2  →  KnowledgeFieldGenericCombo (abstract pattern, definition only)
         ↓  ⊙  Chemical
 M1  →  ChemicalLink (domain concept in M1_Chemistry.jsonld)
         ↓  instantiation
@@ -329,7 +329,7 @@ M0  →  CovalentBond, IonicBond, ReactionPathway (concrete poclet instances)
 ```
 
 ```
-M2  →  KnowledgeFieldMetaCombo (abstract pattern, definition only)
+M2  →  KnowledgeFieldGenericCombo (abstract pattern, definition only)
         ↓  ⊙  Biological
 M1  →  BiologicalProcessor (domain concept in M1_Biology.jsonld)
         ↓  instantiation
@@ -364,22 +364,22 @@ M0  →  Liver, Mitochondrion, RibosomeComplex (concrete poclet instances)
   "@type": ["owl:NamedIndividual", "m2:KnowledgeField"],
   "m2:knowledgeFieldRole": "ADJECTIVE",
   "m2:derivedFrom": "m1:Chemistry",
-  "rdfs:comment": "Disciplinary tag for use in KnowledgeFieldMetaCombo"
+  "rdfs:comment": "Disciplinary tag for use in KnowledgeFieldGenericCombo"
 }
 ```
 
-### Instantiating KnowledgeFieldMetaCombo in M1
+### Instantiating KnowledgeFieldGenericCombo in M1
 
 ```json
 {
   "@id": "m1:ChemicalLink",
   "@type": ["owl:NamedIndividual", "m1:Concept"],
   "rdfs:label": "Chemical Link",
-  "m1:hasParentMetaconcept": "m2:KnowledgeFieldMetaCombo",
-  "m1:knowledgeFieldMetaComboDef": {
+  "m1:hasParentGenericConcept": "m2:KnowledgeFieldGenericCombo",
+  "m1:KnowledgeFieldGenericComboDef": {
     "formula": "Chemical ⊙ Link",
     "knowledgeField": "m1:Chemical",
-    "combinedMetaconcept": "m2:Link"
+    "combinedGenericConcept": "m2:Link"
   },
   "rdfs:comment": "Link pattern (S⊗F) specialized to chemical bonds, reaction pathways, molecular networks"
 }
@@ -403,17 +403,17 @@ M0  →  Liver, Mitochondrion, RibosomeComplex (concrete poclet instances)
 ### Before v15.2.0 (m2:Domain)
 
 ```
-M2_MetaConcepts.jsonld (v14.x)
+M2_GenericConcepts.jsonld (v14.x)
 ├── m2:Domain  (limited — no dual-role, no ADJECTIVE form)
 └── No factorization pattern → risk of M2 pollution with domain concepts
 ```
 
-### After v15.2.0 (KnowledgeField + KnowledgeFieldMetaCombo)
+### After v15.2.0 (KnowledgeField + KnowledgeFieldGenericCombo)
 
 ```
-M2_MetaConcepts.jsonld (v15.2.0)
+M2_GenericConcepts.jsonld (v15.2.0)
 ├── m2:KnowledgeField  (NOUN/ADJECTIVE dual role, full SVD formalism)
-├── m2:KnowledgeFieldMetaCombo  (factorization pattern, ⊙ operator)
+├── m2:KnowledgeFieldGenericCombo  (factorization pattern, ⊙ operator)
 └── Clear separation: M2 = universal, M1 = domain-specific
 
 M1_Chemistry.jsonld     → Chemistry (NOUN) + Chemical (ADJECTIVE) + ChemicalLink, ChemicalProcessor...
@@ -431,9 +431,9 @@ M1_Optics.jsonld        → Optics (NOUN) + Optical (ADJECTIVE) + OpticalTransfo
 
 **Extensibility:** Adding a new discipline (e.g., M1_Acoustics) requires only a new M1 file — M2 remains unchanged.
 
-**Coherence:** All domain-specific concepts follow the same factorization grammar: `ADJECTIVE ⊙ Metaconcept`.
+**Coherence:** All domain-specific concepts follow the same factorization grammar: `ADJECTIVE ⊙ GenericConcept`.
 
-**Validation:** Each M1 instantiation independently validates the universality of the underlying M2 metaconcept.
+**Validation:** Each M1 instantiation independently validates the universality of the underlying M2 GenericConcept.
 
 ---
 
@@ -444,7 +444,7 @@ M1_Optics.jsonld        → Optics (NOUN) + Optical (ADJECTIVE) + OpticalTransfo
 | `M3_GenesisSpace.jsonld` | M3 | Defines ASFID and REVOI Hilbert spaces |
 | `M3_EagleEye.jsonld` | M3 | ASFID dimension definitions |
 | `M3_SphinxEye.jsonld` | M3 | REVOI dimension definitions |
-| `M2_MetaConcepts.jsonld` | M2 | Contains KnowledgeField and KnowledgeFieldMetaCombo |
+| `M2_GenericConcepts.jsonld` | M2 | Contains KnowledgeField and KnowledgeFieldGenericCombo |
 | `M1_Chemistry.jsonld` | M1 | Chemistry KnowledgeField + domain concepts |
 | `M1_Biology.jsonld` | M1 | Biology KnowledgeField + domain concepts |
 | `M1_Optics.jsonld` | M1 | Optics KnowledgeField + domain concepts |
@@ -457,7 +457,7 @@ M1_Optics.jsonld        → Optics (NOUN) + Optical (ADJECTIVE) + OpticalTransfo
 
 | Version | Change |
 |---------|--------|
-| **v15.2.0** | `m2:KnowledgeField` and `m2:KnowledgeFieldMetaCombo` introduced. `m2:Domain` deprecated. |
+| **v15.2.0** | `m2:KnowledgeField` and `m2:KnowledgeFieldGenericCombo` introduced. `m2:Domain` deprecated. |
 | v14.x | `m2:Domain` (precursor — no dual-role semantics, no ⊙ operator) |
 
 ---

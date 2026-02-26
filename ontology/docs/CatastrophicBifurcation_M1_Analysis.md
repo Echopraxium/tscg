@@ -10,7 +10,7 @@
 
 ## Critères M2 vs M1
 
-### M2 (Metaconcepts) - Critères d'Admission
+### M2 (GenericConcepts) - Critères d'Admission
 ✅ **Universalité transdisciplinaire** : Validé dans 5+ domaines très différents  
 ✅ **Irreductibilité** : Ne peut pas être décomposé en concepts plus simples  
 ✅ **Fondamentalité ontologique** : Propriété fondamentale de systèmes  
@@ -18,7 +18,7 @@
 
 ### M1 (Core Concepts) - Critères d'Admission
 ✅ **Transdisciplinarité limitée** : Validé dans 2-4 domaines  
-✅ **Composition** : Construit à partir de M2 metaconcepts  
+✅ **Composition** : Construit à partir de M2 GenericConcepts  
 ✅ **Pattern récurrent** : Apparaît suffisamment pour être "core" mais pas universel  
 ✅ **Complexe** : Combine plusieurs M2 pour créer pattern spécifique
 
@@ -29,7 +29,7 @@
 ### Arguments CONTRE M2 (donc POUR M1)
 
 #### 1. Réductibilité ❌
-**CatastrophicBifurcation = MetaconceptCombo(Bifurcation, Fission)**
+**CatastrophicBifurcation = GenericConceptCombo(Bifurcation, Fission)**
 - Peut être **décomposé** en deux M2 parents
 - N'est pas un concept atomique/primitif
 - C'est une **construction**, pas un fondement
@@ -70,11 +70,11 @@ Apparaît dans **plusieurs domaines**, pas tous :
 
 **Suffisant pour M1, insuffisant pour M2**
 
-#### 2. Construction via MetaconceptCombo ✅
+#### 2. Construction via GenericConceptCombo ✅
 **M1 est précisément le niveau pour ces constructions** :
 ```
 M2: Concepts primitifs universels
- ↓ MetaconceptCombo
+ ↓ GenericConceptCombo
 M1: Patterns construits transdisciplinaires
  ↓ Instantiation
 M0: Instances concrètes (Ragnarök)
@@ -88,7 +88,7 @@ M0: Instances concrètes (Ragnarök)
 
 #### 4. Utilité Pédagogique ✅
 **En M1** :
-- Démontre puissance de MetaconceptCombo
+- Démontre puissance de GenericConceptCombo
 - Pattern réutilisable (template)
 - Pont entre M2 (abstrait) et M0 (concret)
 
@@ -103,19 +103,19 @@ M0: Instances concrètes (Ragnarök)
 
 ### Multipolar Network (M1)
 **Formula** : S⊗I⊗A  
-**Basis** : 3 M2 metaconcepts (Structure, Information, Attractor)  
+**Basis** : 3 M2 GenericConcepts (Structure, Information, Attractor)  
 **Domains** : Mythology (Yggdrasil), Game Design (Magic), Education (TPACK)  
 **Status** : M1_CoreConcepts ✓
 
 ### Cyclic Tension (M1)
 **Formula** : D⊗A⊗F  
-**Basis** : 3 M2 metaconcepts (Dynamics, Attractor, Flow)  
+**Basis** : 3 M2 GenericConcepts (Dynamics, Attractor, Flow)  
 **Domains** : Mythology (Nídhögg-Nornes), Biology (cell wear-repair), Economics  
 **Status** : M1_CoreConcepts ✓
 
 ### CatastrophicBifurcation (Proposed M1)
 **Formula** : S⊗D⊗F  
-**Basis** : 2 M2 metaconcepts via MetaconceptCombo (Bifurcation, Fission)  
+**Basis** : 2 M2 GenericConcepts via GenericConceptCombo (Bifurcation, Fission)  
 **Domains** : Mythology (Ragnarök), Astrophysics (supernova), Ecology (mass extinction)  
 **Status** : Should be M1_CoreConcepts ✓
 
@@ -134,8 +134,8 @@ M0: Instances concrètes (Ragnarök)
   "rdfs:label": "Catastrophic Bifurcation",
   "rdfs:comment": "Sudden, violent, threshold-triggered structural fragmentation of a system. Emerges from synergistic combination of Bifurcation (qualitative state change at threshold) and Fission (structural splitting). Neither smooth transition nor controlled decomposition, but irreversible catastrophic disintegration.",
   
-  "m1:instantiatesMetaconcept": "m2:MetaconceptCombo",
-  "m1:metaconceptComboStructure": {
+  "m1:instantiatesGenericConcept": "m2:GenericConceptCombo",
+  "m1:GenericConceptComboStructure": {
     "parentA": "m2:Bifurcation",
     "parentB": "m2:Fission",
     "emergentConcept": "CatastrophicBifurcation",
@@ -226,7 +226,7 @@ M0: Instances concrètes (Ragnarök)
   
   "dcterms:created": "2026-02-04",
   "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-  "m1:discoveryContext": "Identified during Ragnarök modeling for M0_Yggdrasil poclet. Required MetaconceptCombo construction to capture threshold-triggered violent system fragmentation distinct from smooth bifurcation or controlled fission.",
+  "m1:discoveryContext": "Identified during Ragnarök modeling for M0_Yggdrasil poclet. Required GenericConceptCombo construction to capture threshold-triggered violent system fragmentation distinct from smooth bifurcation or controlled fission.",
   
   "m1:relatedConcepts": [
     "m2:Bifurcation (parent)",
@@ -250,7 +250,7 @@ M0: Instances concrètes (Ragnarök)
 | **Pattern réutilisable** | Oui (template) | ✅ |
 | **Validé par poclet** | M0_Yggdrasil | ✅ |
 | **Non-universel** | Pas dans tous domaines | ✅ (donc M1, pas M2) |
-| **Composé** | MetaconceptCombo | ✅ |
+| **Composé** | GenericConceptCombo | ✅ |
 
 **Conclusion** : ✅ **6/6 critères M1 satisfaits**
 
@@ -262,19 +262,19 @@ M0: Instances concrètes (Ragnarök)
 ```
 M3: Genesis Space (ASFID, REVOI)
  ↓
-M2: 68 Metaconcepts universels primitifs
- ↓ MetaconceptCombo
+M2: 68 GenericConcepts universels primitifs
+ ↓ GenericConceptCombo
 M1: Core Concepts construits (Multipolar Network, Cyclic Tension, CatastrophicBifurcation)
  ↓ Instantiation
 M0: Poclets (Ragnarök, Supernova, Extinction)
 ```
 
 ### 2. Pédagogie ✅
-**En M1** : Démontre comment **MetaconceptCombo** crée nouveaux patterns réutilisables  
+**En M1** : Démontre comment **GenericConceptCombo** crée nouveaux patterns réutilisables  
 **Exemple pédagogique parfait** : Bifurcation + Fission = Catastrophe
 
 ### 3. Extensibilité ✅
-**Autres MetaconceptCombo candidats pour M1** :
+**Autres GenericConceptCombo candidats pour M1** :
 - Oscillation + Amplification = Resonance
 - Homeostasis + Bifurcation = Critical Transition
 - Fusion + Emergence = Coalescence
@@ -290,7 +290,7 @@ M0: Poclets (Ragnarök, Supernova, Extinction)
 
 ### Étape 1 : Ajouter à M1_CoreConcepts.jsonld
 - Définir `m1:core:CatastrophicBifurcation`
-- Documenter MetaconceptCombo construction
+- Documenter GenericConceptCombo construction
 - Lister exemples transdisciplinaires
 
 ### Étape 2 : Référencer depuis M0_Yggdrasil.jsonld
@@ -298,14 +298,14 @@ M0: Poclets (Ragnarök, Supernova, Extinction)
 {
   "@id": "m0:yggdrasil:Ragnarok",
   "m0:instantiatesM1Concept": "m1:core:CatastrophicBifurcation",
-  "m0:instantiatesMetaconcept": "m2:MetaconceptCombo",
-  "m0:metaconceptComboParents": ["m2:Bifurcation", "m2:Fission"]
+  "m0:instantiatesGenericConcept": "m2:GenericConceptCombo",
+  "m0:GenericConceptComboParents": ["m2:Bifurcation", "m2:Fission"]
 }
 ```
 
 ### Étape 3 : Documenter dans M1_CoreConcepts README
 - CatastrophicBifurcation comme 3ème concept validé (après Multipolar Network, Cyclic Tension)
-- Exemple de MetaconceptCombo en action
+- Exemple de GenericConceptCombo en action
 - Pattern réutilisable pour autres catastrophes
 
 ---
@@ -314,11 +314,11 @@ M0: Poclets (Ragnarök, Supernova, Extinction)
 
 ✅ **CatastrophicBifurcation appartient à M1_CoreConcepts** parce que :
 
-1. **Construit** à partir de M2 (via MetaconceptCombo)
+1. **Construit** à partir de M2 (via GenericConceptCombo)
 2. **Transdisciplinaire** mais pas universel (4-6 domaines)
 3. **Pattern récurrent** suffisamment important pour être "core"
 4. **Cohérent** avec autres M1 concepts (Multipolar Network, Cyclic Tension)
-5. **Pédagogique** : Démontre puissance de MetaconceptCombo
+5. **Pédagogique** : Démontre puissance de GenericConceptCombo
 
 **Architecture résultante** :
 - M2 : Bifurcation, Fission (primitifs)
@@ -331,5 +331,5 @@ M0: Poclets (Ragnarök, Supernova, Extinction)
 
 **Document Status**: VALIDÉ  
 **Decision**: Place CatastrophicBifurcation in M1_CoreConcepts  
-**Rationale**: Composite, transdisciplinary but not universal, constructed via MetaconceptCombo  
+**Rationale**: Composite, transdisciplinary but not universal, constructed via GenericConceptCombo  
 **Next**: Implement in M1_CoreConcepts.jsonld

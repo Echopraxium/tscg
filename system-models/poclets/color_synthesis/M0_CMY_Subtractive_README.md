@@ -29,7 +29,7 @@ perceived color. It is the complement of RGB additive synthesis.
 | Components | 3 (C, M, Y channels) |
 | Poclet type | Composite (Specialized) |
 | Complementary to | RGB Additive |
-| M2 Metaconcepts | 13 |
+| M2 GenericConcepts | 13 |
 
 ---
 
@@ -70,7 +70,7 @@ perceived color. It is the complement of RGB additive synthesis.
 
 ## Channels (Components)
 
-| Channel | Metaconcept | Absorbs | Transmits | Complement |
+| Channel | GenericConcept | Absorbs | Transmits | Complement |
 |---|---|---|---|---|
 | Cyan (C) | `m2:Channel` | Red (~620–750 nm) | G + B → Cyan | Red (RGB) |
 | Magenta (M) | `m2:Channel` | Green (~495–570 nm) | R + B → Magenta | Green (RGB) |
@@ -82,9 +82,9 @@ Range: `[0%, 100%]` absorption percentage
 
 ---
 
-## Metaconcepts Mobilized (13)
+## GenericConcepts Mobilized (13)
 
-| Category | Metaconcepts |
+| Category | GenericConcepts |
 |---|---|
 | Structural | Space |
 | Informational | Channel · Signal · Representation |
@@ -122,10 +122,10 @@ Range: `[0%, 100%]` absorption percentage
 ## TSCG Validation
 
 - ✅ All 5 ASFID dimensions present  
-- ✅ 13 metaconcepts  
+- ✅ 13 GenericConcepts  
 - ✅ Minimality (3 channels — theoretical primaries)  
 - ✅ Emergence (color from spectral fusion/absorption)  
-- ✅ Channel metaconcept correctly used  
+- ✅ Channel GenericConcept correctly used  
 - ✅ Falsification principle illustrated (CMY → CMYK evolution)
 
 ---

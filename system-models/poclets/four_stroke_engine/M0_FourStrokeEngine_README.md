@@ -6,7 +6,7 @@ The **Four-Stroke Engine** is a minimal yet complete system representation of th
 
 As a TSCG poclet, the Four-Stroke Engine serves three critical functions:
 1. **Framework Validation**: Demonstrates TSCG's applicability to thermodynamic systems
-2. **M2 Metaconcept Discovery**: Reveals fundamental patterns like Cycle, Sequence, and Transformation
+2. **M2 GenericConcept Discovery**: Reveals fundamental patterns like Cycle, Sequence, and Transformation
 3. **M1 Domain Bootstrapping**: Identifies thermodynamics-specific concepts (Otto Cycle, Compression Ratio, Valve Timing)
 
 ## System Components
@@ -99,35 +99,35 @@ The small gap (0.132) confirms the Otto cycle as a high-fidelity representation 
 - No Power → No work output
 - No Exhaust → Cylinder fills with combustion products
 
-## M2 Metaconcepts Mobilized
+## M2 GenericConcepts Mobilized
 
-This poclet activates **20 metaconcepts** (38% of M2_MetaConcepts.jsonld):
+This poclet activates **20 GenericConcepts** (38% of M2_GenericConcepts.jsonld):
 
-### Structural Metaconcepts
+### Structural GenericConcepts
 - **Component** (S⊗I): 4 strokes as elementary parts
 - **Composition** (S⊗I⊗A): Piston + connecting rod + crankshaft assembly
 - **Symmetry** (S): Cylindrical geometry
 - **Modularity** (S⊗I): Multi-cylinder engines (4-cyl = 4 × single-cyl)
 
-### Dynamic Metaconcepts
+### Dynamic GenericConcepts
 - **Process** (D⊗F): Each stroke is a sub-process
 - **Cycle** (D⊗A): Periodic return to initial state
 - **Sequence** (D⊗I): Strict ordering of 4 strokes
 - **Bifurcation** (D⊗A): Rapid combustion transition
 - **Transformation** (D⊗F): Chemical energy → Heat → Mechanical work
 
-### Regulatory Metaconcepts
+### Regulatory GenericConcepts
 - **Constraint** (I⊗S): Fixed cylinder volume, compression ratio
 - **Threshold** (I⊗D): Ignition point (spark timing)
 - **Trigger** (D⊗I): Spark ignites combustion
 - **Synchronization** (D⊗I): Multi-cylinder timing coordination
 
-### Energetic Metaconcepts
+### Energetic GenericConcepts
 - **Flow** (F): Mass flow (air/fuel in, exhaust out), energy flow (heat → work)
 - **Dissipation** (F⊗D): Heat loss through cylinder walls (cooling system)
 - **Gradient** (F⊗D): Pressure gradient drives piston (power stroke)
 
-### Teleonomic Metaconcepts
+### Teleonomic GenericConcepts
 - **Efficiency** (A⊗F): Thermodynamic efficiency η = 1 − (1/r^(γ−1))
 - **Trade-off**: Higher compression → Higher efficiency BUT higher knock risk
 - **Balance**: Valve timing, ignition timing, piston-crankshaft synchronization
@@ -144,7 +144,7 @@ The "4-phase cycle" pattern appears across multiple domains:
 | **Chemistry** | Ion pump | 4 conformational states in Na⁺/K⁺-ATPase |
 | **Climatology** | Seasonal cycle | Spring, Summer, Fall, Winter |
 
-This cross-domain recurrence validates **Cycle** and **Sequence** as universal M2 metaconcepts.
+This cross-domain recurrence validates **Cycle** and **Sequence** as universal M2 GenericConcepts.
 
 ## M1 Domain Contributions
 

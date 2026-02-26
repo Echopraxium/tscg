@@ -58,7 +58,7 @@
 
 **Add to changelog:**
 ```json
-"v3.1.0": "CATEGORY THEORY INTEGRATION: Added M3_CategoryTheory.jsonld as mathematical foundation. Formalizes categories, objects, morphisms, functors explicitly. Enables categorical structure annotation for KnowledgeField, metaconcepts, and TSCG layers. Total M3 ontologies: 3 → 4 (GenesisSpace, EagleEye, SphinxEye, CategoryTheory)."
+"v3.1.0": "CATEGORY THEORY INTEGRATION: Added M3_CategoryTheory.jsonld as mathematical foundation. Formalizes categories, objects, morphisms, functors explicitly. Enables categorical structure annotation for KnowledgeField, GenericConcepts, and TSCG layers. Total M3 ontologies: 3 → 4 (GenesisSpace, EagleEye, SphinxEye, CategoryTheory)."
 ```
 
 ### 4. Update description
@@ -90,7 +90,7 @@
     "Cat_TSCG": "Category of TSCG layers {M3, M2, M1, M0}",
     "Cat_M3_ASFID": "Category of ASFID dimensions",
     "Cat_M3_REVOI": "Category of REVOI dimensions",
-    "Cat_M2": "Category of metaconcepts (defined in M2)",
+    "Cat_M2": "Category of GenericConcepts (defined in M2)",
     "Cat_KnowledgeField": "Category of knowledge fields (defined in M2)"
   },
   "functors": {
@@ -144,7 +144,7 @@
 
 ```diff
            "v3.0.1": "REFACTORING: Factorized m3:M3Dimension class and common dimension properties (dimensionSymbol, dimensionIndex, dimensionExamples) from M3_EagleEye and M3_SphinxEye into M3_GenesisSpace for architectural coherence. M3Dimension is a Genesis-level concept, not specific to Eagle or Sphinx."
-+          "v3.1.0": "CATEGORY THEORY INTEGRATION: Added M3_CategoryTheory.jsonld as mathematical foundation. Formalizes categories, objects, morphisms, functors explicitly. Enables categorical structure annotation for KnowledgeField, metaconcepts, and TSCG layers. Total M3 ontologies: 3 → 4 (GenesisSpace, EagleEye, SphinxEye, CategoryTheory)."
++          "v3.1.0": "CATEGORY THEORY INTEGRATION: Added M3_CategoryTheory.jsonld as mathematical foundation. Formalizes categories, objects, morphisms, functors explicitly. Enables categorical structure annotation for KnowledgeField, GenericConcepts, and TSCG layers. Total M3 ontologies: 3 → 4 (GenesisSpace, EagleEye, SphinxEye, CategoryTheory)."
          }
 ```
 
@@ -165,7 +165,7 @@ After making these changes:
 
 - [x] M3_CategoryTheory.jsonld created
 - [ ] M3_GenesisSpace.jsonld updated with import
-- [ ] M2_MetaConcepts.jsonld updated with m3:category_theory namespace
+- [ ] M2_GenericConcepts.jsonld updated with m3:category_theory namespace
 - [ ] Category Theory annotations added to KnowledgeField
 - [ ] Documentation updated
 

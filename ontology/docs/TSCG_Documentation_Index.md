@@ -9,7 +9,7 @@
 
 ## 📚 Documentation Overview
 
-This documentation set covers the systematic enrichment of TSCG M2 metaconcepts with ValueSpace attributes (Phases 1-4), architectural extensions (N-ary MetaconceptCombo), and practical user guides.
+This documentation set covers the systematic enrichment of TSCG M2 GenericConcepts with ValueSpace attributes (Phases 1-4), architectural extensions (N-ary GenericConceptCombo), and practical user guides.
 
 **Total deliverables**: 7 documents + 1 ontology file
 
@@ -23,7 +23,7 @@ This documentation set covers the systematic enrichment of TSCG M2 metaconcepts 
 3. Consult **Attribute Reference** when needed
 
 ### For System Analysts
-1. **Poclet Analysis Methodology** (how to discover metaconcepts)
+1. **Poclet Analysis Methodology** (how to discover GenericConcepts)
 2. **User Guide** (how to instantiate with attributes)
 3. **Architectural Extensions** (advanced patterns)
 
@@ -36,14 +36,14 @@ This documentation set covers the systematic enrichment of TSCG M2 metaconcepts 
 
 ## 📄 Document Descriptions
 
-### 1. M2_MetaConcepts.jsonld ⭐ CORE ONTOLOGY
+### 1. M2_GenericConcepts.jsonld ⭐ CORE ONTOLOGY
 
-**File**: `M2_MetaConcepts.jsonld` (v14.4.0)  
+**File**: `M2_GenericConcepts.jsonld` (v14.4.0)  
 **Type**: JSON-LD ontology  
 **Size**: 5530 lines  
 **Content**:
-- 71 M2 metaconcepts (stable)
-- 11 metaconcepts enriched with attributes
+- 71 M2 GenericConcepts (stable)
+- 11 GenericConcepts enriched with attributes
 - 13 attributes (ValueSpace)
 - 72 discrete values with full documentation
 
@@ -55,7 +55,7 @@ This documentation set covers the systematic enrichment of TSCG M2 metaconcepts 
 
 **Key sections**:
 - Lines 1-100: Context and metadata
-- Search for `"m2:hasAttribute"` to find enriched metaconcepts
+- Search for `"m2:hasAttribute"` to find enriched GenericConcepts
 - Each attribute has complete ValueSpace definition
 
 ---
@@ -123,7 +123,7 @@ This documentation set covers the systematic enrichment of TSCG M2 metaconcepts 
 
 **Content**:
 1. **Executive Summary** (mission, results, impact)
-2. **Complete Attribute Catalog** (all 11 metaconcepts)
+2. **Complete Attribute Catalog** (all 11 GenericConcepts)
 3. **Phase-by-Phase Breakdown** (4 phases detailed)
 4. **RAAS Complete Annotation** (full example)
 5. **Statistics** (before/after comparison)
@@ -138,7 +138,7 @@ This documentation set covers the systematic enrichment of TSCG M2 metaconcepts 
 - Academic/research context
 
 **Highlights**:
-- Statistics: 71 metaconcepts (stable) + 13 attributes + 72 values
+- Statistics: 71 GenericConcepts (stable) + 13 attributes + 72 values
 - Architecture validation (no ontology explosion)
 - Complete RAAS JSON annotation
 - Phase-by-phase progression
@@ -149,7 +149,7 @@ This documentation set covers the systematic enrichment of TSCG M2 metaconcepts 
 
 **Type**: Methodological guide (30 pages)  
 **Audience**: System analysts, researchers  
-**Purpose**: How to analyze systems to discover metaconcepts
+**Purpose**: How to analyze systems to discover GenericConcepts
 
 **Content**:
 1. **Core Principle** (poclet = active discovery)
@@ -163,7 +163,7 @@ This documentation set covers the systematic enrichment of TSCG M2 metaconcepts 
 **Use when**:
 - Starting new system analysis
 - Deciding if pattern is M2 or M1
-- Need validation criteria for metaconcept
+- Need validation criteria for GenericConcept
 - Creating poclet from scratch
 
 **Highlights**:
@@ -178,10 +178,10 @@ This documentation set covers the systematic enrichment of TSCG M2 metaconcepts 
 
 **Type**: Architecture specification (25 pages)  
 **Audience**: Framework architects, advanced users  
-**Purpose**: N-ary MetaconceptCombo & attribute architecture
+**Purpose**: N-ary GenericConceptCombo & attribute architecture
 
 **Content**:
-1. **Extension 1: N-ary MetaconceptCombo** (n ≥ 2 parents)
+1. **Extension 1: N-ary GenericConceptCombo** (n ≥ 2 parents)
    - Theoretical foundation (tensor associativity)
    - Coupling algorithm
    - Cascade example (3 parents)
@@ -194,9 +194,9 @@ This documentation set covers the systematic enrichment of TSCG M2 metaconcepts 
 5. **Future Directions**
 
 **Use when**:
-- Designing new MetaconceptCombo
+- Designing new GenericConceptCombo
 - Understanding N-ary composition
-- Creating new attribute for metaconcept
+- Creating new attribute for GenericConcept
 - Architecture discussions
 
 **Highlights**:
@@ -246,7 +246,7 @@ Quick Reference ────┬──► User Guide ────┬──► Fin
                          │
                          └──► Attribute Candidates Analysis
                               │
-                              └──► M2_MetaConcepts.jsonld (authoritative source)
+                              └──► M2_GenericConcepts.jsonld (authoritative source)
 ```
 
 ---
@@ -255,8 +255,8 @@ Quick Reference ────┬──► User Guide ────┬──► Fin
 
 | Metric | Value |
 |--------|-------|
-| **M2 Metaconcepts** | 71 (stable) |
-| **Enriched Metaconcepts** | 11 |
+| **M2 GenericConcepts** | 71 (stable) |
+| **Enriched GenericConcepts** | 11 |
 | **Total Attributes** | 13 |
 | **Discrete Values** | 72 |
 | **JSON-LD Lines** | 5530 |
@@ -283,28 +283,28 @@ Quick Reference ────┬──► User Guide ────┬──► Fin
 1. Final Report (60 min)
 2. Architectural Extensions (60 min)
 3. Attribute Candidates Analysis (45 min)
-4. M2_MetaConcepts.jsonld study (60 min+)
+4. M2_GenericConcepts.jsonld study (60 min+)
 
 ---
 
 ## 🔑 Key Concepts
 
 ### ValueSpace
-Metaconcept (M2) defining space of possible values with epistemic quality measures. Used as mechanism for typed attributes.
+GenericConcept (M2) defining space of possible values with epistemic quality measures. Used as mechanism for typed attributes.
 
 **Formula**: It ⊗ V ⊗ O ⊗ R ⊗ Im
 
 ### Attribute
-Configurable property of metaconcept with predefined discrete values from ValueSpace.
+Configurable property of GenericConcept with predefined discrete values from ValueSpace.
 
 **Example**: `Trajectory.shape ∈ {Linear, Circular, Spiral, ...}`
 
-### Metaconcept Enrichment
-Adding attributes to existing M2 metaconcepts without creating subtype proliferation.
+### GenericConcept Enrichment
+Adding attributes to existing M2 GenericConcepts without creating subtype proliferation.
 
-**Result**: 71 stable metaconcepts + 72 configurations
+**Result**: 71 stable GenericConcepts + 72 configurations
 
-### N-ary MetaconceptCombo
+### N-ary GenericConceptCombo
 Generalization from binary (M_A ⊗⇒ M_B) to N-ary composition (⊗⇒(M₁, ..., Mₙ)).
 
 **Example**: Cascade = ⊗⇒(Process, Step, Trajectory)
@@ -316,7 +316,7 @@ Generalization from binary (M_A ⊗⇒ M_B) to N-ary composition (⊗⇒(M₁, .
 ### Questions?
 - Check FAQ in User Guide
 - Consult Quick Reference for valid values
-- Review M2_MetaConcepts.jsonld for details
+- Review M2_GenericConcepts.jsonld for details
 
 ### Found an Issue?
 - Document in poclet with `"note"` field
@@ -369,7 +369,7 @@ Generalization from binary (M_A ⊗⇒ M_B) to N-ary composition (⊗⇒(M₁, .
 - User testing and feedback
 
 ### Near-term (v14.5.0)
-- Implement N-ary MetaconceptCombo
+- Implement N-ary GenericConceptCombo
 - Cascade = ⊗⇒(Process, Step, Trajectory)
 - Additional poclets for validation
 
@@ -387,7 +387,7 @@ If using TSCG ValueSpace attributes in research or projects:
 ```
 Echopraxium with the collaboration of Claude AI (2026).
 TSCG ValueSpace Attributes: Systematic Enrichment of
-Transdisciplinary Metaconcepts (Version 14.4.0).
+Transdisciplinary GenericConcepts (Version 14.4.0).
 GitHub: https://github.com/Echopraxium/tscg
 ```
 

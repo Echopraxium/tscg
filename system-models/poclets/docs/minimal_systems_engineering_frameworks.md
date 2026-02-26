@@ -400,7 +400,7 @@ Mathematical analogy: **Basis vectors in vector space**
 - Universal system characterization
 
 **M2 Layer (Tensor Ontology)**:
-- ~50 metaconcepts
+- ~50 GenericConcepts
 - Organized into **9 categories**
 - Tensor space operations
 
@@ -429,15 +429,15 @@ Both exhibit:
 - **Orthogonal conceptual niches**
 
 **M2 Categories** (example structure):
-1. Structural metaconcepts
-2. Dynamic metaconcepts
-3. Informational metaconcepts
-4. Relational metaconcepts
-5. Emergent metaconcepts
-6. Constraint metaconcepts
-7. Interface metaconcepts
-8. Adaptive metaconcepts
-9. Teleological metaconcepts
+1. Structural GenericConcepts
+2. Dynamic GenericConcepts
+3. Informational GenericConcepts
+4. Relational GenericConcepts
+5. Emergent GenericConcepts
+6. Constraint GenericConcepts
+7. Interface GenericConcepts
+8. Adaptive GenericConcepts
+9. Teleological GenericConcepts
 
 #### 6.2.3 The Poclet Principle Validated
 

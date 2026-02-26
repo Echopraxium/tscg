@@ -19,7 +19,7 @@
 
 ---
 
-## M2 Metaconcepts Involved
+## M2 GenericConcepts Involved
 
 ### Agent (S⊗I⊗D⊗A⊗E)
 **Definition**: Entity with autonomy, goals, and capacity to act on environment  
@@ -157,7 +157,7 @@ Loki = Agent ⊗ Transformation(Representation)
   "@id": "m0:yggdrasil:Loki",
   "@type": ["owl:NamedIndividual", "m0:yggdrasil:Agent", "m0:yggdrasil:Deity"],
   "rdfs:label": "Loki - Trickster Agent",
-  "m0:instantiatesMetaconcept": "m2:Agent",
+  "m0:instantiatesGenericConcept": "m2:Agent",
   "m0:agentSpecialization": "Representation Transformer (Trickster/Illusionist)"
 }
 ```

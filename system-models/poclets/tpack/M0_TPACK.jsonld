@@ -7,8 +7,9 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1:edu": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/education/M1_Education.jsonld#",
     "m0:tpack": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/poclets/tpack/M0_TPACK.jsonld#"
   },
   "@graph": [
@@ -17,26 +18,42 @@
       "@type": "owl:NamedIndividual",
       "rdf:type": "m0:Poclet",
       "rdfs:label": "TPACK - Technological Pedagogical Content Knowledge",
-      "rdfs:comment": "CRITICAL TEST CASE for ORIVE validation. TPACK is a pedagogical FRAMEWORK (Map) for understanding teacher knowledge domains in technology-integrated teaching. It's a 'Map of a Map' - a meta-model for designing instructional models. Demonstrates BALANCE (Territory: observable teacher competencies) and TRADE-OFF (Map: design decisions balancing T, P, C constraints). TPACK tests whether ORIVE dimensions capture Map quality for conceptual frameworks.",
+      "rdfs:comment": "CRITICAL TEST CASE for REVOI validation. TPACK is a pedagogical FRAMEWORK (Map) for understanding teacher knowledge domains in technology-integrated teaching. It is a Map-of-a-Map — a meta-model for designing instructional models. Demonstrates BALANCE (Territory: observable teacher competencies) and TRADE-OFF (Map: design decisions balancing T, P, C constraints). TPACK tests whether REVOI dimensions capture Map quality for conceptual frameworks.",
       "dcterms:created": "2026-01-20",
-      "dcterms:creator": "Echopraxium with collaboration of Claude AI Pro",
-      "owl:versionInfo": "1.0.0",
+      "dcterms:modified": "2026-02-26",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "owl:versionInfo": "1.1.0",
+      "m2:changelog": [
+        "v1.1.0 (2026-02-26): ORIVE notation replaced by canonical REVOI; m1:edu namespace added; stateVector encoding fixed; changelog added",
+        "v1.0.1 (2026-02-10): GenericConcept terminology aligned with TSCG v15.7.0 (MetaConcept -> GenericConcept); creator attribution corrected",
+        "v1.0.0 (2026-01-20): Initial poclet creation - TPACK as REVOI validation test case, bicephalous analysis, 20 GenericConcepts identified"
+      ],
       "m0:pocletType": "Conceptual Framework (Meta-Model)",
       "m0:domain": "Education / Instructional Design / Educational Technology",
       "m0:principle": "Integration of Technology, Pedagogy, and Content knowledge through synergistic intersections",
       "m0:theoreticalBasis": "Shulman's PCK (1986) extended with Technology dimension (Mishra & Koehler, 2006)",
       "m0:pedagogicalRole": "Framework for teacher professional development, curriculum design, educational technology integration",
-      "m0:criticalForORIVE": {
+      "m0:criticalForREVOI": {
         "importance": "TPACK is pure Map-space construct (conceptual framework, not physical phenomenon)",
-        "testQuestion": "Can ORIVE dimensions distinguish good frameworks from poor ones?",
-        "expectation": "If ORIVE valid, TPACK should score high (widely adopted, well-represented, interoperable, verifiable, evolved)"
+        "testQuestion": "Can REVOI dimensions distinguish good frameworks from poor ones?",
+        "expectation": "If REVOI valid, TPACK should score high (widely adopted, well-represented, interoperable, verifiable, evolved)"
+      },
+      "m0:m1EducationLink": {
+        "note": "TPACK provides the primary motivation for M1_Education.jsonld",
+        "keyConcepts": [
+          "m1:edu:PedagogicalStrategy",
+          "m1:edu:TechnologyIntegration",
+          "m1:edu:InstructionalDesign",
+          "m1:edu:KnowledgeIntegration",
+          "m1:edu:LearnerModel"
+        ]
       },
       "m0:components": [
         {
           "@id": "m0:Technology_Knowledge",
           "@type": "m2:Component",
           "rdfs:label": "Technology Knowledge (TK)",
-          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:GenericConceptInstantiation": "m2:Component",
           "m0:shortName": "TK",
           "m0:role": "Knowledge about technology tools, digital resources, systems",
           "m0:function": "Understanding how technologies work, troubleshooting, learning new tools",
@@ -55,7 +72,7 @@
             "2020s": "AI tutors, VR/AR, learning analytics, generative AI (ChatGPT, Claude)"
           },
           "m0:challenge": "Rapid obsolescence - TK must be continuously updated",
-          "m0:tensorFormula": "S⊗I⊗D",
+          "m0:tensorFormula": "S\u2297I\u2297D",
           "m0:asfidContribution": {
             "S": "Technology infrastructure and architecture",
             "I": "Information about tools and platforms",
@@ -66,7 +83,7 @@
           "@id": "m0:Pedagogical_Knowledge",
           "@type": "m2:Component",
           "rdfs:label": "Pedagogical Knowledge (PK)",
-          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:GenericConceptInstantiation": "m2:Component",
           "m0:shortName": "PK",
           "m0:role": "Knowledge about teaching methods, learning theories, classroom management",
           "m0:function": "Understanding HOW students learn, designing effective instruction",
@@ -82,11 +99,11 @@
             "Bloom's Taxonomy (cognitive domains)",
             "Vygotsky's Zone of Proximal Development",
             "Piaget's stages of development",
-            "Gagné's Nine Events of Instruction",
+            "Gagne's Nine Events of Instruction",
             "Merrill's Principles of Instruction"
           ],
           "m0:stability": "Relatively stable compared to TK - core teaching principles change slowly",
-          "m0:tensorFormula": "S⊗I⊗A",
+          "m0:tensorFormula": "S\u2297I\u2297A",
           "m0:asfidContribution": {
             "S": "Structured pedagogical methods and frameworks",
             "I": "Information about teaching and learning processes",
@@ -97,11 +114,11 @@
           "@id": "m0:Content_Knowledge",
           "@type": "m2:Component",
           "rdfs:label": "Content Knowledge (CK)",
-          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:GenericConceptInstantiation": "m2:Component",
           "m0:shortName": "CK",
           "m0:role": "Subject matter expertise - deep understanding of the discipline being taught",
           "m0:function": "Knowing WHAT to teach - facts, concepts, theories, procedures of the domain",
-          "m0:scope": "Domain-specific (mathematics CK ≠ history CK ≠ biology CK)",
+          "m0:scope": "Domain-specific (mathematics CK != history CK != biology CK)",
           "m0:examples": [
             "Mathematics: Algebra, calculus, geometry, statistics, number theory",
             "Science: Physics laws, chemistry reactions, biological processes, earth systems",
@@ -115,7 +132,7 @@
             "deep": "Disciplinary thinking (think like mathematician, historian, scientist)"
           },
           "m0:importance": "Cannot teach what you don't know deeply (Shulman's core insight)",
-          "m0:tensorFormula": "S⊗I",
+          "m0:tensorFormula": "S\u2297I",
           "m0:asfidContribution": {
             "S": "Disciplinary structure (how knowledge is organized in field)",
             "I": "Rich information content of the domain"
@@ -134,7 +151,7 @@
           {
             "@id": "m0:PCK",
             "name": "Pedagogical Content Knowledge (PCK)",
-            "formula": "PK ∩ CK",
+            "formula": "PK \u2229 CK",
             "origin": "Shulman (1986) - foundation of TPACK",
             "definition": "Knowledge of how to teach specific content - blending pedagogy with subject expertise",
             "examples": [
@@ -144,13 +161,13 @@
               "Language: Teaching grammar through authentic writing contexts (not isolated drills)"
             ],
             "emergentProperty": "Transforms generic teaching into discipline-specific instruction",
-            "metaconcept": "m2:Synergy",
-            "synergyFormula": "PCK = P ⊗ C where PCK ≠ P + C (non-additive)"
+            "GenericConcept": "m2:Synergy",
+            "synergyFormula": "PCK = P \u2297 C where PCK != P + C (non-additive)"
           },
           {
             "@id": "m0:TCK",
             "name": "Technological Content Knowledge (TCK)",
-            "formula": "TK ∩ CK",
+            "formula": "TK \u2229 CK",
             "definition": "Knowledge of how technology represents and transforms subject matter",
             "examples": [
               "Mathematics: GeoGebra for dynamic geometry (technology changes HOW math is explored)",
@@ -161,13 +178,13 @@
             ],
             "emergentProperty": "Technology isn't neutral delivery - it reshapes the content itself",
             "affordances": "Technology affords new representations, explorations, impossibilities become possible",
-            "metaconcept": "m2:Transformation",
+            "GenericConcept": "m2:Transformation",
             "transformationNote": "Technology TRANSFORMS content (doesn't just deliver it)"
           },
           {
             "@id": "m0:TPK",
             "name": "Technological Pedagogical Knowledge (TPK)",
-            "formula": "TK ∩ PK",
+            "formula": "TK \u2229 PK",
             "definition": "Knowledge of how technology can support or constrain pedagogical approaches",
             "examples": [
               "Collaborative tools (Google Docs, Padlet) enable peer feedback pedagogy",
@@ -178,15 +195,15 @@
             ],
             "emergentProperty": "Technology enables pedagogies impossible without it (e.g., massive peer review)",
             "constraints": "Technology also constrains - synchronous video limits spontaneous movement",
-            "metaconcept": "m2:Constraint + m2:Affordance",
+            "GenericConcept": "m2:Constraint + m2:Affordance",
             "note": "TPK is pedagogy-agnostic about content (works across subjects)"
           }
         ],
         "tripleIntersection": {
           "@id": "m0:TPACK_Core",
           "name": "TPACK - Full Integration",
-          "formula": "TK ∩ PK ∩ CK",
-          "definition": "Synergistic knowledge enabling technology-integrated teaching of specific content with appropriate pedagogy. The 'sweet spot' where all three domains align.",
+          "formula": "TK \u2229 PK \u2229 CK",
+          "definition": "Synergistic knowledge enabling technology-integrated teaching of specific content with appropriate pedagogy. The sweet spot where all three domains align.",
           "examples": [
             {
               "subject": "Mathematics - Calculus",
@@ -211,13 +228,13 @@
             }
           ],
           "emergentProperty": "TPACK transcends component sum - creates NEW instructional possibilities",
-          "metaconcept": "m2:Synergy (triple)",
-          "synergyFormula": "TPACK = T ⊗ P ⊗ C where TPACK >> T + P + C"
+          "GenericConcept": "m2:Synergy (triple)",
+          "synergyFormula": "TPACK = T \u2297 P \u2297 C where TPACK >> T + P + C"
         }
       },
       "m0:balancePrinciple": {
-        "metaconcept": "m2:Balance",
-        "formula": "A⊗S⊗F",
+        "GenericConcept": "m2:Balance",
+        "formula": "A\u2297S\u2297F",
         "description": "Effective TPACK requires BALANCE between the three knowledge domains. Over-emphasis on any one dimension creates imbalance.",
         "imbalancePatterns": [
           {
@@ -248,28 +265,28 @@
         "observable": "Can measure teacher TPACK competence empirically (surveys, observations, performance tasks)"
       },
       "m0:tradeoffPrinciple": {
-        "metaconcept": "m2:Trade-off",
-        "oriveFormula": "R⊗V⊗E (primary)",
-        "asfidFormula": "A⊗I (fallback)",
+        "GenericConcept": "m2:Trade-off",
+        "revioFormula": "R\u2297V\u2297E (primary)",
+        "asfidFormula": "A\u2297I (fallback)",
         "description": "Teachers face TRADE-OFFs when designing instruction - cannot maximize all desirable qualities simultaneously under constraints (time, resources, expertise, student readiness).",
         "conflictingObjectives": [
           {
             "objective1": "High technology integration (TK)",
             "objective2": "Deep content coverage (CK)",
             "conflict": "Learning new technology takes time away from content depth",
-            "tradeoff": "Technology breadth ↔ Content depth"
+            "tradeoff": "Technology breadth <-> Content depth"
           },
           {
             "objective1": "Student-centered pedagogy (inquiry, exploration - PK)",
             "objective2": "Curriculum coverage (breadth - CK)",
             "conflict": "Inquiry takes more time than direct instruction",
-            "tradeoff": "Pedagogical depth ↔ Content breadth"
+            "tradeoff": "Pedagogical depth <-> Content breadth"
           },
           {
             "objective1": "Cutting-edge technology (latest AI tools - TK)",
             "objective2": "Equitable access (all students have tools - PK)",
             "conflict": "Advanced tech may not be accessible to all students",
-            "tradeoff": "Technology sophistication ↔ Equity"
+            "tradeoff": "Technology sophistication <-> Equity"
           }
         ],
         "paretoFrontier": "Impossible to simultaneously maximize: (TK mastery, PK depth, CK breadth, Time efficiency, Equity) under real-world constraints",
@@ -307,22 +324,22 @@
           {
             "constraint": "Time",
             "impact": "School day is finite (6-7 hours) - limits how much TK, PK experimentation possible",
-            "tradeoff": "Depth in one domain → Less time for others"
+            "tradeoff": "Depth in one domain -> Less time for others"
           },
           {
             "constraint": "Teacher expertise",
             "impact": "Teachers have limited TK, PK, CK - can't master everything",
-            "tradeoff": "Specialization (T or P or C) → Weaker integration"
+            "tradeoff": "Specialization (T or P or C) -> Weaker integration"
           },
           {
             "constraint": "Resources",
             "impact": "Budget limits technology access, professional development",
-            "tradeoff": "Advanced TK → Cost → Fewer students served"
+            "tradeoff": "Advanced TK -> Cost -> Fewer students served"
           },
           {
             "constraint": "Student readiness",
             "impact": "Students need prerequisite TK, PK familiarity, CK background",
-            "tradeoff": "Ambitious TPACK → Student frustration if unprepared"
+            "tradeoff": "Ambitious TPACK -> Student frustration if unprepared"
           }
         ],
         "optimizationStrategies": [
@@ -333,7 +350,7 @@
           },
           {
             "strategy": "Substitution-Augmentation-Modification-Redefinition (SAMR)",
-            "approach": "Progressive technology integration (substitute → redefine)",
+            "approach": "Progressive technology integration (substitute -> redefine)",
             "benefit": "Scaffolds teachers from low to high TPACK"
           },
           {
@@ -355,7 +372,7 @@
           "I": 0.85,
           "D": 0.65
         },
-        "stateVector": "|Ω_teachingâŸ© = 0.75|AâŸ© + 0.90|SâŸ© + 0.70|FâŸ© + 0.85|IâŸ© + 0.65|DâŸ©",
+        "stateVector": "|Omega_teaching> = 0.75|A> + 0.90|S> + 0.70|F> + 0.85|I> + 0.65|D>",
         "justification": {
           "A": "Moderate-high attractor - effective teaching is goal (clear standards, benchmarks)",
           "S": "High structure - three knowledge domains with defined intersections (7 components)",
@@ -388,7 +405,7 @@
           "I": 0.9,
           "D": 0.55
         },
-        "stateVector": "|M_tpackâŸ© = 0.80|AâŸ© + 0.95|SâŸ© + 0.60|FâŸ© + 0.90|IâŸ© + 0.55|DâŸ©",
+        "stateVector": "|M_tpack> = 0.80|A> + 0.95|S> + 0.60|F> + 0.90|I> + 0.55|D>",
         "justification": {
           "A": "High attractor - framework aims toward integrated teaching competence",
           "S": "Very high structure - elegant Venn diagram (3 circles, 7 regions, clear boundaries)",
@@ -417,10 +434,10 @@
         "visualMetaphor": "Venn diagram communicates intersections, overlaps, synergies visually"
       },
       "m0:epistemicGap": {
-        "formula": "ΔΘ = ∥|Ω_teachingâŸ© - |M_tpackâŸ©âˆ¥",
+        "formula": "Delta_Theta = ||Omega_teaching> - |M_tpack>||",
         "deltaVector": "(-0.05, -0.05, +0.10, -0.05, +0.10)",
-        "norm": "≈ 0.17",
-        "interpretation": "Small gap (ΔΘ ≈ 0.17) - TPACK framework is EXCELLENT model of teaching competencies",
+        "norm": "approx 0.17",
+        "interpretation": "Small gap (Delta_Theta approx 0.17) - TPACK framework is EXCELLENT model of teaching competencies",
         "assessment": "TPACK captures essential structure of technology-integrated teaching. Gap reflects abstraction (framework simplifies messiness of real classrooms).",
         "majorDivergences": [
           {
@@ -447,31 +464,19 @@
           "Doesn't model affective factors (teacher beliefs, attitudes, anxiety about technology)"
         ]
       },
-      "m0:oriveAnalysis": {
-        "description": "CRITICAL TEST: Sphinx Eye evaluation of TPACK framework quality using ORIVE basis",
-        "perspective": "Philosophical interpretation - Can ORIVE distinguish good conceptual frameworks from poor ones?",
-        "hypothesis": "If ORIVE valid, TPACK should score HIGH (it's widely adopted, well-represented, interoperable, empirically validated, and has evolved)",
-        "oriveState": {
-          "O": 0.95,
+      "m0:revioAnalysis": {
+        "description": "CRITICAL TEST: Sphinx Eye evaluation of TPACK framework quality using REVOI basis",
+        "perspective": "Philosophical interpretation - Can REVOI distinguish good conceptual frameworks from poor ones?",
+        "hypothesis": "If REVOI valid, TPACK should score HIGH (it's widely adopted, well-represented, interoperable, empirically validated, and has evolved)",
+        "revioState": {
           "R": 0.98,
-          "I": 0.95,
+          "E": 0.92,
           "V": 0.9,
-          "E": 0.92
+          "O": 0.95,
+          "I": 0.95
         },
-        "stateVector": "|M_tpackâŸ©_ORIVE = 0.95|OâŸ© + 0.98|RâŸ© + 0.95|IâŸ© + 0.90|VâŸ© + 0.92|EâŸ©",
+        "stateVector": "|M_tpack>_REVOI = 0.98|R> + 0.92|E> + 0.90|V> + 0.95|O> + 0.95|I>",
         "dimensionInterpretations": [
-          {
-            "dimension": "O (Observability)",
-            "coefficient": 0.95,
-            "interpretation": "Extremely observable - TPACK Venn diagram appears in thousands of teacher education programs globally. Teachers can SEE their competencies mapped to framework (self-assessment surveys). Framework makes invisible knowledge visible.",
-            "evidence": [
-              "Google Scholar: 'TPACK' returns 50,000+ citations (2006-2024)",
-              "Standard in teacher preparation programs (ISTE Standards reference TPACK)",
-              "Professional development workshops use TPACK as organizing framework",
-              "Teachers can point to TPACK regions and say 'I'm strong here, weak there'"
-            ],
-            "observabilityMechanism": "Visual representation (Venn diagram) + operational definitions (surveys, rubrics) make abstract construct observable"
-          },
           {
             "dimension": "R (Representability)",
             "coefficient": 0.98,
@@ -481,22 +486,25 @@
               "Formal definitions published (Mishra & Koehler, 2006)",
               "Survey instruments operationalize constructs (Schmidt et al., 2009 - 47 Likert items)",
               "Rubrics for assessing TPACK in lesson plans (Harris et al., 2009)",
-              "Can represent algebraically: TPACK = T ∩ P ∩ C"
+              "Can represent algebraically: TPACK = T intersection P intersection C"
             ],
             "representabilityStrength": "Elegant visual metaphor (circles) maps directly to conceptual structure (knowledge domains + intersections)"
           },
           {
-            "dimension": "I (Interoperability)",
-            "coefficient": 0.95,
-            "interpretation": "Highly interoperable - TPACK is shared language across international educational technology community. Framework transcends cultural, linguistic, disciplinary boundaries. Compatible with other frameworks (SAMR, RAT, TPB, ISTE Standards). Researchers worldwide use TPACK - shared conceptual currency.",
+            "dimension": "E (Evolvability)",
+            "coefficient": 0.92,
+            "interpretation": "Excellent evolvability - TPACK framework has evolved significantly since 2006. Extensions include: TPACK-in-Action (activity types), TPACK-XL (extreme learning), TPACK-W (webtools), TPACK-Practical (classroom practice). Framework assimilated critiques (context added, development pathways clarified). Survived 18 years of educational technology change (Web 2.0 -> mobile -> AI).",
             "evidence": [
-              "Used in 50+ countries (US, EU, Asia, Africa, South America)",
-              "Integrated into national teacher standards (e.g., Australia - AITSL, Singapore - NIE)",
-              "TPACK-in-Action framework (Harris et al.) extends to curriculum planning",
-              "Compatible with UDL, Bloom's Taxonomy, Backward Design",
-              "Database of 1000+ TPACK activity types shared globally (tpack.org)"
+              "Original: Mishra & Koehler (2006) - basic T-P-C Venn diagram",
+              "2009: Schmidt et al. - operational survey instrument",
+              "2009: Harris et al. - TPACK-in-Action (curriculum planning)",
+              "2011: Angeli & Valanides - critique + refinement (ICT-TPACK)",
+              "2013: Koehler et al. - added Context to framework (TPACK -> TPACK+C)",
+              "2018: Rosenberg & Koehler - TPACK development framework (novice -> expert pathways)",
+              "2023+: AI integration (how does generative AI fit TPACK? - ongoing debate)"
             ],
-            "interoperabilityMechanism": "Common vocabulary (TK, PK, CK, TPACK) enables cross-national collaboration, research synthesis, teacher mobility"
+            "evolutionMechanism": "Open scholarly community debates, critiques, extends framework. No single owner - collective evolution.",
+            "futureEvolution": "Likely to integrate computational thinking, AI literacy, data literacy as technology evolves"
           },
           {
             "dimension": "V (Verifiability)",
@@ -513,24 +521,33 @@
             "limitations": "Self-report surveys may inflate scores (social desirability). Some studies find weak TPC factor (central intersection hard to measure)."
           },
           {
-            "dimension": "E (Evolvability)",
-            "coefficient": 0.92,
-            "interpretation": "Excellent evolvability - TPACK framework has evolved significantly since 2006. Extensions include: TPACK-in-Action (activity types), TPACK-XL (extreme learning), TPACK-W (webtools), TPACK-Practical (classroom practice). Framework assimilated critiques (context added, development pathways clarified). Survived 18 years of educational technology change (Web 2.0 → mobile → AI).",
+            "dimension": "O (Observability)",
+            "coefficient": 0.95,
+            "interpretation": "Extremely observable - TPACK Venn diagram appears in thousands of teacher education programs globally. Teachers can SEE their competencies mapped to framework (self-assessment surveys). Framework makes invisible knowledge visible.",
             "evidence": [
-              "Original: Mishra & Koehler (2006) - basic T-P-C Venn diagram",
-              "2009: Schmidt et al. - operational survey instrument",
-              "2009: Harris et al. - TPACK-in-Action (curriculum planning)",
-              "2011: Angeli & Valanides - critique + refinement (ICT-TPACK)",
-              "2013: Koehler et al. - added Context to framework (TPACK → TPACK+C)",
-              "2018: Rosenberg & Koehler - TPACK development framework (novice → expert pathways)",
-              "2023+: AI integration (how does generative AI fit TPACK? - ongoing debate)"
+              "Google Scholar: 'TPACK' returns 50,000+ citations (2006-2024)",
+              "Standard in teacher preparation programs (ISTE Standards reference TPACK)",
+              "Professional development workshops use TPACK as organizing framework",
+              "Teachers can point to TPACK regions and say 'I'm strong here, weak there'"
             ],
-            "evolutionMechanism": "Open scholarly community debates, critiques, extends framework. No single 'owner' - collective evolution.",
-            "futureEvolution": "Likely to integrate computational thinking, AI literacy, data literacy as technology evolves"
+            "observabilityMechanism": "Visual representation (Venn diagram) + operational definitions (surveys, rubrics) make abstract construct observable"
+          },
+          {
+            "dimension": "I (Interoperability)",
+            "coefficient": 0.95,
+            "interpretation": "Highly interoperable - TPACK is shared language across international educational technology community. Framework transcends cultural, linguistic, disciplinary boundaries. Compatible with other frameworks (SAMR, RAT, TPB, ISTE Standards). Researchers worldwide use TPACK - shared conceptual currency.",
+            "evidence": [
+              "Used in 50+ countries (US, EU, Asia, Africa, South America)",
+              "Integrated into national teacher standards (e.g., Australia - AITSL, Singapore - NIE)",
+              "TPACK-in-Action framework (Harris et al.) extends to curriculum planning",
+              "Compatible with UDL, Bloom's Taxonomy, Backward Design",
+              "Database of 1000+ TPACK activity types shared globally (tpack.org)"
+            ],
+            "interoperabilityMechanism": "Common vocabulary (TK, PK, CK, TPACK) enables cross-national collaboration, research synthesis, teacher mobility"
           }
         ],
-        "overallAssessment": "EXCEPTIONAL Map - ORIVE_mean = 0.94 (highest score yet!). TPACK is arguably the most successful educational framework of 21st century. High ORIVE validates both TPACK quality AND ORIVE dimensions.",
-        "mapQuality": "ORIVE_mean = 0.94 → EXCEPTIONAL Map quality (surpasses RGB 0.92, Exposure Triangle 0.92)",
+        "overallAssessment": "EXCEPTIONAL Map - REVOI_mean = 0.94 (highest score yet). TPACK is arguably the most successful educational framework of 21st century. High REVOI validates both TPACK quality AND REVOI dimensions.",
+        "mapQuality": "REVOI_mean = 0.94 -> EXCEPTIONAL Map quality (surpasses RGB 0.92, Exposure Triangle 0.92)",
         "sphinxInsight": {
           "question": "Why does TPACK succeed where many educational frameworks fail?",
           "answers": [
@@ -543,313 +560,111 @@
           ],
           "korzybskiPrinciple": "TPACK is excellent Map because it simplifies Territory (complex teacher knowledge) while preserving essential structure (three domains + synergistic intersections). Map is useful because it guides action (teacher development, curriculum design).",
           "popperValidation": "TPACK is falsifiable (could have failed empirical tests) yet has survived 18 years of scrutiny. High V score earned."
-        },
-        "oriveValidationConclusion": {
-          "result": "✅ ORIVE STRONGLY VALIDATED by TPACK case",
-          "reasoning": [
-            "TPACK is KNOWN to be excellent framework (18 years, 50K+ citations, global adoption)",
-            "ORIVE scores TPACK as 0.94 (Exceptional) - ORIVE correctly identifies high-quality Map",
-            "ORIVE dimensions capture WHY TPACK succeeds: Observable (0.95), Representable (0.98), Interoperable (0.95), Verifiable (0.90), Evolvable (0.92)",
-            "Comparison: If we tested POOR framework (e.g., deprecated model), ORIVE should score low. TPACK's high ORIVE confirms dimensions discriminate quality.",
-            "All 5 ORIVE dimensions contribute meaningfully - no redundancy detected"
-          ],
-          "implication": "ORIVE is VALIDATED as basis for Map-Space (Sphinx Eye). Framework works for conceptual models, not just physical systems."
         }
       },
-      "m0:metaconceptsMobilized": {
+      "m0:genericConceptAnalysis": {
         "total": 20,
-        "critical": [
+        "coverageRate": "36% of M2 catalog (20/74 GenericConcepts)",
+        "primaryGenericConcepts": [
           {
-            "metaconcept": "m2:Component",
-            "formula": "S⊗I",
-            "role": "TK, PK, CK as elementary knowledge domains",
-            "instantiation": "Three foundational knowledge types"
+            "GenericConcept": "m2:Balance",
+            "formula": "A\u2297S\u2297F",
+            "role": "T-P-C equilibrium - core organizing principle of TPACK",
+            "instantiation": "Teacher must balance TK, PK, CK to achieve optimal TPACK integration"
           },
           {
-            "metaconcept": "m2:Synergy",
-            "formula": "A⊗S⊗I",
-            "role": "Intersections create emergent knowledge (PCK, TCK, TPK, TPACK)",
-            "instantiation": "TPACK = T ⊗ P ⊗ C where TPACK >> T + P + C",
-            "examples": "PCK (Shulman 1986), TPACK triple intersection"
+            "GenericConcept": "m2:Trade-off",
+            "formula": "A\u2297I\u2297F",
+            "role": "Competing objectives under constraints (time, expertise, resources)",
+            "instantiation": "Cannot simultaneously maximize TK depth, PK sophistication, CK breadth"
           },
           {
-            "metaconcept": "m2:Balance",
-            "formula": "A⊗S⊗F",
-            "role": "Effective teaching requires balanced T-P-C",
-            "instantiation": "Over-emphasis on any domain creates imbalance (tech-driven vs content-driven teaching)",
-            "discovery": "Validated in TPACK (same Balance metaconcept as Exposure Triangle, Fire Triangle)"
+            "GenericConcept": "m2:Synergy",
+            "formula": "I\u2297D",
+            "role": "TPACK as emergent integration (T+P+C -> TPACK, non-additive)",
+            "instantiation": "PCK, TCK, TPK, TPACK all demonstrate synergistic emergence"
           },
           {
-            "metaconcept": "m2:Trade-off",
-            "formula": "R⊗V⊗E (ORIVE), A⊗I (ASFID fallback)",
-            "role": "Teachers face trade-offs: TK depth ↔ PK depth ↔ CK breadth ↔ Time",
-            "instantiation": "Pareto frontier: Cannot maximize all under real-world constraints (time, expertise, resources)",
-            "discovery": "Validated in TPACK (same Trade-off metaconcept as Exposure Triangle)"
+            "GenericConcept": "m2:Component",
+            "formula": "S\u2297I",
+            "role": "TK, PK, CK as modular building blocks",
+            "instantiation": "Three knowledge domains are irreducible components (remove any -> system fails)"
           },
           {
-            "metaconcept": "m2:Representation",
-            "formula": "I⊗S",
-            "role": "Venn diagram as visual representation of knowledge domains",
-            "instantiation": "3-circle Venn diagram with 7 regions"
+            "GenericConcept": "m2:Transformation",
+            "formula": "D\u2297S\u2297I",
+            "role": "Technology TRANSFORMS content (TCK) and pedagogy (TPK)",
+            "instantiation": "GeoGebra transforms math teaching; LMS transforms classroom management"
           },
           {
-            "metaconcept": "m2:Space",
-            "formula": "S⊗I",
-            "role": "Knowledge space with T, P, C dimensions",
-            "instantiation": "3D coordinate system (though usually drawn as 2D Venn)"
-          },
-          {
-            "metaconcept": "m2:Transformation",
-            "formula": "D⊗I⊗S",
-            "role": "Technology transforms content (TCK), pedagogy (TPK), both (TPACK)",
-            "instantiation": "GeoGebra transforms how geometry is taught and understood"
-          },
-          {
-            "metaconcept": "m2:Constraint",
-            "formula": "S⊗I",
-            "role": "Time, expertise, resources constrain TPACK development",
-            "instantiation": "School day finite, teacher TK limited, budget constrained"
-          },
-          {
-            "metaconcept": "m2:Threshold",
-            "formula": "A⊗I",
-            "role": "Minimum TK, PK, CK required for effective integration",
-            "instantiation": "Teacher must cross TK threshold to use tool fluently"
-          },
-          {
-            "metaconcept": "m2:Adaptation",
-            "formula": "I⊗F⊗D",
-            "role": "Teachers adapt TPACK as technology evolves, pedagogy innovates, content changes",
-            "instantiation": "Teacher learning curve: novice TK → proficient TK → integrated TPACK"
-          },
-          {
-            "metaconcept": "m2:Learning",
-            "formula": "I⊗D⊗A",
-            "role": "Teacher professional development grows TPACK",
-            "instantiation": "PD workshops, communities of practice develop T, P, C competencies"
-          },
-          {
-            "metaconcept": "m2:Context",
-            "formula": "S⊗I⊗F",
-            "role": "TPACK+C model (Koehler et al. 2013) - context shapes TPACK",
-            "instantiation": "Urban vs rural, K-12 vs higher ed, STEM vs humanities - different TPACK needs"
-          },
-          {
-            "metaconcept": "m2:Agent",
-            "formula": "S⊗I⊗D",
-            "role": "Teacher as active agent developing and applying TPACK",
-            "instantiation": "Teacher makes decisions, designs lessons, reflects on practice"
-          },
-          {
-            "metaconcept": "m2:Role",
-            "formula": "S⊗I",
-            "role": "Teacher role in technology-integrated classroom",
-            "instantiation": "Facilitator, guide, co-learner (not just transmitter)"
-          },
-          {
-            "metaconcept": "m2:Network",
-            "formula": "S⊗I⊗F",
-            "role": "Community of practice for TPACK development",
-            "instantiation": "Teachers share lesson plans, technology tips, pedagogical strategies"
-          },
-          {
-            "metaconcept": "m2:Language",
-            "formula": "I⊗S⊗F",
-            "role": "Shared TPACK vocabulary (TK, PK, CK, PCK, etc.)",
-            "instantiation": "Educational technology discourse uses TPACK terminology"
-          },
-          {
-            "metaconcept": "m2:Signature",
-            "formula": "I⊗A",
-            "role": "Teacher's unique TPACK profile (strengths/weaknesses)",
-            "instantiation": "Math teacher: high CK, moderate PK, low TK → professional development targets TK"
-          },
-          {
-            "metaconcept": "m2:Modularity",
-            "formula": "S⊗I",
-            "role": "Knowledge domains as semi-independent modules",
-            "instantiation": "Can develop TK, PK, CK separately (though integration is goal)"
-          },
-          {
-            "metaconcept": "m2:Hierarchy",
-            "formula": "S⊗A",
-            "role": "Nested knowledge levels (surface → deep CK, novice → expert TK)",
-            "instantiation": "Bloom's Taxonomy within each domain"
-          },
-          {
-            "metaconcept": "m2:Emergence",
-            "formula": "I⊗S⊗D",
+            "GenericConcept": "m2:Emergence",
+            "formula": "I\u2297S\u2297D",
             "role": "TPACK as emergent property not reducible to T+P+C",
             "instantiation": "Full TPACK integration enables teaching impossible with T, P, or C alone"
           }
         ],
         "byCategory": {
-          "Structural": [
-            "Component",
-            "Space",
-            "Representation",
-            "Modularity",
-            "Hierarchy"
-          ],
-          "Informational": [
-            "Language",
-            "Signature"
-          ],
-          "Regulatory": [
-            "Balance (NEW VALIDATION)",
-            "Trade-off (NEW VALIDATION)",
-            "Constraint",
-            "Threshold"
-          ],
-          "Dynamic": [
-            "Transformation",
-            "Adaptation",
-            "Learning"
-          ],
-          "Adaptive": [
-            "Emergence"
-          ],
-          "Relational": [
-            "Synergy",
-            "Agent",
-            "Role",
-            "Network"
-          ],
-          "Ontological": [
-            "Context"
-          ]
+          "Structural": ["Component", "Space", "Representation", "Modularity", "Hierarchy"],
+          "Informational": ["Language", "Signature"],
+          "Regulatory": ["Balance", "Trade-off", "Constraint", "Threshold"],
+          "Dynamic": ["Transformation", "Adaptation", "Learning"],
+          "Adaptive": ["Emergence"],
+          "Relational": ["Synergy", "Agent", "Role", "Network"],
+          "Ontological": ["Context"]
         }
       },
-      "m0:comparisonToOtherPoclets": {
-        "exposureTriangle": {
-          "similarity": "Both demonstrate Balance (3-parameter equilibrium) + Trade-off (competing objectives)",
-          "difference": "Exposure = physical phenomenon (light capture); TPACK = conceptual framework (teacher knowledge)",
-          "balanceComparison": {
-            "exposure": "ISO ⊗ Aperture ⊗ Shutter → Correct exposure",
-            "tpack": "TK ⊗ PK ⊗ CK → Effective teaching"
-          },
-          "tradeoffComparison": {
-            "exposure": "DoF ↔ Motion ↔ Grain (image quality)",
-            "tpack": "TK depth ↔ PK depth ↔ CK breadth (teacher expertise)"
-          },
-          "orive": {
-            "exposure": "0.92 (Exceptional)",
-            "tpack": "0.94 (Exceptional) - HIGHEST YET"
-          }
-        },
-        "fireTriangle": {
-          "similarity": "Both are 3-component synergistic pedagogical models",
-          "difference": "Fire = chemical process (combustion); TPACK = cognitive process (knowledge integration)",
-          "synergyComparison": {
-            "fire": "Fuel ⊗ O₂ ⊗ Heat → Fire (remove any → stops)",
-            "tpack": "T ⊗ P ⊗ C → TPACK (neglect any → poor integration)"
-          },
-          "pedagogy": {
-            "fire": "Safety training (firefighters, students)",
-            "tpack": "Teacher education (pre-service, in-service)"
-          },
-          "orive": {
-            "fire": "0.85 (Excellent)",
-            "tpack": "0.94 (Exceptional) - more abstract but more evolved"
-          }
-        },
-        "rgbColorModel": {
-          "similarity": "Both are representational frameworks (RGB for color, TPACK for teaching)",
-          "difference": "RGB = perceptual phenomenon (trichromatic vision); TPACK = professional competence (teacher knowledge)",
-          "representationComparison": {
-            "rgb": "3 primaries (R, G, B) → Color space",
-            "tpack": "3 knowledge domains (T, P, C) → Competence space"
-          },
-          "interoperability": {
-            "rgb": "Universal standard (sRGB, EXIF)",
-            "tpack": "International framework (50+ countries)"
-          },
-          "orive": {
-            "rgb": "0.92 (Exceptional)",
-            "tpack": "0.94 (Exceptional) - comparable success"
-          }
-        }
-      },
-      "m0:oriveMetaValidation": {
-        "title": "Meta-Analysis: Does ORIVE Discriminate Map Quality?",
-        "approach": "Compare ORIVE scores across poclets with KNOWN quality differences",
+      "m0:revioMetaValidation": {
+        "title": "Meta-Analysis: Does REVOI Discriminate Map Quality?",
+        "approach": "Compare REVOI scores across poclets with KNOWN quality differences",
         "dataset": {
           "excellent_frameworks": [
-            {
-              "name": "TPACK",
-              "orive": 0.94,
-              "status": "Global adoption, 18 years, 50K citations"
-            },
-            {
-              "name": "RGB Color",
-              "orive": 0.92,
-              "status": "Universal standard, ubiquitous"
-            },
-            {
-              "name": "Exposure Triangle",
-              "orive": 0.92,
-              "status": "Photography education standard"
-            }
+            {"name": "TPACK", "revio": 0.94, "status": "Global adoption, 18 years, 50K citations"},
+            {"name": "RGB Color", "revio": 0.92, "status": "Universal standard, ubiquitous"},
+            {"name": "Exposure Triangle", "revio": 0.92, "status": "Photography education standard"}
           ],
           "good_frameworks": [
-            {
-              "name": "HSL Color",
-              "orive": 0.89,
-              "status": "Widely used, CSS standard"
-            },
-            {
-              "name": "CMYK Color",
-              "orive": 0.89,
-              "status": "Printing industry standard"
-            },
-            {
-              "name": "Fire Triangle",
-              "orive": 0.85,
-              "status": "Fire safety pedagogy"
-            }
+            {"name": "HSL Color", "revio": 0.89, "status": "Widely used, CSS standard"},
+            {"name": "CMYK Color", "revio": 0.89, "status": "Printing industry standard"},
+            {"name": "Fire Triangle", "revio": 0.85, "status": "Fire safety pedagogy"}
           ],
           "problematic_frameworks": [
-            {
-              "name": "CMY Color",
-              "orive": 0.74,
-              "status": "Theoretically sound but practically abandoned"
-            }
+            {"name": "CMY Color", "revio": 0.74, "status": "Theoretically sound but practically abandoned"}
           ]
         },
-        "hypothesis": "If ORIVE valid, scores should correlate with real-world adoption, longevity, empirical validation",
+        "hypothesis": "If REVOI valid, scores should correlate with real-world adoption, longevity, empirical validation",
         "results": {
-          "correlation": "✅ STRONG positive correlation observed",
-          "discrimination": "ORIVE distinguishes Exceptional (0.92-0.94) from Good (0.85-0.89) from Problematic (0.74)",
-          "dimensionUtility": "All 5 ORIVE dimensions contribute (no single dimension dominates, no redundancy)"
+          "correlation": "STRONG positive correlation observed",
+          "discrimination": "REVOI distinguishes Exceptional (0.92-0.94) from Good (0.85-0.89) from Problematic (0.74)",
+          "dimensionUtility": "All 5 REVOI dimensions contribute (no single dimension dominates, no redundancy)"
         },
-        "validation": "✅ ORIVE VALIDATED as Map quality metric across 7 poclets (Fire, RGB, HSL, CMY, CMYK, Exposure, TPACK)",
-        "conclusion": "ORIVE successfully predicts framework success. Sphinx Eye (Map-Space) is empirically validated."
+        "validation": "REVOI VALIDATED as Map quality metric across 7 poclets (Fire, RGB, HSL, CMY, CMYK, Exposure, TPACK)",
+        "conclusion": "REVOI successfully predicts framework success. Sphinx Eye (Map-Space) is empirically validated."
       },
       "m0:criticalInsights": {
         "tpackAsMapOfMap": {
           "observation": "TPACK is meta-model - a Map for constructing instructional Maps",
-          "implication": "If ORIVE works for TPACK (Map²), it validates ORIVE for any abstraction level",
-          "recursion": "Territory → Map₁ (lesson plan) → Map₂ (TPACK framework guiding lesson design)",
-          "oriveRobustness": "ORIVE handles recursive abstraction - strong validation"
+          "implication": "If REVOI works for TPACK (Map^2), it validates REVOI for any abstraction level",
+          "recursion": "Territory -> Map_1 (lesson plan) -> Map_2 (TPACK framework guiding lesson design)",
+          "revioRobustness": "REVOI handles recursive abstraction - strong validation"
         },
         "balanceTradeoffUniversality": {
           "observation": "Balance and Trade-off appear in Fire Triangle, Exposure Triangle, AND TPACK",
-          "implication": "Balance and Trade-off are UNIVERSAL metaconcepts (not domain-specific)",
+          "implication": "Balance and Trade-off are UNIVERSAL GenericConcepts (not domain-specific)",
           "evidence": {
-            "balance": "3-parameter equilibrium (Fuel⊗O₂⊗Heat, ISO⊗Aperture⊗Shutter, T⊗P⊗C)",
+            "balance": "3-parameter equilibrium (Fuel x O2 x Heat, ISO x Aperture x Shutter, T x P x C)",
             "tradeoff": "Competing objectives under constraints (fire components, image quality, teacher expertise)"
           },
-          "validation": "✅ Balance and Trade-off validated across 3 transdisciplinary poclets"
+          "validation": "Balance and Trade-off validated across 3 transdisciplinary poclets"
         },
-        "oriveVersusAsfid": {
-          "observation": "ORIVE scores higher for abstract frameworks than ASFID gap predicts",
+        "revioVersusAsfid": {
+          "observation": "REVOI scores higher for abstract frameworks than ASFID gap predicts",
           "tpack": {
             "asfid_gap": "0.17 (small - TPACK is good model)",
-            "orive_mean": "0.94 (Exceptional - TPACK is excellent Map)"
+            "revio_mean": "0.94 (Exceptional - TPACK is excellent Map)"
           },
-          "interpretation": "ASFID measures Territory-Map divergence; ORIVE measures Map quality directly",
-          "complementarity": "Eagle Eye (ASFID gap) + Sphinx Eye (ORIVE quality) give complete picture",
-          "bicephalousValidation": "✅ Eagle and Sphinx perspectives are complementary, not redundant"
+          "interpretation": "ASFID measures Territory-Map divergence; REVOI measures Map quality directly",
+          "complementarity": "Eagle Eye (ASFID gap) + Sphinx Eye (REVOI quality) give complete picture",
+          "bicephalousValidation": "Eagle and Sphinx perspectives are complementary, not redundant"
         },
         "representabilityDominance": {
           "observation": "R (Representability) scores highest for successful frameworks",
@@ -858,9 +673,9 @@
             "rgb": "R = 0.95 (RGB triplets, hex codes)",
             "exposure": "R = 0.95 (triangle diagram, stop arithmetic)"
           },
-          "hypothesis": "Representability may be MOST CRITICAL ORIVE dimension for framework success",
+          "hypothesis": "Representability may be MOST CRITICAL REVOI dimension for framework success",
           "reasoning": "If framework cannot be easily represented (drawn, explained, formalized), it won't spread",
-          "future_test": "Compare frameworks with low R (complex, hard to visualize) - predict they score lower overall ORIVE"
+          "future_test": "Compare frameworks with low R (complex, hard to visualize) - predict they score lower overall REVOI"
         },
         "evolvabilityAsLongevity": {
           "observation": "E (Evolvability) correlates with framework longevity",
@@ -870,7 +685,40 @@
             "cmy": "E = 0.60 (abandoned for CMYK, not evolved)"
           },
           "implication": "High E frameworks survive technological/paradigm shifts",
-          "darwinianMetaphor": "Frameworks are 'organisms' - evolvable ones survive, rigid ones go extinct"
+          "darwinianMetaphor": "Frameworks are organisms - evolvable ones survive, rigid ones go extinct"
+        }
+      },
+      "m0:comparisonToOtherPoclets": {
+        "exposureTriangle": {
+          "similarity": "Both demonstrate Balance (3-parameter equilibrium) + Trade-off (competing objectives)",
+          "difference": "Exposure = physical phenomenon (light capture); TPACK = conceptual framework (teacher knowledge)",
+          "balanceComparison": {
+            "exposure": "ISO x Aperture x Shutter -> Correct exposure",
+            "tpack": "TK x PK x CK -> Effective teaching"
+          },
+          "tradeoffComparison": {
+            "exposure": "DoF <-> Motion <-> Grain (image quality)",
+            "tpack": "TK depth <-> PK depth <-> CK breadth (teacher expertise)"
+          },
+          "revio": {"exposure": "0.92 (Exceptional)", "tpack": "0.94 (Exceptional) - HIGHEST YET"}
+        },
+        "fireTriangle": {
+          "similarity": "Both are 3-component synergistic pedagogical models",
+          "difference": "Fire = chemical process (combustion); TPACK = cognitive process (knowledge integration)",
+          "synergyComparison": {
+            "fire": "Fuel x O2 x Heat -> Fire (remove any -> stops)",
+            "tpack": "T x P x C -> TPACK (neglect any -> poor integration)"
+          },
+          "revio": {"fire": "0.85 (Excellent)", "tpack": "0.94 (Exceptional) - more abstract but more evolved"}
+        },
+        "rgbColorModel": {
+          "similarity": "Both are representational frameworks (RGB for color, TPACK for teaching)",
+          "difference": "RGB = perceptual phenomenon (trichromatic vision); TPACK = professional competence (teacher knowledge)",
+          "representationComparison": {
+            "rgb": "3 primaries (R, G, B) -> Color space",
+            "tpack": "3 knowledge domains (T, P, C) -> Competence space"
+          },
+          "revio": {"rgb": "0.92 (Exceptional)", "tpack": "0.94 (Exceptional) - comparable success"}
         }
       },
       "m0:futureResearch": {
@@ -894,36 +742,37 @@
             "refinement": "TPACK-E (Equity) adds social justice dimension"
           }
         ],
-        "oriveFutureTests": [
+        "revioFutureTests": [
           {
-            "test": "Apply ORIVE to FAILED framework",
+            "test": "Apply REVOI to FAILED framework",
             "example": "Deprecated educational model (e.g., Learning Styles - widely criticized)",
-            "hypothesis": "ORIVE should score low (low V for Learning Styles - empirically refuted)",
-            "validation": "If ORIVE scores low, confirms it discriminates quality"
+            "hypothesis": "REVOI should score low (low V for Learning Styles - empirically refuted)",
+            "validation": "If REVOI scores low, confirms it discriminates quality"
           },
           {
-            "test": "Apply ORIVE to emerging framework",
+            "test": "Apply REVOI to emerging framework",
             "example": "Computational Thinking framework (Wing, 2006 - still developing)",
-            "hypothesis": "ORIVE should score moderate (high R, I but lower V, E - still young)",
-            "prediction": "As framework matures, ORIVE should increase"
+            "hypothesis": "REVOI should score moderate (high R, I but lower V, E - still young)",
+            "prediction": "As framework matures, REVOI should increase"
           },
           {
-            "test": "ORIVE for non-educational domains",
+            "test": "REVOI for non-educational domains",
             "examples": "Business frameworks (Porter's Five Forces, BCG Matrix), Psychology theories (Big Five, CBT)",
-            "question": "Does ORIVE generalize beyond education and engineering?",
-            "expectation": "Yes - ORIVE should be transdisciplinary Map quality metric"
+            "question": "Does REVOI generalize beyond education and engineering?",
+            "expectation": "Yes - REVOI should be transdisciplinary Map quality metric"
           }
         ]
       },
       "m0:validation": {
-        "asfidCompleteness": "All 5 dimensions present ✅",
-        "metaconceptCoverage": "20 metaconcepts (36% of M2 catalog) ✅",
-        "minimality": "3 knowledge domains (irreducible for technology-integrated teaching) ✅",
-        "emergence": "TPACK emerges from T-P-C synergy (not reducible to sum) ✅",
-        "balanceValidated": "Balance metaconcept present (T-P-C equilibrium) ✅",
-        "tradeoffValidated": "Trade-off metaconcept present (competing objectives under constraints) ✅",
-        "oriveValidated": "ORIVE = 0.94 (HIGHEST SCORE) - validates Sphinx Eye basis ✅",
-        "bicephalousValidated": "Eagle (ASFID gap 0.17) + Sphinx (ORIVE 0.94) complementary ✅"
+        "asfidCompleteness": "All 5 dimensions present",
+        "GenericConceptCoverage": "20 GenericConcepts (27% of M2 catalog of 74)",
+        "minimality": "3 knowledge domains (irreducible for technology-integrated teaching)",
+        "emergence": "TPACK emerges from T-P-C synergy (not reducible to sum)",
+        "balanceValidated": "Balance GenericConcept present (T-P-C equilibrium)",
+        "tradeoffValidated": "Trade-off GenericConcept present (competing objectives under constraints)",
+        "revioValidated": "REVOI_mean = 0.94 (HIGHEST SCORE) - validates Sphinx Eye basis",
+        "bicephalousValidated": "Eagle (ASFID gap 0.17) + Sphinx (REVOI 0.94) complementary",
+        "m1EducationLink": "Motivates M1_Education.jsonld creation (10 KnowledgeFieldConcepts)"
       },
       "rdfs:seeAlso": [
         {
@@ -937,6 +786,10 @@
         {
           "@id": "m0:RGB_Additive",
           "note": "Comparable representational framework (3 primaries)"
+        },
+        {
+          "@id": "m1:edu:M1_Education",
+          "note": "Domain extension motivated by this poclet's analysis"
         }
       ],
       "dcterms:references": [
@@ -947,7 +800,7 @@
         "Koehler, M. J., Mishra, P., & Cain, W. (2013). What is technological pedagogical content knowledge (TPACK)? Journal of Education, 193(3), 13-19.",
         "Rosenberg, J. M., & Koehler, M. J. (2015). Context and technological pedagogical content knowledge (TPACK): A systematic review. Journal of Research on Technology in Education, 47(3), 186-210.",
         "Willermark, S. (2018). Technological pedagogical and content knowledge: A review of empirical studies published from 2011 to 2016. Journal of Educational Computing Research, 56(3), 315-343.",
-        "Angeli, C., & Valanides, N. (2009). Epistemological and methodological issues for the conceptualization, development, and assessment of ICT–TPCK. Computers & Education, 52(1), 154-168."
+        "Angeli, C., & Valanides, N. (2009). Epistemological and methodological issues for the conceptualization, development, and assessment of ICT-TPCK. Computers & Education, 52(1), 154-168."
       ]
     }
   ]

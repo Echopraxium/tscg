@@ -10,18 +10,18 @@
 
 ## Executive Summary
 
-**M2 v9.1.0** introduces a fundamental architectural change: **metaconcepts are now categorized by their Map-Territory nature** and receive formulas accordingly:
+**M2 v9.1.0** introduces a fundamental architectural change: **GenericConcepts are now categorized by their Map-Territory nature** and receive formulas accordingly:
 
-1. **Territory-only metaconcepts**: ASFID formula (stable ✅)
-2. **Map-only metaconcepts**: ORIVE formula (proposition 🧪) + fallback ASFID
-3. **Dual metaconcepts**: ASFID formula (stable ✅) + ORIVE formula (proposition 🧪) + fallback ASFID
+1. **Territory-only GenericConcepts**: ASFID formula (stable ✅)
+2. **Map-only GenericConcepts**: ORIVE formula (proposition 🧪) + fallback ASFID
+3. **Dual GenericConcepts**: ASFID formula (stable ✅) + ORIVE formula (proposition 🧪) + fallback ASFID
 
 This reflects TSCG's bicephalous philosophy: Eagle Eye (ASFID - Territory) and Sphinx Eye (ORIVE - Map) measure/construct systems from complementary perspectives.
 
 **Key changes**:
-- Total metaconcepts: 53 → 55 (+2)
-- New metaconcepts: **Balance** (Territory), **Trade-off** (not added - see rationale)
-- ORIVE proposals: 6 Dual metaconcepts now have ORIVE formulas (with fallback)
+- Total GenericConcepts: 53 → 55 (+2)
+- New GenericConcepts: **Balance** (Territory), **Trade-off** (not added - see rationale)
+- ORIVE proposals: 6 Dual GenericConcepts now have ORIVE formulas (with fallback)
 - Architecture: Territory/Map/Dual trichotomy introduced
 
 ---
@@ -29,11 +29,11 @@ This reflects TSCG's bicephalous philosophy: Eagle Eye (ASFID - Territory) and S
 ## Table of Contents
 
 1. [Architectural Philosophy](#1-architectural-philosophy)
-2. [Three Types of Metaconcepts](#2-three-types-of-metaconcepts)
+2. [Three Types of GenericConcepts](#2-three-types-of-GenericConcepts)
 3. [ORIVE Validation Strategy](#3-orive-validation-strategy)
-4. [New Metaconcept: Balance](#4-new-metaconcept-balance)
+4. [New GenericConcept: Balance](#4-new-GenericConcept-balance)
 5. [Rejected: Trade-off](#5-rejected-trade-off)
-6. [Dual Metaconcepts ORIVE Proposals](#6-dual-metaconcepts-orive-proposals)
+6. [Dual GenericConcepts ORIVE Proposals](#6-dual-GenericConcepts-orive-proposals)
 7. [M2 Complete Inventory](#7-m2-complete-inventory)
 8. [Changelog v9.0.0 → v9.1.0](#8-changelog)
 
@@ -60,9 +60,9 @@ This reflects TSCG's bicephalous philosophy: Eagle Eye (ASFID - Territory) and S
 **Principle**: The Map is NOT the Territory.
 
 **Implications for M2**:
-- Some metaconcepts exist primarily in **Territory** (physical laws, structural realities)
-- Some metaconcepts exist primarily in **Map** (epistemic concepts, modeling constraints)
-- Some metaconcepts are **Dual** (bidirectional processes, manifesting in both)
+- Some GenericConcepts exist primarily in **Territory** (physical laws, structural realities)
+- Some GenericConcepts exist primarily in **Map** (epistemic concepts, modeling constraints)
+- Some GenericConcepts are **Dual** (bidirectional processes, manifesting in both)
 
 **Example**:
 - **Balance** (Territory): Physical law P₁ × P₂ = constant (Boyle's Law)
@@ -71,23 +71,23 @@ This reflects TSCG's bicephalous philosophy: Eagle Eye (ASFID - Territory) and S
 
 ### 1.3 Why This Architecture?
 
-**Problem solved**: Until v9.0.0, all 53 metaconcepts used only ASFID formulas. This was incomplete because:
+**Problem solved**: Until v9.0.0, all 53 GenericConcepts used only ASFID formulas. This was incomplete because:
 1. ASFID measures Territory excellently but doesn't capture Map quality
-2. Some metaconcepts (like Representation, Code, Signature) are fundamentally about **Maps**
-3. Dual metaconcepts (like Coding) have two faces: Territory process + Map representation
+2. Some GenericConcepts (like Representation, Code, Signature) are fundamentally about **Maps**
+3. Dual GenericConcepts (like Coding) have two faces: Territory process + Map representation
 
-**Solution**: Assign formulas based on **metaconcept nature**:
+**Solution**: Assign formulas based on **GenericConcept nature**:
 - If primarily Territory phenomenon → ASFID (stable)
 - If primarily Map concept → ORIVE (proposition) + fallback ASFID
 - If Dual (bidirectional) → Both ASFID + ORIVE (+ fallback)
 
 ---
 
-## 2. Three Types of Metaconcepts
+## 2. Three Types of GenericConcepts
 
-### 2.1 Territory-only Metaconcepts
+### 2.1 Territory-only GenericConcepts
 
-**Definition**: Metaconcepts that describe **physical/systemic phenomena** in the Territory, observable regardless of observer/model.
+**Definition**: GenericConcepts that describe **physical/systemic phenomena** in the Territory, observable regardless of observer/model.
 
 **Formula**: ASFID tensor (Eagle Eye) - **STABLE** ✅
 
@@ -105,9 +105,9 @@ This reflects TSCG's bicephalous philosophy: Eagle Eye (ASFID - Territory) and S
 
 **No ORIVE formula**: Not needed - these are Territory phenomena, not Map constructions.
 
-### 2.2 Map-only Metaconcepts
+### 2.2 Map-only GenericConcepts
 
-**Definition**: Metaconcepts that describe **epistemic/representational concepts** primarily relevant to how we construct Maps.
+**Definition**: GenericConcepts that describe **epistemic/representational concepts** primarily relevant to how we construct Maps.
 
 **Formula**:
 - Primary: ORIVE tensor (Sphinx Eye) - **PROPOSITION** 🧪
@@ -128,15 +128,15 @@ This reflects TSCG's bicephalous philosophy: Eagle Eye (ASFID - Territory) and S
 
 **Validation**: If ORIVE fails empirical testing (success rate <60%), revert to ASFID-only or revise ORIVE formula.
 
-### 2.3 Dual Metaconcepts
+### 2.3 Dual GenericConcepts
 
-**Definition**: Metaconcepts with **bidirectional nature** - they manifest in both Territory AND Map with different aspects.
+**Definition**: GenericConcepts with **bidirectional nature** - they manifest in both Territory AND Map with different aspects.
 
 **Formula**:
 - Territory aspect: ASFID tensor - **STABLE** ✅
 - Map aspect: ORIVE tensor - **PROPOSITION** 🧪 + fallback ASFID
 
-**Current 6 Dual metaconcepts**:
+**Current 6 Dual GenericConcepts**:
 1. **Coding** (Encoding/Decoding)
 2. **Synergy** (Synergy/Antagonism)
 3. **Fusion** (Fusion/Fission)
@@ -193,8 +193,8 @@ This reflects TSCG's bicephalous philosophy: Eagle Eye (ASFID - Territory) and S
 
 **Phase 1 (Current)**: ORIVE proposals
 - ✅ ORIVE formulas proposed for:
-  - 6 Dual metaconcepts (see §6)
-  - Map-only metaconcepts (TBD - need classification of existing 53)
+  - 6 Dual GenericConcepts (see §6)
+  - Map-only GenericConcepts (TBD - need classification of existing 53)
 - ✅ Fallback ASFID mandatory for all ORIVE formulas
 
 **Phase 2 (Next 3-6 months)**: Poclet expansion
@@ -211,7 +211,7 @@ This reflects TSCG's bicephalous philosophy: Eagle Eye (ASFID - Territory) and S
 - **If <60%**: Revert to ASFID-only OR abandon ORIVE
 
 **Phase 4 (Mature)**: Full bicephalous M2
-- All relevant metaconcepts have validated ASFID + ORIVE
+- All relevant GenericConcepts have validated ASFID + ORIVE
 - Eagle and Sphinx fully operational
 - Framework demonstrates true bicephalous architecture
 
@@ -228,14 +228,14 @@ This reflects TSCG's bicephalous philosophy: Eagle Eye (ASFID - Territory) and S
 
 ---
 
-## 4. New Metaconcept: Balance
+## 4. New GenericConcept: Balance
 
 ### 4.1 Specification
 
 ```json
 {
   "@id": "m2:Balance",
-  "@type": "m2:TerritoryMetaconcept",
+  "@type": "m2:TerritoryGenericConcept",
   "rdfs:label": "Balance",
   "rdfs:comment": "State of mutual compensation between parameters where increasing one requires decreasing another to maintain system invariant. Physical law observable in Territory.",
   "m2:hasCategory": "m2:Regulatory",
@@ -309,7 +309,7 @@ This reflects TSCG's bicephalous philosophy: Eagle Eye (ASFID - Territory) and S
 - Fast shutter (freeze motion) ⇔ Low ISO (low noise)
 - Large aperture (shallow DoF) ⇔ Deep DoF (everything sharp)
 
-**Initial proposal**: Trade-off as Map metaconcept (ORIVE: V⊗E⊗I)
+**Initial proposal**: Trade-off as Map GenericConcept (ORIVE: V⊗E⊗I)
 
 ### 5.2 Why Trade-off Was Rejected
 
@@ -325,19 +325,19 @@ This reflects TSCG's bicephalous philosophy: Eagle Eye (ASFID - Territory) and S
 **Decision**: Do NOT add Trade-off to M2 at this time. May reconsider if:
 1. Clear ASFID or ORIVE formula emerges
 2. Transdisciplinary validation on 3+ poclets
-3. Distinct from existing metaconcepts (Constraint, Regulation)
+3. Distinct from existing GenericConcepts (Constraint, Regulation)
 
 ---
 
-## 6. Dual Metaconcepts ORIVE Proposals
+## 6. Dual GenericConcepts ORIVE Proposals
 
-All 6 Dual metaconcepts now have **proposed ORIVE formulas** (Map aspect) in addition to **stable ASFID formulas** (Territory aspect).
+All 6 Dual GenericConcepts now have **proposed ORIVE formulas** (Map aspect) in addition to **stable ASFID formulas** (Territory aspect).
 
 **Full details**: See `M2_Dual_ORIVE_Proposals.md`
 
 ### Summary Table
 
-| Dual Metaconcept | ASFID (Territory - STABLE ✅) | ORIVE (Map - PROPOSITION 🧪) | Fallback |
+| Dual GenericConcept | ASFID (Territory - STABLE ✅) | ORIVE (Map - PROPOSITION 🧪) | Fallback |
 |------------------|------------------------------|------------------------------|----------|
 | **Coding** (Encoding/Decoding) | I⊗S⊗D | R⊗I⊗E | I⊗S⊗D |
 | **Synergy** (Synergy/Antagonism) | A⊗S⊗I | V⊗I⊗O | A⊗S⊗I |
@@ -348,7 +348,7 @@ All 6 Dual metaconcepts now have **proposed ORIVE formulas** (Map aspect) in add
 
 **Status**: All ORIVE formulas are PROPOSITIONS 🧪 requiring validation via poclets.
 
-**Validation target**: 3 poclets per Dual metaconcept = 18 total poclet validations.
+**Validation target**: 3 poclets per Dual GenericConcept = 18 total poclet validations.
 
 ---
 
@@ -368,7 +368,7 @@ All 6 Dual metaconcepts now have **proposed ORIVE formulas** (Map aspect) in add
 | **Teleonomic** | 2 | Autopoiesis, Stability |
 | **Relational** | 4 | Relation, Agent, Role, Link |
 
-**Total**: 55 metaconcepts
+**Total**: 55 GenericConcepts
 
 ### 7.2 By Polarity
 
@@ -387,7 +387,7 @@ All 6 Dual metaconcepts now have **proposed ORIVE formulas** (Map aspect) in add
 | **Map-only** | ~5-10 (TBD) | Representation?, Code?, Language?, ... | ORIVE 🧪 + fallback ASFID |
 | **Dual** | 6 | Coding, Synergy, Fusion, Activation, Convergence, Composition | ASFID ✅ + ORIVE 🧪 + fallback |
 
-**TODO**: Complete classification of all 55 metaconcepts into Territory/Map/Dual.
+**TODO**: Complete classification of all 55 GenericConcepts into Territory/Map/Dual.
 
 ---
 
@@ -395,12 +395,12 @@ All 6 Dual metaconcepts now have **proposed ORIVE formulas** (Map aspect) in add
 
 ### 8.1 Added
 
-1. **New metaconcept: Balance** (A⊗I, Regulatory, Territory-only)
+1. **New GenericConcept: Balance** (A⊗I, Regulatory, Territory-only)
    - Discovered from Exposure Triangle poclet
    - Captures inverse coupling P₁ × P₂ = constant
    - Transdisciplinary validation: Photography, Thermodynamics, Optics, Economics
 
-2. **ORIVE formulas for 6 Dual metaconcepts**:
+2. **ORIVE formulas for 6 Dual GenericConcepts**:
    - Coding: R⊗I⊗E (Map aspect)
    - Synergy: V⊗I⊗O (Map aspect)
    - Fusion: O⊗R⊗E (Map aspect)
@@ -414,23 +414,23 @@ All 6 Dual metaconcepts now have **proposed ORIVE formulas** (Map aspect) in add
 ### 8.2 Modified
 
 1. **M2 architecture**: Now explicitly bicephalous
-   - Territory metaconcepts: ASFID only
-   - Map metaconcepts: ORIVE (+ fallback ASFID)
-   - Dual metaconcepts: ASFID + ORIVE (+ fallback)
+   - Territory GenericConcepts: ASFID only
+   - Map GenericConcepts: ORIVE (+ fallback ASFID)
+   - Dual GenericConcepts: ASFID + ORIVE (+ fallback)
 
 2. **Validation strategy**: ORIVE validation roadmap formalized (4 phases)
 
 ### 8.3 Rejected
 
-1. **Trade-off metaconcept**: Not added (see §5 for rationale)
+1. **Trade-off GenericConcept**: Not added (see §5 for rationale)
    - Not systematic complement of Balance
    - Context-dependent, not universal
    - May reconsider with stronger evidence
 
 ### 8.4 Pending
 
-1. **Territory/Map/Dual classification**: Needs completion for all 55 metaconcepts
-2. **Map-only metaconcept identification**: Likely candidates include Representation, Code, Language, Signature
+1. **Territory/Map/Dual classification**: Needs completion for all 55 GenericConcepts
+2. **Map-only GenericConcept identification**: Likely candidates include Representation, Code, Language, Signature
 3. **ORIVE validation**: Expand from 6 to 15+ poclets (Phase 2)
 
 ---
@@ -440,14 +440,14 @@ All 6 Dual metaconcepts now have **proposed ORIVE formulas** (Map aspect) in add
 ### 9.1 Immediate (This week)
 
 1. ✅ Document M2 v9.1.0 architecture (this file)
-2. ✅ Create ORIVE proposals for 6 Dual metaconcepts
+2. ✅ Create ORIVE proposals for 6 Dual GenericConcepts
 3. ✅ Add Balance to M2 ontology JSON-LD
-4. ⏳ Update M2_MetaConcepts_Ontology.jsonld with v9.1.0 changes
+4. ⏳ Update M2_GenericConcepts_Ontology.jsonld with v9.1.0 changes
 
 ### 9.2 Short-term (Next month)
 
-1. Complete Territory/Map/Dual classification for all 55 metaconcepts
-2. Identify Map-only metaconcepts and propose ORIVE formulas
+1. Complete Territory/Map/Dual classification for all 55 GenericConcepts
+2. Identify Map-only GenericConcepts and propose ORIVE formulas
 3. Create 3-5 new poclets for ORIVE validation:
    - Supply-Demand Triangle (economics)
    - Predator-Prey (biology)
@@ -456,7 +456,7 @@ All 6 Dual metaconcepts now have **proposed ORIVE formulas** (Map aspect) in add
 ### 9.3 Medium-term (3-6 months)
 
 1. Expand poclet library to 15+ for statistical ORIVE validation
-2. Test ORIVE formulas for Dual metaconcepts (18 poclet validations)
+2. Test ORIVE formulas for Dual GenericConcepts (18 poclet validations)
 3. Decide: Stabilize ORIVE ✅ or Refine 🔧 or Revert ❌
 
 ### 9.4 Long-term (6-12 months)
@@ -490,7 +490,7 @@ All 6 Dual metaconcepts now have **proposed ORIVE formulas** (Map aspect) in add
 - Smart Prompt v10.0.0 (2026-01-17)
 - M3_Eagle_Eye.jsonld v2.0.0
 - M3_Sphinx_Eye.jsonld v2.0.0
-- M2_MetaConcepts_Ontology.jsonld v9.0.0
+- M2_GenericConcepts_Ontology.jsonld v9.0.0
 - M0_ExposureTriangle_Photography.jsonld v1.0.0
 - Korzybski, A. (1933). "Science and Sanity" - Map is not Territory
 - Popper, K. (1959). "The Logic of Scientific Discovery" - Falsifiability principle
@@ -501,4 +501,4 @@ All 6 Dual metaconcepts now have **proposed ORIVE formulas** (Map aspect) in add
 
 **Version**: 9.1.0  
 **Status**: Ready for implementation  
-**Next milestone**: Complete Territory/Map/Dual classification (all 55 metaconcepts)
+**Next milestone**: Complete Territory/Map/Dual classification (all 55 GenericConcepts)

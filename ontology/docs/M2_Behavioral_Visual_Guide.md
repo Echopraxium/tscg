@@ -1,4 +1,4 @@
-# M2 Behavioral Metaconcepts - Visual Guide
+# M2 Behavioral GenericConcepts - Visual Guide
 
 **Quick Reference for v14.3.0**
 
@@ -140,7 +140,7 @@ Result: Stem bends ───► towards ───► Light Source
 
 ## 6. Polarity Comparison Table
 
-| Metaconcept | Polarity Type | Pole 1 | Pole 2 | Additional |
+| GenericConcept | Polarity Type | Pole 1 | Pole 2 | Additional |
 |-------------|---------------|--------|--------|------------|
 | **Action** | Bicephalous | Territory (measured) | Map (modeled) | - |
 | **Step** | Bicephalous | Territory (observed) | Map (prescribed) | - |
@@ -263,7 +263,7 @@ Workflow: Recipe
 
 ## 11. Integration with Existing M2
 
-### Related Metaconcepts
+### Related GenericConcepts
 
 | Existing M2 | New M2 | Relationship |
 |-------------|--------|--------------|
@@ -279,7 +279,7 @@ Workflow: Recipe
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  BEHAVIORAL METACONCEPTS CHEAT SHEET                         ║
+║  BEHAVIORAL GenericConceptS CHEAT SHEET                         ║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
 ║  Behavior (S⊗D⊗F)                                            ║
@@ -329,7 +329,7 @@ Workflow: Recipe
 
 ## 14. Validation Status
 
-| Metaconcept | Status | Validated By |
+| GenericConcept | Status | Validated By |
 |-------------|--------|--------------|
 | Behavior | ✅ Validated | Butterfly, BloodPressure, HTTP |
 | Tropism | ✅ Validated | Phototropism (biological literature) |

@@ -12,13 +12,13 @@ This delivery package contains **6 files** representing a major theoretical adva
 
 ### 1. Core Theoretical Advancement
 
-#### M2_Metaconcepts_v13.jsonld (96 KB)
+#### M2_GenericConcepts_v13.jsonld (96 KB)
 - **Type**: Ontology (JSON-LD)
-- **Layer**: M2 (Universal Metaconcepts)
+- **Layer**: M2 (Universal GenericConcepts)
 - **Version**: 13.0.0 (from 12.0.0)
 - **Major Change**: N-ary polarity framework adopted
-- **New Metaconcept**: Polarity (S⊗I⊗A) with N-ary parameter
-- **Total Metaconcepts**: 59 (58→59)
+- **New GenericConcept**: Polarity (S⊗I⊗A) with N-ary parameter
+- **Total GenericConcepts**: 59 (58→59)
 - **Key Innovation**: Replaces binary polarity restriction with parametric N-ary (N ∈ {1,2,3,4,5,...})
 - **Validation**: Magic Color Wheel (N=5), Wu Xing (N=5), Political Compass (N=4), Enneagram (N=9)
 
@@ -46,7 +46,7 @@ This delivery package contains **6 files** representing a major theoretical adva
 - **ORIVE**: 0.85 (excellent - top-tier Map quality)
 - **Epistemic Gap**: 0.20 (Map > Territory - normative framework)
 - **Impact**: Forced adoption of N-ary polarity in M2
-- **Metaconcepts Mobilized**: 28 M2 metaconcepts
+- **GenericConcepts Mobilized**: 28 M2 GenericConcepts
 - **New M2 Candidates**: 3 proposed (Polarity-N, Alliance, Antagonism)
 
 ---
@@ -80,7 +80,7 @@ This delivery package contains **6 files** representing a major theoretical adva
   - NoiseGrainControl (ISO effects)
   - CreativeExposureModes (PASM modes)
 - **Validated By**: M0_ExposureTriangle.jsonld poclet
-- **Imports**: M1_CoreConcepts.jsonld, M2_MetaConcepts.jsonld
+- **Imports**: M1_CoreConcepts.jsonld, M2_GenericConcepts.jsonld
 
 #### TSCG_M1_Architecture.md (14 KB)
 - **Type**: Documentation (Markdown)
@@ -141,7 +141,7 @@ This delivery package contains **6 files** representing a major theoretical adva
 
 **Framework Impact**:
 - Forced theoretical revision (N-ary polarity adoption)
-- Mobilized 28 M2 metaconcepts (framework maturity demonstrated)
+- Mobilized 28 M2 GenericConcepts (framework maturity demonstrated)
 - Proposed 3 new M2 candidates (Polarity-N, Alliance, Antagonism)
 - Identified need for M1_Philosophy extension
 
@@ -149,8 +149,8 @@ This delivery package contains **6 files** representing a major theoretical adva
 
 ## 📊 Statistics
 
-### M2 Layer (Metaconcepts)
-- **Total Metaconcepts**: 59 (↑1 from v12)
+### M2 Layer (GenericConcepts)
+- **Total GenericConcepts**: 59 (↑1 from v12)
 - **Neutral Polarity**: 52
 - **Dual Polarity**: 6
 - **N-ary Polarity**: 1 (Polarity itself)
@@ -224,12 +224,12 @@ This delivery package contains **6 files** representing a major theoretical adva
   "@context": {
     "m1phil": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Philosophy.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     ...
   },
   "owl:imports": [
     "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
-    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld"
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld"
   ],
   "@graph": [
     {
@@ -273,7 +273,7 @@ This delivery package contains **6 files** representing a major theoretical adva
 ## 📚 File Dependencies
 
 ```
-M2_Metaconcepts_v13.jsonld
+M2_GenericConcepts_v13.jsonld
     ↓ owl:imports
 M1_CoreConcepts.jsonld
     ↓ owl:imports
@@ -290,7 +290,7 @@ M1_CoreConcepts.jsonld
 
 **For Understanding N-ary Polarity**:
 1. TSCG_Nary_Polarity_Paradigm_Shift.md (theory)
-2. M2_Metaconcepts_v13.jsonld (implementation)
+2. M2_GenericConcepts_v13.jsonld (implementation)
 3. M0_MagicColorWheel.jsonld (validation)
 
 **For Understanding M1 Architecture**:
@@ -301,7 +301,7 @@ M1_CoreConcepts.jsonld
 **For Complete Picture**:
 1. TSCG_Nary_Polarity_Paradigm_Shift.md
 2. TSCG_M1_Architecture.md
-3. M2_Metaconcepts_v13.jsonld
+3. M2_GenericConcepts_v13.jsonld
 4. M1_CoreConcepts.jsonld
 5. M1_Photography.jsonld
 6. M0_MagicColorWheel.jsonld
@@ -326,7 +326,7 @@ M1_CoreConcepts.jsonld
 
 ### Framework Integrity
 - ✅ Backward compatibility maintained (old poclets still work)
-- ✅ No breaking changes to existing M2 metaconcepts
+- ✅ No breaking changes to existing M2 GenericConcepts
 - ✅ Clear migration path from v12 to v13
 - ✅ Extension mechanism doesn't affect core
 

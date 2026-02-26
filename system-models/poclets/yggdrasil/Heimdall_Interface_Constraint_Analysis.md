@@ -1,4 +1,4 @@
-# Heimdall : Interface Contrainte (MetaconceptCombo)
+# Heimdall : Interface Contrainte (GenericConceptCombo)
 
 **Document**: Heimdall Ontological Analysis  
 **Author**: Echopraxium with the collaboration of Claude AI  
@@ -9,16 +9,16 @@
 
 ## Michel's Insight
 
-> "Heimdall pour moi c'est une Interface Contrainte donc MetaconceptCombo"
+> "Heimdall pour moi c'est une Interface Contrainte donc GenericConceptCombo"
 
 **Key Concepts**:
 - **Interface** (M2) - Connection point between systems
 - **Constraint** (M2) - Restriction on possible states
-- **MetaconceptCombo** - Synergistic combination producing emergent properties
+- **GenericConceptCombo** - Synergistic combination producing emergent properties
 
 ---
 
-## M2 Metaconcepts Involved
+## M2 GenericConcepts Involved
 
 ### Interface (S⊗I⊗F⊗V⊗R)
 **Definition**: Boundary or connection point enabling interaction between distinct systems  
@@ -63,12 +63,12 @@ Heimdall is **simultaneously**:
 
 ---
 
-## MetaconceptCombo Construction
+## GenericConceptCombo Construction
 
 ### Formula
 
 ```
-Heimdall = MetaconceptCombo(Interface, Constraint)
+Heimdall = GenericConceptCombo(Interface, Constraint)
          = (S⊗I⊗F⊗V⊗R)_interface ⊗ (S⊗I⊗F⊗V⊗R)_constraint
          ⇒ ConstrainedInterface
 ```
@@ -171,7 +171,7 @@ Heimdall = MetaconceptCombo(Interface, Constraint)
 
 **Gatekeeper**: Agent implementing Constrained Interface at system boundary
 
-**Formula**: MetaconceptCombo(Interface, Constraint) + Agent
+**Formula**: GenericConceptCombo(Interface, Constraint) + Agent
 
 **Components**:
 1. **Interface** - Enables interaction
@@ -203,9 +203,9 @@ Heimdall = MetaconceptCombo(Interface, Constraint)
   "rdfs:label": "Gatekeeper Archetype",
   "rdfs:comment": "Agent implementing Constrained Interface at critical system boundary. Enables legitimate passage while blocking threats. Combines Interface (connection) with Constraint (selectivity) and Agent (active enforcement).",
   
-  "m1:instantiatesMetaconcept": "m2:MetaconceptCombo",
+  "m1:instantiatesGenericConcept": "m2:GenericConceptCombo",
   
-  "m1:metaconceptComboStructure": {
+  "m1:GenericConceptComboStructure": {
     "parentA": "m2:Interface",
     "parentB": "m2:Constraint",
     "additionalComponent": "m2:Agent",
@@ -302,7 +302,7 @@ Heimdall = MetaconceptCombo(Interface, Constraint)
 
 ---
 
-## Why MetaconceptCombo? (Interface + Constraint)
+## Why GenericConceptCombo? (Interface + Constraint)
 
 ### Neither Parent Alone Suffices
 
@@ -374,8 +374,8 @@ Heimdall = MetaconceptCombo(Interface, Constraint)
   "rdfs:label": "Heimdall - Guardian of Bifröst",
   "skos:altLabel": "The Watchman of the Gods",
   
-  "m0:instantiatesMetaconcept": "m2:MetaconceptCombo",
-  "m0:metaconceptComboStructure": {
+  "m0:instantiatesGenericConcept": "m2:GenericConceptCombo",
+  "m0:GenericConceptComboStructure": {
     "parentA": "m2:Interface",
     "parentB": "m2:Constraint",
     "additionalComponent": "m2:Agent",
@@ -443,7 +443,7 @@ Heimdall = MetaconceptCombo(Interface, Constraint)
 
 | Aspect | Heimdall | Loki |
 |--------|----------|------|
-| **Metaconcept** | Interface ⊗ Constraint | Agent ⊗ Transformation(Representation) |
+| **GenericConcept** | Interface ⊗ Constraint | Agent ⊗ Transformation(Representation) |
 | **Function** | Maintain boundary | Violate boundary |
 | **Order/Chaos** | Order (gatekeeper) | Chaos (trickster) |
 | **Transparency** | Transparent interface | Opaque illusion |
@@ -458,7 +458,7 @@ Heimdall = MetaconceptCombo(Interface, Constraint)
 ## Conclusion
 
 ✅ **Heimdall is a Constrained Interface**  
-✅ **MetaconceptCombo(Interface, Constraint) + Agent**  
+✅ **GenericConceptCombo(Interface, Constraint) + Agent**  
 ✅ **Exemplifies "Gatekeeper" archetype (M1 mythology pattern)**  
 ✅ **NOT simple Mediator (has selectivity + enforcement)**  
 ✅ **NOT pure Constraint (enables legitimate passage)**  
@@ -480,11 +480,11 @@ Heimdall = (Interface ⊗ Constraint) + Agent
 
 ---
 
-**Michel's characterization validated**: Heimdall est une Interface Contrainte via MetaconceptCombo. 🛡️
+**Michel's characterization validated**: Heimdall est une Interface Contrainte via GenericConceptCombo. 🛡️
 
 ---
 
 **Document Status**: VALIDATED  
-**Classification**: Constrained Interface (MetaconceptCombo), Gatekeeper Pattern  
+**Classification**: Constrained Interface (GenericConceptCombo), Gatekeeper Pattern  
 **NOT**: Pure Mediator, Pure Constraint, or Pure Interface  
 **Next**: Formalize m1:mythology:Gatekeeper pattern

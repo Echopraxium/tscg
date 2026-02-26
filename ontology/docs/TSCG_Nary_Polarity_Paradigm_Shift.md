@@ -13,9 +13,9 @@ The TSCG framework has undergone a **paradigm shift** from binary polarity restr
 
 ### Key Changes
 
-- **New metaconcept**: **Polarity** (S⊗I⊗A) with N-ary parameter
+- **New GenericConcept**: **Polarity** (S⊗I⊗A) with N-ary parameter
 - **Polarity redefined**: neutral (N=1), dual (N=2), ternary (N=3), quaternary (N=4), pentagonal (N=5), N-ary (N>5)
-- **Total metaconcepts**: 58 → 59
+- **Total GenericConcepts**: 58 → 59
 - **Theoretical foundation**: Conceptual frameworks are naturally N-ary, not just binary
 
 ---
@@ -34,12 +34,12 @@ bidirectional). N-ary polarity rejected."
 **Rationale** (implicit):
 - Simplicity: Binary classification is mathematically elegant
 - Dualism tradition: Many philosophical systems are dualistic (yin/yang, good/evil)
-- Tensor products: Dual polarity captures bidirectional metaconcepts naturally
+- Tensor products: Dual polarity captures bidirectional GenericConcepts naturally
 
 **Contradiction discovered**:
-- **Switch** metaconcept (v12.0.0) was already explicitly N-ary: "Binary (N=2) is special case; general Switch is N-ary"
-- **Mode** metaconcept (v12.0.0) described N-ary operational states
-- Framework claimed to reject N-ary but already contained N-ary metaconcepts
+- **Switch** GenericConcept (v12.0.0) was already explicitly N-ary: "Binary (N=2) is special case; general Switch is N-ary"
+- **Mode** GenericConcept (v12.0.0) described N-ary operational states
+- Framework claimed to reject N-ary but already contained N-ary GenericConcepts
 
 ### v13.0: N-ary Generalization Era
 
@@ -89,7 +89,7 @@ Magic: The Gathering's color system consists of:
 
 ### Mathematical Structure
 
-**Polarity** is a metaconcept (S⊗I⊗A) characterized by:
+**Polarity** is a GenericConcept (S⊗I⊗A) characterized by:
 
 ```
 Pole Set: P = {p₁, p₂, ..., pₙ} where N ∈ {1, 2, 3, 4, 5, ...}
@@ -153,7 +153,7 @@ Pentagonal structures (N=5) appear repeatedly:
 
 ### Changes to M2 Ontology
 
-**New Metaconcept**: Polarity (S⊗I⊗A)
+**New GenericConcept**: Polarity (S⊗I⊗A)
 - **Category**: Structural/Ontological
 - **Polarity**: nary (self-referential: Polarity has N-ary polarity)
 - **Tensor formula**: S⊗I⊗A (Structure × Information × Attractor)
@@ -171,14 +171,14 @@ NEW: "N-ary polarity framework: neutral (N=1), dual (N=2), ternary (N=3),
 
 ### Retroactive Consistency
 
-**Switch** and **Mode** metaconcepts now **explicitly aligned**:
+**Switch** and **Mode** GenericConcepts now **explicitly aligned**:
 - Both were already N-ary in practice
-- Now theoretically consistent with Polarity metaconcept
+- Now theoretically consistent with Polarity GenericConcept
 - Polarity provides conceptual foundation for their N-ary nature
 
-### Metaconcepts Mobilized by Magic Color Wheel
+### GenericConcepts Mobilized by Magic Color Wheel
 
-The Color Wheel poclet mobilized **28 M2 metaconcepts**:
+The Color Wheel poclet mobilized **28 M2 GenericConcepts**:
 - Structure, Component, Relation, Opposition, Synergy, Constraint, Trade-off, Balance
 - **Polarity** (new!), Attractor, Network, Code, Identity, Boundary
 - Fusion, Composition, Emergence, Diversity, Complementarity, Tension
@@ -230,7 +230,7 @@ Why does N=5 appear so often?
 2. Determine topology (linear, cyclic, networked)
 3. Map relationships (allied/enemy/neutral)
 4. Apply ASFID/ORIVE analysis
-5. Check for new M2 metaconcept candidates
+5. Check for new M2 GenericConcept candidates
 
 ### For M1 Extensions
 
@@ -293,6 +293,6 @@ The adoption of **N-ary polarity** in TSCG v13.0.0 represents a **paradigm shift
 **Last Updated**: January 22, 2026  
 **Review Status**: Pending peer review  
 **Related Files**:
-- `M2_Metaconcepts_v13.jsonld` - Updated ontology
+- `M2_GenericConcepts_v13.jsonld` - Updated ontology
 - `M0_MagicColorWheel.jsonld` - Catalyst poclet
 - `poclet_terminology.md` - Poclet methodology

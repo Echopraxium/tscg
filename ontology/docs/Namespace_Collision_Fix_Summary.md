@@ -36,7 +36,7 @@ Created distinct prefixes for each ontology layer:
   "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/cell_signaling/M0_CellSignalingModes.jsonld#",
   "m1core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
   "m1bio": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld#",
-  "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+  "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
   ...
 }
 ```
@@ -60,7 +60,7 @@ A new biology domain extension was created at:
 
 Each concept includes:
 - `rdfs:label` and `rdfs:comment` (documentation)
-- `m1bio:m2Basis` (linkage to M2 metaconcepts)
+- `m1bio:m2Basis` (linkage to M2 GenericConcepts)
 - `m1bio:examples` (concrete instances)
 - Domain-specific properties (spatial/temporal ranges, mechanisms)
 
@@ -69,7 +69,7 @@ Each concept includes:
 The corrected poclet file now:
 - Uses `m1core:` for core transdisciplinary concepts
 - Uses `m1bio:` for biology-specific concepts
-- Uses `m2:` for metaconcepts
+- Uses `m2:` for GenericConcepts
 - Uses `m0:` for poclet-specific definitions
 
 ---
@@ -94,8 +94,8 @@ Use for **biology-specific concepts**:
 - `m1bio:Cell` - Fundamental biological unit
 - `m1bio:Homeostasis` - Biological regulation principle
 
-#### `m2:` (M2_MetaConcepts.jsonld)
-Use for **universal metaconcepts**:
+#### `m2:` (M2_GenericConcepts.jsonld)
+Use for **universal GenericConcepts**:
 - `m2:Component` - Elementary parts of any system
 - `m2:Balance` - Equilibrium between factors
 - `m2:Trade-off` - Exchange under constraints
@@ -109,7 +109,7 @@ Use for **universal metaconcepts**:
 ```
 ontology/
 ├── M1_CoreConcepts.jsonld              # Generic transdisciplinary concepts
-├── M2_MetaConcepts.jsonld              # Universal metaconcepts
+├── M2_GenericConcepts.jsonld              # Universal GenericConcepts
 │
 ├── M1_extensions/
 │   └── biology/
@@ -128,7 +128,7 @@ ontology/
 1. **m0:** - Poclet-specific instances (highest priority, most specific)
 2. **m1bio:** - Domain-specific concepts (biology layer)
 3. **m1core:** - Generic transdisciplinary concepts (core patterns)
-4. **m2:** - Universal metaconcepts (foundation layer)
+4. **m2:** - Universal GenericConcepts (foundation layer)
 
 ### Example Resolution:
 
@@ -136,7 +136,7 @@ ontology/
 {
   "@id": "m0:AutocrineSignaling",
   "@type": "m1bio:AutocrineSignaling",     // Biology-specific class
-  "m0:metaconceptInstantiation": "m2:Component",  // Universal metaconcept
+  "m0:GenericConceptInstantiation": "m2:Component",  // Universal GenericConcept
   "m0:patternBasis": "m1core:FeedbackLoop"  // Generic pattern
 }
 ```
@@ -144,7 +144,7 @@ ontology/
 **Interpretation**:
 - This is an **instance** (`m0:`) of Autocrine Signaling
 - It is a **biology-specific type** (`m1bio:`)
-- It instantiates a **universal metaconcept** (`m2:Component`)
+- It instantiates a **universal GenericConcept** (`m2:Component`)
 - It uses a **generic pattern** (`m1core:FeedbackLoop`)
 
 ---
@@ -165,7 +165,7 @@ All TSCG ontologies follow this URI structure:
 
 ```
 https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/
-├── M2_MetaConcepts.jsonld                 → m2:
+├── M2_GenericConcepts.jsonld                 → m2:
 ├── M1_CoreConcepts.jsonld                 → m1core:
 ├── M1_extensions/
 │   ├── biology/M1_Biology.jsonld          → m1bio:
@@ -197,10 +197,10 @@ https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/
 ✅ No duplicate keys in `@context`  
 ✅ All namespace prefixes are unique  
 ✅ URIs use `raw.githubusercontent.com` (not `github.com/blob`)  
-✅ M1_Biology.jsonld imports M1_CoreConcepts.jsonld and M2_MetaConcepts.jsonld  
+✅ M1_Biology.jsonld imports M1_CoreConcepts.jsonld and M2_GenericConcepts.jsonld  
 ✅ All biological concepts have `m1bio:` prefix  
 ✅ Generic concepts use `m1core:` prefix  
-✅ Metaconcepts use `m2:` prefix  
+✅ GenericConcepts use `m2:` prefix  
 ✅ Poclet instances use `m0:` prefix  
 
 ---

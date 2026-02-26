@@ -3,26 +3,26 @@
 
 **Date**: 2026-02-05  
 **Author**: Echopraxium with the collaboration of Claude AI  
-**Final Version**: M2_MetaConcepts v14.4.0  
+**Final Version**: M2_GenericConcepts v14.4.0  
 **Status**: ✅ COMPLETE
 
 ---
 
 ## Executive Summary
 
-**Mission**: Systematically enrich M2 metaconcepts with typed attributes using ValueSpace to avoid ontological proliferation.
+**Mission**: Systematically enrich M2 GenericConcepts with typed attributes using ValueSpace to avoid ontological proliferation.
 
-**Result**: 11 metaconcepts enriched with 13 attributes covering 72 discrete values across 4 phases.
+**Result**: 11 GenericConcepts enriched with 13 attributes covering 72 discrete values across 4 phases.
 
-**Impact**: Ontology remains stable at 71 metaconcepts while gaining massive configurability.
+**Impact**: Ontology remains stable at 71 GenericConcepts while gaining massive configurability.
 
 ---
 
 ## Complete Attribute Catalog
 
-### 11 Enriched Metaconcepts
+### 11 Enriched GenericConcepts
 
-| # | Metaconcept | Attribute(s) | Values | Phase |
+| # | GenericConcept | Attribute(s) | Values | Phase |
 |---|-------------|--------------|--------|-------|
 | 1 | **Trajectory** | shape | 9 | 1 |
 | 2 | **Amplification** | direction | 3 | 1 |
@@ -46,7 +46,7 @@
 ### Phase 1 (v14.3.6-14.3.7): Core Dynamics
 **Focus**: Fundamental dynamic behaviors
 
-| Metaconcept | Attribute | Values |
+| GenericConcept | Attribute | Values |
 |-------------|-----------|--------|
 | Trajectory | shape | Linear, Circular, Elliptical, Spiral, Hyperbolic, Random, Constrained, Chaotic, Piecewise (9) |
 | Amplification | direction | Amplifying, Attenuating, Unity (3) |
@@ -60,7 +60,7 @@
 ### Phase 2 (v14.3.8): Control & Convergence
 **Focus**: Control theory and convergence patterns
 
-| Metaconcept | Attribute | Values |
+| GenericConcept | Attribute | Values |
 |-------------|-----------|--------|
 | Regulation | control_type | P, I, D, PI, PD, PID, Bang-bang, Adaptive, MPC (9) |
 | Convergence | convergence_pattern | Monotonic, Oscillatory, Critical, Undamped, Divergent (5) |
@@ -73,7 +73,7 @@
 ### Phase 3 (v14.3.9): Structural & Mathematical
 **Focus**: Bifurcations, symmetries, thresholds
 
-| Metaconcept | Attribute | Values |
+| GenericConcept | Attribute | Values |
 |-------------|-----------|--------|
 | Bifurcation | bifurcation_type | Saddle-node, Transcritical, Pitchfork, Hopf, Period-doubling, Homoclinic, Heteroclinic (7) |
 | Symmetry | symmetry_type | Translational, Rotational, Reflective, Temporal, Scale, Gauge, Permutation, Duality (8) |
@@ -86,7 +86,7 @@
 ### Phase 4 (v14.4.0): Network & Signal
 **Focus**: Topology, signal processing, gradients
 
-| Metaconcept | Attribute | Values |
+| GenericConcept | Attribute | Values |
 |-------------|-----------|--------|
 | Network | topology | Scale-free, Small-world, Random, Lattice, Hierarchical, Star, Ring, Fully-connected (8) |
 | Signal | signal_type | Analog, Digital, Discrete-event, Hybrid (4) |
@@ -194,7 +194,7 @@
 
 | Metric | v14.3.5 (Before) | v14.4.0 (After) | Delta |
 |--------|------------------|-----------------|-------|
-| **Metaconcepts M2** | 71 | 71 | 0 (stable) ✅ |
+| **GenericConcepts M2** | 71 | 71 | 0 (stable) ✅ |
 | **With attributes** | 0 | 11 | +11 |
 | **Total attributes** | 0 | 13 | +13 |
 | **Discrete values** | 0 | 72 | +72 |
@@ -210,7 +210,7 @@
 
 **Without ValueSpace attributes** (hypothetical):
 ```
-71 base M2 metaconcepts
+71 base M2 GenericConcepts
 + 72 subtype variants (e.g., TrajectoryLinear, TrajectoryCircular, ...)
 = 143 M2 entries (ontological explosion!)
 ```
@@ -219,7 +219,7 @@
 
 **With ValueSpace attributes**:
 ```
-71 base M2 metaconcepts (unchanged)
+71 base M2 GenericConcepts (unchanged)
 + 13 configurable attributes
 + 72 values in ValueSpace domains
 = Clean, stable, configurable architecture
@@ -237,7 +237,7 @@
 ## Key Insights from Enrichment Process
 
 ### 1. Pattern Recognition
-Most metaconcepts naturally have 3-8 discrete variations:
+Most GenericConcepts naturally have 3-8 discrete variations:
 - **Few (3-4)**: Binary or ternary choices (Amplifying/Attenuating, Reversible/Irreversible)
 - **Medium (5-7)**: Classification schemes (Convergence patterns, Bifurcation types)
 - **Many (8-9)**: Complex taxonomies (Network topology, Control types, Trajectory shapes)
@@ -258,7 +258,7 @@ Each value includes:
 - ✅ Pros/cons or conditions
 
 ### 4. RAAS as Validation
-RAAS exercised 11 of 11 enriched metaconcepts, demonstrating:
+RAAS exercised 11 of 11 enriched GenericConcepts, demonstrating:
 - ✅ Completeness of attribute coverage
 - ✅ Biological relevance
 - ✅ Non-redundancy (each attribute captures distinct aspect)
@@ -269,7 +269,7 @@ RAAS exercised 11 of 11 enriched metaconcepts, demonstrating:
 
 ### Potential Phase 5 Candidates
 
-| Metaconcept | Proposed Attribute | Values |
+| GenericConcept | Proposed Attribute | Values |
 |-------------|-------------------|--------|
 | **Feedback** | loop_type | Simple, Nested, Cascaded |
 | **Memory** | retention_mechanism | Bistable, Hysteretic, Capacitive |
@@ -296,7 +296,7 @@ RAAS exercised 11 of 11 enriched metaconcepts, demonstrating:
 ## Documentation Deliverables
 
 ### Generated Files
-1. ✅ **M2_MetaConcepts.jsonld** (v14.4.0) - Complete ontology
+1. ✅ **M2_GenericConcepts.jsonld** (v14.4.0) - Complete ontology
 2. ✅ **M2_Attribute_Candidates_Analysis.md** - Selection methodology
 3. ✅ **TSCG_Architectural_Extensions.md** - N-ary combos + ValueSpace
 4. ✅ **Poclet_Analysis_Methodology.md** - Discovery process
@@ -332,7 +332,7 @@ RAAS exercised 11 of 11 enriched metaconcepts, demonstrating:
 ## Recommendations
 
 ### For TSCG Development
-1. **Freeze M2 count at 71**: Resist adding new base metaconcepts unless truly universal
+1. **Freeze M2 count at 71**: Resist adding new base GenericConcepts unless truly universal
 2. **Attribute-first thinking**: When tempted to add M2 subtype, consider attribute instead
 3. **ValueSpace as pattern**: Apply to M1 extensions (M1_Biology, M1_Optics, etc.)
 4. **Documentation standard**: Maintain current level of detail for all future attributes
@@ -345,7 +345,7 @@ RAAS exercised 11 of 11 enriched metaconcepts, demonstrating:
 ### For Future Work
 1. **Create M0_RAAS.jsonld**: Formalize RAAS as complete poclet with all attributes
 2. **M1_Biology population**: Add HormonalCascade, EndocrineAxis, etc.
-3. **Cascade N-ary implementation**: Still pending (requires MetaconceptCombo generalization)
+3. **Cascade N-ary implementation**: Still pending (requires GenericConceptCombo generalization)
 
 ---
 
@@ -354,7 +354,7 @@ RAAS exercised 11 of 11 enriched metaconcepts, demonstrating:
 **Mission Accomplished** ✅
 
 The systematic ValueSpace enrichment (Phases 1-4) has successfully:
-- ✅ Added 13 attributes to 11 metaconcepts
+- ✅ Added 13 attributes to 11 GenericConcepts
 - ✅ Defined 72 discrete values with full documentation
 - ✅ Maintained ontology stability (71 M2 unchanged)
 - ✅ Validated architecture with RAAS biological system

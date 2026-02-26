@@ -26,7 +26,7 @@ The architecture operates through a four-layer hierarchical ontology (M3→M2→
 Two critical noise-reduction mechanisms prevent ontological proliferation: **GenericConceptCombo** 
 (synergistic tensor-product combination of GenericConcepts, achieving ~31% concept reduction) and **KnowledgeFieldGenericCombo** 
 (parameterizable templates demonstrating up to 97% reduction in domain-specific concept count). 
-Validation is conducted through 15 "poclets" (minimal complete system instances) spanning photography, mythology, nuclear engineering, biology, and beyond.
+Validation is conducted through 14 "poclets" (minimal complete system instances) spanning photography, mythology, nuclear engineering, biology, and beyond.
 
 TSCG is emphatically **not a new Theory of Everything**. It is a structured playground—a LEGO Technic kit for systemic modeling—designed to 
 foster experimentation, interdisciplinary dialogue, and the incremental discovery of universal patterns. 
@@ -84,7 +84,7 @@ The experience yielded important lessons about human-AI co-creation that are doc
 the risk of "hallucinations," the necessity of a *Reboot Kit* for conversation restarts, and the surprising absence of direct *GitHub* repository access 
 from within AI chat interfaces.
 
-### 1.3 The *Bicephalous Cyclops*: Stereopsis of Knowledge
+### 1.3 The *Bicephalous Cyclops*: Stereopsy of Knowledge
 
 To understand TSCG's architecture, consider a thought experiment: a mythological creature with two heads sharing one body. 
 The **Eagle Head** scrutinizes the world as it *is*—measuring, observing, instrumenting. 
@@ -98,43 +98,73 @@ creates **depth perception** (Stereopsy)—what we call epistemic depth. In bino
 between the *Territory* measurement (Eagle Eye/ASFID) and the *Map* quality assessment (Sphinx Eye/REVOI). 
 This gap is not an error to minimize but **constitutive information** about how mature our understanding of a domain is.
 
-Furthermore, the two perspectives are not independent: they are coupled by a feedback loop. Observations of the Territory (ASFID measurements) are the raw material from which Maps are constructed. But the act of constructing a Map creates new observational needs—new instruments, new questions, new interpretive frameworks. A hydrological engineer and a telecommunications engineer mapping the same geographic territory need radically different representations: one needs river basins and flood zones; the other needs elevation profiles and line-of-sight corridors for base transceiver stations. The Map shapes what the Eagle Eye looks for next.
+Furthermore, the two perspectives are not independent: they are coupled by a feedback loop. Observations of the Territory (ASFID measurements) 
+are the raw material from which Maps are constructed. But the act of constructing a Map creates new observational needs—new instruments, new questions, 
+new interpretive frameworks. A hydrological engineer and a telecommunications engineer mapping the same geographic territory need radically different representations: 
+one needs river basins and flood zones; the other needs elevation profiles and line-of-sight corridors for base transceiver stations. 
+The Map shapes what the Eagle Eye looks for next.
 
-This feedback loop between Eagle Eye and Sphinx Eye is encoded in TSCG's M3 Genesis Space through coupling operators Φ (Territory→Map feedback) and Ψ (Map→Territory feedback), and their commutator [Φ, Ψ] quantifies the irreducibility of the bicephalous architecture.
+This feedback loop between Eagle Eye and Sphinx Eye is encoded in TSCG's M3 Genesis Space through coupling operators Φ (Territory→Map feedback) 
+and Ψ (Map→Territory feedback), and their commutator [Φ, Ψ] quantifies the irreducibility of the bicephalous architecture.
 
 ### 1.4 The Meta-Territory Problem: When the Territory Is Itself a Map
 
-There is a subtler point that the bat metaphor illuminates perfectly. A bat navigating a cave does not experience the cave directly. Its nervous system constructs a *sonic map* from the echoes of its own ultrasonic cries. This sonic map *is* the bat's functional reality—its operational territory. The cave walls are, in the strictest sense, inaccessible to the bat. The bat lives entirely in the hybrid space between its emitted models and their returning echoes.
+There is a subtler point that the bat metaphor illuminates perfectly. A bat navigating a cave does not experience the cave directly. 
+Its nervous system constructs a *sonic map* from the echoes of its own ultrasonic cries. This sonic map *is* the bat's functional reality—its operational territory. 
+The cave walls are, in the strictest sense, inaccessible to the bat. The bat lives entirely in the hybrid space between its emitted models and their returning echoes.
 
-TSCG's "Territory"—the ASFID measurement space—faces the same epistemological predicament. ASFID measurements are themselves observer-relative constructions. The "territory" we measure is not raw, unmediated reality; it is already a *meta-map*, shaped by the instruments, conceptual frameworks, and theoretical commitments we bring to observation. This is not a weakness but an honest acknowledgment of second-order cybernetics (von Foerster, Varela): the observer is always part of the observed system.
+TSCG's "Territory"—the ASFID measurement space—faces the same epistemological predicament. ASFID measurements are themselves observer-relative constructions. 
+The "territory" we measure is not raw, unmediated reality; it is already a *meta-map*, shaped by the instruments, conceptual frameworks, 
+and theoretical commitments we bring to observation. This is not a weakness but an honest acknowledgment of second-order cybernetics (von Foerster, Varela): 
+the observer is always part of the observed system.
 
-The practical implication: TSCG does not claim to provide access to reality-as-it-is. It provides a structured method for *emitting models* (Sphinx Eye), *receiving echoes* (Eagle Eye measurements), *computing the gap* (δΘ), and *correcting the model* iteratively. This echolocation cycle is the framework's fundamental operating mode.
+The practical implication: TSCG does not claim to provide access to reality-as-it-is. It provides a structured method for *emitting models* (Sphinx Eye), 
+*receiving echoes* (Eagle Eye measurements), *computing the gap* (δΘ), and *correcting the model* iteratively. This echolocation cycle is the framework's fundamental operating mode.
 
 ### 1.5 Inspirations: Periodic Table, Alchemy, LEGO Technic, I Ching
 
 TSCG draws on a diverse set of inspirational models, each contributing a distinct aspect to the framework's philosophy.
 
-**Mendeleev's Periodic Table** demonstrates that apparent diversity (118 elements) can be organized by a small set of underlying parameters (atomic number, electron configuration), revealing structural regularities invisible to direct inspection. TSCG aspires to something analogous for systemic concepts—not a complete periodic table of systems (which would be presumptuous), but a set of recurring "elemental" patterns.
+**Mendeleev's Periodic Table** demonstrates that apparent diversity (118 elements) can be organized by a small set of underlying parameters 
+(atomic number, electron configuration), revealing structural regularities invisible to direct inspection. 
+TSCG aspires to something analogous for systemic concepts—not a complete periodic table of systems (which would be presumptuous), but a set of recurring "elemental" patterns.
 
-**The video game "Alchemy"** (and its variants like "Little Alchemy") models knowledge construction through combinatorial exploration: start with four primitive elements (earth, air, fire, water), combine them to discover new ones, and progressively populate a universe of derived concepts. This constructivist, bottom-up, exploratory ethos is central to TSCG. The M2 GenericConcepts are not axioms delivered from above; they are discovered patterns, validated empirically through poclet analysis.
+**The video game "Alchemy"** (and its variants like "Little Alchemy") models knowledge construction through combinatorial exploration: 
+start with four primitive elements (earth, air, fire, water), combine them to discover new ones, and progressively populate a universe of derived concepts. 
+This constructivist, bottom-up, exploratory ethos is central to TSCG. The M2 GenericConcepts are not axioms delivered from above; they are discovered patterns, 
+validated empirically through poclet analysis.
 
-**LEGO Technic** provides the engineering metaphor: a finite set of standardized, interoperable bricks (M2 GenericConcepts), structured connection protocols (tensor products), domain-specific accessory kits (M1 extensions), and validated assembly examples (M0 poclets). Like LEGO Technic, the goal is not to build one perfect model but to create a construction language expressive enough to model any system—while acknowledging that every LEGO model is necessarily a simplified, biased representation of the real thing.
+**LEGO Technic** provides the engineering metaphor: a finite set of standardized, interoperable bricks (M2 GenericConcepts), 
+structured connection protocols (tensor products), domain-specific accessory kits (M1 extensions), and validated assembly examples (M0 poclets). 
+Like LEGO Technic, the goal is not to build perfectly realistic models but to create a construction language expressive enough to model any 
+system—while acknowledging that every LEGO model is necessarily a simplified, biased representation of the real thing.
 
-**The I Ching (Book of Changes)** demonstrates that 64 hexagrams—constructed from binary combinations of two trigrams, each drawn from a set of 6 lines—can serve as a symbolic grammar for describing an enormous variety of situations. The combinatorial power of a small, structured basis set is the underlying principle. TSCG's tensor products of M3 dimensions function analogously: a small basis (5 ASFID + 5 REVOI dimensions) generates, through composition, a rich vocabulary of systemic concepts.
+**The I Ching (Book of Changes)** demonstrates that 64 hexagrams—constructed from binary combinations of two trigrams, 
+each drawn from a set of 6 lines—can serve as a symbolic grammar for describing an enormous variety of situations. 
+The combinatorial power of a small, structured basis set is the underlying principle. TSCG's tensor products of M3 dimensions function analogously: 
+a small basis (5 ASFID + 5 REVOI dimensions) generates, through composition, a rich vocabulary of systemic concepts.
 
 ### 1.6 What TSCG Is Not
 
 This section is included deliberately, in the spirit of intellectual honesty that the framework demands of itself.
 
-TSCG is **not a new Theory of Everything**. It does not claim to provide a complete, exhaustive, or final description of any system or family of systems. Its sole and explicit ambition is to *stimulate experimentation and exploration* of systemic modeling by facilitating the construction of scaled models of real or hypothetical systems.
+TSCG is **not a new Theory of Everything**. It does not claim to provide a complete, exhaustive, or final description of any system or family of systems. 
+Its sole and explicit ambition is to *stimulate experimentation and exploration* of systemic modeling by facilitating 
+the construction of scaled models of real or hypothetical systems.
 
-TSCG is **not a replacement for domain expertise**. A TSCG model of the RAAS biological system does not substitute for endocrinology; it provides a transdisciplinary lens that may generate new hypotheses or reveal structural analogies, but domain specialists remain the authoritative interpreters of their fields.
+TSCG is **not a replacement for domain expertise**. A TSCG model of the *RAAS* physiological system does not substitute for endocrinology; 
+it provides a transdisciplinary lens that may generate new hypotheses or reveal structural analogies, but domain specialists 
+remain the authoritative interpreters of their fields.
 
-TSCG is **not computationally complete**. The current ontology is implemented in JSON-LD and provides a structured vocabulary, not an automated reasoning engine. OWL reasoning capabilities are planned but not yet operational.
+TSCG is **not computationally complete**. The current ontology is implemented in JSON-LD and provides a structured vocabulary, 
+not an automated reasoning engine. OWL reasoning capabilities are planned but not yet operational.
 
-TSCG is **not empirically validated at scale**. The framework has been applied to 15 poclets across 7 domains. This demonstrates plausibility, not generality. Large-scale empirical validation—user studies, longitudinal ontology analysis, comparative studies—remains future work.
+TSCG is **not empirically validated at scale**. The framework has been applied to 14 poclets across 7 domains. 
+This demonstrates plausibility, not generality. Large-scale empirical validation—user studies, longitudinal ontology analysis, 
+comparative studies—remains future work.
 
-With these caveats clearly stated, the paper proceeds to detail what TSCG *does* offer: a philosophically coherent, mathematically grounded, practically applicable construction kit for transdisciplinary systemic modeling.
+With these caveats clearly stated, the paper proceeds to detail what TSCG *does* offer: a philosophically coherent, 
+mathematically grounded, practically applicable construction kit for transdisciplinary systemic modeling.
 
 ---
 
@@ -144,47 +174,74 @@ With these caveats clearly stated, the paper proceeds to detail what TSCG *does*
 
 Alfred Korzybski's *Science and Sanity* (1933) introduced the principle "the map is not the territory." Three consequences are foundational:
 
-**Non-identity**: Maps differ from territories by abstraction, selection, and projection. The ideal gas law PV = nRT elegantly describes gas behavior while ignoring intermolecular forces—a deliberate, useful simplification.
+**Non-identity**: Maps differ from territories by abstraction, selection, and projection. The ideal gas law PV = nRT elegantly describes 
+gas behavior while ignoring intermolecular forces—a deliberate, useful simplification.
 
-**Non-allness**: No map captures all features of its territory. Borges's 1:1 scale map illustrates the absurdity of completeness: a map that omits nothing provides no abstraction and thus no utility.
+**Non-allness**: No map captures all features of its territory. Borges's 1:1 scale map illustrates the absurdity of completeness: 
+a map that omits nothing provides no abstraction and thus no utility.
 
-**Self-reflexivity**: Maps are themselves territories that can be mapped. TSCG's M3→M2→M1→M0 hierarchy embodies this: each layer serves as both map (of the layer below) and territory (for the layer above).
+**Self-reflexivity**: Maps are themselves territories that can be mapped. TSCG's M3→M2→M1→M0 hierarchy embodies this: 
+each layer serves as both map (of the layer below) and territory (for the layer above).
 
-TSCG operationalizes these insights formally. The epistemic gap δΘ = ‖ASFID − REVOI‖ / √10 quantifies the distance between Territory measurement and Map quality. The REVOI framework evaluates maps on pragmatic criteria—Representable, Evolvable, Verifiable, Observable, Interoperale—acknowledging Korzybski's pragmatist stance: a map is useful if it has "similar structure to the territory," not if it corresponds perfectly to it.
+TSCG operationalizes these insights formally. The epistemic gap δΘ = ‖ASFID − REVOI‖ / √10 quantifies the distance between 
+Territory measurement and Map quality. The REVOI framework evaluates maps on pragmatic criteria—Representable, Evolvable, 
+Verifiable, Observable, Interoperale—acknowledging Korzybski's pragmatist stance: a map is useful if it has "similar structure to the territory," 
+not if it corresponds perfectly to it.
 
 ### 2.2 Second-Order Cybernetics and Observer Relativity
 
-Von Foerster's second-order cybernetics extends first-order cybernetics by including the observer within the observed system. "The environment as we perceive it is our invention"—not solipsism, but acknowledgment that what we measure depends critically on how we observe.
+Von Foerster's second-order cybernetics extends first-order cybernetics by including the observer within the observed system. 
+"The environment as we perceive it is our invention"—not solipsism, but acknowledgment that what we measure depends critically on how we observe.
 
-TSCG embraces observer relativity through: (1) explicit observer context in every bicephalous instance; (2) ASFID scores as observer-relative projections (two observers with different instruments may legitimately score the same system differently); and (3) REVOI as evaluation of maps relative to observer purposes, not absolute correspondence truth.
+TSCG embraces observer relativity through: (1) explicit observer context in every bicephalous instance; 
+(2) ASFID scores as observer-relative projections (two observers with different instruments may legitimately score the same system differently); 
+and (3) REVOI as evaluation of maps relative to observer purposes, not absolute correspondence truth.
 
 ### 2.3 Radical Constructivism and the Status of Knowledge
 
-Ernst von Glasersfeld's radical constructivism (1984) provides a third philosophical pillar for TSCG. Constructivism holds that knowledge is not discovered but *constructed* by cognitive agents through their interactions with experience. The validity criterion for models is *functional viability* (do they enable successful navigation of experience?) rather than correspondence truth.
+Ernst von Glasersfeld's radical constructivism (1984) provides a third philosophical pillar for TSCG. Constructivism holds that knowledge 
+is not discovered but *constructed* by cognitive agents through their interactions with experience. The validity criterion for models 
+is *functional viability* (do they enable successful navigation of experience?) rather than correspondence truth.
 
-TSCG embraces constructivism through its poclet methodology. Poclets are not discovered in nature—they are *constructed* by an analyst choosing a particular system boundary, selecting which properties to measure, and deciding which M2 GenericConcepts to apply. Two analysts analyzing the same physical system might construct different poclets, both valid according to TSCG criteria. This is not a weakness; it is an honest reflection of constructivism's central insight: models serve their makers' purposes, and multiple models of the same reality can coexist without one being simply "wrong."
+TSCG embraces constructivism through its poclet methodology. Poclets are not discovered in nature—they are *constructed* by an analyst 
+choosing a particular system boundary, selecting which properties to measure, and deciding which M2 GenericConcepts to apply. 
+Two analysts analyzing the same physical system might construct different poclets, both valid according to TSCG criteria. 
+This is not a weakness; it is an honest reflection of constructivism's central insight: models serve their makers' purposes, 
+and multiple models of the same reality can coexist without one being simply "wrong."
 
 ### 2.4 General Systems Theory and Cybernetics: Predecessors and Limitations
 
-Von Bertalanffy's General Systems Theory (1968) first systematically proposed searching for isomorphic laws across disciplines. Wiener's Cybernetics (1948) contributed feedback, control, and information. Beer's Viable System Model (VSM, 1972) provided a sophisticated recursive model of organizational viability. Altshuller's TRIZ (1984) systematized inventive principles from engineering patents.
+Von Bertalanffy's General Systems Theory (1968) first systematically proposed searching for isomorphic laws across disciplines. 
+Wiener's Cybernetics (1948) contributed feedback, control, and information. Beer's Viable System Model (VSM, 1972) provided a 
+sophisticated recursive model of organizational viability. Altshuller's TRIZ (1984) systematized inventive principles from engineering patents.
 
 These frameworks each contribute irreplaceable insights that TSCG incorporates:
 
-From **General Systems Theory**: the core désiloification hypothesis—that universal organizational principles exist and can be identified through comparative systems analysis. TSCG operationalizes this hypothesis through its M2 GenericConcept catalog and transdisciplinary validation methodology.
+From **General Systems Theory**: the core desiloification hypothesis—that universal organizational principles exist and can be identified 
+through comparative systems analysis. TSCG operationalizes this hypothesis through its M2 GenericConcept catalog and transdisciplinary validation methodology.
 
-From **Cybernetics**: the centrality of feedback loops for understanding system regulation and the distinction between goal-directed and non-goal-directed behavior. TSCG's Attractor dimension (A) and Regulation GenericConcept (A⊗F⊗I⊗D) directly encode Wiener's feedback insights.
+From **Cybernetics**: the centrality of feedback loops for understanding system regulation and the distinction between goal-directed 
+and non-goal-directed behavior. TSCG's Attractor dimension (A) and Regulation GenericConcept (A⊗F⊗I⊗D) directly encode Wiener's feedback insights.
 
-From **Beer's VSM**: the recursive nature of viable systems, the importance of Variety management (Ashby's Law of Requisite Variety), and the distinction between operational, management, and intelligence functions. These translate into TSCG GenericConcepts: RecursiveViability, VarietyAmplification, VarietyAttenuation.
+From **Beer's VSM**: the recursive nature of viable systems, the importance of Variety management (Ashby's Law of Requisite Variety), 
+and the distinction between operational, management, and intelligence functions. These concepts (RecursiveViability, VarietyAmplification, VarietyAttenuation)
+are mapped into TSCG as GenericConceptCombos (eg. "ValueSpace" and "Amplification"). 
 
-From **TRIZ**: the principle that inventive patterns recur across domains and creative problem-solving can be systematized. TSCG's GenericConceptCombo mechanism is inspired by TRIZ's matrix of inventive principles, generalizing from engineering physics to the full transdisciplinary space.
+From **TRIZ**: the principle that inventive patterns recur across domains and creative problem-solving can be systematized. TSCG's GenericConceptCombo 
+mechanism is inspired by TRIZ's matrix of inventive principles, generalizing from engineering physics to the full transdisciplinary space.
 
-However, these frameworks share a common limitation: none provide formal mechanisms for **preventing ontological proliferation**. Without principled compression (GenericConcept composition, parameterized templates), any framework generates an ever-growing flat taxonomy that becomes as cognitively intractable as the original disciplinary silos.
+However, these frameworks share a common limitation: none provide formal mechanisms for **preventing ontological proliferation**. 
+Without principled compression (GenericConcept composition, parameterized templates), any framework generates an ever-growing flat taxonomy 
+that becomes as cognitively intractable as the original disciplinary silos.
 
 ### 2.4 Noise Reduction as Epistemological Imperative
 
-Without principled mechanisms for concept compression, ontologies degenerate into unmaintainable flat taxonomies. Shannon's information theory provides an analogy: noise accumulation destroys signal. "Semantic noise"—redundant, overlapping, inconsistently defined concepts—destroys the utility of knowledge systems.
+Without principled mechanisms for concept compression, ontologies degenerate into unmaintainable flat taxonomies. Shannon's information theory 
+provides an analogy: noise accumulation destroys signal. "Semantic noise"—redundant, overlapping, inconsistently defined concepts—destroys 
+the utility of knowledge systems.
 
-TSCG treats noise reduction not as an optional optimization but as an epistemological imperative. Two mechanisms address this: GenericConceptCombo (at M2 layer) and DomainSpecificCombo (at M1 layer), detailed in Section 5.
+TSCG treats noise reduction not as an optional optimization but as an epistemological imperative. Two mechanisms address this: 
+GenericConceptCombo (at M2 layer) and KnowledgeFieldGenericCombo (at M1 layer), detailed in Section 5.
 
 ---
 
@@ -207,7 +264,8 @@ The ASFID/REVOI dichotomy creates complementary perspectives that together const
                   (Domain Maturity Index)
 ```
 
-Neither perspective is privileged. The gap δΘ is not an error to minimize—a high δΘ indicates an immature, rapidly evolving domain (high research value); a low δΘ indicates a mature, well-understood domain (high engineering value).
+Neither perspective is privileged. The gap δΘ is not an error to minimize—a high δΘ indicates an immature, rapidly evolving domain 
+(high research value); a low δΘ indicates a mature, well-understood domain (high engineering value).
 
 ### 3.2 Eagle Eye: ASFID Dimensions
 
@@ -269,7 +327,7 @@ M2  GenericConcepts   ─── 72 Universal Transdisciplinary Patterns
 M1  Core + Domain  ─── 9 Core Concepts + 6 Domain Extensions
      │                  Reusable but domain-bounded patterns
      ▼
-M0  Poclets        ─── 15 Validated Minimal System Instances
+M0  Poclets        ─── 14 Validated Minimal System Instances
                         Concrete models; triple validation role
 ```
 
@@ -332,7 +390,7 @@ Poclets serve a triple role:
 
 **Role 3 — Core Concept Population (M0→M1)**: What reusable patterns emerge that are domain-bounded but transdisciplinary? This feeds M1_CoreConcepts from concrete empirical evidence.
 
-The 15 currently validated poclets span maximally diverse domains: Fire Triangle, Four-Stroke Engine, Cell Signaling Modes, Yggdrasil (Norse mythology), Blood Pressure Control, RGB/HSL/CMY/CMYK Color Synthesis, Exposure Triangle (Photography), Nuclear Reactor Typology, Kidneys (filtration system), Transistor (electronics), RAAS (renin-angiotensin-aldosterone system), Butterfly Metamorphosis, and Adaptive Immune Response.
+The 14 currently validated poclets span maximally diverse domains: Fire Triangle, Four-Stroke Engine, Cell Signaling Modes, Yggdrasil (Norse mythology), Blood Pressure Control, RGB/HSL/CMY/CMYK Color Synthesis, Exposure Triangle (Photography), Nuclear Reactor Typology, Kidneys (filtration system), Transistor (electronics), RAAS (renin-angiotensin-aldosterone system), Butterfly Metamorphosis, and Adaptive Immune Response.
 
 ---
 
@@ -600,7 +658,7 @@ This is not merely a bookkeeping convenience. The DSC representation makes the s
 
 ### 7.1 Motivation
 
-As the TSCG ontology grows—72 M2 GenericConcepts, 9 M1_Core concepts, 6 domain extensions, 15 poclets, each with full tensor formulas, ASFID/REVOI scores, multi-domain validation examples, and cross-references—navigating the framework efficiently becomes non-trivial. A human expert cannot simultaneously hold all inter-concept relationships in working memory. An AI assistant working from raw JSON-LD files must parse complex nested structures before extracting relevant information.
+As the TSCG ontology grows—72 M2 GenericConcepts, 9 M1_Core concepts, 6 domain extensions, 14 poclets, each with full tensor formulas, ASFID/REVOI scores, multi-domain validation examples, and cross-references—navigating the framework efficiently becomes non-trivial. A human expert cannot simultaneously hold all inter-concept relationships in working memory. An AI assistant working from raw JSON-LD files must parse complex nested structures before extracting relevant information.
 
 A Retrieval-Augmented Generation (RAG) system addresses both limitations: it provides programmatic, semantics-aware access to the ontology's content, enabling both human analysts and AI tools to find relevant building blocks rapidly and accurately.
 
@@ -651,7 +709,7 @@ The RAG-based poclet generator remains planned but not yet operational. Its deve
 
 **Objection 2: "The choice of ASFID and REVOI is arbitrary. Why these 5 dimensions and not others?"**
 
-*Response*: Correct. These choices are explicitly declared as *axioms* (Section 1.5)—foundational arbitrary choices, acknowledged as such. The framework's validity does not rest on proving ASFID/REVOI to be the *correct* basis; it rests on demonstrating that they are *useful*—that 15 poclets across 7 domains can be meaningfully described using them, that the tensor products generate recognizable patterns, and that the framework produces non-trivial insights (e.g., the recognition that Yggdrasil and nuclear reactor architecture share structural patterns). Other basis choices are possible; some may be better. This is an open research question.
+*Response*: Correct. These choices are explicitly declared as *axioms* (Section 1.5)—foundational arbitrary choices, acknowledged as such. The framework's validity does not rest on proving ASFID/REVOI to be the *correct* basis; it rests on demonstrating that they are *useful*—that 14 poclets across 7 domains can be meaningfully described using them, that the tensor products generate recognizable patterns, and that the framework produces non-trivial insights (e.g., the recognition that Yggdrasil and nuclear reactor architecture share structural patterns). Other basis choices are possible; some may be better. This is an open research question.
 
 **Objection 3: "Tensor products are used decoratively, not substantively. The 'mathematics' is cosmetic."**
 
@@ -661,7 +719,7 @@ The RAG-based poclet generator remains planned but not yet operational. Its deve
 
 *Response*: REVOI scores are assessments, not measurements in the physical sense. They are expert judgments, similar to peer review scores or software quality assessments. The framework provides calibration anchors (what does R=0.9 look like? what does R=0.2 look like?) but cannot eliminate subjectivity. This is not a bug—it is an honest acknowledgment of the epistemological terrain. Maps are evaluated by map-readers, and map-reader judgments are inherently perspective-dependent (second-order cybernetics). The key criterion is *inter-rater reliability*, which remains to be formally assessed.
 
-**Objection 5: "Validating in 15 poclets is insufficient to claim transdisciplinary universality."**
+**Objection 5: "Validating in 14 poclets is insufficient to claim transdisciplinary universality."**
 
 *Response*: Agreed entirely. The paper makes no claim of proven universality. It claims *demonstrated plausibility* across 7 domains and explicitly identifies large-scale empirical validation as future work. The framework is presented as a hypothesis, not a theorem.
 
@@ -693,9 +751,9 @@ The RAG-based poclet generator remains planned but not yet operational. Its deve
 
 **Software ecosystem immaturity**: The framework lacks operational tooling. A useful TSCG ecosystem would include: a poclet editor with automatic ASFID/REVOI scoring assistance; a GenericConcept browser with tensor product visualization; automated δΘ computation; and the RAG system described in Section 7. Currently, all work is done manually or with ad-hoc Python scripts.
 
-**No independent replication**: All 15 poclets were analyzed by the same author (with AI assistance). Independent replication by other researchers is essential to assess whether the ASFID/REVOI framework produces consistent results across different analysts.
+**No independent replication**: All 14 poclets were analyzed by the same author (with AI assistance). Independent replication by other researchers is essential to assess whether the ASFID/REVOI framework produces consistent results across different analysts.
 
-**The "désiloification" hypothesis remains unproven**: That most systems share generic transdisciplinary principles is a productive research hypothesis, not an established fact. The 15 poclets provide encouraging evidence but are far from a systematic sampling of system space.
+**The "désiloification" hypothesis remains unproven**: That most systems share generic transdisciplinary principles is a productive research hypothesis, not an established fact. The 14 poclets provide encouraging evidence but are far from a systematic sampling of system space.
 
 ---
 
@@ -711,9 +769,9 @@ The RAG-based poclet generator remains planned but not yet operational. Its deve
 
 **M2 completeness and consistency**: The 72 M2 GenericConcepts have grown through iterative addition over multiple poclet analyses. No formal ontological consistency check (using OWL reasoning) has been performed. Known risks include: hidden redundancies (two GenericConcepts that, on formal analysis, prove to be structurally identical or one a composition of the other); coverage gaps (system types whose behavior cannot be adequately described by the current catalog); and hierarchical inconsistencies (GenericConcepts at different levels of abstraction placed at the same M2 layer).
 
-**No independent replication**: All 15 poclets were analyzed by the same author (with AI assistance). Scientific methodology requires independent replication: different analysts applying the TSCG protocol to the same systems should produce comparable (if not identical) ASFID scores and M2 mappings. This has not been tested.
+**No independent replication**: All 14 poclets were analyzed by the same author (with AI assistance). Scientific methodology requires independent replication: different analysts applying the TSCG protocol to the same systems should produce comparable (if not identical) ASFID scores and M2 mappings. This has not been tested.
 
-**Domain coverage bias**: The current 15 poclets over-represent biology (5 poclets), engineering (3 poclets), and optics/photography (2 poclets). The domains of social systems, economics, ecology, linguistics, and mathematics are entirely absent from the validated poclet portfolio. Claims of "transdisciplinary" applicability remain provisional until validated across these domains.
+**Domain coverage bias**: The current 14 poclets over-represent biology (5 poclets), engineering (3 poclets), and optics/photography (2 poclets). The domains of social systems, economics, ecology, linguistics, and mathematics are entirely absent from the validated poclet portfolio. Claims of "transdisciplinary" applicability remain provisional until validated across these domains.
 
 ### 9.2 Priority Future Work
 
@@ -777,9 +835,9 @@ The long-term vision is a layered ecosystem: TSCG's M2/M3 as a universal metalan
 
 This paper presents TSCG not as a finished framework but as a structured invitation.
 
-The désiloification hypothesis—that most systems share a discoverable set of generic, transdisciplinary principles—remains a hypothesis. Twenty years of informal reflection, followed by two years of intensive AI-assisted formalization, have produced a framework that demonstrates *plausibility*: 72 GenericConcepts validated across multiple domains, 15 poclets spanning radically different disciplines, and two noise-reduction mechanisms that prevent the ontological proliferation plaguing naive approaches.
+The désiloification hypothesis—that most systems share a discoverable set of generic, transdisciplinary principles—remains a hypothesis. Twenty years of informal reflection, followed by two years of intensive AI-assisted formalization, have produced a framework that demonstrates *plausibility*: 72 GenericConcepts validated across multiple domains, 14 poclets spanning radically different disciplines, and two noise-reduction mechanisms that prevent the ontological proliferation plaguing naive approaches.
 
-But plausibility is not proof. The mathematical formalism awaits computational operationalization. The measurement protocols need inter-rater reliability studies. The M2 catalog needs independent replication and formal ontological consistency checking. The RAG system is planned but not yet operational. The poclet portfolio of 15 represents a beginning, not a comprehensive survey.
+But plausibility is not proof. The mathematical formalism awaits computational operationalization. The measurement protocols need inter-rater reliability studies. The M2 catalog needs independent replication and formal ontological consistency checking. The RAG system is planned but not yet operational. The poclet portfolio of 14 represents a beginning, not a comprehensive survey.
 
 We submit this framework to the community of researchers, engineers, and educators who—like Arthur Keller and the Systemic Club of France—believe that the complexity of contemporary challenges, particularly environmental ones, can no longer be studied effectively without systemic approaches. We believe that disciplinary fragmentation is not merely an academic inconvenience but a genuine obstacle to collective intelligence at a time when collective intelligence is urgently needed.
 
@@ -827,7 +885,7 @@ Wilhelm, R. (trans.) (1950). *The I Ching or Book of Changes*. Bollingen Foundat
 
 ## Appendix A: Validated Poclet Catalog
 
-The following table summarizes the 15 validated poclets in TSCG v15.1.0. An asterisk (*) indicates the poclet has an accompanying interactive Pygame simulation.
+The following table summarizes the 14 validated poclets in TSCG v15.1.0. An asterisk (*) indicates the poclet has an accompanying interactive Pygame simulation.
 
 | ID | Poclet Name | Domain | Key M2 GenericConcepts | Notable Feature |
 |----|-------------|--------|--------------------|--------------------|
@@ -844,7 +902,7 @@ The following table summarizes the 15 validated poclets in TSCG v15.1.0. An aste
 | M0-11 | RAAS System | Biology | Cascade, CascadeAmplification, Homeostasis | Renin-angiotensin-aldosterone; multi-stage hormonal cascade |
 | M0-12 | Butterfly Metamorphosis | Biology | CatastrophicBifurcation, Emergence, Cycle | Holometaboly as radical state space transition |
 | M0-13 | Adaptive Immune Response | Biology | Network, Cascade, Memory, Regulation | Clonal selection as distributed attractor landscape |
-| M0-14 | Complex Chemical Synapse | Biology | - | - |
+| M0-14 | Complex Chemical Synapse | Biology | Interdependence, Synergy, Process, Homeostasis, TradeOff, Balance | Neurobiology / Cellular Communication / Pharmacology |
 
 *Screenshots of Pygame simulations available in the TSCG GitHub repository under `/src/simulations/`.*
 

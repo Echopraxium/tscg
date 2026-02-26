@@ -15,7 +15,7 @@ It extends the theoretical CMY model with a fourth **Key (Black)** channel, solv
 the fundamental failure of pure CMY (`CMY(100,100,100) ≠ black`). CMYK is the global
 industry standard for all printed materials.
 
-> **TSCG insight:** CMYK exemplifies the `m2:Optimization` metaconcept — the K channel
+> **TSCG insight:** CMYK exemplifies the `m2:Optimization` GenericConcept — the K channel
 > optimizes the CMY model for real-world constraints (true black, ink cost reduction,
 > process stability). It also demonstrates Map evolution through falsification.
 
@@ -29,7 +29,7 @@ industry standard for all printed materials.
 | Components | 4 (C, M, Y, K channels) |
 | Poclet type | Composite (Specialized, Extended) |
 | Extends | CMY (adds Key channel) |
-| M2 Metaconcepts | 15 |
+| M2 GenericConcepts | 15 |
 
 ---
 
@@ -62,7 +62,7 @@ industry standard for all printed materials.
 
 ## Channels (Components)
 
-| Channel | Metaconcept | Mechanism | Range |
+| Channel | GenericConcept | Mechanism | Range |
 |---|---|---|---|
 | Cyan (C) | `m2:Channel` | Absorbs red light | [0%, 100%] |
 | Magenta (M) | `m2:Channel` | Absorbs green light | [0%, 100%] |
@@ -73,9 +73,9 @@ industry standard for all printed materials.
 
 ---
 
-## Metaconcepts Mobilized (15)
+## GenericConcepts Mobilized (15)
 
-| Category | Metaconcepts |
+| Category | GenericConcepts |
 |---|---|
 | Structural | Space |
 | Informational | Channel · Signal · Representation · Code |
@@ -138,10 +138,10 @@ CMYK uses halftone screening to simulate continuous tone with discrete ink dots:
 ## TSCG Validation
 
 - ✅ All 5 ASFID dimensions present  
-- ✅ 15 metaconcepts  
+- ✅ 15 GenericConcepts  
 - ✅ Minimality (4 channels — practical minimum for quality printing)  
 - ✅ Emergence (color from 4-channel fusion)  
-- ✅ Optimization metaconcept: K channel solves CMY failure  
+- ✅ Optimization GenericConcept: K channel solves CMY failure  
 - ✅ Map evolution: CMY (theory) → CMYK (practice)
 
 ---

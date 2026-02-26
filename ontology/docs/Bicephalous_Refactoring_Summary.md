@@ -207,11 +207,11 @@ Où **F** est transformation à déterminer empiriquement.
 
 ---
 
-## 📊 M2 Metaconcepts - Mise à Jour
+## 📊 M2 GenericConcepts - Mise à Jour
 
 ### Fichier Modifié
 
-**M2_Metaconcepts.jsonld** v9.0.0
+**M2_GenericConcepts.jsonld** v9.0.0
 
 ### Changements Appliqués
 
@@ -277,7 +277,7 @@ Où **F** est transformation à déterminer empiriquement.
 
 ✅ M3_Eagle_Eye.jsonld valide  
 ✅ M3_Sphinx_Eye.jsonld valide  
-✅ M2_Metaconcepts.jsonld valide
+✅ M2_GenericConcepts.jsonld valide
 
 ### Cohérence Architecturale
 
@@ -352,11 +352,11 @@ Où **F** est transformation à déterminer empiriquement.
 
 ### Ontologie M2 (Mise à Jour)
 
-3. **M2_Metaconcepts.jsonld** (v9.0.0)
+3. **M2_GenericConcepts.jsonld** (v9.0.0)
    - Références Eagle/Sphinx (plus Genesis)
    - m3eagle: pour ASFID dimensions
    - m3sphinx: pour ORIVE (future use)
-   - 53 metaconcepts
+   - 53 GenericConcepts
 
 ### Documentation
 

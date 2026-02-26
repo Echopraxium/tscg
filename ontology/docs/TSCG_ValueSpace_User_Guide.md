@@ -1,5 +1,5 @@
 # TSCG User Guide: Working with ValueSpace Attributes
-## Practical Guide for Instantiating Metaconcepts with Typed Attributes
+## Practical Guide for Instantiating GenericConcepts with Typed Attributes
 
 **Version**: 1.0.0  
 **Date**: 2026-02-05  
@@ -25,7 +25,7 @@
 
 ### What Are ValueSpace Attributes?
 
-**ValueSpace attributes** allow you to configure metaconcepts without creating subtypes.
+**ValueSpace attributes** allow you to configure GenericConcepts without creating subtypes.
 
 **Example**: Instead of creating `TrajectoryLinear`, `TrajectoryCircular`, etc., you use:
 
@@ -46,15 +46,15 @@
 
 ### 3-Step Workflow
 
-#### Step 1: Choose Metaconcept
+#### Step 1: Choose GenericConcept
 
-Identify which M2 metaconcept best describes your system component.
+Identify which M2 GenericConcept best describes your system component.
 
 **Example**: RAAS blood pressure regulation → `m2:Regulation`
 
 #### Step 2: Check Available Attributes
 
-Look up which attributes that metaconcept has.
+Look up which attributes that GenericConcept has.
 
 **Example**: `Regulation` has:
 - `feedback_polarity` (Negative, Positive, Mixed)
@@ -106,7 +106,7 @@ Each attribute is defined as a **ValueSpace** with:
 ```json
 {
   "@id": "m0:MySystem",
-  "@type": "m2:Metaconcept",
+  "@type": "m2:GenericConcept",
   "attribute_name": "ChosenValue"
 }
 ```
@@ -115,7 +115,7 @@ Each attribute is defined as a **ValueSpace** with:
 ```json
 {
   "@id": "m0:MySystem",
-  "@type": "m2:Metaconcept",
+  "@type": "m2:GenericConcept",
   "attribute_name": "ChosenValue",
   "attribute_name_rationale": "Why I chose this value"
 }
@@ -127,7 +127,7 @@ Each attribute is defined as a **ValueSpace** with:
 
 ### Complete List (13 Attributes)
 
-| Metaconcept | Attribute | # Values | Quick Pick Guide |
+| GenericConcept | Attribute | # Values | Quick Pick Guide |
 |-------------|-----------|----------|------------------|
 | **Trajectory** | shape | 9 | Linear (most common), Circular (periodic), Spiral (damped oscillation) |
 | **Amplification** | direction | 3 | Amplifying (gain>1), Attenuating (gain<1), Unity (buffer) |
@@ -149,7 +149,7 @@ Each attribute is defined as a **ValueSpace** with:
 
 ### Pattern 1: Simple Attribute Assignment
 
-**Use when**: Single metaconcept with one attribute
+**Use when**: Single GenericConcept with one attribute
 
 ```json
 {
@@ -161,9 +161,9 @@ Each attribute is defined as a **ValueSpace** with:
 
 ---
 
-### Pattern 2: Multiple Attributes (Same Metaconcept)
+### Pattern 2: Multiple Attributes (Same GenericConcept)
 
-**Use when**: Metaconcept has multiple attributes (e.g., Regulation, Process)
+**Use when**: GenericConcept has multiple attributes (e.g., Regulation, Process)
 
 ```json
 {
@@ -566,7 +566,7 @@ Each attribute is defined as a **ValueSpace** with:
 }
 ```
 
-**Solution**: Always check `m2:possibleValues` in M2_MetaConcepts.jsonld
+**Solution**: Always check `m2:possibleValues` in M2_GenericConcepts.jsonld
 
 ---
 
@@ -672,7 +672,7 @@ Skip attributes like `bifurcation_type` unless your system exhibits bifurcations
 }
 ```
 
-**In M2 metaconcepts**: No, only through formal TSCG extension process.
+**In M2 GenericConcepts**: No, only through formal TSCG extension process.
 
 ---
 
@@ -694,13 +694,13 @@ Skip attributes like `bifurcation_type` unless your system exhibits bifurcations
 
 ---
 
-### Q4: How do I know which attributes a metaconcept has?
+### Q4: How do I know which attributes a GenericConcept has?
 
-**Method 1**: Check M2_MetaConcepts.jsonld directly
+**Method 1**: Check M2_GenericConcepts.jsonld directly
 
 **Method 2**: Use this quick reference:
 
-| Metaconcept | Has Attributes? | Which Ones? |
+| GenericConcept | Has Attributes? | Which Ones? |
 |-------------|-----------------|-------------|
 | Trajectory | ✅ | shape |
 | Amplification | ✅ | direction |
@@ -780,14 +780,14 @@ Skip attributes like `bifurcation_type` unless your system exhibits bifurcations
 
 ## Conclusion
 
-**ValueSpace attributes** provide a powerful, clean way to configure TSCG metaconcepts without ontology proliferation.
+**ValueSpace attributes** provide a powerful, clean way to configure TSCG GenericConcepts without ontology proliferation.
 
 **Key Takeaways**:
-- 13 attributes available across 11 metaconcepts
+- 13 attributes available across 11 GenericConcepts
 - 72 validated discrete values
 - Use only what's relevant to your system
 - Always provide rationale for design decisions
-- Check M2_MetaConcepts.jsonld for authoritative reference
+- Check M2_GenericConcepts.jsonld for authoritative reference
 
 **Happy modeling!** 🎯
 

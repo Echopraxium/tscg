@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-This document explains how **M3_CategoryTheory.jsonld** provides the mathematical foundation for **KnowledgeField** and **KnowledgeFieldMetaCombo** metaconcepts, resolving the architectural question: "KnowledgeField objects (Chemistry, Biology...) are reifications of the KnowledgeField category."
+This document explains how **M3_CategoryTheory.jsonld** provides the mathematical foundation for **KnowledgeField** and **KnowledgeFieldGenericCombo** GenericConcepts, resolving the architectural question: "KnowledgeField objects (Chemistry, Biology...) are reifications of the KnowledgeField category."
 
 ---
 
@@ -24,7 +24,7 @@ In TSCG, we explicitly reference Category Theory:
 }
 ```
 
-But we have **KnowledgeField** as a metaconcept with instances like **Chemistry**, **Biology**, **Optics**.
+But we have **KnowledgeField** as a GenericConcept with instances like **Chemistry**, **Biology**, **Optics**.
 
 **Question:** In Category Theory terms, what IS KnowledgeField and what ARE Chemistry/Biology/Optics?
 
@@ -60,12 +60,12 @@ In Category Theory terms:
 
 ### 3.1 Without M3_CategoryTheory (Previous Approach)
 
-**M2_MetaConcepts.jsonld:**
+**M2_GenericConcepts.jsonld:**
 ```json
 {
   "@id": "m2:KnowledgeField",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept"],
-  "rdfs:comment": "Metaconcept for knowledge fields"
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept"],
+  "rdfs:comment": "GenericConcept for knowledge fields"
 }
 ```
 
@@ -82,12 +82,12 @@ In Category Theory terms:
 
 ### 3.2 With M3_CategoryTheory (New Approach)
 
-**M2_MetaConcepts.jsonld:**
+**M2_GenericConcepts.jsonld:**
 ```json
 {
   "@id": "m2:KnowledgeField",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept"],
-  "rdfs:comment": "Metaconcept for knowledge fields",
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept"],
+  "rdfs:comment": "GenericConcept for knowledge fields",
   
   "m3ct:asMathematicalCategory": {
     "@id": "m2:Cat_KnowledgeField",
@@ -207,11 +207,11 @@ In Category Theory terms:
 
 ---
 
-## 5. KnowledgeFieldMetaCombo in Category Theory
+## 5. KnowledgeFieldGenericCombo in Category Theory
 
 ### 5.1 The Pattern
 
-**KnowledgeFieldMetaCombo** creates domain-specific concepts through operator ⊙:
+**KnowledgeFieldGenericCombo** creates domain-specific concepts through operator ⊙:
 
 ```
 Chemical ⊙ Link = ChemicalLink
@@ -250,7 +250,7 @@ F(Mechanics, Component) = MechanicalComponent
     "F(Biology, Processor) = BiologicalProcessor"
   ],
   
-  "rdfs:comment": "Functor implementing KnowledgeFieldMetaCombo pattern (⊙ operator)"
+  "rdfs:comment": "Functor implementing KnowledgeFieldGenericCombo pattern (⊙ operator)"
 }
 ```
 
@@ -263,7 +263,7 @@ F(Mechanics, Component) = MechanicalComponent
 ```json
 {
   "@id": "m2:KnowledgeField",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept"],
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept"],
   "rdfs:label": "KnowledgeField",
   "m2:hasTensorFormula": "∑ᵢ σᵢ |uᵢ⟩⊗|vᵢ⟩ (5D SVD, ASFID ⊗ REVOI)",
   
@@ -361,7 +361,7 @@ Transdisciplinarity(Chemistry, Biology) =
 - [ ] Add m3ct:categoryTheoryView to m2:KnowledgeField
 - [ ] Define m2:Cat_KnowledgeField as MathematicalCategory
 - [ ] Define m2:F_domain_specialization functor
-- [ ] Add m3ct namespace to M2_MetaConcepts.jsonld context
+- [ ] Add m3ct namespace to M2_GenericConcepts.jsonld context
 
 ### Phase 3: M1 Annotations
 
@@ -401,7 +401,7 @@ SELECT ?target ?morphism WHERE {
 
 ```sparql
 SELECT ?concept WHERE {
-  ?concept m1:hasParentMetaconcept m2:KnowledgeFieldMetaCombo .
+  ?concept m1:hasParentGenericConcept m2:KnowledgeFieldGenericCombo .
 }
 ```
 
@@ -414,7 +414,7 @@ SELECT ?concept WHERE {
 1. **KnowledgeField** is a mathematical category (Cat_KnowledgeField)
 2. **Chemistry, Biology, Optics** are objects in that category
 3. **Knowledge transfers** are morphisms between objects
-4. **KnowledgeFieldMetaCombo** is a functor (F_domain_specialization)
+4. **KnowledgeFieldGenericCombo** is a functor (F_domain_specialization)
 5. **Tensorization** (M3→M2) and **Instantiation** (M2→M1) are functors
 
 This formalization:

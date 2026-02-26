@@ -199,7 +199,7 @@ Evolvability(M) = modularity × extensibility × maintainability
 
 ---
 
-### Dans M2 Metaconcepts (sphinxView)
+### Dans M2 GenericConcepts (sphinxView)
 
 ```json
 {

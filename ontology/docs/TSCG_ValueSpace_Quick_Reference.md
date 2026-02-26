@@ -4,7 +4,7 @@
 
 ---
 
-## 11 Enriched Metaconcepts × 13 Attributes × 72 Values
+## 11 Enriched GenericConcepts × 13 Attributes × 72 Values
 
 ### 1. Trajectory.shape (9 values)
 
@@ -306,7 +306,7 @@ Before finalizing your instantiation:
 
 ## Resources
 
-- **Full ontology**: M2_MetaConcepts.jsonld (v14.4.0)
+- **Full ontology**: M2_GenericConcepts.jsonld (v14.4.0)
 - **User guide**: TSCG_ValueSpace_User_Guide.md
 - **Final report**: ValueSpace_Enrichment_Final_Report.md
 

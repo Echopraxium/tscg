@@ -1,7 +1,7 @@
 {
   "@context": {
     "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
     "owl": "http://www.w3.org/2002/07/owl#",
@@ -25,7 +25,7 @@
         "@id": "m3:SystemicFramework"
       },
       "owl:imports": [
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld",
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld"
       ],
       "dcterms:source": {
@@ -385,7 +385,7 @@
         "m2:ValueSpace"
       ],
       "m0:ashbyLaw": "V(Regulator) ≥ V(Disturbance)",
-      "m0:valueSpaceRole": "Quantifies the cardinality of the value-space (Ashby variety = number of distinguishable states). Foundation for MetaconceptCombo(ValueSpace, Amplification↑/↓) gain calculations."
+      "m0:valueSpaceRole": "Quantifies the cardinality of the value-space (Ashby variety = number of distinguishable states). Foundation for GenericConceptCombo(ValueSpace, Amplification↑/↓) gain calculations."
     },
     {
       "@id": "m0:vsm:attenuatesVariety",
@@ -395,14 +395,14 @@
       "rdfs:domain": "owl:Thing",
       "rdfs:range": "owl:Thing",
       "m0:instantiatesM2": [
-        "m2:MetaconceptCombo",
+        "m2:GenericConceptCombo",
         "m2:ValueSpace",
         "m2:Amplification"
       ],
       "m0:mechanism": "Filtering, aggregation, summarization, exception-based reporting",
-      "m0:metaconceptCombo": {
+      "m0:GenericConceptCombo": {
         "instance": "m0:vsm:VarietyAttenuation",
-        "formula": "MetaconceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation",
+        "formula": "GenericConceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation",
         "parent_A": "m2:ValueSpace",
         "parent_B": "m2:Amplification↓ (attenuationAspect, 0 < Gain < 1)"
       }
@@ -415,14 +415,14 @@
       "rdfs:domain": "owl:Thing",
       "rdfs:range": "owl:Thing",
       "m0:instantiatesM2": [
-        "m2:MetaconceptCombo",
+        "m2:GenericConceptCombo",
         "m2:ValueSpace",
         "m2:Amplification"
       ],
       "m0:mechanism": "Elaboration, specification, contextualization, local adaptation",
-      "m0:metaconceptCombo": {
+      "m0:GenericConceptCombo": {
         "instance": "m0:vsm:VarietyAmplification",
-        "formula": "MetaconceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification",
+        "formula": "GenericConceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification",
         "parent_A": "m2:ValueSpace",
         "parent_B": "m2:Amplification↑ (amplificationAspect, Gain > 1)"
       }
@@ -535,14 +535,14 @@
       "@id": "m0:vsm:VarietyAmplification",
       "@type": "owl:Class",
       "rdfs:label": "Variety Amplification",
-      "rdfs:comment": "MetaconceptCombo instance: MetaconceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification. Synergistic combination of ValueSpace (It⊗V⊗O⊗R⊗Im) and Amplification↑ (Ft⊗D⊗It⊗R⊗O, Gain > 1). Implements VSM S2 coordination — increases Im (interoperability) of variety flowing downward from metasystem to S1 operational units. Shared dimensions {It, R, O} couple rather than duplicate, producing a reduced emergent subspace.",
+      "rdfs:comment": "GenericConceptCombo instance: GenericConceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification. Synergistic combination of ValueSpace (It⊗V⊗O⊗R⊗Im) and Amplification↑ (Ft⊗D⊗It⊗R⊗O, Gain > 1). Implements VSM S2 coordination — increases Im (interoperability) of variety flowing downward from metasystem to S1 operational units. Shared dimensions {It, R, O} couple rather than duplicate, producing a reduced emergent subspace.",
       "rdfs:subClassOf": "m2:Amplification",
       "m0:instantiatesM2": [
-        "m2:MetaconceptCombo",
+        "m2:GenericConceptCombo",
         "m2:ValueSpace",
         "m2:Amplification"
       ],
-      "m0:metaconceptCombo": {
+      "m0:GenericConceptCombo": {
         "operator": "⊗⇒",
         "parent_A": {
           "@id": "m2:ValueSpace",
@@ -558,7 +558,7 @@
           "formula": "Ft⊗D⊗It⊗R⊗O",
           "role": "Gain operation — scales variety magnitude upward"
         },
-        "emergenceFormula": "MetaconceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification",
+        "emergenceFormula": "GenericConceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification",
         "sharedDimensions": [
           "It",
           "R",
@@ -569,7 +569,7 @@
           "R_coupling": "Value-space representability (ValueSpace.R) couples with amplification-stage representability (Amplification↑.R) — elaboration steps must remain symbolizable in the same model",
           "O_coupling": "Variety observability (ValueSpace.O) couples with amplification observability (Amplification↑.O) — amplified variety remains traceable at each elaboration stage"
         },
-        "emergentSubspace": "3 shared dimensions couple rather than duplicate — emergent result is a reduced subspace, not a naive 8D concatenation (cf. MetaconceptCombo couplingRule)"
+        "emergentSubspace": "3 shared dimensions couple rather than duplicate — emergent result is a reduced subspace, not a naive 8D concatenation (cf. GenericConceptCombo couplingRule)"
       },
       "m0:vsmRole": "S2 Coordination — Variety Amplification (downward flow)",
       "m0:vsmFunction": {
@@ -596,14 +596,14 @@
       "@id": "m0:vsm:VarietyAttenuation",
       "@type": "owl:Class",
       "rdfs:label": "Variety Attenuation",
-      "rdfs:comment": "MetaconceptCombo instance: MetaconceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation. Synergistic combination of ValueSpace (It⊗V⊗O⊗R⊗Im) and Amplification↓ (Ft⊗D⊗It⊗R⊗O, 0 < Gain < 1). Implements VSM S3 optimization — decreases O (observability) of variety flowing upward from S1 to metasystem, while preserving V (verifiability) for S3* audit integrity. Shared dimensions {It, R, O} couple rather than duplicate, producing a reduced emergent subspace.",
+      "rdfs:comment": "GenericConceptCombo instance: GenericConceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation. Synergistic combination of ValueSpace (It⊗V⊗O⊗R⊗Im) and Amplification↓ (Ft⊗D⊗It⊗R⊗O, 0 < Gain < 1). Implements VSM S3 optimization — decreases O (observability) of variety flowing upward from S1 to metasystem, while preserving V (verifiability) for S3* audit integrity. Shared dimensions {It, R, O} couple rather than duplicate, producing a reduced emergent subspace.",
       "rdfs:subClassOf": "m2:Amplification",
       "m0:instantiatesM2": [
-        "m2:MetaconceptCombo",
+        "m2:GenericConceptCombo",
         "m2:ValueSpace",
         "m2:Amplification"
       ],
-      "m0:metaconceptCombo": {
+      "m0:GenericConceptCombo": {
         "operator": "⊗⇒",
         "parent_A": {
           "@id": "m2:ValueSpace",
@@ -619,7 +619,7 @@
           "formula": "Ft⊗D⊗It⊗R⊗O",
           "role": "Gain operation — scales variety magnitude downward (filtering)"
         },
-        "emergenceFormula": "MetaconceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation",
+        "emergenceFormula": "GenericConceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation",
         "sharedDimensions": [
           "It",
           "R",
@@ -630,7 +630,7 @@
           "R_coupling": "Value-space representability (ValueSpace.R) couples with attenuation-stage representability (Amplification↓.R) — summarization must remain symbolizable",
           "O_coupling": "Variety observability (ValueSpace.O) couples with attenuation observability (Amplification↓.O) — filtered output observable by S3 at reduced granularity"
         },
-        "emergentSubspace": "3 shared dimensions couple rather than duplicate — emergent result is a reduced subspace, not a naive 8D concatenation (cf. MetaconceptCombo couplingRule)"
+        "emergentSubspace": "3 shared dimensions couple rather than duplicate — emergent result is a reduced subspace, not a naive 8D concatenation (cf. GenericConceptCombo couplingRule)"
       },
       "m0:vsmRole": "S3 Optimization — Variety Attenuation (upward flow)",
       "m0:vsmFunction": {
@@ -681,19 +681,19 @@
         "S4 strategy: Amplify vision into S1-actionable projects"
       ],
       "m0:instantiatesM2": [
-        "m2:MetaconceptCombo",
+        "m2:GenericConceptCombo",
         "m2:ValueSpace",
         "m2:Amplification"
       ],
-      "m0:metaconceptCombos": {
+      "m0:GenericConceptCombos": {
         "amplification": {
           "instance": "m0:vsm:VarietyAmplification",
-          "formula": "MetaconceptCombo(ValueSpace, Amplification↑)",
+          "formula": "GenericConceptCombo(ValueSpace, Amplification↑)",
           "role": "Elaboration cascade — downward (metasystem → S1), Gain > 1"
         },
         "attenuation": {
           "instance": "m0:vsm:VarietyAttenuation",
-          "formula": "MetaconceptCombo(ValueSpace, Amplification↓)",
+          "formula": "GenericConceptCombo(ValueSpace, Amplification↓)",
           "role": "Filtering cascade — upward (S1 → metasystem), 0 < Gain < 1"
         }
       }
@@ -756,13 +756,13 @@
       "m2:Feedback",
       "m2:Imbrication",
       "m2:Amplification",
-      "m2:MetaconceptCombo",
+      "m2:GenericConceptCombo",
       "m2:ValueSpace"
     ],
     "new": [
       "m2:ValueSpace (added 2026-01-28)",
       "m2:Amplification (added 2026-01-31)",
-      "m2:MetaconceptCombo (added 2026-01-31)"
+      "m2:GenericConceptCombo (added 2026-01-31)"
     ]
   },
   "m0:m1Prerequisites": {
@@ -778,26 +778,26 @@
       },
       {
         "name": "VarietyAttenuation",
-        "status": "VALIDATED — MetaconceptCombo instance in M0_VSM v1.1.0",
-        "description": "MetaconceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation — S3 upward flow, reduces O, preserves V",
+        "status": "VALIDATED — GenericConceptCombo instance in M0_VSM v1.1.0",
+        "description": "GenericConceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation — S3 upward flow, reduces O, preserves V",
         "instantiates": [
-          "m2:MetaconceptCombo",
+          "m2:GenericConceptCombo",
           "m2:ValueSpace",
           "m2:Amplification"
         ],
-        "metaconceptComboFormula": "MetaconceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation",
+        "GenericConceptComboFormula": "GenericConceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation",
         "vsmSystem": "S3 (Optimization)"
       },
       {
         "name": "VarietyAmplification",
-        "status": "VALIDATED — MetaconceptCombo instance in M0_VSM v1.1.0",
-        "description": "MetaconceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification — S2 downward flow, increases Im",
+        "status": "VALIDATED — GenericConceptCombo instance in M0_VSM v1.1.0",
+        "description": "GenericConceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification — S2 downward flow, increases Im",
         "instantiates": [
-          "m2:MetaconceptCombo",
+          "m2:GenericConceptCombo",
           "m2:ValueSpace",
           "m2:Amplification"
         ],
-        "metaconceptComboFormula": "MetaconceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification",
+        "GenericConceptComboFormula": "GenericConceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification",
         "vsmSystem": "S2 (Coordination)"
       },
       {

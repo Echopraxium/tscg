@@ -36,7 +36,7 @@
 ### Phase 2: Débat Métaconcepts (~30,000 tokens)
 **Activités:**
 - ✅ Viability → rejeté (composite de Resilience+Adaptation)
-- ✅ Variety → ValueSpace validé (ORIVE Map metaconcept)
+- ✅ Variety → ValueSpace validé (ORIVE Map GenericConcept)
 - ✅ Recursion → Imbrication existe déjà
 - ✅ Débats philosophiques Map/Territory
 
@@ -50,7 +50,7 @@
 **Activités:**
 - ✅ m2:ValueSpace entry (170 lignes, enrichi)
 - ✅ M0_VSM.jsonld (900+ lignes, complet)
-- ✅ Mise à jour M2_MetaConcepts.jsonld
+- ✅ Mise à jour M2_GenericConcepts.jsonld
 - ✅ Corrections encodage Unicode (⊗)
 
 **Efficacité:** ⭐⭐⭐⭐☆ Très bon (quelques corrections nécessaires)
@@ -58,7 +58,7 @@
 **Fichiers produits:**
 1. m2_ValueSpace_entry.jsonld (8kb)
 2. M0_VSM.jsonld (45kb)
-3. M2_MetaConcepts_v14.1.0.jsonld (120kb)
+3. M2_GenericConcepts_v14.1.0.jsonld (120kb)
 
 ---
 
@@ -127,7 +127,7 @@
 ✅ **5 fichiers** créés (~210kb total)  
 ✅ **900+ lignes** pour M0_VSM.jsonld  
 ✅ **400+ lignes** pour README  
-✅ **2924 lignes** M2_MetaConcepts mis à jour
+✅ **2924 lignes** M2_GenericConcepts mis à jour
 
 **Impact:** Ratio production/tokens excellent
 
@@ -185,7 +185,7 @@
 |---------|--------|--------|----------------|
 | **M0_VSM.jsonld** | 900+ | 45kb | ~25,000 |
 | **m2_ValueSpace_entry.jsonld** | 170 | 8kb | ~5,000 |
-| **M2_MetaConcepts_v14.1.0** | 2924 | 120kb | ~60,000 |
+| **M2_GenericConcepts_v14.1.0** | 2924 | 120kb | ~60,000 |
 | **M0_VSM_README.md** | 400+ | 20kb | ~12,000 |
 | **M0_VSM_Prerequisites_Analysis** | 350 | 18kb | ~10,000 |
 
@@ -216,7 +216,7 @@
 **Insight:** "Variety doesn't exist in Territory - counting states is a Map activity"
 
 **Impact TSCG:**
-- Nouveau M2 metaconcept ORIVE-only
+- Nouveau M2 GenericConcept ORIVE-only
 - Renforce distinction Map/Territory
 - Formalise Ashby's Law dans framework
 

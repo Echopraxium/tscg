@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-This document presents the **first electronic validation of the Processor metaconcept** (v15.0.0) using the bipolar junction transistor (BJT) as a minimal complete semiconductor processor demonstrating:
+This document presents the **first electronic validation of the Processor GenericConcept** (v15.0.0) using the bipolar junction transistor (BJT) as a minimal complete semiconductor processor demonstrating:
 
 - **Dual-mode operation**: Linear amplification (analog) + digital switching (binary)
 - **Triple N-ary inputs** (base current, collector voltage, emitter reference) → **single output** (collector current)
@@ -20,7 +20,7 @@ This document presents the **first electronic validation of the Processor metaco
 
 **Key Results**:
 1. ✅ **Processor validated in electronics** - First semiconductor device modeled as Processor
-2. ✅ **Dual-mode validated** - Linear + Digital modes demonstrate Mode metaconcept
+2. ✅ **Dual-mode validated** - Linear + Digital modes demonstrate Mode GenericConcept
 3. ✅ **Amplification critical** - Current gain β=50-500, power gain >10,000
 4. ✅ **Interoperability essential** - Standardized symbols (IEEE), pinouts (JEDEC), models (SPICE)
 5. ✅ **Minimal epistemic gap** (0.01) - 75+ years semiconductor theory perfection
@@ -123,7 +123,7 @@ OUTPUT (N=1):
 
 | Aspect | Value |
 |--------|--------|
-| Primary metaconcept | **m2:Processor** |
+| Primary GenericConcept | **m2:Processor** |
 | Operating modes | 2 (Linear amplification, Digital switching) |
 | Terminals | 3 (Base, Collector, Emitter) |
 | Junctions | 2 (Base-Emitter, Base-Collector) |
@@ -759,7 +759,7 @@ I_C < β × I_B  (β relationship breaks down)
    - **Photodiode amplifier**: Convert photocurrent → voltage
    - **Thermocouple amplifier**: Amplify mV-level signals
 
-**Amplification metaconcept**:
+**Amplification GenericConcept**:
 ```json
 {
   "@type": "m2:Amplification",
@@ -816,7 +816,7 @@ I_C < β × I_B  (β relationship breaks down)
    - **DC-DC converters**: Buck, boost, flyback
    - **PWM control**: Motor speed, LED dimming
 
-**Threshold metaconcept**:
+**Threshold GenericConcept**:
 ```json
 {
   "@type": "m2:Threshold",
@@ -831,7 +831,7 @@ I_C = I_S × exp(V_BE / V_T)
 ```
 Where V_T ≈ 26 mV → **10× change in I_C for 60 mV change in V_BE**
 
-### 7.3 Mode Metaconcept Validation
+### 7.3 Mode GenericConcept Validation
 
 **Mode instantiation**:
 ```json
@@ -1273,15 +1273,15 @@ I_out = (V_BE - V_E) / R_E ≈ V_E / R_E  (if V_BE is fixed)
 
 ## 12. Key Insights
 
-### 12.1 Processor Metaconcept Validation
+### 12.1 Processor GenericConcept Validation
 
 1. **First electronic Processor** ✅
-   - BJT validates Processor metaconcept in electronics domain
+   - BJT validates Processor GenericConcept in electronics domain
    - Triple inputs (I_B, V_CE, V_E) → single output (I_C)
    - Ternary hybrid formulas necessary for complete representation
 
 2. **Dual-mode operation validated** ✅
-   - Linear (amplification) vs Digital (switching) demonstrates **Mode** metaconcept
+   - Linear (amplification) vs Digital (switching) demonstrates **Mode** GenericConcept
    - Same device, different operating regimes
    - Validates multi-mode processor concept
 
@@ -1289,7 +1289,7 @@ I_out = (V_BE - V_E) / R_E ≈ V_E / R_E  (if V_BE is fixed)
    - Current gain β = 50-500
    - Voltage gain A_v up to 1000
    - **Power gain >10,000** (40 dB) demonstrates true amplification
-   - Justifies Amplification as distinct metaconcept
+   - Justifies Amplification as distinct GenericConcept
 
 4. **Interoperability essential** ✅
    - Standardized symbols (IEEE Std 315)
@@ -1356,7 +1356,7 @@ I_out = (V_BE - V_E) / R_E ≈ V_E / R_E  (if V_BE is fixed)
 2. **Transdisciplinary pattern** ✅
    - Processor pattern validated across 4 domains (Electronics, Biology, Hydraulics, Acoustics)
    - Universal characteristics confirmed
-   - Justifies metaconcept status (not domain-specific)
+   - Justifies GenericConcept status (not domain-specific)
 
 3. **Minimal epistemic gap achievement** ✅
    - Only 2 poclets with gap ≤0.01 (Transistor, Kidneys)
@@ -1421,7 +1421,7 @@ The shared blue colour for both amplifier modes visually reinforces the function
 
 ### TSCG Connections
 
-- **m2:Mode** — the tab selector is the direct realisation of the Mode metaconcept: same physical device, different operating regime
+- **m2:Mode** — the tab selector is the direct realisation of the Mode GenericConcept: same physical device, different operating regime
 - **m2:Threshold** — the Cutoff→Active transition (BJT: V_BE ≈ 0.65 V; MOSFET: V_GS = V_th) is explicit in both I-V planes
 - **m2:Amplification** — peaks in the Active / MOSFET-Saturation region; ASFID-A bar drops outside it
 - **m2:Polarity** — the BJT Reverse Active mode demonstrates polarity inversion (B-E ↔ B-C roles swapped)
@@ -1468,7 +1468,7 @@ python transistor_sim.py path/to/M0_Transistor.jsonld
 
 ### 14.4 TSCG Framework
 
-1. **M2_MetaConcepts.jsonld** (v15.0.0)
+1. **M2_GenericConcepts.jsonld** (v15.0.0)
 2. **Poclet_Analysis_Methodology.md**
 
 ---

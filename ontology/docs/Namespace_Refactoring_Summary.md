@@ -117,7 +117,7 @@ Tous les poclets (M0) doivent maintenant importer `M1_CoreConcepts.jsonld` :
 ```json
 "owl:imports": [
   "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
-  "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld"
+  "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld"
 ]
 ```
 
@@ -157,7 +157,7 @@ https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/...
 - [x] M3_SphinxEye.jsonld
 
 **M2 Layer** (1/1):
-- [x] M2_MetaConcepts.jsonld
+- [x] M2_GenericConcepts.jsonld
 
 **M1 Layer** (5/5):
 - [x] M1_CoreConcepts.jsonld
