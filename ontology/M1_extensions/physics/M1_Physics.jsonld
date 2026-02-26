@@ -1,0 +1,214 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m1phys": "M1_extensions/physics/M1_Physics.jsonld#",
+    "m1core": "M1_CoreConcepts.jsonld#",
+    "m2": "M2_GenericConcepts.jsonld#",
+    "m3": "M3_GenesisSpace.jsonld#",
+    "m3eagle": "M3_EagleEye.jsonld#",
+    "m3sphinx": "M3_SphinxEye.jsonld#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "m1phys:M1_Physics",
+      "@type": "owl:Ontology",
+      "rdfs:label": "TSCG M1 Physics Extension",
+      "rdfs:comment": "Domain-specific physics concepts for the TSCG framework. Bootstrapped from the M0_PhaseTransition poclet (v1.1.0). Contains thermodynamic and physical concepts that are reusable within the Physics domain family but do not achieve the universal applicability required for M2 metaconcept status.",
+      "dcterms:title": "TSCG M1 Physics - Domain-Specific Physical Concepts",
+      "dcterms:description": "Extension of the TSCG framework with physics-specific concepts. Initial focus: thermodynamics and phase transition theory (6 concepts). Each concept is grounded in M2 metaconcepts and applicable across Physics subdomains (thermodynamics, statistical mechanics, materials science, physical chemistry).",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-02-26",
+      "owl:versionInfo": "1.0.0",
+      "m2:changelog": [
+        "1.0.0 (2026-02-26): Initial release — 6 seed concepts from M0_PhaseTransition v1.1.0: LatentHeat, TriplePoint, CriticalPoint, OrderParameter, PhaseDiagram, Nucleation"
+      ],
+      "owl:imports": [
+        "M1_CoreConcepts.jsonld",
+        "M2_GenericConcepts.jsonld"
+      ],
+      "skos:scopeNote": "Physics subdomain concepts. v1.0.0 covers Thermodynamics / Phase Transitions. Future planned extensions: Mechanics (Newton, Lagrangian), Electromagnetism (Maxwell), Optics (may integrate with M1_Optics), Quantum Mechanics (Schrodinger, Heisenberg), Statistical Mechanics.",
+      "m1phys:bootstrapSource": "M0_PhaseTransition v1.1.0",
+      "m1phys:conceptCount": 6
+    },
+
+    {
+      "@id": "m1phys:LatentHeat",
+      "@type": "owl:Class",
+      "rdfs:label": "Latent Heat",
+      "rdfs:comment": "Energy absorbed or released during a first-order phase transition at constant temperature and pressure. The word 'latent' (hidden) reflects that no temperature change accompanies the energy transfer — the energy is entirely consumed in structural reorganization. LatentHeat is the thermodynamic observable signature of the Switch M2 metaconcept.",
+      "skos:definition": "The enthalpy change (delta H) at constant T and P during a first-order phase transition. Divided into: heat of fusion (L_fus, Solid/Liquid), heat of vaporization (L_vap, Liquid/Gas), and heat of sublimation (L_sub = L_fus + L_vap, Solid/Gas by Hess's law).",
+      "m1phys:m2Basis": ["m2:Switch", "m2:Threshold", "m2:Flow"],
+      "m1phys:tensorFormula": "Switch (x) Threshold (x) Flow",
+      "m1phys:tensorFormulaTeX": "Switch \\otimes Threshold \\otimes Flow",
+      "m1phys:physicalInterpretation": {
+        "mechanistic": "Energy used entirely to break (fusion) or eliminate (vaporization) intermolecular bonds/attractions — none goes to kinetic energy (temperature stays constant at transition).",
+        "hierarchy": "L_vap >> L_fus: vaporization requires full molecular separation; fusion only requires partial disordering of the lattice.",
+        "hess": "L_sub = L_fus + L_vap (Hess's law — path-independent enthalpy sum)"
+      },
+      "m1phys:referenceValues": [
+        "H2O: L_fus = 6.01 kJ/mol (334 J/g); L_vap = 40.65 kJ/mol (2257 J/g)",
+        "CO2: L_sub = 25.2 kJ/mol (dry ice sublimation at 194.7 K)",
+        "N2: L_vap = 5.57 kJ/mol (198 J/g) at 77.4 K"
+      ],
+      "m1phys:tscgRelevance": "LatentHeat is the primary thermodynamic observable that reveals a first-order Switch between Attractor basins. Absence of latent heat marks a second-order (continuous) transition near the CriticalPoint.",
+      "m1phys:subdomains": ["Thermodynamics", "Calorimetry", "Materials Science", "Meteorology"],
+      "m1phys:pocletOrigin": "M0_PhaseTransition v1.1.0",
+      "m1phys:measuredBy": "Differential Scanning Calorimetry (DSC); isothermal calorimetry"
+    },
+
+    {
+      "@id": "m1phys:TriplePoint",
+      "@type": "owl:Class",
+      "rdfs:label": "Triple Point",
+      "rdfs:comment": "The unique temperature T_tp and pressure P_tp at which all three classical phases (Solid, Liquid, Gas) coexist in thermodynamic equilibrium. By Gibbs phase rule (F = C - Ph + 2), a single-component system (C=1) with three coexisting phases (Ph=3) has F=0 degrees of freedom: the triple point is a fully invariant thermodynamic point. It validates Polarity(N=3) for the phase system: the only (T,P) where the three Attractor basins have equal Gibbs free energy.",
+      "skos:definition": "The unique intersection of the three two-phase coexistence curves (Solid/Liquid, Liquid/Gas, Solid/Gas) in the P-T phase diagram. Invariant for a single-component system (Gibbs phase rule F=0). Used as primary thermometric reference by the BIPM.",
+      "m1phys:m2Basis": ["m2:Attractor", "m2:Polarity", "m2:Threshold"],
+      "m1phys:tensorFormula": "Attractor (x) Polarity (x) Threshold",
+      "m1phys:tensorFormulaTeX": "Attractor \\otimes Polarity \\otimes Threshold",
+      "m1phys:gibbsPhaseRule": "F = C - Ph + 2 = 1 - 3 + 2 = 0 (zero degrees of freedom: both T and P fixed)",
+      "m1phys:referenceValues": [
+        "H2O: T = 273.16 K, P = 611.73 Pa (0.00604 atm) — BIPM temperature standard until 2019",
+        "CO2: T = 216.6 K, P = 517 kPa (5.11 atm)",
+        "N2: T = 63.2 K, P = 12.5 kPa",
+        "Ga: T = 302.9146 K (ITS-90 fixed point), P = 2e-9 Pa (essentially zero)"
+      ],
+      "m1phys:tscgRelevance": "Triple Point physically instantiates Polarity(N=3) in a thermodynamic system: it is the unique (T,P) where three Attractor basins are exactly equally stable. The Gibbs phase rule F=0 quantifies the TSCG concept of a fully constrained fixed point.",
+      "m1phys:subdomains": ["Thermodynamics", "Metrology", "Physical Chemistry"],
+      "m1phys:pocletOrigin": "M0_PhaseTransition v1.1.0",
+      "m1phys:metrologyNote": "Water triple point defined the Kelvin until 2019 SI redefinition; still used as practical calibration reference"
+    },
+
+    {
+      "@id": "m1phys:CriticalPoint",
+      "@type": "owl:Class",
+      "rdfs:label": "Critical Point",
+      "rdfs:comment": "The temperature T_c and pressure P_c above which the distinction between liquid and gas phases vanishes: a single supercritical fluid phase exists with properties intermediate between liquid and gas. The CriticalPoint marks the end of the Liquid/Gas coexistence curve. At T_c, the first-order Liquid/Gas transition (with latent heat and Switch) becomes a second-order continuous transition. It directly validates the CriticalityRegime M2 metaconcept: the Switch between liquid and gas ceases to exist above T_c.",
+      "skos:definition": "The end point of the liquid-gas coexistence curve in the T-P phase diagram. Above T_c and P_c, no phase boundary separates liquid from gas. The transition from liquid to gas above T_c is continuous (no latent heat, no density discontinuity). At T_c exactly: critical opalescence (density fluctuations at all length scales), diverging correlation length.",
+      "m1phys:m2Basis": ["m2:CriticalityRegime", "m2:Bifurcation", "m2:Threshold"],
+      "m1phys:tensorFormula": "CriticalityRegime (x) Bifurcation (x) Threshold",
+      "m1phys:tensorFormulaTeX": "CriticalityRegime \\otimes Bifurcation \\otimes Threshold",
+      "m1phys:physicalInterpretation": {
+        "belowTc": "First-order transition: discontinuous density, latent heat present, Switch exists between liquid and gas",
+        "atTc": "Second-order transition: continuous density change, no latent heat, critical opalescence, correlation length xi -> infinity",
+        "aboveTc": "Supercritical fluid: single phase, no Switch possible between liquid and gas regardless of pressure"
+      },
+      "m1phys:criticalExponents": "Near T_c, thermodynamic quantities diverge as power laws: xi ~ |T-Tc|^(-nu), C_P ~ |T-Tc|^(-alpha). Exponents are universal (same for all substances in the same universality class — renormalization group theory).",
+      "m1phys:referenceValues": [
+        "H2O: T_c = 647.1 K, P_c = 220.6 atm (22.06 MPa)",
+        "CO2: T_c = 304.2 K, P_c = 72.8 atm (7.38 MPa) — supercritical extraction at near-ambient T",
+        "He-4: T_c = 5.19 K, P_c = 2.24 atm",
+        "C2H5OH (ethanol): T_c = 514.0 K, P_c = 60.6 atm"
+      ],
+      "m1phys:supercriticalApplications": [
+        "Supercritical CO2 extraction: coffee decaffeination, essential oils, food processing",
+        "Supercritical water oxidation: organic waste destruction",
+        "Supercritical fluid chromatography (SFC): analytical chemistry",
+        "Dry cleaning (SC-CO2 as solvent replacement)"
+      ],
+      "m1phys:tscgRelevance": "CriticalPoint is the T,P at which the Switch M2 metaconcept between Liquid and Gas Attractors disappears. It validates CriticalityRegime (M2): below T_c the system is subcritical (Switch possible), at T_c the system is critical (transition topology changes), above T_c the Switch no longer exists.",
+      "m1phys:subdomains": ["Thermodynamics", "Statistical Mechanics", "Chemical Engineering"],
+      "m1phys:pocletOrigin": "M0_PhaseTransition v1.1.0"
+    },
+
+    {
+      "@id": "m1phys:OrderParameter",
+      "@type": "owl:Class",
+      "rdfs:label": "Order Parameter",
+      "rdfs:comment": "A measurable physical quantity that is zero in the high-symmetry (disordered) phase and non-zero in the low-symmetry (ordered) phase. The OrderParameter quantifies the degree of broken symmetry following a SymmetryBreaking event. In the TSCG framework, it operationalizes two M2 metaconcepts simultaneously: it encodes which Attractor basin the system occupies (m2:Attractor) and measures how much structural information the phase contains (m2:Information).",
+      "skos:definition": "A scalar, vector, or tensor field introduced by Landau that characterizes the degree of order in a phase. Transforms non-trivially under the symmetry operations that are broken in the ordered phase. Continuous at second-order transitions; discontinuous at first-order transitions.",
+      "m1phys:m2Basis": ["m2:Information", "m2:Attractor", "m2:Structure"],
+      "m1phys:tensorFormula": "Information (x) Attractor (x) Structure",
+      "m1phys:tensorFormulaTeX": "Information \\otimes Attractor \\otimes Structure",
+      "m1phys:examples": [
+        "Crystal: density wave amplitude rho_q (= 0 in liquid; > 0 in crystal — lattice periodicity)",
+        "Ferromagnet: net magnetization M per unit volume (= 0 above T_Curie; |M| > 0 below)",
+        "Superconductor: Cooper pair condensate wavefunction psi (|psi| = 0 above T_c; > 0 below)",
+        "Liquid crystal: orientational order parameter S = (1/2)<3cos^2(theta) - 1> (tensor)",
+        "Bose-Einstein condensate: macroscopic wavefunction amplitude |Psi|^2 = condensate fraction"
+      ],
+      "m1phys:landauTheory": "Free energy expanded in powers of order parameter phi: F = F0 + a(T)*phi^2 + b*phi^4 + ... The sign change of a(T) at T_c drives the phase transition. Minimizing F gives equilibrium phi(T).",
+      "m1phys:tscgRelevance": "OrderParameter operationalizes two M2 concepts: (1) it is the ASFID Information dimension signature of each Attractor basin (encodes which phase the system is in); (2) it is the quantitative measure of the SymmetryBreaking M2 candidate — OrderParameter = 0 means high symmetry; OrderParameter > 0 means symmetry has been broken.",
+      "m1phys:symmetryBreakingLink": "At solidification, OrderParameter transitions discontinuously from 0 (liquid: continuous translational symmetry) to > 0 (crystal: discrete lattice periodicity). This is the quantitative fingerprint of the SymmetryBreaking M2 candidate.",
+      "m1phys:subdomains": ["Statistical Mechanics", "Condensed Matter Physics", "Quantum Field Theory"],
+      "m1phys:pocletOrigin": "M0_PhaseTransition v1.1.0"
+    },
+
+    {
+      "@id": "m1phys:PhaseDiagram",
+      "@type": "owl:Class",
+      "rdfs:label": "Phase Diagram",
+      "rdfs:comment": "A graphical Map in state-variable space (typically T-P axes) that shows the stability domains of each phase (Attractor regions), the coexistence boundaries (Thresholds), the triple point, and the critical point. The PhaseDiagram is the canonical REVOI (Sphinx Eye / Map) representation of the ASFID (Eagle Eye / Territory) attractor landscape. It embodies the core TSCG principle: the Sphinx Eye maps what the Eagle Eye observes.",
+      "skos:definition": "A graph in thermodynamic state-variable space delineating the regions of stability of each phase and the transition boundaries. For a single-component system: T-P axes with Solid, Liquid, Gas regions; three coexistence curves meeting at the triple point; liquid-gas curve ending at the critical point.",
+      "m1phys:m2Basis": ["m2:Attractor", "m2:Threshold", "m2:Representation"],
+      "m1phys:tensorFormula": "Attractor (x) Threshold (x) Representation",
+      "m1phys:tensorFormulaTeX": "Attractor \\otimes Threshold \\otimes Representation",
+      "m1phys:structure": {
+        "regions": "Phase stability domains = Attractor basins (Solid at low T/high P; Liquid at intermediate; Gas at high T/low P; Supercritical above T_c,P_c)",
+        "coexistenceCurves": "Phase boundaries = TSCG Thresholds: Solid/Liquid (melting curve, dP/dT = L_fus/(T*DeltaV)), Liquid/Gas (vapor pressure curve), Solid/Gas (sublimation curve)",
+        "triplePoint": "Intersection of all three coexistence curves = Polarity(N=3) fixed point (F=0)",
+        "criticalPoint": "End of Liquid/Gas coexistence curve = CriticalityRegime boundary (Switch disappears)"
+      },
+      "m1phys:tscgAnalogy": "The PhaseDiagram IS a TSCG bicephalous artifact: it uses REVOI tools (equations, experimental data, mathematical curves = Sphinx Eye / Map) to represent ASFID attractors (stable phases = Eagle Eye / Territory). The coexistence curves are TSCG Thresholds. The triple point is the Polarity(N=3) balance point. Reading a phase diagram is the Sphinx Eye reading the Eagle Eye's landscape.",
+      "m1phys:anomalousExamples": [
+        "H2O: negative melting curve slope (ice less dense than water — Solid/Liquid curve slopes LEFT, contrary to most substances)",
+        "CO2: triple point at 5.11 atm (cannot exist as liquid at 1 atm — only Solid and Gas accessible at standard pressure)",
+        "He-4: phase diagram includes superfluid lambda line (quantum phase transition)"
+      ],
+      "m1phys:subdomains": ["Thermodynamics", "Materials Science", "Physical Chemistry", "Geology"],
+      "m1phys:pocletOrigin": "M0_PhaseTransition v1.1.0"
+    },
+
+    {
+      "@id": "m1phys:Nucleation",
+      "@type": "owl:Class",
+      "rdfs:label": "Nucleation",
+      "rdfs:comment": "The kinetic mechanism by which a new phase begins to form within a parent phase at a phase transition. A microscopic fluctuation must overcome an energy barrier (the nucleation barrier) to form a stable embryo of the new phase. Nucleation reveals the kinetic dimension of the Switch M2 metaconcept: the thermodynamic Threshold can be crossed while the actual Switch is delayed by the barrier, enabling metastable states (supercooling, superheating, supersaturation).",
+      "skos:definition": "The initial stochastic step in phase formation: appearance of a small nucleus of the new phase within the parent phase. Governed by competition between volume free energy gain and surface energy cost. Homogeneous: occurs in the bulk (rare). Heterogeneous: facilitated by surfaces, impurities, or defects (dominates in practice).",
+      "m1phys:m2Basis": ["m2:Switch", "m2:Threshold", "m2:Process"],
+      "m1phys:tensorFormula": "Switch (x) Threshold (x) Process",
+      "m1phys:tensorFormulaTeX": "Switch \\otimes Threshold \\otimes Process",
+      "m1phys:nucleationBarrier": {
+        "formula": "Delta_G(r) = 4*pi*r^2*gamma - (4/3)*pi*r^3*|Delta_G_v|",
+        "criticalRadius": "r* = 2*gamma / |Delta_G_v|",
+        "barrierHeight": "Delta_G* = (16*pi/3) * gamma^3 / (Delta_G_v)^2",
+        "interpretation": "Nuclei smaller than r* dissolve (surface energy dominates); nuclei larger than r* grow spontaneously (volume energy dominates)"
+      },
+      "m1phys:types": {
+        "homogeneous": "Occurs in the bulk without foreign surfaces. Requires large supersaturation/supercooling. Dominant only in very pure systems.",
+        "heterogeneous": "Facilitated by surfaces, impurities, container walls, dust. Much lower effective barrier. Dominates in all practical systems.",
+        "secondary": "Nucleation from existing crystals of the same substance (seeding). Exploited in industrial crystallization."
+      },
+      "m1phys:metastableStates": [
+        "Supercooled liquid: T < T_fusion but liquid persists (water can supercool to -40 C in absence of nucleation sites)",
+        "Superheated solid: T > T_fusion but solid persists (rare; observed in very clean single crystals)",
+        "Supersaturated solution: concentration > solubility limit but no crystallization (sugar supersaturation in candy making)",
+        "Superheated liquid: T > T_boiling without boiling (bumping hazard in laboratory)"
+      ],
+      "m1phys:applications": [
+        "Cloud seeding: silver iodide particles as nucleation sites for ice crystal formation",
+        "Cryopreservation: preventing ice nucleation in biological tissues",
+        "Pharmaceutical crystallization: controlling polymorph formation",
+        "Steel heat treatment: controlling austenite/martensite nucleation kinetics",
+        "Bubble nucleation: cavitation in hydraulic machinery"
+      ],
+      "m1phys:tscgRelevance": "Nucleation reveals that the Switch M2 metaconcept has two distinct aspects: (1) the thermodynamic Switch threshold (when it becomes favorable for the new phase to exist — the phase diagram) and (2) the kinetic Switch barrier (when the transition actually occurs — nucleation theory). These are not the same: a system can be thermodynamically past the Threshold but kinetically unable to Switch. This distinction is important for TSCG modeling of irreversible processes.",
+      "m1phys:subdomains": ["Statistical Mechanics", "Materials Science", "Atmospheric Physics", "Biophysics", "Chemical Engineering"],
+      "m1phys:pocletOrigin": "M0_PhaseTransition v1.1.0"
+    }
+  ],
+  "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/physics/M1_Physics.jsonld",
+  "rdfs:label": "TSCG M1 Physics Extension",
+  "rdfs:comment": "Domain-specific physics concepts for TSCG. v1.0.0 bootstrapped from M0_PhaseTransition. Concepts: LatentHeat, TriplePoint, CriticalPoint, OrderParameter, PhaseDiagram, Nucleation.",
+  "owl:versionInfo": "1.0.0",
+  "owl:imports": [
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld",
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld"
+  ],
+  "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+  "dcterms:created": "2026-02-26"
+}
