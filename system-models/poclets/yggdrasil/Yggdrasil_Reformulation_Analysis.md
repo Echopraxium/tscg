@@ -24,7 +24,7 @@ This document provides a comprehensive analysis for reformulating the Yggdrasil 
 
 **Ontology Location**: `m0:yggdrasil:Pole_[Name]`  
 **Base Type**: `m0:yggdrasil:SevenPoleSystem`  
-**Metaconcept Basis**: m2:Domain (each pole is a functional domain)
+**GenericConcept Basis**: m2:Domain (each pole is a functional domain)
 
 ### The Seven Poles
 
@@ -48,7 +48,7 @@ This document provides a comprehensive analysis for reformulating the Yggdrasil 
 **Role**: "Information Circulation Agent"
 
 ### Proposed Enhancement
-**Metaconcept**: m2:Mediator (F⊗I⊗S)  
+**GenericConcept**: m2:Mediator (F⊗I⊗S)  
 **Pattern**: M1 Messenger Entity → M2 Mediator instance
 
 ```json
@@ -57,7 +57,7 @@ This document provides a comprehensive analysis for reformulating the Yggdrasil 
   "@type": ["owl:NamedIndividual", "m0:yggdrasil:MediatorEntity"],
   "rdfs:label": "Ratatosk - System Mediator",
   "skos:altLabel": "Drill-Tooth Squirrel",
-  "m0:instantiatesMetaconcept": "m2:Mediator",
+  "m0:instantiatesGenericConcept": "m2:Mediator",
   "m0:mediatorFormula": "F⊗I⊗S",
   "m0:role": "Bidirectional information flow mediator",
   "m0:function": "Enables interaction between system extremes (Nídhögg ↔ Eagle)",
@@ -175,7 +175,7 @@ m0:yggdrasil:Entity (root class)
 
 ## 5. Identity Instances (m2:Identity)
 
-### 5.1 Identity Metaconcept Reminder
+### 5.1 Identity GenericConcept Reminder
 **Formula**: S⊗I⊗A⊗V⊗E  
 **Definition**: Persistent property making entity distinguishable and self-restoring across transformations  
 **Domains**: S (structure persists), I (uniqueness), A (self-restoration), V (verifiable continuity), E (evolves while remaining itself)
@@ -195,7 +195,7 @@ m0:yggdrasil:Entity (root class)
   "@id": "m0:yggdrasil:Mjolnir",
   "@type": ["owl:NamedIndividual", "m0:yggdrasil:Artifact", "m0:yggdrasil:IdentityInstance"],
   "rdfs:label": "Mjölnir - Thor's Hammer",
-  "m0:instantiatesMetaconcept": "m2:Identity",
+  "m0:instantiatesGenericConcept": "m2:Identity",
   "m0:identityFormula": "S⊗I⊗A⊗V⊗E",
   "m0:category": "m0:yggdrasil:Weapon",
   "m0:owner": "m0:yggdrasil:Thor",
@@ -225,7 +225,7 @@ m0:yggdrasil:Entity (root class)
   "@id": "m0:yggdrasil:Sleipnir",
   "@type": ["owl:NamedIndividual", "m0:yggdrasil:MagicalAnimal", "m0:yggdrasil:IdentityInstance"],
   "rdfs:label": "Sleipnir - Odin's Eight-Legged Horse",
-  "m0:instantiatesMetaconcept": "m2:Identity",
+  "m0:instantiatesGenericConcept": "m2:Identity",
   "m0:identityFormula": "S⊗I⊗A⊗V⊗E",
   "m0:category": "m0:yggdrasil:MythicalCreature",
   "m0:rider": "m0:yggdrasil:Odin",
@@ -255,7 +255,7 @@ m0:yggdrasil:Entity (root class)
   "@id": "m0:yggdrasil:YggdrasilTree",
   "@type": ["owl:NamedIndividual", "m0:yggdrasil:CosmicEntity", "m0:yggdrasil:IdentityInstance"],
   "rdfs:label": "Yggdrasil - The World Tree",
-  "m0:instantiatesMetaconcept": "m2:Identity",
+  "m0:instantiatesGenericConcept": "m2:Identity",
   "m0:identityFormula": "S⊗I⊗A⊗V⊗E",
   "m0:identityProperties": {
     "structuralPersistence": "7-pole network + 3 roots + vertical axis",
@@ -332,7 +332,7 @@ m0:yggdrasil:Entity (root class)
 }
 ```
 
-### 6.2 New Metaconcept Candidates
+### 6.2 New GenericConcept Candidates
 
 #### A. Axis Mundi (Cosmic Axis)
 **Observation**: Yggdrasil embodies "world axis" pattern found across mythologies  
@@ -386,7 +386,7 @@ m0:yggdrasil:Entity (root class)
   "@id": "m0:yggdrasil:Ragnarok",
   "@type": ["owl:NamedIndividual", "m0:yggdrasil:CosmicEvent"],
   "rdfs:label": "Ragnarök - Twilight of the Gods",
-  "m0:instantiatesMetaconcept": "m2:Bifurcation",
+  "m0:instantiatesGenericConcept": "m2:Bifurcation",
   "m0:eventType": "Catastrophic system transformation",
   "m0:triggers": [
     "Fenrir breaks free",
@@ -437,7 +437,7 @@ m0:yggdrasil:Entity (root class)
 
 ### Phase 3: Pattern Extraction (Priority 3)
 - [ ] Formalize 7 new M1_Mythology patterns
-- [ ] Validate 3 M2 candidate metaconcepts
+- [ ] Validate 3 M2 candidate GenericConcepts
 - [ ] Create Ragnarök bifurcation model
 
 ### Phase 4: Comparative Extension (Priority 4)
@@ -487,4 +487,4 @@ This reformulation positions Yggdrasil poclet as:
 
 **Document Status**: DRAFT awaiting review  
 **Estimated Implementation Time**: 8-12 hours for Phase 1  
-**Dependencies**: M2_MetaConcepts.jsonld v14.3.3+, M1_CoreConcepts.jsonld v1.1.0+
+**Dependencies**: M2_GenericConcepts.jsonld v14.3.3+, M1_CoreConcepts.jsonld v1.1.0+

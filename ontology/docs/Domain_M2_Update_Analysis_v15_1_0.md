@@ -1,4 +1,4 @@
-# Domain Metaconcept Update Analysis - v15.1.0
+# Domain GenericConcept Update Analysis - v15.1.0
 
 **Date**: 2026-02-10  
 **Context**: Feedback loop formalization in M3 v3.0.0  
@@ -12,7 +12,7 @@ Domain **DOIT être enrichi** (non changé radicalement) pour refléter la forma
 
 ---
 
-## État Actuel (M2_MetaConcepts.jsonld)
+## État Actuel (M2_GenericConcepts.jsonld)
 
 ### Ce qui existe déjà ✅
 
@@ -194,7 +194,7 @@ Domain **DOIT être enrichi** (non changé radicalement) pour refléter la forma
 
 ---
 
-## Changements Proposés pour M2_MetaConcepts.jsonld
+## Changements Proposés pour M2_GenericConcepts.jsonld
 
 ### Section 1 : Ajouter après "couplingMatrix"
 
@@ -326,7 +326,7 @@ Ajouter pour chaque domaine :
 
 ## Version Update
 
-**M2_MetaConcepts.jsonld** :
+**M2_GenericConcepts.jsonld** :
 - Version actuelle : `14.4.0`
 - Version proposée : `15.1.0`
 
@@ -335,7 +335,7 @@ Ajouter pour chaque domaine :
 "v15.1.0": {
   "date": "2026-02-10",
   "changes": [
-    "ENRICHED: Domain metaconcept with feedback loop formalization",
+    "ENRICHED: Domain GenericConcept with feedback loop formalization",
     "ADDED: Φ and Ψ operators (observation and interpretation)",
     "ADDED: Iterative refinement algorithm",
     "ADDED: Domain maturity metric (σ_mean classification)",
@@ -411,7 +411,7 @@ Peuvent **optionnellement** référencer Domain maturity :
 
 ## Recommandation
 
-**OUI, Domain doit être enrichi dans M2_MetaConcepts.jsonld v15.1.0** ✅
+**OUI, Domain doit être enrichi dans M2_GenericConcepts.jsonld v15.1.0** ✅
 
 **Type de changement** : **Enrichissement non-breaking**
 - Toutes propriétés existantes préservées

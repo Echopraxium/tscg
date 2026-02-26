@@ -1,4 +1,4 @@
-# M2_MetaConcepts SPARQL Queries - Guide d'Utilisation
+# M2_GenericConcepts SPARQL Queries - Guide d'Utilisation
 ## TSCG Framework v15.0.0
 
 **Auteur**: Echopraxium with the collaboration of Claude AI  
@@ -9,11 +9,11 @@
 
 ## 📚 Vue d'Ensemble
 
-Ce package contient **80+ requêtes SPARQL** pour interroger l'ontologie M2_MetaConcepts.jsonld en tant que triplestore RDF/OWL sémantique.
+Ce package contient **80+ requêtes SPARQL** pour interroger l'ontologie M2_GenericConcepts.jsonld en tant que triplestore RDF/OWL sémantique.
 
 ### Fichiers Fournis
 
-1. **M2_MetaConcepts_SPARQL_Queries.rq** - 80+ requêtes SPARQL organisées en 14 sections
+1. **M2_GenericConcepts_SPARQL_Queries.rq** - 80+ requêtes SPARQL organisées en 14 sections
 2. **m2_sparql_analysis.py** - Script Python pour exécution automatique avec rdflib
 3. **SPARQL_README.md** - Ce guide d'utilisation
 
@@ -23,7 +23,7 @@ Ce package contient **80+ requêtes SPARQL** pour interroger l'ontologie M2_Meta
 
 ### JSON-LD = RDF Sémantique
 
-M2_MetaConcepts.jsonld est un fichier **JSON-LD** (JSON for Linking Data) qui représente :
+M2_GenericConcepts.jsonld est un fichier **JSON-LD** (JSON for Linking Data) qui représente :
 - Des **triplets RDF** (sujet-prédicat-objet)
 - Une **ontologie OWL** (Web Ontology Language)
 - Des **relations sémantiques** (rdfs:subClassOf, owl:sameAs, etc.)
@@ -40,7 +40,7 @@ M2_MetaConcepts.jsonld est un fichier **JSON-LD** (JSON for Linking Data) qui re
 
 ### Exemple Concret
 
-**Triplet RDF dans M2_MetaConcepts.jsonld** :
+**Triplet RDF dans M2_GenericConcepts.jsonld** :
 ```turtle
 m2:Processor rdfs:subClassOf m2:System .
 m2:Processor m2:hasCategory m2:Ontological .
@@ -49,14 +49,14 @@ m2:Processor m2:hasPolarity "dual" .
 
 **En SQL** (nécessite table plate avec perte sémantique) :
 ```sql
-SELECT * FROM metaconcepts WHERE label = 'Processor';
+SELECT * FROM GenericConcepts WHERE label = 'Processor';
 ```
 
 **En SPARQL** (navigation de graphe sémantique) :
 ```sparql
 SELECT ?label ?superClass ?category ?polarity
 WHERE {
-  ?metaconcept rdfs:label "Processor" ;
+  ?GenericConcept rdfs:label "Processor" ;
                rdfs:subClassOf ?superClass ;
                m2:hasCategory ?category ;
                m2:hasPolarity ?polarity .
@@ -76,7 +76,7 @@ tar -xzf apache-jena-4.10.0.tar.gz
 export PATH=$PATH:$PWD/apache-jena-4.10.0/bin
 
 # Exécution d'une requête
-sparql --data=M2_MetaConcepts_v15_0_0.jsonld --query=query.sparql
+sparql --data=M2_GenericConcepts_v15_0_0.jsonld --query=query.sparql
 ```
 
 ### Option 2 : Python rdflib
@@ -93,14 +93,14 @@ python3 m2_sparql_analysis.py
 
 1. Télécharger GraphDB Free : https://graphdb.ontotext.com/
 2. Créer un repository
-3. Importer M2_MetaConcepts_v15_0_0.jsonld
+3. Importer M2_GenericConcepts_v15_0_0.jsonld
 4. Onglet SPARQL → Exécuter les requêtes
 
 ### Option 4 : RDF4J Workbench (Interface Web)
 
 1. Télécharger RDF4J : https://rdf4j.org/
 2. Déployer workbench.war dans Tomcat
-3. Créer repository → Upload M2_MetaConcepts_v15_0_0.jsonld
+3. Créer repository → Upload M2_GenericConcepts_v15_0_0.jsonld
 4. Query → SPARQL
 
 ---
@@ -108,7 +108,7 @@ python3 m2_sparql_analysis.py
 ## 📊 Structure des Requêtes (14 Sections)
 
 ### Section 1 : Requêtes de Base (4 requêtes)
-- Liste complète des metaconcepts
+- Liste complète des GenericConcepts
 - Compte total
 - Formules tensorielles
 - Epistemic gap
@@ -121,7 +121,7 @@ python3 m2_sparql_analysis.py
 - Dual, Territory, Map, Neutral
 - Distribution par polarité
 
-### Section 4 : MetaconceptCombos (3 requêtes)
+### Section 4 : GenericConceptCombos (3 requêtes)
 - Tous les combos
 - Combos avec leurs parents
 - Compte des combos
@@ -135,7 +135,7 @@ python3 m2_sparql_analysis.py
 
 ### Section 6 : Processor (v15.0.0) (3 requêtes)
 - Détails complets
-- Vérification MetaconceptCombo
+- Vérification GenericConceptCombo
 - Exemples
 
 ### Section 7 : Formules Hybrides (2 requêtes)
@@ -157,7 +157,7 @@ python3 m2_sparql_analysis.py
 - Score de qualité global
 
 ### Section 11 : Hiérarchie (2 requêtes)
-- Metaconcepts avec superclasses
+- GenericConcepts avec superclasses
 - Processor rdfs:subClassOf System
 
 ### Section 12 : Validation (3 requêtes)
@@ -171,49 +171,49 @@ python3 m2_sparql_analysis.py
 
 ### Section 14 : DESCRIBE et CONSTRUCT (3 requêtes)
 - DESCRIBE Processor (tous triplets)
-- CONSTRUCT sous-graphe metaconcepts dual
-- CONSTRUCT graphe MetaconceptCombos
+- CONSTRUCT sous-graphe GenericConcepts dual
+- CONSTRUCT graphe GenericConceptCombos
 
 ---
 
 ## 💡 Exemples d'Utilisation
 
-### Exemple 1 : Liste Complète des Metaconcepts
+### Exemple 1 : Liste Complète des GenericConcepts
 
 ```sparql
-PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#>
+PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?metaconcept ?label ?category ?polarity
+SELECT ?GenericConcept ?label ?category ?polarity
 WHERE {
-  ?metaconcept a m2:MetaConcept ;
+  ?GenericConcept a m2:GenericConcept ;
                rdfs:label ?label .
-  OPTIONAL { ?metaconcept m2:hasCategory ?category }
-  OPTIONAL { ?metaconcept m2:hasPolarity ?polarity }
+  OPTIONAL { ?GenericConcept m2:hasCategory ?category }
+  OPTIONAL { ?GenericConcept m2:hasPolarity ?polarity }
 }
 ORDER BY ?label
 ```
 
-**Résultat attendu** : 72 metaconcepts avec leurs propriétés
+**Résultat attendu** : 72 GenericConcepts avec leurs propriétés
 
 ---
 
 ### Exemple 2 : Vérification Processor (v15.0.0)
 
 ```sparql
-PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#>
+PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 
 SELECT ?label ?category ?polarity ?epistemicGap ?created
 WHERE {
-  ?metaconcept a m2:MetaConcept ;
+  ?GenericConcept a m2:GenericConcept ;
                rdfs:label "Processor" ;
                rdfs:label ?label .
-  OPTIONAL { ?metaconcept m2:hasCategory ?category }
-  OPTIONAL { ?metaconcept m2:hasPolarity ?polarity }
-  OPTIONAL { ?metaconcept m2:hasEpistemicGap ?epistemicGap }
-  OPTIONAL { ?metaconcept dcterms:created ?created }
+  OPTIONAL { ?GenericConcept m2:hasCategory ?category }
+  OPTIONAL { ?GenericConcept m2:hasPolarity ?polarity }
+  OPTIONAL { ?GenericConcept m2:hasEpistemicGap ?epistemicGap }
+  OPTIONAL { ?GenericConcept dcterms:created ?created }
 }
 ```
 
@@ -226,37 +226,37 @@ Processor  | m2:Ontological  | dual     | 0.15         | 2026-02-07
 
 ---
 
-### Exemple 3 : Metaconcepts Dual (Bicephalous)
+### Exemple 3 : GenericConcepts Dual (Bicephalous)
 
 ```sparql
-PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#>
+PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?label ?category ?epistemicGap
 WHERE {
-  ?metaconcept a m2:MetaConcept ;
+  ?GenericConcept a m2:GenericConcept ;
                rdfs:label ?label ;
                m2:hasPolarity "dual" .
-  OPTIONAL { ?metaconcept m2:hasCategory ?category }
-  OPTIONAL { ?metaconcept m2:hasEpistemicGap ?epistemicGap }
+  OPTIONAL { ?GenericConcept m2:hasCategory ?category }
+  OPTIONAL { ?GenericConcept m2:hasEpistemicGap ?epistemicGap }
 }
 ORDER BY ?epistemicGap
 ```
 
-**Résultat attendu** : 16 metaconcepts dual, triés par gap croissant
+**Résultat attendu** : 16 GenericConcepts dual, triés par gap croissant
 
 ---
 
 ### Exemple 4 : Distribution par Catégorie
 
 ```sparql
-PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#>
+PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
 
-SELECT ?category (COUNT(?metaconcept) AS ?count) (AVG(?gap) AS ?avgGap)
+SELECT ?category (COUNT(?GenericConcept) AS ?count) (AVG(?gap) AS ?avgGap)
 WHERE {
-  ?metaconcept a m2:MetaConcept ;
+  ?GenericConcept a m2:GenericConcept ;
                m2:hasCategory ?category .
-  OPTIONAL { ?metaconcept m2:hasEpistemicGap ?gap }
+  OPTIONAL { ?GenericConcept m2:hasEpistemicGap ?gap }
 }
 GROUP BY ?category
 ORDER BY DESC(?count)
@@ -277,44 +277,44 @@ m2:Ontological    | 11    | 0.268
 ### Exemple 5 : Recherche par Mot-Clé
 
 ```sparql
-PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#>
+PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?label ?category ?polarity
 WHERE {
-  ?metaconcept a m2:MetaConcept ;
+  ?GenericConcept a m2:GenericConcept ;
                rdfs:label ?label .
   FILTER REGEX(?label, "Process", "i")
-  OPTIONAL { ?metaconcept m2:hasCategory ?category }
-  OPTIONAL { ?metaconcept m2:hasPolarity ?polarity }
+  OPTIONAL { ?GenericConcept m2:hasCategory ?category }
+  OPTIONAL { ?GenericConcept m2:hasPolarity ?polarity }
 }
 ORDER BY ?label
 ```
 
-**Résultat attendu** : Process, Processor (tous les metaconcepts contenant "Process")
+**Résultat attendu** : Process, Processor (tous les GenericConcepts contenant "Process")
 
 ---
 
-### Exemple 6 : ASK - Processor est-il un MetaconceptCombo ?
+### Exemple 6 : ASK - Processor est-il un GenericConceptCombo ?
 
 ```sparql
-PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#>
+PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 ASK {
-  ?processor a m2:MetaconceptCombo ;
+  ?processor a m2:GenericConceptCombo ;
              rdfs:label "Processor" .
 }
 ```
 
-**Résultat attendu** : `true` (Processor est bien un MetaconceptCombo)
+**Résultat attendu** : `true` (Processor est bien un GenericConceptCombo)
 
 ---
 
 ### Exemple 7 : DESCRIBE - Tous les triplets de Processor
 
 ```sparql
-PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#>
+PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 DESCRIBE ?processor
@@ -327,10 +327,10 @@ WHERE {
 
 ---
 
-### Exemple 8 : CONSTRUCT - Sous-graphe Metaconcepts Dual
+### Exemple 8 : CONSTRUCT - Sous-graphe GenericConcepts Dual
 
 ```sparql
-PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#>
+PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 CONSTRUCT {
@@ -340,7 +340,7 @@ CONSTRUCT {
       m2:hasEpistemicGap ?gap .
 }
 WHERE {
-  ?mc a m2:MetaConcept ;
+  ?mc a m2:GenericConcept ;
       rdfs:label ?label ;
       m2:hasPolarity "dual" .
   OPTIONAL { ?mc m2:hasCategory ?category }
@@ -348,7 +348,7 @@ WHERE {
 }
 ```
 
-**Résultat attendu** : Nouveau graphe RDF contenant uniquement les metaconcepts dual
+**Résultat attendu** : Nouveau graphe RDF contenant uniquement les GenericConcepts dual
 
 ---
 
@@ -359,16 +359,16 @@ from rdflib import Graph
 
 # Charger le graphe
 g = Graph()
-g.parse("M2_MetaConcepts_v15_0_0.jsonld", format="json-ld")
+g.parse("M2_GenericConcepts_v15_0_0.jsonld", format="json-ld")
 
 # Exécuter une requête SPARQL
 query = """
-PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#>
+PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?label ?category
 WHERE {
-  ?mc a m2:MetaConcept ;
+  ?mc a m2:GenericConcept ;
       rdfs:label ?label ;
       m2:hasCategory ?category .
 }
@@ -389,18 +389,18 @@ for row in results:
 
 ### Top 5 Requêtes Essentielles
 
-1. **Liste complète** (Section 1.1) - Vue d'ensemble de tous les metaconcepts
-2. **Vérification Processor** (Section 6.1) - Validation du nouveau metaconcept v15.0.0
+1. **Liste complète** (Section 1.1) - Vue d'ensemble de tous les GenericConcepts
+2. **Vérification Processor** (Section 6.1) - Validation du nouveau GenericConcept v15.0.0
 3. **Distribution par catégorie** (Section 2.5) - Comprendre la structure M2
-4. **Metaconcepts Dual** (Section 3.1) - Identifier les patterns bicéphales
-5. **Top 10 gap minimal** (Section 5.1) - Metaconcepts les mieux compris
+4. **GenericConcepts Dual** (Section 3.1) - Identifier les patterns bicéphales
+5. **Top 10 gap minimal** (Section 5.1) - GenericConcepts les mieux compris
 
 ### Top 5 Requêtes Avancées
 
 1. **CONSTRUCT sous-graphe dual** (Section 14.2) - Extraire un sous-graphe sémantique
 2. **Matrice catégorie × polarité** (Section 10.1) - Analyse croisée
 3. **Statistiques gap par catégorie** (Section 5.5) - Qualité par domaine
-4. **MetaconceptCombos avec parents** (Section 4.2) - Relations de composition
+4. **GenericConceptCombos avec parents** (Section 4.2) - Relations de composition
 5. **Recherche REGEX** (Section 9.1) - Recherche textuelle flexible
 
 ---
@@ -409,8 +409,8 @@ for row in results:
 
 ### Statistiques Globales
 
-- **Total metaconcepts** : 72
-- **MetaconceptCombos** : 2 (Cascade, Processor)
+- **Total GenericConcepts** : 72
+- **GenericConceptCombos** : 2 (Cascade, Processor)
 - **Catégories** : 9 (Structural, Dynamic, Ontological, etc.)
 - **Polarités** : 4 (neutral, dual, hybrid, nary)
 - **Gap moyen** : 0.251
@@ -424,13 +424,13 @@ for row in results:
 - **hybrid** : 3 (4.2%)
 - **nary** : 1 (1.4%)
 
-### Nouveau Metaconcept (v15.0.0)
+### Nouveau GenericConcept (v15.0.0)
 
 - **Label** : Processor
 - **Catégorie** : m2:Ontological
 - **Polarité** : dual
 - **Epistemic Gap** : 0.15
-- **Type** : m2:MetaconceptCombo
+- **Type** : m2:GenericConceptCombo
 - **Créé** : 2026-02-07
 
 ---
@@ -518,7 +518,7 @@ Agrégation comme en SQL
 
 ## 💾 Fichiers Inclus
 
-1. **M2_MetaConcepts_SPARQL_Queries.rq** (20 KB)
+1. **M2_GenericConcepts_SPARQL_Queries.rq** (20 KB)
    - 80+ requêtes SPARQL complètes
    - 14 sections organisées
    - Commentaires détaillés
@@ -539,7 +539,7 @@ Agrégation comme en SQL
 
 ### Recherche
 
-- Trouver tous les metaconcepts d'une catégorie
+- Trouver tous les GenericConcepts d'une catégorie
 - Identifier les patterns bicéphales (dual)
 - Chercher par mot-clé dans labels/commentaires
 
@@ -552,7 +552,7 @@ Agrégation comme en SQL
 ### Validation
 
 - Vérifier intégrité (tous ont label/catégorie/gap ?)
-- Valider nouveau metaconcept (Processor)
+- Valider nouveau GenericConcept (Processor)
 - Cohérence ontologique (rdfs:subClassOf)
 
 ### Export
@@ -567,7 +567,7 @@ Agrégation comme en SQL
 
 - [ ] Choisir un outil SPARQL (Jena / rdflib / GraphDB / RDF4J)
 - [ ] Installer et configurer l'outil
-- [ ] Charger M2_MetaConcepts_v15_0_0.jsonld dans le triplestore
+- [ ] Charger M2_GenericConcepts_v15_0_0.jsonld dans le triplestore
 - [ ] Exécuter requête de test (Section 1.1 - Liste complète)
 - [ ] Vérifier Processor (Section 6.1)
 - [ ] Exécuter les analyses qui vous intéressent

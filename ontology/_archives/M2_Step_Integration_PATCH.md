@@ -1,4 +1,4 @@
-# 🔧 PATCH: Intégration de Step dans M2_MetaConcepts.jsonld v14.2.0
+# 🔧 PATCH: Intégration de Step dans M2_GenericConcepts.jsonld v14.2.0
 
 **Date:** January 27, 2026  
 **Author:** Echopraxium with the collaboration of Claude AI
@@ -7,7 +7,7 @@
 
 ## ⚠️ Note Importante
 
-Le fichier source `/mnt/project/M2_MetaConcepts.jsonld` contient une **erreur JSON à la ligne 2814** qui empêche son parsing. Cette erreur doit être corrigée avant l'intégration de Step.
+Le fichier source `/mnt/project/M2_GenericConcepts.jsonld` contient une **erreur JSON à la ligne 2814** qui empêche son parsing. Cette erreur doit être corrigée avant l'intégration de Step.
 
 **Erreur détectée :**
 ```
@@ -19,7 +19,7 @@ Line 2814, column 49: Expecting ',' delimiter
 ## 🔧 Étape 1: Corriger l'Erreur JSON Existante
 
 ### Localisation
-Ligne 2814 dans M2_MetaConcepts.jsonld
+Ligne 2814 dans M2_GenericConcepts.jsonld
 
 ### Ligne problématique (approximative):
 ```json
@@ -44,7 +44,7 @@ Vérifier les guillemets et virgules autour de cette ligne. Le caractère `→` 
       "@id": "m2:Step",
       "@type": [
         "owl:NamedIndividual",
-        "m2:MetaConcept"
+        "m2:GenericConcept"
       ],
       "rdfs:label": "Step",
       "rdfs:comment": "Specialized Node in sequential or processual context representing a discrete unit of progression, transition, or advancement in a temporal or logical sequence. A Step is an atomic quantum of advancement that transforms the system from one configuration to another.",
@@ -130,7 +130,7 @@ Vérifier les guillemets et virgules autour de cette ligne. Le caractère `→` 
         "discoveredFrom": "Butterfly Metamorphosis and Four-Stroke Engine poclets (M0)",
         "validationNote": "Step pattern observed across multiple temporal/sequential systems"
       },
-      "m2:relationToOtherMetaconcepts": {
+      "m2:relationToOtherGenericConcepts": {
         "vs_Node": {
           "difference": "Node is spatial/static; Step is temporal/sequential",
           "relationship": "Step rdfs:subClassOf Node (Step is specialized Node)",
@@ -284,8 +284,8 @@ Chercher dans `@graph` l'objet avec `"@type": "owl:Ontology"`
 
 ```json
 "m2:progress": {
-  "m2:metaconceptsDefined": 62,
-  "m2:metaconceptsTotal": 62,
+  "m2:GenericConceptsDefined": 62,
+  "m2:GenericConceptsTotal": 62,
   "m2:completionPercentage": 100,
   "m2:neutralPolarity": 53,
   "m2:dualPolarity": 6,
@@ -295,8 +295,8 @@ Chercher dans `@graph` l'objet avec `"@type": "owl:Ontology"`
 ```
 
 **Changements:**
-- `metaconceptsDefined`: 61 → 62
-- `metaconceptsTotal`: 61 → 62
+- `GenericConceptsDefined`: 61 → 62
+- `GenericConceptsTotal`: 61 → 62
 - `neutralPolarity`: 52 → 53
 
 ### 3.5 Ajouter Changelog v14.2.0
@@ -308,13 +308,13 @@ Insérer **en premier** dans `m2:changelog`:
   "v14.2.0": {
     "date": "2026-01-27",
     "changes": [
-      "NEW METACONCEPT: Added Step (S⊗I⊗D, Structural, neutral)",
+      "NEW GenericConcept: Added Step (S⊗I⊗D, Structural, neutral)",
       "Step defined as rdfs:subClassOf Node for sequential/temporal contexts",
       "Formula extends Node (S⊗I) with Dynamics dimension (D)",
       "Validated across 10 transdisciplinary domains",
       "Applied to existing poclets: M0_ButterflyMetamorphosis, M0_FourStrokeEngine",
       "Proposed by Echopraxium",
-      "Total metaconcepts: 61 → 62 (+1)",
+      "Total GenericConcepts: 61 → 62 (+1)",
       "Neutral polarity: 52 → 53 (+1)"
     ]
   },
@@ -335,7 +335,7 @@ Insérer **en premier** dans `m2:changelog`:
 - [ ] JSON syntaxiquement valide
 - [ ] owl:versionInfo = "14.2.0"
 - [ ] dcterms:modified = "2026-01-27"
-- [ ] m2:metaconceptsDefined = 62
+- [ ] m2:GenericConceptsDefined = 62
 - [ ] m2:neutralPolarity = 53
 - [ ] Changelog v14.2.0 ajouté
 
@@ -343,16 +343,16 @@ Insérer **en premier** dans `m2:changelog`:
 
 ```bash
 # 1. Vérifier syntaxe JSON
-python3 -m json.tool M2_MetaConcepts.jsonld > /dev/null && echo "✅ JSON valid"
+python3 -m json.tool M2_GenericConcepts.jsonld > /dev/null && echo "✅ JSON valid"
 
-# 2. Compter les metaconcepts
-grep -c '"@id": "m2:' M2_MetaConcepts.jsonld | grep 62
+# 2. Compter les GenericConcepts
+grep -c '"@id": "m2:' M2_GenericConcepts.jsonld | grep 62
 
 # 3. Vérifier présence de Step
-grep '"@id": "m2:Step"' M2_MetaConcepts.jsonld
+grep '"@id": "m2:Step"' M2_GenericConcepts.jsonld
 
 # 4. Valider avec TSCG validator
-python3 tscg_ontology_validator.py M2_MetaConcepts.jsonld
+python3 tscg_ontology_validator.py M2_GenericConcepts.jsonld
 ```
 
 ---
@@ -361,13 +361,13 @@ python3 tscg_ontology_validator.py M2_MetaConcepts.jsonld
 
 ```bash
 # 1. Backup
-cp M2_MetaConcepts.jsonld M2_MetaConcepts_v14.1.0_backup.jsonld
+cp M2_GenericConcepts.jsonld M2_GenericConcepts_v14.1.0_backup.jsonld
 
 # 2. Corriger l'erreur JSON ligne 2814
 # Éditer manuellement le fichier
 
 # 3. Valider JSON
-python3 -m json.tool M2_MetaConcepts.jsonld > /dev/null
+python3 -m json.tool M2_GenericConcepts.jsonld > /dev/null
 
 # 4. Insérer Step
 # Éditer manuellement : copier-coller après ligne 2093
@@ -376,11 +376,11 @@ python3 -m json.tool M2_MetaConcepts.jsonld > /dev/null
 # Éditer manuellement : version, progress, changelog
 
 # 6. Valider final
-python3 -m json.tool M2_MetaConcepts.jsonld > /dev/null
+python3 -m json.tool M2_GenericConcepts.jsonld > /dev/null
 
 # 7. Commit
-git add M2_MetaConcepts.jsonld
-git commit -m "Add Step as 62nd M2 metaconcept (v14.2.0)"
+git add M2_GenericConcepts.jsonld
+git commit -m "Add Step as 62nd M2 GenericConcept (v14.2.0)"
 git tag v14.2.0
 ```
 
@@ -390,7 +390,7 @@ git tag v14.2.0
 
 | Aspect | Avant (v14.1.0) | Après (v14.2.0) |
 |--------|-----------------|-----------------|
-| **Metaconcepts totaux** | 61 | 62 |
+| **GenericConcepts totaux** | 61 | 62 |
 | **Neutral polarity** | 52 | 53 |
 | **Structural category** | Node, Path, Hub, Cluster, Component, Pole | + Step |
 | **Nouveaux rdfs:subClassOf** | - | Step → Node |

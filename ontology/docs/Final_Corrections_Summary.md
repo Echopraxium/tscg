@@ -230,7 +230,7 @@ Sphinx (Énigme) → Philosophical → WHY, WHAT FOR (sens, sagesse, but)
 
 ### Court Terme
 
-5. Ajouter sections bicephalous à M2_Metaconcepts.jsonld
+5. Ajouter sections bicephalous à M2_GenericConcepts.jsonld
 6. Ajouter sections bicephalous à tous poclets M0
 7. Valider cohérence cross-références
 

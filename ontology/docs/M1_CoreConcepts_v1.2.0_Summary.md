@@ -13,9 +13,9 @@
 
 **Category**: Process Archetype  
 **Formula**: S⊗D⊗F  
-**Type**: MetaconceptCombo(Bifurcation, Fission)
+**Type**: GenericConceptCombo(Bifurcation, Fission)
 
-**Definition**: Sudden, violent, threshold-triggered structural fragmentation of a system. First exemplar of MetaconceptCombo construction pattern in M1 layer.
+**Definition**: Sudden, violent, threshold-triggered structural fragmentation of a system. First exemplar of GenericConceptCombo construction pattern in M1 layer.
 
 ### 📊 Statistics
 
@@ -30,7 +30,7 @@
 
 ## CatastrophicBifurcation Details
 
-### Parents (M2 Metaconcepts)
+### Parents (M2 GenericConcepts)
 1. **Bifurcation** (∂D/∂F) - Qualitative state change at threshold
 2. **Fission** (S⊗D) - Structural splitting/separation
 
@@ -62,7 +62,7 @@
 ### ✅ M1 Criteria Met
 - **Composite**: Constructed from 2 M2 parents (not primitive)
 - **Transdisciplinary**: 4-6 domains (not 8-10 for M2)
-- **Pattern**: Demonstrates MetaconceptCombo mechanism
+- **Pattern**: Demonstrates GenericConceptCombo mechanism
 - **Reusable**: Template for other catastrophic events
 
 ### ❌ M2 Criteria NOT Met
@@ -74,21 +74,21 @@
 
 ## Architectural Significance
 
-### First MetaconceptCombo Exemplar in M1
+### First GenericConceptCombo Exemplar in M1
 
-This is the **first concrete example** of MetaconceptCombo construction in M1_CoreConcepts:
+This is the **first concrete example** of GenericConceptCombo construction in M1_CoreConcepts:
 
 ```
 M2: Bifurcation + Fission (universal primitives)
-  ↓ MetaconceptCombo (⊗ with coupling)
+  ↓ GenericConceptCombo (⊗ with coupling)
 M1: CatastrophicBifurcation (transdisciplinary pattern)
   ↓ Instantiation
 M0: Ragnarök, Supernova, Mass Extinction (concrete examples)
 ```
 
-### Pattern for Future MetaconceptCombo Constructions
+### Pattern for Future GenericConceptCombo Constructions
 
-Other potential M1 concepts via MetaconceptCombo:
+Other potential M1 concepts via GenericConceptCombo:
 - **Resonance** = Oscillation ⊗ Amplification
 - **Critical Transition** = Homeostasis ⊗ Bifurcation  
 - **Coalescence** = Fusion ⊗ Emergence
@@ -115,7 +115,7 @@ Other potential M1 concepts via MetaconceptCombo:
 #### 3. Changelog
 Added **v1.2.0** entry documenting:
 - CatastrophicBifurcation addition
-- First MetaconceptCombo example
+- First GenericConceptCombo example
 - 6-domain cross-validation
 
 #### 4. ProcessArchetype Class
@@ -126,7 +126,7 @@ Updated description to include CatastrophicBifurcation:
 
 #### 5. New Concept Entry
 Complete 137-line JSON-LD definition with:
-- MetaconceptCombo structure
+- GenericConceptCombo structure
 - Tensor formula (S⊗D⊗F)
 - 6 cross-domain examples
 - Mathematical properties
@@ -144,8 +144,8 @@ Ragnarök will reference CatastrophicBifurcation:
 {
   "@id": "m0:yggdrasil:Ragnarok",
   "m0:instantiatesM1Concept": "m1:core:CatastrophicBifurcation",
-  "m0:instantiatesMetaconcept": "m2:MetaconceptCombo",
-  "m0:metaconceptComboParents": ["m2:Bifurcation", "m2:Fission"]
+  "m0:instantiatesGenericConcept": "m2:GenericConceptCombo",
+  "m0:GenericConceptComboParents": ["m2:Bifurcation", "m2:Fission"]
 }
 ```
 
@@ -157,7 +157,7 @@ Ragnarök will reference CatastrophicBifurcation:
 1. ✅ CatastrophicBifurcation added to M1_CoreConcepts
 2. 🔄 Update M0_Yggdrasil to reference it (Ragnarök event)
 3. 🔄 Document in TSCG_M1_Architecture.md
-4. 📋 Consider other MetaconceptCombo candidates
+4. 📋 Consider other GenericConceptCombo candidates
 
 ### For Yggdrasil Poclet
 1. 🔄 Complete Q1 (Identity scope)
@@ -198,7 +198,7 @@ This has implications for:
 ## Summary
 
 ✅ **Successfully added CatastrophicBifurcation to M1_CoreConcepts**  
-✅ **First MetaconceptCombo exemplar demonstrating M2→M1 construction**  
+✅ **First GenericConceptCombo exemplar demonstrating M2→M1 construction**  
 ✅ **Validated across 6 domains (Mythology to Cosmology)**  
 ✅ **All metadata, changelogs, and statistics updated**  
 ✅ **JSON-LD syntax validated**  

@@ -185,9 +185,9 @@ Each hexagram carries 4 interpretive layers:
 
 ---
 
-## M2 Metaconcept Activations
+## M2 GenericConcept Activations
 
-| Metaconcept | Dominance | Formula | Role in I Ching |
+| GenericConcept | Dominance | Formula | Role in I Ching |
 |-------------|-----------|---------|-----------------|
 | `m2:Polarity` | **0.99** | `S ⊗ I ⊗ A` | Yin/Yang = archetypal N=2 generative complementarity; 4 polar trigram pairs |
 | `m2:Signature` | **0.97** | `I ⊗ S` | Each hexagram = unique 6-bit situational signature; bijection with {0,1}⁶ |
@@ -200,7 +200,7 @@ Each hexagram carries 4 interpretive layers:
 
 ### RepresentationSpaceCoverage = 1.0
 
-The I Ching is a primary instance of the `m2:Representation.spaceCoverage` ValueSpace attribute at its maximum value (introduced in M2_MetaConcepts v15.4.0):
+The I Ching is a primary instance of the `m2:Representation.spaceCoverage` ValueSpace attribute at its maximum value (introduced in M2_GenericConcepts v15.4.0):
 
 ```
 m2:Representation.spaceCoverage = 1.0  (Generative Exhaustion)
@@ -223,12 +223,12 @@ This property is shared across unrelated domains (same RSC = 1.0):
 
 ## Candidate Reclassifications
 
-Two candidate M2 metaconcepts initially proposed from I Ching analysis were reclassified in v1.1.0:
+Two candidate M2 GenericConcepts initially proposed from I Ching analysis were reclassified in v1.1.0:
 
 | Candidate | Reclassification | Rationale |
 |-----------|-----------------|-----------|
 | **SymbolicArbitration** | Attribute of `m2:Observer` (`validationMode = symbolic`) | Describes how the Observer validates the Map — not a systemic phenomenon independent of Observer |
-| **GenerativeExhaustion** | Special case `m2:Representation.spaceCoverage = 1.0` | The continuous range [0,1] is architecturally richer than a binary M2 metaconcept |
+| **GenerativeExhaustion** | Special case `m2:Representation.spaceCoverage = 1.0` | The continuous range [0,1] is architecturally richer than a binary M2 GenericConcept |
 
 ---
 
@@ -265,7 +265,7 @@ m2:Representation.spaceCoverage = 1.0:      ✅ VALIDATED  64 = {Yin,Yang}⁶ �
 
 ## Contributions to the TSCG Framework
 
-**M2 metaconcepts validated:** Polarity, Composition, Hierarchy, Transformation, Signature, Language, Pattern, FeedbackLoop
+**M2 GenericConcepts validated:** Polarity, Composition, Hierarchy, Transformation, Signature, Language, Pattern, FeedbackLoop
 
 **M2 layer enriched:** `m2:Representation.spaceCoverage` ValueSpace attribute (v15.4.0) — continuous [0.0, 1.0], special case RSC = 1.0 = Generative Exhaustion
 
@@ -292,7 +292,7 @@ m2:Representation.spaceCoverage = 1.0:      ✅ VALIDATED  64 = {Yin,Yang}⁶ �
 
 ```
 M3_GenesisSpace.jsonld      (m3:SymbolicSystemGrammar type definition)
-M2_MetaConcepts.jsonld      (M2 metaconcepts + Representation.spaceCoverage v15.4.0)
+M2_GenericConcepts.jsonld      (M2 GenericConcepts + Representation.spaceCoverage v15.4.0)
 M1_CoreConcepts.jsonld
 M1_extensions/mythology/M1_Mythology.jsonld
 ```

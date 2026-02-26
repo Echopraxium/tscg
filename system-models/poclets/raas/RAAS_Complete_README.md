@@ -1,5 +1,5 @@
 # Analyse Complète du Système RAAS
-## Avec M2_MetaConcepts (Cascade Ternaire) et M1_Biology
+## Avec M2_GenericConcepts (Cascade Ternaire) et M1_Biology
 
 **Version**: 15.0.0  
 **Date**: 2026-02-06  
@@ -10,7 +10,7 @@
 ## Résumé Exécutif
 
 Cette analyse présente la **première modélisation complète du RAAS** utilisant :
-- **M2_MetaConcepts v14.4.0+** avec **Cascade ternaire** (S⊗I⊗A⊗D⊗F)
+- **M2_GenericConcepts v14.4.0+** avec **Cascade ternaire** (S⊗I⊗A⊗D⊗F)
 - **M1_Biology v1.0.0** avec concepts biologiques enrichis
 - **ValueSpace attributes** pour configuration précise
 
@@ -216,7 +216,7 @@ PA(t) = PA_∞ + (PA_0 - PA_∞)·exp(-t/τ)
 4. Conversion ACE Ang I → Ang II
 5. Activation effecteurs multiples
 
-**Premier metaconcept 5D complet !**
+**Premier GenericConcept 5D complet !**
 
 ---
 
@@ -545,9 +545,9 @@ Mais 5D (couplage synergique)
 ### 7.1 Cascade Ternaire
 
 **Découverte majeure** :
-- Premier metaconcept couvrant **tout l'espace ASFID** (5D)
+- Premier GenericConcept couvrant **tout l'espace ASFID** (5D)
 - Nécessite N=3 parents (binaire insuffisant)
-- Valide théorie MetaconceptCombo N-aire
+- Valide théorie GenericConceptCombo N-aire
 
 ### 7.2 ValueSpace Attributes
 
@@ -587,7 +587,7 @@ Mais 5D (couplage synergique)
 **Au M2** :
 - Validation première cascade ternaire
 - Démonstration complète ASFID (5D)
-- Validation 13 metaconcepts simultanément
+- Validation 13 GenericConcepts simultanément
 
 **Au M1_Biology** :
 - Application réelle concepts biologiques
@@ -620,7 +620,7 @@ Mais 5D (couplage synergique)
 
 ## 9. Fichiers Générés
 
-1. **M2_MetaConcepts.jsonld** (v14.4.0+) - Cascade ternaire
+1. **M2_GenericConcepts.jsonld** (v14.4.0+) - Cascade ternaire
 2. **M1_Biology.jsonld** (v1.0.0) - 22 concepts biologiques
 3. **M0_RAAS_Complete.json** (cette analyse) - Instanciation complète
 4. **RAAS_Analysis.md** - Documentation complète
@@ -637,7 +637,7 @@ Mais 5D (couplage synergique)
 - Goodman & Gilman Pharmacological Basis of Therapeutics
 
 **TSCG** :
-- M2_MetaConcepts.jsonld (v14.4.0+)
+- M2_GenericConcepts.jsonld (v14.4.0+)
 - M1_Biology.jsonld (v1.0.0)
 - Cascade_Modeling_README.md
 - TSCG_ValueSpace_User_Guide.md

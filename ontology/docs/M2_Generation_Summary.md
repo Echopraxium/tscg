@@ -8,15 +8,15 @@
 
 ## Files Generated
 
-### 1. TSCG_M2_MetaConcepts_Ontology.jsonld
+### 1. TSCG_M2_GenericConcepts_Ontology.jsonld
 - **Size**: ~2800 lines
-- **Content**: Complete M2 ontology with 42 metaconcepts
+- **Content**: Complete M2 ontology with 42 GenericConcepts
 - **Format**: JSON-LD (RDF/RDFS/OWL)
 - **Validation**: ✅ Valid JSON-LD syntax
 - **Namespace**: Self-referential (Linked Data compliant)
 - **Imports**: M3 Genesis Ontology v5.1.0
 
-### 2. TSCG_M2_MetaConcepts_Ontology_README.md
+### 2. TSCG_M2_GenericConcepts_Ontology_README.md
 - **Size**: ~8000 words
 - **Content**: Comprehensive documentation
 - **Sections**: 11 major sections + appendices
@@ -34,7 +34,7 @@
 
 ## Structure Summary
 
-### Metaconcepts (42)
+### GenericConcepts (42)
 
 | Category | Count | Examples |
 |----------|-------|----------|
@@ -48,7 +48,7 @@
 | Teleonomic | 1 | Self-Organization |
 | Relational | 4 | Agent, Role, Mediator, Link |
 
-**Total**: 42 metaconcepts (+ 9 categories)
+**Total**: 42 GenericConcepts (+ 9 categories)
 
 ### Polarity Distribution
 
@@ -108,14 +108,14 @@
 ## Validation Checklist
 
 - [x] JSON-LD syntax valid
-- [x] All 42 metaconcepts defined
+- [x] All 42 GenericConcepts defined
 - [x] All 9 categories defined
 - [x] Triple axes documented
 - [x] Polarity system explained
 - [x] Epistemic gaps assigned
 - [x] Tensor formulas provided
 - [x] Dominant M3 dimensions identified
-- [x] Examples provided (2-3 per metaconcept)
+- [x] Examples provided (2-3 per GenericConcept)
 - [x] Imports M3 v5.1.0
 - [x] References README (rdfs:seeAlso + dcterms:documentation)
 - [x] Self-referential namespace
@@ -135,11 +135,11 @@
 ### Short Term
 1. Validate tensor formulas with domain experts
 2. Test SPARQL queries on ontology
-3. Create visual diagram of metaconcept relationships
+3. Create visual diagram of GenericConcept relationships
 4. Begin M1 formalization
 
 ### Long Term
-1. Expand to 50-60 metaconcepts (toward 128 capacity)
+1. Expand to 50-60 GenericConcepts (toward 128 capacity)
 2. Implement in code (C#/F#)
 3. Create M1 domain extensions
 4. Build M0 system examples
@@ -151,9 +151,9 @@
 **Token Usage**: ~64K / 190K (34%)  
 **Files Created**: 3  
 **Lines of Code**: ~3000 (JSON-LD + Markdown)  
-**Metaconcepts**: 42 (84% of estimated 50 target)  
+**GenericConcepts**: 42 (84% of estimated 50 target)  
 **Categories**: 9 (complete)  
-**Polarity Pairs**: 7 dual metaconcepts  
+**Polarity Pairs**: 7 dual GenericConcepts  
 **Time Elapsed**: ~2 hours (session time)
 
 ---

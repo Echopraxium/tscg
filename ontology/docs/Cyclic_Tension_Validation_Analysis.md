@@ -1,6 +1,6 @@
 # Cyclic Tension - Validation Analysis across Poclets
 
-**Metaconcept**: Cyclic Tension (M1 Core Concept)  
+**GenericConcept**: Cyclic Tension (M1 Core Concept)  
 **Formula**: D⊗A⊗F (Dynamics × Attractor × Flow)  
 **Date**: 2026-01-22  
 **Analyst**: Echopraxium with the collaboration of Claude AI

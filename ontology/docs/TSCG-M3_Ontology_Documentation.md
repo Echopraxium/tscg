@@ -12,7 +12,7 @@ The **TSCG Framework** (Transdisciplinary System Construction Game) presents its
 ### Founding Analogy: LEGO Technic
 
 - **Elementary bricks** (base pieces) → **M3 Dimensions** (ASFID)
-- **Sub-assemblies** (wheels, gears, motors) → **M2 Metaconcepts** (homeostasis, resilience, etc.)
+- **Sub-assemblies** (wheels, gears, motors) → **M2 GenericConcepts** (homeostasis, resilience, etc.)
 - **Assembly instructions** (assembly sequences) → **M1 Concepts** (narratives, structuring questions)
 - **Final models** (car, crane, robot) → **M0 Models** (observed real systems)
 
@@ -93,11 +93,11 @@ The **TSCG Framework** (Transdisciplinary System Construction Game) presents its
 
 2. ✅ **Transdisciplinary Coverage**: Applicable from physics (vortex) to biology (cell) to social systems (city).
 
-3. ✅ **Minimalism**: 5 dimensions are sufficient to reconstruct rich metaconcepts (M2). Fewer (4D) would be too poor, more (6D+) would be redundant.
+3. ✅ **Minimalism**: 5 dimensions are sufficient to reconstruct rich GenericConcepts (M2). Fewer (4D) would be too poor, more (6D+) would be redundant.
 
 4. ✅ **Physical Anchoring**: Each dimension has a clear mathematical operator and measurement units.
 
-5. ✅ **Generative Power**: Allow construction of a "grammar" of metaconcepts (M2) through composition.
+5. ✅ **Generative Power**: Allow construction of a "grammar" of GenericConcepts (M2) through composition.
 
 **Analogy**: Just as the choice of primary colors (RGB) in additive synthesis is "arbitrary" (we could have chosen other wavelengths), but **functional** (they cover the visible spectrum), ASFID is a choice of "systemic primary colors".
 
@@ -105,10 +105,10 @@ The **TSCG Framework** (Transdisciplinary System Construction Game) presents its
 
 ### M2: The Constructive Space (Sub-Assemblies)
 
-**Nature**: Catalog of **emergent patterns** (metaconcepts) built by non-linear combination of M3 dimensions  
+**Nature**: Catalog of **emergent patterns** (GenericConcepts) built by non-linear combination of M3 dimensions  
 **Function**: The "Periodic Table" of systemic archetypes
 
-**Examples of M2 metaconcepts**:
+**Examples of M2 GenericConcepts**:
 
 #### Dissipative Structure (Prigogine)
 **Signature**: `[A=0.8, S=0.6, F=0.95, I=0.5, D=0.2]`  
@@ -120,7 +120,7 @@ The **TSCG Framework** (Transdisciplinary System Construction Game) presents its
 **Emergence Formula**: Very high A + regulation (derived from F, D) → Active maintenance of parameters within narrow ranges  
 **Examples**: Thermostat, glycemic regulation, stable climate
 
-#### Memory/Historicity (metaconcept, not M3 dimension)
+#### Memory/Historicity (GenericConcept, not M3 dimension)
 **Emergence Formula**: `M(t) = ∫_{-∞}^{t} [D(τ) - F(τ)] dτ`  
 **Interpretation**: If D > F, the system accumulates internal transformations (learning). If F > D, flow erases history (forgetting).  
 **Examples**: DNA (M=0.95), culture (M=0.9), flame (M=0.0)
@@ -135,7 +135,7 @@ The **TSCG Framework** (Transdisciplinary System Construction Game) presents its
 **Emergence Formula**: High I + D + low A (breaking with the past)  
 **Examples**: Tech startup, evolutionary mutation, scientific revolution
 
-**Theoretical Number**: With 5 normalized dimensions, M2 space can contain **thousands** of distinct metaconcepts (analogy: chemical compounds from periodic table elements).
+**Theoretical Number**: With 5 normalized dimensions, M2 space can contain **thousands** of distinct GenericConcepts (analogy: chemical compounds from periodic table elements).
 
 ---
 
@@ -200,7 +200,7 @@ The **TSCG Framework** (Transdisciplinary System Construction Game) presents its
 
 **Process**:
 1. **M3 Specification**: Choose target signature (e.g., `[A=0.9, S=0.8, F=0.5, I=0.7, D=0.4]`)
-2. **M2 Selection**: Identify corresponding metaconcepts (e.g., "Resilient homeostatic system")
+2. **M2 Selection**: Identify corresponding GenericConcepts (e.g., "Resilient homeostatic system")
 3. **M1 Planning**: Define construction steps
 4. **M0 Instantiation**: Realize the system (e.g., sustainable city design)
 
@@ -232,7 +232,7 @@ M0 ----→ M1 ----→ M2 ----→ M3    M3 ----→ M2 ----→ M1 ----→ M0
 
 3. **Openness Rule**: F ≥ F_min > 0 (no closed system)
 
-4. **Coherence Rule**: An M3 signature must correspond to an identifiable M2 metaconcept
+4. **Coherence Rule**: An M3 signature must correspond to an identifiable M2 GenericConcept
 
 5. **Trajectory Rule**: Temporal evolution must be continuous (no teleportation in M3 space)
 
@@ -250,7 +250,7 @@ M0 ----→ M1 ----→ M2 ----→ M3    M3 ----→ M2 ----→ M1 ----→ M0
 
 ### 1. **Playful Experimentation**
 - Test different M3 signatures
-- Explore M2 metaconcept space
+- Explore M2 GenericConcept space
 - Build hypothetical M0 "models"
 
 ### 2. **Learning by Practice**
@@ -258,7 +258,7 @@ M0 ----→ M1 ----→ M2 ----→ M3    M3 ----→ M2 ----→ M1 ----→ M0
 - Intuitive understanding through manipulation (like playing with LEGO)
 
 ### 3. **Authorized Creativity**
-- Invent new M2 metaconcepts
+- Invent new M2 GenericConcepts
 - Propose alternative M3 dimensions (game extensions)
 - Create "mods" (rule variants)
 
@@ -273,7 +273,7 @@ M0 ----→ M1 ----→ M2 ----→ M3    M3 ----→ M2 ----→ M1 ----→ M0
 | Framework | Dimensions | Domain | TSCG Equivalent |
 |-----------|-----------|---------|-----------------|
 | **Cybernetics (Ashby)** | Variety, Regulation | Adaptive systems | A (attractor) + F (flow) |
-| **VSM (Beer)** | 5 nested systems | Organization | M2 Metaconcepts |
+| **VSM (Beer)** | 5 nested systems | Organization | M2 GenericConcepts |
 | **Panarchy (Holling)** | 4 phases (r-K-Ω-α) | Ecology | M0 Trajectories (episodes) |
 | **Systems Theory (Bertalanffy)** | Openness, Homeostasis | Generalist | S, F, A |
 | **Statistical Mechanics** | Position, Momentum, Energy | Physics | S, D, I |
@@ -309,7 +309,7 @@ M0 ----→ M1 ----→ M2 ----→ M3    M3 ----→ M2 ----→ M1 ----→ M0
 
 2. **M3 Tensor**: Replace vector with tensor (capture non-linear correlations)
 
-3. **M2 Dynamics**: Model evolution of metaconcepts themselves (metamorphoses)
+3. **M2 Dynamics**: Model evolution of GenericConcepts themselves (metamorphoses)
 
 4. **Quantification**: Develop rigorous empirical measurement methods for each dimension
 

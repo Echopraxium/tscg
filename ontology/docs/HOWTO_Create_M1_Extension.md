@@ -21,11 +21,11 @@
 
 ### What is M1?
 
-**M1** (Narratives layer) is the **domain-specific instantiation** of M2 metaconcepts.
+**M1** (Narratives layer) is the **domain-specific instantiation** of M2 GenericConcepts.
 
 **Role**:
 - Bridge between universal patterns (M2) and concrete systems (M0)
-- Specialize generic metaconcepts for specific domains
+- Specialize generic GenericConcepts for specific domains
 - Add domain vocabulary while maintaining TSCG foundation
 
 ### Why Extensions?
@@ -110,7 +110,7 @@ M1:Combustion (further specialized)
 
 **Create mapping table**:
 
-| M2 Metaconcept | Domain Concept(s) | Notes |
+| M2 GenericConcept | Domain Concept(s) | Notes |
 |----------------|-------------------|-------|
 | Process | ChemicalReaction | Generic transformation |
 | Component | ChemicalSpecies | Fuel, O₂, etc. |
@@ -119,8 +119,8 @@ M1:Combustion (further specialized)
 | ... | ... | ... |
 
 **Questions to ask**:
-1. Which M2 metaconcepts are **central** to my domain?
-2. Which M2 metaconcepts **don't apply**? (e.g., Memory in simple chemistry)
+1. Which M2 GenericConcepts are **central** to my domain?
+2. Which M2 GenericConcepts **don't apply**? (e.g., Memory in simple chemistry)
 3. What **domain-specific properties** must I add?
 
 ### Step 3: Create Directory Structure
@@ -156,7 +156,7 @@ tscg/ontology/M1_extensions/{domain}/
 **Good examples**:
 - Canonical (Fire Triangle for Combustion)
 - Diverse (different instantiations)
-- Well-documented (ASFID states, metaconcepts)
+- Well-documented (ASFID states, GenericConcepts)
 
 ### Step 6: Validate
 
@@ -172,7 +172,7 @@ tscg/ontology/M1_extensions/{domain}/
 {
   "@context": {
     "m1": "https://github.com/Echopraxium/tscg/blob/main/ontology/M1_extensions/{domain}/M1_{Domain}.jsonld#",
-    "m2": "https://github.com/Echopraxium/tscg/blob/main/ontology/TSCG_M2_MetaConcepts_Ontology.jsonld#",
+    "m2": "https://github.com/Echopraxium/tscg/blob/main/ontology/TSCG_M2_GenericConcepts_Ontology.jsonld#",
     "m3": "https://github.com/Echopraxium/tscg/blob/main/ontology/M3_Genesis_Space.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -203,10 +203,10 @@ tscg/ontology/M1_extensions/{domain}/
     {
       "@id": "m1:{ConceptName}",
       "@type": "owl:Class",
-      "rdfs:subClassOf": "m2:{ParentMetaconcept}",
+      "rdfs:subClassOf": "m2:{ParentGenericConcept}",
       "rdfs:label": "{Concept Label}",
       "rdfs:comment": "{Description}",
-      "m1:instantiatesMetaconcept": ["m2:{MC1}", "m2:{MC2}"],
+      "m1:instantiatesGenericConcept": ["m2:{MC1}", "m2:{MC2}"],
       "m1:properties": {
         "m1:property1": "{Definition}",
         "m1:property2": "{Definition}"
@@ -259,7 +259,7 @@ tscg/ontology/M1_extensions/{domain}/
 ### 5.2 Semantic Correctness
 
 - [ ] All domain classes inherit from M2 (`rdfs:subClassOf`)
-- [ ] `m1:instantiatesMetaconcept` lists relevant M2 parents
+- [ ] `m1:instantiatesGenericConcept` lists relevant M2 parents
 - [ ] No M2 semantics violated
 - [ ] Domain terms not in M2 (purity maintained)
 - [ ] Consistent tensor formulas (if specified)
@@ -276,7 +276,7 @@ tscg/ontology/M1_extensions/{domain}/
 - [ ] At least 1 M0 instance created
 - [ ] Instance validates M1 concepts
 - [ ] ASFID states computed (Territory & Map)
-- [ ] Metaconcepts mobilized listed
+- [ ] GenericConcepts mobilized listed
 
 ### 5.5 Integration
 
@@ -346,7 +346,7 @@ tscg/ontology/M1_extensions/{domain}/
 ```json
 {
   "@id": "m2:Enzyme",  // ❌ Domain-specific term in M2
-  "@type": "m2:MetaConcept"
+  "@type": "m2:GenericConcept"
 }
 ```
 
@@ -374,7 +374,7 @@ tscg/ontology/M1_extensions/{domain}/
 {
   "@id": "m1:Combustion",
   "rdfs:subClassOf": "m2:Process",
-  "m1:instantiatesMetaconcept": ["m2:Process", "m2:Dissipation"]
+  "m1:instantiatesGenericConcept": ["m2:Process", "m2:Dissipation"]
 }
 ```
 
@@ -418,7 +418,7 @@ Process → ChemicalReaction → Combustion
 ### TSCG Core Ontologies
 
 - **M3**: `/ontology/M3_Genesis_Space.jsonld`
-- **M2**: `/ontology/TSCG_M2_MetaConcepts_Ontology.jsonld`
+- **M2**: `/ontology/TSCG_M2_GenericConcepts_Ontology.jsonld`
 - **Template**: `/ontology/M1_extensions/template/M1_Template.jsonld`
 
 ### Reference M1 Extensions
@@ -456,13 +456,13 @@ After creating your M1 extension:
 **Q: Can I create M1 extension for my niche domain?**
 A: Yes! As long as it's coherent and inherits from M2.
 
-**Q: Must I use all M2 metaconcepts?**
+**Q: Must I use all M2 GenericConcepts?**
 A: No, only relevant ones. Chemistry doesn't use Memory or Learning, for example.
 
 **Q: Can I combine multiple domains?**
 A: Yes (e.g., Biochemistry = Chemistry + Biology), but keep it coherent.
 
-**Q: What if my domain needs a new M2 metaconcept?**
+**Q: What if my domain needs a new M2 GenericConcept?**
 A: Propose it! If genuinely universal (not domain-specific), it may be added to M2.
 
 **Q: Can I have multiple M1 files for one domain?**

@@ -53,7 +53,7 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
   - Pupa → Emergence (eclosion trigger)
 - **Irreversibility**: Strong unidirectional attractor field (no regression to earlier poles)
 
-**M2 Metaconcepts Activated**:
+**M2 GenericConcepts Activated**:
 - `m2:Attractor` - System drawn toward reproductive maturity
 - `m2:Irreversibility` - One-way transformation cascade
 - `m2:Threshold` - Critical points triggering state transitions
@@ -76,7 +76,7 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
 - **Histogenesis**: Adult structures built from imaginal disc proliferation
 - **Imaginal Discs**: Embryonically determined adult-structure precursors dormant in larva
 
-**M2 Metaconcepts Activated**:
+**M2 GenericConcepts Activated**:
 - `m2:Modularity` - Discrete developmental stages
 - `m2:Transformation` - Fundamental structural reorganization
 - `m2:Layer` - Multiple nested structural levels (cellular, tissue, organ, organism)
@@ -102,7 +102,7 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
   - Tracheal system persists through transformation
   - Surface area optimization shifts (larva: body surface; imago: wings)
 
-**M2 Metaconcepts Activated**:
+**M2 GenericConcepts Activated**:
 - `m2:Flow` - Material, energy, and information flows
 - `m2:Cycle` - Biochemical recycling during pupation
 - `m2:Regulation` - Hormonal control of transitions
@@ -129,7 +129,7 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
   - Larval CNS persists through pupation (rare among reorganizing tissues)
   - Adult behavior patterns encoded during larval stage
 
-**M2 Metaconcepts Activated**:
+**M2 GenericConcepts Activated**:
 - `m2:Code` - Genetic program encodes transformation
 - `m2:Memory` - Developmental history retained in CNS and imaginal discs
 - `m2:Signal` - Hormonal and environmental cues
@@ -158,7 +158,7 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
   - No backward transitions possible
   - Commitment points (e.g., imaginal disc activation)
 
-**M2 Metaconcepts Activated**:
+**M2 GenericConcepts Activated**:
 - `m2:Process` - Temporal unfolding of lifecycle
 - `m2:Transition` - Discrete phase changes
 - `m2:Irreversibility` - Unidirectional developmental arrow
@@ -197,7 +197,7 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
   - Precise molecular events during histogenesis
 - **Observer Independence**: High (process occurs regardless of observation)
 
-**M2 Metaconcepts Activated**:
+**M2 GenericConcepts Activated**:
 - `m2:Observability` (ORIVE dimension) - Mixed direct/indirect access
 - `m2:Transparency` - External states clear, internal processes opaque
 - `m2:Interface` - Chrysalis case obscures internal transformation
@@ -222,7 +222,7 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
   - Lab-reared populations show consistent metamorphosis
   - Surgical/hormonal manipulations yield predictable outcomes
 
-**M2 Metaconcepts Activated**:
+**M2 GenericConcepts Activated**:
 - `m2:Reproducibility` (ORIVE dimension) - High experimental reliability
 - `m2:Invariance` - Core program invariant across conditions
 - `m2:Robustness` - Developmental canalization
@@ -247,7 +247,7 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
   - Imaginal discs as **stem cell niches** (regenerative medicine link)
   - Emergence as **self-assembly** (materials science parallel)
 
-**M2 Metaconcepts Activated**:
+**M2 GenericConcepts Activated**:
 - `m2:Interoperability` (ORIVE dimension) - Strong within life sciences
 - `m2:Context` - Domain-specific (biology) but conceptually exportable
 - `m2:Analogy` - Phase transition metaphor
@@ -274,7 +274,7 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
   - Evolutionary origin of complete metamorphosis (debated)
   - Consciousness/sentience during transformation (philosophically unclear)
 
-**M2 Metaconcepts Activated**:
+**M2 GenericConcepts Activated**:
 - `m2:Validity` (ORIVE dimension) - Strong empirical support
 - `m2:Coherence` - Integrates multiple levels (molecular → organismal)
 - `m2:Prediction` - Enables accurate forecasting
@@ -301,7 +301,7 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
   - Narrative arc (dramatic transformation story)
   - Cross-cultural symbolic significance (rebirth, transformation)
 
-**M2 Metaconcepts Activated**:
+**M2 GenericConcepts Activated**:
 - `m2:Expressiveness` (ORIVE dimension) - Rich conceptual model
 - `m2:Representation` - Multiple valid representations (genetic, hormonal, morphological)
 - `m2:Symbol` - Cultural/psychological significance
@@ -318,9 +318,9 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
 
 ---
 
-## 4. M2 METACONCEPT IDENTIFICATION
+## 4. M2 GenericConcept IDENTIFICATION
 
-### 4.1 Primary Metaconcepts (Dominance > 0.8)
+### 4.1 Primary GenericConcepts (Dominance > 0.8)
 
 1. **Transformation** (D⊗S⊗I) - **0.96**
    - Fundamental change in structure, function, and identity
@@ -362,7 +362,7 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
    - Temporal layers: embryonic determination → larval growth → pupal reorganization → adult function
    - Protective layers: chorion (egg), cuticle (larva), chrysalis (pupa)
 
-### 4.2 Secondary Metaconcepts (Dominance 0.6-0.8)
+### 4.2 Secondary GenericConcepts (Dominance 0.6-0.8)
 
 9. **Memory** (I⊗D) - **0.75**
    - Larval learning retained in adult (CNS continuity)
@@ -384,9 +384,9 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
     - Growth rate vs. developmental stability
     - Size vs. emergence timing (seasonal constraints)
 
-### 4.3 Emergent Metaconcepts (Novel or Strengthened)
+### 4.3 Emergent GenericConcepts (Novel or Strengthened)
 
-**Candidate for New M2 Metaconcept**:
+**Candidate for New M2 GenericConcept**:
 - **Latency** (I⊗D) - Imaginal discs as latent adult structures
   - Dormant potential awaiting activation
   - Temporal separation between determination and expression
@@ -486,7 +486,7 @@ Following the Domain Hybrid Tensor Product 5D framework:
 - **Validates**: TSCG framework handles multi-pole developmental systems
 - **Contributes**:
   - M2 validation: Confirms Transformation, Emergence, Mode, Switch, Layer
-  - M2 candidates: Latency (potential new metaconcept)
+  - M2 candidates: Latency (potential new GenericConcept)
   - M1 population: Developmental biology concepts (histolysis, imaginal disc, ecdysis)
 
 ---
@@ -516,7 +516,7 @@ Following the Domain Hybrid Tensor Product 5D framework:
 ### 9.1 TSCG Teaching Applications
 - **Introductory**: Demonstrates all ASFID dimensions clearly
 - **Intermediate**: ORIVE analysis reveals map-territory distinctions
-- **Advanced**: M2 metaconcept identification practice
+- **Advanced**: M2 GenericConcept identification practice
 
 ### 9.2 Broader Educational Use
 - **Biology**: Canonical example in developmental biology curricula
@@ -528,7 +528,7 @@ Following the Domain Hybrid Tensor Product 5D framework:
 ## 10. FUTURE RESEARCH DIRECTIONS
 
 ### 10.1 TSCG Framework Refinement
-- **Latency Metaconcept**: Validate across multiple domains
+- **Latency GenericConcept**: Validate across multiple domains
   - Biological: Seed dormancy, viral latency, stem cells
   - Physical: Metastable states, supercooling
   - Social: Hidden potentials, latent conflicts
@@ -567,7 +567,7 @@ The **Butterfly Metamorphosis (6-Pole Model)** is an **exceptional poclet** for 
 This poclet **validates** TSCG's capacity to:
 - Handle multi-pole developmental systems
 - Integrate Territory (observable biology) and Map (conceptual models)
-- Identify transdisciplinary metaconcepts (Transformation, Emergence, Latency)
+- Identify transdisciplinary GenericConcepts (Transformation, Emergence, Latency)
 - Bridge scientific precision and cultural meaning
 
 ### 11.4 Recommendation
@@ -586,7 +586,7 @@ This poclet **validates** TSCG's capacity to:
 - Nijhout, H. F. (1994). *Insect Hormones*. Princeton University Press.
 
 ### 12.2 TSCG Framework
-- `M2_MetaConcepts.jsonld` - Version 14.0.0
+- `M2_GenericConcepts.jsonld` - Version 14.0.0
 - `M3_EagleEye.jsonld` - ASFID dimensions
 - `M3_SphinxEye.jsonld` - ORIVE dimensions
 - `poclet_terminology.md` - Poclet definition and methodology

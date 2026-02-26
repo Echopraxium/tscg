@@ -1,7 +1,7 @@
-# M2 Metaconcepts v8.0.0 → v9.0.0 - Ajout Component & Channel
+# M2 GenericConcepts v8.0.0 → v9.0.0 - Ajout Component & Channel
 
 **Date**: 17 janvier 2026  
-**Fichier modifié**: M2_Metaconcepts.jsonld  
+**Fichier modifié**: M2_GenericConcepts.jsonld  
 **Auteur**: Echopraxium with collaboration of Claude AI Pro
 
 ---
@@ -28,9 +28,9 @@
 "v9.0.0": {
   "date": "2026-01-17",
   "changes": [
-    "Added Component metaconcept (S⊗I, Structural, neutral)",
-    "Added Channel metaconcept (S⊗I⊗F, Structural/Informational, neutral)",
-    "Total metaconcepts: 51 → 53",
+    "Added Component GenericConcept (S⊗I, Structural, neutral)",
+    "Added Channel GenericConcept (S⊗I⊗F, Structural/Informational, neutral)",
+    "Total GenericConcepts: 51 → 53",
     "Neutral polarity: 45 → 47",
     "Bicephalous architecture integration (Eagle/Sphinx Eyes)",
     "M0 poclet validation: Fire Triangle + ColorSynthesis",
@@ -278,7 +278,7 @@ Les métaconcepts émergent de la **pratique** (M0 poclets), pas de la théorie 
 
 Pour utilisateurs ayant v8.0.0:
 
-- [✅] Remplacer M2_Metaconcepts.jsonld par version v9.0.0
+- [✅] Remplacer M2_GenericConcepts.jsonld par version v9.0.0
 - [✅] Mettre à jour Smart Prompt (v8 → v9)
 - [✅] Lire changelog v9.0.0
 - [✅] Comprendre Component (S⊗I)
@@ -317,7 +317,7 @@ Channel ≠ Signal, Path, Component
 ## 📁 Fichiers
 
 **Ontologie mise à jour**:
-- `M2_Metaconcepts.jsonld` (v9.0.0) - 1650+ lignes
+- `M2_GenericConcepts.jsonld` (v9.0.0) - 1650+ lignes
 
 **Documentation associée**:
 - `Smart_Prompt_v9.0.0.md` - Référence session

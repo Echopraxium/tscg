@@ -9,13 +9,13 @@
 ## Overview
 
 The M1 (Middle Layer) in TSCG serves as a bridge between:
-- **M2** (Metaconcepts): Universal patterns applicable across ALL domains
+- **M2** (GenericConcepts): Universal patterns applicable across ALL domains
 - **M0** (Poclets): Concrete instantiations of specific systems
 
 M1 contains **domain-bounded but transdisciplinary concepts** that:
 - Are more specific than M2 (not universal to all domains)
 - Are more general than M0 (reusable within domain families)
-- Instantiate M2 metaconcepts with domain-specific constraints
+- Instantiate M2 GenericConcepts with domain-specific constraints
 
 ---
 
@@ -51,13 +51,13 @@ M1_CoreConcepts.jsonld (BASE)
 
 ### Extension Ontologies: M1_[Domain].jsonld
 
-**Purpose**: Domain-specific patterns that instantiate M2 metaconcepts within a particular field.
+**Purpose**: Domain-specific patterns that instantiate M2 GenericConcepts within a particular field.
 
 **Structure**: Each extension:
 1. **Imports** M1_CoreConcepts (inherits generic concepts)
 2. **Defines** domain-specific namespace (e.g., `m1optics:`, `m1photo:`)
 3. **Contains** patterns validated by poclets in that domain
-4. **References** M2 metaconcepts as theoretical basis
+4. **References** M2 GenericConcepts as theoretical basis
 
 ---
 
@@ -212,7 +212,7 @@ Analyze M0 poclets to identify recurring patterns specific to a domain.
 ### Step 2: Check M2 First
 
 Is this pattern universal across all domains?
-- **Yes** → It's an M2 metaconcept (e.g., Balance, Trade-off)
+- **Yes** → It's an M2 GenericConcept (e.g., Balance, Trade-off)
 - **No** → Continue to Step 3
 
 ### Step 3: Check Existing M1
@@ -224,7 +224,7 @@ Does this concept already exist in M1_CoreConcepts or a domain extension?
 ### Step 4: Create M1 Concept
 
 Create new M1 concept with:
-- **M2 basis**: Which M2 metaconcepts does it instantiate?
+- **M2 basis**: Which M2 GenericConcepts does it instantiate?
 - **Domain scope**: Which domains does it apply to?
 - **Principle**: Core operational principle
 - **Formula**: Mathematical/logical formulation (if applicable)
@@ -267,11 +267,11 @@ If concept appears in **3+ different domains**, consider:
 {
   "@context": {
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     ...
   },
   "owl:imports": [
-    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld"
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld"
   ]
 }
 ```
@@ -283,12 +283,12 @@ If concept appears in **3+ different domains**, consider:
   "@context": {
     "m1photo": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Photography.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     ...
   },
   "owl:imports": [
     "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
-    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld"
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld"
   ]
 }
 ```
@@ -301,7 +301,7 @@ If concept appears in **3+ different domains**, consider:
     "m0": "...",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m1photo": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Photography.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     ...
   },
   "m0:component": {
@@ -442,4 +442,4 @@ This architecture supports TSCG's goal of building a **transdisciplinary framewo
 - `M1_CoreConcepts.jsonld` - Base ontology
 - `M1_Optics.jsonld` - Optics extension
 - `M1_Photography.jsonld` - Photography extension
-- `M2_MetaConcepts.jsonld` - Parent layer
+- `M2_GenericConcepts.jsonld` - Parent layer

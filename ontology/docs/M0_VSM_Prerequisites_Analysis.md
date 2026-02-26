@@ -3,22 +3,22 @@
 
 **Date**: 2026-01-28  
 **Author**: Echopraxium with the collaboration of Claude AI  
-**Purpose**: Identify M2 metaconcepts and M1 core concepts needed before creating M0_VSM.jsonld
+**Purpose**: Identify M2 GenericConcepts and M1 core concepts needed before creating M0_VSM.jsonld
 
 ---
 
 ## 📋 Executive Summary
 
 The Viable System Model (VSM) by Stafford Beer requires:
-- ✅ **14 existing M2 metaconcepts** (ready to use)
-- 🆕 **3 new M2 metaconcept candidates** (to validate and add)
+- ✅ **14 existing M2 GenericConcepts** (ready to use)
+- 🆕 **3 new M2 GenericConcept candidates** (to validate and add)
 - 🔧 **8 M1 core concepts** (either add to M1_CoreConcepts or create M1_Cybernetics extension)
 
 ---
 
-## 1️⃣ M2 METACONCEPTS - EXISTING (Ready to Use)
+## 1️⃣ M2 GenericConceptS - EXISTING (Ready to Use)
 
-| M2 Metaconcept | VSM Usage | Tensor Formula | VSM Context |
+| M2 GenericConcept | VSM Usage | Tensor Formula | VSM Context |
 |----------------|-----------|----------------|-------------|
 | **m2:System** | Each recursive level of VSM | S⊗F | Every viable system is a system |
 | **m2:Environment** | External context (S4 monitors) | F⊗I | Niche within which system operates |
@@ -35,11 +35,11 @@ The Viable System Model (VSM) by Stafford Beer requires:
 | **m2:Constraint** | Requisite variety limits | A⊗I | Ashby's Law constraints |
 | **m2:Feedback** | Control loops (algedonic signals) | A⊗F⊗I | S3 ↔ S1 resource bargaining |
 
-**Total: 14 M2 metaconcepts** ✅
+**Total: 14 M2 GenericConcepts** ✅
 
 ---
 
-## 2️⃣ M2 METACONCEPTS - NEW CANDIDATES (To Create)
+## 2️⃣ M2 GenericConceptS - NEW CANDIDATES (To Create)
 
 ### 🆕 Candidate 1: **Viability**
 
@@ -225,9 +225,9 @@ These are **instances/classes in M0_VSM.jsonld** itself:
 
 ## 6️⃣ RECOMMENDED ACTION PLAN
 
-### Phase 1: Validate & Add M2 Metaconcepts ⭐ PRIORITY
+### Phase 1: Validate & Add M2 GenericConcepts ⭐ PRIORITY
 
-**Create proposals for M2_MetaConcepts.jsonld**:
+**Create proposals for M2_GenericConcepts.jsonld**:
 
 ```json
 {
@@ -289,7 +289,7 @@ M1_Cybernetics.jsonld
   "@type": "owl:Ontology",
   "m3:ontologyCategory": { "@id": "m3:SystemicFramework" },
   "owl:imports": [
-    "M2_MetaConcepts.jsonld",
+    "M2_GenericConcepts.jsonld",
     "M1_Cybernetics.jsonld"
   ]
 }
@@ -302,13 +302,13 @@ M1_Cybernetics.jsonld
 ```mermaid
 graph TD
     M0_VSM[M0_VSM.jsonld] --> M1_Cyber[M1_Cybernetics.jsonld]
-    M0_VSM --> M2[M2_MetaConcepts.jsonld]
+    M0_VSM --> M2[M2_GenericConcepts.jsonld]
     M1_Cyber --> M2
     M2 --> M2_New[+ Viability, Variety, Recursion]
 ```
 
 **Critical Path**:
-1. Add 3 new M2 metaconcepts ← **BLOCKER**
+1. Add 3 new M2 GenericConcepts ← **BLOCKER**
 2. Create M1_Cybernetics.jsonld
 3. Create M0_VSM.jsonld
 
@@ -317,7 +317,7 @@ graph TD
 ## 8️⃣ CONCLUSION
 
 **VSM Prerequisites Summary**:
-- ✅ 14/17 M2 metaconcepts already exist
+- ✅ 14/17 M2 GenericConcepts already exist
 - 🆕 3 new M2 candidates identified (Viability, Variety, Recursion)
 - 🔧 8 M1 cybernetic concepts to create
 - 📊 Excellent ASFID/ORIVE scores (δ=0.08)
@@ -327,9 +327,9 @@ graph TD
 2. Strong mathematical foundation (Ashby's variety)
 3. Recursive architecture (perfect for TSCG)
 4. Extensive validation (Cybersyn, governments, corporations)
-5. Will reveal 3 important transdisciplinary M2 metaconcepts
+5. Will reveal 3 important transdisciplinary M2 GenericConcepts
 
-**Next Step**: Validate and formalize the 3 new M2 metaconcepts before proceeding to M0_VSM.jsonld creation.
+**Next Step**: Validate and formalize the 3 new M2 GenericConcepts before proceeding to M0_VSM.jsonld creation.
 
 ---
 

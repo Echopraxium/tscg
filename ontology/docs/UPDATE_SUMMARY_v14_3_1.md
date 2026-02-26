@@ -2,7 +2,7 @@
 
 **Date:** 2026-01-30  
 **Author:** Echopraxium with the collaboration of Claude AI  
-**Scope:** M2_MetaConcepts.jsonld, M3_GenesisSpace.jsonld, M3_EagleEye.jsonld, M3_SphinxEye.jsonld
+**Scope:** M2_GenericConcepts.jsonld, M3_GenesisSpace.jsonld, M3_EagleEye.jsonld, M3_SphinxEye.jsonld
 
 ---
 
@@ -12,7 +12,7 @@ This update implements two major improvements to the TSCG framework:
 
 1. **REVOI Standard Adoption**: Replacement of REVOÎ (with circumflex accent) by REVOI throughout the framework
 2. **Hybrid Formula Notation**: Introduction of It/Im convention for disambiguating Information dimension in hybrid formulas
-3. **New Metaconcept**: Addition of Imbrication (m2:Imbrication) to M2 layer
+3. **New GenericConcept**: Addition of Imbrication (m2:Imbrication) to M2 layer
 4. **Encoding Cleanup**: Comprehensive correction of corrupted mathematical symbols
 
 ---
@@ -30,7 +30,7 @@ This update implements two major improvements to the TSCG framework:
 - Eliminates encoding incompatibility with mathematical Unicode ranges
 
 **Files Updated:**
-- M2_MetaConcepts.jsonld: All basis references, formulas, descriptions
+- M2_GenericConcepts.jsonld: All basis references, formulas, descriptions
 - M3_GenesisSpace.jsonld: Sphinx Eye basis definition, architectural descriptions
 - M3_SphinxEye.jsonld: Complete ontology basis from REVOÎ to REVOI
 - M3_EagleEye.jsonld: Cross-references to REVOI updated
@@ -58,7 +58,7 @@ This update implements two major improvements to the TSCG framework:
 
 **Implementation:**
 ```json
-// Domain metaconcept (hybrid formula)
+// Domain GenericConcept (hybrid formula)
 {
   "@id": "m2:Domain",
   "m2:hasTensorFormula": "A⊗S⊗F⊗It⊗D⊗R⊗E⊗V⊗O⊗Im",
@@ -69,14 +69,14 @@ This update implements two major improvements to the TSCG framework:
   }
 }
 
-// Process metaconcept (pure ASFID - no subscript needed)
+// Process GenericConcept (pure ASFID - no subscript needed)
 {
   "@id": "m2:Process",
   "m2:hasTensorFormula": "D⊗I⊗F"
   // Plain I - no ambiguity, only ASFID present
 }
 
-// ValueSpace metaconcept (pure REVOI - no subscript needed)
+// ValueSpace GenericConcept (pure REVOI - no subscript needed)
 {
   "@id": "m2:ValueSpace",
   "m2:hasTensorFormula": "O⊗R⊗I⊗V⊗E"
@@ -85,14 +85,14 @@ This update implements two major improvements to the TSCG framework:
 ```
 
 **Files Updated:**
-- M2_MetaConcepts.jsonld: Domain metaconcept updated with hybridNotation property
+- M2_GenericConcepts.jsonld: Domain GenericConcept updated with hybridNotation property
 
 **Documentation:**
 - HYBRID_FORMULAS_NOTATION_README.md: Complete convention guide
 
 ---
 
-### 3. New Metaconcept: Imbrication
+### 3. New GenericConcept: Imbrication
 
 **Addition:**
 - m2:Imbrication (Nesting) added to Ontological category
@@ -118,10 +118,10 @@ This update implements two major improvements to the TSCG framework:
 - vs Recursion: Recursion = abstract principle; Imbrication = concrete structural realization
 
 **Files Updated:**
-- M2_MetaConcepts.jsonld: Complete entry added at position 78
+- M2_GenericConcepts.jsonld: Complete entry added at position 78
 
 **Documentation:**
-- M2_Imbrication_README.md: Comprehensive metaconcept documentation
+- M2_Imbrication_README.md: Comprehensive GenericConcept documentation
 
 ---
 
@@ -144,7 +144,7 @@ This update implements two major improvements to the TSCG framework:
 | âŸ© | ⟩ | Right angle bracket | 28 |
 
 **Files Cleaned:**
-- M2_MetaConcepts.jsonld: 300+ corrections
+- M2_GenericConcepts.jsonld: 300+ corrections
 - M3_GenesisSpace.jsonld: 41 corrections
 - M3_EagleEye.jsonld: 35 corrections
 - M3_SphinxEye.jsonld: 51 corrections
@@ -156,17 +156,17 @@ This update implements two major improvements to the TSCG framework:
 
 ## 📊 Statistics Update
 
-### M2_MetaConcepts.jsonld
+### M2_GenericConcepts.jsonld
 
 **Version:** 14.3.0 → **14.3.1**  
 **Date Modified:** 2026-01-28 → **2026-01-30**
 
-**Metaconcept Count:**
+**GenericConcept Count:**
 - Total: 63 → **64**
 - Ontological: 8 → **9** (Imbrication added)
 - Dual polarity: 12 → **13** (Imbrication is dual)
 
-**Ontological Metaconcepts (9):**
+**Ontological GenericConcepts (9):**
 1. Domain (hybrid)
 2. Environment
 3. Gradient
@@ -178,7 +178,7 @@ This update implements two major improvements to the TSCG framework:
 9. System
 
 **Bicephalous Strategy:**
-- Dual metaconcepts: 19 → **20** (Imbrication added)
+- Dual GenericConcepts: 19 → **20** (Imbrication added)
 
 ---
 
@@ -190,10 +190,10 @@ This update implements two major improvements to the TSCG framework:
     "date": "2026-01-30",
     "changes": [
       "ENCODING: REVOI standard adopted (no circumflex accent)",
-      "NEW: Imbrication metaconcept (S⊗S) - dual perspective",
+      "NEW: Imbrication GenericConcept (S⊗S) - dual perspective",
       "NOTATION: It/Im convention for hybrid formulas established",
       "CATEGORY: Ontological (structural self-similarity)",
-      "TOTAL: 64 metaconcepts (9 Ontological)"
+      "TOTAL: 64 GenericConcepts (9 Ontological)"
     ]
   }
 }
@@ -204,7 +204,7 @@ This update implements two major improvements to the TSCG framework:
 ## ✅ Validation Results
 
 ### JSON Validation
-- ✅ M2_MetaConcepts.jsonld: Valid
+- ✅ M2_GenericConcepts.jsonld: Valid
 - ✅ M3_GenesisSpace.jsonld: Valid
 - ✅ M3_EagleEye.jsonld: Valid
 - ✅ M3_SphinxEye.jsonld: Valid
@@ -216,7 +216,7 @@ This update implements two major improvements to the TSCG framework:
 - ✅ No Î (circumflex) characters in basis names
 
 ### Consistency Checks
-- ✅ All metaconcepts counted correctly (64 total)
+- ✅ All GenericConcepts counted correctly (64 total)
 - ✅ Polarity statistics accurate (13 dual)
 - ✅ Category counts updated (9 Ontological)
 - ✅ Version numbers consistent (14.3.1)
@@ -227,10 +227,10 @@ This update implements two major improvements to the TSCG framework:
 
 ### New Documents
 1. **M2_Imbrication_README.md**
-   - Complete metaconcept documentation
+   - Complete GenericConcept documentation
    - Transdisciplinary validation (8 domains)
    - VSM context and examples
-   - Distinction from related metaconcepts
+   - Distinction from related GenericConcepts
 
 2. **HYBRID_FORMULAS_NOTATION_README.md**
    - REVOI standard rationale
@@ -245,7 +245,7 @@ This update implements two major improvements to the TSCG framework:
    - Python correction script
 
 ### Updated Documents
-4. **M2_MetaConcepts.jsonld** (v14.3.1)
+4. **M2_GenericConcepts.jsonld** (v14.3.1)
    - REVOI standard
    - Imbrication added
    - Domain with It/Im notation
@@ -340,7 +340,7 @@ If creating new formulas combining ASFID and REVOI:
 
 | File | Size Before | Size After | Changes |
 |------|-------------|------------|---------|
-| M2_MetaConcepts.jsonld | ~124 KB | ~130 KB | +Imbrication, REVOI, It/Im, encoding fixes |
+| M2_GenericConcepts.jsonld | ~124 KB | ~130 KB | +Imbrication, REVOI, It/Im, encoding fixes |
 | M3_GenesisSpace.jsonld | ~29 KB | ~29 KB | REVOI, encoding fixes |
 | M3_EagleEye.jsonld | ~9 KB | ~9 KB | Encoding fixes |
 | M3_SphinxEye.jsonld | ~11 KB | ~11 KB | REVOI transition, encoding fixes |
@@ -351,7 +351,7 @@ If creating new formulas combining ASFID and REVOI:
 
 ### Framework Documents
 - TSCG_Map_Territory_Theoretical_Foundation.md - Philosophical basis
-- Domain_Hybrid_Tensor_Product_5D_README.md - Domain metaconcept theory
+- Domain_Hybrid_Tensor_Product_5D_README.md - Domain GenericConcept theory
 - poclet_terminology.md - Poclet definitions
 
 ### New Standards
@@ -367,7 +367,7 @@ If creating new formulas combining ASFID and REVOI:
 
 ## ✅ Checklist for Future Development
 
-When creating new metaconcepts or formulas:
+When creating new GenericConcepts or formulas:
 
 - [ ] Use **REVOI** (not REVOÎ) for all Sphinx Eye references
 - [ ] Use **It** and **Im** ONLY in hybrid formulas (both ASFID and REVOI)

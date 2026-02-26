@@ -88,7 +88,7 @@ Bricks → COMPOSITION → Construction
 **Avant** :
 ```json
 "m0:compositionPrinciple": {
-  "metaconcept": "m2:Composition",
+  "GenericConcept": "m2:Composition",
   "formula": "S⊗I⊗A",
   "operation": "R_signal ⊕ G_signal ⊕ B_signal → Perceived_Color"
 }
@@ -97,7 +97,7 @@ Bricks → COMPOSITION → Construction
 **Après** :
 ```json
 "m0:fusionPrinciple": {
-  "metaconcept": "m2:Fusion",
+  "GenericConcept": "m2:Fusion",
   "formula": "S⊗F⊗D",
   "operation": "R_wave ⊕ G_wave ⊕ B_wave → FUSION → Perceived_Color",
   "physicalMechanism": "Electromagnetic wave superposition (additive interference)"
@@ -108,13 +108,13 @@ Bricks → COMPOSITION → Construction
 
 **Avant** :
 ```json
-"metaconcept": "Composition",
+"GenericConcept": "Composition",
 "role": "Synthesis operation (additive or subtractive)"
 ```
 
 **Après** :
 ```json
-"metaconcept": "Fusion",
+"GenericConcept": "Fusion",
 "role": "Synthesis operation - merging channels into perceived color",
 "fusionAspect": "R+G+B → Color (additive) or C+M+Y → Color (subtractive)",
 "fissionAspect": "Color → (R,G,B) analysis"
@@ -294,7 +294,7 @@ Pourquoi Fusion et pas Composition ?
 
 ## Validation avec M2
 
-**Vérification dans M2_Metaconcepts.jsonld** :
+**Vérification dans M2_GenericConcepts.jsonld** :
 
 ### Fusion (m2:Fusion)
 ```json

@@ -8,7 +8,7 @@
 
 ## 🎯 Décision Finale : Répartition M2 / M1
 
-### ✅ **4 Concepts → M2 MetaconceptCombo** (Transdisciplinaires)
+### ✅ **4 Concepts → M2 GenericConceptCombo** (Transdisciplinaires)
 
 Ces 4 concepts sont **vraiment transdisciplinaires** avec validation dans des domaines non-physiques (biology, social, economics, math).
 
@@ -25,7 +25,7 @@ Ces 4 concepts sont **vraiment transdisciplinaires** avec validation dans des do
 - **Economics** (central banks)
 
 **Sémantique**: Regulation of ongoing process without stopping it  
-**Destination**: **M2_MetaConcepts.jsonld** (MetaconceptCombo)
+**Destination**: **M2_GenericConcepts.jsonld** (GenericConceptCombo)
 
 ---
 
@@ -41,7 +41,7 @@ Ces 4 concepts sont **vraiment transdisciplinaires** avec validation dans des do
 - **Social** (viral content)
 
 **Sémantique**: Output → Input feedback with gain ≥ 1  
-**Destination**: **M2_MetaConcepts.jsonld** (MetaconceptCombo)
+**Destination**: **M2_GenericConcepts.jsonld** (GenericConceptCombo)
 
 ---
 
@@ -57,7 +57,7 @@ Ces 4 concepts sont **vraiment transdisciplinaires** avec validation dans des do
 - **Social** (viral cascade)
 
 **Sémantique**: Sequential stages each with gain > 1  
-**Destination**: **M2_MetaConcepts.jsonld** (MetaconceptCombo)
+**Destination**: **M2_GenericConcepts.jsonld** (GenericConceptCombo)
 
 ---
 
@@ -75,7 +75,7 @@ Ces 4 concepts sont **vraiment transdisciplinaires** avec validation dans des do
 - Physics (phase transitions)
 
 **Sémantique**: Behavior changes qualitatively at critical threshold  
-**Destination**: **M2_MetaConcepts.jsonld** (MetaconceptCombo)
+**Destination**: **M2_GenericConcepts.jsonld** (GenericConceptCombo)
 
 ---
 
@@ -131,10 +131,10 @@ Ces 2 concepts sont validés dans 6 domains **MAIS tous engineering/physics** (a
 
 ## 📋 Structure Finale
 
-### M2_MetaConcepts.jsonld v15.1.0
+### M2_GenericConcepts.jsonld v15.1.0
 
 ```
-MetaconceptCombo (enrichi avec +4 nouveaux):
+GenericConceptCombo (enrichi avec +4 nouveaux):
 ├─ Existing (v14.4.0):
 │   ├─ Homeostasis = Regulation ⊗ Threshold
 │   ├─ Cascade = Process ⊗ Step ⊗ Trajectory
@@ -147,7 +147,7 @@ MetaconceptCombo (enrichi avec +4 nouveaux):
     └─ CriticalityRegime = Threshold ⊗ SelfSustainingReaction ⊗ Amplification (8 domains) ✅
 ```
 
-**Total M2 MetaconceptCombo**: 7 (3 existing + 4 new)
+**Total M2 GenericConceptCombo**: 7 (3 existing + 4 new)
 
 ---
 
@@ -181,7 +181,7 @@ M1_CoreConcepts_Ontology:
 - Tous traités comme transdisciplinaires
 
 **Décision finale** (après analyse rigoureuse):
-- 4 concepts → **M2_MetaConcepts** (vraiment transdisciplinaires)
+- 4 concepts → **M2_GenericConcepts** (vraiment transdisciplinaires)
 - 2 concepts → **M1_CoreConcepts** (engineering-specific)
 
 ### Raison du changement :
@@ -217,9 +217,9 @@ M1_CoreConcepts_Ontology:
    - DomainSpecificCombo pattern ajouté
    - conceptCategories avec UniversalCore et EngineeringCore
 
-2. **M2_MetaConcepts_v15.1.0.jsonld** (à créer)
-   - +4 MetaconceptCombo
-   - Total: 76 metaconcepts (72 existing + 4 new combos)
+2. **M2_GenericConcepts_v15.1.0.jsonld** (à créer)
+   - +4 GenericConceptCombo
+   - Total: 76 GenericConcepts (72 existing + 4 new combos)
 
 3. **M3_EagleEye_v2.2.0.jsonld** ✅
    - ORIVE → REVOI corrigé
@@ -232,7 +232,7 @@ M1_CoreConcepts_Ontology:
    - Feedback loop formalisé (Σ, Φ, Ψ)
 
 6. **Domain_M2_Update_Analysis.md** ✅
-   - Analyse enrichissement Domain metaconcept
+   - Analyse enrichissement Domain GenericConcept
 
 7. **TSCG_Smart_Prompt_v15_1_0.md** ✅
    - Smart prompt complet mis à jour
@@ -250,7 +250,7 @@ M1_CoreConcepts_Ontology:
 | **M3_EagleEye** | 2.1.0 | **2.2.0** | ORIVE→REVOI fix |
 | **M3_SphinxEye** | 2.3.0 | **3.0.0** | REVOI simplified |
 | **M3_GenesisSpace** | 2.4.1 | **3.0.0** | Feedback loop |
-| **M2_MetaConcepts** | 14.4.0 | **15.1.0** | +4 combos, Domain enriched |
+| **M2_GenericConcepts** | 14.4.0 | **15.1.0** | +4 combos, Domain enriched |
 | **M1_CoreConcepts** | 1.1.0 | **1.2.0** | 3→5 concepts, +DSC pattern |
 | **M1_Extensions** | 4 | **5** | +M1_EnergyGenerators |
 
@@ -259,7 +259,7 @@ M1_CoreConcepts_Ontology:
 ## 🎯 Prochaines Étapes
 
 ### Immédiat :
-1. ✅ Créer M2_MetaConcepts v15.1.0 avec 4 nouveaux MetaconceptCombo
+1. ✅ Créer M2_GenericConcepts v15.1.0 avec 4 nouveaux GenericConceptCombo
 2. ✅ Enrichir Domain dans M2 (feedback loop, σ_mean, etc.)
 3. ✅ Valider syntaxe JSON-LD de tous les fichiers
 4. ✅ Déployer dans repository GitHub

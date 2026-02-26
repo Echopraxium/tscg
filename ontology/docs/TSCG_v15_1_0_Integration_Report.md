@@ -179,7 +179,7 @@ M3_GenesisSpace v3.0.0
   ├─ M3_EagleEye (ASFID)
   └─ M3_SphinxEye v3.0.0 (REVOI simplifié)
       ↓
-M2_MetaConcepts
+M2_GenericConcepts
       ↓
 M1_CoreConcepts v1.2.0 (9 concepts)
       ↓

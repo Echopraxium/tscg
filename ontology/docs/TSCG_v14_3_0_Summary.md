@@ -1,4 +1,4 @@
-# TSCG v14.3.0 - Behavioral Metaconcepts Addition
+# TSCG v14.3.0 - Behavioral GenericConcepts Addition
 
 **Date:** 2026-01-28  
 **Author:** Echopraxium with the collaboration of Claude AI  
@@ -8,19 +8,19 @@
 
 ## Executive Summary
 
-Successfully added **5 new metaconcepts** to M2_MetaConcepts.jsonld, forming a coherent family for modeling **behavioral, sequential, and temporal patterns**.
+Successfully added **5 new GenericConcepts** to M2_GenericConcepts.jsonld, forming a coherent family for modeling **behavioral, sequential, and temporal patterns**.
 
 ### Key Achievements
 
-- ✅ Total M2 metaconcepts: **60 → 65** (+5)
-- ✅ Dual polarity metaconcepts: **6 → 11** (+5)
+- ✅ Total M2 GenericConcepts: **60 → 65** (+5)
+- ✅ Dual polarity GenericConcepts: **6 → 11** (+5)
 - ✅ Version updated: **14.0.0 → 14.3.0**
 - ✅ Comprehensive documentation generated
 - ✅ All architectural relationships formalized
 
 ---
 
-## New Metaconcepts Summary
+## New GenericConcepts Summary
 
 | # | Name | Formula | Category | Polarity | Parent | Key Role |
 |---|------|---------|----------|----------|--------|----------|
@@ -64,20 +64,20 @@ m2:Workflow m2:implementsProcess m2:Process .
 
 ## Files Generated
 
-### 1. M2_MetaConcepts_v14_3_0.jsonld
+### 1. M2_GenericConcepts_v14_3_0.jsonld
 **Updated main ontology file**
 - Version: 14.3.0
 - Date: 2026-01-28
-- Total metaconcepts: 65
+- Total GenericConcepts: 65
 - Includes all 5 new entries with full OWL semantics
 
-### 2. M2_New_5_Metaconcepts.jsonld
-**Standalone file with just the 5 new metaconcepts**
+### 2. M2_New_5_GenericConcepts.jsonld
+**Standalone file with just the 5 new GenericConcepts**
 - Clean JSON-LD format
 - Ready for integration testing
 - Can be imported separately
 
-### 3. M2_Behavioral_Sequential_Metaconcepts_README.md
+### 3. M2_Behavioral_Sequential_GenericConcepts_README.md
 **Comprehensive documentation (10,000+ words)**
 - Detailed definitions
 - Mathematical formulations
@@ -127,7 +127,7 @@ Tropism:  A ⊗ S ⊗ D ⊗ F   (order 4) ✓
 
 ---
 
-## Changes to M2_MetaConcepts.jsonld
+## Changes to M2_GenericConcepts.jsonld
 
 ### Modified Sections
 
@@ -136,20 +136,20 @@ Tropism:  A ⊗ S ⊗ D ⊗ F   (order 4) ✓
    - `owl:versionInfo`: "14.0.0" → "14.3.0"
 
 2. **Progress Stats** (lines 97-105)
-   - `m2:metaconceptsDefined`: 60 → 65
+   - `m2:GenericConceptsDefined`: 60 → 65
    - `m2:dualPolarity`: 6 → 11
 
 3. **Changelog** (lines 107-120)
    - Added v14.3.0 entry with 13 change items
 
 4. **Graph** (lines 2872-end)
-   - Inserted 5 new metaconcept definitions
+   - Inserted 5 new GenericConcept definitions
    - Each with full OWL semantics
    - All properties properly defined
 
 ### No Breaking Changes
 
-- ✅ All existing metaconcepts untouched
+- ✅ All existing GenericConcepts untouched
 - ✅ Backward compatible
 - ✅ No URI changes to existing concepts
 - ✅ Imports unchanged
@@ -248,7 +248,7 @@ Action             [Atomic level]
 
 ### Checklist ✅
 
-- [x] All 5 metaconcepts have complete definitions
+- [x] All 5 GenericConcepts have complete definitions
 - [x] Tensor formulas validated
 - [x] Epistemic gaps assigned
 - [x] Polarity specified for all
@@ -277,7 +277,7 @@ Action             [Atomic level]
 
 | Metric | Before | After | Delta |
 |--------|--------|-------|-------|
-| Total metaconcepts | 60 | 65 | +5 |
+| Total GenericConcepts | 60 | 65 | +5 |
 | Dual polarity | 6 | 11 | +5 |
 | Order-2 formulas | ? | +1 | Action |
 | Order-3 formulas | ? | +3 | Behavior, Workflow, Step |
@@ -297,7 +297,7 @@ Action             [Atomic level]
 ## Contact & References
 
 **Repository:** https://github.com/Echopraxium/tscg  
-**Ontology URI:** https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts_Ontology.jsonld#
+**Ontology URI:** https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts_Ontology.jsonld#
 
 **Related Documents:**
 - TSCG_Smart_Prompt_v14_3_0.md
@@ -320,7 +320,7 @@ Special thanks for the careful reasoning through edge cases and the patience in 
 
 ## Conclusion
 
-The addition of these 5 metaconcepts represents a **major architectural enhancement** to TSCG, filling a critical gap in the framework's ability to model sequential, temporal, and behavioral patterns across disciplines.
+The addition of these 5 GenericConcepts represents a **major architectural enhancement** to TSCG, filling a critical gap in the framework's ability to model sequential, temporal, and behavioral patterns across disciplines.
 
 All objectives achieved. Ready for deployment.
 

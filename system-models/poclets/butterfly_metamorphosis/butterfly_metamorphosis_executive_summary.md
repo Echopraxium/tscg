@@ -201,17 +201,17 @@ IMAGO (Pole 6):
   │     LEG       LEG           │
   ╰─────────────────────────────╯
 
-KEY CONCEPT: Latent potential (M2 candidate metaconcept)
+KEY CONCEPT: Latent potential (M2 candidate GenericConcept)
 ```
 
 ---
 
-## 7. M2 METACONCEPT ACTIVATION MATRIX
+## 7. M2 GenericConcept ACTIVATION MATRIX
 
 ```
-PRIMARY METACONCEPTS (Dominance > 0.8)
+PRIMARY GenericConceptS (Dominance > 0.8)
 ─────────────────────────────────────────────────────────
-Metaconcept       | Dominance | Tensor Formula | Description
+GenericConcept       | Dominance | Tensor Formula | Description
 ──────────────────┼───────────┼────────────────┼─────────────
 Transformation    |   0.96    |   D⊗S⊗I        | Fundamental reorganization
 Emergence         |   0.94    |   S⊗I⊗E        | Adult structures emerge
@@ -223,7 +223,7 @@ Threshold         |   0.88    |   A⊗D          | Critical transition points
 Layer             |   0.87    |   S            | Nested organization
 ─────────────────────────────────────────────────────────
 
-SECONDARY METACONCEPTS (Dominance 0.6-0.8)
+SECONDARY GenericConceptS (Dominance 0.6-0.8)
 ─────────────────────────────────────────────────────────
 Code              |   0.78    |   I            | Genetic program
 Memory            |   0.75    |   I⊗D          | CNS continuity, disc memory
@@ -231,7 +231,7 @@ Vulnerability     |   0.72    |   A⊗S          | Emergence fragility
 Trade-off         |   0.70    |   Multiple     | Growth vs mobility
 ─────────────────────────────────────────────────────────
 
-M2 CANDIDATE (Novel Metaconcept)
+M2 CANDIDATE (Novel GenericConcept)
 ─────────────────────────────────────────────────────────
 Latency           |   0.82    |   I⊗D (prop.)  | Dormant potential
                   |           |                | (Imaginal discs)
@@ -276,10 +276,10 @@ Perfect bicephalous balance: Strong Territory AND Map
 ### 9.1 To TSCG Framework
 ✓ **Validates**: Multi-pole developmental system analysis  
 ✓ **Demonstrates**: Perfect bicephalous balance (Territory 0.95, Map 0.88)  
-✓ **Introduces**: Latency as candidate M2 metaconcept  
+✓ **Introduces**: Latency as candidate M2 GenericConcept  
 ✓ **Confirms**: Emergence deserves distinct pole status  
 
-### 9.2 To M2 Metaconcept Layer
+### 9.2 To M2 GenericConcept Layer
 ✓ **Strongly Validates**: Transformation, Emergence, Mode, Regulation, Switch  
 ✓ **Moderately Validates**: Layer, Cycle, Threshold, Code, Memory  
 ✓ **Proposes New**: Latency (imaginal disc dormant potential)  
@@ -324,7 +324,7 @@ UNIQUE FEATURES:
 ### For TSCG Teaching:
 - **Introductory**: All ASFID dimensions clearly present
 - **Intermediate**: ORIVE analysis reveals map-territory distinctions
-- **Advanced**: M2 metaconcept identification practice
+- **Advanced**: M2 GenericConcept identification practice
 
 ### For Broader Education:
 - **Biology**: Canonical developmental biology example
@@ -355,7 +355,7 @@ POCLET VALIDATION CRITERIA
 ✓ FRAMEWORK VALIDATION: Confirms TSCG handles multi-pole
                         developmental systems
 
-✓ M2 CONTRIBUTION:  Validates 7 primary metaconcepts
+✓ M2 CONTRIBUTION:  Validates 7 primary GenericConcepts
                     Proposes 1 new (Latency)
 
 ✓ M1 CONTRIBUTION:  Identifies 7 developmental biology
@@ -375,7 +375,7 @@ Recommendation: HIGH PRIORITY for TSCG library
 ## 13. FUTURE DIRECTIONS
 
 ### 13.1 TSCG Framework Refinement
-- [ ] Validate **Latency** metaconcept across domains:
+- [ ] Validate **Latency** GenericConcept across domains:
   - Biological: Seed dormancy, viral latency, stem cells
   - Physical: Metastable states, supercooling
   - Social: Hidden potentials, latent conflicts
@@ -408,7 +408,7 @@ The **Butterfly Metamorphosis (6-Pole Model)** is an **exceptional poclet** for 
 - **Minimal yet Complete**: 6 poles capture full holometabolous cycle
 - **Pedagogically Powerful**: Clear demonstration of transformation principles
 - **Culturally Resonant**: Bridges scientific rigor and symbolic meaning
-- **Generative**: Contributes M2 validation and novel metaconcept (Latency)
+- **Generative**: Contributes M2 validation and novel GenericConcept (Latency)
 
 ### Key Innovation:
 Treating **Emergence as a distinct pole** (not just transition) captures:
@@ -432,7 +432,7 @@ Treating **Emergence as a distinct pole** (not just transition) captures:
    - Nijhout (1994). *Insect Hormones*. Princeton University Press
 
 2. **TSCG Framework**:
-   - `M2_MetaConcepts.jsonld` - Version 14.0.0
+   - `M2_GenericConcepts.jsonld` - Version 14.0.0
    - `M3_EagleEye.jsonld` - ASFID dimensions
    - `M3_SphinxEye.jsonld` - ORIVE dimensions
    - `poclet_terminology.md` - Poclet methodology

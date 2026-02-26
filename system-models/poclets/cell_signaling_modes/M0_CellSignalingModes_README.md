@@ -24,7 +24,7 @@ The system demonstrates **Balance** (Territory) between these four modes dependi
 
 ### ✅ Balance Validated (Territory)
 
-**Third poclet** validating the Balance metaconcept (after Fire Triangle and Exposure Triangle).
+**Third poclet** validating the Balance GenericConcept (after Fire Triangle and Exposure Triangle).
 ```
 Balance = A⊗S⊗F
 ```
@@ -62,7 +62,7 @@ Trade-off = R⊗V⊗E (ORIVE primary)
 
 ### ✅ Gradient Central Role
 
-**Gradient** metaconcept (already defined in M2 Ontological category) plays **central role**:
+**Gradient** GenericConcept (already defined in M2 Ontological category) plays **central role**:
 ```
 Gradient = ∇F or ∇I
 ```
@@ -279,16 +279,16 @@ The four-modes pattern appears across **8 domains**:
 
 ---
 
-## 📈 Metaconcepts Mobilized
+## 📈 GenericConcepts Mobilized
 
-**Total**: 20 metaconcepts (36% of M2 catalog)
+**Total**: 20 GenericConcepts (36% of M2 catalog)
 
 ### Newly Validated
 1. ✅ **Balance** (A⊗S⊗F) - Physiological equilibrium (3rd poclet validation)
 2. ✅ **Trade-off** (R⊗V⊗E / A⊗I) - Speed ↔ Range constraint
 3. ✅ **Gradient** (∇F / ∇I) - Central to paracrine diffusion
 
-### Existing Metaconcepts
+### Existing GenericConcepts
 **Structural**: Component (4×), Network, Space  
 **Informational**: Signal, Channel, Code, Language  
 **Regulatory**: Regulation, Homeostasis, Constraint, Threshold, Trigger  
@@ -340,7 +340,7 @@ Blood circulation **bypasses diffusion limit** (convective transport).
 - Morphogen gradients pattern development
 - Chemokine gradients recruit immune cells
 
-→ **Gradient metaconcept** (M2) validated as central to biology.
+→ **Gradient GenericConcept** (M2) validated as central to biology.
 
 ---
 
@@ -389,7 +389,7 @@ Blood circulation **bypasses diffusion limit** (convective transport).
 | Criterion | Status | Evidence |
 |-----------|--------|----------|
 | **ASFID completeness** | ✅ | All 5 dimensions present |
-| **Metaconcept coverage** | ✅ | 20/55 (36%) |
+| **GenericConcept coverage** | ✅ | 20/55 (36%) |
 | **Minimality** | ✅ | 4 components (irreducible for distance classification) |
 | **Emergence** | ✅ | Physiological coordination emerges from mode balance |
 | **Balance validated** | ✅ | 3rd poclet (Fire, Exposure, Cell Signaling) |
@@ -407,8 +407,8 @@ Blood circulation **bypasses diffusion limit** (convective transport).
 
 The **Cell Signaling Modes** poclet is a **successful 4-component system** that:
 
-1. ✅ Validates **Balance** metaconcept (3rd poclet)
-2. ✅ Validates **Trade-off** metaconcept (Speed ↔ Range)
+1. ✅ Validates **Balance** GenericConcept (3rd poclet)
+2. ✅ Validates **Trade-off** GenericConcept (Speed ↔ Range)
 3. ✅ Demonstrates **Gradient** centrality (paracrine diffusion)
 4. ✅ Achieves **Excellent ORIVE** (0.88)
 5. ✅ Exhibits **transdisciplinary** applicability (8 domains)

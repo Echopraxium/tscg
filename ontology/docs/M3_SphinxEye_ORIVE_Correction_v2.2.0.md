@@ -279,7 +279,7 @@ All comments referencing the old names have been updated throughout the file.
 2. ⏳ **M3_GenesisSpace.jsonld** - Update ORIVE expansion
 3. ⏳ **ORIVE_Terminology_Reference.md** - Already correct
 4. ⏳ **Smart Prompt** - Verify ORIVE definitions
-5. ⏳ **All M2 metaconcepts** - Check ORIVE formulas in sphinxView
+5. ⏳ **All M2 GenericConcepts** - Check ORIVE formulas in sphinxView
 
 ---
 
@@ -370,4 +370,4 @@ Each question targets a **measurable property** of a map/model.
 
 ---
 
-**⚠️ IMPORTANT:** All downstream documents, M2 metaconcepts, and poclets must be reviewed to ensure they use the **CORRECT** ORIVE terminology!
+**⚠️ IMPORTANT:** All downstream documents, M2 GenericConcepts, and poclets must be reviewed to ensure they use the **CORRECT** ORIVE terminology!

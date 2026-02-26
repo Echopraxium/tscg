@@ -381,11 +381,11 @@ ConceptContracts are behavioral specifications **orthogonal** to families. A Gen
 | Version | Date | Summary |
 |---------|------|---------|
 | **v15.7.0** | 2026-02-24 | NEW: ConceptContract system — `m2:ConceptContract` (abstract), 4 contracts: Triggerable, Observable, Composable, Stateful. 16 GenericConcepts updated with mixin + `m2:implements`. |
-| **v15.6.1** | 2026-02-24 | RENAME: `M2_MetaConcepts` → `M2_GenericConcepts`. 132 terminology replacements (`metaconcept` → `genericConcept`). Preserved biological real words. |
+| **v15.6.1** | 2026-02-24 | RENAME: `M2_GenericConcepts` → `M2_GenericConcepts`. 132 terminology replacements (`GenericConcept` → `genericConcept`). Preserved biological real words. |
 | **v15.6.0** | 2026-02-24 | M2 purification: removed `m2:Domain`, `m2:KnowledgeField`, `m2:KnowledgeFieldGenericCombo` (moved to M1). New 10th family `m2:Combo`. Declared `m2:characterizedBy`. |
 | **v15.5.3** | 2026-02-24 | Created `m2:Resource` (Ontological, `F⊗I⊗R`), `m2:Interoperability` (Structural, `S⊗I⊗F⊗V⊗E`). Corrected `m2:Flow` → `m3:eagle_eye:Flow` in Processor. |
-| **v15.5.2** | 2026-02-24 | Renamed MetaconceptCombo → GenericConceptCombo. Added `m2:hasComboComponent`, `m2:comboRole`. Updated Processor, Cascade, LALI, ButterflyEffect with explicit components and compiled formulas. |
-| **v15.5.0–15.5.1** | 2026-02-24 | OWL architecture migration: NamedIndividuals → `owl:Class` hierarchy. `m2:MetaConcept` → `m2:GenericConcept`. 15 missing properties declared. |
+| **v15.5.2** | 2026-02-24 | Renamed GenericConceptCombo → GenericConceptCombo. Added `m2:hasComboComponent`, `m2:comboRole`. Updated Processor, Cascade, LALI, ButterflyEffect with explicit components and compiled formulas. |
+| **v15.5.0–15.5.1** | 2026-02-24 | OWL architecture migration: NamedIndividuals → `owl:Class` hierarchy. `m2:GenericConcept` → `m2:GenericConcept`. 15 missing properties declared. |
 | v15.3.0 | 2026-02-18 | NEW: `m2:Alignment` (`I⊗A⊗S`), `m2:FeedbackLoop` (GenericConceptCombo). |
 
 ---

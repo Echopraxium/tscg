@@ -1,4 +1,4 @@
-# MetaconceptPair Notation — TSCG M2 Framework
+# GenericConceptPair Notation — TSCG M2 Framework
 
 **Author:** Echopraxium with the collaboration of Claude AI  
 **Version:** 15.3.3  
@@ -8,7 +8,7 @@
 
 ## 1. Motivation
 
-Several M2 metaconcepts have always been defined as **bidirectional pairs**: two named,
+Several M2 GenericConcepts have always been defined as **bidirectional pairs**: two named,
 structurally opposed poles sharing a single base tensor formula. Examples include
 `Composition/Decomposition`, `Convergence/Divergence`, `Activation/Inhibition`.
 
@@ -20,7 +20,7 @@ sometimes concatenated into a single string with a `/` separator
 - mixed two semantically distinct formulas in one field,
 - made the duality implicit rather than formal.
 
-The `MetaconceptPair` class hierarchy introduced in v15.3.3 formalises this pattern
+The `GenericConceptPair` class hierarchy introduced in v15.3.3 formalises this pattern
 with a **parametric notation** inspired by mathematical conventions.
 
 ---
@@ -28,29 +28,29 @@ with a **parametric notation** inspired by mathematical conventions.
 ## 2. Class Hierarchy
 
 ```
-m2:MetaConcept
-  └── m2:MetaconceptPair          (abstract — all named-pole dual metaconcepts)
+m2:GenericConcept
+  └── m2:GenericConceptPair          (abstract — all named-pole dual GenericConcepts)
         ├── m2:DimensionPair      (operator: A^p — dimension present or absent)
         ├── m2:SignPair           (operator: (-1)^p — sign reversal)
         ├── m2:GainPair           (operator: G^{(-1)^p} — gain inversion, G > 1)
         └── m2:StructuralPair     (direction or cardinality reversal — no scalar p)
 ```
 
-A metaconcept is a `MetaconceptPair` if and only if its two poles are:
+A GenericConcept is a `GenericConceptPair` if and only if its two poles are:
 - **named** (each pole has its own identity),
 - **structurally opposed** (one is the formal inverse of the other),
 - **sharing the same base tensor formula** (same ASFID dimensions).
 
 > **Distinction from `m2:dualCounterpart`**: `dualCounterpart` links two *different*
-> metaconcepts that share a parent but have distinct structures
-> (e.g. `LALI ↔ ButterflyEffect`). They are *not* MetaconceptPairs.
+> GenericConcepts that share a parent but have distinct structures
+> (e.g. `LALI ↔ ButterflyEffect`). They are *not* GenericConceptPairs.
 
 ---
 
 ## 3. JSON-LD Fields
 
-Every `MetaconceptPair` entry adds the following fields alongside the standard
-metaconcept fields:
+Every `GenericConceptPair` entry adds the following fields alongside the standard
+GenericConcept fields:
 
 | Field | Type | Description |
 |---|---|---|
@@ -60,7 +60,7 @@ metaconcept fields:
 | `m2:poleMapping` | `object` | Named poles with individual formulas and semantics |
 | `m2:pairType` | `string` | For `StructuralPair` only: `"DirectionReversal"` or `"CardinalityReversal"` |
 
-### `m2:hasTensorFormula` policy for MetaconceptPairs
+### `m2:hasTensorFormula` policy for GenericConceptPairs
 
 For `DimensionPair` and `SignPair`, the three formula fields redirect explicitly
 to their specific `expression` counterpart:
@@ -93,7 +93,7 @@ p = 0  →  A⁰ = 1  (neutral tensor element — dimension dissolved)
 ```json
 {
   "@id": "m2:Composition",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept", "m2:MetaconceptPair", "m2:DimensionPair"],
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept", "m2:GenericConceptPair", "m2:DimensionPair"],
   "m2:fullName": "Composition (Decomposition)",
   "m2:expression": "S ⊗ I ⊗ A^{p}",
   "m2:expressionTeX": "S \\otimes I \\otimes A^{p}",
@@ -125,7 +125,7 @@ p = 1  →  negative pole  (inhibiting, attenuating, destructive)
 ```json
 {
   "@id": "m2:Convergence",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept", "m2:MetaconceptPair", "m2:SignPair"],
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept", "m2:GenericConceptPair", "m2:SignPair"],
   "m2:fullName": "Convergence (Divergence)",
   "m2:expression": "(-1)^{p} ∇·D",
   "m2:expressionTeX": "(-1)^{p} \\nabla \\cdot D",
@@ -155,7 +155,7 @@ with `pole1` / `pole2` keys.
 ```json
 {
   "@id": "m2:Fusion",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept", "m2:MetaconceptPair", "m2:StructuralPair"],
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept", "m2:GenericConceptPair", "m2:StructuralPair"],
   "m2:fullName": "Fusion (Fission)",
   "m2:expression": null,
   "m2:pairType": "CardinalityReversal",
@@ -179,9 +179,9 @@ with `pole1` / `pole2` keys.
 
 ---
 
-## 4. Catalogue of MetaconceptPairs (v15.3.3)
+## 4. Catalogue of GenericConceptPairs (v15.3.3)
 
-**Total: 8 MetaconceptPairs** — 1 DimensionPair, 4 SignPairs, 1 GainPair, 2 StructuralPairs.
+**Total: 8 GenericConceptPairs** — 1 DimensionPair, 4 SignPairs, 1 GainPair, 2 StructuralPairs.
 
 ### 4.1 DimensionPair (1)
 
@@ -275,18 +275,18 @@ positive — there is no "negative gain", only attenuation. The neutral element 
 
 ---
 
-## 5. What is NOT a MetaconceptPair
+## 5. What is NOT a GenericConceptPair
 
-Several metaconcepts carry `m2:hasPolarity: "dual"` but are **not** `MetaconceptPair`
+Several GenericConcepts carry `m2:hasPolarity: "dual"` but are **not** `GenericConceptPair`
 because their two aspects are not structurally opposed poles on a shared base formula:
 
-| Metaconcept | Reason |
+| GenericConcept | Reason |
 |---|---|
 | `m2:Pattern` | Recognition + Reuse are **use modes** of the same concept, not opposing poles |
 | `m2:Identity` | Persistence + Uniqueness are **co-present properties**, not opposing poles |
 | `m2:Imbrication` | `S → S` is a deliberate **self-referential** formula (auto-application), not a pair |
 | `m2:Cascade`, `m2:Behavior`, `m2:Workflow`, `m2:Step`, `m2:Action`, `m2:Processor`, `m2:Tropism` | `hasPolarity: "dual"` expresses a **Territory/Map perspective duality**, not named opposite poles |
-| `m2:LocalActivationLateralInhibition`, `m2:ButterflyEffect` | Linked by `m2:dualCounterpart` — they share a parent (Amplification) but have **different structures** (`⊗⇒(Amplification, Regulation)` vs `⊗⇒(Amplification, Trajectory)`). By design decision, they are structural duals, not a MetaconceptPair. |
+| `m2:LocalActivationLateralInhibition`, `m2:ButterflyEffect` | Linked by `m2:dualCounterpart` — they share a parent (Amplification) but have **different structures** (`⊗⇒(Amplification, Regulation)` vs `⊗⇒(Amplification, Trajectory)`). By design decision, they are structural duals, not a GenericConceptPair. |
 
 ---
 
@@ -305,12 +305,12 @@ the key `"neutral"` for completeness.
 
 ---
 
-## 7. Querying MetaconceptPairs (SPARQL sketch)
+## 7. Querying GenericConceptPairs (SPARQL sketch)
 
 ```sparql
-# All MetaconceptPairs with their type and expression
+# All GenericConceptPairs with their type and expression
 SELECT ?id ?type ?expression WHERE {
-  ?id rdf:type m2:MetaconceptPair .
+  ?id rdf:type m2:GenericConceptPair .
   ?id rdf:type ?type .
   OPTIONAL { ?id m2:expression ?expression }
   FILTER(?type IN (m2:DimensionPair, m2:SignPair, m2:StructuralPair))
@@ -330,7 +330,7 @@ SELECT ?id ?pKey ?poleName ?poleFormula WHERE {
 
 | Version | Date | Change |
 |---|---|---|
-| 15.3.3 | 2026-02-18 | Introduction of `MetaconceptPair` class hierarchy. Classification of 7 pairs. |
+| 15.3.3 | 2026-02-18 | Introduction of `GenericConceptPair` class hierarchy. Classification of 7 pairs. |
 | 15.3.4 | 2026-02-18 | For all `DimensionPair` and `SignPair`: `m2:hasTensorFormula*` replaced by redirect strings. |
 | 15.3.5 | 2026-02-18 | Added `m2:expressionASCII` to all parametric pairs. Redirect strings now reference specific counterpart fields (`m2:expression`, `m2:expressionTeX`, `m2:expressionASCII`). |
-| 15.3.6 | 2026-02-18 | Added `m2:GainPair` class: operator `G^{(-1)^p}` (G>1), distinct from `SignPair` (reciprocal inversion, not sign reversal). Classified `m2:Amplification` as `GainPair`. Total: 8 MetaconceptPairs. |
+| 15.3.6 | 2026-02-18 | Added `m2:GainPair` class: operator `G^{(-1)^p}` (G>1), distinct from `SignPair` (reciprocal inversion, not sign reversal). Classified `m2:Amplification` as `GainPair`. Total: 8 GenericConceptPairs. |

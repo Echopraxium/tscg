@@ -19,7 +19,7 @@ Unlike M1_CoreConcepts (which contains transdisciplinary patterns applicable acr
 - **Domain-Bounded**: Specific to mythological/cosmological systems
 - **Culturally Transferable**: Same patterns appear across different mythologies with local symbolic variations
 - **Symbolic Nature**: Patterns operate through metaphor and symbolism rather than physical causation
-- **M2 Instantiation**: Each pattern instantiates one or more M2 metaconcepts in mythology-specific ways
+- **M2 Instantiation**: Each pattern instantiates one or more M2 GenericConcepts in mythology-specific ways
 
 ---
 
@@ -36,7 +36,7 @@ Unlike M1_CoreConcepts (which contains transdisciplinary patterns applicable acr
 
 ### Key Insight
 Mythological systems exhibit **recurring patterns** that:
-1. Instantiate M2 metaconcepts in culturally-specific symbolic forms
+1. Instantiate M2 GenericConcepts in culturally-specific symbolic forms
 2. Appear across diverse cultures (Norse, Greek, Hindu, Chinese, etc.)
 3. Organize cosmological systems into coherent, analyzable structures
 4. Enable systematic comparison of mythologies using TSCG framework
@@ -224,7 +224,7 @@ Mythological systems exhibit **recurring patterns** that:
 Early analysis suggested creating "Messenger Entity" as a new M1 mythological pattern based on Ratatosk (squirrel in Yggdrasil).
 
 ### Correction
-**Ratatosk is NOT a new M1 pattern** - it is an instance of the existing **M2:Mediator** metaconcept.
+**Ratatosk is NOT a new M1 pattern** - it is an instance of the existing **M2:Mediator** GenericConcept.
 
 **M2:Mediator (F⊗I⊗S)**: "Intermediary entity or mechanism enabling interaction between components"
 
@@ -293,7 +293,7 @@ All patterns meet or exceed 3+ threshold, but formal poclet analysis required fo
   "@context": {
     "m1:mythology": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology.jsonld#",
     "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#"
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#"
   },
   "owl:imports": [
     "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology.jsonld"
@@ -388,11 +388,11 @@ Both are now transdisciplinary M1 core concepts, not mythology-specific.
 
 ---
 
-## Related M2 Metaconcepts
+## Related M2 GenericConcepts
 
-The 4 mythological patterns instantiate the following M2 metaconcepts:
+The 4 mythological patterns instantiate the following M2 GenericConcepts:
 
-| M1 Mythology Pattern | M2 Metaconcepts Instantiated |
+| M1 Mythology Pattern | M2 GenericConcepts Instantiated |
 |---------------------|------------------------------|
 | **Cosmological Axis** | Hierarchy, Structure, Space |
 | **Primordial Opposition** | Polarity (N=2), Emergence, Dynamics |
@@ -422,7 +422,7 @@ The 4 mythological patterns instantiate the following M2 metaconcepts:
 - Identify culture-specific variations vs universal patterns
 - Map mythological evolution over time using TSCG framework
 
-### M2 Candidate Metaconcepts
+### M2 Candidate GenericConcepts
 Three candidates identified from Yggdrasil analysis (require validation):
 1. **Circulation** (F⊗D⊗I): Cyclic flux of information/energy through network
 2. **Systemic Stress** (D⊗A inverted): Constructive permanent tension
@@ -451,7 +451,7 @@ Three candidates identified from Yggdrasil analysis (require validation):
 - M0_Yggdrasil.jsonld (source poclet)
 - M0_Yggdrasil_README.md (comprehensive analysis)
 - M1_CoreConcepts.jsonld (base ontology)
-- M2_MetaConcepts.jsonld (metaconcept layer)
+- M2_GenericConcepts.jsonld (GenericConcept layer)
 
 ---
 

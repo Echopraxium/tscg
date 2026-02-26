@@ -1,17 +1,17 @@
-# M2_MetaConcepts.jsonld
+# M2_GenericConcepts.jsonld
 
 **Version:** 15.3.0 · **Date:** 2026-02-18  
 **Author:** Echopraxium with the collaboration of Claude AI  
-**Layer:** M2 — Transdisciplinary MetaConcepts  
-**Category:** `m3:TransdisciplinaryMetaConcepts`
+**Layer:** M2 — Transdisciplinary GenericConcepts  
+**Category:** `m3:TransdisciplinaryGenericConcepts`
 
 ---
 
 ## Overview
 
-`M2_MetaConcepts.jsonld` defines the **transdisciplinary pattern layer** of the TSCG (Transdisciplinary System Construction Game) framework. It contains **76 metaconcepts** — abstract systemic patterns derived as tensor products of M3 basis dimensions (ASFID) that apply universally across scientific disciplines, from biology and physics to economics and computer science.
+`M2_GenericConcepts.jsonld` defines the **transdisciplinary pattern layer** of the TSCG (Transdisciplinary System Construction Game) framework. It contains **76 GenericConcepts** — abstract systemic patterns derived as tensor products of M3 basis dimensions (ASFID) that apply universally across scientific disciplines, from biology and physics to economics and computer science.
 
-Each metaconcept is formalized as a tensor formula over the 5 ASFID dimensions:
+Each GenericConcept is formalized as a tensor formula over the 5 ASFID dimensions:
 
 | Symbol | Dimension | Role |
 |--------|-----------|------|
@@ -30,7 +30,7 @@ The M2 layer bridges the M3 mathematical foundation (Genesis Space) and the M1 d
 ```
 M3_GenesisSpace.jsonld  (Mathematical foundation — ASFID ⊕ REVOI)
         ↓  imports
-M2_MetaConcepts.jsonld  (Universal patterns — tensor products)
+M2_GenericConcepts.jsonld  (Universal patterns — tensor products)
         ↓  instantiates
 M1_Biology.jsonld, M1_Chemistry.jsonld, …  (Domain concepts)
         ↓  instantiates
@@ -39,12 +39,12 @@ M0_RAAS.jsonld, M0_Yggdrasil.jsonld, …  (Concrete systems — Poclets)
 
 ### Bicephalous Perspective
 
-Each metaconcept has a dual reading:
+Each GenericConcept has a dual reading:
 
 - **Eagle Eye (ASFID / Territory):** measures the pattern in the real system
 - **Sphinx Eye (REVOI / Map):** constructs a representation of the pattern
 
-The `m2:hasDominantM3` property indicates which ASFID dimensions are primary for each metaconcept.
+The `m2:hasDominantM3` property indicates which ASFID dimensions are primary for each GenericConcept.
 
 ---
 
@@ -54,13 +54,13 @@ The `m2:hasDominantM3` property indicates which ASFID dimensions are primary for
 {
   "@context": { "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/", ... },
   "@graph": [
-    { "@id": "m2:M2_MetaConcepts",   "@type": "owl:Ontology" },
-    { "@id": "m2:MetaConcept",       "@type": "owl:Class" },
+    { "@id": "m2:M2_GenericConcepts",   "@type": "owl:Ontology" },
+    { "@id": "m2:GenericConcept",       "@type": "owl:Class" },
     { "@id": "m2:Category",          "@type": "owl:Class" },
-    { "@id": "m2:MetaconceptCombo",  "@type": "owl:Class" },
+    { "@id": "m2:GenericConceptCombo",  "@type": "owl:Class" },
     /* OWL properties (9) */
     /* Category instances (10) */
-    /* Metaconcept instances (76) */
+    /* GenericConcept instances (76) */
   ]
 }
 ```
@@ -72,13 +72,13 @@ The file uses `@base` to simplify IRIs:
 ```json
 "@context": {
   "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-  "m2": "M2_MetaConcepts.jsonld#",
+  "m2": "M2_GenericConcepts.jsonld#",
   "m3": "M3_GenesisSpace.jsonld#"
 }
 ```
 
 So `m2:Homeostasis` resolves to:  
-`https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Homeostasis`
+`https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Homeostasis`
 
 ### `owl:imports`
 
@@ -92,9 +92,9 @@ So `m2:Homeostasis` resolves to:
 
 | Class | Description |
 |-------|-------------|
-| `m2:MetaConcept` | A systemic pattern emerging from tensor product of M3 dimensions. Represents a recognizable organizational or behavioral regularity applicable across multiple knowledge domains. |
-| `m2:Category` | Taxonomic grouping of metaconcepts based on dominant M3 dimensions and functional role. |
-| `m2:MetaconceptCombo` | A composite metaconcept emerging from the tensor coupling (⊗⇒) of two or more existing metaconcepts. Represents emergent, higher-order patterns. |
+| `m2:GenericConcept` | A systemic pattern emerging from tensor product of M3 dimensions. Represents a recognizable organizational or behavioral regularity applicable across multiple knowledge domains. |
+| `m2:Category` | Taxonomic grouping of GenericConcepts based on dominant M3 dimensions and functional role. |
+| `m2:GenericConceptCombo` | A composite GenericConcept emerging from the tensor coupling (⊗⇒) of two or more existing GenericConcepts. Represents emergent, higher-order patterns. |
 
 ---
 
@@ -102,21 +102,21 @@ So `m2:Homeostasis` resolves to:
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `m2:hasCategory` | ObjectProperty | Taxonomic category of the metaconcept |
+| `m2:hasCategory` | ObjectProperty | Taxonomic category of the GenericConcept |
 | `m2:hasTensorFormula` | DatatypeProperty | ASFID tensor formula (e.g., `A⊗S⊗F`) |
 | `m2:hasDominantM3` | ObjectProperty | Primary ASFID dimensions driving the pattern |
 | `m2:hasEpistemicGap` | DatatypeProperty | Degree of epistemic uncertainty (0.0–1.0) |
 | `m2:hasPolarity` | DatatypeProperty | `positive`, `negative`, `neutral`, `dual` |
 | `m2:shortName` | DatatypeProperty | Short identifier |
 | `m2:fullName` | DatatypeProperty | Full expanded name |
-| `m2:dualAspects` | ObjectProperty | Named poles for bipolar metaconcepts |
+| `m2:dualAspects` | ObjectProperty | Named poles for bipolar GenericConcepts |
 | `m2:hasExample` | DatatypeProperty | Domain examples illustrating the pattern |
 
 ---
 
 ## Categories
 
-The 76 metaconcepts are organized into **10 functional categories**:
+The 76 GenericConcepts are organized into **10 functional categories**:
 
 | Category | Count | Primary ASFID dimensions |
 |----------|------:|--------------------------|
@@ -133,11 +133,11 @@ The 76 metaconcepts are organized into **10 functional categories**:
 
 ---
 
-## Complete Metaconcept Reference
+## Complete GenericConcept Reference
 
 ### Adaptive (4)
 
-| Metaconcept | Formula | Notes |
+| GenericConcept | Formula | Notes |
 |-------------|---------|-------|
 | Resilience | `A⊗S` | Capacity to absorb disturbance and reorganize |
 | Adaptation | `I⊗F⊗D` | Structural modification in response to environment |
@@ -146,13 +146,13 @@ The 76 metaconcepts are organized into **10 functional categories**:
 
 ### Compositional (1)
 
-| Metaconcept | Formula | Notes |
+| GenericConcept | Formula | Notes |
 |-------------|---------|-------|
-| KnowledgeFieldMetaCombo | `KnowledgeField ⊙ Metaconcept(s)` | Disciplinary specialization of a metaconcept |
+| KnowledgeFieldGenericCombo | `KnowledgeField ⊙ GenericConcept(s)` | Disciplinary specialization of a GenericConcept |
 
 ### Dynamic (15)
 
-| Metaconcept | Formula | Notes |
+| GenericConcept | Formula | Notes |
 |-------------|---------|-------|
 | Bifurcation | `∂D/∂F` | Qualitative state change at critical parameter |
 | Transformation | `D⊗S⊗I` | Structural change preserving identity |
@@ -172,14 +172,14 @@ The 76 metaconcepts are organized into **10 functional categories**:
 
 ### Energetic (2)
 
-| Metaconcept | Formula | Notes |
+| GenericConcept | Formula | Notes |
 |-------------|---------|-------|
 | Dissipation | `F⊗D` | Irreversible energy loss to environment |
 | Storage | `S⊗F` | Accumulation and release of energy/matter |
 
 ### Informational (8)
 
-| Metaconcept | Formula | Notes |
+| GenericConcept | Formula | Notes |
 |-------------|---------|-------|
 | Code | `I⊗S` | Mapping between symbol sets |
 | Coding | `I⊗S⊗D` | Dynamic encoding/decoding process |
@@ -192,7 +192,7 @@ The 76 metaconcepts are organized into **10 functional categories**:
 
 ### Ontological (12)
 
-| Metaconcept | Formula | Notes |
+| GenericConcept | Formula | Notes |
 |-------------|---------|-------|
 | System | `S⊗F` | Bounded set of interacting components |
 | Environment | `F⊗I` | Surrounding context of a system |
@@ -203,13 +203,13 @@ The 76 metaconcepts are organized into **10 functional categories**:
 | Space | `S⊗I` | Abstract or physical extent |
 | Imbrication | `S → S` | Nested hierarchical containment |
 | Domain | `∑ᵢ σᵢ \|uᵢ⟩⊗\|vᵢ⟩` | Hybrid 5D SVD (ASFID ↔ REVOI) |
-| MetaconceptCombo | `⊗ᵢ₌₁ⁿ Mᵢ ⇒ M_result` | Generic emergent combination pattern |
+| GenericConceptCombo | `⊗ᵢ₌₁ⁿ Mᵢ ⇒ M_result` | Generic emergent combination pattern |
 | **Processor** | `⊗⇒_T(Transf., Flow, Resource) × ⊗⇒_M(Transf., Repr., Interop.)` | **[COMBO]** Bicephalous transformation unit |
 | KnowledgeField | `∑ᵢ σᵢ \|uᵢ⟩⊗\|vᵢ⟩` | Scientific/technical discipline (ASFID ⊗ REVOI) |
 
 ### Regulatory (9)
 
-| Metaconcept | Formula | Notes |
+| GenericConcept | Formula | Notes |
 |-------------|---------|-------|
 | Homeostasis | `A⊗S⊗F` | Maintenance of stable internal state |
 | Regulation | `A⊗S⊗F` | Active control toward target state |
@@ -223,7 +223,7 @@ The 76 metaconcepts are organized into **10 functional categories**:
 
 ### Relational (5)
 
-| Metaconcept | Formula | Notes |
+| GenericConcept | Formula | Notes |
 |-------------|---------|-------|
 | Agent | `S⊗I⊗D` | Autonomous entity with goals and actions |
 | Role | `S⊗I` | Functional position within a system |
@@ -233,7 +233,7 @@ The 76 metaconcepts are organized into **10 functional categories**:
 
 ### Structural (19)
 
-| Metaconcept | Formula | Notes |
+| GenericConcept | Formula | Notes |
 |-------------|---------|-------|
 | Hierarchy | `S⊗A` | Ordered levels of authority/abstraction |
 | Network | `S⊗I⊗F` | Graph of interconnected nodes |
@@ -257,15 +257,15 @@ The 76 metaconcepts are organized into **10 functional categories**:
 
 ### Teleonomic (1)
 
-| Metaconcept | Formula | Notes |
+| GenericConcept | Formula | Notes |
 |-------------|---------|-------|
 | Self-Organization | `A⊗I⊗D` | Spontaneous emergence of ordered structure without external control |
 
 ---
 
-## MetaconceptCombos
+## GenericConceptCombos
 
-A `MetaconceptCombo` is a composite pattern emerging from tensor coupling (⊗⇒) of existing metaconcepts. It is typed both as `m2:MetaConcept` and `m2:MetaconceptCombo`.
+A `GenericConceptCombo` is a composite pattern emerging from tensor coupling (⊗⇒) of existing GenericConcepts. It is typed both as `m2:GenericConcept` and `m2:GenericConceptCombo`.
 
 ### Cascade
 ```
@@ -302,7 +302,7 @@ A cyclic regulatory circuit encompassing the complete system phenomenology (all 
 
 ---
 
-## Notable Metaconcepts
+## Notable GenericConcepts
 
 ### Alignment *(v15.3.0)*
 
@@ -340,7 +340,7 @@ A hybrid variety model encoding the information-theoretic capacity of a system's
 
 ## Usage in the TSCG Hierarchy
 
-### Referencing a Metaconcept in M1
+### Referencing a GenericConcept in M1
 
 In a domain ontology (e.g., `M1_Biology.jsonld`):
 
@@ -353,7 +353,7 @@ In a domain ontology (e.g., `M1_Biology.jsonld`):
 }
 ```
 
-### Referencing a Metaconcept in M0
+### Referencing a GenericConcept in M0
 
 In a poclet (e.g., `M0_RAAS.jsonld`):
 
@@ -370,7 +370,7 @@ In a poclet (e.g., `M0_RAAS.jsonld`):
 ## Dependencies and Imports
 
 ```
-M2_MetaConcepts.jsonld
+M2_GenericConcepts.jsonld
   └── imports: M3_GenesisSpace.jsonld
         └── defines: ASFID dimensions, REVOI dimensions, m3:AlignmentLoop
 ```
@@ -387,13 +387,13 @@ The `@base` URI ensures all relative IRIs resolve correctly:
 
 | Version | Date | Summary |
 |---------|------|---------|
-| **v15.3.0** | 2026-02-18 | NEW: `m2:Alignment` (I⊗A⊗S), `m2:FeedbackLoop` (MetaconceptCombo). Total: 74→76. |
+| **v15.3.0** | 2026-02-18 | NEW: `m2:Alignment` (I⊗A⊗S), `m2:FeedbackLoop` (GenericConceptCombo). Total: 74→76. |
 | v15.2.0 | 2026-02-17 | IRI refactoring: `@base` added, simplified prefix notation. |
 | v15.1.0 | 2026-02-10 | Bidirectional operators Φ/Ψ formalized for Territory↔Map feedback. |
 | v14.5.0 | — | @context cleanup, REVOI naming aligned to v3.0.0 standard (-ability→-able). |
 | v14.4.0 | — | Phase 4 ValueSpace attributes complete: 13 attributes, 72 discrete values. |
 | v14.3.x | — | Systematic enrichment: Bifurcation, Symmetry, Threshold, Network, Signal, Gradient attributes. |
-| v14.4.0 | — | MetaconceptCombo formalized; `Cascade` and `Processor` added. |
+| v14.4.0 | — | GenericConceptCombo formalized; `Cascade` and `Processor` added. |
 
 ---
 

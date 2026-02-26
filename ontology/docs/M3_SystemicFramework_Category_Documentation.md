@@ -116,7 +116,7 @@ m3:TransdisciplinaryPattern (M2 - Universal patterns)
 - ARIZ algorithm
 
 **TSCG Mapping:**
-- Principles → M2 metaconcepts (Modularity, Segmentation, etc.)
+- Principles → M2 GenericConcepts (Modularity, Segmentation, etc.)
 - Contradictions → Tensor conflicts (A⊗S vs F⊗D)
 - Evolution patterns → Dynamics transformations
 
@@ -135,7 +135,7 @@ m3:TransdisciplinaryPattern (M2 - Universal patterns)
 **TSCG Mapping:**
 - Values → Information dimensions
 - Stakeholders → Agent networks
-- Trade-offs → Constraint metaconcepts
+- Trade-offs → Constraint GenericConcepts
 
 ---
 
@@ -190,7 +190,7 @@ m3:TransdisciplinaryPattern (M2 - Universal patterns)
 **TSCG Mapping:**
 - Feedback loops → Homeostasis, Regulation
 - Stocks/flows → Storage, Flow
-- Archetypes → M2 metaconcept patterns
+- Archetypes → M2 GenericConcept patterns
 
 ---
 
@@ -207,9 +207,9 @@ List all core concepts, processes, and relationships.
 
 ---
 
-### Step 2: Map to M2 Metaconcepts
+### Step 2: Map to M2 GenericConcepts
 
-Identify which M2 metaconcepts correspond to framework elements.
+Identify which M2 GenericConcepts correspond to framework elements.
 
 **Example (TRIZ):**
 ```
@@ -305,12 +305,12 @@ Acknowledge what TSCG adds or cannot represent.
 
 **TSCG Analysis:**
 ```sparql
-# Find contradiction-handling metaconcepts in both frameworks
-SELECT ?framework ?metaconcept
+# Find contradiction-handling GenericConcepts in both frameworks
+SELECT ?framework ?GenericConcept
 WHERE {
   ?framework m3:ontologyCategory m3:SystemicFramework ;
-             :uses ?metaconcept .
-  ?metaconcept rdfs:subClassOf m2:Constraint .
+             :uses ?GenericConcept .
+  ?GenericConcept rdfs:subClassOf m2:Constraint .
 }
 ```
 
@@ -339,7 +339,7 @@ Hybrid methodology with both technical rigor and user insight
 
 **Path:**
 1. Start with `M1_TRIZ.jsonld` (familiar territory)
-2. See how TRIZ maps to M2 metaconcepts
+2. See how TRIZ maps to M2 GenericConcepts
 3. Understand ASFID/ORIVE through TRIZ lens
 4. Gradually expand to full TSCG framework
 
@@ -363,14 +363,14 @@ WHERE {
 
 ---
 
-### Find Frameworks Using Specific Metaconcept
+### Find Frameworks Using Specific GenericConcept
 
 ```sparql
 # Find all frameworks that use m2:Modularity
 SELECT ?framework
 WHERE {
   ?framework m3:ontologyCategory m3:SystemicFramework ;
-             :containsMetaconcept m2:Modularity .
+             :containsGenericConcept m2:Modularity .
 }
 ```
 
@@ -397,7 +397,7 @@ WHERE {
   },
   
   "tscg_mapping": {
-    "m2_metaconcepts_used": [...],
+    "m2_GenericConcepts_used": [...],
     "tensor_formulas": {...},
     "epistemic_alignment": 0.85
   },

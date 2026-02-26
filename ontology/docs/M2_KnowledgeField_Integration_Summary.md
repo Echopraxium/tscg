@@ -1,4 +1,4 @@
-# M2_MetaConcepts.jsonld - KnowledgeField Integration Complete
+# M2_GenericConcepts.jsonld - KnowledgeField Integration Complete
 
 **Version:** 15.2.0  
 **Date:** 2026-02-17  
@@ -9,7 +9,7 @@
 
 ## Summary
 
-**KnowledgeField** et **KnowledgeFieldMetaCombo** successfully integrated into M2_MetaConcepts.jsonld with **full UTF-8 encoding preservation**.
+**KnowledgeField** et **KnowledgeFieldGenericCombo** successfully integrated into M2_GenericConcepts.jsonld with **full UTF-8 encoding preservation**.
 
 ---
 
@@ -23,15 +23,15 @@
 
 ---
 
-### 2. Metaconcepts Added
+### 2. GenericConcepts Added
 
-**2 new metaconcepts integrated into @graph:**
+**2 new GenericConcepts integrated into @graph:**
 
 #### m2:KnowledgeField
 ```json
 {
   "@id": "m2:KnowledgeField",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept"],
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept"],
   "rdfs:label": "KnowledgeField (Hybrid Tensor Product ASFID⊗REVOI)",
   "m2:hasCategory": "m2:Ontological",
   "m2:hasTensorFormula": "∑ᵢ σᵢ |uᵢ⟩⊗|vᵢ⟩ (5D SVD, ASFID ⊗ REVOI)",
@@ -42,19 +42,19 @@
 ```
 
 **Key properties:**
-- Hybrid metaconcept (ASFID⊗REVOI)
+- Hybrid GenericConcept (ASFID⊗REVOI)
 - Dual role: NOUN (epistemic fields) + ADJECTIVE (disciplinary tags)
-- Replaces old Domain metaconcept with enhanced theory
+- Replaces old Domain GenericConcept with enhanced theory
 - Mathematical foundation: 5D SVD of 25D tensor product
 
-#### m2:KnowledgeFieldMetaCombo
+#### m2:KnowledgeFieldGenericCombo
 ```json
 {
-  "@id": "m2:KnowledgeFieldMetaCombo",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept"],
-  "rdfs:label": "KnowledgeFieldMetaCombo (Disciplinary Specialization)",
+  "@id": "m2:KnowledgeFieldGenericCombo",
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept"],
+  "rdfs:label": "KnowledgeFieldGenericCombo (Disciplinary Specialization)",
   "m2:hasCategory": "m2:Compositional",
-  "m2:hasTensorFormula": "KnowledgeField ⊙ Metaconcept(s)",
+  "m2:hasTensorFormula": "KnowledgeField ⊙ GenericConcept(s)",
   "m2:hasPolarity": "neutral",
   ...
 }
@@ -74,7 +74,7 @@
 |--------|------------------|-----------------|--------|
 | **File size** | 272 KB | 301 KB | +29 KB |
 | **@graph items** | 93 | 95 | +2 |
-| **Metaconcepts** | 71 | 73 | +2 |
+| **GenericConcepts** | 71 | 73 | +2 |
 | **Version** | 14.4.0 | 15.2.0 | Updated |
 
 ---
@@ -126,7 +126,7 @@ with open(file, 'w', encoding='utf-8') as f:
 
 ## Category Theory Integration
 
-**M2_MetaConcepts.jsonld now references Category Theory from M3:**
+**M2_GenericConcepts.jsonld now references Category Theory from M3:**
 
 **@context already includes:**
 ```json
@@ -155,21 +155,21 @@ with open(file, 'w', encoding='utf-8') as f:
 ### Before Integration
 
 ```
-M2_MetaConcepts.jsonld (v14.4.0)
-├─ 71 metaconcepts
+M2_GenericConcepts.jsonld (v14.4.0)
+├─ 71 GenericConcepts
 ├─ No KnowledgeField
 └─ No domain factorization pattern
 ```
 
-**Problem:** Domain-specific metaconcepts would pollute M2
+**Problem:** Domain-specific GenericConcepts would pollute M2
 
 ### After Integration
 
 ```
-M2_MetaConcepts.jsonld (v15.2.0)
-├─ 73 metaconcepts
+M2_GenericConcepts.jsonld (v15.2.0)
+├─ 73 GenericConcepts
 ├─ m2:KnowledgeField (universal pattern)
-├─ m2:KnowledgeFieldMetaCombo (factorization pattern)
+├─ m2:KnowledgeFieldGenericCombo (factorization pattern)
 └─ Domain specializations → M1 extensions
 ```
 
@@ -182,7 +182,7 @@ M2_MetaConcepts.jsonld (v15.2.0)
 ### ✅ Active Reference Files
 
 **Main file:**
-- **M2_MetaConcepts.jsonld** (301 KB) - v15.2.0 with KnowledgeField integrated
+- **M2_GenericConcepts.jsonld** (301 KB) - v15.2.0 with KnowledgeField integrated
 
 **Supporting files:**
 - M3_GenesisSpace.jsonld (49 KB) - v3.1.0 with Category Theory integrated
@@ -190,7 +190,7 @@ M2_MetaConcepts.jsonld (v15.2.0)
 - M3_SphinxEye.jsonld (14 KB) - v3.1.0 unchanged
 
 **Example M1 extension:**
-- M1_Chemistry_Example_KnowledgeFieldMetaCombo.jsonld (12 KB)
+- M1_Chemistry_Example_KnowledgeFieldGenericCombo.jsonld (12 KB)
 
 ---
 
@@ -199,7 +199,7 @@ M2_MetaConcepts.jsonld (v15.2.0)
 ### ✅ Integration Complete
 
 - [x] KnowledgeField added to M2 @graph
-- [x] KnowledgeFieldMetaCombo added to M2 @graph
+- [x] KnowledgeFieldGenericCombo added to M2 @graph
 - [x] Version updated to 15.2.0
 - [x] Date updated to 2026-02-17
 - [x] UTF-8 special characters preserved
@@ -235,8 +235,8 @@ Create domain-specific M1 files following the pattern:
 {
   "@id": "m1:ChemicalLink",
   "@type": "m1:Concept",
-  "m1:hasParentMetaconcept": "m2:KnowledgeFieldMetaCombo",
-  "m1:knowledgeFieldMetaComboDef": {
+  "m1:hasParentGenericConcept": "m2:KnowledgeFieldGenericCombo",
+  "m1:KnowledgeFieldGenericComboDef": {
     "formula": "Chemical ⊙ Link"
   }
 }
@@ -285,17 +285,17 @@ Create domain-specific M1 files following the pattern:
 
 ## Conclusion
 
-✅ **KnowledgeField and KnowledgeFieldMetaCombo successfully integrated into M2_MetaConcepts.jsonld v15.2.0**
+✅ **KnowledgeField and KnowledgeFieldGenericCombo successfully integrated into M2_GenericConcepts.jsonld v15.2.0**
 
 **Key achievements:**
-- Clean M2 integration (+2 metaconcepts)
+- Clean M2 integration (+2 GenericConcepts)
 - UTF-8 encoding fully preserved
 - Mathematical formulas intact
 - Ready for M1 domain extensions
 
 **Final reference file:**
 ```
-M2_MetaConcepts.jsonld (v15.2.0, 301 KB)
+M2_GenericConcepts.jsonld (v15.2.0, 301 KB)
 ```
 
 ---

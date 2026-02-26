@@ -7,7 +7,7 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m0:color_synthesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/poclets/color_synthesis/M0_CMYK_Subtractive.jsonld#"
   },
@@ -34,7 +34,7 @@
           "@id": "m0:CyanChannel_CMYK",
           "@type": "m2:Channel",
           "rdfs:label": "Cyan Channel (C)",
-          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:GenericConceptInstantiation": "m2:Channel",
           "m0:channelType": "Ink coverage (absorption filter)",
           "m0:role": "Absorbs red light, transmits cyan",
           "m0:function": "Cyan ink coverage percentage",
@@ -52,7 +52,7 @@
           "@id": "m0:MagentaChannel_CMYK",
           "@type": "m2:Channel",
           "rdfs:label": "Magenta Channel (M)",
-          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:GenericConceptInstantiation": "m2:Channel",
           "m0:channelType": "Ink coverage (absorption filter)",
           "m0:role": "Absorbs green light, transmits magenta",
           "m0:function": "Magenta ink coverage percentage",
@@ -70,7 +70,7 @@
           "@id": "m0:YellowChannel_CMYK",
           "@type": "m2:Channel",
           "rdfs:label": "Yellow Channel (Y)",
-          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:GenericConceptInstantiation": "m2:Channel",
           "m0:channelType": "Ink coverage (absorption filter)",
           "m0:role": "Absorbs blue light, transmits yellow",
           "m0:function": "Yellow ink coverage percentage",
@@ -88,7 +88,7 @@
           "@id": "m0:KeyChannel",
           "@type": "m2:Channel",
           "rdfs:label": "Key Channel (K) - Black",
-          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:GenericConceptInstantiation": "m2:Channel",
           "m0:channelType": "Opaque black ink (non-spectral)",
           "m0:role": "Provides true black, enhances contrast, saves ink",
           "m0:function": "Black ink coverage percentage",
@@ -112,7 +112,7 @@
         }
       ],
       "m0:fusionPrinciple": {
-        "metaconcept": "m2:Fusion",
+        "GenericConcept": "m2:Fusion",
         "aspect": "Fusion (subtractive mixing + black addition)",
         "formula": "S⊗F⊗D",
         "description": "Four ink layers fuse through cumulative absorption (CMY) + opaque black overlay (K)",
@@ -195,7 +195,7 @@
         ]
       },
       "m0:halftoning": {
-        "metaconcept": "m2:Code",
+        "GenericConcept": "m2:Code",
         "principle": "Continuous tone simulated by discrete ink dots",
         "mechanism": "Variable dot size/spacing creates illusion of shades",
         "techniques": [
@@ -348,11 +348,11 @@
           "interpretation": "CMYK superior to CMY in ALL ORIVE dimensions. K addition improved observability (true black visible), interoperability (industry adopted), verifiability (measured success), evolvability (spawned variants)."
         }
       },
-      "m0:metaconceptsMobilized": {
+      "m0:GenericConceptsMobilized": {
         "total": 15,
         "critical": [
           {
-            "metaconcept": "m2:Channel",
+            "GenericConcept": "m2:Channel",
             "formula": "S⊗I⊗F",
             "role": "C, M, Y, K as four ink coverage dimensions",
             "instances": [
@@ -363,7 +363,7 @@
             ]
           },
           {
-            "metaconcept": "m2:Signal",
+            "GenericConcept": "m2:Signal",
             "formula": "I⊗F",
             "role": "Ink coverage levels encoded as signals",
             "instances": [
@@ -374,13 +374,13 @@
             ]
           },
           {
-            "metaconcept": "m2:Fusion",
+            "GenericConcept": "m2:Fusion",
             "formula": "S⊗F⊗D",
             "role": "Four ink layers fuse through absorption + black masking",
             "mechanism": "CMY spectral filtering + K opaque overlay + halftone dot fusion"
           },
           {
-            "metaconcept": "m2:Transformation",
+            "GenericConcept": "m2:Transformation",
             "formula": "D⊗I⊗S",
             "role": "RGB → CMYK conversion (complex, device-dependent)",
             "algorithms": [
@@ -390,7 +390,7 @@
             ]
           },
           {
-            "metaconcept": "m2:Code",
+            "GenericConcept": "m2:Code",
             "formula": "I⊗S⊗D",
             "role": "Halftone encoding (continuous tone → discrete dots)",
             "mechanisms": [
@@ -400,7 +400,7 @@
             ]
           },
           {
-            "metaconcept": "m2:Constraint",
+            "GenericConcept": "m2:Constraint",
             "formula": "S⊗I",
             "role": "Total ink limits",
             "constraints": [
@@ -411,7 +411,7 @@
             ]
           },
           {
-            "metaconcept": "m2:Optimization",
+            "GenericConcept": "m2:Optimization",
             "formula": "A⊗I",
             "role": "K channel optimizes CMY inefficiency",
             "objectives": [
@@ -421,19 +421,19 @@
             ]
           },
           {
-            "metaconcept": "m2:Synergy",
+            "GenericConcept": "m2:Synergy",
             "formula": "A⊗S⊗I",
             "role": "Four ink channels synergize into perceived color",
             "example": "CMYK(20,50,80,10) → Olive green (synergy of all 4 inks)"
           },
           {
-            "metaconcept": "m2:Space",
+            "GenericConcept": "m2:Space",
             "formula": "S⊗I",
             "role": "CMYK 4D hypercube",
             "geometry": "[0,100]⁴ (4-dimensional)"
           },
           {
-            "metaconcept": "m2:Representation",
+            "GenericConcept": "m2:Representation",
             "formula": "I⊗S",
             "role": "CMYK as industry-standard printing model",
             "standards": [
@@ -484,12 +484,12 @@
       ],
       "m0:validation": {
         "asfidCompleteness": "All 5 dimensions present ✅",
-        "metaconceptCoverage": "15 metaconcepts ✅",
+        "GenericConceptCoverage": "15 GenericConcepts ✅",
         "minimality": "4 channels (practical minimum for quality printing) ✅",
         "emergence": "Color from 4-channel fusion ✅",
-        "channelConcept": "Channel metaconcept correctly used ✅",
+        "channelConcept": "Channel GenericConcept correctly used ✅",
         "fusionPrinciple": "Fusion through absorption + masking ✅",
-        "practicalOptimization": "K channel demonstrates optimization metaconcept ✅"
+        "practicalOptimization": "K channel demonstrates optimization GenericConcept ✅"
       },
       "rdfs:seeAlso": [
         {
@@ -529,7 +529,7 @@
         {
           "version": "1.0.0",
           "date": "2026-01-17",
-          "changes": "Initial creation — CMYK Subtractive poclet with 15 metaconcepts, 4D hypercube model, Key-channel Optimization pattern"
+          "changes": "Initial creation — CMYK Subtractive poclet with 15 GenericConcepts, 4D hypercube model, Key-channel Optimization pattern"
         }
       ]
     }

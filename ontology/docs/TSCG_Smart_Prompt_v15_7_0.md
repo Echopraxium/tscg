@@ -6,7 +6,7 @@
 **Author**: Echopraxium with the collaboration of Claude AI  
 **Major Updates v15.5.0→v15.7.0**:
 - ✅ **OWL refactoring** : NamedIndividuals → owl:Class hierarchy (103 nodes)
-- ✅ **Rename** : MetaConcept → GenericConcept, M2_MetaConcepts → M2_GenericConcepts
+- ✅ **Rename** : GenericConcept → GenericConcept, M2_GenericConcepts → M2_GenericConcepts
 - ✅ **M2 purification** : KnowledgeField/Domain déplacés en M1 — M2 = patrons universels purs
 - ✅ **GenericConceptCombo** : formalisation rigoureuse, ⊗ = lattice join (F⊔F=F)
 - ✅ **ConceptContract system** : 4 interfaces comportementales (Triggerable, Observable, Composable, Stateful)
@@ -239,7 +239,7 @@ M1_Mythology.jsonld, M1_CoreConcepts_NuclearUpdate.jsonld
 **Key rules**:
 - All M1 concepts: `@type: owl:Class` (no more `owl:NamedIndividual`)
 - All M1 concepts: `rdfs:subClassOf m2:GenericConcept` (directly, no intermediate class)
-- M2 basis unified: `m2:characterizedBy` replaces all variants (`m1:M2_basis`, `m1:biology:m2Basis`, `m1core:m2Basis`, `m1:chemistry:instantiatesMetaconcept`)
+- M2 basis unified: `m2:characterizedBy` replaces all variants (`m1:M2_basis`, `m1:biology:m2Basis`, `m1core:m2Basis`, `m1:chemistry:instantiatesGenericConcept`)
 
 ### KnowledgeFieldGenericCombo (moved from M2)
 
@@ -417,9 +417,9 @@ GenericConcept to classify
    - Composable: Component, Node, Step
    - Stateful: Memory, Storage, Homeostasis, State
 
-### v15.6.1 (2026-02-24) — Rename M2_MetaConcepts → M2_GenericConcepts
-1. ✅ **File renamed**: M2_MetaConcepts.jsonld → M2_GenericConcepts.jsonld
-2. ✅ **132 replacements**: metaconcept→genericConcept, MetaconceptCombo→GenericConceptCombo, MetaconceptFamily→GenericConceptFamily, MetaconceptPair→GenericConceptPair, metaconceptCount→genericConceptCount
+### v15.6.1 (2026-02-24) — Rename M2_GenericConcepts → M2_GenericConcepts
+1. ✅ **File renamed**: M2_GenericConcepts.jsonld → M2_GenericConcepts.jsonld
+2. ✅ **132 replacements**: GenericConcept→genericConcept, GenericConceptCombo→GenericConceptCombo, GenericConceptFamily→GenericConceptFamily, GenericConceptPair→GenericConceptPair, GenericConceptCount→genericConceptCount
 3. ✅ **Preserved**: Metabolic, metamorphosis, metal (biological/chemical real words)
 
 ### v15.6.0 (2026-02-24) — M2 Purification & Combo Family
@@ -435,8 +435,8 @@ GenericConcept to classify
 4. ✅ **KnowledgeFieldGenericCombo.hasFamily** corrected → m2:Ontological
 
 ### v15.5.2 (2026-02-24) — GenericConceptCombo Formalization
-1. ✅ **MetaconceptCombo** → **GenericConceptCombo** (owl:Class, subClassOf GenericConcept)
-2. ✅ **KnowledgeFieldMetaCombo** → **KnowledgeFieldGenericCombo**
+1. ✅ **GenericConceptCombo** → **GenericConceptCombo** (owl:Class, subClassOf GenericConcept)
+2. ✅ **KnowledgeFieldGenericCombo** → **KnowledgeFieldGenericCombo**
 3. ✅ **⊗ = lattice join** documented (F⊔F=F, not Kronecker)
 4. ✅ **m2:hasComboComponent** + **m2:comboRole** declared
 5. ✅ Processor, Cascade, LALI, ButterflyEffect: rdfs:subClassOf → GenericConceptCombo

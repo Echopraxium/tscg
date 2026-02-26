@@ -1,5 +1,5 @@
 # Poclet Analysis Methodology
-## Heuristic for Discovering Metaconcepts and Core Concepts in TSCG
+## Heuristic for Discovering GenericConcepts and Core Concepts in TSCG
 
 **Version**: 1.0.0  
 **Date**: 2026-02-05  
@@ -28,9 +28,9 @@
 
 **Poclet analysis is not just validation — it is active discovery.**
 
-The primary purpose of analyzing a poclet (Proof of Concept minimal system) is **NOT** simply to verify that TSCG's existing metaconcepts can describe it. Rather, poclet analysis serves as a **discovery process** to:
+The primary purpose of analyzing a poclet (Proof of Concept minimal system) is **NOT** simply to verify that TSCG's existing GenericConcepts can describe it. Rather, poclet analysis serves as a **discovery process** to:
 
-1. **Identify missing transdisciplinary principles** that should exist in M2 (Metaconcepts layer)
+1. **Identify missing transdisciplinary principles** that should exist in M2 (GenericConcepts layer)
 2. **Discover generic patterns** that should be formalized in M1_CoreConcepts
 3. **Extract domain-specific concepts** for M1 extensions (M1_Biology, M1_Optics, etc.)
 
@@ -41,7 +41,7 @@ TSCG follows a four-layer hierarchy:
 ```
 M3 (Genesis Space)
   ↓ tensorization
-M2 (Metaconcepts - 71 universal patterns)
+M2 (GenericConcepts - 71 universal patterns)
   ↓ instantiation
 M1 (Core Concepts + Domain Extensions)
   ↓ validation
@@ -50,7 +50,7 @@ M0 (Poclets - minimal system instances)
 
 Poclet analysis flows **upward** through this hierarchy:
 ```
-M0 (poclet) → identifies gaps → M1 concepts → identifies gaps → M2 metaconcepts
+M0 (poclet) → identifies gaps → M1 concepts → identifies gaps → M2 GenericConcepts
 ```
 
 ---
@@ -94,9 +94,9 @@ Every poclet analysis serves **three simultaneous purposes**:
 - ✅ Success → Framework validated for this domain
 - ❌ Failure → Identifies framework gaps
 
-**Example**: Fire Triangle successfully described with existing Balance and Trade-off metaconcepts → Framework validated for combustion systems.
+**Example**: Fire Triangle successfully described with existing Balance and Trade-off GenericConcepts → Framework validated for combustion systems.
 
-### 2. Metaconcept Discovery (M0 → M2)
+### 2. GenericConcept Discovery (M0 → M2)
 
 **Question**: Does this poclet reveal universal patterns not yet formalized in M2?
 
@@ -109,7 +109,7 @@ Every poclet analysis serves **three simultaneous purposes**:
 
 **Example**: RAAS analysis revealed:
 - Path vs Trajectory distinction (Map vs Territory confusion)
-- Cascade as MetaconceptCombo(Process, Step)
+- Cascade as GenericConceptCombo(Process, Step)
 
 ### 3. Core Concept Population (M0 → M1)
 
@@ -173,8 +173,8 @@ Concepts specific to a discipline.
 - Functional patterns (sensing, processing, actuation)
 - Compositional patterns (modularity, nesting, coupling)
 
-**Technique**: Compare with known M2 metaconcepts
-- Use M2_MetaConcepts.jsonld as reference
+**Technique**: Compare with known M2 GenericConcepts
+- Use M2_GenericConcepts.jsonld as reference
 - Check M1_CoreConcepts.jsonld for generic patterns
 - Review domain-specific M1 extensions
 
@@ -198,7 +198,7 @@ For each identified pattern:
 
 ```
 IF pattern exists in M2:
-    ✅ Use existing metaconcept
+    ✅ Use existing GenericConcept
     Document usage in poclet
 ELSE:
     → Proceed to 3B
@@ -215,7 +215,7 @@ ELSE:
 
 ```
 IF passes transdisciplinary test:
-    → CANDIDATE for M2 metaconcept
+    → CANDIDATE for M2 GenericConcept
     → Proceed to Phase 4 (M2 Formalization)
 ELSE:
     → Proceed to 3C
@@ -264,20 +264,20 @@ If pattern is:
 
 #### Phase 4: M2 Formalization (if applicable)
 
-When a new M2 metaconcept is identified:
+When a new M2 GenericConcept is identified:
 
-##### Step 4.1: Determine Metaconcept Type
+##### Step 4.1: Determine GenericConcept Type
 
 **Options**:
 
-**A. Base Metaconcept**
+**A. Base GenericConcept**
 - Formula: Direct tensor product of M3 dimensions
 - Example: `Trajectory = A⊗D⊗F`
 
-**B. MetaconceptCombo**
+**B. GenericConceptCombo**
 - Formula: Synergistic combination of existing M2
 - Example: `Cascade = Process ⊗⇒ Step`
-- Identify parent metaconcepts
+- Identify parent GenericConcepts
 - Identify shared dimensions (coupling)
 
 **C. Specialization**
@@ -286,14 +286,14 @@ When a new M2 metaconcept is identified:
 
 ##### Step 4.2: Define Tensor Formula
 
-**For Base Metaconcept**:
+**For Base GenericConcept**:
 ```
 1. Identify dominant M3 dimensions (from ASFID)
 2. Write tensor product: D₁ ⊗ D₂ ⊗ ... ⊗ Dₙ
 3. Semantic interpretation of each dimension
 ```
 
-**For MetaconceptCombo**:
+**For GenericConceptCombo**:
 ```
 1. Identify parents: M_A, M_B
 2. Identify shared dimensions
@@ -326,10 +326,10 @@ Document for each domain:
 
 ##### Step 4.4: Distinguish from Related
 
-**Critical**: Clarify how new metaconcept differs from existing ones
+**Critical**: Clarify how new GenericConcept differs from existing ones
 
 ```
-vs_ExistingMetaconcept: "Clear distinction statement"
+vs_ExistingGenericConcept: "Clear distinction statement"
 ```
 
 **Example (Cascade)**:
@@ -349,7 +349,7 @@ vs_Amplification: "Amplification is gain operation; Cascade is sequential struct
 ```
 m2:discoveryContext: "Identified during RAAS analysis when distinguishing 
 cascade structure (sequential stages) from amplification operation (gain). 
-Proposed by Michel as MetaconceptCombo(Process, Step)."
+Proposed by Michel as GenericConceptCombo(Process, Step)."
 ```
 
 ---
@@ -363,7 +363,7 @@ Proposed by Michel as MetaconceptCombo(Process, Step)."
 {
   "@id": "m1:ConceptName",
   "@type": "m1:StructuralTemplate",
-  "rdfs:subClassOf": "m2:RelevantMetaconcept",
+  "rdfs:subClassOf": "m2:RelevantGenericConcept",
   "rdfs:comment": "Description emphasizing reusability",
   "m1:domains": ["Domain1", "Domain2", "Domain3"],
   "m1:hasExample": [...]
@@ -377,7 +377,7 @@ Proposed by Michel as MetaconceptCombo(Process, Step)."
 {
   "@id": "m1bio:ConceptName",
   "@type": "m1bio:DomainConcept",
-  "rdfs:subClassOf": "m2:RelevantMetaconcept",
+  "rdfs:subClassOf": "m2:RelevantGenericConcept",
   "rdfs:comment": "Domain-specific description",
   "m1bio:mechanism": "Implementation details",
   "m1bio:hasExample": [...]
@@ -433,9 +433,9 @@ Proposed by Michel as MetaconceptCombo(Process, Step)."
 
 ## Validation Criteria
 
-### For M2 Metaconcepts
+### For M2 GenericConcepts
 
-A proposed M2 metaconcept must satisfy **ALL** of:
+A proposed M2 GenericConcept must satisfy **ALL** of:
 
 #### 1. Transdisciplinary Validation
 - ✅ **≥3 examples** from **distinct domains**
@@ -449,12 +449,12 @@ A proposed M2 metaconcept must satisfy **ALL** of:
 
 #### 3. Tensor Formulation
 - ✅ Expressible as tensor product of **M3 dimensions** (ASFID/REVOI)
-- ✅ OR as **MetaconceptCombo** of existing M2
+- ✅ OR as **GenericConceptCombo** of existing M2
 - ✅ Formula has **clear semantic interpretation**
 
 #### 4. Distinction from Existing
 - ✅ **Not redundant** with existing M2
-- ✅ Clear **boundaries** with related metaconcepts
+- ✅ Clear **boundaries** with related GenericConcepts
 - ✅ Fills a **genuine gap** in M2 coverage
 
 #### 5. Epistemic Coherence
@@ -479,9 +479,9 @@ A proposed M2 metaconcept must satisfy **ALL** of:
 
 | Layer | Additions | Type |
 |-------|-----------|------|
-| **M2** | Trajectory (A⊗D⊗F) | New metaconcept |
+| **M2** | Trajectory (A⊗D⊗F) | New GenericConcept |
 | **M2** | Path correction (territory→map) | Correction |
-| **M2** | Cascade (S⊗I⊗D⊗F) | MetaconceptCombo(Process, Step) |
+| **M2** | Cascade (S⊗I⊗D⊗F) | GenericConceptCombo(Process, Step) |
 | **M1_Core** | FeedbackLoop | Structural template |
 | **M1_Biology** | HormonalCascade, EndocrineAxis | Domain concepts |
 
@@ -506,7 +506,7 @@ Every new M2 entry must include complete metadata: label, comment, category, ten
 
 ### ❌ Anti-Patterns
 
-1. **Over-Metaconcept Creation** — Creating M2 for every observed pattern
+1. **Over-GenericConcept Creation** — Creating M2 for every observed pattern
 2. **Ignoring Existing Concepts** — Not checking if pattern already exists
 3. **Insufficient Validation** — Claiming transdisciplinarity with <3 domains
 4. **Vague Distinctions** — Can't clearly differentiate from existing concepts
@@ -523,7 +523,7 @@ Every new M2 entry must include complete metadata: label, comment, category, ten
 
 Every poclet represents an opportunity to:
 1. **Validate** existing framework
-2. **Discover** missing metaconcepts
+2. **Discover** missing GenericConcepts
 3. **Populate** M1 concepts
 4. **Evolve** TSCG's theoretical foundations
 

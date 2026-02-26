@@ -7,7 +7,7 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m0:color_synthesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/poclets/color_synthesis/M0_HSL_Additive.jsonld#"
   },
@@ -44,7 +44,7 @@
           "@id": "m0:HueChannel",
           "@type": "m2:Channel",
           "rdfs:label": "Hue Channel (H)",
-          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:GenericConceptInstantiation": "m2:Channel",
           "m0:channelType": "Perceptual dimension (color type)",
           "m0:role": "Encodes qualitative color attribute - the 'kind' of color",
           "m0:function": "Dominant wavelength / color family",
@@ -77,7 +77,7 @@
           "@id": "m0:SaturationChannel",
           "@type": "m2:Channel",
           "rdfs:label": "Saturation Channel (S)",
-          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:GenericConceptInstantiation": "m2:Channel",
           "m0:channelType": "Perceptual dimension (color purity)",
           "m0:role": "Encodes chromatic intensity - purity vs grayness",
           "m0:function": "Distance from achromatic axis (gray)",
@@ -104,7 +104,7 @@
           "@id": "m0:LightnessChannel",
           "@type": "m2:Channel",
           "rdfs:label": "Lightness Channel (L)",
-          "m0:metaconceptInstantiation": "m2:Channel",
+          "m0:GenericConceptInstantiation": "m2:Channel",
           "m0:channelType": "Perceptual dimension (brightness)",
           "m0:role": "Encodes perceived brightness",
           "m0:function": "Vertical position (dark to light)",
@@ -130,7 +130,7 @@
         }
       ],
       "m0:fusionPrinciple": {
-        "metaconcept": "m2:Fusion",
+        "GenericConcept": "m2:Fusion",
         "aspect": "Fusion (perceptual integration via RGB transformation)",
         "formula": "S⊗F⊗D",
         "description": "Three perceptual channels (H, S, L) fuse through transformation to RGB, then electromagnetic wave superposition produces perceived color",
@@ -170,7 +170,7 @@
         ]
       },
       "m0:fissionPrinciple": {
-        "metaconcept": "m2:Fusion (fission aspect)",
+        "GenericConcept": "m2:Fusion (fission aspect)",
         "formula": "S⊗F⊗D",
         "description": "Perceived color separated into perceptual dimensions",
         "operation": "Perceived_Color → FISSION → (H_angle, S_purity, L_brightness)",
@@ -182,7 +182,7 @@
         ]
       },
       "m0:transformationToRGB": {
-        "metaconcept": "m2:Transformation",
+        "GenericConcept": "m2:Transformation",
         "formula": "D⊗I⊗S",
         "reversible": true,
         "lossless": true,
@@ -310,11 +310,11 @@
           "evolvabilityExample": "RGB→HSL demonstrates Map adaptation without changing Territory"
         }
       },
-      "m0:metaconceptsMobilized": {
+      "m0:GenericConceptsMobilized": {
         "total": 14,
         "critical": [
           {
-            "metaconcept": "m2:Channel",
+            "GenericConcept": "m2:Channel",
             "formula": "S⊗I⊗F",
             "role": "H, S, L as perceptual transmission dimensions",
             "instances": [
@@ -324,7 +324,7 @@
             ]
           },
           {
-            "metaconcept": "m2:Signal",
+            "GenericConcept": "m2:Signal",
             "formula": "I⊗F",
             "role": "Perceptual attributes as signals",
             "instances": [
@@ -334,31 +334,31 @@
             ]
           },
           {
-            "metaconcept": "m2:Fusion",
+            "GenericConcept": "m2:Fusion",
             "formula": "S⊗F⊗D",
             "role": "Channels fuse (via RGB) into perceived color",
             "mechanism": "HSL → RGB → Light waves → Perception"
           },
           {
-            "metaconcept": "m2:Transformation",
+            "GenericConcept": "m2:Transformation",
             "formula": "D⊗I⊗S",
             "role": "Bijective HSL ↔ RGB conversion",
             "properties": "Lossless, reversible"
           },
           {
-            "metaconcept": "m2:Space",
+            "GenericConcept": "m2:Space",
             "formula": "S⊗I",
             "role": "HSL cylindrical color space",
             "geometry": "Cylinder (H angular, S radial, L vertical)"
           },
           {
-            "metaconcept": "m2:Representation",
+            "GenericConcept": "m2:Representation",
             "formula": "I⊗S",
             "role": "Perceptual representation of RGB",
             "advantage": "Human-friendly"
           },
           {
-            "metaconcept": "m2:Code",
+            "GenericConcept": "m2:Code",
             "formula": "I⊗S⊗D",
             "role": "Color encoding as HSL triplet",
             "formats": [
@@ -367,7 +367,7 @@
             ]
           },
           {
-            "metaconcept": "m2:Invariant",
+            "GenericConcept": "m2:Invariant",
             "formula": "S⊗A",
             "role": "Properties preserved under transformation",
             "invariants": [
@@ -376,7 +376,7 @@
             ]
           },
           {
-            "metaconcept": "m2:Constraint",
+            "GenericConcept": "m2:Constraint",
             "formula": "S⊗I",
             "role": "Value bounds and singularities",
             "constraints": [
@@ -387,19 +387,19 @@
             ]
           },
           {
-            "metaconcept": "m2:Topology",
+            "GenericConcept": "m2:Topology",
             "formula": "S⊗I",
             "role": "Cylindrical topology",
             "properties": "S¹ × [0,1] × [0,1]"
           },
           {
-            "metaconcept": "m2:Symmetry",
+            "GenericConcept": "m2:Symmetry",
             "formula": "S",
             "role": "Cylindrical symmetry",
             "symmetries": "Rotational around L axis"
           },
           {
-            "metaconcept": "m2:Synergy",
+            "GenericConcept": "m2:Synergy",
             "formula": "A⊗S⊗I",
             "role": "Three dimensions combine into unified color",
             "example": "H=0°, S=100%, L=50% → Pure red"
@@ -451,10 +451,10 @@
       ],
       "m0:validation": {
         "asfidCompleteness": "All 5 dimensions present ✅",
-        "metaconceptCoverage": "14 metaconcepts ✅",
+        "GenericConceptCoverage": "14 GenericConcepts ✅",
         "minimality": "3 channels (perceptual triplet) ✅",
         "emergence": "Color from perceptual channel fusion ✅",
-        "channelConcept": "Channel metaconcept used ✅",
+        "channelConcept": "Channel GenericConcept used ✅",
         "fusionPrinciple": "Fusion via RGB transformation ✅",
         "bijectiveToRGB": "Lossless HSL ↔ RGB ✅"
       },

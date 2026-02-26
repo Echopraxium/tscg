@@ -25,7 +25,7 @@ human perception and artistic manipulation rather than hardware rendering.
 | Components | 3 (H, S, L channels) |
 | Poclet type | Composite (Specialized) |
 | Relation to RGB | Bijective transformation (lossless, reversible) |
-| M2 Metaconcepts | 14 |
+| M2 GenericConcepts | 14 |
 
 ---
 
@@ -59,7 +59,7 @@ human perception and artistic manipulation rather than hardware rendering.
 
 ## Channels (Components)
 
-| Channel | Metaconcept | Tensor Formula | Range | Geometry |
+| Channel | GenericConcept | Tensor Formula | Range | Geometry |
 |---|---|---|---|---|
 | Hue (H) | `m2:Channel` | `S⊗I⊗F` | [0°, 360°) circular | Angular |
 | Saturation (S) | `m2:Channel` | `S⊗I⊗F` | [0%, 100%] | Radial |
@@ -77,9 +77,9 @@ human perception and artistic manipulation rather than hardware rendering.
 
 ---
 
-## Metaconcepts Mobilized (14)
+## GenericConcepts Mobilized (14)
 
-| Category | Metaconcepts |
+| Category | GenericConcepts |
 |---|---|
 | Structural | Space · Topology · Symmetry · Invariant |
 | Informational | Channel · Signal · Code · Representation |
@@ -121,10 +121,10 @@ RGB → HSL:
 ## TSCG Validation
 
 - ✅ All 5 ASFID dimensions present  
-- ✅ 14 metaconcepts  
+- ✅ 14 GenericConcepts  
 - ✅ 3 channels (perceptual triplet)  
 - ✅ Emergence (color from perceptual channel fusion)  
-- ✅ Channel metaconcept correctly used  
+- ✅ Channel GenericConcept correctly used  
 - ✅ Bijective lossless HSL ↔ RGB
 
 ---

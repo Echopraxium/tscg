@@ -10,7 +10,7 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "M3_GenesisSpace.jsonld#",
-    "m2": "M2_MetaConcepts.jsonld#",
+    "m2": "M2_GenericConcepts.jsonld#",
     "m1:core": "M1_CoreConcepts.jsonld#",
     "m1:biology": "M1_extensions/biology/M1_Biology.jsonld#",
     "m0:cell_signaling_modes": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/cell_signaling_modes/M0_CellSignalingModes.jsonld#"
@@ -28,7 +28,7 @@
       "owl:versionInfo": "1.0.0",
       "owl:imports": [
         "M3_GenesisSpace.jsonld",
-        "M2_MetaConcepts.jsonld",
+        "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld",
         "M1_extensions/biology/M1_Biology.jsonld"
       ],
@@ -48,7 +48,7 @@
           "@id": "m0:AutocrineSignaling",
           "@type": "m2:Component",
           "rdfs:label": "Autocrine Signaling",
-          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:GenericConceptInstantiation": "m2:Component",
           "m0:role": "Self-signaling - cell responds to its own secreted signals",
           "m0:function": "Local feedback regulation and cell growth control",
           "m0:physicalCorrelate": "Hormone binds to receptors on same cell that secreted it",
@@ -84,7 +84,7 @@
           "@id": "m0:ParacrineSignaling",
           "@type": "m2:Component",
           "rdfs:label": "Paracrine Signaling",
-          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:GenericConceptInstantiation": "m2:Component",
           "m0:role": "Local neighborhood signaling - affects nearby cells",
           "m0:function": "Coordinate activity of cell populations in tissue microenvironment",
           "m0:physicalCorrelate": "Hormone diffuses through extracellular fluid to neighboring cells",
@@ -127,7 +127,7 @@
           "@id": "m0:NeuroendocrineSignaling",
           "@type": "m2:Component",
           "rdfs:label": "Neuroendocrine Signaling",
-          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:GenericConceptInstantiation": "m2:Component",
           "m0:role": "Neural-to-systemic bridge - neurons secrete hormones into bloodstream",
           "m0:function": "Rapid neural trigger with sustained systemic endocrine effect",
           "m0:physicalCorrelate": "Hypothalamic neurons release hormones into posterior pituitary → circulation",
@@ -170,7 +170,7 @@
           "@id": "m0:EndocrineSignaling",
           "@type": "m2:Component",
           "rdfs:label": "Endocrine Signaling (Classic)",
-          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:GenericConceptInstantiation": "m2:Component",
           "m0:role": "Systemic signaling - hormone travels through bloodstream to distant targets",
           "m0:function": "Coordinate physiology across entire organism (metabolism, growth, reproduction)",
           "m0:physicalCorrelate": "Endocrine gland secretes hormone → blood → target organs with receptors",
@@ -213,7 +213,7 @@
         }
       ],
       "m0:balancePrinciple": {
-        "metaconcept": "m2:Balance",
+        "GenericConcept": "m2:Balance",
         "formula": "A⊗S⊗F",
         "description": "Physiological equilibrium achieved through context-dependent mixture of the four signaling modes. No single mode dominates universally - balance shifts according to physiological need.",
         "contextualBalance": {
@@ -259,7 +259,7 @@
         }
       },
       "m0:tradeoffPrinciple": {
-        "metaconcept": "m2:Trade-off",
+        "GenericConcept": "m2:Trade-off",
         "oriveFormula": "R⊗V⊗E (primary)",
         "asfidFormula": "A⊗I (fallback)",
         "description": "Fundamental biophysical constraint: Cannot simultaneously maximize signal transmission SPEED and SPATIAL RANGE. Four modes represent optimal solutions on Pareto frontier.",
@@ -480,128 +480,128 @@
           "korzybskiPrinciple": "Map simplifies Territory (omits crosstalk, receptor diversity) but captures essential organizational principle (distance-dependent signaling)."
         }
       },
-      "m0:metaconceptsMobilized": {
+      "m0:GenericConceptsMobilized": {
         "total": 20,
         "critical": [
           {
-            "metaconcept": "m2:Balance",
+            "GenericConcept": "m2:Balance",
             "formula": "A⊗S⊗F",
             "role": "Physiological equilibrium between 4 modes (context-dependent mixture)",
             "instantiation": "Inflammation: Paracrine 70% + Endocrine 20% + Autocrine 10%. Stress: Neuroendocrine 60% + Endocrine 40%.",
             "discovery": "Validated in Cell Signaling poclet (3rd poclet after Fire + Exposure Triangle)"
           },
           {
-            "metaconcept": "m2:Trade-off",
+            "GenericConcept": "m2:Trade-off",
             "formula": "R⊗V⊗E (ORIVE), A⊗I (ASFID fallback)",
             "role": "Fundamental constraint: Speed ↔ Range. Four modes are Pareto-optimal solutions.",
             "instantiation": "Autocrine: Max speed, min range. Endocrine: Max range, min speed. Neuroendocrine: Hybrid (best of both).",
             "discovery": "Validated in Cell Signaling poclet"
           },
           {
-            "metaconcept": "m2:Gradient",
+            "GenericConcept": "m2:Gradient",
             "formula": "∇F or ∇I",
             "role": "Concentration gradient drives paracrine diffusion (Fick's laws: J = -D∇C)",
             "instantiation": "Morphogen gradients (Hedgehog, BMP) in development. Chemokine gradients in immune cell recruitment.",
             "centralRole": "Paracrine mode fundamentally depends on spatial gradient"
           },
           {
-            "metaconcept": "m2:Component",
+            "GenericConcept": "m2:Component",
             "formula": "S⊗I",
             "role": "Four modes as elementary constitutive parts of cellular signaling",
             "instantiation": "Autocrine, Paracrine, Neuroendocrine, Endocrine - each with distinct function"
           },
           {
-            "metaconcept": "m2:Signal",
+            "GenericConcept": "m2:Signal",
             "formula": "I⊗F",
             "role": "Hormones as information carriers",
             "instantiation": "Insulin signal (glucose ↓), Adrenaline signal (danger), Oxytocin signal (bonding)"
           },
           {
-            "metaconcept": "m2:Channel",
+            "GenericConcept": "m2:Channel",
             "formula": "S⊗I⊗F",
             "role": "Blood vessels as systemic signaling channels (endocrine)",
             "instantiation": "Cardiovascular system distributes hormones (5 L/min cardiac output)"
           },
           {
-            "metaconcept": "m2:Code",
+            "GenericConcept": "m2:Code",
             "formula": "I⊗S⊗D",
             "role": "Hormonal code (concentration, pattern, timing)",
             "instantiation": "GnRH pulsatile secretion (frequency code: fast pulses → LH, slow → FSH)"
           },
           {
-            "metaconcept": "m2:Threshold",
+            "GenericConcept": "m2:Threshold",
             "formula": "A⊗I",
             "role": "Receptor activation threshold, dose-response curves",
             "instantiation": "Insulin: EC50 ~0.1 nM. Cortisol: Threshold for stress response ~300 nM."
           },
           {
-            "metaconcept": "m2:Trigger",
+            "GenericConcept": "m2:Trigger",
             "formula": "D⊗I",
             "role": "Stimulus initiating hormonal response",
             "instantiation": "Hypoglycemia → Glucagon release. Stress → CRH release. Suckling → Oxytocin release."
           },
           {
-            "metaconcept": "m2:Regulation",
+            "GenericConcept": "m2:Regulation",
             "formula": "A⊗S⊗F",
             "role": "Negative/positive feedback loops maintaining homeostasis",
             "instantiation": "HPA axis: Cortisol ⊣ CRH/ACTH (negative feedback). Oxytocin in labor: Stretch → Oxytocin ↑ (positive feedback)."
           },
           {
-            "metaconcept": "m2:Homeostasis",
+            "GenericConcept": "m2:Homeostasis",
             "formula": "A⊗S⊗F",
             "role": "Stable internal state despite external perturbations",
             "instantiation": "Glucose 4-6 mM (insulin/glucagon). Ca²⁺ 2.2-2.6 mM (PTH/calcitonin). Temp 37°C (thyroid)."
           },
           {
-            "metaconcept": "m2:Synergy",
+            "GenericConcept": "m2:Synergy",
             "formula": "A⊗S⊗I",
             "role": "Multiple hormones cooperating (effect > sum of parts)",
             "instantiation": "GH + IGF-1 (growth). Insulin + cortisol (metabolism). E2 + P4 (menstrual cycle)."
           },
           {
-            "metaconcept": "m2:Network",
+            "GenericConcept": "m2:Network",
             "formula": "S⊗I⊗F",
             "role": "Signaling pathways as networks (crosstalk, feedback loops)",
             "instantiation": "HPA axis network, Insulin signaling cascade (IRS → PI3K → Akt), Cytokine networks (immune)."
           },
           {
-            "metaconcept": "m2:Space",
+            "GenericConcept": "m2:Space",
             "formula": "S⊗I",
             "role": "Spatial domains (intracellular, extracellular, systemic)",
             "instantiation": "Autocrine: Cell surface. Paracrine: ECM. Endocrine: Vascular space."
           },
           {
-            "metaconcept": "m2:Constraint",
+            "GenericConcept": "m2:Constraint",
             "formula": "S⊗I",
             "role": "Physical limits (diffusion rate, blood flow, receptor affinity)",
             "instantiation": "Diffusion: L²/D ~ hours for cm scale. Blood flow: 5 L/min max. Receptor Kd: 0.1 nM - 1 µM."
           },
           {
-            "metaconcept": "m2:Transformation",
+            "GenericConcept": "m2:Transformation",
             "formula": "D⊗I⊗S",
             "role": "Hormone metabolism (pro-hormone → active → inactive)",
             "instantiation": "T4 → T3 (thyroid). Testosterone → DHT (5α-reductase). Cortisone → Cortisol (11β-HSD)."
           },
           {
-            "metaconcept": "m2:Process",
+            "GenericConcept": "m2:Process",
             "formula": "D⊗F",
             "role": "Signaling as temporal process (secretion → transport → binding → response)",
             "instantiation": "Insulin secretion → blood → muscle glucose uptake (minutes). GH → IGF-1 → growth (hours-days)."
           },
           {
-            "metaconcept": "m2:Event",
+            "GenericConcept": "m2:Event",
             "formula": "D⊗I",
             "role": "Discrete hormonal events (spikes, pulses)",
             "instantiation": "LH surge (ovulation). Cortisol awakening response. Oxytocin pulses (labor contractions)."
           },
           {
-            "metaconcept": "m2:Memory",
+            "GenericConcept": "m2:Memory",
             "formula": "∫(D - F)dτ",
             "role": "Long-term hormonal effects (gene expression changes, receptor desensitization)",
             "instantiation": "Puberty (permanent developmental changes via sex steroids). Receptor downregulation after chronic stimulation."
           },
           {
-            "metaconcept": "m2:Language",
+            "GenericConcept": "m2:Language",
             "formula": "I⊗S⊗F",
             "role": "Hormonal vocabulary and notation",
             "instantiation": "'Autocrine loop', 'Paracrine factor', 'Endocrine axis', 'Neuroendocrine reflex'. Abbreviations: GH, ACTH, T4, E2."
@@ -660,7 +660,7 @@
             "CellSignaling": "Distance-dependent signaling (spatial scale)"
           }
         },
-        "metaconceptComparison": {
+        "GenericConceptComparison": {
           "Balance": {
             "FireTriangle": "Implicit (fuel/O₂ ratio for complete combustion)",
             "ExposureTriangle": "Explicit (ISO × Aperture × Shutter = const)",
@@ -789,12 +789,12 @@
       },
       "m0:validation": {
         "asfidCompleteness": "All 5 dimensions present ✅",
-        "metaconceptCoverage": "20 metaconcepts (36%) including Balance + Trade-off + Gradient ✅",
+        "GenericConceptCoverage": "20 GenericConcepts (36%) including Balance + Trade-off + Gradient ✅",
         "minimality": "Four components (irreducible for distance-dependent signaling classification) ✅",
         "emergence": "Physiological coordination emerges from mode balance ✅",
         "balanceValidated": "Third poclet validating Balance (after Fire + Exposure) ✅",
         "tradeoffValidated": "Speed ↔ Range fundamental biophysical constraint ✅",
-        "gradientCentral": "Gradient metaconcept (M2) plays central role in paracrine mode ✅",
+        "gradientCentral": "Gradient GenericConcept (M2) plays central role in paracrine mode ✅",
         "transdisciplinaryPotential": "8 domains with analogous communication modes ✅"
       },
       "m0:futureExtensions": {

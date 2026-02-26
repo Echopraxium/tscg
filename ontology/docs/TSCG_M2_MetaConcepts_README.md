@@ -1,9 +1,9 @@
-# TSCG M2 MetaConcepts Ontology
+# TSCG M2 GenericConcepts Ontology
 
 **Version**: 7.2.0  
 **Status**: Production Ready - COMPLETE ✅  
 **Date**: January 15, 2026  
-**Namespace**: `https://github.com/Echopraxium/tscg/blob/main/ontology/TSCG_M2_MetaConcepts_Ontology.jsonld#`
+**Namespace**: `https://github.com/Echopraxium/tscg/blob/main/ontology/TSCG_M2_GenericConcepts_Ontology.jsonld#`
 
 ---
 
@@ -13,7 +13,7 @@
 2. [Mathematical Framework](#mathematical-framework)
 3. [Triple Axes Framework](#triple-axes-framework)
 4. [The Nine Categories](#the-nine-categories)
-5. [The 50 Metaconcepts](#the-42-metaconcepts)
+5. [The 50 GenericConcepts](#the-42-GenericConcepts)
 6. [Polarity System](#polarity-system)
 7. [Epistemic Gap](#epistemic-gap)
 8. [Category Theory Integration](#category-theory-integration)
@@ -27,14 +27,14 @@
 
 ### What is M2?
 
-**M2** (Metaconcepts Layer) is the second foundational layer of the **TSCG** (Transdisciplinary System Construction Game) framework. In the LEGO Technic analogy:
+**M2** (GenericConcepts Layer) is the second foundational layer of the **TSCG** (Transdisciplinary System Construction Game) framework. In the LEGO Technic analogy:
 
 - **M3** = Elementary bricks (5 orthonormal dimensions: A, S, F, I, D)
 - **M2** = Sub-assemblies (systemic patterns from tensor products of M3)
 - **M1** = Instructions (domain-specific concepts)
 - **M0** = Constructions (actual systems)
 
-M2 defines **50 metaconcepts** that represent recognizable organizational patterns found across multiple domains. These are not domain-specific terms (biology, economics, sociology) but **pure systemic vocabulary** drawn from:
+M2 defines **50 GenericConcepts** that represent recognizable organizational patterns found across multiple domains. These are not domain-specific terms (biology, economics, sociology) but **pure systemic vocabulary** drawn from:
 
 - Systems Theory (von Bertalanffy, Laszlo)
 - Cybernetics (Wiener, Ashby, Beer)
@@ -50,7 +50,7 @@ M2 defines **50 metaconcepts** that represent recognizable organizational patter
 - ✅ M2: Network, Hierarchy, Feedback, Memory
 - ❌ M2: Neuron, Market, Gene, Organization (→ M1)
 
-**Purpose**: Enable **ontological weaving** - metaconcepts relate to each other through semantic proximity, inclusion, composition, causality, and duality relationships, forming a coherent systemic fabric.
+**Purpose**: Enable **ontological weaving** - GenericConcepts relate to each other through semantic proximity, inclusion, composition, causality, and duality relationships, forming a coherent systemic fabric.
 
 ---
 
@@ -70,18 +70,18 @@ Where:
 - **Order 3**: 125 components (trilinear: A⊗S⊗F, I⊗S⊗D, etc.)
 - **Total**: 155 possible tensor components
 
-### From Tensors to Metaconcepts
+### From Tensors to GenericConcepts
 
-Not all 155 tensor components correspond to meaningful metaconcepts. M2 selects 50 patterns that:
+Not all 155 tensor components correspond to meaningful GenericConcepts. M2 selects 50 patterns that:
 
 1. Have clear **systemic semantics** (recognizable across domains)
 2. Are **non-redundant** (minimal collisions)
 3. Cover the **essential systemic vocabulary**
-4. Enable **compositional reasoning** (metaconcepts combine)
+4. Enable **compositional reasoning** (GenericConcepts combine)
 
 ### Tensor Notation Examples
 
-| Metaconcept | Tensor Formula | Interpretation |
+| GenericConcept | Tensor Formula | Interpretation |
 |-------------|----------------|----------------|
 | Homeostasis | A⊗S⊗F | Attractor coupled with structure and flow |
 | Memory | ∫(D-F)dτ | Temporal integration of dynamics minus flow |
@@ -94,11 +94,11 @@ Not all 155 tensor components correspond to meaningful metaconcepts. M2 selects 
 
 ## Triple Axes Framework
 
-M2 metaconcepts are characterized by **three orthogonal axes**:
+M2 GenericConcepts are characterized by **three orthogonal axes**:
 
 ### Axis 1: Ontological Nature
 
-**Question**: *Does this metaconcept exist in models, reality, or both?*
+**Question**: *Does this GenericConcept exist in models, reality, or both?*
 
 - **ModelSpace**: Abstract representations, maps, theories
   - Examples: Constraint, Hierarchy, Symmetry, Code
@@ -114,7 +114,7 @@ M2 metaconcepts are characterized by **three orthogonal axes**:
 
 ### Axis 2: Operational Direction
 
-**Question**: *Is this metaconcept about observing/analyzing or generating/building?*
+**Question**: *Is this GenericConcept about observing/analyzing or generating/building?*
 
 - **Analytical** (Φ_A: M0 → M3): Observe, decompose, measure
   - Examples: Constraint, Threshold, Representation, Role
@@ -130,7 +130,7 @@ M2 metaconcepts are characterized by **three orthogonal axes**:
 
 ### Axis 3: Granularity Direction
 
-**Question**: *Does this metaconcept aggregate or disaggregate?*
+**Question**: *Does this GenericConcept aggregate or disaggregate?*
 
 - **Composition**: Bottom-up (atoms → molecule, parts → whole)
   - Examples: Emergence, Modularity (when building)
@@ -149,7 +149,7 @@ M2 metaconcepts are characterized by **three orthogonal axes**:
 ### Independence of Axes
 
 These three axes are **orthogonal** (independent):
-- A metaconcept can be (ModelSpace, Analytical, N/A)
+- A GenericConcept can be (ModelSpace, Analytical, N/A)
 - Another can be (RealitySpace, Constructive, Composition)
 - A third can be (DualNature, DualProjection, Bidirectional)
 
@@ -157,14 +157,14 @@ These three axes are **orthogonal** (independent):
 
 ## The Nine Categories
 
-Metaconcepts are grouped into **9 functional categories** based on dominant M3 dimensions and systemic role:
+GenericConcepts are grouped into **9 functional categories** based on dominant M3 dimensions and systemic role:
 
 ### 1. Structural Category
 
 **Dominant M3**: S (Structure), low D (Dynamics)  
 **Focus**: Topology, organization, spatial arrangement
 
-**Metaconcepts (14)**:
+**GenericConcepts (14)**:
 - Hierarchy, Network, Symmetry, Modularity, Topology, Segmentation
 - Invariant, Signature, Capacity, Space
 - Node, Path, Cluster, Hub
@@ -178,7 +178,7 @@ Metaconcepts are grouped into **9 functional categories** based on dominant M3 d
 **Dominant M3**: D (Dynamics)  
 **Focus**: Processes, transformations, temporal evolution
 
-**Metaconcepts (8)**:
+**GenericConcepts (8)**:
 - Transformation, Bifurcation, Process, Event
 - Synergy (dual), Fusion (dual), Convergence (dual), Gradient
 
@@ -191,7 +191,7 @@ Metaconcepts are grouped into **9 functional categories** based on dominant M3 d
 **Dominant M3**: A (Attractor), tensor couplings  
 **Focus**: Control, stabilization, constraint mechanisms
 
-**Metaconcepts (7)**:
+**GenericConcepts (7)**:
 - Homeostasis, Regulation, Constraint
 - Threshold, Trigger, Activation (dual), Tropism (dual)
 
@@ -204,7 +204,7 @@ Metaconcepts are grouped into **9 functional categories** based on dominant M3 d
 **Dominant M3**: I (Information), medium F (Flow)  
 **Focus**: Learning, evolution, environmental response
 
-**Metaconcepts (4)**:
+**GenericConcepts (4)**:
 - Resilience, Adaptation, Emergence, Memory
 
 **Examples**: Neural plasticity, ecosystem resilience, machine learning
@@ -216,7 +216,7 @@ Metaconcepts are grouped into **9 functional categories** based on dominant M3 d
 **Dominant M3**: F (Flow), high D (Dynamics)  
 **Focus**: Energy, matter, information flows
 
-**Metaconcepts (2)**:
+**GenericConcepts (2)**:
 - Dissipation, Storage
 
 **Examples**: Heat dissipation, battery storage, data buffers
@@ -228,7 +228,7 @@ Metaconcepts are grouped into **9 functional categories** based on dominant M3 d
 **Dominant M3**: I (Information)  
 **Focus**: Data, representation, communication
 
-**Metaconcepts (6)**:
+**GenericConcepts (6)**:
 - Code, Coding (dual), Representation, Language, Signature, Signal
 
 **Examples**: Genetic code, natural languages, data formats
@@ -240,7 +240,7 @@ Metaconcepts are grouped into **9 functional categories** based on dominant M3 d
 **Dominant M3**: S⊗F patterns  
 **Focus**: Fundamental system entities and boundaries
 
-**Metaconcepts (7)**:
+**GenericConcepts (7)**:
 - System, Environment, Observer, State, Substrate, Gradient, Space
 
 **Examples**: System-environment boundary, state space, phase space
@@ -252,7 +252,7 @@ Metaconcepts are grouped into **9 functional categories** based on dominant M3 d
 **Dominant M3**: A (Attractor)  
 **Focus**: Goal-directedness, purpose, optimization
 
-**Metaconcepts (1)**:
+**GenericConcepts (1)**:
 - Self-Organization
 
 **Examples**: Crystal formation, pattern emergence, autopoietic systems
@@ -264,18 +264,18 @@ Metaconcepts are grouped into **9 functional categories** based on dominant M3 d
 **Dominant M3**: S⊗I patterns  
 **Focus**: Interactions between entities, roles, connections
 
-**Metaconcepts (5)**:
+**GenericConcepts (5)**:
 - Agent, Role, Mediator, Link, Relation
 
 **Examples**: Actor-role assignments, API mediators, network edges
 
 ---
 
-## The 50 Metaconcepts
+## The 50 GenericConcepts
 
 ### Complete Reference Table
 
-| # | Metaconcept | Category | Formula | Nature | Direction | Granularity | Gap | Polarity |
+| # | GenericConcept | Category | Formula | Nature | Direction | Granularity | Gap | Polarity |
 |---|-------------|----------|---------|--------|-----------|-------------|-----|----------|
 | 1 | Capacity | Structural | S⊗I | ModelSpace | Analytical | N/A | 0.25 | neutral |
 | 2 | Cluster | Structural | S⊗I⊗A | RealitySpace | Constructive | Composition | 0.3 | neutral |
@@ -328,7 +328,7 @@ Metaconcepts are grouped into **9 functional categories** based on dominant M3 d
 | 49 | Relation | Relational | S⊗I | ModelSpace | Analytical | N/A | 0.25 | neutral |
 | 50 | Role | Relational | S⊗I | ModelSpace | Analytical | N/A | 0.25 | neutral |
 
-**Note**: This table shows all 50 metaconcepts. Tropism was originally #43 but is now #44 due to Signal insertion. The 5 Network decomposition metaconcepts (Node, Relation, Path, Cluster, Hub) were added in v7.1.0.
+**Note**: This table shows all 50 GenericConcepts. Tropism was originally #43 but is now #44 due to Signal insertion. The 5 Network decomposition GenericConcepts (Node, Relation, Path, Cluster, Hub) were added in v7.1.0.
 
 ---
 
@@ -343,9 +343,9 @@ M2 uses a **minimal polarity system**:
 
 **No n-ary polarity** (ternary, quaternary) - rejected as over-generalization.
 
-### Dual Metaconcepts (7)
+### Dual GenericConcepts (7)
 
-| Metaconcept | Aspect 1 | Aspect 2 | Interpretation |
+| GenericConcept | Aspect 1 | Aspect 2 | Interpretation |
 |-------------|----------|----------|----------------|
 | Coding | Encoding | Decoding | Source → Code vs Code → Source |
 | Synergy | Positive Synergy | Negative Synergy | Enhancement vs Inhibition |
@@ -369,7 +369,7 @@ The **epistemic gap** ΔΘ measures the inevitable discrepancy between model and
 ```
 
 Where:
-- **0.0**: Perfect model-reality correspondence (impossible for most metaconcepts)
+- **0.0**: Perfect model-reality correspondence (impossible for most GenericConcepts)
 - **1.0**: Maximal gap (model completely fails to capture reality)
 
 ### Interpretation by Range
@@ -424,7 +424,7 @@ M2 supports several types of morphisms (structure-preserving relationships):
 
 4. **Emergence (⇑)**: E ⇑ {A₁, A₂, ...}
    - Example: Consciousness ⇑ {Neural Network, Memory, Attention}
-   - Interpretation: E emerges from interaction of multiple metaconcepts
+   - Interpretation: E emerges from interaction of multiple GenericConcepts
 
 ### Adjunction
 
@@ -444,7 +444,7 @@ This captures the Korzybski map-territory relationship: moving from concrete sys
 
 **Decision**: Time (t) is a **parameter**, not a 6th dimension in M3.
 
-**Consequence**: Temporal metaconcepts (Memory, Process) require **temporal integration** → They belong to M2, not M3.
+**Consequence**: Temporal GenericConcepts (Memory, Process) require **temporal integration** → They belong to M2, not M3.
 
 **Formula Example**:
 ```
@@ -480,7 +480,7 @@ Memory(t) = ∫_{-∞}^{t} [D(τ) - F(τ)]dτ
 
 **Reason**: Openness to environment is **fundamental**, not derived. All systems exchange with their context.
 
-**Old mistake**: Having "Flow" as both M3 dimension and M2 metaconcept (redundant).
+**Old mistake**: Having "Flow" as both M3 dimension and M2 GenericConcept (redundant).
 
 ---
 
@@ -491,7 +491,7 @@ Memory(t) = ∫_{-∞}^{t} [D(τ) - F(τ)]dτ
 - Axis 1 (Model/Reality) ⊥ Axis 2 (Analytical/Constructive) ⊥ Axis 3 (Composition/Decomposition)
 
 **Wrong interpretation**: Thinking "Model = Analytical" or "Reality = Constructive"  
-**Correct**: A metaconcept can be (Reality, Analytical) like Gradient, or (Model, Constructive) - though rare.
+**Correct**: A GenericConcept can be (Reality, Analytical) like Gradient, or (Model, Constructive) - though rare.
 
 ---
 
@@ -502,7 +502,7 @@ Memory(t) = ∫_{-∞}^{t} [D(τ) - F(τ)]dτ
 **Reason**: Over-generalization risk. Simplicity principle.
 
 **Adopted**: 
-- Most metaconcepts are **neutral** (unique)
+- Most GenericConcepts are **neutral** (unique)
 - Some are **dual** (intrinsically bidirectional)
 
 ---
@@ -525,7 +525,7 @@ Memory(t) = ∫_{-∞}^{t} [D(τ) - F(τ)]dτ
 
 **Format**: 
 ```
-https://github.com/Echopraxium/tscg/blob/main/ontology/TSCG_M2_MetaConcepts_Ontology.jsonld#
+https://github.com/Echopraxium/tscg/blob/main/ontology/TSCG_M2_GenericConcepts_Ontology.jsonld#
 ```
 
 **Reason**: Linked Data compliance, URI dereferenceability.
@@ -538,7 +538,7 @@ https://github.com/Echopraxium/tscg/blob/main/ontology/TSCG_M2_MetaConcepts_Onto
 
 ### When to Use M2
 
-Use M2 metaconcepts when:
+Use M2 GenericConcepts when:
 
 1. **Analyzing existing systems** (Analytical direction)
    - Identify patterns: "This system exhibits Network structure with Hierarchical control"
@@ -552,7 +552,7 @@ Use M2 metaconcepts when:
    - Bridge domains: "Both ant colonies and markets show Self-Organization"
    - Common vocabulary: Avoid domain jargon, use M2 terms
 
-### Combining Metaconcepts
+### Combining GenericConcepts
 
 M2 supports **compositional reasoning**:
 
@@ -582,7 +582,7 @@ M2: Regulation → M1_Economics: Market Stabilization
 
 **M3 State**: |Ω⟩ = 0.8|A⟩ + 0.7|S⟩ + 0.3|F⟩ + 0.2|I⟩ + 0.2|D⟩
 
-**M2 Metaconcepts**:
+**M2 GenericConcepts**:
 - **Homeostasis** (A⊗S⊗F): Maintains temperature
 - **Threshold** (A⊗I): Target temperature (20°C)
 - **Trigger** (D⊗I): Activates heating/cooling
@@ -598,7 +598,7 @@ M2: Regulation → M1_Economics: Market Stabilization
 
 **M3 State**: |Ω⟩ = 0.6|A⟩ + 0.8|S⟩ + 0.7|F⟩ + 0.9|I⟩ + 0.5|D⟩
 
-**M2 Metaconcepts**:
+**M2 GenericConcepts**:
 - **Network** (S⊗I⊗F): Food web
 - **Resilience** (A⊗S): Recovery from disturbance
 - **Emergence** (I⊗S⊗D): Ecosystem properties
@@ -615,7 +615,7 @@ M2: Regulation → M1_Economics: Market Stabilization
 
 **M3 State**: |Ω⟩ = 0.7|A⟩ + 0.9|S⟩ + 0.6|F⟩ + 0.8|I⟩ + 0.4|D⟩
 
-**M2 Metaconcepts**:
+**M2 GenericConcepts**:
 - **Hierarchy** (S⊗A): Layered architecture
 - **Modularity** (S⊗I): Independent components
 - **Link** (S⊗I): API connections
@@ -659,7 +659,7 @@ M2: Regulation → M1_Economics: Market Stabilization
 ### TSCG Documentation
 
 - **M3 Genesis Ontology**: Elementary dimensions (A, S, F, I, D)
-- **M2 MetaConcepts Ontology**: This document
+- **M2 GenericConcepts Ontology**: This document
 - **M1 Narrative Extensions**: Domain-specific instantiations (TBD)
 - **M0 System Models**: Concrete system descriptions (TBD)
 
@@ -677,7 +677,7 @@ M2: Regulation → M1_Economics: Market Stabilization
 
 ### Key Terms
 
-- **Metaconcept**: Systemic pattern emerging from M3 tensor products
+- **GenericConcept**: Systemic pattern emerging from M3 tensor products
 - **Tensor Product (⊗)**: Mathematical operation combining M3 dimensions
 - **Epistemic Gap (ΔΘ)**: Model-reality discrepancy measure
 - **Functor**: Structure-preserving map between categories
@@ -691,19 +691,19 @@ M2: Regulation → M1_Economics: Market Stabilization
 ## Version History
 
 ### v7.1.0 (2026-01-15)
-- Network decomposition complete: 48 metaconcepts total
+- Network decomposition complete: 48 GenericConcepts total
 - Added Node (Structural, dual): elementary network entity
 - Added Relation (Relational, analytical): abstract connection
 - Added Path (Structural, dual): sequence through network  
 - Added Cluster (Structural, constructive): active processing group
 - Added Hub (Structural, dual): passive relay point
 - Modified Link: Formula S⊗I→S⊗I⊗F, Nature Dual→Reality, Direction Dual→Constructive
-- Structural category: 8→12 metaconcepts
-- Relational category: 4→5 metaconcepts
+- Structural category: 8→12 GenericConcepts
+- Relational category: 4→5 GenericConcepts
 - Completion: 96% (48/50)
 
 ### v7.0.0 (2026-01-15)
-- Complete ontology with 43 metaconcepts
+- Complete ontology with 43 GenericConcepts
 - Added: Storage, Capacity, Agent, Role, Mediator, Link, Space, Tropism, Signal
 - Added: Convergence/Divergence (dual)
 - Removed: Resource (replaced by Storage + Capacity)
@@ -722,10 +722,10 @@ M2: Regulation → M1_Economics: Market Stabilization
 
 ### v6.3.0 (2026-01-15)
 - Added: Code, Coding, Representation, Language (Informational)
-- Introduced: Dual polarity for bidirectional metaconcepts
+- Introduced: Dual polarity for bidirectional GenericConcepts
 
 ### v6.0.0 (2026-01-14)
-- Foundation: 16 core metaconcepts
+- Foundation: 16 core GenericConcepts
 - Established: Dual axes (Model/Reality, Analytical/Constructive)
 - Formalized: Binary polarity principle
 

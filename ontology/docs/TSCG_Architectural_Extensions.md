@@ -1,5 +1,5 @@
 # TSCG Architectural Extensions
-## N-ary MetaconceptCombo and Typed Attributes via ValueSpace
+## N-ary GenericConceptCombo and Typed Attributes via ValueSpace
 
 **Version**: 1.0.0  
 **Date**: 2026-02-05  
@@ -11,7 +11,7 @@
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Extension 1: N-ary MetaconceptCombo](#extension-1-n-ary-metaconceptcombo)
+2. [Extension 1: N-ary GenericConceptCombo](#extension-1-n-ary-GenericConceptcombo)
 3. [Extension 2: Typed Attributes via ValueSpace](#extension-2-typed-attributes-via-valuespace)
 4. [Implementation Status](#implementation-status)
 5. [Case Study: Cascade](#case-study-cascade)
@@ -25,32 +25,32 @@
 
 During RAAS poclet analysis, two architectural needs emerged:
 
-1. **N-ary MetaconceptCombo**: Cascade requires 3 parents (Process, Step, Trajectory) to capture full semantics
+1. **N-ary GenericConceptCombo**: Cascade requires 3 parents (Process, Step, Trajectory) to capture full semantics
 2. **Typed Attributes**: Trajectory needs configurable `shape` attribute without creating explosion of subtypes
 
 ### Core Innovations
 
-#### Innovation 1: Generalize MetaconceptCombo from Binary to N-ary
+#### Innovation 1: Generalize GenericConceptCombo from Binary to N-ary
 
 **Current** (v14.3.5):
 ```
-MetaconceptCombo: M_A ⊗⇒ M_B → M_C  (2 parents only)
+GenericConceptCombo: M_A ⊗⇒ M_B → M_C  (2 parents only)
 ```
 
 **Proposed**:
 ```
-MetaconceptCombo: ⊗⇒(M₁, M₂, ..., Mₙ) → M_result  (n ≥ 2 parents)
+GenericConceptCombo: ⊗⇒(M₁, M₂, ..., Mₙ) → M_result  (n ≥ 2 parents)
 ```
 
 #### Innovation 2: Typed Attributes via ValueSpace
 
-**Mechanism**: Leverage existing `m2:ValueSpace` metaconcept to define attribute domains
+**Mechanism**: Leverage existing `m2:ValueSpace` GenericConcept to define attribute domains
 
 **Benefit**: Add configurability without ontological proliferation
 
 ---
 
-## Extension 1: N-ary MetaconceptCombo
+## Extension 1: N-ary GenericConceptCombo
 
 ### Theoretical Foundation
 
@@ -89,16 +89,16 @@ Result: (⋃ᵢ dims(i)) with coupling on all shared dimensions
 
 ```json
 {
-  "@id": "m2:MetaconceptCombo",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept"],
-  "rdfs:label": "MetaconceptCombo (N-ary Synergistic Combination)",
-  "rdfs:comment": "Parameterized metaconcept produced by synergistic combination of N parent metaconcepts (N ≥ 2) via N-ary tensor assembly and emergence morphism (⊗⇒). Shared dimensions couple (trace-like contraction), unique dimensions add. Generalization from binary (v14.3.5) to N-ary (v14.4.0+).",
+  "@id": "m2:GenericConceptCombo",
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept"],
+  "rdfs:label": "GenericConceptCombo (N-ary Synergistic Combination)",
+  "rdfs:comment": "Parameterized GenericConcept produced by synergistic combination of N parent GenericConcepts (N ≥ 2) via N-ary tensor assembly and emergence morphism (⊗⇒). Shared dimensions couple (trace-like contraction), unique dimensions add. Generalization from binary (v14.3.5) to N-ary (v14.4.0+).",
   
   "m2:hasTensorFormula": "⊗⇒(M₁, M₂, ..., Mₙ)",
   "m2:arity": "n ≥ 2",
   
   "m2:formulaSemantics": {
-    "M_i": "i-th parent metaconcept (parameter)",
+    "M_i": "i-th parent GenericConcept (parameter)",
     "⊗⇒": "N-ary synergistic tensor assembly with emergence morphism",
     "n": "Number of parents (arity), must be ≥ 2",
     "coupling": "Dimensions shared among ≥2 parents couple (do not duplicate)",
@@ -153,7 +153,7 @@ Result: (⋃ᵢ dims(i)) with coupling on all shared dimensions
 
 ### Motivation
 
-**Problem**: How to represent variations within a metaconcept without creating subtype explosion?
+**Problem**: How to represent variations within a GenericConcept without creating subtype explosion?
 
 **Example**: Trajectory can be Linear, Circular, Spiral, Chaotic, etc.
 
@@ -174,7 +174,7 @@ m2:Trajectory
 
 ### Mechanism
 
-Leverage **m2:ValueSpace** (existing M2 metaconcept) to define attribute domains.
+Leverage **m2:ValueSpace** (existing M2 GenericConcept) to define attribute domains.
 
 #### ValueSpace Recap
 
@@ -239,9 +239,9 @@ Defines space of possible values with:
 
 ### v14.4.0+ (Planned)
 
-🔄 **N-ary MetaconceptCombo**
+🔄 **N-ary GenericConceptCombo**
 - Generalize from binary to N-ary
-- Update all MetaconceptCombo instances
+- Update all GenericConceptCombo instances
 - Implement Cascade as ⊗⇒(Process, Step, Trajectory)
 
 🔄 **Additional Attributes**
@@ -281,11 +281,11 @@ Formula: S⊗I⊗A⊗D⊗F
 ```json
 {
   "@id": "m2:Cascade",
-  "@type": ["m2:MetaConcept", "m2:MetaconceptCombo"],
+  "@type": ["m2:GenericConcept", "m2:GenericConceptCombo"],
   "m2:hasTensorFormula": "⊗⇒(Process, Step, Trajectory)",
   "m2:hasTensorFormulaExpanded": "S⊗I⊗A⊗D⊗F",
   
-  "m2:parentMetaconcepts": [
+  "m2:parentGenericConcepts": [
     {"@id": "m2:Process", "formula": "D⊗F"},
     {"@id": "m2:Step", "formula": "S⊗I⊗D"},
     {"@id": "m2:Trajectory", "formula": "A⊗D⊗F"}
@@ -358,7 +358,7 @@ Formula: S⊗I⊗A⊗D⊗F
 ### Systematic Attribute Discovery
 
 **Process**:
-1. Analyze existing M2 metaconcepts
+1. Analyze existing M2 GenericConcepts
 2. Identify natural variations/subtypes
 3. Extract common variation dimensions
 4. Formalize as ValueSpace attributes
@@ -372,7 +372,7 @@ Formula: S⊗I⊗A⊗D⊗F
 
 ## Validation Checklist
 
-### For N-ary MetaconceptCombo
+### For N-ary GenericConceptCombo
 
 - ✅ Mathematical foundation (tensor product associativity)
 - ✅ Clear coupling algorithm (dimension intersection)
@@ -386,7 +386,7 @@ Formula: S⊗I⊗A⊗D⊗F
 - ✅ Prevents ontology proliferation
 - ✅ Concrete example (Trajectory.shape with 9 values)
 - ✅ Implemented (v14.3.6)
-- ⏳ Systematic application to other metaconcepts
+- ⏳ Systematic application to other GenericConcepts
 
 ---
 

@@ -164,7 +164,7 @@ All Category Theory definitions now use the **m3:** namespace (not m3:category_t
 
 ## Impact on Other Files
 
-### M2_MetaConcepts.jsonld
+### M2_GenericConcepts.jsonld
 
 **Before (would need both namespaces):**
 ```json
@@ -239,7 +239,7 @@ All Category Theory definitions now use the **m3:** namespace (not m3:category_t
 
 ## Usage Examples
 
-### In M2_MetaConcepts.jsonld
+### In M2_GenericConcepts.jsonld
 ```json
 {
   "@id": "m2:KnowledgeField",

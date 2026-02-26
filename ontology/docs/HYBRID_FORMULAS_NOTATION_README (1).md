@@ -81,7 +81,7 @@ CORRUPTED: "formula": "AâŠ—SâŠ—F"
 ### Scope
 
 This change applies to:
-- All JSON-LD ontology files (M2_MetaConcepts.jsonld, M3_*.jsonld, etc.)
+- All JSON-LD ontology files (M2_GenericConcepts.jsonld, M3_*.jsonld, etc.)
 - All documentation (README.md files)
 - All theoretical formulations
 - All code and scripts
@@ -115,9 +115,9 @@ In **hybrid formulas** combining both ASFID (Territory) and REVOI (Map) dimensio
 
 When both appear in the same formula, **which I is which?**
 
-### Example: Domain Metaconcept
+### Example: Domain GenericConcept
 
-The Domain metaconcept uses a **hybrid tensor product** ASFID⊗REVOI:
+The Domain GenericConcept uses a **hybrid tensor product** ASFID⊗REVOI:
 
 ```
 Domain = A⊗S⊗F⊗I⊗D⊗R⊗E⊗V⊗O⊗I
@@ -158,7 +158,7 @@ When **I** from both ASFID and REVOI appear in the same formula, use **subscript
 
 ## 📐 Implementation Examples
 
-### Example 1: Domain Metaconcept (Hybrid)
+### Example 1: Domain GenericConcept (Hybrid)
 
 **Full Tensor Product** (before reduction):
 
@@ -180,7 +180,7 @@ Where:
 
 ### Example 2: Pure Territory Formula (No Subscript)
 
-**Process Metaconcept** (pure ASFID):
+**Process GenericConcept** (pure ASFID):
 
 ```
 Process = D⊗I⊗F
@@ -190,7 +190,7 @@ Process = D⊗I⊗F
 
 ### Example 3: Pure Map Formula (No Subscript)
 
-**ValueSpace Metaconcept** (pure REVOI):
+**ValueSpace GenericConcept** (pure REVOI):
 
 ```
 ValueSpace = O⊗R⊗I⊗V⊗E
@@ -200,10 +200,10 @@ ValueSpace = O⊗R⊗I⊗V⊗E
 
 ### Example 4: Hypothetical Hybrid Formula
 
-If a future metaconcept combined ASFID's Information with REVOI's Interoperability:
+If a future GenericConcept combined ASFID's Information with REVOI's Interoperability:
 
 ```
-HypotheticalMetaconcept = It⊗Im⊗D⊗R
+HypotheticalGenericConcept = It⊗Im⊗D⊗R
                           ↑  ↑
                          Territory Map
                          (ASFID)  (REVOI)
@@ -255,7 +255,7 @@ HypotheticalMetaconcept = It⊗Im⊗D⊗R
 ### Step 1: Replace REVOÎ with REVOI
 
 **Files affected**:
-- M2_MetaConcepts.jsonld
+- M2_GenericConcepts.jsonld
 - M3_GenesisSpace.jsonld
 - M3_SphinxEye.jsonld
 - All M0 poclets using Sphinx Eye perspective
@@ -344,7 +344,7 @@ print("✅ Migration successful")
 
 ## 📋 Checklist for New Formulas
 
-When creating a new metaconcept or formula:
+When creating a new GenericConcept or formula:
 
 - [ ] Does it use only ASFID dimensions? → Use plain **I**
 - [ ] Does it use only REVOI dimensions? → Use plain **I**
@@ -355,9 +355,9 @@ When creating a new metaconcept or formula:
 
 ---
 
-## 🔍 Examples in M2 Metaconcepts
+## 🔍 Examples in M2 GenericConcepts
 
-### Current Hybrid Metaconcept: Domain
+### Current Hybrid GenericConcept: Domain
 
 ```json
 {
@@ -377,7 +377,7 @@ When creating a new metaconcept or formula:
 }
 ```
 
-### Pure Territory Metaconcept: Process
+### Pure Territory GenericConcept: Process
 
 ```json
 {
@@ -393,7 +393,7 @@ When creating a new metaconcept or formula:
 }
 ```
 
-### Pure Map Metaconcept: ValueSpace
+### Pure Map GenericConcept: ValueSpace
 
 ```json
 {
@@ -436,7 +436,7 @@ When creating a new metaconcept or formula:
 
 ### TSCG Framework Documents
 
-- `M2_MetaConcepts.jsonld` - Metaconcept ontology
+- `M2_GenericConcepts.jsonld` - GenericConcept ontology
 - `M3_GenesisSpace.jsonld` - Bicephalous architecture
 - `M3_EagleEye.jsonld` - ASFID basis (Territory)
 - `M3_SphinxEye.jsonld` - REVOI basis (Map)
@@ -447,7 +447,7 @@ When creating a new metaconcept or formula:
 
 - **v14.3.1**: REVOI standard adopted
 - **v14.3.1**: It/Im notation convention established
-- **v14.3.0**: Domain metaconcept introduced (first hybrid)
+- **v14.3.0**: Domain GenericConcept introduced (first hybrid)
 
 ---
 

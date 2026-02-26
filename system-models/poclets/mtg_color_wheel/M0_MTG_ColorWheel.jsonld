@@ -7,7 +7,7 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m0:mtg_color_wheel": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/poclets/mtg_color_wheel/M0_MTG_ColorWheel.jsonld#"
   },
@@ -19,7 +19,38 @@
       "dcterms:description": "Minimal yet complete philosophical system from Magic: The Gathering. Demonstrates pentagonal structure with allied/enemy relationships, value tensions, and emergent complexity through 5-pole dynamics.",
       "dcterms:created": "2026-01-22",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "owl:versionInfo": "1.0.0",
+      "owl:versionInfo": "1.1.0",
+      "m2:changelog": [
+        {
+          "version": "1.1.0",
+          "date": "2026-02-26",
+          "changes": [
+            "BREAKING: Migrated from deprecated ORIVE to canonical REVOI notation (R=Representability, E=Evolvability, V=Verifiability, O=Observability, I=Interoperability)",
+            "Updated R dimension: Reproducibility → Representability (semantic decodability/encodability of color identities)",
+            "Updated E dimension: Expressiveness → Evolvability (capacity of color pie to absorb new mechanics while preserving identity)",
+            "Added pentagramPosition attribute to each color node (canonical W/U/B/R/G clockwise ordering)",
+            "Recalculated REVOI vector: (0.90, 0.85, 0.70, 0.75, 0.90) → mean=0.82"
+          ]
+        },
+        {
+          "version": "1.0.1",
+          "date": "2026-01-25",
+          "changes": [
+            "Added GenericConceptMobilization section with 28 M2 instantiations",
+            "Added newGenericConceptCandidates: Polarity-N, Alliance, Antagonism",
+            "Validated N-ary polarity (N=5) as TSCG paradigm shift"
+          ]
+        },
+        {
+          "version": "1.0.0",
+          "date": "2026-01-22",
+          "changes": [
+            "Initial poclet creation: Magic Color Wheel pentagonal philosophical system",
+            "Full ASFID analysis: (0.65, 0.80, 0.45, 0.85, 0.50)",
+            "Complete 5-color model with allied/enemy dynamics (10 relationships)"
+          ]
+        }
+      ],
       "dcterms:subject": [
         "Game Theory",
         "Philosophy",
@@ -39,7 +70,7 @@
       ],
       "owl:imports": [
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld"
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld"
       ],
       "m2:ontologyCategory": "Poclet"
     },
@@ -65,6 +96,10 @@
           "@id": "m0:White",
           "@type": "m0:Color",
           "rdfs:label": "White (Order & Collectif)",
+          "m0:pentagramPosition": 0,
+          "m0:pentagramAngleDeg": 90,
+          "m0:hexColor": "#F9FAF4",
+          "m0:manaSymbol": "{W}",
           "m0:coreValues": [
             "Structure",
             "Peace",
@@ -104,6 +139,10 @@
           "@id": "m0:Blue",
           "@type": "m0:Color",
           "rdfs:label": "Blue (Perfection & Knowledge)",
+          "m0:pentagramPosition": 1,
+          "m0:pentagramAngleDeg": 18,
+          "m0:hexColor": "#3A7BD5",
+          "m0:manaSymbol": "{U}",
           "m0:coreValues": [
             "Knowledge",
             "Perfection",
@@ -143,6 +182,10 @@
           "@id": "m0:Black",
           "@type": "m0:Color",
           "rdfs:label": "Black (Ambition & Individual)",
+          "m0:pentagramPosition": 2,
+          "m0:pentagramAngleDeg": 306,
+          "m0:hexColor": "#1A1A1A",
+          "m0:manaSymbol": "{B}",
           "m0:coreValues": [
             "Power",
             "Personal Achievement",
@@ -179,6 +222,10 @@
           "@id": "m0:Red",
           "@type": "m0:Color",
           "rdfs:label": "Red (Freedom & Passion)",
+          "m0:pentagramPosition": 3,
+          "m0:pentagramAngleDeg": 234,
+          "m0:hexColor": "#D32F2F",
+          "m0:manaSymbol": "{R}",
           "m0:coreValues": [
             "Freedom",
             "Emotion",
@@ -218,6 +265,10 @@
           "@id": "m0:Green",
           "@type": "m0:Color",
           "rdfs:label": "Green (Nature & Growth)",
+          "m0:pentagramPosition": 4,
+          "m0:pentagramAngleDeg": 162,
+          "m0:hexColor": "#2E7D32",
+          "m0:manaSymbol": "{G}",
           "m0:coreValues": [
             "Nature",
             "Tradition",
@@ -502,142 +553,142 @@
         ],
         "interpretation": "Magic Color Wheel is an I-S dominant system: highly structured information architecture with moderate attractors, low flows, and moderate dynamics. This profile is typical of *conceptual/philosophical frameworks* rather than physical systems."
       },
-      "m0:oriveAnalysis": {
-        "description": "Sphinx Eye (Map-Space) evaluation using ORIVE dimensions",
-        "note": "Magic Color Wheel is fundamentally a MAP (conceptual model) not Territory. ORIVE should score very high.",
+      "m0:revoiAnalysis": {
+        "description": "Sphinx Eye (Map-Space) evaluation using REVOI dimensions (R=Representability, E=Evolvability, V=Verifiability, O=Observability, I=Interoperability)",
+        "note": "Magic Color Wheel is fundamentally a MAP (conceptual model) not Territory. REVOI should score very high.",
         "dimensions": [
+          {
+            "dimension": "R (Representability)",
+            "coefficient": 0.90,
+            "interpretation": "VERY HIGH representability. The color wheel's semantic encoding is exceptionally decodable: each color's philosophical identity (values, methods, mechanics) is clearly and consistently represented across 20M+ players, 11+ languages, and 30+ years. The Pentagon diagram itself is an optimal semantic representation — simple, memorable, complete.",
+            "evidence": [
+              "Global player base (20M+) shares same understanding of color meanings",
+              "Translated to 11+ languages with no semantic loss",
+              "Visual Color Pie diagram is universally recognized encoding",
+              "Consistent philosophical identity across 100+ sets",
+              "Digital implementations reproduce semantics perfectly"
+            ],
+            "representabilityMechanisms": [
+              "Explicit codification (rulebooks, card text, flavor text)",
+              "Visual reinforcement (color pie diagrams, mana symbols)",
+              "Cultural transmission (player community, content creators)",
+              "Institutional continuity (Wizards of the Coast design team)"
+            ]
+          },
+          {
+            "dimension": "E (Evolvability)",
+            "coefficient": 0.85,
+            "interpretation": "HIGH evolvability. The Color Pie has demonstrated remarkable capacity to absorb new mechanics, keywords, and philosophical nuances while preserving core identity. Color bleed (intentional minor violations) shows controlled evolution. New guild/clan identities (Guilds of Ravnica, Khans of Tarkir) extend the system without breaking it.",
+            "evidence": [
+              "Core pentagon structure unchanged since 1993 (structural stability)",
+              "200+ new mechanics introduced within color identities (adaptive capacity)",
+              "Color pie violations gradually absorbed and codified (evolutionary flexibility)",
+              "New multicolor guild identities extend system expressiveness",
+              "Color bleed as controlled evolutionary mechanism"
+            ],
+            "evolvabilityMechanisms": [
+              "Color pie adjustments (Mark Rosewater's continuous refinement)",
+              "Multicolor combinations creating new stable sub-identities",
+              "Temporal evolution of what each color 'can' do",
+              "Planar Chaos as experimental color mutation test"
+            ]
+          },
+          {
+            "dimension": "V (Verifiability)",
+            "coefficient": 0.70,
+            "interpretation": "MODERATE-HIGH verifiability. As a *descriptive model of gameplay*, highly verifiable (colors mechanically distinct and testable). As a *model of human values*, moderately verifiable (captures real tensions but oversimplifies). The model's predictions are verifiable at gameplay level, less so at philosophical level.",
+            "evidence": [
+              "Gameplay verifiability: Colors feel distinct (30 years of design confirms)",
+              "Narrative verifiability: Generates compelling consistent stories",
+              "Philosophical verifiability: Resonates with actual value conflicts",
+              "Limitation: Oversimplifies (real ethics isn't pentagonal)",
+              "Limitation: Western-centric philosophical assumptions"
+            ],
+            "verifiabilityLimitations": [
+              "Not a scientific theory (not falsifiable in Popperian sense)",
+              "Cultural bias (Western individualism vs collectivism framing)",
+              "Oversimplification (real values are multidimensional)",
+              "Prescriptive contamination (colors as ideals, not pure descriptions)"
+            ]
+          },
           {
             "dimension": "O (Observability)",
             "coefficient": 0.75,
             "interpretation": "HIGH observability *of the model* through gameplay, narrative, card design. However, the philosophical 'Territory' (actual value conflicts) is only indirectly observable. Map itself is crystal clear; what it maps is fuzzy.",
             "evidence": [
-              "5 colors visually distinct (card backs, symbols)",
-              "Mechanical differences observable in gameplay",
-              "Allied/enemy pairs observable through combination difficulty",
-              "30+ years of design reinforces distinctions"
+              "5 colors visually distinct (card backs, mana symbols, art direction)",
+              "Mechanical differences observable in gameplay outcomes",
+              "Allied/enemy pairs observable through deck-building constraints",
+              "30+ years of design reinforces observable distinctions"
             ],
             "observabilityLayers": [
-              "Mechanical layer: Perfectly observable (card rules)",
-              "Philosophical layer: Requires interpretation",
-              "Narrative layer: Shown through stories/characters",
-              "Meta-layer: Community consensus on color meanings"
-            ]
-          },
-          {
-            "dimension": "R (Reproducibility)",
-            "coefficient": 0.95,
-            "interpretation": "VERY HIGH reproducibility. The color wheel model is transmitted perfectly across: cultures, languages, media (physical cards, digital games, novels, art). Virtually zero ambiguity in model structure. Everyone who learns Magic internalizes same Pentagon.",
-            "evidence": [
-              "Global player base (20M+) shares same understanding",
-              "Translated to 11+ languages without loss",
-              "Consistent across 30 years and 100+ sets",
-              "Digital implementations reproduce perfectly",
-              "Educational materials converge on same descriptions"
-            ],
-            "reproducibilityMechanisms": [
-              "Explicit codification (rulebooks, card text)",
-              "Visual reinforcement (color pie diagrams)",
-              "Cultural transmission (player community)",
-              "Institutional continuity (Wizards of the Coast design)"
+              "Mechanical layer: Perfectly observable (card rules, mana costs)",
+              "Philosophical layer: Requires interpretation (reader-dependent)",
+              "Narrative layer: Shown through stories/characters (indirect)",
+              "Meta-layer: Community consensus on color meanings (emergent)"
             ]
           },
           {
             "dimension": "I (Interoperability)",
-            "coefficient": 0.9,
-            "interpretation": "VERY HIGH interoperability. Color wheel combines seamlessly with: Magic lore, gameplay mechanics, other frameworks (psychology, ethics, politics). Model is *generative* - spawns infinite narrative/strategic combinations. Multicolor cards/decks demonstrate compositional interoperability.",
+            "coefficient": 0.90,
+            "interpretation": "VERY HIGH interoperability. Color wheel combines seamlessly with: Magic lore, gameplay mechanics, other frameworks (psychology, ethics, politics). Model is *generative* — spawns infinite narrative/strategic combinations. Multicolor cards/decks demonstrate compositional interoperability.",
             "evidence": [
-              "10 two-color combinations (guilds, clans, etc.)",
-              "10 three-color combinations (shards, wedges)",
-              "5 four-color combinations",
-              "Mechanical synergies explicitly designed",
-              "Narrative cross-pollination (multicolor characters)"
+              "10 two-color combinations (guilds, clans) — all stable and named",
+              "10 three-color combinations (shards, wedges) — all viable",
+              "5 four-color combinations (Nephilim) — functional if less prominent",
+              "Mechanical synergies explicitly designed across colors",
+              "Narrative cross-pollination (multicolor planeswalkers, characters)"
             ],
             "interoperabilityDimensions": [
-              "Internal: Colors combine into multicolor identities",
-              "Narrative: Fits within larger Magic multiverse",
-              "Conceptual: Maps to psychological/ethical frameworks",
-              "Mechanical: Integrates with all card types/mechanics"
-            ]
-          },
-          {
-            "dimension": "V (Validity)",
-            "coefficient": 0.7,
-            "interpretation": "MODERATE-HIGH validity. As a *descriptive model of gameplay*, highly valid (colors mechanically distinct). As a *model of human values*, moderately valid (captures real tensions but oversimplifies). Not empirically falsifiable but pragmatically useful.",
-            "evidence": [
-              "Gameplay validity: Colors feel distinct (30 years of design)",
-              "Narrative validity: Generates compelling stories",
-              "Philosophical validity: Resonates with actual value conflicts",
-              "Limitation: Oversimplifies (real ethics isn't pentagonal)",
-              "Limitation: Western-centric philosophical assumptions"
-            ],
-            "validityLimitations": [
-              "Not a scientific theory (not falsifiable)",
-              "Cultural bias (Western individualism vs collectivism)",
-              "Oversimplification (real values are multidimensional)",
-              "Prescriptive contamination (colors as ideals, not descriptions)"
-            ]
-          },
-          {
-            "dimension": "E (Expressiveness)",
-            "coefficient": 0.95,
-            "interpretation": "VERY HIGH expressiveness. Color wheel is extraordinarily generative: spawns characters, stories, decks, art, philosophical debates. Simple 5-element system creates vast combinatorial/narrative space. Expressive across media (cards, novels, digital, community content).",
-            "evidence": [
-              "100,000+ cards designed within color identities",
-              "Hundreds of novels/stories using color framework",
-              "Infinite deck archetypes (mono, dual, tri, quad, five-color)",
-              "Fan content: art, fiction, philosophy essays",
-              "Cross-domain application (personality tests, ethical frameworks)"
-            ],
-            "expressivenessMetrics": [
-              "Combinatorial: 2^5 - 1 = 31 possible color combinations",
-              "Narrative: Every character can be color-coded",
-              "Mechanical: Each color has 30+ mechanics",
-              "Philosophical: Framework for discussing value trade-offs",
-              "Aesthetic: Distinct visual/thematic identities"
+              "Internal: Colors combine into multicolor identities (2^5-1 = 31 combinations)",
+              "Narrative: Fits within larger Magic multiverse across planes",
+              "Conceptual: Maps to psychological/ethical/political frameworks",
+              "Mechanical: Integrates with all card types, formats, and mechanics"
             ]
           }
         ],
-        "oriveVector": "(0.75, 0.95, 0.90, 0.70, 0.95)",
-        "oriveMean": 0.85,
+        "revoiVector": "(0.90, 0.85, 0.70, 0.75, 0.90)",
+        "revoiMean": 0.82,
         "mapQuality": "EXCELLENT - Very high-quality conceptual model",
-        "stateVector": "|M_colorWheel⟩ = 0.75|O⟩ + 0.95|R⟩ + 0.90|I⟩ + 0.70|V⟩ + 0.95|E⟩",
+        "stateVector": "|M_colorWheel⟩ = 0.90|R⟩ + 0.85|E⟩ + 0.70|V⟩ + 0.75|O⟩ + 0.90|I⟩",
         "dominantDimensions": [
-          "R (Reproducibility)",
-          "E (Expressiveness)",
-          "I (Interoperability)"
+          "R (Representability)",
+          "I (Interoperability)",
+          "E (Evolvability)"
         ],
         "weakDimensions": [
-          "V (Validity) - moderate"
+          "V (Verifiability) - moderate",
+          "O (Observability) - moderate-high"
         ],
-        "interpretation": "Magic Color Wheel is an exemplary MAP: highly reproducible, expressive, and interoperable. Moderate validity reflects its status as *conceptual framework* not empirical theory. ORIVE = 0.85 indicates top-tier conceptual model.",
+        "interpretation": "Magic Color Wheel is an exemplary MAP: highly representable, interoperable, and evolvable. Moderate verifiability reflects its status as *conceptual framework* not empirical theory. REVOI = 0.82 indicates top-tier conceptual model.",
         "comparisonToFireTriangle": {
-          "fireTriangleORIVE": 0.85,
-          "colorWheelORIVE": 0.85,
-          "note": "Both score ~0.85 but for different reasons. Fire Triangle = high V (empirically valid), moderate E. Color Wheel = high E (generative), moderate V (non-empirical)."
+          "fireTriangleREVOI": 0.85,
+          "colorWheelREVOI": 0.82,
+          "note": "Both score ~0.82-0.85 but for different reasons. Fire Triangle = high V (empirically verifiable), high O (physical observability). Color Wheel = high R (semantic clarity), high I (combinatorial richness), moderate V (philosophical, non-falsifiable)."
         }
       },
       "m0:epistemicGapAnalysis": {
-        "formula": "Δθ(M) = ||Territory_ASFID - Map_ORIVE||",
+        "formula": "Delta_theta(M) = ||Territory_ASFID - Map_REVOI||",
         "territoryASFID": 0.65,
-        "mapORIVE": 0.85,
-        "epistemicGap": 0.2,
-        "interpretation": "MODERATE epistemic gap. The Color Wheel as a MAP (ORIVE=0.85) is much stronger than the philosophical 'Territory' it supposedly describes (ASFID=0.65). This is typical of *normative/prescriptive frameworks* - the model is clearer than reality.",
+        "mapREVOI": 0.82,
+        "epistemicGap": 0.17,
+        "interpretation": "MODERATE epistemic gap. The Color Wheel as a MAP (REVOI=0.82) is significantly stronger than the philosophical 'Territory' it supposedly describes (ASFID=0.65). This is typical of *normative/prescriptive frameworks* - the model is clearer than reality.",
         "analysis": {
           "direction": "Map > Territory",
           "meaning": "Model is more coherent than the messy reality of human values",
           "implication": "Color Wheel is *constructive* (creates meanings) not just *descriptive* (measures reality)",
           "comparison": {
-            "fireTriangle": "Δθ = 0.06 (Map ≈ Territory, empirical alignment)",
-            "colorWheel": "Δθ = 0.20 (Map > Territory, normative framework)",
+            "fireTriangle": "Delta_theta = 0.06 (Map ~= Territory, empirical alignment)",
+            "colorWheel": "Delta_theta = 0.17 (Map > Territory, normative framework)",
             "interpretation": "Fire Triangle describes physical reality closely. Color Wheel constructs philosophical space."
           }
         },
-        "philosophicalImplication": "The Color Wheel is a *world-making device* - it doesn't just describe value conflicts, it creates a framework that players/readers/designers inhabit. High ORIVE (strong map) + moderate ASFID (fuzzy territory) = generative fiction, not empirical science."
+        "philosophicalImplication": "The Color Wheel is a *world-making device* - it doesn't just describe value conflicts, it creates a framework that players/readers/designers inhabit. High REVOI (strong map) + moderate ASFID (fuzzy territory) = generative fiction, not empirical science."
       },
-      "m0:metaconceptMobilization": {
-        "description": "M2 metaconcepts instantiated by Magic Color Wheel poclet",
+      "m0:GenericConceptMobilization": {
+        "description": "M2 GenericConcepts instantiated by Magic Color Wheel poclet",
         "total": 28,
-        "metaconcepts": [
+        "GenericConcepts": [
           {
             "m2": "m2:Structure",
             "instantiation": "Pentagon topology, 5 vertices (colors), 10 edges (relationships)",
@@ -779,7 +830,7 @@
             "example": "Simic (Green-Blue) imbricates natural growth + technological progress"
           }
         ],
-        "newMetaconceptCandidates": [
+        "newGenericConceptCandidates": [
           {
             "name": "Polarity-N (N-ary Polarity)",
             "formula": "S⊗I⊗A (proposed)",
@@ -912,13 +963,13 @@
         "pocletValidity": "VALIDATED",
         "frameworkValidation": {
           "asfidCompleteness": "YES - All 5 dimensions present (moderate F/D)",
-          "oriveQuality": "EXCELLENT - ORIVE = 0.85 (top-tier conceptual model)",
-          "epistemicGap": "MODERATE - Δθ = 0.20 (Map > Territory, typical for normative frameworks)",
+          "revoiQuality": "EXCELLENT - REVOI = 0.82 (top-tier conceptual model)",
+          "epistemicGap": "MODERATE - Delta_theta = 0.17 (Map > Territory, typical for normative frameworks)",
           "bicephalousAlignment": "CONFIRMED - Clear Territory/Map distinction"
         },
         "m2Contribution": {
-          "metaconceptsMobilized": 28,
-          "newMetaconceptsCandidates": 3,
+          "GenericConceptsMobilized": 28,
+          "newGenericConceptsCandidates": 3,
           "criticalDiscovery": "Polarity must be N-ary, not just binary/dual"
         },
         "theoreticalImpact": {
@@ -938,12 +989,11 @@
       "m0:conclusions": {
         "primaryConclusion": "Magic Color Wheel is an exemplary poclet demonstrating N-ary polarity (N=5) in philosophical value systems. It challenges and extends TSCG framework by forcing recognition that real-world conceptual frameworks are naturally N-ary, not just binary.",
         "secondaryConclusions": [
-          "High ORIVE (0.85) with moderate ASFID (0.65) confirms Map-dominant nature - it's a generative conceptual framework, not empirical description",
+          "High REVOI (0.82) with moderate ASFID (0.65) confirms Map-dominant nature - it's a generative conceptual framework, not empirical description",
           "Pentagon topology (C₅ symmetry) appears repeatedly across cultures (Magic, Wu Xing) - suggests deep pattern in human conceptualization",
           "Allied/Enemy structure creates rich dynamics unavailable in binary systems - middle path between simplicity (N=2) and chaos (N→∞)",
-          "System is exceptionally reproducible (R=0.95) and expressive (E=0.95) despite moderate validity (V=0.70) - quality of Map, not Territory",
-          "28 M2 metaconcepts mobilized shows framework maturity - poclet leverages existing conceptual resources"
-        ],
+          "System is exceptionally representable (R=0.90) and interoperable (I=0.90) despite moderate verifiability (V=0.70) - quality of Map, not Territory",
+          "28 M2 GenericConcepts mobilized shows framework maturity - poclet leverages existing conceptual resources"        ],
         "futureDirections": [
           "Test N-ary polarity across more poclets (Wu Xing, Political Compass, Enneagram)",
           "Develop M1_Philosophy.jsonld with concepts discovered here",

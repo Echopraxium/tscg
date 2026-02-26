@@ -76,7 +76,7 @@ M3_GenesisSpace.jsonld has been successfully updated from v3.0.1 to v3.1.0 to in
 
 **Added v3.1.0 entry:**
 ```json
-"v3.1.0": "CATEGORY THEORY INTEGRATION: Added M3_CategoryTheory.jsonld as mathematical foundation. Formalizes categories, objects, morphisms, functors explicitly. Enables categorical structure annotation for KnowledgeField, metaconcepts, and TSCG layers. Total M3 ontologies: 3 → 4 (GenesisSpace, EagleEye, SphinxEye, CategoryTheory)."
+"v3.1.0": "CATEGORY THEORY INTEGRATION: Added M3_CategoryTheory.jsonld as mathematical foundation. Formalizes categories, objects, morphisms, functors explicitly. Enables categorical structure annotation for KnowledgeField, GenericConcepts, and TSCG layers. Total M3 ontologies: 3 → 4 (GenesisSpace, EagleEye, SphinxEye, CategoryTheory)."
 ```
 
 ---
@@ -106,19 +106,19 @@ M3_GenesisSpace.jsonld has been successfully updated from v3.0.1 to v3.1.0 to in
     "Cat_TSCG": "Category of TSCG layers {M3, M2, M1, M0}",
     "Cat_M3_ASFID": "Category of ASFID dimensions {A, S, F, I, D}",
     "Cat_M3_REVOI": "Category of REVOI dimensions {R, E, V, O, I}",
-    "Cat_M2": "Category of metaconcepts (defined in M2)",
+    "Cat_M2": "Category of GenericConcepts (defined in M2)",
     "Cat_KnowledgeField": "Category of knowledge fields (defined in M2)"
   },
   "functors": {
-    "F_tensorization": "F_⊗: Cat_M3 → Cat_M2 (tensor products create metaconcepts)",
-    "F_instantiation": "F_inst: Cat_M2 → Cat_M1 (metaconcepts → domain concepts)",
+    "F_tensorization": "F_⊗: Cat_M3 → Cat_M2 (tensor products create GenericConcepts)",
+    "F_instantiation": "F_inst: Cat_M2 → Cat_M1 (GenericConcepts → domain concepts)",
     "F_concretize": "Cat_M1 → Cat_M0 (concepts → concrete instances)"
   },
   "morphisms": {
     "inclusion": "↪ (e.g., Homeostasis ↪ Regulation)",
     "composition": "∘ (e.g., Learning = Memory ∘ Adaptation)",
     "duality": "op (e.g., Divergence = Convergence^op)",
-    "emergence": "⇒ (e.g., MetaconceptCombo: M_A ⊗ M_B ⇒ M_C)"
+    "emergence": "⇒ (e.g., GenericConceptCombo: M_A ⊗ M_B ⇒ M_C)"
   },
   "reification": {
     "description": "Objects in categories are reifications (concrete instances)",
@@ -148,7 +148,7 @@ M3_GenesisSpace.jsonld has been successfully updated from v3.0.1 to v3.1.0 to in
 2. **Explicit categorical structure** for TSCG layers (M3→M2→M1→M0)
 3. **Reification semantics** for KnowledgeField objects
 4. **Functor formalization** for tensorization and instantiation
-5. **Morphism taxonomy** for metaconcept relationships
+5. **Morphism taxonomy** for GenericConcept relationships
 
 ### Enables Future Work
 
@@ -180,7 +180,7 @@ M3_GenesisSpace.jsonld has been successfully updated from v3.0.1 to v3.1.0 to in
    - Check imports resolve correctly
    - Run consistency check
 
-2. **Update M2_MetaConcepts.jsonld**
+2. **Update M2_GenericConcepts.jsonld**
    - Add m3:category_theory namespace
    - Annotate KnowledgeField with categorical properties
    - Define Cat_KnowledgeField
@@ -200,7 +200,7 @@ M3_GenesisSpace.jsonld has been successfully updated from v3.0.1 to v3.1.0 to in
 
 1. **M3_GenesisSpace_v3_1_0.jsonld** - Updated Genesis Space with Category Theory integration
 2. **M3_CategoryTheory_v1_0_0.jsonld** - New Category Theory ontology
-3. **M2_KnowledgeField_KnowledgeFieldMetaCombo_v15_2_0.jsonld** - Updated with m3:category_theory namespace
+3. **M2_KnowledgeField_KnowledgeFieldGenericCombo_v15_2_0.jsonld** - Updated with m3:category_theory namespace
 4. **CategoryTheory_KnowledgeField_Integration.md** - Integration guide
 5. **M3_GenesisSpace_CategoryTheory_Integration.md** - Update instructions (now obsolete, applied)
 

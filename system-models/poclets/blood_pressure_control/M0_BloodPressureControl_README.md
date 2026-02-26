@@ -172,9 +172,9 @@ The **Blood Pressure Control** poclet models the long-term regulation of arteria
 
 ---
 
-## M2 Metaconcepts Mobilized
+## M2 GenericConcepts Mobilized
 
-This poclet validates **12 M2 metaconcepts**:
+This poclet validates **12 M2 GenericConcepts**:
 
 ### 1. **Homeostasis** (A?S?F) - ? CENTRAL
 - **Role**: Core regulatory principle
@@ -510,7 +510,7 @@ The **Blood Pressure Control poclet** is a **high-priority addition** to the TSC
 
 ? **Complete ASFID** - All 5 dimensions robustly present  
 ? **High ORIVE (0.84)** - Excellent Map quality, well-validated  
-? **12 M2 metaconcepts** - Rich theoretical validation  
+? **12 M2 GenericConcepts** - Rich theoretical validation  
 ? **Clinical relevance** - Hypertension = major public health issue  
 ? **Pedagogical value** - Complex system, clear conceptual structure  
 ? **Maximal gamifiability** - 4 game modes with deep learning potential  

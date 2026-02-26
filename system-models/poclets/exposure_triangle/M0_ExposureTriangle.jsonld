@@ -7,7 +7,7 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m0:exposure_triangle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/poclets/exposure_triangle/M0_ExposureTriangle.jsonld#"
   },
@@ -31,7 +31,7 @@
           "@id": "m0:ISO_Sensitivity",
           "@type": "m2:Component",
           "rdfs:label": "ISO Sensitivity (Sensor Gain)",
-          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:GenericConceptInstantiation": "m2:Component",
           "m0:role": "Sensor amplification factor - determines sensitivity to light",
           "m0:function": "Amplifies electrical signal from photons hitting sensor/film",
           "m0:physicalCorrelate": "Analog: Film grain size / silver halide concentration. Digital: Sensor gain (voltage amplification)",
@@ -63,7 +63,7 @@
           "@id": "m0:Aperture_Opening",
           "@type": "m2:Component",
           "rdfs:label": "Aperture (f-number / f-stop)",
-          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:GenericConceptInstantiation": "m2:Component",
           "m0:role": "Lens opening size - controls light flux entering camera",
           "m0:function": "Regulates amount of light per unit time reaching sensor",
           "m0:physicalCorrelate": "Iris diaphragm diameter: Area ∝ (1/f-number)²",
@@ -99,7 +99,7 @@
           "@id": "m0:ShutterSpeed_Duration",
           "@type": "m2:Component",
           "rdfs:label": "Shutter Speed (Exposure Time)",
-          "m0:metaconceptInstantiation": "m2:Component",
+          "m0:GenericConceptInstantiation": "m2:Component",
           "m0:role": "Duration sensor is exposed to light - controls temporal integration",
           "m0:function": "Determines how long light accumulates on sensor/film",
           "m0:physicalCorrelate": "Mechanical curtain or electronic shutter opening duration",
@@ -137,7 +137,7 @@
         }
       ],
       "m0:balancePrinciple": {
-        "metaconcept": "m2:Balance",
+        "GenericConcept": "m2:Balance",
         "formula": "A ⊗ S ⊗ F",
         "description": "Correct exposure achieved when three parameters balance: ISO × Aperture_Area × Time = Constant (scene-dependent)",
         "equation": "log₂(ISO) + log₂(Aperture⁻²) + log₂(Time) = log₂(Scene_Luminance) + K",
@@ -177,7 +177,7 @@
         ]
       },
       "m0:tradeoffPrinciple": {
-        "metaconcept": "m2:Trade-off",
+        "GenericConcept": "m2:Trade-off",
         "revoiFormula": "R ⊗ V ⊗ E (primary, REVOI basis)",
         "asfidFormula": "A ⊗ I (fallback)",
         "description": "Photographer cannot simultaneously maximize all desirable image qualities. Must choose preferred balance point on Pareto frontier.",
@@ -373,26 +373,26 @@
           "korzybskiPrinciple": "Map simplifies Territory (omits scene luminance, optics) but captures essential structure for practical decision-making."
         }
       },
-      "m0:metaconceptsMobilized": {
+      "m0:GenericConceptsMobilized": {
         "total": 22,
         "m3:semanticSignature": "light_balance_attractor + parameter_trade-off_map + photon_flow_amplification",
-        "metaconcepts": [
+        "GenericConcepts": [
           {
-            "metaconcept": "m2:Balance",
+            "GenericConcept": "m2:Balance",
             "formula": "A ⊗ S ⊗ F",
             "role": "Equilibrium state where ISO × Aperture × Shutter yields correct exposure",
             "instantiation": "Compensatory adjustment: +1 stop one parameter compensated by -1 stop another",
-            "discoveryContext": "First identified in Exposure Triangle poclet; now established M2 metaconcept"
+            "discoveryContext": "First identified in Exposure Triangle poclet; now established M2 GenericConcept"
           },
           {
-            "metaconcept": "m2:Trade-off",
+            "GenericConcept": "m2:Trade-off",
             "formula": "R ⊗ V ⊗ E (REVOI primary), A ⊗ I (ASFID fallback)",
             "role": "Photographer's decision-making: Cannot maximize DoF, freeze motion, minimize noise simultaneously",
             "instantiation": "Pareto frontier of image quality objectives under exposure constraint",
-            "discoveryContext": "First identified in Exposure Triangle poclet; now established M2 metaconcept"
+            "discoveryContext": "First identified in Exposure Triangle poclet; now established M2 GenericConcept"
           },
           {
-            "metaconcept": "m2:Amplification",
+            "GenericConcept": "m2:Amplification",
             "formula": "Ft ⊗ D ⊗ It (ASFID Territory component)",
             "role": "ISO sensor gain as signal amplification; ND filter as light attenuation",
             "instantiation": {
@@ -403,7 +403,7 @@
             }
           },
           {
-            "metaconcept": "m2:FeedbackLoop",
+            "GenericConcept": "m2:FeedbackLoop",
             "formula": "m2:Process ⊗ m2:Alignment ⊗ m2:Homeostasis",
             "role": "Camera metering system as negative feedback loop correcting toward target exposure",
             "instantiation": {
@@ -417,7 +417,7 @@
             }
           },
           {
-            "metaconcept": "m2:Polarity",
+            "GenericConcept": "m2:Polarity",
             "formula": "S ⊗ I ⊗ A",
             "role": "Stops scale as bipolar orientation system (over/under-exposed as opposing poles)",
             "instantiation": {
@@ -430,7 +430,7 @@
             }
           },
           {
-            "metaconcept": "m2:Behavior",
+            "GenericConcept": "m2:Behavior",
             "formula": "S ⊗ D ⊗ F",
             "role": "Photographer's structured exposure evaluation routine",
             "instantiation": {
@@ -447,49 +447,49 @@
             }
           },
           {
-            "metaconcept": "m2:Component",
+            "GenericConcept": "m2:Component",
             "formula": "S ⊗ I",
             "role": "ISO, Aperture, Shutter as elementary constitutive parts",
             "instantiation": "Three parameters with distinct roles (sensitivity, flux, duration)"
           },
           {
-            "metaconcept": "m2:Synergy",
+            "GenericConcept": "m2:Synergy",
             "formula": "A ⊗ S ⊗ I",
             "role": "Multiplicative interaction: E ∝ ISO × A × T (not additive)",
             "instantiation": "Three parameters synergistically determine exposure outcome"
           },
           {
-            "metaconcept": "m2:Constraint",
+            "GenericConcept": "m2:Constraint",
             "formula": "S ⊗ I",
             "role": "Physical limits and rules",
             "instantiation": "ISO range [100-25600], Aperture range [f/1.4-f/22], Shutter [1/8000-30s], Reciprocity law"
           },
           {
-            "metaconcept": "m2:Threshold",
+            "GenericConcept": "m2:Threshold",
             "formula": "A ⊗ I",
             "role": "Critical values triggering qualitative change",
             "instantiation": "1/focal_length rule (camera shake), ISO >1600 (visible noise), f/16 (diffraction)"
           },
           {
-            "metaconcept": "m2:Regulation",
+            "GenericConcept": "m2:Regulation",
             "formula": "A ⊗ S ⊗ F",
             "role": "Auto-exposure systems (AE, Av, Tv modes)",
             "instantiation": "Camera automatically adjusts parameters to maintain target exposure"
           },
           {
-            "metaconcept": "m2:Signal",
+            "GenericConcept": "m2:Signal",
             "formula": "I ⊗ F",
             "role": "Light as information carrier",
             "instantiation": "Photon flux encodes scene luminance, color, spatial information"
           },
           {
-            "metaconcept": "m2:Code",
+            "GenericConcept": "m2:Code",
             "formula": "I ⊗ S ⊗ D",
             "role": "EXIF encoding of camera settings",
             "instantiation": "ISO, aperture, shutter encoded as metadata in image file"
           },
           {
-            "metaconcept": "m2:Representation",
+            "GenericConcept": "m2:Representation",
             "formula": "I ⊗ S",
             "role": "Triangle diagram as visual representation",
             "instantiation": "Geometric model mapping parameters to vertices",
@@ -502,49 +502,49 @@
             }
           },
           {
-            "metaconcept": "m2:Space",
+            "GenericConcept": "m2:Space",
             "formula": "S ⊗ I",
             "role": "3D exposure parameter space",
             "instantiation": "Coordinate system (ISO, Aperture, Shutter) defining all possible settings"
           },
           {
-            "metaconcept": "m2:Invariant",
+            "GenericConcept": "m2:Invariant",
             "formula": "S ⊗ A",
             "role": "Exposure value (EV) remains constant across equivalent settings",
             "instantiation": "EV = log₂(ISO × A² / T) invariant for same scene luminance"
           },
           {
-            "metaconcept": "m2:Transformation",
+            "GenericConcept": "m2:Transformation",
             "formula": "D ⊗ I ⊗ S",
             "role": "Conversions between settings maintaining exposure",
             "instantiation": "ISO 400, f/4, 1/250 ↔ ISO 800, f/5.6, 1/250 (equivalent exposure, different image qualities)"
           },
           {
-            "metaconcept": "m2:Process",
+            "GenericConcept": "m2:Process",
             "formula": "D ⊗ F",
             "role": "Exposure as temporal process",
             "instantiation": "Light accumulation from shutter open to close"
           },
           {
-            "metaconcept": "m2:Event",
+            "GenericConcept": "m2:Event",
             "formula": "D ⊗ I",
             "role": "Shutter actuation as discrete event",
             "instantiation": "Moment of capture (click)"
           },
           {
-            "metaconcept": "m2:Memory",
+            "GenericConcept": "m2:Memory",
             "formula": "∫(D - F)dτ",
             "role": "Photographer's learned exposure intuition",
             "instantiation": "Pattern recognition from thousands of shots (muscle memory for settings)"
           },
           {
-            "metaconcept": "m2:Adaptation",
+            "GenericConcept": "m2:Adaptation",
             "formula": "I ⊗ F ⊗ D",
             "role": "Adjusting settings to changing light conditions",
             "instantiation": "ISO ramp from ISO 100 (noon) → ISO 6400 (dusk)"
           },
           {
-            "metaconcept": "m2:Language",
+            "GenericConcept": "m2:Language",
             "formula": "I ⊗ S ⊗ F",
             "role": "Photographer jargon and notation",
             "instantiation": "'Stop down to f/8', '1/250 at f/5.6', 'Push 2 stops'"
@@ -586,11 +586,11 @@
       },
       "m0:validation": {
         "asfidCompleteness": "All 5 dimensions present ✅",
-        "metaconceptCoverage": "22 metaconcepts (31% of M2) ✅",
+        "GenericConceptCoverage": "22 GenericConcepts (31% of M2) ✅",
         "minimality": "Exactly 3 components (irreducible for exposure control) ✅",
         "emergence": "Correct exposure emerges from parameter balance ✅",
         "balanceTradeoffValidated": "Balance and Trade-off fully validated in M2 (v15.1.0) ✅",
-        "newMetaconceptsV1_1": "Amplification (ISO gain), FeedbackLoop (metering), Polarity (stops scale), Behavior (photographer routine) ✅",
+        "newGenericConceptsV1_1": "Amplification (ISO gain), FeedbackLoop (metering), Polarity (stops scale), Behavior (photographer routine) ✅",
         "transdisciplinaryPotential": "Balance and Trade-off validated across 8 domains each ✅"
       },
       "m0:sampleImage": {
@@ -617,11 +617,11 @@
         },
         "v1.1.0": {
           "date": "2026-02-21",
-          "description": "Synchronized with M2 v15.4.0 and M3 v3.5.0. (1) Author field corrected. (2) ORIVE → REVOI terminology update throughout (oriveAnalysis → revoiAnalysis, state vector reordered R/E/V/O/I). (3) Tensor formula spacing normalized (A⊗S⊗F → A ⊗ S ⊗ F). (4) Balance and Trade-off no longer labeled '(NEW)' — now established M2 metaconcepts. (5) Added 4 new metaconcepts: Amplification (ISO sensor gain), FeedbackLoop (metering negative loop), Polarity (stops bipolar scale), Behavior (photographer routine). (6) Added spaceCoverage ValueSpace (RSC≈0.65) to Representation instantiation. (7) Added m3:semanticSignature. Total metaconcepts: 18 → 22."
+          "description": "Synchronized with M2 v15.4.0 and M3 v3.5.0. (1) Author field corrected. (2) ORIVE → REVOI terminology update throughout (oriveAnalysis → revoiAnalysis, state vector reordered R/E/V/O/I). (3) Tensor formula spacing normalized (A⊗S⊗F → A ⊗ S ⊗ F). (4) Balance and Trade-off no longer labeled '(NEW)' — now established M2 GenericConcepts. (5) Added 4 new GenericConcepts: Amplification (ISO sensor gain), FeedbackLoop (metering negative loop), Polarity (stops bipolar scale), Behavior (photographer routine). (6) Added spaceCoverage ValueSpace (RSC≈0.65) to Representation instantiation. (7) Added m3:semanticSignature. Total GenericConcepts: 18 → 22."
         },
         "v1.0.0": {
           "date": "2026-01-20",
-          "description": "Initial creation. 18 metaconcepts (34%). First identification of Balance and Trade-off as new M2 metaconcepts from photography domain analysis."
+          "description": "Initial creation. 18 GenericConcepts (34%). First identification of Balance and Trade-off as new M2 GenericConcepts from photography domain analysis."
         }
       },
       "m0:futureExtensions": {

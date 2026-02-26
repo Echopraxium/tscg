@@ -1,9 +1,9 @@
-# Cascade Metaconcept: Modeling Guide
+# Cascade GenericConcept: Modeling Guide
 
 **Version**: 14.5.0  
 **Date**: 2026-02-06  
 **Author**: Echopraxium with the collaboration of Claude AI  
-**Metaconcept Type**: Ternary MetaconceptCombo (N=3)
+**GenericConcept Type**: Ternary GenericConceptCombo (N=3)
 
 ---
 
@@ -46,7 +46,7 @@
 
 ### Ternary Composition
 
-Cascade uniquely combines **three** parent metaconcepts:
+Cascade uniquely combines **three** parent GenericConcepts:
 
 ```
 Process (D⊗F)
@@ -691,7 +691,7 @@ Before finalizing your Cascade model, verify:
 - [ ] `branching` (true/false) determined
 - [ ] Rationales provided for each choice
 
-### ✅ Distinction from Related Metaconcepts
+### ✅ Distinction from Related GenericConcepts
 
 - [ ] Not just a **Process** (has discrete stages)
 - [ ] Not just **Step** sequence (has flow and goal)
@@ -799,7 +799,7 @@ If ALL G_i < 1 → amplifying: false (attenuating)
 - Stages still sequential within each branch
 - Example: RAAS (Ang II → [vasoconstriction, aldosterone, vasopressin])
 
-**Parallel** (different metaconcept):
+**Parallel** (different GenericConcept):
 - Independent simultaneous processes
 - No sequential dependency
 - Example: Multi-core CPU (independent threads)
@@ -827,14 +827,14 @@ If ALL G_i < 1 → amplifying: false (attenuating)
 
 **Formula**: `S ⊗ I ⊗ A ⊗ D ⊗ F` (complete ASFID)
 
-**First metaconcept to cover all 5 ASFID dimensions!**
+**First GenericConcept to cover all 5 ASFID dimensions!**
 
 ---
 
 ## References
 
-- **M2_MetaConcepts.jsonld** (v14.5.0): Full Cascade definition
-- **TSCG_Architectural_Extensions.md**: N-ary MetaconceptCombo theory
+- **M2_GenericConcepts.jsonld** (v14.5.0): Full Cascade definition
+- **TSCG_Architectural_Extensions.md**: N-ary GenericConceptCombo theory
 - **TSCG_ValueSpace_User_Guide.md**: Attribute usage
 - **Poclet_Analysis_Methodology.md**: Discovery process
 

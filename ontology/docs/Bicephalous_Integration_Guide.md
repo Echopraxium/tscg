@@ -46,12 +46,12 @@
 
 ### Pattern pour Métaconcepts M2
 
-Chaque métaconcept dans `M2_Metaconcepts.jsonld` devrait référencer les deux yeux :
+Chaque métaconcept dans `M2_GenericConcepts.jsonld` devrait référencer les deux yeux :
 
 ```json
 {
   "@id": "m2:Synergy",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept"],
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept"],
   "rdfs:label": "Synergy",
   "m2:hasTensorFormula": "A⊗S⊗I",
   
@@ -244,7 +244,7 @@ Chaque variant devrait aussi avoir section bicephalous :
 
 ## 📋 Checklist d'Intégration
 
-### Pour M2_Metaconcepts.jsonld
+### Pour M2_GenericConcepts.jsonld
 
 Pour CHAQUE métaconcept :
 
@@ -294,7 +294,7 @@ Pour CHAQUE poclet :
         "territoryASFID": "(0.85, 0.70, 0.90, 0.65, 0.75)",
         "mapASFID": "(0.75, 0.90, 0.60, 0.80, 0.50)",
         "gap": "ΔΘ ≈ 0.47 (moderate)",
-        "metaconceptsMobilized": 22,
+        "GenericConceptsMobilized": 22,
         "coverage": "22/52 = 42%"
       },
       "formulas": {
@@ -334,7 +334,7 @@ Pour CHAQUE poclet :
       "depthPerception": "Gap ΔΘ=0.47 = 'Moderate' distance between phenomenon and model",
       "workflow": [
         "Lion: Fire Triangle is pedagogical simplification (WHY: safety training)",
-        "Eagle: ΔΘ=0.47 (quantified gap), 22 metaconcepts mobilized",
+        "Eagle: ΔΘ=0.47 (quantified gap), 22 GenericConcepts mobilized",
         "Lion: Moderate gap acceptable for pedagogy, but inadequate for research (need Tetrahedron)",
         "Synthesis: Use Triangle for training, Tetrahedron for technical analysis"
       ],

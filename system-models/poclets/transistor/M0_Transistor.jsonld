@@ -3,7 +3,7 @@
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
     "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/poclets/transistor/M0_Transistor.jsonld#",
     "m1elec": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Electronics.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
     "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -20,14 +20,14 @@
         "owl:NamedIndividual"
       ],
       "rdfs:label": "Bipolar Junction Transistor (BJT) - NPN Configuration",
-      "rdfs:comment": "BJT as electronic Processor: Input (base current, collector voltage) → Amplification/Switching → Output (collector current). Minimal complete semiconductor processor demonstrating dual modes (linear amplification vs digital switching). Validates Processor metaconcept with continuous analog inputs/outputs and transformation via charge carrier control.",
+      "rdfs:comment": "BJT as electronic Processor: Input (base current, collector voltage) → Amplification/Switching → Output (collector current). Minimal complete semiconductor processor demonstrating dual modes (linear amplification vs digital switching). Validates Processor GenericConcept with continuous analog inputs/outputs and transformation via charge carrier control.",
       "dcterms:created": "2026-02-07",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "owl:versionInfo": "15.2.0",
       "m2:changelog": [
         "2026-02-24: v15.2.0 — Replaced m0:dualModes with comprehensive m0:operatingModes covering BJT (4 modes: Cutoff, Forward Active, Saturation, Reverse Active) and MOSFET NMOS (3 modes: Cutoff, Triode, Saturation). Added namingConventionNote on BJT/MOSFET Saturation inversion. Added comparativeTable (BJT↔MOSFET mode equivalences). Updated m0:simulation for new device-selector tab (BJT/MOSFET) and mode panel. versionInfo 15.1.0 → 15.2.0.",
         "2026-02-24: v15.1.0 — Fixed @context URIs to canonical tscg GitHub raw path. Added m0:simulation property documenting transistor_sim.py (I-V characteristic curves, live operating-point display, ASFID/REVOI panels). Added m0:operatingRegionColors for simulation. versionInfo bumped 15.0.0 → 15.1.0.",
-        "2026-02-07: v15.0.0 — Initial creation. BJT as first electronic Processor poclet. Validates Processor ternary hybrid formulas (Territory: Transformation⊗Flow⊗Resource; Map: Transformation⊗Representation⊗Interoperability). 11 metaconcepts. ASFID=0.85, REVOI=0.86, ΔΘ=0.01."
+        "2026-02-07: v15.0.0 — Initial creation. BJT as first electronic Processor poclet. Validates Processor ternary hybrid formulas (Territory: Transformation⊗Flow⊗Resource; Map: Transformation⊗Representation⊗Interoperability). 11 GenericConcepts. ASFID=0.85, REVOI=0.86, ΔΘ=0.01."
       ],
       "m0:simulation": {
         "filename": "transistor_sim.py",
@@ -61,8 +61,8 @@
         "Digital Electronics",
         "Signal Processing"
       ],
-      "m0:primaryMetaconcept": "m2:Processor",
-      "m0:validatesMetaconcepts": [
+      "m0:primaryGenericConcept": "m2:Processor",
+      "m0:validatesGenericConcepts": [
         "m2:Processor (ternary hybrid formulas)",
         "m2:Transformation",
         "m2:Flow",
@@ -182,7 +182,7 @@
               "m0:transistorState": "OFF",
               "m0:primaryApplication": "Switching circuits (digital logic LOW state)",
               "m0:examples": ["Logic gate output LOW", "Relay OFF", "LED OFF"],
-              "m0:metaconcept": "m2:Threshold (below activation threshold)",
+              "m0:GenericConcept": "m2:Threshold (below activation threshold)",
               "m0:simulationColor": {"hex": "#505070", "rgb": [80, 80, 112]}
             },
             {
@@ -202,7 +202,7 @@
                 "Op-amp input differential pair",
                 "Sensor signal conditioning"
               ],
-              "m0:metaconcept": "m2:Amplification (primary) + m2:Transformation (I_B → I_C via β)",
+              "m0:GenericConcept": "m2:Amplification (primary) + m2:Transformation (I_B → I_C via β)",
               "m0:simulationColor": {"hex": "#4080FF", "rgb": [64, 128, 255]}
             },
             {
@@ -222,7 +222,7 @@
                 "Motor H-bridge switch",
                 "LED driver (LED fully ON)"
               ],
-              "m0:metaconcept": "m2:Threshold (above saturation threshold) + m2:Mode",
+              "m0:GenericConcept": "m2:Threshold (above saturation threshold) + m2:Mode",
               "m0:simulationColor": {"hex": "#FF8C00", "rgb": [255, 140, 0]}
             },
             {
@@ -240,7 +240,7 @@
                 "Early TTL gate design (to reduce transistor count on chip)",
                 "Intentional reverse conduction in certain logic families"
               ],
-              "m0:metaconcept": "m2:Mode (degenerate case) + m2:Polarity (reversed bias polarity)",
+              "m0:GenericConcept": "m2:Mode (degenerate case) + m2:Polarity (reversed bias polarity)",
               "m0:simulationColor": {"hex": "#9040C0", "rgb": [144, 64, 192]}
             }
           ]
@@ -262,7 +262,7 @@
               "m0:transistorState": "OFF",
               "m0:primaryApplication": "Digital logic OFF state, low-power standby",
               "m0:examples": ["CMOS logic gate input LOW", "MOSFET switch OFF"],
-              "m0:metaconcept": "m2:Threshold (below V_th — no channel formed)",
+              "m0:GenericConcept": "m2:Threshold (below V_th — no channel formed)",
               "m0:simulationColor": {"hex": "#505070", "rgb": [80, 80, 112]}
             },
             {
@@ -279,7 +279,7 @@
                 "CMOS logic switch (fully conducting)",
                 "Analog multiplexer/switch"
               ],
-              "m0:metaconcept": "m2:Regulation (voltage-controlled resistance) + m2:Flow (channel current)",
+              "m0:GenericConcept": "m2:Regulation (voltage-controlled resistance) + m2:Flow (channel current)",
               "m0:simulationColor": {"hex": "#50C878", "rgb": [80, 200, 120]}
             },
             {
@@ -297,7 +297,7 @@
                 "Op-amp CMOS input stage",
                 "Current mirror (active load)"
               ],
-              "m0:metaconcept": "m2:Amplification (primary) + m2:Invariant (I_D independent of V_DS in saturation)",
+              "m0:GenericConcept": "m2:Amplification (primary) + m2:Invariant (I_D independent of V_DS in saturation)",
               "m0:simulationColor": {"hex": "#4080FF", "rgb": [64, 128, 255]}
             }
           ],
@@ -475,7 +475,7 @@
       },
       "m0:keyInsights": [
         "Transistor validates Processor in electronics: dual N-ary inputs (I_B, V_CE) → single output (I_C)",
-        "Dual-mode operation (linear vs digital) demonstrates Mode metaconcept instantiation",
+        "Dual-mode operation (linear vs digital) demonstrates Mode GenericConcept instantiation",
         "Amplification dimension critical: β = 50-500 current gain, power gain >10,000",
         "Interoperability essential: standardized symbols (IEEE), pinouts (JEDEC), models (SPICE) enable universal circuit integration",
         "Threshold sharpness (exponential I-V) enables digital switching despite continuous physics",
@@ -497,7 +497,7 @@
         "manufacturing": "β variation (±50%) between units, requires circuit design robustness"
       },
       "m0:notes": [
-        "Second electronic poclet validating Processor metaconcept (after M0_Kidneys biology)",
+        "Second electronic poclet validating Processor GenericConcept (after M0_Kidneys biology)",
         "Demonstrates minimal complete semiconductor processor: 3 terminals, 2 junctions, complete signal processing",
         "Ternary hybrid formulas validated: Territory (charge physics) distinct from Map (circuit model)",
         "Sharp threshold despite continuous physics enables digital computing foundation",
@@ -507,7 +507,7 @@
         "@id": "m3:Poclet"
       },
       "owl:imports": [
-        "M2_MetaConcepts.jsonld",
+        "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld"
       ]
     }
@@ -517,7 +517,7 @@
   "rdfs:comment": "BJT as minimal electronic Processor with dual-mode operation (amplification/switching). Validates Processor ternary hybrid formulas in semiconductor domain.",
   "owl:versionInfo": "15.2.0",
   "owl:imports": [
-    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld",
+    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld",
     "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld"
   ],
   "dcterms:creator": "Echopraxium with the collaboration of Claude AI",

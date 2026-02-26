@@ -14,7 +14,7 @@
 **Critères M1** :
 ✅ **Transdisciplinaire** : Présent dans toutes les mythologies (Norse, Greek, Egyptian, Hindu, etc.)  
 ✅ **Pattern réutilisable** : "Dieu" et "Créature" sont des templates conceptuels  
-✅ **Instancie M2** : Basés sur metaconcepts (Agent, Identity, etc.)  
+✅ **Instancie M2** : Basés sur GenericConcepts (Agent, Identity, etc.)  
 ✅ **Domain-bounded** : Spécifique au domaine mythologie (pas universels comme M2)
 
 **Si c'était M0** : On dupliquerait "Dieu" dans chaque poclet mythologique (Yggdrasil, Olympe, Panthéon Égyptien...)  
@@ -30,7 +30,7 @@
 
 ### Bases M2
 
-**Metaconcepts instanciés** :
+**GenericConcepts instanciés** :
 - **Agent** (S⊗I⊗D⊗A⊗E) - Autonomie, buts, actions
 - **Identity** (S⊗I⊗A⊗V⊗E) - Persistance à travers transformations
 - **Role** (S⊗I⊗F⊗O⊗R) - Fonction dans système (dieu de X)
@@ -93,7 +93,7 @@ m1:mythology:Deity (abstract)
 
 ### Bases M2
 
-**Metaconcepts instanciés** :
+**GenericConcepts instanciés** :
 - **Agent** (si autonome) ou **Entity** (si passif)
 - **Identity** (S⊗I⊗A⊗V⊗E) - Morphologie unique reconnaissable
 - **Role** (optionnel) - Fonction systémique
@@ -344,4 +344,4 @@ Si "Deity" ou "MythicalCreature" s'avèrent universels (validés 8-10 domaines i
 
 **Document Status**: PROPOSAL  
 **Ready for**: Implementation in M1_Mythology.jsonld  
-**Dependencies**: M2_MetaConcepts.jsonld (Agent, Identity, Role)
+**Dependencies**: M2_GenericConcepts.jsonld (Agent, Identity, Role)

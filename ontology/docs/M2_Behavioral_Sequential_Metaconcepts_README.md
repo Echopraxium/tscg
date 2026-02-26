@@ -1,4 +1,4 @@
-# M2 Behavioral/Sequential Metaconcepts Family (v14.3.0)
+# M2 Behavioral/Sequential GenericConcepts Family (v14.3.0)
 
 **Author:** Echopraxium with the collaboration of Claude AI  
 **Date:** 2026-01-28  
@@ -8,11 +8,11 @@
 
 ## Executive Summary
 
-This document introduces 5 new M2 metaconcepts that form a coherent family for modeling **sequential, temporal, and behavioral patterns**. These metaconcepts bridge the gap between pure temporal abstractions (Process) and pure structural patterns (Network).
+This document introduces 5 new M2 GenericConcepts that form a coherent family for modeling **sequential, temporal, and behavioral patterns**. These GenericConcepts bridge the gap between pure temporal abstractions (Process) and pure structural patterns (Network).
 
-### New Metaconcepts
+### New GenericConcepts
 
-| # | Metaconcept | Formula | Polarity | Parent | Role |
+| # | GenericConcept | Formula | Polarity | Parent | Role |
 |---|-------------|---------|----------|--------|------|
 | 1 | **Behavior** | S⊗D⊗F | Dual | - | Network of decomposable Steps |
 | 2 | **Tropism** | A⊗S⊗D⊗F | Dual | Behavior | Gradient-directed Behavior |
@@ -57,7 +57,7 @@ This document introduces 5 new M2 metaconcepts that form a coherent family for m
 3. **Photosynthesis:** light absorption → water splitting → CO2 fixation
 4. **Learning algorithm:** initialize → iterate → converge
 
-### Distinction from Related Metaconcepts
+### Distinction from Related GenericConcepts
 
 | vs | Distinction |
 |----|-------------|
@@ -294,7 +294,7 @@ Tropism:  A ⊗ S ⊗ D ⊗ F   (order 4)
 
 ### Epistemic Gap Distribution
 
-| Metaconcept | Gap | Interpretation |
+| GenericConcept | Gap | Interpretation |
 |-------------|-----|----------------|
 | Action | 0.15 | Most concrete/measurable |
 | Tropism | 0.18 | Very observable (gradient-driven) |
@@ -345,7 +345,7 @@ Steps:
 
 ## Design Rationale
 
-### Why These 5 Metaconcepts?
+### Why These 5 GenericConcepts?
 
 1. **Behavior:** Needed to model decomposable sequential patterns (gap between Process and Network)
 
@@ -430,7 +430,7 @@ m2:triggeredBy a owl:ObjectProperty ;
 
 ## References
 
-### Related M2 Metaconcepts
+### Related M2 GenericConcepts
 
 - **Process** (D⊗F): Parent abstraction for Workflow
 - **Node** (S⊗I): Parent abstraction for Step
@@ -449,19 +449,19 @@ m2:triggeredBy a owl:ObjectProperty ;
 ## Changelog
 
 ### v14.3.0 (2026-01-28)
-- Initial release of 5 behavioral/sequential metaconcepts
-- Total M2 metaconcepts: 60 → 65
-- Dual polarity metaconcepts: 6 → 11
+- Initial release of 5 behavioral/sequential GenericConcepts
+- Total M2 GenericConcepts: 60 → 65
+- Dual polarity GenericConcepts: 6 → 11
 - Validated across 3 poclets
 
 ---
 
 ## Contact
 
-For questions or contributions regarding these metaconcepts, please refer to the main TSCG repository documentation.
+For questions or contributions regarding these GenericConcepts, please refer to the main TSCG repository documentation.
 
 **Repository:** https://github.com/Echopraxium/tscg  
-**Ontology URI:** https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts_Ontology.jsonld
+**Ontology URI:** https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts_Ontology.jsonld
 
 ---
 

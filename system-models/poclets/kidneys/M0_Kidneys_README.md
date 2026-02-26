@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-This document presents the **first biological validation of the Processor metaconcept** (v15.0.0) using the human renal system as a minimal complete processor demonstrating:
+This document presents the **first biological validation of the Processor GenericConcept** (v15.0.0) using the human renal system as a minimal complete processor demonstrating:
 
 - **Dual N-ary inputs** (blood + water) and **dual outputs** (filtered blood + urine)
 - **Bicephalous ternary hybrid formulas** for Territory (Transformation⊗Flow⊗Resource) and Map (Transformation⊗Representation⊗Interoperability)
@@ -19,7 +19,7 @@ This document presents the **first biological validation of the Processor metaco
 - **Exceptional scores**: ASFID 0.87, REVOI 0.86, epistemic gap 0.01
 
 **Key Results**:
-1. ✅ **Processor validated in biology** - First organ modeled as Processor metaconcept
+1. ✅ **Processor validated in biology** - First organ modeled as Processor GenericConcept
 2. ✅ **Interoperability critical** - Interfaces with 4 systems (cardiovascular, endocrine, nervous, RAAS)
 3. ✅ **Minimal epistemic gap** (0.01) - One of best-understood biological processors
 4. ✅ **Clinical relevance** - Processor failure requires artificial replacement (dialysis) or transplant
@@ -100,7 +100,7 @@ OUTPUTS (N=2):
 
 | Aspect | Value |
 |--------|--------|
-| Primary metaconcept | **m2:Processor** |
+| Primary GenericConcept | **m2:Processor** |
 | Processing stages | 3 (Filtration, Reabsorption, Secretion) |
 | Spatial scale | Organ level (~10 cm length) |
 | Temporal scale | Continuous (24/7 operation) |
@@ -848,10 +848,10 @@ Kidneys maintain homeostasis of:
 
 ## 11. Key Insights
 
-### 11.1 Processor Metaconcept Validation
+### 11.1 Processor GenericConcept Validation
 
 1. **First biological Processor** ✅
-   - Kidneys validate Processor metaconcept in biology domain
+   - Kidneys validate Processor GenericConcept in biology domain
    - Dual N-ary inputs (blood, water) and outputs (filtered blood, urine)
    - Ternary hybrid formulas necessary for complete representation
 
@@ -884,7 +884,7 @@ Kidneys maintain homeostasis of:
 
 1. **Dual role validated** ✅
    - Kidneys are BOTH processor (filtration/regulation) AND cascade initiator (renin → RAAS)
-   - Demonstrates metaconcept instantiation can be multiple (Processor + Cascade sensor)
+   - Demonstrates GenericConcept instantiation can be multiple (Processor + Cascade sensor)
    - Creates feedback loop: Processor ↔ Cascade ↔ Processor
 
 2. **Ternary hybrid formulas justified** ✅
@@ -900,14 +900,14 @@ Kidneys maintain homeostasis of:
 ### 11.3 Methodological Insights
 
 1. **Poclet as validation tool** ✅
-   - Kidneys validate framework extension (new metaconcept)
+   - Kidneys validate framework extension (new GenericConcept)
    - Demonstrates framework generalization to new domains
    - Provides template for future Processor poclets
 
 2. **Transdisciplinary pattern** ✅
    - Processor pattern validated across 4 domains (Biology, Engineering, Computing, Chemistry)
    - Universal characteristics identified (dual I/O, transformation, resource management, flow, interoperability)
-   - Confirms metaconcept status (not domain-specific)
+   - Confirms GenericConcept status (not domain-specific)
 
 3. **Minimal epistemic gap achievement** ✅
    - Only 2 poclets with gap ≤0.01 (Kidneys, Transistor)
@@ -940,11 +940,11 @@ Kidneys maintain homeostasis of:
 ### 12.3 TSCG Framework
 
 1. **M2_Processor.jsonld** (v15.0.0)
-   - Processor metaconcept definition
+   - Processor GenericConcept definition
    - Hybrid formulas specification
 
-2. **M2_MetaConcepts.jsonld** (v15.0.0)
-   - Core metaconcept ontology
+2. **M2_GenericConcepts.jsonld** (v15.0.0)
+   - Core GenericConcept ontology
 
 3. **M1_Biology.jsonld** (v1.0.0)
    - Biological domain concepts
@@ -990,7 +990,7 @@ REVOI (Map): 0.86
 Epistemic Gap: 0.01 ⭐⭐
 ```
 
-### A.3 Metaconcepts Validated
+### A.3 GenericConcepts Validated
 
 **Primary**: `m2:Processor`
 
@@ -1006,7 +1006,7 @@ Epistemic Gap: 0.01 ⭐⭐
 - `m2:Gradient` (osmotic gradient)
 - `m2:Process` (continuous operation)
 
-**Total**: 11 metaconcepts
+**Total**: 11 GenericConcepts
 
 ---
 

@@ -66,7 +66,7 @@ Ajouter **3 attributs complémentaires** pour chaque formule:
 ```json
 {
   "@id": "m2:Homeostasis",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept"],
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept"],
   "rdfs:label": "Homeostasis",
   "rdfs:comment": "Self-regulation maintaining stable internal state despite external perturbations.",
   "m2:hasCategory": "m2:Regulatory",
@@ -93,7 +93,7 @@ Ajouter **3 attributs complémentaires** pour chaque formule:
 ```json
 {
   "@id": "m2:ValueSpace",
-  "@type": ["owl:NamedIndividual", "m2:MetaConcept"],
+  "@type": ["owl:NamedIndividual", "m2:GenericConcept"],
   "rdfs:label": "Value Space",
   "m2:hasCategory": "m2:Informational",
   
@@ -331,15 +331,15 @@ if __name__ == '__main__':
 1. ✅ **Ajouter propriétés OWL:**
    ```turtle
    m2:tensorFormulaTeX rdf:type owl:DatatypeProperty ;
-       rdfs:domain m2:MetaConcept ;
+       rdfs:domain m2:GenericConcept ;
        rdfs:range xsd:string .
    
    m2:tensorFormulaASCII rdf:type owl:DatatypeProperty ;
-       rdfs:domain m2:MetaConcept ;
+       rdfs:domain m2:GenericConcept ;
        rdfs:range xsd:string .
    ```
 
-2. ✅ **Corriger M2_MetaConcepts.jsonld:**
+2. ✅ **Corriger M2_GenericConcepts.jsonld:**
    - Remplacer formules corrompues par UTF-8 pur
    - Ajouter tensorFormulaTeX
    - Ajouter tensorFormulaASCII

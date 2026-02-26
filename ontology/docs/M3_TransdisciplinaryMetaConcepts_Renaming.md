@@ -1,4 +1,4 @@
-# 📝 Terminology Update: TransdisciplinaryPattern → TransdisciplinaryMetaConcepts
+# 📝 Terminology Update: TransdisciplinaryPattern → TransdisciplinaryGenericConcepts
 
 **Date:** January 27, 2026  
 **Author:** Echopraxium with the collaboration of Claude AI  
@@ -13,39 +13,39 @@
 ```
 m3:TransdisciplinaryPattern
   skos:prefLabel: "Transdisciplinary Pattern"
-  skos:altLabel: "Universal Pattern", "M2 Layer", "Metaconcept"
+  skos:altLabel: "Universal Pattern", "M2 Layer", "GenericConcept"
 ```
 
 ### New (v2.4.1)
 ```
-m3:TransdisciplinaryMetaConcepts
-  skos:prefLabel: "Transdisciplinary MetaConcepts"
-  skos:altLabel: "Universal MetaConcepts", "M2 Layer", "Metaconcept Repository"
+m3:TransdisciplinaryGenericConcepts
+  skos:prefLabel: "Transdisciplinary GenericConcepts"
+  skos:altLabel: "Universal GenericConcepts", "M2 Layer", "GenericConcept Repository"
 ```
 
 ---
 
 ## 📋 Rationale
 
-### Why "MetaConcepts" is Better
+### Why "GenericConcepts" is Better
 
 **1. Precision**
 - ❌ "Pattern" is vague (could be visual, behavioral, structural...)
-- ✅ "MetaConcepts" is precise (exactly what M2 contains)
+- ✅ "GenericConcepts" is precise (exactly what M2 contains)
 
 **2. Alignment with Framework Vocabulary**
-- M2 layer explicitly called "MetaConcepts layer"
-- Individual items are "metaconcepts" (Homeostasis, Step, Node...)
+- M2 layer explicitly called "GenericConcepts layer"
+- Individual items are "GenericConcepts" (Homeostasis, Step, Node...)
 - Category name should match content
 
 **3. Semantic Clarity**
 - "Pattern" suggests templates or examples
-- "MetaConcepts" indicates abstract universal concepts
+- "GenericConcepts" indicates abstract universal concepts
 - Better conveys the foundational nature
 
 **4. Consistency**
 - M1 has "DomainExtension" (domains)
-- M2 should have "MetaConcepts" (metaconcepts)
+- M2 should have "GenericConcepts" (GenericConcepts)
 - Parallel structure
 
 ---
@@ -58,7 +58,7 @@ m3:TransdisciplinaryMetaConcepts
 "@id": "m3:TransdisciplinaryPattern"
 
 // After
-"@id": "m3:TransdisciplinaryMetaConcepts"
+"@id": "m3:TransdisciplinaryGenericConcepts"
 ```
 
 ---
@@ -69,7 +69,7 @@ m3:TransdisciplinaryMetaConcepts
 "skos:prefLabel": "Transdisciplinary Pattern"
 
 // After
-"skos:prefLabel": "Transdisciplinary MetaConcepts"
+"skos:prefLabel": "Transdisciplinary GenericConcepts"
 ```
 
 ---
@@ -80,15 +80,15 @@ m3:TransdisciplinaryMetaConcepts
 "skos:altLabel": [
   "Universal Pattern",
   "M2 Layer",
-  "Metaconcept",
+  "GenericConcept",
   "Tensor Product"
 ]
 
 // After
 "skos:altLabel": [
-  "Universal MetaConcepts",
+  "Universal GenericConcepts",
   "M2 Layer",
-  "Metaconcept Repository",
+  "GenericConcept Repository",
   "Tensor Products"
 ]
 ```
@@ -101,7 +101,7 @@ m3:TransdisciplinaryMetaConcepts
 "skos:definition": "Universal patterns derived as tensor products of M3 basis dimensions, validated across multiple scientific disciplines..."
 
 // After
-"skos:definition": "Transdisciplinary metaconcepts derived as tensor products of M3 basis dimensions, validated across multiple scientific disciplines and applicable regardless of domain."
+"skos:definition": "Transdisciplinary GenericConcepts derived as tensor products of M3 basis dimensions, validated across multiple scientific disciplines and applicable regardless of domain."
 ```
 
 ---
@@ -109,10 +109,10 @@ m3:TransdisciplinaryMetaConcepts
 ### 5. Comments Updated
 ```json
 // Before
-"rdfs:comment": "M2 layer ontologies containing metaconcepts - abstract patterns that transcend disciplinary boundaries..."
+"rdfs:comment": "M2 layer ontologies containing GenericConcepts - abstract patterns that transcend disciplinary boundaries..."
 
 // After
-"rdfs:comment": "M2 layer ontologies containing metaconcepts - abstract universal concepts that transcend disciplinary boundaries..."
+"rdfs:comment": "M2 layer ontologies containing GenericConcepts - abstract universal concepts that transcend disciplinary boundaries..."
 ```
 
 ---
@@ -143,7 +143,7 @@ All references updated:
 
 ---
 
-### MetaConcepts
+### GenericConcepts
 **Connotations:**
 - Abstract concepts
 - Meta-level (above concrete)
@@ -166,7 +166,7 @@ All references updated:
 |----------|-------|-----------------|-----------|-------|
 | m3:Genesis | M3 | Genesis | - | Unchanged |
 | m3:GenesisExtension | M3 | Genesis Extension | - | Unchanged |
-| **m3:TransdisciplinaryMetaConcepts** | **M2** | **Transdisciplinary MetaConcepts** | ~~TransdisciplinaryPattern~~ | **✅ RENAMED** |
+| **m3:TransdisciplinaryGenericConcepts** | **M2** | **Transdisciplinary GenericConcepts** | ~~TransdisciplinaryPattern~~ | **✅ RENAMED** |
 | m3:DomainExtension | M1 | Domain Extension | - | Unchanged |
 | m3:SystemicFramework | M1 | Systemic Framework | - | Unchanged |
 | m3:Poclet | M0 | Poclet | - | Unchanged |
@@ -185,7 +185,7 @@ m3:OntologyCategoryScheme
 ├─── m3:Genesis (1)
 │    └─── m3:GenesisExtension (2)
 │
-├─── m3:TransdisciplinaryMetaConcepts ✅ (1)
+├─── m3:TransdisciplinaryGenericConcepts ✅ (1)
 │    │
 │    ├─── m3:DomainExtension (6+)
 │    │
@@ -212,7 +212,7 @@ SELECT ?ontology WHERE {
 **After:**
 ```sparql
 SELECT ?ontology WHERE {
-  ?ontology m3:ontologyCategory m3:TransdisciplinaryMetaConcepts .
+  ?ontology m3:ontologyCategory m3:TransdisciplinaryGenericConcepts .
 }
 ```
 
@@ -235,7 +235,7 @@ ORDER BY DESC(?count)
 
 **Expected Result:**
 ```
-"Transdisciplinary MetaConcepts"  | 1
+"Transdisciplinary GenericConcepts"  | 1
 "Domain Extension"                | 6+
 "Poclet"                          | 16+
 ...
@@ -248,12 +248,12 @@ ORDER BY DESC(?count)
 ### Immediate Updates Required
 
 1. ✅ **M3_GenesisSpace.jsonld** - DONE (v2.4.1)
-2. ⏳ **M2_MetaConcepts.jsonld** - Update m3:ontologyCategory reference
+2. ⏳ **M2_GenericConcepts.jsonld** - Update m3:ontologyCategory reference
 3. ⏳ **Smart Prompt** - Update category descriptions
 4. ⏳ **Documentation files** - Update terminology throughout
 
 ### SPARQL Queries
-All queries referencing `m3:TransdisciplinaryPattern` must be updated to `m3:TransdisciplinaryMetaConcepts`.
+All queries referencing `m3:TransdisciplinaryPattern` must be updated to `m3:TransdisciplinaryGenericConcepts`.
 
 ---
 
@@ -268,7 +268,7 @@ Queries filtering on `m3:TransdisciplinaryPattern` will fail.
 ?ont m3:ontologyCategory m3:TransdisciplinaryPattern .
 
 # New (works)
-?ont m3:ontologyCategory m3:TransdisciplinaryMetaConcepts .
+?ont m3:ontologyCategory m3:TransdisciplinaryGenericConcepts .
 ```
 
 ### For OWL Reasoners: ✅ NO
@@ -286,14 +286,14 @@ More clear and intuitive terminology.
 **Mental Model:**
 - "M2 contains patterns"
 - "Patterns are examples or templates"
-- Ambiguous relationship to "metaconcepts"
+- Ambiguous relationship to "GenericConcepts"
 
 ### After (v2.4.1)
 
 **Mental Model:**
-- "M2 contains transdisciplinary metaconcepts"
-- "Metaconcepts are abstract universals"
-- Clear identity: M2 = MetaConcepts layer
+- "M2 contains transdisciplinary GenericConcepts"
+- "GenericConcepts are abstract universals"
+- Clear identity: M2 = GenericConcepts layer
 
 ---
 
@@ -311,9 +311,9 @@ More clear and intuitive terminology.
 | Category | Name Structure |
 |----------|----------------|
 | ~~m3:TransdisciplinaryPattern~~ | ~~[Scope] + [Type]~~ |
-| **m3:TransdisciplinaryMetaConcepts** ✅ | **[Scope] + [ContentType]** |
+| **m3:TransdisciplinaryGenericConcepts** ✅ | **[Scope] + [ContentType]** |
 
-**Better consistency:** Directly names the content (MetaConcepts) rather than abstract descriptor (Pattern).
+**Better consistency:** Directly names the content (GenericConcepts) rather than abstract descriptor (Pattern).
 
 ---
 
@@ -321,19 +321,19 @@ More clear and intuitive terminology.
 
 ### For Ontology Files
 
-**M2_MetaConcepts.jsonld:**
+**M2_GenericConcepts.jsonld:**
 ```json
 // Update this line
-"m3:ontologyCategory": {"@id": "m3:TransdisciplinaryMetaConcepts"}
+"m3:ontologyCategory": {"@id": "m3:TransdisciplinaryGenericConcepts"}
 ```
 
 ### For Documentation
 
 Search and replace:
-- `TransdisciplinaryPattern` → `TransdisciplinaryMetaConcepts`
-- `"Transdisciplinary Pattern"` → `"Transdisciplinary MetaConcepts"`
-- `"Universal Pattern"` → `"Universal MetaConcepts"`
-- `universal patterns` → `transdisciplinary metaconcepts`
+- `TransdisciplinaryPattern` → `TransdisciplinaryGenericConcepts`
+- `"Transdisciplinary Pattern"` → `"Transdisciplinary GenericConcepts"`
+- `"Universal Pattern"` → `"Universal GenericConcepts"`
+- `universal patterns` → `transdisciplinary GenericConcepts`
 
 ### For Code/Scripts
 
@@ -390,13 +390,13 @@ Update any references in:
 - Implies repetition, template, example
 - External observation of regularity
 
-### "MetaConcept" Etymology
+### "GenericConcept" Etymology
 - *Meta* (Greek) = above, beyond
 - *Concept* (Latin *concipere*) = to grasp mentally
 - Abstract idea transcending concrete instances
 - Internal theoretical construct
 
-**Conclusion:** "MetaConcept" better captures the M2 layer's role as abstract foundational theory, while "Pattern" suggests mere observation of recurring structures.
+**Conclusion:** "GenericConcept" better captures the M2 layer's role as abstract foundational theory, while "Pattern" suggests mere observation of recurring structures.
 
 ---
 

@@ -39,35 +39,35 @@ Each poclet serves as a **first-level PoC for the TSCG framework itself**. When 
 
 **Failure modes are equally instructive**: If a poclet resists ASFID analysis or produces incoherent ORIVE scores, it signals either a limitation in the framework or an opportunity for refinement. This makes poclets into diagnostic instruments for the framework's health and completeness.
 
-### 2. Metaconcept Discovery: Populating the M2 Layer
+### 2. GenericConcept Discovery: Populating the M2 Layer
 
-Poclets serve as **fertile ground for identifying candidate M2 metaconcepts**. Because poclets are minimal yet complete, they tend to crystallize fundamental patterns that recur across multiple domains. When we observe that several poclets share a common structural or dynamic principle, that principle becomes a candidate for elevation to the M2 metaconcept layer.
+Poclets serve as **fertile ground for identifying candidate M2 GenericConcepts**. Because poclets are minimal yet complete, they tend to crystallize fundamental patterns that recur across multiple domains. When we observe that several poclets share a common structural or dynamic principle, that principle becomes a candidate for elevation to the M2 GenericConcept layer.
 
 **The discovery process**:
 1. Analyze multiple poclets across different domains
 2. Notice recurring patterns in how they organize, behave, or evolve
-3. Abstract these patterns into candidate metaconcepts
+3. Abstract these patterns into candidate GenericConcepts
 4. Validate candidates through systematic testing across additional poclets
-5. Formalize validated metaconcepts in M2_Metaconcepts.jsonld
+5. Formalize validated GenericConcepts in M2_GenericConcepts.jsonld
 
 **Historical examples from TSCG development**:
 - **Balance** emerged from analyzing equilibria in Fire Triangle, RGB color mixing, and Supply-Demand dynamics
 - **Trade-off** crystallized from observing mutually constraining dimensions across Exposure Triangle, TPACK, and Cell Signaling Modes
 - **Imbrication** was discovered through the VSD meta-poclet's analysis of nested structural relationships
 
-**Why poclets excel at metaconcept discovery**:
+**Why poclets excel at GenericConcept discovery**:
 - Their minimality strips away domain-specific complexity, exposing core patterns
 - Their completeness ensures that discovered patterns are systemically fundamental, not artifacts of oversimplification
 - Their diversity (across physics, biology, social systems, etc.) enables validation of true transdisciplinary principles versus domain-specific regularities
 
 ### 3. Core Concept Identification: Bootstrapping the M1 Layer
 
-Poclets provide **systematic opportunities to identify domain-specific concepts** that populate the emerging M1_CoreConcepts.jsonld ontology. While M2 captures universal metaconcepts applicable across all domains, M1 contains reusable concepts that appear within particular disciplinary families.
+Poclets provide **systematic opportunities to identify domain-specific concepts** that populate the emerging M1_CoreConcepts.jsonld ontology. While M2 captures universal GenericConcepts applicable across all domains, M1 contains reusable concepts that appear within particular disciplinary families.
 
 **The M1 population mechanism**:
-- As we analyze poclets from related domains (e.g., multiple optical poclets, multiple ecological poclets), we notice concepts that are specific to those domains but more concrete than M2 metaconcepts
+- As we analyze poclets from related domains (e.g., multiple optical poclets, multiple ecological poclets), we notice concepts that are specific to those domains but more concrete than M2 GenericConcepts
 - These concepts are candidates for M1 because they are reusable building blocks within their domains but don't achieve the universal applicability required for M2
-- Poclets help us distinguish between truly fundamental metaconcepts (M2) and important but domain-bounded concepts (M1)
+- Poclets help us distinguish between truly fundamental GenericConcepts (M2) and important but domain-bounded concepts (M1)
 
 **Examples of M1 concept discovery through poclets**:
 - Analyzing the RGB Color Model, Exposure Triangle, and Lens Aperture poclets might reveal optical concepts like **Wavelength**, **Intensity**, or **Focal Length**—concepts crucial to optics but not universally applicable
@@ -79,7 +79,7 @@ Poclets provide **systematic opportunities to identify domain-specific concepts*
 **Distinguishing M1 from M2**: A concept belongs in M1 rather than M2 when:
 - It appears across multiple poclets within a domain family but not across all domains
 - It requires domain-specific knowledge to understand (e.g., "wavelength" requires understanding of wave phenomena)
-- It can be defined in terms of M2 metaconcepts plus domain-specific constraints
+- It can be defined in terms of M2 GenericConcepts plus domain-specific constraints
 - It serves as a reusable building block for constructing more complex domain-specific models
 
 ### Integration of the Triple Role
@@ -87,12 +87,12 @@ Poclets provide **systematic opportunities to identify domain-specific concepts*
 These three roles are deeply interconnected and mutually reinforcing:
 
 1. **Framework validation** (PoC) ensures that our analytical tools are working correctly
-2. **Metaconcept discovery** (M2) enriches the framework's theoretical foundations
+2. **GenericConcept discovery** (M2) enriches the framework's theoretical foundations
 3. **Core concept identification** (M1) builds the domain-specific vocabulary needed for practical application
 
 As we accumulate more analyzed poclets:
 - The framework becomes more robust (validated across more cases)
-- M2 becomes more complete (approaching a sufficient set of universal metaconcepts)
+- M2 becomes more complete (approaching a sufficient set of universal GenericConcepts)
 - M1 becomes richer (offering more domain-specific building blocks)
 - New poclets become easier to analyze (using the accumulated conceptual resources)
 
@@ -106,7 +106,7 @@ The fire triangle is a classic poclet demonstrating combustion dynamics:
 - **Complete**: All ASFID dimensions present (attractors, structure, flows, information, dynamics)
 - **Proof of Concept**: Demonstrates that combustion requires the interaction of exactly these three factors
 - **Framework validation**: Successfully analyzed with ORIVE score of 0.94
-- **M2 contribution**: Helped identify Balance and Trade-off metaconcepts
+- **M2 contribution**: Helped identify Balance and Trade-off GenericConcepts
 - **M1 potential**: Could contribute to chemical domain concepts like Reactant or Combustion
 
 ### RGB Color Model
@@ -115,7 +115,7 @@ The RGB color model is a poclet for additive color synthesis:
 - **Complete**: Capable of generating the full visible spectrum
 - **Proof of Concept**: Demonstrates the principle of additive color mixing
 - **Framework validation**: Confirmed ASFID applicability to perceptual systems
-- **M2 contribution**: Reinforced Balance metaconcept, introduced Composition patterns
+- **M2 contribution**: Reinforced Balance GenericConcept, introduced Composition patterns
 - **M1 potential**: Source for optical concepts like Wavelength, Additive Synthesis, Color Space
 
 ### Other Examples
@@ -154,12 +154,12 @@ social systems) provides a foundation for transdisciplinary pattern
 recognition."
 
 "Analysis of the Exposure Triangle poclet not only validated our 
-framework but also revealed the Trade-off metaconcept, which we 
+framework but also revealed the Trade-off GenericConcept, which we 
 then found in six other poclets across different domains."
 
 "By systematically analyzing optical poclets, we're building out 
 the M1 layer with domain-specific concepts while simultaneously 
-stress-testing our M2 metaconcepts."
+stress-testing our M2 GenericConcepts."
 ```
 
 ## Comparison with Related Terms
@@ -199,12 +199,12 @@ The triple role of poclets suggests a systematic methodology for TSCG developmen
 ### Phase 3: Pattern Recognition
 - Compare newly analyzed poclet with existing poclet library
 - Look for recurring structural or dynamic patterns
-- Identify candidate metaconcepts that appear across multiple poclets
+- Identify candidate GenericConcepts that appear across multiple poclets
 - Note domain-specific concepts that might belong in M1
 
 ### Phase 4: Ontological Integration
-- Validate candidate M2 metaconcepts through systematic testing
-- Add confirmed metaconcepts to M2_Metaconcepts.jsonld
+- Validate candidate M2 GenericConcepts through systematic testing
+- Add confirmed GenericConcepts to M2_GenericConcepts.jsonld
 - Accumulate domain-specific M1 candidates for eventual inclusion in M1_CoreConcepts.jsonld
 - Update framework documentation based on lessons learned
 
@@ -228,7 +228,7 @@ The poclet concept opens several avenues for TSCG development:
 
 The term "poclet" provides TSCG with precise terminology for minimal yet complete system representations that serve as proofs of concept for systemic principles. By establishing this term, we create a foundation for systematic exploration of how complex systems can be understood through their minimal complete instantiations.
 
-More fundamentally, poclets serve a triple role in TSCG development: they validate the framework itself, they reveal candidate metaconcepts for the M2 layer, and they identify domain-specific concepts for the emerging M1 layer. This makes poclets not merely test cases or examples, but active participants in the co-evolution of the TSCG framework and its ontological foundations.
+More fundamentally, poclets serve a triple role in TSCG development: they validate the framework itself, they reveal candidate GenericConcepts for the M2 layer, and they identify domain-specific concepts for the emerging M1 layer. This makes poclets not merely test cases or examples, but active participants in the co-evolution of the TSCG framework and its ontological foundations.
 
 Each poclet is simultaneously a proof of concept, a discovery mechanism, and a building block. This triple role transforms poclet analysis from a validation exercise into a systematic methodology for building transdisciplinary knowledge representations.
 

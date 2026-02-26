@@ -1,4 +1,4 @@
-# M2 Metaconcept: Imbrication (Nesting)
+# M2 GenericConcept: Imbrication (Nesting)
 
 **TSCG Framework - M2 Layer**  
 **Version:** 14.3.1  
@@ -15,7 +15,7 @@
 4. [Bicephalous Perspective](#bicephalous-perspective)
 5. [Mathematical Formulation](#mathematical-formulation)
 6. [Transdisciplinary Validation](#transdisciplinary-validation)
-7. [Distinction from Related Metaconcepts](#distinction-from-related-metaconcepts)
+7. [Distinction from Related GenericConcepts](#distinction-from-related-GenericConcepts)
 8. [VSM Context](#vsm-context)
 9. [Examples](#examples)
 10. [Integration Status](#integration-status)
@@ -24,7 +24,7 @@
 
 ## 🎯 Overview
 
-**Imbrication** (also known as **Nesting**) is the 63rd metaconcept added to the TSCG M2 layer. It represents a fundamental structural pattern where a system contains subsystems that reproduce the parent system's structure, exhibiting self-similarity across hierarchical levels.
+**Imbrication** (also known as **Nesting**) is the 63rd GenericConcept added to the TSCG M2 layer. It represents a fundamental structural pattern where a system contains subsystems that reproduce the parent system's structure, exhibiting self-similarity across hierarchical levels.
 
 ### Key Characteristics
 
@@ -35,7 +35,7 @@
 - **Epistemic Gap:** δ = 0.30
 - **Validated Domains:** 8
 
-This metaconcept is fundamental to understanding recursive organizational structures, from the Viable System Model (VSM) in cybernetics to fractal patterns in mathematics and biology.
+This GenericConcept is fundamental to understanding recursive organizational structures, from the Viable System Model (VSM) in cybernetics to fractal patterns in mathematics and biology.
 
 ---
 
@@ -45,7 +45,7 @@ This metaconcept is fundamental to understanding recursive organizational struct
 
 **Imbrication** was discovered during the analysis of **Stafford Beer's Viable System Model (VSM)** as a SystemicFramework candidate for TSCG integration. 
 
-The VSM's core architectural principle states that **every operational unit (System 1) is itself a complete viable system** containing its own implementation of all five VSM functions (S1-S5). This recursive viability pattern required a dedicated metaconcept to capture the principle of structural self-similarity across organizational scales.
+The VSM's core architectural principle states that **every operational unit (System 1) is itself a complete viable system** containing its own implementation of all five VSM functions (S1-S5). This recursive viability pattern required a dedicated GenericConcept to capture the principle of structural self-similarity across organizational scales.
 
 ### Historical Note
 
@@ -272,7 +272,7 @@ Example: Bronchial tree branching with α ≈ 0.5-0.7 per level.
 
 ---
 
-## 🔀 Distinction from Related Metaconcepts
+## 🔀 Distinction from Related GenericConcepts
 
 ### vs. Hierarchy
 
@@ -384,7 +384,7 @@ Viable System (Level 0)
 - **REVOÎ Score:** High (well-formalized theoretical framework)
 - **Imbrication Depth:** Typically 3-5 levels in real organizations
 
-The VSM's recursive viability is one of the clearest examples of Imbrication as a dual metaconcept, observable both in actual organizations (Territory) and in Beer's formal model (Map).
+The VSM's recursive viability is one of the clearest examples of Imbrication as a dual GenericConcept, observable both in actual organizations (Territory) and in Beer's formal model (Map).
 
 ---
 
@@ -500,7 +500,7 @@ Sentence
 
 ## ✅ Integration Status
 
-### M2_MetaConcepts.jsonld Status
+### M2_GenericConcepts.jsonld Status
 
 **Version:** 14.3.1  
 **Integration Date:** 2026-01-30  
@@ -508,14 +508,14 @@ Sentence
 
 #### File Changes
 
-1. **Metaconcept Entry Added**
+1. **GenericConcept Entry Added**
    - Location: Line ~2660 (Ontological category, before Domain)
    - Full JSON-LD structure with all properties
    - Triple formula representation (Unicode, LaTeX, ASCII)
 
 2. **Statistics Updated**
-   - Total metaconcepts: 62 → 63
-   - Ontological metaconcepts: 8 → 9
+   - Total GenericConcepts: 62 → 63
+   - Ontological GenericConcepts: 8 → 9
    - Dual polarity count: 11 → 12
 
 3. **Metadata Updated**
@@ -524,7 +524,7 @@ Sentence
    - Changelog entry added for v14.3.1
 
 4. **Bicephalous Strategy Counts**
-   - Dual metaconcepts: 18 → 19
+   - Dual GenericConcepts: 18 → 19
 
 ### Validation Checklist
 
@@ -535,7 +535,7 @@ Sentence
 - ✅ Sphinx Eye view (REVOÎ) defined with fallback
 - ✅ Epistemic gap calculated (δ=0.30)
 - ✅ 8 transdisciplinary examples provided
-- ✅ Distinctions from related metaconcepts documented
+- ✅ Distinctions from related GenericConcepts documented
 - ✅ VSM context explained
 - ✅ Discovery context recorded
 - ✅ Statistics coherent with actual count
@@ -555,7 +555,7 @@ Sentence
 | Teleonomic | 1 | 1.6% |
 | **TOTAL** | **63** | **100%** |
 
-**Ontological Metaconcepts (9):**
+**Ontological GenericConcepts (9):**
 1. Domain (hybrid ASFID⊗REVOÎ)
 2. Environment
 3. Gradient
@@ -608,7 +608,7 @@ Sentence
 
 ### Integration with SystemicFrameworks
 
-**Imbrication** serves as a bridge metaconcept for integrating recursive frameworks:
+**Imbrication** serves as a bridge GenericConcept for integrating recursive frameworks:
 
 - ✅ **VSM** (Viable System Model) - primary discovery context
 - 🔄 **Spiral Dynamics** (developmental stages containing prior stages)
@@ -640,7 +640,7 @@ Sentence
 
 ### TSCG Framework Documents
 
-- `M2_MetaConcepts.jsonld` - Formal ontology definition
+- `M2_GenericConcepts.jsonld` - Formal ontology definition
 - `M3_GenesisSpace.jsonld` - Bicephalous architecture foundation
 - `M3_EagleEye.jsonld` - ASFID basis definition
 - `M3_SphinxEye.jsonld` - REVOÎ basis definition
@@ -651,8 +651,8 @@ Sentence
 
 ## 🏷️ Metadata
 
-**Metaconcept ID:** `m2:Imbrication`  
-**Ontology URI:** `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#Imbrication`  
+**GenericConcept ID:** `m2:Imbrication`  
+**Ontology URI:** `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Imbrication`  
 **Namespace Prefix:** `m2:`  
 **Version Added:** 14.3.1  
 **Category:** Ontological  

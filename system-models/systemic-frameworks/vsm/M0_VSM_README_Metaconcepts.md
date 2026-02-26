@@ -13,7 +13,7 @@
 2. [Historical Context](#historical-context)
 3. [VSM Architecture](#vsm-architecture)
 4. [TSCG Integration](#tscg-integration)
-5. [MetaconceptCombo: VarietyAmplification & VarietyAttenuation](#metaconceptcombo-varietyamplification--varietyattenuation)
+5. [GenericConceptCombo: VarietyAmplification & VarietyAttenuation](#GenericConceptcombo-varietyamplification--varietyattenuation)
 6. [Variety Engineering](#variety-engineering)
 7. [Key Concepts](#key-concepts)
 8. [OWL Structure](#owl-structure)
@@ -110,7 +110,7 @@ The **Viable System Model (VSM)** is a management cybernetics framework develope
 ```
 m3:SystemicFramework
     └── M0_VSM (this ontology)
-            ├── owl:imports M2_MetaConcepts.jsonld
+            ├── owl:imports M2_GenericConcepts.jsonld
             └── owl:imports M1_CoreConcepts.jsonld
 ```
 
@@ -132,21 +132,21 @@ All VSM-specific identifiers use the `m0:vsm:` prefix (e.g. `m0:vsm:ViableSystem
 
 ---
 
-## 🔬 MetaconceptCombo: VarietyAmplification & VarietyAttenuation
+## 🔬 GenericConceptCombo: VarietyAmplification & VarietyAttenuation
 
-This is the core theoretical contribution of M0_VSM v1.1.0. Two VSM concepts are now formally modeled as **MetaconceptCombo** instances — synergistic combinations of two M2 metaconcepts via the emergence morphism `⊗⇒`.
+This is the core theoretical contribution of M0_VSM v1.1.0. Two VSM concepts are now formally modeled as **GenericConceptCombo** instances — synergistic combinations of two M2 GenericConcepts via the emergence morphism `⊗⇒`.
 
 ### General Pattern
 
 ```
-MetaconceptCombo(M_A, M_B) ⊗⇒ M_C
+GenericConceptCombo(M_A, M_B) ⊗⇒ M_C
 
     M_A ⊗ M_B  →  shared dimensions COUPLE (not duplicate)
                →  emergent subspace (reduced dimensionality)
                →  M_C is semantically irreducible to M_A or M_B alone
 ```
 
-Both VarietyAmplification and VarietyAttenuation share the same `parent_A` (`m2:ValueSpace`) and the same base metaconcept (`m2:Amplification`). The distinction is in `parent_B`: each uses a **different aspect** of `m2:Amplification`'s `dualAspects`.
+Both VarietyAmplification and VarietyAttenuation share the same `parent_A` (`m2:ValueSpace`) and the same base GenericConcept (`m2:Amplification`). The distinction is in `parent_B`: each uses a **different aspect** of `m2:Amplification`'s `dualAspects`.
 
 ### Shared Dimensions & Coupling
 
@@ -168,7 +168,7 @@ This coupling is what produces emergence: the result is a **reduced emergent sub
 ### VarietyAmplification
 
 ```
-MetaconceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification
+GenericConceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification
 ```
 
 | Field | Value |
@@ -201,7 +201,7 @@ Map:        R maintained (stages representable), O maintained (flow traceable)
 ### VarietyAttenuation
 
 ```
-MetaconceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation
+GenericConceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation
 ```
 
 | Field | Value |
@@ -238,7 +238,7 @@ Map:        O reduced (less granular for S3), V maintained (audit integrity)
 
 | Attribute | VarietyAmplification | VarietyAttenuation |
 |-----------|----------------------|--------------------|
-| **Formula** | `MetaconceptCombo(ValueSpace, Amplification↑)` | `MetaconceptCombo(ValueSpace, Amplification↓)` |
+| **Formula** | `GenericConceptCombo(ValueSpace, Amplification↑)` | `GenericConceptCombo(ValueSpace, Amplification↓)` |
 | **parent_B aspect** | `amplificationAspect` (↑) | `attenuationAspect` (↓) |
 | **Gain** | G > 1 | 0 < G < 1 |
 | **Flow direction** | Downward (metasystem → S1) | Upward (S1 → metasystem) |
@@ -251,7 +251,7 @@ Map:        O reduced (less granular for S3), V maintained (audit integrity)
 
 ## ⚙️ Variety Engineering
 
-`m0:vsm:VarietyEngineering` is Beer's practice of deliberately managing organizational variety. It is the **operational methodology** that employs the two MetaconceptCombos above as its core mechanisms.
+`m0:vsm:VarietyEngineering` is Beer's practice of deliberately managing organizational variety. It is the **operational methodology** that employs the two GenericConceptCombos above as its core mechanisms.
 
 ```
 VarietyEngineering
@@ -279,7 +279,7 @@ VarietyEngineering
 
 **Ashby's Law:** `V(Regulator) ≥ V(Disturbance)`
 
-Formalized via `m2:ValueSpace` (It dimension = variety cardinality). The two MetaconceptCombos are the operational instruments that satisfy this constraint: amplification provides sufficient variety downward, attenuation keeps variety manageable upward.
+Formalized via `m2:ValueSpace` (It dimension = variety cardinality). The two GenericConceptCombos are the operational instruments that satisfy this constraint: amplification provides sufficient variety downward, attenuation keeps variety manageable upward.
 
 ### Recursive Viability
 
@@ -334,41 +334,41 @@ S3 and S4 are coupled: S3 wants operational stability, S4 wants strategic change
 | `m0:vsm:RecursiveViability` | `m2:Imbrication` | Imbrication, Hierarchy, Modularity |
 | `m0:vsm:Autonomy` | `m2:Constraint` | Modularity, Agent |
 | `m0:vsm:Cohesion` | `m2:Homeostasis` | Homeostasis, Identity, Constraint |
-| **`m0:vsm:VarietyAmplification`** | `m2:Amplification` | **MetaconceptCombo**, ValueSpace, Amplification |
-| **`m0:vsm:VarietyAttenuation`** | `m2:Amplification` | **MetaconceptCombo**, ValueSpace, Amplification |
-| `m0:vsm:VarietyEngineering` | — | MetaconceptCombo, ValueSpace, Amplification |
+| **`m0:vsm:VarietyAmplification`** | `m2:Amplification` | **GenericConceptCombo**, ValueSpace, Amplification |
+| **`m0:vsm:VarietyAttenuation`** | `m2:Amplification` | **GenericConceptCombo**, ValueSpace, Amplification |
+| `m0:vsm:VarietyEngineering` | — | GenericConceptCombo, ValueSpace, Amplification |
 
 ### Properties
 
 | @id | Type | Instantiates M2 | Notes |
 |-----|------|-----------------|-------|
 | `m0:vsm:hasVariety` | DatatypeProperty | ValueSpace | Range: `xsd:nonNegativeInteger` |
-| `m0:vsm:amplifiesVariety` | ObjectProperty | MetaconceptCombo, ValueSpace, Amplification | Links to VarietyAmplification |
-| `m0:vsm:attenuatesVariety` | ObjectProperty | MetaconceptCombo, ValueSpace, Amplification | Links to VarietyAttenuation |
+| `m0:vsm:amplifiesVariety` | ObjectProperty | GenericConceptCombo, ValueSpace, Amplification | Links to VarietyAmplification |
+| `m0:vsm:attenuatesVariety` | ObjectProperty | GenericConceptCombo, ValueSpace, Amplification | Links to VarietyAttenuation |
 
 ---
 
 ## 🧩 Prerequisites
 
-### M2 Metaconcepts Used (18 total)
+### M2 GenericConcepts Used (18 total)
 
 **Pre-existing (15):**
 `m2:System`, `m2:Environment`, `m2:Homeostasis`, `m2:Hierarchy`, `m2:Network`, `m2:Node`, `m2:Observer`, `m2:Regulation`, `m2:Adaptation`, `m2:Emergence`, `m2:Channel`, `m2:Modularity`, `m2:Constraint`, `m2:Feedback`, `m2:Imbrication`
 
 **Added for VSM (3):**
 
-| Metaconcept | Added | Role in VSM |
+| GenericConcept | Added | Role in VSM |
 |-------------|-------|-------------|
 | `m2:ValueSpace` | 2026-01-28 | Formalizes Ashby's variety as a value-space (`It⊗V⊗O⊗R⊗Im`) |
 | `m2:Amplification` | 2026-01-31 | Bidirectional gain control (`Ft⊗D⊗It⊗R⊗O`) with dual aspects ↑/↓ |
-| `m2:MetaconceptCombo` | 2026-01-31 | Synergistic combination operator (`M_A ⊗ M_B ⇒ M_C`) |
+| `m2:GenericConceptCombo` | 2026-01-31 | Synergistic combination operator (`M_A ⊗ M_B ⇒ M_C`) |
 
 ### M1 Concepts (Validation Status)
 
-| Concept | Status | MetaconceptCombo Formula |
+| Concept | Status | GenericConceptCombo Formula |
 |---------|--------|--------------------------|
-| **VarietyAmplification** | ✅ VALIDATED | `MetaconceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification` |
-| **VarietyAttenuation** | ✅ VALIDATED | `MetaconceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation` |
+| **VarietyAmplification** | ✅ VALIDATED | `GenericConceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification` |
+| **VarietyAttenuation** | ✅ VALIDATED | `GenericConceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation` |
 | RequisiteVariety | 🔲 TO VALIDATE | — |
 | MetaSystem | 🔲 TO VALIDATE | — |
 | AlgedonicSignal | 🔲 TO VALIDATE | — |

@@ -167,14 +167,14 @@ Each dimension represents an **orthonormal basis vector** in the complex space �
 2. **Parsimony**: Avoids redundancy with D (which measures ∂|Ω⟩/∂t)
 3. **Physical coherence**: Consistent with quantum mechanics (t = evolution parameter)
 
-**Consequence**: Temporal metaconcepts (Memory, Trajectory) require integration → they are in M2, not M3.
+**Consequence**: Temporal GenericConcepts (Memory, Trajectory) require integration → they are in M2, not M3.
 
 ---
 
 ### 3. Flow is M3 (F ≥ 0.1)
 **Decision**: F is fundamental dimension with openness axiom.
 
-**Corrected error**: Initially, "Flow" was a redundant M2 metaconcept with F.
+**Corrected error**: Initially, "Flow" was a redundant M2 GenericConcept with F.
 
 **Justification**:
 - **Thermodynamics**: Every real system exchanges with its environment
@@ -191,7 +191,7 @@ Each dimension represents an **orthonormal basis vector** in the complex space �
 - **Normalization**: [0,1] suffices for any variation (0 = absence, 1 = maximum)
 - **Simplicity**: Avoids semantic ambiguities
 
-**Polarities**: Handled at M2 level (dual metaconcepts like Coherence/Entropy), not M3.
+**Polarities**: Handled at M2 level (dual GenericConcepts like Coherence/Entropy), not M3.
 
 ---
 
@@ -256,7 +256,7 @@ P_A|Ω⟩ = a|A⟩  (attractor component)
 ## Relations with M2 (Upper Layer)
 
 ### Tensorization
-M2 metaconcepts are constructed by **tensor products** of M3 dimensions:
+M2 GenericConcepts are constructed by **tensor products** of M3 dimensions:
 
 **Order 1** (linear, 5 terms):
 ```
@@ -277,7 +277,7 @@ Example: Regulation ≈ c_ASF|A⟩⊗|S⟩⊗|F⟩ (attractor + structure + flow
 
 ### M3→M2 Derivation Examples
 
-| M2 Metaconcept | Tensorial Formula | Justification |
+| M2 GenericConcept | Tensorial Formula | Justification |
 |----------------|-------------------|---------------|
 | Homeostasis | A⊗S⊗F | Attractor (stability) + Structure (organization) + Flow (controlled exchange) |
 | Memory | ∫(D - F)dτ | Temporal integration of (internal change - dissipation) |
@@ -429,7 +429,7 @@ No dimension can be derived from the other 4.
 - Complete orthogonality validation (10/10 pairs)
 - Added F ≥ 0.1 axiom
 - Clarified external time
-- Removed redundant "Flow" metaconcept
+- Removed redundant "Flow" GenericConcept
 
 **v5.0.0** (01/14/2026):
 - Initial production version

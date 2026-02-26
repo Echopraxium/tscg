@@ -124,7 +124,7 @@ The uploaded TSCG ontology files had **two critical issues**:
 
 ---
 
-### 4. **M2_MetaConcepts.jsonld**
+### 4. **M2_GenericConcepts.jsonld**
 
 #### Before (INCORRECT):
 ```json
@@ -136,7 +136,7 @@ The uploaded TSCG ontology files had **two critical issues**:
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "tscg": "https://tscg.org/"
   },
-  "@id": "M2_MetaConcepts",
+  "@id": "M2_GenericConcepts",
   "@type": "TensorOntology",
   
   "foundation_layer": {
@@ -152,7 +152,7 @@ The uploaded TSCG ontology files had **two critical issues**:
 ```json
 {
   "@context": {
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3genesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
     "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
     "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
@@ -162,7 +162,7 @@ The uploaded TSCG ontology files had **two critical issues**:
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/"
   },
-  "@id": "m2:M2_MetaConcepts",
+  "@id": "m2:M2_GenericConcepts",
   "@type": "owl:Ontology",
   
   "owl:imports": [
@@ -193,7 +193,7 @@ The uploaded TSCG ontology files had **two critical issues**:
 **Key changes**:
 - ✅ Added **`m2:`** self-reference namespace (already present)
 - ✅ Added all M3 namespaces: `m3genesis:`, `m3eagle:`, `m3sphinx:`
-- ✅ Changed `@id` to use namespace prefix: `m2:M2_MetaConcepts`
+- ✅ Changed `@id` to use namespace prefix: `m2:M2_GenericConcepts`
 - ✅ Changed `@type` to standard OWL: `owl:Ontology`
 - ✅ Replaced incorrect `https://tscg.org/M3_SphinxEye.jsonld` with correct `m3sphinx:M3_SphinxEye`
 - ✅ Added proper `owl:imports` with GitHub URL
@@ -258,9 +258,9 @@ All three can use m3: as shorthand when context is unambiguous
            └──────┬──────┘
                   │
          ┌────────▼────────────────┐
-         │ M2_MetaConcepts.jsonld │
+         │ M2_GenericConcepts.jsonld │
          │ namespace: m2          │
-         │ @id: m2:M2_MetaConcepts│
+         │ @id: m2:M2_GenericConcepts│
          │                        │
          │ owl:imports:           │
          │   - M3_GenesisSpace    │
@@ -299,7 +299,7 @@ All three can use m3: as shorthand when context is unambiguous
 - [x] Parent namespace `m3genesis:` declared
 - [x] `owl:imports` of M3_GenesisSpace
 
-### M2_MetaConcepts.jsonld
+### M2_GenericConcepts.jsonld
 - [x] Correct GitHub base URI
 - [x] Self-reference namespace `m2:` in @context (already present)
 - [x] All M3 namespaces declared
@@ -399,7 +399,7 @@ Both `m3:Attractor` and `m3eagle:Attractor` resolve to the same resource.
 1. ✅ **M3_GenesisSpace_corrected.jsonld** (v2.0.0)
 2. ✅ **M3_EagleEye.jsonld** (no changes - already correct)
 3. ✅ **M3_SphinxEye.jsonld** (no changes - already correct)
-4. ✅ **M2_MetaConcepts_corrected.jsonld** (v1.0.0)
+4. ✅ **M2_GenericConcepts_corrected.jsonld** (v1.0.0)
 
 ### Documentation:
 5. ✅ **TSCG_Namespace_Corrections_Summary.md** (this file)

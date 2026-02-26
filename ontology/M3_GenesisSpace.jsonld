@@ -128,19 +128,19 @@
           "Cat_TSCG": "Category of TSCG layers {M3, M2, M1, M0}",
           "Cat_M3_ASFID": "Category of ASFID dimensions {A, S, F, I, D}",
           "Cat_M3_REVOI": "Category of REVOI dimensions {R, E, V, O, I}",
-          "Cat_M2": "Category of metaconcepts (defined in M2)",
+          "Cat_M2": "Category of GenericConcepts (defined in M2)",
           "Cat_KnowledgeField": "Category of knowledge fields (defined in M2)"
         },
         "functors": {
-          "F_tensorization": "F_⊗: Cat_M3 → Cat_M2 (tensor products create metaconcepts)",
-          "F_instantiation": "F_inst: Cat_M2 → Cat_M1 (metaconcepts → domain concepts)",
+          "F_tensorization": "F_⊗: Cat_M3 → Cat_M2 (tensor products create GenericConcepts)",
+          "F_instantiation": "F_inst: Cat_M2 → Cat_M1 (GenericConcepts → domain concepts)",
           "F_concretize": "Cat_M1 → Cat_M0 (concepts → concrete instances)"
         },
         "morphisms": {
           "inclusion": "↪ (e.g., Homeostasis ↪ Regulation)",
           "composition": "∘ (e.g., Learning = Memory ∘ Adaptation)",
           "duality": "op (e.g., Divergence = Convergence^op)",
-          "emergence": "⇒ (e.g., MetaconceptCombo: M_A ⊗ M_B ⇒ M_C)"
+          "emergence": "⇒ (e.g., GenericConceptCombo: M_A ⊗ M_B ⇒ M_C)"
         },
         "reification": {
           "description": "Objects in categories are reifications (concrete instances)",
@@ -168,7 +168,7 @@
       },
       "derived_layers": [
         {
-          "@id": "M2_MetaConcepts.jsonld",
+          "@id": "M2_GenericConcepts.jsonld",
           "layer": "M2",
           "relationship": "foundation_of",
           "description": "M3 Hilbert space projects onto M2 tensor space via dual mechanisms",
@@ -177,17 +177,17 @@
               "source": "m3:eagle_eye:EagleEye",
               "operation": "projects_onto",
               "formula": "Π_Eagle: M3 → M2",
-              "description": "Each ASFID dimension projects onto all M2 metaconcepts, creating 5D analytical perspective on each metaconcept"
+              "description": "Each ASFID dimension projects onto all M2 GenericConcepts, creating 5D analytical perspective on each GenericConcept"
             },
             {
               "source": "m3:sphinx_eye:SphinxEye",
               "operation": "constructs_from",
               "formula": "Σ_Sphinx: REVOI × M2 → M2_patterns",
-              "description": "REVOI operations compose M2 metaconcepts into domain-specific patterns through synthetic construction"
+              "description": "REVOI operations compose M2 GenericConcepts into domain-specific patterns through synthetic construction"
             }
           ],
           "mathematical_relationship": "M2 ⊆ span(M3)",
-          "tensor_structure": "M2 metaconcepts form tensor products of M3 basis elements"
+          "tensor_structure": "M2 GenericConcepts form tensor products of M3 basis elements"
         }
       ],
       "validation": {
@@ -335,13 +335,13 @@
       "@id": "m3:semanticSignature",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Semantic Signature",
-      "rdfs:comment": "Minimal sufficient characterization of an entity's identity within the TSCG framework. Constitutive (positive) rather than differential (negative). Applicable at all layers: M3 (ontology types), M2 (metaconcepts), M1 (domain concepts), M0 (system instances).",
+      "rdfs:comment": "Minimal sufficient characterization of an entity's identity within the TSCG framework. Constitutive (positive) rather than differential (negative). Applicable at all layers: M3 (ontology types), M2 (GenericConcepts), M1 (domain concepts), M0 (system instances).",
       "skos:definition": "A compact, positive, minimal-yet-sufficient description of what an entity IS, expressed as a conjunction of necessary components. Distinct from m3:distinguishingFeatures which is differential (what an entity is NOT). Structure: component_1 + component_2 + ... where all components are necessary and together sufficient.",
       "rdfs:domain": "owl:Thing",
       "rdfs:range": "xsd:string",
       "skos:example": [
         "M3 type: 'primitives(finite) + combination_rules + multiple_legitimate_interpretations' (SymbolicSystemGrammar)",
-        "M2 metaconcept: 'output → input + regulation + attractor_convergence' (FeedbackLoop)",
+        "M2 GenericConcept: 'output → input + regulation + attractor_convergence' (FeedbackLoop)",
         "M1 concept: 'setpoint + sensor + effector + correction' (Homeostasis)",
         "M0 poclet: 'Renin→Angiotensin→Aldosterone + pressure_regulation + negative_loop' (RAAS)"
       ],
@@ -368,7 +368,7 @@
       "skos:changeNote": "v3.3.0: Renamed from m3:ontologyCategory to m3:ontologyType for clarity. Range changed from m3:OntologyCategoryScheme (incorrect â€” was the ConceptScheme, not a concept) to m3:TscgOntologyType (correct â€” the abstract class).",
       "skos:example": [
         "M3_GenesisSpace.jsonld uses m3:Genesis",
-        "M2_MetaConcepts.jsonld uses m3:TransdisciplinaryPattern",
+        "M2_GenericConcepts.jsonld uses m3:TransdisciplinaryPattern",
         "M1_Biology.jsonld uses m3:DomainExtension",
         "M0_Yggdrasil.jsonld uses m3:Poclet"
       ]
@@ -377,7 +377,7 @@
       "@id": "m3:TscgOntologyType",
       "@type": "owl:Class",
       "rdfs:label": "TSCG Ontology Type",
-      "rdfs:comment": "Abstract OWL class representing the architectural types of ontologies in the TSCG framework. Each TSCG ontology belongs to exactly one type. Instances (subclasses) are: Genesis, GenesisExtension, TransdisciplinaryMetaConcepts, DomainExtension, SystemicFramework, Poclet, CaseStudy, RealWorldSystem. Each type is simultaneously an owl:Class (for OWL reasoning and Protégé class hierarchy) and a skos:Concept (for SKOS vocabulary navigation). Replaces the former m3:OntologyCategoryScheme/m3:OntologyCategoryScheme pattern (v3.3.0).",
+      "rdfs:comment": "Abstract OWL class representing the architectural types of ontologies in the TSCG framework. Each TSCG ontology belongs to exactly one type. Instances (subclasses) are: Genesis, GenesisExtension, TransdisciplinaryGenericConcepts, DomainExtension, SystemicFramework, Poclet, CaseStudy, RealWorldSystem. Each type is simultaneously an owl:Class (for OWL reasoning and Protégé class hierarchy) and a skos:Concept (for SKOS vocabulary navigation). Replaces the former m3:OntologyCategoryScheme/m3:OntologyCategoryScheme pattern (v3.3.0).",
       "rdfs:isDefinedBy": "m3:TscgOntologyTypeScheme",
       "owl:isAbstract": true,
       "dcterms:created": "2026-02-19",
@@ -399,7 +399,7 @@
           "@id": "m3:GenesisExtension"
         },
         {
-          "@id": "m3:TransdisciplinaryMetaConcepts"
+          "@id": "m3:TransdisciplinaryGenericConcepts"
         },
         {
           "@id": "m3:DomainExtension"
@@ -496,7 +496,7 @@
       }
     },
     {
-      "@id": "m3:TransdisciplinaryMetaConcepts",
+      "@id": "m3:TransdisciplinaryGenericConcepts",
       "@type": [
         "owl:Class",
         "skos:Concept"
@@ -507,21 +507,21 @@
       "skos:topConceptOf": {
         "@id": "m3:TscgOntologyTypeScheme"
       },
-      "skos:prefLabel": "Transdisciplinary MetaConcepts",
+      "skos:prefLabel": "Transdisciplinary GenericConcepts",
       "skos:altLabel": [
         "Universal Pattern",
         "M2 Layer",
-        "Metaconcept",
+        "GenericConcept",
         "Tensor Product"
       ],
       "skos:definition": "Universal patterns derived as tensor products of M3 basis dimensions, validated across multiple scientific disciplines and applicable regardless of domain.",
-      "rdfs:comment": "M2 layer ontologies containing metaconcepts - abstract patterns that transcend disciplinary boundaries. Each metaconcept is expressible as a tensor formula combining M3 dimensions (e.g., Homeostasis = A⊗S⊗F).",
+      "rdfs:comment": "M2 layer ontologies containing GenericConcepts - abstract patterns that transcend disciplinary boundaries. Each GenericConcept is expressible as a tensor formula combining M3 dimensions (e.g., Homeostasis = A⊗S⊗F).",
       "m3:semanticSignature": "tensor_product_of_M3_dimensions + domain_agnostic + validated_across_disciplines",
       "skos:notation": "M2",
       "skos:example": [
-        "M2_MetaConcepts.jsonld (currently 62 metaconcepts including Step, Node, Homeostasis, etc.)"
+        "M2_GenericConcepts.jsonld (currently 62 GenericConcepts including Step, Node, Homeostasis, etc.)"
       ],
-      "skos:scopeNote": "Typically 1 ontology containing 72+ metaconcepts. May grow as new transdisciplinary patterns are discovered.",
+      "skos:scopeNote": "Typically 1 ontology containing 72+ GenericConcepts. May grow as new transdisciplinary patterns are discovered.",
       "m3:expectedCount": 1,
       "m3:layerOrder": 2,
       "skos:broader": {
@@ -549,9 +549,9 @@
         "Specialized Ontology",
         "Domain Instance"
       ],
-      "skos:definition": "Domain-specific ontologies that specialize M2 metaconcepts for particular scientific or professional fields. Each is an instance of the m2:Domain metaconcept with specific 5D tensor structure.",
-      "rdfs:comment": "M1 layer ontologies that bridge transdisciplinary metaconcepts (M2) with concrete systems (M0). Examples include Biology, Chemistry, Optics, Photography, Mythology. Each domain has characteristic ASFID⊗REVOI coupling.",
-      "m3:semanticSignature": "domain_specific + specializes_M2_metaconcepts + bridges_M2_to_M0",
+      "skos:definition": "Domain-specific ontologies that specialize M2 GenericConcepts for particular scientific or professional fields. Each is an instance of the m2:Domain GenericConcept with specific 5D tensor structure.",
+      "rdfs:comment": "M1 layer ontologies that bridge transdisciplinary GenericConcepts (M2) with concrete systems (M0). Examples include Biology, Chemistry, Optics, Photography, Mythology. Each domain has characteristic ASFID⊗REVOI coupling.",
+      "m3:semanticSignature": "domain_specific + specializes_M2_GenericConcepts + bridges_M2_to_M0",
       "skos:notation": "M1",
       "skos:example": [
         "M1_CoreConcepts.jsonld",
@@ -565,7 +565,7 @@
       "m3:expectedCount": "6+",
       "m3:layerOrder": 3,
       "skos:broader": {
-        "@id": "m3:TransdisciplinaryMetaConcepts"
+        "@id": "m3:TransdisciplinaryGenericConcepts"
       },
       "rdfs:subClassOf": {
         "@id": "m3:TscgOntologyType"
@@ -600,7 +600,7 @@
       "m3:expectedCount": "5-20",
       "m3:layerOrder": 3,
       "skos:broader": {
-        "@id": "m3:TransdisciplinaryMetaConcepts"
+        "@id": "m3:TransdisciplinaryGenericConcepts"
       },
       "skos:related": [
         {
@@ -618,7 +618,7 @@
       },
       "m3:integrationGuidelines": {
         "step1": "Identify framework's core concepts and relationships",
-        "step2": "Map framework concepts to M2 metaconcepts",
+        "step2": "Map framework concepts to M2 GenericConcepts",
         "step3": "Express framework operations as tensor formulas",
         "step4": "Validate mapping with framework experts",
         "step5": "Document epistemic gaps and alignment scores"
@@ -646,7 +646,7 @@
         "Minimal Complete System",
         "Validation Instance"
       ],
-      "skos:definition": "Minimal yet complete system instances that serve the triple role of (1) framework proof-of-concept, (2) M2 metaconcept identification, and (3) M1 core concept population.",
+      "skos:definition": "Minimal yet complete system instances that serve the triple role of (1) framework proof-of-concept, (2) M2 GenericConcept identification, and (3) M1 core concept population.",
       "rdfs:comment": "M0 layer ontologies representing concrete, well-understood systems used to validate TSCG framework. Must be minimal (no unnecessary components) yet complete (all ASFID dimensions present). Examples: Fire Triangle, Butterfly Metamorphosis, Four-Stroke Engine.",
       "m3:semanticSignature": "minimal + complete(all_ASFID_dimensions) + triple_role(validation+M2_discovery+M1_population)",
       "skos:notation": "M0_Poclet",
@@ -799,7 +799,7 @@
         "coreProperty": "The arbitration of interpretation is symbolic/cultural/contextual — never physical or empirical. This is the defining discriminant."
       },
       "skos:broader": {
-        "@id": "m3:TransdisciplinaryMetaConcepts"
+        "@id": "m3:TransdisciplinaryGenericConcepts"
       },
       "skos:related": [
         {
@@ -856,7 +856,7 @@
       "@id": "m3:MathematicalCategory",
       "@type": "owl:Class",
       "rdfs:label": "Mathematical Category",
-      "rdfs:comment": "A category in the mathematical sense: a collection of objects (Ob(C)) and morphisms (Mor(C)) between them, satisfying identity and associativity axioms. In TSCG: Cat_M3 (ASFID dimensions), Cat_M2 (metaconcepts), Cat_M1 (concepts), Cat_KnowledgeField (Chemistry, Biology, Optics...).",
+      "rdfs:comment": "A category in the mathematical sense: a collection of objects (Ob(C)) and morphisms (Mor(C)) between them, satisfying identity and associativity axioms. In TSCG: Cat_M3 (ASFID dimensions), Cat_M2 (GenericConcepts), Cat_M1 (concepts), Cat_KnowledgeField (Chemistry, Biology, Optics...).",
       "m3:structure": {
         "objects": "Collection Ob(C) of category objects",
         "morphisms": "Collection Mor(C) of arrows between objects",
@@ -873,7 +873,7 @@
       ],
       "m3:tscgExamples": [
         "Cat_KnowledgeField: Ob = {Chemistry, Biology, Optics...}, Mor = knowledge transfers",
-        "Cat_M2: Ob = {Link, Processor, Component...}, Mor = metaconcept inclusions",
+        "Cat_M2: Ob = {Link, Processor, Component...}, Mor = GenericConcept inclusions",
         "Cat_M3_ASFID: Ob = {A, S, F, I, D}, Mor = tensor products",
         "Cat_TSCG: Ob = {M3, M2, M1, M0}, Mor = functors F_⊗, F_inst"
       ]
@@ -891,8 +891,8 @@
         "Structure comes from morphisms TO and FROM the object"
       ],
       "m3:tscgReification": {
-        "description": "In TSCG, metaconcepts (M2) are reified as Category Objects when viewed categorically",
-        "example": "KnowledgeField (M2 metaconcept) IS ALSO a mathematical category with Chemistry, Biology... as objects",
+        "description": "In TSCG, GenericConcepts (M2) are reified as Category Objects when viewed categorically",
+        "example": "KnowledgeField (M2 GenericConcept) IS ALSO a mathematical category with Chemistry, Biology... as objects",
         "doubleRole": "Chemistry is BOTH an object in Cat_KnowledgeField AND potentially a category itself (Cat_Chemistry with subconcepts as objects)"
       }
     },
@@ -920,7 +920,7 @@
         "inclusion": "↪ (e.g., Homeostasis ↪ Regulation)",
         "composition": "∘ (e.g., Learning = Memory ∘ Adaptation)",
         "duality": "op (e.g., Divergence = Convergence^op)",
-        "emergence": "⇒ (e.g., MetaconceptCombo: M_A ⊗ M_B ⇒ M_C)",
+        "emergence": "⇒ (e.g., GenericConceptCombo: M_A ⊗ M_B ⇒ M_C)",
         "tensorization": "⊗ (combination of objects)",
         "instantiation": "inst (M2 concept → M1 concept → M0 instance)"
       }
@@ -948,12 +948,12 @@
       "m3:tscgFunctors": {
         "F_tensorization": {
           "signature": "F_⊗: Cat_M3 → Cat_M2",
-          "description": "Maps ASFID dimensions to metaconcepts via tensor products",
-          "example": "F_⊗(S ⊗ F) = Link (metaconcept from tensor product of Structure and Flow)"
+          "description": "Maps ASFID dimensions to GenericConcepts via tensor products",
+          "example": "F_⊗(S ⊗ F) = Link (GenericConcept from tensor product of Structure and Flow)"
         },
         "F_instantiation": {
           "signature": "F_inst: Cat_M2 → Cat_M1",
-          "description": "Maps metaconcepts to domain-specific concepts",
+          "description": "Maps GenericConcepts to domain-specific concepts",
           "example": "F_inst(Link) = ChemicalLink (in Chemistry domain)"
         },
         "F_domain_projection": {
@@ -1155,7 +1155,7 @@
         "m3:Functor"
       ],
       "rdfs:label": "Tensorization Functor",
-      "rdfs:comment": "Functor mapping M3 dimensions to M2 metaconcepts via tensor products.",
+      "rdfs:comment": "Functor mapping M3 dimensions to M2 GenericConcepts via tensor products.",
       "m3:functorType": "covariant",
       "m3:functorSourceCategory": "m3:Cat_M3_ASFID",
       "m3:signature": "F_⊗: Cat_M3 → Cat_M2",
@@ -1172,7 +1172,7 @@
         "m3:Functor"
       ],
       "rdfs:label": "Instantiation Functor",
-      "rdfs:comment": "Functor mapping M2 metaconcepts to M1 domain-specific concepts.",
+      "rdfs:comment": "Functor mapping M2 GenericConcepts to M1 domain-specific concepts.",
       "m3:functorType": "covariant",
       "m3:signature": "F_inst: Cat_M2 → Cat_M1",
       "m3:examples": [

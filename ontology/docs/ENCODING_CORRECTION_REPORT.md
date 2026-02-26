@@ -1,17 +1,17 @@
 # Rapport de Correction d'Encodage
-## M2_MetaConcepts.jsonld
+## M2_GenericConcepts.jsonld
 
 **Date**: 2026-02-06  
 **Auteur**: Echopraxium with the collaboration of Claude AI  
-**Fichier source**: M2_MetaConcepts.jsonld  
-**Fichier de référence**: M2_MetaConcepts_2026_02_05.jsonld  
-**Fichier corrigé**: M2_MetaConcepts.jsonld (dans /mnt/user-data/outputs)
+**Fichier source**: M2_GenericConcepts.jsonld  
+**Fichier de référence**: M2_GenericConcepts_2026_02_05.jsonld  
+**Fichier corrigé**: M2_GenericConcepts.jsonld (dans /mnt/user-data/outputs)
 
 ---
 
 ## Résumé
 
-Le fichier M2_MetaConcepts.jsonld présentait de nombreuses corruptions d'encodage UTF-8 affectant:
+Le fichier M2_GenericConcepts.jsonld présentait de nombreuses corruptions d'encodage UTF-8 affectant:
 - Les symboles mathématiques (⊗, →, ⇒, ∈, ∂, etc.)
 - Les lettres grecques (α, β, γ, δ, ε, θ, μ, ρ, π, etc.)
 - Les opérateurs de théorie des catégories (↪, ∘)
@@ -86,7 +86,7 @@ Le fichier M2_MetaConcepts.jsonld présentait de nombreuses corruptions d'encoda
 ✓ **JSON valide**: Le fichier corrigé est un JSON-LD syntaxiquement correct  
 ✓ **Conformité ontologique**: Les URIs, namespaces et structures OWL sont préservés  
 ✓ **Symboles mathématiques**: Tous les symboles Unicode sont correctement encodés  
-✓ **Comparaison avec référence**: Les sections clés correspondent à M2_MetaConcepts_2026_02_05.jsonld
+✓ **Comparaison avec référence**: Les sections clés correspondent à M2_GenericConcepts_2026_02_05.jsonld
 
 ---
 
@@ -123,7 +123,7 @@ Le fichier M2_MetaConcepts.jsonld présentait de nombreuses corruptions d'encoda
 
 ## Fichier de Sortie
 
-**Emplacement**: `/mnt/user-data/outputs/M2_MetaConcepts.jsonld`  
+**Emplacement**: `/mnt/user-data/outputs/M2_GenericConcepts.jsonld`  
 **Taille**: 249 523 caractères  
 **Lignes**: 5529  
 **Encodage**: UTF-8  

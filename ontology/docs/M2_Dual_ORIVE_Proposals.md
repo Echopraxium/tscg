@@ -1,4 +1,4 @@
-# M2 Dual Metaconcepts - ORIVE Formula Proposals
+# M2 Dual GenericConcepts - ORIVE Formula Proposals
 
 **Version**: 9.1.0  
 **Date**: 2026-01-20  
@@ -9,9 +9,9 @@
 
 ## Overview
 
-The 6 existing **Dual metaconcepts** in M2 have stable **ASFID formulas** (Eagle Eye - Territory).
+The 6 existing **Dual GenericConcepts** in M2 have stable **ASFID formulas** (Eagle Eye - Territory).
 
-This document proposes **ORIVE formulas** (Sphinx Eye - Map) for the Map aspect of each Dual metaconcept.
+This document proposes **ORIVE formulas** (Sphinx Eye - Map) for the Map aspect of each Dual GenericConcept.
 
 **All ORIVE formulas are PROPOSITIONS** with ASFID fallback until validated via 15+ poclets.
 
@@ -264,7 +264,7 @@ Fallback ASFID: S⊗I⊗A / S⊗I
 
 ## Summary Table
 
-| Dual Metaconcept | ASFID (Territory - STABLE) | ORIVE (Map - PROPOSITION) | Fallback |
+| Dual GenericConcept | ASFID (Territory - STABLE) | ORIVE (Map - PROPOSITION) | Fallback |
 |------------------|---------------------------|--------------------------|----------|
 | **Coding** | I⊗S⊗D | R⊗I⊗E | I⊗S⊗D |
 | **Synergy** | A⊗S⊗I | V⊗I⊗O | A⊗S⊗I |
@@ -278,11 +278,11 @@ Fallback ASFID: S⊗I⊗A / S⊗I
 ## Validation Strategy
 
 ### Phase 1 (Current): Initial proposals
-- ✅ ORIVE formulas proposed for all 6 Dual metaconcepts
+- ✅ ORIVE formulas proposed for all 6 Dual GenericConcepts
 - ✅ Fallback ASFID available for safety
 
 ### Phase 2 (Next): Poclet validation
-- Test each ORIVE formula on 3+ poclets per metaconcept
+- Test each ORIVE formula on 3+ poclets per GenericConcept
 - Target: 18+ total poclet validations (3 × 6)
 - Domains: Chemistry, Biology, Engineering, Economics, Social systems
 
@@ -292,7 +292,7 @@ Fallback ASFID: S⊗I⊗A / S⊗I
 - **If mixed** (60-80%): Refine ORIVE dimensions, keep fallback
 
 ### Phase 4 (Mature): Full bicephalous M2
-- All Dual metaconcepts have validated ASFID + ORIVE
+- All Dual GenericConcepts have validated ASFID + ORIVE
 - Eagle Eye (Territory) and Sphinx Eye (Map) fully operational
 - Framework demonstrates true bicephalous architecture
 

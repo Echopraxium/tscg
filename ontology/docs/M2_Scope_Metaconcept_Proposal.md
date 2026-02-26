@@ -1,4 +1,4 @@
-# M2 Scope Metaconcept - Proposal Documentation
+# M2 Scope GenericConcept - Proposal Documentation
 
 **Version:** 14.3.3  
 **Date:** 2026-02-03  
@@ -9,13 +9,13 @@
 
 ## 📋 Executive Summary
 
-**Scope** is proposed as the 69th metaconcept in M2_MetaConcepts.jsonld. It fills a critical semantic gap between **Constraint** (prohibition) and **Domain** (entire field) by representing **positive boundaries of validity and authority**.
+**Scope** is proposed as the 69th GenericConcept in M2_GenericConcepts.jsonld. It fills a critical semantic gap between **Constraint** (prohibition) and **Domain** (entire field) by representing **positive boundaries of validity and authority**.
 
-**Key Discovery:** Scope is essential for properly modeling **Autonomy** in VSM as `MetaconceptCombo(Agent, Scope)`.
+**Key Discovery:** Scope is essential for properly modeling **Autonomy** in VSM as `GenericConceptCombo(Agent, Scope)`.
 
 ---
 
-## 🎯 Metaconcept Definition
+## 🎯 GenericConcept Definition
 
 ### Basic Properties
 
@@ -140,7 +140,7 @@ This requires:
 - **Agent** (S⊗I⊗D): Capability to act
 - **Scope** (S⊗I⊗A⊗R): Bounded domain where action is authorized
 
-**Solution:** `Autonomy = MetaconceptCombo(Agent, Scope)`
+**Solution:** `Autonomy = GenericConceptCombo(Agent, Scope)`
 
 **Semantic Gap Filled:** 
 - Constraint existed (what you CANNOT do)
@@ -151,7 +151,7 @@ This requires:
 
 ## 🧮 Mathematical Properties
 
-### Coupling Analysis (for MetaconceptCombo)
+### Coupling Analysis (for GenericConceptCombo)
 
 When used in `Agent ⊗ Scope ⇒ Autonomy`:
 
@@ -186,21 +186,21 @@ Emergent space dimension: ≤ 3 + 4 - 2 = 5D
 
 ### Metadata Updates
 
-**M2_MetaConcepts.jsonld v14.3.3:**
-- Total metaconcepts: **68 → 69**
-- Map metaconcepts: **9 → 10**
+**M2_GenericConcepts.jsonld v14.3.3:**
+- Total GenericConcepts: **68 → 69**
+- Map GenericConcepts: **9 → 10**
 - Neutral polarity: **50 → 51**
 - Version: **14.3.2 → 14.3.3**
 
 ### Changelog Entry (v14.3.3)
 
 ```
-NEW: Scope metaconcept (S⊗I⊗A⊗R) - map perspective, 10 transdisciplinary domains
-DISCOVERY: Scope required for VSM Autonomy modeling (MetaconceptCombo of Agent⊗Scope)
+NEW: Scope GenericConcept (S⊗I⊗A⊗R) - map perspective, 10 transdisciplinary domains
+DISCOVERY: Scope required for VSM Autonomy modeling (GenericConceptCombo of Agent⊗Scope)
 DISTINCTION: Scope (positive boundary - what is permitted) vs Constraint (negative boundary - what is prohibited)
 CATEGORY: Scope in Regulatory (domain of validity and authority)
 VALIDATION: Scope validated across programming, cybernetics, management, law, biology, optics, mathematics, linguistics, networks
-TOTAL: 69 metaconcepts (10 Map metaconcepts including Scope)
+TOTAL: 69 GenericConcepts (10 Map GenericConcepts including Scope)
 ```
 
 ---
@@ -218,16 +218,16 @@ Autonomy → instantiates [Modularity, Agent]
 
 **After (with Scope):**
 ```
-Autonomy = MetaconceptCombo(Agent, Scope)
+Autonomy = GenericConceptCombo(Agent, Scope)
 ```
 - ✅ Complete semantic coverage
 - ✅ Agent provides action capability
 - ✅ Scope provides authority boundaries
 - ✅ Emergence: "bounded autonomy" exactly as Beer defined
 
-### Complete VSM MetaconceptCombo Mappings
+### Complete VSM GenericConceptCombo Mappings
 
-| VSM Concept | MetaconceptCombo | Shared Dims | Status |
+| VSM Concept | GenericConceptCombo | Shared Dims | Status |
 |-------------|------------------|-------------|--------|
 | VarietyAmplification | ValueSpace ⊗ Amplification↑ | {It,R,O} = 3 | ✅ Canonical |
 | VarietyAttenuation | ValueSpace ⊗ Amplification↓ | {It,R,O} = 3 | ✅ Canonical |
@@ -305,7 +305,7 @@ Camera DoF:
 ## ✅ Validation Checklist
 
 - [x] **Transdisciplinary:** ≥8 validated domains (10 achieved)
-- [x] **Distinct:** Semantically different from existing metaconcepts
+- [x] **Distinct:** Semantically different from existing GenericConcepts
 - [x] **Necessary:** Fills real semantic gap (Autonomy modeling)
 - [x] **Tensor formula:** Coherent 4D structure (S⊗I⊗A⊗R)
 - [x] **REVOI characterization:** Defined (R⊗V⊗O primary)
@@ -324,7 +324,7 @@ Camera DoF:
 - Ashby, W. R. (1956). *An Introduction to Cybernetics*. (Variety and control)
 
 ### TSCG Internal
-- M2_MetaConcepts.jsonld v14.3.3
+- M2_GenericConcepts.jsonld v14.3.3
 - M0_VSM.jsonld (Viable System Model instantiation)
 - TSCG_Smart_Prompt_v14_3_0.md (Framework overview)
 
@@ -339,7 +339,7 @@ Camera DoF:
 
 ---
 
-**Status:** ✅ APPROVED for integration into M2_MetaConcepts.jsonld v14.3.3
+**Status:** ✅ APPROVED for integration into M2_GenericConcepts.jsonld v14.3.3
 
 ---
 

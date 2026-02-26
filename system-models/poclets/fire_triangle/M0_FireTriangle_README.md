@@ -14,7 +14,7 @@ The **Fire Triangle** is the canonical poclet for TSCG framework validation. It 
 
 This poclet serves as:
 1. **Framework Validation**: Proof-of-concept for TSCG's ASFID/REVOI analysis
-2. **Metaconcept Discovery**: Helped identify Balance, Synergy, and Component metaconcepts
+2. **GenericConcept Discovery**: Helped identify Balance, Synergy, and Component GenericConcepts
 3. **Pedagogical Tool**: Entry point for teaching systems theory and fire science
 
 ---
@@ -58,7 +58,7 @@ This poclet serves as:
 
 ### Flame Color by Temperature
 
-The visible color of a flame directly encodes its temperature — a **spectral Signature** (metaconcept **I⊗F**) linking the Heat dimension to observable Information.
+The visible color of a flame directly encodes its temperature — a **spectral Signature** (GenericConcept **I⊗F**) linking the Heat dimension to observable Information.
 
 | Temperature Range | Color | Typical Context |
 |-------------------|-------|-----------------|
@@ -70,7 +70,7 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 
 **Physical basis**: Planck blackbody radiation combined with spectral line emission from excited combustion intermediates (OH\*, CH\*, C₂\*).
 
-**TSCG link**: Flame color is an *observable* (Eagle Eye / ASFID-I) that encodes temperature information, illustrating the **Signature** metaconcept (I⊗F) — the system broadcasts its thermal state as a structured optical signal.
+**TSCG link**: Flame color is an *observable* (Eagle Eye / ASFID-I) that encodes temperature information, illustrating the **Signature** GenericConcept (I⊗F) — the system broadcasts its thermal state as a structured optical signal.
 
 > *Note*: Perceived color depends on the observer model (human photopic vision, camera CCD, spectrometer). The table above uses standard human vision as reference observer.
 
@@ -166,9 +166,9 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 
 ---
 
-## M2 Metaconcepts Mobilized
+## M2 GenericConcepts Mobilized
 
-**Total**: 22 metaconcepts out of 58 (38%)
+**Total**: 22 GenericConcepts out of 58 (38%)
 
 ### By Category
 
@@ -181,9 +181,9 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 - **Teleonomic**: Autopoiesis
 - **Relational**: Synergy
 
-### Critical Metaconcepts
+### Critical GenericConcepts
 
-| Metaconcept | Role | Formula |
+| GenericConcept | Role | Formula |
 |-------------|------|---------|
 | **Component** | Identifies Fuel, O₂, Heat as elementary parts | S⊗I |
 | **Synergy** | Explains emergence (1+1+1 = Fire, not 3) | A⊗S⊗I |
@@ -274,7 +274,7 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 | Criterion | Status | Assessment |
 |-----------|--------|------------|
 | **ASFID Completeness** | ✅ | All 5 dimensions present (A, S, F, I, D) |
-| **Metaconcept Coverage** | ✅ | 22/58 metaconcepts mobilized (38%) |
+| **GenericConcept Coverage** | ✅ | 22/58 GenericConcepts mobilized (38%) |
 | **Minimality** | ✅ | Exactly 3 components (irreducible) |
 | **Emergence** | ✅ | Fire is emergent property (> sum of parts) |
 | **Pedagogical Value** | ✅ | Universally taught, easily understood |
@@ -348,9 +348,9 @@ M3 (Architecture)
   ├─ Eagle Eye (ASFID) → Measures Territory (physical fire)
   └─ Sphinx Eye (REVOI) → Evaluates Map (Triangle model)
       ↓
-M2 (Metaconcepts)
+M2 (GenericConcepts)
   ├─ Synergy, Component, Composition, Trigger, Process
-  └─ 22 total metaconcepts mobilized
+  └─ 22 total GenericConcepts mobilized
       ↓
 M1 (Domain Concepts)
   └─ Chemistry Extension: Combustion, Chemical Species
@@ -366,8 +366,8 @@ M0 (Poclet Instance)
    - Validates REVOI scoring methodology
    - Confirms bicephalous Territory-Map distinction
 
-2. **Metaconcept Discovery** (M2 Population)
-   - Helped identify **Balance** metaconcept
+2. **GenericConcept Discovery** (M2 Population)
+   - Helped identify **Balance** GenericConcept
    - Reinforced **Synergy** pattern
    - Revealed **Component** as fundamental
 
@@ -383,7 +383,7 @@ M0 (Poclet Instance)
 ### For TSCG Framework Development
 - Use as reference example when validating new poclets
 - Compare ASFID/REVOI scores to Fire Triangle benchmarks
-- Test new metaconcepts against Fire Triangle structure
+- Test new GenericConcepts against Fire Triangle structure
 
 ### For Teaching Systems Theory
 - Introduce ASFID dimensions through visible fire phenomena
@@ -403,14 +403,14 @@ M0 (Poclet Instance)
 - NFPA (National Fire Protection Association) materials
 - OSHA fire safety training standards
 - ISO combustion standards
-- TSCG Framework Documentation (M2_MetaConcepts.jsonld, M3_EagleEye.jsonld, M3_SphinxEye.jsonld)
+- TSCG Framework Documentation (M2_GenericConcepts.jsonld, M3_EagleEye.jsonld, M3_SphinxEye.jsonld)
 
 ---
 
 ## See Also
 
 - **M1_Chemistry.jsonld**: Domain-specific combustion concepts
-- **M2_MetaConcepts.jsonld**: Synergy, Component, Composition metaconcepts
+- **M2_GenericConcepts.jsonld**: Synergy, Component, Composition GenericConcepts
 - **M0_ExposureTriangle.jsonld**: Another 3-component compensatory triangle
 - **poclet_terminology.md**: Definition and methodology of poclets
 
