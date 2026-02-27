@@ -97,18 +97,22 @@
         ]
       },
       "m2:progress": {
-        "m2:genericConceptsDefined": 78,
-        "m2:genericConceptsTotal": 78,
+        "m2:genericConceptsDefined": 71,
+        "m2:genericConceptsTotal": 71,
         "m2:completionPercentage": 100,
-        "m2:neutralPolarity": 52,
+        "m2:neutralPolarity": 51,
         "m2:dualPolarity": 14,
         "m2:naryPolarity": 1,
         "m2:hybridPolarity": 3
       },
       "m2:changelog": {
-        "v15_8_0": {
-          "date": "2026-02-27",
-          "description": "Added m2:Oscillator (Combo, Territory). Ternary combo ⊗⇒(Component, Process, Trajectory | trajectoryShape=Circular). rdfs:subClassOf m2:Component → S dimension unlocked → full ASFID coverage S⊗A⊗I⊗D⊗F. Second GenericConceptCombo with full ASFID 5D after Cascade. 4 ValueSpace attributes: frequency, amplitude, phase, damping_ratio. m2:Combo.genericConceptCount 5→6. neutralPolarity 51→52. Total 77→78."
+        "v15_6_0": {
+          "date": "2026-02-24",
+          "description": "Phase 3a: M2 purification. (1) Removed m2:Domain (superseded by KnowledgeField, same SVD formula). (2) Removed m2:KnowledgeField → moved to M1_CoreConcepts.jsonld. (3) Removed m2:KnowledgeFieldGenericCombo → moved to M1_CoreConcepts.jsonld. (4) Created m2:Combo (10th family) for synergistic combination patterns. (5) Updated hasFamily of GenericConceptCombo, Cascade, Processor, LALI, ButterflyEffect → m2:Combo. (6) Declared m2:characterizedBy (ObjectProperty, M1→M2 link, replaces heterogeneous m2Basis fields). M2 now contains only universally transdisciplinary GenericConcepts."
+        },
+        "v15_6_1": {
+          "date": "2026-02-24",
+          "description": "Rename: M2_GenericConcepts file and ontology @id → M2_GenericConcepts. Replaced all TSCG terminology: genericConcept → genericConcept, GenericConceptCombo (was GenericConceptCombo), GenericConceptFamily (was GenericConceptFamily), GenericConceptPair (was GenericConceptPair), genericConceptCount (was genericConceptCount). Preserved biological/chemical real words: Metabolic, metamorphosis, metal. Formula strings untouched."
         },
         "v15_7_0": {
           "date": "2026-02-24",
@@ -133,6 +137,7 @@
           "perspective": "Both Eagle (territory) and Sphinx (map) perspectives"
         },
         "oriveStatus": "PROPOSITION - Empirical validation in progress (7 poclets validated)",
+        "fallbackMechanism": "ASFID formulas guaranteed if REVOI validation fails",
         "hybridGenericConcepts": {
           "count": 4,
           "description": "GenericConcepts using both ASFID and REVOI dimensions in a single tensor product"
@@ -343,8 +348,8 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": "m2:GenericConceptFamily",
       "rdfs:label": "Combo Family",
-      "rdfs:comment": "GenericConcepts produced by synergistic combination of N parent GenericConcepts (N ≥ 2) via the n-ary tensor assembly and emergence morphism (⊗ⁿ⇒). The resulting concept has semantic identity irreducible to any subset of its parents. Shared dimensions between parents are contracted via lattice join (F ⊔ F = F). Members: GenericConceptCombo (abstract pattern), Cascade, Processor, LocalActivationLateralInhibition, ButterflyEffect, Oscillator.",
-      "m2:genericConceptCount": 6,
+      "rdfs:comment": "GenericConcepts produced by synergistic combination of N parent GenericConcepts (N ≥ 2) via the n-ary tensor assembly and emergence morphism (⊗ⁿ⇒). The resulting concept has semantic identity irreducible to any subset of its parents. Shared dimensions between parents are contracted via lattice join (F ⊔ F = F). Members: GenericConceptCombo (abstract pattern), Cascade, Processor, LocalActivationLateralInhibition, ButterflyEffect.",
+      "m2:genericConceptCount": 5,
       "dcterms:created": "2026-02-24",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
@@ -642,8 +647,13 @@
           "formula": "R → V",
           "role": "Evaluate map quality — is the resource representable and verifiable?",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "F → I",
+          "role": "Guaranteed measurement if REVOI validation fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasExample": [
         "Nutrients (Biology) — flow of chemical energy carriers with encoded molecular info",
@@ -699,8 +709,13 @@
           "formula": "V → E",
           "role": "Evaluate map quality — are interface contracts verifiable and evolvable?",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → I → F",
+          "role": "Guaranteed measurement if REVOI validation fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasExample": [
         "USB protocol (Electronics) — structural interface, encoded data format, flow standard",
@@ -761,8 +776,13 @@
           "formula": "O → R → V",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "A → S → F",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "A \\otimes S \\otimes F",
       "m2:hasTensorFormulaASCII": "A (x) S (x) F",
@@ -921,8 +941,13 @@
           "formula": "R → V → E",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "A → S → F",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "A \\otimes S \\otimes F",
       "m2:hasTensorFormulaASCII": "A (x) S (x) F",
@@ -1207,8 +1232,13 @@
           "formula": "R → V → O",
           "role": "Evaluate scope definition quality in Map",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → I → A",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:distinctionFromRelated": {
         "vs_Constraint": "Constraint defines what is PROHIBITED (negative boundary, hard limit). Scope defines what is PERMITTED (positive boundary, domain of validity). Constraint: 'you cannot leave the garden' vs Scope: 'the garden is your playground'.",
@@ -1429,8 +1459,13 @@
           "formula": "O → R → I",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → A",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "S \\otimes A",
       "m2:hasTensorFormulaASCII": "S (x) A",
@@ -1468,8 +1503,13 @@
           "formula": "O → R → I → V",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → I → F",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes F",
       "m2:hasTensorFormulaASCII": "S (x) I (x) F",
@@ -1686,8 +1726,13 @@
           "formula": "O → V",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaASCII": "S",
       "m2:hasTensorFormulaTeX": "S",
@@ -1868,8 +1913,13 @@
           "formula": "R → I → V",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → I",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I",
       "m2:hasTensorFormulaASCII": "S (x) I",
@@ -2020,8 +2070,13 @@
           "formula": "R → I → V → E",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "I → S",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "I \\otimes S",
       "m2:hasTensorFormulaASCII": "I (x) S",
@@ -2073,8 +2128,13 @@
           "formula": "R → I → E",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "I → S → D",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "I \\otimes S \\otimes D",
       "m2:hasTensorFormulaASCII": "I (x) S (x) D",
@@ -2120,8 +2180,13 @@
           "formula": "O → R → I",
           "role": "Evaluate map quality",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "I → S",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "I \\otimes S",
       "m2:hasTensorFormulaASCII": "I (x) S",
@@ -2246,8 +2311,13 @@
           "formula": "O → R → I → V",
           "role": "Evaluate map quality",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "I → S → F",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "I \\otimes S \\otimes F",
       "m2:hasTensorFormulaASCII": "I (x) S (x) F",
@@ -2299,8 +2369,13 @@
           "role": "Evaluate reusable template quality in Map",
           "status": "PROPOSITION (validation in progress)",
           "comment": "O = pattern must be perceptible in the model; R = its semantics must be decodable; I = it must be reusable cross-domain (interoperability)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → I → A",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:distinctionFromRelated": {
         "vs_Representation": "Representation (I → S) is a single static mapping between domains. Pattern is a recurring motif that repeats and is reusable as template.",
@@ -2941,8 +3016,13 @@
           "formula": "O → I → V",
           "role": "Evaluate map quality",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "I → A",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "I \\otimes A",
       "m2:hasTensorFormulaASCII": "I (x) A",
@@ -3208,8 +3288,13 @@
           "formula": "V → E",
           "role": "Evaluate map quality",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → A",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "S \\otimes A",
       "m2:hasTensorFormulaASCII": "S (x) A",
@@ -3247,8 +3332,13 @@
           "formula": "O → R → V",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "I → S",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "I \\otimes S",
       "m2:hasTensorFormulaASCII": "I (x) S",
@@ -3460,8 +3550,13 @@
           "formula": "O → V → E",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "I → D",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "I \\otimes D",
       "m2:hasTensorFormulaASCII": "I (x) D",
@@ -3527,8 +3622,13 @@
           "formula": "O → R → E",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → D",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "S \\otimes D",
       "m2:hasTensorFormulaASCII": "S (x) D",
@@ -3594,8 +3694,13 @@
           "formula": "O → V → E",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "A → D",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "A \\otimes D",
       "m2:hasTensorFormulaASCII": "A (x) D",
@@ -3659,8 +3764,13 @@
           "formula": "O → V",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "- ⊗ ⊗ ∇·D (convergence) / ⊗ ⊗ ∇·D (divergence)",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "- \\nabla \\cdot D (convergence) / \\nabla \\cdot D (divergence)",
       "m2:hasTensorFormulaASCII": "-∇·D (convergence) / ∇·D (divergence)",
@@ -3869,8 +3979,13 @@
           "formula": "O → R → I → V → E",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → I → D",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes D",
       "m2:hasTensorFormulaASCII": "S (x) I (x) D",
@@ -3902,8 +4017,13 @@
           "formula": "R → I",
           "role": "Evaluate map quality",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → I",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I",
       "m2:hasTensorFormulaASCII": "S (x) I",
@@ -3937,8 +4057,13 @@
           "formula": "R → I → V",
           "role": "Evaluate map quality",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "F → I → S",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "F \\otimes I \\otimes S",
       "m2:hasTensorFormulaASCII": "F (x) I (x) S",
@@ -3978,8 +4103,13 @@
           "formula": "O → R → I",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → I → F",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes F",
       "m2:hasTensorFormulaASCII": "S (x) I (x) F",
@@ -4049,8 +4179,13 @@
           "formula": "R → I",
           "role": "Evaluate map quality",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → I",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I",
       "m2:hasTensorFormulaASCII": "S (x) I",
@@ -4150,8 +4285,13 @@
           "formula": "O → R → I → V",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → I → F",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes F",
       "m2:hasTensorFormulaASCII": "S (x) I (x) F",
@@ -4244,8 +4384,13 @@
           "formula": "O → R → I",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → I",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:hasTensorFormulaTeX": "S \\otimes I",
       "m2:hasTensorFormulaASCII": "S (x) I",
@@ -4387,8 +4532,14 @@
           "formula": "R → I → V",
           "role": "Evaluate Map: is the assembled whole Representable (R), are interfaces Interoperable (I), is the composition Verifiable (V)?",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formulaComposition": "S ⊗ I ⊗ A",
+          "formulaDecomposition": "S ⊗ I",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:dimensionSemantics": {
         "S": "Structure — spatial/topological arrangement of components",
@@ -4530,8 +4681,13 @@
           "formula": "R → V → E",
           "role": "Evaluate map perspective on trade-offs",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "A → I",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:distinctionFromRelated": {
         "vs_Balance": "Balance is EQUILIBRIUM STATE (observable); Trade-off is DECISION CONCEPT (interpretative)",
@@ -4623,8 +4779,13 @@
           "formula": "OVE",
           "role": "Evaluate map perspective (conceptual distinction quality)",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "SIA",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:structuralProperties": {
         "topology": "Can be linear (N=2), triangular (N=3), square (N=4), pentagonal (N=5), or general N-gon",
@@ -4718,8 +4879,13 @@
           "role": "Construct and verify nested patterns in Map",
           "status": "PROPOSITION (validation in progress)",
           "constraint": "Potentially infinite depth in formal systems"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → S",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:distinctionFromRelated": {
         "vs_Hierarchy": "Hierarchy = different levels with control relations; Imbrication = identical structure at each level",
@@ -4810,8 +4976,13 @@
           "role": "Evaluate identity continuity quality in Map",
           "status": "PROPOSITION (validation in progress)",
           "comment": "V = can we verify this is still the same entity after change? (Verifiability is the central Map question for Identity); E = can the identity evolve and adapt while remaining itself? (Evolvability captures identity under transformation); O = deduced from V (verification requires observability)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S → I → A",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:distinctionFromRelated": {
         "vs_Invariant": "Invariant (S → A) is a conserved property passive and generic (applies to all entities equally, e.g. conservation laws). Identity is a conserved property that IDENTIFIES a singular entity and is self-restoring. Identity adds I (uniqueness) and intrinsic scope.",
@@ -4932,8 +5103,13 @@
           "role": "Evaluate: is the combo representable (R), interoperable across instances (I), and verifiable against parent genericConcepts (V)?",
           "note": "As n increases, V (verifiability) becomes critical bottleneck",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S ⊗ I ⊗ A",
+          "role": "Guaranteed measurement if REVOI fails - structure of the combination, information content, attractor stability of the emergent result",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:distinctionFromRelated": {
         "vs_Composition": "Composition (S ⊗ I ⊗ A) = assembly of heterogeneous PARTS into a whole (e.g., atoms → molecule). GenericConceptCombo = assembly of GenericConceptS with emergence morphism ⇒ - operates at the ontological level, not the structural level.",
@@ -5099,8 +5275,13 @@
           "role": "Evaluate map representation quality - ALL five REVOI dimensions",
           "completeness": "COMPLETE (full REVOI coverage)",
           "status": "PROPOSITION (validation in progress)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "S ⊗ I ⊗ A ⊗ D ⊗ F",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:distinctionFromRelated": {
         "vs_Process": "Process (D ⊗ F) lacks structure and goal; Cascade adds discrete stages (S, I) and target state (A)",
@@ -5183,7 +5364,7 @@
       "dcterms:modified": "2026-02-06",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified during RAAS analysis (poclet). Initially proposed as binary Process ⊗ Step (v14.3.5), lacking Attractor dimension. Michel identified need for Trajectory component to capture goal-directed evolution. Led to generalization of GenericConceptCombo to N-ary (N≥2) and first ternary genericConcept combo. Cascade now covers all 5 ASFID dimensions (S ⊗ I ⊗ A ⊗ D ⊗ F), making it the most complete GenericConceptCombo in M2.",
-      "m2:significance": "First GenericConceptCombo to achieve full ASFID coverage (5D). Demonstrates power of N-ary composition. Validates that ternary combinations can produce emergent genericConcepts with properties that no binary combination provides. See also m2:Oscillator (second 5D ternary combo, v15.8.0).",
+      "m2:significance": "First GenericConceptCombo to achieve full ASFID coverage (5D). Demonstrates power of N-ary composition. Validates that ternary combinations can produce emergent genericConcepts with properties that no binary combination provides.",
       "m3:semanticSignature": "sequential_amplification + irreversible_propagation + trajectory_shaping",
       "m2:hasComboComponent": [
         {
@@ -5851,8 +6032,13 @@
           "role": "Evaluate processor map - interface model quality and compatibility",
           "hybridFormula": "hybrid_processor_map",
           "status": "PROPOSITION (validation required)"
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "Transformation ⊗ Flow ⊗ Resource",
+          "role": "Guaranteed measurement if REVOI validation fails",
+          "status": "GUARANTEED"
         }
-        
       },
       "m2:distinctionFromRelated": {
         "vs_Transformation": "Transformation is abstract process; Processor is concrete ENTITY that implements transformations",
@@ -6050,8 +6236,13 @@
           "formula": "R → O",
           "role": "Evaluate map representation quality",
           "status": "PROPOSITION (validation in progress)"
-        }
-        ,
+        },
+        "formulaFallback": {
+          "basis": "ASFID",
+          "formula": "Ft → D → It",
+          "role": "Guaranteed measurement if REVOI fails",
+          "status": "GUARANTEED"
+        },
         "examples": {
           "amplification_map": "Circuit schematic with amplifier symbol ▲, equations visible",
           "attenuation_map": "Filter diagram with transfer function H(ρ°)"
@@ -6705,289 +6896,6 @@
           "rdfs:comment": "State-space trajectory with chaotic shape (Lyapunov exponent λ > 0)"
         }
       ]
-    },
-    {
-      "@id": "m2:Oscillator",
-      "@type": [
-        "owl:Class",
-        "m2:GenericConcept",
-        "m2:GenericConceptCombo"
-      ],
-      "rdfs:subClassOf": [
-        "m2:GenericConcept",
-        "m2:GenericConceptCombo",
-        "m2:Component"
-      ],
-      "rdfs:label": "Oscillator",
-      "rdfs:comment": "A system component that sustains periodic return to previous states through a cyclic trajectory around an attractor. Subclass of Component (S ⊗ I): the Oscillator has a structural identity within a larger system and a functional role (producing periodicity). Emergent combination of Component (S ⊗ I), Process (D ⊗ I ⊗ F) and Trajectory constrained to Circular shape (A ⊗ D ⊗ F). Shared dimensions D, F, I couple across parents; the union yields full ASFID coverage (S ⊗ A ⊗ I ⊗ D ⊗ F). Emergent properties irreducible to any single parent: period T, amplitude A, phase φ. Characterised by four ValueSpace attributes: frequency, amplitude, phase, damping_ratio.",
-      "m2:hasFamily": "m2:Combo",
-      "m2:hasTensorFormula": "⊗⇒(Component, Process, Trajectory) | trajectoryShape=Circular",
-      "m2:hasTensorFormulaTeX": "\\otimes\\Rightarrow(\\text{Component}, \\text{Process}, \\text{Trajectory}) \\;|\\; \\text{trajectoryShape}=\\text{Circular}",
-      "m2:hasTensorFormulaASCII": "(x)=>(Component, Process, Trajectory) | trajectoryShape=Circular",
-      "m2:hasTensorFormulaExpanded": "S ⊗ A ⊗ I ⊗ D ⊗ F",
-      "m2:hasTensorFormulaExpandedTeX": "S \\otimes A \\otimes I \\otimes D \\otimes F",
-      "m2:hasTensorFormulaExpandedASCII": "S (x) A (x) I (x) D (x) F",
-      "m2:hasDominantM3": [
-        "m3:eagle_eye:Structure",
-        "m3:eagle_eye:Attractor",
-        "m3:eagle_eye:Information",
-        "m3:eagle_eye:Dynamics",
-        "m3:eagle_eye:Flow"
-      ],
-      "m2:hasEpistemicGap": 0.2,
-      "m2:hasPolarity": "neutral",
-      "m2:perspective": "territory",
-      "m2:implements": {
-        "@id": "m2:Composable"
-      },
-      "m2:parentGenericConcepts": [
-        {
-          "@id": "m2:Component",
-          "formula": "S ⊗ I",
-          "contribution": "Structural identity within a larger system + functional role — provides S (the Oscillator as a bounded, identifiable part) and reinforces I (functional information encoding what the component does)"
-        },
-        {
-          "@id": "m2:Process",
-          "formula": "D ⊗ I ⊗ F",
-          "contribution": "Temporal evolution with flow — provides continuous dynamics and energy/signal flow through each cycle"
-        },
-        {
-          "@id": "m2:Trajectory",
-          "formula": "A ⊗ D ⊗ F",
-          "contribution": "Goal-directed path through state space constrained to Circular shape — the attractor closes the path back to its origin, producing periodicity"
-        }
-      ],
-      "m2:sharedDimensions": {
-        "D": "Shared by Process and Trajectory — temporal dynamics coupling (period T emerges from this contraction)",
-        "F": "Shared by Process and Trajectory — flow coupling (energy transfer per cycle)",
-        "I": "Shared by Component and Process — functional information coupling (phase state φ as functional signature)"
-      },
-      "m2:couplingExplanation": "Ternary combo (N=3). D couples temporal evolution (Process) with periodic progression along the circular path (Trajectory) — contraction yields period T. F couples energy flow (Process) with state-space traversal (Trajectory) — contraction yields energy stored per cycle. I couples functional role (Component) with phase information (Process) — contraction yields phase state φ as the functional signature of the Oscillator within its host system. S from Component adds structural identity (bounded entity). A from Trajectory adds the attractor (equilibrium point or limit cycle). Result: full 5D ASFID coverage.",
-      "m2:eagleView": {
-        "basis": "ASFID",
-        "formula": "S ⊗ A ⊗ I ⊗ D ⊗ F",
-        "role": "Measure structure S (boundaries), attractor A (equilibrium/limit cycle), phase I (φ), period D (T = 2π/ω), energy flow F per cycle in the Territory",
-        "status": "IMMUTABLE",
-        "dimensionSemantics": {
-          "S": "Structure — the Oscillator as a bounded, identifiable system component (from Component)",
-          "A": "Attractor — equilibrium point or limit cycle the system orbits (from Trajectory)",
-          "I": "Information — phase state φ encoding current position in the cycle (coupled Component + Process)",
-          "D": "Dynamics — temporal evolution; determines angular frequency ω = 2π/T (coupled Process + Trajectory)",
-          "F": "Flow — energy/matter exchanged per half-cycle: kinetic ↔ potential (coupled Process + Trajectory)"
-        },
-        "ASFIDScores_typical": {
-          "A": 0.85,
-          "S": 0.60,
-          "F": 0.75,
-          "I": 0.65,
-          "D": 0.90
-        }
-      },
-      "m2:significance": "Second GenericConceptCombo (with m2:Cascade) to achieve full ASFID coverage (5D). The ternary composition with Component is what unlocks S: Oscillation (behaviour alone) has no structure, but an Oscillator (component) does. Demonstrates that subclassing m2:Component systematically promotes a behavioural combo to a fully structural one.",
-      "m2:hasAttribute": {
-        "frequency": {
-          "@type": "m2:ValueSpace",
-          "m2:valueType": "Continuous scalar",
-          "m2:description": "Number of complete cycles per unit time. ω = 2π·f (angular frequency). Determines the temporal scale of the oscillation.",
-          "m2:unit": "Hz (cycles/s) or rad/s for angular frequency",
-          "m2:formula": "f = 1/T ; ω = 2π/T",
-          "m2:possibleValues": [
-            {
-              "value": "Infrasonic",
-              "description": "f < 1 Hz — very slow oscillations",
-              "examples": ["Circadian rhythms (~1/86400 Hz)", "Economic cycles", "Tidal oscillations"]
-            },
-            {
-              "value": "Acoustic",
-              "description": "1 Hz ≤ f < 20 kHz — human-perceptible range",
-              "examples": ["Pendulum clock (~1 Hz)", "Musical instruments (20–4000 Hz)", "Heart beat (~1.2 Hz)"]
-            },
-            {
-              "value": "Ultrasonic",
-              "description": "f ≥ 20 kHz — above human hearing",
-              "examples": ["Ultrasound imaging", "Quartz oscillator (32 768 Hz)", "Bat echolocation"]
-            }
-          ],
-          "m2:default": "Acoustic"
-        },
-        "amplitude": {
-          "@type": "m2:ValueSpace",
-          "m2:valueType": "Continuous scalar",
-          "m2:description": "Maximum displacement from equilibrium. Encodes energy stored in the oscillation: E ∝ A².",
-          "m2:formula": "x(t) = A·cos(ωt + φ) ; E = ½·k·A²",
-          "m2:possibleValues": [
-            {
-              "value": "Constant",
-              "description": "Undamped — amplitude unchanged over time (ζ = 0)",
-              "examples": ["Ideal LC circuit", "Ideal pendulum in vacuum"]
-            },
-            {
-              "value": "Decaying",
-              "description": "Damped — amplitude decreases exponentially: A(t) = A₀·e^(-ζ·ω₀·t)",
-              "examples": ["Spring-mass-damper (ζ < 1)", "RLC circuit with resistance", "Damped tuning fork"]
-            },
-            {
-              "value": "Growing",
-              "description": "Negative damping — amplitude increases until saturation",
-              "examples": ["Feedback oscillator at startup", "Limit cycle growth (Van der Pol)"]
-            },
-            {
-              "value": "Limit_cycle",
-              "description": "Self-sustained — amplitude stabilises at a fixed value regardless of initial conditions",
-              "examples": ["Van der Pol oscillator", "Heartbeat pacemaker cells", "Bowing a violin string"]
-            }
-          ],
-          "m2:default": "Constant"
-        },
-        "phase": {
-          "@type": "m2:ValueSpace",
-          "m2:valueType": "Continuous scalar",
-          "m2:description": "Angular offset φ ∈ [0, 2π) encoding current position in the cycle at reference time t=0. Determines synchronisation relationships between coupled oscillators.",
-          "m2:formula": "x(t) = A·cos(ωt + φ)",
-          "m2:possibleValues": [
-            {
-              "value": "In_phase",
-              "description": "φ = 0 — oscillators reach their maxima simultaneously",
-              "examples": ["Coupled pendulums (in-phase mode)", "Synchronised fireflies"]
-            },
-            {
-              "value": "Quadrature",
-              "description": "φ = π/2 — one oscillator leads by a quarter cycle",
-              "examples": ["LC tank circuit (V and I)", "Phase-shift oscillator"]
-            },
-            {
-              "value": "Antiphase",
-              "description": "φ = π — oscillators reach their maxima in alternation",
-              "examples": ["Coupled pendulums (anti-phase mode)", "Push-pull amplifier"]
-            },
-            {
-              "value": "Arbitrary",
-              "description": "φ ∈ (0, 2π) — general phase relationship",
-              "examples": ["Uncoupled oscillators", "Initial-condition-determined phase"]
-            }
-          ],
-          "m2:default": "Arbitrary"
-        },
-        "damping_ratio": {
-          "@type": "m2:ValueSpace",
-          "m2:valueType": "Continuous scalar",
-          "m2:description": "Dimensionless parameter ζ ≥ 0 controlling energy dissipation rate relative to restoring force. Determines whether oscillation persists, decays, or is prevented.",
-          "m2:formula": "ζ = c / (2·√(k·m)) ; x(t) = A·e^(-ζ·ω₀·t)·cos(ωd·t + φ) where ωd = ω₀·√(1-ζ²)",
-          "m2:possibleValues": [
-            {
-              "value": "Undamped",
-              "description": "ζ = 0 — perpetual oscillation, no energy loss",
-              "examples": ["Ideal pendulum in vacuum", "Ideal LC circuit"]
-            },
-            {
-              "value": "Underdamped",
-              "description": "0 < ζ < 1 — oscillation with exponentially decaying amplitude",
-              "examples": ["Car suspension (typical ζ ≈ 0.3)", "Damped tuning fork", "RLC circuit with low R"]
-            },
-            {
-              "value": "Critically_damped",
-              "description": "ζ = 1 — fastest return to equilibrium without oscillation",
-              "examples": ["Optimal door closer", "Critically damped galvanometer"]
-            },
-            {
-              "value": "Overdamped",
-              "description": "ζ > 1 — monotonic return to equilibrium, no oscillation",
-              "examples": ["Heavy door closer", "Overdamped RC filter", "Highly viscous pendulum"]
-            }
-          ],
-          "m2:default": "Underdamped",
-          "m2:connectionToM2": "damping_ratio bridges Oscillator to m2:Convergence (convergence_pattern='Oscillatory' for 0 < ζ < 1) and to m2:Bifurcation (Hopf bifurcation at the transition where ζ → 0 and a limit cycle emerges)"
-        }
-      },
-      "m2:transdisciplinaryValidation": {
-        "validated": true,
-        "minDomainsRequired": 3,
-        "actualDomains": 5,
-        "examples": [
-          {
-            "domain": "Physics / Mechanics",
-            "instance": "Pendulum, spring-mass system, LC circuit",
-            "ASFIDMapping": {
-              "S": "physical body (bob, mass, inductor-capacitor pair)",
-              "A": "equilibrium position (rest angle or charge = 0)",
-              "I": "current angle or charge — phase state",
-              "D": "angular frequency ω = √(g/L) or 1/√(LC)",
-              "F": "kinetic ↔ potential energy exchange per half-cycle"
-            }
-          },
-          {
-            "domain": "Biology / Physiology",
-            "instance": "Circadian rhythm, cardiac pacemaker, neural oscillation",
-            "ASFIDMapping": {
-              "S": "cellular or tissue structure (SCN nucleus, SA node, neural circuit)",
-              "A": "homeostatic setpoint (zeitgeber or resting potential)",
-              "I": "phase of biological clock or membrane potential",
-              "D": "period T ≈ 24h (circadian) or ~1s (cardiac)",
-              "F": "hormonal / ionic flux per cycle"
-            }
-          },
-          {
-            "domain": "Economics",
-            "instance": "Business cycle, inventory cycle (Kitchin)",
-            "ASFIDMapping": {
-              "S": "economic sector or market structure",
-              "A": "long-run equilibrium GDP or inventory level",
-              "I": "current phase (expansion, peak, contraction, trough)",
-              "D": "cycle period (~4 years Kitchin, ~10 years Juglar)",
-              "F": "capital / goods flow between phases"
-            }
-          },
-          {
-            "domain": "Chemistry",
-            "instance": "Belousov-Zhabotinsky (BZ) reaction",
-            "ASFIDMapping": {
-              "S": "reactor vessel and reagent mixture",
-              "A": "chemical equilibrium concentrations",
-              "I": "current oxidation state (colour indicator)",
-              "D": "oscillation period (seconds to minutes)",
-              "F": "reactant consumption and product formation flux"
-            }
-          },
-          {
-            "domain": "Electronics / Signal processing",
-            "instance": "Quartz crystal oscillator, Wien bridge oscillator",
-            "ASFIDMapping": {
-              "S": "crystal or RC network structure",
-              "A": "stable operating frequency (resonance)",
-              "I": "instantaneous signal phase",
-              "D": "oscillation frequency (kHz to MHz range)",
-              "F": "electrical energy flow in the resonant loop"
-            }
-          }
-        ]
-      },
-      "m2:distinctionFromRelated": {
-        "vs_Process": "Process is open-ended temporal evolution; Oscillator closes the trajectory on itself (Circular) and has structural identity (Component)",
-        "vs_Trajectory": "Trajectory describes the path shape; Oscillator is the system component that actively traverses a circular path",
-        "vs_Homeostasis": "Homeostasis maintains a static set-point (A dominant); Oscillator maintains a dynamic limit cycle — the equilibrium is a cycle, not a point",
-        "vs_Regulation": "Regulation corrects deviations from a set-point; Oscillator produces deviations as its normal operating mode",
-        "vs_ButterflyEffect": "ButterflyEffect is chaotic (trajectoryShape=Chaotic, λ > 0); Oscillator is periodic (trajectoryShape=Circular, ζ ≥ 0)"
-      },
-      "m2:hasComboComponent": [
-        {
-          "@id": "m2:Component",
-          "m2:comboRole": "structural_host",
-          "rdfs:comment": "Provides structural identity (S) and functional role (I) of the Oscillator within its host system"
-        },
-        {
-          "@id": "m2:Process",
-          "m2:comboRole": "temporal_engine",
-          "rdfs:comment": "Provides continuous dynamics (D) and energy/signal flow (F) through each cycle"
-        },
-        {
-          "@id": "m2:Trajectory",
-          "m2:comboRole": "cyclic_path",
-          "rdfs:comment": "Provides the circular attractor (A) that closes the path, producing periodicity"
-        }
-      ],
-      "m2:discoveryContext": "User proposal validated 2026-02-27. Identified as Process ⊗⇒ Trajectory[Circular] (Territory), then refined as subclass of Component to capture structural identity and unlock S dimension. Key insight: subclassing Component is the architectural move that (1) adds S yielding full ASFID coverage, and (2) distinguishes an Oscillator (system component) from Oscillation (abstract behaviour pattern).",
-      "dcterms:created": "2026-02-27",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     }
   ]
 }
