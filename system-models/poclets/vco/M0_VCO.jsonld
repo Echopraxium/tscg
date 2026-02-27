@@ -1,0 +1,203 @@
+{
+  "@context": {
+    "@base":    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m0":       "M0_VCO.jsonld#",
+    "m2":       "M2_GenericConcepts.jsonld#",
+    "m3":       "M3_GenesisSpace.jsonld#",
+    "m1core":   "M1_CoreConcepts.jsonld#",
+    "m1elec":   "M1_extensions/electronics/M1_Electronics.jsonld#",
+    "dcterms":  "http://purl.org/dc/terms/",
+    "owl":      "http://www.w3.org/2002/07/owl#",
+    "rdf":      "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs":     "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd":      "http://www.w3.org/2001/XMLSchema#",
+    "skos":     "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+
+    {
+      "@id": "m0:VCO_Ontology",
+      "@type": "owl:Ontology",
+      "owl:versionInfo": "1.0.0",
+      "rdfs:label": "Voltage Controlled Oscillator (VCO)",
+      "rdfs:comment": "TSCG M0 poclet — VCO as primary pitch-generation component in a modular synthesizer. First M0 instantiation of m2:Oscillator (v15.8.0). Maps a control voltage (V/Oct standard) to a periodic audio-frequency signal.",
+      "owl:imports": [
+        "M3_GenesisSpace.jsonld",
+        "M2_GenericConcepts.jsonld",
+        "M1_CoreConcepts.jsonld",
+        "M1_extensions/electronics/M1_Electronics.jsonld"
+      ],
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-02-27"
+    },
+
+    {
+      "@id": "m0:VCO",
+      "@type": ["owl:NamedIndividual", "m2:Oscillator"],
+      "rdfs:label": "Voltage Controlled Oscillator (VCO)",
+      "rdfs:comment": "A VCO is a system component (m2:Component) generating a periodic audio-frequency waveform whose frequency is determined by an input control voltage via the V/Oct law: f(CV) = f₀ × 2^(CV). It is the canonical Territory Oscillator: S = circuit structure, A = target frequency (attractor), I = instantaneous phase state, D = oscillation dynamics (frequency law), F = audio output flow.",
+
+      "m0:domain": "Electronics / Sound Synthesis / Music Technology",
+      "m0:subdomains": [
+        "Analog Electronics",
+        "Modular Synthesis",
+        "Signal Processing",
+        "Acoustics"
+      ],
+
+      "m0:primaryMetaconcept": "m2:Oscillator",
+      "m0:validatesMetaconcepts": [
+        "m2:Oscillator",
+        "m2:Component",
+        "m2:Process",
+        "m2:Trajectory",
+        "m2:Amplification",
+        "m2:Transformation",
+        "m2:Signal",
+        "m2:ValueSpace",
+        "m2:Mode"
+      ],
+
+      "m0:asfidAnalysis": {
+        "m0:A": {
+          "score": 0.90,
+          "label": "Attractor",
+          "description": "Target frequency f = f₀ × 2^(CV) — the circular attractor in phase space. Any perturbation is corrected by the oscillator's internal feedback."
+        },
+        "m0:S": {
+          "score": 0.75,
+          "label": "Structure",
+          "description": "Integrator core (capacitor + op-amp or CEM/SSI chip), exponential V/Oct converter, waveform shaper (comparator/flip-flop), output buffers."
+        },
+        "m0:F": {
+          "score": 0.85,
+          "label": "Flow",
+          "description": "Audio output (±5V Eurorack), CV input flow, FM modulation input flow."
+        },
+        "m0:I": {
+          "score": 0.80,
+          "label": "Information",
+          "description": "Instantaneous phase φ(t) = 2π·f·t + φ₀ (position in cycle). Waveform shape (discrete: Sine / Square / Triangle / Sawtooth). Pitch CV value."
+        },
+        "m0:D": {
+          "score": 0.90,
+          "label": "Dynamics",
+          "description": "V/Oct law: f(CV) = f₀ × 2^(CV). At CV=0V → f₀ (e.g. A4=440 Hz). Each +1V → octave up (×2). FM: f_FM(t) = f_carrier × 2^(I_FM × depth)."
+        },
+        "m0:asfidTotal": 0.84,
+        "m0:epistemicGap": 0.16
+      },
+
+      "m0:revoiAnalysis": {
+        "m0:R": { "score": 0.90, "label": "Representability",
+          "description": "Closed-form f = f₀ × 2^CV. Waveforms fully defined by Fourier series." },
+        "m0:E": { "score": 0.85, "label": "Evolvability",
+          "description": "Extends cleanly: FM, hard sync, PWM, wavetable, supersaw, through-zero FM." },
+        "m0:V": { "score": 0.95, "label": "Verifiability",
+          "description": "Frequency measurable with counter/oscilloscope. Tracking verifiable with tuner. Waveform via FFT." },
+        "m0:O": { "score": 0.95, "label": "Observability",
+          "description": "Full waveform visible on oscilloscope. Phase via Lissajous. All state variables directly measurable." },
+        "m0:I_map": { "score": 0.95, "label": "Interoperability",
+          "description": "V/Oct is the universal Eurorack pitch CV standard — direct compatibility with any VCF, VCA, sequencer, keyboard." },
+        "m0:revoiTotal": 0.92
+      },
+
+      "m0:oscillatorValueSpaceAttributes": {
+        "frequency": {
+          "m0:value": "Acoustic",
+          "m0:baseFrequency": "440 Hz (A4) at CV=0V",
+          "m0:law": "f(CV) = f₀ × 2^(CV/1V)",
+          "m0:range": "20 Hz – 20 kHz"
+        },
+        "amplitude": {
+          "m0:value": "Limit_cycle",
+          "m0:level": "±5V peak (Eurorack)",
+          "m0:rationale": "Active circuit maintains constant amplitude regardless of frequency"
+        },
+        "phase": {
+          "m0:value": "Arbitrary",
+          "m0:hardSync": "External sync resets phase to 0 on rising edge"
+        },
+        "damping_ratio": {
+          "m0:value": "Undamped",
+          "m0:rationale": "Active oscillator — energy input compensates losses (ζ = 0 equivalent)"
+        }
+      },
+
+      "m0:waveformModes": {
+        "m0:metaconcept": "m2:Mode (N-ary, N=4)",
+        "m0:modes": [
+          {
+            "m0:name": "Sine",
+            "m0:harmonics": "Fundamental only",
+            "m0:formula": "x(t) = A·sin(2π·f·t)",
+            "m0:timbre": "Pure, warm, flute-like"
+          },
+          {
+            "m0:name": "Square",
+            "m0:harmonics": "Odd harmonics (1/n)",
+            "m0:formula": "x(t) = sign(sin(2π·f·t))",
+            "m0:timbre": "Hollow, woodwind-like"
+          },
+          {
+            "m0:name": "Triangle",
+            "m0:harmonics": "Odd harmonics (1/n²)",
+            "m0:formula": "x(t) = (2A/π)·arcsin(sin(2π·f·t))",
+            "m0:timbre": "Soft, mellow"
+          },
+          {
+            "m0:name": "Sawtooth",
+            "m0:harmonics": "All harmonics (1/n)",
+            "m0:formula": "x(t) = 2A·(f·t - ⌊f·t + 0.5⌋)",
+            "m0:timbre": "Bright, buzzy, string/brass-like"
+          }
+        ]
+      },
+
+      "m0:inputs": [
+        {
+          "@id": "m0:VCO/in/pitch_cv",
+          "rdfs:label": "Pitch CV (V/Oct)",
+          "m0:range": "±5V (10 octaves)",
+          "m0:asfidDimensions": ["A", "D"]
+        },
+        {
+          "@id": "m0:VCO/in/fm",
+          "rdfs:label": "FM Input",
+          "m0:range": "±5V",
+          "m0:asfidDimensions": ["D", "F"]
+        },
+        {
+          "@id": "m0:VCO/in/sync",
+          "rdfs:label": "Hard Sync",
+          "m0:asfidDimensions": ["I", "D"]
+        }
+      ],
+
+      "m0:outputs": [
+        { "@id": "m0:VCO/out/sine",     "rdfs:label": "Sine",     "m0:level": "±5V" },
+        { "@id": "m0:VCO/out/square",   "rdfs:label": "Square",   "m0:level": "±5V" },
+        { "@id": "m0:VCO/out/triangle", "rdfs:label": "Triangle", "m0:level": "±5V" },
+        { "@id": "m0:VCO/out/sawtooth", "rdfs:label": "Sawtooth", "m0:level": "±5V" }
+      ],
+
+      "m0:transdisciplinaryAnalogies": [
+        { "domain": "Biology",   "analogue": "Cardiac pacemaker (SA node)", "cvEquivalent": "Autonomic tone" },
+        { "domain": "Mechanics", "analogue": "Driven variable-length pendulum", "cvEquivalent": "Effective gravity control" },
+        { "domain": "Economics", "analogue": "Business cycle oscillator", "cvEquivalent": "Interest rate policy" },
+        { "domain": "Chemistry", "analogue": "Belousov-Zhabotinsky reaction", "cvEquivalent": "Reagent input rate" }
+      ],
+
+      "m0:changelog": {
+        "v1_0_0": {
+          "date": "2026-02-27",
+          "description": "Initial creation. First M0 poclet to instantiate m2:Oscillator (v15.8.0). Full ASFID+REVOI analysis. 4 waveform modes. V/Oct law formalised."
+        }
+      },
+
+      "dcterms:created": "2026-02-27",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    }
+
+  ]
+}

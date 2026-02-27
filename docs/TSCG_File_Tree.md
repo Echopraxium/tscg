@@ -2,7 +2,7 @@
 
 **Date:** 2026-02-27  
 **Framework Version:** TSCG v15.8.0  
-**Total Files:** 468
+**Total Files:** 477
 
 ---
 
@@ -11,7 +11,7 @@
 **Ontology Files:**
 - M3 Layer: 5 files (+ .ttl twins + Ref/ copies)
 - M2 Layer: 1 file (M2_GenericConcepts) + archived versions in docs/
-- M1 Layer: 1 core file + 8 domain extensions (biology, chemistry, education, energy_generators, mythology, optics, photography, physics)
+- M1 Layer: 1 core file + 9 domain extensions (biology, chemistry, education, **electronics**, energy_generators, mythology, optics, photography, physics)
 - M0 Layer: validated poclets (system-models/validation/) + experimental poclets (system-models/poclets/) + 1 VSM systemic framework + 1 symbolic grammar
 
 **Documentation:** ~110 files  
@@ -19,7 +19,7 @@
 **Scripts & Tools:** 25+ files  
 **Root & Config:** 9 files
 
-**Total:** 468 files
+**Total:** 477 files
 
 ---
 
@@ -33,6 +33,8 @@
 - ✅ Preprints reorganized: v3 added, v1/v2 archived to `previous/` subfolder
 - ✅ New files in `docs/papers/inputs/`: `M2_v7.2.0_Summary.md`, `M2_v8.0.0_Update_Guide.md`
 - ✅ `m2_Oscillator_snippet.jsonld` added at ontology root
+- ✅ New M1 extension: `electronics/` (M1_Electronics.jsonld + README) — 17 concepts
+- ✅ New poclet: `vco/` (M0_VCO + vco_sim.py + VCO_Simulation_README) — first instantiation of m2:Oscillator
 - ✅ `M2_GenericConcepts_2026_02_17_17h-00min.jsonld` added in `ontology/Ref/`
 - ✅ `cli_tools/` new folder at project root
 - ✅ Poclets docs folder renamed from `docs/` to `_00_docs/`
@@ -138,6 +140,10 @@ Core foundation defining the bicephalous architecture (Territory/Map distinction
 - [M1_Education.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/education/M1_Education.jsonld)
 - [M1_Education_README.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/education/M1_Education_README.md)
 
+**Electronics (M1_extensions/electronics/) — NEW:**
+- [M1_Electronics.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/electronics/M1_Electronics.jsonld) — 17 KnowledgeFieldConcepts : ActiveComponent, Amplifier, Filter, ElectronicOscillator, VoltageControlledOscillator, LFO, FeedbackOscillator, WaveformMode, AudioSignal, ControlVoltage, PitchCV, ExponentialConverter, ModulationSource, EurorackModule, SignalChain, FrequencyModulation, SignalProcessor
+- [M1_Electronics_README.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/electronics/M1_Electronics_README.md)
+
 **Energy Generators (M1_extensions/energy_generators/):**
 - [M1_EnergyGenerators.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld) / [.ttl](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.ttl)
 
@@ -215,6 +221,7 @@ Each poclet folder contains `.jsonld`, `.ttl`, `_README.md` and sometimes simula
 - `raas/` — M0_RAAS + RAAS_Complete_README
 - `tpack/` — M0_TPACK + TPACK_README + tpack_sim.py
 - `transistor/` — M0_Transistor + README + transistor_sim.py
+- `vco/` — M0_VCO + M0_VCO_README + vco_sim.py + VCO_Simulation_README — **NEW** (first m2:Oscillator instantiation)
 
 **Yggdrasil companion documents:**
 - [Heimdall_Interface_Constraint_Analysis.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/yggdrasil/Heimdall_Interface_Constraint_Analysis.md)
@@ -274,6 +281,8 @@ Full Python package structure for the TSCG engine.
 - fire_triangle_sim.py, four_stroke_engine_sim.py, phase_transition_sim.py — **NEW**
 - tpack_sim.py, transistor_sim.py
 - poclet_parser.py, requirements.txt
+
+> **Note:** `vco_sim.py` lives in the poclet folder (`system-models/poclets/vco/`) and not in the shared simulation-engine, as it has no dependency on `poclet_parser.py`.
 
 ### Tests (src/tscg/tests/)
 - test_facades.py
@@ -408,6 +417,7 @@ aladas-org/cryptocalc/                 # Repository root
 │   │   ├── biology/
 │   │   ├── chemistry/
 │   │   ├── education/                 # NEW
+│   │   ├── electronics/               # NEW — M1_Electronics (17 concepts)
 │   │   ├── energy_generators/
 │   │   ├── mythology/
 │   │   ├── optics/
@@ -422,6 +432,7 @@ aladas-org/cryptocalc/                 # Repository root
 │   ├── poclets/                       # Experimental models (by subfolder)
 │   │   ├── _00_docs/                  # Poclets documentation (renamed from docs/)
 │   │   ├── phase_transition/          # NEW poclet
+│   │   ├── vco/                       # NEW poclet — VCO (m2:Oscillator)
 │   │   └── [other domain folders]
 │   ├── validation/                    # Validated models (.jsonld + .ttl)
 │   ├── systemic-frameworks/vsm/       # VSM framework integration
@@ -455,8 +466,9 @@ aladas-org/cryptocalc/                 # Repository root
 ### v15.8.0 (2026-02-27) — Current
 
 - Smart Prompt v15.8.0 released
-- New M1 extensions: `education/` and `physics/`
-- New poclet: `phase_transition/` with simulation engine
+- New M1 extensions: `education/`, `physics/`, `electronics/` (VCO domain)
+- New poclets: `phase_transition/` (simulation) + `vco/` (first m2:Oscillator instantiation)
+- `M1_Electronics.jsonld` — 17 concepts covering analog electronics & modular synthesis
 - Preprints reorganized with `previous/` subfolder; v3 is now current
 
 ### v15.7.0 (2026-02-25)
