@@ -8,7 +8,7 @@ def generate_github_urls():
     """
     
     # Configuration
-    REPO_URL = "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/"
+    REPO_URL = "https://raw.githubusercontent.com/echopraxium/tscg/main/"
     OUTPUT_FILE = "files.txt"
     
     # Extensions à inclure
