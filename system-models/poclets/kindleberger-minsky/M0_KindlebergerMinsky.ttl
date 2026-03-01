@@ -1,0 +1,207 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m0: <M0_KindlebergerMinsky.jsonld#> .
+@prefix m2: <M2_GenericConcepts.jsonld#> .
+@prefix m3: <M3_GenesisSpace.jsonld#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_KindlebergerMinsky.jsonld#KindlebergerMinsky> a owl:Ontology ;
+    rdfs:label "Kindleberger-Minsky Financial Crisis Cycle" ;
+    m2:changelog [ ] ;
+    m2:ontologyCategory "Poclet" ;
+    m3:ontologyType <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Poclet> ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:modified "2026-02-28" ;
+    rdfs:comment "TSCG M0 poclet modeling the Kindleberger-Minsky 5-phase speculative cycle (Displacement → Boom → Euphoria → Distress → Revulsion). Primary M2 patterns: m2:Propagation (panic through interbank network) and m2:Narration (collective belief transformation). Includes simulation markers (date, asset price, transaction volume, dynamics) for 6 historical instances across all 5 phases." ;
+    owl:imports "M1_CoreConcepts.jsonld",
+        "M1_extensions/economics/M1_Economics.jsonld",
+        "M2_GenericConcepts.jsonld",
+        "M3_GenesisSpace.jsonld" ;
+    owl:versionInfo "1.0.0" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_KindlebergerMinsky.jsonld#NarrationInstance> a owl:NamedIndividual ;
+    rdfs:label "Market Collective Belief Narration" ;
+    m0:narrationMapping [ ] ;
+    m0:narrativeTransformation [ ] ;
+    m2:characterizedBy <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Narration> ;
+    rdfs:comment "Instantiation of m2:Narration. Collective market belief network transforms across 5 phases: 'new paradigm' → 'this time is different' → 'panic' → 'never again'. Narration topology=Linear, attractorType=Collapse. Im = shared market interpretation framework." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_KindlebergerMinsky.jsonld#Pole_Boom> a owl:NamedIndividual ;
+    rdfs:label "Phase 2 — Boom (Credit Expansion)" ;
+    m0:asfidFormula "F ⊗ D ⊗ A" ;
+    m0:asfidScores [ ] ;
+    m0:poleIndex 2 ;
+    m0:primaryM2 "m2:Amplification" ;
+    m0:secondaryM2 "m2:Cascade",
+        "m2:Narration",
+        "m2:Network",
+        "m2:Propagation",
+        "m2:Threshold" ;
+    m0:simulationMarkers [ m0:Crypto2021 [ ] ;
+            m0:Dotcom [ ] ;
+            m0:GFC2008 [ ] ;
+            m0:SouthSea [ ] ;
+            m0:TulipMania [ ] ;
+            m0:WallStreet1929 [ ] ] ;
+    rdfs:comment "Easy credit fuels investment. Leverage amplifies returns. 'Stability is destabilizing' (Minsky): absence of crisis encourages risk-taking. Narration in Supercritical regime: 'new paradigm' spreads. Price velocity increasing, volume surging, acceleration strongly positive." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_KindlebergerMinsky.jsonld#Pole_Displacement> a owl:NamedIndividual ;
+    rdfs:label "Phase 1 — Displacement" ;
+    m0:asfidFormula "I ⊗ D" ;
+    m0:asfidScores [ ] ;
+    m0:poleIndex 1 ;
+    m0:primaryM2 "m2:Event" ;
+    m0:secondaryM2 "m2:Bifurcation",
+        "m2:Narration",
+        "m2:Trigger" ;
+    m0:simulationMarkers [ m0:Crypto2021 [ ] ;
+            m0:Dotcom [ ] ;
+            m0:GFC2008 [ ] ;
+            m0:SouthSea [ ] ;
+            m0:TulipMania [ ] ;
+            m0:WallStreet1929 [ ] ] ;
+    rdfs:comment "Exogenous shock creates new profit opportunity. Information asymmetry: early movers informed, majority not yet aware. Narration begins: initial semantic network 'unprecedented opportunity' forms. Dynamics: low but positive price acceleration, low volume." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_KindlebergerMinsky.jsonld#Pole_Distress> a owl:NamedIndividual ;
+    rdfs:label "Phase 4 — Distress (Minsky Moment)" ;
+    m0:asfidFormula "I ⊗ D ⊗ A" ;
+    m0:asfidScores [ ] ;
+    m0:poleIndex 4 ;
+    m0:primaryM2 "m2:Bifurcation" ;
+    m0:secondaryM2 "m2:Narration",
+        "m2:Propagation",
+        "m2:Threshold",
+        "m2:Trigger" ;
+    m0:simulationMarkers [ m0:Crypto2021 [ ] ;
+            m0:Dotcom [ ] ;
+            m0:GFC2008 [ ] ;
+            m0:SouthSea [ ] ;
+            m0:TulipMania [ ] ;
+            m0:WallStreet1929 [ ] ] ;
+    rdfs:comment "Bifurcation: first major default or forced seller reveals systemic fragility. Panic propagation begins (R₀ crosses 1). Narration Collapse attractor becomes manifest. Price velocity reverses sharply negative. Volume spikes (distressed selling). Dynamics chaotic." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_KindlebergerMinsky.jsonld#Pole_Euphoria> a owl:NamedIndividual ;
+    rdfs:label "Phase 3 — Euphoria (Overtrading / Peak)" ;
+    m0:asfidFormula "A ⊗ S" ;
+    m0:asfidScores [ ] ;
+    m0:poleIndex 3 ;
+    m0:primaryM2 "m2:Narration" ;
+    m0:secondaryM2 "m2:Emergence",
+        "m2:Identity",
+        "m2:Memory",
+        "m2:Oscillator" ;
+    m0:simulationMarkers [ m0:Crypto2021 [ ] ;
+            m0:Dotcom [ ] ;
+            m0:GFC2008 [ ] ;
+            m0:SouthSea [ ] ;
+            m0:TulipMania [ ] ;
+            m0:WallStreet1929 [ ] ] ;
+    rdfs:comment "'This time is different.' Speculative attractor fully dominates. Narration at maximum density. New participants enter (taxi drivers, retail). Prices decouple from fundamentals. Price velocity peaks then begins first signs of deceleration. Volume at maximum. Insiders quietly sell." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_KindlebergerMinsky.jsonld#Pole_Revulsion> a owl:NamedIndividual ;
+    rdfs:label "Phase 5 — Revulsion (Panic & Crash)" ;
+    m0:asfidFormula "F ⊗ D" ;
+    m0:asfidScores [ ] ;
+    m0:poleIndex 5 ;
+    m0:primaryM2 "m2:Propagation" ;
+    m0:secondaryM2 "m2:Cascade",
+        "m2:Convergence",
+        "m2:Dissipation",
+        "m2:Regulation" ;
+    m0:simulationMarkers [ m0:Crypto2021 [ ] ;
+            m0:Dotcom [ ] ;
+            m0:GFC2008 [ ] ;
+            m0:SouthSea [ ] ;
+            m0:TulipMania [ ] ;
+            m0:WallStreet1929 [ ] ] ;
+    rdfs:comment "Panic fully propagates (Propagation.Saturated). Forced selling cascade. Credit freeze (Im≈0). Narration Collapse attractor reached. Debt deflation (Fisher). Price velocity at maximum negative. Volume at maximum (fire sales). Central Bank LOLR intervention may truncate." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_KindlebergerMinsky.jsonld#PropagationInstance> a owl:NamedIndividual ;
+    rdfs:label "Financial Panic Propagation" ;
+    m0:propagationMapping [ ] ;
+    m2:characterizedBy <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Propagation> ;
+    rdfs:comment "Instantiation of m2:Propagation. Panic spreads through interbank exposure network: each bank run triggers neighboring institutions (Duplication: each receiver becomes new emitter). Threshold attractor A = Minsky Moment. Copy fidelity V = panic signal integrity. Im = bilateral bank exposures." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_KindlebergerMinsky.jsonld#SimulationParameters> a owl:NamedIndividual ;
+    rdfs:label "Simulation Parameters" ;
+    m0:R0_equivalent [ m0:description "Propagation reproduction number equivalent (narrative/panic spread rate). R₀>1 = spreading, R₀<1 = contained." ] ;
+    m0:accelerationSign [ m0:description "Sign of d²Price/dt² at each phase (+= accelerating up, -= decelerating/reversing)" ] ;
+    m0:drawdownFromPeak [ m0:description "Trough price / Peak price — amplitude of crash" ] ;
+    m0:phaseDurationNorm [ m0:description "Typical phase duration as fraction of total cycle" ] ;
+    m0:priceMultiplierFromBase [ m0:description "Peak price / Displacement-start price — amplitude of bubble" ] ;
+    m0:velocityProfile [ m0:description "Price velocity (% per month) at each phase — positive = rising, negative = falling" ] ;
+    m0:volumeProfile [ m0:description "Normalized transaction volume relative to Displacement baseline (1.0)" ] ;
+    rdfs:comment "Normalized parameters extracted from the 6 historical instances for use in simulation. Values are normalized to [0,1] or expressed as dimensionless ratios to enable cross-instance comparison and agent-based modeling." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_KindlebergerMinsky.jsonld#System> a owl:NamedIndividual ;
+    rdfs:label "Kindleberger-Minsky System" ;
+    m0:asfidScores [ ] ;
+    m0:domain "Finance / Economics" ;
+    m0:epistemicGap 9e-02 ;
+    m0:historicalInstances "m0:Instance_Crypto2021",
+        "m0:Instance_Dotcom",
+        "m0:Instance_GFC2008",
+        "m0:Instance_SouthSea",
+        "m0:Instance_TulipMania",
+        "m0:Instance_WallStreet1929" ;
+    m0:poles "m0:Pole_Boom",
+        "m0:Pole_Displacement",
+        "m0:Pole_Distress",
+        "m0:Pole_Euphoria",
+        "m0:Pole_Revulsion" ;
+    m0:primaryMetaconcepts <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Narration>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Propagation> ;
+    m0:revoiScores [ ] ;
+    m0:secondaryMetaconcepts <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Amplification>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Bifurcation>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Cascade>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Duplication>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Emergence>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Memory>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Network>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Oscillator>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Regulation>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Threshold> ;
+    m0:simulationSchema [ m0:description "Schema for simulation markers present in each pole × instance combination" ;
+            m0:fields [ ] ] ;
+    m0:subdomains "Behavioral finance",
+        "Financial economics",
+        "Macroeconomics",
+        "Systemic risk" ;
+    m0:theoreticalBasis "Charles Kindleberger — Manias, Panics and Crashes (1978)",
+        "Hyman Minsky — Financial Instability Hypothesis (stability is destabilizing)",
+        "Irving Fisher — Debt Deflation Theory (1933)",
+        "Robert Shiller — Narrative Economics (Narration as market driver)",
+        "Walter Bagehot — Lender of Last Resort principle (1873)" ;
+    rdfs:comment "5-phase speculative cycle with two co-occurring M2 patterns: m2:Propagation (panic spreads through financial network) and m2:Narration (collective belief 'new paradigm' → Collapse). Validated across 6 historical instances spanning 1636–2022." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Amplification> m0:role "leverage_amplification" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Bifurcation> m0:role "minsky_moment_state_change" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Cascade> m0:role "panic_cascade_mechanism" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Duplication> m0:role "narrative_replication" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Emergence> m0:role "systemic_risk" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Memory> m0:role "institutional_forgetting" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Network> m0:role "interbank_exposure_network" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Oscillator> m0:role "financial_cycle_periodicity" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Regulation> m0:role "central_bank_lender_of_last_resort" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Threshold> m0:role "credit_and_panic_thresholds" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Narration> m0:attractorType "Collapse" ;
+    m0:narrativeArc "'New paradigm' → 'This time is different' → 'Panic' → 'Never again'" ;
+    m0:narrativeTopology "Linear" ;
+    m0:role "collective_belief_transformation" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Propagation> m0:propagationRegime_byPhase [ ] ;
+    m0:role "panic_spread" .
+

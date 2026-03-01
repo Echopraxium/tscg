@@ -1,0 +1,62 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m0: <M0_TscgExplorer.jsonld#> .
+@prefix m2: <M2_GenericConcepts.jsonld#> .
+@prefix m3: <M3_GenesisSpace.jsonld#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_TscgExplorer.jsonld#ModeA> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_TscgExplorer.jsonld#ProjectionMode> ;
+    rdfs:label "Mode A — ASFID ratio × Dimensionality" ;
+    m0:axisX "ASFID_count / total_dims ∈ [0,1]" ;
+    m0:axisY "total tensor dimensions ∈ [1,8]" ;
+    m0:isDefault true ;
+    rdfs:comment "Default projection. X = ASFID_count / total_dims (Territory dominance). Y = total tensor dimensions. Reveals Eagle Eye vs Sphinx Eye balance across the corpus." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_TscgExplorer.jsonld#ModeB> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_TscgExplorer.jsonld#ProjectionMode> ;
+    rdfs:label "Mode B — Family × Dimensionality" ;
+    m0:axisX "family index ∈ {0..9}" ;
+    m0:axisY "total tensor dimensions ∈ [1,8]" ;
+    rdfs:comment "X = family index (ordinal, 0–9 across 10 families). Y = total tensor dimensions. Groups concepts by family and shows intra-family dimensional spread." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_TscgExplorer.jsonld#ModeC> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_TscgExplorer.jsonld#ProjectionMode> ;
+    rdfs:label "Mode C — ASFID count × REVOI count" ;
+    m0:axisX "ASFID dimension count ∈ [0,5]" ;
+    m0:axisY "REVOI dimension count ∈ [0,5]" ;
+    rdfs:comment "Pure bicephalous map. X = number of ASFID dimensions in formula. Y = number of REVOI dimensions. Directly visualizes the Territory/Map decomposition of each concept." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_TscgExplorer.jsonld#TscgExplorer> a owl:Ontology ;
+    m0:asfidAnalysis [ ] ;
+    m0:changelog [ ] ;
+    m0:epistemicGap [ ] ;
+    m0:genericConceptsUsed [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    m0:reflexivityNote [ ] ;
+    m0:revoiAnalysis [ ] ;
+    m0:systemArchitecture [ ] ;
+    m0:toolMetadata [ ] ;
+    m3:ontologyType <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TscgTool> ;
+    dcterms:created "2026-03-01" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Interactive visualization tool for the TSCG M2 GenericConcepts corpus. Displays 81 GenericConcepts as a 2D network ('maillage') with three selectable projection modes revealing structural properties of the corpus: density zones, gaps, Territory/Map balance, and family distribution. Supports IS-A (rdfs:subClassOf) and Combo (⊗⇒) edge visualization. Implements framework reflexivity: TSCG analyzes itself through its own conceptual constructs." ;
+    dcterms:modified "2026-03-01" ;
+    dcterms:title "TSCG Tool — tscg-explorer" ;
+    owl:imports "M1_CoreConcepts.jsonld",
+        "M2_GenericConcepts.jsonld" ;
+    owl:versionInfo "1.0.0" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_TscgExplorer.jsonld#ProjectionMode> a owl:Class ;
+    rdfs:label "Projection Mode" ;
+    m2:characterizedBy "m2:Representation",
+        "m2:Topology" ;
+    rdfs:comment "A 2D projection of the M2 GenericConcept tensor space. Each mode selects two axes from the available dimensional attributes (ASFID ratio, REVOI count, family, dimensionality) to produce a readable 2D layout." .
+

@@ -1,0 +1,168 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
+@prefix ns1: <m0:> .
+@prefix ns2: <m3:sphinx_eye:> .
+@prefix ns3: <m3:eagle_eye:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<m0:synapse:ComplexChemicalSynapse> a owl:Ontology ;
+    dcterms:created "2026-01-21" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Poclet modelling precise, rapid, and temporally controlled synaptic transmission through 5 interdependent poles: NT Synthesis, Vesicular Storage, Exocytotic Release, Postsynaptic Reception, and Signal Termination. Demonstrates quintessential biological interdependence and pharmacological actionability." ;
+    dcterms:modified "2026-02-25" ;
+    dcterms:title "Complex Chemical Synapse Poclet - TSCG M0 Layer" ;
+    rdfs:comment "This poclet captures the 5-pole sequential process governing chemical synaptic transmission in the nervous system. It demonstrates quintessential biological interdependence: removing any single pole abolishes transmission. Validated across 100+ pharmacological interventions and decades of electrophysiology. ASFID mean = 0.76, REVOI mean = 0.87, Epistemic Gap deltaTheta = 0.24." ;
+    rdfs:seeAlso "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/complex_chemical_synapse/M0_ComplexChemicalSynapse_README.md" ;
+    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld" ;
+    owl:versionInfo "1.1.0" ;
+    m2:changelog [ ],
+        [ ],
+        [ ] ;
+    m2:ontologyType <m3:Poclet> ;
+    ns1:asfidScores [ ] ;
+    ns1:clinicalRelevance "Maximal — target of nearly all psychotropic drugs (SSRIs, antipsychotics, benzodiazepines, anticholinesterases)" ;
+    ns1:complexity "High (5 poles, sequential interdependence, millisecond precision)" ;
+    ns1:domain "Neurobiology / Cellular Communication / Pharmacology" ;
+    ns1:epistemicGap 2.4e-01 ;
+    ns1:pocletType "Biological Sequential Process" ;
+    ns1:revoiScores [ ] .
+
+<m0:synapse:ComplexChemicalSynapse_Instance> a owl:NamedIndividual,
+        <m1:core:Poclet> ;
+    rdfs:label "Complex Chemical Synapse (5-Pole Sequential Process)" ;
+    rdfs:comment "Precise, rapid, temporally controlled synaptic transmission between neurons. Sequential poles: Synthesis → Storage → Release → Reception → Termination. Critical property: removing any pole abolishes transmission (absolute interdependence). Pharmacological actionability: each pole is a druggable target." ;
+    ns1:asfid_analysis [ ns3:A [ ] ;
+            ns3:D [ ] ;
+            ns3:F [ ] ;
+            ns3:I [ ] ;
+            ns3:S [ ] ] ;
+    ns1:epistemic_gap [ ] ;
+    ns1:m2_GenericConcepts_global "m2:Balance (A⊗S⊗F) — E/I balance (excitation/inhibition): fundamental constraint on neural circuits",
+        "m2:Homeostasis (A⊗S⊗F) — Synaptic strength homeostasis via LTP/LTD and autoreceptors",
+        "m2:Interdependence (S⊗I) — Sequential poles: removing any pole abolishes transmission",
+        "m2:Process (D⊗I⊗F) — Ordered sequence: Synthesis → Storage → Release → Reception → Termination",
+        "m2:Synergy (S⊗I⊗A) — 5-pole assembly exceeds sum of parts",
+        "m2:TradeOff (A⊗D) — Speed vs reliability vs energy: evolutionary optimization across 3 axes" ;
+    ns1:phenomenon [ ] ;
+    ns1:pole_count 5 ;
+    ns1:poles <m0:synapse:Pole1_Synthesis>,
+        <m0:synapse:Pole2_Storage>,
+        <m0:synapse:Pole3_Release>,
+        <m0:synapse:Pole4_Reception>,
+        <m0:synapse:Pole5_Termination> ;
+    ns1:revoi_analysis [ ns2:E [ ] ;
+            ns2:I [ ] ;
+            ns2:O [ ] ;
+            ns2:R [ ] ;
+            ns2:V [ ] ] .
+
+<m0:synapse:Pole1_Synthesis> a owl:NamedIndividual ;
+    rdfs:label "Pole 1 — Neurotransmitter Synthesis" ;
+    rdfs:comment "Biosynthesis of neurotransmitter molecules in the presynaptic neuron cytoplasm. Requires specific biosynthetic enzymes and molecular precursors. Rate-limiting step determines baseline synaptic strength." ;
+    ns1:location "Presynaptic neuron cytoplasm (soma + axon terminal)" ;
+    ns1:m2_GenericConcepts "m2:Cascade (S⊗I⊗D) — Multi-step enzymatic cascade (e.g., TH → AADC → DBH)",
+        "m2:Flow (F⊗D) — Precursor flux through biosynthetic pathway",
+        "m2:Process (D⊗I⊗F) — Enzymatic biosynthesis as ordered process" ;
+    ns1:mechanism "Choline + Acetyl-CoA → Acetylcholine (enzyme: ChAT — in cholinergic neurons)",
+        "Glutamate → GABA (enzyme: GAD; requires PLP cofactor)",
+        "Tryptophan → 5-HTP → Serotonin (enzymes: TPH → AADC)",
+        "Tyrosine → L-DOPA → Dopamine → Norepinephrine (enzymes: TH → AADC → DBH)" ;
+    ns1:pharmacological_targets "5-HTP: serotonin precursor supplementation (investigational antidepressant)",
+        "Alpha-methyldopa: false precursor → ↓ norepinephrine synthesis",
+        "L-DOPA (Parkinson's): precursor supplementation → ↑ dopamine synthesis" ;
+    ns1:pole_type "Biosynthetic" ;
+    ns1:primary_action "NT molecule production (e.g., acetylcholine via ChAT; dopamine via TH+AADC; GABA via GAD; serotonin via TPH+AADC)" ;
+    ns1:timescale "Minutes to hours (enzyme-limited)" ;
+    ns1:trigger "NT depletion → upregulation of biosynthetic enzymes; neurotrophic factors (BDNF)" .
+
+<m0:synapse:Pole2_Storage> a owl:NamedIndividual ;
+    rdfs:label "Pole 2 — Vesicular Storage" ;
+    rdfs:comment "Active transport of NT molecules into synaptic vesicles via specific vesicular transporters. Protects NT from cytoplasmic degradation. Determines vesicle pool size (readily releasable pool: 10-20 vesicles; reserve pool: 100-200 vesicles)." ;
+    ns1:location "Synaptic vesicles in presynaptic terminal" ;
+    ns1:m2_GenericConcepts "m2:Concentration (F⊗A) — Active concentration against gradient (100,000-fold NT gradient)",
+        "m2:Reservoir (S⊗F) — Vesicle pool as buffer ensuring reliable release",
+        "m2:Storage (S⊗I) — Structural compartmentalization for protection and controlled release" ;
+    ns1:mechanism "Active transport powered by vacuolar H+-ATPase (creates H+ gradient, drives NT uptake)",
+        "VAChT (vesicular acetylcholine transporter) — stores acetylcholine",
+        "VGAT/VIAAT (vesicular GABA transporter) — stores GABA/glycine",
+        "VGLUT1/2/3 (vesicular glutamate transporter) — stores glutamate",
+        "VMAT1/2 (vesicular monoamine transporter) — stores dopamine, norepinephrine, serotonin, histamine" ;
+    ns1:pharmacological_targets "Reserpine: irreversible VMAT inhibitor → monoamine depletion → antihypertensive / antidepressant (historical)",
+        "Tetrabenazine: reversible VMAT2 inhibitor → treat hyperkinetic movement disorders (Huntington's)",
+        "Vesamicol: VAChT inhibitor (research tool)" ;
+    ns1:pole_type "Structural storage" ;
+    ns1:primary_action "NT concentration in vesicles (~100-150 mM inside vesicle vs. 1-10 nM cytoplasm)" ;
+    ns1:timescale "Seconds to minutes (vesicle cycling ~60 s per full cycle)" ;
+    ns1:trigger "Availability of NT in cytoplasm; vesicle docking at active zone" .
+
+<m0:synapse:Pole3_Release> a owl:NamedIndividual ;
+    rdfs:label "Pole 3 — Exocytotic Release" ;
+    rdfs:comment "Ca²⁺-dependent fusion of synaptic vesicles with the presynaptic membrane at the active zone, releasing NT into the synaptic cleft. The SNARE protein complex (syntaxin, SNAP-25, synaptobrevin) is the molecular machine driving membrane fusion. This is the fastest and most precisely controlled pole." ;
+    ns1:location "Presynaptic membrane at active zone (~1 µm² area per active zone)" ;
+    ns1:m2_GenericConcepts "m2:Exocytosis (F⊗D) — SNARE-driven membrane fusion as directed flow event",
+        "m2:Threshold (A⊗I) — Ca²⁺ concentration threshold for vesicle fusion (~1-10 µM at active zone)",
+        "m2:Trigger (D⊗I) — Action potential as binary trigger for analog release probability" ;
+    ns1:mechanism "Action potential depolarizes presynaptic terminal",
+        "Autoreceptors (Gi-coupled) sense excess NT → negative feedback on release",
+        "Ca²⁺ microdomains (~100 µM) activate synaptotagmin (Ca²⁺ sensor)",
+        "SNARE zippering → membrane fusion → NT release into cleft in <0.5 ms",
+        "Synaptotagmin triggers SNARE complex: syntaxin + SNAP-25 + synaptobrevin (VAMP)",
+        "Voltage-gated Ca²⁺ channels (VGCC: N-type, P/Q-type) open at active zone" ;
+    ns1:pharmacological_targets "Baclofen: GABA-B agonist → presynaptic Gi activation → reduces Ca²⁺ influx → reduces release",
+        "Botulinum toxin (BoTox): cleaves SNARE proteins (VAMP, SNAP-25, syntaxin) → blocks all NT release",
+        "Calcium channel blockers (omega-conotoxin, ziconotide): block N/P/Q-type Ca²⁺ channels → reduce release",
+        "Tetanus toxin: cleaves synaptobrevin → blocks inhibitory synapses → spastic paralysis" ;
+    ns1:pole_type "Exocytotic" ;
+    ns1:primary_action "NT quantal release: ~7000 molecules per vesicle fusion event" ;
+    ns1:timescale "0.1-0.5 ms (fastest pole — ultrafast membrane fusion)" ;
+    ns1:trigger "Action potential → voltage-gated Ca²⁺ channel opening → Ca²⁺ influx at active zone" .
+
+<m0:synapse:Pole4_Reception> a owl:NamedIndividual ;
+    rdfs:label "Pole 4 — Postsynaptic Reception" ;
+    rdfs:comment "NT binding to specific postsynaptic receptors transduces the chemical signal into an electrical or biochemical response. Ionotropic receptors (ligand-gated ion channels) generate fast EPSPs/IPSPs (ms timescale); metabotropic receptors (GPCRs) generate slow modulatory signals (seconds to minutes). The nature of the postsynaptic response determines whether the synapse is excitatory or inhibitory." ;
+    ns1:location "Postsynaptic membrane (postsynaptic density, PSD)" ;
+    ns1:m2_GenericConcepts "m2:Amplification (A⊗F⊗D) — Single NT molecule → multiple ion channel openings → large current",
+        "m2:Specificity (S⊗I) — Lock-and-key NT-receptor pairing (Kd in nM-µM range)",
+        "m2:Transduction (I⊗F) — Chemical → electrical signal conversion (information format change)" ;
+    ns1:pharmacological_targets "Antipsychotics (haloperidol, risperidone): dopamine D2 receptor antagonists (schizophrenia)",
+        "Atropine: muscarinic antagonist (anticholinergic)",
+        "Benzodiazepines (diazepam, alprazolam): GABA-A positive allosteric modulators → enhanced Cl- influx → anxiolytic/sedative",
+        "Curare / rocuronium: nicotinic nAChR antagonists (muscle relaxants)",
+        "Ketamine: NMDA receptor antagonist (anesthetic, antidepressant at sub-anesthetic doses)",
+        "LSD, psilocybin: 5-HT2A partial agonists (hallucinogens)",
+        "Naloxone: mu-opioid receptor antagonist (opioid overdose reversal)" ;
+    ns1:pole_type "Signal transduction" ;
+    ns1:primary_action "Chemical → electrical transduction: EPSP (excitatory) or IPSP (inhibitory) generation" ;
+    ns1:receptor_types "Ionotropic (fast): AMPA, NMDA (glutamate) | GABA-A (GABA) | nAChR (acetylcholine) | 5-HT3 (serotonin)",
+        "Metabotropic (slow): mGluR (glutamate) | GABA-B | M1-M5 muscarinic (ACh) | D1-D5 dopamine | 5-HT1/2/4 serotonin" ;
+    ns1:timescale "Ionotropic: 1-10 ms | Metabotropic: 100 ms - minutes" ;
+    ns1:trigger "NT binding to receptor at postsynaptic membrane" .
+
+<m0:synapse:Pole5_Termination> a owl:NamedIndividual ;
+    rdfs:label "Pole 5 — Signal Termination" ;
+    rdfs:comment "Rapid removal of NT from the synaptic cleft to terminate signalling, prevent receptor saturation, and enable temporal precision of next transmission cycle. Three mechanisms: presynaptic reuptake (dominant for monoamines), enzymatic degradation (dominant for acetylcholine), and diffusion. This pole is essential for temporal coding fidelity." ;
+    ns1:location "Synaptic cleft + presynaptic membrane (transporters) + cleft space (enzymes)" ;
+    ns1:m2_GenericConcepts "m2:Precision (I⊗D) — Temporal precision: clearance kinetics determines maximum signalling frequency",
+        "m2:Recycling (F⊗S) — Choline reuptake and vesicle recycling closing the transmission loop",
+        "m2:Termination (D⊗F⊗A) — Active signal cessation enabling next cycle" ;
+    ns1:mechanism "Diffusion — NT escapes cleft into perisynaptic space (spillover, volume transmission)",
+        "Enzymatic degradation — AChE: ACh → choline + acetate (recycled back to Pole 1 via ChAT)",
+        "Glial uptake — astrocytic glutamate transporters (GLT-1, GLAST) remove excess glutamate",
+        "Presynaptic reuptake — monoamine transporters: SERT (serotonin), DAT (dopamine), NET (norepinephrine)" ;
+    ns1:pharmacological_targets "Amphetamine: reverses DAT → active dopamine efflux (ADHD, stimulant)",
+        "Cocaine, methylphenidate: DAT + NET blockers (stimulant, ADHD treatment)",
+        "Donepezil, rivastigmine: AChE inhibitors → ↑ synaptic [ACh] → treat Alzheimer's",
+        "MAO inhibitors (phenelzine): prevent NT degradation → antidepressant (older class)",
+        "SNRIs (venlafaxine, duloxetine): SERT + NET blockers (depression, chronic pain)",
+        "SSRIs (fluoxetine, sertraline): SERT blockers → ↑ synaptic [5-HT] → antidepressant" ;
+    ns1:pole_type "Signal termination" ;
+    ns1:primary_action "NT clearance: cleft [NT] halved in ~1-5 ms; prevents receptor saturation" ;
+    ns1:timescale "1-10 ms (reuptake) | <1 ms (AChE hydrolysis)" ;
+    ns1:trigger "Elevated synaptic cleft [NT] following release" .
+

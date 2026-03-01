@@ -200,12 +200,12 @@
     dcterms:created "2026-01-21" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
     dcterms:description "Complete orthogonal basis for the TSCG framework, consisting of two complementary perspectives: Eagle Eye (ASFID) for Territory measurement and Sphinx Eye (REVOI) for Map construction. Integrates Category Theory formalization as mathematical foundation (definitions included in this file) for functors, morphisms, and categorical structure of TSCG layers." ;
-    dcterms:modified "2026-02-20" ;
+    dcterms:modified "2026-03-01" ;
     dcterms:title "TSCG M3 Genesis Space - Complete Bicephalous Basis" ;
     rdfs:comment "M3 Genesis Space provides the complete orthonormal basis for TSCG through dual complementary perspectives: Eagle Eye (ASFID - analytical decomposition of Territory) and Sphinx Eye (REVOI - synthetic construction of Maps)" ;
     owl:imports "M3_EagleEye.jsonld",
         "M3_SphinxEye.jsonld" ;
-    owl:versionInfo "3.5.0" .
+    owl:versionInfo "3.6.0" .
 
 <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#hasMorphism> a owl:ObjectProperty ;
     rdfs:label "has morphism" ;
@@ -322,6 +322,30 @@
     skos:scopeNote "Open-ended set. Any formal symbolic system with finite primitives, explicit combination rules, and multiple legitimate interpretations qualifies. Arbitration is symbolic/cultural/contextual, never purely physical or empirical." ;
     skos:topConceptOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TscgOntologyTypeScheme> .
 
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TscgTool> a owl:Class,
+        skos:Concept ;
+    m3:distinguishingFeatures [ ] ;
+    m3:expectedCount "3-10" ;
+    m3:layerOrder 4 ;
+    m3:semanticSignature "operates_on_tscg_artifacts + reflexive_meta_level + software_tool + framework_self_analysis" ;
+    rdfs:comment "TscgTools are meta-level applications: visualizers, explorers, validators, converters, simulators that take TSCG ontologies as input and produce analysis, navigation, or transformation as output. They can themselves be characterized by ASFID/REVOI (as any system), but their primary purpose is operating on the TSCG knowledge graph." ;
+    rdfs:subClassOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TscgOntologyType> ;
+    skos:altLabel "Framework Tool",
+        "Meta-Level Application",
+        "Ontology Tool",
+        "Reflexive Tool" ;
+    skos:definition "Software tools that operate reflexively ON the TSCG framework itself. Unlike Poclets (which model external systems), TscgTools model and operate on TSCG artifacts: ontologies, GenericConcepts, poclets, formulas. They are M0-level concrete instantiations whose subject matter is the framework." ;
+    skos:example "M0_TscgExplorer.jsonld (interactive GenericConcept net visualizer, 3 projection modes)",
+        "M0_TscgRagSearch.jsonld (RAG-based semantic search over TSCG — planned)",
+        "M0_TscgValidator.jsonld (ontology consistency checker — planned)" ;
+    skos:inScheme <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TscgOntologyTypeScheme> ;
+    skos:notation "M0_TscgTool" ;
+    skos:prefLabel "TSCG Tool" ;
+    skos:related <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Genesis>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Poclet> ;
+    skos:scopeNote "Open-ended set. Any software tool whose primary input/subject is TSCG ontological artifacts qualifies. Instantiated at M0 level but typed as TscgTool rather than Poclet." ;
+    skos:topConceptOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TscgOntologyTypeScheme> .
+
 <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Functor> a owl:Class ;
     rdfs:label "Functor" ;
     m3:formalDefinition "F: C → D mapping Ob(C) → Ob(D) and Mor(C) → Mor(D)" ;
@@ -369,7 +393,10 @@
         "Theoretical Framework Bridge" ;
     skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryMetaConcepts> ;
     skos:definition "Ontologies that map established systemic/theoretical frameworks (TRIZ, VSD, TPACK, etc.) into TSCG formalism. These provide bridges between TSCG and existing methodologies, enabling cross-framework analysis and integration." ;
-    skos:example "M0_TPACK.jsonld (Technological Pedagogical Content Knowledge)",
+    skos:example "M0_DesignThinking.jsonld (Design Thinking methodology)",
+        "M0_SystemsThinking.jsonld (General Systems Theory)",
+        "M0_TPACK.jsonld (Technological Pedagogical Content Knowledge)",
+        "M0_TRIZ.jsonld (Theory of Inventive Problem Solving)",
         "M0_VSD.jsonld (Value-Sensitive Design)" ;
     skos:inScheme <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TscgOntologyTypeScheme> ;
     skos:notation "M1_Framework" ;
@@ -447,7 +474,7 @@
     skos:definition "Domain-specific ontologies that specialize M2 metaconcepts for particular scientific or professional fields. Each is an instance of the m2:Domain metaconcept with specific 5D tensor structure." ;
     skos:example "M1_Biology.jsonld",
         "M1_Chemistry.jsonld",
-        "M1_CoreConcepts.jsonld",
+        "M1_CoreConcepts.jsonld (transdisciplinary foundation)",
         "M1_Mythology.jsonld",
         "M1_Optics.jsonld",
         "M1_Photography.jsonld" ;
@@ -525,6 +552,7 @@
         <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#RealWorldSystem>,
         <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#SymbolicSystemGrammar>,
         <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#SystemicFramework>,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryMetaConcepts> ;
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryMetaConcepts>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TscgTool> ;
     skos:scopeNote "This scheme is extensible upon framework revision. Each category represents a fundamental architectural distinction in the TSCG metamodel." .
 
