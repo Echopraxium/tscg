@@ -1,410 +1,453 @@
-# M2_GenericConcepts.jsonld
+# M2_GenericConcepts_README.md
 
-**Version:** 15.7.0 · **Date:** 2026-02-24  
+**File:** `M2_GenericConcepts.jsonld`  
+**Version:** 15.9.0 · **Date:** 2026-02-28  
 **Author:** Echopraxium with the collaboration of Claude AI  
-**Layer:** M2 — Transdisciplinary GenericConcepts  
-**Category:** `m2:GenericConcept`
+**Status:** ACTIVE — 81 GenericConcepts across 10 families
 
 ---
 
 ## Overview
 
-`M2_GenericConcepts.jsonld` defines the **transdisciplinary pattern layer** of the TSCG (Transdisciplinary System Construction Game) framework. It contains **74 GenericConcepts** — abstract systemic patterns derived as tensor products of M3 basis dimensions (ASFID/REVOI) that apply universally across scientific disciplines, from biology and physics to economics and computer science.
+`M2_GenericConcepts.jsonld` is the **universal operational layer** of the TSCG framework. It defines the **GenericConcepts** (also called *metaconcepts*) — the abstract, transdisciplinary operational patterns that recur across all knowledge domains. These are the "verbs and nouns of complex systems" expressed as tensor products over the M3 Genesis Space dimensions.
 
-Each GenericConcept is formalized as a tensor formula over the ASFID and/or REVOI dimensions:
+Every M2 GenericConcept:
+- Is **domain-agnostic** — valid in biology, physics, economics, mythology, computing, etc.
+- Is **formalized** as a tensor product of M3 dimensions (ASFID and/or REVOI)
+- Is **validated transdisciplinarily** across ≥ 3 domains (preferably 5–6)
+- Serves as a **building block** for M1 domain concepts and M0 poclets
 
-**Eagle Eye — ASFID (Territory measurement)**
+### Architectural Position
 
-| Symbol | Dimension | Role |
-|--------|-----------|------|
-| **A** | Attractor | Stable states, set points, goals |
-| **S** | Structure | Spatial/organizational configurations |
-| **F** | Flow | Transfers, currents, exchanges |
-| **I** | Information | Signals, codes, representations |
-| **D** | Dynamics | Temporal evolution, change |
+```
+M3  Genesis Space  (ASFID ⊗ REVOI — 10 fundamental dimensions)
+ ↓
+M2  GenericConcepts  ← THIS FILE
+ ↓
+M1  Domain Extensions  (M1_Biology, M1_Chemistry, M1_Economics…)
+ ↓
+M0  Poclets  (minimal complete system instances)
+```
 
-**Sphinx Eye — REVOI (Map construction)**
+---
 
-| Symbol | Dimension | Role |
-|--------|-----------|------|
+## Dimensional Vocabulary
+
+### ASFID — Territory (Eagle Eye)
+
+| Dim | Name | Role |
+|-----|------|------|
+| **A** | Attractor | Stable states, goals, equilibria, thresholds |
+| **S** | Structure | Topology, architecture, organization |
+| **F** | Flow | Flux, transfer, exchange |
+| **I** | Information | Content, signal, state |
+| **D** | Dynamics | Temporal evolution, change rate |
+
+### REVOI — Map (Sphinx Eye)
+
+| Dim | Name | Role |
+|-----|------|------|
 | **R** | Representability | Semantic encodability/decodability |
-| **E** | Evolvability | Capacity to adapt to new formats |
-| **V** | Verifiability | Testability of interface contracts |
-| **O** | Observability | Accessibility to an Observer |
-| **I** | Interoperability | Cross-system compatibility |
+| **E** | Evolvability | Adaptability of the model |
+| **V** | Verifiability | Testability, fidelity, coherence |
+| **O** | Observability | Measurability of internal states |
+| **Im** | Interoperability | Compatibility between subsystems |
 
-> **Note on ⊗ semantics:** In TSCG, `⊗` between dimensions is a **lattice join (⊔)**, not a Kronecker tensor product. Shared dimensions between parents contract: `F ⊔ F = F`. The compiled formula of a GenericConceptCombo is the union of unique dimensions across all parents. Exception: `⊗₂F` denotes a *structural* repetition (e.g. Gradient = differential between two distinct F states) — not duplication.
-
-The M2 layer bridges the M3 mathematical foundation (Genesis Space) and the M1 KnowledgeField-specific ontologies.
+> ⚠️ **R = Representability** (semantic decodability). Never Reproducibility.
 
 ---
 
-## Architecture
+## Statistics (v15.9.0)
 
-```
-M3_GenesisSpace.jsonld     (Mathematical foundation — ASFID ⊕ REVOI)
-        ↓  imports
-M2_GenericConcepts.jsonld  (Universal patterns — pure transdisciplinary)
-        ↓  characterizedBy
-M1_CoreConcepts.jsonld     (KnowledgeFieldConcept, KnowledgeField, KnowledgeFieldGenericCombo)
-M1_Biology.jsonld, M1_Chemistry.jsonld, …  (KnowledgeField-specific concepts)
-        ↓  instantiates
-M0_RAAS.jsonld, M0_Yggdrasil.jsonld, …    (Concrete systems — Poclets)
-```
-
-### M2 Purity Principle
-
-M2 contains **only universally transdisciplinary GenericConcepts** — patterns valid across ALL knowledge fields without exception. Epistemological meta-concepts (`KnowledgeField`, `KnowledgeFieldConcept`, `KnowledgeFieldGenericCombo`) are defined in `M1_CoreConcepts.jsonld`, not in M2.
-
-### Bicephalous Perspective
-
-Each GenericConcept has a dual reading:
-
-- **Eagle Eye (ASFID / Territory):** measures the pattern in the real system
-- **Sphinx Eye (REVOI / Map):** constructs a representation of the pattern
-
-The `m2:eagleView` and `m2:sphinxView` properties encode both perspectives. `m2:hasDominantM3` indicates the primary ASFID dimensions.
+| Metric | Value |
+|--------|-------|
+| Total GenericConcepts | **81** |
+| Atomic concepts | 73 |
+| GenericConceptCombos | 7 (+ 1 abstract parent) |
+| Families | 10 |
+| ConceptContracts | 4 (Triggerable, Observable, Composable, Stateful) |
+| Transdisciplinary validation domains covered | 15+ |
 
 ---
 
-## File Structure
+## Family Breakdown
 
+### Structural (20 concepts)
+*Topology, architecture, organization. High S.*
+
+`Channel` · `Cluster` · `Capacity` · `Component` · `Composition` · `Hub` · `Hierarchy` · `Identity` · `Imbrication` · `Interoperability` · `Invariant` · `Modularity` · `Network` · `Node` · `Path` · `Polarity` · `Segmentation` · `Step` · `Symmetry` · `Topology` · `Workflow`
+
+### Dynamic (15 concepts)
+*Processes, transformations, temporal evolution. High D.*
+
+`Action` · `Activation` · `Alignment` · `Amplification` · `Behavior` · `Bifurcation` · `Convergence` · `Duplication` *(new v15.9.0)* · `Event` · `FeedbackLoop` · `Fusion` · `Process` · `Synergy` · `Transformation` · `Trajectory` · `Tropism`
+
+### Informational (8 concepts)
+*Data, representation, communication. High I.*
+
+`Code` · `Coding` · `Language` · `Pattern` · `Representation` · `Signal` · `Signature` · `ValueSpace`
+
+### Ontological (9 concepts)
+*Fundamental system entities and boundaries. S→F patterns.*
+
+`Environment` · `Gradient` · `Imbrication` · `Observer` · `Resource` · `Space` · `State` · `Substrate` · `System`
+
+### Regulatory (9 concepts)
+*Control, stabilization, constraint. High A.*
+
+`Activation` · `Balance` · `Constraint` · `Homeostasis` · `Regulation` · `Scope` · `Threshold` · `Trade-off` · `Trigger`
+
+### Relational (5 concepts)
+*Interactions between entities and roles.*
+
+`Agent` · `Link` · `Mediator` · `Relation` · `Role`
+
+### Adaptive (4 concepts)
+*Learning, evolution, environmental response. High I, medium F.*
+
+`Adaptation` · `Emergence` · `Memory` · `Resilience`
+
+### Energetic (2 concepts)
+*Energy, matter, information flows. High F, high D.*
+
+`Dissipation` · `Storage`
+
+### Teleonomic (1 concept)
+*Goal-directedness, purpose. High A.*
+
+`Self-Organization`
+
+### Combo (8 concepts)
+*GenericConceptCombos — emergent patterns from N-ary tensor assembly.*
+
+`GenericConceptCombo` *(abstract)* · `ButterflyEffect` · `Cascade` · `LocalActivationLateralInhibition` · `Narration` *(new v15.9.0)* · `Oscillator` · `Processor` · `Propagation` *(new v15.9.0)*
+
+---
+
+## GenericConceptCombos
+
+GenericConceptCombos (⊗⇒) are GenericConcepts produced by the **synergistic N-ary tensor assembly** of existing parent concepts. The resulting concept has semantic identity irreducible to any subset of its parents. Shared dimensions are contracted via lattice join (F⊔F=F).
+
+### Formula
+
+```
+⊗ⁿ⇒(M₁, M₂, …, Mₙ) = lattice_join(dims(M₁) ∪ dims(M₂) ∪ … ∪ dims(Mₙ))
+```
+
+### Catalog (v15.9.0)
+
+| Concept | Parents | Expanded Formula | Dim | Unique contributions |
+|---------|---------|-----------------|-----|---------------------|
+| **Cascade** | Process, Step, Trajectory | S⊗I⊗A⊗D⊗F | 5 | Full ASFID — first 5D Combo |
+| **LocalActivationLateralInhibition** | Amplification, Regulation | — | — | Short-range activation + long-range inhibition |
+| **ButterflyEffect** | Amplification, Trajectory | — | — | Chaotic trajectory (λ>0) |
+| **Oscillator** | Component, Process, Trajectory | S⊗A⊗I⊗D⊗F | 5 | subClassOf Component → S unlocked |
+| **Propagation** *(new)* | Cascade, Duplication, Network | S⊗I⊗A⊗D⊗F⊗V⊗Im | **7** | A (threshold/saturation) · V (fidelity) · Im (node compatibility) |
+| **Narration** *(new)* | Transformation, Representation, Relation | S⊗I⊗D⊗F⊗V⊗R⊗A⊗Im | **8** | D+F (temporal unfolding) · R (encodability) · A+Im (telos + shared understanding) |
+
+### Dimensional Coverage by Combo
+
+```
+Cascade         [S · I · A · D · F]                        = 5D  (full ASFID)
+Oscillator      [S · A · I · D · F]                        = 5D  (full ASFID, structural)
+Propagation     [S · I · A · D · F · V · Im]               = 7D  (ASFID + REVOI V,Im)
+Narration       [S · I · D · F · V · R · A · Im]           = 8D  (ASFID + REVOI V,R,Im)
+```
+
+Narration is the **richest GenericConceptCombo** (8D), fully spanning ASFID Territory (S,I,D,F,A) and key REVOI Map dimensions (V,R,Im).
+
+---
+
+## New Concepts in v15.9.0
+
+### `m2:Duplication`
+
+> Active process producing one or more faithful copies of a source structure, preserving its informational content through a transfer flux over time.
+
+| Property | Value |
+|----------|-------|
+| Family | Dynamic |
+| Formula | `S ⊗ I ⊗ F ⊗ D ⊗ V` |
+| rdfs:subClassOf | `m2:Process` · `m2:Triggerable` · `m2:Observable` |
+| Epistemic gap | 0.22 |
+| Perspective | dual |
+
+**Specialization of `m2:Process` (D⊗F):**
+
+| Dimension | Origin | Role |
+|-----------|--------|------|
+| D | *inherited* from Process | Temporal dynamics of the copying process |
+| F | *inherited* from Process | Transfer flux producing the copy |
+| S | *added* | Source structure being copied |
+| I | *added* | Informational content preserved faithfully |
+| V | *added* (replaces R) | Fidelity verifiability — copy ≡ original |
+
+**Fidelity spectrum (V axis):**
+
+```
+V → 1  Perfect copy     DNA replication (10⁻⁹ error rate), SHA-256 file copy
+V ≈ 0.5  Imperfect copy  RNA virus replication, cultural transmission with drift
+V → 0  Degenerate       → m2:Bifurcation (copies diverge to distinct attractors)
+```
+
+**Transdisciplinary validation (6 domains):** Molecular Biology · Computing · Epidemiology · Physics · Social Sciences · Developmental Biology
+
+**Relation to Bifurcation:** `m2:Bifurcation rdfs:subClassOf m2:Duplication` — semantic specialization where V→0. Not dimensional inheritance (Bifurcation = ∂D/∂F, Dynamic family).
+
+---
+
+### `m2:Propagation`
+
+> Branching spread of a faithfully copied entity through a network, where each receiving node becomes a new emitter.
+
+| Property | Value |
+|----------|-------|
+| Family | Combo |
+| Formula | `⊗⇒(Cascade, Duplication, Network)` |
+| Expanded | `S ⊗ I ⊗ A ⊗ D ⊗ F ⊗ V ⊗ Im` |
+| Dimensions | 7 |
+| Perspective | dual |
+
+**Lattice join decomposition:**
+
+```
+Cascade     = {S, I, A, D, F}   → unique: A
+Duplication = {S, I, F, D, V}   → unique: V
+Network     = {S, I, F, D, Im}  → unique: Im
+Contracted  = {S, I, F, D}
+
+Propagation = {S, I, A, D, F, V, Im}  →  7 dimensions
+```
+
+**Unique dimensional contributions:**
+
+| Dimension | From | Semantic role |
+|-----------|------|--------------|
+| **A** | Cascade | Propagation threshold (R₀=1) and saturation attractor (herd immunity) |
+| **V** | Duplication | Copy fidelity — discriminant vs Diffusion (V≈0) |
+| **Im** | Network | Node compatibility: receiver can become emitter |
+
+**Propagation regimes (A-attractor):**
+
+| Regime | Condition | Example |
+|--------|-----------|---------|
+| SubThreshold | R₀ < 1 | Epidemic dying out, contained panic |
+| Critical | R₀ = 1 | Endemic disease |
+| Supercritical | R₀ > 1 | Epidemic outbreak, Minsky Boom, viral meme |
+| Saturated | Network full | Herd immunity, bubble peak |
+
+**Key distinction — Propagation vs Diffusion:** V is the discriminant. Diffusion (V≈0) is random spread without fidelity. Propagation (V>0) preserves copy identity at each node.
+
+**Transdisciplinary validation (6 domains):** Epidemiology · Finance (Kindleberger-Minsky) · Computing/Cybersecurity · Physics · Social Sciences · Neuroscience
+
+**Planned M1 instances:**
+- `m1:Contagion` (M1_CoreConcepts / M1_Biology) — biological/social propagation
+- `m1:FinancialContagion` (M1_Economics) — Kindleberger-Minsky bank-to-bank panic
+- `m1:WavePropagation` (M1_Physics) — electromagnetic/acoustic wave spread
+
+---
+
+### `m2:Narration`
+
+> Temporal transformation of a semantic network of Representations and their Relations — a semantic network morphism unfolding over time.
+
+| Property | Value |
+|----------|-------|
+| Family | Combo |
+| Formula | `⊗⇒(Transformation, Representation, Relation)` |
+| Expanded | `S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ R ⊗ A ⊗ Im` |
+| Dimensions | **8** (richest Combo to date) |
+| Epistemic gap | 0.35 |
+| Perspective | dual |
+
+**Lattice join decomposition:**
+
+```
+Transformation = {S, I, D, F, V}   → unique: D, F
+Representation = {S, I, V, R}      → unique: R
+Relation       = {S, I, A, Im}     → unique: A, Im
+Contracted     = {S, I, V}
+
+Narration = {S, I, D, F, V, R, A, Im}  →  8 dimensions
+```
+
+**Unique dimensional contributions:**
+
+| Dimension | From | Semantic role |
+|-----------|------|--------------|
+| **D** | Transformation | Temporal unfolding — beginning, development, end |
+| **F** | Transformation | Narrative flux — causality, consequence, continuity between nodes |
+| **R** | Representation | Semantic encodability/decodability of nodes |
+| **A** | Relation | Narrative telos — resolution, moral, conclusion, collapse |
+| **Im** | Relation | Interoperability — shared understanding between emitter and receiver |
+
+**Morphism nature:** Narration is formally a **semantic network morphism** — a structure-preserving map between semantic states. V ensures coherence (meaning preserved or coherently evolved); Im ensures shareability (emitter and receiver on the same semantic substrate).
+
+**Narrative topology (ValueSpace):** Linear · Branching · Circular · Nested · Network (rhizomatic)
+
+**Attractor types (ValueSpace):** Resolution · Transformation · OpenEnded · Collapse
+
+**Naming rationale:** *Narration* (process noun) over *Narrative* (artifact noun) — consistent with M2 process vocabulary (Transformation, Regulation, Adaptation…). The active process of narrating is the M2 pattern; the resulting artifact is an M0/M1 instantiation.
+
+**Transdisciplinary validation (6 domains):** Mythology/Anthropology · Literature/Narratology · Science/Epistemology · Finance/Economics (Kindleberger-Minsky bubble as collective belief narration) · Law · Neuroscience/Cognitive Science
+
+**Key distinction — Narration vs Propagation:**
+
+| | Narration | Propagation |
+|--|-----------|-------------|
+| Content | **Transforms** — evolves toward telos | **Copies** — preserved faithfully |
+| V | Coherence of transformation | Fidelity of copy |
+| Kindleberger-Minsky | Collective belief: "new paradigm" → Collapse | Panic: bank run spreads through interbank network |
+
+---
+
+## ConceptContracts
+
+ConceptContracts are behavioral mixins orthogonal to families — they cut across multiple families to group concepts by shared capability. Applied via `rdfs:subClassOf` (mixin pattern).
+
+| Contract | Semantics | Implementors (selected) |
+|----------|-----------|------------------------|
+| `m2:Triggerable` | Can be initiated by an external condition | Event, Process, Cascade, Transformation, Action, Duplication, Propagation, Narration |
+| `m2:Observable` | Internal states can be measured/tracked | State, Trajectory, Behavior, Gradient, Observer, Duplication, Propagation, Narration |
+| `m2:Composable` | Can be assembled into larger structures | Component, Node, Step |
+| `m2:Stateful` | Maintains persistent internal state over time | Memory, Storage, Homeostasis, State |
+
+---
+
+## Bicephalous Strategy
+
+GenericConcepts use one of three perspective modes:
+
+| Mode | Eagle (ASFID) | Sphinx (REVOI) | Count |
+|------|--------------|----------------|-------|
+| `territory` | Primary, IMMUTABLE | — | 29 |
+| `map` | Fallback only | Primary | 10 |
+| `dual` | Primary, IMMUTABLE | PROPOSITION | 26 + 3 new |
+| `hybrid` | ASFID + REVOI in single formula | — | 4 |
+
+> REVOI formulas are marked `PROPOSITION (validation in progress)` — empirically validated through poclet analysis (7 poclets at v15.8.0).
+
+---
+
+## Key Architectural Relationships
+
+```
+m2:Process (D⊗F)
+  └── m2:Duplication (S⊗I⊗F⊗D⊗V)    [specialization: adds S,I,V]
+        └── m2:Bifurcation (∂D/∂F)    [semantic: V→0 degenerate case]
+
+m2:GenericConceptCombo (abstract)
+  ├── m2:Cascade      ⊗⇒(Process, Step, Trajectory)           [5D]
+  ├── m2:Oscillator   ⊗⇒(Component, Process, Trajectory)      [5D]
+  ├── m2:Propagation  ⊗⇒(Cascade, Duplication, Network)       [7D]
+  └── m2:Narration    ⊗⇒(Transformation, Representation, Relation) [8D]
+
+m2:Homeostasis → semantic morphism_inclusion → m2:Regulation
+m2:Bifurcation → semantic fidelity_degeneration → m2:Duplication
+```
+
+---
+
+## Tensor Formula Notation
+
+### Atomic GenericConcept
+```
+Concept = D₁ ⊗ D₂ ⊗ … ⊗ Dₙ
+```
+where each Dᵢ ∈ {A, S, F, I, D, R, E, V, O, Im}
+
+### GenericConceptCombo
+```
+⊗⇒(M₁, M₂, …, Mₙ) = lattice_join(dims(M₁) ∪ dims(M₂) ∪ … ∪ dims(Mₙ))
+```
+
+Shared dimensions are contracted: F⊔F=F, S⊔S=S, etc.
+Unique dimensions from each parent are the **emergent contributions**.
+
+### Specialization (subClassOf)
+```
+Child ⊃ Parent    Child inherits {Parent dims} and adds {extra dims}
+```
+Example: `Duplication (S⊗I⊗F⊗D⊗V) ⊃ Process (D⊗F)` — inherits D,F; adds S,I,V
+
+---
+
+## M1/M0 Usage Patterns
+
+### M1 — Domain specialization via `m2:characterizedBy`
 ```json
 {
-  "@context": { "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/", ... },
-  "@graph": [
-    { "@id": "m2:M2_GenericConcepts",    "@type": "owl:Ontology" },
-    { "@id": "m2:GenericConcept",        "@type": "owl:Class" },
-    { "@id": "m2:GenericConceptFamily",  "@type": "owl:Class" },
-    { "@id": "m2:GenericConceptCombo",   "@type": "owl:Class" },
-    { "@id": "m2:ConceptContract",       "@type": "owl:Class" },
-    /* OWL properties (28) */
-    /* GenericConceptFamily instances (10) */
-    /* ConceptContract instances (4) */
-    /* GenericConcept instances (74) */
-  ]
+  "@id": "m1:Contagion",
+  "m2:characterizedBy": "m2:Propagation",
+  "rdfs:comment": "Biological/social Propagation with host specificity and epidemiological fidelity"
 }
 ```
 
-### IRI Resolution
-
-```json
-"@context": {
-  "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-  "m2": "M2_GenericConcepts.jsonld#",
-  "m3": "M3_GenesisSpace.jsonld#"
-}
-```
-
-`m2:Homeostasis` resolves to:  
-`https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Homeostasis`
-
----
-
-## OWL Classes
-
-| Class | Description |
-|-------|-------------|
-| `m2:GenericConcept` | A universally transdisciplinary systemic pattern. Applicable across ALL knowledge fields. |
-| `m2:GenericConceptFamily` | Taxonomic grouping by dominant dimensions and functional role. 10 families. |
-| `m2:GenericConceptCombo` | GenericConcept produced by synergistic N-ary combination (⊗ⁿ⇒). `rdfs:subClassOf m2:GenericConcept`. |
-| `m2:GenericConceptPair` | Structural dual pair of GenericConcepts. |
-| `m2:ConceptContract` | Abstract behavioral specification (analogous to OOP interface). No tensor formula. |
-| `m2:Triggerable` | ConceptContract: can be initiated by an external `m2:Trigger`. |
-| `m2:Observable` | ConceptContract: can be measured by an `m2:Observer` in Territory. |
-| `m2:Composable` | ConceptContract: can serve as structural building block in a larger assembly. |
-| `m2:Stateful` | ConceptContract: maintains persistent internal state across interactions. |
-
----
-
-## OWL Properties
-
-### Core GenericConcept properties
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `m2:hasFamily` | ObjectProperty | GenericConceptFamily of this concept |
-| `m2:hasTensorFormula` | DatatypeProperty | ASFID/REVOI tensor formula (Unicode) |
-| `m2:hasTensorFormulaTeX` | DatatypeProperty | LaTeX encoding |
-| `m2:hasTensorFormulaASCII` | DatatypeProperty | ASCII fallback |
-| `m2:hasDominantM3` | ObjectProperty | Primary ASFID dimensions |
-| `m2:hasEpistemicGap` | DatatypeProperty | Epistemic uncertainty (0.0–1.0) |
-| `m2:hasPolarity` | DatatypeProperty | `neutral`, `dual`, `ternary`, `N-ary` |
-| `m2:hasExample` | DatatypeProperty | Domain examples |
-| `m2:eagleView` | ObjectProperty | Territory-side (ASFID) specification |
-| `m2:sphinxView` | ObjectProperty | Map-side (REVOI) specification |
-| `m2:dualCounterpart` | ObjectProperty | Structural dual of this concept |
-
-### Relational properties
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `m2:triggeredBy` | ObjectProperty | Stimulus that initiates this Triggerable |
-| `m2:triggers` | ObjectProperty | Inverse of `triggeredBy` |
-| `m2:componentOf` | ObjectProperty | This Composable is part of a larger structure |
-| `m2:decomposedInto` | ObjectProperty | Inverse of `componentOf` |
-| `m2:implementsProcess` | ObjectProperty | Links structural container to its Process |
-| `m2:hasGradient` | ObjectProperty | Associates concept with driving Gradient |
-
-### GenericConceptCombo properties
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `m2:hasComboComponent` | ObjectProperty | Parent GenericConcept in a Combo |
-| `m2:comboRole` | DatatypeProperty | Role of a component: `core_mechanism`, `medium`, `material`, `path`… |
-
-### ConceptContract property
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `m2:implements` | AnnotationProperty | Explicit declaration of ConceptContract implementation (complements `rdfs:subClassOf` mixin) |
-
-### M1 bridge property
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `m2:characterizedBy` | ObjectProperty | Associates a M1 KnowledgeFieldConcept with its M2 GenericConcept basis. Replaces former heterogeneous `m2Basis` fields. |
-
----
-
-## GenericConcept Families
-
-The 74 GenericConcepts are organized into **10 families**:
-
-| Family | Count | Primary dimensions | Representative members |
-|--------|------:|-------------------|----------------------|
-| Structural | 19 | S, I | Hierarchy, Network, Component, Node, Workflow, Interoperability |
-| Dynamic | 13 | D, F | Process, Event, Behavior, Transformation, FeedbackLoop |
-| Ontological | 9 | S, F, I | System, State, Observer, Resource, Gradient |
-| Regulatory | 9 | A, S, F | Homeostasis, Regulation, Threshold, Trigger |
-| Informational | 8 | I, S | Code, Representation, Signal, ValueSpace |
-| Relational | 5 | S, I, F | Agent, Mediator, Link, Relation |
-| Adaptive | 4 | A, I, D | Resilience, Adaptation, Emergence, Memory |
-| **Combo** | **5** | **— (compiled)** | **GenericConceptCombo, Cascade, Processor, LALI, ButterflyEffect** |
-| Energetic | 2 | F, D | Dissipation, Storage |
-| Teleonomic | 1 | A, I, D | Self-Organization |
-
----
-
-## ConceptContract System
-
-ConceptContracts are behavioral specifications **orthogonal** to families. A GenericConcept implements a contract via **mixin** `rdfs:subClassOf` (OWL-inferable) + `m2:implements` annotation (human-readable):
-
+### M0 — Poclet referencing M2 concepts
 ```json
 {
-  "@id": "m2:Event",
-  "rdfs:subClassOf": ["m2:GenericConcept", "m2:Triggerable"],
-  "m2:implements": { "@id": "m2:Triggerable" }
+  "@id": "m0:KindlebergerMinskyCycle",
+  "m2:characterizedBy": ["m2:Propagation", "m2:Narration", "m2:Bifurcation"]
 }
 ```
 
-| ConceptContract | Implementors |
-|----------------|-------------|
-| `m2:Triggerable` | Event, Action, Process, Cascade, Transformation |
-| `m2:Observable` | State, Trajectory, Behavior, Gradient, Observer |
-| `m2:Composable` | Component, Node, Step |
-| `m2:Stateful` | Memory, Storage, Homeostasis, State |
+### M1 Domain extension files
 
-> `m2:State` implements both `Observable` and `Stateful`.  
-> `m2:Cascade` has `rdfs:subClassOf: [m2:GenericConceptCombo, m2:Triggerable]`.
-
----
-
-## Complete GenericConcept Reference
-
-### Adaptive (4)
-
-| GenericConcept | Formula | ConceptContract |
-|----------------|---------|----------------|
-| Resilience | `A ⊗ S` | — |
-| Adaptation | `I ⊗ F ⊗ D` | — |
-| Emergence | `I ⊗ S ⊗ D` | — |
-| Memory | `∫(D−F)dτ` | Stateful |
-
-### Combo (5)
-
-| GenericConcept | Formula | Notes |
-|----------------|---------|-------|
-| GenericConceptCombo | `⊗ᵢ₌₁ⁿ Mᵢ ⇒ M_result` | Abstract N-ary combination pattern |
-| Cascade | `⊗⇒(Process, Step, Trajectory)` | Triggerable |
-| Processor | `S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ R` | Bicephalous, compiled formula |
-| LocalActivationLateralInhibition | `⊗⇒(Amplification, Regulation) \| range(F_A) << range(F_R)` | Turing pattern |
-| ButterflyEffect | `⊗⇒(Amplification, Trajectory) \| λ > 0` | Chaotic amplification |
-
-### Dynamic (13)
-
-| GenericConcept | Formula | ConceptContract |
-|----------------|---------|----------------|
-| Bifurcation | `∂D/∂F` | — |
-| Transformation | `D ⊗ S ⊗ I` | Triggerable |
-| Process | `D ⊗ F` | Triggerable |
-| Trajectory | `A ⊗ D ⊗ F` | Observable |
-| Event | `D ⊗ I` | Triggerable |
-| Synergy | `I ⊗ D` | — |
-| Fusion | `S ⊗ D` | — |
-| Convergence | `-∇·D / ∇·D` | — |
-| Behavior | `S ⊗ D ⊗ F` | Observable |
-| Action | `D ⊗ I` | Triggerable |
-| Amplification | `Ft → D → It → R → O` | — |
-| Alignment | `I ⊗ A ⊗ S` | — |
-| FeedbackLoop | `⊗⇒(Process, Alignment, Homeostasis)` | — |
-
-### Energetic (2)
-
-| GenericConcept | Formula | ConceptContract |
-|----------------|---------|----------------|
-| Dissipation | `F ⊗ D` | — |
-| Storage | `S ⊗ F` | Stateful |
-
-### Informational (8)
-
-| GenericConcept | Formula | ConceptContract |
-|----------------|---------|----------------|
-| Code | `I ⊗ S` | — |
-| Coding | `I ⊗ S ⊗ D` | — |
-| Representation | `I ⊗ S` | — |
-| Language | `I ⊗ S ⊗ F` | — |
-| Pattern | `S → I → A` | — |
-| Signature | `I ⊗ S` | — |
-| Signal | `I ⊗ F` | — |
-| ValueSpace | `It → V → O → R → Im` | — |
-
-### Ontological (9)
-
-| GenericConcept | Formula | ConceptContract |
-|----------------|---------|----------------|
-| System | `S ⊗ F` | — |
-| Environment | `F ⊗ I` | — |
-| Observer | `I ⊗ A` | Observable |
-| State | `I` | Observable, Stateful |
-| Substrate | `S ⊗ F` | — |
-| Gradient | `⊗₂F or ⊗₂I` | Observable |
-| Space | `S ⊗ I` | — |
-| Imbrication | `S → S` | — |
-| **Resource** *(new)* | `F ⊗ I ⊗ R` | — |
-
-### Regulatory (9)
-
-| GenericConcept | Formula | ConceptContract |
-|----------------|---------|----------------|
-| Homeostasis | `A ⊗ S ⊗ F` | Stateful |
-| Regulation | `A ⊗ S ⊗ F` | — |
-| Constraint | `S ⊗ I` | — |
-| Scope | `S → I → A → R` | — |
-| Threshold | `A ⊗ I` | — |
-| Trigger | `D ⊗ I` | — |
-| Activation | `A ⊗ D` | — |
-| Balance | `A ⊗ S ⊗ F` | — |
-| Trade-off | `A ⊗ I ⊗ F ⊗ A ⊗ A` | — |
-
-### Relational (5)
-
-| GenericConcept | Formula | ConceptContract |
-|----------------|---------|----------------|
-| Agent | `S ⊗ I ⊗ D` | — |
-| Role | `S ⊗ I` | — |
-| Mediator | `F ⊗ I ⊗ S` | — |
-| Link | `S ⊗ I ⊗ F` | — |
-| Relation | `S ⊗ I` | — |
-
-### Structural (19)
-
-| GenericConcept | Formula | ConceptContract |
-|----------------|---------|----------------|
-| Hierarchy | `S ⊗ A` | — |
-| Network | `S ⊗ I ⊗ F` | — |
-| Symmetry | `S` | — |
-| Modularity | `S ⊗ I` | — |
-| Topology | `S ⊗ I` | — |
-| Segmentation | `S ⊗ I ⊗ D` | — |
-| Invariant | `S ⊗ A` | — |
-| Capacity | `S ⊗ I` | — |
-| Node | `S ⊗ I` | Composable |
-| Path | `S ⊗ I ⊗ D` | — |
-| Channel | `S ⊗ I ⊗ F` | — |
-| Cluster | `S ⊗ I ⊗ A` | — |
-| Component | `S ⊗ I` | Composable |
-| Hub | `S ⊗ F` | — |
-| Composition | `S ⊗ I ⊗ A` | — |
-| Polarity | `S ⊗ I ⊗ A` | — |
-| Identity | `S → I → A → V → E` | — |
-| Workflow | `S ⊗ D ⊗ F` | — |
-| Step | `S ⊗ I ⊗ D` | Composable |
-| **Interoperability** *(new)* | `S ⊗ I ⊗ F ⊗ V ⊗ E` | — |
-
-### Teleonomic (1)
-
-| GenericConcept | Formula | ConceptContract |
-|----------------|---------|----------------|
-| Self-Organization | `A ⊗ I ⊗ D` | — |
+| Domain | File | M2 usage (selected) |
+|--------|------|---------------------|
+| Biology | M1_Biology.jsonld | Cascade, Regulation, Homeostasis, Propagation |
+| Chemistry | M1_Chemistry.jsonld | Transformation, Cascade, Network, Link |
+| Optics | M1_Optics.jsonld | Signal, Transformation, Pattern |
+| Photography | M1_Photography.jsonld | Composition, Balance, Threshold |
+| Mythology | M1_Mythology.jsonld | Narration, Pattern, Identity, Relation |
+| Economics *(planned)* | M1_Economics.jsonld | Propagation, Narration, Bifurcation, Oscillator |
 
 ---
 
-## M1 Integration
+## Versioning
 
-### KnowledgeField concepts (defined in M1_CoreConcepts.jsonld)
-
-| Concept | Role |
-|---------|------|
-| `m1:core:KnowledgeField` | Epistemological meta-concept organizing M1. SVD formula: `∑ᵢ σᵢ |uᵢ⟩ ⊗ |vᵢ⟩` |
-| `m1:core:KnowledgeFieldConcept` | Abstract class for all M1 concepts (formerly DomainConcept) |
-| `m1:core:KnowledgeFieldGenericCombo` | Disciplinary qualification: `KnowledgeField ⊙ GenericConcept(s)` |
-
-### Referencing a GenericConcept in M1
-
-```json
-{
-  "@id": "m1:biology:CellularCommunication",
-  "@type": "owl:Class",
-  "rdfs:subClassOf": "m2:GenericConcept",
-  "m2:characterizedBy": [
-    { "@id": "m2:Signal" },
-    { "@id": "m2:Channel" }
-  ]
-}
-```
-
-### Referencing in M0 (Poclets)
-
-```json
-{
-  "@id": "m0raas:BloodPressureRegulation",
-  "@type": ["owl:NamedIndividual", "m1:biology:FeedbackLoop"],
-  "rdfs:comment": "RAAS negative feedback loop maintaining blood pressure homeostasis"
-}
-```
-
----
-
-## Changelog (recent)
-
-| Version | Date | Summary |
-|---------|------|---------|
-| **v15.7.0** | 2026-02-24 | NEW: ConceptContract system — `m2:ConceptContract` (abstract), 4 contracts: Triggerable, Observable, Composable, Stateful. 16 GenericConcepts updated with mixin + `m2:implements`. |
-| **v15.6.1** | 2026-02-24 | RENAME: `M2_GenericConcepts` → `M2_GenericConcepts`. 132 terminology replacements (`GenericConcept` → `genericConcept`). Preserved biological real words. |
-| **v15.6.0** | 2026-02-24 | M2 purification: removed `m2:Domain`, `m2:KnowledgeField`, `m2:KnowledgeFieldGenericCombo` (moved to M1). New 10th family `m2:Combo`. Declared `m2:characterizedBy`. |
-| **v15.5.3** | 2026-02-24 | Created `m2:Resource` (Ontological, `F⊗I⊗R`), `m2:Interoperability` (Structural, `S⊗I⊗F⊗V⊗E`). Corrected `m2:Flow` → `m3:eagle_eye:Flow` in Processor. |
-| **v15.5.2** | 2026-02-24 | Renamed GenericConceptCombo → GenericConceptCombo. Added `m2:hasComboComponent`, `m2:comboRole`. Updated Processor, Cascade, LALI, ButterflyEffect with explicit components and compiled formulas. |
-| **v15.5.0–15.5.1** | 2026-02-24 | OWL architecture migration: NamedIndividuals → `owl:Class` hierarchy. `m2:GenericConcept` → `m2:GenericConcept`. 15 missing properties declared. |
-| v15.3.0 | 2026-02-18 | NEW: `m2:Alignment` (`I⊗A⊗S`), `m2:FeedbackLoop` (GenericConceptCombo). |
+| Version | Date | Key additions |
+|---------|------|--------------|
+| **v15.9.0** | 2026-02-28 | `Duplication` (Dynamic) · `Propagation` (Combo, 7D) · `Narration` (Combo, 8D) · Bifurcation updated (subClassOf Duplication) |
+| v15.8.0 | 2026-02-27 | `Oscillator` (Combo, 5D, subClassOf Component) |
+| v15.7.0 | 2026-02-24 | ConceptContract system (Triggerable, Observable, Composable, Stateful) |
+| v15.5.x | 2026-02 | Cascade, Processor, LALI, ButterflyEffect (Combo family) |
+| v15.2.0 | 2026-02-17 | KnowledgeField, KnowledgeFieldMetaCombo |
+| v14.x | — | Domain (deprecated), base 60 concepts |
 
 ---
 
 ## Related Files
 
-| File | Layer | Role |
-|------|-------|------|
-| `M3_GenesisSpace.jsonld` | M3 | Mathematical foundation — ASFID ⊕ REVOI |
-| `M3_EagleEye.jsonld` | M3 | ASFID dimension definitions |
-| `M3_SphinxEye.jsonld` | M3 | REVOI dimension definitions |
-| `M1_CoreConcepts.jsonld` | M1 | KnowledgeFieldConcept, KnowledgeField, KnowledgeFieldGenericCombo |
-| `M1_Biology.jsonld` | M1 | Biological KnowledgeField concepts |
-| `M1_Chemistry.jsonld` | M1 | Chemical KnowledgeField concepts |
-| `M1_Optics.jsonld` | M1 | Optical KnowledgeField concepts |
-| `M1_Photography.jsonld` | M1 | Photography KnowledgeField concepts |
-| `M1_Mythology.jsonld` | M1 | Mythological KnowledgeField concepts |
-| `M0_RAAS.jsonld` | M0 | Poclet — Renin-Angiotensin-Aldosterone System |
-| `M0_Yggdrasil.jsonld` | M0 | Poclet — World Tree mythological system |
+| File | Layer | Relation |
+|------|-------|---------|
+| `M3_GenesisSpace.jsonld` | M3 | Defines the 10 ASFID⊗REVOI dimensions |
+| `M3_EagleEye.jsonld` | M3 | ASFID Eagle Eye dimension definitions |
+| `M3_SphinxEye.jsonld` | M3 | REVOI Sphinx Eye dimension definitions |
+| `M2_FormulasReference.json` | M2 | Compact tensor formula lookup table (update needed: +3 new concepts) |
+| `M1_CoreConcepts.jsonld` | M1 | Core transdisciplinary concepts using M2 patterns |
+| `M1_Biology.jsonld` | M1 | Biology domain extension |
+| `M1_Chemistry.jsonld` | M1 | Chemistry domain extension |
+| `M1_Mythology.jsonld` | M1 | Mythology extension — uses m2:Narration, m2:Pattern |
+| `M0_RAAS.jsonld` | M0 | RAAS poclet — validated m2:Cascade, m2:Homeostasis |
+| `MetaconceptPair_README.md` | docs | Semantic morphism_inclusion patterns |
+| `TSCG_Smart_Prompt_v15_8_0.md` | docs | Current smart prompt for TSCG sessions |
+
+> ⚠️ **`M2_FormulasReference.json` is not yet updated** with Duplication, Propagation, Narration. Update required.
+
+---
+
+## Design Principles
+
+**Transdisciplinarity:** Every GenericConcept must be validated across ≥ 3 domains (preferably 6). A concept valid in only one domain belongs in M1, not M2.
+
+**Purity:** M2 vocabulary is universal and domain-agnostic. No domain-specific nouns (Contagion → Propagation; Narrative → Narration).
+
+**Non-proliferation:** Before creating a new GenericConcept, verify it cannot be expressed as a GenericConceptCombo of existing concepts. The fidelity spectrum on Duplication (V axis) is an example of parameterizing a continuous family rather than creating multiple discrete concepts.
+
+**Bicephalous consistency:** Every GenericConcept has at minimum an Eagle Eye (ASFID) formula marked IMMUTABLE. Sphinx Eye (REVOI) formulas are PROPOSITION until validated through poclets.
+
+**Process vocabulary:** M2 names are process nouns (Narration, Transformation, Regulation) not artifact nouns (Narrative, Transform, Rule). The active pattern, not the resulting object.
 
 ---
 

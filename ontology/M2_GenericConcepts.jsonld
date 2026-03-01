@@ -17,8 +17,8 @@
       "dcterms:description": "Second layer of the TSCG framework. Defines transdisciplinary GenericConcepts emerging from tensor products of M3 ASFID/REVOI dimensions. M2 is restricted to patterns valid across ALL knowledge fields without exception. KnowledgeField-specific concepts (KnowledgeFieldConcept, KnowledgeField, KnowledgeFieldGenericCombo) are defined in M1. Introduces N-ary polarity framework, GenericConceptCombos (synergistic combinations via ⊗ⁿ⇒ with lattice-join dimension contraction), and bicephalous Eagle Eye (ASFID) / Sphinx Eye (REVOI) dual perspectives.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
-      "dcterms:modified": "2026-02-24",
-      "owl:versionInfo": "15.7.0",
+      "dcterms:modified": "2026-02-28",
+      "owl:versionInfo": "15.9.0",
       "owl:imports": [
         "M3_GenesisSpace.jsonld"
       ],
@@ -97,15 +97,19 @@
         ]
       },
       "m2:progress": {
-        "m2:genericConceptsDefined": 78,
-        "m2:genericConceptsTotal": 78,
+        "m2:genericConceptsDefined": 81,
+        "m2:genericConceptsTotal": 81,
         "m2:completionPercentage": 100,
-        "m2:neutralPolarity": 52,
-        "m2:dualPolarity": 14,
+        "m2:neutralPolarity": 53,
+        "m2:dualPolarity": 16,
         "m2:naryPolarity": 1,
         "m2:hybridPolarity": 3
       },
       "m2:changelog": {
+        "v15_9_0": {
+          "date": "2026-02-28",
+          "description": "Added m2:Duplication (Dynamic, S⊗I⊗F⊗D⊗V, subClassOf Process). Added m2:Propagation (Combo, ⊗⇒(Cascade,Duplication,Network), S⊗I⊗A⊗D⊗F⊗V⊗Im, 7D). Added m2:Narration (Combo, ⊗⇒(Transformation,Representation,Relation), S⊗I⊗D⊗F⊗V⊗R⊗A⊗Im, 8D — richest Combo). Bifurcation updated: rdfs:subClassOf m2:Duplication (semantic). Dynamic 14→15. Combo 6→8. dualPolarity 14→16. neutralPolarity 52→53. Total 78→81."
+        },
         "v15_8_0": {
           "date": "2026-02-27",
           "description": "Added m2:Oscillator (Combo, Territory). Ternary combo ⊗⇒(Component, Process, Trajectory | trajectoryShape=Circular). rdfs:subClassOf m2:Component → S dimension unlocked → full ASFID coverage S⊗A⊗I⊗D⊗F. Second GenericConceptCombo with full ASFID 5D after Cascade. 4 ValueSpace attributes: frequency, amplitude, phase, damping_ratio. m2:Combo.genericConceptCount 5→6. neutralPolarity 51→52. Total 77→78."
@@ -280,7 +284,7 @@
       "rdfs:subClassOf": "m2:GenericConceptFamily",
       "rdfs:label": "Dynamic Family",
       "rdfs:comment": "Processes, transformations, temporal evolution. High D.",
-      "m2:genericConceptCount": 8
+      "m2:genericConceptCount": 15
     },
     {
       "@id": "m2:Regulatory",
@@ -343,8 +347,8 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": "m2:GenericConceptFamily",
       "rdfs:label": "Combo Family",
-      "rdfs:comment": "GenericConcepts produced by synergistic combination of N parent GenericConcepts (N ≥ 2) via the n-ary tensor assembly and emergence morphism (⊗ⁿ⇒). The resulting concept has semantic identity irreducible to any subset of its parents. Shared dimensions between parents are contracted via lattice join (F ⊔ F = F). Members: GenericConceptCombo (abstract pattern), Cascade, Processor, LocalActivationLateralInhibition, ButterflyEffect, Oscillator.",
-      "m2:genericConceptCount": 6,
+      "rdfs:comment": "GenericConcepts produced by synergistic combination of N parent GenericConcepts (N ≥ 2) via the n-ary tensor assembly and emergence morphism (⊗ⁿ⇒). The resulting concept has semantic identity irreducible to any subset of its parents. Shared dimensions between parents are contracted via lattice join (F ⊔ F = F). Members: GenericConceptCombo (abstract pattern), Cascade, Processor, LocalActivationLateralInhibition, ButterflyEffect, Oscillator, Propagation, Narration.",
+      "m2:genericConceptCount": 8,
       "dcterms:created": "2026-02-24",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
@@ -1240,9 +1244,12 @@
     {
       "@id": "m2:Bifurcation",
       "@type": "owl:Class",
-      "rdfs:subClassOf": "m2:GenericConcept",
+      "rdfs:subClassOf": [
+        "m2:GenericConcept",
+        "m2:Duplication"
+      ],
       "rdfs:label": "Bifurcation",
-      "rdfs:comment": "Qualitative change in system behavior at critical parameter threshold.",
+      "rdfs:comment": "Qualitative change in system behavior at critical parameter threshold. Semantic specialization of m2:Duplication where V→0: the copying process loses fidelity entirely and the two resulting branches diverge toward distinct attractors. Analogous to Homeostasis ↪ Regulation semantic inclusion precedent (morphism_inclusion, not dimensional inheritance).",
       "m2:hasFamily": "m2:Dynamic",
       "m2:hasTensorFormula": "∂D/∂F",
       "m2:hasDominantM3": [
@@ -1396,7 +1403,124 @@
           "m2:mathematicalContext": "Bifurcation theory studies how dynamical system structure changes as parameters vary. Codimension indicates number of parameters needed to observe bifurcation generically."
         }
       },
+      "m2:distinctionFromRelated": {
+        "vs_Duplication": "Duplication (S⊗I⊗F⊗D⊗V) produces faithful copies (V→1). Bifurcation is the degenerate limit where V→0: the copying process loses fidelity entirely and the two branches diverge toward distinct attractors. See m2:Duplication fidelitySpectrum.V_low."
+      },
       "m3:semanticSignature": "dynamics_sensitivity_to_flow + threshold_crossing + qualitative_state_change"
+    },
+    {
+      "@id": "m2:Duplication",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": [
+        "m2:Process",
+        "m2:Triggerable",
+        "m2:Observable"
+      ],
+      "rdfs:label": "Duplication",
+      "rdfs:comment": "Active process producing one or more faithful copies of a source structure, preserving its informational content through a transfer flux over time. Specialization of m2:Process (D⊗F): inherits temporal dynamics (D) and flux (F), adds source structure (S), copied content (I), and fidelity verifiability (V). The copy is recognizable as structurally and informationally equivalent to the original. V is the discriminant: V→1 = perfect copy; V→0 = copies diverge toward distinct attractors, degenerating into m2:Bifurcation. m2:Propagation (GenericConceptCombo) uses Duplication as its branching parent — each node that receives a copy becomes a new emitter.",
+      "dcterms:created": "2026-02-28",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:hasFamily": "m2:Dynamic",
+      "m2:hasTensorFormula": "S ⊗ I ⊗ F ⊗ D ⊗ V",
+      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes F \\otimes D \\otimes V",
+      "m2:hasTensorFormulaASCII": "S (x) I (x) F (x) D (x) V",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Dynamics",
+        "m3:eagle_eye:Flow",
+        "m3:eagle_eye:Structure",
+        "m3:eagle_eye:Information"
+      ],
+      "m2:specializationOf": {
+        "@id": "m2:Process",
+        "m2:parentFormula": "D ⊗ F",
+        "m2:inheritedDimensions": ["D", "F"],
+        "m2:addedDimensions": {
+          "S": "Process is content-agnostic; Duplication specifically copies a Structure",
+          "I": "Process transforms or transfers; Duplication preserves Information faithfully",
+          "V": "Fidelity verifiability — the copy is equivalent to the original. Replaces R (Representability) of Process: what matters is copy equivalence, not external symbolic encoding"
+        }
+      },
+      "m2:dimensionSemantics": {
+        "D": "Temporal dynamics of the copying process — duration, rate, error accumulation (inherited from Process)",
+        "F": "Transfer flux producing the copy — replication machinery, data stream, cultural transmission (inherited from Process)",
+        "S": "Source structure being copied — organization, topology, architecture",
+        "I": "Informational content preserved faithfully in the copy — genetic code, data payload, semantic message",
+        "V": "Verifiability of fidelity — the copy is recognizable as equivalent to the original (checksum, genetic proofreading, source citation)"
+      },
+      "m2:hasEpistemicGap": 0.22,
+      "m2:hasPolarity": "neutral",
+      "m2:perspective": "dual",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "S → I → F → D → V",
+        "role": "Measure observable duplication in Territory: source structure copied, informational content preserved, transfer flux active, temporal dynamics tracked, fidelity verifiable between original and copy",
+        "status": "IMMUTABLE"
+      },
+      "m2:sphinxView": {
+        "formulaPrimary": {
+          "basis": "REVOI",
+          "formula": "R → Im → V",
+          "role": "Evaluate Map quality of a duplication model: is the copy representable as equivalent to the original (R), compatible with the receiving system (Im), verifiable as faithful (V)?",
+          "status": "PROPOSITION (validation in progress)"
+        }
+      },
+      "m2:fidelitySpectrum": {
+        "description": "V is the continuous axis unifying all copying phenomena, from perfect replication to complete divergence. Parameterizes the Duplication→Bifurcation transition.",
+        "V_high": {
+          "label": "Perfect duplication (V → 1)",
+          "examples": [
+            "DNA replication with proofreading (error rate ~10⁻⁹ per base)",
+            "Lossless file copy with SHA-256 checksum",
+            "Laser stimulated emission (phase-identical photon copy)"
+          ]
+        },
+        "V_medium": {
+          "label": "Imperfect duplication — mutation, drift (0.3 < V < 0.8)",
+          "examples": [
+            "RNA virus replication (mutation rate ~10⁻⁴ per base)",
+            "Cultural transmission with semantic drift",
+            "Analog audio tape dub (generation loss)"
+          ]
+        },
+        "V_low": {
+          "label": "Degenerate duplication → Bifurcation (V → 0)",
+          "examples": [
+            "Sympatric speciation (lineages diverge completely)",
+            "Minsky Moment — speculative price diverges from fundamental value"
+          ],
+          "semantics": "Copies escape toward distinct attractors — Duplication degenerates into m2:Bifurcation"
+        }
+      },
+      "m2:hasExample": [
+        "Molecular Biology — DNA replication (S=double helix, I=nucleotide sequence, F=polymerase, D=S-phase duration, V=mismatch repair)",
+        "Molecular Biology — Mitosis (S=cell architecture, I=genome, F=cytokinesis, D=cell cycle, V=spindle assembly checkpoint)",
+        "Computing — File copy / RAID mirroring (S=file structure, I=data, F=read-write stream, D=transfer time, V=checksum)",
+        "Computing — Git clone (S=directory tree, I=commit history, F=network transfer, D=clone duration, V=SHA hash)",
+        "Epidemiology — Viral replication in host cell (S=capsid, I=viral genome, F=host machinery hijacking, D=replication cycle, V=phylogenetic traceability)",
+        "Physics — Stimulated emission / laser (S=photon state, I=energy+phase, F=electromagnetic coupling, D=emission time, V=coherence)",
+        "Sociology — Cultural transmission (S=behavioral pattern, I=semantic content, F=social learning, D=generational time, V=recognizability as 'the same')",
+        "Law — Legal precedent citation (S=reasoning structure, I=ruling content, F=citation, D=jurisprudential time, V=verifiable reference to original case)"
+      ],
+      "m2:distinctionFromRelated": {
+        "vs_Process": "Process (D⊗F) is content-agnostic: any sequence of state changes. Duplication specializes Process by specifying WHAT is copied (S, I) and requiring fidelity verification (V).",
+        "vs_Transformation": "Transformation (S⊗I⊗D⊗F⊗V) changes content — output differs from input. Duplication preserves content: original and copy are equivalent.",
+        "vs_Bifurcation": "Bifurcation (∂D/∂F) is the degenerate limit of Duplication when V→0: fidelity breaks entirely and the two branches diverge toward distinct attractors.",
+        "vs_Signal": "Signal (F⊗I⊗R) is 1:1 information transfer — no independent persistent copy is produced. Duplication produces an autonomous copy (1→N).",
+        "vs_Network": "Network (S⊗I⊗F⊗D⊗Im) is the structural substrate enabling propagation. Duplication is the copying operation occurring at each node. Together with Cascade and Network, Duplication forms m2:Propagation."
+      },
+      "m2:transdisciplinaryValidation": {
+        "domains": [
+          { "domain": "Molecular Biology", "examples": ["DNA replication", "RNA transcription", "Mitosis"] },
+          { "domain": "Computing / Information Theory", "examples": ["File copy", "RAID mirroring", "Git clone"] },
+          { "domain": "Epidemiology / Virology", "examples": ["Viral replication", "Bacterial binary fission"] },
+          { "domain": "Physics", "examples": ["Stimulated emission / laser", "Phonon replication"] },
+          { "domain": "Social Sciences / Memetics", "examples": ["Cultural transmission", "Legal precedent citation"] },
+          { "domain": "Developmental Biology", "examples": ["Stem cell self-renewal", "Clonal expansion"] }
+        ],
+        "count": 6
+      },
+      "m2:discoveryContext": "Identified as missing M2 gap during construction of m2:Propagation as GenericConceptCombo ⊗⇒(Cascade, Duplication, Network). Duplication provides the branching parent: each node receiving a copy becomes a new emitter. The fidelity spectrum (V axis) formally connects Duplication to Bifurcation (degenerate V→0 case).",
+      "m3:semanticSignature": "faithful_copy_production + informational_preservation + flux_driven + temporal_dynamics + fidelity_verifiable"
     },
     {
       "@id": "m2:Hierarchy",
@@ -6988,6 +7112,277 @@
       "m2:discoveryContext": "User proposal validated 2026-02-27. Identified as Process ⊗⇒ Trajectory[Circular] (Territory), then refined as subclass of Component to capture structural identity and unlock S dimension. Key insight: subclassing Component is the architectural move that (1) adds S yielding full ASFID coverage, and (2) distinguishes an Oscillator (system component) from Oscillation (abstract behaviour pattern).",
       "dcterms:created": "2026-02-27",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m2:Propagation",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": [
+        "m2:GenericConceptCombo",
+        "m2:Triggerable",
+        "m2:Observable"
+      ],
+      "rdfs:label": "Propagation",
+      "rdfs:comment": "Branching spread of a faithfully copied entity through a network, where each receiving node becomes a new emitter. Synergistic ternary combination: Cascade (sequential chain mechanics + goal attractor) + Duplication (1→N faithful copying at each node) + Network (topological substrate with compatible nodes). Unique dimensional contributions: A from Cascade (propagation threshold and saturation attractor), V from Duplication (copy fidelity — distinguishes propagation from random diffusion), Im from Network (node compatibility — receivers can become emitters). Distinguished from Cascade (linear, no branching) and from Diffusion (no fidelity, no structured topology). Domain-specific instances: m1:Contagion (biological/social), wave propagation (physics), viral spread (computing).",
+      "dcterms:created": "2026-02-28",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:hasFamily": "m2:Combo",
+      "m2:hasTensorFormula": "⊗⇒(Cascade, Duplication, Network)",
+      "m2:hasTensorFormulaExpanded": "S ⊗ I ⊗ A ⊗ D ⊗ F ⊗ V ⊗ Im",
+      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes A \\otimes D \\otimes F \\otimes V \\otimes I_m",
+      "m2:hasTensorFormulaASCII": "S (x) I (x) A (x) D (x) F (x) V (x) Im",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Structure",
+        "m3:eagle_eye:Information",
+        "m3:eagle_eye:Attractor",
+        "m3:eagle_eye:Dynamics",
+        "m3:eagle_eye:Flow"
+      ],
+      "m2:parentGenericConcepts": [
+        {
+          "@id": "m2:Cascade",
+          "formula": "S ⊗ I ⊗ A ⊗ D ⊗ F",
+          "uniqueContribution": "A (Attractor)",
+          "contribution": "Sequential chain mechanics + propagation threshold (R₀=1) and saturation attractor (herd immunity, network saturation)"
+        },
+        {
+          "@id": "m2:Duplication",
+          "formula": "S ⊗ I ⊗ F ⊗ D ⊗ V",
+          "uniqueContribution": "V (Verifiability of fidelity)",
+          "contribution": "1→N branching copy: each receiver becomes a new emitter. V = fidelity discriminant — distinguishes propagation from random diffusion"
+        },
+        {
+          "@id": "m2:Network",
+          "formula": "S ⊗ I ⊗ F ⊗ D ⊗ Im",
+          "uniqueContribution": "Im (Interoperability)",
+          "contribution": "Topological substrate. Im = nodes are structurally compatible to receive AND re-emit the copied entity"
+        }
+      ],
+      "m2:latticeJoinComputation": {
+        "contracted": ["S", "I", "F", "D"],
+        "unique_from_Cascade": ["A"],
+        "unique_from_Duplication": ["V"],
+        "unique_from_Network": ["Im"],
+        "result": ["S", "I", "A", "D", "F", "V", "Im"],
+        "dimensionCount": 7
+      },
+      "m2:dimensionSemantics": {
+        "S": "Topology of the propagation network AND architecture of the propagating entity",
+        "I": "Content being propagated (pathogen genome, panic signal, narrative, wave pattern)",
+        "A": "Propagation threshold (R₀=1, percolation threshold) and saturation state. From Cascade.",
+        "D": "Temporal evolution: exponential growth, plateau, decline",
+        "F": "Transfer flux between nodes (infection events, signal transmission, idea adoption)",
+        "V": "Copy fidelity: each node emits a recognizable copy. Distinguishes Propagation from Diffusion (V≈0). From Duplication.",
+        "Im": "Node compatibility: a receiver can become an emitter. From Network."
+      },
+      "m2:hasEpistemicGap": 0.20,
+      "m2:hasPolarity": "dual",
+      "m2:perspective": "dual",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "S ⊗ I ⊗ A ⊗ D ⊗ F",
+        "role": "Measure observable propagation in Territory: topology (S), content (I), threshold/saturation attractor (A), temporal dynamics (D), inter-node flux (F)",
+        "status": "IMMUTABLE"
+      },
+      "m2:sphinxView": {
+        "formulaPrimary": {
+          "basis": "REVOI (partial)",
+          "formula": "V ⊗ Im ⊗ R ⊗ E",
+          "role": "Evaluate Map quality: fidelity (V), node compatibility (Im), representability of model (R), evolvability to new substrates (E)",
+          "status": "PROPOSITION (validation in progress)"
+        }
+      },
+      "m2:hasAttribute": {
+        "propagationRegime": {
+          "@type": "m2:ValueSpace",
+          "m2:valueType": "Discrete symbolic",
+          "m2:description": "Phase of propagation relative to threshold attractor A",
+          "m2:possibleValues": [
+            { "value": "SubThreshold", "description": "R₀ < 1 — propagation decays", "examples": ["Epidemic with R₀<1", "Contained panic"] },
+            { "value": "Critical", "description": "R₀ = 1 — endemic equilibrium", "examples": ["Endemic disease"] },
+            { "value": "Supercritical", "description": "R₀ > 1 — exponential spread", "examples": ["Epidemic outbreak", "Bank run", "Minsky Boom"] },
+            { "value": "Saturated", "description": "Network fully propagated, attractor reached", "examples": ["Herd immunity", "Market bubble peak"] }
+          ],
+          "m2:default": "Supercritical"
+        }
+      },
+      "m2:hasExample": [
+        "Epidemiology — Viral epidemic (S=contact network, I=pathogen, A=herd immunity threshold, D=epidemic curve, F=infection events, V=strain fidelity, Im=host compatibility)",
+        "Finance — Kindleberger-Minsky financial panic (S=interbank network, I=panic signal, A=Minsky Moment, D=crash dynamics, F=capital flight, V=narrative fidelity, Im=bank-to-bank exposure)",
+        "Computing — Computer worm propagation (S=internet topology, I=payload, A=full infection, D=spread rate, F=exploit transmission, V=payload integrity, Im=OS vulnerability compatibility)",
+        "Physics — Electromagnetic wave (S=medium structure, I=wave pattern, A=steady-state amplitude, D=oscillation, F=energy flux, V=phase coherence, Im=impedance matching)",
+        "Neuroscience — Action potential along axon (S=axon topology, I=signal, A=resting potential, D=conduction velocity, F=ion flux, V=signal fidelity, Im=node of Ranvier compatibility)",
+        "Sociology — Viral meme (S=social network, I=idea, A=critical adoption mass, D=diffusion curve, F=social transmission, V=semantic recognizability, Im=cultural compatibility)"
+      ],
+      "m2:distinctionFromRelated": {
+        "vs_Cascade": "Cascade is strictly linear — one output feeds one next stage. Propagation is branching: one node fans out to N receivers. Cascade lacks V (fidelity) and Im (node compatibility).",
+        "vs_Duplication": "Duplication is the 1→N copy operation at a SINGLE node. Propagation embeds Duplication inside a Network with cascade threshold dynamics (A).",
+        "vs_Network": "Network is the static structural substrate. Propagation is the dynamic process unfolding on it, including fidelity (V) and threshold attractor (A).",
+        "vs_Diffusion": "Diffusion spreads WITHOUT fidelity (V≈0) — random Brownian motion. Propagation requires V>0: each copy is recognizable as the same entity.",
+        "vs_Narration": "Narration TRANSFORMS a semantic network — content evolves toward a telos. Propagation COPIES faithfully — content is preserved. In Kindleberger-Minsky: panic PROPAGATES (Propagation) while collective market beliefs are NARRATED (Narration)."
+      },
+      "m2:transdisciplinaryValidation": {
+        "domains": [
+          { "domain": "Epidemiology / Biology", "examples": ["Viral epidemic (SIR model)", "Action potential propagation", "Clonal B-cell expansion"] },
+          { "domain": "Finance / Economics", "examples": ["Kindleberger-Minsky financial panic", "Bank run contagion"] },
+          { "domain": "Computing / Cybersecurity", "examples": ["Computer worm (WannaCry)", "Botnet recruitment"] },
+          { "domain": "Physics", "examples": ["Electromagnetic wave", "Seismic wave propagation"] },
+          { "domain": "Social Sciences", "examples": ["Viral meme", "Social movement (Granovetter threshold)"] },
+          { "domain": "Neuroscience", "examples": ["Action potential along myelinated axon", "Spreading cortical depression"] }
+        ],
+        "count": 6
+      },
+      "m2:discoveryContext": "Identified during Kindleberger-Minsky poclet analysis. Initial candidate was m2:Contagion, corrected to m2:Propagation to respect M2 purity (no domain-specific vocabulary). m2:Duplication identified as missing M2 prerequisite and created simultaneously. m1:Contagion to be created as domain-specific M1 instance characterizedBy m2:Propagation.",
+      "m2:significance": "First Combo bridging ASFID (A) and REVOI (V, Im) dimensions. V is the key discriminant separating Propagation from Diffusion — a fundamental distinction absent from all prior M2 concepts.",
+      "m3:semanticSignature": "branching_faithful_replication + network_topology + threshold_attractor + fidelity_constrained_spread",
+      "m2:hasComboComponent": [
+        { "@id": "m2:Cascade", "m2:comboRole": "chain_mechanism", "rdfs:comment": "Sequential chain dynamics + goal attractor (threshold/saturation)" },
+        { "@id": "m2:Duplication", "m2:comboRole": "branching_mechanism", "rdfs:comment": "1→N faithful copy: each receiver becomes a new emitter" },
+        { "@id": "m2:Network", "m2:comboRole": "substrate", "rdfs:comment": "Topological substrate with compatible nodes (Im ensures receiver can re-emit)" }
+      ]
+    },
+    {
+      "@id": "m2:Narration",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": [
+        "m2:GenericConceptCombo",
+        "m2:Triggerable",
+        "m2:Observable"
+      ],
+      "rdfs:label": "Narration",
+      "rdfs:comment": "Temporal transformation of a semantic network of Representations and their Relations — a semantic network morphism unfolding over time. Synergistic ternary combination: Transformation (process that evolves the network) + Representation (nodes carrying decodable semantic content) + Relation (arcs linking nodes into coherent structure). Unique contributions: D+F from Transformation (temporal unfolding and narrative flux), R from Representation (semantic encodability/decodability of nodes), A+Im from Relation (narrative attractor — resolution/telos — and interoperability enabling shared understanding). Distinguished from Signal (1:1, no network), Pattern (static template), Language (combinatorial system without directed transformation). Named Narration (process noun) over Narrative (artifact noun): consistent with M2 process vocabulary.",
+      "dcterms:created": "2026-02-28",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:hasFamily": "m2:Combo",
+      "m2:hasTensorFormula": "⊗⇒(Transformation, Representation, Relation)",
+      "m2:hasTensorFormulaExpanded": "S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ R ⊗ A ⊗ Im",
+      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes D \\otimes F \\otimes V \\otimes R \\otimes A \\otimes I_m",
+      "m2:hasTensorFormulaASCII": "S (x) I (x) D (x) F (x) V (x) R (x) A (x) Im",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Structure",
+        "m3:eagle_eye:Information",
+        "m3:eagle_eye:Dynamics",
+        "m3:eagle_eye:Flow",
+        "m3:eagle_eye:Attractor"
+      ],
+      "m2:morphismNote": "Narration is formally a semantic network morphism: a structure-preserving map between semantic states. V ensures coherence — semantic meaning is preserved or coherently evolved. Im ensures shareability — emitter and receiver operate on the same semantic substrate.",
+      "m2:parentGenericConcepts": [
+        {
+          "@id": "m2:Transformation",
+          "formula": "S ⊗ I ⊗ D ⊗ F ⊗ V",
+          "uniqueContribution": "D (Dynamics), F (Flow)",
+          "contribution": "The process evolving the semantic network over time. D = temporal unfolding (beginning, middle, end). F = narrative flux (what flows from one representation to the next). Without Transformation, the semantic network is static — a map, not a narration."
+        },
+        {
+          "@id": "m2:Representation",
+          "formula": "S ⊗ I ⊗ V ⊗ R",
+          "uniqueContribution": "R (Representability)",
+          "contribution": "The nodes of the semantic network — decodable semantic units (words, images, symbols, events). R = semantic encodability/decodability of each node."
+        },
+        {
+          "@id": "m2:Relation",
+          "formula": "S ⊗ I ⊗ A ⊗ Im",
+          "uniqueContribution": "A (Attractor), Im (Interoperability)",
+          "contribution": "The arcs of the semantic network (causality, temporality, contrast, analogy). A = narrative telos (resolution, moral, conclusion). Im = shared understanding between emitter and receiver."
+        }
+      ],
+      "m2:latticeJoinComputation": {
+        "contracted": ["S", "I", "V"],
+        "unique_from_Transformation": ["D", "F"],
+        "unique_from_Representation": ["R"],
+        "unique_from_Relation": ["A", "Im"],
+        "result": ["S", "I", "D", "F", "V", "R", "A", "Im"],
+        "dimensionCount": 8,
+        "note": "Richest GenericConceptCombo to date (8D vs 7D for Propagation). Fully spans ASFID (S,I,D,F,A) + key REVOI dimensions (V,R,Im)."
+      },
+      "m2:dimensionSemantics": {
+        "S": "Topology of the semantic network: nodes (representations), arcs (relations), narrative architecture",
+        "I": "Semantic content carried by nodes and arcs — what the narration is about",
+        "D": "Temporal unfolding — beginning, development, end; tension and resolution evolve. From Transformation.",
+        "F": "Narrative flux — what passes from one representation to the next (causality, consequence, continuity). From Transformation.",
+        "V": "Coherence + decodability: the narration is internally consistent and its nodes are semantically readable. From Transformation ∩ Representation.",
+        "R": "Semantic encodability/decodability of nodes in a symbolic medium (language, image, gesture). From Representation.",
+        "A": "Narrative telos: resolution, moral, conclusion, equilibrium toward which the semantic network gravitates. From Relation.",
+        "Im": "Interoperability: the semantic network is shareable — emitter and receiver operate on the same representational substrate. From Relation."
+      },
+      "m2:hasEpistemicGap": 0.35,
+      "m2:hasPolarity": "neutral",
+      "m2:perspective": "dual",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "S ⊗ I ⊗ A ⊗ D ⊗ F",
+        "role": "Measure observable narration in Territory: semantic network structure (S), informational content (I), narrative attractor/telos (A), temporal unfolding (D), narrative flux (F)",
+        "status": "IMMUTABLE"
+      },
+      "m2:sphinxView": {
+        "formulaPrimary": {
+          "basis": "REVOI (partial)",
+          "formula": "R ⊗ V ⊗ Im ⊗ E",
+          "role": "Evaluate Map quality: semantic encodability (R), coherence (V), shared understanding (Im), evolvability across contexts (E)",
+          "status": "PROPOSITION (validation in progress)"
+        }
+      },
+      "m2:hasAttribute": {
+        "narrativeTopology": {
+          "@type": "m2:ValueSpace",
+          "m2:valueType": "Discrete symbolic",
+          "m2:description": "Topological shape of the semantic network transformation",
+          "m2:possibleValues": [
+            { "value": "Linear", "description": "Single directed chain A→B→C→Resolution", "examples": ["Hero journey", "Historical chronicle", "Scientific paper"] },
+            { "value": "Branching", "description": "Tree with decision points or parallel threads", "examples": ["Choose-your-own-adventure", "Diagnostic decision tree"] },
+            { "value": "Circular", "description": "Attractor is the starting point — narration returns to origin transformed", "examples": ["Myth of eternal return", "Comedy of errors"] },
+            { "value": "Nested", "description": "Narration contains embedded sub-narrations (Imbrication)", "examples": ["Arabian Nights", "Flashback structure"] },
+            { "value": "Network", "description": "Rhizomatic — no single entry/exit, multiple attractors", "examples": ["Hypertext fiction", "Talmudic commentary"] }
+          ],
+          "m2:default": "Linear"
+        },
+        "attractorType": {
+          "@type": "m2:ValueSpace",
+          "m2:valueType": "Discrete symbolic",
+          "m2:description": "Nature of the narrative attractor (A) — the resolution toward which the semantic network gravitates",
+          "m2:possibleValues": [
+            { "value": "Resolution", "description": "Stable equilibrium — conflict resolved, question answered", "examples": ["Detective reveals culprit", "Scientific hypothesis confirmed"] },
+            { "value": "Transformation", "description": "Protagonist/system qualitatively changed", "examples": ["Hero's journey completion", "Paradigm shift (Kuhn)"] },
+            { "value": "OpenEnded", "description": "Asymptotic — narration approaches but never reaches resolution", "examples": ["Postmodern novel", "Ongoing research narrative"] },
+            { "value": "Collapse", "description": "Negative attractor — convergence toward dissolution", "examples": ["Tragedy (Hamlet)", "Kindleberger-Minsky Revulsion phase"] }
+          ],
+          "m2:default": "Resolution"
+        }
+      },
+      "m2:hasExample": [
+        "Mythology — Hero's journey (S=mythological network, I=archetypal content, D=trials unfolding, F=transformation flux, V=internal coherence, R=symbolic encodability, A=apotheosis, Im=cross-cultural archetypes)",
+        "Literature — Novel (S=character+event network, I=semantic content, D=plot unfolding, F=causal flux, V=narrative coherence, R=linguistic encodability, A=resolution/catharsis, Im=reader-author shared language)",
+        "Science — Scientific article (S=concept network, I=empirical content, D=argument development, F=logical flux, V=methodological coherence, R=formal representability, A=conclusion, Im=disciplinary shared vocabulary)",
+        "Finance — Kindleberger-Minsky bubble narrative (S=market belief network, I=speculative content, D=bubble phase unfolding, F=narrative contagion flux, V=internal consistency of 'new paradigm', R=financial media encodability, A=Minsky Moment collapse, Im=shared market interpretation)",
+        "Law — Legal judgment (S=precedent+fact network, I=legal content, D=deliberation unfolding, F=logical flux, V=legal coherence, R=formal legal encodability, A=verdict, Im=shared legal language)",
+        "Neuroscience — Episodic memory construction (S=memory node network, I=experiential content, D=temporal reconstruction, F=associative flux, V=autobiographical coherence, R=mental representability, A=meaning/identity attractor, Im=shared social memory)"
+      ],
+      "m2:distinctionFromRelated": {
+        "vs_Signal": "Signal (F⊗I⊗R) is 1:1 transmission of a single representation. Narration is a NETWORK of representations linked by relations, transformed over time toward a telos.",
+        "vs_Pattern": "Pattern is a static reusable template. Narration is a DYNAMIC TRANSFORMATION — the semantic network evolves.",
+        "vs_Language": "Language (S⊗I⊗F⊗A⊗R) is the formal combinatorial system. Narration uses Language as substrate but adds directed temporal transformation (D), coherence (V), and interoperability (Im).",
+        "vs_Memory": "Memory stores and retrieves past states. Narration actively transforms and reconstructs representations into a directed semantic network with telos.",
+        "vs_Propagation": "Propagation COPIES faithfully — content preserved. Narration TRANSFORMS — content evolves toward a telos. In Kindleberger-Minsky: panic PROPAGATES; collective market beliefs are NARRATED."
+      },
+      "m2:transdisciplinaryValidation": {
+        "domains": [
+          { "domain": "Mythology / Anthropology", "examples": ["Hero's journey (Campbell)", "Creation myths", "Trickster narratives"] },
+          { "domain": "Literature / Narratology", "examples": ["Novel", "Epic poem", "Short story"] },
+          { "domain": "Science / Epistemology", "examples": ["Scientific paper", "Paradigm (Kuhn)", "Research program narrative"] },
+          { "domain": "Finance / Economics", "examples": ["Kindleberger-Minsky bubble narrative", "Shiller narrative economics"] },
+          { "domain": "Law", "examples": ["Legal judgment", "Constitutional narrative", "Contract interpretation"] },
+          { "domain": "Neuroscience / Cognitive Science", "examples": ["Episodic memory construction", "Autobiographical self (Damasio)"] }
+        ],
+        "count": 6
+      },
+      "m2:discoveryContext": "Identified during Kindleberger-Minsky poclet analysis. The speculative bubble is not only a Propagation (panic spreading) but also a Narration: collective market beliefs form a semantic network ('new paradigm', 'this time is different') transformed over 5 Minsky phases toward the Collapse attractor. Michel formalized as 'Process of Transformation of Representations and their Relations — a semantic network morphism'.",
+      "m2:namingRationale": "Narration (process noun) over Narrative (artifact noun): consistent with M2 process vocabulary (Transformation, Regulation, Adaptation). The active process of narrating is the M2 pattern; the resulting artifact is an M0/M1 instantiation.",
+      "m2:significance": "Richest GenericConceptCombo (8D: S⊗I⊗D⊗F⊗V⊗R⊗A⊗Im), fully spanning ASFID Territory (S,I,D,F,A) and key REVOI Map dimensions (V,R,Im). Formalizes semantic network morphism in TSCG. Provides M2 foundation for modeling collective belief systems, market narratives, scientific paradigms and mythological structures within a unified transdisciplinary framework.",
+      "m3:semanticSignature": "semantic_network_morphism + temporal_transformation + representation_nodes + relation_arcs + narrative_attractor + shared_understanding",
+      "m2:hasComboComponent": [
+        { "@id": "m2:Transformation", "m2:comboRole": "process_mechanism", "rdfs:comment": "Directed process evolving the semantic network over time toward the attractor" },
+        { "@id": "m2:Representation", "m2:comboRole": "node", "rdfs:comment": "Semantically encodable/decodable nodes of the network" },
+        { "@id": "m2:Relation", "m2:comboRole": "arc", "rdfs:comment": "Links between representations providing telos (A) and shared understanding (Im)" }
+      ]
     }
   ]
 }

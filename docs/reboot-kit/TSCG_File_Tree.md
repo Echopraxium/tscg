@@ -1,55 +1,50 @@
 # 📁 TSCG Framework - Complete File Tree
 
-**Date:** 2026-02-27  
-**Framework Version:** TSCG v15.8.0  
-**Total Files:** 477
+**Date:** 2026-03-01  
+**Framework Version:** TSCG v15.9.0  
+**Total Files:** 467
 
 ---
 
 ## 📊 Project Statistics
 
 **Ontology Files:**
-- M3 Layer: 5 files (+ .ttl twins + Ref/ copies)
+- M3 Layer: 4 files (M3_EagleEye, M3_GenesisSpace, M3_GenesisSpace_Ref, M3_SphinxEye; .ttl only for Ref and SphinxEye)
 - M2 Layer: 1 file (M2_GenericConcepts) + archived versions in docs/
-- M1 Layer: 1 core file + 9 domain extensions (biology, chemistry, education, **electronics**, energy_generators, mythology, optics, photography, physics)
-- M0 Layer: validated poclets (system-models/validation/) + experimental poclets (system-models/poclets/) + 1 VSM systemic framework + 1 symbolic grammar
+- M1 Layer: 1 core file + 10 domain extensions (biology, chemistry, **economics**, education, electronics, energy_generators, mythology, optics, photography, physics)
+- M0 Layer: experimental poclets (system-models/poclets/) + TSCG Tools (system-models/tscg-tools/) + 1 VSM systemic framework + 1 symbolic grammar
 
 **Documentation:** ~110 files  
 **Source Code:** extensive `src/tscg/` Python package  
 **Scripts & Tools:** 25+ files  
 **Root & Config:** 9 files
 
-**Total:** 477 files
+**Total:** 467 files
 
 ---
 
-## 🆕 What's New (vs v15.7.0)
+## 🆕 What's New (vs v15.8.0)
 
-### v15.8.0 (2026-02-27) — Current
-- ✅ Smart Prompt v15.8.0 released (`docs/reboot-kit/TSCG_Smart_Prompt_v15_8_0.md`)
-- ✅ New M1 extensions: `education/` (M1_Education) and `physics/` (M1_Physics)
-- ✅ New poclet: `phase_transition/` (M0_PhaseTransition + simulation)
-- ✅ `phase_transition_sim.py` added in simulation-engine
-- ✅ Preprints reorganized: v3 added, v1/v2 archived to `previous/` subfolder
-- ✅ New files in `docs/papers/inputs/`: `M2_v7.2.0_Summary.md`, `M2_v8.0.0_Update_Guide.md`
-- ✅ `m2_Oscillator_snippet.jsonld` added at ontology root
-- ✅ New M1 extension: `electronics/` (M1_Electronics.jsonld + README) — 17 concepts
-- ✅ New poclet: `vco/` (M0_VCO + vco_sim.py + VCO_Simulation_README) — first instantiation of m2:Oscillator
-- ✅ `M2_GenericConcepts_2026_02_17_17h-00min.jsonld` added in `ontology/Ref/`
-- ✅ `cli_tools/` new folder at project root
-- ✅ Poclets docs folder renamed from `docs/` to `_00_docs/`
+### v15.9.0 (2026-03-01) — Current
+- ✅ New M1 extension: `economics/` (M1_Economics.jsonld + M1_Economics_README.md)
+- ✅ New poclet: `kindleberger-minsky/` (M0_KindlebergerMinsky + simulation)
+- ✅ New section: `system-models/tscg-tools/tscg-explorer/` (M0_TscgExplorer + tscg_explorer.py)
+- ❌ `system-models/validation/` directory removed (validated poclets now live only in `poclets/`)
+- ❌ `.ttl` twins removed for `M3_EagleEye` and `M3_GenesisSpace` in `ontology/`
+- ❌ `.ttl` twins removed for several poclets (color_synthesis, complex_chemical_synapse, tpack, vco, phase_transition, mtg_color_wheel)
+
+### v15.8.0 (2026-02-27)
+- Smart Prompt v15.8.0 released
+- New M1 extensions: `education/`, `physics/`, `electronics/` (VCO domain)
+- New poclets: `phase_transition/` (simulation) + `vco/` (first m2:Oscillator instantiation)
+- `M1_Electronics.jsonld` — 17 concepts covering analog electronics & modular synthesis
+- Preprints reorganized with `previous/` subfolder; v3 is now current
 
 ### v15.7.0 (2026-02-25)
 - Smart Prompt v15.7.0 released
 - Full src/tscg/ Python engine package
 - symbolic-system-grammars/ category with I-Ching
 - JSON-LD to OWL/Turtle converter operational
-
-### v15.1.0 (2026-02-XX)
-- REVOI canonical notation consolidated (deprecated ORIVE removed)
-- M1_CoreConcepts expanded from 3 to 9 concepts
-- All ontology files converted to dual format (.jsonld + .ttl)
-- M1_EnergyGenerators extension added
 
 ---
 
@@ -58,13 +53,13 @@
 Core foundation defining the bicephalous architecture (Territory/Map distinction).
 
 ### Main ontology/
-- [M3_EagleEye.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_EagleEye.jsonld) / [.ttl](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_EagleEye.ttl) - Territory perspective (ASFID dimensions)
-- [M3_GenesisSpace.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace.jsonld) / [.ttl](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace.ttl) - Foundational ontology
+- [M3_EagleEye.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_EagleEye.jsonld) - Territory perspective (ASFID dimensions)
+- [M3_GenesisSpace.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace.jsonld) - Foundational ontology
 - [M3_GenesisSpace_Ref.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace_Ref.jsonld) / [.ttl](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_GenesisSpace_Ref.ttl) - Reference copy
 - [M3_SphinxEye.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_SphinxEye.jsonld) / [.ttl](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M3_SphinxEye.ttl) - Map perspective (REVOI dimensions)
 
 ### ontology/Ref/ (reference copies)
-- [M2_GenericConcepts_2026_02_17_17h-00min.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/Ref/M2_GenericConcepts_2026_02_17_17h-00min.jsonld) — **NEW**
+- [M2_GenericConcepts_2026_02_17_17h-00min.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/Ref/M2_GenericConcepts_2026_02_17_17h-00min.jsonld)
 - [M2_MetaConcepts_Ref.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/Ref/M2_MetaConcepts_Ref.jsonld) / [.ttl](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/Ref/M2_MetaConcepts_Ref.ttl)
 - [M3_GenesisSpace_Ref.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/Ref/M3_GenesisSpace_Ref.jsonld) / [.ttl](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/Ref/M3_GenesisSpace_Ref.ttl)
 
@@ -74,7 +69,7 @@ Core foundation defining the bicephalous architecture (Territory/Map distinction
 
 ### Main ontology/ file
 - [M2_GenericConcepts.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_GenericConcepts.jsonld) - Generic/universal metaconcepts
-- [m2_Oscillator_snippet.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/m2_Oscillator_snippet.jsonld) — **NEW**
+- [m2_Oscillator_snippet.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/m2_Oscillator_snippet.jsonld)
 
 ### ontology/sparql/ (SPARQL tools)
 - [M2_MetaConcepts_2026_02_08_encoding_lint_ok.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/sparql/M2_MetaConcepts_2026_02_08_encoding_lint_ok.jsonld) / [.ttl](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/sparql/M2_MetaConcepts_2026_02_08_encoding_lint_ok.ttl)
@@ -136,11 +131,15 @@ Core foundation defining the bicephalous architecture (Territory/Map distinction
 **Chemistry (M1_extensions/chemistry/):**
 - [M1_Chemistry.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/chemistry/M1_Chemistry.jsonld) / [.ttl](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/chemistry/M1_Chemistry.ttl)
 
-**Education (M1_extensions/education/) — NEW:**
+**Economics (M1_extensions/economics/) — NEW:**
+- [M1_Economics.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/economics/M1_Economics.jsonld)
+- [M1_Economics_README.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/economics/M1_Economics_README.md)
+
+**Education (M1_extensions/education/):**
 - [M1_Education.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/education/M1_Education.jsonld)
 - [M1_Education_README.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/education/M1_Education_README.md)
 
-**Electronics (M1_extensions/electronics/) — NEW:**
+**Electronics (M1_extensions/electronics/):**
 - [M1_Electronics.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/electronics/M1_Electronics.jsonld) — 17 KnowledgeFieldConcepts : ActiveComponent, Amplifier, Filter, ElectronicOscillator, VoltageControlledOscillator, LFO, FeedbackOscillator, WaveformMode, AudioSignal, ControlVoltage, PitchCV, ExponentialConverter, ModulationSource, EurorackModule, SignalChain, FrequencyModulation, SignalProcessor
 - [M1_Electronics_README.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/electronics/M1_Electronics_README.md)
 
@@ -157,7 +156,7 @@ Core foundation defining the bicephalous architecture (Territory/Map distinction
 **Photography (M1_extensions/photography/):**
 - [M1_Photography.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/photography/M1_Photography.jsonld) / [.ttl](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/photography/M1_Photography.ttl)
 
-**Physics (M1_extensions/physics/) — NEW:**
+**Physics (M1_extensions/physics/):**
 - [M1_Physics.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/physics/M1_Physics.jsonld)
 - [M1_Physics_README.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/physics/M1_Physics_README.md)
 
@@ -179,49 +178,39 @@ Core foundation defining the bicephalous architecture (Territory/Map distinction
 - [M0_IChing.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/symbolic-system-grammars/iching/M0_IChing.jsonld) / [.ttl](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/symbolic-system-grammars/iching/M0_IChing.ttl)
 - [M0_IChing_README.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/symbolic-system-grammars/iching/M0_IChing_README.md)
 
-### Validated Poclets (system-models/validation/)
+### TSCG Tools (system-models/tscg-tools/) — NEW
 
-Each poclet has `.jsonld` and `.ttl` files:
-
-- [M0_AdaptiveImmuneResponse](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_AdaptiveImmuneResponse.jsonld)
-- [M0_BloodPressureControl](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_BloodPressureControl.jsonld)
-- [M0_ButterflyMetamorphosis](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_ButterflyMetamorphosis.jsonld)
-- [M0_CellSignalingModes](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_CellSignalingModes.jsonld)
-- [M0_CMYK_Subtractive](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_CMYK_Subtractive.jsonld)
-- [M0_CMY_Subtractive](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_CMY_Subtractive.jsonld)
-- [M0_ColorSynthesis_Federated](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_ColorSynthesis_Federated.jsonld)
-- [M0_ComplexChemicalSynapse](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_ComplexChemicalSynapse.jsonld)
-- [M0_ExposureTriangle](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_ExposureTriangle.jsonld)
-- [M0_FireTriangle](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_FireTriangle.jsonld)
-- [M0_FourStrokeEngine](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_FourStrokeEngine.jsonld)
-- [M0_HSL_Additive](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_HSL_Additive.jsonld)
-- [M0_MTG_ColorWheel](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_MTG_ColorWheel.jsonld)
-- [M0_RGB_Additive](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_RGB_Additive.jsonld)
-- [M0_TPACK](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_TPACK.jsonld)
-- [M0_Yggdrasil](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_Yggdrasil.jsonld)
+**TSCG Explorer (tscg-tools/tscg-explorer/):**
+- [M0_TscgExplorer.jsonld](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/tscg-tools/tscg-explorer/M0_TscgExplorer.jsonld) - Meta-analytical poclet (TSCG analyzing itself)
+- [M0_TscgExplorer_README.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/tscg-tools/tscg-explorer/M0_TscgExplorer_README.md)
+- [TSCG_Explorer_Simulation_README.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/tscg-tools/tscg-explorer/TSCG_Explorer_Simulation_README.md)
+- [tscg_explorer.py](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/tscg-tools/tscg-explorer/tscg_explorer.py)
+- _00_Run_Simulation.bat, _00_setup_notes.txt, _open_cmd_window.bat, requirements.txt
 
 ### Experimental Poclets (system-models/poclets/)
 
-Each poclet folder contains `.jsonld`, `.ttl`, `_README.md` and sometimes simulation scripts.
+Each poclet folder contains `.jsonld`, `_README.md` and sometimes simulation scripts. Note: `.ttl` twins are present only for certain poclets (see individual entries).
 
 **Active poclets:**
-- `adaptative_immune_response/` — M0_AdaptiveImmuneResponse + README
-- `blood_pressure_control/` — M0_BloodPressureControl + README
-- `butterfly_metamorphosis/` — M0_ButterflyMetamorphosis + README + executive summary
-- `cell_signaling_modes/` — M0_CellSignalingModes + README
-- `color_synthesis/` — CMYK, CMY, ColorSynthesis_Federated, HSL, RGB + READMEs + color_synthesis_sim.py
-- `complex_chemical_synapse/` — M0_ComplexChemicalSynapse + README + complex_chemical_synapse_sim.py
-- `exposure_triangle/` — M0_ExposureTriangle + README + exposure_triangle_sim.py
-- `fire_triangle/` — M0_FireTriangle + README + fire_triangle_sim.py
-- `four_stroke_engine/` — M0_FourStrokeEngine + README + four_stroke_engine_sim.py
-- `kidneys/` — M0_Kidneys + README
-- `mtg_color_wheel/` — M0_MTG_ColorWheel + README + sim_mtg_color_wheel.py
-- `nuclear_reactors_typology/` — M0_NuclearReactorTypology + README
-- `phase_transition/` — M0_PhaseTransition + README + phase_transition_sim.py — **NEW**
-- `raas/` — M0_RAAS + RAAS_Complete_README
-- `tpack/` — M0_TPACK + TPACK_README + tpack_sim.py
-- `transistor/` — M0_Transistor + README + transistor_sim.py
-- `vco/` — M0_VCO + M0_VCO_README + vco_sim.py + VCO_Simulation_README — **NEW** (first m2:Oscillator instantiation)
+- `adaptative_immune_response/` — M0_AdaptiveImmuneResponse.jsonld / .ttl + README
+- `blood_pressure_control/` — M0_BloodPressureControl.jsonld / .ttl + README
+- `butterfly_metamorphosis/` — M0_ButterflyMetamorphosis.jsonld / .ttl + README + executive summary
+- `cell_signaling_modes/` — M0_CellSignalingModes.jsonld / .ttl + README
+- `color_synthesis/` — CMYK, CMY, ColorSynthesis_Federated, HSL, RGB (.jsonld only) + READMEs + color_synthesis_sim.py
+- `complex_chemical_synapse/` — M0_ComplexChemicalSynapse.jsonld + README + complex_chemical_synapse_sim.py
+- `exposure_triangle/` — M0_ExposureTriangle.jsonld / .ttl + README + exposure_triangle_sim.py
+- `fire_triangle/` — M0_FireTriangle.jsonld / .ttl + README + fire_triangle_sim.py
+- `four_stroke_engine/` — M0_FourStrokeEngine.jsonld / .ttl + README + four_stroke_engine_sim.py
+- `kidneys/` — M0_Kidneys.jsonld / .ttl + README
+- `kindleberger-minsky/` — M0_KindlebergerMinsky.jsonld + README + KindlebergerMinsky_Simulation_README + kindleberger_minsky_sim.py — **NEW**
+- `mtg_color_wheel/` — M0_MTG_ColorWheel.jsonld + README + sim_mtg_color_wheel.py
+- `nuclear_reactors_typology/` — M0_NuclearReactorTypology.jsonld / .ttl + README
+- `phase_transition/` — M0_PhaseTransition.jsonld + README + phase_transition_sim.py
+- `raas/` — M0_RAAS.jsonld / .ttl + RAAS_Complete_README
+- `tpack/` — M0_TPACK.jsonld + TPACK_README + tpack_sim.py
+- `transistor/` — M0_Transistor.jsonld / .ttl + README + transistor_sim.py
+- `vco/` — M0_VCO.jsonld + M0_VCO_README + vco_sim.py + VCO_Simulation_README (first m2:Oscillator instantiation)
+- `yggdrasil/` — M0_Yggdrasil.jsonld / .ttl + README + companion documents
 
 **Yggdrasil companion documents:**
 - [Heimdall_Interface_Constraint_Analysis.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/yggdrasil/Heimdall_Interface_Constraint_Analysis.md)
@@ -233,6 +222,7 @@ Each poclet folder contains `.jsonld`, `.ttl`, `_README.md` and sometimes simula
 **Poclets documentation (system-models/poclets/_00_docs/):**
 - [poclet_terminology.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/_00_docs/poclet_terminology.md)
 - [minimal_systems_engineering_frameworks.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/_00_docs/minimal_systems_engineering_frameworks.md)
+- [Poclet Ideas.txt](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/_00_docs/Poclet%20Ideas.txt)
 
 ---
 
@@ -278,11 +268,11 @@ Full Python package structure for the TSCG engine.
 
 ### Simulation Engine (src/tscg/simulation-engine/)
 - color_synthesis_sim.py, complex_chemical_synapse_sim.py, exposure_triangle_sim.py
-- fire_triangle_sim.py, four_stroke_engine_sim.py, phase_transition_sim.py — **NEW**
+- fire_triangle_sim.py, four_stroke_engine_sim.py, phase_transition_sim.py
 - tpack_sim.py, transistor_sim.py
-- poclet_parser.py, requirements.txt
+- poclet_parser.py, requirements.txt, setup_notes.txt
 
-> **Note:** `vco_sim.py` lives in the poclet folder (`system-models/poclets/vco/`) and not in the shared simulation-engine, as it has no dependency on `poclet_parser.py`.
+> **Note:** `vco_sim.py` and `kindleberger_minsky_sim.py` live in their respective poclet folders and not in the shared simulation-engine, as they have no dependency on `poclet_parser.py`.
 
 ### Tests (src/tscg/tests/)
 - test_facades.py
@@ -316,7 +306,7 @@ Full Python package structure for the TSCG engine.
 - [M0_VSM_README.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/M0_VSM_README.md)
 
 **Project Management:**
-- [TSCG_File_Tree.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/TSCG_File_Tree.md) - **This file (v15.8.0)**
+- [TSCG_File_Tree.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/TSCG_File_Tree.md) - **This file (v15.9.0)**
 - [TO_DO.txt](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/TO_DO.txt)
 - [poclet_terminology.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/poclet_terminology.md)
 - [Namespace_Refactoring_Summary.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/Namespace_Refactoring_Summary.md)
@@ -328,7 +318,7 @@ Full Python package structure for the TSCG engine.
 **Smart Prompts (docs/reboot-kit/SmartPrompts/):**
 - [TSCG_Smart_Prompt_v15_1_0.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/TSCG_Smart_Prompt_v15_1_0.md)
 - [TSCG_Smart_Prompt_v15_7_0.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/TSCG_Smart_Prompt_v15_7_0.md)
-- [TSCG_Smart_Prompt_v15_8_0.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/TSCG_Smart_Prompt_v15_8_0.md) — **NEW**
+- [TSCG_Smart_Prompt_v15_8_0.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/TSCG_Smart_Prompt_v15_8_0.md)
 - [SmartPrompts/Smart_Prompt_2026_01_17.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/SmartPrompts/Smart_Prompt_2026_01_17.md)
 - [SmartPrompts/TSCG_Smart_Prompt_11_0_0.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/SmartPrompts/TSCG_Smart_Prompt_11_0_0.md)
 - [SmartPrompts/TSCG_Smart_Prompt_v14.2_Step.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/SmartPrompts/TSCG_Smart_Prompt_v14.2_Step.md)
@@ -359,10 +349,10 @@ Full Python package structure for the TSCG engine.
 ### Papers (docs/papers/)
 
 **Preprints (docs/papers/preprints/):**
-- [TSCG_Research_Paper_Draft_v3.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/preprints/TSCG_Research_Paper_Draft_v3.md) — **NEW (current)**
+- [TSCG_Research_Paper_Draft_v3.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/preprints/TSCG_Research_Paper_Draft_v3.md) *(current)*
 - [new draft specification.txt](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/preprints/new%20draft%20specification.txt)
 
-**Previous versions (docs/papers/preprints/previous/) — NEW SUBFOLDER:**
+**Previous versions (docs/papers/preprints/previous/):**
 - [TSCG_Research_Paper_Draft_v1.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/preprints/previous/TSCG_Research_Paper_Draft_v1.md)
 - [TSCG_Research_Paper_Draft_v2.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/preprints/previous/TSCG_Research_Paper_Draft_v2.md)
 
@@ -375,8 +365,8 @@ Full Python package structure for the TSCG engine.
 - [00_Map_Territory_v1.2_Update_Summary.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/inputs/00_Map_Territory_v1.2_Update_Summary.md)
 - [00_TSCG_M3_Bicephalous_Architecture.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/inputs/00_TSCG_M3_Bicephalous_Architecture.md)
 - [00_TSCG_Map_Territory_Theoretical_Foundation.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/inputs/00_TSCG_Map_Territory_Theoretical_Foundation.md)
-- [M2_v7.2.0_Summary.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/inputs/M2_v7.2.0_Summary.md) — **NEW**
-- [M2_v8.0.0_Update_Guide.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/inputs/M2_v8.0.0_Update_Guide.md) — **NEW**
+- [M2_v7.2.0_Summary.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/inputs/M2_v7.2.0_Summary.md)
+- [M2_v8.0.0_Update_Guide.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/inputs/M2_v8.0.0_Update_Guide.md)
 - [TSCG-M3_Ontology_Documentation.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/inputs/TSCG-M3_Ontology_Documentation.md)
 - [TSCG_Session_Complete_Summary_Claude_2025_01_14.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/inputs/TSCG_Session_Complete_Summary_Claude_2025_01_14.md)
 - [Network_Decomposition_Report.md](https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/inputs/Network_Decomposition_Report.md)
@@ -395,48 +385,49 @@ Full Python package structure for the TSCG engine.
 aladas-org/cryptocalc/                 # Repository root
 ├── CLAUDE.md                          # Claude AI instructions
 ├── README.md
-├── _open_cmd_window.bat               # NEW
-├── claude_setup.txt                   # NEW
+├── _open_cmd_window.bat
+├── claude_setup.txt
 ├── files.txt                          # Complete file list
 ├── create_files_URIS.py
 ├── diagnostic_models.py
-├── cli_tools/                         # NEW
+├── cli_tools/
 │   └── _open_powershell.bat
 ├── ontology/                          # Reference ontologies (M3, M2, M1)
 │   ├── M1_CoreConcepts.jsonld/ttl
 │   ├── M2_GenericConcepts.jsonld
-│   ├── M3_EagleEye.jsonld/ttl
-│   ├── M3_GenesisSpace.jsonld/ttl
+│   ├── M3_EagleEye.jsonld             # .ttl no longer present
+│   ├── M3_GenesisSpace.jsonld         # .ttl no longer present
 │   ├── M3_GenesisSpace_Ref.jsonld/ttl
 │   ├── M3_SphinxEye.jsonld/ttl
-│   ├── m2_Oscillator_snippet.jsonld   # NEW
+│   ├── m2_Oscillator_snippet.jsonld
 │   ├── shacl_shapes.ttl
 │   ├── TO_DO.txt
 │   ├── M1_extensions/                 # Domain-specific extensions
 │   │   ├── M1_CoreConcepts_NuclearUpdate.jsonld/ttl
 │   │   ├── biology/
 │   │   ├── chemistry/
-│   │   ├── education/                 # NEW
-│   │   ├── electronics/               # NEW — M1_Electronics (17 concepts)
+│   │   ├── economics/                 # NEW
+│   │   ├── education/
+│   │   ├── electronics/
 │   │   ├── energy_generators/
 │   │   ├── mythology/
 │   │   ├── optics/
 │   │   ├── photography/
-│   │   └── physics/                   # NEW
+│   │   └── physics/
 │   ├── Ref/                           # Reference copies
-│   │   └── M2_GenericConcepts_2026_02_17_17h-00min.jsonld  # NEW
+│   │   └── M2_GenericConcepts_2026_02_17_17h-00min.jsonld
 │   ├── docs/                          # Ontology documentation & archives
 │   ├── sparql/                        # SPARQL queries & SPARQL-enriched ontologies
 │   └── tools/                         # Reference tool files
 ├── system-models/                     # System instances (M0 layer)
 │   ├── poclets/                       # Experimental models (by subfolder)
-│   │   ├── _00_docs/                  # Poclets documentation (renamed from docs/)
-│   │   ├── phase_transition/          # NEW poclet
-│   │   ├── vco/                       # NEW poclet — VCO (m2:Oscillator)
+│   │   ├── _00_docs/                  # Poclets documentation
+│   │   ├── kindleberger-minsky/       # NEW poclet
 │   │   └── [other domain folders]
-│   ├── validation/                    # Validated models (.jsonld + .ttl)
+│   ├── tscg-tools/                    # NEW — TSCG meta-analytical tools
+│   │   └── tscg-explorer/             # TSCG Explorer (self-analysis)
 │   ├── systemic-frameworks/vsm/       # VSM framework integration
-│   └── symbolic-system-grammars/     # I-Ching and similar systems
+│   └── symbolic-system-grammars/      # I-Ching and similar systems
 │       └── iching/
 ├── src/tscg/                          # Python package
 │   ├── engine/                        # Core engine (analysis, RAG, math, reasoner)
@@ -445,17 +436,17 @@ aladas-org/cryptocalc/                 # Repository root
 │   ├── webapi/
 │   ├── ontology_tools/                # jsonld-to-owl converter, migration tools
 │   ├── rag/                           # Standalone RAG scripts
-│   ├── simulation-engine/             # Pygame simulations (+ phase_transition_sim.py)
+│   ├── simulation-engine/             # Pygame simulations
 │   └── tests/
 └── docs/                              # Main documentation
     ├── reboot-kit/                    # Quick-start package
-    │   └── SmartPrompts/              # Smart Prompt history (v15.8.0 added)
+    │   └── SmartPrompts/              # Smart Prompt history
     ├── methodology/                   # Development guides
     ├── Orchestration/                 # Multi-agent coordination
     └── papers/                        # Academic papers & white papers
         ├── inputs/
         ├── preprints/
-        │   └── previous/              # NEW: archived v1 & v2
+        │   └── previous/              # Archived v1 & v2
         └── white-paper/
 ```
 
@@ -463,7 +454,15 @@ aladas-org/cryptocalc/                 # Repository root
 
 ## 🔄 Version History
 
-### v15.8.0 (2026-02-27) — Current
+### v15.9.0 (2026-03-01) — Current
+
+- New M1 extension: `economics/` (M1_Economics.jsonld + README)
+- New poclet: `kindleberger-minsky/` (M0 + simulation)
+- New section: `system-models/tscg-tools/tscg-explorer/` (meta-analytical tool)
+- `system-models/validation/` directory removed
+- `.ttl` twins removed for M3_EagleEye and M3_GenesisSpace in ontology/
+
+### v15.8.0 (2026-02-27)
 
 - Smart Prompt v15.8.0 released
 - New M1 extensions: `education/`, `physics/`, `electronics/` (VCO domain)
@@ -478,15 +477,8 @@ aladas-org/cryptocalc/                 # Repository root
 - symbolic-system-grammars/ category with I-Ching
 - JSON-LD to OWL/Turtle converter operational
 
-### v15.1.0 (2026-02-XX)
-
-- REVOI canonical notation consolidated (deprecated ORIVE removed)
-- M1_CoreConcepts expanded from 3 to 9 concepts
-- All ontology files converted to dual format (.jsonld + .ttl)
-- M1_EnergyGenerators extension added
-
 ---
 
-**Generated:** 2026-02-27  
-**Framework:** TSCG v15.8.0  
+**Generated:** 2026-03-01  
+**Framework:** TSCG v15.9.0  
 **Author:** Echopraxium with the collaboration of Claude AI

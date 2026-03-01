@@ -79,7 +79,7 @@
         "F_inst(Processor) = BiologicalProcessor (in Biology)" ;
     m3:functorType "covariant" ;
     m3:signature "F_inst: Cat_M2 → Cat_M1" ;
-    rdfs:comment "Functor mapping M2 metaconcepts to M1 domain-specific concepts." .
+    rdfs:comment "Functor mapping M2 GenericConcepts to M1 domain-specific concepts." .
 
 <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#F_tensorization> a owl:NamedIndividual,
         <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Functor> ;
@@ -90,7 +90,7 @@
     m3:functorSourceCategory "m3:Cat_M3_ASFID" ;
     m3:functorType "covariant" ;
     m3:signature "F_⊗: Cat_M3 → Cat_M2" ;
-    rdfs:comment "Functor mapping M3 dimensions to M2 metaconcepts via tensor products." .
+    rdfs:comment "Functor mapping M3 dimensions to M2 GenericConcepts via tensor products." .
 
 <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#KorzybskiPrinciple> a owl:Class ;
     rdfs:label "Korzybski Principle Formalization" ;
@@ -257,21 +257,21 @@
     skos:editorialNote "Defined in M3 (Genesis Space) because it is a foundational metamodel property needed by all layers. M3 has no dependencies, ensuring m3:ontologyCategory is always available without creating circular dependencies." ;
     skos:example "M0_Yggdrasil.jsonld uses m3:Poclet",
         "M1_Biology.jsonld uses m3:DomainExtension",
-        "M2_MetaConcepts.jsonld uses m3:TransdisciplinaryPattern",
+        "M2_GenericConcepts.jsonld uses m3:TransdisciplinaryPattern",
         "M3_GenesisSpace.jsonld uses m3:Genesis" .
 
 <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#semanticSignature> a owl:DatatypeProperty ;
     rdfs:label "Semantic Signature" ;
     dcterms:created "2026-02-20" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Minimal sufficient characterization of an entity's identity within the TSCG framework. Constitutive (positive) rather than differential (negative). Applicable at all layers: M3 (ontology types), M2 (metaconcepts), M1 (domain concepts), M0 (system instances)." ;
+    rdfs:comment "Minimal sufficient characterization of an entity's identity within the TSCG framework. Constitutive (positive) rather than differential (negative). Applicable at all layers: M3 (ontology types), M2 (GenericConcepts), M1 (domain concepts), M0 (system instances)." ;
     rdfs:domain "owl:Thing" ;
     rdfs:range "xsd:string" ;
     skos:definition "A compact, positive, minimal-yet-sufficient description of what an entity IS, expressed as a conjunction of necessary components. Distinct from m3:distinguishingFeatures which is differential (what an entity is NOT). Structure: component_1 + component_2 + ... where all components are necessary and together sufficient." ;
     skos:editorialNote "Supersedes m3:distinguishingFeatures (differential, informal) with a constitutive, formally defined alternative. Existing distinguishingFeatures blocks may be progressively replaced or complemented." ;
     skos:example "M0 poclet: 'Renin→Angiotensin→Aldosterone + pressure_regulation + negative_loop' (RAAS)",
         "M1 concept: 'setpoint + sensor + effector + correction' (Homeostasis)",
-        "M2 metaconcept: 'output → input + regulation + attractor_convergence' (FeedbackLoop)",
+        "M2 GenericConcept: 'output → input + regulation + attractor_convergence' (FeedbackLoop)",
         "M3 type: 'primitives(finite) + combination_rules + multiple_legitimate_interpretations' (SymbolicSystemGrammar)" ;
     skos:scopeNote "Layer-agnostic property defined at M3 level for universal applicability. At M2 level, semanticSignature is the human-readable counterpart of tensorFormula — both express the same identity at different levels of formalization." .
 
@@ -307,7 +307,7 @@
     skos:altLabel "Combinatoric Symbolic System",
         "Formal Symbolic Language",
         "Interpretive Grammar" ;
-    skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryMetaConcepts> ;
+    skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryGenericConcepts> ;
     skos:definition "Ontologies representing formal symbolic systems defined by a finite set of primitives and combination rules, whose value lies in the multiplicity of legitimate interpretations they generate. Neither prescriptive nor empirically arbitrated — interpretation is symbolic, cultural, or contextual." ;
     skos:example "M0_AlchemyGame.jsonld (4 elements → 173 compounds by binary combination)",
         "M0_ChineseGlyphs.jsonld (~200 radicals → ~50,000 sinograms)",
@@ -367,7 +367,7 @@
     skos:altLabel "External Framework Mapping",
         "Framework Integration",
         "Theoretical Framework Bridge" ;
-    skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryMetaConcepts> ;
+    skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryGenericConcepts> ;
     skos:definition "Ontologies that map established systemic/theoretical frameworks (TRIZ, VSD, TPACK, etc.) into TSCG formalism. These provide bridges between TSCG and existing methodologies, enabling cross-framework analysis and integration." ;
     skos:example "M0_TPACK.jsonld (Technological Pedagogical Content Knowledge)",
         "M0_VSD.jsonld (Value-Sensitive Design)" ;
@@ -408,43 +408,43 @@
         "Unit law: f∘id_A = f, id_B∘f = f" ;
     m3:structure [ ] ;
     m3:tscgExamples "Cat_KnowledgeField: Ob = {Chemistry, Biology, Optics...}, Mor = knowledge transfers",
-        "Cat_M2: Ob = {Link, Processor, Component...}, Mor = metaconcept inclusions",
+        "Cat_M2: Ob = {Link, Processor, Component...}, Mor = GenericConcept inclusions",
         "Cat_M3_ASFID: Ob = {A, S, F, I, D}, Mor = tensor products",
         "Cat_TSCG: Ob = {M3, M2, M1, M0}, Mor = functors F_⊗, F_inst" ;
-    rdfs:comment "A category in the mathematical sense: a collection of objects (Ob(C)) and morphisms (Mor(C)) between them, satisfying identity and associativity axioms. In TSCG: Cat_M3 (ASFID dimensions), Cat_M2 (metaconcepts), Cat_M1 (concepts), Cat_KnowledgeField (Chemistry, Biology, Optics...)." .
+    rdfs:comment "A category in the mathematical sense: a collection of objects (Ob(C)) and morphisms (Mor(C)) between them, satisfying identity and associativity axioms. In TSCG: Cat_M3 (ASFID dimensions), Cat_M2 (GenericConcepts), Cat_M1 (concepts), Cat_KnowledgeField (Chemistry, Biology, Optics...)." .
 
-<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryMetaConcepts> a owl:Class,
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryGenericConcepts> a owl:Class,
         skos:Concept ;
     m3:expectedCount 1 ;
     m3:layerOrder 2 ;
     m3:semanticSignature "tensor_product_of_M3_dimensions + domain_agnostic + validated_across_disciplines" ;
-    rdfs:comment "M2 layer ontologies containing metaconcepts - abstract patterns that transcend disciplinary boundaries. Each metaconcept is expressible as a tensor formula combining M3 dimensions (e.g., Homeostasis = A⊗S⊗F)." ;
+    rdfs:comment "M2 layer ontologies containing GenericConcepts - abstract patterns that transcend disciplinary boundaries. Each GenericConcept is expressible as a tensor formula combining M3 dimensions (e.g., Homeostasis = A⊗S⊗F)." ;
     rdfs:subClassOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TscgOntologyType> ;
-    skos:altLabel "M2 Layer",
-        "Metaconcept",
+    skos:altLabel "GenericConcept",
+        "M2 Layer",
         "Tensor Product",
         "Universal Pattern" ;
     skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#Genesis> ;
     skos:definition "Universal patterns derived as tensor products of M3 basis dimensions, validated across multiple scientific disciplines and applicable regardless of domain." ;
-    skos:example "M2_MetaConcepts.jsonld (currently 62 metaconcepts including Step, Node, Homeostasis, etc.)" ;
+    skos:example "M2_GenericConcepts.jsonld (currently 62 GenericConcepts including Step, Node, Homeostasis, etc.)" ;
     skos:inScheme <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TscgOntologyTypeScheme> ;
     skos:notation "M2" ;
-    skos:prefLabel "Transdisciplinary MetaConcepts" ;
-    skos:scopeNote "Typically 1 ontology containing 72+ metaconcepts. May grow as new transdisciplinary patterns are discovered." ;
+    skos:prefLabel "Transdisciplinary GenericConcepts" ;
+    skos:scopeNote "Typically 1 ontology containing 72+ GenericConcepts. May grow as new transdisciplinary patterns are discovered." ;
     skos:topConceptOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TscgOntologyTypeScheme> .
 
 <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#DomainExtension> a owl:Class,
         skos:Concept ;
     m3:expectedCount "6+" ;
     m3:layerOrder 3 ;
-    m3:semanticSignature "domain_specific + specializes_M2_metaconcepts + bridges_M2_to_M0" ;
-    rdfs:comment "M1 layer ontologies that bridge transdisciplinary metaconcepts (M2) with concrete systems (M0). Examples include Biology, Chemistry, Optics, Photography, Mythology. Each domain has characteristic ASFID⊗REVOI coupling." ;
+    m3:semanticSignature "domain_specific + specializes_M2_GenericConcepts + bridges_M2_to_M0" ;
+    rdfs:comment "M1 layer ontologies that bridge transdisciplinary GenericConcepts (M2) with concrete systems (M0). Examples include Biology, Chemistry, Optics, Photography, Mythology. Each domain has characteristic ASFID⊗REVOI coupling." ;
     rdfs:subClassOf <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TscgOntologyType> ;
     skos:altLabel "Domain Instance",
         "M1 Layer",
         "Specialized Ontology" ;
-    skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryMetaConcepts> ;
-    skos:definition "Domain-specific ontologies that specialize M2 metaconcepts for particular scientific or professional fields. Each is an instance of the m2:Domain metaconcept with specific 5D tensor structure." ;
+    skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryGenericConcepts> ;
+    skos:definition "Domain-specific ontologies that specialize M2 GenericConcepts for particular scientific or professional fields. Each is an instance of the m2:Domain GenericConcept with specific 5D tensor structure." ;
     skos:example "M1_Biology.jsonld",
         "M1_Chemistry.jsonld",
         "M1_CoreConcepts.jsonld",
@@ -489,7 +489,7 @@
         "Proof of Concept",
         "Validation Instance" ;
     skos:broader <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#DomainExtension> ;
-    skos:definition "Minimal yet complete system instances that serve the triple role of (1) framework proof-of-concept, (2) M2 metaconcept identification, and (3) M1 core concept population." ;
+    skos:definition "Minimal yet complete system instances that serve the triple role of (1) framework proof-of-concept, (2) M2 GenericConcept identification, and (3) M1 core concept population." ;
     skos:example "M0_ButterflyMetamorphosis.jsonld",
         "M0_ExposureTriangle.jsonld",
         "M0_FireTriangle.jsonld",
@@ -507,7 +507,7 @@
     rdfs:label "TSCG Ontology Type" ;
     dcterms:created "2026-02-19" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
-    rdfs:comment "Abstract OWL class representing the architectural types of ontologies in the TSCG framework. Each TSCG ontology belongs to exactly one type. Instances (subclasses) are: Genesis, GenesisExtension, TransdisciplinaryMetaConcepts, DomainExtension, SystemicFramework, Poclet, CaseStudy, RealWorldSystem. Each type is simultaneously an owl:Class (for OWL reasoning and Protégé class hierarchy) and a skos:Concept (for SKOS vocabulary navigation). Replaces the former m3:OntologyCategoryScheme/m3:OntologyCategoryScheme pattern (v3.3.0)." ;
+    rdfs:comment "Abstract OWL class representing the architectural types of ontologies in the TSCG framework. Each TSCG ontology belongs to exactly one type. Instances (subclasses) are: Genesis, GenesisExtension, TransdisciplinaryGenericConcepts, DomainExtension, SystemicFramework, Poclet, CaseStudy, RealWorldSystem. Each type is simultaneously an owl:Class (for OWL reasoning and Protégé class hierarchy) and a skos:Concept (for SKOS vocabulary navigation). Replaces the former m3:OntologyCategoryScheme/m3:OntologyCategoryScheme pattern (v3.3.0)." ;
     rdfs:isDefinedBy "m3:TscgOntologyTypeScheme" ;
     owl:isAbstract true .
 
@@ -525,6 +525,6 @@
         <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#RealWorldSystem>,
         <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#SymbolicSystemGrammar>,
         <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#SystemicFramework>,
-        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryMetaConcepts> ;
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#TransdisciplinaryGenericConcepts> ;
     skos:scopeNote "This scheme is extensible upon framework revision. Each category represents a fundamental architectural distinction in the TSCG metamodel." .
 

@@ -1,19 +1,13 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix m1core: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#> .
-@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#> .
+@prefix m1core: <M1_CoreConcepts.jsonld#> .
+@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-m1core:CascadeAmplification a owl:Class ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#CascadeAmplification> a owl:Class ;
     rdfs:label "Cascade Amplification" ;
-    rdfs:comment "Sequential multi-stage process where each stage has gain > 1, resulting in exponential amplification. Combines Cascade (staged sequence) with Amplification (gain). Examples: neutron multiplication, transistor amplifiers, MAPK signaling, photomultiplier tubes." ;
-    rdfs:subClassOf "m2:GenericConcept" ;
-    skos:definition "Multi-stage process where signal, energy, or population is amplified at each stage (Gáµ¢ > 1), producing overall gain = âˆáµ¢ Gáµ¢ >> 1. Subset of Cascade metaconcept with specific amplification requirement." ;
-    skos:related "m1core:SelfSustainingReaction",
-        "m2:Amplification",
-        "m2:Cascade" ;
     m1core:controlChallenges "Exponential growth difficult to control (small perturbations â†’ large effects)",
         "Latency issues (cascade takes time, feedback delayed)",
         "Negative feedback essential (prevent runaway)",
@@ -32,17 +26,17 @@ m1core:CascadeAmplification a owl:Class ;
         [ ],
         [ ] ;
     m1core:validationCount 6 ;
+    rdfs:comment "Sequential multi-stage process where each stage has gain > 1, resulting in exponential amplification. Combines Cascade (staged sequence) with Amplification (gain). Examples: neutron multiplication, transistor amplifiers, MAPK signaling, photomultiplier tubes." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    skos:definition "Multi-stage process where signal, energy, or population is amplified at each stage (Gáµ¢ > 1), producing overall gain = âˆáµ¢ Gáµ¢ >> 1. Subset of Cascade GenericConcept with specific amplification requirement." ;
+    skos:related "m1core:SelfSustainingReaction",
+        "m2:Amplification",
+        "m2:Cascade" ;
     m2:characterizedBy m2:Amplification,
         m2:Cascade .
 
-m1core:CriticalityRegime a owl:Class ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#CriticalityRegime> a owl:Class ;
     rdfs:label "Criticality Regime" ;
-    rdfs:comment "System state relative to self-sustaining threshold. Three regimes: subcritical (process dies), critical (self-sustaining equilibrium), supercritical (exponential growth). Universal pattern appearing when process products enable continuation of process." ;
-    rdfs:subClassOf "m2:GenericConcept" ;
-    skos:definition "Classification of system state based on relationship to critical threshold where process becomes self-sustaining (reproduction number = 1, multiplication factor k = 1, percolation probability p = p_c)." ;
-    skos:related "m1core:SelfSustainingReaction",
-        "m2:Bifurcation",
-        "m2:Threshold" ;
     m1core:discoveryContext "Emerged from Nuclear Reactor Typology poclet analysis. Pattern recognized as universal across all self-sustaining processes with threshold behavior." ;
     m1core:mathematicalStructure [ ] ;
     m1core:regimes [ ] ;
@@ -56,18 +50,18 @@ m1core:CriticalityRegime a owl:Class ;
         "Phase Transitions (temperature vs T_critical)",
         "Social Networks (viral spread)" ;
     m1core:validationCount 8 ;
+    rdfs:comment "System state relative to self-sustaining threshold. Three regimes: subcritical (process dies), critical (self-sustaining equilibrium), supercritical (exponential growth). Universal pattern appearing when process products enable continuation of process." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    skos:definition "Classification of system state based on relationship to critical threshold where process becomes self-sustaining (reproduction number = 1, multiplication factor k = 1, percolation probability p = p_c)." ;
+    skos:related "m1core:SelfSustainingReaction",
+        "m2:Bifurcation",
+        "m2:Threshold" ;
     m2:characterizedBy m2:Bifurcation,
         m2:Homeostasis,
         m2:Threshold .
 
-m1core:DualCircuitArchitecture a owl:Class ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#DualCircuitArchitecture> a owl:Class ;
     rdfs:label "Dual Circuit Architecture" ;
-    rdfs:comment "System design with separated primary and secondary circuits connected via interface/barrier. Function: isolation (safety, contamination), efficiency (heat exchange), or voltage transformation. Examples: PWR reactor (radioactive primary, clean secondary), HVAC (refrigerant/air), electrical transformer (high/low voltage)." ;
-    rdfs:subClassOf "m2:GenericConcept" ;
-    skos:definition "Architectural pattern with two distinct circuits separated by barrier, enabling transfer (energy, information, material) while maintaining isolation (safety, pressure, voltage)." ;
-    skos:related "m2:Flow",
-        "m2:Interface",
-        "m2:Structure" ;
     m1core:architecturalComponents [ ] ;
     m1core:designAdvantages "Efficiency (optimize each circuit independently)",
         "Maintenance (secondary circuit accessible, primary sealed)",
@@ -86,31 +80,31 @@ m1core:DualCircuitArchitecture a owl:Class ;
         [ ],
         [ ] ;
     m1core:validationCount 6 ;
+    rdfs:comment "System design with separated primary and secondary circuits connected via interface/barrier. Function: isolation (safety, contamination), efficiency (heat exchange), or voltage transformation. Examples: PWR reactor (radioactive primary, clean secondary), HVAC (refrigerant/air), electrical transformer (high/low voltage)." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    skos:definition "Architectural pattern with two distinct circuits separated by barrier, enabling transfer (energy, information, material) while maintaining isolation (safety, pressure, voltage)." ;
+    skos:related "m2:Flow",
+        "m2:Interface",
+        "m2:Structure" ;
     m2:characterizedBy m2:Flow,
         m2:Interface,
         m2:Structure .
 
-m1core:M1_CoreConcepts_NuclearUpdate a owl:Ontology ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#M1_CoreConcepts_NuclearUpdate> a owl:Ontology ;
+    m1core:changelog [ ] ;
+    m1core:updateSummary [ ] ;
     dcterms:created "2026-02-10" ;
     dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
     dcterms:description "Update to M1_CoreConcepts.jsonld adding 6 transdisciplinary concepts discovered through Nuclear Reactor Typology poclet analysis. These concepts validated across 6+ domains (nuclear engineering, chemistry, biology, electronics, economics, social systems)." ;
     dcterms:modified "2026-02-24" ;
     dcterms:title "M1 Core Concepts - Nuclear Reactor Typology Update" ;
-    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld" ;
+    owl:imports "M1_CoreConcepts.jsonld",
+        "M2_GenericConcepts.jsonld" ;
     owl:versionInfo "1.2.0.p3" ;
-    m1core:changelog [ ] ;
-    m1core:updateSummary [ ] ;
     m2:changelog [ ] .
 
-m1core:ModeratorMechanism a owl:Class ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#ModeratorMechanism> a owl:Class ;
     rdfs:label "Moderator Mechanism" ;
-    rdfs:comment "Component or process that slows, controls, or stabilizes a rapid/intense process. Function: energy reduction, rate control, stabilization. Examples: neutron moderator (nuclear), enzyme inhibitor (biology), damper (mechanics), low-pass filter (electronics)." ;
-    rdfs:subClassOf "m2:GenericConcept" ;
-    skos:definition "Regulatory element that reduces process intensity or rate without stopping it entirely. Acts as intermediate control between full activity and complete shutdown." ;
-    skos:related "m1core:SelfSustainingReaction",
-        "m2:Amplification",
-        "m2:Regulation" ;
     m1core:designPrinciples "Continuous action (not binary on/off)",
         "Energy dissipation or transfer",
         "Negative feedback (stabilizing)",
@@ -129,18 +123,18 @@ m1core:ModeratorMechanism a owl:Class ;
         [ ],
         [ ] ;
     m1core:validationCount 7 ;
+    rdfs:comment "Component or process that slows, controls, or stabilizes a rapid/intense process. Function: energy reduction, rate control, stabilization. Examples: neutron moderator (nuclear), enzyme inhibitor (biology), damper (mechanics), low-pass filter (electronics)." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    skos:definition "Regulatory element that reduces process intensity or rate without stopping it entirely. Acts as intermediate control between full activity and complete shutdown." ;
+    skos:related "m1core:SelfSustainingReaction",
+        "m2:Amplification",
+        "m2:Regulation" ;
     m2:characterizedBy m2:Amplification,
         m2:Homeostasis,
         m2:Regulation .
 
-m1core:PassiveSafety a owl:Class ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#PassiveSafety> a owl:Class ;
     rdfs:label "Passive Safety" ;
-    rdfs:comment "Safety mechanism requiring NO external power or human intervention. Relies on physics (gravity, natural circulation), material properties (melting points), or fail-safe design. Examples: HTR natural cooling, MSR freeze plug, automotive crumple zones, dead man's switch." ;
-    rdfs:subClassOf "m2:GenericConcept" ;
-    skos:definition "Design philosophy where safe state is achieved through inherent physical principles (gravity, thermodynamics, material properties) rather than active systems requiring power or operator action. Fail-safe by default." ;
-    skos:related "m1core:ModeratorMechanism",
-        "m2:Constraint",
-        "m2:Resilience" ;
     m1core:contrastWithActiveSafety [ ] ;
     m1core:designPrinciples "Fail-safe (safe state is default, requires no energy)",
         "Inherent property (not added feature)",
@@ -158,19 +152,18 @@ m1core:PassiveSafety a owl:Class ;
         [ ],
         [ ] ;
     m1core:validationCount 7 ;
+    rdfs:comment "Safety mechanism requiring NO external power or human intervention. Relies on physics (gravity, natural circulation), material properties (melting points), or fail-safe design. Examples: HTR natural cooling, MSR freeze plug, automotive crumple zones, dead man's switch." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    skos:definition "Design philosophy where safe state is achieved through inherent physical principles (gravity, thermodynamics, material properties) rather than active systems requiring power or operator action. Fail-safe by default." ;
+    skos:related "m1core:ModeratorMechanism",
+        "m2:Constraint",
+        "m2:Resilience" ;
     m2:characterizedBy m2:Constraint,
         m2:Resilience,
         m2:Structure .
 
-m1core:SelfSustainingReaction a owl:Class ;
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#SelfSustainingReaction> a owl:Class ;
     rdfs:label "Self-Sustaining Reaction" ;
-    rdfs:comment "Process where products enable continuation of process (output â†’ input positive feedback loop). Requires critical mass/threshold to initiate. Examples: fission chain reaction, combustion, autocatalysis, viral spread." ;
-    rdfs:subClassOf "m2:GenericConcept" ;
-    skos:definition "Dynamic process characterized by positive feedback where reaction products trigger new reactions, creating potential for exponential growth if unregulated. Always exhibits threshold behavior (critical point)." ;
-    skos:related "m1core:CriticalityRegime",
-        "m1core:ModeratorMechanism",
-        "m2:Amplification",
-        "m2:Cycle" ;
     m1core:controlStrategies "Negative feedback (homeostasis)",
         "Product removal (interrupt cycle)",
         "Rate reduction (moderator mechanism)",
@@ -189,6 +182,13 @@ m1core:SelfSustainingReaction a owl:Class ;
         [ ],
         [ ] ;
     m1core:validationCount 6 ;
+    rdfs:comment "Process where products enable continuation of process (output â†’ input positive feedback loop). Requires critical mass/threshold to initiate. Examples: fission chain reaction, combustion, autocatalysis, viral spread." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    skos:definition "Dynamic process characterized by positive feedback where reaction products trigger new reactions, creating potential for exponential growth if unregulated. Always exhibits threshold behavior (critical point)." ;
+    skos:related "m1core:CriticalityRegime",
+        "m1core:ModeratorMechanism",
+        "m2:Amplification",
+        "m2:Cycle" ;
     m2:characterizedBy m2:Amplification,
         m2:Cycle,
         m2:Process,

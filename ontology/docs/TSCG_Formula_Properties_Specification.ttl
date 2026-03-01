@@ -1,12 +1,12 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_MetaConcepts.jsonld#> .
+@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 m2:FormulaRepresentationPattern a owl:Class ;
     rdfs:label "Formula Representation Pattern" ;
-    rdfs:comment "Design pattern for triple formula representation in TSCG metaconcepts." ;
+    rdfs:comment "Design pattern for triple formula representation in TSCG GenericConcepts." ;
     m2:conversionRules [ ] ;
     m2:exampleUsage [ ] ;
     m2:mandatoryProperties "m2:hasTensorFormula (Unicode ⊗)",
@@ -35,7 +35,7 @@ m2:hasTensorFormula a owl:DatatypeProperty ;
     rdfs:label "Tensor Formula (Unicode)" ;
     dcterms:description "Unicode UTF-8 format with proper ⊗ symbol. Use this as PRIMARY representation for human-readable display in web interfaces and modern documentation. MUST be accompanied by tensorFormulaTeX and tensorFormulaASCII variants." ;
     rdfs:comment "PRIMARY tensor formula representation using proper Unicode ⊗ (U+2297 CIRCLED TIMES) symbol. Human-readable display format." ;
-    rdfs:domain "m2:MetaConcept" ;
+    rdfs:domain "m2:GenericConcept" ;
     rdfs:range "xsd:string" ;
     owl:functionalProperty true ;
     m2:encodingGuarantee "UTF-8 with U+2297" ;
@@ -55,7 +55,7 @@ m2:tensorFormulaASCII a owl:DatatypeProperty ;
     rdfs:label "Tensor Formula (ASCII Safe)" ;
     dcterms:description "Ultra-safe ASCII format. Use (x) to represent ⊗. Readable in any environment including plain text logs, terminals, and legacy systems." ;
     rdfs:comment "ASCII-safe representation of tensor formula using (x) for tensor product. Guaranteed compatibility with all systems including legacy terminals and logs." ;
-    rdfs:domain "m2:MetaConcept",
+    rdfs:domain "m2:GenericConcept",
         "owl:Thing" ;
     rdfs:range "xsd:string" ;
     owl:functionalProperty true ;
@@ -74,7 +74,7 @@ m2:tensorFormulaTeX a owl:DatatypeProperty ;
     rdfs:label "Tensor Formula (LaTeX)" ;
     dcterms:description "LaTeX format ensures zero encoding issues. Use \\otimes for tensor product. Example: A \\otimes S \\otimes F" ;
     rdfs:comment "LaTeX representation of tensor formula using \\otimes operator. Guaranteed ASCII-only encoding for scientific publications and documentation." ;
-    rdfs:domain "m2:MetaConcept",
+    rdfs:domain "m2:GenericConcept",
         "owl:Thing" ;
     rdfs:range "xsd:string" ;
     owl:functionalProperty true ;

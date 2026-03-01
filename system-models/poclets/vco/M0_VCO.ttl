@@ -1,0 +1,108 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m0: <M0_VCO.jsonld#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Oscillator> ;
+    rdfs:label "Voltage Controlled Oscillator (VCO)" ;
+    m0:asfidAnalysis [ m0:A [ ] ;
+            m0:D [ ] ;
+            m0:F [ ] ;
+            m0:I [ ] ;
+            m0:S [ ] ;
+            m0:asfidTotal 8.4e-01 ;
+            m0:epistemicGap 1.6e-01 ] ;
+    m0:changelog [ ] ;
+    m0:domain "Electronics / Sound Synthesis / Music Technology" ;
+    m0:inputs <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO/in/fm>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO/in/pitch_cv>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO/in/sync> ;
+    m0:oscillatorValueSpaceAttributes [ ] ;
+    m0:outputs <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO/out/sawtooth>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO/out/sine>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO/out/square>,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO/out/triangle> ;
+    m0:primaryMetaconcept "m2:Oscillator" ;
+    m0:revoiAnalysis [ m0:E [ ] ;
+            m0:I_map [ ] ;
+            m0:O [ ] ;
+            m0:R [ ] ;
+            m0:V [ ] ;
+            m0:revoiTotal 9.2e-01 ] ;
+    m0:subdomains "Acoustics",
+        "Analog Electronics",
+        "Modular Synthesis",
+        "Signal Processing" ;
+    m0:transdisciplinaryAnalogies [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    m0:validatesMetaconcepts "m2:Amplification",
+        "m2:Component",
+        "m2:Mode",
+        "m2:Oscillator",
+        "m2:Process",
+        "m2:Signal",
+        "m2:Trajectory",
+        "m2:Transformation",
+        "m2:ValueSpace" ;
+    m0:waveformModes [ m0:metaconcept "m2:Mode (N-ary, N=4)" ;
+            m0:modes [ m0:formula "x(t) = (2A/π)·arcsin(sin(2π·f·t))" ;
+                    m0:harmonics "Odd harmonics (1/n²)" ;
+                    m0:name "Triangle" ;
+                    m0:timbre "Soft, mellow" ],
+                [ m0:formula "x(t) = sign(sin(2π·f·t))" ;
+                    m0:harmonics "Odd harmonics (1/n)" ;
+                    m0:name "Square" ;
+                    m0:timbre "Hollow, woodwind-like" ],
+                [ m0:formula "x(t) = A·sin(2π·f·t)" ;
+                    m0:harmonics "Fundamental only" ;
+                    m0:name "Sine" ;
+                    m0:timbre "Pure, warm, flute-like" ],
+                [ m0:formula "x(t) = 2A·(f·t - ⌊f·t + 0.5⌋)" ;
+                    m0:harmonics "All harmonics (1/n)" ;
+                    m0:name "Sawtooth" ;
+                    m0:timbre "Bright, buzzy, string/brass-like" ] ] ;
+    dcterms:created "2026-02-27" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A VCO is a system component (m2:Component) generating a periodic audio-frequency waveform whose frequency is determined by an input control voltage via the V/Oct law: f(CV) = f₀ × 2^(CV). It is the canonical Territory Oscillator: S = circuit structure, A = target frequency (attractor), I = instantaneous phase state, D = oscillation dynamics (frequency law), F = audio output flow." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO_Ontology> a owl:Ontology ;
+    rdfs:label "Voltage Controlled Oscillator (VCO)" ;
+    dcterms:created "2026-02-27" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "TSCG M0 poclet — VCO as primary pitch-generation component in a modular synthesizer. First M0 instantiation of m2:Oscillator (v15.8.0). Maps a control voltage (V/Oct standard) to a periodic audio-frequency signal." ;
+    owl:imports "M1_CoreConcepts.jsonld",
+        "M1_extensions/electronics/M1_Electronics.jsonld",
+        "M2_GenericConcepts.jsonld",
+        "M3_GenesisSpace.jsonld" ;
+    owl:versionInfo "1.0.0" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO/in/fm> rdfs:label "FM Input" ;
+    m0:asfidDimensions "D",
+        "F" ;
+    m0:range "±5V" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO/in/pitch_cv> rdfs:label "Pitch CV (V/Oct)" ;
+    m0:asfidDimensions "A",
+        "D" ;
+    m0:range "±5V (10 octaves)" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO/in/sync> rdfs:label "Hard Sync" ;
+    m0:asfidDimensions "D",
+        "I" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO/out/sawtooth> rdfs:label "Sawtooth" ;
+    m0:level "±5V" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO/out/sine> rdfs:label "Sine" ;
+    m0:level "±5V" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO/out/square> rdfs:label "Square" ;
+    m0:level "±5V" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_VCO.jsonld#VCO/out/triangle> rdfs:label "Triangle" ;
+    m0:level "±5V" .
+

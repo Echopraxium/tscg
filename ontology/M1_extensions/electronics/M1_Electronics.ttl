@@ -1,0 +1,307 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
+@prefix ns1: <m1:elec:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:ActiveComponent a owl:Class ;
+    rdfs:label "Active Component" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "An electronic component that requires an external power supply and is capable of controlling or amplifying electrical signals. Distinct from passive components (resistors, capacitors, inductors) which only dissipate or store energy. Foundation for all active electronics patterns in M1_Electronics." ;
+    rdfs:subClassOf "m2:Component" ;
+    m2:characterizedBy "m2:Amplification",
+        "m2:Component",
+        "m2:Transformation" ;
+    ns1:domains "Analog Electronics",
+        "Digital Electronics",
+        "Power Electronics",
+        "RF Electronics" ;
+    ns1:examples "Bipolar Junction Transistor (BJT)",
+        "Field Effect Transistor (MOSFET, JFET)",
+        "Logic gates (NAND, NOR, NOT)",
+        "Operational Amplifier (op-amp)" ;
+    ns1:subclasses "m1:elec:Amplifier",
+        "m1:elec:ElectronicOscillator",
+        "m1:elec:SignalProcessor" ;
+    ns1:tensorFormula "S ⊗ I ⊗ D ⊗ F" .
+
+ns1:Amplifier a owl:Class ;
+    rdfs:label "Amplifier" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "An active component that increases the power, voltage, or current of a signal. Implements m2:Amplification with a structural component (m2:Component) and a defined gain factor. Gain G = V_out / V_in (voltage amplifier) or I_out / I_in (current amplifier). The VCA (Voltage Controlled Amplifier) is a specialisation where G is controlled by an external signal." ;
+    rdfs:subClassOf "m1:elec:ActiveComponent" ;
+    m2:characterizedBy "m2:Amplification",
+        "m2:Component",
+        "m2:Transformation" ;
+    ns1:amplifierClasses "Class A",
+        "Class AB",
+        "Class B",
+        "Class D" ;
+    ns1:examples "BJT common-emitter",
+        "Instrumentation amplifier",
+        "Op-amp inverting amplifier",
+        "VCA (Voltage Controlled Amplifier)" ;
+    ns1:gainFormula "G = V_out / V_in (linear) or 20·log₁₀(V_out/V_in) dB" ;
+    ns1:tensorFormula "S ⊗ (Ft → D → It) ⊗ F" .
+
+ns1:AudioSignal a owl:Class ;
+    rdfs:label "Audio Signal" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A time-varying electrical signal in the audio frequency range (20 Hz – 20 kHz) representing sound information. In Eurorack modular synthesis: ±5V peak, AC coupled. Carries the acoustic information of a synthesized sound between modules. Implements m2:Signal with temporal periodicity (m2:Oscillator output) or aperiodicity (noise, percussion)." ;
+    rdfs:subClassOf "m2:Signal" ;
+    m2:characterizedBy "m2:Flow",
+        "m2:Signal" ;
+    ns1:eurorackLevel "±5V peak (AC)" ;
+    ns1:examples "VCF filtered audio",
+        "VCO sawtooth output",
+        "VCO sine output",
+        "White/pink noise generator output" ;
+    ns1:frequencyRange "20 Hz – 20 kHz" ;
+    ns1:representation "x(t) = A(t)·sin(2π·f(t)·t + φ(t))  [AM+FM+PM general form]" ;
+    ns1:tensorFormula "F ⊗ I ⊗ D" .
+
+ns1:ControlVoltage a owl:Class ;
+    rdfs:label "Control Voltage (CV)" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A DC or slowly varying electrical signal used to control a parameter of another module (frequency, amplitude, filter cutoff, etc.). In Eurorack: 0–10V for unipolar or ±5V for bipolar CV. Pitch CV follows V/Oct standard. The CV interface is the fundamental interoperability mechanism of modular synthesis — implements m2:Interoperability in the electronics domain." ;
+    rdfs:subClassOf "m2:Signal" ;
+    m2:characterizedBy "m2:Interoperability",
+        "m2:Signal" ;
+    ns1:cvTypes [ ] ;
+    ns1:standardLevels [ ] ;
+    ns1:tensorFormula "F ⊗ I" .
+
+ns1:ElectronicOscillator a owl:Class ;
+    rdfs:label "Electronic Oscillator" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "An active electronic circuit that produces a periodic output signal without an external periodic input. Directly instantiates m2:Oscillator (⊗⇒(Component, Process, Trajectory | Circular)). The oscillation frequency is determined by reactive components (L, C) or RC networks. Subclasses: VoltageControlledOscillator (pitch set by CV), FeedbackOscillator (self-sustaining via positive feedback), LFO (sub-audio rate)." ;
+    rdfs:subClassOf "m1:elec:ActiveComponent",
+        "m2:Oscillator" ;
+    m2:characterizedBy "m2:Oscillator" ;
+    ns1:examples "LC tank circuit",
+        "Quartz crystal oscillator (32.768 kHz)",
+        "Ring oscillator (CMOS)",
+        "Wien bridge oscillator" ;
+    ns1:oscillatorTypes [ ] ;
+    ns1:subclasses "m1:elec:FeedbackOscillator",
+        "m1:elec:LFO",
+        "m1:elec:VoltageControlledOscillator" ;
+    ns1:tensorFormula "S ⊗ A ⊗ I ⊗ D ⊗ F" .
+
+ns1:EurorackModule a owl:Class ;
+    rdfs:label "Eurorack Module" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A self-contained electronic function unit conforming to the Eurorack modular synthesis standard (Doepfer, 1995). Implements m2:Component: bounded structural identity within a modular synthesizer rack, with standardised inputs/outputs (3.5mm jacks, ±12V power, V/Oct pitch, ±5V audio/CV). The synthesis patch is a composition of Eurorack Modules — implements m2:Composable." ;
+    rdfs:subClassOf "m2:Component" ;
+    m2:characterizedBy "m2:Component",
+        "m2:Interoperability" ;
+    ns1:canonicalModules [ ] ;
+    ns1:eurorackSpec [ ] ;
+    ns1:instantiatedBy "M0_Transistor.jsonld",
+        "M0_VCO.jsonld" ;
+    ns1:subclasses "m1:elec:Amplifier",
+        "m1:elec:Filter",
+        "m1:elec:LFO",
+        "m1:elec:VoltageControlledOscillator" ;
+    ns1:tensorFormula "S ⊗ I ⊗ F" .
+
+ns1:ExponentialConverter a owl:Class ;
+    rdfs:label "Exponential Converter" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A circuit that converts a linear input voltage into an exponential output current (or voltage), implementing the V/Oct law. Core internal sub-component of every VCO. Uses the exponential I-V characteristic of a bipolar transistor or matched transistor pair (for temperature compensation). Directly instantiates m2:Amplification (exponential gain profile) and m2:Transformation." ;
+    rdfs:subClassOf "m1:elec:SignalProcessor" ;
+    m2:characterizedBy "m2:Amplification",
+        "m2:Transformation" ;
+    ns1:examples "CEM 3340 internal expo converter",
+        "Discrete NPN pair (BC546B matched)",
+        "Matched transistor pair (e.g. THAT 300)" ;
+    ns1:temperatureIssue "V_T is temperature-dependent — matched transistor pairs and tempco resistors used for compensation" ;
+    ns1:tensorFormula "Ft → D → It" ;
+    ns1:transferFunction "I_out = I_s × exp(V_in / V_T)  where V_T = kT/q ≈ 26 mV at 25°C" .
+
+ns1:FeedbackOscillator a owl:Class ;
+    rdfs:label "Feedback Oscillator" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "An oscillator that sustains itself via positive feedback exceeding unity gain at a specific frequency (Barkhausen criterion: |βA| = 1, ∠βA = 0°). Implements m2:Oscillator with m2:FeedbackLoop as the sustaining mechanism. Examples: Wien bridge, phase-shift oscillator, Colpitts. Contrasts with relaxation oscillators (hysteresis-based) and VCOs (external CV-controlled)." ;
+    rdfs:subClassOf "m1:elec:ElectronicOscillator" ;
+    m2:characterizedBy "m2:FeedbackLoop",
+        "m2:Oscillator" ;
+    ns1:barkhausenCriterion "|β(ω)·A(ω)| = 1  and  ∠β(ω)·A(ω) = 0° (or 360°)" ;
+    ns1:examples "Colpitts LC oscillator",
+        "Crystal oscillator (Pierce topology)",
+        "Phase-shift oscillator (RC)",
+        "Wien bridge oscillator (op-amp based)" ;
+    ns1:tensorFormula "S ⊗ A ⊗ I ⊗ D ⊗ F" .
+
+ns1:Filter a owl:Class ;
+    rdfs:label "Filter" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A signal processor that selectively attenuates or passes frequency components of an input signal. Implements m2:Regulation (frequency-domain control) combined with m2:Transformation (spectral shaping). The VCF (Voltage Controlled Filter) is the canonical modular synthesis instantiation." ;
+    rdfs:subClassOf "m1:elec:SignalProcessor" ;
+    m2:characterizedBy "m2:Regulation",
+        "m2:Transformation",
+        "m2:ValueSpace" ;
+    ns1:examples "Sallen-Key low-pass",
+        "State-variable filter (SVF)",
+        "VCF (Voltage Controlled Filter) — Moog ladder filter" ;
+    ns1:filterTypes [ ] ;
+    ns1:keyParameters [ ] ;
+    ns1:tensorFormula "S ⊗ A ⊗ I ⊗ F" .
+
+ns1:FrequencyModulation a owl:Class ;
+    rdfs:label "Frequency Modulation (FM)" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A modulation technique in which the instantaneous frequency of a carrier oscillator is varied by a modulating signal. At audio-rate modulation frequencies (modulator = VCO), produces complex inharmonic or harmonic spectra (Chowning FM synthesis). At sub-audio rates (modulator = LFO), produces vibrato. Instantiates m2:Process (D ⊗ I ⊗ F) in the electronics domain." ;
+    rdfs:subClassOf "m2:Process" ;
+    m2:characterizedBy "m2:Amplification",
+        "m2:Oscillator",
+        "m2:Process" ;
+    ns1:examples "Chowning FM synthesis (DX7, 4-operator FM)",
+        "LFO → VCO pitch = vibrato (exponential FM)",
+        "VCO FM input for audio-rate modulation" ;
+    ns1:fmEquation "f_inst(t) = f_c + k_f × m(t)  [linear FM]  or  f_inst(t) = f_c × 2^(m(t) × depth)  [exponential FM]" ;
+    ns1:fmTypes [ ] ;
+    ns1:modulationIndex "β = Δf / f_m  (ratio of frequency deviation to modulator frequency)" ;
+    ns1:sidebands "f_sidebands = f_c ± n·f_m  for n = 1, 2, 3… (Bessel function amplitudes)" ;
+    ns1:tensorFormula "D ⊗ I ⊗ F" .
+
+ns1:LFO a owl:Class ;
+    rdfs:label "Low Frequency Oscillator (LFO)" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "An electronic oscillator operating below the audio threshold (typically 0.01 Hz – 20 Hz). Used as a modulation source to animate parameters of other modules (pitch vibrato, filter wobble, amplitude tremolo). Implements m2:Oscillator at infrasonic frequency. Distinct from VCO: the LFO output is typically used as a CV signal (modulation), not as audio." ;
+    rdfs:subClassOf "m1:elec:ElectronicOscillator" ;
+    m2:characterizedBy "m2:Oscillator",
+        "m2:Signal" ;
+    ns1:examples "Befaco Rampage",
+        "Doepfer A-145 LFO",
+        "Mutable Instruments Tides" ;
+    ns1:frequencyRange "0.01 Hz – 20 Hz (infrasonic)" ;
+    ns1:tensorFormula "S ⊗ A ⊗ I ⊗ D ⊗ F" ;
+    ns1:typicalApplications [ ] ;
+    ns1:waveformOutputs "Random (S&H)",
+        "Sawtooth",
+        "Sine",
+        "Square",
+        "Triangle" .
+
+ns1:M1_Electronics a owl:Ontology ;
+    rdfs:label "TSCG M1 Electronics Extension" ;
+    dcterms:created "2026-02-27" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Extension of the TSCG framework with electronics-specific concepts: active components, signal manipulation, oscillator types, modulation, and modular synthesis architecture. Serves as M1 foundation for M0 poclets: VCO, VCF, VCA, LFO, Transistor, etc." ;
+    dcterms:title "TSCG M1 Electronics — Domain-Specific Electronic Concepts" ;
+    rdfs:comment "Domain-specific electronic concepts for the TSCG framework. Covers analog and digital electronics, signal processing, power systems, and modular synthesis. Provides reusable patterns bridging M2 GenericConcepts and M0 poclets in the Electronics domain." ;
+    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld" ;
+    owl:versionInfo "1.0.0" ;
+    ns1:categories "Active Components",
+        "Modular Synthesis",
+        "Modulation",
+        "Oscillation",
+        "Signal Processing" ;
+    ns1:changelog [ ] ;
+    ns1:conceptCount 17 ;
+    ns1:validatedPoclets "M0_Transistor.jsonld",
+        "M0_VCO.jsonld" .
+
+ns1:ModulationSource a owl:Class ;
+    rdfs:label "Modulation Source" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "Any signal used to animate or vary a parameter of another module over time. LFO, envelope generators, and sequencers are the primary modulation sources in a modular synthesizer. Implements m2:Signal as a carrier of temporal variation information (m2:Process + m2:Information)." ;
+    rdfs:subClassOf "m2:Signal" ;
+    m2:characterizedBy "m2:Oscillator",
+        "m2:Process",
+        "m2:Signal" ;
+    ns1:modulationSources [ ] ;
+    ns1:modulationTargets "VCA CV (tremolo, envelope shaping)",
+        "VCF Cutoff CV (filter animation)",
+        "VCO FM input (FM synthesis)",
+        "VCO PWM input (pulse-width animation)",
+        "VCO Pitch CV (vibrato)" ;
+    ns1:tensorFormula "F ⊗ I ⊗ D" .
+
+ns1:PitchCV a owl:Class ;
+    rdfs:label "Pitch CV (V/Oct)" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A control voltage following the 1V/Oct standard for pitch control. Maps linearly to a logarithmic frequency scale: each +1V doubles the frequency (one octave). The universally adopted pitch interface in Eurorack modular synthesis. Implements m2:Transformation (voltage domain → frequency domain) via an ExponentialConverter." ;
+    rdfs:subClassOf "m1:elec:ControlVoltage" ;
+    m2:characterizedBy "m2:Amplification",
+        "m2:Signal",
+        "m2:Transformation" ;
+    ns1:examples "Arpeggiator pitch output",
+        "Keyboard CV output",
+        "MIDI-to-CV converter output",
+        "Sequencer step CV" ;
+    ns1:reference "f₀ = 440 Hz (A4) at V = 0V  (or C4 = 261.63 Hz depending on tuning)" ;
+    ns1:semitone "1 semitone = 1/12 V ≈ 83.3 mV" ;
+    ns1:tensorFormula "F ⊗ I ⊗ D" ;
+    ns1:transferLaw "f(V) = f₀ × 2^(V / 1V)  — exponential (V/Oct)" .
+
+ns1:SignalChain a owl:Class ;
+    rdfs:label "Signal Chain" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "An ordered sequence of signal processing modules through which an audio signal passes, with each module transforming the signal according to its transfer function. Directly instantiates m2:Cascade (⊗⇒(Process, Step, Trajectory)) in the electronics/modular synthesis domain. The canonical signal chain is: VCO → VCF → VCA → Output." ;
+    rdfs:subClassOf "m2:Cascade" ;
+    m2:characterizedBy "m2:Cascade",
+        "m2:Process",
+        "m2:Transformation" ;
+    ns1:canonicalChain "VCO (pitch) → VCF (timbre) → VCA (amplitude) → Output" ;
+    ns1:examples "Classic subtractive synthesis chain: VCO → VCF → VCA",
+        "Effects chain: DRY → Delay → Reverb → OUT",
+        "FM synthesis: carrier VCO + modulator VCO → Output" ;
+    ns1:tensorFormula "S ⊗ I ⊗ A ⊗ D ⊗ F" ;
+    ns1:transferFunction "H_total(f) = H_VCO(f) × H_VCF(f) × H_VCA(f)" .
+
+ns1:SignalProcessor a owl:Class ;
+    rdfs:label "Signal Processor" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "An active component or circuit that transforms a signal according to a defined transfer function. Generalises over filters, waveshapers, ring modulators, and effects units. Directly instantiates m2:Processor (S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ R)." ;
+    rdfs:subClassOf "m1:elec:ActiveComponent" ;
+    m2:characterizedBy "m2:Processor",
+        "m2:Transformation" ;
+    ns1:examples "Ring modulator",
+        "Sample & Hold",
+        "VCF (Voltage Controlled Filter)",
+        "Waveshaper / wavefolder" ;
+    ns1:subclasses "m1:elec:Filter" ;
+    ns1:tensorFormula "S ⊗ I ⊗ D ⊗ F" .
+
+ns1:VoltageControlledOscillator a owl:Class ;
+    rdfs:label "Voltage Controlled Oscillator (VCO)" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "An electronic oscillator whose frequency is determined by an input control voltage following a defined transfer law. In modular synthesis the standard is V/Oct: f(CV) = f₀ × 2^(CV). The archetypal Territory Oscillator in the Eurorack domain. Instantiated as M0 poclet M0_VCO." ;
+    rdfs:subClassOf "m1:elec:ElectronicOscillator" ;
+    m2:characterizedBy "m2:Amplification",
+        "m2:Oscillator" ;
+    ns1:alternativeLaws [ ] ;
+    ns1:eurorackStandard [ ] ;
+    ns1:examples "Buchla 258 Complex Oscillator",
+        "CEM 3340 / SSI 2130 chip-based VCO",
+        "Doepfer A-110 (Eurorack)",
+        "Moog 921 VCO" ;
+    ns1:frequencyLaw "f(CV) = f₀ × 2^(CV / 1V)  [V/Oct standard]" ;
+    ns1:instantiatedBy "M0_VCO.jsonld" ;
+    ns1:modulationInputs "FM (linear/exponential)",
+        "Hard Sync",
+        "PWM",
+        "Pitch CV (V/Oct)" ;
+    ns1:tensorFormula "S ⊗ A ⊗ I ⊗ D ⊗ F" ;
+    ns1:waveformOutputs "Pulse",
+        "Sawtooth",
+        "Sine",
+        "Square",
+        "Triangle" .
+
+ns1:WaveformMode a owl:Class ;
+    rdfs:label "Waveform Mode" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "An N-ary operational mode of an electronic oscillator selecting the shape of the periodic output signal. Each waveform has a distinct harmonic spectrum (Fourier decomposition) and therefore a distinct timbre. Directly instantiates m2:Mode (N-ary) in the electronics domain." ;
+    rdfs:subClassOf "m2:Mode" ;
+    m2:characterizedBy "m2:Mode",
+        "m2:Signal",
+        "m2:ValueSpace" ;
+    ns1:nArity 5 ;
+    ns1:tensorFormula "I ⊗ S" ;
+    ns1:waveforms [ ] .
+

@@ -13,9 +13,6 @@ Research preprint: DOI [10.5281/zenodo.18471860](https://doi.org/10.5281/zenodo.
 No build system is currently configured. Key scripts to run directly:
 
 ```bash
-# Validate model structure across ontologies
-python diagnostic_models.py
-
 # Generate file URIs for the project
 python create_files_URIS.py
 
@@ -42,7 +39,7 @@ Every artifact in this repo belongs to one of four layers (M0–M3). This is the
 | Layer | Name | Description | Location |
 |-------|------|-------------|----------|
 | **M3** | Genesis Space | 10D bicephalous basis — the universal meta-framework | `ontology/M3_*.jsonld/.ttl` |
-| **M2** | Metaconcepts | 68 universal patterns applicable across all domains | `ontology/M2_MetaConcepts.jsonld/.ttl` |
+| **M2** | GenericConcepts | 81 universal patterns applicable across all domains | `ontology/M2_GenericConcepts.jsonld` |
 | **M1** | Core/Domain Concepts | Domain-specific concept extensions (biology, chemistry, etc.) | `ontology/M1_*.jsonld`, `ontology/M1_extensions/` |
 | **M0** | Poclets | Validated minimal complete models of real systems | `system-models/poclets/*/M0_*.jsonld/.ttl` |
 
@@ -63,7 +60,7 @@ Files: `M3_EagleEye.jsonld` (ASFID), `M3_SphinxEye.jsonld` (REVOI), `M3_GenesisS
 - **Control**: regulation and feedback patterns
 - **Information**: knowledge and representation patterns
 
-The production file is `M2_MetaConcepts.jsonld`; `M2_MetaConcepts_Ref.jsonld` is the reference/backup version. Draft/experimental work lives in `ontology/docs/`.
+The production file is `M2_GenericConcepts.jsonld`; `M2_MetaConcepts_Ref.jsonld` is the reference/backup version. Draft/experimental work lives in `ontology/docs/`.
 
 ### M0: Poclets
 
@@ -273,11 +270,11 @@ The **epistemic gap** `δΘ = ||ASFID_score - REVOI_score||` measures the distan
 ```
 M3  Genesis Space          3 ontologies  ─ foundational, zero dependencies
  ↕  (tensorization)
-M2  Metaconcepts          ~72 patterns   ─ tensor products of M3 dimensions
+M2  GenericConcepts        81 patterns    ─ tensor products of M3 dimensions
  ↕  (instantiation)
 M1  Core + Domain Concepts variable      ─ generic and domain-specific concepts
  ↕  (validation)
-M0  Poclets / Case Studies ~16+ models   ─ minimal complete real-world systems
+M0  Poclets / Case Studies ~25+ models   ─ minimal complete real-world systems
 ```
 
 ### M3 Ontology Files (closed set — exactly 3)
@@ -292,7 +289,7 @@ M0  Poclets / Case Studies ~16+ models   ─ minimal complete real-world systems
 
 | File | Content |
 |------|---------|
-| `M2_MetaConcepts.jsonld` | ~72 metaconcepts as tensor products of M3 dimensions, organised in 5 families: Ontological, Structural, Dynamic, Control, Information |
+| `M2_GenericConcepts.jsonld` | 81 GenericConcepts as tensor products of M3 dimensions, organised in 5 families: Ontological, Structural, Dynamic, Control, Information |
 
 ### M1 Ontology Files (extensible set)
 
@@ -301,9 +298,14 @@ M0  Poclets / Case Studies ~16+ models   ─ minimal complete real-world systems
 | `M1_CoreConcepts.jsonld` | Base ontology — generic transdisciplinary concepts |
 | `M1_Biology.jsonld` | Domain extension — biology |
 | `M1_Chemistry.jsonld` | Domain extension — chemistry |
+| `M1_Economics.jsonld` | Domain extension — economics |
+| `M1_Education.jsonld` | Domain extension — education |
+| `M1_Electronics.jsonld` | Domain extension — electronics & modular synthesis (17 concepts) |
+| `M1_EnergyGenerators.jsonld` | Domain extension — energy generators |
+| `M1_Mythology.jsonld` | Domain extension — mythology |
 | `M1_Optics.jsonld` | Domain extension — optics |
 | `M1_Photography.jsonld` | Domain extension — photography |
-| `M1_Mythology.jsonld` | Domain extension — mythology |
+| `M1_Physics.jsonld` | Domain extension — physics |
 
 Each M1 domain extension imports `M1_CoreConcepts.jsonld` via `owl:imports` and uses its own namespace (e.g., `m1:optics:`, `m1:photo:`, `m1:mythology:`).
 
@@ -401,7 +403,6 @@ Base: `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/`
 | files.txt | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/files.txt` |
 | claude_setup.txt | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/claude_setup.txt` |
 | create_files_URIS.py | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/create_files_URIS.py` |
-| diagnostic_models.py | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/diagnostic_models.py` |
 
 #### ontology/ — Core Ontology Files
 
@@ -429,12 +430,24 @@ Base: `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/`
 | biology/M2_MetaConcepts_Alignment.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/biology/M2_MetaConcepts_Alignment.jsonld` |
 | biology/M2_MetaConcepts_Alignment.ttl | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/biology/M2_MetaConcepts_Alignment.ttl` |
 | chemistry/M1_Chemistry.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/chemistry/M1_Chemistry.jsonld` |
+| economics/M1_Economics.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/economics/M1_Economics.jsonld` |
+| economics/M1_Economics.ttl | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/economics/M1_Economics.ttl` |
+| economics/M1_Economics_README.md | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/economics/M1_Economics_README.md` |
+| education/M1_Education.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/education/M1_Education.jsonld` |
+| education/M1_Education.ttl | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/education/M1_Education.ttl` |
+| education/M1_Education_README.md | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/education/M1_Education_README.md` |
+| electronics/M1_Electronics.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/electronics/M1_Electronics.jsonld` |
+| electronics/M1_Electronics.ttl | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/electronics/M1_Electronics.ttl` |
+| electronics/M1_Electronics_README.md | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/electronics/M1_Electronics_README.md` |
 | energy_generators/M1_EnergyGenerators.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld` |
 | energy_generators/M1_EnergyGenerators.ttl | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.ttl` |
 | mythology/M1_Mythology.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/mythology/M1_Mythology.jsonld` |
 | mythology/M1_Mythology_README.md | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/mythology/M1_Mythology_README.md` |
 | optics/M1_Optics.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/optics/M1_Optics.jsonld` |
 | photography/M1_Photography.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/photography/M1_Photography.jsonld` |
+| physics/M1_Physics.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/physics/M1_Physics.jsonld` |
+| physics/M1_Physics.ttl | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/physics/M1_Physics.ttl` |
+| physics/M1_Physics_README.md | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_extensions/physics/M1_Physics_README.md` |
 
 #### ontology/Ref/ — Reference Backups
 
@@ -538,13 +551,19 @@ Base: `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/`
 | Cell Signaling Modes | M0_CellSignalingModes.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/cell_signaling_modes/M0_CellSignalingModes.jsonld` |
 | Cell Signaling Modes | M0_CellSignalingModes.ttl | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/cell_signaling_modes/M0_CellSignalingModes.ttl` |
 | Cell Signaling Modes | README | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/cell_signaling_modes/M0_CellSignalingModes_README.md` |
-| Exposure Triangle | M0_ExposureTriangle.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/exposure_triangle/M0_ExposureTriangle.jsonld` |
+| Color Synthesis | M0_CMYK_Subtractive.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/color_synthesis/M0_CMYK_Subtractive.jsonld` |
+| Color Synthesis | M0_CMY_Subtractive.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/color_synthesis/M0_CMY_Subtractive.jsonld` |
+| Color Synthesis | M0_ColorSynthesis_Federated.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/color_synthesis/M0_ColorSynthesis_Federated.jsonld` |
+| Color Synthesis | M0_HSL_Additive.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/color_synthesis/M0_HSL_Additive.jsonld` |
+| Color Synthesis | M0_RGB_Additive.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/color_synthesis/M0_RGB_Additive.jsonld` |
+| Complex Chemical Synapse | M0_ComplexChemicalSynapse.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/complex_chemical_synapse/M0_ComplexChemicalSynapse.jsonld` |
+| Complex Chemical Synapse | README | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/complex_chemical_synapse/M0_ComplexChemicalSynapse_README.md` |
 | Exposure Triangle | README | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/exposure_triangle/M0_ExposureTriangle_README.md` |
 | Fire Triangle | M0_FireTriangle.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/fire_triangle/M0_FireTriangle.jsonld` |
 | Fire Triangle | README | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/fire_triangle/M0_FireTriangle_README.md` |
-| Four-Stroke Engine | M0_FourStrokeEngine.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/four-stroke-engine/M0_FourStrokeEngine.jsonld` |
-| Four-Stroke Engine | README | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/four-stroke-engine/M0_FourStrokeEngine_README.md` |
-| Four-Stroke Engine | Sim | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/four-stroke-engine/four_stroke_engine_sim.py` |
+| Four-Stroke Engine | M0_FourStrokeEngine.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/four_stroke_engine/M0_FourStrokeEngine.jsonld` |
+| Four-Stroke Engine | README | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/four_stroke_engine/M0_FourStrokeEngine_README.md` |
+| Four-Stroke Engine | Sim | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/four_stroke_engine/four_stroke_engine_sim.py` |
 | Kidneys | M0_Kidneys.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/kidneys/M0_Kidneys.jsonld` |
 | Kidneys | M0_Kidneys.ttl | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/kidneys/M0_Kidneys.ttl` |
 | Kidneys | README | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/kidneys/M0_Kidneys_README.md` |
@@ -561,40 +580,27 @@ Base: `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/`
 | Yggdrasil | M0_Yggdrasil.ttl | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/yggdrasil/M0_Yggdrasil.ttl` |
 | Yggdrasil | README | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/yggdrasil/M0_Yggdrasil_README.md` |
 
-#### system-models/poclets/00_to_be_fixed/ — Poclets Under Repair
+| Kindleberger-Minsky | M0_KindlebergerMinsky.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/kindleberger-minsky/M0_KindlebergerMinsky.jsonld` |
+| Kindleberger-Minsky | README | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/kindleberger-minsky/M0_KindlebergerMinsky_README.md` |
+| Kindleberger-Minsky | Sim | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/kindleberger-minsky/kindleberger_minsky_sim.py` |
+| MTG Color Wheel | M0_MTG_ColorWheel.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/mtg_color_wheel/M0_MTG_ColorWheel.jsonld` |
+| MTG Color Wheel | README | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/mtg_color_wheel/MTG_ColorWheel_README.md` |
+| Phase Transition | M0_PhaseTransition.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/phase_transition/M0_PhaseTransition.jsonld` |
+| Phase Transition | README | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/phase_transition/M0_PhaseTransition_README.md` |
+| TPACK | M0_TPACK.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/tpack/M0_TPACK.jsonld` |
+| TPACK | README | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/tpack/TPACK_README.md` |
+| VCO | M0_VCO.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/vco/M0_VCO.jsonld` |
+| VCO | README | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/vco/M0_VCO_README.md` |
+| VCO | Sim | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/vco/vco_sim.py` |
+
+#### system-models/tscg-tools/tscg-explorer/ — TSCG Meta-Analytical Tool
 
 | File | URI |
 |------|-----|
-| color_synthesis/M0_CMYK_Subtractive.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/00_to_be_fixed/color_synthesis/M0_CMYK_Subtractive.jsonld` |
-| color_synthesis/M0_CMY_Subtractive.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/00_to_be_fixed/color_synthesis/M0_CMY_Subtractive.jsonld` |
-| color_synthesis/M0_ColorSynthesis_Federated.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/00_to_be_fixed/color_synthesis/M0_ColorSynthesis_Federated.jsonld` |
-| color_synthesis/M0_ComplexChemicalSynapse.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/00_to_be_fixed/color_synthesis/M0_ComplexChemicalSynapse.jsonld` |
-| color_synthesis/M0_HSL_Additive.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/00_to_be_fixed/color_synthesis/M0_HSL_Additive.jsonld` |
-| color_synthesis/M0_RGB_Additive.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/00_to_be_fixed/color_synthesis/M0_RGB_Additive.jsonld` |
-| complex_chemical_synapse/M0_ComplexChemicalSynapse.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/00_to_be_fixed/complex_chemical_synapse/M0_ComplexChemicalSynapse.jsonld` |
-| mtg_color_wheel/M0_MTG_ColorWheel.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/00_to_be_fixed/mtg_color_wheel/M0_MTG_ColorWheel.jsonld` |
-| tpack/M0_TPACK.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/poclets/00_to_be_fixed/tpack/M0_TPACK.jsonld` |
-
-#### system-models/validation/ — Validation Copies
-
-| File | URI |
-|------|-----|
-| M0_AdaptiveImmuneResponse.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_AdaptiveImmuneResponse.jsonld` |
-| M0_BloodPressureControl.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_BloodPressureControl.jsonld` |
-| M0_ButterflyMetamorphosis.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_ButterflyMetamorphosis.jsonld` |
-| M0_CellSignalingModes.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_CellSignalingModes.jsonld` |
-| M0_CMYK_Subtractive.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_CMYK_Subtractive.jsonld` |
-| M0_CMY_Subtractive.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_CMY_Subtractive.jsonld` |
-| M0_ColorSynthesis_Federated.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_ColorSynthesis_Federated.jsonld` |
-| M0_ComplexChemicalSynapse.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_ComplexChemicalSynapse.jsonld` |
-| M0_ExposureTriangle.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_ExposureTriangle.jsonld` |
-| M0_FireTriangle.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_FireTriangle.jsonld` |
-| M0_FourStrokeEngine.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_FourStrokeEngine.jsonld` |
-| M0_HSL_Additive.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_HSL_Additive.jsonld` |
-| M0_MTG_ColorWheel.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_MTG_ColorWheel.jsonld` |
-| M0_RGB_Additive.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_RGB_Additive.jsonld` |
-| M0_TPACK.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_TPACK.jsonld` |
-| M0_Yggdrasil.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/validation/M0_Yggdrasil.jsonld` |
+| M0_TscgExplorer.jsonld | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/tscg-tools/tscg-explorer/M0_TscgExplorer.jsonld` |
+| M0_TscgExplorer_README.md | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/tscg-tools/tscg-explorer/M0_TscgExplorer_README.md` |
+| TSCG_Explorer_Simulation_README.md | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/tscg-tools/tscg-explorer/TSCG_Explorer_Simulation_README.md` |
+| tscg_explorer.py | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/system-models/tscg-tools/tscg-explorer/tscg_explorer.py` |
 
 #### system-models/systemic-frameworks/vsm/ — VSM
 
@@ -659,6 +665,7 @@ Base: `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/`
 | docs/papers/preprints/TSCG_Research_Paper_Draft_v2.md | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/preprints/TSCG_Research_Paper_Draft_v2.md` |
 | docs/papers/white-paper/TSCG_WhitePaper.md | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/papers/white-paper/TSCG_WhitePaper.md` |
 | docs/reboot-kit/TSCG_Smart_Prompt_v15_7_0.md | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/TSCG_Smart_Prompt_v15_7_0.md` |
+| docs/reboot-kit/TSCG_Smart_Prompt_v15_8_0.md | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/TSCG_Smart_Prompt_v15_8_0.md` |
 | docs/reboot-kit/TSCG_ValueSpace_Quick_Reference.md | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/TSCG_ValueSpace_Quick_Reference.md` |
 | docs/reboot-kit/TSCG_ValueSpace_User_Guide.md | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/TSCG_ValueSpace_User_Guide.md` |
 | docs/reboot-kit/HYBRID_FORMULAS_NOTATION_README.md | `https://raw.githubusercontent.com/aladas-org/cryptocalc/master/docs/reboot-kit/HYBRID_FORMULAS_NOTATION_README.md` |

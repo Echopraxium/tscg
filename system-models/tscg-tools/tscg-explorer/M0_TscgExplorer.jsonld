@@ -1,0 +1,235 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m0": "M0_TscgExplorer.jsonld#",
+    "m1": "M1_CoreConcepts.jsonld#",
+    "m2": "M2_GenericConcepts.jsonld#",
+    "m3": "M3_GenesisSpace.jsonld#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "m0:TscgExplorer",
+      "@type": "owl:Ontology",
+      "dcterms:title": "TSCG Tool — tscg-explorer",
+      "dcterms:description": "Interactive visualization tool for the TSCG M2 GenericConcepts corpus. Displays 81 GenericConcepts as a 2D network ('maillage') with three selectable projection modes revealing structural properties of the corpus: density zones, gaps, Territory/Map balance, and family distribution. Supports IS-A (rdfs:subClassOf) and Combo (⊗⇒) edge visualization. Implements framework reflexivity: TSCG analyzes itself through its own conceptual constructs.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-03-01",
+      "dcterms:modified": "2026-03-01",
+      "owl:versionInfo": "1.0.0",
+      "owl:imports": [
+        "M2_GenericConcepts.jsonld",
+        "M1_CoreConcepts.jsonld"
+      ],
+      "m3:ontologyType": {
+        "@id": "m3:TscgTool"
+      },
+      "m0:toolMetadata": {
+        "toolName": "tscg-explorer",
+        "toolVersion": "1.0.0",
+        "toolType": "Interactive Visualization / Network Explorer",
+        "implementation": "Python 3 / pygame",
+        "entryPoint": "tscg_explorer.py",
+        "dependencies": ["pygame >= 2.1.0"],
+        "targetArtifacts": ["M2_GenericConcepts.jsonld"],
+        "reflexivityLevel": "M2 → M2 (framework analyzes its own GenericConcept corpus)"
+      },
+      "m0:systemArchitecture": {
+        "layout": "Dual-panel (860px net | 580px profile+readme)",
+        "leftPanel": "2D concept net with pan/zoom, node selection, edge rendering",
+        "rightPanel": "Concept profile (name, formula, superclass, combo components) + embedded README",
+        "projectionModes": {
+          "modeA": {
+            "label": "ASFID ratio × Dimensionality",
+            "axisX": "ASFID_count / total_dims — Territory dominance [0,1]",
+            "axisY": "Total number of tensor dimensions",
+            "reveals": "Eagle Eye vs Sphinx Eye balance across the corpus",
+            "default": true
+          },
+          "modeB": {
+            "label": "Family × Dimensionality",
+            "axisX": "Family index (ordinal, 0–9)",
+            "axisY": "Total number of tensor dimensions",
+            "reveals": "Intra-family dimensional spread and cross-family comparison"
+          },
+          "modeC": {
+            "label": "ASFID count × REVOI count",
+            "axisX": "Number of ASFID dimensions in tensor formula [0,5]",
+            "axisY": "Number of REVOI dimensions in tensor formula [0,5]",
+            "reveals": "Bicephalous decomposition — pure Territory vs mixed vs pure Map concepts"
+          }
+        },
+        "edgeTypes": {
+          "isA": {
+            "style": "solid line",
+            "color": "blue (180,200,255)",
+            "semantics": "rdfs:subClassOf — IS-A inheritance"
+          },
+          "combo": {
+            "style": "dashed line",
+            "color": "orange (255,160,80)",
+            "semantics": "GenericConceptCombo ⊗⇒ component — synergistic assembly"
+          }
+        },
+        "nodeEncoding": {
+          "color": "family (10 distinct colors)",
+          "size": "proportional to tensor dimensionality",
+          "outline": "white ring = selected, grey ring = hovered, white circle = Combo"
+        }
+      },
+      "m0:asfidAnalysis": {
+        "perspective": "Eagle Eye (Territory)",
+        "A_Attractor": {
+          "score": 0.7,
+          "rationale": "Primary goal: detect density zones and structural gaps in the 81-concept corpus. The tool converges toward revealing the 'shape' of the GenericConcept space — its attractors are visualization clarity and corpus legibility."
+        },
+        "S_Structure": {
+          "score": 0.9,
+          "rationale": "Core output IS a structural representation: the 2D network graph with IS-A and Combo edges. The dual-panel layout, three projection modes, and node/edge encoding are all structural choices that make the M2 topology visible."
+        },
+        "F_Flow": {
+          "score": 0.8,
+          "rationale": "Interactive navigation flows: user clicks nodes (selection flow), scrolls the README (reading flow), pans/zooms the net (spatial exploration flow), switches modes (analytical flow). The tool mediates the cognitive flow between the user and the M2 ontology."
+        },
+        "I_Information": {
+          "score": 0.9,
+          "rationale": "Rich information display: tensor formulas, ASFID/REVOI dimension counts, family membership, superclass hierarchy, Combo component lists, embedded README. All M2 structural information made navigable."
+        },
+        "D_Dynamics": {
+          "score": 0.6,
+          "rationale": "Real-time rendering at 60 fps; interactive state updates (selection, hover, zoom, pan, mode switch, scroll). Dynamics are present but not the primary function — the tool is primarily structural/informational rather than temporally evolving."
+        },
+        "asfidVector": [0.7, 0.9, 0.8, 0.9, 0.6],
+        "asfidOverall": 0.78
+      },
+      "m0:revoiAnalysis": {
+        "perspective": "Sphinx Eye (Map)",
+        "R_Representability": {
+          "score": 0.9,
+          "rationale": "The tool encodes 81 GenericConcepts as visual nodes with three distinct 2D projections. Each projection mode is a different representation of the same underlying tensor space — high semantic encodability."
+        },
+        "E_Evolvability": {
+          "score": 0.8,
+          "rationale": "Concept data is embedded as Python data structures mirroring the JSON-LD ontology — straightforward to update as M2 grows. New projection modes can be added by implementing a new position-computation function. Architecture is modular."
+        },
+        "V_Verifiability": {
+          "score": 0.7,
+          "rationale": "Visual verification: the user can directly inspect whether IS-A edges connect correct superclasses, whether Combo edges point to declared components, and whether node colors match declared families. However, no automated consistency checker is built in (planned as separate TscgTool)."
+        },
+        "O_Observability": {
+          "score": 0.9,
+          "rationale": "All internal concept properties are directly observable through the profile panel on click. The three projection modes make density zones and gaps visible to the analyst — the tool maximizes observability of the M2 corpus structure."
+        },
+        "Im_Interoperability": {
+          "score": 0.6,
+          "rationale": "The tool is self-contained (no external API calls). Concept data is currently embedded; future versions could load directly from M2_GenericConcepts.jsonld via rdflib. Interoperability with other TSCG tools is planned but not implemented in v1.0.0."
+        },
+        "revoiVector": [0.9, 0.8, 0.7, 0.9, 0.6],
+        "revoiOverall": 0.78
+      },
+      "m0:epistemicGap": {
+        "delta": 0.0,
+        "rationale": "ASFID overall (0.78) = REVOI overall (0.78). Perfect Territory/Map symmetry — the tool is as well-observable as it is structurally rich. No epistemic gap.",
+        "interpretation": "Mature tool: the map (REVOI) faithfully represents the territory (ASFID). Both structural quality and representational quality are equally high."
+      },
+      "m0:genericConceptsUsed": [
+        {
+          "concept": "m2:Network",
+          "role": "The GenericConcept graph IS a network: nodes (concepts) + edges (IS-A, Combo)",
+          "formula": "S ⊗ I ⊗ F ⊗ D ⊗ Im"
+        },
+        {
+          "concept": "m2:Representation",
+          "role": "Three projection modes are three distinct representations of the same tensor space",
+          "formula": "S ⊗ I ⊗ V ⊗ R"
+        },
+        {
+          "concept": "m2:Observer",
+          "role": "The user navigating the tool acts as an Observer of the M2 corpus",
+          "formula": "A ⊗ I ⊗ R"
+        },
+        {
+          "concept": "m2:ValueSpace",
+          "role": "Each concept's tensor formula is its ValueSpace — displayed in the profile panel",
+          "formula": "I ⊗ V ⊗ O ⊗ R ⊗ Im"
+        },
+        {
+          "concept": "m2:Hierarchy",
+          "role": "IS-A edges render the rdfs:subClassOf hierarchy as visible solid lines",
+          "formula": "A ⊗ S ⊗ V ⊗ R"
+        },
+        {
+          "concept": "m2:Cascade",
+          "role": "Combo ⊗⇒ edges visualize the synergistic assembly chains",
+          "formula": "S ⊗ I ⊗ D ⊗ F ⊗ R"
+        },
+        {
+          "concept": "m2:Topology",
+          "role": "Each projection mode reveals a different topological reading of the concept space",
+          "formula": "S ⊗ I ⊗ A ⊗ V"
+        },
+        {
+          "concept": "m2:FeedbackLoop",
+          "role": "User interaction with the tool → updated display → refined understanding → new interaction (Φ/Ψ epistemic loop)",
+          "formula": "A ⊗ S ⊗ I ⊗ F ⊗ D ⊗ V ⊗ R ⊗ E"
+        }
+      ],
+      "m0:reflexivityNote": {
+        "principle": "A TscgTool exhibits framework reflexivity: TSCG analyzes itself through its own GenericConcepts.",
+        "manifestation": "tscg-explorer uses m2:Network, m2:Representation, m2:Observer, m2:Hierarchy to describe a tool that DISPLAYS those very same concepts.",
+        "korzybskiConnection": "The tool is a Map of the Map: it renders the M2 GenericConcept layer (which is itself a Map of Territory phenomena) — a second-order cartographic act.",
+        "epistemicValue": "Visualizing density zones and gaps in the concept net reveals whether the TSCG framework has blind spots — regions of systemic experience not yet captured by a GenericConcept."
+      },
+      "m0:changelog": {
+        "v1.0.0": {
+          "date": "2026-03-01",
+          "changes": [
+            "Initial release of tscg-explorer TscgTool",
+            "Three projection modes: A (ASFID ratio × dims), B (family × dims), C (ASFID count × REVOI count)",
+            "Dual-panel layout: 860px concept net + 580px profile/readme",
+            "IS-A edges (solid blue) and Combo ⊗⇒ edges (dashed orange)",
+            "Full ASFID/REVOI analysis and epistemic gap δ=0.0 documented",
+            "8 M2 GenericConcepts identified as characterizing the tool itself"
+          ]
+        }
+      }
+    },
+    {
+      "@id": "m0:ProjectionMode",
+      "@type": "owl:Class",
+      "rdfs:label": "Projection Mode",
+      "rdfs:comment": "A 2D projection of the M2 GenericConcept tensor space. Each mode selects two axes from the available dimensional attributes (ASFID ratio, REVOI count, family, dimensionality) to produce a readable 2D layout.",
+      "m2:characterizedBy": ["m2:Representation", "m2:Topology"]
+    },
+    {
+      "@id": "m0:ModeA",
+      "@type": ["owl:NamedIndividual", "m0:ProjectionMode"],
+      "rdfs:label": "Mode A — ASFID ratio × Dimensionality",
+      "rdfs:comment": "Default projection. X = ASFID_count / total_dims (Territory dominance). Y = total tensor dimensions. Reveals Eagle Eye vs Sphinx Eye balance across the corpus.",
+      "m0:axisX": "ASFID_count / total_dims ∈ [0,1]",
+      "m0:axisY": "total tensor dimensions ∈ [1,8]",
+      "m0:isDefault": true
+    },
+    {
+      "@id": "m0:ModeB",
+      "@type": ["owl:NamedIndividual", "m0:ProjectionMode"],
+      "rdfs:label": "Mode B — Family × Dimensionality",
+      "rdfs:comment": "X = family index (ordinal, 0–9 across 10 families). Y = total tensor dimensions. Groups concepts by family and shows intra-family dimensional spread.",
+      "m0:axisX": "family index ∈ {0..9}",
+      "m0:axisY": "total tensor dimensions ∈ [1,8]"
+    },
+    {
+      "@id": "m0:ModeC",
+      "@type": ["owl:NamedIndividual", "m0:ProjectionMode"],
+      "rdfs:label": "Mode C — ASFID count × REVOI count",
+      "rdfs:comment": "Pure bicephalous map. X = number of ASFID dimensions in formula. Y = number of REVOI dimensions. Directly visualizes the Territory/Map decomposition of each concept.",
+      "m0:axisX": "ASFID dimension count ∈ [0,5]",
+      "m0:axisY": "REVOI dimension count ∈ [0,5]"
+    }
+  ]
+}

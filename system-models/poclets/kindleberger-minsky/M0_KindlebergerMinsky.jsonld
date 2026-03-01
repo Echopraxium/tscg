@@ -1,0 +1,1133 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m0": "M0_KindlebergerMinsky.jsonld#",
+    "m1core": "M1_CoreConcepts.jsonld#",
+    "m1econ": "M1_extensions/economics/M1_Economics.jsonld#",
+    "m2": "M2_GenericConcepts.jsonld#",
+    "m3": "M3_GenesisSpace.jsonld#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+
+    {
+      "@id": "m0:KindlebergerMinsky",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Kindleberger-Minsky Financial Crisis Cycle",
+      "rdfs:comment": "TSCG M0 poclet modeling the Kindleberger-Minsky 5-phase speculative cycle (Displacement → Boom → Euphoria → Distress → Revulsion). Primary M2 patterns: m2:Propagation (panic through interbank network) and m2:Narration (collective belief transformation). Includes simulation markers (date, asset price, transaction volume, dynamics) for 6 historical instances across all 5 phases.",
+      "owl:versionInfo": "1.0.0",
+      "dcterms:created": "2026-02-28",
+      "dcterms:modified": "2026-02-28",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:changelog": {
+        "v1_0_0": {
+          "date": "2026-02-28",
+          "description": "Initial version. 5 poles, 6 historical instances with full simulation markers (dateRange, assetPrice, transactionVolume, dynamics). Primary M2: Propagation + Narration. ASFID mean=0.91, REVOI mean=0.82, δΘ=0.09."
+        }
+      },
+      "m3:ontologyType": { "@id": "m3:Poclet" },
+      "m2:ontologyCategory": "Poclet",
+      "owl:imports": [
+        "M3_GenesisSpace.jsonld",
+        "M2_GenericConcepts.jsonld",
+        "M1_CoreConcepts.jsonld",
+        "M1_extensions/economics/M1_Economics.jsonld"
+      ]
+    },
+
+    {
+      "@id": "m0:System",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Kindleberger-Minsky System",
+      "rdfs:comment": "5-phase speculative cycle with two co-occurring M2 patterns: m2:Propagation (panic spreads through financial network) and m2:Narration (collective belief 'new paradigm' → Collapse). Validated across 6 historical instances spanning 1636–2022.",
+
+      "m0:domain": "Finance / Economics",
+      "m0:subdomains": ["Financial economics", "Behavioral finance", "Macroeconomics", "Systemic risk"],
+
+      "m0:theoreticalBasis": [
+        "Hyman Minsky — Financial Instability Hypothesis (stability is destabilizing)",
+        "Charles Kindleberger — Manias, Panics and Crashes (1978)",
+        "Robert Shiller — Narrative Economics (Narration as market driver)",
+        "Irving Fisher — Debt Deflation Theory (1933)",
+        "Walter Bagehot — Lender of Last Resort principle (1873)"
+      ],
+
+      "m0:asfidScores": {
+        "A": 0.92, "S": 0.85, "F": 0.92, "I": 0.90, "D": 0.95, "mean": 0.91
+      },
+      "m0:revoiScores": {
+        "R": 0.85, "E": 0.78, "V": 0.75, "O": 0.82, "Im": 0.88, "mean": 0.82
+      },
+      "m0:epistemicGap": 0.09,
+
+      "m0:primaryMetaconcepts": [
+        {
+          "@id": "m2:Propagation",
+          "m0:role": "panic_spread",
+          "m0:propagationRegime_byPhase": {
+            "Displacement": "SubThreshold (panic R₀<<1)",
+            "Boom": "SubThreshold (optimism dominant)",
+            "Euphoria": "SubThreshold for panic, Supercritical for opportunity narrative",
+            "Distress": "Critical → Supercritical (R₀ crosses 1 at Minsky Moment)",
+            "Revulsion": "Supercritical → Saturated"
+          }
+        },
+        {
+          "@id": "m2:Narration",
+          "m0:role": "collective_belief_transformation",
+          "m0:narrativeTopology": "Linear",
+          "m0:attractorType": "Collapse",
+          "m0:narrativeArc": "'New paradigm' → 'This time is different' → 'Panic' → 'Never again'"
+        }
+      ],
+
+      "m0:secondaryMetaconcepts": [
+        { "@id": "m2:Cascade",       "m0:role": "panic_cascade_mechanism" },
+        { "@id": "m2:Bifurcation",   "m0:role": "minsky_moment_state_change" },
+        { "@id": "m2:Amplification", "m0:role": "leverage_amplification" },
+        { "@id": "m2:Duplication",   "m0:role": "narrative_replication" },
+        { "@id": "m2:Oscillator",    "m0:role": "financial_cycle_periodicity" },
+        { "@id": "m2:Threshold",     "m0:role": "credit_and_panic_thresholds" },
+        { "@id": "m2:Network",       "m0:role": "interbank_exposure_network" },
+        { "@id": "m2:Regulation",    "m0:role": "central_bank_lender_of_last_resort" },
+        { "@id": "m2:Emergence",     "m0:role": "systemic_risk" },
+        { "@id": "m2:Memory",        "m0:role": "institutional_forgetting" }
+      ],
+
+      "m0:simulationSchema": {
+        "m0:description": "Schema for simulation markers present in each pole × instance combination",
+        "m0:fields": {
+          "dateRange": {
+            "type": "object",
+            "fields": { "start": "ISO date or year string", "end": "ISO date or year string", "duration": "human-readable duration" }
+          },
+          "assetReference": {
+            "type": "object",
+            "fields": {
+              "name": "Name of the reference asset or index",
+              "unit": "Currency or unit of measure",
+              "priceStart": "Asset price at phase start (nominal)",
+              "priceEnd": "Asset price at phase end (nominal)",
+              "pricePeak": "Maximum price during phase (if applicable)",
+              "priceTrough": "Minimum price during phase (if applicable)",
+              "changePercent": "Percentage change start→end"
+            }
+          },
+          "transactionVolume": {
+            "type": "object",
+            "fields": {
+              "indicator": "Name of volume/activity indicator used",
+              "valueStart": "Value at phase start",
+              "valueEnd": "Value at phase end",
+              "unit": "Unit of measure",
+              "trend": "increasing | decreasing | stable | volatile"
+            }
+          },
+          "dynamics": {
+            "type": "object",
+            "fields": {
+              "regime": "accelerating | decelerating | stable | reversing | chaotic",
+              "priceVelocity": "Approximate monthly price change rate (% per month)",
+              "acceleration": "Sign and magnitude of d²Price/dt² (positive=accelerating up, negative=decelerating or reversing)",
+              "volatility": "Low | Medium | High | Extreme",
+              "dominantForce": "Primary driver of dynamics in this phase"
+            }
+          }
+        }
+      },
+
+      "m0:poles": [
+        "m0:Pole_Displacement",
+        "m0:Pole_Boom",
+        "m0:Pole_Euphoria",
+        "m0:Pole_Distress",
+        "m0:Pole_Revulsion"
+      ],
+
+      "m0:historicalInstances": [
+        "m0:Instance_TulipMania",
+        "m0:Instance_SouthSea",
+        "m0:Instance_WallStreet1929",
+        "m0:Instance_Dotcom",
+        "m0:Instance_GFC2008",
+        "m0:Instance_Crypto2021"
+      ]
+    },
+
+    {
+      "@id": "m0:Pole_Displacement",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Phase 1 — Displacement",
+      "rdfs:comment": "Exogenous shock creates new profit opportunity. Information asymmetry: early movers informed, majority not yet aware. Narration begins: initial semantic network 'unprecedented opportunity' forms. Dynamics: low but positive price acceleration, low volume.",
+      "m0:poleIndex": 1,
+      "m0:asfidFormula": "I ⊗ D",
+      "m0:asfidScores": { "A": 0.70, "S": 0.65, "F": 0.75, "I": 0.95, "D": 0.90, "mean": 0.79 },
+      "m0:primaryM2": "m2:Event",
+      "m0:secondaryM2": ["m2:Trigger", "m2:Bifurcation", "m2:Narration"],
+
+      "m0:simulationMarkers": {
+        "m0:TulipMania": {
+          "dateRange": { "start": "1634-01", "end": "1636-05", "duration": "~28 months" },
+          "assetReference": {
+            "name": "Semper Augustus tulip bulb",
+            "unit": "Dutch guilders (per bulb)",
+            "priceStart": 50,
+            "priceEnd": 300,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "+500%"
+          },
+          "transactionVolume": {
+            "indicator": "Contracts traded at inns (informal futures market)",
+            "valueStart": "~dozens/month",
+            "valueEnd": "~hundreds/month",
+            "unit": "contracts",
+            "trend": "increasing"
+          },
+          "dynamics": {
+            "regime": "accelerating",
+            "priceVelocity": "+15% per month",
+            "acceleration": "positive, low",
+            "volatility": "Low",
+            "dominantForce": "Novelty premium — tulips as luxury status symbol among Dutch bourgeoisie"
+          }
+        },
+        "m0:SouthSea": {
+          "dateRange": { "start": "1711-01", "end": "1719-01", "duration": "~8 years" },
+          "assetReference": {
+            "name": "South Sea Company stock",
+            "unit": "GBP (per share)",
+            "priceStart": 100,
+            "priceEnd": 130,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "+30%"
+          },
+          "transactionVolume": {
+            "indicator": "Share subscriptions",
+            "valueStart": "limited",
+            "valueEnd": "growing",
+            "unit": "GBP subscribed",
+            "trend": "increasing"
+          },
+          "dynamics": {
+            "regime": "stable",
+            "priceVelocity": "+0.3% per month",
+            "acceleration": "near-zero",
+            "volatility": "Low",
+            "dominantForce": "Parliamentary grant of monopoly on South American trade; debt conversion narrative"
+          }
+        },
+        "m0:WallStreet1929": {
+          "dateRange": { "start": "1922-01", "end": "1925-12", "duration": "~4 years" },
+          "assetReference": {
+            "name": "Dow Jones Industrial Average",
+            "unit": "USD (index points)",
+            "priceStart": 95,
+            "priceEnd": 160,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "+68%"
+          },
+          "transactionVolume": {
+            "indicator": "NYSE daily trading volume",
+            "valueStart": "~1M shares/day",
+            "valueEnd": "~2M shares/day",
+            "unit": "shares/day",
+            "trend": "increasing"
+          },
+          "dynamics": {
+            "regime": "accelerating",
+            "priceVelocity": "+1.2% per month",
+            "acceleration": "positive, low",
+            "volatility": "Low",
+            "dominantForce": "Post-WWI industrial expansion, electrification, Ford mass production, Federal Reserve easy money"
+          }
+        },
+        "m0:Dotcom": {
+          "dateRange": { "start": "1993-01", "end": "1997-01", "duration": "~4 years" },
+          "assetReference": {
+            "name": "NASDAQ Composite",
+            "unit": "USD (index points)",
+            "priceStart": 700,
+            "priceEnd": 1300,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "+86%"
+          },
+          "transactionVolume": {
+            "indicator": "VC investment in internet startups",
+            "valueStart": "$1B/year",
+            "valueEnd": "$5B/year",
+            "unit": "USD/year",
+            "trend": "increasing"
+          },
+          "dynamics": {
+            "regime": "accelerating",
+            "priceVelocity": "+1.5% per month",
+            "acceleration": "positive, low",
+            "volatility": "Low-Medium",
+            "dominantForce": "Netscape IPO (1995), commercialization of internet, browser wars"
+          }
+        },
+        "m0:GFC2008": {
+          "dateRange": { "start": "2001-01", "end": "2004-12", "duration": "~4 years" },
+          "assetReference": {
+            "name": "S&P/Case-Shiller US National Home Price Index",
+            "unit": "Index (Jan 2000 = 100)",
+            "priceStart": 110,
+            "priceEnd": 145,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "+32%"
+          },
+          "transactionVolume": {
+            "indicator": "MBS issuance volume",
+            "valueStart": "$500B/year",
+            "valueEnd": "$1.2T/year",
+            "unit": "USD/year",
+            "trend": "increasing"
+          },
+          "dynamics": {
+            "regime": "accelerating",
+            "priceVelocity": "+0.6% per month",
+            "acceleration": "positive, low-medium",
+            "volatility": "Low",
+            "dominantForce": "Fed Funds rate at 1% (2003-2004), financial innovation (MBS/CDO), housing deregulation (FSMA 1999)"
+          }
+        },
+        "m0:Crypto2021": {
+          "dateRange": { "start": "2019-01", "end": "2020-10", "duration": "~22 months" },
+          "assetReference": {
+            "name": "Bitcoin (BTC)",
+            "unit": "USD (per BTC)",
+            "priceStart": 3500,
+            "priceEnd": 11000,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "+214%"
+          },
+          "transactionVolume": {
+            "indicator": "Daily on-chain BTC transaction volume",
+            "valueStart": "$1B/day",
+            "valueEnd": "$5B/day",
+            "unit": "USD/day",
+            "trend": "increasing"
+          },
+          "dynamics": {
+            "regime": "accelerating",
+            "priceVelocity": "+7% per month",
+            "acceleration": "positive, medium",
+            "volatility": "Medium",
+            "dominantForce": "DeFi emergence (Uniswap, Compound), institutional interest (MicroStrategy), Bitcoin halving (May 2020)"
+          }
+        }
+      }
+    },
+
+    {
+      "@id": "m0:Pole_Boom",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Phase 2 — Boom (Credit Expansion)",
+      "rdfs:comment": "Easy credit fuels investment. Leverage amplifies returns. 'Stability is destabilizing' (Minsky): absence of crisis encourages risk-taking. Narration in Supercritical regime: 'new paradigm' spreads. Price velocity increasing, volume surging, acceleration strongly positive.",
+      "m0:poleIndex": 2,
+      "m0:asfidFormula": "F ⊗ D ⊗ A",
+      "m0:asfidScores": { "A": 0.85, "S": 0.80, "F": 0.95, "I": 0.85, "D": 0.95, "mean": 0.88 },
+      "m0:primaryM2": "m2:Amplification",
+      "m0:secondaryM2": ["m2:Cascade", "m2:Network", "m2:Propagation", "m2:Narration", "m2:Threshold"],
+
+      "m0:simulationMarkers": {
+        "m0:TulipMania": {
+          "dateRange": { "start": "1636-06", "end": "1636-11", "duration": "~6 months" },
+          "assetReference": {
+            "name": "Semper Augustus tulip bulb",
+            "unit": "Dutch guilders (per bulb)",
+            "priceStart": 300,
+            "priceEnd": 1200,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "+300%"
+          },
+          "transactionVolume": {
+            "indicator": "Contracts traded at inns",
+            "valueStart": "~hundreds/month",
+            "valueEnd": "~thousands/month",
+            "unit": "contracts",
+            "trend": "increasing rapidly"
+          },
+          "dynamics": {
+            "regime": "accelerating",
+            "priceVelocity": "+35% per month",
+            "acceleration": "strongly positive",
+            "volatility": "Medium",
+            "dominantForce": "Informal futures market created at inns; leverage via deferred payment contracts; new entrants from lower classes"
+          }
+        },
+        "m0:SouthSea": {
+          "dateRange": { "start": "1719-01", "end": "1720-03", "duration": "~15 months" },
+          "assetReference": {
+            "name": "South Sea Company stock",
+            "unit": "GBP (per share)",
+            "priceStart": 130,
+            "priceEnd": 330,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "+154%"
+          },
+          "transactionVolume": {
+            "indicator": "Share subscriptions + secondary market",
+            "valueStart": "£2M",
+            "valueEnd": "£10M",
+            "unit": "GBP (notional)",
+            "trend": "increasing rapidly"
+          },
+          "dynamics": {
+            "regime": "accelerating",
+            "priceVelocity": "+10% per month",
+            "acceleration": "positive, medium",
+            "volatility": "Medium",
+            "dominantForce": "Government debt conversion scheme; insider promotion by directors; installment purchase plan enabling leverage"
+          }
+        },
+        "m0:WallStreet1929": {
+          "dateRange": { "start": "1926-01", "end": "1928-12", "duration": "~3 years" },
+          "assetReference": {
+            "name": "Dow Jones Industrial Average",
+            "unit": "USD (index points)",
+            "priceStart": 160,
+            "priceEnd": 300,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "+88%"
+          },
+          "transactionVolume": {
+            "indicator": "NYSE daily trading volume",
+            "valueStart": "~2M shares/day",
+            "valueEnd": "~5M shares/day",
+            "unit": "shares/day",
+            "trend": "increasing"
+          },
+          "dynamics": {
+            "regime": "accelerating",
+            "priceVelocity": "+2.0% per month",
+            "acceleration": "positive, medium",
+            "volatility": "Low-Medium",
+            "dominantForce": "Margin accounts at 10% (10:1 leverage); broker call money rates low; investment trusts (leveraged vehicles)"
+          }
+        },
+        "m0:Dotcom": {
+          "dateRange": { "start": "1997-01", "end": "1999-01", "duration": "~2 years" },
+          "assetReference": {
+            "name": "NASDAQ Composite",
+            "unit": "USD (index points)",
+            "priceStart": 1300,
+            "priceEnd": 2500,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "+92%"
+          },
+          "transactionVolume": {
+            "indicator": "VC investment in internet startups",
+            "valueStart": "$5B/year",
+            "valueEnd": "$50B/year",
+            "unit": "USD/year",
+            "trend": "increasing rapidly"
+          },
+          "dynamics": {
+            "regime": "accelerating",
+            "priceVelocity": "+3.5% per month",
+            "acceleration": "positive, medium-high",
+            "volatility": "Medium",
+            "dominantForce": "Online broker democratization (E*Trade, Schwab), day trading boom, IPO frenzy (Amazon 1997, eBay 1998)"
+          }
+        },
+        "m0:GFC2008": {
+          "dateRange": { "start": "2005-01", "end": "2006-12", "duration": "~2 years" },
+          "assetReference": {
+            "name": "S&P/Case-Shiller US National Home Price Index",
+            "unit": "Index (Jan 2000 = 100)",
+            "priceStart": 145,
+            "priceEnd": 185,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "+28%"
+          },
+          "transactionVolume": {
+            "indicator": "MBS/CDO issuance volume",
+            "valueStart": "$1.2T/year",
+            "valueEnd": "$2.5T/year",
+            "unit": "USD/year",
+            "trend": "increasing rapidly"
+          },
+          "dynamics": {
+            "regime": "accelerating",
+            "priceVelocity": "+1.1% per month",
+            "acceleration": "positive, medium",
+            "volatility": "Low (VIX < 15)",
+            "dominantForce": "Subprime lending expansion, no-doc loans (NINJA), CDO squared, investment bank leverage 30:1"
+          }
+        },
+        "m0:Crypto2021": {
+          "dateRange": { "start": "2020-11", "end": "2021-03", "duration": "~5 months" },
+          "assetReference": {
+            "name": "Bitcoin (BTC)",
+            "unit": "USD (per BTC)",
+            "priceStart": 11000,
+            "priceEnd": 58000,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "+427%"
+          },
+          "transactionVolume": {
+            "indicator": "Binance daily spot volume",
+            "valueStart": "$10B/day",
+            "valueEnd": "$50B/day",
+            "unit": "USD/day",
+            "trend": "increasing rapidly"
+          },
+          "dynamics": {
+            "regime": "accelerating",
+            "priceVelocity": "+50% per month",
+            "acceleration": "strongly positive",
+            "volatility": "High",
+            "dominantForce": "Institutional adoption (Tesla, MicroStrategy), PayPal crypto launch, low-rate environment, retail FOMO"
+          }
+        }
+      }
+    },
+
+    {
+      "@id": "m0:Pole_Euphoria",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Phase 3 — Euphoria (Overtrading / Peak)",
+      "rdfs:comment": "'This time is different.' Speculative attractor fully dominates. Narration at maximum density. New participants enter (taxi drivers, retail). Prices decouple from fundamentals. Price velocity peaks then begins first signs of deceleration. Volume at maximum. Insiders quietly sell.",
+      "m0:poleIndex": 3,
+      "m0:asfidFormula": "A ⊗ S",
+      "m0:asfidScores": { "A": 0.98, "S": 0.92, "F": 0.85, "I": 0.88, "D": 0.85, "mean": 0.90 },
+      "m0:primaryM2": "m2:Narration",
+      "m0:secondaryM2": ["m2:Oscillator", "m2:Identity", "m2:Emergence", "m2:Memory"],
+
+      "m0:simulationMarkers": {
+        "m0:TulipMania": {
+          "dateRange": { "start": "1636-12", "end": "1637-02-03", "duration": "~2 months" },
+          "assetReference": {
+            "name": "Semper Augustus tulip bulb",
+            "unit": "Dutch guilders (per bulb)",
+            "priceStart": 1200,
+            "priceEnd": 6700,
+            "pricePeak": 6700,
+            "priceTrough": null,
+            "changePercent": "+458%"
+          },
+          "transactionVolume": {
+            "indicator": "Contracts traded at inns",
+            "valueStart": "~thousands/month",
+            "valueEnd": "peak — entire Dutch society involved",
+            "unit": "contracts",
+            "trend": "at maximum"
+          },
+          "dynamics": {
+            "regime": "accelerating then peak",
+            "priceVelocity": "+100% per month (final weeks)",
+            "acceleration": "extreme positive → zero at peak (2026-02-03)",
+            "volatility": "Extreme",
+            "dominantForce": "Futures contracts bought with no money down; entire social classes speculating; Semper Augustus at 10× average craftsman annual income"
+          }
+        },
+        "m0:SouthSea": {
+          "dateRange": { "start": "1720-04", "end": "1720-06-24", "duration": "~3 months" },
+          "assetReference": {
+            "name": "South Sea Company stock",
+            "unit": "GBP (per share)",
+            "priceStart": 330,
+            "priceEnd": 1050,
+            "pricePeak": 1050,
+            "priceTrough": null,
+            "changePercent": "+218%"
+          },
+          "transactionVolume": {
+            "indicator": "Exchange Alley (London) daily transactions",
+            "valueStart": "£15M",
+            "valueEnd": "£30M+",
+            "unit": "GBP (notional)",
+            "trend": "at maximum"
+          },
+          "dynamics": {
+            "regime": "accelerating then peak",
+            "priceVelocity": "+60% per month (peak phase)",
+            "acceleration": "strongly positive → zero at peak",
+            "volatility": "High",
+            "dominantForce": "King George I as governor, aristocracy publicly invested, installment purchases creating artificial demand, 'bubble companies' proliferating"
+          }
+        },
+        "m0:WallStreet1929": {
+          "dateRange": { "start": "1929-01", "end": "1929-09-03", "duration": "~8 months" },
+          "assetReference": {
+            "name": "Dow Jones Industrial Average",
+            "unit": "USD (index points)",
+            "priceStart": 300,
+            "priceEnd": 381,
+            "pricePeak": 381.2,
+            "priceTrough": null,
+            "changePercent": "+27% (peak: Sep 3, 1929)"
+          },
+          "transactionVolume": {
+            "indicator": "NYSE daily trading volume",
+            "valueStart": "~5M shares/day",
+            "valueEnd": "~8M shares/day",
+            "unit": "shares/day",
+            "trend": "at maximum"
+          },
+          "dynamics": {
+            "regime": "decelerating (price still rising but slower)",
+            "priceVelocity": "+1.5% per month (slowing from Boom)",
+            "acceleration": "slightly negative (first warning sign)",
+            "volatility": "Medium (VIX equivalent rising slightly)",
+            "dominantForce": "Irving Fisher 'permanently high plateau' declaration (Sep 1929); investment trusts at peak; margin debt at record"
+          }
+        },
+        "m0:Dotcom": {
+          "dateRange": { "start": "1999-01", "end": "2000-03-10", "duration": "~14 months" },
+          "assetReference": {
+            "name": "NASDAQ Composite",
+            "unit": "USD (index points)",
+            "priceStart": 2500,
+            "priceEnd": 5132,
+            "pricePeak": 5132.52,
+            "priceTrough": null,
+            "changePercent": "+105% (peak: Mar 10, 2000)"
+          },
+          "transactionVolume": {
+            "indicator": "NASDAQ daily trading volume",
+            "valueStart": "1B shares/day",
+            "valueEnd": "2.5B shares/day",
+            "unit": "shares/day",
+            "trend": "at maximum"
+          },
+          "dynamics": {
+            "regime": "accelerating then peak",
+            "priceVelocity": "+6% per month",
+            "acceleration": "positive then zero at peak (Mar 10, 2000)",
+            "volatility": "High",
+            "dominantForce": "AOL-Time Warner merger ($165B, Jan 2000); PE ratios 200-500× for unprofitable companies; 'eyeballs' metric replacing revenue"
+          }
+        },
+        "m0:GFC2008": {
+          "dateRange": { "start": "2007-01", "end": "2007-07", "duration": "~7 months" },
+          "assetReference": {
+            "name": "S&P/Case-Shiller US National Home Price Index",
+            "unit": "Index (Jan 2000 = 100)",
+            "priceStart": 185,
+            "priceEnd": 195,
+            "pricePeak": 195.4,
+            "priceTrough": null,
+            "changePercent": "+5.4% (peak: Jul 2007)"
+          },
+          "transactionVolume": {
+            "indicator": "US existing home sales",
+            "valueStart": "6.5M units/year",
+            "valueEnd": "5.8M units/year (already declining)",
+            "unit": "units/year",
+            "trend": "at maximum then declining"
+          },
+          "dynamics": {
+            "regime": "decelerating (price still at peak, volume declining)",
+            "priceVelocity": "+0.3% per month (near zero — peak plateau)",
+            "acceleration": "negative (volume declining first, price lagging)",
+            "volatility": "Low-Medium (VIX ~15 — deceptive calm)",
+            "dominantForce": "Bernanke 'subprime is contained' (Mar 2007); ABX index declining; Bear Stearns hedge funds in trouble (Jun 2007)"
+          }
+        },
+        "m0:Crypto2021": {
+          "dateRange": { "start": "2021-03", "end": "2021-11-10", "duration": "~8 months" },
+          "assetReference": {
+            "name": "Bitcoin (BTC)",
+            "unit": "USD (per BTC)",
+            "priceStart": 58000,
+            "priceEnd": 69000,
+            "pricePeak": 69044,
+            "priceTrough": null,
+            "changePercent": "+19% (second peak: Nov 10, 2021)"
+          },
+          "transactionVolume": {
+            "indicator": "Total crypto market daily volume (all exchanges)",
+            "valueStart": "$150B/day",
+            "valueEnd": "$200B/day",
+            "unit": "USD/day",
+            "trend": "at maximum"
+          },
+          "dynamics": {
+            "regime": "volatile with double peak (Apr 2021: $64K, May crash, Nov 2021: $69K)",
+            "priceVelocity": "+4% per month average (highly variable)",
+            "acceleration": "oscillating — first correction Apr-May 2021 (-50%), recovery, second peak",
+            "volatility": "Extreme",
+            "dominantForce": "NFT boom (Beeple $69M Mar 2021), Coinbase IPO, El Salvador BTC legal tender, Shiba Inu +1000%"
+          }
+        }
+      }
+    },
+
+    {
+      "@id": "m0:Pole_Distress",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Phase 4 — Distress (Minsky Moment)",
+      "rdfs:comment": "Bifurcation: first major default or forced seller reveals systemic fragility. Panic propagation begins (R₀ crosses 1). Narration Collapse attractor becomes manifest. Price velocity reverses sharply negative. Volume spikes (distressed selling). Dynamics chaotic.",
+      "m0:poleIndex": 4,
+      "m0:asfidFormula": "I ⊗ D ⊗ A",
+      "m0:asfidScores": { "A": 0.95, "S": 0.85, "F": 0.88, "I": 0.95, "D": 0.98, "mean": 0.92 },
+      "m0:primaryM2": "m2:Bifurcation",
+      "m0:secondaryM2": ["m2:Trigger", "m2:Threshold", "m2:Propagation", "m2:Narration"],
+
+      "m0:simulationMarkers": {
+        "m0:TulipMania": {
+          "dateRange": { "start": "1637-02-03", "end": "1637-02-07", "duration": "~4 days" },
+          "assetReference": {
+            "name": "Semper Augustus tulip bulb",
+            "unit": "Dutch guilders (per bulb)",
+            "priceStart": 6700,
+            "priceEnd": 1500,
+            "pricePeak": 6700,
+            "priceTrough": null,
+            "changePercent": "-78% in 4 days"
+          },
+          "transactionVolume": {
+            "indicator": "Contracts traded",
+            "valueStart": "at peak",
+            "valueEnd": "collapsed — buyers vanished",
+            "unit": "contracts",
+            "trend": "collapsing"
+          },
+          "dynamics": {
+            "regime": "reversing — catastrophic",
+            "priceVelocity": "-50% in first 24h",
+            "acceleration": "extreme negative",
+            "volatility": "Extreme",
+            "dominantForce": "Feb 3 1637: Haarlem auction fails — first buyers refuse to honor contracts. Coordinated default triggers complete loss of bid side"
+          }
+        },
+        "m0:SouthSea": {
+          "dateRange": { "start": "1720-06-24", "end": "1720-09-01", "duration": "~2 months" },
+          "assetReference": {
+            "name": "South Sea Company stock",
+            "unit": "GBP (per share)",
+            "priceStart": 1050,
+            "priceEnd": 700,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "-33%"
+          },
+          "transactionVolume": {
+            "indicator": "Exchange Alley transactions",
+            "valueStart": "£30M+",
+            "valueEnd": "declining",
+            "unit": "GBP (notional)",
+            "trend": "declining with distressed selling spikes"
+          },
+          "dynamics": {
+            "regime": "reversing",
+            "priceVelocity": "-15% per month",
+            "acceleration": "negative",
+            "volatility": "High",
+            "dominantForce": "Bubble Act (Jun 1720) restricts competing companies — capital repatriation triggers selling; insider selling by directors revealed"
+          }
+        },
+        "m0:WallStreet1929": {
+          "dateRange": { "start": "1929-09-04", "end": "1929-10-24", "duration": "~7 weeks" },
+          "assetReference": {
+            "name": "Dow Jones Industrial Average",
+            "unit": "USD (index points)",
+            "priceStart": 381,
+            "priceEnd": 305,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "-20%"
+          },
+          "transactionVolume": {
+            "indicator": "NYSE daily trading volume",
+            "valueStart": "8M shares/day",
+            "valueEnd": "12M shares/day (distressed)",
+            "unit": "shares/day",
+            "trend": "spiking (distressed selling)"
+          },
+          "dynamics": {
+            "regime": "reversing — accelerating decline",
+            "priceVelocity": "-3% per week",
+            "acceleration": "strongly negative",
+            "volatility": "High",
+            "dominantForce": "Sep-Oct 1929: margin call cascade begins; banks start calling broker loans; Black Thursday (Oct 24) — 12.9M shares in single day"
+          }
+        },
+        "m0:Dotcom": {
+          "dateRange": { "start": "2000-03-11", "end": "2000-06-30", "duration": "~4 months" },
+          "assetReference": {
+            "name": "NASDAQ Composite",
+            "unit": "USD (index points)",
+            "priceStart": 5132,
+            "priceEnd": 3400,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "-34%"
+          },
+          "transactionVolume": {
+            "indicator": "NASDAQ daily trading volume",
+            "valueStart": "2.5B shares/day",
+            "valueEnd": "2.0B shares/day (distressed)",
+            "unit": "shares/day",
+            "trend": "volatile, declining"
+          },
+          "dynamics": {
+            "regime": "reversing",
+            "priceVelocity": "-8% per month",
+            "acceleration": "strongly negative",
+            "volatility": "High",
+            "dominantForce": "Mar 13 2000: massive institutional sell orders; Japan recession news; Microsoft antitrust ruling; dot-com earnings misses (Pets.com, Webvan)"
+          }
+        },
+        "m0:GFC2008": {
+          "dateRange": { "start": "2007-08-01", "end": "2008-09-15", "duration": "~13 months" },
+          "assetReference": {
+            "name": "S&P 500 + TED spread (interbank stress)",
+            "unit": "USD (S&P points) / bps (TED spread)",
+            "priceStart": 1550,
+            "priceEnd": 1250,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "S&P: -19%; TED spread: 24bps → 250bps"
+          },
+          "transactionVolume": {
+            "indicator": "Interbank lending volume + CDX credit spread",
+            "valueStart": "normal",
+            "valueEnd": "frozen — LIBOR spike",
+            "unit": "bps (TED spread)",
+            "trend": "credit volume collapsing"
+          },
+          "dynamics": {
+            "regime": "chaotic — slow then catastrophic",
+            "priceVelocity": "-2% per month (slow bleed)",
+            "acceleration": "negative, then extreme at Lehman (Sep 15, 2008)",
+            "volatility": "High → Extreme (VIX: 20 → 80)",
+            "dominantForce": "Aug 2007: BNP Paribas freezes funds; Bear Stearns rescue (Mar 2008); Fannie/Freddie conservatorship (Sep 7, 2008); Lehman bankruptcy (Sep 15, 2008)"
+          }
+        },
+        "m0:Crypto2021": {
+          "dateRange": { "start": "2021-11-10", "end": "2022-05-12", "duration": "~6 months" },
+          "assetReference": {
+            "name": "Bitcoin (BTC)",
+            "unit": "USD (per BTC)",
+            "priceStart": 69000,
+            "priceEnd": 29000,
+            "pricePeak": null,
+            "priceTrough": null,
+            "changePercent": "-58%"
+          },
+          "transactionVolume": {
+            "indicator": "Total crypto market daily volume",
+            "valueStart": "$200B/day",
+            "valueEnd": "$100B/day",
+            "unit": "USD/day",
+            "trend": "declining with panic spikes"
+          },
+          "dynamics": {
+            "regime": "reversing — accelerating",
+            "priceVelocity": "-10% per month",
+            "acceleration": "strongly negative (Terra/LUNA collapse: -99% in 72h, May 9-12 2022)",
+            "volatility": "Extreme",
+            "dominantForce": "May 9-12 2022: Terra UST depeg ($40B wiped) → contagion to Celsius, Three Arrows Capital, Voyager; Fed rate hike cycle (risk-off)"
+          }
+        }
+      }
+    },
+
+    {
+      "@id": "m0:Pole_Revulsion",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Phase 5 — Revulsion (Panic & Crash)",
+      "rdfs:comment": "Panic fully propagates (Propagation.Saturated). Forced selling cascade. Credit freeze (Im≈0). Narration Collapse attractor reached. Debt deflation (Fisher). Price velocity at maximum negative. Volume at maximum (fire sales). Central Bank LOLR intervention may truncate.",
+      "m0:poleIndex": 5,
+      "m0:asfidFormula": "F ⊗ D",
+      "m0:asfidScores": { "A": 0.88, "S": 0.82, "F": 0.98, "I": 0.88, "D": 0.98, "mean": 0.91 },
+      "m0:primaryM2": "m2:Propagation",
+      "m0:secondaryM2": ["m2:Cascade", "m2:Dissipation", "m2:Regulation", "m2:Convergence"],
+
+      "m0:simulationMarkers": {
+        "m0:TulipMania": {
+          "dateRange": { "start": "1637-02-07", "end": "1637-05", "duration": "~3 months" },
+          "assetReference": {
+            "name": "Semper Augustus tulip bulb",
+            "unit": "Dutch guilders (per bulb)",
+            "priceStart": 1500,
+            "priceEnd": 10,
+            "pricePeak": null,
+            "priceTrough": 10,
+            "changePercent": "-99.9% (from peak of 6700)"
+          },
+          "transactionVolume": {
+            "indicator": "Contracts honored / settled",
+            "valueStart": "near zero",
+            "valueEnd": "court-mandated settlements at 3.5 cents/guilder",
+            "unit": "guilders settled",
+            "trend": "collapsed"
+          },
+          "dynamics": {
+            "regime": "free fall then stabilization at near-zero",
+            "priceVelocity": "-90% in first month",
+            "acceleration": "extreme negative then stabilizes",
+            "volatility": "Extreme then zero (no market)",
+            "dominantForce": "Complete buyer withdrawal; Dutch courts rule contracts unenforceable as gambling debts; market ceases to function"
+          }
+        },
+        "m0:SouthSea": {
+          "dateRange": { "start": "1720-09-01", "end": "1720-12", "duration": "~4 months" },
+          "assetReference": {
+            "name": "South Sea Company stock",
+            "unit": "GBP (per share)",
+            "priceStart": 700,
+            "priceEnd": 100,
+            "pricePeak": null,
+            "priceTrough": 100,
+            "changePercent": "-86% (from peak of 1050: -90%)"
+          },
+          "transactionVolume": {
+            "indicator": "Exchange Alley transactions",
+            "valueStart": "distressed selling",
+            "valueEnd": "minimal",
+            "unit": "GBP (notional)",
+            "trend": "collapsed"
+          },
+          "dynamics": {
+            "regime": "free fall",
+            "priceVelocity": "-30% per month",
+            "acceleration": "extreme negative",
+            "volatility": "High",
+            "dominantForce": "Directors flee; Bank of England refuses support; Parliamentary inquiry (Newton loses £20K); bankruptcies cascade through aristocracy"
+          }
+        },
+        "m0:WallStreet1929": {
+          "dateRange": { "start": "1929-10-24", "end": "1932-07-08", "duration": "~33 months" },
+          "assetReference": {
+            "name": "Dow Jones Industrial Average",
+            "unit": "USD (index points)",
+            "priceStart": 305,
+            "priceEnd": 41,
+            "pricePeak": null,
+            "priceTrough": 41.22,
+            "changePercent": "-89% (from peak: Jul 8, 1932)"
+          },
+          "transactionVolume": {
+            "indicator": "NYSE daily trading volume",
+            "valueStart": "12M shares/day",
+            "valueEnd": "1M shares/day (market nearly dead)",
+            "unit": "shares/day",
+            "trend": "peak spike then collapse"
+          },
+          "dynamics": {
+            "regime": "prolonged decline with dead-cat bounces",
+            "priceVelocity": "-3% per month average (peaks: Black Mon -13%, Black Tue -12% Oct 28-29)",
+            "acceleration": "negative with intermittent relief rallies",
+            "volatility": "Extreme (Black Monday: -13% in one day)",
+            "dominantForce": "9000 bank failures 1930-33; Smoot-Hawley tariffs; Federal Reserve tightening; 25% unemployment; debt deflation spiral"
+          }
+        },
+        "m0:Dotcom": {
+          "dateRange": { "start": "2000-07-01", "end": "2002-10-09", "duration": "~28 months" },
+          "assetReference": {
+            "name": "NASDAQ Composite",
+            "unit": "USD (index points)",
+            "priceStart": 3400,
+            "priceEnd": 1114,
+            "pricePeak": null,
+            "priceTrough": 1114.11,
+            "changePercent": "-78% (from peak: Oct 9, 2002)"
+          },
+          "transactionVolume": {
+            "indicator": "NASDAQ daily trading volume",
+            "valueStart": "2B shares/day",
+            "valueEnd": "800M shares/day",
+            "unit": "shares/day",
+            "trend": "declining (market drying up)"
+          },
+          "dynamics": {
+            "regime": "prolonged decline with bounces",
+            "priceVelocity": "-3% per month average",
+            "acceleration": "negative with dead-cat bounces (multiple 20-30% relief rallies reversed)",
+            "volatility": "High",
+            "dominantForce": "Pets.com, Webvan, Kozmo bankruptcies; 9/11 shock; WorldCom/Enron accounting frauds; VC funding collapses; $5T market cap destroyed"
+          }
+        },
+        "m0:GFC2008": {
+          "dateRange": { "start": "2008-09-15", "end": "2009-03-09", "duration": "~6 months" },
+          "assetReference": {
+            "name": "S&P 500",
+            "unit": "USD (index points)",
+            "priceStart": 1250,
+            "priceEnd": 666,
+            "pricePeak": null,
+            "priceTrough": 666.79,
+            "changePercent": "-47% (from peak 1565: -57%)"
+          },
+          "transactionVolume": {
+            "indicator": "NYSE daily trading volume + LIBOR-OIS spread",
+            "valueStart": "10B shares/day (panic volume)",
+            "valueEnd": "3B shares/day (frozen)",
+            "unit": "shares/day / bps",
+            "trend": "panic spike then freeze"
+          },
+          "dynamics": {
+            "regime": "free fall with LOLR intervention plateau",
+            "priceVelocity": "-8% per month (Sep-Nov 2008)",
+            "acceleration": "extreme negative then stabilizing (TARP $700B, Fed QE1 Nov 2008)",
+            "volatility": "Extreme (VIX peak: 89.53 on Oct 24, 2008 — all-time record)",
+            "dominantForce": "Lehman bankruptcy → money market funds break the buck → commercial paper market freezes → TARP bailout → Fed QE1 → gradual stabilization"
+          }
+        },
+        "m0:Crypto2021": {
+          "dateRange": { "start": "2022-05-12", "end": "2022-11-21", "duration": "~6 months" },
+          "assetReference": {
+            "name": "Bitcoin (BTC)",
+            "unit": "USD (per BTC)",
+            "priceStart": 29000,
+            "priceEnd": 15500,
+            "pricePeak": null,
+            "priceTrough": 15599,
+            "changePercent": "-46% (from ATH $69K: -77%)"
+          },
+          "transactionVolume": {
+            "indicator": "Total crypto market daily volume",
+            "valueStart": "$100B/day",
+            "valueEnd": "$20B/day",
+            "unit": "USD/day",
+            "trend": "collapsed"
+          },
+          "dynamics": {
+            "regime": "cascading collapse",
+            "priceVelocity": "-8% per month",
+            "acceleration": "negative with cascade shocks (FTX collapse Nov 8-11 2022: -25% in 3 days)",
+            "volatility": "Extreme",
+            "dominantForce": "Celsius freeze (Jun), Three Arrows Capital insolvency (Jun), Voyager bankruptcy (Jul), FTX collapse ($32B → $0, Nov 8-11 2022) — complete trust destruction"
+          }
+        }
+      }
+    },
+
+    {
+      "@id": "m0:SimulationParameters",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Simulation Parameters",
+      "rdfs:comment": "Normalized parameters extracted from the 6 historical instances for use in simulation. Values are normalized to [0,1] or expressed as dimensionless ratios to enable cross-instance comparison and agent-based modeling.",
+
+      "m0:phaseDurationNorm": {
+        "m0:description": "Typical phase duration as fraction of total cycle",
+        "Displacement": { "min": 0.05, "typical": 0.20, "max": 0.50, "unit": "fraction of cycle" },
+        "Boom":         { "min": 0.10, "typical": 0.25, "max": 0.40, "unit": "fraction of cycle" },
+        "Euphoria":     { "min": 0.03, "typical": 0.15, "max": 0.25, "unit": "fraction of cycle" },
+        "Distress":     { "min": 0.01, "typical": 0.10, "max": 0.20, "unit": "fraction of cycle" },
+        "Revulsion":    { "min": 0.10, "typical": 0.30, "max": 0.60, "unit": "fraction of cycle" }
+      },
+
+      "m0:priceMultiplierFromBase": {
+        "m0:description": "Peak price / Displacement-start price — amplitude of bubble",
+        "TulipMania":    { "value": 134, "unit": "×" },
+        "SouthSea":      { "value": 10.5, "unit": "×" },
+        "WallStreet1929":{ "value": 4.0, "unit": "×" },
+        "Dotcom":        { "value": 7.3, "unit": "×" },
+        "GFC2008":       { "value": 1.8, "unit": "× (housing index)" },
+        "Crypto2021":    { "value": 19.7, "unit": "×" }
+      },
+
+      "m0:drawdownFromPeak": {
+        "m0:description": "Trough price / Peak price — amplitude of crash",
+        "TulipMania":    { "value": 0.001, "changePercent": "-99.9%" },
+        "SouthSea":      { "value": 0.095, "changePercent": "-90.5%" },
+        "WallStreet1929":{ "value": 0.108, "changePercent": "-89.2%" },
+        "Dotcom":        { "value": 0.217, "changePercent": "-78.3%" },
+        "GFC2008":       { "value": 0.426, "changePercent": "-57.4% (S&P 500)" },
+        "Crypto2021":    { "value": 0.225, "changePercent": "-77.5%" }
+      },
+
+      "m0:velocityProfile": {
+        "m0:description": "Price velocity (% per month) at each phase — positive = rising, negative = falling",
+        "TulipMania":    { "Displacement": 15, "Boom": 35,  "Euphoria": 100, "Distress": -500, "Revulsion": -90 },
+        "SouthSea":      { "Displacement": 0.3,"Boom": 10,  "Euphoria": 60,  "Distress": -15,  "Revulsion": -30 },
+        "WallStreet1929":{ "Displacement": 1.2,"Boom": 2.0, "Euphoria": 1.5, "Distress": -4,   "Revulsion": -3  },
+        "Dotcom":        { "Displacement": 1.5,"Boom": 3.5, "Euphoria": 6.0, "Distress": -8,   "Revulsion": -3  },
+        "GFC2008":       { "Displacement": 0.6,"Boom": 1.1, "Euphoria": 0.3, "Distress": -2,   "Revulsion": -8  },
+        "Crypto2021":    { "Displacement": 7,  "Boom": 50,  "Euphoria": 4,   "Distress": -10,  "Revulsion": -8  }
+      },
+
+      "m0:accelerationSign": {
+        "m0:description": "Sign of d²Price/dt² at each phase (+= accelerating up, -= decelerating/reversing)",
+        "TulipMania":    { "Displacement": "+", "Boom": "++", "Euphoria": "+→0", "Distress": "---", "Revulsion": "---→0" },
+        "SouthSea":      { "Displacement": "0", "Boom": "+",  "Euphoria": "+→0", "Distress": "--",  "Revulsion": "---"    },
+        "WallStreet1929":{ "Displacement": "+", "Boom": "+",  "Euphoria": "-",   "Distress": "--",  "Revulsion": "---"    },
+        "Dotcom":        { "Displacement": "+", "Boom": "++", "Euphoria": "+→0", "Distress": "--",  "Revulsion": "--"     },
+        "GFC2008":       { "Displacement": "+", "Boom": "+",  "Euphoria": "-",   "Distress": "--",  "Revulsion": "---"    },
+        "Crypto2021":    { "Displacement": "+", "Boom": "++", "Euphoria": "±",   "Distress": "--",  "Revulsion": "---"    }
+      },
+
+      "m0:volumeProfile": {
+        "m0:description": "Normalized transaction volume relative to Displacement baseline (1.0)",
+        "TulipMania":    { "Displacement": 1.0, "Boom": 5,   "Euphoria": 20,  "Distress": 0.5, "Revulsion": 0.01 },
+        "SouthSea":      { "Displacement": 1.0, "Boom": 5,   "Euphoria": 10,  "Distress": 5,   "Revulsion": 0.1  },
+        "WallStreet1929":{ "Displacement": 1.0, "Boom": 2.5, "Euphoria": 4,   "Distress": 6,   "Revulsion": 0.5  },
+        "Dotcom":        { "Displacement": 1.0, "Boom": 10,  "Euphoria": 25,  "Distress": 20,  "Revulsion": 8    },
+        "GFC2008":       { "Displacement": 1.0, "Boom": 2.5, "Euphoria": 1.3, "Distress": 2,   "Revulsion": 0.3  },
+        "Crypto2021":    { "Displacement": 1.0, "Boom": 5,   "Euphoria": 20,  "Distress": 10,  "Revulsion": 2    }
+      },
+
+      "m0:R0_equivalent": {
+        "m0:description": "Propagation reproduction number equivalent (narrative/panic spread rate). R₀>1 = spreading, R₀<1 = contained.",
+        "Boom_narrative_R0":     { "range": "1.2–2.0", "interpretation": "Opportunity narrative Supercritical" },
+        "Euphoria_narrative_R0": { "range": "2.0–5.0", "interpretation": "Bubble narrative at peak propagation" },
+        "Distress_panic_R0":     { "range": "0.5→3.0", "interpretation": "Crossing R₀=1 = Minsky Moment" },
+        "Revulsion_panic_R0":    { "range": "3.0→0.5", "interpretation": "Panic Supercritical → Saturated → SubThreshold" }
+      }
+    },
+
+    {
+      "@id": "m0:PropagationInstance",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Financial Panic Propagation",
+      "rdfs:comment": "Instantiation of m2:Propagation. Panic spreads through interbank exposure network: each bank run triggers neighboring institutions (Duplication: each receiver becomes new emitter). Threshold attractor A = Minsky Moment. Copy fidelity V = panic signal integrity. Im = bilateral bank exposures.",
+      "m2:characterizedBy": { "@id": "m2:Propagation" },
+      "m0:propagationMapping": {
+        "S": "Interbank exposure network (bilateral credit lines, CDS, common asset holdings)",
+        "I": "Panic signal content (counterparty default risk, liquidity shortage message)",
+        "A": "Minsky Moment threshold — R₀=1 bifurcation point for panic spread",
+        "D": "Panic dynamics: hours to days in acute phase",
+        "F": "Capital flight, margin calls, repo withdrawal between nodes",
+        "V": "Panic signal fidelity (high: legitimate counterparty risk; low: pure contagion)",
+        "Im": "Bank-to-bank compatibility: bilateral credit lines, CDS contracts, repo agreements"
+      }
+    },
+
+    {
+      "@id": "m0:NarrationInstance",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Market Collective Belief Narration",
+      "rdfs:comment": "Instantiation of m2:Narration. Collective market belief network transforms across 5 phases: 'new paradigm' → 'this time is different' → 'panic' → 'never again'. Narration topology=Linear, attractorType=Collapse. Im = shared market interpretation framework.",
+      "m2:characterizedBy": { "@id": "m2:Narration" },
+      "m0:narrationMapping": {
+        "S": "Market belief network topology (analyst consensus, media, social networks)",
+        "I": "Collective belief content (speculative thesis, valuation narrative, panic message)",
+        "D": "Temporal unfolding across 5 Minsky phases",
+        "F": "Narrative flux: how beliefs propagate (financial media, analyst reports, social proof)",
+        "V": "Narrative coherence (high in Euphoria: internally consistent; zero in Revulsion: contradictory)",
+        "R": "Narrative encodability (Shiller: quantifiable via surveys, media analysis, Google Trends)",
+        "A": "Collapse attractor — Minsky Moment is the telos already implicit in Euphoria structure",
+        "Im": "Shared market interpretation framework: Bloomberg, CNBC, analyst consensus vocabulary"
+      },
+      "m0:narrativeTransformation": {
+        "Displacement": "'Unprecedented opportunity — early mover advantage'",
+        "Boom": "'New paradigm — traditional valuation metrics obsolete'",
+        "Euphoria": "'This time is different — [asset] always goes up'",
+        "Distress": "'Isolated problem — contained, buy the dip'",
+        "Revulsion": "'Total fraud — I will never invest in [asset] again'"
+      }
+    }
+
+  ]
+}
