@@ -1,0 +1,144 @@
+{
+  "_meta": {
+    "title": "TSCG TscgPocletMiner — Corpus Profile",
+    "description": "Invariants and profiling data extracted from the 21 validated TSCG poclets. Used by TscgPocletMiner as scoring reference.",
+    "version": "1.0.0",
+    "date": "2026-03-16",
+    "authors": ["Echopraxium with the collaboration of Claude AI"]
+  },
+
+  "domain_coverage": {
+    "biology":     ["RAAS", "BloodPressureControl", "AdaptiveImmuneResponse", "ButterflyMetamorphosis", "ChemicalSynapse", "Kidneys", "CellSignalingModes"],
+    "physics":     ["PhaseTransition"],
+    "chemistry":   ["Combustion"],
+    "electronics": ["VCO", "Transistor", "MOSFET", "FourStrokeEngine"],
+    "photography": ["ExposureTriangle"],
+    "mythology":   ["Yggdrasil"],
+    "game_design": ["MTG_ColorWheel"],
+    "education":   ["TPACK"],
+    "economics":   ["KindlebergerMinsky"],
+    "optics":      ["RGBColorSynthesis"]
+  },
+
+  "corpus_stats": {
+    "total": 21,
+    "domains_covered": 10,
+    "asfid_mean_avg": 0.83,
+    "revoi_mean_avg": 0.84,
+    "epistemic_gap_avg": 0.04
+  },
+
+  "invariants": {
+    "description": "Criteria that ALL 21 validated poclets satisfy — used for candidate screening",
+    "criteria": [
+      {
+        "id": "INV-01",
+        "label": "Real observable system",
+        "question": "Is the candidate a real, observable system (not a pure abstraction)?",
+        "weight": 1.0,
+        "examples_ok":   ["RAAS", "Transistor", "ButterflyMetamorphosis"],
+        "examples_fail": ["Pure mathematics", "Philosophical concept", "Vague metaphor"]
+      },
+      {
+        "id": "INV-02",
+        "label": "Identifiable Attractor (A)",
+        "question": "Does the system tend toward a stable state or equilibrium?",
+        "weight": 0.9,
+        "examples_ok":   ["Blood pressure homeostasis", "Transistor Q-point", "Clot formation"],
+        "examples_fail": ["Pure random process with no attractor"]
+      },
+      {
+        "id": "INV-03",
+        "label": "Identifiable Structure (S)",
+        "question": "Does the system have clearly delimited components and boundaries?",
+        "weight": 1.0,
+        "examples_ok":   ["RAAS (renin, angiotensin, aldosterone)", "Transistor (B, C, E terminals)"],
+        "examples_fail": ["Fuzzy concept with no clear components"]
+      },
+      {
+        "id": "INV-04",
+        "label": "Identifiable Flow (F)",
+        "question": "Does the system involve flows of matter, energy, or information?",
+        "weight": 0.9,
+        "examples_ok":   ["Hormonal flow in RAAS", "Electron flow in transistor", "Signal cascade in immunity"],
+        "examples_fail": ["Static classification with no flow"]
+      },
+      {
+        "id": "INV-05",
+        "label": "Non-trivial regulation or dynamics (D)",
+        "question": "Does the system exhibit feedback, adaptation, or non-trivial dynamics?",
+        "weight": 0.85,
+        "examples_ok":   ["Negative feedback in blood pressure", "Switching dynamics in transistor"],
+        "examples_fail": ["Trivial linear process, no regulation"]
+      },
+      {
+        "id": "INV-06",
+        "label": "Delimited domain",
+        "question": "Does the candidate belong to a clearly named discipline or domain?",
+        "weight": 0.8,
+        "examples_ok":   ["Biology", "Electronics", "Economics", "Mythology"],
+        "examples_fail": ["Everything / too vague"]
+      },
+      {
+        "id": "INV-07",
+        "label": "Web-documentable",
+        "question": "Is the system documented in Wikipedia, academic papers, or reliable web sources?",
+        "weight": 0.9,
+        "examples_ok":   ["RAAS (extensive medical literature)", "Transistor (IEEE, textbooks)"],
+        "examples_fail": ["Proprietary unpublished system", "Invented concept"]
+      },
+      {
+        "id": "INV-08",
+        "label": "Domain gap",
+        "question": "Does this candidate add a new domain OR a meaningfully distinct system within an existing domain?",
+        "weight": 0.7,
+        "examples_ok":   ["SIR model (epidemiology)", "Harmonic oscillator (music)"],
+        "examples_fail": ["Another hormonal feedback loop too similar to RAAS"]
+      },
+      {
+        "id": "INV-09",
+        "label": "Type discriminant",
+        "question": "Is the candidate a Poclet (single domain), TransDisclet (natively multi-domain), or SystemicFramework?",
+        "weight": 0.8,
+        "options": {
+          "Poclet":            "Single domain, empirically validated",
+          "TransDisclet":      "Natively exists in 2+ disciplines simultaneously (structural homology required)",
+          "SystemicFramework": "Established external methodology (VSM, Cynefin, etc.)"
+        }
+      }
+    ]
+  },
+
+  "gap_analysis": {
+    "description": "Domains NOT yet covered — high-priority targets for new poclets",
+    "priority_candidates": [
+      { "system": "SIR Epidemiological Model",    "domain": "Epidemiology", "type": "Poclet" },
+      { "system": "Peirce's Semiotic Triangle",   "domain": "Semiotics",    "type": "Poclet" },
+      { "system": "Rogers Innovation Diffusion",  "domain": "Sociology",    "type": "Poclet" },
+      { "system": "Harmonic Tension-Resolution",  "domain": "Music Theory", "type": "Poclet" },
+      { "system": "Trophic Pyramid",              "domain": "Ecology",      "type": "Poclet" },
+      { "system": "Transducer",                   "domain": "Cross-domain", "type": "TransDisclet" },
+      { "system": "Oscillator",                   "domain": "Cross-domain", "type": "TransDisclet" },
+      { "system": "Filter",                       "domain": "Cross-domain", "type": "TransDisclet" }
+    ]
+  },
+
+  "scoring_thresholds": {
+    "asfid_min_for_acceptance": 0.6,
+    "invariants_min_satisfied": 6,
+    "invariants_total": 9,
+    "verdict": {
+      "strong_candidate": { "invariants_min": 8, "asfid_min": 0.75 },
+      "candidate":        { "invariants_min": 6, "asfid_min": 0.60 },
+      "weak_candidate":   { "invariants_min": 4, "asfid_min": 0.50 },
+      "rejected":         { "invariants_min": 0, "asfid_min": 0.00 }
+    }
+  },
+
+  "web_search_templates": {
+    "wikipedia":      "https://en.wikipedia.org/wiki/{SYSTEM}",
+    "scholar":        "https://scholar.google.com/scholar?q={SYSTEM}+system",
+    "gemini_suggest": "https://gemini.google.com/app?q=List+10+well-documented+systems+in+{DOMAIN}+that+have+clear+feedback+loops+and+regulation",
+    "duckduckgo":     "https://duckduckgo.com/?q={SYSTEM}+{DOMAIN}+feedback+regulation"
+  }
+}
