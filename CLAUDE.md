@@ -41,7 +41,7 @@ Every artifact in this repo belongs to one of four layers (M0–M3). This is the
 | **M3** | Genesis Space | 10D bicephalous basis — the universal meta-framework | `ontology/M3_*.jsonld/.ttl` |
 | **M2** | GenericConcepts | 81 universal patterns applicable across all domains | `ontology/M2_GenericConcepts.jsonld` |
 | **M1** | Core/Domain Concepts | Domain-specific concept extensions (biology, chemistry, etc.) | `ontology/M1_*.jsonld`, `ontology/M1_extensions/` |
-| **M0** | Poclets | Validated minimal complete models of real systems | `system-models/poclets/*/M0_*.jsonld/.ttl` |
+| **M0** | Poclets | Validated minimal complete models of real systems | `instances/poclets/*/M0_*.jsonld/.ttl` |
 
 ### M3: The Bicephalous Basis
 
@@ -64,7 +64,7 @@ The production file is `M2_GenericConcepts.jsonld`; `M2_MetaConcepts_Ref.jsonld`
 
 ### M0: Poclets
 
-A **poclet** (Proof-Of-Concept LET) is a minimal, complete, validated model of a real system. Each poclet lives in its own directory under `system-models/poclets/` and has dual-format files (`M0_*.jsonld` + `M0_*.ttl`). Models under active repair are in `system-models/poclets/00_to_be_fixed/`.
+A **poclet** (Proof-Of-Concept LET) is a minimal, complete, validated model of a real system. Each poclet lives in its own directory under `instances/poclets/` and has dual-format files (`M0_*.jsonld` + `M0_*.ttl`). Models under active repair are in `instances/poclets/00_to_be_fixed/`.
 
 ## File Format Conventions
 
@@ -133,7 +133,7 @@ Three-module RAG stack, composed by `RAGFacade`:
 
 ### `ontology_tools/`
 
-**`jsonld_to_turtle.py`** — `JSONLDToTurtleConverter`: batch-converts all `.jsonld` files in `ontology/` and `system-models/` to `.ttl`, preserving directory structure. Supports dry-run mode and skip-on-error. This is the canonical tool for keeping dual-format files in sync.
+**`jsonld_to_turtle.py`** — `JSONLDToTurtleConverter`: batch-converts all `.jsonld` files in `ontology/` and `instances/` to `.ttl`, preserving directory structure. Supports dry-run mode and skip-on-error. This is the canonical tool for keeping dual-format files in sync.
 
 ### `rag/` (top-level, separate from `engine/rag/`)
 
@@ -535,90 +535,90 @@ Base: `https://raw.githubusercontent.com/echopraxium/tscg/main/`
 | Namespace_Refactoring_Summary.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/Namespace_Refactoring_Summary.md` |
 | ontology_analysis.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/ontology_analysis.md` |
 
-#### system-models/poclets/ — Validated Poclets
+#### instances/poclets/ — Validated Poclets
 
 | Poclet | File | URI |
 |--------|------|-----|
-| Adaptive Immune Response | M0_AdaptiveImmuneResponse.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld` |
-| Adaptive Immune Response | M0_AdaptiveImmuneResponse.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.ttl` |
-| Adaptive Immune Response | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse_README.md` |
-| Blood Pressure Control | M0_BloodPressureControl.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld` |
-| Blood Pressure Control | M0_BloodPressureControl.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/blood_pressure_control/M0_BloodPressureControl.ttl` |
-| Blood Pressure Control | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/blood_pressure_control/M0_BloodPressureControl_README.md` |
-| Butterfly Metamorphosis | M0_ButterflyMetamorphosis.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/butterfly_metamorphosis/M0_ButterflyMetamorphosis.jsonld` |
-| Butterfly Metamorphosis | M0_ButterflyMetamorphosis.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/butterfly_metamorphosis/M0_ButterflyMetamorphosis.ttl` |
-| Butterfly Metamorphosis | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/butterfly_metamorphosis/butterfly_metamorphosis_README.md` |
-| Cell Signaling Modes | M0_CellSignalingModes.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/cell_signaling_modes/M0_CellSignalingModes.jsonld` |
-| Cell Signaling Modes | M0_CellSignalingModes.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/cell_signaling_modes/M0_CellSignalingModes.ttl` |
-| Cell Signaling Modes | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/cell_signaling_modes/M0_CellSignalingModes_README.md` |
-| Color Synthesis | M0_CMYK_Subtractive.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/color_synthesis/M0_CMYK_Subtractive.jsonld` |
-| Color Synthesis | M0_CMY_Subtractive.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/color_synthesis/M0_CMY_Subtractive.jsonld` |
-| Color Synthesis | M0_ColorSynthesis_Federated.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/color_synthesis/M0_ColorSynthesis_Federated.jsonld` |
-| Color Synthesis | M0_HSL_Additive.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/color_synthesis/M0_HSL_Additive.jsonld` |
-| Color Synthesis | M0_RGB_Additive.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/color_synthesis/M0_RGB_Additive.jsonld` |
-| Complex Chemical Synapse | M0_ComplexChemicalSynapse.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/complex_chemical_synapse/M0_ComplexChemicalSynapse.jsonld` |
-| Complex Chemical Synapse | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/complex_chemical_synapse/M0_ComplexChemicalSynapse_README.md` |
-| Exposure Triangle | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/exposure_triangle/M0_ExposureTriangle_README.md` |
-| Fire Triangle | M0_FireTriangle.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/fire_triangle/M0_FireTriangle.jsonld` |
-| Fire Triangle | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/fire_triangle/M0_FireTriangle_README.md` |
-| Four-Stroke Engine | M0_FourStrokeEngine.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/four_stroke_engine/M0_FourStrokeEngine.jsonld` |
-| Four-Stroke Engine | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/four_stroke_engine/M0_FourStrokeEngine_README.md` |
-| Four-Stroke Engine | Sim | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/four_stroke_engine/four_stroke_engine_sim.py` |
-| Kidneys | M0_Kidneys.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/kidneys/M0_Kidneys.jsonld` |
-| Kidneys | M0_Kidneys.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/kidneys/M0_Kidneys.ttl` |
-| Kidneys | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/kidneys/M0_Kidneys_README.md` |
-| Nuclear Reactor Typology | M0_NuclearReactorTypology.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/nuclear_reactors_typology/M0_NuclearReactorTypology.jsonld` |
-| Nuclear Reactor Typology | M0_NuclearReactorTypology.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/nuclear_reactors_typology/M0_NuclearReactorTypology.ttl` |
-| Nuclear Reactor Typology | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/nuclear_reactors_typology/M0_NuclearReactorTypology_README.md` |
-| RAAS | M0_RAAS.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/raas/M0_RAAS.jsonld` |
-| RAAS | M0_RAAS.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/raas/M0_RAAS.ttl` |
-| RAAS | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/raas/RAAS_Complete_README.md` |
-| Transistor | M0_Transistor.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/transistor/M0_Transistor.jsonld` |
-| Transistor | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/transistor/M0_Transistor_README.md` |
-| Transistor | Sim | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/transistor/transistor_sim.py` |
-| Yggdrasil | M0_Yggdrasil.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/yggdrasil/M0_Yggdrasil.jsonld` |
-| Yggdrasil | M0_Yggdrasil.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/yggdrasil/M0_Yggdrasil.ttl` |
-| Yggdrasil | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/yggdrasil/M0_Yggdrasil_README.md` |
+| Adaptive Immune Response | M0_AdaptiveImmuneResponse.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld` |
+| Adaptive Immune Response | M0_AdaptiveImmuneResponse.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.ttl` |
+| Adaptive Immune Response | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse_README.md` |
+| Blood Pressure Control | M0_BloodPressureControl.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld` |
+| Blood Pressure Control | M0_BloodPressureControl.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/blood_pressure_control/M0_BloodPressureControl.ttl` |
+| Blood Pressure Control | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/blood_pressure_control/M0_BloodPressureControl_README.md` |
+| Butterfly Metamorphosis | M0_ButterflyMetamorphosis.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/butterfly_metamorphosis/M0_ButterflyMetamorphosis.jsonld` |
+| Butterfly Metamorphosis | M0_ButterflyMetamorphosis.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/butterfly_metamorphosis/M0_ButterflyMetamorphosis.ttl` |
+| Butterfly Metamorphosis | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/butterfly_metamorphosis/butterfly_metamorphosis_README.md` |
+| Cell Signaling Modes | M0_CellSignalingModes.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/cell_signaling_modes/M0_CellSignalingModes.jsonld` |
+| Cell Signaling Modes | M0_CellSignalingModes.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/cell_signaling_modes/M0_CellSignalingModes.ttl` |
+| Cell Signaling Modes | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/cell_signaling_modes/M0_CellSignalingModes_README.md` |
+| Color Synthesis | M0_CMYK_Subtractive.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/color_synthesis/M0_CMYK_Subtractive.jsonld` |
+| Color Synthesis | M0_CMY_Subtractive.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/color_synthesis/M0_CMY_Subtractive.jsonld` |
+| Color Synthesis | M0_ColorSynthesis_Federated.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/color_synthesis/M0_ColorSynthesis_Federated.jsonld` |
+| Color Synthesis | M0_HSL_Additive.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/color_synthesis/M0_HSL_Additive.jsonld` |
+| Color Synthesis | M0_RGB_Additive.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/color_synthesis/M0_RGB_Additive.jsonld` |
+| Complex Chemical Synapse | M0_ComplexChemicalSynapse.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/complex_chemical_synapse/M0_ComplexChemicalSynapse.jsonld` |
+| Complex Chemical Synapse | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/complex_chemical_synapse/M0_ComplexChemicalSynapse_README.md` |
+| Exposure Triangle | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/exposure_triangle/M0_ExposureTriangle_README.md` |
+| Fire Triangle | M0_FireTriangle.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/fire_triangle/M0_FireTriangle.jsonld` |
+| Fire Triangle | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/fire_triangle/M0_FireTriangle_README.md` |
+| Four-Stroke Engine | M0_FourStrokeEngine.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/four_stroke_engine/M0_FourStrokeEngine.jsonld` |
+| Four-Stroke Engine | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/four_stroke_engine/M0_FourStrokeEngine_README.md` |
+| Four-Stroke Engine | Sim | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/four_stroke_engine/four_stroke_engine_sim.py` |
+| Kidneys | M0_Kidneys.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/kidneys/M0_Kidneys.jsonld` |
+| Kidneys | M0_Kidneys.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/kidneys/M0_Kidneys.ttl` |
+| Kidneys | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/kidneys/M0_Kidneys_README.md` |
+| Nuclear Reactor Typology | M0_NuclearReactorTypology.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/nuclear_reactors_typology/M0_NuclearReactorTypology.jsonld` |
+| Nuclear Reactor Typology | M0_NuclearReactorTypology.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/nuclear_reactors_typology/M0_NuclearReactorTypology.ttl` |
+| Nuclear Reactor Typology | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/nuclear_reactors_typology/M0_NuclearReactorTypology_README.md` |
+| RAAS | M0_RAAS.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/raas/M0_RAAS.jsonld` |
+| RAAS | M0_RAAS.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/raas/M0_RAAS.ttl` |
+| RAAS | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/raas/RAAS_Complete_README.md` |
+| Transistor | M0_Transistor.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/transistor/M0_Transistor.jsonld` |
+| Transistor | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/transistor/M0_Transistor_README.md` |
+| Transistor | Sim | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/transistor/transistor_sim.py` |
+| Yggdrasil | M0_Yggdrasil.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/yggdrasil/M0_Yggdrasil.jsonld` |
+| Yggdrasil | M0_Yggdrasil.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/yggdrasil/M0_Yggdrasil.ttl` |
+| Yggdrasil | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/yggdrasil/M0_Yggdrasil_README.md` |
 
-| Kindleberger-Minsky | M0_KindlebergerMinsky.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/kindleberger-minsky/M0_KindlebergerMinsky.jsonld` |
-| Kindleberger-Minsky | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/kindleberger-minsky/M0_KindlebergerMinsky_README.md` |
-| Kindleberger-Minsky | Sim | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/kindleberger-minsky/kindleberger_minsky_sim.py` |
-| MTG Color Wheel | M0_MTG_ColorWheel.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/mtg_color_wheel/M0_MTG_ColorWheel.jsonld` |
-| MTG Color Wheel | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/mtg_color_wheel/MTG_ColorWheel_README.md` |
-| Phase Transition | M0_PhaseTransition.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/phase_transition/M0_PhaseTransition.jsonld` |
-| Phase Transition | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/phase_transition/M0_PhaseTransition_README.md` |
-| TPACK | M0_TPACK.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/tpack/M0_TPACK.jsonld` |
-| TPACK | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/tpack/TPACK_README.md` |
-| VCO | M0_VCO.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/vco/M0_VCO.jsonld` |
-| VCO | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/vco/M0_VCO_README.md` |
-| VCO | Sim | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/vco/vco_sim.py` |
+| Kindleberger-Minsky | M0_KindlebergerMinsky.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/kindleberger-minsky/M0_KindlebergerMinsky.jsonld` |
+| Kindleberger-Minsky | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/kindleberger-minsky/M0_KindlebergerMinsky_README.md` |
+| Kindleberger-Minsky | Sim | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/kindleberger-minsky/kindleberger_minsky_sim.py` |
+| MTG Color Wheel | M0_MTG_ColorWheel.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/mtg_color_wheel/M0_MTG_ColorWheel.jsonld` |
+| MTG Color Wheel | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/mtg_color_wheel/MTG_ColorWheel_README.md` |
+| Phase Transition | M0_PhaseTransition.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/phase_transition/M0_PhaseTransition.jsonld` |
+| Phase Transition | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/phase_transition/M0_PhaseTransition_README.md` |
+| TPACK | M0_TPACK.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/tpack/M0_TPACK.jsonld` |
+| TPACK | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/tpack/TPACK_README.md` |
+| VCO | M0_VCO.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/vco/M0_VCO.jsonld` |
+| VCO | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/vco/M0_VCO_README.md` |
+| VCO | Sim | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/vco/vco_sim.py` |
 
-#### system-models/tscg-tools/tscg-explorer/ — TSCG Meta-Analytical Tool
-
-| File | URI |
-|------|-----|
-| M0_TscgExplorer.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/tscg-tools/tscg-explorer/M0_TscgExplorer.jsonld` |
-| M0_TscgExplorer_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/tscg-tools/tscg-explorer/M0_TscgExplorer_README.md` |
-| TSCG_Explorer_Simulation_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/tscg-tools/tscg-explorer/TSCG_Explorer_Simulation_README.md` |
-| tscg_explorer.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/tscg-tools/tscg-explorer/tscg_explorer.py` |
-
-#### system-models/systemic-frameworks/vsm/ — VSM
+#### instances/tscg-tools/tscg-explorer/ — TSCG Meta-Analytical Tool
 
 | File | URI |
 |------|-----|
-| M0_VSM.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/systemic-frameworks/vsm/M0_VSM.jsonld` |
-| M0_VSM.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/systemic-frameworks/vsm/M0_VSM.ttl` |
-| M0_VSM_Metaconcepts.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/systemic-frameworks/vsm/M0_VSM_Metaconcepts.jsonld` |
-| M0_VSM_Metaconcepts.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/systemic-frameworks/vsm/M0_VSM_Metaconcepts.ttl` |
-| M0_VSM_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/systemic-frameworks/vsm/M0_VSM_README.md` |
-| M0_VSM_README_Metaconcepts.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/systemic-frameworks/vsm/M0_VSM_README_Metaconcepts.md` |
+| M0_TscgExplorer.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/tscg-explorer/M0_TscgExplorer.jsonld` |
+| M0_TscgExplorer_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/tscg-explorer/M0_TscgExplorer_README.md` |
+| TSCG_Explorer_Simulation_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/tscg-explorer/TSCG_Explorer_Simulation_README.md` |
+| tscg_explorer.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/tscg-explorer/tscg_explorer.py` |
 
-#### system-models/symbolic-system-grammars/iching/ — I Ching
+#### instances/systemic-frameworks/vsm/ — VSM
 
 | File | URI |
 |------|-----|
-| M0_IChing.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/symbolic-system-grammars/iching/M0_IChing.jsonld` |
-| M0_IChing_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/symbolic-system-grammars/iching/M0_IChing_README.md` |
+| M0_VSM.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM.jsonld` |
+| M0_VSM.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM.ttl` |
+| M0_VSM_Metaconcepts.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM_Metaconcepts.jsonld` |
+| M0_VSM_Metaconcepts.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM_Metaconcepts.ttl` |
+| M0_VSM_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM_README.md` |
+| M0_VSM_README_Metaconcepts.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM_README_Metaconcepts.md` |
+
+#### instances/symbolic-system-grammars/iching/ — I Ching
+
+| File | URI |
+|------|-----|
+| M0_IChing.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/symbolic-system-grammars/iching/M0_IChing.jsonld` |
+| M0_IChing_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/symbolic-system-grammars/iching/M0_IChing_README.md` |
 
 #### src/ — Python Engine
 

@@ -17,14 +17,14 @@ tscg/
 ├── src/
 │   └── tscg/
 │       ├── ontology/          ← FAUX
-│       └── system-models/     ← FAUX
+│       └── instances/     ← FAUX
 ```
 
 **Après (correct) :**
 ```
 tscg/                          ← Racine du repository GitHub
 ├── ontology/                  ← CORRECT : à la racine
-├── system-models/             ← CORRECT : à la racine
+├── instances/             ← CORRECT : à la racine
 └── src/
     └── tscg/
         └── ontology_tools/    ← Scripts de conversion
@@ -50,9 +50,9 @@ default=Path.cwd().parent.parent.parent  # Remonte 3 niveaux
 ```python
 # Nouveau code ajouté
 def _validate_root_dir(self) -> bool:
-    """Vérifie si ontology/ et system-models/ existent"""
+    """Vérifie si ontology/ et instances/ existent"""
     ontology_exists = (self.root_dir / "ontology").exists()
-    system_models_exists = (self.root_dir / "system-models").exists()
+    system_models_exists = (self.root_dir / "instances").exists()
     return ontology_exists or system_models_exists
 
 def _auto_detect_root(self):
@@ -60,7 +60,7 @@ def _auto_detect_root(self):
     current = Path.cwd()
     for _ in range(5):
         if (current / "ontology").exists() or 
-           (current / "system-models").exists():
+           (current / "instances").exists():
             self.root_dir = current
             return
         current = current.parent
@@ -90,9 +90,9 @@ def _auto_detect_root(self):
 
 L'utilisateur place simplement les fichiers dans `src/tscg/ontology_tools/` et le script :
 
-1. **Détecte automatiquement** la racine en cherchant `ontology/` et `system-models/`
+1. **Détecte automatiquement** la racine en cherchant `ontology/` et `instances/`
 2. **Remonte les dossiers** : `ontology_tools/` → `tscg/` → `src/` → **racine/**
-3. **Scanne récursivement** `ontology/` et `system-models/`
+3. **Scanne récursivement** `ontology/` et `instances/`
 4. **Convertit tous les .jsonld** en .ttl dans leurs dossiers respectifs
 
 **Aucune configuration manuelle nécessaire !** ✨
@@ -126,12 +126,12 @@ Le script vérifie maintenant :
 root = Path.cwd().parent.parent.parent  # → tscg/
 
 assert (root / "ontology").exists()      # ✓ Doit exister
-assert (root / "system-models").exists() # ✓ Doit exister
+assert (root / "instances").exists() # ✓ Doit exister
 ```
 
 Si les dossiers n'existent pas au niveau attendu, le script :
 1. Remonte jusqu'à 5 niveaux parents
-2. Cherche `ontology/` et `system-models/`
+2. Cherche `ontology/` et `instances/`
 3. Ajuste automatiquement `root_dir`
 
 ---
@@ -150,7 +150,7 @@ Si les dossiers n'existent pas au niveau attendu, le script :
 ## ✅ Garanties
 
 - ✅ Auto-détection de la racine (0 configuration)
-- ✅ Scan récursif complet (ontology/ + system-models/)
+- ✅ Scan récursif complet (ontology/ + instances/)
 - ✅ Gestion UTF-8 robuste (pas de corruption)
 - ✅ Conversion sans perte (100% fidélité RDF)
 - ✅ Compatible Protégé + raisonneurs OWL

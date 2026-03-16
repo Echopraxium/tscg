@@ -522,7 +522,7 @@ This validates VSM as both scientifically grounded (Territory) and methodologica
 
 ---
 
-**Ontology URI:** `https://raw.githubusercontent.com/Echopraxium/tscg/main/system-models/M0_VSM.jsonld`  
+**Ontology URI:** `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/M0_VSM.jsonld`  
 **Version:** 1.1.0  
 **Status:** ✅ Validated - Production-ready with MetaconceptCombo architecture
 

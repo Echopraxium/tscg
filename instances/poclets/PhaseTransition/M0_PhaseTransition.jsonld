@@ -1,0 +1,591 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "sm": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/PhaseTransition/M0_PhaseTransition.jsonld#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "tscg": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/tscg#",
+    "m3": "M3_GenesisSpace.jsonld#",
+    "m2": "M2_GenericConcepts.jsonld#",
+    "m1core": "M1_CoreConcepts.jsonld#",
+    "m1chem": "M1_extensions/chemistry/M1_Chemistry.jsonld#",
+    "m1phys": "M1_extensions/physics/M1_Physics.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m0:PhaseTransition",
+      "@type": "owl:Ontology",
+      "owl:versionInfo": "1.1.0",
+      "rdfs:label": "Phase Transition Poclet",
+      "rdfs:comment": "TSCG M0 poclet modeling matter phase transitions (Solid, Liquid, Gas) governed by temperature and pressure, with ideal gas law (pV=nRT) formalization and 7 reference substances",
+      "tscg:domain": "Physical Chemistry / Thermodynamics",
+      "tscg:namespace": "m0:PhaseTransition",
+      "dcterms:created": "2026-02-26",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "tscg:primaryPhenomenon": "Discontinuous change of macroscopic state (solid -> liquid -> gas) driven by temperature and pressure, governed by latent heat absorption/release and the Clausius-Clapeyron equation",
+      "tscg:governingLaw": "Ideal Gas Law: pV = nRT (R = 8.314 J/mol/K)",
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
+      "owl:imports": [
+        "M3_GenesisSpace.jsonld",
+        "M2_GenericConcepts.jsonld",
+        "M1_CoreConcepts.jsonld",
+        "M1_extensions/chemistry/M1_Chemistry.jsonld",
+        "M1_extensions/physics/M1_Physics.jsonld"
+      ],
+      "m2:changelog": [
+        "1.1.0 (2026-02-26): Added TSCG bicephalous synthesis, synergyFormula, M2 candidates (SymmetryBreaking), M1_Physics imports, keyInsights; fixed stateSpace count (3 phases)",
+        "1.1.0 (2026-02-26): Simplified to 3 phases (solid/liquid/gas) — plasma removed",
+        "1.0.0 (2026-02-26): Initial creation — ideal gas law, seven reference substances"
+      ]
+    },
+    {
+      "@id": "m0:System",
+      "@type": "tscg:Poclet",
+      "rdfs:label": "Phase Transition System",
+      "rdfs:comment": "A pure substance traversing the solid, liquid and gas phases as temperature and pressure vary across the phase diagram.",
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
+      "tscg:primaryControlParameters": [
+        "Temperature (T, Kelvin)",
+        "Pressure (P, Pascal / atm)"
+      ],
+      "tscg:stateSpace": "3 classical thermodynamic phases: Solid, Liquid, Gas",
+      "tscg:governingEquation": "Ideal Gas Law: pV = nRT (R = 8.314 J*mol^-1*K^-1)",
+      "tscg:gibbsPhaseRule": "F = C - P + 2 (F=degrees of freedom, C=components, P=phases)",
+      "tscg:clausiusClapeyron": "dP/dT = L / (T * Delta_V) — slope of phase boundary lines in P-T diagram",
+      "m0:synergyFormula": "Attractor(N=3) x Threshold x Switch",
+      "m0:synergyEmergent": "The phase diagram: a Map (REVOI) of thermodynamic attractors separated by threshold boundaries — a structural analogy to TSCG's own bicephalous architecture",
+      "m0:validatesMetaconcepts": [
+        "m2:Attractor",
+        "m2:Threshold",
+        "m2:Switch",
+        "m2:Bifurcation",
+        "m2:Equilibrium",
+        "m2:Emergence",
+        "m2:Flow",
+        "m2:Dynamics",
+        "m2:Symmetry",
+        "m2:Order",
+        "m2:Boundary",
+        "m2:Constraint",
+        "m2:Hierarchy",
+        "m2:CriticalityRegime"
+      ],
+      "m0:validatesM1Concepts": [
+        "m1phys:LatentHeat",
+        "m1phys:TriplePoint",
+        "m1phys:CriticalPoint",
+        "m1phys:OrderParameter",
+        "m1phys:PhaseDiagram",
+        "m1phys:Nucleation"
+      ],
+      "m0:m2Candidates": [
+        {
+          "@id": "m0:M2Candidate_SymmetryBreaking",
+          "m0:name": "SymmetryBreaking",
+          "m0:status": "M2_CANDIDATE",
+          "m0:tensorFormula": "Structure x Threshold x Switch",
+          "m0:tensorFormulaTeX": "Structure \\otimes Threshold \\otimes Switch",
+          "m0:definition": "Spontaneous transition from a high-symmetry state to a lower-symmetry state at a critical threshold, where the resulting structure no longer exhibits the original symmetry group.",
+          "m0:primaryInstance": "Solidification: liquid (continuous translational symmetry) -> crystal (discrete lattice symmetry). The OrderParameter transitions from 0 to >0.",
+          "m0:transdisciplinaryValidation": {
+            "validatedDomains": 10,
+            "domainsSample": [
+              "Physics: crystallization, ferromagnetism (T < T_Curie), electroweak symmetry breaking",
+              "Mathematics: pitchfork bifurcation (symmetric solution becomes unstable, asymmetric branches emerge)",
+              "Biology: cell differentiation (totipotent -> specialized), morphogenesis (radial -> bilateral body axis)",
+              "Chemistry: chirality (abiotic racemic synthesis -> homochiral biochemistry)",
+              "Ecology: speciation (homogeneous population -> isolated species)",
+              "Social Sciences: norm formation (balanced opinions -> dominant convention)",
+              "Economics: technology lock-in (symmetric competition -> market monopoly)",
+              "Computer Science: leader election in symmetric distributed graph"
+            ],
+            "includesBiology": true,
+            "includesMathematics": true,
+            "includesSocialSciences": true,
+            "includesEconomics": true
+          },
+          "m0:distinctionFromCriticalityRegime": "CriticalityRegime (already M2): concerns dynamic behavior thresholds (subcritical/critical/supercritical process amplification). SymmetryBreaking: concerns structural outcome — the post-transition configuration has a strictly lower symmetry group. Orthogonal: boiling (Liquid->Gas) is a Switch without SymmetryBreaking (both phases share continuous translational symmetry); solidification is both a Switch AND SymmetryBreaking.",
+          "m0:noteForM2Integration": "Proposed category: Structural. Proposed family: Dynamic-Structural boundary. Requires formal entry in M2_GenericConcepts.jsonld."
+        }
+      ],
+      "m0:bicephalousSynthesis": {
+        "territory_ASFID_mean": 0.86,
+        "map_REVOI_mean": 0.88,
+        "epistemicGap": 0.12,
+        "balance": "Near-symmetric bicephalous balance. Sphinx Eye (REVOI=0.88) slightly stronger than Eagle Eye (ASFID=0.86), reflecting the exceptional representability and verifiability of thermodynamic phase diagrams.",
+        "keyCouplings": [
+          "A x R: 0.91 (Phase diagram as canonical Map of Attractor landscape)",
+          "S x V: 0.92 (Crystal structure verified by X-ray diffraction at precision < 0.01 Angstrom)",
+          "D x O: 0.89 (Nucleation kinetics and latent heat plateau directly observable)",
+          "I x R: 0.87 (Order parameter and Boltzmann entropy as precise informational encodings)",
+          "F x I: 0.86 (Latent heat flow as measurable interoperability signal between phases)"
+        ],
+        "epistemicGapAnalysis": {
+          "lowGap": [
+            "Equilibrium phase boundaries (T_fus, T_boil, T_c, P_triple) known to high precision",
+            "Ideal gas law pV=nRT accurate to < 1% for noble gases at moderate conditions",
+            "Latent heats measurable by DSC calorimetry"
+          ],
+          "moderateGap": [
+            "Nucleation kinetics (stochastic, impurity-sensitive, path-dependent)",
+            "Non-equilibrium phenomena (supercooling, superheating, metastable glasses)",
+            "Critical exponents and universality classes (requires renormalization group theory)",
+            "Real gas deviations at high P or near critical point (van der Waals corrections)"
+          ]
+        }
+      },
+      "m0:keyInsights": [
+        "The phase diagram is a structural analogy to TSCG itself: a Map (REVOI / Sphinx Eye) of Territory attractors (ASFID / Eagle Eye) separated by threshold boundaries.",
+        "The triple point uniquely validates Polarity(N=3): the only T,P where the three Gibbs energy basins are simultaneously equal — F=0 degrees of freedom (Gibbs phase rule).",
+        "The critical point validates CriticalityRegime (M2): above T_c the liquid/gas Switch ceases to exist — a first-order transition becomes second-order (continuous).",
+        "Solidification is the primary physical instance of the SymmetryBreaking M2 candidate: the liquid's continuous translational symmetry is spontaneously broken into discrete crystalline lattice symmetry.",
+        "Latent heat is the thermodynamic signature of Switch: energy absorbed/released at constant temperature, entirely consumed in structural reorganization rather than kinetic energy change.",
+        "Nucleation reveals the kinetic dimension of Switch: the thermodynamic Threshold can be crossed while the actual transition is delayed by the nucleation barrier (supercooling, superheating).",
+        "This poclet bootstraps the M1_Physics extension with 6 seed concepts (LatentHeat, TriplePoint, CriticalPoint, OrderParameter, PhaseDiagram, Nucleation).",
+        "First TSCG poclet covering the Physics / Thermodynamics domain."
+      ],
+      "tscg:phases": [
+        "m0:Phase_Solid",
+        "m0:Phase_Liquid",
+        "m0:Phase_Gas"
+      ],
+      "tscg:transitions": [
+        {"@id": "m0:Transition_MeltingFreezing"},
+        {"@id": "m0:Transition_VaporizationCondensation"},
+        {"@id": "m0:Transition_SublimationDeposition"}
+      ],
+      "tscg:specialPoints": [
+        {"@id": "m0:Point_TriplePoint"},
+        {"@id": "m0:Point_CriticalPoint"}
+      ],
+      "tscg:referenceSubstances": [
+        {"@id": "m0:Substance_Water"},
+        {"@id": "m0:Substance_Methanol"},
+        {"@id": "m0:Substance_Gallium"},
+        {"@id": "m0:Substance_Sulfur"},
+        {"@id": "m0:Substance_Iodine"},
+        {"@id": "m0:Substance_Camphor"},
+        {"@id": "m0:Substance_Dichloromethane"}
+      ],
+      "tscg:asfidScore": {
+        "tscg:attractorScore": 0.9,
+        "tscg:structureScore": 0.88,
+        "tscg:flowScore": 0.85,
+        "tscg:informationScore": 0.82,
+        "tscg:dynamicsScore": 0.87,
+        "tscg:asfidTotal": 0.86
+      },
+      "tscg:revoiScore": {
+        "tscg:representabilityScore": 0.92,
+        "tscg:evolvabilityScore": 0.78,
+        "tscg:verifiabilityScore": 0.95,
+        "tscg:observabilityScore": 0.9,
+        "tscg:interoperabilityScore": 0.85,
+        "tscg:revoiTotal": 0.88
+      },
+      "tscg:epistemicGap": 0.12,
+      "tscg:bicephalousBalance": "Near-symmetric (ASFID=0.86, REVOI=0.88). Sphinx Eye slightly dominant reflecting exceptional phase diagram representability and experimental verifiability.",
+      "tscg:phaseCount": 3
+    },
+    {
+      "@id": "m0:Phase_Solid",
+      "@type": "tscg:SystemState",
+      "rdfs:label": "Solid Phase",
+      "rdfs:comment": "Matter with fixed shape and volume; particles in ordered lattice with only vibrational motion; lowest entropy state",
+      "tscg:index": 0,
+      "tscg:orderParameter": "High crystalline order (low entropy)",
+      "tscg:molecularMotion": "Vibrational only (around fixed lattice positions)",
+      "tscg:entropy": "Lowest among condensed phases",
+      "tscg:compressibility": "Very low (incompressible in practice)",
+      "tscg:typicalDensity": "Highest of the 3 phases (exception: water ice less dense than liquid water)",
+      "m3:asfid_dimension": "Attractor (stable energy minimum at low T / high P)",
+      "tscg:idealGasLaw": "Not directly applicable; requires Einstein/Debye solid models for thermal properties",
+      "tscg:colorCode": "#3A5F8A",
+      "tscg:displayLabel": "SOLID"
+    },
+    {
+      "@id": "m0:Phase_Liquid",
+      "@type": "tscg:SystemState",
+      "rdfs:label": "Liquid Phase",
+      "rdfs:comment": "Matter with fixed volume but no fixed shape; particles mobile but densely packed; viscosity finite and temperature-dependent",
+      "tscg:index": 1,
+      "tscg:orderParameter": "Short-range order, long-range disorder",
+      "tscg:molecularMotion": "Translational + rotational + vibrational",
+      "tscg:entropy": "Intermediate (higher than solid, lower than gas)",
+      "tscg:compressibility": "Very low (quasi-incompressible)",
+      "tscg:viscosity": "Finite, temperature-dependent: eta proportional exp(Ea/RT) (Arrhenius law)",
+      "m3:asfid_dimension": "Flow (dominant: liquid defined by capacity to flow)",
+      "tscg:idealGasLaw": "Vapor pressure above liquid follows Clausius-Clapeyron: ln(P) = -L_vap/(R*T) + const",
+      "tscg:colorCode": "#2E86C1",
+      "tscg:displayLabel": "LIQUID"
+    },
+    {
+      "@id": "m0:Phase_Gas",
+      "@type": "tscg:SystemState",
+      "rdfs:label": "Gas Phase",
+      "rdfs:comment": "Matter with no fixed shape or volume; particles far apart with negligible intermolecular forces; obeys ideal gas law pV=nRT",
+      "tscg:index": 2,
+      "tscg:orderParameter": "No order (maximum entropy for given T and P)",
+      "tscg:molecularMotion": "Rapid translational, fully free",
+      "tscg:entropy": "High (scales with ln(V/n))",
+      "tscg:compressibility": "High (very compressible)",
+      "tscg:idealGasLaw": "pV = nRT — primary governing equation",
+      "tscg:idealGasLawVariables": {
+        "p": "Pressure (Pa)",
+        "V": "Volume (m^3)",
+        "n": "Amount of substance (mol)",
+        "R": "Universal gas constant = 8.314 J*mol^-1*K^-1",
+        "T": "Temperature (K)"
+      },
+      "tscg:deviations": "Real gases deviate via van der Waals: (p + a*n^2/V^2)(V - nb) = nRT",
+      "m3:asfid_dimension": "Dynamics (dominant: kinetic energy governs gas behavior)",
+      "tscg:colorCode": "#85C1E9",
+      "tscg:displayLabel": "GAS"
+    },
+    {
+      "@id": "m0:Transition_MeltingFreezing",
+      "@type": "tscg:PhaseTransition",
+      "rdfs:label": "Melting / Freezing",
+      "rdfs:comment": "First-order phase transition between solid and liquid at the melting point; discontinuous volume and entropy; latent heat absorbed/released",
+      "tscg:fromPhase": "Solid",
+      "tscg:toPhase": "Liquid",
+      "tscg:direction": "Solid -> Liquid (melting, endothermic) | Liquid -> Solid (freezing, exothermic)",
+      "tscg:orderOfTransition": "First-order",
+      "tscg:latentHeat": "Heat of fusion L_fus (J/mol) absorbed or released at constant T",
+      "tscg:clausiusClapeyron": "dP/dT = L_fus / (T * Delta_V_fus)",
+      "tscg:signature": "Latent heat plateau in heating/cooling curve; volume discontinuity",
+      "tscg:symmetryBreaking": "YES (Freezing direction) — spontaneous descent from continuous translational symmetry (liquid) to discrete lattice symmetry (crystal). Primary physical instance of SymmetryBreaking M2 candidate.",
+      "m0:m2basis": ["m2:Switch", "m2:Threshold", "m2:Transformation"]
+    },
+    {
+      "@id": "m0:Transition_VaporizationCondensation",
+      "@type": "tscg:PhaseTransition",
+      "rdfs:label": "Vaporization / Condensation",
+      "rdfs:comment": "First-order transition between liquid and gas at boiling point; ideal gas law applies in gas phase; vapor pressure follows Clausius-Clapeyron",
+      "tscg:fromPhase": "Liquid",
+      "tscg:toPhase": "Gas",
+      "tscg:direction": "Liquid -> Gas (vaporization, endothermic) | Gas -> Liquid (condensation, exothermic)",
+      "tscg:orderOfTransition": "First-order below critical point; continuous (second-order) above critical point",
+      "tscg:latentHeat": "Heat of vaporization L_vap (J/mol); typically 5-10x L_fus",
+      "tscg:clausiusClapeyron": "dP/dT = L_vap / (T * Delta_V_vap) approx L_vap * P / (R * T^2)",
+      "tscg:idealGasLink": "Vapor pressure: ln(P) = -L_vap/(R*T) + const",
+      "tscg:symmetryBreaking": "NO — both liquid and gas share continuous translational symmetry. Transition is pure Switch/Threshold without symmetry breaking (density discontinuity only).",
+      "m0:m2basis": ["m2:Switch", "m2:Threshold", "m2:Gradient"]
+    },
+    {
+      "@id": "m0:Transition_SublimationDeposition",
+      "@type": "tscg:PhaseTransition",
+      "rdfs:label": "Sublimation / Deposition",
+      "rdfs:comment": "Direct solid-to-gas transition bypassing liquid phase; occurs when P < P_triple; notable in iodine and camphor at standard conditions",
+      "tscg:fromPhase": "Solid",
+      "tscg:toPhase": "Gas",
+      "tscg:direction": "Solid -> Gas (sublimation, endothermic) | Gas -> Solid (deposition, exothermic)",
+      "tscg:condition": "Pressure < P_triple_point of substance",
+      "tscg:notableExamples": [
+        "CO2 (dry ice) at 1 atm",
+        "Iodine: triple point at 11.7 kPa (above 1 atm vapor pressure at RT)",
+        "Camphor: triple point at 6.6 kPa"
+      ],
+      "tscg:latentHeat": "L_sub = L_fus + L_vap (Hess's law)",
+      "tscg:symmetryBreaking": "YES (Deposition direction) — gas directly acquires crystalline order. Combines Switch and SymmetryBreaking in a single step.",
+      "m0:m2basis": ["m2:Switch", "m2:Threshold", "m2:Transformation"]
+    },
+    {
+      "@id": "m0:Point_TriplePoint",
+      "@type": "tscg:SpecialPoint",
+      "rdfs:label": "Triple Point",
+      "rdfs:comment": "Unique (T, P) at which solid, liquid, and gas coexist in thermodynamic equilibrium; invariant (F=0) for single-component system (Gibbs rule). Validates Polarity(N=3): the only point where all three Attractor basins have equal Gibbs free energy.",
+      "tscg:gibbsPhaseRule": "F = C - P + 2 = 1 - 3 + 2 = 0 (invariant — zero degrees of freedom)",
+      "tscg:waterTriplePoint": "273.16 K / 611.73 Pa (defined standard of Kelvin scale until 2019 BIPM redefinition)",
+      "m3:asfid_dimension": "Attractor (unique thermodynamic fixed point — equal depth of all three basins)",
+      "m1phys:concept": {"@id": "m1phys:TriplePoint"},
+      "m0:m2basis": ["m2:Attractor", "m2:Polarity", "m2:Threshold"]
+    },
+    {
+      "@id": "m0:Point_CriticalPoint",
+      "@type": "tscg:SpecialPoint",
+      "rdfs:label": "Critical Point",
+      "rdfs:comment": "End of liquid-vapor coexistence curve; above Tc and Pc, liquid and gas phases merge into supercritical fluid; second-order transition (continuous). Validates CriticalityRegime (M2): the first-order Liquid/Gas Switch ceases to exist above T_c.",
+      "tscg:significance": "Density fluctuations diverge (critical opalescence); order parameter vanishes continuously; correlation length xi -> infinity",
+      "tscg:waterCriticalPoint": "647.1 K / 220.6 atm",
+      "tscg:supercriticalFluid": "Above Tc and Pc: liquid-like density, gas-like diffusivity; applications in extraction (SC-CO2, decaffeination)",
+      "m3:asfid_dimension": "Bifurcation + CriticalityRegime (topology change: 2-phase coexistence curve terminates; Switch between L and G disappears)",
+      "m1phys:concept": {"@id": "m1phys:CriticalPoint"},
+      "m0:m2basis": ["m2:CriticalityRegime", "m2:Bifurcation", "m2:Threshold"]
+    },
+    {
+      "@id": "m0:Substance_Water",
+      "@type": "tscg:ReferenceSubstance",
+      "rdfs:label": "Water (H2O)",
+      "tscg:formula": "H2O",
+      "tscg:molarMass_g_per_mol": 18.015,
+      "tscg:meltingPoint_K": 273.15,
+      "tscg:boilingPoint_K_at_1atm": 373.15,
+      "tscg:triplePoint_K": 273.16,
+      "tscg:triplePoint_Pa": 611.73,
+      "tscg:criticalTemp_K": 647.1,
+      "tscg:criticalPressure_atm": 217.7,
+      "tscg:heatFusion_kJ_per_mol": 6.01,
+      "tscg:heatVaporization_kJ_per_mol": 40.65,
+      "tscg:anomaly": "Negative Clapeyron slope for melting curve (ice less dense than liquid water: anomalous density maximum at 277 K)",
+      "tscg:significance": "Reference substance for Kelvin scale; universal solvent; biological and industrial importance",
+      "tscg:simulationColor_rgb": [100, 180, 255]
+    },
+    {
+      "@id": "m0:Substance_Methanol",
+      "@type": "tscg:ReferenceSubstance",
+      "rdfs:label": "Methanol (CH3OH)",
+      "tscg:formula": "CH3OH",
+      "tscg:molarMass_g_per_mol": 32.04,
+      "tscg:meltingPoint_K": 175.6,
+      "tscg:boilingPoint_K_at_1atm": 337.8,
+      "tscg:triplePoint_K": 175.6,
+      "tscg:triplePoint_Pa": 0.187,
+      "tscg:criticalTemp_K": 512.6,
+      "tscg:criticalPressure_atm": 79.9,
+      "tscg:heatFusion_kJ_per_mol": 3.17,
+      "tscg:heatVaporization_kJ_per_mol": 35.27,
+      "tscg:significance": "Simplest alcohol; antifreeze; low triple-point pressure (ultra-low P sublimation under vacuum); fuel cell applications",
+      "tscg:simulationColor_rgb": [255, 200, 100]
+    },
+    {
+      "@id": "m0:Substance_Gallium",
+      "@type": "tscg:ReferenceSubstance",
+      "rdfs:label": "Gallium (Ga)",
+      "tscg:formula": "Ga",
+      "tscg:molarMass_g_per_mol": 69.72,
+      "tscg:meltingPoint_K": 302.9,
+      "tscg:boilingPoint_K_at_1atm": 2477.0,
+      "tscg:triplePoint_K": 302.9146,
+      "tscg:triplePoint_Pa": 2e-09,
+      "tscg:criticalTemp_K": 7620.0,
+      "tscg:criticalPressure_atm": 4270.0,
+      "tscg:heatFusion_kJ_per_mol": 5.59,
+      "tscg:heatVaporization_kJ_per_mol": 256.0,
+      "tscg:anomaly": "Melts at 29.76 degC (near room temperature); expands on freezing like water; exceptionally wide liquid range (2174 K)",
+      "tscg:significance": "ITS-90 thermometry fixed point; semiconductor industry; gallium-based liquid metals; extremely low vapor pressure as liquid",
+      "tscg:simulationColor_rgb": [180, 200, 180]
+    },
+    {
+      "@id": "m0:Substance_Sulfur",
+      "@type": "tscg:ReferenceSubstance",
+      "rdfs:label": "Sulfur (S)",
+      "tscg:formula": "S8 (cyclic) / S (atomic above boiling point)",
+      "tscg:molarMass_g_per_mol": 32.06,
+      "tscg:meltingPoint_K": 388.4,
+      "tscg:boilingPoint_K_at_1atm": 717.8,
+      "tscg:triplePoint_K": 388.4,
+      "tscg:triplePoint_Pa": 21330.0,
+      "tscg:criticalTemp_K": 1314.0,
+      "tscg:criticalPressure_atm": 207.2,
+      "tscg:heatFusion_kJ_per_mol": 1.72,
+      "tscg:heatVaporization_kJ_per_mol": 45.0,
+      "tscg:anomaly": "Two stable solid allotropes (alpha-S and beta-S); viscosity anomaly in liquid sulfur above 432 K (S8 ring polymerization -> plastic sulfur)",
+      "tscg:significance": "Industrial acid production (H2SO4); vulcanization; allotrope transitions (Ostwald ripening); classic viscosity anomaly",
+      "tscg:simulationColor_rgb": [230, 210, 50]
+    },
+    {
+      "@id": "m0:Substance_Iodine",
+      "@type": "tscg:ReferenceSubstance",
+      "rdfs:label": "Iodine (I2)",
+      "tscg:formula": "I2",
+      "tscg:molarMass_g_per_mol": 253.81,
+      "tscg:meltingPoint_K": 386.9,
+      "tscg:boilingPoint_K_at_1atm": 457.6,
+      "tscg:triplePoint_K": 386.65,
+      "tscg:triplePoint_Pa": 11700.0,
+      "tscg:criticalTemp_K": 819.0,
+      "tscg:criticalPressure_atm": 115.6,
+      "tscg:heatFusion_kJ_per_mol": 7.82,
+      "tscg:heatVaporization_kJ_per_mol": 41.57,
+      "tscg:anomaly": "Triple point pressure (11.7 kPa) > vapor pressure at RT (0.04 kPa) -> sublimes visibly; deep violet gas (500-600 nm absorption); photodissociates in UV",
+      "tscg:significance": "Classic sublimation demonstration; medical antiseptic; spectroscopic standard; iodine clock oscillation reaction",
+      "tscg:simulationColor_rgb": [120, 60, 140]
+    },
+    {
+      "@id": "m0:Substance_Camphor",
+      "@type": "tscg:ReferenceSubstance",
+      "rdfs:label": "Camphor (C10H16O)",
+      "tscg:formula": "C10H16O",
+      "tscg:molarMass_g_per_mol": 152.23,
+      "tscg:meltingPoint_K": 452.0,
+      "tscg:boilingPoint_K_at_1atm": 477.0,
+      "tscg:triplePoint_K": 451.5,
+      "tscg:triplePoint_Pa": 6600.0,
+      "tscg:criticalTemp_K": 701.0,
+      "tscg:criticalPressure_atm": 40.0,
+      "tscg:heatFusion_kJ_per_mol": 6.82,
+      "tscg:heatVaporization_kJ_per_mol": 41.8,
+      "tscg:anomaly": "Sublimes noticeably at ambient conditions despite 179 degC melting point; very narrow liquid range (~25 K at 1 atm); strong camphoraceous odor even as solid (high vapor pressure)",
+      "tscg:significance": "Classic sublimation lab demo; Beckmann thermometer calibrant; pharmaceutical; cryoscopic constant benchmark (5.5 K/mol/kg)",
+      "tscg:simulationColor_rgb": [240, 230, 200]
+    },
+    {
+      "@id": "m0:Substance_Dichloromethane",
+      "@type": "tscg:ReferenceSubstance",
+      "rdfs:label": "Dichloromethane (CH2Cl2)",
+      "tscg:formula": "CH2Cl2",
+      "tscg:molarMass_g_per_mol": 84.93,
+      "tscg:meltingPoint_K": 176.0,
+      "tscg:boilingPoint_K_at_1atm": 312.7,
+      "tscg:triplePoint_Pa": 3.5,
+      "tscg:triplePoint_K": 176.0,
+      "tscg:criticalTemp_K": 510.0,
+      "tscg:criticalPressure_atm": 60.8,
+      "tscg:heatFusion_kJ_per_mol": 4.6,
+      "tscg:heatVaporization_kJ_per_mol": 28.82,
+      "tscg:anomaly": "Low boiling point (39.6 degC); exceptionally high vapor pressure at room temperature (47 kPa at 20 degC); density 1.325 g/mL (denser than water despite low boiling point)",
+      "tscg:significance": "Ubiquitous laboratory solvent; extraction; chromatography; paint stripping; pharmaceutical manufacturing",
+      "tscg:simulationColor_rgb": [180, 240, 220]
+    },
+    {
+      "@id": "m0:ASFID_Attractor",
+      "@type": "m2:Attractor",
+      "rdfs:label": "Phase Attractors (Gibbs Energy Minima)",
+      "rdfs:comment": "Each phase is a stable attractor basin in (T,P) space defined by a local minimum of Gibbs free energy G(T,P,n)",
+      "m3:asfid_dimension": "Attractor",
+      "tscg:attractorType": "Energy minimum basins in Gibbs free energy landscape G(T,P)",
+      "tscg:attractorCount": 3,
+      "tscg:attractorBasins": {
+        "solid": "Low T, high P (close-packed lattice energy minimum; enthalpy dominated)",
+        "liquid": "Intermediate T/P (balance of translational freedom vs interaction energy)",
+        "gas": "High T, low P (entropy S = nR*ln(V/n) + const dominates G = H - TS)"
+      },
+      "tscg:stabilityCondition": "d2G/dT2 > 0 and d2G/dP2 > 0 (thermodynamic stability criteria)",
+      "m3:tensorFormula": "A (x) D — Attractor stability as balance of order (A) and thermal energy flux (D)"
+    },
+    {
+      "@id": "m0:ASFID_Structure",
+      "@type": "m2:Structure",
+      "rdfs:label": "Molecular / Lattice Structure",
+      "rdfs:comment": "Order parameter: long-range crystalline order (solid) -> short-range order (liquid) -> no order (gas)",
+      "m3:asfid_dimension": "Structure",
+      "tscg:solidStructure": "Crystalline lattice — long-range 3D periodic order; point defects (vacancies, interstitials) and line defects (dislocations) present",
+      "tscg:liquidStructure": "Short-range order only; amorphous (radial distribution function g(r) decays beyond ~1 nm)",
+      "tscg:gasStructure": "No spatial structure; mean free path >> molecular diameter (l = k_B*T / (sqrt(2)*pi*d^2*P))",
+      "tscg:symmetryBreakingNote": "Solidification is the physical instance of SymmetryBreaking M2 candidate: OrderParameter transitions from 0 (liquid, continuous symmetry) to >0 (crystal, discrete lattice symmetry).",
+      "m3:tensorFormula": "S (x) I — Structural arrangement as encoded information (lattice symmetry groups)"
+    },
+    {
+      "@id": "m0:ASFID_Flow",
+      "@type": "m2:Flow",
+      "rdfs:label": "Heat Flows and Mass Transport",
+      "rdfs:comment": "Heat flows (latent heat, sensible heat) define phase transition thermodynamics; ideal gas law governs compressible flow",
+      "m3:asfid_dimension": "Flow",
+      "tscg:heatFlow": "Endothermic S -> L -> G; exothermic on reverse path",
+      "tscg:latentHeat": "Energy stored/released at constant T during first-order transitions; H2O: Lfus=6.01 kJ/mol, Lvap=40.65 kJ/mol",
+      "tscg:enthalpyHierarchy": "Delta_H_fus << Delta_H_vap (energetic hierarchy: vaporization requires ~6-7x more energy than fusion for H2O)",
+      "tscg:idealGasFlow": "For gas phase: pV = nRT enables calculation of V at given T,P for n moles",
+      "m3:tensorFormula": "F (x) D — Heat transfer as thermodynamic process driving state change"
+    },
+    {
+      "@id": "m0:ASFID_Information",
+      "@type": "m2:Information",
+      "rdfs:label": "Thermodynamic Information (Entropy)",
+      "rdfs:comment": "Entropy S = k_B*ln(Omega) as measure of microscopic disorder; monotonically increases S_solid < S_liquid < S_gas",
+      "m3:asfid_dimension": "Information",
+      "tscg:entropyGradient": "S_solid < S_liquid < S_gas",
+      "tscg:orderParameter": "Crystalline order parameter eta: 1 (perfect crystal) -> 0 (liquid/gas). The OrderParameter is the informational signature of SymmetryBreaking.",
+      "tscg:boltzmann": "S = k_B * ln(Omega), Omega = number of accessible microstates",
+      "tscg:idealGasEntropy": "S = nR * [ln(V/n) + (3/2)*ln(T) + const] (Sackur-Tetrode equation for monatomic ideal gas)",
+      "m3:tensorFormula": "I (x) S — Structural order as information content (lattice symmetry == low entropy)"
+    },
+    {
+      "@id": "m0:ASFID_Dynamics",
+      "@type": "m2:Dynamics",
+      "rdfs:label": "Phase Transition Kinetics",
+      "rdfs:comment": "First-order transition dynamics via nucleation/growth; critical slowing down near second-order transitions; ideal gas kinetics via Maxwell-Boltzmann",
+      "m3:asfid_dimension": "Dynamics",
+      "tscg:firstOrderDynamics": "Nucleation and growth — requires supersaturation/supercooling; metastable states (supercooled liquid, superheated solid) possible",
+      "tscg:secondOrderDynamics": "Near critical point: correlation length xi -> infinity; critical slowing down (relaxation time tau ~ |T-Tc|^(-z*nu))",
+      "tscg:idealGasKinetics": "Maxwell-Boltzmann velocity distribution: f(v) proportional v^2 * exp(-m*v^2 / 2*k_B*T)",
+      "tscg:nucleationBarrier": "Homogeneous nucleation: Delta_G* = 16*pi*gamma^3 / (3*Delta_G_v^2); surface tension gamma governs rate",
+      "tscg:hysteresisLoop": "Metastable states give hysteresis in heating vs cooling curves — kinetic dimension of Switch metaconcept",
+      "m3:tensorFormula": "D (x) A — Kinetics of transition between attractor basins"
+    },
+    {
+      "@id": "m0:REVOI_Representability",
+      "@type": "m2:Representability",
+      "rdfs:label": "Phase Diagram Representability",
+      "rdfs:comment": "P-T phase diagrams provide complete semantic encoding of phase regions, coexistence curves, triple point and critical point for any single-component substance",
+      "m3:revoi_dimension": "Representability",
+      "tscg:representation": "P-T phase diagram: 2D axes (Temperature, Pressure) with phase regions, coexistence curves, triple point (S+L+G), critical point (L=G)",
+      "tscg:formalLanguage": "Gibbs free energy surfaces G(T,P); common tangent plane constructions for phase coexistence",
+      "tscg:encodability": "Full state (phase, T, P) encodable in 2D diagram; pV=nRT gives analytical formula for gas phase volume",
+      "tscg:tscgAnalogy": "The phase diagram IS a TSCG representation: it maps ASFID attractors (phases) using REVOI tools (equations, experiments). Eagle Eye meets Sphinx Eye.",
+      "tscg:score": 0.92
+    },
+    {
+      "@id": "m0:REVOI_Evolvability",
+      "@type": "m2:Evolvability",
+      "rdfs:label": "Phase Diagram Evolvability",
+      "rdfs:comment": "Model extensible to binary/ternary systems, quantum phases, non-equilibrium phases; currently limited to single-component equilibrium",
+      "m3:revoi_dimension": "Evolvability",
+      "tscg:extensions": [
+        "Multicomponent phase diagrams (Gibbs triangle, lever rule)",
+        "Non-equilibrium phases (glasses, amorphous solids, plastic crystals)",
+        "Quantum phases (Bose-Einstein condensate, superfluidity, superconductivity)",
+        "Magnetic phase transitions (ferromagnetic/paramagnetic boundary)",
+        "Allotropic transitions (e.g. sulfur alpha/beta, iron BCC/FCC)"
+      ],
+      "tscg:currentLimitation": "Ideal gas law deviates at high P or near critical point; van der Waals or Peng-Robinson EOS needed",
+      "tscg:score": 0.78
+    },
+    {
+      "@id": "m0:REVOI_Verifiability",
+      "@type": "m2:Verifiability",
+      "rdfs:label": "Phase Transition Verifiability",
+      "rdfs:comment": "Phase transitions measurable with high precision; pV=nRT accurate to < 1% for many gases at moderate conditions; triple and critical points reproducible to sub-millikelvin",
+      "m3:revoi_dimension": "Verifiability",
+      "tscg:experimentalMethods": [
+        "Differential Scanning Calorimetry (DSC) — latent heat measurement",
+        "X-ray / neutron diffraction — crystalline structure confirmation (OrderParameter measurement)",
+        "PVT apparatus — direct ideal gas law validation",
+        "Refractometry / optical microscopy — phase boundary detection",
+        "Critical opalescence — optical signature of critical point"
+      ],
+      "tscg:idealGasAccuracy": "< 1% error for noble gases at T >> T_boiling and P < 10 atm; up to 5% for polar molecules",
+      "tscg:score": 0.95
+    },
+    {
+      "@id": "m0:REVOI_Observability",
+      "@type": "m2:Observability",
+      "rdfs:label": "Phase Transition Observability",
+      "rdfs:comment": "Phase transitions directly observable through macroscopic indicators: color change, opacity, volume jump, latent heat plateau, electrical conductivity",
+      "m3:revoi_dimension": "Observability",
+      "tscg:directObservables": [
+        "Latent heat plateau in time-temperature heating/cooling curve (isothermal transition signature)",
+        "Density / volume discontinuity at transition (ice floats on water; gallium expands on freezing)",
+        "Opacity change: iodine solid (dark) -> violet gas (transparent-tinted)",
+        "Camphor odor intensification near sublimation temperature",
+        "Critical opalescence: milky turbidity at critical point due to density fluctuations at all length scales"
+      ],
+      "tscg:score": 0.9
+    },
+    {
+      "@id": "m0:REVOI_Interoperability",
+      "@type": "m2:Interoperability",
+      "rdfs:label": "Phase Transition Interoperability",
+      "rdfs:comment": "Phase transition formalism applies universally: chemistry, materials science, astrophysics, geology, atmospheric science; pV=nRT foundational across thermodynamics",
+      "m3:revoi_dimension": "Interoperability",
+      "tscg:crossDomainApplications": [
+        "Geophysics: mantle phase transitions (olivine -> spinel -> perovskite under pressure)",
+        "Astrophysics: stellar plasma phase diagrams; neutron star matter (quark-gluon plasma)",
+        "Materials science: iron-carbon allotropes (ferrite/austenite/cementite/martensite)",
+        "Atmospheric science: cloud formation (water condensation/ice nucleation) and precipitation",
+        "Cryogenics: liquid helium superfluid lambda transition at 2.17 K",
+        "Biology: lipid bilayer phase transitions (gel -> fluid membrane); protein folding as phase-like transition"
+      ],
+      "tscg:score": 0.85
+    }
+  ]
+}

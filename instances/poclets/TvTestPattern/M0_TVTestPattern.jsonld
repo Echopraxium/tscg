@@ -1,0 +1,288 @@
+{
+  "@context": {
+    "@base":          "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m0":             "instances/poclets/tv_test_pattern/M0_TVTestPattern.jsonld#",
+    "m1:core":        "M1_CoreConcepts.jsonld#",
+    "m1:electronics": "M1_extensions/electronics/M1_Electronics.jsonld#",
+    "m2":             "M2_GenericConcepts.jsonld#",
+    "m3":             "M3_GenesisSpace.jsonld#",
+    "m3:eagle_eye":   "M3_EagleEye.jsonld#",
+    "m3:sphinx_eye":  "M3_SphinxEye.jsonld#",
+    "dcterms":        "http://purl.org/dc/terms/",
+    "owl":            "http://www.w3.org/2002/07/owl#",
+    "rdf":            "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs":           "http://www.w3.org/2000/01/rdf-schema#",
+    "skos":           "http://www.w3.org/2004/02/skos/core#",
+    "xsd":            "http://www.w3.org/2001/XMLSchema#"
+  },
+
+  "@graph": [
+
+    {
+      "@id": "m0:TVTestPattern_Poclet",
+      "@type": "owl:Ontology",
+      "dcterms:title":       "TSCG M0 — Analogue TV Test Pattern (Mire)",
+      "dcterms:description": "Poclet modeling the analogue television test pattern (mire) as a full-chain calibration system. Primary validator for m2:Calibration (A⊗F⊗It⊗D). Architecturally remarkable: the test pattern artefact is simultaneously the Territory Flow (a physical analogue signal subject to degradation) and the external Attractor (the normative reference standard the chain must reproduce). This self-referential duality — the Map acting as Territory — makes this poclet an ideal bicephalous validation case with an exceptionally low epistemic gap (δ=0.13).",
+      "dcterms:creator":     "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created":     "2026-03-02",
+      "dcterms:modified":    "2026-03-02",
+      "owl:versionInfo":     "1.0.0",
+      "owl:imports": [
+        "M2_GenericConcepts.jsonld",
+        "M1_CoreConcepts.jsonld",
+        "M1_extensions/electronics/M1_Electronics.jsonld"
+      ],
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
+      "m2:changelog": {
+        "v1_0_0": {
+          "date":        "2026-03-02",
+          "description": "Initial version. Primary validator for m2:Calibration (A⊗F⊗It⊗D, territory). ASFID=0.88, REVOI=0.87, δ=0.13. 11 M2 GenericConcepts mobilized. Triggered by TV test pattern analysis session leading to creation of m2:Calibration v15.10.0."
+        }
+      }
+    },
+
+    {
+      "@id": "m0:TVTestPattern",
+      "@type":        "owl:NamedIndividual",
+      "rdfs:label":   "Analogue TV Test Pattern (Mire)",
+      "rdfs:comment": "A standardised reference image (test pattern / mire) injected into the full analogue television signal chain — from camera or signal generator to receiver and display — in order to calibrate, diagnose, and validate every link in the chain. The test pattern simultaneously constitutes the external Attractor (the normative standard) and the Territory Flow (the physical signal subject to degradation). This self-referential duality between Territory and Map makes it an architecturally exceptional TSCG poclet.",
+
+      "m0:domain":    "Signal Engineering / Broadcast Television",
+      "m0:subdomains": [
+        "Analogue Video Engineering",
+        "Broadcast Standards",
+        "Metrology / Measurement",
+        "Signal Processing"
+      ],
+      "m0:pocletType":        "Calibration System",
+      "m0:observer":          "Broadcast Engineer / Video Technician",
+      "m0:primaryStandards":  ["EBU (European Broadcasting Union)", "SMPTE (Society of Motion Picture and Television Engineers)", "ITU-R BT.471"],
+      "m0:variants":          ["PM5544 (Philips, European)", "SMPTE colour bars (US)", "Uher/Fernseh resolution chart (German)", "Indian Head (US, 1939–1970)"],
+      "m0:primaryMetaconcept": { "@id": "m2:Calibration" },
+      "m0:calibrationFormula": "A ⊗ F ⊗ It ⊗ D",
+
+      "m0:bicephalousArchitectureNote": "The TV test pattern is a unique instance of self-referential duality in the TSCG framework. The same physical artefact occupies two ontological roles simultaneously: (1) Eagle Eye / Territory: the test pattern IS a physical analogue signal (voltage waveform) that propagates through the chain and can be degraded, distorted, or noised; (2) Sphinx Eye / Map: the test pattern IS the external Attractor — the normative reference the chain must faithfully reproduce. The residual gap between emitted and received pattern is therefore both a Territory measurement (waveform deviation) and a Map quality metric (epistemic gap δ). This is the reason M0_TVTestPattern is the ideal validation poclet for m2:Calibration.",
+
+      "m0:asfidScores": {
+        "A":    0.95,
+        "S":    0.85,
+        "F":    0.90,
+        "I":    0.90,
+        "D":    0.80,
+        "mean": 0.88,
+        "interpretation": "All five ASFID dimensions robustly present. A is exceptionally high (0.95): the external reference is a sovereign, precisely normalised standard (IRE levels, EBU colour vectors, certified spatial frequencies). D slightly lower (0.80): adjustment loop involves human-in-the-loop latency and iterative re-measurement."
+      },
+
+      "m0:revoiScores": {
+        "R":    0.90,
+        "E":    0.75,
+        "V":    0.95,
+        "O":    0.90,
+        "I":    0.85,
+        "mean": 0.87,
+        "interpretation": "V exceptionally high (0.95): residual deviations are quantifiable in IRE, degrees of chrominance phase, and TVL — pass/fail is defined by broadcast specification. E moderate (0.75): standards are evolvable (SMPTE, EBU updates) but constrained by regulatory and interoperability requirements. I slightly penalised (0.85) due to NTSC/PAL/SECAM incompatibility across regions."
+      },
+
+      "m0:epistemicGap": {
+        "delta":  0.13,
+        "formula": "δ = 1 − (ASFID_mean + REVOI_mean) / 2 = 1 − (0.88 + 0.87) / 2",
+        "quality": "Very low — mature coupling",
+        "interpretation": "δ=0.13 reflects the near-identity of Territory and Map in this poclet. The test pattern is simultaneously the physical signal and the reference standard. A calibrated chain in specification achieves δ→0 in practice (the emitted pattern matches the received pattern within tolerance). This poclet is one of the rare cases where reducing δ is the explicit operational goal of the system."
+      },
+
+      "m0:synergyPrinciple": {
+        "formula":           "A ⊗ F ⊗ It ⊗ D → calibration convergence",
+        "emergentProperty":  "Full-chain fidelity: the signal received at the display faithfully reproduces the original reference standard across all measured parameters (luminance, chrominance, resolution, geometry, timing)",
+        "synergyCondition":  "Convergence requires all four ASFID dimensions active simultaneously: a reference (A), an injected stimulus (F), a measurable response (It), and an operative correction loop (D). Absence of any one dimension breaks calibration."
+      },
+
+      "m0:components": [
+        {
+          "@id":         "m0:ReferencePattern",
+          "rdfs:label":  "Reference Test Pattern (Mire)",
+          "m0:role":     "External Attractor — the normative standard",
+          "m0:function": "Provides the ground truth against which the signal chain is measured. Contains normalised luminance steps, EBU/SMPTE colour bars, resolution wedges, geometric grid, sync pulses, and multiburst frequency packets. Acts simultaneously as Territory Flow (physical signal) and Map Attractor (normative reference).",
+          "m0:asfidContribution": { "A": 0.95, "F": 0.80 },
+          "m0:calibrationParameters": [
+            "Luminance levels: IRE 7.5% (black) to 100% (white) — 5 to 10 steps",
+            "Colour bars: 8 EBU reference colours (White, Yellow, Cyan, Green, Magenta, Red, Blue, Black)",
+            "Resolution wedges (spatial frequency): horizontal and vertical TVL (TV lines) up to system limit",
+            "Geometric grid: squares and central circle for linearity and aspect ratio verification",
+            "Multiburst: sine-wave packets at 0.5, 1, 2, 3, 3.58/4.43 MHz (luma bandwidth)",
+            "Sync pulses: line sync, field sync, colour burst (3.58 MHz NTSC / 4.43 MHz PAL)"
+          ]
+        },
+        {
+          "@id":         "m0:SignalChain",
+          "rdfs:label":  "Analogue Signal Chain",
+          "m0:role":     "Structure — topology of the transmission system under test",
+          "m0:function": "Sequential infrastructure transporting and transforming the video signal from source to display. Each link is independently isolatable for diagnosis.",
+          "m0:asfidContribution": { "S": 0.85 },
+          "m0:links": [
+            "Signal generator / Camera (source of test pattern)",
+            "Video encoder / Modulator",
+            "Transmission medium (coaxial cable, RF broadcast, VCR tape)",
+            "Demodulator / Decoder / Tuner",
+            "Display (CRT monitor or receiver)"
+          ]
+        },
+        {
+          "@id":         "m0:VideoSignal",
+          "rdfs:label":  "Composite Analogue Video Signal",
+          "m0:role":     "Flow — the physical carrier of the test information",
+          "m0:function": "Continuous analogue waveform encoding luminance (Y), chrominance (C), synchronisation pulses, and colour burst on a single composite signal. The signal is measurable at every node of the chain with a waveform monitor or oscilloscope.",
+          "m0:asfidContribution": { "F": 0.90 },
+          "m0:technicalParameters": {
+            "bandwidthLuma_MHz":       "5.5 (PAL) / 4.2 (NTSC)",
+            "subcarrierFreq_MHz":      "4.43361875 (PAL) / 3.579545 (NTSC)",
+            "lineCount":               "625 (PAL/SECAM) / 525 (NTSC)",
+            "fieldRate_Hz":            "50 (PAL) / 60 (NTSC)",
+            "blackLevel_IRE":          7.5,
+            "whiteLevel_IRE":          100,
+            "compositeFormat":         "Y + C (QAM modulation of colour subcarrier)"
+          }
+        },
+        {
+          "@id":         "m0:MeasurementSystem",
+          "rdfs:label":  "Measurement Instruments",
+          "m0:role":     "Territory Information — capture and comparison of It vs A",
+          "m0:function": "Instruments that make the internal state of the signal chain observable and quantitatively comparable to the reference standard. Each instrument addresses specific calibration parameters.",
+          "m0:asfidContribution": { "I": 0.90 },
+          "m0:instruments": [
+            {
+              "instrument":   "Waveform Monitor (oscilloscope)",
+              "measures":     "Luminance levels (IRE), sync pulse timing, field/line blanking",
+              "parameters":   ["Black level (7.5 IRE)", "White level (100 IRE)", "Sync tip (−40 IRE)", "Colour burst amplitude"]
+            },
+            {
+              "instrument":   "Vectorscope",
+              "measures":     "Chrominance phase and amplitude in polar coordinates",
+              "parameters":   ["Colour vector directions (±few degrees tolerance)", "Colour saturation (amplitude)", "Subcarrier phase drift"]
+            },
+            {
+              "instrument":   "Resolution chart reader",
+              "measures":     "Spatial frequency cutoff in TVL (TV lines)",
+              "parameters":   ["Horizontal resolution (bandwidth-limited)", "Vertical resolution (line-count limited)", "Corner resolution (convergence)"]
+            },
+            {
+              "instrument":   "Spectrum analyser",
+              "measures":     "RF signal bandwidth and spurious emissions",
+              "parameters":   ["Video bandwidth (MHz)", "Carrier-to-noise ratio (dB)", "Adjacent channel interference"]
+            }
+          ]
+        },
+        {
+          "@id":         "m0:CorrectionLoop",
+          "rdfs:label":  "Adjustment and Correction Loop",
+          "m0:role":     "Dynamics — iterative reduction of |It − A|",
+          "m0:function": "The human-in-the-loop (or automated) process that iteratively adjusts signal chain parameters until the measured response (It) converges to the reference standard (A) within specification tolerances.",
+          "m0:asfidContribution": { "D": 0.80 },
+          "m0:adjustableParameters": [
+            "Luminance gain (white level)",
+            "Black level (pedestal / setup)",
+            "Gamma correction (greyscale linearity)",
+            "Chrominance gain (colour saturation)",
+            "Colour subcarrier phase (hue)",
+            "Horizontal and vertical geometry (linearity, size, aspect ratio)",
+            "Convergence (colour CRT — R/G/B beam alignment)",
+            "Focus and aperture (sharpness, bandwidth)"
+          ],
+          "m0:loopMechanism": "Measure deviation on instrument → identify offending parameter → adjust potentiometer / alignment control → re-measure → iterate until within tolerance. Typically 2–5 iterations for experienced engineer.",
+          "m0:convergenceCriterion": "All measured parameters within ±2 IRE (luminance), ±2° (chrominance phase), ±5% (amplitude), resolution within 10% of specification"
+        }
+      ],
+
+      "m0:validatesGenericConcepts": [
+        {
+          "@id":   "m2:Calibration",
+          "m0:validationStrength": "PRIMARY — direct instantiation of A⊗F⊗It⊗D. All four dimensions concretely present: A=ReferencePattern, F=VideoSignal, It=MeasuredResponse, D=CorrectionLoop. Confirms 'territory' perspective: all dimensions physical and observable.",
+          "m0:sphinxEyeNote": "V⊗O confirmed as Map-level quality descriptor of the calibration procedure (REVOI scores V=0.95, O=0.90) — NOT constitutive of the m2:Calibration GenericConcept itself. This distinction validated empirically by this poclet."
+        },
+        { "@id": "m2:Signal",        "m0:role": "The composite video signal (Y+C+sync) as the primary territory information carrier" },
+        { "@id": "m2:Pattern",       "m0:role": "The geometrical and chromatic structure of the test pattern (wedges, bars, circles, grid)" },
+        { "@id": "m2:Threshold",     "m0:role": "IRE level boundaries (7.5% black / 100% white), colour vector tolerances, resolution specification limits" },
+        { "@id": "m2:FeedbackLoop",  "m0:role": "Measure → Adjust → Re-measure iterative correction cycle" },
+        { "@id": "m2:Channel",       "m0:role": "Each link in the signal chain (encoder, cable, decoder, display) as an independent channel" },
+        { "@id": "m2:Trajectory",    "m0:role": "Convergence of measured parameters toward reference values across successive adjustment iterations" },
+        { "@id": "m2:Representation","m0:role": "The test pattern as visual/electronic encoding of the calibration standard" },
+        { "@id": "m2:Alignment",     "m0:role": "Geometric alignment (sync timing, aspect ratio, CRT convergence) and chromatic alignment (subcarrier phase)" },
+        { "@id": "m2:Decomposition", "m0:role": "Separation of composite signal into independent measurable components: Y, Cb, Cr, sync, burst" },
+        { "@id": "m2:Regulation",    "m0:role": "Each adjustment control as a regulatory mechanism constraining a signal parameter within bounds" }
+      ],
+
+      "m0:M1ConceptsIdentified": {
+        "M1_Electronics": [
+          {
+            "concept":      "SignalChainCalibration",
+            "description":  "Full end-to-end calibration of a multi-link analogue signal processing chain using a normalised reference stimulus",
+            "m2Basis":      "m2:Calibration",
+            "status":       "To be created in M1_Electronics"
+          },
+          {
+            "concept":      "ChrominanceCalibration",
+            "description":  "Calibration of the colour subcarrier phase, amplitude, and vector accuracy against EBU/SMPTE colour bar standard",
+            "m2Basis":      "m2:Calibration ⊗ m2:Signal",
+            "status":       "To be created in M1_Electronics"
+          },
+          {
+            "concept":      "LuminanceCalibration",
+            "description":  "Calibration of the greyscale response (black level, white level, gamma) against normalised IRE steps",
+            "m2Basis":      "m2:Calibration ⊗ m2:Threshold",
+            "status":       "To be created in M1_Electronics"
+          },
+          {
+            "concept":      "ResolutionMeasurement",
+            "description":  "Quantitative measurement of horizontal and vertical spatial resolution in TVL using resolution wedges",
+            "m2Basis":      "m2:Signal ⊗ m2:Threshold",
+            "status":       "To be created in M1_Electronics"
+          }
+        ],
+        "M1_CoreConcepts": [
+          {
+            "concept":      "CalibrationReference",
+            "description":  "An externally defined, normatively sovereign reference state serving as the Attractor in a Calibration process",
+            "m2Basis":      "m2:Calibration (A dimension)",
+            "status":       "To be created in M1_CoreConcepts"
+          },
+          {
+            "concept":      "CalibrationProcedure",
+            "description":  "A structured, repeatable sequence of measurement and adjustment steps implementing a Calibration process",
+            "m2Basis":      "m2:Calibration ⊗ m2:FeedbackLoop",
+            "status":       "To be created in M1_CoreConcepts"
+          }
+        ]
+      },
+
+      "m0:transdisciplinaryBridges": {
+        "description": "The TV test pattern poclet demonstrates m2:Calibration across the following related domains, confirming transdisciplinary validity",
+        "bridges": [
+          { "domain": "Metrology",         "analogStructure": "Etalon (A) → reference signal (F) → instrument reading (It) → scale-factor adjustment (D)" },
+          { "domain": "Medical Imaging",   "analogStructure": "MRI phantom (A) → RF pulse (F) → scanner output (It) → gain/shim correction (D)" },
+          { "domain": "Audio Engineering", "analogStructure": "Pink noise reference (A) → test tone (F) → measured frequency response (It) → EQ adjustment (D)" },
+          { "domain": "Robotics",          "analogStructure": "Target pose (A) → commanded trajectory (F) → end-effector position (It) → joint offset correction (D)" }
+        ]
+      },
+
+      "m0:historicalContext": {
+        "origin":       "Test patterns were introduced with the first experimental television broadcasts in the 1930s",
+        "goldStandard": "PM5544 pattern (Philips, 1967) became the de facto European standard, broadcast overnight by many European networks for decades",
+        "instruments":  "Waveform monitors and vectorscopes were standard broadcast equipment from the 1950s through transition to digital (1990s–2000s)",
+        "legacy":       "Digital HD/4K calibration systems (CalMAN, Lightspace, SMPTE ST 2110) are direct successors to analogue mire calibration methodology — same conceptual structure (A⊗F⊗It⊗D), different signal substrate"
+      },
+
+      "m0:frameworkContributions": {
+        "M2_validated":    ["m2:Calibration — territory mode A⊗F⊗It⊗D CONFIRMED ✅"],
+        "M2_confirmed":    ["V⊗O belongs to REVOI poclet scoring, NOT to m2:Calibration GenericConcept definition ✅"],
+        "M1_toCreate":     ["M1_Electronics: SignalChainCalibration, ChrominanceCalibration, LuminanceCalibration, ResolutionMeasurement", "M1_CoreConcepts: CalibrationReference, CalibrationProcedure"],
+        "architecturalInsight": "Self-referential Territory/Map duality confirmed as a valid and uniquely informative poclet pattern in TSCG. The mire is the only known case where the same physical artefact occupies both the A (attractor/reference) and F (flow/stimulus) roles simultaneously."
+      },
+
+      "dcterms:creator":  "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created":  "2026-03-02",
+      "dcterms:modified": "2026-03-02"
+    }
+
+  ]
+}

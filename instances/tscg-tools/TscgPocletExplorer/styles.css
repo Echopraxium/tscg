@@ -1,0 +1,237 @@
+/* ============================================================
+   TSCG Poclet Explorer — styles.css
+   Author: Echopraxium with the collaboration of Claude AI
+   Version: 2.0.0
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0d1117;
+  --panel:   #161b22;
+  --card:    #1c2130;
+  --hover:   #21262d;
+  --sel:     #1f3044;
+  --border:  #30363d;
+  --border2: #3d444f;
+  --eagle:   #f78166;
+  --sphinx:  #79c0ff;
+  --accent:  #56d364;
+  --warn:    #e3b341;
+  --muted:   #8b949e;
+  --text:    #e6edf3;
+  --dim:     #b1bac4;
+  --font:    'Segoe UI', system-ui, sans-serif;
+  --mono:    'Cascadia Code', 'Fira Code', monospace;
+  --header-h: 44px;
+  --footer-h: 52px;
+  --left-w:   280px;   /* default left panel width — overridden by splitter */
+}
+
+html, body {
+  height: 100%; background: var(--bg); color: var(--text);
+  font-family: var(--font); font-size: 13px; overflow: hidden;
+}
+
+/* ── Shell ──────────────────────────────────────────────────── */
+#shell {
+  display: grid;
+  grid-template-rows: var(--header-h) 1fr var(--footer-h);
+  grid-template-columns: var(--left-w) 5px 1fr;
+  grid-template-areas:
+    "header  header  header"
+    "tree    split   readme"
+    "footer  footer  footer";
+  height: 100vh;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+#header {
+  grid-area: header;
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 16px;
+  background: var(--panel); border-bottom: 1px solid var(--border);
+  -webkit-app-region: drag;
+}
+.logo {
+  font-size: 11px; font-weight: 700; letter-spacing: .12em;
+  color: var(--eagle); text-transform: uppercase;
+}
+.title { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; }
+
+/* ── Left panel — file tree ─────────────────────────────────── */
+#tree-panel {
+  grid-area: tree;
+  display: flex; flex-direction: column;
+  background: var(--panel); border-right: 1px solid var(--border);
+  overflow: hidden; min-width: 160px;
+}
+#tree-header {
+  padding: 8px 12px 6px;
+  font-size: 10px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between;
+}
+#tree-count { font-size: 10px; color: var(--text); font-weight: 600; }
+#tree-list {
+  flex: 1; overflow-y: auto; padding: 4px 0;
+}
+.tree-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 12px; cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: background .12s, border-color .12s;
+  user-select: none;
+}
+.tree-item:hover { background: var(--hover); }
+.tree-item.active {
+  background: var(--sel);
+  border-left-color: var(--sphinx);
+}
+.tree-item.active .tree-label { color: var(--text); font-weight: 600; }
+.tree-icon { font-size: 14px; flex-shrink: 0; }
+.tree-label { font-size: 12px; color: var(--dim); flex: 1;
+              white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tree-badges { display: flex; gap: 3px; flex-shrink: 0; }
+.tree-badge {
+  font-size: 9px; padding: 1px 5px; border-radius: 10px; flex-shrink: 0;
+  border: 1px solid var(--border2); color: var(--muted);
+  font-weight: 700; letter-spacing: 0.04em;
+}
+.tree-badge.has-electron { border-color: rgba(121,192,255,.45); color: var(--sphinx); }
+.tree-badge.has-python   { border-color: rgba(227,179,65,.45);  color: var(--warn); }
+.tree-badge.has-sim      { border-color: rgba(86,211,100,.4);   color: var(--accent); }
+
+/* ── Splitter ───────────────────────────────────────────────── */
+#splitter {
+  grid-area: split;
+  background: var(--border); cursor: col-resize; z-index: 10;
+  transition: background .15s;
+}
+#splitter:hover, #splitter.dragging { background: var(--sphinx); }
+
+/* ── Right panel — README ───────────────────────────────────── */
+#readme-panel {
+  grid-area: readme;
+  display: flex; flex-direction: column;
+  overflow: hidden; min-width: 200px;
+}
+#readme-header {
+  padding: 8px 16px 6px;
+  font-size: 11px; color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0; display: flex; align-items: center; gap: 8px;
+}
+#readme-poclet-name {
+  font-size: 13px; font-weight: 700; color: var(--text);
+}
+#readme-body {
+  flex: 1; overflow-y: auto;
+  padding: 20px 28px;
+}
+
+/* ── README markdown rendering ──────────────────────────────── */
+.readme-md { line-height: 1.7; color: var(--dim); }
+.readme-md h1 {
+  font-size: 20px; font-weight: 800; color: var(--text);
+  margin: 0 0 16px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.readme-md h2 {
+  font-size: 15px; font-weight: 700; color: var(--text);
+  margin: 22px 0 8px; padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+.readme-md h3 { font-size: 13px; font-weight: 700; color: var(--dim); margin: 14px 0 6px; }
+.readme-md p  { margin: 0 0 10px; }
+.readme-md ul, .readme-md ol { padding-left: 20px; margin: 0 0 10px; }
+.readme-md li { margin: 3px 0; }
+.readme-md code {
+  font-family: var(--mono); font-size: 11.5px;
+  background: var(--card); color: var(--sphinx);
+  padding: 1px 5px; border-radius: 3px;
+}
+.readme-md pre {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 5px; padding: 12px 14px; overflow-x: auto;
+  margin: 0 0 12px;
+}
+.readme-md pre code { background: none; padding: 0; color: var(--dim); }
+.readme-md table {
+  width: 100%; border-collapse: collapse; margin: 0 0 12px; font-size: 12px;
+}
+.readme-md th, .readme-md td {
+  border: 1px solid var(--border); padding: 5px 10px; text-align: left;
+}
+.readme-md th { background: var(--card); color: var(--text); font-weight: 600; }
+.readme-md blockquote {
+  border-left: 3px solid var(--border2); padding-left: 12px;
+  color: var(--muted); margin: 0 0 10px;
+}
+.readme-md hr {
+  border: none; border-top: 1px solid var(--border); margin: 16px 0;
+}
+.readme-md strong { color: var(--text); font-weight: 700; }
+.readme-md em     { color: var(--dim); font-style: italic; }
+.readme-md a      { color: var(--sphinx); text-decoration: none; }
+.readme-md a:hover{ text-decoration: underline; }
+
+/* Empty/placeholder state */
+.readme-placeholder {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; height: 100%; gap: 14px;
+  color: var(--muted); text-align: center;
+}
+.readme-placeholder svg { opacity: .2; }
+.readme-placeholder .ph-title { font-size: 15px; font-weight: 600; color: var(--dim); }
+.readme-placeholder .ph-sub   { font-size: 12px; }
+
+/* ── Footer ─────────────────────────────────────────────────── */
+#footer {
+  grid-area: footer;
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 16px;
+  background: var(--panel); border-top: 1px solid var(--border);
+}
+/* ── Launch buttons container ────────────────────────────────── */
+#launch-buttons { display: flex; gap: 6px; flex-shrink: 0; }
+
+.btn-run {
+  padding: 7px 16px;
+  border-radius: 5px;
+  font-size: 12px; font-weight: 700; font-family: var(--font);
+  cursor: pointer; transition: background .15s, border-color .15s;
+  white-space: nowrap;
+}
+.btn-run:disabled { opacity: .3; cursor: not-allowed; }
+
+/* Electron variant — blue */
+.btn-run.btn-electron, .btn-run:not(.btn-python):not(.btn-electron) {
+  background: rgba(121,192,255,.12); border: 1px solid rgba(121,192,255,.4);
+  color: var(--sphinx);
+}
+.btn-run.btn-electron:hover:not(:disabled) {
+  background: rgba(121,192,255,.22); border-color: rgba(121,192,255,.7);
+}
+
+/* Python variant — amber */
+.btn-run.btn-python {
+  background: rgba(227,179,65,.12); border: 1px solid rgba(227,179,65,.4);
+  color: var(--warn);
+}
+.btn-run.btn-python:hover:not(:disabled) {
+  background: rgba(227,179,65,.22); border-color: rgba(227,179,65,.7);
+}
+#footer-info { font-size: 11px; color: var(--muted); flex: 1; }
+#footer-path {
+  font-size: 10px; font-family: var(--mono); color: var(--border2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 400px; text-align: right;
+}
+
+/* ── Scrollbars ─────────────────────────────────────────────── */
+::-webkit-scrollbar         { width: 5px; height: 5px; }
+::-webkit-scrollbar-track   { background: transparent; }
+::-webkit-scrollbar-thumb   { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }

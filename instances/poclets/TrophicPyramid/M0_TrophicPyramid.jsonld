@@ -1,0 +1,420 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m0": "instances/poclets/TrophicPyramid/M0_TrophicPyramid.jsonld#",
+    "m1bio": "M1_extensions/biology/M1_Biology.jsonld#",
+    "m1core": "M1_CoreConcepts.jsonld#",
+    "m2": "M2_GenericConcepts.jsonld#",
+    "m3eagle": "M3_EagleEye.jsonld#",
+    "m3sphinx": "M3_SphinxEye.jsonld#",
+    "m3": "M3_GenesisSpace.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+
+    {
+      "@id": "m0:TrophicPyramid",
+      "@type": "owl:Ontology",
+      "dcterms:title": "TSCG M0 Trophic Pyramid Poclet",
+      "dcterms:description": "Ecological trophic pyramid (Lindeman 1942). 5-pole layered model demonstrating StratifiedDissipation: ~90% energy loss at each trophic boundary creates a universal pyramidal biomass structure. Primary validation domain for m2:Layer and m2:Context GenericConcepts. Introduces KnowledgeFieldConceptCombo 'StratifiedDissipation' (Biology ⊙ (Layer ⊗ Dissipation)).",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-03-13",
+      "dcterms:modified": "2026-03-13",
+      "owl:versionInfo": "1.0.0",
+      "owl:imports": [
+        "M3_GenesisSpace.jsonld",
+        "M2_GenericConcepts.jsonld",
+        "M1_CoreConcepts.jsonld",
+        "M1_extensions/biology/M1_Biology.jsonld"
+      ],
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
+      "m2:changelog": {
+        "v1.0.0": {
+          "date": "2026-03-13",
+          "description": "Initial version. 5-pole trophic pyramid (Producers → Herbivores → Carnivores → Apex Predators + Decomposers). ASFID=0.89, REVOI=0.84, δ=0.05. Introduces StratifiedDissipation KnowledgeFieldConceptCombo. Validates m2:Layer and m2:Context."
+        }
+      }
+    },
+
+    {
+      "@id": "m0:TrophicPyramidSystem",
+      "@type": ["owl:NamedIndividual", "owl:Class"],
+      "rdfs:label": "Trophic Pyramid System",
+      "rdfs:comment": "A trophic pyramid is a layered, hierarchical ecological structure in which each trophic level consumes biomass from the level below and dissipates ~90% of received energy as heat (Lindeman's 10% efficiency rule). The pyramidal shape is a thermodynamic attractor: energy flow (F) structured by stable positional strata (S⊗I⊗A) produces irreversible dissipation (F⊗D) at each boundary, universally driving biomass volume downward from base to apex.",
+      "m0:domain": "Ecology / Biology",
+      "m0:subdomains": [
+        "Community Ecology",
+        "Trophodynamics",
+        "Thermodynamics of Ecosystems",
+        "Conservation Biology"
+      ],
+      "m0:pocletType": "Stratified Energy System",
+      "m0:observer": "Ecologist / Systems Biologist",
+      "m0:poleCount": 5,
+      "m0:discoveryReference": "Lindeman R.L. (1942) — The Trophic-Dynamic Aspect of Ecology, Ecology 23(4):399-417",
+
+      "m0:territorySpace": {
+        "m0:asfidState": {
+          "A": 0.95,
+          "S": 0.90,
+          "F": 0.95,
+          "I": 0.80,
+          "D": 0.85,
+          "mean": 0.89,
+          "commentary": {
+            "A": "Pyramid shape is a universal thermodynamic attractor. 10% efficiency rule (Lindeman) acts as positional attractor for each trophic level. No ecosystem escapes this basin.",
+            "S": "Discrete, ordered strata: each trophic level is a bounded positional partition (m2:Layer). Structure is stable across biomes (terrestrial, aquatic, marine).",
+            "F": "Energy/biomass flow is the fundamental mechanism. Unidirectional (bottom-up) primary flow + top-down trophic cascades. Biogeochemical cycling across decomposers.",
+            "I": "Trophic position encodes ecological role, metabolic budget, and niche information. Biomagnification: persistent toxins concentrate upward (information ≠ entropy here).",
+            "D": "Population dynamics (Lotka-Volterra oscillations), trophic cascades (predator removal → herbivore irruption → vegetation collapse), seasonal succession."
+          }
+        }
+      },
+
+      "m0:mapSpace": {
+        "m0:reviState": {
+          "R": 0.95,
+          "E": 0.70,
+          "V": 0.90,
+          "O": 0.80,
+          "I": 0.85,
+          "mean": 0.84,
+          "commentary": {
+            "R": "Iconic representation: one of ecology's most universally recognised diagrams. Standardised notation (energy, biomass, numbers pyramids). Semantically unambiguous.",
+            "E": "Core structure is thermodynamically constrained (10% rule is law-like). Extensions possible: inverted pyramids (aquatic), web-to-pyramid projections, multi-dimensional.",
+            "V": "Lindeman's 10% law empirically validated across hundreds of ecosystems since 1942. Energy budgets measurable via calorimetry, isotope tracing, stable isotope analysis.",
+            "O": "Species identifiable, populations countable. Energy flow requires indirect measurement (metabolic assays, radiotracer studies). Decomposer activity often underestimated.",
+            "I": "Bridges thermodynamics (entropy), evolutionary biology (niche theory), biogeochemistry (nutrient cycling), conservation biology (minimum viable population)."
+          }
+        }
+      },
+
+      "m0:epistemicGap": {
+        "delta": 0.05,
+        "deltaVector": "(0.0, +0.20, +0.05, 0.0, 0.0)",
+        "commentary": "Exceptionally low gap (δ=0.05): one of ecology's best-characterised laws. Main residual gap: E dimension (ASFID A=0.95 vs REVOI E=0.70) reflects that while the pyramid attractor is universally observed, modeling ecosystem evolvability under climate change remains challenging.",
+        "balanceType": "Eagle Eye dominant (strong empirical grounding via Lindeman's law)"
+      },
+
+      "m0:synergyPrinciple": {
+        "formula": "StratifiedDissipation = Biology ⊙ (m2:Layer ⊗ m2:Dissipation)",
+        "formulaASCII": "StratifiedDissipation = Biology [o] (Layer (x) Dissipation)",
+        "emergentProperty": "Pyramidal biomass structure — the universal conical shape of ecosystems. No designer required: thermodynamic loss (F⊗D) operating through stable positional strata (S⊗I⊗A) inevitably produces the pyramid.",
+        "coupledDimensions": "S, I, A (from m2:Layer) + F, D (from m2:Dissipation) → full S⊗I⊗A⊗F⊗D signature"
+      },
+
+      "m0:primaryGenericConcepts": [
+        {
+          "@id": "m2:Layer",
+          "role": "STRUCTURAL BACKBONE — each trophic level IS a Layer (S⊗I⊗A⊗R)",
+          "instantiation": "5 layers: Producers, Herbivores, Carnivores, Apex Predators, Decomposers"
+        },
+        {
+          "@id": "m2:Dissipation",
+          "role": "CORE MECHANISM — ~90% energy lost as heat at each trophic boundary (F⊗D)",
+          "instantiation": "Lindeman's 10% efficiency rule — universal across all ecosystems"
+        },
+        {
+          "@id": "m2:Context",
+          "role": "EPISTEMIC FRAME — the ecological context (biome, season, latitude) determines which species occupy each level (O⊗R⊗Im⊗E)",
+          "instantiation": "Tropical rainforest vs Arctic tundra: same trophic structure, different species filling each layer"
+        }
+      ],
+
+      "m0:secondaryGenericConcepts": [
+        { "@id": "m2:Hierarchy", "role": "Positional ordering base→apex (A⊗S)" },
+        { "@id": "m2:Flow", "role": "Energy/biomass transfer between levels (F)" },
+        { "@id": "m2:Gradient", "role": "Energy density gradient from base to apex (F at two distinct points)" },
+        { "@id": "m2:Homeostasis", "role": "Ecosystem equilibrium under perturbation (A⊗S⊗F⊗I⊗D)" },
+        { "@id": "m2:Regulation", "role": "Predator-prey feedback loops (A⊗S⊗F)" },
+        { "@id": "m2:Cascade", "role": "Trophic cascade: apex predator removal → top-down destabilisation (⊗⇒(Process,Step,Trajectory))" },
+        { "@id": "m2:Threshold", "role": "Minimum viable population thresholds; trophic collapse triggers (A⊗I⊗F)" },
+        { "@id": "m2:Network", "role": "Food web underlying the pyramid (S⊗F⊗I)" },
+        { "@id": "m2:Emergence", "role": "Ecosystem services (pollination, carbon sequestration) emerging from level interactions" }
+      ],
+
+      "m0:knowledgeFieldConceptCombos": [
+        {
+          "@id": "m0:StratifiedDissipation",
+          "@type": ["owl:NamedIndividual", "m1core:KnowledgeFieldConceptCombo"],
+          "rdfs:label": "StratifiedDissipation",
+          "rdfs:comment": "Biology-specific instantiation of the Layer⊗Dissipation pattern. Energy dissipation that is structured by stable positional strata: at each trophic boundary ~90% of received energy is irreversibly converted to heat, producing the universal pyramidal biomass distribution. The Layer dimension (S⊗I⊗A⊗R) provides the spatial scaffolding; the Dissipation dimension (F⊗D) drives the thermodynamic gradient.",
+          "m1core:knowledgeField": "Biology",
+          "m1core:operator": "⊙ (disciplinary qualification)",
+          "m1core:compiledFormula": "Biology ⊙ (S⊗I⊗A⊗R⊗F⊗D)",
+          "m1core:dominantDimensions": ["S", "I", "A", "F", "D"],
+          "m1core:empiricalLaw": "Lindeman's 10% rule — η ≈ 0.1 at each trophic boundary",
+          "m1core:validationDomains": ["Terrestrial ecology", "Marine ecology", "Freshwater ecology", "Aquatic microbial ecology", "Agro-ecology"]
+        }
+      ],
+
+      "m0:constraints": [
+        {
+          "m0:constraintId": "c1_energy_efficiency",
+          "m0:name": "Lindeman Efficiency",
+          "m0:formula": "η = E_n+1 / E_n ≈ 0.10",
+          "m0:type": "Thermodynamic (strict)",
+          "m0:condition": "Energy transfer efficiency between consecutive trophic levels ≤ 15%",
+          "m0:violationConsequence": "Ecosystem collapse — insufficient energy budget to sustain higher levels"
+        },
+        {
+          "m0:constraintId": "c2_level_ordering",
+          "m0:name": "Positional Ordering",
+          "m0:formula": "rank(L_i) < rank(L_{i+1}) — strict total order",
+          "m0:type": "Structural (Layer attractor)",
+          "m0:condition": "No cyclic predation at same trophic level (cannibalism is a special case, not the norm)"
+        },
+        {
+          "m0:constraintId": "c3_minimum_base",
+          "m0:name": "Autotrophic Base Constraint",
+          "m0:formula": "Biomass(Producers) ≥ Σ Biomass(all other levels)",
+          "m0:type": "Energetic",
+          "m0:condition": "Primary production (photosynthesis / chemosynthesis) must exceed total consumer demand"
+        }
+      ]
+    },
+
+    {
+      "@id": "m0:TrophicLevel",
+      "@type": "owl:Class",
+      "rdfs:label": "Trophic Level",
+      "rdfs:comment": "A stable, ordered positional partition in the trophic hierarchy — an instance of m2:Layer. Each level has characteristic content (I: metabolic role), positional attractor (A: rank in the energy cascade), and contributes to StratifiedDissipation.",
+      "rdfs:subClassOf": { "@id": "m2:Layer" },
+      "m2:characterizedBy": ["m2:Layer", "m2:Dissipation", "m2:Context"]
+    },
+
+    {
+      "@id": "m0:level_1_producers",
+      "@type": ["owl:NamedIndividual", "m0:TrophicLevel"],
+      "rdfs:label": "Level 1 — Primary Producers (Autotrophs)",
+      "m0:rank": 1,
+      "m0:energySource": "Solar radiation (photosynthesis) or chemical energy (chemosynthesis)",
+      "m0:biomassPercentage": "~99% of total ecosystem biomass (terrestrial)",
+      "m0:energyCapture": "~1-2% of incident solar radiation converted to chemical energy (gross primary production)",
+      "m0:representativeOrganisms": [
+        "Vascular plants (terrestrial)",
+        "Phytoplankton (aquatic)",
+        "Macro-algae (coastal)",
+        "Cyanobacteria (prokaryotic)",
+        "Chemolithotrophs (hydrothermal vents)"
+      ],
+      "m0:dominantASFID": {
+        "A": 0.95,
+        "S": 0.95,
+        "F": 0.85,
+        "I": 0.75,
+        "D": 0.70
+      },
+      "m0:layerSemantics": {
+        "m2:Layer_S": "Spatial dominance of ecosystem floor / water column base",
+        "m2:Layer_I": "Encodes photosynthetic capacity, chlorophyll content, GPP/NPP ratio",
+        "m2:Layer_A": "Rank = 1 (absolute base — no autotroph can be outranked in trophic order)",
+        "m2:Layer_R": "Universally named and encoded: 'primary producer' is cross-disciplinary shorthand"
+      },
+      "m0:dissipationAtBoundary": {
+        "toLevel2": "~90% lost as heat + respiration + structural biomass not consumed",
+        "transferEfficiency": 0.10
+      }
+    },
+
+    {
+      "@id": "m0:level_2_herbivores",
+      "@type": ["owl:NamedIndividual", "m0:TrophicLevel"],
+      "rdfs:label": "Level 2 — Primary Consumers (Herbivores)",
+      "m0:rank": 2,
+      "m0:energySource": "Ingestion of Level 1 biomass",
+      "m0:biomassPercentage": "~1% of total ecosystem biomass (terrestrial estimate)",
+      "m0:representativeOrganisms": [
+        "Insects, ungulates, rabbits (terrestrial)",
+        "Zooplankton, small fish (aquatic)",
+        "Molluscs, sea urchins (marine)"
+      ],
+      "m0:dominantASFID": {
+        "A": 0.90,
+        "S": 0.85,
+        "F": 0.90,
+        "I": 0.80,
+        "D": 0.85
+      },
+      "m0:layerSemantics": {
+        "m2:Layer_S": "Distributed spatial coverage tracking producer density",
+        "m2:Layer_I": "Encodes diet breadth (specialist vs generalist), gut flora, digestive efficiency",
+        "m2:Layer_A": "Rank = 2 — positioned by inability to synthesise own organic matter",
+        "m2:Layer_R": "Herbivore as universal concept: semantically stable across all terrestrial biomes"
+      },
+      "m0:dissipationAtBoundary": {
+        "toLevel3": "~90% lost as heat + faeces + undigested material",
+        "transferEfficiency": 0.10
+      }
+    },
+
+    {
+      "@id": "m0:level_3_carnivores",
+      "@type": ["owl:NamedIndividual", "m0:TrophicLevel"],
+      "rdfs:label": "Level 3 — Secondary Consumers (Carnivores / Omnivores)",
+      "m0:rank": 3,
+      "m0:energySource": "Ingestion of Level 2 biomass",
+      "m0:representativeOrganisms": [
+        "Snakes, foxes, small raptors (terrestrial)",
+        "Large predatory fish — bass, tuna (aquatic)",
+        "Squid, octopus (marine)"
+      ],
+      "m0:dominantASFID": {
+        "A": 0.90,
+        "S": 0.80,
+        "F": 0.85,
+        "I": 0.85,
+        "D": 0.90
+      },
+      "m0:layerSemantics": {
+        "m2:Layer_S": "Wider spatial range than herbivores (home range scales with trophic rank)",
+        "m2:Layer_I": "Encodes hunting strategy, prey selection, predation pressure on level 2",
+        "m2:Layer_A": "Rank = 3 — stabilises level 2 populations through negative feedback",
+        "m2:Layer_R": "Secondary consumer / mesopredator — universally recognised ecological role"
+      },
+      "m0:dissipationAtBoundary": {
+        "toLevel4": "~90% lost as heat + uneaten carcass biomass + parasites",
+        "transferEfficiency": 0.10
+      }
+    },
+
+    {
+      "@id": "m0:level_4_apex",
+      "@type": ["owl:NamedIndividual", "m0:TrophicLevel"],
+      "rdfs:label": "Level 4 — Apex Predators (Tertiary Consumers)",
+      "m0:rank": 4,
+      "m0:energySource": "Ingestion of Level 3 biomass",
+      "m0:biomassNote": "Smallest biomass — energetically barely sustainable. Minimum viable population constrained by available energy budget.",
+      "m0:representativeOrganisms": [
+        "Large cats, wolves, eagles (terrestrial)",
+        "Sharks, orca (marine)",
+        "Pike, large catfish (freshwater)"
+      ],
+      "m0:dominantASFID": {
+        "A": 0.95,
+        "S": 0.75,
+        "F": 0.75,
+        "I": 0.90,
+        "D": 0.95
+      },
+      "m0:layerSemantics": {
+        "m2:Layer_S": "Largest spatial range — often keystone species with disproportionate ecosystem control",
+        "m2:Layer_I": "Encodes trophic cascade potential: removal → herbivore irruption → vegetation collapse",
+        "m2:Layer_A": "Rank = 4 (apex) — no natural predators. Regulates entire pyramid via top-down cascades",
+        "m2:Layer_R": "Apex predator universally recognised: wolves (Yellowstone), sharks (marine), eagles (riparian)"
+      },
+      "m0:trophicCascadeRole": {
+        "type": "Keystone species (trophic)",
+        "mechanism": "m2:Cascade — removal triggers: Apex removed → Carnivores irrupt → Herbivores irrupt → Producers collapse",
+        "empiricalExample": "Wolf reintroduction in Yellowstone (1995) — rivers changed course (trophic cascade → geomorphic cascade)"
+      }
+    },
+
+    {
+      "@id": "m0:level_5_decomposers",
+      "@type": ["owl:NamedIndividual", "m0:TrophicLevel"],
+      "rdfs:label": "Level 5 — Decomposers (Detritivores / Saprotrophs)",
+      "m0:rank": "cross-cutting (all levels)",
+      "m0:energySource": "Dead organic matter (detritus) from all trophic levels",
+      "m0:layerNote": "Decomposers occupy a unique m2:Layer position: they are not on the main energy axis but cut across all levels. Their S⊗I⊗A structure is transversal — m2:Context (O⊗R⊗Im⊗E) determines which decomposers colonise which substrate.",
+      "m0:representativeOrganisms": [
+        "Fungi (terrestrial — dominant)",
+        "Bacteria (all environments)",
+        "Earthworms, millipedes (detritivores)",
+        "Vultures, hyenas (macro-detritivores)"
+      ],
+      "m0:dominantASFID": {
+        "A": 0.80,
+        "S": 0.85,
+        "F": 0.95,
+        "I": 0.85,
+        "D": 0.90
+      },
+      "m0:ecologicalRole": {
+        "function": "Nutrient recycling — completes the biogeochemical cycle",
+        "output": "Inorganic nutrients (N, P, K, C) returned to soil/water for Producer uptake",
+        "dissipation": "~40-60% of all ecosystem energy passes through the decomposer channel (detrital pathway)",
+        "m2concept": "m2:Cycle — decomposers close the matter cycle; energy still dissipates (2nd Law)"
+      }
+    },
+
+    {
+      "@id": "m0:EnergyFlowDynamics",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Energy Flow Dynamics",
+      "rdfs:comment": "Quantitative characterisation of energy transfer across the 4-level trophic gradient. Implements the StratifiedDissipation combo: each boundary is a Dissipation event operating on a Layer interface.",
+      "m0:lindeman10PercentRule": {
+        "formula": "E_n = E_1 × 0.1^(n-1)",
+        "example": {
+          "E1_producers_kJ_m2_yr": 10000,
+          "E2_herbivores_kJ_m2_yr": 1000,
+          "E3_carnivores_kJ_m2_yr": 100,
+          "E4_apex_kJ_m2_yr": 10
+        }
+      },
+      "m0:gradientDirection": "Base → Apex (energy density decreasing)",
+      "m0:dissipationMechanism": "Heat (respiration) + faecal energy + uneaten biomass at each trophic boundary",
+      "m0:mobilisedGenericConcepts": ["m2:Gradient", "m2:Dissipation", "m2:Layer", "m2:Flow"]
+    },
+
+    {
+      "@id": "m0:TrophicCascade",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Trophic Cascade Event",
+      "rdfs:comment": "Top-down destabilisation triggered by apex predator removal. Implements m2:Cascade (⊗⇒(Process, Step, Trajectory)) operating through the m2:Layer hierarchy in reverse. Demonstrates the bidirectional nature of trophic regulation: normal mode is bottom-up (energy flow); cascade mode is top-down (regulatory collapse).",
+      "m0:cascadeSteps": [
+        "Step 1: Apex predator population removed or collapsed",
+        "Step 2: Level 3 carnivores released from predation pressure → population irruption",
+        "Step 3: Level 2 herbivores under intensified predation → population collapse",
+        "Step 4: Level 1 producers released from herbivory → vegetation change",
+        "Step 5 (indirect): Geomorphic, hydrological and soil effects follow"
+      ],
+      "m0:empiricalValidation": "Yellowstone wolf reintroduction (1995), kelp forest recovery (sea otter / sea urchin / kelp triad), shark removal effects in Atlantic coastal zones",
+      "m0:mobilisedGenericConcepts": ["m2:Cascade", "m2:Threshold", "m2:Regulation", "m2:Homeostasis", "m2:Bifurcation"]
+    },
+
+    {
+      "@id": "m0:BiocenologicalContext",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Biocenological Context",
+      "rdfs:comment": "The ecological context (m2:Context = O⊗R⊗Im⊗E) that determines WHICH species fill each trophic Layer. Same trophic structure (Layer hierarchy), radically different species composition across biomes. The Context is the epistemic frame; the Layer is the structural frame.",
+      "m0:contextInstances": [
+        {
+          "biome": "Tropical Rainforest",
+          "producers": "Canopy trees, epiphytes",
+          "herbivores": "Leaf-cutter ants, tapirs, sloths",
+          "carnivores": "Ocelots, harpy eagles",
+          "apex": "Jaguars, anacondas"
+        },
+        {
+          "biome": "Arctic Tundra",
+          "producers": "Mosses, lichens, sedges",
+          "herbivores": "Lemmings, caribou",
+          "carnivores": "Arctic fox",
+          "apex": "Polar bear, wolf"
+        },
+        {
+          "biome": "Open Ocean",
+          "producers": "Phytoplankton (diatoms, dinoflagellates)",
+          "herbivores": "Zooplankton (copepods, krill)",
+          "carnivores": "Small fish (herring, anchovy)",
+          "apex": "Tuna, sharks, orca"
+        }
+      ],
+      "m0:contextDimensions": {
+        "O": "Observable field: species richness, biomass measurements, energy budgets",
+        "R": "Representable as: food web diagrams, energy pyramids, biomass histograms, Ecological Network Analysis",
+        "Im": "Shared scientific framework: trophic ecology, Lindeman's trophodynamics, Elton's food chain concept",
+        "E": "Evolvable: climate change alters species distributions, invasive species restructure levels, novel ecosystems emerge"
+      }
+    }
+
+  ]
+}

@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - ✨ Initial release of JSON-LD to OWL Turtle converter
-- 📁 Recursive scanning of `ontology/` and `system-models/` directories
+- 📁 Recursive scanning of `ontology/` and `instances/` directories
 - 🔄 Automatic conversion of all `.jsonld` files to `.ttl` format
 - 🧪 Dry-run mode (`--dry-run`) for previewing conversions
 - 🛡️ UTF-8 encoding handling with proper error reporting

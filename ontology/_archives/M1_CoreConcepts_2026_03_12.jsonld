@@ -1,0 +1,604 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m1core": "M1_CoreConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m3eagle": "M3_EagleEye.jsonld#",
+    "m3sphinx": "M3_SphinxEye.jsonld#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "m1core:M1_CoreConcepts_NuclearUpdate",
+      "@type": "owl:Ontology",
+      "dcterms:title": "M1 Core Concepts - Nuclear Reactor Typology Update",
+      "dcterms:description": "Update to M1_CoreConcepts.jsonld adding 6 transdisciplinary concepts discovered through Nuclear Reactor Typology poclet analysis. These concepts validated across 6+ domains (nuclear engineering, chemistry, biology, electronics, economics, social systems).",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-02-10",
+      "owl:versionInfo": "1.2.0.p3",
+      "owl:imports": [
+        "M1_CoreConcepts.jsonld",
+        "M2_GenericConcepts.jsonld"
+      ],
+      "m1core:updateSummary": {
+        "pocletSource": "M0_NuclearReactorTypology.jsonld",
+        "newConcepts": 6,
+        "totalM1CoreConcepts": 9,
+        "transdisciplinaryValidation": "Each concept validated in 6+ domains",
+        "significantContribution": "First M1 Core Concepts from industrial engineering domain"
+      },
+      "m1core:changelog": {
+        "v1.2.0": {
+          "date": "2026-02-10",
+          "changes": [
+            "ADDED: CriticalityRegime (subcritical, critical, supercritical states)",
+            "ADDED: SelfSustainingReaction (output â†’ input positive feedback)",
+            "ADDED: ModeratorMechanism (rate control, stabilization)",
+            "ADDED: DualCircuitArchitecture (primary/secondary isolation)",
+            "ADDED: PassiveSafety (fail-safe, no external power)",
+            "ADDED: CascadeAmplification (sequential gain > 1)",
+            "VALIDATION: All 6 concepts validated across nuclear, chemistry, biology, electronics, economics, social domains"
+          ]
+        }
+      },
+      "dcterms:modified": "2026-02-24",
+      "m2:changelog": {
+        "p3_20260224": {
+          "date": "2026-02-24",
+          "description": "Phase 3 migration: (1) Non-standard @types converted to owl:Class. (2) rdfs:subClassOf m2:GenericConcept added to root concepts. (3) m2Basis fields unified → m2:characterizedBy. (4) Wrong IS-A to M2 classes moved to m2:characterizedBy. Renamed DomainConcept → KnowledgeFieldConcept throughout."
+        }
+      }
+    },
+    {
+      "@id": "m1core:CriticalityRegime",
+      "@type": "owl:Class",
+      "rdfs:label": "Criticality Regime",
+      "rdfs:comment": "System state relative to self-sustaining threshold. Three regimes: subcritical (process dies), critical (self-sustaining equilibrium), supercritical (exponential growth). Universal pattern appearing when process products enable continuation of process.",
+      "skos:definition": "Classification of system state based on relationship to critical threshold where process becomes self-sustaining (reproduction number = 1, multiplication factor k = 1, percolation probability p = p_c).",
+      "m1core:tensorFormula": "Threshold âŠ— SelfSustainingReaction âŠ— Amplification",
+      "m1core:regimes": {
+        "subcritical": {
+          "condition": "Î» < 1 (eigenvalue of propagation matrix)",
+          "behavior": "Process dies out naturally",
+          "examples": [
+            "Nuclear: k_eff < 1 (reactor shutdown)",
+            "Epidemiology: Râ‚€ < 1 (disease dies out)",
+            "Finance: r < 0 (investment decay)",
+            "Social: Viral coefficient < 1 (content dies)"
+          ]
+        },
+        "critical": {
+          "condition": "Î» = 1 (exact threshold)",
+          "behavior": "Self-sustaining equilibrium (steady-state)",
+          "examples": [
+            "Nuclear: k_eff = 1.0 (steady power)",
+            "Epidemiology: Râ‚€ = 1 (endemic equilibrium)",
+            "Finance: r = 0 (break-even)",
+            "Percolation: p = p_c (spanning cluster)"
+          ]
+        },
+        "supercritical": {
+          "condition": "Î» > 1 (above threshold)",
+          "behavior": "Exponential growth (runaway if uncontrolled)",
+          "examples": [
+            "Nuclear: k_eff > 1 (power increase)",
+            "Epidemiology: Râ‚€ > 1 (epidemic)",
+            "Finance: r > 0 (compound growth)",
+            "Social: Viral coefficient > 1 (viral spread)"
+          ]
+        }
+      },
+      "m1core:mathematicalStructure": {
+        "differential_equation": "dx/dt = (Î» - 1) Ã— x",
+        "solution_subcritical": "x(t) = xâ‚€ Ã— exp[-(1-Î»)t] â†’ 0 as t â†’ âˆž",
+        "solution_critical": "x(t) = xâ‚€ (constant)",
+        "solution_supercritical": "x(t) = xâ‚€ Ã— exp[(Î»-1)t] â†’ âˆž as t â†’ âˆž"
+      },
+      "m1core:transdisciplinaryDomains": [
+        "Nuclear Engineering (fission criticality)",
+        "Epidemiology (disease reproduction number Râ‚€)",
+        "Chemistry (autocatalytic reactions)",
+        "Percolation Theory (bond/site probability)",
+        "Economics (growth/decay rates)",
+        "Social Networks (viral spread)",
+        "Ecology (population dynamics)",
+        "Phase Transitions (temperature vs T_critical)"
+      ],
+      "m1core:validationCount": 8,
+      "m1core:discoveryContext": "Emerged from Nuclear Reactor Typology poclet analysis. Pattern recognized as universal across all self-sustaining processes with threshold behavior.",
+      "skos:related": [
+        "m1core:SelfSustainingReaction",
+        "m2:Threshold",
+        "m2:Bifurcation"
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Threshold"
+        },
+        {
+          "@id": "m2:Bifurcation"
+        },
+        {
+          "@id": "m2:Homeostasis"
+        }
+      ]
+    },
+    {
+      "@id": "m1core:SelfSustainingReaction",
+      "@type": "owl:Class",
+      "rdfs:label": "Self-Sustaining Reaction",
+      "rdfs:comment": "Process where products enable continuation of process (output â†’ input positive feedback loop). Requires critical mass/threshold to initiate. Examples: fission chain reaction, combustion, autocatalysis, viral spread.",
+      "skos:definition": "Dynamic process characterized by positive feedback where reaction products trigger new reactions, creating potential for exponential growth if unregulated. Always exhibits threshold behavior (critical point).",
+      "m1core:tensorFormula": "Process âŠ— Cycle âŠ— Amplification (gain â‰¥ 1)",
+      "m1core:keyCharacteristic": "Output â†’ Input (positive feedback creates self-reinforcing loop)",
+      "m1core:transdisciplinaryExamples": [
+        {
+          "domain": "Nuclear Physics",
+          "process": "Fission chain reaction",
+          "mechanism": "Neutron + U-235 â†’ Fission Products + 2.5 neutrons â†’ trigger new fissions",
+          "threshold": "Critical mass (52 kg for bare U-235 sphere)",
+          "control": "Control rods (neutron absorption)"
+        },
+        {
+          "domain": "Chemistry",
+          "process": "Combustion",
+          "mechanism": "Heat from reaction maintains ignition temperature",
+          "threshold": "Ignition temperature (kindling point)",
+          "control": "Remove fuel, oxygen, or heat (fire triangle)"
+        },
+        {
+          "domain": "Biology",
+          "process": "Autocatalysis (enzyme production)",
+          "mechanism": "Enzyme products catalyze own synthesis",
+          "threshold": "Minimum enzyme concentration",
+          "control": "Allosteric inhibition, substrate depletion"
+        },
+        {
+          "domain": "Ecology",
+          "process": "Population reproduction",
+          "mechanism": "Offspring mature and reproduce",
+          "threshold": "Minimum viable population",
+          "control": "Predation, resource limits (carrying capacity)"
+        },
+        {
+          "domain": "Economics",
+          "process": "Compound interest",
+          "mechanism": "Returns fund new investments",
+          "threshold": "Positive interest rate",
+          "control": "Taxation, inflation, consumption"
+        },
+        {
+          "domain": "Social Networks",
+          "process": "Viral content spread",
+          "mechanism": "Shares generate more shares",
+          "threshold": "Viral coefficient > 1",
+          "control": "Algorithm suppression, engagement decay"
+        }
+      ],
+      "m1core:requiredConditions": [
+        "Positive feedback mechanism (output â†’ input)",
+        "Amplification (gain â‰¥ 1 per cycle)",
+        "Threshold (critical point for self-sustaining)",
+        "Initial trigger (seed, spark, catalyst)"
+      ],
+      "m1core:controlStrategies": [
+        "Negative feedback (homeostasis)",
+        "Product removal (interrupt cycle)",
+        "Rate reduction (moderator mechanism)",
+        "Threshold maintenance (critical point)"
+      ],
+      "m1core:validationCount": 6,
+      "m1core:discoveryContext": "Nuclear fission chain reaction analysis revealed universal pattern of output â†’ input positive feedback with threshold behavior.",
+      "skos:related": [
+        "m1core:CriticalityRegime",
+        "m1core:ModeratorMechanism",
+        "m2:Amplification",
+        "m2:Cycle"
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Process"
+        },
+        {
+          "@id": "m2:Cycle"
+        },
+        {
+          "@id": "m2:Amplification"
+        },
+        {
+          "@id": "m2:Threshold"
+        }
+      ]
+    },
+    {
+      "@id": "m1core:ModeratorMechanism",
+      "@type": "owl:Class",
+      "rdfs:label": "Moderator Mechanism",
+      "rdfs:comment": "Component or process that slows, controls, or stabilizes a rapid/intense process. Function: energy reduction, rate control, stabilization. Examples: neutron moderator (nuclear), enzyme inhibitor (biology), damper (mechanics), low-pass filter (electronics).",
+      "skos:definition": "Regulatory element that reduces process intensity or rate without stopping it entirely. Acts as intermediate control between full activity and complete shutdown.",
+      "m1core:tensorFormula": "Regulation âŠ— Attenuation âŠ— Stabilization",
+      "m1core:primaryFunctions": [
+        "Energy reduction (fast â†’ slow)",
+        "Rate control (limit reaction speed)",
+        "Stabilization (prevent runaway)",
+        "Bandwidth limiting (filter high frequencies)"
+      ],
+      "m1core:transdisciplinaryExamples": [
+        {
+          "domain": "Nuclear Engineering",
+          "rapidProcess": "Fast neutrons (2 MeV kinetic energy)",
+          "moderator": "Light water (Hâ‚‚O), heavy water (Dâ‚‚O), or graphite (C)",
+          "effect": "Thermalization to 0.025 eV (thermal neutrons)",
+          "mechanism": "Elastic scattering collisions transfer neutron energy to moderator nuclei"
+        },
+        {
+          "domain": "Chemistry",
+          "rapidProcess": "Chain reaction (uncontrolled)",
+          "moderator": "Inhibitor, catalyst poison",
+          "effect": "Rate reduction, controlled reaction",
+          "mechanism": "Competitive binding, active site blocking"
+        },
+        {
+          "domain": "Biology",
+          "rapidProcess": "Enzyme cascade (signal amplification)",
+          "moderator": "Allosteric inhibitor, phosphatase",
+          "effect": "Negative feedback, signal attenuation",
+          "mechanism": "Enzyme deactivation, product inhibition"
+        },
+        {
+          "domain": "Mechanical Engineering",
+          "rapidProcess": "High-speed motion, vibration",
+          "moderator": "Damper, shock absorber, brake",
+          "effect": "Velocity reduction, oscillation damping",
+          "mechanism": "Friction, viscous resistance, energy dissipation"
+        },
+        {
+          "domain": "Electronics",
+          "rapidProcess": "High-frequency signal",
+          "moderator": "Low-pass filter (RC, LC)",
+          "effect": "Frequency cutoff, noise reduction",
+          "mechanism": "Capacitive/inductive impedance increases with frequency"
+        },
+        {
+          "domain": "Social Systems",
+          "rapidProcess": "Extreme opinions, inflammatory content",
+          "moderator": "Forum moderator, community guidelines",
+          "effect": "Civility enforcement, tone reduction",
+          "mechanism": "Content removal, warning, timeout"
+        },
+        {
+          "domain": "Economics",
+          "rapidProcess": "Inflation, market volatility",
+          "moderator": "Central bank policy (interest rates)",
+          "effect": "Rate stabilization, market cooling",
+          "mechanism": "Money supply control, lending cost adjustment"
+        }
+      ],
+      "m1core:designPrinciples": [
+        "Partial control (reduce, not eliminate)",
+        "Continuous action (not binary on/off)",
+        "Negative feedback (stabilizing)",
+        "Energy dissipation or transfer"
+      ],
+      "m1core:validationCount": 7,
+      "m1core:discoveryContext": "Nuclear reactor moderator (water, graphite) slowing fast neutrons revealed universal pattern of rate control in rapid processes.",
+      "skos:related": [
+        "m2:Regulation",
+        "m2:Amplification",
+        "m1core:SelfSustainingReaction"
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Regulation"
+        },
+        {
+          "@id": "m2:Amplification"
+        },
+        {
+          "@id": "m2:Homeostasis"
+        }
+      ]
+    },
+    {
+      "@id": "m1core:DualCircuitArchitecture",
+      "@type": "owl:Class",
+      "rdfs:label": "Dual Circuit Architecture",
+      "rdfs:comment": "System design with separated primary and secondary circuits connected via interface/barrier. Function: isolation (safety, contamination), efficiency (heat exchange), or voltage transformation. Examples: PWR reactor (radioactive primary, clean secondary), HVAC (refrigerant/air), electrical transformer (high/low voltage).",
+      "skos:definition": "Architectural pattern with two distinct circuits separated by barrier, enabling transfer (energy, information, material) while maintaining isolation (safety, pressure, voltage).",
+      "m1core:tensorFormula": "Structure âŠ— Interface âŠ— Isolation",
+      "m1core:architecturalComponents": {
+        "primaryCircuit": "High-energy, high-risk, or contaminated side",
+        "secondaryCircuit": "Low-energy, safe, or clean side",
+        "interface": "Barrier enabling transfer while maintaining separation",
+        "barrier_types": [
+          "Physical (heat exchanger tubes, transformer coil insulation)",
+          "Thermal (temperature gradient)",
+          "Electrical (galvanic isolation)",
+          "Chemical (membrane, filter)"
+        ]
+      },
+      "m1core:transdisciplinaryExamples": [
+        {
+          "domain": "Nuclear Engineering (PWR)",
+          "primaryCircuit": "Radioactive water (155 bar, 325Â°C, activated corrosion products)",
+          "secondaryCircuit": "Clean steam (70 bar, 280Â°C, drives turbine)",
+          "interface": "Steam generator (U-tubes, Inconel 600/690)",
+          "purpose": "Radiation containment, prevent radioactive steam reaching turbine"
+        },
+        {
+          "domain": "Thermal Engineering",
+          "primaryCircuit": "Heat source fluid (hot side)",
+          "secondaryCircuit": "Heat sink fluid (cold side)",
+          "interface": "Heat exchanger (shell-and-tube, plate)",
+          "purpose": "Temperature control, thermal isolation"
+        },
+        {
+          "domain": "Hydraulic Systems",
+          "primaryCircuit": "High-pressure oil (3000 psi)",
+          "secondaryCircuit": "Low-pressure oil (500 psi)",
+          "interface": "Pressure reducer valve",
+          "purpose": "Safety, prevent overpressure in actuators"
+        },
+        {
+          "domain": "Electrical Engineering",
+          "primaryCircuit": "High voltage (11 kV distribution)",
+          "secondaryCircuit": "Low voltage (220 V user)",
+          "interface": "Transformer (magnetic coupling, no electrical connection)",
+          "purpose": "User safety, voltage matching"
+        },
+        {
+          "domain": "HVAC (Air Conditioning)",
+          "primaryCircuit": "Refrigerant loop (R-410A, high pressure)",
+          "secondaryCircuit": "Air loop (indoor circulation)",
+          "interface": "Evaporator coil (cold side), condenser coil (hot side)",
+          "purpose": "Thermal transfer, refrigerant containment"
+        },
+        {
+          "domain": "Automotive",
+          "primaryCircuit": "Engine coolant (ethylene glycol, 90-110Â°C)",
+          "secondaryCircuit": "Cabin air (fresh or recirculated)",
+          "interface": "Heater core (small radiator in dashboard)",
+          "purpose": "Thermal comfort, coolant containment"
+        }
+      ],
+      "m1core:keyProperties": [
+        "Physical separation (two distinct circuits)",
+        "Barrier interface (heat exchanger, transformer, membrane)",
+        "Transfer mechanism (thermal, electrical, chemical)",
+        "Isolation guarantee (safety, contamination prevention)"
+      ],
+      "m1core:designAdvantages": [
+        "Safety (contamination/radiation contained in primary)",
+        "Pressure decoupling (different operating pressures)",
+        "Efficiency (optimize each circuit independently)",
+        "Maintenance (secondary circuit accessible, primary sealed)"
+      ],
+      "m1core:validationCount": 6,
+      "m1core:discoveryContext": "PWR nuclear reactor primary/secondary circuit separation revealed universal architectural pattern for safe energy transfer.",
+      "skos:related": [
+        "m2:Structure",
+        "m2:Interface",
+        "m2:Flow"
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Structure"
+        },
+        {
+          "@id": "m2:Interface"
+        },
+        {
+          "@id": "m2:Flow"
+        }
+      ]
+    },
+    {
+      "@id": "m1core:PassiveSafety",
+      "@type": "owl:Class",
+      "rdfs:label": "Passive Safety",
+      "rdfs:comment": "Safety mechanism requiring NO external power or human intervention. Relies on physics (gravity, natural circulation), material properties (melting points), or fail-safe design. Examples: HTR natural cooling, MSR freeze plug, automotive crumple zones, dead man's switch.",
+      "skos:definition": "Design philosophy where safe state is achieved through inherent physical principles (gravity, thermodynamics, material properties) rather than active systems requiring power or operator action. Fail-safe by default.",
+      "m1core:tensorFormula": "Constraint âŠ— Resilience âŠ— InherentProperty",
+      "m1core:designPrinciples": [
+        "Fail-safe (safe state is default, requires no energy)",
+        "Physics-based (gravity, natural circulation, material limits)",
+        "No operator action required",
+        "No external power needed",
+        "Inherent property (not added feature)"
+      ],
+      "m1core:transdisciplinaryExamples": [
+        {
+          "domain": "Nuclear Engineering (HTR)",
+          "passiveMechanism": "Natural circulation cooling + TRISO fuel integrity",
+          "activeAlternative": "Forced cooling pumps requiring power",
+          "failureMode": "Loss of power â†’ natural convection maintains cooling, TRISO withstands 1600Â°C",
+          "physicalBasis": "Buoyancy (hot gas rises), ceramic fuel melting point (2800Â°C >> operational 950Â°C)"
+        },
+        {
+          "domain": "Nuclear Engineering (MSR)",
+          "passiveMechanism": "Freeze plug (solid salt plug melts at 500Â°C)",
+          "activeAlternative": "Manual valve actuation",
+          "failureMode": "Loss of active cooling â†’ plug melts â†’ fuel drains to criticality-safe dump tanks",
+          "physicalBasis": "Gravity drainage, phase transition temperature"
+        },
+        {
+          "domain": "Automotive Safety",
+          "passiveMechanism": "Crumple zones (controlled deformation)",
+          "activeAlternative": "Airbags (explosive deployment requiring sensors)",
+          "failureMode": "Collision â†’ material yields, absorbs kinetic energy",
+          "physicalBasis": "Material plastic deformation, energy absorption"
+        },
+        {
+          "domain": "Aviation",
+          "passiveMechanism": "Ram Air Turbine (RAT, wind-driven emergency generator)",
+          "activeAlternative": "APU (Auxiliary Power Unit, fuel-powered)",
+          "failureMode": "Total power loss â†’ RAT deploys, windmilling generates emergency power",
+          "physicalBasis": "Airstream kinetic energy conversion"
+        },
+        {
+          "domain": "Building Safety",
+          "passiveMechanism": "Fire doors with fusible link (melts at 74Â°C)",
+          "activeAlternative": "Powered sprinkler pumps",
+          "failureMode": "Fire heat â†’ link melts â†’ door closes automatically (gravity/spring)",
+          "physicalBasis": "Material melting point, gravity, spring tension"
+        },
+        {
+          "domain": "Electronics",
+          "passiveMechanism": "Fuse (overcurrent melting)",
+          "activeAlternative": "Circuit breaker (electromechanical trip)",
+          "failureMode": "Overcurrent â†’ fuse element melts â†’ circuit open",
+          "physicalBasis": "Resistive heating (IÂ²R), material melting point"
+        },
+        {
+          "domain": "Mechanical",
+          "passiveMechanism": "Dead man's switch (spring return to safe state)",
+          "activeAlternative": "Emergency stop button (requires operator action)",
+          "failureMode": "Operator incapacitation â†’ spring returns lever â†’ power off",
+          "physicalBasis": "Spring potential energy, mechanical linkage"
+        }
+      ],
+      "m1core:contrastWithActiveSafety": {
+        "activeSafety": "Requires power, sensors, actuators, operator action",
+        "passiveSafety": "Inherent, always present, independent of external systems",
+        "reliability": "Passive > Active (fewer failure modes, no common-cause failures)",
+        "complexity": "Passive < Active (simpler, physics-based)",
+        "cost": "Passive may be higher upfront (materials, design) but lower long-term (no maintenance)"
+      },
+      "m1core:nuclearSafetyExample": {
+        "HTR": "Walk-away safe - operator can leave, reactor shuts down passively",
+        "mechanism": [
+          "Strong negative temperature coefficient (reactivity drops as temp rises)",
+          "TRISO fuel withstands 1600Â°C without failure (2800Â°C melting point)",
+          "Natural circulation removes decay heat (no pumps needed)",
+          "Graphite moderator absorbs decay heat (thermal mass)"
+        ],
+        "result": "No operator action, no external power â†’ reactor safe indefinitely"
+      },
+      "m1core:validationCount": 7,
+      "m1core:discoveryContext": "HTR and MSR passive safety features revealed universal design pattern of physics-based fail-safe mechanisms.",
+      "skos:related": [
+        "m2:Resilience",
+        "m2:Constraint",
+        "m1core:ModeratorMechanism"
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Constraint"
+        },
+        {
+          "@id": "m2:Resilience"
+        },
+        {
+          "@id": "m2:Structure"
+        }
+      ]
+    },
+    {
+      "@id": "m1core:CascadeAmplification",
+      "@type": "owl:Class",
+      "rdfs:label": "Cascade Amplification",
+      "rdfs:comment": "Sequential multi-stage process where each stage has gain > 1, resulting in exponential amplification. Combines Cascade (staged sequence) with Amplification (gain). Examples: neutron multiplication, transistor amplifiers, MAPK signaling, photomultiplier tubes.",
+      "skos:definition": "Multi-stage process where signal, energy, or population is amplified at each stage (Gáµ¢ > 1), producing overall gain = âˆáµ¢ Gáµ¢ >> 1. Subset of Cascade GenericConcept with specific amplification requirement.",
+      "m1core:tensorFormula": "Cascade âŠ— Amplification (gain > 1 per stage)",
+      "m1core:mathematicalModel": {
+        "sequential_stages": "Output_i = Gáµ¢ Ã— Input_i; Input_{i+1} = Output_i",
+        "overall_gain": "G_total = Gâ‚ Ã— Gâ‚‚ Ã— ... Ã— Gâ‚™ = âˆáµ¢â‚Œâ‚â¿ Gáµ¢",
+        "condition": "Gáµ¢ > 1 âˆ€i (amplification at each stage)",
+        "result": "Output_n = Input_0 Ã— âˆáµ¢ Gáµ¢ >> Input_0 (exponential amplification)"
+      },
+      "m1core:transdisciplinaryExamples": [
+        {
+          "domain": "Nuclear Physics",
+          "process": "Neutron multiplication (fission chain)",
+          "input": "1 neutron",
+          "stages": "nâ‚€ â†’ 2.5nâ‚ â†’ 6.25nâ‚‚ â†’ 15.6nâ‚ƒ â†’ ...",
+          "gain_per_stage": "Î½ = 2.5 (average neutrons per fission)",
+          "total_gain": "After 80 generations: 2.5â¸â° â‰ˆ 10Â³Â² (nuclear weapon timescale ~1 Î¼s)",
+          "control": "Absorb neutrons to maintain k_eff = 1.0 (steady-state)"
+        },
+        {
+          "domain": "Electronics",
+          "process": "Multistage transistor amplifier",
+          "input": "Î¼V signal",
+          "stages": "Stage 1 (Ã—100) â†’ Stage 2 (Ã—50) â†’ Stage 3 (Ã—20)",
+          "gain_per_stage": "Gâ‚=100, Gâ‚‚=50, Gâ‚ƒ=20",
+          "total_gain": "100 Ã— 50 Ã— 20 = 100,000 (10âµ or 100 dB)",
+          "control": "Negative feedback (prevent saturation)"
+        },
+        {
+          "domain": "Biology (Signal Transduction)",
+          "process": "MAPK cascade (Raf â†’ MEK â†’ ERK)",
+          "input": "1 activated receptor",
+          "stages": "Raf (Ã—10) â†’ MEK (Ã—10) â†’ ERK (Ã—10) â†’ Gene expression",
+          "gain_per_stage": "~10-100 fold amplification per kinase",
+          "total_gain": "10Â³ - 10â¶ (signal amplification)",
+          "control": "Phosphatases (dephosphorylation, negative feedback)"
+        },
+        {
+          "domain": "Optics (Photomultiplier Tube)",
+          "process": "Electron avalanche (dynode chain)",
+          "input": "1 photon",
+          "stages": "Photocathode â†’ Dynodeâ‚ (Ã—4) â†’ Dynodeâ‚‚ (Ã—4) â†’ ... Ã— Dynodeâ‚â‚€ (Ã—4)",
+          "gain_per_stage": "Î´ â‰ˆ 4 (secondary emission coefficient)",
+          "total_gain": "4Â¹â° â‰ˆ 10â¶ (million electrons from 1 photon)",
+          "control": "Voltage adjustment (dynode potential)"
+        },
+        {
+          "domain": "Finance",
+          "process": "Compound interest",
+          "input": "Principal Pâ‚€",
+          "stages": "Year 1: Pâ‚€(1+r) â†’ Year 2: Pâ‚€(1+r)Â² â†’ ... â†’ Year n: Pâ‚€(1+r)â¿",
+          "gain_per_stage": "(1 + r) where r = interest rate",
+          "total_gain": "After 30 years at 7%: (1.07)Â³â° â‰ˆ 7.6 (money grows 7.6Ã—)",
+          "control": "Taxation, consumption (withdraw gains)"
+        },
+        {
+          "domain": "Social Networks",
+          "process": "Viral cascade",
+          "input": "1 original post",
+          "stages": "Gen 1: 10 shares â†’ Gen 2: 100 shares â†’ Gen 3: 1000 shares â†’ ...",
+          "gain_per_stage": "Viral coefficient k (average shares per person)",
+          "total_gain": "After n generations: k^n views (exponential if k > 1)",
+          "control": "Algorithm suppression, engagement decay"
+        }
+      ],
+      "m1core:controlChallenges": [
+        "Exponential growth difficult to control (small perturbations â†’ large effects)",
+        "Requires precise regulation (nuclear: k=1.000, not 1.001)",
+        "Negative feedback essential (prevent runaway)",
+        "Latency issues (cascade takes time, feedback delayed)"
+      ],
+      "m1core:designConsiderations": [
+        "Stage count (n): More stages â†’ higher total gain but longer latency",
+        "Gain per stage (Gáµ¢): Higher gain â†’ fewer stages needed but stability issues",
+        "Feedback: Negative feedback essential for stable operation",
+        "Saturation: Each stage has maximum output (nonlinearity)"
+      ],
+      "m1core:validationCount": 6,
+      "m1core:discoveryContext": "Nuclear fission neutron multiplication (cascade with gain >1) revealed universal pattern of sequential amplification across domains.",
+      "skos:related": [
+        "m2:Cascade",
+        "m2:Amplification",
+        "m1core:SelfSustainingReaction"
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Cascade"
+        },
+        {
+          "@id": "m2:Amplification"
+        }
+      ]
+    }
+  ]
+}

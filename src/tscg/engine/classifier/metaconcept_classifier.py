@@ -94,7 +94,7 @@ class MetaconceptClassifier:
 
     Two query signals are combined:
       - ontology_doc segments  → M2 metaconcept candidates
-      - system-models segments → analogous poclets / frameworks
+      - instances segments → analogous poclets / frameworks
 
     Example:
         >>> clf = MetaconceptClassifier()
@@ -256,8 +256,8 @@ class MetaconceptClassifier:
     def _query_analogous_systems(
         self, query_vec: list, top_k: int
     ) -> List[AnalogousSystem]:
-        """Query for segments from system-models/ to find analogous systems."""
-        # Fetch broadly — system-models is a subset, so we need more candidates
+        """Query for segments from instances/ to find analogous systems."""
+        # Fetch broadly — instances is a subset, so we need more candidates
         raw = self._collection.query(
             query_embeddings=[query_vec],
             n_results=top_k * 10,
@@ -276,7 +276,7 @@ class MetaconceptClassifier:
                 continue
 
             source = meta.get("source", "").replace("\\", "/")
-            if "system-models" not in source:
+            if "instances" not in source:
                 continue
 
             src_name = Path(source).name

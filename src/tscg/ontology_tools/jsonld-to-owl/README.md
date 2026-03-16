@@ -38,7 +38,7 @@ tscg/                         ← GitHub repository root
 │   ├── M3_SphinxEye.jsonld
 │   ├── M2_MetaConcepts.jsonld
 │   └── M1_extensions/
-├── system-models/            ← System models (M0 poclets)
+├── instances/            ← System models (M0 poclets)
 │   ├── poclets/
 │   └── validation/
 └── src/                      
@@ -59,12 +59,12 @@ cd src/tscg/ontology_tools
 pip install -r requirements.txt
 ```
 
-**Note:** The script automatically detects the TSCG root by searching for `ontology/` and `system-models/` directories, climbing up from `src/tscg/ontology_tools/` → `src/tscg/` → `src/` → `root/`.
+**Note:** The script automatically detects the TSCG root by searching for `ontology/` and `instances/` directories, climbing up from `src/tscg/ontology_tools/` → `src/tscg/` → `src/` → `root/`.
 
 ### 2. Basic Usage
 
 ```bash
-# Convert all .jsonld files in ontology/ and system-models/
+# Convert all .jsonld files in ontology/ and instances/
 python jsonld_to_turtle.py
 
 # Preview what would be converted (dry-run)
@@ -102,7 +102,7 @@ tscg/
 │       ├── optics/M1_Optics.jsonld         → M1_Optics.ttl
 │       └── photography/M1_Photography.jsonld → M1_Photography.ttl
 │
-└── system-models/
+└── instances/
     ├── poclets/
     │   ├── M0_FireTriangle.jsonld          → M0_FireTriangle.ttl
     │   ├── M0_RAAS.jsonld                  → M0_RAAS.ttl
@@ -159,7 +159,7 @@ turtle-ontologies/
 │   ├── M3_EagleEye.ttl
 │   ├── M2_MetaConcepts.ttl
 │   └── ...
-└── system-models/
+└── instances/
     └── ...
 ```
 
@@ -180,7 +180,7 @@ The tool generates a detailed report:
 TSCG JSON-LD to OWL Turtle Converter v1.0.0
 ======================================================================
 Root directory: /path/to/tscg
-Target directories: ontology, system-models
+Target directories: ontology, instances
 
 Scanning for .jsonld files...
 Found 58 .jsonld files
@@ -284,11 +284,11 @@ The tool expects this directory structure:
 ```
 tscg/                         ← Repository root
 ├── ontology/                 ← Must exist
-├── system-models/            ← Must exist  
+├── instances/            ← Must exist  
 └── src/tscg/ontology_tools/  ← You are here
 ```
 
-**The script auto-detects the root** by searching for `ontology/` and `system-models/` directories up to 5 levels above the current location.
+**The script auto-detects the root** by searching for `ontology/` and `instances/` directories up to 5 levels above the current location.
 
 If running from a different location or non-standard structure:
 ```bash

@@ -37,7 +37,7 @@ tscg/                         ← Racine du repository GitHub
 │   ├── M3_SphinxEye.jsonld
 │   ├── M2_MetaConcepts.jsonld
 │   └── M1_extensions/
-├── system-models/            ← Modèles de systèmes (M0 poclets)
+├── instances/            ← Modèles de systèmes (M0 poclets)
 │   ├── poclets/
 │   └── validation/
 └── src/                      
@@ -101,7 +101,7 @@ Tests passed: 5/5
 
 ### Détection Automatique de la Racine
 
-Le script **détecte automatiquement** la racine du projet TSCG en cherchant les dossiers `ontology/` et `system-models/`.
+Le script **détecte automatiquement** la racine du projet TSCG en cherchant les dossiers `ontology/` et `instances/`.
 
 Depuis le dossier `src/tscg/ontology_tools/`, le script remonte automatiquement de 3 niveaux pour trouver la racine :
 ```
@@ -157,7 +157,7 @@ ontology/
     ├── optics/M1_Optics.jsonld           → .ttl
     └── photography/M1_Photography.jsonld → .ttl
 
-system-models/
+instances/
 ├── poclets/
 │   ├── M0_FireTriangle.jsonld → .ttl
 │   ├── M0_RAAS.jsonld         → .ttl
@@ -177,7 +177,7 @@ Après l'exécution, vous verrez :
 TSCG JSON-LD to OWL Turtle Converter v1.0.0
 ======================================================================
 Root directory: C:\Projects\tscg
-Target directories: ontology, system-models
+Target directories: ontology, instances
 
 Scanning for .jsonld files...
 Found 58 .jsonld files
@@ -255,7 +255,7 @@ turtle-ontologies/
 │   ├── M3_EagleEye.ttl
 │   ├── M2_MetaConcepts.ttl
 │   └── ...
-└── system-models/
+└── instances/
     └── ...
 ```
 
@@ -301,11 +301,11 @@ Le script attend cette structure :
 ```
 tscg/                          ← Racine du repository
 ├── ontology/                  ← Doit exister
-├── system-models/             ← Doit exister
+├── instances/             ← Doit exister
 └── src/tscg/ontology_tools/   ← Vous êtes ici
 ```
 
-**Le script détecte automatiquement la racine** en cherchant les dossiers `ontology/` et `system-models/`.
+**Le script détecte automatiquement la racine** en cherchant les dossiers `ontology/` et `instances/`.
 
 Si vous avez une structure différente :
 ```bash
