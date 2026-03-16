@@ -1,0 +1,1 @@
+start python tv_test_pattern_sim.py

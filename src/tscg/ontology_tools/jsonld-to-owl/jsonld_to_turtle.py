@@ -4,7 +4,7 @@
 TSCG JSON-LD to OWL Turtle Converter
 ====================================
 
-Converts all .jsonld files to .ttl (OWL Turtle format) in ontology/ and system-models/ directories.
+Converts all .jsonld files to .ttl (OWL Turtle format) in ontology/ and instances/ directories.
 
 Author: Echopraxium with the collaboration of Claude AI
 Date: 2026-02-15
@@ -64,7 +64,7 @@ class JSONLDToTurtleConverter:
         # Target directories to scan
         self.target_dirs = [
             self.root_dir / "ontology",
-            self.root_dir / "system-models"
+            self.root_dir / "instances"
         ]
         
         # Statistics
@@ -82,9 +82,9 @@ class JSONLDToTurtleConverter:
         self._setup_logging()
     
     def _validate_root_dir(self) -> bool:
-        """Check if root directory contains ontology/ and system-models/"""
+        """Check if root directory contains ontology/ and instances/"""
         ontology_exists = (self.root_dir / "ontology").exists()
-        system_models_exists = (self.root_dir / "system-models").exists()
+        system_models_exists = (self.root_dir / "instances").exists()
         return ontology_exists or system_models_exists
     
     def _auto_detect_root(self):
@@ -93,7 +93,7 @@ class JSONLDToTurtleConverter:
         max_levels = 5  # Don't search more than 5 levels up
         
         for _ in range(max_levels):
-            if (current / "ontology").exists() or (current / "system-models").exists():
+            if (current / "ontology").exists() or (current / "instances").exists():
                 self.root_dir = current
                 return
             current = current.parent

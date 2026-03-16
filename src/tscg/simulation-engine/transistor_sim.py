@@ -479,7 +479,7 @@ def find_poclet():
     if POCLET_OVERRIDE: return Path(POCLET_OVERRIDE)
     cur=Path(__file__).resolve().parent
     for _ in range(8):
-        c=cur/"system-models"/"poclets"/"transistor"/"M0_Transistor.jsonld"
+        c=cur/"instances"/"poclets"/"transistor"/"M0_Transistor.jsonld"
         if c.exists(): return c
         p=cur.parent
         if p==cur: break

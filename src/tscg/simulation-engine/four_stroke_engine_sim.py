@@ -664,7 +664,7 @@ def find_poclet():
         return Path(POCLET_OVERRIDE)
     cur = Path(__file__).resolve().parent
     for _ in range(8):
-        c = cur / "system-models" / "poclets" / "four_stroke_engine" / "M0_FourStrokeEngine.jsonld"
+        c = cur / "instances" / "poclets" / "four_stroke_engine" / "M0_FourStrokeEngine.jsonld"
         if c.exists():
             return c
         p = cur.parent

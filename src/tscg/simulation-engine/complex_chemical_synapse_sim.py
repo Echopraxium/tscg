@@ -673,7 +673,7 @@ def find_poclet():
         return Path(POCLET_OVERRIDE)
     cur = Path(__file__).resolve().parent
     for _ in range(8):
-        c = cur / "system-models" / "poclets" / "complex_chemical_synapse" \
+        c = cur / "instances" / "poclets" / "complex_chemical_synapse" \
             / "M0_ComplexChemicalSynapse.jsonld"
         if c.exists():
             return c

@@ -402,7 +402,7 @@ pip install -e .[webapi]
 ```
 tscg/                              # GitHub repository
 ├── ontology/                      # M3, M2, M1 ontologies
-├── system-models/                 # M0 poclets
+├── instances/                 # M0 poclets
 ├── docs/                          # Documentation
 ├── src/
 │   ├── TSCG.Orchestrator/        # C# orchestrator
@@ -415,7 +415,7 @@ tscg/                              # GitHub repository
 ```
 tscg/                              # GitHub repository
 ├── ontology/                      # (unchanged)
-├── system-models/                 # (unchanged)
+├── instances/                 # (unchanged)
 ├── docs/                          # (unchanged)
 ├── src/
 │   ├── TSCG.Orchestrator/        # (unchanged)

@@ -10,7 +10,7 @@
 ## 🎯 Objectifs Atteints
 
 ### 1. ✅ Correction des Poclets M0 (Structure URIs)
-**Objectif:** Migrer les poclets de `ontology/poclets` vers `system-models/poclets`
+**Objectif:** Migrer les poclets de `ontology/poclets` vers `instances/poclets`
 
 **Résultat:**
 - 16 poclets corrigés avec nouvelle structure URI
@@ -178,7 +178,7 @@ Step est un Node spécialisé dans un contexte séquentiel/temporel représentan
 - ✅ Simplification M3: `m3` au lieu de `m3:eagle_eye`/`m3:sphinx_eye`
 
 ### URIs
-- ✅ Base changée: `ontology/poclets` → `system-models/poclets`
+- ✅ Base changée: `ontology/poclets` → `instances/poclets`
 - ✅ Domaine correct: `raw.githubusercontent.com` (pas `github.com`)
 - ✅ Fragments `#` ajoutés systématiquement
 
@@ -209,7 +209,7 @@ Step est un Node spécialisé dans un contexte séquentiel/temporel représentan
 - ✅ Modélisation séquences temporelles (Step)
 - ✅ Catégorisation ontologies (m3:ontologyCategory)
 - ✅ Validation automatique (validateur)
-- ✅ Structure URI cohérente (system-models)
+- ✅ Structure URI cohérente (instances)
 - ✅ Hiérarchie Step ⊂ Node formalisée
 
 ---
@@ -222,8 +222,8 @@ Step est un Node spécialisé dans un contexte séquentiel/temporel représentan
 ### 2. Step comme rdfs:subClassOf Node
 **Rationale:** Step est une spécialisation de Node pour contextes séquentiels
 
-### 3. system-models/poclets (pas ontology/poclets)
-**Rationale:** Séparer modèles concrets (system-models) de l'ontologie abstraite
+### 3. instances/poclets (pas ontology/poclets)
+**Rationale:** Séparer modèles concrets (instances) de l'ontologie abstraite
 
 ### 4. Namespaces hiérarchiques avec `:`
 **Rationale:** Standard JSON-LD (pas `.` qui est invalide)
@@ -247,7 +247,7 @@ Step est un Node spécialisé dans un contexte séquentiel/temporel représentan
 7. Appliquer m3:ontologyCategory à M3_EagleEye et M3_SphinxEye
 8. Ajouter m3:ontologyCategory à M2_MetaConcepts ("UniversalPattern")
 9. Ajouter m3:ontologyCategory à tous les M1_*.jsonld ("DomainExtension")
-10. Créer dossiers system-models/poclets/* sur GitHub
+10. Créer dossiers instances/poclets/* sur GitHub
 11. Tester validateur sur tous les fichiers
 
 ### Moyen Terme (Ce mois)
@@ -308,7 +308,7 @@ Un bon validateur est indispensable pour maintenir la qualité d'une ontologie c
 
 Cette session a permis d'accomplir **7 objectifs majeurs** :
 
-1. ✅ Migration structure URI des poclets (system-models)
+1. ✅ Migration structure URI des poclets (instances)
 2. ✅ Correction architecturale (m3:ontologyCategory)
 3. ✅ Mise à jour M3_GenesisSpace v2.1.0
 4. ✅ Correction terminologie ORIVE (Evolvability)

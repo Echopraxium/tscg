@@ -107,14 +107,14 @@ class ColorSynthesisAdapter:
         Strategy (fastest first):
         1. Walk upward from script and cwd, check explicit known subpaths
            (validated + 00_to_be_fixed / _00_to_be_fixed variants).
-        2. Fallback: rglob under system-models/ if explicit paths missed.
+        2. Fallback: rglob under instances/ if explicit paths missed.
         3. Last resort: script directory (files placed alongside script).
         """
         TARGET = "M0_RGB_Additive.jsonld"
         EXPLICIT_SUBPATHS = [
-            Path("system-models") / "poclets" / "color_synthesis",
-            Path("system-models") / "poclets" / "00_to_be_fixed"  / "color_synthesis",
-            Path("system-models") / "poclets" / "_00_to_be_fixed" / "color_synthesis",
+            Path("instances") / "poclets" / "color_synthesis",
+            Path("instances") / "poclets" / "00_to_be_fixed"  / "color_synthesis",
+            Path("instances") / "poclets" / "_00_to_be_fixed" / "color_synthesis",
         ]
 
         try:
@@ -144,9 +144,9 @@ class ColorSynthesisAdapter:
                     print(f"[TSCG] Found poclets at: {folder}")
                     return folder
 
-        # Pass 2: rglob under system-models/ (slower but catches any layout)
+        # Pass 2: rglob under instances/ (slower but catches any layout)
         for root in roots:
-            sm = root / "system-models"
+            sm = root / "instances"
             if sm.exists():
                 for match in sm.rglob(TARGET):
                     print(f"[TSCG] Found poclets at: {match.parent}")

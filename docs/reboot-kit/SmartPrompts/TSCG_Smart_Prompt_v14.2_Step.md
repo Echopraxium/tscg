@@ -403,7 +403,7 @@ When applying TSCG v14.2.0 to a new system:
 **Infrastructure:**
 - Added m3:ontologyCategory property to M3_GenesisSpace
 - Corrected namespace: m2:ontologyCategory → m3:ontologyCategory
-- Updated system-models/poclets structure
+- Updated instances/poclets structure
 - All poclets migrated to new URI structure
 
 ### v14.1.0 (2026-01-23)

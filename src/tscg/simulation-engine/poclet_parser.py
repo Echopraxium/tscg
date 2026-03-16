@@ -38,7 +38,7 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 
 # Standard TSCG path for poclets inside the repository
-POCLETS_RELATIVE_PATH = Path("system-models") / "poclets"
+POCLETS_RELATIVE_PATH = Path("instances") / "poclets"
 
 
 class PocletRepository:
@@ -48,8 +48,8 @@ class PocletRepository:
     Search strategy:
       1. Use the provided root if given.
       2. Otherwise walk upward from this file's directory until a folder
-         containing 'system-models/poclets' is found.
-      3. Scan recursively under <root>/system-models/poclets for all
+         containing 'instances/poclets' is found.
+      3. Scan recursively under <root>/instances/poclets for all
          files matching 'M0_*.jsonld'.
 
     Usage:
@@ -120,7 +120,7 @@ class PocletRepository:
     def _auto_detect_root(self):
         """
         Walk upward from this file's location until we find a directory
-        that contains 'system-models/poclets'.
+        that contains 'instances/poclets'.
         """
         candidate = Path(__file__).resolve().parent
         for _ in range(10):   # max 10 levels up

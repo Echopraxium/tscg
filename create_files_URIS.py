@@ -17,15 +17,28 @@ def generate_github_urls():
     # Dossiers LOCAUX à exclure (dans le système de fichiers)
     EXCLUDED_LOCAL_DIRS = {
         '.git',
-        '_archives'
+        '_archives',
+        'api_key',      # dossiers api_key (toute profondeur)
     }
+
+    # Extensions de fichiers à exclure (sécurité)
+    EXCLUDED_EXTENSIONS = {
+        '.api_key',
+    }
+
+    # Patterns de nom de fichier à exclure (insensible à la casse)
+    EXCLUDED_NAME_PATTERNS = [
+        'apik',         # ex: myapik, apik_secret, etc.
+    ]
     
     print("=" * 60)
     print("Génération de files.txt avec URLs raw GitHub")
     print("=" * 60)
     print()
-    print(f"Extensions incluses: {', '.join(sorted(INCLUDED_EXTENSIONS))}")
-    print(f"Dossiers locaux exclus: {', '.join(sorted(EXCLUDED_LOCAL_DIRS))}")
+    print(f"Extensions incluses:  {', '.join(sorted(INCLUDED_EXTENSIONS))}")
+    print(f"Extensions exclues:   {', '.join(sorted(EXCLUDED_EXTENSIONS))}")
+    print(f"Patterns exclus:      {', '.join(EXCLUDED_NAME_PATTERNS)}")
+    print(f"Dossiers exclus:      {', '.join(sorted(EXCLUDED_LOCAL_DIRS))}")
     print()
     print("Note: Les URLs contenant ces mots (ex: .../.git/... ou .../_archives/...)")
     print("      sont AUTORISÉES si elles viennent de GitHub")
@@ -60,7 +73,16 @@ def generate_github_urls():
         for file_name in files:
             file_path = root_path / file_name
             
-            # Vérifier l'extension
+            # Exclure les extensions sensibles
+            if file_path.suffix.lower() in EXCLUDED_EXTENSIONS:
+                continue
+
+            # Exclure les fichiers dont le nom contient un pattern sensible
+            name_lower = file_path.name.lower()
+            if any(pat in name_lower for pat in EXCLUDED_NAME_PATTERNS):
+                continue
+
+            # Vérifier l'extension incluse
             if file_path.suffix.lower() not in INCLUDED_EXTENSIONS:
                 continue
             
@@ -96,25 +118,37 @@ def generate_github_urls():
     print("ANALYSE des URLs générées")
     print("=" * 60)
     
-    # 1. Vérifier qu'aucune URL ne pointe vers un dossier local exclu
-    print("\n🔍 Vérification des exclusions LOCALES:")
-    local_exclusion_issues = 0
-    
+    # 1. Vérifier qu'aucune URL sensible n'a été incluse
+    print("\n🔍 Vérification des exclusions LOCALES et de sécurité:")
+    issues = 0
+
     for url in urls_generated:
-        # Extraire le chemin après "master/"
-        if "master/" in url:
-            path_part = url.split("master/")[1]
-            
-            # Vérifier si ce chemin correspond à un dossier local exclu
-            parts = path_part.split('/')
-            if parts and parts[0] in EXCLUDED_LOCAL_DIRS:
-                print(f"❌ ERREUR: URL pointe vers un dossier local exclu: {url}")
-                local_exclusion_issues += 1
-    
-    if local_exclusion_issues == 0:
-        print("✅ OK: Aucune URL ne pointe vers un dossier local exclu")
+        path_part = url.split("/main/", 1)[-1] if "/main/" in url else url
+
+        # Dossiers exclus
+        parts = path_part.split('/')
+        for part in parts[:-1]:   # tous les segments sauf le nom de fichier
+            if part in EXCLUDED_LOCAL_DIRS:
+                print(f"❌ ERREUR dossier exclu: {url}")
+                issues += 1
+                break
+
+        # Extensions exclues
+        suffix = '.' + path_part.rsplit('.', 1)[-1] if '.' in path_part else ''
+        if suffix.lower() in EXCLUDED_EXTENSIONS:
+            print(f"❌ ERREUR extension sensible: {url}")
+            issues += 1
+
+        # Patterns de nom exclus
+        fname = path_part.split('/')[-1].lower()
+        if any(pat in fname for pat in EXCLUDED_NAME_PATTERNS):
+            print(f"❌ ERREUR nom sensible: {url}")
+            issues += 1
+
+    if issues == 0:
+        print("✅ OK: Aucune URL sensible détectée")
     else:
-        print(f"⚠️  {local_exclusion_issues} problème(s) trouvé(s)")
+        print(f"⚠️  {issues} problème(s) trouvé(s)")
     
     # 2. Compter les URLs par type
     print("\n📊 Répartition par extension:")

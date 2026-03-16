@@ -1,0 +1,207 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl":     "http://www.w3.org/2002/07/owl#",
+    "rdf":     "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs":    "http://www.w3.org/2000/01/rdf-schema#",
+    "skos":    "http://www.w3.org/2004/02/skos/core#",
+    "xsd":     "http://www.w3.org/2001/XMLSchema#",
+    "m2":      "M2_GenericConcepts.jsonld#",
+    "m3":      "M3_GenesisSpace.jsonld#"
+  },
+
+  "@graph": [
+
+    {
+      "@id": "m2:Calibration_Addition",
+      "@type": "owl:Ontology",
+      "owl:versionInfo": "15.10.0",
+      "dcterms:created":  "2026-03-02",
+      "dcterms:modified": "2026-03-02",
+      "dcterms:creator":  "Echopraxium with the collaboration of Claude AI",
+      "dcterms:title":    "TSCG M2 GenericConcept - Calibration (Addition)",
+      "dcterms:description": "Standalone addition file defining m2:Calibration for integration into M2_GenericConcepts.jsonld. Calibration is an atomic Regulatory GenericConcept (Territory / Eagle Eye) modelling the asymmetric dynamic adjustment of a system-under-test toward an externally imposed reference state, with quantified residual deviation. Perspective: territory (pure ASFID — all four dimensions are physical, observable, measurable).",
+      "owl:imports": [
+        "M3_GenesisSpace.jsonld",
+        "M2_GenericConcepts.jsonld"
+      ],
+      "metadata": {
+        "layer":            "M2",
+        "addition_target":  "M2_GenericConcepts.jsonld",
+        "family":           "Regulatory",
+        "concept_type":     "atomic",
+        "perspective_mode": "territory",
+        "date_created":     "2026-03-02",
+        "date_modified":    "2026-03-02",
+        "authors": [
+          "Echopraxium with the collaboration of Claude AI"
+        ],
+        "changelog": {
+          "v15.10.0": "ADD m2:Calibration (Regulatory, atomic, territory A⊗F⊗It⊗D). Triggered by TV test pattern analysis. Validated across 8 transdisciplinary domains. Perspective is 'territory': all four dimensions are physical/observable (pure ASFID). V⊗O characterizes the Map-level quality of a calibration procedure — belongs to REVOI poclet scoring, not to the GenericConcept definition."
+        }
+      }
+    },
+
+    {
+      "@id": "m2:Calibration",
+      "@type": [
+        "owl:Class",
+        "m2:GenericConcept"
+      ],
+      "rdfs:subClassOf": [
+        "m2:GenericConcept",
+        "m2:Observable",
+        "m2:Triggerable",
+        "m2:Stateful"
+      ],
+
+      "rdfs:label":   "Calibration",
+      "rdfs:comment": "Dynamic and asymmetric adjustment of a system-under-test toward an externally imposed reference state (the standard / ground truth), with quantified measurement of residual deviation. Distinct from Regulation (internal equilibrium) and Homeostasis (self-maintained set-point): Calibration always implies an external referential authority and iterative error correction. Pure Territory concept: all four dimensions (A, F, It, D) are physical, observable, and measurable.",
+
+      "skos:definition": "A GenericConcept formalizing the process by which a system-under-test is iteratively adjusted to match an externally defined reference state. The reference constitutes an Attractor (A); the reference stimulus is a Flow (F); the measured response is Territory Information (It); the correction loop is Dynamics (D). V and O (Verifiability, Observability) characterize the quality of the calibration procedure as assessed from the Map perspective — they belong to REVOI scoring of a poclet, not to the GenericConcept definition itself.",
+
+      "skos:altLabel": [
+        "Calibration Process",
+        "Reference-Based Adjustment"
+      ],
+
+      "skos:scopeNote": "The asymmetry between the reference (authority, fixed) and the system-under-test (subject, corrected) is the defining characteristic of Calibration, distinguishing it from the symmetric mutual convergence of m2:Alignment and from the purely internal self-regulation of m2:Regulation and m2:Homeostasis.",
+
+      "m2:family":      "Regulatory",
+      "m2:perspective": "territory",
+
+      "m2:eagleEye": {
+        "formula":        "A ⊗ F ⊗ It ⊗ D",
+        "formulaASCII":   "A (x) F (x) It (x) D",
+        "formulaTeX":     "A \\otimes F \\otimes I_t \\otimes D",
+        "status":         "IMMUTABLE",
+        "dimensions":     4,
+        "dimensionRoles": {
+          "A":  "External reference state as Attractor — the standard, ground truth, or etalon that the system must converge toward. A is exogenous and independent of the system-under-test (key distinction vs Regulation/Homeostasis where A is endogenous).",
+          "F":  "Reference stimulus Flow — the calibration signal physically injected into the system-under-test (e.g. known voltage, test pattern, pure tone at 440 Hz, MRI phantom signal).",
+          "It": "Measured system response — Territory Information captured from the system-under-test during the calibration procedure. Disambiguated as It (ASFID Information) to avoid confusion with Im (REVOI Interoperability).",
+          "D":  "Correction Dynamics — the iterative adjustment loop that reduces the residual error |It - A| toward zero (e.g. gain trimming, gamma correction, parameter optimisation, physical tuning)."
+        }
+      },
+
+      "m2:conceptContracts": [
+        {
+          "contract":      "m2:Observable",
+          "justification": "The residual deviation (It - A) and intermediate correction states are measurable by definition — Calibration requires observability of the system response at each iteration."
+        },
+        {
+          "contract":      "m2:Triggerable",
+          "justification": "Calibration is initiated by an external condition: scheduled maintenance, detected drift, initial commissioning, or a verification request — always a Trigger event."
+        },
+        {
+          "contract":      "m2:Stateful",
+          "justification": "Calibration stores its result as persistent state: correction coefficients, offset tables, calibration certificates, or updated internal parameters that persist beyond the calibration event itself."
+        }
+      ],
+
+      "m2:distinctionFromNeighbors": {
+        "vs_Regulation":  "Regulation maintains an internal equilibrium against perturbations (A is endogenous). Calibration adjusts toward an external authoritative reference (A is exogenous and imposed).",
+        "vs_Homeostasis": "Homeostasis self-maintains an acquired set-point (internal self-reference). Calibration corrects against an external standard; the reference pre-exists and is independent of the system.",
+        "vs_Alignment":   "Alignment is symmetric — two entities converge mutually. Calibration is asymmetric — the reference is fixed and only the system-under-test is corrected.",
+        "vs_Threshold":   "Threshold is a binary gate (below/above a limit). Calibration is a continuous quantitative reduction of residual error across a full dynamic range."
+      },
+
+      "m2:transdisciplinaryValidation": {
+        "domainsCount": 8,
+        "minRequired":  6,
+        "status":       "VALIDATED",
+        "domains": [
+          {
+            "domain":    "Metrology / Physics",
+            "instance":  "Instrument calibration against SI etalons (metre, kelvin, ampere)",
+            "A":  "SI standard (etalon)",
+            "F":  "Reference signal applied to instrument",
+            "It": "Instrument reading",
+            "D":  "Adjustment of scale factor / offset"
+          },
+          {
+            "domain":    "Video / Signal Engineering",
+            "instance":  "Analogue TV test pattern (mire): full-chain calibration of camera to receiver",
+            "A":  "Test pattern as reference — the mire IS the attractor",
+            "F":  "Injected test signal (luminance steps, colour bars, resolution wedges)",
+            "It": "Received/displayed signal measured on oscilloscope or vectorscope",
+            "D":  "Adjustment of gain, gamma, chrominance phase, geometry"
+          },
+          {
+            "domain":    "Medicine / Medical Imaging",
+            "instance":  "MRI phantom calibration; audiometric calibration at 1 kHz reference",
+            "A":  "Phantom reference values / 0 dB HL audiometric standard",
+            "F":  "RF pulse sequence / pure tone",
+            "It": "Scanner output / patient threshold response",
+            "D":  "Scanner gain, B0 shimming / audiometer output adjustment"
+          },
+          {
+            "domain":    "Machine Learning / Statistics",
+            "instance":  "Probabilistic model calibration (Platt scaling, isotonic regression)",
+            "A":  "True empirical frequency (reliability diagram diagonal)",
+            "F":  "Model confidence scores on calibration set",
+            "It": "Actual event frequencies per confidence bin",
+            "D":  "Sigmoid / isotonic transformation of raw logits"
+          },
+          {
+            "domain":    "Music / Acoustics",
+            "instance":  "Instrument tuning to concert pitch A = 440 Hz",
+            "A":  "A = 440 Hz international standard as tonal attractor",
+            "F":  "Reference tone from tuning fork or electronic tuner",
+            "It": "Instrument pitch as measured frequency",
+            "D":  "Physical tension, bore, or electronic oscillator adjustment"
+          },
+          {
+            "domain":    "Robotics / Control Engineering",
+            "instance":  "Robot arm sensor and actuator calibration",
+            "A":  "Kinematic model / certified target pose",
+            "F":  "Commanded motion through calibration trajectory",
+            "It": "End-effector measured position",
+            "D":  "Joint offset, scale factor, and DH parameter correction"
+          },
+          {
+            "domain":    "Neuroscience / Perception",
+            "instance":  "Prism adaptation — perceptual recalibration of visuo-motor mapping",
+            "A":  "Veridical target position in world coordinates",
+            "F":  "Repeated reaching attempts toward targets",
+            "It": "Perceived target position / actual hand endpoint error",
+            "D":  "Cerebellum-driven remapping of the internal forward model"
+          },
+          {
+            "domain":    "Finance / Quantitative Risk",
+            "instance":  "Stochastic model calibration to market instruments (vol surface, CIR)",
+            "A":  "Observed market prices of vanilla options",
+            "F":  "Model-generated prices across parameter grid",
+            "It": "Residual vector: model prices minus market prices",
+            "D":  "Non-linear optimisation of model parameters (sigma, kappa, theta)"
+          }
+        ]
+      },
+
+      "m2:architecturalPosition": {
+        "layer":  "M2",
+        "family": "Regulatory",
+        "siblingConcepts": [
+          "m2:Regulation",
+          "m2:Homeostasis",
+          "m2:Alignment",
+          "m2:Threshold",
+          "m2:Balance"
+        ],
+        "instantiationExamples": {
+          "M1_level": [
+            "M1_Electronics  : SensorCalibration, FrequencyCalibration",
+            "M1_Photography  : WhiteBalance, ExposureCalibration",
+            "M1_Biology      : PerceptualRecalibration",
+            "M1_CoreConcepts : CalibrationReference (the standard), CalibrationProcedure (the sequence)"
+          ],
+          "M0_level": [
+            "M0_TVTestPattern (planned) — the mire is simultaneously the Territory flow (physical analogue signal) and the Map reference (the standard the chain must reproduce). This self-referential duality makes it the ideal poclet for bicephalous analysis of m2:Calibration."
+          ]
+        }
+      }
+    }
+
+  ]
+}

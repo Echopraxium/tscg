@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TSCG — Trophic Pyramid</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Override grid to support resizable splitter */
+    #app {
+      display: grid;
+      grid-template-rows: var(--header-h) 1fr var(--controls-h);
+      grid-template-columns: 1fr 5px var(--sidebar-w);
+      grid-template-areas:
+        "header   header  header"
+        "canvas   split   sidebar"
+        "controls controls controls";
+      height: 100vh;
+    }
+    #canvas-area {
+      grid-area: canvas;
+      position: relative;
+      overflow: hidden;
+      min-width: 200px;
+    }
+    #render-canvas {
+      width: 100%; height: 100%;
+      display: block;
+      touch-action: none;
+      outline: none;
+    }
+    /* Splitter */
+    #splitter {
+      grid-area: split;
+      background: var(--border);
+      cursor: col-resize;
+      transition: background 0.15s;
+      position: relative;
+      z-index: 10;
+      user-select: none;
+    }
+    #splitter:hover, #splitter.dragging { background: var(--sphinx); }
+    #splitter::after {
+      content: "";
+      position: absolute;
+      inset: 0 -4px;  /* wider hit zone */
+    }
+    #sidebar { min-width: 180px; max-width: 600px; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <header id="header">
+    <span class="tscg-logo">TSCG</span>
+    <span class="sep">&middot;</span>
+    <span class="poclet-name">Trophic Pyramid &mdash; StratifiedDissipation Poclet</span>
+    <div class="meta-chips">
+      <span class="chip domain">Ecology / Biology</span>
+      <span class="chip type">m3:Poclet</span>
+      <span class="chip version">v1.0.0</span>
+    </div>
+  </header>
+
+  <!-- CANVAS (BabylonJS will inject into #render-canvas) -->
+  <div id="canvas-area">
+    <canvas id="render-canvas"></canvas>
+  </div>
+
+  <!-- SPLITTER -->
+  <div id="splitter"></div>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="description">Description</button>
+      <button class="tab-btn" data-tab="scores">Scores</button>
+      <button class="tab-btn" data-tab="concepts">Concepts</button>
+      <button class="tab-btn" data-tab="synergy">Synergy</button>
+    </nav>
+
+    <!-- TAB: Description (default) -->
+    <div id="panel-description" class="tab-panel active">
+      <div class="readme-content">
+<h2>System</h2>
+A <strong>Trophic Pyramid</strong> is a layered hierarchical structure in which each
+level consumes biomass from below and dissipates ~90% of received energy as heat.
+This thermodynamic constraint &mdash; Lindeman's 10% rule &mdash; produces the
+universal pyramidal biomass shape: <strong>StratifiedDissipation</strong>.
+
+<h2>Lindeman's 10% Rule (1942)</h2>
+<code>&eta; = E(n+1) / E(n) &asymp; 0.10</code>
+
+Energy cascade: <code>10 000 &rarr; 1 000 &rarr; 100 &rarr; 10 kJ/m&sup2;/yr</code>
+Validated across terrestrial, freshwater and marine ecosystems.
+
+<h2>5 Trophic Poles</h2>
+<code>Level 1</code> &nbsp;Primary Producers &mdash; plants, phytoplankton
+<code>Level 2</code> &nbsp;Herbivores &mdash; insects, ungulates, zooplankton
+<code>Level 3</code> &nbsp;Carnivores &mdash; foxes, snakes, predatory fish
+<code>Level 4</code> &nbsp;Apex Predators &mdash; wolves, sharks, eagles
+<code>&perp;</code> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Decomposers &mdash; fungi, bacteria (cross-cutting)
+
+<h2>Key GenericConcepts</h2>
+&bull; <strong>m2:Layer</strong> (S&otimes;I&otimes;A&otimes;R) &mdash; each level is a stable positional stratum
+&bull; <strong>m2:Dissipation</strong> (F&otimes;D) &mdash; irreversible thermodynamic loss per boundary
+&bull; <strong>m2:Context</strong> (O&otimes;R&otimes;Im&otimes;E) &mdash; biome determines species composition
+
+<h2>Trophic Cascade</h2>
+Click <em>&ldquo;Remove Apex Predator&rdquo;</em> to trigger:
+Apex removed &rarr; Carnivores irrupt &rarr; Herbivores collapse &rarr; Producers rebound.
+
+<em>Famous case: wolf reintroduction in Yellowstone (1995) changed river morphology.</em>
+
+<h2>3D Controls</h2>
+&bull; <strong>Left-drag</strong> &nbsp;&mdash; orbit camera
+&bull; <strong>Scroll</strong> &nbsp;&nbsp;&nbsp;&nbsp;&mdash; zoom in / out
+&bull; <strong>Right-drag</strong> &mdash; pan
+&bull; <strong>Click level</strong> &mdash; inspect in Scores tab
+
+<h2>Reference</h2>
+Lindeman R.L. (1942) &mdash; <em>The Trophic-Dynamic Aspect of Ecology</em>,
+Ecology 23(4):399&ndash;417
+      </div>
+    </div>
+
+    <!-- TAB: Scores -->
+    <div id="panel-scores" class="tab-panel">
+      <div class="score-group">
+        <div class="score-group-label eagle">Eagle Eye &mdash; ASFID (Territory)</div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-A)">A</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-A)"></div></div><div class="score-val">0.95</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-S)">S</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-S)"></div></div><div class="score-val">0.90</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-F)">F</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-F)"></div></div><div class="score-val">0.95</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-I)">I</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:var(--col-I)"></div></div><div class="score-val">0.80</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-D)">D</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-D)"></div></div><div class="score-val">0.85</div></div>
+        <div class="score-mean-row"><span>ASFID mean</span><span>0.89</span></div>
+      </div>
+      <div class="score-group">
+        <div class="score-group-label sphinx">Sphinx Eye &mdash; REVOI (Map)</div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-R)">R</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-R)"></div></div><div class="score-val">0.95</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-E)">E</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:var(--col-E)"></div></div><div class="score-val">0.70</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-V)">V</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-V)"></div></div><div class="score-val">0.90</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-O)">O</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:var(--col-O)"></div></div><div class="score-val">0.80</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-Im)">I</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-Im)"></div></div><div class="score-val">0.85</div></div>
+        <div class="score-mean-row"><span>REVOI mean</span><span>0.84</span></div>
+      </div>
+      <div class="gap-badge">
+        <div><div class="gap-label">Epistemic Gap &delta;</div><div class="gap-val">0.05</div></div>
+        <div class="gap-desc">Exceptionally low &mdash; Lindeman's law is one of ecology's strongest empirical findings</div>
+      </div>
+      <div id="level-info">
+        <div class="level-info-box">
+          <span style="color:var(--muted)">Click a trophic level in the 3D view to inspect</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Concepts -->
+    <div id="panel-concepts" class="tab-panel">
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:4px">Primary &mdash; 3 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item primary"><span class="gc-name">m2:Layer</span><div><div class="gc-formula">S&otimes;I&otimes;A&otimes;R</div><div class="gc-role">Structural backbone &mdash; each trophic level IS a Layer</div></div></div>
+        <div class="gc-item primary"><span class="gc-name">m2:Dissipation</span><div><div class="gc-formula">F&otimes;D</div><div class="gc-role">~90% energy lost as heat at each trophic boundary</div></div></div>
+        <div class="gc-item primary"><span class="gc-name">m2:Context</span><div><div class="gc-formula">O&otimes;R&otimes;Im&otimes;E</div><div class="gc-role">Biome context determines species per Layer</div></div></div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin:8px 0 4px">Secondary &mdash; 9 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item secondary"><span class="gc-name">m2:Hierarchy</span><div><div class="gc-formula">A&otimes;S</div><div class="gc-role">Positional ordering base&rarr;apex</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Flow</span><div><div class="gc-formula">F</div><div class="gc-role">Energy/biomass transfer between levels</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Gradient</span><div><div class="gc-formula">&otimes;&sup2;F</div><div class="gc-role">Energy density gradient base&rarr;apex</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Homeostasis</span><div><div class="gc-formula">A&otimes;S&otimes;F&otimes;I&otimes;D</div><div class="gc-role">Ecosystem equilibrium</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Regulation</span><div><div class="gc-formula">A&otimes;S&otimes;F</div><div class="gc-role">Predator-prey negative feedback</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Cascade</span><div><div class="gc-formula">&otimes;&rArr;(P,St,Tr)</div><div class="gc-role">Top-down trophic cascade</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Threshold</span><div><div class="gc-formula">A&otimes;I&otimes;F</div><div class="gc-role">Minimum viable population triggers</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Network</span><div><div class="gc-formula">S&otimes;F&otimes;I</div><div class="gc-role">Food web underlying the pyramid</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Emergence</span><div><div class="gc-formula">&mdash;</div><div class="gc-role">Ecosystem services from interactions</div></div></div>
+      </div>
+    </div>
+
+    <!-- TAB: Synergy -->
+    <div id="panel-synergy" class="tab-panel">
+      <div class="synergy-box">
+        <div class="synergy-label">KnowledgeFieldConceptCombo</div>
+        <div class="synergy-formula">StratifiedDissipation</div>
+        <div class="synergy-formula" style="font-size:10px;color:var(--muted)">
+          = Biology &odot; (Layer &otimes; Dissipation)<br>
+          compiled: S&otimes;I&otimes;A&otimes;R&otimes;F&otimes;D
+        </div>
+        <div class="synergy-emergent"><strong>Emergent property:</strong> Pyramidal biomass structure &mdash; thermodynamic loss (F&otimes;D) through ordered strata (S&otimes;I&otimes;A&otimes;R) inevitably produces the pyramid.</div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--sphinx)">
+        <div class="synergy-label" style="color:var(--sphinx)">Empirical Law</div>
+        <div class="synergy-formula">&eta; = E(n+1) / E(n) &asymp; 0.10</div>
+        <div class="synergy-emergent">Lindeman (1942). 10 000 &rarr; 1 000 &rarr; 100 &rarr; 10 kJ/m&sup2;/yr</div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--eagle)">
+        <div class="synergy-label" style="color:var(--eagle)">Trophic Cascade &mdash; m2:Cascade</div>
+        <div class="synergy-formula">Apex removed &rarr; top-down propagation</div>
+        <div class="synergy-emergent">Apex &cross; &rarr; Carnivores &uarr; &rarr; Herbivores &darr; &rarr; Producers &uarr;<br><em>Yellowstone wolves (1995): cascade changed river courses.</em></div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- CONTROLS -->
+  <footer id="controls">
+    <button class="ctrl-btn active" id="btn-play">&#9646;&#9646; Pause</button>
+    <button class="ctrl-btn" id="btn-reset">&#8634; Reset</button>
+    <div class="ctrl-sep"></div>
+    <span class="ctrl-label">Speed</span>
+    <input type="range" id="speed-slider" min="0.2" max="3.0" step="0.2" value="1.0">
+    <span class="ctrl-label" id="speed-label">&times;1.0</span>
+    <div class="ctrl-sep"></div>
+    <button class="ctrl-btn danger" id="btn-cascade">&#128058; Remove Apex Predator</button>
+    <div class="ctrl-sep"></div>
+    <button class="ctrl-btn" id="btn-explorer" title="Poclet Explorer (Ctrl+Shift+E)">&#10799; Poclet Explorer</button>
+    <div class="status-indicator">
+      <div class="status-dot running" id="status-dot"></div>
+      <span id="status-label">Running</span>
+    </div>
+  </footer>
+
+</div><!-- #app -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BabylonJS loading — resolved from node_modules at runtime.
+     No lib/ copy needed. nodeIntegration=true in Electron.
+════════════════════════════════════════════════════════════════════ -->
+<script>
+(function loadBabylon() {
+  const path = require('path');
+  // sim/ is 4 levels deep inside tscg/
+  // tscg / instances / poclets / trophic-pyramid / sim
+  const repoRoot = path.resolve(__dirname, '..', '..', '..', '..');
+  const babylonPath = path.join(repoRoot, 'node_modules', 'babylonjs', 'babylon.js');
+  // pathToFileURL for correct file:// URI on all platforms (incl. Windows backslashes)
+  const { pathToFileURL } = require('url');
+  const babylonURL = pathToFileURL(babylonPath).href;
+  // document.write is synchronous during parse — script executes before rest of body
+  document.write('<script src="' + babylonURL + '"></' + 'script>');
+})();
+</script>
+
+<script src="./metadata.js"></script>
+<script src="./renderer.js"></script>
+
+<script>
+// ── Tab switching ──────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + t).classList.add('active');
+  });
+});
+
+// ── Poclet Explorer button ─────────────────────────────────────
+document.getElementById('btn-explorer').addEventListener('click', () => {
+  try { require('electron').ipcRenderer.send('open-explorer'); } catch(e) {}
+});
+
+// ── Resizable splitter ─────────────────────────────────────────
+(function initSplitter() {
+  const splitter = document.getElementById('splitter');
+  const app      = document.getElementById('app');
+  const sidebar  = document.getElementById('sidebar');
+  let dragging = false;
+  let startX   = 0;
+  let startW   = 0;
+
+  splitter.addEventListener('mousedown', e => {
+    dragging = true;
+    startX   = e.clientX;
+    startW   = sidebar.getBoundingClientRect().width;
+    splitter.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const delta  = startX - e.clientX;        // positive = drag left = widen sidebar
+    const newW   = Math.max(180, Math.min(620, startW + delta));
+    // Update CSS variable so the grid column resizes
+    app.style.setProperty('--sidebar-w', newW + 'px');
+    // Notify BabylonJS engine to resize canvas
+    if (typeof engine !== 'undefined' && engine) engine.resize();
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false;
+    splitter.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    if (typeof engine !== 'undefined' && engine) engine.resize();
+  });
+})();
+</script>
+</body>
+</html>

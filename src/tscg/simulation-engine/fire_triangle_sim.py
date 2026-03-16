@@ -17,7 +17,7 @@ Run:
 
 Discovery:
     By default uses PocletRepository to find M0_FireTriangle.jsonld anywhere
-    under <repo_root>/system-models/poclets/ -- no need to be in the same folder.
+    under <repo_root>/instances/poclets/ -- no need to be in the same folder.
 """
 
 import sys

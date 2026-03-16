@@ -18,7 +18,7 @@ tscg/                                    ← RACINE du repository GitHub
 │       ├── optics/M1_Optics.jsonld
 │       └── photography/M1_Photography.jsonld
 │
-├── system-models/                       ← Modèles de systèmes
+├── instances/                       ← Modèles de systèmes
 │   ├── poclets/
 │   │   ├── M0_FireTriangle.jsonld      → sera converti en .ttl
 │   │   ├── M0_RAAS.jsonld              → sera converti en .ttl
@@ -134,7 +134,7 @@ Depuis: src/tscg/ontology_tools/
     ↑
     └─ Remonte à: tscg/  ← RACINE DÉTECTÉE ✓
         ├── ontology/       ← Trouvé !
-        └── system-models/  ← Trouvé !
+        └── instances/  ← Trouvé !
 ```
 
 **Vous n'avez RIEN à configurer !** 🎉
@@ -145,7 +145,7 @@ Depuis: src/tscg/ontology_tools/
 
 **Scan récursif de :**
 - ✅ `ontology/` et tous ses sous-dossiers
-- ✅ `system-models/` et tous ses sous-dossiers
+- ✅ `instances/` et tous ses sous-dossiers
 
 **Pour chaque fichier `.jsonld` trouvé :**
 ```

@@ -12,7 +12,7 @@
 - M3 Layer: 4 files (M3_EagleEye, M3_GenesisSpace, M3_GenesisSpace_Ref, M3_SphinxEye; .ttl only for Ref and SphinxEye)
 - M2 Layer: 1 file (M2_GenericConcepts) + archived versions in docs/
 - M1 Layer: 1 core file + 10 domain extensions (biology, chemistry, **economics**, education, electronics, energy_generators, mythology, optics, photography, physics)
-- M0 Layer: experimental poclets (system-models/poclets/) + TSCG Tools (system-models/tscg-tools/) + 1 VSM systemic framework + 1 symbolic grammar
+- M0 Layer: experimental poclets (instances/poclets/) + TSCG Tools (instances/tscg-tools/) + 1 VSM systemic framework + 1 symbolic grammar
 
 **Documentation:** ~110 files  
 **Source Code:** extensive `src/tscg/` Python package  
@@ -28,8 +28,8 @@
 ### v15.9.0 (2026-03-01) — Current
 - ✅ New M1 extension: `economics/` (M1_Economics.jsonld + M1_Economics_README.md)
 - ✅ New poclet: `kindleberger-minsky/` (M0_KindlebergerMinsky + simulation)
-- ✅ New section: `system-models/tscg-tools/tscg-explorer/` (M0_TscgExplorer + tscg_explorer.py)
-- ❌ `system-models/validation/` directory removed (validated poclets now live only in `poclets/`)
+- ✅ New section: `instances/tscg-tools/tscg-explorer/` (M0_TscgExplorer + tscg_explorer.py)
+- ❌ `instances/validation/` directory removed (validated poclets now live only in `poclets/`)
 - ❌ `.ttl` twins removed for `M3_EagleEye` and `M3_GenesisSpace` in `ontology/`
 - ❌ `.ttl` twins removed for several poclets (color_synthesis, complex_chemical_synapse, tpack, vco, phase_transition, mtg_color_wheel)
 
@@ -164,30 +164,30 @@ Core foundation defining the bicephalous architecture (Territory/Map distinction
 
 ## 🔬 M0 Layer - System Models
 
-### Systemic Frameworks (system-models/systemic-frameworks/vsm/)
+### Systemic Frameworks (instances/systemic-frameworks/vsm/)
 
-- [M0_VSM.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/systemic-frameworks/vsm/M0_VSM.jsonld) - Viable System Model (Stafford Beer)
-- [M0_VSM_Metaconcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/systemic-frameworks/vsm/M0_VSM_Metaconcepts.jsonld)
-- [M0_VSM_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/systemic-frameworks/vsm/M0_VSM_README.md)
-- [M0_VSM_README_Metaconcepts.md](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/systemic-frameworks/vsm/M0_VSM_README_Metaconcepts.md)
-- [Session_VSM_Capacity_Evaluation.md](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/systemic-frameworks/vsm/Session_VSM_Capacity_Evaluation.md)
+- [M0_VSM.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM.jsonld) - Viable System Model (Stafford Beer)
+- [M0_VSM_Metaconcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM_Metaconcepts.jsonld)
+- [M0_VSM_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM_README.md)
+- [M0_VSM_README_Metaconcepts.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM_README_Metaconcepts.md)
+- [Session_VSM_Capacity_Evaluation.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/Session_VSM_Capacity_Evaluation.md)
 
-### Symbolic System Grammars (system-models/symbolic-system-grammars/)
+### Symbolic System Grammars (instances/symbolic-system-grammars/)
 
 **I-Ching (symbolic-system-grammars/iching/):**
-- [M0_IChing.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/symbolic-system-grammars/iching/M0_IChing.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/symbolic-system-grammars/iching/M0_IChing.ttl)
-- [M0_IChing_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/symbolic-system-grammars/iching/M0_IChing_README.md)
+- [M0_IChing.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/symbolic-system-grammars/iching/M0_IChing.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/symbolic-system-grammars/iching/M0_IChing.ttl)
+- [M0_IChing_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/symbolic-system-grammars/iching/M0_IChing_README.md)
 
-### TSCG Tools (system-models/tscg-tools/) — NEW
+### TSCG Tools (instances/tscg-tools/) — NEW
 
 **TSCG Explorer (tscg-tools/tscg-explorer/):**
-- [M0_TscgExplorer.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/tscg-tools/tscg-explorer/M0_TscgExplorer.jsonld) - Meta-analytical poclet (TSCG analyzing itself)
-- [M0_TscgExplorer_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/tscg-tools/tscg-explorer/M0_TscgExplorer_README.md)
-- [TSCG_Explorer_Simulation_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/tscg-tools/tscg-explorer/TSCG_Explorer_Simulation_README.md)
-- [tscg_explorer.py](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/tscg-tools/tscg-explorer/tscg_explorer.py)
+- [M0_TscgExplorer.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/tscg-explorer/M0_TscgExplorer.jsonld) - Meta-analytical poclet (TSCG analyzing itself)
+- [M0_TscgExplorer_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/tscg-explorer/M0_TscgExplorer_README.md)
+- [TSCG_Explorer_Simulation_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/tscg-explorer/TSCG_Explorer_Simulation_README.md)
+- [tscg_explorer.py](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/tscg-explorer/tscg_explorer.py)
 - _00_Run_Simulation.bat, _00_setup_notes.txt, _open_cmd_window.bat, requirements.txt
 
-### Experimental Poclets (system-models/poclets/)
+### Experimental Poclets (instances/poclets/)
 
 Each poclet folder contains `.jsonld`, `_README.md` and sometimes simulation scripts. Note: `.ttl` twins are present only for certain poclets (see individual entries).
 
@@ -213,16 +213,16 @@ Each poclet folder contains `.jsonld`, `_README.md` and sometimes simulation scr
 - `yggdrasil/` — M0_Yggdrasil.jsonld / .ttl + README + companion documents
 
 **Yggdrasil companion documents:**
-- [Heimdall_Interface_Constraint_Analysis.md](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/yggdrasil/Heimdall_Interface_Constraint_Analysis.md)
-- [Loki_As_Representation_Transformer.md](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/yggdrasil/Loki_As_Representation_Transformer.md)
-- [Yggdrasil_7_vs_9_Analysis.md](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/yggdrasil/Yggdrasil_7_vs_9_Analysis.md)
-- [Yggdrasil_Discussion_Points.md](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/yggdrasil/Yggdrasil_Discussion_Points.md)
-- [Yggdrasil_Reformulation_Analysis.md](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/yggdrasil/Yggdrasil_Reformulation_Analysis.md)
+- [Heimdall_Interface_Constraint_Analysis.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/yggdrasil/Heimdall_Interface_Constraint_Analysis.md)
+- [Loki_As_Representation_Transformer.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/yggdrasil/Loki_As_Representation_Transformer.md)
+- [Yggdrasil_7_vs_9_Analysis.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/yggdrasil/Yggdrasil_7_vs_9_Analysis.md)
+- [Yggdrasil_Discussion_Points.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/yggdrasil/Yggdrasil_Discussion_Points.md)
+- [Yggdrasil_Reformulation_Analysis.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/yggdrasil/Yggdrasil_Reformulation_Analysis.md)
 
-**Poclets documentation (system-models/poclets/_00_docs/):**
-- [poclet_terminology.md](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/_00_docs/poclet_terminology.md)
-- [minimal_systems_engineering_frameworks.md](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/_00_docs/minimal_systems_engineering_frameworks.md)
-- [Poclet Ideas.txt](https://raw.githubusercontent.com/echopraxium/tscg/main/system-models/poclets/_00_docs/Poclet%20Ideas.txt)
+**Poclets documentation (instances/poclets/_00_docs/):**
+- [poclet_terminology.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/_00_docs/poclet_terminology.md)
+- [minimal_systems_engineering_frameworks.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/_00_docs/minimal_systems_engineering_frameworks.md)
+- [Poclet Ideas.txt](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/_00_docs/Poclet%20Ideas.txt)
 
 ---
 
@@ -419,7 +419,7 @@ echopraxium/tscg/                      # Repository root
 │   ├── docs/                          # Ontology documentation & archives
 │   ├── sparql/                        # SPARQL queries & SPARQL-enriched ontologies
 │   └── tools/                         # Reference tool files
-├── system-models/                     # System instances (M0 layer)
+├── instances/                     # System instances (M0 layer)
 │   ├── poclets/                       # Experimental models (by subfolder)
 │   │   ├── _00_docs/                  # Poclets documentation
 │   │   ├── kindleberger-minsky/       # NEW poclet
@@ -458,8 +458,8 @@ echopraxium/tscg/                      # Repository root
 
 - New M1 extension: `economics/` (M1_Economics.jsonld + README)
 - New poclet: `kindleberger-minsky/` (M0 + simulation)
-- New section: `system-models/tscg-tools/tscg-explorer/` (meta-analytical tool)
-- `system-models/validation/` directory removed
+- New section: `instances/tscg-tools/tscg-explorer/` (meta-analytical tool)
+- `instances/validation/` directory removed
 - `.ttl` twins removed for M3_EagleEye and M3_GenesisSpace in ontology/
 
 ### v15.8.0 (2026-02-27)

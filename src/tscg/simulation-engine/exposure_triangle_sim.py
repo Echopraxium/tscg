@@ -479,7 +479,7 @@ def find_poclet_path():
     # Walk up to repo root
     cur = Path(__file__).resolve().parent
     for _ in range(8):
-        candidate = (cur / "system-models" / "poclets"
+        candidate = (cur / "instances" / "poclets"
                         / "exposure_triangle" / "M0_ExposureTriangle.jsonld")
         if candidate.exists():
             return candidate
