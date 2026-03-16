@@ -1,0 +1,196 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m0": "instances/tscg-tools/tscg-poclet-miner/M0_TscgPocletMiner.jsonld#",
+    "m2": "M2_GenericConcepts.jsonld#",
+    "m3": "M3_GenesisSpace.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m0:TscgPocletMiner_Ontology",
+      "@type": "owl:Ontology",
+      "owl:versionInfo": "1.1.0",
+      "dcterms:created": "2026-03-16",
+      "dcterms:modified": "2026-03-16",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:title": "M0 TscgPocletMiner — TSCG Tool Instance",
+      "dcterms:description": "TscgTool instance modeling TscgPocletMiner: an interactive Electron application that helps users discover new poclet candidates by profiling existing poclets (corpus of 21+), guiding the user through a structured Q&A wizard, performing JS-native RAG semantic search (@xenova/transformers, all-MiniLM-L6-v2) against the poclet corpus and M2 GenericConcepts, and opening targeted web searches (including Gemini suggestions). No external LLM — scoring is deterministic and RAG runs fully in-process within Electron.",
+      "m3:ontologyType": {
+        "@id": "m3:TscgTool"
+      },
+      "metadata": {
+        "layer": "M0",
+        "type": "TscgTool",
+        "name": "TscgPocletMiner",
+        "version": "1.1.0",
+        "date_created": "2026-03-16",
+        "date_modified": "2026-03-16",
+        "authors": [
+          "Echopraxium with the collaboration of Claude AI"
+        ],
+        "repository_path": "instances/tscg-tools/tscg-poclet-miner/",
+        "changelog": {
+          "v1.0.0": "Initial TscgPocletMiner instance. Electron/vanilla JS wizard with 5-round Q&A, ASFID pre-scoring, corpus gap analysis, web search and deterministic verdict engine. No LLM dependency.",
+          "v1.1.0": "RAG integration: JS-native @xenova/transformers (all-MiniLM-L6-v2, 384-dim, WASM). Round 2 queries poclet corpus for semantic similarity (duplicate detection). Round 5 queries M2 GenericConcepts corpus for concept suggestions pre-filling scaffold export. Zero Python, zero external server."
+        }
+      }
+    },
+    {
+      "@id": "m0:TscgPocletMiner",
+      "@type": [
+        "owl:NamedIndividual",
+        "m3:TscgTool"
+      ],
+      "rdfs:label": "TscgPocletMiner",
+      "rdfs:comment": "Electron application for discovering and evaluating TSCG poclet candidates. Combines a deterministic Q&A wizard (invariant scoring, ASFID pre-scoring, gap analysis) with TSCG RAG queries for semantic context (similar existing instances, suggested GenericConcepts) and targeted web searches. The RAG bridge (rag_bridge.py) calls query_tscg_rag.py via child_process.spawn — zero LLM API dependency.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "owl:versionInfo": "1.1.0",
+      "m0:toolCategory": "PocletDiscovery",
+      "m0:reflexivity": "Operates on the TSCG poclet corpus and ontology graph as its primary input",
+      "m0:runtimeLLM": false,
+      "m0:ragEnabled": true,
+      "m0:ragBackend": "@xenova/transformers v2 — all-MiniLM-L6-v2 (384-dim, WASM, in-process)",
+      "m0:ragBridge": "rag_bridge.py — Python subprocess called via Electron child_process.spawn",
+      "m0:webSearchEnabled": true,
+      "m0:techStack": [
+        "Electron",
+        "Node.js",
+        "Vanilla JS",
+        "HTML/CSS",
+        "Python (rag_bridge.py)"
+      ],
+      "m0:workflow": {
+        "description": "5-round guided wizard producing a scored verdict enriched by TSCG RAG context",
+        "rounds": [
+          {
+            "round": 1,
+            "label": "Domain identification",
+            "description": "User enters system name and domain. Automatic gap analysis against covered domains.",
+            "output": "domain, gap_flag"
+          },
+          {
+            "round": 2,
+            "label": "Web verification + RAG similar poclets",
+            "description": "Web search URLs generated (Wikipedia, DuckDuckGo, Scholar). Simultaneously: RAG query (mode=similar_poclets) finds M0 instances most semantically similar to the candidate.",
+            "rag_query": "similar_poclets",
+            "rag_filter": "M0 layer jsonld_entry",
+            "output": "doc_quality, rag_similar_results"
+          },
+          {
+            "round": 3,
+            "label": "ASFID pre-screening",
+            "description": "5 graded questions mapping to A, S, F, I, D. Scores computed live.",
+            "output": "asfid_prescores [A, S, F, I, D]"
+          },
+          {
+            "round": 4,
+            "label": "Type discriminant",
+            "description": "User selects: Poclet / TransDisclet / SystemicFramework.",
+            "output": "candidate_type"
+          },
+          {
+            "round": 5,
+            "label": "Invariants + RAG GenericConcepts + Verdict",
+            "description": "User checks applicable invariants. RAG query (mode=suggest_concepts) suggests relevant M2 GenericConcepts based on ASFID profile + system name. Final verdict computed. Gemini URL opened for domain-wide suggestions.",
+            "rag_query": "suggest_concepts",
+            "rag_filter": "M2 layer jsonld_entry",
+            "output": "verdict, final_score, rag_concept_results, gemini_query_url"
+          }
+        ]
+      },
+      "m0:asfidScores": {
+        "A": 0.75,
+        "A_justification": "Attractor: convergence toward a scored verdict (accept/reject) via iterative Q&A + RAG enrichment",
+        "S": 0.9,
+        "S_justification": "Structure: 5-round wizard, corpus JSON, invariant grid, RAG bridge, scoring engine",
+        "F": 0.88,
+        "F_justification": "Flow: user input → Q&A → RAG queries (spawn) → scoring → web search → verdict → export",
+        "I": 0.85,
+        "I_justification": "Information: ASFID pre-scores, RAG semantic results (similar poclets + concepts), gap flags, verdict",
+        "D": 0.75,
+        "D_justification": "Dynamics: RAG results adapt to each query; corpus grows as new poclets are validated",
+        "mean": 0.826
+      },
+      "m0:revoiScores": {
+        "R": 0.9,
+        "R_justification": "Representability: all RAG results displayed with score, label, definition; wizard UI fully explicit",
+        "E": 0.88,
+        "E_justification": "Evolvability: corpus JSONs are external and growable; RAG model is swappable; wizard rounds configurable; concept corpus updated as M2 grows",
+        "V": 0.92,
+        "V_justification": "Verifiability: scoring is deterministic; RAG results are traceable to specific ontology entries (poclets or M2 concepts); web search results independently verifiable",
+        "O": 0.9,
+        "O_justification": "Observability: every RAG result, score, and wizard step displayed transparently",
+        "I": 0.82,
+        "I_justification": "Interoperability: JSON export includes RAG-suggested concepts; rag_bridge.py reusable by other tools",
+        "mean": 0.884
+      },
+      "m0:epistemicGap": 0.06,
+      "m0:epistemicGap_comment": "Gap reduced vs v1.0.0 (0.08 → 0.06): RAG semantic context enriches scoring with actual TSCG knowledge, reducing dependence on user's prior framework knowledge.",
+      "m0:validatesGenericConcepts": [
+        "m2:Filter",
+        "m2:Evaluation",
+        "m2:Pattern",
+        "m2:Representation",
+        "m2:Interoperability",
+        "m2:Process",
+        "m2:Information",
+        "m2:Calibration",
+        "m2:Context"
+      ],
+      "m0:inputs": [
+        {
+          "@id": "m0:TscgPocletMiner/input/UserResponses",
+          "rdfs:label": "User Q&A responses (5 rounds)"
+        },
+        {
+          "@id": "m0:TscgPocletMiner/input/CorpusProfile",
+          "rdfs:label": "poclet_corpus_profile.json"
+        },
+        {
+          "@id": "m0:TscgPocletMiner/input/TscgRAG",
+          "rdfs:label": "TSCG ChromaDB RAG (db_tscg_rag) via rag_bridge.py"
+        }
+      ],
+      "m0:outputs": [
+        {
+          "@id": "m0:TscgPocletMiner/output/Verdict",
+          "rdfs:label": "Scored verdict (Strong / Candidate / Weak / Rejected)"
+        },
+        {
+          "@id": "m0:TscgPocletMiner/output/CandidateSummary",
+          "rdfs:label": "JSON scaffold with RAG-suggested GenericConcepts and similar poclets"
+        },
+        {
+          "@id": "m0:TscgPocletMiner/output/WebSearchURLs",
+          "rdfs:label": "Wikipedia, Scholar, DuckDuckGo, Gemini URLs"
+        }
+      ],
+      "skos:related": [
+        {
+          "@id": "m3:TscgTool"
+        },
+        {
+          "@id": "m3:Poclet"
+        },
+        {
+          "@id": "m3:TransDisclet"
+        }
+      ],
+      "m0:runtimeRAG": true,
+      "m0:ragCorpora": [
+        "poclet_corpus_profile.json (21 validated poclets + gap candidates)",
+        "m2_concepts_corpus.json (52 M2 GenericConcepts with labels, formulas, descriptions)"
+      ],
+      "m0:ragIntegration": {
+        "Round_2": "querySimilarPoclets() — semantic search against poclet corpus; warns if score > 0.88 (potential duplicate)",
+        "Round_5": "suggestGenericConcepts() — semantic search against M2 corpus; results pre-fill validatesGenericConcepts in exported scaffold"
+      }
+    }
+  ]
+}

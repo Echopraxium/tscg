@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'unsafe-inline'; script-src 'self'">
+  <title>TscgPocletMiner</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0c0c12;
+      --panel:   #16161f;
+      --panel2:  #1e1e2a;
+      --border:  #2e2e44;
+      --text:    #d8d8e8;
+      --dim:     #7878a0;
+      --gold:    #ffc832;
+      --green:   #50d298;
+      --red:     #e05050;
+      --blue:    #5098e0;
+      --purple:  #9050e0;
+      --orange:  #e08050;
+      --teal:    #40c0b0;
+      --radius:  8px;
+      --pad:     16px;
+    }
+
+    html, body { height: 100%; background: var(--bg); color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; overflow: hidden; }
+
+    /* ── Layout ── */
+    #app { display: flex; flex-direction: column; height: 100vh; }
+
+    /* ── Header ── */
+    #header { display: flex; align-items: center; gap: 12px; padding: 12px var(--pad);
+      background: var(--panel); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    #header .logo { font-size: 18px; font-weight: 700; color: var(--gold); }
+    #header .subtitle { color: var(--dim); font-size: 12px; }
+    #header .badges { margin-left: auto; display: flex; gap: 8px; }
+    .badge { background: var(--panel2); border: 1px solid var(--border); border-radius: 20px;
+      padding: 3px 12px; font-size: 11px; color: var(--dim); }
+    .badge span { color: var(--gold); font-weight: 600; }
+    .badge.rag { border-color: var(--teal); color: var(--teal); }
+
+    /* ── Progress ── */
+    #progress-bar { display: flex; gap: 4px; padding: 10px var(--pad);
+      background: var(--panel); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .step-dot { flex: 1; height: 4px; border-radius: 2px; background: var(--border); transition: background 0.3s; }
+    .step-dot.active { background: var(--gold); }
+    .step-dot.done   { background: var(--green); }
+
+    /* ── Main ── */
+    #main { display: flex; flex: 1; overflow: hidden; }
+
+    /* ── Wizard ── */
+    #wizard { flex: 1; display: flex; flex-direction: column; padding: var(--pad);
+      overflow-y: auto; gap: 14px; }
+
+    .round-header { display: flex; align-items: center; gap: 10px; }
+    .round-badge  { background: var(--gold); color: #000; font-weight: 700; font-size: 12px;
+      border-radius: 12px; padding: 2px 10px; white-space: nowrap; }
+    .round-title  { font-size: 16px; font-weight: 600; }
+    .round-desc   { color: var(--dim); font-size: 12px; line-height: 1.5; }
+
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: var(--pad); display: flex; flex-direction: column; gap: 12px; }
+
+    label { font-size: 12px; color: var(--dim); margin-bottom: 4px; display: block; }
+
+    input[type="text"] { width: 100%; background: var(--panel2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 8px 10px; color: var(--text); font-size: 14px; outline: none;
+      transition: border-color 0.2s; }
+    input[type="text"]:focus { border-color: var(--gold); }
+    .field-group { display: flex; flex-direction: column; gap: 4px; }
+
+    /* ── Domain chips ── */
+    .domain-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .chip { background: var(--panel2); border: 1px solid var(--border); border-radius: 12px;
+      padding: 3px 10px; font-size: 11px; color: var(--dim); }
+    .chip.covered { border-color: var(--green); color: var(--green); }
+    .chip.new     { border-color: var(--gold);  color: var(--gold); background: #ffc83220; }
+
+    /* ── Search buttons ── */
+    .search-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+    .btn-search { background: var(--panel2); border: 1px solid var(--border); border-radius: 6px;
+      padding: 6px 14px; color: var(--text); font-size: 12px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+    .btn-search:hover        { border-color: var(--blue);   color: var(--blue); }
+    .btn-search.gemini:hover { border-color: var(--purple); color: var(--purple); }
+
+    /* ── RAG panels ── */
+    .rag-panel { background: var(--panel2); border: 1px solid var(--teal); border-radius: var(--radius);
+      padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .rag-panel-title { font-size: 11px; font-weight: 700; color: var(--teal);
+      text-transform: uppercase; letter-spacing: 0.7px; }
+    .rag-status { font-size: 12px; color: var(--dim); }
+    .rag-panel  { background: var(--panel2); border: 1px solid var(--border); border-radius: 6px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+    .rag-panel-title { font-size: 11px; font-weight: 700; color: var(--purple); text-transform: uppercase; letter-spacing: 0.6px; }
+    .rag-note   { font-size: 12px; color: var(--dim); font-style: italic; }
+    .rag-warning{ font-size: 12px; color: var(--orange); background: #e0805010; border-radius: 4px; padding: 4px 8px; }
+    .rag-row    { display: flex; align-items: center; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+    .rag-row:last-child { border-bottom: none; }
+    .rag-name   { color: var(--text); font-weight: 500; min-width: 120px; }
+    .rag-domain { color: var(--gold); font-size: 11px; }
+    .rag-formula{ color: var(--dim); font-size: 10px; }
+    .rag-score  { color: var(--green); font-size: 11px; font-weight: 700; margin-left: auto; }
+    .rag-results { display: flex; flex-direction: column; gap: 6px; }
+
+    .rag-card { background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+      padding: 8px 10px; display: flex; flex-direction: column; gap: 3px; }
+    .rag-card.concept { border-color: #9050e040; }
+    .rag-card-header { display: flex; align-items: center; gap: 8px; }
+    .rag-score { font-size: 11px; font-weight: 700; color: var(--teal);
+      background: #40c0b020; border-radius: 4px; padding: 1px 6px; }
+    .rag-label { font-size: 13px; color: var(--text); flex: 1; }
+    .rag-layer { font-size: 10px; color: var(--dim); background: var(--panel2);
+      border-radius: 4px; padding: 1px 6px; }
+    .rag-layer.m2 { color: var(--purple); background: #9050e020; }
+    .rag-def { font-size: 11px; color: var(--dim); line-height: 1.4; }
+    .rag-formula { font-size: 11px; color: var(--gold); font-family: monospace; }
+
+    /* ── ASFID questions ── */
+    .asfid-question { display: flex; flex-direction: column; gap: 6px; padding: 10px;
+      background: var(--panel2); border-radius: 6px; border: 1px solid var(--border); }
+    .q-label { font-size: 13px; color: var(--text); display: flex; gap: 8px; align-items: center; }
+    .dim-badge { background: var(--panel); border: 1px solid var(--border); border-radius: 4px;
+      padding: 1px 7px; font-size: 11px; font-weight: 700; color: var(--gold); }
+    .score-slider { -webkit-appearance: none; width: 100%; height: 4px; background: var(--border);
+      border-radius: 2px; outline: none; }
+    .score-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px;
+      border-radius: 50%; background: var(--gold); cursor: pointer; }
+    .score-value { font-size: 12px; color: var(--gold); text-align: right; }
+
+    /* ── Type selector ── */
+    .type-options { display: flex; gap: 10px; flex-wrap: wrap; }
+    .type-card { flex: 1; min-width: 170px; background: var(--panel2); border: 2px solid var(--border);
+      border-radius: var(--radius); padding: 12px; cursor: pointer; transition: border-color 0.2s; }
+    .type-card:hover    { border-color: var(--dim); }
+    .type-card.selected { border-color: var(--gold); }
+    .type-card .type-name { font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .type-card .type-desc { font-size: 11px; color: var(--dim); line-height: 1.4; }
+
+    /* ── Invariant checklist ── */
+    .inv-row { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px;
+      background: var(--panel2); border-radius: 6px; border: 1px solid var(--border); }
+    .inv-row input[type="checkbox"] { margin-top: 2px; accent-color: var(--gold); }
+    .inv-row .inv-text { font-size: 12px; color: var(--text); line-height: 1.4; }
+    .inv-row .inv-id   { font-size: 10px; color: var(--dim); }
+
+    /* ── Verdict ── */
+    #verdict-section { display: none; flex-direction: column; gap: 12px; }
+    .verdict-box { border-radius: var(--radius); padding: var(--pad);
+      border: 2px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+    .verdict-box.strong { border-color: var(--green);  background: #50d29810; }
+    .verdict-box.cand   { border-color: var(--gold);   background: #ffc83210; }
+    .verdict-box.weak   { border-color: var(--orange); background: #e0805010; }
+    .verdict-box.reject { border-color: var(--red);    background: #e0505010; }
+    .verdict-label { font-size: 20px; font-weight: 700; }
+    .verdict-box.strong .verdict-label { color: var(--green); }
+    .verdict-box.cand   .verdict-label { color: var(--gold); }
+    .verdict-box.weak   .verdict-label { color: var(--orange); }
+    .verdict-box.reject .verdict-label { color: var(--red); }
+    .verdict-scores { display: flex; gap: 16px; font-size: 13px; color: var(--dim); }
+    .verdict-scores strong { color: var(--text); }
+
+    /* ── Sidebar ── */
+    #sidebar { width: 255px; background: var(--panel); border-left: 1px solid var(--border);
+      display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; }
+    .sidebar-section { padding: 12px; border-bottom: 1px solid var(--border); }
+    .sidebar-title { font-size: 11px; font-weight: 700; color: var(--dim);
+      text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+
+    /* ── ASFID bars ── */
+    .score-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+    .score-row .dim-lbl { font-size: 12px; font-weight: 700; color: var(--gold); width: 16px; }
+    .bar-bg { flex: 1; height: 6px; background: var(--panel2); border-radius: 3px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 3px; background: var(--gold); transition: width 0.4s; }
+    .score-row .score-num { font-size: 11px; color: var(--dim); width: 28px; text-align: right; }
+
+    /* ── Priority list ── */
+    .cand-row { display: flex; justify-content: space-between; align-items: center;
+      padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 11px; }
+    .cand-row:last-child { border-bottom: none; }
+    .cand-name { color: var(--text); }
+    .cand-type { color: var(--purple); font-size: 10px; }
+    .cand-dom  { color: var(--dim); font-size: 10px; }
+
+    /* ── Nav ── */
+    #nav-bar { display: flex; gap: 10px; padding: 12px var(--pad);
+      background: var(--panel); border-top: 1px solid var(--border); flex-shrink: 0; }
+    .btn { padding: 8px 20px; border-radius: 6px; border: 1px solid var(--border);
+      background: var(--panel2); color: var(--text); font-size: 13px; cursor: pointer;
+      transition: border-color 0.2s, color 0.2s; }
+    .btn:hover    { border-color: var(--dim); }
+    .btn.primary  { background: var(--gold); border-color: var(--gold); color: #000; font-weight: 700; }
+    .btn.primary:hover { background: #e0b020; border-color: #e0b020; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn.danger   { border-color: var(--red); color: var(--red); }
+
+    .hidden { display: none !important; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ── RAG DB Restore Modal ─────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.65);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000;
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal-box {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 540px; max-width: 90vw;
+      padding: var(--pad);
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .modal-title {
+      font-size: 15px; font-weight: 700; color: var(--gold);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .modal-close {
+      background: none; border: none; color: var(--dim);
+      font-size: 18px; cursor: pointer; line-height: 1;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal-desc { font-size: 12px; color: var(--dim); line-height: 1.5; }
+    .modal-field { display: flex; flex-direction: column; gap: 4px; }
+    .modal-field label { font-size: 11px; color: var(--dim); }
+    .modal-path-row {
+      display: flex; gap: 8px; align-items: center;
+    }
+    .modal-path-row input {
+      flex: 1; background: var(--panel2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 6px 10px; color: var(--text);
+      font-size: 12px; outline: none;
+    }
+    .modal-path-row input:read-only { color: var(--dim); }
+    .modal-path-row .btn-pick {
+      background: var(--panel2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 6px 12px; color: var(--dim);
+      font-size: 12px; cursor: pointer; white-space: nowrap;
+    }
+    .modal-path-row .btn-pick:hover { border-color: var(--gold); color: var(--gold); }
+    .modal-log {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 8px 10px;
+      font-family: monospace; font-size: 11px; color: var(--dim);
+      height: 110px; overflow-y: auto; white-space: pre-wrap;
+      display: none;
+    }
+    .modal-log.visible { display: block; }
+    .restore-status { font-size: 12px; min-height: 18px; }
+
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- Header -->
+  <div id="header">
+    <div>
+      <div class="logo">⛏ TscgPocletMiner</div>
+      <div class="subtitle">TSCG Poclet Candidate Discovery Wizard</div>
+    </div>
+    <div class="badges">
+      <div class="badge">Corpus: <span id="corpus-count">—</span> poclets · <span id="domains-count">—</span> domains</div>
+      <div class="badge rag">⚡ RAG-enabled</div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div id="progress-bar">
+    <div class="step-dot" id="dot-1"></div>
+    <div class="step-dot" id="dot-2"></div>
+    <div class="step-dot" id="dot-3"></div>
+    <div class="step-dot" id="dot-4"></div>
+    <div class="step-dot" id="dot-5"></div>
+  </div>
+
+  <div id="main">
+    <div id="wizard">
+
+      <!-- Round 1 -->
+      <div id="round-1" class="hidden">
+        <div class="round-header">
+          <span class="round-badge">Round 1 / 5</span>
+          <span class="round-title">Domain Identification</span>
+        </div>
+        <p class="round-desc">Name the candidate system and its primary discipline. Gap analysis runs automatically.</p>
+        <div class="card">
+          <div class="field-group">
+            <label>System name (e.g. "SIR Epidemiological Model")</label>
+            <input type="text" id="inp-system" placeholder="Enter system name…">
+          </div>
+          <div class="field-group">
+            <label>Primary domain (e.g. "Epidemiology")</label>
+            <input type="text" id="inp-domain" placeholder="Enter domain…">
+          </div>
+          <div>
+            <label>Domain coverage in current corpus</label>
+            <div class="domain-chips" id="domain-chips"></div>
+          </div>
+          <div id="gap-flag" class="hidden" style="color:var(--gold);font-size:12px;">
+            ✨ <strong>New domain detected</strong> — high priority for corpus diversity!
+          </div>
+        </div>
+      </div>
+
+      <!-- Round 2 -->
+      <div id="round-2" class="hidden">
+        <div class="round-header">
+          <span class="round-badge">Round 2 / 5</span>
+          <span class="round-title">Web Verification + RAG Context</span>
+        </div>
+        <p class="round-desc">Search the web to confirm the system is documented. The TSCG RAG simultaneously finds the most similar existing poclets.</p>
+        <div class="card">
+          <label>Open external searches</label>
+          <div class="search-buttons" id="search-buttons"></div>
+          <div class="field-group" style="margin-top:4px;">
+            <label>Documentation quality (0 = not found → 3 = excellent)</label>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <input type="range" class="score-slider" id="doc-quality" min="0" max="3" step="1" value="2">
+              <span id="doc-quality-val" style="color:var(--gold);font-weight:700;width:20px;">2</span>
+            </div>
+          </div>
+        </div>
+        <!-- RAG similar poclets -->
+        <div class="rag-panel hidden" id="rag-similar-panel">
+          <div class="rag-panel-title">⚡ TSCG RAG — Similar instances in corpus</div>
+          <div class="rag-status" id="rag-poclets-results"></div>
+          <div class="rag-results" id="rag-similar-results"></div>
+        </div>
+      </div>
+
+      <!-- Round 3 -->
+      <div id="round-3" class="hidden">
+        <div class="round-header">
+          <span class="round-badge">Round 3 / 5</span>
+          <span class="round-title">ASFID Pre-Screening</span>
+        </div>
+        <p class="round-desc">Score each ASFID dimension for the candidate (0 = absent, 1 = strong).</p>
+        <div class="card" id="asfid-questions"></div>
+      </div>
+
+      <!-- Round 4 -->
+      <div id="round-4" class="hidden">
+        <div class="round-header">
+          <span class="round-badge">Round 4 / 5</span>
+          <span class="round-title">Type Discriminant</span>
+        </div>
+        <p class="round-desc">Select the TSCG ontology type that best describes this candidate.</p>
+        <div class="card">
+          <div class="type-options" id="type-options">
+            <div class="type-card" data-type="Poclet">
+              <div class="type-name">Poclet</div>
+              <div class="type-desc">Single domain, empirically validated system with identifiable ASFID structure.</div>
+            </div>
+            <div class="type-card" data-type="TransDisclet">
+              <div class="type-name">TransDisclet</div>
+              <div class="type-desc">Natively exists across 2+ disciplines simultaneously (structural homology required).</div>
+            </div>
+            <div class="type-card" data-type="SystemicFramework">
+              <div class="type-name">SystemicFramework</div>
+              <div class="type-desc">Established external methodology (VSM, Cynefin, Wardley Maps…).</div>
+            </div>
+          </div>
+          <div id="transdisclet-warning" class="hidden" style="color:var(--orange);font-size:12px;margin-top:4px;">
+            ⚠ TransDisclet requires structural homology (same ASFID tensor formula) in each disciplinary instance — not just analogy.
+          </div>
+        </div>
+      </div>
+
+      <!-- Round 5 -->
+      <div id="round-5" class="hidden">
+        <div class="round-header">
+          <span class="round-badge">Round 5 / 5</span>
+          <span class="round-title">Invariants, GenericConcepts &amp; Verdict</span>
+        </div>
+        <p class="round-desc">Check applicable invariants. The RAG simultaneously suggests relevant M2 GenericConcepts.</p>
+        <div class="card">
+          <div id="inv-checklist"></div>
+        </div>
+        <!-- RAG concept suggestions -->
+        <div class="rag-panel hidden" id="rag-concepts-panel">
+          <div class="rag-panel-title">⚡ TSCG RAG — Suggested M2 GenericConcepts</div>
+          <div class="rag-status" id="rag-concepts-status"></div>
+          <div class="rag-results" id="rag-concepts-results"></div>
+        </div>
+        <!-- Verdict -->
+        <div id="verdict-section">
+          <div class="verdict-box" id="verdict-box">
+            <div class="verdict-label" id="verdict-label">—</div>
+            <div class="verdict-scores">
+              <span>Invariants: <strong id="v-inv">—</strong>/9</span>
+              <span>ASFID: <strong id="v-asfid">—</strong></span>
+              <span>Doc: <strong id="v-doc">—</strong>/3</span>
+            </div>
+            <div id="verdict-detail" style="font-size:12px;color:var(--dim);"></div>
+          </div>
+          <div class="search-buttons" id="gemini-buttons"></div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn primary" id="btn-export">Export JSON Scaffold</button>
+            <button class="btn" id="btn-restart">⟳ New Candidate</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /wizard -->
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Live ASFID Pre-Score</div>
+        <div class="score-row"><span class="dim-lbl">A</span><div class="bar-bg"><div class="bar-fill" id="bar-A" style="width:50%"></div></div><span class="score-num" id="num-A">0.50</span></div>
+        <div class="score-row"><span class="dim-lbl">S</span><div class="bar-bg"><div class="bar-fill" id="bar-S" style="width:50%"></div></div><span class="score-num" id="num-S">0.50</span></div>
+        <div class="score-row"><span class="dim-lbl">F</span><div class="bar-bg"><div class="bar-fill" id="bar-F" style="width:50%"></div></div><span class="score-num" id="num-F">0.50</span></div>
+        <div class="score-row"><span class="dim-lbl">I</span><div class="bar-bg"><div class="bar-fill" id="bar-I" style="width:50%"></div></div><span class="score-num" id="num-I">0.50</span></div>
+        <div class="score-row"><span class="dim-lbl">D</span><div class="bar-bg"><div class="bar-fill" id="bar-D" style="width:50%"></div></div><span class="score-num" id="num-D">0.50</span></div>
+        <div style="margin-top:6px;font-size:11px;color:var(--dim);">Mean: <strong id="asfid-mean" style="color:var(--gold);">0.50</strong></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Candidate Info</div>
+        <div style="font-size:12px;display:flex;flex-direction:column;gap:4px;">
+          <div>System: <strong id="sb-system" style="color:var(--text);">—</strong></div>
+          <div>Domain: <strong id="sb-domain" style="color:var(--gold);">—</strong></div>
+          <div>Type: <strong id="sb-type" style="color:var(--purple);">—</strong></div>
+          <div>Domain gap: <strong id="sb-gap" style="color:var(--dim);">—</strong></div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Priority Candidates</div>
+        <div id="priority-list"></div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+
+  <!-- Nav -->
+  <div id="nav-bar">
+    <button class="btn" id="btn-prev" disabled>← Back</button>
+    <button class="btn primary" id="btn-next">Next →</button>
+    <button class="btn danger hidden" id="btn-compute">Compute Verdict</button>
+  </div>
+
+</div>
+<script src="renderer.js"></script>
+</body>
+</html>
