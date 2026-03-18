@@ -1,30 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-rebuild_corpus.py - TSCG Poclet Corpus Analyser
+rebuild_corpus.py — TSCG Poclet Corpus Builder
+Author: Echopraxium with the collaboration of Claude AI
+v2.0.0
 
-Scans all M0 poclet JSON-LD files in the repository and produces:
-  1. Typical poclet profile (ASFID/REVOI scores, epistemic gap δ)
-  2. GenericConcept frequency ranking (which M2 concepts are most mobilised)
-  3. Domain coverage map + gap analysis (under-represented domains)
-  4. Per-poclet detail table
-  5. Optional JSON export (--json)
+Scans instances/poclets/ for M0_*.jsonld files and writes
+poclet_corpus_profile.json — the exact same format as rebuild_corpus.js.
 
-Handles all score field naming variants found across the corpus:
-  m0:asfidScores / m0:territorySpace.asfidState / m0:asfidProfile /
-  m0:asfidMean / tscg:asfidScore  →  normalised to A,S,F,I,D means
-  m0:revoiScores / m0:mapSpace.reviState              →  R,E,V,O,I means
-  m0:epistemicGap (float or {delta: …})               →  δ float
-  m0:validatesMetaconcepts / m0:primaryGenericConcepts /
-  m0:instantiatesM2 / m0:mobilisedGenericConcepts / …  →  concept set
+PocletMiner (Electron) reads this JSON file via the 'load-corpus' IPC handler
+and rag_engine.js uses it for semantic embedding.
 
 Usage:
-  python rebuild_corpus.py                   # scan repo relative to script
-  python rebuild_corpus.py --repo /path/to/tscg
-  python rebuild_corpus.py --json report.json
-  python rebuild_corpus.py --verbose
+  python rebuild_corpus.py                        # auto-detect repo root
+  python rebuild_corpus.py --repo /path/to/tscg  # explicit repo root
+  python rebuild_corpus.py --out /path/to/out/poclet_corpus_profile.json
+  python rebuild_corpus.py --verbose              # print extracted entries
 
-Author: Echopraxium with the collaboration of Claude AI
+Output: poclet_corpus_profile.json (next to this script unless --out is given)
 """
 
 import os
@@ -32,745 +25,522 @@ import sys
 import json
 import re
 import argparse
+import hashlib
 import datetime
 from pathlib import Path
-from collections import Counter, defaultdict
-from typing import Dict, List, Optional, Tuple
+from collections import Counter
+from typing import Optional
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-# ==============================================================================
-# CONFIGURATION
-# ==============================================================================
+# ─── Repo detection ───────────────────────────────────────────────────────────
 
-# Repo root: script lives at src/tscg/rag/rebuild_corpus.py
-_SCRIPT_DIR  = Path(__file__).resolve().parent
-_REPO_ROOT   = _SCRIPT_DIR.parent.parent.parent.parent
-DEFAULT_REPO = str(_REPO_ROOT)
+_SCRIPT_DIR = Path(__file__).resolve().parent
 
-# Known domains → broader category  (for gap analysis)
-DOMAIN_TAXONOMY = {
-    # Biology & Life Sciences
-    "biology": "Life Sciences",
-    "ecology": "Life Sciences",
-    "endocrinology": "Life Sciences",
-    "developmental biology": "Life Sciences",
-    "renal physiology": "Life Sciences",
-    "cardiovascular": "Life Sciences",
-    "immunology": "Life Sciences",
-    "neuroscience": "Life Sciences",
-    "cell biology": "Life Sciences",
-    # Physics & Engineering
-    "electronics": "Physics & Engineering",
-    "semiconductor physics": "Physics & Engineering",
-    "signal processing": "Physics & Engineering",
-    "thermodynamics": "Physics & Engineering",
-    "mechanics": "Physics & Engineering",
-    "nuclear engineering": "Physics & Engineering",
-    "optics": "Physics & Engineering",
-    # Mathematics & Formal Sciences
-    "mathematics": "Mathematics & Formal Sciences",
-    "logic": "Mathematics & Formal Sciences",
-    "information theory": "Mathematics & Formal Sciences",
-    # Humanities & Culture
-    "mythology": "Humanities & Culture",
-    "comparative religion": "Humanities & Culture",
-    "cosmology": "Humanities & Culture",
-    "linguistics": "Humanities & Culture",
-    "philosophy": "Humanities & Culture",
-    # Social Sciences & Economics
-    "economics": "Social Sciences & Economics",
-    "finance": "Social Sciences & Economics",
-    "sociology": "Social Sciences & Economics",
-    "political science": "Social Sciences & Economics",
-    # Education & Cognitive Sciences
-    "education": "Education & Cognitive Sciences",
-    "cognitive science": "Education & Cognitive Sciences",
-    "psychology": "Education & Cognitive Sciences",
-    # Design & Creative Arts
-    "game design": "Design & Creative Arts",
-    "photography": "Design & Creative Arts",
-    "music": "Design & Creative Arts",
-    "architecture": "Design & Creative Arts",
-    # Chemistry
-    "chemistry": "Chemistry",
-    "biochemistry": "Chemistry",
-}
-
-DESIRED_DOMAINS = [
-    "Life Sciences", "Physics & Engineering", "Chemistry",
-    "Mathematics & Formal Sciences", "Humanities & Culture",
-    "Social Sciences & Economics", "Education & Cognitive Sciences",
-    "Design & Creative Arts",
-]
-
-# ==============================================================================
-# ARGUMENT PARSING
-# ==============================================================================
-
-def parse_arguments():
-    parser = argparse.ArgumentParser(
-        description="TSCG Poclet Corpus Analyser — profile, coverage, concept frequencies",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-EXAMPLES:
-  python rebuild_corpus.py
-  python rebuild_corpus.py --repo /path/to/tscg
-  python rebuild_corpus.py --json corpus_report.json
-  python rebuild_corpus.py --verbose
-        """
-    )
-    parser.add_argument("--repo",    default=DEFAULT_REPO,
-                        help=f"Repository root (default: {DEFAULT_REPO})")
-    parser.add_argument("--json",    metavar="PATH",
-                        help="Export full report as JSON to this path")
-    parser.add_argument("--top",     type=int, default=15,
-                        help="Number of top GenericConcepts to display (default: 15)")
-    parser.add_argument("--verbose", action="store_true",
-                        help="Show per-file parsing details")
-    return parser.parse_args()
-
-# ==============================================================================
-# JSON-LD POCLET PARSER
-# ==============================================================================
-
-def _strip_prefix(value: str) -> str:
-    """Remove 'm2:', 'm0:', 'tscg:' etc. prefixes, keep the local name."""
-    if isinstance(value, str):
-        return value.split(":")[-1].split("#")[-1].strip()
-    return str(value)
-
-
-def _extract_concept_ref(item) -> Optional[str]:
-    """
-    Normalise a concept reference to its local name.
-    Handles:  "m2:Cascade"  |  {"@id": "m2:Cascade"}  |  {"@id": "m2:Cascade", "role": "…"}
-    """
-    if isinstance(item, str):
-        name = _strip_prefix(item)
-        # Strip trailing parenthetical annotations like "(ternary 5D)"
-        name = re.sub(r'\s*\(.*\)$', '', name).strip()
-        return name if name else None
-    if isinstance(item, dict):
-        ref = item.get("@id") or item.get("id", "")
-        name = _strip_prefix(ref)
-        name = re.sub(r'\s*\(.*\)$', '', name).strip()
-        return name if name else None
+def find_repo_root(start: Path) -> Optional[Path]:
+    """Walk up from start looking for instances/poclets/."""
+    for p in [start, *start.parents]:
+        if (p / "instances" / "poclets").is_dir():
+            return p
     return None
 
+# ─── Field extraction helpers ─────────────────────────────────────────────────
 
-def _extract_concepts_from_entry(entry: dict) -> List[str]:
-    """
-    Collect all M2 GenericConcept references from a single @graph entry.
-    Handles all field name variants found in the corpus.
-    """
-    CONCEPT_FIELDS = [
-        "m0:validatesMetaconcepts", "m0:primaryMetaconcept",
-        "m0:primaryGenericConcepts", "m0:secondaryGenericConcepts",
-        "m0:mobilisedGenericConcepts", "m0:mobilizedGenericConcepts",
-        "m0:instantiatesM2", "m0:metaconceptsMobilized",
-        "tscg:mobilizesMetaconcept", "m0:instantiatesMetaconcept",
-        "m0:m2_metaconcepts", "m0:metaconcept",
-        "m2:metaconceptUsage",
+def strip_ns(s: str) -> str:
+    """'m2:Cascade (ternary 5D)' → 'Cascade', 'm1:biology:DevelopmentalBiology' → 'DevelopmentalBiology'"""
+    if not isinstance(s, str):
+        return str(s)
+    # Remove trailing parenthetical
+    s = re.sub(r'\s*\(.*?\)\s*$', '', s).strip()
+    # Strip last namespace prefix
+    parts = s.split(':')
+    return parts[-1].strip() if len(parts) > 1 else s.strip()
+
+def safe_str(v) -> str:
+    if isinstance(v, str):   return v
+    if isinstance(v, list):  return v[0] if v else ''
+    if isinstance(v, dict):  return v.get('@id', v.get('@value', ''))
+    return str(v) if v is not None else ''
+
+def safe_list(v) -> list:
+    if isinstance(v, list): return v
+    if v is not None:       return [v]
+    return []
+
+def safe_num(v) -> Optional[float]:
+    if isinstance(v, (int, float)): return float(v)
+    if isinstance(v, str):
+        try:   return float(v)
+        except ValueError: return None
+    return None
+
+def extract_asfid(entry: dict) -> Optional[dict]:
+    """Extract ASFID scores from various field naming conventions."""
+    # Convention 1: m0:asfidScores { A, S, F, I, D, mean }
+    raw = entry.get('m0:asfidScores')
+    if isinstance(raw, dict):
+        scores = {
+            'A':    safe_num(raw.get('A')),
+            'S':    safe_num(raw.get('S')),
+            'F':    safe_num(raw.get('F')),
+            'I':    safe_num(raw.get('I')),
+            'D':    safe_num(raw.get('D')),
+            'mean': safe_num(raw.get('mean'))
+        }
+        # Also handle verbose keys with justification siblings (M0_Kidneys pattern)
+        if scores['A'] is None: scores['A'] = safe_num(raw.get('A_score'))
+        if scores['S'] is None: scores['S'] = safe_num(raw.get('S_score'))
+        if scores['F'] is None: scores['F'] = safe_num(raw.get('F_score'))
+        if scores['I'] is None: scores['I'] = safe_num(raw.get('I_score'))
+        if scores['D'] is None: scores['D'] = safe_num(raw.get('D_score'))
+        # Auto-compute mean if missing
+        if scores['mean'] is None:
+            vals = [v for v in [scores['A'], scores['S'], scores['F'], scores['I'], scores['D']] if v is not None]
+            scores['mean'] = round(sum(vals) / len(vals), 3) if vals else None
+        return scores
+
+    # Convention 2: m1:core:asfidScoring { attractor, structure, flow, information, dynamics, overall }
+    raw = entry.get('m1:core:asfidScoring')
+    if isinstance(raw, dict):
+        a = safe_num(raw.get('attractor'))
+        s = safe_num(raw.get('structure'))
+        f = safe_num(raw.get('flow'))
+        i = safe_num(raw.get('information'))
+        d = safe_num(raw.get('dynamics'))
+        mean = safe_num(raw.get('overall') or raw.get('mean'))
+        if mean is None:
+            vals = [v for v in [a, s, f, i, d] if v is not None]
+            mean = round(sum(vals) / len(vals), 3) if vals else None
+        return {'A': a, 'S': s, 'F': f, 'I': i, 'D': d, 'mean': mean}
+
+    # Convention 3: m0:asfidMean (scalar only)
+    mean = safe_num(entry.get('m0:asfidMean'))
+    if mean is not None:
+        return {'A': None, 'S': None, 'F': None, 'I': None, 'D': None, 'mean': mean}
+    return None
+
+def extract_revoi(entry: dict) -> Optional[dict]:
+    """Extract REVOI scores — also handles deprecated 'orive' field names."""
+    # Convention 1: m0:revoiScores { R, E, V, O, I, mean }
+    raw = entry.get('m0:revoiScores') or entry.get('m0:oriveScores')
+    if isinstance(raw, dict):
+        return {
+            'R':    safe_num(raw.get('R')),
+            'E':    safe_num(raw.get('E')),
+            'V':    safe_num(raw.get('V')),
+            'O':    safe_num(raw.get('O')),
+            'I':    safe_num(raw.get('I')),
+            'mean': safe_num(raw.get('mean'))
+        }
+    # Convention 2: m0:oriveMean / m0:revoiMean (scalar only)
+    mean = (safe_num(entry.get('m0:oriveMean')) or
+            safe_num(entry.get('m0:revoiMean')))
+    if mean is not None:
+        return {'R': None, 'E': None, 'V': None, 'O': None, 'I': None, 'mean': mean}
+    return None
+
+def extract_domain(entry: dict) -> str:
+    """Extract domain string, stripping namespace prefix if present."""
+    raw = safe_str(entry.get('m0:domain', ''))
+    if raw:
+        return strip_ns(raw)
+    # Fallback: m1:core:pocletCharacteristics { domain / mainDomain }
+    chars = entry.get('m1:core:pocletCharacteristics')
+    if isinstance(chars, dict):
+        d = chars.get('domain') or chars.get('mainDomain') or ''
+        if d:
+            return safe_str(d)
+    return 'Unknown'
+
+def extract_subdomains(entry: dict) -> list:
+    return [strip_ns(safe_str(s)) for s in safe_list(entry.get('m0:subdomains', []))]
+
+def extract_ontology_type(entry: dict) -> str:
+    ot = entry.get('m3:ontologyType') or entry.get('m2:ontologyCategory', '')
+    if isinstance(ot, dict):
+        ot = ot.get('@id', '')
+    return strip_ns(safe_str(ot)) or 'Poclet'
+
+def extract_validates(entry: dict) -> list:
+    """Collect validated metaconcepts from all known field names."""
+    fields = [
+        'm0:validatesMetaconcepts',
+        'm0:validatedMetaconcepts',
+        'm0:primaryGenericConcepts',
+        'm0:instantiatesM2',
+        'm0:mobilisedGenericConcepts',
+        'm0:genericConceptsUsed',
     ]
-    concepts = []
-    for field in CONCEPT_FIELDS:
-        val = entry.get(field)
-        if val is None:
-            continue
-        if isinstance(val, (str, dict)):
-            val = [val]
-        if isinstance(val, list):
-            for item in val:
-                name = _extract_concept_ref(item)
-                if name and name.lower() not in ("none", ""):
-                    concepts.append(name)
-    # Also scrape nested objects for mobilisedGenericConcepts lists
-    for key, val in entry.items():
-        if isinstance(val, dict):
-            nested = val.get("m0:mobilisedGenericConcepts") or val.get("m0:mobilizedGenericConcepts")
-            if nested:
-                if isinstance(nested, str):
-                    nested = [nested]
-                for item in nested:
-                    name = _extract_concept_ref(item)
-                    if name:
-                        concepts.append(name)
-    return concepts
+    result = []
+    for f in fields:
+        for v in safe_list(entry.get(f, [])):
+            name = strip_ns(safe_str(v))
+            if name and name not in result:
+                result.append(name)
+    return result
 
+def extract_primary_metaconcept(entry: dict) -> str:
+    raw = (entry.get('m0:primaryMetaconcept') or
+           entry.get('m0:primaryGenericConcept') or '')
+    return strip_ns(safe_str(raw))
 
-def _extract_asfid(entry: dict) -> Optional[Dict[str, float]]:
+def extract_epistemic_gap(entry: dict) -> Optional[float]:
+    raw = entry.get('m0:epistemicGap')
+    if isinstance(raw, dict):
+        return safe_num(raw.get('delta') or raw.get('value'))
+    return safe_num(raw)
+
+# ─── JSON-LD file parser ──────────────────────────────────────────────────────
+
+def find_system_entry(graph: list) -> Optional[dict]:
+    """Return the primary system node from a @graph array.
+
+    Priority:
+      1. Entry with m0:domain (explicit domain tag)
+      2. Entry with m1:core:pocletCharacteristics (new-style metadata)
+      3. Entry with m1:core:asfidScoring
+      4. Entry typed owl:Ontology (header node, often carries metadata)
+      5. First NamedIndividual
+      6. First entry
     """
-    Extract ASFID scores {A, S, F, I, D, mean} from all known field variants.
-    Returns None if no scores found.
-    """
-    DIM_MAP = {
-        "a": "A", "attractor": "A",
-        "s": "S", "structure": "S",
-        "f": "F", "flow": "F",
-        "i": "I", "information": "I",
-        "d": "D", "dynamics": "D",
-    }
+    for e in graph:
+        if 'm0:domain' in e:
+            return e
+    for e in graph:
+        if 'm1:core:pocletCharacteristics' in e or 'm1:core:asfidScoring' in e:
+            return e
+    for e in graph:
+        types = safe_list(e.get('@type', []))
+        if any('Ontology' in t for t in types):
+            return e
+    for e in graph:
+        types = safe_list(e.get('@type', []))
+        if any('NamedIndividual' in t for t in types):
+            return e
+    return graph[0] if graph else None
 
-    def _parse_score_dict(raw: dict) -> Optional[Dict[str, float]]:
-        scores = {}
-        for k, v in raw.items():
-            mapped = DIM_MAP.get(k.lower())
-            if mapped and isinstance(v, (int, float)):
-                scores[mapped] = float(v)
-        if len(scores) == 5:
-            scores["mean"] = round(sum(scores[d] for d in "ASFID") / 5, 4)
-            return scores
-        mean = raw.get("mean") or raw.get("score")
-        if mean and isinstance(mean, (int, float)):
-            return {"mean": float(mean)}
+def parse_poclet_file(file_path: Path, verbose: bool = False) -> Optional[dict]:
+    try:
+        with open(file_path, encoding='utf-8') as f:
+            doc = json.load(f)
+    except Exception as e:
+        if verbose:
+            print(f"  [skip] {file_path.name}: parse error — {e}")
         return None
 
-    # Variant 1: m0:asfidScores
-    raw = entry.get("m0:asfidScores")
-    if isinstance(raw, dict):
-        result = _parse_score_dict(raw)
-        if result:
-            return result
-
-    # Variant 2: m0:territorySpace → m0:asfidState
-    ts = entry.get("m0:territorySpace")
-    if isinstance(ts, dict):
-        state = ts.get("m0:asfidState")
-        if isinstance(state, dict):
-            result = _parse_score_dict(state)
-            if result:
-                return result
-
-    # Variant 3: m0:asfidProfile  (long-form key names: attractor, structure, …)
-    raw = entry.get("m0:asfidProfile")
-    if isinstance(raw, dict):
-        result = _parse_score_dict(raw)
-        if result:
-            return result
-
-    # Variant 4: m0:asfidMean  (only mean available)
-    mean_val = entry.get("m0:asfidMean") or entry.get("tscg:asfidScore")
-    if isinstance(mean_val, (int, float)):
-        return {"mean": float(mean_val)}
-
-    return None
-
-
-def _extract_revoi(entry: dict) -> Optional[Dict[str, float]]:
-    """
-    Extract REVOI scores {R, E, V, O, I, mean} from all known field variants.
-    """
-    DIM_MAP = {
-        "r": "R", "representability": "R", "representable": "R",
-        "e": "E", "evolvability": "E",    "evolvable": "E",
-        "v": "V", "verifiability": "V",   "verifiable": "V",
-        "o": "O", "observability": "O",   "observable": "O",
-        "i": "I", "interoperability": "I","interoperable": "I",
-    }
-
-    def _parse_score_dict(raw: dict) -> Optional[Dict[str, float]]:
-        scores = {}
-        for k, v in raw.items():
-            mapped = DIM_MAP.get(k.lower())
-            if mapped and isinstance(v, (int, float)):
-                scores[mapped] = float(v)
-        if len(scores) == 5:
-            scores["mean"] = round(sum(scores[d] for d in "REVOI") / 5, 4)
-            return scores
-        mean = raw.get("mean") or raw.get("score")
-        if mean and isinstance(mean, (int, float)):
-            return {"mean": float(mean)}
+    graph = doc.get('@graph', [])
+    if not graph:
+        if verbose:
+            print(f"  [skip] {file_path.name}: no @graph")
         return None
 
-    # Variant 1: m0:revoiScores
-    raw = entry.get("m0:revoiScores")
-    if isinstance(raw, dict):
-        result = _parse_score_dict(raw)
-        if result:
-            return result
+    entry = find_system_entry(graph)
+    if entry is None:
+        if verbose:
+            print(f"  [skip] {file_path.name}: empty @graph")
+        return None
 
-    # Variant 2: m0:mapSpace → m0:reviState
-    ms = entry.get("m0:mapSpace")
-    if isinstance(ms, dict):
-        state = ms.get("m0:reviState")
-        if isinstance(state, dict):
-            result = _parse_score_dict(state)
-            if result:
-                return result
+    ontology_type = extract_ontology_type(entry)
 
-    return None
+    # Only Poclets (skip TransDisclet, TscgTool, CaseStudy, etc.)
+    if ontology_type not in ('Poclet', ''):
+        if verbose:
+            print(f"  [skip] {file_path.name}: type={ontology_type}")
+        return None
 
+    filename    = file_path.stem                                     # M0_RAAS
+    label_raw   = entry.get('rdfs:label', '')
+    label       = safe_str(label_raw) or filename
 
-def _extract_epistemic_gap(entry: dict) -> Optional[float]:
-    """Extract δ (epistemic gap) as a float from all known variants."""
-    for field in ("m0:epistemicGap", "tscg:epistemicGap"):
-        val = entry.get(field)
-        if isinstance(val, (int, float)):
-            return float(val)
-        if isinstance(val, dict):
-            delta = val.get("delta") or val.get("value")
-            if isinstance(delta, (int, float)):
-                return float(delta)
-    return None
+    domain      = extract_domain(entry)
+    subdomains  = extract_subdomains(entry)
+    asfid       = extract_asfid(entry)
+    revoi       = extract_revoi(entry)
+    gap         = extract_epistemic_gap(entry)
+    primary     = extract_primary_metaconcept(entry)
+    validates   = extract_validates(entry)
 
+    # Rich description for RAG embedding (same logic as rebuild_corpus.js)
+    desc_parts = [
+        label,
+        f"Domain: {domain}",
+        f"Subdomains: {', '.join(subdomains)}" if subdomains else '',
+        f"Primary concept: {primary}" if primary else '',
+        f"Validates: {', '.join(validates)}" if validates else '',
+        f"ASFID mean: {asfid['mean']}" if asfid and asfid['mean'] is not None else '',
+        f"REVOI mean: {revoi['mean']}" if revoi and revoi['mean'] is not None else '',
+    ]
+    description = '. '.join(p for p in desc_parts if p)
 
-def _extract_domain(entry: dict) -> Optional[str]:
-    """Extract the primary domain string."""
-    for field in ("m0:domain", "tscg:domain"):
-        val = entry.get(field)
-        if isinstance(val, str) and val:
-            return val.strip()
-    # Nested in pocletMetadata
-    meta = entry.get("m0:pocletMetadata")
-    if isinstance(meta, dict):
-        val = meta.get("domain")
-        if isinstance(val, str):
-            return val.strip()
-    return None
-
-
-def _extract_label(entry: dict) -> str:
-    lbl = entry.get("rdfs:label", "")
-    if isinstance(lbl, dict):
-        lbl = lbl.get("@value", "")
-    return str(lbl).strip()
-
-
-def _is_main_entry(entry: dict) -> bool:
-    """
-    Heuristic: the main poclet entry is typically the first NamedIndividual
-    with an @id containing 'm0:' and carrying domain / score fields.
-    """
-    entry_id = entry.get("@id", "")
-    types = entry.get("@type", [])
-    if isinstance(types, str):
-        types = [types]
-
-    # Ontology header entries
-    if "owl:Ontology" in types:
-        return True
-
-    # NamedIndividual at poclet level
-    has_m0_id = "m0:" in str(entry_id) and "/" not in str(entry_id).replace("m0:", "")
-    if "owl:NamedIndividual" in types and has_m0_id:
-        return True
-
-    # Any entry with score or domain fields
-    score_keys = {"m0:asfidScores", "m0:revoiScores", "m0:asfidMean",
-                  "m0:territorySpace", "m0:mapSpace", "m0:asfidProfile"}
-    if score_keys & set(entry.keys()):
-        return True
-
-    return False
-
-
-# ==============================================================================
-# POCLET DATA CLASS
-# ==============================================================================
-
-class PocletProfile:
-    def __init__(self, path: str):
-        self.path     = path
-        self.name     = Path(path).stem          # e.g. M0_RAAS
-        self.label    = ""
-        self.domain   = "Unknown"
-        self.asfid    : Optional[Dict[str, float]] = None
-        self.revoi    : Optional[Dict[str, float]] = None
-        self.delta    : Optional[float] = None
-        self.concepts : List[str] = []           # all M2 GenericConcept names
-        self.parse_errors : List[str] = []
-
-    @property
-    def asfid_mean(self) -> Optional[float]:
-        return self.asfid.get("mean") if self.asfid else None
-
-    @property
-    def revoi_mean(self) -> Optional[float]:
-        return self.revoi.get("mean") if self.revoi else None
-
-
-# ==============================================================================
-# CORPUS SCANNER
-# ==============================================================================
-
-def scan_corpus(repo_path: str, verbose: bool = False) -> List[PocletProfile]:
-    """
-    Walk the repository and parse all M0_*.jsonld poclet files.
-    Returns a list of PocletProfile objects.
-    """
-    repo  = Path(repo_path)
-    poclets: List[PocletProfile] = []
-
-    # Collect files — exclude archived / sparql / docs directories
-    SKIP_DIRS = {"_archives", "_archive", "sparql", "docs", "node_modules",
-                 ".git", "__pycache__", "tools"}
-
-    m0_files = []
-    for f in repo.rglob("M0_*.jsonld"):
-        if any(part in SKIP_DIRS for part in f.parts):
-            continue
-        m0_files.append(f)
-
-    m0_files.sort()
+    poclet = {
+        'id':                    filename,
+        'label':                 label,
+        'domain':                domain,
+        'subdomains':            subdomains,
+        'ontologyType':          'Poclet',
+        'asfidScores':           asfid,
+        'revoiScores':           revoi,
+        'epistemicGap':          gap,
+        'primaryMetaconcept':    primary,
+        'validatesMetaconcepts': validates,
+        'description':           description,
+        'sourceFile':            str(file_path)
+    }
 
     if verbose:
-        print(f"  Found {len(m0_files)} M0 poclet files")
+        print(f"  [ok]   {filename}  domain={domain}  "
+              f"asfid={asfid['mean'] if asfid else '?'}  "
+              f"revoi={revoi['mean'] if revoi else '?'}")
+    return poclet
 
-    for fpath in m0_files:
-        profile = PocletProfile(str(fpath))
+# ─── Directory scanner ────────────────────────────────────────────────────────
 
-        try:
-            data = json.loads(fpath.read_text(encoding="utf-8", errors="replace"))
-        except json.JSONDecodeError as e:
-            profile.parse_errors.append(f"JSON parse error: {e}")
-            poclets.append(profile)
-            continue
+def walk_jsonld(directory: Path) -> list:
+    result = []
+    if not directory.is_dir():
+        return result
+    for root, dirs, files in os.walk(directory):
+        # Skip hidden dirs
+        dirs[:] = [d for d in dirs if not d.startswith('.')]
+        for fname in files:
+            if fname.endswith('.jsonld'):
+                result.append(Path(root) / fname)
+    return sorted(result)
 
-        graph = data.get("@graph", [])
-        if not isinstance(graph, list):
-            graph = []
+# ─── Static corpus data ───────────────────────────────────────────────────────
 
-        all_concepts: List[str] = []
+# invariants.criteria — shape expected by renderer.js buildInvariantChecklist()
+INVARIANT_CRITERIA = [
+    {
+        'id': 'real_observable',
+        'weight': 2,
+        'question': 'Is this a real, observable system (not a pure abstraction)?',
+        'examples_ok': ['RAAS', 'Transistor', 'Fire Triangle']
+    },
+    {
+        'id': 'asfid_complete',
+        'weight': 2,
+        'question': 'Can you identify at least A + S + F ASFID dimensions?',
+        'examples_ok': ['ButterflyMetamorphosis', 'BloodPressureControl']
+    },
+    {
+        'id': 'domain_delimited',
+        'weight': 1,
+        'question': 'Is the domain clearly delimited (biology, electronics, …)?',
+        'examples_ok': ['Yggdrasil (mythology)', 'Transistor (electronics)']
+    },
+    {
+        'id': 'non_trivial_dynamics',
+        'weight': 2,
+        'question': 'Does the system exhibit non-trivial regulation or dynamics?',
+        'examples_ok': ['RAAS (cascade)', 'ExposureTriangle (trade-off)']
+    },
+    {
+        'id': 'web_documented',
+        'weight': 1,
+        'question': 'Is it well-documented on the web (Wikipedia, papers)?',
+        'examples_ok': ['Kidneys', 'AdaptiveImmuneResponse']
+    },
+    {
+        'id': 'corpus_gap',
+        'weight': 2,
+        'question': 'Does it fill a domain gap in the current corpus?',
+        'examples_ok': ['SIR model (epidemiology)', 'Peirce triangle (semiotics)']
+    },
+    {
+        'id': 'type_discriminated',
+        'weight': 1,
+        'question': 'Can you determine the type: Poclet vs TransDisclet vs SystemicFramework?',
+        'examples_ok': ['Transistor (Poclet)', 'Oscillator (TransDisclet)']
+    },
+]
 
-        for entry in graph:
-            if not isinstance(entry, dict):
-                continue
+# screening_criteria — legacy flat list (kept for rebuild_corpus.js compatibility)
+SCREENING_CRITERIA = [
+    {'id': c['id'], 'label': c['question'], 'weight': c['weight']}
+    for c in INVARIANT_CRITERIA
+]
 
-            # Concepts from ALL entries (sub-entries also mobilise M2 concepts)
-            all_concepts.extend(_extract_concepts_from_entry(entry))
-
-            # Scores and domain — only from the main entry
-            if _is_main_entry(entry):
-                if not profile.label:
-                    profile.label = _extract_label(entry)
-                if profile.domain == "Unknown":
-                    d = _extract_domain(entry)
-                    if d:
-                        profile.domain = d
-                if profile.asfid is None:
-                    profile.asfid = _extract_asfid(entry)
-                if profile.revoi is None:
-                    profile.revoi = _extract_revoi(entry)
-                if profile.delta is None:
-                    profile.delta = _extract_epistemic_gap(entry)
-
-        # Deduplicate concepts (preserve frequency across the whole poclet)
-        profile.concepts = all_concepts
-
-        if verbose:
-            print(f"  {profile.name}: domain={profile.domain}, "
-                  f"asfid={profile.asfid_mean}, revoi={profile.revoi_mean}, "
-                  f"δ={profile.delta}, concepts={len(set(all_concepts))}")
-
-        poclets.append(profile)
-
-    return poclets
-
-
-# ==============================================================================
-# ANALYSIS
-# ==============================================================================
-
-def mean(values: List[float]) -> Optional[float]:
-    if not values:
-        return None
-    return round(sum(values) / len(values), 4)
-
-
-def _classify_domain(raw_domain: str) -> str:
-    """Map a raw domain string to a broad DOMAIN_TAXONOMY category."""
-    d = raw_domain.lower()
-    for keyword, category in DOMAIN_TAXONOMY.items():
-        if keyword in d:
-            return category
-    return "Other"
-
-
-def analyse_corpus(poclets: List[PocletProfile], top_n: int = 15) -> Dict:
-    """
-    Compute corpus-level statistics from a list of PocletProfile objects.
-    """
-    n = len(poclets)
-
-    # ── ASFID distribution ────────────────────────────────────────────────────
-    dims_asfid = defaultdict(list)
-    for p in poclets:
-        if p.asfid:
-            for dim in "ASFID":
-                val = p.asfid.get(dim)
-                if val is not None:
-                    dims_asfid[dim].append(val)
-
-    asfid_profile = {
-        dim: {"mean": mean(dims_asfid[dim]),
-              "min":  min(dims_asfid[dim], default=None),
-              "max":  max(dims_asfid[dim], default=None),
-              "n":    len(dims_asfid[dim])}
-        for dim in "ASFID"
+SCORING_THRESHOLDS = {
+    'verdict': {
+        'strong_candidate': {'invariants_min': 6, 'asfid_min': 0.75},
+        'candidate':        {'invariants_min': 4, 'asfid_min': 0.60},
+        'weak_candidate':   {'invariants_min': 2, 'asfid_min': 0.45},
     }
-    asfid_means = [p.asfid_mean for p in poclets if p.asfid_mean is not None]
+}
 
-    # ── REVOI distribution ────────────────────────────────────────────────────
-    dims_revoi = defaultdict(list)
-    for p in poclets:
-        if p.revoi:
-            for dim in "REVOI":
-                val = p.revoi.get(dim)
-                if val is not None:
-                    dims_revoi[dim].append(val)
+WEB_SEARCH_TEMPLATES = {
+    'wikipedia':      'https://en.wikipedia.org/wiki/{SYSTEM}',
+    'google':         'https://www.google.com/search?q={SYSTEM}+{DOMAIN}+system+model',
+    'duckduckgo':     'https://duckduckgo.com/?q={SYSTEM}+{DOMAIN}+system+model',
+    'scholar':        'https://scholar.google.com/scholar?q={SYSTEM}+system+model',
+    'gemini_verify':  'https://gemini.google.com/app?q=Is+{SYSTEM}+a+minimal+complete+system+in+{DOMAIN}%3F+Does+it+have+ASFID+dimensions%3F',
+    'gemini_suggest': 'https://gemini.google.com/app?q=Suggest+5+minimal+complete+systems+in+{DOMAIN}+suitable+for+TSCG+poclet+modeling',
+}
 
-    revoi_profile = {
-        dim: {"mean": mean(dims_revoi[dim]),
-              "min":  min(dims_revoi[dim], default=None),
-              "max":  max(dims_revoi[dim], default=None),
-              "n":    len(dims_revoi[dim])}
-        for dim in "REVOI"
+GAP_ANALYSIS_CANDIDATES = [
+    {'system': 'SIR Epidemiological Model',     'domain': 'Epidemiology',     'type': 'Poclet',       'priority': 'high'},
+    {'system': "Peirce's Semiotic Triangle",    'domain': 'Semiotics',        'type': 'Poclet',       'priority': 'high'},
+    {'system': 'Harmonic Oscillator',           'domain': 'Physics',          'type': 'TransDisclet', 'priority': 'high'},
+    {'system': "Rogers' Innovation Diffusion",  'domain': 'Social Sciences',  'type': 'Poclet',       'priority': 'medium'},
+    {'system': 'Neural Network (Perceptron)',    'domain': 'Computer Science', 'type': 'Poclet',       'priority': 'medium'},
+    {'system': 'Krebs Cycle',                   'domain': 'Biochemistry',     'type': 'Poclet',       'priority': 'medium'},
+    {'system': 'Supply & Demand Equilibrium',   'domain': 'Economics',        'type': 'Poclet',       'priority': 'medium'},
+    {'system': 'Predator-Prey (Lotka-Volterra)','domain': 'Ecology',          'type': 'Poclet',       'priority': 'medium'},
+]
+
+# ─── Corpus assembly ──────────────────────────────────────────────────────────
+
+def build_corpus_stats(poclets: list, domains: list) -> dict:
+    return {
+        'total':           len(poclets),
+        'domains_covered': len([d for d in domains if d != 'Unknown']),
+        'validated':       len([p for p in poclets if p.get('asfidScores')]),
     }
-    revoi_means = [p.revoi_mean for p in poclets if p.revoi_mean is not None]
 
-    # ── Epistemic gap ─────────────────────────────────────────────────────────
-    deltas = [p.delta for p in poclets if p.delta is not None]
-
-    # ── GenericConcept frequencies ────────────────────────────────────────────
-    concept_counter: Counter = Counter()
+def build_domain_coverage(poclets: list) -> dict:
+    coverage: dict = {}
     for p in poclets:
-        # Count distinct concept mentions per poclet (avoid double-counting
-        # when the same entry is referenced many times in one poclet)
-        for concept in set(p.concepts):
-            concept_counter[concept] += 1
+        coverage.setdefault(p['domain'], []).append(p['id'])
+    return coverage
 
-    top_concepts = concept_counter.most_common(top_n)
+def build_gap_analysis(poclets: list) -> dict:
+    covered = {p['domain'].lower() for p in poclets if p['domain'] != 'Unknown'}
+    uncovered = sorted({
+        c['domain'] for c in GAP_ANALYSIS_CANDIDATES
+        if c['domain'].lower() not in covered
+    })
+    return {
+        'description': 'Domains and systems not yet covered in the corpus',
+        'uncovered_domains': uncovered,
+        'priority_candidates': GAP_ANALYSIS_CANDIDATES,
+    }
 
-    # ── Domain coverage ───────────────────────────────────────────────────────
-    domain_counter: Counter = Counter()
-    category_map: Dict[str, List[str]] = defaultdict(list)
+def build_invariants(poclets: list) -> dict:
+    domains = sorted({p['domain'] for p in poclets})
 
-    for p in poclets:
-        category = _classify_domain(p.domain)
-        domain_counter[category] += 1
-        if p.domain not in category_map[category]:
-            category_map[category].append(p.domain)
+    all_concepts = [c for p in poclets for c in p['validatesMetaconcepts']]
+    freq = Counter(all_concepts)
+    top_concepts = [{'concept': c, 'freq': f}
+                    for c, f in freq.most_common(20)]
 
-    covered    = {cat for cat in domain_counter if domain_counter[cat] > 0}
-    gaps       = [cat for cat in DESIRED_DOMAINS if cat not in covered]
+    def dim_mean(dim_key, scores_key):
+        vals = [p[scores_key][dim_key]
+                for p in poclets
+                if p.get(scores_key) and p[scores_key].get(dim_key) is not None]
+        return round(sum(vals) / len(vals), 3) if vals else None
+
+    asfid_means = {d: dim_mean(d, 'asfidScores') for d in 'ASFID'}
+    revoi_means = {d: dim_mean(d, 'revoiScores')  for d in 'REVOI'}
 
     return {
-        "generated_at":    datetime.datetime.now().isoformat(),
-        "poclet_count":    n,
-        "asfid_profile":   asfid_profile,
-        "asfid_mean_dist": {
-            "mean": mean(asfid_means),
-            "min":  min(asfid_means, default=None),
-            "max":  max(asfid_means, default=None),
-            "n":    len(asfid_means),
-        },
-        "revoi_profile":   revoi_profile,
-        "revoi_mean_dist": {
-            "mean": mean(revoi_means),
-            "min":  min(revoi_means, default=None),
-            "max":  max(revoi_means, default=None),
-            "n":    len(revoi_means),
-        },
-        "epistemic_gap": {
-            "mean":   mean(deltas),
-            "min":    min(deltas, default=None),
-            "max":    max(deltas, default=None),
-            "n":      len(deltas),
-            "values": {p.name: p.delta for p in poclets if p.delta is not None},
-        },
-        "top_concepts":    top_concepts,
-        "all_concepts":    dict(concept_counter.most_common()),
-        "domain_coverage": {
-            "by_category":       dict(domain_counter),
-            "by_category_detail": {k: v for k, v in category_map.items()},
-            "covered_categories": sorted(covered),
-            "gap_categories":    gaps,
-        },
-        "poclets": [
-            {
-                "name":       p.name,
-                "label":      p.label,
-                "domain":     p.domain,
-                "asfid_mean": p.asfid_mean,
-                "revoi_mean": p.revoi_mean,
-                "delta":      p.delta,
-                "asfid":      p.asfid,
-                "revoi":      p.revoi,
-                "top_concepts": list(dict(Counter(p.concepts).most_common(5)).keys()),
-                "concept_count": len(set(p.concepts)),
-                "parse_errors": p.parse_errors,
-            }
-            for p in poclets
-        ],
+        'description':        'Statistical invariants distilled from the validated corpus',
+        'domains':            domains,
+        'topValidatedConcepts': top_concepts,
+        'corpusMeanASFID':    asfid_means,
+        'corpusMeanREVOI':    revoi_means,
+        'criteria':           INVARIANT_CRITERIA,   # ← renderer.js buildInvariantChecklist()
     }
 
-
-# ==============================================================================
-# DISPLAY
-# ==============================================================================
-
-def _bar(value: Optional[float], width: int = 20) -> str:
-    """Render a 0–1 value as a text progress bar."""
-    if value is None:
-        return "─" * width
-    filled = round(value * width)
-    return "█" * filled + "░" * (width - filled)
-
-
-def _fmt(value: Optional[float]) -> str:
-    return f"{value:.3f}" if value is not None else "  n/a "
-
-
-def display_report(report: Dict, top_n: int = 15) -> None:
-    n  = report["poclet_count"]
-    W  = 72
-
-    print("\n" + "=" * W)
-    print("  TSCG POCLET CORPUS — PROFILE REPORT")
-    print("=" * W)
-    print(f"  Generated : {report['generated_at'][:19]}")
-    print(f"  Poclets   : {n}")
-    print("=" * W)
-
-    # ── 1. Typical poclet ASFID profile ───────────────────────────────────────
-    ap  = report["asfid_profile"]
-    adm = report["asfid_mean_dist"]
-    print(f"\n{'─'*W}")
-    print("  1. TYPICAL ASFID PROFILE  (Eagle Eye — Territory)")
-    print(f"{'─'*W}")
-    print(f"  {'Dim':<5} {'Mean':>6}  {'Min':>6}  {'Max':>6}  {'n':>3}  Distribution")
-    print(f"  {'─'*5} {'─'*6}  {'─'*6}  {'─'*6}  {'─'*3}  {'─'*22}")
-    DIM_NAMES = {"A":"Attractor","S":"Structure","F":"Flow","I":"Information","D":"Dynamics"}
-    for dim in "ASFID":
-        d = ap[dim]
-        print(f"  {dim} ({DIM_NAMES[dim][0:1]+')':<4} {_fmt(d['mean'])}  {_fmt(d['min'])}  {_fmt(d['max'])}  {d['n']:>3}  {_bar(d['mean'])}")
-    print(f"\n  Overall ASFID mean : {_fmt(adm['mean'])}  {_bar(adm['mean'])}  (n={adm['n']})")
-
-    # ── 2. Typical poclet REVOI profile ───────────────────────────────────────
-    rp  = report["revoi_profile"]
-    rdm = report["revoi_mean_dist"]
-    print(f"\n{'─'*W}")
-    print("  2. TYPICAL REVOI PROFILE  (Sphinx Eye — Map)")
-    print(f"{'─'*W}")
-    print(f"  {'Dim':<5} {'Mean':>6}  {'Min':>6}  {'Max':>6}  {'n':>3}  Distribution")
-    print(f"  {'─'*5} {'─'*6}  {'─'*6}  {'─'*6}  {'─'*3}  {'─'*22}")
-    REVOI_NAMES = {"R":"Representab.","E":"Evolvability","V":"Verifiability",
-                   "O":"Observability","I":"Interoperab."}
-    for dim in "REVOI":
-        d = rp[dim]
-        print(f"  {dim} ({REVOI_NAMES[dim][0:1]+')':<4} {_fmt(d['mean'])}  {_fmt(d['min'])}  {_fmt(d['max'])}  {d['n']:>3}  {_bar(d['mean'])}")
-    print(f"\n  Overall REVOI mean : {_fmt(rdm['mean'])}  {_bar(rdm['mean'])}  (n={rdm['n']})")
-
-    # ── 3. Epistemic gap δ ────────────────────────────────────────────────────
-    eg = report["epistemic_gap"]
-    print(f"\n{'─'*W}")
-    print("  3. EPISTEMIC GAP δ  (Map-Territory divergence)")
-    print(f"{'─'*W}")
-    print(f"  Corpus mean δ : {_fmt(eg['mean'])}  (n={eg['n']})")
-    print(f"  Min           : {_fmt(eg['min'])}")
-    print(f"  Max           : {_fmt(eg['max'])}")
-    print()
-    if eg["values"]:
-        for pname, delta in sorted(eg["values"].items(), key=lambda x: (x[1] or 99)):
-            bar = _bar(delta, 15)
-            print(f"    {pname:<35} δ={_fmt(delta)}  {bar}")
-
-    # ── 4. GenericConcept frequencies ─────────────────────────────────────────
-    print(f"\n{'─'*W}")
-    print(f"  4. TOP {top_n} GENERIC CONCEPTS  (by poclet count)")
-    print(f"{'─'*W}")
-    print(f"  {'Rank':<5} {'GenericConcept':<28} {'Poclets':>7}  Frequency bar")
-    print(f"  {'─'*5} {'─'*28} {'─'*7}  {'─'*22}")
-    max_freq = report["top_concepts"][0][1] if report["top_concepts"] else 1
-    for rank, (concept, count) in enumerate(report["top_concepts"], 1):
-        bar = "█" * round(22 * count / max(max_freq, 1))
-        print(f"  {rank:<5} {concept:<28} {count:>7}  {bar}")
-
-    # ── 5. Domain coverage ────────────────────────────────────────────────────
-    dc = report["domain_coverage"]
-    print(f"\n{'─'*W}")
-    print("  5. DOMAIN COVERAGE")
-    print(f"{'─'*W}")
-    print(f"  {'Category':<32} {'Poclets':>7}")
-    print(f"  {'─'*32} {'─'*7}")
-    for cat in DESIRED_DOMAINS:
-        count = dc["by_category"].get(cat, 0)
-        domains = ", ".join(dc["by_category_detail"].get(cat, []))
-        flag = "  " if count > 0 else "⚠ "
-        print(f"  {flag}{cat:<30} {count:>7}   {domains[:38]}")
-    other = dc["by_category"].get("Other", 0)
-    if other:
-        print(f"    {'Other':<30} {other:>7}")
-
-    if dc["gap_categories"]:
-        print(f"\n  ⚠  GAPS — no poclet yet in:")
-        for cat in dc["gap_categories"]:
-            print(f"       • {cat}")
-    else:
-        print("\n  ✓  All target domain categories covered")
-
-    # ── 6. Per-poclet summary table ───────────────────────────────────────────
-    print(f"\n{'─'*W}")
-    print("  6. PER-POCLET SUMMARY")
-    print(f"{'─'*W}")
-    print(f"  {'Poclet':<32} {'ASFID':>6}  {'REVOI':>6}  {'δ':>6}  Domain")
-    print(f"  {'─'*32} {'─'*6}  {'─'*6}  {'─'*6}  {'─'*20}")
-    for p in report["poclets"]:
-        dom = (p["domain"] or "?")[:22]
-        print(f"  {p['name']:<32} {_fmt(p['asfid_mean'])}  {_fmt(p['revoi_mean'])}  "
-              f"{_fmt(p['delta'])}  {dom}")
-
-    print(f"\n{'='*W}\n")
-
-
-# ==============================================================================
-# MAIN
-# ==============================================================================
+# ─── Main ─────────────────────────────────────────────────────────────────────
 
 def main():
-    args = parse_arguments()
+    parser = argparse.ArgumentParser(
+        description='Rebuild poclet_corpus_profile.json for TscgPocletMiner'
+    )
+    parser.add_argument('--repo',    type=str, help='Path to TSCG repo root')
+    parser.add_argument('--out',     type=str, help='Output JSON path (default: next to this script)')
+    parser.add_argument('--verbose', action='store_true', help='Print each parsed poclet')
+    args = parser.parse_args()
 
-    print("\n" + "=" * 70)
-    print("  TSCG Poclet Corpus Analyser")
-    print("=" * 70)
-    print(f"  Repository : {args.repo}")
-    print("=" * 70)
+    # ── Locate poclets directory ──────────────────────────────────────────────
+    if args.repo:
+        repo_root = Path(args.repo)
+    else:
+        repo_root = find_repo_root(_SCRIPT_DIR)
+        if repo_root is None:
+            print(f"ERROR: Could not find instances/poclets/ relative to {_SCRIPT_DIR}")
+            print("Use --repo /path/to/tscg to specify the repo root explicitly.")
+            sys.exit(1)
 
-    # 1. Scan
-    print("\n📁 Scanning poclets...")
-    poclets = scan_corpus(args.repo, verbose=args.verbose)
-    if not poclets:
-        print("❌ No M0 poclet files found.")
-        return 1
-    print(f"✓ Found {len(poclets)} poclets")
+    poclets_dir = repo_root / 'instances' / 'poclets'
+    print(f"Scanning: {poclets_dir}")
 
-    # 2. Analyse
-    print("📊 Analysing corpus...")
-    report = analyse_corpus(poclets, top_n=args.top)
+    # ── Parse all .jsonld files ───────────────────────────────────────────────
+    all_files = walk_jsonld(poclets_dir)
+    print(f"Found {len(all_files)} .jsonld file(s)")
 
-    # 3. Display
-    display_report(report, top_n=args.top)
+    poclets = []
+    skipped = []
 
-    # 4. Optional JSON export
-    if args.json:
-        with open(args.json, "w", encoding="utf-8") as f:
-            json.dump(report, f, indent=2, ensure_ascii=False)
-        print(f"📄 Report saved → {args.json}")
+    for f in all_files:
+        result = parse_poclet_file(f, verbose=args.verbose)
+        if result:
+            poclets.append(result)
+        else:
+            skipped.append(f.name)
 
-    return 0
+    print(f"Extracted {len(poclets)} poclet(s), skipped {len(skipped)}")
+    if skipped and args.verbose:
+        print(f"Skipped: {', '.join(skipped)}")
+
+    # ── Build output document ─────────────────────────────────────────────────
+    now_iso  = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    now_date = now_iso[:10]
+
+    invariants = build_invariants(poclets)
+    domains    = invariants['domains']
+
+    output = {
+        '_meta': {
+            'title':        'TSCG Poclet Corpus Profile — Auto-generated by rebuild_corpus.py',
+            'version':      '2.1.0',
+            'generatedAt':  now_iso,
+            'date':         now_date,
+            'authors':      ['Echopraxium with the collaboration of Claude AI'],
+            'purpose':      'Profiling reference used by TscgPocletMiner to score new candidates against the validated corpus.',
+            'pocletsDir':   str(poclets_dir),
+            'pocletCount':  len(poclets),
+            'skippedFiles': skipped,
+            'hash':         ''
+        },
+        'corpus_stats':       build_corpus_stats(poclets, domains),
+        'domain_coverage':    build_domain_coverage(poclets),
+        'invariants':         invariants,
+        'gap_analysis':       build_gap_analysis(poclets),
+        'scoring_thresholds': SCORING_THRESHOLDS,
+        'web_search_templates': WEB_SEARCH_TEMPLATES,
+        'screening_criteria': SCREENING_CRITERIA,
+        'poclets':            poclets,
+    }
+
+    # ── Hash ──────────────────────────────────────────────────────────────────
+    content = json.dumps(output, ensure_ascii=False, indent=2)
+    h = hashlib.sha256(content.encode('utf-8')).hexdigest()[:16]
+    output['_meta']['hash'] = h
+
+    # ── Write ─────────────────────────────────────────────────────────────────
+    out_path = Path(args.out) if args.out else _SCRIPT_DIR / 'poclet_corpus_profile.json'
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    final_content = json.dumps(output, ensure_ascii=False, indent=2)
+    with open(out_path, 'w', encoding='utf-8') as f:
+        f.write(final_content)
+
+    print(f"Written: {out_path}  ({len(poclets)} poclets, hash={h})")
+
+    # ── Console summary ───────────────────────────────────────────────────────
+    print(f"\nDomains covered ({len(invariants['domains'])}):")
+    for d in invariants['domains']:
+        count = sum(1 for p in poclets if p['domain'] == d)
+        print(f"  {d:30s}  {count} poclet(s)")
+
+    if invariants['topValidatedConcepts']:
+        print(f"\nTop GenericConcepts:")
+        for entry in invariants['topValidatedConcepts'][:10]:
+            print(f"  {entry['concept']:30s}  freq={entry['freq']}")
 
 
-if __name__ == "__main__":
-    try:
-        sys.exit(main())
-    except KeyboardInterrupt:
-        print("\n\n👋 Interrupted")
-        sys.exit(1)
-    except Exception as e:
-        print(f"\n❌ Error: {e}")
-        if "--verbose" in sys.argv:
-            import traceback
-            traceback.print_exc()
-        sys.exit(1)
+if __name__ == '__main__':
+    main()

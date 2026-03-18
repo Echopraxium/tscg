@@ -1,6 +1,6 @@
 // renderer.js — TscgPocletMiner Wizard Logic, Scoring Engine & RAG Integration
 // Author: Echopraxium with the collaboration of Claude AI
-// v1.1.0 — RAG JS-native (@xenova/transformers)
+// v1.2.0 — Clickable priority candidates
 
 'use strict';
 
@@ -16,6 +16,7 @@ const state = {
   domain:        '',
   isNewDomain:   false,
   docQuality:    2,
+  pastedContent: '',        // paste zone content (Round 2)
   asfid: { A: 0.5, S: 0.5, F: 0.5, I: 0.5, D: 0.5 },
   candidateType: null,
   invariantChecks: {},
@@ -47,6 +48,16 @@ function showRound(n) {
   updateNav(n);
 }
 
+// Round badge labels — kept in sync with index.html round-title spans
+const ROUND_TITLES = [
+  '',                                          // 0 — unused
+  'Domain Identification',                     // Round 1
+  'Web Verification + RAG Context',            // Round 2
+  'ASFID Pre-Screening',                       // Round 3
+  'Type Discriminant',                         // Round 4
+  'Invariants, GenericConcepts & Verdict'      // Round 5
+];
+
 function updateProgress(n) {
   for (let i = 1; i <= state.totalRounds; i++) {
     const dot = $(`dot-${i}`);
@@ -55,6 +66,42 @@ function updateProgress(n) {
     if (i < n)  dot.classList.add('done');
     if (i === n) dot.classList.add('active');
   }
+
+  const roundEl = $(`round-${n}`);
+  if (!roundEl) return;
+
+  // Badge: step number only  →  [Round 2 / 5]
+  const badge = roundEl.querySelector('.round-badge');
+  if (badge) badge.textContent = `Round ${n} / ${state.totalRounds}`;
+
+  // System name: displayed after the round-title, in its own element
+  // We inject/update a <span id="round-N-system"> after .round-title
+  const header = roundEl.querySelector('.round-header');
+  if (!header) return;
+
+  let sysSpan = roundEl.querySelector('.round-system-name');
+  if (!sysSpan) {
+    sysSpan = document.createElement('span');
+    sysSpan.className = 'round-system-name';
+    sysSpan.style.cssText = [
+      'font-size:15px',
+      'color:var(--gold)',
+      'font-weight:600',
+      'margin-left:8px',
+      'opacity:0.90',
+      'white-space:nowrap',
+      'overflow:hidden',
+      'text-overflow:ellipsis',
+      'max-width:360px'
+    ].join(';');
+    header.appendChild(sysSpan);
+  }
+
+  // Round title: smaller than the poclet name
+  const titleEl = header.querySelector('.round-title');
+  if (titleEl) titleEl.style.fontSize = '12px';
+
+  sysSpan.textContent = (n > 1 && state.systemName) ? `- ${state.systemName}` : '';
 }
 
 function updateNav(n) {
@@ -153,6 +200,120 @@ function updateDomainChips(userDomain) {
   $('sb-gap').style.color = state.isNewDomain ? 'var(--gold)' : 'var(--dim)';
 }
 
+
+// ─── Round 2: Paste zone analysis ─────────────────────────────────────────────
+
+// ASFID keyword signatures — ordered by specificity
+const ASFID_KEYWORDS = {
+  A: ['equilibrium','homeostasis','steady.?state','attractor','setpoint','set.?point',
+      'stable','stability','converge','convergence','fixed.?point','balance','regulated',
+      'maintained','maintained at','normal level','blood pressure','pH','temperature'],
+  S: ['component','structure','boundary','interface','organ','enzyme','receptor',
+      'terminal','node','layer','compartment','module','element','part','protein',
+      'cell','tissue','circuit','network topology','anatomy'],
+  F: ['flow','flux','current','circulation','transport','diffusion','signal',
+      'hormone','electron','nutrient','blood','lymph','cascade','secretion',
+      'release','uptake','absorption','emission','transfer','propagat'],
+  I: ['encod','information','signal','message','code','instruct','data',
+      'blueprint','DNA','RNA','gene','transcri','translat','receptor binding',
+      'inhibit','activat','phosphorylat','alloster','feedback signal'],
+  D: ['feedback','dynamic','oscillat','adapt','regulat','cycle','loop',
+      'nonlinear','phase transition','bifurcat','chaos','amplif','damping',
+      'negative feedback','positive feedback','homeostatic','allostasis','control']
+};
+
+function scoreTextForASFID(text) {
+  const lower = text.toLowerCase();
+  const scores = {};
+  const hits   = {};
+
+  for (const [dim, keywords] of Object.entries(ASFID_KEYWORDS)) {
+    const matched = keywords.filter(kw => new RegExp(kw, 'i').test(lower));
+    // Sigmoid-like scaling: 0 hits→0.3, 3 hits→0.7, 6+→0.95
+    const raw = matched.length;
+    scores[dim] = raw === 0 ? 0.30
+                : raw === 1 ? 0.55
+                : raw === 2 ? 0.65
+                : raw <= 4  ? 0.75
+                : raw <= 6  ? 0.85
+                :             0.95;
+    hits[dim] = matched.slice(0, 3); // top 3 for display
+  }
+  return { scores, hits };
+}
+
+function autoDocQuality(text) {
+  const len = text.trim().length;
+  if (len === 0)    return 0;
+  if (len < 100)    return 1;
+  if (len < 500)    return 2;
+  return 3;
+}
+
+function handlePastedContent() {
+  const ta   = $('paste-content');
+  const hint = $('paste-hint');
+  const row  = $('asfid-hint-row');
+  if (!ta) return;
+
+  const text = ta.value;
+  state.pastedContent = text;
+
+  // Visual feedback on textarea
+  ta.classList.toggle('has-content', text.trim().length > 0);
+
+  if (!text.trim()) {
+    if (hint) hint.textContent = '';
+    if (row)  row.innerHTML = '';
+    return;
+  }
+
+  // ── Auto doc-quality ────────────────────────────────────────────────────
+  const dq = autoDocQuality(text);
+  const dqEl = $('doc-quality');
+  const dqValEl = $('doc-quality-val');
+  if (dqEl)    { dqEl.value = dq; state.docQuality = dq; }
+  if (dqValEl) dqValEl.textContent = dq;
+
+  // ── ASFID keyword analysis ──────────────────────────────────────────────
+  const { scores, hits } = scoreTextForASFID(text);
+
+  // Update sliders in Round 3 (may not be rendered yet — also store in state)
+  for (const [dim, score] of Object.entries(scores)) {
+    state.asfid[dim] = score;
+    const slider = $(`slider-${dim}`);
+    const val    = $(`val-${dim}`);
+    if (slider) { slider.value = score; }
+    if (val)    val.textContent = score.toFixed(2);
+  }
+  updateLiveASFID();
+
+  // ── Show ASFID hint chips ───────────────────────────────────────────────
+  if (row) {
+    row.innerHTML = Object.entries(hits).map(([dim, words]) => {
+      const hasHit = words.length > 0;
+      const label  = hasHit
+        ? `${dim}: ${words.slice(0,2).join(', ')}`
+        : `${dim}: —`;
+      return `<span class="asfid-hint-chip ${hasHit ? 'hit' : ''}" title="ASFID dimension ${dim}">${label}</span>`;
+    }).join('');
+  }
+
+  // ── Hint message ───────────────────────────────────────────────────────
+  const wordCount = text.trim().split(/\s+/).length;
+  if (hint) {
+    hint.textContent = `✅ ${wordCount} words analysed — doc quality set to ${dq}/3, ASFID pre-scores updated`;
+    hint.style.color = 'var(--teal)';
+  }
+
+  // ── Re-run RAG with enriched query ─────────────────────────────────────
+  // Debounce: wait 800ms after last keystroke before re-querying
+  clearTimeout(handlePastedContent._timer);
+  handlePastedContent._timer = setTimeout(() => {
+    runRagSimilarPoclets();
+  }, 800);
+}
+
 // ─── Round 2 ──────────────────────────────────────────────────────────────────
 
 function buildSearchButtons() {
@@ -161,19 +322,62 @@ function buildSearchButtons() {
   const domEnc = encodeURIComponent(state.domain);
   const slug   = state.systemName.replace(/\s+/g, '_');
 
-  const urls = [
-    { label: '📖 Wikipedia',      url: tpls.wikipedia.replace('{SYSTEM}', slug) },
-    { label: '🔍 DuckDuckGo',     url: tpls.duckduckgo.replace('{SYSTEM}', sysEnc).replace('{DOMAIN}', domEnc) },
-    { label: '📚 Google Scholar', url: tpls.scholar.replace('{SYSTEM}', sysEnc) }
+  // DeepSeek query (copied to clipboard — no URL param support)
+  const deepseekQuery = `Explain "${state.systemName}" as a minimal complete system in ${state.domain}. ` +
+    `Does it have: (A) a stable attractor/equilibrium? (S) clear components and boundaries? ` +
+    `(F) observable flows of matter/energy/information? (I) structured information encoding? ` +
+    `(D) feedback loops or non-trivial dynamics? Is it well documented?`;
+
+  const buttons = [
+    { id: 'btn-deepseek',label: '🤖 DeepSeek',         url: null, clipboard: deepseekQuery },
+    { id: 'btn-gemini',  label: '✨ Gemini',            url: tpls.gemini_verify.replace('{SYSTEM}', sysEnc).replace('{DOMAIN}', domEnc) },
+    { id: 'btn-google',  label: '🔍 Google',           url: tpls.google.replace('{SYSTEM}', sysEnc).replace('{DOMAIN}', domEnc) },
+    { id: 'btn-wiki',    label: '📖 Wikipedia',       url: tpls.wikipedia.replace('{SYSTEM}', slug) },
+    { id: 'btn-scholar', label: '📚 Scholar',          url: tpls.scholar.replace('{SYSTEM}', sysEnc) },
   ];
 
-  $('search-buttons').innerHTML = urls.map(u =>
-    `<button class="btn-search" data-url="${u.url}">${u.label}</button>`
+  $('search-buttons').innerHTML = buttons.map(b =>
+    `<button class="btn-search" id="${b.id}"
+             data-url="${b.url || ''}"
+             data-clipboard="${b.clipboard ? encodeURIComponent(b.clipboard) : ''}"
+             title="${b.clipboard ? 'Copies query to clipboard, then opens DeepSeek' : b.label}">
+       ${b.label}
+     </button>`
   ).join('');
 
-  $$('#search-buttons .btn-search').forEach(btn =>
-    btn.addEventListener('click', () => window.tscgAPI.openURL(btn.dataset.url))
-  );
+  // Track visited count to suggest doc-quality bump
+  let visitedCount = 0;
+
+  $$('#search-buttons .btn-search').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      // DeepSeek: copy query to clipboard first, then open chat
+      if (btn.dataset.clipboard) {
+        try {
+          await navigator.clipboard.writeText(decodeURIComponent(btn.dataset.clipboard));
+          btn.textContent = '🤖 DeepSeek ✅ (query copied)';
+          btn.style.borderColor = 'var(--teal)';
+        } catch {
+          btn.textContent = '🤖 DeepSeek (copy failed)';
+        }
+        window.tscgAPI.openURL('https://chat.deepseek.com/');
+      } else {
+        window.tscgAPI.openURL(btn.dataset.url);
+      }
+
+      // Visual visited feedback
+      btn.classList.add('visited');
+      visitedCount++;
+
+      // After 2+ sources opened, suggest bumping doc-quality
+      if (visitedCount === 2) {
+        const hint = $('doc-quality-hint');
+        if (hint) {
+          hint.textContent = '💡 Found documentation? Adjust quality above.';
+          hint.classList.remove('hidden');
+        }
+      }
+    });
+  });
 }
 
 async function runRagSimilarPoclets() {
@@ -186,7 +390,8 @@ async function runRagSimilarPoclets() {
   }
 
   container.innerHTML = `<div class="rag-note">🔍 Searching corpus…</div>`;
-  const query = `${state.systemName} ${state.domain} system feedback regulation`;
+  const contextSnippet = state.pastedContent ? state.pastedContent.slice(0, 300) : '';
+  const query = `${state.systemName} ${state.domain} system feedback regulation ${contextSnippet}`.trim();
   const res   = await window.tscgAPI.ragQuery({ query, mode: 'similar_poclets', topK: 5 });
 
   if (!res.ok) {
@@ -315,12 +520,61 @@ async function runRagSuggestConcepts() {
 
 function buildPriorityList() {
   if (!state.corpus) return;
-  $('priority-list').innerHTML = state.corpus.gap_analysis.priority_candidates.slice(0, 6).map(c => `
-    <div class="cand-row">
-      <div><div class="cand-name">${c.system}</div><div class="cand-dom">${c.domain}</div></div>
-      <div class="cand-type">${c.type}</div>
-    </div>
-  `).join('');
+
+  const candidates = state.corpus.gap_analysis.priority_candidates.slice(0, 8);
+
+  $('priority-list').innerHTML = [
+    `<div style="font-size:11px;color:var(--dim);margin-bottom:6px;">
+       💡 No idea yet? Click a suggestion below to use it as your starting point
+     </div>`,
+    ...candidates.map(c => `
+      <div class="cand-row cand-clickable"
+           data-system="${c.system}"
+           data-domain="${c.domain}"
+           data-type="${c.type}"
+           title="Click to start with: ${c.system}">
+        <div>
+          <div class="cand-name">${c.system}</div>
+          <div class="cand-dom">${c.domain}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+          <span class="cand-type">${c.type}</span>
+          ${c.priority === 'high'
+            ? '<span style="font-size:9px;color:var(--gold);">★ high priority</span>'
+            : '<span style="font-size:9px;color:var(--dim);">medium</span>'}
+        </div>
+      </div>
+    `)
+  ].join('');
+
+  // Click → pre-fill Round 1 and advance to Round 2
+  $$('#priority-list .cand-clickable').forEach(row => {
+    row.addEventListener('click', () => {
+      const system = row.dataset.system;
+      const domain = row.dataset.domain;
+
+      // Update state
+      state.systemName = system;
+      state.domain     = domain;
+
+      // Update DOM inputs
+      $('inp-system').value = system;
+      $('inp-domain').value = domain;
+
+      // Update sidebar
+      $('sb-system').textContent = system;
+      $('sb-domain').textContent = domain;
+
+      // Update domain chips
+      updateDomainChips(domain);
+
+      // Advance to Round 2 (triggers web search buttons + RAG)
+      buildSearchButtons();
+      runRagSimilarPoclets();
+      state.currentRound = 2;
+      showRound(2);
+    });
+  });
 }
 
 // ─── Verdict engine ───────────────────────────────────────────────────────────
@@ -396,6 +650,7 @@ async function exportCandidate() {
     is_new_domain: state.isNewDomain,
     invariants_checked: state.invariantChecks,
     suggested_generic_concepts: checkedConcepts,
+    pasted_content_excerpt: state.pastedContent ? state.pastedContent.slice(0, 500) : '',
     system_slug: slug,
     generated: new Date().toISOString()
   };
@@ -433,6 +688,9 @@ function restart() {
     invariantChecks: {}, suggestedConcepts: [], verdict: null
   });
   $('inp-system').value = ''; $('inp-domain').value = '';
+  const pz = $('paste-content'); if (pz) { pz.value = ''; pz.classList.remove('has-content'); }
+  const ph = $('paste-hint');    if (ph) ph.textContent = '';
+  const pr = $('asfid-hint-row');if (pr) pr.innerHTML = '';
   $('doc-quality').value = 2; $('doc-quality-val').textContent = '2';
   ASFID_QUESTIONS.forEach(q => {
     const s = $(`slider-${q.dim}`); if (s) s.value = 0.5;
@@ -469,6 +727,13 @@ function bindEvents() {
     state.docQuality = parseInt(e.target.value);
     $('doc-quality-val').textContent = state.docQuality;
   });
+
+  // Paste zone (Round 2)
+  const pasteEl = $('paste-content');
+  if (pasteEl) {
+    pasteEl.addEventListener('input', handlePastedContent);
+    pasteEl.addEventListener('paste', () => setTimeout(handlePastedContent, 50));
+  }
   bindTypeCards();
 
   // ── RAG DB Restore Modal ─────────────────────────────────────────────────
