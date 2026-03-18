@@ -1,217 +1,189 @@
-/**
- * restore_rag.js — TSCG RAG Database Extraction for Electron
- *
- * Handles two cases automatically:
- *   • Single volume : db_tscg_rag.tar.gz
- *   • Multi-volume  : db_tscg_rag_01.tar.gz, db_tscg_rag_02.tar.gz, …
- *
- * Zero npm dependencies — uses only Node.js built-ins:
- *   zlib  (gunzip)
- *   fs    (file I/O)
- *   path  (path helpers)
- *
- * ─────────────────────────────────────────────────────────────
- * Integration (main.js):
- *   const { registerRestoreHandlers } = require('./restore_rag');
- *   registerRestoreHandlers(ipcMain);
- *
- * Preload (preload.js):
- *   contextBridge.exposeInMainWorld('api', {
- *     pickArchive:    ()             => ipcRenderer.invoke('dialog:openFile'),
- *     pickOutDir:     ()             => ipcRenderer.invoke('dialog:openDir'),
- *     restoreRag:     (file, outDir) => ipcRenderer.invoke('rag:restore', file, outDir),
- *     onRagProgress:  (cb)           => ipcRenderer.on('rag:progress', (_, m) => cb(m)),
- *     offRagProgress: ()             => ipcRenderer.removeAllListeners('rag:progress'),
- *   });
- *
- * Renderer — pass any one volume or the single archive:
- *   await window.api.restoreRag('/path/to/db_tscg_rag_01.tar.gz', '/output/dir');
- *   await window.api.restoreRag('/path/to/db_tscg_rag.tar.gz',    '/output/dir');
- * ─────────────────────────────────────────────────────────────
- *
- * Author: Echopraxium with the collaboration of Claude AI
- */
+// restore_rag.js — TSCG RAG Database Extraction for Electron
+// Author: Echopraxium with the collaboration of Claude AI
+// v1.0.0
+//
+// Zero npm dependencies — Node.js built-ins only: fs, path, zlib, crypto
+//
+// Naming conventions (auto-detected):
+//   Single volume : db_tscg_rag.tar.gz
+//   Multi-volume  : db_tscg_rag_01.tar.gz, db_tscg_rag_02.tar.gz, …
+//
+// Integration in main.js:
+//   const { registerRestoreHandlers } = require('./restore_rag');
+//   registerRestoreHandlers(ipcMain);
+//
+// Preload bridge (preload.js):
+//   pickArchive:    ()             => ipcRenderer.invoke('dialog:openFile')
+//   pickOutDir:     ()             => ipcRenderer.invoke('dialog:openDir')
+//   restoreRag:     (file, outDir) => ipcRenderer.invoke('rag:restore', file, outDir)
+//   detectVolumes:  (file)         => ipcRenderer.invoke('rag:detect-volumes', file)
+//   onRagProgress:  cb             => ipcRenderer.on('rag:progress', (_, m) => cb(m))
+//   offRagProgress: ()             => ipcRenderer.removeAllListeners('rag:progress')
 
 'use strict';
 
-const fs   = require('fs');
-const path = require('path');
-const zlib = require('zlib');
+const fs     = require('fs');
+const path   = require('path');
+const zlib   = require('zlib');
+const crypto = require('crypto');
 
-// ==============================================================================
-// VOLUME DETECTION
-// ==============================================================================
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/**
- * Given any file path (single archive or one volume of a split set), return
- * the ordered list of files that make up the complete archive.
- *
- * Naming convention:
- *   Single : db_tscg_rag.tar.gz
- *   Split  : db_tscg_rag_01.tar.gz  db_tscg_rag_02.tar.gz  ...
- *
- * @param {string} filePath
- * @returns {{ volumes: string[], isMulti: boolean }}
- */
-function detectVolumes(filePath) {
-  const dir      = path.dirname(path.resolve(filePath));
-  const basename = path.basename(filePath);
+function formatBytes(n) {
+  if (n < 1024)        return `${n} B`;
+  if (n < 1048576)     return `${(n / 1024).toFixed(1)} KB`;
+  if (n < 1073741824)  return `${(n / 1048576).toFixed(1)} MB`;
+  return `${(n / 1073741824).toFixed(2)} GB`;
+}
 
-  // Multi-volume pattern: ends with _NN.tar.gz
-  const multiMatch = basename.match(/^(.+)_(\d{2})\.tar\.gz$/);
+function readOctal(buf, off, len) {
+  return parseInt(buf.slice(off, off + len).toString('ascii').trim() || '0', 8);
+}
 
-  if (!multiMatch) {
-    // Single archive — no number suffix
-    return { volumes: [path.resolve(filePath)], isMulti: false };
+// ─── Volume detection ─────────────────────────────────────────────────────────
+//
+//  Given any of these inputs, returns the full ordered list of volumes:
+//    db_tscg_rag.tar.gz        → single, [ db_tscg_rag.tar.gz ]
+//    db_tscg_rag_01.tar.gz     → multi,  [ _01.tar.gz, _02.tar.gz, … ]
+//    db_tscg_rag_02.tar.gz     → multi,  [ _01.tar.gz, _02.tar.gz, … ]
+
+function detectVolumes(archivePath) {
+  const dir      = path.dirname(archivePath);
+  const basename = path.basename(archivePath);
+
+  // Multi-volume pattern: ends with _NN.tar.gz  (NN = two or more digits)
+  const multiRe = /^(.+?)_(\d{2,})\.tar\.gz$/;
+  const match   = basename.match(multiRe);
+
+  if (!match) {
+    // Single volume (or unrecognised — treat as single)
+    return { isMulti: false, volumes: [archivePath] };
   }
 
-  const prefix   = multiMatch[1];  // e.g. "db_tscg_rag"
-  const volumeRe = new RegExp(`^${escapeRegex(prefix)}_(\\d{2})\\.tar\\.gz$`);
+  const stem = match[1]; // e.g. "db_tscg_rag"
+  const volumes = [];
 
-  const volumes = fs.readdirSync(dir)
-    .filter(f => volumeRe.test(f))
-    .sort()                              // lexicographic = numeric for zero-padded NN
-    .map(f => path.join(dir, f));
+  for (let n = 1; n <= 99; n++) {
+    const num  = String(n).padStart(2, '0');
+    const file = path.join(dir, `${stem}_${num}.tar.gz`);
+    if (fs.existsSync(file)) {
+      volumes.push(file);
+    } else if (n > 1) {
+      break; // stop at first gap after the first found
+    }
+    // If n===1 and not found, try anyway (the user may have passed _02)
+  }
 
-  return { volumes, isMulti: volumes.length > 1 };
+  // If detection yielded nothing (caller passed _02 and _01 is missing),
+  // fall back to the single provided file so we at least attempt extraction.
+  if (volumes.length === 0) {
+    return { isMulti: false, volumes: [archivePath] };
+  }
+
+  return { isMulti: volumes.length > 1, volumes };
 }
 
-function escapeRegex(s) {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
+// ─── Pure-JS TAR extractor ────────────────────────────────────────────────────
+//
+//  Reads a TAR buffer (already decompressed) and writes files to outDir.
+//  Supports USTAR + GNU long-name headers (type 'L').
+//  Returns array of extracted file paths.
 
-// ==============================================================================
-// TAR PARSER  (pure Node.js / Buffer — zero npm)
-// ==============================================================================
-
-/**
- * Parse a raw TAR buffer and extract all regular files to outDir.
- *
- * TAR block = 512 bytes.
- * Header layout (POSIX ustar):
- *   [0–99]   filename  (NUL-terminated)
- *   [124–135] file size (octal ASCII)
- *   [156]    type flag  '0'=file  '5'=directory  '\0'=old-style file
- *   [265–499] name prefix (ustar extension — prepended with '/')
- *
- * Security: paths are sanitised — absolute paths and '..' are stripped.
- *
- * @param {Buffer}   tarBuf
- * @param {string}   outDir
- * @param {Function} [onProgress]
- * @returns {string[]} extracted file paths
- */
 function extractTarBuffer(tarBuf, outDir, onProgress) {
   fs.mkdirSync(outDir, { recursive: true });
 
   const extracted = [];
   let offset = 0;
+  let pendingLongName = null; // GNU @LongLink
 
   while (offset + 512 <= tarBuf.length) {
     const header = tarBuf.slice(offset, offset + 512);
+    offset += 512;
 
-    // Two consecutive zero blocks = end-of-archive marker
-    if (isZeroBlock(header)) break;
+    // All-zero block = end-of-archive marker
+    if (header.every(b => b === 0)) break;
 
-    const name     = readNulString(header, 0,   100);
-    const prefix   = readNulString(header, 265, 155);
-    const sizeStr  = readNulString(header, 124, 12);
+    const rawName  = header.slice(0, 100).toString('utf8').replace(/\0/g, '');
     const typeFlag = String.fromCharCode(header[156]);
-    const fileSize = parseInt(sizeStr.trim(), 8) || 0;
+    const size     = readOctal(header, 124, 12);
 
-    offset += 512;  // advance past header
+    // Prefix field (USTAR)
+    const prefix   = header.slice(345, 500).toString('utf8').replace(/\0/g, '');
+    let name = pendingLongName ||
+               (prefix ? `${prefix}/${rawName}` : rawName);
+    pendingLongName = null;
 
-    const rawPath  = prefix ? `${prefix}/${name}` : name;
-    const safePath = sanitizePath(rawPath);
-
-    if (!safePath) {
-      offset += Math.ceil(fileSize / 512) * 512;
+    // GNU long-name extension: type 'L' stores the real name as content
+    if (typeFlag === 'L') {
+      const blocks = Math.ceil(size / 512);
+      pendingLongName = tarBuf
+        .slice(offset, offset + size)
+        .toString('utf8')
+        .replace(/\0/g, '');
+      offset += blocks * 512;
       continue;
     }
 
-    const destPath = path.join(outDir, safePath);
+    const blocks = Math.ceil(size / 512);
 
-    if (typeFlag === '5' || rawPath.endsWith('/')) {
-      // Directory entry
-      fs.mkdirSync(destPath, { recursive: true });
-    } else if (typeFlag === '0' || typeFlag === '\0') {
+    if (typeFlag === '0' || typeFlag === '' || typeFlag === '\0') {
       // Regular file
-      fs.mkdirSync(path.dirname(destPath), { recursive: true });
-      fs.writeFileSync(destPath, tarBuf.slice(offset, offset + fileSize));
-      extracted.push(destPath);
-      onProgress?.(`  ${safePath}  (${formatBytes(fileSize)})`);
-    }
+      const safeName  = name.replace(/^\/+/, '').replace(/\.\.\//g, '');
+      const dest      = path.join(outDir, safeName);
+      const parentDir = path.dirname(dest);
 
-    offset += Math.ceil(fileSize / 512) * 512;
+      if (!fs.existsSync(parentDir)) fs.mkdirSync(parentDir, { recursive: true });
+
+      const content = tarBuf.slice(offset, offset + size);
+      fs.writeFileSync(dest, content);
+      extracted.push(dest);
+      onProgress?.(`  + ${safeName}  (${formatBytes(size)})`);
+
+    } else if (typeFlag === '5') {
+      // Directory
+      const safeName = name.replace(/^\/+/, '').replace(/\.\.\//g, '');
+      const dest     = path.join(outDir, safeName);
+      fs.mkdirSync(dest, { recursive: true });
+    }
+    // Symlinks, hard links, etc. — silently skip
+
+    offset += blocks * 512;
   }
 
   return extracted;
 }
 
-function isZeroBlock(buf) {
-  for (let i = 0; i < 512; i++) if (buf[i] !== 0) return false;
-  return true;
-}
-
-function readNulString(buf, start, maxLen) {
-  let end = start;
-  while (end < start + maxLen && buf[end] !== 0) end++;
-  return buf.slice(start, end).toString('utf8');
-}
-
-function sanitizePath(raw) {
-  const parts = raw
-    .replace(/\\/g, '/')
-    .replace(/^\/+/, '')
-    .split('/')
-    .filter(seg => seg !== '' && seg !== '..');
-  return parts.join('/');
-}
-
-function formatBytes(n) {
-  if (n < 1024)      return `${n} B`;
-  if (n < 1024*1024) return `${(n/1024).toFixed(1)} KB`;
-  return `${(n/1024/1024).toFixed(2)} MB`;
-}
-
-// ==============================================================================
-// PUBLIC API
-// ==============================================================================
+// ─── Main restore function ────────────────────────────────────────────────────
 
 /**
- * Restore a TSCG RAG database from a single or multi-volume archive.
+ * restoreRagDb(archivePath, outDir, onProgress?)
  *
- * Automatically detects volumes from the provided file path:
- *   db_tscg_rag.tar.gz         single archive  → direct extraction
- *   db_tscg_rag_01.tar.gz      finds all _NN siblings → concatenate → extract
- *
- * @param {string}   archiveFile  — path to the archive or any one volume
- * @param {string}   outDir       — destination directory
- * @param {Function} [onProgress] — optional callback(message: string)
- *
- * @returns {Promise<{ dbDir: string, volumeCount: number, filesExtracted: number }>}
+ * @param  {string}   archivePath  Path to any volume (.tar.gz or _01.tar.gz …)
+ * @param  {string}   outDir       Destination directory (created if absent)
+ * @param  {Function} [onProgress] Callback(message: string)
+ * @returns {Promise<{ dbDir, volumeCount, filesExtracted }>}
  */
-async function restoreRagDb(archiveFile, outDir, onProgress) {
+async function restoreRagDb(archivePath, outDir, onProgress) {
   // 1 — detect volumes
-  const { volumes, isMulti } = detectVolumes(archiveFile);
+  const { isMulti, volumes } = detectVolumes(archivePath);
 
   if (isMulti) {
-    onProgress?.(`Multi-volume archive: ${volumes.length} volumes`);
+    onProgress?.(`Multi-volume archive detected — ${volumes.length} part(s):`);
     volumes.forEach((v, i) =>
-      onProgress?.(`  [${i + 1}/${volumes.length}] ${path.basename(v)}  ${formatBytes(fs.statSync(v).size)}`)
+      onProgress?.(`  [${i + 1}/${volumes.length}] ${path.basename(v)}  (${formatBytes(fs.statSync(v).size)})`)
     );
   } else {
-    onProgress?.(`Single archive: ${path.basename(volumes[0])}  ${formatBytes(fs.statSync(volumes[0]).size)}`);
+    onProgress?.(`Single archive: ${path.basename(volumes[0])}  (${formatBytes(fs.statSync(volumes[0]).size)})`);
   }
 
-  // 2 — read + concatenate
+  // 2 — read & concatenate
   onProgress?.(isMulti ? 'Joining volumes…' : 'Reading archive…');
   const chunks = volumes.map(v => fs.readFileSync(v));
   const rawGz  = chunks.length === 1 ? chunks[0] : Buffer.concat(chunks);
   onProgress?.(`  Compressed total: ${formatBytes(rawGz.length)}`);
 
   // 3 — gunzip
-  onProgress?.('Decompressing…');
+  onProgress?.('Decompressing (gunzip)…');
   let tarBuf;
   try {
     tarBuf = zlib.gunzipSync(rawGz);
@@ -223,38 +195,37 @@ async function restoreRagDb(archiveFile, outDir, onProgress) {
   onProgress?.(`  Decompressed: ${formatBytes(tarBuf.length)}`);
 
   // 4 — extract TAR
-  onProgress?.(`Extracting to ${outDir}…`);
+  onProgress?.(`Extracting to: ${outDir}`);
   const extracted = extractTarBuffer(tarBuf, outDir, onProgress);
 
-  // 5 — locate ChromaDB root (directory that contains chroma.sqlite3)
+  // 5 — locate ChromaDB root (directory containing chroma.sqlite3)
   const sqlitePath = extracted.find(f => path.basename(f) === 'chroma.sqlite3');
   const dbDir      = sqlitePath ? path.dirname(sqlitePath) : outDir;
 
   onProgress?.(`Done — ${extracted.length} file(s) extracted`);
-  onProgress?.(`DB directory: ${dbDir}`);
+  onProgress?.(`ChromaDB directory: ${dbDir}`);
 
   return { dbDir, volumeCount: volumes.length, filesExtracted: extracted.length };
 }
 
-// ==============================================================================
-// ELECTRON IPC INTEGRATION
-// ==============================================================================
+// ─── Electron IPC integration ─────────────────────────────────────────────────
 
 /**
- * Register all IPC handlers on ipcMain.
+ * Register IPC handlers on ipcMain.
  *
- *   'rag:restore'      invoke → { ok, dbDir, volumeCount, filesExtracted }
- *                              or { ok: false, error }
- *   'dialog:openFile'  invoke → string | null
- *   'dialog:openDir'   invoke → string | null
+ *   'rag:restore'         invoke(archiveFile, outDir) → { ok, dbDir, volumeCount, filesExtracted }
+ *   'rag:detect-volumes'  invoke(archiveFile)         → { ok, isMulti, volumes, totalSize }
+ *   'dialog:openFile'     invoke()                    → string | null
+ *   'dialog:openDir'      invoke()                    → string | null
  *
- * Progress messages are forwarded to the renderer via 'rag:progress' events.
+ * Progress forwarded to renderer via 'rag:progress' events.
  *
  * @param {Electron.IpcMain} ipcMain
  */
 function registerRestoreHandlers(ipcMain) {
   const { BrowserWindow, dialog } = require('electron');
 
+  // ── Restore ────────────────────────────────────────────────────────────────
   ipcMain.handle('rag:restore', async (event, archiveFile, outDir) => {
     const win = BrowserWindow.fromWebContents(event.sender);
     const onProgress = msg => {
@@ -268,11 +239,25 @@ function registerRestoreHandlers(ipcMain) {
     }
   });
 
+  // ── Detect volumes only (no extraction) ───────────────────────────────────
+  ipcMain.handle('rag:detect-volumes', (_event, archiveFile) => {
+    try {
+      const { isMulti, volumes } = detectVolumes(archiveFile);
+      const totalSize = volumes.reduce((s, v) => {
+        try { return s + fs.statSync(v).size; } catch { return s; }
+      }, 0);
+      return { ok: true, isMulti, volumes, totalSize };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  });
+
+  // ── File / directory pickers ───────────────────────────────────────────────
   ipcMain.handle('dialog:openFile', async () => {
     const { filePaths } = await dialog.showOpenDialog({
       title:      'Select RAG archive',
       filters:    [{ name: 'RAG Archives', extensions: ['gz'] }],
-      properties: ['openFile'],
+      properties: ['openFile']
     });
     return filePaths[0] ?? null;
   });
@@ -280,18 +265,16 @@ function registerRestoreHandlers(ipcMain) {
   ipcMain.handle('dialog:openDir', async () => {
     const { filePaths } = await dialog.showOpenDialog({
       title:      'Select output directory',
-      properties: ['openDirectory', 'createDirectory'],
+      properties: ['openDirectory', 'createDirectory']
     });
     return filePaths[0] ?? null;
   });
 }
 
-// ==============================================================================
-// EXPORTS
-// ==============================================================================
+// ─── Exports ──────────────────────────────────────────────────────────────────
 
 module.exports = {
   restoreRagDb,             // programmatic use
   registerRestoreHandlers,  // Electron IPC wiring
-  detectVolumes,            // inspect volumes without extracting
+  detectVolumes             // inspect volumes without extracting
 };
