@@ -19,7 +19,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TSCG · Color Synthesis Federated</title>
+  <title>TSCG — Color Synthesis</title>
 <style>
 /*
  * styles.css (embedded)
@@ -91,19 +91,26 @@ body {
   display: flex;
   align-items: center;
   padding: 0 10px;
-  gap: 8px;
+  gap: 10px;
   flex-shrink: 0;
 }
-.titlebar-title {
-  font-size: 13px; font-weight: bold; color: var(--gold);
-  letter-spacing: 0.3px; flex: 1; white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis;
+.titlebar-logo {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--rgb-c); text-transform: uppercase; flex-shrink: 0;
 }
-.titlebar-badge {
-  font-size: 10px; color: var(--dim);
-  border: 1px solid var(--border); border-radius: 3px;
-  padding: 1px 5px; flex-shrink: 0;
+.titlebar-sep { color: var(--border); font-size: 16px; flex-shrink: 0; }
+.titlebar-poclet-name {
+  font-size: 14px; font-weight: 600; color: var(--text);
+  flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+.titlebar-chips { display: flex; gap: 6px; flex-shrink: 0; }
+.chip {
+  padding: 2px 8px; border-radius: 20px;
+  font-size: 11px; font-weight: 500; border: 1px solid transparent;
+}
+.chip-domain  { background: rgba(100,200,255,0.12); border-color: rgba(100,200,255,0.3); color: var(--hsl-c); }
+.chip-type    { background: rgba(255,100,100,0.12); border-color: rgba(255,100,100,0.3); color: var(--rgb-c); }
+.chip-version { background: rgba(80,220,160,0.12);  border-color: rgba(80,220,160,0.3);  color: var(--cmy-c); }
 
 /* ═══════════════════════════════
    THREE-PANEL SHELL
@@ -434,10 +441,14 @@ input[type="range"]::-webkit-slider-thumb {
 ══════════════════════════════════════════════ -->
 <div class="titlebar">
   <a id="btn-home" href="https://echopraxium.github.io/tscg/" title="Back to Poclet Gallery" target="_self"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></a>
-  <span class="titlebar-title">
-    TSCG &middot; Color Synthesis Federated
-    <span class="titlebar-badge">M0 &middot; Federated Poclet</span>
-  </span>
+  <span class="titlebar-logo">TSCG</span>
+  <span class="titlebar-sep">&middot;</span>
+  <span class="titlebar-poclet-name">Color Synthesis</span>
+  <div class="titlebar-chips">
+    <span class="chip chip-domain">Optics / Color Science</span>
+    <span class="chip chip-type">m3:Poclet</span>
+    <span class="chip chip-version">v1.1.0</span>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════════════
@@ -1607,7 +1618,15 @@ function setRTab(tab) {
 }
 
 function updateDescriptionTab() {
-  document.getElementById('rtab-description').innerHTML = renderMarkdown(README[activeModel]);
+  const mcol = MODEL_RGB_CSS[activeModel];
+  const header = `<div style="margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)">
+    <div style="font-size:16px;font-weight:bold;color:var(--gold);letter-spacing:0.3px">🎨 Color Synthesis</div>
+    <div style="font-size:11px;color:var(--dim);margin-top:3px">
+      Active model: <span style="color:${mcol};font-weight:bold">${activeModel}</span>
+      &nbsp;·&nbsp; Federated Poclet (M0 Layer)
+    </div>
+  </div>`;
+  document.getElementById('rtab-description').innerHTML = header + renderMarkdown(README[activeModel]);
 }
 
 function updateConceptsTab() {
