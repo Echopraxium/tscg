@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<!--
+  ColorSynthesis_sim.html
+  =======================
+  TSCG Poclet Simulation — Color Synthesis Federated (Static HTML)
+  Author: Echopraxium with the collaboration of Claude AI
+
+  Structure:
+    ┌─────────────────────── Title Bar ───────────────────────────┐
+    │ 🎨 TSCG · Color Synthesis Federated   [M0]                  │
+    ├─────────────┬────────────────────────┬───────────────────────┤
+    │  LEFT       │  CENTER                │  RIGHT                │
+    │  Sliders    │  Tabs RGB/HSL/CMY/CMYK │  [Description]        │
+    │  + Swatch   │  RGB Cube (draggable)  │  [Concepts  ]         │
+    │  + Codes    │  Named Colors          │  [Scores    ]         │
+    └─────────────┴────────────────────────┴───────────────────────┘
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TSCG · Color Synthesis Federated</title>
+<style>
+/*
+ * styles.css (embedded)
+ * =====================
+ * TSCG Poclet Simulation — Color Synthesis Federated
+ * Author: Echopraxium with the collaboration of Claude AI
+ */
+
+:root {
+  --bg:        #0c0c12;
+  --panel:     #161620;
+  --panel2:    #1c1c2a;
+  --border:    #373750;
+  --text:      #dcdce6;
+  --dim:       #787890;
+  --gold:      #ffc832;
+  --green:     #50d278;
+  --red:       #dc3c3c;
+  --slider-bg: #26263a;
+  --pad: 12px;
+  --rgb-c:  #ff6464;
+  --hsl-c:  #64c8ff;
+  --cmy-c:  #50dca0;
+  --cmyk-c: #c896ff;
+  --titlebar-h: 34px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 13px;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Home button ── */
+#btn-home {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  margin-right: 4px;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+#btn-home:hover { opacity: 1; }
+
+/* ═══════════════════════════════
+   TITLE BAR
+═══════════════════════════════ */
+.titlebar {
+  height: var(--titlebar-h);
+  background: #0a0a10;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.titlebar-title {
+  font-size: 13px; font-weight: bold; color: var(--gold);
+  letter-spacing: 0.3px; flex: 1; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.titlebar-badge {
+  font-size: 10px; color: var(--dim);
+  border: 1px solid var(--border); border-radius: 3px;
+  padding: 1px 5px; flex-shrink: 0;
+}
+
+/* ═══════════════════════════════
+   THREE-PANEL SHELL
+═══════════════════════════════ */
+.shell {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════
+   LEFT PANEL
+═══════════════════════════════ */
+.panel-left {
+  width: 265px; flex-shrink: 0;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.title-area { padding: var(--pad) var(--pad) 8px; }
+.title-area h1 {
+  font-size: 15px; font-weight: bold; color: var(--gold);
+  margin-bottom: 3px; letter-spacing: 0.3px;
+}
+.domain-lbl { font-size: 11px; color: var(--dim); }
+.divider-v { height: 1px; background: var(--border); margin: 0 var(--pad); }
+.model-lbl { padding: 7px var(--pad) 5px; font-size: 13px; font-weight: bold; transition: color 0.15s; }
+
+.sliders-area { padding: 4px var(--pad) 0; overflow: hidden; }
+.slider-group        { display: none; }
+.slider-group.active { display: block; }
+
+.slider-item { margin-bottom: 16px; }
+.slider-row {
+  display: flex; justify-content: space-between;
+  align-items: baseline; margin-bottom: 5px;
+}
+.slider-row .s-lbl { font-size: 12px; color: var(--text); }
+.slider-row .s-val {
+  font-size: 12px; font-family: Consolas, 'Courier New', monospace;
+  min-width: 52px; text-align: right;
+}
+input[type="range"] {
+  -webkit-appearance: none; width: 100%; height: 5px;
+  border-radius: 2px;
+  background: #4a4a6a;
+  outline: none; cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  background: #ffffff;
+  cursor: pointer;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  border-radius: 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.7);
+}
+
+.color-readout {
+  margin: 6px var(--pad) var(--pad);
+  background: var(--panel2); border: 1px solid var(--border);
+  border-radius: 6px; padding: 10px var(--pad);
+}
+.swatch {
+  height: 42px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.18);
+  display: flex; align-items: center; justify-content: center;
+  font-family: Consolas, monospace; font-size: 15px; font-weight: bold;
+  margin-bottom: 10px; letter-spacing: 1.5px; transition: background 0.1s;
+}
+.code-row {
+  display: flex; gap: 6px; margin-bottom: 4px;
+  font-size: 11px; font-family: Consolas, monospace; transition: opacity 0.2s;
+}
+.code-row .c-lbl { width: 40px; font-weight: bold; }
+.code-row .c-val  { flex: 1; color: var(--text); }
+
+/* ═══════════════════════════════
+   CENTER PANEL
+═══════════════════════════════ */
+.panel-center {
+  flex: 1; background: #101018;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.tabs { display: flex; padding: 8px 8px 0; gap: 4px; flex-shrink: 0; }
+.tab {
+  flex: 1; height: 30px; border: 2px solid; border-radius: 5px;
+  font-size: 13px; font-weight: bold; cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  font-family: 'Segoe UI', sans-serif;
+}
+.tab[data-m="RGB"]  { border-color: var(--rgb-c); }
+.tab[data-m="HSL"]  { border-color: var(--hsl-c); }
+.tab[data-m="CMY"]  { border-color: var(--cmy-c); }
+.tab[data-m="CMYK"] { border-color: var(--cmyk-c); }
+.tab.active[data-m="RGB"]  { background: var(--rgb-c);  color: #0c0c12; }
+.tab.active[data-m="HSL"]  { background: var(--hsl-c);  color: #0c0c12; }
+.tab.active[data-m="CMY"]  { background: var(--cmy-c);  color: #0c0c12; }
+.tab.active[data-m="CMYK"] { background: var(--cmyk-c); color: #0c0c12; }
+.tab:not(.active)[data-m="RGB"]  { background:rgba(255,100,100,0.10); color:var(--rgb-c); }
+.tab:not(.active)[data-m="HSL"]  { background:rgba(100,200,255,0.10); color:var(--hsl-c); }
+.tab:not(.active)[data-m="CMY"]  { background:rgba(80,220,160,0.10);  color:var(--cmy-c); }
+.tab:not(.active)[data-m="CMYK"] { background:rgba(200,150,255,0.10); color:var(--cmyk-c); }
+
+.cube-wrapper { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 4px; overflow: hidden; }
+.cube-title { font-size: 12px; color: var(--dim); margin: 5px 0 3px; }
+#cubeCanvas { display: block; cursor: grab; }
+#cubeCanvas.dragging { cursor: grabbing; }
+.principle-lbl { font-size: 11px; color: var(--dim); align-self: flex-start; padding: 3px 4px; }
+
+/* Splitter haut/bas (cube / named colors) */
+#splitter-tb {
+  height: 5px;
+  flex-shrink: 0;
+  background: var(--border);
+  cursor: row-resize;
+  transition: background 0.15s;
+  position: relative;
+}
+#splitter-tb:hover,
+#splitter-tb.dragging { background: var(--gold); }
+#splitter-tb::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px; height: 1px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 1px;
+}
+
+.named-area { flex-shrink: 0; padding: 4px 8px 0; display: flex; flex-direction: column; }
+.named-title { font-size: 10px; color: var(--dim); margin-bottom: 4px; flex-shrink: 0; }
+.named-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.nc-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
+.nc-swatch { width: 100%; height: 22px; border-radius: 3px; border: 2px solid var(--border); transition: border-color 0.1s, transform 0.1s; }
+.nc-btn.active .nc-swatch { border-color: var(--gold); transform: scale(1.08); }
+.nc-lbl { font-size: 9px; color: var(--dim); transition: color 0.1s; }
+.nc-btn.active .nc-lbl { color: var(--gold); }
+.source-lbl { font-size: 10px; color: #2d2d45; padding: 1px 4px 2px; flex-shrink: 0; }
+
+/* ═══════════════════════════════
+   SPLITTERS
+═══════════════════════════════ */
+#splitter-lc {
+  width: 5px; flex-shrink: 0;
+  background: var(--border); cursor: col-resize;
+  transition: background 0.15s; position: relative;
+}
+#splitter-lc:hover,
+#splitter-lc.dragging { background: var(--gold); }
+#splitter-lc::after {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1px; height: 32px;
+  background: rgba(255,255,255,0.25); border-radius: 1px;
+}
+
+#splitter-cr {
+  width: 5px; flex-shrink: 0;
+  background: var(--border); cursor: col-resize;
+  transition: background 0.15s; position: relative;
+}
+#splitter-cr:hover,
+#splitter-cr.dragging { background: var(--gold); }
+#splitter-cr::after {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1px; height: 32px;
+  background: rgba(255,255,255,0.25); border-radius: 1px;
+}
+
+/* ═══════════════════════════════
+   RIGHT PANEL — onglets info
+═══════════════════════════════ */
+.panel-right {
+  width: 480px; flex-shrink: 0;
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+
+.rtab-bar {
+  display: flex; border-bottom: 1px solid var(--border);
+  flex-shrink: 0; background: #0e0e18;
+}
+.rtab {
+  flex: 1; height: 32px; background: transparent;
+  border: none; border-bottom: 3px solid transparent;
+  color: var(--dim); font-size: 12px; font-weight: bold;
+  font-family: 'Segoe UI', sans-serif; cursor: pointer;
+  transition: color 0.12s, border-color 0.12s; letter-spacing: 0.2px;
+}
+.rtab:hover { color: var(--text); }
+.rtab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+.rtab-content {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  padding: 10px 12px; display: none;
+}
+.rtab-content.active { display: block; }
+.rtab-content::-webkit-scrollbar { width: 5px; }
+.rtab-content::-webkit-scrollbar-track { background: transparent; }
+.rtab-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ════ DESCRIPTION — Markdown ════ */
+.md-body { color: var(--text); font-size: 12px; line-height: 1.6; }
+.md-body h1 {
+  font-size: 14px; font-weight: bold; color: var(--gold);
+  margin: 0 0 6px; padding-bottom: 5px; border-bottom: 1px solid var(--border);
+}
+.md-body h2 {
+  font-size: 13px; font-weight: bold; color: var(--gold);
+  margin: 14px 0 6px; padding-bottom: 3px; border-bottom: 1px solid var(--border);
+}
+.md-body h3 { font-size: 12px; font-weight: bold; color: #b4c8e0; margin: 10px 0 4px; }
+.md-body p  { margin: 0 0 7px; }
+.md-body ul, .md-body ol { margin: 0 0 7px; padding-left: 18px; }
+.md-body li { margin-bottom: 3px; }
+.md-body code {
+  font-family: Consolas, 'Courier New', monospace; font-size: 11px;
+  background: var(--panel2); border: 1px solid var(--border);
+  border-radius: 3px; padding: 1px 4px; color: #a0d0ff;
+}
+.md-body pre {
+  background: var(--panel2); border: 1px solid var(--border);
+  border-radius: 4px; padding: 8px 10px; margin: 0 0 8px;
+  overflow-x: auto; font-family: Consolas, 'Courier New', monospace;
+  font-size: 11px; color: #a0d0ff; white-space: pre;
+}
+.md-body pre code { background: none; border: none; padding: 0; }
+.md-body blockquote {
+  border-left: 3px solid var(--gold); margin: 0 0 8px; padding: 4px 10px;
+  background: rgba(255,200,50,0.05); color: #c8c870; font-style: italic;
+  border-radius: 0 4px 4px 0;
+}
+.md-body table { border-collapse: collapse; width: 100%; margin: 0 0 10px; font-size: 11px; }
+.md-body th {
+  background: var(--panel2); color: var(--gold);
+  border: 1px solid var(--border); padding: 4px 7px; text-align: left;
+}
+.md-body td { border: 1px solid var(--border); padding: 3px 7px; vertical-align: top; }
+.md-body tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+.md-body strong { color: #e0e0f0; font-weight: bold; }
+.md-body em     { color: #c8c870; font-style: italic; }
+.md-body a      { color: #64b4ff; text-decoration: none; }
+.md-body hr     { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+
+/* ════ CONCEPTS ════ */
+.section-title {
+  font-size: 12px; font-weight: bold; color: var(--gold);
+  margin-bottom: 8px; padding-bottom: 5px;
+  border-bottom: 1px solid var(--border); letter-spacing: 0.2px;
+}
+.concepts-meta { font-size: 11px; color: var(--dim); margin-bottom: 8px; }
+.concepts-pattern {
+  background: var(--panel2); border: 1px solid var(--border);
+  border-left: 3px solid var(--gold); border-radius: 4px;
+  padding: 7px 10px; font-size: 11px; font-family: Consolas, monospace;
+  color: #c8e4a0; margin-bottom: 12px; line-height: 1.5;
+}
+.cat-block { margin-bottom: 12px; }
+.cat-title {
+  font-size: 11px; font-weight: bold; color: var(--dim);
+  text-transform: uppercase; letter-spacing: 0.6px;
+  margin-bottom: 5px; padding-bottom: 3px; border-bottom: 1px solid var(--border);
+}
+.concept-row {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 4px 0; border-bottom: 1px solid rgba(55,55,80,0.4);
+}
+.concept-row:last-child { border-bottom: none; }
+.concept-name {
+  font-size: 11px; font-family: Consolas, monospace; color: #a0d0ff;
+  min-width: 115px; flex-shrink: 0;
+}
+.concept-formula {
+  font-size: 10px; font-family: Consolas, monospace;
+  color: #c8e4a0; min-width: 72px; flex-shrink: 0;
+}
+.concept-role { font-size: 11px; color: var(--dim); flex: 1; line-height: 1.4; }
+
+/* ════ SCORES ════ */
+.scores-section { margin-bottom: 14px; }
+
+.abar-row { display: flex; align-items: center; gap: 6px; margin-bottom: 7px; }
+.abar-dim { width: 14px; font-weight: bold; font-size: 12px; font-family: Consolas, monospace; flex-shrink: 0; }
+.abar-track { flex: 1; height: 11px; background: var(--slider-bg); border-radius: 3px; position: relative; }
+.abar-fill  { height: 100%; border-radius: 3px; transition: width 0.08s linear; }
+.abar-base  { position: absolute; top: -2px; width: 2px; height: 15px; background: rgba(200,200,200,0.4); pointer-events: none; }
+.abar-val   { width: 38px; text-align: right; font-size: 11px; font-family: Consolas, monospace; color: var(--dim); flex-shrink: 0; }
+
+.revoi-header { display: flex; align-items: center; gap: 4px; margin-bottom: 5px; }
+.revoi-d-col  { width: 16px; flex-shrink: 0; }
+.revoi-m-col  { flex: 1; text-align: center; font-size: 10px; font-weight: bold; }
+.revoi-row    { display: flex; align-items: center; gap: 4px; margin-bottom: 5px; }
+.revoi-dim    { width: 16px; font-weight: bold; font-size: 11px; font-family: Consolas, monospace; flex-shrink: 0; }
+.revoi-cell   { flex: 1; display: flex; flex-direction: column; gap: 1px; }
+.revoi-bar-track { height: 8px; background: var(--slider-bg); border-radius: 2px; overflow: hidden; }
+.revoi-bar-fill  { height: 100%; border-radius: 2px; }
+.revoi-num { font-size: 9px; font-family: Consolas, monospace; color: var(--dim); text-align: center; }
+
+.gap-box {
+  background: var(--panel2); border: 1px solid var(--border);
+  border-radius: 5px; padding: 9px 12px; margin-bottom: 10px;
+}
+.gap-row   { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+.gap-value { font-size: 16px; font-weight: bold; font-family: Consolas, monospace; transition: color 0.2s; }
+.gap-interp{ font-size: 11px; color: var(--dim); }
+
+.st-swatch-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.st-swatch { width: 22px; height: 22px; border-radius: 4px; border: 1px solid var(--border); flex-shrink: 0; transition: background 0.1s; }
+.st-hex    { font-family: Consolas, monospace; font-size: 14px; font-weight: bold; }
+.st-row    { margin-bottom: 5px; font-size: 12px; }
+.st-row .lbl { color: var(--dim); }
+
+.emergent-box {
+  background: var(--panel2); border: 1px solid var(--border);
+  border-left: 3px solid var(--gold); border-radius: 4px;
+  padding: 6px 10px; font-size: 11px; color: var(--gold); margin-top: 8px;
+}
+.emergent-lbl { color: var(--dim); font-size: 10px; margin-bottom: 2px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     TITLE BAR
+══════════════════════════════════════════════ -->
+<div class="titlebar">
+  <a id="btn-home" href="https://echopraxium.github.io/tscg/" title="Back to Poclet Gallery" target="_self"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></a>
+  <span class="titlebar-title">
+    TSCG &middot; Color Synthesis Federated
+    <span class="titlebar-badge">M0 &middot; Federated Poclet</span>
+  </span>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     THREE-PANEL SHELL
+══════════════════════════════════════════════ -->
+<div class="shell">
+
+  <!-- ══ LEFT — Sliders ══ -->
+  <div class="panel-left">
+    <div class="title-area">
+      <h1>🎨 Color Synthesis Federated</h1>
+      <p class="domain-lbl">Domain: Optics / Color Science</p>
+    </div>
+    <div class="divider-v"></div>
+    <div class="model-lbl" id="modelLbl">RGB Controls</div>
+
+    <div class="sliders-area">
+
+      <!-- RGB -->
+      <div class="slider-group active" data-m="RGB">
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Red</span>
+            <span class="s-val" id="vr" style="color:#ff6464">180</span>
+          </div>
+          <input type="range" id="sr" min="0" max="255" value="180" oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Green</span>
+            <span class="s-val" id="vg" style="color:#50c850">80</span>
+          </div>
+          <input type="range" id="sg" min="0" max="255" value="80" oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Blue</span>
+            <span class="s-val" id="vb" style="color:#6478ff">220</span>
+          </div>
+          <input type="range" id="sb" min="0" max="255" value="220" oninput="onSlide()">
+        </div>
+      </div>
+
+      <!-- HSL -->
+      <div class="slider-group" data-m="HSL">
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Hue</span>
+            <span class="s-val" id="vh" style="color:#c8b464">0°</span>
+          </div>
+          <input type="range" id="sh" min="0" max="360" value="0" oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Saturation</span>
+            <span class="s-val" id="vs" style="color:#b482dc">50%</span>
+          </div>
+          <input type="range" id="ss" min="0" max="100" value="50" oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Lightness</span>
+            <span class="s-val" id="vl" style="color:#b4dcb4">50%</span>
+          </div>
+          <input type="range" id="sl" min="0" max="100" value="50" oninput="onSlide()">
+        </div>
+      </div>
+
+      <!-- CMY -->
+      <div class="slider-group" data-m="CMY">
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Cyan</span>
+            <span class="s-val" id="vcy" style="color:#3cc8c8">0%</span>
+          </div>
+          <input type="range" id="scy" min="0" max="100" value="0" oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Magenta</span>
+            <span class="s-val" id="vmg" style="color:#dc3cb4">0%</span>
+          </div>
+          <input type="range" id="smg" min="0" max="100" value="0" oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Yellow</span>
+            <span class="s-val" id="vyw" style="color:#dcc83c">0%</span>
+          </div>
+          <input type="range" id="syw" min="0" max="100" value="0" oninput="onSlide()">
+        </div>
+      </div>
+
+      <!-- CMYK -->
+      <div class="slider-group" data-m="CMYK">
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Cyan</span>
+            <span class="s-val" id="vck" style="color:#3cc8c8">0%</span>
+          </div>
+          <input type="range" id="sck" min="0" max="100" value="0" oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Magenta</span>
+            <span class="s-val" id="vmk" style="color:#dc3cb4">0%</span>
+          </div>
+          <input type="range" id="smk" min="0" max="100" value="0" oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Yellow</span>
+            <span class="s-val" id="vyk" style="color:#dcc83c">0%</span>
+          </div>
+          <input type="range" id="syk" min="0" max="100" value="0" oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Black (K)</span>
+            <span class="s-val" id="vkk" style="color:#a0a0a0">0%</span>
+          </div>
+          <input type="range" id="skk" min="0" max="100" value="0" oninput="onSlide()">
+        </div>
+      </div>
+
+    </div><!-- /sliders-area -->
+
+    <!-- Color readout -->
+    <div class="color-readout">
+      <div class="swatch" id="swatch">
+        <span id="hex-val">#B450DC</span>
+        <button id="btn-eyedropper" title="Pick color from screen"
+                onclick="pickColor()"
+                style="background:none; border:none; cursor:pointer; padding:2px 4px;
+                       font-size:16px; line-height:1; border-radius:4px; margin-left:6px;
+                       opacity:0.7; transition:opacity .15s, background .15s;"
+                onmouseover="this.style.opacity='1';this.style.background='rgba(255,255,255,0.15)'"
+                onmouseout="this.style.opacity='0.7';this.style.background='none'">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+               xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;pointer-events:none">
+            <path d="M20.71 5.63l-2.34-2.34a1 1 0 0 0-1.41 0l-3.12 3.12-1.41-1.42-1.42 1.42
+                     1.41 1.41-6.6 6.6A2 2 0 0 0 5 16v3h3a2 2 0 0 0 1.42-.59l6.6-6.6
+                     1.41 1.42 1.42-1.42-1.42-1.41 3.12-3.12a1 1 0 0 0 0-1.65z"
+                  fill="currentColor"/>
+            <circle cx="6.5" cy="17.5" r="1" fill="currentColor" opacity="0.7"/>
+          </svg>
+        </button>
+      </div>
+      <div class="code-row" id="code-rgb">
+        <span class="c-lbl" style="color:var(--rgb-c)">RGB:</span>
+        <span class="c-val"></span>
+      </div>
+      <div class="code-row" id="code-hsl">
+        <span class="c-lbl" style="color:var(--hsl-c)">HSL:</span>
+        <span class="c-val"></span>
+      </div>
+      <div class="code-row" id="code-cmy">
+        <span class="c-lbl" style="color:var(--cmy-c)">CMY:</span>
+        <span class="c-val"></span>
+      </div>
+      <div class="code-row" id="code-cmyk">
+        <span class="c-lbl" style="color:var(--cmyk-c)">CMYK:</span>
+        <span class="c-val"></span>
+      </div>
+    </div>
+
+    <!-- Reset button -->
+    <div style="padding: 0 var(--pad) var(--pad);">
+      <button onclick="resetColor()"
+              style="width:100%; height:30px; background:var(--panel2);
+                     border:1px solid var(--border); border-radius:5px;
+                     color:var(--text); font-size:12px; font-family:'Segoe UI',sans-serif;
+                     cursor:pointer; letter-spacing:0.3px;
+                     transition:border-color .12s, color .12s;"
+              onmouseover="this.style.borderColor='#ffc832';this.style.color='#ffc832'"
+              onmouseout="this.style.borderColor='#373750';this.style.color='#dcdce6'">
+        &#8634; Reset
+      </button>
+    </div>
+  </div><!-- /panel-left -->
+
+  <!-- Splitter redimensionnable left / center -->
+  <div id="splitter-lc"></div>
+
+  <!-- ══ CENTER — Cube + Named Colors ══ -->
+  <div class="panel-center">
+
+    <div class="tabs" id="tabBar">
+      <button class="tab active" data-m="RGB"  onclick="setModel('RGB')">RGB</button>
+      <button class="tab"        data-m="HSL"  onclick="setModel('HSL')">HSL</button>
+      <button class="tab"        data-m="CMY"  onclick="setModel('CMY')">CMY</button>
+      <button class="tab"        data-m="CMYK" onclick="setModel('CMYK')">CMYK</button>
+    </div>
+
+    <div class="cube-wrapper">
+      <div class="cube-title">
+        RGB Color Cube &nbsp;
+        <span id="dragHint" style="opacity:0.6">[drag to rotate]</span>
+      </div>
+      <canvas id="cubeCanvas" width="492"></canvas>
+      <div class="principle-lbl" id="principleLbl">Principle: Additive (light)</div>
+    </div>
+
+    <div id="splitter-tb"></div>
+
+    <div class="named-area" id="namedArea">
+      <div class="named-title">Named Colors</div>
+      <div class="named-grid" id="namedGrid"></div>
+      <div class="source-lbl">
+        Sources: M0_RGB / M0_HSL / M0_CMY / M0_CMYK + M0_ColorSynthesis_Federated
+      </div>
+    </div>
+
+  </div><!-- /panel-center -->
+
+  <!-- Splitter redimensionnable center / right -->
+  <div id="splitter-cr"></div>
+
+  <!-- ══ RIGHT — Onglets Description / Concepts / Scores ══ -->
+  <div class="panel-right">
+
+    <div class="rtab-bar">
+      <button class="rtab active" data-tab="description" onclick="setRTab('description')">Description</button>
+      <button class="rtab"        data-tab="concepts"    onclick="setRTab('concepts')">Concepts</button>
+      <button class="rtab"        data-tab="scores"      onclick="setRTab('scores')">Scores</button>
+    </div>
+
+    <div class="rtab-content active" data-tab="description" id="rtab-description"></div>
+    <div class="rtab-content"        data-tab="concepts"    id="rtab-concepts"></div>
+    <div class="rtab-content"        data-tab="scores"      id="rtab-scores"></div>
+
+  </div><!-- /panel-right -->
+
+</div><!-- /shell -->
+
+<script>
+/**
+ * renderer.js (embedded)
+ * ======================
+ * TSCG Poclet Simulation — Color Synthesis Federated (Static HTML)
+ * Author: Echopraxium with the collaboration of Claude AI
+ */
+
+'use strict';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// README  (source Markdown par modèle)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const README = {
+
+// ── RGB ──────────────────────────────────────────────────────────────────────
+RGB: `# M0_RGB_Additive — RGB Additive Color Synthesis Poclet
+
+**TSCG Framework · M0 Layer · Color Synthesis Domain**
+**Version:** 1.1.0 | **Created:** 2026-01-17 | **Updated:** 2026-02-25
+**Author:** Echopraxium with the collaboration of Claude AI
+
+---
+
+## Overview
+
+\`M0_RGB_Additive\` is a TSCG M0-layer poclet modeling **additive color synthesis** using Red, Green, and Blue light primaries.
+
+It is the canonical model for all light-emitting displays (LCD, OLED, CRT, projectors) and the primary member of the Color Synthesis Federated Poclet.
+
+### Key Characteristics
+
+| Attribute | Value |
+|---|---|
+| Domain | Optics / Color Science |
+| Principle | Additive Synthesis (light emission + superposition) |
+| Physical basis | Electromagnetic wave superposition (380–740 nm) |
+| Components | 3 (R, G, B channels) |
+| Poclet type | Composite (Specialized) |
+| M2 GenericConcepts | 15 (29% coverage) |
+
+---
+
+## TSCG Dual-Space Analysis
+
+### Territory Space — Eagle Eye (ASFID)
+
+\`\`\`
+|Ω_RGB⟩ = 0.75|A⟩ + 0.85|S⟩ + 0.95|F⟩ + 0.95|I⟩ + 0.40|D⟩
+\`\`\`
+
+| Dimension | Score | Justification |
+|---|---|---|
+| A (Attractor) | 0.75 | Strong perceptual attractor (trichromatic vision) |
+| S (Structure) | 0.85 | Well-structured 3-channel architecture |
+| F (Flow) | 0.95 | Dominant photon flux (light emission) |
+| I (Information) | 0.95 | High information content (3 × 8-bit channels) |
+| D (Dynamics) | 0.40 | Low dynamics (static model) |
+
+### Map Space — Sphinx Eye (REVOI)
+
+\`\`\`
+|M_RGB⟩_REVOI = 0.90|R⟩ + 0.95|E⟩ + 0.95|V⟩ + 0.90|O⟩ + 0.95|I⟩
+\`\`\`
+
+| Dimension | Score | Justification |
+|---|---|---|
+| R (Representability) | 0.90 | Excellent — RGB triplet, hex notation, widely understood |
+| E (Evolvability) | 0.95 | Spawned HSL, sRGB, HDR standards |
+| V (Verifiability) | 0.95 | Directly measurable with spectrophotometers |
+| O (Observability) | 0.90 | Directly visible on any screen |
+| I (Interoperability) | 0.95 | Universal standard (CSS, OpenGL, web, cameras) |
+
+---
+
+## Channels (Components)
+
+| Channel | GenericConcept | Wavelength | Biological Target |
+|---|---|---|---|
+| Red (R) | \`m2:Signal\` | ~620–750 nm | L-cones |
+| Green (G) | \`m2:Signal\` | ~495–570 nm | M-cones |
+| Blue (B) | \`m2:Signal\` | ~450–495 nm | S-cones |
+
+Digital range: \`[0, 255]\` (8-bit) — Analog range: \`[0.0, 1.0]\`
+
+---
+
+## Key Color Mixtures
+
+| Result | RGB | Mechanism |
+|---|---|---|
+| White | (255, 255, 255) | All cones equally stimulated |
+| Yellow | (255, 255, 0) | L+M cones — no yellow wavelength in stimulus! |
+| Cyan | (0, 255, 255) | M+S cones |
+| Magenta | (255, 0, 255) | L+S cones — non-spectral color |
+| Black | (0, 0, 0) | Absence of light |
+
+---
+
+## TSCG Validation
+
+- ✅ All 5 ASFID dimensions present
+- ✅ 15 GenericConcepts (29% coverage)
+- ✅ Minimality (3 channels — irreducible for trichromatic vision)
+- ✅ Emergence (perceived color emerges from signal fusion)
+- ✅ Signal GenericConcept central to model
+- ✅ Fusion GenericConcept explains wave superposition
+
+---
+
+## Changelog
+
+| Version | Date | Change |
+|---|---|---|
+| 1.1.0 | 2026-02-25 | Corrected \`dcterms:creator\`; renamed \`oriveAnalysis\` → \`revoiAnalysis\` |
+| 1.0.1 | 2026-01-20 | Minor corrections in GenericConceptsMobilized |
+| 1.0.0 | 2026-01-17 | Initial creation |`,
+
+// ── HSL ──────────────────────────────────────────────────────────────────────
+HSL: `# M0_HSL_Additive — HSL Additive Color Synthesis Poclet
+
+**TSCG Framework · M0 Layer · Color Synthesis Domain**
+**Version:** 1.1.0 | **Created:** 2026-01-17 | **Updated:** 2026-02-25
+**Author:** Echopraxium with the collaboration of Claude AI
+
+---
+
+## Overview
+
+\`M0_HSL_Additive\` is a TSCG M0-layer poclet modeling **perceptual additive color synthesis** using Hue, Saturation, and Lightness channels.
+
+HSL is a **bijective transformation of RGB** — same Territory (perceived color), different Map (cylindrical vs cubic coordinate system). Optimized for human perception and artistic manipulation rather than hardware rendering.
+
+### Key Characteristics
+
+| Attribute | Value |
+|---|---|
+| Domain | Optics / Color Science |
+| Principle | Additive Synthesis (Perceptual Representation) |
+| Physical basis | Same as RGB — electromagnetic superposition in perceptual coordinates |
+| Components | 3 (H, S, L channels) |
+| Poclet type | Composite (Specialized) |
+| Relation to RGB | Bijective transformation (lossless, reversible) |
+| M2 GenericConcepts | 14 |
+
+---
+
+## TSCG Dual-Space Analysis
+
+### Territory Space — Eagle Eye (ASFID)
+
+\`\`\`
+|Ω_color⟩ = 0.70|A⟩ + 0.85|S⟩ + 0.90|F⟩ + 0.95|I⟩ + 0.40|D⟩
+\`\`\`
+
+*Identical to RGB Territory — same physical light, same perception.*
+
+### Map Space — Sphinx Eye (REVOI)
+
+\`\`\`
+|M_HSL⟩_REVOI = 0.90|R⟩ + 0.95|E⟩ + 0.85|V⟩ + 0.85|O⟩ + 0.90|I⟩
+\`\`\`
+
+| Dimension | Score | Justification |
+|---|---|---|
+| R (Representability) | 0.90 | (H°, S%, L%) matches human perceptual language |
+| E (Evolvability) | 0.95 | Spawned HSV, HSI, HSB variants; RGB → HSL demonstrates Map evolution |
+| V (Verifiability) | 0.85 | Testable via bijective RGB conversion |
+| O (Observability) | 0.85 | Directly observable in all color pickers (Photoshop, CSS) |
+| I (Interoperability) | 0.90 | CSS3 \`hsl()\`, standard in all design tools |
+
+**Epistemic Gap:** \`ΔΘ ≈ 0.37\` — Small gap; HSL is a good perceptual model.
+
+---
+
+## Channels (Components)
+
+| Channel | Tensor Formula | Range | Geometry |
+|---|---|---|---|
+| Hue (H) | \`S⊗I⊗F\` | [0°, 360°) circular | Angular |
+| Saturation (S) | \`S⊗I⊗F\` | [0%, 100%] | Radial |
+| Lightness (L) | \`S⊗I⊗F\` | [0%, 100%] | Vertical |
+
+**Geometry:** HSL Cylinder = S¹ × [0,1] × [0,1]
+
+### Hue Color Wheel
+
+| Angle | Color | Angle | Color |
+|---|---|---|---|
+| 0° | Red | 180° | Cyan |
+| 60° | Yellow | 240° | Blue |
+| 120° | Green | 300° | Magenta |
+
+---
+
+## RGB ↔ HSL Transformation (Bijective)
+
+\`\`\`
+HSL → RGB:
+  C = (1 - |2L - 1|) × S   // Chroma
+  X = C × (1 - |(H/60°) mod 2 - 1|)
+  (R, G, B) = sector formula + L offset
+
+RGB → HSL:
+  L = (max + min) / 2
+  S = (max - min) / (1 - |2L - 1|)
+  H = from dominant channel
+\`\`\`
+
+---
+
+## Key Advantages and Limitations
+
+| Aspect | Detail |
+|---|---|
+| ✅ Perceptually intuitive | Hue = color type, adjustable independently |
+| ✅ Matches artistic color theory | Analogous, complementary, triadic harmonies |
+| ⚠️ Not perceptually uniform | Equal HSL distance ≠ equal perceived difference |
+| ⚠️ Singularity at gray | H undefined when S = 0 |
+
+---
+
+## TSCG Validation
+
+- ✅ All 5 ASFID dimensions present
+- ✅ 14 GenericConcepts
+- ✅ 3 channels (perceptual triplet)
+- ✅ Bijective lossless HSL ↔ RGB
+
+---
+
+## Changelog
+
+| Version | Date | Change |
+|---|---|---|
+| 1.1.0 | 2026-02-25 | Corrected \`dcterms:creator\`; renamed \`oriveAnalysis\` → \`revoiAnalysis\` |
+| 1.0.1 | 2026-01-20 | Added bijective transformation details |
+| 1.0.0 | 2026-01-17 | Initial creation |`,
+
+// ── CMY ──────────────────────────────────────────────────────────────────────
+CMY: `# M0_CMY_Subtractive — CMY Subtractive Color Synthesis Poclet
+
+**TSCG Framework · M0 Layer · Color Synthesis Domain**
+**Version:** 1.1.0 | **Created:** 2026-01-17 | **Updated:** 2026-02-25
+**Author:** Echopraxium with the collaboration of Claude AI
+
+---
+
+## Overview
+
+\`M0_CMY_Subtractive\` is a TSCG M0-layer poclet modeling **subtractive color synthesis** using Cyan, Magenta, and Yellow pigment primaries.
+
+This is the **theoretical model** of pigment/ink mixing: each primary **absorbs** (subtracts) a portion of white incident light, and the remaining transmitted spectrum produces the perceived color. It is the complement of RGB additive synthesis.
+
+> **TSCG insight:** CMY demonstrates Map falsification in action — the theoretical prediction \`CMY(100,100,100) = black\` fails with real pigments (produces muddy brown), which forced evolution to the CMYK model (Popper's falsification principle).
+
+### Key Characteristics
+
+| Attribute | Value |
+|---|---|
+| Domain | Optics / Color Science / Printing |
+| Principle | Subtractive Synthesis (pigment mixing / spectral filtering) |
+| Physical basis | Wavelength-selective absorption by pigments |
+| Components | 3 (C, M, Y channels) |
+| Poclet type | Composite (Specialized) |
+| Complementary to | RGB Additive |
+| M2 GenericConcepts | 13 |
+
+---
+
+## TSCG Dual-Space Analysis
+
+### Territory Space — Eagle Eye (ASFID)
+
+\`\`\`
+|Ω_pigment⟩ = 0.65|A⟩ + 0.75|S⟩ + 0.70|F⟩ + 0.80|I⟩ + 0.30|D⟩
+\`\`\`
+
+| Dimension | Score | Justification |
+|---|---|---|
+| A (Attractor) | 0.65 | Moderate (color stability under illumination) |
+| S (Structure) | 0.75 | Pigment particle organization, surface texture |
+| F (Flow) | 0.70 | Incident white light, reflected spectrum |
+| I (Information) | 0.80 | Spectral absorption profile |
+| D (Dynamics) | 0.30 | Low (pigments stable) |
+
+### Map Space — Sphinx Eye (REVOI)
+
+\`\`\`
+|M_CMY⟩_REVOI = 0.85|R⟩ + 0.60|E⟩ + 0.75|V⟩ + 0.70|O⟩ + 0.80|I⟩
+\`\`\`
+
+**REVOI mean ≈ 0.74** — Good theoretical Map, poor practical Map.
+**Epistemic Gap:** \`ΔΘ ≈ 0.28\` — Small gap for ideal pigments; larger for real materials.
+
+---
+
+## Channels (Components)
+
+| Channel | Absorbs | Transmits | Complement |
+|---|---|---|---|
+| Cyan (C) | Red (~620–750 nm) | G + B → Cyan | Red (RGB) |
+| Magenta (M) | Green (~495–570 nm) | R + B → Magenta | Green (RGB) |
+| Yellow (Y) | Blue (~450–495 nm) | R + G → Yellow | Blue (RGB) |
+
+**CMY ↔ RGB:** \`C = 1−R, M = 1−G, Y = 1−B\` (ideal pigments only)
+
+---
+
+## Key Color Mixtures (Subtractive)
+
+| Result | CMY | Mechanism |
+|---|---|---|
+| White | (0%, 0%, 0%) | No absorption — paper shows through |
+| Black (theoretical) | (100%, 100%, 100%) | All wavelengths absorbed — *fails in practice* |
+| Red | (0%, 100%, 100%) | M+Y absorb green+blue → red transmitted |
+| Green | (100%, 0%, 100%) | C+Y absorb red+blue → green transmitted |
+| Blue | (100%, 100%, 0%) | C+M absorb red+green → blue transmitted |
+
+---
+
+## Why CMY Evolved into CMYK
+
+| Problem | Cause | Solution |
+|---|---|---|
+| \`CMY(100,100,100) ≠ black\` | Real pigments not spectrally pure | Add K (Key/Black) channel |
+| Brown instead of black | Incomplete absorption, scattering | K provides true deep black |
+| High ink cost | Three inks needed for dark areas | K cheaper than C+M+Y |
+
+---
+
+## TSCG Validation
+
+- ✅ All 5 ASFID dimensions present
+- ✅ 13 GenericConcepts
+- ✅ Minimality (3 channels — theoretical primaries)
+- ✅ Falsification principle illustrated (CMY → CMYK evolution)
+
+---
+
+## Changelog
+
+| Version | Date | Change |
+|---|---|---|
+| 1.1.0 | 2026-02-25 | Corrected \`dcterms:creator\`; renamed \`oriveAnalysis\` → \`revoiAnalysis\` |
+| 1.0.1 | 2026-01-20 | Added Popper falsification analysis |
+| 1.0.0 | 2026-01-17 | Initial creation |`,
+
+// ── CMYK ─────────────────────────────────────────────────────────────────────
+CMYK: `# M0_CMYK_Subtractive — CMYK Subtractive Color Synthesis Poclet
+
+**TSCG Framework · M0 Layer · Color Synthesis Domain**
+**Version:** 1.1.0 | **Created:** 2026-01-17 | **Updated:** 2026-02-25
+**Author:** Echopraxium with the collaboration of Claude AI
+
+---
+
+## Overview
+
+\`M0_CMYK_Subtractive\` is a TSCG M0-layer poclet modeling the **practical subtractive color synthesis** used in the commercial printing industry.
+
+It extends the theoretical CMY model with a fourth **Key (Black)** channel, solving the fundamental failure of pure CMY (\`CMY(100,100,100) ≠ black\`). CMYK is the global industry standard for all printed materials.
+
+> **TSCG insight:** CMYK exemplifies the \`m2:Optimization\` GenericConcept — the K channel optimizes the CMY model for real-world constraints (true black, ink cost reduction, process stability). It also demonstrates Map evolution through falsification.
+
+### Key Characteristics
+
+| Attribute | Value |
+|---|---|
+| Domain | Printing / Commercial Graphics |
+| Principle | Subtractive Synthesis (ink layering) + Practical Optimization (K channel) |
+| Physical basis | Spectral absorption by inks + opaque black overlay |
+| Components | 4 (C, M, Y, K channels) |
+| Poclet type | Composite (Specialized, Extended) |
+| Extends | CMY (adds Key channel) |
+| M2 GenericConcepts | 15 |
+
+---
+
+## TSCG Dual-Space Analysis
+
+### Territory Space — Eagle Eye (ASFID)
+
+\`\`\`
+|Ω_print⟩ = 0.70|A⟩ + 0.80|S⟩ + 0.65|F⟩ + 0.85|I⟩ + 0.25|D⟩
+\`\`\`
+
+### Map Space — Sphinx Eye (REVOI)
+
+\`\`\`
+|M_CMYK⟩_REVOI = 0.90|R⟩ + 0.85|E⟩ + 0.90|V⟩ + 0.85|O⟩ + 0.95|I⟩
+\`\`\`
+
+| Dimension | Score | Justification |
+|---|---|---|
+| R (Representability) | 0.90 | (C%, M%, Y%, K%) — printer-intuitive notation |
+| E (Evolvability) | 0.85 | CMY→CMYK; spawned hexachrome; GCR/UCR refined |
+| V (Verifiability) | 0.90 | Measured with densitometers; ISO 12647 compliance |
+| O (Observability) | 0.85 | Ubiquitous in printed materials; halftone dots visible under loupe |
+| I (Interoperability) | 0.95 | ISO 12647, SWOP, Fogra — global standards |
+
+**REVOI mean ≈ 0.89** — Excellent Map quality.
+**Epistemic Gap:** \`ΔΘ ≈ 0.27\` — Small gap; CMYK is an excellent practical model.
+
+---
+
+## Channels (Components)
+
+| Channel | Mechanism | Range |
+|---|---|---|
+| Cyan (C) | Absorbs red light | [0%, 100%] |
+| Magenta (M) | Absorbs green light | [0%, 100%] |
+| Yellow (Y) | Absorbs blue light | [0%, 100%] |
+| Key (K) | Opaque black overlay (non-spectral) | [0%, 100%] |
+
+**TAC (Total Area Coverage):** C + M + Y + K ≤ 300–400% (paper saturation limit)
+
+---
+
+## Black Generation Strategies
+
+| Strategy | Principle | Best Use |
+|---|---|---|
+| **GCR** | \`K = min(C,M,Y)\` | General commercial printing |
+| **UCR** | Replace CMY only in dark areas | High-quality reproduction |
+| Maximum K | Maximize K, minimize CMY | Newspapers, low-cost |
+| Minimum K | Minimize K, maximize CMY | Fine art reproduction |
+
+---
+
+## Halftoning
+
+| Technique | Method | Use |
+|---|---|---|
+| AM Screening | Fixed spacing, variable dot size | Traditional offset |
+| FM Screening | Fixed dot size, variable spacing | High-quality digital |
+
+**Rosette angles:** C: 105° / M: 75° / Y: 90° / K: 45°
+
+---
+
+## Key Color Mixtures
+
+| Result | CMYK | Notes |
+|---|---|---|
+| Pure Black | (0%, 0%, 0%, 100%) | K only — true deep black |
+| Rich Black | (60%, 40%, 40%, 100%) | Dense for large areas |
+| White | (0%, 0%, 0%, 0%) | Paper white — no ink |
+
+---
+
+## TSCG Validation
+
+- ✅ All 5 ASFID dimensions present
+- ✅ 15 GenericConcepts
+- ✅ Minimality (4 channels — practical minimum for quality printing)
+- ✅ Optimization GenericConcept: K channel solves CMY failure
+- ✅ Map evolution: CMY (theory) → CMYK (practice)
+
+---
+
+## Changelog
+
+| Version | Date | Change |
+|---|---|---|
+| 1.1.0 | 2026-02-25 | Corrected \`dcterms:creator\`; renamed \`oriveAnalysis\` → \`revoiAnalysis\` |
+| 1.0.1 | 2026-01-20 | Added halftoning section (AM/FM, rosette) |
+| 1.0.0 | 2026-01-17 | Initial creation |`,
+}; // end README
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GENERIC CONCEPTS DATA
+// ─────────────────────────────────────────────────────────────────────────────
+
+const CONCEPTS = {
+  RGB: {
+    count: 15,
+    pattern: 'Signal × Fusion → emergent Synergy\nR_wave ⊕ G_wave ⊕ B_wave → Perceived Color',
+    categories: [
+      { name: 'Structural', concepts: [
+        { name: 'm2:Component',    formula: 'S⊗I',     role: 'R, G, B as elementary parts' },
+        { name: 'm2:Space',        formula: 'S⊗I',     role: 'RGB color space (unit cube ℝ³)' },
+        { name: 'm2:Topology',     formula: 'S⊗I',     role: 'Compact, connected, simply-connected' },
+        { name: 'm2:Symmetry',     formula: 'S',        role: 'Octahedral symmetry group of RGB cube' },
+        { name: 'm2:Invariant',    formula: 'S⊗A',     role: 'Cube topology, achromatic diagonal, complementary pairs' },
+      ]},
+      { name: 'Informational', concepts: [
+        { name: 'm2:Signal',       formula: 'I⊗F',     role: 'R, G, B channels as intensity information carriers' },
+        { name: 'm2:Code',         formula: 'I⊗S⊗D',  role: 'Color percept encoded as (R,G,B) triplet — hex, decimal' },
+        { name: 'm2:Representation',formula:'I⊗S',    role: 'RGB cube as geometric representation of color space' },
+        { name: 'm2:Language',     formula: 'I⊗S⊗F',  role: 'Color naming — #FF5733, named colors, CSS notation' },
+        { name: 'm2:Signature',    formula: 'I⊗A',     role: 'Unique color identity (brand colors)' },
+      ]},
+      { name: 'Regulatory', concepts: [
+        { name: 'm2:Constraint',   formula: 'S⊗I',     role: '0 ≤ R,G,B ≤ 255; overflow clipping' },
+        { name: 'm2:Threshold',    formula: 'A⊗I',     role: 'JND — Just Noticeable Difference (~2-3 levels)' },
+      ]},
+      { name: 'Dynamic', concepts: [
+        { name: 'm2:Transformation',formula:'D⊗I⊗S',  role: 'Color space conversions: RGB ↔ HSL, RGB ↔ CMYK' },
+        { name: 'm2:Fusion',       formula: 'S⊗F⊗D',  role: 'Three light waves fuse into perceived color (+ fission)' },
+      ]},
+      { name: 'Relational', concepts: [
+        { name: 'm2:Synergy',      formula: 'A⊗S⊗I',  role: 'Trichromatic integration → emergent color (yellow from R+G!)' },
+      ]},
+    ],
+  },
+
+  HSL: {
+    count: 14,
+    pattern: 'Channel × Transformation(HSL↔RGB) × Fusion → emergent Color\nHSL Cylinder = S¹ × [0,1] × [0,1]',
+    categories: [
+      { name: 'Structural', concepts: [
+        { name: 'm2:Space',        formula: 'S⊗I',     role: 'HSL cylindrical color space' },
+        { name: 'm2:Topology',     formula: 'S⊗I',     role: 'Cylindrical topology (circular Hue axis)' },
+        { name: 'm2:Symmetry',     formula: 'S',        role: 'Rotational symmetry around L axis' },
+        { name: 'm2:Invariant',    formula: 'S⊗A',     role: 'Bijection invariant — same Territory as RGB' },
+      ]},
+      { name: 'Informational', concepts: [
+        { name: 'm2:Channel',      formula: 'S⊗I⊗F',  role: 'H, S, L as independent perceptual channels' },
+        { name: 'm2:Signal',       formula: 'I⊗F',     role: 'Perceptual dimensions as information carriers' },
+        { name: 'm2:Code',         formula: 'I⊗S⊗D',  role: 'hsl(H°, S%, L%) notation' },
+        { name: 'm2:Representation',formula:'I⊗S',    role: 'Cylindrical map vs cubic RGB — different Map, same Territory' },
+      ]},
+      { name: 'Regulatory', concepts: [
+        { name: 'm2:Constraint',   formula: 'S⊗I',     role: 'H: [0°,360°); S,L: [0%,100%]; singularity at S=0' },
+      ]},
+      { name: 'Dynamic', concepts: [
+        { name: 'm2:Transformation',formula:'D⊗I⊗S',  role: 'Bijective lossless conversion RGB ↔ HSL' },
+        { name: 'm2:Fusion',       formula: 'S⊗F⊗D',  role: 'Channel fusion → perceived color' },
+      ]},
+      { name: 'Relational', concepts: [
+        { name: 'm2:Synergy',      formula: 'A⊗S⊗I',  role: 'Emergent color from perceptual channel combination' },
+      ]},
+    ],
+  },
+
+  CMY: {
+    count: 13,
+    pattern: 'Channel(Filter) × Fusion(spectral absorption) → emergent Synergy\nC_pigment ⊗ M_pigment ⊗ Y_pigment → Perceived Color (subtractive)',
+    categories: [
+      { name: 'Structural', concepts: [
+        { name: 'm2:Space',        formula: 'S⊗I',     role: 'CMY color space (unit cube, subtractive)' },
+      ]},
+      { name: 'Informational', concepts: [
+        { name: 'm2:Channel',      formula: 'S⊗I⊗F',  role: 'C, M, Y as spectral absorption channels' },
+        { name: 'm2:Signal',       formula: 'I⊗F',     role: 'Reflected/transmitted spectrum as information' },
+        { name: 'm2:Representation',formula:'I⊗S',    role: '(C%, M%, Y%) encoding of pigment mixture' },
+      ]},
+      { name: 'Regulatory', concepts: [
+        { name: 'm2:Constraint',   formula: 'S⊗I',     role: '0% ≤ C,M,Y ≤ 100%; C+M+Y ≤ 300%' },
+        { name: 'm2:Filter',       formula: 'S⊗I⊗F',  role: 'Each pigment filters specific wavelengths' },
+      ]},
+      { name: 'Dynamic', concepts: [
+        { name: 'm2:Transformation',formula:'D⊗I⊗S',  role: 'C = 1−R, M = 1−G, Y = 1−B (ideal pigments)' },
+        { name: 'm2:Fusion',       formula: 'S⊗F⊗D',  role: 'Spectral absorption stacking → color' },
+      ]},
+      { name: 'Energetic', concepts: [
+        { name: 'm2:Dissipation',  formula: 'F⊗D',     role: 'Light energy dissipated by absorption; heat from dark pigments' },
+      ]},
+      { name: 'Relational', concepts: [
+        { name: 'm2:Synergy',      formula: 'A⊗S⊗I',  role: 'Color emerges from combined spectral filtering' },
+      ]},
+    ],
+  },
+
+  CMYK: {
+    count: 15,
+    pattern: 'Channel × Optimization(K) × Fusion → practical printed Color\nK = 1 − max(C,M,Y)  [GCR strategy]',
+    categories: [
+      { name: 'Structural', concepts: [
+        { name: 'm2:Space',        formula: 'S⊗I',     role: 'CMYK color space (4D ink gamut)' },
+      ]},
+      { name: 'Informational', concepts: [
+        { name: 'm2:Channel',      formula: 'S⊗I⊗F',  role: 'C, M, Y, K as ink deposition channels' },
+        { name: 'm2:Signal',       formula: 'I⊗F',     role: 'Ink percentage as absorption signal' },
+        { name: 'm2:Representation',formula:'I⊗S',    role: '(C%, M%, Y%, K%) printer-native encoding' },
+        { name: 'm2:Code',         formula: 'I⊗S⊗D',  role: 'ICC profiles, CMYK color codes for print' },
+      ]},
+      { name: 'Regulatory', concepts: [
+        { name: 'm2:Constraint',   formula: 'S⊗I',     role: 'TAC ≤ 300–400%; 0% ≤ each channel ≤ 100%' },
+        { name: 'm2:Optimization', formula: 'D⊗I⊗A',  role: 'K channel: true black + ink cost reduction + stability' },
+      ]},
+      { name: 'Dynamic', concepts: [
+        { name: 'm2:Transformation',formula:'D⊗I⊗S',  role: 'GCR/UCR algorithms; CMYK ↔ RGB conversion' },
+        { name: 'm2:Fusion',       formula: 'S⊗F⊗D',  role: 'Four-ink halftone fusion → printed color' },
+      ]},
+      { name: 'Relational', concepts: [
+        { name: 'm2:Synergy',      formula: 'A⊗S⊗I',  role: 'K resolves CMY failure → emergent print quality' },
+      ]},
+    ],
+  },
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MODEL DATA
+// ─────────────────────────────────────────────────────────────────────────────
+
+const MODEL_KEYS    = ['RGB', 'HSL', 'CMY', 'CMYK'];
+const MODEL_RGB_CSS = { RGB: '#ff6464', HSL: '#64c8ff', CMY: '#50dca0', CMYK: '#c896ff' };
+const MODEL_ADDITIVE= { RGB: true, HSL: true, CMY: false, CMYK: false };
+
+const MODEL_DATA = {
+  RGB:  { asfid: { A:0.75, S:0.85, F:0.95, I:0.95, D:0.40 }, revoi: { R:0.90, E:0.95, V:0.95, O:0.90, I:0.95 }, synergy: 'Perceived color (light emission)' },
+  HSL:  { asfid: { A:0.70, S:0.85, F:0.90, I:0.95, D:0.40 }, revoi: { R:0.90, E:0.95, V:0.85, O:0.85, I:0.90 }, synergy: 'Perceived color (perceptual coords)' },
+  CMY:  { asfid: { A:0.65, S:0.75, F:0.70, I:0.80, D:0.30 }, revoi: { R:0.85, E:0.60, V:0.75, O:0.70, I:0.80 }, synergy: 'Perceived color (pigment absorption)' },
+  CMYK: { asfid: { A:0.70, S:0.80, F:0.65, I:0.85, D:0.25 }, revoi: { R:0.90, E:0.85, V:0.90, O:0.85, I:0.95 }, synergy: 'Printed color (ink optimization)' },
+};
+
+const ASFID_COLORS = { A:'#ffb43c', S:'#64c8ff', F:'#3cc8a0', I:'#c882ff', D:'#ff6464' };
+const REVOI_COLORS = { R:'#64b4ff', E:'#b4ff78', V:'#ffdc50', O:'#ff82c8', I:'#82dcff' };
+
+const SYNTHETIC = [
+  ['Red',     [255,   0,   0]],
+  ['Orange',  [255, 128,   0]],
+  ['Yellow',  [255, 255,   0]],
+  ['Green',   [  0, 255,   0]],
+  ['Cyan',    [  0, 255, 255]],
+  ['Blue',    [  0,   0, 255]],
+  ['Magenta', [255,   0, 255]],
+  ['Black',   [  0,   0,   0]],
+  ['#222',    [ 34,  34,  34]],
+  ['#555',    [ 85,  85,  85]],
+  ['Gray',    [128, 128, 128]],
+  ['#AAA',    [170, 170, 170]],
+  ['#DDD',    [221, 221, 221]],
+  ['White',   [255, 255, 255]],
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────────────────────
+
+let activeModel  = 'RGB';
+let activeRTab   = 'description';
+let currentRGB   = [180, 80, 220];
+const DEFAULT_AZ = 30.0;
+const DEFAULT_EL = 20.0;
+let cubeAz       = DEFAULT_AZ;
+let cubeEl       = DEFAULT_EL;
+let cubeDragging = false;
+let dragLastPos  = [0, 0];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MARKDOWN RENDERER
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderMarkdown(md) {
+  const escHtml = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const codeBlocks = [];
+  md = md.replace(/```[\w]*\n?([\s\S]*?)```/g, (_, code) => {
+    const i = codeBlocks.length;
+    codeBlocks.push(`<pre><code>${escHtml(code.trimEnd())}</code></pre>`);
+    return `\x00CODE${i}\x00`;
+  });
+  const lines = md.split('\n');
+  let html = '';
+  let inTable = false;
+  let inList  = false;
+  const flushList  = () => { if (inList)  { html += '</ul>'; inList = false; } };
+  const flushTable = () => { if (inTable) { html += '</tbody></table>'; inTable = false; } };
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+    if (/^\x00CODE\d+\x00$/.test(line.trim())) {
+      flushList(); flushTable();
+      const idx = parseInt(line.match(/\d+/)[0]);
+      html += codeBlocks[idx]; continue;
+    }
+    const hm = line.match(/^(#{1,3})\s+(.+)$/);
+    if (hm) {
+      flushList(); flushTable();
+      const level = hm[1].length;
+      html += `<h${level}>${inlineFormat(hm[2])}</h${level}>`; continue;
+    }
+    if (/^---+$/.test(line.trim())) { flushList(); flushTable(); html += '<hr>'; continue; }
+    if (/^\|/.test(line)) {
+      const cells = line.replace(/^\||\|$/g,'').split('|');
+      if (/^[\s|:-]+$/.test(line)) continue;
+      if (!inTable) {
+        flushList();
+        html += '<table><thead><tr>';
+        cells.forEach(c => html += `<th>${inlineFormat(c.trim())}</th>`);
+        html += '</tr></thead><tbody>'; inTable = true;
+      } else {
+        html += '<tr>';
+        cells.forEach(c => html += `<td>${inlineFormat(c.trim())}</td>`);
+        html += '</tr>';
+      }
+      continue;
+    }
+    if (inTable) { flushTable(); }
+    if (/^[-*]\s+/.test(line)) {
+      if (!inList) { flushTable(); html += '<ul>'; inList = true; }
+      html += `<li>${inlineFormat(line.replace(/^[-*]\s+/, ''))}</li>`; continue;
+    }
+    if (inList && line.trim() === '') { flushList(); }
+    if (/^>\s*/.test(line)) {
+      flushList(); flushTable();
+      html += `<blockquote>${inlineFormat(line.replace(/^>\s*/, ''))}</blockquote>`; continue;
+    }
+    if (line.trim() === '') { flushList(); flushTable(); continue; }
+    flushTable();
+    if (!inList) html += `<p>${inlineFormat(line)}</p>`;
+  }
+  flushList(); flushTable();
+  return `<div class="md-body">${html}</div>`;
+}
+
+function inlineFormat(s) {
+  return s
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '<a>$1</a>');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COLOR MATH
+// ─────────────────────────────────────────────────────────────────────────────
+
+function clamp(v, lo=0, hi=1) { return Math.max(lo, Math.min(hi, v)); }
+function clampI(v) { return Math.max(0, Math.min(255, Math.round(v))); }
+
+function rgbToHsl(r, g, b) {
+  r/=255; g/=255; b/=255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+  const l=(mx+mn)/2, s=d===0?0:d/(1-Math.abs(2*l-1));
+  let h=0;
+  if(d!==0) {
+    if(mx===r) h=60*(((g-b)/d)%6);
+    else if(mx===g) h=60*((b-r)/d+2);
+    else h=60*((r-g)/d+4);
+    if(h<0) h+=360;
+  }
+  return [h, s*100, l*100];
+}
+function hslToRgb(h, s, l) {
+  s/=100; l/=100;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m=l-c/2;
+  let r0,g0,b0;
+  if(h<60){r0=c;g0=x;b0=0;}else if(h<120){r0=x;g0=c;b0=0;}
+  else if(h<180){r0=0;g0=c;b0=x;}else if(h<240){r0=0;g0=x;b0=c;}
+  else if(h<300){r0=x;g0=0;b0=c;}else{r0=c;g0=0;b0=x;}
+  return [clampI((r0+m)*255),clampI((g0+m)*255),clampI((b0+m)*255)];
+}
+function rgbToCmy(r,g,b){return[100-Math.round(r*100/255),100-Math.round(g*100/255),100-Math.round(b*100/255)];}
+function cmyToRgb(c,m,y){return[clampI((100-c)*2.55),clampI((100-m)*2.55),clampI((100-y)*2.55)];}
+function rgbToCmyk(r,g,b){
+  const r0=r/255,g0=g/255,b0=b/255,k=1-Math.max(r0,g0,b0);
+  if(k>=0.9999)return[0,0,0,100];
+  return[Math.round((1-r0-k)/(1-k)*100),Math.round((1-g0-k)/(1-k)*100),Math.round((1-b0-k)/(1-k)*100),Math.round(k*100)];
+}
+function cmykToRgb(c,m,y,k){return[clampI(255*(1-c/100)*(1-k/100)),clampI(255*(1-m/100)*(1-k/100)),clampI(255*(1-y/100)*(1-k/100))];}
+
+function computeDynAsfid(r, g, b, base) {
+  const r0=r/255,g0=g/255,b0=b/255, brightness=(r0+g0+b0)/3;
+  const [,s,l]=rgbToHsl(r,g,b);
+  const sorted=[r0,g0,b0].sort((a,b)=>a-b), spread=sorted[2]-sorted[0];
+  const variance=((r0-brightness)**2+(g0-brightness)**2+(b0-brightness)**2)/3;
+  const colorfulness=clamp(Math.sqrt(variance)*Math.sqrt(3));
+  const NAMED=[[0,0,0],[255,255,255],[255,0,0],[0,255,0],[0,0,255],[255,255,0],[0,255,255],[255,0,255],[128,128,128]];
+  const maxD=Math.sqrt(3)*255;
+  const minD=Math.min(...NAMED.map(([nr,ng,nb])=>Math.sqrt((r-nr)**2+(g-ng)**2+(b-nb)**2)));
+  const prox=1-minD/maxD;
+  return {
+    A:clamp(base.A*(0.3+0.7*prox)), S:clamp(base.S*(0.4+0.6*spread)),
+    F:clamp(base.F*(0.1+0.9*brightness)), I:clamp(base.I*(0.3+0.7*colorfulness)),
+    D:clamp(base.D*(0.1+0.9*(s/100)*(1-Math.abs(2*l/100-1)))),
+  };
+}
+function epGapNorm(live,base){return Math.sqrt(['A','S','F','I','D'].reduce((acc,d)=>acc+(live[d]-base[d])**2,0));}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RGB CUBE
+// ─────────────────────────────────────────────────────────────────────────────
+
+function isoProject(rx,gx,bx,cx,cy,scale,az,el){
+  const cA=Math.cos(az*Math.PI/180),sA=Math.sin(az*Math.PI/180);
+  const cE=Math.cos(el*Math.PI/180),sE=Math.sin(el*Math.PI/180);
+  const x=rx-0.5,y=gx-0.5,z=bx-0.5;
+  const x2=x*cA-y*sA, y2=x*sA+y*cA;
+  return[cx+x2*scale, cy-(z*cE+y2*sE)*scale];
+}
+const CUBE_VERTS={Black:[0,0,0],Red:[1,0,0],Green:[0,1,0],Blue:[0,0,1],Yellow:[1,1,0],Cyan:[0,1,1],Magenta:[1,0,1],White:[1,1,1]};
+const CUBE_EDGES=[['Black','Red'],['Black','Green'],['Black','Blue'],['Red','Yellow'],['Red','Magenta'],['Green','Yellow'],['Green','Cyan'],['Blue','Cyan'],['Blue','Magenta'],['Yellow','White'],['Cyan','White'],['Magenta','White']];
+const INNER_EDGES=[['000','100'],['000','010'],['100','110'],['010','110'],['001','101'],['001','011'],['101','111'],['011','111'],['000','001'],['100','101'],['010','011'],['110','111']];
+
+function drawInnerCube(ctx,cx,cy,r,g,b,scale,az,el){
+  const r0=r/255, g0=g/255, b0=b/255, H=0.32;
+  const v={};
+  for(const ri of[0,1])for(const gi of[0,1])for(const bi of[0,1])
+    v[`${ri}${gi}${bi}`]=isoProject(0.5+(ri?H:-H),0.5+(gi?H:-H),0.5+(bi?H:-H),cx,cy,scale,az,el);
+  const cosAz=Math.cos(az*Math.PI/180), sinAz=Math.sin(az*Math.PI/180);
+  const cosEl=Math.cos(el*Math.PI/180), sinEl=Math.sin(el*Math.PI/180);
+  const Vx=-sinAz*cosEl, Vy=-cosAz*cosEl, Vz=sinEl;
+  const FACES6=[
+    {pts:["100","110","111","101"], nx: 1,ny: 0,nz: 0},
+    {pts:["000","010","011","001"], nx:-1,ny: 0,nz: 0},
+    {pts:["010","110","111","011"], nx: 0,ny: 1,nz: 0},
+    {pts:["000","100","101","001"], nx: 0,ny:-1,nz: 0},
+    {pts:["001","101","111","011"], nx: 0,ny: 0,nz: 1},
+    {pts:["000","100","110","010"], nx: 0,ny: 0,nz:-1},
+  ];
+  const visible=FACES6
+    .map(f=>({...f, dot:Vx*f.nx+Vy*f.ny+Vz*f.nz}))
+    .filter(f=>f.dot>0)
+    .sort((a,b)=>a.dot-b.dot);
+  for(const face of visible){
+    const isTop = face.nz===1 && Vz>0;
+    const lum = 0.5 + 0.5*(face.dot/1.0);
+    const fr=Math.round(r*lum), fg=Math.round(g*lum), fb=Math.round(b*lum);
+    ctx.globalAlpha = isTop ? 1.0 : 0.50;
+    ctx.fillStyle=`rgb(${fr},${fg},${fb})`;
+    ctx.beginPath();
+    ctx.moveTo(...v[face.pts[0]]);
+    face.pts.slice(1).forEach(k=>ctx.lineTo(...v[k]));
+    ctx.closePath(); ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  const topFace = FACES6.find(f=>f.nz===1);
+  if (topFace && (Vz > 0)) {
+    const tp = topFace.pts.map(k=>v[k]);
+    const mx4 = tp.reduce((s,p)=>s+p[0],0)/4, my4 = tp.reduce((s,p)=>s+p[1],0)/4;
+    const sq  = tp.map(p=>[ mx4+(p[0]-mx4)*0.5, my4+(p[1]-my4)*0.5 ]);
+    const lum = 0.5 + 0.5*(Vz);
+    const fr=Math.round(r*lum), fg=Math.round(g*lum), fb=Math.round(b*lum);
+    ctx.globalAlpha=1.0;
+    ctx.fillStyle=`rgb(${fr},${fg},${fb})`;
+    ctx.beginPath();ctx.moveTo(...sq[0]);sq.slice(1).forEach(p=>ctx.lineTo(...p));ctx.closePath();ctx.fill();
+    ctx.globalAlpha=1;
+  }
+  ctx.globalAlpha=1;
+  ctx.strokeStyle='rgba(255,255,255,0.9)';ctx.lineWidth=2;
+  for(const[k1,k2]of INNER_EDGES){ctx.beginPath();ctx.moveTo(...v[k1]);ctx.lineTo(...v[k2]);ctx.stroke();}
+  const cp  = isoProject(r0,g0,b0,cx,cy,scale,az,el);
+  const ctr = isoProject(0.5,0.5,0.5,cx,cy,scale,az,el);
+  const OCT_R = 8, SIDES = 8;
+  ctx.save();
+  ctx.setLineDash([4,4]);
+  ctx.strokeStyle='rgba(255,255,255,0.55)';
+  ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(ctr[0],ctr[1]);ctx.lineTo(cp[0],cp[1]);ctx.stroke();
+  ctx.restore();
+  ctx.strokeStyle='rgba(255,255,255,0.95)';
+  ctx.lineWidth=1.5;
+  ctx.beginPath();
+  for(let i=0;i<SIDES;i++){
+    const a=i*(2*Math.PI/SIDES)-Math.PI/SIDES;
+    const px=cp[0]+OCT_R*Math.cos(a), py=cp[1]+OCT_R*Math.sin(a);
+    i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+  }
+  ctx.closePath();ctx.stroke();
+  ctx.fillStyle='white';
+  ctx.beginPath();ctx.arc(cp[0],cp[1],2.5,0,Math.PI*2);ctx.fill();
+}
+
+function drawCentreMarker(ctx,cx,cy,scale,az,el){
+  const H=0.0115;
+  const vc={};
+  for(const ri of[0,1])for(const gi of[0,1])for(const bi of[0,1])
+    vc[`${ri}${gi}${bi}`]=isoProject(0.5+(ri?H:-H),0.5+(gi?H:-H),0.5+(bi?H:-H),cx,cy,scale,az,el);
+  const cosAz=Math.cos(az*Math.PI/180),sinAz=Math.sin(az*Math.PI/180);
+  const cosEl=Math.cos(el*Math.PI/180),sinEl=Math.sin(el*Math.PI/180);
+  const Vx=-sinAz*cosEl,Vy=-cosAz*cosEl,Vz=sinEl;
+  const FACES6=[
+    {pts:["100","110","111","101"],nx: 1,ny: 0,nz: 0},
+    {pts:["000","010","011","001"],nx:-1,ny: 0,nz: 0},
+    {pts:["010","110","111","011"],nx: 0,ny: 1,nz: 0},
+    {pts:["000","100","101","001"],nx: 0,ny:-1,nz: 0},
+    {pts:["001","101","111","011"],nx: 0,ny: 0,nz: 1},
+    {pts:["000","100","110","010"],nx: 0,ny: 0,nz:-1},
+  ];
+  const visible=FACES6
+    .map(f=>({...f,dot:Vx*f.nx+Vy*f.ny+Vz*f.nz}))
+    .filter(f=>f.dot>0)
+    .sort((a,b)=>a.dot-b.dot);
+  for(const face of visible){
+    const lum=0.7+0.3*face.dot;
+    ctx.globalAlpha=1.0;
+    ctx.fillStyle=`rgba(${Math.round(255*lum)},${Math.round(255*lum)},${Math.round(255*lum)},1)`;
+    ctx.beginPath();
+    ctx.moveTo(...vc[face.pts[0]]);
+    face.pts.slice(1).forEach(k=>ctx.lineTo(...vc[k]));
+    ctx.closePath(); ctx.fill();
+  }
+  ctx.globalAlpha=1;
+}
+
+function renderCube(r,g,b){
+  const canvas=document.getElementById('cubeCanvas');
+  const wrapper=canvas.parentElement;
+  const titleH =(wrapper.querySelector('.cube-title')||{offsetHeight:20}).offsetHeight||20;
+  const lblH   =(wrapper.querySelector('.principle-lbl')||{offsetHeight:16}).offsetHeight||16;
+  const availH =wrapper.clientHeight - titleH - lblH - 10;
+  if(availH > 80) canvas.height = availH;
+  // Adapt width to wrapper
+  const availW = wrapper.clientWidth - 8;
+  if(availW > 100) canvas.width = availW;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2,scale=Math.min(172, H*0.42, W*0.32);
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#101018';ctx.fillRect(0,0,W,H);
+  const pts={};
+  for(const[name,[vr,vg,vb]]of Object.entries(CUBE_VERTS))pts[name]=isoProject(vr,vg,vb,cx,cy,scale,cubeAz,cubeEl);
+  ctx.strokeStyle='#373750';ctx.lineWidth=1;
+  for(const[n1,n2]of CUBE_EDGES){ctx.beginPath();ctx.moveTo(...pts[n1]);ctx.lineTo(...pts[n2]);ctx.stroke();}
+  drawInnerCube(ctx,cx,cy,r,g,b,scale,cubeAz,cubeEl);
+  drawCentreMarker(ctx,cx,cy,scale,cubeAz,cubeEl);
+  const centre=isoProject(0.5,0.5,0.5,cx,cy,scale,cubeAz,cubeEl);
+  ctx.font='11px Consolas, monospace';ctx.textBaseline='middle';
+  const MARGIN=14;
+  for(const[name,[vr,vg,vb]]of Object.entries(CUBE_VERTS)){
+    const p=pts[name],col=`rgb(${Math.round(vr*255)},${Math.round(vg*255)},${Math.round(vb*255)})`;
+    ctx.fillStyle=col;ctx.beginPath();ctx.arc(p[0],p[1],7,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='rgba(220,220,230,0.8)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(p[0],p[1],7,0,Math.PI*2);ctx.stroke();
+    const dx=p[0]-centre[0],dy=p[1]-centre[1],dist=Math.hypot(dx,dy)||1;
+    const ndx=dx/dist,ndy=dy/dist,w=ctx.measureText(name).width;
+    let lx=p[0]+ndx*(7+MARGIN),ly=p[1]+ndy*(7+MARGIN);
+    if(ndx<-0.1)lx-=w;if(ndy<-0.1)ly-=11;
+    ctx.fillStyle='#dcdce6';ctx.fillText(name,lx,ly);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RIGHT PANEL
+// ─────────────────────────────────────────────────────────────────────────────
+
+function setRTab(tab) {
+  activeRTab = tab;
+  document.querySelectorAll('.rtab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.rtab-content').forEach(c => c.classList.toggle('active', c.dataset.tab === tab));
+}
+
+function updateDescriptionTab() {
+  document.getElementById('rtab-description').innerHTML = renderMarkdown(README[activeModel]);
+}
+
+function updateConceptsTab() {
+  const data = CONCEPTS[activeModel];
+  const mcol = MODEL_RGB_CSS[activeModel];
+  let h = `<div class="section-title">GenericConcepts — ${activeModel}</div>`;
+  h += `<div class="concepts-meta">Total: <strong>${data.count}</strong> GenericConcepts mobilized</div>`;
+  h += `<div class="concepts-pattern">${data.pattern.replace(/\n/g,'<br>')}</div>`;
+  for (const cat of data.categories) {
+    h += `<div class="cat-block"><div class="cat-title">${cat.name}</div>`;
+    for (const c of cat.concepts) {
+      h += `<div class="concept-row">
+              <span class="concept-name" style="color:${mcol}">${c.name}</span>
+              <span class="concept-formula">${c.formula}</span>
+              <span class="concept-role">${c.role}</span>
+            </div>`;
+    }
+    h += '</div>';
+  }
+  document.getElementById('rtab-concepts').innerHTML = h;
+}
+
+function updateScoresTab(r, g, b, hex, live, base, gap) {
+  const acol = MODEL_RGB_CSS[activeModel];
+  const gapCol = gap < 0.3 ? '#50d278' : (gap < 0.5 ? '#ffc832' : '#dc3c3c');
+  const gapTxt = gap < 0.3 ? 'Good alignment' : (gap < 0.5 ? 'Moderate gap' : 'Large gap');
+  const prin   = MODEL_ADDITIVE[activeModel] ? 'Additive' : 'Subtractive';
+  let h = '';
+  h += `<div class="scores-section">
+    <div class="section-title">Current Color</div>
+    <div class="gap-box">
+      <div class="st-swatch-row">
+        <div class="st-swatch" style="background:rgb(${r},${g},${b})"></div>
+        <span class="st-hex" style="color:${(r+g+b)>200?`rgb(${r},${g},${b})`:'#dcdce6'}">${hex}</span>
+      </div>
+      <div class="st-row"><span class="lbl">Active model: </span><span style="color:${acol};font-weight:bold">${activeModel}</span></div>
+      <div class="st-row" style="margin-bottom:8px"><span class="lbl">Principle: </span><span style="font-weight:bold">${prin}</span></div>
+      <div class="gap-row"><span class="gap-value" style="color:${gapCol}">ΔΘ = ${gap.toFixed(3)}</span></div>
+      <div class="gap-interp">${gapTxt} (Map–Territory epistemic gap)</div>
+    </div>
+    <div class="emergent-box">
+      <div class="emergent-lbl">Emergent property</div>
+      ${MODEL_DATA[activeModel].synergy}
+    </div>
+  </div>`;
+  h += '<div class="scores-section"><div class="section-title">ASFID — Eagle Eye · Territory (live)</div>';
+  for (const d of ['A','S','F','I','D']) {
+    const val=live[d], bval=base[d], col=ASFID_COLORS[d];
+    h += `<div class="abar-row">
+      <span class="abar-dim" style="color:${col}">${d}</span>
+      <div class="abar-track">
+        <div class="abar-fill" style="width:${val*100}%;background:${col}"></div>
+        <div class="abar-base" style="left:${bval*100}%"></div>
+      </div>
+      <span class="abar-val" style="color:${col}">${val.toFixed(2)}</span>
+    </div>`;
+  }
+  h += '<div style="font-size:10px;color:var(--dim);margin-top:3px">│ = base score · bar = live value</div></div>';
+  h += '<div class="scores-section"><div class="section-title">REVOI — Sphinx Eye · Map (all models)</div>';
+  h += '<div class="revoi-header"><div class="revoi-d-col"></div>';
+  for (const mk of MODEL_KEYS) h += `<div class="revoi-m-col" style="color:${MODEL_RGB_CSS[mk]}">${mk}</div>`;
+  h += '</div>';
+  for (const d of ['R','E','V','O','I']) {
+    const col = REVOI_COLORS[d];
+    h += `<div class="revoi-row"><div class="revoi-dim" style="color:${col}">${d}</div>`;
+    for (const mk of MODEL_KEYS) {
+      const val = MODEL_DATA[mk].revoi[d];
+      h += `<div class="revoi-cell">
+              <div class="revoi-bar-track"><div class="revoi-bar-fill" style="width:${val*100}%;background:${col}"></div></div>
+              <div class="revoi-num">${val.toFixed(2)}</div>
+            </div>`;
+    }
+    h += '</div>';
+  }
+  h += '</div>';
+  document.getElementById('rtab-scores').innerHTML = h;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// NAMED COLORS
+// ─────────────────────────────────────────────────────────────────────────────
+
+function buildNamedColors() {
+  let h = '';
+  for (const [name,[r,g,b]] of SYNTHETIC)
+    h += `<div class="nc-btn" id="nc-${name.replace('#','_')}" onclick="setColor(${r},${g},${b})">
+            <div class="nc-swatch" style="background:rgb(${r},${g},${b})"></div>
+            <div class="nc-lbl">${name}</div>
+          </div>`;
+  document.getElementById('namedGrid').innerHTML = h;
+}
+
+function refreshNamedColors(r,g,b) {
+  for (const [name,[sr,sg,sb]] of SYNTHETIC) {
+    const el=document.getElementById(`nc-${name.replace('#','_')}`);
+    if(el) el.classList.toggle('active', Math.sqrt((r-sr)**2+(g-sg)**2+(b-sb)**2)<20);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FULL UI UPDATE
+// ─────────────────────────────────────────────────────────────────────────────
+
+function updateAll() {
+  const [r,g,b]         = currentRGB;
+  const [h,s,l]         = rgbToHsl(r,g,b);
+  const [c,m,y]         = rgbToCmy(r,g,b);
+  const [ck,mk,yk,k]    = rgbToCmyk(r,g,b);
+  const hex = '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0').toUpperCase()).join('');
+  const sw = document.getElementById('swatch');
+  sw.style.background = `rgb(${r},${g},${b})`;
+  sw.style.color      = (r+g+b)<380?'white':'black';
+  const hexSpan = document.getElementById('hex-val');
+  if (hexSpan) hexSpan.textContent = hex;
+  document.querySelector('#code-rgb  .c-val').textContent=`(${r}, ${g}, ${b})`;
+  document.querySelector('#code-hsl  .c-val').textContent=`(${Math.round(h)}°, ${Math.round(s)}%, ${Math.round(l)}%)`;
+  document.querySelector('#code-cmy  .c-val').textContent=`(${c}%, ${m}%, ${y}%)`;
+  document.querySelector('#code-cmyk .c-val').textContent=`(${ck}%, ${mk}%, ${yk}%, ${k}%)`;
+  for (const mk2 of MODEL_KEYS)
+    document.getElementById(`code-${mk2.toLowerCase()}`).style.opacity = mk2===activeModel?'1':'0.45';
+  const lbl = document.getElementById('modelLbl');
+  lbl.textContent = `${activeModel} Controls`;
+  lbl.style.color = MODEL_RGB_CSS[activeModel];
+  document.getElementById('principleLbl').textContent =
+    `Principle: ${MODEL_ADDITIVE[activeModel]?'Additive (light)':'Subtractive (pigment)'}`;
+  const base = MODEL_DATA[activeModel].asfid;
+  const live = computeDynAsfid(r,g,b,base);
+  const gap  = epGapNorm(live, base);
+  refreshNamedColors(r,g,b);
+  renderCube(r,g,b);
+  updateDescriptionTab();
+  updateConceptsTab();
+  updateScoresTab(r,g,b,hex,live,base,gap);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SLIDER SYNC
+// ─────────────────────────────────────────────────────────────────────────────
+
+function syncSlidersFromRGB() {
+  const [r,g,b]      = currentRGB;
+  const [h,s,l]      = rgbToHsl(r,g,b);
+  const [c,m,y]      = rgbToCmy(r,g,b);
+  const [ck,mk,yk,k] = rgbToCmyk(r,g,b);
+  function sv(id,v,fmt){ const e=document.getElementById(id); if(e)e.value=v; const ve=document.getElementById('v'+id.slice(1)); if(ve)ve.textContent=fmt; }
+  sv('sr',r,r); sv('sg',g,g); sv('sb',b,b);
+  sv('sh',h,Math.round(h)+'°'); sv('ss',s,Math.round(s)+'%'); sv('sl',l,Math.round(l)+'%');
+  sv('scy',c,c+'%'); sv('smg',m,m+'%'); sv('syw',y,y+'%');
+  sv('sck',ck,ck+'%'); sv('smk',mk,mk+'%'); sv('syk',yk,yk+'%'); sv('skk',k,k+'%');
+}
+
+function onSlide() {
+  let r,g,b;
+  const v=id=>+document.getElementById(id).value;
+  const txt=(id,s)=>{const e=document.getElementById(id);if(e)e.textContent=s;};
+  if(activeModel==='RGB'){
+    r=v('sr');g=v('sg');b=v('sb'); txt('vr',r);txt('vg',g);txt('vb',b);
+  } else if(activeModel==='HSL'){
+    const H=v('sh'),S=v('ss'),L=v('sl');
+    txt('vh',Math.round(H)+'°');txt('vs',Math.round(S)+'%');txt('vl',Math.round(L)+'%');
+    [r,g,b]=hslToRgb(H,S,L);
+  } else if(activeModel==='CMY'){
+    const C=v('scy'),M=v('smg'),Y=v('syw');
+    txt('vcy',Math.round(C)+'%');txt('vmg',Math.round(M)+'%');txt('vyw',Math.round(Y)+'%');
+    [r,g,b]=cmyToRgb(C,M,Y);
+  } else {
+    const C=v('sck'),M=v('smk'),Y=v('syk'),K=v('skk');
+    txt('vck',Math.round(C)+'%');txt('vmk',Math.round(M)+'%');txt('vyk',Math.round(Y)+'%');txt('vkk',Math.round(K)+'%');
+    [r,g,b]=cmykToRgb(C,M,Y,K);
+  }
+  currentRGB=[r,g,b];
+  syncSlidersFromRGB();
+  updateAll();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MODEL / COLOR SETTERS
+// ─────────────────────────────────────────────────────────────────────────────
+
+function setModel(key) {
+  activeModel=key;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.m===key));
+  document.querySelectorAll('.slider-group').forEach(g=>g.classList.toggle('active',g.dataset.m===key));
+  syncSlidersFromRGB();
+  updateAll();
+}
+
+function setColor(r,g,b) {
+  currentRGB=[r,g,b];
+  syncSlidersFromRGB();
+  updateAll();
+}
+
+function resetColor() {
+  cubeAz = DEFAULT_AZ;
+  cubeEl = DEFAULT_EL;
+  setColor(180, 80, 220);
+}
+
+// ── Pipette : EyeDropper API (Chrome 95+, Edge 95+) ──────────────────────────
+async function pickColor() {
+  if (!window.EyeDropper) {
+    alert('EyeDropper API not available in this browser.\nUse Chrome 95+ or Edge 95+.');
+    return;
+  }
+  try {
+    const btn = document.getElementById('btn-eyedropper');
+    if (btn) btn.style.opacity = '1';
+    const result = await new EyeDropper().open();
+    const h = result.sRGBHex;
+    const r = parseInt(h.slice(1,3), 16);
+    const g = parseInt(h.slice(3,5), 16);
+    const b = parseInt(h.slice(5,7), 16);
+    setColor(r, g, b);
+  } catch(e) {
+    // User pressed Escape — no error to display
+  } finally {
+    const btn = document.getElementById('btn-eyedropper');
+    if (btn) btn.style.opacity = '0.7';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CUBE DRAG ROTATION
+// ─────────────────────────────────────────────────────────────────────────────
+
+function initCubeDrag() {
+  const canvas=document.getElementById('cubeCanvas');
+  const hint  =document.getElementById('dragHint');
+  let clickStartPos = null;
+
+  canvas.addEventListener('mousedown', e => {
+    cubeDragging = true;
+    dragLastPos  = [e.clientX, e.clientY];
+    clickStartPos= [e.clientX, e.clientY];
+    canvas.classList.add('dragging');
+    hint.textContent = '[rotating...]';
+    e.preventDefault();
+  });
+
+  window.addEventListener('mouseup', e => {
+    if (!cubeDragging) return;
+    cubeDragging = false;
+    document.getElementById('cubeCanvas').classList.remove('dragging');
+    hint.textContent = '[drag to rotate]';
+    if (clickStartPos) {
+      const dx = e.clientX - clickStartPos[0];
+      const dy = e.clientY - clickStartPos[1];
+      if (Math.hypot(dx, dy) < 4) {
+        trySelectVertex(canvas, e.clientX, e.clientY);
+      }
+    }
+    clickStartPos = null;
+  });
+
+  window.addEventListener('mousemove', e => {
+    if (cubeDragging) {
+      cubeAz=(cubeAz+(e.clientX-dragLastPos[0])*0.4)%360;
+      cubeEl=Math.max(-80,Math.min(80,cubeEl-(e.clientY-dragLastPos[1])*0.3));
+      dragLastPos=[e.clientX,e.clientY];
+      renderCube(...currentRGB);
+      return;
+    }
+    const rect  = canvas.getBoundingClientRect();
+    const mx    = e.clientX - rect.left, my = e.clientY - rect.top;
+    const W=canvas.width, H=canvas.height, cx=W/2, cy=H/2, scale=Math.min(172, H*0.42, W*0.32);
+    const onVertex = Object.values(CUBE_VERTS).some(([vr,vg,vb]) => {
+      const [px,py]=isoProject(vr,vg,vb,cx,cy,scale,cubeAz,cubeEl);
+      return Math.hypot(mx-px, my-py) < 18;
+    });
+    canvas.style.cursor = onVertex ? 'pointer' : 'grab';
+  });
+}
+
+function trySelectVertex(canvas, clientX, clientY) {
+  const rect  = canvas.getBoundingClientRect();
+  const mx    = clientX - rect.left;
+  const my    = clientY - rect.top;
+  const W     = canvas.width, H = canvas.height;
+  const cx    = W / 2, cy = H / 2;
+  const scale = Math.min(172, H*0.42, W*0.32);
+  const HIT_R = 18;
+  let bestDist = Infinity, bestRGB = null;
+  for (const [name, [vr, vg, vb]] of Object.entries(CUBE_VERTS)) {
+    const [px, py] = isoProject(vr, vg, vb, cx, cy, scale, cubeAz, cubeEl);
+    const d = Math.hypot(mx - px, my - py);
+    if (d < HIT_R && d < bestDist) {
+      bestDist = d;
+      bestRGB  = [Math.round(vr * 255), Math.round(vg * 255), Math.round(vb * 255)];
+    }
+  }
+  if (bestRGB) setColor(...bestRGB);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SPLITTERS
+// ─────────────────────────────────────────────────────────────────────────────
+
+function initSplitterTB() {
+  const splitter  = document.getElementById('splitter-tb');
+  const namedArea = document.getElementById('namedArea');
+  if (!splitter || !namedArea) return;
+  namedArea.style.height    = '172px';
+  namedArea.style.flexShrink= '0';
+  namedArea.style.overflow  = 'hidden';
+  let dragging=false, startY=0, startH=0;
+  splitter.addEventListener('mousedown', e=>{
+    dragging=true; startY=e.clientY;
+    startH=namedArea.getBoundingClientRect().height;
+    splitter.classList.add('dragging');
+    document.body.style.cssText='cursor:row-resize;user-select:none;-webkit-user-select:none';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e=>{
+    if(!dragging)return;
+    const newH=Math.max(172, Math.min(320, startH+(startY-e.clientY)));
+    namedArea.style.height=newH+'px';
+    namedArea.style.flexShrink='0';
+    namedArea.style.overflow='hidden';
+  });
+  document.addEventListener('mouseup', ()=>{
+    if(!dragging)return;
+    dragging=false;
+    splitter.classList.remove('dragging');
+    document.body.style.cssText='';
+    renderCube(...currentRGB);
+  });
+}
+
+function initSplitterLC() {
+  const splitter   = document.getElementById('splitter-lc');
+  const panelLeft  = document.querySelector('.panel-left');
+  if (!splitter || !panelLeft) return;
+  let dragging=false, startX=0, startW=0;
+  splitter.addEventListener('mousedown', e=>{
+    dragging=true; startX=e.clientX;
+    startW=panelLeft.getBoundingClientRect().width;
+    splitter.classList.add('dragging');
+    document.body.style.cssText='cursor:col-resize;user-select:none;-webkit-user-select:none';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e=>{
+    if(!dragging)return;
+    const newW=Math.max(220, Math.min(480, startW+(e.clientX-startX)));
+    panelLeft.style.width=newW+'px';
+  });
+  document.addEventListener('mouseup', ()=>{
+    if(!dragging)return;
+    dragging=false;
+    splitter.classList.remove('dragging');
+    document.body.style.cssText='';
+    renderCube(...currentRGB);
+  });
+}
+
+function initSplitter() {
+  const splitter    = document.getElementById('splitter-cr');
+  const panelRight  = document.querySelector('.panel-right');
+  if (!splitter) return;
+  let dragging=false, startX=0, startW=0;
+  splitter.addEventListener('mousedown', e=>{
+    dragging=true; startX=e.clientX;
+    startW=panelRight.getBoundingClientRect().width;
+    splitter.classList.add('dragging');
+    document.body.style.cssText='cursor:col-resize;user-select:none;-webkit-user-select:none';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e=>{
+    if(!dragging)return;
+    const newW=Math.max(320, Math.min(680, startW+(startX-e.clientX)));
+    panelRight.style.width=newW+'px';
+  });
+  document.addEventListener('mouseup', ()=>{
+    if(!dragging)return;
+    dragging=false;
+    splitter.classList.remove('dragging');
+    document.body.style.cssText='';
+    renderCube(...currentRGB);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// KEYBOARD
+// ─────────────────────────────────────────────────────────────────────────────
+
+window.addEventListener('keydown', e => {
+  if (e.key==='Tab') {
+    e.preventDefault();
+    setModel(MODEL_KEYS[(MODEL_KEYS.indexOf(activeModel)+1)%MODEL_KEYS.length]);
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RESIZE OBSERVER — redraw cube on window resize
+// ─────────────────────────────────────────────────────────────────────────────
+
+window.addEventListener('resize', () => { renderCube(...currentRGB); });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', () => {
+  buildNamedColors();
+  syncSlidersFromRGB();
+  initCubeDrag();
+  initSplitter();
+  initSplitterLC();
+  initSplitterTB();
+  setRTab('description');
+  updateAll();
+});
+</script>
+</body>
+</html>

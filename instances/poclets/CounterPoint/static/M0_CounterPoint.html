@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://cdnjs.cloudflare.com;
+                 script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
+                 style-src  'self' 'unsafe-inline';
+                 img-src    'self' data: blob:;
+                 connect-src 'self' http://127.0.0.1:* ws://127.0.0.1:*;">
+  <title>TSCG &mdash; Counterpoint</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-deep:#0d1117; --bg-panel:#161b22; --bg-card:#1c2130; --bg-hover:#21262d;
+  --border:#30363d; --border2:#3d444f;
+  --eagle:#f78166; --sphinx:#79c0ff; --accent:#56d364; --warn:#e3b341;
+  --muted:#8b949e; --text:#e6edf3; --text-dim:#b1bac4;
+  --col-A:#f78166; --col-S:#56d364; --col-F:#79c0ff;
+  --col-I:#d2a8ff; --col-D:#e3b341;
+  --col-R:#79c0ff; --col-E:#56d364; --col-V:#f78166;
+  --col-O:#d2a8ff; --col-Im:#e3b341;
+  --header-h:44px; --controls-h:56px;
+  --left-w:210px; --sidebar-w:310px; --split-w:5px;
+  --radius:6px;
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:'Cascadia Code','Fira Code','Consolas',monospace;
+}
+html,body{height:100%;overflow:hidden;font-family:var(--font);
+  background:var(--bg-deep);color:var(--text);font-size:13px;line-height:1.5;user-select:none;}
+
+#app{
+  display:grid;
+  grid-template-rows:var(--header-h) 1fr var(--controls-h);
+  grid-template-columns:var(--left-w) var(--split-w) 1fr var(--split-w) var(--sidebar-w);
+  grid-template-areas:
+    "header  header  header  header  header"
+    "explorer split1 canvas  split2  sidebar"
+    "controls controls controls controls controls";
+  height:100vh;
+}
+
+/* ── Header ── */
+#header{grid-area:header;display:flex;align-items:center;gap:12px;padding:0 16px;
+  background:var(--bg-panel);border-bottom:1px solid var(--border);}
+.tscg-logo{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--eagle);text-transform:uppercase;flex-shrink:0;}
+.sep{color:var(--border2);font-size:16px;}
+.poclet-name{font-size:14px;font-weight:600;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.chip{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid transparent;}
+.chip.domain {background:rgba(86,211,100,.12);border-color:rgba(86,211,100,.3);color:var(--accent);}
+.chip.version{background:rgba(121,192,255,.12);border-color:rgba(121,192,255,.3);color:var(--sphinx);}
+.chip.type   {background:rgba(247,129,102,.12);border-color:rgba(247,129,102,.3);color:var(--eagle);}
+
+/* ── Explorer ── */
+#explorer{grid-area:explorer;display:flex;flex-direction:column;
+  background:var(--bg-panel);border-right:1px solid var(--border);overflow:hidden;min-width:140px;}
+.expl-header{padding:8px 12px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);border-bottom:1px solid var(--border);flex-shrink:0;
+  display:flex;justify-content:space-between;align-items:center;}
+.expl-list{overflow-y:auto;flex:1;}
+.expl-item{display:flex;align-items:flex-start;gap:8px;padding:8px 12px 8px 10px;
+  cursor:pointer;border-left:3px solid transparent;transition:background .12s,border-color .12s;}
+.expl-item:hover{background:var(--bg-hover);}
+.expl-item.active{background:rgba(121,192,255,.08);border-left-color:var(--sphinx);}
+.expl-icon{font-size:14px;flex-shrink:0;margin-top:1px;}
+.expl-info{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.expl-name{font-size:12px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.expl-item.active .expl-name{color:var(--text);}
+.expl-sub{font-size:10px;color:var(--border2);}
+.expl-badge{font-size:9px;padding:1px 5px;border-radius:3px;margin-top:2px;align-self:flex-start;
+  background:rgba(121,192,255,.12);color:var(--sphinx);border:1px solid rgba(121,192,255,.2);}
+
+/* ── Splitters ── */
+.splitter{background:var(--border);cursor:col-resize;transition:background .15s;z-index:10;}
+.splitter:hover,.splitter.dragging{background:var(--sphinx);}
+#split1{grid-area:split1;} #split2{grid-area:split2;}
+
+/* ── Canvas ── */
+#canvas-area{grid-area:canvas;position:relative;overflow:hidden;background:var(--bg-deep);min-width:200px;}
+#roll-scroll{position:absolute;inset:0;overflow-x:auto;overflow-y:hidden;}
+#roll-scroll::-webkit-scrollbar{height:6px;}
+#roll-scroll::-webkit-scrollbar-track{background:transparent;}
+#roll-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+canvas#pianoRoll{display:block;}
+#pole-overlay{position:absolute;top:0;left:0;right:0;height:22px;display:flex;z-index:5;pointer-events:none;}
+.pole-seg{display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.2);
+  transition:color .3s;border-right:1px solid rgba(255,255,255,.05);}
+.pole-seg.pole-active{color:rgba(255,255,255,.8);}
+.canvas-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:var(--muted);pointer-events:none;}
+
+/* ── Sidebar ── */
+#sidebar{grid-area:sidebar;display:flex;flex-direction:column;
+  background:var(--bg-panel);border-left:1px solid var(--border);overflow:hidden;min-width:180px;max-width:600px;}
+.tab-bar{display:flex;background:var(--bg-deep);border-bottom:1px solid var(--border);flex-shrink:0;}
+.tab-btn{flex:1;padding:8px 4px;font-size:11px;font-weight:600;background:none;border:none;
+  border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;transition:color .15s,border-color .15s;}
+.tab-btn:hover{color:var(--text-dim);}
+.tab-btn.active{color:var(--sphinx);border-bottom-color:var(--sphinx);}
+.tab-panel{display:none;flex-direction:column;flex:1;overflow-y:auto;padding:12px;gap:10px;}
+.tab-panel.active{display:flex;}
+
+.s-head{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  padding-bottom:4px;border-bottom:1px solid var(--border);margin-bottom:2px;}
+.s-head.eagle{color:var(--eagle);}  .s-head.sphinx{color:var(--sphinx);}
+.score-group{display:flex;flex-direction:column;gap:5px;}
+.score-row{display:flex;align-items:center;gap:8px;font-size:12px;}
+.score-dim{width:20px;font-weight:700;font-family:var(--mono);font-size:11px;text-align:center;flex-shrink:0;}
+.score-bar-bg{flex:1;height:6px;background:var(--bg-card);border-radius:3px;overflow:hidden;}
+.score-bar-fill{height:100%;border-radius:3px;transition:width .6s ease;}
+.score-val{width:30px;text-align:right;font-family:var(--mono);font-size:11px;color:var(--text-dim);flex-shrink:0;}
+.score-mean-row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding-top:2px;font-family:var(--mono);}
+.score-mean-row span{color:var(--text);font-weight:600;}
+.gap-badge{display:flex;align-items:flex-start;gap:10px;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-size:12px;}
+.gap-label{color:var(--muted);font-size:11px;} .gap-val{font-family:var(--mono);font-weight:700;font-size:16px;color:var(--accent);}
+.gap-desc{color:var(--text-dim);font-size:11px;line-height:1.5;}
+.gc-list{display:flex;flex-direction:column;gap:4px;}
+.gc-item{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;
+  background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);}
+.gc-item.primary{border-left:3px solid var(--eagle);}
+.gc-item.secondary{border-left:3px solid var(--border2);}
+.gc-name{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--sphinx);flex-shrink:0;min-width:90px;}
+.gc-formula{font-family:var(--mono);font-size:10px;color:var(--muted);flex-shrink:0;}
+.gc-role{font-size:11px;color:var(--text-dim);line-height:1.4;}
+.synergy-box{background:var(--bg-card);border:1px solid var(--border);
+  border-left:3px solid var(--warn);border-radius:var(--radius);padding:10px 12px;gap:6px;display:flex;flex-direction:column;}
+.synergy-label{font-size:12px;font-weight:700;color:var(--warn);}
+.synergy-formula{font-family:var(--mono);font-size:11.5px;color:var(--text);word-break:break-word;}
+.synergy-emergent{font-size:11px;color:var(--text-dim);}
+.asfid-event-card{display:flex;align-items:center;gap:10px;background:var(--bg-card);
+  border:1px solid var(--border);border-left:3px solid var(--border2);
+  border-radius:var(--radius);padding:8px 12px;min-height:48px;transition:border-color .3s;}
+.asfid-ring{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:13px;flex-shrink:0;background:var(--bg-card);color:var(--border2);transition:all .3s;}
+.asfid-ev-dim{font-weight:700;font-size:12px;color:var(--muted);transition:color .3s;}
+.asfid-ev-lbl{font-size:11px;color:var(--border2);margin-top:1px;}
+.voice-legend{display:flex;flex-wrap:wrap;gap:8px;}
+.vl-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-dim);}
+.vl-dot{width:9px;height:9px;border-radius:50%;}
+.prose{font-size:12px;line-height:1.7;color:var(--text-dim);}
+.prose strong{color:var(--text);}
+
+/* ── Controls ── */
+#controls{grid-area:controls;display:flex;align-items:center;gap:10px;padding:0 16px;
+  background:var(--bg-panel);border-top:1px solid var(--border);}
+.ctrl-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--text-dim);font-size:12px;font-family:var(--font);cursor:pointer;transition:background .15s,border-color .15s;}
+.ctrl-btn:hover{background:var(--bg-hover);border-color:var(--border2);}
+.ctrl-btn.primary{background:rgba(86,211,100,.1);border-color:rgba(86,211,100,.35);color:var(--accent);}
+.ctrl-btn.primary:hover{background:rgba(86,211,100,.2);}
+.ctrl-btn.danger{background:rgba(247,129,102,.1);border-color:rgba(247,129,102,.3);color:var(--eagle);}
+.ctrl-btn:disabled{opacity:.4;cursor:not-allowed;}
+.ctrl-sep{width:1px;height:28px;background:var(--border);flex-shrink:0;}
+.time-bar-wrap{flex:1;display:flex;align-items:center;gap:8px;}
+.time-track{flex:1;height:4px;background:var(--bg-card);border-radius:2px;overflow:hidden;}
+.time-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--sphinx),var(--col-I));
+  border-radius:2px;transition:width .12s linear;}
+.time-lbl{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;}
+.example-lbl{font-size:11px;color:var(--border2);margin-left:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;}
+
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:var(--muted);}
+</style>
+</head>
+<body>
+<div id="app">
+
+<header id="header">
+  <span class="tscg-logo">TSCG</span>
+  <span class="sep">›</span>
+  <span class="poclet-name">M0_Counterpoint — Constrained Autonomous Voices &amp; Emergent Harmonic Coherence</span>
+  <div style="display:flex;gap:6px;flex-shrink:0">
+    <span class="chip domain">Music</span>
+    <span class="chip version">v1.0.0</span>
+    <span class="chip type">Poclet</span>
+  </div>
+</header>
+
+<div id="explorer">
+  <div class="expl-header">
+    Examples
+    <span id="expl-count" style="font-weight:400;color:var(--border2)">—</span>
+  </div>
+  <div class="expl-list" id="expl-list"></div>
+</div>
+
+<div class="splitter" id="split1"></div>
+
+<div id="canvas-area">
+  <div id="pole-overlay">
+    <div class="pole-seg" id="ps0" style="flex:1">Exposition</div>
+    <div class="pole-seg" id="ps1" style="flex:2">Development</div>
+    <div class="pole-seg" id="ps2" style="flex:1">Stretto</div>
+    <div class="pole-seg" id="ps3" style="flex:1">Resolution</div>
+  </div>
+  <div id="roll-scroll"><canvas id="pianoRoll"></canvas></div>
+  <div class="canvas-msg" id="canvas-msg">Select an example from the left panel</div>
+</div>
+
+<div class="splitter" id="split2"></div>
+
+<div id="sidebar">
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="description">Description</button>
+    <button class="tab-btn" data-tab="concepts">Concepts</button>
+    <button class="tab-btn" data-tab="synergy">Synergy</button>
+    <button class="tab-btn" data-tab="scores">Scores</button>
+  </div>
+
+  <div class="tab-panel active" id="panel-description">
+    <p class="prose">A polyphonic system in which N independent melodic <strong>voices</strong> coexist, each pursuing its own trajectory while respecting shared normative constraints — the <strong>Counterpoint Rules</strong>. Harmonic coherence is an <strong>emergent property</strong> of local rule compliance.</p>
+    <div class="synergy-box">
+      <div class="synergy-label">⊗ TSCG Synergy</div>
+      <div class="synergy-formula">ContrapuntalCoherence = Music ⊙ (Autonomy ⊗ Constraint ⊗ Emergence)</div>
+      <div class="synergy-emergent">Tensor: A ⊗ S ⊗ F ⊗ I ⊗ D</div>
+    </div>
+    <div class="synergy-box" style="border-left-color:#d2a8ff">
+      <div class="synergy-label" style="color:#d2a8ff">⚡ m3:Enigma Candidate</div>
+      <div class="synergy-formula">Voice Autonomy ⊗ CounterpointRule → Harmonic Coherence</div>
+      <div class="synergy-emergent">Without Rules: chaos. Without Autonomy: mere melody. The Rule is the mandatory ternary mediator.</div>
+    </div>
+    <div class="s-head">4-Pole Lifecycle</div>
+    <div class="gc-list">
+      <div class="gc-item primary"><div class="gc-name" style="color:#6C63FF">Exposition</div><div class="gc-role">Voices enter successively. System initializes from silence to full texture.</div></div>
+      <div class="gc-item"><div class="gc-name" style="color:#00C896">Development</div><div class="gc-role">Episodes modulate through keys. Middle Subject entries explore harmonic space.</div></div>
+      <div class="gc-item"><div class="gc-name" style="color:#FF6B35">Stretto</div><div class="gc-role">Subject entries overlap. Maximum polyphonic density. Climactic tension.</div></div>
+      <div class="gc-item"><div class="gc-name" style="color:#FFD93D">Resolution</div><div class="gc-role">Tonic reestablished. Pedal point + authentic cadence (V⁷→I).</div></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-concepts">
+    <div class="s-head eagle">Primary GenericConcepts</div>
+    <div class="gc-list">
+      <div class="gc-item primary"><div class="gc-name">Propagation</div><div class="gc-formula">I⊗F</div><div class="gc-role">Subject cloned &amp; transformed across voices through time.</div></div>
+      <div class="gc-item primary"><div class="gc-name">Autonomy</div><div class="gc-formula">A⊗I</div><div class="gc-role">Each voice = independent melodic agent.</div></div>
+      <div class="gc-item primary"><div class="gc-name">Constraint</div><div class="gc-formula">S⊗D</div><div class="gc-role">Counterpoint Rules: constitutive, not restrictive.</div></div>
+      <div class="gc-item primary"><div class="gc-name">Emergence</div><div class="gc-formula">S⊗I⊗D</div><div class="gc-role">Harmonic coherence from pairwise rule compliance — no central coordinator.</div></div>
+      <div class="gc-item primary"><div class="gc-name">Imitation</div><div class="gc-formula">I⊗S</div><div class="gc-role">Voice B imitates Voice A's Subject. Core structural mechanism.</div></div>
+    </div>
+    <div class="s-head sphinx" style="margin-top:4px">Secondary</div>
+    <div class="gc-list">
+      <div class="gc-item secondary"><div class="gc-name">Attractor</div><div class="gc-formula">A⊗D</div><div class="gc-role">Tonic key = global attractor. Consonances = local attractors.</div></div>
+      <div class="gc-item secondary"><div class="gc-name">Compression</div><div class="gc-formula">D⊗F</div><div class="gc-role">Stretto = temporal compression driving climactic intensification.</div></div>
+      <div class="gc-item secondary"><div class="gc-name">Cycle</div><div class="gc-formula">D⊗F</div><div class="gc-role">Tension → Dissonance → Resolution. Recurring dynamic engine.</div></div>
+    </div>
+    <div class="s-head" style="margin-top:4px">M1 Music</div>
+    <div class="gc-list">
+      <div class="gc-item"><div class="gc-name">FugueSubject</div><div class="gc-formula">I⊗S⊗F</div><div class="gc-role">System DNA — defines and constitutes content simultaneously.</div></div>
+      <div class="gc-item"><div class="gc-name">CounterpointRule</div><div class="gc-formula">S⊗I⊗D</div><div class="gc-role">Enigma Mediator. Forbids parallel 5ths/8ths, mandates dissonance resolution.</div></div>
+      <div class="gc-item"><div class="gc-name">Stretto</div><div class="gc-formula">D⊗S⊗F</div><div class="gc-role">Subject entries overlap before completion. Structural climax device.</div></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-synergy">
+    <div class="s-head">Active ASFID Dimension</div>
+    <div class="asfid-event-card" id="asfid-card">
+      <div class="asfid-ring" id="asfid-ring">—</div>
+      <div>
+        <div class="asfid-ev-dim" id="asfid-dim">Waiting</div>
+        <div class="asfid-ev-lbl" id="asfid-lbl">Press Play to start</div>
+      </div>
+    </div>
+    <div class="s-head" style="margin-top:4px">Voice Legend</div>
+    <div class="voice-legend" id="voice-legend"><span style="font-size:11px;color:var(--border2)">—</span></div>
+    <div class="s-head" style="margin-top:4px">Current Example</div>
+    <div id="example-info" class="prose" style="font-size:11px;color:var(--border2)">Select an example</div>
+    <div class="s-head" style="margin-top:4px">Enigma Cross-Domain</div>
+    <div class="gc-list">
+      <div class="gc-item"><div class="gc-role"><strong>Music:</strong> Voice Autonomy ⊗ Rule → Coherence</div></div>
+      <div class="gc-item"><div class="gc-role"><strong>Ecology:</strong> Species Autonomy ⊗ Niche → Stability</div></div>
+      <div class="gc-item"><div class="gc-role"><strong>Distributed Systems:</strong> Process ⊗ Protocol → Consistency</div></div>
+      <div class="gc-item"><div class="gc-role"><strong>Jazz ensemble:</strong> Improviser ⊗ Harmonic Grid → Collective Music</div></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-scores">
+    <div class="s-head eagle">Eagle Eye — ASFID (Territory)</div>
+    <div class="score-group" id="asfid-scores"></div>
+    <div class="score-mean-row"><span>Mean</span><span>0.886</span></div>
+    <div class="s-head sphinx" style="margin-top:6px">Sphinx Eye — REVOI (Map)</div>
+    <div class="score-group" id="revoi-scores"></div>
+    <div class="score-mean-row"><span>Mean</span><span>0.870</span></div>
+    <div class="gap-badge" style="margin-top:8px">
+      <div><div class="gap-label">Epistemic Gap δ₁</div><div class="gap-val">0.016</div></div>
+      <div class="gap-desc">SpectralClass: <strong>Coherent</strong> [0, 0.05)<br>Main gap: O = 0.78 (perceptual fusion for untrained listeners). Piano Roll compensates.</div>
+    </div>
+  </div>
+</div>
+
+<div id="controls">
+  <button class="ctrl-btn" id="btn-home">🏠 Home</button>
+  <div class="ctrl-sep"></div>
+  <button class="ctrl-btn primary" id="btn-play" disabled>▶ Play</button>
+  <button class="ctrl-btn danger"   id="btn-stop" disabled>■ Stop</button>
+  <div class="ctrl-sep"></div>
+  <div class="time-bar-wrap">
+    <div class="time-track"><div class="time-fill" id="time-fill"></div></div>
+    <div class="time-lbl" id="time-lbl">0.0s</div>
+  </div>
+  <span class="example-lbl" id="ctrl-lbl">—</span>
+</div>
+
+</div><!-- #app -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+<script>
+'use strict';
+// ============================================================
+//  TSCG — M0_Counterpoint
+//  Author: Echopraxium with the collaboration of Claude AI
+//  v1.0.0 — 2026-03-20
+//
+//  Data files (voices/ subfolder):
+//    frere-jacques.json  bwv578.json  bwv565.json  jazz-modal.json
+// ============================================================
+
+// Manifest: display info only — actual data lives in JSON files
+const MANIFEST = [
+  { id:'frere-jacques', icon:'🎵', name:'Frère Jacques',            sub:'Canon, 4 voices, unison',        badge:'Canon'   },
+  { id:'bwv578',        icon:'🎹', name:'BWV 578 — Little Fugue',   sub:'J.S. Bach, G minor, 4 voices',   badge:'Primary' },
+  { id:'bwv565',        icon:'🎸', name:'BWV 565 — Toccata & Fugue',sub:'J.S. Bach, D minor, 4 voices',   badge:'Iconic'  },
+  { id:'jazz-modal',    icon:'🎺', name:'Jazz Modal — Miles Davis',  sub:'Herbie Hancock, Ron Carter, 1965',badge:'Jazz'    }
+];
+
+const ASFID_DEF = [
+  {dim:'A',name:'Attractor',        score:0.87,col:'var(--col-A)'},
+  {dim:'S',name:'Structure',        score:0.90,col:'var(--col-S)'},
+  {dim:'F',name:'Flow',             score:0.85,col:'var(--col-F)'},
+  {dim:'I',name:'Information',      score:0.93,col:'var(--col-I)'},
+  {dim:'D',name:'Dynamics',         score:0.88,col:'var(--col-D)'}
+];
+const REVOI_DEF = [
+  {dim:'R',name:'Representability', score:0.95,col:'var(--col-R)'},
+  {dim:'E',name:'Evolvability',     score:0.88,col:'var(--col-E)'},
+  {dim:'V',name:'Verifiability',    score:0.92,col:'var(--col-V)'},
+  {dim:'O',name:'Observability',    score:0.78,col:'var(--col-O)'},
+  {dim:'I',name:'Interoperability', score:0.82,col:'var(--col-Im)'}
+];
+const ASFID_FULL = {A:'Attractor',S:'Structure',F:'Flow',I:'Information',D:'Dynamics'};
+
+// ── Runtime state ─────────────────────────────────────────────
+let cache     = {};     // id → loaded JSON data
+let currentEx = null;
+let simState  = 'STOPPED';
+let synths    = [];
+let audioOK   = false;
+let rafId     = null;
+let staticImg = null;
+
+// ── Scores ────────────────────────────────────────────────────
+function buildScoreRows(defs, id) {
+  document.getElementById(id).innerHTML = defs.map(s =>
+    `<div class="score-row">
+       <div class="score-dim" style="color:${s.col}">${s.dim}</div>
+       <div class="score-bar-bg"><div class="score-bar-fill" style="width:${s.score*100}%;background:${s.col}"></div></div>
+       <div class="score-val">${s.score.toFixed(2)}</div>
+     </div>`).join('');
+}
+buildScoreRows(ASFID_DEF, 'asfid-scores');
+buildScoreRows(REVOI_DEF, 'revoi-scores');
+
+// ── Explorer ──────────────────────────────────────────────────
+function buildExplorer() {
+  document.getElementById('expl-count').textContent = MANIFEST.length;
+  document.getElementById('expl-list').innerHTML = MANIFEST.map(m =>
+    `<div class="expl-item" data-id="${m.id}">
+       <span class="expl-icon">${m.icon}</span>
+       <div class="expl-info">
+         <div class="expl-name">${m.name}</div>
+         <div class="expl-sub">${m.sub}</div>
+         <div class="expl-badge">${m.badge}</div>
+       </div>
+     </div>`).join('');
+  document.getElementById('expl-list').querySelectorAll('.expl-item').forEach(el =>
+    el.addEventListener('click', () => selectExample(el.dataset.id)));
+}
+
+// ── Load JSON (with cache) ─────────────────────────────────────
+async function loadExample(id) {
+  if (cache[id]) return cache[id];
+  const resp = await fetch(`voices/${id}.json`);
+  if (!resp.ok) throw new Error(`voices/${id}.json — HTTP ${resp.status}`);
+  cache[id] = await resp.json();
+  return cache[id];
+}
+
+async function selectExample(id) {
+  stopSim();
+  document.querySelectorAll('.expl-item').forEach(el =>
+    el.classList.toggle('active', el.dataset.id === id));
+  const msg = document.getElementById('canvas-msg');
+  msg.style.display = 'flex';
+  msg.textContent   = 'Loading…';
+  try {
+    currentEx = await loadExample(id);
+  } catch(e) {
+    msg.textContent = '⚠ ' + e.message;
+    return;
+  }
+  msg.style.display = 'none';
+  document.getElementById('btn-play').disabled = false;
+  document.getElementById('btn-stop').disabled = false;
+  document.getElementById('ctrl-lbl').textContent = currentEx.name + ' — ' + currentEx.key;
+  document.getElementById('example-info').innerHTML =
+    `<strong>${currentEx.name}</strong> — ${currentEx.description}`;
+  document.getElementById('voice-legend').innerHTML = currentEx.voices.map(v =>
+    `<div class="vl-item"><div class="vl-dot" style="background:${v.color}"></div>${v.name}</div>`
+  ).join('');
+  updatePoleOverlay();
+  drawRoll();
+  resetUI();
+}
+
+// ── Pole overlay ──────────────────────────────────────────────
+function updatePoleOverlay() {
+  if (!currentEx) return;
+  ['ps0','ps1','ps2','ps3'].forEach((pid, i) => {
+    const el = document.getElementById(pid);
+    const p  = currentEx.poles[i];
+    if (!p) { el.style.display = 'none'; return; }
+    el.style.display    = 'flex';
+    el.style.flex       = String(p.end - p.start + 1);
+    el.style.background = p.color + '18';
+    el.textContent      = p.label;
+    el.classList.remove('pole-active');
+  });
+}
+
+// ── Piano Roll ────────────────────────────────────────────────
+const PX_BEAT=42, NOTE_H=7, LABEL_H=20, POLE_H=22;
+
+function noteToMidi(name) {
+  const M={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+  const m=name.match(/^([A-G])(b|#)?(-?\d)$/);
+  if(!m)return-1;
+  let n=M[m[1]];
+  if(m[2]==='b')n--; if(m[2]==='#')n++;
+  return(parseInt(m[3])+1)*12+n;
+}
+
+function drawRoll() {
+  if (!currentEx) return;
+  const ex = currentEx;
+  const midis = [];
+  ex.voices.forEach(v => v.notes.forEach(([n]) => { const m=noteToMidi(n); if(m>0)midis.push(m); }));
+  const midiMin = Math.max(21, Math.min(...midis)-3);
+  const midiMax = Math.min(108, Math.max(...midis)+3);
+  const rollH   = (midiMax-midiMin+1)*NOTE_H;
+
+  const area   = document.getElementById('canvas-area');
+  const canvas = document.getElementById('pianoRoll');
+  canvas.width  = ex.totalBeats*PX_BEAT+60;
+  canvas.height = Math.max(rollH+LABEL_H+POLE_H, area.clientHeight);
+
+  const ctx   = canvas.getContext('2d');
+  const beatX = b => 52+b*PX_BEAT;
+  const midiY = m => POLE_H+(midiMax-m)*NOTE_H;
+
+  ctx.fillStyle='#0d1117'; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // Black key rows
+  const bk=[1,3,6,8,10];
+  for(let m=midiMin;m<=midiMax;m++){
+    if(bk.includes(m%12)){ctx.fillStyle='#111525';ctx.fillRect(0,midiY(m),canvas.width,NOTE_H);}
+  }
+  // Octave lines
+  for(let m=midiMin;m<=midiMax;m++){
+    if(m%12===0){
+      ctx.strokeStyle='#252540';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(0,midiY(m));ctx.lineTo(canvas.width,midiY(m));ctx.stroke();
+    }
+  }
+  // Note name labels
+  const NM=['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
+  ctx.font='8px Consolas,monospace';
+  for(let m=midiMin;m<=midiMax;m++){
+    const nm=NM[m%12];
+    if(!nm.includes('b')){
+      ctx.fillStyle=(m%12===0)?'#446':'#2a2a4a';
+      ctx.fillText(nm+(Math.floor(m/12)-1),2,midiY(m)+NOTE_H-2);
+    }
+  }
+  // Beat grid + measure numbers
+  for(let b=0;b<=ex.totalBeats;b++){
+    const x=beatX(b),isMeasure=b%4===0;
+    ctx.strokeStyle=isMeasure?'#222235':'#16161e';ctx.lineWidth=isMeasure?1:0.5;
+    ctx.beginPath();ctx.moveTo(x,POLE_H);ctx.lineTo(x,POLE_H+rollH);ctx.stroke();
+    if(isMeasure){
+      ctx.fillStyle='#333355';ctx.font='8px Consolas,monospace';
+      ctx.fillText('m'+(b/4+1),x+2,POLE_H+rollH+14);
+    }
+  }
+  // Pole shading
+  ex.poles.forEach(p=>{
+    ctx.fillStyle=p.color+'11';
+    ctx.fillRect(beatX(p.start),POLE_H,beatX(p.end+1)-beatX(p.start),rollH);
+  });
+  // ASFID event markers
+  ex.events.forEach(ev=>{
+    const x=beatX(ev.beat);
+    ctx.save();ctx.setLineDash([3,3]);
+    ctx.strokeStyle=ev.color+'55';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x,POLE_H);ctx.lineTo(x,POLE_H+rollH);ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle=ev.color;ctx.font='bold 9px Consolas,monospace';
+    ctx.fillText(ev.dim,x+2,POLE_H+11);
+  });
+  // Notes
+  ex.voices.forEach(voice=>{
+    voice.notes.forEach(([name,sb,db])=>{
+      const midi=noteToMidi(name);
+      if(midi<midiMin||midi>midiMax)return;
+      const x=beatX(sb),y=midiY(midi),w=Math.max(2,db*PX_BEAT-2),h=NOTE_H-1;
+      ctx.fillStyle=voice.color+'bb';ctx.fillRect(x,y,w,h);
+      ctx.strokeStyle=voice.color;ctx.lineWidth=1;ctx.strokeRect(x,y,w,h);
+    });
+  });
+  staticImg=ctx.getImageData(0,0,canvas.width,canvas.height);
+}
+
+// ── Playhead ──────────────────────────────────────────────────
+function drawPlayhead(sec) {
+  if(!currentEx||!staticImg)return;
+  const ex=currentEx,B=60/ex.bpm,beat=sec/B;
+  const canvas=document.getElementById('pianoRoll');
+  const ctx=canvas.getContext('2d');
+  const beatX=b=>52+b*PX_BEAT;
+  const x=beatX(beat);
+  const rollH=canvas.height-LABEL_H-POLE_H;
+
+  ctx.putImageData(staticImg,0,0);
+  ctx.save();ctx.shadowColor='#ffffff88';ctx.shadowBlur=5;
+  ctx.strokeStyle='#ffffff';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(x,POLE_H);ctx.lineTo(x,POLE_H+rollH);ctx.stroke();
+  ctx.restore();
+
+  const pct=Math.min(100,(sec/(ex.totalBeats*B))*100);
+  document.getElementById('time-fill').style.width=pct+'%';
+  document.getElementById('time-lbl').textContent=sec.toFixed(1)+'s';
+
+  ['ps0','ps1','ps2','ps3'].forEach((pid,i)=>{
+    const p=ex.poles[i];
+    document.getElementById(pid).classList.toggle('pole-active',p&&beat>=p.start&&beat<=p.end);
+  });
+
+  const scroll=document.getElementById('roll-scroll');
+  scroll.scrollLeft=Math.max(0,x-scroll.clientWidth*0.38);
+
+  let activeEv=null;
+  for(const ev of ex.events){if(ev.beat<=beat)activeEv=ev;else break;}
+  if(activeEv)updateASFIDCard(activeEv);
+}
+
+function updateASFIDCard(ev){
+  const card=document.getElementById('asfid-card');
+  const ring=document.getElementById('asfid-ring');
+  const dim=document.getElementById('asfid-dim');
+  const lbl=document.getElementById('asfid-lbl');
+  card.style.borderLeftColor=ev.color;
+  ring.style.background=ev.color;ring.style.color='#fff';ring.textContent=ev.dim;
+  dim.style.color=ev.color;dim.textContent=ev.dim+' — '+(ASFID_FULL[ev.dim]||'');
+  lbl.style.color='var(--text-dim)';lbl.textContent=ev.label;
+}
+
+// ── Audio ─────────────────────────────────────────────────────
+async function ensureAudio(){if(audioOK)return;await Tone.start();audioOK=true;}
+
+function buildSynths(ex){
+  synths.forEach(s=>{try{s.synth.dispose();s.vol.dispose();}catch(e){}});
+  synths=ex.voices.map(v=>{
+    const sy=new Tone.Synth({oscillator:{type:'triangle8'},
+      envelope:{attack:0.015,decay:0.08,sustain:0.82,release:0.45}});
+    const vol=new Tone.Volume(v.vol);
+    sy.connect(vol);vol.toDestination();
+    return{synth:sy,vol};
+  });
+}
+
+function scheduleNotes(ex){
+  const B=60/ex.bpm;
+  Tone.Transport.bpm.value=ex.bpm;Tone.Transport.cancel();
+  ex.voices.forEach((voice,vi)=>{
+    voice.notes.forEach(([name,sb,db])=>{
+      const t=sb*B,dur=db*B*0.87;
+      Tone.Transport.schedule(now=>{
+        try{synths[vi].synth.triggerAttackRelease(name,dur,now);}catch(e){}
+      },t);
+    });
+  });
+  Tone.Transport.schedule(()=>stopSim(),ex.totalBeats*B+0.3);
+}
+
+function animate(){
+  if(simState!=='PLAYING')return;
+  drawPlayhead(Tone.Transport.seconds);
+  rafId=requestAnimationFrame(animate);
+}
+
+async function playSim(){
+  if(!currentEx)return;await ensureAudio();
+  if(simState==='STOPPED'){
+    buildSynths(currentEx);Tone.Transport.stop();Tone.Transport.seconds=0;
+    scheduleNotes(currentEx);
+  }
+  Tone.Transport.start();simState='PLAYING';animate();
+  document.getElementById('btn-play').textContent='⏸ Pause';
+}
+
+function pauseSim(){
+  Tone.Transport.pause();simState='PAUSED';cancelAnimationFrame(rafId);
+  document.getElementById('btn-play').textContent='▶ Play';
+}
+
+function stopSim(){
+  Tone.Transport.stop();Tone.Transport.cancel();simState='STOPPED';
+  cancelAnimationFrame(rafId);
+  document.getElementById('btn-play').textContent='▶ Play';
+  resetUI();
+}
+
+function resetUI(){
+  if(staticImg){document.getElementById('pianoRoll').getContext('2d').putImageData(staticImg,0,0);}
+  document.getElementById('time-fill').style.width='0%';
+  document.getElementById('time-lbl').textContent='0.0s';
+  document.getElementById('roll-scroll').scrollLeft=0;
+  ['ps0','ps1','ps2','ps3'].forEach(pid=>document.getElementById(pid).classList.remove('pole-active'));
+  document.getElementById('asfid-card').style.borderLeftColor='var(--border)';
+  const ring=document.getElementById('asfid-ring');
+  ring.style.background='var(--bg-card)';ring.style.color='var(--border2)';ring.textContent='—';
+  document.getElementById('asfid-dim').style.color='var(--muted)';
+  document.getElementById('asfid-dim').textContent='Waiting';
+  document.getElementById('asfid-lbl').style.color='var(--border2)';
+  document.getElementById('asfid-lbl').textContent='Press Play to start';
+}
+
+// ── Controls ──────────────────────────────────────────────────
+document.getElementById('btn-play').addEventListener('click',async()=>{
+  if(simState==='PLAYING')pauseSim();else await playSim();
+});
+document.getElementById('btn-stop').addEventListener('click',stopSim);
+document.getElementById('btn-home').addEventListener('click',()=>{
+  window.location.href='../../../index.html';
+});
+
+// ── Tabs ──────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+}));
+
+// ── Splitters ─────────────────────────────────────────────────
+function makeSplitter(splitterId,cssVar,getW,side){
+  const sp=document.getElementById(splitterId);
+  const app=document.getElementById('app');
+  let dragging=false,startX=0,startW=0;
+  sp.addEventListener('mousedown',e=>{
+    dragging=true;startX=e.clientX;startW=getW();
+    sp.classList.add('dragging');document.body.style.cssText='cursor:col-resize;user-select:none';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!dragging)return;
+    const d=e.clientX-startX;
+    const newW=Math.max(140,Math.min(520,side==='left'?startW+d:startW-d));
+    app.style.setProperty(cssVar,newW+'px');drawRoll();
+  });
+  document.addEventListener('mouseup',()=>{
+    if(!dragging)return;dragging=false;
+    sp.classList.remove('dragging');document.body.style.cssText='';
+  });
+}
+makeSplitter('split1','--left-w',   ()=>document.getElementById('explorer').getBoundingClientRect().width,'left');
+makeSplitter('split2','--sidebar-w',()=>document.getElementById('sidebar').getBoundingClientRect().width,'right');
+
+// ── Init ──────────────────────────────────────────────────────
+buildExplorer();
+selectExample('bwv578');
+window.addEventListener('resize',()=>drawRoll());
+</script>
+</body>
+</html>
