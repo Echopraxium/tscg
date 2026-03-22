@@ -1,0 +1,521 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/instances/poclets/Music/M0_Counterpoint.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1:music": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/music/M1_Music.jsonld#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "m0:Counterpoint",
+      "@type": ["owl:Ontology"],
+      "rdfs:label": "Counterpoint Poclet — Constrained Autonomous Voices Producing Emergent Harmonic Coherence",
+      "rdfs:comment": "TSCG minimal model of musical counterpoint as a system of autonomous melodic agents governed by shared normative constraints (Counterpoint Rules), producing emergent harmonic coherence. Primary reference: J.S. Bach fugal tradition. Includes Canon (Frère Jacques), Baroque Fugue (BWV 578, BWV 565), and Jazz contrapuntal improvisation as cross-stylistic validations. Candidate m3:Enigma: voice autonomy and harmonic coherence appear mutually exclusive yet coexist through the mandatory ternary mediator structure of Counterpoint Rules.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-03-20",
+      "m2:ontologyCategory": "Poclet",
+      "owl:versionInfo": "1.0.0",
+      "m2:changelog": [
+        {
+          "version": "1.0.0",
+          "date": "2026-03-20",
+          "description": "Initial release. 4-pole model (Exposition, Development, Stretto, Resolution). Full ASFID/REVOI bicephalous analysis. Enigma candidate pattern documented. Cross-stylistic validation: Canon, Baroque Fugue, Jazz."
+        }
+      ],
+      "owl:imports": [
+        "M3_GenesisSpace.jsonld",
+        "M2_GenericConcepts.jsonld",
+        "M1_CoreConcepts.jsonld",
+        "M1_extensions/music/M1_Music.jsonld"
+      ],
+      "m0:domain": "m1:music:Polyphony",
+      "m0:status": "VALIDATED",
+      "m0:poleCount": 4,
+      "m0:asfidMean": 0.88,
+      "m0:revojMean": 0.85,
+      "m0:epistemicGap": 0.18,
+      "m0:enigmaCandidate": true,
+      "m0:simulationAvailable": true,
+      "m0:simulationType": "ElectronJS + Tone.js (Piano Roll + ASFID real-time highlighting)",
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      }
+    },
+
+    {
+      "@id": "m0:CounterpointSystem",
+      "@type": "owl:Class",
+      "rdfs:label": "Counterpoint System",
+      "rdfs:comment": "A polyphonic system in which N independent melodic voices coexist simultaneously, each governed by shared normative constraints (Counterpoint Rules) that prevent harmonic collision while preserving individual melodic identity. The system produces global harmonic coherence as an emergent property of local rule compliance.",
+      "m0:coreParadox": "Voice Autonomy ⊗ CounterpointRule → Harmonic Coherence. Without rules: cacophony. Without autonomy: mere melody. The Rules are the mandatory ternary mediator.",
+      "m0:voiceCount": "2 (Canon) to 8 (Renaissance motet); practical optimum: 4 (Baroque fugue)",
+      "m0:m2Basis": [
+        "m2:Autonomy",
+        "m2:Constraint",
+        "m2:Emergence",
+        "m2:Propagation",
+        "m2:Attractor"
+      ],
+      "m0:tensorFormula": "A ⊗ S ⊗ F ⊗ I ⊗ D"
+    },
+
+    {
+      "@id": "m0:CounterpointPole",
+      "@type": "owl:Class",
+      "rdfs:label": "Counterpoint Pole",
+      "rdfs:comment": "Discrete functional phase in the lifecycle of a fugal composition. Each pole has a distinct structural role, voice density, and tension level."
+    },
+
+    {
+      "@id": "m0:pole_1_exposition",
+      "@type": ["m0:CounterpointPole"],
+      "rdfs:label": "Pole 1: Exposition",
+      "m0:poleNumber": 1,
+      "rdfs:comment": "System initialization. All voices enter successively, each presenting the Subject or its tonal Answer. The polyphonic texture is built incrementally from silence to full N-voice density. The Countersubject appears as the first instance of autonomous counter-melody.",
+      "m0:voiceDensity": "Progressive: 1 → N voices",
+      "m0:harmonicTension": "Low to Medium — tonic key, stable entries",
+      "m0:keyEvents": [
+        "Voice 1: Subject announced alone (pure melodic information)",
+        "Voice 2: Answer at the fifth + Voice 1: Countersubject begins",
+        "Voice 3..N: successive Subject/Answer entries",
+        "Full texture reached: Exposition closes"
+      ],
+      "m0:asfid": {
+        "A": {"score": 0.85, "comment": "Tonic attractor strongly established; each entry reinforces tonal center"},
+        "S": {"score": 0.95, "comment": "Formal structure maximally clear: strict entry order, Subject/Answer alternation"},
+        "F": {"score": 0.82, "comment": "Progressive temporal flow of voice entries; rhythmic regularity"},
+        "I": {"score": 0.95, "comment": "Subject = the information unit; propagated intact across all voices"},
+        "D": {"score": 0.70, "comment": "Low dynamic tension; system initializing, no confrontation yet"}
+      }
+    },
+
+    {
+      "@id": "m0:pole_2_development",
+      "@type": ["m0:CounterpointPole"],
+      "rdfs:label": "Pole 2: Development (Episodes + Middle Entries)",
+      "m0:poleNumber": 2,
+      "rdfs:comment": "System exploration. Episodes — passages without complete Subject — modulate through related keys using motivic fragments derived from Subject/Countersubject. New Subject entries appear in foreign keys. This is the 'wandering' phase: harmonic narrative unfolds through tonal journey.",
+      "m0:voiceDensity": "Full N voices, varying texture density",
+      "m0:harmonicTension": "Medium — modulations create instability, resolved locally",
+      "m0:keyEvents": [
+        "Episode: motivic fragmentation, sequential patterns, modulation",
+        "Middle entry: Subject in new key (dominant, relative, etc.)",
+        "Sequence chains: descending thirds, falling fifths (information propagation patterns)",
+        "Invertible counterpoint: voices exchange registers"
+      ],
+      "m0:asfid": {
+        "A": {"score": 0.72, "comment": "Tonal attractors plural — navigates through multiple key centers"},
+        "S": {"score": 0.85, "comment": "Episode/Entry alternation; motivic fragmentation controlled"},
+        "F": {"score": 0.90, "comment": "Continuous flow; sequential patterns create directional momentum"},
+        "I": {"score": 0.92, "comment": "Subject fragments propagated, transformed; motivic development rich"},
+        "D": {"score": 0.82, "comment": "Tonal instability through modulation; harmonic tension fluctuates"}
+      }
+    },
+
+    {
+      "@id": "m0:pole_3_stretto",
+      "@type": ["m0:CounterpointPole"],
+      "rdfs:label": "Pole 3: Stretto",
+      "m0:poleNumber": 3,
+      "rdfs:comment": "Maximum structural compression. Subject entries overlap — a new voice enters with the Subject before the previous voice has completed it. Polyphonic density reaches its climactic peak. The information propagation cycle is compressed to its minimum interval. Generates maximal tension before final resolution.",
+      "m0:voiceDensity": "Full N voices, maximum overlap",
+      "m0:harmonicTension": "High — overlapping Subject entries create chromatic friction",
+      "m0:keyEvents": [
+        "Subject entry 1 begins in Voice A",
+        "Before completion: Subject entry 2 begins in Voice B (stretto interval: 1–2 measures)",
+        "Optional: third overlapping entry (triple stretto)",
+        "Voices must remain harmonically compatible despite overlap — structural constraint at maximum"
+      ],
+      "m0:asfid": {
+        "A": {"score": 0.80, "comment": "Tonic return begins; harmonic gravity increases toward resolution"},
+        "S": {"score": 0.90, "comment": "Extreme structural compression — same Subject appearing simultaneously in multiple stages"},
+        "F": {"score": 0.88, "comment": "Accelerated sense of flow; overlapping entries create forward momentum"},
+        "I": {"score": 0.95, "comment": "Information (Subject) present in maximum density; propagation at maximum rate"},
+        "D": {"score": 0.95, "comment": "Maximum dynamic tension; the system at highest energy before collapse to equilibrium"}
+      }
+    },
+
+    {
+      "@id": "m0:pole_4_resolution",
+      "@type": ["m0:CounterpointPole"],
+      "rdfs:label": "Pole 4: Resolution (Coda)",
+      "m0:poleNumber": 4,
+      "rdfs:comment": "System closure. Tonic key firmly reestablished. Final Subject entry (often pedal point in organ fugues). Cadential gesture resolves accumulated harmonic tension. The attractor that was left in Pole 2 and compressed in Pole 3 is finally and decisively reached. In organ works, often a sustained pedal note under final harmonies.",
+      "m0:voiceDensity": "Full N voices, converging to unison/octave on final chord",
+      "m0:harmonicTension": "Decreasing to zero — systematic tension release",
+      "m0:keyEvents": [
+        "Final Subject entry in tonic key",
+        "Pedal point (often): sustained tonic bass note",
+        "Authentic cadence: Dominant 7th → Tonic (V7 → I)",
+        "Final chord: tonic major (Baroque often ends minor fugues on major — Picardy third)"
+      ],
+      "m0:asfid": {
+        "A": {"score": 0.98, "comment": "Tonic attractor reached definitively; system at global minimum energy"},
+        "S": {"score": 0.88, "comment": "Structure converges; voices merge into final harmonic statement"},
+        "F": {"score": 0.75, "comment": "Flow slows and stops; temporal energy dissipated"},
+        "I": {"score": 0.85, "comment": "Information (Subject) confirmed one final time; identity reaffirmed"},
+        "D": {"score": 0.60, "comment": "Dynamic tension resolved; system returns to ground state"}
+      }
+    },
+
+    {
+      "@id": "m0:ASFIDAnalysis",
+      "@type": "owl:Class",
+      "rdfs:label": "ASFID Analysis (Territory — Eagle Eye)",
+      "rdfs:comment": "Five-dimensional Territory analysis of the Counterpoint system."
+    },
+    {
+      "@id": "m0:asfid_attractor",
+      "@type": ["m0:ASFIDAnalysis"],
+      "rdfs:label": "A — Attractor",
+      "m0:score": 0.87,
+      "rdfs:comment": "The tonal center (tonic key) functions as the system's global attractor. All harmonic motion departs from and ultimately returns to tonic. Consonant intervals are local attractors within voice pairs. Cadential gestures (V7→I) are attractor-approach mechanisms. The tension/resolution cycle is a continuous attractor-deviation-return dynamic.",
+      "m0:attractorInstances": [
+        "Global: tonic key (G minor in BWV 578, D minor in BWV 565)",
+        "Local: consonant intervals on strong beats",
+        "Micro: leading tone → tonic resolution (half-step pull)"
+      ],
+      "m0:m2_metaconcept": "m2:Attractor"
+    },
+    {
+      "@id": "m0:asfid_structure",
+      "@type": ["m0:ASFIDAnalysis"],
+      "rdfs:label": "S — Structure",
+      "m0:score": 0.90,
+      "rdfs:comment": "Multi-layered structure: (1) Voice layer — N independent melodic lines, each with distinct register; (2) Formal layer — Exposition → Development → Stretto → Resolution; (3) Motivic layer — Subject, Answer, Countersubject hierarchy; (4) Harmonic layer — tonal plan across keys. Structure is both simultaneous (N voices) and temporal (4-pole lifecycle).",
+      "m0:structuralLayers": [
+        "Vertical (synchronic): N simultaneous voices",
+        "Horizontal (diachronic): 4-pole formal lifecycle",
+        "Motivic: Subject / Answer / Countersubject / free counterpoint hierarchy"
+      ],
+      "m0:m2_metaconcept": "m2:Layer"
+    },
+    {
+      "@id": "m0:asfid_flow",
+      "@type": ["m0:ASFIDAnalysis"],
+      "rdfs:label": "F — Flow",
+      "m0:score": 0.85,
+      "rdfs:comment": "Temporal flow of melodic lines through time. Each voice has its own flow trajectory. Flows interact at every moment: consonant flows reinforce each other, dissonant flows create friction requiring resolution. Sequential episode patterns create directed flow (e.g., descending-fifth sequences). The stretto phase accelerates flow to maximum density.",
+      "m0:flowTypes": [
+        "Melodic flow: stepwise motion (conjunct) vs leaps (disjunct)",
+        "Harmonic flow: tonal journey across keys",
+        "Rhythmic flow: metric regularity punctuated by syncopations/suspensions"
+      ],
+      "m0:m2_metaconcept": "m2:Flow"
+    },
+    {
+      "@id": "m0:asfid_information",
+      "@type": ["m0:ASFIDAnalysis"],
+      "rdfs:label": "I — Information",
+      "m0:score": 0.93,
+      "rdfs:comment": "The Fugue Subject is the primary information unit of the system. It is announced once, then propagated, transformed, and recombined throughout. Transformations (transposition, inversion, augmentation, diminution, retrograde) are information-preserving operations — the Subject remains recognizable despite transformation. The entire fugue is a single information unit unfolding through time.",
+      "m0:informationDimensions": {
+        "subject": "Primary information token — melodic identity kernel",
+        "propagation": "Subject copied across voices with transformations",
+        "encoding": "Musical notation = lossless symbolic encoding",
+        "redundancy": "Multiple voice entries = robustness through redundancy"
+      },
+      "m0:uniqueness": "The Fugue Subject is both the system's DNA and its message — it defines the system AND constitutes its content",
+      "m0:m2_metaconcept": "m2:Information"
+    },
+    {
+      "@id": "m0:asfid_dynamics",
+      "@type": ["m0:ASFIDAnalysis"],
+      "rdfs:label": "D — Dynamics",
+      "m0:score": 0.88,
+      "rdfs:comment": "The tension/resolution cycle is the fundamental dynamic engine. Dissonance = energy injection. Resolution = energy release. The 4-pole lifecycle follows a canonical energy curve: low (Exposition) → medium (Development) → high (Stretto) → zero (Resolution). The Stretto is the dynamic climax — maximum energy density before release.",
+      "m0:dynamicCycle": "Consonance (equilibrium) → Dissonance (perturbation) → Resolution (return to equilibrium)",
+      "m0:energyCurve": "Exposition(0.4) → Development(0.6) → Stretto(0.95) → Resolution(0.1)",
+      "m0:m2_metaconcept": "m2:Dynamics"
+    },
+
+    {
+      "@id": "m0:REVOIAnalysis",
+      "@type": "owl:Class",
+      "rdfs:label": "REVOI Analysis (Map — Sphinx Eye)",
+      "rdfs:comment": "Five-dimensional Map analysis of the Counterpoint system."
+    },
+    {
+      "@id": "m0:revoi_representability",
+      "@type": ["m0:REVOIAnalysis"],
+      "rdfs:label": "R — Representability",
+      "m0:score": 0.95,
+      "rdfs:comment": "Musical notation is one of humanity's oldest and most precise symbolic systems. Staff notation encodes pitch, duration, rhythm, dynamics, articulation, and voice identity with minimal ambiguity. A fugue score is a complete, lossless representation of the system — any trained musician can reconstruct the exact system from the score. Piano Roll notation (used in simulation) adds temporal visual clarity.",
+      "m0:representationForms": [
+        "Staff notation (standard, lossless)",
+        "Piano Roll (temporal visualization, simulation-friendly)",
+        "Tablature (instrument-specific)",
+        "MIDI (machine-readable, lossless)",
+        "Analytical reduction (Schenkerian, harmonic symbols)"
+      ],
+      "m0:m2_metaconcept": "m2:Representability"
+    },
+    {
+      "@id": "m0:revoi_evolvability",
+      "@type": ["m0:REVOIAnalysis"],
+      "rdfs:label": "E — Evolvability",
+      "m0:score": 0.88,
+      "rdfs:comment": "Counterpoint has evolved continuously over 600+ years: strict species counterpoint (Fux, 16th c.) → Baroque tonal fugue (Bach, 17th–18th c.) → Classical development (Beethoven) → Romantic chromatic counterpoint (Wagner, Brahms) → 20th century atonal counterpoint (Schoenberg) → Jazz contrapuntal improvisation (Davis, Hancock) → algorithmic counterpoint. The underlying ASFID structure (autonomous voices + constraint + emergence) is invariant across all evolutions.",
+      "m0:evolutionAxis": "Rule strictness: strict species → free jazz improvisation",
+      "m0:m2_metaconcept": "m2:Evolvability"
+    },
+    {
+      "@id": "m0:revoi_verifiability",
+      "@type": ["m0:REVOIAnalysis"],
+      "rdfs:label": "V — Verifiability",
+      "m0:score": 0.92,
+      "rdfs:comment": "Species counterpoint rules are fully explicit and mechanically verifiable. Errors (parallel fifths, parallel octaves, unresolved dissonances) can be detected algorithmically. Harmony analysis (Roman numeral analysis) provides verifiable harmonic labeling. The fugue's structural poles (Exposition boundary, Stretto onset) are analytically determinable from the score.",
+      "m0:verificationMethods": [
+        "Species rule checking (algorithmic — parallel motion detection)",
+        "Harmonic analysis (Roman numeral labeling)",
+        "Structural analysis (Exposition/Episode/Stretto boundary detection)",
+        "Acoustical analysis (consonance/dissonance ratio measurement)"
+      ],
+      "m0:m2_metaconcept": "m2:Verifiability"
+    },
+    {
+      "@id": "m0:revoi_observability",
+      "@type": ["m0:REVOIAnalysis"],
+      "rdfs:label": "O — Observability",
+      "m0:score": 0.78,
+      "rdfs:comment": "The counterpoint system is directly audible — observers can perceive multiple voices simultaneously with training. Score analysis provides complete structural observability. The simulation (Piano Roll + ASFID color coding) makes the system's internal state visually observable in real time. Main observability challenge: untrained listeners cannot consciously isolate individual voices — perceptual fusion reduces apparent complexity.",
+      "m0:observationModes": [
+        "Auditory: direct perception of voice texture",
+        "Visual-score: complete structural transparency via notation",
+        "Visual-simulation: real-time ASFID dimension highlighting (Piano Roll)",
+        "Analytical: post-hoc harmonic/structural reduction"
+      ],
+      "m0:observabilityLimit": "Perceptual streaming: untrained listeners fuse voices into single texture (cocktail party effect)",
+      "m0:m2_metaconcept": "m2:Observability"
+    },
+    {
+      "@id": "m0:revoi_interoperability",
+      "@type": ["m0:REVOIAnalysis"],
+      "rdfs:label": "I — Interoperability",
+      "m0:score": 0.82,
+      "rdfs:comment": "Counterpoint principles interoperate with: harmony (contrapuntal lines generate chords), form (fugue is a formal structure built on counterpoint), orchestration (contrapuntal textures distribute across instruments), jazz theory (voice leading as improvisation guideline), computer music (algorithmic counterpoint generation), cognitive science (auditory stream segregation research).",
+      "m0:interoperabilityDomains": [
+        "Harmony theory (voice leading generates harmonic progressions)",
+        "Formal analysis (fugue = counterpoint + architecture)",
+        "Jazz improvisation (counterpoint as constraint system)",
+        "Computer music / algorithmic composition",
+        "Cognitive science (auditory scene analysis, streaming)"
+      ],
+      "m0:m2_metaconcept": "m2:Interoperability"
+    },
+
+    {
+      "@id": "m0:EnigmaPattern",
+      "@type": "owl:Class",
+      "rdfs:label": "Enigma Pattern (m3:Enigma Candidate)",
+      "rdfs:comment": "Apparent impossibility in the Counterpoint system: Voice Autonomy and Harmonic Coherence appear mutually exclusive. An autonomous voice should be free to go anywhere melodically; a coherent harmony requires all voices to conform to shared constraints. Yet both coexist. Resolution: the Counterpoint Rules form a mandatory ternary mediator — the system is not binary (Autonomy vs Coherence) but ternary: Autonomy ⊗ Rules → Coherence."
+    },
+    {
+      "@id": "m0:enigma_counterpoint",
+      "@type": ["m0:EnigmaPattern"],
+      "rdfs:label": "Counterpoint Enigma: Autonomy ⊗ Rule → Coherence",
+      "m0:apparentImpossibility": "N voices simultaneously independent AND harmonically unified",
+      "m0:binaryFallacy": "Either voices are free (→ chaos) or constrained (→ not autonomous)",
+      "m0:ternaryResolution": "Voice Autonomy ⊗ CounterpointRule → Harmonic Coherence",
+      "m0:mediatorRole": "CounterpointRule is not a restriction of Autonomy — it is the enabling condition of co-existence",
+      "m0:crossDomainInstances": [
+        "Ecology: species autonomy ⊗ niche differentiation → ecosystem coherence",
+        "Distributed systems: process autonomy ⊗ consensus protocol → system consistency",
+        "Urban planning: individual freedom ⊗ zoning law → functional city",
+        "Jazz ensemble: improviser autonomy ⊗ shared harmonic grid → collective music"
+      ],
+      "m0:enigmaStatus": "CANDIDATE for m3:Enigma — pending formal TransDisclet validation across 2+ disciplines"
+    },
+
+    {
+      "@id": "m0:CrossStyleValidation",
+      "@type": "owl:Class",
+      "rdfs:label": "Cross-Stylistic Validation",
+      "rdfs:comment": "Validation that the same ASFID structure is identifiable across different stylistic instantiations of counterpoint."
+    },
+    {
+      "@id": "m0:validation_canon_frere_jacques",
+      "@type": ["m0:CrossStyleValidation"],
+      "rdfs:label": "Canon — Frère Jacques",
+      "m0:style": "Popular round (folk tradition)",
+      "m0:voiceCount": 4,
+      "m0:complexity": "Minimal — same melodic line, pure time offset",
+      "rdfs:comment": "The simplest possible counterpoint: a single melody sung by 4 voices entering at 2-measure intervals. Demonstrates the canonical (pun intended) form of the Imitation principle. Despite maximal simplicity, all ASFID dimensions are present: tonal attractor (C major), 4-voice structure, melodic flow, the song-text as information, and the mild tension/resolution cycle at each phrase end. Pedagogically indispensable: every child in the Western tradition has lived this system.",
+      "m0:asfidPresentDimensions": ["A", "S", "F", "I", "D"],
+      "m0:pedagogicalRole": "Entry-level introduction — zero prior musical knowledge required"
+    },
+    {
+      "@id": "m0:validation_bwv578",
+      "@type": ["m0:CrossStyleValidation"],
+      "rdfs:label": "Fugue in G minor BWV 578 — 'Little Fugue' (J.S. Bach)",
+      "m0:style": "Baroque organ fugue",
+      "m0:voiceCount": 4,
+      "m0:complexity": "Medium — canonical 4-voice fugue, clear structure",
+      "rdfs:comment": "Primary reference for the simulation. 4-voice fugue in G minor. Clear, pedagogically transparent structure: Exposition (4 entries, ~32 measures) → Episodes (sequential patterns) → Middle entries → Stretto → Final cadence. The Subject (descending G minor line) is immediately recognizable and motivically rich. All 4 poles of the poclet are cleanly identifiable. Bach's most accessible complete fugue — standard teaching example.",
+      "m0:simulationPrimary": true,
+      "m0:keySignature": "G minor",
+      "m0:estimatedDuration_seconds": 180,
+      "m0:asfidPresentDimensions": ["A", "S", "F", "I", "D"]
+    },
+    {
+      "@id": "m0:validation_bwv565",
+      "@type": ["m0:CrossStyleValidation"],
+      "rdfs:label": "Toccata and Fugue in D minor BWV 565 (J.S. Bach)",
+      "m0:style": "Baroque organ toccata + fugue",
+      "m0:voiceCount": 4,
+      "m0:complexity": "High — dramatic subject, extensive development, pedal virtuosity",
+      "rdfs:comment": "The most iconic fugue in the repertoire. The Toccata serves as a dramatic introduction (ASFID Dynamics pre-activation) before the Fugue proper. The D minor Subject (falling diminished seventh + stepwise run) has extreme motivic identity — arguably the most recognizable subject in fugal history. The Fugue demonstrates: extended Development with remote key modulations, multiple Stretto phases, and a final pedal-point Resolution of overwhelming force. Cited as iconic example of the counterpoint system at full expressive power.",
+      "m0:simulationPrimary": false,
+      "m0:keySignature": "D minor",
+      "m0:asfidPresentDimensions": ["A", "S", "F", "I", "D"]
+    },
+    {
+      "@id": "m0:validation_jazz_modal",
+      "@type": ["m0:CrossStyleValidation"],
+      "rdfs:label": "Jazz Modal Counterpoint — Miles Davis Quintet (Herbie Hancock, Ron Carter, Tony Williams)",
+      "m0:style": "Jazz modal improvisation",
+      "m0:voiceCount": "Variable (2–5 simultaneous voices)",
+      "m0:complexity": "High — rules internalized, real-time negotiation",
+      "rdfs:comment": "The jazz modal ensemble (Miles Davis second great quintet, 1964–68: Davis, Herbie Hancock, Wayne Shorter, Ron Carter, Tony Williams) represents counterpoint liberated from written score. Each performer improvises independently while sharing the harmonic grid (modal chord changes). The ASFID structure is identical: tonal/modal attractor, multi-voice structure, melodic flow, motivic information exchange (trading fours, call-and-response), and dynamic tension cycles. The Counterpoint Rules are internalized rather than written — the mediator is now cognitive rather than notated. Key difference from Baroque: the Subject is not pre-composed but emerges live from collective negotiation.",
+      "m0:keyDifference": "Rules internalized (not written). Subject emergent (not pre-composed). Mediator: shared stylistic vocabulary.",
+      "m0:asfidPresentDimensions": ["A", "S", "F", "I", "D"]
+    },
+
+    {
+      "@id": "m0:BicephalousSynthesis",
+      "@type": "owl:Class",
+      "rdfs:label": "Bicephalous Synthesis (Eagle Eye + Sphinx Eye)",
+      "rdfs:comment": "Integration of Territory (ASFID) and Map (REVOI) perspectives on the Counterpoint system."
+    },
+    {
+      "@id": "m0:bicephalous_synthesis",
+      "@type": ["m0:BicephalousSynthesis"],
+      "rdfs:label": "Eagle-Sphinx Integration",
+      "m0:territoryStrength": 0.886,
+      "m0:mapStrength": 0.870,
+      "m0:epistemicGap": 0.18,
+      "m0:spectralClass": "OnCriticalLine",
+      "rdfs:comment": "Mature, well-formalized domain. Territory (ASFID 0.886): high structural clarity, strong information propagation, powerful dynamic cycles. Map (REVOI 0.870): excellent representability (musical notation), high verifiability (explicit rules), good evolvability (600-year stylistic evolution). Main epistemic gap: perceptual observability for untrained listeners (O: 0.78) and jazz interoperability complexity (I: 0.82). Overall: strong candidate for TSCG's first aesthetic domain poclet.",
+      "m0:keyCouplings": [
+        "S⊗R: 0.95 (formal structure perfectly representable in score)",
+        "I⊗R: 0.93 (Subject/Answer encodable without loss)",
+        "I⊗V: 0.92 (species rules mechanically verifiable)",
+        "A⊗O: 0.85 (tonal center directly audible)",
+        "D⊗O: 0.80 (tension/resolution perceptible with minimal training)"
+      ],
+      "m0:gapAnalysis": {
+        "lowGap": [
+          "Rule formalization (counterpoint species fully explicit)",
+          "Score representation (lossless notation)",
+          "Structural analysis (poles analytically determinable)"
+        ],
+        "moderateGap": [
+          "Perceptual streaming (untrained listener voice fusion)",
+          "Jazz rules implicit vs explicit",
+          "Subjective aesthetic experience vs structural analysis"
+        ]
+      }
+    },
+
+    {
+      "@id": "m0:M2MetaconceptActivation",
+      "@type": "owl:Class",
+      "rdfs:label": "M2 Metaconcept Activation",
+      "rdfs:comment": "M2 metaconcepts instantiated and validated by this poclet."
+    },
+    {
+      "@id": "m0:m2_autonomy",
+      "@type": ["m0:M2MetaconceptActivation"],
+      "m0:metaconcept": "m2:Autonomy",
+      "m0:dominance": 0.92,
+      "rdfs:comment": "Each voice pursues its own melodic trajectory — independent melodic agency within shared constraints.",
+      "m0:tensorFormula": "A ⊗ I"
+    },
+    {
+      "@id": "m0:m2_constraint",
+      "@type": ["m0:M2MetaconceptActivation"],
+      "m0:metaconcept": "m2:Constraint",
+      "m0:dominance": 0.95,
+      "rdfs:comment": "Counterpoint Rules = normative constraints enabling coexistence. Forbidden parallel motions, mandatory dissonance resolution — constitutive rather than restrictive.",
+      "m0:tensorFormula": "S ⊗ D"
+    },
+    {
+      "@id": "m0:m2_emergence",
+      "@type": ["m0:M2MetaconceptActivation"],
+      "m0:metaconcept": "m2:Emergence",
+      "m0:dominance": 0.90,
+      "rdfs:comment": "Harmonic coherence emerges from local voice interactions. No single voice 'knows' the global harmony — it arises from pairwise compliance with rules.",
+      "m0:tensorFormula": "S ⊗ I ⊗ D"
+    },
+    {
+      "@id": "m0:m2_propagation",
+      "@type": ["m0:M2MetaconceptActivation"],
+      "m0:metaconcept": "m2:Propagation",
+      "m0:dominance": 0.94,
+      "rdfs:comment": "The Fugue Subject propagates across voices through time. Each entry = a copy; transformations (transposition, inversion) = information-preserving mutations.",
+      "m0:tensorFormula": "I ⊗ F"
+    },
+    {
+      "@id": "m0:m2_attractor",
+      "@type": ["m0:M2MetaconceptActivation"],
+      "m0:metaconcept": "m2:Attractor",
+      "m0:dominance": 0.88,
+      "rdfs:comment": "Tonic key = global attractor. Consonant intervals = local attractors. All harmonic motion is attractor-deviation-return.",
+      "m0:tensorFormula": "A ⊗ D"
+    },
+    {
+      "@id": "m0:m2_imitation",
+      "@type": ["m0:M2MetaconceptActivation"],
+      "m0:metaconcept": "m2:Imitation",
+      "m0:dominance": 0.93,
+      "rdfs:comment": "Voice B imitates Voice A's Subject entry. Imitation is the structural mechanism of counterpoint — it is how information propagates between agents.",
+      "m0:tensorFormula": "I ⊗ S"
+    },
+    {
+      "@id": "m0:m2_compression",
+      "@type": ["m0:M2MetaconceptActivation"],
+      "m0:metaconcept": "m2:Compression",
+      "m0:dominance": 0.85,
+      "rdfs:comment": "Stretto = temporal compression of propagation cycle. The interval between entries decreases until maximum overlap. Compression drives climactic intensification.",
+      "m0:tensorFormula": "D ⊗ F"
+    },
+
+    {
+      "@id": "m0:PocletValidation",
+      "@type": "owl:Class",
+      "rdfs:label": "Poclet Validation",
+      "rdfs:comment": "Validation of minimality, completeness, and proof-of-concept status."
+    },
+    {
+      "@id": "m0:validation_result",
+      "@type": ["m0:PocletValidation"],
+      "rdfs:label": "Validation Result",
+      "m0:minimality": "VALIDATED — 4 poles necessary and sufficient: Exposition (initialization), Development (exploration), Stretto (compression/climax), Resolution (closure). Removing any pole destroys the lifecycle narrative. No pole can be merged without information loss.",
+      "m0:completeness": "VALIDATED — All ASFID dimensions present across all poles: A(0.87), S(0.90), F(0.85), I(0.93), D(0.88). Cross-stylistic validation confirmed (Canon, BWV 578, BWV 565, Jazz modal).",
+      "m0:proofOfConcept": "VALIDATED — First TSCG poclet in the aesthetic domain. Demonstrates ASFID applicability beyond natural sciences. Enigma pattern identified (Autonomy ⊗ Rule → Coherence) with cross-domain potential.",
+      "m0:contributions": {
+        "M2_validation": [
+          "Autonomy", "Constraint", "Emergence", "Propagation",
+          "Attractor", "Imitation", "Compression"
+        ],
+        "M2_candidates": [],
+        "M1_population": [
+          "Polyphony", "PolyphonicVoice", "FugueSubject", "FugueAnswer",
+          "Countersubject", "FugueExposition", "FugueEpisode", "Stretto",
+          "Canon", "Consonance", "Dissonance", "HarmonicResolution",
+          "CounterpointRule", "JazzContrapuntal"
+        ]
+      },
+      "m0:overallStatus": "VALIDATED — First aesthetic domain poclet (ASFID: 0.886, REVOI: 0.870, δ: 0.18 — OnCriticalLine)",
+      "m0:strategicValue": "Demonstrates TSCG transdisciplinary reach beyond natural sciences. The counterpoint Enigma (Autonomy⊗Rule→Coherence) is a candidate TransDisclet pattern across music, ecology, distributed systems, and urban planning."
+    }
+  ]
+}
