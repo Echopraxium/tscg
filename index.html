@@ -2,303 +2,506 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>TSCG — Trophic Pyramid</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self' 'unsafe-inline';
+                 style-src  'self' 'unsafe-inline';
+                 img-src    'self' data: blob:;
+                 connect-src 'none';">
+  <title>TSCG &mdash; Poclet Gallery</title>
+  <!-- ── SEO ─────────────────────────────────────────────────────────── -->
+  <meta name="description"  content="TSCG (Transdisciplinary System Conceptual Grammar) Poclet Gallery — 3 interactive simulations for systemic modelling and ontology-driven cross-domain analysis. Domains covered: Photography / Optics / Image Formation, Thermodynamics.">
+  <meta name="keywords"     content="TSCG, Transdisciplinary System Conceptual Grammar, transdisciplinary framework, transdisciplinarity, systemic modeling, systemic modelling, complex systems, ontology, ontology-driven, knowledge representation, cross-domain analysis, cross-domain patterns, simulation, interactive simulation, scientific visualization, poclet, GenericConcepts, M0, M1, M2, M3, Genesis Space, EagleEye, SphinxEye, bicephalous architecture, ASFID, REVOI, epistemic gap, epistemic distance, Attractor, Structure, Flow, Information, Dynamics, Representability, Evolvability, Verifiability, Observability, Interoperability, TransDisclet, TscgTool, CaseStudy, SymbolicSystemGrammar, JSON-LD, OWL, SPARQL, RDF, Photography / Optics / Image Formation, Thermodynamics">
+  <meta name="author"       content="Echopraxium">
+  <meta name="robots"       content="index, follow">
+  <meta name="theme-color"  content="#0d1117">
+  <meta name="generator"    content="generate_index.js (TSCG)">
+  <meta name="date"         content="2026-03-22">
+  <!-- Open Graph -->
+  <meta property="og:type"         content="website">
+  <meta property="og:site_name"    content="TSCG Poclet Gallery">
+  <meta property="og:title"        content="TSCG — Poclet Gallery (3 simulations)">
+  <meta property="og:description"  content="TSCG (Transdisciplinary System Conceptual Grammar) Poclet Gallery — 3 interactive simulations for systemic modelling and ontology-driven cross-domain analysis. Domains covered: Photography / Optics / Image Formation, Thermodynamics.">
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary">
+  <meta name="twitter:title"       content="TSCG — Poclet Gallery (3 simulations)">
+  <meta name="twitter:description" content="TSCG (Transdisciplinary System Conceptual Grammar) Poclet Gallery — 3 interactive simulations for systemic modelling and ontology-driven cross-domain analysis. Domains covered: Photography / Optics / Image Formation, Thermodynamics.">
+  <!-- JSON-LD structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "TSCG Poclet Gallery",
+    "description": "TSCG (Transdisciplinary System Conceptual Grammar) Poclet Gallery — 3 interactive simulations for systemic modelling and ontology-driven cross-domain analysis. Domains covered: Photography / Optics / Image Formation, Thermodynamics.",
+    "keywords": "TSCG, Transdisciplinary System Conceptual Grammar, transdisciplinary framework, transdisciplinarity, systemic modeling, systemic modelling, complex systems, ontology, ontology-driven, knowledge representation, cross-domain analysis, cross-domain patterns",
+    "author": {
+      "@type": "Person",
+      "name": "Echopraxium",
+      "url": "https://github.com/Echopraxium"
+    },
+    "dateModified": "2026-03-22"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "TSCG Poclets",
+    "description": "List of 3 TSCG poclet simulations",
+    "numberOfItems": 3,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Exposure Triangle (Photography)",
+        "description": "Photography / Optics / Image Formation domain"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Fire Triangle (Poclet)"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Four-Stroke Engine (Poclet)",
+        "description": "Thermodynamics domain",
+        "version": "1.2.0"
+      }
+    ]
+  }
+  </script>
+  <!-- ─────────────────────────────────────────────────────────────────── -->
   <style>
-    /* Override grid to support resizable splitter */
-    #app {
-      display: grid;
-      grid-template-rows: var(--header-h) 1fr var(--controls-h);
-      grid-template-columns: 1fr 5px var(--sidebar-w);
-      grid-template-areas:
-        "header   header  header"
-        "canvas   split   sidebar"
-        "controls controls controls";
-      height: 100vh;
-    }
-    #canvas-area {
-      grid-area: canvas;
-      position: relative;
-      overflow: hidden;
-      min-width: 200px;
-    }
-    #render-canvas {
-      width: 100%; height: 100%;
-      display: block;
-      touch-action: none;
-      outline: none;
-    }
-    /* Splitter */
-    #splitter {
-      grid-area: split;
-      background: var(--border);
-      cursor: col-resize;
-      transition: background 0.15s;
-      position: relative;
-      z-index: 10;
-      user-select: none;
-    }
-    #splitter:hover, #splitter.dragging { background: var(--sphinx); }
-    #splitter::after {
-      content: "";
-      position: absolute;
-      inset: 0 -4px;  /* wider hit zone */
-    }
-    #sidebar { min-width: 180px; max-width: 600px; }
+/* ── Reset & variables ──────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117; --bg-panel:#161b22; --bg-card:#1c2130; --bg-hover:#21262d;
+  --border:#30363d; --border2:#3d444f;
+  --eagle:#f78166; --sphinx:#79c0ff; --accent:#56d364; --warn:#e3b341;
+  --muted:#8b949e; --text:#e6edf3; --text-dim:#b1bac4;
+  --col-A:#ffb840; --col-S:#64c8ff; --col-F:#3dc896;
+  --col-I:#c882ff; --col-D:#ff6464;
+  --col-R:#79c0ff; --col-E:#56d364; --col-V:#f78166;
+  --col-O:#d2a8ff; --col-Im:#e3b341;
+  --header-h:46px; --footer-h:44px; --left-w:290px; --split-w:5px;
+  --radius:6px;
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:'Cascadia Code','Fira Code','Consolas',monospace;
+}
+html,body{height:100%;overflow:hidden;font-family:var(--font);
+  background:var(--bg);color:var(--text);font-size:13px;line-height:1.5;}
+
+/* ── Shell grid ─────────────────────────────────────────────────────── */
+#shell{
+  display:grid;
+  grid-template-rows:var(--header-h) 1fr var(--footer-h);
+  grid-template-columns:var(--left-w) var(--split-w) 1fr;
+  grid-template-areas:
+    "header header header"
+    "tree   split  readme"
+    "footer footer footer";
+  height:100vh;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+#header{grid-area:header;display:flex;align-items:center;gap:12px;padding:0 16px;
+  background:var(--bg-panel);border-bottom:1px solid var(--border);}
+.logo{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--eagle);text-transform:uppercase;}
+.title{font-size:14px;font-weight:600;flex:1;}
+.chip{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid transparent;}
+.chip-count{background:rgba(86,211,100,.12);border-color:rgba(86,211,100,.3);color:var(--accent);}
+.chip-date {background:rgba(121,192,255,.12);border-color:rgba(121,192,255,.3);color:var(--sphinx);}
+
+/* ── Tree panel ─────────────────────────────────────────────────────── */
+#tree-panel{grid-area:tree;display:flex;flex-direction:column;
+  background:var(--bg-panel);border-right:1px solid var(--border);
+  overflow:hidden;min-width:160px;}
+#tree-header{display:flex;justify-content:space-between;align-items:center;
+  padding:8px 12px;font-size:11px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--border);flex-shrink:0;}
+#tree-count{font-weight:400;color:var(--border2);}
+#tree-list{overflow-y:auto;flex:1;}
+.tree-item{display:flex;align-items:center;gap:8px;padding:7px 12px;
+  cursor:pointer;border-left:3px solid transparent;
+  transition:background .12s,border-color .12s;}
+.tree-item:hover{background:var(--bg-hover);}
+.tree-item.active{background:rgba(121,192,255,.08);border-left-color:var(--sphinx);}
+.tree-icon{font-size:10px;color:var(--border2);flex-shrink:0;}
+.tree-label{flex:1;font-size:12px;color:var(--text-dim);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tree-item.active .tree-label{color:var(--text);}
+.tree-domain{font-size:10px;color:var(--border2);white-space:nowrap;flex-shrink:0;}
+
+/* ── Splitter ───────────────────────────────────────────────────────── */
+#splitter{grid-area:split;background:var(--border);cursor:col-resize;
+  transition:background .15s;z-index:10;}
+#splitter:hover,#splitter.dragging{background:var(--sphinx);}
+
+/* ── README panel ───────────────────────────────────────────────────── */
+#readme-panel{grid-area:readme;display:flex;flex-direction:column;
+  overflow:hidden;min-width:200px;}
+#readme-header{display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:8px 16px;flex-shrink:0;
+  background:var(--bg-panel);border-bottom:1px solid var(--border);}
+#readme-poclet-name{font-size:14px;font-weight:600;flex:1;}
+#readme-body{flex:1;overflow-y:auto;padding:20px 24px;background:var(--bg);}
+
+/* ── Scores strip ───────────────────────────────────────────────────── */
+#scores-strip{display:none;align-items:center;gap:14px;flex-wrap:nowrap;
+  padding:7px 16px;background:var(--bg-panel);
+  border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;}
+#scores-strip.visible{display:flex;}
+.score-group{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.score-group-label{font-size:10px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;flex-shrink:0;}
+.score-group-label.eagle{color:var(--eagle);}
+.score-group-label.sphinx{color:var(--sphinx);}
+.score-mini{display:flex;align-items:center;gap:4px;}
+.score-mini-ltr{font-family:var(--mono);font-size:10px;font-weight:700;
+  width:13px;text-align:center;flex-shrink:0;}
+.score-mini-bg{width:44px;height:4px;background:var(--bg-card);border-radius:2px;overflow:hidden;}
+.score-mini-fill{height:100%;border-radius:2px;}
+.score-sep{width:1px;height:22px;background:var(--border);flex-shrink:0;}
+.gap-mini{display:flex;align-items:center;gap:6px;flex-shrink:0;
+  padding:3px 8px;background:var(--bg-card);border-radius:4px;border:1px solid var(--border);}
+.gap-mini-lbl{font-size:10px;color:var(--muted);}
+.gap-mini-val{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent);}
+
+/* ── Placeholder ────────────────────────────────────────────────────── */
+.readme-placeholder{height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:10px;
+  color:var(--muted);text-align:center;opacity:.6;}
+.ph-title{font-size:15px;font-weight:600;color:var(--text-dim);}
+.ph-sub{font-size:12px;}
+
+/* ── Markdown ───────────────────────────────────────────────────────── */
+.readme-md{max-width:820px;font-size:13px;line-height:1.75;color:var(--text-dim);}
+.readme-md h1{font-size:20px;font-weight:700;color:var(--text);
+  border-bottom:1px solid var(--border);padding-bottom:6px;margin:24px 0 12px;}
+.readme-md h2{font-size:15px;font-weight:700;color:var(--text);
+  border-bottom:1px solid var(--border);padding-bottom:4px;margin:20px 0 8px;}
+.readme-md h3{font-size:13px;font-weight:700;color:var(--text-dim);margin:16px 0 6px;}
+.readme-md p{margin:0 0 10px;}
+.readme-md strong{color:var(--text);}
+.readme-md code{font-family:var(--mono);font-size:11.5px;background:var(--bg-card);
+  padding:1px 5px;border-radius:3px;color:var(--sphinx);}
+.readme-md pre{background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:12px 14px;overflow-x:auto;margin:10px 0;}
+.readme-md pre code{background:none;padding:0;font-size:11.5px;color:var(--text-dim);}
+.readme-md table{border-collapse:collapse;width:100%;margin:10px 0;font-size:12px;}
+.readme-md th{background:var(--bg-card);color:var(--text);font-weight:700;
+  padding:6px 10px;border:1px solid var(--border);text-align:left;}
+.readme-md td{padding:5px 10px;border:1px solid var(--border);color:var(--text-dim);}
+.readme-md ul,.readme-md ol{padding-left:20px;margin:6px 0 10px;}
+.readme-md li{margin-bottom:3px;}
+.readme-md blockquote{border-left:3px solid var(--sphinx);padding:4px 12px;
+  margin:8px 0;color:var(--muted);background:rgba(121,192,255,.04);
+  border-radius:0 4px 4px 0;}
+.readme-md hr{border:none;border-top:1px solid var(--border);margin:16px 0;}
+.readme-md a{color:var(--sphinx);text-decoration:none;}
+.readme-md a:hover{text-decoration:underline;}
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+#footer{grid-area:footer;display:flex;align-items:center;gap:10px;padding:0 16px;
+  background:var(--bg-panel);border-top:1px solid var(--border);}
+#launch-btn{padding:5px 16px;border-radius:var(--radius);
+  background:rgba(86,211,100,.12);border:1px solid rgba(86,211,100,.35);
+  color:var(--accent);font-size:12px;font-weight:600;font-family:var(--font);
+  cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+  transition:background .15s,border-color .15s;}
+#launch-btn:hover{background:rgba(86,211,100,.22);border-color:rgba(86,211,100,.55);}
+#launch-btn.hidden{display:none;}
+#footer-info{font-size:12px;color:var(--text-dim);flex:1;}
+#footer-path{font-size:10px;color:var(--border2);font-family:var(--mono);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px;}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);
+  margin-left:auto;flex-shrink:0;}
+
+/* ── Scrollbar ──────────────────────────────────────────────────────── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:var(--muted);}
   </style>
 </head>
 <body>
-<div id="app">
+<div id="shell">
 
   <!-- HEADER -->
   <header id="header">
-    <span class="tscg-logo">TSCG</span>
-    <span class="sep">&middot;</span>
-    <span class="poclet-name">Trophic Pyramid &mdash; StratifiedDissipation Poclet</span>
-    <div class="meta-chips">
-      <span class="chip domain">Ecology / Biology</span>
-      <span class="chip type">m3:Poclet</span>
-      <span class="chip version">v1.0.0</span>
-    </div>
+    <span class="logo">TSCG</span>
+    <span class="title">Poclet Gallery &mdash; Static Simulations</span>
+    <span class="chip chip-count" id="hdr-count">0 simulations</span>
+    <span class="chip chip-date">2026-03-22</span>
   </header>
 
-  <!-- CANVAS (BabylonJS will inject into #render-canvas) -->
-  <div id="canvas-area">
-    <canvas id="render-canvas"></canvas>
+  <!-- TREE -->
+  <div id="tree-panel">
+    <div id="tree-header">
+      Poclets <span id="tree-count">0</span>
+    </div>
+    <div id="tree-list"></div>
   </div>
 
   <!-- SPLITTER -->
   <div id="splitter"></div>
 
-  <!-- SIDEBAR -->
-  <aside id="sidebar">
-    <nav class="tab-bar">
-      <button class="tab-btn active" data-tab="description">Description</button>
-      <button class="tab-btn" data-tab="scores">Scores</button>
-      <button class="tab-btn" data-tab="concepts">Concepts</button>
-      <button class="tab-btn" data-tab="synergy">Synergy</button>
-    </nav>
-
-    <!-- TAB: Description (default) -->
-    <div id="panel-description" class="tab-panel active">
-      <div class="readme-content">
-<h2>System</h2>
-A <strong>Trophic Pyramid</strong> is a layered hierarchical structure in which each
-level consumes biomass from below and dissipates ~90% of received energy as heat.
-This thermodynamic constraint &mdash; Lindeman's 10% rule &mdash; produces the
-universal pyramidal biomass shape: <strong>StratifiedDissipation</strong>.
-
-<h2>Lindeman's 10% Rule (1942)</h2>
-<code>&eta; = E(n+1) / E(n) &asymp; 0.10</code>
-
-Energy cascade: <code>10 000 &rarr; 1 000 &rarr; 100 &rarr; 10 kJ/m&sup2;/yr</code>
-Validated across terrestrial, freshwater and marine ecosystems.
-
-<h2>5 Trophic Poles</h2>
-<code>Level 1</code> &nbsp;Primary Producers &mdash; plants, phytoplankton
-<code>Level 2</code> &nbsp;Herbivores &mdash; insects, ungulates, zooplankton
-<code>Level 3</code> &nbsp;Carnivores &mdash; foxes, snakes, predatory fish
-<code>Level 4</code> &nbsp;Apex Predators &mdash; wolves, sharks, eagles
-<code>&perp;</code> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Decomposers &mdash; fungi, bacteria (cross-cutting)
-
-<h2>Key GenericConcepts</h2>
-&bull; <strong>m2:Layer</strong> (S&otimes;I&otimes;A&otimes;R) &mdash; each level is a stable positional stratum
-&bull; <strong>m2:Dissipation</strong> (F&otimes;D) &mdash; irreversible thermodynamic loss per boundary
-&bull; <strong>m2:Context</strong> (O&otimes;R&otimes;Im&otimes;E) &mdash; biome determines species composition
-
-<h2>Trophic Cascade</h2>
-Click <em>&ldquo;Remove Apex Predator&rdquo;</em> to trigger:
-Apex removed &rarr; Carnivores irrupt &rarr; Herbivores collapse &rarr; Producers rebound.
-
-<em>Famous case: wolf reintroduction in Yellowstone (1995) changed river morphology.</em>
-
-<h2>3D Controls</h2>
-&bull; <strong>Left-drag</strong> &nbsp;&mdash; orbit camera
-&bull; <strong>Scroll</strong> &nbsp;&nbsp;&nbsp;&nbsp;&mdash; zoom in / out
-&bull; <strong>Right-drag</strong> &mdash; pan
-&bull; <strong>Click level</strong> &mdash; inspect in Scores tab
-
-<h2>Reference</h2>
-Lindeman R.L. (1942) &mdash; <em>The Trophic-Dynamic Aspect of Ecology</em>,
-Ecology 23(4):399&ndash;417
-      </div>
+  <!-- README + SCORES -->
+  <div id="readme-panel">
+    <div id="readme-header">
+      <span id="readme-poclet-name" style="color:var(--muted)">Select a poclet</span>
+      <span id="readme-domain" style="font-size:11px;color:var(--muted)"></span>
     </div>
-
-    <!-- TAB: Scores -->
-    <div id="panel-scores" class="tab-panel">
-      <div class="score-group">
-        <div class="score-group-label eagle">Eagle Eye &mdash; ASFID (Territory)</div>
-        <div class="score-row"><div class="score-dim" style="color:var(--col-A)">A</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-A)"></div></div><div class="score-val">0.95</div></div>
-        <div class="score-row"><div class="score-dim" style="color:var(--col-S)">S</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-S)"></div></div><div class="score-val">0.90</div></div>
-        <div class="score-row"><div class="score-dim" style="color:var(--col-F)">F</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-F)"></div></div><div class="score-val">0.95</div></div>
-        <div class="score-row"><div class="score-dim" style="color:var(--col-I)">I</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:var(--col-I)"></div></div><div class="score-val">0.80</div></div>
-        <div class="score-row"><div class="score-dim" style="color:var(--col-D)">D</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-D)"></div></div><div class="score-val">0.85</div></div>
-        <div class="score-mean-row"><span>ASFID mean</span><span>0.89</span></div>
-      </div>
-      <div class="score-group">
-        <div class="score-group-label sphinx">Sphinx Eye &mdash; REVOI (Map)</div>
-        <div class="score-row"><div class="score-dim" style="color:var(--col-R)">R</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-R)"></div></div><div class="score-val">0.95</div></div>
-        <div class="score-row"><div class="score-dim" style="color:var(--col-E)">E</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:var(--col-E)"></div></div><div class="score-val">0.70</div></div>
-        <div class="score-row"><div class="score-dim" style="color:var(--col-V)">V</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-V)"></div></div><div class="score-val">0.90</div></div>
-        <div class="score-row"><div class="score-dim" style="color:var(--col-O)">O</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:var(--col-O)"></div></div><div class="score-val">0.80</div></div>
-        <div class="score-row"><div class="score-dim" style="color:var(--col-Im)">I</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-Im)"></div></div><div class="score-val">0.85</div></div>
-        <div class="score-mean-row"><span>REVOI mean</span><span>0.84</span></div>
-      </div>
-      <div class="gap-badge">
-        <div><div class="gap-label">Epistemic Gap &delta;</div><div class="gap-val">0.05</div></div>
-        <div class="gap-desc">Exceptionally low &mdash; Lindeman's law is one of ecology's strongest empirical findings</div>
-      </div>
-      <div id="level-info">
-        <div class="level-info-box">
-          <span style="color:var(--muted)">Click a trophic level in the 3D view to inspect</span>
+    <div id="scores-strip"></div>
+    <div id="readme-body">
+      <div class="readme-placeholder">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="1" opacity=".3">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+        <div class="ph-title">Select a poclet</div>
+        <div class="ph-sub">Click a poclet in the left panel to read its README</div>
+        <div class="ph-sub" style="margin-top:6px;font-size:10px;color:var(--border2)">
+          &uarr;&darr; Arrow keys to navigate &nbsp;&middot;&nbsp;
+          Enter to open simulation
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- TAB: Concepts -->
-    <div id="panel-concepts" class="tab-panel">
-      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:4px">Primary &mdash; 3 concepts</div>
-      <div class="gc-list">
-        <div class="gc-item primary"><span class="gc-name">m2:Layer</span><div><div class="gc-formula">S&otimes;I&otimes;A&otimes;R</div><div class="gc-role">Structural backbone &mdash; each trophic level IS a Layer</div></div></div>
-        <div class="gc-item primary"><span class="gc-name">m2:Dissipation</span><div><div class="gc-formula">F&otimes;D</div><div class="gc-role">~90% energy lost as heat at each trophic boundary</div></div></div>
-        <div class="gc-item primary"><span class="gc-name">m2:Context</span><div><div class="gc-formula">O&otimes;R&otimes;Im&otimes;E</div><div class="gc-role">Biome context determines species per Layer</div></div></div>
-      </div>
-      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin:8px 0 4px">Secondary &mdash; 9 concepts</div>
-      <div class="gc-list">
-        <div class="gc-item secondary"><span class="gc-name">m2:Hierarchy</span><div><div class="gc-formula">A&otimes;S</div><div class="gc-role">Positional ordering base&rarr;apex</div></div></div>
-        <div class="gc-item secondary"><span class="gc-name">m2:Flow</span><div><div class="gc-formula">F</div><div class="gc-role">Energy/biomass transfer between levels</div></div></div>
-        <div class="gc-item secondary"><span class="gc-name">m2:Gradient</span><div><div class="gc-formula">&otimes;&sup2;F</div><div class="gc-role">Energy density gradient base&rarr;apex</div></div></div>
-        <div class="gc-item secondary"><span class="gc-name">m2:Homeostasis</span><div><div class="gc-formula">A&otimes;S&otimes;F&otimes;I&otimes;D</div><div class="gc-role">Ecosystem equilibrium</div></div></div>
-        <div class="gc-item secondary"><span class="gc-name">m2:Regulation</span><div><div class="gc-formula">A&otimes;S&otimes;F</div><div class="gc-role">Predator-prey negative feedback</div></div></div>
-        <div class="gc-item secondary"><span class="gc-name">m2:Cascade</span><div><div class="gc-formula">&otimes;&rArr;(P,St,Tr)</div><div class="gc-role">Top-down trophic cascade</div></div></div>
-        <div class="gc-item secondary"><span class="gc-name">m2:Threshold</span><div><div class="gc-formula">A&otimes;I&otimes;F</div><div class="gc-role">Minimum viable population triggers</div></div></div>
-        <div class="gc-item secondary"><span class="gc-name">m2:Network</span><div><div class="gc-formula">S&otimes;F&otimes;I</div><div class="gc-role">Food web underlying the pyramid</div></div></div>
-        <div class="gc-item secondary"><span class="gc-name">m2:Emergence</span><div><div class="gc-formula">&mdash;</div><div class="gc-role">Ecosystem services from interactions</div></div></div>
-      </div>
-    </div>
-
-    <!-- TAB: Synergy -->
-    <div id="panel-synergy" class="tab-panel">
-      <div class="synergy-box">
-        <div class="synergy-label">KnowledgeFieldConceptCombo</div>
-        <div class="synergy-formula">StratifiedDissipation</div>
-        <div class="synergy-formula" style="font-size:10px;color:var(--muted)">
-          = Biology &odot; (Layer &otimes; Dissipation)<br>
-          compiled: S&otimes;I&otimes;A&otimes;R&otimes;F&otimes;D
-        </div>
-        <div class="synergy-emergent"><strong>Emergent property:</strong> Pyramidal biomass structure &mdash; thermodynamic loss (F&otimes;D) through ordered strata (S&otimes;I&otimes;A&otimes;R) inevitably produces the pyramid.</div>
-      </div>
-      <div class="synergy-box" style="border-left-color:var(--sphinx)">
-        <div class="synergy-label" style="color:var(--sphinx)">Empirical Law</div>
-        <div class="synergy-formula">&eta; = E(n+1) / E(n) &asymp; 0.10</div>
-        <div class="synergy-emergent">Lindeman (1942). 10 000 &rarr; 1 000 &rarr; 100 &rarr; 10 kJ/m&sup2;/yr</div>
-      </div>
-      <div class="synergy-box" style="border-left-color:var(--eagle)">
-        <div class="synergy-label" style="color:var(--eagle)">Trophic Cascade &mdash; m2:Cascade</div>
-        <div class="synergy-formula">Apex removed &rarr; top-down propagation</div>
-        <div class="synergy-emergent">Apex &cross; &rarr; Carnivores &uarr; &rarr; Herbivores &darr; &rarr; Producers &uarr;<br><em>Yellowstone wolves (1995): cascade changed river courses.</em></div>
-      </div>
-    </div>
-
-  </aside>
-
-  <!-- CONTROLS -->
-  <footer id="controls">
-    <button class="ctrl-btn active" id="btn-play">&#9646;&#9646; Pause</button>
-    <button class="ctrl-btn" id="btn-reset">&#8634; Reset</button>
-    <div class="ctrl-sep"></div>
-    <span class="ctrl-label">Speed</span>
-    <input type="range" id="speed-slider" min="0.2" max="3.0" step="0.2" value="1.0">
-    <span class="ctrl-label" id="speed-label">&times;1.0</span>
-    <div class="ctrl-sep"></div>
-    <button class="ctrl-btn danger" id="btn-cascade">&#128058; Remove Apex Predator</button>
-    <div class="ctrl-sep"></div>
-    <button class="ctrl-btn" id="btn-explorer" title="Poclet Explorer (Ctrl+Shift+E)">&#10799; Poclet Explorer</button>
-    <div class="status-indicator">
-      <div class="status-dot running" id="status-dot"></div>
-      <span id="status-label">Running</span>
-    </div>
+  <!-- FOOTER -->
+  <footer id="footer">
+    <a id="launch-btn" class="hidden" href="#" target="_blank" rel="noopener">
+      &#9654; Open Simulation
+    </a>
+    <span id="footer-info"></span>
+    <span id="footer-path"></span>
+    <div class="status-dot"></div>
   </footer>
 
-</div><!-- #app -->
+</div><!-- #shell -->
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BabylonJS loading — resolved from node_modules at runtime.
-     No lib/ copy needed. nodeIntegration=true in Electron.
-════════════════════════════════════════════════════════════════════ -->
 <script>
-(function loadBabylon() {
-  const path = require('path');
-  // sim/ is 4 levels deep inside tscg/
-  // tscg / instances / poclets / trophic-pyramid / sim
-  const repoRoot = path.resolve(__dirname, '..', '..', '..', '..');
-  const babylonPath = path.join(repoRoot, 'node_modules', 'babylonjs', 'babylon.js');
-  // pathToFileURL for correct file:// URI on all platforms (incl. Windows backslashes)
-  const { pathToFileURL } = require('url');
-  const babylonURL = pathToFileURL(babylonPath).href;
-  // document.write is synchronous during parse — script executes before rest of body
-  document.write('<script src="' + babylonURL + '"></' + 'script>');
-})();
+CLIENT_JS_PLACEHOLDER
 </script>
-
-<script src="./metadata.js"></script>
-<script src="./renderer.js"></script>
+</script>
+</body>
+</html>
+</div><!-- #shell -->
 
 <script>
-// ── Tab switching ──────────────────────────────────────────────
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const t = btn.dataset.tab;
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('panel-' + t).classList.add('active');
+'use strict';
+// ── Embedded data ─────────────────────────────────────────────────────────────
+const POCLETS = [{"id":"ExposureTriangle","label":"Exposure Triangle (Photography)","domain":"Photography / Optics / Image Formation","version":"","gap":null,"asfid":null,"revoi":null,"htmlRelPath":"instances/poclets/ExposureTriangle/static/M0_ExposureTriangle.html","hasReadme":true,"readme":"# M0_ExposureTriangle — TSCG Poclet README\r\n\r\n**Poclet:** `M0_ExposureTriangle`  \r\n**Domain:** Photography / Optics / Image Formation  \r\n**Version:** 1.2.0 · **Date:** 2026-02-24  \r\n**Author:** Echopraxium with the collaboration of Claude AI  \r\n**Ontology URI:** `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/ExposureTriangle/M0_ExposureTriangle.jsonld`  \r\n**Status:** ACTIVE — Canonical pedagogical model\r\n\r\n---\r\n\r\n## Table of Contents\r\n\r\n1. [Overview](#1-overview)\r\n2. [System Description](#2-system-description)\r\n3. [ASFID Analysis (Eagle Eye — Territory)](#3-asfid-analysis-eagle-eye--territory)\r\n4. [REVOI Analysis (Sphinx Eye — Map)](#4-revoi-analysis-sphinx-eye--map)\r\n5. [Epistemic Gap](#5-epistemic-gap)\r\n6. [GenericConcepts Mobilized (22)](#6-GenericConcepts-mobilized-22)\r\n7. [M2 GenericConcepts Discovered from this Poclet](#7-m2-GenericConcepts-discovered-from-this-poclet)\r\n8. [Map–Territory Comparison](#8-mapterritory-comparison)\r\n9. [Analogy to the Fire Triangle](#9-analogy-to-the-fire-triangle)\r\n10. [Validation](#10-validation)\r\n11. [Future Extensions](#11-future-extensions)\r\n12. [Simulation (exposure-triangle_sim.py)](#12-simulation-exposure-triangle_simpy)\r\n13. [Changelog](#13-changelog)\r\n\r\n---\r\n\r\n## 1. Overview\r\n\r\nThe **Exposure Triangle** is the canonical pedagogical model of photography. It represents the three interdependent parameters that govern the amount of light reaching the camera sensor:\r\n\r\n| Parameter | Physical Role | Primary Effect |\r\n|-----------|--------------|----------------|\r\n| **ISO** | Sensor gain (signal amplification) | Brightness ↑, Noise ↑ |\r\n| **Aperture** (f-number) | Lens opening area (light flux control) | Brightness ↑/↓, Depth of Field ↔ |\r\n| **Shutter Speed** | Exposure duration (temporal integration) | Brightness ↑, Motion Blur ↔ |\r\n\r\n**Core physical law:**\r\n\r\n```\r\nExposure ∝ ISO × Aperture_Area × Time\r\n```\r\n\r\nIn logarithmic stop space:\r\n```\r\nlog₂(ISO) + log₂(1/f²) + log₂(T) = log₂(Scene_Luminance) + K\r\n```\r\n\r\nEvery stop (+1 or −1) represents a doubling or halving of light. This makes compensatory adjustments symmetric: `+1 stop ISO` exactly compensates `−1 stop Aperture` or `−1 stop Shutter`.\r\n\r\n**Pedagogical role:** The Exposure Triangle is the universal teaching model for photographic exposure — equivalent to the Fire Triangle for combustion, the OSI model for networking, or the Iron Triangle for project management. A simple Map that simplifies a complex Territory with remarkable practical effectiveness.\r\n\r\n---\r\n\r\n## 2. System Description\r\n\r\n### 2.1 Components\r\n\r\n#### ISO Sensitivity (Sensor Gain)\r\n- **Physical correlate:** Analog = film grain/silver halide concentration; Digital = voltage amplification of photosensor output\r\n- **Range:** ISO 100–204800 (professional cameras)\r\n- **Log scale:** Each ISO doubling = +1 stop\r\n- **ASFID tensor:** `S ⊗ I` (Structure of sensor architecture × Information amplification)\r\n- **Trade-off:** Higher ISO → brighter image **but** more grain/noise (SNR degrades)\r\n\r\n#### Aperture (f-number / f-stop)\r\n- **Physical correlate:** Iris diaphragm; light area ∝ 1/N² where N = f-number\r\n- **Range:** f/1.4 to f/22 (lens dependent)\r\n- **Full stop scale:** f/1.4, f/2, f/2.8, f/4, f/5.6, f/8, f/11, f/16, f/22, f/32\r\n- **ASFID tensor:** `S ⊗ F` (Structure of iris geometry × Flow of photons entering)\r\n- **Trade-off:** Wide aperture (f/1.4) → more light, shallow DoF; Narrow aperture (f/16) → less light, deep DoF\r\n\r\n#### Shutter Speed (Exposure Time)\r\n- **Physical correlate:** Mechanical curtain or electronic shutter duration\r\n- **Range:** 30s to 1/8000s (+ Bulb mode)\r\n- **Hand-holding rule:** T ≥ 1/focal_length (e.g. 50mm lens → 1/50s minimum)\r\n- **ASFID tensor:** `F ⊗ D` (Temporal flux accumulation × Temporal dynamics of scene)\r\n- **Trade-off:** Fast shutter → freezes motion; Slow shutter → motion blur, more light\r\n\r\n### 2.2 The Reciprocity Law\r\n\r\nAny combination satisfying the exposure equation yields the **same total exposure** (same histogram brightness), but with **different image qualities**:\r\n\r\n```\r\nISO 400 + f/4 + 1/250s  →  Same EV as:\r\nISO 800 + f/5.6 + 1/250s  (same exposure, shallower DoF)\r\nISO 400 + f/4 + 1/500s  (same exposure, frozen motion ↑)\r\n```\r\n\r\nThis is the fundamental **Trade-off** (m2:Trade-off): infinite equivalent exposures on the Pareto frontier, each sacrificing one quality dimension to gain another.\r\n\r\n---\r\n\r\n## 3. ASFID Analysis (Eagle Eye — Territory)\r\n\r\nTerritory state vector: `|Ω_exposure⟩ = 0.80|A⟩ + 0.85|S⟩ + 0.95|F⟩ + 0.75|I⟩ + 0.60|D⟩`\r\n\r\n| Dimension | Score | Justification |\r\n|-----------|-------|---------------|\r\n| **A** Attractor | 0.80 | System converges toward correct exposure (metering system acts as set-point) |\r\n| **S** Structure | 0.85 | Three-parameter coupling ISO × Aperture × Time with well-defined logarithmic interdependence |\r\n| **F** Flow | 0.95 | Massive photon flux (10¹⁵–10¹⁸ photons per typical exposure) — dominant physical phenomenon |\r\n| **I** Information | 0.75 | Spatial + spectral + temporal information encoded in captured photons |\r\n| **D** Dynamics | 0.60 | Exposure spans milliseconds to seconds — present but not fast-changing dynamics |\r\n\r\n**ASFID completeness:** All 5 dimensions present ✅\r\n\r\n---\r\n\r\n## 4. REVOI Analysis (Sphinx Eye — Map)\r\n\r\nMap state vector: `|M_triangle⟩_REVOI = 0.95|R⟩ + 0.85|E⟩ + 0.95|V⟩ + 0.95|O⟩ + 0.90|I⟩`\r\n\r\n**REVOI_mean = 0.92 → Exceptional Map quality**\r\n\r\n| Dimension | Score | Justification |\r\n|-----------|-------|---------------|\r\n| **R** Representability | 0.95 | Perfectly representable: triangular diagram, stop arithmetic (±1, ±2, ±3 stops), log₂ formula. `spaceCoverage ≈ 0.65` (covers 3 parameters + trade-offs; omits scene luminance, metering, optical physics) |\r\n| **E** Evolvability | 0.85 | Evolved from film to digital (ISO now variable per shot). Extends gracefully to computational photography (HDR, AI metering) without becoming obsolete |\r\n| **V** Verifiability | 0.95 | Predictions testable instantly: change any parameter → immediate visual feedback (histogram, chimping). Reproduced by millions of photographers daily |\r\n| **O** Observability | 0.95 | Ubiquitous in every photography textbook, tutorial, camera manual. Photographers internalize it as muscle memory through practice |\r\n| **I** Interoperability | 0.90 | Lingua franca of photography. Works across film/digital, all camera brands. Formalized in EXIF standard (ISO 12234) |\r\n\r\n### REVOI Map Analysis State (also encoded in ASFID for comparison)\r\n\r\nMap ASFID state: `|M_triangle⟩ = 0.85|A⟩ + 0.95|S⟩ + 0.70|F⟩ + 0.85|I⟩ + 0.50|D⟩`\r\n\r\n| Dimension | Score | Justification |\r\n|-----------|-------|---------------|\r\n| **A** | 0.85 | Strong pedagogical attractor — teaches correct exposure with high clarity |\r\n| **S** | 0.95 | Perfect triangular geometry (3 vertices, 3 edges — minimal and complete) |\r\n| **F** | 0.70 | Moderate — conceptual flow only (no actual photon flux in the diagram) |\r\n| **I** | 0.85 | High — encodes 3 parameters + trade-off relationships |\r\n| **D** | 0.50 | Low — static diagram (does not model the temporal adjustment process) |\r\n\r\n> **Sphinx Eye insight:** Why does the Exposure Triangle work so well as a teaching tool?\r\n> 1. Reduces complex optics physics to 3 intuitive parameters  \r\n> 2. Immediate visual feedback reinforces learning in every practice session  \r\n> 3. Trade-offs are universal human experience (no free lunch) — the model resonates cognitively  \r\n> — *Korzybski principle: the Map simplifies the Territory, but captures the essential structure for practical decision-making.*\r\n\r\n---\r\n\r\n## 5. Epistemic Gap\r\n\r\n```\r\nΔΘ = ‖|Ω_exposure⟩ − |M_triangle⟩‖ ≈ 0.32\r\n```\r\n\r\nDeviation vector: `(−0.05, −0.10, +0.25, +0.10, +0.10)`\r\n\r\n| Dimension | Gap | Interpretation |\r\n|-----------|-----|----------------|\r\n| **F (Flow)** | +0.25 | Largest divergence: Territory has massive photon flux (10¹⁸ photons); Map is abstract diagram with no actual flow representation |\r\n| **S (Structure)** | −0.10 | Territory has complex sensor/lens/optics physics; Map reduces to simple triangle |\r\n| **I, D** | +0.10 each | Information and dynamics richer in Territory than the static diagram captures |\r\n\r\n**Assessment:** Moderate gap (ΔΘ ≈ 0.32) — the Triangle is a good pedagogical Map but simplifies the Territory significantly. This is by design, not a defect: the Triangle's strength lies in its deliberate simplification.\r\n\r\n**Known limitations of the Map:**\r\n- Omits scene luminance (the 4th implicit parameter)\r\n- Ignores metering system complexity (TTL, spot, matrix metering algorithms)\r\n- Simplifies optical physics (diffraction limit at f/16+, lens aberrations)\r\n- Doesn't model reciprocity failure (film limitation at extreme exposures)\r\n- Static — doesn't represent the dynamic feedback adjustment process\r\n\r\n---\r\n\r\n## 6. GenericConcepts Mobilized (22)\r\n\r\n**Coverage: 22 of 71 M2 GenericConcepts (31%)**  \r\n`m3:semanticSignature`: `light_balance_attractor + parameter_trade-off_map + photon_flow_amplification`\r\n\r\n| # | GenericConcept | Formula | Role in Exposure Triangle |\r\n|---|-------------|---------|---------------------------|\r\n| 1 | `m2:Balance` | `A ⊗ S ⊗ F` | Equilibrium: ISO × Aperture × Shutter → correct exposure via compensatory stops |\r\n| 2 | `m2:Trade-off` | `R ⊗ V ⊗ E` (REVOI) / `A ⊗ I` (fallback) | Cannot simultaneously maximize DoF, freeze motion, minimize noise — Pareto frontier |\r\n| 3 | `m2:Amplification` | `Ft ⊗ D ⊗ It` | ISO = sensor signal amplification (+1 stop = ×2 gain); ND filter = attenuation |\r\n| 4 | `m2:FeedbackLoop` | `Process ⊗ Alignment ⊗ Homeostasis` | Camera metering = negative feedback loop (scene → meter → compare EV → adjust) |\r\n| 5 | `m2:Polarity` | `S ⊗ I ⊗ A` | Stops scale: bipolar axis centered on correct exposure (over-/under-exposed as opposing poles) |\r\n| 6 | `m2:Behavior` | `S ⊗ D ⊗ F` | Photographer's structured exposure evaluation routine (observe → meter → assess → adjust → capture → review) |\r\n| 7 | `m2:Component` | `S ⊗ I` | ISO, Aperture, Shutter as elementary constitutive parts |\r\n| 8 | `m2:Synergy` | `A ⊗ S ⊗ I` | Multiplicative (not additive) interaction: E ∝ ISO × Area × Time |\r\n| 9 | `m2:Constraint` | `S ⊗ I` | Physical limits: ISO [100–25600], Aperture [f/1.4–f/22], Shutter [1/8000–30s] |\r\n| 10 | `m2:Threshold` | `A ⊗ I` | Critical transitions: 1/focal_length rule, ISO >1600 (visible noise), f/16 (diffraction) |\r\n| 11 | `m2:Regulation` | `A ⊗ S ⊗ F` | Auto-exposure modes (AE, Av, Tv) — camera adjusts parameters to maintain target EV |\r\n| 12 | `m2:Signal` | `I ⊗ F` | Light as information carrier: photon flux encodes scene luminance, color, spatial info |\r\n| 13 | `m2:Code` | `I ⊗ S ⊗ D` | EXIF metadata: ISO/Aperture/Shutter encoded in image file per ISO 12234 standard |\r\n| 14 | `m2:Representation` | `I ⊗ S` | Triangle diagram as Map; `spaceCoverage ≈ 0.65` |\r\n| 15 | `m2:Space` | `S ⊗ I` | 3D exposure parameter space (ISO, Aperture, Shutter) — all possible settings |\r\n| 16 | `m2:Invariant` | `S ⊗ A` | EV = log₂(ISO × A² / T) invariant across all equivalent settings for same scene luminance |\r\n| 17 | `m2:Transformation` | `D ⊗ I ⊗ S` | Equivalent exposure conversions: ISO 400 + f/4 + 1/250 ↔ ISO 800 + f/5.6 + 1/250 |\r\n| 18 | `m2:Process` | `D ⊗ F` | Exposure as temporal process: photon accumulation from shutter open to close |\r\n| 19 | `m2:Event` | `D ⊗ I` | Shutter actuation as discrete capture event |\r\n| 20 | `m2:Memory` | `∫(D − F)dτ` | Photographer's learned exposure intuition (muscle memory from thousands of shots) |\r\n| 21 | `m2:Adaptation` | `I ⊗ F ⊗ D` | ISO ramp across lighting conditions: ISO 100 (noon) → ISO 6400 (dusk) |\r\n| 22 | `m2:Language` | `I ⊗ S ⊗ F` | Photography jargon: 'stop down to f/8', '+2 EV compensation', 'push 2 stops' |\r\n\r\n### By Category\r\n\r\n| Category | GenericConcepts |\r\n|----------|-------------|\r\n| **Structural** | Component, Space, Representation |\r\n| **Informational** | Signal, Code, Language |\r\n| **Regulatory** | Balance, Trade-off, Regulation, Constraint, Threshold, Polarity |\r\n| **Dynamic** | Process, Event, Transformation, Adaptation, Amplification, FeedbackLoop, Behavior |\r\n| **Adaptive** | Memory |\r\n| **Relational** | Synergy, Invariant |\r\n\r\n---\r\n\r\n## 7. M2 GenericConcepts Discovered from this Poclet\r\n\r\nThe Exposure Triangle poclet served as the **discovery context** for two M2 GenericConcepts that were subsequently validated across 8+ disciplines and promoted to established M2 status:\r\n\r\n### m2:Balance  `A ⊗ S ⊗ F`\r\n\r\n> *State of equilibrium between multiple interacting factors where variations compensate to maintain system stability.*\r\n\r\n**Discovered via:** The compensatory stops arithmetic — `+1 ISO stop` exactly cancels `−1 Aperture stop`. This is not Homeostasis (dynamic active regulation) nor Regulation (mechanism) — it is a **static equilibrium state** achieved through mutual parameter compensation.\r\n\r\n**Validated in 8 domains:** Photography, Chemistry (chemical equilibrium), Thermodynamics (energy balance), Economics (trade balance), Ecology (predator-prey), Audio engineering (frequency balance), Nutrition (macronutrient balance), Accounting (balance sheet).\r\n\r\n### m2:Trade-off  `R ⊗ V ⊗ E` (REVOI) / `A ⊗ I` (ASFID fallback)\r\n\r\n> *Deliberate exchange where improving one desirable property necessarily degrades another due to inherent constraints.*\r\n\r\n**Discovered via:** The photographer's dilemma — no exposure setting simultaneously maximizes depth of field, freezes motion, AND minimizes noise. The Triangle makes the Pareto frontier explicit.\r\n\r\n**Validated in 8 domains:** Photography (DoF/Grain/Motion), Machine Learning (Bias-Variance), Engineering (Speed-Accuracy), Economics (Inflation-Unemployment), Project Management (Cost-Quality-Time), Computer Science (Time-Space complexity), Biology (r-K selection), Reinforcement Learning (Exploration-Exploitation).\r\n\r\n> **Architectural note:** `m2:Trade-off` has `m2:perspective: \"map\"` — it is a Map-space GenericConcept (the photographer's decision model), not a Territory-space observable. This is why its primary formula uses REVOI dimensions (`R ⊗ V ⊗ E`) with ASFID as fallback (`A ⊗ I`).\r\n\r\n---\r\n\r\n## 8. Map–Territory Comparison\r\n\r\n| Aspect | Territory (Physical Reality) | Map (Exposure Triangle) |\r\n|--------|------------------------------|------------------------|\r\n| **Phenomenon** | Photon accumulation on sensor (quantum events) | Abstract diagram (3 vertices, 3 edges) |\r\n| **Parameters** | ISO, Aperture, Shutter + Scene Luminance + Metering | Only ISO, Aperture, Shutter |\r\n| **Flow** | 10¹⁵–10¹⁸ photons per exposure | Conceptual arrows between vertices |\r\n| **Physics** | Diffraction, aberrations, reciprocity failure, ADC noise | Simplified linear model |\r\n| **Dynamics** | Milliseconds (shutter) to hours (astrophotography) | Static, timeless diagram |\r\n| **REVOI quality** | — | R=0.95, E=0.85, V=0.95, O=0.95, I=0.90 → Mean 0.92 |\r\n| **Epistemic gap** | — | ΔΘ ≈ 0.32 (moderate, pedagogically acceptable) |\r\n\r\n---\r\n\r\n## 9. Analogy to the Fire Triangle\r\n\r\nThe Exposure Triangle is structurally analogous to the **Fire Triangle** (Fuel ⊗ O₂ ⊗ Heat → Fire):\r\n\r\n| Dimension | Fire Triangle | Exposure Triangle |\r\n|-----------|--------------|-------------------|\r\n| **Structure** | 3-component synergistic system | 3-component synergistic system |\r\n| **Removal test** | Remove ANY component → fire stops | Set any parameter to extreme → no usable image (ISO≈0, f/∞, T≈0) |\r\n| **Dominant principle** | Synergy (emergent chemical reaction) | Balance (equilibrium of light parameters) |\r\n| **Pedagogy** | Universal for fire safety training | Universal for photography education |\r\n| **Map limitation** | Omits chain reaction → led to Fire Tetrahedron | Omits scene luminance → could extend to Exposure Square |\r\n| **TSCG layer** | `M0_FireTriangle` | `M0_ExposureTriangle` |\r\n\r\nBoth are **Canonical Pedagogical Triangle** poclets — the TSCG type `m3:TscgOntologyType` for this class of reducible, 3-component teaching models.\r\n\r\n---\r\n\r\n## 10. Validation\r\n\r\n| Criterion | Status |\r\n|-----------|--------|\r\n| ASFID completeness (all 5 dimensions present) | ✅ |\r\n| Minimality (exactly 3 components, irreducible) | ✅ |\r\n| Emergence (correct exposure emerges from parameter balance) | ✅ |\r\n| Balance & Trade-off validated in M2 (v15.1.0, 8 domains each) | ✅ |\r\n| GenericConcept coverage (22 of 71 M2 = 31%) | ✅ |\r\n| New GenericConcepts v1.1.0 (Amplification, FeedbackLoop, Polarity, Behavior) | ✅ |\r\n| spaceCoverage ValueSpace on m2:Representation (RSC ≈ 0.65) | ✅ |\r\n| REVOI analysis complete (Mean = 0.92) | ✅ |\r\n| JSON-LD encoding valid | ✅ |\r\n\r\n---\r\n\r\n## 11. Future Extensions\r\n\r\n### Exposure Square (4th parameter)\r\nAdd **Scene Luminance** (EV of the scene) as 4th explicit parameter, making the implicit assumption of the Triangle explicit. The Square would have lower epistemic gap (ΔΘ < 0.20) at the cost of pedagogical simplicity.\r\n\r\n### Computational Photography Layer\r\nModern cameras and AI are reducing Trade-off severity without eliminating it:\r\n\r\n| Technology | Trade-off addressed | Method |\r\n|-----------|-------------------|--------|\r\n| HDR | Dynamic range vs single exposure | Multi-exposure merge |\r\n| Focus stacking | DoF vs sharpness | Multi-focus merge |\r\n| AI noise reduction | ISO noise vs resolution | Neural denoising |\r\n| IBIS / OIS | Shutter speed vs shake | Optical/sensor stabilization |\r\n| Computational exposure | All three | Real-time AI parameter optimization |\r\n\r\nThese extend the Triangle's Map but do not obsolete it — the physical law `E ∝ ISO × A × T` remains invariant.\r\n\r\n### Ansel Adams Zone System\r\nExtension of the Triangle to a 10-zone tonal mapping system (Zone 0 = pure black, Zone X = pure white). Adds explicit tonal placement awareness to the exposure decision — a more complete Map (spaceCoverage ≈ 0.80 vs. Triangle's ≈ 0.65).\r\n\r\n---\r\n\r\n## 12. Simulation (exposure-triangle_sim.py)\r\n\r\nThe poclet is accompanied by an interactive Pygame simulation that applies **live photo effects** to a sample image (`photo_sample.jpg`) driven by the three exposure parameter sliders.\r\n\r\n### Sample Image\r\n\r\n`photo_sample.jpg` — Autumn maple leaves on wet cobblestones. Used as reference scene because it contains:\r\n- Fine-grain texture (cobblestone joints) that clearly shows **ISO noise** artifacts\r\n- Both bright (yellow leaves) and dark (wet stone) tonal zones that reveal **over/under-exposure** clipping\r\n- Natural colour richness that highlights **white-balance neutrality** at the baseline exposure\r\n\r\n**Baseline exposure** (EV offset = 0): `ISO 400 · f/5.6 · 1/250s`\r\n\r\n### Visual Effects per Parameter\r\n\r\n| Parameter | Effect on Image | Physical Justification |\r\n|-----------|----------------|------------------------|\r\n| **ISO** | Grain/noise overlay — amplitude grows from 0 (ISO 100) to ±55 px (ISO 6400) | Signal amplification raises both signal and read noise proportionally |\r\n| **Aperture** | Edge vignette (DoF indicator) — active below f/4, maximum at f/1.4 | Shallow depth-of-field renders out-of-focus areas at image periphery |\r\n| **Shutter Speed** | Horizontal motion blur — onset at 1/50 s, kernel up to 40 px at 2 s | Hand-held camera shake during long exposures |\r\n| **All three** | Brightness shift (EV offset) | E ∝ ISO × Aperture_Area × Time — any surplus/deficit shifts tonal range |\r\n\r\n### TSCG Connections\r\n\r\n- **I (Information) / ASFID**: The photograph *is* the encoded territory information — each pixel encodes scene luminance, colour, texture. The simulation makes the **Signature** GenericConcept (I⊗F) visible: the image changes signature depending on capture parameters.\r\n- **V (Verifiability) / REVOI**: Changing any slider immediately verifies the Triangle's prediction. The EV bar and trade-off panel make the Pareto frontier tangible.\r\n- **A (Attractor)**: The baseline settings form the stable attractor state — the image \"wants\" to look correctly exposed; any deviation is penalised by a visible artefact.\r\n\r\n### Requirements & Usage\r\n\r\n```bash\r\npip install pygame numpy\r\npython exposure-triangle_sim.py\r\n# Optional: explicit poclet path\r\npython exposure-triangle_sim.py path/to/M0_ExposureTriangle.jsonld\r\n```\r\n\r\nPlace `photo_sample.jpg` in the **same folder** as `exposure-triangle_sim.py`.\r\n\r\n---\r\n\r\n## 13. Changelog\r\n\r\n| Version | Date | Description |\r\n|---------|------|-------------|\r\n| **1.2.0** | 2026-02-24 | Added `m0:sampleImage` property (`photo_sample.jpg`). Documents baseline exposure (ISO 400 / f/5.6 / 1/250s) and simulation effects (ISO→noise, Aperture→vignette, Shutter→motion blur). Added `exposure-triangle_sim.py` Pygame simulation with live photo effects driven by poclet ASFID/REVOI data. |\r\n| **1.1.0** | 2026-02-21 | Synchronized with M2 v15.4.0 and M3 v3.5.0. Author corrected. ORIVE → REVOI throughout. Tensor formula spacing normalized. Balance and Trade-off no longer labeled '(NEW)'. Added 4 GenericConcepts: `Amplification`, `FeedbackLoop`, `Polarity`, `Behavior`. Added `spaceCoverage` ValueSpace (RSC ≈ 0.65) on Representation. Added `m3:semanticSignature`. Total: 18 → 22 GenericConcepts. |\r\n| **1.0.0** | 2026-01-20 | Initial creation. 18 GenericConcepts (34%). First identification of `m2:Balance` and `m2:Trade-off` as new M2 GenericConcepts from photography domain analysis. |\r\n\r\n---\r\n\r\n## References\r\n\r\n- Adams, A. (1981). *The Negative* (The Ansel Adams Photography Series)\r\n- Freeman, M. (2007). *The Photographer's Eye: Composition and Design*\r\n- Peterson, B. (2016). *Understanding Exposure* (4th ed.)\r\n- Langford, M. (2010). *Langford's Basic Photography* (9th ed.)\r\n- ISO 12232:2019 — Photography — Digital still cameras — Determination of exposure index\r\n\r\n---\r\n\r\n*See also: `M0_FireTriangle` (structural analogy — both are 3-component canonical pedagogical models)*\r\n"},{"id":"FireTriangle","label":"Fire Triangle (Poclet)","domain":"","version":"","gap":null,"asfid":null,"revoi":null,"htmlRelPath":"instances/poclets/FireTriangle/static/M0_FireTriangle.html","hasReadme":true,"readme":"# Fire Triangle Poclet - README\r\n\r\n**Author**: Echopraxium with the collaboration of Claude AI  \r\n**Created**: 2026-01-17  \r\n**Domain**: Chemistry  \r\n**Type**: Composite Poclet  \r\n**Status**: ✅ Validated - Canonical Example\r\n\r\n---\r\n\r\n## Overview\r\n\r\nThe **Fire Triangle** is the canonical poclet for TSCG framework validation. It represents the minimal yet complete system for combustion, demonstrating that fire requires exactly three components simultaneously: **Fuel**, **Oxygen (Oxidizer)**, and **Heat**. Removing any one component immediately stops the fire.\r\n\r\nThis poclet serves as:\r\n1. **Framework Validation**: Proof-of-concept for TSCG's ASFID/REVOI analysis\r\n2. **GenericConcept Discovery**: Helped identify Balance, Synergy, and Component GenericConcepts\r\n3. **Pedagogical Tool**: Entry point for teaching systems theory and fire science\r\n\r\n---\r\n\r\n## System Description\r\n\r\n### The Three Components\r\n\r\n#### 1. Fuel (Combustible)\r\n- **Role**: Energy source\r\n- **Function**: Provides chemical potential energy\r\n- **Examples**: Wood, gasoline, natural gas, paper, coal\r\n- **State**: Solid, liquid, or gas\r\n- **Chemical Nature**: Typically hydrocarbons or organic matter\r\n- **ASFID Contribution**:\r\n  - **S** (Structure): Material structure of fuel\r\n  - **F** (Flow): Fuel consumption flow\r\n  - **I** (Information): Chemical composition information\r\n\r\n#### 2. Oxygen (Oxidizer)\r\n- **Role**: Electron acceptor\r\n- **Function**: Enables oxidation reaction\r\n- **Primary Example**: O₂ (atmospheric oxygen)\r\n- **Alternative Oxidizers**: Cl₂, F₂, ClO₄⁻, NO₃⁻\r\n- **Concentration**: Typically >16% in air for sustained combustion\r\n- **ASFID Contribution**:\r\n  - **F** (Flow): O₂ flow from environment\r\n  - **D** (Dynamics): Reaction dynamics (oxidation rate)\r\n\r\n#### 3. Heat (Activation Energy)\r\n- **Role**: Activation threshold\r\n- **Function**: Initiates and sustains reaction above ignition temperature\r\n- **Sources**: Match, spark, friction, hot surface, lightning\r\n- **Threshold**: T_ignition (fuel-dependent)\r\n- **Sustainment**: Once ignited, combustion generates its own heat (positive feedback)\r\n- **ASFID Contribution**:\r\n  - **A** (Attractor): Thermal attractor (equilibrium temperature)\r\n  - **D** (Dynamics): Thermal dynamics (heating/cooling)\r\n\r\n---\r\n\r\n### Flame Color by Temperature\r\n\r\nThe visible color of a flame directly encodes its temperature — a **spectral Signature** (GenericConcept **I⊗F**) linking the Heat dimension to observable Information.\r\n\r\n| Temperature Range | Color | Typical Context |\r\n|-------------------|-------|-----------------|\r\n| 525 – 700 °C | 🔴 Dark Red | First glow; near lower limit of human vision |\r\n| 700 – 900 °C | 🔴 Red | Campfire base, cherry-red zone |\r\n| 900 – 1 100 °C | 🟠 Orange | Standard hydrocarbon flame, wood fire crown |\r\n| 1 100 – 1 400 °C | 🟡 Yellow | Candle tip, high-intensity torch |\r\n| > 1 400 °C | ⚪ White | Acetylene torch, thermite — near-blackbody |\r\n\r\n**Physical basis**: Planck blackbody radiation combined with spectral line emission from excited combustion intermediates (OH\\*, CH\\*, C₂\\*).\r\n\r\n**TSCG link**: Flame color is an *observable* (Eagle Eye / ASFID-I) that encodes temperature information, illustrating the **Signature** GenericConcept (I⊗F) — the system broadcasts its thermal state as a structured optical signal.\r\n\r\n> *Note*: Perceived color depends on the observer model (human photopic vision, camera CCD, spectrometer). The table above uses standard human vision as reference observer.\r\n\r\n### Synergy Principle\r\n\r\n**Formula**: `Fuel ⊕ O₂ ⊕ Heat → Fire (emergent)`\r\n\r\n- **Description**: All three components required **simultaneously**\r\n- **Emergent Property**: Flame (self-sustaining exothermic reaction)\r\n- **Non-Linearity**: 1 + 1 + 1 ≠ 3, but = **Fire** (qualitative emergence)\r\n- **Critical Requirement**: Eliminating ANY component stops combustion immediately\r\n\r\n---\r\n\r\n## ASFID Analysis (Territory Space - Eagle Eye)\r\n\r\n### Territory: Fire as Observed Phenomenon\r\n\r\n**Observer**: Human with standard scientific instrumentation\r\n\r\n**ASFID State Vector**: `|Ω_fire⟩ = 0.85|A⟩ + 0.70|S⟩ + 0.90|F⟩ + 0.65|I⟩ + 0.75|D⟩`\r\n\r\n| Dimension | Score | Interpretation |\r\n|-----------|-------|----------------|\r\n| **A** (Attractor) | 0.85 | Strong thermal attractors; system drawn to equilibrium temperature |\r\n| **S** (Structure) | 0.70 | Moderate structural organization (flame geometry, fuel arrangement) |\r\n| **F** (Flow) | 0.90 | Very high flow intensity (heat, gases, air convection) |\r\n| **I** (Information) | 0.65 | Moderate information content (chemical signatures, spectral data) |\r\n| **D** (Dynamics) | 0.75 | Substantial dynamic behavior (rapid state changes, feedback loops) |\r\n\r\n**Norm**: 1.734\r\n\r\n**Observable Phenomena**:\r\n- Flame (visible light emission)\r\n- Heat (IR radiation, temperature gradient)\r\n- Sound (crackling, roaring)\r\n- Gases (CO₂, H₂O, smoke)\r\n- Fuel consumption (visible disappearance)\r\n\r\n---\r\n\r\n## REVOI Analysis (Map Space - Sphinx Eye)\r\n\r\n### Map: Fire Triangle as Theoretical Model\r\n\r\n**Observer**: Western scientist (modern perspective)\r\n\r\n**REVOI State Vector**: `|M_triangle⟩_REVOI = 0.80|O⟩ + 0.90|R⟩ + 0.90|I⟩ + 0.95|V⟩ + 0.70|E⟩`\r\n\r\n| Dimension | Score | Interpretation |\r\n|-----------|-------|----------------|\r\n| **O** (Observability) | 0.80 | Fire Triangle is highly observable as a model - can be drawn, visualized, taught. The triangle shape is immediately perceptible. |\r\n| **R** (Representability) | 0.90 | Excellently representable - simple geometric diagram with 3 labeled vertices. Minimal symbolism (triangle + 3 words). |\r\n| **I** (Interoperability) | 0.90 | Highly shareable - Fire Triangle is international standard in fire safety. Same model used globally by firefighters, chemists, educators. |\r\n| **V** (Verifiability) | 0.95 | Extremely verifiable - Popper gold standard. Falsifiable prediction: \"Remove ANY component → fire stops.\" Testable experimentally. |\r\n| **E** (Evolvability) | 0.70 | Moderately evolvable - Model extended to Fire Tetrahedron (+Chain Reaction). Triangle remains dominant in pedagogy. |\r\n\r\n**REVOI Mean**: **0.85** → Very high-quality Map\r\n\r\n**Overall Assessment**: Excellent Map - High REVOI across all dimensions. Fire Triangle is paradigmatic example of effective scientific model: observable, representable, shareable, testable, and evolvable.\r\n\r\n### Comparison: Territory vs Map\r\n\r\n| Aspect | Territory (ASFID) | Map (REVOI) |\r\n|--------|-------------------|-------------|\r\n| **What is measured** | Physical fire phenomenon | Fire Triangle model |\r\n| **Perspective** | Eagle Eye | Sphinx Eye |\r\n| **State Vector** | ASFID: (0.85, 0.70, 0.90, 0.65, 0.75) | REVOI: (0.90, 0.70, 0.95, 0.80, 0.90) · Map ASFID: (0.75, 0.90, 0.60, 0.80, 0.50) |\r\n| **Norm** | 1.734 | (calculated from REVOI) |\r\n| **Function** | Measure observable reality | Evaluate conceptual model quality |\r\n\r\n---\r\n\r\n## Epistemic Gap Analysis\r\n\r\n**Formula**: `ΔΘ = ‖|Ω_fire⟩ - |M_triangle⟩‖`\r\n\r\n**Delta Vector (Territory - Map)**: `(+0.10, -0.20, +0.30, -0.15, +0.25)`\r\n\r\n**Gap Norm**: **0.474**\r\n\r\n**Interpretation**: **Moderate gap** (0 < ΔΘ < 0.5)\r\n\r\n**Assessment**: Model is reasonably good - captures essence but simplifies reality\r\n\r\n### Major Divergences\r\n\r\n| Dimension | Divergence | Reason |\r\n|-----------|------------|--------|\r\n| **S** (Structure) | -0.20 | Triangle = perfect geometry; Real fire = irregular, fluctuating |\r\n| **F** (Flow) | +0.30 | Real fire = massive flows (gases, heat); Model = conceptual flows |\r\n| **D** (Dynamics) | +0.25 | Real fire = rapid, chaotic dynamics; Model = static representation |\r\n\r\n---\r\n\r\n## M2 GenericConcepts Mobilized\r\n\r\n**Total**: 22 GenericConcepts out of 58 (38%)\r\n\r\n### By Category\r\n\r\n- **Structural**: Component, Composition, Topology, Modularity, Hierarchy, Invariant, Symmetry\r\n- **Dynamic**: Process, Bifurcation, Gradient\r\n- **Regulatory**: Constraint, Threshold, Trigger, Feedback\r\n- **Energetic**: Dissipation\r\n- **Informational**: Code, Language, Representation, Signature\r\n- **Ontological**: System\r\n- **Teleonomic**: Autopoiesis\r\n- **Relational**: Synergy\r\n\r\n### Critical GenericConcepts\r\n\r\n| GenericConcept | Role | Formula |\r\n|-------------|------|---------|\r\n| **Component** | Identifies Fuel, O₂, Heat as elementary parts | S⊗I |\r\n| **Synergy** | Explains emergence (1+1+1 = Fire, not 3) | A⊗S⊗I |\r\n| **Composition** | Bottom-up assembly of components into system | S⊗I⊗A |\r\n| **Trigger** | Heat initiates process when threshold crossed | D⊗I |\r\n| **Process** | Combustion as dynamic transformation | D⊗F |\r\n\r\n---\r\n\r\n## Fire Extinguishment Strategies\r\n\r\n**Principle**: Remove any component of the triangle\r\n\r\n### Methods\r\n\r\n#### 1. Target: Fuel\r\n- **Action**: Fuel removal or dilution\r\n- **Examples**: Clear vegetation, close gas valve, shovel away burning material\r\n- **Mechanism**: Eliminate energy source\r\n\r\n#### 2. Target: Oxidizer\r\n- **Action**: O₂ exclusion (smothering)\r\n- **Examples**: Fire blanket, CO₂ extinguisher, foam, sand\r\n- **Mechanism**: Prevent oxidation reaction\r\n\r\n#### 3. Target: Heat\r\n- **Action**: Cooling below ignition temperature\r\n- **Examples**: Water spray, dry chemical powder, heat-absorbing agents\r\n- **Mechanism**: Break thermal feedback loop\r\n\r\n---\r\n\r\n## Alternative Observer Perspectives\r\n\r\n### 1. Ant Perspective\r\n- **ASFID State**: (A:0.90, S:0.30, F:0.85, I:0.40, D:0.70)\r\n- **Differences**: Higher A (danger), lower S (scale), lower I (complexity)\r\n- **Interpretation**: Heat gradient danger, chemical threat\r\n\r\n### 2. IR Sensor Perspective\r\n- **ASFID State**: (A:0.60, S:0.40, F:0.95, I:0.90, D:0.50)\r\n- **Differences**: Very high F (radiative flux), high I (spectral info), lower D (static)\r\n- **Interpretation**: Thermal radiation spectrum analysis\r\n\r\n### 3. Firefighter Perspective\r\n- **Basis**: REVOI (Sphinx Eye) — Map perspective\r\n- **REVOI State**: (R:0.80, E:0.75, V:0.85, O:0.85, I:0.60)\r\n- **State Vector**: |M_firefighter⟩_REVOI = 0.80|R⟩ + 0.75|E⟩ + 0.85|V⟩ + 0.85|O⟩ + 0.60|I⟩\r\n- **Differences**: High O/V (threat visible and testable), lower I (action-focused, not a universal standard)\r\n- **Interpretation**: Operational threat model (Map quality, not Territory measurement)\r\n\r\n---\r\n\r\n## Model Evolution\r\n\r\n### Fire Triangle (Classic)\r\n- **Components**: Fuel, Oxygen, Heat\r\n- **Era**: Early 20th century - present\r\n- **Usage**: Standard teaching tool in fire science and safety training\r\n\r\n### Fire Tetrahedron (Extended)\r\n- **Additional Component**: Chemical Chain Reaction\r\n- **Rationale**: Some fires (e.g., metal fires) sustain through radical propagation\r\n- **Example**: Magnesium can burn in CO₂ (no O₂ needed)\r\n- **Status**: More complete but less pedagogically accessible\r\n\r\n### Fire Square (Suppression-Oriented)\r\n- **Additional Component**: Uninhibited Chemical Reaction\r\n- **Usage**: Includes suppression mechanisms (chemical inhibition)\r\n- **Context**: Advanced fire suppression systems\r\n\r\n---\r\n\r\n## Transdisciplinary Analogies\r\n\r\n### Principle: 3-Component Synergistic Systems\r\n\r\n| Domain | Poclet | Components | Synergy |\r\n|--------|--------|------------|---------|\r\n| **Optics** | RGB Color Model | Red, Green, Blue | Full color spectrum |\r\n| **Biology** | Krebs Cycle (simplified) | Acetyl-CoA, Oxaloacetate, Enzymes | Cyclic ATP production |\r\n| **Economics** | Supply-Demand Equilibrium | Supply, Demand, Price | Market equilibrium |\r\n\r\n---\r\n\r\n## Validation Results\r\n\r\n| Criterion | Status | Assessment |\r\n|-----------|--------|------------|\r\n| **ASFID Completeness** | ✅ | All 5 dimensions present (A, S, F, I, D) |\r\n| **GenericConcept Coverage** | ✅ | 22/58 GenericConcepts mobilized (38%) |\r\n| **Minimality** | ✅ | Exactly 3 components (irreducible) |\r\n| **Emergence** | ✅ | Fire is emergent property (> sum of parts) |\r\n| **Pedagogical Value** | ✅ | Universally taught, easily understood |\r\n| **Empirical Validity** | ✅ | Matches real combustion phenomenon |\r\n| **Framework Fit** | ✅ | Perfect M3→M2→M1→M0 instantiation |\r\n\r\n**Overall Score**: **REVOI = 0.85** (Excellent)  \r\n**Epistemic Gap**: **ΔΘ = 0.474** (Moderate - acceptable)\r\n\r\n---\r\n\r\n## The Sphinx Riddle\r\n\r\n> **Question**: What has three legs but cannot walk, three sides but is not a shape, and dies when you remove any one of its parts?\r\n\r\n> **Answer**: Fire Triangle - A model that represents a process, not a geometric object. Remove Fuel, O₂, or Heat → fire stops (system collapses).\r\n\r\n*Following the Sphinx tradition of revealing truth through enigma.*\r\n\r\n---\r\n\r\n## Combustion Process\r\n\r\n**Type**: Exothermic oxidation reaction (ΔH < 0)\r\n\r\n**Mechanism**:\r\n```\r\nFuel vaporization → Mixing with O₂ → Oxidation → Heat + Light + Products\r\n```\r\n\r\n**Products**:\r\n- CO₂ (Carbon dioxide)\r\n- H₂O (Water vapor)\r\n- Heat (thermal energy)\r\n- Light (electromagnetic radiation)\r\n- Ash/Smoke (incomplete combustion)\r\n\r\n**Energy Balance**: Exothermic (releases more energy than absorbed)\r\n\r\n**Self-Sustaining**: Yes - positive feedback loop (combustion generates heat → maintains temperature > T_ignition)\r\n\r\n---\r\n\r\n## Constraints and Conditions\r\n\r\n| Type | Parameter | Condition |\r\n|------|-----------|-----------|\r\n| **Concentration** | Fuel | Above Lower Explosive Limit (LEL) |\r\n| **Concentration** | O₂ | > 16% (typical for air) |\r\n| **Temperature** | Heat | > T_ignition (fuel-specific) |\r\n| **Mixing** | Fuel-Oxidizer ratio | Proper stoichiometry for complete combustion |\r\n\r\n---\r\n\r\n## Historical Context\r\n\r\n- **Origin**: Fire Triangle model developed in early 20th century\r\n- **Evolution**: Later extended to Fire Tetrahedron (+ chemical chain reaction)\r\n- **Pedagogy**: Standard teaching tool in fire science, safety training, emergency response\r\n- **Limitations**: Oversimplifies complex combustion chemistry (but pedagogically effective)\r\n- **Standards**: Referenced in NFPA (National Fire Protection Association), OSHA fire safety training, ISO standards\r\n\r\n---\r\n\r\n## TSCG Framework Integration\r\n\r\n### Ontological Layers\r\n\r\n```\r\nM3 (Architecture)\r\n  ├─ Eagle Eye (ASFID) → Measures Territory (physical fire)\r\n  └─ Sphinx Eye (REVOI) → Evaluates Map (Triangle model)\r\n      ↓\r\nM2 (GenericConcepts)\r\n  ├─ Synergy, Component, Composition, Trigger, Process\r\n  └─ 22 total GenericConcepts mobilized\r\n      ↓\r\nM1 (Domain Concepts)\r\n  └─ Chemistry Extension: Combustion, Chemical Species\r\n      ↓\r\nM0 (Poclet Instance)\r\n  └─ Fire Triangle: Fuel ⊕ O₂ ⊕ Heat → Fire\r\n```\r\n\r\n### Triple Role in TSCG Development\r\n\r\n1. **Framework Validation** (Proof-of-Concept)\r\n   - Demonstrates ASFID completeness\r\n   - Validates REVOI scoring methodology\r\n   - Confirms bicephalous Territory-Map distinction\r\n\r\n2. **GenericConcept Discovery** (M2 Population)\r\n   - Helped identify **Balance** GenericConcept\r\n   - Reinforced **Synergy** pattern\r\n   - Revealed **Component** as fundamental\r\n\r\n3. **Domain Concept Identification** (M1 Bootstrapping)\r\n   - Contributed to M1_Chemistry extension\r\n   - Identified Combustion as domain pattern\r\n   - Established chemical process modeling patterns\r\n\r\n---\r\n\r\n## Usage Guidelines\r\n\r\n### For TSCG Framework Development\r\n- Use as reference example when validating new poclets\r\n- Compare ASFID/REVOI scores to Fire Triangle benchmarks\r\n- Test new GenericConcepts against Fire Triangle structure\r\n\r\n### For Teaching Systems Theory\r\n- Introduce ASFID dimensions through visible fire phenomena\r\n- Demonstrate emergence through synergy principle\r\n- Explain Territory vs Map using physical fire vs Triangle model\r\n\r\n### For Fire Safety Applications\r\n- Apply extinguishment strategies based on component removal\r\n- Understand fire behavior through systems perspective\r\n- Recognize limitations of simplified model in complex scenarios\r\n\r\n---\r\n\r\n## References\r\n\r\n- Fire science textbooks (standard reference)\r\n- NFPA (National Fire Protection Association) materials\r\n- OSHA fire safety training standards\r\n- ISO combustion standards\r\n- TSCG Framework Documentation (M2_GenericConcepts.jsonld, M3_EagleEye.jsonld, M3_SphinxEye.jsonld)\r\n\r\n---\r\n\r\n## See Also\r\n\r\n- **M1_Chemistry.jsonld**: Domain-specific combustion concepts\r\n- **M2_GenericConcepts.jsonld**: Synergy, Component, Composition GenericConcepts\r\n- **M0_ExposureTriangle.jsonld**: Another 3-component compensatory triangle\r\n- **poclet_terminology.md**: Definition and methodology of poclets\r\n\r\n---\r\n\r\n**File**: `M0_FireTriangle.jsonld`  \r\n**URI**: `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/FireTriangle/M0_FireTriangle.jsonld`  \r\n**Version**: 1.1  \r\n**Last Updated**: 2026-02-24\r\n"},{"id":"FourStrokeEngine","label":"Four-Stroke Engine (Poclet)","domain":"Thermodynamics","version":"1.2.0","gap":0.132,"asfid":[0.85,0.9,0.95,0.8,0.85],"revoi":[0.9,0.85,0.9,0.9,0.85],"htmlRelPath":"instances/poclets/FourStrokeEngine/static/M0_FourStrokeEngine.html","hasReadme":true,"readme":"# Four-Stroke Engine Poclet\n\n## Overview\n\nThe **Four-Stroke Engine** is a minimal yet complete system representation of the thermodynamic cycle that powers most internal combustion engines. This poclet demonstrates how a cyclic process can convert chemical energy (fuel) into mechanical work through four sequential phases: **Intake**, **Compression**, **Power**, and **Exhaust**.\n\nAs a TSCG poclet, the Four-Stroke Engine serves three critical functions:\n1. **Framework Validation**: Demonstrates TSCG's applicability to thermodynamic systems\n2. **M2 GenericConcept Discovery**: Reveals fundamental patterns like Workflow, FeedbackLoop, and Transformation\n3. **M1 Domain Bootstrapping**: Identifies thermodynamics-specific concepts (Otto Cycle, Compression Ratio, Valve Timing, Thermal Efficiency)\n\n## System Components\n\nThe Four-Stroke Engine consists of **4 sequential strokes** (minimal configuration for a complete thermodynamic cycle):\n\n### 1. Intake Stroke\n- **Piston**: Moves downward (Top Dead Center → Bottom Dead Center)\n- **Intake Valve**: Open\n- **Exhaust Valve**: Closed\n- **Action**: Air-fuel mixture drawn into cylinder\n- **Volume**: Increases from V_min to V_max\n\n### 2. Compression Stroke\n- **Piston**: Moves upward (BDC → TDC)\n- **Both Valves**: Closed\n- **Action**: Air-fuel mixture compressed\n- **Pressure & Temperature**: Increase\n- **Compression Ratio**: r = V_max / V_min (typically 8:1 to 12:1)\n\n### 3. Power Stroke (Combustion)\n- **Piston**: Moves downward (TDC → BDC)\n- **Both Valves**: Closed\n- **Trigger**: Spark plug ignites compressed mixture\n- **Action**: Rapid combustion → pressure spike → piston pushed down\n- **Work Output**: Mechanical energy transferred to crankshaft\n\n### 4. Exhaust Stroke\n- **Piston**: Moves upward (BDC → TDC)\n- **Intake Valve**: Closed\n- **Exhaust Valve**: Open\n- **Action**: Combustion products expelled from cylinder\n- **Cycle Reset**: Returns to initial state for next cycle\n\n## ASFID Analysis (Eagle Eye — Territory)\n\n| Dimension | Score | Description |\n|-----------|-------|-------------|\n| **A**ttractor | 0.85 | Steady-state rotation (target RPM), conversion of heat → mechanical work |\n| **S**tructure | 0.90 | Piston-cylinder assembly, valves, connecting rod, crankshaft; cyclic topology |\n| **F**low | 0.95 | Air-fuel intake, exhaust gas output, energy flow (chemical → heat → work) |\n| **I**nformation | 0.80 | Valve timing, ignition timing, compression ratio, P-V-T state variables |\n| **D**ynamics | 0.85 | 4-stroke sequence, 2 crankshaft revolutions per cycle, combustion bifurcation |\n\n**Territory ASFID Vector**: `(0.85, 0.90, 0.95, 0.80, 0.85)`\n`‖ASFID‖ = 1.969`\n\n## REVOI Analysis (Sphinx Eye — Map)\n\n> **Note v1.1.0**: The Map perspective acronym is **REVOI** (canonical TSCG notation), not ORIVE.  \n> Dimension definitions: **R**epresentability · **E**volvability · **V**erifiability · **O**bservability · **I**nteroperability\n\n| Dimension | Score | Description |\n|-----------|-------|-------------|\n| **R**epresentability | 0.90 | Highly encodable via P-V diagrams, T-s diagrams, thermodynamic equations, animations |\n| **E**volvability | 0.85 | Base model readily extended to VVT, GDI, turbocharging, hybrid powertrains |\n| **V**erifiability | 0.90 | Validated by 150+ years of engineering practice; matches First & Second Law predictions |\n| **O**bservability | 0.90 | Measurable via RPM, cylinder pressure, temperature, airflow sensors |\n| **I**nteroperability | 0.85 | Modular design (1-cyl, 4-cyl, V6, V8), fuel flexibility (gasoline, E85, methanol) |\n\n**Map REVOI Vector**: `(0.90, 0.85, 0.90, 0.90, 0.85)`\n`‖REVOI‖ = 1.969`\n\n## Epistemic Gap (ΔΘ)\n\n```\nΔΘ = ‖ASFID − REVOI‖\n   = ‖(0.85−0.90, 0.90−0.85, 0.95−0.90, 0.80−0.90, 0.85−0.85)‖\n   = ‖(−0.05, +0.05, +0.05, −0.10, 0.00)‖\n   = √(0.0025 + 0.0025 + 0.0025 + 0.01 + 0)\n   = √0.0175\n   ≈ 0.132\n```\n\n**Interpretation**: Excellent alignment between physical system (Territory) and theoretical model (Map).  \nThe small gap (0.132) confirms the Otto cycle as a high-fidelity representation of real engine behavior.\n\n> Previous v1.0.x value of ΔΘ = 0.16 was computed against the (now deprecated) ORIVE vector with different dimension semantics.\n\n## Minimality Validation\n\n**Why 4 strokes is minimal**:\n- **3 strokes**: Insufficient to separate intake and exhaust phases → incomplete cycle\n- **2 strokes**: Exists but less efficient (fuel loss during exhaust overlap)\n- **4 strokes**: Optimal balance between completeness and simplicity\n\n**Irreducibility Test**: Removing any stroke destroys the cycle's functionality:\n- No Intake → No fuel/air\n- No Compression → No pressure for efficient combustion\n- No Power → No work output\n- No Exhaust → Cylinder fills with combustion products\n\n## M2 GenericConcepts Mobilized\n\nThis poclet activates **20 GenericConcepts** (27% of M2_GenericConcepts.jsonld v15.10.1 — 20/75):\n\n> **Note v1.2.0**: Aligned to M2 v15.10.1. Deprecated concepts replaced: `Cycle` → `FeedbackLoop` + `Process`, `Sequence` → `Workflow`, `Flow` → `Channel`, `Synchronization` → `Alignment`. `Efficiency` relocated to M1_Thermodynamics (domain-specific).\n\n### Structural GenericConcepts\n- **Component** (S⊗I): 4 strokes as elementary parts\n- **Composition** (S⊗I⊗A): Piston + connecting rod + crankshaft assembly\n- **Symmetry** (S): Cylindrical geometry\n- **Modularity** (S⊗I): Multi-cylinder engines (4-cyl = 4 × single-cyl)\n\n### Dynamic GenericConcepts\n- **Process** (D⊗F): Each stroke is a sub-process\n- **Step** (S⊗I⊗D): Each stroke as elementary unit in the Workflow\n- **Workflow** (S⊗D⊗F): Strict ordered sequencing of the 4 strokes *(replaces deprecated `Sequence`)*\n- **FeedbackLoop** (Process⊗Alignment⊗Homeostasis): Periodic return to initial state — defines cyclicity *(replaces deprecated `Cycle`)*\n- **Bifurcation** (∂D/∂F): Rapid combustion transition at power stroke onset\n- **Transformation** (D⊗S⊗I): Chemical energy → Heat → Mechanical work\n\n### Regulatory GenericConcepts\n- **Constraint** (S⊗I): Fixed cylinder volume, compression ratio\n- **Threshold** (A⊗I): Ignition point (spark timing)\n- **Trigger** (D⊗I): Spark ignites combustion\n- **Alignment** (I⊗A⊗S): Multi-cylinder timing coordination *(replaces deprecated `Synchronization`)*\n\n### Energetic GenericConcepts\n- **Channel** (S⊗I⊗F): Air-fuel intake path + exhaust gas conduit *(replaces deprecated `Flow`)*\n- **Dissipation** (F⊗D): Heat loss through cylinder walls (cooling system)\n- **Gradient** (⊗₂F): Pressure gradient drives piston on power stroke\n\n### Teleonomic GenericConcepts\n- **Trade-off** (A⊗I⊗F): Higher compression → higher efficiency BUT higher knock risk\n- **Balance** (A⊗S⊗F): Valve timing, ignition timing, piston-crankshaft synchronization\n- **Emergence** (I⊗S⊗D): Continuous crankshaft rotation emerges from 4 discrete strokes\n\n> `Efficiency` removed from this list — domain-specific metric relocated to **M1_Thermodynamics** as `ThermalEfficiency` (η = 1 − 1/r^(γ−1)).\n\n## Transdisciplinary Validation\n\nThe \"4-phase cycle\" pattern appears across multiple domains:\n\n| Domain | Example | 4 Phases |\n|--------|---------|----------|\n| **Cardiology** | Cardiac cycle | Atrial diastole, Atrial systole, Ventricular diastole, Ventricular systole |\n| **Economics** | Business cycle | Expansion, Peak, Contraction, Trough |\n| **Chemistry** | Ion pump | 4 conformational states in Na⁺/K⁺-ATPase |\n| **Climatology** | Seasonal cycle | Spring, Summer, Fall, Winter |\n\nThis cross-domain recurrence validates **Workflow** + **FeedbackLoop** as the universal M2 pattern capturing both ordered sequencing and cyclic return — the two inseparable faces of any 4-phase cycle.\n\n## M1 Domain Contributions\n\nThis poclet identifies **8 thermodynamics-specific concepts** for `M1_extensions/thermodynamics/M1_Thermodynamics.jsonld`:\n\n1. **Stroke**: A phase in an engine cycle (Intake, Compression, Power, Exhaust)\n2. **Compression Ratio**: r = V_max / V_min (key performance parameter)\n3. **Otto Cycle**: Idealized thermodynamic cycle (basis for gasoline engines)\n4. **Valve Timing**: Precise synchronization of intake/exhaust valve opening/closing\n5. **Ignition Timing**: Spark timing for combustion initiation\n6. **Bore & Stroke**: Cylinder diameter and piston travel distance\n7. **Displacement**: Total cylinder volume (engine size metric)\n8. **Thermal Efficiency**: η = 1 − (1/r^(γ−1)) — domain-specific metric relocated from M2 (was `m2:Efficiency`, removed in v15)\n\n## Pedagogical Value\n\nThe Four-Stroke Engine is ideal for teaching:\n- **Systems Thinking**: How sequential processes create emergent behavior (rotation)\n- **Energy Conversion**: Chemical → Thermal → Mechanical transformation chain\n- **Cyclicity**: Periodic systems and state-space return\n- **Trade-offs**: Compression ratio vs. knock resistance\n- **Modularity**: Single-cylinder principles scale to multi-cylinder engines\n\n## Historical Context\n\n- **1876**: Nicolaus Otto patents the four-stroke engine\n- **1886**: Karl Benz builds first automobile with four-stroke engine\n- **1920s–present**: Becomes dominant design for gasoline engines\n- **Modern Era**: Electronic fuel injection, variable valve timing enhance efficiency\n\n## Engineering Significance\n\n**Why 4-stroke dominates over 2-stroke**:\n- ✅ Better fuel efficiency (no fresh charge loss)\n- ✅ Lower emissions (complete exhaust scavenging)\n- ✅ Quieter operation\n- ✅ Longer engine life (better lubrication)\n- ❌ More complex (requires valve train)\n- ❌ Lower power-to-weight ratio\n\n## Thermodynamic Efficiency\n\n**Ideal Otto Cycle Efficiency**:\n```\nη = 1 − (1 / r^(γ−1))\n```\nWhere:\n- η = thermal efficiency\n- r = compression ratio\n- γ = heat capacity ratio (≈1.4 for air)\n\n**Example**: r = 10:1 → η ≈ 60% (ideal)  \n**Reality**: Real engines achieve 25–30% due to friction, heat loss, incomplete combustion\n\n## Bicephalous Perspective\n\n### Eagle Eye (Territory — ASFID)\n- **Observable**: Piston motion, pressure waves, temperature profiles\n- **Measurable**: RPM, torque, power output, fuel consumption\n- **Physical**: Real metal components, combustion reactions, heat transfer\n\n### Sphinx Eye (Map — REVOI)\n- **Theoretical**: Idealized Otto cycle (reversible, adiabatic, constant volume)\n- **Pedagogical**: Simplified P-V diagram for education\n- **Epistemic Gap**: ΔΘ = 0.132 (small gap) → high-fidelity model\n\n**Synthesis**: The Four-Stroke model is an excellent map of the territory — it accurately predicts real engine behavior while remaining simple enough for educational and engineering purposes.\n\n## Conclusion\n\nThe **Four-Stroke Engine** is a validated TSCG poclet demonstrating:\n- ✅ **Minimality**: 4 strokes is the irreducible minimum\n- ✅ **Completeness**: All 5 ASFID dimensions present\n- ✅ **High Map Quality**: REVOI = (0.90, 0.85, 0.90, 0.90, 0.85)\n- ✅ **Small Epistemic Gap**: δ = 0.132 — SpectralClass `OnCriticalLine` (excellent Territory-Map alignment)\n- ✅ **Transdisciplinary**: 4-phase cycle pattern appears across domains\n- ✅ **Pedagogical**: Universally taught in engineering education\n- ✅ **Framework Validation**: Confirms TSCG applicability to thermodynamic systems\n- ✅ **M1 CoreConcepts reuse**: `m1core:Oscillator` (crankshaft), `m1core:Processor` (engine as transformer)\n\n**POCLET STATUS**: ✅ VALIDATED\n\n---\n\n## Changelog\n\n| Version | Date | Summary |\n|---------|------|---------|\n| **1.2.0** | 2026-03-18 | M2 v15.10.1 alignment: Cycle→FeedbackLoop+Process, Sequence→Workflow, Flow→Channel, Synchronization→Alignment; Efficiency→M1_Thermodynamics; `@base` added to jsonld; GenericConceptCoverage 38%→27% (20/75); 8th M1 concept ThermalEfficiency added |\n| 1.1.0 | 2026-02-24 | BREAKING: ORIVE → REVOI; R=Representability, E=Evolvability, V=Verifiability; ΔΘ recalculated to 0.132; poclet-loader fields added |\n| 1.0.1 | 2026-01-28 | Added transdisciplinary validation and M1 contributions |\n\n---\n\n## References\n\n- Otto, N. A. (1876). *Four-Stroke Internal Combustion Engine* (Patent)\n- Heywood, J. B. (1988). *Internal Combustion Engine Fundamentals*. McGraw-Hill.\n- Taylor, C. F. (1985). *The Internal Combustion Engine in Theory and Practice*. MIT Press.\n- SAE International. *Engine Technology Standards* (J1349, J1995).\n\n## Related Poclets\n\n- **Fire Triangle**: Similar 3-component synergistic system\n- **Carnot Cycle**: Idealized thermodynamic cycle (benchmark for efficiency)\n- **Krebs Cycle**: Biological metabolic cycle with sequential phases\n- **Predator-Prey**: Cyclical dynamics with phase coupling\n\n---\n\n**Document Version**: 1.2.0  \n**Date**: March 2026  \n**Framework**: TSCG (Transdisciplinary System Construction Game)  \n**Authors**: Echopraxium with the collaboration of Claude AI  \n**Ontology**: M0_FourStrokeEngine.jsonld  \n"}];
+// Generated: 2026-03-22
+
+const ASFID_COLORS = ['var(--col-A)','var(--col-S)','var(--col-F)','var(--col-I)','var(--col-D)'];
+const REVOI_COLORS = ['var(--col-R)','var(--col-E)','var(--col-V)','var(--col-O)','var(--col-Im)'];
+
+let selectedId = null;
+
+window.addEventListener('DOMContentLoaded', () => {
+  renderTree();
+  initSplitter();
+  initKeyboard();
+  if (POCLETS.length) selectPoclet(POCLETS[0].id);
+});
+
+function renderTree() {
+  const list = document.getElementById('tree-list');
+  const n    = POCLETS.length;
+  document.getElementById('tree-count').textContent = n;
+  document.getElementById('hdr-count').textContent  =
+    n + ' simulation' + (n !== 1 ? 's' : '');
+  if (!n) {
+    list.innerHTML =
+      '<div style="padding:16px 12px;font-size:11px;color:var(--muted)">No static simulations found.</div>';
+    return;
+  }
+  list.innerHTML = POCLETS.map(p =>
+    '<div class="tree-item" data-id="' + esc(p.id) + '">' +
+    '<span class="tree-icon">&#9654;</span>' +
+    '<span class="tree-label">' + esc(p.label) + '</span>' +
+    (p.domain ? '<span class="tree-domain">' + esc(p.domain) + '</span>' : '') +
+    '</div>'
+  ).join('');
+  list.querySelectorAll('.tree-item').forEach(el =>
+    el.addEventListener('click', () => selectPoclet(el.dataset.id)));
+}
+
+function selectPoclet(id) {
+  selectedId = id;
+  const p    = POCLETS.find(x => x.id === id);
+  document.querySelectorAll('.tree-item').forEach(el =>
+    el.classList.toggle('active', el.dataset.id === id));
+  const nameEl   = document.getElementById('readme-poclet-name');
+  const domainEl = document.getElementById('readme-domain');
+  nameEl.textContent   = p ? p.label   : 'Select a poclet';
+  nameEl.style.color   = p ? 'var(--text)' : 'var(--muted)';
+  domainEl.textContent = p && p.domain ? p.domain : '';
+  renderScoresStrip(p);
+  const btn = document.getElementById('launch-btn');
+  if (p) { btn.href = p.htmlRelPath; btn.classList.remove('hidden'); }
+  else   { btn.classList.add('hidden'); }
+  document.getElementById('footer-info').textContent =
+    p ? p.label + (p.version ? '  v' + p.version : '') : '';
+  document.getElementById('footer-path').textContent =
+    p ? p.htmlRelPath : '';
+  if (!p)           { showPlaceholder('No poclet selected'); return; }
+  if (!p.hasReadme) { showPlaceholder(p.label + '\n\nNo README found.'); return; }
+  document.getElementById('readme-body').innerHTML =
+    '<div class="readme-md">' + parseMarkdown(p.readme) + '</div>';
+  document.getElementById('readme-body').scrollTop = 0;
+}
+
+function renderScoresStrip(p) {
+  const strip = document.getElementById('scores-strip');
+  if (!p || (!p.asfid && !p.revoi && p.gap == null)) {
+    strip.className = ''; strip.innerHTML = ''; return;
+  }
+  strip.className = 'visible';
+  let html = '';
+  if (p.asfid) {
+    html += '<div class="score-group"><span class="score-group-label eagle">ASFID</span>';
+    ['A','S','F','I','D'].forEach((d, i) => {
+      const pct = Math.round(p.asfid[i] * 100);
+      html += '<div class="score-mini">' +
+        '<span class="score-mini-ltr" style="color:' + ASFID_COLORS[i] + '">' + d + '</span>' +
+        '<div class="score-mini-bg"><div class="score-mini-fill" style="width:' + pct +
+        '%;background:' + ASFID_COLORS[i] + '"></div></div></div>';
+    });
+    html += '</div>';
+  }
+  if (p.asfid && (p.revoi || p.gap != null)) html += '<div class="score-sep"></div>';
+  if (p.revoi) {
+    html += '<div class="score-group"><span class="score-group-label sphinx">REVOI</span>';
+    ['R','E','V','O','I'].forEach((d, i) => {
+      const pct = Math.round(p.revoi[i] * 100);
+      html += '<div class="score-mini">' +
+        '<span class="score-mini-ltr" style="color:' + REVOI_COLORS[i] + '">' + d + '</span>' +
+        '<div class="score-mini-bg"><div class="score-mini-fill" style="width:' + pct +
+        '%;background:' + REVOI_COLORS[i] + '"></div></div></div>';
+    });
+    html += '</div>';
+  }
+  if (p.revoi && p.gap != null) html += '<div class="score-sep"></div>';
+  if (p.gap != null) {
+    html += '<div class="gap-mini"><span class="gap-mini-lbl">&delta;</span>' +
+      '<span class="gap-mini-val">' + p.gap.toFixed(3) + '</span></div>';
+  }
+  strip.innerHTML = html;
+}
+
+function showPlaceholder(msg) {
+  const lines = msg.split('\n');
+  document.getElementById('readme-body').innerHTML =
+    '<div class="readme-placeholder">' +
+    '<svg width="48" height="48" viewBox="0 0 24 24" fill="none"' +
+    ' stroke="currentColor" stroke-width="1" opacity=".3">' +
+    '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>' +
+    '<polyline points="14 2 14 8 20 8"/></svg>' +
+    '<div class="ph-title">' + esc(lines[0]) + '</div>' +
+    lines.slice(1).filter(l => l.trim()).map(l =>
+      '<div class="ph-sub">' + esc(l) + '</div>').join('') +
+    '</div>';
+}
+
+function parseMarkdown(md) {
+  let h = escMd(md);
+  h = h.replace(/```[\w]*\n([\s\S]*?)```/g,
+    (_, c) => '<pre><code>' + c.trimEnd() + '</code></pre>');
+  h = h.replace(/^#{4,}\s+(.+)$/gm, '<h3>$1</h3>');
+  h = h.replace(/^###\s+(.+)$/gm,   '<h3>$1</h3>');
+  h = h.replace(/^##\s+(.+)$/gm,    '<h2>$1</h2>');
+  h = h.replace(/^#\s+(.+)$/gm,     '<h1>$1</h1>');
+  h = h.replace(/^[-*_]{3,}\s*$/gm, '<hr>');
+  h = h.replace(/^&gt;\s*(.+)$/gm,  '<blockquote>$1</blockquote>');
+  h = h.replace(/((?:^\|.+\|\n?)+)/gm, m => {
+    const rows = m.trim().split('\n');
+    if (rows.length < 2) return m;
+    let out = '<table>', inBody = false;
+    rows.forEach(row => {
+      if (/^\|[-| :]+\|$/.test(row.trim())) { out += '<tbody>'; inBody = true; return; }
+      const cells = row.replace(/^\||\|$/g, '').split('|');
+      const tag = inBody ? 'td' : 'th';
+      out += '<tr>' + cells.map(c => '<' + tag + '>' + c.trim() + '</' + tag + '>').join('') + '</tr>';
+    });
+    return out + (inBody ? '</tbody>' : '') + '</table>';
   });
-});
+  h = h.replace(/^[-*+]\s+(.+)$/gm, '<li>$1</li>');
+  h = h.replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>');
+  h = h.replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>');
+  h = h.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  h = h.replace(/\*([^*]+)\*/g,     '<em>$1</em>');
+  h = h.replace(/`([^`]+)`/g,       '<code>$1</code>');
+  h = h.replace(/\[([^\]]+)\]\(([^)]+)\)/g,
+    '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  return h.split(/\n{2,}/).map(b => {
+    const t = b.trim();
+    if (!t) return '';
+    if (/^<(h[1-6]|ul|ol|pre|table|blockquote|hr)/.test(t)) return t;
+    return '<p>' + t.replace(/\n/g, '<br>') + '</p>';
+  }).join('\n');
+}
 
-// ── Poclet Explorer button ─────────────────────────────────────
-document.getElementById('btn-explorer').addEventListener('click', () => {
-  try { require('electron').ipcRenderer.send('open-explorer'); } catch(e) {}
-});
+function escMd(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')
+          .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
-// ── Resizable splitter ─────────────────────────────────────────
-(function initSplitter() {
+function initKeyboard() {
+  document.addEventListener('keydown', e => {
+    const idx = POCLETS.findIndex(p => p.id === selectedId);
+    if (e.key === 'ArrowDown') {
+      const next = Math.min(idx + 1, POCLETS.length - 1);
+      if (POCLETS[next]) selectPoclet(POCLETS[next].id);
+      e.preventDefault();
+    }
+    if (e.key === 'ArrowUp') {
+      const prev = Math.max(idx - 1, 0);
+      if (POCLETS[prev]) selectPoclet(POCLETS[prev].id);
+      e.preventDefault();
+    }
+    if (e.key === 'Enter') {
+      const p = POCLETS.find(x => x.id === selectedId);
+      if (p) window.open(p.htmlRelPath, '_blank');
+    }
+  });
+}
+
+function initSplitter() {
   const splitter = document.getElementById('splitter');
-  const app      = document.getElementById('app');
-  const sidebar  = document.getElementById('sidebar');
-  let dragging = false;
-  let startX   = 0;
-  let startW   = 0;
-
+  const shell    = document.getElementById('shell');
+  let dragging = false, startX = 0, startW = 0;
   splitter.addEventListener('mousedown', e => {
-    dragging = true;
-    startX   = e.clientX;
-    startW   = sidebar.getBoundingClientRect().width;
+    dragging = true; startX = e.clientX;
+    startW   = document.getElementById('tree-panel').getBoundingClientRect().width;
     splitter.classList.add('dragging');
-    document.body.style.cursor = 'col-resize';
-    document.body.style.userSelect = 'none';
+    document.body.style.cssText = 'cursor:col-resize;user-select:none';
     e.preventDefault();
   });
-
   document.addEventListener('mousemove', e => {
     if (!dragging) return;
-    const delta  = startX - e.clientX;        // positive = drag left = widen sidebar
-    const newW   = Math.max(180, Math.min(620, startW + delta));
-    // Update CSS variable so the grid column resizes
-    app.style.setProperty('--sidebar-w', newW + 'px');
-    // Notify BabylonJS engine to resize canvas
-    if (typeof engine !== 'undefined' && engine) engine.resize();
+    const w = Math.max(160, Math.min(520, startW + (e.clientX - startX)));
+    shell.style.gridTemplateColumns = w + 'px var(--split-w) 1fr';
   });
-
   document.addEventListener('mouseup', () => {
     if (!dragging) return;
     dragging = false;
     splitter.classList.remove('dragging');
-    document.body.style.cursor = '';
-    document.body.style.userSelect = '';
-    if (typeof engine !== 'undefined' && engine) engine.resize();
+    document.body.style.cssText = '';
   });
-})();
+}
 </script>
 </body>
 </html>

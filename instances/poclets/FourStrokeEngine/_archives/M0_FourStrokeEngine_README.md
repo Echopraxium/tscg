@@ -6,8 +6,8 @@ The **Four-Stroke Engine** is a minimal yet complete system representation of th
 
 As a TSCG poclet, the Four-Stroke Engine serves three critical functions:
 1. **Framework Validation**: Demonstrates TSCG's applicability to thermodynamic systems
-2. **M2 GenericConcept Discovery**: Reveals fundamental patterns like Workflow, FeedbackLoop, and Transformation
-3. **M1 Domain Bootstrapping**: Identifies thermodynamics-specific concepts (Otto Cycle, Compression Ratio, Valve Timing, Thermal Efficiency)
+2. **M2 GenericConcept Discovery**: Reveals fundamental patterns like Cycle, Sequence, and Transformation
+3. **M1 Domain Bootstrapping**: Identifies thermodynamics-specific concepts (Otto Cycle, Compression Ratio, Valve Timing)
 
 ## System Components
 
@@ -101,9 +101,7 @@ The small gap (0.132) confirms the Otto cycle as a high-fidelity representation 
 
 ## M2 GenericConcepts Mobilized
 
-This poclet activates **20 GenericConcepts** (27% of M2_GenericConcepts.jsonld v15.10.1 — 20/75):
-
-> **Note v1.2.0**: Aligned to M2 v15.10.1. Deprecated concepts replaced: `Cycle` → `FeedbackLoop` + `Process`, `Sequence` → `Workflow`, `Flow` → `Channel`, `Synchronization` → `Alignment`. `Efficiency` relocated to M1_Thermodynamics (domain-specific).
+This poclet activates **20 GenericConcepts** (38% of M2_GenericConcepts.jsonld):
 
 ### Structural GenericConcepts
 - **Component** (S⊗I): 4 strokes as elementary parts
@@ -113,29 +111,27 @@ This poclet activates **20 GenericConcepts** (27% of M2_GenericConcepts.jsonld v
 
 ### Dynamic GenericConcepts
 - **Process** (D⊗F): Each stroke is a sub-process
-- **Step** (S⊗I⊗D): Each stroke as elementary unit in the Workflow
-- **Workflow** (S⊗D⊗F): Strict ordered sequencing of the 4 strokes *(replaces deprecated `Sequence`)*
-- **FeedbackLoop** (Process⊗Alignment⊗Homeostasis): Periodic return to initial state — defines cyclicity *(replaces deprecated `Cycle`)*
-- **Bifurcation** (∂D/∂F): Rapid combustion transition at power stroke onset
-- **Transformation** (D⊗S⊗I): Chemical energy → Heat → Mechanical work
+- **Cycle** (D⊗A): Periodic return to initial state
+- **Sequence** (D⊗I): Strict ordering of 4 strokes
+- **Bifurcation** (D⊗A): Rapid combustion transition
+- **Transformation** (D⊗F): Chemical energy → Heat → Mechanical work
 
 ### Regulatory GenericConcepts
-- **Constraint** (S⊗I): Fixed cylinder volume, compression ratio
-- **Threshold** (A⊗I): Ignition point (spark timing)
+- **Constraint** (I⊗S): Fixed cylinder volume, compression ratio
+- **Threshold** (I⊗D): Ignition point (spark timing)
 - **Trigger** (D⊗I): Spark ignites combustion
-- **Alignment** (I⊗A⊗S): Multi-cylinder timing coordination *(replaces deprecated `Synchronization`)*
+- **Synchronization** (D⊗I): Multi-cylinder timing coordination
 
 ### Energetic GenericConcepts
-- **Channel** (S⊗I⊗F): Air-fuel intake path + exhaust gas conduit *(replaces deprecated `Flow`)*
+- **Flow** (F): Mass flow (air/fuel in, exhaust out), energy flow (heat → work)
 - **Dissipation** (F⊗D): Heat loss through cylinder walls (cooling system)
-- **Gradient** (⊗₂F): Pressure gradient drives piston on power stroke
+- **Gradient** (F⊗D): Pressure gradient drives piston (power stroke)
 
 ### Teleonomic GenericConcepts
-- **Trade-off** (A⊗I⊗F): Higher compression → higher efficiency BUT higher knock risk
-- **Balance** (A⊗S⊗F): Valve timing, ignition timing, piston-crankshaft synchronization
-- **Emergence** (I⊗S⊗D): Continuous crankshaft rotation emerges from 4 discrete strokes
-
-> `Efficiency` removed from this list — domain-specific metric relocated to **M1_Thermodynamics** as `ThermalEfficiency` (η = 1 − 1/r^(γ−1)).
+- **Efficiency** (A⊗F): Thermodynamic efficiency η = 1 − (1/r^(γ−1))
+- **Trade-off**: Higher compression → Higher efficiency BUT higher knock risk
+- **Balance**: Valve timing, ignition timing, piston-crankshaft synchronization
+- **Emergence**: Continuous crankshaft rotation emerges from 4 discrete strokes
 
 ## Transdisciplinary Validation
 
@@ -148,11 +144,11 @@ The "4-phase cycle" pattern appears across multiple domains:
 | **Chemistry** | Ion pump | 4 conformational states in Na⁺/K⁺-ATPase |
 | **Climatology** | Seasonal cycle | Spring, Summer, Fall, Winter |
 
-This cross-domain recurrence validates **Workflow** + **FeedbackLoop** as the universal M2 pattern capturing both ordered sequencing and cyclic return — the two inseparable faces of any 4-phase cycle.
+This cross-domain recurrence validates **Cycle** and **Sequence** as universal M2 GenericConcepts.
 
 ## M1 Domain Contributions
 
-This poclet identifies **8 thermodynamics-specific concepts** for `M1_extensions/thermodynamics/M1_Thermodynamics.jsonld`:
+This poclet identifies **7 thermodynamics-specific concepts** for M1_Thermodynamics.jsonld:
 
 1. **Stroke**: A phase in an engine cycle (Intake, Compression, Power, Exhaust)
 2. **Compression Ratio**: r = V_max / V_min (key performance parameter)
@@ -161,7 +157,6 @@ This poclet identifies **8 thermodynamics-specific concepts** for `M1_extensions
 5. **Ignition Timing**: Spark timing for combustion initiation
 6. **Bore & Stroke**: Cylinder diameter and piston travel distance
 7. **Displacement**: Total cylinder volume (engine size metric)
-8. **Thermal Efficiency**: η = 1 − (1/r^(γ−1)) — domain-specific metric relocated from M2 (was `m2:Efficiency`, removed in v15)
 
 ## Pedagogical Value
 
@@ -223,11 +218,10 @@ The **Four-Stroke Engine** is a validated TSCG poclet demonstrating:
 - ✅ **Minimality**: 4 strokes is the irreducible minimum
 - ✅ **Completeness**: All 5 ASFID dimensions present
 - ✅ **High Map Quality**: REVOI = (0.90, 0.85, 0.90, 0.90, 0.85)
-- ✅ **Small Epistemic Gap**: δ = 0.132 — SpectralClass `OnCriticalLine` (excellent Territory-Map alignment)
+- ✅ **Small Epistemic Gap**: ΔΘ = 0.132 (excellent Territory-Map alignment)
 - ✅ **Transdisciplinary**: 4-phase cycle pattern appears across domains
 - ✅ **Pedagogical**: Universally taught in engineering education
 - ✅ **Framework Validation**: Confirms TSCG applicability to thermodynamic systems
-- ✅ **M1 CoreConcepts reuse**: `m1core:Oscillator` (crankshaft), `m1core:Processor` (engine as transformer)
 
 **POCLET STATUS**: ✅ VALIDATED
 
@@ -237,9 +231,9 @@ The **Four-Stroke Engine** is a validated TSCG poclet demonstrating:
 
 | Version | Date | Summary |
 |---------|------|---------|
-| **1.2.0** | 2026-03-18 | M2 v15.10.1 alignment: Cycle→FeedbackLoop+Process, Sequence→Workflow, Flow→Channel, Synchronization→Alignment; Efficiency→M1_Thermodynamics; `@base` added to jsonld; GenericConceptCoverage 38%→27% (20/75); 8th M1 concept ThermalEfficiency added |
-| 1.1.0 | 2026-02-24 | BREAKING: ORIVE → REVOI; R=Representability, E=Evolvability, V=Verifiability; ΔΘ recalculated to 0.132; poclet-loader fields added |
+| **1.1.0** | 2026-02-24 | BREAKING: ORIVE → REVOI; R=Representability, E=Evolvability, V=Verifiability; ΔΘ recalculated to 0.132; poclet-loader fields added |
 | 1.0.1 | 2026-01-28 | Added transdisciplinary validation and M1 contributions |
+| 1.0.0 | 2026-01-22 | Initial validated poclet |
 
 ---
 
@@ -259,8 +253,8 @@ The **Four-Stroke Engine** is a validated TSCG poclet demonstrating:
 
 ---
 
-**Document Version**: 1.2.0  
-**Date**: March 2026  
+**Document Version**: 1.1.0  
+**Date**: February 2026  
 **Framework**: TSCG (Transdisciplinary System Construction Game)  
 **Authors**: Echopraxium with the collaboration of Claude AI  
 **Ontology**: M0_FourStrokeEngine.jsonld  
