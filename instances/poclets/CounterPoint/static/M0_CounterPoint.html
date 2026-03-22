@@ -2,12 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self' https://cdnjs.cloudflare.com;
-                 script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
-                 style-src  'self' 'unsafe-inline';
-                 img-src    'self' data: blob:;
-                 connect-src 'self' http://127.0.0.1:* ws://127.0.0.1:*;">
   <title>TSCG &mdash; Counterpoint</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -142,6 +136,25 @@ canvas#pianoRoll{display:block;}
 .prose{font-size:12px;line-height:1.7;color:var(--text-dim);}
 .prose strong{color:var(--text);}
 
+
+
+/* ── Instrument selector ── */
+.instr-select{
+  display:flex;align-items:center;gap:6px;flex-shrink:0;
+}
+.instr-select label{font-size:11px;color:var(--muted);white-space:nowrap;}
+.instr-select select{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);color:var(--text-dim);
+  font-size:11px;font-family:var(--font);padding:3px 7px;
+  cursor:pointer;outline:none;
+}
+.instr-select select:hover{border-color:var(--border2);}
+/* ── Home button ── */
+#btn-home{display:inline-flex;align-items:center;background:none;border:none;
+  cursor:pointer;padding:4px 6px;opacity:.85;transition:opacity .15s;
+  text-decoration:none;flex-shrink:0;}
+#btn-home:hover{opacity:1;}
 /* ── Controls ── */
 #controls{grid-area:controls;display:flex;align-items:center;gap:10px;padding:0 16px;
   background:var(--bg-panel);border-top:1px solid var(--border);}
@@ -192,12 +205,7 @@ canvas#pianoRoll{display:block;}
 <div class="splitter" id="split1"></div>
 
 <div id="canvas-area">
-  <div id="pole-overlay">
-    <div class="pole-seg" id="ps0" style="flex:1">Exposition</div>
-    <div class="pole-seg" id="ps1" style="flex:2">Development</div>
-    <div class="pole-seg" id="ps2" style="flex:1">Stretto</div>
-    <div class="pole-seg" id="ps3" style="flex:1">Resolution</div>
-  </div>
+  <div id="pole-overlay"></div>
   <div id="roll-scroll"><canvas id="pianoRoll"></canvas></div>
   <div class="canvas-msg" id="canvas-msg">Select an example from the left panel</div>
 </div>
@@ -293,10 +301,21 @@ canvas#pianoRoll{display:block;}
 </div>
 
 <div id="controls">
-  <button class="ctrl-btn" id="btn-home">🏠 Home</button>
+  <a id="btn-home" href="https://echopraxium.github.io/tscg/" title="Back to Poclet Gallery" target="_self"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></a>
   <div class="ctrl-sep"></div>
   <button class="ctrl-btn primary" id="btn-play" disabled>▶ Play</button>
   <button class="ctrl-btn danger"   id="btn-stop" disabled>■ Stop</button>
+  <div class="ctrl-sep"></div>
+  <div class="instr-select">
+    <label>🎹</label>
+    <select id="instr-select">
+      <option value="organ"   selected>Organ</option>
+      <option value="piano"          >Piano</option>
+      <option value="flute"          >Flute</option>
+      <option value="strings"        >Strings</option>
+      <option value="harpsichord"    >Harpsichord</option>
+    </select>
+  </div>
   <div class="ctrl-sep"></div>
   <div class="time-bar-wrap">
     <div class="time-track"><div class="time-fill" id="time-fill"></div></div>
@@ -306,8 +325,6 @@ canvas#pianoRoll{display:block;}
 </div>
 
 </div><!-- #app -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
 <script>
 'use strict';
 // ============================================================
@@ -319,7 +336,14 @@ canvas#pianoRoll{display:block;}
 //    frere-jacques.json  bwv578.json  bwv565.json  jazz-modal.json
 // ============================================================
 
-// Manifest: display info only — actual data lives in JSON files
+const EXAMPLES_DATA = {
+  "frere-jacques": {"id":"frere-jacques","icon":"🎵","name":"Frère Jacques","sub":"Canon, 4 voices, unison","badge":"Canon","bpm":96,"key":"C major","totalBeats":32,"description":"The simplest possible counterpoint: one melody, 4 voices, pure time offset (4-beat delay). All ASFID dimensions present despite maximal simplicity. Every child has lived this system — zero prior musical knowledge required.","voices":[{"name":"Voice 1","color":"#6C63FF","vol":-8,"notes":[["C4",0,1],["D4",1,1],["E4",2,1],["C4",3,1],["C4",4,1],["D4",5,1],["E4",6,1],["C4",7,1],["E4",8,1],["F4",9,1],["G4",10,2],["E4",12,1],["F4",13,1],["G4",14,2],["G4",16,0.5],["A4",16.5,0.5],["G4",17,0.5],["F4",17.5,0.5],["E4",18,1],["C4",19,1],["G4",20,0.5],["A4",20.5,0.5],["G4",21,0.5],["F4",21.5,0.5],["E4",22,1],["C4",23,1],["C4",24,1],["G3",25,1],["C4",26,2],["C4",28,1],["G3",29,1],["C4",30,2]]},{"name":"Voice 2","color":"#00C896","vol":-9,"notes":[["C4",4,1],["D4",5,1],["E4",6,1],["C4",7,1],["C4",8,1],["D4",9,1],["E4",10,1],["C4",11,1],["E4",12,1],["F4",13,1],["G4",14,2],["E4",16,1],["F4",17,1],["G4",18,2],["G4",20,0.5],["A4",20.5,0.5],["G4",21,0.5],["F4",21.5,0.5],["E4",22,1],["C4",23,1],["G4",24,0.5],["A4",24.5,0.5],["G4",25,0.5],["F4",25.5,0.5],["E4",26,1],["C4",27,1],["C4",28,1],["G3",29,1],["C4",30,2]]},{"name":"Voice 3","color":"#FF6B35","vol":-9,"notes":[["C4",8,1],["D4",9,1],["E4",10,1],["C4",11,1],["C4",12,1],["D4",13,1],["E4",14,1],["C4",15,1],["E4",16,1],["F4",17,1],["G4",18,2],["E4",20,1],["F4",21,1],["G4",22,2],["G4",24,0.5],["A4",24.5,0.5],["G4",25,0.5],["F4",25.5,0.5],["E4",26,1],["C4",27,1],["G4",28,0.5],["A4",28.5,0.5],["G4",29,0.5],["F4",29.5,0.5],["E4",30,1],["C4",31,1]]},{"name":"Voice 4","color":"#FFD93D","vol":-8,"notes":[["C4",12,1],["D4",13,1],["E4",14,1],["C4",15,1],["C4",16,1],["D4",17,1],["E4",18,1],["C4",19,1],["E4",20,1],["F4",21,1],["G4",22,2],["E4",24,1],["F4",25,1],["G4",26,2],["G4",28,0.5],["A4",28.5,0.5],["G4",29,0.5],["F4",29.5,0.5],["E4",30,1],["C4",31,1]]}],"poles":[{"start":0,"end":11,"color":"#6C63FF","label":"Exposition"},{"start":12,"end":19,"color":"#00C896","label":"Development"},{"start":20,"end":27,"color":"#FF6B35","label":"Stretto"},{"start":28,"end":31,"color":"#FFD93D","label":"Resolution"}],"events":[{"beat":0,"dim":"I","color":"#d2a8ff","label":"Subject — Voice 1 enters"},{"beat":4,"dim":"I","color":"#d2a8ff","label":"Imitation — Voice 2 enters (4-beat offset)"},{"beat":8,"dim":"S","color":"#56d364","label":"3-voice texture — structural density growing"},{"beat":12,"dim":"I","color":"#d2a8ff","label":"Voice 4 enters — full 4-voice texture"},{"beat":16,"dim":"D","color":"#e3b341","label":"Dynamic peak — all voices in syncopated phrase"},{"beat":24,"dim":"A","color":"#f78166","label":"Cadential approach — returning to tonic C"},{"beat":28,"dim":"A","color":"#f78166","label":"Final resolution — Tonic C (Attractor reached)"}]},
+  "bwv578": {"id":"bwv578","icon":"🎹","name":"BWV 578 — Little Fugue","sub":"J.S. Bach, G minor, 4 voices","badge":"Primary","bpm":80,"key":"G minor","totalBeats":64,"description":"The most accessible 4-voice fugue by Bach. Clear structure: Exposition (all 4 voices enter with Subject/Answer) → Development (Episodes + modulations) → Stretto (overlapping Subject entries) → Resolution (tonic G minor, authentic cadence). Primary simulation reference for this poclet.","voices":[{"name":"Soprano","color":"#6C63FF","vol":-8,"notes":[["G4",0,1],["F4",1,1],["Eb4",2,1],["D4",3,1],["C4",4,1],["Bb3",5,1],["A3",6,1],["G3",7,1],["G3",8,2],["D4",10,1],["Eb4",11,1],["F4",12,2],["G4",14,2],["A4",16,1],["Bb4",17,1],["C5",18,1],["A4",19,1],["G4",20,2],["F4",22,1],["G4",23,1],["A4",24,1],["Bb4",25,1],["C5",26,1],["Bb4",27,1],["A4",28,2],["G4",30,2],["D5",32,2],["Eb5",34,1],["F5",35,1],["G5",36,2],["F5",38,1],["Eb5",39,1],["D5",40,1],["C5",41,1],["Bb4",42,1],["C5",43,1],["D5",44,2],["Eb5",46,2],["F5",48,2],["Eb5",50,1],["D5",51,1],["C5",52,2],["Bb4",54,1],["A4",55,1],["G4",56,1],["F4",57,1],["G4",58,1],["A4",59,1],["Bb4",60,2],["A4",62,2]]},{"name":"Alto","color":"#00C896","vol":-10,"notes":[["D5",16,1],["C5",17,1],["Bb4",18,1],["A4",19,1],["G4",20,1],["F4",21,1],["E4",22,1],["D4",23,1],["D4",24,2],["A4",26,1],["Bb4",27,1],["C5",28,2],["D5",30,2],["A4",32,1],["Bb4",33,1],["C5",34,1],["A4",35,1],["G4",36,2],["F4",38,1],["G4",39,1],["A4",40,1],["Bb4",41,1],["C5",42,1],["Bb4",43,1],["A4",44,2],["G4",46,2],["Bb4",48,2],["A4",50,1],["G4",51,1],["F4",52,2],["Eb4",54,1],["D4",55,1],["Eb4",56,1],["F4",57,1],["G4",58,1],["A4",59,1],["Bb4",60,2],["A4",62,2]]},{"name":"Tenor","color":"#FF6B35","vol":-10,"notes":[["G3",32,1],["F3",33,1],["Eb3",34,1],["D3",35,1],["C3",36,1],["Bb2",37,1],["A2",38,1],["G2",39,1],["G2",40,2],["D3",42,1],["Eb3",43,1],["F3",44,2],["G3",46,2],["A3",48,1],["Bb3",49,1],["C4",50,1],["A3",51,1],["G3",52,2],["F3",54,1],["G3",55,1],["A3",56,1],["Bb3",57,1],["C4",58,1],["Bb3",59,1],["A3",60,2],["G3",62,2]]},{"name":"Bass","color":"#FFD93D","vol":-8,"notes":[["D3",48,1],["C3",49,1],["Bb2",50,1],["A2",51,1],["G2",52,1],["F2",53,1],["E2",54,1],["D2",55,1],["D2",56,2],["A2",58,1],["Bb2",59,1],["C3",60,2],["D3",62,2]]}],"poles":[{"start":0,"end":15,"color":"#6C63FF","label":"Exposition"},{"start":16,"end":47,"color":"#00C896","label":"Development"},{"start":48,"end":55,"color":"#FF6B35","label":"Stretto"},{"start":56,"end":63,"color":"#FFD93D","label":"Resolution"}],"events":[{"beat":0,"dim":"I","color":"#d2a8ff","label":"Subject — Voice 1 (Soprano), G minor"},{"beat":8,"dim":"D","color":"#e3b341","label":"Harmonic tension building"},{"beat":12,"dim":"A","color":"#f78166","label":"Tonic resolution (Attractor)"},{"beat":16,"dim":"I","color":"#d2a8ff","label":"Answer — Voice 2 (Alto), up a 5th"},{"beat":20,"dim":"D","color":"#e3b341","label":"Contrapuntal tension — 2 active voices"},{"beat":32,"dim":"I","color":"#d2a8ff","label":"Subject — Voice 3 (Tenor)"},{"beat":36,"dim":"S","color":"#56d364","label":"3-voice texture established"},{"beat":44,"dim":"F","color":"#79c0ff","label":"Motivic flow — sequential episode"},{"beat":48,"dim":"I","color":"#d2a8ff","label":"Answer — Voice 4 (Bass, full texture)"},{"beat":52,"dim":"S","color":"#56d364","label":"Exposition complete — all 4 voices"},{"beat":60,"dim":"A","color":"#f78166","label":"Cadential approach — tonic G minor"}]},
+  "bwv565": {"id":"bwv565","icon":"🎸","name":"BWV 565 — Toccata & Fugue in D minor","sub":"J.S. Bach · Authentic MIDI source","badge":"Iconic","bpm":72,"key":"D minor","totalBeats":128,"description":"The most iconic organ work in the repertoire. Opens with the famous solo A octaves + descending flourish (Toccata), then the Fugue subject propagates through all 4 voices. Extracted from authentic MIDI. 128 beats covering Toccata + full Fugue Exposition + Development + Stretto + Resolution.","voices":[{"name":"Soprano","color":"#6C63FF","vol":-7,"notes":[["A4",0.0,0.5],["G4",0.25,0.5],["A4",0.5,1.75],["G4",4.25,0.5],["F4",4.5,0.5],["D5",5.0,0.25],["Db5",5.25,1.0],["D5",6.25,2.0],["A4",11.0,0.5],["G4",11.5,0.5],["E5",15.25,0.5],["F4",16.0,0.75],["Db5",16.5,1.25],["D5",17.5,2.25],["Db5",45.5,6.0],["D5",52.0,7.25],["Db5",62.75,0.25],["D5",63.0,0.25],["E5",63.25,0.25],["Db5",63.5,0.25],["D5",64.0,0.25],["E5",64.25,0.25],["Db5",64.5,0.25],["D5",64.75,0.25],["E5",65.0,0.25],["Db5",65.25,0.25],["D5",65.5,0.25],["E5",66.0,0.25],["G4",66.75,0.25],["F4",67.25,0.25],["G4",67.5,0.25],["E5",68.0,0.25],["G4",68.5,0.25],["E5",68.75,0.25],["F4",69.0,0.25],["A4",69.75,0.25],["Bb4",70.0,0.25],["G4",70.5,0.25],["A4",70.75,0.25],["Bb4",71.0,0.25],["G4",71.25,0.25],["A4",71.5,0.25],["Bb4",71.75,0.25],["G4",72.0,0.25],["A4",72.25,0.5],["Db5",75.0,0.25],["D5",75.25,0.25],["Db5",75.75,0.25],["E5",76.25,0.25],["Db5",76.5,0.25],["D5",76.75,0.25],["E5",77.0,0.25],["Db5",77.25,0.25],["D5",77.75,0.25],["F4",78.5,0.25],["G4",79.0,0.25],["E5",79.25,0.25],["F4",79.5,0.25],["G4",79.75,0.25],["E5",80.0,0.25],["F4",80.25,0.25],["G4",80.5,0.25],["E5",80.75,0.25],["F4",81.25,0.25],["A4",82.0,0.25],["Bb4",82.5,0.25],["G4",82.75,0.25],["A4",83.0,0.25],["Bb4",83.25,0.25],["G4",83.5,0.25],["Bb4",84.25,0.25],["G4",84.5,0.25],["A4",84.75,0.25],["A4",88.75,0.5],["G4",89.5,0.5],["Bb4",89.75,0.5],["E5",90.25,0.5],["G4",90.75,0.25],["Bb4",91.0,0.25],["E5",91.25,0.5],["E5",91.5,0.25],["F4",91.75,0.5],["A4",92.0,0.5],["D5",92.5,0.5],["F4",92.75,0.5],["A4",93.0,0.25],["D5",93.5,0.5],["E5",93.75,0.5],["G4",94.0,0.25],["C5",94.5,0.25],["E5",94.75,0.5],["G4",95.0,0.25],["C5",95.25,0.5],["C5",95.5,0.25],["D5",95.75,0.5],["F4",96.0,0.25],["Bb4",96.25,0.25],["D5",96.5,0.25],["F4",96.75,0.25],["Bb4",97.25,0.5],["C5",97.5,0.5],["E5",97.75,0.25],["A4",98.0,0.25],["C5",98.25,0.5],["E5",98.75,0.25],["A4",99.0,0.25],["Bb4",99.25,0.5],["G4",99.75,0.5],["Bb4",100.0,0.25],["D5",100.25,0.25],["G4",100.5,0.25],["A4",100.75,0.5],["C5",101.25,0.25],["F4",101.5,0.25],["A4",101.75,0.25],["C5",102.0,0.25],["F4",102.25,0.25],["E5",103.25,0.25],["G4",103.5,0.5],["E5",104.0,0.25],["F4",104.25,0.5],["A4",104.5,0.25],["D5",105.0,0.5],["F4",105.25,0.5],["D5",105.75,0.25],["E5",106.0,0.5],["G4",106.25,0.5],["Db5",106.75,0.5],["E5",107.0,0.5],["G4",107.5,0.5],["Db5",107.75,2.0],["Bb4",111.5,4.0],["Db5",111.5,2.25],["G4",111.5,2.5],["A4",115.25,0.75],["G4",115.75,0.5],["F4",116.25,0.5],["E5",116.5,0.25],["D5",116.75,0.25],["Db5",117.0,0.25],["Db5",117.75,1.0],["Db5",119.0,0.75],["E5",119.5,0.5],["G4",120.0,0.5],["F4",120.5,0.5],["G4",121.0,0.25],["F4",121.25,0.25],["F4",121.75,0.25],["G4",121.75,0.5],["F4",122.0,1.0],["E5",123.0,0.5]]},{"name":"Alto","color":"#00C896","vol":-10,"notes":[["F4",4.75,0.25],["E4",5.0,0.25],["A4",11.75,2.5],["G4",27.25,0.75],["F4",27.75,0.5],["D4",28.25,0.5],["Db4",37.5,1.0],["E4",39.0,0.75],["G4",40.5,0.75],["Db4",40.5,0.75],["E4",40.5,0.75],["Db4",41.75,0.75],["E4",42.0,0.75],["G4",42.0,1.0],["Db4",43.5,1.0],["Bb4",43.5,1.25],["G4",43.5,1.25],["G4",52.0,2.25],["A4",52.0,7.5],["E4",53.25,2.0],["Gb4",55.0,4.25],["F4",66.5,0.25],["E4",67.0,0.25],["F4",68.25,0.25],["G4",69.5,0.25],["Bb4",70.25,0.25],["E4",75.5,0.25],["D4",76.0,0.25],["D4",77.0,0.25],["E4",77.25,0.25],["Db4",77.5,0.25],["E4",78.25,0.25],["F4",78.75,0.25],["E4",81.0,0.25],["G4",81.75,0.25],["A4",82.25,0.25],["A4",83.75,0.25],["Bb4",90.0,0.5],["F4",97.0,0.25],["E4",98.5,0.25],["D4",99.5,0.5],["E4",111.5,1.5],["B4",117.25,0.5],["A4",118.5,0.75],["E4",119.75,0.5],["G4",121.5,0.25],["F4",124.5,3.5],["A4",124.5,3.75]]},{"name":"Tenor","color":"#FF6B35","vol":-10,"notes":[["Db3",28.5,1.25],["E3",37.5,0.75],["G3",37.5,0.75],["Db3",39.0,0.75],["G3",39.0,0.75],["Bb3",39.0,0.75],["D3",40.5,0.75],["Bb3",40.5,0.75],["Bb3",41.75,0.75],["E3",41.75,1.0],["D3",42.0,1.0],["D3",43.5,1.25],["E3",43.5,1.25],["E3",45.5,2.0],["D3",45.5,1.75],["G3",102.5,0.5],["Bb3",102.75,0.5],["E3",103.0,0.25],["Bb3",103.75,0.25],["A3",105.5,0.25],["D3",110.5,0.25],["D3",124.5,3.5]]},{"name":"Bass / Pedal","color":"#FFD93D","vol":-8,"notes":[["A2",22.75,0.5],["G2",23.25,0.5],["A2",23.5,2.0],["E2",28.0,0.5],["D2",29.75,2.0],["D2",35.5,1.5],["Bb2",37.5,1.25],["D2",37.5,1.0],["D2",39.0,0.75],["Bb2",42.0,1.0],["D2",45.25,0.25],["G2",45.5,2.25],["Bb2",45.5,2.5],["D2",48.75,2.5],["D2",49.0,2.5],["D2",58.25,1.0],["D2",58.5,0.75],["D2",108.75,1.0]]}],"poles":[{"start":0,"end":19,"color":"#6C63FF","label":"Toccata"},{"start":20,"end":63,"color":"#00C896","label":"Exposition"},{"start":64,"end":99,"color":"#FF6B35","label":"Development"},{"start":100,"end":115,"color":"#e94560","label":"Stretto"},{"start":116,"end":127,"color":"#FFD93D","label":"Resolution"}],"events":[{"beat":0,"dim":"D","color":"#e3b341","label":"Toccata — iconic A octaves"},{"beat":4,"dim":"I","color":"#d2a8ff","label":"Descending run A–G–F–E–D–C#–D"},{"beat":8,"dim":"A","color":"#f78166","label":"Toccata repeat — D minor attractor"},{"beat":16,"dim":"S","color":"#56d364","label":"Dramatic chords — full texture"},{"beat":20,"dim":"I","color":"#d2a8ff","label":"Fugue Subject — Voice 1"},{"beat":36,"dim":"I","color":"#d2a8ff","label":"Answer — Voice 2"},{"beat":52,"dim":"S","color":"#56d364","label":"Full polyphonic texture"},{"beat":64,"dim":"F","color":"#79c0ff","label":"Development — motivic sequences"},{"beat":88,"dim":"D","color":"#e3b341","label":"Chromatic tension rising"},{"beat":100,"dim":"S","color":"#56d364","label":"Stretto — overlapping entries"},{"beat":116,"dim":"A","color":"#f78166","label":"Pedal D — final resolution"}]},
+  "jazz-modal": {"id":"jazz-modal","icon":"🎺","name":"Jazz Modal — Miles Davis","sub":"Herbie Hancock, Ron Carter, 1965","badge":"Jazz","bpm":112,"key":"Bb modal","totalBeats":32,"description":"The Miles Davis second great quintet (1964–68) exemplifies counterpoint liberated from written score. Each performer improvises independently while sharing the harmonic grid. The ASFID structure is identical to Baroque fugue — only the Rules change: written notation → internalized stylistic vocabulary.","voices":[{"name":"Trumpet (Davis)","color":"#6C63FF","vol":-8,"notes":[["Bb4",0,0.5],["C5",0.5,0.5],["D5",1,1],["F5",2,1],["Eb5",3,1],["D5",4,2],["C5",6,0.5],["Bb4",6.5,0.5],["A4",7,1],["Bb4",8,2],["G4",10,0.5],["F4",10.5,0.5],["Eb4",11,1],["F4",12,2],["G4",14,0.5],["Ab4",14.5,0.5],["G4",15,1],["F4",16,2],["Eb4",18,2],["D4",20,4],["Bb4",24,1],["C5",25,1],["D5",26,2],["F5",28,2],["D5",30,2]]},{"name":"Piano (Hancock)","color":"#00C896","vol":-10,"notes":[["Bb3",0,2],["D4",0,2],["F4",0,2],["Bb3",2,2],["Eb4",2,2],["G4",2,2],["Bb3",4,2],["D4",4,2],["F4",4,2],["C4",6,2],["Eb4",6,2],["G4",6,2],["Bb3",8,4],["D4",8,4],["F4",8,4],["Ab3",12,2],["C4",12,2],["Eb4",12,2],["Bb3",14,2],["D4",14,2],["F4",14,2],["Eb4",16,2],["G4",16,2],["Bb4",16,2],["D4",18,2],["F4",18,2],["A4",18,2],["Bb3",20,4],["D4",20,4],["F4",20,4],["F4",24,2],["A4",24,2],["C5",24,2],["Bb3",26,2],["D4",26,2],["G4",26,2],["Bb3",28,4],["D4",28,4],["F4",28,4]]},{"name":"Bass (Carter)","color":"#FF6B35","vol":-9,"notes":[["Bb2",0,2],["F2",2,2],["Bb2",4,2],["C3",6,2],["Bb2",8,2],["Eb3",10,2],["Bb2",12,2],["F2",14,2],["Eb3",16,2],["D3",18,2],["Bb2",20,4],["F3",24,2],["G3",26,2],["Bb2",28,4]]},{"name":"Drums (Williams)","color":"#FFD93D","vol":-14,"notes":[["A2",0,0.5],["A2",1,0.5],["A2",2,0.5],["A2",3,0.5],["A2",4,0.5],["A2",5,0.5],["A2",6,0.5],["A2",7,0.5],["A2",8,0.5],["A2",9,0.5],["A2",10,0.5],["A2",11,0.5],["A2",12,0.5],["A2",13,0.5],["A2",14,0.5],["A2",15,0.5],["A2",16,0.5],["A2",17,0.5],["A2",18,0.5],["A2",19,0.5],["A2",20,0.5],["A2",21,0.5],["A2",22,0.5],["A2",23,0.5],["A2",24,0.5],["A2",25,0.5],["A2",26,0.5],["A2",27,0.5],["A2",28,0.5],["A2",29,0.5],["A2",30,0.5],["A2",31,0.5]]}],"poles":[{"start":0,"end":7,"color":"#6C63FF","label":"Theme"},{"start":8,"end":19,"color":"#00C896","label":"Development"},{"start":20,"end":27,"color":"#FF6B35","label":"Climax"},{"start":28,"end":31,"color":"#FFD93D","label":"Resolution"}],"events":[{"beat":0,"dim":"S","color":"#56d364","label":"Collective entry — shared harmonic grid"},{"beat":4,"dim":"A","color":"#f78166","label":"Modal attractor — Bb major tonal center"},{"beat":8,"dim":"I","color":"#d2a8ff","label":"Motivic propagation — Davis phrase echoed"},{"beat":12,"dim":"F","color":"#79c0ff","label":"Modal flow — chromatic passing harmonies"},{"beat":16,"dim":"D","color":"#e3b341","label":"Tension — Williams polyrhythm intensifies"},{"beat":20,"dim":"D","color":"#e3b341","label":"Climax — collective peak, all voices dense"},{"beat":24,"dim":"I","color":"#d2a8ff","label":"Return motif — Subject negotiated live"},{"beat":28,"dim":"A","color":"#f78166","label":"Resolution — Bb tonic reaffirmed"}]}
+};
+
+// Manifest: display info only — actual data lives in EXAMPLES_DATA above
 const MANIFEST = [
   { id:'frere-jacques', icon:'🎵', name:'Frère Jacques',            sub:'Canon, 4 voices, unison',        badge:'Canon'   },
   { id:'bwv578',        icon:'🎹', name:'BWV 578 — Little Fugue',   sub:'J.S. Bach, G minor, 4 voices',   badge:'Primary' },
@@ -380,12 +404,11 @@ function buildExplorer() {
     el.addEventListener('click', () => selectExample(el.dataset.id)));
 }
 
-// ── Load JSON (with cache) ─────────────────────────────────────
+// ── Load example (inline data — no fetch needed) ──────────────
 async function loadExample(id) {
   if (cache[id]) return cache[id];
-  const resp = await fetch(`voices/${id}.json`);
-  if (!resp.ok) throw new Error(`voices/${id}.json — HTTP ${resp.status}`);
-  cache[id] = await resp.json();
+  if (!EXAMPLES_DATA[id]) throw new Error(`Example "${id}" not found in embedded data`);
+  cache[id] = EXAMPLES_DATA[id];
   return cache[id];
 }
 
@@ -419,15 +442,16 @@ async function selectExample(id) {
 // ── Pole overlay ──────────────────────────────────────────────
 function updatePoleOverlay() {
   if (!currentEx) return;
-  ['ps0','ps1','ps2','ps3'].forEach((pid, i) => {
-    const el = document.getElementById(pid);
-    const p  = currentEx.poles[i];
-    if (!p) { el.style.display = 'none'; return; }
-    el.style.display    = 'flex';
-    el.style.flex       = String(p.end - p.start + 1);
+  const overlay = document.getElementById('pole-overlay');
+  overlay.innerHTML = '';
+  currentEx.poles.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'pole-seg';
+    el.id = 'ps' + i;
+    el.style.flex = String(p.end - p.start + 1);
     el.style.background = p.color + '18';
-    el.textContent      = p.label;
-    el.classList.remove('pole-active');
+    el.textContent = p.label;
+    overlay.appendChild(el);
   });
 }
 
@@ -457,7 +481,7 @@ function drawRoll() {
   canvas.width  = ex.totalBeats*PX_BEAT+60;
   canvas.height = Math.max(rollH+LABEL_H+POLE_H, area.clientHeight);
 
-  const ctx   = canvas.getContext('2d');
+  const ctx   = canvas.getContext('2d', {willReadFrequently: true});
   const beatX = b => 52+b*PX_BEAT;
   const midiY = m => POLE_H+(midiMax-m)*NOTE_H;
 
@@ -528,7 +552,7 @@ function drawPlayhead(sec) {
   if(!currentEx||!staticImg)return;
   const ex=currentEx,B=60/ex.bpm,beat=sec/B;
   const canvas=document.getElementById('pianoRoll');
-  const ctx=canvas.getContext('2d');
+  const ctx=canvas.getContext('2d',{willReadFrequently:true});
   const beatX=b=>52+b*PX_BEAT;
   const x=beatX(beat);
   const rollH=canvas.height-LABEL_H-POLE_H;
@@ -543,9 +567,9 @@ function drawPlayhead(sec) {
   document.getElementById('time-fill').style.width=pct+'%';
   document.getElementById('time-lbl').textContent=sec.toFixed(1)+'s';
 
-  ['ps0','ps1','ps2','ps3'].forEach((pid,i)=>{
-    const p=ex.poles[i];
-    document.getElementById(pid).classList.toggle('pole-active',p&&beat>=p.start&&beat<=p.end);
+  ex.poles.forEach((p,i)=>{
+    const el=document.getElementById('ps'+i);
+    if(el) el.classList.toggle('pole-active', beat>=p.start&&beat<=p.end);
   });
 
   const scroll=document.getElementById('roll-scroll');
@@ -567,59 +591,198 @@ function updateASFIDCard(ev){
   lbl.style.color='var(--text-dim)';lbl.textContent=ev.label;
 }
 
-// ── Audio ─────────────────────────────────────────────────────
-async function ensureAudio(){if(audioOK)return;await Tone.start();audioOK=true;}
+// ── Audio Engine — Pure Web Audio API, multi-instrument ──────────────────
+let actx = null;
+let masterGain = null;
+let startWallTime = 0;
+let transportSec = 0;
+let scheduledNodes = [];
 
-function buildSynths(ex){
-  synths.forEach(s=>{try{s.synth.dispose();s.vol.dispose();}catch(e){}});
-  synths=ex.voices.map(v=>{
-    const sy=new Tone.Synth({oscillator:{type:'triangle8'},
-      envelope:{attack:0.015,decay:0.08,sustain:0.82,release:0.45}});
-    const vol=new Tone.Volume(v.vol);
-    sy.connect(vol);vol.toDestination();
-    return{synth:sy,vol};
-  });
-}
-
-function scheduleNotes(ex){
-  const B=60/ex.bpm;
-  Tone.Transport.bpm.value=ex.bpm;Tone.Transport.cancel();
-  ex.voices.forEach((voice,vi)=>{
-    voice.notes.forEach(([name,sb,db])=>{
-      const t=sb*B,dur=db*B*0.87;
-      Tone.Transport.schedule(now=>{
-        try{synths[vi].synth.triggerAttackRelease(name,dur,now);}catch(e){}
-      },t);
-    });
-  });
-  Tone.Transport.schedule(()=>stopSim(),ex.totalBeats*B+0.3);
-}
-
-function animate(){
-  if(simState!=='PLAYING')return;
-  drawPlayhead(Tone.Transport.seconds);
-  rafId=requestAnimationFrame(animate);
-}
-
-async function playSim(){
-  if(!currentEx)return;await ensureAudio();
-  if(simState==='STOPPED'){
-    buildSynths(currentEx);Tone.Transport.stop();Tone.Transport.seconds=0;
-    scheduleNotes(currentEx);
+// ── Instrument presets ────────────────────────────────────────────────────
+const INSTRUMENTS = {
+  organ: {
+    // Triangle fundamental + slight 3rd harmonic → warm organ
+    build(hz, gainNode, t0, dur) {
+      const osc1 = actx.createOscillator();
+      const osc2 = actx.createOscillator();
+      const mix  = actx.createGain();
+      osc1.type = 'triangle'; osc1.frequency.value = hz;
+      osc2.type = 'triangle'; osc2.frequency.value = hz * 3;
+      const g2 = actx.createGain(); g2.gain.value = 0.15;
+      osc1.connect(mix); osc2.connect(g2); g2.connect(mix);
+      mix.connect(gainNode);
+      // Organ: instant on, instant off
+      gainNode.gain.setValueAtTime(0, t0);
+      gainNode.gain.linearRampToValueAtTime(1, t0 + 0.01);
+      gainNode.gain.setValueAtTime(1, t0 + dur * 0.9);
+      gainNode.gain.linearRampToValueAtTime(0, t0 + dur + 0.02);
+      [osc1, osc2].forEach(o => { o.start(t0); o.stop(t0 + dur + 0.1); });
+      return [osc1, osc2];
+    }
+  },
+  piano: {
+    // Sine + weak 2nd harmonic, sharp decay → piano-like
+    build(hz, gainNode, t0, dur) {
+      const osc1 = actx.createOscillator();
+      const osc2 = actx.createOscillator();
+      osc1.type = 'sine'; osc1.frequency.value = hz;
+      osc2.type = 'sine'; osc2.frequency.value = hz * 2;
+      const g2 = actx.createGain(); g2.gain.value = 0.25;
+      osc1.connect(gainNode); osc2.connect(g2); g2.connect(gainNode);
+      // Piano: fast attack, exponential decay
+      gainNode.gain.setValueAtTime(0, t0);
+      gainNode.gain.linearRampToValueAtTime(1, t0 + 0.008);
+      gainNode.gain.exponentialRampToValueAtTime(0.3, t0 + 0.2);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, t0 + Math.min(dur, 1.5));
+      gainNode.gain.linearRampToValueAtTime(0, t0 + Math.min(dur, 1.5) + 0.05);
+      [osc1, osc2].forEach(o => { o.start(t0); o.stop(t0 + Math.min(dur,1.5) + 0.1); });
+      return [osc1, osc2];
+    }
+  },
+  flute: {
+    // Pure sine, slow attack → flute
+    build(hz, gainNode, t0, dur) {
+      const osc = actx.createOscillator();
+      osc.type = 'sine'; osc.frequency.value = hz;
+      osc.connect(gainNode);
+      gainNode.gain.setValueAtTime(0, t0);
+      gainNode.gain.linearRampToValueAtTime(1, t0 + 0.08);
+      gainNode.gain.setValueAtTime(1, t0 + dur * 0.85);
+      gainNode.gain.linearRampToValueAtTime(0, t0 + dur + 0.05);
+      osc.start(t0); osc.stop(t0 + dur + 0.1);
+      return [osc];
+    }
+  },
+  strings: {
+    // Sawtooth with slow attack + vibrato → strings
+    build(hz, gainNode, t0, dur) {
+      const osc = actx.createOscillator();
+      const lfo = actx.createOscillator();
+      const lfoG = actx.createGain();
+      osc.type = 'sawtooth'; osc.frequency.value = hz;
+      lfo.type = 'sine'; lfo.frequency.value = 5.5;
+      lfoG.gain.value = hz * 0.012;  // ~1.2% vibrato depth
+      lfo.connect(lfoG); lfoG.connect(osc.frequency);
+      osc.connect(gainNode);
+      gainNode.gain.setValueAtTime(0, t0);
+      gainNode.gain.linearRampToValueAtTime(1, t0 + 0.18);
+      gainNode.gain.setValueAtTime(1, t0 + dur * 0.8);
+      gainNode.gain.linearRampToValueAtTime(0, t0 + dur + 0.12);
+      [osc, lfo].forEach(o => { o.start(t0); o.stop(t0 + dur + 0.2); });
+      return [osc, lfo];
+    }
+  },
+  harpsichord: {
+    // Sawtooth, very fast decay + harmonic shimmer → harpsichord
+    build(hz, gainNode, t0, dur) {
+      const osc1 = actx.createOscillator();
+      const osc2 = actx.createOscillator();
+      osc1.type = 'sawtooth'; osc1.frequency.value = hz;
+      osc2.type = 'square';   osc2.frequency.value = hz * 2;
+      const g2 = actx.createGain(); g2.gain.value = 0.1;
+      osc1.connect(gainNode); osc2.connect(g2); g2.connect(gainNode);
+      gainNode.gain.setValueAtTime(0, t0);
+      gainNode.gain.linearRampToValueAtTime(1, t0 + 0.005);
+      gainNode.gain.exponentialRampToValueAtTime(0.5, t0 + 0.05);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, t0 + Math.min(dur, 0.8));
+      gainNode.gain.linearRampToValueAtTime(0, t0 + Math.min(dur, 0.8) + 0.02);
+      [osc1, osc2].forEach(o => { o.start(t0); o.stop(t0 + Math.min(dur,0.8) + 0.1); });
+      return [osc1, osc2];
+    }
   }
-  Tone.Transport.start();simState='PLAYING';animate();
-  document.getElementById('btn-play').textContent='⏸ Pause';
+};
+
+function currentInstrument() {
+  const sel = document.getElementById('instr-select');
+  return INSTRUMENTS[sel ? sel.value : 'organ'] || INSTRUMENTS.organ;
 }
 
-function pauseSim(){
-  Tone.Transport.pause();simState='PAUSED';cancelAnimationFrame(rafId);
-  document.getElementById('btn-play').textContent='▶ Play';
+function dbToGain(db) { return Math.pow(10, db / 20); }
+
+function noteToHz(name) {
+  const M={'C':0,'D':2,'E':4,'F':5,'G':7,'A':9,'B':11};
+  const acc={'b':-1,'#':1};
+  const m = name.match(/^([A-G])([b#]?)(-?\d)$/);
+  if(!m) return 440;
+  const semi = M[m[1]] + (acc[m[2]]||0);
+  const oct  = parseInt(m[3]);
+  return 440 * Math.pow(2, ((oct+1)*12 + semi - 69) / 12);
 }
 
-function stopSim(){
-  Tone.Transport.stop();Tone.Transport.cancel();simState='STOPPED';
+function clearScheduled() {
+  scheduledNodes.forEach(n => { try{n.stop(0);}catch(e){} });
+  scheduledNodes = [];
+}
+
+async function ensureAudio() {
+  if(audioOK) return;
+  actx = new (window.AudioContext || window.webkitAudioContext)();
+  masterGain = actx.createGain();
+  masterGain.gain.value = 0.85;
+  masterGain.connect(actx.destination);
+  audioOK = true;
+}
+
+function scheduleVoice(voice, instrFn, fromSec) {
+  const B = 60 / currentEx.bpm;
+  voice.notes.forEach(([name, sb, db]) => {
+    const noteSec = sb * B;
+    if(noteSec < fromSec - 0.05) return;
+    const t0  = startWallTime + noteSec;
+    if(t0 < actx.currentTime - 0.05) return;
+    const hz  = noteToHz(name);
+    const dur = db * B * 0.87;
+    const vol = dbToGain(voice.vol) * 0.9;
+    const gainNode = actx.createGain();
+    gainNode.gain.value = vol;
+    gainNode.connect(masterGain);
+    const oscs = instrFn(hz, gainNode, t0, dur);
+    oscs.forEach(o => scheduledNodes.push(o));
+    scheduledNodes.push({ stop: t => { try{gainNode.disconnect();}catch(e){} } });
+  });
+}
+
+function scheduleAll(fromSec) {
+  const instr = currentInstrument();
+  clearScheduled();
+  startWallTime = actx.currentTime - fromSec;
+  currentEx.voices.forEach(voice => scheduleVoice(voice, instr.build.bind(instr), fromSec));
+}
+
+function animate() {
+  if(simState !== 'PLAYING') return;
+  const elapsed = actx.currentTime - startWallTime;
+  drawPlayhead(elapsed);
+  const totalDur = currentEx.totalBeats * 60 / currentEx.bpm;
+  if(elapsed >= totalDur + 0.3) { stopSim(); return; }
+  rafId = requestAnimationFrame(animate);
+}
+
+async function playSim() {
+  if(!currentEx) return;
+  await ensureAudio();
+  if(actx.state === 'suspended') await actx.resume();
+  const fromSec = (simState === 'PAUSED') ? transportSec : 0;
+  scheduleAll(fromSec);
+  simState = 'PLAYING';
+  animate();
+  document.getElementById('btn-play').textContent = '⏸ Pause';
+}
+
+function pauseSim() {
+  transportSec = actx.currentTime - startWallTime;
+  clearScheduled();
+  simState = 'PAUSED';
   cancelAnimationFrame(rafId);
-  document.getElementById('btn-play').textContent='▶ Play';
+  document.getElementById('btn-play').textContent = '▶ Play';
+}
+
+function stopSim() {
+  clearScheduled();
+  transportSec = 0;
+  simState = 'STOPPED';
+  cancelAnimationFrame(rafId);
+  document.getElementById('btn-play').textContent = '▶ Play';
   resetUI();
 }
 
@@ -628,7 +791,7 @@ function resetUI(){
   document.getElementById('time-fill').style.width='0%';
   document.getElementById('time-lbl').textContent='0.0s';
   document.getElementById('roll-scroll').scrollLeft=0;
-  ['ps0','ps1','ps2','ps3'].forEach(pid=>document.getElementById(pid).classList.remove('pole-active'));
+  document.querySelectorAll('.pole-seg').forEach(el=>el.classList.remove('pole-active'));
   document.getElementById('asfid-card').style.borderLeftColor='var(--border)';
   const ring=document.getElementById('asfid-ring');
   ring.style.background='var(--bg-card)';ring.style.color='var(--border2)';ring.textContent='—';
@@ -643,9 +806,7 @@ document.getElementById('btn-play').addEventListener('click',async()=>{
   if(simState==='PLAYING')pauseSim();else await playSim();
 });
 document.getElementById('btn-stop').addEventListener('click',stopSim);
-document.getElementById('btn-home').addEventListener('click',()=>{
-  window.location.href='../../../index.html';
-});
+// Home button is an <a> link — no JS needed
 
 // ── Tabs ──────────────────────────────────────────────────────
 document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{
@@ -683,6 +844,13 @@ makeSplitter('split2','--sidebar-w',()=>document.getElementById('sidebar').getBo
 buildExplorer();
 selectExample('bwv578');
 window.addEventListener('resize',()=>drawRoll());
+// Restart playback when instrument changes
+document.getElementById('instr-select').addEventListener('change', async () => {
+  if(simState === 'PLAYING') {
+    const pos = actx.currentTime - startWallTime;
+    scheduleAll(pos);
+  }
+});
 </script>
 </body>
 </html>
