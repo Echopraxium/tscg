@@ -2,12 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' https://cdnjs.cloudflare.com;
-                 script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
+                 script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
                  style-src  'self' 'unsafe-inline';
                  img-src    'self' data: blob:;
                  connect-src http://127.0.0.1:* ws://127.0.0.1:*;">
@@ -335,21 +332,6 @@ input[type="range"].comp-slider::-webkit-slider-thumb {
   box-shadow: 0 0 0 1px rgba(255,255,255,0.4),
               0 0 12px rgba(247,129,102,0.5) !important;
 }
-
-/* ── Home button — SVG icon, visited-proof ── */
-#btn-home {
-  display: inline-flex;
-  align-items: center;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 6px;
-  margin-right: 4px;
-  opacity: 0.85;
-  transition: opacity 0.15s;
-  text-decoration: none;
-}
-#btn-home:hover { opacity: 1; }
   </style>
   <link rel="icon" href="data:,">
 </head>
@@ -359,7 +341,13 @@ input[type="range"].comp-slider::-webkit-slider-thumb {
   <!-- HEADER -->
   <header id="header">
     <!-- Home button disabled in standalone web mode -->
-    <a id="btn-home" href="https://echopraxium.github.io/tscg/" title="Back to Poclet Gallery" target="_self"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></a>
+    <button id="btn-home" title="Poclet Explorer (disabled in standalone mode)"
+            style="background:none; border:none; cursor:not-allowed;
+                   padding:4px 6px; margin-right:4px; border-radius:5px;
+                   color:#3d444f; font-size:23px; line-height:1;"
+            title="Poclet Explorer — not available in standalone mode">
+      &#8962;
+    </button>
     <span class="tscg-logo">TSCG</span>
     <span class="sep">&middot;</span>
     <span class="poclet-name">Fire Triangle &mdash; CombustionEquilibrium Poclet</span>
@@ -1428,6 +1416,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 })();
 
 // Home / Explorer buttons — no-op in standalone web mode
+document.getElementById('btn-home').addEventListener('click', () => {});
 document.getElementById('btn-explorer').addEventListener('click', () => {});
 
 // ── Splitter ─────────────────────────────────────────────────
