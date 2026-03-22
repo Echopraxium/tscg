@@ -322,11 +322,11 @@ function generateHtml(poclets) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
-                 script-src 'self' 'unsafe-inline';
+        content="default-src 'self' https://echopraxium.github.io;
+                 script-src 'self' 'unsafe-inline' 'unsafe-eval';
                  style-src  'self' 'unsafe-inline';
                  img-src    'self' data: blob:;
-                 connect-src 'none';">
+                 connect-src 'self' http://127.0.0.1:* ws://127.0.0.1:*;">
   <title>TSCG &mdash; Poclet Gallery</title>
 ${seoHead}
   <style>
@@ -541,14 +541,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);
     <div class="status-dot"></div>
   </footer>
 
-</div><!-- #shell -->
-
-<script>
-CLIENT_JS_PLACEHOLDER
-</script>
-</script>
-</body>
-</html>
 </div><!-- #shell -->
 `;
 }
