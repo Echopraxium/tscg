@@ -1,8 +1,8 @@
 # 📁 TSCG Framework - Complete File Tree
 
-**Date:** 2026-03-16  
-**Framework Version:** TSCG v15.10.0  
-**Total Files:** 593
+**Date:** 2026-03-23  
+**Framework Version:** TSCG v15.10.1  
+**Total Files:** 618
 
 ---
 
@@ -11,21 +11,31 @@
 **Ontology Files:**
 - M3 Layer: 4 files (M3_EagleEye, M3_GenesisSpace, M3_GenesisSpace_Ref, M3_SphinxEye; .ttl only for Ref and SphinxEye)
 - M2 Layer: 1 main file (M2_GenericConcepts) + 1 standalone (M2_Calibration) + archived versions in docs/
-- M1 Layer: 1 core file + 10 domain extensions (biology, chemistry, **economics**, education, electronics, energy_generators, mythology, optics, photography, physics)
-- M0 Layer: 21 poclets (instances/poclets/) + TSCG Tools (instances/tscg-tools/) + 1 VSM systemic framework + 1 symbolic grammar
+- M1 Layer: 1 core file + 11 domain extensions (biology, chemistry, **economics**, education, electronics, energy_generators, **music**, mythology, optics, photography, physics)
+- M0 Layer: 23 poclets (instances/poclets/) + TSCG Tools (instances/tscg-tools/) + 1 VSM systemic framework + 1 symbolic grammar
 
-**Documentation:** ~120 files  
+**Documentation:** ~125 files  
 **Source Code:** extensive `src/tscg/` Python package  
 **Scripts & Tools:** 30+ files  
-**Root & Config:** 9 files
+**Root & Config:** 10 files
 
-**Total:** 593 files
+**Total:** 618 files
 
 ---
 
-## 🆕 What's New (vs v15.9.0)
+## 🆕 What's New (vs v15.10.0)
 
-### v15.10.0 (2026-03-16) — Current
+### v15.10.1 (2026-03-23) — Current
+- ✅ New poclet: `CounterPoint/` (M0_Counterpoint.jsonld + README + static/sounds scripts)
+- ✅ New poclet: `NakamotoConsensus/` (M0_Poclet_NakamotoConsensus.jsonld + README)
+- ✅ New TSCG tool: `TscgPocletMiner/` (M0_TscgPocletMiner.jsonld + README + tools/rebuild_m2_corpus.py)
+- ✅ New M1 extension: `music/M1_music.jsonld`
+- ✅ New session README: `TSCG_Session_README_2026-03-23.md` added to reboot-kit
+- ✅ New Smart Prompt: `TSCG_Smart_Prompt_v15_10_1.md` added to reboot-kit/SmartPrompts/
+- ✅ New CLI tool: `cli_tools/generate_index-html/` (_Generate_Index-html.bat)
+- ✅ New root script: `_serve_index-html.bat`
+
+### v15.10.0 (2026-03-16)
 - ✅ New poclet: `TrophicPyramid/` (M0_TrophicPyramid.jsonld + README + sim/)
 - ✅ New poclet: `TvTestPattern/` (M0_TVTestPattern.jsonld + README + tv_test_pattern_sim.py)
 - ✅ New TSCG tool: `TscgPocletGenerator/` (M0_TscgPocletGenerator.jsonld + tscg_poclet_generator.py + tscg_rag_augmentor.py)
@@ -36,18 +46,11 @@
 
 ### v15.9.0 (2026-03-01)
 - ✅ New M1 extension: `economics/` (M1_Economics.jsonld + M1_Economics_README.md)
-- ✅ New poclet: `KindlebergerMinsky/` (M0_KindlebergerMinsky + simulation)
+- ✅ New poclet: `KindlebergerMinsky/` (M0 + simulation)
 - ✅ New section: `instances/tscg-tools/TscgExplorer/` (M0_TscgExplorer + tscg_explorer.py)
 - ❌ `instances/validation/` directory removed (validated poclets now live only in `poclets/`)
 - ❌ `.ttl` twins removed for `M3_EagleEye` and `M3_GenesisSpace` in `ontology/`
 - ❌ `.ttl` twins removed for several poclets (ColorSynthesis, ComplexChemicalSynapse, Tpack, Vco, PhaseTransition, MtgColorWheel)
-
-### v15.8.0 (2026-02-27)
-- Smart Prompt v15.8.0 released
-- New M1 extensions: `education/`, `physics/`, `electronics/` (VCO domain)
-- New poclets: `PhaseTransition/` (simulation) + `Vco/` (first m2:Oscillator instantiation)
-- `M1_Electronics.jsonld` — 17 concepts covering analog electronics & modular synthesis
-- Preprints reorganized with `previous/` subfolder; v3 is now current
 
 ---
 
@@ -72,7 +75,7 @@ Core foundation defining the bicephalous architecture (Territory/Map distinction
 
 ### Main ontology/ files
 - [M2_GenericConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld) - Generic/universal metaconcepts *(primary)*
-- [M2_Calibration.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M2_Calibration.jsonld) - Calibration standalone metaconcept — **NEW**
+- [M2_Calibration.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M2_Calibration.jsonld) - Calibration standalone metaconcept
 
 ### ontology/sparql/ (SPARQL tools)
 - [M2_MetaConcepts_2026_02_08_encoding_lint_ok.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_MetaConcepts_2026_02_08_encoding_lint_ok.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_MetaConcepts_2026_02_08_encoding_lint_ok.ttl)
@@ -150,6 +153,9 @@ Core foundation defining the bicephalous architecture (Territory/Map distinction
 **Energy Generators (M1_extensions/energy_generators/):**
 - [M1_EnergyGenerators.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.ttl)
 
+**Music (M1_extensions/music/) — NEW:**
+- [M1_music.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/music/M1_music.jsonld)
+
 **Mythology (M1_extensions/mythology/):**
 - [M1_Mythology.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology.ttl)
 - [M1_Mythology_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology_README.md)
@@ -192,40 +198,48 @@ Core foundation defining the bicephalous architecture (Territory/Map distinction
 - [tscg_explorer.py](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgExplorer/tscg_explorer.py)
 - _00_Run_Simulation.bat, _00_setup_notes.txt, _open_cmd_window.bat, requirements.txt
 
-**TSCG Poclet Explorer (tscg-tools/TscgPocletExplorer/) — NEW:**
+**TSCG Poclet Explorer (tscg-tools/TscgPocletExplorer/):**
 - [00_Run.bat](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletExplorer/00_Run.bat)
 
-**TSCG Poclet Generator (tscg-tools/TscgPocletGenerator/) — NEW:**
+**TSCG Poclet Generator (tscg-tools/TscgPocletGenerator/):**
 - [M0_TscgPocletGenerator.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletGenerator/M0_TscgPocletGenerator.jsonld)
 - [M0_TscgPocletGenerator_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletGenerator/M0_TscgPocletGenerator_README.md)
 - [tscg_poclet_generator.py](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletGenerator/tscg_poclet_generator.py)
 - [tscg_rag_augmentor.py](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletGenerator/tscg_rag_augmentor.py)
 - _00_Run_Simulation.bat, _00_setup_notes.txt, _google_cloud_login.bat, _open_cmd_window.bat, _open_powershell.bat, requirements.txt
 
+**TSCG Poclet Miner (tscg-tools/TscgPocletMiner/) — NEW:**
+- [M0_TscgPocletMiner.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletMiner/M0_TscgPocletMiner.jsonld)
+- [M0_TscgPocletMiner_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletMiner/M0_TscgPocletMiner_README.md)
+- [tools/rebuild_m2_corpus.py](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletMiner/tools/rebuild_m2_corpus.py)
+- 00_Run.bat
+
 ### Experimental Poclets (instances/poclets/)
 
 Each poclet folder contains `.jsonld`, `_README.md` and sometimes simulation scripts. `.ttl` twins are present only for certain poclets (see individual entries). Folder names use CamelCase as in the repository.
 
-**Active poclets (21 total):**
+**Active poclets (23 total):**
 - `AdaptativeImmuneResponse/` — M0_AdaptiveImmuneResponse.jsonld / .ttl + README
 - `BloodPressureControl/` — M0_BloodPressureControl.jsonld / .ttl + README
 - `ButterflyMetamorphosis/` — M0_ButterflyMetamorphosis.jsonld / .ttl + README + executive summary
 - `CellSignalingModes/` — M0_CellSignalingModes.jsonld / .ttl + README
 - `ColorSynthesis/` — CMYK, CMY, ColorSynthesis_Federated, HSL, RGB (.jsonld only) + READMEs *(sim lives in src/tscg/simulation-engine/)*
 - `ComplexChemicalSynapse/` — M0_ComplexChemicalSynapse.jsonld / .ttl + README + complex_chemical_synapse_sim.py
+- `CounterPoint/` — M0_Counterpoint.jsonld + README + static/ (sound scripts) — **NEW**
 - `ExposureTriangle/` — M0_ExposureTriangle.jsonld + README *(sim lives in src/tscg/simulation-engine/)*
 - `FireTriangle/` — M0_FireTriangle.jsonld + README *(sim lives in src/tscg/simulation-engine/)*
 - `FourStrokeEngine/` — M0_FourStrokeEngine.jsonld / .ttl + README + four_stroke_engine_sim.py
 - `Kidneys/` — M0_Kidneys.jsonld / .ttl + README
-- `KindlebergerMinsky/` — M0_KindlebergerMinsky.jsonld / .ttl + README + KindlebergerMinsky_Simulation_README + kindleberger_minsky_sim.py
+- `KindlebergerMinsky/` — M0_KindlebergerMinsky.jsonld / .ttl + README + KindlebergerMinsky_Simulation_README + kindleberger_minsky_sim.py + companion doc
 - `MtgColorWheel/` — M0_MtgColorWheel.jsonld + README + sim_mtg_color_wheel.py
+- `NakamotoConsensus/` — M0_Poclet_NakamotoConsensus.jsonld + README — **NEW**
 - `NuclearReactorsTypology/` — M0_NuclearReactorTypology.jsonld / .ttl + README
 - `PhaseTransition/` — M0_PhaseTransition.jsonld / .ttl + README + phase_transition_sim.py
 - `Raas/` — M0_RAAS.jsonld + README
 - `Tpack/` — M0_TPACK.jsonld / .ttl + README + tpack_sim.py
 - `Transistor/` — M0_Transistor.jsonld / .ttl + README + transistor_sim.py + companion doc
-- `TrophicPyramid/` — M0_TrophicPyramid.jsonld + README + sim/ (INSTALL.md, MIGRATION_GUIDE.md) — **NEW**
-- `TvTestPattern/` — M0_TVTestPattern.jsonld + README + tv_test_pattern_sim.py — **NEW**
+- `TrophicPyramid/` — M0_TrophicPyramid.jsonld + README + sim/ (INSTALL.md, MIGRATION_GUIDE.md)
+- `TvTestPattern/` — M0_TVTestPattern.jsonld + README + tv_test_pattern_sim.py
 - `Vco/` — M0_VCO.jsonld / .ttl + README + VCO_Simulation_README + vco_sim.py *(first m2:Oscillator instantiation)*
 - `Yggdrasil/` — M0_Yggdrasil.jsonld / .ttl + README + companion documents
 
@@ -280,6 +294,7 @@ Full Python package structure for the TSCG engine.
 ### RAG (src/tscg/rag/)
 - [create_tscg_rag.py](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/rag/create_tscg_rag.py)
 - [query_tscg_rag.py](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/rag/query_tscg_rag.py)
+- [rebuild_corpus.py](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/rag/rebuild_corpus.py)
 - [TSCG_RAG_Segmentation_Guide.md](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/rag/TSCG_RAG_Segmentation_Guide.md)
 - [TSCG_RAG_Standalone_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/rag/TSCG_RAG_Standalone_README.md)
 
@@ -306,6 +321,7 @@ Shared simulation scripts (poclets with no local `poclet_parser.py` dependency u
 **Essential Quick-Start Package** - Complete framework context in one directory.
 
 **Core Documentation:**
+- [TSCG_Session_README_2026-03-23.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Session_README_2026-03-23.md) — **NEW**
 - [00_TSCG_M3_Bicephalous_Architecture.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/00_TSCG_M3_Bicephalous_Architecture.md)
 - [00_TSCG_Map_Territory_Theoretical_Foundation.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/00_TSCG_Map_Territory_Theoretical_Foundation.md)
 - [00_Map_Territory_v1.2_Update_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/00_Map_Territory_v1.2_Update_Summary.md)
@@ -321,14 +337,14 @@ Shared simulation scripts (poclets with no local `poclet_parser.py` dependency u
 - [Amplification_Integration_Summary (1).md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/Amplification_Integration_Summary%20(1).md)
 - [ValueSpace_Integration_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/ValueSpace_Integration_Summary.md)
 - [M2_OntologyCategory_Proposal.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_OntologyCategory_Proposal.md)
-- [M2_FormulasReference_v15.10.0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_FormulasReference_v15.10.0.md) — **NEW**
-- [M2_GenericConcepts_README (1).md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_GenericConcepts_README%20(1).md) — **NEW**
+- [M2_FormulasReference_v15.10.0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_FormulasReference_v15.10.0.md)
+- [M2_GenericConcepts_README (1).md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_GenericConcepts_README%20(1).md)
 
 **M0 VSM Documentation:**
 - [M0_VSM_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M0_VSM_README.md)
 
 **Project Management:**
-- [TSCG_File_Tree.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_File_Tree.md) - **This file (v15.10.0)**
+- [TSCG_File_Tree.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_File_Tree.md) - **This file (v15.10.1)**
 - [TO_DO.txt](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TO_DO.txt)
 - [poclet_terminology.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/poclet_terminology.md)
 - [Namespace_Refactoring_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/Namespace_Refactoring_Summary.md)
@@ -338,10 +354,11 @@ Shared simulation scripts (poclets with no local `poclet_parser.py` dependency u
 - [macros.txt](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/macros.txt)
 
 **Smart Prompts (docs/reboot-kit/SmartPrompts/):**
-- [TSCG_Smart_Prompt_v15_1_0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v15_1_0.md)
-- [TSCG_Smart_Prompt_v15_7_0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v15_7_0.md)
+- [SmartPrompts/TSCG_Smart_Prompt_v15_10_1.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/SmartPrompts/TSCG_Smart_Prompt_v15_10_1.md) — **NEW**
+- [TSCG_Smart_Prompt_v15_9_0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v15_9_0.md)
 - [TSCG_Smart_Prompt_v15_8_0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v15_8_0.md)
-- [TSCG_Smart_Prompt_v15_9_0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v15_9_0.md) — **NEW**
+- [TSCG_Smart_Prompt_v15_7_0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v15_7_0.md)
+- [TSCG_Smart_Prompt_v15_1_0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v15_1_0.md)
 - [SmartPrompts/Smart_Prompt_2026_01_17.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/SmartPrompts/Smart_Prompt_2026_01_17.md)
 - [SmartPrompts/TSCG_Smart_Prompt_11_0_0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/SmartPrompts/TSCG_Smart_Prompt_11_0_0.md)
 - [SmartPrompts/TSCG_Smart_Prompt_v14.2_Step.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/SmartPrompts/TSCG_Smart_Prompt_v14.2_Step.md)
@@ -354,7 +371,7 @@ Shared simulation scripts (poclets with no local `poclet_parser.py` dependency u
 - [M0_VSM.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M0_VSM.jsonld)
 - [M1_CoreConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M1_CoreConcepts.jsonld)
 - [M2_MetaConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_MetaConcepts.jsonld)
-- [M2_GenericConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_GenericConcepts.jsonld) — **NEW**
+- [M2_GenericConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_GenericConcepts.jsonld)
 - [M2_MetaconceptCombo.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_MetaconceptCombo.jsonld)
 - [M2_Pattern_metaconcept.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_Pattern_metaconcept.jsonld)
 - [M3_EagleEye.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M3_EagleEye.jsonld)
@@ -414,15 +431,19 @@ echopraxium/tscg/                      # Repository root
 ├── README.md
 ├── _open_cmd_window.bat
 ├── _Run_Poclet_Explorer.bat
+├── _serve_index-html.bat              # NEW
 ├── claude_setup.txt
 ├── files.txt                          # Complete file list
 ├── create_files_URIS.py
 ├── cli_tools/
-│   └── _open_powershell.bat
+│   ├── _open_powershell.bat
+│   └── generate_index-html/           # NEW
+│       ├── _Generate_Index-html.bat
+│       └── _open_cmd_window.bat
 ├── ontology/                          # Reference ontologies (M3, M2, M1)
 │   ├── M1_CoreConcepts.jsonld
 │   ├── M2_GenericConcepts.jsonld
-│   ├── M2_Calibration.jsonld          # NEW — standalone M2 file
+│   ├── M2_Calibration.jsonld
 │   ├── M3_EagleEye.jsonld/ttl
 │   ├── M3_GenesisSpace.jsonld
 │   ├── M3_GenesisSpace_Ref.ttl        # .ttl only in root ontology/
@@ -436,6 +457,7 @@ echopraxium/tscg/                      # Repository root
 │   │   ├── education/
 │   │   ├── electronics/
 │   │   ├── energy_generators/
+│   │   ├── music/                     # NEW
 │   │   ├── mythology/
 │   │   ├── optics/
 │   │   ├── photography/
@@ -448,7 +470,7 @@ echopraxium/tscg/                      # Repository root
 │   ├── sparql/                        # SPARQL queries & enriched ontologies
 │   └── tools/                         # Reference tool files
 ├── instances/                         # System instances (M0 layer)
-│   ├── poclets/                       # 21 experimental models (CamelCase subfolders)
+│   ├── poclets/                       # 23 experimental models (CamelCase subfolders)
 │   │   ├── _00_docs/                  # Poclets documentation
 │   │   ├── AdaptativeImmuneResponse/
 │   │   ├── BloodPressureControl/
@@ -456,25 +478,28 @@ echopraxium/tscg/                      # Repository root
 │   │   ├── CellSignalingModes/
 │   │   ├── ColorSynthesis/
 │   │   ├── ComplexChemicalSynapse/
+│   │   ├── CounterPoint/              # NEW
 │   │   ├── ExposureTriangle/
 │   │   ├── FireTriangle/
 │   │   ├── FourStrokeEngine/
 │   │   ├── Kidneys/
 │   │   ├── KindlebergerMinsky/
 │   │   ├── MtgColorWheel/
+│   │   ├── NakamotoConsensus/         # NEW
 │   │   ├── NuclearReactorsTypology/
 │   │   ├── PhaseTransition/
 │   │   ├── Raas/
 │   │   ├── Tpack/
 │   │   ├── Transistor/
-│   │   ├── TrophicPyramid/            # NEW
-│   │   ├── TvTestPattern/             # NEW
+│   │   ├── TrophicPyramid/
+│   │   ├── TvTestPattern/
 │   │   ├── Vco/
 │   │   └── Yggdrasil/
 │   ├── tscg-tools/                    # TSCG meta-analytical tools
 │   │   ├── TscgExplorer/              # TSCG Explorer (self-analysis)
-│   │   ├── TscgPocletExplorer/        # NEW (stub)
-│   │   └── TscgPocletGenerator/       # NEW — AI-powered poclet generation
+│   │   ├── TscgPocletExplorer/        # Stub launcher
+│   │   ├── TscgPocletGenerator/       # AI-powered poclet generation
+│   │   └── TscgPocletMiner/           # NEW — corpus mining & rebuild
 │   ├── systemic-frameworks/Vsm/       # VSM framework integration
 │   └── symbolic-system-grammars/      # I-Ching and similar systems
 │       └── Iching/
@@ -503,7 +528,15 @@ echopraxium/tscg/                      # Repository root
 
 ## 🔄 Version History
 
-### v15.10.0 (2026-03-16) — Current
+### v15.10.1 (2026-03-23) — Current
+
+- New poclets: `CounterPoint/` (music, static sound scripts) + `NakamotoConsensus/` (blockchain consensus)
+- New TSCG tool: `TscgPocletMiner/` (corpus mining + rebuild_m2_corpus.py)
+- New M1 extension: `music/M1_music.jsonld`
+- New session README: `TSCG_Session_README_2026-03-23.md` + Smart Prompt v15.10.1 in reboot-kit
+- New CLI tool: `cli_tools/generate_index-html/` + `_serve_index-html.bat` at root
+
+### v15.10.0 (2026-03-16)
 
 - New poclets: `TrophicPyramid/` + `TvTestPattern/` (tv_test_pattern_sim.py)
 - New TSCG tools: `TscgPocletGenerator/` (AI-powered generation) + `TscgPocletExplorer/` (stub)
@@ -517,16 +550,8 @@ echopraxium/tscg/                      # Repository root
 - New section: `instances/tscg-tools/TscgExplorer/` (meta-analytical tool)
 - `instances/validation/` directory removed
 
-### v15.8.0 (2026-02-27)
-
-- Smart Prompt v15.8.0 released
-- New M1 extensions: `education/`, `physics/`, `electronics/` (VCO domain)
-- New poclets: `PhaseTransition/` (simulation) + `Vco/` (first m2:Oscillator instantiation)
-- `M1_Electronics.jsonld` — 17 concepts covering analog electronics & modular synthesis
-- Preprints reorganized with `previous/` subfolder; v3 is now current
-
 ---
 
-**Generated:** 2026-03-16  
-**Framework:** TSCG v15.10.0  
+**Generated:** 2026-03-23  
+**Framework:** TSCG v15.10.1  
 **Author:** Echopraxium with the collaboration of Claude AI
