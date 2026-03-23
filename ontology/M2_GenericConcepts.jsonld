@@ -18,7 +18,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
       "dcterms:modified": "2026-03-13",
-      "owl:versionInfo": "15.10.1",
+      "owl:versionInfo": "15.11.0",
       "owl:imports": [
         "M3_GenesisSpace.jsonld"
       ],
@@ -97,18 +97,38 @@
         ]
       },
       "m2:progress": {
-        "m2:genericConceptsDefined": 81,
-        "m2:genericConceptsTotal": 81,
+        "m2:genericConceptsDefined": 90,
+        "m2:genericConceptsTotal": 90,
         "m2:completionPercentage": 100,
-        "m2:neutralPolarity": 53,
-        "m2:dualPolarity": 16,
+        "m2:neutralPolarity": 59,
+        "m2:dualPolarity": 19,
         "m2:naryPolarity": 1,
-        "m2:hybridPolarity": 3,
-        "totalConcepts": 75,
-        "comboConcepts": 0,
-        "atomicConcepts": 75
+        "m2:hybridPolarity": 4,
+        "totalConcepts": 84,
+        "comboConcepts": 4,
+        "atomicConcepts": 80
       },
       "m2:changelog": {
+        "v15_11_0": {
+          "date": "2026-03-23",
+          "session": "Ranaora & Yii poclet analysis — TSCG M2 architectural discoveries",
+          "source": "DOI: 10.5281/zenodo.19160047",
+          "changes": [
+            "NEW ATOMIC: m2:Processor (Dynamic, S⊗I⊗F⊗D, neutral) — generic transformer",
+            "NEW ATOMIC: m2:Transducer (Energetic, F⊗S⊗I, neutral, subClassOf Processor) — flux converter",
+            "NEW ATOMIC: m2:Entropy (Energetic, F⊗I⊗D, dual Entropy/Negentropy) — irreversibility measure (Feynman)",
+            "NEW ATOMIC: m2:Stase (Structural, S⊗A, neutral) — F=0 reversible ground state",
+            "NEW ATOMIC: m2:Coherence (Structural, A⊗S⊗I⊗R⊗O, dual Coherence/Incoherence, bicephalous) — structural+perceptual alignment",
+            "NEW COMBO: m2:Inertia (⊗⇒(Memory,Entropy), S⊗F⊗I⊗D, neutral) — thermodynamic resistance via accumulated Entropy",
+            "NEW COMBO: m2:Potentialization (⊗⇒(Activation,Process), A⊗D⊗F, dual +/-) — F=0↔F_active transition",
+            "NEW COMBO: m2:AbsorbingState (⊗⇒(Stase,Entropy), S⊗A⊗F⊗I⊗D, neutral) — irreversibly sealed Stase",
+            "NEW COMBO: m2:TopologicalDefect (⊗⇒(Incoherence,Invariant), S⊗A⊗I⊗R⊗O, neutral) — locally stable incoherence",
+            "REVISED: m2:Dissipation — subClassOf Transducer, produces Entropy, Feynman note (equations are time-reversible)",
+            "ARCHITECTURAL M3: F axiom relaxed F≥0 (F=0=Stase valid). F_morphic annotation (F∈Mor∩Ob). F_potential/F_active spectrum. F_total conservation as emergent M2 property.",
+            "RECONCILIATION: Coherence^op=Entropy (v6.5.0) was imprecise. Correct: Incoherence→[Dissipation]→Entropy (causal morphism, not categorical dual). Coherence^op=Incoherence; Entropy^op=Negentropy.",
+            "Atomics 75→80, Combos 0→4, Total 75→84, neutralPolarity 53→59, dualPolarity 16→19, hybridPolarity 3→4"
+          ]
+        },
         "v15_10_1": {
           "date": "2026-03-13",
           "changes": [
@@ -1029,8 +1049,23 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": "m2:GenericConcept",
       "rdfs:label": "Dissipation",
-      "rdfs:comment": "Irreversible energy degradation and entropy production.",
+      "rdfs:comment": "Degrading Transducer that channels an active flow (F_active) toward a lower-energy state — the physical mechanism of energy degradation. Dissipation is the PRODUCER of Entropy (F⊗I⊗D), not Entropy itself. FEYNMAN NOTE: Dissipation's governing equations are time-reversible; irreversibility emerges only through the Entropy it generates, not from Dissipation itself. Dissipation is the morphism F_active → F_degraded; Entropy is its cumulative irreversibility measure.",
       "m2:hasFamily": "m2:Energetic",
+      "rdfs:subClassOf": "m2:Transducer",
+      "m2:ontologicalNature": "entity_and_morphism",
+      "m2:morphicRole": {
+        "description": "Dissipation as morphism: channels F_active → Entropy production",
+        "source": "F_active (available exergy)",
+        "target": "m2:Entropy",
+        "irreversibility": "NOT intrinsic — equations are time-reversible (Feynman)",
+        "irreversibilitySource": "Emerges from produced Entropy (F⊗I⊗D)"
+      },
+      "m2:produces": {
+        "@id": "m2:Entropy",
+        "relation": "Dissipation is the generative mechanism of Entropy",
+        "formula": "Dissipation(F⊗D) →generates→ Entropy(F⊗I⊗D)",
+        "note": "I dimension emerges from accumulation of F⊗D — not present in Dissipation itself"
+      },
       "m2:hasTensorFormula": "F ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
@@ -1051,7 +1086,12 @@
       },
       "m2:hasTensorFormulaTeX": "F \\otimes D",
       "m2:hasTensorFormulaASCII": "F (x) D",
-      "m3:semanticSignature": "energy_flow + irreversible_dynamics"
+      "m2:distinctFrom": {
+        "m2:Entropy": "Entropy (F⊗I⊗D) is the MEASURE of disorder produced; Dissipation (F⊗D) is the MECHANISM of production. Dissipation equations are time-reversible; Entropy encodes irreversibility (Feynman).",
+        "m2:Process": "Process (D⊗F) is a generic temporal sequence; Dissipation specifically implies energy degradation toward lower states.",
+        "m2:Transducer": "Dissipation is a subclass of Transducer — the degrading specialization (F_active → F_degraded). General Transducer converts between flux types without implying energy loss."
+      },
+      "m3:semanticSignature": "energy_flow + directed_degradation + entropy_generator"
     },
     {
       "@id": "m2:Regulation",
@@ -5963,6 +6003,435 @@
       },
       "m2:hasTensorFormulaASCII": "Process (x) Alignment (x) Homeostasis",
       "m3:semanticSignature": "output_fed_back_to_input + polarity(positive|negative) + dynamic_regulation"
+    },
+    {
+      "@id": "m2:Processor",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "rdfs:label": "Processor",
+      "rdfs:comment": "Entity that transforms a flow (F) of information or energy according to a defined internal structure (S), producing a specified informational output (I), unfolding temporally (D). The most general transformation agent — Transducer and Dissipation are specializations. Processor is both entity (a system component) and morphism (a transformation operator) due to F in its tensor.",
+      "m2:hasFamily": "m2:Dynamic",
+      "m2:hasTensorFormula": "S ⊗ I ⊗ F ⊗ D",
+      "m2:hasTensorFormulaTeX": "S \\otimes I \\otimes F \\otimes D",
+      "m2:hasTensorFormulaASCII": "S (x) I (x) F (x) D",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Structure",
+        "m3:eagle_eye:Information",
+        "m3:eagle_eye:Flow",
+        "m3:eagle_eye:Dynamics"
+      ],
+      "m2:hasEpistemicGap": 0.2,
+      "m2:hasPolarity": "neutral",
+      "m2:perspective": "territory",
+      "m2:ontologicalNature": "entity_and_morphism",
+      "m2:subClassHierarchy": "Processor ⊃ Transducer ⊃ Dissipation",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "S → I → F → D",
+        "role": "Measure observable phenomenon",
+        "status": "IMMUTABLE"
+      },
+      "m2:hasExample": [
+        "CPU / GPU (computing)",
+        "Ribosome: mRNA → protein (biology)",
+        "Mitochondria: glucose → ATP (bioenergetics)",
+        "Chemical reactor (chemistry)",
+        "Heat engine: heat → work (thermodynamics)",
+        "Cortex: stimulus → percept (neuroscience)",
+        "Translator: language A → language B (linguistics)"
+      ],
+      "m2:distinctFrom": {
+        "m2:Channel": "Channel (F⊗I⊗S) transmits without transformation — no D (temporal unfolding); Processor actively transforms",
+        "m2:Mediator": "Mediator (S⊗I⊗F) connects without active transformation; Processor changes the nature of I",
+        "m2:Transducer": "Transducer is a Processor specialization focused on flux-type conversion (a-temporal); Processor is the general case with D",
+        "m2:Agent": "Agent (S⊗I⊗D) is an autonomous actor; Processor is a transformation component (not necessarily autonomous)"
+      },
+      "m3:semanticSignature": "structural_transformation + information_processing + flow_throughput + temporal_unfolding"
+    },
+    {
+      "@id": "m2:Transducer",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:Processor",
+      "rdfs:label": "Transducer",
+      "rdfs:comment": "Processor specialized in converting a flow of one physical type into a flow of another type, via a coupling structure (S) and a conversion specification (I). The conversion is a-temporal (D absent — instantaneous or steady-state). Dissipation is a further specialization (degrading Transducer). Inherits entity_and_morphism nature from F.",
+      "m2:hasFamily": "m2:Energetic",
+      "m2:hasTensorFormula": "F ⊗ S ⊗ I",
+      "m2:hasTensorFormulaTeX": "F \\otimes S \\otimes I",
+      "m2:hasTensorFormulaASCII": "F (x) S (x) I",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Flow",
+        "m3:eagle_eye:Structure",
+        "m3:eagle_eye:Information"
+      ],
+      "m2:hasEpistemicGap": 0.15,
+      "m2:hasPolarity": "neutral",
+      "m2:perspective": "territory",
+      "m2:ontologicalNature": "entity_and_morphism",
+      "m2:subClassHierarchy": "Processor ⊃ Transducer ⊃ Dissipation",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "F → S → I",
+        "role": "Measure observable phenomenon",
+        "status": "IMMUTABLE"
+      },
+      "m2:hasExample": [
+        "Piezoelectricity: mechanical → electrical (physics)",
+        "Photoreceptor: photon → nerve signal (biology)",
+        "ATP synthase: H⁺ gradient → ATP (biochemistry)",
+        "Microphone / loudspeaker (engineering)",
+        "Carnot engine: heat → work (thermodynamics)",
+        "ADC/DAC: analog ↔ digital (computing)",
+        "Synapse: electrical → chemical → electrical (neuroscience)"
+      ],
+      "m2:distinctFrom": {
+        "m2:Channel": "Channel transmits without type conversion; Transducer changes the physical nature of the flux",
+        "m2:Processor": "Processor is the general case (with D); Transducer is a-temporal specialization on flux-type conversion",
+        "m2:Dissipation": "Dissipation is a degrading Transducer (F_active → F_degraded + Entropy); Transducer is the general flux-conversion case"
+      },
+      "m3:semanticSignature": "flux_type_conversion + coupling_structure + conversion_specification"
+    },
+    {
+      "@id": "m2:Entropy",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "rdfs:label": "Entropy (Entropy/Negentropy)",
+      "rdfs:comment": "Measure of disorder, uncertainty, or irreversibility produced by a degrading flow. Entropy is the OUTPUT of Dissipation — it is the quantity that confers irreversibility on physical phenomena (Feynman: the equations of Dissipation are time-reversible; it is Entropy that makes processes effectively irreversible). Encompasses both thermodynamic entropy (Boltzmann: S=kB·lnΩ) and information entropy (Shannon: H=-Σp·logp). Pivot concept of the irreversibility chain: Dissipation→Entropy→Inertia→AbsorbingState.",
+      "m2:hasFamily": "m2:Energetic",
+      "m2:hasTensorFormula": "F ⊗ I ⊗ D",
+      "m2:hasTensorFormulaTeX": "F \\otimes I \\otimes D",
+      "m2:hasTensorFormulaASCII": "F (x) I (x) D",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Flow",
+        "m3:eagle_eye:Information",
+        "m3:eagle_eye:Dynamics"
+      ],
+      "m2:hasEpistemicGap": 0.15,
+      "m2:hasPolarity": "dual",
+      "m2:shortName": "Entropy",
+      "m2:fullName": "Entropy (Negentropy)",
+      "m2:dualAspects": {
+        "positiveAspect": {
+          "name": "Entropy",
+          "comment": "Disorder, uncertainty, irreversibility — ΔS > 0",
+          "examples": ["Heat death", "Information erasure", "Ecosystem degradation"]
+        },
+        "negativeAspect": {
+          "name": "Negentropy",
+          "comment": "Order, structure, low uncertainty — ΔS < 0 locally (maintained by external exergy)",
+          "examples": ["Living organisms", "Crystals", "Blockchain ordered phase"]
+        }
+      },
+      "m2:perspective": "territory",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "F → I → D",
+        "role": "Measure observable phenomenon",
+        "status": "IMMUTABLE"
+      },
+      "m2:feynmanNote": "Dissipation equations are time-reversible. Irreversibility is NOT intrinsic to Dissipation — it emerges from the Entropy it produces. Entropy is the quantity that breaks time-reversal symmetry at the macroscopic level.",
+      "m2:reconciliationNote": "v6.5.0 noted 'Coherence^op = Entropy' — INCORRECT. Correct relations: Coherence^op = Incoherence (structural dual); Entropy^op = Negentropy (thermodynamic dual). Incoherence →[Dissipation]→ Entropy is a causal morphism, not a categorical duality.",
+      "m2:generativeChain": "Dissipation(F⊗D) →produces→ Entropy(F⊗I⊗D) →[Memory]→ Inertia →[max]→ AbsorbingState",
+      "m2:hasExample": [
+        "Thermodynamic entropy: S = kB·ln(Ω) — Boltzmann",
+        "Information entropy: H = -Σ p·log(p) — Shannon",
+        "Blockchain immutability: ΔF(z) = z·kBTeff·ln(p/q) — Ranaora & Yii 2026",
+        "Heat death of universe (max Entropy)",
+        "Cellular negentropy: living organisms maintain local order via exergy input"
+      ],
+      "m2:distinctFrom": {
+        "m2:Dissipation": "Dissipation (F⊗D) is the time-reversible MECHANISM; Entropy (F⊗I⊗D) is the irreversibility MEASURE it produces",
+        "m2:Coherence": "Coherence (A⊗S⊗I⊗R⊗O) is structural/perceptual alignment; Entropy is thermodynamic disorder. Related causally: Incoherence→Entropy via Dissipation",
+        "m2:Information": "Information (pure I) is content; Entropy is the measure of missing information / disorder in a flow"
+      },
+      "m3:semanticSignature": "degrading_flow + disorder_measure + irreversibility_via_feynman"
+    },
+    {
+      "@id": "m2:Stase",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "rdfs:label": "Stase",
+      "rdfs:comment": "Fundamental ground state of a system where flow is suspended (F=0) but Structure and Attractor are fully preserved intact. Stase is NECESSARILY REVERSIBLE — this reversibility is structurally encoded by the ABSENCE of D in the tensor (a-temporal state). Stase is 'a system waiting for itself': Potentialization is suspended but not destroyed. Distinguished from Absorbing State by reversibility: Stase can be re-activated via Potentialization; Absorbing State cannot (sealed by Entropy).",
+      "m2:hasFamily": "m2:Structural",
+      "m2:hasTensorFormula": "S ⊗ A",
+      "m2:hasTensorFormulaTeX": "S \\otimes A",
+      "m2:hasTensorFormulaASCII": "S (x) A",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Structure",
+        "m3:eagle_eye:Attractor"
+      ],
+      "m2:hasEpistemicGap": 0.2,
+      "m2:hasPolarity": "neutral",
+      "m2:perspective": "territory",
+      "m2:m3Note": "F=0 is valid per revised M3 axiom (F≥0). Stase is the canonical F=0 state. Absence of D in tensor guarantees reversibility by construction — no temporal sealing possible.",
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "S → A",
+        "role": "Measure observable phenomenon",
+        "status": "IMMUTABLE"
+      },
+      "m2:hasExample": [
+        "Tardigrade cryptobiosis — suspended animation (biology)",
+        "Bacterial spore — dormancy (microbiology)",
+        "2000-year-old viable seed (botany)",
+        "Quantum ground state |0⟩ (physics)",
+        "Suspended VM / thread snapshot (computing)",
+        "Frozen capital reserve (economics)",
+        "Quiescent ecosystem under ice (ecology)"
+      ],
+      "m2:distinctFrom": {
+        "m2:AbsorbingState": "Absorbing State = Stase sealed by Entropy (irréversible); Stase = F=0 with intact Potentialization potential (reversible)",
+        "m2:Homeostasis": "Homeostasis (A⊗S⊗F) maintains a stable state via active flow regulation; Stase has F=0 (no active flow)",
+        "m2:State": "State (S⊗A) is any instantaneous configuration; Stase specifically implies F=0 (flow suspension) as constitutive property"
+      },
+      "m3:semanticSignature": "structure_preserved + attractor_maintained + flow_suspended_reversibly"
+    },
+    {
+      "@id": "m2:Coherence",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "rdfs:label": "Coherence (Coherence/Incoherence)",
+      "rdfs:comment": "Property of a system whose elements are aligned toward a common attractor (A), structurally continuous (S), and informationally compatible (I) — AND representable as such (R) AND perceptible as such (O). Coherence may be factual (Territory: A⊗S⊗I) or merely perceived (Map: R⊗O) without being factual. This bicephalous nature (Eagle Eye + Sphinx Eye) is constitutive: coherence can be real without being perceived, or perceived without being real. Incoherence is the local rupture of this alignment — the precursor of Topological Defects.",
+      "m2:hasFamily": "m2:Structural",
+      "m2:hasTensorFormula": "A ⊗ S ⊗ I ⊗ R ⊗ O",
+      "m2:hasTensorFormulaTeX": "A \\otimes S \\otimes I \\otimes R \\otimes O",
+      "m2:hasTensorFormulaASCII": "A (x) S (x) I (x) R (x) O",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Attractor",
+        "m3:eagle_eye:Structure",
+        "m3:eagle_eye:Information",
+        "m3:sphinx_eye:Representability",
+        "m3:sphinx_eye:Observability"
+      ],
+      "m2:hasEpistemicGap": 0.25,
+      "m2:hasPolarity": "dual",
+      "m2:shortName": "Coherence",
+      "m2:fullName": "Coherence (Incoherence)",
+      "m2:perspective": "dual",
+      "m2:dualAspects": {
+        "positiveAspect": {
+          "name": "Coherence",
+          "comment": "Global alignment — θ(x) continuous, A⊗S⊗I aligned, R⊗O confirms it",
+          "examples": ["Laser coherence", "Network consensus", "Scientific paradigm"]
+        },
+        "negativeAspect": {
+          "name": "Incoherence",
+          "comment": "Local rupture of continuity — singularity in the order parameter field",
+          "examples": ["Fork in blockchain", "Contradiction in logic", "Neural desynchronization"]
+        }
+      },
+      "m2:quaternaryRegimes": {
+        "description": "4 regimes from combination of Territory (A⊗S⊗I) and Map (R⊗O) coherence",
+        "truthCoherent":     "A⊗S⊗I strong + R⊗O strong → factual AND perceived coherence (science, verified fact)",
+        "realityUnperceived": "A⊗S⊗I strong + R⊗O weak  → real coherence not perceived (hidden order)",
+        "illusion":           "A⊗S⊗I weak  + R⊗O strong → perceived coherence without factual basis (ideology, conspiracy)",
+        "totalChaos":         "A⊗S⊗I weak  + R⊗O weak  → no coherence anywhere (pure noise)"
+      },
+      "m2:eagleView": {
+        "basis": "ASFID",
+        "formula": "A → S → I",
+        "role": "Measure territorial coherence",
+        "status": "IMMUTABLE"
+      },
+      "m2:sphinxView": {
+        "formulaPrimary": {
+          "basis": "REVOI",
+          "formula": "R ⊗ O",
+          "role": "Evaluate perceived/represented coherence (Map quality)",
+          "status": "PROPOSITION (validation in progress)"
+        }
+      },
+      "m2:reconciliationNote": "v6.5.0 incorrectly noted 'Coherence^op = Entropy'. Correct: Coherence^op = Incoherence (internal dual). Entropy^op = Negentropy. Incoherence →[Dissipation]→ Entropy is a causal morphism, not a categorical duality.",
+      "m2:hasExample": [
+        "Laser: photons in phase (physics)",
+        "Blockchain consensus: nodes aligned on canonical chain (distributed systems)",
+        "Scientific paradigm: community aligned on framework (epistemology)",
+        "Conspiracy theory: perceived coherent but factually incoherent (illusion regime)",
+        "Lucid dream: internally coherent but not territorial (map coherence)",
+        "Neural binding: synchrony creating unified percept (neuroscience)",
+        "Quantum coherence vs decoherence (quantum physics)"
+      ],
+      "m2:distinctFrom": {
+        "m2:Alignment": "Alignment (I⊗A⊗S) is the active process of reducing discrepancy; Coherence is the resulting state of alignment achieved",
+        "m2:Homeostasis": "Homeostasis (A⊗S⊗F) maintains stable state via flow; Coherence describes structural/informational alignment (F absent)",
+        "m2:Entropy": "Entropy (F⊗I⊗D) measures thermodynamic disorder; Coherence measures structural/perceptual alignment. Incoherence →[Dissipation]→ Entropy (causal, not dual)"
+      },
+      "m3:semanticSignature": "attractor_alignment + structural_continuity + informational_compatibility + representable + observable"
+    },
+    {
+      "@id": "m2:Inertia",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
+      "rdfs:label": "Inertia",
+      "rdfs:comment": "Structural resistance to state reversal, emerging from temporal integration of accumulated Entropy. Thermodynamic memory: the more Entropy a system has produced, the greater its resistance to inversion. Inertia = Memory(Entropy) = ∫(F⊗I⊗D)dτ. Instance blockchain: M_eff^(phen) = S_PoW/e_ref = ∫Pnet·dt/e_ref.",
+      "m2:hasFamily": "m2:Combo",
+      "m2:hasComboComponents": [
+        {"@id": "m2:Memory", "role": "temporal integration operator"},
+        {"@id": "m2:Entropy", "role": "accumulated irreversibility"}
+      ],
+      "m2:hasTensorFormula": "S ⊗ F ⊗ I ⊗ D",
+      "m2:comboFormula": "⊗⇒(Memory, Entropy)",
+      "m2:comboExpansion": "∫(D−F)dτ ⊗ (F⊗I⊗D) = S⊗F⊗I⊗D",
+      "m2:hasTensorFormulaTeX": "S \\otimes F \\otimes I \\otimes D",
+      "m2:hasTensorFormulaASCII": "S (x) F (x) I (x) D",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Structure",
+        "m3:eagle_eye:Flow",
+        "m3:eagle_eye:Information",
+        "m3:eagle_eye:Dynamics"
+      ],
+      "m2:hasEpistemicGap": 0.3,
+      "m2:hasPolarity": "neutral",
+      "m2:perspective": "territory",
+      "m2:hasExample": [
+        "Blockchain: ΔF(z)=z·kBTeff·ln(p/q) — barrier grows with PoW history (Ranaora & Yii 2026)",
+        "Newtonian mechanics: p=∫F·dt (accumulated momentum)",
+        "Epigenetics: reprogramming cost grows with differentiation history (Yamanaka)",
+        "Path dependency: institutional lock-in (North — economics)",
+        "LTP: memory consolidation resistance to erasure (neuroscience)",
+        "Geological hysteresis: energy to invert stratigraphy"
+      ],
+      "m2:distinctFrom": {
+        "m2:Memory": "Memory (∫(D-F)dτ) stores any past state; Inertia specifically integrates Entropy — thermodynamic resistance, not informational retention",
+        "m2:Constraint": "Constraint (S⊗F) bounds accessible states statically; Inertia resists trajectory reversal dynamically and historically",
+        "m2:Dissipation": "Dissipation is the instantaneous mechanism; Inertia is its temporally accumulated structural effect"
+      },
+      "m3:semanticSignature": "thermodynamic_memory + accumulated_entropy + structural_resistance_to_reversal"
+    },
+    {
+      "@id": "m2:Potentialization",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
+      "rdfs:label": "Potentialization (Potentialization/F-Depletion)",
+      "rdfs:comment": "Bidirectional transition between the latent mode (F_potential, F=0) and the active mode (F_active) of a flow. Potentialization mobilizes a reserve into effective flux; F-Depletion suspends an active flux into latent reserve or Stase. Resolves the 'Category 3 tension': M2 concepts containing F_potential (Resource, Storage, Hub, Stateful, Environment) represent systems in suspended Potentialization state.",
+      "m2:hasFamily": "m2:Combo",
+      "m2:hasComboComponents": [
+        {"@id": "m2:Activation", "role": "enabling/blocking operator"},
+        {"@id": "m2:Process", "role": "temporal unfolding of flux mobilization"}
+      ],
+      "m2:hasTensorFormula": "A ⊗ D ⊗ F",
+      "m2:comboFormula": "⊗⇒(Activation, Process)",
+      "m2:comboExpansion": "(A⊗D) ⊗ (D⊗F) = A⊗D⊗F",
+      "m2:hasTensorFormulaTeX": "A \\otimes D \\otimes F",
+      "m2:hasTensorFormulaASCII": "A (x) D (x) F",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Attractor",
+        "m3:eagle_eye:Dynamics",
+        "m3:eagle_eye:Flow"
+      ],
+      "m2:hasEpistemicGap": 0.25,
+      "m2:hasPolarity": "dual",
+      "m2:shortName": "Potentialization",
+      "m2:fullName": "Potentialization (F-Depletion)",
+      "m2:dualAspects": {
+        "positiveAspect": {
+          "name": "Potentialization",
+          "comment": "F=0 → F_active: mobilization, awakening, activation of reserve",
+          "examples": ["Seed germination", "Capital investment", "Thread resume", "Cell differentiation trigger"]
+        },
+        "negativeAspect": {
+          "name": "F-Depletion",
+          "comment": "F_active → F=0: exhaustion, quiescence, suspension of flow",
+          "examples": ["Organism entering hibernation", "Capital freeze", "Thread suspension", "Cellular senescence"]
+        }
+      },
+      "m2:perspective": "territory",
+      "m2:hasExample": [
+        "Thermodynamics: exergy → work (Potentialization) / work → stored exergy (F-Depletion)",
+        "Biology: stem cell → differentiation trigger (Potentialization)",
+        "Economics: capital reserve → investment (Potentialization) / capital freeze (F-Depletion)",
+        "Chemistry: reactant activation energy crossing (Potentialization)",
+        "Computing: lazy evaluation → strict (Potentialization) / process suspend (F-Depletion)",
+        "Neuroscience: LTM → working memory (Potentialization)"
+      ],
+      "m2:distinctFrom": {
+        "m2:Activation": "Activation (A⊗D) enables/blocks processes reversibly; Potentialization specifically governs the F=0↔F_active transition",
+        "m2:Process": "Process (D⊗F) is a generic temporal sequence; Potentialization focuses on the mode transition of F itself"
+      },
+      "m3:semanticSignature": "flow_mode_transition + attractor_directed + dynamic_mobilization"
+    },
+    {
+      "@id": "m2:AbsorbingState",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
+      "rdfs:label": "Absorbing State",
+      "rdfs:comment": "Stase irreversibly sealed by Entropy production. Terminal state from which Potentialization is structurally impossible — the Entropy produced has closed the return path permanently. Distinct from Stase (reversible, D absent) by the presence of Entropy (F⊗I⊗D) which introduces irreversible temporal sealing. F=0 is permanent, not merely suspended. Relation to TSCG axiom: Absorbing State is the limit case where F=0 AND Potentialization=impossible.",
+      "m2:hasFamily": "m2:Combo",
+      "m2:hasComboComponents": [
+        {"@id": "m2:Stase", "role": "F=0 ground state (reversible base)"},
+        {"@id": "m2:Entropy", "role": "irreversible sealing operator"}
+      ],
+      "m2:hasTensorFormula": "S ⊗ A ⊗ F ⊗ I ⊗ D",
+      "m2:comboFormula": "⊗⇒(Stase, Entropy)",
+      "m2:comboExpansion": "(S⊗A) ⊗ (F⊗I⊗D) = S⊗A⊗F⊗I⊗D",
+      "m2:hasTensorFormulaTeX": "S \\otimes A \\otimes F \\otimes I \\otimes D",
+      "m2:hasTensorFormulaASCII": "S (x) A (x) F (x) I (x) D",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Structure",
+        "m3:eagle_eye:Attractor",
+        "m3:eagle_eye:Flow",
+        "m3:eagle_eye:Information",
+        "m3:eagle_eye:Dynamics"
+      ],
+      "m2:hasEpistemicGap": 0.2,
+      "m2:hasPolarity": "neutral",
+      "m2:perspective": "territory",
+      "m2:hasExample": [
+        "Species extinction — irreversible, ¬Potentialization (ecology)",
+        "51% attack total network collapse — blockchain absorbed (distributed systems)",
+        "Apoptosis: programmed irreversible cell death (biology)",
+        "System fatal crash / stack overflow (computing)",
+        "Bankruptcy with no recovery path (economics)",
+        "Thermodynamic heat death — F=0 permanent (physics)"
+      ],
+      "m2:distinctFrom": {
+        "m2:Stase": "Stase (S⊗A) has F=0 reversible (D absent — a-temporal); Absorbing State has F=0 sealed by Entropy (D present via Entropy component — temporal sealing)",
+        "m2:Attractor": "Attractor admits reversible basin trajectories; Absorbing State is strictly unidirectional (no return trajectory possible)",
+        "m2:Constraint": "Constraint bounds accessible states; Absorbing State permanently forecloses all states except the terminal one"
+      },
+      "m3:semanticSignature": "terminal_stase + entropy_sealed + potentialization_impossible"
+    },
+    {
+      "@id": "m2:TopologicalDefect",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
+      "rdfs:label": "Topological Defect",
+      "rdfs:comment": "Localized Incoherence whose singularity is protected by a discrete topological invariant (n ∈ ℤ) — not eliminable by continuous deformation of the surrounding field. The defect is LOCAL but its invariant is a GLOBAL property of the field: this local↔global tension is constitutive and irreducible. Stability arises not from energy minimization but from topological protection. Key: the order parameter field is undefined at the defect core.",
+      "m2:hasFamily": "m2:Combo",
+      "m2:hasComboComponents": [
+        {"@id": "m2:Coherence", "role": "Incoherence pole — local rupture of alignment"},
+        {"@id": "m2:Invariant", "role": "discrete topological invariant protecting stability"}
+      ],
+      "m2:hasTensorFormula": "S ⊗ A ⊗ I ⊗ R ⊗ O",
+      "m2:comboFormula": "⊗⇒(Incoherence, Invariant)",
+      "m2:comboExpansion": "¬(A⊗S⊗I⊗R⊗O) ∧ (S⊗A) → S⊗A⊗I⊗R⊗O",
+      "m2:hasTensorFormulaTeX": "S \\otimes A \\otimes I \\otimes R \\otimes O",
+      "m2:hasTensorFormulaASCII": "S (x) A (x) I (x) R (x) O",
+      "m2:hasDominantM3": [
+        "m3:eagle_eye:Structure",
+        "m3:eagle_eye:Attractor",
+        "m3:eagle_eye:Information",
+        "m3:sphinx_eye:Representability",
+        "m3:sphinx_eye:Observability"
+      ],
+      "m2:hasEpistemicGap": 0.3,
+      "m2:hasPolarity": "neutral",
+      "m2:perspective": "dual",
+      "m2:topologicalInvariant": "winding number n ∈ ℤ (or charge, index) — discrete, conserved, non-zero at defect core",
+      "m2:hasExample": [
+        "Abrikosov vortex in type-II superconductor (condensed matter)",
+        "Crystal dislocation — edge/screw (materials science)",
+        "Liquid crystal disclination line (soft matter)",
+        "Cosmic string / magnetic monopole (cosmology)",
+        "Persistent fork in P2P blockchain network — vortex KT (distributed systems, Ranaora & Yii 2026)",
+        "Phase singularity in collective neural oscillations (neuroscience)",
+        "Morphogenetic singularity in cell orientation fields (biology)"
+      ],
+      "m2:distinctFrom": {
+        "m2:Coherence": "Coherence is the global ordered state; Topological Defect is a localized incoherence within it, stable via topological protection",
+        "m2:Invariant": "Invariant (S⊗A) is a preserved property under transformation; Topological Defect is a singularity CARRYING a discrete invariant — not just preserving one",
+        "m2:Bifurcation": "Bifurcation is a global state transition; Topological Defect is a localized persistent singularity in an otherwise ordered field"
+      },
+      "m3:semanticSignature": "local_incoherence + discrete_topological_invariant + globally_protected_stability"
     }
   ]
 }

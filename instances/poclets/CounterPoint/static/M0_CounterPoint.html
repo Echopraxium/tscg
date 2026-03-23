@@ -35,8 +35,15 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);
 }
 
 /* ── Header ── */
-#header{grid-area:header;display:flex;align-items:center;gap:12px;padding:0 16px;
-  background:var(--bg-panel);border-bottom:1px solid var(--border);}
+#header, header#header {
+  grid-area: header;
+  grid-row: 1; grid-column: 1 / -1;
+  display: flex; align-items: center;
+  height: var(--header-h);
+  padding: 0 16px; gap: 12px;
+  background: var(--bg-panel); border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
 .tscg-logo{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--eagle);text-transform:uppercase;flex-shrink:0;}
 .sep{color:var(--border2);font-size:16px;}
 .poclet-name{font-size:14px;font-weight:600;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -150,14 +157,38 @@ canvas#pianoRoll{display:block;}
   cursor:pointer;outline:none;
 }
 .instr-select select:hover{border-color:var(--border2);}
-/* ── Home button ── */
-#btn-home{display:inline-flex;align-items:center;background:none;border:none;
-  cursor:pointer;padding:4px 6px;opacity:.85;transition:opacity .15s;
-  text-decoration:none;flex-shrink:0;}
-#btn-home:hover{opacity:1;}
+/* ── Home button — SVG icon, visited-proof ── */
+#btn-home,
+#btn-home:link,
+#btn-home:visited,
+#btn-home:hover,
+#btn-home:active {
+  display: inline-flex;
+  align-items: center;
+  background: none !important;
+  border: none !important;
+  cursor: pointer;
+  padding: 4px 6px;
+  margin-right: 4px;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+  text-decoration: none !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  color: inherit !important;
+}
+#btn-home:hover { opacity: 1 !important; }
+#btn-home path, #btn-home:visited path { fill: #ffffff !important; }
 /* ── Controls ── */
-#controls{grid-area:controls;display:flex;align-items:center;gap:10px;padding:0 16px;
-  background:var(--bg-panel);border-top:1px solid var(--border);}
+#controls {
+  grid-area: controls;
+  grid-row: 3; grid-column: 1 / -1;
+  display: flex; align-items: center;
+  height: var(--controls-h);
+  gap: 10px; padding: 0 16px;
+  background: var(--bg-panel); border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
 .ctrl-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;
   background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
   color:var(--text-dim);font-size:12px;font-family:var(--font);cursor:pointer;transition:background .15s,border-color .15s;}
@@ -179,11 +210,14 @@ canvas#pianoRoll{display:block;}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
 ::-webkit-scrollbar-thumb:hover{background:var(--muted);}
 </style>
+<script src="WebAudioFontPlayer.js"></script>
+  <link rel="icon" href="data:,">
 </head>
 <body>
 <div id="app">
 
 <header id="header">
+  <a id="btn-home" href="https://echopraxium.github.io/tscg/" title="Back to Poclet Gallery" target="_self"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></a>
   <span class="tscg-logo">TSCG</span>
   <span class="sep">›</span>
   <span class="poclet-name">M0_Counterpoint — Constrained Autonomous Voices &amp; Emergent Harmonic Coherence</span>
@@ -193,6 +227,7 @@ canvas#pianoRoll{display:block;}
     <span class="chip type">Poclet</span>
   </div>
 </header>
+</div>
 
 <div id="explorer">
   <div class="expl-header">
@@ -301,7 +336,6 @@ canvas#pianoRoll{display:block;}
 </div>
 
 <div id="controls">
-  <a id="btn-home" href="https://echopraxium.github.io/tscg/" title="Back to Poclet Gallery" target="_self"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></a>
   <div class="ctrl-sep"></div>
   <button class="ctrl-btn primary" id="btn-play" disabled>▶ Play</button>
   <button class="ctrl-btn danger"   id="btn-stop" disabled>■ Stop</button>
@@ -309,12 +343,15 @@ canvas#pianoRoll{display:block;}
   <div class="instr-select">
     <label>🎹</label>
     <select id="instr-select">
-      <option value="organ"   selected>Organ</option>
-      <option value="piano"          >Piano</option>
-      <option value="flute"          >Flute</option>
-      <option value="strings"        >Strings</option>
-      <option value="harpsichord"    >Harpsichord</option>
+      <option value="organ"       selected>Organ</option>
+      <option value="piano"              >Piano</option>
+      <option value="harpsichord"        >Harpsichord</option>
+      <option value="flute"              >Flute</option>
+      <option value="strings"            >Strings</option>
+      <option value="choir"              >Choir</option>
+      <option value="trumpet"            >Trumpet</option>
     </select>
+    <span id="instr-status" style="font-size:10px;color:var(--muted)"></span>
   </div>
   <div class="ctrl-sep"></div>
   <div class="time-bar-wrap">
@@ -591,170 +628,122 @@ function updateASFIDCard(ev){
   lbl.style.color='var(--text-dim)';lbl.textContent=ev.label;
 }
 
-// ── Audio Engine — Pure Web Audio API, multi-instrument ──────────────────
-let actx = null;
-let masterGain = null;
-let startWallTime = 0;
-let transportSec = 0;
-let scheduledNodes = [];
-
-// ── Instrument presets ────────────────────────────────────────────────────
-const INSTRUMENTS = {
-  organ: {
-    // Triangle fundamental + slight 3rd harmonic → warm organ
-    build(hz, gainNode, t0, dur) {
-      const osc1 = actx.createOscillator();
-      const osc2 = actx.createOscillator();
-      const mix  = actx.createGain();
-      osc1.type = 'triangle'; osc1.frequency.value = hz;
-      osc2.type = 'triangle'; osc2.frequency.value = hz * 3;
-      const g2 = actx.createGain(); g2.gain.value = 0.15;
-      osc1.connect(mix); osc2.connect(g2); g2.connect(mix);
-      mix.connect(gainNode);
-      // Organ: instant on, instant off
-      gainNode.gain.setValueAtTime(0, t0);
-      gainNode.gain.linearRampToValueAtTime(1, t0 + 0.01);
-      gainNode.gain.setValueAtTime(1, t0 + dur * 0.9);
-      gainNode.gain.linearRampToValueAtTime(0, t0 + dur + 0.02);
-      [osc1, osc2].forEach(o => { o.start(t0); o.stop(t0 + dur + 0.1); });
-      return [osc1, osc2];
-    }
-  },
-  piano: {
-    // Sine + weak 2nd harmonic, sharp decay → piano-like
-    build(hz, gainNode, t0, dur) {
-      const osc1 = actx.createOscillator();
-      const osc2 = actx.createOscillator();
-      osc1.type = 'sine'; osc1.frequency.value = hz;
-      osc2.type = 'sine'; osc2.frequency.value = hz * 2;
-      const g2 = actx.createGain(); g2.gain.value = 0.25;
-      osc1.connect(gainNode); osc2.connect(g2); g2.connect(gainNode);
-      // Piano: fast attack, exponential decay
-      gainNode.gain.setValueAtTime(0, t0);
-      gainNode.gain.linearRampToValueAtTime(1, t0 + 0.008);
-      gainNode.gain.exponentialRampToValueAtTime(0.3, t0 + 0.2);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, t0 + Math.min(dur, 1.5));
-      gainNode.gain.linearRampToValueAtTime(0, t0 + Math.min(dur, 1.5) + 0.05);
-      [osc1, osc2].forEach(o => { o.start(t0); o.stop(t0 + Math.min(dur,1.5) + 0.1); });
-      return [osc1, osc2];
-    }
-  },
-  flute: {
-    // Pure sine, slow attack → flute
-    build(hz, gainNode, t0, dur) {
-      const osc = actx.createOscillator();
-      osc.type = 'sine'; osc.frequency.value = hz;
-      osc.connect(gainNode);
-      gainNode.gain.setValueAtTime(0, t0);
-      gainNode.gain.linearRampToValueAtTime(1, t0 + 0.08);
-      gainNode.gain.setValueAtTime(1, t0 + dur * 0.85);
-      gainNode.gain.linearRampToValueAtTime(0, t0 + dur + 0.05);
-      osc.start(t0); osc.stop(t0 + dur + 0.1);
-      return [osc];
-    }
-  },
-  strings: {
-    // Sawtooth with slow attack + vibrato → strings
-    build(hz, gainNode, t0, dur) {
-      const osc = actx.createOscillator();
-      const lfo = actx.createOscillator();
-      const lfoG = actx.createGain();
-      osc.type = 'sawtooth'; osc.frequency.value = hz;
-      lfo.type = 'sine'; lfo.frequency.value = 5.5;
-      lfoG.gain.value = hz * 0.012;  // ~1.2% vibrato depth
-      lfo.connect(lfoG); lfoG.connect(osc.frequency);
-      osc.connect(gainNode);
-      gainNode.gain.setValueAtTime(0, t0);
-      gainNode.gain.linearRampToValueAtTime(1, t0 + 0.18);
-      gainNode.gain.setValueAtTime(1, t0 + dur * 0.8);
-      gainNode.gain.linearRampToValueAtTime(0, t0 + dur + 0.12);
-      [osc, lfo].forEach(o => { o.start(t0); o.stop(t0 + dur + 0.2); });
-      return [osc, lfo];
-    }
-  },
-  harpsichord: {
-    // Sawtooth, very fast decay + harmonic shimmer → harpsichord
-    build(hz, gainNode, t0, dur) {
-      const osc1 = actx.createOscillator();
-      const osc2 = actx.createOscillator();
-      osc1.type = 'sawtooth'; osc1.frequency.value = hz;
-      osc2.type = 'square';   osc2.frequency.value = hz * 2;
-      const g2 = actx.createGain(); g2.gain.value = 0.1;
-      osc1.connect(gainNode); osc2.connect(g2); g2.connect(gainNode);
-      gainNode.gain.setValueAtTime(0, t0);
-      gainNode.gain.linearRampToValueAtTime(1, t0 + 0.005);
-      gainNode.gain.exponentialRampToValueAtTime(0.5, t0 + 0.05);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, t0 + Math.min(dur, 0.8));
-      gainNode.gain.linearRampToValueAtTime(0, t0 + Math.min(dur, 0.8) + 0.02);
-      [osc1, osc2].forEach(o => { o.start(t0); o.stop(t0 + Math.min(dur,0.8) + 0.1); });
-      return [osc1, osc2];
-    }
-  }
+// ── Audio Engine — WebAudioFont (real instrument samples) ────────────────
+// Instrument definitions: WebAudioFont sample files
+// Each file defines a global _tone_XXXX variable with audio sample data
+const INSTR_DEFS = {
+  organ:       { label:'Organ',       url:'sounds/0190_GeneralUserGS_sf2_file.js',  varName:'_tone_0190_GeneralUserGS_sf2_file' },
+  piano:       { label:'Piano',       url:'sounds/0000_JCLive_sf2_file.js',         varName:'_tone_0000_JCLive_sf2_file' },
+  harpsichord: { label:'Harpsichord', url:'sounds/0060_GeneralUserGS_sf2_file.js',  varName:'_tone_0060_GeneralUserGS_sf2_file' },
+  flute:       { label:'Flute',       url:'sounds/0730_JCLive_sf2_file.js',         varName:'_tone_0730_JCLive_sf2_file' },
+  strings:     { label:'Strings',     url:'sounds/0490_GeneralUserGS_sf2_file.js',  varName:'_tone_0490_GeneralUserGS_sf2_file' },
+  choir:       { label:'Choir',       url:'sounds/0520_GeneralUserGS_sf2_file.js',  varName:'_tone_0520_GeneralUserGS_sf2_file' },
+  trumpet:     { label:'Trumpet',     url:'sounds/0560_GeneralUserGS_sf2_file.js',  varName:'_tone_0560_GeneralUserGS_sf2_file' }
 };
 
-function currentInstrument() {
-  const sel = document.getElementById('instr-select');
-  return INSTRUMENTS[sel ? sel.value : 'organ'] || INSTRUMENTS.organ;
-}
+let actx       = null;
+let wafPlayer  = null;
+let instrCache = {};       // key -> loaded sample variable
+let startWallTime = 0;
+let transportSec  = 0;
+let scheduledEnvelopes = [];
+let simTimer = null;
 
-function dbToGain(db) { return Math.pow(10, db / 20); }
-
-function noteToHz(name) {
+function noteNameToMidi(name) {
   const M={'C':0,'D':2,'E':4,'F':5,'G':7,'A':9,'B':11};
   const acc={'b':-1,'#':1};
   const m = name.match(/^([A-G])([b#]?)(-?\d)$/);
-  if(!m) return 440;
+  if(!m) return 60;
   const semi = M[m[1]] + (acc[m[2]]||0);
   const oct  = parseInt(m[3]);
-  return 440 * Math.pow(2, ((oct+1)*12 + semi - 69) / 12);
+  return (oct+1)*12 + semi;
 }
 
-function clearScheduled() {
-  scheduledNodes.forEach(n => { try{n.stop(0);}catch(e){} });
-  scheduledNodes = [];
+function setInstrStatus(msg) {
+  const el = document.getElementById('instr-status');
+  if(el) el.textContent = msg;
 }
 
 async function ensureAudio() {
   if(audioOK) return;
   actx = new (window.AudioContext || window.webkitAudioContext)();
-  masterGain = actx.createGain();
-  masterGain.gain.value = 0.85;
-  masterGain.connect(actx.destination);
+  wafPlayer = new WebAudioFontPlayer();
   audioOK = true;
 }
 
-function scheduleVoice(voice, instrFn, fromSec) {
-  const B = 60 / currentEx.bpm;
-  voice.notes.forEach(([name, sb, db]) => {
-    const noteSec = sb * B;
-    if(noteSec < fromSec - 0.05) return;
-    const t0  = startWallTime + noteSec;
-    if(t0 < actx.currentTime - 0.05) return;
-    const hz  = noteToHz(name);
-    const dur = db * B * 0.87;
-    const vol = dbToGain(voice.vol) * 0.9;
-    const gainNode = actx.createGain();
-    gainNode.gain.value = vol;
-    gainNode.connect(masterGain);
-    const oscs = instrFn(hz, gainNode, t0, dur);
-    oscs.forEach(o => scheduledNodes.push(o));
-    scheduledNodes.push({ stop: t => { try{gainNode.disconnect();}catch(e){} } });
+async function loadInstrument(key) {
+  if(instrCache[key]) return instrCache[key];
+  const def = INSTR_DEFS[key];
+  if(!def) return null;
+  // Already loaded by a previous call (global var exists)?
+  if(window[def.varName]) {
+    wafPlayer.adjustPreset(actx, window[def.varName]);
+    instrCache[key] = window[def.varName];
+    return instrCache[key];
+  }
+  setInstrStatus('⏳ Loading ' + def.label + '…');
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = def.url;
+    script.onload = () => {
+      if(window[def.varName]) {
+        wafPlayer.adjustPreset(actx, window[def.varName]);
+        instrCache[key] = window[def.varName];
+        setInstrStatus('');
+        resolve(instrCache[key]);
+      } else {
+        setInstrStatus('⚠ Load failed');
+        reject(new Error('Variable not found: ' + def.varName));
+      }
+    };
+    script.onerror = () => { setInstrStatus('⚠ Load failed'); reject(new Error('Script load failed')); };
+    document.head.appendChild(script);
   });
 }
 
+function currentInstrKey() {
+  const sel = document.getElementById('instr-select');
+  return sel ? sel.value : 'organ';
+}
+
+function clearScheduled() {
+  scheduledEnvelopes.forEach(e => { try{ e.cancel(); }catch(ex){} });
+  scheduledEnvelopes = [];
+  if(simTimer) { clearTimeout(simTimer); simTimer = null; }
+}
+
 function scheduleAll(fromSec) {
-  const instr = currentInstrument();
   clearScheduled();
+  const key   = currentInstrKey();
+  const instr = instrCache[key];
+  if(!instr) return;
+  const B = 60 / currentEx.bpm;
   startWallTime = actx.currentTime - fromSec;
-  currentEx.voices.forEach(voice => scheduleVoice(voice, instr.build.bind(instr), fromSec));
+  currentEx.voices.forEach(voice => {
+    voice.notes.forEach(([name, sb, db]) => {
+      const noteSec = sb * B;
+      if(noteSec < fromSec - 0.05) return;
+      const when  = startWallTime + noteSec;
+      if(when < actx.currentTime - 0.05) return;
+      const midi  = noteNameToMidi(name);
+      const dur   = db * B * 0.9;
+      const vol   = Math.pow(10, voice.vol / 20) * 1.2;
+      try {
+        const env = wafPlayer.queueWaveTable(actx, actx.destination, instr, when, midi, dur, vol);
+        if(env) scheduledEnvelopes.push(env);
+      } catch(e) {}
+    });
+  });
+  // Auto-stop timer
+  const totalDur = currentEx.totalBeats * B;
+  const remaining = (totalDur - fromSec) * 1000 + 400;
+  simTimer = setTimeout(() => stopSim(), remaining);
 }
 
 function animate() {
   if(simState !== 'PLAYING') return;
   const elapsed = actx.currentTime - startWallTime;
   drawPlayhead(elapsed);
-  const totalDur = currentEx.totalBeats * 60 / currentEx.bpm;
-  if(elapsed >= totalDur + 0.3) { stopSim(); return; }
   rafId = requestAnimationFrame(animate);
 }
 
@@ -762,6 +751,12 @@ async function playSim() {
   if(!currentEx) return;
   await ensureAudio();
   if(actx.state === 'suspended') await actx.resume();
+  // Load instrument if needed
+  const key = currentInstrKey();
+  if(!instrCache[key]) {
+    try { await loadInstrument(key); }
+    catch(e) { console.warn('Instrument load failed, using organ fallback'); }
+  }
   const fromSec = (simState === 'PAUSED') ? transportSec : 0;
   scheduleAll(fromSec);
   simState = 'PLAYING';
@@ -784,21 +779,6 @@ function stopSim() {
   cancelAnimationFrame(rafId);
   document.getElementById('btn-play').textContent = '▶ Play';
   resetUI();
-}
-
-function resetUI(){
-  if(staticImg){document.getElementById('pianoRoll').getContext('2d').putImageData(staticImg,0,0);}
-  document.getElementById('time-fill').style.width='0%';
-  document.getElementById('time-lbl').textContent='0.0s';
-  document.getElementById('roll-scroll').scrollLeft=0;
-  document.querySelectorAll('.pole-seg').forEach(el=>el.classList.remove('pole-active'));
-  document.getElementById('asfid-card').style.borderLeftColor='var(--border)';
-  const ring=document.getElementById('asfid-ring');
-  ring.style.background='var(--bg-card)';ring.style.color='var(--border2)';ring.textContent='—';
-  document.getElementById('asfid-dim').style.color='var(--muted)';
-  document.getElementById('asfid-dim').textContent='Waiting';
-  document.getElementById('asfid-lbl').style.color='var(--border2)';
-  document.getElementById('asfid-lbl').textContent='Press Play to start';
 }
 
 // ── Controls ──────────────────────────────────────────────────
@@ -844,13 +824,25 @@ makeSplitter('split2','--sidebar-w',()=>document.getElementById('sidebar').getBo
 buildExplorer();
 selectExample('bwv578');
 window.addEventListener('resize',()=>drawRoll());
-// Restart playback when instrument changes
+// Load instrument on selection change
 document.getElementById('instr-select').addEventListener('change', async () => {
+  if(!audioOK) return;
+  const key = currentInstrKey();
+  if(!instrCache[key]) {
+    await loadInstrument(key).catch(e => console.warn(e));
+  }
   if(simState === 'PLAYING') {
     const pos = actx.currentTime - startWallTime;
     scheduleAll(pos);
   }
 });
+
+// Pre-load organ on first user interaction
+document.addEventListener('click', async () => {
+  if(audioOK && !instrCache['organ']) {
+    await loadInstrument('organ').catch(()=>{});
+  }
+}, {once: true});
 </script>
 </body>
 </html>
