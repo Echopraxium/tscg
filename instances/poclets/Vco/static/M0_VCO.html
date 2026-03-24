@@ -441,7 +441,7 @@ First M0 instantiation of <code>m2:Oscillator</code>, validating the GenericConc
     </div>
     <div class="ctrl-sep"></div>
     <!-- Audio — AudioContext created on first click ONLY -->
-    <button class="ctrl-btn" id="btn-audio">&#9675;&#8201;Audio</button>
+    <button class="ctrl-btn audio-on" id="btn-audio">&#9679;&#8201;Audio ON</button>
     <div class="status-indicator">
       <div class="status-dot" id="status-dot"></div>
       <span id="status-label">Ready</span>
@@ -463,7 +463,7 @@ const VCO = {
   amplitude: 0.50,
   fineCents: 0,
   waveform:  'sine',
-  audioOn:   false,
+  audioOn:   true,
 };
 
 const WF_COLORS = {
@@ -556,9 +556,8 @@ async function toggleAudio() {
   setAudioUI(VCO.audioOn);
 }
 
-/* Called once on first user gesture — starts audio automatically. */
+/* Starts audio — called at boot and from gesture fallback. */
 async function autoStartAudio() {
-  if (VCO.audioOn) return;
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     gainNode = audioCtx.createGain();
@@ -566,6 +565,7 @@ async function autoStartAudio() {
     gainNode.connect(audioCtx.destination);
   }
   try { await audioCtx.resume(); } catch(e) { console.warn('AudioContext resume:', e); }
+  if (audioCtx.state !== 'running') return; // still blocked — gesture fallback will retry
   VCO.audioOn = true;
   startOsc();
   setAudioUI(true);

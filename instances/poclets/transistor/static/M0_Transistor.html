@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSCG · BJT NPN / MOSFET NMOS — Operating Modes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Rajdhani:wght@500;600;700&display=swap');
+
+  :root {
+    --bg:          #0c0c12;
+    --panel-bg:    #16161e;
+    --border:      #37374b;
+    --text:        #dcdce6;
+    --dim:         #82829a;
+    --gold:        #ffc832;
+    --green-ok:    #50c878;
+    --red-warn:    #dc3c3c;
+    --c-cutoff:    #505070;
+    --c-active:    #4080ff;
+    --c-sat-bjt:   #ff8c00;
+    --c-triode:    #50c878;
+    --c-reverse:   #9040c0;
+    --ib-col:      #50d2d2;
+    --vce-col:     #ffaf2d;
+    --beta-col:    #c86eff;
+    --vgs-col:     #50c896;
+    --vds-col:     #ffaf2d;
+    --vth-col:     #ff6464;
+    --revoi-col:   #78b4ff;
+    --left-w:      292px;
+    --right-w:     228px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+  }
+
+  /* ── LAYOUT ──────────────────────────────────────────────────── */
+  #app {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  #left-panel {
+    width: var(--left-w);
+    min-width: var(--left-w);
+    background: var(--panel-bg);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0 0 8px 0;
+  }
+
+  #center-panel {
+    flex: 1;
+    background: #101018;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #right-panel {
+    width: var(--right-w);
+    min-width: var(--right-w);
+    background: var(--panel-bg);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 4px 0;
+    overflow: hidden;
+  }
+
+  /* ── LEFT PANEL ───────────────────────────────────────────────── */
+  #device-header {
+    padding: 10px 12px 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  #device-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+  }
+
+  #device-subtitle {
+    font-size: 10px;
+    color: var(--dim);
+    margin-top: 1px;
+  }
+
+  #controls-section {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+  }
+
+  /* Sliders */
+  .slider-group {
+    margin-bottom: 14px;
+  }
+  .slider-group:last-child { margin-bottom: 0; }
+
+  .slider-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  .slider-label { color: var(--text); font-size: 11px; }
+  .slider-value { font-size: 11px; font-weight: 600; }
+
+  .slider-track-wrap {
+    position: relative;
+    height: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #262634;
+    outline: none;
+    cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--thumb-col, #4080ff);
+    border: 1.5px solid rgba(255,255,255,0.6);
+    cursor: pointer;
+    box-shadow: 0 0 6px var(--thumb-col, #4080ff);
+  }
+  input[type=range]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--thumb-col, #4080ff);
+    border: 1.5px solid rgba(255,255,255,0.6);
+    cursor: pointer;
+  }
+
+  /* Schematic SVG area */
+  #schematic-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 0 2px;
+    border-bottom: 1px solid var(--border);
+    height: 120px;
+    flex-shrink: 0;
+  }
+
+  #schematic-svg {
+    width: 200px;
+    height: 110px;
+  }
+
+  /* Mode table */
+  #modes-section {
+    flex: 1;
+    padding: 6px 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .modes-hint {
+    font-size: 9px;
+    color: #64884e;
+    font-style: italic;
+  }
+
+  .mode-row {
+    border-radius: 5px;
+    padding: 5px 8px;
+    margin-bottom: 3px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: background 0.12s, border-color 0.12s;
+    position: relative;
+  }
+  .mode-row:hover { filter: brightness(1.25); }
+  .mode-row-label {
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Rajdhani', sans-serif;
+    letter-spacing: 0.3px;
+  }
+  .mode-row-cond {
+    font-size: 9.5px;
+    color: var(--dim);
+    margin-top: 1px;
+  }
+  .mode-badge {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    border-radius: 4px 0 0 4px;
+  }
+
+  /* ── CENTER PANEL ─────────────────────────────────────────────── */
+  #tabs-row {
+    display: flex;
+    gap: 6px;
+    padding: 6px 10px 4px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .tab-btn {
+    padding: 5px 22px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    background: transparent;
+    color: var(--dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.3px;
+  }
+  .tab-btn.active-bjt {
+    border-color: #3c78c8;
+    background: #1e2a3a;
+    color: var(--text);
+  }
+  .tab-btn.active-mos {
+    border-color: #3ca064;
+    background: #1a2a22;
+    color: var(--text);
+  }
+
+  #canvas-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    padding: 4px 10px 0;
+  }
+
+  #iv-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #legend-row {
+    display: flex;
+    gap: 14px;
+    padding: 3px 60px 2px;
+    flex-shrink: 0;
+  }
+  .legend-item {
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+  #warn-banner {
+    background: rgba(255,200,0,0.07);
+    border-top: 1px solid rgba(255,200,0,0.15);
+    padding: 4px 8px;
+    font-size: 9.5px;
+    color: #b4a032;
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── RIGHT PANEL ──────────────────────────────────────────────── */
+  .right-section {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .right-section:last-child { border-bottom: none; flex: 1; }
+
+  .panel-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 6px;
+    letter-spacing: 0.3px;
+  }
+  .panel-subtitle {
+    font-size: 9.5px;
+    color: var(--dim);
+    margin-top: -4px;
+    margin-bottom: 6px;
+  }
+
+  .score-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    gap: 6px;
+  }
+  .score-key {
+    font-size: 12px;
+    font-weight: 700;
+    width: 14px;
+    flex-shrink: 0;
+  }
+  .score-bar-wrap {
+    flex: 1;
+    height: 12px;
+    background: #262634;
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+  }
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.25s ease;
+  }
+  .score-bar-base {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 1.5px;
+    background: rgba(200,200,200,0.6);
+  }
+  .score-val {
+    font-size: 10px;
+    font-weight: 600;
+    width: 30px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .revoi-mean {
+    font-size: 10px;
+    color: var(--revoi-col);
+    margin-top: 3px;
+  }
+
+  /* Status */
+  #status-section {
+    flex: 1;
+    overflow: hidden;
+  }
+  .status-device { font-size: 11px; color: var(--gold); font-weight: 600; margin-bottom: 2px; }
+  .status-region { font-size: 12px; font-weight: 700; margin-bottom: 6px; font-family: 'Rajdhani', sans-serif; }
+  .status-val    { font-size: 11px; margin-bottom: 2px; }
+  .status-eq     { font-size: 9.5px; color: var(--dim); margin-top: 4px; line-height: 1.5; }
+  .status-meta   { font-size: 9.5px; color: var(--dim); margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ═══ LEFT PANEL ════════════════════════════════════════════════ -->
+  <div id="left-panel">
+
+    <div id="device-header">
+      <div id="device-title">⚡ <span id="lbl-device">BJT NPN</span></div>
+      <div id="device-subtitle">Domain: Electronics &nbsp;|&nbsp; ΔΘ = 0.01</div>
+    </div>
+
+    <div id="controls-section">
+      <div class="section-title">Parameter Controls</div>
+      <div id="slider-container"></div>
+    </div>
+
+    <div id="schematic-wrap">
+      <svg id="schematic-svg" viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+
+    <div id="modes-section">
+      <div class="modes-header">
+        <span class="section-title" style="margin-bottom:0">Operating Modes</span>
+        <span class="modes-hint">← click to apply</span>
+      </div>
+      <div id="mode-rows"></div>
+    </div>
+
+  </div><!-- /left-panel -->
+
+  <!-- ═══ CENTER PANEL ══════════════════════════════════════════════ -->
+  <div id="center-panel">
+
+    <div id="tabs-row">
+      <button class="tab-btn active-bjt" id="tab-bjt" onclick="setDevice(0)">BJT NPN</button>
+      <button class="tab-btn" id="tab-mos" onclick="setDevice(1)">MOSFET NMOS</button>
+    </div>
+
+    <div id="canvas-wrap">
+      <canvas id="iv-canvas"></canvas>
+    </div>
+
+    <div id="legend-row"></div>
+    <div id="warn-banner">
+      ⚠  'Saturation' means OPPOSITE things: &nbsp; BJT Sat. = switch ON (orange) &nbsp;|&nbsp; MOSFET Sat. = amplifier (blue)  —  BJT Active ↔ MOSFET Saturation (both amplifiers, both blue)
+    </div>
+
+  </div><!-- /center-panel -->
+
+  <!-- ═══ RIGHT PANEL ═══════════════════════════════════════════════ -->
+  <div id="right-panel">
+
+    <div class="right-section">
+      <div class="panel-title">ASFID</div>
+      <div class="panel-subtitle">Eagle Eye · Territory</div>
+      <div id="asfid-bars"></div>
+    </div>
+
+    <div class="right-section">
+      <div class="panel-title">REVOI</div>
+      <div class="panel-subtitle">Sphinx Eye · Map</div>
+      <div id="revoi-bars"></div>
+      <div class="revoi-mean" id="revoi-mean">mean = 0.86</div>
+    </div>
+
+    <div class="right-section" id="status-section">
+      <div class="panel-title">Status</div>
+      <div id="status-content"></div>
+    </div>
+
+  </div><!-- /right-panel -->
+
+</div><!-- /app -->
+
+<script>
+// ─────────────────────────────────────────────────────────────────────
+// Poclet data (from M0_Transistor.jsonld)
+// ─────────────────────────────────────────────────────────────────────
+const POCLET = {
+  label: 'BJT NPN + MOSFET NMOS',
+  domain: 'Electronics',
+  asfid: { A:0.70, S:0.90, F:0.95, I:0.85, D:0.80 },
+  revoi: { R:0.95, E:0.60, V:0.90, O:0.90, I:0.95 },
+  gap: 0.01
+};
+
+// ─────────────────────────────────────────────────────────────────────
+// Physics constants
+// ─────────────────────────────────────────────────────────────────────
+const VCE_SAT=0.2, VCE_MAX=20, IB_MAX=100, BETA_MIN=50, BETA_MAX=500;
+const IB_REFS=[10,20,30,40,60,80,100];
+const VGS_MAX=5, VDS_MAX=10, VTH_MIN=0.5, VTH_MAX=3.0, KN=1.5;
+const VGS_REFS=[1.0,1.5,2.0,2.5,3.0,3.5,4.0];
+
+function bjtIc(ib,vce,beta){
+  if(ib<1)return 0;
+  const ica=beta*ib/1000;
+  if(vce<VCE_SAT) return ica*(vce/VCE_SAT)*0.9;
+  return ica*(1+vce/80);
+}
+function bjtRegion(ib,vce){
+  if(ib<1) return 'Cutoff';
+  if(vce<VCE_SAT) return 'Saturation';
+  return 'Forward Active';
+}
+function mosfetId(vgs,vds,vth){
+  const vov=vgs-vth; if(vov<=0)return 0;
+  if(vds<vov) return KN*(vov*vds-0.5*vds*vds);
+  return 0.5*KN*vov*vov;
+}
+function mosfetRegion(vgs,vds,vth){
+  const vov=vgs-vth;
+  if(vov<=0) return 'Cutoff';
+  if(vds<vov) return 'Triode';
+  return 'Saturation';
+}
+
+function clamp(v,lo=0,hi=1){ return Math.max(lo,Math.min(hi,v)); }
+
+// ─────────────────────────────────────────────────────────────────────
+// Colors
+// ─────────────────────────────────────────────────────────────────────
+const C={
+  CUTOFF:'#505070', ACTIVE:'#4080ff', SAT_BJT:'#ff8c00',
+  TRIODE:'#50c878', REVERSE:'#9040c0',
+  IB:'#50d2d2', VCE:'#ffaf2d', BETA:'#c86eff',
+  VGS:'#50c896', VDS:'#ffaf2d', VTH:'#ff6464',
+  REVOI:'#78b4ff', TEXT:'#dcdce6', DIM:'#82829a', GOLD:'#ffc832'
+};
+const CURVE_PAL=['#ff6464','#ffa53c','#ffdc3c','#82dc82','#50c8dc','#7890ff','#c882ff'];
+
+function regionCol(r,dev){
+  if(dev===0){
+    return {Cutoff:C.CUTOFF,'Forward Active':C.ACTIVE,Saturation:C.SAT_BJT,'Reverse Active':C.REVERSE}[r]||C.CUTOFF;
+  }
+  return {Cutoff:C.CUTOFF,Triode:C.TRIODE,Saturation:C.ACTIVE}[r]||C.CUTOFF;
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Mode definitions
+// ─────────────────────────────────────────────────────────────────────
+const BJT_MODES=[
+  {lbl:'Cutoff',        col:C.CUTOFF,  cond:'V_BE < 0.6 V  –  I_C ≈ 0'},
+  {lbl:'Forward Active',col:C.ACTIVE,  cond:'V_BE≈0.7V, V_CE>0.2V  –  I_C=β·I_B'},
+  {lbl:'Saturation',    col:C.SAT_BJT, cond:'V_CE≈0.2V  –  fully ON, I_C max'},
+  {lbl:'Reverse Active',col:C.REVERSE, cond:'V_BC≈0.7V  –  low β, rare'},
+];
+const MOS_MODES=[
+  {lbl:'Cutoff',           col:C.CUTOFF,  cond:'V_GS < V_th  –  I_D = 0'},
+  {lbl:'Triode / Linear',  col:C.TRIODE,  cond:'V_DS < V_GS−V_th  –  V-ctrl resistor'},
+  {lbl:'Saturation (Amp)', col:C.ACTIVE,  cond:'V_DS ≥ V_GS−V_th  –  I_D = k_n/2·V_ov²'},
+];
+
+const BJT_PRESETS={
+  'Cutoff':         {ib:0,   vce:10, beta:150},
+  'Forward Active': {ib:40,  vce:5,  beta:150},
+  'Saturation':     {ib:80,  vce:0.1,beta:150},
+  'Reverse Active': {ib:0.5, vce:0.5,beta:20},
+};
+const MOS_PRESETS={
+  'Cutoff':           {vgs:0.3,vds:5,  vth:1},
+  'Triode':           {vgs:3,  vds:0.5,vth:1},
+  'Saturation':       {vgs:3,  vds:5,  vth:1},
+};
+
+// ─────────────────────────────────────────────────────────────────────
+// State
+// ─────────────────────────────────────────────────────────────────────
+let deviceIdx=0;
+let state={
+  ib:40, vce:5, beta:150,
+  vgs:2.5, vds:3, vth:1
+};
+
+// ─────────────────────────────────────────────────────────────────────
+// Sliders
+// ─────────────────────────────────────────────────────────────────────
+const SLIDER_DEFS=[
+  [
+    {id:'ib',  label:'Base Current (I_B)',         min:0,      max:100,   step:0.1,  unit:'μA', col:C.IB,   fmt:v=>`${v.toFixed(1)} μA`},
+    {id:'vce', label:'Coll-Emit Voltage (V_CE)',   min:0,      max:20,    step:0.01, unit:'V',  col:C.VCE,  fmt:v=>`${v.toFixed(2)} V`},
+    {id:'beta',label:'Current Gain (β)',           min:BETA_MIN,max:BETA_MAX,step:1, unit:'',   col:C.BETA, fmt:v=>`β = ${Math.round(v)}`},
+  ],
+  [
+    {id:'vgs', label:'Gate-Source Voltage (V_GS)', min:0,      max:5,     step:0.01, unit:'V',  col:C.VGS,  fmt:v=>`${v.toFixed(2)} V`},
+    {id:'vds', label:'Drain-Source Voltage (V_DS)',min:0,      max:10,    step:0.01, unit:'V',  col:C.VDS,  fmt:v=>`${v.toFixed(2)} V`},
+    {id:'vth', label:'Threshold Voltage (V_th)',   min:VTH_MIN,max:VTH_MAX,step:0.01,unit:'V',  col:C.VTH,  fmt:v=>`${v.toFixed(2)} V`},
+  ]
+];
+
+function buildSliders(){
+  const container=document.getElementById('slider-container');
+  container.innerHTML='';
+  const defs=SLIDER_DEFS[deviceIdx];
+  defs.forEach(d=>{
+    const val=state[d.id];
+    const g=document.createElement('div');
+    g.className='slider-group';
+    g.innerHTML=`
+      <div class="slider-header">
+        <span class="slider-label">${d.label}</span>
+        <span class="slider-value" style="color:${d.col}" id="sv-${d.id}">${d.fmt(val)}</span>
+      </div>
+      <div class="slider-track-wrap">
+        <input type="range" id="sl-${d.id}"
+          min="${d.min}" max="${d.max}" step="${d.step}" value="${val}"
+          style="--thumb-col:${d.col};
+                 background:linear-gradient(to right,${d.col} ${(val-d.min)/(d.max-d.min)*100}%,#262634 0%)"
+          oninput="onSlider('${d.id}',this.value,this)">
+      </div>`;
+    container.appendChild(g);
+  });
+}
+
+function onSlider(id,v,el){
+  state[id]=parseFloat(v);
+  const defs=SLIDER_DEFS[deviceIdx].find(d=>d.id===id);
+  document.getElementById(`sv-${id}`).textContent=defs.fmt(state[id]);
+  // update gradient
+  const mn=parseFloat(el.min),mx=parseFloat(el.max);
+  const pct=(state[id]-mn)/(mx-mn)*100;
+  el.style.background=`linear-gradient(to right,${defs.col} ${pct}%,#262634 0%)`;
+  update();
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Mode rows
+// ─────────────────────────────────────────────────────────────────────
+function buildModeRows(activeRegion){
+  const container=document.getElementById('mode-rows');
+  container.innerHTML='';
+  const modes=deviceIdx===0?BJT_MODES:MOS_MODES;
+  modes.forEach(m=>{
+    const isActive=activeRegion.startsWith(m.lbl)||m.lbl.startsWith(activeRegion);
+    const row=document.createElement('div');
+    row.className='mode-row';
+    const alpha=isActive?'33':'10';
+    const borderAlpha=isActive?'cc':'30';
+    row.style.background=hexA(m.col,isActive?0.2:0.06);
+    row.style.borderColor=hexA(m.col,isActive?0.8:0.18);
+    row.innerHTML=`
+      <div class="mode-badge" style="background:${isActive?m.col:hexA(m.col,0.25)}"></div>
+      <div class="mode-row-label" style="color:${m.col};padding-left:10px">${m.lbl}</div>
+      <div class="mode-row-cond" style="padding-left:10px">${m.cond}</div>`;
+    row.onclick=()=>applyPreset(m.lbl);
+    container.appendChild(row);
+  });
+}
+
+function applyPreset(label){
+  if(deviceIdx===0){
+    const key=Object.keys(BJT_PRESETS).find(k=>label.includes(k)||k.includes(label));
+    if(key){
+      Object.assign(state,BJT_PRESETS[key]);
+      buildSliders(); update();
+    }
+  } else {
+    const key=Object.keys(MOS_PRESETS).find(k=>label.includes(k)||k.includes(label));
+    if(key){
+      Object.assign(state,MOS_PRESETS[key]);
+      buildSliders(); update();
+    }
+  }
+}
+
+function hexA(hex,a){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Legend
+// ─────────────────────────────────────────────────────────────────────
+function buildLegend(){
+  const row=document.getElementById('legend-row');
+  const modes=deviceIdx===0?BJT_MODES:MOS_MODES;
+  row.innerHTML=modes.map(m=>`
+    <div class="legend-item">
+      <div class="legend-dot" style="background:${m.col}"></div>
+      <span style="color:${m.col}">${m.lbl}</span>
+    </div>`).join('');
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// ASFID bars  (live for A, F, I, D)
+// ─────────────────────────────────────────────────────────────────────
+const ASFID_COLS={A:'#ffb43c',S:'#64c8ff',F:'#3cc8a0',I:'#c882ff',D:'#ff6464'};
+const REVOI_COLS={R:'#64b4ff',E:'#b4ff78',V:'#ffdc50',O:'#ff82c8',I:'#82dcff'};
+
+function buildRevoi(){
+  const c=document.getElementById('revoi-bars');
+  c.innerHTML='';
+  Object.entries(POCLET.revoi).forEach(([k,v])=>{
+    const col=REVOI_COLS[k];
+    c.insertAdjacentHTML('beforeend',`
+      <div class="score-row">
+        <span class="score-key" style="color:${col}">${k}</span>
+        <div class="score-bar-wrap">
+          <div class="score-bar-fill" style="width:${v*100}%;background:${col}"></div>
+        </div>
+        <span class="score-val" style="color:${col}">${v.toFixed(2)}</span>
+      </div>`);
+  });
+  const mean=Object.values(POCLET.revoi).reduce((a,b)=>a+b,0)/5;
+  document.getElementById('revoi-mean').textContent=`mean = ${mean.toFixed(2)}`;
+}
+
+function updateAsfid(live){
+  const c=document.getElementById('asfid-bars');
+  c.innerHTML='';
+  const base=POCLET.asfid;
+  Object.entries(live).forEach(([k,lv])=>{
+    const bv=base[k]; const col=ASFID_COLS[k];
+    c.insertAdjacentHTML('beforeend',`
+      <div class="score-row">
+        <span class="score-key" style="color:${col}">${k}</span>
+        <div class="score-bar-wrap">
+          <div class="score-bar-fill" style="width:${lv*100}%;background:${col}"></div>
+          <div class="score-bar-base" style="left:${bv*100}%"></div>
+        </div>
+        <span class="score-val" style="color:${col}">${lv.toFixed(2)}</span>
+      </div>`);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Status panel
+// ─────────────────────────────────────────────────────────────────────
+function updateStatus(dev,region,vals,eqs){
+  const rcol=regionCol(region,deviceIdx);
+  const html=`
+    <div class="status-device">Device: ${dev}</div>
+    <div class="status-region" style="color:${rcol}">${region}</div>
+    ${vals.map(([l,c])=>`<div class="status-val" style="color:${c}">${l}</div>`).join('')}
+    <div class="status-eq">${eqs.map(e=>`${e}<br>`).join('')}</div>
+    <div class="status-meta">Metaconcepts: 11 &nbsp;|&nbsp; ΔΘ=0.01</div>`;
+  document.getElementById('status-content').innerHTML=html;
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// I-V Canvas
+// ─────────────────────────────────────────────────────────────────────
+const canvas=document.getElementById('iv-canvas');
+const ctx=canvas.getContext('2d');
+
+function resizeCanvas(){
+  const wrap=document.getElementById('canvas-wrap');
+  canvas.width=wrap.clientWidth;
+  canvas.height=wrap.clientHeight;
+}
+
+function drawAxes(pr,xmax,ymax,xlabel,ylabel){
+  ctx.fillStyle='#10101a'; ctx.fillRect(pr.x,pr.y,pr.w,pr.h);
+  ctx.strokeStyle='#373748'; ctx.lineWidth=1;
+  ctx.strokeRect(pr.x,pr.y,pr.w,pr.h);
+  // grid
+  ctx.strokeStyle='#1e1e2e';
+  for(let i=1;i<5;i++){
+    const gx=pr.x+pr.w*i/5;
+    ctx.beginPath(); ctx.moveTo(gx,pr.y); ctx.lineTo(gx,pr.y+pr.h); ctx.stroke();
+    const gy=pr.y+pr.h*(1-i/5);
+    ctx.beginPath(); ctx.moveTo(pr.x,gy); ctx.lineTo(pr.x+pr.w,gy); ctx.stroke();
+  }
+  // x labels
+  ctx.fillStyle=C.DIM; ctx.font='10px JetBrains Mono'; ctx.textAlign='center';
+  for(let i=0;i<=4;i++){
+    const v=xmax*i/4;
+    const px=pr.x+pr.w*i/4;
+    ctx.fillText(v.toFixed(0),px,pr.y+pr.h+14);
+  }
+  ctx.fillStyle=C.VCE; ctx.font='10px JetBrains Mono';
+  ctx.fillText(xlabel,pr.x+pr.w/2,pr.y+pr.h+26);
+  // y labels
+  ctx.fillStyle=C.DIM; ctx.textAlign='right';
+  for(let i=0;i<=4;i++){
+    const iy=ymax*i/4;
+    const py=pr.y+pr.h*(1-i/4);
+    ctx.fillText(iy.toFixed(0),pr.x-6,py+4);
+  }
+  ctx.save(); ctx.translate(pr.x-28,pr.y+pr.h/2); ctx.rotate(-Math.PI/2);
+  ctx.fillStyle=C.IB; ctx.textAlign='center';
+  ctx.fillText(ylabel,0,0); ctx.restore();
+}
+
+function ivPx(v,i,xmax,ymax,pr){
+  return [pr.x+v/xmax*pr.w, pr.y+pr.h-clamp(i/ymax)*pr.h];
+}
+
+function drawQpoint(qx,qy,rcol,label,pr){
+  // crosshairs
+  ctx.strokeStyle=hexA(rcol,0.4); ctx.lineWidth=1; ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(pr.x,qy); ctx.lineTo(pr.x+pr.w,qy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(qx,pr.y); ctx.lineTo(qx,pr.y+pr.h); ctx.stroke();
+  ctx.setLineDash([]);
+  // halo
+  for(const r of [13,9,6]){
+    ctx.beginPath(); ctx.arc(qx,qy,r,0,2*Math.PI);
+    ctx.fillStyle=hexA(rcol,(r===13?0.08:r===9?0.14:0.22)); ctx.fill();
+  }
+  // dot
+  ctx.beginPath(); ctx.arc(qx,qy,7,0,2*Math.PI);
+  ctx.fillStyle=rcol; ctx.fill();
+  ctx.strokeStyle=C.TEXT; ctx.lineWidth=1.5; ctx.stroke();
+  // label
+  ctx.fillStyle=rcol; ctx.font='10px JetBrains Mono'; ctx.textAlign='left';
+  const lx=Math.min(qx+10,pr.x+pr.w-80);
+  const ly=Math.max(qy-10,pr.y+12);
+  ctx.fillText(label,lx,ly);
+}
+
+function drawBjtIV(pr){
+  const icMax=Math.max(bjtIc(IB_REFS[IB_REFS.length-1],VCE_MAX,state.beta)*1.25,5);
+  drawAxes(pr,VCE_MAX,icMax,'V_CE (V)','I_C (mA)');
+  // sat boundary
+  const sx=pr.x+VCE_SAT/VCE_MAX*pr.w;
+  ctx.strokeStyle='#5a3c1e'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(sx,pr.y); ctx.lineTo(sx,pr.y+pr.h); ctx.stroke();
+  ctx.fillStyle='#645028'; ctx.font='9px JetBrains Mono'; ctx.textAlign='center';
+  ctx.fillText('Sat.',sx,pr.y+pr.h+12);
+  // curves
+  const N=300;
+  IB_REFS.forEach((rib,idx)=>{
+    const col=CURVE_PAL[idx%CURVE_PAL.length];
+    ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.beginPath();
+    let first=true;
+    for(let k=0;k<=N;k++){
+      const v=VCE_MAX*k/N;
+      const ic=bjtIc(rib,v,state.beta);
+      const [px,py]=ivPx(v,ic,VCE_MAX,icMax,pr);
+      first?ctx.moveTo(px,py):ctx.lineTo(px,py); first=false;
+    }
+    ctx.stroke();
+    const [lx,ly]=ivPx(VCE_MAX,bjtIc(rib,VCE_MAX,state.beta),VCE_MAX,icMax,pr);
+    ctx.fillStyle=col; ctx.font='9px JetBrains Mono'; ctx.textAlign='right';
+    ctx.fillText(`${rib}μA`,lx-2,ly-4);
+  });
+  // Q-point
+  const region=bjtRegion(state.ib,state.vce);
+  const rcol=regionCol(region,0);
+  const icVal=bjtIc(state.ib,state.vce,state.beta);
+  const [qx,qy]=ivPx(state.vce,icVal,VCE_MAX,icMax,pr);
+  drawQpoint(qx,qy,rcol,`Q(${state.vce.toFixed(1)}V, ${icVal.toFixed(2)}mA)`,pr);
+  return {region,rcol,ic:icVal};
+}
+
+function drawMosfetIV(pr){
+  const allIds=VGS_REFS.map(vg=>mosfetId(vg+state.vth,VDS_MAX,state.vth));
+  const idMax=Math.max(...allIds)*1.25||5;
+  drawAxes(pr,VDS_MAX,idMax,'V_DS (V)','I_D (mA)');
+  const N=300;
+  // curves per VGS_REFS (delta above Vth)
+  VGS_REFS.forEach((dvg,idx)=>{
+    const vgAbs=dvg+state.vth;
+    if(vgAbs>VGS_MAX+0.1) return;
+    const col=CURVE_PAL[idx%CURVE_PAL.length];
+    ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.beginPath();
+    let first=true;
+    for(let k=0;k<=N;k++){
+      const v=VDS_MAX*k/N;
+      const id=mosfetId(vgAbs,v,state.vth);
+      const [px,py]=ivPx(v,id,VDS_MAX,idMax,pr);
+      first?ctx.moveTo(px,py):ctx.lineTo(px,py); first=false;
+    }
+    ctx.stroke();
+    const vov=vgAbs-state.vth;
+    if(vov<VDS_MAX){
+      const [kx,ky]=ivPx(vov,mosfetId(vgAbs,vov,state.vth),VDS_MAX,idMax,pr);
+      ctx.fillStyle=col; ctx.font='9px JetBrains Mono'; ctx.textAlign='left';
+      ctx.fillText(`${vgAbs.toFixed(1)}V`,kx+3,ky-4);
+    }
+  });
+  // boundary parabola
+  const bpts=[];
+  for(let k=0;k<=N;k++){
+    const vov=VDS_MAX*k/N; const vg=vov+state.vth;
+    if(vg>VGS_MAX) break;
+    bpts.push(ivPx(vov,mosfetId(vg,vov,state.vth),VDS_MAX,idMax,pr));
+  }
+  if(bpts.length>2){
+    ctx.strokeStyle='#6e6e37'; ctx.lineWidth=1; ctx.beginPath();
+    ctx.moveTo(...bpts[0]);
+    bpts.slice(1).forEach(p=>ctx.lineTo(...p)); ctx.stroke();
+    ctx.fillStyle='#6e6e37'; ctx.font='9px JetBrains Mono'; ctx.textAlign='left';
+    ctx.fillText('Triode | Saturation',pr.x+6,pr.y+14);
+  }
+  // Q-point
+  const region=mosfetRegion(state.vgs,state.vds,state.vth);
+  const rcol=regionCol(region,1);
+  const idVal=mosfetId(state.vgs,state.vds,state.vth);
+  const [qx,qy]=ivPx(state.vds,idVal,VDS_MAX,idMax,pr);
+  drawQpoint(qx,qy,rcol,`Q(${state.vds.toFixed(1)}V, ${idVal.toFixed(2)}mA)`,pr);
+  return {region,rcol,id:idVal};
+}
+
+function drawIV(){
+  resizeCanvas();
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const pad={l:52,t:24,r:22,b:44};
+  const pr={
+    x:pad.l, y:pad.t,
+    w:canvas.width-pad.l-pad.r,
+    h:canvas.height-pad.t-pad.b
+  };
+  if(deviceIdx===0) return drawBjtIV(pr);
+  return drawMosfetIV(pr);
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// SVG Schematics
+// ─────────────────────────────────────────────────────────────────────
+function drawBjtSchematic(region){
+  const rcol=regionCol(region,0);
+  const cx=100,cy=52,br=28;
+  const svg=document.getElementById('schematic-svg');
+  const bx=cx-11;
+  const ex=cx+br-4, ey=cy+20;
+  const ccx=cx+br-4, ccy=cy-20;
+  const ang=Math.atan2(ey-(cy+9),ex-bx);
+  const ax1=ex-Math.round(8*Math.cos(ang+0.4)), ay1=ey-Math.round(8*Math.sin(ang+0.4));
+  const ax2=ex-Math.round(8*Math.cos(ang-0.4)), ay2=ey-Math.round(8*Math.sin(ang-0.4));
+  // current arrow
+  const showArrow=(region!=='Cutoff');
+  svg.innerHTML=`
+    <!-- circle -->
+    <circle cx="${cx}" cy="${cy}" r="${br}" fill="#14141e" stroke="${rcol}" stroke-width="2"/>
+    <!-- base bar -->
+    <line x1="${bx}" y1="${cy-19}" x2="${bx}" y2="${cy+19}" stroke="${rcol}" stroke-width="2.5"/>
+    <!-- emitter line + arrowhead -->
+    <line x1="${bx}" y1="${cy+9}" x2="${ex}" y2="${ey}" stroke="${rcol}" stroke-width="2"/>
+    <line x1="${ax1}" y1="${ay1}" x2="${ex}" y2="${ey}" stroke="${rcol}" stroke-width="2"/>
+    <line x1="${ax2}" y1="${ay2}" x2="${ex}" y2="${ey}" stroke="${rcol}" stroke-width="2"/>
+    <!-- collector line -->
+    <line x1="${bx}" y1="${cy-9}" x2="${ccx}" y2="${ccy}" stroke="${rcol}" stroke-width="2"/>
+    <!-- base lead -->
+    <line x1="${cx-br-18}" y1="${cy}" x2="${bx}" y2="${cy}" stroke="${C.IB}" stroke-width="2"/>
+    <!-- collector VCC -->
+    <line x1="${ccx}" y1="${ccy}" x2="${ccx}" y2="${ccy-18}" stroke="${C.VCE}" stroke-width="2"/>
+    <line x1="${ccx}" y1="${ccy-18}" x2="${ccx+12}" y2="${ccy-18}" stroke="${C.VCE}" stroke-width="2"/>
+    <text x="${ccx+8}" y="${ccy-22}" fill="${C.VCE}" font-size="9" font-family="JetBrains Mono">VCC</text>
+    <!-- GND lines -->
+    <line x1="${ex-13}" y1="${ey+16}" x2="${ex+13}" y2="${ey+16}" stroke="${C.VCE}" stroke-width="2"/>
+    <line x1="${ex-9}"  y1="${ey+22}" x2="${ex+9}"  y2="${ey+22}" stroke="${C.VCE}" stroke-width="2"/>
+    <line x1="${ex-5}"  y1="${ey+28}" x2="${ex+5}"  y2="${ey+28}" stroke="${C.VCE}" stroke-width="2"/>
+    <!-- labels -->
+    <text x="${cx-br-28}" y="${cy+4}" fill="${C.IB}" font-size="9" font-family="JetBrains Mono">B</text>
+    <text x="${ccx+4}"    y="${ccy-4}" fill="${C.VCE}" font-size="9" font-family="JetBrains Mono">C</text>
+    <text x="${ex+4}"     y="${ey+6}" fill="${C.VCE}" font-size="9" font-family="JetBrains Mono">E</text>
+    <!-- current arrow -->
+    ${showArrow?`
+    <line x1="${ccx}" y1="${ccy-5}" x2="${ccx}" y2="${ccy+8}" stroke="${C.IB}" stroke-width="2"/>
+    <polygon points="${ccx},${ccy+8} ${ccx-4},${ccy+1} ${ccx+4},${ccy+1}" fill="${C.IB}"/>
+    `:''}
+    <!-- region label -->
+    <text x="${cx}" y="${cy+br+14}" fill="${rcol}" font-size="9" font-family="JetBrains Mono" text-anchor="middle">${region}</text>
+  `;
+}
+
+function drawMosfetSchematic(region,vov){
+  const rcol=regionCol(region,1);
+  const gx=64, cy=50;
+  const ox=gx+9, chx=ox+9;
+  const chCol=(region!=='Cutoff')?rcol:'#232338';
+  const svg=document.getElementById('schematic-svg');
+  svg.innerHTML=`
+    <!-- gate lead + metal plate -->
+    <line x1="${gx-18}" y1="${cy}" x2="${gx}" y2="${cy}" stroke="${C.VGS}" stroke-width="2"/>
+    <line x1="${gx}" y1="${cy-20}" x2="${gx}" y2="${cy+20}" stroke="${C.VGS}" stroke-width="2.5"/>
+    <!-- oxide gap dashed -->
+    ${[...Array(11)].map((_,i)=>{
+      const dy=cy-20+i*4;
+      return `<line x1="${ox}" y1="${dy}" x2="${ox}" y2="${dy+2}" stroke="#82829a" stroke-width="1"/>`;
+    }).join('')}
+    <!-- channel -->
+    <line x1="${chx}" y1="${cy-20}" x2="${chx}" y2="${cy+20}" stroke="${chCol}" stroke-width="4"/>
+    <!-- drain/source horizontal -->
+    <line x1="${chx}" y1="${cy-20}" x2="${chx+26}" y2="${cy-20}" stroke="${C.VDS}" stroke-width="2"/>
+    <line x1="${chx}" y1="${cy+20}" x2="${chx+26}" y2="${cy+20}" stroke="${C.VDS}" stroke-width="2"/>
+    <!-- drain to VDD -->
+    <line x1="${chx+26}" y1="${cy-20}" x2="${chx+26}" y2="${cy-44}" stroke="${C.VDS}" stroke-width="2"/>
+    <text x="${chx+18}" y="${cy-48}" fill="${C.VDS}" font-size="9" font-family="JetBrains Mono">V_DD</text>
+    <!-- source GND -->
+    <line x1="${chx+13}" y1="${cy+36}" x2="${chx+39}" y2="${cy+36}" stroke="${C.VDS}" stroke-width="2"/>
+    <line x1="${chx+17}" y1="${cy+42}" x2="${chx+35}" y2="${cy+42}" stroke="${C.VDS}" stroke-width="2"/>
+    <line x1="${chx+21}" y1="${cy+48}" x2="${chx+31}" y2="${cy+48}" stroke="${C.VDS}" stroke-width="2"/>
+    <!-- labels -->
+    <text x="${gx-28}" y="${cy+4}" fill="${C.VGS}" font-size="9" font-family="JetBrains Mono">G</text>
+    <text x="${chx+30}" y="${cy-16}" fill="${C.VDS}" font-size="9" font-family="JetBrains Mono">D</text>
+    <text x="${chx+30}" y="${cy+24}" fill="${C.VDS}" font-size="9" font-family="JetBrains Mono">S</text>
+    ${vov>0?`<text x="${gx-18}" y="${cy+36}" fill="${rcol}" font-size="9" font-family="JetBrains Mono">V_ov=${vov.toFixed(2)}V</text>`:''}
+    <!-- region label -->
+    <text x="${(gx+chx+26)/2}" y="${cy+64}" fill="${rcol}" font-size="9" font-family="JetBrains Mono" text-anchor="middle">${region}</text>
+  `;
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Live ASFID calculation
+// ─────────────────────────────────────────────────────────────────────
+function calcAsfidLive(region){
+  const ba=POCLET.asfid;
+  if(deviceIdx===0){
+    const amp=(region==='Forward Active');
+    const icN=clamp(bjtIc(state.ib,state.vce,state.beta)/(state.beta*IB_MAX/1000+1e-9));
+    return {
+      A:clamp(ba.A*(0.3+0.7*(amp?1:0.2))),
+      S:ba.S,
+      F:clamp(ba.F*(0.1+0.9*icN)),
+      I:clamp(ba.I*(0.2+0.8*(state.beta-BETA_MIN)/(BETA_MAX-BETA_MIN))),
+      D:clamp(ba.D*(0.1+0.9*state.vce/VCE_MAX))
+    };
+  } else {
+    const amp=(region==='Saturation');
+    const idMax=0.5*KN*Math.pow(VGS_MAX-state.vth,2)+1e-9;
+    const idN=clamp(mosfetId(state.vgs,state.vds,state.vth)/idMax);
+    return {
+      A:clamp(ba.A*(0.3+0.7*(amp?1:0.2))),
+      S:ba.S,
+      F:clamp(ba.F*(0.05+0.95*idN)),
+      I:clamp(ba.I*(0.2+0.8*state.vgs/VGS_MAX)),
+      D:clamp(ba.D*(0.1+0.9*state.vds/VDS_MAX))
+    };
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Master update
+// ─────────────────────────────────────────────────────────────────────
+function update(){
+  const result=drawIV();
+  const {region}=result;
+  const rcol=regionCol(region,deviceIdx);
+  buildModeRows(region);
+  // Schematic
+  if(deviceIdx===0){
+    const icVal=result.ic;
+    drawBjtSchematic(region,icVal,state.beta);
+  } else {
+    const vov=Math.max(state.vgs-state.vth,0);
+    drawMosfetSchematic(region,vov);
+  }
+  // ASFID live
+  const live=calcAsfidLive(region);
+  updateAsfid(live);
+  // Status
+  if(deviceIdx===0){
+    const ic=result.ic;
+    const pd=state.vce*ic;
+    updateStatus('BJT',region,[
+      [`I_B  = ${state.ib.toFixed(1)} μA`, C.IB],
+      [`V_CE = ${state.vce.toFixed(2)} V`,  C.VCE],
+      [`β    = ${Math.round(state.beta)}`,   C.BETA],
+      [`I_C  = ${ic.toFixed(2)} mA`,        '#50c878'],
+      [`P_D  = ${pd.toFixed(1)} mW`,        '#dc3c3c'],
+    ],[
+      'I_C = β·I_B  (active)',
+      'P_D = V_CE·I_C'
+    ]);
+  } else {
+    const idVal=result.id;
+    const vov=Math.max(state.vgs-state.vth,0);
+    const pd=state.vds*idVal;
+    updateStatus('MOSFET',region,[
+      [`V_GS = ${state.vgs.toFixed(2)} V`, C.VGS],
+      [`V_DS = ${state.vds.toFixed(2)} V`, C.VDS],
+      [`V_th = ${state.vth.toFixed(2)} V`, C.VTH],
+      [`V_ov = ${vov.toFixed(2)} V`,       '#50c878'],
+      [`I_D  = ${idVal.toFixed(2)} mA`,    '#50c878'],
+      [`P_D  = ${pd.toFixed(1)} mW`,       '#dc3c3c'],
+    ],[
+      'I_D = k_n/2·V_ov²  (sat.)',
+      'I_D = k_n·(V_ov·V_DS−V_DS²/2)',
+      '     (triode)',
+      'P_D = V_DS·I_D'
+    ]);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Device switch
+// ─────────────────────────────────────────────────────────────────────
+function setDevice(idx){
+  deviceIdx=idx;
+  document.getElementById('lbl-device').textContent=idx===0?'BJT NPN':'MOSFET NMOS';
+  document.getElementById('tab-bjt').className='tab-btn'+(idx===0?' active-bjt':'');
+  document.getElementById('tab-mos').className='tab-btn'+(idx===1?' active-mos':'');
+  buildSliders();
+  buildLegend();
+  update();
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Init
+// ─────────────────────────────────────────────────────────────────────
+function init(){
+  buildSliders();
+  buildLegend();
+  buildRevoi();
+  update();
+  window.addEventListener('resize',()=>update());
+}
+
+init();
+</script>
+</body>
+</html>
