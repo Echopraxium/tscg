@@ -290,3 +290,7 @@ See [CONTRIBUTING.md](https://github.com/Echopraxium/tscg) for details.
 **"The map is not the territory, but the echo is enough to fly."**
 
 *Last Updated: February 2026*
+
+## Links
+
+[![Hypercommit](https://img.shields.io/badge/Hypercommit-DB2475)](https://hypercommit.com/tscg)
