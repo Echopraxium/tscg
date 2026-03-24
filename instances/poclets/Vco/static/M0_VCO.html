@@ -202,10 +202,11 @@ html, body {
   white-space: nowrap; flex-shrink: 0;
 }
 .ctrl-btn:hover { background: var(--bg-hover); color: var(--text); border-color: var(--border-light); }
-#btn-audio.audio-on {
+#btn-play.playing {
   background: rgba(86,211,100,0.12); border-color: rgba(86,211,100,0.55);
   color: var(--accent); box-shadow: 0 0 10px rgba(86,211,100,0.18);
 }
+.status-dot.paused { background: var(--muted); animation: none; }
 .ctrl-sep { width: 1px; height: 28px; background: var(--border); flex-shrink: 0; }
 .ctrl-group { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; }
 .ctrl-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); white-space: nowrap; }
@@ -441,10 +442,10 @@ First M0 instantiation of <code>m2:Oscillator</code>, validating the GenericConc
     </div>
     <div class="ctrl-sep"></div>
     <!-- Audio — AudioContext created on first click ONLY -->
-    <button class="ctrl-btn audio-on" id="btn-audio">&#9679;&#8201;Audio ON</button>
+    <button class="ctrl-btn" id="btn-play">&#9654;&#8201;Play</button>
     <div class="status-indicator">
-      <div class="status-dot" id="status-dot"></div>
-      <span id="status-label">Ready</span>
+      <div class="status-dot paused" id="status-dot"></div>
+      <span id="status-label">Paused</span>
     </div>
   </footer>
 
@@ -463,7 +464,7 @@ const VCO = {
   amplitude: 0.50,
   fineCents: 0,
   waveform:  'sine',
-  audioOn:   true,
+  audioOn:   false,
 };
 
 const WF_COLORS = {
@@ -489,11 +490,7 @@ function freqToNote(freq) {
   return name + oct + ' (' + (cents >= 0 ? '+' : '') + cents + '\u00a2)';
 }
 
-/* ── Audio Engine ─────────────────────────────────────────────────
-   FIX: AudioContext is created ONLY when the user clicks btn-audio.
-   This satisfies the Chrome autoplay policy (user gesture required).
-   No AudioContext is created at page load or DOMContentLoaded.
-────────────────────────────────────────────────────────────────── */
+/* ── Audio Engine ─────────────────────────────────────────────── */
 let audioCtx = null;
 let oscNode  = null;
 let gainNode = null;
@@ -511,10 +508,8 @@ function startOsc() {
 
 function stopOsc() {
   if (oscNode) {
-    if (gainNode) {
-      gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
-      gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.025);
-    }
+    gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+    gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.025);
     const o = oscNode; oscNode = null;
     setTimeout(() => { try { o.stop(); o.disconnect(); } catch(e) {} }, 120);
   }
@@ -528,47 +523,39 @@ function syncAudio() {
   gainNode.gain.setTargetAtTime(VCO.amplitude * 0.22, audioCtx.currentTime, 0.008);
 }
 
-function setAudioUI(on) {
-  const btn = document.getElementById('btn-audio');
-  if (on) {
-    btn.innerHTML = '&#9679;&#8201;Audio ON';
-    btn.classList.add('audio-on');
-    document.getElementById('status-label').textContent = 'Audio ON';
+function setPlayUI(playing) {
+  VCO.audioOn = playing;
+  const btn = document.getElementById('btn-play');
+  const dot = document.getElementById('status-dot');
+  if (playing) {
+    btn.innerHTML = '&#9646;&#9646;&#8201;Pause';
+    btn.classList.add('playing');
+    dot.classList.remove('paused');
+    document.getElementById('status-label').textContent = 'Playing';
   } else {
-    btn.innerHTML = '&#9675;&#8201;Audio';
-    btn.classList.remove('audio-on');
-    document.getElementById('status-label').textContent = 'Audio OFF';
+    btn.innerHTML = '&#9654;&#8201;Play';
+    btn.classList.remove('playing');
+    dot.classList.add('paused');
+    document.getElementById('status-label').textContent = 'Paused';
   }
 }
 
-/* toggleAudio is async so we can AWAIT resume() before touching the graph. */
-async function toggleAudio() {
+/* Play: create context on first call (user gesture), await resume(), start osc. */
+async function togglePlay() {
+  if (VCO.audioOn) {
+    stopOsc();
+    setPlayUI(false);
+    return;
+  }
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     gainNode = audioCtx.createGain();
     gainNode.gain.value = 0;
     gainNode.connect(audioCtx.destination);
   }
-  try { await audioCtx.resume(); } catch(e) { console.warn('AudioContext resume:', e); }
-
-  VCO.audioOn = !VCO.audioOn;
-  if (VCO.audioOn) { startOsc(); } else { stopOsc(); }
-  setAudioUI(VCO.audioOn);
-}
-
-/* Starts audio — called at boot and from gesture fallback. */
-async function autoStartAudio() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    gainNode = audioCtx.createGain();
-    gainNode.gain.value = 0;
-    gainNode.connect(audioCtx.destination);
-  }
-  try { await audioCtx.resume(); } catch(e) { console.warn('AudioContext resume:', e); }
-  if (audioCtx.state !== 'running') return; // still blocked — gesture fallback will retry
-  VCO.audioOn = true;
+  try { await audioCtx.resume(); } catch(e) {}
   startOsc();
-  setAudioUI(true);
+  setPlayUI(true);
 }
 
 /* ── Controls wiring ──────────────────────────────────────────── */
@@ -606,7 +593,7 @@ function wireControls() {
     });
   });
 
-  document.getElementById('btn-audio').addEventListener('click', toggleAudio);
+  document.getElementById('btn-play').addEventListener('click', togglePlay);
 }
 
 /* ── p5.js Sketch ─────────────────────────────────────────────── */
@@ -795,25 +782,6 @@ function initP5() {
 window.addEventListener('DOMContentLoaded', () => {
   wireControls();
   initP5();
-
-  // Try to start audio immediately — works if the browser permits autoplay
-  // (e.g. GitHub Pages after navigation, or Electron).
-  // If the context ends up suspended the gesture fallback below recovers it.
-  autoStartAudio().then(() => {
-    if (audioCtx && audioCtx.state === 'running') return; // success
-    // Fallback: arm a one-shot gesture listener
-    armGestureFallback();
-  }).catch(() => armGestureFallback());
-
-  function armGestureFallback() {
-    document.getElementById('status-label').textContent = 'Click anywhere to start';
-    const TRIGGERS = ['click', 'keydown', 'pointerdown'];
-    function onFirstGesture() {
-      TRIGGERS.forEach(ev => document.removeEventListener(ev, onFirstGesture, true));
-      autoStartAudio();
-    }
-    TRIGGERS.forEach(ev => document.addEventListener(ev, onFirstGesture, true));
-  }
 });
 </script>
 
