@@ -528,33 +528,47 @@ function syncAudio() {
   gainNode.gain.setTargetAtTime(VCO.amplitude * 0.22, audioCtx.currentTime, 0.008);
 }
 
-/* toggleAudio is async so we can AWAIT resume() before touching the graph.
-   Without await, the oscillator starts while the context is still suspended
-   (a Promise is returned but ignored), producing silence in Electron/Chrome. */
+function setAudioUI(on) {
+  const btn = document.getElementById('btn-audio');
+  if (on) {
+    btn.innerHTML = '&#9679;&#8201;Audio ON';
+    btn.classList.add('audio-on');
+    document.getElementById('status-label').textContent = 'Audio ON';
+  } else {
+    btn.innerHTML = '&#9675;&#8201;Audio';
+    btn.classList.remove('audio-on');
+    document.getElementById('status-label').textContent = 'Audio OFF';
+  }
+}
+
+/* toggleAudio is async so we can AWAIT resume() before touching the graph. */
 async function toggleAudio() {
-  // Create context on first click (this IS the user gesture)
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     gainNode = audioCtx.createGain();
     gainNode.gain.value = 0;
     gainNode.connect(audioCtx.destination);
   }
-  // Always await resume — ensures context is truly running before startOsc()
   try { await audioCtx.resume(); } catch(e) { console.warn('AudioContext resume:', e); }
 
   VCO.audioOn = !VCO.audioOn;
-  const btn = document.getElementById('btn-audio');
-  if (VCO.audioOn) {
-    startOsc();
-    btn.innerHTML = '&#9679;&#8201;Audio ON';
-    btn.classList.add('audio-on');
-    document.getElementById('status-label').textContent = 'Audio ON';
-  } else {
-    stopOsc();
-    btn.innerHTML = '&#9675;&#8201;Audio';
-    btn.classList.remove('audio-on');
-    document.getElementById('status-label').textContent = 'Audio OFF';
+  if (VCO.audioOn) { startOsc(); } else { stopOsc(); }
+  setAudioUI(VCO.audioOn);
+}
+
+/* Called once on first user gesture — starts audio automatically. */
+async function autoStartAudio() {
+  if (VCO.audioOn) return;
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    gainNode = audioCtx.createGain();
+    gainNode.gain.value = 0;
+    gainNode.connect(audioCtx.destination);
   }
+  try { await audioCtx.resume(); } catch(e) { console.warn('AudioContext resume:', e); }
+  VCO.audioOn = true;
+  startOsc();
+  setAudioUI(true);
 }
 
 /* ── Controls wiring ──────────────────────────────────────────── */
@@ -781,6 +795,25 @@ function initP5() {
 window.addEventListener('DOMContentLoaded', () => {
   wireControls();
   initP5();
+
+  // Try to start audio immediately — works if the browser permits autoplay
+  // (e.g. GitHub Pages after navigation, or Electron).
+  // If the context ends up suspended the gesture fallback below recovers it.
+  autoStartAudio().then(() => {
+    if (audioCtx && audioCtx.state === 'running') return; // success
+    // Fallback: arm a one-shot gesture listener
+    armGestureFallback();
+  }).catch(() => armGestureFallback());
+
+  function armGestureFallback() {
+    document.getElementById('status-label').textContent = 'Click anywhere to start';
+    const TRIGGERS = ['click', 'keydown', 'pointerdown'];
+    function onFirstGesture() {
+      TRIGGERS.forEach(ev => document.removeEventListener(ev, onFirstGesture, true));
+      autoStartAudio();
+    }
+    TRIGGERS.forEach(ev => document.addEventListener(ev, onFirstGesture, true));
+  }
 });
 </script>
 
