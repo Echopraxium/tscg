@@ -2,6 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self' 'unsafe-inline' 'unsafe-eval';
+                 style-src  'self' 'unsafe-inline';
+                 img-src    'self' data: blob:;
+                 connect-src 'self' http://127.0.0.1:* ws://127.0.0.1:*;">
   <title>TSCG &mdash; Counterpoint</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -869,8 +878,10 @@ makeSplitter('split1','--left-w',   ()=>document.getElementById('explorer').getB
 makeSplitter('split2','--sidebar-w',()=>document.getElementById('sidebar').getBoundingClientRect().width,'right');
 
 // ── Init ──────────────────────────────────────────────────────
-buildExplorer();
-selectExample('bwv578');
+window.addEventListener('load', () => {
+  buildExplorer();
+  selectExample('bwv578');
+});
 window.addEventListener('resize',()=>drawRoll());
 // Load instrument on selection change
 document.getElementById('instr-select').addEventListener('change', async () => {
