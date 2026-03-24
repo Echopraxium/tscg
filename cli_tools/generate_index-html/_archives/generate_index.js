@@ -316,7 +316,6 @@ function discoverPoclets() {
   // Label overrides (when M0 label is wrong or refers to a sub-poclet)
   const LABEL_OVERRIDES = {
     'ColorSynthesis': 'Color Synthesis',
-    'Transistor':     'Transistor',
   };
   results.forEach(p => {
     if (DOMAIN_OVERRIDES[p.id]) p.domain = DOMAIN_OVERRIDES[p.id];
