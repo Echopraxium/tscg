@@ -805,6 +805,21 @@ function pauseSim() {
   document.getElementById('btn-play').textContent = '▶ Play';
 }
 
+function resetUI() {
+  // Reset progress bar and time label
+  const fill = document.getElementById('time-fill');
+  const lbl  = document.getElementById('time-lbl');
+  if (fill) fill.style.width = '0%';
+  if (lbl)  lbl.textContent  = '0.0s';
+  // Clear active pole highlights
+  document.querySelectorAll('.pole-seg').forEach(el => el.classList.remove('pole-active'));
+  // Scroll piano roll back to start
+  const scroll = document.getElementById('roll-scroll');
+  if (scroll) scroll.scrollLeft = 0;
+  // Redraw clean roll (no playhead)
+  drawRoll();
+}
+
 function stopSim() {
   clearScheduled();
   transportSec = 0;
