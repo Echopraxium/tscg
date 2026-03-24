@@ -616,7 +616,9 @@ function initP5() {
     };
 
     p.draw = () => {
-      phaseOff = (phaseOff + 0.006) % 1000;
+      // Phase scrolls proportionally to frequency — realistic scope feel
+      const effFDraw = effectiveFreq();
+      phaseOff = (phaseOff + 0.004 * (effFDraw / 440)) % 1000;
       p.background(13, 17, 23);
       const oscH = Math.floor(p.height * 0.56);
       drawScope(0, 0, p.width, oscH);
@@ -639,6 +641,8 @@ function initP5() {
       p.stroke(55, 70, 100, 200);
       p.line(x, y + h / 2, x + w, y + h / 2);
 
+      // Cycles scale logarithmically with frequency: low freq = 1 wide cycle, high = many tight
+      const CYCLES = Math.max(1.0, Math.min(18, 1.0 + Math.log2(effF / 20) * 1.4));
       // Waveform — 3 passes (glow + line)
       const N = 512, cy = y + h / 2, ampPx = h * 0.40 * amp;
       for (let pass = 0; pass < 3; pass++) {
@@ -646,7 +650,7 @@ function initP5() {
         p.strokeWeight([7, 3, 1.5][pass]);
         p.noFill(); p.beginShape();
         for (let i = 0; i <= N; i++) {
-          const t  = (i / N) * 2.5 + phaseOff;
+          const t  = (i / N) * CYCLES + phaseOff;
           const s  = wfSample(VCO.waveform, t);
           p.vertex(x + (i / N) * w, cy - s * ampPx);
         }
