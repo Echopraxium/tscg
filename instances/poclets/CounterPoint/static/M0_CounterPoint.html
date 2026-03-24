@@ -878,11 +878,12 @@ makeSplitter('split1','--left-w',   ()=>document.getElementById('explorer').getB
 makeSplitter('split2','--sidebar-w',()=>document.getElementById('sidebar').getBoundingClientRect().width,'right');
 
 // ── Init ──────────────────────────────────────────────────────
-window.addEventListener('load', () => {
-  buildExplorer();
-  selectExample('bwv578');
-});
-window.addEventListener('resize',()=>drawRoll());
+// Script is at bottom of <body> → DOM already complete.
+// setTimeout(0) lets the browser finish its layout pass before
+// drawRoll() reads clientHeight, avoiding a 0-height canvas.
+buildExplorer();
+setTimeout(() => selectExample('bwv578'), 0);
+window.addEventListener('resize', () => drawRoll());
 // Load instrument on selection change
 document.getElementById('instr-select').addEventListener('change', async () => {
   if(!audioOK) return;
