@@ -11,12 +11,11 @@
                  style-src  'self' 'unsafe-inline';
                  img-src    'self' data: blob:;
                  connect-src http://127.0.0.1:* ws://127.0.0.1:*;">
-  <title>TSCG &mdash; VCO</title>
-
+  <title>TSCG &mdash; Voltage Controlled Oscillator</title>
+  <link rel="icon" href="data:,">
   <style>
 /* ── Reset & Globals ─────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
   --bg-deep:      #0d1117;
   --bg-panel:     #161b22;
@@ -31,91 +30,80 @@
   --muted:        #8b949e;
   --text:         #e6edf3;
   --text-dim:     #b1bac4;
-  --col-A: #f78166;
-  --col-S: #56d364;
-  --col-F: #79c0ff;
-  --col-I: #d2a8ff;
-  --col-D: #e3b341;
-  --col-R: #79c0ff;
-  --col-E: #56d364;
-  --col-V: #f78166;
-  --col-O: #d2a8ff;
-  --col-Im: #e3b341;
-  /* VCO waveform colors */
-  --wf-sine:     #32d2e1;
-  --wf-square:   #41cd6e;
-  --wf-triangle: #ff9628;
-  --wf-sawtooth: #ffc328;
-  --header-h: 44px;
-  --controls-h: 56px;
-  --sidebar-w: 320px;
-  --gap: 8px;
+  --col-A: #f78166; --col-S: #56d364; --col-F: #79c0ff;
+  --col-I: #d2a8ff; --col-D: #e3b341;
+  --col-R: #79c0ff; --col-E: #56d364; --col-V: #f78166;
+  --col-O: #d2a8ff; --col-Im: #e3b341;
+  --header-h:   44px;
+  --controls-h: 68px;
+  --sidebar-w:  320px;
   --radius: 6px;
   --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
   --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
 }
-
 html, body {
   height: 100%; overflow: hidden;
-  font-family: var(--font);
-  background: var(--bg-deep);
-  color: var(--text);
-  font-size: 13px; line-height: 1.5;
+  font-family: var(--font); background: var(--bg-deep);
+  color: var(--text); font-size: 13px; line-height: 1.5;
   user-select: none;
 }
-
 #app {
   display: grid;
-  grid-template-rows: var(--header-h) 1fr auto var(--controls-h);
+  grid-template-rows: var(--header-h) 1fr var(--controls-h);
   grid-template-columns: 1fr 5px var(--sidebar-w);
   grid-template-areas:
     "header   header   header"
     "canvas   split    sidebar"
-    "compbar  compbar  compbar"
     "controls controls controls";
   height: 100vh;
 }
 
-/* ── Header ─────────────────────────────────────────────────── */
+/* ── Header ────────────────────────────────────────────────────── */
 #header {
-  grid-area: header;
-  display: flex; align-items: center; padding: 0 16px; gap: 12px;
+  grid-area: header; display: flex; align-items: center;
+  padding: 0 16px; gap: 12px;
   background: var(--bg-panel); border-bottom: 1px solid var(--border);
 }
-#header .tscg-logo {
+#btn-home {
+  display: inline-flex; align-items: center;
+  background: none; border: none; cursor: pointer;
+  padding: 4px 6px; margin-right: 4px;
+  opacity: 0.85; transition: opacity 0.15s; text-decoration: none;
+}
+#btn-home:hover { opacity: 1; }
+.tscg-logo {
   font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
   color: var(--eagle); text-transform: uppercase; flex-shrink: 0;
 }
-#header .sep { color: var(--border-light); font-size: 16px; }
-#header .poclet-name {
+.sep { color: var(--border-light); font-size: 16px; }
+.poclet-name {
   font-size: 14px; font-weight: 600; color: var(--text);
   flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-#header .meta-chips { display: flex; gap: 6px; flex-shrink: 0; }
+.meta-chips { display: flex; gap: 6px; flex-shrink: 0; }
 .chip {
   padding: 2px 8px; border-radius: 20px;
   font-size: 11px; font-weight: 500; border: 1px solid transparent;
 }
-.chip.domain  { background: rgba(86,211,100,0.12); border-color: rgba(86,211,100,0.3);  color: var(--accent); }
+.chip.domain  { background: rgba(86,211,100,0.12);  border-color: rgba(86,211,100,0.3);  color: var(--accent); }
 .chip.version { background: rgba(121,192,255,0.12); border-color: rgba(121,192,255,0.3); color: var(--sphinx); }
 .chip.type    { background: rgba(247,129,102,0.12); border-color: rgba(247,129,102,0.3); color: var(--eagle); }
 
-/* ── Canvas ──────────────────────────────────────────────────── */
+/* ── Canvas ────────────────────────────────────────────────────── */
 #canvas-area {
-  grid-area: canvas; position: relative; overflow: hidden;
-  background: var(--bg-deep); min-width: 200px;
+  grid-area: canvas; position: relative;
+  overflow: hidden; background: var(--bg-deep); min-width: 200px;
 }
 #canvas-area canvas { position: absolute; top: 0; left: 0; }
 
-/* ── Splitter ────────────────────────────────────────────────── */
+/* ── Splitter ──────────────────────────────────────────────────── */
 #splitter {
   grid-area: split; background: var(--border);
-  cursor: col-resize; transition: background 0.15s;
-  position: relative; z-index: 10;
+  cursor: col-resize; transition: background 0.15s; z-index: 10;
 }
 #splitter:hover, #splitter.dragging { background: var(--sphinx); }
 
-/* ── Sidebar ─────────────────────────────────────────────────── */
+/* ── Sidebar ───────────────────────────────────────────────────── */
 #sidebar {
   grid-area: sidebar; display: flex; flex-direction: column;
   background: var(--bg-panel); border-left: 1px solid var(--border);
@@ -133,7 +121,6 @@ html, body {
 }
 .tab-btn:hover { color: var(--text-dim); }
 .tab-btn.active { color: var(--sphinx); border-bottom-color: var(--sphinx); }
-
 .tab-panel { display: none; flex-direction: column; flex: 1; overflow-y: auto; padding: 12px; gap: 10px; }
 .tab-panel.active { display: flex; }
 
@@ -147,42 +134,39 @@ html, body {
 .score-group-label.eagle { color: var(--eagle); }
 .score-group-label.sphinx { color: var(--sphinx); }
 .score-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-.score-dim {
-  width: 20px; font-weight: 700; font-family: var(--font-mono);
-  font-size: 11px; text-align: center; flex-shrink: 0;
-}
+.score-dim { width: 20px; font-weight: 700; font-family: var(--font-mono); font-size: 11px; text-align: center; flex-shrink: 0; }
 .score-bar-bg { flex: 1; height: 6px; background: var(--bg-card); border-radius: 3px; overflow: hidden; }
 .score-bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
 .score-val { width: 30px; text-align: right; font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); flex-shrink: 0; }
 .score-mean-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); padding-top: 2px; font-family: var(--font-mono); }
 .score-mean-row span { color: var(--text); font-weight: 600; }
-
 .gap-badge {
   display: flex; align-items: center; gap: 10px;
   background: var(--bg-card); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 8px 12px; font-size: 12px;
 }
 .gap-badge .gap-label { color: var(--muted); }
-.gap-badge .gap-val { font-family: var(--font-mono); font-weight: 700; font-size: 16px; color: var(--warn); }
+.gap-badge .gap-val { font-family: var(--font-mono); font-weight: 700; font-size: 16px; color: var(--accent); }
 .gap-badge .gap-desc { color: var(--text-dim); font-size: 11px; }
 
 /* Concepts */
 .gc-list { display: flex; flex-direction: column; gap: 4px; }
 .gc-item {
-  display: flex; align-items: flex-start; gap: 8px; padding: 6px 8px;
+  display: flex; flex-direction: column; gap: 3px; padding: 6px 8px;
   background: var(--bg-card); border-radius: var(--radius);
-  border: 1px solid var(--border); cursor: default;
+  border: 1px solid var(--border);
   transition: border-color 0.15s, background 0.15s;
 }
 .gc-item:hover { background: var(--bg-hover); border-color: var(--border-light); }
 .gc-item.primary   { border-left: 3px solid var(--eagle); }
 .gc-item.secondary { border-left: 3px solid var(--border-light); }
-.gc-name  { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--sphinx); flex-shrink: 0; min-width: 110px; }
-.gc-formula { font-family: var(--font-mono); font-size: 10px; color: var(--muted); flex-shrink: 0; }
+.gc-header { display: flex; align-items: baseline; gap: 8px; }
+.gc-name { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--sphinx); }
+.gc-formula { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
 .gc-role { font-size: 11px; color: var(--text-dim); line-height: 1.4; }
 
 /* Description */
-.readme-content { font-size: 12px; line-height: 1.7; color: var(--text-dim); white-space: pre-wrap; font-family: var(--font); }
+.readme-content { font-size: 12px; line-height: 1.7; color: var(--text-dim); white-space: pre-wrap; }
 .readme-content h2 { font-size: 13px; font-weight: 700; color: var(--text); margin: 12px 0 4px; padding-bottom: 3px; border-bottom: 1px solid var(--border); }
 .readme-content strong { color: var(--text); }
 .readme-content code { font-family: var(--font-mono); font-size: 10.5px; background: var(--bg-card); padding: 1px 4px; border-radius: 3px; color: var(--sphinx); }
@@ -191,121 +175,70 @@ html, body {
 .synergy-box {
   background: var(--bg-card); border: 1px solid var(--border);
   border-left: 3px solid var(--warn); border-radius: var(--radius);
-  padding: 10px 12px; gap: 6px; display: flex; flex-direction: column;
+  padding: 10px 12px; display: flex; flex-direction: column; gap: 5px;
 }
-.synergy-label { font-size: 12px; font-weight: 700; color: var(--warn); }
+.synergy-label   { font-size: 12px; font-weight: 700; color: var(--warn); }
 .synergy-formula { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); word-break: break-word; }
 .synergy-emergent { font-size: 11px; color: var(--text-dim); }
+.analogy-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 2px; }
+.analogy-table th { text-align: left; padding: 3px 8px; color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border); }
+.analogy-table td { padding: 3px 8px; color: var(--text-dim); border-bottom: 1px solid var(--border); }
+.analogy-table tr:last-child td { border-bottom: none; }
+.analogy-table td:first-child { color: var(--sphinx); font-family: var(--font-mono); font-size: 10px; }
 
-/* ── Comp-bar ─────────────────────────────────────────────────── */
-#comp-bar {
-  grid-area: compbar; background: var(--bg-panel);
-  border-top: 1px solid var(--border); overflow: hidden;
-}
-#comp-inner {
-  display: flex; align-items: center; gap: 12px;
-  padding: 8px 16px; flex-wrap: nowrap; overflow-x: auto; height: 100%;
-}
-.comp-group { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-.comp-label {
-  font-size: 11px; color: var(--muted); white-space: nowrap;
-  display: flex; align-items: center; gap: 4px;
-}
-.comp-icon { font-size: 14px; }
-.comp-val {
-  font-size: 11px; font-family: var(--font-mono);
-  color: var(--text-dim); min-width: 52px; text-align: right;
-}
-input[type="range"].comp-slider {
-  -webkit-appearance: none; width: 110px; height: 4px;
-  background: var(--bg-card); border-radius: 2px; outline: none;
-}
-input[type="range"].comp-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
-  background: var(--sphinx); cursor: pointer; border: 2px solid var(--bg-panel);
-}
-.comp-sep { width: 1px; height: 28px; background: var(--border); flex-shrink: 0; }
-
-/* Waveform buttons */
-.wf-btn {
-  padding: 4px 10px; border-radius: var(--radius);
-  font-size: 11px; font-weight: 600; cursor: pointer;
-  border: 1px solid var(--border); background: var(--bg-card);
-  color: var(--muted); transition: all 0.12s; flex-shrink: 0;
-}
-.wf-btn:hover { color: var(--text-dim); border-color: var(--border-light); }
-.wf-btn.active-sine     { color: var(--wf-sine);     border-color: var(--wf-sine);     background: rgba(50,210,225,0.12); }
-.wf-btn.active-square   { color: var(--wf-square);   border-color: var(--wf-square);   background: rgba(65,205,110,0.12); }
-.wf-btn.active-triangle { color: var(--wf-triangle); border-color: var(--wf-triangle); background: rgba(255,150,40,0.12); }
-.wf-btn.active-sawtooth { color: var(--wf-sawtooth); border-color: var(--wf-sawtooth); background: rgba(255,195,40,0.12); }
-
-/* Note display */
-#note-display {
-  font-family: var(--font-mono); font-size: 13px; font-weight: 700;
-  color: var(--wf-sine); min-width: 100px; text-align: center;
-  flex-shrink: 0;
-}
-
-/* ── Controls ─────────────────────────────────────────────────── */
+/* ── Controls ──────────────────────────────────────────────────── */
 #controls {
-  grid-area: controls;
-  display: flex; align-items: center; gap: 10px; padding: 0 16px;
-  background: var(--bg-panel); border-top: 1px solid var(--border); flex-wrap: nowrap;
+  grid-area: controls; display: flex; align-items: center;
+  gap: 10px; padding: 0 14px;
+  background: var(--bg-panel); border-top: 1px solid var(--border);
+  flex-wrap: nowrap; overflow-x: auto;
 }
 .ctrl-btn {
-  display: flex; align-items: center; gap: 5px; padding: 5px 12px;
+  display: flex; align-items: center; gap: 5px; padding: 5px 11px;
   background: var(--bg-card); border: 1px solid var(--border);
   border-radius: var(--radius); color: var(--text-dim); font-size: 12px;
   font-family: var(--font); cursor: pointer;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
   white-space: nowrap; flex-shrink: 0;
 }
-.ctrl-btn:hover  { background: var(--bg-hover); color: var(--text); border-color: var(--border-light); }
-.ctrl-btn.active { background: rgba(86,211,100,0.1); border-color: var(--accent); color: var(--accent); }
-.ctrl-btn.audio-on {
-  background: rgba(50,210,225,0.1) !important;
-  border-color: var(--wf-sine) !important;
-  color: var(--wf-sine) !important;
+.ctrl-btn:hover { background: var(--bg-hover); color: var(--text); border-color: var(--border-light); }
+#btn-audio.audio-on {
+  background: rgba(86,211,100,0.12); border-color: rgba(86,211,100,0.55);
+  color: var(--accent); box-shadow: 0 0 10px rgba(86,211,100,0.18);
 }
 .ctrl-sep { width: 1px; height: 28px; background: var(--border); flex-shrink: 0; }
-.ctrl-label { font-size: 11px; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
-
+.ctrl-group { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; }
+.ctrl-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); white-space: nowrap; }
+.ctrl-row { display: flex; align-items: center; gap: 5px; }
+.ctrl-val { font-family: var(--font-mono); font-size: 11px; color: var(--sphinx); min-width: 60px; text-align: right; flex-shrink: 0; }
 input[type="range"] {
-  -webkit-appearance: none; width: 80px; height: 4px;
+  -webkit-appearance: none; width: 100px; height: 4px;
   background: var(--bg-card); border-radius: 2px; outline: none; flex-shrink: 0;
 }
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
   background: var(--sphinx); cursor: pointer; border: 2px solid var(--bg-panel);
 }
-
-.status-indicator {
-  margin-left: auto; display: flex; align-items: center; gap: 6px;
-  font-size: 11px; color: var(--muted); flex-shrink: 0;
+#sl-amp::-webkit-slider-thumb { background: var(--warn); }
+#sl-fine::-webkit-slider-thumb { background: var(--eagle); }
+.wf-btn {
+  padding: 3px 8px; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 4px; color: var(--muted); font-size: 11px; cursor: pointer;
+  transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
 }
-.status-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--muted); transition: background 0.3s;
-}
-.status-dot.running { background: var(--wf-sine); animation: pulse 1.4s ease-in-out infinite; }
-.status-dot.paused  { background: var(--muted); }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
+.wf-btn:hover { color: var(--text-dim); border-color: var(--border-light); }
+.wf-btn[data-wf="sine"].active     { background: rgba(50,210,225,0.15);  border-color: #32d2e1; color: #32d2e1; }
+.wf-btn[data-wf="square"].active   { background: rgba(65,205,110,0.15);  border-color: #41cd6e; color: #41cd6e; }
+.wf-btn[data-wf="triangle"].active { background: rgba(255,150,40,0.15);  border-color: #ff9628; color: #ff9628; }
+.wf-btn[data-wf="sawtooth"].active { background: rgba(255,195,40,0.15);  border-color: #ffc328; color: #ffc328; }
+.status-indicator { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); flex-shrink: 0; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 1.8s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
-
-/* Home button */
-#btn-home {
-  display: inline-flex; align-items: center;
-  background: none; border: none; cursor: pointer;
-  padding: 4px 6px; margin-right: 4px;
-  opacity: 0.85; transition: opacity 0.15s; text-decoration: none;
-}
-#btn-home:hover { opacity: 1; }
   </style>
-  <link rel="icon" href="data:,">
 </head>
 <body>
 <div id="app">
@@ -313,15 +246,13 @@ input[type="range"]::-webkit-slider-thumb {
   <!-- HEADER -->
   <header id="header">
     <a id="btn-home" href="https://echopraxium.github.io/tscg/" title="Back to Poclet Gallery" target="_self">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block">
-        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-      </svg>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     </a>
     <span class="tscg-logo">TSCG</span>
     <span class="sep">&middot;</span>
-    <span class="poclet-name">VCO &mdash; Voltage Controlled Oscillator Poclet</span>
+    <span class="poclet-name">VCO &mdash; Voltage Controlled Oscillator</span>
     <div class="meta-chips">
-      <span class="chip domain">Electronics / Sound Synthesis</span>
+      <span class="chip domain">Electronics / Modular Synth</span>
       <span class="chip type">m3:Poclet</span>
       <span class="chip version">v1.0.0</span>
     </div>
@@ -336,102 +267,76 @@ input[type="range"]::-webkit-slider-thumb {
   <!-- SIDEBAR -->
   <aside id="sidebar">
     <nav class="tab-bar">
-      <button class="tab-btn" data-tab="description">Description</button>
+      <button class="tab-btn active" data-tab="description">Description</button>
       <button class="tab-btn" data-tab="concepts">Concepts</button>
       <button class="tab-btn" data-tab="synergy">Synergy</button>
       <button class="tab-btn" data-tab="scores">Scores</button>
     </nav>
 
     <!-- Description -->
-    <div id="panel-description" class="tab-panel">
+    <div id="panel-description" class="tab-panel active">
       <div class="readme-content">
 <h2>System</h2>
-A <strong>VCO (Voltage Controlled Oscillator)</strong> is the fundamental pitch-generation
-component of a modular synthesizer. It produces a periodic audio-frequency waveform
-whose frequency is controlled by an input voltage via the <strong>V/Oct standard</strong>.
+A <strong>VCO (Voltage Controlled Oscillator)</strong> is the fundamental pitch-generation component of a modular synthesizer. It produces a periodic audio-frequency waveform whose frequency is precisely controlled by an input voltage following the <strong>V/Oct standard</strong> (1 volt per octave).
 
 <h2>V/Oct Law</h2>
 <code>f(CV) = f&#x2080; &times; 2^(CV / 1V)</code>
-&nbsp; CV = 0V &rarr; 440 Hz (A4) &nbsp;|&nbsp; +1V &rarr; 880 Hz (+1 oct)
-&nbsp; CV = &minus;1V &rarr; 220 Hz (&minus;1 oct) &nbsp;|&nbsp; 1/12 V &rarr; +1 semitone
+
+At <code>f&#x2080; = 440 Hz (A4)</code>:
+<code>CV = 0V   &rarr;  440 Hz  (A4)</code>
+<code>CV = +1V  &rarr;  880 Hz  (A5, +1 octave)</code>
+<code>CV = -1V  &rarr;  220 Hz  (A3, -1 octave)</code>
+<code>1/12 V &asymp; 83 mV  &rarr;  +1 semitone</code>
 
 <h2>Waveform Modes</h2>
-<code>Sine</code> &mdash; Fundamental only &mdash; pure, flute-like
-<code>Square</code> &mdash; Odd harmonics (1/n) &mdash; hollow, woodwind
-<code>Triangle</code> &mdash; Odd harmonics (1/n&sup2;) &mdash; soft, mellow
-<code>Sawtooth</code> &mdash; All harmonics (1/n) &mdash; bright, string/brass
+<strong>Sine</strong>      Fundamental only. Pure, flute-like.
+<strong>Square</strong>    Odd harmonics (1/n). Hollow, woodwind.
+<strong>Triangle</strong>  Odd harmonics (1/n&sup2;). Soft, mellow.
+<strong>Sawtooth</strong>  All harmonics (1/n). Bright, string/brass.
 
-<h2>TSCG Insight</h2>
-Primary metaconcept: <code>m2:Oscillator</code> &mdash; a GenericConceptCombo that
-captures the <em>structured periodic attractor</em>: a component (S) generating a
-circular trajectory (A+I) driven by voltage-controlled dynamics (D) emitting a signal
-flow (F). The V/Oct law is a perfect exponential <code>m2:Amplification</code>.
-
-<h2>Controls</h2>
-Use the <strong>Frequency</strong>, <strong>Amplitude</strong> and <strong>Fine Tune</strong>
-sliders in the bar below the oscilloscope. Select a waveform with the 4 buttons.
-Toggle <strong>AUDIO</strong> in the footer to hear the oscillator live.
+<h2>TSCG Positioning</h2>
+First M0 instantiation of <code>m2:Oscillator</code>, validating the GenericConceptCombo in the Electronics / Music Technology domain. Subclassing <code>m2:Component</code> unlocks full ASFID 5D coverage:
+<code>S &otimes; A &otimes; I &otimes; D &otimes; F</code>
       </div>
     </div>
 
     <!-- Concepts -->
     <div id="panel-concepts" class="tab-panel">
-      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:4px">Primary &mdash; 1 concept</div>
       <div class="gc-list">
         <div class="gc-item primary">
-          <span class="gc-name">m2:Oscillator</span>
-          <div>
-            <div class="gc-formula">&otimes;&rArr;(Component, Process, Trajectory|Circular)</div>
-            <div class="gc-role">Primary — bounded component generating a circular phase-space trajectory; S&otimes;A&otimes;I&otimes;D&otimes;F</div>
+          <div class="gc-header">
+            <span class="gc-name">m2:Oscillator</span>
+            <span class="gc-formula">&otimes;&rArr;(Component, Process, Trajectory|Circular)</span>
           </div>
-        </div>
-      </div>
-      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin:8px 0 4px">Secondary &mdash; 4 concepts</div>
-      <div class="gc-list">
-        <div class="gc-item secondary">
-          <span class="gc-name">m2:Amplification</span>
-          <div>
-            <div class="gc-formula">A&otimes;D</div>
-            <div class="gc-role">V/Oct law: exponential CV&rarr;frequency mapping (×2 per volt)</div>
-          </div>
+          <div class="gc-role">Primary &mdash; bounded, patchable module generating a periodic waveform. Subclasses Component (S) + Process (F) + CircularTrajectory (A).</div>
         </div>
         <div class="gc-item secondary">
-          <span class="gc-name">m2:Transformation</span>
-          <div>
-            <div class="gc-formula">S&otimes;D</div>
-            <div class="gc-role">CV domain &rarr; audio frequency domain (voltage-to-pitch conversion)</div>
+          <div class="gc-header">
+            <span class="gc-name">m2:Amplification</span>
+            <span class="gc-formula">A &otimes; D</span>
           </div>
+          <div class="gc-role">V/Oct exponential CV&rarr;frequency mapping. Each +1V doubles frequency (one octave gain).</div>
         </div>
         <div class="gc-item secondary">
-          <span class="gc-name">m2:Mode</span>
-          <div>
-            <div class="gc-formula">I&otimes;S</div>
-            <div class="gc-role">N-ary selector (N=4): Sine / Square / Triangle / Sawtooth</div>
+          <div class="gc-header">
+            <span class="gc-name">m2:Transformation</span>
+            <span class="gc-formula">S &otimes; D</span>
           </div>
+          <div class="gc-role">CV voltage domain &rarr; audio frequency domain. Logarithmic domain crossing.</div>
         </div>
         <div class="gc-item secondary">
-          <span class="gc-name">m2:Signal</span>
-          <div>
-            <div class="gc-formula">F</div>
-            <div class="gc-role">Audio output waveform &mdash; the observable carrier of pitch information</div>
+          <div class="gc-header">
+            <span class="gc-name">m2:Mode</span>
+            <span class="gc-formula">I &otimes; S</span>
           </div>
-        </div>
-      </div>
-      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin:8px 0 4px">Also validated</div>
-      <div class="gc-list">
-        <div class="gc-item secondary">
-          <span class="gc-name">m2:ValueSpace</span>
-          <div>
-            <div class="gc-formula">A&otimes;I</div>
-            <div class="gc-role">Frequency=Acoustic, Amplitude=Limit_cycle, Phase=Arbitrary, Damping=Undamped</div>
-          </div>
+          <div class="gc-role">Waveform selector (N=4: Sine, Square, Triangle, Sawtooth). Discrete qualitative state switching.</div>
         </div>
         <div class="gc-item secondary">
-          <span class="gc-name">m2:Component</span>
-          <div>
-            <div class="gc-formula">S</div>
-            <div class="gc-role">Patchable Eurorack module — integrator core, V/Oct converter, waveform shaper, buffers</div>
+          <div class="gc-header">
+            <span class="gc-name">m2:Signal</span>
+            <span class="gc-formula">F &otimes; I</span>
           </div>
+          <div class="gc-role">Audio output waveform &plusmn;5V. Observable carrier of harmonic information to downstream modules.</div>
         </div>
       </div>
     </div>
@@ -439,46 +344,29 @@ Toggle <strong>AUDIO</strong> in the footer to hear the oscillator live.
     <!-- Synergy -->
     <div id="panel-synergy" class="tab-panel">
       <div class="synergy-box">
-        <div class="synergy-label">GenericConceptCombo</div>
-        <div class="synergy-formula">m2:Oscillator</div>
-        <div class="synergy-formula" style="font-size:10px;color:var(--muted)">
-          &otimes;&rArr;(Component, Process, Trajectory|Circular)<br>
-          compiled: S&otimes;A&otimes;I&otimes;D&otimes;F
-        </div>
-        <div class="synergy-emergent">
-          <strong>Emergent property:</strong> Pitch-stable periodic waveform whose frequency
-          is precisely and continuously controllable by voltage &mdash; the hallmark of
-          voltage-controlled synthesis. The V/Oct law makes pitch linear in the musical sense.
-        </div>
+        <div class="synergy-label">Primary Metaconcept</div>
+        <div class="synergy-formula">m2:Oscillator &otimes;&rArr; (Component, Process, Trajectory|Circular)</div>
+        <div class="synergy-emergent">Bounded, identifiable, patchable pitch source &mdash; not just an abstract process. The Component dimension adds Structure and enables full 5D ASFID coverage.</div>
+      </div>
+      <div class="synergy-box">
+        <div class="synergy-label">ASFID Tensor Formula</div>
+        <div class="synergy-formula">S &otimes; A &otimes; I &otimes; D &otimes; F</div>
+        <div class="synergy-emergent"><strong>S</strong> integrator core, V/Oct converter, waveform shaper &bull; <strong>A</strong> circular frequency attractor f&thinsp;=&thinsp;f&#x2080;&thinsp;&times;&thinsp;2^CV &bull; <strong>I</strong> phase &phi;(t), shape, pitch CV &bull; <strong>D</strong> V/Oct exponential law &bull; <strong>F</strong> audio output &plusmn;5V + CV + FM inputs</div>
+      </div>
+      <div class="synergy-box">
+        <div class="synergy-label">V/Oct Empirical Law</div>
+        <div class="synergy-formula">f(CV) = f&#x2080; &times; 2^(CV / 1V)</div>
+        <div class="synergy-emergent">Universal Eurorack standard. At f&#x2080;&thinsp;=&thinsp;440 Hz: each 1V = one octave, each 1/12V &asymp; one semitone. Highest REVOI score (0.92) in the Combo family.</div>
       </div>
       <div class="synergy-box" style="border-left-color:var(--sphinx)">
-        <div class="synergy-label" style="color:var(--sphinx)">V/Oct Exponential Law</div>
-        <div class="synergy-formula">f(CV) = f&#x2080; &times; 2^(CV / 1V)</div>
-        <div class="synergy-emergent">
-          This is an <strong>m2:Amplification</strong> in the log domain: each +1V doubles
-          frequency (one octave). Musical intervals are therefore <em>linear</em> in CV space,
-          enabling transposition by simple voltage addition.
-        </div>
-      </div>
-      <div class="synergy-box" style="border-left-color:var(--warn)">
-        <div class="synergy-label" style="color:var(--warn)">Mode Switching &mdash; m2:Mode</div>
-        <div class="synergy-formula">Waveform &isin; {Sine, Square, Triangle, Sawtooth}</div>
-        <div class="synergy-emergent">
-          Each mode selects a different <em>harmonic profile</em> (Information dimension I):
-          Sine=pure, Square=odd 1/n, Triangle=odd 1/n&sup2;, Sawtooth=all 1/n.
-          Same pitch, different timbre — orthogonal axes of the sound design space.
-        </div>
-      </div>
-      <div class="synergy-box" style="border-left-color:var(--eagle)">
-        <div class="synergy-label" style="color:var(--eagle)">Transdisciplinary reach</div>
-        <div class="synergy-formula">m2:Oscillator pattern across domains</div>
-        <div class="synergy-emergent">
-          The same S&otimes;A&otimes;I&otimes;D&otimes;F structure recurs in:<br>
-          &bull; <strong>Biology</strong> &mdash; Cardiac pacemaker (SA node)<br>
-          &bull; <strong>Mechanics</strong> &mdash; Driven variable-length pendulum<br>
-          &bull; <strong>Economics</strong> &mdash; Business cycle oscillator<br>
-          &bull; <strong>Chemistry</strong> &mdash; Belousov-Zhabotinsky reaction
-        </div>
+        <div class="synergy-label" style="color:var(--sphinx)">Transdisciplinary Homologies</div>
+        <table class="analogy-table">
+          <tr><th>Domain</th><th>Analogue</th><th>CV equivalent</th></tr>
+          <tr><td>Biology</td><td>SA node (cardiac pacemaker)</td><td>Autonomic nervous tone</td></tr>
+          <tr><td>Mechanics</td><td>Variable-length driven pendulum</td><td>Effective gravity</td></tr>
+          <tr><td>Economics</td><td>Business cycle oscillator</td><td>Interest rate policy</td></tr>
+          <tr><td>Chemistry</td><td>Belousov-Zhabotinsky reaction</td><td>Reagent input rate</td></tr>
+        </table>
       </div>
     </div>
 
@@ -505,701 +393,425 @@ Toggle <strong>AUDIO</strong> in the footer to hear the oscillator live.
       <div class="gap-badge">
         <div>
           <div class="gap-label">Epistemic Gap &delta;</div>
-          <div class="gap-val">0.16</div>
+          <div class="gap-val">0.08</div>
         </div>
-        <div class="gap-desc">Liminal [0.15, 0.30) &mdash; V/Oct circuit has higher implementation complexity than its elegant mathematical description suggests</div>
+        <div class="gap-desc">OnCriticalLine [0.05, 0.15) &mdash; Map richer than Territory. Highest REVOI in the Combo family.</div>
       </div>
     </div>
   </aside>
 
-  <!-- COMPONENTS BAR -->
-  <div id="comp-bar">
-    <div id="comp-inner">
-      <div class="comp-group">
-        <div class="comp-label"><span class="comp-icon">🎵</span> Freq</div>
-        <input type="range" id="sl-freq" class="comp-slider" min="0" max="1000" step="1" value="671">
-        <div class="comp-val" id="sl-freq-val">440.0 Hz</div>
-      </div>
-      <div class="comp-sep"></div>
-      <div class="comp-group">
-        <div class="comp-label"><span class="comp-icon">📢</span> Amp</div>
-        <input type="range" id="sl-amp" class="comp-slider" min="0" max="1" step="0.01" value="0.70">
-        <div class="comp-val" id="sl-amp-val">70%</div>
-      </div>
-      <div class="comp-sep"></div>
-      <div class="comp-group">
-        <div class="comp-label"><span class="comp-icon">🎛</span> Fine</div>
-        <input type="range" id="sl-fine" class="comp-slider" min="-100" max="100" step="1" value="0">
-        <div class="comp-val" id="sl-fine-val">+0 ¢</div>
-      </div>
-      <div class="comp-sep"></div>
-      <div class="comp-group" style="gap:4px">
-        <button class="wf-btn active-sine"  id="wf-sine"     data-wf="Sine">Sine</button>
-        <button class="wf-btn"              id="wf-square"   data-wf="Square">Square</button>
-        <button class="wf-btn"              id="wf-triangle" data-wf="Triangle">Triangle</button>
-        <button class="wf-btn"              id="wf-sawtooth" data-wf="Sawtooth">Sawtooth</button>
-      </div>
-      <div class="comp-sep"></div>
-      <div id="note-display">A4</div>
-    </div>
-  </div>
-
   <!-- CONTROLS -->
   <footer id="controls">
-    <button class="ctrl-btn active" id="btn-play">&#9646;&#9646; Pause</button>
-    <button class="ctrl-btn"       id="btn-reset">&#8634; Reset</button>
+    <!-- Frequency -->
+    <div class="ctrl-group">
+      <div class="ctrl-lbl">Frequency</div>
+      <div class="ctrl-row">
+        <input type="range" id="sl-freq" min="0" max="100" step="0.1" value="67.1">
+        <span class="ctrl-val" id="val-freq">440.0 Hz</span>
+      </div>
+    </div>
     <div class="ctrl-sep"></div>
-    <span class="ctrl-label">Speed</span>
-    <input type="range" id="speed-slider" min="0.2" max="3.0" step="0.2" value="1.0">
-    <span class="ctrl-label" id="speed-label">&times;1.0</span>
+    <!-- Amplitude -->
+    <div class="ctrl-group">
+      <div class="ctrl-lbl">Amplitude</div>
+      <div class="ctrl-row">
+        <input type="range" id="sl-amp" min="0" max="100" step="1" value="50">
+        <span class="ctrl-val" id="val-amp">50%</span>
+      </div>
+    </div>
     <div class="ctrl-sep"></div>
-    <button class="ctrl-btn" id="btn-audio">&#9711; Audio</button>
+    <!-- Fine Tune -->
+    <div class="ctrl-group">
+      <div class="ctrl-lbl">Fine Tune</div>
+      <div class="ctrl-row">
+        <input type="range" id="sl-fine" min="-100" max="100" step="1" value="0">
+        <span class="ctrl-val" id="val-fine">0&#x00A2;</span>
+      </div>
+    </div>
     <div class="ctrl-sep"></div>
-    <button class="ctrl-btn" id="btn-explorer"
-            style="opacity:0.4;cursor:not-allowed"
-            title="Poclet Explorer — not available in standalone mode">&#10799; Poclet Explorer</button>
+    <!-- Waveform -->
+    <div class="ctrl-group">
+      <div class="ctrl-lbl">Waveform</div>
+      <div class="ctrl-row" id="wf-buttons">
+        <button class="wf-btn active" data-wf="sine">Sine</button>
+        <button class="wf-btn" data-wf="square">Square</button>
+        <button class="wf-btn" data-wf="triangle">Triangle</button>
+        <button class="wf-btn" data-wf="sawtooth">Sawtooth</button>
+      </div>
+    </div>
+    <div class="ctrl-sep"></div>
+    <!-- Audio — AudioContext created on first click ONLY -->
+    <button class="ctrl-btn" id="btn-audio">&#9675;&#8201;Audio</button>
     <div class="status-indicator">
-      <div class="status-dot running" id="status-dot"></div>
-      <span id="status-label">Running</span>
+      <div class="status-dot" id="status-dot"></div>
+      <span id="status-label">Ready</span>
     </div>
   </footer>
 
 </div><!-- #app -->
 
-<!-- p5.js -->
+<!-- p5.js from cdnjs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
 
-<!-- ── Metadata ──────────────────────────────────────────────── -->
+<!-- VCO State, Audio Engine & p5 sketch -->
 <script>
 'use strict';
-const POCLET_METADATA = {
-  id:      'M0_VCO',
-  label:   'Voltage Controlled Oscillator',
-  version: '1.0.0',
-  domain:  'Electronics / Sound Synthesis',
-  type:    'Poclet',
-  date:    '2026-02-27',
-  author:  'Echopraxium with the collaboration of Claude AI',
-  asfid:   { A: 0.90, S: 0.75, F: 0.85, I: 0.80, D: 0.90, mean: 0.84 },
-  revoi:   { R: 0.90, E: 0.85, V: 0.95, O: 0.95, I: 0.95, mean: 0.92 },
-  epistemicGap:     0.16,
-  epistemicGapDesc: 'Liminal \u2014 elegant math, complex analog implementation',
-  synergy: {
-    formula:          'VCO = Electronics \u2299 (Oscillator \u2297 Mode)',
-    compiledTensor:   'S \u2297 A \u2297 I \u2297 D \u2297 F',
-    emergentProperty: 'Pitch-stable periodic waveform controllable by voltage',
-  }
+
+/* ── VCO state ─────────────────────────────────────────────────── */
+const VCO = {
+  frequency: 440,
+  amplitude: 0.50,
+  fineCents: 0,
+  waveform:  'sine',
+  audioOn:   false,
 };
 
 const WF_COLORS = {
-  Sine:     [50,  210, 225],
-  Square:   [65,  205, 110],
-  Triangle: [255, 150,  40],
-  Sawtooth: [255, 195,  40]
+  sine:     [50,  210, 225],
+  square:   [65,  205, 110],
+  triangle: [255, 150,  40],
+  sawtooth: [255, 195,  40],
 };
 
-const NOTES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+function effectiveFreq() {
+  return VCO.frequency * Math.pow(2, VCO.fineCents / 1200);
+}
 
+const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 function freqToNote(freq) {
   if (freq <= 0) return '---';
-  const semitones = 12.0 * Math.log2(freq / 440.0) + 69;
+  const semitones = 12 * Math.log2(freq / 440) + 69;
   const midi  = Math.round(semitones);
   const cents = Math.round((semitones - midi) * 100);
-  const name  = NOTES[((midi % 12) + 12) % 12];
+  const name  = NOTE_NAMES[((midi % 12) + 12) % 12];
   const oct   = Math.floor(midi / 12) - 1;
-  if (cents === 0) return `${name}${oct}`;
-  const sign  = cents >= 0 ? '+' : '';
-  return `${name}${oct} (${sign}${cents}\u00a2)`;
+  if (cents === 0) return name + oct;
+  return name + oct + ' (' + (cents >= 0 ? '+' : '') + cents + '\u00a2)';
 }
 
-function rawToFreq(raw) {
-  // log scale 20–2000 Hz: raw in [0,1000]
-  return 20.0 * Math.pow(100.0, raw / 1000.0);
-}
-</script>
+/* ── Audio Engine ─────────────────────────────────────────────────
+   FIX: AudioContext is created ONLY when the user clicks btn-audio.
+   This satisfies the Chrome autoplay policy (user gesture required).
+   No AudioContext is created at page load or DOMContentLoaded.
+────────────────────────────────────────────────────────────────── */
+let audioCtx = null;
+let oscNode  = null;
+let gainNode = null;
 
-<!-- ── Simulation + p5 sketch ────────────────────────────────── -->
-<script>
-'use strict';
-
-const SIM = {
-  running:     true,
-  speed:       1.0,
-  time:        0,
-  phase:       0,
-  frequency:   440.0,
-  amplitude:   0.70,
-  fineTune:    0,      // cents
-  waveform:   'Sine',
-  audioEnabled: false
-};
-
-let p5Instance = null;
-
-function getEffectiveFreq() {
-  return SIM.frequency * Math.pow(2, SIM.fineTune / 1200.0);
+function startOsc() {
+  stopOsc();
+  oscNode = audioCtx.createOscillator();
+  oscNode.type = VCO.waveform;
+  oscNode.frequency.value = effectiveFreq();
+  oscNode.connect(gainNode);
+  oscNode.start();
+  gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+  gainNode.gain.setTargetAtTime(VCO.amplitude * 0.22, audioCtx.currentTime, 0.025);
 }
 
-function waveVal(wf, phi) {
-  const pm = ((phi % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-  const tn = pm / (2 * Math.PI);
-  switch (wf) {
-    case 'Sine':     return Math.sin(phi);
-    case 'Square':   return pm < Math.PI ? 1.0 : -1.0;
-    case 'Triangle': return tn < 0.5 ? 4*tn - 1 : 3 - 4*tn;
-    case 'Sawtooth': return 2*tn - 1;
-    default:         return 0;
+function stopOsc() {
+  if (oscNode) {
+    if (gainNode) {
+      gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+      gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.025);
+    }
+    const o = oscNode; oscNode = null;
+    setTimeout(() => { try { o.stop(); o.disconnect(); } catch(e) {} }, 120);
   }
 }
 
-function getWfColor() { return WF_COLORS[SIM.waveform] || [120,130,145]; }
+function syncAudio() {
+  if (!audioCtx || !oscNode) return;
+  oscNode.type = VCO.waveform;
+  oscNode.frequency.setTargetAtTime(effectiveFreq(), audioCtx.currentTime, 0.008);
+  gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+  gainNode.gain.setTargetAtTime(VCO.amplitude * 0.22, audioCtx.currentTime, 0.008);
+}
+
+/* toggleAudio is async so we can AWAIT resume() before touching the graph.
+   Without await, the oscillator starts while the context is still suspended
+   (a Promise is returned but ignored), producing silence in Electron/Chrome. */
+async function toggleAudio() {
+  // Create context on first click (this IS the user gesture)
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    gainNode = audioCtx.createGain();
+    gainNode.gain.value = 0;
+    gainNode.connect(audioCtx.destination);
+  }
+  // Always await resume — ensures context is truly running before startOsc()
+  try { await audioCtx.resume(); } catch(e) { console.warn('AudioContext resume:', e); }
+
+  VCO.audioOn = !VCO.audioOn;
+  const btn = document.getElementById('btn-audio');
+  if (VCO.audioOn) {
+    startOsc();
+    btn.innerHTML = '&#9679;&#8201;Audio ON';
+    btn.classList.add('audio-on');
+    document.getElementById('status-label').textContent = 'Audio ON';
+  } else {
+    stopOsc();
+    btn.innerHTML = '&#9675;&#8201;Audio';
+    btn.classList.remove('audio-on');
+    document.getElementById('status-label').textContent = 'Audio OFF';
+  }
+}
+
+/* ── Controls wiring ──────────────────────────────────────────── */
+function sliderToFreq(s)  { return 20 * Math.pow(100, s / 100); }
+function freqToSlider(f)  { return 100 * Math.log(f / 20) / Math.log(100); }
+
+function wireControls() {
+  const slFreq = document.getElementById('sl-freq');
+  slFreq.value = freqToSlider(440).toFixed(1);
+  slFreq.addEventListener('input', () => {
+    VCO.frequency = sliderToFreq(parseFloat(slFreq.value));
+    document.getElementById('val-freq').textContent = VCO.frequency.toFixed(1) + ' Hz';
+    syncAudio();
+  });
+
+  document.getElementById('sl-amp').addEventListener('input', function() {
+    VCO.amplitude = parseInt(this.value) / 100;
+    document.getElementById('val-amp').textContent = Math.round(VCO.amplitude * 100) + '%';
+    syncAudio();
+  });
+
+  document.getElementById('sl-fine').addEventListener('input', function() {
+    VCO.fineCents = parseInt(this.value);
+    document.getElementById('val-fine').textContent =
+      (VCO.fineCents >= 0 ? '+' : '') + VCO.fineCents + '\u00a2';
+    syncAudio();
+  });
+
+  document.querySelectorAll('.wf-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.wf-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      VCO.waveform = btn.dataset.wf;
+      syncAudio();
+    });
+  });
+
+  document.getElementById('btn-audio').addEventListener('click', toggleAudio);
+}
+
+/* ── p5.js Sketch ─────────────────────────────────────────────── */
+let p5Instance = null;
 
 function initP5() {
-  const container = document.getElementById('canvas-area');
+  const sketch = (p) => {
+    let phaseOff = 0;
 
-  const sketch = function(p) {
-    let W, H;
-
-    function resize() {
-      W = container.clientWidth  || 640;
-      H = container.clientHeight || 480;
-      p.resizeCanvas(W, H);
-    }
-
-    p.setup = function() {
-      W = container.clientWidth  || 640;
-      H = container.clientHeight || 480;
-      const cnv = p.createCanvas(W, H);
+    p.setup = () => {
+      const el = document.getElementById('canvas-area');
+      const cnv = p.createCanvas(el.offsetWidth, el.offsetHeight);
       cnv.parent('canvas-area');
-      cnv.canvas.style.position = 'absolute';
-      cnv.canvas.style.top  = '0';
-      cnv.canvas.style.left = '0';
       p.frameRate(60);
-      p.textFont('Segoe UI, system-ui, sans-serif');
-      new ResizeObserver(resize).observe(container);
     };
 
-    p.draw = function() {
-      if (SIM.running) {
-        SIM.time  += SIM.speed / 60.0;
-        const freq = getEffectiveFreq();
-        SIM.phase += (2 * Math.PI * freq / 60.0) * SIM.speed;
-        SIM.phase  %= (2 * Math.PI);
-      }
+    p.windowResized = () => {
+      const el = document.getElementById('canvas-area');
+      p.resizeCanvas(el.offsetWidth, el.offsetHeight);
+    };
 
+    p.draw = () => {
+      phaseOff = (phaseOff + 0.006) % 1000;
       p.background(13, 17, 23);
-
-      const scopeH = Math.floor(H * 0.57);
-      const voctH  = H - scopeH;
-      const PAD    = 12;
-
-      drawOscilloscope(p, PAD, PAD, W - PAD*2, scopeH - PAD*2);
-      drawVOctCurve   (p, PAD, scopeH + 4, W - PAD*2, voctH - PAD - 4);
+      const oscH = Math.floor(p.height * 0.56);
+      drawScope(0, 0, p.width, oscH);
+      drawVoct(0, oscH, p.width, p.height - oscH);
     };
 
-    // ── Oscilloscope ────────────────────────────────────────────
-    function drawOscilloscope(p, x, y, w, h) {
-      const freq  = getEffectiveFreq();
-      const amp   = SIM.amplitude;
-      const col   = getWfColor();
-      const SCOPE_MS = 20.0;
-      const window_s = SCOPE_MS / 1000.0;
-      const n_cycles = freq * window_s;
+    /* ── Oscilloscope ─────────────────────────────────────────── */
+    function drawScope(x, y, w, h) {
+      const col = WF_COLORS[VCO.waveform];
+      const amp = VCO.amplitude;
+      const effF = effectiveFreq();
 
-      // Panel
-      p.noStroke();
-      p.fill(18, 22, 34);
-      p.rect(x, y, w, h, 5);
-      p.noFill();
-      p.stroke(45, 52, 72);
-      p.strokeWeight(1);
-      p.rect(x, y, w, h, 5);
+      p.noStroke(); p.fill(14, 18, 28);
+      p.rect(x, y, w, h);
 
-      const PAD_L = 38;
-      const PAD_R = 8;
-      const PAD_T = 22;
-      const PAD_B = 18;
-      const cx0  = x + PAD_L;
-      const cw   = w - PAD_L - PAD_R;
-      const cy   = y + PAD_T + (h - PAD_T - PAD_B) / 2;
-      const ch   = h - PAD_T - PAD_B;
+      // Grid
+      p.stroke(38, 50, 72, 110); p.strokeWeight(1);
+      for (let i = 1; i < 8; i++)  p.line(x + w * i / 8, y, x + w * i / 8, y + h);
+      for (let i = 1; i < 4; i++)  p.line(x, y + h * i / 4, x + w, y + h * i / 4);
+      p.stroke(55, 70, 100, 200);
+      p.line(x, y + h / 2, x + w, y + h / 2);
 
-      // Subtle horizontal grid
-      for (let g = -1; g <= 1; g += 1) {
-        if (g === 0) continue;
-        const gy = cy + g * (ch / 2) * amp * 0.5;
-        p.stroke(35, 42, 58);
-        p.strokeWeight(1);
-        p.line(cx0, gy, cx0 + cw, gy);
-      }
-
-      // Center line
-      p.stroke(50, 58, 80);
-      p.strokeWeight(1);
-      p.line(cx0, cy, cx0 + cw, cy);
-
-      // Y-axis
-      p.stroke(50, 58, 80);
-      p.line(cx0, y + PAD_T, cx0, y + PAD_T + ch);
-
-      // Y labels
-      p.noStroke();
-      p.fill(70, 80, 100);
-      p.textAlign(p.RIGHT, p.CENTER);
-      p.textSize(9);
-      p.text('+1', cx0 - 3, cy - ch/2 * amp + 1);
-      p.text('0',  cx0 - 3, cy);
-      p.text('\u22121', cx0 - 3, cy + ch/2 * amp - 1);
-
-      // Vertical grid (per cycle)
-      const n_grid = Math.min(Math.floor(n_cycles), 32);
-      p.stroke(40, 48, 66);
-      p.strokeWeight(1);
-      if (n_grid >= 1) {
-        for (let k = 1; k <= n_grid; k++) {
-          const gx = cx0 + (k / n_cycles) * cw;
-          if (gx <= cx0 + cw) p.line(gx, y + PAD_T, gx, y + PAD_T + ch);
+      // Waveform — 3 passes (glow + line)
+      const N = 512, cy = y + h / 2, ampPx = h * 0.40 * amp;
+      for (let pass = 0; pass < 3; pass++) {
+        p.stroke(col[0], col[1], col[2], [28, 70, 215][pass]);
+        p.strokeWeight([7, 3, 1.5][pass]);
+        p.noFill(); p.beginShape();
+        for (let i = 0; i <= N; i++) {
+          const t  = (i / N) * 2.5 + phaseOff;
+          const s  = wfSample(VCO.waveform, t);
+          p.vertex(x + (i / N) * w, cy - s * ampPx);
         }
-      } else {
-        [0.25, 0.5, 0.75].forEach(fr => {
-          p.line(cx0 + fr*cw, y + PAD_T, cx0 + fr*cw, y + PAD_T + ch);
-        });
+        p.endShape();
       }
 
-      // Glow pass (low-alpha wide stroke)
-      p.stroke(col[0], col[1], col[2], 40);
-      p.strokeWeight(5);
-      p.noFill();
-      p.beginShape();
-      for (let px = 0; px <= cw; px += 2) {
-        const t   = px / cw * window_s;
-        const phi = 2 * Math.PI * freq * t;
-        const val = waveVal(SIM.waveform, phi) * amp;
-        p.vertex(cx0 + px, cy - val * (ch / 2));
-      }
-      p.endShape();
-
-      // Main waveform stroke
-      p.stroke(col[0], col[1], col[2], 220);
-      p.strokeWeight(2);
-      p.noFill();
-      p.beginShape();
-      for (let px = 0; px <= cw; px++) {
-        const t   = px / cw * window_s;
-        const phi = 2 * Math.PI * freq * t;
-        const val = waveVal(SIM.waveform, phi) * amp;
-        p.vertex(cx0 + px, cy - val * (ch / 2));
-      }
-      p.endShape();
-
-      // Header labels
+      // Note name + freq
+      const note = freqToNote(effF);
       p.noStroke();
-      p.fill(col[0], col[1], col[2], 180);
-      p.textAlign(p.LEFT, p.TOP);
-      p.textSize(9.5);
-      p.textStyle(p.BOLD);
-      p.text('OSCILLOSCOPE', x + 4, y + 4);
-      p.textStyle(p.NORMAL);
+      p.fill(col[0], col[1], col[2], 235);
+      p.textFont('Consolas, monospace');
+      p.textAlign(p.LEFT, p.TOP); p.textSize(14); p.textStyle(p.BOLD);
+      p.text(note, x + 12, y + 10);
+      p.fill(110, 125, 150, 200);
+      p.textSize(11); p.textStyle(p.NORMAL);
+      p.text(effF.toFixed(2) + ' Hz', x + 12, y + 29);
 
-      // Waveform name badge (top-right area)
-      p.fill(col[0], col[1], col[2], 140);
-      p.textAlign(p.RIGHT, p.TOP);
-      p.textSize(9);
-      p.text(SIM.waveform.toUpperCase(), x + w - 4, y + 4);
+      // Waveform name top-right
+      const wfLabel = VCO.waveform.charAt(0).toUpperCase() + VCO.waveform.slice(1);
+      p.fill(col[0], col[1], col[2], 160);
+      p.textAlign(p.RIGHT, p.TOP); p.textSize(11);
+      p.text(wfLabel, x + w - 10, y + 10);
 
-      // Bottom-left: cycle count
-      p.fill(80, 92, 115);
-      p.textAlign(p.LEFT, p.BOTTOM);
-      p.textSize(9);
-      const cycleText = n_cycles >= 1
-        ? `${n_cycles.toFixed(1)} cycles @ ${freq.toFixed(1)} Hz`
-        : `${(1000.0/freq).toFixed(0)} ms/cycle @ ${freq.toFixed(1)} Hz`;
-      p.text(cycleText, cx0, y + h - 2);
-
-      // Bottom-right: amp + window
-      p.textAlign(p.RIGHT, p.BOTTOM);
-      p.text(`Amp ${(amp*100).toFixed(0)}%  |  ${SCOPE_MS} ms window`, x + w - 4, y + h - 2);
-
-      // Live note name overlay (large, centered on canvas)
-      const noteStr = freqToNote(freq);
-      p.textAlign(p.CENTER, p.CENTER);
-      p.fill(col[0], col[1], col[2], 50);
-      p.textSize(26);
-      p.textStyle(p.BOLD);
-      p.text(noteStr, x + w/2, cy);
-      p.textStyle(p.NORMAL);
+      // Panel label
+      p.fill(45, 60, 88, 160);
+      p.textAlign(p.LEFT, p.BOTTOM); p.textSize(10);
+      p.text('OSCILLOSCOPE', x + 10, y + h - 8);
     }
 
-    // ── V/Oct Curve ─────────────────────────────────────────────
-    function drawVOctCurve(p, x, y, w, h) {
-      const freq    = getEffectiveFreq();
-      const col     = getWfColor();
-      const BASE_F  = 440.0;
-      const cv_lo   = -3.0, cv_hi = 5.0;
-      const f_lo    = BASE_F * Math.pow(2, cv_lo);
-      const f_hi    = BASE_F * Math.pow(2, cv_hi);
-
-      // Panel
-      p.noStroke();
-      p.fill(18, 22, 34);
-      p.rect(x, y, w, h, 5);
-      p.noFill();
-      p.stroke(45, 52, 72);
-      p.strokeWeight(1);
-      p.rect(x, y, w, h, 5);
-
-      const PAD_L = 14;
-      const PAD_R = 12;
-      const PAD_T = 20;
-      const PAD_B = 18;
-      const mx = x + PAD_L;
-      const my = y + PAD_T;
-      const mw = w - PAD_L - PAD_R;
-      const mh = h - PAD_T - PAD_B;
-
-      function cvToPx(cv)  { return mx + (cv - cv_lo) / (cv_hi - cv_lo) * mw; }
-      function freqToPy(f) {
-        const t = Math.log(f / f_lo) / Math.log(f_hi / f_lo);
-        return my + mh - t * mh;
-      }
-
-      // Octave vertical grid + V labels
-      for (let cv = Math.ceil(cv_lo); cv <= Math.floor(cv_hi); cv++) {
-        const gx = cvToPx(cv);
-        p.stroke(40, 48, 66);
-        p.strokeWeight(1);
-        p.line(gx, my, gx, my + mh);
-        p.noStroke();
-        p.fill(65, 75, 98);
-        p.textAlign(p.CENTER, p.TOP);
-        p.textSize(8.5);
-        p.text(`${cv >= 0 ? '+' : ''}${cv}V`, gx, my + mh + 2);
-      }
-
-      // Horizontal note grid (every octave of freq)
-      for (let oct = -3; oct <= 5; oct++) {
-        const f  = BASE_F * Math.pow(2, oct);
-        if (f < f_lo || f > f_hi) continue;
-        const gy = freqToPy(f);
-        p.stroke(33, 40, 56);
-        p.strokeWeight(1);
-        p.line(mx, gy, mx + mw, gy);
-        // Freq label on left
-        p.noStroke();
-        p.fill(55, 65, 88);
-        p.textAlign(p.LEFT, p.CENTER);
-        p.textSize(8);
-        const hz  = f < 1000 ? `${f.toFixed(0)}Hz` : `${(f/1000).toFixed(1)}kHz`;
-        p.text(hz, mx + 2, gy);
-      }
-
-      // Curve glow
-      p.stroke(col[0], col[1], col[2], 35);
-      p.strokeWeight(4);
-      p.noFill();
-      p.beginShape();
-      for (let px = 0; px <= mw; px += 2) {
-        const cv = cv_lo + px / mw * (cv_hi - cv_lo);
-        const f  = BASE_F * Math.pow(2, cv);
-        const gy = freqToPy(f);
-        if (gy >= my && gy <= my + mh) p.vertex(mx + px, gy);
-      }
-      p.endShape();
-
-      // Curve main
-      p.stroke(col[0], col[1], col[2], 160);
-      p.strokeWeight(1.5);
-      p.noFill();
-      p.beginShape();
-      for (let px = 0; px <= mw; px++) {
-        const cv = cv_lo + px / mw * (cv_hi - cv_lo);
-        const f  = BASE_F * Math.pow(2, cv);
-        const gy = freqToPy(f);
-        if (gy >= my && gy <= my + mh) p.vertex(mx + px, gy);
-      }
-      p.endShape();
-
-      // Current frequency marker
-      if (freq > f_lo && freq < f_hi) {
-        const cv_cur = Math.log2(freq / BASE_F);
-        if (cv_cur >= cv_lo && cv_cur <= cv_hi) {
-          const gx = cvToPx(cv_cur);
-          const gy = freqToPy(freq);
-
-          // Vertical line
-          p.stroke(col[0], col[1], col[2], 130);
-          p.strokeWeight(1);
-          p.line(gx, my, gx, my + mh);
-
-          // Dot glow
-          p.noStroke();
-          p.fill(col[0], col[1], col[2], 50);
-          p.ellipse(gx, gy, 16, 16);
-          // Dot
-          p.fill(col[0], col[1], col[2]);
-          p.ellipse(gx, gy, 8, 8);
-
-          // Labels
-          const noteStr = freqToNote(freq);
-          const lx = Math.min(gx + 8, mx + mw - 80);
-          p.textStyle(p.BOLD);
-          p.fill(col[0], col[1], col[2]);
-          p.textAlign(p.LEFT, p.BOTTOM);
-          p.textSize(10);
-          p.text(`${freq.toFixed(1)} Hz`, lx, gy - 1);
-          p.textStyle(p.NORMAL);
-          p.fill(col[0], col[1], col[2], 190);
-          p.textSize(9);
-          p.textAlign(p.LEFT, p.TOP);
-          p.text(noteStr, lx, gy + 2);
-
-          // CV value at bottom
-          p.fill(col[0], col[1], col[2], 160);
-          p.textAlign(p.CENTER, p.TOP);
-          p.textSize(8.5);
-          p.text(`${cv_cur >= 0 ? '+' : ''}${cv_cur.toFixed(2)}V`, gx, my + mh + 2);
-        }
-      }
-
-      // Title
-      p.noStroke();
-      p.fill(80, 92, 115);
-      p.textAlign(p.LEFT, p.TOP);
-      p.textSize(9);
-      p.text('V/Oct law  f = f\u2080 \u00d7 2^CV', x + 4, y + 4);
-      p.textAlign(p.RIGHT, p.TOP);
-      p.text('f\u2080 = 440 Hz (A4)', x + w - 4, y + 4);
+    function wfSample(wf, t) {
+      const ph = (t % 1.0) * 2 * Math.PI;
+      if (wf === 'sine')     return Math.sin(ph);
+      if (wf === 'square')   return ph < Math.PI ? 1 : -1;
+      if (wf === 'triangle') { const pn = ph / (2 * Math.PI); return pn < 0.5 ? 4*pn-1 : 3-4*pn; }
+      if (wf === 'sawtooth') return (ph / (2 * Math.PI)) * 2 - 1;
+      return 0;
     }
+
+    /* ── V/Oct Curve ──────────────────────────────────────────── */
+    function drawVoct(x, y, w, h) {
+      const F0   = 440;
+      const CV_MIN = -2, CV_MAX = 4;
+      const F_MIN  = 20, F_MAX  = 2000;
+      const effF   = effectiveFreq();
+
+      p.noStroke(); p.fill(12, 15, 22);
+      p.rect(x, y, w, h);
+      p.stroke(40, 52, 72, 200); p.strokeWeight(1);
+      p.line(x, y, x + w, y);   // separator
+
+      const cvToX = cv => x + (cv - CV_MIN) / (CV_MAX - CV_MIN) * w;
+      const fToY  = f  => {
+        const t = (Math.log(Math.max(F_MIN, Math.min(F_MAX, f))) - Math.log(F_MIN))
+                / (Math.log(F_MAX) - Math.log(F_MIN));
+        return y + h - 14 - t * (h - 26);
+      };
+
+      // Volt grid
+      p.textFont('Consolas, monospace');
+      for (let cv = CV_MIN; cv <= CV_MAX; cv++) {
+        const gx = cvToX(cv);
+        const isZero = cv === 0;
+        p.stroke(isZero ? 65 : 36, isZero ? 85 : 50, isZero ? 120 : 72, isZero ? 190 : 100);
+        p.strokeWeight(1);
+        p.line(gx, y + 2, gx, y + h - 13);
+        p.noStroke();
+        p.fill(isZero ? 100 : 60, isZero ? 125 : 78, isZero ? 175 : 110, 185);
+        p.textAlign(p.CENTER, p.BOTTOM); p.textSize(9); p.textStyle(p.NORMAL);
+        p.text(cv + 'V', gx, y + h);
+      }
+
+      // Octave reference lines
+      [[55,'A1'],[110,'A2'],[220,'A3'],[440,'A4'],[880,'A5'],[1760,'A6']].forEach(([f, l]) => {
+        const gy = fToY(f);
+        if (gy < y + 4 || gy > y + h - 15) return;
+        p.stroke(36, 50, 72, 88); p.strokeWeight(1);
+        p.line(x + 26, gy, x + w, gy);
+        p.noStroke();
+        p.fill(55, 72, 100, 155);
+        p.textAlign(p.LEFT, p.CENTER); p.textSize(9);
+        p.text(l, x + 4, gy);
+      });
+
+      // V/Oct exponential curve
+      p.stroke(100, 165, 240, 190); p.strokeWeight(2); p.noFill();
+      p.beginShape();
+      for (let i = 0; i <= 300; i++) {
+        const cv = CV_MIN + (i / 300) * (CV_MAX - CV_MIN);
+        const f  = F0 * Math.pow(2, cv);
+        if (f < F_MIN * 0.85 || f > F_MAX * 1.15) continue;
+        p.vertex(cvToX(cv), fToY(f));
+      }
+      p.endShape();
+
+      // Current operating point
+      const currCV = Math.log2(effF / F0);
+      if (currCV >= CV_MIN && currCV <= CV_MAX && effF >= F_MIN && effF <= F_MAX) {
+        const px  = cvToX(currCV);
+        const py  = fToY(effF);
+        const col = WF_COLORS[VCO.waveform];
+
+        // Crosshairs
+        p.stroke(col[0], col[1], col[2], 55); p.strokeWeight(1);
+        p.line(x, py, x + w, py);
+        p.line(px, y + 2, px, y + h - 14);
+
+        // Glow halo
+        p.noStroke(); p.fill(col[0], col[1], col[2], 45);
+        p.ellipse(px, py, 22, 22);
+        // Dot
+        p.fill(col[0], col[1], col[2], 230);
+        p.ellipse(px, py, 9, 9);
+
+        // Label
+        const lbl = effF.toFixed(1) + ' Hz  CV=' + currCV.toFixed(2) + 'V';
+        const toRight = currCV < (CV_MIN + CV_MAX) / 2;
+        p.fill(col[0], col[1], col[2], 230);
+        p.textAlign(toRight ? p.LEFT : p.RIGHT, p.BOTTOM);
+        p.textSize(10); p.textStyle(p.BOLD);
+        p.text(lbl, px + (toRight ? 10 : -10), py - 5);
+      }
+
+      // Panel label
+      p.noStroke(); p.fill(45, 60, 88, 160);
+      p.textAlign(p.RIGHT, p.BOTTOM); p.textSize(10); p.textStyle(p.NORMAL);
+      p.text('V/OCT CURVE  \u00b7  f\u2080 = 440 Hz  \u00b7  f(CV) = f\u2080 \u00d7 2^CV', x + w - 10, y + h);
+    }
+
   }; // end sketch
-
   p5Instance = new p5(sketch);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   wireControls();
   initP5();
-  initAudio();
-  initCompBar();
-  initTabSwitching();
-  initSplitter();
-  updateNoteDisplay();
 });
 </script>
 
-<!-- ── Web Audio ──────────────────────────────────────────────── -->
+<!-- Tab switching & Splitter -->
 <script>
 'use strict';
-
-let _audioCtx   = null;
-let _osc        = null;
-let _gainNode   = null;
-let _audioReady = false;
-
-function initAudio() {
-  // Create context but keep gain at 0 until user enables
-  try {
-    _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    _gainNode = _audioCtx.createGain();
-    _gainNode.gain.value = 0;
-    _gainNode.connect(_audioCtx.destination);
-
-    _osc = _audioCtx.createOscillator();
-    _osc.type = 'sine';
-    _osc.frequency.value = 440;
-    _osc.connect(_gainNode);
-    _osc.start();
-    _audioReady = true;
-  } catch(e) {
-    console.warn('Web Audio API not available:', e);
-    _audioReady = false;
-  }
-}
-
-const WF_AUDIO_TYPE = {
-  Sine:     'sine',
-  Square:   'square',
-  Triangle: 'triangle',
-  Sawtooth: 'sawtooth'
-};
-
-function updateAudio() {
-  if (!_audioReady || !_osc) return;
-  if (_audioCtx.state === 'suspended') _audioCtx.resume();
-  _osc.type = WF_AUDIO_TYPE[SIM.waveform] || 'sine';
-  _osc.frequency.value = Math.max(20, getEffectiveFreq());
-  _gainNode.gain.value = SIM.audioEnabled ? SIM.amplitude * 0.22 : 0;
-}
-</script>
-
-<!-- ── Controls wiring ───────────────────────────────────────── -->
-<script>
-'use strict';
-
-function updateStatusIndicator() {
-  const dot   = document.getElementById('status-dot');
-  const label = document.getElementById('status-label');
-  if (!dot || !label) return;
-  if (!SIM.running) {
-    dot.className     = 'status-dot paused';
-    label.textContent = 'Paused';
-  } else {
-    dot.className     = 'status-dot running';
-    label.textContent = 'Running';
-  }
-}
-
-function updateNoteDisplay() {
-  const nd  = document.getElementById('note-display');
-  if (!nd) return;
-  const col = WF_COLORS[SIM.waveform] || [120,130,145];
-  nd.textContent = freqToNote(getEffectiveFreq());
-  nd.style.color = `rgb(${col[0]},${col[1]},${col[2]})`;
-}
-
-function syncWfButtons() {
-  const wfKey = SIM.waveform.toLowerCase();
-  document.querySelectorAll('.wf-btn').forEach(btn => {
-    const bwf = btn.dataset.wf.toLowerCase();
-    btn.className = 'wf-btn' + (bwf === wfKey ? ` active-${bwf}` : '');
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + t).classList.add('active');
   });
-  // also update freq slider thumb color via custom prop
-  const col = WF_COLORS[SIM.waveform];
-  const hexCol = col ? `rgb(${col[0]},${col[1]},${col[2]})` : 'var(--sphinx)';
-  document.querySelectorAll('.comp-slider').forEach(sl =>
-    sl.style.setProperty('--thumb-color', hexCol)
-  );
-}
-
-function wireControls() {
-  const btnPlay    = document.getElementById('btn-play');
-  const btnReset   = document.getElementById('btn-reset');
-  const btnAudio   = document.getElementById('btn-audio');
-  const speedSlider = document.getElementById('speed-slider');
-
-  btnPlay.addEventListener('click', () => {
-    SIM.running = !SIM.running;
-    btnPlay.textContent = SIM.running ? '\u23f8 Pause' : '\u25b6 Play';
-    btnPlay.classList.toggle('active', SIM.running);
-    if (p5Instance) { SIM.running ? p5Instance.loop() : p5Instance.noLoop(); }
-    updateStatusIndicator();
-  });
-
-  btnReset.addEventListener('click', () => {
-    SIM.frequency  = 440.0;
-    SIM.amplitude  = 0.70;
-    SIM.fineTune   = 0;
-    SIM.waveform   = 'Sine';
-    SIM.time       = 0;
-    SIM.phase      = 0;
-
-    document.getElementById('sl-freq').value = 671;
-    document.getElementById('sl-amp').value  = 0.70;
-    document.getElementById('sl-fine').value = 0;
-    document.getElementById('sl-freq-val').textContent = '440.0 Hz';
-    document.getElementById('sl-amp-val').textContent  = '70%';
-    document.getElementById('sl-fine-val').textContent = '+0 \u00a2';
-
-    syncWfButtons();
-    updateNoteDisplay();
-    updateAudio();
-
-    if (!SIM.running) {
-      SIM.running = true;
-      btnPlay.textContent = '\u23f8 Pause';
-      btnPlay.classList.add('active');
-      if (p5Instance) p5Instance.loop();
-    }
-    updateStatusIndicator();
-  });
-
-  btnAudio.addEventListener('click', () => {
-    if (_audioCtx && _audioCtx.state === 'suspended') _audioCtx.resume();
-    SIM.audioEnabled = !SIM.audioEnabled;
-    btnAudio.textContent = SIM.audioEnabled ? '\u25cf Audio' : '\u25cb Audio';
-    btnAudio.classList.toggle('audio-on', SIM.audioEnabled);
-    updateAudio();
-  });
-
-  speedSlider.addEventListener('input', () => {
-    SIM.speed = parseFloat(speedSlider.value);
-    document.getElementById('speed-label').textContent = '\u00d7' + SIM.speed.toFixed(1);
-  });
-}
-
-function initCompBar() {
-  // Frequency (log)
-  const slFreq    = document.getElementById('sl-freq');
-  const slFreqVal = document.getElementById('sl-freq-val');
-  slFreq.addEventListener('input', () => {
-    SIM.frequency = rawToFreq(parseFloat(slFreq.value));
-    slFreqVal.textContent = SIM.frequency < 100
-      ? `${SIM.frequency.toFixed(1)} Hz`
-      : `${SIM.frequency.toFixed(0)} Hz`;
-    updateNoteDisplay();
-    updateAudio();
-  });
-
-  // Amplitude
-  const slAmp    = document.getElementById('sl-amp');
-  const slAmpVal = document.getElementById('sl-amp-val');
-  slAmp.addEventListener('input', () => {
-    SIM.amplitude = parseFloat(slAmp.value);
-    slAmpVal.textContent = `${(SIM.amplitude * 100).toFixed(0)}%`;
-    updateAudio();
-  });
-
-  // Fine Tune
-  const slFine    = document.getElementById('sl-fine');
-  const slFineVal = document.getElementById('sl-fine-val');
-  slFine.addEventListener('input', () => {
-    SIM.fineTune = parseInt(slFine.value);
-    const sign = SIM.fineTune >= 0 ? '+' : '';
-    slFineVal.textContent = `${sign}${SIM.fineTune} \u00a2`;
-    updateNoteDisplay();
-    updateAudio();
-  });
-
-  // Waveform buttons
-  document.querySelectorAll('.wf-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      SIM.waveform = btn.dataset.wf;
-      syncWfButtons();
-      updateNoteDisplay();
-      updateAudio();
-    });
-  });
-
-  syncWfButtons();
-}
-</script>
-
-<!-- ── Tabs + Splitter ───────────────────────────────────────── -->
-<script>
-'use strict';
-
-function initTabSwitching() {
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const t = btn.dataset.tab;
-      document.querySelectorAll('.tab-btn').forEach(b   => b.classList.remove('active'));
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('panel-' + t).classList.add('active');
-    });
-  });
-  // Default: Description
+});
+// Default: Description
+(function() {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelector('[data-tab="description"]').classList.add('active');
   document.getElementById('panel-description').classList.add('active');
-}
+})();
 
-function initSplitter() {
+// Splitter
+(function() {
   const splitter = document.getElementById('splitter');
   const app      = document.getElementById('app');
   let dragging = false, startX = 0, startW = 0;
 
   splitter.addEventListener('mousedown', e => {
-    dragging = true;
-    startX   = e.clientX;
+    dragging = true; startX = e.clientX;
     startW   = document.getElementById('sidebar').getBoundingClientRect().width;
     splitter.classList.add('dragging');
     document.body.style.cssText = 'cursor:col-resize;user-select:none';
@@ -1215,14 +827,11 @@ function initSplitter() {
     dragging = false;
     splitter.classList.remove('dragging');
     document.body.style.cssText = '';
+    if (typeof p5Instance !== 'undefined' && p5Instance) {
+      requestAnimationFrame(() => p5Instance.windowResized());
+    }
   });
-}
-
-// Explorer no-op
-document.addEventListener('DOMContentLoaded', () => {
-  const btnExplorer = document.getElementById('btn-explorer');
-  if (btnExplorer) btnExplorer.addEventListener('click', () => {});
-});
+})();
 </script>
 </body>
 </html>
