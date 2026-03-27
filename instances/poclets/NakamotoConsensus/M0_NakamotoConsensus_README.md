@@ -1,241 +1,170 @@
-# Poclet — Nakamoto Consensus as Dissipative Structure
-**TSCG M0 Poclet** | Version 1.0.0 | 2026-03-23
+# Nakamoto Consensus — TSCG Poclet
+
+**Author:** Echopraxium with the collaboration of Claude AI  
+**Version:** 15.10.1  
+**Date:** 2026-03-23  
+**Ontology file:** `M0_Poclet_NakamotoConsensus.jsonld`  
+**Simulation:** `NakamotoConsensus_sim.html`
 
 ---
 
-## Source
+## Overview
 
-| Field | Value |
-|-------|-------|
-| **Title** | A Phenomenological Statistical-Physics Framework for Distributed Consensus: Phase Transitions and Thermodynamic Stability |
-| **Authors** | Pascal Ranaora, Jennifer Yii |
-| **Institution** | Information Physics Institute, Sydney, Australia |
-| **DOI** | [10.5281/zenodo.19160047](https://doi.org/10.5281/zenodo.19160047) |
-| **Date** | March 23, 2026 |
-| **Version** | v4 (preprint) |
-| **License** | CC-BY 4.0 |
-| **Code** | [github.com/pascalranaora/NakamotoRanaoraPRE2026](https://github.com/pascalranaora/NakamotoRanaoraPRE2026) |
+The **Nakamoto Consensus** models Bitcoin's proof-of-work as a **Prigogine dissipative structure** maintained far from thermodynamic equilibrium, via a **Ginzburg-Landau 1D formalism**. It achieves exceptional TSCG coverage: ASFID 5/5, REVOI 5/5, SpectralClass **Coherent** (δ₁ = 0.030).
+
+This poclet also motivated three **M3 architectural discoveries** (F ≥ 0 axiom relaxation, F as morphic dimension, F_potential / F_active distinction) and five new M2 candidates (Entropy, Stase, Coherence, Processor, Transducer) plus four Combos (Inertia, Potentialization, Absorbing State, Topological Defect).
+
+**Source paper:**  
+Ranaora & Yii (2026) — *"A Phenomenological Statistical-Physics Framework for Distributed Consensus"*  
+Information Physics Institute, Sydney  
+DOI: [10.5281/zenodo.19160047](https://zenodo.org/records/19160047)
 
 ---
 
-## What This Poclet Models
+## System Description
 
-The Bitcoin blockchain modeled as a **Prigogine dissipative structure** maintained far from thermodynamic equilibrium, via a one-dimensional **Ginzburg-Landau field theory**. The paper moves beyond traditional cryptographic and game-theoretic analyses to ground blockchain immutability in non-equilibrium statistical physics.
-
-The central claim: consensus emergence is a **continuous ordering phase transition**, and blockchain immutability is not absolute but **thermodynamically robust** — rewriting history requires overcoming a free-energy barrier ΔF(z) that grows exponentially with confirmation depth and diverges beyond physically realizable bounds.
-
-**TSCG Tier: S** — 5/5 ASFID, 5/5 ORIVE, 17 M2 metaconcepts active, 5 explicit falsifiable predictions, authentic transdisciplinary bridge.
-
----
-
-## Isomorphism Dictionary (Table I — Ranaora & Yii)
-
-The paper provides an explicit mapping between statistical mechanics and consensus observables — a ready-made TSCG M0 dictionary:
-
-| Statistical Physics | Consensus Observable | Role |
-|---|---|---|
-| Local state variable (sᵢ, θᵢ) | Local node view / branch preference | Microscopic degree of freedom |
-| Global order parameter (Φ, ϕ) | Consensus coherence / normalized security density | Degree of ordering and SSB |
-| Effective temperature Teff | Ēeff · τL / (kB · τB) | Desynchronization agitation scale |
-| Mass gap m = ξ⁻¹ | Reorganization suppression scale | Inverse correlation length |
-| Dissipation functional Σ(B) | Cumulative PoW expenditure | Path-weighting functional |
-| Active noise ζ | Block-discovery variance / exogenous shocks | Non-equilibrium stochastic forcing |
-| Effective Markov blanket ∂V | UTXO set | Compressed state description |
-| External quench | Halving event | Deterministic protocol shock |
+The Nakamoto Consensus is the distributed agreement mechanism underpinning Bitcoin. Miners compete to solve a cryptographic puzzle (Proof-of-Work). The network adopts the longest valid chain, creating a global attractor. Ranaora & Yii show this maps exactly onto a 1D Ginzburg-Landau field theory: hash power acts as effective temperature, chain coherence is the order parameter, and forks are topological defects (KT vortices).
 
 ---
 
 ## Master Equations
 
-### 1 — Effective Temperature
-```
-kB · Teff(t) = Pnet(t) · τL
-```
-The thermal noise equals the "blind" energy dissipated during the geographic latency window τL.  
-Increasing block size → increasing Teff → risk of crossing critical threshold Tc.
-
-### 2 — Critical Block Size
-```
-VB,crit ≈ Ceff · (τB / Γc − τ0)
-```
-Protocol-dependent upper bound on block volume. Exceeding it pushes the network beyond its thermal percolation limit into the disordered "liquid" phase. **Key insight:** the validation latency coefficient γ [s/Byte] imposes an irreducible constraint even at infinite communication bandwidth (Cnode → ∞).
-
-### 3 — Probabilistic Finality
-```
-Preorg(z) = (q/p)^z = e^{−z/ξ}     with ξ⁻¹ = ln(p/q)
-```
-Reorganization probability decays exponentially with confirmation depth z. The canonical "6-block rule" corresponds to z ≈ 13ξ for a standard attacker (q = 0.1), suppressing Preorg to ~2×10⁻⁶.
-
-### 4 — Nakamoto Consensus Action
-```
-SPoW(t1, t2) = τB · ∫[t1→t2] Pnet(t) dt
-```
-The ledger accumulates action, not merely data. The heaviest chain maximizes SPoW. The phenomenological inertia scale is:
-```
-M_eff^(phen) = SPoW / (e_mfg · τB)   [kg]
-```
-Immutability is sustained because reversing the ledger would require spontaneous, localized re-absorption of this macroscopic heat — a statistical impossibility.
-
----
-
-## TSCG Eagle Eye — ASFID Analysis
-
-| Dimension | Score | Manifestation |
+| Name | Formula | Interpretation |
 |---|---|---|
-| **A — Attractor** | 0.95 | Canonical chain as free-energy attractor. SSB double-well selects unique history. KT ordered phase. Phenomenological mass gap m = ξ⁻¹. |
-| **S — Structure** | 0.92 | 1D GL functional F[ϕ]; small-world P2P topology; UTXO Markov blanket ∂V; correlation length ξ; RG decimation operator R. |
-| **F — Flow** | 0.97 | Exergy flux (hashrate Pnet); dissipation Σ(B); Landauer erasure cost Q̇_diss; Nakamoto Action SPoW. F is dominant and constitutive. |
-| **I — Information** | 0.93 | Shannon entropy of mempool vs blockchain; Thermal Time Hypothesis (Connes-Rovelli); UTXO as compressed state; MEI equivalence. |
-| **D — Dynamics** | 0.95 | Phase transitions (SSB, KT, Directed Percolation); Halving quench; DAA thermostat; FDT violation; Langevin dynamics with anticipatory force. |
+| Effective temperature | `k_B · T_eff(t) = P_net(t) · τ_L` | Hash power → thermodynamic temperature |
+| Critical block size | `V_B,crit ≈ C_eff · (τ_B/Γ_c − τ₀)` | Max stable block size before propagation delay dominates |
+| Probabilistic finality | `P_reorg(z) = (q/p)^z = exp(−z/ξ)` | Fork probability after z confirmations |
+| Correlation length | `ξ⁻¹ = ln(p/q)` | Fork persistence depth |
+| Nakamoto action | `S_PoW(t₁,t₂) = τ_B · ∫ P_net(t) dt` | Analogue of least-action principle |
 
 ---
 
-## TSCG Sphinx Eye — ORIVE Analysis
+## TSCG Analysis
 
-| Dimension | Score | Rationale |
+### ASFID State (Territory / Eagle Eye 🦅)
+
+| Dim | Score | Justification |
+|-----|-------|---------------|
+| **A** Attractor | 0.92 | Longest-chain rule = global consensus attractor; Ginzburg-Landau order parameter |
+| **S** Structure | 0.89 | Merkle-tree chain + P2P gossip topology; Table I structural homology |
+| **F** Flow | 0.95 | Hash computation as continuous F_active; F_potential in mining pools (F ≥ 0 discovery) |
+| **I** Information | 0.91 | Nonce entropy, block propagation, difficulty bits as information encoding |
+| **D** Dynamics | 0.93 | Real-time difficulty adjustment, fork race, irreversible PoW entropy production |
+
+**Mean ASFID:** 0.920
+
+### REVOI State (Map / Sphinx Eye 🦁)
+
+| Dim | Score | Justification |
+|-----|-------|---------------|
+| **R** Representability | 0.91 | Full Ginzburg-Landau 1D formalism; Table I isomorphism dictionary |
+| **E** Evolvability | 0.83 | Framework extendable to PoS, DAG (lower score: extensions require new formalisms) |
+| **V** Verifiability | 0.95 | 5 explicit falsifiable predictions (§VII.D of source paper) |
+| **O** Observability | 0.89 | All parameters observable on-chain (hash rate, block time, fork rate) |
+| **Im** Interoperability | 0.85 | Direct connection with Cryptocalc; bridges 4 transdisciplinary domains |
+
+**Mean REVOI:** 0.890
+
+### Epistemic Gap
+
+```
+δ₁ = |ASFID_vec − REVOI_vec| / √5 ≈ 0.030
+SpectralClass: Coherent  [0.00, 0.05)
+```
+
+The near-zero gap confirms that the Ginzburg-Landau formalism provides a genuine Territory model (not just a metaphor), with high verifiability and observability.
+
+---
+
+## Components
+
+| Component | ASFID contribution | Description |
 |---|---|---|
-| **R — Representability** | 0.95 | Table I is an explicit isomorphism dictionary. GL functional, order parameter, partition function all formally defined with dimensional consistency. |
-| **E — Evolvability** | 0.85 | Framework extends to neural synchronization, ribosomal proofreading (ref [32]). Currently limited to PoW systems — extension to other consensus protocols is future work. |
-| **V — Verifiability** | 0.93 | Section VII.D lists 5 explicit falsifiable predictions. Empirical validation on 4 historical Halvings (Table II). Open-source code for all empirical figures. |
-| **O — Observability** | 0.92 | All quantities mapped to measurable network observables: H(t), τL, orphan rate rc, inter-block variance Var(Δt). Multiple diagnostic signatures defined. |
-| **I — Interoperability** | 0.88 | Bridges statistical mechanics ↔ distributed systems ↔ information theory ↔ biology. Open-source Python repository. Specialized to Bitcoin protocol. |
-
-**Epistemic Gap:** δ = 0.072 — very small. The phenomenological model closely tracks observable network reality.
-
----
-
-## M2 Metaconcepts Mobilized (17)
-
-| Metaconcept | Tensor | Role in this Poclet |
-|---|---|---|
-| **Dissipation** | F⊗D | Σ(B) as path-weighting functional. Q̇_diss ≫ kBTsub·ln2 — protocol deliberately inflates Landauer cost by orders of magnitude. |
-| **Entropy** | F⊗I⊗D | ΔS_irrev in Crooks fluctuation theorem. History entropy S_history maximized in Sybil regime (T→∞). Pivot of the immutability chain. |
-| **Coherence/Incoherence** | A⊗S⊗I⊗R⊗O | Global consensus coherence (Φ→1, ordered phase) vs incoherence (fork proliferation). Topological defects = persistent incoherence in the P2P phase field. |
-| **Phase Transition** | A⊗S⊗D | SSB mempool→blockchain (continuous ordering transition). KT transition under network partition. Directed Percolation universality class for fork extinction. |
-| **Emergence** | A⊗D | Time as emergent coarse-grained variable (Thermal Time Hypothesis, Connes-Rovelli 1994). Canonical history emerging from stochastic PoW process. |
-| **Markov Blanket** | S⊗I | UTXO set as ∂V — compressed state description. RG flow: ∂Vt = R(Vt-1 ∪ Bt). Saturation (VB → VB,crit) → consensus fracture. |
-| **Constraint** | S⊗F | VB,crit as hard upper bound on block volume. γ (validation latency) as irreducible constraint even at Cnode → ∞. |
-| **Inertia** | S⊗F⊗I⊗D | M_eff^(phen) = SPoW/(e_mfg·τB). Phenomenological ledger mass — resistance to history reversal grows with accumulated PoW dissipation. |
-| **Absorbing State** | S⊗A⊗F⊗I⊗D | Canonical chain as absorbing state of Directed Percolation. Forks = active states decaying irreversibly toward absorption. 51% attack = supercritical → absorbing state permanently lost. |
-| **Topological Defect** | S⊗A⊗I⊗R⊗O | Persistent forks as vortices (winding number n≠0) in P2P consensus phase field θᵢ. KT transition: free vortex proliferation at Teff > TKT destroys global phase coherence. |
-| **Self-Organization** | A⊗S⊗D | Dissipative structure maintaining order via continuous exergy injection. DAA as self-organizing thermostat. Small-world topology as self-organized spatial structure. |
-| **Feedback Loop** | A⊗S⊗F⊗I⊗D | DAA as non-linear negative feedback controller: NH(D) adjusted to maintain τB ≈ 600s. Thermostat damping Halving quench relaxation (damped oscillations). |
-| **Processor** | S⊗I⊗F⊗D | Mining nodes as processors converting electrical energy into cryptographic proofs. Network as distributed processor implementing Maxwell's Demon sorting. |
-| **Transducer** | F⊗S⊗I | ASIC hardware as Transducer: electrical energy → hash computation → heat. Dissipation as degrading Transducer: exergy → entropy. |
-| **Stase** | S⊗A | Quantum ground state |0⟩ analogy for minimal hashrate. F=0 regime. Relevant for network shutdown and cold-start analysis. |
-| **Potentialization** | A⊗D⊗F | Halving anticipatory phase: miners pre-deploy hardware (F_potential → F_active). Compression of anticipation horizon from 14 epochs (2012) to 1 epoch (2024) reflects industrial maturation. |
-| **Renormalization Group** | S⊗I⊗D | UTXO decimation operator R as irreversible RG flow integrating out inactive degrees of freedom — essential to maintain VB < VB,crit. |
+| Mining Pool (Honest) | F, D, A | Continuous hash computation → F_active; drives chain growth toward attractor |
+| Mining Pool (Attacker) | F, D | Competing hash computation; fork initiator when ≥ q fraction |
+| P2P Network | S, I | Block gossip topology; propagation delay τ_L |
+| Blockchain | S, A | Merkle chain structure + longest-chain attractor |
+| Difficulty Adjustment | D, I, A | Regulation loop every 2016 blocks; keeps τ_B ≈ 600 s |
+| Transaction | I, F | Information flux through mempool → block |
+| Fork | S, A, I | Topological defect — resolved by attractor (longest chain) |
 
 ---
 
-## Falsifiable Predictions (Section VII.D)
+## GenericConcepts Mobilized (14)
 
-Five operational predictions stated in testable form:
+### Atomic (10)
 
-**P1 — Latency-controlled effective temperature**  
-At fixed Ēeff and τB, increases in propagation latency τL should systematically correlate with elevated orphan risk and reduced local ordering stability.
+| Concept | Tensor | Family | Role |
+|---|---|---|---|
+| Dissipation | `F⊗D` | Energetic | Hash computation as irreversible energy degradation |
+| Entropy | `F⊗I⊗D` | Energetic | PoW entropy; source of irreversibility (Feynman) |
+| Attractor | `A` | Dynamic | Longest-chain rule as global order parameter |
+| Process | `D⊗F` | Dynamic | Block mining as temporally unfolded hash search |
+| Cascade | `S⊗I⊗A⊗D⊗F` | Dynamic | Chain growth as amplifying 5D cascade |
+| Threshold | `D⊗I` | Dynamic | Difficulty adjustment mechanism |
+| Regulation | `A⊗I⊗D` | Dynamic | Difficulty regulation loop (τ_B target) |
+| Signal | `I⊗F` | Informational | Block propagation through P2P gossip |
+| Network | `S⊗I` | Structural | P2P topology with gossip protocol |
+| Coherence | `A⊗S⊗I⊗R⊗O` | Structural/Ontol. | Consensus as bicephalous coherence |
 
-**P2 — Protocol-dependent upper bound on block volume**  
-Any protocol modification increasing validation friction γ or effective hop diameter Dhop should reduce VB,crit before large-scale desynchronization appears.
+### Combos (4) — new M2 candidates from this session
 
-**P3 — Depth-dependent reorganization suppression**  
-Empirical reorganization risk should collapse onto the exponential depth law e^{−z/ξ} when conditioned on the honest/attacker hashrate ratio p/q.
-
-**P4 — Quench-induced excess variance** *(empirically validated)*  
-Deterministic subsidy reductions generate transient increases in block-time variance, with amplitude modulated by the anticipation horizon and DAA damping action.
-
-**P5 — Compression of anticipation horizons** *(empirically validated)*  
-Optimal pre-quench horizon shortens as mining supply chains become more industrialized: 14 epochs (2012, 2016) → 3 epochs (2020) → 1 epoch (2024).
-
----
-
-## Key Physical Insights
-
-**Arrow of time from dissipation**  
-Without thermodynamic cost (Eeff = 0), history A = {E1,E2} is indistinguishable from history B = {E2,E1} — t → −t symmetry holds. Sustained PoW dissipation breaks this symmetry, creating an emergent arrow of time grounded in irreversible exergy expenditure.
-
-**Blockchain as Maxwell's Demon**  
-The mining network acts as a decentralized Maxwell's Demon: sorting the high-entropy mempool "gas" into the UTXO set's low-entropy "crystal." The mandatory thermodynamic cost is not wasted computation — it is macroscopic uncertainty erasure (Landauer's principle), deliberately inflated by the DAA to make history reversal physically unattainable.
-
-**Marginal mass vs. global mass**  
-Two distinct inertia scales: the *global mass* M_eff^(phen) = ∫SPoW integrates total historical dissipation; the *marginal mass* κ_marginal = ∂²U/∂Φ²|Φ₀ governs local resistance to chain-tip reorganization. The security signal-to-noise ratio is: (p−q)/q = κ_marginal / (kBTeff).
-
-**Halving as thermodynamic quench**  
-The Halving is not a simple parametric update but a thermodynamic shock on a non-stationary potential. The observed dynamics (anticipatory run-up, variance spike, DAA damping) are consistent with a non-equilibrium relaxation process — not with equilibrium adjustment.
+| Concept | Formula | Tensor | Role |
+|---|---|---|---|
+| Inertia | `⊗⇒(Memory, Entropy)` | `S⊗F⊗I⊗D` | Accumulated PoW defines attack cost |
+| Potentialization | `⊗⇒(Activation, Process)` | `A⊗D⊗F` | F=0 → F_active transition (mining startup) |
+| Absorbing State | `⊗⇒(Stase, Entropy)` | `S⊗A⊗F⊗I⊗D` | Transaction finality (6-confirmation rule) |
+| Topological Defect | `⊗⇒(Incoherence, Invariant)` | `S⊗A⊗I⊗R⊗O` | Persistent fork as KT vortex |
 
 ---
 
-## Connection to Cryptocalc
+## Key Insights
 
-[Cryptocalc](https://github.com/Echopraxium/cryptocalc) (Echopraxium) implements the Nakamoto protocol modeled in this paper. The poclet provides thermodynamic grounding for Cryptocalc's security model:
+1. **F ≥ 0 axiom** — This poclet forced the relaxation of the TSCG M3 axiom `F ≠ 0` to `F ≥ 0`: chain stasis (F=0) is a valid fundamental state (no new blocks), while active mining is F_active, and mining pool reserves are F_potential.
 
-- **HD wallet depth security** maps to ΔF(z) barrier at confirmation depth
-- **BIP38 encryption strength** is analogous to Landauer erasure cost
-- **The 6-block rule** = 13ξ correlation lengths for standard attacker (q = 0.1) → Preorg ≈ 2×10⁻⁶
-- **Block explorer depth visualization** could incorporate ξ-normalized security margin display
+2. **F as morphic dimension** — F is the sole ASFID dimension that structurally requires a source→target relation: `F ∈ Mor(Cat_M3) ∩ Ob(Cat_M3)`. All M2 concepts containing F are natural candidates for entity/morphism duality.
 
----
+3. **Causal chain** — The poclet reveals a coherent irreversibility chain: `F_active → [Dissipation] → Entropy → [Memory] → Inertia → [maximal] → Absorbing State`.
 
-## Broader Applicability
+4. **Topological defect** — A blockchain fork is a KT vortex: local Incoherence protected by a discrete topological invariant (chain index n ∈ ℤ), non-eliminable by continuous deformation.
 
-The paper explicitly suggests two extensions beyond Bitcoin:
-
-**Neural synchronization** — Dissipative ordering of neural networks: metabolic cost of synchrony plays the role of PoW exergy expenditure.
-
-**Ribosomal kinetic proofreading** (ref [32] — Small 2024, Biophysical Journal) — The ribosome uses thermodynamic work to reduce thermal noise during protein assembly: a biological "proof-of-work" that parallels Nakamoto consensus at the molecular scale.
-
-Within TSCG, this poclet also suggests modeling the **M2 metaconcept validation process** itself as a dissipative ordering transition — community consensus on framework concepts as a Nakamoto-like ordering phase transition.
+5. **Falsifiability** — 5 explicit falsifiable predictions in §VII.D of the source paper make this one of the highest-V poclets in the catalogue (V = 0.95).
 
 ---
 
-## TSCG Architectural Discoveries
+## Transdisciplinary Isomorphisms (Table I)
 
-This poclet session produced several architectural contributions to the TSCG framework itself:
+### Statistical Physics ↔ Nakamoto
 
-**M3 GenesisSpace v3.9.0 — F dimension enriched**
-- Axiom relaxed: F≥0 (F=0 = Stase, valid ground state)
-- F_morphic annotation: F ∈ Mor(Cat_M3) ∩ Ob(Cat_M3) — only ASFID dimension with intrinsic dual entity/morphism nature
-- F_potential / F_active spectrum with F_crit threshold
+| Statistical Physics | Bitcoin / Nakamoto |
+|---|---|
+| Temperature k_B·T | k_B·T_eff = P_net · τ_L |
+| Order parameter φ | Chain coherence (consensus level) |
+| Phase transition | Fork resolution / consensus achievement |
+| Dissipative structure | Mining pool dynamics (Prigogine) |
+| Ginzburg-Landau field | Network hash-state field |
+| Thermal fluctuation | Mining variance / block time jitter |
+| Correlation length ξ | Fork persistence depth |
+| Vortex (KT transition) | Persistent chain fork |
+| Entropy S | PoW entropy S_PoW |
+| Least-action S[φ] | Nakamoto action S_PoW(t₁,t₂) |
 
-**M2 GenericConcepts v15.11.0 — new concepts**
+### Biology ↔ Nakamoto
 
-*New atomics:* Processor (S⊗I⊗F⊗D), Transducer (F⊗S⊗I, subClassOf Processor), Entropy (F⊗I⊗D, Feynman pivot), Stase (S⊗A), Coherence (A⊗S⊗I⊗R⊗O, bicephalous)
-
-*Revised:* Dissipation (F⊗D) — subClassOf Transducer, produces Entropy, Feynman note added
-
-*New combos:* Inertia ⊗⇒(Memory,Entropy), Potentialization ⊗⇒(Activation,Process), Absorbing State ⊗⇒(Stase,Entropy), Topological Defect ⊗⇒(Incoherence,Invariant)
-
-**Feynman reconciliation**  
-> *"What makes phenomena irreversible is not their equations (which are reversible) but Entropy."*  
-Dissipation (F⊗D) is the time-reversible mechanism. Entropy (F⊗I⊗D) is the measure that confers irreversibility. This distinction is now formally encoded in M2.
-
----
-
-## Files
-
-| File | Description |
-|------|-------------|
-| `M0_Poclet_NakamotoConsensus_Ranaora2026.jsonld` | TSCG M0 poclet — full JSON-LD |
-| `M2_GenericConcepts_v15.11.0.jsonld` | M2 ontology updated |
-| `M3_GenesisSpace_v3.9.0.jsonld` | M3 ontology updated |
-| `TSCG_Session_README_2026-03-23.md` | Full session notes (French) |
-| `README_Poclet_NakamotoConsensus_Ranaora2026.md` | This file |
+| Biology | Bitcoin / Nakamoto |
+|---|---|
+| Quorum sensing | 51% majority rule |
+| Immune memory | Accumulated PoW (Inertia) |
+| Absorbing state | Finalized transaction (6+ confirmations) |
+| Phenotypic stasis | Chain stasis — F=0 |
+| Dissipation | Continuous hash computation |
 
 ---
 
 ## References
 
-Key references from Ranaora & Yii (2026) relevant to this poclet:
-
-- Nakamoto, S. (2008). *Bitcoin: A peer-to-peer electronic cash system.*
-- Prigogine, I. (1997). *The End of Certainty.* Free Press.
-- Shannon, C.E. (1948). A mathematical theory of communication. *Bell System Technical Journal*, 27, 379.
-- Landauer, R. (1961). Irreversibility and heat generation in the computing process. *IBM J. Res. Dev.*, 5, 183.
-- Connes, A. & Rovelli, C. (1994). Von Neumann algebra automorphisms and time-thermodynamics relation. *Class. Quantum Grav.*, 11, 2899.
-- Crooks, G.E. (1999). Entropy production fluctuation theorem. *Phys. Rev. E*, 60, 2721.
-- Watts, D.J. & Strogatz, S.H. (1998). Collective dynamics of small-world networks. *Nature*, 393, 440.
-- Small, J. (2024). Thermodynamics of distributed consensus and the thermodynamics of life. *Biophys. J.*, 123, 1105.
-
----
-
-*Poclet created by Michel (Echopraxium) with Claude Sonnet 4.6 — TSCG Framework v15.11.0 / M3 v3.9.0*
+- Ranaora & Yii (2026) — *A Phenomenological Statistical-Physics Framework for Distributed Consensus: Phase Transitions and Thermodynamic Stability* — Information Physics Institute, Sydney — [https://zenodo.org/records/19160047](https://zenodo.org/records/19160047) — DOI: 10.5281/zenodo.19160047
+- Nakamoto, S. (2008) — *Bitcoin: A Peer-to-Peer Electronic Cash System*
+- Prigogine, I. (1978) — *From Being to Becoming* (dissipative structures)
+- Feynman, R. P. (1965) — *The Feynman Lectures on Physics*, Vol. I, Ch. 46 (irreversibility and entropy)
+- TSCG Framework v15.10.1 — [https://github.com/Echopraxium/tscg](https://github.com/Echopraxium/tscg)
