@@ -340,7 +340,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);
   padding:4px 10px;font-size:11px;font-weight:500;
   letter-spacing:0.04em;white-space:nowrap;
   pointer-events:none;opacity:0;transition:opacity 0.18s;
-  transform:translateX(-50%);
 ">TSCG Github repository</div>
 <script>
 (function(){
@@ -349,8 +348,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);
   if (!btn || !tip) return;
   btn.addEventListener('mouseenter', function() {
     const r = btn.getBoundingClientRect();
-    tip.style.left = (r.left + r.width / 2) + 'px';
+    tip.style.left = Math.max(8, r.left) + 'px';
     tip.style.top  = (r.bottom + 6) + 'px';
+    tip.style.transform = 'none';
     tip.style.opacity = '1';
   });
   btn.addEventListener('mouseleave', function() { tip.style.opacity = '0'; });
