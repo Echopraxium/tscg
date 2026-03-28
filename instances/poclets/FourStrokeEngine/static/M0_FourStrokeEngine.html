@@ -242,34 +242,8 @@ input[type="range"].comp-slider::-webkit-slider-thumb {
   
 /* TSCG logo — clickable link + tooltip */
 .tscg-logo-link, .titlebar-logo-link {
-  text-decoration: none;
-  color: inherit;
-  position: relative;
-  cursor: pointer;
-}
-.tscg-logo-link::after, .titlebar-logo-link::after {
-  content: 'Github repository';
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: #1c2130;
-  color: #e6edf3;
-  border: 1px solid #3d444f;
-  border-radius: 6px;
-  padding: 4px 10px;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: none;
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.18s;
-  z-index: 9999;
-}
-.tscg-logo-link:hover::after, .titlebar-logo-link:hover::after {
-  opacity: 1;
+  text-decoration: none; color: inherit; position: relative; cursor: pointer;
+  background: none; border: none; padding: 0;
 }
 
 </style>
@@ -280,8 +254,8 @@ input[type="range"].comp-slider::-webkit-slider-thumb {
 
   <!-- HEADER -->
   <header id="header">
-    <a id="btn-home" href="https://echopraxium.github.io/tscg/" title="Back to Poclet Gallery" target="_self"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></a>
-    <a class="tscg-logo-link" href="https://github.com/Echopraxium/tscg" target="_blank" rel="noopener noreferrer"><span class="tscg-logo">TSCG</span></a>
+    <button id="btn-home" onclick="window.location.href='https://echopraxium.github.io/tscg/'"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></button>
+    <button class="tscg-logo-link" onclick="window.open('https://github.com/Echopraxium/tscg','_blank')"><span class="tscg-logo">TSCG</span></button>
     <span class="sep">&middot;</span>
     <span class="poclet-name">Four-Stroke Engine &mdash; Otto Cycle Poclet</span>
     <div class="meta-chips">
@@ -1282,6 +1256,54 @@ document.addEventListener('keydown', e => {
   if (e.key === ',')            { speedIdx = Math.max(0, speedIdx - 1); document.getElementById(`spd-${speedIdx}`).click(); }
   if (e.key === '.')            { speedIdx = Math.min(SPEED_STEPS.length - 1, speedIdx + 1); document.getElementById(`spd-${speedIdx}`).click(); }
 });
+</script>
+
+<!-- Home button tooltip -->
+<div id="home-tip" style="
+  position:fixed; z-index:999999;
+  background:#1c2130; color:#e6edf3;
+  border:1px solid #3d444f; border-radius:6px;
+  padding:4px 10px; font-size:11px; font-weight:500;
+  letter-spacing:0.04em; white-space:nowrap;
+  pointer-events:none; opacity:0; transition:opacity 0.18s;
+">Back to Poclet Gallery</div>
+
+<!-- TSCG logo tooltip -->
+<div id="tscg-tip" style="
+  position:fixed; z-index:999999;
+  background:#1c2130; color:#e6edf3;
+  border:1px solid #3d444f; border-radius:6px;
+  padding:4px 10px; font-size:11px; font-weight:500;
+  letter-spacing:0.04em; white-space:nowrap;
+  pointer-events:none; opacity:0; transition:opacity 0.18s;
+  transform:translateX(-50%);
+">TSCG Github repository</div>
+
+<script>
+(function(){
+  const home    = document.getElementById('btn-home');
+  const homeTip = document.getElementById('home-tip');
+  if (home && homeTip) {
+    home.addEventListener('mouseenter', function() {
+      const r = home.getBoundingClientRect();
+      homeTip.style.left = Math.max(8, r.left) + 'px';
+      homeTip.style.top  = (r.bottom + 6) + 'px';
+      homeTip.style.opacity = '1';
+    });
+    home.addEventListener('mouseleave', function() { homeTip.style.opacity = '0'; });
+  }
+  const logo = document.querySelector('.tscg-logo-link');
+  const tip  = document.getElementById('tscg-tip');
+  if (logo && tip) {
+    logo.addEventListener('mouseenter', function() {
+      const r = logo.getBoundingClientRect();
+      tip.style.left = (r.left + r.width / 2) + 'px';
+      tip.style.top  = (r.bottom + 6) + 'px';
+      tip.style.opacity = '1';
+    });
+    logo.addEventListener('mouseleave', function() { tip.style.opacity = '0'; });
+  }
+})();
 </script>
 </body>
 </html>

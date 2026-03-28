@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://cdnjs.cloudflare.com;
+                 script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
+                 style-src  'self' 'unsafe-inline';
+                 img-src    'self' data: blob:;
+                 connect-src http://127.0.0.1:* ws://127.0.0.1:*;">
+  <title>TSCG &mdash; Phase Transition</title>
+  <style>
+/* ── Reset & Globals ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep:      #0d1117;
+  --bg-panel:     #161b22;
+  --bg-card:      #1c2130;
+  --bg-hover:     #21262d;
+  --border:       #30363d;
+  --border-light: #3d444f;
+  --eagle:        #f78166;
+  --sphinx:       #79c0ff;
+  --accent:       #56d364;
+  --warn:         #e3b341;
+  --muted:        #8b949e;
+  --text:         #e6edf3;
+  --text-dim:     #b1bac4;
+  --col-A: #f78166;
+  --col-S: #56d364;
+  --col-F: #79c0ff;
+  --col-I: #d2a8ff;
+  --col-D: #e3b341;
+  --col-R: #79c0ff;
+  --col-E: #56d364;
+  --col-V: #f78166;
+  --col-O: #d2a8ff;
+  --col-Im: #e3b341;
+  --header-h: 44px;
+  --controls-h: 52px;
+  --sidebar-w: 320px;
+  --gap: 8px;
+  --radius: 6px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font);
+  background: var(--bg-deep);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+  user-select: none;
+}
+
+#app {
+  display: grid;
+  grid-template-rows: var(--header-h) 1fr auto var(--controls-h);
+  grid-template-columns: 1fr 5px var(--sidebar-w);
+  grid-template-areas:
+    "header   header   header"
+    "canvas   split    sidebar"
+    "compbar  compbar  compbar"
+    "controls controls controls";
+  height: 100vh;
+  gap: 0;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+#header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  overflow: visible;
+}
+#header .tscg-logo {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--eagle); text-transform: uppercase; flex-shrink: 0;
+}
+#header .sep { color: var(--border-light); font-size: 16px; }
+#header .poclet-name {
+  font-size: 14px; font-weight: 600; color: var(--text);
+  flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+#header .meta-chips { display: flex; gap: 6px; flex-shrink: 0; }
+.chip {
+  padding: 2px 8px; border-radius: 20px;
+  font-size: 11px; font-weight: 500; border: 1px solid transparent;
+}
+.chip.domain  { background: rgba(86,211,100,0.12); border-color: rgba(86,211,100,0.3);  color: var(--accent); }
+.chip.version { background: rgba(121,192,255,0.12); border-color: rgba(121,192,255,0.3); color: var(--sphinx); }
+.chip.type    { background: rgba(247,129,102,0.12); border-color: rgba(247,129,102,0.3); color: var(--eagle); }
+.chip.phase-chip {
+  font-weight: 700; font-family: var(--font-mono); letter-spacing: 0.05em;
+}
+.chip.phase-solid  { background: rgba(86,211,100,0.12); border-color: rgba(86,211,100,0.4); color: #56d364; }
+.chip.phase-liquid { background: rgba(121,192,255,0.12); border-color: rgba(121,192,255,0.4); color: #79c0ff; }
+.chip.phase-gas    { background: rgba(247,129,102,0.12); border-color: rgba(247,129,102,0.4); color: #f78166; }
+
+/* ── Canvas ──────────────────────────────────────────────── */
+#canvas-area {
+  grid-area: canvas;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-deep);
+  min-width: 200px;
+}
+#canvas-area canvas { position: absolute; top: 0; left: 0; }
+
+/* ── Splitter ────────────────────────────────────────────── */
+#splitter {
+  grid-area: split;
+  background: var(--border);
+  cursor: col-resize;
+  transition: background 0.15s;
+  position: relative; z-index: 10;
+}
+#splitter:hover, #splitter.dragging { background: var(--sphinx); }
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+#sidebar {
+  grid-area: sidebar;
+  display: flex; flex-direction: column;
+  background: var(--bg-panel);
+  border-left: 1px solid var(--border);
+  overflow: hidden;
+  min-width: 180px; max-width: 620px;
+}
+.tab-bar {
+  display: flex;
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.tab-btn {
+  flex: 1; padding: 8px 4px; font-size: 12px; font-weight: 600;
+  background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--muted); cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab-btn:hover { color: var(--text-dim); }
+.tab-btn.active { color: var(--sphinx); border-bottom-color: var(--sphinx); }
+
+.tab-panel { display: none; flex-direction: column; flex: 1; overflow-y: auto; padding: 12px; gap: 10px; }
+.tab-panel.active { display: flex; }
+
+/* ── Sidebar Components ──────────────────────────────────── */
+.score-group { display: flex; flex-direction: column; gap: 5px; }
+.score-group-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted);
+  padding-bottom: 4px; border-bottom: 1px solid var(--border); margin-bottom: 2px;
+}
+.score-group-label.eagle { color: var(--eagle); }
+.score-group-label.sphinx { color: var(--sphinx); }
+.score-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.score-dim {
+  width: 20px; font-weight: 700; font-family: var(--font-mono);
+  font-size: 11px; text-align: center; flex-shrink: 0;
+}
+.score-bar-bg { flex: 1; height: 6px; background: var(--bg-card); border-radius: 3px; overflow: hidden; }
+.score-bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.score-val {
+  width: 30px; text-align: right; font-family: var(--font-mono);
+  font-size: 11px; color: var(--text-dim); flex-shrink: 0;
+}
+.score-mean-row {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--muted); padding-top: 2px; font-family: var(--font-mono);
+}
+.score-mean-row span { color: var(--text); font-weight: 600; }
+.gap-badge {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 8px 12px; font-size: 12px;
+}
+.gap-badge .gap-label { color: var(--muted); }
+.gap-badge .gap-val { font-family: var(--font-mono); font-weight: 700; font-size: 16px; color: var(--accent); }
+.gap-badge .gap-desc { color: var(--text-dim); font-size: 11px; }
+
+.gc-list { display: flex; flex-direction: column; gap: 4px; }
+.gc-item {
+  display: flex; align-items: flex-start; gap: 8px; padding: 6px 8px;
+  background: var(--bg-card); border-radius: var(--radius);
+  border: 1px solid var(--border); cursor: default;
+  transition: border-color 0.15s, background 0.15s;
+}
+.gc-item:hover { background: var(--bg-hover); border-color: var(--border-light); }
+.gc-item.primary   { border-left: 3px solid var(--eagle); }
+.gc-item.secondary { border-left: 3px solid var(--border-light); }
+.gc-name  { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--sphinx); flex-shrink: 0; min-width: 110px; }
+.gc-formula { font-family: var(--font-mono); font-size: 10px; color: var(--muted); flex-shrink: 0; }
+.gc-role { font-size: 11px; color: var(--text-dim); line-height: 1.4; }
+
+.readme-content {
+  font-size: 12px; line-height: 1.7; color: var(--text-dim);
+  white-space: pre-wrap; font-family: var(--font);
+}
+.readme-content h2 {
+  font-size: 13px; font-weight: 700; color: var(--text);
+  margin: 12px 0 4px; padding-bottom: 3px; border-bottom: 1px solid var(--border);
+}
+.readme-content strong { color: var(--text); }
+.readme-content code {
+  font-family: var(--font-mono); font-size: 10.5px;
+  background: var(--bg-card); padding: 1px 4px; border-radius: 3px; color: var(--sphinx);
+}
+
+.synergy-box {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-left: 3px solid var(--warn); border-radius: var(--radius);
+  padding: 10px 12px; gap: 6px; display: flex; flex-direction: column;
+}
+.synergy-label   { font-size: 12px; font-weight: 700; color: var(--warn); }
+.synergy-formula { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); word-break: break-word; }
+.synergy-emergent { font-size: 11px; color: var(--text-dim); }
+
+/* ── Dynamic Properties Panel ────────────────────────────── */
+.props-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 8px 10px;
+  font-size: 11px; line-height: 1.6;
+}
+.props-card .props-title {
+  font-size: 12px; font-weight: 700; color: var(--text);
+  margin-bottom: 5px; display: flex; align-items: center; gap: 6px;
+}
+.props-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.props-row { display: flex; justify-content: space-between; gap: 8px; }
+.props-key { color: var(--muted); }
+.props-val { font-family: var(--font-mono); color: var(--text-dim); text-align: right; }
+.props-val.highlight { color: var(--accent); font-weight: 600; }
+
+.cc-table { width: 100%; border-collapse: collapse; font-size: 10.5px; font-family: var(--font-mono); }
+.cc-table td { padding: 2px 4px; color: var(--text-dim); }
+.cc-table td:first-child { color: var(--muted); }
+.cc-table tr.current-p td { color: var(--sphinx); font-weight: 600; }
+
+/* ── Component Bar ───────────────────────────────────────── */
+#comp-bar {
+  grid-area: compbar;
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border);
+}
+#comp-inner {
+  display: flex; flex-direction: column;
+  padding: 5px 14px; gap: 4px;
+}
+.comp-row {
+  display: flex; align-items: center; gap: 8px; flex-wrap: nowrap;
+}
+.comp-sep { width: 1px; height: 22px; background: var(--border); flex-shrink: 0; }
+.comp-label { font-size: 11px; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+.comp-val-display {
+  font-size: 11px; font-family: var(--font-mono);
+  color: var(--text-dim); min-width: 52px; text-align: right; flex-shrink: 0;
+}
+
+input[type="range"].comp-slider {
+  -webkit-appearance: none; height: 4px;
+  background: var(--bg-card); border-radius: 2px; outline: none; flex-shrink: 0; width: 120px;
+}
+input[type="range"].comp-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--sphinx); cursor: pointer; border: 2px solid var(--bg-panel);
+}
+
+/* Substance buttons */
+.sub-btn {
+  padding: 2px 9px; border-radius: 20px;
+  font-size: 11px; font-weight: 500;
+  background: var(--bg-card); border: 1px solid var(--border);
+  color: var(--text-dim); cursor: pointer;
+  transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
+}
+.sub-btn:hover { background: var(--bg-hover); color: var(--text); }
+.sub-btn.active {
+  font-weight: 700;
+}
+
+/* ── Controls ────────────────────────────────────────────── */
+#controls {
+  grid-area: controls;
+  display: flex; align-items: center; gap: 8px; padding: 0 14px;
+  background: var(--bg-panel); border-top: 1px solid var(--border); flex-wrap: nowrap;
+}
+.ctrl-btn {
+  display: flex; align-items: center; gap: 5px; padding: 4px 10px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text-dim); font-size: 12px;
+  font-family: var(--font); cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap; flex-shrink: 0;
+}
+.ctrl-btn:hover { background: var(--bg-hover); color: var(--text); border-color: var(--border-light); }
+.ctrl-btn.snap-solid  { border-color: rgba(86,211,100,0.3);  color: #56d364; }
+.ctrl-btn.snap-liquid { border-color: rgba(121,192,255,0.3); color: #79c0ff; }
+.ctrl-btn.snap-gas    { border-color: rgba(247,129,102,0.3); color: #f78166; }
+.ctrl-btn.snap-solid:hover  { background: rgba(86,211,100,0.1); }
+.ctrl-btn.snap-liquid:hover { background: rgba(121,192,255,0.1); }
+.ctrl-btn.snap-gas:hover    { background: rgba(247,129,102,0.1); }
+.ctrl-sep { width: 1px; height: 26px; background: var(--border); flex-shrink: 0; }
+.ctrl-label { font-size: 11px; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+
+input[type="range"]#speed-slider {
+  -webkit-appearance: none; width: 70px; height: 4px;
+  background: var(--bg-card); border-radius: 2px; outline: none; flex-shrink: 0;
+}
+input[type="range"]#speed-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--sphinx); cursor: pointer; border: 2px solid var(--bg-panel);
+}
+
+.status-indicator {
+  margin-left: auto; display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--muted); flex-shrink: 0;
+}
+.status-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--muted); transition: background 0.3s;
+}
+.status-dot.running { background: var(--accent); animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* ── Home button / TSCG logo ─────────────────────────────── */
+#btn-home {
+  display: inline-flex; align-items: center;
+  background: none; border: none; cursor: pointer;
+  padding: 4px 6px; margin-right: 4px; opacity: 0.85; transition: opacity 0.15s; text-decoration: none;
+}
+#btn-home:hover { opacity: 1; }
+.tscg-logo-link {
+  text-decoration: none; color: inherit; position: relative; cursor: pointer;
+  background: none; border: none; padding: 0;
+}
+
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+</style>
+  <link rel="icon" href="data:,">
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <header id="header">
+    <button id="btn-home" onclick="window.location.href='https://echopraxium.github.io/tscg/'">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+      </svg>
+    </button>
+    <button class="tscg-logo-link" onclick="window.open('https://github.com/Echopraxium/tscg','_blank')">
+      <span class="tscg-logo">TSCG</span>
+    </button>
+    <span class="sep">&middot;</span>
+    <span class="poclet-name">Phase Transition &mdash; PhaseEquilibrium Poclet</span>
+    <div class="meta-chips">
+      <span class="chip domain">Physical Chemistry</span>
+      <span class="chip type">m3:Poclet</span>
+      <span class="chip version">v1.0.0</span>
+      <span class="chip phase-chip phase-liquid" id="phase-chip">LIQUID</span>
+    </div>
+  </header>
+
+  <!-- CANVAS (p5 appends here) -->
+  <div id="canvas-area"></div>
+
+  <!-- SPLITTER -->
+  <div id="splitter"></div>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="description">Description</button>
+      <button class="tab-btn" data-tab="concepts">Concepts</button>
+      <button class="tab-btn" data-tab="synergy">Synergy</button>
+      <button class="tab-btn" data-tab="scores">Scores</button>
+    </nav>
+
+    <!-- ── Description ── -->
+    <div id="panel-description" class="tab-panel active">
+      <div id="substance-card" class="props-card">
+        <div class="props-title">
+          <span class="props-dot" id="sub-dot" style="background:#5ba3d9"></span>
+          <span id="sub-title">Water &mdash; H&#x2082;O</span>
+        </div>
+        <div class="props-row"><span class="props-key">mp (1 atm)</span><span class="props-val" id="val-mp">0.0 °C</span></div>
+        <div class="props-row"><span class="props-key">bp (1 atm)</span><span class="props-val" id="val-bp">100.0 °C</span></div>
+        <div class="props-row"><span class="props-key">T<sub>m</sub> at P</span><span class="props-val highlight" id="val-tm-p">&mdash;</span></div>
+        <div class="props-row"><span class="props-key">T<sub>b</sub> at P</span><span class="props-val highlight" id="val-tb-p">&mdash;</span></div>
+        <div class="props-row"><span class="props-key">Critical point</span><span class="props-val" id="val-tc">374.0 °C / 217.7 atm</span></div>
+        <div class="props-row"><span class="props-key">&Delta;H<sub>vap</sub></span><span class="props-val" id="val-dhvap">40.7 kJ/mol</span></div>
+        <div class="props-row"><span class="props-key">&Delta;H<sub>fus</sub></span><span class="props-val" id="val-dhfus">6.01 kJ/mol</span></div>
+        <div class="props-row"><span class="props-key">V (n=1 mol)</span><span class="props-val highlight" id="val-v">&mdash;</span></div>
+        <div id="sub-anomaly" style="font-size:10px;color:#e3b341;margin-top:4px;display:none"></div>
+      </div>
+
+      <div class="props-card">
+        <div class="props-title">Clausius&ndash;Clapeyron &mdash; bp vs P</div>
+        <table class="cc-table" id="cc-table">
+          <tr><td>P = 0.01 atm</td><td id="cc-001">&mdash;</td></tr>
+          <tr><td>P = 0.1 atm</td> <td id="cc-01">&mdash;</td></tr>
+          <tr><td>P = 1 atm</td>   <td id="cc-1">&mdash;</td></tr>
+          <tr><td>P = 10 atm</td>  <td id="cc-10">&mdash;</td></tr>
+          <tr><td>P = 100 atm</td> <td id="cc-100">&mdash;</td></tr>
+        </table>
+      </div>
+
+      <div class="readme-content">
+<h2>Ideal Gas Law</h2>
+<code>pV = nRT</code> &nbsp;— direct governing equation for the gas phase.
+<em>p</em> = pressure (Pa), <em>V</em> = volume (m&sup3;), <em>n</em> = mol, <em>R</em> = 8.314 J&middot;mol&#8315;&sup1;&middot;K&#8315;&sup1;, <em>T</em> = temperature (K).
+
+<h2>Gibbs Phase Rule</h2>
+<code>F = C &minus; P + 2</code>
+For a pure substance (C=1):&nbsp; 1 phase &rarr; F=2 (T and P free)&nbsp; &middot;&nbsp; 2-phase coexistence &rarr; F=1 (boundary curve)&nbsp; &middot;&nbsp; triple point &rarr; F=0 (invariant).
+
+<h2>Clausius&ndash;Clapeyron</h2>
+<code>ln(P&#x2082;/P&#x2081;) = &Delta;H<sub>vap</sub>/R &times; (1/T&#x2081; &minus; 1/T&#x2082;)</code>
+Used to compute T<sub>b</sub>(P) from the reference boiling point at 1 atm.
+
+<h2>Phase Animations</h2>
+&bull; <strong>Solid</strong> &mdash; 48 particles on a grid vibrating thermally around rest positions. Amplitude &prop; T/T<sub>m</sub>.
+&bull; <strong>Liquid</strong> &mdash; 70 particles in an analytically divergence-free stream-function velocity field. Transient bonds form when d &lt; 35 px.
+&bull; <strong>Gas</strong> &mdash; 22 particles following Langevin&ndash;Brownian dynamics (random kicks + damping). Elastic wall reflections.
+
+<h2>Reference Substances</h2>
+7 substances selected to illustrate diverse behaviors: <strong>Water</strong> (anomalous dTm/dP), <strong>Methanol</strong>, <strong>Gallium</strong> (widest liquid range), <strong>Sulfur</strong> (viscosity anomaly), <strong>Iodine</strong> (sublimates at 1 atm), <strong>Camphor</strong> (narrow 29 K liquid range), <strong>DCM</strong> (very low bp).
+      </div>
+    </div>
+
+    <!-- ── Concepts ── -->
+    <div id="panel-concepts" class="tab-panel">
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:4px">Primary &mdash; 3 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item primary">
+          <span class="gc-name">m2:Attractor</span>
+          <div>
+            <div class="gc-formula">A</div>
+            <div class="gc-role">4 Gibbs energy minima as stable attractors (solid, liquid, gas, plasma)</div>
+          </div>
+        </div>
+        <div class="gc-item primary">
+          <span class="gc-name">m2:Threshold</span>
+          <div>
+            <div class="gc-formula">A&otimes;I&otimes;F</div>
+            <div class="gc-role">Melting / boiling / sublimation boundaries &mdash; critical (T,P) crossings</div>
+          </div>
+        </div>
+        <div class="gc-item primary">
+          <span class="gc-name">m2:Bifurcation</span>
+          <div>
+            <div class="gc-formula">A&otimes;D</div>
+            <div class="gc-role">Phase boundaries as topological bifurcations of the Gibbs landscape</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin:8px 0 4px">Secondary &mdash; 9 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Equilibrium</span>
+          <div><div class="gc-formula">A&otimes;S</div><div class="gc-role">Thermodynamic equilibrium within each phase region</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Emergence</span>
+          <div><div class="gc-formula">I&otimes;S</div><div class="gc-role">Macroscopic properties (viscosity, conductivity) from microscopic structure</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Flow</span>
+          <div><div class="gc-formula">F</div><div class="gc-role">Latent heat flows; particle flows during evaporation/condensation</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Dynamics</span>
+          <div><div class="gc-formula">D</div><div class="gc-role">Nucleation / growth kinetics; Maxwell-Boltzmann velocity distribution</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Order</span>
+          <div><div class="gc-formula">S&otimes;I</div><div class="gc-role">Crystalline order parameter; long-range order broken at melt transition</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Boundary</span>
+          <div><div class="gc-formula">A&otimes;F</div><div class="gc-role">Coexistence curves defining the phase region limits in (T,P) space</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Hierarchy</span>
+          <div><div class="gc-formula">A&otimes;S</div><div class="gc-role">Energy hierarchy: &Delta;H<sub>fus</sub> &ll; &Delta;H<sub>vap</sub> &ll; &Delta;H<sub>ion</sub></div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Constraint</span>
+          <div><div class="gc-formula">I&otimes;A</div><div class="gc-role">Gibbs phase rule constraining degrees of freedom at coexistence</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Symmetry</span>
+          <div><div class="gc-formula">S</div><div class="gc-role">Symmetry breaking at transitions (crystal group &rarr; isotropic liquid)</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Synergy ── -->
+    <div id="panel-synergy" class="tab-panel">
+      <div class="synergy-box">
+        <div class="synergy-label">KnowledgeFieldConceptCombo</div>
+        <div class="synergy-formula">PhaseEquilibrium</div>
+        <div class="synergy-formula" style="font-size:10px;color:var(--muted)">
+          = PhysicalChemistry &odot; (Attractor &otimes; Threshold &otimes; Bifurcation)<br>
+          compiled: A&otimes;S&otimes;F&otimes;I&otimes;D
+        </div>
+        <div class="synergy-emergent">
+          <strong>Emergent property:</strong> Multi-stable equilibria connected by discontinuous first-order transitions. The P-T diagram is the complete 2D attractor landscape.
+        </div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--sphinx)">
+        <div class="synergy-label" style="color:var(--sphinx)">Gibbs Phase Rule</div>
+        <div class="synergy-formula">F = C &minus; P + 2</div>
+        <div class="synergy-emergent">
+          Pure substance (C=1): single phase F=2 &nbsp;&middot;&nbsp; coexistence curve F=1 &nbsp;&middot;&nbsp; triple point F=0 (invariant). The rule encodes the maximum attractor dimensionality at each regime.
+        </div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--eagle)">
+        <div class="synergy-label" style="color:var(--eagle)">Latent Heat</div>
+        <div class="synergy-formula">Q = n &times; &Delta;H &nbsp;(first-order)</div>
+        <div class="synergy-emergent">
+          Temperature is flat at the transition (plateau on T-t diagram) while latent heat is absorbed/released. Entropy jump: &Delta;S = &Delta;H / T<sub>transition</sub>.
+        </div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--accent)">
+        <div class="synergy-label" style="color:var(--accent)">Transdisciplinary Reach</div>
+        <div class="synergy-formula">Attractor &otimes; Threshold pattern</div>
+        <div class="synergy-emergent">
+          &bull; <strong>Magnetism</strong> &mdash; paramagnetic &harr; ferromagnetic (Curie temperature)<br>
+          &bull; <strong>Biology</strong> &mdash; lipid bilayer gel &harr; fluid; protein folding<br>
+          &bull; <strong>Ecology</strong> &mdash; regime shifts and tipping points<br>
+          &bull; <strong>Materials</strong> &mdash; amorphous &harr; crystalline (glass transition)
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Scores ── -->
+    <div id="panel-scores" class="tab-panel">
+      <div class="score-group">
+        <div class="score-group-label eagle">Eagle Eye &mdash; ASFID (Territory)</div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-A)">A</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-A)"></div></div><div class="score-val">0.90</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-S)">S</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:88%;background:var(--col-S)"></div></div><div class="score-val">0.88</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-F)">F</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-F)"></div></div><div class="score-val">0.85</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-I)">I</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:82%;background:var(--col-I)"></div></div><div class="score-val">0.82</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-D)">D</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:87%;background:var(--col-D)"></div></div><div class="score-val">0.87</div></div>
+        <div class="score-mean-row"><span>ASFID mean</span><span>0.864</span></div>
+      </div>
+      <div class="score-group">
+        <div class="score-group-label sphinx">Sphinx Eye &mdash; REVOI (Map)</div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-R)">R</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:92%;background:var(--col-R)"></div></div><div class="score-val">0.92</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-E)">E</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:78%;background:var(--col-E)"></div></div><div class="score-val">0.78</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-V)">V</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-V)"></div></div><div class="score-val">0.95</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-O)">O</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-O)"></div></div><div class="score-val">0.90</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-Im)">I</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-Im)"></div></div><div class="score-val">0.85</div></div>
+        <div class="score-mean-row"><span>REVOI mean</span><span>0.880</span></div>
+      </div>
+      <div class="gap-badge">
+        <div>
+          <div class="gap-label">Epistemic Gap &delta;&#x2081;</div>
+          <div class="gap-val">0.12</div>
+        </div>
+        <div class="gap-desc">Very low &mdash; well-constrained, analytically solved system. SpectralClass: <strong>Coherent</strong></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- COMPONENT BAR -->
+  <div id="comp-bar">
+    <div id="comp-inner">
+      <!-- Row 1: substance selector -->
+      <div class="comp-row">
+        <span class="comp-label">Substance:</span>
+        <button class="sub-btn" id="sub-methanol">Methanol</button>
+        <button class="sub-btn active" id="sub-water">Water</button>
+        <button class="sub-btn" id="sub-gallium">Gallium</button>
+        <button class="sub-btn" id="sub-sulfur">Sulfur</button>
+        <button class="sub-btn" id="sub-iodine">Iodine</button>
+        <button class="sub-btn" id="sub-camphor">Camphor</button>
+        <button class="sub-btn" id="sub-dcm">DCM</button>
+      </div>
+      <!-- Row 2: T / P sliders -->
+      <div class="comp-row">
+        <span class="comp-label">T (°C)</span>
+        <input type="range" id="sl-temp" class="comp-slider" min="-200" max="500" step="0.5" value="50" style="width:150px">
+        <span class="comp-val-display" id="val-temp">50.0 °C</span>
+        <div class="comp-sep"></div>
+        <span class="comp-label">P (atm)</span>
+        <input type="range" id="sl-press" class="comp-slider" min="0" max="200" step="1" value="100" style="width:130px">
+        <span class="comp-val-display" id="val-press">1.000 atm</span>
+        <div class="comp-sep"></div>
+        <span class="comp-label">V (n=1 mol)</span>
+        <span class="comp-val-display" id="val-vol" style="min-width:72px">&mdash;</span>
+        <div class="comp-sep"></div>
+        <span class="comp-label">&#x25CE; Perturb radius</span>
+        <input type="range" id="sl-radius" class="comp-slider" min="10" max="50" step="5" value="30" style="width:100px">
+        <span class="comp-val-display" id="val-radius" style="min-width:38px">30 px</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <footer id="controls">
+    <button class="ctrl-btn snap-solid"  id="btn-snap-solid">&#x25BC; Solid</button>
+    <button class="ctrl-btn snap-liquid" id="btn-snap-liquid">&#x25BC; Liquid</button>
+    <button class="ctrl-btn snap-gas"    id="btn-snap-gas">&#x25BC; Gas</button>
+    <div class="ctrl-sep"></div>
+    <button class="ctrl-btn" id="btn-play">&#9646;&#9646; Pause</button>
+    <button class="ctrl-btn" id="btn-reset">&#8634; Reset</button>
+    <div class="ctrl-sep"></div>
+    <span class="ctrl-label">Speed</span>
+    <input type="range" id="speed-slider" min="0.2" max="3.0" step="0.2" value="1.0">
+    <span class="ctrl-label" id="speed-label">&times;1.0</span>
+    <div class="status-indicator">
+      <div class="status-dot running" id="status-dot"></div>
+      <span id="status-label">Running</span>
+    </div>
+  </footer>
+
+</div><!-- #app -->
+
+<!-- ── p5.js ────────────────────────────────────────────── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════════════════════════
+   SUBSTANCE DATA
+═══════════════════════════════════════════════════════════ */
+const SUBSTANCES = [
+  { id: 'methanol', label: 'Methanol',       formula: 'CH\u2083OH',        M: 32.04,
+    mp: -97.6,  bp:   64.6,  tc: 239.45, pc: 80.9,  dHvap: 37.4,  dHfus: 3.16,
+    dTmdP: 0.01,  color: '#a8b8c0', tp_T: -97.6,  tp_P: null,
+    anomaly: null },
+  { id: 'water',    label: 'Water',          formula: 'H\u2082O',           M: 18.015,
+    mp:   0.0,  bp:  100.0,  tc: 374.0,  pc: 217.7, dHvap: 40.7,  dHfus: 6.01,
+    dTmdP: -0.0075, color: '#5ba3d9', tp_T: 0.01, tp_P: 0.00604,
+    anomaly: 'Anomalous: density max 4\u00b0C; negative dTm/dP' },
+  { id: 'gallium',  label: 'Gallium',        formula: 'Ga',                 M: 69.72,
+    mp:  29.8,  bp: 2402.9,  tc: 7273,   pc: 7000,  dHvap: 256.0, dHfus: 5.59,
+    dTmdP: 0.005, color: '#b8ccd8', tp_T: 29.77, tp_P: null,
+    anomaly: 'Expands on solidification; widest liquid range (2373 K)' },
+  { id: 'sulfur',   label: 'Sulfur',         formula: 'S\u2088',            M: 256.52,
+    mp: 112.8,  bp:  444.6,  tc: 1041,   pc: 207,   dHvap: 45.0,  dHfus: 1.72,
+    dTmdP: 0.035, color: '#c8b800', tp_T: 112.8, tp_P: 21.3,
+    anomaly: 'Viscosity maximum ~160\u00b0C (S\u2088 ring polymerisation)' },
+  { id: 'iodine',   label: 'Iodine',         formula: 'I\u2082',            M: 253.81,
+    mp: 113.7,  bp:  184.4,  tc: 546,    pc: 116,   dHvap: 41.57, dHfus: 15.52,
+    dTmdP: 0.04,  color: '#7858a8', tp_T: 113.5, tp_P: 11.7,
+    anomaly: 'Triple-point P > standard vapor pressure \u2192 sublimates visibly at 1 atm' },
+  { id: 'camphor',  label: 'Camphor',        formula: 'C\u2081\u2080H\u2081\u2086O', M: 152.23,
+    mp: 175.0,  bp:  204.0,  tc: 700,    pc: 40,    dHvap: 47.0,  dHfus: 6.8,
+    dTmdP: 0.03,  color: '#d8d0a8', tp_T: 174.7, tp_P: 6.6,
+    anomaly: 'Very narrow liquid range (29 K); strong sublimation at RT' },
+  { id: 'dcm',      label: 'Dichloromethane', formula: 'CH\u2082Cl\u2082',  M: 84.93,
+    mp: -96.7,  bp:   39.6,  tc: 237,    pc: 60.8,  dHvap: 28.06, dHfus: 4.7,
+    dTmdP: 0.01,  color: '#88aacc', tp_T: -96.7, tp_P: null,
+    anomaly: 'Very low bp (39.6\u00b0C); suspected carcinogen' }
+];
+
+/* ═══════════════════════════════════════════════════════════
+   SIMULATION STATE
+═══════════════════════════════════════════════════════════ */
+const SIM = {
+  running:   true,
+  speed:     1.0,
+  subIdx:    1,
+  T_C:       50.0,
+  P_atm:     1.0,
+  phase:     'liquid',
+  prevPhase: 'liquid',
+  simTime:   0,
+  perturbR:  30        // perturbation radius in px
+};
+
+/* ═══════════════════════════════════════════════════════════
+   PHYSICS FUNCTIONS
+═══════════════════════════════════════════════════════════ */
+const R_gas = 8.314;
+const ATM_PA = 101325;
+
+function getSub() { return SUBSTANCES[SIM.subIdx]; }
+
+/** Clausius-Clapeyron: boiling point (K) at pressure P2_atm */
+function cc_Tb_K(sub, P2_atm) {
+  const T1 = sub.bp + 273.15;
+  const inv = 1 / T1 - R_gas * Math.log(P2_atm) / (sub.dHvap * 1000);
+  return inv > 0 ? 1 / inv : Infinity;
+}
+
+function getTm_C(P_atm) {
+  const s = getSub();
+  return s.mp + s.dTmdP * (P_atm - 1);
+}
+
+function getTb_C(P_atm) {
+  const s = getSub();
+  return cc_Tb_K(s, P_atm) - 273.15;
+}
+
+function computePhase(T_C, P_atm) {
+  const tm = getTm_C(P_atm);
+  const tb = getTb_C(P_atm);
+  if (T_C < tm) return 'solid';
+  if (T_C < tb) return 'liquid';
+  return 'gas';
+}
+
+function getVolume_L(T_C, P_atm) {
+  const T_K = T_C + 273.15;
+  if (T_K <= 0) return 0;
+  return R_gas * T_K / (P_atm * ATM_PA) * 1000;
+}
+
+/* P slider: input [0..200] → P_atm = 10^((x-100)/50) */
+function sliderToP(x)  { return Math.pow(10, (x - 100) / 50); }
+function PToSlider(p)  { return Math.round(Math.log10(p) * 50 + 100); }
+
+/* ═══════════════════════════════════════════════════════════
+   HELPER
+═══════════════════════════════════════════════════════════ */
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return { r, g, b };
+}
+
+/* ═══════════════════════════════════════════════════════════
+   P5 SKETCH
+═══════════════════════════════════════════════════════════ */
+new p5(function(sk) {
+
+  /* --- Solid state --- */
+  let solidPts      = [];
+  let solidBonds    = [];
+  let solidNeighbors = [];        // adjacency list (per-particle neighbor indices)
+  const S_COLS = 13, S_ROWS = 8;  // 104 particles
+
+  /* --- Interaction state --- */
+  let _dragDist  = 0;             // cumulative drag distance this press
+  let _isDragging = false;
+
+  /* --- Liquid state --- */
+  let liqPts = [];
+  const LIQ_N = 140;
+  // Stream-function modes — amplitudes halved to avoid particle rivers
+  const LIQ_MODES = [
+    { A: 42,  fx: 0.012, fy: 0.016, wx: 0.55, wy: 0.40 },
+    { A: 26,  fx: 0.024, fy: 0.030, wx: 0.90, wy: 0.70 },
+    { A: 14,  fx: 0.048, fy: 0.052, wx: 1.40, wy: 1.10 }
+  ];
+
+  /* --- Gas state --- */
+  let gasPts = [];
+  const GAS_N = 44;
+  const GAM   = 0.05;
+  const V0    = 3.2;   // target speed px/frame
+  const SIGMA = 0.75;
+
+  /* ---- Initialise all particle systems ---- */
+  function initSolid(W, H) {
+    solidPts      = [];
+    solidBonds    = [];
+    solidNeighbors = [];
+    const mx = W * 0.08, my = H * 0.12;
+    const sx = (W - 2*mx) / (S_COLS - 1);
+    const sy = (H - 2*my) / (S_ROWS - 1);
+    for (let r = 0; r < S_ROWS; r++) {
+      for (let c = 0; c < S_COLS; c++) {
+        solidPts.push({
+          x0: mx + c*sx, y0: my + r*sy,
+          x: 0, y: 0,
+          px: Math.random() * Math.PI * 2,
+          py: Math.random() * Math.PI * 2,
+          wx: 1.8 + Math.random() * 0.8,
+          wy: 2.0 + Math.random() * 0.8,
+          excite: 0   // mechanical-wave excitation amplitude boost
+        });
+      }
+    }
+    // Bonds (right + down)
+    for (let r = 0; r < S_ROWS; r++) {
+      for (let c = 0; c < S_COLS; c++) {
+        const i = r * S_COLS + c;
+        if (c < S_COLS - 1) solidBonds.push([i, i + 1]);
+        if (r < S_ROWS - 1) solidBonds.push([i, i + S_COLS]);
+      }
+    }
+    // Adjacency list (for wave propagation)
+    solidNeighbors = solidPts.map(() => []);
+    for (const [a, b] of solidBonds) {
+      solidNeighbors[a].push(b);
+      solidNeighbors[b].push(a);
+    }
+  }
+
+  function initLiquid(W, H) {
+    liqPts = [];
+    for (let i = 0; i < LIQ_N; i++) {
+      liqPts.push({
+        x:        8 + Math.random() * (W - 16),
+        y:        8 + Math.random() * (H - 16),
+        vx: 0, vy: 0,      // output velocity (2nd low-pass output)
+        svx: 0, svy: 0,    // 1st low-pass accumulator (tracks desired)
+        tx:  0, ty:  0,    // wall-turbulence accumulator
+        noiseOff: Math.random() * Math.PI * 2  // unique phase per particle
+      });
+    }
+  }
+
+  function initGas(W, H) {
+    gasPts = [];
+    for (let i = 0; i < GAS_N; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const spd = 2 + Math.random() * 2.5;
+      gasPts.push({
+        x:  8 + Math.random() * (W - 16),
+        y:  8 + Math.random() * (H - 16),
+        vx: Math.cos(ang) * spd,
+        vy: Math.sin(ang) * spd
+      });
+    }
+  }
+
+  function rebuildAll() {
+    const lH = lyrH(), W = sk.width;
+    initSolid(W, lH);
+    initLiquid(W, lH);
+    initGas(W, lH);
+  }
+
+  function lyrH() { return Math.floor(sk.height / 3); }
+
+  /* ---- Stream-function velocity ---- */
+  function streamVel(x, y, t) {
+    let vx = 0, vy = 0;
+    for (const m of LIQ_MODES) {
+      const sX = Math.sin(m.fx * x + m.wx * t);
+      const cX = Math.cos(m.fx * x + m.wx * t);
+      const sY = Math.sin(m.fy * y + m.wy * t);
+      const cY = Math.cos(m.fy * y + m.wy * t);
+      vx +=  m.A * m.fy * sX * cY;
+      vy += -m.A * m.fx * cX * sY;
+    }
+    return { vx, vy };
+  }
+
+  /* ---- Update liquid ---- */
+  function updateLiquid(W, H, t, dt) {
+    const MARGIN      = Math.max(20, W / 12);
+    const TURB_AMP    = 0.9;
+    const TURB_ALPHA  = 0.025;  // very slow -- ~40 frame ramp, no direction reversals
+    const LP1_ALPHA   = 0.04;   // 1st low-pass: desired -> svx/svy (~25 frame ramp)
+    const LP2_ALPHA   = 0.14;   // 2nd low-pass: svx/svy -> vx/vy  (~7 frame ramp)
+    const MAX_SPD     = 1.6;
+    const cx = W * 0.5, cy = H * 0.5;
+    const CENTRE_R    = Math.min(W, H) * 0.28;
+    const CENTRE_K    = 0.22;
+
+    // Phase 1: desired velocity per particle (stream + wall turbulence + centrifugal)
+    for (const p of liqPts) {
+      const { vx: sfx, vy: sfy } = streamVel(p.x, p.y, t);
+
+      // Wall turbulence: outward push near walls
+      let wx = 0, wy = 0;
+      if (p.x < MARGIN)   wx += TURB_AMP * (1 - p.x / MARGIN);
+      if (p.x > W-MARGIN) wx -= TURB_AMP * (1 - (W - p.x) / MARGIN);
+      if (p.y < MARGIN)   wy += TURB_AMP * (1 - p.y / MARGIN);
+      if (p.y > H-MARGIN) wy -= TURB_AMP * (1 - (H - p.y) / MARGIN);
+      // Slow unique per-particle noise -- desynchronises trajectories
+      wx += 0.07 * Math.sin(t * 0.38 + p.noiseOff);
+      wy += 0.07 * Math.cos(t * 0.31 + p.noiseOff * 1.4);
+      p.tx += TURB_ALPHA * (wx - p.tx);
+      p.ty += TURB_ALPHA * (wy - p.ty);
+
+      let dvx = sfx + p.tx;
+      let dvy = sfy + p.ty;
+
+      // Centrifugal push away from panel centre
+      const dcx = p.x - cx, dcy = p.y - cy;
+      const dc  = Math.sqrt(dcx*dcx + dcy*dcy);
+      if (dc < CENTRE_R && dc > 0.01) {
+        const s = CENTRE_K * (1 - dc / CENTRE_R);
+        dvx += (dcx / dc) * s;
+        dvy += (dcy / dc) * s;
+      }
+
+      // Double low-pass cascade: stage1 tracks desired slowly, stage2 tracks stage1
+      p.svx += LP1_ALPHA * (dvx - p.svx);
+      p.svy += LP1_ALPHA * (dvy - p.svy);
+      p.vx  += LP2_ALPHA * (p.svx - p.vx);
+      p.vy  += LP2_ALPHA * (p.svy - p.vy);
+
+      const spd = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+      if (spd > MAX_SPD) { p.vx *= MAX_SPD/spd; p.vy *= MAX_SPD/spd; }
+
+      p.x += p.vx * dt * 60;
+      p.y += p.vy * dt * 60;
+    }
+
+    // Phase 2: soft-sphere repulsion -- tiny capped position micro-correction only
+    // Capped at MAX_PUSH px per pair per frame so the low-pass is never bypassed.
+    const REPEL_R  = 22;
+    const MAX_PUSH = 0.5;
+    const n = liqPts.length;
+    for (let i = 0; i < n; i++) {
+      for (let j = i + 1; j < n; j++) {
+        const dx = liqPts[j].x - liqPts[i].x;
+        const dy = liqPts[j].y - liqPts[i].y;
+        const d2 = dx*dx + dy*dy;
+        if (d2 >= REPEL_R * REPEL_R) continue;
+        const d  = Math.sqrt(d2) || 0.01;
+        const ux = dx / d, uy = dy / d;
+        const push = Math.min((1 - d / REPEL_R) * REPEL_R * 0.08, MAX_PUSH);
+        liqPts[i].x -= ux * push;  liqPts[i].y -= uy * push;
+        liqPts[j].x += ux * push;  liqPts[j].y += uy * push;
+      }
+    }
+
+    // Phase 3: boundary clamp (attenuate svx/svy too to prevent rebound)
+    for (const p of liqPts) {
+      if (p.x < 4)   { p.x = 4;   p.vx = Math.abs(p.vx)*0.4; p.svx = Math.abs(p.svx)*0.4; }
+      if (p.x > W-4) { p.x = W-4; p.vx =-Math.abs(p.vx)*0.4; p.svx =-Math.abs(p.svx)*0.4; }
+      if (p.y < 4)   { p.y = 4;   p.vy = Math.abs(p.vy)*0.4; p.svy = Math.abs(p.svy)*0.4; }
+      if (p.y > H-4) { p.y = H-4; p.vy =-Math.abs(p.vy)*0.4; p.svy =-Math.abs(p.svy)*0.4; }
+    }
+  }
+  /* ---- Update gas ---- */
+  function updateGas(W, H, dt) {
+    for (const p of gasPts) {
+      const spd = Math.sqrt(p.vx*p.vx + p.vy*p.vy) || 1;
+      p.vx = p.vx * (1 - GAM + GAM * V0/spd) + (Math.random()-0.5) * 2 * SIGMA;
+      p.vy = p.vy * (1 - GAM + GAM * V0/spd) + (Math.random()-0.5) * 2 * SIGMA;
+      const s2 = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+      if (s2 > 7) { p.vx *= 7/s2; p.vy *= 7/s2; }
+
+      p.x += p.vx * dt * 60;
+      p.y += p.vy * dt * 60;
+      if (p.x < 4)   { p.x = 4;   p.vx =  Math.abs(p.vx); }
+      if (p.x > W-4) { p.x = W-4; p.vx = -Math.abs(p.vx); }
+      if (p.y < 4)   { p.y = 4;   p.vy =  Math.abs(p.vy); }
+      if (p.y > H-4) { p.y = H-4; p.vy = -Math.abs(p.vy); }
+    }
+  }
+
+  /* ---- Draw solid particles ---- */
+  function drawSolid(y0, W, H, sub, t) {
+    const tc = hexToRgb(sub.color);
+    const tm = getTm_C(SIM.P_atm) + 273.15;
+    const T_K = SIM.T_C + 273.15;
+    const ratio   = Math.max(0.05, Math.min(1.3, T_K / tm));
+    const baseAmp = ratio * 1.122; // +10% default vibration
+
+    // ── Wave propagation (mechanical disturbance through lattice) ──
+    const prevExcite = solidPts.map(p => p.excite);
+    const SPREAD = 0.10;
+    const DECAY  = 0.55;   // very fast decay — disturbance fades in ~2 frames
+    for (let i = 0; i < solidPts.length; i++) {
+      if (prevExcite[i] < 0.001) { solidPts[i].excite = 0; continue; }
+      for (const j of solidNeighbors[i]) {
+        solidPts[j].excite = Math.min(2.277, solidPts[j].excite + prevExcite[i] * SPREAD);
+      }
+      solidPts[i].excite *= DECAY;
+    }
+
+    // ── Update positions — amplitude boosted by excitation, capped at +130% ──
+    for (const p of solidPts) {
+      const boost = Math.min(2.277, p.excite); // max 228% extra
+      const amp   = baseAmp * (1 + boost);
+      p.x = p.x0 + amp * Math.sin(p.wx * t + p.px);
+      p.y = p.y0 + amp * Math.cos(p.wy * t + p.py);
+    }
+
+    // ── Bonds — follow actual particle positions ──
+    sk.strokeWeight(0.9);
+    sk.stroke(tc.r, tc.g, tc.b, 90);
+    for (const [a, b] of solidBonds) {
+      const pa = solidPts[a], pb = solidPts[b];
+      sk.line(pa.x, y0 + pa.y, pb.x, y0 + pb.y);
+    }
+
+    // ── Particles — standard appearance, no glow ──
+    sk.noStroke();
+    sk.fill(tc.r, tc.g, tc.b, 230);
+    for (const p of solidPts) {
+      sk.ellipse(p.x, y0 + p.y, 5.5, 5.5);
+    }
+  }
+
+  /* ---- Draw liquid particles ---- */
+  function drawLiquid(y0, W, H, sub, t, dt) {
+    const tc = hexToRgb(sub.color);
+    updateLiquid(W, H, t, dt);
+
+    // Transient bonds
+    const bondR = 34;
+    sk.strokeWeight(0.8);
+    for (let i = 0; i < liqPts.length; i++) {
+      let bonds = 0;
+      for (let j = i+1; j < liqPts.length && bonds < 4; j++) {
+        const dx = liqPts[i].x - liqPts[j].x;
+        const dy = liqPts[i].y - liqPts[j].y;
+        const d  = Math.sqrt(dx*dx + dy*dy);
+        if (d < bondR) {
+          const al = (1 - d/bondR) * 110;
+          sk.stroke(tc.r, tc.g, tc.b, al);
+          sk.line(liqPts[i].x, y0+liqPts[i].y, liqPts[j].x, y0+liqPts[j].y);
+          bonds++;
+        }
+      }
+    }
+
+    // Particles
+    sk.noStroke();
+    sk.fill(tc.r, tc.g, tc.b, 210);
+    for (const p of liqPts) {
+      sk.ellipse(p.x, y0 + p.y, 6, 6);
+    }
+  }
+
+  /* ---- Draw gas particles ---- */
+  function drawGas(y0, W, H, sub, dt) {
+    const tc = hexToRgb(sub.color);
+    updateGas(W, H, dt);
+
+    sk.noStroke();
+    for (const p of gasPts) {
+      sk.fill(tc.r, tc.g, tc.b, 40);
+      sk.ellipse(p.x, y0 + p.y, 12, 12);
+      sk.fill(tc.r, tc.g, tc.b, 190);
+      sk.ellipse(p.x, y0 + p.y, 6.5, 6.5);
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────── */
+  sk.setup = function() {
+    const el = document.getElementById('canvas-area');
+    const cnv = sk.createCanvas(el.offsetWidth, el.offsetHeight);
+    cnv.parent('canvas-area');
+    sk.frameRate(60);
+    rebuildAll();
+  };
+
+  sk.draw = function() {
+    const dt = (1/60) * SIM.speed;
+    if (SIM.running) SIM.simTime += dt;
+    const t  = SIM.simTime;
+    const W  = sk.width;
+    const lH = lyrH();
+    const sub   = getSub();
+    const phase = SIM.phase;
+    const tm    = getTm_C(SIM.P_atm);
+    const tb    = getTb_C(SIM.P_atm);
+    const tc    = hexToRgb(sub.color);
+
+    sk.background('#0d1117');
+
+    const LAYERS = ['gas', 'liquid', 'solid'];
+    LAYERS.forEach((lyr, i) => {
+      const y0     = i * lH;
+      const active = (lyr === phase);
+
+      // Layer background
+      sk.noStroke();
+      sk.fill(active ? 16 : 11, active ? 23 : 15, active ? 36 : 20);
+      sk.rect(0, y0, W, lH);
+
+      // Separator line
+      if (i > 0) {
+        sk.stroke('#30363d'); sk.strokeWeight(1);
+        sk.line(0, y0, W, y0); sk.noStroke();
+      }
+
+      // Active border highlight
+      if (active) {
+        sk.stroke(tc.r, tc.g, tc.b, 80);
+        sk.strokeWeight(1);
+        sk.noFill();
+        sk.rect(0, y0, W-1, lH);
+        sk.noStroke();
+      }
+
+      // Draw particles for active layer
+      if (active && SIM.running) {
+        if (lyr === 'solid')  drawSolid(y0, W, lH, sub, t);
+        else if (lyr === 'liquid') drawLiquid(y0, W, lH, sub, t, dt);
+        else                  drawGas(y0, W, lH, sub, dt);
+      }
+
+      // Phase label
+      sk.textAlign(sk.CENTER, sk.CENTER);
+      sk.textStyle(sk.BOLD);
+      if (active) {
+        sk.textSize(21);
+        sk.fill(tc.r, tc.g, tc.b, 170);
+      } else {
+        sk.textSize(16);
+        sk.fill(75, 85, 105, 140);
+      }
+      sk.text(lyr.toUpperCase(), W/2, y0 + lH/2);
+
+      // Sub-label
+      if (active) {
+        sk.textSize(11); sk.textStyle(sk.NORMAL);
+        sk.fill(120, 130, 152, 140);
+        const sub_lbl = lyr === 'solid' ? 'Crystalline \u2014 lattice vibrations'
+                      : lyr === 'liquid'? 'Short-range order \u2014 free flow'
+                                        : 'Disordered \u2014 Brownian motion';
+        sk.text(sub_lbl, W/2, y0 + lH/2 + 22);
+
+        // Hint: click to switch / drag to disturb
+        sk.textSize(9); sk.fill(80, 90, 112, 160);
+        sk.text('click layer to switch phase  \u2022  drag to disturb', W/2, y0 + lH - 12);
+      } else {
+        // Clickable hint on inactive layers
+        sk.textSize(10); sk.textStyle(sk.NORMAL);
+        sk.fill(60, 75, 100, 180);
+        sk.text('\u25B6  click to activate', W/2, y0 + lH/2 + 22);
+      }
+
+      // Turbulence cursor ring (active layer, while dragging)
+      if (active && _isDragging &&
+          sk.mouseX >= 0 && sk.mouseX <= W &&
+          sk.mouseY >= y0 && sk.mouseY <= y0 + lH) {
+        sk.noFill();
+        sk.strokeWeight(1);
+        sk.stroke(tc.r, tc.g, tc.b, 60);
+        sk.ellipse(sk.mouseX, sk.mouseY, SIM.perturbR * 2, SIM.perturbR * 2);
+        sk.stroke(tc.r, tc.g, tc.b, 120);
+        sk.ellipse(sk.mouseX, sk.mouseY, 4, 4);
+        sk.noStroke();
+      }
+    });
+
+    // Phase boundary temperature labels
+    sk.textAlign(sk.LEFT, sk.CENTER);
+    sk.textStyle(sk.NORMAL); sk.textSize(10);
+    sk.fill(135, 145, 170, 200);
+    const tbStr = isFinite(tb) ? `${tb.toFixed(1)} °C` : '> Tc';
+    sk.text(`T b = ${tbStr} @ ${SIM.P_atm < 1 ? SIM.P_atm.toFixed(4) : SIM.P_atm.toFixed(2)} atm`,
+            8, lH - 8);
+    sk.text(`T m = ${tm.toFixed(1)} °C @ ${SIM.P_atm < 1 ? SIM.P_atm.toFixed(4) : SIM.P_atm.toFixed(2)} atm`,
+            8, 2*lH - 8);
+
+    // Substance formula overlay (top-right)
+    sk.textAlign(sk.RIGHT, sk.TOP);
+    sk.textSize(11); sk.fill(150, 160, 180, 160);
+    sk.text(`${sub.label}  ${sub.formula}  M = ${sub.M} g/mol`, W - 10, 8);
+  };
+
+  sk.windowResized = function() {
+    const el = document.getElementById('canvas-area');
+    sk.resizeCanvas(el.offsetWidth, el.offsetHeight);
+    rebuildAll();
+  };
+
+  // Expose for external phase-change reset
+  window._rebuildPhase = function(phase) {
+    const lH = lyrH(), W = sk.width;
+    if (phase === 'solid')  initSolid(W, lH);
+    if (phase === 'liquid') initLiquid(W, lH);
+    if (phase === 'gas')    initGas(W, lH);
+  };
+
+  /* ── Layer helper ── */
+  function layerAtY(y) {
+    const lH = lyrH();
+    if (y < lH)       return 'gas';
+    if (y < 2 * lH)   return 'liquid';
+    return 'solid';
+  }
+
+  function inCanvas() {
+    return sk.mouseX >= 0 && sk.mouseX <= sk.width &&
+           sk.mouseY >= 0 && sk.mouseY <= sk.height;
+  }
+
+  /* ── Click → phase switch ── */
+  sk.mousePressed = function() {
+    if (!inCanvas()) return;   // let sliders etc. work normally
+    _isDragging = false;
+    _dragDist   = 0;
+  };
+
+  sk.mouseReleased = function() {
+    if (!inCanvas()) return;
+    // Only switch phase if it was a true click (not a drag)
+    if (_dragDist < 8) {
+      const lyr = layerAtY(sk.mouseY);
+      snapToPhase(lyr);
+      refreshUI();
+    }
+    _isDragging = false;
+    _dragDist   = 0;
+  };
+
+  /* ── Drag → turbulence / mechanical wave ── */
+  sk.mouseDragged = function() {
+    if (!inCanvas()) return;   // don't steal slider drags
+    _isDragging = true;
+    const ddx = sk.mouseX - sk.pmouseX;
+    const ddy = sk.mouseY - sk.pmouseY;
+    _dragDist += Math.sqrt(ddx*ddx + ddy*ddy);
+
+    const lH     = lyrH();
+    const lyrIdx = Math.floor(Math.max(0, Math.min(sk.mouseY, sk.height - 1)) / lH);
+    const lyr    = ['gas','liquid','solid'][lyrIdx];
+    const localY = sk.mouseY - lyrIdx * lH;
+    const RADIUS = SIM.perturbR;
+    const force  = Math.sqrt(ddx*ddx + ddy*ddy);
+
+    if (lyr === 'gas') {
+      for (const p of gasPts) {
+        const d = Math.sqrt((p.x - sk.mouseX)**2 + (p.y - localY)**2);
+        if (d < RADIUS) {
+          const w = (1 - d / RADIUS) * 5;
+          p.vx += ddx * w;
+          p.vy += ddy * w;
+        }
+      }
+    } else if (lyr === 'liquid') {
+      for (const p of liqPts) {
+        const d = Math.sqrt((p.x - sk.mouseX)**2 + (p.y - localY)**2);
+        if (d < RADIUS) {
+          const w = (1 - d / RADIUS) * 3;
+          p.vx += ddx * w;
+          p.vy += ddy * w;
+        }
+      }
+    } else {
+      // Solid: inject mechanical excitation — wave propagates via lattice bonds
+      for (const p of solidPts) {
+        const d = Math.sqrt((p.x0 - sk.mouseX)**2 + (p.y0 - localY)**2);
+        if (d < RADIUS) {
+          const w = (1 - d / RADIUS) * force * 0.25;
+          p.excite = Math.min(2.277, p.excite + w * 1.518);
+        }
+      }
+    }
+  };
+
+}, 'canvas-area');
+
+/* ═══════════════════════════════════════════════════════════
+   UI UPDATE
+═══════════════════════════════════════════════════════════ */
+
+function refreshUI() {
+  const sub   = getSub();
+  const T     = SIM.T_C;
+  const P     = SIM.P_atm;
+  const tm    = getTm_C(P);
+  const tb    = getTb_C(P);
+  const vol   = getVolume_L(T, P);
+
+  // Phase computation + reset particles when phase changes
+  const newPhase = computePhase(T, P);
+  if (newPhase !== SIM.prevPhase) {
+    SIM.prevPhase = newPhase;
+    if (window._rebuildPhase) window._rebuildPhase(newPhase);
+  }
+  SIM.phase = newPhase;
+
+  // Phase chip
+  const chip = document.getElementById('phase-chip');
+  chip.textContent = SIM.phase.toUpperCase();
+  chip.className = `chip phase-chip phase-${SIM.phase}`;
+
+  // Slider value displays
+  document.getElementById('val-temp').textContent  = `${T.toFixed(1)} °C`;
+  document.getElementById('val-press').textContent = P < 0.01 ? `${P.toFixed(5)} atm`
+                                                    : P < 1   ? `${P.toFixed(4)} atm`
+                                                    : P < 10  ? `${P.toFixed(3)} atm`
+                                                    :            `${P.toFixed(2)} atm`;
+
+  // Volume display (gas only meaningful but always show)
+  if (T + 273.15 > 0 && P > 0) {
+    document.getElementById('val-vol').textContent = `${vol.toFixed(2)} L`;
+  } else {
+    document.getElementById('val-vol').textContent = '\u2014';
+  }
+
+  /* ---- Sidebar substance card ---- */
+  document.getElementById('sub-dot').style.background = sub.color;
+  document.getElementById('sub-title').textContent = `${sub.label} \u2014 ${sub.formula}`;
+  document.getElementById('val-mp').textContent   = `${sub.mp.toFixed(1)} °C`;
+  document.getElementById('val-bp').textContent   = `${sub.bp.toFixed(1)} °C`;
+  document.getElementById('val-tm-p').textContent = `${tm.toFixed(2)} °C`;
+  document.getElementById('val-tb-p').textContent = isFinite(tb) ? `${tb.toFixed(2)} °C` : '> Tc';
+  document.getElementById('val-tc').textContent   = `${sub.tc} °C / ${sub.pc} atm`;
+  document.getElementById('val-dhvap').textContent = `${sub.dHvap} kJ/mol`;
+  document.getElementById('val-dhfus').textContent = `${sub.dHfus} kJ/mol`;
+
+  // Volume in L
+  if (T + 273.15 > 0) {
+    document.getElementById('val-v').textContent = `${vol.toFixed(3)} L`;
+  } else {
+    document.getElementById('val-v').textContent = '\u2014';
+  }
+
+  // Anomaly note
+  const anomEl = document.getElementById('sub-anomaly');
+  if (sub.anomaly) {
+    anomEl.textContent = '\u26A0\uFE0F ' + sub.anomaly;
+    anomEl.style.display = 'block';
+  } else {
+    anomEl.style.display = 'none';
+  }
+
+  /* ---- Clausius-Clapeyron table ---- */
+  const CC_PRESSURES = [0.01, 0.1, 1.0, 10, 100];
+  const CC_IDS       = ['cc-001','cc-01','cc-1','cc-10','cc-100'];
+  const tableEl = document.getElementById('cc-table');
+  CC_PRESSURES.forEach((pRef, i) => {
+    const Tb_K = cc_Tb_K(sub, pRef);
+    const Tb_C = Tb_K - 273.15;
+    const td   = document.getElementById(CC_IDS[i]);
+    td.textContent = isFinite(Tb_C) ? `${Tb_C.toFixed(1)} °C` : '> Tc';
+    const row  = td.closest('tr');
+    row.classList.toggle('current-p', Math.abs(pRef - P) < pRef * 0.1);
+  });
+
+  /* ---- Substance buttons ---- */
+  SUBSTANCES.forEach((s, idx) => {
+    const btn = document.getElementById(`sub-${s.id}`);
+    if (!btn) return;
+    btn.classList.toggle('active', idx === SIM.subIdx);
+    if (idx === SIM.subIdx) {
+      const c = hexToRgb(s.color);
+      btn.style.borderColor = s.color;
+      btn.style.color = s.color;
+      btn.style.background = `rgba(${c.r},${c.g},${c.b},0.10)`;
+    } else {
+      btn.style.borderColor = '';
+      btn.style.color = '';
+      btn.style.background = '';
+    }
+  });
+}
+
+function setTSliderRange() {
+  const sub = getSub();
+  const tMin = Math.round(sub.mp - 50);
+  const tMax = sub.id === 'gallium' ? 800 : Math.round(sub.bp + 150);
+  const sl   = document.getElementById('sl-temp');
+  sl.min = tMin;
+  sl.max = tMax;
+  // Default: liquid midpoint
+  const def  = sub.id === 'gallium' ? sub.mp + 300 : sub.mp + (sub.bp - sub.mp) * 0.4;
+  SIM.T_C    = parseFloat(def.toFixed(1));
+  sl.value   = SIM.T_C;
+}
+
+/* Phase snap */
+function snapToPhase(targetPhase) {
+  const sub   = getSub();
+  const P_ref = 1.0;
+  document.getElementById('sl-press').value = PToSlider(P_ref);
+  SIM.P_atm = P_ref;
+  if (targetPhase === 'solid') {
+    SIM.T_C = sub.mp - 25;
+  } else if (targetPhase === 'liquid') {
+    SIM.T_C = sub.id === 'gallium'
+      ? sub.mp + 200
+      : sub.mp + (sub.bp - sub.mp) * 0.4;
+  } else {
+    SIM.T_C = sub.id === 'gallium'
+      ? sub.mp + 500
+      : sub.bp + 50;
+  }
+  // Clamp T to slider bounds
+  const sl = document.getElementById('sl-temp');
+  SIM.T_C  = Math.max(parseFloat(sl.min), Math.min(parseFloat(sl.max), SIM.T_C));
+  sl.value = SIM.T_C;
+  refreshUI();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EVENT LISTENERS
+═══════════════════════════════════════════════════════════ */
+
+// Perturbation radius slider
+document.getElementById('sl-radius').addEventListener('input', function() {
+  SIM.perturbR = parseInt(this.value);
+  document.getElementById('val-radius').textContent = `${SIM.perturbR} px`;
+});
+
+// Temperature slider
+document.getElementById('sl-temp').addEventListener('input', function() {
+  SIM.T_C = parseFloat(this.value);
+  refreshUI();
+});
+
+// Pressure slider
+document.getElementById('sl-press').addEventListener('input', function() {
+  SIM.P_atm = sliderToP(parseInt(this.value));
+  refreshUI();
+});
+
+// Substance buttons
+SUBSTANCES.forEach((s, idx) => {
+  const btn = document.getElementById(`sub-${s.id}`);
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    SIM.subIdx = idx;
+    setTSliderRange();
+    SIM.P_atm = 1.0;
+    document.getElementById('sl-press').value = PToSlider(1.0);
+    refreshUI();
+  });
+});
+
+// Phase snap buttons
+document.getElementById('btn-snap-solid').addEventListener('click',  () => snapToPhase('solid'));
+document.getElementById('btn-snap-liquid').addEventListener('click', () => snapToPhase('liquid'));
+document.getElementById('btn-snap-gas').addEventListener('click',    () => snapToPhase('gas'));
+
+// Play / Pause
+document.getElementById('btn-play').addEventListener('click', function() {
+  SIM.running = !SIM.running;
+  const dot   = document.getElementById('status-dot');
+  const lbl   = document.getElementById('status-label');
+  if (SIM.running) {
+    this.textContent = '\u23F8\uFE0F Pause';
+    dot.classList.add('running');
+    lbl.textContent = 'Running';
+  } else {
+    this.textContent = '\u25B6 Play';
+    dot.classList.remove('running');
+    lbl.textContent = 'Paused';
+  }
+});
+
+// Reset
+document.getElementById('btn-reset').addEventListener('click', () => {
+  SIM.subIdx = 1; // Water
+  SIM.P_atm  = 1.0;
+  document.getElementById('sl-press').value = PToSlider(1.0);
+  setTSliderRange();
+  SIM.running = true;
+  SIM.simTime = 0;
+  document.getElementById('btn-play').textContent = '\u23F8\uFE0F Pause';
+  document.getElementById('status-dot').classList.add('running');
+  document.getElementById('status-label').textContent = 'Running';
+  refreshUI();
+});
+
+// Speed slider
+document.getElementById('speed-slider').addEventListener('input', function() {
+  SIM.speed = parseFloat(this.value);
+  document.getElementById('speed-label').textContent = `\u00d7${SIM.speed.toFixed(1)}`;
+});
+
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const tab = this.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById(`panel-${tab}`).classList.add('active');
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════
+   SPLITTER DRAG
+═══════════════════════════════════════════════════════════ */
+(function() {
+  const splitter = document.getElementById('splitter');
+  const app      = document.getElementById('app');
+  let dragging   = false, startX = 0, startSW = 0;
+
+  splitter.addEventListener('mousedown', e => {
+    dragging = true;
+    startX   = e.clientX;
+    startSW  = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-w'));
+    splitter.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const delta  = startX - e.clientX;
+    const newSW  = Math.max(180, Math.min(620, startSW + delta));
+    document.documentElement.style.setProperty('--sidebar-w', `${newSW}px`);
+  });
+  document.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false;
+    splitter.classList.remove('dragging');
+    document.body.style.cursor = '';
+    // trigger p5 resize
+    window.dispatchEvent(new Event('resize'));
+  });
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   INITIALISE
+═══════════════════════════════════════════════════════════ */
+setTSliderRange();
+refreshUI();
+</script>
+
+<!-- Home button tooltip -->
+<div id="home-tip" style="
+  position:fixed; z-index:999999;
+  background:#1c2130; color:#e6edf3;
+  border:1px solid #3d444f; border-radius:6px;
+  padding:4px 10px; font-size:11px; font-weight:500;
+  letter-spacing:0.04em; white-space:nowrap;
+  pointer-events:none; opacity:0; transition:opacity 0.18s;
+  transform:translateX(-50%);
+">Back to Poclet Gallery</div>
+
+<!-- TSCG logo tooltip (fixed, always on top) -->
+<div id="tscg-tip" style="
+  position:fixed; z-index:999999;
+  background:#1c2130; color:#e6edf3;
+  border:1px solid #3d444f; border-radius:6px;
+  padding:4px 10px; font-size:11px; font-weight:500;
+  letter-spacing:0.04em; white-space:nowrap;
+  pointer-events:none; opacity:0; transition:opacity 0.18s;
+  transform:translateX(-50%);
+">TSCG Github repository</div>
+<script>
+(function(){
+  const logo = document.querySelector('.tscg-logo-link');
+  const tip  = document.getElementById('tscg-tip');
+  logo.addEventListener('mouseenter', function() {
+    const r = logo.getBoundingClientRect();
+    // Place just below the logo (header is only 44px — no room above)
+    tip.style.left = (r.left + r.width / 2) + 'px';
+    tip.style.top  = (r.bottom + 6) + 'px';
+    tip.style.opacity = '1';
+  });
+  logo.addEventListener('mouseleave', function() {
+    tip.style.opacity = '0';
+  });
+  const home    = document.getElementById('btn-home');
+  const homeTip = document.getElementById('home-tip');
+  home.addEventListener('mouseenter', function() {
+    const r = home.getBoundingClientRect();
+    homeTip.style.left = Math.max(8, r.left) + 'px';
+    homeTip.style.top  = (r.bottom + 6) + 'px';
+    homeTip.style.transform = 'none';
+    homeTip.style.opacity = '1';
+  });
+  home.addEventListener('mouseleave', function() {
+    homeTip.style.opacity = '0';
+  });
+})();
+</script>
+</body>
+</html>
