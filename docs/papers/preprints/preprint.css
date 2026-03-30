@@ -1,0 +1,125 @@
+/* TSCG Preprint Stylesheet */
+
+body {
+  font-family: "Calibri", "Segoe UI", "Arial", sans-serif;
+  font-size: 11pt;
+  line-height: 1.5;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 1cm 1.5cm;
+  color: #1a1a1a;
+}
+
+/* Titres */
+h1 { font-size: 17pt; margin-top: 1.8em; border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+h2 { font-size: 13pt; margin-top: 1.5em; border-bottom: 1px solid #aaa; padding-bottom: 0.2em; }
+h3 { font-size: 11.5pt; margin-top: 1.2em; }
+h4 { font-size: 11pt; font-style: italic; margin-top: 1em; }
+
+/* Titre principal */
+header { text-align: center; margin-bottom: 1.5em; border-bottom: 3px double #333; padding-bottom: 1em; }
+header h1 { font-size: 15pt; border-bottom: none; }
+
+/* Table des matieres */
+nav#TOC {
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 0.8em 1.2em;
+  margin: 1.2em 0 1.5em 0;
+  font-size: 9.5pt;
+}
+nav#TOC ul { margin: 0.2em 0; padding-left: 1.2em; }
+nav#TOC > ul { padding-left: 0; }
+
+/* Blocs de code */
+code, pre {
+  font-family: "Consolas", "DejaVu Sans Mono", monospace;
+  font-size: 9pt;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+}
+pre {
+  padding: 0.6em 0.8em;
+  overflow-x: auto;
+  line-height: 1.35;
+  border-radius: 3px;
+}
+code { padding: 0.1em 0.3em; border-radius: 2px; }
+pre code { background: none; border: none; padding: 0; }
+
+/* Tableaux */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 9.5pt;
+  margin: 0.8em 0;
+}
+th {
+  background: #e8e8e8;
+  font-weight: bold;
+  padding: 0.4em 0.6em;
+  border: 1px solid #aaa;
+  text-align: left;
+}
+td { padding: 0.3em 0.6em; border: 1px solid #ccc; }
+tr:nth-child(even) { background: #fafafa; }
+
+/* Blockquotes */
+blockquote {
+  border-left: 3px solid #999;
+  margin: 0.8em 0 0.8em 1em;
+  padding: 0.3em 0.8em;
+  color: #444;
+  font-style: italic;
+}
+
+/* Liens */
+a { color: #1a4a8a; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Notes de bas de page */
+.footnotes {
+  font-size: 9pt;
+  border-top: 1px solid #ccc;
+  margin-top: 1.5em;
+  padding-top: 0.6em;
+  color: #555;
+}
+
+/* Separateurs */
+hr { border: none; border-top: 1px solid #ddd; margin: 1.5em 0; }
+
+/* ============================================
+   IMPRESSION — suppression footer navigateur
+   @page doit etre HORS de @media print
+   pour que Brave/Chrome le respecte
+   ============================================ */
+@page {
+  size: A4;
+  margin: 1.8cm 2cm;
+}
+
+@media print {
+  body {
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+    font-size: 10pt;
+  }
+  h2 { page-break-after: avoid; }
+  h3 { page-break-after: avoid; }
+  pre, table, blockquote { page-break-inside: avoid; }
+  a { color: #1a1a1a; }
+  nav#TOC { page-break-after: always; }
+}
+
+/* Bibliographie — interligne reduit + retrait suspendu */
+div#refs, div.references {
+  font-size: 10pt;
+  line-height: 1.25;
+}
+div#refs p, div.references p {
+  margin: 0.3em 0;
+  padding-left: 1.5em;
+  text-indent: -1.5em;
+}
