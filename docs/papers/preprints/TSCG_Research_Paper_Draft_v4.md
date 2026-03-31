@@ -1,11 +1,11 @@
 # TSCG: The Transdisciplinary System Construction Game
 ## A Proposal to Practice Systemic Modeling as a Construction Game
 
-**Authors**: Echopraxium with the collaboration of Claude AI
+**Authors**: Michel Kern (aka Echopraxium) with the collaboration of Claude AI
 **Date**: March 2026
 **Version**: 4.0
 **Framework Version**: TSCG v15.11.0
-**DOI (Prior Work)**: 10.5281/zenodo.18471860
+**DOI (Prior Work)**: 10.5281/zenodo.19351282
 **Repository**: https://github.com/Echopraxium/tscg
 **Live Demo**: https://echopraxium.github.io/tscg/
 **License**: CC BY 4.0
@@ -16,16 +16,16 @@
 
 This paper presents the Transdisciplinary System Construction Game (TSCG) version
 15.11.0, a modeling framework for analyzing and designing complex systems across
-disciplinary boundaries. Born from over twenty-five years of creative reflection on
+disciplinary boundaries. Born from over twenty years of creative reflection on
 the existence of generic, recurring principles in most systems, and developed through
 sustained collaboration with Claude AI (Anthropic), the framework synthesizes systems
 theory, cybernetics, phenomenology, and semantic web technologies into a practical
 construction kit for systemic modeling.
 
 TSCG proposes a **bicephalous architecture** grounded in an extended reading of
-Korzybski's map-territory distinction: the **Eagle Eye** (ASFID: Attractor,
+Korzybski's map-territory distinction: the **Eagle Eye** (ASFID dimensions: Attractor,
 Structure, Flow, Information, Dynamics) measures the Territory as it is; the
-**Sphinx Eye** (REVOI: Representability, Evolvability, Verifiability, Observability,
+**Sphinx Eye** (REVOI dimensions: Representability, Evolvability, Verifiability, Observability,
 Interoperability) constructs the Map as it is known. Crucially, this duality is not
 a simple dichotomy but a bidirectional feedback loop: the Map shapes how the
 Territory is observed, and the Territory's resistance to inadequate Maps forces Map
@@ -52,7 +52,7 @@ formalization of irreversibility through a causal chain:
 Dissipation → Entropy → Inertia → Absorbing State.
 
 A poclet may be illustrated by its **standalone HTML simulation** — a zero-dependency
-interactive visualization accessible directly in any browser. Ten simulations are
+interactive visualization accessible directly in any browser. Eleven simulations are
 currently published, collectively forming
 the **TSCG Poclet Gallery** (https://echopraxium.github.io/tscg/). This represents
 a deliberate ergonomic and pedagogical shift: from environment-dependent Python
@@ -66,7 +66,7 @@ identification of universal systemic patterns.
 
 **Keywords**: Systems theory, Ontology engineering, Transdisciplinarity, Knowledge
 representation, Map-territory distinction, Cybernetics, Tensor products, Semantic
-web, ASFID, REVOI, Desiloification, Poclet, GenericConcept, JSON-LD
+web, Desiloification, Systemic Esperanto, Poclet, GenericConcept, JSON-LD
 
 ---
 
@@ -172,7 +172,7 @@ different guises, across the full breadth of organized complexity.
 ### 1.2 Origin: Twenty Years of Creative Meditation, Then an AI Interlocutor
 
 This framework did not emerge from an academic program. It grew from more than
-twenty-five years of informal, persistent reflection — what the author describes
+twenty years of informal, persistent reflection — what the author describes
 as "creative meditation" — on whether generic principles truly recur across most
 systems. The intuition was strong but remained largely qualitative: structural
 echoes between biological regulation and industrial control systems, between
@@ -749,7 +749,7 @@ TSCG v15.11.0 comprises **22 validated poclets** spanning 10+ domains.
 | M0-14 | ComplexChemicalSynapse | Neurobiology | 5/5 | Synergy, Process, Homeostasis | — |
 | M0-15 | TrophicPyramid | Ecology | 5/5 | Hierarchy, Flow, Constraint | — |
 | M0-16 | TvTestPattern | Broadcast Engineering | 4/5 | Code, Signal, Representation | — |
-| M0-17 | KindlebergerMinsky | Economics | 5/5 | Cycle, Bifurcation, Cascade | — |
+| M0-17 | KindlebergerMinsky | Economics | 5/5 | Cycle, Bifurcation, Cascade | ✓ |
 | M0-18 | PhaseTransition | Physics/Thermodynamics | 5/5 | Bifurcation, Threshold, Emergence | ✓ |
 | M0-19 | VCO | Electronics/Signal Processing | 5/5 | Oscillation, FeedbackLoop, Trajectory | ✓ |
 | M0-20 | CounterPoint | Music Theory | 5/5 | Constraint, Balance, Emergence | ✓ |
@@ -791,7 +791,7 @@ claims. They are offered as *invitations to scrutiny*.
 
 #### 4.4.1 The Standalone HTML Solution
 
-Ten poclet simulations are currently implemented as **standalone HTML files** —
+Eleven, poclet simulations are currently implemented as **standalone HTML files** —
 single-file, zero-dependency applications running in any modern browser. The
 technical architecture: all data embedded as JavaScript literals (no `fetch()`
 calls), visualization libraries from cdnjs.cloudflare.com CDN, a Content Security
@@ -1092,11 +1092,10 @@ to those concepts and provides a methodology for testing their generality.
 **Objection**: *The choice of exactly five ASFID dimensions is arbitrary.*
 
 **Response**: The choice is **empirically motivated but not logically necessary**.
-The five dimensions emerged from twenty-five years of iterative reflection and
-validation. Two observations support their current form: across 22 poclets, no
-system has been encountered requiring a dimension not reducible to ASFID; and no
+The five territory dimensions (ASFID) emerged after twenty years of creative reflection followed recently by collaborative iterations with Claude AI.
+Two observations support their current form: across 22 poclets, no system has been encountered requiring a dimension not reducible to ASFID; and no
 two ASFID dimensions have been found redundant. The objection nevertheless
-identifies a genuine open question: are the ASFID dimensions the optimal basis?
+identifies a genuine open question: are the ASFID dimensions the optimal basis ?
 TSCG's response is Popperian: submit the current choice to the community and let
 comparative explanatory power be assessed against the poclet corpus.
 
@@ -1181,7 +1180,7 @@ derivation is traceable, not as objective measurements.
 
 ### 7.7 On Assumed Arbitrariness
 
-A final meta-observation: **you may be right**. TSCG is twenty-five years of
+A final meta-observation: **you may be right**. TSCG is twenty years of
 creative intuition formalized with AI assistance, validated against a small corpus,
 and submitted — not imposed — to a community that has not yet had the opportunity
 to engage with it systematically.
@@ -1545,7 +1544,7 @@ encouraged to engage at precisely that level.
 ### E.1 — Stage 1: Transversal Systemic Principles
 
 The origin of TSCG is not a theory but an observation, accumulated over more than
-twenty-five years: *most systems share the same small set of structural behaviors*.
+twenty years: *most systems share the same small set of structural behaviors*.
 A thermostat, a predator-prey ecosystem, a hormonal cascade, a blockchain consensus
 protocol, and a mythological cosmology all appear to regulate, cycle, amplify, and
 converge. The first maturity stage was the commitment to make this intuition
@@ -1644,7 +1643,7 @@ instrument for systemic discovery?*
 *End of Document*
 
 **TSCG Framework v15.11.0**
-**Authors**: Echopraxium with the collaboration of Claude AI
+**Authors**: Michel Kern (aka Echopraxium) with the collaboration of Claude AI
 **Repository**: https://github.com/Echopraxium/tscg
 **License**: CC BY 4.0 (document) — BSD 3-Clause (source code)
 *Last Updated: March 2026*

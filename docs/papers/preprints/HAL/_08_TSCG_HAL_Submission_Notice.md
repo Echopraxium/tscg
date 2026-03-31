@@ -56,8 +56,7 @@ Map-territory distinction
 Tensor products
 Semantic web
 JSON-LD
-ASFID
-REVOI
+Map-territory dichotomy
 ```
 
 **Français** :
