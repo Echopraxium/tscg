@@ -21,11 +21,11 @@
       "@id": "m0:TrophicPyramid",
       "@type": "owl:Ontology",
       "dcterms:title": "TSCG M0 Trophic Pyramid Poclet",
-      "dcterms:description": "Ecological trophic pyramid (Lindeman 1942). 5-pole layered model demonstrating StratifiedDissipation: ~90% energy loss at each trophic boundary creates a universal pyramidal biomass structure. Primary validation domain for m2:Layer and m2:Context GenericConcepts. Introduces KnowledgeFieldConceptCombo 'StratifiedDissipation' (Biology ⊙ (Layer ⊗ Dissipation)).",
+      "dcterms:description": "Ecological trophic pyramid (Lindeman 1942) extended with humanity as supra-trophic super-predator. 6-pole layered model demonstrating StratifiedDissipation: ~90% energy loss at each trophic boundary creates a universal pyramidal biomass structure. Humanity (Level 6) bypasses Lindeman's rule via fossil fuel energy, consuming at all trophic levels simultaneously and exerting meta-regulatory control over the entire pyramid. Introduces two KnowledgeFieldConceptCombos: 'StratifiedDissipation' (Biology ⊙ (Layer ⊗ Dissipation)) and 'AnthropogenicDomination' (Biology ⊙ (Transducer ⊗ Regulation ⊗ Entropy)).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-03-13",
-      "dcterms:modified": "2026-03-13",
-      "owl:versionInfo": "1.0.0",
+      "dcterms:modified": "2026-04-02",
+      "owl:versionInfo": "2.0.0",
       "owl:imports": [
         "M3_GenesisSpace.jsonld",
         "M2_GenericConcepts.jsonld",
@@ -36,6 +36,14 @@
         "@id": "m3:Poclet"
       },
       "m2:changelog": {
+        "v2.1.0": {
+          "date": "2026-04-02",
+          "description": "Added Anthropic Pressure (AP ∈ [0,1]) model: per-level biomass impact formulas B_n(AP), critical threshold AP_crit=0.7 (irreversible cascade), decomposers repositioned as base-level transversal split (vertical bisection of pyramid base). Visualization convention: pyramid base split vertically into Producers (left) + Decomposers (right)."
+        },
+        "v2.0.0": {
+          "date": "2026-04-02",
+          "description": "Added Level 6 — Humanity as supra-trophic super-predator. New pole m0:level_6_humanity with fossil-fuel energy bypass formula. New KnowledgeFieldConceptCombo AnthropogenicDomination (Biology ⊙ (Transducer ⊗ Regulation ⊗ Entropy)). Updated ASFID=0.94, REVOI=0.87, δ=0.07 (OnCriticalLine). Added m2:Transducer, m2:Entropy, m2:Processor as secondary GenericConcepts. poleCount updated to 6."
+        },
         "v1.0.0": {
           "date": "2026-03-13",
           "description": "Initial version. 5-pole trophic pyramid (Producers → Herbivores → Carnivores → Apex Predators + Decomposers). ASFID=0.89, REVOI=0.84, δ=0.05. Introduces StratifiedDissipation KnowledgeFieldConceptCombo. Validates m2:Layer and m2:Context."
@@ -47,74 +55,86 @@
       "@id": "m0:TrophicPyramidSystem",
       "@type": ["owl:NamedIndividual", "owl:Class"],
       "rdfs:label": "Trophic Pyramid System",
-      "rdfs:comment": "A trophic pyramid is a layered, hierarchical ecological structure in which each trophic level consumes biomass from the level below and dissipates ~90% of received energy as heat (Lindeman's 10% efficiency rule). The pyramidal shape is a thermodynamic attractor: energy flow (F) structured by stable positional strata (S⊗I⊗A) produces irreversible dissipation (F⊗D) at each boundary, universally driving biomass volume downward from base to apex.",
+      "rdfs:comment": "A trophic pyramid is a layered, hierarchical ecological structure in which each trophic level consumes biomass from the level below and dissipates ~90% of received energy as heat (Lindeman's 10% efficiency rule). The pyramidal shape is a thermodynamic attractor: energy flow (F) structured by stable positional strata (S⊗I⊗A) produces irreversible dissipation (F⊗D) at each boundary, universally driving biomass volume downward from base to apex. Humanity (Level 6) is a supra-trophic super-predator that escapes Lindeman's rule through fossil-fuel energy, consuming simultaneously at all levels and exerting global meta-regulatory control — amplifying entropy across the entire biosphere.",
       "m0:domain": "Ecology / Biology",
       "m0:subdomains": [
         "Community Ecology",
         "Trophodynamics",
         "Thermodynamics of Ecosystems",
-        "Conservation Biology"
+        "Conservation Biology",
+        "Anthropocene Ecology"
       ],
-      "m0:pocletType": "Stratified Energy System",
-      "m0:observer": "Ecologist / Systems Biologist",
-      "m0:poleCount": 5,
+      "m0:pocletType": "Stratified Energy System (with Supra-Trophic Override)",
+      "m0:observer": "Ecologist / Systems Biologist / Earth System Scientist",
+      "m0:poleCount": 6,
       "m0:discoveryReference": "Lindeman R.L. (1942) — The Trophic-Dynamic Aspect of Ecology, Ecology 23(4):399-417",
 
       "m0:territorySpace": {
         "m0:asfidState": {
-          "A": 0.95,
-          "S": 0.90,
-          "F": 0.95,
-          "I": 0.80,
-          "D": 0.85,
-          "mean": 0.89,
+          "A": 0.97,
+          "S": 0.92,
+          "F": 0.97,
+          "I": 0.90,
+          "D": 0.95,
+          "mean": 0.94,
           "commentary": {
-            "A": "Pyramid shape is a universal thermodynamic attractor. 10% efficiency rule (Lindeman) acts as positional attractor for each trophic level. No ecosystem escapes this basin.",
-            "S": "Discrete, ordered strata: each trophic level is a bounded positional partition (m2:Layer). Structure is stable across biomes (terrestrial, aquatic, marine).",
-            "F": "Energy/biomass flow is the fundamental mechanism. Unidirectional (bottom-up) primary flow + top-down trophic cascades. Biogeochemical cycling across decomposers.",
-            "I": "Trophic position encodes ecological role, metabolic budget, and niche information. Biomagnification: persistent toxins concentrate upward (information ≠ entropy here).",
-            "D": "Population dynamics (Lotka-Volterra oscillations), trophic cascades (predator removal → herbivore irruption → vegetation collapse), seasonal succession."
+            "A": "Pyramid shape is a universal thermodynamic attractor; humanity adds a supra-trophic meta-attractor (global dominance of all ecosystems). Dual attractor: thermodynamic basin (Lindeman) + anthropogenic basin (Anthropocene).",
+            "S": "Discrete, ordered strata: each trophic level is a bounded positional partition (m2:Layer). Structure stable across biomes. Humanity adds a structured meta-layer (agriculture, cities, fishing fleets) overlying all natural levels.",
+            "F": "Energy/biomass flow is the fundamental mechanism. Unidirectional (bottom-up) primary flow + top-down trophic cascades + fossil-fuel bypass (humanity extracts ~20000 kJ/m²/yr from geological reserves, exceeding total natural primary production).",
+            "I": "Trophic position encodes ecological role, metabolic budget, and niche information. Biomagnification: persistent toxins concentrate upward. Humanity adds unprecedented information processing (technology, symbolic culture, global monitoring).",
+            "D": "Lotka-Volterra population oscillations, trophic cascades (predator removal → herbivore irruption), seasonal succession — plus: 6th mass extinction, climate change, habitat destruction, domestication of 80% of mammal biomass. Anthropocene dynamics dominate."
           }
         }
       },
 
       "m0:mapSpace": {
         "m0:reviState": {
-          "R": 0.95,
-          "E": 0.70,
-          "V": 0.90,
-          "O": 0.80,
-          "I": 0.85,
-          "mean": 0.84,
+          "R": 0.85,
+          "E": 0.80,
+          "V": 0.85,
+          "O": 0.90,
+          "I": 0.95,
+          "mean": 0.87,
           "commentary": {
-            "R": "Iconic representation: one of ecology's most universally recognised diagrams. Standardised notation (energy, biomass, numbers pyramids). Semantically unambiguous.",
-            "E": "Core structure is thermodynamically constrained (10% rule is law-like). Extensions possible: inverted pyramids (aquatic), web-to-pyramid projections, multi-dimensional.",
-            "V": "Lindeman's 10% law empirically validated across hundreds of ecosystems since 1942. Energy budgets measurable via calorimetry, isotope tracing, stable isotope analysis.",
-            "O": "Species identifiable, populations countable. Energy flow requires indirect measurement (metabolic assays, radiotracer studies). Decomposer activity often underestimated.",
-            "I": "Bridges thermodynamics (entropy), evolutionary biology (niche theory), biogeochemistry (nutrient cycling), conservation biology (minimum viable population)."
+            "R": "Classic pyramid diagram remains iconic, but adding humanity as a meta-level challenges standard representational conventions — the pyramid metaphor strains when a single species commands all levels simultaneously.",
+            "E": "Core thermodynamic structure is constrained (Lindeman). Model gains evolvability: Anthropocene scenarios, climate-driven trophic shifts, rewilding, de-extinction, managed ecosystems.",
+            "V": "Lindeman's 10% law validated across hundreds of ecosystems. Human impact harder to quantify: HANPP (Human Appropriation of Net Primary Production) estimated at 30-40% globally, but with high uncertainty.",
+            "O": "Species identifiable, populations countable. Human activities are highly observable via satellite, fishery data, agricultural statistics, biodiversity indices (IUCN Red List, Living Planet Index).",
+            "I": "Excellent interoperability: bridges thermodynamics, evolutionary biology, biogeochemistry, conservation biology, economics (ecosystem services), political science (environmental governance), Earth System Science."
           }
         }
       },
 
       "m0:epistemicGap": {
-        "delta": 0.05,
-        "deltaVector": "(0.0, +0.20, +0.05, 0.0, 0.0)",
-        "commentary": "Exceptionally low gap (δ=0.05): one of ecology's best-characterised laws. Main residual gap: E dimension (ASFID A=0.95 vs REVOI E=0.70) reflects that while the pyramid attractor is universally observed, modeling ecosystem evolvability under climate change remains challenging.",
-        "balanceType": "Eagle Eye dominant (strong empirical grounding via Lindeman's law)"
+        "delta": 0.07,
+        "spectralClass": "OnCriticalLine [0.05, 0.15)",
+        "deltaVector": "(+0.12, +0.12, +0.12, 0.0, 0.0)",
+        "commentary": "Gap increased from 0.05 to 0.07 (Coherent → OnCriticalLine) with the addition of humanity. Main residual gaps: A/R (+0.12) — the meta-trophic attractor (humanity's global dominance) is empirically undeniable but harder to diagram; S/E (+0.12) — while the pyramid structure is observed, its evolvability under combined Anthropocene + climate pressures is hard to model; F/V (+0.12) — quantifying fossil-fuel energy bypass vs natural trophic flows requires Earth System Science methods. ASFID I and D match their REVOI counterparts (O and I) well.",
+        "balanceType": "Eagle Eye dominant (thermodynamic + anthropogenic empirical grounding)"
       },
 
-      "m0:synergyPrinciple": {
-        "formula": "StratifiedDissipation = Biology ⊙ (m2:Layer ⊗ m2:Dissipation)",
-        "formulaASCII": "StratifiedDissipation = Biology [o] (Layer (x) Dissipation)",
-        "emergentProperty": "Pyramidal biomass structure — the universal conical shape of ecosystems. No designer required: thermodynamic loss (F⊗D) operating through stable positional strata (S⊗I⊗A) inevitably produces the pyramid.",
-        "coupledDimensions": "S, I, A (from m2:Layer) + F, D (from m2:Dissipation) → full S⊗I⊗A⊗F⊗D signature"
-      },
+      "m0:synergyPrinciple": [
+        {
+          "combo": "StratifiedDissipation",
+          "formula": "StratifiedDissipation = Biology ⊙ (m2:Layer ⊗ m2:Dissipation)",
+          "formulaASCII": "StratifiedDissipation = Biology [o] (Layer (x) Dissipation)",
+          "emergentProperty": "Pyramidal biomass structure — the universal conical shape of ecosystems. No designer required: thermodynamic loss (F⊗D) operating through stable positional strata (S⊗I⊗A) inevitably produces the pyramid.",
+          "coupledDimensions": "S, I, A (from m2:Layer) + F, D (from m2:Dissipation) → full S⊗I⊗A⊗F⊗D signature"
+        },
+        {
+          "combo": "AnthropogenicDomination",
+          "formula": "AnthropogenicDomination = Biology ⊙ (m2:Transducer ⊗ m2:Regulation ⊗ m2:Entropy)",
+          "formulaASCII": "AnthropogenicDomination = Biology [o] (Transducer (x) Regulation (x) Entropy)",
+          "emergentProperty": "Supra-trophic meta-control — a single species that converts geological energy (fossil fuels) into ecosystem regulation, simultaneously consuming at all trophic levels and amplifying global entropy (mass extinction, climate change, habitat destruction).",
+          "coupledDimensions": "F⊗I (Transducer) + A⊗S⊗F (Regulation) + D⊗F (Entropy) → full A⊗S⊗F⊗I⊗D signature"
+        }
+      ],
 
       "m0:primaryGenericConcepts": [
         {
           "@id": "m2:Layer",
           "role": "STRUCTURAL BACKBONE — each trophic level IS a Layer (S⊗I⊗A⊗R)",
-          "instantiation": "5 layers: Producers, Herbivores, Carnivores, Apex Predators, Decomposers"
+          "instantiation": "6 layers: Producers, Herbivores, Carnivores, Apex Predators, Decomposers, Humanity"
         },
         {
           "@id": "m2:Dissipation",
@@ -133,11 +153,14 @@
         { "@id": "m2:Flow", "role": "Energy/biomass transfer between levels (F)" },
         { "@id": "m2:Gradient", "role": "Energy density gradient from base to apex (F at two distinct points)" },
         { "@id": "m2:Homeostasis", "role": "Ecosystem equilibrium under perturbation (A⊗S⊗F⊗I⊗D)" },
-        { "@id": "m2:Regulation", "role": "Predator-prey feedback loops (A⊗S⊗F)" },
-        { "@id": "m2:Cascade", "role": "Trophic cascade: apex predator removal → top-down destabilisation (⊗⇒(Process,Step,Trajectory))" },
-        { "@id": "m2:Threshold", "role": "Minimum viable population thresholds; trophic collapse triggers (A⊗I⊗F)" },
+        { "@id": "m2:Regulation", "role": "Predator-prey feedback loops + anthropogenic top-down meta-regulation (A⊗S⊗F)" },
+        { "@id": "m2:Cascade", "role": "Trophic cascade: apex predator removal → top-down destabilisation; anthropogenic super-cascade: habitat loss + climate change → biosphere collapse (⊗⇒(Process,Step,Trajectory))" },
+        { "@id": "m2:Threshold", "role": "Minimum viable population thresholds; trophic collapse triggers; planetary boundaries (A⊗I⊗F)" },
         { "@id": "m2:Network", "role": "Food web underlying the pyramid (S⊗F⊗I)" },
-        { "@id": "m2:Emergence", "role": "Ecosystem services (pollination, carbon sequestration) emerging from level interactions" }
+        { "@id": "m2:Emergence", "role": "Ecosystem services (pollination, carbon sequestration) emerging from level interactions" },
+        { "@id": "m2:Transducer", "role": "Humanity converts non-biological energy (fossil fuels, nuclear, renewable) into trophic control — the key mechanism enabling the supra-trophic bypass of Lindeman's rule (F⊗I)" },
+        { "@id": "m2:Entropy", "role": "Accelerated irreversibility at the planetary scale: mass extinction is an absorbing state for biodiversity; fossil-fuel combustion irreversibly shifts the climate attractor (D⊗F)" },
+        { "@id": "m2:Processor", "role": "Humanity's technological information processing enables supra-trophic strategy: agriculture, fishing fleets, conservation management, genomics (I)" }
       ],
 
       "m0:knowledgeFieldConceptCombos": [
@@ -152,6 +175,19 @@
           "m1core:dominantDimensions": ["S", "I", "A", "F", "D"],
           "m1core:empiricalLaw": "Lindeman's 10% rule — η ≈ 0.1 at each trophic boundary",
           "m1core:validationDomains": ["Terrestrial ecology", "Marine ecology", "Freshwater ecology", "Aquatic microbial ecology", "Agro-ecology"]
+        },
+        {
+          "@id": "m0:AnthropogenicDomination",
+          "@type": ["owl:NamedIndividual", "m1core:KnowledgeFieldConceptCombo"],
+          "rdfs:label": "AnthropogenicDomination",
+          "rdfs:comment": "Biology-specific instantiation of the Transducer⊗Regulation⊗Entropy pattern. Humanity acts as a meta-transducer converting geological energy (fossil fuels) into ecosystem regulation, consuming at all trophic levels simultaneously and amplifying global entropy through mass extinction, climate forcing, and habitat destruction. Unlike StratifiedDissipation (thermodynamic law), AnthropogenicDomination is a contingent but dominant meta-pattern of the Anthropocene.",
+          "m1core:knowledgeField": "Biology",
+          "m1core:operator": "⊙ (disciplinary qualification)",
+          "m1core:compiledFormula": "Biology ⊙ (F⊗I⊗A⊗S⊗D)",
+          "m1core:dominantDimensions": ["F", "I", "A", "D"],
+          "m1core:keyMechanism": "Fossil-fuel energy bypass: E_humanity = Σ(f_n × E_n) + E_fossil — humanity's effective energy capture exceeds total natural primary production",
+          "m1core:empiricalData": "HANPP (Human Appropriation of Net Primary Production) ≈ 30-40% of terrestrial NPP; >80% of mammal biomass is livestock or humans",
+          "m1core:validationDomains": ["Anthropocene ecology", "Earth System Science", "Conservation biology", "Global change biology", "Sustainability science"]
         }
       ],
 
@@ -177,8 +213,55 @@
           "m0:formula": "Biomass(Producers) ≥ Σ Biomass(all other levels)",
           "m0:type": "Energetic",
           "m0:condition": "Primary production (photosynthesis / chemosynthesis) must exceed total consumer demand"
+        },
+        {
+          "m0:constraintId": "c4_ap_critical_threshold",
+          "m0:name": "Anthropic Pressure Critical Threshold",
+          "m0:formula": "AP_crit = 0.7",
+          "m0:type": "Anthropogenic (contingent)",
+          "m0:condition": "For AP ≥ AP_crit, the trophic cascade becomes irreversible — m2:Entropy seals the system into an absorbing state. Recovery is no longer possible even if AP is subsequently reduced.",
+          "m0:violationConsequence": "Irreversible biosphere collapse — 6th mass extinction absorbing state"
         }
-      ]
+      ],
+
+      "m0:anthropicPressure": {
+        "m0:definition": "Anthropic Pressure (AP) — a normalised scalar ∈ [0.0, 1.0] representing the combined intensity of fossil fuel exploitation and extractive mining on trophic biodiversity. AP = 0.0 corresponds to a pre-industrial natural pyramid; AP = 1.0 corresponds to maximum exploitation and total biosphere collapse. Conceptually grounded in Meadows et al. (1972) 'Limits to Growth' (Club of Rome): AP operationalises the 'overshoot and collapse' scenario as a single trophic pressure parameter.",
+        "m0:limitsToGrowthReference": {
+          "source": "Meadows D.H., Meadows D.L., Randers J., Behrens W.W. (1972) — The Limits to Growth, Club of Rome / Universe Books, New York",
+          "relevance": "The 'standard run' (Business As Usual) scenario of Limits to Growth predicts resource depletion and pollution overshoot leading to civilisation collapse by mid-21st century. AP maps this trajectory onto the trophic pyramid: AP ≈ 0.46 (2024 baseline), AP → 0.85+ (BAU 2050), crossing AP_crit = 0.70 triggers irreversible trophic collapse — the biological expression of the Limits to Growth overshoot.",
+          "scenarios": {
+            "BAU": "AP → 0.85 by 2050 (Business As Usual — fossil fuel exploitation continues)",
+            "stabilised": "AP stabilises at ~0.50 (aggressive decarbonisation + rewilding)",
+            "recovery": "AP reduced to ~0.35 by 2100 (full energy transition + ecosystem restoration)"
+          }
+        },
+        "m0:currentValue_2024": 0.46,
+        "m0:scenario_BAU_2050": 0.85,
+        "m0:criticalThreshold": 0.70,
+        "m0:drivers": [
+          "Fossil fuel extraction (CO₂/CH₄ → ocean acidification, global warming → habitat loss, species range shifts)",
+          "Extractive mining (direct habitat destruction, freshwater pollution → local food chain collapse)"
+        ],
+        "m0:biomassImpactFormulas": {
+          "m0:note": "B_n(AP) = relative biomass of trophic level n under Anthropic Pressure AP. B_n = 1.0 at AP = 0 (natural baseline). Impact is top-down: Level 4 collapses first.",
+          "L4_apex":       "B4(AP) = max(0,  1.0 − 3.0 × AP)",
+          "L3_carnivores": "B3(AP) = max(0,  1.0 − 2.0 × AP)",
+          "L2_herbivores": "B2(AP) = (1 + 0.5 × AP) × max(0, 1.0 − 1.8 × AP)",
+          "L1_producers":  "B1(AP) = max(0,  1.0 − 1.0 × AP)",
+          "decomposers":   "Bd(AP) = (1 + 0.8 × AP) × max(0, 1.0 − 3.0 × max(0, AP − 0.6))"
+        },
+        "m0:collapseSequence": [
+          "AP = 0.33 → L4 Apex reaches zero (first collapse — large slow-reproducing species)",
+          "AP = 0.46 → Current situation (2024): L4 severely reduced, L3 declining, L2 in irruption",
+          "AP = 0.50 → L3 Carnivores reach zero; L2 Herbivores at irruption peak",
+          "AP = 0.55 → L2 Herbivores begin collapse (habitat loss overrides predation release)",
+          "AP = 0.60 → Decomposers begin rapid collapse (detrital substrate exhausted)",
+          "AP = 0.70 → CRITICAL THRESHOLD (AP_crit): irreversible absorbing state — m2:Entropy seals cascade",
+          "AP = 1.00 → Full pyramid collapse; all B_n = 0"
+        ],
+        "m0:decomposersSpecialBehaviour": "Decomposers exhibit counter-intuitive irruption under moderate AP (more dead biomass available as substrate) before collapsing rapidly above AP = 0.60. This non-monotonic response is captured by the (1 + 0.8×AP) amplification term followed by the hard cutoff.",
+        "m0:visualisationConvention": "In simulation: pyramid base is bisected vertically into two compartments — LEFT: Level 1 Producers (width ∝ B1(AP)), RIGHT: Decomposers (width ∝ Bd(AP)). The total base width is fixed; each compartment rescales dynamically with AP. This represents the transversal nature of decomposers (cross-cutting all levels) while keeping the pyramid as a unified geometric form."
+      }
     },
 
     {
@@ -307,7 +390,7 @@
       "m0:layerSemantics": {
         "m2:Layer_S": "Largest spatial range — often keystone species with disproportionate ecosystem control",
         "m2:Layer_I": "Encodes trophic cascade potential: removal → herbivore irruption → vegetation collapse",
-        "m2:Layer_A": "Rank = 4 (apex) — no natural predators. Regulates entire pyramid via top-down cascades",
+        "m2:Layer_A": "Rank = 4 — apex within natural trophic hierarchy; however subject to top-down pressure from Level 6 humanity (trophy hunting, overfishing, habitat destruction)",
         "m2:Layer_R": "Apex predator universally recognised: wolves (Yellowstone), sharks (marine), eagles (riparian)"
       },
       "m0:trophicCascadeRole": {
@@ -321,9 +404,9 @@
       "@id": "m0:level_5_decomposers",
       "@type": ["owl:NamedIndividual", "m0:TrophicLevel"],
       "rdfs:label": "Level 5 — Decomposers (Detritivores / Saprotrophs)",
-      "m0:rank": "cross-cutting (all levels)",
+      "m0:rank": "base-level (transversal — right compartment of pyramid base)",
       "m0:energySource": "Dead organic matter (detritus) from all trophic levels",
-      "m0:layerNote": "Decomposers occupy a unique m2:Layer position: they are not on the main energy axis but cut across all levels. Their S⊗I⊗A structure is transversal — m2:Context (O⊗R⊗Im⊗E) determines which decomposers colonise which substrate.",
+      "m0:layerNote": "Decomposers occupy a unique m2:Layer position: transversal across all levels, they receive dead biomass from every stratum. In the simulation, they are represented as the right compartment of the pyramid base (vertical bisection), alongside Level 1 Producers on the left. This dual-base convention preserves the pyramid's geometric unity while acknowledging the decomposers' cross-cutting nature.",
       "m0:representativeOrganisms": [
         "Fungi (terrestrial — dominant)",
         "Bacteria (all environments)",
@@ -342,6 +425,10 @@
         "output": "Inorganic nutrients (N, P, K, C) returned to soil/water for Producer uptake",
         "dissipation": "~40-60% of all ecosystem energy passes through the decomposer channel (detrital pathway)",
         "m2concept": "m2:Cycle — decomposers close the matter cycle; energy still dissipates (2nd Law)"
+      },
+      "m0:apImpact": {
+        "formula": "Bd(AP) = (1 + 0.8 × AP) × max(0, 1.0 − 3.0 × max(0, AP − 0.6))",
+        "behaviour": "Non-monotonic: irruption under moderate AP (more dead biomass available) then rapid collapse above AP = 0.60 as the detrital substrate is exhausted and soil/aquatic habitats are destroyed"
       }
     },
 
@@ -349,7 +436,7 @@
       "@id": "m0:EnergyFlowDynamics",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "Energy Flow Dynamics",
-      "rdfs:comment": "Quantitative characterisation of energy transfer across the 4-level trophic gradient. Implements the StratifiedDissipation combo: each boundary is a Dissipation event operating on a Layer interface.",
+      "rdfs:comment": "Quantitative characterisation of energy transfer across the trophic gradient. Implements the StratifiedDissipation combo for Levels 1-4 (Lindeman). Level 6 (Humanity) bypasses the 10% rule via the AnthropogenicDomination combo: fossil-fuel energy input exceeds total natural primary production.",
       "m0:lindeman10PercentRule": {
         "formula": "E_n = E_1 × 0.1^(n-1)",
         "example": {
@@ -359,60 +446,131 @@
           "E4_apex_kJ_m2_yr": 10
         }
       },
-      "m0:gradientDirection": "Base → Apex (energy density decreasing)",
-      "m0:dissipationMechanism": "Heat (respiration) + faecal energy + uneaten biomass at each trophic boundary",
-      "m0:mobilisedGenericConcepts": ["m2:Gradient", "m2:Dissipation", "m2:Layer", "m2:Flow"]
+      "m0:humanityEnergyBypass": {
+        "formula": "E_humanity = Σ(f_n × E_n) + E_fossil",
+        "components": {
+          "f1_agriculture_kJ_m2_yr": 1000,
+          "f2_livestock_bushmeat_kJ_m2_yr": 50,
+          "f3_fish_meat_kJ_m2_yr": 5,
+          "f4_trophy_luxury_kJ_m2_yr": 0.2,
+          "E_fossil_kJ_m2_yr": 20000,
+          "total_effective_kJ_m2_yr": 21055
+        },
+        "keyInsight": "Humanity's fossil-fuel energy input (~20000 kJ/m²/yr) EXCEEDS total natural primary production (E1 = 10000 kJ/m²/yr). This geological energy bypass is the thermodynamic basis for anthropogenic ecological dominance and climate change.",
+        "lindemanViolation": "Level 6 does NOT follow η = 0.1 from Level 4. The Lindeman rule applies only within the natural trophic chain (Levels 1-4)."
+      },
+      "m0:gradientDirection": "Base → Apex (energy density decreasing) — except at Level 6 where fossil-fuel bypass inverts the energy hierarchy",
+      "m0:dissipationMechanism": "Heat (respiration) + faecal energy + uneaten biomass at each trophic boundary; CO₂ + waste heat from fossil-fuel combustion at Level 6",
+      "m0:mobilisedGenericConcepts": ["m2:Gradient", "m2:Dissipation", "m2:Layer", "m2:Flow", "m2:Transducer", "m2:Entropy"]
     },
 
     {
       "@id": "m0:TrophicCascade",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "Trophic Cascade Event",
-      "rdfs:comment": "Top-down destabilisation triggered by apex predator removal. Implements m2:Cascade (⊗⇒(Process, Step, Trajectory)) operating through the m2:Layer hierarchy in reverse. Demonstrates the bidirectional nature of trophic regulation: normal mode is bottom-up (energy flow); cascade mode is top-down (regulatory collapse).",
-      "m0:cascadeSteps": [
+      "rdfs:comment": "Top-down destabilisation triggered by apex predator removal. Implements m2:Cascade (⊗⇒(Process, Step, Trajectory)) operating through the m2:Layer hierarchy in reverse. Demonstrates the bidirectional nature of trophic regulation: normal mode is bottom-up (energy flow); cascade mode is top-down (regulatory collapse). The anthropogenic super-cascade operates at planetary scale.",
+      "m0:naturalCascadeSteps": [
         "Step 1: Apex predator population removed or collapsed",
         "Step 2: Level 3 carnivores released from predation pressure → population irruption",
         "Step 3: Level 2 herbivores under intensified predation → population collapse",
         "Step 4: Level 1 producers released from herbivory → vegetation change",
         "Step 5 (indirect): Geomorphic, hydrological and soil effects follow"
       ],
-      "m0:empiricalValidation": "Yellowstone wolf reintroduction (1995), kelp forest recovery (sea otter / sea urchin / kelp triad), shark removal effects in Atlantic coastal zones",
-      "m0:mobilisedGenericConcepts": ["m2:Cascade", "m2:Threshold", "m2:Regulation", "m2:Homeostasis", "m2:Bifurcation"]
+      "m0:anthropogenicSuperCascade": {
+        "trigger": "Level 6 humanity — simultaneous action across all trophic levels",
+        "steps": [
+          "Step 1: Habitat destruction + fragmentation → all apex predator populations collapse globally",
+          "Step 2: Overexploitation of Level 3 (fishing, bushmeat) → meso-predator irruption",
+          "Step 3: Agricultural conversion removes >50% of terrestrial Level 1 biomass",
+          "Step 4: Climate forcing (CO₂ from fossil fuels) shifts primary production zones globally",
+          "Step 5: 6th mass extinction — irreversible absorbing states for thousands of species per decade",
+          "Step 6 (indirect): Earth system boundary violations — biogeochemical, hydrological, atmospheric cascades"
+        ],
+        "m2concept": "m2:Cascade ⊗ m2:Entropy — cascade that produces irreversible absorbing states (extinction), not recoverable equilibria",
+        "distinguishedFrom": "Natural trophic cascade (reversible, single-species trigger) vs. Anthropogenic super-cascade (irreversible, multi-level, multi-mechanism)"
+      },
+      "m0:empiricalValidation": "Natural: Yellowstone wolf reintroduction (1995), kelp forest recovery (sea otter / sea urchin / kelp triad). Anthropogenic: IUCN Red List 2024 (44,000+ threatened species), Global Living Planet Index -73% vertebrate populations since 1970 (WWF 2024)",
+      "m0:mobilisedGenericConcepts": ["m2:Cascade", "m2:Threshold", "m2:Regulation", "m2:Homeostasis", "m2:Bifurcation", "m2:Entropy"]
     },
 
     {
       "@id": "m0:BiocenologicalContext",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "Biocenological Context",
-      "rdfs:comment": "The ecological context (m2:Context = O⊗R⊗Im⊗E) that determines WHICH species fill each trophic Layer. Same trophic structure (Layer hierarchy), radically different species composition across biomes. The Context is the epistemic frame; the Layer is the structural frame.",
+      "rdfs:comment": "The ecological context (m2:Context = O⊗R⊗Im⊗E) that determines WHICH species fill each trophic Layer. Same trophic structure (Layer hierarchy), radically different species composition across biomes. Level 6 (Humanity) is the only species present across ALL biomes simultaneously.",
       "m0:contextInstances": [
         {
           "biome": "Tropical Rainforest",
           "producers": "Canopy trees, epiphytes",
           "herbivores": "Leaf-cutter ants, tapirs, sloths",
           "carnivores": "Ocelots, harpy eagles",
-          "apex": "Jaguars, anacondas"
+          "apex": "Jaguars, anacondas",
+          "humanity": "Deforestation (Amazon -20% since 1970), gold mining, agribusiness, bushmeat trade"
         },
         {
           "biome": "Arctic Tundra",
           "producers": "Mosses, lichens, sedges",
           "herbivores": "Lemmings, caribou",
           "carnivores": "Arctic fox",
-          "apex": "Polar bear, wolf"
+          "apex": "Polar bear, wolf",
+          "humanity": "Oil extraction (Arctic drilling), climate forcing (permafrost thaw), shipping routes, trophy hunting"
         },
         {
           "biome": "Open Ocean",
           "producers": "Phytoplankton (diatoms, dinoflagellates)",
           "herbivores": "Zooplankton (copepods, krill)",
           "carnivores": "Small fish (herring, anchovy)",
-          "apex": "Tuna, sharks, orca"
+          "apex": "Tuna, sharks, orca",
+          "humanity": "Industrial fishing (90% of large marine fish removed), ocean acidification (CO₂), plastic pollution, shipping noise"
         }
       ],
       "m0:contextDimensions": {
-        "O": "Observable field: species richness, biomass measurements, energy budgets",
-        "R": "Representable as: food web diagrams, energy pyramids, biomass histograms, Ecological Network Analysis",
-        "Im": "Shared scientific framework: trophic ecology, Lindeman's trophodynamics, Elton's food chain concept",
-        "E": "Evolvable: climate change alters species distributions, invasive species restructure levels, novel ecosystems emerge"
+        "O": "Observable field: species richness, biomass measurements, energy budgets, IUCN Red List status, satellite monitoring",
+        "R": "Representable as: food web diagrams, energy pyramids, biomass histograms, Ecological Network Analysis, planetary boundary diagrams",
+        "Im": "Shared scientific framework: trophic ecology, Lindeman's trophodynamics, Elton's food chain concept, Earth System Science",
+        "E": "Evolvable: climate change alters species distributions, invasive species restructure levels, novel ecosystems emerge, rewilding scenarios"
+      }
+    },
+
+    {
+      "@id": "m0:level_6_humanity",
+      "@type": ["owl:NamedIndividual", "m0:TrophicLevel"],
+      "rdfs:label": "Level 6 — Humanity (Supra-Trophic Super-Predator)",
+      "m0:rank": "supra-trophic (meta-level above the natural pyramid)",
+      "m0:energySource": "ALL trophic levels simultaneously + fossil fuels (geological bypass) + nuclear + renewables",
+      "m0:biomassNote": "Homo sapiens represents only ~0.01% of total animal biomass, yet commands ~30-40% of terrestrial net primary productivity (HANPP). Livestock biomass exceeds all wild mammals combined. Unique feature: total effective energy capture (~21000 kJ/m²/yr) exceeds natural primary production (E1 = ~10000 kJ/m²/yr).",
+      "m0:representativeOrganisms": [
+        "Homo sapiens (the only member of this trophic level)"
+      ],
+      "m0:dominantASFID": {
+        "A": 0.99,
+        "S": 0.95,
+        "F": 0.99,
+        "I": 0.99,
+        "D": 0.99
+      },
+      "m0:layerSemantics": {
+        "m2:Layer_S": "Highly structured supra-trophic layer: agriculture, cities, fishing fleets, protected areas, managed ecosystems — the most structured 'trophic level' ever to exist on Earth",
+        "m2:Layer_I": "Unprecedented information density: technology, symbolic culture, scientific knowledge, global monitoring (IUCN, FAO, NASA) — enables strategic management of all lower levels simultaneously",
+        "m2:Layer_A": "Rank = supra-trophic (6) — the dominant global attractor. No natural predators. Acts on all levels simultaneously via consumption, habitat transformation, climate forcing, and deliberate conservation",
+        "m2:Layer_R": "Universally recognisable: human civilisation. Unique instance — no other species has occupied this meta-trophic position in 4 billion years of Earth's biosphere"
+      },
+      "m0:trophicBypass": {
+        "mechanism": "m2:Transducer — conversion of geological energy (fossil fuels: ~20000 kJ/m²/yr) into biological control. This bypass is the thermodynamic basis of the Anthropocene.",
+        "lindemanException": "Level 6 is NOT constrained by η = 0.1. Energy budget = Σ(harvest at all levels) + fossil energy >> E_1",
+        "consequence": "The pyramid structure is preserved below Level 6 but is being progressively destabilised by over-extraction and climate forcing"
+      },
+      "m0:anthropoceneSignature": {
+        "biomassDistribution": ">80% of all mammal biomass is now humans + livestock; <20% is wild mammals",
+        "speciesLoss": "6th mass extinction: >1 million species threatened (IPBES 2019)",
+        "climateForcing": "CO₂ concentration at 420+ ppm (2024) — highest in 3 million years",
+        "primaryProductionCapture": "HANPP ≈ 30-40% of terrestrial NPP appropriated by humanity",
+        "oceanImpact": ">90% of large marine fish removed by industrial fishing since pre-industrial baseline"
+      },
+      "m0:dualRole": {
+        "asDestructor": "Dominant driver of 6th mass extinction, trophic cascade amplification, habitat destruction",
+        "asRegulator": "Potential planetary steward: conservation biology, rewilding (wolf reintroductions, sea otter recovery), nature-based climate solutions, Marine Protected Areas",
+        "m2concept": "m2:Bifurcation — humanity's trajectory bifurcates between two absorbing states: (1) accelerated biosphere collapse, (2) planetary stewardship equilibrium"
       }
     }
 
