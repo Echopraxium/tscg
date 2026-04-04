@@ -331,17 +331,17 @@ AP &asymp; 0.85 &rarr; BAU 2050 (LtG standard run collapse)</div>
       <div class="env-row">
         <div class="env-group">
           <div class="env-label">&#127759; Anthropic Pressure (AP)</div>
-          <input type="range" id="sl-ap" class="env-slider" min="0" max="1" step="0.01" value="0.46">
-          <div class="env-val" id="val-ap" style="min-width:36px;font-weight:700;color:var(--warn)">0.46</div>
-          <span class="ap-badge stress" id="badge-ap">CURRENT 2024</span>
-          <span id="year-display" style="font-size:11px;font-family:var(--font-mono);color:var(--sphinx);font-weight:700;margin-left:6px;white-space:nowrap">2026 Q2</span>
+          <input type="range" id="sl-ap" class="env-slider" min="0" max="1" step="0.01" value="0.20">
+          <div class="env-val" id="val-ap" style="min-width:36px;font-weight:700;color:var(--warn)">0.20</div>
+          <span class="ap-badge natural" id="badge-ap">EARLY STRESS</span>
+          <span id="year-display" style="font-size:11px;font-family:var(--font-mono);color:var(--sphinx);font-weight:700;margin-left:6px;white-space:nowrap">1972 Q1</span>
         </div>
         <div class="env-sep"></div>
-        <div class="env-group"><div class="env-label">CO&#8322;</div><div class="env-val" id="val-co2">662 ppm</div></div>
+        <div class="env-group"><div class="env-label">CO&#8322;</div><div class="env-val" id="val-co2">444 ppm</div></div>
         <div class="env-sep"></div>
-        <div class="env-group"><div class="env-label">&#127777; &Delta;T</div><div class="env-val" id="val-temp">+2.8&deg;C</div></div>
+        <div class="env-group"><div class="env-label">&#127777; &Delta;T</div><div class="env-val" id="val-temp">+1.2&deg;C</div></div>
         <div class="env-sep"></div>
-        <div class="env-group"><div class="env-label">&#127807; Biodiversity</div><div class="env-val" id="val-bio">64%</div></div>
+        <div class="env-group"><div class="env-label">&#127807; Biodiversity</div><div class="env-val" id="val-bio">88%</div></div>
         <div class="env-sep"></div>
         <div id="env-warnings"></div>
       </div>
@@ -389,7 +389,7 @@ AP &asymp; 0.85 &rarr; BAU 2050 (LtG standard run collapse)</div>
 'use strict';
 
 /* ── Simulation state ─────────────────────────────────────── */
-const SIM={running:true,speed:1.0,apexRemoved:false,cascadeTimer:0,selectedLevel:null,time:0,ap:0.46,year:2026,quarter:2,quarterTimer:0,oscTime:0};
+const SIM={running:true,speed:1.0,apexRemoved:false,cascadeTimer:0,selectedLevel:null,time:0,ap:0.20,year:1972,quarter:1,quarterTimer:0,oscTime:0};
 
 /* ── B_n(AP) formulas (M0_TrophicPyramid v2.1.0) ─────────── */
 const BFN={
@@ -417,7 +417,7 @@ const GEO={2:{dBot:5.0,dTop:3.8,h:1.4,y:2.4},3:{dBot:3.8,dTop:2.6,h:1.4,y:4.1},4
 // Split base: two boxes
 const GBASE={halfW:2.6,depth:5.2,h:1.4,y:0.7};
 // Humanity platform above L4 (L4 top = 5.8+0.7=6.5, gap 0.5, h/2=0.25 -> y=7.25)
-const GHUM={w:7.0,d:7.0,h:0.18,y:7.18};
+const GHUM={w:3.0,d:3.0,h:0.70,y:7.05};
 
 const COLORS={2:'#79c0ff',3:'#d2a8ff',4:'#f78166',prod:'#56d364',deco:'#e3b341',human:'#b0b0b0'};
 
@@ -429,6 +429,8 @@ const PT ={L1:1,L2:1,L3:1,L4:1,DECO:1,HUMAN:0.2};
 let engine,scene,camera,glowLayer;
 let lm={},lmat={};   // level meshes / materials indexed by rank or key
 let prodMesh,decoMesh,humanMesh,prodMat,decoMat,humanMat;
+let humanCubes=[], humanCubeMats=[];
+let humanOccWire=null, humanOccWireMat=null;
 let ePart={},hPart={},fossilPart=null;
 let hudDiv;
 const HUD_W=200,HUD_R=18;
@@ -441,28 +443,50 @@ function sst(t){t=Math.max(0,Math.min(1,t));return t*t*(3-2*t)}
 
 /* ── HUD ──────────────────────────────────────────────────── */
 function buildHUD(){
-  hudDiv=document.createElement('div');
-  hudDiv.id='hud-overlay';
-  Object.assign(hudDiv.style,{position:'absolute',inset:'0',pointerEvents:'none',overflow:'visible',zIndex:'5'});
-  document.getElementById('canvas-area').appendChild(hudDiv);
+  // Fixed 2D HUD panel — top-right of canvas, never moves with camera
+  const panel=document.createElement('div');
+  panel.id='hud-panel';
+  Object.assign(panel.style,{
+    position:'absolute', top:'10px', right:'10px',
+    width:'190px', zIndex:'8', pointerEvents:'none',
+    display:'flex', flexDirection:'column', gap:'3px',
+    fontFamily:"'Segoe UI',system-ui,sans-serif"
+  });
+  document.getElementById('canvas-area').appendChild(panel);
 
-  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-  svg.id='hud-svg';
-  Object.assign(svg.style,{position:'absolute',inset:'0',width:'100%',height:'100%',pointerEvents:'none',overflow:'visible'});
-  hudDiv.appendChild(svg);
-
-  const defs=[
-    {id:'hL1',col:COLORS.prod},  {id:'hL2',col:COLORS[2]},
-    {id:'hL3',col:COLORS[3]},    {id:'hL4',col:COLORS[4]},
-    {id:'hDECO',col:COLORS.deco},{id:'hHUMAN',col:COLORS.human}
+  // Order: top of pyramid → base (matches visual reading top→bottom)
+  const rows=[
+    {key:'HUMAN', col:COLORS.human},
+    {key:'L4',    col:COLORS[4]},
+    {key:'L3',    col:COLORS[3]},
+    {key:'L2',    col:COLORS[2]},
+    {key:'L1',    col:COLORS.prod},
+    {key:'DECO',  col:COLORS.deco}
   ];
-  defs.forEach(({id,col})=>{
-    const el=document.createElement('div'); el.id=id;
-    const key=id.replace('h','');
-    const m=META[key]||{emoji:'',label:id,energy:''};
-    Object.assign(el.style,{position:'absolute',width:HUD_W+'px',display:'flex',flexDirection:'column',alignItems:'flex-start',gap:'3px',pointerEvents:'none',transform:'translateY(-50%)',background:'rgba(13,17,23,0.82)',border:`1px solid ${col}44`,borderLeft:`4px solid ${col}`,borderRadius:'0 6px 6px 0',padding:'5px 10px 5px 8px',opacity:'0',transition:'opacity 0.3s'});
-    el.innerHTML=`<span style="font-size:14px;font-weight:800;color:${col};white-space:nowrap;text-shadow:0 0 8px ${col}88">${m.emoji}&nbsp;${m.label}</span><span style="font-size:10px;color:#b1bac4;white-space:nowrap;font-family:monospace">${m.energy}</span><span id="${id}p" style="font-size:10px;color:${col}bb;white-space:nowrap;font-family:monospace">B = 1.00</span>`;
-    hudDiv.appendChild(el);
+  rows.forEach(({key,col})=>{
+    const m=META[key];
+    const row=document.createElement('div');
+    row.id='hrow-'+key;
+    Object.assign(row.style,{
+      display:'flex', flexDirection:'column', gap:'1px',
+      background:'rgba(13,17,23,0.82)',
+      border:'1px solid '+col+'33',
+      borderLeft:'3px solid '+col,
+      borderRadius:'0 4px 4px 0',
+      padding:'4px 8px 4px 7px',
+      cursor:'pointer', transition:'background .15s'
+    });
+    row.innerHTML=
+      `<div style="display:flex;align-items:center;gap:5px">` +
+      `<span style="font-size:12px">${m.emoji}</span>` +
+      `<span style="font-size:12px;font-weight:700;color:${col}">${m.label}</span>` +
+      `</div>` +
+      `<div style="font-size:9px;color:#8b949e;font-family:monospace">${m.energy}</div>` +
+      `<div id="hb-${key}" style="font-size:9px;color:${col}bb;font-family:monospace">B = 1.00</div>`;
+    row.addEventListener('click',()=>{ selectLevel(key); });
+    row.addEventListener('mouseenter',()=>{ row.style.background='rgba(33,38,45,0.92)'; });
+    row.addEventListener('mouseleave',()=>{ row.style.background='rgba(13,17,23,0.82)'; });
+    panel.appendChild(row);
   });
 }
 
@@ -478,76 +502,26 @@ function prj(p3,W,H){
 }
 
 function updateHUD(){
-  if(!scene||!camera)return;
-  const cvs=document.getElementById('render-canvas');
-  const W=cvs.clientWidth,H=cvs.clientHeight;
-  if(!W||!H)return;
-  const lx=W-HUD_W-HUD_R;
+  // Fixed 2D panel — just update B values, no 3D projection needed
   const ap=SIM.ap;
-  const svgP=[];
-
-  // [id, worldCenter, anchorWorld (bottom-face center of each level), key, yOffset(px)]
-  // Anchors = center of bottom face of each polyhedron
-  const defs=[
-    ['hL2',   new BABYLON.Vector3(0,GEO[2].y,0),    new BABYLON.Vector3(0,GEO[2].y-GEO[2].h/2,0),'L2', 0],
-    ['hL3',   new BABYLON.Vector3(0,GEO[3].y,0),    new BABYLON.Vector3(0,GEO[3].y-GEO[3].h/2,0),'L3', 0],
-    ['hL4',   new BABYLON.Vector3(0,GEO[4].y,0),    new BABYLON.Vector3(0,GEO[4].y-GEO[4].h/2,0),'L4', 0],
-    ['hHUMAN',new BABYLON.Vector3(0,GHUM.y,0),      new BABYLON.Vector3(0,GHUM.y-GHUM.h/2,0),   'HUMAN',0]
-  ];
-
-  // Compute L2 screen Y once — L1 and DECO are anchored relative to it
-  const l2c2 = prj(new BABYLON.Vector3(0,GEO[2].y,0),W,H);
-  const baseY = l2c2 ? l2c2.y : H*0.72;
-
-  // L1 (Producers) and DECO placed below L2 in a fixed vertical stack
-  const l1El   = document.getElementById('hL1');
-  const decoEl = document.getElementById('hDECO');
-  if(l1El){
-    l1El.style.opacity='0.95'; l1El.style.left=lx+'px';
-    l1El.style.top=Math.round(baseY+80)+'px';
-    const pEl=document.getElementById('hL1p');
-    if(pEl){ const bv=BFN.L1(ap); pEl.textContent=bv<0.02?'✗ COLLAPSED':`B = ${bv.toFixed(2)}`; }
-    const a2=prj(new BABYLON.Vector3(-GBASE.halfW*0.5,GBASE.y-GBASE.h/2,0),W,H);
-    if(a2){
-      const ax=Math.round(a2.x),ay=Math.round(a2.y),ly=Math.round(baseY+80),ex=lx-22;
-      if(isFinite(ax)&&isFinite(ay)&&isFinite(ly))
-        svgP.push(`<line x1="${ax}" y1="${ay}" x2="${ex}" y2="${ly}" stroke="${COLORS.prod}" stroke-width="1.5" stroke-opacity=".6" stroke-dasharray="5 3"/><line x1="${ex}" y1="${ly}" x2="${lx}" y2="${ly}" stroke="${COLORS.prod}" stroke-width="1.5" stroke-opacity=".6" stroke-dasharray="5 3"/><circle cx="${ax}" cy="${ay}" r="4" fill="${COLORS.prod}" fill-opacity=".85" stroke="rgba(13,17,23,.9)" stroke-width="1.5"/>`);
-    }
-  }
-  if(decoEl){
-    decoEl.style.opacity='0.95'; decoEl.style.left=lx+'px';
-    decoEl.style.top=Math.round(baseY+155)+'px';
-    const pEl=document.getElementById('hDECOp');
-    if(pEl){ const bv=BFN.DECO(ap); pEl.textContent=bv<0.02?'✗ COLLAPSED':`B = ${bv.toFixed(2)}`; }
-    const a2=prj(new BABYLON.Vector3(GBASE.halfW*0.5,GBASE.y-GBASE.h/2,0),W,H);
-    if(a2){
-      const ax=Math.round(a2.x),ay=Math.round(a2.y),ly=Math.round(baseY+155),ex=lx-22;
-      if(isFinite(ax)&&isFinite(ay)&&isFinite(ly))
-        svgP.push(`<line x1="${ax}" y1="${ay}" x2="${ex}" y2="${ly}" stroke="${COLORS.deco}" stroke-width="1.5" stroke-opacity=".6" stroke-dasharray="5 3"/><line x1="${ex}" y1="${ly}" x2="${lx}" y2="${ly}" stroke="${COLORS.deco}" stroke-width="1.5" stroke-opacity=".6" stroke-dasharray="5 3"/><circle cx="${ax}" cy="${ay}" r="4" fill="${COLORS.deco}" fill-opacity=".85" stroke="rgba(13,17,23,.9)" stroke-width="1.5"/>`);
-    }
-  }
-
-  defs.forEach(([id,wc,wa,key,yOff])=>{
-    const el=document.getElementById(id);
+  const keys=['HUMAN','L4','L3','L2','L1','DECO'];
+  keys.forEach(key=>{
+    const el=document.getElementById('hb-'+key);
     if(!el)return;
-    const c2=prj(wc,W,H);
-    if(!c2){el.style.opacity='0';return;}
-    el.style.opacity='0.95'; el.style.left=lx+'px'; el.style.top=Math.round(c2.y+(yOff||0))+'px';
-    const pEl=document.getElementById(id+'p');
-    if(pEl){
-      const bv=(BFN[key]||(_=>1))(ap);
-      const isCasc=SIM.apexRemoved&&key==='HUMAN';
-      pEl.textContent=isCasc?'✗ REMOVED':(bv<0.02?'✗ COLLAPSED':`B = ${bv.toFixed(2)}`);
+    const bv=(BFN[key]||(_=>1))(ap);
+    const isCasc=SIM.apexRemoved&&key==='HUMAN';
+    const col=key==='L1'?COLORS.prod:key==='DECO'?COLORS.deco:key==='HUMAN'?COLORS.human:COLORS[parseInt(key.replace('L',''))];
+    if(isCasc){
+      el.textContent='✗ REMOVED'; el.style.color='#f85149';
+    } else if(bv<0.02){
+      el.textContent='✗ COLLAPSED'; el.style.color='#f85149';
+    } else {
+      el.textContent='B = '+bv.toFixed(2); el.style.color=col+'bb';
     }
-    const col=id==='hL1'?COLORS.prod:id==='hDECO'?COLORS.deco:id==='hHUMAN'?COLORS.human:COLORS[parseInt(id.replace('hL',''))];
-    const a2=prj(wa,W,H);
-    if(!a2)return;
-    const ax=Math.round(a2.x),ay=Math.round(a2.y),ly=Math.round(c2.y),ex=lx-22;
-    if(!isFinite(ax)||!isFinite(ay)||!isFinite(ly))return;
-    svgP.push(`<line x1="${ax}" y1="${ay}" x2="${ex}" y2="${ly}" stroke="${col}" stroke-width="1.5" stroke-opacity=".6" stroke-dasharray="5 3"/><line x1="${ex}" y1="${ly}" x2="${lx}" y2="${ly}" stroke="${col}" stroke-width="1.5" stroke-opacity=".6" stroke-dasharray="5 3"/><circle cx="${ax}" cy="${ay}" r="4" fill="${col}" fill-opacity=".85" stroke="rgba(13,17,23,.9)" stroke-width="1.5"/>`);
+    // Highlight selected level row
+    const row=document.getElementById('hrow-'+key);
+    if(row) row.style.borderLeftWidth=SIM.selectedLevel===key?'5px':'3px';
   });
-  const svgEl=document.getElementById('hud-svg');
-  if(svgEl)svgEl.innerHTML=svgP.join('');
 }
 
 /* ── Time advance ─────────────────────────────────────────── */
@@ -593,7 +567,7 @@ function buildScene(){
   const sc=new BABYLON.Scene(engine);
   sc.clearColor=new BABYLON.Color4(0.051,0.067,0.090,1);
 
-  camera=new BABYLON.ArcRotateCamera('cam',-Math.PI/5,1.1,16,new BABYLON.Vector3(0,3.8,0),sc);
+  camera=new BABYLON.ArcRotateCamera('cam',-Math.PI/4,1.05,18,new BABYLON.Vector3(0,3.5,0),sc);
   camera.attachControl(document.getElementById('render-canvas'),true);
   camera.lowerRadiusLimit=6; camera.upperRadiusLimit=36;
   camera.wheelPrecision=50; camera.lowerBetaLimit=0.15; camera.upperBetaLimit=Math.PI/2-0.05;
@@ -645,16 +619,67 @@ function buildScene(){
   const div=BABYLON.MeshBuilder.CreateBox('div',{width:.05,height:GBASE.h+.02,depth:GBASE.depth+.04},sc);
   div.position.set(0,GBASE.y,0); div.material=divm; div.isPickable=false;
 
-  // Humanity platform
+  // Humanity layer — semi-transparent container + randomly overlapping cubic particles
+  // Container scales with AP (small in Holocene, large in BAU)
   humanMat=new BABYLON.StandardMaterial('hmat',sc);
-  humanMat.diffuseColor=hC3(COLORS.human); humanMat.emissiveColor=hC3(COLORS.human).scale(0.18);
-  humanMat.specularColor=new BABYLON.Color3(.4,.3,.1); humanMat.specularPower=60; humanMat.alpha=0.88;
+  humanMat.diffuseColor=hC3(COLORS.human);
+  humanMat.emissiveColor=hC3(COLORS.human).scale(0.07);
+  humanMat.alpha=0.09;
+  humanMat.backFaceCulling=false;
   humanMesh=BABYLON.MeshBuilder.CreateBox('humanity',{width:GHUM.w,height:GHUM.h,depth:GHUM.d},sc);
   humanMesh.position.y=GHUM.y; humanMesh.material=humanMat; humanMesh.metadata={lk:'HUMAN'};
   lm['HUMAN']=humanMesh; lmat['HUMAN']=humanMat;
-  const hwm=new BABYLON.StandardMaterial('hwm',sc); hwm.emissiveColor=hC3(COLORS.human).scale(0.5); hwm.wireframe=true; hwm.alpha=0.55;
+  // Container boundary — very subtle outline only
+  const hwm=new BABYLON.StandardMaterial('hwm',sc);
+  hwm.emissiveColor=hC3(COLORS.human).scale(0.18); hwm.wireframe=true; hwm.alpha=0.18;
   const hw=humanMesh.clone('humanityW'); hw.material=hwm; hw.isPickable=false; hw.metadata={};
-  hw.scaling.set(1.03,1.06,1.03);
+
+  // Occupied-volume wireframe — follows population scale, this is the prominent wireframe
+  humanOccWireMat=new BABYLON.StandardMaterial('howm',sc);
+  humanOccWireMat.emissiveColor=hC3(COLORS.human).scale(0.92);
+  humanOccWireMat.wireframe=true; humanOccWireMat.alpha=0.88;
+  humanOccWire=BABYLON.MeshBuilder.CreateBox('humanOccW',
+    {width:GHUM.w,height:GHUM.h,depth:GHUM.d},sc);
+  humanOccWire.position.y=GHUM.y;
+  humanOccWire.material=humanOccWireMat;
+  humanOccWire.isPickable=false; humanOccWire.metadata={};
+
+  // Cubic particles — true cubes (w=h=d=sz), prism-shaped, no rotation
+  // CUBE SIZE is FIXED (not scaled by scH) so cubes remain visible even at Holocene
+  // Only POSITION and COUNT vary with population
+  const MAX_CUBES=157;
+  // Min cube size = 2% of GHUM.w = 0.112; max = ratio 1:3 → 0.336
+  const CUBE_MIN=0.060, CUBE_MAX=0.180; // ratio 1:3, 2% of layer width (3.6×0.02=0.072)
+  const HW=GHUM.w/2, HD=GHUM.d/2, HH=GHUM.h/2;
+  let seed=137;
+  const rng=()=>{seed=(seed*1664525+1013904223)&0xffffffff;return(seed>>>0)/0xffffffff;};
+  for(let i=0;i<MAX_CUBES;i++){
+    const sz=CUBE_MIN+rng()*(CUBE_MAX-CUBE_MIN);  // [0.060..0.180], ratio 1:3
+    // Positions within FULL prism (they will be repositioned by scH in updateMeshes)
+    const px=(rng()*2-1)*(HW-sz/2);
+    const pz=(rng()*2-1)*(HD-sz/2);
+    const py=GHUM.y+(rng()*2-1)*(HH-sz/2);
+    const cMat=new BABYLON.StandardMaterial('hcm'+i,sc);
+    const g=0.65+rng()*0.28;
+    const warm=rng()*0.07;
+    cMat.diffuseColor=new BABYLON.Color3(g+warm, g, g+warm*0.3);
+    cMat.emissiveColor=new BABYLON.Color3((g+warm)*.13, g*.11, g*.13);
+    cMat.specularColor=new BABYLON.Color3(.35,.35,.38);
+    cMat.specularPower=45;
+    cMat.alpha=0.78+rng()*0.17;
+    const cube=BABYLON.MeshBuilder.CreateBox('hcube'+i,{
+      width:sz, height:sz, depth:sz              // TRUE CUBE: w=h=d=sz
+    },sc);
+    cube.position.set(px, py, pz);
+    cube.rotation.set(0,0,0);                   // no rotation — faces parallel to layers
+    cube.material=cMat;
+    cube.metadata={lk:'HUMAN'};
+    cube._baseX=px; cube._baseZ=pz; cube._baseY=py-GHUM.y; // relative to GHUM center
+    cube._phase=rng()*Math.PI*2;
+    cube.isVisible=false;
+    humanCubes.push(cube);
+    humanCubeMats.push(cMat);
+  }
 
   buildParticles(sc);
 
@@ -779,12 +804,52 @@ function updateMeshes(){
     decoMat.emissiveColor=SIM.selectedLevel==='DECO'?hC3(COLORS.deco).scale(.3):BABYLON.Color3.Black();
   }
   if(humanMesh&&humanMat){
+    // Container: fixed size, very transparent background reference
+    const tAlpha=SIM.apexRemoved?lerp(.09,0,Math.min(1,SIM.cascadeTimer*2)):.07;
+    humanMat.alpha=lerp(humanMat.alpha,tAlpha,.04);
+    humanMat.emissiveColor=hC3(COLORS.human).scale(SIM.selectedLevel==='HUMAN'?.15:.04);
+    // humanMesh stays at scale 1 (container = total capacity)
+  }
+  if(humanCubes.length){
     const bh=Math.max(0,POP.HUMAN);
-    humanMesh.scaling.x=lerp(humanMesh.scaling.x,bh*.72,.025);
-    humanMesh.scaling.z=lerp(humanMesh.scaling.z,bh*.72,.025);
-    humanMat.emissiveColor=hC3(COLORS.human).scale(SIM.selectedLevel==='HUMAN'?.4:.15+.08*Math.sin(SIM.oscTime*1.2));
-    const targetAlpha=SIM.apexRemoved?lerp(.82,0,Math.min(1,SIM.cascadeTimer*2)):.82+.08*Math.sin(SIM.time*.9);
-    humanMat.alpha=lerp(humanMat.alpha,targetAlpha,.04);
+    const ot=SIM.oscTime;
+    const isSelected=SIM.selectedLevel==='HUMAN';
+    const BH_MAX=1.8;
+    // Occupied volume scale: -30% from BFN, minimum 5% of full size
+    const scH_raw=bh/BH_MAX * 0.70;           // 30% reduction
+    const scH_target=Math.max(0.05, scH_raw);  // minimum 5%
+    // Smooth the scale
+    const prevScH=humanOccWire?humanOccWire.scaling.x:scH_target;
+    const scH=lerp(prevScH, scH_target, .025);
+
+    // Occupied wireframe follows exactly the occupied volume
+    if(humanOccWire){
+      humanOccWire.scaling.set(scH, scH, scH);
+      const wAlpha=SIM.apexRemoved?lerp(.88,0,Math.min(1,SIM.cascadeTimer*2)):.88;
+      humanOccWireMat.alpha=lerp(humanOccWireMat.alpha,wAlpha,.04);
+    }
+
+    // Number of visible cubes proportional to population
+    const nVisible=Math.round(Math.min(1,bh/BH_MAX)*humanCubes.length);
+    humanCubes.forEach((cube,i)=>{
+      const visible=i<nVisible && !SIM.apexRemoved;
+      cube.isVisible=visible;
+      if(!visible)return;
+      const mat=humanCubeMats[i];
+      if(!mat)return;
+      const ph=cube._phase||0;
+      // Positions scale with occupied volume (prism shrinks/grows)
+      // Cube SIZE stays fixed — always visible even at Holocene (min 2% of layer)
+      cube.position.x=cube._baseX*scH;
+      cube.position.z=cube._baseZ*scH;
+      cube.position.y=GHUM.y+cube._baseY*scH;
+      // Cube scaling = 1 (fixed size), gentle XZ breathing only
+      const breath=1.0+0.025*Math.sin(ot+ph);
+      cube.scaling.set(breath, 1.0, breath);   // Y=1 fixed: top/bottom stay parallel
+      mat.alpha=lerp(mat.alpha,.84,.04);
+      const em=isSelected?.22:.10+.025*Math.sin(ot*0.6+ph);
+      mat.emissiveColor=new BABYLON.Color3(em+.02, em, em+.03);
+    });
   }
 
   [1,2,3].forEach(r=>{
@@ -937,8 +1002,9 @@ window.addEventListener('DOMContentLoaded',()=>{
 
   // Reset
   document.getElementById('btn-reset').addEventListener('click',()=>{
-    SIM.ap=.46;SIM.apexRemoved=false;SIM.cascadeTimer=0;SIM.time=0;SIM.oscTime=0;SIM.selectedLevel=null;SIM.running=true;SIM.year=2026;SIM.quarter=2;SIM.quarterTimer=0;
-    slAP.value=.46;
+    SIM.ap=.20;SIM.apexRemoved=false;SIM.cascadeTimer=0;SIM.time=0;SIM.oscTime=0;SIM.selectedLevel=null;SIM.running=true;SIM.year=1972;SIM.quarter=1;SIM.quarterTimer=0;
+    slAP.value=.20;
+    if(camera){camera.alpha=-Math.PI/4;camera.beta=1.05;camera.radius=18;camera.target.set(0,3.5,0);}
     Object.keys(POP).forEach(k=>{POP[k]=k==='HUMAN'?.2:1;});
     Object.keys(PT).forEach(k=>{PT[k]=k==='HUMAN'?.2:1;});
     document.getElementById('btn-cascade').textContent='🌍 Without Humanity';
