@@ -624,7 +624,7 @@ Used to compute T<sub>b</sub>(P) from the reference boiling point at 1 atm.
     <button class="ctrl-btn" id="btn-reset">&#8634; Reset</button>
     <div class="ctrl-sep"></div>
     <span class="ctrl-label">Speed</span>
-    <input type="range" id="speed-slider" min="0.2" max="3.0" step="0.2" value="1.4">
+    <input type="range" id="speed-slider" min="0.2" max="3.0" step="0.2" value="1.0">
     <span class="ctrl-label" id="speed-label">&times;1.0</span>
     <div class="status-indicator">
       <div class="status-dot running" id="status-dot"></div>
@@ -679,7 +679,7 @@ const SUBSTANCES = [
 ═══════════════════════════════════════════════════════════ */
 const SIM = {
   running:   true,
-  speed:     1.44,
+  speed:     1.0,
   subIdx:    1,
   T_C:       50.0,
   P_atm:     1.0,
@@ -865,11 +865,11 @@ new p5(function(sk) {
   /* ---- Update liquid ---- */
   function updateLiquid(W, H, t, dt) {
     const MARGIN      = Math.max(20, W / 12);
-    const TURB_AMP    = 2.08;
+    const TURB_AMP    = 0.9;
     const TURB_ALPHA  = 0.025;  // very slow -- ~40 frame ramp, no direction reversals
     const LP1_ALPHA   = 0.04;   // 1st low-pass: desired -> svx/svy (~25 frame ramp)
     const LP2_ALPHA   = 0.14;   // 2nd low-pass: svx/svy -> vx/vy  (~7 frame ramp)
-    const MAX_SPD     = 1.9;
+    const MAX_SPD     = 1.6;
     const cx = W * 0.5, cy = H * 0.5;
     const CENTRE_R    = Math.min(W, H) * 0.28;
     const CENTRE_K    = 0.22;
@@ -878,15 +878,15 @@ new p5(function(sk) {
     for (const p of liqPts) {
       const { vx: sfx, vy: sfy } = streamVel(p.x, p.y, t);
 
-      // Wall turbulence: outward push near walls (+15% on horizontal axis)
+      // Wall turbulence: outward push near walls
       let wx = 0, wy = 0;
-      if (p.x < MARGIN)   wx += TURB_AMP * 2.496 * (1 - p.x / MARGIN);
-      if (p.x > W-MARGIN) wx -= TURB_AMP * 2.496 * (1 - (W - p.x) / MARGIN);
+      if (p.x < MARGIN)   wx += TURB_AMP * (1 - p.x / MARGIN);
+      if (p.x > W-MARGIN) wx -= TURB_AMP * (1 - (W - p.x) / MARGIN);
       if (p.y < MARGIN)   wy += TURB_AMP * (1 - p.y / MARGIN);
       if (p.y > H-MARGIN) wy -= TURB_AMP * (1 - (H - p.y) / MARGIN);
-      // Slow unique per-particle noise -- desynchronises trajectories (+15% on X)
-      wx += 0.1748 * Math.sin(t * 0.38 + p.noiseOff);
-      wy += 0.07   * Math.cos(t * 0.31 + p.noiseOff * 1.4);
+      // Slow unique per-particle noise -- desynchronises trajectories
+      wx += 0.07 * Math.sin(t * 0.38 + p.noiseOff);
+      wy += 0.07 * Math.cos(t * 0.31 + p.noiseOff * 1.4);
       p.tx += TURB_ALPHA * (wx - p.tx);
       p.ty += TURB_ALPHA * (wy - p.ty);
 
@@ -915,9 +915,10 @@ new p5(function(sk) {
       p.y += p.vy * dt * 60;
     }
 
-    // Phase 2: soft-sphere repulsion -- stronger to prevent cluster formation
-    const REPEL_R  = 28;
-    const MAX_PUSH = 1.4;
+    // Phase 2: soft-sphere repulsion -- tiny capped position micro-correction only
+    // Capped at MAX_PUSH px per pair per frame so the low-pass is never bypassed.
+    const REPEL_R  = 22;
+    const MAX_PUSH = 0.5;
     const n = liqPts.length;
     for (let i = 0; i < n; i++) {
       for (let j = i + 1; j < n; j++) {
@@ -927,20 +928,10 @@ new p5(function(sk) {
         if (d2 >= REPEL_R * REPEL_R) continue;
         const d  = Math.sqrt(d2) || 0.01;
         const ux = dx / d, uy = dy / d;
-        const push = Math.min((1 - d / REPEL_R) * REPEL_R * 0.14, MAX_PUSH);
+        const push = Math.min((1 - d / REPEL_R) * REPEL_R * 0.08, MAX_PUSH);
         liqPts[i].x -= ux * push;  liqPts[i].y -= uy * push;
         liqPts[j].x += ux * push;  liqPts[j].y += uy * push;
       }
-    }
-
-    // Phase 2b: cluster-break jitter -- random impulse per particle every frame
-    // Mimics thermal agitation that prevents long-range order in liquids (+15% on X)
-    const JITTER_AMP = 0.364;
-    for (const p of liqPts) {
-      const angle = Math.random() * Math.PI * 2;
-      const mag   = JITTER_AMP * Math.random();
-      p.x += Math.cos(angle) * mag * 2.496;
-      p.y += Math.sin(angle) * mag;
     }
 
     // Phase 3: boundary clamp (attenuate svx/svy too to prevent rebound)
@@ -1018,31 +1009,23 @@ new p5(function(sk) {
     const tc = hexToRgb(sub.color);
     updateLiquid(W, H, t, dt);
 
-    // Transient hydrogen-bond proximity indicators — dashed lines, no physical constraint
-    const bondR = 38;
-    // Enable dashed stroke to represent hydrogen-bond (proximity only, not structural)
-    // Colour: blend particle colour toward white/cyan for luminous visibility
-    const hbR = Math.round(Math.min(255, tc.r * 0.5 + 200));
-    const hbG = Math.round(Math.min(255, tc.g * 0.5 + 200));
-    const hbB = Math.round(Math.min(255, tc.b * 0.5 + 215));
-    sk.drawingContext.setLineDash([4, 5]);
-    sk.strokeWeight(1.2);
+    // Transient bonds
+    const bondR = 34;
+    sk.strokeWeight(0.8);
     for (let i = 0; i < liqPts.length; i++) {
       let bonds = 0;
-      for (let j = i+1; j < liqPts.length && bonds < 3; j++) {
+      for (let j = i+1; j < liqPts.length && bonds < 4; j++) {
         const dx = liqPts[i].x - liqPts[j].x;
         const dy = liqPts[i].y - liqPts[j].y;
         const d  = Math.sqrt(dx*dx + dy*dy);
         if (d < bondR) {
-          const al = (1 - d/bondR) * 160;  // clearly visible proximity indicator
-          sk.stroke(hbR, hbG, hbB, al);
+          const al = (1 - d/bondR) * 110;
+          sk.stroke(tc.r, tc.g, tc.b, al);
           sk.line(liqPts[i].x, y0+liqPts[i].y, liqPts[j].x, y0+liqPts[j].y);
           bonds++;
         }
       }
     }
-    // Restore solid stroke for subsequent drawing
-    sk.drawingContext.setLineDash([]);
 
     // Particles
     sk.noStroke();
