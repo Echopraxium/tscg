@@ -858,6 +858,12 @@ function updateMeshes(){
   });
   if(fossilPart)fossilPart.emitRate=Math.round(ap*45);
   if(glowLayer)glowLayer.intensity=lerp(.3,1.1,ap*1.1);
+
+  // Update gauges every frame — use effective AP (reduces during Humanity removal)
+  const apEff = SIM.apexRemoved
+    ? lerp(ap, 0, Math.min(1, SIM.cascadeTimer * 0.8))
+    : ap;
+  updateGauges(apEff);
 }
 
 /* ── Level selection ──────────────────────────────────────── */
