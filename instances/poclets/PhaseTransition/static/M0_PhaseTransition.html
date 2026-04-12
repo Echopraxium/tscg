@@ -624,7 +624,7 @@ Used to compute T<sub>b</sub>(P) from the reference boiling point at 1 atm.
     <button class="ctrl-btn" id="btn-reset">&#8634; Reset</button>
     <div class="ctrl-sep"></div>
     <span class="ctrl-label">Speed</span>
-    <input type="range" id="speed-slider" min="0.2" max="3.0" step="0.2" value="1.4">
+    <input type="range" id="speed-slider" min="0.2" max="3.0" step="0.2" value="1.2">
     <span class="ctrl-label" id="speed-label">&times;1.0</span>
     <div class="status-indicator">
       <div class="status-dot running" id="status-dot"></div>
@@ -679,7 +679,7 @@ const SUBSTANCES = [
 ═══════════════════════════════════════════════════════════ */
 const SIM = {
   running:   true,
-  speed:     1.44,
+  speed:     1.1368,
   subIdx:    1,
   T_C:       50.0,
   P_atm:     1.0,
@@ -882,11 +882,12 @@ new p5(function(sk) {
       let wx = 0, wy = 0;
       if (p.x < MARGIN)   wx += TURB_AMP * 2.496 * (1 - p.x / MARGIN);
       if (p.x > W-MARGIN) wx -= TURB_AMP * 2.496 * (1 - (W - p.x) / MARGIN);
-      if (p.y < MARGIN)   wy += TURB_AMP * (1 - p.y / MARGIN);
-      if (p.y > H-MARGIN) wy -= TURB_AMP * (1 - (H - p.y) / MARGIN);
+      if (p.y < MARGIN)   wy += TURB_AMP * 2.64  * (1 - p.y / MARGIN);
+      if (p.y > H-MARGIN) wy -= TURB_AMP * 2.64  * (1 - (H - p.y) / MARGIN);
       // Slow unique per-particle noise -- desynchronises trajectories (+15% on X)
       wx += 0.1748 * Math.sin(t * 0.38 + p.noiseOff);
-      wy += 0.07   * Math.cos(t * 0.31 + p.noiseOff * 1.4);
+      // Independent random vertical noise: different frequency & phase to avoid Y-lock
+      wy += 0.168  * Math.sin(t * 0.53 + p.noiseOff * 1.7 + 2.1);
       p.tx += TURB_ALPHA * (wx - p.tx);
       p.ty += TURB_ALPHA * (wy - p.ty);
 
@@ -937,10 +938,39 @@ new p5(function(sk) {
     // Mimics thermal agitation that prevents long-range order in liquids (+15% on X)
     const JITTER_AMP = 0.364;
     for (const p of liqPts) {
-      const angle = Math.random() * Math.PI * 2;
-      const mag   = JITTER_AMP * Math.random();
+      const angle  = Math.random() * Math.PI * 2;
+      const mag    = JITTER_AMP * Math.random();
       p.x += Math.cos(angle) * mag * 2.496;
-      p.y += Math.sin(angle) * mag;
+      // Independent vertical random kick — different draw to avoid Y-axis sticking
+      const angleV = Math.random() * Math.PI * 2;
+      p.y += Math.sin(angleV) * mag * 1.92;
+    }
+
+    // Phase 2c: local density repulsion -- detect clusters and push particles
+    // away from their local neighbour centroid. Force scales with neighbour count.
+    const CLUSTER_R   = 52;   // neighbourhood radius to detect a cluster
+    const CLUSTER_K   = 1.8;  // base push strength per neighbour
+    const CLUSTER_MIN = 3;    // minimum neighbours to trigger dispersal
+    for (let i = 0; i < n; i++) {
+      let cx = 0, cy = 0, count = 0;
+      for (let j = 0; j < n; j++) {
+        if (i === j) continue;
+        const dx = liqPts[j].x - liqPts[i].x;
+        const dy = liqPts[j].y - liqPts[i].y;
+        if (dx*dx + dy*dy < CLUSTER_R * CLUSTER_R) {
+          cx += liqPts[j].x; cy += liqPts[j].y; count++;
+        }
+      }
+      if (count < CLUSTER_MIN) continue;
+      cx /= count; cy /= count;
+      // Vector from centroid to particle (escape direction)
+      const ex = liqPts[i].x - cx;
+      const ey = liqPts[i].y - cy;
+      const ed = Math.sqrt(ex*ex + ey*ey) || 0.01;
+      // Force proportional to density (count) and inversely to distance
+      const force = CLUSTER_K * (count - CLUSTER_MIN + 1) / (ed + 8);
+      liqPts[i].x += (ex / ed) * force;
+      liqPts[i].y += (ey / ed) * force;
     }
 
     // Phase 3: boundary clamp (attenuate svx/svy too to prevent rebound)
@@ -1020,12 +1050,15 @@ new p5(function(sk) {
 
     // Transient hydrogen-bond proximity indicators — dashed lines, no physical constraint
     const bondR = 38;
+    // Elastic bond length: each pair gets a unique threshold ±18% of bondR
+    // (base ±15% × 1.20 = ±18%) — stable hash avoids flickering each frame
     // Enable dashed stroke to represent hydrogen-bond (proximity only, not structural)
     // Colour: blend particle colour toward white/cyan for luminous visibility
     const hbR = Math.round(Math.min(255, tc.r * 0.5 + 200));
     const hbG = Math.round(Math.min(255, tc.g * 0.5 + 200));
     const hbB = Math.round(Math.min(255, tc.b * 0.5 + 215));
-    sk.drawingContext.setLineDash([4, 5]);
+    sk.drawingContext.setLineDash([1, 6]);
+    sk.drawingContext.lineCap = 'round';
     sk.strokeWeight(1.2);
     for (let i = 0; i < liqPts.length; i++) {
       let bonds = 0;
@@ -1033,8 +1066,11 @@ new p5(function(sk) {
         const dx = liqPts[i].x - liqPts[j].x;
         const dy = liqPts[i].y - liqPts[j].y;
         const d  = Math.sqrt(dx*dx + dy*dy);
-        if (d < bondR) {
-          const al = (1 - d/bondR) * 160;  // clearly visible proximity indicator
+        // Per-pair elastic threshold: hash on (i,j) → [0.82 .. 1.18] × bondR
+        const hashT = ((i * 7 + j * 13) % 97) / 97;  // [0, 1)
+        const pairR = bondR * (0.82 + 0.36 * hashT);
+        if (d < pairR) {
+          const al = (1 - d/pairR) * 160;  // clearly visible proximity indicator
           sk.stroke(hbR, hbG, hbB, al);
           sk.line(liqPts[i].x, y0+liqPts[i].y, liqPts[j].x, y0+liqPts[j].y);
           bonds++;
@@ -1043,6 +1079,7 @@ new p5(function(sk) {
     }
     // Restore solid stroke for subsequent drawing
     sk.drawingContext.setLineDash([]);
+    sk.drawingContext.lineCap = 'butt';
 
     // Particles
     sk.noStroke();

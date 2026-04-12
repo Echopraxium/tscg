@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tectonics Integrated</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/6.26.0/babylon.min.js"></script>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#0b0f1a}
+#renderCanvas{width:100%;height:100%}
+#mantle-hud{position:absolute;background:#111;padding:10px;border-radius:6px;color:#fff;display:none;transform:translate(-50%,-120%)}
+button{margin:2px}
+</style>
+</head>
+<body>
+<canvas id="renderCanvas"></canvas>
+
+<div id="mantle-hud">
+<b>Mantle Cell</b><br>
+<button id="mh-rupture">Rupture</button>
+<button id="mh-dilate">Dilate</button>
+<button id="mh-contract">Contract</button>
+</div>
+
+<script>
+const canvas = document.getElementById("renderCanvas");
+const engine = new BABYLON.Engine(canvas,true);
+let scene, camera;
+
+const SIM = {selectedCell:null, hoveredCell:null};
+
+const createScene = ()=>{
+scene = new BABYLON.Scene(engine);
+camera = new BABYLON.ArcRotateCamera("cam",-Math.PI/2,Math.PI/3,35,new BABYLON.Vector3(0,0,0),scene);
+camera.attachControl(canvas,true);
+new BABYLON.HemisphericLight("l",new BABYLON.Vector3(0,1,0),scene);
+
+SIM.hl = new BABYLON.HighlightLayer("hl",scene);
+
+const cells=[];
+const size=25;
+
+for(let i=0;i<size;i++){
+ for(let j=0;j<size;j++){
+  const c = BABYLON.MeshBuilder.CreateGround(`c-${i}-${j}`,{width:1,height:1},scene);
+  c.position.x=i-size/2;
+  c.position.z=j-size/2;
+  c.metadata={isMantleCell:true,velocity:new BABYLON.Vector3(0,0,0)};
+  const m=new BABYLON.StandardMaterial("m",scene);
+  m.diffuseColor=new BABYLON.Color3(0.1,0.1,0.15);
+  m.alpha=0.35;
+  c.material=m;
+  cells.push(c);
+ }
+}
+
+function magma(pos){
+ const ps=new BABYLON.ParticleSystem("ps",200,scene);
+ ps.particleTexture=new BABYLON.Texture("https://playground.babylonjs.com/textures/flare.png",scene);
+ ps.emitter=pos;
+ ps.color1=new BABYLON.Color4(1,0.5,0,1);
+ ps.color2=new BABYLON.Color4(1,0.1,0,1);
+ ps.emitRate=300;
+ ps.direction1=new BABYLON.Vector3(0,1,0);
+ ps.direction2=new BABYLON.Vector3(0,2,0);
+ ps.start(); setTimeout(()=>ps.stop(),800);
+}
+
+function rupture(cell){
+ const o=cell.position;
+ cells.forEach(m=>{
+  const d=BABYLON.Vector3.Distance(o,m.position);
+  if(d<5){
+   const dir=m.position.subtract(o).normalize();
+   m.metadata.velocity.addInPlace(dir.scale(0.2));
+  }
+ });
+}
+
+function dilate(cell){
+ const o=cell.position;
+ cells.forEach(m=>{
+  const dir=m.position.subtract(o);
+  const d=dir.length();
+  if(d<6){dir.normalize(); m.metadata.velocity.addInPlace(dir.scale(0.05));}
+ });
+ magma(o);
+}
+
+function contract(cell){
+ const o=cell.position;
+ cells.forEach(m=>{
+  const dir=o.subtract(m.position);
+  const d=dir.length();
+  if(d<6){dir.normalize(); m.metadata.velocity.addInPlace(dir.scale(0.04));}
+ });
+}
+
+scene.onPointerObservable.add((pi)=>{
+ if(pi.type===BABYLON.PointerEventTypes.POINTERMOVE){
+  const pick=scene.pick(scene.pointerX,scene.pointerY,m=>m.metadata?.isMantleCell);
+  if(pick.hit){
+   if(SIM.hoveredCell!==pick.pickedMesh){
+    SIM.hoveredCell=pick.pickedMesh;
+    SIM.hl.removeAllMeshes();
+    if(SIM.selectedCell) SIM.hl.addMesh(SIM.selectedCell,BABYLON.Color3.Orange());
+    SIM.hl.addMesh(SIM.hoveredCell,BABYLON.Color3.Blue());
+   }
+   canvas.style.cursor="pointer";
+  } else {
+   SIM.hoveredCell=null;
+   SIM.hl.removeAllMeshes();
+   if(SIM.selectedCell) SIM.hl.addMesh(SIM.selectedCell,BABYLON.Color3.Orange());
+   canvas.style.cursor="default";
+  }
+ }
+
+ if(pi.type===BABYLON.PointerEventTypes.POINTERDOWN){
+  const pick=scene.pick(scene.pointerX,scene.pointerY,m=>m.metadata?.isMantleCell);
+  if(pick.hit){
+   SIM.selectedCell=pick.pickedMesh;
+   SIM.hl.removeAllMeshes();
+   SIM.hl.addMesh(SIM.selectedCell,BABYLON.Color3.Orange());
+   document.getElementById("mantle-hud").style.display="block";
+  }
+ }
+});
+
+// HUD buttons
+mh-rupture.onclick=()=>SIM.selectedCell&&rupture(SIM.selectedCell);
+mh-dilate.onclick=()=>SIM.selectedCell&&dilate(SIM.selectedCell);
+mh-contract.onclick=()=>SIM.selectedCell&&contract(SIM.selectedCell);
+
+scene.onBeforeRenderObservable.add(()=>{
+ cells.forEach(c=>{
+  c.metadata.velocity.scaleInPlace(0.95);
+  c.position.addInPlace(c.metadata.velocity);
+ });
+
+ if(SIM.selectedCell){
+  const pos=BABYLON.Vector3.Project(
+   SIM.selectedCell.position,
+   BABYLON.Matrix.Identity(),
+   scene.getTransformMatrix(),
+   camera.viewport.toGlobal(engine.getRenderWidth(),engine.getRenderHeight())
+  );
+  const hud=document.getElementById("mantle-hud");
+  hud.style.left=pos.x+"px";
+  hud.style.top=pos.y+"px";
+ }
+});
+
+return scene;
+};
+
+createScene();
+engine.runRenderLoop(()=>scene.render());
+window.addEventListener("resize",()=>engine.resize());
+</script>
+</body>
+</html>
