@@ -179,7 +179,7 @@ Description | Concepts | Synergy | Scores
 ```
 instances/
   poclets/
-    Music/
+    Counterpoint/
       M0_Counterpoint.jsonld          ← Ontology
       M0_Counterpoint_README.md       ← This file
       M0_Counterpoint.html            ← Standalone simulation

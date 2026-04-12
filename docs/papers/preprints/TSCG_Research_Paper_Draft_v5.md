@@ -1,11 +1,11 @@
 # TSCG: The Transdisciplinary System Construction Game
-## A Proposal to Practice Systemic Modeling as a Construction Kit
+## A Conceptual Toolkit for Exploring Systems
 
-**Authors**: Michel Kern (aka Echopraxium) with the collaboration of Claude AI and DeepSeek
+**Authors**: Michel Kern (aka Echopraxium) with the contribution of Claude AI and DeepSeek
 **Date**: April 2026
 **Version**: 5.0
 **Smart Prompt Version**: TSCG v5 (March 2026)
-**DOI (Prior Work)**: 10.5281/zenodo.19351282
+**DOI (Prior Work)**: 10.5281/zenodo.19544443
 **Repository**: https://github.com/Echopraxium/tscg
 **Live Demo**: https://echopraxium.github.io/tscg/
 **License**: CC BY 4.0
@@ -24,11 +24,11 @@ The toolkit adopts a **falsificationist stance**: it has not yet been invalidate
 
 Tensor algebra is used – delegated to Claude AI, as the author is not a mathematician – as a specification language for ontological coherence, implemented in JSON-LD across a four-layer hierarchy (M3→M2→M1→M0). A notable recent addition is the relaxation of a foundational axiom (Flow ≥ 0), enabling formalization of irreversibility as a causal chain (Dissipation → Entropy → Inertia → Absorbing State).
 
-Eleven poclets are accompanied by standalone HTML simulations (Babylon.js 3D, with occasional p5.js for simple 2D cases) forming the **TSCG Poclet Gallery**. TSCG is submitted to the research community not as a Theory of Everything, but as a **community-revisable construction kit** – an invitation to test whether this arbitrary grid can be broken, and if not, what it enables us to see across disciplinary silos.
+Twelve poclets are accompanied by standalone HTML simulations (Babylon.js 3D, with occasional p5.js for simple 2D cases) forming the **TSCG Poclet Gallery**. TSCG is submitted to the research community not as a Theory of Everything, but as a **community-revisable construction kit** – an invitation to test whether this arbitrary grid can be broken, and if not, what it enables us to see across disciplinary silos.
 
 **Without close collaboration with AI – including documentary research, delegation of tensor formalization, ontology encoding, and pair modeling for candidate GenericConcepts – this project would not have been concretized.**
 
-**Keywords**: Systems theory, Ontology engineering, Transdisciplinarity, Knowledge representation, Map-territory distinction, Cybernetics, Tensor products, Semantic web, Desiloification, Systemic Esperanto, Poclet, GenericConcept, JSON-LD, Human-AI collaboration
+**Keywords**: Systems Modeling, Ontology engineering, Transdisciplinarity, Knowledge representation, map-territory, Cybernetics, Tensor products, Semantic web, Desiloification, Systemic Esperanto, Human-AI collaboration
 
 ---
 
@@ -168,15 +168,20 @@ A further annotation: Flow is the only ASFID dimension that possesses an intrins
 
 ---
 
-### 2.2 M2 — The GenericConcepts Layer
-
-M2 is the operational core of TSCG: a vocabulary of **80 atomic GenericConcepts** organized into 9 families (Structural, Dynamic, Regulatory, Adaptive, Energetic, Informational, Ontological, Teleonomic, Relational), each expressed as a tensor product of ASFID⊕REVOI dimensions.
+2.2 M2 — The GenericConcepts Layer
+M2 is the operational core of TSCG: a vocabulary of 80 atomic **GenericConcepts** organized into 9 families (Structural, Dynamic, Regulatory, Adaptive, Energetic, Informational, Ontological, Teleonomic, Relational), each expressed as a tensor product of ASFID⊕REVOI dimensions.
 
 GenericConcepts are constructed from M3 dimensions by the tensorization functor F_⊗: Cat_M3 → Cat_M2, from the tensor space T_M2 = ⨂_{k=1}^{3} H_M3^{⊗k}, producing 155 possible tensor products. Of these positions, TSCG v5.0 occupies 80 with validated atomic GenericConcepts. The nine families with representative examples are listed in Appendix C.
 
-Beyond atomic concepts, M2 defines two **combination classes**:
-- **GenericConceptCombo**: synergistic tensor-product combinations of existing GenericConcepts, producing emergent patterns not reducible to their components. Currently 4 validated Combos.
-- **KnowledgeFieldConceptCombo**: parameterizable templates combining GenericConcepts in domain-specific ways, absorbing domain specialization without polluting M2 (see §2.5 and §5).
+**Paired GenericConcepts** as a crowding‑control mechanism. A second-order design choice that limits the proliferation of atomic concepts in M2 is the systematic use of complementary pairs – two concepts that are mutual opposites or inverses of each other (e.g., Entropy / Negentropy, Convergence / Divergence, Activation / Inhibition). Rather than encoding each opposite as a fully separate atomic entry, TSCG defines one concept of the pair as the primary and the other as its inverse, linked by the property m2:inverse. The primary concept carries its standard tensor formula; the inverse is derived automatically via a duality morphism that flips the sign or direction of the relevant dimension(s) – typically those expressing polarity, flow orientation, or informational asymmetry. This mechanism yields two major benefits for M2 hygiene: (1) crowding reduction – without paired concepts, the 80 atomic concepts would grow to over 120 if every natural opposite were forced into its own entry; (2) pollution prevention – accidental, domain‑specific, or merely quantitative opposites (e.g., “fast dissipation” vs. “slow dissipation”) are not elevated to first‑class M2 status but remain captured by value spaces, parameters, or KnowledgeFieldConceptCombos. Only pairs that pass the six‑domain validation threshold – i.e., whose opposition is structurally fundamental across disciplines – qualify for the m2:inverse relationship in M2.
+
+Important distinction: Paired GenericConcepts are not to be confused with the Dual polarity used elsewhere in TSCG. Dual (noted D in tables) denotes a bicephalous GenericConcept that simultaneously occupies both the Territory (ASFID) and the Map (REVOI) subspaces – a single concept with two epistemic natures. Paired concepts, by contrast, are two distinct atomic concepts (each purely territorial or purely cartographic, or occasionally bicephalous) that stand in an inverse relationship. Entropy (F⊗I⊗D) and Negentropy (its inverse) form a complementary pair; neither is bicephalous, so neither carries the Dual flag.
+
+Beyond atomic concepts, M2 defines two combination classes:
+
+- **GenericConceptCombo**: synergistic tensor‑product combinations of existing GenericConcepts, producing emergent patterns not reducible to their components. Currently 4 validated Combos.
+
+- **KnowledgeFieldConceptCombo**: parameterizable templates combining GenericConcepts in domain‑specific ways, absorbing domain specialization without polluting M2 (see §2.5 and §5).
 
 ---
 
@@ -373,7 +378,7 @@ TSCG v5.0 comprises **22 validated poclets** spanning 10+ domains.
 | M0-05 | BloodPressureControl | Biology/Medicine | 5/5 | Homeostasis, Regulation, FeedbackLoop | — |
 | M0-06 | ColorSynthesis | Optics | 5/5 | Polarity, Trade-off, Emergence | ✓ |
 | M0-07 | ExposureTriangle | Photography | 5/5 | Balance, Trade-off, Regulation | ✓ |
-| M0-08 | NuclearReactorTypology | Energy Engineering | 5/5 | Regulation, Constraint, Threshold | — |
+| M0-08 | NuclearReactorTypology | Energy Engineering | 5/5 | Regulation, Constraint, Threshold | ✓ |
 | M0-09 | Kidneys | Biology/Medicine | 5/5 | Homeostasis, Filtration, Threshold | — |
 | M0-10 | Transistor | Electronics | 5/5 | Regulation, Amplification, Threshold | ✓ |
 | M0-11 | RAAS | Biology/Medicine | 5/5 | Cascade, Amplification, Homeostasis | — |
@@ -413,7 +418,7 @@ These observations are preliminary — the corpus is too small for strong empiri
 
 #### 4.4.1 The Standalone HTML Solution
 
-Eleven poclet simulations are currently implemented as **standalone HTML files** — single-file, zero-dependency applications running in any modern browser. The technical architecture: all data embedded as JavaScript literals (no `fetch()` calls), visualization libraries from cdnjs.cloudflare.com CDN (Babylon.js for 3D, p5.js for simple 2D cases), a Content Security Policy header ensuring Electron compatibility, the complete application in a single `.html` file.
+Twelve poclet simulations are currently implemented as **standalone HTML files** — single-file, zero-dependency applications running in any modern browser. The technical architecture: all data embedded as JavaScript literals (no `fetch()` calls), visualization libraries from cdnjs.cloudflare.com CDN (Babylon.js for 3D, p5.js for simple 2D cases), a Content Security Policy header ensuring Electron compatibility, the complete application in a single `.html` file.
 
 All simulations follow a canonical layout (established by the FireTriangle simulation): CSS Grid with header, animation canvas, resizable sidebar (tabs: Description | Concepts | Synergy | Scores), and JS-based tooltips using `getBoundingClientRect()`.
 
@@ -795,7 +800,7 @@ Not all AI-generated outputs receive the same level of human review before being
 
 **GenericConcept identification and modeling** is the one area where the review dynamic is genuinely bilateral. Candidate concepts are debated: the author proposes on the basis of systemic intuition; Claude AI evaluates tensor decomposition and consistency; both parties can object. The resulting concepts are *co-produced*, not delegated. This "pair modeling" mode — analogous to pair programming — is what distinguishes M2 work from the other output categories.
 
-**Simulation code and interactive HTML** is reviewed primarily for ergonomics and pedagogical credibility. The author iterates on visual clarity, tab structure, and interactive controls; he does not review the JavaScript or BabylonJS mechanics in detail.
+**Simulation code and interactive HTML** is reviewed primarily for ergonomics and pedagogical credibility. The author (twenty three years in software engineering) iterates on 3D visualization issues (experience with BabylonJS), ergonomy, pedagogy, UX and visual-design; he delegates the JavaScript coding but provides clues (eg: "use the mesh's local frame of reference") or discuss on debugging strategies especially when the 3D visualization is not inline with the design intent.
 
 In practice, this differentiated discipline has caught several classes of errors: UTF-8 corruption of mathematical symbols (caught during conceptual review of JSON-LD content), ontological inconsistencies such as tensor formula collisions (caught during pair modeling sessions), and simulation ergonomic issues (caught during interactive testing). It has *not* provided independent mathematical validation — a limitation honestly documented throughout this paper.
 
@@ -974,5 +979,5 @@ The final stage — ongoing, not concluded — is the explicit embrace of a peda
 **TSCG Toolkit v5 (Smart Prompt v5)**
 **Authors**: Michel Kern (aka Echopraxium) with the collaboration of Claude AI and DeepSeek
 **Repository**: https://github.com/Echopraxium/tscg
-**License**: CC BY 4.0 (document) — BSD 3-Clause (source code)
+**License**: CC BY 4.0 (document) — BSD 3-Clause Clear (source code)
 *Last Updated: April 2026*
