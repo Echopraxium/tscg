@@ -1,126 +1,175 @@
-// main.js — TscgPocletMiner Electron Main Process
-// Author: Echopraxium with the collaboration of Claude AI
-// v1.1.0 — RAG JS-native via @xenova/transformers (Option C)
-
 'use strict';
 
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+/**
+ * main.js — Electron main process for TscgPocletMiner.
+ *
+ * Responsibilities:
+ *   - Create the BrowserWindow
+ *   - Expose IPC handlers for LLM calls, RAG, config management
+ *   - Run Node.js-side code (fs, fetch, provider instantiation)
+ *
+ * Author: Echopraxium with the collaboration of Claude AI
+ */
+
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs   = require('fs');
-const { ragEngine } = require('./rag_engine');
-const { registerRestoreHandlers } = require('./restore_rag');
 
-// ─── Window ───────────────────────────────────────────────────────────────────
+const { ProviderFactory  } = require('./src/llm/ProviderFactory');
+const { RagBuilder       } = require('./src/rag/RagBuilder');
+const { PocletPipeline   } = require('./src/tscg/PocletPipeline');
 
-let mainWin = null;
+// ── App state ─────────────────────────────────────────────────────────────────
 
-function createWindow() {
-  mainWin = new BrowserWindow({
-    width:  980,
-    height: 760,
-    minWidth:  860,
-    minHeight: 640,
-    title: 'TscgPocletMiner',
-    backgroundColor: '#0c0c12',
-    webPreferences: {
-      preload:          path.join(__dirname, 'preload.js'),
-      contextIsolation: true,
-      nodeIntegration:  false
-    }
-  });
-  mainWin.loadFile('index.html');
-  // mainWin.webContents.openDevTools();
+let mainWindow  = null;
+let ragBuilder  = null;
+let pipeline    = null;
+
+// ── Config persistence ────────────────────────────────────────────────────────
+
+function configPath() {
+  return path.join(app.getPath('userData'), 'tscg_miner_config.json');
 }
 
-app.whenReady().then(() => {
-  createWindow();
-  registerRestoreHandlers(ipcMain);
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  });
-});
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
-});
-
-// ─── IPC: Load corpus ─────────────────────────────────────────────────────────
-
-ipcMain.handle('load-corpus', () => {
-  const corpusPath = path.join(__dirname, 'poclet_corpus_profile.json');
+function loadConfig() {
   try {
-    return { ok: true, data: JSON.parse(fs.readFileSync(corpusPath, 'utf-8')) };
-  } catch (err) {
-    return { ok: false, error: err.message };
+    const raw = fs.readFileSync(configPath(), 'utf-8');
+    return JSON.parse(raw);
+  } catch {
+    return ProviderFactory.defaultConfig();
   }
-});
+}
 
-// ─── IPC: Open URL ────────────────────────────────────────────────────────────
+function saveConfig(config) {
+  fs.mkdirSync(path.dirname(configPath()), { recursive: true });
+  fs.writeFileSync(configPath(), JSON.stringify(config, null, 2), 'utf-8');
+}
 
-ipcMain.handle('open-url', (_e, url) => {
-  shell.openExternal(url);
+// ── Window ────────────────────────────────────────────────────────────────────
+
+function createWindow() {
+  mainWindow = new BrowserWindow({
+    width:  1100,
+    height: 750,
+    minWidth:  800,
+    minHeight: 600,
+    title: 'TSCG Poclet Miner',
+    webPreferences: {
+      preload:           path.join(__dirname, 'preload.js'),
+      contextIsolation:  true,
+      nodeIntegration:   false,
+      sandbox:           false,
+    },
+  });
+
+  mainWindow.loadFile('renderer/index.html');
+
+  if (process.argv.includes('--dev')) {
+    mainWindow.webContents.openDevTools();
+  }
+}
+
+app.whenReady().then(createWindow);
+app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
+app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
+
+// ── IPC: Config ───────────────────────────────────────────────────────────────
+
+ipcMain.handle('config:load', () => loadConfig());
+
+ipcMain.handle('config:save', (_evt, config) => {
+  saveConfig(config);
   return { ok: true };
 });
 
-// ─── IPC: Export candidate JSON ───────────────────────────────────────────────
+ipcMain.handle('config:listProviders', () => ProviderFactory.listProviders());
 
-ipcMain.handle('export-candidate', (_e, data) => {
-  const filename = `tscg_candidate_${data.system_slug}_${Date.now()}.json`;
-  const outPath  = path.join(app.getPath('downloads'), filename);
-  try {
-    fs.writeFileSync(outPath, JSON.stringify(data, null, 2), 'utf-8');
-    return { ok: true, path: outPath };
-  } catch (err) {
-    return { ok: false, error: err.message };
-  }
+ipcMain.handle('config:checkAll', async (_evt, config) => {
+  return ProviderFactory.checkAll(config);
 });
 
-// ─── IPC: RAG init (called once by renderer after startup) ───────────────────
+// ── IPC: TSCG repo path ───────────────────────────────────────────────────────
 
-ipcMain.handle('rag-init', async () => {
+ipcMain.handle('repo:browse', async () => {
+  const result = await dialog.showOpenDialog(mainWindow, {
+    title:       'Select TSCG repository root',
+    properties:  ['openDirectory'],
+  });
+  return result.canceled ? null : result.filePaths[0];
+});
+
+// ── IPC: RAG ──────────────────────────────────────────────────────────────────
+
+ipcMain.handle('rag:build', async (_evt, repoRoot) => {
   try {
-    await ragEngine.init((progress) => {
-      // Forward progress to renderer
-      if (mainWin && !mainWin.isDestroyed()) {
-        mainWin.webContents.send('rag-progress', progress);
-      }
+    ragBuilder = new RagBuilder(repoRoot);
+    const stats = await ragBuilder.build(msg => {
+      mainWindow?.webContents.send('rag:progress', msg);
     });
-    return { ok: true };
+    return { ok: true, ...stats };
   } catch (err) {
-    return { ok: false, error: err.message };
+    return { ok: false, message: err.message };
   }
 });
 
-// ─── IPC: RAG query — similar poclets ────────────────────────────────────────
-//
-//  mode: "similar_poclets"  → search validated M0 corpus
-//  mode: "suggest_concepts" → search M2 GenericConcepts corpus
-//
-ipcMain.handle('rag-query', async (_e, { query, mode, topK }) => {
+ipcMain.handle('rag:status', () => ({
+  built:    ragBuilder?.isBuilt  ?? false,
+  docCount: ragBuilder?.docCount ?? 0,
+  stats:    ragBuilder?.stats    ?? {},
+}));
+
+// ── IPC: Pipeline ─────────────────────────────────────────────────────────────
+
+ipcMain.handle('pipeline:reset', () => {
+  pipeline = null;
+  return { ok: true };
+});
+
+ipcMain.handle('pipeline:runRound', async (_evt, { round, userInput, configOverride }) => {
   try {
-    let results;
-    if (mode === 'suggest_concepts') {
-      results = await ragEngine.suggestGenericConcepts(query, topK || 6);
+    // Load config (or use override from renderer)
+    const config   = configOverride ?? loadConfig();
+    const provider = ProviderFactory.create(config);
+
+    // Create/reuse pipeline
+    if (!pipeline || round === 1) {
+      pipeline = new PocletPipeline(provider, ragBuilder);
     } else {
-      results = await ragEngine.querySimilarPoclets(query, topK || 5);
+      // Swap provider if config changed
+      pipeline._provider = provider;
     }
-    return { ok: true, results };
+
+    const result = await pipeline.runRound(round, userInput);
+    return {
+      ok:        true,
+      round,
+      result,
+      roundData: pipeline.roundData,
+    };
   } catch (err) {
-    return { ok: false, error: err.message, results: [] };
+    return { ok: false, round, message: err.message };
   }
 });
 
-// ─── IPC: Rebuild corpus from instances/poclets/ ──────────────────────────────
+ipcMain.handle('pipeline:getData', () => ({
+  roundData:    pipeline?.roundData    ?? {},
+  currentRound: pipeline?.currentRound ?? 0,
+  isComplete:   pipeline?.isComplete   ?? false,
+}));
 
-const { rebuildCorpus } = require('./rebuild_corpus');
+// ── IPC: File save ────────────────────────────────────────────────────────────
 
-ipcMain.handle('rebuild-corpus', async () => {
+ipcMain.handle('file:saveJsonLd', async (_evt, { content, suggestedName }) => {
+  const result = await dialog.showSaveDialog(mainWindow, {
+    title:       'Save M0 JSON-LD poclet',
+    defaultPath: suggestedName ?? 'M0_Poclet.jsonld',
+    filters:     [{ name: 'JSON-LD', extensions: ['jsonld'] }],
+  });
+  if (result.canceled) return { ok: false, canceled: true };
   try {
-    const result = rebuildCorpus({ startDir: __dirname });
-    // Signal rag_engine to re-embed if hash changed
-    ragEngine.markCorpusDirty();
-    return { ok: true, ...result };
+    fs.writeFileSync(result.filePath, content, 'utf-8');
+    return { ok: true, filePath: result.filePath };
   } catch (err) {
-    return { ok: false, error: err.message };
+    return { ok: false, message: err.message };
   }
 });

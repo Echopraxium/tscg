@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSCG — Plate Tectonics v7.0 - FEM Stress Diffusion</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+<div id="app">
+
+<header id="hd">
+  <button id="btn-home" onclick="location.href='https://echopraxium.github.io/tscg/'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="#c8d8f8"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+  </button>
+  <button class="logo-btn" onclick="window.open('https://github.com/Echopraxium/tscg','_blank')">TSCG</button>
+  <span class="sep">&middot;</span>
+  <span class="poclet-name">Plate Tectonics — Wilson Cycle v7.0 (FEM Stress Diffusion)</span>
+  <div style="display:flex;gap:6px;flex-shrink:0">
+    <span class="chip domain">Geology</span>
+    <span class="chip type">m3:Poclet</span>
+    <span class="chip version">v7.0.0</span>
+  </div>
+</header>
+
+<div id="cv">
+  <canvas id="renderCanvas"></canvas>
+  <div id="quake-flash" class="quake-effect"></div>
+
+  <!-- Legend Panel - Top Left -->
+  <div id="legend-panel" class="panel">
+    <div class="panel-header" onclick="togglePanel('legend-content')">
+      <span class="panel-title">▼ GEOLOGICAL LAYERS ▼</span>
+      <span class="panel-toggle" id="legend-toggle">▲</span>
+    </div>
+    <div id="legend-content" class="panel-content expanded">
+      <div class="legend-content">
+        <div class="legend-row"><div class="legend-color" style="background:#b50a02"></div><span class="legend-desc">Upper Mantle</span><span class="legend-value">deep</span></div>
+        <div class="legend-row"><div class="legend-color" style="background:#e04a10"></div><span class="legend-desc">Asthenosphere (3D grid)</span><span class="legend-value">viscous</span></div>
+        <div class="legend-row"><div class="legend-color" style="background:#8B6914"></div><span class="legend-desc">Lithosphere</span><span class="legend-value">rigid</span></div>
+        <div class="legend-row"><div class="legend-color" style="background:#CD9B1D"></div><span class="legend-desc">Continental Crust</span><span class="legend-value">30-70km</span></div>
+        <div class="legend-row"><div class="legend-color" style="background:#1a2d5a"></div><span class="legend-desc">Oceanic Crust</span><span class="legend-value">7-10km</span></div>
+        <div class="legend-row"><div class="legend-color" style="background:#0d40b3"></div><span class="legend-desc">Ocean</span><span class="legend-value">~4km</span></div>
+        <div class="legend-divider"></div>
+        <div class="legend-row"><div class="legend-color" style="background:#ffcc33"></div><span class="legend-desc">Selected Cell</span><span class="legend-value">Gold/Yellow</span></div>
+        <div class="legend-row"><div class="legend-color" style="background:#ff8800"></div><span class="legend-desc">Hover (pre-select)</span><span class="legend-value">Orange</span></div>
+        <div class="legend-row"><div class="legend-color" style="background:#ff6644"></div><span class="legend-desc">Magma (ridge/subduction)</span><span class="legend-value">hot</span></div>
+        <div class="legend-row"><div class="legend-color" style="background:#fff"></div><span class="legend-desc">Wireframe selected</span><span class="legend-value">white</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Control Panel - Top Right -->
+  <div id="dof-panel" class="panel">
+    <div class="panel-header" onclick="togglePanel('dof-content')">
+      <span class="panel-title">▼ CONTROL PANEL ▼</span>
+      <span class="panel-toggle" id="dof-toggle">▲</span>
+    </div>
+    <div id="dof-content" class="panel-content expanded">
+      <div class="dof-content">
+        <div class="view-mode-buttons">
+          <button class="view-mode-btn active" id="mode-layer">🍰 Layer Cake</button>
+          <button class="view-mode-btn" id="mode-planet">🌍 Planet Mode</button>
+        </div>
+
+        <div class="dof-section">
+          <div class="dof-section-header">🌡️ Convection</div>
+          <div class="dof-row">
+            <input type="range" id="sl-conv" class="csl" min="0.05" max="1" step="0.05" value="0.5">
+            <span class="cv2" id="val-conv">50%</span>
+          </div>
+        </div>
+
+        <div class="dof-section">
+          <div class="dof-section-header">⬇️ Slab density</div>
+          <div class="dof-row">
+            <input type="range" id="sl-slab" class="csl" min="0.1" max="1" step="0.05" value="0.6">
+            <span class="cv2" id="val-slab">60%</span>
+          </div>
+        </div>
+
+        <div class="dof-section">
+          <div class="dof-section-header">🔄 Asymmetry</div>
+          <div class="dof-row">
+            <input type="range" id="sl-asym" class="csl" min="-1" max="1" step="0.05" value="0">
+            <span class="cv2" id="val-asym">0</span>
+          </div>
+        </div>
+
+        <div class="dof-section">
+          <div class="dof-section-header">📡 Propagation</div>
+          <div class="dof-row">
+            <input type="range" id="sl-propagation" class="csl" min="0" max="1" step="0.05" value="0.8">
+            <span class="cv2" id="val-propagation">80%</span>
+          </div>
+        </div>
+
+        <div class="dof-section">
+          <div class="dof-section-header">🎯 Radius</div>
+          <div class="dof-row">
+            <input type="range" id="sl-radius" class="csl" min="1" max="4" step="0.1" value="1.88">
+            <span class="cv2" id="val-radius">1.88</span>
+          </div>
+        </div>
+
+        <div class="dof-section">
+          <div class="dof-section-header">⚠️ Quake Threshold</div>
+          <div class="dof-row">
+            <input type="range" id="sl-threshold" class="csl" min="0.3" max="0.95" step="0.01" value="0.70">
+            <span class="cv2" id="val-threshold">70%</span>
+          </div>
+        </div>
+
+        <div class="dof-section">
+          <button id="btn-propagate" class="mode-btn" style="width:100%; margin-top:8px;">🌀 Propagate Stress</button>
+        </div>
+
+        <div class="status-text" id="xyz-status">No cell selected</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cell Info Panel - Bottom Left (avec bouton Sample) -->
+  <div id="cell-panel" class="hide">
+    <div class="cp-hdr">
+      <span class="cp-title">📌 SELECTED CELL</span>
+      <button class="cp-close" id="cp-close">✕</button>
+    </div>
+    <div class="cp-info" id="cp-info">None</div>
+    <div class="cp-propagation" id="cp-propagation">--</div>
+    <button id="btn-sample" class="cp-apply" style="margin-top:5px; display:none;">🔬 Sample</button>
+  </div>
+</div>
+
+<div id="sp"></div>
+
+<aside id="sb">
+  <nav class="tab-bar">
+    <button class="tab-btn" data-tab="desc">Description</button>
+    <button class="tab-btn" data-tab="concepts">Concepts</button>
+    <button class="tab-btn" data-tab="synergy">Synergy</button>
+  </nav>
+  <div id="panel-desc" class="tab-panel">
+    <div class="rc">
+<h2>Finite Element Simulation of Plate Tectonics – Realistic Deformations</h2>
+
+<h2>Overview</h2>
+This simulation uses a simplified finite‑element approach (stress diffusion) to model lithosphere‑mantle interaction.
+
+<h2>Deformation by Layer</h2>
+
+<h3>1. Plate (Lithosphere)</h3>
+<code>Elastic</code> – Flexure at ridges, subduction zones, topographic loading. Small strains (10⁻⁶–10⁻⁴).
+<code>Plastic (brittle)</code> – Faulting in the upper brittle part (0–15 km crust, up to 40 km cold mantle).
+<code>Viscous (ductile)</code> – Dislocation creep below ~600–700 °C (lower lithosphere).
+
+<h3>2. Mantle (Asthenosphere + Lower Mantle)</h3>
+<code>Dominant regime</code> – Non‑Newtonian viscous flow (power‑law creep, n ≈ 3).
+<code>Realistic strain types</code> – Simple shear (basal drag), Pure shear (divergence/convergence), Rigid‑body rotation.
+<code>Volume change</code> – Negligible → enforce incompressibility (∇·v=0).
+<code>Strain rates</code> – 10⁻¹⁵ – 10⁻¹² s⁻¹.
+
+<h3>3. Magma (Partial Melt Zones)</h3>
+<code>Localized pockets</code> – Ridges, plumes, subduction zones.
+<code>Rheology</code> – Newtonian viscous (η ∼ 10¹–10⁴ Pa·s).
+
+<h2>Simulation Controls</h2>
+<code>Convection</code> – intensity of mantle circulation.
+<code>Slab density</code> – weight of subducting plate (slab pull).
+<code>Asymmetry</code> – preferred direction of plate motion.
+<code>Propagation</code> – stress diffusion coefficient.
+<code>Radius</code> – influence distance for neighbour coupling.
+<code>Quake Threshold</code> – stress level needed to trigger an earthquake (30%-95%).
+
+<h2>Interaction</h2>
+<code>Click on a mantle cell</code> – injects a stress perturbation (mantle plume or magmatic intrusion).
+<code>Propagate Stress button</code> – forces diffusion of stress to neighboring cells.
+<code>Stress then diffuses</code> according to a non‑linear viscosity law (n=3).
+<code>Cell colour and scale</code> reflect stress level.
+<code>Earthquake triggers</code> when average stress > threshold.
+
+<h2>Planet Mode</h2>
+<code>Click on the grid</code> – select a meridian/parallel cell.
+<code>Sample button</code> – extract geological data at that location.
+
+<h2>Visual Feedback</h2>
+<code>Cell colour</code> – from orange (low stress) to red (high stress).
+<code>Cell scaling</code> – expands with stress.
+<code>Fault lines</code> – colour changes with global stress.
+<code>Earthquake</code> – camera shake and domino effect on buildings.
+
+<h2>Technical Notes</h2>
+<code>Grid</code> – 16×3×4 prismatic cells (doubled in length).
+<code>Stress diffusion</code> – non‑linear, exponent n=3.
+<code>Forcing</code> – slab pull (right side) + ridge push (center) + basal drag.
+
+<h2>Reference</h2>
+Turcotte, D.L. & Schubert, G. (2014) – Geodynamics, 3rd edition. Cambridge University Press.
+    </div>
+  </div>
+  <div id="panel-concepts" class="tab-panel">
+    <div class="gc-list">
+      <div class="gc-item p"><span class="gc-name">m2:Layer</span><div>Geological stratification</div></div>
+      <div class="gc-item p"><span class="gc-name">m2:Convection</span><div>Mantle heat engine</div></div>
+      <div class="gc-item p"><span class="gc-name">m2:Cycle</span><div>Wilson Cycle ~500 Ma</div></div>
+      <div class="gc-item p"><span class="gc-name">m2:StressDiffusion</span><div>Non‑Newtonian FEM</div></div>
+    </div>
+  </div>
+  <div id="panel-synergy" class="tab-panel">
+    <div class="syn-box">
+      <div class="syn-lbl">Stress Diffusion Model</div>
+      <div class="syn-f">Click on a cell → inject stress → diffusion (n=3)</div>
+      <div class="syn-t">Slab pull, ridge push, and mantle convection drive global stress.</div>
+    </div>
+  </div>
+</aside>
+
+<footer id="ct">
+  <button class="cb active" id="btn-play">⏸ Pause</button>
+  <button class="cb" id="btn-reset">⟳ Reset</button>
+  <div class="cs"></div>
+  <button class="cb wilson" id="btn-wilson">🌍 Wilson Cycle</button>
+  <button class="cb active" id="btn-labels">🗺️ Legend</button>
+  <div class="cs"></div>
+  <span class="cl">Fault stress</span>
+  <div id="sw"><div id="sbg"><div id="sfl" style="width:0%"></div></div><span class="cv2" id="val-stress">0%</span></div>
+  <div class="si"><div class="sdot run" id="sdot"></div><span id="slbl">Running</span></div>
+</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/6.26.0/babylon.min.js"></script>
+
+<!-- Modules -->
+<script src="src/config.js"></script>
+<script src="src/state.js"></script>
+<script src="src/utils.js"></script>
+<script src="src/wireframe.js"></script>
+
+<script src="src/mantleGrid.js"></script>
+<script src="src/transformations.js"></script>
+<script src="src/buildings.js"></script>
+<script src="src/geologyData.js"></script>
+<script src="src/sceneBuilder.js"></script>        <!-- ← continentalPlates, oceanicPlates définis ici -->
+<script src="src/layerCakeUpdater.js"></script>   <!-- ← utilise ces variables -->
+<script src="src/planet.js"></script>
+<script src="src/particles.js"></script>
+<script src="src/uiControls.js"></script>
+<script src="src/main.js"></script>
+
+</body>
+</html>

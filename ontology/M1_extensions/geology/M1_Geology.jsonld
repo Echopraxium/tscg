@@ -1,0 +1,276 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m1geo": "M1_extensions/geology/M1_Geology.jsonld#",
+    "m1core": "M1_CoreConcepts.jsonld#",
+    "m2": "M2_GenericConcepts.jsonld#",
+    "m3eagle": "M3_EagleEye.jsonld#",
+    "m3sphinx": "M3_SphinxEye.jsonld#",
+    "m3": "M3_GenesisSpace.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+
+    {
+      "@id": "m1geo:M1_Geology",
+      "@type": "owl:Ontology",
+      "rdfs:label": "TSCG M1 Geology Extension",
+      "rdfs:comment": "Domain-specific geological and geophysical concepts for the TSCG framework. Contains patterns and concepts specific to plate tectonics, geodynamics, mineralogy, and Earth system science. Discovery context: M0_PlateTectonics poclet analysis (2026-04-05).",
+      "dcterms:title": "TSCG M1 Geology — Domain-Specific Geological and Geophysical Concepts",
+      "dcterms:description": "Extension of the TSCG framework with geology-specific concepts. Covers plate tectonics (lithospheric plates, subduction, mid-ocean ridges, mantle convection), geodynamic equilibria (isostasy), seismotectonics (faults), and orogenic processes. First TSCG domain extension in the Earth Sciences field. Introduces the GeologicalAccretion KnowledgeFieldConceptCombo, linking m1core:Accretion to its geological instantiation.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-04-05",
+      "dcterms:modified": "2026-04-05",
+      "owl:versionInfo": "1.0.0",
+      "m3:ontologyCategory": {
+        "@id": "m3:DomainExtension"
+      },
+      "m2:changelog": {
+        "v1_0_0": {
+          "date": "2026-04-05",
+          "description": "Initial version. 9 domain concepts extracted from M0_PlateTectonics poclet analysis. 2 KnowledgeField instances (Geology NOUN + Geological ADJECTIVE). 7 KnowledgeFieldConcepts: LithosphericPlate, SubductionZone, MidOceanRidge, MantleConvectionCell, IsostasyEquilibrium, SeismicFault, Orogeny. 1 KnowledgeFieldConceptCombo: GeologicalAccretion."
+        }
+      },
+      "owl:imports": [
+        "M3_GenesisSpace.jsonld",
+        "M2_GenericConcepts.jsonld",
+        "M1_CoreConcepts.jsonld"
+      ]
+    },
+
+    {
+      "@id": "m1geo:Geology",
+      "@type": ["owl:NamedIndividual", "m2:KnowledgeField"],
+      "rdfs:label": "Geology",
+      "rdfs:comment": "Study of the Earth's solid materials, structures, processes, and history. Encompasses geophysics, geochemistry, mineralogy, petrology, stratigraphy, and geodynamics. As a KnowledgeField, Geology is strongly territory-dominant: physical processes (ASFID) are highly observable and verifiable through seismology, geodesy, and petrological analysis.",
+      "m2:knowledgeFieldRole": "NOUN",
+      "m2:sigma_mean": 0.84,
+      "m2:alignmentAngle": "~22°",
+      "m2:maturityLevel": "mature",
+      "m2:maturityNote": "Plate tectonics paradigm fully established since 1970s. High verifiability (GPS, seismology, geochronology). Main epistemic limit: mantle deep structure (tomography indirect) and long-term geodynamic prediction.",
+      "m2:dominantASFID": ["m3eagle:Structure", "m3eagle:Flow", "m3eagle:Dynamics"],
+      "m2:dominantREVOI": ["m3sphinx:Verifiability", "m3sphinx:Representability", "m3sphinx:Observability"],
+      "m2:epistemicDepth": "High — processes span 9 orders of magnitude in time (seconds for earthquakes to Ga for Wilson cycles). Direct observation of mantle impossible; inferred from seismic tomography.",
+      "dcterms:created": "2026-04-05",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1geo:Geological",
+      "@type": ["owl:NamedIndividual", "m2:KnowledgeField"],
+      "rdfs:label": "Geological",
+      "rdfs:comment": "Disciplinary qualifier (ADJECTIVE form) for use in KnowledgeFieldConceptCombo patterns. Derived from m1geo:Geology, qualifying concepts operating within geological time scales, spatial scales (km to 10^4 km), and material domains (rock, mineral, magma, fluid).",
+      "m2:knowledgeFieldRole": "ADJECTIVE",
+      "m2:derivedFrom": "m1geo:Geology",
+      "m2:qualifier": "Pertaining to Earth materials, geodynamic processes, geological time scales (ka to Ga), and lithospheric to mantle spatial scales",
+      "dcterms:created": "2026-04-05",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1geo:LithosphericPlate",
+      "@type": "owl:Class",
+      "rdfs:label": "Lithospheric Plate",
+      "rdfs:comment": "Rigid segment of the Earth's outer shell (lithosphere = crust + upper mantle) moving as a coherent unit on the underlying asthenosphere. Each plate is bounded by divergent, convergent, or transform boundaries. Plates are the fundamental structural units of the plate tectonics system — they ARE the mobile S elements.",
+      "m2:characterizedBy": ["m2:Layer", "m2:Boundary", "m2:Trajectory"],
+      "m1geo:tensorFormula": "S ⊗ I ⊗ A ⊗ D",
+      "m1geo:tensorFormulaASCII": "S (x) I (x) A (x) D",
+      "m1geo:physicalProperties": {
+        "thickness": "Oceanic: 7-10 km crust + ~60-80 km lithospheric mantle. Continental: 30-70 km crust + ~100-200 km lithospheric mantle",
+        "velocity": "1-15 cm/year (GPS measurable)",
+        "density": "Oceanic: ~3.0 g/cm³. Continental: ~2.7 g/cm³",
+        "age": "Oceanic: 0-200 Ma (recycled by subduction). Continental: up to 4 Ga (stable cratons)"
+      },
+      "m1geo:boundaryTypes": [
+        "Divergent (mid-ocean ridges) — Accretion of new crust",
+        "Convergent (subduction zones, collision) — Destruction or deformation",
+        "Transform (strike-slip faults) — Lateral displacement, no creation/destruction"
+      ],
+      "m1geo:examples": [
+        "Pacific Plate (largest, ~10.3 cm/yr NW motion)",
+        "African Plate (slow, ~2 cm/yr N motion)",
+        "Indo-Australian Plate (fast convergence with Eurasian, building Himalayas)",
+        "Juan de Fuca Plate (small, subducting under North America — Cascadia subduction zone)"
+      ],
+      "dcterms:created": "2026-04-05",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1geo:MidOceanRidge",
+      "@type": "owl:Class",
+      "rdfs:label": "Mid-Ocean Ridge",
+      "rdfs:comment": "Divergent plate boundary where two lithospheric plates move apart, allowing hot asthenospheric material to upwell, decompress, and solidify as new oceanic crust. The primary geological instantiation of m1core:Accretion: new crustal material continuously accretes to both plates at the ridge axis, progressively building the ocean floor. Generates ~60% of Earth's volcanic activity.",
+      "m2:characterizedBy": ["m2:Bifurcation", "m2:Convection", "m1core:Accretion"],
+      "m1geo:tensorFormula": "S ⊗ F ⊗ I ⊗ D",
+      "m1geo:tensorFormulaASCII": "S (x) F (x) I (x) D",
+      "m1geo:accretionMechanism": "Decompression melting of ascending asthenosphere → basaltic magma → solidification at ridge axis → symmetric addition to both diverging plates",
+      "m1geo:spreadingRate": {
+        "slow": "< 4 cm/yr (e.g., Mid-Atlantic Ridge) — rugged topography, frequent earthquakes",
+        "intermediate": "4-9 cm/yr (e.g., Juan de Fuca Ridge)",
+        "fast": "> 9 cm/yr (e.g., East Pacific Rise) — smooth topography, hydrothermal vents"
+      },
+      "m1geo:systemicRole": "Accretion pole of the plate tectonics system — new crust created here is eventually destroyed at subduction zones (Wilson cycle)",
+      "m1geo:examples": [
+        "Mid-Atlantic Ridge — separating Americas from Europe/Africa at ~2.5 cm/yr",
+        "East Pacific Rise — separating Pacific from Nazca/Cocos plates at ~10-17 cm/yr",
+        "Carlsberg Ridge (Indian Ocean)",
+        "Southwest Indian Ridge (ultra-slow, ~1.5 cm/yr)"
+      ],
+      "dcterms:created": "2026-04-05",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1geo:SubductionZone",
+      "@type": "owl:Class",
+      "rdfs:label": "Subduction Zone",
+      "rdfs:comment": "Convergent plate boundary where a denser lithospheric plate (typically oceanic) descends beneath a less dense plate (oceanic or continental) into the asthenosphere. The primary geological instantiation of m2:Transformation: solid lithosphere is progressively transformed into molten asthenosphere through pressure-temperature increase along the Wadati-Benioff zone. Generates ~90% of Earth's seismicity and most arc volcanism.",
+      "m2:characterizedBy": ["m2:Transformation", "m2:Threshold", "m2:Trajectory"],
+      "m1geo:tensorFormula": "S ⊗ I ⊗ D ⊗ F",
+      "m1geo:tensorFormulaASCII": "S (x) I (x) D (x) F",
+      "m1geo:transformationMechanism": "Slab pull (negative buoyancy of dense oceanic lithosphere) + ridge push → descending slab dehydrates → fluids metasomatize overlying mantle wedge → partial melting → arc volcanism",
+      "m1geo:systemicRole": "Destruction pole of the Wilson cycle — compensates MidOceanRidge creation. Balances Accretion with Transformation.",
+      "m1geo:hazards": [
+        "Megathrust earthquakes (largest on Earth — Mw 9.0+ possible)",
+        "Tsunamis (rapid seafloor displacement)",
+        "Volcanic arc eruptions (volatile-rich magmas)",
+        "Slow-slip events and episodic tremor"
+      ],
+      "m1geo:examples": [
+        "Cascadia Subduction Zone (Juan de Fuca under N. America — major tsunami risk)",
+        "Japan Trench (Pacific under Eurasia — 2011 Tōhoku Mw 9.0)",
+        "Peru-Chile Trench (Nazca under S. America — Andes orogeny)",
+        "Mariana Trench (Pacific under Philippine — deepest point on Earth, ~11 km)"
+      ],
+      "dcterms:created": "2026-04-05",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1geo:MantleConvectionCell",
+      "@type": "owl:Class",
+      "rdfs:label": "Mantle Convection Cell",
+      "rdfs:comment": "Large-scale thermally-driven circulation of solid-but-viscous mantle material. The primary thermodynamic motor of plate tectonics: hot mantle material rises (low density), spreads laterally, cools, and sinks (high density) at subduction zones, driving plate motion through viscous coupling and slab pull. Operates on timescales of millions of years at strain rates of 10⁻¹⁵ s⁻¹.",
+      "m2:characterizedBy": ["m2:Convection", "m2:Cycle", "m2:Entropy"],
+      "m1geo:tensorFormula": "F ⊗ D ⊗ S ⊗ A",
+      "m1geo:tensorFormulaASCII": "F (x) D (x) S (x) A",
+      "m1geo:entropyBalance": "Negentropy at ridge (organized crustal accretion) + Entropy export (heat flux through ocean floor and arc volcanism) — net Earth cooling since formation",
+      "m1geo:drivingForces": [
+        "Basal heating from core-mantle boundary (CMB heat flux ~10 TW)",
+        "Internal heating from radioactive decay (U, Th, K — ~20 TW)",
+        "Slab pull (dominant driving force, ~30× ridge push)"
+      ],
+      "m1geo:physicalParameters": {
+        "viscosity": "10²⁰ - 10²² Pa·s (solid but flows over Ma timescales)",
+        "velocity": "1-10 cm/yr",
+        "temperature_range": "700°C (slab) to 3500°C (CMB)",
+        "depth_range": "Upper mantle 0-660 km + Lower mantle 660-2900 km"
+      },
+      "m1geo:examples": [
+        "Whole-mantle convection (single layer model — most recent evidence)",
+        "Double-layer convection (upper + lower separated at 660 km — older model)",
+        "Mantle plumes (narrow upwellings — hotspots: Hawaii, Iceland, Yellowstone)"
+      ],
+      "dcterms:created": "2026-04-05",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1geo:IsostasyEquilibrium",
+      "@type": "owl:Class",
+      "rdfs:label": "Isostasy Equilibrium",
+      "rdfs:comment": "Gravitational equilibrium between the Earth's lithosphere and the underlying asthenosphere, analogous to Archimedes' principle for solid crust floating on viscous mantle. Acts as the primary attractor of the plate tectonics system: any perturbation (erosion, ice loading, crustal thickening) triggers compensatory vertical adjustment (glacial rebound, mountain subsidence) restoring isostatic balance.",
+      "m2:characterizedBy": ["m2:Equilibrium", "m2:Regulation", "m2:Adaptation"],
+      "m1geo:tensorFormula": "A ⊗ F ⊗ D",
+      "m1geo:tensorFormulaASCII": "A (x) F (x) D",
+      "m1geo:models": {
+        "Airy": "Variable crust thickness — mountain roots extend deeper into mantle (same density crust, variable thickness)",
+        "Pratt": "Variable crust density — topographic variations compensated by lateral density changes (same thickness, variable density)",
+        "Vening_Meinesz": "Regional (flexural) isostasy — lithospheric rigidity distributes loads over wider area"
+      },
+      "m1geo:systemicRole": "Primary attractor (A) of the plate tectonics poclet — all vertical surface processes converge toward isostatic balance",
+      "m1geo:examples": [
+        "Post-glacial rebound: Scandinavia rising ~1 cm/yr since Last Glacial Maximum (Laurentide ice sheet removal)",
+        "Mountain roots: Alps crust ~50 km thick vs. 30 km average",
+        "Ocean basin: thin dense oceanic crust compensated by deep ocean floor",
+        "Delta subsidence: sediment loading causes compensatory sinking"
+      ],
+      "dcterms:created": "2026-04-05",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1geo:SeismicFault",
+      "@type": "owl:Class",
+      "rdfs:label": "Seismic Fault",
+      "rdfs:comment": "A planar discontinuity in Earth's crust along which rock masses have moved relative to each other, accumulating elastic strain energy that is episodically released as seismic waves (earthquakes). Transform plate boundaries ARE seismic faults at the largest scale; faults also occur within plates. Instantiates m2:Threshold: strain accumulates continuously (slow dynamics) until a critical stress threshold is exceeded, triggering sudden rupture (fast dynamics).",
+      "m2:characterizedBy": ["m2:Threshold", "m2:Pressure", "m2:Bifurcation"],
+      "m1geo:tensorFormula": "I ⊗ A ⊗ S ⊗ D",
+      "m1geo:tensorFormulaASCII": "I (x) A (x) S (x) D",
+      "m1geo:faultTypes": {
+        "normal": "Extension — hanging wall drops (Basin & Range, mid-ocean ridge flanks)",
+        "reverse_thrust": "Compression — hanging wall rises (subduction zones, collision belts)",
+        "strike_slip": "Lateral displacement — transform boundaries (San Andreas, North Anatolian)"
+      },
+      "m1geo:seismicCycle": "Interseismic (strain accumulation, decades-centuries) → Coseismic (rupture, seconds) → Postseismic (relaxation, months-years) → repeat",
+      "m1geo:examples": [
+        "San Andreas Fault (transform — Pacific/N.America, 1200 km, Mw 7.9 historical max)",
+        "North Anatolian Fault (transform — migrating earthquake sequence westward since 1939)",
+        "Cascadia Megathrust (convergent — last major rupture ~1700 CE, Mw 9.0)",
+        "Dead Sea Transform (divergent pull-apart basin)"
+      ],
+      "dcterms:created": "2026-04-05",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1geo:Orogeny",
+      "@type": "owl:Class",
+      "rdfs:label": "Orogeny",
+      "rdfs:comment": "The process of mountain belt formation through tectonic convergence, crustal thickening, and lithospheric deformation. Orogeny is the largest-scale manifestation of convergent plate dynamics: when two continental plates collide (neither can subduct efficiently due to low density), crustal material is compressed, folded, thrust-faulted, and uplifted. Represents the culmination of the m2:Transformation process at the continental collision stage.",
+      "m2:characterizedBy": ["m2:Transformation", "m2:Pressure", "m2:Layer"],
+      "m1geo:tensorFormula": "S ⊗ D ⊗ F ⊗ A",
+      "m1geo:tensorFormulaASCII": "S (x) D (x) F (x) A",
+      "m1geo:stages": [
+        "Subduction phase — oceanic lithosphere consumed, arc volcanism",
+        "Collision phase — continents meet, crustal shortening and thickening",
+        "Post-collisional phase — gravitational collapse, extensional tectonics, uplift erosion"
+      ],
+      "m1geo:environmentalSignificance": "Orogenic weathering is a major CO₂ sink (silicate weathering of uplified rocks): the tectonic carbon cycle regulates Earth's long-term climate over millions of years (Walker-Hays-Kasting feedback)",
+      "m1geo:examples": [
+        "Himalayas / Tibetan Plateau — India-Asia collision, ongoing since ~50 Ma, highest elevations on Earth",
+        "Alps — Adriatic microplate collision with Europe, complex nappe structure",
+        "Appalachians — Paleozoic collision (Alleghenian orogeny), now eroded remnants",
+        "Andes — non-collisional orogeny driven by Nazca subduction (flat-slab mechanism)"
+      ],
+      "dcterms:created": "2026-04-05",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1geo:GeologicalAccretion",
+      "@type": ["owl:Class", "m2:KnowledgeFieldConceptCombo"],
+      "rdfs:label": "Geological Accretion",
+      "rdfs:comment": "Domain-specific instantiation of m1core:Accretion in the geological context: the continuous addition of new solid material (oceanic crust, sediment, or continental fragments) to the boundary of an existing lithospheric structure, driven by mantle convection and governed by thermodynamic Negentropy. The canonical geological example is mid-ocean ridge spreading. A KnowledgeFieldConceptCombo combining the Geological KnowledgeField with the Accretion GenericConceptCombo.",
+      "m2:knowledgeField": { "@id": "m1geo:Geological" },
+      "m2:genericConceptCombo": { "@id": "m1core:Accretion" },
+      "m1geo:comboFormula": "Geological ⊙ Accretion",
+      "m1geo:tensorFormula": "S ⊗ F ⊗ I ⊗ D",
+      "m1geo:tensorFormulaASCII": "S (x) F (x) I (x) D",
+      "m1geo:instances": [
+        "MidOceanRidge spreading — canonical geological Accretion",
+        "Accretionary prism / wedge — sediments scraped off subducting slab accreted to overriding plate",
+        "Continental growth — addition of juvenile crust (island arcs) to continental margins",
+        "Coral reef growth — biological Accretion with geological record"
+      ],
+      "dcterms:created": "2026-04-05",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    }
+
+  ]
+}

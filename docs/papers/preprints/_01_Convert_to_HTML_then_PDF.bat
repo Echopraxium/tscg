@@ -1,12 +1,12 @@
 @echo off
 chcp 65001 > nul
 echo ========================================
-echo  TSCG v4.0 - Conversion HTML + PDF
+echo  TSCG v5.0 - Conversion HTML + PDF
 echo ========================================
 echo.
 
 REM Genere un HTML standalone avec style preprint
-pandoc TSCG_Research_Paper_Draft_v4.md ^
+pandoc TSCG_Research_Paper_Draft_v5.md ^
   --standalone ^
   --toc ^
   --toc-depth=3 ^
@@ -14,7 +14,7 @@ pandoc TSCG_Research_Paper_Draft_v4.md ^
   --metadata title="TSCG: The Transdisciplinary System Construction Game" ^
   --css=preprint.css ^
   --highlight-style=kate ^
-  -o TSCG_Research_Paper_Draft_v4.html
+  -o TSCG_Research_Paper_Draft_v5.html
 
 if %ERRORLEVEL% NEQ 0 (
     echo ERREUR - Pandoc absent : https://pandoc.org/installing.html
@@ -23,7 +23,7 @@ if %ERRORLEVEL% NEQ 0 (
 )
 
 echo.
-echo OK - TSCG_Research_Paper_Draft_v4.html genere.
+echo OK - TSCG_Research_Paper_Draft_v5.html genere.
 echo.
 echo ========================================
 echo  ETAPES POUR GENERER LE PDF :
@@ -39,5 +39,5 @@ echo  8. Cliquez "Enregistrer"
 echo ========================================
 echo.
 
-start TSCG_Research_Paper_Draft_v4.html
+start TSCG_Research_Paper_Draft_v5.html
 pause

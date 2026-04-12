@@ -1,0 +1,2169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://cdnjs.cloudflare.com https://cdn.babylonjs.com;
+                 script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.babylonjs.com;
+                 style-src  'self' 'unsafe-inline';
+                 img-src    'self' data: blob:;
+                 connect-src http://127.0.0.1:* ws://127.0.0.1:*;">
+  <title>TSCG — Nuclear Reactor Typology</title>
+<style>
+/* ── Reset & Globals ─────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-deep:#1a1f2e;--bg-panel:#0d1117;--bg-card:#161b22;--bg-hover:#21262d;
+  --border:#30363d;--border-light:#3d444f;
+  --eagle:#f78166;--sphinx:#79c0ff;--accent:#56d364;--warn:#e3b341;
+  --muted:#8b949e;--text:#e6edf3;--text-dim:#b1bac4;
+  --col-A:#f78166;--col-S:#56d364;--col-F:#79c0ff;--col-I:#d2a8ff;--col-D:#e3b341;
+  --col-R:#79c0ff;--col-E:#56d364;--col-V:#f78166;--col-O:#d2a8ff;--col-Im:#e3b341;
+  --nuclear-thermal:#ff6b35;--nuclear-water:#4a90e2;--nuclear-graphite:#7cb342;
+  --nuclear-fast:#c084fc;--nuclear-safety:#fbbf24;--nuclear-core:#dc2626;
+  --header-h:44px;--btnbar-h:auto;--controls-h:52px;--sidebar-w:360px;
+  --radius:6px;--font:'Segoe UI',system-ui,sans-serif;--font-mono:'Cascadia Code','Fira Code','Consolas',monospace;
+}
+html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg-deep);color:var(--text);font-size:13px;line-height:1.5;user-select:none}
+
+#app{display:grid;
+  grid-template-columns:auto 1fr 5px var(--sidebar-w);
+  grid-template-areas:
+    "header header header header"
+    "canvas canvas split sidebar"
+    "pedago timeline timeline timeline"
+    "ctrl ctrl ctrl ctrl";
+  grid-template-rows:auto 1fr auto auto;height:100vh}
+
+/* Header */
+#header{grid-area:header;display:flex;align-items:center;padding:0 12px;gap:10px;
+  background:var(--bg-panel);border-bottom:1px solid var(--border)}
+#btn-home{display:inline-flex;align-items:center;background:none;border:none;cursor:pointer;
+  padding:4px 6px;margin-right:2px;opacity:.85;transition:opacity .15s;text-decoration:none}
+#btn-home:hover{opacity:1}
+.tscg-logo-link{text-decoration:none;color:inherit;position:relative;cursor:pointer;background:none;border:none;padding:0}
+.tscg-logo{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--eagle);text-transform:uppercase;flex-shrink:0}
+.sep{color:var(--border-light);font-size:16px}
+.poclet-name{font-size:14px;font-weight:600;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta-chips{display:flex;gap:5px;flex-shrink:0}
+.chip{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid transparent}
+.chip.domain{background:rgba(86,211,100,.12);border-color:rgba(86,211,100,.3);color:var(--accent)}
+.chip.version{background:rgba(121,192,255,.12);border-color:rgba(121,192,255,.3);color:var(--sphinx)}
+.chip.type{background:rgba(247,129,102,.12);border-color:rgba(247,129,102,.3);color:var(--eagle)}
+#sel-chip{display:none;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;
+  border:1px solid rgba(227,179,65,.5);background:rgba(227,179,65,.12);color:var(--warn)}
+
+/* Canvas area */
+#canvas-area{grid-area:canvas;display:flex;flex-direction:column;overflow:hidden;background:var(--bg-deep);min-width:200px;position:relative}
+
+/* Pedagogic Mode bar (bottom left) */
+#pedago-mode-bar{grid-area:pedago;background:var(--bg-panel);border-top:1px solid var(--border);
+  border-right:1px solid var(--border);padding:6px 15px;display:flex;align-items:center;
+  justify-content:flex-start;gap:8px;min-height:55px}
+.mode-btn{padding:6px 12px;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);color:var(--text-dim);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .2s}
+.mode-btn:hover{background:var(--bg-hover);border-color:var(--sphinx)}
+.mode-btn.active{background:linear-gradient(135deg,var(--eagle),var(--sphinx));
+  color:#ffffff;border-color:transparent;font-weight:600}
+
+/* Timeline bar (bottom of app, OUTSIDE canvas-area) */
+#timeline-bar{grid-area:timeline;background:var(--bg-panel);border-top:1px solid var(--border);
+  padding:4px 15px;display:flex;align-items:center;justify-content:space-between;min-height:35px}
+#timeline-bar h4{margin:0;flex-shrink:0;margin-right:20px;font-size:10px !important}
+
+/* Gauges panel (left side) - VERTICAL style like TrophicPyramid */
+#gauges-panel{position:absolute;left:8px;top:65%;transform:translateY(-50%);
+  display:flex;align-items:flex-end;gap:8px;z-index:50;pointer-events:none;height:70%}
+#gauges-panel h4{display:none}  /* Hide title for compact design */
+.gauge-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;pointer-events:auto}
+.gauge-label{font-size:9px;color:rgba(200,200,200,.7);text-align:center;white-space:nowrap;
+  writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--font-mono);letter-spacing:.05em}
+.gauge-val{font-size:10px;color:rgba(200,200,200,.95);text-align:center;
+  font-family:var(--font-mono);font-weight:600;white-space:nowrap}
+.gauge-track{flex:1;width:12px;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);border-radius:3px;
+  position:relative;overflow:hidden;min-height:80px}
+.gauge-fill{position:absolute;bottom:0;left:0;right:0;
+  border-radius:2px;transition:height 0.4s ease}
+
+/* Timeline panel styles (inside timeline-bar) */
+#timeline-panel{flex:1;display:flex;align-items:center;justify-content:flex-end}
+#timeline-panel h4{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--sphinx);margin-bottom:8px}
+.timeline-track{position:relative;height:35px;background:rgba(255,255,255,0.05);border-radius:4px;padding:4px;
+  width:100%;max-width:700px}
+.timeline-item{position:absolute;width:34px;height:34px;border-radius:50%;cursor:pointer;
+  transition:transform 0.2s;border:2px solid rgba(255,255,255,0.3)}
+.timeline-item:hover{transform:scale(1.2);border-color:rgba(255,255,255,0.8)}
+.timeline-item.selected{border-color:var(--warn);box-shadow:0 0 8px var(--warn)}
+
+/* HUD Legend for Shared Characteristics */
+/* Top control bar: Presets (2/3) + Legend (1/3) */
+#top-control-bar{display:flex;gap:8px;padding:8px;background:var(--bg-panel);border-bottom:1px solid var(--border);
+  height:160px;flex-shrink:0}
+
+/* Button grid: 2/3 width */
+#btn-grid{flex:2;display:grid;grid-template-rows:repeat(3,1fr);grid-template-columns:repeat(3,1fr);
+  gap:3px;padding:5px;background:var(--bg-deep);border:1px solid var(--border);border-radius:var(--radius);
+  overflow-y:auto}
+
+/* HUD Legend: 1/3 width */
+#hud-legend{flex:1;background:rgba(13,17,23,0.92);border:1px solid var(--border);
+  border-radius:var(--radius);padding:8px 12px;font-size:11px;color:var(--text-dim);
+  overflow-y:auto;backdrop-filter:blur(4px)}
+#hud-legend h4{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--sphinx);margin-bottom:6px;border-bottom:1px solid var(--border);padding-bottom:3px}
+#hud-legend .legend-row{display:flex;align-items:center;gap:8px;margin:3px 0}
+#hud-legend .legend-sphere{width:14px;height:14px;border-radius:50%;flex-shrink:0;border:1px solid rgba(255,255,255,.15)}
+#hud-legend .legend-sphere.bicolor{background:linear-gradient(90deg,var(--c1) 50%,var(--c2) 50%)}
+#hud-legend .legend-text{font-size:10.5px;line-height:1.3}
+.reactor-btn{display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--radius);cursor:pointer;font-size:14px;font-weight:700;
+  font-family:var(--font);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  padding:0 4px;transition:border-color .15s,box-shadow .15s,filter .15s,color .15s}
+.reactor-btn:hover{filter:brightness(1.2);border-color:rgba(255,255,255,.35)}
+.reactor-btn.active{border-color:#e3b341 !important;box-shadow:0 0 0 2px rgba(227,179,65,.5),0 0 8px rgba(227,179,65,.4);
+  filter:brightness(1.15);color:#ffffff !important}
+
+/* BabylonJS canvas wrapper + canvas */
+#canvas-wrap{flex:1;position:relative;overflow:hidden;min-height:0}
+#renderCanvas{position:absolute;top:0;left:0;width:100%;height:100%;outline:none;display:block}
+
+/* Splitter */
+#splitter{grid-area:split;background:var(--border);cursor:col-resize;transition:background .15s;position:relative;z-index:10}
+#splitter:hover,#splitter.dragging{background:var(--sphinx)}
+
+/* Sidebar */
+#sidebar{grid-area:sidebar;display:flex;flex-direction:column;background:var(--bg-panel);
+  border-left:1px solid var(--border);overflow:hidden;min-width:180px;max-width:640px}
+.tab-bar{display:flex;background:var(--bg-deep);border-bottom:1px solid var(--border);flex-shrink:0}
+.tab-btn{flex:1;padding:7px 4px;font-size:11.5px;font-weight:600;background:none;border:none;
+  border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;transition:color .15s,border-color .15s}
+.tab-btn:hover{color:var(--text-dim)}
+.tab-btn.active{color:var(--sphinx);border-bottom-color:var(--sphinx)}
+.tab-panel{display:none;flex-direction:column;flex:1;overflow-y:auto;padding:12px;gap:9px}
+.tab-panel.active{display:flex}
+
+/* Score rows */
+.score-group{display:flex;flex-direction:column;gap:5px}
+.score-group-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);padding-bottom:4px;border-bottom:1px solid var(--border);margin-bottom:2px}
+.score-group-label.eagle{color:var(--eagle)}.score-group-label.sphinx{color:var(--sphinx)}
+.score-row{display:flex;align-items:center;gap:8px;font-size:12px}
+.score-dim{width:20px;font-weight:700;font-family:var(--font-mono);font-size:11px;text-align:center;flex-shrink:0}
+.score-bar-bg{flex:1;height:6px;background:var(--bg-card);border-radius:3px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;transition:width .6s ease}
+.score-val{width:30px;text-align:right;font-family:var(--font-mono);font-size:11px;color:var(--text-dim);flex-shrink:0}
+.gap-badge{display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:8px 12px;font-size:12px}
+.gap-label{color:var(--muted)}.gap-val{font-family:var(--font-mono);font-weight:700;font-size:16px;color:var(--accent)}
+.gap-desc{color:var(--text-dim);font-size:11px}
+
+/* GenericConcepts */
+.gc-list{display:flex;flex-direction:column;gap:4px}
+.gc-item{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;background:var(--bg-card);
+  border-radius:var(--radius);border:1px solid var(--border)}
+.gc-item.primary{border-left:3px solid var(--eagle)}.gc-item.secondary{border-left:3px solid var(--border-light)}
+.gc-name{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--sphinx);flex-shrink:0;min-width:110px}
+.gc-formula{font-family:var(--font-mono);font-size:10px;color:var(--muted);flex-shrink:0}
+.gc-role{font-size:11px;color:var(--text-dim);line-height:1.4}
+
+/* Detail tab */
+.detail-panel{font-size:12px;line-height:1.75;color:var(--text-dim);padding:2px 0}
+.detail-panel h1{font-size:15px;font-weight:700;color:var(--text);margin:0 0 8px;padding-bottom:6px;border-bottom:2px solid var(--border)}
+.detail-panel h2{font-size:13px;font-weight:700;color:var(--eagle);margin:14px 0 4px;padding-bottom:3px;border-bottom:1px solid var(--border)}
+.detail-panel h3{font-size:12px;font-weight:700;color:var(--sphinx);margin:10px 0 3px}
+.detail-panel p{margin-bottom:6px}
+.detail-panel em{color:var(--warn);font-style:italic}
+.detail-panel strong{color:var(--text)}
+.detail-panel code{font-family:var(--font-mono);font-size:10.5px;background:var(--bg-card);padding:1px 4px;border-radius:3px;color:var(--sphinx)}
+.detail-panel ul{padding-left:18px;margin:4px 0}
+.detail-panel li{margin-bottom:3px}
+.sec-anchor{display:block;padding-top:4px}
+
+/* Controls */
+#controls{grid-area:ctrl;display:flex;align-items:center;gap:8px;padding:4px 14px;
+  background:var(--bg-panel);border-top:1px solid var(--border);flex-wrap:wrap}
+.ctrl-btn{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:var(--radius);color:var(--text-dim);
+  font-size:12px;font-family:var(--font);cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;flex-shrink:0}
+.ctrl-btn:hover{background:var(--bg-hover);color:var(--text);border-color:var(--border-light)}
+.ctrl-btn.active{background:rgba(86,211,100,.1);border-color:var(--accent);color:var(--accent)}
+.ctrl-sep{width:1px;height:26px;background:var(--border);flex-shrink:0}
+.ctrl-label{font-size:11px;color:var(--muted);white-space:nowrap;flex-shrink:0}
+.status-indicator{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);flex-shrink:0}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.status-dot.live{background:var(--accent)}
+#sel-info{font-size:11px;color:var(--text-dim);flex:1;text-align:center;font-family:var(--font-mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ═══ HEADER ═══════════════════════════════════════════════════════════ -->
+<div id="header">
+  <a id="btn-home" href="https://echopraxium.github.io/tscg/" title="TSCG Home">
+    <svg width="16" height="16" fill="#ffffff" style="opacity:.75">
+      <path d="M8 1.5l-7 6v7.5h5v-5h4v5h5v-7.5l-7-6z"/>
+    </svg>
+  </a>
+  <button class="tscg-logo-link" onclick="window.open('https://github.com/Echopraxium/tscg','_blank')">
+    <span class="tscg-logo">TSCG</span>
+  </button>
+  <span class="sep">│</span>
+  <div class="poclet-name">Nuclear Reactor Typology</div>
+  <div class="meta-chips">
+    <span class="chip domain">Nuclear Energy</span>
+    <span class="chip type">Enneagram N=9</span>
+    <span class="chip version">M0 v1.0</span>
+  </div>
+  <span id="sel-chip"></span>
+</div>
+
+<!-- ═══ CANVAS AREA ═══════════════════════════════════════════════════════ -->
+<div id="canvas-area">
+  <!-- Top control bar: Presets (2/3) + Legend (1/3) -->
+  <div id="top-control-bar">
+    <!-- Button grid: 3×3 for 9 reactors (2/3 width) -->
+    <div id="btn-grid">
+      <button class="reactor-btn" data-id="PWR" style="background:linear-gradient(135deg,#4a90e2,#357abd)">PWR</button>
+      <button class="reactor-btn" data-id="BWR" style="background:linear-gradient(135deg,#cd853f,#a0692f)">BWR</button>
+      <button class="reactor-btn" data-id="FNR" style="background:linear-gradient(135deg,#c084fc,#a855f7)">FNR</button>
+      <button class="reactor-btn" data-id="PHWR" style="background:linear-gradient(135deg,#3b82f6,#2563eb)">PHWR</button>
+      <button class="reactor-btn" data-id="RBMK" style="background:linear-gradient(135deg,#7cb342,#558b2f)">RBMK</button>
+      <button class="reactor-btn" data-id="HTR" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)">HTR</button>
+      <button class="reactor-btn" data-id="SMR" style="background:linear-gradient(135deg,#60a5fa,#3b82f6)">SMR</button>
+      <button class="reactor-btn" data-id="MSR" style="background:linear-gradient(135deg,#ff6b35,#dc2626)">MSR</button>
+      <button class="reactor-btn" data-id="AGR" style="background:linear-gradient(135deg,#8bc34a,#689f38)">AGR</button>
+    </div>
+
+    <!-- HUD Legend for Shared Characteristics (1/3 width) -->
+    <div id="hud-legend">
+      <h4>🎨 Shared Characteristics (Bicolor Spheres)</h4>
+      <div class="legend-row">
+        <div class="legend-sphere bicolor" style="--c1:#4a90e2;--c2:#5dade2"></div>
+        <div class="legend-text"><strong>Adjacent pairs</strong> — Direct technical heritage</div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-sphere bicolor" style="--c1:#c084fc;--c2:#3b82f6"></div>
+        <div class="legend-text"><strong>Diagonal pairs</strong> — Cross-cutting concepts</div>
+      </div>
+      <div class="legend-text" style="margin-top:4px;font-size:10px;font-style:italic;color:var(--muted)">
+        Click bicolor spheres to learn more
+      </div>
+    </div>
+  </div>
+
+  <!-- Gauges panel (left side) - VERTICAL -->
+  <div id="gauges-panel">
+    <div class="gauge-wrap">
+      <div class="gauge-label">Efficiency</div>
+      <div class="gauge-track"><div class="gauge-fill" id="gauge-efficiency" style="background:linear-gradient(180deg,#56d364,#3fb950);height:0"></div></div>
+      <div class="gauge-val" id="gauge-efficiency-val">-</div>
+    </div>
+    <div class="gauge-wrap">
+      <div class="gauge-label">Build Speed</div>
+      <div class="gauge-track"><div class="gauge-fill" id="gauge-construction" style="background:linear-gradient(180deg,#79c0ff,#58a6ff);height:0"></div></div>
+      <div class="gauge-val" id="gauge-construction-val">-</div>
+    </div>
+    <div class="gauge-wrap">
+      <div class="gauge-label">Lifespan</div>
+      <div class="gauge-track"><div class="gauge-fill" id="gauge-lifespan" style="background:linear-gradient(180deg,#fbbf24,#f59e0b);height:0"></div></div>
+      <div class="gauge-val" id="gauge-lifespan-val">-</div>
+    </div>
+    <div class="gauge-wrap">
+      <div class="gauge-label">Safety</div>
+      <div class="gauge-track"><div class="gauge-fill" id="gauge-risk" style="background:linear-gradient(180deg,#56d364,#3fb950);height:0"></div></div>
+      <div class="gauge-val" id="gauge-risk-val">-</div>
+    </div>
+    <div class="gauge-wrap">
+      <div class="gauge-label">Low Cost</div>
+      <div class="gauge-track"><div class="gauge-fill" id="gauge-maintenance" style="background:linear-gradient(180deg,#c084fc,#a855f7);height:0"></div></div>
+      <div class="gauge-val" id="gauge-maintenance-val">-</div>
+    </div>
+  </div>
+
+  <!-- BabylonJS canvas -->
+  <div id="canvas-wrap">
+    <canvas id="renderCanvas"></canvas>
+  </div>
+</div>
+
+<!-- ═══ PEDAGOGIC MODE BAR ════════════════════════════════════════════════ -->
+<div id="pedago-mode-bar">
+  <span style="font-size:11px;font-weight:600;color:var(--text-dim);margin-right:8px">Pedagogic Mode:</span>
+  <button class="mode-btn active" id="btn-mode-beginner" onclick="setPedagogicMode('beginner')">👶 Beginner</button>
+  <button class="mode-btn" id="btn-mode-intermediate" onclick="setPedagogicMode('intermediate')">🎓 Intermediate</button>
+  <button class="mode-btn" id="btn-mode-advanced" onclick="setPedagogicMode('advanced')">🔬 Advanced</button>
+</div>
+
+<!-- ═══ TIMELINE BAR ══════════════════════════════════════════════════════ -->
+<div id="timeline-bar">
+  <h4 style="text-align:left;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sphinx);margin:0;line-height:1.2">DEVELOPMENT<br>TIMELINE</h4>
+  <div id="timeline-panel">
+    <div class="timeline-track" id="timeline-track"></div>
+  </div>
+</div>
+
+<!-- ═══ SPLITTER ══════════════════════════════════════════════════════════ -->
+<div id="splitter"></div>
+
+<!-- ═══ SIDEBAR ═══════════════════════════════════════════════════════════ -->
+<div id="sidebar">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="activateTab(0)">Description</button>
+    <button class="tab-btn" onclick="activateTab(1)">Scores</button>
+    <button class="tab-btn" onclick="activateTab(2)">M2 Concepts</button>
+    <button class="tab-btn" onclick="activateTab(3)">M1 Core</button>
+  </div>
+
+  <!-- Tab 0: Scores (Button 1 "Scores" → Content panel 0) -->
+  <div class="tab-panel">
+    <div class="score-group">
+      <div class="score-group-label eagle">ASFID — Territory (Eagle Eye)</div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-A)">A</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-A)"></div></div>
+        <div class="score-val">0.95</div>
+      </div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-S)">S</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-S)"></div></div>
+        <div class="score-val">0.90</div>
+      </div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-F)">F</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-F)"></div></div>
+        <div class="score-val">0.90</div>
+      </div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-I)">I</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-I)"></div></div>
+        <div class="score-val">0.85</div>
+      </div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-D)">D</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-D)"></div></div>
+        <div class="score-val">0.90</div>
+      </div>
+    </div>
+
+    <div class="score-group">
+      <div class="score-group-label sphinx">REVOI — Map (Sphinx Eye)</div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-R)">R</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-R)"></div></div>
+        <div class="score-val">0.95</div>
+      </div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-E)">E</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-E)"></div></div>
+        <div class="score-val">0.85</div>
+      </div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-V)">V</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-V)"></div></div>
+        <div class="score-val">0.90</div>
+      </div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-O)">O</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-O)"></div></div>
+        <div class="score-val">0.90</div>
+      </div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-Im)">I</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-Im)"></div></div>
+        <div class="score-val">0.85</div>
+      </div>
+    </div>
+
+    <div class="gap-badge">
+      <div class="gap-label">Epistemic Gap</div>
+      <div class="gap-val">0.01</div>
+    </div>
+    <div class="gap-desc">Exceptional Territory-Map alignment: empirical reactor physics (Territory) perfectly matched by safety models and standards (Map).</div>
+  </div>
+
+  <!-- Tab 1: M2 Concepts (Button 2 "M2 Concepts" → Content panel 1) -->
+  <div class="tab-panel">
+    <div class="gc-list">
+      <div class="gc-item primary">
+        <div class="gc-name">Processor</div>
+        <div class="gc-formula">A⊗S⊗F⊗I⊗D</div>
+        <div class="gc-role">Dual bicephalous architecture — Territory: fission dynamics; Map: safety standards</div>
+      </div>
+      <div class="gc-item primary">
+        <div class="gc-name">Polarity</div>
+        <div class="gc-formula">N=9</div>
+        <div class="gc-role">Nine reactor types forming enneagram-like multipolar structure</div>
+      </div>
+      <div class="gc-item primary">
+        <div class="gc-name">Trade-off</div>
+        <div class="gc-formula">A⊗I⊗F</div>
+        <div class="gc-role">Safety ↔ Performance ↔ Cost ↔ Sustainability embedded in design choices</div>
+      </div>
+      <div class="gc-item secondary">
+        <div class="gc-name">Homeostasis</div>
+        <div class="gc-formula">∫ feedback</div>
+        <div class="gc-role">Criticality k=1 maintenance via control rods and feedback mechanisms</div>
+      </div>
+      <div class="gc-item secondary">
+        <div class="gc-name">Regulation</div>
+        <div class="gc-formula">F⊗I</div>
+        <div class="gc-role">Control rods, soluble boron, recirculation flow adjustments</div>
+      </div>
+      <div class="gc-item secondary">
+        <div class="gc-name">Cascade</div>
+        <div class="gc-formula">F⊗D</div>
+        <div class="gc-role">Neutron multiplication chain reaction (each fission releases 2-3 neutrons)</div>
+      </div>
+      <div class="gc-item secondary">
+        <div class="gc-name">Threshold</div>
+        <div class="gc-formula">A⊗S</div>
+        <div class="gc-role">Critical mass / geometry required for sustained chain reaction</div>
+      </div>
+      <div class="gc-item secondary">
+        <div class="gc-name">Conversion</div>
+        <div class="gc-formula">A⊗F⊗D</div>
+        <div class="gc-role">Nuclear energy → Thermal → Electrical (multi-stage energy transformation)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 2: M1 Core (Button 3 "M1 Core" → Content panel 2) -->
+  <div class="tab-panel">
+    <div class="gc-list">
+      <div class="gc-item primary">
+        <div class="gc-name">MultipolarNetwork</div>
+        <div class="gc-role">Nine reactor types with transformation pathways and philosophical relationships</div>
+      </div>
+      <div class="gc-item primary">
+        <div class="gc-name">CriticalityRegime</div>
+        <div class="gc-role">Three states: k&lt;1 (subcritical), k=1 (critical), k&gt;1 (supercritical)</div>
+      </div>
+      <div class="gc-item primary">
+        <div class="gc-name">SelfSustainingReaction</div>
+        <div class="gc-role">Fission chain reaction where each event triggers the next (k=1)</div>
+      </div>
+      <div class="gc-item secondary">
+        <div class="gc-name">ModeratorMechanism</div>
+        <div class="gc-role">Neutron thermalization via water, heavy water, graphite, or none (fast spectrum)</div>
+      </div>
+      <div class="gc-item secondary">
+        <div class="gc-name">DualCircuitArchitecture</div>
+        <div class="gc-role">Primary (radioactive) and secondary (clean) coolant loops in most designs</div>
+      </div>
+      <div class="gc-item secondary">
+        <div class="gc-name">PassiveSafety</div>
+        <div class="gc-role">Inherent safety features (HTR, SMR, MSR) vs active systems (PWR, BWR)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 3: Description (Button 0 "Description" → Content panel 3) -->
+  <div class="tab-panel active">
+    <div class="detail-panel">
+      <h1>Nuclear Reactor Typology</h1>
+      <p>Nine-pole classification demonstrating <strong>enneagram-like multipolar structure</strong>. Each reactor type represents a distinct philosophical approach to nuclear energy generation, trading off between safety, performance, cost, and sustainability.</p>
+
+      <h2 id="sec-overview">Overview</h2>
+      <p>This poclet validates the <em>Processor GenericConcept</em> in a complex industrial engineering domain, demonstrating dual bicephalous architecture where Territory captures empirical fission dynamics and Map represents safety models and regulatory standards.</p>
+      <p><strong>Key Features:</strong></p>
+      <ul>
+        <li>N=9 Polarity (second validation after Yggdrasil)</li>
+        <li>Complete ASFID coverage (mean: 0.90)</li>
+        <li>Epistemic gap: 0.01 (exceptional alignment)</li>
+        <li>6 M1 Core Concepts discovered</li>
+        <li>M1_EnergyGenerators extension created</li>
+      </ul>
+
+      <h2 id="sec-PWR">PWR — Pressurized Water Reactor</h2>
+      <p><strong>Philosophy:</strong> Proven, safe, standardized design. Most common reactor type worldwide (70% of global fleet).</p>
+      <p><strong>Characteristics:</strong></p>
+      <ul>
+        <li>Moderator: Light Water (H₂O)</li>
+        <li>Coolant: Pressurized Light Water (155 bar, 325°C)</li>
+        <li>Spectrum: Thermal neutrons</li>
+        <li>Fuel: 3-5% enriched U-235</li>
+        <li>Typical Power: 1000-1650 MWe</li>
+        <li>Efficiency: 33-37%</li>
+      </ul>
+      <p><strong>Advantages:</strong> Compact core, high power density, proven reliability. <strong>Disadvantages:</strong> Requires enriched fuel, high pressure vessel, cannot refuel online.</p>
+
+      <h2 id="sec-BWR">BWR — Boiling Water Reactor</h2>
+      <p><strong>Philosophy:</strong> Simplicity through fewer components. Water boils directly in reactor core.</p>
+      <p><strong>Characteristics:</strong></p>
+      <ul>
+        <li>Moderator: Light Water</li>
+        <li>Coolant: Boiling Light Water</li>
+        <li>Spectrum: Thermal neutrons</li>
+        <li>Fuel: 2.5-3.5% enriched U-235</li>
+        <li>Typical Power: 800-1400 MWe</li>
+        <li>Efficiency: 33-34%</li>
+      </ul>
+      <p><strong>Advantages:</strong> Simpler design, no steam generators. <strong>Disadvantages:</strong> Radioactivity throughout steam system, lower thermal efficiency.</p>
+
+      <h2 id="sec-FNR">FNR — Fast Neutron Reactor</h2>
+      <p><strong>Philosophy:</strong> Breeding and sustainability. Creates more fuel than it consumes.</p>
+      <p><strong>Characteristics:</strong></p>
+      <ul>
+        <li>Moderator: None (fast neutrons)</li>
+        <li>Coolant: Liquid sodium</li>
+        <li>Spectrum: Fast neutrons (no moderation)</li>
+        <li>Fuel: Plutonium + depleted uranium</li>
+        <li>Typical Power: 250-1500 MWe</li>
+        <li>Breeding Ratio: 1.2-1.4</li>
+      </ul>
+      <p><strong>Advantages:</strong> Plutonium breeding, 60× better uranium utilization. <strong>Disadvantages:</strong> Sodium-water reaction risk, complex fuel handling, proliferation concerns.</p>
+
+      <h2 id="sec-PHWR">PHWR — Pressurized Heavy Water Reactor</h2>
+      <p><strong>Philosophy:</strong> Energy independence through natural uranium fuel (CANDU design).</p>
+      <p><strong>Characteristics:</strong></p>
+      <ul>
+        <li>Moderator: Heavy Water (D₂O)</li>
+        <li>Coolant: Pressurized Heavy Water</li>
+        <li>Spectrum: Thermal neutrons</li>
+        <li>Fuel: Natural uranium (no enrichment)</li>
+        <li>Typical Power: 600-900 MWe</li>
+        <li>Efficiency: 30-32%</li>
+      </ul>
+      <p><strong>Advantages:</strong> No enrichment needed, online refueling, fuel flexibility. <strong>Disadvantages:</strong> Large heavy water inventory, tritium production, lower efficiency.</p>
+
+      <h2 id="sec-RBMK">RBMK — Soviet Graphite-Moderated Reactor</h2>
+      <p><strong>Philosophy:</strong> Historical Soviet design. Chernobyl legacy teaches passive safety importance.</p>
+      <p><strong>Characteristics:</strong></p>
+      <ul>
+        <li>Moderator: Graphite blocks</li>
+        <li>Coolant: Boiling Light Water</li>
+        <li>Spectrum: Thermal neutrons</li>
+        <li>Fuel: 2% enriched U-235</li>
+        <li>Typical Power: 1000 MWe</li>
+        <li>Status: Obsolete (being decommissioned)</li>
+      </ul>
+      <p><strong>Advantages:</strong> Online refueling, simple fuel design. <strong>Disadvantages:</strong> Positive void coefficient, no containment, Chernobyl accident legacy. All units now shutdown or decommissioning.</p>
+
+      <h2 id="sec-HTR">HTR — High Temperature Reactor</h2>
+      <p><strong>Philosophy:</strong> Inherent safety through physics, not engineered systems. Passive meltdown protection.</p>
+      <p><strong>Characteristics:</strong></p>
+      <ul>
+        <li>Moderator: Graphite</li>
+        <li>Coolant: Helium gas (70-90 bar)</li>
+        <li>Spectrum: Thermal neutrons</li>
+        <li>Fuel: TRISO particles in graphite pebbles/prisms</li>
+        <li>Temperature: 750-950°C outlet</li>
+        <li>Efficiency: 40-50% (high-temp Brayton cycle)</li>
+      </ul>
+      <p><strong>Advantages:</strong> Meltdown impossible, high efficiency, hydrogen production capable. <strong>Disadvantages:</strong> Limited commercial deployment, graphite dust, high-temp materials challenge.</p>
+
+      <h2 id="sec-SMR">SMR — Small Modular Reactor</h2>
+      <p><strong>Philosophy:</strong> Modularity and flexibility. Factory-built, transportable units.</p>
+      <p><strong>Characteristics:</strong></p>
+      <ul>
+        <li>Technology: Various (PWR, BWR, liquid metal, molten salt variants)</li>
+        <li>Typical Power: 10-300 MWe per module</li>
+        <li>Size: Factory-built, road/rail transportable</li>
+        <li>Safety: Enhanced passive safety features</li>
+        <li>Deployment: Modular scaling (1-12 units per site)</li>
+      </ul>
+      <p><strong>Advantages:</strong> Lower capital cost, flexible siting, passive safety, faster construction. <strong>Disadvantages:</strong> Higher cost per MWe, regulatory approval pending, limited operating experience.</p>
+
+      <h2 id="sec-MSR">MSR — Molten Salt Reactor</h2>
+      <p><strong>Philosophy:</strong> Liquid fuel revolution. Online reprocessing, waste transmutation.</p>
+      <p><strong>Characteristics:</strong></p>
+      <ul>
+        <li>Fuel: Dissolved in molten fluoride/chloride salts (liquid)</li>
+        <li>Coolant: Same molten salt (fuel = coolant)</li>
+        <li>Spectrum: Thermal or Fast (depending on design)</li>
+        <li>Temperature: 600-700°C</li>
+        <li>Unique: Continuous fuel processing, waste burning capability</li>
+      </ul>
+      <p><strong>Advantages:</strong> Atmospheric pressure, online fission product removal, thorium cycle possible, excellent safety. <strong>Disadvantages:</strong> Corrosive salts, tritium containment, unproven at commercial scale.</p>
+
+      <h2 id="sec-AGR">AGR — Advanced Gas-Cooled Reactor</h2></h2>
+      <p><strong>Philosophy:</strong> High efficiency through CO₂ cooling. Proven UK design.</p>
+      <p><strong>Characteristics:</strong></p>
+      <ul>
+        <li>Moderator: Graphite</li>
+        <li>Coolant: Carbon dioxide gas (40 bar, 650°C)</li>
+        <li>Spectrum: Thermal neutrons</li>
+        <li>Fuel: 2.5-3.5% enriched uranium oxide</li>
+        <li>Typical Power: 600-680 MWe</li>
+        <li>Efficiency: 41-42% (highest among Gen II)</li>
+      </ul>
+      <p><strong>Advantages:</strong> Very high efficiency, online refueling, proven reliability (40+ years). <strong>Disadvantages:</strong> Large prestressed concrete vessel, UK-only technology, all units decommissioning by 2030.</p>
+
+      <h2>Transformation Pathways</h2>
+      <p>The enneagram structure reveals philosophical relationships between reactor types, visualized by colored connection arcs:</p>
+      
+      <h3>🟢 Evolution (Green)</h3>
+      <p><strong>PWR → SMR:</strong> Miniaturization and passive safety evolution. Small Modular Reactors inherit PWR principles but add modularity and enhanced passive safety features.</p>
+      
+      <h3>🟡 Trade-off (Yellow)</h3>
+      <p><strong>PWR ↔ HTR:</strong> Safety philosophy trade-off between active engineered systems (PWR) and inherent physics-based safety (HTR).</p>
+      <p><strong>FNR ↔ PHWR:</strong> Fuel strategy trade-off between plutonium breeding (FNR) and natural uranium independence (PHWR/CANDU).</p>
+      
+      <h3>🟣 Shared Vision (Purple)</h3>
+      <p><strong>FNR ↔ MSR:</strong> Both future-oriented advanced technologies sharing the vision of long-term sustainability — FNR through breeding, MSR through waste transmutation.</p>
+      
+      <h3>🔵 Historical Lineage (Cyan)</h3>
+      <p><strong>RBMK → HTR:</strong> From graphite-moderated danger (Chernobyl) to graphite-based inherent safety. HTR learned from RBMK's flaws to create passively safe design.</p>
+      
+      <h3>🟠 Safety Lesson (Orange)</h3>
+      <p><strong>RBMK → PWR:</strong> Chernobyl accident reinforced PWR safety standards worldwide, validating containment building and negative feedback coefficient importance.</p>
+      
+      <h3>🔷 Simplification (Blue)</h3>
+      <p><strong>BWR → SMR:</strong> Natural circulation principles from BWR inform SMR passive cooling designs.</p>
+      <p><strong>AGR → HTR:</strong> Decades of graphite + gas cooling operational experience (AGR) inform Generation IV HTR development.</p>
+
+      <h2>Shared Characteristics (Guild System)</h2>
+      <p>Inspired by MTG's color combinations, <strong>small bicolor spheres</strong> between reactor poles represent shared technical characteristics. Click on them to explore common traits!</p>
+      
+      <h3>🔵 Adjacent Pairs (Technical Heritage)</h3>
+      <ul>
+        <li><strong>Light Water:</strong> PWR + BWR share H₂O moderation</li>
+        <li><strong>High Power:</strong> BWR + FNR both achieve high power density</li>
+        <li><strong>Graphite Core:</strong> RBMK + HTR both use graphite moderation</li>
+        <li><strong>Passive Safety:</strong> HTR + SMR emphasize inherent safety</li>
+        <li><strong>Advanced Gen:</strong> SMR + MSR represent Gen III+/IV future</li>
+        <li><strong>High Temp:</strong> MSR + AGR operate at elevated temperatures</li>
+        <li><strong>Gas Cooled:</strong> AGR + PWR... (actually AGR uses CO₂, different from PWR)</li>
+      </ul>
+      
+      <h3>⚡ Diagonal Pairs (Cross-Cutting Concepts)</h3>
+      <ul>
+        <li><strong>Proven Power:</strong> PWR + FNR combine reliability with performance</li>
+        <li><strong>Online Refuel:</strong> BWR + PHWR allow refueling during operation</li>
+        <li><strong>Fast Spectrum:</strong> FNR + RBMK operate without significant moderation</li>
+        <li><strong>Future Vision:</strong> HTR + MSR embody next-generation sustainability</li>
+        <li><strong>Thermal Efficiency:</strong> MSR + PWR optimize energy conversion</li>
+      </ul>
+
+      <h2 id="sec-PWR">PWR — Le Précurseur rigoureux</h2>
+  </div>
+</div>
+
+<!-- ═══ CONTROLS ══════════════════════════════════════════════════════════ -->
+<div id="controls">
+  <button class="ctrl-btn" id="btn-autorot" onclick="toggleAutoRotate()">⟲ Auto-Rotate</button>
+  <button class="ctrl-btn" onclick="resetView(); clearAllSelections()">⊕ Reset View</button>
+  <button class="ctrl-btn active" onclick="toggleConnections()">⚡ Connections</button>
+  <div class="ctrl-sep"></div>
+  <span class="ctrl-label">Selection:</span>
+  <span id="sel-info">Click a reactor sphere or button to explore</span>
+  <div class="status-indicator">
+    <span class="status-dot live"></span>
+    <span id="statusText">3D Live</span>
+  </div>
+</div>
+
+<!-- Tooltip pour meshes 3D -->
+<div id="mesh-tooltip" style="position:fixed;background:rgba(0,0,0,0.9);color:#fff;padding:6px 10px;border-radius:4px;
+  font-size:12px;pointer-events:none;z-index:9999;display:none;border:1px solid rgba(255,255,255,0.2);
+  box-shadow:0 2px 8px rgba(0,0,0,0.5);max-width:250px;line-height:1.4"></div>
+
+</div>
+
+<!-- BabylonJS from CDN -->
+<script src="https://cdn.babylonjs.com/babylon.js"></script>
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════════════════════════
+// DATA MODEL — 9 Nuclear Reactor Types
+// ═══════════════════════════════════════════════════════════════════
+const REACTORS = [
+  {id:'PWR',  label:'PWR',  name:'Pressurized Water Reactor',    hex:'#4a90e2', pole:1, philosophy:'The Rigorous Pioneer',
+   gauges:{efficiency:85, constructionSpeed:65, lifespan:75, safety:75, maintenanceEconomy:70}},
+  {id:'BWR',  label:'BWR',  name:'Boiling Water Reactor',        hex:'#cd853f', pole:2, philosophy:'The Efficient Economizer',
+   gauges:{efficiency:82, constructionSpeed:70, lifespan:70, safety:70, maintenanceEconomy:75}},
+  {id:'FNR',  label:'FNR',  name:'Fast Neutron Reactor',         hex:'#c084fc', pole:3, philosophy:'The High-Performance Innovator',
+   gauges:{efficiency:95, constructionSpeed:35, lifespan:65, safety:50, maintenanceEconomy:40}},
+  {id:'PHWR', label:'PHWR', name:'Pressurized Heavy Water (CANDU)', hex:'#3b82f6', pole:4, philosophy:'The Robust Heavy-Duty',
+   gauges:{efficiency:80, constructionSpeed:50, lifespan:80, safety:80, maintenanceEconomy:60}},
+  {id:'RBMK', label:'RBMK', name:'Soviet Graphite-Moderated',    hex:'#7cb342', pole:5, philosophy:'The Ancestral Graphite',
+   gauges:{efficiency:70, constructionSpeed:75, lifespan:60, safety:35, maintenanceEconomy:65}},
+  {id:'HTR',  label:'HTR',  name:'High Temperature Reactor',     hex:'#fbbf24', pole:6, philosophy:'The Resilient Safe',
+   gauges:{efficiency:90, constructionSpeed:55, lifespan:85, safety:95, maintenanceEconomy:55}},
+  {id:'SMR',  label:'SMR',  name:'Small Modular Reactor',        hex:'#60a5fa', pole:7, philosophy:'The Compact Mobile',
+   gauges:{efficiency:88, constructionSpeed:85, lifespan:70, safety:90, maintenanceEconomy:80}},
+  {id:'MSR',  label:'MSR',  name:'Molten Salt Reactor',          hex:'#ff6b35', pole:8, philosophy:'The Radical Visionary',
+   gauges:{efficiency:92, constructionSpeed:40, lifespan:75, safety:85, maintenanceEconomy:50}},
+  {id:'AGR',  label:'AGR',  name:'Advanced Gas-cooled Reactor',  hex:'#8bc34a', pole:9, philosophy:'The Proven Reliable',
+   gauges:{efficiency:78, constructionSpeed:60, lifespan:90, safety:82, maintenanceEconomy:62}}
+];
+
+// Transformation paths (enneagram connections)
+const CONNECTIONS = [
+  {from:0, to:6, type:'evolution'},    // PWR → SMR
+  {from:0, to:5, type:'tradeoff'},     // PWR ↔ HTR
+  {from:2, to:7, type:'vision'},       // FNR ↔ MSR
+  {from:2, to:3, type:'tradeoff'},     // FNR ↔ PHWR
+  {from:4, to:5, type:'lineage'},      // RBMK → HTR
+  {from:4, to:0, type:'lesson'},       // RBMK → PWR (Chernobyl lesson)
+  {from:1, to:6, type:'simplification'},// BWR → SMR
+  {from:8, to:5, type:'evolution'}     // AGR → HTR
+];
+
+// Build reactor map for quick lookup
+const REACTOR_MAP = {};
+REACTORS.forEach(r => { REACTOR_MAP[r.id] = r; });
+
+// Shared characteristics between reactor types (MTG guild-style)
+const SHARED_CHARACTERISTICS = [
+  // Adjacent pairs (like MTG adjacent guilds)
+  {i:0, j:1, name:'Light Water', trait:'Modération eau légère', hex1:'#4a90e2', hex2:'#cd853f'},
+  {i:1, j:2, name:'High Power', trait:'Haute puissance thermique', hex1:'#5dade2', hex2:'#c084fc'},
+  {i:2, j:3, name:'Fuel Breeding', trait:'Régénération combustible', hex1:'#c084fc', hex2:'#3b82f6'},
+  {i:3, j:4, name:'Natural Uranium', trait:'Uranium naturel capable', hex1:'#3b82f6', hex2:'#7cb342'},
+  {i:4, j:5, name:'Graphite Core', trait:'Modération graphite', hex1:'#7cb342', hex2:'#fbbf24'},
+  {i:5, j:6, name:'Passive Safety', trait:'Sûreté passive avancée', hex1:'#fbbf24', hex2:'#60a5fa'},
+  {i:6, j:7, name:'Advanced Gen', trait:'Génération avancée (Gen III+/IV)', hex1:'#60a5fa', hex2:'#ff6b35'},
+  {i:7, j:8, name:'High Temp', trait:'Haute température sortie', hex1:'#ff6b35', hex2:'#8bc34a'},
+  {i:8, j:0, name:'Gas Cooled', trait:'Refroidissement gaz', hex1:'#8bc34a', hex2:'#4a90e2'},
+  
+  // Diagonal pairs (like MTG enemy guilds)
+  {i:0, j:2, name:'Proven Power', trait:'Technologie éprouvée haute puissance', hex1:'#4a90e2', hex2:'#c084fc'},
+  {i:1, j:3, name:'Online Refuel', trait:'Rechargement en ligne', hex1:'#5dade2', hex2:'#3b82f6'},
+  {i:2, j:4, name:'Fast Spectrum', trait:'Spectre neutronique rapide', hex1:'#c084fc', hex2:'#7cb342'},
+  {i:3, j:5, name:'Heavy Element', trait:'Éléments lourds (D₂O, Graphite)', hex1:'#3b82f6', hex2:'#fbbf24'},
+  {i:4, j:6, name:'Graphite Legacy', trait:'Héritage graphite moderne', hex1:'#7cb342', hex2:'#60a5fa'},
+  {i:5, j:7, name:'Future Vision', trait:'Vision énergétique future', hex1:'#fbbf24', hex2:'#ff6b35'},
+  {i:6, j:8, name:'Modularity', trait:'Conception modulaire', hex1:'#60a5fa', hex2:'#8bc34a'},
+  {i:7, j:0, name:'Thermal Eff', trait:'Efficacité thermique optimisée', hex1:'#ff6b35', hex2:'#4a90e2'},
+  {i:8, j:1, name:'Proven UK/JP', trait:'Technologies éprouvées UK/JP', hex1:'#8bc34a', hex2:'#cd853f'}
+];
+
+// ═══════════════════════════════════════════════════════════════════
+// BABYLON.JS SCENE SETUP
+// ═══════════════════════════════════════════════════════════════════
+const canvas = document.getElementById('renderCanvas');
+const engine = new BABYLON.Engine(canvas, true, {preserveDrawingBuffer:true, stencil:true});
+
+let scene, cam;
+let meshRegistry = {}; // {id: {sphere, rings, label}}
+let connectionMeshes = [];
+let currentSel = null;
+let selectedConnection = null;  // Arc de connexion actuellement sélectionné
+let selectedBicolorSphere = null;  // Sphère bicolore actuellement sélectionnée
+let autoRotate = false;  // Pas de rotation par défaut
+let showConnections = true;  // Afficher les connexions par défaut
+let pedagogicMode = 'beginner';  // Mode pédagogique par défaut
+let dragging = false;
+let diagonalArcMeshes = [];  // Arcs diagonaux (en dessous, Advanced mode)
+let adjacentArcMeshes = [];  // Arcs adjacents pointillés (au-dessus)
+let enneagramRoot = null;    // Nœud parent pour rotation ennéagramme
+
+// Enneagram layout constants
+const N = 9;
+const R_CIRCLE = 3.5;  // radius of reactor circle
+const Y_LEVEL = 1.725;   // y position - remonté +15% pour meilleure vue
+const OFFSET_X = 1.19;  // Centrage parfait
+const S_REACTOR = 0.35; // reactor sphere radius
+const S_RING = 0.42;   // selection ring radius
+
+// Calculate angles for 9 points (start at top, go clockwise)
+const ANGLES = [];
+for (let i=0; i<N; i++) {
+  ANGLES.push(-Math.PI/2 + (i * 2*Math.PI / N));
+}
+
+// Position helper (avec offset - positions absolues)
+function reactorPos(idx) {
+  const a = ANGLES[idx];
+  return new BABYLON.Vector3(Math.cos(a)*R_CIRCLE + OFFSET_X, Y_LEVEL, Math.sin(a)*R_CIRCLE);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// SCENE CREATION
+// ═══════════════════════════════════════════════════════════════════
+function createScene() {
+  scene = new BABYLON.Scene(engine);
+  scene.clearColor = new BABYLON.Color4(0.102, 0.122, 0.18, 1); // --bg-deep
+
+  // Camera
+  cam = new BABYLON.ArcRotateCamera('cam', -Math.PI/2, 1.0, 11.0,
+    new BABYLON.Vector3(OFFSET_X, Y_LEVEL, 0), scene);  // Centre ennéagramme
+  cam.attachControl(canvas, true);
+  
+  // Configuration inertie pour rotation fluide
+  cam.inertia = 0.9;  // Inertie élevée pour mouvement fluide
+  cam.angularSensibilityX = 1000;  // Sensibilité rotation
+  cam.angularSensibilityY = 1000;
+  
+  // Comportement auto-rotation intégré (ultra-fluide)
+  cam.useAutoRotationBehavior = true;
+  cam.autoRotationBehavior.idleRotationSpeed = 0;  // Désactivé par défaut (bouton l'active)
+  cam.autoRotationBehavior.idleRotationWaitTime = 0;  // Pas d'attente
+  cam.autoRotationBehavior.idleRotationSpinupTime = 100;  // Accélération rapide
+  cam.autoRotationBehavior.zoomStopsAnimation = false;  // Continue pendant zoom
+  
+  cam.lowerRadiusLimit = 5;
+  cam.upperRadiusLimit = 20;
+  cam.lowerBetaLimit = 0.1;  // Presque au-dessus
+  cam.upperBetaLimit = Math.PI - 0.1;  // Presque en dessous (rotation complète)
+  cam.wheelPrecision = 40;
+  cam.panningSensibility = 0; // disable panning
+
+  // Detect camera drag
+  cam.onViewMatrixChangedObservable.add(() => {
+    dragging = true;
+    setTimeout(() => { dragging = false; }, 200);
+  });
+
+  // Lights
+  const hemi = new BABYLON.HemisphericLight('hemi', new BABYLON.Vector3(0,1,0), scene);
+  hemi.intensity = 0.6;
+  hemi.diffuse = new BABYLON.Color3(0.9, 0.93, 0.96);
+  hemi.groundColor = new BABYLON.Color3(0.3, 0.35, 0.4);
+
+  const spot1 = new BABYLON.PointLight('spot1', new BABYLON.Vector3(5,6,5), scene);
+  spot1.intensity = 0.7;
+  spot1.diffuse = new BABYLON.Color3(1, 0.97, 0.95);
+
+  const spot2 = new BABYLON.PointLight('spot2', new BABYLON.Vector3(-5,6,-5), scene);
+  spot2.intensity = 0.5;
+  spot2.diffuse = new BABYLON.Color3(0.95, 0.97, 1);
+
+  // Build scene
+  buildEnneagram();
+  buildConnections();
+
+  // Picking
+  scene.onPointerDown = function(evt, pickResult) {
+    if (pickResult.hit && pickResult.pickedMesh) {
+      const m = pickResult.pickedMesh;
+      if (m.metadata && m.metadata.reactorId) {
+        selectReactor(m.metadata.reactorId);
+      } else if (m.metadata && m.metadata.sharedChar) {
+        // Afficher info sur la caractéristique partagée
+        showSharedCharInfo(m.metadata.sharedChar, m.metadata.trait);
+      } else if (m.metadata && m.metadata.connectionType) {
+        // Afficher info sur la connexion et changer sa couleur
+        showConnectionInfo(m.metadata.label, m.metadata.description, m);
+      } else {
+        // Clic sur un mesh sans métadonnée → désélectionner tout
+        clearAllSelections();
+      }
+    } else {
+      // Clic en dehors (pas de hit) → désélectionner tout
+      clearAllSelections();
+    }
+  };
+
+  // Initialiser le mode pédagogique (masque sphères diagonales en Beginner)
+  setPedagogicMode('beginner');
+  
+  // Sélectionner HTR par défaut
+  setTimeout(() => {
+    if (meshRegistry['HTR']) {
+      selectReactor('HTR');
+    }
+  }, 100);
+  
+  // ═══ SYSTÈME DE TOOLTIP POUR MESHES 3D ═══
+  const tooltipDiv = document.getElementById('mesh-tooltip');
+  let currentHoveredMesh = null;
+  
+  scene.onPointerMove = function(evt) {
+    const pickResult = scene.pick(scene.pointerX, scene.pointerY);
+    
+    if (pickResult.hit && pickResult.pickedMesh) {
+      const mesh = pickResult.pickedMesh;
+      let tooltipText = '';
+      
+      // Tooltips pour arcs de connexion
+      if (mesh.name && mesh.name.startsWith('conn_') && mesh.metadata) {
+        const meta = mesh.metadata;
+        const typeLabels = {
+          'evolution': '🔄 Evolution',
+          'tradeoff': '⚖️ Trade-off',
+          'vision': '🎯 Shared Vision',
+          'lineage': '📜 Historical Lineage',
+          'lesson': '⚠️ Safety Lesson',
+          'simplification': '🔧 Simplification'
+        };
+        const typeLabel = typeLabels[meta.connectionType] || meta.connectionType;
+        tooltipText = `<strong>${typeLabel}</strong><br>${meta.description}`;
+      }
+      
+      // Tooltips pour sphères bicolores (shared characteristics)
+      else if (mesh.name && mesh.name.startsWith('shared_') && mesh.metadata) {
+        const meta = mesh.metadata;
+        tooltipText = `<strong>🔗 Shared: ${meta.sharedChar}</strong><br>${meta.trait}`;
+      }
+      
+      // Tooltips pour pôles réacteurs
+      else if (mesh.metadata && mesh.metadata.reactorId) {
+        const reactor = REACTOR_MAP[mesh.metadata.reactorId];
+        if (reactor) {
+          tooltipText = `<strong>${reactor.label}</strong><br>${reactor.name}`;
+        }
+      }
+      
+      if (tooltipText && mesh !== currentHoveredMesh) {
+        currentHoveredMesh = mesh;
+        tooltipDiv.innerHTML = tooltipText;
+        tooltipDiv.style.display = 'block';
+        tooltipDiv.style.left = evt.clientX + 15 + 'px';
+        tooltipDiv.style.top = evt.clientY + 15 + 'px';
+      } else if (tooltipText) {
+        // Update position
+        tooltipDiv.style.left = evt.clientX + 15 + 'px';
+        tooltipDiv.style.top = evt.clientY + 15 + 'px';
+      } else {
+        tooltipDiv.style.display = 'none';
+        currentHoveredMesh = null;
+      }
+    } else {
+      tooltipDiv.style.display = 'none';
+      currentHoveredMesh = null;
+    }
+  };
+  
+  return scene;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// BUILD ENNEAGRAM STRUCTURE
+// ═══════════════════════════════════════════════════════════════════
+function buildEnneagram() {
+  // Créer nœud parent pour rotation de l'ennéagramme (AU CENTRE)
+  enneagramRoot = new BABYLON.TransformNode('enneagramRoot', scene);
+  enneagramRoot.position = new BABYLON.Vector3(OFFSET_X, Y_LEVEL, 0);  // Centre ennéagramme
+  
+  REACTORS.forEach((r, i) => {
+    const pos = reactorPos(i);
+
+    // Main reactor sphere
+    const sphere = BABYLON.MeshBuilder.CreateSphere(r.id, {diameter: S_REACTOR*2, segments:32}, scene);
+    sphere.position = pos.subtract(enneagramRoot.position);  // Position relative
+    sphere.parent = enneagramRoot;
+    sphere.metadata = {reactorId: r.id};
+
+    // Material with reactor color (sans effets lumineux)
+    const mat = new BABYLON.StandardMaterial('mat_'+r.id, scene);
+    const col = BABYLON.Color3.FromHexString(r.hex);
+    mat.diffuseColor = col;
+    mat.specularColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+    mat.emissiveColor = new BABYLON.Color3(0, 0, 0); // Pas d'émissif
+    sphere.material = mat;
+
+    // Selection rings (initially hidden) - orientés selon le repère local du pôle
+    const rings = makeRingPair(r.id, pos, S_RING, i);
+    rings.forEach(ring => {
+      ring.position = ring.position.subtract(enneagramRoot.position);  // Relative
+      ring.parent = enneagramRoot;
+    });
+
+    // Text label (plane with dynamic texture)
+    const label = makeLabel(r.label, pos, i);
+    label.position = label.position.subtract(enneagramRoot.position);  // Relative
+    label.parent = enneagramRoot;
+
+    meshRegistry[r.id] = {sphere, rings, label};
+  });
+
+  // Légende centrale supprimée (illisible sur fond sombre)
+  // buildConnectionLegend();
+  
+  // Caractéristiques partagées (sphères bicolores style MTG guildes)
+  buildSharedCharacteristics();
+  
+  // Sphère de référence transparente (rayon = R_CIRCLE)
+  const refSphere = BABYLON.MeshBuilder.CreateSphere('reference_sphere', {
+    diameter: R_CIRCLE * 2,
+    segments: 64
+  }, scene);
+  refSphere.position = new BABYLON.Vector3(0, 0, 0);  // Au centre du parent
+  refSphere.parent = enneagramRoot;  // Attacher au parent pour rotation
+  
+  const refMat = new BABYLON.StandardMaterial('ref_mat', scene);
+  refMat.diffuseColor = new BABYLON.Color3(0.8, 0.9, 1.0);  // Bleu très clair
+  refMat.specularColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+  refMat.alpha = 0.15;  // Très transparent
+  refMat.wireframe = false;
+  refSphere.material = refMat;
+  refSphere.isPickable = false;  // Ne pas interférer avec les clics
+  
+  // DEBUG: Lignes de debug désactivées (labels maintenant corrects)
+  // buildDebugRadialLines();   // Lignes jaunes
+  // buildDebugLabelLines();    // Lignes rouges + rectangles bleus
+  // buildDebugRingLines();     // (déjà vide)
+}
+
+// Build debug lines (red) under each label baseline
+function buildDebugLabelLines() {
+  console.log("=== DEBUG LIGNES ROUGES (perpendiculaires aux rayons) ===");
+  
+  REACTORS.forEach((r, i) => {
+    const angle = ANGLES[i];
+    const distanceFromCenter = R_CIRCLE + 0.8;
+    const labelPos = new BABYLON.Vector3(
+      Math.cos(angle) * distanceFromCenter + OFFSET_X,
+      Y_LEVEL,
+      Math.sin(angle) * distanceFromCenter
+    );
+    
+    // Ligne rouge représentant la base du label (perpendiculaire au rayon)
+    const labelWidth = 1.1;  // Même largeur que le label
+    const perpAngle = angle + Math.PI / 2;  // Perpendiculaire au rayon
+    
+    // DEBUG: Afficher l'angle de la ligne rouge
+    console.log(`Ligne rouge ${r.label}: angle rayon=${(angle*180/Math.PI).toFixed(1)}°, perpAngle=${(perpAngle*180/Math.PI).toFixed(1)}°`);
+    
+    const start = new BABYLON.Vector3(
+      labelPos.x - Math.cos(perpAngle) * labelWidth / 2,
+      Y_LEVEL + 0.02,  // Légèrement au-dessus pour visibilité
+      labelPos.z - Math.sin(perpAngle) * labelWidth / 2
+    );
+    
+    const end = new BABYLON.Vector3(
+      labelPos.x + Math.cos(perpAngle) * labelWidth / 2,
+      Y_LEVEL + 0.02,
+      labelPos.z + Math.sin(perpAngle) * labelWidth / 2
+    );
+    
+    const labelLine = BABYLON.MeshBuilder.CreateLines('debug_label_'+i, {
+      points: [start, end]
+    }, scene);
+    
+    labelLine.color = new BABYLON.Color3(1, 0, 0);  // Rouge
+    labelLine.alpha = 0.9;
+    
+    // DEBUG: Rectangle dans plan XZ avec un côté sur ligne rouge
+    // Largeur = ligne rouge, Hauteur = vers le centre
+    
+    const center = new BABYLON.Vector3(OFFSET_X, Y_LEVEL, 0);
+    const rectHeight = 0.5;  // Distance vers le centre
+    
+    // Direction du label vers le centre (pour la hauteur du rectangle)
+    const dirToCenter = center.subtract(labelPos);
+    dirToCenter.normalize();
+    
+    // 4 coins du rectangle :
+    // Côté proche (sur la ligne rouge)
+    const corner1 = start.clone();
+    const corner2 = end.clone();
+    
+    // Côté loin (décalé vers le centre)
+    const corner3 = end.add(dirToCenter.scale(rectHeight));
+    const corner4 = start.add(dirToCenter.scale(rectHeight));
+    
+    // Tous les coins à la même hauteur Y
+    corner1.y = Y_LEVEL + 0.01;
+    corner2.y = Y_LEVEL + 0.01;
+    corner3.y = Y_LEVEL + 0.01;
+    corner4.y = Y_LEVEL + 0.01;
+    
+    // Créer le rectangle avec Ribbon
+    const pathArray = [
+      [corner1, corner2],
+      [corner4, corner3]
+    ];
+    
+    const debugRect = BABYLON.MeshBuilder.CreateRibbon('debug_rect_'+i, {
+      pathArray: pathArray,
+      closePath: false,
+      closeArray: true
+    }, scene);
+    
+    // Matériau semi-transparent bleu avec émissif (visible sans lumière)
+    const rectMat = new BABYLON.StandardMaterial('rectMat_'+i, scene);
+    rectMat.diffuseColor = new BABYLON.Color3(0, 0.5, 1);  // Bleu
+    rectMat.emissiveColor = new BABYLON.Color3(0, 0.3, 0.6);  // Bleu émissif
+    rectMat.specularColor = new BABYLON.Color3(0, 0, 0);  // Pas de reflet
+    rectMat.alpha = 0.6;
+    rectMat.wireframe = true;  // Fil de fer pour debug
+    rectMat.backFaceCulling = false;  // Visible des deux côtés
+    debugRect.material = rectMat;
+  });
+  
+  console.log("=== FIN DEBUG LIGNES ROUGES ===");
+}
+
+// Build debug lines (red) showing polar ring orientation - SUPPRIMÉ
+// Les lignes verticales rouges sur les pôles ne sont plus nécessaires
+function buildDebugRingLines() {
+  // SUPPRIMÉ - ne plus tracer les lignes verticales rouges
+}
+
+// Build debug radial lines (yellow) from center to each pole
+function buildDebugRadialLines() {
+  const center = new BABYLON.Vector3(OFFSET_X, Y_LEVEL, 0);  // Centre de l'ennéagramme
+  
+  REACTORS.forEach((r, i) => {
+    const polePos = reactorPos(i);
+    
+    // Direction du centre vers le pôle
+    const direction = polePos.subtract(center);
+    const length = direction.length();
+    
+    // Étendre de 30% au-delà du pôle (au lieu de 15%)
+    const extendedEnd = center.add(direction.normalize().scale(length * 1.30));
+    
+    // Créer la ligne jaune
+    const line = BABYLON.MeshBuilder.CreateLines('debug_radial_'+i, {
+      points: [center, extendedEnd]
+    }, scene);
+    
+    line.color = new BABYLON.Color3(1, 1, 0);  // Jaune
+    line.alpha = 0.8;
+  });
+}
+
+// Create shared characteristic spheres (MTG guild-style)
+function buildSharedCharacteristics() {
+  const S_SHARED = 0.18;  // Taille des sphères de caractéristiques
+  
+  SHARED_CHARACTERISTICS.forEach((char, index) => {
+    const pos1 = reactorPos(char.i);
+    const pos2 = reactorPos(char.j);
+    
+    // Pour les paires adjacentes (9 premières), calculer position sur l'arc
+    let midPos;
+    if (index < 9) {
+      // Arc dans le plan XZ
+      const distance = BABYLON.Vector3.Distance(
+        new BABYLON.Vector3(pos1.x, 0, pos1.z),
+        new BABYLON.Vector3(pos2.x, 0, pos2.z)
+      );
+      
+      // Centre de l'arc (entre les deux points)
+      const center = new BABYLON.Vector3(
+        (pos1.x + pos2.x) / 2,
+        Y_LEVEL,
+        (pos1.z + pos2.z) / 2
+      );
+      
+      // Direction vers L'EXTÉRIEUR (même calcul que les arcs pointillés)
+      const dirToCenter = new BABYLON.Vector3(OFFSET_X - center.x, 0, 0 - center.z);
+      dirToCenter.normalize();
+      const dirOutward = dirToCenter.scale(-1);  // INVERSER pour bomber vers l'extérieur
+      
+      // Point au milieu de l'arc (t=0.5, sin(0.5*π) = 1 = maximum)
+      const arcOffset = distance * 0.12;  // Décalage vers l'extérieur
+      
+      midPos = center.add(dirOutward.scale(arcOffset));
+      midPos.y = Y_LEVEL;  // Dans le plan XZ (Y constant)
+    } else {
+      // Paires diagonales : au milieu de l'arc EN DESSOUS
+      midPos = BABYLON.Vector3.Lerp(pos1, pos2, 0.5);
+      
+      // Calculer profondeur de l'arc (même calcul que buildDiagonalArcs)
+      const distance = BABYLON.Vector3.Distance(
+        new BABYLON.Vector3(pos1.x, 0, pos1.z),
+        new BABYLON.Vector3(pos2.x, 0, pos2.z)
+      );
+      const arcDepth = distance * 0.25;
+      
+      // Point le plus bas de l'arc (t=0.5, sin(0.5*π) = 1)
+      midPos.y = Y_LEVEL - arcDepth;
+    }
+    
+    // Direction pour la séparation des couleurs
+    const dir = new BABYLON.Vector3(pos1.x - pos2.x, 0, pos1.z - pos2.z);
+    
+    // Créer la sphère bicolore
+    makeSplitSphere(midPos, char.hex1, char.hex2, S_SHARED, char.name, char.trait, dir);
+  });
+  
+  // Créer des arcs pointillés pour les paires adjacentes (9 premières)
+  buildAdjacentArcs();
+  buildDiagonalArcs();  // Arcs diagonaux en dessous (Advanced mode)
+}
+
+// Create dashed arcs for adjacent shared characteristics  
+function buildAdjacentArcs() {
+  const adjacentPairs = SHARED_CHARACTERISTICS.slice(0, 9); // First 9 are adjacent
+  
+  adjacentPairs.forEach(char => {
+    const from = reactorPos(char.i);
+    const to = reactorPos(char.j);
+    
+    // Arc de cercle DANS LE PLAN XZ (Y constant)
+    const distance = BABYLON.Vector3.Distance(
+      new BABYLON.Vector3(from.x, 0, from.z),
+      new BABYLON.Vector3(to.x, 0, to.z)
+    );
+    
+    // Centre de l'arc
+    const center = new BABYLON.Vector3(
+      (from.x + to.x) / 2,
+      Y_LEVEL,
+      (from.z + to.z) / 2
+    );
+    
+    // Direction vers L'EXTÉRIEUR de l'ennéagramme (inverse du centre)
+    const dirToEnneagramCenter = new BABYLON.Vector3(OFFSET_X - center.x, 0, 0 - center.z);
+    dirToEnneagramCenter.normalize();
+    const dirOutward = dirToEnneagramCenter.scale(-1);  // INVERSER pour bomber vers l'extérieur
+    
+    // Créer arc dans le plan XZ
+    const steps = 30;
+    const points = [];
+    const arcHeight = distance * 0.12;  // Décalage vers l'extérieur
+    
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const p = BABYLON.Vector3.Lerp(from, to, t);
+      
+      // Décalage vers L'EXTÉRIEUR (parabole) - comme pétale de fleur
+      const offset = Math.sin(t * Math.PI) * arcHeight;
+      p.x += dirOutward.x * offset;  // Vers l'extérieur
+      p.z += dirOutward.z * offset;
+      p.y = Y_LEVEL;  // Rester dans le plan horizontal
+      
+      points.push(p);
+    }
+    
+    // Convertir en positions relatives au parent
+    const relativePoints = points.map(p => p.subtract(enneagramRoot.position));
+    
+    // Créer ligne pointillée
+    const arc = BABYLON.MeshBuilder.CreateDashedLines('adjacent_arc_'+char.i+'_'+char.j, {
+      points: relativePoints,
+      dashSize: 0.08,
+      gapSize: 0.04,
+      dashNb: 40
+    }, scene);
+    
+    arc.color = new BABYLON.Color3(0.5, 0.5, 0.5);  // Gris moyen
+    arc.alpha = 0.4;  // Assez visible mais discret
+    arc.parent = enneagramRoot;  // Attacher au parent
+    
+    // Stocker pour toggle Connections
+    adjacentArcMeshes.push(arc);
+  });
+}
+
+// Build diagonal arcs (UNDER the XZ plane, visible only in Advanced mode)
+function buildDiagonalArcs() {
+  const diagonalPairs = SHARED_CHARACTERISTICS.slice(9, 18); // Last 9 are diagonal
+  
+  diagonalPairs.forEach((char, idx) => {
+    const from = reactorPos(char.i);
+    const to = reactorPos(char.j);
+    
+    // Arc qui passe EN DESSOUS du plan XZ
+    const distance = BABYLON.Vector3.Distance(
+      new BABYLON.Vector3(from.x, 0, from.z),
+      new BABYLON.Vector3(to.x, 0, to.z)
+    );
+    
+    // Profondeur de l'arc (proportionnelle à la distance)
+    const arcDepth = distance * 0.25;  // Descend de 25% de la distance
+    
+    // Créer arc parabolique inversé (descend puis remonte)
+    const steps = 40;
+    const points = [];
+    
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const p = BABYLON.Vector3.Lerp(from, to, t);
+      
+      // Parabole inversée : descend au milieu, remonte aux extrémités
+      const depthOffset = Math.sin(t * Math.PI) * arcDepth;
+      p.y = Y_LEVEL - depthOffset;  // SOUS le plan (Y négatif)
+      
+      points.push(p);
+    }
+    
+    // Convertir en positions relatives au parent
+    const relativePoints = points.map(p => p.subtract(enneagramRoot.position));
+    
+    // Créer ligne pointillée
+    const arc = BABYLON.MeshBuilder.CreateDashedLines('diagonal_arc_'+char.i+'_'+char.j, {
+      points: relativePoints,
+      dashSize: 0.1,
+      gapSize: 0.05,
+      dashNb: 50
+    }, scene);
+    
+    arc.color = new BABYLON.Color3(0.4, 0.6, 0.8);  // Bleu-gris (distinct des adjacents)
+    arc.alpha = 0.5;
+    arc.parent = enneagramRoot;  // Attacher au parent
+    
+    // Visible seulement en mode Advanced
+    arc.isVisible = (pedagogicMode === 'advanced');
+    
+    // Stocker pour toggle de mode
+    diagonalArcMeshes.push(arc);
+  });
+}
+
+// Create a split-colored sphere (texture bicolore comme MTG)
+function makeSplitSphere(pos, hex1, hex2, radius, name, trait, splitDir) {
+  // Calculate rotation angle from split direction
+  let rotY = 0;
+  if (splitDir) {
+    const l = Math.sqrt(splitDir.x*splitDir.x + splitDir.z*splitDir.z);
+    if (l > 0.0001) rotY = Math.atan2(-splitDir.z/l, splitDir.x/l) + Math.PI/2;
+  }
+
+  // Create bicolor texture (left/right split)
+  const dt = new BABYLON.DynamicTexture('shared_'+name+'_tex', {width:256, height:128}, scene, false);
+  const ctx = dt.getContext();
+  ctx.fillStyle = hex1;
+  ctx.fillRect(0, 0, 128, 128);
+  ctx.fillStyle = hex2;
+  ctx.fillRect(128, 0, 128, 128);
+  dt.update();
+
+  // Create sphere with bicolor texture
+  const sphere = BABYLON.MeshBuilder.CreateSphere('shared_'+name, {
+    diameter: radius*2,
+    segments: 24
+  }, scene);
+  sphere.position = pos.clone().subtract(enneagramRoot.position);  // Position relative
+  sphere.rotation.y = rotY;
+  sphere.parent = enneagramRoot;  // Attacher au parent pour rotation
+
+  const mat = new BABYLON.StandardMaterial('mat_shared_'+name, scene);
+  mat.diffuseTexture = dt;
+  mat.specularColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+  sphere.material = mat;
+
+  // Metadata pour interaction
+  sphere.metadata = {sharedChar: name, trait: trait};
+
+  // Créer les cercles de sélection (comme pour les réacteurs)
+  const rings = makeRingPair('shared_'+name, pos, radius*1.15, -1);
+  rings.forEach(r => {
+    r.position = r.position.subtract(enneagramRoot.position);  // Relative
+    r.isVisible = false;  // Cachés par défaut
+    r.parent = enneagramRoot;  // Attacher au parent
+  });
+
+  // Ajouter au registry
+  meshRegistry['shared_'+name] = {sphere, rings, trait};
+}
+
+// Create connection legend in the center
+function buildConnectionLegend() {
+  const legendTexts = [
+    {text: 'TRANSFORMATION', color: '#56d364', y: 0.6},
+    {text: 'PATHWAYS', color: '#79c0ff', y: 0.3},
+    {text: '(Enneagram Relations)', color: '#d2a8ff', y: 0.0}  // Violet clair au lieu de gris
+  ];
+
+  legendTexts.forEach(item => {
+    const plane = BABYLON.MeshBuilder.CreatePlane('legend_'+item.y, {width:2.2, height:0.3}, scene);
+    plane.position = new BABYLON.Vector3(0, item.y, 0);
+    plane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+
+    const tex = new BABYLON.DynamicTexture('legendTex_'+item.y, {width:440, height:60}, scene, false);
+    tex.hasAlpha = true;
+    const ctx = tex.getContext();
+    ctx.clearRect(0, 0, 440, 60);
+    ctx.font = 'bold 32px "Segoe UI"';
+    ctx.fillStyle = item.color;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(item.text, 220, 30);
+    tex.update();
+
+    const mat = new BABYLON.StandardMaterial('legendMat_'+item.y, scene);
+    mat.diffuseTexture = tex;
+    mat.emissiveColor = BABYLON.Color3.FromHexString(item.color).scale(0.2);  // Émissif réduit
+    mat.disableLighting = true;
+    mat.backFaceCulling = false;
+    mat.opacityTexture = tex;
+    mat.alpha = 0.85;
+    plane.material = mat;
+    plane.layerMask = 0x0FFFFFFF;
+  });
+}
+
+// Create selection ring pair (white tori): équateur + méridien
+// Using quaternion rotation like MTG Color Wheel
+function makeRingPair(id, pos, radius, poleIndex) {
+  const rings = [];
+  const ringMat = new BABYLON.StandardMaterial('ringMat_'+id, scene);
+  ringMat.emissiveColor = new BABYLON.Color3(1, 1, 1);
+  ringMat.disableLighting = true;
+
+  // Ring 1: Équateur (flat in XZ plane, no rotation needed)
+  const ringEq = BABYLON.MeshBuilder.CreateTorus('ring_'+id+'_eq', {
+    diameter: radius*2,
+    thickness: 0.018,
+    tessellation: 48
+  }, scene);
+  ringEq.position = pos.clone();
+  // Pas de rotation - reste dans le plan XZ horizontal
+  ringEq.material = ringMat;
+  ringEq.isVisible = false;  // Invisible au début
+  rings.push(ringEq);
+
+  // Ring 2: Méridien (dans le plan vertical contenant la droite centre→pôle)
+  // Pour être aligné avec la droite centre→pôle, on fait juste une rotation Y
+  const ringMer = BABYLON.MeshBuilder.CreateTorus('ring_'+id+'_mer', {
+    diameter: radius*2,
+    thickness: 0.018,
+    tessellation: 48
+  }, scene);
+  ringMer.position = pos.clone();
+  
+  // CORRECTION : utiliser l'angle depuis ANGLES au lieu de le recalculer depuis pos
+  // (pos inclut OFFSET_X donc Math.atan2(pos.z, pos.x) donne un mauvais angle)
+  const angle = (poleIndex >= 0) ? ANGLES[poleIndex] : Math.atan2(pos.z - 0, pos.x - OFFSET_X);
+  
+  // Méthode MTG : quaternion pour rotation locale
+  // Axe perpendiculaire à la direction radiale
+  const axis = new BABYLON.Vector3(Math.sin(angle), 0, -Math.cos(angle));
+  
+  // Rotation de π/2 pour mettre le ring dans le plan vertical radial
+  ringMer.rotationQuaternion = BABYLON.Quaternion.RotationAxis(axis, Math.PI / 2);
+  
+  ringMer.material = ringMat;
+  ringMer.isVisible = false;  // Invisible au début
+  rings.push(ringMer);
+
+  return rings;
+}
+
+// Create text label (dans le plan horizontal, perpendiculaire au rayon)
+function makeLabel(text, pos, poleIndex) {
+  const plane = BABYLON.MeshBuilder.CreatePlane('label_'+text, {width:1.29, height:0.41}, scene);
+  
+  // Position plus éloignée radialement depuis le centre
+  const angle = ANGLES[poleIndex];
+  const distanceFromCenter = R_CIRCLE + 0.55;  // Réduit de 0.8 à 0.55 (plus proche)
+  const labelPos = new BABYLON.Vector3(
+    Math.cos(angle) * distanceFromCenter + OFFSET_X,
+    Y_LEVEL,
+    Math.sin(angle) * distanceFromCenter
+  );
+  // Orientation : label parallèle à la ligne rouge (perpendiculaire au rayon)
+  // Ligne rouge : direction (cos(perpAngle), 0, sin(perpAngle)) dans plan XZ
+  const perpAngle = angle + Math.PI / 2;
+  
+  // DEBUG STRATEGY: Afficher différentes informations pour comprendre le problème
+  console.log(`Label ${text}: angle=${(angle*180/Math.PI).toFixed(1)}°, perpAngle=${(perpAngle*180/Math.PI).toFixed(1)}°`);
+  
+  // SOLUTION FINALE :
+  // 1. Coucher dans plan XZ avec rotation.x
+  // 2. Orienter avec rotation.z (signe inversé)
+  // 3. AMÉLIORATION: Retourner si "à l'envers" pour faciliter lecture
+  
+  plane.position = labelPos;
+  plane.rotation.x = -Math.PI / 2;   // Coucher dans plan XZ
+  
+  // Normaliser perpAngle dans [0, 2π]
+  let normalizedAngle = perpAngle % (Math.PI * 2);
+  if (normalizedAngle < 0) normalizedAngle += Math.PI * 2;
+  
+  // CORRECTION: Inverser la condition + cas spécifiques
+  // Si le label pointe "vers l'avant" (entre 90° et 270°), PAS de retournement
+  // Sinon, retourner de π
+  let finalAngle = -perpAngle;
+  
+  // Cas spéciaux : PHWR, RBMK, HTR, SMR (indices 3,4,5,6) → toujours retourner
+  if (poleIndex === 3 || poleIndex === 4 || poleIndex === 5 || poleIndex === 6) {
+    finalAngle += Math.PI;
+  } 
+  // Autres pôles : logique originale
+  else if (normalizedAngle <= Math.PI / 2 || normalizedAngle >= 3 * Math.PI / 2) {
+    finalAngle += Math.PI;
+  }
+  
+  plane.rotation.z = finalAngle;
+  plane.rotation.y = 0;
+
+  const tex = new BABYLON.DynamicTexture('labelTex_'+text, {width:320, height:80}, scene, false);
+  tex.hasAlpha = true;
+  const ctx = tex.getContext();
+  ctx.clearRect(0, 0, 320, 80);
+  
+  // Flip horizontal pour corriger l'effet miroir
+  ctx.save();
+  ctx.scale(-1, 1);  // Flip horizontal
+  ctx.translate(-320, 0);  // Repositionner après le flip
+  
+  ctx.font = 'bold 44px "Segoe UI"';
+  ctx.fillStyle = '#FFFFFF';  // Blanc pur pour meilleure visibilité
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  
+  // Ombre portée forte pour contraste
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.95)';
+  ctx.shadowBlur = 6;
+  ctx.shadowOffsetX = 3;
+  ctx.shadowOffsetY = 3;
+  ctx.fillText(text, 160, 40);
+  ctx.restore();
+  tex.update();
+
+  const mat = new BABYLON.StandardMaterial('labelMat_'+text, scene);
+  mat.diffuseTexture = tex;
+  mat.emissiveColor = new BABYLON.Color3(0.9, 0.9, 0.9);  // Émissif très fort
+  mat.disableLighting = true;
+  mat.backFaceCulling = false;
+  mat.opacityTexture = tex;
+  plane.material = mat;
+  
+  // Exclure du glow layer pour meilleure lisibilité
+  plane.layerMask = 0x0FFFFFFF;
+
+  return plane;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// BUILD CONNECTION LINES
+// ═══════════════════════════════════════════════════════════════════
+function buildConnections() {
+  CONNECTIONS.forEach(conn => {
+    const from = reactorPos(conn.from);
+    const to = reactorPos(conn.to);
+
+    // Create curved path (arc de sphère)
+    const mid = BABYLON.Vector3.Lerp(from, to, 0.5);
+    
+    // Calcul géométrique : hauteur pour que le point culminant touche la sphère
+    const distance = BABYLON.Vector3.Distance(from, to);
+    
+    // Point milieu dans le plan XZ
+    const midXZ = new BABYLON.Vector3(
+      (from.x + to.x) / 2,
+      0,
+      (from.z + to.z) / 2
+    );
+    
+    // Distance horizontale du milieu au centre de la sphère
+    const sphereCenter = new BABYLON.Vector3(OFFSET_X, 0, 0);
+    const d_horizontal = BABYLON.Vector3.Distance(midXZ, sphereCenter);
+    
+    // Hauteur calculée pour intersection avec sphère
+    // hauteur = 2 × √[R² - d_horizontal²]
+    const R = R_CIRCLE;
+    const underRoot = R * R - d_horizontal * d_horizontal;
+    
+    let arcHeight;
+    if (underRoot > 0) {
+      arcHeight = 2 * Math.sqrt(underRoot);
+    } else {
+      // Si le point milieu est hors de la sphère, utiliser hauteur minimale
+      arcHeight = 0.5;
+      console.warn(`Arc ${conn.from}→${conn.to}: milieu hors sphère, d=${d_horizontal.toFixed(2)} > R=${R}`);
+    }
+    
+    mid.y += arcHeight;
+    
+    const curve = BABYLON.Curve3.CreateQuadraticBezier(from, mid, to, 48);  // Plus de segments
+    const allPoints = curve.getPoints();
+    
+    // Convertir points en positions relatives au parent
+    const relativePoints = allPoints.map(p => p.subtract(enneagramRoot.position));
+    
+    const halfIndex = Math.floor(relativePoints.length / 2);
+    
+    // Diviser en deux moitiés
+    const firstHalf = relativePoints.slice(0, halfIndex + 1);
+    const secondHalf = relativePoints.slice(halfIndex);
+    
+    // Couleurs des pôles
+    const fromReactor = REACTORS[conn.from];
+    const toReactor = REACTORS[conn.to];
+    const col1 = BABYLON.Color3.FromHexString(fromReactor.hex);
+    const col2 = BABYLON.Color3.FromHexString(toReactor.hex);
+    
+    // Première moitié (couleur du premier pôle)
+    const line1 = BABYLON.MeshBuilder.CreateLines('conn_'+conn.from+'_'+conn.to+'_1', {
+      points: firstHalf
+    }, scene);
+    line1.color = col1;
+    line1.alpha = 0.8;
+    line1.isVisible = showConnections;
+    line1.parent = enneagramRoot;  // Attacher au parent
+    
+    // Seconde moitié (couleur du second pôle)
+    const line2 = BABYLON.MeshBuilder.CreateLines('conn_'+conn.from+'_'+conn.to+'_2', {
+      points: secondHalf
+    }, scene);
+    line2.color = col2;
+    line2.alpha = 0.8;
+    line2.isVisible = showConnections;
+    line2.parent = enneagramRoot;  // Attacher au parent
+    
+    // Version épaisse pour la sélection (deux tubes, un pour chaque moitié)
+    // Première moitié épaisse
+    const thickTube1 = BABYLON.MeshBuilder.CreateTube('conn_'+conn.from+'_'+conn.to+'_thick1', {
+      path: firstHalf,
+      radius: 0.04,  // 75% plus épais
+      cap: BABYLON.Mesh.CAP_ALL
+    }, scene);
+    const thickMat1 = new BABYLON.StandardMaterial('connThickMat1_'+conn.from+'_'+conn.to, scene);
+    thickMat1.diffuseColor = col1;
+    thickMat1.emissiveColor = col1.scale(0.3);  // Émissif réduit
+    thickMat1.alpha = 0.95;
+    thickTube1.material = thickMat1;
+    thickTube1.isVisible = false;
+    thickTube1.parent = enneagramRoot;  // Attacher au parent
+    
+    // Seconde moitié épaisse
+    const thickTube2 = BABYLON.MeshBuilder.CreateTube('conn_'+conn.from+'_'+conn.to+'_thick2', {
+      path: secondHalf,
+      radius: 0.04,  // 75% plus épais
+      cap: BABYLON.Mesh.CAP_ALL
+    }, scene);
+    const thickMat2 = new BABYLON.StandardMaterial('connThickMat2_'+conn.from+'_'+conn.to, scene);
+    thickMat2.diffuseColor = col2;
+    thickMat2.emissiveColor = col2.scale(0.3);  // Émissif réduit
+    thickMat2.alpha = 0.95;
+    thickTube2.material = thickMat2;
+    thickTube2.isVisible = false;
+    thickTube2.parent = enneagramRoot;  // Attacher au parent
+    
+    // Metadata commune sur tous les éléments
+    const connectionLabel = `${conn.type.toUpperCase()}: ${fromReactor.label} ↔ ${toReactor.label}`;
+    const metadata = {
+      connectionType: conn.type,
+      from: conn.from,
+      to: conn.to,
+      label: connectionLabel,
+      description: getConnectionDescription(conn.type, fromReactor.label, toReactor.label),
+      line1: line1,
+      line2: line2,
+      thickTube1: thickTube1,
+      thickTube2: thickTube2
+    };
+    
+    line1.metadata = metadata;
+    line2.metadata = metadata;
+    thickTube1.metadata = metadata;
+    thickTube2.metadata = metadata;
+
+    connectionMeshes.push(line1);  // Première moitié
+    connectionMeshes.push(line2);  // Seconde moitié (AJOUTÉ pour toggleConnections)
+  });
+}
+
+// Get connection description based on type
+function getConnectionDescription(type, from, to) {
+  const descriptions = {
+    'evolution': `Evolution pathway: ${from} → ${to}. Miniaturization and passive safety advances.`,
+    'tradeoff': `Design trade-off: ${from} ↔ ${to}. Competing priorities between safety philosophies and performance.`,
+    'vision': `Shared vision: ${from} ↔ ${to}. Both pursue long-term sustainability through different approaches.`,
+    'lineage': `Historical lineage: ${from} → ${to}. Lessons learned from operational experience shape new designs.`,
+    'lesson': `Safety lesson: ${from} → ${to}. Accidents reinforce the importance of robust safety systems.`,
+    'simplification': `Simplification: ${from} → ${to}. Natural circulation principles inform passive safety designs.`
+  };
+  return descriptions[type] || `Connection between ${from} and ${to}`;
+}
+
+function toggleConnections() {
+  showConnections = !showConnections;
+  
+  // CORRECTION BUG: Si on masque les connexions, désélectionner l'arc
+  if (!showConnections) {
+    // Masquer arcs de connexion
+    connectionMeshes.forEach(m => { m.isVisible = false; });
+    
+    // Masquer arcs adjacents pointillés
+    adjacentArcMeshes.forEach(arc => { arc.isVisible = false; });
+    
+    // Masquer arcs diagonaux (Advanced mode)
+    diagonalArcMeshes.forEach(arc => { arc.isVisible = false; });
+    
+    // Masquer aussi les arcs épais (sélection)
+    if (selectedConnection && selectedConnection.metadata) {
+      const meta = selectedConnection.metadata;
+      if (meta.thickTube1) meta.thickTube1.isVisible = false;
+      if (meta.thickTube2) meta.thickTube2.isVisible = false;
+    }
+    
+    // Désélectionner pour que le prochain toggle affiche TOUS les arcs
+    selectedConnection = null;
+  } else {
+    // Réafficher arcs de connexion
+    connectionMeshes.forEach(m => { m.isVisible = true; });
+    
+    // Réafficher arcs adjacents pointillés
+    adjacentArcMeshes.forEach(arc => { arc.isVisible = true; });
+    
+    // Réafficher arcs diagonaux SEULEMENT si mode Advanced
+    if (pedagogicMode === 'advanced') {
+      diagonalArcMeshes.forEach(arc => { arc.isVisible = true; });
+    }
+  }
+  
+  document.querySelector('[onclick="toggleConnections()"]').classList.toggle('active', showConnections);
+}
+
+function setPedagogicMode(mode) {
+  pedagogicMode = mode;
+  
+  // Mettre à jour les boutons
+  document.getElementById('btn-mode-beginner').classList.toggle('active', mode === 'beginner');
+  document.getElementById('btn-mode-intermediate').classList.toggle('active', mode === 'intermediate');
+  document.getElementById('btn-mode-advanced').classList.toggle('active', mode === 'advanced');
+  
+  // Beginner: seulement réacteurs + 3 connexions principales
+  // Intermediate: + sphères bicolores adjacentes + toutes connexions
+  // Advanced: tout (y compris lignes de debug)
+  
+  // Gérer visibilité des connexions
+  connectionMeshes.forEach((m, idx) => {
+    if (mode === 'beginner') {
+      // Seulement 3 premières connexions
+      m.isVisible = idx < 6;  // 3 connexions × 2 (line1 + line2)
+      if (m.metadata && m.metadata.line1) m.metadata.line1.isVisible = idx < 6;
+      if (m.metadata && m.metadata.line2) m.metadata.line2.isVisible = idx < 6;
+    } else {
+      m.isVisible = showConnections;
+      if (m.metadata && m.metadata.line1) m.metadata.line1.isVisible = showConnections;
+      if (m.metadata && m.metadata.line2) m.metadata.line2.isVisible = showConnections;
+    }
+  });
+  
+  // Gérer visibilité des sphères bicolores
+  let sphereCount = 0;
+  let hiddenCount = 0;
+  Object.keys(meshRegistry).forEach(key => {
+    if (key.startsWith('shared_')) {
+      const entry = meshRegistry[key];
+      if (entry.sphere) {
+        sphereCount++;
+        if (mode === 'beginner') {
+          entry.sphere.isVisible = false;  // Cachées en mode débutant
+          hiddenCount++;
+        } else if (mode === 'intermediate') {
+          // Seulement adjacentes (9 premières)
+          const sharedIdx = Object.keys(meshRegistry).filter(k => k.startsWith('shared_')).indexOf(key);
+          entry.sphere.isVisible = sharedIdx < 9;
+        } else {
+          entry.sphere.isVisible = true;  // Toutes visibles en advanced
+        }
+      }
+    }
+  });
+  console.log(`[setPedagogicMode] mode=${mode}, spheres found=${sphereCount}, hidden=${hiddenCount}`);
+  
+  // Gérer visibilité des arcs diagonaux (seulement Advanced)
+  diagonalArcMeshes.forEach(arc => {
+    arc.isVisible = (mode === 'advanced');
+  });
+  
+  // Gérer visibilité des lignes de debug (jaunes et rouges)
+  scene.meshes.forEach(m => {
+    if (m.name && (m.name.startsWith('debug_radial_') || 
+                   m.name.startsWith('debug_label_') || 
+                   m.name.startsWith('debug_ring_'))) {
+      m.isVisible = (mode === 'advanced');
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// SELECTION SYSTEM
+// ═══════════════════════════════════════════════════════════════════
+function applyHighlight(id, on) {
+  const entry = meshRegistry[id];
+  if (!entry) return;
+  entry.rings.forEach(r => { r.isVisible = on; });
+}
+
+function selectReactor(id) {
+  // Toggle: click same reactor again → deselect ALL
+  if (currentSel === id) { 
+    clearAllSelections(); 
+    return; 
+  }
+
+  // Clear ALL previous selections (reactors, arcs, bicolor spheres)
+  clearAllSelections();
+
+  // Select this reactor
+  currentSel = id;
+  applyHighlight(id, true);
+
+  // ROTATION AUTO : Amener le pôle sélectionné face à la caméra
+  const reactorIndex = REACTORS.findIndex(r => r.id === id);
+  if (reactorIndex >= 0) {
+    rotateCameraToReactor(reactorIndex);
+    updateGauges(REACTORS[reactorIndex]);
+  }
+
+  // Update timeline selection
+  document.querySelectorAll('.timeline-item').forEach(dot => {
+    dot.classList.toggle('selected', dot.dataset.reactor === id);
+  });
+
+  // Activate button
+  const btn = document.querySelector('.reactor-btn[data-id="'+id+'"]');
+  if (btn) btn.classList.add('active');
+
+  // Update header chip
+  const reactor = REACTOR_MAP[id];
+  const chip = document.getElementById('sel-chip');
+  chip.textContent = reactor ? reactor.name : id;
+  chip.style.display = 'inline-block';
+
+  // Update status bar
+  document.getElementById('sel-info').textContent = reactor ? reactor.name : id;
+  document.getElementById('sel-info').style.color = 'var(--warn)';
+
+  // Mettre à jour le HUD avec les détails du réacteur
+  if (reactor) {
+    const description = `${reactor.name}. ${reactor.philosophy}`;
+    updateHUDLegend('⚛️ Nuclear Reactor', reactor.label, description);
+  }
+
+  // Navigate Detail tab to the section
+  navigateToSection(id);
+}
+
+function clearSelection() {
+  clearAllSelections();
+}
+
+// Clear ALL selections (poles, arcs, bicolor spheres)
+function clearAllSelections() {
+  // 1. Clear reactor selection
+  if (currentSel) {
+    applyHighlight(currentSel, false);
+    const prevBtn = document.querySelector('.reactor-btn[data-id="'+currentSel+'"]');
+    if (prevBtn) prevBtn.classList.remove('active');
+    currentSel = null;
+  }
+  
+  // 2. Clear arc selection (hide thick tubes)
+  if (selectedConnection && selectedConnection.metadata) {
+    const meta = selectedConnection.metadata;
+    if (meta.thickTube1) meta.thickTube1.isVisible = false;
+    if (meta.thickTube2) meta.thickTube2.isVisible = false;
+    selectedConnection = null;
+  }
+  
+  // 3. Clear bicolor sphere selection (hide rings)
+  Object.values(meshRegistry).forEach(entry => {
+    if (entry.rings) entry.rings.forEach(r => r.isVisible = false);
+  });
+  selectedBicolorSphere = null;
+  
+  // 4. Clear timeline selection
+  document.querySelectorAll('.timeline-item').forEach(dot => {
+    dot.classList.remove('selected');
+  });
+  
+  // 5. Update UI
+  document.getElementById('sel-chip').style.display = 'none';
+  document.getElementById('sel-info').textContent = 'Click a reactor sphere or button to explore';
+  document.getElementById('sel-info').style.color = 'var(--muted)';
+}
+
+function navigateToSection(id) {
+  activateTab(0);  // Tab 0 = Description (premier onglet)
+  setTimeout(function() {
+    const el = document.getElementById('sec-'+id);
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 60);
+}
+
+function showSharedCharInfo(name, trait) {
+  const sharedKey = 'shared_'+name;
+  
+  // Toggle: click same bicolor sphere again → deselect ALL
+  if (selectedBicolorSphere === sharedKey) {
+    clearAllSelections();
+    return;
+  }
+  
+  // Clear ALL previous selections (reactors, arcs, bicolor spheres)
+  clearAllSelections();
+  
+  // Select this bicolor sphere (show rings)
+  if (meshRegistry[sharedKey] && meshRegistry[sharedKey].rings) {
+    meshRegistry[sharedKey].rings.forEach(r => r.isVisible = true);
+    selectedBicolorSphere = sharedKey;
+  }
+  
+  // Update UI
+  const chip = document.getElementById('sel-chip');
+  chip.textContent = '🔗 ' + name;
+  chip.style.display = 'inline-block';
+  
+  document.getElementById('sel-info').textContent = trait;
+  document.getElementById('sel-info').style.color = 'var(--sphinx)';
+  
+  // Mettre à jour le HUD
+  updateHUDLegend('🔗 Shared Characteristic', name, trait);
+}
+
+function showConnectionInfo(label, description, connectionMesh) {
+  // Toggle: click same arc again → deselect ALL
+  if (selectedConnection === connectionMesh) {
+    clearAllSelections();
+    return;
+  }
+  
+  // Clear ALL previous selections (reactors, arcs, bicolor spheres)
+  clearAllSelections();
+  
+  // Select this arc (show thick tubes)
+  if (connectionMesh && connectionMesh.metadata) {
+    const meta = connectionMesh.metadata;
+    if (meta.thickTube1) meta.thickTube1.isVisible = true;
+    if (meta.thickTube2) meta.thickTube2.isVisible = true;
+    selectedConnection = connectionMesh;
+  }
+  
+  // Update UI
+  const chip = document.getElementById('sel-chip');
+  chip.textContent = '⚡ Connection';
+  chip.style.display = 'inline-block';
+  
+  document.getElementById('sel-info').textContent = label;
+  document.getElementById('sel-info').style.color = 'var(--warn)';
+  
+  // Mettre à jour le HUD
+  updateHUDLegend('⚡ Transformation Pathway', label, description);
+}
+
+function updateHUDLegend(title, subtitle, description) {
+  const hud = document.getElementById('hud-legend');
+  hud.innerHTML = `
+    <h4>${title}</h4>
+    <div style="font-size:11px;font-weight:600;color:var(--text);margin:4px 0">${subtitle}</div>
+    <div style="font-size:10.5px;line-height:1.4;color:var(--text-dim)">${description}</div>
+    <div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border);font-size:10px;font-style:italic;color:var(--muted)">
+      Click reactors, connections, or bicolor spheres to explore
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════════════════════════
+function activateTab(idx) {
+  // Mapping: Button index → Content index
+  // Button 0 (Description) → Content panel 3
+  // Button 1 (Scores) → Content panel 0
+  // Button 2 (M2 Concepts) → Content panel 1
+  // Button 3 (M1 Core) → Content panel 2
+  const panelMapping = [3, 0, 1, 2];
+  const contentIdx = panelMapping[idx];
+  
+  const tabs   = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+  tabs.forEach((t,i)   => { t.classList.toggle('active', i===idx); });
+  panels.forEach((p,i) => { p.classList.toggle('active', i===contentIdx); });
+}
+
+function toggleAutoRotate() {
+  autoRotate = !autoRotate;
+  document.getElementById('btn-autorot').classList.toggle('active', autoRotate);
+}
+
+function resetView() {
+  if (!cam) return;
+  cam.alpha  = -Math.PI/2;
+  cam.beta   = 1.0;
+  cam.radius = 11.0;  // Vue large éloignée
+  
+  // Remettre rotation ennéagramme à 0
+  if (enneagramRoot) {
+    enneagramRoot.rotation.y = 0;
+  }
+  
+  // Sélectionner HTR
+  if (meshRegistry['HTR']) {
+    selectReactor('HTR');
+  }
+}
+
+// Rotate camera to face a reactor (smooth animation)
+function rotateCameraToReactor(reactorIndex) {
+  if (!cam) return;
+  
+  const targetAngle = ANGLES[reactorIndex];
+  // Alpha = angle pour que le réacteur soit face à la caméra
+  const targetAlpha = targetAngle;
+  
+  // Animation douce (0.6s) - CAMERA tourne, enneagramRoot reste fixe
+  BABYLON.Animation.CreateAndStartAnimation(
+    'camRotate',
+    cam,
+    'alpha',
+    60,  // 60 fps
+    36,  // 36 frames = 0.6s
+    cam.alpha,
+    targetAlpha,
+    BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT,
+    new BABYLON.CubicEase(),
+    () => {}
+  );
+}
+
+// Update performance gauges (VERTICAL bars)
+function updateGauges(reactor) {
+  if (!reactor || !reactor.gauges) return;
+  
+  const g = reactor.gauges;
+  
+  document.getElementById('gauge-efficiency-val').textContent = g.efficiency + '%';
+  document.getElementById('gauge-efficiency').style.height = g.efficiency + '%';
+  
+  document.getElementById('gauge-construction-val').textContent = g.constructionSpeed + '%';
+  document.getElementById('gauge-construction').style.height = g.constructionSpeed + '%';
+  
+  document.getElementById('gauge-lifespan-val').textContent = g.lifespan + '%';
+  document.getElementById('gauge-lifespan').style.height = g.lifespan + '%';
+  
+  document.getElementById('gauge-risk-val').textContent = g.safety + '%';
+  document.getElementById('gauge-risk').style.height = g.safety + '%';
+  
+  document.getElementById('gauge-maintenance-val').textContent = g.maintenanceEconomy + '%';
+  document.getElementById('gauge-maintenance').style.height = g.maintenanceEconomy + '%';
+}
+
+// Initialize timeline with reactor deployment dates
+function initTimeline() {
+  const track = document.getElementById('timeline-track');
+  if (!track) return;
+  
+  // Données chronologiques approximatives (décennie de première commercialisation)
+  const timeline = [
+    {reactor: 'PWR', year: 1955, decade:'1950s'},
+    {reactor: 'BWR', year: 1960, decade:'1960s'},
+    {reactor: 'PHWR', year: 1962, decade:'1960s'},
+    {reactor: 'FNR', year: 1967, decade:'1960s'},
+    {reactor: 'RBMK', year: 1973, decade:'1970s'},
+    {reactor: 'AGR', year: 1976, decade:'1970s'},
+    {reactor: 'HTR', year: 2003, decade:'2000s'},
+    {reactor: 'SMR', year: 2016, decade:'2010s'},
+    {reactor: 'MSR', year: 2028, decade:'Future'}
+  ];
+  
+  const minYear = 1950;
+  const maxYear = 2030;
+  const range = maxYear - minYear;
+  
+  timeline.forEach(item => {
+    const r = REACTORS.find(x => x.id === item.reactor);
+    if (!r) return;
+    
+    const position = ((item.year - minYear) / range) * 100;
+    const dot = document.createElement('div');
+    dot.className = 'timeline-item';
+    dot.style.left = `calc(${position}% - 17px)`;  // 34px / 2
+    dot.style.background = `linear-gradient(135deg, ${r.hex}, ${r.hex}dd)`;
+    dot.title = `${r.id} — First Time: ${item.year}`;  // Simplifié
+    dot.dataset.reactor = r.id;
+    
+    dot.addEventListener('click', () => selectReactor(r.id));
+    
+    track.appendChild(dot);
+  });
+}
+
+// Wire up reactor buttons
+document.querySelectorAll('.reactor-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    selectReactor(this.dataset.id);
+  });
+});
+
+// Initialize timeline
+initTimeline();
+
+// ═══════════════════════════════════════════════════════════════════
+// SPLITTER (drag to resize sidebar)
+// ═══════════════════════════════════════════════════════════════════
+(function() {
+  const splitter = document.getElementById('splitter');
+  let draggingSp = false, startX = 0, startW = 0;
+  const MIN_W = 180, MAX_W = 640;
+
+  splitter.addEventListener('mousedown', function(e) {
+    draggingSp = true;
+    startX = e.clientX;
+    startW = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-w')) || 360;
+    splitter.classList.add('dragging');
+    e.preventDefault();
+  });
+  window.addEventListener('mousemove', function(e) {
+    if (!draggingSp) return;
+    const dx = startX - e.clientX;
+    const nw = Math.min(MAX_W, Math.max(MIN_W, startW + dx));
+    document.documentElement.style.setProperty('--sidebar-w', nw+'px');
+  });
+  window.addEventListener('mouseup', function() {
+    draggingSp = false;
+    splitter.classList.remove('dragging');
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════════════
+// RENDER LOOP
+// ═══════════════════════════════════════════════════════════════════
+createScene();
+engine.resize();
+
+engine.runRenderLoop(function() {
+  if (!scene || !cam) return;
+  
+  // Auto-rotation de l'ennéagramme (fluide)
+  if (autoRotate && enneagramRoot) {
+    enneagramRoot.rotation.y += 0.005;  // Rotation constante
+  }
+  
+  scene.render();
+});
+
+window.addEventListener('resize', function() { engine.resize(); });
+</script>
+
+<!-- Tooltips -->
+<div id="home-tip" style="
+  position:fixed;z-index:999999;
+  background:#1c2130;color:#e6edf3;
+  border:1px solid #3d444f;border-radius:6px;
+  padding:4px 10px;font-size:11px;font-weight:500;
+  letter-spacing:.04em;white-space:nowrap;
+  pointer-events:none;opacity:0;transition:opacity .18s;
+">Back to Poclet Gallery</div>
+
+<div id="tscg-tip" style="
+  position:fixed;z-index:999999;
+  background:#1c2130;color:#e6edf3;
+  border:1px solid #3d444f;border-radius:6px;
+  padding:4px 10px;font-size:11px;font-weight:500;
+  letter-spacing:.04em;white-space:nowrap;
+  pointer-events:none;opacity:0;transition:opacity .18s;
+  transform:translateX(-50%);
+">TSCG Github repository</div>
+
+<script>
+(function(){
+  const home = document.getElementById('btn-home');
+  const homeTip = document.getElementById('home-tip');
+  if (home && homeTip) {
+    home.addEventListener('mouseenter', function() {
+      const r = home.getBoundingClientRect();
+      homeTip.style.left = Math.max(8, r.left) + 'px';
+      homeTip.style.top  = (r.bottom + 6) + 'px';
+      homeTip.style.opacity = '1';
+    });
+    home.addEventListener('mouseleave', function() { homeTip.style.opacity = '0'; });
+  }
+  const logo = document.querySelector('.tscg-logo-link');
+  const tip  = document.getElementById('tscg-tip');
+  if (logo && tip) {
+    logo.addEventListener('mouseenter', function() {
+      const r = logo.getBoundingClientRect();
+      tip.style.left = (r.left + r.width / 2) + 'px';
+      tip.style.top  = (r.bottom + 6) + 'px';
+      tip.style.opacity = '1';
+    });
+    logo.addEventListener('mouseleave', function() { tip.style.opacity = '0'; });
+  }
+})();
+</script>
+</body>
+</html>

@@ -48,8 +48,8 @@ if hasattr(sys.stderr, "reconfigure"):
 # CONFIGURATION
 # ==============================================================================
 
-DEFAULT_EXTENSIONS = ['md', 'jsonld', 'txt', 'py', 'cs', 'fs']
-IGNORED_PATTERNS = ['bin/', 'obj/', '.git/', '__pycache__/', 'node_modules/']
+DEFAULT_EXTENSIONS = ['md', 'jsonld', 'txt', 'js', 'py', 'cs', 'fs', 'html']
+IGNORED_PATTERNS = ['bin/', 'obj/', '.git/', '__pycache__/', 'node_modules/', '_protos/']
 
 # File extensions that are ALWAYS excluded, regardless of --extensions.
 # .ttl (Turtle/RDF) files are auto-generated from .jsonld via jsonld_to_turtle.py
@@ -928,7 +928,7 @@ def collect_files(repo_path: str, extensions: List[str], ignored_patterns: List[
 
         filtered = []
         for f in pattern_files:
-            rel_path = str(f.relative_to(repo))
+            rel_path = str(f.relative_to(repo)).replace('\\', '/')  # Normalize to forward slashes
             # Skip standard ignored patterns
             if any(pattern in rel_path for pattern in ignored_patterns):
                 continue
@@ -981,6 +981,19 @@ def main():
         return 1
 
     print(f"✓ Found {len(files)} files to index")
+    
+    # Count by extension
+    from collections import Counter
+    ext_count = Counter(f.split('.')[-1].lower() for f in files)
+    print(f"  Extensions: {dict(ext_count)}")
+    
+    # Show .js files location
+    print("\n  Sample .js files locations:")
+    js_files = [f for f in files if f.endswith('.js')]
+    from collections import Counter
+    js_dirs = Counter('/'.join(str(Path(f).relative_to(args.repo)).split('/')[:2]) for f in js_files)
+    for dir_prefix, count in js_dirs.most_common(10):
+        print(f"    {dir_prefix}: {count} files")
 
     # 2. Initialize segmenter
     print("\n🔧 Initializing segmenter...")
