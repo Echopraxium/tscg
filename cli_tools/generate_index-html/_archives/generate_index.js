@@ -400,7 +400,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);
 /* ── Header ─────────────────────────────────────────────────────────── */
 #header{grid-area:header;display:flex;align-items:center;gap:12px;padding:0 16px;
   background:var(--bg-panel);border-bottom:1px solid var(--border);}
-.logo{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--eagle);text-transform:uppercase;}
+.logo{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--eagle);text-transform:uppercase;cursor:pointer;background:none;border:none;padding:0;font-family:var(--font);}
 .title{font-size:14px;font-weight:600;flex:1;}
 .chip{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid transparent;}
 .chip-count{background:rgba(86,211,100,.12);border-color:rgba(86,211,100,.3);color:var(--accent);}
@@ -523,7 +523,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);
 
   <!-- HEADER -->
   <header id="header">
-    <span class="logo">TSCG</span>
+    <button id="tscg-logo-btn" class="logo" onclick="window.open('https://github.com/Echopraxium/tscg','_blank')">TSCG</button>
     <span class="title">Poclet Gallery &mdash; Static Simulations</span>
     <span class="chip chip-count" id="hdr-count">0 simulations</span>
     <span class="chip chip-date">${now}</span>
@@ -575,6 +575,32 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);
     <span id="footer-path"></span>
     <div class="status-dot"></div>
   </footer>
+
+
+<!-- TSCG logo tooltip -->
+<div id="tscg-tip" style="
+  position:fixed;z-index:999999;
+  background:#1c2130;color:#e6edf3;
+  border:1px solid #3d444f;border-radius:6px;
+  padding:4px 10px;font-size:11px;font-weight:500;
+  letter-spacing:0.04em;white-space:nowrap;
+  pointer-events:none;opacity:0;transition:opacity 0.18s;
+">TSCG Github repository</div>
+<script>
+(function(){
+  const btn = document.getElementById('tscg-logo-btn');
+  const tip = document.getElementById('tscg-tip');
+  if (!btn || !tip) return;
+  btn.addEventListener('mouseenter', function() {
+    const r = btn.getBoundingClientRect();
+    tip.style.left = Math.max(8, r.left) + 'px';
+    tip.style.top  = (r.bottom + 6) + 'px';
+    tip.style.transform = 'none';
+    tip.style.opacity = '1';
+  });
+  btn.addEventListener('mouseleave', function() { tip.style.opacity = '0'; });
+})();
+</script>
 
 </div><!-- #shell -->
 `;
