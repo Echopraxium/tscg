@@ -178,29 +178,78 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);
 }
 
 /* ── Header ─────────────────────────────────────────────────────────── */
-#header{grid-area:header;display:flex;align-items:center;gap:12px;padding:0 16px;
+#header{grid-area:header;display:flex;align-items:baseline;gap:12px;padding:0 16px;
   background:var(--bg-panel);border-bottom:1px solid var(--border);}
-.logo{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--eagle);text-transform:uppercase;cursor:pointer;background:none;border:none;padding:0;font-family:var(--font);}
-.title{font-size:14px;font-weight:600;flex:1;}
+.logo{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--eagle);text-transform:uppercase;cursor:pointer;background:none;border:none;padding:0;font-family:var(--font);line-height:1;}
+.logo:hover{color:#ff9178;}
+.title{font-size:14px;font-weight:600;flex:1;line-height:1;}
 .chip{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid transparent;}
 .chip-count{background:rgba(86,211,100,.12);border-color:rgba(86,211,100,.3);color:var(--accent);}
 .chip-date {background:rgba(121,192,255,.12);border-color:rgba(121,192,255,.3);color:var(--sphinx);}
+
+/* ── Tag Filter ─────────────────────────────────────────────────────── */
+.tag-filter-section{padding:12px;border-bottom:1px solid var(--border);background:var(--bg-card);}
+.tag-filter-label{font-size:12px;font-weight:600;color:var(--text-dim);margin-bottom:8px;
+  text-transform:uppercase;letter-spacing:.5px;}
+.tag-select-row{display:flex;gap:6px;align-items:stretch;}
+.tag-select{flex:1;background:var(--bg-panel);border:1px solid var(--border);
+  border-radius:var(--radius);color:var(--text);padding:6px 8px;font-size:13px;
+  font-family:var(--font);cursor:pointer;outline:none;transition:border-color .2s;}
+.tag-select:hover{border-color:var(--border2);}
+.tag-select:focus{border-color:var(--accent);}
+.tag-select option{background:var(--bg-panel);color:var(--text);padding:4px;}
+.clear-tags-btn{width:32px;background:var(--bg-panel);border:1px solid var(--border);
+  border-radius:var(--radius);color:var(--muted);font-size:16px;font-weight:bold;
+  cursor:pointer;outline:none;transition:all .2s;display:flex;align-items:center;
+  justify-content:center;padding:0;flex-shrink:0;}
+.clear-tags-btn:hover{background:var(--bg-hover);border-color:var(--border2);color:var(--text);}
+.clear-tags-btn:active{transform:scale(.95);}
+.clear-tags-btn:disabled{opacity:.3;cursor:not-allowed;}
+.clear-tags-btn:disabled:hover{background:var(--bg-panel);border-color:var(--border);
+  color:var(--muted);transform:none;}
+.selected-tags-container{margin-top:12px;max-height:120px;overflow-y:auto;overflow-x:hidden;
+  padding:8px;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--radius);min-height:48px;}
+.selected-tags-container::-webkit-scrollbar{width:8px;}
+.selected-tags-container::-webkit-scrollbar-track{background:var(--bg-panel);border-radius:4px;}
+.selected-tags-container::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+.selected-tags-container::-webkit-scrollbar-thumb:hover{background:var(--muted);}
+.selected-tags-empty{color:var(--muted);font-size:12px;font-style:italic;
+  text-align:center;padding:8px 0;}
+.tag-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;margin:3px;
+  border-radius:12px;font-size:12px;font-weight:500;cursor:pointer;
+  transition:all .2s;user-select:none;}
+.tag-pill:hover{transform:translateY(-1px);filter:brightness(1.15);}
+.tag-pill:active{transform:translateY(0);}
+.tag-remove{width:14px;height:14px;border-radius:50%;background:rgba(0,0,0,.3);
+  display:flex;align-items:center;justify-content:center;font-size:10px;
+  font-weight:bold;transition:background .2s;}
+.tag-pill:hover .tag-remove{background:rgba(0,0,0,.5);}
+.tag-color-0{background:linear-gradient(135deg,#ff6b6b,#ee5a6f);color:#fff;}
+.tag-color-1{background:linear-gradient(135deg,#4ecdc4,#44a08d);color:#fff;}
+.tag-color-2{background:linear-gradient(135deg,#ffd93d,#f6b93b);color:#2c2c2c;}
+.tag-color-3{background:linear-gradient(135deg,#6c5ce7,#5f27cd);color:#fff;}
+.tag-color-4{background:linear-gradient(135deg,#fd79a8,#e84393);color:#fff;}
+.tag-color-5{background:linear-gradient(135deg,#00b894,#00a896);color:#fff;}
+.tag-color-6{background:linear-gradient(135deg,#74b9ff,#0984e3);color:#fff;}
+.tag-color-7{background:linear-gradient(135deg,#ff7675,#d63031);color:#fff;}
 
 /* ── Tree panel ─────────────────────────────────────────────────────── */
 #tree-panel{grid-area:tree;display:flex;flex-direction:column;
   background:var(--bg-panel);border-right:1px solid var(--border);
   overflow:hidden;min-width:160px;}
 #tree-header{display:flex;justify-content:space-between;align-items:center;
-  padding:8px 12px;font-size:11px;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--muted);
+  padding:8px 12px;font-size:11px;font-weight:500;
+  color:var(--muted);
   border-bottom:1px solid var(--border);flex-shrink:0;}
-#tree-count{font-weight:400;color:var(--border2);}
+.tree-count-num{color:var(--accent);font-weight:600;}
 #tree-list{overflow-y:auto;flex:1;}
 .tree-item{display:flex;align-items:center;gap:8px;padding:7px 12px;
   cursor:pointer;border-left:3px solid transparent;
   transition:background .12s,border-color .12s;}
 .tree-item:hover{background:var(--bg-hover);}
 .tree-item.active{background:rgba(121,192,255,.08);border-left-color:var(--sphinx);}
+.tree-item.filtered{display:none;}
 .tree-icon{font-size:10px;color:var(--border2);flex-shrink:0;}
 .tree-label{flex:1;font-size:12px;color:var(--text-dim);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -311,8 +360,21 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);
 
   <!-- TREE -->
   <div id="tree-panel">
+    <!-- Tag filter section -->
+    <div class="tag-filter-section">
+      <div class="tag-filter-label">🏷️ Filter by Tags</div>
+      <div class="tag-select-row">
+        <select id="tag-select" class="tag-select">
+          <option value="">— Select a tag —</option>
+        </select>
+        <button id="clear-tags-btn" class="clear-tags-btn" title="Clear all tags">✕</button>
+      </div>
+      <div id="selected-tags" class="selected-tags-container">
+        <div class="selected-tags-empty">No tags selected</div>
+      </div>
+    </div>
     <div id="tree-header">
-      Poclets <span id="tree-count">0</span>
+      <div class="tree-count">Showing <span class="tree-count-num" id="visible-count">0</span> of <span class="tree-count-num" id="tree-count">0</span> poclets</div>
     </div>
     <div id="tree-list"></div>
   </div>
@@ -395,19 +457,152 @@ const ASFID_COLORS = ['var(--col-A)','var(--col-S)','var(--col-F)','var(--col-I)
 const REVOI_COLORS = ['var(--col-R)','var(--col-E)','var(--col-V)','var(--col-O)','var(--col-Im)'];
 
 let selectedId = null;
+const selectedTags = new Set();
 
 window.addEventListener('DOMContentLoaded', () => {
+  populateTagSelect();
   renderTree();
   initTreeListeners();
+  initTagListeners();
   initSplitter();
   initKeyboard();
-  if (POCLETS.length) selectPoclet(POCLETS[0].id);
+  filterPoclets();
 });
+
+// ── Tag management ────────────────────────────────────────────────────────────
+
+function populateTagSelect() {
+  const allTags = new Set();
+  POCLETS.forEach(p => {
+    if (p.domain) allTags.add(p.domain);
+  });
+  const sorted = [...allTags].sort();
+  const select = document.getElementById('tag-select');
+  sorted.forEach(tag => {
+    const opt = document.createElement('option');
+    opt.value = tag;
+    opt.textContent = tag;
+    select.appendChild(opt);
+  });
+}
+
+function getTagColor(tag) {
+  let hash = 0;
+  for (let i = 0; i < tag.length; i++) {
+    hash = tag.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return Math.abs(hash) % 8;
+}
+
+function renderSelectedTags() {
+  const container = document.getElementById('selected-tags');
+  const clearBtn = document.getElementById('clear-tags-btn');
+  
+  if (selectedTags.size === 0) {
+    container.innerHTML = '<div class="selected-tags-empty">No tags selected</div>';
+    clearBtn.disabled = true;
+    return;
+  }
+  
+  clearBtn.disabled = false;
+  
+  let html = '';
+  selectedTags.forEach(tag => {
+    const colorClass = 'tag-color-' + getTagColor(tag);
+    html += '<div class="tag-pill ' + colorClass + '" data-tag="' + esc(tag) + '">' +
+      '<span>' + esc(tag) + '</span>' +
+      '<span class="tag-remove">✕</span>' +
+      '</div>';
+  });
+  
+  container.innerHTML = html;
+  
+  container.querySelectorAll('.tag-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const tag = pill.dataset.tag;
+      selectedTags.delete(tag);
+      renderSelectedTags();
+      filterPoclets();
+    });
+  });
+}
+
+function filterPoclets() {
+  const items = document.querySelectorAll('.tree-item');
+  let visibleCount = 0;
+  let firstVisibleItem = null;
+  
+  items.forEach(item => {
+    const poclet = POCLETS.find(p => p.id === item.dataset.id);
+    if (!poclet) return;
+    
+    if (selectedTags.size === 0) {
+      item.classList.remove('filtered');
+      if (!firstVisibleItem) firstVisibleItem = item;
+      visibleCount++;
+      return;
+    }
+    
+    const hasMatch = Array.from(selectedTags).some(selectedTag => 
+      poclet.domain && (
+        poclet.domain.toLowerCase().includes(selectedTag.toLowerCase()) ||
+        selectedTag.toLowerCase().includes(poclet.domain.toLowerCase())
+      )
+    );
+    
+    if (hasMatch) {
+      item.classList.remove('filtered');
+      if (!firstVisibleItem) firstVisibleItem = item;
+      visibleCount++;
+    } else {
+      item.classList.add('filtered');
+    }
+  });
+  
+  document.getElementById('visible-count').textContent = visibleCount;
+  
+  // Auto-select first visible item
+  if (firstVisibleItem) {
+    selectPocletElement(firstVisibleItem);
+  } else {
+    // No visible items - clear selection
+    document.querySelectorAll('.tree-item').forEach(i => i.classList.remove('active'));
+    document.getElementById('launch-btn').classList.add('hidden');
+    document.getElementById('footer-info').textContent = '';
+  }
+}
+
+function selectPocletElement(item) {
+  document.querySelectorAll('.tree-item').forEach(i => i.classList.remove('active'));
+  item.classList.add('active');
+  selectPoclet(item.dataset.id);
+}
+
+function initTagListeners() {
+  document.getElementById('tag-select').addEventListener('change', e => {
+    const tag = e.target.value;
+    if (tag && !selectedTags.has(tag)) {
+      selectedTags.add(tag);
+      renderSelectedTags();
+      filterPoclets();
+    }
+    e.target.value = '';
+  });
+  
+  document.getElementById('clear-tags-btn').addEventListener('click', () => {
+    selectedTags.clear();
+    renderSelectedTags();
+    filterPoclets();
+  });
+}
+
+// ── Tree rendering ────────────────────────────────────────────────────────────
 
 function renderTree() {
   const list = document.getElementById('tree-list');
   const n    = POCLETS.length;
   document.getElementById('tree-count').textContent = n;
+  document.getElementById('visible-count').textContent = n;
   document.getElementById('hdr-count').textContent  =
     n + ' simulation' + (n !== 1 ? 's' : '');
   if (!n) {
@@ -423,8 +618,6 @@ function renderTree() {
     '<span class="tree-label">' + esc(p.label) + '</span>' +
     '</div>'
   ).join('');
-  list.querySelectorAll('.tree-item').forEach(el =>
-    el.addEventListener('click', () => selectPoclet(el.dataset.id)));
 }
 
 function selectPoclet(id) {
@@ -555,7 +748,9 @@ function initTreeListeners() {
   const list = document.getElementById('tree-list');
   list.addEventListener('click', e => {
     const item = e.target.closest('.tree-item');
-    if (item) selectPoclet(item.dataset.id);
+    if (item && !item.classList.contains('filtered')) {
+      selectPocletElement(item);
+    }
   });
   list.addEventListener('dblclick', e => {
     const item = e.target.closest('.tree-item');
@@ -569,15 +764,24 @@ function initTreeListeners() {
 
 function initKeyboard() {
   document.addEventListener('keydown', e => {
-    const idx = POCLETS.findIndex(p => p.id === selectedId);
+    const visiblePoclets = POCLETS.filter(p => {
+      if (selectedTags.size === 0) return true;
+      return Array.from(selectedTags).some(tag =>
+        p.domain && (
+          p.domain.toLowerCase().includes(tag.toLowerCase()) ||
+          tag.toLowerCase().includes(p.domain.toLowerCase())
+        )
+      );
+    });
+    const idx = visiblePoclets.findIndex(p => p.id === selectedId);
     if (e.key === 'ArrowDown') {
-      const next = Math.min(idx + 1, POCLETS.length - 1);
-      if (POCLETS[next]) selectPoclet(POCLETS[next].id);
+      const next = Math.min(idx + 1, visiblePoclets.length - 1);
+      if (visiblePoclets[next]) selectPoclet(visiblePoclets[next].id);
       e.preventDefault();
     }
     if (e.key === 'ArrowUp') {
       const prev = Math.max(idx - 1, 0);
-      if (POCLETS[prev]) selectPoclet(POCLETS[prev].id);
+      if (visiblePoclets[prev]) selectPoclet(visiblePoclets[prev].id);
       e.preventDefault();
     }
     if (e.key === 'Enter') {
@@ -600,7 +804,7 @@ function initSplitter() {
   });
   document.addEventListener('mousemove', e => {
     if (!dragging) return;
-    const w = Math.max(160, Math.min(520, startW + (e.clientX - startX)));
+    const w = Math.max(180, Math.min(640, startW + (e.clientX - startX)));
     shell.style.gridTemplateColumns = w + 'px var(--split-w) 1fr';
   });
   document.addEventListener('mouseup', () => {
@@ -610,6 +814,7 @@ function initSplitter() {
     document.body.style.cssText = '';
   });
 }
+
 </script>
 </body>
 </html>
