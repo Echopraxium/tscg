@@ -329,7 +329,14 @@ function discoverPoclets() {
 function parseJsonld(filePath) {
   try {
     const raw  = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-    const node = (raw['@graph'] || [raw])[0] || {};
+    const graph = raw['@graph'] || [raw];
+    
+    // Skip owl:Ontology nodes — find the actual poclet node
+    let node = graph.find(n => {
+      const types = Array.isArray(n['@type']) ? n['@type'] : [n['@type']];
+      return !types.includes('owl:Ontology');
+    }) || graph[0] || {};
+    
     const as   = node['m0:asfidScores'] || null;
     const rv   = node['m0:revoiScores'] || null;
     return {
