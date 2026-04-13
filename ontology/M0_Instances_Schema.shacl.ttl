@@ -1,0 +1,335 @@
+# SHACL Schema for TSCG M0 Poclets – Common Grammar
+# References M3, M2, M1 vocabularies; does not redefine them.
+# Validates core metadata, ASFID/REVOI scores, architectural patterns,
+# and usage of M2 GenericConcepts (Pole, Network, Mediator, Trigger, Environment, Boundary, System).
+
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m0: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet.jsonld#> .
+@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
+@prefix m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#> .
+@prefix m1core: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#> .
+
+# ============================================
+# MAIN POCLET SHAPE (targets owl:Ontology with m3:Poclet type)
+# ============================================
+m0:PocletShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:targetClass owl:NamedIndividual ;
+  sh:property [
+    sh:path rdfs:label ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "Every poclet MUST have an rdfs:label"
+  ], [
+    sh:path rdfs:comment ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:message "Every poclet MUST have an rdfs:comment"
+  ], [
+    sh:path dcterms:created ;
+    sh:datatype xsd:date ;
+    sh:minCount 1 ;
+    sh:message "Creation date (dcterms:created) is required"
+  ], [
+    sh:path dcterms:creator ;
+    sh:minCount 1 ;
+    sh:message "Creator (dcterms:creator) is required"
+  ], [
+    sh:path owl:versionInfo ;
+    sh:pattern "^[0-9]+\\.[0-9]+\\.[0-9]+$" ;
+    sh:minCount 1 ;
+    sh:message "VersionInfo MUST follow semver (X.Y.Z)"
+  ], [
+    sh:path m3:ontologyType ;
+    sh:hasValue m3:Poclet ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "ontologyType MUST be m3:Poclet"
+  ], [
+    sh:path m0:domain ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:message "Every poclet MUST specify its domain (m0:domain)"
+  ], [
+    sh:path m0:pocletType ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "Every poclet MUST have a pocletType"
+  ], [
+    sh:path m0:architecturePattern ;
+    sh:datatype xsd:string ;
+    sh:in ("Monolithic" "Multipolar" "NetworkWithOrchestrator" "SequentialPoles") ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "architecturePattern must be one of: Monolithic, Multipolar, NetworkWithOrchestrator, SequentialPoles"
+  ],
+
+  # Optional common properties
+  [
+    sh:path m0:asfidScores ;
+    sh:node m0:AsfidScoresShape ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "If present, ASFID scores must conform to AsfidScoresShape"
+  ], [
+    sh:path m0:revoiScores ;
+    sh:node m0:RevoiScoresShape ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "If present, REVOI scores must conform to RevoiScoresShape"
+  ], [
+    sh:path m0:epistemicGap ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "Epistemic gap must be a float between 0 and 1"
+  ],
+
+  # Architectural choice (exactly one pattern)
+  sh:or (
+    [ sh:property [ sh:path m0:components ; sh:minCount 1 ] ]                    # Monolithic
+    [ sh:property [ sh:path m0:validationStatus ; sh:minCount 1 ] ]              # Multipolar
+    [ sh:and (
+        [ sh:property [ sh:path m0:architecturePattern ; sh:hasValue "NetworkWithOrchestrator" ] ]
+        [ sh:property [ sh:path m0:hasNetwork ; sh:minCount 1 ] ]
+      )
+    ]
+    [ sh:and (
+        [ sh:property [ sh:path m0:architecturePattern ; sh:hasValue "SequentialPoles" ] ]
+        [ sh:property [ sh:path m0:hasPole ; sh:minCount 2 ] ]
+      )
+    ]
+  ) ;
+  sh:message "Poclet must follow exactly one architecture: Monolithic (m0:components), Multipolar (m0:validationStatus), NetworkWithOrchestrator (m0:hasNetwork), or SequentialPoles (m0:hasPole)" .
+
+# ============================================
+# ASFID and REVOI score structures
+# ============================================
+m0:AsfidScoresShape
+  a sh:NodeShape ;
+  sh:property [
+    sh:path m0:A ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
+    sh:minCount 1 ; sh:maxCount 1 ; sh:message "ASFID A (Attractor) required (0-1)"
+  ], [
+    sh:path m0:S ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
+    sh:minCount 1 ; sh:maxCount 1 ; sh:message "ASFID S (Structure) required (0-1)"
+  ], [
+    sh:path m0:F ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
+    sh:minCount 1 ; sh:maxCount 1 ; sh:message "ASFID F (Flow) required (0-1)"
+  ], [
+    sh:path m0:I ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
+    sh:minCount 1 ; sh:maxCount 1 ; sh:message "ASFID I (Information) required (0-1)"
+  ], [
+    sh:path m0:D ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
+    sh:minCount 1 ; sh:maxCount 1 ; sh:message "ASFID D (Dynamics) required (0-1)"
+  ], [
+    sh:path m0:mean ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
+    sh:minCount 0 ; sh:maxCount 1 ; sh:message "ASFID mean (optional) must be 0-1"
+  ] .
+
+m0:RevoiScoresShape
+  a sh:NodeShape ;
+  sh:property [
+    sh:path m0:R ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
+    sh:minCount 1 ; sh:maxCount 1 ; sh:message "REVOI R (Representability) required (0-1)"
+  ], [
+    sh:path m0:E ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
+    sh:minCount 1 ; sh:maxCount 1 ; sh:message "REVOI E (Evolvability) required (0-1)"
+  ], [
+    sh:path m0:V ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
+    sh:minCount 1 ; sh:maxCount 1 ; sh:message "REVOI V (Verifiability) required (0-1)"
+  ], [
+    sh:path m0:O ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
+    sh:minCount 1 ; sh:maxCount 1 ; sh:message "REVOI O (Observability) required (0-1)"
+  ], [
+    sh:path m0:I ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
+    sh:minCount 1 ; sh:maxCount 1 ; sh:message "REVOI I (Interoperability) required (0-1)"
+  ], [
+    sh:path m0:mean ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
+    sh:minCount 0 ; sh:maxCount 1 ; sh:message "REVOI mean (optional) must be 0-1"
+  ] .
+
+# ============================================
+# Shapes for M2 GenericConcepts (as used in poclets)
+# ============================================
+# These shapes only constrain the properties that appear in poclet instances.
+# They rely on the existence of M2 classes and properties.
+
+m2:SystemShape
+  a sh:NodeShape ;
+  sh:targetClass m2:System ;
+  sh:property [
+    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
+    sh:message "System must have an rdfs:label"
+  ], [
+    sh:path m2:hasBoundary ; sh:node m2:BoundaryShape ; sh:minCount 0 ;
+  ], [
+    sh:path m2:hasEnvironment ; sh:node m2:EnvironmentShape ; sh:minCount 0 ;
+  ] .
+
+m2:NetworkShape
+  a sh:NodeShape ;
+  sh:targetClass m2:Network ;
+  sh:property [
+    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ], [
+    sh:path m2:hasNode ; sh:node m2:PoleShape ; sh:minCount 2 ;
+    sh:message "A Network must have at least two nodes (m2:hasNode)"
+  ], [
+    sh:path m2:orchestrator ; sh:node m2:PoleShape ; sh:minCount 0 ;
+  ], [
+    sh:path m2:hasTopology ; sh:datatype xsd:string ; sh:minCount 0 ;
+  ] .
+
+m2:PoleShape
+  a sh:NodeShape ;
+  sh:targetClass m2:Pole ;
+  sh:property [
+    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ], [
+    sh:path m2:poleRole ; sh:datatype xsd:string ; sh:minCount 1 ;
+    sh:message "Pole must specify its role (m2:poleRole)"
+  ], [
+    sh:path m2:asfidDecomposition ; sh:node m2:AsfidDecompositionShape ; sh:minCount 0 ;
+  ] .
+
+m2:AsfidDecompositionShape
+  a sh:NodeShape ;
+  sh:property [
+    sh:path m2:structure ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ], [
+    sh:path m2:information ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ], [
+    sh:path m2:attractor ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ] .
+
+m2:MediatorShape
+  a sh:NodeShape ;
+  sh:targetClass m2:Mediator ;
+  sh:property [
+    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ], [
+    sh:path m2:mediatorType ; sh:datatype xsd:string ; sh:minCount 1 ;
+    sh:message "Mediator must specify its type (m2:mediatorType)"
+  ], [
+    sh:path m2:fisDecomposition ; sh:node m2:FisDecompositionShape ; sh:minCount 0 ;
+  ] .
+
+m2:FisDecompositionShape
+  a sh:NodeShape ;
+  sh:property [
+    sh:path m2:flow ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ], [
+    sh:path m2:information ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ], [
+    sh:path m2:structure ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ] .
+
+m2:TriggerShape
+  a sh:NodeShape ;
+  sh:targetClass m2:Trigger ;
+  sh:property [
+    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ], [
+    sh:path m2:diDecomposition ; sh:node m2:DiDecompositionShape ; sh:minCount 0 ;
+  ] .
+
+m2:DiDecompositionShape
+  a sh:NodeShape ;
+  sh:property [
+    sh:path m2:dynamics ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ], [
+    sh:path m2:information ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ] .
+
+m2:EnvironmentShape
+  a sh:NodeShape ;
+  sh:targetClass m2:Environment ;
+  sh:property [
+    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ], [
+    sh:path m2:fiDecomposition ; sh:node m2:FiDecompositionShape ; sh:minCount 0 ;
+  ] .
+
+m2:FiDecompositionShape
+  a sh:NodeShape ;
+  sh:property [
+    sh:path m2:flow ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ], [
+    sh:path m2:information ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ] .
+
+m2:BoundaryShape
+  a sh:NodeShape ;
+  sh:targetClass m2:Boundary ;
+  sh:property [
+    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
+  ], [
+    sh:path m2:boundaryType ; sh:datatype xsd:string ; sh:minCount 1 ;
+    sh:message "Boundary must have a boundaryType"
+  ] .
+
+# ============================================
+# Component shape for monolithic poclets
+# ============================================
+m2:ComponentShape
+  a sh:NodeShape ;
+  sh:targetClass m2:Component ;
+  sh:property [
+    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
+    sh:message "Component must have a label"
+  ], [
+    sh:path m0:role ; sh:datatype xsd:string ; sh:minCount 1 ;
+    sh:message "Component must specify its role"
+  ] .
+
+# ============================================
+# SPARQL constraints for architecture exclusivity and ASFID completeness
+# ============================================
+m0:NoMixedArchitectureShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "Poclet cannot have both m0:components and m0:hasNetwork or m0:hasPole" ;
+    sh:select """
+      SELECT $this WHERE {
+        $this m0:components ?c .
+        FILTER( EXISTS { $this m0:hasNetwork ?n } || EXISTS { $this m0:hasPole ?p } )
+      }
+    """
+  ] ;
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "Poclet cannot have both m0:validationStatus and m0:hasNetwork or m0:hasPole" ;
+    sh:select """
+      SELECT $this WHERE {
+        $this m0:validationStatus ?v .
+        FILTER( EXISTS { $this m0:hasNetwork ?n } || EXISTS { $this m0:hasPole ?p } )
+      }
+    """
+  ] .
+
+m0:AsfidCompletenessShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "Poclet MUST document ASFID completeness (either m0:asfidScores or m0:asfidCompleteness textual description)" ;
+    sh:select """
+      SELECT $this WHERE {
+        $this a owl:Ontology .
+        FILTER NOT EXISTS { $this m0:asfidScores ?s }
+        FILTER NOT EXISTS { $this m0:asfidCompleteness ?c }
+      }
+    """
+  ] .
