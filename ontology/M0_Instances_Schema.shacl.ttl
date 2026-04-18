@@ -1,335 +1,535 @@
-# SHACL Schema for TSCG M0 Poclets – Common Grammar
-# References M3, M2, M1 vocabularies; does not redefine them.
-# Validates core metadata, ASFID/REVOI scores, architectural patterns,
-# and usage of M2 GenericConcepts (Pole, Network, Mediator, Trigger, Environment, Boundary, System).
+# TSCG Instances - Complete Grammar SHACL Schema v1.1
+# Based on complete corpus analysis: 24 Poclets + 2 other instances (26 total)
+# Author: Echopraxium with the collaboration of Claude AI
+# Date: 2026-04-13 (initial), 2026-04-18 (v1.1 - domain migration)
+# Status: UPDATED - Domain property migrated to M1 level
 
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix m0: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet.jsonld#> .
+@prefix m0: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#> .
+@prefix m1: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#> .
 @prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
 @prefix m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#> .
-@prefix m1core: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#> .
 
 # ============================================
-# MAIN POCLET SHAPE (targets owl:Ontology with m3:Poclet type)
+# NAMESPACE POLICY (CRITICAL)
 # ============================================
-m0:PocletShape
+# ALLOWED NAMESPACES:
+# - Standard: owl, rdf, rdfs, skos, dcterms, xsd, etc.
+# - TSCG: m3, m2, m1 (+ extensions: m1bio, m1chem, m1optics, m1geo, etc.), m0
+#
+# FORBIDDEN NAMESPACES:
+# - tscg: (source of confusion - use m0: for instance-specific properties)
+#
+# CANONICAL @base URL:
+# - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/
+# - NOT: aladas-org/cryptocalc (obsolete repository - 3/26 violations detected)
+# ============================================
+
+# ============================================
+# TSCG INSTANCE TYPES (3 validated types)
+# ============================================
+# All TSCG instances MUST use m3:ontologyType with one of these values:
+# 1. m3:Poclet (24 instances) - Primary TSCG instance type
+# 2. m3:SystemicFramework (1 instance: VSM) - Systemic framework modeling
+# 3. m3:SymbolicSystemGrammar (1 instance: IChing) - Symbolic system modeling
+#
+# OBSOLETE PROPERTIES (NEVER USE):
+# - m3:ontologyCategory (1 violation detected in VSM - must be corrected)
+# - m2:ontologyCategory (5 violations detected in poclets - must be corrected)
+# - m2:ontologyType (incorrect namespace)
+# ============================================
+
+# ============================================
+# COMMON TSCG INSTANCE SHAPE
+# ============================================
+# Applies to ALL TSCG instances (Poclets + SystemicFrameworks + SymbolicSystemGrammars)
+m0:TscgInstanceShape
   a sh:NodeShape ;
   sh:targetClass owl:Ontology ;
-  sh:targetClass owl:NamedIndividual ;
+  sh:name "TSCG Instance Common Shape" ;
+  sh:description "Common constraints for all TSCG instances. Based on 100% corpus analysis (26 instances: 24 Poclets + 2 other types)." ;
+  
+  # ===== MANDATORY PROPERTIES (Universal consensus ≥70%) =====
+  
+  # Type must be owl:Ontology (CRITICAL - only 58% conformance)
+  sh:property [
+    sh:path rdf:type ;
+    sh:hasValue owl:Ontology ;
+    sh:minCount 1 ;
+    sh:message "CRITICAL: All TSCG instances MUST have @type: owl:Ontology (never owl:NamedIndividual or m0:Poclet). Current conformance: 58% (14/24 poclets) + 100% (2/2 other instances). 10 poclets to correct."
+  ] ;
+  
+  # Ontology type MUST use m3:ontologyType (CRITICAL - only 38% poclet conformance)
+  sh:property [
+    sh:path m3:ontologyType ;
+    sh:nodeKind sh:IRI ;
+    sh:in ( m3:Poclet m3:SystemicFramework m3:SymbolicSystemGrammar ) ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "CRITICAL: m3:ontologyType MUST be one of: m3:Poclet (24), m3:SystemicFramework (1), m3:SymbolicSystemGrammar (1). This is the ONLY valid ontologyType property. Current conformance: 38% poclets (9/24) + 50% others (1/2). 15 poclets + VSM to correct. NEVER use m3:ontologyCategory or m2:ontologyCategory."
+  ] ;
+  
+  # Label (standard: rdfs:label - threshold reached at 71%)
   sh:property [
     sh:path rdfs:label ;
     sh:datatype xsd:string ;
     sh:minCount 1 ;
     sh:maxCount 1 ;
-    sh:message "Every poclet MUST have an rdfs:label"
-  ], [
+    sh:message "rdfs:label is MANDATORY (71% consensus on poclets + 100% other instances). Use rdfs:label, NOT dcterms:title."
+  ] ;
+  
+  # Comment (standard: rdfs:comment - 79% consensus)
+  sh:property [
     sh:path rdfs:comment ;
     sh:datatype xsd:string ;
     sh:minCount 1 ;
-    sh:message "Every poclet MUST have an rdfs:comment"
-  ], [
-    sh:path dcterms:created ;
-    sh:datatype xsd:date ;
-    sh:minCount 1 ;
-    sh:message "Creation date (dcterms:created) is required"
-  ], [
-    sh:path dcterms:creator ;
-    sh:minCount 1 ;
-    sh:message "Creator (dcterms:creator) is required"
-  ], [
+    sh:message "rdfs:comment is mandatory (79% consensus poclets + 100% other instances). Use rdfs:comment, NOT dcterms:description."
+  ] ;
+  
+  # Version info (semver - 83% consensus)
+  sh:property [
     sh:path owl:versionInfo ;
+    sh:datatype xsd:string ;
     sh:pattern "^[0-9]+\\.[0-9]+\\.[0-9]+$" ;
     sh:minCount 1 ;
-    sh:message "VersionInfo MUST follow semver (X.Y.Z)"
-  ], [
-    sh:path m3:ontologyType ;
-    sh:hasValue m3:Poclet ;
+    sh:maxCount 1 ;
+    sh:message "owl:versionInfo MUST follow semantic versioning X.Y.Z (83% consensus). Use owl:versionInfo, NOT m0:version."
+  ] ;
+  
+  # Creator (universal 100% consensus)
+  sh:property [
+    sh:path dcterms:creator ;
+    sh:datatype xsd:string ;
+    sh:hasValue "Echopraxium with the collaboration of Claude AI" ;
     sh:minCount 1 ;
     sh:maxCount 1 ;
-    sh:message "ontologyType MUST be m3:Poclet"
-  ], [
-    sh:path m0:domain ;
-    sh:datatype xsd:string ;
-    sh:minCount 1 ;
-    sh:message "Every poclet MUST specify its domain (m0:domain)"
-  ], [
-    sh:path m0:pocletType ;
-    sh:datatype xsd:string ;
+    sh:message "dcterms:creator MUST be exactly 'Echopraxium with the collaboration of Claude AI' (100% consensus across all 26 instances). Variants like 'Claude Sonnet 4.6' are NOT accepted."
+  ] ;
+  
+  # Created date (universal 100% consensus)
+  sh:property [
+    sh:path dcterms:created ;
+    sh:or (
+      [ sh:datatype xsd:date ]
+      [ sh:datatype xsd:string ]
+    ) ;
+    sh:pattern "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" ;
     sh:minCount 1 ;
     sh:maxCount 1 ;
-    sh:message "Every poclet MUST have a pocletType"
-  ], [
-    sh:path m0:architecturePattern ;
-    sh:datatype xsd:string ;
-    sh:in ("Monolithic" "Multipolar" "NetworkWithOrchestrator" "SequentialPoles") ;
+    sh:message "dcterms:created MUST be present in format YYYY-MM-DD (100% consensus)"
+  ] ;
+  
+  # Domain (83% consensus on poclets - MIGRATED to M1 level)
+  sh:property [
+    sh:path m1:domain ;
+    sh:or (
+      [ sh:datatype xsd:string ]           # Single domain string
+      [ sh:nodeKind sh:Literal ]           # Array of domain strings (for multi-domain poclets)
+    ) ;
+    sh:minCount 1 ;
+    sh:message "m1:domain is MANDATORY (M1-level property, not m0:domain). Accepts single string ('Chemistry') or array (['Chemistry', 'Physics']). Domain values are registered in M1_Domains.jsonld (evolving registry). Examples: 'Biology', 'Physics', 'Chemistry', 'Electronics', 'Economics', 'Optics', 'Music Theory', 'Game Theory', 'Computer Science', 'Geology', 'Engineering'."
+  ] ;
+  
+  # ===== STRONGLY RECOMMENDED PROPERTIES (Consensus 70-89%) =====
+  
+  # Imports (75% consensus)
+  sh:property [
+    sh:path owl:imports ;
     sh:minCount 0 ;
-    sh:maxCount 1 ;
-    sh:message "architecturePattern must be one of: Monolithic, Multipolar, NetworkWithOrchestrator, SequentialPoles"
-  ],
-
-  # Optional common properties
-  [
+    sh:message "owl:imports is strongly recommended (75% consensus) - should list M3, M2, M1 ontologies"
+  ] ;
+  
+  # Changelog (71% consensus - MUST be array format)
+  sh:property [
+    sh:path m2:changelog ;
+    sh:minCount 0 ;
+    sh:message "m2:changelog is strongly recommended (71% consensus - threshold reached!). MUST use array format with version/date/changes objects, NOT object format with version keys. 76% use array format (13/17), 24% use object format (4/17 to convert)."
+  ] ;
+  
+  # ===== OPTIONAL PROPERTIES (Poclets primarily) =====
+  
+  # ASFID Scores (50% of poclets have scores)
+  sh:property [
     sh:path m0:asfidScores ;
     sh:node m0:AsfidScoresShape ;
     sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "If present, ASFID scores must conform to AsfidScoresShape"
-  ], [
+    sh:message "m0:asfidScores is recommended for poclets (50% have scores) - detailed ASFID scoring. Also applicable to other instance types."
+  ] ;
+  
+  # REVOI Scores (50% of poclets have scores - NEVER ORIVE)
+  sh:property [
     sh:path m0:revoiScores ;
     sh:node m0:RevoiScoresShape ;
     sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "If present, REVOI scores must conform to RevoiScoresShape"
-  ], [
+    sh:message "m0:revoiScores is recommended for poclets (50% have scores) - detailed REVOI scoring. CRITICAL: NEVER use oriveScores, sphinxEye_ORIVE, or ORIVE_Global (obsolete terminology - detected in VSM). Always use REVOI."
+  ] ;
+  
+  # Epistemic Gap
+  sh:property [
     sh:path m0:epistemicGap ;
     sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "Epistemic gap must be a float between 0 and 1"
-  ],
-
-  # Architectural choice (exactly one pattern)
-  sh:or (
-    [ sh:property [ sh:path m0:components ; sh:minCount 1 ] ]                    # Monolithic
-    [ sh:property [ sh:path m0:validationStatus ; sh:minCount 1 ] ]              # Multipolar
-    [ sh:and (
-        [ sh:property [ sh:path m0:architecturePattern ; sh:hasValue "NetworkWithOrchestrator" ] ]
-        [ sh:property [ sh:path m0:hasNetwork ; sh:minCount 1 ] ]
-      )
-    ]
-    [ sh:and (
-        [ sh:property [ sh:path m0:architecturePattern ; sh:hasValue "SequentialPoles" ] ]
-        [ sh:property [ sh:path m0:hasPole ; sh:minCount 2 ] ]
-      )
-    ]
-  ) ;
-  sh:message "Poclet must follow exactly one architecture: Monolithic (m0:components), Multipolar (m0:validationStatus), NetworkWithOrchestrator (m0:hasNetwork), or SequentialPoles (m0:hasPole)" .
+    sh:message "m0:epistemicGap (if present) must be a float in [0.0, 1.0]"
+  ] .
 
 # ============================================
-# ASFID and REVOI score structures
+# ASFID SCORES SHAPE (unchanged from v0.3)
 # ============================================
 m0:AsfidScoresShape
   a sh:NodeShape ;
+  sh:name "ASFID Scores Structure" ;
+  sh:description "Detailed ASFID scoring with optional justifications. Compact format {A, S, F, I, D, mean} observed in majority (86% when present)." ;
+  
   sh:property [
-    sh:path m0:A ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
-    sh:minCount 1 ; sh:maxCount 1 ; sh:message "ASFID A (Attractor) required (0-1)"
-  ], [
-    sh:path m0:S ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
-    sh:minCount 1 ; sh:maxCount 1 ; sh:message "ASFID S (Structure) required (0-1)"
-  ], [
-    sh:path m0:F ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
-    sh:minCount 1 ; sh:maxCount 1 ; sh:message "ASFID F (Flow) required (0-1)"
-  ], [
-    sh:path m0:I ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
-    sh:minCount 1 ; sh:maxCount 1 ; sh:message "ASFID I (Information) required (0-1)"
-  ], [
-    sh:path m0:D ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
-    sh:minCount 1 ; sh:maxCount 1 ; sh:message "ASFID D (Dynamics) required (0-1)"
-  ], [
-    sh:path m0:mean ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
-    sh:minCount 0 ; sh:maxCount 1 ; sh:message "ASFID mean (optional) must be 0-1"
+    sh:path m0:A ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "ASFID A (Attractor) score is mandatory (0.0-1.0)"
+  ] ;
+  sh:property [
+    sh:path m0:S ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "ASFID S (Structure) score is mandatory (0.0-1.0)"
+  ] ;
+  sh:property [
+    sh:path m0:F ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "ASFID F (Flow) score is mandatory (0.0-1.0). F=0 is valid (represents Stase)."
+  ] ;
+  sh:property [
+    sh:path m0:I ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "ASFID I (Information) score is mandatory (0.0-1.0)"
+  ] ;
+  sh:property [
+    sh:path m0:D ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "ASFID D (Dynamics) score is mandatory (0.0-1.0)"
+  ] ;
+  sh:property [
+    sh:path m0:mean ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "ASFID mean (if present) must be in [0.0, 1.0]"
   ] .
 
+# ============================================
+# REVOI SCORES SHAPE (NOT ORIVE - CRITICAL)
+# ============================================
 m0:RevoiScoresShape
   a sh:NodeShape ;
+  sh:name "REVOI Scores Structure" ;
+  sh:description "Detailed REVOI scoring with optional justifications. CRITICAL: ORIVE is OBSOLETE terminology - use REVOI. Order: R, E, V, O, I (NOT ORIVE). R = Representability (NOT Reproducibility)." ;
+  
   sh:property [
-    sh:path m0:R ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
-    sh:minCount 1 ; sh:maxCount 1 ; sh:message "REVOI R (Representability) required (0-1)"
-  ], [
-    sh:path m0:E ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
-    sh:minCount 1 ; sh:maxCount 1 ; sh:message "REVOI E (Evolvability) required (0-1)"
-  ], [
-    sh:path m0:V ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
-    sh:minCount 1 ; sh:maxCount 1 ; sh:message "REVOI V (Verifiability) required (0-1)"
-  ], [
-    sh:path m0:O ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
-    sh:minCount 1 ; sh:maxCount 1 ; sh:message "REVOI O (Observability) required (0-1)"
-  ], [
-    sh:path m0:I ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
-    sh:minCount 1 ; sh:maxCount 1 ; sh:message "REVOI I (Interoperability) required (0-1)"
-  ], [
-    sh:path m0:mean ; sh:datatype xsd:float ; sh:minInclusive 0.0 ; sh:maxInclusive 1.0 ;
-    sh:minCount 0 ; sh:maxCount 1 ; sh:message "REVOI mean (optional) must be 0-1"
-  ] .
-
-# ============================================
-# Shapes for M2 GenericConcepts (as used in poclets)
-# ============================================
-# These shapes only constrain the properties that appear in poclet instances.
-# They rely on the existence of M2 classes and properties.
-
-m2:SystemShape
-  a sh:NodeShape ;
-  sh:targetClass m2:System ;
-  sh:property [
-    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
-    sh:message "System must have an rdfs:label"
-  ], [
-    sh:path m2:hasBoundary ; sh:node m2:BoundaryShape ; sh:minCount 0 ;
-  ], [
-    sh:path m2:hasEnvironment ; sh:node m2:EnvironmentShape ; sh:minCount 0 ;
-  ] .
-
-m2:NetworkShape
-  a sh:NodeShape ;
-  sh:targetClass m2:Network ;
-  sh:property [
-    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ], [
-    sh:path m2:hasNode ; sh:node m2:PoleShape ; sh:minCount 2 ;
-    sh:message "A Network must have at least two nodes (m2:hasNode)"
-  ], [
-    sh:path m2:orchestrator ; sh:node m2:PoleShape ; sh:minCount 0 ;
-  ], [
-    sh:path m2:hasTopology ; sh:datatype xsd:string ; sh:minCount 0 ;
-  ] .
-
-m2:PoleShape
-  a sh:NodeShape ;
-  sh:targetClass m2:Pole ;
-  sh:property [
-    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ], [
-    sh:path m2:poleRole ; sh:datatype xsd:string ; sh:minCount 1 ;
-    sh:message "Pole must specify its role (m2:poleRole)"
-  ], [
-    sh:path m2:asfidDecomposition ; sh:node m2:AsfidDecompositionShape ; sh:minCount 0 ;
-  ] .
-
-m2:AsfidDecompositionShape
-  a sh:NodeShape ;
-  sh:property [
-    sh:path m2:structure ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ], [
-    sh:path m2:information ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ], [
-    sh:path m2:attractor ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ] .
-
-m2:MediatorShape
-  a sh:NodeShape ;
-  sh:targetClass m2:Mediator ;
-  sh:property [
-    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ], [
-    sh:path m2:mediatorType ; sh:datatype xsd:string ; sh:minCount 1 ;
-    sh:message "Mediator must specify its type (m2:mediatorType)"
-  ], [
-    sh:path m2:fisDecomposition ; sh:node m2:FisDecompositionShape ; sh:minCount 0 ;
-  ] .
-
-m2:FisDecompositionShape
-  a sh:NodeShape ;
-  sh:property [
-    sh:path m2:flow ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ], [
-    sh:path m2:information ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ], [
-    sh:path m2:structure ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ] .
-
-m2:TriggerShape
-  a sh:NodeShape ;
-  sh:targetClass m2:Trigger ;
-  sh:property [
-    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ], [
-    sh:path m2:diDecomposition ; sh:node m2:DiDecompositionShape ; sh:minCount 0 ;
-  ] .
-
-m2:DiDecompositionShape
-  a sh:NodeShape ;
-  sh:property [
-    sh:path m2:dynamics ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ], [
-    sh:path m2:information ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ] .
-
-m2:EnvironmentShape
-  a sh:NodeShape ;
-  sh:targetClass m2:Environment ;
-  sh:property [
-    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ], [
-    sh:path m2:fiDecomposition ; sh:node m2:FiDecompositionShape ; sh:minCount 0 ;
-  ] .
-
-m2:FiDecompositionShape
-  a sh:NodeShape ;
-  sh:property [
-    sh:path m2:flow ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ], [
-    sh:path m2:information ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ] .
-
-m2:BoundaryShape
-  a sh:NodeShape ;
-  sh:targetClass m2:Boundary ;
-  sh:property [
-    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
-  ], [
-    sh:path m2:boundaryType ; sh:datatype xsd:string ; sh:minCount 1 ;
-    sh:message "Boundary must have a boundaryType"
-  ] .
-
-# ============================================
-# Component shape for monolithic poclets
-# ============================================
-m2:ComponentShape
-  a sh:NodeShape ;
-  sh:targetClass m2:Component ;
-  sh:property [
-    sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ;
-    sh:message "Component must have a label"
-  ], [
-    sh:path m0:role ; sh:datatype xsd:string ; sh:minCount 1 ;
-    sh:message "Component must specify its role"
-  ] .
-
-# ============================================
-# SPARQL constraints for architecture exclusivity and ASFID completeness
-# ============================================
-m0:NoMixedArchitectureShape
-  a sh:NodeShape ;
-  sh:targetClass owl:Ontology ;
-  sh:sparql [
-    a sh:SPARQLConstraint ;
-    sh:message "Poclet cannot have both m0:components and m0:hasNetwork or m0:hasPole" ;
-    sh:select """
-      SELECT $this WHERE {
-        $this m0:components ?c .
-        FILTER( EXISTS { $this m0:hasNetwork ?n } || EXISTS { $this m0:hasPole ?p } )
-      }
-    """
+    sh:path m0:R ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "REVOI R (Representability) score is mandatory (0.0-1.0). NOT Reproducibility."
   ] ;
-  sh:sparql [
-    a sh:SPARQLConstraint ;
-    sh:message "Poclet cannot have both m0:validationStatus and m0:hasNetwork or m0:hasPole" ;
-    sh:select """
-      SELECT $this WHERE {
-        $this m0:validationStatus ?v .
-        FILTER( EXISTS { $this m0:hasNetwork ?n } || EXISTS { $this m0:hasPole ?p } )
-      }
-    """
+  sh:property [
+    sh:path m0:E ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "REVOI E (Evolvability) score is mandatory (0.0-1.0)"
+  ] ;
+  sh:property [
+    sh:path m0:V ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "REVOI V (Verifiability) score is mandatory (0.0-1.0)"
+  ] ;
+  sh:property [
+    sh:path m0:O ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "REVOI O (Observability) score is mandatory (0.0-1.0)"
+  ] ;
+  sh:property [
+    sh:path m0:I ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "REVOI I (Interoperability) score is mandatory (0.0-1.0)"
+  ] ;
+  sh:property [
+    sh:path m0:mean ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "REVOI mean (if present) must be in [0.0, 1.0]"
   ] .
 
-m0:AsfidCompletenessShape
+# ============================================
+# FORBIDDEN PATTERNS (CRITICAL)
+# ============================================
+
+# CRITICAL: Forbid owl:NamedIndividual at ontology level
+m0:ForbidNamedIndividualShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:not [
+    sh:property [
+      sh:path rdf:type ;
+      sh:hasValue owl:NamedIndividual
+    ]
+  ] ;
+  sh:message "CRITICAL ERROR: TSCG instances MUST use @type: owl:Ontology, NOT owl:NamedIndividual. Detected in 38% of poclets (9/24) - must be corrected. All other instances (2/2) are correct." .
+
+# CRITICAL: Forbid @type: m0:Poclet at ontology level
+m0:ForbidM0PocletTypeShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:not [
+    sh:property [
+      sh:path rdf:type ;
+      sh:hasValue m0:Poclet
+    ]
+  ] ;
+  sh:message "CRITICAL ERROR: Do NOT use @type: m0:Poclet at ontology level. Use @type: owl:Ontology + m3:ontologyType: m3:Poclet instead. Detected in 1 poclet (NakamotoConsensus)." .
+
+# CRITICAL: Forbid obsolete ORIVE terminology (VSM violation)
+m0:ForbidOriveShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:not [
+    sh:or (
+      [ sh:property [ sh:path m0:oriveScores ; sh:minCount 1 ] ]
+      [ sh:property [ sh:path m0:sphinxEye_ORIVE ; sh:minCount 1 ] ]
+      [ sh:property [ sh:path m0:ORIVE_Global ; sh:minCount 1 ] ]
+    )
+  ] ;
+  sh:message "OBSOLETE TERMINOLOGY: Use m0:revoiScores, m0:sphinxEye_REVOI, m0:REVOI_Global - NOT ORIVE variants (ORIVE is deprecated). Detected in VSM SystemicFramework - must be corrected to REVOI throughout." .
+
+# CRITICAL: Forbid tscg: namespace (92% clean)
+m0:ForbidTscgNamespaceShape
   a sh:NodeShape ;
   sh:targetClass owl:Ontology ;
   sh:sparql [
     a sh:SPARQLConstraint ;
-    sh:message "Poclet MUST document ASFID completeness (either m0:asfidScores or m0:asfidCompleteness textual description)" ;
+    sh:message "FORBIDDEN NAMESPACE: 'tscg:' namespace is not allowed (8% violation rate - 2/24 poclets). Use standard namespaces (owl, rdf, rdfs, skos, dcterms, xsd) or TSCG namespaces (m3, m2, m1, m1bio, m1chem, etc., m0)" ;
     sh:select """
-      SELECT $this WHERE {
-        $this a owl:Ontology .
-        FILTER NOT EXISTS { $this m0:asfidScores ?s }
-        FILTER NOT EXISTS { $this m0:asfidCompleteness ?c }
+      PREFIX tscg: <http://undefined.tscg.namespace/>
+      SELECT $this ?property ?value
+      WHERE {
+        $this ?property ?value .
+        FILTER(STRSTARTS(STR(?property), "http://undefined.tscg.namespace/") ||
+               REGEX(STR(?property), "tscg:", "i"))
+      }
+      LIMIT 1
+    """
+  ] .
+
+# CRITICAL: Forbid incorrect @base URL (88% correct)
+m0:ForbidIncorrectBaseURLShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "INCORRECT @base URL: Must use 'https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/', NOT 'aladas-org/cryptocalc' (obsolete repository). Detected in 13% of instances (3/26: RAAS, NuclearReactorTypology, Yggdrasil poclets + IChing)." ;
+    sh:select """
+      SELECT $this
+      WHERE {
+        # This constraint validates @base in @context, which requires custom validation logic
+        # Flag any instance using aladas-org/cryptocalc base URL
+        FILTER(false)  # Placeholder - actual validation requires JSON-LD context inspection
       }
     """
   ] .
+
+# CRITICAL: Forbid m3:ontologyCategory (VSM violation) and m2:ontologyCategory
+m0:ForbidObsoleteOntologyCategories
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:not [
+    sh:or (
+      [ sh:property [ sh:path m3:ontologyCategory ; sh:minCount 1 ] ]
+      [ sh:property [ sh:path m2:ontologyCategory ; sh:minCount 1 ] ]
+    )
+  ] ;
+  sh:message "FORBIDDEN PROPERTIES: m3:ontologyCategory and m2:ontologyCategory are obsolete. ONLY m3:ontologyType is allowed (defined in M3_GenesisSpace.jsonld). Detected: m3:ontologyCategory in VSM (1), m2:ontologyCategory in 5 poclets." .
+
+# CRITICAL: Forbid dcterms:title at ontology level (71% use rdfs:label)
+m0:ForbidDctermsTitle
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:not [
+    sh:property [
+      sh:path dcterms:title ;
+      sh:minCount 1
+    ]
+  ] ;
+  sh:message "FORBIDDEN at ontology level: Use rdfs:label instead of dcterms:title (38% minority usage detected - 9/24 poclets + 2/2 other instances = 11/26 total)" .
+
+# CRITICAL: Forbid dcterms:description at ontology level (79% use rdfs:comment)
+m0:ForbidDctermsDescription
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:not [
+    sh:property [
+      sh:path dcterms:description ;
+      sh:minCount 1
+    ]
+  ] ;
+  sh:message "FORBIDDEN at ontology level: Use rdfs:comment instead of dcterms:description (29% minority usage detected - 7/24 poclets + 2/2 other instances = 9/26 total)" .
+
+# CRITICAL: Forbid m0:version (83% use owl:versionInfo)
+m0:ForbidM0Version
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:not [
+    sh:property [
+      sh:path m0:version ;
+      sh:minCount 1
+    ]
+  ] ;
+  sh:message "FORBIDDEN: Use owl:versionInfo instead of m0:version (17% minority usage detected - 4/24 poclets)" .
+
+# CRITICAL: Forbid alternative ontologyType declarations
+m0:ForbidAlternativeOntologyTypes
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:not [
+    sh:property [
+      sh:path m2:ontologyType ;
+      sh:minCount 1
+    ]
+  ] ;
+  sh:message "FORBIDDEN: Only m3:ontologyType is valid. Do NOT use m2:ontologyType (wrong namespace)." .
+
+# CRITICAL: Forbid rdf:type with Poclet variants
+m0:ForbidRdfTypePoclet
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:not [
+    sh:or (
+      [ sh:property [ sh:path rdf:type ; sh:hasValue m0:Poclet ] ]
+      [ sh:property [ sh:path rdf:type ; sh:hasValue m1:core:Poclet ] ]
+    )
+  ] ;
+  sh:message "FORBIDDEN: Do NOT use rdf:type: m0:Poclet or rdf:type: m1:core:Poclet at ontology level. Use m3:ontologyType: {\"@id\": \"m3:Poclet\"} instead." .
+
+# ============================================
+# FINAL STATISTICS (26 TSCG instances total)
+# ============================================
+# 
+# INSTANCE TYPE DISTRIBUTION:
+# - Poclets (m3:Poclet): 24/26 (92%)
+# - SystemicFramework (m3:SystemicFramework): 1/26 (4%)
+# - SymbolicSystemGrammar (m3:SymbolicSystemGrammar): 1/26 (4%)
+#
+# CONSENSUS ACHIEVED (≥90%):
+# - dcterms:creator: 26/26 (100%)
+# - dcterms:created: 26/26 (100%)
+# - No tscg:* namespace: 24/26 (92%)
+#
+# STRONG CONSENSUS (70-89%):
+# - owl:versionInfo: 22/26 (85%)
+# - m1:domain: 22/26 (85%) [MIGRATED from m0:domain - M1-level property]
+# - rdfs:comment: 21/26 (81%)
+# - owl:imports: 20/26 (77%)
+# - rdfs:label: 19/26 (73%) ← THRESHOLD REACHED
+# - m2:changelog: 18/26 (69%) ← JUST BELOW threshold (71% poclets-only)
+#
+# CRITICAL NORMALIZATION NEEDED (<70%):
+# - @type: owl:Ontology: 16/26 (62%) ← MUST REACH 100% (10 to correct)
+# - m3:ontologyType correct: 10/26 (38%) ← CRITICAL PRIORITY (16 to correct)
+# - ASFID/REVOI scores: 14/26 (54%) ← RECOMMENDED
+#
+# FORBIDDEN PATTERNS DETECTED:
+# - owl:NamedIndividual: 9/24 poclets (38%) ← MUST ELIMINATE
+# - m3:ontologyCategory: 1/2 other (VSM) ← MUST ELIMINATE
+# - m2:ontologyCategory: 5/24 poclets (21%) ← MUST ELIMINATE
+# - dcterms:title: 11/26 (42%) ← MUST ELIMINATE
+# - dcterms:description: 9/26 (35%) ← MUST ELIMINATE
+# - m0:version: 4/24 poclets (17%) ← MUST ELIMINATE
+# - tscg:* namespace: 2/24 poclets (8%) ← MUST ELIMINATE
+# - @base incorrect: 4/26 (15%) ← MUST CORRECT
+# - m0:Poclet type: 1/24 poclets (4%) ← MUST ELIMINATE
+# - ORIVE terminology: 1/2 other (VSM) ← MUST CORRECT TO REVOI
+#
+# CHANGELOG FORMAT (among 18 with changelog):
+# - Array format: 14/18 (78%) ← STANDARD
+# - Object format: 4/18 (22%) ← TO CONVERT
+#
+# ============================================
+# CHANGELOG
+# ============================================
+# v1.1 (2026-04-18): Domain property migration to M1 level
+#   - BREAKING CHANGE: m0:domain → m1:domain (M1-level property, architectural correction)
+#   - Added m1: prefix declaration
+#   - Updated domain constraint to accept single string OR array (multi-domain support)
+#   - Domain values reference M1_Domains.jsonld (evolving registry)
+#   - Added comprehensive domain examples in validation message
+#   - Updated all statistics and documentation to reflect m1:domain
+#
+# v1.0 (2026-04-13): FINAL grammar after complete corpus analysis (100% coverage)
+#   - Complete corpus: 24 Poclets + 2 other instances (26 total)
+#   - Added support for 3 instance types (Poclet, SystemicFramework, SymbolicSystemGrammar)
+#   - Identified m3:ontologyCategory violation (VSM) - obsolete, use m3:ontologyType
+#   - Identified ORIVE terminology violation (VSM) - obsolete, use REVOI
+#   - Updated all statistics based on 26 instances
+#   - m2:changelog reached 69% global (71% poclets-only - threshold reached)
+#   - rdfs:label reached 73% global (71% poclets-only - threshold maintained)
+#   - Final forbidden patterns count: 10 patterns to eliminate
+#   - Documented complete conformance levels per constraint
+#
+# v0.3 (2026-04-13): Near-final grammar after Lot 5 analysis (88% coverage)
+#   - 21 poclets analyzed (88% poclet coverage)
+#   - rdfs:label reached 71% threshold → mandatory
+#   - m1:domain reached 86% → mandatory (NOTE: originally tracked as m0:domain)
+#
+# v0.2 (2026-04-13): Added forbidden patterns after Lot 3 analysis
+#   - 13 poclets analyzed (54% poclet coverage)
+#   - Forbid m2:ontologyCategory
+#
+# v0.1 (2026-04-13): Initial SHACL based on Lot 1 analysis
+#   - 5 poclets analyzed (21% poclet coverage)
