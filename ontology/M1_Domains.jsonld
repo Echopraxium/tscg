@@ -1,0 +1,475 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1domain": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Domains.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "M1_Domains.jsonld",
+      "@type": "owl:Ontology",
+      "rdfs:label": "TSCG Knowledge Domains Registry",
+      "rdfs:comment": "Centralized registry of all knowledge domains referenced by TSCG M0 instances. Each domain entry lists its subdomains, related domains, and the poclets that exemplify it. This file is the authoritative source for m1:domain values used across the M0 corpus.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-04-18",
+      "dcterms:modified": "2026-04-18",
+      "owl:versionInfo": "1.0.0",
+      "owl:imports": {"@id": "M1_CoreConcepts.jsonld"},
+      "m1:domainCount": 18,
+      "m1:totalPoclets": 24,
+      "m2:changelog": [
+        {
+          "version": "1.0.0",
+          "date": "2026-04-18",
+          "description": "Initial creation — extracted from full M0 corpus scan (24 poclets + 2 non-poclet instances). Part of m0:domain -> m1:domain migration (SHACL v1.1)."
+        }
+      ]
+    },
+    {
+      "@id": "m1domain:Biology",
+      "@type": "m1:Domain",
+      "rdfs:label": "Biology",
+      "rdfs:comment": "Life sciences encompassing cellular biology, physiology, immunology, developmental biology, endocrinology, and neurobiology",
+      "m1:subdomains": [
+        "Immunology",
+        "Cardiovascular Physiology",
+        "Developmental Biology",
+        "Endocrinology",
+        "Cell Biology",
+        "Neurobiology",
+        "Renal Physiology",
+        "Nephrology",
+        "Homeostasis",
+        "Pharmacology"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Ecology"},
+        {"@id": "m1domain:Chemistry"},
+        {"@id": "m1domain:Physics"}
+      ],
+      "m1:pocletExamples": [
+        "M0_AdaptiveImmuneResponse",
+        "M0_BloodPressureControl",
+        "M0_ButterflyMetamorphosis",
+        "M0_CellSignalingModes",
+        "M0_ComplexChemicalSynapse",
+        "M0_Kidneys",
+        "M0_RAAS",
+        "M0_TrophicPyramid"
+      ],
+      "m1:pocletCount": 8
+    },
+    {
+      "@id": "m1domain:Ecology",
+      "@type": "m1:Domain",
+      "rdfs:label": "Ecology",
+      "rdfs:comment": "Study of interactions between organisms and their environments, trophic dynamics, and ecosystem structure",
+      "m1:subdomains": [
+        "Community Ecology",
+        "Trophodynamics",
+        "Thermodynamics of Ecosystems",
+        "Conservation Biology",
+        "Anthropocene Ecology",
+        "Biogeography"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Biology"},
+        {"@id": "m1domain:Geology"}
+      ],
+      "m1:pocletExamples": [
+        "M0_TrophicPyramid"
+      ],
+      "m1:pocletCount": 1
+    },
+    {
+      "@id": "m1domain:Chemistry",
+      "@type": "m1:Domain",
+      "rdfs:label": "Chemistry",
+      "rdfs:comment": "Science of matter, composition, structure, properties, and transformations",
+      "m1:subdomains": [
+        "Combustion Chemistry",
+        "Physical Chemistry",
+        "Thermodynamics",
+        "Chemical Kinetics",
+        "Pharmacology",
+        "Cellular Communication"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Physics"},
+        {"@id": "m1domain:Biology"}
+      ],
+      "m1:pocletExamples": [
+        "M0_FireTriangle",
+        "M0_PhaseTransition",
+        "M0_ComplexChemicalSynapse"
+      ],
+      "m1:pocletCount": 3
+    },
+    {
+      "@id": "m1domain:Physics",
+      "@type": "m1:Domain",
+      "rdfs:label": "Physics",
+      "rdfs:comment": "Fundamental science of matter, energy, and their interactions — thermodynamics, mechanics, statistical physics",
+      "m1:subdomains": [
+        "Thermodynamics",
+        "Physical Chemistry",
+        "Nuclear Physics",
+        "Statistical Mechanics",
+        "Mechanics"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Chemistry"},
+        {"@id": "m1domain:Engineering"},
+        {"@id": "m1domain:NuclearEngineering"}
+      ],
+      "m1:pocletExamples": [
+        "M0_FourStrokeEngine",
+        "M0_PhaseTransition",
+        "M0_NuclearReactorTypology"
+      ],
+      "m1:pocletCount": 3
+    },
+    {
+      "@id": "m1domain:Engineering",
+      "@type": "m1:Domain",
+      "rdfs:label": "Engineering",
+      "rdfs:comment": "Applied physical sciences — design and operation of mechanical, thermal, and industrial systems",
+      "m1:subdomains": [
+        "Mechanical Engineering",
+        "Thermal Engineering",
+        "Engine Design",
+        "Thermodynamic Cycles"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Physics"},
+        {"@id": "m1domain:NuclearEngineering"},
+        {"@id": "m1domain:Electronics"}
+      ],
+      "m1:pocletExamples": [
+        "M0_FourStrokeEngine"
+      ],
+      "m1:pocletCount": 1
+    },
+    {
+      "@id": "m1domain:NuclearEngineering",
+      "@type": "m1:Domain",
+      "rdfs:label": "Nuclear Engineering",
+      "rdfs:comment": "Engineering discipline concerned with nuclear fission and fusion, reactor design, and nuclear safety",
+      "m1:subdomains": [
+        "Reactor Design",
+        "Nuclear Physics Applications",
+        "Thermal Engineering",
+        "Neutron Physics",
+        "Nuclear Safety",
+        "Fuel Cycle"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Physics"},
+        {"@id": "m1domain:Engineering"}
+      ],
+      "m1:pocletExamples": [
+        "M0_NuclearReactorTypology"
+      ],
+      "m1:pocletCount": 1
+    },
+    {
+      "@id": "m1domain:Electronics",
+      "@type": "m1:Domain",
+      "rdfs:label": "Electronics",
+      "rdfs:comment": "Science and engineering of electronic circuits, components, and systems — from semiconductors to signal processing",
+      "m1:subdomains": [
+        "Semiconductor Physics",
+        "Analog Electronics",
+        "Digital Electronics",
+        "Signal Processing",
+        "Modular Synthesis",
+        "Broadcast Technology"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Physics"},
+        {"@id": "m1domain:Music"},
+        {"@id": "m1domain:SignalEngineering"}
+      ],
+      "m1:pocletExamples": [
+        "M0_Transistor",
+        "M0_VCO",
+        "M0_TVTestPattern"
+      ],
+      "m1:pocletCount": 3
+    },
+    {
+      "@id": "m1domain:Optics",
+      "@type": "m1:Domain",
+      "rdfs:label": "Optics",
+      "rdfs:comment": "Science of light behavior, color theory, and visual perception — additive and subtractive color synthesis, color space models",
+      "m1:subdomains": [
+        "Color Theory",
+        "Additive Color Synthesis",
+        "Subtractive Color Synthesis",
+        "Color Space Models",
+        "Light Physics",
+        "Visual Perception"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Physics"},
+        {"@id": "m1domain:Photography"},
+        {"@id": "m1domain:SignalEngineering"}
+      ],
+      "m1:pocletExamples": [
+        "M0_RGB_Additive",
+        "M0_HSL_Additive",
+        "M0_CMY_Subtractive",
+        "M0_CMYK_Subtractive",
+        "M0_ColorSynthesis_Federated",
+        "M0_ExposureTriangle"
+      ],
+      "m1:pocletCount": 6
+    },
+    {
+      "@id": "m1domain:Photography",
+      "@type": "m1:Domain",
+      "rdfs:label": "Photography",
+      "rdfs:comment": "Art and science of capturing images through controlled light exposure — aperture, shutter speed, and sensor sensitivity",
+      "m1:subdomains": [
+        "Image Formation",
+        "Photometric Exposure",
+        "Sensor Sensitivity",
+        "Aperture Optics",
+        "Depth of Field"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Optics"},
+        {"@id": "m1domain:Physics"}
+      ],
+      "m1:pocletExamples": [
+        "M0_ExposureTriangle"
+      ],
+      "m1:pocletCount": 1
+    },
+    {
+      "@id": "m1domain:Music",
+      "@type": "m1:Domain",
+      "rdfs:label": "Music",
+      "rdfs:comment": "Science and art of organized sound — music theory, polyphonic composition, and electronic sound synthesis",
+      "m1:subdomains": [
+        "Polyphonic Composition",
+        "Music Theory",
+        "Analog Synthesis",
+        "Modular Synthesis",
+        "Acoustics",
+        "Counterpoint"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Electronics"},
+        {"@id": "m1domain:Physics"}
+      ],
+      "m1:pocletExamples": [
+        "M0_Counterpoint",
+        "M0_VCO"
+      ],
+      "m1:pocletCount": 2
+    },
+    {
+      "@id": "m1domain:Geology",
+      "@type": "m1:Domain",
+      "rdfs:label": "Geology",
+      "rdfs:comment": "Earth sciences — plate tectonics, geodynamics, seismology, and the long-term evolution of planetary surfaces",
+      "m1:subdomains": [
+        "Geodynamics",
+        "Seismology",
+        "Volcanology",
+        "Paleoclimatology",
+        "Biogeography",
+        "Geohazard Science",
+        "Geophysics"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Physics"},
+        {"@id": "m1domain:Ecology"}
+      ],
+      "m1:pocletExamples": [
+        "M0_PlateTectonics"
+      ],
+      "m1:pocletCount": 1
+    },
+    {
+      "@id": "m1domain:Economics",
+      "@type": "m1:Domain",
+      "rdfs:label": "Economics",
+      "rdfs:comment": "Study of economic systems, financial dynamics, behavioral economics, and macroeconomic cycles — including speculative bubbles and systemic risk",
+      "m1:subdomains": [
+        "Financial Economics",
+        "Behavioral Finance",
+        "Macroeconomics",
+        "Systemic Risk",
+        "Economic Cycles",
+        "Financial History"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:ComputerScience"},
+        {"@id": "m1domain:SystemsTheory"}
+      ],
+      "m1:pocletExamples": [
+        "M0_KindlebergerMinsky"
+      ],
+      "m1:pocletCount": 1
+    },
+    {
+      "@id": "m1domain:Education",
+      "@type": "m1:Domain",
+      "rdfs:label": "Education",
+      "rdfs:comment": "Pedagogical frameworks, instructional design, and educational technology — including knowledge integration models",
+      "m1:subdomains": [
+        "Instructional Design",
+        "Educational Technology",
+        "Pedagogical Content Knowledge",
+        "Technology Integration",
+        "Teacher Knowledge"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:ComputerScience"},
+        {"@id": "m1domain:SystemsTheory"}
+      ],
+      "m1:pocletExamples": [
+        "M0_TPACK"
+      ],
+      "m1:pocletCount": 1
+    },
+    {
+      "@id": "m1domain:ComputerScience",
+      "@type": "m1:Domain",
+      "rdfs:label": "Computer Science",
+      "rdfs:comment": "Distributed systems, consensus algorithms, cryptography, game theory, and blockchain — computational frameworks for decentralized agreement",
+      "m1:subdomains": [
+        "Distributed Systems",
+        "Consensus Algorithms",
+        "Cryptography",
+        "Game Theory",
+        "Blockchain",
+        "Peer-to-Peer Networks"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Economics"},
+        {"@id": "m1domain:Mathematics"}
+      ],
+      "m1:pocletExamples": [
+        "M0_Poclet_NakamotoConsensus"
+      ],
+      "m1:pocletCount": 1
+    },
+    {
+      "@id": "m1domain:Mythology",
+      "@type": "m1:Domain",
+      "rdfs:label": "Mythology",
+      "rdfs:comment": "Mythological systems, symbolic grammars, comparative mythology, and cosmological narratives as systemic structures",
+      "m1:subdomains": [
+        "Norse Mythology",
+        "Chinese Cosmology",
+        "Comparative Mythology",
+        "Symbolic Divination",
+        "Cosmological Narratives",
+        "Archetypal Structures"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:CulturalStudies"},
+        {"@id": "m1domain:SystemsTheory"}
+      ],
+      "m1:pocletExamples": [
+        "M0_Yggdrasil",
+        "M0_IChing"
+      ],
+      "m1:pocletCount": 2
+    },
+    {
+      "@id": "m1domain:CulturalStudies",
+      "@type": "m1:Domain",
+      "rdfs:label": "Cultural Studies",
+      "rdfs:comment": "Cultural artifacts, game design, color philosophy, and cultural semiotics analyzed as systemic structures",
+      "m1:subdomains": [
+        "Game Design",
+        "Color Philosophy",
+        "Cultural Semiotics",
+        "Decision Theory",
+        "Strategic Thinking"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Mythology"},
+        {"@id": "m1domain:Optics"}
+      ],
+      "m1:pocletExamples": [
+        "M0_MtgColorWheel"
+      ],
+      "m1:pocletCount": 1
+    },
+    {
+      "@id": "m1domain:SignalEngineering",
+      "@type": "m1:Domain",
+      "rdfs:label": "Signal Engineering",
+      "rdfs:comment": "Broadcast television, analogue video engineering, signal standards, and measurement metrology",
+      "m1:subdomains": [
+        "Analogue Video Engineering",
+        "Broadcast Standards",
+        "Metrology",
+        "Signal Processing",
+        "Colour Bars",
+        "Television Engineering"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Electronics"},
+        {"@id": "m1domain:Optics"}
+      ],
+      "m1:pocletExamples": [
+        "M0_TVTestPattern"
+      ],
+      "m1:pocletCount": 1
+    },
+    {
+      "@id": "m1domain:SystemsTheory",
+      "@type": "m1:Domain",
+      "rdfs:label": "Systems Theory",
+      "rdfs:comment": "Meta-level frameworks for organizational cybernetics, viable systems, and management science — including VSM",
+      "m1:subdomains": [
+        "Cybernetics",
+        "Organizational Design",
+        "Viable System Model",
+        "Management Cybernetics",
+        "Homeostasis",
+        "Recursive Systems"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Economics"},
+        {"@id": "m1domain:Education"},
+        {"@id": "m1domain:Biology"}
+      ],
+      "m1:pocletExamples": [
+        "M0_VSM"
+      ],
+      "m1:pocletCount": 1
+    },
+    {
+      "@id": "m1domain:Mathematics",
+      "@type": "m1:Domain",
+      "rdfs:label": "Mathematics",
+      "rdfs:comment": "Formal mathematical structures underlying TSCG — category theory, game theory, statistical analysis, and formal logic",
+      "m1:subdomains": [
+        "Category Theory",
+        "Game Theory",
+        "Statistical Analysis",
+        "Formal Logic",
+        "Information Theory"
+      ],
+      "m1:relatedDomains": [
+        {"@id": "m1domain:Physics"},
+        {"@id": "m1domain:ComputerScience"},
+        {"@id": "m1domain:Economics"}
+      ],
+      "m1:pocletExamples": [],
+      "m1:pocletCount": 0
+    }
+]	
