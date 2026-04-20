@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://cdnjs.cloudflare.com;
+                 script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
+                 style-src  'self' 'unsafe-inline';
+                 img-src    'self' data: blob:;
+                 connect-src https://cdnjs.cloudflare.com;">
+  <title>TSCG &mdash; Trophic Pyramid</title>
+  <link rel="icon" href="data:,">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-deep:#0d1117;--bg-panel:#161b22;--bg-card:#1c2130;--bg-hover:#21262d;
+  --border:#30363d;--border-light:#3d444f;
+  --eagle:#f78166;--sphinx:#79c0ff;--accent:#56d364;--warn:#e3b341;--danger:#f85149;
+  --muted:#8b949e;--text:#e6edf3;--text-dim:#b1bac4;
+  --col-A:#f78166;--col-S:#56d364;--col-F:#79c0ff;--col-I:#d2a8ff;--col-D:#e3b341;
+  --col-R:#79c0ff;--col-E:#56d364;--col-V:#f78166;--col-O:#d2a8ff;--col-Im:#e3b341;
+  --header-h:44px;--controls-h:52px;--sidebar-w:320px;
+  --radius:6px;
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --font-mono:'Cascadia Code','Fira Code','Consolas',monospace;
+}
+html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg-deep);color:var(--text);font-size:13px;line-height:1.5;user-select:none}
+#app{display:grid;grid-template-rows:var(--header-h) 1fr auto var(--controls-h);grid-template-columns:1fr 5px var(--sidebar-w);grid-template-areas:"header header header" "canvas split sidebar" "envbar envbar envbar" "controls controls controls";height:100vh}
+#header{grid-area:header;display:flex;align-items:center;padding:0 16px;gap:12px;background:var(--bg-panel);border-bottom:1px solid var(--border)}
+.tscg-logo{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--eagle);text-transform:uppercase;flex-shrink:0}
+.sep{color:var(--border-light);font-size:16px}
+.poclet-name{font-size:14px;font-weight:600;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta-chips{display:flex;gap:6px;flex-shrink:0}
+.chip{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid transparent}
+.chip.domain{background:rgba(86,211,100,.12);border-color:rgba(86,211,100,.3);color:var(--accent)}
+.chip.version{background:rgba(121,192,255,.12);border-color:rgba(121,192,255,.3);color:var(--sphinx)}
+.chip.type{background:rgba(247,129,102,.12);border-color:rgba(247,129,102,.3);color:var(--eagle)}
+#canvas-area{grid-area:canvas;position:relative;overflow:hidden;background:var(--bg-deep);min-width:200px}
+#render-canvas{width:100%;height:100%;display:block;touch-action:none;outline:none}
+#splitter{grid-area:split;background:var(--border);cursor:col-resize;transition:background .15s;z-index:10}
+#splitter:hover,#splitter.dragging{background:var(--sphinx)}
+#sidebar{grid-area:sidebar;display:flex;flex-direction:column;background:var(--bg-panel);border-left:1px solid var(--border);overflow:hidden;min-width:180px;max-width:620px}
+.tab-bar{display:flex;background:var(--bg-deep);border-bottom:1px solid var(--border);flex-shrink:0}
+.tab-btn{flex:1;padding:8px 4px;font-size:12px;font-weight:600;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;transition:color .15s,border-color .15s}
+.tab-btn:hover{color:var(--text-dim)}.tab-btn.active{color:var(--sphinx);border-bottom-color:var(--sphinx)}
+.tab-panel{display:none;flex-direction:column;flex:1;overflow-y:auto;padding:12px;gap:8px}
+.tab-panel.active{display:flex}
+.score-group{display:flex;flex-direction:column;gap:5px}
+.score-group-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-bottom:4px;border-bottom:1px solid var(--border);margin-bottom:2px}
+.score-group-label.eagle{color:var(--eagle)}.score-group-label.sphinx{color:var(--sphinx)}
+.score-row{display:flex;align-items:center;gap:8px;font-size:12px}
+.score-dim{width:20px;font-weight:700;font-family:var(--font-mono);font-size:11px;text-align:center;flex-shrink:0}
+.score-bar-bg{flex:1;height:6px;background:var(--bg-card);border-radius:3px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px}
+.score-val{width:30px;text-align:right;font-family:var(--font-mono);font-size:11px;color:var(--text-dim);flex-shrink:0}
+.score-mean-row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding-top:2px;font-family:var(--font-mono)}
+.score-mean-row span{color:var(--text);font-weight:600}
+.gap-badge{display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-size:12px}
+.gap-badge .gap-label{color:var(--muted);font-size:11px}
+.gap-badge .gap-val{font-family:var(--font-mono);font-weight:700;font-size:16px;color:var(--warn)}
+.gap-badge .gap-desc{color:var(--text-dim);font-size:11px}
+.gc-list{display:flex;flex-direction:column;gap:4px}
+.gc-item{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);transition:border-color .15s,background .15s}
+.gc-item:hover{background:var(--bg-hover);border-color:var(--border-light)}
+.gc-item.primary{border-left:3px solid var(--eagle)}.gc-item.secondary{border-left:3px solid var(--border-light)}
+.gc-name{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--sphinx);flex-shrink:0;min-width:112px}
+.gc-formula{font-family:var(--font-mono);font-size:10px;color:var(--muted)}
+.gc-role{font-size:11px;color:var(--text-dim);line-height:1.4}
+.readme-content{font-size:12px;line-height:1.7;color:var(--text-dim);white-space:pre-wrap}
+.readme-content h2{font-size:13px;font-weight:700;color:var(--text);margin:10px 0 4px;padding-bottom:3px;border-bottom:1px solid var(--border)}
+.readme-content strong{color:var(--text)}
+.readme-content code{font-family:var(--font-mono);font-size:10.5px;background:var(--bg-card);padding:1px 4px;border-radius:3px;color:var(--sphinx)}
+.synergy-box{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--warn);border-radius:var(--radius);padding:10px 12px;gap:6px;display:flex;flex-direction:column}
+.synergy-label{font-size:12px;font-weight:700;color:var(--warn)}
+.synergy-formula{font-family:var(--font-mono);font-size:11px;color:var(--text);word-break:break-word}
+.synergy-emergent{font-size:11px;color:var(--text-dim);line-height:1.5}
+.level-info-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;font-size:11px;line-height:1.6}
+.level-title{font-size:12px;font-weight:700;color:var(--text)}
+.level-rank{font-family:var(--font-mono);font-size:10px;color:var(--muted)}
+#env-bar{grid-area:envbar;background:var(--bg-panel);border-top:1px solid var(--border);padding:0;overflow:hidden;transition:max-height .3s ease;max-height:0}
+#env-bar.open{max-height:150px}
+#env-inner{display:flex;flex-direction:column;padding:5px 16px;gap:5px}
+.env-row{display:flex;align-items:center;gap:10px;flex-wrap:nowrap}
+.env-group{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.env-label{font-size:11px;color:var(--muted);white-space:nowrap}
+.env-val{font-size:11px;font-family:var(--font-mono);color:var(--text-dim);min-width:60px;text-align:right}
+.env-sep{width:1px;height:24px;background:var(--border);flex-shrink:0}
+#env-warnings{display:flex;gap:10px;align-items:center;flex:1;flex-wrap:wrap;padding-left:8px;border-left:1px solid var(--border)}
+input[type="range"].env-slider{-webkit-appearance:none;height:4px;background:var(--bg-card);border-radius:2px;outline:none}
+input[type="range"].env-slider::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--warn);cursor:pointer;border:2px solid var(--bg-panel)}
+#sl-ap{width:220px}
+.ap-badge{padding:1px 8px;border-radius:20px;font-size:10.5px;font-weight:600;border:1px solid transparent;white-space:nowrap;flex-shrink:0}
+.ap-badge.natural{background:rgba(86,211,100,.12);border-color:rgba(86,211,100,.3);color:var(--accent)}
+.ap-badge.stress{background:rgba(227,179,65,.12);border-color:rgba(227,179,65,.3);color:var(--warn)}
+.ap-badge.critical{background:rgba(248,81,73,.18);border-color:rgba(248,81,73,.4);color:var(--danger);animation:blink .8s ease-in-out infinite}
+.ap-badge.collapse{background:rgba(248,81,73,.30);border-color:rgba(248,81,73,.6);color:var(--danger);font-weight:800;animation:blink .4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+#controls{grid-area:controls;display:flex;align-items:center;gap:8px;padding:0 14px;background:var(--bg-panel);border-top:1px solid var(--border);flex-wrap:nowrap}
+.ctrl-btn{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);color:var(--text-dim);font-size:12px;font-family:var(--font);cursor:pointer;transition:background .15s,color .15s,border-color .15s;white-space:nowrap;flex-shrink:0}
+.ctrl-btn:hover{background:var(--bg-hover);color:var(--text);border-color:var(--border-light)}
+.ctrl-btn.active{color:var(--accent);border-color:rgba(86,211,100,.4)}
+.ctrl-btn.danger{color:var(--eagle);border-color:rgba(247,129,102,.3)}
+.ctrl-btn.danger:hover{background:rgba(247,129,102,.08)}
+.ctrl-btn.danger.active{color:var(--danger);border-color:rgba(248,81,73,.5);background:rgba(248,81,73,.08)}
+.ctrl-btn.ltg{font-size:10px;padding:2px 7px}
+.ctrl-btn.ltg.recovery{color:var(--accent)}
+.ctrl-btn.ltg.bau{color:var(--danger)}
+.ctrl-sep{width:1px;height:26px;background:var(--border);flex-shrink:0}
+.ctrl-label{font-size:11px;color:var(--muted);white-space:nowrap;flex-shrink:0}
+input[type="range"]#speed-slider{-webkit-appearance:none;width:70px;height:4px;background:var(--bg-card);border-radius:2px;outline:none;flex-shrink:0}
+input[type="range"]#speed-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--sphinx);cursor:pointer;border:2px solid var(--bg-panel)}
+.status-indicator{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);flex-shrink:0}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);transition:background .3s}
+.status-dot.running{background:var(--accent);animation:pulse 1.2s ease-in-out infinite}
+.status-dot.cascade{background:var(--eagle);animation:pulse .6s ease-in-out infinite}
+.status-dot.critical{background:var(--danger);animation:pulse .4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+#btn-home{display:inline-flex;align-items:center;background:none;border:none;cursor:pointer;padding:4px 6px;margin-right:4px;opacity:.85;transition:opacity .15s;text-decoration:none}
+#btn-home:hover{opacity:1}
+.tscg-logo-link{text-decoration:none;color:inherit;cursor:pointer;background:none;border:none;padding:0}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+
+/* ── Gauge bars ──────────────────────────────────────────── */
+#gauges {
+  position:absolute; left:8px; top:10px; bottom:10px;
+  display:flex; align-items:flex-end; gap:4px; z-index:6; pointer-events:none;
+}
+.gauge-wrap {
+  display:flex; flex-direction:column; align-items:center; gap:2px; height:100%;
+}
+.gauge-label {
+  font-size:9px; color:rgba(200,200,200,.7); text-align:center; white-space:nowrap;
+  writing-mode:vertical-rl; transform:rotate(180deg);
+  font-family:var(--font-mono); letter-spacing:.05em;
+}
+.gauge-val {
+  font-size:9px; color:rgba(200,200,200,.85); text-align:center;
+  font-family:var(--font-mono); white-space:nowrap;
+}
+.gauge-track {
+  flex:1; width:10px; background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12); border-radius:3px;
+  position:relative; overflow:hidden; min-height:60px;
+}
+.gauge-fill {
+  position:absolute; bottom:0; left:0; right:0;
+  border-radius:2px; transition:height .4s ease;
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <header id="header">
+    <button id="btn-home" onclick="window.location.href='https://echopraxium.github.io/tscg/'" title="TSCG Home">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </button>
+    <button class="tscg-logo-link" onclick="window.open('https://github.com/Echopraxium/tscg','_blank')"><span class="tscg-logo">TSCG</span></button>
+    <span class="sep">&middot;</span>
+    <span class="poclet-name">Trophic Pyramid &mdash; StratifiedDissipation &amp; AnthropogenicDomination Poclet</span>
+    <div class="meta-chips">
+      <span class="chip domain">Ecology / Biology</span>
+      <span class="chip type">m3:Poclet</span>
+      <span class="chip version">v2.1.0</span>
+    </div>
+  </header>
+
+  <div id="canvas-area">
+    <canvas id="render-canvas"></canvas>
+    <div id="gauges">
+      <div class="gauge-wrap">
+        <div class="gauge-label">Temp. (&deg;C)</div>
+        <div class="gauge-track"><div class="gauge-fill" id="g-temp" style="background:#f85149"></div></div>
+        <div class="gauge-val" id="gv-temp">+2.8°C</div>
+      </div>
+      <div class="gauge-wrap">
+        <div class="gauge-label">Renew. (TW)</div>
+        <div class="gauge-track"><div class="gauge-fill" id="g-renew" style="background:#56d364"></div></div>
+        <div class="gauge-val" id="gv-renew">54%</div>
+      </div>
+      <div class="gauge-wrap">
+        <div class="gauge-label">Fossil (TW)</div>
+        <div class="gauge-track"><div class="gauge-fill" id="g-fossil" style="background:#ff9500"></div></div>
+        <div class="gauge-val" id="gv-fossil">46%</div>
+      </div>
+      <div class="gauge-wrap">
+        <div class="gauge-label">CO2 (ppm)</div>
+        <div class="gauge-track"><div class="gauge-fill" id="g-co2" style="background:#e3b341"></div></div>
+        <div class="gauge-val" id="gv-co2">662</div>
+      </div>
+      <div class="gauge-wrap">
+        <div class="gauge-label">Biodiversity</div>
+        <div class="gauge-track"><div class="gauge-fill" id="g-bio" style="background:#79c0ff"></div></div>
+        <div class="gauge-val" id="gv-bio">64%</div>
+      </div>
+    </div>
+  </div>
+  <div id="splitter"></div>
+
+  <aside id="sidebar">
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="description">Description</button>
+      <button class="tab-btn" data-tab="concepts">Concepts</button>
+      <button class="tab-btn" data-tab="synergy">Synergy</button>
+      <button class="tab-btn" data-tab="scores">Scores</button>
+    </nav>
+
+    <div id="panel-description" class="tab-panel active">
+      <div class="readme-content">
+<h2>System</h2>
+A <strong>Trophic Pyramid</strong> is a layered ecological structure where each level dissipates ~90% of energy as heat (Lindeman 1942). This poclet adds <strong>Humanity</strong> as a supra-trophic super-predator (Level 6) and an <strong>Anthropic Pressure (AP)</strong> model grounded in <em>The Limits to Growth</em> (Meadows et al. 1972).
+
+<h2>Lindeman's 10% Rule (1942)</h2>
+<code>&eta; = E(n+1)/E(n) &asymp; 0.10</code>
+<code>10 000 &rarr; 1 000 &rarr; 100 &rarr; 10 kJ/m&sup2;/yr</code>
+
+<h2>6 Trophic Poles</h2>
+<code>Level 1</code> &#127807; Producers &mdash; plants, phytoplankton (LEFT base)
+<code>&#8869;</code>&nbsp;&nbsp;&nbsp;&nbsp;&#127812; Decomposers &mdash; fungi, bacteria (RIGHT base &mdash; transversal)
+<code>Level 2</code> &#128008; Herbivores &mdash; ungulates, zooplankton
+<code>Level 3</code> &#128049; Carnivores &mdash; foxes, predatory fish
+<code>Level 4</code> &#129413; Apex Predators &mdash; wolves, sharks
+<code>Level 6</code> &#127758; Humanity &mdash; supra-trophic super-predator
+
+<h2>Anthropic Pressure (AP)</h2>
+AP &isin; [0, 1] &mdash; fossil fuel exploitation + mining impact on biodiversity. Impact is <strong>top-down</strong>: Level 4 collapses at AP=0.33. <strong>AP_crit = 0.70</strong> &rarr; irreversible cascade.
+<em>Current 2024: AP &asymp; 0.46</em>
+
+<h2>Decomposers &mdash; Split Base</h2>
+The pyramid base is <strong>bisected vertically</strong>: Producers (LEFT box) | Decomposers (RIGHT box). Decomposers exhibit non-monotonic behaviour: irruption under moderate AP, collapse above AP = 0.60.
+
+<h2>Humanity's Energy Bypass</h2>
+<code>E_human = &Sigma;(f_n&times;E_n) + E_fossil</code>
+Fossil input (~20 000 kJ/m&sup2;/yr) exceeds total natural primary production. The gold platform above the apex grows with AP.
+
+<h2>3D Controls</h2>
+Left-drag: orbit &nbsp;&bull;&nbsp; Scroll: zoom &nbsp;&bull;&nbsp; Right-drag: pan &nbsp;&bull;&nbsp; Click level: inspect
+
+<h2>References</h2>
+Lindeman (1942) &mdash; <em>Trophic-Dynamic Aspect of Ecology</em>, Ecology 23(4)
+Meadows et al. (1972) &mdash; <em>The Limits to Growth</em>, Club of Rome
+      </div>
+    </div>
+
+    <div id="panel-concepts" class="tab-panel">
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:4px">Primary &mdash; 3 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item primary"><span class="gc-name">m2:Layer</span><div><div class="gc-formula">S&otimes;I&otimes;A&otimes;R</div><div class="gc-role">Structural backbone &mdash; each trophic level IS a Layer (6 levels)</div></div></div>
+        <div class="gc-item primary"><span class="gc-name">m2:Dissipation</span><div><div class="gc-formula">F&otimes;D</div><div class="gc-role">~90% energy lost as heat at each trophic boundary (Lindeman 10% rule)</div></div></div>
+        <div class="gc-item primary"><span class="gc-name">m2:Context</span><div><div class="gc-formula">O&otimes;R&otimes;Im&otimes;E</div><div class="gc-role">Biome context determines species composition per Layer</div></div></div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin:8px 0 4px">Secondary &mdash; 12 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item secondary"><span class="gc-name">m2:Hierarchy</span><div><div class="gc-formula">A&otimes;S</div><div class="gc-role">Positional ordering base &rarr; apex</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Flow</span><div><div class="gc-formula">F</div><div class="gc-role">Energy/biomass transfer between levels</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Gradient</span><div><div class="gc-formula">&otimes;&sup2;F</div><div class="gc-role">Energy density gradient base &rarr; apex</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Homeostasis</span><div><div class="gc-formula">A&otimes;S&otimes;F&otimes;I&otimes;D</div><div class="gc-role">Ecosystem equilibrium under perturbation</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Regulation</span><div><div class="gc-formula">A&otimes;S&otimes;F</div><div class="gc-role">Predator-prey feedback + anthropogenic meta-regulation</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Cascade</span><div><div class="gc-formula">&otimes;&rArr;(P,St,Tr)</div><div class="gc-role">Natural cascade + Anthropogenic super-cascade (AP &ge; 0.70)</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Threshold</span><div><div class="gc-formula">A&otimes;I&otimes;F</div><div class="gc-role">AP_crit = 0.70 &rarr; irreversible absorbing state (m2:Entropy)</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Network</span><div><div class="gc-formula">S&otimes;F&otimes;I</div><div class="gc-role">Food web underlying the pyramid</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Emergence</span><div><div class="gc-formula">&mdash;</div><div class="gc-role">Ecosystem services from level interactions</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Transducer</span><div><div class="gc-formula">F&otimes;I</div><div class="gc-role">Humanity converts fossil energy into trophic control (bypass)</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Entropy</span><div><div class="gc-formula">D&otimes;F</div><div class="gc-role">Mass extinction = absorbing state; AP &ge; 0.70 seals cascade</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Processor</span><div><div class="gc-formula">I</div><div class="gc-role">Humanity's technology enabling supra-trophic strategy</div></div></div>
+      </div>
+    </div>
+
+    <div id="panel-synergy" class="tab-panel">
+      <div class="synergy-box">
+        <div class="synergy-label">KnowledgeFieldConceptCombo #1</div>
+        <div class="synergy-formula">StratifiedDissipation</div>
+        <div class="synergy-formula" style="font-size:10px;color:var(--muted)">= Biology &odot; (Layer &otimes; Dissipation)<br>compiled: S&otimes;I&otimes;A&otimes;R&otimes;F&otimes;D</div>
+        <div class="synergy-emergent"><strong>Emergent:</strong> Pyramidal biomass structure. Thermodynamic loss (F&otimes;D) through stable positional strata (S&otimes;I&otimes;A) inevitably produces the pyramid. No designer required.</div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--eagle)">
+        <div class="synergy-label" style="color:var(--eagle)">KnowledgeFieldConceptCombo #2</div>
+        <div class="synergy-formula">AnthropogenicDomination</div>
+        <div class="synergy-formula" style="font-size:10px;color:var(--muted)">= Biology &odot; (Transducer &otimes; Regulation &otimes; Entropy)<br>compiled: F&otimes;I&otimes;A&otimes;S&otimes;D</div>
+        <div class="synergy-emergent"><strong>Emergent:</strong> Supra-trophic meta-control. Fossil fuel conversion amplifies global entropy (mass extinction, climate forcing). Grounded in <em>Limits to Growth</em> (Meadows 1972) overshoot scenario.</div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--sphinx)">
+        <div class="synergy-label" style="color:var(--sphinx)">Empirical Law &mdash; Lindeman (1942)</div>
+        <div class="synergy-formula">&eta; = E(n+1)/E(n) &asymp; 0.10</div>
+        <div class="synergy-emergent">10 000 &rarr; 1 000 &rarr; 100 &rarr; 10 kJ/m&sup2;/yr<br>Humanity bypasses this rule: E_humanity &asymp; 21 000 kJ/m&sup2;/yr via fossil fuels.</div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--warn)">
+        <div class="synergy-label" style="color:var(--warn)">AP Model &mdash; Limits to Growth (Meadows 1972)</div>
+        <div class="synergy-formula">AP_crit = 0.70 &rarr; m2:Entropy absorbing state</div>
+        <div class="synergy-emergent">
+AP = 0.00 &rarr; Pre-industrial natural pyramid
+AP &asymp; 0.46 &rarr; Current situation (2024)
+AP = 0.70 &rarr; Critical threshold (irreversible)
+AP &asymp; 0.85 &rarr; BAU 2050 (LtG standard run collapse)</div>
+      </div>
+    </div>
+
+    <div id="panel-scores" class="tab-panel">
+      <div class="score-group">
+        <div class="score-group-label eagle">Eagle Eye &mdash; ASFID (Territory)</div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-A)">A</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:97%;background:var(--col-A)"></div></div><div class="score-val">0.97</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-S)">S</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:92%;background:var(--col-S)"></div></div><div class="score-val">0.92</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-F)">F</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:97%;background:var(--col-F)"></div></div><div class="score-val">0.97</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-I)">I</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-I)"></div></div><div class="score-val">0.90</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-D)">D</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-D)"></div></div><div class="score-val">0.95</div></div>
+        <div class="score-mean-row"><span>ASFID mean</span><span>0.94</span></div>
+      </div>
+      <div class="score-group">
+        <div class="score-group-label sphinx">Sphinx Eye &mdash; REVOI (Map)</div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-R)">R</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-R)"></div></div><div class="score-val">0.85</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-E)">E</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:var(--col-E)"></div></div><div class="score-val">0.80</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-V)">V</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-V)"></div></div><div class="score-val">0.85</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-O)">O</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-O)"></div></div><div class="score-val">0.90</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-Im)">I</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-Im)"></div></div><div class="score-val">0.95</div></div>
+        <div class="score-mean-row"><span>REVOI mean</span><span>0.87</span></div>
+      </div>
+      <div class="gap-badge">
+        <div><div class="gap-label">Epistemic Gap &delta;</div><div class="gap-val">0.07</div></div>
+        <div class="gap-desc">OnCriticalLine [0.05,0.15) &mdash; anthropogenic dimension harder to model than to observe</div>
+      </div>
+      <div id="level-info">
+        <div class="level-info-box"><span style="color:var(--muted)">Click a trophic level in the 3D view to inspect</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div id="env-bar">
+    <div id="env-inner">
+      <div class="env-row">
+        <div class="env-group">
+          <div class="env-label">&#127759; Anthropic Pressure (AP)</div>
+          <input type="range" id="sl-ap" class="env-slider" min="0" max="1" step="0.01" value="0.20">
+          <div class="env-val" id="val-ap" style="min-width:36px;font-weight:700;color:var(--warn)">0.20</div>
+          <span class="ap-badge natural" id="badge-ap">EARLY STRESS</span>
+          <span id="year-display" style="font-size:11px;font-family:var(--font-mono);color:var(--sphinx);font-weight:700;margin-left:6px;white-space:nowrap">1972 Q1</span>
+        </div>
+        <div class="env-sep"></div>
+        <div class="env-group"><div class="env-label">CO&#8322;</div><div class="env-val" id="val-co2">444 ppm</div></div>
+        <div class="env-sep"></div>
+        <div class="env-group"><div class="env-label">&#127777; &Delta;T</div><div class="env-val" id="val-temp">+1.2&deg;C</div></div>
+        <div class="env-sep"></div>
+        <div class="env-group"><div class="env-label">&#127807; Biodiversity</div><div class="env-val" id="val-bio">88%</div></div>
+        <div class="env-sep"></div>
+        <div id="env-warnings"></div>
+      </div>
+      <div class="env-row">
+        <div class="env-label" style="font-size:10px;margin-right:4px">&#x1F4D6; LtG (Meadows 1972):</div>
+        <button class="ctrl-btn ltg" id="btn-ltg-holocene">Holocene (-17500)</button>
+        <button class="ctrl-btn ltg" id="btn-ltg-0">Anthropocene (0.12)</button>
+        <button class="ctrl-btn ltg" id="btn-ltg-20">LtG 1972 (~0.20)</button>
+        <button class="ctrl-btn ltg" id="btn-ltg-46">Current 2026 (0.46)</button>
+        <button class="ctrl-btn ltg" id="btn-ltg-55">Trend 2035 (0.55)</button>
+        <button class="ctrl-btn ltg bau" id="btn-ltg-85">BAU 2050 (0.85)</button>
+      </div>
+      <div class="env-row">
+        <div class="env-label" style="font-size:10px;margin-right:4px;color:var(--sphinx);font-weight:700">&#127758; Meadows Projections:</div>
+        <button class="ctrl-btn ltg recovery" id="btn-ltg-rec">LtG Recovery (0.35)</button>
+        <button class="ctrl-btn ltg recovery" id="btn-ltg-paris">Paris Accord (0.30)</button>
+        <button class="ctrl-btn ltg recovery" id="btn-ltg-stab">Stabilized 2050 (0.25)</button>
+      </div>
+    </div>
+  </div>
+
+  <footer id="controls">
+    <button class="ctrl-btn active" id="btn-play">&#9646;&#9646; Pause</button>
+    <button class="ctrl-btn" id="btn-reset">&#8634; Reset</button>
+    <div class="ctrl-sep"></div>
+    <span class="ctrl-label">Speed</span>
+    <input type="range" id="speed-slider" min="0.5" max="25" step="0.5" value="1.0" style="-webkit-appearance:none;width:80px;height:4px;background:var(--bg-card);border-radius:2px;outline:none;flex-shrink:0">
+    <span class="ctrl-label" id="speed-label" style="min-width:32px">&times;1.0</span>
+    <button class="ctrl-btn spd" data-spd="2">&times;2</button>
+    <button class="ctrl-btn spd" data-spd="5">&times;5</button>
+    <button class="ctrl-btn spd" data-spd="10">&times;10</button>
+    <div class="ctrl-sep"></div>
+    <button class="ctrl-btn danger" id="btn-cascade">&#127758; Without Humanity</button>
+    <div class="ctrl-sep"></div>
+    <button class="ctrl-btn" id="btn-env">&#127759; AP Controls</button>
+    <div class="status-indicator">
+      <div class="status-dot running" id="status-dot"></div>
+      <span id="status-label">Running</span>
+    </div>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/6.26.0/babylon.js"></script>
+<script>
+'use strict';
+
+/* ── Simulation state ─────────────────────────────────────── */
+const SIM={running:true,speed:1.0,apexRemoved:false,cascadeTimer:0,selectedLevel:null,time:0,ap:0.20,year:1972,quarter:1,quarterTimer:0,oscTime:0};
+
+/* ── B_n(AP) formulas (M0_TrophicPyramid v2.1.0) ─────────── */
+const BFN={
+  L4: ap=>Math.max(0,1.0-3.0*ap),
+  L3: ap=>Math.max(0,1.0-2.0*ap),
+  L2: ap=>(1+0.5*ap)*Math.max(0,1.0-1.8*ap),
+  L1: ap=>Math.max(0,1.0-1.0*ap),
+  DECO: ap=>(1+0.8*ap)*Math.max(0,1.0-3.0*Math.max(0,ap-0.6)),
+  HUMAN: ap=>Math.min(1.8,0.2+ap*1.8)
+};
+
+/* ── Level metadata ───────────────────────────────────────── */
+const META={
+  L1:   {label:'Producers',     sub:'Primary Producers (Autotrophs)',    emoji:'🌿',energy:'10 000 kJ/m²/yr',rank:1, asfid:{A:.95,S:.95,F:.85,I:.75,D:.70}},
+  L2:   {label:'Herbivores',    sub:'Primary Consumers',                 emoji:'🦌',energy:'1 000 kJ/m²/yr', rank:2, asfid:{A:.80,S:.80,F:.85,I:.75,D:.80}},
+  L3:   {label:'Carnivores',    sub:'Secondary Consumers',               emoji:'🦊',energy:'100 kJ/m²/yr',   rank:3, asfid:{A:.85,S:.75,F:.80,I:.80,D:.85}},
+  L4:   {label:'Apex Predators',sub:'Tertiary Consumers (natural apex)', emoji:'🦅',energy:'10 kJ/m²/yr',    rank:4, asfid:{A:.95,S:.75,F:.75,I:.90,D:.95}},
+  DECO: {label:'Decomposers',   sub:'Detritivores / Saprotrophs (base)',emoji:'🍄',energy:'40-60% of flux',  rank:'⊥',asfid:{A:.80,S:.85,F:.95,I:.85,D:.90}},
+  HUMAN:{label:'Humanity',      sub:'Supra-Trophic Super-Predator',      emoji:'🌍',energy:'~21 000 kJ/m²/yr (fossil)',rank:6,asfid:{A:.99,S:.95,F:.99,I:.99,D:.99}}
+};
+
+/* ── 3D geometry ──────────────────────────────────────────── */
+// L2/L3/L4 as square frustums (tessellation=4 BABYLON.MeshBuilder.CreateCylinder)
+const GEO={2:{dBot:5.0,dTop:3.8,h:1.4,y:2.4},3:{dBot:3.8,dTop:2.6,h:1.4,y:4.1},4:{dBot:2.6,dTop:1.4,h:1.4,y:5.8}};
+// Split base: two boxes
+const GBASE={halfW:2.6,depth:5.2,h:1.4,y:0.7};
+// Humanity platform above L4 (L4 top = 5.8+0.7=6.5, gap 0.5, h/2=0.25 -> y=7.25)
+const GHUM={w:3.0,d:3.0,h:0.70,y:7.05};
+
+const COLORS={2:'#79c0ff',3:'#d2a8ff',4:'#f78166',prod:'#56d364',deco:'#e3b341',human:'#b0b0b0'};
+
+/* ── Smooth populations ───────────────────────────────────── */
+const POP={L1:1,L2:1,L3:1,L4:1,DECO:1,HUMAN:0.2};
+const PT ={L1:1,L2:1,L3:1,L4:1,DECO:1,HUMAN:0.2};
+
+/* ── BabylonJS globals ────────────────────────────────────── */
+let engine,scene,camera,glowLayer;
+let lm={},lmat={};   // level meshes / materials indexed by rank or key
+let prodMesh,decoMesh,humanMesh,prodMat,decoMat,humanMat;
+let humanCubes=[], humanCubeMats=[];
+let humanOccWire=null, humanOccWireMat=null;
+let ePart={},hPart={},fossilPart=null;
+let hudDiv;
+const HUD_W=200,HUD_R=18;
+
+/* ── Utilities ────────────────────────────────────────────── */
+function hC3(h){return new BABYLON.Color3(parseInt(h.slice(1,3),16)/255,parseInt(h.slice(3,5),16)/255,parseInt(h.slice(5,7),16)/255)}
+function hC4(h,a=1){const c=hC3(h);return new BABYLON.Color4(c.r,c.g,c.b,a)}
+function lerp(a,b,t){return a+(b-a)*t}
+function sst(t){t=Math.max(0,Math.min(1,t));return t*t*(3-2*t)}
+
+/* ── HUD ──────────────────────────────────────────────────── */
+function buildHUD(){
+  // Fixed 2D HUD panel — top-right of canvas, never moves with camera
+  const panel=document.createElement('div');
+  panel.id='hud-panel';
+  Object.assign(panel.style,{
+    position:'absolute', top:'10px', right:'10px',
+    width:'190px', zIndex:'8', pointerEvents:'none',
+    display:'flex', flexDirection:'column', gap:'3px',
+    fontFamily:"'Segoe UI',system-ui,sans-serif"
+  });
+  document.getElementById('canvas-area').appendChild(panel);
+
+  // Order: top of pyramid → base (matches visual reading top→bottom)
+  const rows=[
+    {key:'HUMAN', col:COLORS.human},
+    {key:'L4',    col:COLORS[4]},
+    {key:'L3',    col:COLORS[3]},
+    {key:'L2',    col:COLORS[2]},
+    {key:'L1',    col:COLORS.prod},
+    {key:'DECO',  col:COLORS.deco}
+  ];
+  rows.forEach(({key,col})=>{
+    const m=META[key];
+    const row=document.createElement('div');
+    row.id='hrow-'+key;
+    Object.assign(row.style,{
+      display:'flex', flexDirection:'column', gap:'1px',
+      background:'rgba(13,17,23,0.82)',
+      border:'1px solid '+col+'33',
+      borderLeft:'3px solid '+col,
+      borderRadius:'0 4px 4px 0',
+      padding:'4px 8px 4px 7px',
+      cursor:'pointer', transition:'background .15s'
+    });
+    row.innerHTML=
+      `<div style="display:flex;align-items:center;gap:5px">` +
+      `<span style="font-size:12px">${m.emoji}</span>` +
+      `<span style="font-size:12px;font-weight:700;color:${col}">${m.label}</span>` +
+      `</div>` +
+      `<div style="font-size:9px;color:#8b949e;font-family:monospace">${m.energy}</div>` +
+      `<div id="hb-${key}" style="font-size:9px;color:${col}bb;font-family:monospace">B = 1.00</div>`;
+    row.addEventListener('click',()=>{ selectLevel(key); });
+    row.addEventListener('mouseenter',()=>{ row.style.background='rgba(33,38,45,0.92)'; });
+    row.addEventListener('mouseleave',()=>{ row.style.background='rgba(13,17,23,0.82)'; });
+    panel.appendChild(row);
+  });
+}
+
+function prj(p3,W,H){
+  if(!scene||!camera||!W||!H)return null;
+  const tm=scene.getTransformMatrix();
+  if(!tm||!isFinite(tm.m[0]))return null;
+  const vp=camera.viewport.toGlobal(W,H);
+  const sc=BABYLON.Vector3.Project(p3,BABYLON.Matrix.Identity(),tm,vp);
+  if(!isFinite(sc.x)||!isFinite(sc.y)||!isFinite(sc.z))return null;
+  if(sc.z<=0||sc.z>=1)return null;
+  return{x:sc.x,y:sc.y};
+}
+
+function updateHUD(){
+  // Fixed 2D panel — just update B values, no 3D projection needed
+  const ap=SIM.ap;
+  const keys=['HUMAN','L4','L3','L2','L1','DECO'];
+  keys.forEach(key=>{
+    const el=document.getElementById('hb-'+key);
+    if(!el)return;
+    const bv=(BFN[key]||(_=>1))(ap);
+    const isCasc=SIM.apexRemoved&&key==='HUMAN';
+    const col=key==='L1'?COLORS.prod:key==='DECO'?COLORS.deco:key==='HUMAN'?COLORS.human:COLORS[parseInt(key.replace('L',''))];
+    if(isCasc){
+      el.textContent='✗ REMOVED'; el.style.color='#f85149';
+    } else if(bv<0.02){
+      el.textContent='✗ COLLAPSED'; el.style.color='#f85149';
+    } else {
+      el.textContent='B = '+bv.toFixed(2); el.style.color=col+'bb';
+    }
+    // Highlight selected level row
+    const row=document.getElementById('hrow-'+key);
+    if(row) row.style.borderLeftWidth=SIM.selectedLevel===key?'5px':'3px';
+  });
+}
+
+/* ── Time advance ─────────────────────────────────────────── */
+const SECS_PER_QUARTER = 20; // real seconds per quarter at ×1 speed
+function advanceQuarter(dt){
+  if(!SIM.running) return;
+  SIM.quarterTimer += dt * SIM.speed;
+  if(SIM.quarterTimer >= SECS_PER_QUARTER){
+    SIM.quarterTimer -= SECS_PER_QUARTER;
+    SIM.quarter++;
+    if(SIM.quarter > 4){ SIM.quarter = 1; SIM.year++; }
+    const q=id=>document.getElementById(id);
+    const yd=q('year-display');
+    if(yd){
+      const yrStr=SIM.year<0?SIM.year+' BCE':String(SIM.year);
+      yd.textContent=yrStr+' Q'+SIM.quarter;
+    }
+  }
+}
+
+/* ── Scene ────────────────────────────────────────────────── */
+function initBabylon(){
+  const cvs=document.getElementById('render-canvas');
+  engine=new BABYLON.Engine(cvs,true);
+  scene=buildScene();
+  engine.runRenderLoop(()=>{
+    const dt=engine.getDeltaTime()*0.001;
+    if(SIM.running){
+      SIM.time+=dt*SIM.speed;
+      SIM.oscTime+=dt*0.32;  // constant rate — speed-independent, no pulsation at high speed
+      if(SIM.apexRemoved)SIM.cascadeTimer=Math.min(SIM.cascadeTimer+dt*SIM.speed,1.0);
+      advanceQuarter(dt);
+    }
+    updatePop();
+    updateMeshes();
+    updateHUD();
+    scene.render();
+  });
+  window.addEventListener('resize',()=>engine.resize());
+}
+
+function buildScene(){
+  const sc=new BABYLON.Scene(engine);
+  sc.clearColor=new BABYLON.Color4(0.051,0.067,0.090,1);
+
+  camera=new BABYLON.ArcRotateCamera('cam',-Math.PI/4,1.05,18,new BABYLON.Vector3(0,3.5,0),sc);
+  camera.attachControl(document.getElementById('render-canvas'),true);
+  camera.lowerRadiusLimit=6; camera.upperRadiusLimit=36;
+  camera.wheelPrecision=50; camera.lowerBetaLimit=0.15; camera.upperBetaLimit=Math.PI/2-0.05;
+
+  const hemi=new BABYLON.HemisphericLight('h',new BABYLON.Vector3(0,1,0),sc);
+  hemi.intensity=0.5; hemi.diffuse=new BABYLON.Color3(.85,.9,1); hemi.groundColor=new BABYLON.Color3(.08,.1,.13);
+  const sun=new BABYLON.DirectionalLight('s',new BABYLON.Vector3(-1,-2,-.5),sc); sun.intensity=0.85;
+
+  glowLayer=new BABYLON.GlowLayer('glow',sc); glowLayer.intensity=0.4;
+
+  // Floor grid
+  const fl=BABYLON.MeshBuilder.CreateGround('floor',{width:20,height:20,subdivisions:14},sc);
+  const fm=new BABYLON.StandardMaterial('fm',sc); fm.diffuseColor=new BABYLON.Color3(.06,.08,.11); fm.wireframe=true;
+  fl.material=fm; fl.position.y=-0.02; fl.isPickable=false;
+
+  // Frustum levels L2/L3/L4
+  [2,3,4].forEach(r=>{
+    const g=GEO[r],col=COLORS[r];
+    const mat=new BABYLON.StandardMaterial('m'+r,sc);
+    mat.diffuseColor=hC3(col); mat.specularColor=new BABYLON.Color3(.25,.25,.25); mat.specularPower=40; mat.alpha=0.85;
+    lmat[r]=mat;
+    const mesh=BABYLON.MeshBuilder.CreateCylinder('lv'+r,{diameterTop:g.dTop,diameterBottom:g.dBot,height:g.h,tessellation:4},sc);
+    mesh.position.y=g.y; mesh.rotation.y=Math.PI/4; mesh.material=mat; mesh.metadata={lk:'L'+r};
+    lm[r]=mesh;
+    // Wireframe overlay
+    const wm=new BABYLON.StandardMaterial('wm'+r,sc);
+    wm.emissiveColor=hC3(col).scale(0.35); wm.wireframe=true; wm.alpha=0.22;
+    const wMesh=mesh.clone('wlv'+r); wMesh.material=wm; wMesh.isPickable=false; wMesh.metadata={};
+  });
+
+  // Split base: Producers (left)
+  prodMat=new BABYLON.StandardMaterial('pmat',sc);
+  prodMat.diffuseColor=hC3(COLORS.prod); prodMat.specularColor=new BABYLON.Color3(.2,.2,.2); prodMat.specularPower=40; prodMat.alpha=0.85;
+  prodMesh=BABYLON.MeshBuilder.CreateBox('producers',{width:GBASE.halfW,height:GBASE.h,depth:GBASE.depth},sc);
+  prodMesh.position.set(-GBASE.halfW/2,GBASE.y,0); prodMesh.material=prodMat; prodMesh.metadata={lk:'L1'};
+  const pwm=new BABYLON.StandardMaterial('pwm',sc); pwm.emissiveColor=hC3(COLORS.prod).scale(0.3); pwm.wireframe=true; pwm.alpha=0.2;
+  const pw=prodMesh.clone('prodW'); pw.material=pwm; pw.isPickable=false; pw.metadata={};
+
+  // Split base: Decomposers (right)
+  decoMat=new BABYLON.StandardMaterial('dmat',sc);
+  decoMat.diffuseColor=hC3(COLORS.deco); decoMat.specularColor=new BABYLON.Color3(.2,.2,.2); decoMat.specularPower=40; decoMat.alpha=0.85;
+  decoMesh=BABYLON.MeshBuilder.CreateBox('decomposers',{width:GBASE.halfW,height:GBASE.h,depth:GBASE.depth},sc);
+  decoMesh.position.set(GBASE.halfW/2,GBASE.y,0); decoMesh.material=decoMat; decoMesh.metadata={lk:'DECO'};
+  const dwm=new BABYLON.StandardMaterial('dwm',sc); dwm.emissiveColor=hC3(COLORS.deco).scale(0.3); dwm.wireframe=true; dwm.alpha=0.2;
+  const dw=decoMesh.clone('decoW'); dw.material=dwm; dw.isPickable=false; dw.metadata={};
+
+  // Vertical divider
+  const divm=new BABYLON.StandardMaterial('divm',sc); divm.emissiveColor=new BABYLON.Color3(.4,.4,.4); divm.alpha=0.5;
+  const div=BABYLON.MeshBuilder.CreateBox('div',{width:.05,height:GBASE.h+.02,depth:GBASE.depth+.04},sc);
+  div.position.set(0,GBASE.y,0); div.material=divm; div.isPickable=false;
+
+  // Humanity layer — semi-transparent container + randomly overlapping cubic particles
+  // Container scales with AP (small in Holocene, large in BAU)
+  humanMat=new BABYLON.StandardMaterial('hmat',sc);
+  humanMat.diffuseColor=hC3(COLORS.human);
+  humanMat.emissiveColor=hC3(COLORS.human).scale(0.07);
+  humanMat.alpha=0.09;
+  humanMat.backFaceCulling=false;
+  humanMesh=BABYLON.MeshBuilder.CreateBox('humanity',{width:GHUM.w,height:GHUM.h,depth:GHUM.d},sc);
+  humanMesh.position.y=GHUM.y; humanMesh.material=humanMat; humanMesh.metadata={lk:'HUMAN'};
+  lm['HUMAN']=humanMesh; lmat['HUMAN']=humanMat;
+  // Container boundary — very subtle outline only
+  const hwm=new BABYLON.StandardMaterial('hwm',sc);
+  hwm.emissiveColor=hC3(COLORS.human).scale(0.18); hwm.wireframe=true; hwm.alpha=0.18;
+  const hw=humanMesh.clone('humanityW'); hw.material=hwm; hw.isPickable=false; hw.metadata={};
+
+  // Occupied-volume wireframe — follows population scale, this is the prominent wireframe
+  humanOccWireMat=new BABYLON.StandardMaterial('howm',sc);
+  humanOccWireMat.emissiveColor=hC3(COLORS.human).scale(0.92);
+  humanOccWireMat.wireframe=true; humanOccWireMat.alpha=0.88;
+  humanOccWire=BABYLON.MeshBuilder.CreateBox('humanOccW',
+    {width:GHUM.w,height:GHUM.h,depth:GHUM.d},sc);
+  humanOccWire.position.y=GHUM.y;
+  humanOccWire.material=humanOccWireMat;
+  humanOccWire.isPickable=false; humanOccWire.metadata={};
+
+  // Cubic particles — true cubes (w=h=d=sz), prism-shaped, no rotation
+  // CUBE SIZE is FIXED (not scaled by scH) so cubes remain visible even at Holocene
+  // Only POSITION and COUNT vary with population
+  const MAX_CUBES=157;
+  // Min cube size = 2% of GHUM.w = 0.112; max = ratio 1:3 → 0.336
+  const CUBE_MIN=0.060, CUBE_MAX=0.180; // ratio 1:3, 2% of layer width (3.6×0.02=0.072)
+  const HW=GHUM.w/2, HD=GHUM.d/2, HH=GHUM.h/2;
+  let seed=137;
+  const rng=()=>{seed=(seed*1664525+1013904223)&0xffffffff;return(seed>>>0)/0xffffffff;};
+  for(let i=0;i<MAX_CUBES;i++){
+    const sz=CUBE_MIN+rng()*(CUBE_MAX-CUBE_MIN);  // [0.060..0.180], ratio 1:3
+    // Positions within FULL prism (they will be repositioned by scH in updateMeshes)
+    const px=(rng()*2-1)*(HW-sz/2);
+    const pz=(rng()*2-1)*(HD-sz/2);
+    const py=GHUM.y+(rng()*2-1)*(HH-sz/2);
+    const cMat=new BABYLON.StandardMaterial('hcm'+i,sc);
+    const g=0.65+rng()*0.28;
+    const warm=rng()*0.07;
+    cMat.diffuseColor=new BABYLON.Color3(g+warm, g, g+warm*0.3);
+    cMat.emissiveColor=new BABYLON.Color3((g+warm)*.13, g*.11, g*.13);
+    cMat.specularColor=new BABYLON.Color3(.35,.35,.38);
+    cMat.specularPower=45;
+    cMat.alpha=0.78+rng()*0.17;
+    const cube=BABYLON.MeshBuilder.CreateBox('hcube'+i,{
+      width:sz, height:sz, depth:sz              // TRUE CUBE: w=h=d=sz
+    },sc);
+    cube.position.set(px, py, pz);
+    cube.rotation.set(0,0,0);                   // no rotation — faces parallel to layers
+    cube.material=cMat;
+    cube.metadata={lk:'HUMAN'};
+    cube._baseX=px; cube._baseZ=pz; cube._baseY=py-GHUM.y; // relative to GHUM center
+    cube._phase=rng()*Math.PI*2;
+    cube.isVisible=false;
+    humanCubes.push(cube);
+    humanCubeMats.push(cMat);
+  }
+
+  buildParticles(sc);
+
+  // Click picking
+  sc.onPointerObservable.add(inf=>{
+    if(inf.type!==BABYLON.PointerEventTypes.POINTERPICK)return;
+    const lk=inf.pickInfo?.pickedMesh?.metadata?.lk;
+    selectLevel(lk||null);
+  });
+
+  return sc;
+}
+
+/* ── Particles ────────────────────────────────────────────── */
+function mkTex(sc){
+  const sz=32,tex=new BABYLON.DynamicTexture('pt',{width:sz,height:sz},sc,false);
+  tex.hasAlpha=true; tex.wrapU=tex.wrapV=BABYLON.Texture.CLAMP_ADDRESSMODE;
+  const ctx=tex.getContext(),cx=sz/2,g=ctx.createRadialGradient(cx,cx,0,cx,cx,cx);
+  g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.4,'rgba(255,255,255,.8)'); g.addColorStop(1,'rgba(255,255,255,0)');
+  ctx.clearRect(0,0,sz,sz); ctx.fillStyle=g; ctx.fillRect(0,0,sz,sz); tex.update(); return tex;
+}
+
+function buildParticles(sc){
+  const tx=mkTex(sc);
+
+  // Energy flow: upward between levels
+  [{r:1,fy:GBASE.y+GBASE.h/2,sp:2.0,c1:COLORS.prod,c2:COLORS[2]},
+   {r:2,fy:GEO[2].y+GEO[2].h/2,sp:1.4,c1:COLORS[2],c2:COLORS[3]},
+   {r:3,fy:GEO[3].y+GEO[3].h/2,sp:0.9,c1:COLORS[3],c2:COLORS[4]}
+  ].forEach(({r,fy,sp,c1,c2})=>{
+    const ps=new BABYLON.ParticleSystem('ep'+r,100,sc);
+    ps.particleTexture=tx; ps.emitter=new BABYLON.Vector3(0,fy,0);
+    ps.minEmitBox=new BABYLON.Vector3(-sp,0,-sp); ps.maxEmitBox=new BABYLON.Vector3(sp,0,sp);
+    ps.color1=hC4(c1,.9); ps.color2=hC4(c2,.7); ps.colorDead=new BABYLON.Color4(1,.6,.2,0);
+    ps.minSize=.08; ps.maxSize=.20; ps.minLifeTime=.8; ps.maxLifeTime=1.6; ps.emitRate=15;
+    ps.gravity=new BABYLON.Vector3(0,0,0);
+    ps.direction1=new BABYLON.Vector3(-.12,1.2,-.12); ps.direction2=new BABYLON.Vector3(.12,1.8,.12);
+    ps.minEmitPower=.5; ps.maxEmitPower=1.0; ps.updateSpeed=.025; ps.start();
+    ePart[r]=ps;
+  });
+
+  // Heat sparks at level boundaries
+  [2,3,4].forEach(r=>{
+    const g=GEO[r],ps=new BABYLON.ParticleSystem('ht'+r,50,sc);
+    ps.particleTexture=tx; ps.emitter=new BABYLON.Vector3(0,g.y-g.h/2-.05,0);
+    const sp=g.dBot*.45; ps.minEmitBox=new BABYLON.Vector3(-sp,0,-sp); ps.maxEmitBox=new BABYLON.Vector3(sp,0,sp);
+    ps.color1=new BABYLON.Color4(1,.65,.15,.80); ps.color2=new BABYLON.Color4(.9,.3,.05,.45); ps.colorDead=new BABYLON.Color4(.3,.1,0,0);
+    ps.minSize=.04; ps.maxSize=.10; ps.minLifeTime=.20; ps.maxLifeTime=.50; ps.emitRate=8;
+    ps.gravity=new BABYLON.Vector3(0,-.4,0);
+    ps.direction1=new BABYLON.Vector3(-1,.5,-1); ps.direction2=new BABYLON.Vector3(1,1.2,1);
+    ps.minEmitPower=.2; ps.maxEmitPower=.6; ps.updateSpeed=.04; ps.start();
+    hPart[r]=ps;
+  });
+
+  // Fossil bypass: downward from Humanity
+  const fps=new BABYLON.ParticleSystem('fossil',80,sc);
+  fps.particleTexture=tx; fps.emitter=new BABYLON.Vector3(0,GHUM.y-GHUM.h/2,0);
+  fps.minEmitBox=new BABYLON.Vector3(-2.8,0,-2.8); fps.maxEmitBox=new BABYLON.Vector3(2.8,0,2.8);
+  fps.color1=new BABYLON.Color4(1,.60,.05,.85); fps.color2=new BABYLON.Color4(.8,.35,.02,.50); fps.colorDead=new BABYLON.Color4(.4,.1,0,0);
+  fps.minSize=.06; fps.maxSize=.14; fps.minLifeTime=.4; fps.maxLifeTime=1.0; fps.emitRate=0;
+  fps.gravity=new BABYLON.Vector3(0,-.5,0);
+  fps.direction1=new BABYLON.Vector3(-.5,-1.5,-.5); fps.direction2=new BABYLON.Vector3(.5,-.8,.5);
+  fps.minEmitPower=.3; fps.maxEmitPower=.9; fps.updateSpeed=.03; fps.start();
+  fossilPart=fps;
+}
+
+/* ── Population dynamics ──────────────────────────────────── */
+function updatePop(){
+  if(!SIM.running)return;
+  const ap=SIM.ap,t=SIM.time;
+  const osc=ap<0.7?1:0;
+
+  if(SIM.apexRemoved){
+    const ct=SIM.cascadeTimer;
+    // Humanity removed → fossil bypass cut → all levels recover toward natural (AP=0) values
+    const apEff=lerp(ap,0,sst(ct));  // effective AP decreases as recovery progresses
+    PT.L4  =lerp(BFN.L4(ap), BFN.L4(0),  sst(Math.max(0,ct-.1)));
+    PT.L3  =lerp(BFN.L3(ap), BFN.L3(0),  sst(Math.max(0,ct-.2)));
+    PT.L2  =lerp(BFN.L2(ap), BFN.L2(0),  sst(Math.max(0,ct-.3)));
+    PT.L1  =lerp(BFN.L1(ap), BFN.L1(0),  sst(Math.max(0,ct-.4)));
+    PT.DECO=lerp(BFN.DECO(ap),BFN.DECO(0),sst(Math.max(0,ct-.3)));
+    PT.HUMAN=0; // platform fades out
+  }else{
+    SIM.cascadeTimer=0;
+    const ot=SIM.oscTime; // speed-independent oscillator — no pulsation at high speed
+    PT.L4  =Math.max(0,BFN.L4(ap)  *(1+.03*Math.sin(ot)*osc));
+    PT.L3  =Math.max(0,BFN.L3(ap)  *(1+.04*Math.sin(ot+1)*osc));
+    PT.L2  =Math.max(0,BFN.L2(ap)  *(1+.05*Math.sin(ot+2)*osc));
+    PT.L1  =Math.max(0,BFN.L1(ap)  *(1+.03*Math.sin(ot+3)*osc));
+    PT.DECO=Math.max(0,BFN.DECO(ap)*(1+.04*Math.sin(ot*.88+.5)*osc));
+  }
+  PT.HUMAN=BFN.HUMAN(ap);
+  const al=.025*SIM.speed;
+  Object.keys(POP).forEach(k=>{POP[k]=lerp(POP[k],PT[k],al);});
+}
+
+/* ── Mesh updates ─────────────────────────────────────────── */
+function updateMeshes(){
+  const ap=SIM.ap,crit=ap>=0.70,pulse=crit?.5+.5*Math.sin(SIM.time*4):0;
+
+  [2,3,4].forEach(r=>{
+    const mesh=lm[r],mat=lmat[r];
+    if(!mesh||!mat)return;
+    const sc=Math.cbrt(Math.max(.04,POP['L'+r]));
+    mesh.scaling.x=sc; mesh.scaling.z=sc;
+    const col=COLORS[r];
+    mat.emissiveColor=SIM.selectedLevel==='L'+r?hC3(col).scale(.35):BABYLON.Color3.Black();
+    if(crit&&r>=3)mat.emissiveColor=new BABYLON.Color3(.28*pulse,0,0);
+    const ta=.85;
+    mat.alpha=lerp(mat.alpha,ta,.04);
+  });
+
+  if(prodMesh&&prodMat){
+    const s=Math.max(.04,POP.L1);
+    prodMesh.scaling.x=s; prodMesh.position.x=-GBASE.halfW*s/2;
+    prodMat.emissiveColor=SIM.selectedLevel==='L1'?hC3(COLORS.prod).scale(.3):BABYLON.Color3.Black();
+    if(crit)prodMat.emissiveColor=new BABYLON.Color3(.25*pulse,0,0);
+  }
+  if(decoMesh&&decoMat){
+    const s=Math.max(.04,POP.DECO);
+    decoMesh.scaling.x=s; decoMesh.position.x=GBASE.halfW*s/2;
+    decoMat.emissiveColor=SIM.selectedLevel==='DECO'?hC3(COLORS.deco).scale(.3):BABYLON.Color3.Black();
+  }
+  if(humanMesh&&humanMat){
+    // Container: fixed size, very transparent background reference
+    const tAlpha=SIM.apexRemoved?lerp(.09,0,Math.min(1,SIM.cascadeTimer*2)):.07;
+    humanMat.alpha=lerp(humanMat.alpha,tAlpha,.04);
+    humanMat.emissiveColor=hC3(COLORS.human).scale(SIM.selectedLevel==='HUMAN'?.15:.04);
+    // humanMesh stays at scale 1 (container = total capacity)
+  }
+  if(humanCubes.length){
+    const bh=Math.max(0,POP.HUMAN);
+    const ot=SIM.oscTime;
+    const isSelected=SIM.selectedLevel==='HUMAN';
+    const BH_MAX=1.8;
+    // Occupied volume scale: -30% from BFN, minimum 5% of full size
+    const scH_raw=bh/BH_MAX * 0.70;           // 30% reduction
+    const scH_target=Math.max(0.05, scH_raw);  // minimum 5%
+    // Smooth the scale
+    const prevScH=humanOccWire?humanOccWire.scaling.x:scH_target;
+    const scH=lerp(prevScH, scH_target, .025);
+
+    // Occupied wireframe follows exactly the occupied volume
+    if(humanOccWire){
+      humanOccWire.scaling.set(scH, scH, scH);
+      const wAlpha=SIM.apexRemoved?lerp(.88,0,Math.min(1,SIM.cascadeTimer*2)):.88;
+      humanOccWireMat.alpha=lerp(humanOccWireMat.alpha,wAlpha,.04);
+    }
+
+    // Number of visible cubes proportional to population
+    const nVisible=Math.round(Math.min(1,bh/BH_MAX)*humanCubes.length);
+    humanCubes.forEach((cube,i)=>{
+      const visible=i<nVisible && !SIM.apexRemoved;
+      cube.isVisible=visible;
+      if(!visible)return;
+      const mat=humanCubeMats[i];
+      if(!mat)return;
+      const ph=cube._phase||0;
+      // Positions scale with occupied volume (prism shrinks/grows)
+      // Cube SIZE stays fixed — always visible even at Holocene (min 2% of layer)
+      cube.position.x=cube._baseX*scH;
+      cube.position.z=cube._baseZ*scH;
+      cube.position.y=GHUM.y+cube._baseY*scH;
+      // Cube scaling = 1 (fixed size), gentle XZ breathing only
+      const breath=1.0+0.025*Math.sin(ot+ph);
+      cube.scaling.set(breath, 1.0, breath);   // Y=1 fixed: top/bottom stay parallel
+      mat.alpha=lerp(mat.alpha,.84,.04);
+      const em=isSelected?.22:.10+.025*Math.sin(ot*0.6+ph);
+      mat.emissiveColor=new BABYLON.Color3(em+.02, em, em+.03);
+    });
+  }
+
+  [1,2,3].forEach(r=>{
+    const ps=ePart[r]; if(!ps)return;
+    ps.emitRate=Math.max(1,Math.round(15*POP['L'+r]*Math.max(0,1-ap*.7)));
+  });
+  if(fossilPart)fossilPart.emitRate=Math.round(ap*45);
+  if(glowLayer)glowLayer.intensity=lerp(.3,1.1,ap*1.1);
+
+  // Update gauges every frame — use effective AP (reduces during Humanity removal)
+  const apEff = SIM.apexRemoved
+    ? lerp(ap, 0, Math.min(1, SIM.cascadeTimer * 0.8))
+    : ap;
+  updateGauges(apEff);
+}
+
+/* ── Level selection ──────────────────────────────────────── */
+function selectLevel(key){
+  SIM.selectedLevel=key;
+  if(key!==null){
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    const btn=document.querySelector('[data-tab="scores"]');
+    if(btn){btn.classList.add('active');document.getElementById('panel-scores').classList.add('active');}
+  }
+  updateInfoPanel(key);
+}
+
+function updateInfoPanel(key){
+  const box=document.getElementById('level-info');
+  if(!box)return;
+  if(!key){box.innerHTML='<div class="level-info-box"><span style="color:var(--muted)">Click a trophic level in the 3D view to inspect</span></div>';return;}
+  const m=META[key]; if(!m)return;
+  const ap=SIM.ap,bv=(BFN[key]||(_=>1))(ap);
+  const a=m.asfid;
+  const casc=SIM.apexRemoved&&key==='HUMAN';
+  const sc=casc?'var(--danger)':bv<0.1?'var(--danger)':bv<0.5?'var(--warn)':'var(--accent)';
+  const st=casc?'✗ REMOVED — cascade active':`B(AP=${ap.toFixed(2)}) = ${bv.toFixed(3)}`;
+  box.innerHTML=`<div class="level-info-box"><div class="level-title">${m.emoji} ${m.label} <span class="level-rank">[Rank ${m.rank}]</span></div><div style="color:var(--muted);font-size:10px;margin-bottom:4px">${m.sub}</div><div style="font-size:10px;color:var(--text-dim);margin-bottom:4px">${m.energy}</div><div style="font-size:10px;color:var(--muted)">ASFID: A=${a.A} S=${a.S} F=${a.F} I=${a.I} D=${a.D}</div><div style="font-size:11px;color:${sc};margin-top:5px;font-weight:600">${st}</div></div>`;
+}
+
+/* ── Gauge bars update ────────────────────────────────────── */
+function updateGauges(ap){
+  const tempC    = ap*6;                                         // 0..6°C
+  const renewTW  = parseFloat(((1-ap)*18).toFixed(1));          // 0..18 TW
+  const fossilTW = parseFloat((ap*22).toFixed(1));              // 0..22 TW
+  const co2      = Math.round(280+ap*820);                      // 280..1100 ppm
+  const bioPct   = Math.round(100*Math.pow(Math.max(0,1-ap),.55));
+  const MAX_RENEW=18, MAX_FOSSIL=22, MAX_CO2=820;
+
+  const q=id=>document.getElementById(id);
+  const setG=(fillId,valId,pct,txt)=>{
+    const f=q(fillId); if(f)f.style.height=Math.min(100,Math.round(pct))+'%';
+    const v=q(valId);  if(v)v.textContent=txt;
+  };
+  setG('g-temp',   'gv-temp',   tempC/6*100,              '+'+tempC.toFixed(1)+'°C');
+  setG('g-renew',  'gv-renew',  renewTW/MAX_RENEW*100,    renewTW+' TW');
+  setG('g-fossil', 'gv-fossil', fossilTW/MAX_FOSSIL*100,  fossilTW+' TW');
+  setG('g-co2',    'gv-co2',    (co2-280)/MAX_CO2*100,    co2+' ppm');
+  setG('g-bio',    'gv-bio',    bioPct,                   bioPct+'%');
+}
+
+/* ── AP indicators ────────────────────────────────────────── */
+function updateAPUI(ap){
+  updateGauges(ap);
+  const co2=Math.round(280+ap*820);
+  const temp=(ap*6).toFixed(1);
+  const bio=Math.round(100*Math.pow(Math.max(0,1-ap),.55));
+  let sc,bc;
+  if(ap<0.05){sc='PRE-INDUSTRIAL';bc='natural';}
+  else if(ap<0.30){sc='EARLY STRESS';bc='natural';}
+  else if(ap<0.55){sc='CURRENT 2024';bc='stress';}
+  else if(ap<0.70){sc='HIGH STRESS';bc='stress';}
+  else if(ap<0.85){sc='⚠ CRITICAL — AP_crit crossed';bc='critical';}
+  else{sc='☠ COLLAPSE — LtG BAU 2050';bc='collapse';}
+
+  const q=id=>document.getElementById(id);
+  if(q('val-ap'))q('val-ap').textContent=ap.toFixed(2);
+  if(q('val-co2'))q('val-co2').textContent=co2+' ppm';
+  if(q('val-temp'))q('val-temp').innerHTML='+'+temp+'&deg;C';
+  if(q('val-bio'))q('val-bio').textContent=bio+'%';
+  if(q('badge-ap')){q('badge-ap').textContent=sc;q('badge-ap').className='ap-badge '+bc;}
+  if(q('year-display')){
+    const yr=SIM.year; const qn=SIM.quarter||1;
+    const yrStr=yr<0?yr+' BCE':String(yr);
+    q('year-display').textContent=yrStr+' Q'+qn;
+  }
+
+  const wEl=q('env-warnings');
+  if(wEl){
+    let msg='';
+    if(ap>=.70)msg=`<span style="color:var(--danger);font-size:10.5px">☠ AP &ge; AP_crit (0.70) &mdash; m2:Entropy absorbing state &mdash; irreversible cascade</span>`;
+    else if(ap>=.50)msg=`<span style="color:var(--warn);font-size:10.5px">⚠ High stress &mdash; Level 4 collapsed, Level 3 declining, L2 irruption</span>`;
+    else if(ap>=.33)msg=`<span style="color:var(--warn);font-size:10.5px">⚠ Moderate stress &mdash; Level 4 under severe pressure (AP=0.33 collapse)</span>`;
+    else msg=`<span style="color:var(--accent);font-size:10.5px">✓ Ecosystem within natural bounds &mdash; Lindeman dynamics active</span>`;
+    wEl.innerHTML=msg;
+  }
+
+  const dot=q('status-dot'),lbl=q('status-label');
+  if(SIM.apexRemoved){if(dot)dot.className='status-dot cascade';if(lbl)lbl.textContent='CASCADE';}
+  else if(ap>=.70){if(dot)dot.className='status-dot critical';if(lbl)lbl.textContent='CRITICAL';}
+  else{if(dot)dot.className=SIM.running?'status-dot running':'status-dot';if(lbl)lbl.textContent=SIM.running?'Running':'Paused';}
+}
+
+/* ── DOMContentLoaded ─────────────────────────────────────── */
+window.addEventListener('DOMContentLoaded',()=>{
+  buildHUD();
+  initBabylon();
+
+  // Tabs
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const t=btn.dataset.tab;
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-'+t).classList.add('active');
+    });
+  });
+
+  // AP slider
+  const slAP=document.getElementById('sl-ap');
+  slAP.addEventListener('input',()=>{SIM.ap=parseFloat(slAP.value);updateAPUI(SIM.ap);updateInfoPanel(SIM.selectedLevel);});
+  updateAPUI(SIM.ap);
+
+  // LtG presets — {ap, year, quarter}
+  const PRESETS={
+    'btn-ltg-holocene':{ap:0.00,year:-15500,q:2},
+    'btn-ltg-0':        {ap:0.12,year:1950,  q:1},
+    'btn-ltg-20':       {ap:0.20,year:1972,  q:1},
+    'btn-ltg-46':       {ap:0.46,year:2026,  q:2},
+    'btn-ltg-55':       {ap:0.55,year:2035,  q:1},
+    'btn-ltg-rec':       {ap:0.35,year:2040,  q:1},
+    'btn-ltg-paris':     {ap:0.30,year:2040,  q:2},
+    'btn-ltg-stab':      {ap:0.25,year:2050,  q:1},
+    'btn-ltg-85':       {ap:0.85,year:2050,  q:3}
+  };
+  Object.entries(PRESETS).forEach(([id,pr])=>{
+    const el=document.getElementById(id);
+    if(el)el.addEventListener('click',()=>{
+      SIM.ap=pr.ap; SIM.year=pr.year; SIM.quarter=pr.q; SIM.quarterTimer=0;
+      slAP.value=pr.ap;
+      updateAPUI(pr.ap);
+      updateInfoPanel(SIM.selectedLevel);
+    });
+  });
+
+  // Play/Pause
+  const btnPlay=document.getElementById('btn-play');
+  btnPlay.addEventListener('click',()=>{
+    SIM.running=!SIM.running;
+    btnPlay.textContent=SIM.running?'⏸ Pause':'▶ Play';
+    btnPlay.classList.toggle('active',SIM.running);
+    updateAPUI(SIM.ap);
+  });
+
+  // Reset
+  document.getElementById('btn-reset').addEventListener('click',()=>{
+    SIM.ap=.20;SIM.apexRemoved=false;SIM.cascadeTimer=0;SIM.time=0;SIM.oscTime=0;SIM.selectedLevel=null;SIM.running=true;SIM.year=1972;SIM.quarter=1;SIM.quarterTimer=0;
+    slAP.value=.20;
+    if(camera){camera.alpha=-Math.PI/4;camera.beta=1.05;camera.radius=18;camera.target.set(0,3.5,0);}
+    Object.keys(POP).forEach(k=>{POP[k]=k==='HUMAN'?.2:1;});
+    Object.keys(PT).forEach(k=>{PT[k]=k==='HUMAN'?.2:1;});
+    document.getElementById('btn-cascade').textContent='🌍 Without Humanity';
+    document.getElementById('btn-cascade').classList.remove('active');
+    if(speedSlider){speedSlider.value=1.0;document.getElementById('speed-label').textContent='×1.0';}
+    btnPlay.textContent='⏸ Pause';btnPlay.classList.add('active');
+    updateAPUI(SIM.ap);updateInfoPanel(null);
+  });
+
+  // Cascade
+  const btnC=document.getElementById('btn-cascade');
+  btnC.addEventListener('click',()=>{
+    SIM.apexRemoved=!SIM.apexRemoved;SIM.cascadeTimer=0;
+    btnC.textContent=SIM.apexRemoved?'🌍 With Humanity':'🌍 Without Humanity';
+    btnC.classList.toggle('active',SIM.apexRemoved);
+    updateAPUI(SIM.ap);
+  });
+
+  // Speed slider
+  const speedSlider=document.getElementById('speed-slider');
+  speedSlider.addEventListener('input',()=>{
+    SIM.speed=parseFloat(speedSlider.value);
+    document.getElementById('speed-label').textContent='×'+SIM.speed.toFixed(1);
+    document.querySelectorAll('.ctrl-btn.spd').forEach(b=>b.classList.remove('active'));
+  });
+  // Speed preset buttons
+  document.querySelectorAll('.ctrl-btn.spd').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const v=parseFloat(btn.dataset.spd);
+      SIM.speed=v; speedSlider.value=v;
+      document.getElementById('speed-label').textContent='×'+v.toFixed(1);
+      document.querySelectorAll('.ctrl-btn.spd').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // AP Controls toggle
+  document.getElementById('btn-env').addEventListener('click',()=>{
+    const bar=document.getElementById('env-bar');
+    bar.classList.toggle('open');
+    document.getElementById('btn-env').classList.toggle('active',bar.classList.contains('open'));
+    setTimeout(()=>{if(engine)engine.resize();},350);
+  });
+  document.getElementById('env-bar').classList.add('open');
+
+  // Splitter
+  (()=>{
+    const sp=document.getElementById('splitter'),app=document.getElementById('app');
+    let dr=false,sx=0,sw=0;
+    sp.addEventListener('mousedown',e=>{dr=true;sx=e.clientX;sw=document.getElementById('sidebar').getBoundingClientRect().width;sp.classList.add('dragging');document.body.style.cssText='cursor:col-resize;user-select:none';e.preventDefault();});
+    document.addEventListener('mousemove',e=>{if(!dr)return;const nw=Math.max(180,Math.min(620,sw+(sx-e.clientX)));app.style.setProperty('--sidebar-w',nw+'px');if(engine)engine.resize();});
+    document.addEventListener('mouseup',()=>{if(!dr)return;dr=false;sp.classList.remove('dragging');document.body.style.cssText='';if(engine)engine.resize();});
+  })();
+});
+/*
+ * TSCG — Trophic Pyramid HTML Simulation (Standalone, BabylonJS 6.26.0)
+ * Author: Echopraxium with the collaboration of Claude AI
+ * Version: 2.1.0 — 2026-04-04
+ * Validate locally — BabylonJS CSP sandbox may restrict preview in claude.ai
+ */
+</script>
+</body>
+</html>

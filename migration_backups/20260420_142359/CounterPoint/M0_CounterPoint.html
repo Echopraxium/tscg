@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>TSCG &mdash; Counterpoint</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-deep:#0d1117; --bg-panel:#161b22; --bg-card:#1c2130; --bg-hover:#21262d;
+  --border:#30363d; --border2:#3d444f;
+  --eagle:#f78166; --sphinx:#79c0ff; --accent:#56d364; --warn:#e3b341;
+  --muted:#8b949e; --text:#e6edf3; --text-dim:#b1bac4;
+  --col-A:#f78166; --col-S:#56d364; --col-F:#79c0ff;
+  --col-I:#d2a8ff; --col-D:#e3b341;
+  --col-R:#79c0ff; --col-E:#56d364; --col-V:#f78166;
+  --col-O:#d2a8ff; --col-Im:#e3b341;
+  --header-h:44px; --controls-h:56px;
+  --left-w:210px; --sidebar-w:310px; --split-w:5px;
+  --radius:6px;
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:'Cascadia Code','Fira Code','Consolas',monospace;
+}
+html,body{height:100%;overflow:hidden;font-family:var(--font);
+  background:var(--bg-deep);color:var(--text);font-size:13px;line-height:1.5;user-select:none;}
+
+#app{
+  display:grid;
+  grid-template-rows:var(--header-h) 1fr var(--controls-h);
+  grid-template-columns:var(--left-w) var(--split-w) 1fr var(--split-w) var(--sidebar-w);
+  grid-template-areas:
+    "header  header  header  header  header"
+    "explorer split1 canvas  split2  sidebar"
+    "controls controls controls controls controls";
+  height:100vh;
+}
+
+/* ── Header ── */
+#header, header#header {
+  grid-area: header;
+  grid-row: 1; grid-column: 1 / -1;
+  display: flex; align-items: center;
+  height: var(--header-h);
+  padding: 0 16px; gap: 12px;
+  background: var(--bg-panel); border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.tscg-logo{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--eagle);text-transform:uppercase;flex-shrink:0;}
+.sep{color:var(--border2);font-size:16px;}
+.poclet-name{font-size:14px;font-weight:600;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.chip{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid transparent;}
+.chip.domain {background:rgba(86,211,100,.12);border-color:rgba(86,211,100,.3);color:var(--accent);}
+.chip.version{background:rgba(121,192,255,.12);border-color:rgba(121,192,255,.3);color:var(--sphinx);}
+.chip.type   {background:rgba(247,129,102,.12);border-color:rgba(247,129,102,.3);color:var(--eagle);}
+
+/* ── Explorer ── */
+#explorer{grid-area:explorer;display:flex;flex-direction:column;
+  background:var(--bg-panel);border-right:1px solid var(--border);overflow:hidden;min-width:140px;}
+.expl-header{padding:8px 12px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);border-bottom:1px solid var(--border);flex-shrink:0;
+  display:flex;justify-content:space-between;align-items:center;}
+.expl-list{overflow-y:auto;flex:1;}
+.expl-item{display:flex;align-items:flex-start;gap:8px;padding:8px 12px 8px 10px;
+  cursor:pointer;border-left:3px solid transparent;transition:background .12s,border-color .12s;}
+.expl-item:hover{background:var(--bg-hover);}
+.expl-item.active{background:rgba(121,192,255,.08);border-left-color:var(--sphinx);}
+.expl-icon{font-size:14px;flex-shrink:0;margin-top:1px;}
+.expl-info{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.expl-name{font-size:12px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.expl-item.active .expl-name{color:var(--text);}
+.expl-sub{font-size:10px;color:var(--border2);}
+.expl-badge{font-size:9px;padding:1px 5px;border-radius:3px;margin-top:2px;align-self:flex-start;
+  background:rgba(121,192,255,.12);color:var(--sphinx);border:1px solid rgba(121,192,255,.2);}
+
+/* ── Splitters ── */
+.splitter{background:var(--border);cursor:col-resize;transition:background .15s;z-index:10;}
+.splitter:hover,.splitter.dragging{background:var(--sphinx);}
+#split1{grid-area:split1;} #split2{grid-area:split2;}
+
+/* ── Canvas ── */
+#canvas-area{grid-area:canvas;position:relative;overflow:hidden;background:var(--bg-deep);min-width:200px;}
+#roll-scroll{position:absolute;inset:0;overflow-x:auto;overflow-y:hidden;}
+#roll-scroll::-webkit-scrollbar{height:6px;}
+#roll-scroll::-webkit-scrollbar-track{background:transparent;}
+#roll-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+canvas#pianoRoll{display:block;}
+#pole-overlay{position:absolute;top:0;left:0;right:0;height:22px;display:flex;z-index:5;pointer-events:none;}
+.pole-seg{display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.2);
+  transition:color .3s;border-right:1px solid rgba(255,255,255,.05);}
+.pole-seg.pole-active{color:rgba(255,255,255,.8);}
+.canvas-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:var(--muted);pointer-events:none;}
+
+/* ── Sidebar ── */
+#sidebar{grid-area:sidebar;display:flex;flex-direction:column;
+  background:var(--bg-panel);border-left:1px solid var(--border);overflow:hidden;min-width:180px;max-width:600px;}
+.tab-bar{display:flex;background:var(--bg-deep);border-bottom:1px solid var(--border);flex-shrink:0;}
+.tab-btn{flex:1;padding:8px 4px;font-size:11px;font-weight:600;background:none;border:none;
+  border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;transition:color .15s,border-color .15s;}
+.tab-btn:hover{color:var(--text-dim);}
+.tab-btn.active{color:var(--sphinx);border-bottom-color:var(--sphinx);}
+.tab-panel{display:none;flex-direction:column;flex:1;overflow-y:auto;padding:12px;gap:10px;}
+.tab-panel.active{display:flex;}
+
+.s-head{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  padding-bottom:4px;border-bottom:1px solid var(--border);margin-bottom:2px;}
+.s-head.eagle{color:var(--eagle);}  .s-head.sphinx{color:var(--sphinx);}
+.score-group{display:flex;flex-direction:column;gap:5px;}
+.score-row{display:flex;align-items:center;gap:8px;font-size:12px;}
+.score-dim{width:20px;font-weight:700;font-family:var(--mono);font-size:11px;text-align:center;flex-shrink:0;}
+.score-bar-bg{flex:1;height:6px;background:var(--bg-card);border-radius:3px;overflow:hidden;}
+.score-bar-fill{height:100%;border-radius:3px;transition:width .6s ease;}
+.score-val{width:30px;text-align:right;font-family:var(--mono);font-size:11px;color:var(--text-dim);flex-shrink:0;}
+.score-mean-row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding-top:2px;font-family:var(--mono);}
+.score-mean-row span{color:var(--text);font-weight:600;}
+.gap-badge{display:flex;align-items:flex-start;gap:10px;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-size:12px;}
+.gap-label{color:var(--muted);font-size:11px;} .gap-val{font-family:var(--mono);font-weight:700;font-size:16px;color:var(--accent);}
+.gap-desc{color:var(--text-dim);font-size:11px;line-height:1.5;}
+.gc-list{display:flex;flex-direction:column;gap:4px;}
+.gc-item{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;
+  background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);}
+.gc-item.primary{border-left:3px solid var(--eagle);}
+.gc-item.secondary{border-left:3px solid var(--border2);}
+.gc-name{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--sphinx);flex-shrink:0;min-width:90px;}
+.gc-formula{font-family:var(--mono);font-size:10px;color:var(--muted);flex-shrink:0;}
+.gc-role{font-size:11px;color:var(--text-dim);line-height:1.4;}
+.synergy-box{background:var(--bg-card);border:1px solid var(--border);
+  border-left:3px solid var(--warn);border-radius:var(--radius);padding:10px 12px;gap:6px;display:flex;flex-direction:column;}
+.synergy-label{font-size:12px;font-weight:700;color:var(--warn);}
+.synergy-formula{font-family:var(--mono);font-size:11.5px;color:var(--text);word-break:break-word;}
+.synergy-emergent{font-size:11px;color:var(--text-dim);}
+.asfid-event-card{display:flex;align-items:center;gap:10px;background:var(--bg-card);
+  border:1px solid var(--border);border-left:3px solid var(--border2);
+  border-radius:var(--radius);padding:8px 12px;min-height:48px;transition:border-color .3s;}
+.asfid-ring{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:13px;flex-shrink:0;background:var(--bg-card);color:var(--border2);transition:all .3s;}
+.asfid-ev-dim{font-weight:700;font-size:12px;color:var(--muted);transition:color .3s;}
+.asfid-ev-lbl{font-size:11px;color:var(--border2);margin-top:1px;}
+.voice-legend{display:flex;flex-wrap:wrap;gap:8px;}
+.vl-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-dim);}
+.vl-dot{width:9px;height:9px;border-radius:50%;}
+.prose{font-size:12px;line-height:1.7;color:var(--text-dim);}
+.prose strong{color:var(--text);}
+
+
+
+/* ── Instrument selector ── */
+.instr-select{
+  display:flex;align-items:center;gap:6px;flex-shrink:0;
+}
+.instr-select label{font-size:11px;color:var(--muted);white-space:nowrap;}
+.instr-select select{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);color:var(--text-dim);
+  font-size:11px;font-family:var(--font);padding:3px 7px;
+  cursor:pointer;outline:none;
+}
+.instr-select select:hover{border-color:var(--border2);}
+/* ── Home button — SVG icon, visited-proof ── */
+#btn-home,
+#btn-home:link,
+#btn-home:visited,
+#btn-home:hover,
+#btn-home:active {
+  display: inline-flex;
+  align-items: center;
+  background: none !important;
+  border: none !important;
+  cursor: pointer;
+  padding: 4px 6px;
+  margin-right: 4px;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+  text-decoration: none !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  color: inherit !important;
+}
+#btn-home:hover { opacity: 1 !important; }
+#btn-home path, #btn-home:visited path { fill: #ffffff !important; }
+/* ── Controls ── */
+#controls {
+  grid-area: controls;
+  grid-row: 3; grid-column: 1 / -1;
+  display: flex; align-items: center;
+  height: var(--controls-h);
+  gap: 10px; padding: 0 16px;
+  background: var(--bg-panel); border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.ctrl-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--text-dim);font-size:12px;font-family:var(--font);cursor:pointer;transition:background .15s,border-color .15s;}
+.ctrl-btn:hover{background:var(--bg-hover);border-color:var(--border2);}
+.ctrl-btn.primary{background:rgba(86,211,100,.1);border-color:rgba(86,211,100,.35);color:var(--accent);}
+.ctrl-btn.primary:hover{background:rgba(86,211,100,.2);}
+.ctrl-btn.danger{background:rgba(247,129,102,.1);border-color:rgba(247,129,102,.3);color:var(--eagle);}
+.ctrl-btn:disabled{opacity:.4;cursor:not-allowed;}
+.ctrl-sep{width:1px;height:28px;background:var(--border);flex-shrink:0;}
+.time-bar-wrap{flex:1;display:flex;align-items:center;gap:8px;}
+.time-track{flex:1;height:4px;background:var(--bg-card);border-radius:2px;overflow:hidden;}
+.time-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--sphinx),var(--col-I));
+  border-radius:2px;transition:width .12s linear;}
+.time-lbl{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;}
+.example-lbl{font-size:11px;color:var(--border2);margin-left:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;}
+
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:var(--muted);}
+
+/* TSCG logo — clickable link + tooltip */
+.tscg-logo-link, .titlebar-logo-link {
+  text-decoration: none; color: inherit; position: relative; cursor: pointer;
+  background: none; border: none; padding: 0;
+}
+
+</style>
+<script src="WebAudioFontPlayer.js"></script>
+  <link rel="icon" href="data:,">
+</head>
+<body>
+<div id="app">
+
+<header id="header">
+  <button id="btn-home" onclick="window.location.href='https://echopraxium.github.io/tscg/'"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></button>
+  <button class="tscg-logo-link" onclick="window.open('https://github.com/Echopraxium/tscg','_blank')"><span class="tscg-logo">TSCG</span></button>
+  <span class="sep">›</span>
+  <span class="poclet-name">M0_Counterpoint — Constrained Autonomous Voices &amp; Emergent Harmonic Coherence</span>
+  <div style="display:flex;gap:6px;flex-shrink:0">
+    <span class="chip domain">Music</span>
+    <span class="chip version">v1.0.0</span>
+    <span class="chip type">Poclet</span>
+  </div>
+</header>
+
+<div id="explorer">
+  <div class="expl-header">
+    Examples
+    <span id="expl-count" style="font-weight:400;color:var(--border2)">—</span>
+  </div>
+  <div class="expl-list" id="expl-list"></div>
+</div>
+
+<div class="splitter" id="split1"></div>
+
+<div id="canvas-area">
+  <div id="pole-overlay"></div>
+  <div id="roll-scroll"><canvas id="pianoRoll"></canvas></div>
+  <div class="canvas-msg" id="canvas-msg">Select an example from the left panel</div>
+</div>
+
+<div class="splitter" id="split2"></div>
+
+<div id="sidebar">
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="description">Description</button>
+    <button class="tab-btn" data-tab="concepts">Concepts</button>
+    <button class="tab-btn" data-tab="synergy">Synergy</button>
+    <button class="tab-btn" data-tab="scores">Scores</button>
+  </div>
+
+  <div class="tab-panel active" id="panel-description">
+    <p class="prose">A polyphonic system in which N independent melodic <strong>voices</strong> coexist, each pursuing its own trajectory while respecting shared normative constraints — the <strong>Counterpoint Rules</strong>. Harmonic coherence is an <strong>emergent property</strong> of local rule compliance.</p>
+    <div class="synergy-box">
+      <div class="synergy-label">⊗ TSCG Synergy</div>
+      <div class="synergy-formula">ContrapuntalCoherence = Music ⊙ (Autonomy ⊗ Constraint ⊗ Emergence)</div>
+      <div class="synergy-emergent">Tensor: A ⊗ S ⊗ F ⊗ I ⊗ D</div>
+    </div>
+    <div class="synergy-box" style="border-left-color:#d2a8ff">
+      <div class="synergy-label" style="color:#d2a8ff">⚡ m3:Enigma Candidate</div>
+      <div class="synergy-formula">Voice Autonomy ⊗ CounterpointRule → Harmonic Coherence</div>
+      <div class="synergy-emergent">Without Rules: chaos. Without Autonomy: mere melody. The Rule is the mandatory ternary mediator.</div>
+    </div>
+    <div class="s-head">4-Pole Lifecycle</div>
+    <div class="gc-list">
+      <div class="gc-item primary"><div class="gc-name" style="color:#6C63FF">Exposition</div><div class="gc-role">Voices enter successively. System initializes from silence to full texture.</div></div>
+      <div class="gc-item"><div class="gc-name" style="color:#00C896">Development</div><div class="gc-role">Episodes modulate through keys. Middle Subject entries explore harmonic space.</div></div>
+      <div class="gc-item"><div class="gc-name" style="color:#FF6B35">Stretto</div><div class="gc-role">Subject entries overlap. Maximum polyphonic density. Climactic tension.</div></div>
+      <div class="gc-item"><div class="gc-name" style="color:#FFD93D">Resolution</div><div class="gc-role">Tonic reestablished. Pedal point + authentic cadence (V⁷→I).</div></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-concepts">
+    <div class="s-head eagle">Primary GenericConcepts</div>
+    <div class="gc-list">
+      <div class="gc-item primary"><div class="gc-name">Propagation</div><div class="gc-formula">I⊗F</div><div class="gc-role">Subject cloned &amp; transformed across voices through time.</div></div>
+      <div class="gc-item primary"><div class="gc-name">Autonomy</div><div class="gc-formula">A⊗I</div><div class="gc-role">Each voice = independent melodic agent.</div></div>
+      <div class="gc-item primary"><div class="gc-name">Constraint</div><div class="gc-formula">S⊗D</div><div class="gc-role">Counterpoint Rules: constitutive, not restrictive.</div></div>
+      <div class="gc-item primary"><div class="gc-name">Emergence</div><div class="gc-formula">S⊗I⊗D</div><div class="gc-role">Harmonic coherence from pairwise rule compliance — no central coordinator.</div></div>
+      <div class="gc-item primary"><div class="gc-name">Imitation</div><div class="gc-formula">I⊗S</div><div class="gc-role">Voice B imitates Voice A's Subject. Core structural mechanism.</div></div>
+    </div>
+    <div class="s-head sphinx" style="margin-top:4px">Secondary</div>
+    <div class="gc-list">
+      <div class="gc-item secondary"><div class="gc-name">Attractor</div><div class="gc-formula">A⊗D</div><div class="gc-role">Tonic key = global attractor. Consonances = local attractors.</div></div>
+      <div class="gc-item secondary"><div class="gc-name">Compression</div><div class="gc-formula">D⊗F</div><div class="gc-role">Stretto = temporal compression driving climactic intensification.</div></div>
+      <div class="gc-item secondary"><div class="gc-name">Cycle</div><div class="gc-formula">D⊗F</div><div class="gc-role">Tension → Dissonance → Resolution. Recurring dynamic engine.</div></div>
+    </div>
+    <div class="s-head" style="margin-top:4px">M1 Music</div>
+    <div class="gc-list">
+      <div class="gc-item"><div class="gc-name">FugueSubject</div><div class="gc-formula">I⊗S⊗F</div><div class="gc-role">System DNA — defines and constitutes content simultaneously.</div></div>
+      <div class="gc-item"><div class="gc-name">CounterpointRule</div><div class="gc-formula">S⊗I⊗D</div><div class="gc-role">Enigma Mediator. Forbids parallel 5ths/8ths, mandates dissonance resolution.</div></div>
+      <div class="gc-item"><div class="gc-name">Stretto</div><div class="gc-formula">D⊗S⊗F</div><div class="gc-role">Subject entries overlap before completion. Structural climax device.</div></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-synergy">
+    <div class="s-head">Active ASFID Dimension</div>
+    <div class="asfid-event-card" id="asfid-card">
+      <div class="asfid-ring" id="asfid-ring">—</div>
+      <div>
+        <div class="asfid-ev-dim" id="asfid-dim">Waiting</div>
+        <div class="asfid-ev-lbl" id="asfid-lbl">Press Play to start</div>
+      </div>
+    </div>
+    <div class="s-head" style="margin-top:4px">Voice Legend</div>
+    <div class="voice-legend" id="voice-legend"><span style="font-size:11px;color:var(--border2)">—</span></div>
+    <div class="s-head" style="margin-top:4px">Current Example</div>
+    <div id="example-info" class="prose" style="font-size:11px;color:var(--border2)">Select an example</div>
+    <div class="s-head" style="margin-top:4px">Enigma Cross-Domain</div>
+    <div class="gc-list">
+      <div class="gc-item"><div class="gc-role"><strong>Music:</strong> Voice Autonomy ⊗ Rule → Coherence</div></div>
+      <div class="gc-item"><div class="gc-role"><strong>Ecology:</strong> Species Autonomy ⊗ Niche → Stability</div></div>
+      <div class="gc-item"><div class="gc-role"><strong>Distributed Systems:</strong> Process ⊗ Protocol → Consistency</div></div>
+      <div class="gc-item"><div class="gc-role"><strong>Jazz ensemble:</strong> Improviser ⊗ Harmonic Grid → Collective Music</div></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-scores">
+    <div class="s-head eagle">Eagle Eye — ASFID (Territory)</div>
+    <div class="score-group" id="asfid-scores"></div>
+    <div class="score-mean-row"><span>Mean</span><span>0.886</span></div>
+    <div class="s-head sphinx" style="margin-top:6px">Sphinx Eye — REVOI (Map)</div>
+    <div class="score-group" id="revoi-scores"></div>
+    <div class="score-mean-row"><span>Mean</span><span>0.870</span></div>
+    <div class="gap-badge" style="margin-top:8px">
+      <div><div class="gap-label">Epistemic Gap δ₁</div><div class="gap-val">0.016</div></div>
+      <div class="gap-desc">SpectralClass: <strong>Coherent</strong> [0, 0.05)<br>Main gap: O = 0.78 (perceptual fusion for untrained listeners). Piano Roll compensates.</div>
+    </div>
+  </div>
+</div>
+
+<div id="controls">
+  <div class="ctrl-sep"></div>
+  <button class="ctrl-btn primary" id="btn-play" disabled>▶ Play</button>
+  <button class="ctrl-btn danger"   id="btn-stop" disabled>■ Stop</button>
+  <div class="ctrl-sep"></div>
+  <div class="instr-select">
+    <label>🎹</label>
+    <select id="instr-select">
+      <option value="organ"       selected>Organ</option>
+      <option value="piano"              >Piano</option>
+      <option value="harpsichord"        >Harpsichord</option>
+      <option value="flute"              >Flute</option>
+      <option value="strings"            >Strings</option>
+      <option value="choir"              >Choir</option>
+      <option value="trumpet"            >Trumpet</option>
+    </select>
+    <span id="instr-status" style="font-size:10px;color:var(--muted)"></span>
+  </div>
+  <div class="ctrl-sep"></div>
+  <div class="time-bar-wrap">
+    <div class="time-track"><div class="time-fill" id="time-fill"></div></div>
+    <div class="time-lbl" id="time-lbl">0.0s</div>
+  </div>
+  <span class="example-lbl" id="ctrl-lbl">—</span>
+</div>
+
+</div><!-- #app -->
+<script>
+'use strict';
+// ============================================================
+//  TSCG — M0_Counterpoint
+//  Author: Echopraxium with the collaboration of Claude AI
+//  v1.0.0 — 2026-03-20
+//
+//  Data files (voices/ subfolder):
+//    frere-jacques.json  bwv578.json  bwv565.json  jazz-modal.json
+// ============================================================
+
+const EXAMPLES_DATA = {
+  "frere-jacques": {"id":"frere-jacques","icon":"🎵","name":"Frère Jacques","sub":"Canon, 4 voices, unison","badge":"Canon","bpm":96,"key":"C major","totalBeats":32,"description":"The simplest possible counterpoint: one melody, 4 voices, pure time offset (4-beat delay). All ASFID dimensions present despite maximal simplicity. Every child has lived this system — zero prior musical knowledge required.","voices":[{"name":"Voice 1","color":"#6C63FF","vol":-8,"notes":[["C4",0,1],["D4",1,1],["E4",2,1],["C4",3,1],["C4",4,1],["D4",5,1],["E4",6,1],["C4",7,1],["E4",8,1],["F4",9,1],["G4",10,2],["E4",12,1],["F4",13,1],["G4",14,2],["G4",16,0.5],["A4",16.5,0.5],["G4",17,0.5],["F4",17.5,0.5],["E4",18,1],["C4",19,1],["G4",20,0.5],["A4",20.5,0.5],["G4",21,0.5],["F4",21.5,0.5],["E4",22,1],["C4",23,1],["C4",24,1],["G3",25,1],["C4",26,2],["C4",28,1],["G3",29,1],["C4",30,2]]},{"name":"Voice 2","color":"#00C896","vol":-9,"notes":[["C4",4,1],["D4",5,1],["E4",6,1],["C4",7,1],["C4",8,1],["D4",9,1],["E4",10,1],["C4",11,1],["E4",12,1],["F4",13,1],["G4",14,2],["E4",16,1],["F4",17,1],["G4",18,2],["G4",20,0.5],["A4",20.5,0.5],["G4",21,0.5],["F4",21.5,0.5],["E4",22,1],["C4",23,1],["G4",24,0.5],["A4",24.5,0.5],["G4",25,0.5],["F4",25.5,0.5],["E4",26,1],["C4",27,1],["C4",28,1],["G3",29,1],["C4",30,2]]},{"name":"Voice 3","color":"#FF6B35","vol":-9,"notes":[["C4",8,1],["D4",9,1],["E4",10,1],["C4",11,1],["C4",12,1],["D4",13,1],["E4",14,1],["C4",15,1],["E4",16,1],["F4",17,1],["G4",18,2],["E4",20,1],["F4",21,1],["G4",22,2],["G4",24,0.5],["A4",24.5,0.5],["G4",25,0.5],["F4",25.5,0.5],["E4",26,1],["C4",27,1],["G4",28,0.5],["A4",28.5,0.5],["G4",29,0.5],["F4",29.5,0.5],["E4",30,1],["C4",31,1]]},{"name":"Voice 4","color":"#FFD93D","vol":-8,"notes":[["C4",12,1],["D4",13,1],["E4",14,1],["C4",15,1],["C4",16,1],["D4",17,1],["E4",18,1],["C4",19,1],["E4",20,1],["F4",21,1],["G4",22,2],["E4",24,1],["F4",25,1],["G4",26,2],["G4",28,0.5],["A4",28.5,0.5],["G4",29,0.5],["F4",29.5,0.5],["E4",30,1],["C4",31,1]]}],"poles":[{"start":0,"end":11,"color":"#6C63FF","label":"Exposition"},{"start":12,"end":19,"color":"#00C896","label":"Development"},{"start":20,"end":27,"color":"#FF6B35","label":"Stretto"},{"start":28,"end":31,"color":"#FFD93D","label":"Resolution"}],"events":[{"beat":0,"dim":"I","color":"#d2a8ff","label":"Subject — Voice 1 enters"},{"beat":4,"dim":"I","color":"#d2a8ff","label":"Imitation — Voice 2 enters (4-beat offset)"},{"beat":8,"dim":"S","color":"#56d364","label":"3-voice texture — structural density growing"},{"beat":12,"dim":"I","color":"#d2a8ff","label":"Voice 4 enters — full 4-voice texture"},{"beat":16,"dim":"D","color":"#e3b341","label":"Dynamic peak — all voices in syncopated phrase"},{"beat":24,"dim":"A","color":"#f78166","label":"Cadential approach — returning to tonic C"},{"beat":28,"dim":"A","color":"#f78166","label":"Final resolution — Tonic C (Attractor reached)"}]},
+  "bwv578": {"id":"bwv578","icon":"🎹","name":"BWV 578 — Little Fugue","sub":"J.S. Bach, G minor, 4 voices","badge":"Primary","bpm":80,"key":"G minor","totalBeats":64,"description":"The most accessible 4-voice fugue by Bach. Clear structure: Exposition (all 4 voices enter with Subject/Answer) → Development (Episodes + modulations) → Stretto (overlapping Subject entries) → Resolution (tonic G minor, authentic cadence). Primary simulation reference for this poclet.","voices":[{"name":"Soprano","color":"#6C63FF","vol":-8,"notes":[["G4",0,1],["F4",1,1],["Eb4",2,1],["D4",3,1],["C4",4,1],["Bb3",5,1],["A3",6,1],["G3",7,1],["G3",8,2],["D4",10,1],["Eb4",11,1],["F4",12,2],["G4",14,2],["A4",16,1],["Bb4",17,1],["C5",18,1],["A4",19,1],["G4",20,2],["F4",22,1],["G4",23,1],["A4",24,1],["Bb4",25,1],["C5",26,1],["Bb4",27,1],["A4",28,2],["G4",30,2],["D5",32,2],["Eb5",34,1],["F5",35,1],["G5",36,2],["F5",38,1],["Eb5",39,1],["D5",40,1],["C5",41,1],["Bb4",42,1],["C5",43,1],["D5",44,2],["Eb5",46,2],["F5",48,2],["Eb5",50,1],["D5",51,1],["C5",52,2],["Bb4",54,1],["A4",55,1],["G4",56,1],["F4",57,1],["G4",58,1],["A4",59,1],["Bb4",60,2],["A4",62,2]]},{"name":"Alto","color":"#00C896","vol":-10,"notes":[["D5",16,1],["C5",17,1],["Bb4",18,1],["A4",19,1],["G4",20,1],["F4",21,1],["E4",22,1],["D4",23,1],["D4",24,2],["A4",26,1],["Bb4",27,1],["C5",28,2],["D5",30,2],["A4",32,1],["Bb4",33,1],["C5",34,1],["A4",35,1],["G4",36,2],["F4",38,1],["G4",39,1],["A4",40,1],["Bb4",41,1],["C5",42,1],["Bb4",43,1],["A4",44,2],["G4",46,2],["Bb4",48,2],["A4",50,1],["G4",51,1],["F4",52,2],["Eb4",54,1],["D4",55,1],["Eb4",56,1],["F4",57,1],["G4",58,1],["A4",59,1],["Bb4",60,2],["A4",62,2]]},{"name":"Tenor","color":"#FF6B35","vol":-10,"notes":[["G3",32,1],["F3",33,1],["Eb3",34,1],["D3",35,1],["C3",36,1],["Bb2",37,1],["A2",38,1],["G2",39,1],["G2",40,2],["D3",42,1],["Eb3",43,1],["F3",44,2],["G3",46,2],["A3",48,1],["Bb3",49,1],["C4",50,1],["A3",51,1],["G3",52,2],["F3",54,1],["G3",55,1],["A3",56,1],["Bb3",57,1],["C4",58,1],["Bb3",59,1],["A3",60,2],["G3",62,2]]},{"name":"Bass","color":"#FFD93D","vol":-8,"notes":[["D3",48,1],["C3",49,1],["Bb2",50,1],["A2",51,1],["G2",52,1],["F2",53,1],["E2",54,1],["D2",55,1],["D2",56,2],["A2",58,1],["Bb2",59,1],["C3",60,2],["D3",62,2]]}],"poles":[{"start":0,"end":15,"color":"#6C63FF","label":"Exposition"},{"start":16,"end":47,"color":"#00C896","label":"Development"},{"start":48,"end":55,"color":"#FF6B35","label":"Stretto"},{"start":56,"end":63,"color":"#FFD93D","label":"Resolution"}],"events":[{"beat":0,"dim":"I","color":"#d2a8ff","label":"Subject — Voice 1 (Soprano), G minor"},{"beat":8,"dim":"D","color":"#e3b341","label":"Harmonic tension building"},{"beat":12,"dim":"A","color":"#f78166","label":"Tonic resolution (Attractor)"},{"beat":16,"dim":"I","color":"#d2a8ff","label":"Answer — Voice 2 (Alto), up a 5th"},{"beat":20,"dim":"D","color":"#e3b341","label":"Contrapuntal tension — 2 active voices"},{"beat":32,"dim":"I","color":"#d2a8ff","label":"Subject — Voice 3 (Tenor)"},{"beat":36,"dim":"S","color":"#56d364","label":"3-voice texture established"},{"beat":44,"dim":"F","color":"#79c0ff","label":"Motivic flow — sequential episode"},{"beat":48,"dim":"I","color":"#d2a8ff","label":"Answer — Voice 4 (Bass, full texture)"},{"beat":52,"dim":"S","color":"#56d364","label":"Exposition complete — all 4 voices"},{"beat":60,"dim":"A","color":"#f78166","label":"Cadential approach — tonic G minor"}]},
+  "bwv565": {"id":"bwv565","icon":"🎸","name":"BWV 565 — Toccata & Fugue in D minor","sub":"J.S. Bach · Authentic MIDI source","badge":"Iconic","bpm":72,"key":"D minor","totalBeats":128,"description":"The most iconic organ work in the repertoire. Opens with the famous solo A octaves + descending flourish (Toccata), then the Fugue subject propagates through all 4 voices. Extracted from authentic MIDI. 128 beats covering Toccata + full Fugue Exposition + Development + Stretto + Resolution.","voices":[{"name":"Soprano","color":"#6C63FF","vol":-7,"notes":[["A4",0.0,0.5],["G4",0.25,0.5],["A4",0.5,1.75],["G4",4.25,0.5],["F4",4.5,0.5],["D5",5.0,0.25],["Db5",5.25,1.0],["D5",6.25,2.0],["A4",11.0,0.5],["G4",11.5,0.5],["E5",15.25,0.5],["F4",16.0,0.75],["Db5",16.5,1.25],["D5",17.5,2.25],["Db5",45.5,6.0],["D5",52.0,7.25],["Db5",62.75,0.25],["D5",63.0,0.25],["E5",63.25,0.25],["Db5",63.5,0.25],["D5",64.0,0.25],["E5",64.25,0.25],["Db5",64.5,0.25],["D5",64.75,0.25],["E5",65.0,0.25],["Db5",65.25,0.25],["D5",65.5,0.25],["E5",66.0,0.25],["G4",66.75,0.25],["F4",67.25,0.25],["G4",67.5,0.25],["E5",68.0,0.25],["G4",68.5,0.25],["E5",68.75,0.25],["F4",69.0,0.25],["A4",69.75,0.25],["Bb4",70.0,0.25],["G4",70.5,0.25],["A4",70.75,0.25],["Bb4",71.0,0.25],["G4",71.25,0.25],["A4",71.5,0.25],["Bb4",71.75,0.25],["G4",72.0,0.25],["A4",72.25,0.5],["Db5",75.0,0.25],["D5",75.25,0.25],["Db5",75.75,0.25],["E5",76.25,0.25],["Db5",76.5,0.25],["D5",76.75,0.25],["E5",77.0,0.25],["Db5",77.25,0.25],["D5",77.75,0.25],["F4",78.5,0.25],["G4",79.0,0.25],["E5",79.25,0.25],["F4",79.5,0.25],["G4",79.75,0.25],["E5",80.0,0.25],["F4",80.25,0.25],["G4",80.5,0.25],["E5",80.75,0.25],["F4",81.25,0.25],["A4",82.0,0.25],["Bb4",82.5,0.25],["G4",82.75,0.25],["A4",83.0,0.25],["Bb4",83.25,0.25],["G4",83.5,0.25],["Bb4",84.25,0.25],["G4",84.5,0.25],["A4",84.75,0.25],["A4",88.75,0.5],["G4",89.5,0.5],["Bb4",89.75,0.5],["E5",90.25,0.5],["G4",90.75,0.25],["Bb4",91.0,0.25],["E5",91.25,0.5],["E5",91.5,0.25],["F4",91.75,0.5],["A4",92.0,0.5],["D5",92.5,0.5],["F4",92.75,0.5],["A4",93.0,0.25],["D5",93.5,0.5],["E5",93.75,0.5],["G4",94.0,0.25],["C5",94.5,0.25],["E5",94.75,0.5],["G4",95.0,0.25],["C5",95.25,0.5],["C5",95.5,0.25],["D5",95.75,0.5],["F4",96.0,0.25],["Bb4",96.25,0.25],["D5",96.5,0.25],["F4",96.75,0.25],["Bb4",97.25,0.5],["C5",97.5,0.5],["E5",97.75,0.25],["A4",98.0,0.25],["C5",98.25,0.5],["E5",98.75,0.25],["A4",99.0,0.25],["Bb4",99.25,0.5],["G4",99.75,0.5],["Bb4",100.0,0.25],["D5",100.25,0.25],["G4",100.5,0.25],["A4",100.75,0.5],["C5",101.25,0.25],["F4",101.5,0.25],["A4",101.75,0.25],["C5",102.0,0.25],["F4",102.25,0.25],["E5",103.25,0.25],["G4",103.5,0.5],["E5",104.0,0.25],["F4",104.25,0.5],["A4",104.5,0.25],["D5",105.0,0.5],["F4",105.25,0.5],["D5",105.75,0.25],["E5",106.0,0.5],["G4",106.25,0.5],["Db5",106.75,0.5],["E5",107.0,0.5],["G4",107.5,0.5],["Db5",107.75,2.0],["Bb4",111.5,4.0],["Db5",111.5,2.25],["G4",111.5,2.5],["A4",115.25,0.75],["G4",115.75,0.5],["F4",116.25,0.5],["E5",116.5,0.25],["D5",116.75,0.25],["Db5",117.0,0.25],["Db5",117.75,1.0],["Db5",119.0,0.75],["E5",119.5,0.5],["G4",120.0,0.5],["F4",120.5,0.5],["G4",121.0,0.25],["F4",121.25,0.25],["F4",121.75,0.25],["G4",121.75,0.5],["F4",122.0,1.0],["E5",123.0,0.5]]},{"name":"Alto","color":"#00C896","vol":-10,"notes":[["F4",4.75,0.25],["E4",5.0,0.25],["A4",11.75,2.5],["G4",27.25,0.75],["F4",27.75,0.5],["D4",28.25,0.5],["Db4",37.5,1.0],["E4",39.0,0.75],["G4",40.5,0.75],["Db4",40.5,0.75],["E4",40.5,0.75],["Db4",41.75,0.75],["E4",42.0,0.75],["G4",42.0,1.0],["Db4",43.5,1.0],["Bb4",43.5,1.25],["G4",43.5,1.25],["G4",52.0,2.25],["A4",52.0,7.5],["E4",53.25,2.0],["Gb4",55.0,4.25],["F4",66.5,0.25],["E4",67.0,0.25],["F4",68.25,0.25],["G4",69.5,0.25],["Bb4",70.25,0.25],["E4",75.5,0.25],["D4",76.0,0.25],["D4",77.0,0.25],["E4",77.25,0.25],["Db4",77.5,0.25],["E4",78.25,0.25],["F4",78.75,0.25],["E4",81.0,0.25],["G4",81.75,0.25],["A4",82.25,0.25],["A4",83.75,0.25],["Bb4",90.0,0.5],["F4",97.0,0.25],["E4",98.5,0.25],["D4",99.5,0.5],["E4",111.5,1.5],["B4",117.25,0.5],["A4",118.5,0.75],["E4",119.75,0.5],["G4",121.5,0.25],["F4",124.5,3.5],["A4",124.5,3.75]]},{"name":"Tenor","color":"#FF6B35","vol":-10,"notes":[["Db3",28.5,1.25],["E3",37.5,0.75],["G3",37.5,0.75],["Db3",39.0,0.75],["G3",39.0,0.75],["Bb3",39.0,0.75],["D3",40.5,0.75],["Bb3",40.5,0.75],["Bb3",41.75,0.75],["E3",41.75,1.0],["D3",42.0,1.0],["D3",43.5,1.25],["E3",43.5,1.25],["E3",45.5,2.0],["D3",45.5,1.75],["G3",102.5,0.5],["Bb3",102.75,0.5],["E3",103.0,0.25],["Bb3",103.75,0.25],["A3",105.5,0.25],["D3",110.5,0.25],["D3",124.5,3.5]]},{"name":"Bass / Pedal","color":"#FFD93D","vol":-8,"notes":[["A2",22.75,0.5],["G2",23.25,0.5],["A2",23.5,2.0],["E2",28.0,0.5],["D2",29.75,2.0],["D2",35.5,1.5],["Bb2",37.5,1.25],["D2",37.5,1.0],["D2",39.0,0.75],["Bb2",42.0,1.0],["D2",45.25,0.25],["G2",45.5,2.25],["Bb2",45.5,2.5],["D2",48.75,2.5],["D2",49.0,2.5],["D2",58.25,1.0],["D2",58.5,0.75],["D2",108.75,1.0]]}],"poles":[{"start":0,"end":19,"color":"#6C63FF","label":"Toccata"},{"start":20,"end":63,"color":"#00C896","label":"Exposition"},{"start":64,"end":99,"color":"#FF6B35","label":"Development"},{"start":100,"end":115,"color":"#e94560","label":"Stretto"},{"start":116,"end":127,"color":"#FFD93D","label":"Resolution"}],"events":[{"beat":0,"dim":"D","color":"#e3b341","label":"Toccata — iconic A octaves"},{"beat":4,"dim":"I","color":"#d2a8ff","label":"Descending run A–G–F–E–D–C#–D"},{"beat":8,"dim":"A","color":"#f78166","label":"Toccata repeat — D minor attractor"},{"beat":16,"dim":"S","color":"#56d364","label":"Dramatic chords — full texture"},{"beat":20,"dim":"I","color":"#d2a8ff","label":"Fugue Subject — Voice 1"},{"beat":36,"dim":"I","color":"#d2a8ff","label":"Answer — Voice 2"},{"beat":52,"dim":"S","color":"#56d364","label":"Full polyphonic texture"},{"beat":64,"dim":"F","color":"#79c0ff","label":"Development — motivic sequences"},{"beat":88,"dim":"D","color":"#e3b341","label":"Chromatic tension rising"},{"beat":100,"dim":"S","color":"#56d364","label":"Stretto — overlapping entries"},{"beat":116,"dim":"A","color":"#f78166","label":"Pedal D — final resolution"}]},
+  "jazz-modal": {"id":"jazz-modal","icon":"🎺","name":"Jazz Modal — Miles Davis","sub":"Herbie Hancock, Ron Carter, 1965","badge":"Jazz","bpm":112,"key":"Bb modal","totalBeats":32,"description":"The Miles Davis second great quintet (1964–68) exemplifies counterpoint liberated from written score. Each performer improvises independently while sharing the harmonic grid. The ASFID structure is identical to Baroque fugue — only the Rules change: written notation → internalized stylistic vocabulary.","voices":[{"name":"Trumpet (Davis)","color":"#6C63FF","vol":-8,"notes":[["Bb4",0,0.5],["C5",0.5,0.5],["D5",1,1],["F5",2,1],["Eb5",3,1],["D5",4,2],["C5",6,0.5],["Bb4",6.5,0.5],["A4",7,1],["Bb4",8,2],["G4",10,0.5],["F4",10.5,0.5],["Eb4",11,1],["F4",12,2],["G4",14,0.5],["Ab4",14.5,0.5],["G4",15,1],["F4",16,2],["Eb4",18,2],["D4",20,4],["Bb4",24,1],["C5",25,1],["D5",26,2],["F5",28,2],["D5",30,2]]},{"name":"Piano (Hancock)","color":"#00C896","vol":-10,"notes":[["Bb3",0,2],["D4",0,2],["F4",0,2],["Bb3",2,2],["Eb4",2,2],["G4",2,2],["Bb3",4,2],["D4",4,2],["F4",4,2],["C4",6,2],["Eb4",6,2],["G4",6,2],["Bb3",8,4],["D4",8,4],["F4",8,4],["Ab3",12,2],["C4",12,2],["Eb4",12,2],["Bb3",14,2],["D4",14,2],["F4",14,2],["Eb4",16,2],["G4",16,2],["Bb4",16,2],["D4",18,2],["F4",18,2],["A4",18,2],["Bb3",20,4],["D4",20,4],["F4",20,4],["F4",24,2],["A4",24,2],["C5",24,2],["Bb3",26,2],["D4",26,2],["G4",26,2],["Bb3",28,4],["D4",28,4],["F4",28,4]]},{"name":"Bass (Carter)","color":"#FF6B35","vol":-9,"notes":[["Bb2",0,2],["F2",2,2],["Bb2",4,2],["C3",6,2],["Bb2",8,2],["Eb3",10,2],["Bb2",12,2],["F2",14,2],["Eb3",16,2],["D3",18,2],["Bb2",20,4],["F3",24,2],["G3",26,2],["Bb2",28,4]]},{"name":"Drums (Williams)","color":"#FFD93D","vol":-14,"notes":[["A2",0,0.5],["A2",1,0.5],["A2",2,0.5],["A2",3,0.5],["A2",4,0.5],["A2",5,0.5],["A2",6,0.5],["A2",7,0.5],["A2",8,0.5],["A2",9,0.5],["A2",10,0.5],["A2",11,0.5],["A2",12,0.5],["A2",13,0.5],["A2",14,0.5],["A2",15,0.5],["A2",16,0.5],["A2",17,0.5],["A2",18,0.5],["A2",19,0.5],["A2",20,0.5],["A2",21,0.5],["A2",22,0.5],["A2",23,0.5],["A2",24,0.5],["A2",25,0.5],["A2",26,0.5],["A2",27,0.5],["A2",28,0.5],["A2",29,0.5],["A2",30,0.5],["A2",31,0.5]]}],"poles":[{"start":0,"end":7,"color":"#6C63FF","label":"Theme"},{"start":8,"end":19,"color":"#00C896","label":"Development"},{"start":20,"end":27,"color":"#FF6B35","label":"Climax"},{"start":28,"end":31,"color":"#FFD93D","label":"Resolution"}],"events":[{"beat":0,"dim":"S","color":"#56d364","label":"Collective entry — shared harmonic grid"},{"beat":4,"dim":"A","color":"#f78166","label":"Modal attractor — Bb major tonal center"},{"beat":8,"dim":"I","color":"#d2a8ff","label":"Motivic propagation — Davis phrase echoed"},{"beat":12,"dim":"F","color":"#79c0ff","label":"Modal flow — chromatic passing harmonies"},{"beat":16,"dim":"D","color":"#e3b341","label":"Tension — Williams polyrhythm intensifies"},{"beat":20,"dim":"D","color":"#e3b341","label":"Climax — collective peak, all voices dense"},{"beat":24,"dim":"I","color":"#d2a8ff","label":"Return motif — Subject negotiated live"},{"beat":28,"dim":"A","color":"#f78166","label":"Resolution — Bb tonic reaffirmed"}]}
+};
+
+// Manifest: display info only — actual data lives in EXAMPLES_DATA above
+const MANIFEST = [
+  { id:'frere-jacques', icon:'🎵', name:'Frère Jacques',            sub:'Canon, 4 voices, unison',        badge:'Canon'   },
+  { id:'bwv578',        icon:'🎹', name:'BWV 578 — Little Fugue',   sub:'J.S. Bach, G minor, 4 voices',   badge:'Primary' },
+  { id:'bwv565',        icon:'🎸', name:'BWV 565 — Toccata & Fugue',sub:'J.S. Bach, D minor, 4 voices',   badge:'Iconic'  },
+  { id:'jazz-modal',    icon:'🎺', name:'Jazz Modal — Miles Davis',  sub:'Herbie Hancock, Ron Carter, 1965',badge:'Jazz'    }
+];
+
+const ASFID_DEF = [
+  {dim:'A',name:'Attractor',        score:0.87,col:'var(--col-A)'},
+  {dim:'S',name:'Structure',        score:0.90,col:'var(--col-S)'},
+  {dim:'F',name:'Flow',             score:0.85,col:'var(--col-F)'},
+  {dim:'I',name:'Information',      score:0.93,col:'var(--col-I)'},
+  {dim:'D',name:'Dynamics',         score:0.88,col:'var(--col-D)'}
+];
+const REVOI_DEF = [
+  {dim:'R',name:'Representability', score:0.95,col:'var(--col-R)'},
+  {dim:'E',name:'Evolvability',     score:0.88,col:'var(--col-E)'},
+  {dim:'V',name:'Verifiability',    score:0.92,col:'var(--col-V)'},
+  {dim:'O',name:'Observability',    score:0.78,col:'var(--col-O)'},
+  {dim:'I',name:'Interoperability', score:0.82,col:'var(--col-Im)'}
+];
+const ASFID_FULL = {A:'Attractor',S:'Structure',F:'Flow',I:'Information',D:'Dynamics'};
+
+// ── Runtime state ─────────────────────────────────────────────
+let cache     = {};     // id → loaded JSON data
+let currentEx = null;
+let simState  = 'STOPPED';
+let synths    = [];
+let audioOK   = false;
+let rafId     = null;
+let staticImg = null;
+
+// ── Scores ────────────────────────────────────────────────────
+function buildScoreRows(defs, id) {
+  document.getElementById(id).innerHTML = defs.map(s =>
+    `<div class="score-row">
+       <div class="score-dim" style="color:${s.col}">${s.dim}</div>
+       <div class="score-bar-bg"><div class="score-bar-fill" style="width:${s.score*100}%;background:${s.col}"></div></div>
+       <div class="score-val">${s.score.toFixed(2)}</div>
+     </div>`).join('');
+}
+buildScoreRows(ASFID_DEF, 'asfid-scores');
+buildScoreRows(REVOI_DEF, 'revoi-scores');
+
+// ── Explorer ──────────────────────────────────────────────────
+function buildExplorer() {
+  document.getElementById('expl-count').textContent = MANIFEST.length;
+  document.getElementById('expl-list').innerHTML = MANIFEST.map(m =>
+    `<div class="expl-item" data-id="${m.id}">
+       <span class="expl-icon">${m.icon}</span>
+       <div class="expl-info">
+         <div class="expl-name">${m.name}</div>
+         <div class="expl-sub">${m.sub}</div>
+         <div class="expl-badge">${m.badge}</div>
+       </div>
+     </div>`).join('');
+  document.getElementById('expl-list').querySelectorAll('.expl-item').forEach(el =>
+    el.addEventListener('click', () => selectExample(el.dataset.id)));
+}
+
+// ── Load example (inline data — no fetch needed) ──────────────
+async function loadExample(id) {
+  if (cache[id]) return cache[id];
+  if (!EXAMPLES_DATA[id]) throw new Error(`Example "${id}" not found in embedded data`);
+  cache[id] = EXAMPLES_DATA[id];
+  return cache[id];
+}
+
+async function selectExample(id) {
+  stopSim();
+  document.querySelectorAll('.expl-item').forEach(el =>
+    el.classList.toggle('active', el.dataset.id === id));
+  const msg = document.getElementById('canvas-msg');
+  msg.style.display = 'flex';
+  msg.textContent   = 'Loading…';
+  try {
+    currentEx = await loadExample(id);
+  } catch(e) {
+    msg.textContent = '⚠ ' + e.message;
+    return;
+  }
+  msg.style.display = 'none';
+  document.getElementById('btn-play').disabled = false;
+  document.getElementById('btn-stop').disabled = false;
+  document.getElementById('ctrl-lbl').textContent = currentEx.name + ' — ' + currentEx.key;
+  document.getElementById('example-info').innerHTML =
+    `<strong>${currentEx.name}</strong> — ${currentEx.description}`;
+  document.getElementById('voice-legend').innerHTML = currentEx.voices.map(v =>
+    `<div class="vl-item"><div class="vl-dot" style="background:${v.color}"></div>${v.name}</div>`
+  ).join('');
+  updatePoleOverlay();
+  drawRoll();
+  resetUI();
+}
+
+// ── Pole overlay ──────────────────────────────────────────────
+function updatePoleOverlay() {
+  if (!currentEx) return;
+  const overlay = document.getElementById('pole-overlay');
+  overlay.innerHTML = '';
+  currentEx.poles.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'pole-seg';
+    el.id = 'ps' + i;
+    el.style.flex = String(p.end - p.start + 1);
+    el.style.background = p.color + '18';
+    el.textContent = p.label;
+    overlay.appendChild(el);
+  });
+}
+
+// ── Piano Roll ────────────────────────────────────────────────
+const PX_BEAT=42, NOTE_H=7, LABEL_H=20, POLE_H=22;
+
+function noteToMidi(name) {
+  const M={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+  const m=name.match(/^([A-G])(b|#)?(-?\d)$/);
+  if(!m)return-1;
+  let n=M[m[1]];
+  if(m[2]==='b')n--; if(m[2]==='#')n++;
+  return(parseInt(m[3])+1)*12+n;
+}
+
+function drawRoll() {
+  if (!currentEx) return;
+  const ex = currentEx;
+  const midis = [];
+  ex.voices.forEach(v => v.notes.forEach(([n]) => { const m=noteToMidi(n); if(m>0)midis.push(m); }));
+  const midiMin = Math.max(21, Math.min(...midis)-3);
+  const midiMax = Math.min(108, Math.max(...midis)+3);
+  const rollH   = (midiMax-midiMin+1)*NOTE_H;
+
+  const area   = document.getElementById('canvas-area');
+  const canvas = document.getElementById('pianoRoll');
+  canvas.width  = ex.totalBeats*PX_BEAT+60;
+  canvas.height = Math.max(rollH+LABEL_H+POLE_H, area.clientHeight);
+
+  const ctx   = canvas.getContext('2d', {willReadFrequently: true});
+  const beatX = b => 52+b*PX_BEAT;
+  const midiY = m => POLE_H+(midiMax-m)*NOTE_H;
+
+  ctx.fillStyle='#0d1117'; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // Black key rows
+  const bk=[1,3,6,8,10];
+  for(let m=midiMin;m<=midiMax;m++){
+    if(bk.includes(m%12)){ctx.fillStyle='#111525';ctx.fillRect(0,midiY(m),canvas.width,NOTE_H);}
+  }
+  // Octave lines
+  for(let m=midiMin;m<=midiMax;m++){
+    if(m%12===0){
+      ctx.strokeStyle='#252540';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(0,midiY(m));ctx.lineTo(canvas.width,midiY(m));ctx.stroke();
+    }
+  }
+  // Note name labels
+  const NM=['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
+  ctx.font='8px Consolas,monospace';
+  for(let m=midiMin;m<=midiMax;m++){
+    const nm=NM[m%12];
+    if(!nm.includes('b')){
+      ctx.fillStyle=(m%12===0)?'#446':'#2a2a4a';
+      ctx.fillText(nm+(Math.floor(m/12)-1),2,midiY(m)+NOTE_H-2);
+    }
+  }
+  // Beat grid + measure numbers
+  for(let b=0;b<=ex.totalBeats;b++){
+    const x=beatX(b),isMeasure=b%4===0;
+    ctx.strokeStyle=isMeasure?'#222235':'#16161e';ctx.lineWidth=isMeasure?1:0.5;
+    ctx.beginPath();ctx.moveTo(x,POLE_H);ctx.lineTo(x,POLE_H+rollH);ctx.stroke();
+    if(isMeasure){
+      ctx.fillStyle='#333355';ctx.font='8px Consolas,monospace';
+      ctx.fillText('m'+(b/4+1),x+2,POLE_H+rollH+14);
+    }
+  }
+  // Pole shading
+  ex.poles.forEach(p=>{
+    ctx.fillStyle=p.color+'11';
+    ctx.fillRect(beatX(p.start),POLE_H,beatX(p.end+1)-beatX(p.start),rollH);
+  });
+  // ASFID event markers
+  ex.events.forEach(ev=>{
+    const x=beatX(ev.beat);
+    ctx.save();ctx.setLineDash([3,3]);
+    ctx.strokeStyle=ev.color+'55';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x,POLE_H);ctx.lineTo(x,POLE_H+rollH);ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle=ev.color;ctx.font='bold 9px Consolas,monospace';
+    ctx.fillText(ev.dim,x+2,POLE_H+11);
+  });
+  // Notes
+  ex.voices.forEach(voice=>{
+    voice.notes.forEach(([name,sb,db])=>{
+      const midi=noteToMidi(name);
+      if(midi<midiMin||midi>midiMax)return;
+      const x=beatX(sb),y=midiY(midi),w=Math.max(2,db*PX_BEAT-2),h=NOTE_H-1;
+      ctx.fillStyle=voice.color+'bb';ctx.fillRect(x,y,w,h);
+      ctx.strokeStyle=voice.color;ctx.lineWidth=1;ctx.strokeRect(x,y,w,h);
+    });
+  });
+  staticImg=ctx.getImageData(0,0,canvas.width,canvas.height);
+}
+
+// ── Playhead ──────────────────────────────────────────────────
+function drawPlayhead(sec) {
+  if(!currentEx||!staticImg)return;
+  const ex=currentEx,B=60/ex.bpm,beat=sec/B;
+  const canvas=document.getElementById('pianoRoll');
+  const ctx=canvas.getContext('2d',{willReadFrequently:true});
+  const beatX=b=>52+b*PX_BEAT;
+  const x=beatX(beat);
+  const rollH=canvas.height-LABEL_H-POLE_H;
+
+  ctx.putImageData(staticImg,0,0);
+  ctx.save();ctx.shadowColor='#ffffff88';ctx.shadowBlur=5;
+  ctx.strokeStyle='#ffffff';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(x,POLE_H);ctx.lineTo(x,POLE_H+rollH);ctx.stroke();
+  ctx.restore();
+
+  const pct=Math.min(100,(sec/(ex.totalBeats*B))*100);
+  document.getElementById('time-fill').style.width=pct+'%';
+  document.getElementById('time-lbl').textContent=sec.toFixed(1)+'s';
+
+  ex.poles.forEach((p,i)=>{
+    const el=document.getElementById('ps'+i);
+    if(el) el.classList.toggle('pole-active', beat>=p.start&&beat<=p.end);
+  });
+
+  const scroll=document.getElementById('roll-scroll');
+  scroll.scrollLeft=Math.max(0,x-scroll.clientWidth*0.38);
+
+  let activeEv=null;
+  for(const ev of ex.events){if(ev.beat<=beat)activeEv=ev;else break;}
+  if(activeEv)updateASFIDCard(activeEv);
+}
+
+function updateASFIDCard(ev){
+  const card=document.getElementById('asfid-card');
+  const ring=document.getElementById('asfid-ring');
+  const dim=document.getElementById('asfid-dim');
+  const lbl=document.getElementById('asfid-lbl');
+  card.style.borderLeftColor=ev.color;
+  ring.style.background=ev.color;ring.style.color='#fff';ring.textContent=ev.dim;
+  dim.style.color=ev.color;dim.textContent=ev.dim+' — '+(ASFID_FULL[ev.dim]||'');
+  lbl.style.color='var(--text-dim)';lbl.textContent=ev.label;
+}
+
+// ── Audio Engine — WebAudioFont (real instrument samples) ────────────────
+// Instrument definitions: WebAudioFont sample files
+// Each file defines a global _tone_XXXX variable with audio sample data
+const INSTR_DEFS = {
+  organ:       { label:'Organ',       url:'sounds/0190_GeneralUserGS_sf2_file.js',  varName:'_tone_0190_GeneralUserGS_sf2_file' },
+  piano:       { label:'Piano',       url:'sounds/0000_JCLive_sf2_file.js',         varName:'_tone_0000_JCLive_sf2_file' },
+  harpsichord: { label:'Harpsichord', url:'sounds/0060_GeneralUserGS_sf2_file.js',  varName:'_tone_0060_GeneralUserGS_sf2_file' },
+  flute:       { label:'Flute',       url:'sounds/0730_JCLive_sf2_file.js',         varName:'_tone_0730_JCLive_sf2_file' },
+  strings:     { label:'Strings',     url:'sounds/0490_GeneralUserGS_sf2_file.js',  varName:'_tone_0490_GeneralUserGS_sf2_file' },
+  choir:       { label:'Choir',       url:'sounds/0520_GeneralUserGS_sf2_file.js',  varName:'_tone_0520_GeneralUserGS_sf2_file' },
+  trumpet:     { label:'Trumpet',     url:'sounds/0560_GeneralUserGS_sf2_file.js',  varName:'_tone_0560_GeneralUserGS_sf2_file' }
+};
+
+let actx       = null;
+let wafPlayer  = null;
+let instrCache = {};       // key -> loaded sample variable
+let startWallTime = 0;
+let transportSec  = 0;
+let scheduledEnvelopes = [];
+let simTimer = null;
+
+function noteNameToMidi(name) {
+  const M={'C':0,'D':2,'E':4,'F':5,'G':7,'A':9,'B':11};
+  const acc={'b':-1,'#':1};
+  const m = name.match(/^([A-G])([b#]?)(-?\d)$/);
+  if(!m) return 60;
+  const semi = M[m[1]] + (acc[m[2]]||0);
+  const oct  = parseInt(m[3]);
+  return (oct+1)*12 + semi;
+}
+
+function setInstrStatus(msg) {
+  const el = document.getElementById('instr-status');
+  if(el) el.textContent = msg;
+}
+
+async function ensureAudio() {
+  if(audioOK) return;
+  actx = new (window.AudioContext || window.webkitAudioContext)();
+  wafPlayer = new WebAudioFontPlayer();
+  audioOK = true;
+}
+
+async function loadInstrument(key) {
+  if(instrCache[key]) return instrCache[key];
+  const def = INSTR_DEFS[key];
+  if(!def) return null;
+  // Already loaded by a previous call (global var exists)?
+  if(window[def.varName]) {
+    wafPlayer.adjustPreset(actx, window[def.varName]);
+    instrCache[key] = window[def.varName];
+    return instrCache[key];
+  }
+  setInstrStatus('⏳ Loading ' + def.label + '…');
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = def.url;
+    script.onload = () => {
+      if(window[def.varName]) {
+        wafPlayer.adjustPreset(actx, window[def.varName]);
+        instrCache[key] = window[def.varName];
+        setInstrStatus('');
+        resolve(instrCache[key]);
+      } else {
+        setInstrStatus('⚠ Load failed');
+        reject(new Error('Variable not found: ' + def.varName));
+      }
+    };
+    script.onerror = () => { setInstrStatus('⚠ Load failed'); reject(new Error('Script load failed')); };
+    document.head.appendChild(script);
+  });
+}
+
+function currentInstrKey() {
+  const sel = document.getElementById('instr-select');
+  return sel ? sel.value : 'organ';
+}
+
+function clearScheduled() {
+  scheduledEnvelopes.forEach(e => { try{ e.cancel(); }catch(ex){} });
+  scheduledEnvelopes = [];
+  if(simTimer) { clearTimeout(simTimer); simTimer = null; }
+}
+
+function scheduleAll(fromSec) {
+  clearScheduled();
+  const key   = currentInstrKey();
+  const instr = instrCache[key];
+  if(!instr) return;
+  const B = 60 / currentEx.bpm;
+  startWallTime = actx.currentTime - fromSec;
+  currentEx.voices.forEach(voice => {
+    voice.notes.forEach(([name, sb, db]) => {
+      const noteSec = sb * B;
+      if(noteSec < fromSec - 0.05) return;
+      const when  = startWallTime + noteSec;
+      if(when < actx.currentTime - 0.05) return;
+      const midi  = noteNameToMidi(name);
+      const dur   = db * B * 0.9;
+      const vol   = Math.pow(10, voice.vol / 20) * 1.2;
+      try {
+        const env = wafPlayer.queueWaveTable(actx, actx.destination, instr, when, midi, dur, vol);
+        if(env) scheduledEnvelopes.push(env);
+      } catch(e) {}
+    });
+  });
+  // Auto-stop timer
+  const totalDur = currentEx.totalBeats * B;
+  const remaining = (totalDur - fromSec) * 1000 + 400;
+  simTimer = setTimeout(() => stopSim(), remaining);
+}
+
+function animate() {
+  if(simState !== 'PLAYING') return;
+  const elapsed = actx.currentTime - startWallTime;
+  drawPlayhead(elapsed);
+  rafId = requestAnimationFrame(animate);
+}
+
+async function playSim() {
+  if(!currentEx) return;
+  await ensureAudio();
+  if(actx.state === 'suspended') await actx.resume();
+  // Load instrument if needed
+  const key = currentInstrKey();
+  if(!instrCache[key]) {
+    try { await loadInstrument(key); }
+    catch(e) { console.warn('Instrument load failed, using organ fallback'); }
+  }
+  const fromSec = (simState === 'PAUSED') ? transportSec : 0;
+  scheduleAll(fromSec);
+  simState = 'PLAYING';
+  animate();
+  document.getElementById('btn-play').textContent = '⏸ Pause';
+}
+
+function pauseSim() {
+  transportSec = actx.currentTime - startWallTime;
+  clearScheduled();
+  simState = 'PAUSED';
+  cancelAnimationFrame(rafId);
+  document.getElementById('btn-play').textContent = '▶ Play';
+}
+
+function resetUI() {
+  // Reset progress bar and time label
+  const fill = document.getElementById('time-fill');
+  const lbl  = document.getElementById('time-lbl');
+  if (fill) fill.style.width = '0%';
+  if (lbl)  lbl.textContent  = '0.0s';
+  // Clear active pole highlights
+  document.querySelectorAll('.pole-seg').forEach(el => el.classList.remove('pole-active'));
+  // Scroll piano roll back to start
+  const scroll = document.getElementById('roll-scroll');
+  if (scroll) scroll.scrollLeft = 0;
+  // Redraw clean roll (no playhead)
+  drawRoll();
+}
+
+function stopSim() {
+  clearScheduled();
+  transportSec = 0;
+  simState = 'STOPPED';
+  cancelAnimationFrame(rafId);
+  document.getElementById('btn-play').textContent = '▶ Play';
+  resetUI();
+}
+
+// ── Controls ──────────────────────────────────────────────────
+document.getElementById('btn-play').addEventListener('click',async()=>{
+  if(simState==='PLAYING')pauseSim();else await playSim();
+});
+document.getElementById('btn-stop').addEventListener('click',stopSim);
+// Home button is an <a> link — no JS needed
+
+// ── Tabs ──────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+}));
+
+// ── Splitters ─────────────────────────────────────────────────
+function makeSplitter(splitterId,cssVar,getW,side){
+  const sp=document.getElementById(splitterId);
+  const app=document.getElementById('app');
+  let dragging=false,startX=0,startW=0;
+  sp.addEventListener('mousedown',e=>{
+    dragging=true;startX=e.clientX;startW=getW();
+    sp.classList.add('dragging');document.body.style.cssText='cursor:col-resize;user-select:none';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!dragging)return;
+    const d=e.clientX-startX;
+    const newW=Math.max(140,Math.min(520,side==='left'?startW+d:startW-d));
+    app.style.setProperty(cssVar,newW+'px');drawRoll();
+  });
+  document.addEventListener('mouseup',()=>{
+    if(!dragging)return;dragging=false;
+    sp.classList.remove('dragging');document.body.style.cssText='';
+  });
+}
+makeSplitter('split1','--left-w',   ()=>document.getElementById('explorer').getBoundingClientRect().width,'left');
+makeSplitter('split2','--sidebar-w',()=>document.getElementById('sidebar').getBoundingClientRect().width,'right');
+
+// ── Init ──────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  buildExplorer();
+  selectExample('bwv578');
+});
+window.addEventListener('resize',()=>drawRoll());
+// Load instrument on selection change
+document.getElementById('instr-select').addEventListener('change', async () => {
+  if(!audioOK) return;
+  const key = currentInstrKey();
+  if(!instrCache[key]) {
+    await loadInstrument(key).catch(e => console.warn(e));
+  }
+  if(simState === 'PLAYING') {
+    const pos = actx.currentTime - startWallTime;
+    scheduleAll(pos);
+  }
+});
+
+// Pre-load organ on first user interaction
+document.addEventListener('click', async () => {
+  if(audioOK && !instrCache['organ']) {
+    await loadInstrument('organ').catch(()=>{});
+  }
+}, {once: true});
+</script>
+
+<!-- Home button tooltip -->
+<div id="home-tip" style="
+  position:fixed; z-index:999999;
+  background:#1c2130; color:#e6edf3;
+  border:1px solid #3d444f; border-radius:6px;
+  padding:4px 10px; font-size:11px; font-weight:500;
+  letter-spacing:0.04em; white-space:nowrap;
+  pointer-events:none; opacity:0; transition:opacity 0.18s;
+">Back to Poclet Gallery</div>
+
+<!-- TSCG logo tooltip -->
+<div id="tscg-tip" style="
+  position:fixed; z-index:999999;
+  background:#1c2130; color:#e6edf3;
+  border:1px solid #3d444f; border-radius:6px;
+  padding:4px 10px; font-size:11px; font-weight:500;
+  letter-spacing:0.04em; white-space:nowrap;
+  pointer-events:none; opacity:0; transition:opacity 0.18s;
+  transform:translateX(-50%);
+">TSCG Github repository</div>
+
+<script>
+(function(){
+  const home    = document.getElementById('btn-home');
+  const homeTip = document.getElementById('home-tip');
+  if (home && homeTip) {
+    home.addEventListener('mouseenter', function() {
+      const r = home.getBoundingClientRect();
+      homeTip.style.left = Math.max(8, r.left) + 'px';
+      homeTip.style.top  = (r.bottom + 6) + 'px';
+      homeTip.style.opacity = '1';
+    });
+    home.addEventListener('mouseleave', function() { homeTip.style.opacity = '0'; });
+  }
+  const logo = document.querySelector('.tscg-logo-link');
+  const tip  = document.getElementById('tscg-tip');
+  if (logo && tip) {
+    logo.addEventListener('mouseenter', function() {
+      const r = logo.getBoundingClientRect();
+      tip.style.left = (r.left + r.width / 2) + 'px';
+      tip.style.top  = (r.bottom + 6) + 'px';
+      tip.style.opacity = '1';
+    });
+    logo.addEventListener('mouseleave', function() { tip.style.opacity = '0'; });
+  }
+})();
+</script>
+</body>
+</html>

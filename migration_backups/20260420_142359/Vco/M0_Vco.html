@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://cdnjs.cloudflare.com;
+                 script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
+                 style-src  'self' 'unsafe-inline';
+                 img-src    'self' data: blob:;
+                 connect-src http://127.0.0.1:* ws://127.0.0.1:*;">
+  <title>TSCG &mdash; Voltage Controlled Oscillator</title>
+  <link rel="icon" href="data:,">
+  <style>
+/* ── Reset & Globals ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg-deep:      #0d1117;
+  --bg-panel:     #161b22;
+  --bg-card:      #1c2130;
+  --bg-hover:     #21262d;
+  --border:       #30363d;
+  --border-light: #3d444f;
+  --eagle:        #f78166;
+  --sphinx:       #79c0ff;
+  --accent:       #56d364;
+  --warn:         #e3b341;
+  --muted:        #8b949e;
+  --text:         #e6edf3;
+  --text-dim:     #b1bac4;
+  --col-A: #f78166; --col-S: #56d364; --col-F: #79c0ff;
+  --col-I: #d2a8ff; --col-D: #e3b341;
+  --col-R: #79c0ff; --col-E: #56d364; --col-V: #f78166;
+  --col-O: #d2a8ff; --col-Im: #e3b341;
+  --header-h:   44px;
+  --controls-h: 68px;
+  --sidebar-w:  320px;
+  --radius: 6px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+html, body {
+  height: 100%; overflow: hidden;
+  font-family: var(--font); background: var(--bg-deep);
+  color: var(--text); font-size: 13px; line-height: 1.5;
+  user-select: none;
+}
+#app {
+  display: grid;
+  grid-template-rows: var(--header-h) 1fr var(--controls-h);
+  grid-template-columns: 1fr 5px var(--sidebar-w);
+  grid-template-areas:
+    "header   header   header"
+    "canvas   split    sidebar"
+    "controls controls controls";
+  height: 100vh;
+}
+
+/* ── Header ────────────────────────────────────────────────────── */
+#header {
+  grid-area: header; display: flex; align-items: center;
+  padding: 0 16px; gap: 12px;
+  background: var(--bg-panel); border-bottom: 1px solid var(--border);
+}
+#btn-home {
+  display: inline-flex; align-items: center;
+  background: none; border: none; cursor: pointer;
+  padding: 4px 6px; margin-right: 4px;
+  opacity: 0.85; transition: opacity 0.15s; text-decoration: none;
+}
+#btn-home:hover { opacity: 1; }
+.tscg-logo {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--eagle); text-transform: uppercase; flex-shrink: 0;
+}
+.sep { color: var(--border-light); font-size: 16px; }
+.poclet-name {
+  font-size: 14px; font-weight: 600; color: var(--text);
+  flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.meta-chips { display: flex; gap: 6px; flex-shrink: 0; }
+.chip {
+  padding: 2px 8px; border-radius: 20px;
+  font-size: 11px; font-weight: 500; border: 1px solid transparent;
+}
+.chip.domain  { background: rgba(86,211,100,0.12);  border-color: rgba(86,211,100,0.3);  color: var(--accent); }
+.chip.version { background: rgba(121,192,255,0.12); border-color: rgba(121,192,255,0.3); color: var(--sphinx); }
+.chip.type    { background: rgba(247,129,102,0.12); border-color: rgba(247,129,102,0.3); color: var(--eagle); }
+
+/* ── Canvas ────────────────────────────────────────────────────── */
+#canvas-area {
+  grid-area: canvas; position: relative;
+  overflow: hidden; background: var(--bg-deep); min-width: 200px;
+}
+#canvas-area canvas { position: absolute; top: 0; left: 0; }
+
+/* ── Splitter ──────────────────────────────────────────────────── */
+#splitter {
+  grid-area: split; background: var(--border);
+  cursor: col-resize; transition: background 0.15s; z-index: 10;
+}
+#splitter:hover, #splitter.dragging { background: var(--sphinx); }
+
+/* ── Sidebar ───────────────────────────────────────────────────── */
+#sidebar {
+  grid-area: sidebar; display: flex; flex-direction: column;
+  background: var(--bg-panel); border-left: 1px solid var(--border);
+  overflow: hidden; min-width: 180px; max-width: 620px;
+}
+.tab-bar {
+  display: flex; background: var(--bg-deep);
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.tab-btn {
+  flex: 1; padding: 8px 4px; font-size: 12px; font-weight: 600;
+  background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--muted); cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab-btn:hover { color: var(--text-dim); }
+.tab-btn.active { color: var(--sphinx); border-bottom-color: var(--sphinx); }
+.tab-panel { display: none; flex-direction: column; flex: 1; overflow-y: auto; padding: 12px; gap: 10px; }
+.tab-panel.active { display: flex; }
+
+/* Scores */
+.score-group { display: flex; flex-direction: column; gap: 5px; }
+.score-group-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted);
+  padding-bottom: 4px; border-bottom: 1px solid var(--border); margin-bottom: 2px;
+}
+.score-group-label.eagle { color: var(--eagle); }
+.score-group-label.sphinx { color: var(--sphinx); }
+.score-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.score-dim { width: 20px; font-weight: 700; font-family: var(--font-mono); font-size: 11px; text-align: center; flex-shrink: 0; }
+.score-bar-bg { flex: 1; height: 6px; background: var(--bg-card); border-radius: 3px; overflow: hidden; }
+.score-bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.score-val { width: 30px; text-align: right; font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); flex-shrink: 0; }
+.score-mean-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); padding-top: 2px; font-family: var(--font-mono); }
+.score-mean-row span { color: var(--text); font-weight: 600; }
+.gap-badge {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 8px 12px; font-size: 12px;
+}
+.gap-badge .gap-label { color: var(--muted); }
+.gap-badge .gap-val { font-family: var(--font-mono); font-weight: 700; font-size: 16px; color: var(--accent); }
+.gap-badge .gap-desc { color: var(--text-dim); font-size: 11px; }
+
+/* Concepts */
+.gc-list { display: flex; flex-direction: column; gap: 4px; }
+.gc-item {
+  display: flex; flex-direction: column; gap: 3px; padding: 6px 8px;
+  background: var(--bg-card); border-radius: var(--radius);
+  border: 1px solid var(--border);
+  transition: border-color 0.15s, background 0.15s;
+}
+.gc-item:hover { background: var(--bg-hover); border-color: var(--border-light); }
+.gc-item.primary   { border-left: 3px solid var(--eagle); }
+.gc-item.secondary { border-left: 3px solid var(--border-light); }
+.gc-header { display: flex; align-items: baseline; gap: 8px; }
+.gc-name { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--sphinx); }
+.gc-formula { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
+.gc-role { font-size: 11px; color: var(--text-dim); line-height: 1.4; }
+
+/* Description */
+.readme-content { font-size: 12px; line-height: 1.7; color: var(--text-dim); white-space: pre-wrap; }
+.readme-content h2 { font-size: 13px; font-weight: 700; color: var(--text); margin: 12px 0 4px; padding-bottom: 3px; border-bottom: 1px solid var(--border); }
+.readme-content strong { color: var(--text); }
+.readme-content code { font-family: var(--font-mono); font-size: 10.5px; background: var(--bg-card); padding: 1px 4px; border-radius: 3px; color: var(--sphinx); }
+
+/* Synergy */
+.synergy-box {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-left: 3px solid var(--warn); border-radius: var(--radius);
+  padding: 10px 12px; display: flex; flex-direction: column; gap: 5px;
+}
+.synergy-label   { font-size: 12px; font-weight: 700; color: var(--warn); }
+.synergy-formula { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); word-break: break-word; }
+.synergy-emergent { font-size: 11px; color: var(--text-dim); }
+.analogy-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 2px; }
+.analogy-table th { text-align: left; padding: 3px 8px; color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border); }
+.analogy-table td { padding: 3px 8px; color: var(--text-dim); border-bottom: 1px solid var(--border); }
+.analogy-table tr:last-child td { border-bottom: none; }
+.analogy-table td:first-child { color: var(--sphinx); font-family: var(--font-mono); font-size: 10px; }
+
+/* ── Controls ──────────────────────────────────────────────────── */
+#controls {
+  grid-area: controls; display: flex; align-items: center;
+  gap: 10px; padding: 0 14px;
+  background: var(--bg-panel); border-top: 1px solid var(--border);
+  flex-wrap: nowrap; overflow-x: auto;
+}
+.ctrl-btn {
+  display: flex; align-items: center; gap: 5px; padding: 5px 11px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text-dim); font-size: 12px;
+  font-family: var(--font); cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap; flex-shrink: 0;
+}
+.ctrl-btn:hover { background: var(--bg-hover); color: var(--text); border-color: var(--border-light); }
+#btn-play.playing {
+  background: rgba(86,211,100,0.12); border-color: rgba(86,211,100,0.55);
+  color: var(--accent); box-shadow: 0 0 10px rgba(86,211,100,0.18);
+}
+.status-dot.paused { background: var(--muted); animation: none; }
+.ctrl-sep { width: 1px; height: 28px; background: var(--border); flex-shrink: 0; }
+.ctrl-group { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; }
+.ctrl-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); white-space: nowrap; }
+.ctrl-row { display: flex; align-items: center; gap: 5px; }
+.ctrl-val { font-family: var(--font-mono); font-size: 11px; color: var(--sphinx); min-width: 60px; text-align: right; flex-shrink: 0; }
+input[type="range"] {
+  -webkit-appearance: none; width: 100px; height: 4px;
+  background: var(--bg-card); border-radius: 2px; outline: none; flex-shrink: 0;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--sphinx); cursor: pointer; border: 2px solid var(--bg-panel);
+}
+#sl-amp::-webkit-slider-thumb { background: var(--warn); }
+#sl-fine::-webkit-slider-thumb { background: var(--eagle); }
+.wf-btn {
+  padding: 3px 8px; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 4px; color: var(--muted); font-size: 11px; cursor: pointer;
+  transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
+}
+.wf-btn:hover { color: var(--text-dim); border-color: var(--border-light); }
+.wf-btn[data-wf="sine"].active     { background: rgba(50,210,225,0.15);  border-color: #32d2e1; color: #32d2e1; }
+.wf-btn[data-wf="square"].active   { background: rgba(65,205,110,0.15);  border-color: #41cd6e; color: #41cd6e; }
+.wf-btn[data-wf="triangle"].active { background: rgba(255,150,40,0.15);  border-color: #ff9628; color: #ff9628; }
+.wf-btn[data-wf="sawtooth"].active { background: rgba(255,195,40,0.15);  border-color: #ffc328; color: #ffc328; }
+.status-indicator { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); flex-shrink: 0; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 1.8s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+  
+/* TSCG logo — clickable link + tooltip */
+.tscg-logo-link, .titlebar-logo-link {
+  text-decoration: none; color: inherit; position: relative; cursor: pointer;
+  background: none; border: none; padding: 0;
+}
+
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <header id="header">
+    <button id="btn-home" onclick="window.location.href='https://echopraxium.github.io/tscg/'">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </button>
+    <button class="tscg-logo-link" onclick="window.open('https://github.com/Echopraxium/tscg','_blank')"><span class="tscg-logo">TSCG</span></button>
+    <span class="sep">&middot;</span>
+    <span class="poclet-name">VCO &mdash; Voltage Controlled Oscillator</span>
+    <div class="meta-chips">
+      <span class="chip domain">Electronics / Modular Synth</span>
+      <span class="chip type">m3:Poclet</span>
+      <span class="chip version">v1.0.0</span>
+    </div>
+  </header>
+
+  <!-- CANVAS -->
+  <div id="canvas-area"></div>
+
+  <!-- SPLITTER -->
+  <div id="splitter"></div>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="description">Description</button>
+      <button class="tab-btn" data-tab="concepts">Concepts</button>
+      <button class="tab-btn" data-tab="synergy">Synergy</button>
+      <button class="tab-btn" data-tab="scores">Scores</button>
+    </nav>
+
+    <!-- Description -->
+    <div id="panel-description" class="tab-panel active">
+      <div class="readme-content">
+<h2>System</h2>
+A <strong>VCO (Voltage Controlled Oscillator)</strong> is the fundamental pitch-generation component of a modular synthesizer. It produces a periodic audio-frequency waveform whose frequency is precisely controlled by an input voltage following the <strong>V/Oct standard</strong> (1 volt per octave).
+
+<h2>V/Oct Law</h2>
+<code>f(CV) = f&#x2080; &times; 2^(CV / 1V)</code>
+
+At <code>f&#x2080; = 440 Hz (A4)</code>:
+<code>CV = 0V   &rarr;  440 Hz  (A4)</code>
+<code>CV = +1V  &rarr;  880 Hz  (A5, +1 octave)</code>
+<code>CV = -1V  &rarr;  220 Hz  (A3, -1 octave)</code>
+<code>1/12 V &asymp; 83 mV  &rarr;  +1 semitone</code>
+
+<h2>Waveform Modes</h2>
+<strong>Sine</strong>      Fundamental only. Pure, flute-like.
+<strong>Square</strong>    Odd harmonics (1/n). Hollow, woodwind.
+<strong>Triangle</strong>  Odd harmonics (1/n&sup2;). Soft, mellow.
+<strong>Sawtooth</strong>  All harmonics (1/n). Bright, string/brass.
+
+<h2>TSCG Positioning</h2>
+First M0 instantiation of <code>m2:Oscillator</code>, validating the GenericConceptCombo in the Electronics / Music Technology domain. Subclassing <code>m2:Component</code> unlocks full ASFID 5D coverage:
+<code>S &otimes; A &otimes; I &otimes; D &otimes; F</code>
+      </div>
+    </div>
+
+    <!-- Concepts -->
+    <div id="panel-concepts" class="tab-panel">
+      <div class="gc-list">
+        <div class="gc-item primary">
+          <div class="gc-header">
+            <span class="gc-name">m2:Oscillator</span>
+            <span class="gc-formula">&otimes;&rArr;(Component, Process, Trajectory|Circular)</span>
+          </div>
+          <div class="gc-role">Primary &mdash; bounded, patchable module generating a periodic waveform. Subclasses Component (S) + Process (F) + CircularTrajectory (A).</div>
+        </div>
+        <div class="gc-item secondary">
+          <div class="gc-header">
+            <span class="gc-name">m2:Amplification</span>
+            <span class="gc-formula">A &otimes; D</span>
+          </div>
+          <div class="gc-role">V/Oct exponential CV&rarr;frequency mapping. Each +1V doubles frequency (one octave gain).</div>
+        </div>
+        <div class="gc-item secondary">
+          <div class="gc-header">
+            <span class="gc-name">m2:Transformation</span>
+            <span class="gc-formula">S &otimes; D</span>
+          </div>
+          <div class="gc-role">CV voltage domain &rarr; audio frequency domain. Logarithmic domain crossing.</div>
+        </div>
+        <div class="gc-item secondary">
+          <div class="gc-header">
+            <span class="gc-name">m2:Mode</span>
+            <span class="gc-formula">I &otimes; S</span>
+          </div>
+          <div class="gc-role">Waveform selector (N=4: Sine, Square, Triangle, Sawtooth). Discrete qualitative state switching.</div>
+        </div>
+        <div class="gc-item secondary">
+          <div class="gc-header">
+            <span class="gc-name">m2:Signal</span>
+            <span class="gc-formula">F &otimes; I</span>
+          </div>
+          <div class="gc-role">Audio output waveform &plusmn;5V. Observable carrier of harmonic information to downstream modules.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Synergy -->
+    <div id="panel-synergy" class="tab-panel">
+      <div class="synergy-box">
+        <div class="synergy-label">Primary Metaconcept</div>
+        <div class="synergy-formula">m2:Oscillator &otimes;&rArr; (Component, Process, Trajectory|Circular)</div>
+        <div class="synergy-emergent">Bounded, identifiable, patchable pitch source &mdash; not just an abstract process. The Component dimension adds Structure and enables full 5D ASFID coverage.</div>
+      </div>
+      <div class="synergy-box">
+        <div class="synergy-label">ASFID Tensor Formula</div>
+        <div class="synergy-formula">S &otimes; A &otimes; I &otimes; D &otimes; F</div>
+        <div class="synergy-emergent"><strong>S</strong> integrator core, V/Oct converter, waveform shaper &bull; <strong>A</strong> circular frequency attractor f&thinsp;=&thinsp;f&#x2080;&thinsp;&times;&thinsp;2^CV &bull; <strong>I</strong> phase &phi;(t), shape, pitch CV &bull; <strong>D</strong> V/Oct exponential law &bull; <strong>F</strong> audio output &plusmn;5V + CV + FM inputs</div>
+      </div>
+      <div class="synergy-box">
+        <div class="synergy-label">V/Oct Empirical Law</div>
+        <div class="synergy-formula">f(CV) = f&#x2080; &times; 2^(CV / 1V)</div>
+        <div class="synergy-emergent">Universal Eurorack standard. At f&#x2080;&thinsp;=&thinsp;440 Hz: each 1V = one octave, each 1/12V &asymp; one semitone. Highest REVOI score (0.92) in the Combo family.</div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--sphinx)">
+        <div class="synergy-label" style="color:var(--sphinx)">Transdisciplinary Homologies</div>
+        <table class="analogy-table">
+          <tr><th>Domain</th><th>Analogue</th><th>CV equivalent</th></tr>
+          <tr><td>Biology</td><td>SA node (cardiac pacemaker)</td><td>Autonomic nervous tone</td></tr>
+          <tr><td>Mechanics</td><td>Variable-length driven pendulum</td><td>Effective gravity</td></tr>
+          <tr><td>Economics</td><td>Business cycle oscillator</td><td>Interest rate policy</td></tr>
+          <tr><td>Chemistry</td><td>Belousov-Zhabotinsky reaction</td><td>Reagent input rate</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Scores -->
+    <div id="panel-scores" class="tab-panel">
+      <div class="score-group">
+        <div class="score-group-label eagle">Eagle Eye &mdash; ASFID (Territory)</div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-A)">A</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-A)"></div></div><div class="score-val">0.90</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-S)">S</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:75%;background:var(--col-S)"></div></div><div class="score-val">0.75</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-F)">F</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-F)"></div></div><div class="score-val">0.85</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-I)">I</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:var(--col-I)"></div></div><div class="score-val">0.80</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-D)">D</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-D)"></div></div><div class="score-val">0.90</div></div>
+        <div class="score-mean-row"><span>ASFID mean</span><span>0.84</span></div>
+      </div>
+      <div class="score-group">
+        <div class="score-group-label sphinx">Sphinx Eye &mdash; REVOI (Map)</div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-R)">R</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-R)"></div></div><div class="score-val">0.90</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-E)">E</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-E)"></div></div><div class="score-val">0.85</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-V)">V</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-V)"></div></div><div class="score-val">0.95</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-O)">O</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-O)"></div></div><div class="score-val">0.95</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-Im)">I</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-Im)"></div></div><div class="score-val">0.95</div></div>
+        <div class="score-mean-row"><span>REVOI mean</span><span>0.92</span></div>
+      </div>
+      <div class="gap-badge">
+        <div>
+          <div class="gap-label">Epistemic Gap &delta;</div>
+          <div class="gap-val">0.08</div>
+        </div>
+        <div class="gap-desc">OnCriticalLine [0.05, 0.15) &mdash; Map richer than Territory. Highest REVOI in the Combo family.</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTROLS -->
+  <footer id="controls">
+    <!-- Frequency -->
+    <div class="ctrl-group">
+      <div class="ctrl-lbl">Frequency</div>
+      <div class="ctrl-row">
+        <input type="range" id="sl-freq" min="0" max="100" step="0.1" value="67.1">
+        <span class="ctrl-val" id="val-freq">440.0 Hz</span>
+      </div>
+    </div>
+    <div class="ctrl-sep"></div>
+    <!-- Amplitude -->
+    <div class="ctrl-group">
+      <div class="ctrl-lbl">Amplitude</div>
+      <div class="ctrl-row">
+        <input type="range" id="sl-amp" min="0" max="100" step="1" value="50">
+        <span class="ctrl-val" id="val-amp">50%</span>
+      </div>
+    </div>
+    <div class="ctrl-sep"></div>
+    <!-- Fine Tune -->
+    <div class="ctrl-group">
+      <div class="ctrl-lbl">Fine Tune</div>
+      <div class="ctrl-row">
+        <input type="range" id="sl-fine" min="-100" max="100" step="1" value="0">
+        <span class="ctrl-val" id="val-fine">0&#x00A2;</span>
+      </div>
+    </div>
+    <div class="ctrl-sep"></div>
+    <!-- Waveform -->
+    <div class="ctrl-group">
+      <div class="ctrl-lbl">Waveform</div>
+      <div class="ctrl-row" id="wf-buttons">
+        <button class="wf-btn active" data-wf="sine">Sine</button>
+        <button class="wf-btn" data-wf="square">Square</button>
+        <button class="wf-btn" data-wf="triangle">Triangle</button>
+        <button class="wf-btn" data-wf="sawtooth">Sawtooth</button>
+      </div>
+    </div>
+    <div class="ctrl-sep"></div>
+    <!-- Audio — AudioContext created on first click ONLY -->
+    <button class="ctrl-btn" id="btn-play">&#9654;&#8201;Play</button>
+    <div class="status-indicator">
+      <div class="status-dot paused" id="status-dot"></div>
+      <span id="status-label">Paused</span>
+    </div>
+  </footer>
+
+</div><!-- #app -->
+
+<!-- p5.js from cdnjs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+
+<!-- VCO State, Audio Engine & p5 sketch -->
+<script>
+'use strict';
+
+/* ── VCO state ─────────────────────────────────────────────────── */
+const VCO = {
+  frequency: 440,
+  amplitude: 0.50,
+  fineCents: 0,
+  waveform:  'sine',
+  audioOn:   false,
+};
+
+const WF_COLORS = {
+  sine:     [50,  210, 225],
+  square:   [65,  205, 110],
+  triangle: [255, 150,  40],
+  sawtooth: [255, 195,  40],
+};
+
+function effectiveFreq() {
+  return VCO.frequency * Math.pow(2, VCO.fineCents / 1200);
+}
+
+const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+function freqToNote(freq) {
+  if (freq <= 0) return '---';
+  const semitones = 12 * Math.log2(freq / 440) + 69;
+  const midi  = Math.round(semitones);
+  const cents = Math.round((semitones - midi) * 100);
+  const name  = NOTE_NAMES[((midi % 12) + 12) % 12];
+  const oct   = Math.floor(midi / 12) - 1;
+  if (cents === 0) return name + oct;
+  return name + oct + ' (' + (cents >= 0 ? '+' : '') + cents + '\u00a2)';
+}
+
+/* ── Audio Engine ─────────────────────────────────────────────── */
+let audioCtx = null;
+let oscNode  = null;
+let gainNode = null;
+
+function startOsc() {
+  stopOsc();
+  oscNode = audioCtx.createOscillator();
+  oscNode.type = VCO.waveform;
+  oscNode.frequency.value = effectiveFreq();
+  oscNode.connect(gainNode);
+  oscNode.start();
+  gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+  gainNode.gain.setTargetAtTime(VCO.amplitude * 0.22, audioCtx.currentTime, 0.025);
+}
+
+function stopOsc() {
+  if (oscNode) {
+    gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+    gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.025);
+    const o = oscNode; oscNode = null;
+    setTimeout(() => { try { o.stop(); o.disconnect(); } catch(e) {} }, 120);
+  }
+}
+
+function syncAudio() {
+  if (!audioCtx || !oscNode) return;
+  oscNode.type = VCO.waveform;
+  oscNode.frequency.setTargetAtTime(effectiveFreq(), audioCtx.currentTime, 0.008);
+  gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+  gainNode.gain.setTargetAtTime(VCO.amplitude * 0.22, audioCtx.currentTime, 0.008);
+}
+
+function setPlayUI(playing) {
+  VCO.audioOn = playing;
+  const btn = document.getElementById('btn-play');
+  const dot = document.getElementById('status-dot');
+  if (playing) {
+    btn.innerHTML = '&#9646;&#9646;&#8201;Pause';
+    btn.classList.add('playing');
+    dot.classList.remove('paused');
+    document.getElementById('status-label').textContent = 'Playing';
+  } else {
+    btn.innerHTML = '&#9654;&#8201;Play';
+    btn.classList.remove('playing');
+    dot.classList.add('paused');
+    document.getElementById('status-label').textContent = 'Paused';
+  }
+}
+
+/* Play: create context on first call (user gesture), await resume(), start osc. */
+async function togglePlay() {
+  if (VCO.audioOn) {
+    stopOsc();
+    setPlayUI(false);
+    return;
+  }
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    gainNode = audioCtx.createGain();
+    gainNode.gain.value = 0;
+    gainNode.connect(audioCtx.destination);
+  }
+  try { await audioCtx.resume(); } catch(e) {}
+  startOsc();
+  setPlayUI(true);
+}
+
+/* ── Controls wiring ──────────────────────────────────────────── */
+function sliderToFreq(s)  { return 20 * Math.pow(100, s / 100); }
+function freqToSlider(f)  { return 100 * Math.log(f / 20) / Math.log(100); }
+
+function wireControls() {
+  const slFreq = document.getElementById('sl-freq');
+  slFreq.value = freqToSlider(440).toFixed(1);
+  slFreq.addEventListener('input', () => {
+    VCO.frequency = sliderToFreq(parseFloat(slFreq.value));
+    document.getElementById('val-freq').textContent = VCO.frequency.toFixed(1) + ' Hz';
+    syncAudio();
+  });
+
+  document.getElementById('sl-amp').addEventListener('input', function() {
+    VCO.amplitude = parseInt(this.value) / 100;
+    document.getElementById('val-amp').textContent = Math.round(VCO.amplitude * 100) + '%';
+    syncAudio();
+  });
+
+  document.getElementById('sl-fine').addEventListener('input', function() {
+    VCO.fineCents = parseInt(this.value);
+    document.getElementById('val-fine').textContent =
+      (VCO.fineCents >= 0 ? '+' : '') + VCO.fineCents + '\u00a2';
+    syncAudio();
+  });
+
+  document.querySelectorAll('.wf-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.wf-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      VCO.waveform = btn.dataset.wf;
+      syncAudio();
+    });
+  });
+
+  document.getElementById('btn-play').addEventListener('click', togglePlay);
+}
+
+/* ── p5.js Sketch ─────────────────────────────────────────────── */
+let p5Instance = null;
+
+function initP5() {
+  const sketch = (p) => {
+    let phaseOff = 0;
+
+    p.setup = () => {
+      const el = document.getElementById('canvas-area');
+      const cnv = p.createCanvas(el.offsetWidth, el.offsetHeight);
+      cnv.parent('canvas-area');
+      p.frameRate(60);
+    };
+
+    p.windowResized = () => {
+      const el = document.getElementById('canvas-area');
+      p.resizeCanvas(el.offsetWidth, el.offsetHeight);
+    };
+
+    p.draw = () => {
+      // Phase scrolls proportionally to frequency — realistic scope feel
+      const effFDraw = effectiveFreq();
+      phaseOff = (phaseOff + 0.004 * (effFDraw / 440)) % 1000;
+      p.background(13, 17, 23);
+      const oscH = Math.floor(p.height * 0.56);
+      drawScope(0, 0, p.width, oscH);
+      drawVoct(0, oscH, p.width, p.height - oscH);
+    };
+
+    /* ── Oscilloscope ─────────────────────────────────────────── */
+    function drawScope(x, y, w, h) {
+      const col = WF_COLORS[VCO.waveform];
+      const amp = VCO.amplitude;
+      const effF = effectiveFreq();
+
+      p.noStroke(); p.fill(14, 18, 28);
+      p.rect(x, y, w, h);
+
+      // Grid
+      p.stroke(38, 50, 72, 110); p.strokeWeight(1);
+      for (let i = 1; i < 8; i++)  p.line(x + w * i / 8, y, x + w * i / 8, y + h);
+      for (let i = 1; i < 4; i++)  p.line(x, y + h * i / 4, x + w, y + h * i / 4);
+      p.stroke(55, 70, 100, 200);
+      p.line(x, y + h / 2, x + w, y + h / 2);
+
+      // Cycles scale logarithmically with frequency: low freq = 1 wide cycle, high = many tight
+      const CYCLES = Math.max(1.0, Math.min(18, 1.0 + Math.log2(effF / 20) * 1.4));
+      // Waveform — 3 passes (glow + line)
+      const N = 512, cy = y + h / 2, ampPx = h * 0.40 * amp;
+      for (let pass = 0; pass < 3; pass++) {
+        p.stroke(col[0], col[1], col[2], [28, 70, 215][pass]);
+        p.strokeWeight([7, 3, 1.5][pass]);
+        p.noFill(); p.beginShape();
+        for (let i = 0; i <= N; i++) {
+          const t  = (i / N) * CYCLES + phaseOff;
+          const s  = wfSample(VCO.waveform, t);
+          p.vertex(x + (i / N) * w, cy - s * ampPx);
+        }
+        p.endShape();
+      }
+
+      // Note name + freq
+      const note = freqToNote(effF);
+      p.noStroke();
+      p.fill(col[0], col[1], col[2], 235);
+      p.textFont('Consolas, monospace');
+      p.textAlign(p.LEFT, p.TOP); p.textSize(14); p.textStyle(p.BOLD);
+      p.text(note, x + 12, y + 10);
+      p.fill(110, 125, 150, 200);
+      p.textSize(11); p.textStyle(p.NORMAL);
+      p.text(effF.toFixed(2) + ' Hz', x + 12, y + 29);
+
+      // Waveform name top-right
+      const wfLabel = VCO.waveform.charAt(0).toUpperCase() + VCO.waveform.slice(1);
+      p.fill(col[0], col[1], col[2], 160);
+      p.textAlign(p.RIGHT, p.TOP); p.textSize(11);
+      p.text(wfLabel, x + w - 10, y + 10);
+
+      // Panel label
+      p.fill(45, 60, 88, 160);
+      p.textAlign(p.LEFT, p.BOTTOM); p.textSize(10);
+      p.text('OSCILLOSCOPE', x + 10, y + h - 8);
+    }
+
+    function wfSample(wf, t) {
+      const ph = (t % 1.0) * 2 * Math.PI;
+      if (wf === 'sine')     return Math.sin(ph);
+      if (wf === 'square')   return ph < Math.PI ? 1 : -1;
+      if (wf === 'triangle') { const pn = ph / (2 * Math.PI); return pn < 0.5 ? 4*pn-1 : 3-4*pn; }
+      if (wf === 'sawtooth') return (ph / (2 * Math.PI)) * 2 - 1;
+      return 0;
+    }
+
+    /* ── V/Oct Curve ──────────────────────────────────────────── */
+    function drawVoct(x, y, w, h) {
+      const F0   = 440;
+      const CV_MIN = -2, CV_MAX = 4;
+      const F_MIN  = 20, F_MAX  = 2000;
+      const effF   = effectiveFreq();
+
+      p.noStroke(); p.fill(12, 15, 22);
+      p.rect(x, y, w, h);
+      p.stroke(40, 52, 72, 200); p.strokeWeight(1);
+      p.line(x, y, x + w, y);   // separator
+
+      const cvToX = cv => x + (cv - CV_MIN) / (CV_MAX - CV_MIN) * w;
+      const fToY  = f  => {
+        const t = (Math.log(Math.max(F_MIN, Math.min(F_MAX, f))) - Math.log(F_MIN))
+                / (Math.log(F_MAX) - Math.log(F_MIN));
+        return y + h - 14 - t * (h - 26);
+      };
+
+      // Volt grid
+      p.textFont('Consolas, monospace');
+      for (let cv = CV_MIN; cv <= CV_MAX; cv++) {
+        const gx = cvToX(cv);
+        const isZero = cv === 0;
+        p.stroke(isZero ? 65 : 36, isZero ? 85 : 50, isZero ? 120 : 72, isZero ? 190 : 100);
+        p.strokeWeight(1);
+        p.line(gx, y + 2, gx, y + h - 13);
+        p.noStroke();
+        p.fill(isZero ? 100 : 60, isZero ? 125 : 78, isZero ? 175 : 110, 185);
+        p.textAlign(p.CENTER, p.BOTTOM); p.textSize(9); p.textStyle(p.NORMAL);
+        p.text(cv + 'V', gx, y + h);
+      }
+
+      // Octave reference lines
+      [[55,'A1'],[110,'A2'],[220,'A3'],[440,'A4'],[880,'A5'],[1760,'A6']].forEach(([f, l]) => {
+        const gy = fToY(f);
+        if (gy < y + 4 || gy > y + h - 15) return;
+        p.stroke(36, 50, 72, 88); p.strokeWeight(1);
+        p.line(x + 26, gy, x + w, gy);
+        p.noStroke();
+        p.fill(55, 72, 100, 155);
+        p.textAlign(p.LEFT, p.CENTER); p.textSize(9);
+        p.text(l, x + 4, gy);
+      });
+
+      // V/Oct exponential curve
+      p.stroke(100, 165, 240, 190); p.strokeWeight(2); p.noFill();
+      p.beginShape();
+      for (let i = 0; i <= 300; i++) {
+        const cv = CV_MIN + (i / 300) * (CV_MAX - CV_MIN);
+        const f  = F0 * Math.pow(2, cv);
+        if (f < F_MIN * 0.85 || f > F_MAX * 1.15) continue;
+        p.vertex(cvToX(cv), fToY(f));
+      }
+      p.endShape();
+
+      // Current operating point
+      const currCV = Math.log2(effF / F0);
+      if (currCV >= CV_MIN && currCV <= CV_MAX && effF >= F_MIN && effF <= F_MAX) {
+        const px  = cvToX(currCV);
+        const py  = fToY(effF);
+        const col = WF_COLORS[VCO.waveform];
+
+        // Crosshairs
+        p.stroke(col[0], col[1], col[2], 55); p.strokeWeight(1);
+        p.line(x, py, x + w, py);
+        p.line(px, y + 2, px, y + h - 14);
+
+        // Glow halo
+        p.noStroke(); p.fill(col[0], col[1], col[2], 45);
+        p.ellipse(px, py, 22, 22);
+        // Dot
+        p.fill(col[0], col[1], col[2], 230);
+        p.ellipse(px, py, 9, 9);
+
+        // Label
+        const lbl = effF.toFixed(1) + ' Hz  CV=' + currCV.toFixed(2) + 'V';
+        const toRight = currCV < (CV_MIN + CV_MAX) / 2;
+        p.fill(col[0], col[1], col[2], 230);
+        p.textAlign(toRight ? p.LEFT : p.RIGHT, p.BOTTOM);
+        p.textSize(10); p.textStyle(p.BOLD);
+        p.text(lbl, px + (toRight ? 10 : -10), py - 5);
+      }
+
+      // Panel label
+      p.noStroke(); p.fill(45, 60, 88, 160);
+      p.textAlign(p.RIGHT, p.BOTTOM); p.textSize(10); p.textStyle(p.NORMAL);
+      p.text('V/OCT CURVE  \u00b7  f\u2080 = 440 Hz  \u00b7  f(CV) = f\u2080 \u00d7 2^CV', x + w - 10, y + h);
+    }
+
+  }; // end sketch
+  p5Instance = new p5(sketch);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  wireControls();
+  initP5();
+});
+</script>
+
+<!-- Tab switching & Splitter -->
+<script>
+'use strict';
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + t).classList.add('active');
+  });
+});
+// Default: Description
+(function() {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-tab="description"]').classList.add('active');
+  document.getElementById('panel-description').classList.add('active');
+})();
+
+// Splitter
+(function() {
+  const splitter = document.getElementById('splitter');
+  const app      = document.getElementById('app');
+  let dragging = false, startX = 0, startW = 0;
+
+  splitter.addEventListener('mousedown', e => {
+    dragging = true; startX = e.clientX;
+    startW   = document.getElementById('sidebar').getBoundingClientRect().width;
+    splitter.classList.add('dragging');
+    document.body.style.cssText = 'cursor:col-resize;user-select:none';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const newW = Math.max(180, Math.min(620, startW + (startX - e.clientX)));
+    app.style.setProperty('--sidebar-w', newW + 'px');
+  });
+  document.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false;
+    splitter.classList.remove('dragging');
+    document.body.style.cssText = '';
+    if (typeof p5Instance !== 'undefined' && p5Instance) {
+      requestAnimationFrame(() => p5Instance.windowResized());
+    }
+  });
+})();
+</script>
+
+<!-- Home button tooltip -->
+<div id="home-tip" style="
+  position:fixed; z-index:999999;
+  background:#1c2130; color:#e6edf3;
+  border:1px solid #3d444f; border-radius:6px;
+  padding:4px 10px; font-size:11px; font-weight:500;
+  letter-spacing:0.04em; white-space:nowrap;
+  pointer-events:none; opacity:0; transition:opacity 0.18s;
+">Back to Poclet Gallery</div>
+
+<!-- TSCG logo tooltip -->
+<div id="tscg-tip" style="
+  position:fixed; z-index:999999;
+  background:#1c2130; color:#e6edf3;
+  border:1px solid #3d444f; border-radius:6px;
+  padding:4px 10px; font-size:11px; font-weight:500;
+  letter-spacing:0.04em; white-space:nowrap;
+  pointer-events:none; opacity:0; transition:opacity 0.18s;
+  transform:translateX(-50%);
+">TSCG Github repository</div>
+
+<script>
+(function(){
+  const home    = document.getElementById('btn-home');
+  const homeTip = document.getElementById('home-tip');
+  if (home && homeTip) {
+    home.addEventListener('mouseenter', function() {
+      const r = home.getBoundingClientRect();
+      homeTip.style.left = Math.max(8, r.left) + 'px';
+      homeTip.style.top  = (r.bottom + 6) + 'px';
+      homeTip.style.opacity = '1';
+    });
+    home.addEventListener('mouseleave', function() { homeTip.style.opacity = '0'; });
+  }
+  const logo = document.querySelector('.tscg-logo-link');
+  const tip  = document.getElementById('tscg-tip');
+  if (logo && tip) {
+    logo.addEventListener('mouseenter', function() {
+      const r = logo.getBoundingClientRect();
+      tip.style.left = (r.left + r.width / 2) + 'px';
+      tip.style.top  = (r.bottom + 6) + 'px';
+      tip.style.opacity = '1';
+    });
+    logo.addEventListener('mouseleave', function() { tip.style.opacity = '0'; });
+  }
+})();
+</script>
+</body>
+</html>

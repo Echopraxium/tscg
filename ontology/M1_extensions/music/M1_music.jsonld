@@ -1,8 +1,6 @@
 {
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m1:music": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/music/M1_Music.jsonld#",
-    "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m3:genesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
     "m3:eagle_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
     "m3:sphinx_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
@@ -12,11 +10,13 @@
     "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1.ext:music": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/music/M1_Music.jsonld#"
   },
   "@graph": [
     {
-      "@id": "m1:music:M1_Music",
+      "@id": "m1.ext:music:M1_Music",
       "@type": "owl:Ontology",
       "rdfs:label": "TSCG M1 Music Extension",
       "rdfs:comment": "Domain-specific musical concepts for TSCG framework. Focused on polyphonic composition patterns, counterpoint techniques, and temporal voice relationships.",
@@ -37,60 +37,71 @@
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld"
       ]
     },
-
     {
-      "@id": "m1:music:Polyphony",
+      "@id": "m1.ext:music:Polyphony",
       "@type": "owl:Class",
       "rdfs:label": "Polyphony",
       "rdfs:comment": "Musical texture in which multiple independent melodic voices sound simultaneously. Each voice maintains its own identity while contributing to a collective harmonic whole. The defining structural property of counterpoint.",
-      "rdfs:subClassOf": "m1:core:CompositionPattern",
-      "m1:music:m2Basis": [
+      "rdfs:subClassOf": "m1:CompositionPattern",
+      "m1.ext:music:m2Basis": [
         "m2:Composition",
         "m2:Layer",
         "m2:Emergence"
       ],
-      "m1:music:tensorFormula": "S ⊗ F ⊗ I",
-      "m1:music:voiceRange": "2 to 8 simultaneous voices (practical: 2–4)",
-      "m1:music:opposedTo": "Monophony (single melody), Homophony (melody + chordal accompaniment)",
-      "m1:music:examples": [
+      "m1.ext:music:tensorFormula": "S ⊗ F ⊗ I",
+      "m1.ext:music:voiceRange": "2 to 8 simultaneous voices (practical: 2–4)",
+      "m1.ext:music:opposedTo": "Monophony (single melody), Homophony (melody + chordal accompaniment)",
+      "m1.ext:music:examples": [
         "Baroque fugue (Bach BWV 578, BWV 565)",
         "Renaissance motet (Palestrina, Lassus)",
         "Jazz ensemble improvisation (Miles Davis, Herbie Hancock)"
       ]
     },
-
     {
-      "@id": "m1:music:PolyphonicVoice",
+      "@id": "m1.ext:music:PolyphonicVoice",
       "@type": "owl:Class",
       "rdfs:label": "Polyphonic Voice",
       "rdfs:comment": "An autonomous melodic agent within a polyphonic texture. Each voice follows its own melodic trajectory while respecting shared harmonic constraints. The voice is the fundamental unit of counterpoint — independent yet bound.",
-      "rdfs:subClassOf": "m1:music:Polyphony",
-      "m1:music:m2Basis": [
+      "rdfs:subClassOf": "m1.ext:music:Polyphony",
+      "m1.ext:music:m2Basis": [
         "m2:Agent",
         "m2:Flow",
         "m2:Autonomy"
       ],
-      "m1:music:tensorFormula": "A ⊗ F ⊗ I",
-      "m1:music:voiceTypes": {
-        "classical": ["Soprano", "Alto", "Tenor", "Bass"],
-        "instrumental": ["Violin I", "Violin II", "Viola", "Cello"],
-        "organ": ["Manual I", "Manual II", "Pedal"]
+      "m1.ext:music:tensorFormula": "A ⊗ F ⊗ I",
+      "m1.ext:music:voiceTypes": {
+        "classical": [
+          "Soprano",
+          "Alto",
+          "Tenor",
+          "Bass"
+        ],
+        "instrumental": [
+          "Violin I",
+          "Violin II",
+          "Viola",
+          "Cello"
+        ],
+        "organ": [
+          "Manual I",
+          "Manual II",
+          "Pedal"
+        ]
       },
-      "m1:music:keyProperty": "Melodic independence — a voice should be singable and meaningful in isolation"
+      "m1.ext:music:keyProperty": "Melodic independence — a voice should be singable and meaningful in isolation"
     },
-
     {
-      "@id": "m1:music:MusicalMotif",
+      "@id": "m1.ext:music:MusicalMotif",
       "@type": "owl:Class",
       "rdfs:label": "Musical Motif",
       "rdfs:comment": "Minimal melodic or rhythmic unit that carries recognizable identity and can be propagated, transformed, or developed across voices and time. The atomic unit of musical information.",
-      "m1:music:m2Basis": [
+      "m1.ext:music:m2Basis": [
         "m2:Information",
         "m2:Pattern",
         "m2:Signal"
       ],
-      "m1:music:tensorFormula": "I ⊗ S",
-      "m1:music:transformations": [
+      "m1.ext:music:tensorFormula": "I ⊗ S",
+      "m1.ext:music:transformations": [
         "Repetition (exact)",
         "Transposition (pitch shift)",
         "Inversion (melodic mirror)",
@@ -99,299 +110,297 @@
         "Diminution (rhythm compressed)"
       ]
     },
-
     {
-      "@id": "m1:music:FugueSubject",
+      "@id": "m1.ext:music:FugueSubject",
       "@type": "owl:Class",
       "rdfs:label": "Fugue Subject",
       "rdfs:comment": "The primary melodic theme of a fugue. It is announced alone in one voice, then propagated successively through all other voices. The Subject is the information unit whose propagation generates the entire fugal architecture.",
-      "rdfs:subClassOf": "m1:music:MusicalMotif",
-      "m1:music:m2Basis": [
+      "rdfs:subClassOf": "m1.ext:music:MusicalMotif",
+      "m1.ext:music:m2Basis": [
         "m2:Information",
         "m2:Propagation",
         "m2:Seed"
       ],
-      "m1:music:tensorFormula": "I ⊗ S ⊗ F",
-      "m1:music:role": "Structural seed — all fugal development derives from Subject transformations",
-      "m1:music:examples": [
+      "m1.ext:music:tensorFormula": "I ⊗ S ⊗ F",
+      "m1.ext:music:role": "Structural seed — all fugal development derives from Subject transformations",
+      "m1.ext:music:examples": [
         "BWV 578 subject: G minor, descending conjunct line, 4 measures",
         "BWV 565 subject: D minor, dramatic descending leap + stepwise run",
         "Art of Fugue (BWV 1080): chromatic subject, basis for 14 contrapuntal variations"
       ]
     },
-
     {
-      "@id": "m1:music:FugueAnswer",
+      "@id": "m1.ext:music:FugueAnswer",
       "@type": "owl:Class",
       "rdfs:label": "Fugue Answer",
       "rdfs:comment": "The transposed restatement of the Fugue Subject, typically appearing a fifth higher (or fourth lower) in the second voice to enter. Creates tonal dialogue with the Subject. Can be 'real' (exact transposition) or 'tonal' (slightly modified to preserve tonal center).",
-      "rdfs:subClassOf": "m1:music:MusicalMotif",
-      "m1:music:m2Basis": [
+      "rdfs:subClassOf": "m1.ext:music:MusicalMotif",
+      "m1.ext:music:m2Basis": [
         "m2:Response",
         "m2:Propagation",
         "m2:Symmetry"
       ],
-      "m1:music:tensorFormula": "I ⊗ S ⊗ F",
-      "m1:music:types": {
+      "m1.ext:music:tensorFormula": "I ⊗ S ⊗ F",
+      "m1.ext:music:types": {
         "real": "Exact transposition of Subject at the fifth",
         "tonal": "Slightly adjusted to avoid leaving the tonic key"
       }
     },
-
     {
-      "@id": "m1:music:Countersubject",
+      "@id": "m1.ext:music:Countersubject",
       "@type": "owl:Class",
       "rdfs:label": "Countersubject",
       "rdfs:comment": "A secondary melodic line that accompanies the Subject or Answer in another voice during the Exposition. It provides harmonic and rhythmic contrast, and often recurs consistently throughout the fugue. Embodies the principle of autonomous voice independence.",
-      "rdfs:subClassOf": "m1:music:MusicalMotif",
-      "m1:music:m2Basis": [
+      "rdfs:subClassOf": "m1.ext:music:MusicalMotif",
+      "m1.ext:music:m2Basis": [
         "m2:Complement",
         "m2:Contrast",
         "m2:Coexistence"
       ],
-      "m1:music:tensorFormula": "S ⊗ I ⊗ F",
-      "m1:music:compositionalRule": "Must form consonant intervals with Subject on strong beats; dissonances permitted on weak beats as passing tones"
+      "m1.ext:music:tensorFormula": "S ⊗ I ⊗ F",
+      "m1.ext:music:compositionalRule": "Must form consonant intervals with Subject on strong beats; dissonances permitted on weak beats as passing tones"
     },
-
     {
-      "@id": "m1:music:FugueExposition",
+      "@id": "m1.ext:music:FugueExposition",
       "@type": "owl:Class",
       "rdfs:label": "Fugue Exposition",
       "rdfs:comment": "Opening section of a fugue in which all voices enter successively, each announcing the Subject or Answer. The Exposition establishes the full polyphonic texture and introduces all melodic material. Corresponds to system initialization in TSCG terms.",
-      "rdfs:subClassOf": "m1:music:Polyphony",
-      "m1:music:m2Basis": [
+      "rdfs:subClassOf": "m1.ext:music:Polyphony",
+      "m1.ext:music:m2Basis": [
         "m2:Initialization",
         "m2:Sequence",
         "m2:Emergence"
       ],
-      "m1:music:tensorFormula": "S ⊗ F ⊗ I",
-      "m1:music:voiceEntryPattern": "Voice 1: Subject → Voice 2: Answer + Voice 1: Countersubject → Voice 3: Subject + Voices 1-2: free counterpoint → ...",
-      "m1:music:completionCriteria": "All N voices have entered; full polyphonic texture established"
+      "m1.ext:music:tensorFormula": "S ⊗ F ⊗ I",
+      "m1.ext:music:voiceEntryPattern": "Voice 1: Subject → Voice 2: Answer + Voice 1: Countersubject → Voice 3: Subject + Voices 1-2: free counterpoint → ...",
+      "m1.ext:music:completionCriteria": "All N voices have entered; full polyphonic texture established"
     },
-
     {
-      "@id": "m1:music:FugueEpisode",
+      "@id": "m1.ext:music:FugueEpisode",
       "@type": "owl:Class",
       "rdfs:label": "Fugue Episode",
       "rdfs:comment": "Transitional passage between Subject entries. Does not present the complete Subject; instead develops motivic fragments through sequences and imitation. Provides dynamic contrast and modulates toward new keys for subsequent Subject entries.",
-      "rdfs:subClassOf": "m1:music:Polyphony",
-      "m1:music:m2Basis": [
+      "rdfs:subClassOf": "m1.ext:music:Polyphony",
+      "m1.ext:music:m2Basis": [
         "m2:Transition",
         "m2:Development",
         "m2:Modulation"
       ],
-      "m1:music:tensorFormula": "F ⊗ D ⊗ I",
-      "m1:music:function": "Tonal navigation — connects Subject entries in different keys; relaxes tension before next entry"
+      "m1.ext:music:tensorFormula": "F ⊗ D ⊗ I",
+      "m1.ext:music:function": "Tonal navigation — connects Subject entries in different keys; relaxes tension before next entry"
     },
-
     {
-      "@id": "m1:music:Stretto",
+      "@id": "m1.ext:music:Stretto",
       "@type": "owl:Class",
       "rdfs:label": "Stretto",
       "rdfs:comment": "Advanced fugal device in which Subject entries in successive voices overlap — a new voice enters with the Subject before the previous voice has finished it. Maximizes polyphonic density and creates climactic intensification. Embodies the extreme compression of the information propagation cycle.",
-      "rdfs:subClassOf": "m1:music:Polyphony",
-      "m1:music:m2Basis": [
+      "rdfs:subClassOf": "m1.ext:music:Polyphony",
+      "m1.ext:music:m2Basis": [
         "m2:Compression",
         "m2:Overlap",
         "m2:Intensification"
       ],
-      "m1:music:tensorFormula": "D ⊗ S ⊗ F",
-      "m1:music:dramaticRole": "Structural climax technique — typically appears near the end of a fugue to build maximum tension before final resolution",
-      "m1:music:constraint": "Requires Subject entries to be harmonically compatible when overlapped — not all subjects permit stretto"
+      "m1.ext:music:tensorFormula": "D ⊗ S ⊗ F",
+      "m1.ext:music:dramaticRole": "Structural climax technique — typically appears near the end of a fugue to build maximum tension before final resolution",
+      "m1.ext:music:constraint": "Requires Subject entries to be harmonically compatible when overlapped — not all subjects permit stretto"
     },
-
     {
-      "@id": "m1:music:Canon",
+      "@id": "m1.ext:music:Canon",
       "@type": "owl:Class",
       "rdfs:label": "Canon",
       "rdfs:comment": "Strict contrapuntal form in which one voice imitates another at a fixed time interval and pitch interval, using the exact same melodic line. The simplest and most transparent form of imitative counterpoint. A Canon is to counterpoint what a single crystal is to matter: pure, regular, self-similar.",
-      "rdfs:subClassOf": "m1:music:Polyphony",
-      "m1:music:m2Basis": [
+      "rdfs:subClassOf": "m1.ext:music:Polyphony",
+      "m1.ext:music:m2Basis": [
         "m2:Imitation",
         "m2:Propagation",
         "m2:SelfSimilarity"
       ],
-      "m1:music:tensorFormula": "I ⊗ F ⊗ S",
-      "m1:music:parameters": {
+      "m1.ext:music:tensorFormula": "I ⊗ F ⊗ S",
+      "m1.ext:music:parameters": {
         "timeInterval": "Delay between voices (e.g., 2 measures in Frère Jacques)",
         "pitchInterval": "Transposition of imitation (e.g., unison, fifth, octave)",
         "voiceCount": "2 (two-voice canon) to N (circular/infinite canon)"
       },
-      "m1:music:examples": [
+      "m1.ext:music:examples": [
         "Frère Jacques (round canon, unison, 4-voice entry, folk tradition)",
         "Pachelbel Canon in D (3 violins over ground bass)",
         "Bach BWV 1076 (Canon triplex for 6 voices)",
         "Row Your Boat (children's round)"
       ]
     },
-
     {
-      "@id": "m1:music:Imitation",
+      "@id": "m1.ext:music:Imitation",
       "@type": "owl:Class",
       "rdfs:label": "Imitation",
       "rdfs:comment": "Contrapuntal technique in which a melodic idea presented in one voice is immediately repeated in another voice, while the first continues. Unlike Canon, imitation need not be strict or perpetual. The foundational mechanism of all imitative polyphony.",
-      "m1:music:m2Basis": [
+      "m1.ext:music:m2Basis": [
         "m2:Imitation",
         "m2:Propagation",
         "m2:Sequence"
       ],
-      "m1:music:tensorFormula": "I ⊗ F",
-      "m1:music:types": {
+      "m1.ext:music:tensorFormula": "I ⊗ F",
+      "m1.ext:music:types": {
         "strict": "Exact pitch and rhythm replication (→ Canon)",
         "free": "Approximate replication with variations",
         "invertible": "Voices can be exchanged (upper/lower) without violating harmonic rules"
       }
     },
-
     {
-      "@id": "m1:music:Consonance",
+      "@id": "m1.ext:music:Consonance",
       "@type": "owl:Class",
       "rdfs:label": "Consonance",
       "rdfs:comment": "Harmonic state of stability and resolution between simultaneously sounding pitches. Consonant intervals are perceived as restful and require no resolution. In tonal counterpoint, consonances define the attractor states of harmonic motion.",
-      "m1:music:m2Basis": [
+      "m1.ext:music:m2Basis": [
         "m2:Attractor",
         "m2:Balance",
         "m2:Stability"
       ],
-      "m1:music:tensorFormula": "A ⊗ S",
-      "m1:music:intervals": {
-        "perfect": ["Unison (1:1)", "Octave (2:1)", "Fifth (3:2)", "Fourth (4:3)"],
-        "imperfect": ["Major/minor Third (5:4, 6:5)", "Major/minor Sixth (5:3, 8:5)"]
+      "m1.ext:music:tensorFormula": "A ⊗ S",
+      "m1.ext:music:intervals": {
+        "perfect": [
+          "Unison (1:1)",
+          "Octave (2:1)",
+          "Fifth (3:2)",
+          "Fourth (4:3)"
+        ],
+        "imperfect": [
+          "Major/minor Third (5:4, 6:5)",
+          "Major/minor Sixth (5:3, 8:5)"
+        ]
       },
-      "m1:music:contrapuntalRule": "All strong beats must form consonant intervals between voices"
+      "m1.ext:music:contrapuntalRule": "All strong beats must form consonant intervals between voices"
     },
-
     {
-      "@id": "m1:music:Dissonance",
+      "@id": "m1.ext:music:Dissonance",
       "@type": "owl:Class",
       "rdfs:label": "Dissonance",
       "rdfs:comment": "Harmonic state of tension between simultaneously sounding pitches. Dissonant intervals are perceived as unstable and require resolution toward consonance. In counterpoint, dissonances are the dynamic engine — they generate motion by demanding resolution.",
-      "m1:music:m2Basis": [
+      "m1.ext:music:m2Basis": [
         "m2:Tension",
         "m2:Instability",
         "m2:Potential"
       ],
-      "m1:music:tensorFormula": "D ⊗ A",
-      "m1:music:intervals": {
-        "mild": ["Major/minor Seventh", "Major/minor Second"],
-        "sharp": ["Tritone (augmented fourth/diminished fifth, ratio 45:32)"]
+      "m1.ext:music:tensorFormula": "D ⊗ A",
+      "m1.ext:music:intervals": {
+        "mild": [
+          "Major/minor Seventh",
+          "Major/minor Second"
+        ],
+        "sharp": [
+          "Tritone (augmented fourth/diminished fifth, ratio 45:32)"
+        ]
       },
-      "m1:music:contrapuntalUsage": {
+      "m1.ext:music:contrapuntalUsage": {
         "passingTone": "Dissonance on weak beat connecting two consonances by step",
         "suspension": "Consonance held while lower voice moves, creating momentary dissonance then resolving",
         "leadingTone": "Semitone dissonance that creates strong pull toward tonic"
       }
     },
-
     {
-      "@id": "m1:music:HarmonicResolution",
+      "@id": "m1.ext:music:HarmonicResolution",
       "@type": "owl:Class",
       "rdfs:label": "Harmonic Resolution",
       "rdfs:comment": "The movement from a dissonant interval to a consonant one. Resolution is the fundamental dynamic cycle of tonal music: tension → release. It is the attractor mechanism that gives counterpoint its sense of directed motion.",
-      "m1:music:m2Basis": [
+      "m1.ext:music:m2Basis": [
         "m2:Resolution",
         "m2:Attractor",
         "m2:Cycle"
       ],
-      "m1:music:tensorFormula": "D ⊗ A ⊗ F",
-      "m1:music:types": {
+      "m1.ext:music:tensorFormula": "D ⊗ A ⊗ F",
+      "m1.ext:music:types": {
         "stepwise": "Dissonant voice moves by half or whole step to consonance (most common)",
         "authentic": "Dominant seventh → Tonic (V7 → I, strongest resolution)",
         "deceptive": "Dominant → unexpected consonance (V → VI, narrative surprise)"
       }
     },
-
     {
-      "@id": "m1:music:CounterpointRule",
+      "@id": "m1.ext:music:CounterpointRule",
       "@type": "owl:Class",
       "rdfs:label": "Counterpoint Rule",
       "rdfs:comment": "A normative constraint governing simultaneous motion between voices. Counterpoint rules collectively define the 'grammar' of polyphonic composition: what is permitted, what is forbidden, and what must eventually occur. In TSCG Enigma terms, the set of Counterpoint Rules is the mandatory ternary Mediator between Voice Autonomy and Harmonic Coherence.",
-      "m1:music:m2Basis": [
+      "m1.ext:music:m2Basis": [
         "m2:Constraint",
         "m2:Rule",
         "m2:Mediator"
       ],
-      "m1:music:tensorFormula": "S ⊗ I ⊗ D",
-      "m1:music:species": {
+      "m1.ext:music:tensorFormula": "S ⊗ I ⊗ D",
+      "m1.ext:music:species": {
         "first": "Note against note (1:1 ratio) — only consonances permitted",
         "second": "Two notes against one — passing dissonances on weak beats allowed",
         "third": "Three notes against one — more dissonance freedom",
         "fourth": "Suspensions — dissonance on strong beat, resolving downward",
         "fifth": "Florid counterpoint — all previous techniques combined"
       },
-      "m1:music:forbiddenMotions": [
+      "m1.ext:music:forbiddenMotions": [
         "Parallel fifths (consecutive perfect fifths between same pair of voices)",
         "Parallel octaves (consecutive octaves between same pair of voices)",
         "Hidden fifths/octaves (direct motion into perfect consonance in outer voices)",
         "Voice crossing (lower voice ascending above upper voice)"
       ],
-      "m1:music:enigmaRole": "Mediator in the Enigma pattern: Voice Autonomy ⊗ CounterpointRule → Harmonic Coherence. Without the Rule, autonomy produces chaos; without autonomy, the Rule produces mere melody."
+      "m1.ext:music:enigmaRole": "Mediator in the Enigma pattern: Voice Autonomy ⊗ CounterpointRule → Harmonic Coherence. Without the Rule, autonomy produces chaos; without autonomy, the Rule produces mere melody."
     },
-
     {
-      "@id": "m1:music:Fugue",
+      "@id": "m1.ext:music:Fugue",
       "@type": "owl:Class",
       "rdfs:label": "Fugue",
       "rdfs:comment": "The highest form of imitative counterpoint. A Fugue is a polyphonic composition built on systematic propagation and development of a Subject through all voices. Its formal architecture (Exposition → Episodes → Stretto → Coda) constitutes a complete lifecycle of information through a constrained autonomous multi-agent system.",
-      "rdfs:subClassOf": "m1:music:Polyphony",
-      "m1:music:m2Basis": [
+      "rdfs:subClassOf": "m1.ext:music:Polyphony",
+      "m1.ext:music:m2Basis": [
         "m2:Composition",
         "m2:Propagation",
         "m2:Emergence",
         "m2:Cycle"
       ],
-      "m1:music:tensorFormula": "S ⊗ F ⊗ I ⊗ D",
-      "m1:music:structure": {
+      "m1.ext:music:tensorFormula": "S ⊗ F ⊗ I ⊗ D",
+      "m1.ext:music:structure": {
         "exposition": "All voices enter with Subject/Answer",
         "development": "Episodes + further Subject entries in new keys",
         "stretto": "Optional climactic overlapping entries",
         "coda": "Tonic reaffirmation, final cadence"
       },
-      "m1:music:notableExamples": [
+      "m1.ext:music:notableExamples": [
         "BWV 578 'Little' Fugue in G minor — 4 voices, pedagogically clear structure",
         "BWV 565 Toccata and Fugue in D minor — iconic, dramatic subject",
         "The Well-Tempered Clavier BWV 846–893 — 48 Preludes and Fugues across all keys",
         "The Art of Fugue BWV 1080 — 14 contrapuncti on single subject (unfinished)"
       ]
     },
-
     {
-      "@id": "m1:music:GroundBass",
+      "@id": "m1.ext:music:GroundBass",
       "@type": "owl:Class",
       "rdfs:label": "Ground Bass",
       "rdfs:comment": "A repeating bass line (ostinato) over which upper voices develop freely. Creates a structural attractor in the lowest register while allowing emergent variation above. Found in Baroque and in jazz as the 'changes' or harmonic grid.",
-      "m1:music:m2Basis": [
+      "m1.ext:music:m2Basis": [
         "m2:Attractor",
         "m2:Cycle",
         "m2:Constraint"
       ],
-      "m1:music:tensorFormula": "A ⊗ S ⊗ F",
-      "m1:music:examples": [
+      "m1.ext:music:tensorFormula": "A ⊗ S ⊗ F",
+      "m1.ext:music:examples": [
         "Pachelbel Canon in D (2-measure bass repeated ~28 times)",
         "Purcell 'Dido's Lament' (chromatic descending bass)",
         "Jazz 12-bar blues (harmonic ground for improvisation)"
       ]
     },
-
     {
-      "@id": "m1:music:JazzContrapuntal",
+      "@id": "m1.ext:music:JazzContrapuntal",
       "@type": "owl:Class",
       "rdfs:label": "Jazz Contrapuntal Texture",
       "rdfs:comment": "The improvisational application of contrapuntal principles in jazz. Each improvising voice maintains melodic independence while respecting shared harmonic structure (chord changes). The jazz ensemble approximates a 'living fugue' where the Subject is replaced by the shared harmonic grid and each voice improvises its own 'answer'.",
-      "rdfs:subClassOf": "m1:music:Polyphony",
-      "m1:music:m2Basis": [
+      "rdfs:subClassOf": "m1.ext:music:Polyphony",
+      "m1.ext:music:m2Basis": [
         "m2:Improvisation",
         "m2:Autonomy",
         "m2:Emergence",
         "m2:Constraint"
       ],
-      "m1:music:tensorFormula": "A ⊗ F ⊗ I ⊗ D",
-      "m1:music:examples": [
+      "m1.ext:music:tensorFormula": "A ⊗ F ⊗ I ⊗ D",
+      "m1.ext:music:examples": [
         "Miles Davis + Herbie Hancock + Ron Carter + Tony Williams — modal jazz interplay",
         "Bill Evans Trio — contrapuntal piano/bass/drums dialogue",
         "Charles Mingus compositions — written counterpoint meets improvisation"
       ],
-      "m1:music:keyDifference": "Baroque counterpoint: rules fully explicit and written. Jazz counterpoint: rules internalized and negotiated in real time between performers."
+      "m1.ext:music:keyDifference": "Baroque counterpoint: rules fully explicit and written. Jazz counterpoint: rules internalized and negotiated in real time between performers."
     }
   ]
 }

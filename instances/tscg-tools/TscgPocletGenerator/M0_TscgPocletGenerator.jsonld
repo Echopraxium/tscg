@@ -2,32 +2,34 @@
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
     "dcterms": "http://purl.org/dc/terms/",
-    "owl":     "http://www.w3.org/2002/07/owl#",
-    "rdf":     "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs":    "http://www.w3.org/2000/01/rdf-schema#",
-    "skos":    "http://www.w3.org/2004/02/skos/core#",
-    "xsd":     "http://www.w3.org/2001/XMLSchema#",
-    "m3":  "M3_GenesisSpace.jsonld#",
-    "m2":  "M2_GenericConcepts.jsonld#",
-    "m1:core": "M1_CoreConcepts.jsonld#",
-    "m0":  "instances/tscg-tools/poclet_generator/M0_TscgPocletGenerator.jsonld#"
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m3": "M3_GenesisSpace.jsonld#",
+    "m2": "M2_GenericConcepts.jsonld#",
+    "m0": "instances/tscg-tools/poclet_generator/M0_TscgPocletGenerator.jsonld#",
+    "m1": "M1_CoreConcepts.jsonld#"
   },
   "@graph": [
     {
       "@id": "m0:TscgPocletGenerator",
       "@type": "owl:Ontology",
-      "dcterms:created":  "2026-03-06",
+      "dcterms:created": "2026-03-06",
       "dcterms:modified": "2026-03-06",
-      "dcterms:creator":  "Echopraxium with the collaboration of Claude AI",
-      "owl:versionInfo":  "1.0.0",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "owl:versionInfo": "1.0.0",
       "owl:imports": [
         "M3_GenesisSpace.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld"
       ],
-      "rdfs:label":   "TSCG Poclet Generator — TscgTool Ontology",
+      "rdfs:label": "TSCG Poclet Generator — TscgTool Ontology",
       "rdfs:comment": "Dogfooding poclet: the TSCG framework analyzes its own desktop generation tool. tscg_poclet_generator.py is a PySide6 application that takes natural language system descriptions and produces complete poclet deliverable sets (M0 JSON-LD + README + Pygame simulation) via 4 LLM backends, optionally augmented by a ChromaDB RAG pipeline over the TSCG knowledge base.",
-      "m3:ontologyType": { "@id": "m3:TscgTool" },
+      "m3:ontologyType": {
+        "@id": "m3:TscgTool"
+      },
       "m2:changelog": {
         "v1.0.0": "Initial TscgTool ontology for tscg_poclet_generator.py — dogfooding instance. ASFID/REVOI analysis, 8-component architecture, 8 GenericConcepts mobilized."
       }
@@ -35,59 +37,74 @@
     {
       "@id": "m0:TscgPocletGeneratorSystem",
       "@type": "owl:NamedIndividual",
-      "rdfs:label":   "TSCG Poclet Generator",
+      "rdfs:label": "TSCG Poclet Generator",
       "rdfs:comment": "PySide6 desktop application that operationalizes the TSCG framework as a generation pipeline. Input: natural language description of a system. Output: M0_xxx.jsonld + README.md + xxx_sim.py. Supports 4 LLM backends. Includes RAG-augmented prompt enrichment from the TSCG knowledge base. Exemplifies framework reflexivity: TSCG used to model a tool that itself generates TSCG artifacts.",
-
       "dcterms:created": "2026-03-06",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "owl:versionInfo": "1.0.0",
-
-      "m0:toolType":    "PocletGenerator",
-      "m0:domain":      "TSCG Framework (meta-level)",
-      "m0:subdomains":  ["Ontology Engineering", "LLM Integration", "RAG Pipeline", "Human-AI Collaboration"],
-      "m0:status":      "VALIDATED",
+      "m0:toolType": "PocletGenerator",
+      "m0:domain": "TSCG Framework (meta-level)",
+      "m0:subdomains": [
+        "Ontology Engineering",
+        "LLM Integration",
+        "RAG Pipeline",
+        "Human-AI Collaboration"
+      ],
+      "m0:status": "VALIDATED",
       "m0:reflexivity": "COMPLETE",
-      "m0:dogfooding":  true,
-
+      "m0:dogfooding": true,
       "m0:implementation": {
-        "language":    "Python 3.11+",
-        "guiToolkit":  "PySide6 (Qt 6)",
-        "mainFile":    "tscg_poclet_generator.py",
-        "moduleFile":  "tscg_rag_augmentor.py",
+        "language": "Python 3.11+",
+        "guiToolkit": "PySide6 (Qt 6)",
+        "mainFile": "tscg_poclet_generator.py",
+        "moduleFile": "tscg_rag_augmentor.py",
         "linesOfCode": "~500 (generator) + ~350 (augmentor)"
       },
-
       "m0:llmBackends": [
         {
-          "name":     "Anthropic Claude API",
+          "name": "Anthropic Claude API",
           "protocol": "anthropic Python SDK",
-          "models":   ["claude-opus-4-5", "claude-sonnet-4-5", "claude-haiku-4-5"]
+          "models": [
+            "claude-opus-4-5",
+            "claude-sonnet-4-5",
+            "claude-haiku-4-5"
+          ]
         },
         {
-          "name":     "Google Gemini",
+          "name": "Google Gemini",
           "protocol": "google-generativeai SDK",
-          "models":   ["gemini-2.0-flash", "gemini-1.5-pro", "gemini-1.5-flash"],
-          "note":     "Free tier via aistudio.google.com"
+          "models": [
+            "gemini-2.0-flash",
+            "gemini-1.5-pro",
+            "gemini-1.5-flash"
+          ],
+          "note": "Free tier via aistudio.google.com"
         },
         {
-          "name":     "Ollama",
+          "name": "Ollama",
           "protocol": "REST /api/chat",
-          "models":   ["llama3.2", "mistral", "qwen2.5", "deepseek-r1"],
-          "note":     "Local execution, no API key required"
+          "models": [
+            "llama3.2",
+            "mistral",
+            "qwen2.5",
+            "deepseek-r1"
+          ],
+          "note": "Local execution, no API key required"
         },
         {
-          "name":     "OpenAI-compatible",
+          "name": "OpenAI-compatible",
           "protocol": "OpenAI Python SDK",
-          "models":   ["local-model"],
-          "note":     "LM Studio, Jan, vLLM, any OpenAI-compat endpoint"
+          "models": [
+            "local-model"
+          ],
+          "note": "LM Studio, Jan, vLLM, any OpenAI-compat endpoint"
         }
       ],
-
       "m0:components": [
         {
           "@id": "m0:BackendSelector",
           "rdfs:label": "Backend Selector",
-          "m0:role":     "Configuration",
+          "m0:role": "Configuration",
           "m0:function": "Selects LLM provider, model, API key/endpoint. Adapts UI controls visibility to backend capabilities.",
           "m0:asfidContribution": {
             "S": "Structural choice point: which processing engine is active",
@@ -97,7 +114,7 @@
         {
           "@id": "m0:SmartPromptLoader",
           "rdfs:label": "Smart Prompt Loader",
-          "m0:role":     "Context Provider",
+          "m0:role": "Context Provider",
           "m0:function": "Loads TSCG_Smart_Prompt_vXX.md as the base system prompt, encoding the full TSCG grammar for the LLM. Falls back to a built-in minimal prompt if no file is loaded.",
           "m0:asfidContribution": {
             "I": "Primary information source: TSCG grammar, conventions, output format rules",
@@ -107,7 +124,7 @@
         {
           "@id": "m0:RagAugmentor",
           "rdfs:label": "RAG Augmentor (tscg_rag_augmentor.py)",
-          "m0:role":     "Knowledge Retrieval",
+          "m0:role": "Knowledge Retrieval",
           "m0:function": "Queries db_tscg_rag (ChromaDB, all-MiniLM-L6-v2 embeddings) for TSCG chunks relevant to the user request. Injects top-K chunks (poclet examples, GenericConcept definitions, READMEs, sim.py patterns) into the system prompt before generation.",
           "m0:asfidContribution": {
             "I": "Retrieves and injects contextual TSCG knowledge",
@@ -118,7 +135,7 @@
         {
           "@id": "m0:RequestEditor",
           "rdfs:label": "Request Editor",
-          "m0:role":     "Input Interface",
+          "m0:role": "Input Interface",
           "m0:function": "QPlainTextEdit widget where the user describes the system to model. Natural language input to the generation pipeline.",
           "m0:asfidContribution": {
             "I": "Entry point of the information flow: captures user intent",
@@ -128,7 +145,7 @@
         {
           "@id": "m0:LlmWorker",
           "rdfs:label": "LLM Worker (QThread)",
-          "m0:role":     "Generation Engine",
+          "m0:role": "Generation Engine",
           "m0:function": "Runs the LLM API call asynchronously in a QThread to keep the UI responsive. Dispatches to the active backend. Emits finished/error signals on completion.",
           "m0:asfidContribution": {
             "D": "Core dynamic: the transformation process that converts prompts into poclet artifacts",
@@ -139,7 +156,7 @@
         {
           "@id": "m0:OutputParser",
           "rdfs:label": "Output Parser",
-          "m0:role":     "Structure Extractor",
+          "m0:role": "Structure Extractor",
           "m0:function": "Extracts jsonld/README/sim.py blocks from raw LLM output using regex on fenced code blocks (```jsonld, ```markdown, ```python). Falls back to heuristic section detection.",
           "m0:asfidContribution": {
             "S": "Imposes structure on the raw LLM output",
@@ -149,7 +166,7 @@
         {
           "@id": "m0:OutputTabs",
           "rdfs:label": "Output Tabs (3-tab display)",
-          "m0:role":     "Output Interface",
+          "m0:role": "Output Interface",
           "m0:function": "Three QPlainTextEdit tabs: M0_xxx.jsonld (JSON-LD syntax highlighting), README.md, sim.py (Python syntax highlighting). Save current tab or all files to disk.",
           "m0:asfidContribution": {
             "S": "Final structural organization of the deliverable set",
@@ -159,7 +176,7 @@
         {
           "@id": "m0:HistoryManager",
           "rdfs:label": "History Manager",
-          "m0:role":     "Persistence Layer",
+          "m0:role": "Persistence Layer",
           "m0:function": "Stores past generations (request + all 3 outputs + backend/model) as a QListWidget. Clicking any entry restores the full session. Complemented by QSettings persistence of backend/model/endpoint/smart-prompt path across sessions.",
           "m0:asfidContribution": {
             "A": "Accumulative attractor: past successful generations become reachable states",
@@ -167,18 +184,16 @@
           }
         }
       ],
-
       "m0:synergyPrinciple": {
-        "formula":            "SmartPrompt ⊗ RAGContext ⊗ LLMEngine → PocletDeliverableSet",
-        "emergentProperty":   "Ontological translation — natural language system descriptions are faithfully converted into rigorous TSCG-compliant formal representations including scored ASFID/REVOI vectors, mobilized GenericConcepts, and runnable Pygame simulations.",
-        "reflexivityNote":    "The tool applies TSCG grammar to generate TSCG artifacts, and is itself described by a TSCG ontology — complete framework reflexivity (dogfooding)."
+        "formula": "SmartPrompt ⊗ RAGContext ⊗ LLMEngine → PocletDeliverableSet",
+        "emergentProperty": "Ontological translation — natural language system descriptions are faithfully converted into rigorous TSCG-compliant formal representations including scored ASFID/REVOI vectors, mobilized GenericConcepts, and runnable Pygame simulations.",
+        "reflexivityNote": "The tool applies TSCG grammar to generate TSCG artifacts, and is itself described by a TSCG ontology — complete framework reflexivity (dogfooding)."
       },
-
       "m0:territorySpace": {
         "asfidScores": {
           "A": 0.88,
           "S": 0.92,
-          "F": 0.90,
+          "F": 0.9,
           "I": 0.93,
           "D": 0.82,
           "mean": 0.89
@@ -191,10 +206,9 @@
           "D": "Non-blocking QThread execution, lazy RAG initialization, settings persistence, history accumulation. Slightly lower D because dynamics are essentially sequential, not highly adaptive."
         }
       },
-
       "m0:mapSpace": {
         "revoiScores": {
-          "R": 0.90,
+          "R": 0.9,
           "E": 0.92,
           "V": 0.84,
           "O": 0.88,
@@ -209,79 +223,85 @@
           "I": "4 standard LLM protocols + PySide6 cross-platform + standard JSON-LD + Markdown output. Highest interoperability score."
         }
       },
-
       "m0:epistemicGap": {
-        "norm":           0.136,
-        "deltaVector":    "(−0.02, 0.00, +0.06, +0.05, −0.11)",
+        "norm": 0.136,
+        "deltaVector": "(−0.02, 0.00, +0.06, +0.05, −0.11)",
         "interpretation": "Small epistemic gap. The map closely follows the territory. Main discrepancy on D/I axes: the tool's dynamics (D=0.82) are less well captured by the map (I=0.93) because its adaptive behavior is partially emergent from LLM non-determinism.",
-        "assessment":     "Well-modeled system. The TSCG framework successfully captures its own tool at M0 level, confirming the universality of the bicephalous analysis."
+        "assessment": "Well-modeled system. The TSCG framework successfully captures its own tool at M0 level, confirming the universality of the bicephalous analysis."
       },
-
       "m0:genericConceptsMobilized": {
         "total": 8,
         "concepts": [
           {
-            "name":          "Processor",
+            "name": "Processor",
             "tensorFormula": "S⊗I⊗D⊗F⊗V",
-            "role":          "The app as a whole is a Processor: it transforms (D) a structured input (I) — user request — through a defined structure (S) and flow (F) into a verified (V) output — the poclet deliverable set."
+            "role": "The app as a whole is a Processor: it transforms (D) a structured input (I) — user request — through a defined structure (S) and flow (F) into a verified (V) output — the poclet deliverable set."
           },
           {
-            "name":          "Pipeline",
+            "name": "Pipeline",
             "tensorFormula": "S⊗F⊗I",
-            "role":          "The generation flow is a Pipeline: Request → RAG augment → Prompt assembly → LLM call → Parse → Display. Sequential, unidirectional, with clearly bounded stages."
+            "role": "The generation flow is a Pipeline: Request → RAG augment → Prompt assembly → LLM call → Parse → Display. Sequential, unidirectional, with clearly bounded stages."
           },
           {
-            "name":          "Interface",
+            "name": "Interface",
             "tensorFormula": "S⊗I",
-            "role":          "The PySide6 UI acts as an Interface: a structural (S) boundary that mediates information (I) exchange between human intent and LLM processing engine."
+            "role": "The PySide6 UI acts as an Interface: a structural (S) boundary that mediates information (I) exchange between human intent and LLM processing engine."
           },
           {
-            "name":          "FeedbackLoop",
+            "name": "FeedbackLoop",
             "tensorFormula": "A⊗S⊗F⊗I⊗D",
-            "role":          "The RAG augmentation creates a feedback loop: the TSCG knowledge base (previous generations, validated poclets, GenericConcepts) feeds back into the prompt that drives new generation — TSCG bootstraps itself."
+            "role": "The RAG augmentation creates a feedback loop: the TSCG knowledge base (previous generations, validated poclets, GenericConcepts) feeds back into the prompt that drives new generation — TSCG bootstraps itself."
           },
           {
-            "name":          "Adapter",
+            "name": "Adapter",
             "tensorFormula": "S⊗I",
-            "role":          "The multi-backend abstraction layer (LlmWorker dispatching to Anthropic/Gemini/Ollama/OpenAI-compat) is a structural (S) Adapter that normalizes heterogeneous information (I) protocols into a uniform interface."
+            "role": "The multi-backend abstraction layer (LlmWorker dispatching to Anthropic/Gemini/Ollama/OpenAI-compat) is a structural (S) Adapter that normalizes heterogeneous information (I) protocols into a uniform interface."
           },
           {
-            "name":          "Context",
+            "name": "Context",
             "tensorFormula": "I⊗S⊗A",
-            "role":          "The active context window (Smart Prompt + RAG chunks + user request) constitutes a Context: the attractor-setting (A) structured (S) information (I) envelope that shapes LLM output."
+            "role": "The active context window (Smart Prompt + RAG chunks + user request) constitutes a Context: the attractor-setting (A) structured (S) information (I) envelope that shapes LLM output."
           },
           {
-            "name":          "Narration",
+            "name": "Narration",
             "tensorFormula": "I⊗D⊗S⊗F⊗A⊗E⊗O⊗R",
-            "role":          "The app operationalizes Narration: it transforms a user's informal description into a formal ontological narrative (the poclet), preserving the system's identity across the representation change."
+            "role": "The app operationalizes Narration: it transforms a user's informal description into a formal ontological narrative (the poclet), preserving the system's identity across the representation change."
           },
           {
-            "name":          "Propagation",
+            "name": "Propagation",
             "tensorFormula": "F⊗I⊗D",
-            "role":          "The user request propagates through the system: from request editor → RAG augmentation → LLM → parser → three output tabs. Information is carried forward (F) and transformed (D) at each stage."
+            "role": "The user request propagates through the system: from request editor → RAG augmentation → LLM → parser → three output tabs. Information is carried forward (F) and transformed (D) at each stage."
           }
         ]
       },
-
       "m0:templates": {
-        "readme": ["Standard", "Minimal", "Academic"],
-        "simulation": ["Radial (default)", "Linear horizontal", "Linear vertical", "Grid 2×N", "FSM state diagram"]
+        "readme": [
+          "Standard",
+          "Minimal",
+          "Academic"
+        ],
+        "simulation": [
+          "Radial (default)",
+          "Linear horizontal",
+          "Linear vertical",
+          "Grid 2×N",
+          "FSM state diagram"
+        ]
       },
-
       "m0:outputs": {
-        "primary":    "M0_xxx.jsonld — JSON-LD poclet ontology",
-        "secondary":  "M0_xxx_README.md — structured documentation",
-        "tertiary":   "xxx_sim.py — Pygame simulation"
+        "primary": "M0_xxx.jsonld — JSON-LD poclet ontology",
+        "secondary": "M0_xxx_README.md — structured documentation",
+        "tertiary": "xxx_sim.py — Pygame simulation"
       },
-
       "m0:reflexivityAnalysis": {
-        "dogfoodingType":   "Complete",
-        "description":      "The TSCG Poclet Generator is analyzed using TSCG itself (M0 ontology typed as m3:TscgTool). The tool uses TSCG grammar (Smart Prompt) to generate TSCG artifacts, and that same grammar is now used to model the tool. This constitutes a fixed point in the TSCG representational system.",
-        "fixedPointNote":   "TSCG(TscgPocletGenerator) → PocletDeliverableSet ∧ TSCG(TscgPocletGenerator) ∈ TscgOntology — the system is both operator and object.",
+        "dogfoodingType": "Complete",
+        "description": "The TSCG Poclet Generator is analyzed using TSCG itself (M0 ontology typed as m3:TscgTool). The tool uses TSCG grammar (Smart Prompt) to generate TSCG artifacts, and that same grammar is now used to model the tool. This constitutes a fixed point in the TSCG representational system.",
+        "fixedPointNote": "TSCG(TscgPocletGenerator) → PocletDeliverableSet ∧ TSCG(TscgPocletGenerator) ∈ TscgOntology — the system is both operator and object.",
         "korzybskiReading": "The map (M0_TscgPocletGenerator.jsonld) describes a tool that draws maps. The tool that draws maps is itself on the map."
       },
-
-      "m3:ontologyType": { "@id": "m3:TscgTool" }
+      "m3:ontologyType": {
+        "@id": "m3:TscgTool"
+      }
     }
   ]
 }

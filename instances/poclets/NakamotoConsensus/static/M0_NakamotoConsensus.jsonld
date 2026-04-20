@@ -1,0 +1,339 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m0": "M0_Poclets.jsonld#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m0:Poclet_NakamotoConsensus_Ranaora2026",
+      "@type": "owl:Ontology",
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
+      "rdfs:label": "Nakamoto Consensus as Dissipative Structure — Phenomenological Statistical-Physics Framework",
+      "rdfs:comment": "Poclet modeling Nakamoto consensus (Bitcoin) as a dissipative structure maintained far from thermodynamic equilibrium, via a 1D Ginzburg-Landau framework. Source: Ranaora & Yii (2026), Information Physics Institute.",
+      "dcterms:creator": "Echopraxium with Claude Sonnet 4.6",
+      "dcterms:created": "2026-03-23",
+      "owl:versionInfo": "1.0.0",
+      "m1:domain": "Blockchain",
+      "m0:source": {
+        "doi": "10.5281/zenodo.19160047",
+        "url": "https://doi.org/10.5281/zenodo.19160047",
+        "title": "A Phenomenological Statistical-Physics Framework for Distributed Consensus: Phase Transitions and Thermodynamic Stability",
+        "authors": [
+          "Pascal Ranaora",
+          "Jennifer Yii"
+        ],
+        "institution": "Information Physics Institute, Sydney, Australia",
+        "date": "2026-03-23",
+        "version": "v4",
+        "license": "CC-BY-4.0",
+        "codeRepository": "https://github.com/pascalranaora/NakamotoRanaoraPRE2026"
+      },
+      "m0:tscgTier": "S",
+      "m0:tscgTierRationale": "5/5 ASFID, 5/5 ORIVE, ~12 M2 metaconcepts active, authentic transdisciplinary bridge, 5 explicit falsifiable predictions, direct connection to Cryptocalc",
+      "m0:systemDescription": {
+        "name": "Nakamoto Consensus Network",
+        "type": "Non-Equilibrium Dissipative Structure",
+        "domain": "Distributed Systems / Statistical Physics / Information Theory",
+        "abstract": "The Bitcoin blockchain as a 1D growing network L of length N(t) evolving under dissipative forcing. Consensus emerges as a continuous phase transition between a high-entropy disordered phase (mempool) and a low-entropy ordered phase (blockchain), analogous to liquid-crystallization. The ledger is a dissipative structure whose low entropy is preserved far from equilibrium only through continuous consumption of work.",
+        "scope": "Proof-of-Work systems with Nakamoto-style longest-chain selection. Phenomenological — not microscopic derivation.",
+        "keyInsight": "Blockchain immutability is not absolute but thermodynamically robust — rewriting history requires overcoming a ΔF barrier that grows exponentially with depth and diverges beyond physically realizable bounds."
+      },
+      "m0:isomorphismDictionary": {
+        "description": "Table I from Ranaora & Yii — direct mapping of statistical mechanics to consensus observables",
+        "entries": [
+          {
+            "statPhys": "Local state variable (sᵢ, θᵢ)",
+            "consensus": "Local node view / branch preference",
+            "role": "Microscopic degree of freedom on P2P network"
+          },
+          {
+            "statPhys": "Global order parameter (Φ, ϕ)",
+            "consensus": "Consensus coherence / normalized security density",
+            "role": "Degree of ordering and symmetry breaking"
+          },
+          {
+            "statPhys": "Effective temperature (Teff)",
+            "consensus": "Ēeff · τL / (kB · τB)",
+            "role": "Desynchronization-driven agitation scale"
+          },
+          {
+            "statPhys": "Mass gap (m = ξ⁻¹)",
+            "consensus": "Reorganization suppression scale",
+            "role": "Inverse correlation length controlling finality"
+          },
+          {
+            "statPhys": "Dissipation functional Σ(B)",
+            "consensus": "Cumulative PoW expenditure",
+            "role": "Path-weighting functional favoring dissipative histories"
+          },
+          {
+            "statPhys": "Active noise ζ",
+            "consensus": "Block-discovery variance / exogenous shocks",
+            "role": "Non-equilibrium stochastic forcing"
+          },
+          {
+            "statPhys": "Effective Markov blanket ∂V",
+            "consensus": "UTXO set",
+            "role": "Compressed state description for validation"
+          },
+          {
+            "statPhys": "External quench",
+            "consensus": "Halving event",
+            "role": "Deterministic protocol shock driving non-equilibrium response"
+          }
+        ]
+      },
+      "m0:masterEquations": {
+        "description": "4 master equations of the poclet",
+        "effectiveTemperature": {
+          "formula": "kBTeff(t) = Pnet(t) · τL",
+          "meaning": "Thermal noise = blind energy dissipated during geographic latency window τL",
+          "variables": {
+            "kB": "Boltzmann constant",
+            "Teff": "effective information temperature [K]",
+            "Pnet": "total network power [W]",
+            "τL": "network propagation latency [s]"
+          }
+        },
+        "criticalBlockSize": {
+          "formula": "VB,crit ≈ Ceff · (τB/Γc − τ0)",
+          "meaning": "Protocol-dependent upper bound on block volume — exceeding it pushes network beyond thermal percolation limit",
+          "variables": {
+            "Ceff": "effective global channel capacity [B/s]",
+            "τB": "target block interval [s] ≈ 600s",
+            "Γc": "critical latency ratio ≈ 10",
+            "τ0": "geometric delay floor [s]",
+            "γ": "validation-time coefficient [s/B] — irreducible even at infinite bandwidth"
+          }
+        },
+        "probabilisticFinality": {
+          "formula": "Preorg(z) = (q/p)^z = e^{−z/ξ}",
+          "massGap": "ξ⁻¹ = ln(p/q)",
+          "meaning": "Reorganization probability decays exponentially with depth z. 6-block rule = 13ξ for standard attacker (q=0.1)",
+          "variables": {
+            "z": "confirmation depth [blocks]",
+            "p": "honest network hashrate share",
+            "q": "attacker hashrate share",
+            "xi": "correlation length [blocks]"
+          }
+        },
+        "nakaomotoAction": {
+          "formula": "SPoW(t1,t2) = τB · ∫[t1→t2] Pnet(t) dt",
+          "meaning": "Accumulated consensus action — ledger inertia scale. The heaviest chain maximizes SPoW.",
+          "variables": {
+            "tau_B": "target block interval [s]",
+            "Pnet": "total network power [W]",
+            "SPoW": "Nakamoto consensus action [J·s]"
+          },
+          "phenomenologicalMass": "M_eff^(phen) = SPoW / (e_mfg · τB) [kg]"
+        }
+      },
+      "m0:territorySpace": {
+        "description": "Eagle Eye — ASFID analysis of Nakamoto consensus",
+        "asfidScores": {
+          "A": 0.95,
+          "S": 0.92,
+          "F": 0.97,
+          "I": 0.93,
+          "D": 0.95
+        },
+        "asfidRationale": {
+          "A": "Canonical chain as strong attractor of the free-energy landscape. SSB double-well selects unique history. KT ordered phase. Score 0.95 — attractor is probabilistic, not absolute.",
+          "S": "1D GL functional F[ϕ]; small-world P2P topology; UTXO Markov blanket; correlation length ξ; mass gap m. Score 0.92 — phenomenological, not microscopic.",
+          "F": "Exergy flux (hashrate); dissipation Σ(B); Landauer erasure cost Q̇_diss; Nakamoto Action SPoW. Score 0.97 — F is constitutive and dominant throughout.",
+          "I": "Shannon entropy of mempool vs blockchain; Thermal Time Hypothesis (Connes-Rovelli); UTXO as compressed state. Score 0.93 — information-physics bridge is central.",
+          "D": "Phase transitions (SSB, KT, Directed Percolation); Halving quench; DAA thermostat; FDT violation; Langevin dynamics. Score 0.95 — rich multi-scale dynamics."
+        }
+      },
+      "m0:mapSpace": {
+        "description": "Sphinx Eye — ORIVE analysis",
+        "revoiScores": {
+          "R": 0.95,
+          "E": 0.85,
+          "V": 0.93,
+          "O": 0.92,
+          "I": 0.88
+        },
+        "revoiRationale": {
+          "R": "Table I is an explicit isomorphism dictionary. GL functional, order parameter, partition function all formally defined. Score 0.95.",
+          "E": "Framework extends to neural synchronization, cellular proofreading (ribosome PoW). Protocol-agnostic structure. Score 0.85 — limited to PoW systems currently.",
+          "V": "Section VII.D lists 5 explicit falsifiable predictions. Empirical validation on 4 historical Halvings (Table II). Score 0.93.",
+          "O": "All quantities mapped to measurable observables: hashrate H(t), latency τL, orphan rate rc, inter-block variance Var(Δt). Score 0.92.",
+          "I": "Bridges statistical mechanics ↔ distributed systems ↔ information theory ↔ biology. Open-source code repository. Score 0.88 — specialized to Bitcoin protocol."
+        }
+      },
+      "m0:epistemicGap": {
+        "norm": 0.072,
+        "deltaVector": "(−0.05, −0.08, −0.03, −0.07, −0.05)",
+        "interpretation": "Very small epistemic gap — the phenomenological model closely follows observable network reality. Main discrepancy on S axis: microscopic Hamiltonian not derived, structural claims are coarse-grained approximations.",
+        "assessment": "Exceptionally well-modeled system for a phenomenological framework. The isomorphism dictionary (Table I) is dimensionally consistent and operationally testable."
+      },
+      "m0:genericConceptsMobilized": {
+        "total": 17,
+        "concepts": [
+          {
+            "name": "Dissipation",
+            "tensorFormula": "F⊗D",
+            "role": "Σ(B) as path-weighting functional. Q̇_diss >> kBTsub·ln2 — deliberate inflation of Landauer cost by protocol. Core mechanism of consensus stability."
+          },
+          {
+            "name": "Entropy",
+            "tensorFormula": "F⊗I⊗D",
+            "role": "Irreversibility measure (Feynman). ΔS_irrev in Crooks fluctuation theorem. History entropy S_history maximized in Sybil regime (T→∞). Pivot of immutability chain."
+          },
+          {
+            "name": "Coherence/Incoherence",
+            "tensorFormula": "A⊗S⊗I⊗R⊗O",
+            "role": "Global consensus coherence (Φ→1 ordered phase) vs incoherence (fork proliferation). Topological defects = persistent incoherence in P2P phase field."
+          },
+          {
+            "name": "Phase Transition",
+            "tensorFormula": "A⊗S⊗D",
+            "role": "SSB mempool→blockchain (continuous ordering transition). KT transition under partition. Directed Percolation (fork→absorbing canonical chain)."
+          },
+          {
+            "name": "Emergence",
+            "tensorFormula": "A⊗D",
+            "role": "Time as emergent coarse-grained variable (Thermal Time Hypothesis, Connes-Rovelli). Canonical history as emergent from stochastic PoW process."
+          },
+          {
+            "name": "Markov Blanket",
+            "tensorFormula": "S⊗I",
+            "role": "UTXO set as ∂V — compressed state description for validation. RG flow decimation: ∂Vt = R(Vt-1 ∪ Bt). Saturation → consensus fracture."
+          },
+          {
+            "name": "Constraint",
+            "tensorFormula": "S⊗F",
+            "role": "VB,crit as upper bound on block volume. γ (validation latency) as irreducible constraint even at infinite bandwidth (Cnode→∞)."
+          },
+          {
+            "name": "Inertia",
+            "tensorFormula": "S⊗F⊗I⊗D",
+            "role": "M_eff^(phen) = SPoW/(e_mfg·τB). Phenomenological mass of the ledger — resistance to history reversal grows with accumulated PoW dissipation."
+          },
+          {
+            "name": "Absorbing State",
+            "tensorFormula": "S⊗A⊗F⊗I⊗D",
+            "role": "Canonical chain as absorbing state of Directed Percolation. Forks = active states decaying irreversibly toward absorption. 51% attack = supercritical → absorbing state lost."
+          },
+          {
+            "name": "Topological Defect",
+            "tensorFormula": "S⊗A⊗I⊗R⊗O",
+            "role": "Persistent forks as vortices (n≠0) in P2P consensus phase field θᵢ. KT transition: free vortex proliferation at Teff>TKT destroys global phase coherence."
+          },
+          {
+            "name": "Self-Organization",
+            "tensorFormula": "A⊗S⊗D",
+            "role": "Dissipative structure maintaining order via continuous exergy injection. DAA as self-organizing thermostat. Small-world topology as self-organized spatial structure."
+          },
+          {
+            "name": "Feedback Loop",
+            "tensorFormula": "A⊗S⊗F⊗I⊗D",
+            "role": "DAA as non-linear negative feedback controller: NH(D) adjusted to maintain τB≈600s. Thermostat damping Halving quench relaxation."
+          },
+          {
+            "name": "Processor",
+            "tensorFormula": "S⊗I⊗F⊗D",
+            "role": "Mining nodes as processors transforming electrical energy into cryptographic proofs. Network as distributed processor implementing Maxwell's Demon sorting."
+          },
+          {
+            "name": "Transducer",
+            "tensorFormula": "F⊗S⊗I",
+            "role": "ASIC hardware as Transducer: electrical energy → hash computation → heat. Dissipation as degrading Transducer: exergy → entropy."
+          },
+          {
+            "name": "Stase",
+            "tensorFormula": "S⊗A",
+            "role": "Quantum ground state |0⟩ analogy for minimal hashrate. F=0 regime = system in Stase. Relevant for analyzing network shutdown scenarios."
+          },
+          {
+            "name": "Potentialization",
+            "tensorFormula": "A⊗D⊗F",
+            "role": "Halving anticipatory phase: miners pre-deploy hardware (F_potential→F_active). Compression of anticipation horizon 14→1 epoch reflects industrial maturation."
+          },
+          {
+            "name": "Renormalization Group",
+            "tensorFormula": "S⊗I⊗D",
+            "role": "UTXO decimation operator R as non-invertible RG flow: ∂Vt = R(Vt-1 ∪ Bt). Integrates out inactive degrees of freedom — essential to keep VB < VB,crit."
+          }
+        ]
+      },
+      "m0:falsifiablePredictions": {
+        "source": "Section VII.D — Ranaora & Yii 2026",
+        "predictions": [
+          {
+            "id": "P1",
+            "name": "Latency-controlled effective temperature",
+            "statement": "At fixed Ēeff and τB, increases in propagation latency τL should systematically correlate with elevated orphan risk and reduced local ordering stability",
+            "testable": "Empirical orphan rate vs measured τL across network events"
+          },
+          {
+            "id": "P2",
+            "name": "Protocol-dependent upper bound on block volume",
+            "statement": "Any protocol modification increasing γ or Dhop should reduce VB,crit before large-scale desynchronization appears",
+            "testable": "Controlled stress tests on experimental Nakamoto-style networks"
+          },
+          {
+            "id": "P3",
+            "name": "Depth-dependent reorganization suppression",
+            "statement": "Empirical reorganization risk should collapse onto exponential depth law e^{-z/ξ} when conditioned on p/q hashrate ratio",
+            "testable": "Historical chain reorganization data analysis"
+          },
+          {
+            "id": "P4",
+            "name": "Quench-induced excess variance",
+            "statement": "Deterministic subsidy reductions should generate transient increases in block-time variance, amplitude modulated by anticipation horizon and DAA damping",
+            "testable": "Validated empirically on 4 Halvings (Table II, this paper)"
+          },
+          {
+            "id": "P5",
+            "name": "Compression of anticipation horizons with industrial maturation",
+            "statement": "Optimal pre-quench horizon should shorten as mining supply chains become more industrialized",
+            "testable": "Longitudinal analysis: 14 epochs (2012) → 1 epoch (2024) — confirmed in this paper"
+          }
+        ]
+      },
+      "m0:cryptocalcConnection": {
+        "description": "Direct connection with Cryptocalc project (Echopraxium)",
+        "relevance": "Cryptocalc implements the Nakamoto protocol modeled in this paper. The poclet provides thermodynamic understanding of the security model.",
+        "applicableInsights": [
+          "HD wallet security = function of ΔF(z) barrier at derivation depth",
+          "BIP38 encryption strength maps to Landauer erasure cost analogy",
+          "The 6-block confirmation rule = 13ξ (z≈13 correlation lengths) for standard attacker",
+          "Block explorer depth visualization could include ξ-normalized security margin"
+        ]
+      },
+      "m0:broadApplicability": {
+        "description": "Extensions suggested by authors and TSCG analysis",
+        "extensions": [
+          {
+            "domain": "Neuroscience",
+            "analogy": "Neural synchronization as dissipative ordering — PoW ↔ metabolic cost of synchrony"
+          },
+          {
+            "domain": "Biology — Molecular",
+            "analogy": "Ribosomal kinetic proofreading as biological PoW (ref [32] in paper) — error reduction via thermodynamic work",
+            "reference": "Small (2024), Biophysical Journal"
+          },
+          {
+            "domain": "Distributed Computing",
+            "analogy": "Any consensus mechanism can be analyzed via the same phenomenological lens — not limited to Bitcoin"
+          },
+          {
+            "domain": "TSCG Framework itself",
+            "analogy": "TSCG M2 layer consensus (validation of metaconcepts) as dissipative structure — community alignment as ordering transition"
+          }
+        ]
+      }
+    }
+  ]
+}

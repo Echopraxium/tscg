@@ -1,0 +1,1 @@
+pyshacl -s M0_Instances_Schema.shacl.ttl -df json-ld ..\instances\poclets\FireTriangle\M0_FireTriangle.jsonld
