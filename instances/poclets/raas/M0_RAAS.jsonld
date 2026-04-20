@@ -1,10 +1,10 @@
 {
   "@context": {
-    "@base": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/",
-    "sm": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/instances/",
-    "m0": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/instances/poclets/raas/M0_RAAS.jsonld#",
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "sm": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/raas/M0_RAAS.jsonld#",
     "m1bio": "M1_extensions/biology/M1_Biology.jsonld#",
-    "m2": "M2_GenericConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3eagle": "M3_EagleEye.jsonld#",
     "m3sphinx": "M3_SphinxEye.jsonld#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -12,7 +12,8 @@
     "dcterms": "http://purl.org/dc/terms/",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "m3": "M3_GenesisSpace.jsonld#"
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#"
   },
   "@graph": [
     {
@@ -20,12 +21,20 @@
       "@type": [
         "owl:NamedIndividual"
       ],
+      "owl:imports": [
+        "M2_GenericConcepts.jsonld",
+        "M1_CoreConcepts.jsonld",
+        "M1_extensions/biology/M1_Biology.jsonld"
+      ],
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
       "rdfs:label": "Renin-Angiotensin-Aldosterone System",
       "rdfs:comment": "Complete RAAS modeling with ternary Cascade (S⊗I⊗A⊗D⊗F). First poclet demonstrating complete 5D ASFID coverage.",
-      "dcterms:created": "2026-02-06",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-02-06",
       "owl:versionInfo": "15.0.0",
-      "m0:domain": "Biology",
+      "m1:domain": "Biology",
       "m0:subdomains": [
         "Endocrinology",
         "Renal Physiology",
@@ -80,15 +89,10 @@
         "m1bio:BloodCirculation"
       ],
       "m0:transdisciplinaryDomains": 6,
-      "m0:clinicalRelevance": "Major therapeutic target (ACE-I, ARBs, MR antagonists)",
-      "m3:ontologyType": {
-        "@id": "m3:Poclet"
-      },
-      "owl:imports": [
-        "M2_GenericConcepts.jsonld",
-        "M1_CoreConcepts.jsonld",
-        "M1_extensions/biology/M1_Biology.jsonld"
-      ]
+      "m0:clinicalRelevance": "Major therapeutic target (ACE-I, ARBs, MR antagonists)"
     }
-  ]
+  ],
+  "m3:ontologyType": {
+    "@id": "m3:Poclet"
+  }
 }

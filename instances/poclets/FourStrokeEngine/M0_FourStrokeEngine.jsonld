@@ -2,47 +2,52 @@
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
     "dcterms": "http://purl.org/dc/terms/",
-    "owl":     "http://www.w3.org/2002/07/owl#",
-    "rdf":     "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs":    "http://www.w3.org/2000/01/rdf-schema#",
-    "skos":    "http://www.w3.org/2004/02/skos/core#",
-    "xsd":     "http://www.w3.org/2001/XMLSchema#",
-    "m3":      "M3_GenesisSpace.jsonld#",
-    "m2":      "M2_GenericConcepts.jsonld#",
-    "m1core":  "M1_CoreConcepts.jsonld#",
-    "m0":      "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/FourStrokeEngine/M0_FourStrokeEngine.jsonld#"
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m1core": "M1_CoreConcepts.jsonld#",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/FourStrokeEngine/M0_FourStrokeEngine.jsonld#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#"
   },
   "@graph": [
     {
       "@id": "m0:FourStrokeEnginePoclet",
-      "@type": "owl:NamedIndividual",
-      "rdf:type": { "@id": "m3:Poclet" },
+      "@type": "owl:Ontology",
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
       "rdfs:label": "Four-Stroke Engine (Poclet)",
       "rdfs:comment": "Minimal yet complete system representation of the thermodynamic cycle powering internal combustion engines. Demonstrates all 5 ASFID dimensions through 4 sequential strokes and mobilizes 20 M2 GenericConcepts (v15.10.1). Canonical example for cyclic processes and energy transformation.",
-      "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-03-18",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m3:ontologyCategory": { "@id": "m3:Poclet" },
+      "dcterms:created": "2026-01-22",
+      "owl:versionInfo": "1.2.0",
+      "m1:domain": "Thermodynamics",
+      "rdf:type": {
+        "@id": "m3:Poclet"
+      },
+      "dcterms:modified": "2026-03-18",
       "m0:pocletType": "Cyclic",
-      "m0:domain": "Thermodynamics",
       "m0:completeness": "All ASFID dimensions present",
       "m0:minimality": "Exactly 4 strokes (irreducible for complete cycle)",
       "m0:pedagogy": "Universal teaching tool for thermodynamics and mechanical engineering",
       "m0:observer": "Human (engineering/scientific perspective)",
-      "m0:version": "1.2.0",
       "m0:epistemicGap": 0.132,
       "m0:asfidScores": {
         "A": 0.85,
-        "S": 0.90,
+        "S": 0.9,
         "F": 0.95,
-        "I": 0.80,
+        "I": 0.8,
         "D": 0.85
       },
       "m0:revoiScores": {
-        "R": 0.90,
+        "R": 0.9,
         "E": 0.85,
-        "V": 0.90,
-        "O": 0.90,
+        "V": 0.9,
+        "O": 0.9,
         "I": 0.85
       },
       "m0:changelog": [
@@ -225,7 +230,7 @@
           "stability": "Self-sustaining once started (via flywheel momentum)"
         },
         "m0:structure": {
-          "S": 0.90,
+          "S": 0.9,
           "description": "Piston-cylinder assembly with valves and crankshaft linkage",
           "topology": "Cyclic (4-stroke workflow repeats via FeedbackLoop)",
           "geometry": "Cylindrical symmetry",
@@ -239,7 +244,7 @@
           "momentumFlow": "Gas pressure → Piston force → Crankshaft torque"
         },
         "m0:information": {
-          "I": 0.80,
+          "I": 0.8,
           "description": "Valve timing, ignition timing, compression ratio, thermodynamic state",
           "controlSignals": "Spark timing, fuel injection timing, valve lift profiles",
           "stateVariables": "Pressure P(t), Volume V(t), Temperature T(t)",
@@ -283,7 +288,7 @@
           "basis": "REVOI",
           "revoiAnalysis": {
             "R_representability": {
-              "score": 0.90,
+              "score": 0.9,
               "description": "Highly encodable via P-V diagrams, T-s diagrams, thermodynamic equations, 3D animations",
               "pedagogicalValue": "Taught universally in thermodynamics and mechanical engineering curricula"
             },
@@ -293,19 +298,30 @@
               "limitations": "Ideal Otto cycle assumptions (adiabatic, reversible) limit direct evolvability to real combustion"
             },
             "V_verifiability": {
-              "score": 0.90,
+              "score": 0.9,
               "description": "Validated by 150+ years of engineering practice; matches First & Second Law predictions",
               "accuracy": "Otto cycle predicts real efficiency within ~5-10% (accounting for friction, heat loss)"
             },
             "O_observability": {
-              "score": 0.90,
+              "score": 0.9,
               "description": "Measurable via RPM, cylinder pressure, temperature, airflow sensors",
-              "instruments": ["Cylinder pressure transducers", "Thermocouples", "Crank angle sensors", "MAF sensors", "Lambda/O₂ sensors"]
+              "instruments": [
+                "Cylinder pressure transducers",
+                "Thermocouples",
+                "Crank angle sensors",
+                "MAF sensors",
+                "Lambda/O₂ sensors"
+              ]
             },
             "I_interoperability": {
               "score": 0.85,
               "description": "Modular design (1-cyl, 4-cyl, V6, V8), fuel flexibility (gasoline, E85, methanol)",
-              "applications": ["Automotive", "Marine", "Industrial generators", "Hybrid powertrains"]
+              "applications": [
+                "Automotive",
+                "Marine",
+                "Industrial generators",
+                "Hybrid powertrains"
+              ]
             },
             "vectorREVOI": "(0.90, 0.85, 0.90, 0.90, 0.85)",
             "norm": "||REVOI|| = sqrt(0.90² + 0.85² + 0.90² + 0.90² + 0.85²) = 1.969"
@@ -408,25 +424,45 @@
           {
             "field": "Cardiology",
             "example": "Cardiac Cycle",
-            "phases": ["Atrial diastole", "Atrial systole", "Ventricular diastole", "Ventricular systole"],
+            "phases": [
+              "Atrial diastole",
+              "Atrial systole",
+              "Ventricular diastole",
+              "Ventricular systole"
+            ],
             "similarity": "Sequential phases with flow reversal (blood in/out)"
           },
           {
             "field": "Economics",
             "example": "Business Cycle",
-            "phases": ["Expansion", "Peak", "Contraction", "Trough"],
+            "phases": [
+              "Expansion",
+              "Peak",
+              "Contraction",
+              "Trough"
+            ],
             "similarity": "Cyclic pattern with growth/decline phases"
           },
           {
             "field": "Biochemistry",
             "example": "Na⁺/K⁺-ATPase Ion Pump",
-            "phases": ["E1 (Na⁺ binding)", "E1-P (phosphorylation)", "E2-P (conformational change)", "E2 (K⁺ release)"],
+            "phases": [
+              "E1 (Na⁺ binding)",
+              "E1-P (phosphorylation)",
+              "E2-P (conformational change)",
+              "E2 (K⁺ release)"
+            ],
             "similarity": "4 conformational states in energy-driven cycle"
           },
           {
             "field": "Climatology",
             "example": "Seasonal Cycle",
-            "phases": ["Spring", "Summer", "Fall", "Winter"],
+            "phases": [
+              "Spring",
+              "Summer",
+              "Fall",
+              "Winter"
+            ],
             "similarity": "Annual periodic cycle driven by solar energy"
           }
         ],
@@ -453,7 +489,12 @@
             "name": "OttoCycle",
             "definition": "Idealized thermodynamic cycle for 4-stroke spark-ignition engines",
             "m2Basis": "m2:Workflow (S⊗D⊗F) + m2:Transformation (D⊗S⊗I)",
-            "processes": ["Isentropic compression", "Isochoric heat addition", "Isentropic expansion", "Isochoric heat rejection"]
+            "processes": [
+              "Isentropic compression",
+              "Isochoric heat addition",
+              "Isentropic expansion",
+              "Isochoric heat rejection"
+            ]
           },
           {
             "name": "ValveTiming",
@@ -538,5 +579,8 @@
         "SAE International. Engine Technology Standards (J1349, J1995)"
       ]
     }
-  ]
+  ],
+  "m3:ontologyType": {
+    "@id": "m3:Poclet"
+  }
 }

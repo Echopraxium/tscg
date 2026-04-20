@@ -1,12 +1,10 @@
 {
   "@context": {
-    "@base": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/",
-    "sm": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/instances/",
-    "m0": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/instances/poclets/yggdrasil/M0_Yggdrasil.jsonld#",
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "sm": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/yggdrasil/M0_Yggdrasil.jsonld#",
     "m0:yggdrasil": "M0_poclets/yggdrasil/M0_Yggdrasil.jsonld#",
-    "m1:mythology": "M1_extensions/mythology/M1_Mythology.jsonld#",
-    "m1:core": "M1_CoreConcepts.jsonld#",
-    "m2": "M2_GenericConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3:eagle_eye": "M3_EagleEye.jsonld#",
     "m3:sphinx_eye": "M3_SphinxEye.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -15,23 +13,29 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "m3": "M3_GenesisSpace.jsonld#"
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1.ext:mythology": "M1_extensions/mythology/M1_Mythology.jsonld#"
   },
   "@graph": [
     {
       "@id": "m0:yggdrasil:Yggdrasil_Poclet",
       "@type": "owl:Ontology",
-      "dcterms:title": "TSCG M0 Yggdrasil Poclet",
-      "dcterms:description": "Norse cosmology system centered on Yggdrasil World Tree. Validates TSCG framework through: 7-pole multipolar network, 9 interconnected worlds, cyclic tension (Nidhogg-Nornes), catastrophic bifurcation (Ragnarök), mythological patterns (Trickster/Loki, Gatekeeper/Heimdall). Demonstrates complete M3→M2→M1→M0 hierarchy with 20 Identity instances, 12 deities, 7 creatures, 3 artifacts.",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-02-04",
-      "owl:versionInfo": "2.0.0",
       "owl:imports": [
         "M1_extensions/mythology/M1_Mythology.jsonld",
         "M1_CoreConcepts.jsonld",
         "M2_GenericConcepts.jsonld"
       ],
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
+      "rdfs:label": "TSCG M0 Yggdrasil Poclet",
+      "rdfs:comment": "Norse cosmology system centered on Yggdrasil World Tree. Validates TSCG framework through: 7-pole multipolar network, 9 interconnected worlds, cyclic tension (Nidhogg-Nornes), catastrophic bifurcation (Ragnarök), mythological patterns (Trickster/Loki, Gatekeeper/Heimdall). Demonstrates complete M3→M2→M1→M0 hierarchy with 20 Identity instances, 12 deities, 7 creatures, 3 artifacts.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-01-22",
+      "owl:versionInfo": "2.0.0",
+      "m1:domain": "Mythology",
+      "dcterms:modified": "2026-02-04",
       "m0:pocletMetadata": {
         "pocletType": "Mythological Cosmology",
         "domain": "Norse Mythology / Comparative Religion / Cosmology",
@@ -45,9 +49,9 @@
       },
       "m0:systemArchitecture": {
         "model": "Hybrid 7 Poles (functional) + 9 Worlds (spatial)",
-        "corePattern": "m1:core:MultipolarNetwork (N=7)",
-        "maintenanceMechanism": "m1:core:CyclicTension (Nidhogg ↔ Nornes)",
-        "catastrophicEvent": "m1:core:CatastrophicBifurcation (Ragnarök)",
+        "corePattern": "m1:MultipolarNetwork (N=7)",
+        "maintenanceMechanism": "m1:CyclicTension (Nidhogg ↔ Nornes)",
+        "catastrophicEvent": "m1:CatastrophicBifurcation (Ragnarök)",
         "demonstratedPatterns": [
           "Trickster (Loki)",
           "Gatekeeper (Heimdall)",
@@ -97,38 +101,35 @@
             "Initial release with 7-pole structure"
           ]
         }
-      },
-      "m3:ontologyType": {
-        "@id": "m3:Poclet"
       }
     },
     {
       "@id": "m0:yggdrasil:associatedWithPole",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "associated with pole",
-      "rdfs:domain": "m1:mythology:MythologicalEntity",
+      "rdfs:domain": "m1.ext:mythology:MythologicalEntity",
       "rdfs:range": "m0:yggdrasil:Pole"
     },
     {
       "@id": "m0:yggdrasil:residesInWorld",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "resides in world",
-      "rdfs:domain": "m1:mythology:MythologicalEntity",
+      "rdfs:domain": "m1.ext:mythology:MythologicalEntity",
       "rdfs:range": "m0:yggdrasil:World"
     },
     {
       "@id": "m0:yggdrasil:interactsWith",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "interacts with",
-      "rdfs:domain": "m1:mythology:MythologicalEntity",
-      "rdfs:range": "m1:mythology:MythologicalEntity"
+      "rdfs:domain": "m1.ext:mythology:MythologicalEntity",
+      "rdfs:range": "m1.ext:mythology:MythologicalEntity"
     },
     {
       "@id": "m0:yggdrasil:hasParent",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "has parent",
-      "rdfs:domain": "m1:mythology:MythologicalEntity",
-      "rdfs:range": "m1:mythology:MythologicalEntity"
+      "rdfs:domain": "m1.ext:mythology:MythologicalEntity",
+      "rdfs:range": "m1.ext:mythology:MythologicalEntity"
     },
     {
       "@id": "m0:yggdrasil:manifestsAsPole",
@@ -141,7 +142,7 @@
       "@id": "m0:yggdrasil:Odin",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:SupremeDeity"
+        "m1.ext:mythology:SupremeDeity"
       ],
       "rdfs:label": "Odin",
       "m0:cosmicRole": "Wisdom, War, Poetry, Magic",
@@ -156,7 +157,7 @@
       "@id": "m0:yggdrasil:Thor",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MajorDeity"
+        "m1.ext:mythology:MajorDeity"
       ],
       "rdfs:label": "Thor",
       "m0:cosmicRole": "Thunder, Strength, Protection",
@@ -171,7 +172,7 @@
       "@id": "m0:yggdrasil:Loki",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MajorDeity"
+        "m1.ext:mythology:MajorDeity"
       ],
       "rdfs:label": "Loki",
       "m0:cosmicRole": "Trickster, Chaos, Transformation",
@@ -181,13 +182,13 @@
         "m2:Identity",
         "m2:Role"
       ],
-      "m0:exemplifiesPattern": "m1:mythology:Trickster"
+      "m0:exemplifiesPattern": "m1.ext:mythology:Trickster"
     },
     {
       "@id": "m0:yggdrasil:Freyja",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MajorDeity"
+        "m1.ext:mythology:MajorDeity"
       ],
       "rdfs:label": "Freyja",
       "m0:cosmicRole": "Love, Beauty, War, Magic",
@@ -202,7 +203,7 @@
       "@id": "m0:yggdrasil:Freyr",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MajorDeity"
+        "m1.ext:mythology:MajorDeity"
       ],
       "rdfs:label": "Freyr",
       "m0:cosmicRole": "Fertility, Prosperity, Peace",
@@ -217,7 +218,7 @@
       "@id": "m0:yggdrasil:Tyr",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MajorDeity"
+        "m1.ext:mythology:MajorDeity"
       ],
       "rdfs:label": "Tyr",
       "m0:cosmicRole": "War, Justice, Law",
@@ -232,7 +233,7 @@
       "@id": "m0:yggdrasil:Frigg",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MajorDeity"
+        "m1.ext:mythology:MajorDeity"
       ],
       "rdfs:label": "Frigg",
       "m0:cosmicRole": "Marriage, Motherhood, Foresight",
@@ -247,7 +248,7 @@
       "@id": "m0:yggdrasil:Baldr",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MajorDeity"
+        "m1.ext:mythology:MajorDeity"
       ],
       "rdfs:label": "Baldr",
       "m0:cosmicRole": "Light, Purity, Beauty",
@@ -262,7 +263,7 @@
       "@id": "m0:yggdrasil:Heimdall",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MajorDeity"
+        "m1.ext:mythology:MajorDeity"
       ],
       "rdfs:label": "Heimdall",
       "m0:cosmicRole": "Guardian of Bifrost",
@@ -272,13 +273,13 @@
         "m2:Identity",
         "m2:Role"
       ],
-      "m0:exemplifiesPattern": "m1:mythology:Gatekeeper"
+      "m0:exemplifiesPattern": "m1.ext:mythology:Gatekeeper"
     },
     {
       "@id": "m0:yggdrasil:Njord",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MajorDeity"
+        "m1.ext:mythology:MajorDeity"
       ],
       "rdfs:label": "Njord",
       "m0:cosmicRole": "Sea, Wind, Wealth",
@@ -293,7 +294,7 @@
       "@id": "m0:yggdrasil:Idun",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MinorDeity"
+        "m1.ext:mythology:MinorDeity"
       ],
       "rdfs:label": "Idun",
       "m0:cosmicRole": "Youth, Apples of Immortality",
@@ -308,7 +309,7 @@
       "@id": "m0:yggdrasil:Hel",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:ChthonianDeity"
+        "m1.ext:mythology:ChthonianDeity"
       ],
       "rdfs:label": "Hel",
       "m0:cosmicRole": "Underworld, Death",
@@ -323,7 +324,7 @@
       "@id": "m0:yggdrasil:Fenrir",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MonstrousWolf"
+        "m1.ext:mythology:MonstrousWolf"
       ],
       "rdfs:label": "Fenrir",
       "m0:systemRole": "Chaos wolf, bound until Ragnarok",
@@ -335,7 +336,7 @@
       "@id": "m0:yggdrasil:Jormungandr",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:Serpent"
+        "m1.ext:mythology:Serpent"
       ],
       "rdfs:label": "Jormungandr",
       "m0:systemRole": "World serpent, encircles Midgard",
@@ -347,7 +348,7 @@
       "@id": "m0:yggdrasil:Nidhogg",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:Dragon"
+        "m1.ext:mythology:Dragon"
       ],
       "rdfs:label": "Nidhogg",
       "m0:systemRole": "Gnaws roots, degradation agent",
@@ -359,7 +360,7 @@
       "@id": "m0:yggdrasil:Sleipnir",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:HybridCreature"
+        "m1.ext:mythology:HybridCreature"
       ],
       "rdfs:label": "Sleipnir",
       "m0:systemRole": "8-legged horse, Odin's mount",
@@ -371,7 +372,7 @@
       "@id": "m0:yggdrasil:Ratatosk",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:Messenger"
+        "m1.ext:mythology:Messenger"
       ],
       "rdfs:label": "Ratatosk",
       "m0:systemRole": "Squirrel, information mediator",
@@ -384,7 +385,7 @@
       "@id": "m0:yggdrasil:Eagle",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MagicalBird"
+        "m1.ext:mythology:MagicalBird"
       ],
       "rdfs:label": "Eagle",
       "m0:systemRole": "Omniscient observer at crown",
@@ -396,7 +397,7 @@
       "@id": "m0:yggdrasil:HuginMunin",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MagicalBird"
+        "m1.ext:mythology:MagicalBird"
       ],
       "rdfs:label": "HuginMunin",
       "m0:systemRole": "Odin's ravens, thought and memory",
@@ -408,7 +409,7 @@
       "@id": "m0:yggdrasil:Mjolnir",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MythicalArtifact"
+        "m1.ext:mythology:MythicalArtifact"
       ],
       "rdfs:label": "Mjolnir",
       "m0:function": "Thor's hammer, returns when thrown",
@@ -420,7 +421,7 @@
       "@id": "m0:yggdrasil:Gungnir",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MythicalArtifact"
+        "m1.ext:mythology:MythicalArtifact"
       ],
       "rdfs:label": "Gungnir",
       "m0:function": "Odin's spear, never misses",
@@ -432,7 +433,7 @@
       "@id": "m0:yggdrasil:Draupnir",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MythicalArtifact"
+        "m1.ext:mythology:MythicalArtifact"
       ],
       "rdfs:label": "Draupnir",
       "m0:function": "Odin's ring, self-replicates every 9 nights",
@@ -445,7 +446,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Pole (Functional Node)",
       "rdfs:comment": "Functional node in 7-pole multipolar network. Represents distinct systemic function. Multiple spatial worlds may manifest as single functional pole.",
-      "m0:instantiatesM1Concept": "m1:core:MultipolarNetwork",
+      "m0:instantiatesM1Concept": "m1:MultipolarNetwork",
       "m0:totalPoles": 7
     },
     {
@@ -453,7 +454,7 @@
       "@type": "owl:Class",
       "rdfs:label": "World (Spatial Realm)",
       "rdfs:comment": "Spatial realm in Norse 9-world cosmology (Niu Heimar). Each world is distinct environment that manifests systemically as one of 7 functional poles.",
-      "rdfs:subClassOf": "m1:mythology:MythicalPlace",
+      "rdfs:subClassOf": "m1.ext:mythology:MythicalPlace",
       "m0:totalWorlds": 9
     },
     {
@@ -693,8 +694,8 @@
       "@id": "m0:yggdrasil:CatastrophicEvent",
       "@type": "owl:Class",
       "rdfs:label": "Catastrophic Event",
-      "rdfs:comment": "System-scale destructive transformation. Instantiates m1:core:CatastrophicBifurcation.",
-      "m0:instantiatesM1Concept": "m1:core:CatastrophicBifurcation"
+      "rdfs:comment": "System-scale destructive transformation. Instantiates m1:CatastrophicBifurcation.",
+      "m0:instantiatesM1Concept": "m1:CatastrophicBifurcation"
     },
     {
       "@id": "m0:yggdrasil:Ragnarok",
@@ -704,7 +705,7 @@
       ],
       "rdfs:label": "Ragnarök - Twilight of the Gods",
       "rdfs:comment": "Catastrophic system bifurcation and fragmentation. Cosmic-scale destruction and renewal. Instantiates CatastrophicBifurcation (M1_CoreConcepts) = GenericConceptCombo(Bifurcation, Fission). Threshold-triggered violent system transformation with no return path to pre-catastrophe state.",
-      "m0:instantiatesM1Concept": "m1:core:CatastrophicBifurcation",
+      "m0:instantiatesM1Concept": "m1:CatastrophicBifurcation",
       "m0:instantiatesGenericConcept": "m2:GenericConceptCombo",
       "m0:GenericConceptComboParents": [
         "m2:Bifurcation",
@@ -794,7 +795,7 @@
       "@id": "m0:yggdrasil:Nornes",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:CosmicForce"
+        "m1.ext:mythology:CosmicForce"
       ],
       "rdfs:label": "Nornes - The Three Fates",
       "skos:altLabel": [
@@ -806,7 +807,7 @@
         "m2:Agent",
         "m2:Role"
       ],
-      "m0:instantiatesM1Pattern": "m1:core:CyclicTension",
+      "m0:instantiatesM1Pattern": "m1:CyclicTension",
       "m0:members": [
         "Urd (Past/Origin)",
         "Verdandi (Present/Becoming)",
@@ -821,7 +822,7 @@
       "@id": "m0:yggdrasil:Bifrost",
       "@type": [
         "owl:NamedIndividual",
-        "m1:mythology:MythicalPlace"
+        "m1.ext:mythology:MythicalPlace"
       ],
       "rdfs:label": "Bifröst - Rainbow Bridge",
       "rdfs:comment": "Rainbow bridge connecting Midgard to Asgard. Guarded by Heimdall (Gatekeeper). Acts as Interface (enables passage) constrained by Heimdall's enforcement. Destroyed at Ragnarok when Surtr's fire giants cross it.",

@@ -1,19 +1,19 @@
 {
   "@context": {
-    "@base": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/",
-    "sm": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/instances/",
-    "m0": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/instances/poclets/ButterflyMetamorphosis/M0_ButterflyMetamorphosis.jsonld#",
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "sm": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/ButterflyMetamorphosis/M0_ButterflyMetamorphosis.jsonld#",
     "dcterms": "http://purl.org/dc/terms/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "m3": "M3_GenesisSpace.jsonld#",
-    "m2": "M2_GenericConcepts.jsonld#",
-    "m1:core": "M1_CoreConcepts.jsonld#",
-    "m1:biology": "M1_extensions/biology/M1_Biology.jsonld#",
-    "m0:butterfly_metamorphosis": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/instances/poclets/ButterflyMetamorphosis/M0_ButterflyMetamorphosis.jsonld#"
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m0:butterfly_metamorphosis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/ButterflyMetamorphosis/M0_ButterflyMetamorphosis.jsonld#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1.ext:biology": "M1_extensions/biology/M1_Biology.jsonld#"
   },
   "@graph": [
     {
@@ -21,20 +21,22 @@
       "@type": [
         "owl:Ontology"
       ],
-      "dcterms:created": "2026-01-24",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m2:ontologyCategory": "Poclet",
-      "owl:versionInfo": "1.0.0",
       "owl:imports": [
         "M3_GenesisSpace.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld",
         "M1_extensions/biology/M1_Biology.jsonld"
       ],
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
       "rdfs:label": "Butterfly Metamorphosis Poclet - Complete Holometabolous Lifecycle",
       "rdfs:comment": "6-pole model of butterfly metamorphosis from egg to adult imago, including critical emergence phase. Demonstrates complete transformation with radical structural reorganization, hormonal regulation, and imaginal disc-based development. Validated poclet for TSCG framework.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-01-24",
+      "owl:versionInfo": "1.1.0",
+      "m1:domain": "m1.ext:biology:DevelopmentalBiology",
       "m0:check_following_attributes:START": "",
-      "m0:domain": "m1:biology:DevelopmentalBiology",
       "m0:status": "VALIDATED",
       "m0:poleCount": 6,
       "m0:metamorphosisType": "Holometabolous",
@@ -42,31 +44,15 @@
       "m0:oriveMean": 0.88,
       "m0:epistemicGap": 0.25,
       "rdfs:seeAlso": [
-        "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M1_Biology.jsonld",
-        "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/M2_GenericConcepts.jsonld"
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Biology.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld"
       ],
       "m0:check_following_attributes:END": "",
-      "m3:ontologyType": {
-        "@id": "m3:Poclet"
-      }
-    },
-    {
-      "@id": "m0:Poclet",
-      "@type": "owl:Class",
-      "rdfs:label": "Poclet (Proof-of-Concept-let)",
-      "rdfs:comment": "Minimal yet complete system representation serving triple role: (1) Validates TSCG framework, (2) Identifies M2 GenericConcept candidates, (3) Populates M1 core concepts."
-    },
-    {
-      "@id": "m0:DevelopmentalPole",
-      "@type": "owl:Class",
-      "rdfs:label": "Developmental Pole",
-      "rdfs:comment": "Discrete stable state in developmental lifecycle with distinct morphology, behavior, and ecological role."
+      "dcterms:modified": "2026-04-20"
     },
     {
       "@id": "m0:pole_1_egg",
-      "@type": [
-        "m0:DevelopmentalPole"
-      ],
+      "@type": "owl:NamedIndividual",
       "rdfs:label": "Pole 1: Egg",
       "m0:poleNumber": 1,
       "m0:duration_days": "3-7",
@@ -87,15 +73,13 @@
         "D": 0.4
       },
       "rdfs:seeAlso": [
-        "m1:biology:Embryogenesis",
-        "m1:biology:ImagenalDiscDetermination"
+        "m1.ext:biology:Embryogenesis",
+        "m1.ext:biology:ImagenalDiscDetermination"
       ]
     },
     {
       "@id": "m0:pole_2_larva",
-      "@type": [
-        "m0:DevelopmentalPole"
-      ],
+      "@type": "owl:NamedIndividual",
       "rdfs:label": "Pole 2: Larva (Caterpillar)",
       "m0:poleNumber": 2,
       "m0:duration_days": "14-35",
@@ -127,16 +111,14 @@
         "Ecdysone": "Pulsatile (triggers molting between instars)"
       },
       "rdfs:seeAlso": [
-        "m1:biology:Ecdysis",
-        "m1:biology:Instar",
-        "m1:biology:JuvenileHormone"
+        "m1.ext:biology:Ecdysis",
+        "m1.ext:biology:Instar",
+        "m1.ext:biology:JuvenileHormone"
       ]
     },
     {
       "@id": "m0:pole_3_prepupa",
-      "@type": [
-        "m0:DevelopmentalPole"
-      ],
+      "@type": "owl:NamedIndividual",
       "rdfs:label": "Pole 3: Pre-Pupa (Chrysalis Formation)",
       "m0:poleNumber": 3,
       "m0:duration_days": "1-2",
@@ -162,15 +144,13 @@
       },
       "m0:transitionType": "Irreversible commitment to metamorphosis",
       "rdfs:seeAlso": [
-        "m1:biology:Ecdysis",
-        "m1:biology:Cremaster"
+        "m1.ext:biology:Ecdysis",
+        "m1.ext:biology:Cremaster"
       ]
     },
     {
       "@id": "m0:pole_4_pupa",
-      "@type": [
-        "m0:DevelopmentalPole"
-      ],
+      "@type": "owl:NamedIndividual",
       "rdfs:label": "Pole 4: Pupa (Chrysalis in Transformation)",
       "m0:poleNumber": 4,
       "m0:duration_days": "10-14 (variable: 7 days to 9 months depending on species, temperature, diapause)",
@@ -201,17 +181,15 @@
         "20-Hydroxyecdysone": "HIGH (drives imaginal disc differentiation)"
       },
       "rdfs:seeAlso": [
-        "m1:biology:Histolysis",
-        "m1:biology:Histogenesis",
-        "m1:biology:ImagenalDisc",
-        "m1:biology:Apoptosis"
+        "m1.ext:biology:Histolysis",
+        "m1.ext:biology:Histogenesis",
+        "m1.ext:biology:ImagenalDisc",
+        "m1.ext:biology:Apoptosis"
       ]
     },
     {
       "@id": "m0:pole_5_emergence",
-      "@type": [
-        "m0:DevelopmentalPole"
-      ],
+      "@type": "owl:NamedIndividual",
       "rdfs:label": "Pole 5: Emergence (Eclosion)",
       "m0:poleNumber": 5,
       "m0:duration_hours": "2-4",
@@ -248,16 +226,14 @@
       ],
       "m0:uniqueness": "This pole distinguishes 6-pole model from simpler 5-pole metamorphosis models. Captures dramatic vulnerability and hydraulic wing deployment dynamics.",
       "rdfs:seeAlso": [
-        "m1:biology:Eclosion",
-        "m1:biology:Sclerotization",
-        "m1:biology:Hemolymph"
+        "m1.ext:biology:Eclosion",
+        "m1.ext:biology:Sclerotization",
+        "m1.ext:biology:Hemolymph"
       ]
     },
     {
       "@id": "m0:pole_6_imago",
-      "@type": [
-        "m0:DevelopmentalPole"
-      ],
+      "@type": "owl:NamedIndividual",
       "rdfs:label": "Pole 6: Imago (Mature Adult)",
       "m0:poleNumber": 6,
       "m0:duration_days": "14-42 (highly variable: days to months)",
@@ -285,9 +261,9 @@
       },
       "m0:lifecycle_closure": "Female oviposits → returns to Pole 1 (Egg) at population level",
       "rdfs:seeAlso": [
-        "m1:biology:Imago",
-        "m1:biology:Pollination",
-        "m1:biology:Oviposition"
+        "m1.ext:biology:Imago",
+        "m1.ext:biology:Pollination",
+        "m1.ext:biology:Oviposition"
       ]
     },
     {

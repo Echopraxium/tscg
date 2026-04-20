@@ -1,7 +1,7 @@
 {
   "@context": {
-    "m1:chemistry:chemistry": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/chemistry/M1_Chemistry.jsonld#",
-    "m1:chemistry:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1.ext:chemistry:chemistry": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/chemistry/M1_Chemistry.jsonld#",
+    "m1.ext:chemistry:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/TSCG_M2_GenericConcepts_Ontology.jsonld#",
     "m3:genesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
     "m3:eagle_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
@@ -15,7 +15,7 @@
   },
   "@graph": [
     {
-      "@id": "m1:chemistry:M1_Chemistry_Ontology",
+      "@id": "m1.ext:chemistry:M1_Chemistry_Ontology",
       "@type": "owl:Ontology",
       "dcterms:title": "TSCG M1 Extension: Chemistry",
       "dcterms:description": "Domain-specific instantiation of M2 GenericConcepts for chemistry. Defines chemical processes, reactions, substances, and transformations using TSCG M2 GenericConcepts as foundation.",
@@ -26,17 +26,17 @@
       "owl:imports": [
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/TSCG_M2_GenericConcepts_Ontology.jsonld"
       ],
-      "m1:chemistry:domain": "Chemistry",
-      "m1:chemistry:functor": "F_instantiate : M2 â†’ M1_Chemistry",
+      "m1.ext:chemistry:domain": "Chemistry",
+      "m1.ext:chemistry:functor": "F_instantiate : M2 â†’ M1_Chemistry",
       "rdfs:comment": "This M1 extension specializes M2 GenericConcepts for chemical systems. Key principles: (1) Inherit M2 tensor formulas, (2) Add chemistry-specific properties, (3) Maintain ASFID foundation.",
-      "m1:chemistry:scope": [
+      "m1.ext:chemistry:scope": [
         "Chemical reactions and processes",
         "Molecular structure and bonding",
         "Thermochemistry and kinetics",
         "Chemical equilibria and dynamics",
         "Catalysis and reaction mechanisms"
       ],
-      "m1:chemistry:examplePoclets": [
+      "m1.ext:chemistry:examplePoclets": [
         "Fire Triangle (Combustion)",
         "Water Electrolysis",
         "Photosynthesis",
@@ -51,7 +51,7 @@
       }
     },
     {
-      "@id": "m1:chemistry:ChemicalReaction",
+      "@id": "m1.ext:chemistry:ChemicalReaction",
       "@type": "owl:Class",
       "rdfs:label": "Chemical Reaction",
       "skos:altLabel": [
@@ -59,19 +59,19 @@
         "Chemical Transformation"
       ],
       "rdfs:comment": "Process involving transformation of chemical species through bond breaking and formation, with associated energy changes. Instantiates M2:Process with chemistry-specific semantics.",
-      "m1:chemistry:asfidSignature": "DâŠ—F (high dynamics, high flow)",
-      "m1:chemistry:properties": {
-        "m1:chemistry:reactants": {
+      "m1.ext:chemistry:asfidSignature": "DâŠ—F (high dynamics, high flow)",
+      "m1.ext:chemistry:properties": {
+        "m1.ext:chemistry:reactants": {
           "type": "m1:ChemicalSpecies",
           "cardinality": "1..*",
           "role": "Input substances consumed"
         },
-        "m1:chemistry:products": {
+        "m1.ext:chemistry:products": {
           "type": "m1:ChemicalSpecies",
           "cardinality": "1..*",
           "role": "Output substances produced"
         },
-        "m1:chemistry:energyBalance": {
+        "m1.ext:chemistry:energyBalance": {
           "type": "xsd:string",
           "enum": [
             "Exothermic",
@@ -80,27 +80,27 @@
           ],
           "role": "Net energy change"
         },
-        "m1:chemistry:catalyst": {
+        "m1.ext:chemistry:catalyst": {
           "type": "m1:ChemicalSpecies",
           "cardinality": "0..1",
           "role": "Optional species enabling reaction without being consumed"
         },
-        "m1:chemistry:mechanism": {
+        "m1.ext:chemistry:mechanism": {
           "type": "xsd:string",
           "role": "Step-by-step process description"
         },
-        "m1:chemistry:rateConstant": {
+        "m1.ext:chemistry:rateConstant": {
           "type": "xsd:float",
           "unit": "varies (mol/LÂ·s, sâ»Â¹, etc.)",
           "role": "Kinetic parameter"
         }
       },
-      "m1:chemistry:constraints": [
+      "m1.ext:chemistry:constraints": [
         "Conservation of mass (atoms)",
         "Conservation of charge",
         "Energy conservation (1st law thermodynamics)"
       ],
-      "m1:chemistry:examples": [
+      "m1.ext:chemistry:examples": [
         "Hâ‚‚ + Oâ‚‚ â†’ Hâ‚‚O (water formation)",
         "CaCOâ‚ƒ â†’ CaO + COâ‚‚ (thermal decomposition)",
         "CHâ‚„ + 2Oâ‚‚ â†’ COâ‚‚ + 2Hâ‚‚O (methane combustion)"
@@ -119,7 +119,7 @@
       "rdfs:subClassOf": "m2:GenericConcept"
     },
     {
-      "@id": "m1:chemistry:Combustion",
+      "@id": "m1.ext:chemistry:Combustion",
       "@type": "owl:Class",
       "rdfs:subClassOf": "m1:ChemicalReaction",
       "rdfs:label": "Combustion",
@@ -128,8 +128,8 @@
         "Fire"
       ],
       "rdfs:comment": "Exothermic chemical reaction between a fuel and an oxidizer, producing heat, light, and combustion products. Canonical example: Fire Triangle (Fuel + Oâ‚‚ + Heat â†’ Flame).",
-      "m1:chemistry:asfidSignature": "High A, Medium S, High F, Medium I, High D",
-      "m1:chemistry:requiredComponents": [
+      "m1.ext:chemistry:asfidSignature": "High A, Medium S, High F, Medium I, High D",
+      "m1.ext:chemistry:requiredComponents": [
         {
           "name": "Fuel",
           "type": "m1:ChemicalSpecies",
@@ -163,9 +163,9 @@
           ]
         }
       ],
-      "m1:chemistry:properties": {
-        "m1:chemistry:energyBalance": "Exothermic (always)",
-        "m1:chemistry:products": {
+      "m1.ext:chemistry:properties": {
+        "m1.ext:chemistry:energyBalance": "Exothermic (always)",
+        "m1.ext:chemistry:products": {
           "typical": [
             "Heat",
             "Light",
@@ -175,7 +175,7 @@
           ],
           "note": "Products vary by fuel composition"
         },
-        "m1:chemistry:ignitionTemperature": {
+        "m1.ext:chemistry:ignitionTemperature": {
           "type": "xsd:float",
           "unit": "Kelvin or Celsius",
           "role": "Threshold temperature for self-sustaining combustion",
@@ -185,7 +185,7 @@
             "Methane": "580Â°C"
           }
         },
-        "m1:chemistry:flameStructure": {
+        "m1.ext:chemistry:flameStructure": {
           "zones": [
             "Preheat zone",
             "Combustion zone",
@@ -193,7 +193,7 @@
           ],
           "note": "Spatial organization of combustion process"
         },
-        "m1:chemistry:flameColor": {
+        "m1.ext:chemistry:flameColor": {
           "type": "xsd:string",
           "examples": {
             "Complete combustion": "Blue (high temp)",
@@ -201,7 +201,7 @@
           }
         }
       },
-      "m1:chemistry:constraints": [
+      "m1.ext:chemistry:constraints": [
         {
           "parameter": "Fuel concentration",
           "condition": "> LEL (Lower Explosive Limit)",
@@ -223,7 +223,7 @@
           "note": "Affects completeness and efficiency"
         }
       ],
-      "m1:chemistry:subTypes": [
+      "m1.ext:chemistry:subTypes": [
         {
           "name": "Complete Combustion",
           "condition": "Excess Oâ‚‚",
@@ -246,7 +246,7 @@
           ]
         }
       ],
-      "m1:chemistry:fireTrianglePrinciple": {
+      "m1.ext:chemistry:fireTrianglePrinciple": {
         "description": "Removal of ANY component stops combustion",
         "extinguishmentStrategies": [
           {
@@ -276,12 +276,12 @@
           }
         ]
       },
-      "m1:chemistry:feedbackLoop": {
+      "m1.ext:chemistry:feedbackLoop": {
         "type": "Positive feedback (self-sustaining)",
         "mechanism": "Heat produced â†’ Fuel vaporization â†’ More combustion â†’ More heat",
         "consequence": "Self-propagating once ignited (until resource exhaustion)"
       },
-      "m1:chemistry:examples": [
+      "m1.ext:chemistry:examples": [
         {
           "name": "Wood fire",
           "fuel": "Cellulose (Câ‚†Hâ‚â‚€Oâ‚…)â‚™",
@@ -331,7 +331,7 @@
       ]
     },
     {
-      "@id": "m1:chemistry:Oxidation",
+      "@id": "m1.ext:chemistry:Oxidation",
       "@type": "owl:Class",
       "rdfs:subClassOf": "m1:ChemicalReaction",
       "rdfs:label": "Oxidation",
@@ -340,12 +340,12 @@
         "Oxygen Gain"
       ],
       "rdfs:comment": "Reaction involving electron loss or oxygen gain. Combustion is a rapid oxidation; corrosion (rust) is slow oxidation.",
-      "m1:chemistry:properties": {
-        "m1:chemistry:electronTransfer": "Loss of electrons",
-        "m1:chemistry:oxidationState": "Increase in oxidation number",
-        "m1:chemistry:coupledReaction": "Always paired with Reduction (redox)"
+      "m1.ext:chemistry:properties": {
+        "m1.ext:chemistry:electronTransfer": "Loss of electrons",
+        "m1.ext:chemistry:oxidationState": "Increase in oxidation number",
+        "m1.ext:chemistry:coupledReaction": "Always paired with Reduction (redox)"
       },
-      "m1:chemistry:examples": [
+      "m1.ext:chemistry:examples": [
         "2Fe + Oâ‚‚ â†’ 2FeO (iron rusting - slow oxidation)",
         "C + Oâ‚‚ â†’ COâ‚‚ (carbon combustion - fast oxidation)",
         "FeÂ²âº â†’ FeÂ³âº + eâ» (electron loss)"
@@ -365,7 +365,7 @@
       ]
     },
     {
-      "@id": "m1:chemistry:Reduction",
+      "@id": "m1.ext:chemistry:Reduction",
       "@type": "owl:Class",
       "rdfs:subClassOf": "m1:ChemicalReaction",
       "rdfs:label": "Reduction",
@@ -374,12 +374,12 @@
         "Oxygen Loss"
       ],
       "rdfs:comment": "Reaction involving electron gain or oxygen loss. Always coupled with Oxidation in redox reactions.",
-      "m1:chemistry:properties": {
-        "m1:chemistry:electronTransfer": "Gain of electrons",
-        "m1:chemistry:oxidationState": "Decrease in oxidation number",
-        "m1:chemistry:coupledReaction": "Always paired with Oxidation (redox)"
+      "m1.ext:chemistry:properties": {
+        "m1.ext:chemistry:electronTransfer": "Gain of electrons",
+        "m1.ext:chemistry:oxidationState": "Decrease in oxidation number",
+        "m1.ext:chemistry:coupledReaction": "Always paired with Oxidation (redox)"
       },
-      "m1:chemistry:examples": [
+      "m1.ext:chemistry:examples": [
         "CuÂ²âº + 2eâ» â†’ Cu (copper plating)",
         "Feâ‚‚Oâ‚ƒ + 3CO â†’ 2Fe + 3COâ‚‚ (iron smelting)",
         "Oâ‚‚ + 4eâ» â†’ 2OÂ²â» (oxygen reduction)"
@@ -395,7 +395,7 @@
       ]
     },
     {
-      "@id": "m1:chemistry:ChemicalSpecies",
+      "@id": "m1.ext:chemistry:ChemicalSpecies",
       "@type": "owl:Class",
       "rdfs:label": "Chemical Species",
       "skos:altLabel": [
@@ -405,24 +405,24 @@
         "Ion"
       ],
       "rdfs:comment": "Identifiable chemical entity with specific molecular formula and properties. Instantiates M2:Component in chemistry domain.",
-      "m1:chemistry:properties": {
-        "m1:chemistry:molecularFormula": "Chemical composition (e.g., Hâ‚‚O, COâ‚‚, Câ‚†Hâ‚â‚‚Oâ‚†)",
-        "m1:chemistry:molecularMass": "Mass in g/mol or Da",
-        "m1:chemistry:phase": [
+      "m1.ext:chemistry:properties": {
+        "m1.ext:chemistry:molecularFormula": "Chemical composition (e.g., Hâ‚‚O, COâ‚‚, Câ‚†Hâ‚â‚‚Oâ‚†)",
+        "m1.ext:chemistry:molecularMass": "Mass in g/mol or Da",
+        "m1.ext:chemistry:phase": [
           "Solid",
           "Liquid",
           "Gas",
           "Plasma"
         ],
-        "m1:chemistry:structure": "3D arrangement of atoms (if applicable)"
+        "m1.ext:chemistry:structure": "3D arrangement of atoms (if applicable)"
       },
-      "m1:chemistry:subTypes": [
+      "m1.ext:chemistry:subTypes": [
         "m1:Element",
         "m1:Compound",
         "m1:Ion",
         "m1:Radical"
       ],
-      "m1:chemistry:examples": [
+      "m1.ext:chemistry:examples": [
         "Hâ‚‚O (water)",
         "Oâ‚‚ (dioxygen)",
         "CHâ‚„ (methane)",
@@ -437,17 +437,17 @@
       "rdfs:subClassOf": "m2:GenericConcept"
     },
     {
-      "@id": "m1:chemistry:Catalyst",
+      "@id": "m1.ext:chemistry:Catalyst",
       "@type": "owl:Class",
       "rdfs:subClassOf": "m1:ChemicalSpecies",
       "rdfs:label": "Catalyst",
       "rdfs:comment": "Chemical species that increases reaction rate without being consumed. Instantiates M2:Catalysis and M2:Mediator.",
-      "m1:chemistry:properties": {
-        "m1:chemistry:mechanism": "Lowers activation energy barrier",
-        "m1:chemistry:specificity": "Often selective for particular reactions",
-        "m1:chemistry:regeneration": "Recovered unchanged after reaction"
+      "m1.ext:chemistry:properties": {
+        "m1.ext:chemistry:mechanism": "Lowers activation energy barrier",
+        "m1.ext:chemistry:specificity": "Often selective for particular reactions",
+        "m1.ext:chemistry:regeneration": "Recovered unchanged after reaction"
       },
-      "m1:chemistry:examples": [
+      "m1.ext:chemistry:examples": [
         "Platinum (catalytic converter)",
         "Enzymes (biological catalysts)",
         "Hâ‚‚SOâ‚„ (acid catalyst in esterification)"
@@ -462,14 +462,14 @@
       ]
     },
     {
-      "@id": "m1:chemistry:ReactionMechanism",
+      "@id": "m1.ext:chemistry:ReactionMechanism",
       "@type": "owl:Class",
       "rdfs:label": "Reaction Mechanism",
       "rdfs:comment": "Step-by-step sequence of elementary reactions constituting overall chemical transformation.",
-      "m1:chemistry:properties": {
-        "m1:chemistry:elementarySteps": "List of individual reaction steps",
-        "m1:chemistry:intermediates": "Transient species formed and consumed",
-        "m1:chemistry:rateDeterminingStep": "Slowest step controlling overall rate"
+      "m1.ext:chemistry:properties": {
+        "m1.ext:chemistry:elementarySteps": "List of individual reaction steps",
+        "m1.ext:chemistry:intermediates": "Transient species formed and consumed",
+        "m1.ext:chemistry:rateDeterminingStep": "Slowest step controlling overall rate"
       },
       "m2:characterizedBy": [
         {

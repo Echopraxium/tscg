@@ -8,21 +8,24 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
-    "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m0:exposure-triangle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/ExposureTriangle/M0_ExposureTriangle.jsonld#"
+    "m0:exposure-triangle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/ExposureTriangle/M0_ExposureTriangle.jsonld#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#"
   },
   "@graph": [
     {
       "@id": "m0:ExposureTriangle",
-      "@type": "owl:NamedIndividual",
-      "rdf:type": "m0:Poclet",
+      "@type": "owl:Ontology",
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
       "rdfs:label": "Exposure Triangle (Photography)",
       "rdfs:comment": "Fundamental photographic system demonstrating BALANCE (Territory) between three parameters: ISO, Aperture, Shutter Speed. Photographers make conscious TRADE-OFFs (Map) between competing image qualities: depth of field, motion blur, grain/noise. Canonical pedagogical model in photography, analogous to Fire Triangle in combustion.",
-      "dcterms:created": "2026-01-20",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-01-20",
       "owl:versionInfo": "1.1.0",
+      "m1:domain": "Photography / Optics / Image Formation",
+      "rdf:type": "m0:Poclet",
       "m0:pocletType": "Canonical (Pedagogical Triangle)",
-      "m0:domain": "Photography / Optics / Image Formation",
       "m0:principle": "Balanced Exposure via Compensatory Parameter Adjustment",
       "m0:physicalBasis": "Light capture governed by multiplicative relationship: Exposure ∝ ISO × Aperture_Area × Time",
       "m0:pedagogicalRole": "Universal teaching model for photographic exposure control (equivalent to Fire Triangle for combustion)",
@@ -497,8 +500,18 @@
               "@type": "m2:ValueSpace",
               "value": 0.65,
               "rationale": "Triangle covers the 3-parameter exposure relationship and key trade-offs, but omits scene luminance, metering systems, optical physics (diffraction, aberrations), focal length (hand-holding rule), reciprocity failure, and computational photography. Significant blind spots → RSC < 0.7.",
-              "covered": ["ISO × Aperture × Shutter relationship", "Stop arithmetic", "DoF/Motion/Noise trade-offs"],
-              "uncovered": ["Scene luminance (4th parameter)", "Metering systems", "Optical aberrations", "Reciprocity failure", "Computational photography (HDR, AI)"]
+              "covered": [
+                "ISO × Aperture × Shutter relationship",
+                "Stop arithmetic",
+                "DoF/Motion/Noise trade-offs"
+              ],
+              "uncovered": [
+                "Scene luminance (4th parameter)",
+                "Metering systems",
+                "Optical aberrations",
+                "Reciprocity failure",
+                "Computational photography (HDR, AI)"
+              ]
             }
           },
           {
@@ -551,12 +564,40 @@
           }
         ],
         "byCategory": {
-          "Structural": ["Component", "Space", "Representation"],
-          "Informational": ["Signal", "Code", "Language"],
-          "Regulatory": ["Balance", "Trade-off", "Regulation", "Constraint", "Threshold", "Polarity"],
-          "Dynamic": ["Process", "Event", "Transformation", "Adaptation", "Amplification", "FeedbackLoop", "Behavior"],
-          "Adaptive": ["Memory"],
-          "Relational": ["Synergy", "Invariant"]
+          "Structural": [
+            "Component",
+            "Space",
+            "Representation"
+          ],
+          "Informational": [
+            "Signal",
+            "Code",
+            "Language"
+          ],
+          "Regulatory": [
+            "Balance",
+            "Trade-off",
+            "Regulation",
+            "Constraint",
+            "Threshold",
+            "Polarity"
+          ],
+          "Dynamic": [
+            "Process",
+            "Event",
+            "Transformation",
+            "Adaptation",
+            "Amplification",
+            "FeedbackLoop",
+            "Behavior"
+          ],
+          "Adaptive": [
+            "Memory"
+          ],
+          "Relational": [
+            "Synergy",
+            "Invariant"
+          ]
         }
       },
       "m0:analogyToFireTriangle": {
@@ -653,5 +694,8 @@
         "ISO 12232:2019 (Photography - Digital still cameras - Determination of exposure index)"
       ]
     }
-  ]
+  ],
+  "m3:ontologyType": {
+    "@id": "m3:Poclet"
+  }
 }

@@ -2,7 +2,7 @@
 
 **Author**: Echopraxium with the collaboration of Claude AI  
 **Created**: 2026-01-17  
-**Domain**: Chemistry  
+**Domain**: Chemistry, Thermodynamics, Fire Safety
 **Type**: Composite Poclet  
 **Status**: ✅ Validated - Canonical Example
 
@@ -91,7 +91,7 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 
 **Observer**: Human with standard scientific instrumentation
 
-**ASFID State Vector**: `|Ω_fire⟩ = 0.85|A⟩ + 0.70|S⟩ + 0.90|F⟩ + 0.65|I⟩ + 0.75|D⟩`
+**ASFID State Vector**: `|Ω_fire⟩ = 0.85|A⟩ + 0.70|S⟩ + 0.90|F⟩ + 0.65|It⟩ + 0.75|D⟩`
 
 | Dimension | Score | Interpretation |
 |-----------|-------|----------------|
@@ -118,7 +118,7 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 
 **Observer**: Western scientist (modern perspective)
 
-**REVOI State Vector**: `|M_triangle⟩_REVOI = 0.80|O⟩ + 0.90|R⟩ + 0.90|I⟩ + 0.95|V⟩ + 0.70|E⟩`
+**REVOI State Vector**: `|M_triangle⟩_REVOI = 0.80|O⟩ + 0.90|R⟩ + 0.90|Im⟩ + 0.95|V⟩ + 0.70|E⟩`
 
 | Dimension | Score | Interpretation |
 |-----------|-------|----------------|
@@ -231,7 +231,7 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 ### 3. Firefighter Perspective
 - **Basis**: REVOI (Sphinx Eye) — Map perspective
 - **REVOI State**: (R:0.80, E:0.75, V:0.85, O:0.85, I:0.60)
-- **State Vector**: |M_firefighter⟩_REVOI = 0.80|R⟩ + 0.75|E⟩ + 0.85|V⟩ + 0.85|O⟩ + 0.60|I⟩
+- **State Vector**: |M_firefighter⟩_REVOI = 0.80|R⟩ + 0.75|E⟩ + 0.85|V⟩ + 0.85|O⟩ + 0.60|Im⟩
 - **Differences**: High O/V (threat visible and testable), lower I (action-focused, not a universal standard)
 - **Interpretation**: Operational threat model (Map quality, not Territory measurement)
 
@@ -273,7 +273,7 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 
 | Criterion | Status | Assessment |
 |-----------|--------|------------|
-| **ASFID Completeness** | ✅ | All 5 dimensions present (A, S, F, I, D) |
+| **ASFID Completeness** | ✅ | All 5 dimensions present (A, S, F, It, D) |
 | **GenericConcept Coverage** | ✅ | 22/58 GenericConcepts mobilized (38%) |
 | **Minimality** | ✅ | Exactly 3 components (irreducible) |
 | **Emergence** | ✅ | Fire is emergent property (> sum of parts) |

@@ -4,66 +4,86 @@
     "m0": "instances/poclets/PlateTectonics/M0_PlateTectonics.jsonld#",
     "m1geo": "M1_extensions/geology/M1_Geology.jsonld#",
     "m1core": "M1_CoreConcepts.jsonld#",
-    "m2": "M2_GenericConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3eagle": "M3_EagleEye.jsonld#",
     "m3sphinx": "M3_SphinxEye.jsonld#",
-    "m3": "M3_GenesisSpace.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#"
   },
   "@graph": [
-
     {
       "@id": "m0:PlateTectonics",
       "@type": "owl:Ontology",
-      "dcterms:title": "TSCG M0 Plate Tectonics Poclet",
-      "dcterms:description": "Plate tectonics system (Wilson 1963, Morgan 1968). 5-pole geodynamic model demonstrating the interplay of Accretion (mid-ocean ridges), Transformation (subduction zones), thermodynamic driving (mantle convection), gravitational equilibrium (isostasy), and stress release (seismic faults). Primary validation domain for m1core:Accretion. Introduces M1_Geology extension and GeologicalAccretion KnowledgeFieldConceptCombo. Environmental significance: tectonic carbon cycle and geohazard generation.",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:created": "2026-04-05",
-      "dcterms:modified": "2026-04-05",
-      "owl:versionInfo": "1.1.0",
       "owl:imports": [
         "M3_GenesisSpace.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld",
         "M1_extensions/geology/M1_Geology.jsonld"
       ],
-      "m3:ontologyType": { "@id": "m3:Poclet" },
-      "m2:changelog": {
-        "v1_1_0": {
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
+      "rdfs:label": "TSCG M0 Plate Tectonics Poclet",
+      "rdfs:comment": "Plate tectonics system (Wilson 1963, Morgan 1968). 5-pole geodynamic model demonstrating the interplay of Accretion (mid-ocean ridges), Transformation (subduction zones), thermodynamic driving (mantle convection), gravitational equilibrium (isostasy), and stress release (seismic faults). Primary validation domain for m1core:Accretion. Introduces M1_Geology extension and GeologicalAccretion KnowledgeFieldConceptCombo. Environmental significance: tectonic carbon cycle and geohazard generation.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-04-05",
+      "owl:versionInfo": "1.1.0",
+      "m1:domain": "Geology / Geophysics",
+      "dcterms:modified": "2026-04-05",
+      "m2:changelog": [
+        {
+          "version": "1.1.0",
           "date": "2026-04-05",
-          "description": "Added m0:drivingForcesPhysics (mantle drives plates — slab pull 70%, ridge push 10%, mantle drag 20%). Added m0:eulerRotationNote to LithosphericPlate pole. Added MIT ARTEMiS educational reference (Ivanova & Perron 2013). Linked to static HTML simulation v2.0.0 (BabylonJS 6.26.0, 3 sliders, Wilson Cycle animation, labels overlay)."
+          "changes": "Added m0:drivingForcesPhysics (mantle drives plates — slab pull 70%, ridge push 10%, mantle drag 20%). Added m0:eulerRotationNote to LithosphericPlate pole. Added MIT ARTEMiS educational reference (Ivanova & Perron 2013). Linked to static HTML simulation v2.0.0 (BabylonJS 6.26.0, 3 sliders, Wilson Cycle animation, labels overlay)."
         },
-        "v1_0_0": {
+        {
+          "version": "1.0.0",
           "date": "2026-04-05",
-          "description": "Initial version. 5-pole system (LithosphericPlate, MidOceanRidge, SubductionZone, MantleConvectionCell, SeismicFault). ASFID mean=0.89, REVOI mean=0.854, delta=0.078 (OnCriticalLine). Primary validation of m1core:Accretion. Introduces M1_Geology extension."
+          "changes": "Initial version. 5-pole system (LithosphericPlate, MidOceanRidge, SubductionZone, MantleConvectionCell, SeismicFault). ASFID mean=0.89, REVOI mean=0.854, delta=0.078 (OnCriticalLine). Primary validation of m1core:Accretion. Introduces M1_Geology extension."
         }
-      }
+      ]
     },
-
     {
       "@id": "m0:PlateTectonicsSystem",
-      "@type": ["owl:NamedIndividual", "owl:Class"],
+      "@type": [
+        "owl:NamedIndividual",
+        "owl:Class"
+      ],
       "rdfs:label": "Plate Tectonics System",
       "rdfs:comment": "The governing geodynamic system of Earth's lithosphere: rigid plates floating on the viscous asthenosphere, driven by mantle convection, continuously creating new crust at mid-ocean ridges (Accretion / Negentropy) and destroying it at subduction zones (Transformation / Entropy export), while releasing accumulated stress along seismic faults and maintaining gravitational equilibrium through isostasy. A thermodynamic machine converting Earth's internal heat into surface deformation, volcanism, and geomorphology — while regulating the long-term carbon cycle and shaping the conditions for life.",
-      "m0:domain": "Geology / Geophysics",
       "m0:subdomains": [
-        "Geodynamics", "Seismology", "Volcanology",
-        "Paleoclimatology", "Biogeography", "Geohazard Science"
+        "Geodynamics",
+        "Seismology",
+        "Volcanology",
+        "Paleoclimatology",
+        "Biogeography",
+        "Geohazard Science"
       ],
       "m0:pocletType": "Thermodynamic Geodynamic System",
       "m0:observer": "Geophysicist / Earth System Scientist",
       "m0:poleCount": 5,
       "m0:poles": [
-        { "@id": "m0:Pole_LithosphericPlate" },
-        { "@id": "m0:Pole_MidOceanRidge" },
-        { "@id": "m0:Pole_SubductionZone" },
-        { "@id": "m0:Pole_MantleConvectionCell" },
-        { "@id": "m0:Pole_SeismicFault" }
+        {
+          "@id": "m0:Pole_LithosphericPlate"
+        },
+        {
+          "@id": "m0:Pole_MidOceanRidge"
+        },
+        {
+          "@id": "m0:Pole_SubductionZone"
+        },
+        {
+          "@id": "m0:Pole_MantleConvectionCell"
+        },
+        {
+          "@id": "m0:Pole_SeismicFault"
+        }
       ],
       "m0:discoveryReferences": [
         "Wegener A. (1912) — Die Entstehung der Kontinente, continental drift hypothesis",
@@ -76,7 +96,12 @@
         "title": "Visual Earth: Plate Tectonics — interactive 3D globe visualization",
         "url": "https://news.mit.edu/2013/as-the-world-turns-learning-about-plate-tectonics-through-on-screen-interactions",
         "pedagogicalApproach": "Data-layer expert groups: each student specializes in one data type (seismicity, volcanism, seafloor age, topography) then combines expertise to determine plate boundaries. Wilson Cycle and Pangaea splitting animations.",
-        "dataLayers": ["seafloor age", "earthquake locations", "volcano locations", "topography"],
+        "dataLayers": [
+          "seafloor age",
+          "earthquake locations",
+          "volcano locations",
+          "topography"
+        ],
         "relevanceToTSCG": "Validates the four primary observability axes of m0:mapSpace REVOI dimensions (R=maps, V=data layers, O=observability per layer, I=cross-discipline synthesis)"
       },
       "m0:drivingForcesPhysics": {
@@ -117,14 +142,13 @@
         "biogeography": "Continental drift drives species isolation → allopatric speciation (Darwin, Wallace)",
         "resources": "Ore deposits (Cu, Au, Ni, Cr, Pt) concentrated at fossil plate boundaries"
       },
-
       "m0:territorySpace": {
         "m0:asfidState": {
           "A": 0.85,
           "S": 0.95,
-          "F": 0.90,
+          "F": 0.9,
           "I": 0.85,
-          "D": 0.90,
+          "D": 0.9,
           "mean": 0.89,
           "commentary": {
             "A": "Isostasy is the primary attractor: any crustal perturbation triggers compensatory adjustment. Slightly below 1.0: Wilson cycle attractors (~500 Ma) difficult to quantify precisely.",
@@ -135,13 +159,12 @@
           }
         }
       },
-
       "m0:mapSpace": {
         "m0:reviState": {
-          "R": 0.90,
-          "E": 0.80,
+          "R": 0.9,
+          "E": 0.8,
           "V": 0.92,
-          "O": 0.80,
+          "O": 0.8,
           "I": 0.85,
           "mean": 0.854,
           "commentary": {
@@ -153,7 +176,6 @@
           }
         }
       },
-
       "m0:epistemicGap": {
         "delta": 0.078,
         "spectralClass": "OnCriticalLine",
@@ -162,7 +184,6 @@
         "commentary": "OnCriticalLine: mature model, two residual gaps. (1) S: ASFID=0.95 vs REVOI=0.80 — plate structure perfectly known but mantle Map-observability limited. (2) E: ASFID=0.85 vs REVOI=0.80 — isostasy understood but long-term geodynamic modeling remains challenging.",
         "balanceType": "Slightly Eagle Eye dominant — strong empirical grounding via GPS, seismology, geochronology"
       },
-
       "m0:synergyPrinciple": {
         "formula": "PlateTectonics = Geological ⊙ (m2:Entropy[Negentropy] ⊗ m1core:Accretion ⊗ m2:Transformation)",
         "formulaASCII": "PlateTectonics = Geological [o] (Entropy[Negentropy] (x) Accretion (x) Transformation)",
@@ -180,20 +201,48 @@
           ]
         }
       },
-
       "m0:primaryGenericConcepts": [
-        { "@id": "m2:Layer",          "role": "Lithospheric stratification (crust / lithospheric mantle / asthenosphere)" },
-        { "@id": "m2:Entropy",        "role": "Dual: Negentropy (ridge Accretion) + Entropy (heat export)" },
-        { "@id": "m1core:Accretion",  "role": "Seafloor spreading — canonical geological validation" },
-        { "@id": "m2:Transformation", "role": "Subduction — oceanic lithosphere → asthenosphere" },
-        { "@id": "m2:Equilibrium",    "role": "Isostasy — gravitational attractor of crustal thickness/density" },
-        { "@id": "m2:Convection",     "role": "Mantle thermodynamic driver (Ra ~ 10⁷)" },
-        { "@id": "m2:Trajectory",     "role": "Continental drift — Euler rotation vectors" },
-        { "@id": "m2:Threshold",      "role": "Seismic failure — Coulomb criterion" },
-        { "@id": "m2:Cycle",          "role": "Wilson cycle ~500 Ma" },
-        { "@id": "m2:Bifurcation",    "role": "Ridge genesis — divergent boundary" }
+        {
+          "@id": "m2:Layer",
+          "role": "Lithospheric stratification (crust / lithospheric mantle / asthenosphere)"
+        },
+        {
+          "@id": "m2:Entropy",
+          "role": "Dual: Negentropy (ridge Accretion) + Entropy (heat export)"
+        },
+        {
+          "@id": "m1core:Accretion",
+          "role": "Seafloor spreading — canonical geological validation"
+        },
+        {
+          "@id": "m2:Transformation",
+          "role": "Subduction — oceanic lithosphere → asthenosphere"
+        },
+        {
+          "@id": "m2:Equilibrium",
+          "role": "Isostasy — gravitational attractor of crustal thickness/density"
+        },
+        {
+          "@id": "m2:Convection",
+          "role": "Mantle thermodynamic driver (Ra ~ 10⁷)"
+        },
+        {
+          "@id": "m2:Trajectory",
+          "role": "Continental drift — Euler rotation vectors"
+        },
+        {
+          "@id": "m2:Threshold",
+          "role": "Seismic failure — Coulomb criterion"
+        },
+        {
+          "@id": "m2:Cycle",
+          "role": "Wilson cycle ~500 Ma"
+        },
+        {
+          "@id": "m2:Bifurcation",
+          "role": "Ridge genesis — divergent boundary"
+        }
       ],
-
       "m0:transdisciplinaryResonances": {
         "Climatology": "Continental positions control ocean circulation; orogenic weathering regulates CO2 (Walker cycle)",
         "Biogeography": "Plate separation → allopatric speciation; collisions → faunal exchange (Great American Biotic Interchange)",
@@ -201,7 +250,6 @@
         "TrophicPyramid": "Both: stratified (m2:Layer), energy-flux driven, threshold-mediated",
         "PhaseTransition": "Mantle melting, eclogite transition, slab dehydration = first-order phase transitions at geological scale"
       },
-
       "m0:m1ContributionSummary": {
         "newM1Extension": "M1_Geology.jsonld — first TSCG Earth Sciences extension (9 concepts + 1 KFCCombo)",
         "validatedM1CoreCombos": [
@@ -215,15 +263,20 @@
         ]
       }
     },
-
     {
       "@id": "m0:Pole_LithosphericPlate",
-      "@type": ["owl:NamedIndividual", "m1geo:LithosphericPlate"],
+      "@type": [
+        "owl:NamedIndividual",
+        "m1geo:LithosphericPlate"
+      ],
       "rdfs:label": "Lithospheric Plate",
       "rdfs:comment": "Rigid structural unit of the plate tectonics system. Moves as a coherent block on the viscous asthenosphere, driven by mantle convection and slab pull. The primary S element of the system.",
       "m0:poleIndex": 1,
       "m0:poleRole": "STRUCTURAL UNIT (S dominant)",
-      "m0:dominantDimensions": ["m3eagle:Structure", "m3eagle:Attractor"],
+      "m0:dominantDimensions": [
+        "m3eagle:Structure",
+        "m3eagle:Attractor"
+      ],
       "m0:asfidContribution": {
         "A": "Plate velocity converges toward mantle convection steady-state",
         "S": "The plate IS the structural unit — rigid, bounded, mobile",
@@ -238,18 +291,26 @@
         "count": "7 major + ~15 minor plates"
       },
       "m0:eulerRotationNote": "Plate motion is mathematically described as rotation about a fixed Euler pole on the unit sphere (Euler's theorem for rigid body rotation on a sphere). This explains why Africa and South America did not separate along a straight translation but along curved paths. In the simulation, the Asymmetry slider introduces differential convection, breaking bilateral symmetry and causing the continental plate to rotate — as geophysically observed.",
-      "m0:primaryM2": ["m2:Layer", "m2:Trajectory"],
+      "m0:primaryM2": [
+        "m2:Layer",
+        "m2:Trajectory"
+      ],
       "m0:primaryM1geo": "m1geo:LithosphericPlate"
     },
-
     {
       "@id": "m0:Pole_MidOceanRidge",
-      "@type": ["owl:NamedIndividual", "m1geo:MidOceanRidge"],
+      "@type": [
+        "owl:NamedIndividual",
+        "m1geo:MidOceanRidge"
+      ],
       "rdfs:label": "Mid-Ocean Ridge",
       "rdfs:comment": "Divergent boundary and primary Accretion zone. New oceanic crust continuously created by decompression melting of ascending asthenosphere. The Negentropy pole: local order (crystalline basalt) emerges from disordered mantle melt. Canonical validation domain for m1core:Accretion.",
       "m0:poleIndex": 2,
       "m0:poleRole": "ACCRETION ZONE — Negentropy (F + S dominant)",
-      "m0:dominantDimensions": ["m3eagle:Flow", "m3eagle:Structure"],
+      "m0:dominantDimensions": [
+        "m3eagle:Flow",
+        "m3eagle:Structure"
+      ],
       "m0:asfidContribution": {
         "A": "Ridge axis is topographic attractor — new crust always forms at shallowest point",
         "S": "Symmetric spreading: crust added equally to both diverging plates",
@@ -264,19 +325,30 @@
         "East Pacific Rise (~10-17 cm/yr fast spreading)",
         "Carlsberg Ridge (Indian Ocean)"
       ],
-      "m0:primaryM2": ["m2:Bifurcation", "m2:Entropy"],
+      "m0:primaryM2": [
+        "m2:Bifurcation",
+        "m2:Entropy"
+      ],
       "m0:primaryM1core": "m1core:Accretion",
-      "m0:primaryM1geo": ["m1geo:MidOceanRidge", "m1geo:GeologicalAccretion"]
+      "m0:primaryM1geo": [
+        "m1geo:MidOceanRidge",
+        "m1geo:GeologicalAccretion"
+      ]
     },
-
     {
       "@id": "m0:Pole_SubductionZone",
-      "@type": ["owl:NamedIndividual", "m1geo:SubductionZone"],
+      "@type": [
+        "owl:NamedIndividual",
+        "m1geo:SubductionZone"
+      ],
       "rdfs:label": "Subduction Zone",
       "rdfs:comment": "Convergent boundary and primary Transformation zone. Dense oceanic lithosphere descends into the mantle, generating seismicity, arc volcanism, and lithospheric recycling. Balances MidOceanRidge creation in the Wilson cycle. Entropy export pole: volatiles and heat released as lithosphere transforms back into mantle material.",
       "m0:poleIndex": 3,
       "m0:poleRole": "TRANSFORMATION ZONE — Entropy export (D + F dominant)",
-      "m0:dominantDimensions": ["m3eagle:Dynamics", "m3eagle:Flow"],
+      "m0:dominantDimensions": [
+        "m3eagle:Dynamics",
+        "m3eagle:Flow"
+      ],
       "m0:asfidContribution": {
         "A": "Subduction angle converges toward steady-state dip (~30-60°) controlled by slab density/viscosity",
         "S": "Layered slab: metabasalt → eclogite transformation with depth",
@@ -290,18 +362,27 @@
         "Japan Trench (2011 Tōhoku Mw 9.0)",
         "Peru-Chile Trench (Nazca under S. America — Andes driver)"
       ],
-      "m0:primaryM2": ["m2:Transformation", "m2:Threshold", "m2:Trajectory"],
+      "m0:primaryM2": [
+        "m2:Transformation",
+        "m2:Threshold",
+        "m2:Trajectory"
+      ],
       "m0:primaryM1geo": "m1geo:SubductionZone"
     },
-
     {
       "@id": "m0:Pole_MantleConvectionCell",
-      "@type": ["owl:NamedIndividual", "m1geo:MantleConvectionCell"],
+      "@type": [
+        "owl:NamedIndividual",
+        "m1geo:MantleConvectionCell"
+      ],
       "rdfs:label": "Mantle Convection Cell",
       "rdfs:comment": "Thermodynamic motor of the system. Converts Earth's internal heat (radiogenic + primordial) into mechanical work (plate motion) through viscous mantle flow. Without convection, plates would stop. The primary F + D element of the system.",
       "m0:poleIndex": 4,
       "m0:poleRole": "THERMODYNAMIC DRIVER (F + D dominant)",
-      "m0:dominantDimensions": ["m3eagle:Flow", "m3eagle:Dynamics"],
+      "m0:dominantDimensions": [
+        "m3eagle:Flow",
+        "m3eagle:Dynamics"
+      ],
       "m0:asfidContribution": {
         "A": "Rayleigh-Bénard self-organization: hot rises, cools, sinks — stable cellular attractor (Ra ~ 10⁷)",
         "S": "Cellular structure: upwelling limbs (ridges/plumes) + downwelling limbs (subducting slabs)",
@@ -314,18 +395,27 @@
         "Basal heating from core-mantle boundary (~10 TW)",
         "Internal radioactive decay U, Th, K (~20 TW)"
       ],
-      "m0:primaryM2": ["m2:Convection", "m2:Cycle", "m2:Entropy"],
+      "m0:primaryM2": [
+        "m2:Convection",
+        "m2:Cycle",
+        "m2:Entropy"
+      ],
       "m0:primaryM1geo": "m1geo:MantleConvectionCell"
     },
-
     {
       "@id": "m0:Pole_SeismicFault",
-      "@type": ["owl:NamedIndividual", "m1geo:SeismicFault"],
+      "@type": [
+        "owl:NamedIndividual",
+        "m1geo:SeismicFault"
+      ],
       "rdfs:label": "Seismic Fault",
       "rdfs:comment": "Stress accumulation and release interface. Faults accumulate elastic strain energy over interseismic periods (decades-centuries), then release it as earthquakes when the Coulomb failure criterion is exceeded. Instantiates m2:Threshold. Transform plate boundaries ARE seismic faults at the largest scale.",
       "m0:poleIndex": 5,
       "m0:poleRole": "STRESS RELEASE (I + D dominant)",
-      "m0:dominantDimensions": ["m3eagle:Information", "m3eagle:Dynamics"],
+      "m0:dominantDimensions": [
+        "m3eagle:Information",
+        "m3eagle:Dynamics"
+      ],
       "m0:asfidContribution": {
         "A": "Seismic cycle attractor: fault returns to locked interseismic state after each earthquake",
         "S": "Fault geometry (strike, dip, rake) defines rupture plane",
@@ -339,9 +429,12 @@
         "North Anatolian Fault (migrating earthquake sequence since 1939)",
         "Dead Sea Transform (pull-apart basins)"
       ],
-      "m0:primaryM2": ["m2:Threshold", "m2:Pressure", "m2:Bifurcation"],
+      "m0:primaryM2": [
+        "m2:Threshold",
+        "m2:Pressure",
+        "m2:Bifurcation"
+      ],
       "m0:primaryM1geo": "m1geo:SeismicFault"
     }
-
   ]
 }

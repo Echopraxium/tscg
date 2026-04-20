@@ -371,7 +371,7 @@ input[type="range"].comp-slider::-webkit-slider-thumb {
     <span class="sep">&middot;</span>
     <span class="poclet-name">Fire Triangle &mdash; CombustionEquilibrium Poclet</span>
     <div class="meta-chips">
-      <span class="chip domain">Chemistry / Physics</span>
+      <span class="chip domain">Chemistry / Thermodynamics / Fire Safety</span>
       <span class="chip type">m3:Poclet</span>
       <span class="chip version">v1.0.0</span>
     </div>
@@ -621,7 +621,7 @@ const POCLET_METADATA = {
   id:        'M0_FireTriangle',
   label:     'Fire Triangle',
   version:   '1.0.0',
-  domain:    'Chemistry / Physics',
+  domain:    'Chemistry / Thermodynamics / Fire Safety',
   type:      'Poclet',
   date:      '2026-03-15',
   author:    'Echopraxium with the collaboration of Claude AI',
@@ -634,8 +634,8 @@ const POCLET_METADATA = {
     empiricalLaw:      'Extinction law: removing any one component immediately terminates combustion'
   },
 
-  asfid: { A: 0.90, S: 0.85, F: 0.85, I: 0.80, D: 0.90, mean: 0.86 },
-  revoi: { R: 0.90, E: 0.70, V: 0.95, O: 0.85, I: 0.85, mean: 0.85 },
+  asfid: { A: 0.90, S: 0.85, F: 0.85, It: 0.80, D: 0.90, mean: 0.86 },
+  revoi: { R: 0.90, E: 0.70, V: 0.95, O: 0.85, Im: 0.85, mean: 0.85 },
   epistemicGap:     0.01,
   epistemicGapDesc: 'Near-zero gap \u2014 the Fire Triangle is an almost perfect Map of combustion Territory',
 
@@ -665,7 +665,7 @@ const POCLET_METADATA = {
       defaultValue:     0.65,
       extinctionMethod: 'Cooling \u2014 water spray, CO\u2082 extinguisher, heat-absorbing powder',
       description:      'Ignition source providing the activation energy to initiate the oxidation chain reaction. Sources: spark, friction, pilot flame. Minimum = ignition temperature of the specific fuel (wood ~300\u00b0C, methane ~580\u00b0C).',
-      asfid: { A: 0.90, S: 0.75, F: 0.85, I: 0.90, D: 0.95 }
+      asfid: { A: 0.90, S: 0.75, F: 0.85, It: 0.90, D: 0.95 }
     },
     {
       id:               'fuel',
@@ -677,7 +677,7 @@ const POCLET_METADATA = {
       defaultValue:     0.75,
       extinctionMethod: 'Fuel removal \u2014 fire breaks, closing gas valve, clearing brush',
       description:      'Reducing agent providing carbon-hydrogen bonds for oxidation. Must exceed stoichiometric minimum. Sources: cellulose, hydrocarbons, metals. Extinction: fuel starvation (fire breaks, gas valve closure, water curtain).',
-      asfid: { A: 0.85, S: 0.90, F: 0.90, I: 0.75, D: 0.85 }
+      asfid: { A: 0.85, S: 0.90, F: 0.90, It: 0.75, D: 0.85 }
     },
     {
       id:               'oxygen',
@@ -689,7 +689,7 @@ const POCLET_METADATA = {
       defaultValue:     0.70,
       extinctionMethod: 'Smothering \u2014 CO\u2082 extinguisher, foam, fire blanket (O\u2082 exclusion)',
       description:      'Atmospheric oxidizer (O\u2082 \u2265 16% required). Accepts electrons in the redox reaction. Standard air: 21% O\u2082. Fire smothers at <16%. Extinction: CO\u2082 blanket, foam, fire blanket \u2014 all displace O\u2082 below threshold.',
-      asfid: { A: 0.90, S: 0.85, F: 0.85, I: 0.80, D: 0.85 }
+      asfid: { A: 0.90, S: 0.85, F: 0.85, It: 0.80, D: 0.85 }
     }
   ]
 };
@@ -803,7 +803,7 @@ function updatePoleInfoPanel(poleId) {
         \u2702\ufe0f Extinction: ${pole.extinctionMethod}
       </div>
       <div style="font-size:10px;color:var(--muted)">
-        ASFID: A=${pole.asfid.A} S=${pole.asfid.S} F=${pole.asfid.F} I=${pole.asfid.I} D=${pole.asfid.D}
+        ASFID: A=${pole.asfid.A} S=${pole.asfid.S} F=${pole.asfid.F} I=${pole.asfid.It} D=${pole.asfid.D}
       </div>
       <div style="font-size:11px;color:${col};margin-top:4px;font-weight:600">${status}</div>
     </div>`;

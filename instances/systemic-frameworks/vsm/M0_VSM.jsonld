@@ -1,32 +1,34 @@
 {
   "@context": {
-    "@base": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/ontology/",
-    "sm": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/instances/",
-    "m0": "https://raw.githubusercontent.com/aladas-org/cryptocalc/master/instances/systemic-frameworks/Vsm/M0_VSM.jsonld#",
-    "m2": "M2_GenericConcepts.jsonld#",
-    "m1": "M1_CoreConcepts.jsonld#",
-    "m3": "M3_GenesisSpace.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/systemic-frameworks/Vsm/"
   },
   "@graph": [
     {
-      "@id": "m0:vsm:VSM_Framework",
+      "@id": "M0_Vsm.jsonld#vsm:VSM_Framework",
       "@type": "owl:Ontology",
-      "dcterms:title": "Viable System Model (Stafford Beer) - Systemic Framework",
-      "dcterms:description": "Stafford Beer's Viable System Model (VSM) formalized within TSCG framework using GenericConceptCombo patterns. VSM defines organizational viability through 5 recursive subsystems managing operations, coordination, optimization, intelligence, and policy. Foundation: Ashby's Law of Requisite Variety. Version 1.1.0 introduces proper GenericConceptCombo modeling for VSM-specific concepts.",
+      "owl:imports": [
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld"
+      ],
+      "m3:ontologyType": {
+        "@id": "m3:SystemicFramework"
+      },
+      "rdfs:label": "Viable System Model (Stafford Beer) - Systemic Framework",
+      "rdfs:comment": "Stafford Beer's Viable System Model (VSM) formalized within TSCG framework. VSM defines organizational viability through 5 recursive subsystems managing operations, coordination, optimization, intelligence, and policy. Foundation: Ashby's Law of Requisite Variety.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-28",
-      "dcterms:modified": "2026-02-03",
-      "owl:versionInfo": "1.1.0",
-      "owl:imports": [
-        "M2_GenericConcepts.jsonld",
-        "M1_CoreConcepts.jsonld"
-      ],
+      "owl:versionInfo": "1.2.0",
+      "m1:domain": "Cybernetics",
+      "dcterms:modified": "2026-04-20",
       "dcterms:source": {
         "primary": "Stafford Beer, Brain of the Firm (1972)",
         "secondary": [
@@ -114,9 +116,6 @@
             "fourStrokeEngine": 0.22
           }
         }
-      },
-      "m3:ontologyType": {
-        "@id": "m3:SystemicFramework"
       }
     },
     {
@@ -383,8 +382,11 @@
       "rdfs:comment": "Quantifies the number of distinguishable states a VSM component can exhibit (Ashby's variety). Foundation of requisite variety matching.",
       "rdfs:domain": "owl:Thing",
       "rdfs:range": "xsd:nonNegativeInteger",
-      "m0:instantiatesM2": "m2:ValueSpace",
-      "m0:ashbyLaw": "V(Regulator) ≥ V(Disturbance)"
+      "m0:instantiatesM2": [
+        "m2:ValueSpace"
+      ],
+      "m0:ashbyLaw": "V(Regulator) ≥ V(Disturbance)",
+      "m0:valueSpaceRole": "Quantifies the cardinality of the value-space (Ashby variety = number of distinguishable states). Foundation for GenericConceptCombo(ValueSpace, Amplification↑/↓) gain calculations."
     },
     {
       "@id": "m0:vsm:attenuatesVariety",
@@ -393,8 +395,18 @@
       "rdfs:comment": "Filtering/reducing variety flowing upward through hierarchy. Example: S3* audit filters S1 data before presenting to S3.",
       "rdfs:domain": "owl:Thing",
       "rdfs:range": "owl:Thing",
-      "m0:instantiatesM2": "m2:Channel",
-      "m0:mechanism": "Filtering, aggregation, summarization, exception-based reporting"
+      "m0:instantiatesM2": [
+        "m2:GenericConceptCombo",
+        "m2:ValueSpace",
+        "m2:Amplification"
+      ],
+      "m0:mechanism": "Filtering, aggregation, summarization, exception-based reporting",
+      "m0:GenericConceptCombo": {
+        "instance": "m0:vsm:VarietyAttenuation",
+        "formula": "GenericConceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation",
+        "parent_A": "m2:ValueSpace",
+        "parent_B": "m2:Amplification↓ (attenuationAspect, 0 < Gain < 1)"
+      }
     },
     {
       "@id": "m0:vsm:amplifiesVariety",
@@ -403,8 +415,18 @@
       "rdfs:comment": "Expanding variety flowing downward through hierarchy. Example: S3 command amplified into detailed S1 operational actions.",
       "rdfs:domain": "owl:Thing",
       "rdfs:range": "owl:Thing",
-      "m0:instantiatesM2": "m2:Channel",
-      "m0:mechanism": "Elaboration, specification, contextualization, local adaptation"
+      "m0:instantiatesM2": [
+        "m2:GenericConceptCombo",
+        "m2:ValueSpace",
+        "m2:Amplification"
+      ],
+      "m0:mechanism": "Elaboration, specification, contextualization, local adaptation",
+      "m0:GenericConceptCombo": {
+        "instance": "m0:vsm:VarietyAmplification",
+        "formula": "GenericConceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification",
+        "parent_A": "m2:ValueSpace",
+        "parent_B": "m2:Amplification↑ (amplificationAspect, Gain > 1)"
+      }
     },
     {
       "@id": "m0:vsm:AlgedonicSignal",
@@ -446,7 +468,10 @@
       "rdfs:label": "Requisite Variety Principle",
       "rdfs:comment": "Ashby's Law applied to VSM: a regulator must have variety at least equal to the variety of disturbances it aims to control. Fundamental constraint on viable system design.",
       "rdfs:subClassOf": "m2:Constraint",
-      "m0:instantiatesM2": "m2:Constraint",
+      "m0:instantiatesM2": [
+        "m2:Constraint",
+        "m2:ValueSpace"
+      ],
       "m0:formalization": "V(Regulator) ≥ V(Disturbance)",
       "m0:implications": [
         "S2 coordination variety must match inter-S1 conflict variety",
@@ -455,7 +480,8 @@
         "Variety attenuation required for upward flow (avoid overload)",
         "Variety amplification required for downward flow (provide detail)"
       ],
-      "m0:reference": "W. Ross Ashby, An Introduction to Cybernetics (1956), Chapter 11"
+      "m0:reference": "W. Ross Ashby, An Introduction to Cybernetics (1956), Chapter 11",
+      "m0:valueSpaceFormalization": "V(Regulator) ≥ V(Disturbance) where V = cardinality of ValueSpace (It dimension). Managed via VarietyAmplification (↓ flow) and VarietyAttenuation (↑ flow)."
     },
     {
       "@id": "m0:vsm:RecursiveViability",
@@ -507,6 +533,131 @@
       ]
     },
     {
+      "@id": "m0:vsm:VarietyAmplification",
+      "@type": "owl:Class",
+      "rdfs:label": "Variety Amplification",
+      "rdfs:comment": "GenericConceptCombo instance: GenericConceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification. Synergistic combination of ValueSpace (It⊗V⊗O⊗R⊗Im) and Amplification↑ (Ft⊗D⊗It⊗R⊗O, Gain > 1). Implements VSM S2 coordination — increases Im (interoperability) of variety flowing downward from metasystem to S1 operational units. Shared dimensions {It, R, O} couple rather than duplicate, producing a reduced emergent subspace.",
+      "rdfs:subClassOf": "m2:Amplification",
+      "m0:instantiatesM2": [
+        "m2:GenericConceptCombo",
+        "m2:ValueSpace",
+        "m2:Amplification"
+      ],
+      "m0:GenericConceptCombo": {
+        "operator": "⊗⇒",
+        "parent_A": {
+          "@id": "m2:ValueSpace",
+          "label": "ValueSpace",
+          "formula": "It⊗V⊗O⊗R⊗Im",
+          "role": "Space of possible values — defines the variety being amplified"
+        },
+        "parent_B": {
+          "@id": "m2:Amplification#amplificationAspect",
+          "label": "Amplification↑",
+          "direction": "Increase (↑)",
+          "operation": "Gain > 1",
+          "formula": "Ft⊗D⊗It⊗R⊗O",
+          "role": "Gain operation — scales variety magnitude upward"
+        },
+        "emergenceFormula": "GenericConceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification",
+        "sharedDimensions": [
+          "It",
+          "R",
+          "O"
+        ],
+        "couplingDetails": {
+          "It_coupling": "Variety cardinality (ValueSpace.It) couples with amplified signal information (Amplification↑.It) — the variety being amplified IS the information content being elaborated",
+          "R_coupling": "Value-space representability (ValueSpace.R) couples with amplification-stage representability (Amplification↑.R) — elaboration steps must remain symbolizable in the same model",
+          "O_coupling": "Variety observability (ValueSpace.O) couples with amplification observability (Amplification↑.O) — amplified variety remains traceable at each elaboration stage"
+        },
+        "emergentSubspace": "3 shared dimensions couple rather than duplicate — emergent result is a reduced subspace, not a naive 8D concatenation (cf. GenericConceptCombo couplingRule)"
+      },
+      "m0:vsmRole": "S2 Coordination — Variety Amplification (downward flow)",
+      "m0:vsmFunction": {
+        "direction": "Downward (metasystem → S1)",
+        "source": "S3 directives, S4 strategic options, S5 policy",
+        "target": "S1 operational units",
+        "effect": "Increases Im (interoperability) so S1 can interpret and execute high-level commands with operational granularity",
+        "ashbyConstraint": "Amplified variety must not exceed S1 operational capacity — pathology if violated: micromanagement (S1 overloaded)"
+      },
+      "m0:gainProfile": {
+        "gain": "G > 1",
+        "territory": "Ft↑ (more variety flowing down), It↑ (richer operational detail)",
+        "map": "R maintained (elaboration stages representable), O maintained (flow traceable in Beer diagram)"
+      },
+      "m0:examples": [
+        "S3 'reduce costs 10%' → S1: specific supplier renegotiations, process optimizations, headcount freezes",
+        "S4 'enter Asian market' → S1: market research tasks, product localization specs, logistics setup",
+        "S5 'maintain quality ethos' → S2 standards → S1: specific quality checkpoints per production line",
+        "Software: architectural decision → team-level sprint tasks (variety amplified through decomposition)"
+      ],
+      "m0:pathologyIfAbsent": "S1 receives abstract directives without operational detail → drift, misalignment, or costly misinterpretation of metasystem intent"
+    },
+    {
+      "@id": "m0:vsm:VarietyAttenuation",
+      "@type": "owl:Class",
+      "rdfs:label": "Variety Attenuation",
+      "rdfs:comment": "GenericConceptCombo instance: GenericConceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation. Synergistic combination of ValueSpace (It⊗V⊗O⊗R⊗Im) and Amplification↓ (Ft⊗D⊗It⊗R⊗O, 0 < Gain < 1). Implements VSM S3 optimization — decreases O (observability) of variety flowing upward from S1 to metasystem, while preserving V (verifiability) for S3* audit integrity. Shared dimensions {It, R, O} couple rather than duplicate, producing a reduced emergent subspace.",
+      "rdfs:subClassOf": "m2:Amplification",
+      "m0:instantiatesM2": [
+        "m2:GenericConceptCombo",
+        "m2:ValueSpace",
+        "m2:Amplification"
+      ],
+      "m0:GenericConceptCombo": {
+        "operator": "⊗⇒",
+        "parent_A": {
+          "@id": "m2:ValueSpace",
+          "label": "ValueSpace",
+          "formula": "It⊗V⊗O⊗R⊗Im",
+          "role": "Space of possible values — defines the variety being attenuated"
+        },
+        "parent_B": {
+          "@id": "m2:Amplification#attenuationAspect",
+          "label": "Amplification↓",
+          "direction": "Decrease (↓)",
+          "operation": "0 < Gain < 1",
+          "formula": "Ft⊗D⊗It⊗R⊗O",
+          "role": "Gain operation — scales variety magnitude downward (filtering)"
+        },
+        "emergenceFormula": "GenericConceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation",
+        "sharedDimensions": [
+          "It",
+          "R",
+          "O"
+        ],
+        "couplingDetails": {
+          "It_coupling": "Variety cardinality (ValueSpace.It) couples with attenuated signal information (Amplification↓.It) — the variety being filtered IS the information content being compressed",
+          "R_coupling": "Value-space representability (ValueSpace.R) couples with attenuation-stage representability (Amplification↓.R) — summarization must remain symbolizable",
+          "O_coupling": "Variety observability (ValueSpace.O) couples with attenuation observability (Amplification↓.O) — filtered output observable by S3 at reduced granularity"
+        },
+        "emergentSubspace": "3 shared dimensions couple rather than duplicate — emergent result is a reduced subspace, not a naive 8D concatenation (cf. GenericConceptCombo couplingRule)"
+      },
+      "m0:vsmRole": "S3 Optimization — Variety Attenuation (upward flow)",
+      "m0:vsmFunction": {
+        "direction": "Upward (S1 → metasystem)",
+        "source": "S1 operational data, performance metrics, local state reports",
+        "target": "S3 (optimization), S3* (audit), S5 (policy oversight)",
+        "effect": "Reduces O (observability) for S3 manageability while preserving V (verifiability) for audit integrity",
+        "ashbyConstraint": "Attenuated variety must not drop below S3 decision threshold — pathology if violated: blind spots (critical signals lost)",
+        "verifiabilityGuard": "V must be preserved throughout attenuation chain — S3* audit channel exists precisely to verify attenuation has not destroyed critical information"
+      },
+      "m0:gainProfile": {
+        "gain": "0 < G < 1",
+        "territory": "Ft↓ (less variety flowing up), It↓ (compressed operational detail)",
+        "map": "O reduced (less granular view for S3), V maintained (audit integrity preserved)"
+      },
+      "m0:examples": [
+        "S1 raw production data → S3: exception-based dashboard (only deviations reported)",
+        "S1 individual transaction logs → S3: aggregated KPI summary (statistical process control)",
+        "S1 detailed project timelines → S3: milestone-level status (hierarchical filtering)",
+        "S1 sensor readings → S3: trend alerts with confidence intervals (statistical attenuation)",
+        "Software: microservice logs → ops dashboard: error rate, latency percentiles"
+      ],
+      "m0:relationToS3star": "S3* audit channel bypasses VarietyAttenuation selectively — when S3* suspects attenuation has hidden critical info, it accesses S1 directly at full variety. This is the V-preservation mechanism in action.",
+      "m0:pathologyIfAbsent": "S3 receives unfiltered S1 variety → cognitive overload, decision paralysis, inability to distinguish signal from noise (the 'variety overload' pathology)"
+    },
+    {
       "@id": "m0:vsm:VarietyEngineering",
       "@type": "owl:Class",
       "rdfs:label": "Variety Engineering",
@@ -529,7 +680,24 @@
         "S3* audit: Attenuate S1 variety via sampling instead of exhaustive monitoring",
         "S3 command: Amplify 'reduce costs 10%' into detailed S1 operational changes",
         "S4 strategy: Amplify vision into S1-actionable projects"
-      ]
+      ],
+      "m0:instantiatesM2": [
+        "m2:GenericConceptCombo",
+        "m2:ValueSpace",
+        "m2:Amplification"
+      ],
+      "m0:GenericConceptCombos": {
+        "amplification": {
+          "instance": "m0:vsm:VarietyAmplification",
+          "formula": "GenericConceptCombo(ValueSpace, Amplification↑)",
+          "role": "Elaboration cascade — downward (metasystem → S1), Gain > 1"
+        },
+        "attenuation": {
+          "instance": "m0:vsm:VarietyAttenuation",
+          "formula": "GenericConceptCombo(ValueSpace, Amplification↓)",
+          "role": "Filtering cascade — upward (S1 → metasystem), 0 < Gain < 1"
+        }
+      }
     }
   ],
   "m0:vsmDiagnostics": {
@@ -587,165 +755,96 @@
       "m2:Modularity",
       "m2:Constraint",
       "m2:Feedback",
-      "m2:Imbrication"
+      "m2:Imbrication",
+      "m2:Amplification",
+      "m2:GenericConceptCombo",
+      "m2:ValueSpace"
     ],
     "new": [
       "m2:ValueSpace (added 2026-01-28)",
-      "m2:Scope (added 2026-02-03)"
+      "m2:Amplification (added 2026-01-31)",
+      "m2:GenericConceptCombo (added 2026-01-31)"
     ]
   },
   "m0:m1Prerequisites": {
     "cyberneticConcepts": [
       {
         "name": "RequisiteVariety",
-        "status": "VALIDATED for M1_CoreConcepts",
-        "description": "Ashby's Law - regulator variety must match disturbance variety (V(Regulator) ≥ V(Disturbance))",
+        "status": "TO VALIDATE for M1_CoreConcepts",
+        "description": "Ashby's Law - regulator variety must match disturbance variety",
         "instantiates": [
           "m2:Constraint",
           "m2:ValueSpace"
-        ],
-        "m0:vsmContext": "Foundational principle for all VSM variety management (S2, S3, S4)"
-      },
-      {
-        "name": "VarietyAmplification",
-        "status": "VALIDATED - GenericConceptCombo pattern",
-        "description": "Expanding variety downward through hierarchy (S3→S1 command elaboration)",
-        "m0:isGenericConceptCombo": true,
-        "m0:parentGenericConcepts": [
-          "m2:ValueSpace",
-          "m2:Amplification"
-        ],
-        "m0:comboFormula": "(It⊗V⊗O⊗R⊗Im) ⊗ (Ft⊗D⊗It⊗R⊗O)↑ ⇒ VarietyAmplification",
-        "m0:sharedDimensions": [
-          "It",
-          "R",
-          "O"
-        ],
-        "m0:emergentProperty": "Controlled expansion of decision variety while preserving epistemic accessibility (Im) and representability (R)",
-        "m0:vsmContext": "S2 function - increase variety (specifically Im interoperability) to match S1 operational complexity"
+        ]
       },
       {
         "name": "VarietyAttenuation",
-        "status": "VALIDATED - GenericConceptCombo pattern",
-        "description": "Filtering/reducing variety upward through hierarchy (S1→S3 information aggregation)",
-        "m0:isGenericConceptCombo": true,
-        "m0:parentGenericConcepts": [
+        "status": "VALIDATED — GenericConceptCombo instance in M0_VSM v1.1.0",
+        "description": "GenericConceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation — S3 upward flow, reduces O, preserves V",
+        "instantiates": [
+          "m2:GenericConceptCombo",
           "m2:ValueSpace",
           "m2:Amplification"
         ],
-        "m0:comboFormula": "(It⊗V⊗O⊗R⊗Im) ⊗ (Ft⊗D⊗It⊗R⊗O)↓ ⇒ VarietyAttenuation",
-        "m0:sharedDimensions": [
-          "It",
-          "R",
-          "O"
-        ],
-        "m0:emergentProperty": "Controlled reduction of information variety while maintaining verifiability (V) and observability (O) for S5",
-        "m0:vsmContext": "S3 function - decrease variety (specifically O observability) for S5 manageability without losing critical information"
+        "GenericConceptComboFormula": "GenericConceptCombo(ValueSpace, Amplification↓) ⊗⇒ VarietyAttenuation",
+        "vsmSystem": "S3 (Optimization)"
       },
       {
-        "name": "Cohesion",
-        "status": "VALIDATED - GenericConceptCombo pattern",
-        "description": "Force maintaining system integrity despite operational autonomy",
-        "m0:isGenericConceptCombo": true,
-        "m0:parentGenericConcepts": [
-          "m2:Identity",
-          "m2:Constraint"
+        "name": "VarietyAmplification",
+        "status": "VALIDATED — GenericConceptCombo instance in M0_VSM v1.1.0",
+        "description": "GenericConceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification — S2 downward flow, increases Im",
+        "instantiates": [
+          "m2:GenericConceptCombo",
+          "m2:ValueSpace",
+          "m2:Amplification"
         ],
-        "m0:comboFormula": "(S⊗I⊗A⊗V⊗E) ⊗ (S⊗I⊗F⊗V⊗R) ⇒ Cohesion",
-        "m0:sharedDimensions": [
-          "S",
-          "I",
-          "V"
-        ],
-        "m0:emergentProperty": "Persistent organizational identity (Identity) structured by negotiated limits (Constraint) = systemic cohesion",
-        "m0:mechanisms": [
-          "S5 constitutional principles and values (Identity layer)",
-          "S3 resource allocation creating interdependence (Constraint layer)",
-          "S2 shared standards and protocols (Constraint layer)",
-          "Cultural ethos maintaining organizational continuity (Identity layer)"
-        ],
-        "m0:vsmContext": "S5 primary function with S3/S2 support - ensures viable system maintains separate existence as unified entity"
+        "GenericConceptComboFormula": "GenericConceptCombo(ValueSpace, Amplification↑) ⊗⇒ VarietyAmplification",
+        "vsmSystem": "S2 (Coordination)"
+      },
+      {
+        "name": "MetaSystem",
+        "status": "TO VALIDATE for M1_CoreConcepts",
+        "description": "System managing other systems (S2+S3+S4+S5)",
+        "instantiates": [
+          "m2:Hierarchy",
+          "m2:System"
+        ]
       },
       {
         "name": "AlgedonicSignal",
-        "status": "VALIDATED - GenericConceptCombo pattern",
-        "description": "Emergency alert from S1 directly to S3, bypassing normal hierarchy",
-        "m0:isGenericConceptCombo": true,
-        "m0:parentGenericConcepts": [
-          "m2:Trigger",
-          "m2:Signal"
-        ],
-        "m0:comboFormula": "(D⊗I⊗V) ⊗ (F⊗I⊗R) ⇒ AlgedonicSignal",
-        "m0:sharedDimensions": [
-          "I"
-        ],
-        "m0:emergentProperty": "Verifiable trigger (D⊗I⊗V) that becomes representable signal (F⊗I⊗R) with unique hierarchical bypass capability",
-        "m0:etymology": "Greek algos (pain) + hedone (pleasure)",
-        "m0:vsmContext": "Emergency escalation bypassing S2 coordination - pain/pleasure signals requiring immediate S3 intervention",
-        "m0:examples": [
-          "Factory production line stoppage (pain signal)",
-          "Major unexpected profit opportunity (pleasure signal)",
-          "Safety violation alert (pain signal)",
-          "Critical resource shortage (pain signal)"
+        "status": "TO VALIDATE for M1_CoreConcepts",
+        "description": "Emergency alert bypassing hierarchy",
+        "instantiates": [
+          "m2:Signal",
+          "m2:Trigger"
         ]
       },
       {
         "name": "ResourceBargain",
-        "status": "VALIDATED - GenericConceptCombo pattern",
-        "description": "Iterative negotiation between S3 (resource allocation) and S1 (operational needs)",
-        "m0:isGenericConceptCombo": true,
-        "m0:parentGenericConcepts": [
+        "status": "TO VALIDATE for M1_CoreConcepts",
+        "description": "Negotiation between management and operations",
+        "instantiates": [
           "m2:Trade-off",
           "m2:Feedback"
-        ],
-        "m0:comboFormula": "(A⊗I⊗F) ⊗ (A⊗S⊗F) ⇒ ResourceBargain",
-        "m0:sharedDimensions": [
-          "A",
-          "F"
-        ],
-        "m0:emergentProperty": "Trade-off decisions (A⊗I⊗F) that continuously adjust via feedback loops (A⊗S⊗F) = iterative negotiation",
-        "m0:mechanism": "S1 requests resources → S3 negotiates performance commitments → S1 responds with adjusted request → iterative convergence to mutual agreement",
-        "m0:autonomyPrinciple": "S1 units have maximum freedom in HOW to achieve agreed targets (autonomy), but WHAT targets are negotiated with S3 (accountability)",
-        "m0:vsmContext": "S3↔S1 primary interaction - balances systemic optimization (S3) with operational autonomy (S1)"
-      },
-      {
-        "name": "Autonomy",
-        "status": "VALIDATED - GenericConceptCombo pattern NEW v1.1.0",
-        "description": "Operational independence within defined authority boundaries - Beer's 'maximum local freedom; minimum central constraint'",
-        "m0:isGenericConceptCombo": true,
-        "m0:parentGenericConcepts": [
-          "m2:Agent",
-          "m2:Scope"
-        ],
-        "m0:comboFormula": "(S⊗I⊗D) ⊗ (S⊗I⊗A⊗R) ⇒ Autonomy",
-        "m0:sharedDimensions": [
-          "S",
-          "I"
-        ],
-        "m0:emergentProperty": "Action capability (Agent: S⊗I⊗D) bounded by defined authority domain (Scope: S⊗I⊗A⊗R) = bounded autonomy",
-        "m0:couplingSemantics": {
-          "S_coupling": "Agent's structure aligns with scope's structural boundaries",
-          "I_coupling": "Agent's capability information aligns with scope's authority information"
-        },
-        "m0:balance": "Autonomy (local freedom) ⇔ Cohesion (systemic integrity)",
-        "m0:vsmContext": "S1 defining characteristic - each operational unit decides HOW to achieve targets within S3-defined scope (WHAT) and S5-defined purpose (WHY)",
-        "m0:beerDictum": "Maximum local freedom; minimum central constraint",
-        "m0:scopeExamples": [
-          "Budget authority: decisions < 10,000€",
-          "Hiring authority: temporary staff only",
-          "Geographical scope: regional operations",
-          "Temporal scope: day-to-day tactical decisions"
         ]
       },
       {
-        "name": "MetaSystem",
-        "status": "VALIDATED for M1_CoreConcepts",
-        "description": "Collective supervisory function of S2+S3+S4+S5 managing S1 operations",
+        "name": "Autonomy",
+        "status": "TO VALIDATE for M1_CoreConcepts",
+        "description": "Local decision capacity within constraints",
         "instantiates": [
-          "m2:Hierarchy",
-          "m2:System"
-        ],
-        "m0:vsmContext": "Meta-system ensures viability through coordination, optimization, intelligence, and policy while granting maximum autonomy to operations"
+          "m2:Modularity",
+          "m2:Agent"
+        ]
+      },
+      {
+        "name": "Cohesion",
+        "status": "TO VALIDATE for M1_CoreConcepts",
+        "description": "Force maintaining system integrity",
+        "instantiates": [
+          "m2:Homeostasis",
+          "m2:Identity"
+        ]
       }
     ]
   },
@@ -756,25 +855,5 @@
     "Espejo, R., & Harnden, R. (Eds.). (1989). The Viable System Model: Interpretations and Applications of Stafford Beer's VSM. Wiley.",
     "Ashby, W. R. (1956). An Introduction to Cybernetics. Chapman & Hall.",
     "Medina, E. (2011). Cybernetic Revolutionaries: Technology and Politics in Allende's Chile. MIT Press."
-  ],
-  "m0:changelog_v1.1.0": {
-    "date": "2026-02-03",
-    "changes": [
-      "MAJOR: All VSM-specific concepts now properly modeled as GenericConceptCombo instances",
-      "NEW: Autonomy = GenericConceptCombo(Agent, Scope) - replaces incomplete instantiation pattern",
-      "NEW: Scope GenericConcept added to M2 prerequisites (S⊗I⊗A⊗R)",
-      "VALIDATED: VarietyAmplification = GenericConceptCombo(ValueSpace, Amplification↑)",
-      "VALIDATED: VarietyAttenuation = GenericConceptCombo(ValueSpace, Amplification↓)",
-      "VALIDATED: Cohesion = GenericConceptCombo(Identity, Constraint)",
-      "VALIDATED: AlgedonicSignal = GenericConceptCombo(Trigger, Signal)",
-      "VALIDATED: ResourceBargain = GenericConceptCombo(Trade-off, Feedback)",
-      "ENRICHED: All combo definitions include coupling analysis, emergent properties, VSM context",
-      "UPDATED: Description to reflect GenericConceptCombo architectural pattern",
-      "STATUS: Framework-level validation complete - ready for M0 poclet implementation"
-    ],
-    "breakingChanges": [
-      "Autonomy now requires m2:Scope GenericConcept (new M2 dependency)",
-      "Autonomy modeling shifted from simple instantiation to GenericConceptCombo pattern"
-    ]
-  }
+  ]
 }

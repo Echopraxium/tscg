@@ -7,26 +7,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "m3": "M3_GenesisSpace.jsonld#",
-    "m2": "M2_GenericConcepts.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m1core": "M1_CoreConcepts.jsonld#",
     "m1music": "M1_extensions/music/M1_Music.jsonld#",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/Music/M0_Counterpoint.jsonld#"
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/Music/M0_Counterpoint.jsonld#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#"
   },
   "@graph": [
     {
       "@id": "m0:CounterpointPoclet",
-      "@type": "owl:NamedIndividual",
-      "rdf:type": { "@id": "m3:Poclet" },
+      "@type": "owl:Ontology",
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
       "rdfs:label": "Counterpoint (Music)",
       "rdfs:comment": "Polyphonic compositional system in which N independent melodic voices coexist under shared normative constraints (Counterpoint Rules), producing harmonic coherence as an emergent property. First TSCG poclet in the aesthetic domain. Candidate m3:Enigma: Voice Autonomy ⊗ CounterpointRule → Harmonic Coherence.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-03-20",
+      "owl:versionInfo": "1.0.0",
+      "m1:domain": "Music / Polyphonic Composition",
+      "rdf:type": {
+        "@id": "m3:Poclet"
+      },
       "dcterms:modified": "2026-03-20",
-      "m3:ontologyCategory": { "@id": "m3:Poclet" },
       "m0:pocletType": "Polyphonic",
-      "m0:domain": "Music / Polyphonic Composition",
-      "m0:version": "1.0.0",
       "m0:completeness": "All ASFID dimensions present",
       "m0:minimality": "4 poles necessary and sufficient: Exposition, Development, Stretto, Resolution",
       "m0:pedagogy": "First aesthetic domain poclet — demonstrates TSCG applicability beyond natural sciences",
@@ -36,7 +41,7 @@
       "m0:enigmaCandidate": true,
       "m0:asfidScores": {
         "A": 0.87,
-        "S": 0.90,
+        "S": 0.9,
         "F": 0.85,
         "I": 0.93,
         "D": 0.88
@@ -67,28 +72,52 @@
           "rdfs:label": "Pole 1 — Exposition",
           "m0:poleNumber": 1,
           "rdfs:comment": "System initialization. All N voices enter successively with Subject or Answer. Polyphonic texture builds progressively from silence to full N-voice density.",
-          "m0:asfid": { "A": 0.85, "S": 0.95, "F": 0.82, "I": 0.95, "D": 0.70 }
+          "m0:asfid": {
+            "A": 0.85,
+            "S": 0.95,
+            "F": 0.82,
+            "I": 0.95,
+            "D": 0.7
+          }
         },
         {
           "@id": "m0:Pole_Development",
           "rdfs:label": "Pole 2 — Development",
           "m0:poleNumber": 2,
           "rdfs:comment": "System exploration. Episodes modulate through related keys using motivic fragments. Middle Subject entries in foreign keys. System navigates harmonic space.",
-          "m0:asfid": { "A": 0.72, "S": 0.85, "F": 0.90, "I": 0.92, "D": 0.82 }
+          "m0:asfid": {
+            "A": 0.72,
+            "S": 0.85,
+            "F": 0.9,
+            "I": 0.92,
+            "D": 0.82
+          }
         },
         {
           "@id": "m0:Pole_Stretto",
           "rdfs:label": "Pole 3 — Stretto",
           "m0:poleNumber": 3,
           "rdfs:comment": "Structural climax. Subject entries overlap — new voice enters before previous voice completes. Maximum polyphonic density. Climactic tension before final resolution.",
-          "m0:asfid": { "A": 0.80, "S": 0.90, "F": 0.88, "I": 0.95, "D": 0.95 }
+          "m0:asfid": {
+            "A": 0.8,
+            "S": 0.9,
+            "F": 0.88,
+            "I": 0.95,
+            "D": 0.95
+          }
         },
         {
           "@id": "m0:Pole_Resolution",
           "rdfs:label": "Pole 4 — Resolution (Coda)",
           "m0:poleNumber": 4,
           "rdfs:comment": "System closure. Tonic key decisively reestablished. Final Subject entry over pedal point. Authentic cadence V7->I releases all accumulated harmonic tension.",
-          "m0:asfid": { "A": 0.98, "S": 0.88, "F": 0.75, "I": 0.85, "D": 0.60 }
+          "m0:asfid": {
+            "A": 0.98,
+            "S": 0.88,
+            "F": 0.75,
+            "I": 0.85,
+            "D": 0.6
+          }
         }
       ],
       "m0:asfidAnalysis": {
@@ -102,7 +131,7 @@
           ]
         },
         "m0:structure": {
-          "S": 0.90,
+          "S": 0.9,
           "description": "Multi-layered: N simultaneous voices (vertical) x 4-pole formal lifecycle (horizontal) x Subject/Answer/Countersubject motivic hierarchy.",
           "layers": [
             "Vertical (synchronic): N simultaneous voices",
@@ -212,29 +241,91 @@
         "m2TotalAtomicConcepts": 75,
         "percentage": "16% of M2 v15.10.1",
         "primary": [
-          { "concept": "m2:Propagation", "formula": "I(x)F",   "role": "Subject cloned and transformed across voices through time" },
-          { "concept": "m2:Autonomy",    "formula": "A(x)I",   "role": "Each voice = independent melodic agent" },
-          { "concept": "m2:Constraint",  "formula": "S(x)D",   "role": "CounterpointRule: constitutive, not restrictive" },
-          { "concept": "m2:Emergence",   "formula": "S(x)I(x)D","role": "Harmonic coherence from pairwise rule compliance — no central coordinator" },
-          { "concept": "m2:Imitation",   "formula": "I(x)S",   "role": "Voice B imitates Voice A's Subject — core structural mechanism" }
+          {
+            "concept": "m2:Propagation",
+            "formula": "I(x)F",
+            "role": "Subject cloned and transformed across voices through time"
+          },
+          {
+            "concept": "m2:Autonomy",
+            "formula": "A(x)I",
+            "role": "Each voice = independent melodic agent"
+          },
+          {
+            "concept": "m2:Constraint",
+            "formula": "S(x)D",
+            "role": "CounterpointRule: constitutive, not restrictive"
+          },
+          {
+            "concept": "m2:Emergence",
+            "formula": "S(x)I(x)D",
+            "role": "Harmonic coherence from pairwise rule compliance — no central coordinator"
+          },
+          {
+            "concept": "m2:Imitation",
+            "formula": "I(x)S",
+            "role": "Voice B imitates Voice A's Subject — core structural mechanism"
+          }
         ],
         "secondary": [
-          { "concept": "m2:Attractor",   "formula": "A(x)D",   "role": "Tonic key = global attractor; consonances = local attractors" },
-          { "concept": "m2:Compression", "formula": "D(x)F",   "role": "Stretto = temporal compression driving climactic intensification" },
-          { "concept": "m2:Cycle",       "formula": "D(x)F",   "role": "Tension -> Dissonance -> Resolution recurring dynamic engine" },
-          { "concept": "m2:Layer",       "formula": "S",        "role": "N simultaneous voice layers" },
-          { "concept": "m2:Sequence",    "formula": "F(x)I",   "role": "Sequential episode patterns (descending-fifth chains)" },
-          { "concept": "m2:Pattern",     "formula": "S(x)I",   "role": "Subject = recurring recognizable pattern" },
-          { "concept": "m2:Threshold",   "formula": "A(x)D",   "role": "Consonance/dissonance boundary; resolution trigger" }
+          {
+            "concept": "m2:Attractor",
+            "formula": "A(x)D",
+            "role": "Tonic key = global attractor; consonances = local attractors"
+          },
+          {
+            "concept": "m2:Compression",
+            "formula": "D(x)F",
+            "role": "Stretto = temporal compression driving climactic intensification"
+          },
+          {
+            "concept": "m2:Cycle",
+            "formula": "D(x)F",
+            "role": "Tension -> Dissonance -> Resolution recurring dynamic engine"
+          },
+          {
+            "concept": "m2:Layer",
+            "formula": "S",
+            "role": "N simultaneous voice layers"
+          },
+          {
+            "concept": "m2:Sequence",
+            "formula": "F(x)I",
+            "role": "Sequential episode patterns (descending-fifth chains)"
+          },
+          {
+            "concept": "m2:Pattern",
+            "formula": "S(x)I",
+            "role": "Subject = recurring recognizable pattern"
+          },
+          {
+            "concept": "m2:Threshold",
+            "formula": "A(x)D",
+            "role": "Consonance/dissonance boundary; resolution trigger"
+          }
         ]
       },
       "m0:m1Contributions": {
         "description": "Domain-specific concepts contributed to M1_extensions/music/M1_Music.jsonld",
         "concepts": [
-          "Polyphony", "PolyphonicVoice", "MusicalMotif", "FugueSubject", "FugueAnswer",
-          "Countersubject", "FugueExposition", "FugueEpisode", "Stretto", "Canon",
-          "Imitation", "Consonance", "Dissonance", "HarmonicResolution", "CounterpointRule",
-          "Fugue", "GroundBass", "JazzContrapuntal"
+          "Polyphony",
+          "PolyphonicVoice",
+          "MusicalMotif",
+          "FugueSubject",
+          "FugueAnswer",
+          "Countersubject",
+          "FugueExposition",
+          "FugueEpisode",
+          "Stretto",
+          "Canon",
+          "Imitation",
+          "Consonance",
+          "Dissonance",
+          "HarmonicResolution",
+          "CounterpointRule",
+          "Fugue",
+          "GroundBass",
+          "JazzContrapuntal"
         ]
       },
       "m0:validation": {
@@ -248,7 +339,12 @@
         "type": "Standalone HTML + Tone.js",
         "technology": "Web Audio API via Tone.js (triangle8 oscillator, organ-like timbre)",
         "primaryReference": "BWV 578 — Fugue in G minor, 4 voices",
-        "examples": ["frere-jacques (Canon)", "bwv578 (Little Fugue)", "bwv565 (Toccata & Fugue)", "jazz-modal (Miles Davis)"],
+        "examples": [
+          "frere-jacques (Canon)",
+          "bwv578 (Little Fugue)",
+          "bwv565 (Toccata & Fugue)",
+          "jazz-modal (Miles Davis)"
+        ],
         "features": [
           "Piano Roll with real-time animated playhead",
           "ASFID dimension highlighting per structural event",
@@ -276,5 +372,8 @@
         "Bregman A.S. (1990) — Auditory Scene Analysis (perceptual basis of voice streaming)"
       ]
     }
-  ]
+  ],
+  "m3:ontologyType": {
+    "@id": "m3:Poclet"
+  }
 }
