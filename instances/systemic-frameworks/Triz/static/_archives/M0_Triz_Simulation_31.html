@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TSCG — TRIZ Innovation Framework</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-deep:#0a0e1a;--bg-panel:#0d1117;--bg-card:#161b22;--bg-hover:#21262d;
+  --border:#30363d;--border-light:#3d444f;
+  --eagle:#f78166;--sphinx:#79c0ff;--accent:#56d364;--warn:#e3b341;
+  --muted:#8b949e;--text:#e6edf3;--text-dim:#b1bac4;
+  --fam-method:#3b82f6;--fam-transform:#10b981;--fam-compo:#a855f7;
+  --fam-physico:#f97316;--fam-subst:#eab308;--fam-geo:#06b6d4;
+  --header-h:44px;--sidebar-w:400px;--controls-h:90px;
+  --radius:6px;--font:'Segoe UI',system-ui,sans-serif;
+  --font-mono:'Cascadia Code','Fira Code',monospace;
+}
+html,body{height:100%;overflow:hidden;font-family:var(--font);
+  background:var(--bg-deep);color:var(--text);font-size:13px;
+  line-height:1.5;user-select:none}
+#app{display:grid;grid-template-columns:1fr 5px var(--sidebar-w);
+  grid-template-areas:"header header header" "canvas split sidebar" "controls controls controls";
+  grid-template-rows:auto 1fr auto;height:100vh}
+#header{grid-area:header;display:flex;align-items:center;padding:0 16px;gap:12px;
+  background:var(--bg-panel);border-bottom:1px solid var(--border);height:var(--header-h)}
+#btn-home{display:inline-flex;align-items:center;background:none;border:none;cursor:pointer;
+  padding:4px 6px;margin-right:2px;opacity:.85;transition:opacity .15s;text-decoration:none}
+#btn-home:hover{opacity:1}
+.tscg-logo-link{text-decoration:none;color:inherit;position:relative;cursor:pointer;background:none;border:none;padding:0}
+.tscg-logo{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--eagle);text-transform:uppercase}
+.sep{color:var(--border-light);font-size:16px}
+.title{font-size:15px;font-weight:600;color:var(--text);flex:1}
+.chip{padding:2px 10px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid transparent}
+.chip.type{background:rgba(121,192,255,.12);border-color:rgba(121,192,255,.3);color:var(--sphinx)}
+.btn-export{padding:6px 12px;border-radius:4px;background:var(--bg-card);border:1px solid var(--border);
+  color:var(--text);font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-export:hover{border-color:var(--accent);background:var(--bg-hover)}
+#canvas-area{grid-area:canvas;display:flex;flex-direction:column;background:var(--bg-deep);position:relative}
+#renderCanvas{width:100%;height:100%;outline:none;touch-action:none}
+#splitter{grid-area:split;background:var(--border);cursor:col-resize;transition:background .2s}
+#splitter:hover{background:var(--sphinx)}
+#sidebar{grid-area:sidebar;background:var(--bg-panel);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden}
+.tab-bar{display:flex;background:var(--bg-card);border-bottom:1px solid var(--border)}
+.tab-btn{flex:1;padding:10px;background:none;border:none;color:var(--text-dim);
+  font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;border-bottom:2px solid transparent}
+.tab-btn:hover{color:var(--text);background:var(--bg-hover)}
+.tab-btn.active{color:var(--sphinx);border-bottom-color:var(--sphinx)}
+.tab-panel{display:none;flex:1;overflow-y:auto;padding:20px}
+.tab-panel.active{display:block}
+.tab-panel::-webkit-scrollbar{width:8px}
+.tab-panel::-webkit-scrollbar-track{background:var(--bg-card)}
+.tab-panel::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+#controls{grid-area:controls;background:var(--bg-panel);border-top:1px solid var(--border);
+  padding:10px 20px;display:flex;flex-direction:column;gap:8px;height:var(--controls-h)}
+.controls-row{display:flex;align-items:center;gap:16px}
+.control-group{display:flex;align-items:center;gap:8px}
+.control-label{font-size:10px;font-weight:600;color:var(--text-dim);
+  text-transform:uppercase;letter-spacing:.05em}
+#case-select,#principle-select{padding:5px 10px;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);color:var(--text);font-size:11px;cursor:pointer;min-width:200px}
+#case-select:hover,#principle-select:hover{border-color:var(--sphinx)}
+.btn-clear{width:28px;height:28px;border-radius:4px;background:var(--bg-hover);
+  border:1px solid var(--border);color:var(--text-dim);font-size:18px;font-weight:700;
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;
+  line-height:1;padding:0}
+.btn-clear:hover{background:var(--warn);color:#000;border-color:var(--warn)}
+.family-legend{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.family-badge{padding:3px 10px;border-radius:4px;font-size:10px;font-weight:600;
+  cursor:pointer;transition:all .2s;border:2px solid transparent;display:flex;align-items:center;gap:4px}
+.family-badge:hover{transform:scale(1.05);border-color:currentColor}
+.family-badge.active{border-color:currentColor;box-shadow:0 0 8px currentColor}
+.family-badge .count{opacity:0.7;font-size:9px}
+#sel-chip{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;
+  border:1px solid rgba(227,179,65,.5);background:rgba(227,179,65,.12);color:var(--warn);display:none}
+.desc-container h1{font-size:20px;color:var(--text);margin-bottom:8px}
+.desc-container h2{font-size:16px;color:var(--sphinx);margin:20px 0 10px;
+  border-bottom:1px solid var(--border);padding-bottom:6px}
+.desc-container p{margin-bottom:12px;color:var(--text-dim);line-height:1.6}
+.desc-container strong{color:var(--text)}
+.desc-container .principle-code{display:inline-block;padding:2px 8px;border-radius:4px;
+  background:var(--bg-card);color:var(--warn);font-family:var(--font-mono);font-size:12px;font-weight:600}
+.desc-container .family-badge{display:inline-block;padding:2px 8px;margin-left:8px;
+  border-radius:4px;font-size:11px;font-weight:500}
+.example-box{background:var(--bg-card);border-left:3px solid var(--accent);
+  padding:12px;margin:10px 0;border-radius:4px}
+.example-box strong{color:var(--accent)}
+.score-section{margin-bottom:24px}
+.score-header{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--sphinx);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.score-grid{display:grid;grid-template-columns:40px 1fr 50px;gap:10px;align-items:center}
+.score-dim{font-family:var(--font-mono);font-size:14px;font-weight:700;text-align:center}
+.score-bar-bg{height:20px;background:rgba(255,255,255,.06);border-radius:10px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:10px;transition:width .6s ease}
+.score-val{font-family:var(--font-mono);font-size:13px;font-weight:600;text-align:right}
+.gap-section{background:var(--bg-card);padding:16px;border-radius:var(--radius);margin-top:16px}
+.gap-label{font-size:11px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em}
+.gap-value{font-size:24px;font-weight:700;color:var(--accent);font-family:var(--font-mono);margin:8px 0}
+.gap-class{font-size:12px;color:var(--sphinx);font-weight:500}
+.case-info{background:var(--bg-card);padding:16px;border-radius:var(--radius);margin-bottom:16px}
+.case-info h3{font-size:14px;color:var(--warn);margin-bottom:8px}
+.case-info p{font-size:12px;color:var(--text-dim);line-height:1.5}
+.case-info .label{color:var(--text);font-weight:600;margin-top:8px}
+.principles-used{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.principle-tag{padding:4px 10px;border-radius:4px;background:var(--bg-hover);
+  font-size:11px;font-weight:500;line-height:1.4}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="header">
+    <a id="btn-home" href="https://echopraxium.github.io/tscg/" title="TSCG Home">
+      <svg width="16" height="16" fill="#ffffff" style="opacity:.75">
+        <path d="M8 1.5l-7 6v7.5h5v-5h4v5h5v-7.5l-7-6z"/>
+      </svg>
+    </a>
+    <button class="tscg-logo-link" onclick="window.open('https://github.com/Echopraxium/tscg','_blank')">
+      <span class="tscg-logo">TSCG</span>
+    </button>
+    <div class="sep">›</div>
+    <div class="title">TRIZ — 40 Inventive Principles</div>
+    <div class="chip type">SystemicFramework</div>
+    <div id="sel-chip"></div>
+    <button class="btn-export" onclick="exportScreenshot()">📷 Export PNG</button>
+  </div>
+  <div id="canvas-area"><canvas id="renderCanvas"></canvas></div>
+  <div id="splitter"></div>
+  <div id="sidebar">
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="activateTab(0)">Description</button>
+      <button class="tab-btn" onclick="activateTab(1)">Scores</button>
+      <button class="tab-btn" onclick="activateTab(2)">Case Study</button>
+    </div>
+    <div class="tab-panel active">
+      <div class="desc-container" id="desc-content">
+        <div style="margin-bottom:16px;padding:10px 12px;background:rgba(121,192,255,.15);border-radius:6px;border:1px solid rgba(121,192,255,.4);text-align:center">
+          <a href="https://www.matriz.org" target="_blank" style="color:var(--sphinx);text-decoration:none;font-weight:600;font-size:12px;display:inline-flex;align-items:center;gap:6px">
+            🌐 International TRIZ Association (MATRIZ)
+            <span style="font-size:14px">→</span>
+          </a>
+        </div>
+        <h1>TRIZ Innovation Framework</h1>
+        <p>Theory of Inventive Problem Solving (TRIZ) developed by Genrich Altshuller through analysis of 200,000+ patents. The framework identifies <strong>40 universal inventive principles</strong> that resolve technical contradictions across all engineering domains.</p>
+        <h2>How to Use</h2>
+        <p>• <strong>Click any triangle</strong> to select a principle and view details</p>
+        <p>• <strong>Use dropdown</strong> below to select a principle by name</p>
+        <p>• <strong>Select Case Study</strong> (20 examples) to see principle combinations in action</p>
+      </div>
+    </div>
+    <div class="tab-panel">
+      <div class="score-section">
+        <div class="score-header">ASFID — Territory (Eagle Eye)</div>
+        <div class="score-grid">
+          <div class="score-dim" style="color:#f78166">A</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%;background:#f78166"></div></div>
+          <div class="score-val">5.0</div>
+          <div class="score-dim" style="color:#56d364">S</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%;background:#56d364"></div></div>
+          <div class="score-val">5.0</div>
+          <div class="score-dim" style="color:#79c0ff">F</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:#79c0ff"></div></div>
+          <div class="score-val">4.0</div>
+          <div class="score-dim" style="color:#d2a8ff">I</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%;background:#d2a8ff"></div></div>
+          <div class="score-val">5.0</div>
+          <div class="score-dim" style="color:#e3b341">D</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:#e3b341"></div></div>
+          <div class="score-val">3.0</div>
+        </div>
+      </div>
+      <div class="score-section">
+        <div class="score-header">REVOI — Map (Sphinx Eye)</div>
+        <div class="score-grid">
+          <div class="score-dim" style="color:#79c0ff">R</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%;background:#79c0ff"></div></div>
+          <div class="score-val">5.0</div>
+          <div class="score-dim" style="color:#56d364">E</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:#56d364"></div></div>
+          <div class="score-val">4.0</div>
+          <div class="score-dim" style="color:#f78166">V</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%;background:#f78166"></div></div>
+          <div class="score-val">5.0</div>
+          <div class="score-dim" style="color:#d2a8ff">O</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%;background:#d2a8ff"></div></div>
+          <div class="score-val">5.0</div>
+          <div class="score-dim" style="color:#e3b341">I</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%;background:#e3b341"></div></div>
+          <div class="score-val">5.0</div>
+        </div>
+      </div>
+      <div class="gap-section">
+        <div class="gap-label">Epistemic Gap (δ₁)</div>
+        <div class="gap-value">0.083</div>
+        <div class="gap-class">OnCriticalLine [0.05, 0.15)</div>
+      </div>
+    </div>
+    <div class="tab-panel">
+      <div id="case-detail-content">
+        <p style="color:var(--text-dim);font-size:12px">Select a case study from the dropdown below.</p>
+      </div>
+    </div>
+  </div>
+  <div id="controls">
+    <div class="controls-row">
+      <div class="control-group">
+        <label class="control-label">Principle:</label>
+        <select id="principle-select" onchange="selectPrincipleByDropdown()">
+          <option value="">— Select Principle —</option>
+        <option value="1">01 — Sgm# — Segmentation</option>
+        <option value="2">02 — Xtrc# — Extraction</option>
+        <option value="3">03 — LocQ — Local Quality</option>
+        <option value="4">04 — AsmY — Asymmetry</option>
+        <option value="5">05 — Merg% — Merging</option>
+        <option value="6">06 — UnivY — Universality</option>
+        <option value="7">07 — Nest# — Nesting (Russian Dolls)</option>
+        <option value="8">08 — AWght — Anti-weight</option>
+        <option value="9">09 — PrAA# — Preliminary Anti-action</option>
+        <option value="10">10 — PrA# — Preliminary Action</option>
+        <option value="11">11 — B4Cus — Beforehand Cushioning</option>
+        <option value="12">12 — EquiP — Equipotentiality</option>
+        <option value="13">13 — DIIR — Do it in Reverse</option>
+        <option value="14">14 — SphrY — Spheroidality</option>
+        <option value="15">15 — Dyn$ — Dynamics</option>
+        <option value="16">16 — P/ExA — Partial or Excessive Action</option>
+        <option value="17">17 — OthD# — Another Dimension</option>
+        <option value="18">18 — MecV# — Mechanical Vibration</option>
+        <option value="19">19 — PerA# — Periodic Action</option>
+        <option value="20">20 — CUA# — Continuity of Useful Action</option>
+        <option value="21">21 — Rus== — Rushing Through</option>
+        <option value="22">22 — CH2B — Convert Harm into Benefit</option>
+        <option value="23">23 — FeedB — Feedback</option>
+        <option value="24">24 — IntmY — Intermediary</option>
+        <option value="25">25 — SlfS — Self-service</option>
+        <option value="26">26 — Copy% — Copying</option>
+        <option value="27">27 — CSLO — Cheap Short-lived Objects</option>
+        <option value="28">28 — RMS — Replacement of Mechanical System</option>
+        <option value="29">29 — P/H$ — Pneumatics or Hydraulics</option>
+        <option value="30">30 — FS/TF — Flexible Shells or Thin Films</option>
+        <option value="31">31 — PorM@ — Porous Materials</option>
+        <option value="32">32 — Clr:= — Color Changes</option>
+        <option value="33">33 — HmgY — Homogeneity</option>
+        <option value="34">34 — Ds&Rc — Discarding and Recovering</option>
+        <option value="35">35 — Prp:= — Transformation of Properties</option>
+        <option value="36">36 — Phs:= — Phase Transition</option>
+        <option value="37">37 — ThXp# — Thermal Expansion</option>
+        <option value="38">38 — Oxy*+ — Strong Oxidants</option>
+        <option value="39">39 — InAtm — Inert Atmosphere</option>
+        <option value="40">40 — CmpM@ — Composite Materials</option>
+        </select>
+        <button class="btn-clear" onclick="clearPrincipleSelection()" title="Clear selection">×</button>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Case Study:</label>
+        <select id="case-select" onchange="selectCaseStudy()">
+          <option value="">— Select Case —</option>
+        <option value="0">Swiss Army Knife</option>
+        <option value="1">Automotive Airbag</option>
+        <option value="2">Velcro Hook-and-Loop Fastener</option>
+        <option value="3">Bimetallic Strip Thermostat</option>
+        <option value="4">Automotive Catalytic Converter</option>
+        <option value="5">Self-Cleaning Oven (Pyrolytic)</option>
+        <option value="6">Inflatable Life Vest</option>
+        <option value="7">Heat Pipe</option>
+        <option value="8">Aerogel (Silica Aerogel)</option>
+        <option value="9">Post-it Notes</option>
+        <option value="10">Non-Stick Teflon Pan</option>
+        <option value="11">Hydraulic Jack</option>
+        <option value="12">Reflective Safety Clothing</option>
+        <option value="13">Shape Memory Alloy (Nitinol)</option>
+        <option value="14">Dual-Flush Toilet</option>
+        <option value="15">Anti-Lock Braking System (ABS)</option>
+        <option value="16">Fiberglass Composite</option>
+        <option value="17">Pressure Cooker</option>
+        <option value="18">Kevlar Body Armor</option>
+        <option value="19">Passive Solar Water Heater</option>
+        </select>
+        <button class="btn-clear" onclick="clearCaseStudySelection()" title="Clear selection">×</button>
+      </div>
+      <div style="flex:1"></div>
+      <button class="btn-export" onclick="resetAll()">🔄 Reset</button>
+      <button class="btn-export" id="btn-auto-rotate" onclick="toggleAutoRotate()">▶️ Auto Rotate</button>
+    </div>
+    <div class="controls-row">
+      <div class="family-legend">
+        <span style="font-size:10px;font-weight:600;color:var(--text-dim);text-transform:uppercase">Families:</span>
+        <div class="family-badge active" style="background:#88888833;color:#aaaaaa" onclick="filterFamily('all')" data-family="all">
+          All <span class="count">(40)</span>
+        </div>
+        <div class="family-badge" style="background:#a0d0ff33;color:#a0d0ff" onclick="filterFamily('Methodological')" data-family="Methodological">
+          🔵 Method <span class="count">(8)</span>
+        </div>
+        <div class="family-badge" style="background:#70ffb033;color:#70ffb0" onclick="filterFamily('Transformational')" data-family="Transformational">
+          🟢 Transform <span class="count">(7)</span>
+        </div>
+        <div class="family-badge" style="background:#e0a5ff33;color:#e0a5ff" onclick="filterFamily('Compositional')" data-family="Compositional">
+          🟣 Compo <span class="count">(6)</span>
+        </div>
+        <div class="family-badge" style="background:#ffc08033;color:#ffc080" onclick="filterFamily('Physicochemical')" data-family="Physicochemical">
+          🟠 Physico <span class="count">(9)</span>
+        </div>
+        <div class="family-badge" style="background:#ffe07033;color:#ffe070" onclick="filterFamily('Substitution')" data-family="Substitution">
+          🟡 Subst <span class="count">(5)</span>
+        </div>
+        <div class="family-badge" style="background:#70f0ff33;color:#70f0ff" onclick="filterFamily('Geometric')" data-family="Geometric">
+          🔵 Geo <span class="count">(5)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.babylonjs.com/babylon.js"></script>
+<script>
+const PRINCIPLES = [{"number": 1, "code": "Sgm#", "label": "Segmentation", "description": "Divide an object into independent parts, make it sectional, or increase degree of fragmentation", "example": "Replace mainframe computer with network of PCs; modular furniture; sectional snake drill", "family": "Transformational"}, {"number": 2, "code": "Xtrc#", "label": "Extraction", "description": "Separate disturbing part or property from object, or extract only necessary part/property", "example": "Place noisy air compressor outside building; extract active ingredient from plant; noise-canceling headphones", "family": "Transformational"}, {"number": 3, "code": "LocQ", "label": "Local Quality", "description": "Change structure from uniform to non-uniform; make different parts perform different functions; place each part in conditions most favorable for its operation", "example": "Pencil with eraser; hammer with claw; multi-zone climate control; graded lenses", "family": "Transformational"}, {"number": 4, "code": "AsmY", "label": "Asymmetry", "description": "Replace symmetrical form with asymmetrical; if already asymmetric, increase degree of asymmetry", "example": "Flat side on cylindrical shaft for secure grip; asymmetric tire tread; ergonomic tool handles", "family": "Transformational"}, {"number": 5, "code": "Merg%", "label": "Merging", "description": "Bring identical or similar objects together; assemble identical or similar parts for parallel operations", "example": "Multiple medical tests on single blood sample; parallel processing; multi-blade razor; twin-engine aircraft", "family": "Compositional"}, {"number": 6, "code": "UnivY", "label": "Universality", "description": "Make object perform multiple functions; eliminate need for other parts", "example": "Toothbrush handle containing toothpaste; Swiss Army knife; smartphone (phone+camera+computer); sofa bed", "family": "Compositional"}, {"number": 7, "code": "Nest#", "label": "Nesting (Russian Dolls)", "description": "Place object inside another; make one part pass through cavity of another", "example": "Telescopic radio antenna; Russian dolls (matryoshka); nested shopping carts; collapsible cup", "family": "Transformational"}, {"number": 8, "code": "AWght", "label": "Anti-weight", "description": "Compensate weight by merging with object providing lift; compensate weight via interaction with environment (aerodynamic, hydrodynamic forces)", "example": "Helium balloon supporting advertising sign; hydrofoil boat; airplane wing lift; magnetic levitation", "family": "Physicochemical"}, {"number": 9, "code": "PrAA#", "label": "Preliminary Anti-action", "description": "If necessary to perform action with harmful/unwanted effects, perform anti-action in advance; create pre-stresses to oppose known undesirable working stresses", "example": "Pre-stressing steel bars before pouring concrete; pre-shrinking fabric; permanent-press treatment", "family": "Geometric"}, {"number": 10, "code": "PrA#", "label": "Preliminary Action", "description": "Perform required change in advance (fully or partially); pre-arrange objects so they can come into action immediately", "example": "Pre-glued wallpaper; pre-pasted adhesive; self-adhesive stamps; instant coffee; frozen dinners", "family": "Methodological"}, {"number": 11, "code": "B4Cus", "label": "Beforehand Cushioning", "description": "Prepare emergency means beforehand to compensate for relatively low reliability of object", "example": "Backup parachute; airbag; spare tire; firewall; redundant systems; emergency exit", "family": "Methodological"}, {"number": 12, "code": "EquiP", "label": "Equipotentiality", "description": "Change operating conditions to eliminate need to raise/lower object in gravitational field", "example": "Panama Canal uses locks to change water level instead of raising ships; spring-loaded parts delivery system", "family": "Geometric"}, {"number": 13, "code": "DIIR", "label": "Do it in Reverse", "description": "Invert action to solve problem; make moving parts fixed and fixed parts moving; turn object upside down", "example": "To free jammed part, cool inner part (instead of heating outer); turn mold upside down; reverse direction", "family": "Transformational"}, {"number": 14, "code": "SphrY", "label": "Spheroidality", "description": "Replace linear parts/surfaces with curved ones; use balls, cylinders, spheres; go from flat surfaces to spherical, from cube to ball shapes", "example": "Ball casters for furniture; cylindrical brush roller; spherical storage tank; barrel shape for stability", "family": "Transformational"}, {"number": 15, "code": "Dyn$", "label": "Dynamics", "description": "Allow characteristics to change to be optimal at each stage; divide object into parts capable of movement relative to each other; if rigid make it movable/adaptive", "example": "Adjustable car steering wheel/seat; adjustable spanner; folding smartphone screen; adaptive suspension", "family": "Transformational"}, {"number": 16, "code": "P/ExA", "label": "Partial or Excessive Action", "description": "If 100% of desired effect is hard to achieve, use slightly less or slightly more; do more than necessary then remove excess", "example": "Apply extra layer of paint then sand to smooth; overfill mold then trim; overbook flights; batch processing", "family": "Methodological"}, {"number": 17, "code": "OthD#", "label": "Another Dimension", "description": "Move from one dimension to two, two to three; use multi-story arrangement; tilt/re-orient object; use opposite side of surface", "example": "Double-sided circuit boards; stacked chips; multi-level parking; vertical farming; high-rise buildings", "family": "Transformational"}, {"number": 18, "code": "MecV#", "label": "Mechanical Vibration", "description": "Cause object to oscillate/vibrate; use resonant frequency; use ultrasonic vibrations; combine with ultrasonic field", "example": "Electric knife with vibrating blade; ultrasonic cleaning; vibratory compaction; resonance in musical instruments", "family": "Geometric"}, {"number": 19, "code": "PerA#", "label": "Periodic Action", "description": "Replace continuous action with periodic (pulsed); if already periodic, change frequency; use pauses to perform different action", "example": "Pulsed siren (more alarming than continuous); intermittent windshield wipers; pulse-width modulation; HIIT training", "family": "Methodological"}, {"number": 20, "code": "CUA#", "label": "Continuity of Useful Action", "description": "Carry on work continuously; make all parts work at full load; eliminate idle/intermediate actions", "example": "Printer prints during carriage return stroke; double-acting cylinder; continuous production line; pipelining in CPU", "family": "Methodological"}, {"number": 21, "code": "Rus==", "label": "Rushing Through", "description": "Conduct harmful/hazardous operation at high speed to reduce harm", "example": "Paper cutter for sharp-edged products; quick freezing; rapid prototyping; fast fail in software development", "family": "Methodological"}, {"number": 22, "code": "CH2B", "label": "Convert Harm into Benefit", "description": "Use harmful factors to achieve positive effect; eliminate primary harmful action by adding to another harmful action; amplify harmful factor to point where it ceases being harmful", "example": "Use waste heat from factory to warm offices; use invasive species as resource; composting waste; carbon capture", "family": "Geometric"}, {"number": 23, "code": "FeedB", "label": "Feedback", "description": "Introduce feedback to improve process/action; if already exists, change its magnitude/influence", "example": "Thermostat controlling heater; cruise control; noise-canceling headphones; adaptive learning systems", "family": "Methodological"}, {"number": 24, "code": "IntmY", "label": "Intermediary", "description": "Use intermediary object to transfer/carry out action; merge object temporarily with another easily removed one", "example": "Carrier pigeon; transmission fluid; chemical catalyst; middleware software; broker; mediator pattern", "family": "Substitution"}, {"number": 25, "code": "SlfS", "label": "Self-service", "description": "Make object serve itself by performing auxiliary/repair operations; use waste resources, energy, substances", "example": "Self-cleaning oven; self-lubricating bearing; self-healing polymer; automatic garbage collection (software)", "family": "Methodological"}, {"number": 26, "code": "Copy%", "label": "Copying", "description": "Use simple inexpensive copies instead of complex/fragile/inconvenient originals; replace object/process with optical copies; use infrared/ultraviolet copies if visible copies exist", "example": "Virtual car crash simulation instead of real crash test; digital twin; blueprint; photograph; CAD model", "family": "Substitution"}, {"number": 27, "code": "CSLO", "label": "Cheap Short-lived Objects", "description": "Replace expensive object with multiple inexpensive ones, compromising certain qualities (e.g., service life)", "example": "Disposable paper surgical masks; single-use plastic bags; ephemeral architecture; temporary signage", "family": "Substitution"}, {"number": 28, "code": "RMS", "label": "Replacement of Mechanical System", "description": "Replace mechanical means with sensory (optical, acoustic, taste/smell); use electric, magnetic, electromagnetic fields; change from static to movable fields, structured to unstructured, fixed to time-varying", "example": "Magnetic levitation train; optical sensors replacing mechanical switches; electromagnetic clutch; touchscreen vs buttons", "family": "Physicochemical"}, {"number": 29, "code": "P/H$", "label": "Pneumatics or Hydraulics", "description": "Replace solid parts with gas/liquid; use pneumatic/hydraulic constructions; use air/water for inflation, dynamic stabilization", "example": "Air or hydraulic suspension; pneumatic drill; water bed; inflatable life vest; hydraulic brakes", "family": "Physicochemical"}, {"number": 30, "code": "FS/TF", "label": "Flexible Shells or Thin Films", "description": "Use flexible shells/thin films instead of 3D structures; isolate object from external environment using flexible/thin films", "example": "Inflatable mattress; bubble wrap; flexible solar panels; Mylar balloons; soap bubbles as physics demo", "family": "Physicochemical"}, {"number": 31, "code": "PorM@", "label": "Porous Materials", "description": "Make object porous or add porous elements; if already porous, use pores to introduce useful substance/function", "example": "Metal sponge for filtering; aerogel insulation; porous bone implants for integration; activated carbon; foam packaging", "family": "Physicochemical"}, {"number": 32, "code": "Clr:=", "label": "Color Changes", "description": "Change color of object/environment; change transparency; use colored additives to observe objects/processes", "example": "Photochromic sunglasses; mood ring; litmus paper; thermochromic paint; traffic light", "family": "Transformational"}, {"number": 33, "code": "HmgY", "label": "Homogeneity", "description": "Make objects interact with the main object of same material (or material with identical properties)", "example": "Ice cubes made from same drink to avoid dilution; diamond-cutting diamond; ceramic-on-ceramic bearings", "family": "Substitution"}, {"number": 34, "code": "Ds&Rc", "label": "Discarding and Recovering", "description": "Make portions of object disappear (dissolve, evaporate) after fulfilling function; conversely, restore consumable part during operation", "example": "Self-dissolving medical stitch; biodegradable packaging; evaporating cooling system; erasable markers", "family": "Transformational"}, {"number": 35, "code": "Prp:=", "label": "Transformation of Properties", "description": "Change aggregate state; change concentration/density; change degree of flexibility; change temperature", "example": "Classic squib fire extinguisher (CO2 liquid→gas); freeze-drying; memory metal; shape-memory polymers", "family": "Transformational"}, {"number": 36, "code": "Phs:=", "label": "Phase Transition", "description": "Use phenomena occurring during phase transitions (volume change, heat absorption/release)", "example": "Refrigerator uses heat absorption during liquid evaporation; heat pipe; latent heat storage; ice melting for cooling", "family": "Physicochemical"}, {"number": 37, "code": "ThXp#", "label": "Thermal Expansion", "description": "Use thermal expansion (or contraction) of materials; use multiple materials with different coefficients of thermal expansion", "example": "Bimetallic strip in thermostat; thermal fuse; expansion joint in bridges; thermometer", "family": "Physicochemical"}, {"number": 38, "code": "Oxy*+", "label": "Strong Oxidants", "description": "Replace common air with oxygen-enriched air; replace enriched air with pure oxygen; expose air/oxygen to ionizing radiation; use ionized oxygen; replace ozonized oxygen with ozone", "example": "Oxyacetylene torch for cutting metal; oxygen tent for patients; ozone treatment for water; rocket oxidizer", "family": "Physicochemical"}, {"number": 39, "code": "InAtm", "label": "Inert Atmosphere", "description": "Replace normal environment with inert one; add neutral parts/inert additives to object", "example": "Using argon gas in lightbulb to prevent oxidation; nitrogen packaging for food; inert gas welding", "family": "Physicochemical"}, {"number": 40, "code": "CmpM@", "label": "Composite Materials", "description": "Replace homogeneous materials with composite ones", "example": "Fiber-reinforced polymer (carbon fiber) for airplane parts; plywood; reinforced concrete; composite dental fillings", "family": "Compositional"}];
+const CASE_STUDIES = [{"id": "Case_SwissArmyKnife", "label": "Swiss Army Knife", "problem": "User needs multiple tools (knife, scissors, screwdriver, etc.) but has limited pocket space and weight tolerance", "solution": "Single handle with multiple folding tools sharing common structure. Each tool folds into compact unit (Segmentation), tools share handle (Merging), one object serves many functions (Universality).", "codes": ["UnivY", "Merg%", "Sgm#"], "principlesUsed": [{"number": 6, "weight": 0.4}, {"number": 5, "weight": 0.35}, {"number": 1, "weight": 0.25}], "level": 2, "domain": "Mechanical Engineering / Consumer Products"}, {"id": "Case_Airbag", "label": "Automotive Airbag", "problem": "Protect passengers during collision without occupying space or adding weight during normal operation", "solution": "Inflatable bag stored compactly, deploys rapidly using gas generator. Beforehand cushioning prepared, pneumatic inflation on demand, dynamic transformation from flat to protective.", "codes": ["B4Cus", "P/H$", "Dyn$"], "principlesUsed": [{"number": 11, "weight": 0.4}, {"number": 29, "weight": 0.35}, {"number": 15, "weight": 0.25}], "level": 3, "domain": "Automotive Safety / Mechanical Engineering"}, {"id": "Case_Velcro", "label": "Velcro Hook-and-Loop Fastener", "problem": "Create strong fastener that is easily reversible without buttons, zippers, or knots", "solution": "Two-part composite material (hooks + loops) that interlock mechanically. Intermediary mechanical coupling, composite material synergy, extraction separates components easily.", "codes": ["IntmY", "CmpM@", "Xtrc#"], "principlesUsed": [{"number": 24, "weight": 0.35}, {"number": 40, "weight": 0.35}, {"number": 2, "weight": 0.3}], "level": 3, "domain": "Materials Science / Textile Engineering"}, {"id": "Case_BimetallicThermostat", "label": "Bimetallic Strip Thermostat", "problem": "Regulate temperature automatically without external power or complex sensors", "solution": "Two metals with different thermal expansion coefficients bonded together. Strip bends with temperature (Thermal Expansion), movement triggers switch creating feedback loop (Feedback), dynamic response to conditions (Dynamics).", "codes": ["ThXp#", "FeedB", "Dyn$"], "principlesUsed": [{"number": 37, "weight": 0.45}, {"number": 23, "weight": 0.35}, {"number": 15, "weight": 0.2}], "level": 2, "domain": "Thermal Control / Mechanical Engineering"}, {"id": "Case_CatalyticConverter", "label": "Automotive Catalytic Converter", "problem": "Reduce harmful exhaust emissions without significantly reducing engine performance or adding complexity", "solution": "Catalyst intermediary facilitates chemical reaction converting harmful gases to benign ones. Intermediary catalyst, harm (pollution) converted to benefit (clean exhaust), chemical system replaces mechanical filtering.", "codes": ["IntmY", "CH2B", "RMS"], "principlesUsed": [{"number": 24, "weight": 0.4}, {"number": 22, "weight": 0.35}, {"number": 28, "weight": 0.25}], "level": 3, "domain": "Chemical Engineering / Automotive"}, {"id": "Case_SelfCleaningOven", "label": "Self-Cleaning Oven (Pyrolytic)", "problem": "Remove baked-on food residue without manual scrubbing or harsh chemicals", "solution": "Oven heats to ~900°F, incinerating residue to ash that wipes away. Self-service (oven cleans itself), phase transition (organic matter → ash), property transformation (solid grease → powder).", "codes": ["SlfS", "Phs:=", "Prp:="], "principlesUsed": [{"number": 25, "weight": 0.4}, {"number": 36, "weight": 0.35}, {"number": 35, "weight": 0.25}], "level": 2, "domain": "Home Appliances / Thermal Engineering"}, {"id": "Case_InflatableLifeVest", "label": "Inflatable Life Vest", "problem": "Provide buoyancy for water safety without bulk during normal wear", "solution": "Vest contains CO2 cartridge that inflates bladder on demand (manual or automatic). Pneumatic inflation, beforehand cushioning prepared, dynamic transformation when needed.", "codes": ["P/H$", "B4Cus", "Dyn$"], "principlesUsed": [{"number": 29, "weight": 0.45}, {"number": 11, "weight": 0.35}, {"number": 15, "weight": 0.2}], "level": 2, "domain": "Safety Equipment / Marine Engineering"}, {"id": "Case_HeatPipe", "label": "Heat Pipe", "problem": "Transfer heat efficiently across distance without moving parts or external power", "solution": "Sealed tube with working fluid. Heat causes evaporation at hot end, vapor condenses at cold end releasing heat, liquid returns via capillary action. Phase transition cycle, preliminary action (fluid pre-loaded), universality (passive cooling/heating).", "codes": ["Phs:=", "PrA#", "UnivY"], "principlesUsed": [{"number": 36, "weight": 0.5}, {"number": 10, "weight": 0.3}, {"number": 6, "weight": 0.2}], "level": 3, "domain": "Thermal Engineering / Electronics Cooling"}, {"id": "Case_Aerogel", "label": "Aerogel (Silica Aerogel)", "problem": "Create ultra-lightweight insulation with minimal thermal conductivity", "solution": "Nanoporous solid-state material ~99% air. Porous structure traps air (Porous Materials), composite silica network + air (Composite Materials), anti-weight (mostly air, minimal solid).", "codes": ["PorM@", "CmpM@", "AWght"], "principlesUsed": [{"number": 31, "weight": 0.45}, {"number": 40, "weight": 0.35}, {"number": 8, "weight": 0.2}], "level": 4, "domain": "Materials Science / Nanotechnology"}, {"id": "Case_PostItNotes", "label": "Post-it Notes", "problem": "Create bookmark that stays in place but doesn't damage pages when removed", "solution": "Paper with weak adhesive on one edge. Temporary use (Cheap Short-lived Objects), repositionable copies of notes (Copying), adhesive only on local area (Local Quality).", "codes": ["CSLO", "Copy%", "LocQ"], "principlesUsed": [{"number": 27, "weight": 0.4}, {"number": 26, "weight": 0.35}, {"number": 3, "weight": 0.25}], "level": 2, "domain": "Stationery / Adhesive Chemistry"}, {"id": "Case_TeflonPan", "label": "Non-Stick Teflon Pan", "problem": "Food sticks to pan requiring excessive oil and difficult cleaning", "solution": "PTFE coating creates ultra-low friction surface. Preliminary anti-action (coating prevents sticking), other way (coating acts as barrier), harm to benefit (chemical inertness prevents reactions).", "codes": ["PrAA", "OthW", "CH2B"], "principlesUsed": [{"number": 9, "weight": 0.4}, {"number": 13, "weight": 0.35}, {"number": 22, "weight": 0.25}], "level": 2, "domain": "Cookware / Materials Science"}, {"id": "Case_HydraulicJack", "label": "Hydraulic Jack", "problem": "Lift heavy loads with minimal manual force", "solution": "Small piston creates pressure amplified through larger piston. Mechanical substitution (hydraulic), cushion in advance (fluid incompressibility), intermediary (hydraulic fluid transmits force).", "codes": ["RMS", "Cush", "IntmY"], "principlesUsed": [{"number": 28, "weight": 0.45}, {"number": 12, "weight": 0.3}, {"number": 24, "weight": 0.25}], "level": 3, "domain": "Mechanical Engineering / Heavy Equipment"}, {"id": "Case_ReflectiveStripes", "label": "Reflective Safety Clothing", "problem": "Make workers visible in low-light conditions without active lighting", "solution": "Retroreflective material reflects light back to source. Color change (bright in light), other way (passive reflection vs active emission), cheap short-lived objects (disposable vests).", "codes": ["ColR", "OthW", "CSLO"], "principlesUsed": [{"number": 32, "weight": 0.5}, {"number": 13, "weight": 0.3}, {"number": 27, "weight": 0.2}], "level": 2, "domain": "Safety Equipment / Optics"}, {"id": "Case_ShapeMemoryAlloy", "label": "Shape Memory Alloy (Nitinol)", "problem": "Create actuator that responds to temperature without external power", "solution": "Alloy 'remembers' shape and returns to it when heated. Phase transition (martensite ↔ austenite), thermal expansion, harm to benefit (heat triggers useful deformation).", "codes": ["Phs:=", "ThXp#", "CH2B"], "principlesUsed": [{"number": 36, "weight": 0.5}, {"number": 37, "weight": 0.3}, {"number": 22, "weight": 0.2}], "level": 4, "domain": "Materials Science / Medical Devices"}, {"id": "Case_DualFlushToilet", "label": "Dual-Flush Toilet", "problem": "Reduce water consumption while maintaining sanitation effectiveness", "solution": "Two flush options: low volume for liquid waste, high volume for solid waste. Segmentation (two modes), local quality (volume matches need), preliminary action (user selects before flush).", "codes": ["Sgm#", "LocQ", "PrA#"], "principlesUsed": [{"number": 1, "weight": 0.4}, {"number": 3, "weight": 0.35}, {"number": 10, "weight": 0.25}], "level": 2, "domain": "Plumbing / Environmental Engineering"}, {"id": "Case_AntiLockBrakes", "label": "Anti-Lock Braking System (ABS)", "problem": "Prevent wheel lockup during emergency braking while maintaining steering control", "solution": "Electronic system rapidly pulses brakes. Feedback (wheel speed sensors), dynamics (adaptive braking force), intermediary (electronic control between pedal and brakes).", "codes": ["FeedB", "Dyn$", "IntmY"], "principlesUsed": [{"number": 23, "weight": 0.45}, {"number": 15, "weight": 0.35}, {"number": 24, "weight": 0.2}], "level": 4, "domain": "Automotive Safety / Control Systems"}, {"id": "Case_Fiberglass", "label": "Fiberglass Composite", "problem": "Create strong, lightweight material for boats, cars, and structures", "solution": "Glass fibers embedded in resin matrix. Composite materials (glass + polymer), cheap short-lived vs durable (disposable molds create permanent parts), nested doll (fibers within matrix).", "codes": ["CmpM@", "CSLO", "Nest@"], "principlesUsed": [{"number": 40, "weight": 0.5}, {"number": 27, "weight": 0.25}, {"number": 7, "weight": 0.25}], "level": 3, "domain": "Materials Science / Marine Engineering"}, {"id": "Case_PressureCooker", "label": "Pressure Cooker", "problem": "Cook food faster while retaining moisture and nutrients", "solution": "Sealed vessel raises boiling point via pressure. Harm to benefit (pressure enables faster cooking), phase transition (water → steam under pressure), preliminary action (seal before heating).", "codes": ["CH2B", "Phs:=", "PrA#"], "principlesUsed": [{"number": 22, "weight": 0.45}, {"number": 36, "weight": 0.3}, {"number": 10, "weight": 0.25}], "level": 3, "domain": "Cooking / Thermodynamics"}, {"id": "Case_Kevlar", "label": "Kevlar Body Armor", "problem": "Stop bullets while remaining lightweight and flexible enough to wear", "solution": "Aramid fiber layers dissipate kinetic energy. Composite materials (woven fibers + resin), cushion in advance (layers pre-positioned), anti-weight (strength without mass).", "codes": ["CmpM@", "Cush", "AWght"], "principlesUsed": [{"number": 40, "weight": 0.4}, {"number": 12, "weight": 0.35}, {"number": 8, "weight": 0.25}], "level": 4, "domain": "Materials Science / Defense"}, {"id": "Case_SolarWaterHeater", "label": "Passive Solar Water Heater", "problem": "Heat water using sunlight without pumps or external power", "solution": "Black collector absorbs heat, natural convection circulates water. Self-service (passive system), color change (black absorbs heat), thermal expansion (drives convection).", "codes": ["SlfS", "ColR", "ThXp#"], "principlesUsed": [{"number": 25, "weight": 0.4}, {"number": 32, "weight": 0.35}, {"number": 37, "weight": 0.25}], "level": 2, "domain": "Renewable Energy / Plumbing"}];
+const FAMILY_COLORS = {
+  'Methodological': '#a0d0ff', 'Transformational': '#70ffb0', 'Compositional': '#e0a5ff',
+  'Physicochemical': '#ffc080', 'Substitution': '#ffe070', 'Geometric': '#70f0ff'
+};
+let canvas, engine, scene, camera;
+let triangleMeshes = [];
+let edgeTubes = [];
+let selectedPrinciple = null;
+let barycenterSphere = null;
+let connectionTubes = [];
+let currentCaseStudy = null;
+
+function activateTab(index) {
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+  tabs.forEach((tab, i) => tab.classList.toggle('active', i === index));
+  panels.forEach((panel, i) => panel.classList.toggle('active', i === index));
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  canvas = document.getElementById('renderCanvas');
+  engine = new BABYLON.Engine(canvas, true, {preserveDrawingBuffer: true, stencil: true});
+  scene = new BABYLON.Scene(engine);
+  scene.clearColor = new BABYLON.Color4(0.04, 0.06, 0.1, 1);
+  
+  camera = new BABYLON.ArcRotateCamera('camera', Math.PI/4, Math.PI/3, 8, BABYLON.Vector3.Zero(), scene);
+  camera.attachControl(canvas, true);
+  camera.lowerRadiusLimit = 4;
+  camera.upperRadiusLimit = 12;
+  
+  const light1 = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, 1, 0), scene);
+  light1.intensity = 0.7;
+  const light2 = new BABYLON.PointLight('light2', new BABYLON.Vector3(-2, 3, -2), scene);
+  light2.intensity = 0.5;
+  
+  createIcosahedron();
+  
+  console.log(`✅ Triangles: ${triangleMeshes.length}/40`);
+  console.log(`✅ Edge tubes: ${edgeTubes.length}`);
+  console.log(`✅ Case studies: ${CASE_STUDIES.length}`);
+  
+  // Auto-rotate logic
+  scene.registerBeforeRender(() => {
+    if (autoRotateEnabled) {
+      camera.alpha += 0.005;
+    }
+  });
+  
+  engine.runRenderLoop(() => scene.render());
+  window.addEventListener('resize', () => engine.resize());
+});
+
+function createIcosahedron() {
+  const phi = (1 + Math.sqrt(5)) / 2;
+  const scale = 1.566199;
+  const vertices = [
+    [0, 1, phi], [0, -1, phi], [0, 1, -phi], [0, -1, -phi],
+    [1, phi, 0], [-1, phi, 0], [1, -phi, 0], [-1, -phi, 0],
+    [phi, 0, 1], [-phi, 0, 1], [phi, 0, -1], [-phi, 0, -1]
+  ].map(v => new BABYLON.Vector3(v[0]*scale, v[1]*scale, v[2]*scale));
+  
+  const faces = [
+    [0,1,8],[0,8,4],[0,4,5],[0,5,9],[0,9,1],
+    [1,9,7],[1,7,6],[1,6,8],[2,3,11],[2,11,5],
+    [2,5,4],[2,4,10],[2,10,3],[3,10,6],[3,6,7],
+    [3,7,11],[4,8,10],[5,11,9],[6,10,8],[7,9,11]
+  ];
+  
+  let principleIndex = 0;
+  
+  faces.forEach((face) => {
+    if (principleIndex >= 40) return;
+    
+    const [a, b, c] = face.map(i => vertices[i]);
+    const midAB = a.add(b).scale(0.5);
+    
+    // Tubes pour les 3 arêtes du triangle équilatéral
+    createEdgeTube(a, b);
+    createEdgeTube(b, c);
+    createEdgeTube(c, a);
+    
+    if (principleIndex < 40) {
+      createTriangle(a, midAB, c, principleIndex);
+      principleIndex++;
+    }
+    if (principleIndex < 40) {
+      createTriangle(midAB, b, c, principleIndex);
+      principleIndex++;
+    }
+  });
+}
+
+function createEdgeTube(v1, v2) {
+  const tube = BABYLON.MeshBuilder.CreateTube('edgeTube_' + edgeTubes.length, {
+    path: [v1, v2],
+    radius: 0.02,
+    tessellation: 6,
+    cap: BABYLON.Mesh.CAP_ALL
+  }, scene);
+  
+  const mat = new BABYLON.StandardMaterial('edgeMat_' + edgeTubes.length, scene);
+  mat.diffuseColor = new BABYLON.Color3(0.4, 0.4, 0.4);
+  mat.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+  tube.material = mat;
+  
+  tube.baseRadius = 0.02;
+  tube.baseColor = new BABYLON.Color3(0.4, 0.4, 0.4);
+  tube.baseEmissive = new BABYLON.Color3(0.1, 0.1, 0.1);
+  
+  edgeTubes.push(tube);
+}
+
+function createTriangle(v1, v2, v3, principleIndex) {
+  const principle = PRINCIPLES[principleIndex];
+  const positions = [v1.x, v1.y, v1.z, v2.x, v2.y, v2.z, v3.x, v3.y, v3.z];
+  const indices = [0, 1, 2];
+  
+  const vertexData = new BABYLON.VertexData();
+  vertexData.positions = positions;
+  vertexData.indices = indices;
+  BABYLON.VertexData.ComputeNormals(positions, indices, vertexData.normals = []);
+  
+  const mesh = new BABYLON.Mesh('triangle_' + principleIndex, scene);
+  vertexData.applyToMesh(mesh);
+  
+  const mat = new BABYLON.StandardMaterial('mat_' + principleIndex, scene);
+  const baseColor = BABYLON.Color3.FromHexString(FAMILY_COLORS[principle.family]);
+  mat.diffuseColor = baseColor;
+  mat.emissiveColor = baseColor.scale(0.4);  // NOUVEAU: Brillance pour opacité visuelle
+  mat.specularColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+  mat.alpha = 1.0;  // MODIFIÉ: 0.85 → 1.0 pour opacité maximale
+  mat.backFaceCulling = false;
+  mesh.material = mat;
+  
+  mesh.principleData = principle;
+  mesh.principleIndex = principleIndex;
+  mesh.baseColor = baseColor;
+  mesh.baseAlpha = 1.0;
+  mesh.centerPosition = v1.add(v2).add(v3).scale(1/3);
+  
+  // Label sur la face externe du triangle
+  const center = v1.add(v2).add(v3).scale(1/3);
+  
+  // VRAIE normale de la face (produit vectoriel des arêtes)
+  const edge1 = v2.subtract(v1);
+  const edge2 = v3.subtract(v1);
+  let faceNormal = BABYLON.Vector3.Cross(edge1, edge2).normalize();
+  
+  // Vérifier que la normale pointe vers l'EXTÉRIEUR
+  // Si dot(faceNormal, center) < 0, la normale pointe vers l'intérieur
+  if (BABYLON.Vector3.Dot(faceNormal, center) < 0) {
+    faceNormal = faceNormal.scale(-1); // Inverser
+  }
+  
+  // Créer texture pour le label
+  const labelTexture = createLabelTexture(principle.code);
+  
+  // Créer un DECAL appliqué sur la face du triangle (taille augmentée)
+  const decalSize = new BABYLON.Vector3(0.5, 0.5, 0.5);
+  const decal = BABYLON.MeshBuilder.CreateDecal('decal_' + principleIndex, mesh, {
+    position: center,
+    normal: faceNormal,  // NE PAS inverser !
+    size: decalSize
+  }, scene);
+  
+  const decalMat = new BABYLON.StandardMaterial('decalMat_' + principleIndex, scene);
+  decalMat.diffuseTexture = labelTexture;
+  decalMat.diffuseTexture.hasAlpha = true;
+  decalMat.zOffset = -2; // Pour être au-dessus du mesh
+  decalMat.emissiveColor = new BABYLON.Color3(1, 1, 1);
+  decalMat.disableLighting = true;
+  decalMat.backFaceCulling = false;  // Visible des 2 côtés
+  decal.material = decalMat;
+  
+  mesh.labelDecal = decal;
+  
+  mesh.actionManager = new BABYLON.ActionManager(scene);
+  mesh.actionManager.registerAction(
+    new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, () => selectPrinciple(mesh))
+  );
+  
+  triangleMeshes.push(mesh);
+}
+
+function createLabelTexture(text) {
+  const texture = new BABYLON.DynamicTexture('labelTex_' + text + '_' + Math.random(), 256, scene);
+  const ctx = texture.getContext();
+  
+  // FOND TRANSPARENT
+  ctx.clearRect(0, 0, 256, 256);
+  
+  // Taille adaptative selon nombre de caractères
+  let fontSize = 100;
+  const len = text.length;
+  if (len === 3) fontSize = 92;      // -8%
+  else if (len === 4) fontSize = 89;  // -11%
+  else if (len === 5) fontSize = 85;  // -15%
+  
+  // CONTOUR NOIR
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 10;
+  ctx.font = `bold ${fontSize}px monospace`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.strokeText(text, 128, 128);
+  
+  // TEXTE BLANC
+  ctx.fillStyle = 'white';
+  ctx.fillText(text, 128, 128);
+  
+  texture.update();
+  texture.hasAlpha = true;
+  
+  return texture;
+}
+
+function selectPrinciple(mesh) {
+  if (selectedPrinciple) {
+    selectedPrinciple.material.diffuseColor = selectedPrinciple.baseColor;
+    selectedPrinciple.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+    selectedPrinciple.material.alpha = selectedPrinciple.baseAlpha;
+  }
+  
+  selectedPrinciple = mesh;
+  const lighter = mesh.baseColor.scale(1.3);
+  mesh.material.diffuseColor = lighter;
+  mesh.material.emissiveColor = lighter.scale(0.2);
+  mesh.material.alpha = 0.95;
+  
+  const p = mesh.principleData;
+  document.getElementById('sel-chip').textContent = '#' + p.number + ' ' + p.code;
+  document.getElementById('sel-chip').style.display = 'inline-block';
+  document.getElementById('principle-select').value = p.number;
+  
+  rotateCameraToFace(mesh.centerPosition);
+  
+  const familyColor = FAMILY_COLORS[p.family];
+  document.getElementById('desc-content').innerHTML = `
+    <h1>${p.label} <span class="principle-code">${p.code}</span></h1>
+    <span class="family-badge" style="background:${familyColor};color:white">${p.family}</span>
+    <h2>Description</h2>
+    <p>${p.description}</p>
+    <div class="example-box">
+      <strong>Examples:</strong><br>${p.example}
+    </div>
+  `;
+  
+  // NOUVEAU: Filtrer Case Studies qui utilisent ce principe
+  const caseSelect = document.getElementById('case-select');
+  let matchingCount = 0;
+  Array.from(caseSelect.options).forEach(option => {
+    if (option.value === '') return; // Keep "Select Case"
+    const cs = CASE_STUDIES[parseInt(option.value)];
+    const usesPrinciple = cs.principlesUsed.some(pu => pu.number === p.number);
+    if (usesPrinciple) {
+      matchingCount++;
+    }
+  });
+  
+  // Si aucun case study ne correspond, ne pas filtrer (tout montrer)
+  if (matchingCount === 0) {
+    Array.from(caseSelect.options).forEach(option => {
+      if (option.value === '') return;
+      option.style.display = '';
+    });
+  } else {
+    // Sinon, filtrer normalement
+    Array.from(caseSelect.options).forEach(option => {
+      if (option.value === '') return;
+      const cs = CASE_STUDIES[parseInt(option.value)];
+      const usesPrinciple = cs.principlesUsed.some(pu => pu.number === p.number);
+      option.style.display = usesPrinciple ? '' : 'none';
+    });
+  }
+  
+  // Update description avec nombre de case studies
+  if (matchingCount > 0) {
+    const csInfo = document.createElement('p');
+    csInfo.style.cssText = 'color:var(--accent);font-weight:600;margin-top:12px;font-size:12px';
+    csInfo.textContent = `✓ Used in ${matchingCount} case ${matchingCount > 1 ? 'studies' : 'study'}`;
+    document.getElementById('desc-content').appendChild(csInfo);
+  } else {
+    const csInfo = document.createElement('p');
+    csInfo.style.cssText = 'color:var(--text-dim);font-weight:600;margin-top:12px;font-size:12px';
+    csInfo.textContent = `ℹ️ This principle is not used in the current case studies`;
+    document.getElementById('desc-content').appendChild(csInfo);
+  }
+}
+
+function rotateCameraToFace(faceCenter) {
+  const direction = faceCenter.normalize();
+  const targetAlpha = Math.atan2(direction.z, direction.x);
+  const targetBeta = Math.acos(direction.y);
+  
+  BABYLON.Animation.CreateAndStartAnimation(
+    'camAlpha', camera, 'alpha', 60, 30,
+    camera.alpha, targetAlpha, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+  );
+  BABYLON.Animation.CreateAndStartAnimation(
+    'camBeta', camera, 'beta', 60, 30,
+    camera.beta, targetBeta, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+  );
+}
+
+function selectPrincipleByDropdown() {
+  const select = document.getElementById('principle-select');
+  const num = parseInt(select.value);
+  if (!isNaN(num) && num >= 1 && num <= 40) {
+    const mesh = triangleMeshes[num - 1];
+    if (mesh) {
+      selectPrinciple(mesh);
+      activateTab(0);
+    }
+  }
+}
+
+function clearPrincipleSelection() {
+  document.getElementById('principle-select').value = '';
+  document.getElementById('sel-chip').style.display = 'none';
+  
+  if (selectedPrinciple) {
+    selectedPrinciple.material.diffuseColor = selectedPrinciple.baseColor;
+    selectedPrinciple.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+    selectedPrinciple.material.alpha = selectedPrinciple.baseAlpha;
+    selectedPrinciple = null;
+  }
+  
+  // Reset Case Study filter (show all matching current family filter)
+  const caseSelect = document.getElementById('case-select');
+  Array.from(caseSelect.options).forEach(option => {
+    if (option.value === '') return;
+    const cs = CASE_STUDIES[parseInt(option.value)];
+    const hasMatchingPrinciple = cs.principlesUsed.some(p => {
+      const principle = PRINCIPLES[p.number - 1];
+      return currentFilter === 'all' || principle.family === currentFilter;
+    });
+    if (hasMatchingPrinciple) {
+      option.style.display = '';
+    } else {
+      option.style.display = 'none';
+    }
+  });
+}
+
+function clearCaseStudySelection() {
+  document.getElementById('case-select').value = '';
+  selectCaseStudy();
+}
+
+let currentFilter = 'all';
+let autoRotateEnabled = false;
+
+function exportScreenshot() {
+  BABYLON.Tools.CreateScreenshot(engine, camera, {width: 1920, height: 1080}, (data) => {
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = 'triz_icosahedron_' + new Date().getTime() + '.png';
+    link.click();
+  });
+}
+
+function resetCamera() {
+  // Reset camera to initial position
+  BABYLON.Animation.CreateAndStartAnimation(
+    'resetAlpha', camera, 'alpha', 60, 30,
+    camera.alpha, Math.PI / 4, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+  );
+  BABYLON.Animation.CreateAndStartAnimation(
+    'resetBeta', camera, 'beta', 60, 30,
+    camera.beta, Math.PI / 3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+  );
+  BABYLON.Animation.CreateAndStartAnimation(
+    'resetRadius', camera, 'radius', 60, 30,
+    camera.radius, 8, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+  );
+}
+
+function resetAll() {
+  // 1. Reset camera
+  resetCamera();
+  
+  // 2. Reset filters (show all)
+  filterFamily('all');
+  
+  // 3. Clear selections
+  clearPrincipleSelection();
+  clearCaseStudySelection();
+  
+  // 4. Stop auto-rotate if active
+  if (autoRotateEnabled) {
+    toggleAutoRotate();
+  }
+}
+
+function toggleAutoRotate() {
+  autoRotateEnabled = !autoRotateEnabled;
+  const btn = document.getElementById('btn-auto-rotate');
+  if (autoRotateEnabled) {
+    btn.textContent = '⏸️ Auto Rotate';
+    btn.style.borderColor = 'var(--accent)';
+  } else {
+    btn.textContent = '▶️ Auto Rotate';
+    btn.style.borderColor = '';
+  }
+}
+
+function filterFamily(family) {
+  currentFilter = family;
+  
+  // Update active badge
+  document.querySelectorAll('.family-badge').forEach(badge => {
+    badge.classList.remove('active');
+    if (badge.dataset.family === family) {
+      badge.classList.add('active');
+    }
+  });
+  
+  // Filter triangles
+  triangleMeshes.forEach(mesh => {
+    if (family === 'all' || mesh.principleData.family === family) {
+      mesh.material.alpha = mesh.baseAlpha;
+      if (mesh.labelDecal) mesh.labelDecal.setEnabled(true);
+    } else {
+      mesh.material.alpha = 0.1;
+      if (mesh.labelDecal) mesh.labelDecal.setEnabled(false);
+    }
+  });
+  
+  // Filter Principle Select dropdown
+  const principleSelect = document.getElementById('principle-select');
+  Array.from(principleSelect.options).forEach(option => {
+    if (option.value === '') return; // Keep "Select Principle"
+    const pNum = parseInt(option.value);
+    const principle = PRINCIPLES[pNum - 1];
+    if (family === 'all' || principle.family === family) {
+      option.style.display = '';
+    } else {
+      option.style.display = 'none';
+    }
+  });
+  
+  // Filter Case Study Select dropdown
+  const caseSelect = document.getElementById('case-select');
+  Array.from(caseSelect.options).forEach(option => {
+    if (option.value === '') return; // Keep "Select Case"
+    const cs = CASE_STUDIES[parseInt(option.value)];
+    // Show if ANY principle in case study matches filter
+    const hasMatchingPrinciple = cs.principlesUsed.some(p => {
+      const principle = PRINCIPLES[p.number - 1];
+      return family === 'all' || principle.family === family;
+    });
+    if (hasMatchingPrinciple) {
+      option.style.display = '';
+    } else {
+      option.style.display = 'none';
+    }
+  });
+}
+
+function selectCaseStudy() {
+  const select = document.getElementById('case-select');
+  const index = parseInt(select.value);
+  
+  if (barycenterSphere) {
+    barycenterSphere.dispose();
+    barycenterSphere = null;
+  }
+  connectionTubes.forEach(tube => tube.dispose());
+  connectionTubes = [];
+  
+  if (isNaN(index)) {
+    // Reset: tous les triangles normaux, tubes normaux
+    triangleMeshes.forEach(m => {
+      m.baseAlpha = 0.85;
+      m.material.alpha = 0.85;
+      if (m.labelDecal) m.labelDecal.setEnabled(true);
+    });
+    // CORRECTION: Garder les tubes NORMAUX (pas beiges/fins)
+    edgeTubes.forEach(tube => {
+      tube.scaling = new BABYLON.Vector3(1, 1, 1);
+      tube.material.diffuseColor = tube.baseColor;
+      tube.material.emissiveColor = tube.baseEmissive;
+    });
+    currentCaseStudy = null;
+    document.getElementById('case-detail-content').innerHTML = `
+      <p style="color:var(--text-dim);font-size:12px">Select a case study to view principle combinations.</p>
+    `;
+    return;
+  }
+  
+  const cs = CASE_STUDIES[index];
+  currentCaseStudy = cs;
+  
+  const usedPrinciples = cs.principlesUsed.map(p => p.number);
+  
+  // Triangles concernés: alpha=0.85, HIGHLIGHTED (emissive), labels visibles
+  // Triangles NON concernés: alpha=0.05, labels cachés
+  triangleMeshes.forEach(m => {
+    if (usedPrinciples.includes(m.principleData.number)) {
+      m.baseAlpha = 0.85;
+      m.material.alpha = 0.85;
+      m.material.emissiveColor = m.baseColor.scale(0.3);  // HIGHLIGHT
+      if (m.labelDecal) m.labelDecal.setEnabled(true);
+    } else {
+      m.baseAlpha = 0.05;
+      m.material.alpha = 0.05;
+      m.material.emissiveColor = new BABYLON.Color3(0, 0, 0);  // Pas d'émission
+      if (m.labelDecal) m.labelDecal.setEnabled(false);
+    }
+  });
+  
+  // CORRECTION: Garder tubes VISIBLES (gris normal, pas beiges/fins)
+  // Les tubes restent normaux pour maintenir la structure de l'icosaèdre
+  
+  // Barycentre pondéré
+  let bary = BABYLON.Vector3.Zero();
+  cs.principlesUsed.forEach(p => {
+    const mesh = triangleMeshes[p.number - 1];
+    if (mesh) bary = bary.add(mesh.centerPosition.scale(p.weight));
+  });
+  
+  // Sphère barycentre
+  barycenterSphere = BABYLON.MeshBuilder.CreateSphere('bary', {diameter: 0.3}, scene);
+  barycenterSphere.position = bary;
+  const mat = new BABYLON.StandardMaterial('baryMat', scene);
+  mat.diffuseColor = new BABYLON.Color3(1, 1, 1);
+  mat.emissiveColor = new BABYLON.Color3(0.8, 0.8, 0.8);
+  barycenterSphere.material = mat;
+  
+  // Animation pulsation du barycentre
+  const pulse = new BABYLON.Animation('pulse', 'scaling', 30, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+  const keys = [
+    {frame: 0, value: new BABYLON.Vector3(1, 1, 1)},
+    {frame: 30, value: new BABYLON.Vector3(1.15, 1.15, 1.15)},
+    {frame: 60, value: new BABYLON.Vector3(1, 1, 1)}
+  ];
+  pulse.setKeys(keys);
+  barycenterSphere.animations = [pulse];
+  scene.beginAnimation(barycenterSphere, 0, 60, true);
+  
+  // Connexions colorées épaisses avec CSG (coupe booléenne sur volume extrudé)
+  cs.principlesUsed.forEach(p => {
+    const mesh = triangleMeshes[p.number - 1];
+    if (mesh) {
+      // Créer tube complet
+      const tube = BABYLON.MeshBuilder.CreateTube('tube_' + p.number, {
+        path: [bary, mesh.centerPosition],
+        radius: 0.05,
+        tessellation: 8,
+        cap: BABYLON.Mesh.CAP_ALL
+      }, scene);
+      
+      const tubeMat = new BABYLON.StandardMaterial('tubeMat_' + p.number, scene);
+      tubeMat.diffuseColor = mesh.baseColor;
+      tubeMat.emissiveColor = mesh.baseColor.scale(0.4);
+      
+      // OPÉRATION BOOLÉENNE CSG avec PRISME extrudé
+      try {
+        // Récupérer vertices du triangle
+        const positions = mesh.getVerticesData(BABYLON.VertexBuffer.PositionKind);
+        const v1 = new BABYLON.Vector3(positions[0], positions[1], positions[2]);
+        const v2 = new BABYLON.Vector3(positions[3], positions[4], positions[5]);
+        const v3 = new BABYLON.Vector3(positions[6], positions[7], positions[8]);
+        
+        // Calculer normale
+        const edge1 = v2.subtract(v1);
+        const edge2 = v3.subtract(v1);
+        let normal = BABYLON.Vector3.Cross(edge1, edge2).normalize();
+        
+        // Vérifier orientation
+        const center = v1.add(v2).add(v3).scale(1/3);
+        if (BABYLON.Vector3.Dot(normal, center) < 0) {
+          normal = normal.scale(-1);
+        }
+        
+        // Créer PRISME extrudé (épaisseur = diamètre tige + marge)
+        const extrusion = 0.15;
+        const v1_out = v1.add(normal.scale(extrusion));
+        const v2_out = v2.add(normal.scale(extrusion));
+        const v3_out = v3.add(normal.scale(extrusion));
+        
+        // Mesh prisme
+        const prismPositions = [
+          v1.x, v1.y, v1.z,  v2.x, v2.y, v2.z,  v3.x, v3.y, v3.z,
+          v1_out.x, v1_out.y, v1_out.z,  v2_out.x, v2_out.y, v2_out.z,  v3_out.x, v3_out.y, v3_out.z
+        ];
+        const prismIndices = [
+          0,1,2,  3,5,4,
+          0,3,4, 0,4,1,
+          1,4,5, 1,5,2,
+          2,5,3, 2,3,0
+        ];
+        
+        const prism = new BABYLON.Mesh('prism_' + p.number, scene);
+        const vertexData = new BABYLON.VertexData();
+        vertexData.positions = prismPositions;
+        vertexData.indices = prismIndices;
+        BABYLON.VertexData.ComputeNormals(prismPositions, prismIndices, vertexData.normals = []);
+        vertexData.applyToMesh(prism);
+        
+        // CSG: tube - prisme
+        const tubeCSG = BABYLON.CSG.FromMesh(tube);
+        const prismCSG = BABYLON.CSG.FromMesh(prism);
+        const clippedCSG = tubeCSG.subtract(prismCSG);
+        
+        tube.dispose();
+        prism.dispose();
+        const clippedTube = clippedCSG.toMesh('clipped_' + p.number, tubeMat, scene);
+        connectionTubes.push(clippedTube);
+      } catch (e) {
+        console.warn('CSG failed for tube ' + p.number, e);
+        tube.material = tubeMat;
+        connectionTubes.push(tube);
+      }
+    }
+  });
+  
+  // NOMS COMPLETS dans Case Study
+  const principlesList = cs.principlesUsed.map(pu => {
+    const p = PRINCIPLES[pu.number - 1];
+    return `<span class="principle-tag">#${p.number} — ${p.code} — ${p.label}</span>`;
+  }).join('');
+  
+  document.getElementById('case-detail-content').innerHTML = `
+    <div class="case-info">
+      <h3>${cs.label}</h3>
+      <p class="label">Problem:</p>
+      <p>${cs.problem}</p>
+      <p class="label">Solution:</p>
+      <p>${cs.solution}</p>
+      <p class="label">Principles Used:</p>
+      <div class="principles-used">${principlesList}</div>
+      <p class="label" style="margin-top:12px">Inventivity Level: ${cs.level}</p>
+      <p class="label">Domain: ${cs.domain}</p>
+    </div>
+  `;
+  activateTab(2);
+}
+</script>
+</body>
+</html>
