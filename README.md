@@ -1,7 +1,7 @@
 # 🦇🔊 TSCG: The Systemic Construction Game
 ### *"Navigating the unknown like a bat in its cave"*
 
-**Version**: 14.2.0  
+**Version**: 5.0  
 **Authors**: Echopraxium with the collaboration of Claude AI  
 **License**: BSD 3-Clause "Clear" License  
 **Repository**: https://github.com/Echopraxium/tscg
