@@ -949,9 +949,13 @@ function selectCaseStudy() {
   cs.principlesUsed.forEach(p => {
     const mesh = triangleMeshes[p.number - 1];
     if (mesh) {
+      // CORRECTION: Prolonger tube au-delà du centre pour toucher surface triangle
+      const direction = mesh.centerPosition.subtract(bary).normalize();
+      const surfacePoint = mesh.centerPosition.add(direction.scale(0.15));
+      
       // Créer tube complet
       const tube = BABYLON.MeshBuilder.CreateTube('tube_' + p.number, {
-        path: [bary, mesh.centerPosition],
+        path: [bary, surfacePoint],  // Au lieu de centerPosition
         radius: 0.05,
         tessellation: 8,
         cap: BABYLON.Mesh.CAP_ALL
@@ -981,7 +985,7 @@ function selectCaseStudy() {
         }
         
         // Créer PRISME extrudé (épaisseur = diamètre tige + marge)
-        const extrusion = 0.15;
+        const extrusion = 0.25;  // Augmenté de 0.15 pour meilleure coupe
         const v1_out = v1.add(normal.scale(extrusion));
         const v2_out = v2.add(normal.scale(extrusion));
         const v3_out = v3.add(normal.scale(extrusion));
