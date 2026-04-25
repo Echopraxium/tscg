@@ -280,6 +280,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);
       <div style="flex:1"></div>
       <button class="btn-export" onclick="resetAll()">🔄 Reset</button>
       <button class="btn-export" id="btn-auto-rotate" onclick="toggleAutoRotate()">▶️ Auto Rotate</button>
+      <button class="btn-export" id="btn-carousel" onclick="toggleCarousel()">▶️ Carousel</button>
+      <button class="btn-export" id="btn-auto-gallery" onclick="toggleAutoGallery()">▶️ Auto Gallery</button>
     </div>
     <div class="controls-row">
       <div class="family-legend">
@@ -543,7 +545,12 @@ function createLabelTexture(text) {
   return texture;
 }
 
-function selectPrinciple(mesh) {
+function selectPrinciple(mesh, autoSelect = false) {
+  // Arrêter carousel si sélection manuelle
+  if (!autoSelect && carouselEnabled) {
+    toggleCarousel();
+  }
+  
   if (selectedPrinciple) {
     selectedPrinciple.material.diffuseColor = selectedPrinciple.baseColor;
     selectedPrinciple.material.emissiveColor = selectedPrinciple.baseColor.scale(0.4);
@@ -581,13 +588,18 @@ function selectPrinciple(mesh) {
   });
   
   const p = mesh.principleData;
-  document.getElementById('sel-chip').textContent = '#' + p.number + ' ' + p.code;
-  document.getElementById('sel-chip').style.display = 'inline-block';
+  const familyColor = FAMILY_COLORS[p.family];
+  
+  const chip = document.getElementById('sel-chip');
+  chip.textContent = '#' + p.number + ' ' + p.code;
+  chip.style.display = 'inline-block';
+  chip.style.background = familyColor;
+  chip.style.color = 'white';
+  
   document.getElementById('principle-select').value = p.number;
   
   rotateCameraToFace(mesh.centerPosition);
   
-  const familyColor = FAMILY_COLORS[p.family];
   document.getElementById('desc-content').innerHTML = `
     <h1>${p.label} <span class="principle-code">${p.code}</span></h1>
     <span class="family-badge" style="background:${familyColor};color:white">${p.family}</span>
@@ -667,6 +679,19 @@ function selectPrincipleByDropdown() {
   }
 }
 
+function checkAndShowDefaultIfNothingSelected() {
+  // Vérifier si aucune sélection active (ni principe ni case study)
+  const caseStudySelected = document.getElementById('case-select').value !== '';
+  const principleSelected = selectedPrinciple !== null;
+  
+  if (!caseStudySelected && !principleSelected) {
+    // Activer tab Description
+    activateTab(0);
+    // Afficher page par défaut TRIZ
+    showDefaultDescription();
+  }
+}
+
 function clearPrincipleSelection() {
   document.getElementById('principle-select').value = '';
   document.getElementById('sel-chip').style.display = 'none';
@@ -698,8 +723,8 @@ function clearPrincipleSelection() {
     }
   });
   
-  // Show default description
-  showDefaultDescription();
+  // Vérifier si afficher page par défaut (si aucune sélection)
+  checkAndShowDefaultIfNothingSelected();
 }
 
 function clearCaseStudySelection() {
@@ -709,6 +734,10 @@ function clearCaseStudySelection() {
 
 let currentFilter = 'all';
 let autoRotateEnabled = false;
+let carouselEnabled = false;
+let autoGalleryEnabled = false;
+let carouselInterval = null;
+let autoGalleryInterval = null;
 
 function showDefaultDescription() {
   document.getElementById('desc-content').innerHTML = `
@@ -763,10 +792,23 @@ function resetAll() {
   clearPrincipleSelection();
   clearCaseStudySelection();
   
-  // 4. Stop auto-rotate if active
+  // 4. Stop carousel if active
+  if (carouselEnabled) {
+    toggleCarousel();
+  }
+  
+  // 5. Stop auto-gallery if active
+  if (autoGalleryEnabled) {
+    toggleAutoGallery();
+  }
+  
+  // 6. Stop auto-rotate if active
   if (autoRotateEnabled) {
     toggleAutoRotate();
   }
+  
+  // 7. Activate Description tab
+  activateTab(0);
 }
 
 function toggleAutoRotate() {
@@ -777,12 +819,134 @@ function toggleAutoRotate() {
     btn.style.borderColor = 'var(--accent)';
   } else {
     btn.textContent = '▶️ Auto Rotate';
-    btn.style.borderColor = '';
+    btn.style.borderColor = 'var(--border)';  // Forcer gris, pas vert
+  }
+}
+
+function toggleCarousel() {
+  carouselEnabled = !carouselEnabled;
+  const btn = document.getElementById('btn-carousel');
+  
+  if (carouselEnabled) {
+    // Désactiver Auto Gallery (exclusif)
+    if (autoGalleryEnabled) {
+      toggleAutoGallery();
+    }
+    
+    // Activer auto-rotation
+    if (!autoRotateEnabled) {
+      toggleAutoRotate();
+    }
+    
+    // Sélectionner premier principe aléatoire immédiatement
+    selectRandomPrinciple();
+    
+    // Lancer interval (20 secondes)
+    carouselInterval = setInterval(selectRandomPrinciple, 20000);
+    
+    btn.textContent = '⏸️ Carousel';
+    btn.style.borderColor = 'var(--accent)';
+  } else {
+    // Arrêter interval
+    if (carouselInterval) {
+      clearInterval(carouselInterval);
+      carouselInterval = null;
+    }
+    
+    btn.textContent = '▶️ Carousel';
+    btn.style.borderColor = 'var(--border)';  // Forcer gris, pas vert
+  }
+}
+
+function toggleAutoGallery() {
+  autoGalleryEnabled = !autoGalleryEnabled;
+  const btn = document.getElementById('btn-auto-gallery');
+  
+  if (autoGalleryEnabled) {
+    // Désactiver Carousel (exclusif)
+    if (carouselEnabled) {
+      toggleCarousel();
+    }
+    
+    // Activer auto-rotation
+    if (!autoRotateEnabled) {
+      toggleAutoRotate();
+    }
+    
+    // Sélectionner premier case study aléatoire immédiatement
+    selectRandomCaseStudy();
+    
+    // Lancer interval (20 secondes)
+    autoGalleryInterval = setInterval(selectRandomCaseStudy, 20000);
+    
+    btn.textContent = '⏸️ Auto Gallery';
+    btn.style.borderColor = 'var(--accent)';
+  } else {
+    // Arrêter interval
+    if (autoGalleryInterval) {
+      clearInterval(autoGalleryInterval);
+      autoGalleryInterval = null;
+    }
+    
+    btn.textContent = '▶️ Auto Gallery';
+    btn.style.borderColor = 'var(--border)';  // Forcer gris, pas vert
+  }
+}
+
+function selectRandomPrinciple() {
+  // Clear sélection case study précédente (éviter fantôme)
+  clearCaseStudySelection();
+  
+  // CORRECTION: Respecter filtre famille actuel
+  console.log('[Carousel] currentFilter:', currentFilter);
+  let visibleMeshes = triangleMeshes;
+  if (currentFilter !== 'all') {
+    visibleMeshes = triangleMeshes.filter(m => m.principleData.family === currentFilter);
+    console.log('[Carousel] Filtered to', visibleMeshes.length, 'principles of family', currentFilter);
+  }
+  
+  // Sélectionner aléatoirement parmi les principes VISIBLES
+  if (visibleMeshes.length > 0) {
+    const randomIndex = Math.floor(Math.random() * visibleMeshes.length);
+    const mesh = visibleMeshes[randomIndex];
+    console.log('[Carousel] Selected principle #' + mesh.principleData.number, mesh.principleData.label, '('+mesh.principleData.family+')');
+    selectPrinciple(mesh, true);  // true = autoSelect
+    activateTab(0);  // Tab Description
+  }
+}
+
+function selectRandomCaseStudy() {
+  // Clear sélection principe précédente (éviter fantôme)
+  clearPrincipleSelection();
+  
+  // CORRECTION: Filtrer case studies selon filtre famille actuel
+  let visibleCaseStudies = [];
+  CASE_STUDIES.forEach((cs, index) => {
+    const hasMatchingPrinciple = cs.principlesUsed.some(p => {
+      const principle = PRINCIPLES[p.number - 1];
+      return currentFilter === 'all' || principle.family === currentFilter;
+    });
+    if (hasMatchingPrinciple) {
+      visibleCaseStudies.push(index);
+    }
+  });
+  
+  // Sélectionner aléatoirement parmi les case studies VISIBLES
+  if (visibleCaseStudies.length > 0) {
+    const randomIndex = Math.floor(Math.random() * visibleCaseStudies.length);
+    const caseStudyIndex = visibleCaseStudies[randomIndex];
+    const select = document.getElementById('case-select');
+    select.value = caseStudyIndex;
+    selectCaseStudy(true);  // true = autoSelect
+    activateTab(2);  // Tab Case Study
   }
 }
 
 function filterFamily(family) {
   currentFilter = family;
+  
+  // Activer tab Description
+  activateTab(0);
   
   // Update active badge
   document.querySelectorAll('.family-badge').forEach(badge => {
@@ -842,9 +1006,17 @@ function filterFamily(family) {
       option.style.display = 'none';
     }
   });
+  
+  // Activate Description tab
+  activateTab(0);
 }
 
-function selectCaseStudy() {
+function selectCaseStudy(autoSelect = false) {
+  // Arrêter auto-gallery si sélection manuelle
+  if (!autoSelect && autoGalleryEnabled) {
+    toggleAutoGallery();
+  }
+  
   const select = document.getElementById('case-select');
   const index = parseInt(select.value);
   
@@ -892,6 +1064,9 @@ function selectCaseStudy() {
     document.getElementById('case-detail-content').innerHTML = `
       <p style="color:var(--text-dim);font-size:12px">Select a case study to view principle combinations.</p>
     `;
+    
+    // Vérifier si afficher page par défaut (si aucune sélection)
+    checkAndShowDefaultIfNothingSelected();
     return;
   }
   
@@ -985,7 +1160,7 @@ function selectCaseStudy() {
         }
         
         // Créer PRISME extrudé (épaisseur = diamètre tige + marge)
-        const extrusion = 0.25;  // Augmenté de 0.15 pour meilleure coupe
+        const extrusion = 0.25;  // Optimal pour coupe robuste
         const v1_out = v1.add(normal.scale(extrusion));
         const v2_out = v2.add(normal.scale(extrusion));
         const v3_out = v3.add(normal.scale(extrusion));
