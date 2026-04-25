@@ -1126,7 +1126,7 @@ function selectCaseStudy(autoSelect = false) {
     if (mesh) {
       // CORRECTION: Prolonger tube au-delà du centre pour toucher surface triangle
       const direction = mesh.centerPosition.subtract(bary).normalize();
-      const surfacePoint = mesh.centerPosition.add(direction.scale(0.15));
+      const surfacePoint = mesh.centerPosition.add(direction.scale(0.30));
       
       // Créer tube complet
       const tube = BABYLON.MeshBuilder.CreateTube('tube_' + p.number, {
@@ -1160,7 +1160,7 @@ function selectCaseStudy(autoSelect = false) {
         }
         
         // Créer PRISME extrudé (épaisseur = diamètre tige + marge)
-        const extrusion = 0.25;  // Optimal pour coupe robuste
+        const extrusion = 0.35;  // Augmenté pour garantir coupe robuste
         const v1_out = v1.add(normal.scale(extrusion));
         const v2_out = v2.add(normal.scale(extrusion));
         const v3_out = v3.add(normal.scale(extrusion));

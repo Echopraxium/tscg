@@ -588,18 +588,13 @@ function selectPrinciple(mesh, autoSelect = false) {
   });
   
   const p = mesh.principleData;
-  const familyColor = FAMILY_COLORS[p.family];
-  
-  const chip = document.getElementById('sel-chip');
-  chip.textContent = '#' + p.number + ' ' + p.code;
-  chip.style.display = 'inline-block';
-  chip.style.background = familyColor;
-  chip.style.color = 'white';
-  
+  document.getElementById('sel-chip').textContent = '#' + p.number + ' ' + p.code;
+  document.getElementById('sel-chip').style.display = 'inline-block';
   document.getElementById('principle-select').value = p.number;
   
   rotateCameraToFace(mesh.centerPosition);
   
+  const familyColor = FAMILY_COLORS[p.family];
   document.getElementById('desc-content').innerHTML = `
     <h1>${p.label} <span class="principle-code">${p.code}</span></h1>
     <span class="family-badge" style="background:${familyColor};color:white">${p.family}</span>
@@ -679,19 +674,6 @@ function selectPrincipleByDropdown() {
   }
 }
 
-function checkAndShowDefaultIfNothingSelected() {
-  // Vérifier si aucune sélection active (ni principe ni case study)
-  const caseStudySelected = document.getElementById('case-select').value !== '';
-  const principleSelected = selectedPrinciple !== null;
-  
-  if (!caseStudySelected && !principleSelected) {
-    // Activer tab Description
-    activateTab(0);
-    // Afficher page par défaut TRIZ
-    showDefaultDescription();
-  }
-}
-
 function clearPrincipleSelection() {
   document.getElementById('principle-select').value = '';
   document.getElementById('sel-chip').style.display = 'none';
@@ -723,8 +705,8 @@ function clearPrincipleSelection() {
     }
   });
   
-  // Vérifier si afficher page par défaut (si aucune sélection)
-  checkAndShowDefaultIfNothingSelected();
+  // Show default description
+  showDefaultDescription();
 }
 
 function clearCaseStudySelection() {
@@ -897,19 +879,9 @@ function selectRandomPrinciple() {
   // Clear sélection case study précédente (éviter fantôme)
   clearCaseStudySelection();
   
-  // CORRECTION: Respecter filtre famille actuel
-  console.log('[Carousel] currentFilter:', currentFilter);
-  let visibleMeshes = triangleMeshes;
-  if (currentFilter !== 'all') {
-    visibleMeshes = triangleMeshes.filter(m => m.principleData.family === currentFilter);
-    console.log('[Carousel] Filtered to', visibleMeshes.length, 'principles of family', currentFilter);
-  }
-  
-  // Sélectionner aléatoirement parmi les principes VISIBLES
-  if (visibleMeshes.length > 0) {
-    const randomIndex = Math.floor(Math.random() * visibleMeshes.length);
-    const mesh = visibleMeshes[randomIndex];
-    console.log('[Carousel] Selected principle #' + mesh.principleData.number, mesh.principleData.label, '('+mesh.principleData.family+')');
+  const randomIndex = Math.floor(Math.random() * 40);
+  const mesh = triangleMeshes[randomIndex];
+  if (mesh) {
     selectPrinciple(mesh, true);  // true = autoSelect
     activateTab(0);  // Tab Description
   }
@@ -919,27 +891,11 @@ function selectRandomCaseStudy() {
   // Clear sélection principe précédente (éviter fantôme)
   clearPrincipleSelection();
   
-  // CORRECTION: Filtrer case studies selon filtre famille actuel
-  let visibleCaseStudies = [];
-  CASE_STUDIES.forEach((cs, index) => {
-    const hasMatchingPrinciple = cs.principlesUsed.some(p => {
-      const principle = PRINCIPLES[p.number - 1];
-      return currentFilter === 'all' || principle.family === currentFilter;
-    });
-    if (hasMatchingPrinciple) {
-      visibleCaseStudies.push(index);
-    }
-  });
-  
-  // Sélectionner aléatoirement parmi les case studies VISIBLES
-  if (visibleCaseStudies.length > 0) {
-    const randomIndex = Math.floor(Math.random() * visibleCaseStudies.length);
-    const caseStudyIndex = visibleCaseStudies[randomIndex];
-    const select = document.getElementById('case-select');
-    select.value = caseStudyIndex;
-    selectCaseStudy(true);  // true = autoSelect
-    activateTab(2);  // Tab Case Study
-  }
+  const randomIndex = Math.floor(Math.random() * CASE_STUDIES.length);
+  const select = document.getElementById('case-select');
+  select.value = randomIndex;
+  selectCaseStudy(true);  // true = autoSelect
+  activateTab(2);  // Tab Case Study
 }
 
 function filterFamily(family) {
@@ -1064,9 +1020,6 @@ function selectCaseStudy(autoSelect = false) {
     document.getElementById('case-detail-content').innerHTML = `
       <p style="color:var(--text-dim);font-size:12px">Select a case study to view principle combinations.</p>
     `;
-    
-    // Vérifier si afficher page par défaut (si aucune sélection)
-    checkAndShowDefaultIfNothingSelected();
     return;
   }
   
@@ -1126,7 +1079,7 @@ function selectCaseStudy(autoSelect = false) {
     if (mesh) {
       // CORRECTION: Prolonger tube au-delà du centre pour toucher surface triangle
       const direction = mesh.centerPosition.subtract(bary).normalize();
-      const surfacePoint = mesh.centerPosition.add(direction.scale(0.15));
+      const surfacePoint = mesh.centerPosition.add(direction.scale(0.30));
       
       // Créer tube complet
       const tube = BABYLON.MeshBuilder.CreateTube('tube_' + p.number, {
@@ -1160,7 +1113,7 @@ function selectCaseStudy(autoSelect = false) {
         }
         
         // Créer PRISME extrudé (épaisseur = diamètre tige + marge)
-        const extrusion = 0.25;  // Optimal pour coupe robuste
+        const extrusion = 0.35;  // Augmenté pour garantir coupe robuste
         const v1_out = v1.add(normal.scale(extrusion));
         const v2_out = v2.add(normal.scale(extrusion));
         const v3_out = v3.add(normal.scale(extrusion));

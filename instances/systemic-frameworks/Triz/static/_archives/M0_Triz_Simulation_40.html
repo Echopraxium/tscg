@@ -588,18 +588,13 @@ function selectPrinciple(mesh, autoSelect = false) {
   });
   
   const p = mesh.principleData;
-  const familyColor = FAMILY_COLORS[p.family];
-  
-  const chip = document.getElementById('sel-chip');
-  chip.textContent = '#' + p.number + ' ' + p.code;
-  chip.style.display = 'inline-block';
-  chip.style.background = familyColor;
-  chip.style.color = 'white';
-  
+  document.getElementById('sel-chip').textContent = '#' + p.number + ' ' + p.code;
+  document.getElementById('sel-chip').style.display = 'inline-block';
   document.getElementById('principle-select').value = p.number;
   
   rotateCameraToFace(mesh.centerPosition);
   
+  const familyColor = FAMILY_COLORS[p.family];
   document.getElementById('desc-content').innerHTML = `
     <h1>${p.label} <span class="principle-code">${p.code}</span></h1>
     <span class="family-badge" style="background:${familyColor};color:white">${p.family}</span>
@@ -898,18 +893,15 @@ function selectRandomPrinciple() {
   clearCaseStudySelection();
   
   // CORRECTION: Respecter filtre famille actuel
-  console.log('[Carousel] currentFilter:', currentFilter);
   let visibleMeshes = triangleMeshes;
   if (currentFilter !== 'all') {
     visibleMeshes = triangleMeshes.filter(m => m.principleData.family === currentFilter);
-    console.log('[Carousel] Filtered to', visibleMeshes.length, 'principles of family', currentFilter);
   }
   
   // Sélectionner aléatoirement parmi les principes VISIBLES
   if (visibleMeshes.length > 0) {
     const randomIndex = Math.floor(Math.random() * visibleMeshes.length);
     const mesh = visibleMeshes[randomIndex];
-    console.log('[Carousel] Selected principle #' + mesh.principleData.number, mesh.principleData.label, '('+mesh.principleData.family+')');
     selectPrinciple(mesh, true);  // true = autoSelect
     activateTab(0);  // Tab Description
   }
@@ -1126,7 +1118,7 @@ function selectCaseStudy(autoSelect = false) {
     if (mesh) {
       // CORRECTION: Prolonger tube au-delà du centre pour toucher surface triangle
       const direction = mesh.centerPosition.subtract(bary).normalize();
-      const surfacePoint = mesh.centerPosition.add(direction.scale(0.15));
+      const surfacePoint = mesh.centerPosition.add(direction.scale(0.30));
       
       // Créer tube complet
       const tube = BABYLON.MeshBuilder.CreateTube('tube_' + p.number, {
@@ -1160,7 +1152,7 @@ function selectCaseStudy(autoSelect = false) {
         }
         
         // Créer PRISME extrudé (épaisseur = diamètre tige + marge)
-        const extrusion = 0.25;  // Optimal pour coupe robuste
+        const extrusion = 0.35;  // Augmenté pour garantir coupe robuste
         const v1_out = v1.add(normal.scale(extrusion));
         const v2_out = v2.add(normal.scale(extrusion));
         const v3_out = v3.add(normal.scale(extrusion));
