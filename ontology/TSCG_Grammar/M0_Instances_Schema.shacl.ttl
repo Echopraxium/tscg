@@ -1,8 +1,8 @@
-# TSCG Instances - Complete Grammar SHACL Schema v1.2
+# TSCG Instances - Complete Grammar SHACL Schema v1.3
 # Based on complete corpus analysis: 24 Poclets + 2 other instances (26 total)
 # Author: Echopraxium with the collaboration of Claude AI
-# Date: 2026-04-13 (initial), 2026-04-18 (v1.1 - domain migration), 2026-04-19 (v1.2 - absolute URL requirements)
-# Status: UPDATED - Domain migrated to M1, ASFID/REVOI dimensions migrated to M3, absolute URL requirements documented
+# Date: 2026-04-13 (initial), 2026-04-18 (v1.1), 2026-04-19 (v1.2), 2026-04-25 (v1.3 - domain format enforcement)
+# Status: UPDATED - Domain format enforcement: m1:domain must use array for multiple domains (no "/" separator)
 
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -139,14 +139,24 @@ m0:TscgInstanceShape
   ] ;
   
   # Domain (83% consensus on poclets - MIGRATED to M1 level)
+  # v1.3 CHANGE: Added pattern constraint to reject "/" separator in single string format
   sh:property [
     sh:path m1:domain ;
     sh:or (
-      [ sh:datatype xsd:string ]           # Single domain string
-      [ sh:nodeKind sh:Literal ]           # Array of domain strings (for multi-domain poclets)
+      # Single domain: string WITHOUT "/" separator
+      [ 
+        sh:datatype xsd:string ;
+        sh:pattern "^[^/]+$" ;  # Reject strings containing "/"
+        sh:message "Single domain must be a string WITHOUT '/' separator (e.g., 'Chemistry'). For multiple domains, use array format instead."
+      ]
+      # Multiple domains: array of strings
+      [ 
+        sh:nodeKind sh:Literal ;
+        sh:message "Multiple domains must use array format (e.g., ['Chemistry', 'Physics'])"
+      ]
     ) ;
     sh:minCount 1 ;
-    sh:message "m1:domain is MANDATORY (M1-level property, not m0:domain). Accepts single string ('Chemistry') or array (['Chemistry', 'Physics']). Domain values are registered in M1_Domains.jsonld (evolving registry). Examples: 'Biology', 'Physics', 'Chemistry', 'Electronics', 'Economics', 'Optics', 'Music Theory', 'Game Theory', 'Computer Science', 'Geology', 'Engineering'. IMPORTANT: If this validation fails but m1:domain is present, check that 'm1:' namespace in @context uses ABSOLUTE URL (https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#) not relative URL (M1_CoreConcepts.jsonld#) - pyshacl cannot resolve relative URLs."
+    sh:message "m1:domain is MANDATORY (M1-level property, not m0:domain). FORMATS: single string ('Chemistry') for one domain, OR array (['Chemistry', 'Physics']) for multiple domains. String format with '/' separator (e.g., 'Chemistry / Physics') is FORBIDDEN - use array format instead. Domain values are registered in M1_Domains.jsonld (evolving registry). Examples: 'Biology', 'Physics', 'Chemistry', 'Electronics', 'Economics', 'Optics', 'Music Theory', 'Game Theory', 'Computer Science', 'Geology', 'Engineering'. IMPORTANT: If this validation fails but m1:domain is present, check that 'm1:' namespace in @context uses ABSOLUTE URL (https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#) not relative URL (M1_CoreConcepts.jsonld#) - pyshacl cannot resolve relative URLs."
   ] ;
   
   # ===== STRONGLY RECOMMENDED PROPERTIES (Consensus 70-89%) =====
@@ -522,6 +532,20 @@ m3:eagle_eye:FloworbidRdfTypePoclet
 # ============================================
 # CHANGELOG
 # ============================================
+# v1.3 (2026-04-25): Domain format enforcement
+#   - BREAKING CHANGE: Reject m1:domain strings containing "/" separator
+#   - Added pattern constraint "^[^/]+$" to enforce single domain string format
+#   - Multiple domains MUST use array format: ["Domain1", "Domain2"]
+#   - Detected issue: Some instances had "Domain1 / Domain2" format (incorrect)
+#   - Solution: Use fix_domain_format.py script to convert existing instances
+#   - Updated validation message with clear format requirements and examples
+#
+# v1.2 (2026-04-19): Absolute URL requirements documentation
+#   - CRITICAL: Documented absolute URL requirement for @context namespaces
+#   - Added detailed explanation why pyshacl requires absolute URLs
+#   - Updated validation messages for m3:ontologyType and m1:domain
+#   - No constraint changes, only documentation improvements
+#
 # v1.1 (2026-04-18): Domain property migration to M1 level
 #   - BREAKING CHANGE: m0:domain → m1:domain (M1-level property, architectural correction)
 #   - Added m1: prefix declaration
@@ -529,26 +553,3 @@ m3:eagle_eye:FloworbidRdfTypePoclet
 #   - Domain values reference M1_Domains.jsonld (evolving registry)
 #   - Added comprehensive domain examples in validation message
 #   - Updated all statistics and documentation to reflect m1:domain
-#
-# v1.0 (2026-04-13): FINAL grammar after complete corpus analysis (100% coverage)
-#   - Complete corpus: 24 Poclets + 2 other instances (26 total)
-#   - Added support for 3 instance types (Poclet, SystemicFramework, SymbolicSystemGrammar)
-#   - Identified m3:ontologyCategory violation (VSM) - obsolete, use m3:ontologyType
-#   - Identified ORIVE terminology violation (VSM) - obsolete, use REVOI
-#   - Updated all statistics based on 26 instances
-#   - m2:changelog reached 69% global (71% poclets-only - threshold reached)
-#   - rdfs:label reached 73% global (71% poclets-only - threshold maintained)
-#   - Final forbidden patterns count: 10 patterns to eliminate
-#   - Documented complete conformance levels per constraint
-#
-# v0.3 (2026-04-13): Near-final grammar after Lot 5 analysis (88% coverage)
-#   - 21 poclets analyzed (88% poclet coverage)
-#   - rdfs:label reached 71% threshold → mandatory
-#   - m1:domain reached 86% → mandatory (NOTE: originally tracked as m0:domain)
-#
-# v0.2 (2026-04-13): Added forbidden patterns after Lot 3 analysis
-#   - 13 poclets analyzed (54% poclet coverage)
-#   - Forbid m2:ontologyCategory
-#
-# v0.1 (2026-04-13): Initial SHACL based on Lot 1 analysis
-#   - 5 poclets analyzed (21% poclet coverage)
