@@ -1,0 +1,207 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m3": "M3_GenesisSpace.jsonld#",
+    "m0": "M0_InstanceSimulations.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "M0_InstanceSimulations.jsonld",
+      "@type": "owl:Ontology",
+      "rdfs:label": "TSCG Instance Simulations - Capitalization of Experience",
+      "rdfs:comment": "Knowledge base documenting best practices, design patterns, technical solutions, and lessons learned from creating interactive 3D simulations for TSCG instances (Poclets, Systemic Frameworks, Symbolic System Grammars). This ontology serves as a reflexive meta-level resource for future simulation development.",
+      "m3:ontologyType": {
+        "@id": "m3:TscgTool"
+      },
+      "owl:versionInfo": "1.0.0",
+      "dcterms:created": "2026-05-05",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m0:simulationCount": 11,
+      "m0:completedSimulations": [
+        "FireTriangle",
+        "FourStrokeEngine",
+        "ExposureTriangle",
+        "ColorSynthesis",
+        "Transistor",
+        "PhaseTransition",
+        "VCO",
+        "CounterPoint",
+        "MtgColorWheel",
+        "NakamotoConsensus",
+        "Ptoe"
+      ],
+      "m0:technicalStack": {
+        "rendering": "BabylonJS 6.26.0",
+        "2d_graphics": "p5.js (instance mode)",
+        "layout": "Canonical layout from M0_FireTriangle.html",
+        "validation": "ESLint for code quality"
+      },
+      "m0:designPatterns": [
+        {
+          "@id": "m0:TabularInterface",
+          "rdfs:label": "Tabular Interface Pattern",
+          "rdfs:comment": "Standard 4-tab layout: Description, Scores, Concepts, User's Guide. Provides consistent navigation across all simulations.",
+          "m0:components": [
+            "Tab 0 (Description): Instance overview + domain-specific content (e.g., element families, reactor types)",
+            "Tab 1 (Scores): ASFID/REVOI visualization with score bars and epistemic gap badge",
+            "Tab 2 (Concepts): M2 GenericConcepts mobilized, organized by family with descriptions and roles",
+            "Tab 3 (User's Guide): Interactive controls and navigation instructions"
+          ],
+          "m0:bestPractice": "Always extract Tab content structure from canonical reference (M0_FireTriangle.html) before starting new simulation"
+        },
+        {
+          "@id": "m0:DualViewArchitecture",
+          "rdfs:label": "Dual View Architecture",
+          "rdfs:comment": "Main view + auxiliary view pattern (e.g., Nautilus spiral + Orbital model in Ptoe). Allows switching between complementary visualizations of the same system.",
+          "m0:implementation": "Main canvas + NE floating panel with swap functionality",
+          "m0:examples": [
+            "Ptoe: Nautilus spiral (main) ↔ Orbital/Bohr model (auxiliary)",
+            "MtgColorWheel: Pentagon layout (main) ↔ Alternative view (auxiliary)"
+          ]
+        },
+        {
+          "@id": "m0:ColorCodingByFamily",
+          "rdfs:label": "Color-Coding by Family/Category",
+          "rdfs:comment": "Use consistent color mapping for categories/families with legend-driven selection. Enables visual pattern recognition and family highlighting.",
+          "m0:implementation": "Left panel legend with clickable family entries, hover effects, and path-based highlighting in 3D scene",
+          "m0:examples": [
+            "Ptoe: 10 element families with distinct colors (Alkali Metals=#FF4422, Noble Gases=#FF44BB, etc.)",
+            "MtgColorWheel: 5 MTG colors with canonical mapping (White, Blue, Black, Red, Green)"
+          ]
+        },
+        {
+          "@id": "m0:GeometricPrimitives",
+          "rdfs:label": "Geometric Primitives Catalog",
+          "rdfs:comment": "Reusable 3D shapes with documented rotation/alignment conventions.",
+          "m0:primitives": [
+            {
+              "shape": "CreateCylinder(tessellation=4)",
+              "alignment": "Corners at 0°/90°/180°/270° — no offset needed",
+              "usage": "Radial alignment via rotation.y = atan2(pos.z, pos.x)"
+            },
+            {
+              "shape": "Octahedron (bicolor)",
+              "pattern": "makeBicolorOctaParts with tiltQuat composition",
+              "note": "makeSolidOctaParts must delegate to makeBicolorOctaParts (hex1=hex2) for rotation consistency"
+            },
+            {
+              "shape": "Ring pair (selection)",
+              "pattern": "makeRingPair() — equatorial + polar tori",
+              "usage": "White rings for element/node selection (more reliable than octahedron-based selection)"
+            }
+          ]
+        },
+        {
+          "@id": "m0:ContentSourceIntegration",
+          "rdfs:label": "Content Source Integration",
+          "rdfs:comment": "Pattern for extracting content from M0 JSON-LD and README files to populate HTML tabs.",
+          "m0:workflow": [
+            "Extract GenericConcepts list from M0_*.jsonld (GenericConceptsMobilized section)",
+            "Retrieve concept descriptions from M2_GenericConcepts.jsonld",
+            "Extract role descriptions from M0_*.jsonld (conceptList entries)",
+            "Extract domain-specific content from M0_*_README.md (e.g., Element Families section)",
+            "Generate HTML fragments with consistent styling and structure"
+          ],
+          "m0:tooling": "Python script for automated extraction (see extract_m2_concepts.py example)"
+        }
+      ],
+      "m0:technicalSolutions": [
+        {
+          "@id": "m0:AspectRatioCorrection",
+          "rdfs:label": "Aspect Ratio Correction",
+          "rdfs:comment": "Solution to prevent deformation in 3D objects when canvas dimensions change.",
+          "m0:problem": "Objects appear stretched/compressed when canvas aspect ratio != intended ratio",
+          "m0:solution": "Always recalculate camera aspect ratio on window resize and update projection matrix",
+          "m0:codePattern": "camera.aspect = engine.getRenderWidth() / engine.getRenderHeight(); camera.getProjectionMatrix(true);"
+        },
+        {
+          "@id": "m0:BabylonJSPreviewRestriction",
+          "rdfs:label": "BabylonJS Preview Restriction",
+          "rdfs:comment": "CSP sandbox in Claude.ai blocks BabylonJS APIs — never preview BabylonJS in artifacts.",
+          "m0:workflow": [
+            "Prototype layout/logic in conversation",
+            "Validate geometry via Python/Matplotlib visualization",
+            "Create complete HTML file for local testing",
+            "Test locally in browser (Brave/Chrome/Firefox)"
+          ]
+        },
+        {
+          "@id": "m0:MultiLineCommandWorkaround",
+          "rdfs:label": "Windows Multi-Line Command Workaround",
+          "rdfs:comment": "cmd.exe doesn't support bash-style line continuation with backslash.",
+          "m0:solution": [
+            "Use single-line commands, OR",
+            "Use ^ for cmd.exe continuation, OR",
+            "Use backtick (`) for PowerShell continuation"
+          ]
+        }
+      ],
+      "m0:contentPatterns": [
+        {
+          "@id": "m0:ElementFamiliesDescription",
+          "rdfs:label": "Element Families Description Pattern (Ptoe)",
+          "rdfs:comment": "Template for documenting categorical subdivisions within an instance.",
+          "m0:structure": [
+            "Category name as H4 heading with color-coding",
+            "Detailed paragraph covering: properties, behavior, applications, examples",
+            "Consistent formatting: font-size 12px, line-height 1.6, margin-top 12px"
+          ],
+          "m0:applicability": "Any instance with natural categorical subdivisions (chemical families, reactor types, biological taxa, etc.)"
+        },
+        {
+          "@id": "m0:ConceptsTabStructure",
+          "rdfs:label": "Concepts Tab Structure Pattern",
+          "rdfs:comment": "Standard structure for displaying M2 GenericConcepts mobilized in an instance.",
+          "m0:sections": [
+            "Summary paragraph: total concepts + family breakdown",
+            "Family sections (Structural, Informational, Ontological, Regulatory, etc.)",
+            "Per-concept entries: Name + Formula + Description + Role"
+          ],
+          "m0:styling": "Color-coded family headers (#56d364 Structural, #d2a8ff Informational, #79c0ff Ontological, #f78166 Regulatory)"
+        }
+      ],
+      "m0:lessonsLearned": [
+        {
+          "@id": "m0:SkillFirst",
+          "rdfs:label": "Always Read Skill First",
+          "rdfs:comment": "Before writing any simulation code, read the matching SKILL.md file(s). Skills encode environment-specific constraints not in training data.",
+          "m0:rationale": "Prevents costly iterations to fix library mismatches, rendering quirks, or output path errors"
+        },
+        {
+          "@id": "m0:IterativeEditing",
+          "rdfs:label": "Prefer Iterative Editing",
+          "rdfs:comment": "Build long content (>100 lines) across multiple tool calls. Start with outline/structure, add content section by section.",
+          "m0:rationale": "Reduces token usage, enables surgical corrections, maintains version control"
+        },
+        {
+          "@id": "m0:CoherenceAcrossFiles",
+          "rdfs:label": "Maintain Coherence Across Files",
+          "rdfs:comment": "M0_*.jsonld, M0_*_README.md, and M0_*.html must present consistent information.",
+          "m0:checklist": [
+            "Element/component descriptions match between README and HTML",
+            "GenericConcepts list in JSON-LD matches Concepts tab in HTML",
+            "ASFID/REVOI scores identical in all files",
+            "Version numbers synchronized"
+          ]
+        },
+        {
+          "@id": "m0:LocalTestingMandatory",
+          "rdfs:label": "Local Testing is Mandatory",
+          "rdfs:comment": "BabylonJS simulations cannot be validated in Claude.ai artifacts. Always test locally.",
+          "m0:workflow": "Create → Deliver → User tests locally → Report issues → Iterate"
+        }
+      ],
+      "m0:futureDirections": [
+        "Automated content extraction pipeline (M0 JSON-LD → HTML tabs)",
+        "Component library for common 3D primitives (rings, octahedra, spirals)",
+        "Template repository for new simulations",
+        "Validation script to check coherence across M0_*.jsonld, README, HTML"
+      ]
+    }
+  ]
+}

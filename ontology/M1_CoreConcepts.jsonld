@@ -20,8 +20,8 @@
       "dcterms:description": "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-03-13",
-      "owl:versionInfo": "2.1.0",
+      "dcterms:modified": "2026-04-28",
+      "owl:versionInfo": "2.2.0",
       "m1:layerPosition": {
         "above": "M0 (Poclets - concrete instantiations)",
         "below": "M2 (Metaconcepts - universal patterns)",
@@ -184,6 +184,13 @@
         "m1:note": "9 instances of m2:GenericConceptCombo + 2 instances of m1core:CorePattern"
       },
       "m1:changelog": {
+        "v2.2.0": {
+          "date": "2026-04-28",
+          "changes": [
+            "ADDED: m1:simulationTitle property — short display title for simulations/gallery (fallback: rdfs:label)",
+            "PURPOSE: Separate formal ontology label from user-facing simulation title in generate_index.js"
+          ]
+        },
         "v2.1.0": {
           "date": "2026-03-13",
           "changes": [
@@ -201,14 +208,26 @@
             "@base added | m1:core: → m1core: | m2: URI updated to M2_GenericConcepts.jsonld",
             "M2 Combo family fully suppressed — M2 is now atomic-only"
           ]
-        },
-        "v1.1.0": {
-          "date": "2026-01-22",
-          "changes": [
-            "YGGDRASIL: MultipolarNetwork (S⊗I⊗A) + CyclicTension (D⊗A⊗F) — 2 validated CorePatterns"
-          ]
         }
       }
+    },
+    {
+      "@id": "m1core:simulationTitle",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Simulation Title",
+      "rdfs:comment": "Short human-readable title for displaying instances in simulation galleries and user interfaces. Typically shorter and more user-friendly than the formal rdfs:label. Used by generate_index.js and other gallery/presentation tools.",
+      "rdfs:domain": "owl:Ontology",
+      "rdfs:range": "xsd:string",
+      "skos:definition": "A concise display name optimized for gallery cards, simulation headers, and navigation menus. Unlike rdfs:label (which may contain formal prefixes like 'TSCG M0' or full descriptive text), simulationTitle contains only the essential name. If absent, tools should fallback to rdfs:label stripped of common prefixes.",
+      "skos:example": [
+        "Fire Triangle (instead of 'TSCG M0 Fire Triangle Poclet')",
+        "Trophic Pyramid (instead of 'TSCG M0 Trophic Pyramid Poclet')",
+        "Kindleberger-Minsky Financial Bubble (instead of 'Kindleberger-Minsky Financial Crisis Cycle')",
+        "Nuclear Reactor Typology (instead of 'TSCG M0 Nuclear Reactor Typology Poclet')"
+      ],
+      "skos:scopeNote": "Property defined at M1 level but applicable to M0 instances (owl:Ontology nodes in M0_*.jsonld files). This is architecturally correct as M1 provides vocabulary for describing M0 instances.",
+      "dcterms:created": "2026-04-28",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
     {
       "@id": "m1core:CoreConcept",
