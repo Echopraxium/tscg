@@ -1,0 +1,402 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m3": "M3_GenesisSpace.jsonld#",
+    "m0": "M0_InstanceSimulation_UXControls.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "M0_InstanceSimulation_UXControls.jsonld",
+      "@type": "owl:Ontology",
+      "rdfs:label": "TSCG Instance Simulation UX Controls - Pattern Library",
+      "rdfs:comment": "Catalog of reusable UX components and interaction patterns for TSCG instance simulations. Documents standard controls, layouts, and behaviors to ensure consistent user experience across all simulations.",
+      "m3:ontologyType": {
+        "@id": "m3:TscgTool"
+      },
+      "owl:versionInfo": "1.0.0",
+      "dcterms:created": "2026-05-05",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m0:fileStructure": {
+        "root": "M0_*.html",
+        "styles": "src/*.css",
+        "scripts": "src/*.js",
+        "rationale": "Separation of concerns: HTML structure, CSS styling, JS behavior"
+      },
+      "m0:layoutPatterns": [
+        {
+          "@id": "m0:MainCanvasLayout",
+          "rdfs:label": "Main Canvas Layout",
+          "rdfs:comment": "Primary 3D viewport occupying central region with fixed header and footer.",
+          "m0:structure": {
+            "header": "40px fixed top (TSCG branding + navigation + instance title)",
+            "footer": "32px fixed bottom (status indicators + controls + hints)",
+            "mainCanvas": "Fill remaining vertical space",
+            "sidePanel": "203px fixed left (legends, selections, filters)"
+          },
+          "m0:htmlPattern": "<div id='layout'> with CSS Grid: grid-template-columns: 203px 1fr 5px var(--sidebar-w, 360px)",
+          "m0:examples": ["FireTriangle", "Ptoe", "MtgColorWheel"]
+        },
+        {
+          "@id": "m0:DualCanvasLayout",
+          "rdfs:label": "Dual Canvas Layout (Main + Auxiliary)",
+          "rdfs:comment": "Primary canvas + floating auxiliary view (NE panel) for complementary visualizations.",
+          "m0:structure": {
+            "mainCanvas": "Full-size primary view (grid-column: 2)",
+            "nePanel": "Floating top-right panel with independent canvas",
+            "swapButton": "Toggle between main/auxiliary views",
+            "resizeHandle": "Bottom-left corner drag handle for NE panel"
+          },
+          "m0:dimensions": {
+            "nePanel": "192px default width, expandable to 680px max",
+            "minHeight": "160px (accommodates orbital view)"
+          },
+          "m0:examples": ["Ptoe (Nautilus ↔ Orbital/Bohr)"]
+        },
+        {
+          "@id": "m0:SplitterLayout",
+          "rdfs:label": "Resizable Splitter Layout",
+          "rdfs:comment": "Draggable vertical splitter between main canvas and sidebar (tabs).",
+          "m0:behavior": {
+            "cursor": "col-resize",
+            "minSidebarWidth": "200px",
+            "maxSidebarWidth": "600px",
+            "dragState": "Visual feedback (color change) during drag"
+          },
+          "m0:cssPattern": "#splitter { cursor: col-resize; user-select: none; }",
+          "m0:jsPattern": "Track mousedown → mousemove → mouseup, update CSS variable --sidebar-w"
+        }
+      ],
+      "m0:navigationControls": [
+        {
+          "@id": "m0:ArcRotateCamera",
+          "rdfs:label": "3D Camera Navigation (ArcRotate)",
+          "rdfs:comment": "Standard BabylonJS ArcRotateCamera with drag-rotate, scroll-zoom.",
+          "m0:interactions": {
+            "leftDrag": "Rotate around target (alpha/beta angles)",
+            "scroll": "Zoom in/out (adjust radius)",
+            "rightDrag": "Pan (translate target)",
+            "doubleClick": "Reset to default view (optional)"
+          },
+          "m0:parameters": {
+            "alpha": "Horizontal rotation (radians)",
+            "beta": "Vertical rotation (radians, typically π/4 to π/2)",
+            "radius": "Distance from target (units)",
+            "target": "Look-at point (BABYLON.Vector3)",
+            "lowerRadiusLimit": "Minimum zoom distance",
+            "upperRadiusLimit": "Maximum zoom distance"
+          },
+          "m0:codePattern": "new BABYLON.ArcRotateCamera('cam', alpha, beta, radius, target, scene)"
+        },
+        {
+          "@id": "m0:HomeButton",
+          "rdfs:label": "Home Button",
+          "rdfs:comment": "Return to TSCG project homepage (GitHub Pages).",
+          "m0:placement": "Top-left corner of header",
+          "m0:icon": "SVG house icon (24×24px)",
+          "m0:link": "https://echopraxium.github.io/tscg/",
+          "m0:styling": "Color: rgba(140,185,255,0.70), hover: #fff"
+        },
+        {
+          "@id": "m0:TscgBadge",
+          "rdfs:label": "TSCG Badge Link",
+          "rdfs:comment": "Link to TSCG GitHub repository.",
+          "m0:placement": "Header, next to Home button",
+          "m0:text": "TSCG (uppercase, letter-spacing: 2px)",
+          "m0:link": "https://github.com/Echopraxium/tscg",
+          "m0:styling": "Border: 1px solid, padding: 2px 8px, border-radius: 4px"
+        }
+      ],
+      "m0:selectionControls": [
+        {
+          "@id": "m0:CombolistWithClear",
+          "rdfs:label": "Combolist + Clear Button",
+          "rdfs:comment": "Dropdown selection with adjacent reset button. Used for selecting instances (elements, nodes, entities).",
+          "m0:components": {
+            "select": "<select> element with <option> entries",
+            "clearButton": "Button with ✕ symbol to reset to default"
+          },
+          "m0:behavior": {
+            "onChange": "Update 3D scene to highlight selected item",
+            "onClear": "Reset to default selection (e.g., first element)"
+          },
+          "m0:styling": {
+            "select": "Background: rgba(6,11,24,0.96), border: 1px solid, border-radius: 7px",
+            "clearButton": "Border: 1px solid, color: rgba(170,140,65,0.55), hover: #ffd060"
+          },
+          "m0:examples": ["Ptoe: Element selector (118 options, clears to H)"]
+        },
+        {
+          "@id": "m0:LegendList",
+          "rdfs:label": "Legend List (Family/Category Selection)",
+          "rdfs:comment": "Clickable list of families/categories with color indicators. Selecting one highlights related items in 3D scene.",
+          "m0:components": {
+            "header": "Title + Clear button",
+            "items": "Scrollable list of category entries"
+          },
+          "m0:itemStructure": {
+            "colorDot": "11×11px square with family color",
+            "label": "Category name (e.g., 'Alkali Metals', 'Noble Gases')"
+          },
+          "m0:behavior": {
+            "onClick": "Toggle selection, highlight in 3D (luminous path)",
+            "onClear": "Deselect all families"
+          },
+          "m0:styling": {
+            "item": "Hover: background rgba(80,120,200,0.09), selected: background rgba(180,145,60,0.20)",
+            "colorDot": "border-radius: 2px, flex-shrink: 0"
+          },
+          "m0:examples": ["Ptoe: 10 element families", "MtgColorWheel: 5 MTG colors"]
+        }
+      ],
+      "m0:actionControls": [
+        {
+          "@id": "m0:ActionButton",
+          "rdfs:label": "Action Button",
+          "rdfs:comment": "Single-action button triggering immediate effect (reset, home, swap views).",
+          "m0:variants": [
+            {
+              "type": "Reset",
+              "action": "Return simulation to initial state",
+              "icon": "↺ or Reset text",
+              "placement": "Bottom bar or header"
+            },
+            {
+              "type": "Home",
+              "action": "Navigate to TSCG homepage",
+              "icon": "SVG house",
+              "placement": "Top-left header"
+            },
+            {
+              "type": "Swap",
+              "action": "Switch between main/auxiliary views",
+              "icon": "⇄",
+              "placement": "NE panel titlebar"
+            }
+          ],
+          "m0:styling": {
+            "default": "Background: rgba(7,12,26,0.92), border: 1px solid, border-radius: 7px",
+            "hover": "Background: rgba(60,100,200,0.14), color: #ddeeff"
+          }
+        },
+        {
+          "@id": "m0:ToggleButton",
+          "rdfs:label": "Toggle Button (On/Off State)",
+          "rdfs:comment": "Button with persistent on/off state, visual feedback for current state.",
+          "m0:commonUses": ["Auto Rotate", "Show Grid", "Show Labels"],
+          "m0:behavior": {
+            "onClick": "Toggle state, update visual indicator, trigger action"
+          },
+          "m0:styling": {
+            "off": "Border: rgba(100,135,205,0.24), color: rgba(160,190,235,0.72)",
+            "on": "Border: rgba(70,200,90,0.44), color: rgba(100,220,90,0.88), background: rgba(15,70,25,0.16)"
+          },
+          "m0:stateIndicator": "Class 'on' applied when active",
+          "m0:examples": ["Auto Rotate toggle with speed slider"]
+        }
+      ],
+      "m0:parameterControls": [
+        {
+          "@id": "m0:Slider",
+          "rdfs:label": "Parameter Slider (Range Input)",
+          "rdfs:comment": "Continuous value adjustment with visual feedback. Used for speed, zoom level, transparency, etc.",
+          "m0:htmlPattern": "<input type='range' min='0' max='100' value='50'>",
+          "m0:behavior": {
+            "onInput": "Update parameter in real-time",
+            "showValue": "Display current value next to slider (optional)"
+          },
+          "m0:styling": {
+            "track": "Background: rgba(30,50,120,0.3), height: 4px",
+            "thumb": "Width: 16px, height: 16px, border-radius: 50%, background: gradient"
+          },
+          "m0:examples": [
+            "Auto Rotate speed (0.1 to 2.0)",
+            "Zoom level (0 to 100%)",
+            "Transparency (0 to 1)"
+          ]
+        },
+        {
+          "@id": "m0:NumericStepper",
+          "rdfs:label": "Numeric Stepper (Arrows)",
+          "rdfs:comment": "Discrete value adjustment with ◄/► arrow buttons.",
+          "m0:components": {
+            "display": "Current value with units",
+            "leftArrow": "Decrement button (◄)",
+            "rightArrow": "Increment button (►)"
+          },
+          "m0:behavior": {
+            "step": "Increment/decrement by fixed amount",
+            "min/max": "Optional bounds",
+            "wrap": "Optional circular behavior (max → min)"
+          },
+          "m0:examples": ["Ptoe: Z number selector (1-118, circular)"]
+        }
+      ],
+      "m0:panelControls": [
+        {
+          "@id": "m0:TabPanel",
+          "rdfs:label": "Tabbed Panel (Sidebar)",
+          "rdfs:comment": "Multi-tab interface for organizing content (Description, Scores, Concepts, User's Guide).",
+          "m0:structure": {
+            "tabBar": "Horizontal bar with tab buttons",
+            "tabContent": "Scrollable content area for active tab"
+          },
+          "m0:behavior": {
+            "onClick": "Switch active tab, update content visibility"
+          },
+          "m0:styling": {
+            "inactive": "Color: rgba(210,185,120,0.6), border-bottom: 2px transparent",
+            "active": "Color: rgba(210,185,120,1), border-bottom: 2px rgba(130,108,48,0.8)",
+            "hover": "Background: rgba(55,90,170,0.08)"
+          },
+          "m0:standardTabs": [
+            "Description (overview + domain content)",
+            "Scores (ASFID/REVOI bars + epistemic gap)",
+            "Concepts (M2 GenericConcepts mobilized)",
+            "User's Guide (interaction instructions)"
+          ]
+        },
+        {
+          "@id": "m0:ResizablePanel",
+          "rdfs:label": "Resizable Panel (NE Floating)",
+          "rdfs:comment": "Floating panel with drag handle for manual resizing.",
+          "m0:components": {
+            "titlebar": "Header with controls (toggle, mode selector, swap button)",
+            "body": "Content area (canvas, text, controls)",
+            "resizeHandle": "Bottom-left corner drag area (↙ icon)"
+          },
+          "m0:behavior": {
+            "onDrag": "Update panel width/height via CSS variables or inline styles",
+            "minSize": "160×160px minimum dimensions",
+            "maxSize": "680×800px maximum dimensions"
+          },
+          "m0:positioning": "position: fixed, top-right corner with z-index: 30"
+        }
+      ],
+      "m0:feedbackControls": [
+        {
+          "@id": "m0:HoverIndicator",
+          "rdfs:label": "Hover Indicator Strip",
+          "rdfs:comment": "Display information about currently hovered 3D object.",
+          "m0:placement": "Left panel, below selection controls",
+          "m0:content": "Label: 'Hovered Elt:' + dynamic value",
+          "m0:styling": {
+            "background": "rgba(15,25,50,0.3)",
+            "label": "Color: cyan, font-weight: bold",
+            "value": "Color: rgba(200,220,255,0.92)"
+          },
+          "m0:behavior": "Update on onPointerOver/onPointerOut events"
+        },
+        {
+          "@id": "m0:ProgressGauge",
+          "rdfs:label": "Progress Gauge / Indicator Bar",
+          "rdfs:comment": "Visual indicator of quantity, progress, or level (horizontal or vertical bar).",
+          "m0:variants": [
+            {
+              "type": "Horizontal Bar",
+              "usage": "ASFID/REVOI scores, percentages",
+              "structure": "Outer container + inner fill bar",
+              "animation": "Smooth width transition on value change"
+            },
+            {
+              "type": "Vertical Stack",
+              "usage": "Trophic pyramid levels, layer hierarchies",
+              "structure": "Stacked bars with labels",
+              "colorCoding": "Gradient or category-specific colors"
+            }
+          ],
+          "m0:styling": {
+            "container": "Background: rgba(30,50,120,0.3), border-radius: 4px",
+            "fill": "Dynamic width/height, transition: width 0.3s ease"
+          },
+          "m0:examples": [
+            "Ptoe: ASFID/REVOI score bars (5 dimensions × 2 eyes)",
+            "TrophicPyramid: Vertical energy level gauges"
+          ]
+        },
+        {
+          "@id": "m0:StatusBadge",
+          "rdfs:label": "Status Badge",
+          "rdfs:comment": "Compact indicator displaying system state or metadata.",
+          "m0:variants": [
+            {
+              "type": "Epistemic Gap",
+              "content": "δ₁ value + spectral class",
+              "styling": "Larger font, colored by class (Coherent/OnCriticalLine/Liminal)"
+            },
+            {
+              "type": "Header Chip",
+              "content": "Instance metadata (e.g., '118 Elements', 'H — Hydrogen')",
+              "styling": "Small uppercase text, background: rgba(30,50,120,0.40)"
+            }
+          ]
+        }
+      ],
+      "m0:interactionPatterns": [
+        {
+          "@id": "m0:ClickToSelect",
+          "rdfs:label": "Click-to-Select Pattern",
+          "rdfs:comment": "Click on 3D object or 2D legend item to select and highlight.",
+          "m0:behavior": {
+            "3dObject": "onPointerDown → identify mesh → update selection state",
+            "legendItem": "onClick → filter by family → highlight matching objects",
+            "visualFeedback": "Selection rings, color change, or luminous path"
+          },
+          "m0:deselection": "Click clear button or click selected item again (toggle)"
+        },
+        {
+          "@id": "m0:HoverToPreview",
+          "rdfs:label": "Hover-to-Preview Pattern",
+          "rdfs:comment": "Hover over 3D object or legend item to see preview information without selecting.",
+          "m0:behavior": {
+            "onPointerOver": "Update hover indicator, optional highlight effect",
+            "onPointerOut": "Clear indicator, remove highlight"
+          },
+          "m0:tooltip": "Optional: Show tooltip near cursor with detailed info"
+        },
+        {
+          "@id": "m0:DragToAdjust",
+          "rdfs:label": "Drag-to-Adjust Pattern",
+          "rdfs:comment": "Drag handle or slider to adjust parameter continuously.",
+          "m0:applications": [
+            "Resize panel (drag corner handle)",
+            "Adjust splitter (drag vertical divider)",
+            "Scrub timeline (drag time indicator)"
+          ],
+          "m0:feedback": "Visual cursor change (resize arrows), real-time preview"
+        }
+      ],
+      "m0:cssConventions": {
+        "colorPalette": {
+          "primary": "#79c0ff (links, accents)",
+          "secondary": "#d2a8ff (informational)",
+          "success": "#56d364 (structural, positive actions)",
+          "warning": "#e3b341 (dynamic, caution)",
+          "danger": "#f78166 (regulatory, errors)",
+          "neutral": "rgba(200,220,255,0.8) (general text)"
+        },
+        "spacing": {
+          "xs": "4px",
+          "sm": "8px",
+          "md": "12px",
+          "lg": "16px",
+          "xl": "20px"
+        },
+        "borderRadius": {
+          "small": "4px",
+          "medium": "7px",
+          "large": "10px"
+        },
+        "transitions": {
+          "fast": "0.15s",
+          "medium": "0.25s",
+          "slow": "0.5s"
+        }
+      }
+    }
+  ]
+}

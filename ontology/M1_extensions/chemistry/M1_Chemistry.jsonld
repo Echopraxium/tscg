@@ -19,10 +19,10 @@
       "@type": "owl:Ontology",
       "dcterms:title": "TSCG M1 Extension: Chemistry",
       "dcterms:description": "Domain-specific instantiation of M2 GenericConcepts for chemistry. Defines chemical processes, reactions, substances, and transformations using TSCG M2 GenericConcepts as foundation.",
-      "dcterms:creator": "TSCG Project",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-17",
-      "dcterms:modified": "2026-02-24",
-      "owl:versionInfo": "1.0.0.p3",
+      "dcterms:modified": "2026-04-26",
+      "owl:versionInfo": "1.1.0",
       "owl:imports": [
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/TSCG_M2_GenericConcepts_Ontology.jsonld"
       ],
@@ -34,21 +34,30 @@
         "Molecular structure and bonding",
         "Thermochemistry and kinetics",
         "Chemical equilibria and dynamics",
-        "Catalysis and reaction mechanisms"
+        "Catalysis and reaction mechanisms",
+        "Atomic structure and periodic properties"
       ],
       "m1.ext:chemistry:examplePoclets": [
         "Fire Triangle (Combustion)",
+        "Ptoe (Periodic Table of Elements)",
         "Water Electrolysis",
         "Photosynthesis",
         "Enzyme Catalysis",
         "Acid-Base Neutralization"
       ],
-      "m2:changelog": {
-        "p3_20260224": {
-          "date": "2026-02-24",
-          "description": "Phase 3 migration: (1) Non-standard @types converted to owl:Class. (2) rdfs:subClassOf m2:GenericConcept added to root concepts. (3) m2Basis fields unified → m2:characterizedBy. (4) Wrong IS-A to M2 classes moved to m2:characterizedBy. Renamed DomainConcept → KnowledgeFieldConcept throughout."
+      "m2:changelog": [
+        {
+          "version": "1.1.0",
+          "date": "2026-04-26",
+          "description": "ENRICHMENT for Ptoe poclet: Added 8 atomic structure concepts (Element, ElectronConfiguration, NobleGas, OrbitalBlock, ChemicalFamily, AtomicProperty, OxidationState, QuantumNumbers). Extends M1_Chemistry scope from chemical reactions to atomic/periodic organization."
+        },
+        {
+          "p3_20260224": {
+            "date": "2026-02-24",
+            "description": "Phase 3 migration: (1) Non-standard @types converted to owl:Class. (2) rdfs:subClassOf m2:GenericConcept added to root concepts. (3) m2Basis fields unified → m2:characterizedBy. (4) Wrong IS-A to M2 classes moved to m2:characterizedBy. Renamed DomainConcept → KnowledgeFieldConcept throughout."
+          }
         }
-      }
+      ]
     },
     {
       "@id": "m1.ext:chemistry:ChemicalReaction",
@@ -477,6 +486,197 @@
         },
         {
           "@id": "m2:Path"
+        }
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept"
+    },
+    {
+      "@id": "m1.ext:chemistry:Element",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m2:GenericConcept",
+      "rdfs:label": "Chemical Element",
+      "skos:altLabel": [
+        "Atom",
+        "Elementary Substance"
+      ],
+      "rdfs:comment": "Pure chemical substance with atoms of same atomic number Z. Building block of Periodic Table.",
+      "m1.ext:chemistry:asfidSignature": "S⊗I",
+      "m1.ext:chemistry:examples": [
+        "H (Z=1)",
+        "C (Z=6)",
+        "Fe (Z=26)",
+        "Au (Z=79)"
+      ],
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Component"
+        },
+        {
+          "@id": "m2:Identity"
+        },
+        {
+          "@id": "m2:Node"
+        }
+      ]
+    },
+    {
+      "@id": "m1.ext:chemistry:ElectronConfiguration",
+      "@type": "owl:Class",
+      "rdfs:label": "Electron Configuration",
+      "skos:altLabel": [
+        "Orbital Occupation"
+      ],
+      "rdfs:comment": "Distribution of electrons across atomic orbitals. Notation: [core] ns^a np^b nd^c nf^d.",
+      "m1.ext:chemistry:examples": [
+        "H: 1s¹",
+        "Ne: [He] 2s² 2p⁶",
+        "Fe: [Ar] 3d⁶ 4s²"
+      ],
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Signature"
+        },
+        {
+          "@id": "m2:Code"
+        }
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept"
+    },
+    {
+      "@id": "m1.ext:chemistry:NobleGas",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": "m1.ext:chemistry:Element",
+      "rdfs:label": "Noble Gas",
+      "skos:altLabel": [
+        "Inert Gas",
+        "Group 18 Element"
+      ],
+      "rdfs:comment": "Elements with filled electron shells (ns² np⁶). Chemically inert, high ionization energy.",
+      "m1.ext:chemistry:members": [
+        "He",
+        "Ne",
+        "Ar",
+        "Kr",
+        "Xe",
+        "Rn",
+        "Og"
+      ],
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Threshold"
+        },
+        {
+          "@id": "m2:Stase"
+        }
+      ]
+    },
+    {
+      "@id": "m1.ext:chemistry:OrbitalBlock",
+      "@type": "owl:Class",
+      "rdfs:label": "Orbital Block",
+      "skos:altLabel": [
+        "Electron Block"
+      ],
+      "rdfs:comment": "Classification by angular momentum quantum number l: s (l=0), p (l=1), d (l=2), f (l=3).",
+      "m1.ext:chemistry:blocks": [
+        "s-block (2 elem/period)",
+        "p-block (6)",
+        "d-block (10)",
+        "f-block (14)"
+      ],
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Modularity"
+        },
+        {
+          "@id": "m2:Segmentation"
+        }
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept"
+    },
+    {
+      "@id": "m1.ext:chemistry:ChemicalFamily",
+      "@type": "owl:Class",
+      "rdfs:label": "Chemical Family",
+      "skos:altLabel": [
+        "Element Group",
+        "Periodic Group"
+      ],
+      "rdfs:comment": "Elements with similar valence configuration and chemical properties (vertical columns in table).",
+      "m1.ext:chemistry:examples": [
+        "Alkali metals (Group 1)",
+        "Halogens (Group 17)",
+        "Transition metals (Groups 3-12)"
+      ],
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Network"
+        },
+        {
+          "@id": "m2:Pattern"
+        }
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept"
+    },
+    {
+      "@id": "m1.ext:chemistry:AtomicProperty",
+      "@type": "owl:Class",
+      "rdfs:label": "Atomic Property",
+      "rdfs:comment": "Measurable characteristic of elements: electronegativity, atomic radius, ionization energy, etc.",
+      "m1.ext:chemistry:propertyTypes": [
+        "Electronegativity (χ)",
+        "Atomic radius (r)",
+        "Ionization energy (IE)",
+        "Electron affinity (EA)"
+      ],
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Gradient"
+        },
+        {
+          "@id": "m2:Observable"
+        }
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept"
+    },
+    {
+      "@id": "m1.ext:chemistry:OxidationState",
+      "@type": "owl:Class",
+      "rdfs:label": "Oxidation State",
+      "skos:altLabel": [
+        "Valence State"
+      ],
+      "rdfs:comment": "Charge of atom in compound, representing electron loss/gain. E.g., Fe²⁺, Fe³⁺, Cl⁻.",
+      "m1.ext:chemistry:examples": [
+        "Na: +1",
+        "Fe: +2, +3",
+        "Cl: -1",
+        "O: -2"
+      ],
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:State"
+        }
+      ],
+      "rdfs:subClassOf": "m2:GenericConcept"
+    },
+    {
+      "@id": "m1.ext:chemistry:QuantumNumbers",
+      "@type": "owl:Class",
+      "rdfs:label": "Quantum Numbers",
+      "rdfs:comment": "Set of 4 numbers (n, l, m, s) fully specifying electron state in atom.",
+      "m1.ext:chemistry:numbers": {
+        "n": "Principal (shell: 1,2,3...)",
+        "l": "Angular momentum (subshell: 0=s, 1=p, 2=d, 3=f)",
+        "m": "Magnetic (orbital: -l to +l)",
+        "s": "Spin (±1/2)"
+      },
+      "m2:characterizedBy": [
+        {
+          "@id": "m2:Space"
+        },
+        {
+          "@id": "m2:Constraint"
         }
       ],
       "rdfs:subClassOf": "m2:GenericConcept"

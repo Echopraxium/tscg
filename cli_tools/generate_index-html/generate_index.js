@@ -365,6 +365,14 @@ function discoverInstances() {
   return results;
 }
 
+/**
+ * Parse M0_*.jsonld metadata.
+ * 
+ * Title extraction (v2.2.0, 2026-04-28):
+ * - Primary: m1core:simulationTitle (short display name for gallery)
+ * - Fallback: rdfs:label (formal ontology label, may contain prefixes)
+ * - This allows instances to specify user-friendly titles without changing formal labels
+ */
 function parseJsonld(filePath) {
   try {
     const raw  = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
@@ -384,8 +392,11 @@ function parseJsonld(filePath) {
       domainValue = (mainNode['m0:domain'] !== 'Poclet') ? mainNode['m0:domain'] : '';
     }
     
-    // Extract label from the main node
-    const label = (mainNode['rdfs:label'] || '').replace(/\s*\([^)]+\)\s*$/, '').trim() || '';
+    // Extract label from the main node (prefer m1core:simulationTitle, fallback to rdfs:label)
+    const label = (
+      mainNode['m1core:simulationTitle'] || 
+      (mainNode['rdfs:label'] || '').replace(/\s*\([^)]+\)\s*$/, '').trim()
+    ) || '';
     
     // Extract version from the main node
     const version = mainNode['owl:versionInfo'] || mainNode['m0:version'] || '';
