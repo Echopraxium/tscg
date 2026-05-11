@@ -1,0 +1,393 @@
+/* Theremin Prototype - CSS
+ * Author: Echopraxium with the collaboration of Claude AI
+ * Framework: TSCG
+ */
+
+/* ======================================
+   Global Styles
+   ====================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --header-h: 40px;
+  --bottom-h: 40px;
+  --sidebar-w: 320px;
+  --bg-dark: #1a1a1a;
+  --bg-medium: #2a2a2a;
+  --bg-light: #3a3a3a;
+  --text-color: #e0e0e0;
+  --accent-color: #4CAF50;
+  --accent-hover: #66BB6A;
+  --border-color: #444;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-color);
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ======================================
+   Header
+   ====================================== */
+#header {
+  height: var(--header-h);
+  background: var(--bg-medium);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  justify-content: space-between;
+}
+
+#nav-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+#home-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+#home-btn:hover {
+  background: var(--bg-light);
+  border-color: var(--accent-color);
+}
+
+#tscg-badge {
+  background: var(--accent-color);
+  color: #000;
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+
+#tscg-badge:hover {
+  background: var(--accent-hover);
+}
+
+#title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ======================================
+   Main Content Layout
+   ====================================== */
+#main-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+#canvas-container {
+  flex: 1;
+  position: relative;
+  background: #000;
+}
+
+#canvas-main {
+  width: 100%;
+  height: 100%;
+  display: block;
+  outline: none;
+}
+
+/* ======================================
+   Sidebar
+   ====================================== */
+#sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg-medium);
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#sidebar-tabs {
+  display: flex;
+  background: var(--bg-dark);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tab-btn {
+  flex: 1;
+  background: var(--bg-dark);
+  border: none;
+  color: var(--text-color);
+  padding: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  border-right: 1px solid var(--border-color);
+  transition: all 0.2s;
+}
+
+.tab-btn:last-child {
+  border-right: none;
+}
+
+.tab-btn:hover {
+  background: var(--bg-light);
+}
+
+.tab-btn.active {
+  background: var(--bg-medium);
+  color: var(--accent-color);
+  font-weight: 600;
+  border-bottom: 2px solid var(--accent-color);
+}
+
+.tab-content {
+  display: none;
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.tab-content h3 {
+  color: var(--accent-color);
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.tab-content h4 {
+  color: #bbb;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.tab-content p {
+  line-height: 1.6;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.tab-content ul {
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.tab-content li {
+  margin-bottom: 6px;
+  line-height: 1.5;
+  font-size: 13px;
+}
+
+/* ======================================
+   Audio Parameters
+   ====================================== */
+.param-group {
+  margin-bottom: 16px;
+}
+
+.param-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: #bbb;
+}
+
+#waveform-select {
+  width: 100%;
+  background: var(--bg-dark);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+#waveform-select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.value-display {
+  background: var(--bg-dark);
+  padding: 10px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: var(--accent-color);
+  text-align: center;
+  border: 1px solid var(--border-color);
+}
+
+/* ======================================
+   Bottom Bar
+   ====================================== */
+#bottom-bar {
+  height: var(--bottom-h);
+  background: var(--bg-medium);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+#bottom-bar button {
+  background: var(--accent-color);
+  border: none;
+  color: #000;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+#bottom-bar button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+#bottom-bar label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+#bottom-bar input[type="checkbox"] {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+
+#play-sound-btn {
+  background: #2196F3;
+}
+
+#play-sound-btn:hover {
+  background: #42A5F5;
+}
+
+#play-sound-btn:disabled {
+  background: #555;
+  color: #888;
+  cursor: not-allowed;
+}
+
+#play-demo-btn {
+  background: #FF9800;
+  color: #000;
+}
+
+#play-demo-btn:hover {
+  background: #FFB74D;
+}
+
+#play-demo-btn.playing {
+  background: #F44336;
+}
+
+#style-select,
+#melody-select {
+  background: var(--bg-light);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+#style-select {
+  min-width: 120px;
+}
+
+#melody-select {
+  min-width: 220px;
+}
+
+#style-select:focus,
+#melody-select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+#style-select option,
+#melody-select option {
+  background: var(--bg-dark);
+  color: var(--text-color);
+}
+
+/* ======================================
+   Scrollbar Styling
+   ====================================== */
+.tab-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tab-content::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+.tab-content::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+.tab-content::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ======================================
+   Responsive Adjustments
+   ====================================== */
+@media (max-width: 768px) {
+  :root {
+    --sidebar-w: 280px;
+  }
+  
+  #title {
+    font-size: 14px;
+  }
+  
+  .tab-btn {
+    font-size: 11px;
+    padding: 8px 4px;
+  }
+}
