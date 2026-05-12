@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**TSCG (The Systemic Construction Game)** is a transdisciplinary framework for modeling complex systems using a unified ontological "construction kit." The metaphor is LEGO Technic: reusable conceptual blocks that snap together across biology, chemistry, engineering, mythology, and social sciences. The philosophical basis is Korzybski's "The map is not the territory."
+**TSCG (Transdisciplinary System Construction Game)** is a transdisciplinary framework for modeling complex systems using a unified ontological "construction kit." The metaphor is LEGO Technic: reusable conceptual blocks that snap together across biology, chemistry, engineering, mythology, and social sciences. The philosophical basis is Korzybski's "The map is not the territory."
 
-Research preprint: DOI [10.5281/zenodo.18471860](https://doi.org/10.5281/zenodo.18471860)
+Research preprint: DOI [10.5281/zenodo.18471860](https://doi.org/10.5281/zenodo.18471860) (v3.0, published). Version 4.0 (~11,300 words) is complete and pending Zenodo submission.
 
 ## Common Commands
 
@@ -23,8 +23,11 @@ python src/tscg/rag/create_tscg_rag.py local
 python src/tscg/rag/query_tscg_rag.py "What is ASFID?"
 python src/tscg/rag/query_tscg_rag.py --interactive
 
-# SPARQL analysis on M2 metaconcepts
+# SPARQL analysis on M2 GenericConcepts
 python ontology/sparql/m2_sparql_analysis.py
+
+# Generate gallery index for simulations
+node generate_index.js
 ```
 
 The Python engine in `src/` is a namespace package (PEP 420). Planned install variants (not yet configured):
@@ -39,9 +42,9 @@ Every artifact in this repo belongs to one of four layers (M0–M3). This is the
 | Layer | Name | Description | Location |
 |-------|------|-------------|----------|
 | **M3** | Genesis Space | 10D bicephalous basis — the universal meta-framework | `ontology/M3_*.jsonld/.ttl` |
-| **M2** | GenericConcepts | 81 universal patterns applicable across all domains | `ontology/M2_GenericConcepts.jsonld` |
+| **M2** | GenericConcepts | 80 atomic transdisciplinary patterns across 9 families | `ontology/M2_GenericConcepts.jsonld` |
 | **M1** | Core/Domain Concepts | Domain-specific concept extensions (biology, chemistry, etc.) | `ontology/M1_*.jsonld`, `ontology/M1_extensions/` |
-| **M0** | Poclets | Validated minimal complete models of real systems | `instances/poclets/*/M0_*.jsonld/.ttl` |
+| **M0** | Instances | Poclets, TscgTools, SystemicFrameworks, SymbolicSystemGrammars | `instances/*/` |
 
 ### M3: The Bicephalous Basis
 
@@ -49,29 +52,70 @@ M3 is split into two complementary perspectives that together form a 10-dimensio
 - **ASFID (Eagle Eye / Territory)**: Attractor, Structure, Flow, Information, Dynamics — what a system *is*
 - **REVOI (Sphinx Eye / Map)**: Representability, Evolvability, Verifiability, Observability, Interoperability — how a system is *known*
 
-Files: `M3_EagleEye.jsonld` (ASFID), `M3_SphinxEye.jsonld` (REVOI), `M3_GenesisSpace.jsonld` (unified with coupling matrices).
+**CRITICAL**: The R in REVOI stands for **Representability** (NEVER Reproducibility).
 
-### M2: Metaconcept Organization
+Files:
+- `M3_GenesisSpace.jsonld` — Unified bicephalous foundation with coupling matrices
+- `M3_EagleEye.jsonld` — ASFID dimension definitions
+- `M3_SphinxEye.jsonld` — REVOI dimension definitions
 
-68 metaconcepts organized into 5 categories, constructed as tensor products of M3 dimensions:
+### M2: GenericConcept Organization
+
+80 atomic transdisciplinary GenericConcepts organized into 9 families:
 - **Ontological**: fundamental existence patterns
 - **Structural**: organizational patterns
 - **Dynamic**: change and process patterns
 - **Control**: regulation and feedback patterns
 - **Information**: knowledge and representation patterns
+- **Emergence**: self-organization and phase transitions
+- **Boundary**: interface and containment patterns
+- **Temporal**: time and rhythm patterns
+- **Relational**: connection and interaction patterns
 
-The production file is `M2_GenericConcepts.jsonld`; `M2_MetaConcepts_Ref.jsonld` is the reference/backup version. Draft/experimental work lives in `ontology/docs/`.
+The Combo family has been **removed from M2** and migrated to M1 (now hosted in `M1_CoreConcepts.jsonld` as `m2:GenericConceptCombo` and `m2:KnowledgeFieldConceptCombo` instances).
 
-### M0: Poclets
+The production file is `M2_GenericConcepts.jsonld`. Draft/experimental work lives in `ontology/docs/`.
 
-A **poclet** (Proof-Of-Concept LET) is a minimal, complete, validated model of a real system. Each poclet lives in its own directory under `instances/poclets/` and has dual-format files (`M0_*.jsonld` + `M0_*.ttl`). Models under active repair are in `instances/poclets/00_to_be_fixed/`.
+### M1: Domain Extensions
+
+Domain-specific concept extensions that specialize M2 GenericConcepts:
+- `M1_CoreConcepts.jsonld` — Hosts all GenericConceptCombo and KnowledgeFieldConceptCombo instances
+- `M1_Biology.jsonld`, `M1_Chemistry.jsonld`, `M1_Physics.jsonld`, etc. — Domain vocabularies
+- All M1 extensions stored in: `ontology/M1_extensions/<domain>/M1_<Domain>.jsonld`
+
+### M0: Instances
+
+**Instance types** (declared via `m3:ontologyType`):
+- **Poclets** (`m3:Poclet`) — Minimal, complete, validated models of real systems (23+ validated poclets spanning chemistry, physics, biology, music, electronics, economics, mythology, education, governance)
+- **TscgTools** (`m3:TscgTool`) — Meta-analytical and development tools (TscgPocletMiner, Tscg3DModeler, TscgExplorer)
+- **SystemicFrameworks** (`m3:SystemicFramework`) — Cybernetic and systemic modeling frameworks (VSM)
+- **SymbolicSystemGrammars** (`m3:SymbolicSystemGrammar`) — Formal symbolic systems (I Ching)
+- **TransDisclets** (`m3:TransDisclet`) — Transdisciplinary conceptual bridges
+
+Each instance lives in its own directory under `instances/<type>/<name>/` with dual-format files (`M0_*.jsonld` + `M0_*.ttl`).
 
 ## File Format Conventions
 
+### Ontology Files
 - All ontologies are maintained in **dual format**: `.jsonld` (JSON-LD) and `.ttl` (RDF/Turtle)
 - File naming follows the layer prefix: `M3_`, `M2_`, `M1_`, `M0_`
-- RDF namespace base: `http://tscg.net/ontology/`
+- **RDF namespace base**: `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/`
+- **@base convention**: All M0, M1, M2, M3 ontologies use `"@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"` for shorter IRIs
+- **Authorship**: All generated ontology files authored as `"Echopraxium with the collaboration of Claude AI"`
+- **Changelog**: Keep only the 3 most recent entries in `m2:changelog`
 - SPARQL queries are in `ontology/sparql/`
+
+### Critical Ontology Rules
+- **ontologyType declaration**: Use ONLY `m3:ontologyType` property (never `tscg:` namespace, never `m2:ontologyCategory`)
+- **M1 extension references**: Use format `"M1_extensions/<domain>/M1_<Domain>.jsonld"` (e.g., `"M1_extensions/biology/M1_Biology.jsonld"`)
+- **No JSON-LD comments**: Comments forbidden in `.jsonld` files; use `.ttl` format for commented versions
+- **SHACL naming**: Use dot separator before "shacl" extension (e.g., `M0_Instances_Schema.shacl.ttl`)
+
+### Simulation Files
+- **BabylonJS version**: 6.26.0 is the exclusive 3D library for TSCG simulations
+- **CDN**: Use `unpkg.com/babylonjs@6.26.0/babylon.js` (not cdn.babylonjs.com)
+- **UX Controls catalog**: Consult `ontology/InstanceSimulations/M0_InstanceSimulation_UXControls.jsonld` before implementing UI patterns
+- **Reference layouts**: `M0_FireTriangle.html`, `MtgColorWheel_sim.html` for BabylonJS patterns
 
 ## Python Engine Architecture (`src/`)
 
@@ -148,544 +192,280 @@ Segmentation strategies by file type:
 | File type | Strategy |
 |-----------|----------|
 | `.jsonld` | Per `@graph` entry, converted to **natural language summary** (label, definition, tensor formula, M3 dimensions, examples). OWL infrastructure entries (properties, ontology headers) are skipped. |
-| `.md` | Per section header, with **parent breadcrumb** prepended (`Parent > Child > Current`) so sub-sections retain context. Files under `ontology/docs/` tagged `ontology_doc: True`. |
-| `.py` / `.cs` | Per function/class block |
-| `.txt` | By paragraph with overlap |
+| `.ttl` | Per triple block (subject changed) with context preservation |
+| `.md` | Per heading (level 2+) with context preservation from parent headings |
+| `.py` | Per function/class definition with docstrings |
+| `.html` | Per structural block (heading + following paragraph) |
+| `.js` | Per function definition |
 
-Key internals:
-- `_source_prefix(source)` — generates globally unique segment IDs as `{stem}_{6-char-path-hash}` to avoid collisions when the same filename exists in multiple directories
-- `_entry_to_text(entry, layer)` — converts a JSON-LD `@graph` entry to a readable NL summary; returns `None` for OWL infrastructure to skip it
-- Layer (`M0`–`M3`) is inferred from the filename prefix
+Guide: `src/tscg/rag/TSCG_RAG_Segmentation_Guide.md`.
 
-**`query_tscg_rag.py`** — CLI for querying the ChromaDB database.
-- Auto-decompresses `db_tscg_rag.tar.gz` if the uncompressed directory is absent
-- Deduplicates results by content hash (fetches `top_k × 3` candidates, returns `top_k` unique)
-- `--ontology-docs-only` restricts results to `ontology/docs/` files (authoritative documentation)
-- `--filter-type jsonld_entry` restricts to ontology concept segments
-- Modes: single query, `--interactive` REPL with `stats` / `sources` commands
+**`query_tscg_rag.py`** — CLI for querying the vector DB. Two modes:
+- Single-shot: `python query_tscg_rag.py "What is a poclet?"`
+- Interactive REPL: `python query_tscg_rag.py --interactive`
 
-### `tests/`
+Both load `db_tscg_rag/` if it exists, or extract from `db_tscg_rag.tar.gz` if needed. Interactive mode supports commands:
+- `context` — show retrieval settings
+- `set k=N` / `set threshold=X` — adjust parameters
+- `reload` — refresh embeddings from disk
+- `clear` — clear screen
+- `exit` / Ctrl-D — quit
 
-**`test_facades.py`** — pytest unit tests covering facade instantiation and score model arithmetic. Integration tests (loading real ontology files) run conditionally when `/mnt/project` is present.
+## Methodological Guides
 
-### Key Design Patterns
+Reference documents for TSCG development workflows:
 
-- **Facade pattern**: only import from `tscg.engine.facade`; never from `core/`, `analysis/`, or `exporters/` directly
-- **Lazy loading**: `TSCGEmbedder` defers model load to first call; RAG components instantiate on demand
-- **Dataclass results**: `SPARQLResult`, `ExportResult`, `SearchResult`, `OrthogonalityReport` are structured containers — never raw dicts
-- **Caching**: `SPARQLExecutor` uses SHA-based query hash; pass `use_cache=False` to bypass
+### Framework Development
+- **`TSCG_Smart_Prompt_v16_0_0.md`** — Current framework version snapshot for Claude context initialization
+- **`00_TSCG_M3_Bicephalous_Architecture.md`** — Theoretical foundation of the dual-headed M3 (Map/Territory)
+- **`00_TSCG_Map_Territory_Theoretical_Foundation.md`** — Korzybski philosophical basis
+- **`Structural_Grammar_Foundation.md`** — Lambek calculus foundation (replaces tensor product interpretation)
 
-### Dependencies
+### Instance Development
+- **`Poclet_Analysis_Methodology.md`** — Step-by-step poclet analysis heuristic
+- **`HYBRID_FORMULAS_NOTATION_README.md`** — Formula encoding conventions (It/Im, REVOI standard)
+- **`TSCG_ValueSpace_User_Guide.md`** — How to use ValueSpace attributes in instantiations
+- **`TSCG_ValueSpace_Quick_Reference.md`** — Cheat sheet for all 13 ValueSpace attributes
 
-| Group | Packages |
-|-------|---------|
-| Core | `rdflib`, `pydantic`, `numpy`, `scipy` |
-| RAG/ML | `sentence-transformers`, `chromadb` |
-| CLI | `prompt-toolkit`, `rich`, `typer` |
-| Optional (Google mode) | `langchain-google-genai` |
-| Tests | `pytest` |
+### Ontology Management
+- **`Domain_M2_Update_Analysis_v15_1_0.md`** — M2 update analysis methodology
+- **`MetaconceptPair_README.md`** — MetaconceptPair pattern documentation
+- **`M2_KnowledgeField_README.md`** — KnowledgeField concept organization
 
-## RAG Integration
+### Simulation Development
+- **`tscg-create-instance-simulation` skill** — 4-step BabylonJS simulation pipeline
+- **`M0_InstanceSimulation_UXControls.jsonld`** — Living catalog of reusable UI patterns
 
-Two separate RAG implementations exist:
-
-- **`src/tscg/engine/rag/`** — in-process, numpy-backed, used via `RAGFacade` (programmatic use)
-- **`src/tscg/rag/`** — ChromaDB-backed, file-based pipeline for building and querying a persistent vector store (CLI use)
-
-### File-based RAG pipeline (`src/tscg/rag/`)
-
-The database (`db_tscg_rag.tar.gz`, ~21 MB) is committed to git. On first query after a fresh clone, `query_tscg_rag.py` auto-decompresses it — no manual setup needed.
-
-To rebuild from scratch (needed after adding/changing ontology files):
-```bash
-rmdir /s /q src\tscg\rag\db_tscg_rag        # Windows
-python src/tscg/rag/create_tscg_rag.py local
-```
-
-**Embedding modes:**
-- `local` — `sentence-transformers/all-MiniLM-L6-v2` (384-dim, free, offline, recommended)
-- `api` — Google `gemini-embedding-001` (768-dim, requires `.api_key` file, quota-limited)
-
-**Useful query flags:**
-```bash
---ontology-docs-only      # restrict to ontology/docs/ authoritative files
---filter-type jsonld_entry  # restrict to ontology concept segments only
---top-k 10                # return more results
---show-text               # show full segment text instead of excerpt
---interactive             # REPL mode with stats/sources commands
-```
-
-**Previous implementation** archived at `src/tscg/rag/_archives/RAG-prev/` — do not use.
-
-## The Bicephalous Architecture (Eagle Eye / Sphinx Eye)
-
-M3 is the **dual-headed foundation** of TSCG. It defines a 10-dimensional Genesis Space structured as two complementary 5D bases:
+## Repository Structure
 
 ```
-Genesis Space ℋ = ℋ_ASFID ⊕ ℋ_REVOI
-                  (Eagle Eye)  (Sphinx Eye)
+tscg/
+├── ontology/                       # M0–M3 ontology files
+│   ├── M3_GenesisSpace.jsonld      # Bicephalous foundation
+│   ├── M3_EagleEye.jsonld          # ASFID dimensions
+│   ├── M3_SphinxEye.jsonld         # REVOI dimensions
+│   ├── M2_GenericConcepts.jsonld   # 80 GenericConcepts
+│   ├── M1_CoreConcepts.jsonld      # Combo instances
+│   ├── M1_Domains.jsonld           # Domain registry
+│   ├── M1_extensions/              # Domain-specific extensions
+│   │   ├── biology/
+│   │   ├── chemistry/
+│   │   ├── physics/
+│   │   └── ...
+│   ├── InstanceSimulations/        # Simulation metadata
+│   │   ├── M0_InstanceSimulations.jsonld
+│   │   └── M0_InstanceSimulation_UXControls.jsonld
+│   ├── sparql/                     # SPARQL queries
+│   └── docs/                       # Draft/experimental ontologies
+│
+├── instances/                      # M0 instances
+│   ├── poclets/                    # Validated system models
+│   │   ├── adaptive-immune-response/
+│   │   ├── fire-triangle/
+│   │   ├── transistor/
+│   │   └── ... (23+ poclets)
+│   ├── tscg-tools/                 # Meta-analytical tools
+│   │   ├── tscg-poclet-miner/
+│   │   ├── tscg-3d-modeler/
+│   │   └── tscg-explorer/
+│   ├── systemic-frameworks/        # Cybernetic frameworks
+│   │   └── vsm/
+│   ├── symbolic-system-grammars/   # Formal symbolic systems
+│   │   └── iching/
+│   └── transdisclet/               # Transdisciplinary bridges
+│
+├── src/                            # Python engine (namespace package)
+│   ├── ARCHITECTURE_GUIDE.md       # Design spec (~1000 lines)
+│   └── tscg/
+│       ├── engine/
+│       │   ├── core/               # Domain models, loader
+│       │   ├── facade/             # Public API layer
+│       │   ├── analysis/           # SPARQL, metrics
+│       │   ├── exporters/          # Turtle export
+│       │   ├── rag/                # RAG embeddings/retrieval
+│       │   ├── classifier/         # Metaconcept classification
+│       │   └── reasoner/           # OWL reasoning
+│       ├── cli/                    # REPL
+│       ├── rag/                    # ChromaDB scripts
+│       ├── simulation-engine/      # Python simulations
+│       └── ontology_tools/         # Migration, conversion
+│
+├── docs/                           # Documentation
+│   ├── methodology/                # Development guides
+│   ├── papers/                     # Research articles
+│   └── reboot-kit/                 # Smart Prompts, guides
+│
+├── generate_index.js               # Gallery generator
+├── create_files_URIS.py            # URI generator
+└── CLAUDE.md                       # This file
 ```
 
-### Eagle Eye — Territory Space (ASFID)
+## Key File URIs
 
-Measures **what a system IS** — observable phenomena in the physical world.
+### Core Ontology Files
 
-| Letter | Dimension | Role |
-|--------|-----------|------|
-| **A** | Attractor | Stable states, equilibria, fixed points |
-| **S** | Structure | Organisation, topology, components |
-| **F** | Flow | Transfers, fluxes, movements |
-| **I** | Information | Signals, encoding, state representation |
-| **D** | Dynamics | Change, evolution, temporal behaviour |
+| File | URI |
+|------|-----|
+| M3_GenesisSpace.jsonld | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld` |
+| M3_EagleEye.jsonld | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld` |
+| M3_SphinxEye.jsonld | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld` |
+| M2_GenericConcepts.jsonld | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld` |
+| M1_CoreConcepts.jsonld | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld` |
+| M1_Domains.jsonld | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Domains.jsonld` |
+| M0_Instances_Schema.shacl.ttl | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Instances_Schema.shacl.ttl` |
 
-### Sphinx Eye — Map Space (REVOI)
+### M1 Extensions
 
-Measures **how a system is KNOWN** — quality of the conceptual model that represents it.
+| Extension | URI |
+|-----------|-----|
+| M1_Biology | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld` |
+| M1_Chemistry | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/chemistry/M1_Chemistry.jsonld` |
+| M1_Economics | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld` |
+| M1_Education | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/education/M1_Education.jsonld` |
+| M1_Electronics | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/electronics/M1_Electronics.jsonld` |
+| M1_Geology | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/geology/M1_Geology.jsonld` |
+| M1_Music | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/music/M1_Music.jsonld` |
+| M1_Mythology | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology.jsonld` |
+| M1_Physics | `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/physics/M1_Physics.jsonld` |
 
-| Letter | Dimension | Role |
-|--------|-----------|------|
-| **R** | Representability | Can the system be modelled? |
-| **E** | Evolvability | Can the model adapt over time? |
-| **V** | Verifiability | Can predictions be tested? |
-| **O** | Observability | Are states measurable? |
-| **I** | Interoperability | Can models integrate with others? |
+### Example Poclets (Sample)
 
-> ⚠️ **REVOI**: R = Representability (NEVER Reproducibility). Always verify before writing.
-
-### Coupling Between Perspectives
-
-Territory (ASFID) and Map (REVOI) are coupled through:
-- **Φ**: observation operator (Territory → Map), matrix form `Φ = V Σ U^T`
-- **Ψ**: implementation operator (Map → Territory), matrix form `Ψ = U Σ V^T`
-- **Σ**: 5×5 coupling matrix encoding ASFID↔REVOI interaction strength (~80% sparse)
-
-The **epistemic gap** `δΘ = ||ASFID_score - REVOI_score||` measures the distance between observable reality and the quality of its conceptual representation. Smaller gap = better framework maturity.
-
----
-
-## Framework Layers and M0 Ontology Types
-
-### The Four-Layer Stack
-
-```
-M3  Genesis Space          3 ontologies  ─ foundational, zero dependencies
- ↕  (tensorization)
-M2  GenericConcepts        81 patterns    ─ tensor products of M3 dimensions
- ↕  (instantiation)
-M1  Core + Domain Concepts variable      ─ generic and domain-specific concepts
- ↕  (validation)
-M0  Poclets / Case Studies ~25+ models   ─ minimal complete real-world systems
-```
-
-### M3 Ontology Files (closed set — exactly 3)
-
-| File | Role |
-|------|------|
-| `M3_GenesisSpace.jsonld` | Unified 10D space + coupling matrices Φ, Ψ, Σ |
-| `M3_EagleEye.jsonld` | ASFID basis (Territory) |
-| `M3_SphinxEye.jsonld` | REVOI basis (Map) |
-
-### M2 Ontology File (single production file)
-
-| File | Content |
-|------|---------|
-| `M2_GenericConcepts.jsonld` | 81 GenericConcepts as tensor products of M3 dimensions, organised in 5 families: Ontological, Structural, Dynamic, Control, Information |
-
-### M1 Ontology Files (extensible set)
-
-| File | Role |
-|------|------|
-| `M1_CoreConcepts.jsonld` | Base ontology — generic transdisciplinary concepts |
-| `M1_Biology.jsonld` | Domain extension — biology |
-| `M1_Chemistry.jsonld` | Domain extension — chemistry |
-| `M1_Economics.jsonld` | Domain extension — economics |
-| `M1_Education.jsonld` | Domain extension — education |
-| `M1_Electronics.jsonld` | Domain extension — electronics & modular synthesis (17 concepts) |
-| `M1_EnergyGenerators.jsonld` | Domain extension — energy generators |
-| `M1_Mythology.jsonld` | Domain extension — mythology |
-| `M1_Optics.jsonld` | Domain extension — optics |
-| `M1_Photography.jsonld` | Domain extension — photography |
-| `M1_Physics.jsonld` | Domain extension — physics |
-
-Each M1 domain extension imports `M1_CoreConcepts.jsonld` via `owl:imports` and uses its own namespace (e.g., `m1:optics:`, `m1:photo:`, `m1:mythology:`).
-
-### M0 Instance Types (the three kinds of system model)
-
-Every M0 file declares its type via `"m3:ontologyType": {"@id": "m3:..."}`:
-
-| Type | `@id` | Criteria |
-|------|-------|----------|
-| **Poclet** | `m3:Poclet` | Minimal + Complete across all ASFID dimensions + validated across ≥3 unrelated domains |
-| **Case Study** | `m3:CaseStudy` | Pedagogical or exploratory — may be incomplete or non-minimal |
-| **Real-World System** | `m3:RealWorldSystem` | Actual deployed operational system |
-
-A **poclet** is the most rigorous M0 form: it must exhibit all 5 ASFID dimensions and serve as proof-of-concept for systemic principles. It plays a triple role: (1) validates TSCG, (2) reveals M2 metaconcept candidates, (3) populates M1 concepts.
-
----
-
-## Formula Encoding — Critical Rules
-
-Ontology files contain formulas using **Unicode mathematical and Greek characters**. Corruption of these symbols breaks semantic meaning and JSON validation.
-
-### Characters at Risk
-
-| Symbol | Unicode | Name | Risk |
-|--------|---------|------|------|
-| `⊗` | U+2297 | Tensor product | High — corrupts to `â€"` sequences |
-| `→` | U+2192 | Arrow | High |
-| `↔` | U+2194 | Bidirectional arrow | High |
-| `Φ` | U+03A6 | Phi (observation operator) | Medium |
-| `Ψ` | U+03A8 | Psi (implementation operator) | Medium |
-| `Σ` | U+03A3 | Sigma (coupling matrix) | Medium |
-| `δ` | U+03B4 | Delta (epistemic gap) | Medium |
-| Greek subscripts | U+2080-2089 | ₀₁₂₃... | Medium |
-
-### Rules When Modifying an Ontology File
-
-1. **Always open and write files with explicit `encoding='utf-8'`** in Python scripts.
-2. **Never copy-paste formula strings through an ASCII-only tool** — use raw file editing only.
-3. **Validate JSON after every modification**: `python -c "import json; json.load(open('file.jsonld', encoding='utf-8'))"`.
-4. **Run `check_encoding_issues.py`** after any batch operation to detect corruption early.
-5. **Do NOT use `Î` (U+00CE, I with circumflex)** — the official acronym is **REVOI** (plain Latin I, U+0049). If you see `REVOÎ` or `REVOÃˆ` in a file, that is corruption — fix it.
-
-### The It / Im Disambiguation Convention
-
-In **hybrid formulas** combining both ASFID and REVOI dimensions, the letter `I` is ambiguous (it appears in both bases). Use subscript notation:
-
-| Symbol | Meaning | Origin |
+| Poclet | M0 File | README |
 |--------|---------|--------|
-| `It` | Information (Territory) | ASFID — Eagle Eye |
-| `Im` | Interoperability (Map) | REVOI — Sphinx Eye |
+| Adaptive Immune Response | `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/adaptive-immune-response/M0_AdaptiveImmuneResponse.jsonld` | `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/adaptive-immune-response/M0_AdaptiveImmuneResponse_README.md` |
+| Fire Triangle | `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/fire-triangle/M0_FireTriangle.jsonld` | `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/fire-triangle/M0_FireTriangle_README.md` |
+| Transistor | `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/transistor/M0_Transistor.jsonld` | `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/transistor/M0_Transistor_README.md` |
 
-Use subscripts **only when both I's coexist in the same formula**:
-- Pure ASFID formula → plain `I`
-- Pure REVOI formula → plain `I`
-- Hybrid formula → `It` and `Im`
+Full poclet corpus (23+ validated instances) spans chemistry, physics, biology, music, electronics, economics, mythology, education, and governance domains.
 
-```json
-// Pure ASFID — no disambiguation needed
-"m2:hasTensorFormula": "D ⊗ I ⊗ F"
+### TSCG Tools
 
-// Hybrid — disambiguation required
-"m2:hasTensorFormula": "A ⊗ S ⊗ F ⊗ It ⊗ D ⊗ R ⊗ E ⊗ V ⊗ O ⊗ Im"
+| Tool | M0 File | README |
+|------|---------|--------|
+| TscgPocletMiner | `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/tscg-tools/tscg-poclet-miner/M0_TscgPocletMiner.jsonld` | `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/tscg-tools/tscg-poclet-miner/M0_TscgPocletMiner_README.md` |
+| Tscg3DModeler | `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/tscg-tools/tscg-3d-modeler/M0_Tscg3DModeler.jsonld` | `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/tscg-tools/tscg-3d-modeler/M0_Tscg3DModeler_README.md` |
+| TscgExplorer | `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/tscg-tools/tscg-explorer/M0_TscgExplorer.jsonld` | `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/tscg-tools/tscg-explorer/M0_TscgExplorer_README.md` |
+
+### Documentation
+
+| Document | URI |
+|----------|-----|
+| TSCG Smart Prompt v16.0.0 | `https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v16_0_0.md` |
+| Architecture Guide | `https://raw.githubusercontent.com/Echopraxium/tscg/main/src/ARCHITECTURE_GUIDE.md` |
+| Poclet Analysis Methodology | `https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/methodology/Poclet_Analysis_Methodology.md` |
+| ValueSpace User Guide | `https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/TSCG_ValueSpace_User_Guide.md` |
+| Hybrid Formulas Notation | `https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/HYBRID_FORMULAS_NOTATION_README.md` |
+
+## Development Workflow
+
+### Creating a New Poclet
+
+1. **System identification** — Choose a minimal, complete system
+2. **ASFID scoring** — Evaluate A, S, F, I, D dimensions (0.0–1.0)
+3. **REVOI scoring** — Evaluate R, E, V, O, I dimensions (0.0–1.0)
+4. **M2/M1 concept identification** — Map to GenericConcepts and domain extensions
+5. **M0 modeling** — Create `M0_<Name>.jsonld` with proper structure
+6. **README** — Document system, scoring rationale, concepts
+7. **Simulation** (optional) — BabylonJS 6.26.0 interactive visualization
+
+### Running SPARQL Queries
+
+```python
+from tscg.engine.facade import OntologyFacade, QueryFacade
+
+# Load ontology
+ontology = OntologyFacade()
+ontology.load("ontology/M2_GenericConcepts.jsonld")
+
+# Execute query
+query = QueryFacade()
+query.set_graph(ontology.get_graph("M2_GenericConcepts"))
+results = query.execute("""
+    SELECT ?concept ?label WHERE {
+        ?concept a m2:GenericConcept .
+        ?concept rdfs:label ?label .
+    }
+""")
+
+for row in results.bindings:
+    print(f"{row['concept']}: {row['label']}")
 ```
 
-### ASCII Fallback Fields
+### Generating File URIs
 
-Every metaconcept formula should have three representations for resilience:
+```bash
+python create_files_URIS.py
+```
+
+Outputs markdown tables with GitHub raw URIs for all ontology and instance files.
+
+### Building the RAG Database
+
+```bash
+cd src/tscg/rag
+python create_tscg_rag.py local
+```
+
+Creates `db_tscg_rag/` ChromaDB and compresses to `db_tscg_rag.tar.gz`.
+
+### Gallery Generation
+
+```bash
+node generate_index.js
+```
+
+Generates `index.html` with interactive gallery of all poclet simulations. Metadata read from `m1core:simulationTitle` (preferred) or `rdfs:label`. Scores searched across all `@graph` nodes. Domain tags from `m1:domain` array in `owl:Ontology` node.
+
+## Critical Patterns
+
+### ASFID/REVOI Short-Key Aliases
+
+M0 instances use short keys in `@context` that resolve to full M3 IRIs:
 
 ```json
-"m2:hasTensorFormula":      "D ⊗ I ⊗ F",
-"m2:hasTensorFormulaTeX":   "D \\otimes I \\otimes F",
-"m2:hasTensorFormulaASCII": "D (x) I (x) F"
+"@context": {
+  "A": "m3:eagle_eye:Attractor",
+  "S": "m3:eagle_eye:Structure",
+  "F": "m3:eagle_eye:Flow",
+  "It": "m3:eagle_eye:Information",
+  "D": "m3:eagle_eye:Dynamics",
+  "R": "m3:sphinx_eye:Representability",
+  "E": "m3:sphinx_eye:Evolvability",
+  "V": "m3:sphinx_eye:Verifiability",
+  "O": "m3:sphinx_eye:Observability",
+  "Im": "m3:sphinx_eye:Interoperability"
+}
 ```
+
+**It/Im notation**: Disambiguates Information dimensions when both ASFID and REVOI appear in the same formula.
+
+### Epistemic Gap (δ₁)
+
+Normalized vectorial distance between ASFID and REVOI score vectors:
+
+```
+δ₁ = ||ASFID - REVOI|| / √10
+```
+
+SpectralClasses include: `Coherent`, `OnCriticalLine`, etc.
+
+### M1 Extension Reference Pattern
+
+In M0 instances:
+
+```json
+"@context": {
+  "m1bio": "M1_extensions/biology/M1_Biology.jsonld#",
+  "m1chem": "M1_extensions/chemistry/M1_Chemistry.jsonld#"
+}
+```
+
+### Metadata Node Pattern
+
+In all M0 instances, `@graph[0]` is the reference node for metadata (`rdfs:label`, `m1:domain`, `m2:version`). Scores may appear in any node.
 
 ---
 
-## Key Documentation
-
-- `src/ARCHITECTURE_GUIDE.md` — authoritative Python engine design spec
-- `docs/TSCG_M2_Category_Taxonomy.md` — M2 category organization
-- `docs/methodology/` — methodological guides
-- `README.md` — framework overview with quick-start workflow
-- `claude_setup.txt` — setup instructions for this environment
-
-### Repository File URIs (Complete List)
-
-Base: `https://raw.githubusercontent.com/echopraxium/tscg/main/`
-
-#### Root Files
-
-| File | URI |
-|------|-----|
-| CLAUDE.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/CLAUDE.md` |
-| README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/README.md` |
-| files.txt | `https://raw.githubusercontent.com/echopraxium/tscg/main/files.txt` |
-| claude_setup.txt | `https://raw.githubusercontent.com/echopraxium/tscg/main/claude_setup.txt` |
-| create_files_URIS.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/create_files_URIS.py` |
-
-#### ontology/ — Core Ontology Files
-
-| File | URI |
-|------|-----|
-| M3_GenesisSpace.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld` |
-| M3_GenesisSpace.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GenesisSpace.ttl` |
-| M3_GenesisSpace_Ref.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GenesisSpace_Ref.jsonld` |
-| M3_EagleEye.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_EagleEye.jsonld` |
-| M3_EagleEye.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_EagleEye.ttl` |
-| M3_SphinxEye.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld` |
-| M3_SphinxEye.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_SphinxEye.ttl` |
-| M2_GenericConcepts.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld` |
-| M1_CoreConcepts.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld` |
-| shacl_shapes.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/shacl_shapes.ttl` |
-
-#### ontology/M1_extensions/ — Domain Extensions
-
-| File | URI |
-|------|-----|
-| M1_CoreConcepts_NuclearUpdate.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/M1_CoreConcepts_NuclearUpdate.jsonld` |
-| M1_CoreConcepts_NuclearUpdate.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/M1_CoreConcepts_NuclearUpdate.ttl` |
-| M1_Extensions_Summary.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/M1_Extensions_Summary.md` |
-| biology/M1_Biology.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld` |
-| biology/M2_MetaConcepts_Alignment.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/biology/M2_MetaConcepts_Alignment.jsonld` |
-| biology/M2_MetaConcepts_Alignment.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/biology/M2_MetaConcepts_Alignment.ttl` |
-| chemistry/M1_Chemistry.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/chemistry/M1_Chemistry.jsonld` |
-| economics/M1_Economics.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld` |
-| economics/M1_Economics.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.ttl` |
-| economics/M1_Economics_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics_README.md` |
-| education/M1_Education.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/education/M1_Education.jsonld` |
-| education/M1_Education.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/education/M1_Education.ttl` |
-| education/M1_Education_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/education/M1_Education_README.md` |
-| electronics/M1_Electronics.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/electronics/M1_Electronics.jsonld` |
-| electronics/M1_Electronics.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/electronics/M1_Electronics.ttl` |
-| electronics/M1_Electronics_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/electronics/M1_Electronics_README.md` |
-| energy_generators/M1_EnergyGenerators.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld` |
-| energy_generators/M1_EnergyGenerators.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.ttl` |
-| mythology/M1_Mythology.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology.jsonld` |
-| mythology/M1_Mythology_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology_README.md` |
-| optics/M1_Optics.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/optics/M1_Optics.jsonld` |
-| photography/M1_Photography.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/photography/M1_Photography.jsonld` |
-| physics/M1_Physics.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/physics/M1_Physics.jsonld` |
-| physics/M1_Physics.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/physics/M1_Physics.ttl` |
-| physics/M1_Physics_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/physics/M1_Physics_README.md` |
-
-#### ontology/Ref/ — Reference Backups
-
-| File | URI |
-|------|-----|
-| M2_MetaConcepts_Ref.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M2_MetaConcepts_Ref.jsonld` |
-| M2_MetaConcepts_Ref.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M2_MetaConcepts_Ref.ttl` |
-| M3_GenesisSpace_Ref.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M3_GenesisSpace_Ref.jsonld` |
-| M3_GenesisSpace_Ref.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M3_GenesisSpace_Ref.ttl` |
-
-#### ontology/sparql/ — SPARQL Files
-
-| File | URI |
-|------|-----|
-| m2_sparql_analysis.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/m2_sparql_analysis.py` |
-| SPARQL_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/SPARQL_README.md` |
-| M2_MetaConcepts_2026_02_08_encoding_lint_ok.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_MetaConcepts_2026_02_08_encoding_lint_ok.jsonld` |
-| M2_MetaConcepts_2026_02_08_encoding_lint_ok.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_MetaConcepts_2026_02_08_encoding_lint_ok.ttl` |
-| M2_MetaConcepts_v15_0_0_WITH_Processor.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_MetaConcepts_v15_0_0_WITH_Processor.jsonld` |
-| M2_MetaConcepts_v15_0_0_WITH_Processor.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_MetaConcepts_v15_0_0_WITH_Processor.ttl` |
-| M2_Processor.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_Processor.jsonld` |
-| M2_Processor.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_Processor.ttl` |
-| M2_MetaConcepts_SPARQL_Querie_README.txt | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_MetaConcepts_SPARQL_Querie_README.txt` |
-
-#### ontology/tools/
-
-| File | URI |
-|------|-----|
-| M2_MetaConcepts_Ref.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/tools/M2_MetaConcepts_Ref.jsonld` |
-| M2_MetaConcepts_Ref.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/tools/M2_MetaConcepts_Ref.ttl` |
-
-#### ontology/docs/ — Ontology Documentation & Drafts
-
-| File | URI |
-|------|-----|
-| M1_CoreConcepts.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M1_CoreConcepts.jsonld` |
-| M1_CoreConcepts.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M1_CoreConcepts.ttl` |
-| M1_CoreConcepts_NuclearUpdate.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M1_CoreConcepts_NuclearUpdate.jsonld` |
-| M1_CoreConcepts_NuclearUpdate.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M1_CoreConcepts_NuclearUpdate.ttl` |
-| M1_CoreConcepts_updated.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M1_CoreConcepts_updated.jsonld` |
-| M1_CoreConcepts_updated.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M1_CoreConcepts_updated.ttl` |
-| M2_MetaConcepts.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaConcepts.jsonld` |
-| M2_MetaConcepts.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaConcepts.ttl` |
-| M2_MetaConcepts_2026_02_06_encoding_lint_checked.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaConcepts_2026_02_06_encoding_lint_checked.jsonld` |
-| M2_MetaConcepts_2026_03_04_FixedEncoding.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaConcepts_2026_03_04_FixedEncoding_validéLint.jsonld` |
-| M2_MetaconceptCombo.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaconceptCombo.jsonld` |
-| M2_MetaconceptCombo.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaconceptCombo.ttl` |
-| M2_Metaconcepts_v13.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Metaconcepts_v13.jsonld` |
-| M2_New_5_Metaconcepts.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_New_5_Metaconcepts.jsonld` |
-| M2_Pattern_metaconcept.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Pattern_metaconcept.jsonld` |
-| M2_KnowledgeField_KnowledgeFieldMetaCombo_v15_2_0.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_KnowledgeField_KnowledgeFieldMetaCombo_v15_2_0.jsonld` |
-| M3_CategoryTheory_v1_0_0.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M3_CategoryTheory_v1_0_0.jsonld` |
-| M3_Philosophical_Eye.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M3_Philosophical_Eye.jsonld` |
-| TSCG_Formula_Properties_Specification.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/TSCG_Formula_Properties_Specification.jsonld` |
-| m2_Imbrication_entry.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/m2_Imbrication_entry.jsonld` |
-| M1_CoreConcepts_v1.2.0_Summary.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M1_CoreConcepts_v1.2.0_Summary.md` |
-| M1_Extensions_Summary.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M1_Extensions_Summary.md` |
-| M2_Architecture_Specification_v9.1.0.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Architecture_Specification_v9.1.0.md` |
-| M2_Behavioral_Sequential_Metaconcepts_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Behavioral_Sequential_Metaconcepts_README.md` |
-| M2_Coherence_Analysis.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Coherence_Analysis.md` |
-| M2_GenericConcepts_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_GenericConcepts_README.md` |
-| M2_Imbrication_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Imbrication_README.md` |
-| M2_KnowledgeField_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_KnowledgeField_README.md` |
-| M2_MetaConcepts_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaConcepts_README.md` |
-| M3_EagleEye_Update_Analysis_v15_1_0.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M3_EagleEye_Update_Analysis_v15_1_0.md` |
-| M3_GenesisSpace_CategoryTheory_Integration.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M3_GenesisSpace_CategoryTheory_Integration.md` |
-| M3_Genesis_Space_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M3_Genesis_Space_README.md` |
-| MetaconceptPair_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/MetaconceptPair_README.md` |
-| Poclet_Analysis_Methodology.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/Poclet_Analysis_Methodology.md` |
-| TSCG_Architectural_Extensions.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/TSCG_Architectural_Extensions.md` |
-| TSCG_Documentation_Index.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/TSCG_Documentation_Index.md` |
-| TSCG_Formula_Encoding_Solution.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/TSCG_Formula_Encoding_Solution.md` |
-| TSCG_M1_Architecture.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/TSCG_M1_Architecture.md` |
-| TSCG_M2_MetaConcepts_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/TSCG_M2_MetaConcepts_README.md` |
-| TSCG_Smart_Prompt_v15_7_0.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/TSCG_Smart_Prompt_v15_7_0.md` |
-| TSCG_ValueSpace_Quick_Reference.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/TSCG_ValueSpace_Quick_Reference.md` |
-| TSCG_ValueSpace_User_Guide.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/TSCG_ValueSpace_User_Guide.md` |
-| TSCG_v15_1_0_Final_Classification.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/TSCG_v15_1_0_Final_Classification.md` |
-| TSCG_v15_1_0_Integration_Report.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/TSCG_v15_1_0_Integration_Report.md` |
-| Domain_M2_Update_Analysis_v15_1_0.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/Domain_M2_Update_Analysis_v15_1_0.md` |
-| Cascade_Modeling_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/Cascade_Modeling_README.md` |
-| Amplification_Integration_Summary.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/Amplification_Integration_Summary.md` |
-| Bicephalous_Integration_Guide.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/Bicephalous_Integration_Guide.md` |
-| HOWTO_Create_M1_Extension.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/HOWTO_Create_M1_Extension.md` |
-| Namespace_Refactoring_Summary.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/Namespace_Refactoring_Summary.md` |
-| ontology_analysis.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/ontology_analysis.md` |
-
-#### instances/poclets/ — Validated Poclets
-
-| Poclet | File | URI |
-|--------|------|-----|
-| Adaptive Immune Response | M0_AdaptiveImmuneResponse.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.jsonld` |
-| Adaptive Immune Response | M0_AdaptiveImmuneResponse.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse.ttl` |
-| Adaptive Immune Response | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/adaptative_immune_response/M0_AdaptiveImmuneResponse_README.md` |
-| Blood Pressure Control | M0_BloodPressureControl.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/blood_pressure_control/M0_BloodPressureControl.jsonld` |
-| Blood Pressure Control | M0_BloodPressureControl.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/blood_pressure_control/M0_BloodPressureControl.ttl` |
-| Blood Pressure Control | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/blood_pressure_control/M0_BloodPressureControl_README.md` |
-| Butterfly Metamorphosis | M0_ButterflyMetamorphosis.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/butterfly_metamorphosis/M0_ButterflyMetamorphosis.jsonld` |
-| Butterfly Metamorphosis | M0_ButterflyMetamorphosis.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/butterfly_metamorphosis/M0_ButterflyMetamorphosis.ttl` |
-| Butterfly Metamorphosis | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/butterfly_metamorphosis/butterfly_metamorphosis_README.md` |
-| Cell Signaling Modes | M0_CellSignalingModes.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/cell_signaling_modes/M0_CellSignalingModes.jsonld` |
-| Cell Signaling Modes | M0_CellSignalingModes.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/cell_signaling_modes/M0_CellSignalingModes.ttl` |
-| Cell Signaling Modes | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/cell_signaling_modes/M0_CellSignalingModes_README.md` |
-| Color Synthesis | M0_CMYK_Subtractive.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/color_synthesis/M0_CMYK_Subtractive.jsonld` |
-| Color Synthesis | M0_CMY_Subtractive.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/color_synthesis/M0_CMY_Subtractive.jsonld` |
-| Color Synthesis | M0_ColorSynthesis_Federated.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/color_synthesis/M0_ColorSynthesis_Federated.jsonld` |
-| Color Synthesis | M0_HSL_Additive.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/color_synthesis/M0_HSL_Additive.jsonld` |
-| Color Synthesis | M0_RGB_Additive.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/color_synthesis/M0_RGB_Additive.jsonld` |
-| Complex Chemical Synapse | M0_ComplexChemicalSynapse.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/complex_chemical_synapse/M0_ComplexChemicalSynapse.jsonld` |
-| Complex Chemical Synapse | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/complex_chemical_synapse/M0_ComplexChemicalSynapse_README.md` |
-| Exposure Triangle | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/exposure_triangle/M0_ExposureTriangle_README.md` |
-| Fire Triangle | M0_FireTriangle.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/fire_triangle/M0_FireTriangle.jsonld` |
-| Fire Triangle | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/fire_triangle/M0_FireTriangle_README.md` |
-| Four-Stroke Engine | M0_FourStrokeEngine.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/four_stroke_engine/M0_FourStrokeEngine.jsonld` |
-| Four-Stroke Engine | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/four_stroke_engine/M0_FourStrokeEngine_README.md` |
-| Four-Stroke Engine | Sim | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/four_stroke_engine/four_stroke_engine_sim.py` |
-| Kidneys | M0_Kidneys.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/kidneys/M0_Kidneys.jsonld` |
-| Kidneys | M0_Kidneys.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/kidneys/M0_Kidneys.ttl` |
-| Kidneys | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/kidneys/M0_Kidneys_README.md` |
-| Nuclear Reactor Typology | M0_NuclearReactorTypology.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/nuclear_reactors_typology/M0_NuclearReactorTypology.jsonld` |
-| Nuclear Reactor Typology | M0_NuclearReactorTypology.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/nuclear_reactors_typology/M0_NuclearReactorTypology.ttl` |
-| Nuclear Reactor Typology | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/nuclear_reactors_typology/M0_NuclearReactorTypology_README.md` |
-| RAAS | M0_RAAS.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/raas/M0_RAAS.jsonld` |
-| RAAS | M0_RAAS.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/raas/M0_RAAS.ttl` |
-| RAAS | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/raas/RAAS_Complete_README.md` |
-| Transistor | M0_Transistor.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/transistor/M0_Transistor.jsonld` |
-| Transistor | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/transistor/M0_Transistor_README.md` |
-| Transistor | Sim | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/transistor/transistor_sim.py` |
-| Yggdrasil | M0_Yggdrasil.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/yggdrasil/M0_Yggdrasil.jsonld` |
-| Yggdrasil | M0_Yggdrasil.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/yggdrasil/M0_Yggdrasil.ttl` |
-| Yggdrasil | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/yggdrasil/M0_Yggdrasil_README.md` |
-
-| Kindleberger-Minsky | M0_KindlebergerMinsky.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/kindleberger-minsky/M0_KindlebergerMinsky.jsonld` |
-| Kindleberger-Minsky | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/kindleberger-minsky/M0_KindlebergerMinsky_README.md` |
-| Kindleberger-Minsky | Sim | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/kindleberger-minsky/kindleberger_minsky_sim.py` |
-| MTG Color Wheel | M0_MTG_ColorWheel.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/mtg_color_wheel/M0_MTG_ColorWheel.jsonld` |
-| MTG Color Wheel | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/mtg_color_wheel/MTG_ColorWheel_README.md` |
-| Phase Transition | M0_PhaseTransition.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/phase_transition/M0_PhaseTransition.jsonld` |
-| Phase Transition | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/phase_transition/M0_PhaseTransition_README.md` |
-| TPACK | M0_TPACK.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/tpack/M0_TPACK.jsonld` |
-| TPACK | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/tpack/TPACK_README.md` |
-| VCO | M0_VCO.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/vco/M0_VCO.jsonld` |
-| VCO | README | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/vco/M0_VCO_README.md` |
-| VCO | Sim | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/vco/vco_sim.py` |
-
-#### instances/tscg-tools/tscg-explorer/ — TSCG Meta-Analytical Tool
-
-| File | URI |
-|------|-----|
-| M0_TscgExplorer.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/tscg-explorer/M0_TscgExplorer.jsonld` |
-| M0_TscgExplorer_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/tscg-explorer/M0_TscgExplorer_README.md` |
-| TSCG_Explorer_Simulation_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/tscg-explorer/TSCG_Explorer_Simulation_README.md` |
-| tscg_explorer.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/tscg-explorer/tscg_explorer.py` |
-
-#### instances/systemic-frameworks/vsm/ — VSM
-
-| File | URI |
-|------|-----|
-| M0_VSM.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM.jsonld` |
-| M0_VSM.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM.ttl` |
-| M0_VSM_Metaconcepts.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM_Metaconcepts.jsonld` |
-| M0_VSM_Metaconcepts.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM_Metaconcepts.ttl` |
-| M0_VSM_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM_README.md` |
-| M0_VSM_README_Metaconcepts.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/vsm/M0_VSM_README_Metaconcepts.md` |
-
-#### instances/symbolic-system-grammars/iching/ — I Ching
-
-| File | URI |
-|------|-----|
-| M0_IChing.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/symbolic-system-grammars/iching/M0_IChing.jsonld` |
-| M0_IChing_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/instances/symbolic-system-grammars/iching/M0_IChing_README.md` |
-
-#### src/ — Python Engine
-
-| File | URI |
-|------|-----|
-| ARCHITECTURE_GUIDE.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/ARCHITECTURE_GUIDE.md` |
-| tscg/engine/core/models.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/core/models.py` |
-| tscg/engine/core/ontology_loader.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/core/ontology_loader.py` |
-| tscg/engine/facade/ontology.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/facade/ontology.py` |
-| tscg/engine/facade/query.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/facade/query.py` |
-| tscg/engine/facade/metrics.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/facade/metrics.py` |
-| tscg/engine/facade/export.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/facade/export.py` |
-| tscg/engine/facade/rag.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/facade/rag.py` |
-| tscg/engine/analysis/sparql/executor.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/analysis/sparql/executor.py` |
-| tscg/engine/analysis/metrics/orthogonality.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/analysis/metrics/orthogonality.py` |
-| tscg/engine/exporters/turtle_exporter.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/exporters/turtle_exporter.py` |
-| tscg/engine/rag/embeddings.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/rag/embeddings.py` |
-| tscg/engine/rag/vector_store.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/rag/vector_store.py` |
-| tscg/engine/rag/retrieval.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/rag/retrieval.py` |
-| tscg/engine/classifier/metaconcept_classifier.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/classifier/metaconcept_classifier.py` |
-| tscg/engine/reasoner/reasoner.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/engine/reasoner/reasoner.py` |
-| tscg/cli/repl/context.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/cli/repl/context.py` |
-| tscg/cli/repl/interpreter.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/cli/repl/interpreter.py` |
-| tscg/rag/create_tscg_rag.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/rag/create_tscg_rag.py` |
-| tscg/rag/query_tscg_rag.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/rag/query_tscg_rag.py` |
-| tscg/rag/TSCG_RAG_Segmentation_Guide.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/rag/TSCG_RAG_Segmentation_Guide.md` |
-| tscg/simulation-engine/color_synthesis_sim.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/simulation-engine/color_synthesis_sim.py` |
-| tscg/simulation-engine/exposure_triangle_sim.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/simulation-engine/exposure_triangle_sim.py` |
-| tscg/simulation-engine/fire_triangle_sim.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/simulation-engine/fire_triangle_sim.py` |
-| tscg/simulation-engine/four_stroke_engine_sim.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/simulation-engine/four_stroke_engine_sim.py` |
-| tscg/simulation-engine/transistor_sim.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/simulation-engine/transistor_sim.py` |
-| tscg/ontology_tools/jsonld-to-owl/jsonld_to_turtle.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/ontology_tools/jsonld-to-owl/jsonld_to_turtle.py` |
-| tscg/ontology_tools/migration/tscg_migration.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/ontology_tools/migration/tscg_migration.py` |
-| tscg/tests/test_facades.py | `https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/tests/test_facades.py` |
-
-#### docs/ — Documentation
-
-| File | URI |
-|------|-----|
-| docs/TSCG_M2_Category_Taxonomy.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/docs/TSCG_M2_Category_Taxonomy.md` |
-| docs/methodology/Bicephalous_Integration_Guide.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/docs/methodology/Bicephalous_Integration_Guide.md` |
-| docs/methodology/Standard_Referencing_Pattern.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/docs/methodology/Standard_Referencing_Pattern.md` |
-| docs/papers/preprints/TSCG_Research_Paper_Draft_v1.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/preprints/TSCG_Research_Paper_Draft_v1.md` |
-| docs/papers/preprints/TSCG_Research_Paper_Draft_v2.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/preprints/TSCG_Research_Paper_Draft_v2.md` |
-| docs/papers/white-paper/TSCG_WhitePaper.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/white-paper/TSCG_WhitePaper.md` |
-| docs/reboot-kit/TSCG_Smart_Prompt_v15_7_0.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v15_7_0.md` |
-| docs/reboot-kit/TSCG_Smart_Prompt_v15_8_0.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v15_8_0.md` |
-| docs/reboot-kit/TSCG_ValueSpace_Quick_Reference.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_ValueSpace_Quick_Reference.md` |
-| docs/reboot-kit/TSCG_ValueSpace_User_Guide.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_ValueSpace_User_Guide.md` |
-| docs/reboot-kit/HYBRID_FORMULAS_NOTATION_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/HYBRID_FORMULAS_NOTATION_README.md` |
-| docs/reboot-kit/Cascade_Modeling_README.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/Cascade_Modeling_README.md` |
-| docs/reboot-kit/poclet_terminology.md | `https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/poclet_terminology.md` |
-| docs/reboot-kit/SmartPrompts/macros.txt | `https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/SmartPrompts/macros.txt` |
-
-### Methodology Documents (in project knowledge base)
-
-| Document | Content |
-|----------|---------|
-| `Poclet_Analysis_Methodology.md` | Step-by-step poclet analysis heuristic |
-| `HYBRID_FORMULAS_NOTATION_README.md` | Formula encoding conventions (It/Im, REVOI standard) |
-| `TSCG_ValueSpace_User_Guide.md` | How to use ValueSpace attributes in instantiations |
-| `TSCG_ValueSpace_Quick_Reference.md` | Cheat sheet for all 13 ValueSpace attributes |
-| `00_TSCG_M3_Bicephalous_Architecture.md` | Theoretical foundation of the dual-headed M3 |
-| `00_TSCG_Map_Territory_Theoretical_Foundation.md` | Korzybski philosophical basis |
-
-- `src/ARCHITECTURE_GUIDE.md` — authoritative Python engine design spec
-- `docs/TSCG_M2_Category_Taxonomy.md` — M2 category organization
-- `docs/methodology/` — methodological guides
-- `README.md` — framework overview with quick-start workflow
-- `claude_setup.txt` — setup instructions for this environment
+**Version**: Updated for TSCG v16.0.0  
+**Last updated**: May 2026  
+**Maintained by**: Echopraxium with the collaboration of Claude AI
