@@ -1,4 +1,4 @@
-# TSCG Framework
+# 🦇 TSCG Framework
 ## Transdisciplinary System Construction Game
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](LICENSE)
@@ -6,314 +6,244 @@
 [![Version](https://img.shields.io/badge/Version-16.0.0-green.svg)](https://github.com/Echopraxium/tscg/releases)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18471860.svg)](https://doi.org/10.5281/zenodo.18471860)
 
-A sophisticated **transdisciplinary ontological framework** for modeling complex systems through universal patterns. TSCG provides a four-layer architecture (M3→M2→M1→M0) built on a **bicephalous foundation** that distinguishes Territory (measurement via ASFID) from Map (representation via REVOI).
-
 **Author:** Echopraxium with the collaboration of Claude AI  
 **License:** BSD 3-Clause (source code) | CC BY 4.0 (documentation & research article)  
-**Research Paper:** [Zenodo v3.0 Preprint](https://doi.org/10.5281/zenodo.18471860) | v4.0 submission in progress
+**Repository:** https://github.com/Echopraxium/tscg
 
 ---
 
-## 🎯 What is TSCG?
+## 🦇 The Bat's Lesson: Navigating Complexity Through Echolocation
 
-TSCG (Transdisciplinary System Construction Game) is a **formalized ontological framework** for:
-- **Modeling complex systems** across disciplines (physics, biology, economics, mythology, etc.)
-- **Identifying universal patterns** through ~80 transdisciplinary GenericConcepts
-- **Measuring systemic coherence** via dual epistemic lenses (ASFID/REVOI)
-- **Creating validated instances** (Poclets) with interactive HTML simulations
-- **Enabling AI-assisted analysis** through multi-backend LLM tooling (TscgPocletMiner)
+In the silence of a cave, a bat emits an ultrasonic pulse. The sound bounces off invisible walls and returns transformed. In milliseconds, the bat **constructs a sonic map** of its environment. It never **sees** the cave directly — yet it navigates, hunts, and thrives.
 
-The framework bridges **Territory** (what exists empirically) and **Map** (how we represent it) through a rigorous mathematical foundation inspired by differential geometry and category theory.
+**The bat teaches us something profound:** You don't need direct access to reality to navigate it effectively. You need:
+1. A **model** to emit (your hypothesis)
+2. **Echoes** to receive (measurements from reality)
+3. A way to compute the **gap** between model and measurement
+4. A process to **correct** and refine
 
----
+**TSCG is the human version of echolocation for understanding complex systems.**
 
-## 🏗️ Architecture Overview
-
-### The Bicephalous Foundation (M3 Genesis Space)
-
-TSCG is built on a **dual-head** metaphor inspired by the Mesopotamian deity Anzû:
-- **🦅 Eagle Eye (ASFID)**: Measures Territory through 5 dimensions  
-  **A**ttractor | **S**tructure | **F**low | **I**nformation | **D**ynamics
-- **🦁 Sphinx Eye (REVOI)**: Constructs Map through 5 dimensions  
-  **R**epresentability | **E**volvability | **V**erifiability | **O**bservability | **I**nteroperability
-
-Together, these perspectives create **binocular vision** — a complete understanding of systems that reconciles empirical measurement with epistemological representation.
-
-### Four-Layer Hierarchy
-
-```
-M3 (Genesis Space)      → Bicephalous foundation: ASFID/REVOI dimensions
-M2 (GenericConcepts)    → ~80 atomic transdisciplinary patterns (9 families)
-M1 (CoreConcepts)       → Domain-specific extensions (11 disciplines)
-M0 (Instances)          → Concrete validated systems (23+ Poclets)
-```
-
-**Key Innovation:** M2 contains **only universally transdisciplinary** atomic patterns. Domain-specific combinations migrate to M1 extensions (biology, chemistry, economics, electronics, energy_generators, music, mythology, optics, photography, physics, education).
+Just as the bat lives in the **hybrid space** between its emitted pulse and returning echo, we humans live in the hybrid space between our **Maps** (how we represent systems) and the **Territory** (what exists empirically). The gap between them is not a failure — it's the very mechanism that enables learning, navigation, and discovery.
 
 ---
 
-## 📦 Repository Structure
+## 🌍 Three Pillars of TSCG
+
+### 1️⃣ **An "Esperanto" for Systems Thinking**
+
+TSCG proposes a **universal transdisciplinary language** for describing any complex system — from chemical reactions to blockchain consensus, from cellular biology to musical counterpoint.
+
+Just as Esperanto aims to bridge human languages, TSCG provides:
+- **Universal vocabulary**: ~80 atomic GenericConcepts (Feedback, Hierarchy, Flow, etc.)
+- **Common grammar**: Structural rules for combining concepts
+- **Cross-domain translation**: The same pattern "Homeostasis" applies to thermostats, ecosystems, and economies
+
+**Key insight:** Most systems share the **same underlying patterns**. Once you speak TSCG, you can recognize these patterns anywhere.
+
+---
+
+### 2️⃣ **Map-Territory Duality: The Bicephalous Vision**
+
+At the heart of TSCG is a rigorous distinction inspired by Alfred Korzybski's principle: **"The map is not the territory."**
+
+TSCG formalizes this through a **dual-layer architecture**:
+
+| Perspective | Metaphor | What It Measures | 5 Dimensions |
+|-------------|----------|------------------|--------------|
+| **🦅 Eagle Eye (ASFID)** | The bat's echo | **Territory** — What exists empirically | **A**ttractor, **S**tructure, **F**low, **I**nformation, **D**ynamics |
+| **🦁 Sphinx Eye (REVOI)** | The bat's emission | **Map** — How we represent it | **R**epresentability, **E**volvability, **V**erifiability, **O**bservability, **I**nteroperability |
+
+**Why two perspectives?**
+- **ASFID** asks: *"What is the system doing?"* (measurement)
+- **REVOI** asks: *"How well can we model it?"* (representation)
+
+The **epistemic gap (δ)** between these perspectives tells us how aligned our understanding is with reality — and where to improve.
+
+This creates a **layered model** (M3 → M2 → M1 → M0) where universal foundations cascade into domain-specific applications.
+
+---
+
+### 3️⃣ **LEGO Technic Metaphor: Build System Models Like Toys**
+
+Think of TSCG as **LEGO Technic® for the mind**:
+
+| LEGO Concept | TSCG Equivalent | Example |
+|--------------|-----------------|---------|
+| **Basic bricks** | GenericConcepts (M2) | Feedback, Hierarchy, Transformation |
+| **Specialized kits** | Domain extensions (M1) | Biology, Chemistry, Electronics, Music, Mythology |
+| **Finished models** | Validated instances (M0) | Fire Triangle, Four-Stroke Engine, Cell Signaling |
+| **Building instructions** | Structural Grammar | How concepts combine via tensor products |
+
+**Just like LEGO Technic® offers themed sets** (Pneumatics, Sensors, Renewable Energy), TSCG offers:
+- **M1_Biology**: Cell structures, homeostasis, immune response
+- **M1_Electronics**: Transistors, oscillators, signal processing
+- **M1_Optics**: Color synthesis, exposure control, light filtering
+- **M1_Music**: Counterpoint, harmony, voice leading
+- **M1_Mythology**: Cosmological structures, archetypal patterns
+- ...and 11+ other domains
+
+**The "Game" in TSCG**: Building minimal, validated system models (called **"Poclets"**) is like assembling a functional LEGO model — it must be coherent, complete, and actually work.
+
+---
+
+## 🏗️ Architecture at a Glance
 
 ```
-tscg/
-├── ontology/                       # Reference ontologies (JSON-LD + Turtle)
-│   ├── M3_GenesisSpace.jsonld      # Bicephalous foundation
-│   ├── M3_EagleEye.jsonld          # ASFID dimensions (Territory)
-│   ├── M3_SphinxEye.jsonld         # REVOI dimensions (Map)
-│   ├── M2_GenericConcepts.jsonld   # ~80 universal patterns
-│   ├── M1_CoreConcepts.jsonld      # Core domain concepts
-│   ├── M1_Domains.jsonld           # Domain registry (centralized)
-│   ├── M1_extensions/              # 11 domain-specific extensions
-│   └── docs/                       # Ontology documentation & formulas
-│
-├── instances/                      # M0 Layer - Concrete Systems
-│   ├── poclets/                    # 23+ validated system models
-│   │   ├── FireTriangle/           # Combustion triangle (canonical simulation)
-│   │   ├── MtgColorWheel/          # Magic: The Gathering color system
-│   │   ├── FourStrokeEngine/       # Internal combustion cycle
-│   │   ├── NakamotoConsensus/      # Bitcoin consensus mechanism
-│   │   ├── CounterPoint/           # Musical counterpoint theory
-│   │   └── ...                     # 18+ additional poclets
-│   │
-│   ├── tscg-tools/                 # Meta-analytical tools
-│   │   ├── TscgPocletMiner/        # ElectronJS LLM-powered corpus analyzer
-│   │   ├── TscgPocletGenerator/    # AI-assisted poclet creation
-│   │   └── TscgExplorer/           # TSCG self-analysis tool
-│   │
-│   ├── systemic-frameworks/        # VSM and other systemic models
-│   └── symbolic-system-grammars/   # I-Ching and similar systems
-│
-├── src/tscg/                       # Python package
-│   ├── engine/                     # Core analysis engine
-│   ├── cli/                        # Command-line interface
-│   ├── ontology_tools/             # JSON-LD ↔ OWL converters
-│   └── simulation-engine/          # Shared simulation components
-│
-├── docs/                           # Documentation
-│   ├── papers/                     # Research articles & preprints
-│   ├── methodology/                # Development guides
-│   └── reboot-kit/                 # Quick-start package
-│
-└── index.html                      # Gallery of HTML simulations
+M3 (Genesis Space)      → Universal foundation: ASFID/REVOI dimensions
+                           (The "bat's echolocation mechanism")
+    ↓
+M2 (GenericConcepts)    → ~80 transdisciplinary patterns
+                           (Universal "LEGO bricks")
+    ↓
+M1 (Extensions)         → 11+ domain-specific vocabularies
+                           (Specialized "LEGO kits")
+    ↓
+M0 (Instances)          → 23+ validated system models
+                           (Finished "LEGO models")
 ```
+
+**Current M0 Corpus**: Fire Triangle, Four-Stroke Engine, Nakamoto Consensus (blockchain), Adaptive Immune Response, Counterpoint (music), MTG Color Wheel, Blood Pressure Control, Yggdrasil (Norse cosmology), TPACK (education), and 14+ others spanning chemistry, biology, electronics, ecology, economics, optics, mythology.
 
 ---
 
 ## 🎮 Interactive Simulations
 
-All poclets include **standalone HTML simulations** (no backend required):
-- **Technology Stack:** p5.js (2D) | BabylonJS 6.26.0 (3D)
-- **Migration Complete:** Python/Pygame → Static HTML for GitHub Pages
-- **Canonical Reference:** `FireTriangle.html` (CSS Grid layout with 4 tabs)
-- **Deployment:** [https://echopraxium.github.io/tscg/](https://echopraxium.github.io/tscg/)
-
-**Simulation Features:**
-- Real-time parameter controls with responsive UI
-- Draggable splitter between canvas and sidebar
-- Description | Concepts | Synergy | Scores tabs
-- ASFID/REVOI scoring visualization
-- Epistemic gap δ₁ calculation (normalized vectorial)
-
----
-
-## 🔬 Key Concepts
-
-### ASFID Scoring (Territory/Eagle Eye)
-Measures systemic **empirical coherence** through 5 dimensions:
-- **Attractor (A):** System stability and equilibrium tendencies
-- **Structure (S):** Architectural organization and component relationships
-- **Flow (F):** Dynamic exchanges and transformations
-- **Information (I):** Encoded knowledge and semantic content
-- **Dynamics (D):** Temporal evolution and behavioral patterns
-
-### REVOI Scoring (Map/Sphinx Eye)
-Measures **representational adequacy** through 5 dimensions:
-- **Representability (R):** Symbolic expressiveness (⚠️ NEVER "Reproducibility")
-- **Evolvability (E):** Capacity for incremental refinement
-- **Verifiability (V):** Empirical testability and validation
-- **Observability (O):** Measurability and instrumentation
-- **Interoperability (I):** Cross-system compatibility
-
-### Epistemic Gap (δ)
-Quantifies the **mismatch** between Territory (ASFID) and Map (REVOI):
-
-**δ₁ Formula (normalized vectorial, recommended):**
-```
-δ₁ = √Σ(ASFIDᵢ - REVOIᵢ)² / √10
-```
-
-**Spectral Classes:**
-- **Coherent:** [0, 0.05) — Excellent Territory-Map alignment
-- **OnCriticalLine:** [0.05, 0.15) — Good alignment with minor tensions
-- **Liminal:** [0.15, 0.30) — Moderate epistemic divergence
-- **Enigmatic:** [0.30, 1.0) — Significant Map-Territory gap (requires investigation)
-
----
-
-## 🛠️ TscgPocletMiner
-
-**ElectronJS-based LLM tool** for corpus analysis and knowledge extraction:
+Every validated system includes a **standalone HTML simulation** (no installation required):
+- **2D simulations**: p5.js
+- **3D simulations**: BabylonJS 6.26.0
+- **Live demo**: [https://echopraxium.github.io/tscg/](https://echopraxium.github.io/tscg/)
 
 **Features:**
-- **Multi-backend LLM support:** Google Gemini Free Tier (default) | Ollama local | DeepSeek Cloud | Anthropic Claude API
-- **On-the-fly RAG:** Recursive whole-repo scan (~5,797 chunks) with no pre-built ChromaDB
-- **Corpus rebuild:** `rebuild_m2_corpus.py` for M2 concept extraction
-- **Hardware-optimized:** RTX 3050 Ti 4GB VRAM → phi3.5:3.8b for full GPU execution
+- Real-time parameter controls
+- ASFID/REVOI scoring visualization
+- Epistemic gap (δ) calculation
+- Interactive concept exploration
 
-**Local LLM Configuration:**
-```bash
-# Recommended for 16GB RAM / 4GB VRAM
-ollama pull phi3.5:3.8b-mini-instruct-q4_K_M
+**Canonical reference**: `FireTriangle.html` — CSS Grid layout with Description | Concepts | Synergy | Scores tabs
+
+---
+
+## 🚀 Quick Start: Your First "Echolocation"
+
+Want to model a system with TSCG? Follow the **bat's cycle**:
+
+### 1. **Emit a pulse (Build your Map)**
+   - What do you hypothesize about the system?
+   - Identify relevant GenericConcepts from M2
+   - Score your model on REVOI dimensions (0–1)
+
+### 2. **Listen for the echo (Measure the Territory)**
+   - Observe the real-world system
+   - Score it on ASFID dimensions (0–1)
+   - Note: Flow (F) ≥ 0.1 (no perfectly closed systems)
+
+### 3. **Compute the gap (Calculate δ)**
+   - Compare ASFID vs. REVOI vectors
+   - δ₁ = √[Σ(ASFIDᵢ - REVOIᵢ)²] / √10
+   - Spectral classes: Coherent (< 0.05) | OnCriticalLine (0.05–0.15) | Liminal (0.15–0.30) | Enigmatic (≥ 0.30)
+
+### 4. **Correct your flight (Refine the model)**
+   - Use the gap to identify mismatches
+   - Adjust your GenericConcept selection
+   - Iterate until coherence is achieved
+
+```
+TSCG Cycle = Emission (REVOI) → Echo (ASFID) → Gap (δ) → Correction → Action
 ```
 
 ---
 
-## 📚 Documentation
+## 🛠️ TscgPocletMiner: AI-Powered Corpus Analysis
 
-### Essential Reading
+**ElectronJS desktop tool** for exploring the TSCG knowledge base:
+- **Multi-backend LLM**: Google Gemini Free Tier (default) | Ollama local | DeepSeek | Anthropic Claude
+- **On-the-fly RAG**: Recursive repo scan (~5,797 chunks)
+- **No database**: Pure dynamic retrieval from source files
+- **Optimized for consumer hardware**: RTX 3050 Ti 4GB VRAM → phi3.5:3.8b model
+
+**Use cases:**
+- "What M2 concepts apply to protein folding?"
+- "Find poclets with high Flow scores"
+- "Compare ASFID profiles across domains"
+
+---
+
+## 📚 Essential Documentation
+
+- **[Poclet Analysis Methodology](docs/methodology/Poclet_Analysis_Methodology.md)** — How to create a validated instance
 - **[M3 Bicephalous Architecture](ontology/docs/00_TSCG_M3_Bicephalous_Architecture.md)** — Philosophical foundation
-- **[M2 Formulas Reference v15.10.0](ontology/docs/M2_FormulasReference_v15.10.0.md)** — Complete mathematical framework
-- **[Poclet Analysis Methodology](docs/methodology/Poclet_Analysis_Methodology.md)** — Pipeline for creating instances
-- **[TSCG File Tree](TSCG_File_Tree.md)** — Complete repository structure
+- **[M2 Formulas Reference](ontology/docs/M2_FormulasReference_v15.10.0.md)** — Mathematical framework
+- **[UX Controls Catalog](ontology/InstanceSimulations/M0_InstanceSimulation_UXControls_README.md)** — Reusable simulation UI patterns
 
-### Quick Start
-1. **Explore simulations:** Visit [GitHub Pages gallery](https://echopraxium.github.io/tscg/)
-2. **Read a poclet:** Start with `instances/poclets/FireTriangle/README.md`
-3. **Understand M2:** Review `ontology/docs/M2_GenericConcepts_README.md`
-4. **Try TscgPocletMiner:** Follow `instances/tscg-tools/TscgPocletMiner/README.md`
+**Research article (v4.0 submission pending):**  
+📄 [Zenodo v3.0 Preprint](https://doi.org/10.5281/zenodo.18471860) — Complete M3→M2→M1→M0 architecture with 10+ case studies (~11,300 words)
 
 ---
 
-## 📊 Current Poclet Corpus (23+ instances)
+## 📁 Repository Structure
 
-**Physics & Chemistry:**
-- FireTriangle | PhaseTransition | FourStrokeEngine | NuclearReactorsTypology
-
-**Electronics & Optics:**
-- Transistor | VCO (Voltage-Controlled Oscillator) | ExposureTriangle | ColorSynthesis | TvTestPattern
-
-**Biology & Medicine:**
-- AdaptativeImmuneResponse | BloodPressureControl | CellSignalingModes | ComplexChemicalSynapse | Kidneys | RAAS (Renin-Angiotensin-Aldosterone System) | ButterflyMetamorphosis
-
-**Ecology & Geology:**
-- TrophicPyramid | (PlateTectonics in development)
-
-**Economics & Governance:**
-- KindlebergerMinsky (financial cycles) | NakamotoConsensus (blockchain) | GovernanceTrinity
-
-**Music & Mythology:**
-- CounterPoint (polyphonic voice leading) | MtgColorWheel (game design ontology) | Yggdrasil (Norse cosmology)
-
-**Education:**
-- TPACK (Technological Pedagogical Content Knowledge)
-
----
-
-## 🔧 Installation & Usage
-
-### Prerequisites
-```bash
-# For Python tools
-python >= 3.9
-pip install -r requirements.txt
-
-# For TscgPocletMiner (ElectronJS)
-node >= 16.x
-npm install
-
-# For local LLM (optional)
-ollama >= 0.1.0
 ```
-
-### Running Simulations Locally
-```bash
-# Start local HTTP server (required for file:/// security restrictions)
-./_serve_index-html.bat  # Windows
-# Or use Python
-python -m http.server 8080
-# Navigate to http://127.0.0.1:8080
+tscg/
+├── ontology/                       # M3/M2/M1 reference ontologies (JSON-LD)
+│   ├── M3_GenesisSpace.jsonld      # Bicephalous foundation
+│   ├── M2_GenericConcepts.jsonld   # ~80 universal patterns
+│   ├── M1_extensions/              # 11 domain vocabularies
+│   └── docs/                       # Theoretical foundations
+│
+├── instances/                      # M0 Layer — Concrete validated systems
+│   ├── poclets/                    # 23+ system models with simulations
+│   ├── tscg-tools/                 # TscgPocletMiner, TscgPocletGenerator
+│   ├── systemic-frameworks/        # VSM and cybernetic models
+│   └── symbolic-system-grammars/   # I-Ching and similar systems
+│
+├── docs/                           # Methodology guides
+├── index.html                      # Gallery of simulations (auto-generated)
+└── cli_tools/                      # Python/Node.js utilities
 ```
-
-### Generating Gallery Index
-```bash
-# Auto-generates index.html from poclet simulations
-node cli_tools/generate_index-html/generate_index.js
-```
-
----
-
-## 📖 Research & Publications
-
-### Preprint Article (v4.0 in progress)
-- **Current:** [Zenodo v3.0](https://doi.org/10.5281/zenodo.18471860) (~8,500 words)
-- **Target:** Zenodo v4.0 (~11,300 words) — submission pending
-- **License:** CC BY 4.0
-- **Scope:** Complete M3→M2→M1→M0 architecture, ASFID/REVOI theoretical foundation, 10+ poclet case studies
-
-**Submission History:**
-- ❌ HAL (rejected — requires academic affiliation)
-- ✅ Zenodo (accepted — institutional-grade DOI)
 
 ---
 
 ## 🤝 Contributing
 
-TSCG is currently a **single-developer project** (Michel/Echopraxium) with Claude AI collaboration. Contributions are welcome through:
-- **Issue reporting:** Bug reports, simulation improvements, ontology suggestions
-- **Poclet proposals:** New system models following the [4-stage pipeline](docs/methodology/Poclet_Analysis_Methodology.md)
-- **Documentation:** Translations, clarifications, educational materials
-- **Extensions:** New M1 domain extensions (requires M2 compliance)
+TSCG is currently a **single-developer project** (Michel/Echopraxium) with Claude AI collaboration. Contributions welcome through:
+- **Poclet proposals**: New validated system models
+- **M1 extensions**: New domain vocabularies (requires M2 compliance)
+- **Documentation**: Clarifications, translations, educational materials
+- **Simulation improvements**: UI/UX enhancements, new visualization techniques
 
-**Authoring Conventions:**
+**Key conventions:**
 - Files in **English**, conversations in **French**
-- Author attribution: `"Echopraxium with the collaboration of Claude AI"`
-- `@base` = `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/`
-- Changelog: max 3 entries (rolling window)
-- PascalCase naming for poclets (1–4 words)
-
----
-
-## 📜 License
-
-**Source Code:** BSD 3-Clause License  
-**Documentation & Article:** Creative Commons Attribution 4.0 International (CC BY 4.0)
-
-See [LICENSE](LICENSE) for details.
+- Author: `"Echopraxium with the collaboration of Claude AI"`
+- `@base` URI: `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/`
+- Changelog: max 3 entries per file
 
 ---
 
 ## 🔗 Links
 
-- **GitHub Repository:** https://github.com/Echopraxium/tscg
-- **GitHub Pages Gallery:** https://echopraxium.github.io/tscg/
-- **Research Article (v3.0):** https://doi.org/10.5281/zenodo.18471860
-- **Author:** Michel (Echopraxium) — Namur, Belgium
+- **GitHub Repository**: https://github.com/Echopraxium/tscg
+- **Live Gallery**: https://echopraxium.github.io/tscg/
+- **Research Article (v3.0)**: https://doi.org/10.5281/zenodo.18471860
+- **Author**: Michel (Echopraxium) — Namur, Belgium
 
 ---
 
-## 🙏 Acknowledgments
+## 🦇 Final Thought
 
-**Technical Collaboration:** Claude AI (Anthropic) — ontology design, poclet analysis, simulation development, documentation
+> *"The bat doesn't see the cave.  
+> It hears the cave's echo.  
+> And that echo is enough to navigate any darkness."*
 
-**Theoretical Foundations:**
-- Differential geometry & category theory for epistemic gap formalization
-- Mesopotamian mythology (Anzû) for bicephalous metaphor
-- VSM (Viable System Model) cybernetic principles
-
-**Open Source Stack:**
-- BabylonJS 6.26.0 (3D simulations)
-- p5.js (2D simulations)
-- ElectronJS (desktop tooling)
-- Ollama (local LLM inference)
-- Google Gemini Free Tier (cloud LLM)
+**TSCG doesn't give you direct access to reality.**  
+**It gives you a way to emit models, receive measurements, compute gaps, and refine your understanding.**  
+**And that is enough to navigate any complex system.**
 
 ---
 
 **Version:** 16.0.0  
-**Last Updated:** 2026-04-28  
-**Framework Status:** Active development — M0 corpus expansion ongoing
+**Last Updated:** 2026-05-12  
+**Framework Status:** Active development — v4.0 research article submission in progress
 
----
-
-*"Two eyes, two perspectives, one complete vision. From Territory to Map, from measurement to meaning."*  
-— **TSCG Bicephalous Principle**
+*"The map is not the territory, but the echo is enough to fly."*  
+— **The Bat's Wisdom**
