@@ -1,14 +1,13 @@
 {
   "@context": {
-    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/",
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
     "dcterms": "http://purl.org/dc/terms/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "m3s": "M3_SphinxEye.jsonld#",
-    "m3gf": "M3_GrammarFoundation.jsonld#"
+    "m3": "M3_GenesisSpace.jsonld#"
   },
   "@graph": [
     {
@@ -16,50 +15,45 @@
       "@type": "owl:Ontology",
       "owl:versionInfo": "3.2.0",
       "dcterms:created": "2026-01-21",
-      "dcterms:modified": "2026-02-16",
+      "dcterms:modified": "2026-05-12",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:description": "REVOI basis (Representable, Evolvable, Verifiable, Observable, Interoperable) for Map construction through synthetic composition of conceptual models",
+      "dcterms:description": "Sphinx Grammar (Gm) — primitive types {R,E,V,O,I} for epistemic quality assessment of system representations. Part of the TSCG bicephalous architecture (Gt ⊕ Gm).",
       "m3:ontologyType": {
         "@id": "m3:GenesisExtension"
       },
-      "owl:imports": [
-        "M3_GrammarFoundation.jsonld"
-      ],
+      "owl:imports": [ "M3_GenesisSpace.jsonld" ],
       "rdfs:label": "Sphinx Eye - REVOI Basis for Map Construction",
-      "rdfs:comment": "Orthonormal basis providing synthetic perspective on models-as-maps. Sphinx Eye constructs, composes, and poses riddles about understanding.",
+      "rdfs:comment": "Sphinx Grammar (Gm): free commutative monoidal grammar over primitive types {R,E,V,O,I}. Provides the epistemic/representational perspective on systems-as-map. At M0, each primitive instantiates as an evaluation functor F_x : System → [0,1].",
       "metadata": {
         "layer": "M3",
         "name": "Sphinx Eye - REVOI Basis",
-        "version": "3.1.0",
+        "version": "3.2.0",
         "date_created": "2026-01-21",
-        "date_modified": "2026-02-16",
+        "date_modified": "2026-05-12",
         "authors": [
           "Echopraxium with the collaboration of Claude AI"
         ],
         "description": "REVOI basis for Map construction through synthetic composition",
         "changelog": {
-          "v2.0.1": "Namespace refactoring: m3sphinx → m3:sphinx_eye",
-          "v2.1.0": "Added m3:ontologyCategory: GenesisExtension. Added skos namespace. Cleaned @id.",
-          "v2.2.0": "CRITICAL FIX: Corrected REVOI dimensions - R:Representability, E:Evolvability, V:Verifiability, O:Observability, I:Interoperability.",
-          "v2.3.0": "COLLISION FIX: Renamed I (Interoperability) to distinguish from Eagle Eye's I (Information). Reordered to REVOI.",
-          "v3.0.0": "SIMPLIFICATION: Changed dimension names from -ability to -able forms for grammatical consistency with ASFID (nouns). Representability→Representable, Evolvability→Evolvable, Verifiability→Verifiable, Observability→Observable, Interoperability→Interoperable. Acronym REVOI unchanged.",
           "v3.0.1": "Added @graph envelope for consistency. Cleaned @context (removed redundant prefixes). Added M3Dimension class and properties definitions. Fixed parent_ontology @id. Added m3:ontologyCategory property reference.",
-          "v3.1.0": "REFACTORING: Removed m3:sphinx_eye:M3Dimension class (now m3:M3Dimension in GenesisSpace). Removed common properties (symbol, index, examples - now m3:dimensionSymbol, m3:dimensionIndex, m3:dimensionExamples in GenesisSpace). Kept REVOI-specific properties (philosophicalInterpretation, rangeProposed, formerName, renameRationale, note)."
+          "v3.1.0": "REFACTORING: Removed m3:sphinx_eye:M3Dimension class (now m3:M3Dimension in GenesisSpace). Removed common properties (symbol, index, examples - now m3:dimensionSymbol, m3:dimensionIndex, m3:dimensionExamples in GenesisSpace). Kept REVOI-specific properties (philosophicalInterpretation, rangeProposed, formerName, renameRationale, note).",
+          "v3.2.0": "FORMALISM REFORM: Replaced Hilbert space / orthonormal basis framing with Structural Grammar (Lambek calculus). basis_properties → grammar_properties. Removed hilbert_space, orthonormality fields. Φ/Ψ reframed as natural transformations. See Structural_Grammar_Foundation.md."
         }
       },
       "parent_ontology": {
-        "@id": "m3:genesis_space:GenesisSpace",
+        "@id": "m3:GenesisSpace",
         "relationship": "component_of",
         "description": "Sphinx Eye is the REVOI component of M3 Genesis Space, providing the synthetic perspective on systems"
       },
-      "basis_properties": {
-        "name": "REVOI",
-        "expansion": "Representable, Evolvable, Verifiable, Observable, Interoperable",
-        "dimensions": 5,
-        "orthonormality": "verified",
-        "completeness": "partial (completes with ASFID from Eagle Eye)",
-        "role": "Map construction",
-        "hilbert_space": "ℋ_μ"
+      "grammar_properties": {
+        "grammar_name": "Sphinx Grammar (Gm: Map)",
+        "grammar_type": "free_commutative_monoidal",
+        "primitives": ["R", "E", "V", "O", "I"],
+        "product": "⊗ᵐ (structural co-activation, Map)",
+        "primitive_role": "generators of Map type expressions (epistemic quality signatures)",
+        "functor_role": "F_R, F_E, F_V, F_O, F_I : System → [0,1]  (M0 evaluation)",
+        "perspective": "epistemic / representational",
+        "independence": "verified  (no primitive derivable from others)"
       },
       "grammatical_note": {
         "form": "Adjective (qualificatif)",
@@ -192,25 +186,17 @@
           "m3:sphinx_eye:renameRationale": "Simplified to adjective form for consistency"
         }
       ],
-      "orthogonality_matrix": {
-        "description": "Inner products ⟨R|E⟩, ⟨R|V⟩, etc. = 0 (orthogonal)",
-        "verified": "true",
-        "basis": "Orthonormal: ⟨i|j⟩ = δᵢⱼ"
-      },
-      "coupling_with_ASFID": {
-        "description": "REVOI (Map) couples with ASFID (Territory) via Σ matrix (5×5 coupling strengths)",
-        "operator": "Σ ∈ ℝ^(5×5)",
-        "feedback_loop": {
-          "Phi": "Φ: ASFID → REVOI (observation operator)",
-          "Psi": "Ψ: REVOI → ASFID (interpretation operator)"
-        },
-        "see_also": "M3_GenesisSpace v3.0.0 for feedback loop formalization"
+      "coupling_with_TerritoryGrammar": {
+        "description": "Gm (Map) and Gt (Territory) are connected via natural transformations",
+        "Phi": "Φ : Gt → Gm  (observation: Territory → Map)",
+        "Psi": "Ψ : Gm → Gt  (interpretation: Map → Territory)",
+        "epistemic_gap": "δ₁ = ||ASFID_mean − REVOI_mean|| / √2  (non-isomorphism measure)"
       },
       "complementary_basis": {
         "@id": "m3:eagle_eye:EagleEye",
-        "description": "Eagle Eye provides ASFID basis for Territory measurement, complementing Sphinx's Map construction",
-        "relationship": "orthogonal_complement",
-        "complete_space": "M3 Genesis Space = ASFID ⊕ REVOI (10D Hilbert space)"
+        "description": "Eagle Eye provides ASFID (Territory Grammar Gt) complementing Sphinx's Map Grammar Gm",
+        "relationship": "bicephalous_complement",
+        "complete_space": "M3 Genesis Space = Gt ⊕ Gm  (bicephalous grammar: Territory ⊕ Map)"
       }
     },
     {
