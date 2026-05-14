@@ -216,8 +216,12 @@
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Simulation Title",
       "rdfs:comment": "Short human-readable title for displaying instances in simulation galleries and user interfaces. Typically shorter and more user-friendly than the formal rdfs:label. Used by generate_index.js and other gallery/presentation tools.",
-      "rdfs:domain": "owl:Ontology",
-      "rdfs:range": "xsd:string",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
       "skos:definition": "A concise display name optimized for gallery cards, simulation headers, and navigation menus. Unlike rdfs:label (which may contain formal prefixes like 'TSCG M0' or full descriptive text), simulationTitle contains only the essential name. If absent, tools should fallback to rdfs:label stripped of common prefixes.",
       "skos:example": [
         "Fire Triangle (instead of 'TSCG M0 Fire Triangle Poclet')",
@@ -234,7 +238,9 @@
       "@type": "owl:Class",
       "rdfs:label": "M1 Core Concept",
       "rdfs:comment": "A domain-bounded but transdisciplinary concept that instantiates one or more M2 metaconcepts. Core concepts are reusable patterns that appear across multiple domains but don't achieve the full universality of M2 metaconcepts. Examples: Oscillator (appears in physics, biology, economics), Multipolar Network (appears in mythology, game design, education).",
-      "rdfs:subClassOf": "owl:Thing",
+      "rdfs:subClassOf": {
+        "@id": "owl:Thing"
+      },
       "m1:properties": [
         "m1:M2_basis - Which M2 metaconcepts does this instantiate?",
         "m1:domainScope - Which domains does this apply to?",
@@ -248,7 +254,9 @@
       "@type": "owl:Class",
       "rdfs:label": "Domain-Specific Pattern",
       "rdfs:comment": "A pattern specific to a particular domain (e.g., Additive Color Synthesis in optics, Compensatory Triplet in photography). Lives in domain-specific M1 extensions (M1_Optics, M1_Photography, etc.) rather than M1_CoreConcepts.",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": {
+        "@id": "m1core:CoreConcept"
+      },
       "m1:note": "Domain patterns extend CoreConcept but are defined in M1_[Domain].jsonld files, not here."
     },
     {
@@ -256,7 +264,9 @@
       "@type": "owl:Class",
       "rdfs:label": "Generic Mechanism",
       "rdfs:comment": "Reusable operational mechanism appearing across multiple domains. Examples: Oscillator (pendulum, AC current, predator-prey cycles, business cycles), Amplifier (electronic amplifier, biological cascade, social amplification).",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": {
+        "@id": "m1core:CoreConcept"
+      },
       "skos:note": "To be populated with specific mechanisms as they are discovered through poclet analysis."
     },
     {
@@ -264,7 +274,9 @@
       "@type": "owl:Class",
       "rdfs:label": "Structural Template",
       "rdfs:comment": "Common architectural pattern for system organization. Examples: Feedback Loop (control systems, ecosystems, markets), Cascade (signal transduction, waterfall, information flow), Hierarchy (organizational charts, taxonomies, file systems), Multipolar Network (Yggdrasil, Magic Color Wheel, TPACK).",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": {
+        "@id": "m1core:CoreConcept"
+      },
       "skos:note": "Now includes 1 validated concept: Multipolar Network. Additional templates to be populated through poclet analysis."
     },
     {
@@ -272,7 +284,9 @@
       "@type": "owl:Class",
       "rdfs:label": "Relational Pattern",
       "rdfs:comment": "Generic type of relationship between entities. Examples: Competition (species, companies, ideas), Cooperation (mutualism, trade, collaboration), Parasitism (biological, economic extraction).",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": {
+        "@id": "m1core:CoreConcept"
+      },
       "skos:note": "To be populated with specific patterns as they are discovered through poclet analysis."
     },
     {
@@ -280,14 +294,18 @@
       "@type": "owl:Class",
       "rdfs:label": "Process Archetype",
       "rdfs:comment": "Generic transformational process. Examples: Growth (population, economic, crystal), Decay (radioactive, ecological succession, market correction), Saturation (carrying capacity, market saturation, chemical equilibrium), Cyclic Tension (Yggdrasil wear-repair, cell maintenance, market corrections).",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": {
+        "@id": "m1core:CoreConcept"
+      },
       "skos:note": "Now includes 1 validated concept: Cyclic Tension. Additional archetypes to be populated through poclet analysis."
     },
     {
       "@id": "m1core:CorePattern",
       "@type": "owl:Class",
       "rdfs:label": "Core Pattern",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": {
+        "@id": "m1core:CoreConcept"
+      },
       "rdfs:comment": "Recurrent structural or process archetype discovered empirically through poclet analysis and validated across ≥3 domains. Unlike TransdisciplinaryCombo (explicit N-ary formula), a CorePattern is identified through cross-domain pattern recognition. Examples: MultipolarNetwork, CyclicTension."
     },
     {
