@@ -1,193 +1,306 @@
-# M3_GrammarFoundation.jsonld
+# M3_GrammarFoundation.jsonld — README
 
-**Version:** 1.0.0  
-**Layer:** M3  
-**Type:** Foundational Interface Ontology  
-**Created:** 2026-05-12  
-**Status:** Foundational
-
----
-
-## 🎯 Role
-
-**M3_GrammarFoundation** is the **mathematical foundation** for all TSCG M3-level grammars. It defines:
-- Lambek Calculus formalism (free commutative monoidal categories)
-- Monoidal product ⊗ with indexed forms
-- Abstract classes for M3 grammars and dimensions
-- Common properties shared by all M3 components
-
-This interface ontology **resolves circular dependencies** in the M3 layer by providing a common foundation that EagleEye, SphinxEye, and GenesisGrammar all import.
+**Author**: Echopraxium with the collaboration of Claude AI
+**Version**: 1.1.0
+**Date**: 2026-05-13
+**Layer**: M3 — Apex Ontology
+**Status**: Active
 
 ---
 
-## 📐 Mathematical Foundation
+## Overview
 
-### Lambek Calculus
+`M3_GrammarFoundation.jsonld` is the **apex ontology** of the TSCG hierarchy.
+It has no imports and no dependencies — every other TSCG ontology depends on it,
+directly or transitively.
 
-TSCG structural grammars use **Lambek Calculus** — a logical framework for composition based on **free commutative monoidal categories**:
-
-```
-Category C with:
-- Objects: M3 dimensions (A, S, F, I, D, R, E, V, O, I)
-- Morphisms: Composition operations
-- Monoidal product: ⊗ (tensor-like but without metric)
-```
-
-**Key properties:**
-- **Associative:** (A ⊗ B) ⊗ C = A ⊗ (B ⊗ C)
-- **Commutative:** A ⊗ B = B ⊗ A
-- **Neutral element:** 1 where A ⊗ 1 = A
+It defines the complete mathematical and epistemological foundation of the
+TSCG Structural Grammar: operators, abstract classes, type system, and
+measurement properties.
 
 ---
 
-## ⊗ Monoidal Product
+## Position in the Import Hierarchy
 
-The **monoidal product ⊗** is the core composition operator with **indexed forms** for different perspectives:
-
-### Base Form
 ```
-⊗ : C × C → C
-```
-
-### Indexed Forms
-```
-⊗ⁱ where i ∈ {t, m}
-
-⊗ᵗ (Territory/Eagle):  D ⊗ᵗ I ⊗ᵗ F = Process (Territory context)
-⊗ᵐ (Map/Sphinx):       R ⊗ᵐ V ⊗ᵐ O = ModelQuality (Map context)
-```
-
-### Emergence Operator
-```
-⊗ⁱ⇒ : Tuple[Concept] → Concept
-
-⊗ᵗ⇒(Memory, Entropy) = Inertia (Territory emergence)
-⊗ᵐ⇒(Representable, Verifiable) = ModelQuality (Map emergence)
-```
-
-### Duality Operator
-```
-^opⁱ : Concept → Concept
-
-Coherence^opᵗ = Incoherence (Territory duality)
-Observable^opᵐ = Unobservable (Map duality)
+M3_GrammarFoundation.jsonld        ← APEX (no owl:imports)
+        ↓ imported by
+   M3_EagleEye.jsonld              (Territory Grammar Gt, ASFID primitives)
+   M3_SphinxEye.jsonld             (Map Grammar Gm, REVOI primitives)
+   M3_GenesisGrammar.jsonld        (bicephalous hub)
+        ↓ imported by
+   M2_GenericConcepts.jsonld
+        ↓ imported by
+   M1_CoreConcepts.jsonld  →  M1_xxx.jsonld  →  M0_xxx.jsonld
 ```
 
 ---
 
-## 🏗️ Architecture Position
+## Mathematical Foundation
+
+The TSCG Structural Grammar is rooted in two well-established theories:
+
+**Lambek Calculus** (Joachim Lambek, 1958)
+A typed logical calculus for syntactic composition. Originally designed for
+natural language grammars; adapted here for transdisciplinary concept grammars.
+Key property: complex types are built from primitive types using compositional
+operators — without any metric structure.
+
+**Free Commutative Monoidal Categories** (Saunders MacLane, 1963/1971)
+The algebraic framework underlying the `⊗` operator. A monoidal category
+requires only three axioms: associativity, commutativity, and a neutral element.
+No norm, no inner product, no scalar multiplication.
+
+### Why Not Tensor Products / Hilbert Spaces?
 
 ```
-M3_GrammarFoundation ← YOU ARE HERE
-(Mathematical foundation)
-         ↓ imported by
-    ┌────┴────┬─────────┐
-    │         │         │
-M3_Eagle  M3_Sphinx  M3_Genesis
-    │         │         │
-    └────┬────┴─────────┘
-         ↓ imported by
-    M2_GenericConcepts
+Hilbert space requires:    Monoidal category requires:
+  scalar multiplication  →    NOT needed in TSCG
+  vector addition        →    NOT needed in TSCG
+  inner product / norm   →    NOT needed in TSCG
+  metric structure       →    NOT needed in TSCG
 ```
 
-**Design pattern:** Interface/Implementation
-- **Interface:** M3_GrammarFoundation (this file)
-- **Implementations:** EagleEye, SphinxEye, GenesisGrammar
+The `⊗` symbol is shared with tensor algebra by notational convention only —
+exactly as `×` denotes both scalar multiplication and the vector cross product.
+The mathematical context is explicitly different and must be read as such.
 
 ---
 
-## 📚 Why Monoidal (not Vectorial)?
+## Abstract Classes
 
-TSCG uses **monoidal categories** instead of vector spaces because:
+### `m3gf:M3Grammar`
 
-### Vector Spaces are TOO RICH
-- Require scalar multiplication (what's "2 × Attractor"?)
-- Require metric/norm structure
-- Force artificial linearity
+Abstract base class for all M3-level structural grammars.
+Concrete subclasses defined in dependent files:
 
-### Monoidal Categories are MINIMAL
-- Only need composition: A ⊗ B
-- Order doesn't matter (commutative)
-- Grouping doesn't matter (associative)
-- Neutral element exists (1)
+| Subclass | File | Primitives |
+|---|---|---|
+| Territory Grammar Gt | `M3_EagleEye.jsonld` | {A, S, F, I, D} |
+| Map Grammar Gm | `M3_SphinxEye.jsonld` | {R, E, V, O, I} |
 
-### Mathematical Hierarchy
+A grammar is characterised by four elements:
+- **Primitives** — finite set of irreducible generators
+- **Monoidal product** `⊗ⁱ` — co-activation operator
+- **Emergence operator** `⊗ⁱ⇒` — produces emergent concept types
+- **Duality operator** `^opⁱ` — produces structural opposites
+
+### `m3gf:M3Dimension`
+
+Abstract base class for M3 primitive types.
+Plays two distinct mathematical roles depending on layer:
+
+| Layer | Role | Mathematical object | Metric? |
+|---|---|---|---|
+| M3 / M2 | Generator of type expressions | Primitive type in a monoidal grammar | ❌ None |
+| M0 | Evaluation function | Functor `F_x : System → [0,1]` | ✅ Real-valued |
+
+> The word "dimension" is used in the **analytical sense** (independent axis
+> of characterisation), NOT in the metric/Hilbert sense.
+
+---
+
+## The Six Indexed Operators
+
+All operators carry an index `i ∈ {t, m}` indicating whether they operate
+in the Territory Grammar (Gt) or Map Grammar (Gm).
+
+### `⊗ⁱ` — Monoidal Product (Co-activation)
+
 ```
-Monoidal Category ← TSCG uses this
-    ↓ add structure
-Group
-    ↓ add scalar field
-Module
-    ↓ add division
-Vector Space
-    ↓ add inner product
-Hilbert Space
+⊗ᵗ  :  Territory co-activation   (Eagle Eye / ASFID)
+⊗ᵐ  :  Map co-activation         (Sphinx Eye / REVOI)
+⊗ⁱ  :  general indexed form
 ```
 
-TSCG stays at the **monoidal level** — just enough structure for composition, nothing artificial.
+**Axioms:**
+```
+Associativity  :  (A ⊗ B) ⊗ C  =  A ⊗ (B ⊗ C)
+Commutativity  :  A ⊗ B  =  B ⊗ A
+Neutral element:  A ⊗ 1  =  A
+No metric      :  no norm, no inner product, no scalar multiplication
+```
+
+**Meaning**: both primitive types are simultaneously active in the concept
+signature.
+
+**Example**: `Process = D ⊗ᵗ I ⊗ᵗ F`
+(Process mobilises Dynamics, Information, and Flow together)
 
 ---
 
-## 🎯 Abstract Classes
+### `⊗ⁱ⇒` — Emergence Operator
 
-### m3gf:M3Grammar
-Base class for all M3-level structural grammars.
+```
+⊗ᵗ⇒  :  Territory emergence   (ontological)
+⊗ᵐ⇒  :  Map emergence         (epistemic)
+⊗ⁱ⇒  :  general indexed form
+```
 
-**Subclasses:**
-- m3e:EagleEye (Territory Grammar)
-- m3s:SphinxEye (Map Grammar)
-- m3:GenesisGrammar (Bicephalous aggregation)
+**Meaning**: produces a derived concept whose properties are **irreducible**
+to the sum of its parts. Corresponds to the function type `(→)` in the
+Curry-Howard correspondence.
 
-### m3gf:M3Dimension
-Base class for M3 primitive dimensions.
-
-**Subclasses:**
-- ASFID dimensions (m3e:Attractor, m3e:Structure, etc.)
-- REVOI dimensions (m3s:Representable, m3s:Evolvable, etc.)
-
----
-
-## 🔧 Common Properties
-
-### m3gf:grammarType
-**Type:** `owl:DatatypeProperty`  
-**Range:** `xsd:string`  
-**Purpose:** Disambiguate grammar types across TSCG layers
-
-**Enum values:**
-- `M3_StructuralGrammar` (monoidal composition at M3)
-- `M2_GenericConcepts` (formula grammars at M2)
-- `M1_DomainConcepts` (domain specializations)
-- `M0_InstanceOntology` (SHACL validation)
-
-**Why needed:** Prevents collision between M3 structural grammar and M0 instance grammar.
-
-### m3gf:monoidalProduct
-**Type:** `owl:ObjectProperty`  
-**Purpose:** Define monoidal product relationships
+**Examples**:
+```
+⊗ᵗ⇒(Memory, Entropy)           =  Inertia
+⊗ᵐ⇒(Representable, Verifiable) =  ModelQuality
+```
 
 ---
 
-## 📚 Historical Foundation
+### `^opⁱ` — Duality Operator
 
-**Braille Structural Grammar (2022-07)**  
-`ontology/StructuralGrammar/Braille_StructuralGrammar.pdf`
+```
+^opᵗ  :  Territory duality
+^opᵐ  :  Map duality
+^opⁱ  :  general indexed form
+```
 
-The Lambek Calculus formalism was **empirically validated** through the Braille writing system modeling — a complete 6-dot structural grammar demonstrating:
-- Character composition via monoidal products
-- Phonetic/semantic emergence
-- Dual perspective (tactile/symbolic)
+**Meaning**: produces the **polar opposite** of a concept type within the
+same dimensional space. Corresponds to negation in propositional logic via
+the Curry-Howard correspondence.
 
-This provided concrete proof that monoidal categories work for real-world complex systems.
+**Examples**:
+```
+Coherence^opᵗ   =  Incoherence
+Observable^opᵐ  =  Unobservable
+Entropy^opᵗ     =  NegEntropy  (e.g. information, life)
+```
 
 ---
 
-## 🎯 Key Takeaways
+## Type System Hierarchy
 
-1. **Foundation for all M3 grammars** — imported by Eagle, Sphinx, Genesis
-2. **Lambek Calculus formalism** — free commutative monoidal categories
-3. **Indexed operators** — ⊗ⁱ, ⊗ⁱ⇒, ^opⁱ for Territory/Map perspectives
-4. **Resolves circular dependencies** — clean architecture
-5. **Minimal mathematical structure** — just enough, nothing artificial
+The three operators generate a complete four-level type system:
 
-**M3_GrammarFoundation is where TSCG's mathematical rigor becomes explicit.** 🌟
+```
+𝕋₀  Primitive Types       M3   {A, S, F, I, D, R, E, V, O, I}
+                                10 generators, no metric
+
+𝕋₁  Derived Types         M2   τ₁ ⊗ⁱ τ₂ ⊗ⁱ ... ⊗ⁱ τₙ  |  τᵢ ∈ 𝕋₀
+                                ~80 M2 GenericConcepts (named product types)
+
+𝕋₂  Compound Types        M1   τ₁ ⊗ⁱ⇒ τ₂  |  τᵢ ∈ 𝕋₁
+                                M1 GenericConceptCombos (emergent types)
+
+𝕄₀  Terms (Proof Terms)   M0   poclets inhabiting a type τ ∈ 𝕋₁ ∪ 𝕋₂
+                                instances that prove a system fits a type
+```
+
+### Curry-Howard Correspondence
+
+Under this type system, TSCG acquires a logical interpretation:
+
+| Type Theory | TSCG |
+|---|---|
+| Primitive type | ASFID/REVOI dimension |
+| Product type `τ₁ ⊗ τ₂` | M2 structural formula |
+| Named type | M2 GenericConcept |
+| Term inhabiting a type | M0 Poclet |
+| Proof of a proposition | Poclet demonstrating system fits type |
+| Degree of proof | Epistemic gap δ₁ |
+
+A poclet does not merely *describe* a system — it *proves* that the system
+inhabits a conceptual type. δ₁ measures how strongly.
+
+---
+
+## Measurement Properties
+
+### `m3gf:intersubjectiveBenchmark`
+
+Domain-contextualized canonical poclet used as scoring reference for M0
+instances. Grounds TSCG measurement in **norm-referenced intersubjective
+consensus**.
+
+**Canon resolution order (default = DomainSpecific):**
+```
+1. DomainSpecific  —  same M1 domain as the poclet          ← DEFAULT
+2. CrossDomain     —  adjacent M1 domain
+3. Universal       —  e.g. M0_AdaptiveImmuneResponse
+4. Free scoring    —  with explicit justification            ← last resort
+```
+
+**Objectivity levels:**
+```
+Subjective              →  single expert, no reference
+MultiExpertConsensus    →  several experts, same setup
+CanonCalibrated         →  scored against domain benchmark
+ContextualizedBenchmark →  multi-cook, multi-setup convergence  ← default
+```
+
+### `m3gf:defeasibilityStatus`
+
+Explicit declaration that a benchmark is **provisional** — valid until
+superseded by broader consensus.
+
+```json
+{
+  "status":          "provisional",
+  "validUntil":      "superseded_by_better_consensus",
+  "revisionTrigger": [
+    "new_canonical_poclet_identified",
+    "expert_consensus_challenged",
+    "domain_expansion",
+    "corpus_maturation"
+  ]
+}
+```
+
+This is not a weakness — it is the normal epistemic status of scientific,
+legal, and practical knowledge. Analogous to:
+- *Stare decisis* in law (precedent holds until overruled)
+- Scientific paradigms (Kuhn: valid until anomalies accumulate)
+- Peirce: truth as the limit of indefinite communal inquiry
+
+---
+
+## Properties Summary
+
+| Property | Type | Defined on | Description |
+|---|---|---|---|
+| `m3gf:grammarType` | DatatypeProperty | M3Grammar | e.g. `free_commutative_monoidal` |
+| `m3gf:monoidalProduct` | DatatypeProperty | M3Grammar | `⊗ⁱ` operator definition |
+| `m3gf:emergenceOperator` | DatatypeProperty | M3Grammar | `⊗ⁱ⇒` operator definition |
+| `m3gf:dualityOperator` | DatatypeProperty | M3Grammar | `^opⁱ` operator definition |
+| `m3gf:intersubjectiveBenchmark` | ObjectProperty | M0 instances | benchmark reference |
+| `m3gf:defeasibilityStatus` | DatatypeProperty | M0 instances | provisional status |
+
+---
+
+## Changelog
+
+| Version | Date | Changes |
+|---|---|---|
+| **1.1.0** | 2026-05-13 | MAJOR UPDATE: dcterms metadata, 6 indexed operators (⊗ᵗ ⊗ᵐ ⊗ᵗ⇒ ⊗ᵐ⇒ ^opᵗ ^opᵐ), type system 𝕋₀/𝕋₁/𝕋₂/𝕄₀, intersubjectiveBenchmark, defeasibilityStatus. Apex position confirmed. |
+| **1.0.0** | 2026-05-12 | Initial skeleton: M3Grammar, M3Dimension, grammarType, monoidalProduct. |
+
+---
+
+## References
+
+- Lambek, J. (1958). *The mathematics of sentence structure.*
+  American Mathematical Monthly, 65(3), 154–170.
+- MacLane, S. (1963). *Natural associativity and commutativity.*
+  Rice University Studies.
+- MacLane, S. (1971). *Categories for the Working Mathematician.* Springer.
+- Howard, W. (1980). *The formulae-as-types notion of construction.*
+- Stevens, S.S. (1946). *On the theory of scales of measurement.*
+  Science, 103(2684), 677–680.
+- Peirce, C.S. (1878). *How to Make Our Ideas Clear.*
+  Popular Science Monthly.
+
+---
+
+## See Also
+
+- `TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md`
+- `TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md`
+- `M3_EagleEye.jsonld` — Territory Grammar Gt
+- `M3_SphinxEye.jsonld` — Map Grammar Gm
+- `M3_GenesisGrammar.jsonld` — Bicephalous hub
+
+---
+
+*TSCG Framework — Echopraxium with the collaboration of Claude AI — May 2026*

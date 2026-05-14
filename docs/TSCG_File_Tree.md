@@ -1,17 +1,17 @@
 # 📁 TSCG Framework - Complete File Tree
 
-**Date:** 2026-03-23  
-**Framework Version:** TSCG v15.10.1  
-**Total Files:** 618
+**Date:** 2026-05-13  
+**Framework Version:** TSCG v16.0.0  
+**Total Files:** ~640
 
 ---
 
 ## 📊 Project Statistics
 
 **Ontology Files:**
-- M3 Layer: 4 files (M3_EagleEye, M3_GenesisSpace, M3_GenesisSpace_Ref, M3_SphinxEye; .ttl only for Ref and SphinxEye)
+- M3 Layer: 5 files (M3_GrammarFoundation **NEW apex**, M3_EagleEye, M3_GenesisGrammar *(ex-GenesisSpace)*, M3_SphinxEye) + 4 README files + StructuralGrammar/ documentation folder
 - M2 Layer: 1 main file (M2_GenericConcepts) + 1 standalone (M2_Calibration) + archived versions in docs/
-- M1 Layer: 1 core file + 11 domain extensions (biology, chemistry, **economics**, education, electronics, energy_generators, **music**, mythology, optics, photography, physics)
+- M1 Layer: 2 root files (M1_CoreConcepts, M1_Domains) + 13 domain extensions (biology, chemistry, economics, education, electronics, energy_generators, **geology** NEW, music, mythology, optics, photography, physics, **system_modeling** NEW) — @base factorised in all files
 - M0 Layer: 23 poclets (instances/poclets/) + TSCG Tools (instances/tscg-tools/) + 1 VSM systemic framework + 1 symbolic grammar
 
 **Documentation:** ~125 files  
@@ -25,7 +25,24 @@
 
 ## 🆕 What's New (vs v15.10.0)
 
-### v15.10.1 (2026-03-23) — Current
+### v16.0.0 (2026-05-13) — Current
+
+**FORMALISM REFORM: Tensor Product → Structural Grammar (Lambek Calculus)**
+
+- ✅ **NEW** `ontology/M3_GrammarFoundation.jsonld` — apex ontology (no imports), defines 6 indexed operators (⊗ᵗ ⊗ᵐ ⊗ᵗ⇒ ⊗ᵐ⇒ ^opᵗ ^opᵐ), type system 𝕋₀/𝕋₁/𝕋₂/𝕄₀, `m3gf:intersubjectiveBenchmark`, `m3gf:defeasibilityStatus`
+- ✅ **RENAMED** `M3_GenesisSpace.jsonld` → `M3_GenesisGrammar.jsonld` (v4.0.0) — Hilbert/SVD replaced by Lambek grammar foundation
+- ✅ **UPDATED** `M3_EagleEye.jsonld` (v2.5.0) — Territory Grammar Gt, imports GrammarFoundation
+- ✅ **UPDATED** `M3_SphinxEye.jsonld` (v3.3.0) — Map Grammar Gm, imports GrammarFoundation
+- ✅ **UPDATED** `M2_GenericConcepts.jsonld` (v15.12.0) — `hasTensorFormula` → `hasStructuralFormula` (250 occurrences)
+- ✅ **NEW** `ontology/StructuralGrammar/` — documentation folder (5 READMEs + session transcript)
+- ✅ **NEW** README files for all M3 files and M2_GenericConcepts
+- ✅ **UPDATED** All 15 M1 files — `@base` added/factorised uniformly; M1_Economics hasTensorFormula fixed
+- ✅ **NEW** `cli_tools/verify_migration/` — post-migration validation CLI tool
+- ✅ **UPDATED** `cli_tools/migrate_properties/` — rename CLI tool (README added)
+- ✅ **NEW** `.claude/skills/tscg-tensor-to-structural-grammar-migration/` — migration SKILL
+- ❌ `M3_GenesisSpace.jsonld` removed from `ontology/` root (archived in `Ref/`)
+
+### v15.10.1 (2026-03-23)
 - ✅ New poclet: `CounterPoint/` (M0_Counterpoint.jsonld + README + static/sounds scripts)
 - ✅ New poclet: `NakamotoConsensus/` (M0_Poclet_NakamotoConsensus.jsonld + README)
 - ✅ New TSCG tool: `TscgPocletMiner/` (M0_TscgPocletMiner.jsonld + README + tools/rebuild_m2_corpus.py)
@@ -54,15 +71,38 @@
 
 ---
 
-## 🏛️ M3 Layer - Genesis Space
+## 🏛️ M3 Layer - Genesis Grammar (Structural Grammar Foundation)
 
-Core foundation defining the bicephalous architecture (Territory/Map distinction).
+Core foundation defining the bicephalous architecture (Territory Grammar Gt / Map Grammar Gm).
+Mathematical foundation: **Lambek Calculus** / Free Commutative Monoidal Categories.
+Operator `⊗` is a monoidal product — NOT an algebraic tensor product.
 
-### Main ontology/
-- [M3_EagleEye.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_EagleEye.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_EagleEye.ttl) - Territory perspective (ASFID dimensions)
-- [M3_GenesisSpace.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld) - Foundational ontology
-- [M3_GenesisSpace_Ref.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GenesisSpace_Ref.ttl) - Reference copy (TTL only in root ontology/)
-- [M3_SphinxEye.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_SphinxEye.ttl) - Map perspective (REVOI dimensions)
+### Main ontology/ — Import hierarchy
+```
+M3_GrammarFoundation.jsonld  ← APEX (no imports)
+        ↓ imported by
+M3_EagleEye.jsonld  +  M3_SphinxEye.jsonld
+        ↓ imported by
+M3_GenesisGrammar.jsonld
+        ↓ imported by
+M2_GenericConcepts.jsonld → M1 → M0
+```
+
+- [M3_GrammarFoundation.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GrammarFoundation.jsonld) **NEW — APEX** — 6 operators (⊗ᵗ ⊗ᵐ ⊗ᵗ⇒ ⊗ᵐ⇒ ^opᵗ ^opᵐ), type system 𝕋₀/𝕋₁/𝕋₂/𝕄₀, intersubjectiveBenchmark
+- [M3_GrammarFoundation_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GrammarFoundation_README.md) **NEW**
+- [M3_EagleEye.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_EagleEye.jsonld) v2.5.0 — Territory Grammar Gt, primitive types {A,S,F,I,D}
+- [M3_EagleEye_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_EagleEye_README.md) **NEW**
+- [M3_GenesisGrammar.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld) v4.0.0 **NEW** *(renamed from M3_GenesisSpace)* — bicephalous hub, imports GrammarFoundation+EagleEye+SphinxEye
+- [M3_GenesisGrammar_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GenesisGrammar_README.md) **NEW**
+- [M3_SphinxEye.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld) v3.3.0 — Map Grammar Gm, primitive types {R,E,V,O,I}
+- [M3_SphinxEye_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_SphinxEye_README.md) **NEW**
+
+### ontology/StructuralGrammar/ **NEW — Formalism documentation**
+- [Structural_Grammar_Foundation.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/Structural_Grammar_Foundation.md) — Lambek Calculus / monoidal categories technical foundation
+- [TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md) — comprehensive 12-section reform documentation
+- [TSCG_Mathematical_Legitimacy_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/TSCG_Mathematical_Legitimacy_Summary.md) — before/after legitimacy assessment
+- [TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md) — measurement epistemology
+- [_00_Session_Claude_GrammaireStructurelle.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/_00_Session_Claude_GrammaireStructurelle.md) — session transcript (FR)
 
 ### ontology/Ref/ (reference copies)
 - [M2_GenericConcepts_2026_02_17_17h-00min.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M2_GenericConcepts_2026_02_17_17h-00min.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M2_GenericConcepts_2026_02_17_17h-00min.ttl)
@@ -74,7 +114,8 @@ Core foundation defining the bicephalous architecture (Territory/Map distinction
 ## 🌐 M2 Layer - Universal GenericConcepts
 
 ### Main ontology/ files
-- [M2_GenericConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld) - Generic/universal metaconcepts *(primary)*
+- [M2_GenericConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld) v15.12.0 — ~84 named product types (𝕋₁); `hasStructuralFormula` (ex-hasTensorFormula, 250 renames) *(primary)*
+- [M2_GenericConcepts_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M2_GenericConcepts_README.md) **NEW**
 - [M2_Calibration.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M2_Calibration.jsonld) - Calibration standalone metaconcept
 
 ### ontology/sparql/ (SPARQL tools)
@@ -153,8 +194,11 @@ Core foundation defining the bicephalous architecture (Territory/Map distinction
 **Energy Generators (M1_extensions/energy_generators/):**
 - [M1_EnergyGenerators.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.ttl)
 
-**Music (M1_extensions/music/) — NEW:**
-- [M1_music.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/music/M1_music.jsonld)
+**Geology (M1_extensions/geology/) — NEW:**
+- [M1_Geology.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/geology/M1_Geology.jsonld)
+
+**Music (M1_extensions/music/):**
+- [M1_music.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/music/M1_Music.jsonld)
 
 **Mythology (M1_extensions/mythology/):**
 - [M1_Mythology.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology.ttl)
@@ -436,36 +480,57 @@ echopraxium/tscg/                      # Repository root
 ├── files.txt                          # Complete file list
 ├── create_files_URIS.py
 ├── cli_tools/
-│   ├── _open_powershell.bat
-│   └── generate_index-html/           # NEW
-│       ├── _Generate_Index-html.bat
-│       └── _open_cmd_window.bat
+│   ├── _open_cmd_window.bat
+│   ├── generate_index-html/           # gallery generator
+│   │   ├── _Generate_Index-html.bat
+│   │   └── _open_cmd_window.bat
+│   ├── migrate_properties/            # UPDATED — rename hasTensorFormula→hasStructuralFormula
+│   │   ├── migrate_properties.py
+│   │   └── README.md
+│   ├── migrate_ontologyCategory_to_ontologyType.py
+│   ├── ontology-linter/               # JSON-LD linter
+│   └── verify_migration/              # NEW — post-migration validator
+│       ├── verify_migration.py
+│       └── README.md
 ├── ontology/                          # Reference ontologies (M3, M2, M1)
-│   ├── M1_CoreConcepts.jsonld
-│   ├── M2_GenericConcepts.jsonld
+│   ├── M1_CoreConcepts.jsonld         # @base factorised (v16.0.0)
+│   ├── M1_Domains.jsonld              # @base factorised (v16.0.0)
+│   ├── M2_GenericConcepts.jsonld      # v15.12.0 — hasStructuralFormula
+│   ├── M2_GenericConcepts_README.md   # NEW
 │   ├── M2_Calibration.jsonld
-│   ├── M3_EagleEye.jsonld/ttl
-│   ├── M3_GenesisSpace.jsonld
-│   ├── M3_GenesisSpace_Ref.ttl        # .ttl only in root ontology/
-│   ├── M3_SphinxEye.jsonld/ttl
-│   ├── shacl_shapes.ttl
-│   ├── M1_extensions/                 # Domain-specific extensions
+│   ├── M3_EagleEye.jsonld             # v2.5.0 — Territory Grammar Gt
+│   ├── M3_EagleEye_README.md          # NEW
+│   ├── M3_GenesisGrammar.jsonld       # v4.0.0 NEW (ex-GenesisSpace)
+│   ├── M3_GenesisGrammar_README.md    # NEW
+│   ├── M3_GrammarFoundation.jsonld    # v1.1.0 NEW — APEX ontology
+│   ├── M3_GrammarFoundation_README.md # NEW
+│   ├── M3_SphinxEye.jsonld            # v3.3.0 — Map Grammar Gm
+│   ├── M3_SphinxEye_README.md         # NEW
+│   ├── M1_extensions/                 # Domain-specific extensions (@base factorised)
 │   │   ├── M1_CoreConcepts_NuclearUpdate.jsonld/ttl
 │   │   ├── biology/
 │   │   ├── chemistry/
-│   │   ├── economics/
+│   │   ├── economics/                 # hasStructuralFormula fixed
 │   │   ├── education/
-│   │   ├── electronics/
+│   │   ├── electronics/               # trailing comma fixed
 │   │   ├── energy_generators/
-│   │   ├── music/                     # NEW
+│   │   ├── geology/                   # NEW
+│   │   ├── music/
 │   │   ├── mythology/
 │   │   ├── optics/
 │   │   ├── photography/
-│   │   └── physics/
+│   │   ├── physics/
+│   │   └── system_modeling/           # NEW
 │   ├── Ref/                           # Reference copies
 │   │   ├── M2_GenericConcepts_2026_02_17_17h-00min.jsonld/ttl
 │   │   ├── M2_MetaConcepts_Ref.jsonld/ttl
-│   │   └── M3_GenesisSpace_Ref.jsonld/ttl
+│   │   └── M3_GenesisSpace_Ref.jsonld/ttl   # archived ex-GenesisSpace
+│   ├── StructuralGrammar/             # NEW — formalism documentation
+│   │   ├── Structural_Grammar_Foundation.md
+│   │   ├── TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md
+│   │   ├── TSCG_Mathematical_Legitimacy_Summary.md
+│   │   ├── TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md
+│   │   └── _00_Session_Claude_GrammaireStructurelle.md
 │   ├── docs/                          # Ontology documentation & archives
 │   ├── sparql/                        # SPARQL queries & enriched ontologies
 │   └── tools/                         # Reference tool files
@@ -528,7 +593,24 @@ echopraxium/tscg/                      # Repository root
 
 ## 🔄 Version History
 
-### v15.10.1 (2026-03-23) — Current
+### v16.0.0 (2026-05-13) — Current
+
+**FORMALISM REFORM: Tensor Product → Structural Grammar (Lambek Calculus)**
+
+- ✅ **NEW** `ontology/M3_GrammarFoundation.jsonld` — apex ontology (no imports), defines 6 indexed operators (⊗ᵗ ⊗ᵐ ⊗ᵗ⇒ ⊗ᵐ⇒ ^opᵗ ^opᵐ), type system 𝕋₀/𝕋₁/𝕋₂/𝕄₀, `m3gf:intersubjectiveBenchmark`, `m3gf:defeasibilityStatus`
+- ✅ **RENAMED** `M3_GenesisSpace.jsonld` → `M3_GenesisGrammar.jsonld` (v4.0.0) — Hilbert/SVD replaced by Lambek grammar foundation
+- ✅ **UPDATED** `M3_EagleEye.jsonld` (v2.5.0) — Territory Grammar Gt, imports GrammarFoundation
+- ✅ **UPDATED** `M3_SphinxEye.jsonld` (v3.3.0) — Map Grammar Gm, imports GrammarFoundation
+- ✅ **UPDATED** `M2_GenericConcepts.jsonld` (v15.12.0) — `hasTensorFormula` → `hasStructuralFormula` (250 occurrences)
+- ✅ **NEW** `ontology/StructuralGrammar/` — documentation folder (5 READMEs + session transcript)
+- ✅ **NEW** README files for all M3 files and M2_GenericConcepts
+- ✅ **UPDATED** All 15 M1 files — `@base` added/factorised uniformly; M1_Economics hasTensorFormula fixed
+- ✅ **NEW** `cli_tools/verify_migration/` — post-migration validation CLI tool
+- ✅ **UPDATED** `cli_tools/migrate_properties/` — rename CLI tool (README added)
+- ✅ **NEW** `.claude/skills/tscg-tensor-to-structural-grammar-migration/` — migration SKILL
+- ❌ `M3_GenesisSpace.jsonld` removed from `ontology/` root (archived in `Ref/`)
+
+### v15.10.1 (2026-03-23)
 
 - New poclets: `CounterPoint/` (music, static sound scripts) + `NakamotoConsensus/` (blockchain consensus)
 - New TSCG tool: `TscgPocletMiner/` (corpus mining + rebuild_m2_corpus.py)
@@ -552,6 +634,6 @@ echopraxium/tscg/                      # Repository root
 
 ---
 
-**Generated:** 2026-03-23  
-**Framework:** TSCG v15.10.1  
+**Generated:** 2026-05-13  
+**Framework:** TSCG v16.0.0  
 **Author:** Echopraxium with the collaboration of Claude AI
