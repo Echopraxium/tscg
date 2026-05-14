@@ -1,7 +1,7 @@
-# TSCG Instances - Complete Grammar SHACL Schema v1.3
+# TSCG Instances - Complete Grammar SHACL Schema v1.4
 # Based on complete corpus analysis: 24 Poclets + 2 other instances (26 total)
 # Author: Echopraxium with the collaboration of Claude AI
-# Date: 2026-04-13 (initial), 2026-04-18 (v1.1), 2026-04-19 (v1.2), 2026-04-25 (v1.3 - domain format enforcement)
+# Date: 2026-04-13 (initial), 2026-04-18 (v1.1), 2026-04-19 (v1.2), 2026-05-13 (v1.4 - domain format enforcement)
 # Status: UPDATED - Domain format enforcement: m1:domain must use array for multiple domains (no "/" separator)
 
 @prefix sh: <http://www.w3.org/ns/shacl#> .
@@ -13,7 +13,7 @@
 @prefix m0: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#> .
 @prefix m1: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#> .
 @prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
-@prefix m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#> .
+@prefix m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#> .
 
 # ============================================
 # NAMESPACE POLICY (CRITICAL)
@@ -31,15 +31,15 @@
 #
 # @CONTEXT URL REQUIREMENTS (CRITICAL FOR PYSHACL):
 # ALL namespace URLs in @context MUST be ABSOLUTE, not relative.
-# ✅ CORRECT:   "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#"
-# ❌ INCORRECT: "m3": "M3_GenesisSpace.jsonld#"
+# ✅ CORRECT:   "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#"
+# ❌ INCORRECT: "m3": "M3_GenesisGrammar.jsonld#"
 # 
 # Reason: pyshacl cannot resolve relative URLs when validating. Relative URLs
 # cause namespace resolution failures, making properties appear absent even when
 # present (e.g., m3:ontologyType, m1:domain).
 #
 # Required absolute URLs:
-# - "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#"
+# - "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#"
 # - "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#"
 # - "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#"
 # ============================================
@@ -85,7 +85,7 @@ m0:TscgInstanceShape
     sh:in ( m3:Poclet m3:SystemicFramework m3:SymbolicSystemGrammar ) ;
     sh:minCount 1 ;
     sh:maxCount 1 ;
-    sh:message "CRITICAL: m3:ontologyType MUST be one of: m3:Poclet (24), m3:SystemicFramework (1), m3:SymbolicSystemGrammar (1). This is the ONLY valid ontologyType property. Current conformance: 38% poclets (9/24) + 50% others (1/2). 15 poclets + VSM to correct. NEVER use m3:ontologyCategory or m2:ontologyCategory. IMPORTANT: If this validation fails but m3:ontologyType is present, check that 'm3:' namespace in @context uses ABSOLUTE URL (https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#) not relative URL (M3_GenesisSpace.jsonld#) - pyshacl cannot resolve relative URLs."
+    sh:message "CRITICAL: m3:ontologyType MUST be one of: m3:Poclet (24), m3:SystemicFramework (1), m3:SymbolicSystemGrammar (1). This is the ONLY valid ontologyType property. Current conformance: 38% poclets (9/24) + 50% others (1/2). 15 poclets + VSM to correct. NEVER use m3:ontologyCategory or m2:ontologyCategory. IMPORTANT: If this validation fails but m3:ontologyType is present, check that 'm3:' namespace in @context uses ABSOLUTE URL (https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#) not relative URL (M3_GenesisGrammar.jsonld#) - pyshacl cannot resolve relative URLs."
   ] ;
   
   # Label (standard: rdfs:label - threshold reached at 71%)
@@ -424,7 +424,7 @@ m3:eagle_eye:FloworbidObsoleteOntologyCategories
       [ sh:property [ sh:path m2:ontologyCategory ; sh:minCount 1 ] ]
     )
   ] ;
-  sh:message "FORBIDDEN PROPERTIES: m3:ontologyCategory and m2:ontologyCategory are obsolete. ONLY m3:ontologyType is allowed (defined in M3_GenesisSpace.jsonld). Detected: m3:ontologyCategory in VSM (1), m2:ontologyCategory in 5 poclets." .
+  sh:message "FORBIDDEN PROPERTIES: m3:ontologyCategory and m2:ontologyCategory are obsolete. ONLY m3:ontologyType is allowed (defined in M3_GenesisGrammar.jsonld). Detected: m3:ontologyCategory in VSM (1), m2:ontologyCategory in 5 poclets." .
 
 # CRITICAL: Forbid dcterms:title at ontology level (71% use rdfs:label)
 m3:eagle_eye:FloworbidDctermsTitle
@@ -532,6 +532,12 @@ m3:eagle_eye:FloworbidRdfTypePoclet
 # ============================================
 # CHANGELOG
 # ============================================
+# v1.4 (2026-05-13): M3 Architecture Update
+#   - Updated M3 namespace: M3_GenesisSpace.jsonld → M3_GenesisGrammar.jsonld
+#   - Aligns with TSCG structural grammar migration (tensor → monoidal product formalism)
+#   - No constraint changes, only namespace reference update
+#   - 5 occurrences updated across prefix declarations and documentation
+#
 # v1.3 (2026-04-25): Domain format enforcement
 #   - BREAKING CHANGE: Reject m1:domain strings containing "/" separator
 #   - Added pattern constraint "^[^/]+$" to enforce single domain string format

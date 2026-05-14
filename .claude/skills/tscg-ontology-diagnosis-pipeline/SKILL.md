@@ -60,7 +60,9 @@ description: >
 
 **Available Tools:**
 - `ontology_linter.py` - TSCG conventions + syntax
-- `pellet` / `hermit` - OWL reasoning
+- `rdfs_diagnostic.py` ⭐ NEW - RDFS/OWL modeling errors
+- `fix_owl_literals.py` ⭐ NEW - Automated OWL fixes
+- `test_owl_reasoning.py` ⭐ NEW - Pellet reasoner (logical consistency)
 - `shacl-validator` - Shape constraints
 - `jena riot` - RDF parsing
 - `sparql` - Query-based tests
@@ -149,42 +151,88 @@ description: >
 ### Phase 3: Technical Validation
 **Goal:** Formal tools verify correctness
 
-**Steps:**
-1. 🛠️ **Linter:** Run on modified files
-   ```bash
-   python ontology_linter.py <modified_files> --strict
-   ```
-   **Pass:** No new errors  
-   **Fail:** → Fix issues → Retry
+**Sequential execution with failure gates:**
 
-2. 🛠️ **Reasoner:** Check logical consistency
-   ```bash
-   pellet consistency <modified_files>
-   pellet realize <modified_files>
-   ```
-   **Pass:** No unsatisfiable classes  
-   **Fail:** → Fix logic → Retry
+**3.1 🛠️ Ontology Linter** - Syntax & TSCG conventions
+```bash
+python cli-tools/ontology-linter/ontology_linter.py <modified_files> --strict
+```
+**Pass:** No new errors  
+**Fail:** → Fix issues → Retry
 
-3. 🛠️ **SHACL:** Validate shapes (if defined)
-   ```bash
-   shacl validate --shapes grammar.ttl --data ontology.jsonld
-   ```
-   **Pass:** All constraints satisfied  
-   **Fail:** → Fix violations → Retry
+**Exit gate:** Must pass before 3.2
 
-4. 🛠️ **Regression Tests:** Run SPARQL suite
-   ```bash
-   pytest tests/ontology/
-   ```
-   **Pass:** All tests green  
-   **Fail:** → Fix regressions → Retry
+---
 
-5. 🤖 **LLM:** Aggregate tool results
-   - Parse outputs
-   - Identify patterns in failures
-   - Suggest fixes if needed
+**3.2 🛠️ RDFS Diagnostic** ⭐ NEW - OWL modeling errors
+```bash
+python cli-tools/owl_reasoning_test/rdfs_diagnostic.py
+```
+**Checks:**
+- Literal values vs URI references (rdfs:subClassOf, domain, range)
+- Invalid property declarations (@owl:functionalProperty)
+- Undefined class references
 
-**Exit criteria:** All formal tools pass
+**Pass:** 0 errors  
+**Fail:** → Apply automated fixes:
+```bash
+# Preview fixes
+python cli-tools/owl_reasoning_test/fix_owl_literals.py --dry-run
+
+# Apply if preview OK
+python cli-tools/owl_reasoning_test/fix_owl_literals.py
+
+# Re-validate
+python cli-tools/owl_reasoning_test/rdfs_diagnostic.py
+```
+
+**Exit gate:** Must pass with 0 errors before 3.3
+
+---
+
+**3.3 🛠️ OWL Reasoning** ⭐ NEW - Logical consistency (Pellet)
+```bash
+python cli-tools/owl_reasoning_test/test_owl_reasoning.py
+```
+**Checks:**
+- Logical consistency
+- Inconsistent classes
+- OWL axiom validation
+
+**Pass:** No inconsistencies found  
+**Fail:** → Review Pellet output → Fix logical issues → Retry
+
+**Note:** "Reparenting" warnings are normal (Pellet optimizing hierarchy)
+
+**Exit gate:** Must pass before 3.4
+
+---
+
+**3.4 🛠️ SHACL Validation** - Schema compliance (if grammar exists)
+```bash
+shacl validate --shapes ontology/TSCG_Grammar/M*_Schema.ttl --data <modified_file>
+```
+**Pass:** All constraints satisfied  
+**Fail:** → Fix violations → Retry
+
+---
+
+**3.5 🛠️ Regression Tests** - SPARQL suite (if applicable)
+```bash
+pytest tests/ontology/
+```
+**Pass:** All tests green  
+**Fail:** → Fix regressions → Retry
+
+---
+
+**3.6 🤖 LLM:** Aggregate results & report
+- Parse all tool outputs
+- Identify error patterns
+- Suggest fixes if failures
+- Generate Phase 3 summary
+
+**Exit criteria:** All formal tools pass (3.1 → 3.2 → 3.3 → 3.4 → 3.5)
 
 ---
 
