@@ -25,7 +25,7 @@
         "M3_GrammarFoundation.jsonld"
       ],
       "rdfs:label": "Eagle Eye - Territory Grammar Gt",
-      "rdfs:comment": "Territory Grammar Gt: free commutative monoidal grammar over primitive types {A,S,F,I,D}. Provides the ontological/empirical perspective on systems-as-territory. At M0, each primitive type instantiates as a structural grammar (qualitative, no numeric scoring at this level). Part of the TSCG bicephalous architecture (Gt + Gm). See TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md.",
+      "rdfs:comment": "Territory Grammar Gt: free commutative monoidal grammar over primitive types {A,S,F,I,D}. Provides the ontological/empirical perspective on systems-as-territory. At M0, each primitive type instantiates as an evaluation functor F_x : System → [0,1]. Part of the TSCG bicephalous architecture (Gt + Gm). See TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md.",
       "metadata": {
         "layer": "M3",
         "name": "Eagle Eye - ASFID Basis",
@@ -59,7 +59,7 @@
         ],
         "product": "⊗ᵗ  (structural co-activation, Territory)",
         "primitive_role": "generators of Territory type expressions (M2 structural formulas)",
-        "functor_role": "F_A, F_S, F_F, F_I, F_D : System → (M0 numeric ValueSpace)  (evaluation morphisms at M0)",
+        "functor_role": "F_A, F_S, F_F, F_I, F_D : System → [0,1]  (evaluation morphisms at M0)",
         "perspective": "ontological / empirical",
         "independence": "verified  (no primitive derivable from others)",
         "mathematical_foundation": "Lambek Calculus / free commutative monoidal categories (Lambek 1958, MacLane 1963)"
@@ -109,11 +109,11 @@
             "m3:M3Dimension"
           ],
           "rdfs:label": "Attractor",
-          "m3:dimensionSymbol": "A",
+          "m3:dimensionSymbol": "|A⟩",
           "m3:dimensionIndex": 1,
           "rdfs:comment": "Asymptotic convergence tendency. Measures stability landscape and equilibrium attraction.",
           "m3:eagle_eye:physicalInterpretation": "Stability basin, attractor state, homeostatic set-point",
-          "m3:eagle_eye:rangeAnalog": "qualitative spectrum: minimal=chaos/instability, 1=perfect stability",
+          "m3:eagle_eye:rangeAnalog": "[0,1] where 0=chaos/instability, 1=perfect stability",
           "m3:dimensionExamples": [
             "Thermostat set-point (high A)",
             "Strange attractor in chaos (low A)",
@@ -127,11 +127,11 @@
             "m3:M3Dimension"
           ],
           "rdfs:label": "Structure",
-          "m3:dimensionSymbol": "S",
+          "m3:dimensionSymbol": "|S⟩",
           "m3:dimensionIndex": 2,
           "rdfs:comment": "Topological organization and connectivity. Measures internal arrangement and relational patterns.",
           "m3:eagle_eye:physicalInterpretation": "Network topology, crystalline order, organizational hierarchy",
-          "m3:eagle_eye:rangeAnalog": "qualitative spectrum: minimal=gas (no structure), 1=crystal (perfect lattice)",
+          "m3:eagle_eye:rangeAnalog": "[0,1] where 0=gas (no structure), 1=crystal (perfect lattice)",
           "m3:dimensionExamples": [
             "Gas molecules (S≈0.1)",
             "Liquid water (S≈0.4)",
@@ -146,12 +146,12 @@
             "m3:M3Dimension"
           ],
           "rdfs:label": "Flow",
-          "m3:dimensionSymbol": "F",
+          "m3:dimensionSymbol": "|F⟩",
           "m3:dimensionIndex": 3,
           "rdfs:comment": "Exchange rate with environment. Measures openness and dissipation. AXIOM: F ≥ 0.1 (Universal Openness).",
           "m3:eagle_eye:physicalInterpretation": "Matter/energy/information flux across boundary",
           "m3:eagle_eye:rangeAnalog": "[0.1,1] where 0.1=quasi-closed, 1=maximally dissipative",
-          "m3:eagle_eye:criticalAxiom": "F cannot be absent from any non-degenerate system",
+          "m3:eagle_eye:criticalAxiom": "F ≥ 0.1 (no perfectly isolated system exists)",
           "m3:dimensionExamples": [
             "Thermos flask (F≈0.15 - quasi-closed)",
             "Human body (F≈0.6 - moderate exchange)",
@@ -165,11 +165,11 @@
             "m3:M3Dimension"
           ],
           "rdfs:label": "Information",
-          "m3:dimensionSymbol": "I",
+          "m3:dimensionSymbol": "|I⟩",
           "m3:dimensionIndex": 4,
           "rdfs:comment": "State complexity (synchronic). Measures variety, diversity, Shannon entropy at fixed time.",
           "m3:eagle_eye:physicalInterpretation": "Configurational entropy, state-space volume, variety",
-          "m3:eagle_eye:rangeAnalog": "qualitative spectrum: minimal=trivial/simple, 1=maximally complex",
+          "m3:eagle_eye:rangeAnalog": "[0,1] where 0=trivial/simple, 1=maximally complex",
           "m3:dimensionExamples": [
             "Single atom (I≈0.05)",
             "Binary switch (I≈0.1)",
@@ -184,11 +184,11 @@
             "m3:M3Dimension"
           ],
           "rdfs:label": "Dynamics",
-          "m3:dimensionSymbol": "D",
+          "m3:dimensionSymbol": "|D⟩",
           "m3:dimensionIndex": 5,
           "rdfs:comment": "State evolution (diachronic). Measures temporal change and transformation rate.",
           "m3:eagle_eye:physicalInterpretation": "Phase velocity, reaction rate, evolutionary trajectory",
-          "m3:eagle_eye:rangeAnalog": "qualitative spectrum: minimal=static/frozen, 1=rapid change",
+          "m3:eagle_eye:rangeAnalog": "[0,1] where 0=static/frozen, 1=rapid change",
           "m3:dimensionExamples": [
             "Geological processes (D≈0.1 - slow)",
             "Chemical reactions (D≈0.5 - moderate)",
@@ -206,19 +206,7 @@
         "description": "Sphinx Eye provides Map Grammar Gm over primitive types {R,E,V,O,I}, complementing Eagle's Territory Grammar Gt",
         "relationship": "structurally_complementary",
         "complete_architecture": "TSCG Bicephalous Grammar = Gt (Territory) + Gm (Map)"
-      },
-      "m2:changelog": [
-        {
-          "version": "2.7.0",
-          "date": "2026-05-16",
-          "changes": "FORMALISM REFORM (complete): ket notation |X⟩ → single-letter type atoms; [0,1] scalar ranges → qualitative structural spectra; F≥0.1 axiom → structural necessity rule. M3 layer is now fully notation-clean (no Dirac/Hilbert/scalar formalism)."
-        },
-        {
-          "version": "2.6.0",
-          "date": "2026-05-16",
-          "changes": "FORMALISM REFORM: rangeAnalog and criticalAxiom updated to Structural Grammar formalism. Removed scalar constraints (F ≥ 0.1, [0,1] scale) — replaced with qualitative structural rules compatible with Lambek calculus / monoidal product formalism."
-        }
-      ]
+      }
     },
     {
       "@id": "m3:eagle_eye:physicalInterpretation",
@@ -238,31 +226,31 @@
     {
       "@id": "m3:eagle_eye:rangeAnalog",
       "@type": "owl:DatatypeProperty",
-      "rdfs:label": "Qualitative Range (ASFID)",
-      "rdfs:comment": "Qualitative structural domain of the ASFID dimension in Territory — expressed as a spectrum, not a numeric scale.",
+      "rdfs:label": "Range Analog (ASFID)",
+      "rdfs:comment": "Typical measurement range and interpretation scale for ASFID dimension in Territory",
       "rdfs:domain": {
         "@id": "m3:M3Dimension"
       },
       "rdfs:range": {
         "@id": "xsd:string"
       },
-      "skos:definition": "Description of the structural domain of this ASFID dimension as a qualitative spectrum from minimal/absent structural expression to maximal/dominant. Replaces the numeric [0,1] scale of the former Hilbert-space formalism with qualitative anchors compatible with the Structural Grammar formalism.",
-      "skos:example": "Structure (S): minimal structural bonding (gas-like, no stable organisation) ↔ maximal structural order (crystalline, fully constrained lattice)",
+      "skos:definition": "Normalized scale [0,1] with semantic anchors describing extreme and typical values for Territory measurements",
+      "skos:example": "Structure: [0,1] where 0=gas (no structure), 1=crystal (perfect lattice)",
       "dcterms:created": "2026-02-16"
     },
     {
       "@id": "m3:eagle_eye:criticalAxiom",
       "@type": "owl:DatatypeProperty",
-      "rdfs:label": "Structural Axiom (ASFID)",
-      "rdfs:comment": "Universal structural principle or necessity governing the presence and role of this ASFID dimension in any non-degenerate system.",
+      "rdfs:label": "Critical Axiom (ASFID)",
+      "rdfs:comment": "Fundamental constraint or axiom that applies to this ASFID dimension",
       "rdfs:domain": {
         "@id": "m3:M3Dimension"
       },
       "rdfs:range": {
         "@id": "xsd:string"
       },
-      "skos:definition": "A structural necessity or universal principle — expressed as a qualitative rule, not a numeric inequality — that must hold for this ASFID dimension in any observable system. Replaces scalar constraints (e.g., F ≥ 0.1) of the former Hilbert-space formalism with structural grammar rules.",
-      "skos:example": "Flow (F) — Universal Openness Axiom: F is structurally necessary in any observable system; no real system is perfectly isolated from its environment. Expressed structurally: F cannot be absent from the structural formula of any non-degenerate system.",
+      "skos:definition": "Theoretical or empirical constraint that must be satisfied in Territory measurements (e.g., Flow ≥ 0.1 Universal Openness axiom)",
+      "skos:example": "F ≥ 0.1 (no perfectly isolated system exists)",
       "dcterms:created": "2026-02-16"
     }
   ]

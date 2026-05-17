@@ -1,8 +1,8 @@
 {
   "@context": {
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
-    "m3:eagle_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
-    "m3:sphinx_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
+    "m2": "M2_GenericConcepts.jsonld#",
+    "m3:eagle_eye": "M3_EagleEye.jsonld#",
+    "m3:sphinx_eye": "M3_SphinxEye.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
@@ -10,7 +10,7 @@
     "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m1core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#"
+    "m1core": "M1_CoreConcepts.jsonld#"
   },
   "@graph": [
     {
@@ -155,7 +155,7 @@
         ]
       },
       "owl:imports": [
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld"
+        "M2_GenericConcepts.jsonld"
       ],
       "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/docs/TSCG_M1_Architecture.md",
       "rdfs:comment": "M1_CoreConcepts is the BASE ontology for M1 layer. It contains generic transdisciplinary concepts applicable across multiple domains. Domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.) import M1_CoreConcepts and add specialized patterns. This architecture allows: (1) Sharing common concepts, (2) Domain specialization, (3) Modular extension, (4) Clear namespace separation.",
@@ -209,22 +209,19 @@
             "M2 Combo family fully suppressed — M2 is now atomic-only"
           ]
         }
-      },
-      "m2:changelog": [
-        {
-          "version": "2.4.0",
-          "date": "2026-05-17",
-          "changes": "PROPERTY RENAME (M1): tensorFormula→structuralGrammarFormula, tensorFormulaTeX→structuralGrammarFormulaTeX, tensorFormulaASCII→structuralGrammarFormulaRawText, tensorFormulaExpanded→structuralGrammarFormulaExpanded. Full Structural Grammar formalism migration."
-        }
-      ]
+      }
     },
     {
       "@id": "m1core:simulationTitle",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Simulation Title",
       "rdfs:comment": "Short human-readable title for displaying instances in simulation galleries and user interfaces. Typically shorter and more user-friendly than the formal rdfs:label. Used by generate_index.js and other gallery/presentation tools.",
-      "rdfs:domain": "owl:Ontology",
-      "rdfs:range": "xsd:string",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
       "skos:definition": "A concise display name optimized for gallery cards, simulation headers, and navigation menus. Unlike rdfs:label (which may contain formal prefixes like 'TSCG M0' or full descriptive text), simulationTitle contains only the essential name. If absent, tools should fallback to rdfs:label stripped of common prefixes.",
       "skos:example": [
         "Fire Triangle (instead of 'TSCG M0 Fire Triangle Poclet')",
@@ -241,7 +238,9 @@
       "@type": "owl:Class",
       "rdfs:label": "M1 Core Concept",
       "rdfs:comment": "A domain-bounded but transdisciplinary concept that instantiates one or more M2 metaconcepts. Core concepts are reusable patterns that appear across multiple domains but don't achieve the full universality of M2 metaconcepts. Examples: Oscillator (appears in physics, biology, economics), Multipolar Network (appears in mythology, game design, education).",
-      "rdfs:subClassOf": "owl:Thing",
+      "rdfs:subClassOf": {
+        "@id": "owl:Thing"
+      },
       "m1:properties": [
         "m1:M2_basis - Which M2 metaconcepts does this instantiate?",
         "m1:domainScope - Which domains does this apply to?",
@@ -255,7 +254,9 @@
       "@type": "owl:Class",
       "rdfs:label": "Domain-Specific Pattern",
       "rdfs:comment": "A pattern specific to a particular domain (e.g., Additive Color Synthesis in optics, Compensatory Triplet in photography). Lives in domain-specific M1 extensions (M1_Optics, M1_Photography, etc.) rather than M1_CoreConcepts.",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": {
+        "@id": "m1core:CoreConcept"
+      },
       "m1:note": "Domain patterns extend CoreConcept but are defined in M1_[Domain].jsonld files, not here."
     },
     {
@@ -263,7 +264,9 @@
       "@type": "owl:Class",
       "rdfs:label": "Generic Mechanism",
       "rdfs:comment": "Reusable operational mechanism appearing across multiple domains. Examples: Oscillator (pendulum, AC current, predator-prey cycles, business cycles), Amplifier (electronic amplifier, biological cascade, social amplification).",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": {
+        "@id": "m1core:CoreConcept"
+      },
       "skos:note": "To be populated with specific mechanisms as they are discovered through poclet analysis."
     },
     {
@@ -271,7 +274,9 @@
       "@type": "owl:Class",
       "rdfs:label": "Structural Template",
       "rdfs:comment": "Common architectural pattern for system organization. Examples: Feedback Loop (control systems, ecosystems, markets), Cascade (signal transduction, waterfall, information flow), Hierarchy (organizational charts, taxonomies, file systems), Multipolar Network (Yggdrasil, Magic Color Wheel, TPACK).",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": {
+        "@id": "m1core:CoreConcept"
+      },
       "skos:note": "Now includes 1 validated concept: Multipolar Network. Additional templates to be populated through poclet analysis."
     },
     {
@@ -279,7 +284,9 @@
       "@type": "owl:Class",
       "rdfs:label": "Relational Pattern",
       "rdfs:comment": "Generic type of relationship between entities. Examples: Competition (species, companies, ideas), Cooperation (mutualism, trade, collaboration), Parasitism (biological, economic extraction).",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": {
+        "@id": "m1core:CoreConcept"
+      },
       "skos:note": "To be populated with specific patterns as they are discovered through poclet analysis."
     },
     {
@@ -287,14 +294,18 @@
       "@type": "owl:Class",
       "rdfs:label": "Process Archetype",
       "rdfs:comment": "Generic transformational process. Examples: Growth (population, economic, crystal), Decay (radioactive, ecological succession, market correction), Saturation (carrying capacity, market saturation, chemical equilibrium), Cyclic Tension (Yggdrasil wear-repair, cell maintenance, market corrections).",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": {
+        "@id": "m1core:CoreConcept"
+      },
       "skos:note": "Now includes 1 validated concept: Cyclic Tension. Additional archetypes to be populated through poclet analysis."
     },
     {
       "@id": "m1core:CorePattern",
       "@type": "owl:Class",
       "rdfs:label": "Core Pattern",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": {
+        "@id": "m1core:CoreConcept"
+      },
       "rdfs:comment": "Recurrent structural or process archetype discovered empirically through poclet analysis and validated across ≥3 domains. Unlike TransdisciplinaryCombo (explicit N-ary formula), a CorePattern is identified through cross-domain pattern recognition. Examples: MultipolarNetwork, CyclicTension."
     },
     {
@@ -310,7 +321,7 @@
         "m2:Information (I) - Distinctions between pole identities",
         "m2:Attractor (A) - System equilibrium across poles"
       ],
-      "m1:structuralGrammarFormula": "S⊗I⊗A",
+      "m1:tensorFormula": "S⊗I⊗A",
       "m1:principle": "Distributed equilibrium across N ≥ 3 interdependent poles where each pole is irreducible and contributes unique function to system stability",
       "m1:characteristicProperties": {
         "minimumPolarity": "N ≥ 3 (below 3 reduces to simple duality)",
@@ -368,7 +379,7 @@
         "m2:Attractor (A) - Equilibrium maintained through opposition",
         "m2:Flow (F) - Energy/matter exchange during degradation and restoration"
       ],
-      "m1:structuralGrammarFormula": "D⊗A⊗F",
+      "m1:tensorFormula": "D⊗A⊗F",
       "m1:principle": "System viability maintained through perpetual opposition of degradative and restorative processes, where neither can permanently dominate. Equilibrium is dynamic, not static - the system is never 'finished' but perpetually in process.",
       "m1:characteristicProperties": {
         "bidirectionality": "Two opposed processes (not unidirectional decay or growth)",
@@ -426,10 +437,10 @@
         "m2:Step",
         "m2:Trajectory"
       ],
-      "m1:structuralGrammarFormula": "⊗⇒(Process, Step, Trajectory)",
-      "m1:structuralGrammarFormulaExpanded": "S ⊗ I ⊗ A ⊗ D ⊗ F",
-      "m1:structuralGrammarFormulaTeX": "S \\otimes I \\otimes A \\otimes D \\otimes F",
-      "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F",
+      "m1:tensorFormula": "⊗⇒(Process, Step, Trajectory)",
+      "m1:tensorFormulaExpanded": "S ⊗ I ⊗ A ⊗ D ⊗ F",
+      "m1:tensorFormulaTeX": "S \\otimes I \\otimes A \\otimes D \\otimes F",
+      "m1:tensorFormulaASCII": "S (x) I (x) A (x) D (x) F",
       "m1:hasEpistemicGap": 0.2,
       "m1:hasPolarity": "dual",
       "m1:perspective": "dual",
@@ -562,10 +573,10 @@
         "m2:Process",
         "m2:Trajectory"
       ],
-      "m1:structuralGrammarFormula": "⊗⇒(Component, Process, Trajectory) | trajectoryShape=Circular",
-      "m1:structuralGrammarFormulaExpanded": "S ⊗ A ⊗ I ⊗ D ⊗ F",
-      "m1:structuralGrammarFormulaTeX": "\\otimes\\Rightarrow(\\text{Component}, \\text{Process}, \\text{Trajectory}) \\;|\\; \\text{trajectoryShape}=\\text{Circular}",
-      "m1:structuralGrammarFormulaRawText": "(x)=>(Component, Process, Trajectory) | trajectoryShape=Circular",
+      "m1:tensorFormula": "⊗⇒(Component, Process, Trajectory) | trajectoryShape=Circular",
+      "m1:tensorFormulaExpanded": "S ⊗ A ⊗ I ⊗ D ⊗ F",
+      "m1:tensorFormulaTeX": "\\otimes\\Rightarrow(\\text{Component}, \\text{Process}, \\text{Trajectory}) \\;|\\; \\text{trajectoryShape}=\\text{Circular}",
+      "m1:tensorFormulaASCII": "(x)=>(Component, Process, Trajectory) | trajectoryShape=Circular",
       "m1:hasEpistemicGap": 0.2,
       "m1:hasPolarity": "neutral",
       "m1:perspective": "territory",
@@ -840,10 +851,10 @@
       "rdfs:label": "Processor",
       "rdfs:comment": "Generic system with inputs and outputs that transforms/processes incoming resources, signals, or matter into outputs. Dual synergistic combinations: Territory (Transformation ⊗ Flow ⊗ Resource) provides empirical processing dynamics, Map (Transformation ⊗ Representation ⊗ Interoperability) provides conceptual interface model. Distinct from pure Transformation (abstract process) by being a concrete entity that IMPLEMENTS transformations while managing flows and interfacing with environment.",
       "m1:comboOf": [],
-      "m1:structuralGrammarFormula": "S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ R",
-      "m1:structuralGrammarFormulaExpanded": "",
-      "m1:structuralGrammarFormulaTeX": "S \\otimes I \\otimes D \\otimes F \\otimes V \\otimes R",
-      "m1:structuralGrammarFormulaRawText": "S (x) I (x) D (x) F (x) V (x) R",
+      "m1:tensorFormula": "S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ R",
+      "m1:tensorFormulaExpanded": "",
+      "m1:tensorFormulaTeX": "S \\otimes I \\otimes D \\otimes F \\otimes V \\otimes R",
+      "m1:tensorFormulaASCII": "S (x) I (x) D (x) F (x) V (x) R",
       "m1:hasEpistemicGap": 0.15,
       "m1:hasPolarity": "dual",
       "m1:perspective": "dual",
@@ -966,10 +977,10 @@
         "m2:Amplification",
         "m2:Regulation"
       ],
-      "m1:structuralGrammarFormula": "⊗⇒(Amplification, Regulation) | range(F_A) << range(F_R)",
-      "m1:structuralGrammarFormulaExpanded": "",
-      "m1:structuralGrammarFormulaTeX": "\\otimes\\Rightarrow(\\text{Amplification}, \\text{Regulation}) \\;|\\; \\|\\text{range}(F_A)\\| \\ll \\|\\text{range}(F_R)\\|",
-      "m1:structuralGrammarFormulaRawText": "(x)=>(Amplification, Regulation) | range(F_A) << range(F_R)",
+      "m1:tensorFormula": "⊗⇒(Amplification, Regulation) | range(F_A) << range(F_R)",
+      "m1:tensorFormulaExpanded": "",
+      "m1:tensorFormulaTeX": "\\otimes\\Rightarrow(\\text{Amplification}, \\text{Regulation}) \\;|\\; \\|\\text{range}(F_A)\\| \\ll \\|\\text{range}(F_R)\\|",
+      "m1:tensorFormulaASCII": "(x)=>(Amplification, Regulation) | range(F_A) << range(F_R)",
       "m1:hasEpistemicGap": 0.2,
       "m1:hasPolarity": "dual",
       "m1:perspective": "territory",
@@ -1087,10 +1098,10 @@
         "m2:Amplification",
         "m2:Trajectory"
       ],
-      "m1:structuralGrammarFormula": "⊗⇒(Amplification, Trajectory) | trajectoryShape=Chaotic ∧ λ > 0",
-      "m1:structuralGrammarFormulaExpanded": "",
-      "m1:structuralGrammarFormulaTeX": "\\otimes\\Rightarrow(\\text{Amplification}, \\text{Trajectory}) \\;|\\; \\text{trajectoryShape}=\\text{Chaotic} \\wedge \\lambda > 0",
-      "m1:structuralGrammarFormulaRawText": "(x)=>(Amplification, Trajectory) | trajectoryShape=Chaotic AND lambda > 0",
+      "m1:tensorFormula": "⊗⇒(Amplification, Trajectory) | trajectoryShape=Chaotic ∧ λ > 0",
+      "m1:tensorFormulaExpanded": "",
+      "m1:tensorFormulaTeX": "\\otimes\\Rightarrow(\\text{Amplification}, \\text{Trajectory}) \\;|\\; \\text{trajectoryShape}=\\text{Chaotic} \\wedge \\lambda > 0",
+      "m1:tensorFormulaASCII": "(x)=>(Amplification, Trajectory) | trajectoryShape=Chaotic AND lambda > 0",
       "m1:hasEpistemicGap": 0.85,
       "m1:hasPolarity": "dual",
       "m1:perspective": "territory",
@@ -1203,10 +1214,10 @@
         "m2:Duplication",
         "m2:Network"
       ],
-      "m1:structuralGrammarFormula": "⊗⇒(Cascade, Duplication, Network)",
-      "m1:structuralGrammarFormulaExpanded": "S ⊗ I ⊗ A ⊗ D ⊗ F ⊗ V ⊗ Im",
-      "m1:structuralGrammarFormulaTeX": "S \\otimes I \\otimes A \\otimes D \\otimes F \\otimes V \\otimes I_m",
-      "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F (x) V (x) Im",
+      "m1:tensorFormula": "⊗⇒(Cascade, Duplication, Network)",
+      "m1:tensorFormulaExpanded": "S ⊗ I ⊗ A ⊗ D ⊗ F ⊗ V ⊗ Im",
+      "m1:tensorFormulaTeX": "S \\otimes I \\otimes A \\otimes D \\otimes F \\otimes V \\otimes I_m",
+      "m1:tensorFormulaASCII": "S (x) I (x) A (x) D (x) F (x) V (x) Im",
       "m1:hasEpistemicGap": 0.2,
       "m1:hasPolarity": "dual",
       "m1:perspective": "dual",
@@ -1344,10 +1355,10 @@
         "m2:Representation",
         "m2:Relation"
       ],
-      "m1:structuralGrammarFormula": "⊗⇒(Transformation, Representation, Relation)",
-      "m1:structuralGrammarFormulaExpanded": "S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ R ⊗ A ⊗ Im",
-      "m1:structuralGrammarFormulaTeX": "S \\otimes I \\otimes D \\otimes F \\otimes V \\otimes R \\otimes A \\otimes I_m",
-      "m1:structuralGrammarFormulaRawText": "S (x) I (x) D (x) F (x) V (x) R (x) A (x) Im",
+      "m1:tensorFormula": "⊗⇒(Transformation, Representation, Relation)",
+      "m1:tensorFormulaExpanded": "S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ R ⊗ A ⊗ Im",
+      "m1:tensorFormulaTeX": "S \\otimes I \\otimes D \\otimes F \\otimes V \\otimes R \\otimes A \\otimes I_m",
+      "m1:tensorFormulaASCII": "S (x) I (x) D (x) F (x) V (x) R (x) A (x) Im",
       "m1:hasEpistemicGap": 0.35,
       "m1:hasPolarity": "neutral",
       "m1:perspective": "dual",
@@ -1536,10 +1547,10 @@
         "m2:Layer",
         "m2:Dissipation"
       ],
-      "m1:structuralGrammarFormula": "⊗²⇒(Layer, Dissipation)",
-      "m1:structuralGrammarFormulaExpanded": "S ⊗ I ⊗ A ⊗ D ⊗ F ⊗ V ⊗ R",
-      "m1:structuralGrammarFormulaTeX": "S \\otimes I \\otimes A \\otimes D \\otimes F \\otimes V \\otimes R",
-      "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F (x) V (x) R",
+      "m1:tensorFormula": "⊗²⇒(Layer, Dissipation)",
+      "m1:tensorFormulaExpanded": "S ⊗ I ⊗ A ⊗ D ⊗ F ⊗ V ⊗ R",
+      "m1:tensorFormulaTeX": "S \\otimes I \\otimes A \\otimes D \\otimes F \\otimes V \\otimes R",
+      "m1:tensorFormulaASCII": "S (x) I (x) A (x) D (x) F (x) V (x) R",
       "m1:dimensions": 7,
       "m1:parentGenericConcepts": [
         {
@@ -1591,10 +1602,10 @@
         "m2:Cascade",
         "m2:Amplification"
       ],
-      "m1:structuralGrammarFormula": "⊗²⇒(Cascade, Amplification) | gain_per_stage > 1",
-      "m1:structuralGrammarFormulaExpanded": "S ⊗ I ⊗ A ⊗ D ⊗ F ⊗ R ⊗ O",
-      "m1:structuralGrammarFormulaTeX": "S \\otimes I \\otimes A \\otimes D \\otimes F \\otimes R \\otimes O",
-      "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F (x) R (x) O",
+      "m1:tensorFormula": "⊗²⇒(Cascade, Amplification) | gain_per_stage > 1",
+      "m1:tensorFormulaExpanded": "S ⊗ I ⊗ A ⊗ D ⊗ F ⊗ R ⊗ O",
+      "m1:tensorFormulaTeX": "S \\otimes I \\otimes A \\otimes D \\otimes F \\otimes R \\otimes O",
+      "m1:tensorFormulaASCII": "S (x) I (x) A (x) D (x) F (x) R (x) O",
       "m1:dimensions": 7,
       "m1:parentGenericConcepts": [
         {

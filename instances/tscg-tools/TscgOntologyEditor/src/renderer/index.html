@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TscgOntologyEditor</title>
+  <!-- Theme stylesheet — href updated dynamically by renderer.js -->
+  <link id="theme-stylesheet" rel="stylesheet" href="themes/night.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ── Top bar ─────────────────────────────────────────────── -->
+  <header id="topbar">
+    <div id="layer-buttons">
+      <button id="btn-m3" title="Load M3 GenesisSpace">M3</button>
+      <button id="btn-m2" title="Load M2 GenericConcepts">M2</button>
+      <button id="btn-m1" title="Load M1 CoreConcepts">M1</button>
+    </div>
+
+    <span id="active-ontology-label">—</span>
+  </header>
+
+  <!-- ── Document tab bar (MDI) ─────────────────────────────── -->
+  <div id="doc-tab-bar">
+    <!-- tabs injected by DocumentManager.renderTabBar() -->
+    <!-- use File > Open to open additional documents -->
+  </div>
+
+  <!-- ── 3-column workspace ─────────────────────────────────── -->
+  <main id="workspace">
+
+    <!-- Left: Object Explorer -->
+    <section id="object-explorer">
+      <div class="panel-header">Object Explorer</div>
+      <div id="object-tree">
+        <p class="placeholder">Load an ontology to browse its objects.</p>
+      </div>
+    </section>
+
+    <div class="splitter" id="splitter-lc"></div>
+
+    <!-- Center: Property Inspector -->
+    <section id="property-inspector">
+      <div class="panel-header">Property Inspector</div>
+      <div id="property-drawers">
+        <p class="placeholder">Select an object to inspect its properties.</p>
+      </div>
+    </section>
+
+    <div class="splitter" id="splitter-cr"></div>
+
+    <!-- Right: Tabbed panel -->
+    <section id="right-panel">
+      <div id="tab-bar">
+        <button class="tab-btn active" data-tab="description">Description</button>
+        <button class="tab-btn" data-tab="imports">Imports</button>
+        <button class="tab-btn" data-tab="neighbor-layer" id="btn-neighbor-tab">Neighbor Layers ↕</button>
+        <button class="tab-btn" data-tab="sparql">SPARQL</button>
+      </div>
+      <div id="tab-content">
+        <div id="tab-description"    class="tab-pane active">
+          <p class="placeholder">Select an object.</p>
+        </div>
+        <div id="tab-imports" class="tab-pane">
+          <p class="placeholder">Select an object to see its imports.</p>
+        </div>
+        <div id="tab-neighbor-layer" class="tab-pane">
+          <p class="placeholder">No active ontology.</p>
+        </div>
+        <div id="tab-sparql" class="tab-pane">
+          <div id="sparql-panel">
+            <textarea id="sparql-query" class="sparql-editor" spellcheck="false"
+              placeholder="SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 10"></textarea>
+            <div id="sparql-actions">
+              <button id="btn-sparql-run" class="sparql-btn">▶ Run</button>
+              <button id="btn-sparql-clear" class="sparql-btn sparql-btn-sec">Clear</button>
+              <span id="sparql-status" class="sparql-status"></span>
+            </div>
+            <div id="sparql-results"></div>
+          </div>
+        </div>
+      </div>
+      <div id="right-panel-extra"></div>
+    </section>
+
+  </main>
+
+  <!-- ── Status bar ─────────────────────────────────────────── -->
+  <footer id="statusbar">
+    <span id="status-msg">Ready.</span>
+    <span id="bridge-indicator" title="Python Bridge status">● Bridge</span>
+  </footer>
+
+  <!-- ── Popup overlay ──────────────────────────────────────── -->
+  <div id="popup-overlay" hidden>
+    <div id="popup-box">
+      <p id="popup-message"></p>
+      <p id="popup-from" class="popup-from"></p>
+      <button id="popup-close">Close</button>
+    </div>
+  </div>
+
+  <script type="module" src="renderer.js"></script>
+</body>
+</html>
