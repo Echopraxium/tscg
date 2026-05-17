@@ -70,11 +70,44 @@
         </div>
         <div id="tab-sparql" class="tab-pane">
           <div id="sparql-panel">
+            <div id="sparql-presets-row">
+              <select id="sparql-presets" class="sparql-preset-select">
+                <option value="">— Predefined queries —</option>
+                <optgroup label="🔍 Exploration">
+                  <option value="all_classes">List all Classes</option>
+                  <option value="all_properties">List all Properties</option>
+                  <option value="class_hierarchy">Class Hierarchy (subClassOf)</option>
+                  <option value="all_triples">All Triples (LIMIT 20)</option>
+                </optgroup>
+                <optgroup label="⬡ TSCG — M2 GenericConcepts">
+                  <option value="generic_concepts">All GenericConcepts</option>
+                  <option value="by_family">GenericConcepts by Family</option>
+                  <option value="structural_formulas">Structural Grammar Formulas</option>
+                  <option value="dual_polarity">Dual-polarity Concepts</option>
+                  <option value="dominant_m3">Concepts by dominant M3 dimension</option>
+                </optgroup>
+                <optgroup label="🦅 TSCG — M3 Dimensions">
+                  <option value="m3_dimensions">All M3 Dimensions</option>
+                  <option value="asfid_dims">ASFID Dimensions (Eagle Eye)</option>
+                  <option value="revoi_dims">REVOI Dimensions (Sphinx Eye)</option>
+                </optgroup>
+                <optgroup label="📦 TSCG — Instances (M0)">
+                  <option value="poclets">List Poclets</option>
+                  <option value="asfid_scores">ASFID Scores of an instance</option>
+                </optgroup>
+                <optgroup label="🔧 Utilities">
+                  <option value="named_graphs">Named Graphs in document</option>
+                  <option value="owl_imports">owl:imports</option>
+                  <option value="ontology_meta">Ontology metadata</option>
+                </optgroup>
+              </select>
+            </div>
             <textarea id="sparql-query" class="sparql-editor" spellcheck="false"
               placeholder="SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 10"></textarea>
             <div id="sparql-actions">
               <button id="btn-sparql-run" class="sparql-btn">▶ Run</button>
               <button id="btn-sparql-clear" class="sparql-btn sparql-btn-sec">Clear</button>
+              <button id="btn-sparql-save" class="sparql-btn sparql-btn-sec" disabled>Save As…</button>
               <span id="sparql-status" class="sparql-status"></span>
             </div>
             <div id="sparql-results"></div>

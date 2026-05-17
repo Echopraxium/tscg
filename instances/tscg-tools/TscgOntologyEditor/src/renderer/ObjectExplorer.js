@@ -163,6 +163,9 @@ export function renderObjectExplorer ({ objects, pairs, onSelect }) {
   treeBody.className = 'oe-tree-body'
   treeEl.appendChild(treeBody)
 
+  // Store context for selectObjectByIri re-render
+  _currentRenderCtx = { treeBody, byIri, children, classCount, groupMap, level1 }
+
   const redraw = () => {
     const mode = modeSel.value
     filterBar.style.display = (mode === 'classes') ? '' : 'none'
@@ -170,6 +173,7 @@ export function renderObjectExplorer ({ objects, pairs, onSelect }) {
     pillsEl.innerHTML = '<span class="oe-pills-empty">All groups visible</span>'
     clearBtn.disabled = true
     if (mode === 'classes') {
+      _currentRenderCtx = { treeBody, byIri, children, classCount, groupMap, level1 }
       _renderTree(treeBody, byIri, children, classCount, groupMap, level1)
     } else {
       _renderFlatList(treeBody, typeGroups[mode] || [], nonClassByIri, mode)
@@ -197,6 +201,65 @@ export function renderObjectExplorer ({ objects, pairs, onSelect }) {
     })
     _renderTree(treeBody, byIri, children, classCount, groupMap, level1)
   })
+}
+
+// ── Navigate to object by IRI ─────────────────────────────────
+// Stored by renderObjectExplorer for re-render capability
+let _currentRenderCtx = null   // { treeBody, byIri, children, classCount, groupMap, level1 }
+// Called from Property Inspector when user clicks an internal URI
+// Pending cross-document navigation: set before loadFile(), consumed on render
+let _pendingSelectIri = null
+export function setPendingSelectIri (iri) { _pendingSelectIri = iri }
+
+export function selectObjectByIri (iri) {
+  const treeBody = document.querySelector('.oe-tree-body')
+  if (!treeBody) return false
+
+  const safeIri = iri.replace(/"/g, '\\"')
+
+  // Try to find node directly (might already be visible)
+  let nodeEl = treeBody.querySelector(`[data-iri="${safeIri}"]`)
+
+  if (!nodeEl && _currentRenderCtx) {
+    // Node is collapsed — find all ancestors and expand them, then re-render
+    const { byIri, children, classCount, groupMap, level1 } = _currentRenderCtx
+
+    // Build parent map from children map
+    const parentOf = new Map()
+    for (const [parent, kids] of children)
+      for (const kid of kids) parentOf.set(kid, parent)
+
+    // Walk ancestors and add to _expanded
+    let current = iri
+    let safety  = 0
+    while (current && safety++ < 20) {
+      _expanded.add(current)
+      current = parentOf.get(current)
+    }
+
+    // Re-render the tree with expanded ancestors
+    _renderTree(treeBody, byIri, children, classCount, groupMap, level1)
+    nodeEl = treeBody.querySelector(`[data-iri="${safeIri}"]`)
+  }
+
+  if (!nodeEl) {
+    console.warn('[OE] selectObjectByIri: node not found after expand, IRI:', iri.slice(-60))
+    return false
+  }
+
+  treeBody.querySelectorAll('.oe-node.selected').forEach(n => n.classList.remove('selected'))
+  nodeEl.classList.add('selected')
+  nodeEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  nodeEl.click()
+  return true
+}
+
+// Called after Object Explorer renders — apply pending cross-doc navigation
+export function applyPendingSelect () {
+  if (!_pendingSelectIri) return
+  const iri = _pendingSelectIri
+  _pendingSelectIri = null
+  setTimeout(() => selectObjectByIri(iri), 100)
 }
 
 // ── Flat list for Properties / Individuals ─────────────────────
@@ -227,6 +290,10 @@ function _renderFlatList (treeBody, iris, byIri, typeName) {
   treeBody.appendChild(badge)
 }
 
+
+// ── Navigate to object by IRI ─────────────────────────────────
+// Stored by renderObjectExplorer for re-render capability
+// Called from Property Inspector when user clicks an internal URI
 
 // ── Flat list for Properties / Individuals ─────────────────────
 

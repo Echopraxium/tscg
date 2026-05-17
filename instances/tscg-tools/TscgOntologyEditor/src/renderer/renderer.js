@@ -9,7 +9,7 @@ import { createRendererApiFor, dispatchAction,
 import { initSplitters }                                from './Splitter.js'
 import { setBridgeUrl, getBridgeUrl, getOntologyRoot, setRepoRoot, setLayerPaths, setBridgeButtonsEnabled,
          setExplorerRenderer, onDocumentLoaded, activateDocument, loadLayer, loadFile, onObjectSelected } from './OntologyLoader.js'
-import { renderObjectExplorer }                                     from './ObjectExplorer.js'
+import { renderObjectExplorer, selectObjectByIri, setPendingSelectIri, applyPendingSelect } from './ObjectExplorer.js'
 import { registry }                                     from '../commands/CommandRegistry.js'
 import { docManager, renderTabBar }                     from './DocumentManager.js'
 
@@ -47,6 +47,7 @@ onDocumentLoaded(({ filePath, label }) => {
   // Populate Imports tab for the newly loaded ontology
   populateImportsTab(filePath)
 })
+  setTimeout(() => applyPendingSelect(), 250)  // cross-doc navigation
 
 
 // =============================================================
@@ -228,7 +229,7 @@ function populatePropertyInspector (obj, properties) {
   for (const { predicate, object } of properties) {
     const pred  = predicate.value
     const short = pred.split('#').pop().split('/').pop()
-    const val   = object.type === 'literal'
+    const val   = (object.type === 'literal' || object.type === 'bnode_resolved' || object.type === 'uri')
       ? object.value
       : `<${object.value}>`
 
@@ -274,13 +275,40 @@ function createDrawer (title, props) {
     const strVal = v ?? '—'
 
     if (isUri(strVal)) {
-      // URI value — render as clickable link, double-click opens browser
-      valEl.textContent = strVal
-      valEl.classList.add('drawer-val-uri')
-      valEl.title = 'Double-click to open in browser'
-      valEl.addEventListener('dblclick', () => {
-        window.tscgAPI.openExternal(strVal)
-      })
+      const isInternal = strVal.includes('echopraxium') || strVal.includes('raw.githubusercontent')
+      const sep    = Math.max(strVal.lastIndexOf('#'), strVal.lastIndexOf('/'))
+      const local  = sep >= 0 ? strVal.slice(sep + 1) : strVal
+      const stem   = strVal.slice(0, sep).split('/').pop().replace(/\.jsonld$/i, '')
+      const prefix = stem.replace(/^M(\d+)_.*/,  (_, n) => 'M' + n)
+
+      // Chip only for same-document URIs (same filename stem)
+      const activeDoc    = docManager.active
+      const activeFile   = activeDoc?.filePath || ''
+      const activeStem   = activeFile.split(/[/\\]/).pop().replace(/\.jsonld$/i, '')
+      const isSameDoc    = isInternal && strVal.includes(activeStem)
+
+      if (isSameDoc) {
+        valEl.className    = 'imports-chip imports-chip-local'
+        valEl.textContent  = prefix ? `${prefix}:${local}` : local
+        valEl.title        = strVal + '\nClick: navigate to this object'
+        valEl.style.cursor = 'pointer'
+        valEl.style.margin = '2px 0'
+        valEl.addEventListener('click', (e) => { e.stopPropagation(); selectObjectByIri(strVal) })
+        // Also make the whole row clickable (chip may not cover full cell area)
+        row.style.cursor = 'pointer'
+        row.addEventListener('click', () => selectObjectByIri(strVal))
+      } else if (isInternal) {
+        // Cross-document internal URI → plain text (no chip, no broken nav)
+        valEl.textContent = prefix ? `${prefix}:${local}` : local
+        valEl.title       = strVal
+        valEl.style.color = 'var(--text-secondary)'
+      } else {
+        // External URI → open in browser on click
+        valEl.textContent = strVal
+        valEl.classList.add('drawer-val-uri')
+        valEl.title = 'Click to open in browser'
+        valEl.addEventListener('click', () => window.tscgAPI.openExternal(strVal))
+      }
     } else {
       valEl.textContent = strVal
     }
@@ -485,6 +513,182 @@ document.body.dataset.mode = 'browse'
 // =============================================================
 // SPARQL PANEL
 // =============================================================
+
+// ── Predefined queries ────────────────────────────────────────
+const SPARQL_PRESETS = {
+  // Exploration
+  all_classes: `SELECT DISTINCT ?class ?label WHERE {
+  ?class a owl:Class .
+  OPTIONAL { ?class rdfs:label ?label }
+} ORDER BY ?label`,
+
+  all_properties: `SELECT DISTINCT ?prop ?type ?label WHERE {
+  ?prop a ?type .
+  VALUES ?type { owl:ObjectProperty owl:DatatypeProperty }
+  OPTIONAL { ?prop rdfs:label ?label }
+} ORDER BY ?type ?label`,
+
+  class_hierarchy: `SELECT ?child ?parent WHERE {
+  ?child rdfs:subClassOf ?parent .
+  FILTER(!isBlank(?child) && !isBlank(?parent))
+} ORDER BY ?parent ?child`,
+
+  all_triples: `SELECT ?s ?p ?o WHERE {
+  ?s ?p ?o .
+  FILTER(!isBlank(?s))
+} LIMIT 20`,
+
+  // M2 GenericConcepts
+  generic_concepts: `PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?concept ?label ?family WHERE {
+  ?concept rdfs:subClassOf+ m2:GenericConcept .
+  OPTIONAL { ?concept rdfs:label ?label }
+  OPTIONAL { ?concept m2:hasFamily ?family }
+} ORDER BY ?family ?label`,
+
+  by_family: `PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?family (COUNT(?concept) AS ?count) WHERE {
+  ?concept rdfs:subClassOf+ m2:GenericConcept .
+  ?concept m2:hasFamily ?family .
+} GROUP BY ?family ORDER BY DESC(?count)`,
+
+  structural_formulas: `PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?concept ?label ?formula WHERE {
+  ?concept rdfs:subClassOf+ m2:GenericConcept .
+  ?concept m2:hasStructuralGrammarFormula ?formula .
+  OPTIONAL { ?concept rdfs:label ?label }
+} ORDER BY ?label`,
+
+  dual_polarity: `PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?concept ?label ?formula WHERE {
+  ?concept m2:hasPolarity "dual" .
+  OPTIONAL { ?concept rdfs:label ?label }
+  OPTIONAL { ?concept m2:hasStructuralGrammarFormula ?formula }
+} ORDER BY ?label`,
+
+  dominant_m3: `PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?dim (GROUP_CONCAT(?label; separator=", ") AS ?concepts) WHERE {
+  ?concept m2:hasDominantM3 ?dim .
+  OPTIONAL { ?concept rdfs:label ?label }
+} GROUP BY ?dim ORDER BY ?dim`,
+
+  // M3 Dimensions
+  m3_dimensions: `PREFIX m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?dim ?label ?symbol WHERE {
+  ?dim a m3:M3Dimension .
+  OPTIONAL { ?dim rdfs:label ?label }
+  OPTIONAL { ?dim m3:dimensionSymbol ?symbol }
+} ORDER BY ?symbol`,
+
+  asfid_dims: `PREFIX m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?dim ?label ?symbol WHERE {
+  ?dim a m3:M3Dimension .
+  OPTIONAL { ?dim rdfs:label ?label }
+  OPTIONAL { ?dim m3:dimensionSymbol ?symbol }
+} ORDER BY ?symbol`,
+
+  revoi_dims: `PREFIX m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?dim ?label ?symbol WHERE {
+  ?dim a m3:M3Dimension .
+  OPTIONAL { ?dim rdfs:label ?label }
+  OPTIONAL { ?dim m3:dimensionSymbol ?symbol }
+} ORDER BY ?symbol`,
+
+  // M0 Instances
+  poclets: `PREFIX m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?poclet ?label WHERE {
+  ?poclet a m3:Poclet .
+  OPTIONAL { ?poclet rdfs:label ?label }
+} ORDER BY ?label`,
+
+  asfid_scores: `PREFIX m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#>
+SELECT ?attractor ?structure ?flow ?information ?dynamics WHERE {
+  ?instance m3:hasAttractor ?attractor ;
+            m3:hasStructure ?structure ;
+            m3:hasFlow      ?flow ;
+            m3:hasInformation ?information ;
+            m3:hasDynamics  ?dynamics .
+} LIMIT 10`,
+
+  // Utilities
+  named_graphs: `SELECT DISTINCT ?g WHERE {
+  GRAPH ?g { ?s ?p ?o }
+} ORDER BY ?g`,
+
+  owl_imports: `SELECT ?import WHERE {
+  ?ont a owl:Ontology .
+  ?ont owl:imports ?import .
+}`,
+
+  ontology_meta: `PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+SELECT ?version ?creator ?created WHERE {
+  ?ont a owl:Ontology .
+  OPTIONAL { ?ont owl:versionInfo ?version }
+  OPTIONAL { ?ont dcterms:creator ?creator }
+  OPTIONAL { ?ont dcterms:created ?created }
+}`,
+}
+
+document.getElementById('sparql-presets')?.addEventListener('change', (e) => {
+  const key = e.target.value
+  if (!key || !SPARQL_PRESETS[key]) return
+  const ta = document.getElementById('sparql-query')
+  if (ta) {
+    ta.value = SPARQL_PRESETS[key]
+    ta.focus()
+  }
+  e.target.value = ''  // reset so same query can be re-selected
+})
+// Last SPARQL results for Save As
+let _lastSparqlResults   = null
+let _lastSparqlVars      = []
+let _lastSparqlQueryType = 'SELECT'
+
+document.getElementById('btn-sparql-save')?.addEventListener('click', async () => {
+  if (!_lastSparqlResults?.length) return
+  const ts       = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19)
+  const isTurtle = _lastSparqlQueryType === 'CONSTRUCT'
+  const ext      = isTurtle ? 'ttl' : 'csv'
+  const filename = `SPARQL_OUTPUT_${ts}.${ext}`
+
+  let fileContent
+  if (isTurtle) {
+    // CONSTRUCT → Turtle (.ttl): results are RDF triples
+    fileContent = _lastSparqlResults
+      .map(r => {
+        const s = typeof r.s === 'object' ? r.s.value : (r.s || '')
+        const p = typeof r.p === 'object' ? r.p.value : (r.p || '')
+        const o = typeof r.o === 'object' ? r.o.value : (r.o || '')
+        return `<${s}> <${p}> <${o}> .`
+      }).join('\n')
+    fileContent = '@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n' + fileContent
+  } else {
+    // SELECT → CSV (tabular)
+    const header = _lastSparqlVars.join(',')
+    const rows   = _lastSparqlResults.map(row =>
+      _lastSparqlVars.map(v => {
+        const raw = row[v]
+        const val = raw === null || raw === undefined ? ''
+                  : typeof raw === 'object' ? (raw.value || '') : String(raw)
+        return `"${val.replace(/"/g, '""')}"`
+      }).join(',')
+    )
+    fileContent = [header, ...rows].join('\n')
+  }
+  await window.tscgAPI.saveSparqlOutput({ filename, content: fileContent })
+})
+
 document.getElementById('btn-sparql-run')?.addEventListener('click', async () => {
   const query   = document.getElementById('sparql-query')?.value?.trim()
   const results = document.getElementById('sparql-results')
@@ -526,9 +730,17 @@ document.getElementById('btn-sparql-run')?.addEventListener('click', async () =>
     for (const row of data.results) {
       const tr = document.createElement('tr')
       vars.forEach(v => {
-        const td = document.createElement('td')
-        const val = row[v] || ''
-        td.textContent = val
+        const td  = document.createElement('td')
+        const raw = row[v]
+        // SPARQL results come as {type, value} objects from rdflib
+        const val = raw === null || raw === undefined ? '—'
+                  : typeof raw === 'object' ? (raw.value || JSON.stringify(raw))
+                  : String(raw)
+        // Shorten long URIs for display, keep full in tooltip
+        const display = val.length > 60 && val.startsWith('http')
+          ? '…' + val.slice(val.lastIndexOf('/') + 1).slice(0, 50)
+          : val
+        td.textContent = display
         td.title       = val
         tr.appendChild(td)
       })
@@ -537,6 +749,12 @@ document.getElementById('btn-sparql-run')?.addEventListener('click', async () =>
     table.appendChild(tbody)
     if (results) results.appendChild(table)
     if (status)  status.textContent = `${data.results.length} row(s)`
+    // Store for Save As
+    _lastSparqlResults   = data.results
+    _lastSparqlVars      = vars
+    _lastSparqlQueryType = data.query_type || 'SELECT'
+    const saveBtn = document.getElementById('btn-sparql-save')
+    if (saveBtn) saveBtn.disabled = false
   } catch (err) {
     if (status)  status.textContent = `Error: ${err.message}`
     if (results) results.innerHTML  = `<p class="placeholder" style="color:var(--danger)">${err.message}</p>`
@@ -550,6 +768,9 @@ document.getElementById('btn-sparql-clear')?.addEventListener('click', () => {
   if (q) q.value = ''
   if (r) r.innerHTML = ''
   if (s) s.textContent = ''
+  _lastSparqlResults = null; _lastSparqlVars = []
+  const saveBtn = document.getElementById('btn-sparql-save')
+  if (saveBtn) saveBtn.disabled = true
 })
 
 window.tscgAPI.onOpenPluginManager(async () => {
@@ -558,11 +779,3 @@ window.tscgAPI.onOpenPluginManager(async () => {
 })
 
 console.log('[renderer] Initialised.')
-
-// ── Global click diagnostic (temporary) ──────────────────────
-document.addEventListener('click', (e) => {
-  const t = e.target
-  console.log('[GLOBAL CLICK] tag:', t.tagName,
-    'class:', t.className || '—',
-    'text:', t.textContent?.trim().slice(0, 50) || '—')
-}, true)  // capture phase — fires before any other handler

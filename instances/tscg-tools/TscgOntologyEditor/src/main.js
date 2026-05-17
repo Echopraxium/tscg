@@ -389,6 +389,54 @@ app.whenReady().then(() => {
   // Open preferences from renderer (e.g. keyboard shortcut)
   ipcMain.on('open-preferences', () => openPreferencesWindow())
 
+  // Save SPARQL results as CSV to output/ folder
+  ipcMain.handle('save-sparql-output', async (_event, { filename, content: csv }) => {
+    const repoRoot  = config.get('ontologyRootPath', '').replace(/[/\\]ontology$/, '')
+    const outputDir = path.join(repoRoot, 'instances', 'tscg-tools',
+                                'TscgOntologyEditor', 'output')
+    try {
+      const fs = require('fs')
+      fs.mkdirSync(outputDir, { recursive: true })
+      const filePath = path.join(outputDir, filename)
+      fs.writeFileSync(filePath, csv, 'utf-8')
+      // Show info dialog
+      await dialog.showMessageBox(mainWindow, {
+        type:    'info',
+        title:   'SPARQL Results Saved',
+        message: `File saved successfully`,
+        detail:  `File: ${filename}\nFolder: ${outputDir}`,
+        buttons: ['OK']
+      })
+      return { ok: true, filePath }
+    } catch (err) {
+      await dialog.showMessageBox(mainWindow, {
+        type: 'error', title: 'Save Failed',
+        message: err.message, buttons: ['OK']
+      })
+      return { ok: false, error: err.message }
+    }
+  })
+
+  // Export format picker — shows a native list dialog
+  ipcMain.handle('show-export-format-dialog', async () => {
+    const FORMATS = [
+      { id: 'turtle',   label: 'Turtle (.ttl)  — OWL/RDF, Protégé compatible',  extension: '.ttl' },
+      { id: 'rdfxml',   label: 'RDF/XML (.rdf) — OWL standard, broad compatibility', extension: '.rdf' },
+      { id: 'ntriples', label: 'N-Triples (.nt) — simple line-by-line RDF',      extension: '.nt'  },
+      { id: 'jsonld',   label: 'JSON-LD (.jsonld) — re-export with absolute URIs', extension: '.jsonld' },
+    ]
+    const { response } = await dialog.showMessageBox(mainWindow, {
+      type:        'question',
+      title:       'Export As…',
+      message:     'Choose export format:',
+      buttons:     [...FORMATS.map(f => f.label), 'Cancel'],
+      cancelId:    FORMATS.length,
+      defaultId:   0,
+    })
+    if (response === FORMATS.length) return null   // cancelled
+    return FORMATS[response]
+  })
+
   // File/folder picker invoked from Preferences Browse buttons
   ipcMain.handle('show-open-dialog', async (_event, opts = {}) => {
     const result = await dialog.showOpenDialog({
