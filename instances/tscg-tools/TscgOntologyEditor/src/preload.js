@@ -42,6 +42,8 @@ contextBridge.exposeInMainWorld('tscgAPI', {
   saveExport:             (data) => ipcRenderer.send('export-as', data),
   showExportFormatDialog: ()     => ipcRenderer.invoke('show-export-format-dialog'),
   saveSparqlOutput:       (data) => ipcRenderer.invoke('save-sparql-output', data),
+  onFindInOntology:       (cb)   => ipcRenderer.on('find-in-ontology', cb),
+  listM1Extensions:       ()     => ipcRenderer.invoke('list-m1-extensions'),
 
   // ── Open external URI in system browser ──────────────────
   openExternal: (url) => ipcRenderer.send('open-external', url),

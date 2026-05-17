@@ -204,6 +204,11 @@ function buildAppMenu () {
       label: 'Edit',
       submenu: [
         {
+          label: 'Find in Ontology…', accelerator: 'CmdOrCtrl+F',
+          click: () => mainWindow?.webContents.send('find-in-ontology')
+        },
+        { type: 'separator' },
+        {
           label: 'Preferences…', accelerator: 'CmdOrCtrl+,',
           click: () => openPreferencesWindow()
         }
@@ -388,6 +393,26 @@ app.whenReady().then(() => {
 
   // Open preferences from renderer (e.g. keyboard shortcut)
   ipcMain.on('open-preferences', () => openPreferencesWindow())
+
+  // Scan ontology/M1_extensions/ for all .jsonld files
+  ipcMain.handle('list-m1-extensions', async () => {
+    const fs   = require('fs')
+    const root = config.get('ontologyRootPath', '')
+    const extDir = path.join(root, 'M1_extensions')
+    if (!fs.existsSync(extDir)) return []
+    const results = []
+    for (const sub of fs.readdirSync(extDir)) {
+      const subPath = path.join(extDir, sub)
+      if (!fs.statSync(subPath).isDirectory()) continue
+      for (const file of fs.readdirSync(subPath)) {
+        if (!file.endsWith('.jsonld')) continue
+        const fullPath = path.join(subPath, file)
+        const name = file.replace(/\.jsonld$/i, '')   // e.g. "M1_Biology"
+        results.push({ name, file, path: fullPath, subfolder: sub })
+      }
+    }
+    return results.sort((a, b) => a.name.localeCompare(b.name))
+  })
 
   // Save SPARQL results as CSV to output/ folder
   ipcMain.handle('save-sparql-output', async (_event, { filename, content: csv }) => {

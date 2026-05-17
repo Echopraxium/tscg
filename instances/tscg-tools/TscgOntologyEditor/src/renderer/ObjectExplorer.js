@@ -130,10 +130,20 @@ export function renderObjectExplorer ({ objects, pairs, onSelect }) {
   const clsOpt = document.createElement('option')
   clsOpt.value = 'classes'; clsOpt.textContent = '⬡ Classes'
   modeSel.appendChild(clsOpt)
+  // Auto-select first mode with content if Classes is empty
+  const hasClasses = level1.length > 0
+  if (!hasClasses && typeNames.length > 0) {
+    clsOpt.disabled = true
+    modeSel.value = ''  // will be set after options added
+  }
   for (const t of typeNames) {
     const opt = document.createElement('option')
     opt.value = t; opt.textContent = '⬡ ' + t
     modeSel.appendChild(opt)
+  }
+  // If Classes empty, auto-select first property/individual type
+  if (!hasClasses && typeNames.length > 0) {
+    modeSel.value = typeNames[0]
   }
   modeRow.appendChild(modeSel)
   treeEl.appendChild(modeRow)
@@ -262,6 +272,57 @@ export function applyPendingSelect () {
   setTimeout(() => selectObjectByIri(iri), 100)
 }
 
+// ── Search / filter ───────────────────────────────────────────
+export function filterObjectTree (query) {
+  const treeBody = document.querySelector('.oe-tree-body')
+  if (!treeBody) return 0
+
+  const q = query.trim().toLowerCase()
+  const nodes = treeBody.querySelectorAll('.oe-node')
+  let matches = 0
+
+  nodes.forEach(nodeEl => {
+    const lblEl = nodeEl.querySelector('.oe-lbl')
+    if (!lblEl) return
+
+    const text  = lblEl.textContent.toLowerCase()
+    const iri   = (nodeEl.dataset.iri || '').toLowerCase()
+    const hit   = q === '' || text.includes(q) || iri.includes(q)
+
+    if (q === '') {
+      // Clear — restore all nodes
+      nodeEl.classList.remove('oe-node-dimmed')
+      lblEl.innerHTML = lblEl.textContent   // remove highlights
+    } else if (hit) {
+      matches++
+      nodeEl.classList.remove('oe-node-dimmed')
+      // Highlight matching substring
+      const orig = lblEl.textContent
+      const idx  = orig.toLowerCase().indexOf(q)
+      if (idx >= 0) {
+        lblEl.innerHTML =
+          escHtml(orig.slice(0, idx)) +
+          `<span class="oe-match">${escHtml(orig.slice(idx, idx + q.length))}</span>` +
+          escHtml(orig.slice(idx + q.length))
+      }
+      // Ensure ancestors are visible (un-dim parents)
+      let p = nodeEl.parentElement
+      while (p && p !== treeBody) {
+        if (p.classList.contains('oe-node')) p.classList.remove('oe-node-dimmed')
+        p = p.parentElement
+      }
+    } else {
+      nodeEl.classList.add('oe-node-dimmed')
+    }
+  })
+
+  return matches
+}
+
+function escHtml (s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+}
+
 // ── Flat list for Properties / Individuals ─────────────────────
 function _renderFlatList (treeBody, iris, byIri, typeName) {
   treeBody.innerHTML = ''
@@ -294,6 +355,9 @@ function _renderFlatList (treeBody, iris, byIri, typeName) {
 // ── Navigate to object by IRI ─────────────────────────────────
 // Stored by renderObjectExplorer for re-render capability
 // Called from Property Inspector when user clicks an internal URI
+
+// ── Search / filter ───────────────────────────────────────────
+
 
 // ── Flat list for Properties / Individuals ─────────────────────
 

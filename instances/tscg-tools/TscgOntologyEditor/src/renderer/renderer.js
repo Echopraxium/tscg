@@ -8,8 +8,9 @@ import { createRendererApiFor, dispatchAction,
          getMenuItems, getTabs, notifyOntologyChanged } from './RendererPluginApi.js'
 import { initSplitters }                                from './Splitter.js'
 import { setBridgeUrl, getBridgeUrl, getOntologyRoot, setRepoRoot, setLayerPaths, setBridgeButtonsEnabled,
-         setExplorerRenderer, onDocumentLoaded, activateDocument, loadLayer, loadFile, onObjectSelected } from './OntologyLoader.js'
-import { renderObjectExplorer, selectObjectByIri, setPendingSelectIri, applyPendingSelect } from './ObjectExplorer.js'
+         setExplorerRenderer, onDocumentLoaded, activateDocument, isDirtyLoad, clearDirtyLoad,
+         loadLayer, loadFile, onObjectSelected } from './OntologyLoader.js'
+import { renderObjectExplorer, selectObjectByIri, setPendingSelectIri, applyPendingSelect, filterObjectTree } from './ObjectExplorer.js'
 import { registry }                                     from '../commands/CommandRegistry.js'
 import { docManager, renderTabBar }                     from './DocumentManager.js'
 
@@ -45,6 +46,8 @@ onDocumentLoaded(({ filePath, label }) => {
   renderTabBar()
 
   // Populate Imports tab for the newly loaded ontology
+  activateDocument(filePath)  // ensure Object Explorer shows the new doc
+  clearDirtyLoad()              // allow tab-switch activations again
   populateImportsTab(filePath)
 })
   setTimeout(() => applyPendingSelect(), 250)  // cross-doc navigation
@@ -139,7 +142,69 @@ window.tscgAPI.onExportAs(async () => {
 // =============================================================
 document.getElementById('btn-m3').addEventListener('click', () => registry.execute('file.openM3'))
 document.getElementById('btn-m2').addEventListener('click', () => registry.execute('file.openM2'))
-document.getElementById('btn-m1').addEventListener('click', () => registry.execute('file.openM1'))
+document.getElementById('btn-m1').addEventListener('click', async (e) => {
+  // Remove any existing dropdown
+  document.getElementById('m1-ext-dropdown')?.remove()
+  const btn     = e.currentTarget
+  const btnRect = btn.getBoundingClientRect()
+
+  const drop = document.createElement('div')
+  drop.id = 'm1-ext-dropdown'
+  Object.assign(drop.style, {
+    position: 'fixed', top: `${btnRect.bottom + 4}px`, left: `${btnRect.left}px`,
+    minWidth: '220px', maxHeight: '320px', overflowY: 'auto',
+    background: 'var(--bg-drawer)', border: '1px solid var(--accent)',
+    borderRadius: '6px', boxShadow: '0 4px 16px rgba(0,0,0,.4)',
+    zIndex: '9999', fontSize: '11px',
+  })
+
+  const addSection = (label) => {
+    const h = document.createElement('div')
+    Object.assign(h.style, { padding: '5px 12px 3px', color: 'var(--text-muted)',
+      fontSize: '10px', fontWeight: '700', borderBottom: '1px solid var(--border)' })
+    h.textContent = label; drop.appendChild(h)
+  }
+  const addItem = (label, filePath, accent = false) => {
+    const item = document.createElement('div')
+    Object.assign(item.style, { padding: '7px 16px', cursor: 'pointer',
+      color: accent ? 'var(--accent)' : 'var(--text-primary)',
+      fontWeight: accent ? '700' : '400' })
+    item.textContent = label
+    item.onmouseenter = () => { item.style.background = 'var(--bg-hover)' }
+    item.onmouseleave = () => { item.style.background = '' }
+    item.addEventListener('click', () => { drop.remove(); loadFile(filePath) })
+    drop.appendChild(item)
+  }
+
+  addSection('M1 Layer')
+  const ontRoot = getOntologyRoot()
+  if (ontRoot) addItem('M1_CoreConcepts  ★', ontRoot + '/M1_CoreConcepts.jsonld', true)
+
+  const sep = document.createElement('div')
+  sep.style.cssText = 'height:1px;background:var(--border);margin:2px 0'
+  drop.appendChild(sep)
+  addSection('Extensions')
+
+  try {
+    const exts = await window.tscgAPI.listM1Extensions()
+    if (!exts?.length) {
+      addItem('(no extensions found)', null)
+    } else {
+      for (const ext of exts)
+        addItem(ext.name.replace(/^M1_/, ''), ext.path)
+    }
+  } catch (err) {
+    addItem('Error: ' + err.message, null)
+  }
+
+  document.body.appendChild(drop)
+  const close = (ev) => {
+    if (!drop.contains(ev.target) && ev.target !== btn) {
+      drop.remove(); document.removeEventListener('click', close, true)
+    }
+  }
+  setTimeout(() => document.addEventListener('click', close, true), 10)
+})
 
 window.tscgAPI.onLoadLayer(async (layerName) => {
   setLabel(`${layerName} loading…`)
@@ -169,8 +234,10 @@ docManager.onChange((type, doc) => {
     if (drawers) drawers.innerHTML = '<p class="placeholder">Select an object to inspect its properties.</p>'
     const descPane = document.getElementById('tab-description')
     if (descPane) descPane.innerHTML = '<p class="placeholder">Select an object.</p>'
-    // Restore Object Explorer from cache (or reload from bridge)
-    activateDocument(doc.filePath)
+    // Restore Object Explorer — skip if just freshly loaded (onDocumentLoaded handles it)
+    if (!isDirtyLoad()) {
+      activateDocument(doc.filePath)
+    }
     // Refresh Imports tab for the activated document
     populateImportsTab(doc.filePath)
   }
@@ -779,3 +846,46 @@ window.tscgAPI.onOpenPluginManager(async () => {
 })
 
 console.log('[renderer] Initialised.')
+
+// ── Object Explorer search (Ctrl+F / Edit > Find) ──────────────
+const searchBar   = document.getElementById('oe-search-bar')
+const searchInput = document.getElementById('oe-search-input')
+const searchCount = document.getElementById('oe-search-count')
+const searchClose = document.getElementById('oe-search-close')
+
+function openSearch () {
+  if (!searchBar) return
+  searchBar.style.display = 'flex'
+  searchInput?.focus()
+  searchInput?.select()
+}
+function closeSearch () {
+  if (!searchBar) return
+  searchBar.style.display = 'none'
+  if (searchInput) searchInput.value = ''
+  filterObjectTree('')
+  searchCount.textContent = ''
+}
+
+searchInput?.addEventListener('input', () => {
+  const q = searchInput.value
+  if (!q.trim()) { filterObjectTree(''); searchCount.textContent = ''; return }
+  const n = filterObjectTree(q)
+  searchCount.textContent = n ? `${n} match${n > 1 ? 'es' : ''}` : 'no match'
+  searchCount.style.color = n ? 'var(--accent)' : 'var(--danger)'
+})
+searchInput?.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeSearch()
+})
+searchClose?.addEventListener('click', closeSearch)
+
+// Ctrl+F → open search (global)
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+    e.preventDefault()
+    openSearch()
+  }
+})
+
+// Expose for Edit menu IPC
+window.tscgAPI.onFindInOntology?.(() => openSearch())
