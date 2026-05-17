@@ -255,6 +255,131 @@ def get_objects(file_path: str):
         })
     return {'objects': results, 'count': len(results)}
 
+# ── JSON-LD direct property reader ──────────────────────────────
+def _short_key(uri: str, ctx: dict) -> str:
+    """Resolve a full URI to its shortest prefix:local form using @context."""
+    # Try reverse-lookup in context
+    for prefix, expansion in ctx.items():
+        if prefix.startswith('@') or not isinstance(expansion, str): continue
+        if uri.startswith(expansion):
+            local = uri[len(expansion):]
+            if local and '/' not in local and '#' not in local:
+                return f'{prefix}:{local}'
+    # Fallback: just the local name after last # or /
+    sep = max(uri.rfind('#'), uri.rfind('/'))
+    return uri[sep+1:] if sep >= 0 else uri
+
+def _expand_value(val, ctx: dict, base: str):
+    """Recursively expand a JSON-LD value to a human-readable string."""
+    if val is None:
+        return None
+    if isinstance(val, str):
+        return val
+    if isinstance(val, (int, float, bool)):
+        return str(val)
+    if isinstance(val, list):
+        items = [_expand_value(v, ctx, base) for v in val]
+        items = [i for i in items if i is not None]
+        return items if len(items) > 1 else (items[0] if items else None)
+    if isinstance(val, dict):
+        if '@value' in val:
+            return str(val['@value'])
+        if '@id' in val and len(val) == 1:
+            full = val['@id']
+            if ':' in full and not full.startswith('http'):
+                pfx, local = full.split(':', 1)
+                if pfx in ctx and isinstance(ctx[pfx], str):
+                    full = ctx[pfx] + local
+                    # Resolve against @base if prefix expansion still relative
+                    if not full.startswith('http') and base:
+                        full = base.rstrip('/') + '/' + full.lstrip('./ ')
+            return full
+        # Anonymous node → flatten to readable key: value pairs
+        parts = {}
+        for k, v in val.items():
+            if k.startswith('@'): continue
+            # Short key: strip prefix
+            short_k = k.split(':')[-1] if ':' in k else k
+            parts[short_k] = _expand_value(v, ctx, base)
+        return parts
+    return str(val)
+
+def _get_properties_from_json(file_path: str, subject_uri: str) -> list:
+    """Read properties directly from JSON-LD — bypasses rdflib blank node issues."""
+    import json as _json
+    with open(file_path, encoding='utf-8') as f:
+        data = _json.load(f)
+
+    ctx  = data.get('@context', {})
+    base = ctx.get('@base', '') if isinstance(ctx, dict) else ''
+
+    def compact_to_full(ciri: str) -> str:
+        if ciri.startswith('http'): return ciri
+        if ':' in ciri:
+            pfx, local = ciri.split(':', 1)
+            expansion = ctx.get(pfx, '') if isinstance(ctx, dict) else ''
+            if expansion:
+                full = expansion + local
+                # Expansion may itself be relative — resolve against @base
+                if not full.startswith('http') and base:
+                    full = base.rstrip('/') + '/' + full.lstrip('./')
+                return full
+        # Bare name — resolve against @base
+        return (base.rstrip('/') + '/' + ciri) if base else ciri
+
+    props = []
+    seen  = set()
+    for node in data.get('@graph', []):
+        node_id = compact_to_full(node.get('@id', ''))
+        if node_id != subject_uri: continue
+
+        for raw_key, raw_val in node.items():
+            if raw_key.startswith('@'): continue
+            # Expand key to full URI then compact for display
+            full_key = compact_to_full(raw_key)
+            short_key = _short_key(full_key, ctx if isinstance(ctx, dict) else {})
+            expanded  = _expand_value(raw_val, ctx if isinstance(ctx, dict) else {}, base)
+            if expanded is None: continue
+
+            if isinstance(expanded, list):
+                for item in expanded:
+                    entry_key = (short_key, str(item))
+                    if entry_key in seen: continue
+                    seen.add(entry_key)
+                    props.append({
+                        'predicate': {'type': 'uri', 'value': full_key, 'short': short_key},
+                        'object':    {'type': 'literal' if not str(item).startswith('http') else 'uri',
+                                      'value': str(item)}
+                    })
+            elif isinstance(expanded, dict):
+                # Inline anonymous object — flatten top-level keys only
+                def _fmt(v):
+                    if isinstance(v, dict): return '{…}'
+                    if isinstance(v, list): return f'[{len(v)} items]'
+                    s = str(v)
+                    return s[:60] + '…' if len(s) > 60 else s
+                obj_str = '  |  '.join(f'{k}: {_fmt(v)}' for k,v in expanded.items())
+                entry_key = (short_key, obj_str)
+                if entry_key not in seen:
+                    seen.add(entry_key)
+                    props.append({
+                        'predicate': {'type': 'uri', 'value': full_key, 'short': short_key},
+                        'object':    {'type': 'bnode_resolved', 'value': obj_str}
+                    })
+            else:
+                entry_key = (short_key, str(expanded))
+                if entry_key in seen: continue
+                seen.add(entry_key)
+                props.append({
+                    'predicate': {'type': 'uri', 'value': full_key, 'short': short_key},
+                    'object':    {'type': 'literal' if not str(expanded).startswith('http') else 'uri',
+                                  'value': str(expanded)}
+                })
+        break  # found our node
+
+    props.sort(key=lambda x: x['predicate']['short'].lower())
+    return props
+
 # ── Get properties of a subject ────────────────────────────────
 def _resolve_bnode_in_ctx(ctx, bnode, depth=0):
     """Resolve a blank node WITHIN its own named graph context.
@@ -283,28 +408,31 @@ def _resolve_bnode_in_ctx(ctx, bnode, depth=0):
 @app.get('/properties')
 def get_properties(file_path: str, subject_uri: str):
     """Return all predicate-object pairs for a given subject URI.
-    Blank node objects are resolved to their property content inline."""
+    Uses direct JSON-LD parsing for reliable blank node resolution."""
+    # Use JSON-LD direct reader (bypasses rdflib blank node scoping issues)
+    if file_path.endswith('.jsonld') or file_path.endswith('.json'):
+        try:
+            props = _get_properties_from_json(file_path, subject_uri)
+            if props:
+                return {'subject': subject_uri, 'properties': props, 'count': len(props)}
+        except Exception as e:
+            print(f'[bridge] JSON-LD reader failed, falling back to rdflib: {e}')
+
+    # Fallback: rdflib SPARQL (for non-JSON-LD files)
     g       = _get_graph(file_path)
     subject = URIRef(subject_uri)
     props   = []
-    # Iterate all named graphs to find subject triples
     seen_po = set()
     for ctx in g.contexts():
         for pred, obj in ctx.predicate_objects(subject):
             po_key = (str(pred), str(obj))
-            if po_key in seen_po:
-                continue
+            if po_key in seen_po: continue
             seen_po.add(po_key)
             if isinstance(obj, BNode):
-                # Pass the same context — blank nodes are graph-scoped in JSON-LD
                 obj_val = _resolve_bnode_in_ctx(ctx, obj)
             else:
                 obj_val = _term_to_value(obj)
-            props.append({
-                'predicate': _term_to_value(pred),
-                'object':    obj_val,
-            })
-    # Sort by predicate local name for readable display
+            props.append({'predicate': _term_to_value(pred), 'object': obj_val})
     props.sort(key=lambda x: x['predicate']['value'].split('#')[-1].split('/')[-1].lower())
     return {'subject': subject_uri, 'properties': props, 'count': len(props)}
 
@@ -324,7 +452,7 @@ def sparql_query(req: SparqlRequest):
     query_type = results.type  # 'SELECT', 'CONSTRUCT', 'ASK', 'DESCRIBE'
 
     if query_type == 'ASK':
-        return {'type': 'ASK', 'result': bool(results)}
+        return {'query_type': 'ASK', 'result': bool(results)}
 
     if query_type == 'SELECT':
         vars_  = [str(v) for v in results.vars]
@@ -332,7 +460,7 @@ def sparql_query(req: SparqlRequest):
         for row in results:
             rows.append({v: _term_to_value(row[v]) if row[v] is not None else None
                          for v in vars_})
-        return {'type': 'SELECT', 'vars': vars_, 'results': rows, 'count': len(rows)}
+        return {'query_type': 'SELECT', 'vars': vars_, 'results': rows, 'count': len(rows)}
 
     if query_type in ('CONSTRUCT', 'DESCRIBE'):
         triples = [
@@ -343,7 +471,9 @@ def sparql_query(req: SparqlRequest):
             }
             for s, p, o in results
         ]
-        return {'type': query_type, 'triples': triples, 'count': len(triples)}
+        # CONSTRUCT: return triples as results rows for Save As .ttl
+        triple_rows = [{'s': str(s), 'p': str(p), 'o': str(o)} for s, p, o in triples]
+        return {'query_type': query_type, 'vars': ['s','p','o'], 'results': triple_rows, 'count': len(triples)}
 
     return {'type': query_type, 'raw': str(results)}
 

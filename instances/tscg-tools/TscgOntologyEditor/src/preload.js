@@ -39,7 +39,9 @@ contextBridge.exposeInMainWorld('tscgAPI', {
 
   // ── Export As ─────────────────────────────────────────────
   onExportAs: (cb) => ipcRenderer.on('export-as', () => cb()),
-  saveExport: (data) => ipcRenderer.send('export-as', data),
+  saveExport:             (data) => ipcRenderer.send('export-as', data),
+  showExportFormatDialog: ()     => ipcRenderer.invoke('show-export-format-dialog'),
+  saveSparqlOutput:       (data) => ipcRenderer.invoke('save-sparql-output', data),
 
   // ── Open external URI in system browser ──────────────────
   openExternal: (url) => ipcRenderer.send('open-external', url),

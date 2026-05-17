@@ -110,19 +110,19 @@
       },
       "m2:changelog": [
         {
+          "version": "16.8.0",
+          "date": "2026-05-17",
+          "changes": "FORMALISM REFORM: F=0 scalar notation replaced by F∉Σ (\"F not in structural formula\") across Stase, Potentialization, AbsorbingState. In Structural Grammar, a type atom either participates in Σ or is absent — F=0 (scalar) is incompatible."
+        },
+        {
+          "version": "16.7.0",
+          "date": "2026-05-17",
+          "changes": "FORMALISM REFORM: V→0 and V→1 scalar notation replaced by qualitative structural expressions — \"V absent (fidelity lost)\" and \"V present (high fidelity)\". V is a structural type atom, not a numeric scale."
+        },
+        {
           "version": "16.6.0",
           "date": "2026-05-17",
           "changes": "ARCHITECTURAL CORRECTION: removed hasEpistemicGap from all 84 M2 GenericConcept nodes. δ₁ is an emergent M0 metric computed per instance from ASFID/REVOI scores — incompatible with the Intersubjective Canon at M2 abstraction level. Property definition retained for M0 use."
-        },
-        {
-          "version": "16.5.0",
-          "date": "2026-05-17",
-          "changes": "FORMALISM REFORM: Bifurcation and Convergence structural grammar formulas corrected — differential notation (∂D/∂F, ∇·D) replaced by proper monoidal type expressions (D⊗F, F⊗D). Domain math kept in m2:expression field only."
-        },
-        {
-          "version": "16.4.0",
-          "date": "2026-05-17",
-          "changes": "Added missing owl:DatatypeProperty definitions for hasStructuralGrammarFormulaTeX and hasStructuralGrammarFormulaRawText (both rdfs:subPropertyOf hasStructuralGrammarFormula). Updated rdfs:label and rdfs:comment of hasStructuralGrammarFormula."
         }
       ],
       "m2:bicephalousStrategy": {
@@ -354,7 +354,7 @@
         "@id": "m2:GenericConceptPair"
       },
       "rdfs:label": "Sign Pair",
-      "rdfs:comment": "A GenericConceptPair where the two poles differ by a SIGN REVERSAL on the base formula, formalized as (-1)^p · F(ASFID) where F is the shared base formula. p=0 → positive pole (enabling, amplifying, constructive); p=1 → negative pole (inhibiting, attenuating, destructive). Examples: Activation/Inhibition = (-1)^p (A ⊗ D); Convergence/Divergence = (-1)^p ∇·D; Synergy+/Synergy− = (-1)^p (I ⊗ D).",
+      "rdfs:comment": "A GenericConceptPair where the two poles differ by a SIGN REVERSAL on the base formula, formalized as (-1)^p · F(ASFID) where F is the shared base formula. p=0 → positive pole (enabling, amplifying, constructive); p=1 → negative pole (inhibiting, attenuating, destructive). Examples: Activation/Inhibition = (-1)^p (A ⊗ D); Convergence/Divergence = (-1)^p F ⊗ D; Synergy+/Synergy− = (-1)^p (I ⊗ D).",
       "m2:parametricOperator": "(-1)^{p}, p ∈ {0,1}",
       "m2:convention": "p=0: positive pole (enabling/amplifying); p=1: negative pole (inhibiting/attenuating)",
       "dcterms:created": "2026-02-18",
@@ -1607,7 +1607,7 @@
         }
       ],
       "rdfs:label": "Bifurcation",
-      "rdfs:comment": "Qualitative change in system behavior at critical parameter threshold. Semantic specialization of m2:Duplication where V→0: the copying process loses fidelity entirely and the two resulting branches diverge toward distinct attractors. Analogous to Homeostasis ↪ Regulation semantic inclusion precedent (morphism_inclusion, not dimensional inheritance).",
+      "rdfs:comment": "Qualitative change in system behavior at critical parameter threshold. Semantic specialization of m2:Duplication where V absent (fidelity lost): the copying process loses fidelity entirely and the two resulting branches diverge toward distinct attractors. Analogous to Homeostasis ↪ Regulation semantic inclusion precedent (morphism_inclusion, not dimensional inheritance).",
       "m2:hasFamily": "m2:Dynamic",
       "m2:hasStructuralGrammarFormula": "D ⊗ F",
       "m2:hasDominantM3": [
@@ -1622,7 +1622,7 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "∂D/∂F",
+        "formula": "D ⊗ F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -1761,7 +1761,7 @@
         }
       },
       "m2:distinctionFromRelated": {
-        "vs_Duplication": "Duplication (S⊗I⊗F⊗D⊗V) produces faithful copies (V→1). Bifurcation is the degenerate limit where V→0: the copying process loses fidelity entirely and the two branches diverge toward distinct attractors. See m2:Duplication fidelitySpectrum.V_low."
+        "vs_Duplication": "Duplication (S⊗I⊗F⊗D⊗V) produces faithful copies (V present (high fidelity)). Bifurcation is the degenerate limit where V absent (fidelity lost): the copying process loses fidelity entirely and the two branches diverge toward distinct attractors. See m2:Duplication fidelitySpectrum.V_low."
       },
       "m3:semanticSignature": "dynamics_sensitivity_to_flow + threshold_crossing + qualitative_state_change"
     },
@@ -1780,7 +1780,7 @@
         }
       ],
       "rdfs:label": "Duplication",
-      "rdfs:comment": "Active process producing one or more faithful copies of a source structure, preserving its informational content through a transfer flux over time. Specialization of m2:Process (D⊗F): inherits temporal dynamics (D) and flux (F), adds source structure (S), copied content (I), and fidelity verifiability (V). The copy is recognizable as structurally and informationally equivalent to the original. V is the discriminant: V→1 = perfect copy; V→0 = copies diverge toward distinct attractors, degenerating into m2:Bifurcation. m2:Propagation (GenericConceptCombo) uses Duplication as its branching parent — each node that receives a copy becomes a new emitter.",
+      "rdfs:comment": "Active process producing one or more faithful copies of a source structure, preserving its informational content through a transfer flux over time. Specialization of m2:Process (D⊗F): inherits temporal dynamics (D) and flux (F), adds source structure (S), copied content (I), and fidelity verifiability (V). The copy is recognizable as structurally and informationally equivalent to the original. V is the discriminant: V present (high fidelity) = perfect copy; V absent (fidelity lost) = copies diverge toward distinct attractors, degenerating into m2:Bifurcation. m2:Propagation (GenericConceptCombo) uses Duplication as its branching parent — each node that receives a copy becomes a new emitter.",
       "dcterms:created": "2026-02-28",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:hasFamily": "m2:Dynamic",
@@ -1832,7 +1832,7 @@
       "m2:fidelitySpectrum": {
         "description": "V is the continuous axis unifying all copying phenomena, from perfect replication to complete divergence. Parameterizes the Duplication→Bifurcation transition.",
         "V_high": {
-          "label": "Perfect duplication (V → 1)",
+          "label": "Perfect duplication (V present (high fidelity))",
           "examples": [
             "DNA replication with proofreading (error rate ~10⁻⁹ per base)",
             "Lossless file copy with SHA-256 checksum",
@@ -1848,7 +1848,7 @@
           ]
         },
         "V_low": {
-          "label": "Degenerate duplication → Bifurcation (V → 0)",
+          "label": "Degenerate duplication → Bifurcation (V absent (fidelity lost))",
           "examples": [
             "Sympatric speciation (lineages diverge completely)",
             "Minsky Moment — speculative price diverges from fundamental value"
@@ -1869,7 +1869,7 @@
       "m2:distinctionFromRelated": {
         "vs_Process": "Process (D⊗F) is content-agnostic: any sequence of state changes. Duplication specializes Process by specifying WHAT is copied (S, I) and requiring fidelity verification (V).",
         "vs_Transformation": "Transformation (S⊗I⊗D⊗F⊗V) changes content — output differs from input. Duplication preserves content: original and copy are equivalent.",
-        "vs_Bifurcation": "Bifurcation (∂D/∂F) is the degenerate limit of Duplication when V→0: fidelity breaks entirely and the two branches diverge toward distinct attractors.",
+        "vs_Bifurcation": "Bifurcation (D ⊗ F) is the degenerate limit of Duplication when V absent (fidelity lost): fidelity breaks entirely and the two branches diverge toward distinct attractors.",
         "vs_Signal": "Signal (F⊗I⊗R) is 1:1 information transfer — no independent persistent copy is produced. Duplication produces an autonomous copy (1→N).",
         "vs_Network": "Network (S⊗I⊗F⊗D⊗Im) is the structural substrate enabling propagation. Duplication is the copying operation occurring at each node. Together with Cascade and Network, Duplication forms m2:Propagation."
       },
@@ -1922,7 +1922,7 @@
         ],
         "count": 6
       },
-      "m2:discoveryContext": "Identified as missing M2 gap during construction of m2:Propagation as GenericConceptCombo ⊗⇒(Cascade, Duplication, Network). Duplication provides the branching parent: each node receiving a copy becomes a new emitter. The fidelity spectrum (V axis) formally connects Duplication to Bifurcation (degenerate V→0 case).",
+      "m2:discoveryContext": "Identified as missing M2 gap during construction of m2:Propagation as GenericConceptCombo ⊗⇒(Cascade, Duplication, Network). Duplication provides the branching parent: each node receiving a copy becomes a new emitter. The fidelity spectrum (V axis) formally connects Duplication to Bifurcation (degenerate V absent (fidelity lost) case).",
       "m3:semanticSignature": "faithful_copy_production + informational_preservation + flux_driven + temporal_dynamics + fidelity_verifiable"
     },
     {
@@ -4208,7 +4208,7 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "-∇·D (convergence) / ∇·D (divergence)",
+        "formula": "F ⊗ D (convergence) / F ⊗ D (divergence)",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -4310,17 +4310,17 @@
           "m2:usageGuidelines": "Most homeostatic biological systems (like RAAS) exhibit Monotonic convergence. Use Oscillatory for systems with inertia/capacitance. Use Critical for optimized control systems. Undamped/Divergent indicate lack of stability."
         }
       },
-      "m2:expression": "∇·D",
-      "m2:expressionTeX": "\\nabla \\cdot D",
+      "m2:expression": "F ⊗ D",
+      "m2:expressionTeX": "F \\otimes D",
       "m2:poleMapping": {
         "p=1": {
           "name": "Convergence",
-          "formula": "-∇·D",
+          "formula": "F ⊗ D",
           "semantics": "Negative divergence: flows/trajectories focus toward attractor"
         },
         "p=0": {
           "name": "Divergence",
-          "formula": "∇·D",
+          "formula": "F ⊗ D",
           "semantics": "Positive divergence: flows/trajectories disperse away from repeller"
         }
       },
@@ -6415,7 +6415,7 @@
         "@id": "m2:GenericConcept"
       },
       "rdfs:label": "Stase",
-      "rdfs:comment": "Fundamental ground state of a system where flow is suspended (F=0) but Structure and Attractor are fully preserved intact. Stase is NECESSARILY REVERSIBLE — this reversibility is structurally encoded by the ABSENCE of D in the structural formula (a-temporal state). Stase is 'a system waiting for itself': Potentialization is suspended but not destroyed. Distinguished from Absorbing State by reversibility: Stase can be re-activated via Potentialization; Absorbing State cannot (sealed by Entropy).",
+      "rdfs:comment": "Fundamental ground state of a system where Flow is structurally undefined (F∉Σ) but Structure and Attractor are fully preserved intact. Stase is NECESSARILY REVERSIBLE — this reversibility is structurally encoded by the ABSENCE of D in the structural formula (a-temporal state). Stase is 'a system waiting for itself': Potentialization is suspended but not destroyed. Distinguished from Absorbing State by reversibility: Stase can be re-activated via Potentialization; Absorbing State cannot (sealed by Entropy).",
       "m2:hasFamily": "m2:Structural",
       "m2:hasStructuralGrammarFormula": "S ⊗ A",
       "m2:hasStructuralGrammarFormulaTeX": "S \\otimes A",
@@ -6426,7 +6426,7 @@
       ],
       "m2:hasPolarity": "neutral",
       "m2:perspective": "territory",
-      "m2:m3Note": "F=0 is valid per revised M3 axiom (F≥0). Stase is the canonical F=0 state. Absence of D in structural formula guarantees reversibility by construction — no temporal sealing possible.",
+      "m2:m3Note": "F∉Σ is valid per revised M3 axiom (F≥0). Stase is the canonical F∉Σ state. Absence of D in structural formula guarantees reversibility by construction — no temporal sealing possible.",
       "m2:eagleView": {
         "basis": "ASFID",
         "formula": "S → A",
@@ -6443,9 +6443,9 @@
         "Quiescent ecosystem under ice (ecology)"
       ],
       "m2:distinctFrom": {
-        "m2:AbsorbingState": "Absorbing State = Stase sealed by Entropy (irréversible); Stase = F=0 with intact Potentialization potential (reversible)",
-        "m2:Homeostasis": "Homeostasis (A⊗S⊗F) maintains a stable state via active flow regulation; Stase has F=0 (no active flow)",
-        "m2:State": "State (S⊗A) is any instantaneous configuration; Stase specifically implies F=0 (flow suspension) as constitutive property"
+        "m2:AbsorbingState": "Absorbing State = Stase sealed by Entropy (irréversible); Stase = F∉Σ with intact Potentialization potential (reversible)",
+        "m2:Homeostasis": "Homeostasis (A⊗S⊗F) maintains a stable state via active flow regulation; Stase has F∉Σ (no active flow)",
+        "m2:State": "State (S⊗A) is any instantaneous configuration; Stase specifically implies F∉Σ (flow suspension) as constitutive property"
       },
       "m3:semanticSignature": "structure_preserved + attractor_maintained + flow_suspended_reversibly"
     },
@@ -6584,7 +6584,7 @@
         "@id": "m2:GenericConceptCombo"
       },
       "rdfs:label": "Potentialization (Potentialization/F-Depletion)",
-      "rdfs:comment": "Bidirectional transition between the latent mode (F_potential, F=0) and the active mode (F_active) of a flow. Potentialization mobilizes a reserve into effective flux; F-Depletion suspends an active flux into latent reserve or Stase. Resolves the 'Category 3 tension': M2 concepts containing F_potential (Resource, Storage, Hub, Stateful, Environment) represent systems in suspended Potentialization state.",
+      "rdfs:comment": "Bidirectional transition between the latent mode (F_potential (F∉Σ)) and the active mode (F_active) of a flow. Potentialization mobilizes a reserve into effective flux; F-Depletion suspends an active flux into latent reserve or Stase. Resolves the 'Category 3 tension': M2 concepts containing F_potential (Resource, Storage, Hub, Stateful, Environment) represent systems in suspended Potentialization state.",
       "m2:hasFamily": "m2:Combo",
       "m2:hasComboComponents": [
         {
@@ -6612,7 +6612,7 @@
       "m2:dualAspects": {
         "positiveAspect": {
           "name": "Potentialization",
-          "comment": "F=0 → F_active: mobilization, awakening, activation of reserve",
+          "comment": "F∉Σ → F_active: mobilization, awakening, activation of reserve",
           "examples": [
             "Seed germination",
             "Capital investment",
@@ -6622,7 +6622,7 @@
         },
         "negativeAspect": {
           "name": "F-Depletion",
-          "comment": "F_active → F=0: exhaustion, quiescence, suspension of flow",
+          "comment": "F_active → F∉Σ: exhaustion, quiescence, suspension of flow",
           "examples": [
             "Organism entering hibernation",
             "Capital freeze",
@@ -6641,7 +6641,7 @@
         "Neuroscience: LTM → working memory (Potentialization)"
       ],
       "m2:distinctFrom": {
-        "m2:Activation": "Activation (A⊗D) enables/blocks processes reversibly; Potentialization specifically governs the F=0↔F_active transition",
+        "m2:Activation": "Activation (A⊗D) enables/blocks processes reversibly; Potentialization specifically governs the F∉Σ↔F_active transition",
         "m2:Process": "Process (D⊗F) is a generic temporal sequence; Potentialization focuses on the mode transition of F itself"
       },
       "m3:semanticSignature": "flow_mode_transition + attractor_directed + dynamic_mobilization"
@@ -6653,12 +6653,12 @@
         "@id": "m2:GenericConceptCombo"
       },
       "rdfs:label": "Absorbing State",
-      "rdfs:comment": "Stase irreversibly sealed by Entropy production. Terminal state from which Potentialization is structurally impossible — the Entropy produced has closed the return path permanently. Distinct from Stase (reversible, D absent) by the presence of Entropy (F⊗I⊗D) which introduces irreversible temporal sealing. F=0 is permanent, not merely suspended. Relation to TSCG axiom: Absorbing State is the limit case where F=0 AND Potentialization=impossible.",
+      "rdfs:comment": "Stase irreversibly sealed by Entropy production. Terminal state from which Potentialization is structurally impossible — the Entropy produced has closed the return path permanently. Distinct from Stase (reversible, D absent) by the presence of Entropy (F⊗I⊗D) which introduces irreversible temporal sealing. F∉Σ is permanent, not merely suspended. Relation to TSCG axiom: Absorbing State is the limit case where F∉Σ AND Potentialization=impossible.",
       "m2:hasFamily": "m2:Combo",
       "m2:hasComboComponents": [
         {
           "@id": "m2:Stase",
-          "role": "F=0 ground state (reversible base)"
+          "role": "F∉Σ ground state (reversible base)"
         },
         {
           "@id": "m2:Entropy",
@@ -6685,10 +6685,10 @@
         "Apoptosis: programmed irreversible cell death (biology)",
         "System fatal crash / stack overflow (computing)",
         "Bankruptcy with no recovery path (economics)",
-        "Thermodynamic heat death — F=0 permanent (physics)"
+        "Thermodynamic heat death — F∉Σ permanent (physics)"
       ],
       "m2:distinctFrom": {
-        "m2:Stase": "Stase (S⊗A) has F=0 reversible (D absent — a-temporal); Absorbing State has F=0 sealed by Entropy (D present via Entropy component — temporal sealing)",
+        "m2:Stase": "Stase (S⊗A) has F∉Σ reversible (D absent — a-temporal); Absorbing State has F∉Σ sealed by Entropy (D present via Entropy component — temporal sealing)",
         "m2:Attractor": "Attractor admits reversible basin trajectories; Absorbing State is strictly unidirectional (no return trajectory possible)",
         "m2:Constraint": "Constraint bounds accessible states; Absorbing State permanently forecloses all states except the terminal one"
       },
