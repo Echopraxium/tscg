@@ -119,7 +119,6 @@ def health():
 @app.post('/load')
 def load_ontology(req: LoadRequest):
     """
-    print(f"[bridge /load] Request for: {req.file_path[-50:]}", flush=True)
     Load a JSON-LD (or any RDF) file into the in-memory store.
     Also returns the raw @graph for the Object Explorer.
     """
@@ -216,7 +215,6 @@ def load_ontology(req: LoadRequest):
             'keys':  []
         })
 
-    print(f'[/load] req={req.file_path[-45:]} | objects={len(objects)} | sample={objects[1]["id"][-40:] if len(objects)>1 else "none"} | p_file={str(p)[-45:] if not is_url else "URL"}', flush=True)
     return {
         'loaded':    True,
         'triples':   len(g),
@@ -255,7 +253,6 @@ def get_objects(file_path: str):
             'type':  str(row.type)  if row.type  else '',
             'label': str(row.label) if row.label else str(row.s).split('#')[-1].split('/')[-1],
         })
-    print(f"[bridge /load] {req.file_path[-40:]} → {len(objects)} objects, sample: {objects[1]['id'][-35:] if len(objects)>1 else 'none'}", flush=True)
     return {'objects': results, 'count': len(results)}
 
 # ── JSON-LD direct property reader ──────────────────────────────

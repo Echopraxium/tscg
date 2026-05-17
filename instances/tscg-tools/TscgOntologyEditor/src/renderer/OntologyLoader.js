@@ -194,9 +194,6 @@ export async function loadFile (absPath) {
 
     // Cache the loaded data for fast tab switching
     _isDirty = true  // mark as fresh load in progress
-    console.log('[OntologyLoader] Caching:', absPath.split(/[/\\]/).pop(),
-      '| objects:', data.objects?.length,
-      '| sample:', data.objects?.[1]?.id?.slice(-35))
     _docCache.set(absPath, { objects: data.objects, pairs })
 
     // Notify renderer to create/activate a document tab
@@ -238,10 +235,7 @@ export async function activateDocument (filePath) {
     _activeFile = filePath
     setStatus(`${objects.length} objects — cached`)
     populateObjectExplorer(objects, pairs)
-    const stem = filePath.split(/[/\\]/).pop()
-    console.log('[OntologyLoader] Activated from cache:', stem,
-      '| objects:', objects.length,
-      '| sample IRI:', objects[1]?.id?.slice(-35) || '?')
+    console.log('[OntologyLoader] Activated from cache:', filePath.split(/[/\\]/).pop())
   } else {
     // Cache miss: load from bridge
     console.log('[OntologyLoader] Cache miss — loading from bridge:', filePath.split(/[/\\]/).pop())
