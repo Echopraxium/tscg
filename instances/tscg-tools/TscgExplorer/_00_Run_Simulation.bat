@@ -1,1 +1,0 @@
-start python tscg_explorer.py
