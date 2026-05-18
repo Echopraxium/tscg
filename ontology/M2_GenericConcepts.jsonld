@@ -18,7 +18,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
       "dcterms:modified": "2026-05-13",
-      "owl:versionInfo": "16.10.0",
+      "owl:versionInfo": "16.10.1",
       "owl:imports": [
         "M3_GenesisGrammar.jsonld"
       ],
@@ -110,6 +110,11 @@
       },
       "m2:changelog": [
         {
+          "version": "16.10.1",
+          "date": "2026-05-18",
+          "changes": "FULL Structural Grammar migration from GitHub source: hasEpistemicGap removed from 84 instances, hasStructuralFormula→Grammar (84×), hasStructuralFormulaTeX→GrammarTeX (82×), calculus notation fixed (3×), (-1)^{p} removed from expressions (7×)"
+        },
+        {
           "version": "16.10.0",
           "date": "2026-05-18",
           "changes": "Structural Grammar migration: hasStructuralFormulaASCII→RawText (83×), hasStructuralFormula→hasStructuralGrammarFormula (keys), calculus notation ∂∇ → monoidal formula (3×)"
@@ -118,37 +123,6 @@
           "version": "16.9.0",
           "date": "2026-05-17",
           "changes": "MODELING FIX: Removed redundant rdfs:subClassOf ConceptContract (Composable/Observable/Stateful/Triggerable) from 15 GenericConcepts. ConceptContracts are behavioral interfaces implemented via m2:implements, not taxonomic parent classes. Affected: Homeostasis, Memory, Transformation, Process, Trajectory, Event, Observer, State, Gradient, Storage, Node, Component, Behavior, Step, Action."
-        },
-        {
-          "v15_12_0": "FORMALISM REFORM: hasStructuralFormula/TeX/ASCII → hasStructuralFormula/TeX/ASCII (250 occurrences). owl:imports GenesisSpace → GenesisGrammar. tensorFormula → structuralFormula in semanticSignature (migration completed). Property labels updated to reflect monoidal grammar context. See TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md.",
-          "v15_11_0": {
-            "date": "2026-03-23",
-            "session": "Ranaora & Yii poclet analysis — TSCG M2 architectural discoveries",
-            "source": "DOI: 10.5281/zenodo.19160047",
-            "changes": [
-              "NEW ATOMIC: m2:Processor (Dynamic, S⊗I⊗F⊗D, neutral) — generic transformer",
-              "NEW ATOMIC: m2:Transducer (Energetic, F⊗S⊗I, neutral, subClassOf Processor) — flux converter",
-              "NEW ATOMIC: m2:Entropy (Energetic, F⊗I⊗D, dual Entropy/Negentropy) — irreversibility measure (Feynman)",
-              "NEW ATOMIC: m2:Stase (Structural, S⊗A, neutral) — F=0 reversible ground state",
-              "NEW ATOMIC: m2:Coherence (Structural, A⊗S⊗I⊗R⊗O, dual Coherence/Incoherence, bicephalous) — structural+perceptual alignment",
-              "NEW COMBO: m2:Inertia (⊗⇒(Memory,Entropy), S⊗F⊗I⊗D, neutral) — thermodynamic resistance via accumulated Entropy",
-              "NEW COMBO: m2:Potentialization (⊗⇒(Activation,Process), A⊗D⊗F, dual +/-) — F=0↔F_active transition",
-              "NEW COMBO: m2:AbsorbingState (⊗⇒(Stase,Entropy), S⊗A⊗F⊗I⊗D, neutral) — irreversibly sealed Stase",
-              "NEW COMBO: m2:TopologicalDefect (⊗⇒(Incoherence,Invariant), S⊗A⊗I⊗R⊗O, neutral) — locally stable incoherence",
-              "REVISED: m2:Dissipation — subClassOf Transducer, produces Entropy, Feynman note (equations are time-reversible)",
-              "ARCHITECTURAL M3: F axiom relaxed F≥0 (F=0=Stase valid). F_morphic annotation (F∈Mor∩Ob). F_potential/F_active spectrum. F_total conservation as emergent M2 property.",
-              "RECONCILIATION: Coherence^op=Entropy (v6.5.0) was imprecise. Correct: Incoherence→[Dissipation]→Entropy (causal morphism, not categorical dual). Coherence^op=Incoherence; Entropy^op=Negentropy.",
-              "Atomics 75→80, Combos 0→4, Total 75→84, neutralPolarity 53→59, dualPolarity 16→19, hybridPolarity 3→4"
-            ]
-          },
-          "v15_10_1": {
-            "date": "2026-03-13",
-            "changes": [
-              "RESTORED: m2:GenericConceptCombo as owl:Class (subClassOf m2:GenericConcept) — instances moved to M1_CoreConcepts.jsonld",
-              "NEW CLASS: m2:KnowledgeFieldConceptCombo (subClassOf m2:GenericConceptCombo) — cross-knowledge-field combos",
-              "ARCHITECTURE: M2 defines Combo classes only; M1_CoreConcepts hosts all instances"
-            ]
-          }
         }
       ],
       "m2:bicephalousStrategy": {
@@ -214,8 +188,6 @@
       "rdfs:label": "Layer",
       "rdfs:comment": "Stable, ordered positional partition in a stack: each layer has a characteristic content (I) and occupies a fixed rank defined by an attractor (A). Subclass of Segmentation (S ⊗ I ⊗ D): the D dimension is replaced by A — partition is positional-stable rather than dynamically produced. No subordination (unlike Hierarchy): layers are co-equal strata. Representability (R) ensures the stacking order is semantically encodable.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I ⊗ A ⊗ R",
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes A \\otimes R",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) A (x) R",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -223,7 +195,6 @@
         "m3:eagle_eye:Attractor",
         "m3:sphinx_eye:Representability"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:perspective": "territory",
       "m2:eagleView": {
@@ -268,7 +239,9 @@
         ]
       },
       "dcterms:created": "2026-03-13",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I ⊗ A ⊗ R",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes A \\otimes R"
     },
     {
       "@id": "m2:Context",
@@ -284,8 +257,6 @@
       "rdfs:label": "Context",
       "rdfs:comment": "Epistemic frame — subclass of Environment — that delimits what is observable (O), how it is encodable/nameable (R), within which shared interpretive space between observers (Im), and how that frame can reconfigure (E). Pure Map concept (all four dimensions are REVOI): unlike its parent Environment (F ⊗ I — Territory), Context describes HOW a system is known rather than WHAT it is. A context can be linguistic, computational, legal, biological or mathematical — in every case it is the epistemic scaffolding that conditions observation.",
       "m2:hasFamily": "m2:Ontological",
-      "m2:hasStructuralFormula": "O ⊗ R ⊗ Im ⊗ E",
-      "m2:hasStructuralFormulaTeX": "O \\otimes R \\otimes I_m \\otimes E",
       "m2:hasStructuralGrammarFormulaRawText": "O (x) R (x) Im (x) E",
       "m2:hasDominantM3": [
         "m3:sphinx_eye:Observability",
@@ -293,7 +264,6 @@
         "m3:sphinx_eye:Interoperability",
         "m3:sphinx_eye:Evolvability"
       ],
-      "m2:hasEpistemicGap": 0.15,
       "m2:hasPolarity": "neutral",
       "m2:perspective": "map",
       "m2:sphinxView": {
@@ -336,7 +306,9 @@
         ]
       },
       "dcterms:created": "2026-03-13",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:hasStructuralGrammarFormula": "O ⊗ R ⊗ Im ⊗ E",
+      "m2:hasStructuralGrammarFormulaTeX": "O \\otimes R \\otimes I_m \\otimes E"
     },
     {
       "@id": "m2:GenericConcept",
@@ -413,15 +385,16 @@
       "rdfs:comment": "Associates a genericConcept with its GenericConceptFamily. Renamed from hasCategory to hasFamily to align with the renaming of m2:Category to m2:GenericConceptFamily."
     },
     {
-      "@id": "m2:hasStructuralFormula",
+      "@id": "m2:hasStructuralGrammarFormula",
       "@type": "owl:DatatypeProperty",
-      "rdfs:label": "has structural formula",
+      "rdfs:label": "has structural grammar formula",
       "rdfs:domain": {
         "@id": "m2:GenericConcept"
       },
       "rdfs:range": {
         "@id": "xsd:string"
-      }
+      },
+      "rdfs:comment": "Monoidal composition formula in TSCG Structural Grammar (Lambek calculus). Unicode form, e.g. S ⊗ I ⊗ D."
     },
     {
       "@id": "m2:hasDominantM3",
@@ -946,14 +919,11 @@
       "rdfs:label": "Resource",
       "rdfs:comment": "A quantifiable entity available to, consumed by, or produced by a system. Characterised by three coupled dimensions: Flow (F) — the resource moves or circulates through the system; Information (I) — it carries encoded state or content (energy level, chemical concentration, data payload); Representability (R, REVOI) — it can be described, measured and modelled. Transdisciplinary instances: nutrients/waste (Biology), electrical power (Electronics), raw materials (Engineering), memory/CPU cycles (Computing), capital (Economics).",
       "m2:hasFamily": "m2:Ontological",
-      "m2:hasStructuralFormula": "F ⊗ I ⊗ R",
-      "m2:hasStructuralFormulaTeX": "F \\otimes I \\otimes R",
       "m2:hasStructuralGrammarFormulaRawText": "F (x) I (x) R",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:perspective": "dual",
       "m2:eagleView": {
@@ -992,7 +962,9 @@
       },
       "m3:semanticSignature": "quantifiable_entity + flow_carrier + information_bearing",
       "dcterms:created": "2026-02-24",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:hasStructuralGrammarFormula": "F ⊗ I ⊗ R",
+      "m2:hasStructuralGrammarFormulaTeX": "F \\otimes I \\otimes R"
     },
     {
       "@id": "m2:Interoperability",
@@ -1003,15 +975,12 @@
       "rdfs:label": "Interoperability",
       "rdfs:comment": "The structural capacity of a system to exchange, process and use information with other systems according to shared protocols or standards, while remaining evolvable. Combines: Structure (S) — the interface architecture; Information (I) — the format and encoding of exchanged content; Flow (F) — the actual exchange protocol; Verifiability (V, REVOI) — testability of interface contracts; Evolvability (E, REVOI) — adaptability to new formats and standards. Note: distinct from the REVOI dimension I (Interoperability as a map-quality axis) — this GenericConcept models the observable STRUCTURAL PATTERN of interoperation, whereas REVOI-I measures the degree of interoperability of a conceptual model.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I ⊗ F ⊗ V ⊗ E",
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes F \\otimes V \\otimes E",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) F (x) V (x) E",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:perspective": "dual",
       "m2:eagleView": {
@@ -1050,7 +1019,9 @@
       },
       "m3:semanticSignature": "interface_structure + information_exchange + protocol_flow + evolvable_contract",
       "dcterms:created": "2026-02-24",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I ⊗ F ⊗ V ⊗ E",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes F \\otimes V \\otimes E"
     },
     {
       "@id": "m2:Homeostasis",
@@ -1061,13 +1032,11 @@
       "rdfs:label": "Homeostasis",
       "rdfs:comment": "Self-regulation maintaining stable internal state despite external perturbations.",
       "m2:hasFamily": "m2:Regulatory",
-      "m2:hasStructuralFormula": "A ⊗ S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Body temperature regulation",
@@ -1088,12 +1057,13 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "A \\otimes S \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "A (x) S (x) F",
       "m3:semanticSignature": "attractor_maintenance + structural_stability + flow_regulation",
       "m2:implements": {
         "@id": "m2:Stateful"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "A ⊗ S ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "A \\otimes S \\otimes F"
     },
     {
       "@id": "m2:Resilience",
@@ -1104,12 +1074,10 @@
       "rdfs:label": "Resilience",
       "rdfs:comment": "Capacity to absorb disturbances while retaining fundamental structure and function.",
       "m2:hasFamily": "m2:Adaptive",
-      "m2:hasStructuralFormula": "A ⊗ S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Structure"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Ecosystem recovery after wildfire",
@@ -1122,9 +1090,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "A \\otimes S",
       "m2:hasStructuralGrammarFormulaRawText": "A (x) S",
-      "m3:semanticSignature": "return_to_attractor + structural_integrity"
+      "m3:semanticSignature": "return_to_attractor + structural_integrity",
+      "m2:hasStructuralGrammarFormula": "A ⊗ S",
+      "m2:hasStructuralGrammarFormulaTeX": "A \\otimes S"
     },
     {
       "@id": "m2:Adaptation",
@@ -1135,13 +1104,11 @@
       "rdfs:label": "Adaptation",
       "rdfs:comment": "Progressive modification of structure or behavior in response to environmental changes.",
       "m2:hasFamily": "m2:Adaptive",
-      "m2:hasStructuralFormula": "I ⊗ F ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Bacterial antibiotic resistance",
@@ -1154,9 +1121,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "I \\otimes F \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "I (x) F (x) D",
-      "m3:semanticSignature": "information_driven + flow_modification + dynamic_change"
+      "m3:semanticSignature": "information_driven + flow_modification + dynamic_change",
+      "m2:hasStructuralGrammarFormula": "I ⊗ F ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "I \\otimes F \\otimes D"
     },
     {
       "@id": "m2:Emergence",
@@ -1167,13 +1135,11 @@
       "rdfs:label": "Emergence",
       "rdfs:comment": "Appearance of novel properties at system level not predictable from components alone.",
       "m2:hasFamily": "m2:Adaptive",
-      "m2:hasStructuralFormula": "I ⊗ S ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.5,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Consciousness from neural interactions",
@@ -1186,9 +1152,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "I \\otimes S \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "I (x) S (x) D",
-      "m3:semanticSignature": "information_integration + structural_reorganization + novel_dynamics"
+      "m3:semanticSignature": "information_integration + structural_reorganization + novel_dynamics",
+      "m2:hasStructuralGrammarFormula": "I ⊗ S ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "I \\otimes S \\otimes D"
     },
     {
       "@id": "m2:Dissipation",
@@ -1213,12 +1180,10 @@
         "formula": "Dissipation(F⊗D) →generates→ Entropy(F⊗I⊗D)",
         "note": "I dimension emerges from accumulation of F⊗D — not present in Dissipation itself"
       },
-      "m2:hasStructuralFormula": "F ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.15,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Heat loss in engines",
@@ -1231,14 +1196,15 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "F \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "F (x) D",
       "m2:distinctFrom": {
         "m2:Entropy": "Entropy (F⊗I⊗D) is the MEASURE of disorder produced; Dissipation (F⊗D) is the MECHANISM of production. Dissipation equations are time-reversible; Entropy encodes irreversibility (Feynman).",
         "m2:Process": "Process (D⊗F) is a generic temporal sequence; Dissipation specifically implies energy degradation toward lower states.",
         "m2:Transducer": "Dissipation is a subclass of Transducer — the degrading specialization (F_active → F_degraded). General Transducer converts between flux types without implying energy loss."
       },
-      "m3:semanticSignature": "energy_flow + directed_degradation + entropy_generator"
+      "m3:semanticSignature": "energy_flow + directed_degradation + entropy_generator",
+      "m2:hasStructuralGrammarFormula": "F ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "F \\otimes D"
     },
     {
       "@id": "m2:Regulation",
@@ -1249,13 +1215,11 @@
       "rdfs:label": "Regulation",
       "rdfs:comment": "Control mechanisms maintaining system parameters within acceptable ranges. Feedback polarity (Negative/Positive/Mixed) specified via feedback_polarity attribute.",
       "m2:hasFamily": "m2:Regulatory",
-      "m2:hasStructuralFormula": "A ⊗ S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.35,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Hormonal feedback loops",
@@ -1276,7 +1240,6 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "A \\otimes S \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "A (x) S (x) F",
       "m2:hasAttribute": {
         "feedback_polarity": {
@@ -1456,7 +1419,9 @@
           "m2:usageGuidelines": "PID is the industrial standard for most applications. Use Bang-bang for simple on/off systems (HVAC). Use Adaptive/MPC for complex or time-varying systems. RAAS uses biological equivalent of negative feedback (closest to Proportional)."
         }
       },
-      "m3:semanticSignature": "attractor_control + structural_constraints + flow_modulation"
+      "m3:semanticSignature": "attractor_control + structural_constraints + flow_modulation",
+      "m2:hasStructuralGrammarFormula": "A ⊗ S ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "A \\otimes S \\otimes F"
     },
     {
       "@id": "m2:Memory",
@@ -1467,14 +1432,11 @@
       "rdfs:label": "Memory",
       "rdfs:comment": "Retention of past states influencing current behavior through temporal integration.",
       "m2:hasFamily": "m2:Adaptive",
-      "m2:hasStructuralFormula": "∫(D−F)dτ",
-      "m2:hasStructuralFormulaTeX": "\\int (D - F)\\,d\\tau",
       "m2:hasStructuralGrammarFormulaRawText": "integral(D - F, dtau)",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Neural synaptic weights",
@@ -1490,7 +1452,9 @@
       "m3:semanticSignature": "temporal_integration + persistence_over_time(dynamics_minus_flow)",
       "m2:implements": {
         "@id": "m2:Stateful"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "∫(D−F)dτ",
+      "m2:hasStructuralGrammarFormulaTeX": "\\int (D - F)\\,d\\tau"
     },
     {
       "@id": "m2:Constraint",
@@ -1501,12 +1465,10 @@
       "rdfs:label": "Constraint",
       "rdfs:comment": "Restriction on possible system states or trajectories, limiting degrees of freedom.",
       "m2:hasFamily": "m2:Regulatory",
-      "m2:hasStructuralFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Physical conservation laws",
@@ -1519,9 +1481,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I",
-      "m3:semanticSignature": "structural_boundary + information_limit"
+      "m3:semanticSignature": "structural_boundary + information_limit",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I"
     },
     {
       "@id": "m2:Scope",
@@ -1532,8 +1495,6 @@
       "rdfs:label": "Scope",
       "rdfs:comment": "Domain of validity or applicability where an entity, rule, or authority has effect. Defines a positive boundary of what is permitted or possible, in contrast to Constraint (which defines what is prohibited). Fundamental to autonomy, jurisdiction, and authorization concepts across multiple domains.",
       "m2:hasFamily": "m2:Regulatory",
-      "m2:hasStructuralFormula": "S → I → A → R",
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes A \\otimes R",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) A (x) R",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -1541,7 +1502,6 @@
         "m3:eagle_eye:Attractor",
         "m3:sphinx_eye:Representable"
       ],
-      "m2:hasEpistemicGap": 0.35,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Programming: Variable scope (lexical, global, block)",
@@ -1589,7 +1549,9 @@
       "dcterms:created": "2026-02-03",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified during VSM M0 modeling refinement. Required to properly model Autonomy as GenericConceptCombo(Agent, Scope) where Agent provides action capability and Scope provides bounded domain of authority. Fills semantic gap between Constraint (prohibition) and Domain (entire field). Essential for authorization, delegation, and jurisdictional concepts.",
-      "m3:semanticSignature": "structural_boundary + information_range + attractor_reach + representational_extent"
+      "m3:semanticSignature": "structural_boundary + information_range + attractor_reach + representational_extent",
+      "m2:hasStructuralGrammarFormula": "S → I → A → R",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes A \\otimes R"
     },
     {
       "@id": "m2:Bifurcation",
@@ -1605,12 +1567,10 @@
       "rdfs:label": "Bifurcation",
       "rdfs:comment": "Qualitative change in system behavior at critical parameter threshold. Semantic specialization of m2:Duplication where V→0: the copying process loses fidelity entirely and the two resulting branches diverge toward distinct attractors. Analogous to Homeostasis ↪ Regulation semantic inclusion precedent (morphism_inclusion, not dimensional inheritance).",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "D ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.4,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Phase transitions",
@@ -1623,8 +1583,7 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "\\partial D / \\partial F",
-      "m2:hasStructuralGrammarFormulaRawText": "dD/dF",
+      "m2:hasStructuralGrammarFormulaRawText": "D (x) F",
       "m2:hasAttribute": {
         "bifurcation_type": {
           "@type": "m2:ValueSpace",
@@ -1760,7 +1719,9 @@
       "m2:distinctionFromRelated": {
         "vs_Duplication": "Duplication (S⊗I⊗F⊗D⊗V) produces faithful copies (V→1). Bifurcation is the degenerate limit where V→0: the copying process loses fidelity entirely and the two branches diverge toward distinct attractors. See m2:Duplication fidelitySpectrum.V_low."
       },
-      "m3:semanticSignature": "dynamics_sensitivity_to_flow + threshold_crossing + qualitative_state_change"
+      "m3:semanticSignature": "dynamics_sensitivity_to_flow + threshold_crossing + qualitative_state_change",
+      "m2:hasStructuralGrammarFormula": "D ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "D \\otimes F"
     },
     {
       "@id": "m2:Duplication",
@@ -1773,8 +1734,6 @@
       "dcterms:created": "2026-02-28",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "S ⊗ I ⊗ F ⊗ D ⊗ V",
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes F \\otimes D \\otimes V",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) F (x) D (x) V",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
@@ -1802,7 +1761,6 @@
         "I": "Informational content preserved faithfully in the copy — genetic code, data payload, semantic message",
         "V": "Verifiability of fidelity — the copy is recognizable as equivalent to the original (checksum, genetic proofreading, source citation)"
       },
-      "m2:hasEpistemicGap": 0.22,
       "m2:hasPolarity": "neutral",
       "m2:perspective": "dual",
       "m2:eagleView": {
@@ -1913,7 +1871,9 @@
         "count": 6
       },
       "m2:discoveryContext": "Identified as missing M2 gap during construction of m2:Propagation as GenericConceptCombo ⊗⇒(Cascade, Duplication, Network). Duplication provides the branching parent: each node receiving a copy becomes a new emitter. The fidelity spectrum (V axis) formally connects Duplication to Bifurcation (degenerate V→0 case).",
-      "m3:semanticSignature": "faithful_copy_production + informational_preservation + flux_driven + temporal_dynamics + fidelity_verifiable"
+      "m3:semanticSignature": "faithful_copy_production + informational_preservation + flux_driven + temporal_dynamics + fidelity_verifiable",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I ⊗ F ⊗ D ⊗ V",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes F \\otimes D \\otimes V"
     },
     {
       "@id": "m2:Hierarchy",
@@ -1924,12 +1884,10 @@
       "rdfs:label": "Hierarchy",
       "rdfs:comment": "Nested levels of organization with vertical control relations.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Attractor"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Biological organization (atoms ⊗ → molecules ⊗ ⊗ cells)",
@@ -1950,9 +1908,10 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes A",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) A",
-      "m3:semanticSignature": "structural_levels + attractor_ordering"
+      "m3:semanticSignature": "structural_levels + attractor_ordering",
+      "m2:hasStructuralGrammarFormula": "S ⊗ A",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes A"
     },
     {
       "@id": "m2:Network",
@@ -1963,13 +1922,11 @@
       "rdfs:label": "Network",
       "rdfs:comment": "Set of nodes connected by edges enabling distributed interactions.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Neural networks",
@@ -1990,7 +1947,6 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) F",
       "m2:hasAttribute": {
         "topology": {
@@ -2173,7 +2129,9 @@
           }
         }
       },
-      "m3:semanticSignature": "structural_topology + information_routing + flow_distribution"
+      "m3:semanticSignature": "structural_topology + information_routing + flow_distribution",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes F"
     },
     {
       "@id": "m2:Symmetry",
@@ -2184,11 +2142,9 @@
       "rdfs:label": "Symmetry",
       "rdfs:comment": "Invariance under transformation.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Crystal lattice symmetries",
@@ -2210,7 +2166,6 @@
         }
       },
       "m2:hasStructuralGrammarFormulaRawText": "S",
-      "m2:hasStructuralFormulaTeX": "S",
       "m2:hasAttribute": {
         "symmetry_type": {
           "@type": "m2:ValueSpace",
@@ -2355,7 +2310,9 @@
           "m2:spontaneous_breaking": "System Lagrangian has symmetry, but ground state doesn't (Higgs mechanism, ferromagnetism)"
         }
       },
-      "m3:semanticSignature": "structural_invariance_under_transformation"
+      "m3:semanticSignature": "structural_invariance_under_transformation",
+      "m2:hasStructuralGrammarFormula": "S",
+      "m2:hasStructuralGrammarFormulaTeX": "S"
     },
     {
       "@id": "m2:Modularity",
@@ -2366,12 +2323,10 @@
       "rdfs:label": "Modularity",
       "rdfs:comment": "Decomposition into semi-independent functional units.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Software modules",
@@ -2392,9 +2347,10 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I",
-      "m3:semanticSignature": "structural_decomposability + informational_independence"
+      "m3:semanticSignature": "structural_decomposability + informational_independence",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I"
     },
     {
       "@id": "m2:Topology",
@@ -2405,12 +2361,10 @@
       "rdfs:label": "Topology",
       "rdfs:comment": "Classification of structural properties preserved under continuous deformations: connectivity, compactness, genus. Captures the TYPE or CLASS of structure independent of metric, enabling structural pattern recognition across domains.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Network topology types (star, ring, mesh) - computer science",
@@ -2433,9 +2387,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I",
-      "m3:semanticSignature": "structural_connectivity + informational_adjacency"
+      "m3:semanticSignature": "structural_connectivity + informational_adjacency",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I"
     },
     {
       "@id": "m2:Segmentation",
@@ -2446,13 +2401,11 @@
       "rdfs:label": "Segmentation",
       "rdfs:comment": "Partition of a whole into homogeneous segments according to similarity, continuity, or structural criteria. Analytical decomposition producing distinct but exhaustive regions (vs functional decomposition in Modularity).",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Image segmentation (edge detection, region growing) - computer vision",
@@ -2474,9 +2427,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) D",
-      "m3:semanticSignature": "structural_partition + informational_boundaries + dynamic_differentiation"
+      "m3:semanticSignature": "structural_partition + informational_boundaries + dynamic_differentiation",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes D"
     },
     {
       "@id": "m2:Transformation",
@@ -2487,13 +2441,11 @@
       "rdfs:label": "Transformation",
       "rdfs:comment": "Fundamental change in system state, structure, or identity.",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "D ⊗ S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Metamorphosis",
@@ -2506,12 +2458,13 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "D \\otimes S \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "D (x) S (x) I",
       "m3:semanticSignature": "dynamic_change + structural_mapping + information_preservation",
       "m2:implements": {
         "@id": "m2:Triggerable"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "D ⊗ S ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "D \\otimes S \\otimes I"
     },
     {
       "@id": "m2:Code",
@@ -2522,12 +2475,10 @@
       "rdfs:label": "Code",
       "rdfs:comment": "System of rules for systematic transformation between domains.",
       "m2:hasFamily": "m2:Informational",
-      "m2:hasStructuralFormula": "I ⊗ S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Genetic code",
@@ -2548,9 +2499,10 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "I \\otimes S",
       "m2:hasStructuralGrammarFormulaRawText": "I (x) S",
-      "m3:semanticSignature": "information_encoding + structural_mapping"
+      "m3:semanticSignature": "information_encoding + structural_mapping",
+      "m2:hasStructuralGrammarFormula": "I ⊗ S",
+      "m2:hasStructuralGrammarFormulaTeX": "I \\otimes S"
     },
     {
       "@id": "m2:Coding",
@@ -2561,13 +2513,11 @@
       "rdfs:label": "Coding (Encoding/Decoding)",
       "rdfs:comment": "Bidirectional transformation between information and coded representation.",
       "m2:hasFamily": "m2:Informational",
-      "m2:hasStructuralFormula": "I ⊗ S ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Coding",
       "m2:fullName": "Coding (Encoding / Decoding)",
@@ -2602,7 +2552,6 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "I \\otimes S \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "I (x) S (x) D",
       "m2:expression": null,
       "m2:pairType": "DirectionReversal",
@@ -2618,7 +2567,9 @@
           "semantics": "Coded representation restored to source information (S ⊗ D applied in reverse)"
         }
       },
-      "m3:semanticSignature": "encoding_rules + structural_grammar + dynamic_conversion"
+      "m3:semanticSignature": "encoding_rules + structural_grammar + dynamic_conversion",
+      "m2:hasStructuralGrammarFormula": "I ⊗ S ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "I \\otimes S \\otimes D"
     },
     {
       "@id": "m2:Representation",
@@ -2629,12 +2580,10 @@
       "rdfs:label": "Representation",
       "rdfs:comment": "Mapping between domains preserving structural relationships.",
       "m2:hasFamily": "m2:Informational",
-      "m2:hasStructuralFormula": "I ⊗ S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Mathematical models",
@@ -2650,7 +2599,6 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "I \\otimes S",
       "m2:hasStructuralGrammarFormulaRawText": "I (x) S",
       "m3:semanticSignature": "information_structure + symbol_mapping + space_coverage_ratio",
       "m2:hasAttribute": {
@@ -2744,7 +2692,9 @@
             "m2:Scope": "Scope defines the boundary of applicability; RSC measures coverage density within that scope"
           }
         }
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "I ⊗ S",
+      "m2:hasStructuralGrammarFormulaTeX": "I \\otimes S"
     },
     {
       "@id": "m2:Language",
@@ -2755,13 +2705,11 @@
       "rdfs:label": "Language",
       "rdfs:comment": "Structured system for information exchange and meaning construction.",
       "m2:hasFamily": "m2:Informational",
-      "m2:hasStructuralFormula": "I ⊗ S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Natural language",
@@ -2777,9 +2725,10 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "I \\otimes S \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "I (x) S (x) F",
-      "m3:semanticSignature": "information_system + structural_grammar + communicative_flow"
+      "m3:semanticSignature": "information_system + structural_grammar + communicative_flow",
+      "m2:hasStructuralGrammarFormula": "I ⊗ S ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "I \\otimes S \\otimes F"
     },
     {
       "@id": "m2:Pattern",
@@ -2790,13 +2739,11 @@
       "rdfs:label": "Pattern (Recognition / Reuse)",
       "rdfs:comment": "Recurring structural motif identifiable across instances and reusable as a template. Exists as an observable regularity in Territory (Eagle Eye) and as a reusable archetype in Map (Sphinx Eye). The key discriminator vs related concepts is the combination of recurrence (vs Signature) and cross-domain reusability (vs Representation).",
       "m2:hasFamily": "m2:Informational",
-      "m2:hasStructuralFormula": "S → I → A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Attractor"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Pattern",
       "m2:fullName": "Pattern Recognition / Pattern Reuse",
@@ -2854,9 +2801,10 @@
       "dcterms:created": "2026-01-31",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified as missing genericConcept during TO_DO review. Pattern occupies a unique niche: it bridges observation (Territory) and reuse (Map) through structural recurrence. No existing genericConcept captured both the recurring regularity aspect and the cross-domain template reusability in a single concept.",
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes A",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) A",
-      "m3:semanticSignature": "structural_regularity + information_recognition + attractor_reuse"
+      "m3:semanticSignature": "structural_regularity + information_recognition + attractor_reuse",
+      "m2:hasStructuralGrammarFormula": "S → I → A",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes A"
     },
     {
       "@id": "m2:Process",
@@ -2867,12 +2815,10 @@
       "rdfs:label": "Process",
       "rdfs:comment": "Sequence of state changes over time. Time discretization (Continuous/Discrete/Hybrid) specified via time_discretization attribute.",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "D ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Manufacturing process",
@@ -2886,7 +2832,6 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "D \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "D (x) F",
       "m2:hasAttribute": {
         "time_discretization": {
@@ -3006,7 +2951,9 @@
       "m3:semanticSignature": "temporal_dynamics + flow_transformation",
       "m2:implements": {
         "@id": "m2:Triggerable"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "D ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "D \\otimes F"
     },
     {
       "@id": "m2:Trajectory",
@@ -3017,13 +2964,11 @@
       "rdfs:label": "Trajectory",
       "rdfs:comment": "Observable path through state space traced by system evolution over time. Empirical, measured evolution in territory - what actually happens. Distinguished from Path (planned route on conceptual map). Trajectory shape (linear, circular, spiral, etc.) can be specified via shape attribute.",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "A ⊗ D ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.15,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Projectile trajectory - observed ballistic motion",
@@ -3059,7 +3004,6 @@
       "dcterms:created": "2026-02-05",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified during RAAS analysis when distinguishing between biochemical pathway diagrams (Path on map) and actual blood pressure evolution over time (Trajectory in territory). Resolves Map-Territory confusion in Path genericConcept.",
-      "m2:hasStructuralFormulaTeX": "A \\otimes D \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "A (x) D (x) F",
       "m2:hasAttribute": {
         "shape": {
@@ -3171,7 +3115,9 @@
       "m3:semanticSignature": "attractor_directed + dynamic_path + flow_sequence",
       "m2:implements": {
         "@id": "m2:Observable"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "A ⊗ D ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "A \\otimes D \\otimes F"
     },
     {
       "@id": "m2:Event",
@@ -3182,12 +3128,10 @@
       "rdfs:label": "Event",
       "rdfs:comment": "Discrete occurrence with temporal localization.",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "D ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Action potential spike",
@@ -3201,12 +3145,13 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "D \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "D (x) I",
       "m3:semanticSignature": "dynamic_occurrence + information_marking",
       "m2:implements": {
         "@id": "m2:Triggerable"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "D ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "D \\otimes I"
     },
     {
       "@id": "m2:Threshold",
@@ -3217,12 +3162,10 @@
       "rdfs:label": "Threshold",
       "rdfs:comment": "Critical value triggering qualitative change in system behavior.",
       "m2:hasFamily": "m2:Regulatory",
-      "m2:hasStructuralFormula": "A ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Activation threshold",
@@ -3236,7 +3179,6 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "A \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "A (x) I",
       "m2:hasAttribute": {
         "threshold_behavior": {
@@ -3348,7 +3290,9 @@
           }
         }
       },
-      "m3:semanticSignature": "attractor_boundary + information_criticality"
+      "m3:semanticSignature": "attractor_boundary + information_criticality",
+      "m2:hasStructuralGrammarFormula": "A ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "A \\otimes I"
     },
     {
       "@id": "m2:Trigger",
@@ -3359,12 +3303,10 @@
       "rdfs:label": "Trigger",
       "rdfs:comment": "Initiating stimulus for process activation.",
       "m2:hasFamily": "m2:Regulatory",
-      "m2:hasStructuralFormula": "D ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Signal transduction trigger",
@@ -3378,9 +3320,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "D \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "D (x) I",
-      "m3:semanticSignature": "dynamic_activation + information_condition"
+      "m3:semanticSignature": "dynamic_activation + information_condition",
+      "m2:hasStructuralGrammarFormula": "D ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "D \\otimes I"
     },
     {
       "@id": "m2:System",
@@ -3391,12 +3334,10 @@
       "rdfs:label": "System",
       "rdfs:comment": "Organized set of interacting components with defined boundary.",
       "m2:hasFamily": "m2:Ontological",
-      "m2:hasStructuralFormula": "S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Living cell",
@@ -3410,9 +3351,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) F",
-      "m3:semanticSignature": "structural_boundary + internal_flow"
+      "m3:semanticSignature": "structural_boundary + internal_flow",
+      "m2:hasStructuralGrammarFormula": "S ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes F"
     },
     {
       "@id": "m2:Environment",
@@ -3423,12 +3365,10 @@
       "rdfs:label": "Environment",
       "rdfs:comment": "External context with which system exchanges matter, energy, information.",
       "m2:hasFamily": "m2:Ontological",
-      "m2:hasStructuralFormula": "F ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Ecological niche",
@@ -3442,9 +3382,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "F \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "F (x) I",
-      "m3:semanticSignature": "external_flow + contextual_information"
+      "m3:semanticSignature": "external_flow + contextual_information",
+      "m2:hasStructuralGrammarFormula": "F ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "F \\otimes I"
     },
     {
       "@id": "m2:Observer",
@@ -3455,12 +3396,10 @@
       "rdfs:label": "Observer",
       "rdfs:comment": "Entity performing measurement or interpretation of system state.",
       "m2:hasFamily": "m2:Ontological",
-      "m2:hasStructuralFormula": "I ⊗ A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Attractor"
       ],
-      "m2:hasEpistemicGap": 0.35,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Scientific measurement apparatus",
@@ -3476,12 +3415,13 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "I \\otimes A",
       "m2:hasStructuralGrammarFormulaRawText": "I (x) A",
       "m3:semanticSignature": "information_collection + attractor_reference",
       "m2:implements": {
         "@id": "m2:Observable"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "I ⊗ A",
+      "m2:hasStructuralGrammarFormulaTeX": "I \\otimes A"
     },
     {
       "@id": "m2:State",
@@ -3492,11 +3432,9 @@
       "rdfs:label": "State",
       "rdfs:comment": "Instantaneous configuration of system variables.",
       "m2:hasFamily": "m2:Ontological",
-      "m2:hasStructuralFormula": "I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.15,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "System state vector",
@@ -3511,7 +3449,6 @@
         "status": "IMMUTABLE"
       },
       "m2:hasStructuralGrammarFormulaRawText": "I",
-      "m2:hasStructuralFormulaTeX": "I",
       "m3:semanticSignature": "information_snapshot(system_configuration_at_instant)",
       "m2:implements": [
         {
@@ -3520,7 +3457,9 @@
         {
           "@id": "m2:Stateful"
         }
-      ]
+      ],
+      "m2:hasStructuralGrammarFormula": "I",
+      "m2:hasStructuralGrammarFormulaTeX": "I"
     },
     {
       "@id": "m2:Substrate",
@@ -3531,12 +3470,10 @@
       "rdfs:label": "Substrate",
       "rdfs:comment": "Material or informational support enabling system existence.",
       "m2:hasFamily": "m2:Ontological",
-      "m2:hasStructuralFormula": "S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Physical medium",
@@ -3550,9 +3487,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) F",
-      "m3:semanticSignature": "structural_support + flow_medium"
+      "m3:semanticSignature": "structural_support + flow_medium",
+      "m2:hasStructuralGrammarFormula": "S ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes F"
     },
     {
       "@id": "m2:Gradient",
@@ -3563,12 +3501,10 @@
       "rdfs:label": "Gradient",
       "rdfs:comment": "Spatial or temporal variation creating driving force for flows.",
       "m2:hasFamily": "m2:Ontological",
-      "m2:hasStructuralFormula": "⊗ ₂F or ⊗ ₂I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Temperature gradient",
@@ -3582,7 +3518,6 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "\\otimes_2 F \\text{ ou } \\otimes_2 I",
       "m2:hasStructuralGrammarFormulaRawText": "⊗₂F or ⊗₂I",
       "m2:hasAttribute": {
         "gradient_type": {
@@ -3711,7 +3646,9 @@
       "m3:semanticSignature": "differential_variation + directional_flow_or_information",
       "m2:implements": {
         "@id": "m2:Observable"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "⊗ ₂F or ⊗ ₂I",
+      "m2:hasStructuralGrammarFormulaTeX": "\\otimes_2 F \\text{ ou } \\otimes_2 I"
     },
     {
       "@id": "m2:Invariant",
@@ -3722,12 +3659,10 @@
       "rdfs:label": "Invariant",
       "rdfs:comment": "Property unchanged under specific transformations or operations.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Attractor"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Conservation laws",
@@ -3743,9 +3678,10 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes A",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) A",
-      "m3:semanticSignature": "structural_persistence + attractor_stability"
+      "m3:semanticSignature": "structural_persistence + attractor_stability",
+      "m2:hasStructuralGrammarFormula": "S ⊗ A",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes A"
     },
     {
       "@id": "m2:Signature",
@@ -3756,12 +3692,10 @@
       "rdfs:label": "Signature",
       "rdfs:comment": "Characteristic pattern enabling unique identification.",
       "m2:hasFamily": "m2:Informational",
-      "m2:hasStructuralFormula": "I ⊗ S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Spectral signature",
@@ -3783,9 +3717,10 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "I \\otimes S",
       "m2:hasStructuralGrammarFormulaRawText": "I (x) S",
-      "m3:semanticSignature": "identifying_information + structural_fingerprint"
+      "m3:semanticSignature": "identifying_information + structural_fingerprint",
+      "m2:hasStructuralGrammarFormula": "I ⊗ S",
+      "m2:hasStructuralGrammarFormulaTeX": "I \\otimes S"
     },
     {
       "@id": "m2:Signal",
@@ -3796,12 +3731,10 @@
       "rdfs:label": "Signal",
       "rdfs:comment": "Carrier of information through space or time, enabling communication between system components.",
       "m2:hasFamily": "m2:Informational",
-      "m2:hasStructuralFormula": "I ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Neural action potential",
@@ -3816,7 +3749,6 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "I \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "I (x) F",
       "m2:hasAttribute": {
         "signal_type": {
@@ -3918,7 +3850,9 @@
           "m2:usageGuidelines": "Biological systems (RAAS) are typically Analog (continuous hormone concentrations) or Discrete-event (neuronal spikes). Digital for computer/communications. Hybrid for cyberphysical systems (sensors + digital control). Information Theory: analog_capacity C = B·log₂(1 + SNR) bits/sec (Shannon-Hartley); digital_reliability Error rates < 10^(-12) with coding; event_based_efficiency Only transmit when change occurs (sparse)."
         }
       },
-      "m3:semanticSignature": "information_carrier + flow_transmission"
+      "m3:semanticSignature": "information_carrier + flow_transmission",
+      "m2:hasStructuralGrammarFormula": "I ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "I \\otimes F"
     },
     {
       "@id": "m2:Self-Organization",
@@ -3929,13 +3863,11 @@
       "rdfs:label": "Self-Organization",
       "rdfs:comment": "Spontaneous emergence of ordered patterns without external direction.",
       "m2:hasFamily": "m2:Teleonomic",
-      "m2:hasStructuralFormula": "A ⊗ I ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.4,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Crystal formation",
@@ -3949,9 +3881,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "A \\otimes I \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "A (x) I (x) D",
-      "m3:semanticSignature": "attractor_emergence + information_driven + dynamic_self_structuring"
+      "m3:semanticSignature": "attractor_emergence + information_driven + dynamic_self_structuring",
+      "m2:hasStructuralGrammarFormula": "A ⊗ I ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "A \\otimes I \\otimes D"
     },
     {
       "@id": "m2:Synergy",
@@ -3962,12 +3895,10 @@
       "rdfs:label": "Synergy (Positive/Negative)",
       "rdfs:comment": "Combined effect differing from sum of individual effects (enhancement or inhibition).",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "I ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Synergy",
       "m2:fullName": "Synergy (Positive / Negative)",
@@ -4001,10 +3932,9 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "I \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "I (x) D",
-      "m2:expression": "(-1)^{p} (I ⊗ D)",
-      "m2:expressionTeX": "(-1)^{p} (I \\otimes D)",
+      "m2:expression": "(I ⊗ D)",
+      "m2:expressionTeX": "(I \\otimes D)",
       "m2:poleMapping": {
         "p=0": {
           "name": "Positive Synergy",
@@ -4017,7 +3947,9 @@
           "semantics": "Combined effect < sum of parts: 1+1 < 2 (antagonism, inhibition)"
         }
       },
-      "m3:semanticSignature": "interaction_producing_emergent_value + polarity(positive|negative)"
+      "m3:semanticSignature": "interaction_producing_emergent_value + polarity(positive|negative)",
+      "m2:hasStructuralGrammarFormula": "I ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "I \\otimes D"
     },
     {
       "@id": "m2:Fusion",
@@ -4028,12 +3960,10 @@
       "rdfs:label": "Fusion (Fusion/Fission)",
       "rdfs:comment": "Union or separation of entities.",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "S ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Fusion",
       "m2:fullName": "Fusion (Fission)",
@@ -4069,7 +3999,6 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) D",
       "m2:expression": null,
       "m2:pairType": "CardinalityReversal",
@@ -4087,7 +4016,9 @@
           "semantics": "One entity splits into N distinct entities"
         }
       },
-      "m3:semanticSignature": "structural_merging + dynamic_reconfiguration + polarity(fusion|fission)"
+      "m3:semanticSignature": "structural_merging + dynamic_reconfiguration + polarity(fusion|fission)",
+      "m2:hasStructuralGrammarFormula": "S ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes D"
     },
     {
       "@id": "m2:Activation",
@@ -4098,12 +4029,10 @@
       "rdfs:label": "Activation (Activation/Inhibition)",
       "rdfs:comment": "Enabling or blocking of processes or pathways.",
       "m2:hasFamily": "m2:Regulatory",
-      "m2:hasStructuralFormula": "A ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Activation",
       "m2:fullName": "Activation (Inhibition)",
@@ -4137,10 +4066,9 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "A \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "A (x) D",
-      "m2:expression": "(-1)^{p} (A ⊗ D)",
-      "m2:expressionTeX": "(-1)^{p} (A \\otimes D)",
+      "m2:expression": "(A ⊗ D)",
+      "m2:expressionTeX": "(A \\otimes D)",
       "m2:poleMapping": {
         "p=0": {
           "name": "Activation",
@@ -4153,7 +4081,9 @@
           "semantics": "Negative gain: blocks process, closes pathway"
         }
       },
-      "m3:semanticSignature": "dynamic_state_change + polarity(activation|inhibition)"
+      "m3:semanticSignature": "dynamic_state_change + polarity(activation|inhibition)",
+      "m2:hasStructuralGrammarFormula": "A ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "A \\otimes D"
     },
     {
       "@id": "m2:Convergence",
@@ -4164,12 +4094,10 @@
       "rdfs:label": "Convergence (Convergence/Divergence)",
       "rdfs:comment": "Focusing or dispersing of flows, trajectories, or information.",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "F ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Convergence",
       "m2:fullName": "Convergence (Divergence)",
@@ -4203,7 +4131,6 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "- \\nabla \\cdot D (convergence) / \\nabla \\cdot D (divergence)",
       "m2:hasStructuralGrammarFormulaRawText": "F ⊗ D",
       "m2:hasAttribute": {
         "convergence_pattern": {
@@ -4294,7 +4221,7 @@
         }
       },
       "m2:expression": "F ⊗ D",
-      "m2:expressionTeX": "(-1)^{p} \\nabla \\cdot D",
+      "m2:expressionTeX": "\\nabla \\cdot D",
       "m2:poleMapping": {
         "p=1": {
           "name": "Convergence",
@@ -4307,7 +4234,9 @@
           "semantics": "Positive divergence: flows/trajectories disperse away from repeller"
         }
       },
-      "m3:semanticSignature": "trajectory_directed + polarity(convergence|divergence)"
+      "m3:semanticSignature": "trajectory_directed + polarity(convergence|divergence)",
+      "m2:hasStructuralGrammarFormula": "F ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "F \\otimes D"
     },
     {
       "@id": "m2:Storage",
@@ -4318,12 +4247,10 @@
       "rdfs:label": "Storage",
       "rdfs:comment": "Function of retaining and accumulating matter, energy, or information.",
       "m2:hasFamily": "m2:Energetic",
-      "m2:hasStructuralFormula": "S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Battery storage",
@@ -4338,12 +4265,13 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) F",
       "m3:semanticSignature": "structural_container + flow_accumulation",
       "m2:implements": {
         "@id": "m2:Stateful"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "S ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes F"
     },
     {
       "@id": "m2:Capacity",
@@ -4354,12 +4282,10 @@
       "rdfs:label": "Capacity",
       "rdfs:comment": "Upper structural limit or maximal potential of system.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Channel bandwidth (Shannon)",
@@ -4374,9 +4300,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I",
-      "m3:semanticSignature": "structural_volume + information_limit"
+      "m3:semanticSignature": "structural_volume + information_limit",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I"
     },
     {
       "@id": "m2:Agent",
@@ -4387,13 +4314,11 @@
       "rdfs:label": "Agent",
       "rdfs:comment": "Active entity capable of autonomous action and interaction.",
       "m2:hasFamily": "m2:Relational",
-      "m2:hasStructuralFormula": "S ⊗ I ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.35,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Software agent",
@@ -4415,9 +4340,10 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) D",
-      "m3:semanticSignature": "autonomous_structure + information_processing + dynamic_action"
+      "m3:semanticSignature": "autonomous_structure + information_processing + dynamic_action",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes D"
     },
     {
       "@id": "m2:Role",
@@ -4428,12 +4354,10 @@
       "rdfs:label": "Role",
       "rdfs:comment": "Functional position or responsibility within system structure.",
       "m2:hasFamily": "m2:Relational",
-      "m2:hasStructuralFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Server/client role",
@@ -4449,9 +4373,10 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I",
-      "m3:semanticSignature": "structural_position + informational_function"
+      "m3:semanticSignature": "structural_position + informational_function",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I"
     },
     {
       "@id": "m2:Mediator",
@@ -4462,13 +4387,11 @@
       "rdfs:label": "Mediator",
       "rdfs:comment": "Intermediary entity or mechanism enabling interaction between components.",
       "m2:hasFamily": "m2:Relational",
-      "m2:hasStructuralFormula": "F ⊗ I ⊗ S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Structure"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "API gateway",
@@ -4485,9 +4408,10 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "F \\otimes I \\otimes S",
       "m2:hasStructuralGrammarFormulaRawText": "F (x) I (x) S",
-      "m3:semanticSignature": "flow_facilitation + information_translation + structural_bridging"
+      "m3:semanticSignature": "flow_facilitation + information_translation + structural_bridging",
+      "m2:hasStructuralGrammarFormula": "F ⊗ I ⊗ S",
+      "m2:hasStructuralGrammarFormulaTeX": "F \\otimes I \\otimes S"
     },
     {
       "@id": "m2:Link",
@@ -4498,13 +4422,11 @@
       "rdfs:label": "Link",
       "rdfs:comment": "Concrete physical connection between nodes enabling actual information or resource transfer (constructive).",
       "m2:hasFamily": "m2:Relational",
-      "m2:hasStructuralFormula": "S ⊗ I ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Network edge",
@@ -4527,9 +4449,10 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) F",
-      "m3:semanticSignature": "structural_connection + information_transfer + flow_path"
+      "m3:semanticSignature": "structural_connection + information_transfer + flow_path",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes F"
     },
     {
       "@id": "m2:Node",
@@ -4540,12 +4463,10 @@
       "rdfs:label": "Node",
       "rdfs:comment": "Elementary entity or point in a network structure, serving as connection endpoint.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Server in network topology",
@@ -4560,12 +4481,13 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I",
       "m3:semanticSignature": "structural_junction + information_concentration",
       "m2:implements": {
         "@id": "m2:Composable"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "S ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I"
     },
     {
       "@id": "m2:Relation",
@@ -4576,12 +4498,10 @@
       "rdfs:label": "Relation",
       "rdfs:comment": "Abstract connection or association between entities, identified through analysis or modeling.",
       "m2:hasFamily": "m2:Relational",
-      "m2:hasStructuralFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Causal relation in systems",
@@ -4598,9 +4518,10 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I",
-      "m3:semanticSignature": "structural_association + informational_dependency"
+      "m3:semanticSignature": "structural_association + informational_dependency",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I"
     },
     {
       "@id": "m2:Path",
@@ -4611,13 +4532,11 @@
       "rdfs:label": "Path",
       "rdfs:comment": "Planned or conceptual route through network structure. Represents paths on maps/models (graphs, diagrams, schematics), distinct from Trajectory (observed evolution in territory).",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Shortest path algorithm (Dijkstra) - computed on graph",
@@ -4633,9 +4552,10 @@
         "role": "Measure structural configuration",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) D",
-      "m3:semanticSignature": "structural_route + information_sequence + dynamic_traversal"
+      "m3:semanticSignature": "structural_route + information_sequence + dynamic_traversal",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes D"
     },
     {
       "@id": "m2:Channel",
@@ -4646,13 +4566,11 @@
       "rdfs:label": "Channel",
       "rdfs:comment": "Structured conduit for signal transmission. Isolates one dimension, filters content, has finite capacity. Permanent structure independent of signals transmitted.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.15,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "RGB color channels (Red, Green, Blue in displays)",
@@ -4702,9 +4620,10 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) F",
-      "m3:semanticSignature": "structural_conduit + information_carrier + flow_direction"
+      "m3:semanticSignature": "structural_conduit + information_carrier + flow_direction",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes F"
     },
     {
       "@id": "m2:Cluster",
@@ -4715,13 +4634,11 @@
       "rdfs:label": "Cluster",
       "rdfs:comment": "Dense local grouping of nodes exhibiting synergistic cooperation and emergent functional properties (active processing role).",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I ⊗ A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Attractor"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Enteric nervous system (gut brain)",
@@ -4737,9 +4654,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes A",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) A",
-      "m3:semanticSignature": "structural_grouping + informational_cohesion + attractor_basin"
+      "m3:semanticSignature": "structural_grouping + informational_cohesion + attractor_basin",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I ⊗ A",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes A"
     },
     {
       "@id": "m2:Component",
@@ -4750,12 +4668,10 @@
       "rdfs:label": "Component",
       "rdfs:comment": "Elementary constitutive part of a system with functional role in the whole. Distinguished from arbitrary partition by having meaningful function.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.1,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Fire Triangle: Fuel, Oxygen, Heat (3 components)",
@@ -4796,12 +4712,13 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I",
       "m3:semanticSignature": "structural_part + functional_information",
       "m2:implements": {
         "@id": "m2:Composable"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "S ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I"
     },
     {
       "@id": "m2:Hub",
@@ -4812,12 +4729,10 @@
       "rdfs:label": "Hub",
       "rdfs:comment": "Highly connected node serving as central routing point for flow redistribution, without active processing (passive relay role).",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Nerve plexus (brachial, solar)",
@@ -4833,9 +4748,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) F",
-      "m3:semanticSignature": "high_connectivity_structure + flow_concentration"
+      "m3:semanticSignature": "high_connectivity_structure + flow_concentration",
+      "m2:hasStructuralGrammarFormula": "S ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes F"
     },
     {
       "@id": "m2:Space",
@@ -4846,12 +4762,10 @@
       "rdfs:label": "Space",
       "rdfs:comment": "Dimensional framework in which system states and trajectories exist (state space, phase space).",
       "m2:hasFamily": "m2:Ontological",
-      "m2:hasStructuralFormula": "S ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "State space",
@@ -4866,9 +4780,10 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasStructuralFormulaTeX": "S \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I",
-      "m3:semanticSignature": "structural_container + informational_extent"
+      "m3:semanticSignature": "structural_container + informational_extent",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I"
     },
     {
       "@id": "m2:Composition",
@@ -4879,17 +4794,14 @@
       "rdfs:label": "Composition (Composition/Decomposition)",
       "rdfs:comment": "Bidirectional structural operation forming the fundamental duality of assembly and disassembly. Composition (bottom-up): aggregation of elementary parts into an emergent whole — the whole acquires properties (Attractor) absent from parts alone (S ⊗ I ⊗ A). Decomposition (top-down): partition of a whole into its elementary constituents — the Attractor (emergent property) dissolves, leaving only structure and interfaces (S ⊗ I). The asymmetry between the two poles is ontological: composition requires an Attractor (emergent property that justifies the assembly), while decomposition loses it.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I ⊗ A",
       "m2:hasStructuralFormulaNote": "Decomposition pole: S ⊗ I — see m2:polaritySemantics",
       "m2:hasStructuralFormulaExpanded": "Structure ⊗ Information ⊗ Attractor",
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes A (composition)",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Attractor"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "dual",
       "m2:polaritySemantics": {
         "pole1": {
@@ -4989,7 +4901,9 @@
           "semantics": "A⁰ = 1 (neutral monoidal unit): emergent property dissolves, parts recovered"
         }
       },
-      "m3:semanticSignature": "structural_assembly + polarity(composition|decomposition)"
+      "m3:semanticSignature": "structural_assembly + polarity(composition|decomposition)",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I ⊗ A",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes A (composition)"
     },
     {
       "@id": "m2:Balance",
@@ -5000,13 +4914,11 @@
       "rdfs:label": "Balance",
       "rdfs:comment": "State of equilibrium between multiple interacting factors where variations compensate to maintain system stability. Distinct from Homeostasis (dynamic regulation) - Balance is a static equilibrium state achieved through mutual compensation of parameters.",
       "m2:hasFamily": "m2:Regulatory",
-      "m2:hasStructuralFormula": "A ⊗ S ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Photographic exposure: ISO → Aperture → Shutter Speed → correct exposure",
@@ -5047,9 +4959,10 @@
       "dcterms:created": "2026-01-20",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified during analysis of Exposure Triangle poclet as fundamental genericConcept distinct from existing Homeostasis and Regulation",
-      "m2:hasStructuralFormulaTeX": "A \\otimes S \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "A (x) S (x) F",
-      "m3:semanticSignature": "attractor_equilibrium + structural_symmetry + flow_compensation"
+      "m3:semanticSignature": "attractor_equilibrium + structural_symmetry + flow_compensation",
+      "m2:hasStructuralGrammarFormula": "A ⊗ S ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "A \\otimes S \\otimes F"
     },
     {
       "@id": "m2:Trade-off",
@@ -5061,15 +4974,12 @@
       "rdfs:comment": "Deliberate exchange where improving one desirable property necessarily degrades another due to inherent constraints. A conscious decision-making concept in model/map space where observer accepts losses in one dimension to gain in another. Fundamental to optimization under constraints.",
       "m2:hasFamily": "m2:Regulatory",
       "m2:hasOntologicalNature": "ModelSpace",
-      "m2:hasStructuralFormula": "A ⊗ I ⊗ F",
-      "m2:hasStructuralFormulaTeX": "A \\otimes I \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "A (x) I (x) F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "neutral",
       "m2:hasExample": [
         "Photography: Shallow DoF (artistic blur) ⊗ Deep DoF (all sharp) via aperture",
@@ -5125,7 +5035,9 @@
           "rationale": "A=target objective, I=knowledge of options and costs, F=resource allocation flux. Removes redundant A repetitions while preserving semantic intent."
         }
       },
-      "m3:semanticSignature": "attractor_optimization + information_constraint + flow_cost"
+      "m3:semanticSignature": "attractor_optimization + information_constraint + flow_cost",
+      "m2:hasStructuralGrammarFormula": "A ⊗ I ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "A \\otimes I \\otimes F"
     },
     {
       "@id": "m2:Polarity",
@@ -5136,13 +5048,11 @@
       "rdfs:label": "Polarity (N-ary)",
       "rdfs:comment": "Configuration of N distinct, mutually exclusive value poles or orientational axes organized in structured opposition or complementarity. Generalizes binary opposition to N-dimensional value spaces. N {1, 2, 3, 4, 5, ...} where N=1 (neutral/monopolar), N=2 (dual/bipolar), N3 (multipolar).",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I ⊗ A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Attractor"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "nary",
       "m2:naryParameter": {
         "N": "variable",
@@ -5229,9 +5139,10 @@
       "dcterms:created": "2026-01-22",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified during Magic: The Gathering Color Wheel poclet analysis. Revealed that binary polarity restriction was limiting framework's ability to model real philosophical/value systems. Validated across 10 domains with N ranging from 2 to 9.",
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes A",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) A",
-      "m3:semanticSignature": "structural_opposition + informational_contrast + attractor_poles(N-ary)"
+      "m3:semanticSignature": "structural_opposition + informational_contrast + attractor_poles(N-ary)",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I ⊗ A",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes A"
     },
     {
       "@id": "m2:Imbrication",
@@ -5242,12 +5153,10 @@
       "rdfs:label": "Imbrication (Nesting)",
       "rdfs:comment": "Structural relation where a system contains subsystems that reproduce the parent system's structure. Principle of self-similarity across hierarchical levels. Fundamental to VSM where each operational unit is itself a complete viable system.",
       "m2:hasFamily": "m2:Ontological",
-      "m2:hasStructuralFormula": "S → S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Structure"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "dual",
       "m2:polarityDescription": {
         "territory": "Observable finite nesting in physical systems (limited by material constraints)",
@@ -5314,9 +5223,10 @@
       "dcterms:created": "2026-01-30",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Emerged from VSM analysis where recursive viability is fundamental architectural principle. Generalizes to any system exhibiting structural self-similarity across scales.",
-      "m2:hasStructuralFormulaTeX": "S \\otimes S",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) S",
-      "m3:semanticSignature": "recursive_structural_nesting"
+      "m3:semanticSignature": "recursive_structural_nesting",
+      "m2:hasStructuralGrammarFormula": "S → S",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes S"
     },
     {
       "@id": "m2:Identity",
@@ -5327,8 +5237,6 @@
       "rdfs:label": "Identity",
       "rdfs:comment": "Persistent property that makes an entity distinguishable and self-restoring across transformations. An entity remains itself despite internal changes: its structure persists (S), its distinguishing information is maintained (I), and it returns to its characteristic state after perturbation (A). Identity is intrinsic it is not external recognition (vs Signature) nor a generic conserved quantity (vs Invariant), but the singular property binding persistence, uniqueness, and self-restoration into one coherent entity.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S → I → A → V → E",
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes A \\otimes V \\otimes E",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) A (x) V (x) E",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -5337,7 +5245,6 @@
         "m3:sphinx_eye:Verifiable",
         "m3:sphinx_eye:Evolvable"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Identity",
       "m2:fullName": "Entity Identity (Persistence / Uniqueness)",
@@ -5397,7 +5304,9 @@
       "dcterms:created": "2026-02-01",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified during M0_VSM (Viable System Model) validation. Cohesion concept required a genericConcept capturing 'shared organizational thread persisting despite S1 autonomy'. No existing M2 covered the combination of persistence (vs Invariant), uniqueness (vs Signature), and self-restoration (A). TRIZ validates Identity as a foundational principle (conserved property under transformation). Formalized as hybrid S → I → A → V → E to distinguish from Pattern (same Eagle base, divergent Map question).",
-      "m3:semanticSignature": "persistent_distinguishing_signature + structural+informational+attractor+verifiable+evolvable"
+      "m3:semanticSignature": "persistent_distinguishing_signature + structural+informational+attractor+verifiable+evolvable",
+      "m2:hasStructuralGrammarFormula": "S → I → A → V → E",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes A \\otimes V \\otimes E"
     },
     {
       "@id": "m2:Behavior",
@@ -5408,13 +5317,11 @@
       "rdfs:label": "Behavior",
       "rdfs:comment": "Network of coordinated Steps that can be decomposed and analyzed. Represents structured operational pattern observable in Territory and modelable in Map. Distinct from Process (pure temporal sequence) by adding structural decomposability.",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "S ⊗ D ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "dual",
       "m2:polarityDescription": {
         "territory": "Observable network of Steps with measured execution",
@@ -5453,12 +5360,13 @@
       "dcterms:created": "2026-01-28",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Emerged from need to model sequential yet decomposable patterns in poclets (Butterfly metamorphosis, Blood pressure control). Bridges Process (pure temporal) and Network (pure structural) by fusing both aspects.",
-      "m2:hasStructuralFormulaTeX": "S \\otimes D \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) D (x) F",
       "m3:semanticSignature": "structural_repertoire + dynamic_execution + flow_expression",
       "m2:implements": {
         "@id": "m2:Observable"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "S ⊗ D ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes D \\otimes F"
     },
     {
       "@id": "m2:Tropism",
@@ -5469,14 +5377,12 @@
       "rdfs:label": "Tropism",
       "rdfs:comment": "Specialized Behavior directed by external gradient stimulus. Orientation or movement towards (positive) or away from (negative) an Attractor source. Inherits network decomposability from Behavior while adding directional constraint.",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "A ⊗ S ⊗ D ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.18,
       "m2:hasPolarity": "dual",
       "m2:polarityDescription": {
         "bicephalous": {
@@ -5526,9 +5432,10 @@
       "dcterms:created": "2026-01-28",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Recognized as specialized Behavior pattern prevalent in biological systems (phototropism, chemotaxis, geotropism). Extends Behavior by adding Attractor dimension to capture directional constraint.",
-      "m2:hasStructuralFormulaTeX": "A \\otimes S \\otimes D \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "A (x) S (x) D (x) F",
-      "m3:semanticSignature": "attractor_directed + structural_orientation + dynamic_response + flow_driven"
+      "m3:semanticSignature": "attractor_directed + structural_orientation + dynamic_response + flow_driven",
+      "m2:hasStructuralGrammarFormula": "A ⊗ S ⊗ D ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "A \\otimes S \\otimes D \\otimes F"
     },
     {
       "@id": "m2:Workflow",
@@ -5539,13 +5446,11 @@
       "rdfs:label": "Workflow",
       "rdfs:comment": "Structured network implementation of a Process. Prescriptive representation (Map-oriented) of how a Process should be executed, distinct from Behavior (descriptive observation of what occurs). Can be simulated or prescribed.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ D ⊗ F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.22,
       "m2:hasPolarity": "dual",
       "m2:polarityDescription": {
         "structural": "Static representation as network topology",
@@ -5584,9 +5489,10 @@
       "dcterms:created": "2026-01-28",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Needed to distinguish prescriptive models (Workflow) from descriptive observations (Behavior). Both are structured networks of Steps, but serve different epistemic roles.",
-      "m2:hasStructuralFormulaTeX": "S \\otimes D \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) D (x) F",
-      "m3:semanticSignature": "structured_sequence + dynamic_execution + flow_coordination"
+      "m3:semanticSignature": "structured_sequence + dynamic_execution + flow_coordination",
+      "m2:hasStructuralGrammarFormula": "S ⊗ D ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes D \\otimes F"
     },
     {
       "@id": "m2:Step",
@@ -5597,13 +5503,11 @@
       "rdfs:label": "Step",
       "rdfs:comment": "Node specialized for sequential/temporal contexts. Elementary unit in Behavior or Workflow network. Extends Node by adding temporal/sequential semantics and capability to trigger Actions.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ I ⊗ D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "dual",
       "m2:polarityDescription": {
         "territory": "Observable step in actual execution",
@@ -5656,12 +5560,13 @@
       "dcterms:created": "2026-01-28",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Emerged from analysis of sequential systems (Butterfly lifecycle, Blood pressure control). Needed specialized Node type for temporal contexts that can trigger atomic Actions.",
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) D",
       "m3:semanticSignature": "discrete_structural_unit + information_state + dynamic_transition",
       "m2:implements": {
         "@id": "m2:Composable"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "S ⊗ I ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes D"
     },
     {
       "@id": "m2:Action",
@@ -5672,12 +5577,10 @@
       "rdfs:label": "Action",
       "rdfs:comment": "Atomic operation triggered by a Step. Elementary executable unit with informational content. Represents indivisible operation in behavioral or workflow context.",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "D ⊗ I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.15,
       "m2:hasPolarity": "dual",
       "m2:polarityDescription": {
         "territory": "Measured atomic operation",
@@ -5720,12 +5623,13 @@
       "dcterms:created": "2026-01-28",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified as atomic operational unit in behavioral decomposition. Represents finest-grained executable element triggered by Steps in Behavior/Workflow networks.",
-      "m2:hasStructuralFormulaTeX": "D \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "D (x) I",
       "m3:semanticSignature": "dynamic_execution + information_triggered",
       "m2:implements": {
         "@id": "m2:Triggerable"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "D ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "D \\otimes I"
     },
     {
       "@id": "m2:ValueSpace",
@@ -5736,13 +5640,10 @@
       "rdfs:label": "ValueSpace (Hybrid Variety Model)",
       "rdfs:comment": "Space of possible values for a property or object. Can be scalar (e.g., temperature range), vector (e.g., RGB 3D color components), structural composition (e.g., 5D ASFID genericConcept formulas), or symbolic (e.g., alphabet symbols). Values can be discrete or continuous. Characterized both by intrinsic information content (Territory) and epistemic model quality (Map). Foundation for Ashby's Law of Requisite Variety in cybernetics. Mnemonic: ItVORIm (subscripts t/m mark Territory/Map boundary).",
       "m2:hasFamily": "m2:Informational",
-      "m2:hasStructuralFormula": "It → V → O → R → Im",
-      "m2:hasStructuralFormulaTeX": "I_t \\otimes V \\otimes O \\otimes R \\otimes I_m",
       "m2:hasStructuralGrammarFormulaRawText": "I_t (x) V (x) O (x) R (x) I_m",
       "m2:hasDominantM3": [
         "HYBRID: It from ASFID (Eagle Eye) + V → O → R → Im from REVOI (Sphinx Eye)"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "hybrid",
       "m2:polarityDescription": {
         "territory": "Information content of value space (cardinality, dimension)",
@@ -5889,7 +5790,9 @@
       "dcterms:created": "2026-01-31",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Required for VSM modeling to formalize Ashby's Law of Requisite Variety. Emerged from need to represent value/state spaces with bicephalous perspective: Territory (what values exist - It) AND Map (how we model them - VORI). The ItVORIm mnemonic order provides epistemic progression where subscripts t/m explicitly mark the Territory/Map boundary. Generalizes beyond system states to any property's value domain (scalar, vector, tensor, symbolic, hybrid). Essential for variety amplification (S2) and attenuation (S3) in VSM.",
-      "m3:semanticSignature": "territory_information + variety + observability + representability + map_interoperability"
+      "m3:semanticSignature": "territory_information + variety + observability + representability + map_interoperability",
+      "m2:hasStructuralGrammarFormula": "It → V → O → R → Im",
+      "m2:hasStructuralGrammarFormulaTeX": "I_t \\otimes V \\otimes O \\otimes R \\otimes I_m"
     },
     {
       "@id": "m2:Amplification",
@@ -5900,13 +5803,10 @@
       "rdfs:label": "Amplification (Amplification/Attenuation)",
       "rdfs:comment": "Bidirectional process: increase (amplification) or decrease (attenuation) of signal, flow, quantity, or variety. Fundamental cybernetic operation for gain control and variety management. Characterized by measurable flux/dynamics/information (Territory) and representability/observability in models (Map). Direction (Amplifying/Attenuating/Unity) specified via direction attribute.",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "Ft → D → It → R → O",
-      "m2:hasStructuralFormulaTeX": "F_t \\otimes D \\otimes I_t \\otimes R \\otimes O",
       "m2:hasStructuralGrammarFormulaRawText": "F_t (x) D (x) I_t (x) R (x) O",
       "m2:hasDominantM3": [
         "HYBRID: Ft → D → It from ASFID (Eagle Eye) + R → O from REVOI (Sphinx Eye)"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "hybrid",
       "m2:polarityDescription": {
         "territory": "Measured flow amplification/attenuation (flux, dynamics, information)",
@@ -6105,7 +6005,9 @@
           "m2:usageGuidelines": "Select based on gain magnitude. Use Amplifying for RAAS enzymatic stages (G>1), Attenuating for inhibitory pathways (G<1)."
         }
       },
-      "m3:semanticSignature": "signal_gain + polarity(amplification|attenuation)"
+      "m3:semanticSignature": "signal_gain + polarity(amplification|attenuation)",
+      "m2:hasStructuralGrammarFormula": "Ft → D → It → R → O",
+      "m2:hasStructuralGrammarFormulaTeX": "F_t \\otimes D \\otimes I_t \\otimes R \\otimes O"
     },
     {
       "@id": "m2:Alignment",
@@ -6116,13 +6018,11 @@
       "rdfs:label": "Alignment",
       "rdfs:comment": "Bidirectional dynamic process by which two entities, representations, or systems progressively reduce their mutual discrepancy toward a coherent correspondence. Distinct from Representation (static mapping A→B), Balance (static equilibrium), and Convergence (geometric focusing of trajectories): Alignment is an active, iterative, bidirectional reconciliation process.",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "I ⊗ A ⊗ S",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Structure"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "neutral",
       "m2:perspective": "dual",
       "m2:hasExample": [
@@ -6138,7 +6038,8 @@
         "m2:Balance": "Balance is a static equilibrium state; Alignment is an active process toward coherence",
         "m2:Convergence": "Convergence concerns geometric focusing of trajectories; Alignment concerns structural/semantic correspondence between entities"
       },
-      "m3:semanticSignature": "information_coherence + attractor_convergence + structural_correspondence"
+      "m3:semanticSignature": "information_coherence + attractor_convergence + structural_correspondence",
+      "m2:hasStructuralGrammarFormula": "I ⊗ A ⊗ S"
     },
     {
       "@id": "m2:FeedbackLoop",
@@ -6149,7 +6050,6 @@
       "rdfs:label": "Feedback Loop",
       "rdfs:comment": "Cyclic regulatory process where a system compares its current state to a target (Homeostasis), reduces the discrepancy (Alignment), and evolves over time (Process). Encompasses both negative feedback (stabilizing, error-correcting) and positive feedback (amplifying, self-reinforcing). Universal systemic pattern found across biology, engineering, economics, ecology and social systems.",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "m2:Process ⊗ m2:Alignment ⊗ m2:Homeostasis",
       "m2:structuralExpansion": "(D ⊗ F) ⊗ (I ⊗ A ⊗ S) ⊗ (A ⊗ S ⊗ F) = A ⊗ S ⊗ F ⊗ I ⊗ D",
       "m2:structuralNote": "Expanded formula covers all 5 ASFID dimensions, reflecting that a feedback loop engages the full phenomenology of a system: Attractor (set point), Structure (circuit), Flow (signal), Information (error signal), Dynamics (temporal evolution).",
       "m2:componentGenericConcepts": [
@@ -6176,7 +6076,6 @@
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "dual",
       "m2:perspective": "dual",
       "m2:dualAspects": {
@@ -6221,8 +6120,8 @@
       },
       "m2:architecturalNote": "m2:FeedbackLoop models systemic regulatory circuits across all domains. Distinct from m3:AlignmentLoop which is the epistemological Territory↔Map alignment mechanism intrinsic to TSCG architecture (see M3_GenesisGrammar).",
       "m2:fullName": "Feedback Loop (Negative / Positive)",
-      "m2:expression": "(-1)^{p} · k · (Process ⊗ Alignment ⊗ Homeostasis)",
-      "m2:expressionTeX": "(-1)^{p} \\cdot k \\cdot (\\text{Process} \\otimes \\text{Alignment} \\otimes \\text{Homeostasis})",
+      "m2:expression": "k · (Process ⊗ Alignment ⊗ Homeostasis)",
+      "m2:expressionTeX": "\\cdot k \\cdot (\\text{Process} \\otimes \\text{Alignment} \\otimes \\text{Homeostasis})",
       "m2:poleMapping": {
         "p=1": {
           "name": "Negative Feedback",
@@ -6236,7 +6135,8 @@
         }
       },
       "m2:hasStructuralGrammarFormulaRawText": "Process (x) Alignment (x) Homeostasis",
-      "m3:semanticSignature": "output_fed_back_to_input + polarity(positive|negative) + dynamic_regulation"
+      "m3:semanticSignature": "output_fed_back_to_input + polarity(positive|negative) + dynamic_regulation",
+      "m2:hasStructuralGrammarFormula": "m2:Process ⊗ m2:Alignment ⊗ m2:Homeostasis"
     },
     {
       "@id": "m2:Processor",
@@ -6247,8 +6147,6 @@
       "rdfs:label": "Processor",
       "rdfs:comment": "Entity that transforms a flow (F) of information or energy according to a defined internal structure (S), producing a specified informational output (I), unfolding temporally (D). The most general transformation agent — Transducer and Dissipation are specializations. Processor is both entity (a system component) and morphism (a transformation operator) due to F in its structural formula.",
       "m2:hasFamily": "m2:Dynamic",
-      "m2:hasStructuralFormula": "S ⊗ I ⊗ F ⊗ D",
-      "m2:hasStructuralFormulaTeX": "S \\otimes I \\otimes F \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) I (x) F (x) D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -6256,7 +6154,6 @@
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:perspective": "territory",
       "m2:ontologicalNature": "entity_and_morphism",
@@ -6282,7 +6179,9 @@
         "m2:Transducer": "Transducer is a Processor specialization focused on flux-type conversion (a-temporal); Processor is the general case with D",
         "m2:Agent": "Agent (S⊗I⊗D) is an autonomous actor; Processor is a transformation component (not necessarily autonomous)"
       },
-      "m3:semanticSignature": "structural_transformation + information_processing + flow_throughput + temporal_unfolding"
+      "m3:semanticSignature": "structural_transformation + information_processing + flow_throughput + temporal_unfolding",
+      "m2:hasStructuralGrammarFormula": "S ⊗ I ⊗ F ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes I \\otimes F \\otimes D"
     },
     {
       "@id": "m2:Transducer",
@@ -6293,15 +6192,12 @@
       "rdfs:label": "Transducer",
       "rdfs:comment": "Processor specialized in converting a flow of one physical type into a flow of another type, via a coupling structure (S) and a conversion specification (I). The conversion is a-temporal (D absent — instantaneous or steady-state). Dissipation is a further specialization (degrading Transducer). Inherits entity_and_morphism nature from F.",
       "m2:hasFamily": "m2:Energetic",
-      "m2:hasStructuralFormula": "F ⊗ S ⊗ I",
-      "m2:hasStructuralFormulaTeX": "F \\otimes S \\otimes I",
       "m2:hasStructuralGrammarFormulaRawText": "F (x) S (x) I",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
       ],
-      "m2:hasEpistemicGap": 0.15,
       "m2:hasPolarity": "neutral",
       "m2:perspective": "territory",
       "m2:ontologicalNature": "entity_and_morphism",
@@ -6326,7 +6222,9 @@
         "m2:Processor": "Processor is the general case (with D); Transducer is a-temporal specialization on flux-type conversion",
         "m2:Dissipation": "Dissipation is a degrading Transducer (F_active → F_degraded + Entropy); Transducer is the general flux-conversion case"
       },
-      "m3:semanticSignature": "flux_type_conversion + coupling_structure + conversion_specification"
+      "m3:semanticSignature": "flux_type_conversion + coupling_structure + conversion_specification",
+      "m2:hasStructuralGrammarFormula": "F ⊗ S ⊗ I",
+      "m2:hasStructuralGrammarFormulaTeX": "F \\otimes S \\otimes I"
     },
     {
       "@id": "m2:Entropy",
@@ -6337,15 +6235,12 @@
       "rdfs:label": "Entropy (Entropy/Negentropy)",
       "rdfs:comment": "Measure of disorder, uncertainty, or irreversibility produced by a degrading flow. Entropy is the OUTPUT of Dissipation — it is the quantity that confers irreversibility on physical phenomena (Feynman: the equations of Dissipation are time-reversible; it is Entropy that makes processes effectively irreversible). Encompasses both thermodynamic entropy (Boltzmann: S=kB·lnΩ) and information entropy (Shannon: H=-Σp·logp). Pivot concept of the irreversibility chain: Dissipation→Entropy→Inertia→AbsorbingState.",
       "m2:hasFamily": "m2:Energetic",
-      "m2:hasStructuralFormula": "F ⊗ I ⊗ D",
-      "m2:hasStructuralFormulaTeX": "F \\otimes I \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "F (x) I (x) D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.15,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Entropy",
       "m2:fullName": "Entropy (Negentropy)",
@@ -6391,7 +6286,9 @@
         "m2:Coherence": "Coherence (A⊗S⊗I⊗R⊗O) is structural/perceptual alignment; Entropy is thermodynamic disorder. Related causally: Incoherence→Entropy via Dissipation",
         "m2:Information": "Information (pure I) is content; Entropy is the measure of missing information / disorder in a flow"
       },
-      "m3:semanticSignature": "degrading_flow + disorder_measure + irreversibility_via_feynman"
+      "m3:semanticSignature": "degrading_flow + disorder_measure + irreversibility_via_feynman",
+      "m2:hasStructuralGrammarFormula": "F ⊗ I ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "F \\otimes I \\otimes D"
     },
     {
       "@id": "m2:Stase",
@@ -6402,14 +6299,11 @@
       "rdfs:label": "Stase",
       "rdfs:comment": "Fundamental ground state of a system where flow is suspended (F=0) but Structure and Attractor are fully preserved intact. Stase is NECESSARILY REVERSIBLE — this reversibility is structurally encoded by the ABSENCE of D in the structural formula (a-temporal state). Stase is 'a system waiting for itself': Potentialization is suspended but not destroyed. Distinguished from Absorbing State by reversibility: Stase can be re-activated via Potentialization; Absorbing State cannot (sealed by Entropy).",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "S ⊗ A",
-      "m2:hasStructuralFormulaTeX": "S \\otimes A",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) A",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
         "m3:eagle_eye:Attractor"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:perspective": "territory",
       "m2:m3Note": "F=0 is valid per revised M3 axiom (F≥0). Stase is the canonical F=0 state. Absence of D in structural formula guarantees reversibility by construction — no temporal sealing possible.",
@@ -6433,7 +6327,9 @@
         "m2:Homeostasis": "Homeostasis (A⊗S⊗F) maintains a stable state via active flow regulation; Stase has F=0 (no active flow)",
         "m2:State": "State (S⊗A) is any instantaneous configuration; Stase specifically implies F=0 (flow suspension) as constitutive property"
       },
-      "m3:semanticSignature": "structure_preserved + attractor_maintained + flow_suspended_reversibly"
+      "m3:semanticSignature": "structure_preserved + attractor_maintained + flow_suspended_reversibly",
+      "m2:hasStructuralGrammarFormula": "S ⊗ A",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes A"
     },
     {
       "@id": "m2:Coherence",
@@ -6444,8 +6340,6 @@
       "rdfs:label": "Coherence (Coherence/Incoherence)",
       "rdfs:comment": "Property of a system whose elements are aligned toward a common attractor (A), structurally continuous (S), and informationally compatible (I) — AND representable as such (R) AND perceptible as such (O). Coherence may be factual (Territory: A⊗S⊗I) or merely perceived (Map: R⊗O) without being factual. This bicephalous nature (Eagle Eye + Sphinx Eye) is constitutive: coherence can be real without being perceived, or perceived without being real. Incoherence is the local rupture of this alignment — the precursor of Topological Defects.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormula": "A ⊗ S ⊗ I ⊗ R ⊗ O",
-      "m2:hasStructuralFormulaTeX": "A \\otimes S \\otimes I \\otimes R \\otimes O",
       "m2:hasStructuralGrammarFormulaRawText": "A (x) S (x) I (x) R (x) O",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
@@ -6454,7 +6348,6 @@
         "m3:sphinx_eye:Representability",
         "m3:sphinx_eye:Observability"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Coherence",
       "m2:fullName": "Coherence (Incoherence)",
@@ -6515,7 +6408,9 @@
         "m2:Homeostasis": "Homeostasis (A⊗S⊗F) maintains stable state via flow; Coherence describes structural/informational alignment (F absent)",
         "m2:Entropy": "Entropy (F⊗I⊗D) measures thermodynamic disorder; Coherence measures structural/perceptual alignment. Incoherence →[Dissipation]→ Entropy (causal, not dual)"
       },
-      "m3:semanticSignature": "attractor_alignment + structural_continuity + informational_compatibility + representable + observable"
+      "m3:semanticSignature": "attractor_alignment + structural_continuity + informational_compatibility + representable + observable",
+      "m2:hasStructuralGrammarFormula": "A ⊗ S ⊗ I ⊗ R ⊗ O",
+      "m2:hasStructuralGrammarFormulaTeX": "A \\otimes S \\otimes I \\otimes R \\otimes O"
     },
     {
       "@id": "m2:Inertia",
@@ -6536,10 +6431,8 @@
           "role": "accumulated irreversibility"
         }
       ],
-      "m2:hasStructuralFormula": "S ⊗ F ⊗ I ⊗ D",
       "m2:comboFormula": "⊗⇒(Memory, Entropy)",
       "m2:comboExpansion": "∫(D−F)dτ ⊗ (F⊗I⊗D) = S⊗F⊗I⊗D",
-      "m2:hasStructuralFormulaTeX": "S \\otimes F \\otimes I \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) F (x) I (x) D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -6547,7 +6440,6 @@
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "neutral",
       "m2:perspective": "territory",
       "m2:hasExample": [
@@ -6563,7 +6455,9 @@
         "m2:Constraint": "Constraint (S⊗F) bounds accessible states statically; Inertia resists trajectory reversal dynamically and historically",
         "m2:Dissipation": "Dissipation is the instantaneous mechanism; Inertia is its temporally accumulated structural effect"
       },
-      "m3:semanticSignature": "thermodynamic_memory + accumulated_entropy + structural_resistance_to_reversal"
+      "m3:semanticSignature": "thermodynamic_memory + accumulated_entropy + structural_resistance_to_reversal",
+      "m2:hasStructuralGrammarFormula": "S ⊗ F ⊗ I ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes F \\otimes I \\otimes D"
     },
     {
       "@id": "m2:Potentialization",
@@ -6584,17 +6478,14 @@
           "role": "temporal unfolding of flux mobilization"
         }
       ],
-      "m2:hasStructuralFormula": "A ⊗ D ⊗ F",
       "m2:comboFormula": "⊗⇒(Activation, Process)",
       "m2:comboExpansion": "(A⊗D) ⊗ (D⊗F) = A⊗D⊗F",
-      "m2:hasStructuralFormulaTeX": "A \\otimes D \\otimes F",
       "m2:hasStructuralGrammarFormulaRawText": "A (x) D (x) F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
         "m3:eagle_eye:Dynamics",
         "m3:eagle_eye:Flow"
       ],
-      "m2:hasEpistemicGap": 0.25,
       "m2:hasPolarity": "dual",
       "m2:shortName": "Potentialization",
       "m2:fullName": "Potentialization (F-Depletion)",
@@ -6633,7 +6524,9 @@
         "m2:Activation": "Activation (A⊗D) enables/blocks processes reversibly; Potentialization specifically governs the F=0↔F_active transition",
         "m2:Process": "Process (D⊗F) is a generic temporal sequence; Potentialization focuses on the mode transition of F itself"
       },
-      "m3:semanticSignature": "flow_mode_transition + attractor_directed + dynamic_mobilization"
+      "m3:semanticSignature": "flow_mode_transition + attractor_directed + dynamic_mobilization",
+      "m2:hasStructuralGrammarFormula": "A ⊗ D ⊗ F",
+      "m2:hasStructuralGrammarFormulaTeX": "A \\otimes D \\otimes F"
     },
     {
       "@id": "m2:AbsorbingState",
@@ -6654,10 +6547,8 @@
           "role": "irreversible sealing operator"
         }
       ],
-      "m2:hasStructuralFormula": "S ⊗ A ⊗ F ⊗ I ⊗ D",
       "m2:comboFormula": "⊗⇒(Stase, Entropy)",
       "m2:comboExpansion": "(S⊗A) ⊗ (F⊗I⊗D) = S⊗A⊗F⊗I⊗D",
-      "m2:hasStructuralFormulaTeX": "S \\otimes A \\otimes F \\otimes I \\otimes D",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) A (x) F (x) I (x) D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -6666,7 +6557,6 @@
         "m3:eagle_eye:Information",
         "m3:eagle_eye:Dynamics"
       ],
-      "m2:hasEpistemicGap": 0.2,
       "m2:hasPolarity": "neutral",
       "m2:perspective": "territory",
       "m2:hasExample": [
@@ -6682,7 +6572,9 @@
         "m2:Attractor": "Attractor admits reversible basin trajectories; Absorbing State is strictly unidirectional (no return trajectory possible)",
         "m2:Constraint": "Constraint bounds accessible states; Absorbing State permanently forecloses all states except the terminal one"
       },
-      "m3:semanticSignature": "terminal_stase + entropy_sealed + potentialization_impossible"
+      "m3:semanticSignature": "terminal_stase + entropy_sealed + potentialization_impossible",
+      "m2:hasStructuralGrammarFormula": "S ⊗ A ⊗ F ⊗ I ⊗ D",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes A \\otimes F \\otimes I \\otimes D"
     },
     {
       "@id": "m2:TopologicalDefect",
@@ -6703,10 +6595,8 @@
           "role": "discrete topological invariant protecting stability"
         }
       ],
-      "m2:hasStructuralFormula": "S ⊗ A ⊗ I ⊗ R ⊗ O",
       "m2:comboFormula": "⊗⇒(Incoherence, Invariant)",
       "m2:comboExpansion": "¬(A⊗S⊗I⊗R⊗O) ∧ (S⊗A) → S⊗A⊗I⊗R⊗O",
-      "m2:hasStructuralFormulaTeX": "S \\otimes A \\otimes I \\otimes R \\otimes O",
       "m2:hasStructuralGrammarFormulaRawText": "S (x) A (x) I (x) R (x) O",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -6715,7 +6605,6 @@
         "m3:sphinx_eye:Representability",
         "m3:sphinx_eye:Observability"
       ],
-      "m2:hasEpistemicGap": 0.3,
       "m2:hasPolarity": "neutral",
       "m2:perspective": "dual",
       "m2:topologicalInvariant": "winding number n ∈ ℤ (or charge, index) — discrete, conserved, non-zero at defect core",
@@ -6733,7 +6622,37 @@
         "m2:Invariant": "Invariant (S⊗A) is a preserved property under transformation; Topological Defect is a singularity CARRYING a discrete invariant — not just preserving one",
         "m2:Bifurcation": "Bifurcation is a global state transition; Topological Defect is a localized persistent singularity in an otherwise ordered field"
       },
-      "m3:semanticSignature": "local_incoherence + discrete_topological_invariant + globally_protected_stability"
+      "m3:semanticSignature": "local_incoherence + discrete_topological_invariant + globally_protected_stability",
+      "m2:hasStructuralGrammarFormula": "S ⊗ A ⊗ I ⊗ R ⊗ O",
+      "m2:hasStructuralGrammarFormulaTeX": "S \\otimes A \\otimes I \\otimes R \\otimes O"
+    },
+    {
+      "@id": "m2:hasStructuralGrammarFormulaTeX",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "has structural grammar formula (TeX)",
+      "rdfs:comment": "Monoidal composition formula in LaTeX notation, e.g. S \\otimes I \\otimes D.",
+      "rdfs:domain": {
+        "@id": "m2:GenericConcept"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "dcterms:created": "2026-05-18",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m2:hasStructuralGrammarFormulaRawText",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "has structural grammar formula (raw text)",
+      "rdfs:comment": "Monoidal composition formula in ASCII-safe notation, e.g. S (x) I (x) D.",
+      "rdfs:domain": {
+        "@id": "m2:GenericConcept"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "dcterms:created": "2026-05-18",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     }
   ]
 }
