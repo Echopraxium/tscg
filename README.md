@@ -186,7 +186,7 @@ TSCG Cycle = Emission (REVOI) → Echo (ASFID) → Gap (δ) → Correction → A
 ```
 tscg/
 ├── ontology/                       # M3/M2/M1 reference ontologies (JSON-LD)
-│   ├── M3_GenesisSpace.jsonld      # Bicephalous foundation
+│   ├── M3_GenesisGrammar.jsonld     # Bicephalous foundation (Structural Grammar)
 │   ├── M2_GenericConcepts.jsonld   # ~80 universal patterns
 │   ├── M1_extensions/              # 11 domain vocabularies
 │   └── docs/                       # Theoretical foundations
@@ -201,6 +201,41 @@ tscg/
 ├── index.html                      # Gallery of simulations (auto-generated)
 └── cli_tools/                      # Python/Node.js utilities
 ```
+
+---
+
+
+## 🔧 Tools
+
+### TscgOntologyExplorer
+
+An Electron-based ontology browser dedicated to the TSCG framework, available at:
+
+```
+instances/tscg-tools/TscgOntologyExplorer/
+```
+
+Provides interactive navigation across all **four TSCG ontology layers**:
+
+| Layer | Files | What you can explore |
+|-------|-------|---------------------|
+| **M3** | `M3_GenesisGrammar.jsonld`, `M3_EagleEye.jsonld`, `M3_SphinxEye.jsonld` | ASFID/REVOI structural primitives |
+| **M2** | `M2_GenericConcepts.jsonld` | ~80 GenericConcepts with structural formulas |
+| **M1** | `ontology/M1_extensions/` | Domain vocabularies (Biology, Physics…) |
+| **M0** | `instances/poclets/` | Validated Poclets with ASFID/REVOI scores |
+
+**Key features:**
+- **Object Explorer** — class hierarchy, mode selector, search with regex (`^Me`, `loop$`, `/pattern/`)
+- **Property Inspector** — real JSON-LD values, clickable IRI cross-navigation
+- **SPARQL panel** — 16 predefined queries, export CSV/TTL
+- **Imports tab** — namespace prefixes, `owl:imports` cross-loading
+- **M1 dropdown** — one-click access to all domain extensions
+
+> 📖 Full documentation: `instances/tscg-tools/TscgOntologyExplorer/docs/UserManual.md`
+
+### TscgPocletMiner
+
+AI-powered corpus analysis tool — see [🛠️ TscgPocletMiner](#️-tscgpocletminer-ai-powered-corpus-analysis) above.
 
 ---
 
