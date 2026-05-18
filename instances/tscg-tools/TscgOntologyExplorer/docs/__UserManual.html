@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TscgOntologyExplorer — User's Manual</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap');
+
+  :root {
+    --bg:        #0f1117;
+    --bg2:       #161b27;
+    --bg3:       #1e2535;
+    --border:    #2d3552;
+    --accent:    #7c6af0;
+    --accent2:   #4ecdc4;
+    --accent3:   #f6b93b;
+    --text:      #e8eaf0;
+    --text2:     #9ba4bc;
+    --danger:    #ee5a6f;
+    --code-bg:   #0d1117;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── Layout ── */
+  .layout { display: flex; min-height: 100vh; }
+
+  nav {
+    width: 260px;
+    min-width: 260px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 0 0 40px;
+  }
+
+  .nav-logo {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  .nav-logo h1 { font-size: 14px; font-weight: 700; color: var(--accent); letter-spacing: .5px; }
+  .nav-logo p  { font-size: 11px; color: var(--text2); margin-top: 2px; }
+
+  nav a {
+    display: block;
+    padding: 6px 20px;
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 12.5px;
+    border-left: 2px solid transparent;
+    transition: all .15s;
+  }
+  nav a:hover        { color: var(--text); background: var(--bg3); }
+  nav a.active       { color: var(--accent); border-left-color: var(--accent); background: var(--bg3); }
+  nav .nav-section   { padding: 16px 20px 4px; font-size: 10px; font-weight: 700;
+                       color: var(--accent); letter-spacing: 1.5px; text-transform: uppercase; }
+  nav a.sub          { padding-left: 32px; font-size: 12px; }
+
+  main {
+    flex: 1;
+    max-width: 860px;
+    padding: 48px 56px;
+    overflow-x: hidden;
+  }
+
+  /* ── Typography ── */
+  h1 { font-size: 2.2rem; font-weight: 700; color: var(--text);
+       border-bottom: 2px solid var(--accent); padding-bottom: 12px; margin-bottom: 24px; }
+  h2 { font-size: 1.5rem; font-weight: 700; color: var(--accent); margin: 48px 0 16px;
+       display: flex; align-items: center; gap: 10px; }
+  h2::before { content: ''; display: block; width: 4px; height: 1.4em;
+               background: var(--accent); border-radius: 2px; flex-shrink: 0; }
+  h3 { font-size: 1.1rem; font-weight: 600; color: var(--accent2); margin: 28px 0 10px; }
+  h4 { font-size: .95rem; font-weight: 600; color: var(--accent3); margin: 20px 0 8px; }
+
+  p  { margin-bottom: 14px; color: var(--text); }
+  ul, ol { margin: 0 0 14px 20px; }
+  li { margin-bottom: 5px; }
+  strong { color: var(--accent2); font-weight: 600; }
+  em     { color: var(--accent3); font-style: normal; font-weight: 600; }
+
+  /* ── Code ── */
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .82em;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--accent2);
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .82rem;
+    line-height: 1.6;
+    color: #c9d1d9;
+  }
+  pre .kw  { color: var(--accent); }
+  pre .str { color: var(--accent2); }
+  pre .cmt { color: var(--text2); }
+  pre .num { color: var(--accent3); }
+
+  /* ── Layer badges ── */
+  .layers {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .layer {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .layer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .layer.m3::before { background: var(--accent); }
+  .layer.m2::before { background: var(--accent2); }
+  .layer.m1::before { background: var(--accent3); }
+  .layer.m0::before { background: var(--danger); }
+  .layer .badge {
+    font-size: 1.8rem; font-weight: 700; margin-bottom: 4px;
+  }
+  .layer.m3 .badge { color: var(--accent); }
+  .layer.m2 .badge { color: var(--accent2); }
+  .layer.m1 .badge { color: var(--accent3); }
+  .layer.m0 .badge { color: var(--danger); }
+  .layer .name { font-size: 11px; font-weight: 700; color: var(--text2); letter-spacing: .5px; }
+  .layer .desc { font-size: 11px; color: var(--text2); margin-top: 6px; line-height: 1.4; }
+
+  /* ── Formula box ── */
+  .formula {
+    background: var(--bg2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .9rem;
+    color: var(--accent2);
+  }
+  .formula .label { font-family: 'IBM Plex Sans', sans-serif;
+                    font-size: 10px; color: var(--text2); letter-spacing: 1px;
+                    text-transform: uppercase; margin-bottom: 4px; }
+
+  /* ── Callout ── */
+  .callout {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: .9rem;
+  }
+  .callout.info  { background: #1a1f3a; border-left: 3px solid var(--accent); }
+  .callout.tip   { background: #1a2b2a; border-left: 3px solid var(--accent2); }
+  .callout.warn  { background: #2b2415; border-left: 3px solid var(--accent3); }
+  .callout .icon { font-size: 1rem; margin-right: 6px; }
+
+  /* ── Keyboard shortcut ── */
+  kbd {
+    display: inline-block;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-bottom: 3px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .8rem;
+    color: var(--text2);
+  }
+
+  /* ── Feature table ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: .88rem;
+  }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--bg3);
+    color: var(--accent);
+    font-size: .78rem;
+    letter-spacing: .5px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:hover td { background: var(--bg2); }
+  td:first-child { color: var(--accent2); font-family: 'IBM Plex Mono', monospace; font-size: .82rem; }
+
+  /* ── Section divider ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* ── Screenshot placeholder ── */
+  .panel-diagram {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 16px 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .78rem;
+    line-height: 1.8;
+    color: var(--text2);
+    white-space: pre;
+  }
+
+  .tag { display: inline-block; background: var(--bg3); border: 1px solid var(--border);
+         border-radius: 12px; padding: 2px 10px; font-size: .75rem; color: var(--text2);
+         margin: 2px 3px; font-family: 'IBM Plex Mono', monospace; }
+  .tag.accent { background: rgba(124,106,240,.15); border-color: var(--accent); color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ── Navigation ── -->
+<nav>
+  <div class="nav-logo">
+    <h1>⬡ TscgOntologyExplorer</h1>
+    <p>User's Manual — v1.1</p>
+  </div>
+
+  <div class="nav-section">Overview</div>
+  <a href="#intro">Introduction</a>
+  <a href="#architecture">TSCG Architecture</a>
+
+  <div class="nav-section">TSCG Layers</div>
+  <a href="#m3" class="sub">M3 — Genesis Grammar</a>
+  <a href="#m2" class="sub">M2 — Generic Concepts</a>
+  <a href="#m1" class="sub">M1 — Domain Extensions</a>
+  <a href="#m0" class="sub">M0 — Instances</a>
+
+  <div class="nav-section">JSON-LD Format</div>
+  <a href="#jsonld">JSON-LD Basics</a>
+  <a href="#context" class="sub">@context &amp; Prefixes</a>
+  <a href="#graph" class="sub">@graph Nodes</a>
+
+  <div class="nav-section">Features</div>
+  <a href="#explorer">Object Explorer</a>
+  <a href="#inspector">Property Inspector</a>
+  <a href="#imports">Imports Tab</a>
+  <a href="#sparql">SPARQL Panel</a>
+  <a href="#export">Export</a>
+
+  <div class="nav-section">Reference</div>
+  <a href="#shortcuts">Keyboard Shortcuts</a>
+  <a href="#sparql-ref">SPARQL Query Ref.</a>
+</nav>
+
+<!-- ── Main content ── -->
+<main>
+
+<!-- INTRO -->
+<section id="intro">
+<h1>TscgOntologyExplorer</h1>
+<p>TscgOntologyExplorer is a specialized ontology browser and inspector built for the <strong>TSCG framework</strong> (Transdisciplinary System Construction Game). It provides a structured view of TSCG ontologies across the four modeling layers, with integrated SPARQL querying, property inspection, and cross-navigation between concepts.</p>
+
+<div class="callout info">
+  <span class="icon">ℹ</span> TscgOntologyExplorer is read-only by design — it is an <em>explorer</em>, not an editor. It loads JSON-LD ontology files from your local TSCG repository and provides navigation, search, and query capabilities.
+</div>
+
+<h3>Key Capabilities</h3>
+<ul>
+  <li>Browse the <strong>class hierarchy</strong> of any TSCG ontology layer</li>
+  <li>Inspect <strong>real property values</strong> fetched from the Python bridge</li>
+  <li>Navigate between concepts via <strong>clickable IRI chips</strong></li>
+  <li>Query any loaded ontology with <strong>SPARQL</strong> (predefined or custom)</li>
+  <li>Explore <strong>imports and namespace prefixes</strong> of each ontology</li>
+  <li>Search objects with <strong>full regex support</strong></li>
+  <li>Export ontologies as <strong>Turtle (.ttl)</strong> or other RDF formats</li>
+</ul>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+<h2>TSCG Architecture</h2>
+<p>TSCG organizes knowledge into four hierarchical <em>meta-levels</em>, from the most abstract (M3) to the most concrete (M0):</p>
+
+<div class="layers">
+  <div class="layer m3">
+    <div class="badge">M3</div>
+    <div class="name">Genesis Grammar</div>
+    <div class="desc">Structural primitives — type atoms A,S,F,I,D,R,E,V,O,I</div>
+  </div>
+  <div class="layer m2">
+    <div class="badge">M2</div>
+    <div class="name">Generic Concepts</div>
+    <div class="desc">~80 transdisciplinary concepts with structural formulas</div>
+  </div>
+  <div class="layer m1">
+    <div class="badge">M1</div>
+    <div class="name">Domain Extensions</div>
+    <div class="desc">Biology, Physics, Economics… specializing M2 concepts</div>
+  </div>
+  <div class="layer m0">
+    <div class="badge">M0</div>
+    <div class="name">Instances (Poclets)</div>
+    <div class="desc">Concrete systems with ASFID/REVOI scores</div>
+  </div>
+</div>
+
+<div class="formula">
+  <div class="label">Layer relationships</div>
+  M3  →  M2  →  M1  →  M0
+  (Genesis)  (Concepts)  (Domains)  (Instances)
+</div>
+
+<p>Each layer <em>imports</em> the one above it. An M0 Poclet references M1 domain concepts, which in turn specialize M2 Generic Concepts, which are typed by M3 structural primitives.</p>
+</section>
+
+<hr>
+
+<!-- M3 -->
+<section id="m3">
+<h2>M3 — Genesis Grammar</h2>
+<p>M3 defines the <strong>Structural Grammar</strong> of TSCG — the primitive type atoms from which all higher-level concepts are composed. It is grounded in <strong>Lambek Calculus</strong> and <strong>free commutative monoidal categories</strong>.</p>
+
+<h3>ASFID — Territory Grammar (Eagle Eye)</h3>
+<p>Five dimensions describing systems as they <em>are</em> (ontological perspective):</p>
+<table>
+  <tr><th>Atom</th><th>Dimension</th><th>Role</th></tr>
+  <tr><td>A</td><td>Attractor</td><td>Stability basins, convergence tendencies</td></tr>
+  <tr><td>S</td><td>Structure</td><td>Architectural organization, bonds</td></tr>
+  <tr><td>F</td><td>Flow</td><td>Exchange, circulation, openness</td></tr>
+  <tr><td>I</td><td>Information</td><td>Patterns, codes, signals</td></tr>
+  <tr><td>D</td><td>Dynamics</td><td>Change, transformation, time evolution</td></tr>
+</table>
+
+<h3>REVOI — Map Grammar (Sphinx Eye)</h3>
+<p>Five dimensions describing systems as they are <em>represented</em> (epistemic perspective):</p>
+<table>
+  <tr><th>Atom</th><th>Dimension</th><th>Role</th></tr>
+  <tr><td>R</td><td>Representable</td><td>Can be formally modeled</td></tr>
+  <tr><td>E</td><td>Evolvable</td><td>Model can be updated over time</td></tr>
+  <tr><td>V</td><td>Verifiable</td><td>Empirically testable predictions</td></tr>
+  <tr><td>O</td><td>Observable</td><td>Measurable outputs exist</td></tr>
+  <tr><td>I</td><td>Interoperable</td><td>Integrates with other models</td></tr>
+</table>
+
+<h3>Monoidal Composition</h3>
+<p>Concepts are composed using the <strong>monoidal product ⊗</strong> — not a tensor product (no scalar multiplication or metric required):</p>
+<div class="formula">
+  <div class="label">Example — Memory concept</div>
+  Memory  =  S ⊗ I ⊗ D        (Structure ⊗ Information ⊗ Dynamics)
+</div>
+
+<h3>M3 Files</h3>
+<ul>
+  <li><code>M3_GenesisGrammar.jsonld</code> — Core grammar, M3Dimension class, dimension symbols</li>
+  <li><code>M3_EagleEye.jsonld</code> — ASFID properties (physicalInterpretation, rangeAnalog…)</li>
+  <li><code>M3_SphinxEye.jsonld</code> — REVOI properties</li>
+  <li><code>M3_GrammarFoundation.jsonld</code> — Base grammar classes</li>
+</ul>
+</section>
+
+<hr>
+
+<!-- M2 -->
+<section id="m2">
+<h2>M2 — Generic Concepts</h2>
+<p>M2 contains ~80 <strong>transdisciplinary GenericConcepts</strong> — patterns that appear across multiple domains. Each concept has a structural formula expressing its ASFID/REVOI composition.</p>
+
+<h3>Concept Families</h3>
+<table>
+  <tr><th>Family</th><th>Examples</th></tr>
+  <tr><td>Structural</td><td>Hierarchy, Network, Modularity, Topology</td></tr>
+  <tr><td>Dynamic</td><td>Process, Trajectory, Bifurcation, Emergence</td></tr>
+  <tr><td>Regulatory</td><td>Regulation, FeedbackLoop, Homeostasis</td></tr>
+  <tr><td>Adaptive</td><td>Adaptation, Resilience, Self-Organization</td></tr>
+  <tr><td>Energetic</td><td>Dissipation, Entropy, Transducer</td></tr>
+  <tr><td>Informational</td><td>Code, Signal, Language, Pattern</td></tr>
+  <tr><td>Ontological</td><td>Identity, System, Observer, Environment</td></tr>
+  <tr><td>Teleonomic</td><td>Goal, Behavior, Workflow, Action</td></tr>
+  <tr><td>Relational</td><td>Relation, Link, Channel, Mediator</td></tr>
+</table>
+
+<h3>ConceptContracts</h3>
+<p>Behavioral interfaces that a GenericConcept can fulfill via <code>m2:implements</code>:</p>
+<ul>
+  <li><strong>Composable</strong> — can participate in part-whole relations</li>
+  <li><strong>Observable</strong> — has measurable outputs</li>
+  <li><strong>Stateful</strong> — maintains internal state</li>
+  <li><strong>Triggerable</strong> — can be activated by external events</li>
+</ul>
+
+<h3>Structural Grammar Properties</h3>
+<table>
+  <tr><th>Property</th><th>Content</th><th>Example</th></tr>
+  <tr><td>hasStructuralGrammarFormula</td><td>Unicode monoidal expression</td><td><code>S ⊗ I ⊗ D</code></td></tr>
+  <tr><td>hasStructuralGrammarFormulaTeX</td><td>LaTeX rendering</td><td><code>S \otimes I \otimes D</code></td></tr>
+  <tr><td>hasStructuralGrammarFormulaRawText</td><td>ASCII-safe</td><td><code>S (x) I (x) D</code></td></tr>
+</table>
+</section>
+
+<hr>
+
+<!-- M1 -->
+<section id="m1">
+<h2>M1 — Domain Extensions</h2>
+<p>M1 files specialize M2 Generic Concepts for specific knowledge domains. Each extension is in its own subfolder under <code>ontology/M1_extensions/</code>.</p>
+
+<h3>Available Extensions</h3>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin:12px 0">
+  <span class="tag accent">Biology</span>
+  <span class="tag accent">Chemistry</span>
+  <span class="tag accent">Economics</span>
+  <span class="tag accent">Education</span>
+  <span class="tag accent">Electronics</span>
+  <span class="tag accent">Energy Generators</span>
+  <span class="tag accent">Geology</span>
+  <span class="tag accent">Music</span>
+  <span class="tag accent">Mythology</span>
+  <span class="tag accent">Optics</span>
+  <span class="tag accent">Photography</span>
+  <span class="tag accent">Physics</span>
+  <span class="tag accent">Systemic Modeling</span>
+</div>
+
+<h3>Loading M1 Extensions</h3>
+<p>Click the <strong>M1</strong> button in the toolbar. A dropdown appears with <code>M1_CoreConcepts</code> at the top (★) and all domain extensions below. Each opens as a new document tab.</p>
+
+<div class="callout tip">
+  <span class="icon">💡</span> Extensions are discovered automatically — add a new <code>.jsonld</code> file in a subfolder of <code>M1_extensions/</code> and it appears in the dropdown on next launch.
+</div>
+</section>
+
+<hr>
+
+<!-- M0 -->
+<section id="m0">
+<h2>M0 — Instances (Poclets)</h2>
+<p>M0 contains concrete system models called <strong>Poclets</strong> (Proof-of-Concept + -let). A Poclet models a real-world system by assigning ASFID and REVOI scores and linking to M1/M2 concepts.</p>
+
+<h3>Epistemic Gap δ₁</h3>
+<p>The epistemic gap measures how well the Map (REVOI) captures the Territory (ASFID):</p>
+<div class="formula">
+  <div class="label">Epistemic Gap formula</div>
+  δ₁  =  ‖ ASFID_scores − REVOI_scores ‖  ∈ [0, 1]
+</div>
+<p>A small δ₁ means the model accurately represents the system. A large δ₁ signals modeling gaps.</p>
+
+<div class="callout warn">
+  <span class="icon">⚠</span> δ₁ is computed <em>per instance</em> at M0 level. It is NOT a fixed property of M2 Generic Concepts.
+</div>
+</section>
+
+<hr>
+
+<!-- JSON-LD -->
+<section id="jsonld">
+<h2>JSON-LD Format</h2>
+<p>TSCG ontologies are stored as <strong>JSON-LD files</strong> (.jsonld). JSON-LD is JSON with a semantic layer — it maps compact keys to full IRIs and enables RDF/SPARQL processing.</p>
+
+<h3 id="context">@context — Namespace Prefixes</h3>
+<p>The <code>@context</code> object defines shorthand prefixes for long URIs:</p>
+<pre><span class="str">"@context"</span>: {
+  <span class="str">"@base"</span>: <span class="str">"https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"</span>,
+  <span class="str">"m2"</span>:  <span class="str">"M2_GenericConcepts.jsonld#"</span>,
+  <span class="str">"m3"</span>:  <span class="str">"M3_GenesisGrammar.jsonld#"</span>,
+  <span class="str">"rdfs"</span>: <span class="str">"http://www.w3.org/2000/01/rdf-schema#"</span>,
+  <span class="str">"owl"</span>:  <span class="str">"http://www.w3.org/2002/07/owl#"</span>
+}</pre>
+
+<h3 id="graph">@graph — Concept Nodes</h3>
+<p>Each concept is a JSON object inside the <code>@graph</code> array:</p>
+<pre>{
+  <span class="str">"@id"</span>:   <span class="str">"m2:Memory"</span>,
+  <span class="str">"@type"</span>: <span class="str">"owl:Class"</span>,
+  <span class="str">"rdfs:label"</span>: <span class="str">"Memory"</span>,
+  <span class="str">"rdfs:subClassOf"</span>: { <span class="str">"@id"</span>: <span class="str">"m2:GenericConcept"</span> },
+  <span class="str">"m2:hasStructuralGrammarFormula"</span>: <span class="str">"S ⊗ I ⊗ D"</span>,
+  <span class="str">"m2:hasFamily"</span>: <span class="str">"m2:Dynamic"</span>,
+  <span class="str">"m2:implements"</span>: { <span class="str">"@id"</span>: <span class="str">"m2:Stateful"</span> }
+}</pre>
+</section>
+
+<hr>
+
+<!-- OBJECT EXPLORER -->
+<section id="explorer">
+<h2>Object Explorer</h2>
+<p>The leftmost panel shows the hierarchy of objects in the active ontology document.</p>
+
+<div class="panel-diagram">┌─ OBJECT EXPLORER ──────────────────────────┐
+│ ⬡ Classes                          ▼      │  ← Mode selector
+├──────────────────────────────────────────┤
+│ Show group…              [✕ All]          │  ← Group filter
+│ All groups visible                        │
+├──────────────────────────────────────────┤
+│ ▼ owl:Thing                               │
+│   ▼ GenericConcept                        │
+│     ▶ Bifurcation                         │
+│       Coherence                           │
+│       Memory                              │
+│       ...                                 │
+├──────────────────────────────────────────┤
+│         109 / 109 classes                 │
+└──────────────────────────────────────────┘</div>
+
+<h3>Mode Selector</h3>
+<p>The dropdown at the top switches between different object types:</p>
+<ul>
+  <li><strong>⬡ Classes</strong> — shows <code>owl:Class</code> hierarchy via <code>rdfs:subClassOf</code> (default)</li>
+  <li><strong>⬡ ObjectProperty</strong> — flat list of object properties</li>
+  <li><strong>⬡ DatatypeProperty</strong> — flat list of datatype properties</li>
+  <li><strong>⬡ NamedIndividual</strong> — flat list of named individuals</li>
+</ul>
+<p>For ontologies with no owl:Class nodes (e.g. M3_EagleEye), the first available type is selected automatically.</p>
+
+<h3>Group Filter</h3>
+<p>In Classes mode, the second dropdown filters by Level-1 group (direct subclasses of owl:Thing). Select multiple groups — they appear as colored pills. Click <kbd>✕ All</kbd> to clear.</p>
+
+<h3>Search — <kbd>Ctrl</kbd>+<kbd>F</kbd></h3>
+<p>Opens the inline search bar. The tree filters in real time. Three search modes:</p>
+<table>
+  <tr><th>Query</th><th>Behavior</th><th>Example</th></tr>
+  <tr><td><code>memory</code></td><td>Case-insensitive contains</td><td>Finds Memory, MemoryCell…</td></tr>
+  <tr><td><code>^me</code></td><td>Starts with</td><td>Memory, Mediator, Modularity…</td></tr>
+  <tr><td><code>loop$</code></td><td>Ends with</td><td>FeedbackLoop</td></tr>
+  <tr><td><code>/^[A-Z]{2}/</code></td><td>Explicit regex</td><td>Names starting with 2 capitals</td></tr>
+</table>
+<p>The first match is auto-selected and scrolled into view. Press <kbd>Esc</kbd> to close.</p>
+</section>
+
+<hr>
+
+<!-- PROPERTY INSPECTOR -->
+<section id="inspector">
+<h2>Property Inspector</h2>
+<p>Click any object in the Explorer to load its properties. Values come directly from the Python bridge parsing the JSON-LD file.</p>
+
+<h3>IRI Chips</h3>
+<p>Property values that are IRIs within the <em>current document</em> appear as <strong>clickable chips</strong>:</p>
+<ul>
+  <li><strong>Click</strong> → navigates to that object in the Explorer tree (expanding collapsed nodes if needed)</li>
+  <li><strong>Hover</strong> → shows the full IRI as tooltip</li>
+</ul>
+<p>IRIs from other ontology files appear as plain text (cross-document navigation is handled via the Imports tab).</p>
+
+<h3>Complex Values (Blank Nodes)</h3>
+<p>Anonymous nested objects (JSON-LD blank nodes) are expanded inline as <code>key: value | key: value</code> pairs. Deeply nested structures are shown as <code>{…}</code> — use SPARQL for full exploration.</p>
+</section>
+
+<hr>
+
+<!-- IMPORTS -->
+<section id="imports">
+<h2>Imports Tab</h2>
+<p>Shows all dependencies of the active ontology document:</p>
+
+<h4>@context Namespaces</h4>
+<p>Each prefix defined in <code>@context</code> appears as a chip showing the prefix key. Hover for the full URI. Click to:</p>
+<ul>
+  <li><strong>Internal TSCG prefix</strong> (violet chip) → loads that ontology as a new document tab</li>
+  <li><strong>External prefix</strong> (grey chip) → opens in browser</li>
+</ul>
+
+<h4>owl:imports</h4>
+<p>Explicit OWL imports appear as chips showing the filename stem. Click → loads the imported file.</p>
+</section>
+
+<hr>
+
+<!-- SPARQL -->
+<section id="sparql">
+<h2>SPARQL Panel</h2>
+<p>The rightmost tab provides a full SPARQL 1.1 query editor against the active ontology.</p>
+
+<h3>Predefined Queries</h3>
+<p>The dropdown at the top loads ready-to-run queries organized by category:</p>
+<ul>
+  <li><strong>🔍 Exploration</strong> — list classes, properties, all triples</li>
+  <li><strong>⬡ M2 GenericConcepts</strong> — by family, structural formulas, dual polarity…</li>
+  <li><strong>🦅 M3 Dimensions</strong> — ASFID and REVOI dimension lists</li>
+  <li><strong>📦 M0 Instances</strong> — poclets, ASFID scores</li>
+  <li><strong>🔧 Utilities</strong> — named graphs, imports, ontology metadata</li>
+</ul>
+
+<h3>Running Queries</h3>
+<p>Click <strong>▶ Run</strong> or modify the predefined query before running. Results display as a sortable table with full IRI tooltips.</p>
+
+<h3>Save As…</h3>
+<p>After a successful query, <strong>Save As…</strong> exports results to:</p>
+<ul>
+  <li><strong>SELECT</strong> queries → <code>SPARQL_OUTPUT_&lt;timestamp&gt;.csv</code></li>
+  <li><strong>CONSTRUCT</strong> queries → <code>SPARQL_OUTPUT_&lt;timestamp&gt;.ttl</code></li>
+</ul>
+<p>Files are saved to <code>instances/tscg-tools/TscgOntologyExplorer/output/</code>.</p>
+</section>
+
+<hr>
+
+<!-- EXPORT -->
+<section id="export">
+<h2>Export</h2>
+<p>Use <strong>File → Export As…</strong> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>E</kbd>) to export the active ontology in a different format:</p>
+<table>
+  <tr><th>Format</th><th>Extension</th><th>Use case</th></tr>
+  <tr><td>Turtle</td><td>.ttl</td><td>Protégé, OWL tools — recommended</td></tr>
+  <tr><td>RDF/XML</td><td>.rdf</td><td>Broad OWL compatibility</td></tr>
+  <tr><td>N-Triples</td><td>.nt</td><td>Simple line-by-line RDF</td></tr>
+  <tr><td>JSON-LD</td><td>.jsonld</td><td>Re-export with absolute IRIs</td></tr>
+</table>
+</section>
+
+<hr>
+
+<!-- SHORTCUTS -->
+<section id="shortcuts">
+<h2>Keyboard Shortcuts</h2>
+<table>
+  <tr><th>Shortcut</th><th>Action</th></tr>
+  <tr><td><kbd>Ctrl</kbd>+<kbd>F</kbd></td><td>Find in Object Explorer</td></tr>
+  <tr><td><kbd>Esc</kbd></td><td>Close search bar / close dropdown</td></tr>
+  <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>E</kbd></td><td>Export As…</td></tr>
+  <tr><td><kbd>Ctrl</kbd>+<kbd>,</kbd></td><td>Preferences</td></tr>
+</table>
+</section>
+
+<hr>
+
+<!-- SPARQL REFERENCE -->
+<section id="sparql-ref">
+<h2>SPARQL Quick Reference</h2>
+<h3>List all GenericConcepts with formulas</h3>
+<pre><span class="kw">PREFIX</span> m2: &lt;https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#&gt;
+<span class="kw">PREFIX</span> rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+<span class="kw">SELECT</span> ?concept ?label ?formula <span class="kw">WHERE</span> {
+  ?concept rdfs:subClassOf+ m2:GenericConcept .
+  ?concept m2:hasStructuralGrammarFormula ?formula .
+  <span class="kw">OPTIONAL</span> { ?concept rdfs:label ?label }
+} <span class="kw">ORDER BY</span> ?label</pre>
+
+<h3>Concepts by family</h3>
+<pre><span class="kw">SELECT</span> ?family (<span class="kw">COUNT</span>(?c) <span class="kw">AS</span> ?count) <span class="kw">WHERE</span> {
+  ?c rdfs:subClassOf+ m2:GenericConcept .
+  ?c m2:hasFamily ?family .
+} <span class="kw">GROUP BY</span> ?family <span class="kw">ORDER BY DESC</span>(?count)</pre>
+
+<h3>All triples for a specific concept</h3>
+<pre><span class="kw">SELECT</span> ?p ?o <span class="kw">WHERE</span> {
+  &lt;https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#Memory&gt;
+  ?p ?o .
+}</pre>
+
+<p style="margin-top:40px;color:var(--text2);font-size:.85rem;">
+  TscgOntologyExplorer — Echopraxium with the collaboration of Claude AI — 2026
+</p>
+</section>
+
+</main>
+</div>
+
+<script>
+// Highlight active nav link on scroll
+const sections = document.querySelectorAll('section[id]')
+const navLinks  = document.querySelectorAll('nav a[href^="#"]')
+const observer  = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'))
+      const active = document.querySelector(`nav a[href="#${e.target.id}"]`)
+      if (active) active.classList.add('active')
+    }
+  })
+}, { threshold: 0.3 })
+sections.forEach(s => observer.observe(s))
+</script>
+</body>
+</html>
