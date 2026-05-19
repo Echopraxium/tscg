@@ -1,330 +1,691 @@
 # TSCG Structural Grammar Foundation
-**Lambek Calculus and Monoidal Categories**
 
-**Version:** 1.0  
-**Date:** 2026-05-13  
-**Status:** Theoretical Foundation
+**Author**: Echopraxium with the collaboration of Claude AI  
+**Date**: 2026-05-18 (v2 — Operator Notation Reform)  
+**Framework**: TSCG (Transdisciplinary System Construction Game) v16.0.0+  
+**Status**: Foundational Reform — M3 Level (v2: Operator Notation Reform)
 
----
-
-## Abstract
-
-This document establishes the mathematical foundation for TSCG (Transdisciplinary System Construction Game) structural grammars based on **Lambek Calculus** and **free commutative monoidal categories**. It replaces the previous tensor product interpretation (Hilbert spaces) with a more appropriate categorical framework that captures systemic composition without imposing unnecessary metric structure.
-
----
-
-## 1. Why Monoidal Categories?
-
-### 1.1 The Problem with Vector Spaces
-
-TSCG originally used tensor products from Hilbert space theory. This was **mathematically too rich**:
-
-**Vector spaces require:**
-- Scalar multiplication: `λ · v` (what is "2 × Attractor"?)
-- Addition: `u + v` (what is "Process + Memory"?)
-- Metric/norm: `||v||` (how do you measure "distance" between concepts?)
-- Linear structure that doesn't fit systemic composition
-
-**These operations have no natural interpretation in TSCG.**
-
-### 1.2 Monoidal Categories are Minimal
-
-**Free commutative monoidal categories** provide **just enough structure**:
-
-```
-Category C with:
-- Objects: Systemic dimensions (A, S, F, I, D, R, E, V, O)
-- Morphisms: Composition operations
-- Monoidal product ⊗: C × C → C
-```
-
-**Required properties (and ONLY these):**
-1. **Associativity:** `(A ⊗ B) ⊗ C ≅ A ⊗ (B ⊗ C)`
-2. **Commutativity:** `A ⊗ B ≅ B ⊗ A`
-3. **Neutral element:** `∃ 1 : A ⊗ 1 ≅ A`
-
-**That's it. Nothing more needed.**
+> **v2 Update (2026-05-18):** This document covers two reform phases.
+> Phase 1 (2026-05-11): ⊗ redefined as monoidal product (Lambek), abandoning tensor/Hilbert formalism.
+> Phase 2 (2026-05-18): ⊗ *replaced* by three explicit operators ×, +, | — one per grammar.
+> New: M3_BicephalousPerspective.jsonld, T (Temporality) as first Gs primitive, intra vs inter-grammar distinction.
 
 ---
 
-## 2. Lambek Calculus
+## Table of Contents
 
-### 2.1 Historical Context
-
-**Joachim Lambek (1958)** developed a logical calculus for syntactic composition based on category theory. Key insight: **composition can be formalized categorically without metric structure**.
-
-TSCG adapts Lambek's framework from linguistics to **systemic modeling**.
-
-### 2.2 Core Principles
-
-```
-1. Composition is categorical
-2. Order may or may not matter (we choose commutativity)
-3. Grouping doesn't matter (associativity)
-4. Minimal structure maximizes applicability
-```
-
-### 2.3 Free vs Constrained
-
-**"Free" commutative monoidal category** means:
-- No additional constraints beyond associativity, commutativity, neutral element
-- Maximal generality
-- No metric, no norm, no scalar multiplication
-
-**This is perfect for transdisciplinary modeling** where domains have different "units" and metrics.
+1. [Overview](#overview)
+2. [The Problem: Tensor Product Formalism](#the-problem-tensor-product-formalism)
+3. [The Anticipation: Braille Structural Grammar (©2022)](#the-anticipation-braille-structural-grammar)
+4. [The Solution: Structural Grammar Formalism](#the-solution-structural-grammar-formalism)
+5. [Mathematical Foundation: Lambek Calculus](#mathematical-foundation-lambek-calculus)
+6. [What ASFID and REVOI Dimensions Become](#what-asfid-and-revoi-dimensions-become)
+7. [The Epistemic Gap δ₁ — Unchanged and Strengthened](#the-epistemic-gap-δ₁)
+8. [Impact on M3 Architecture](#impact-on-m3-architecture)
+9. [Backward Compatibility: M2 to M0](#backward-compatibility-m2-to-m0)
+10. [Migration Guide](#migration-guide)
+11. [Summary](#summary)
 
 ---
 
-## 3. TSCG Structural Grammar Formalism
+## Overview
 
-### 3.1 Indexed Monoidal Products
+This document describes a **foundational reform** of the TSCG mathematical
+formalism: the replacement of the tensor product interpretation of the `⊗`
+operator (borrowed from quantum mechanics and linear algebra) with a rigorous,
+honest, and more powerful formalism called the **Structural Grammar**, rooted
+in **Lambek Calculus** and categorical algebra.
 
-TSCG extends standard monoidal categories with **indexed products**:
+> **Key principle**: The `⊗` symbol is *kept* — but its mathematical context
+> is explicitly redefined. Just as `×` means scalar multiplication in arithmetic
+> and vector cross product in geometry (same symbol, different contexts), `⊗` in
+> TSCG denotes **structural co-activation in a typed grammar**, not tensor product
+> in a Hilbert space.
 
-```
-⊗ⁱ where i ∈ {t, m}
-
-⊗ᵗ : Territory-specific monoidal product (ontological)
-⊗ᵐ : Map-specific monoidal product (epistemic)
-```
-
-**Why indexed?** Systems exist in two perspectives:
-- **Territory (t):** What systems ARE (ontological, empirical)
-- **Map (m):** How we REPRESENT systems (epistemic, model-based)
-
-### 3.2 Emergence Operator
-
-```
-⊗ⁱ⇒ : Tuple[Concept₁, ..., Conceptₙ] → Emergent_Concept
-
-Examples:
-⊗ᵗ⇒(Memory, Entropy) = Inertia
-⊗ᵐ⇒(Representable, Verifiable) = ModelQuality
-```
-
-**Semantics:** Synergistic combination where the whole has properties irreducible to parts.
-
-### 3.3 Duality Operator
-
-```
-^opⁱ : Concept → Dual_Concept
-
-Examples:
-Coherence^opᵗ = Incoherence (Territory duality)
-Observable^opᵐ = Unobservable (Map duality)
-```
-
-**Semantics:** Categorical opposition within the same dimensional space.
+This reform:
+- **Removes** the indefensible borrowing from quantum mechanics (Hilbert spaces,
+  SVD, coupling matrices, ket notation)
+- **Keeps** all formula notation unchanged (`D × I × F`, `A × S × F × I`, etc.)
+- **Strengthens** the Map/Territory dichotomy by making it structurally fundamental
+- **Preserves** the epistemic gap δ₁ and all M0 scoring
+- **Introduces** a principled categorical foundation compatible with well-established
+  mathematics
 
 ---
 
-## 4. Comparison with Other Formalisms
+## The Problem: Tensor Product Formalism
 
-### 4.1 Mathematical Hierarchy
+### What Was Claimed
 
-```
-Monoidal Category ← TSCG uses this
-    ↓ add group structure
-Group
-    ↓ add scalar field
-Module
-    ↓ add division
-Vector Space
-    ↓ add inner product
-Hilbert Space
-```
-
-**TSCG deliberately stays at the monoidal level** — adding more structure would be artificial.
-
-### 4.2 vs Tensor Products
-
-| Feature | Tensor Products (⊗) | TSCG Monoidal Products (⊗) |
-|---------|---------------------|----------------------------|
-| Context | Vector spaces, Hilbert spaces | Free monoidal categories |
-| Scalar mult | Required | Not needed |
-| Metric | Required | Not needed |
-| Linearity | Required | Not needed |
-| Applicability | Limited to metric spaces | Universal (transdisciplinary) |
-
-**Key insight:** TSCG uses ⊗ symbol but NOT tensor product semantics — it's a monoidal product.
-
----
-
-## 5. Empirical Validation
-
-### 5.1 Braille Structural Grammar (2022-07)
-
-The first empirical validation came from modeling the **Braille writing system** as a structural grammar:
-
-**System:** 6-dot Braille cells  
-**Primitives:** Dot positions (1-6)  
-**Composition:** Monoidal product of active dots  
-**Emergence:** Phonetic/semantic character meanings  
-
-**Result:** Complete functional grammar demonstrating:
-- Monoidal composition works for real complex systems
-- No metric needed
-- Dual perspectives (tactile/symbolic) naturally emerge
-
-**Document:** `ontology/StructuralGrammar/Braille_StructuralGrammar.pdf`
-
-### 5.2 Validation Criteria
-
-A successful structural grammar must:
-1. ✅ Compose primitives via monoidal product
-2. ✅ Explain emergent properties
-3. ✅ Work transdisciplinarily
-4. ✅ Avoid artificial metric structure
-
-**Braille met all criteria — proof of concept.**
-
----
-
-## 6. Advantages for TSCG
-
-### 6.1 Transdisciplinary Power
-
-**Monoidal categories are domain-agnostic:**
-- Biology uses different units than Economics
-- Physics has different metrics than Sociology
-- Yet TSCG formulas work across all domains
-
-**Why?** No metric imposed → universal applicability.
-
-### 6.2 Dual Perspectives
-
-**Territory vs Map distinction** formalizes:
-- Korzybski's "map is not the territory"
-- Ontological vs epistemic perspectives
-- What IS vs how we REPRESENT
-
-**Indexed operators ⊗ⁱ make this mathematically rigorous.**
-
-### 6.3 Minimal Ontological Commitment
-
-**TSCG doesn't assume:**
-- Linearity
-- Metric distance
-- Scalar multiplication
-- Vector space structure
-
-**Only assumes:**
-- Compositional structure (⊗)
-- Associativity, commutativity
-- Neutral element
-
-**Minimal assumptions → maximal generality.**
-
----
-
-## 7. Notation Conventions
-
-### 7.1 Standard Notation
+Previous versions of TSCG described the `⊗` operator in M2 concept formulas
+(e.g. `Process = D × I × F`) using the vocabulary of algebraic tensor products
+and Hilbert spaces:
 
 ```
-D ⊗ It ⊗ F          Unicode, symbolic
-D \otimes I_t \otimes F    LaTeX, TeX
-D (x) It (x) F      ASCII-safe
+"hilbert_space": "ℋ_μ"
+"orthonormality": "verified"
+"basis": "⟨i|j⟩ = δᵢⱼ"
+ℋ_Domain = ℋ_ASFID ⊗ ℋ_REVOI = ℂ²⁵
+|D⟩ = Σᵢⱼ αᵢⱼ |ASFIDᵢ⟩ ⊗ |REVOIⱼ⟩
 ```
 
-### 7.2 Indexed Notation
+The `Domain` metaconcept even proposed an SVD (Singular Value Decomposition)
+to reduce 25 dimensions to 5 "principal modes" with coupling coefficients αᵢⱼ.
+
+### Why This Was Problematic
+
+A rigorous mathematical reviewer would immediately identify the following issues:
+
+**1. No vector space is defined.**
+Tensor products require vector spaces with addition and scalar multiplication.
+What is `2 × Attractor` or `Flow + Structure`? These operations are undefined
+in TSCG. Without them, writing `ℂ²⁵` or `ℋ_ASFID` is decorative mathematics.
+
+**2. The coupling coefficients αᵢⱼ are phantoms.**
+The formula `|D⟩ = Σᵢⱼ αᵢⱼ |ASFIDᵢ⟩ ⊗ |REVOIⱼ⟩` implies numerical values
+for αᵢⱼ. These coupling strengths were never measured, computed, or even
+operationally defined. Applying SVD to a matrix whose entries cannot be
+constructed is algebra in mid-air.
+
+**3. Non-commutativity was silently ignored.**
+In genuine tensor algebra, `A⊗B ≠ B⊗A` (they are isomorphic but not equal).
+TSCG formulas treat `⊗` as commutative without stating or justifying this.
+
+**4. The Hilbert space / ket notation is cosmetic.**
+The notation `|D⟩`, `ℂ²⁵`, `ℋ` creates the appearance of quantum-mechanical
+rigor without the underlying structure. Any physicist would recognise the
+category error immediately.
+
+**5. The ASFID ⊗ REVOI conflation blurs the Map/Territory distinction.**
+Modelling ASFID and REVOI as two orthonormal bases of the *same* object
+(ℂ²⁵) mathematically undermines the very separation that TSCG is built on:
+Territory and Map are not two aspects of a single metric space — they are
+fundamentally distinct epistemic stances.
+
+### What Was Defensible
+
+Despite the problematic formalism, the *intuition* behind `⊗` in TSCG was
+always real and valid:
+
+- `Process = D × I × F` correctly captures that Process *simultaneously mobilises*
+  the Dynamics, Information, and Flow dimensions
+- The formulas function as reliable **structural fingerprints** of concepts
+- They have proven heuristic value across 23+ validated poclets
+
+The problem was not the intuition — it was the unjustified mathematical
+*pretension* attached to it.
+
+---
+
+## The Anticipation: Braille Structural Grammar
+
+*©2022 Michel Kern — created before TSCG began*
+
+### The Diagram
+
+In 2022, Michel Kern independently created a classification of the Braille
+alphabet showing how **all 26 letters can be generated from 2 primitive glyphs**
+(`S` and `A`) using a small set of structural operations:
 
 ```
-⊗ⁱ    General indexed form (i ∈ {t, m})
-⊗ᵗ    Territory-specific
-⊗ᵐ    Map-specific
-⊗ᵗ⇒   Territory emergence
-⊗ᵐ⇒   Map emergence
-^opᵗ  Territory duality
-^opᵐ  Map duality
+Primitives   :  { S, A }
+Operations   :  +  (dot addition)
+                −  (dot subtraction)
+                SymH  (horizontal symmetry)
+                SymV  (vertical symmetry)
+                Rotation
 ```
 
-### 7.3 Arrow Notation (→)
+Examples from the diagram:
+```
+B  = !Y + A          (addition)
+C  = SymHV(B)        (double symmetry)
+E  = SymH(I)         (horizontal mirror of I)
+K  = P − I           (subtraction)
+W  = SymH(R)         (mirror)
+Q  = G + K           (addition of two derived glyphs)
+```
 
-**Reserved for:**
-1. **Functors:** `F : Cat_M3 → Cat_M2` (between categories)
-2. **Logical implications:** `p=1 → Composition` (in comments)
+All 26 letters of the Braille alphabet emerge from these 2 primitives and
+5 operations. The system is **closed** (all generated forms are valid Braille
+letters), **complete** (all 26 letters are reachable), and **minimal**
+(no redundant primitives or operations).
 
-**NOT for monoidal products** — use ⊗ instead.
+### Why This is Remarkable
 
----
+This diagram was created **before TSCG was formulated**. It demonstrates,
+empirically and independently, the exact structural principle that TSCG
+needed as its mathematical foundation:
 
-## 8. Relation to Category Theory
+> *A complete symbolic system can be generated from a small set of primitives
+> and a small set of operations — without any metric structure, without any
+> Hilbert space, without SVD.*
 
-### 8.1 Categorical Semantics
+This is not tensor algebra. It is a **grammar of structures**.
 
-TSCG is a **concrete category:**
-- **Objects:** M3 dimensions, M2 concepts, M1 domains, M0 instances
-- **Morphisms:** Composition operations, specializations, instantiations
-- **Functors:** 
-  - `F_⊗ : Cat_M3 → Cat_M2` (monoidal product at M2)
-  - `F_inst : Cat_M2 → Cat_M1` (domain specialization)
-  - `F_eval : Cat_M1 → Cat_M0` (instance evaluation)
+The parallel to TSCG is exact:
 
-### 8.2 Natural Transformations
+| Braille Grammar | TSCG Structural Grammar |
+|---|---|
+| 2 primitives `{S, A}` | 10 primitive dimensions `{A,S,F,I,D,R,E,V,O,I}` |
+| Operations: `+`, `−`, `SymH`, `SymV`, `Rot` | Operators: `⊗`, `⊗⇒`, `^op` |
+| 26 derived glyphs | ~80 M2 GenericConcepts |
+| Complexity levels (1–5 points) | Formula arity (2–5 dimensions) |
+| Closure: all results are valid Braille | Closure: all formulas are valid concept signatures |
 
-**Φ : Gt → Gm** (Territory to Map)  
-**Ψ : Gm → Gt** (Map to Territory)
+### Morphisms Between Glyphs
 
-These enable **bicephalous reasoning** — viewing systems through both lenses.
+The diagram makes explicit something deeper than enumeration: it maps the
+**morphisms** (structural transformations) between glyphs. `SymH`, `SymV`,
+and `Rotation` are not just operations — they are **structure-preserving maps**
+between glyphs, i.e. *morphisms in a category of Braille patterns*.
 
----
+This anticipates the categorical formalism that TSCG now adopts:
+ASFID/REVOI dimensions are not coordinates in a metric space — they are
+**primitive types** in a typed grammar, and concept formulas are
+**morphisms** (structural derivations) within that grammar.
 
-## 9. Future Directions
-
-### 9.1 Map Grammar Development
-
-Currently REVOI (Map Grammar) is underused in M2. Future work:
-- Develop more Map-centric GenericConcepts
-- Explore epistemic quality patterns
-- Formalize model validation criteria
-
-### 9.2 Higher-Order Composition
-
-Investigate **monoidal functors** and **braided categories** for:
-- Cross-layer composition
-- Hierarchical emergence
-- Multi-perspective integration
-
-### 9.3 Computational Implementation
-
-Develop **proof assistants** for:
-- TSCG formula verification
-- Automatic M0 instance validation
-- Category-theoretic model checking
+The Braille diagram is henceforth the **canonical illustration** of the TSCG
+Structural Grammar principle.
 
 ---
 
-## 10. References
+## The Solution: Structural Grammar Formalism
 
-### Primary Sources
+### Core Redefinition
 
-1. **Lambek, J. (1958).** "The Mathematics of Sentence Structure." *American Mathematical Monthly* 65(3): 154-170.
+The `⊗` operator in TSCG is formally redefined as:
 
-2. **Mac Lane, S. (1971).** *Categories for the Working Mathematician.* Springer.
+```
+×SCG : TypeSet × TypeSet → ConceptSignature
+```
 
-3. **Joyal, A. & Street, R. (1991).** "The Geometry of Tensor Calculus, I." *Advances in Mathematics* 88(1): 55-112.
+**Properties (axiomatically declared):**
+- **Associative**: `(A⊗S)⊗F = A⊗(S⊗F)` ✅
+- **Commutative**: `A⊗S = S⊗A` ✅ *(explicit choice for TSCG)*
+- **No metric**: does NOT presuppose a normed space ✅
+- **No Hilbert space**: does NOT require inner product or orthonormality ✅
+- **Unit element**: the empty signature `ε` acts as identity: `A⊗ε = A` ✅
 
-### TSCG Documents
+This makes `⊗` a **commutative monoidal product** on the free algebra of
+TSCG primitive types — a well-defined and legitimate mathematical structure.
 
-4. **Braille Structural Grammar (2022-07).** `ontology/StructuralGrammar/Braille_StructuralGrammar.pdf`
+### Official Documentation Statement
 
-5. **M3_GrammarFoundation.jsonld (2026-05).** Formalization of Lambek Calculus for TSCG.
+The following statement is to be included in all TSCG documentation where
+`⊗` appears in formulas:
+
+> *"The symbol `⊗` in TSCG denotes the **structural co-activation operator**
+> of the TSCG Concept Grammar. It shares notation with the tensor product of
+> linear algebra but operates in a fundamentally different context: a typed
+> combinatorial space over qualitative primitive dimensions, without metric
+> or vector structure. This is analogous to how `×` denotes both scalar
+> multiplication and the vector cross product — same symbol, distinct
+> mathematical contexts. The TSCG `⊗` is the monoidal product of a
+> Lambek-style structural grammar over the primitive alphabet
+> `{A, S, F, I, D, R, E, V, O, I}`."*
+
+### The Three TSCG Operators
+
+Under the Structural Grammar formalism, TSCG has exactly three operators:
+
+| Operator | Name | Meaning | Example |
+|---|---|---|---|
+| `×` | Territory product | ASFID types simultaneously present (intra-Gt) | `D × I × F` = Process |
+| `+` | Map sum | REVOI types simultaneously present (intra-Gm) | `O + R + Im` = Context |
+| `\|` | Stereopsic fusion | Inter-grammar — connects Gt, Gm, Gs | `A × S × I \| R + O` = Coherence |
+| `×⇒` | Territory emergence | Emergent Territory concept | `×⇒(Memory, Entropy)` = Inertia |
+| `+⇒` | Map emergence | Emergent Map concept | `+⇒(Representable, Verifiable)` = ModelQuality |
+| `^op` | Duality / Opposition | Polar opposite | `Coherence^op` = Incoherence |
+
+These three operators form the complete **operator vocabulary** of the TSCG
+Structural Grammar — no additional algebraic machinery is required or claimed.
 
 ---
 
-## Conclusion
+## Mathematical Foundation: Lambek Calculus
 
-**TSCG Structural Grammar** is grounded in **Lambek Calculus** and **free commutative monoidal categories** — providing:
+### Background
 
-✅ **Mathematical rigor** without artificial constraints  
-✅ **Transdisciplinary power** through domain-agnostic formalism  
-✅ **Dual perspectives** (Territory/Map) via indexed operators  
-✅ **Empirical validation** (Braille system)  
-✅ **Minimal ontological commitment** for maximal applicability  
+The **Lambek Calculus** (Joachim Lambek, 1958) is a typed logical system
+originally designed for the formal analysis of natural language grammars.
+It has since become foundational in:
 
-**This foundation makes TSCG a truly universal systemic modeling framework.**
+- **Categorial Grammar** (linguistics)
+- **Linear Logic** (Girard, 1987)
+- **Type Theory** (Martin-Löf, 1984)
+- **Monoidal Categories** (MacLane, 1963)
+
+It provides precisely what TSCG needs: a **grammar of types** where complex
+types are built from primitive types using product (`⊗`) and function-type
+operators — without requiring any metric structure.
+
+### Curry-Howard Correspondence
+
+In the Lambek / type-theoretic framework, there is a deep correspondence
+known as the **Curry-Howard isomorphism**:
+
+```
+Type (formula M2)    ↔   Proposition (logical statement)
+Term (poclet M0)     ↔   Proof (evidence that the proposition holds)
+Type-checking        ↔   Proof verification
+δ₁ (epistemic gap)  ↔   Degree of proof completeness
+```
+
+Under this reading:
+
+- A TSCG formula like `Process = D × I × F` is a **type declaration**: any
+  system that exhibits Dynamics, Information transfer, and Flow *inhabits*
+  the Process type.
+- A poclet (M0) is a **proof term**: it provides concrete evidence that a
+  real-world system satisfies the type.
+- The epistemic gap δ₁ measures how faithfully the poclet "proves" the type —
+  a kind of partial proof in a graded logic.
+
+This is a far richer and more defensible foundation than the Hilbert space
+analogy, and it is mathematically rigorous without requiring any metric.
+
+### Connection to Category Theory
+
+Each ASFID/REVOI dimension can be understood as a **functor**:
+
+```
+F_A : SystemCategory  →  ScoreCategory   (maps systems to Attractor scores)
+F_S : SystemCategory  →  ScoreCategory   (maps systems to Structure scores)
+...
+F_R : SystemCategory  →  ScoreCategory   (maps systems to Representability scores)
+```
+
+The observation and interpretation operators become **natural transformations**
+between functors:
+
+```
+Φ : G_T → G_M     (observation: Territory → Map)
+Ψ : G_M → G_T     (interpretation: Map → Territory)
+```
+
+This is legitimate category theory — well-established, metric-free, and
+perfectly suited to the TSCG bicephalous architecture.
 
 ---
 
-**For placement in:** `ontology/StructuralGrammar/Structural_Grammar_Foundation.md`
+## What ASFID and REVOI Dimensions Become
+
+### Two Mathematical Roles, Two Levels
+
+The same 10 labels `{A,S,F,I,D}` + `{R,E,V,O,I}` play **two distinct
+mathematical roles** depending on the layer:
+
+| Layer | Role | Mathematical object | Metric? |
+|---|---|---|---|
+| M3 / M2 | Primitive types of the Grammar | Generators of a free monoidal algebra | ❌ No |
+| M0 | Evaluation functions | Morphisms `F_x : System → [0,1]` | ✅ Yes |
+
+At M2 level, `D × I × F` is a **type expression** built from primitive generators —
+purely qualitative, no numbers involved.
+
+At M0 level, each dimension instantiates as a **real-valued measurement** in
+`[0,1]`. The space `[0,1]⁵` is a perfectly legitimate metric space, and δ₁
+is a valid Euclidean distance within it.
+
+This duality — qualitative grammar at M2, quantitative evaluation at M0 — is
+not a weakness but a **structural virtue** that mirrors the Eagle/Sphinx
+bicephalous architecture itself.
+
+### Terminology Update
+
+| Old term | New term | Rationale |
+|---|---|---|
+| "dimension of a Hilbert space" | "primitive type of Territory/Map Grammar" | Honest |
+| "orthonormal basis" | "independent primitive generators" | Accurate |
+| "tensor product" | "structural co-activation (monoidal product)" | Rigorous |
+| "coupling coefficient αᵢⱼ" | *(removed)* | Was undefined |
+| "SVD decomposition" | *(removed)* | Was inapplicable |
+
+---
+
+## The Epistemic Gap δ₁
+
+**The epistemic gap δ₁ is entirely preserved.** It never depended on the
+Hilbert space formalism.
+
+### Formula (Unchanged)
+
+```
+δ₁ = ||ASFID_mean − REVOI_mean|| / √2
+```
+
+where `ASFID_mean` and `REVOI_mean` are the means of the 5 M0 scores in each
+respective space — both well-defined real numbers in `[0,1]`.
+
+### Spectral Classes (Unchanged)
+
+| Class | δ₁ range | Interpretation |
+|---|---|---|
+| **Coherent** | `[0, 0.05)` | Near-perfect Territory/Map alignment |
+| **OnCriticalLine** | `[0.05, 0.15)` | Productive epistemic tension |
+| **Liminal** | `[0.15, 0.30)` | Significant gap, attention required |
+| **Enigmatic** | `[0.30, 1.0)` | Fundamental modeling challenge |
+
+### Why δ₁ Survives Unchanged
+
+At M0, the ASFID and REVOI dimensions instantiate as **evaluation functions**
+returning real values in `[0,1]`. The score space `[0,1]⁵` is a legitimate
+metric space. δ₁ is simply a normalised Euclidean distance in this space —
+no Hilbert space formalism was ever required for this computation.
+
+### Categorical Interpretation (New)
+
+Under the Structural Grammar formalism, δ₁ acquires a deeper meaning:
+
+```
+δ₁  =  measure of the non-isomorphism of Φ : G_T → G_M
+```
+
+The Korzybski principle formalised:
+
+> *"The map is not the territory"*
+> = Φ is never a perfect isomorphism
+> = there always exists δ₁ > 0
+
+A perfect map (δ₁ = 0) is theoretically possible but never observed in practice —
+just as Korzybski argued that no map ever perfectly captures its territory.
+
+---
+
+## Impact on M3 Architecture
+
+### M3_EagleEye.jsonld → Territory Grammar G_T
+
+**Removed:**
+- `"orthonormality": "verified"`
+- `"hilbert_space": "ℋ_μ"`
+- Any ket notation or inner product references
+
+**Added:**
+```json
+"grammar_properties": {
+  "grammar_name":    "Territory Grammar G_T",
+  "grammar_type":    "free_commutative_monoidal",
+  "primitives":      ["A", "S", "F", "I", "D"],
+  "product":         "×  (structural product, Territory)",
+  "perspective":     "ontological / empirical",
+  "primitive_role":  "generators of Territory type expressions",
+  "functor_role":    "F_A, F_S, F_F, F_I, F_D : System → [0,1]  (M0 evaluation)"
+}
+```
+
+**Unchanged:** All ASFID dimension definitions, Eagle Eye identity, Territory role.
+
+### M3_SphinxEye.jsonld → Map Grammar G_M
+
+**Removed:** Same Hilbert-related fields as EagleEye.
+
+**Added:**
+```json
+"grammar_properties": {
+  "grammar_name":    "Map Grammar G_M",
+  "grammar_type":    "free_commutative_monoidal",
+  "primitives":      ["R", "E", "V", "O", "I"],
+  "product":         "+  (structural sum, Map)",
+  "perspective":     "epistemic / representational",
+  "primitive_role":  "generators of Map type expressions",
+  "functor_role":    "F_R, F_E, F_V, F_O, F_I : System → [0,1]  (M0 evaluation)"
+}
+```
+
+**Unchanged:** All REVOI dimension definitions, Sphinx Eye identity, Map role.
+
+### M3_GenesisGrammar.jsonld → Bicephalous Bicategory
+
+**Removed:** SVD/coupling matrix `Σ`, `αᵢⱼ` coefficients, Hilbert space ℂ²⁵,
+ket notation, `Domain`/`KnowledgeField` Hilbert content.
+
+**Reframed:** Φ and Ψ operators become **natural transformations** between the
+Territory and Map Grammars:
+
+```json
+"bicephalous_connection": {
+  "Phi": {
+    "type":    "natural_transformation",
+    "maps":    "G_T → G_M",
+    "role":    "Observation: Territory → Map",
+    "meaning": "Transforms empirical ASFID scores into Map REVOI representation"
+  },
+  "Psi": {
+    "type":    "natural_transformation",
+    "maps":    "G_M → G_T",
+    "role":    "Interpretation: Map → Territory",
+    "meaning": "Map predictions guide Territory measurement strategies"
+  },
+  "gap": {
+    "symbol":  "δ₁",
+    "meaning": "Measure of non-isomorphism between Φ and Ψ",
+    "formula": "||ASFID_mean − REVOI_mean|| / √2"
+  }
+}
+```
+
+### Why Map/Territory is Strengthened, Not Weakened
+
+| Aspect | Hilbert approach | Structural Grammar |
+|---|---|---|
+| ASFID and REVOI | Two bases of **same** space ℂ²⁵ | Two **separate** grammars G_T and G_M |
+| Their connection | Algebraic subspaces | Natural transformations Φ, Ψ |
+| Map ≠ Territory | Implicit | **Structurally fundamental** |
+| Epistemic gap | Metric distance in ℂ²⁵ | Non-isomorphism of Φ |
+
+---
+
+## Backward Compatibility: M2 to M0
+
+### Formula Values: Zero Change
+
+All M2 concept formulas remain syntactically and semantically identical:
+
+```
+Process       =  D⊗I⊗F          ✅  unchanged
+FeedbackLoop  =  A × F × D          ✅  unchanged
+Coherence     =  A × S × I | R + O     ✅  unchanged
+```
+
+The mathematical *interpretation* of `⊗` changes (monoidal product instead of
+tensor product), but the *notation* and the *structural content* are identical.
+
+### M0 Instances: No Data Migration
+
+ASFID/REVOI scores, `m0:epistemicGap`, `m0:asfidScores`, `m0:revoiScores` —
+all are real numbers unaffected by the M3 reframing.
+
+### M1 Extensions: No Structural Change
+
+Domain-specific concept definitions reference M2 formulas. Since formulas are
+unchanged, M1 files require no modification.
+
+---
+
+## Migration Guide
+
+The only structural change requiring file modification is the renaming of
+the `m2:hasTensorFormula` property family, whose name explicitly encodes
+the old (incorrect) mathematical interpretation.
+
+### Properties to Rename
+
+| Old property | New property |
+|---|---|
+| `m2:hasTensorFormula` | `m2:hasStructuralFormula` |
+| `m2:hasTensorFormulaTeX` | `m2:hasStructuralFormulaTeX` |
+| `m2:hasTensorFormulaASCII` | `m2:hasStructuralFormulaASCII` |
+
+### Automated Migration Script
+
+```python
+import json, re
+from pathlib import Path
+
+OLD_PROPS = [
+    ("m2:hasTensorFormula\"",     "m2:hasStructuralFormula\""),
+    ("m2:hasTensorFormulaTeX\"",  "m2:hasStructuralFormulaTeX\""),
+    ("m2:hasTensorFormulaASCII\"","m2:hasStructuralFormulaASCII\""),
+]
+
+def migrate_file(path: Path) -> bool:
+    content = path.read_text(encoding="utf-8")
+    modified = content
+    for old, new in OLD_PROPS:
+        modified = modified.replace(old, new)
+    if modified != content:
+        path.write_text(modified, encoding="utf-8")
+        # Validate JSON
+        json.loads(modified)
+        return True
+    return False
+
+# Run on all ontology files
+for f in Path("ontology").rglob("*.jsonld"):
+    changed = migrate_file(f)
+    print(f"{'✅ migrated' if changed else '— unchanged':14s}  {f}")
+```
+
+### Migration Phases
+
+| Phase | Scope | Type | Effort |
+|---|---|---|---|
+| **1 — M3** | 3 files | Manual — remove Hilbert/SVD, add grammar semantics | ~2h |
+| **2 — M2** | 1 large file | Script — rename 3 properties + clean Domain/KnowledgeField | ~1h |
+| **3 — M1/M0** | 20+ files | Script — verify/rename if `hasTensorFormula` present | ~30min |
+
+### What Is *Not* Migrated
+
+- Formula values (`"D⊗I⊗F"` strings) — unchanged
+- Score properties (`m0:asfidScores`, `m0:revoiScores`, `m0:epistemicGap`) — unchanged
+- Ontology structure (`@graph`, `@context`, `@base`) — unchanged
+- All `rdfs:label`, `rdfs:comment`, `skos:definition` — unchanged
+- `m3:ontologyType`, `owl:imports` — unchanged
+
+---
+
+
+---
+
+## Phase 2: Three Operators, Three Alphabets (2026-05-18)
+
+### The Operator Notation Reform
+
+Phase 1 kept ⊗ but redefined it as a monoidal product. Phase 2 goes further:
+⊗ is **replaced** by three distinct operators — one per grammar — eliminating
+all remaining ambiguity:
+
+```
+⊗ᵗ  →  ×   Territory structural product   (intra-Gt, closed within Gt)
+⊗ᵐ  →  +   Map structural sum             (intra-Gm, closed within Gm)
+(new)   |   Stereopsic fusion              (inter-grammar, always produces Gs)
+```
+
+This reform makes the bicephalous architecture **explicit in the notation itself**.
+
+### Three Primitive Alphabets
+
+```
+𝕋₀(×) = {A, S, F, I, D}      Territory primitives — Eagle Eye (Gt)
+𝕋₀(+) = {R, E, V, O, Im}     Map primitives       — Sphinx Eye (Gm)
+𝕋₀(|) = {T}                   Bicephalous primitives — Bicephalous Perspective (Gs)
+
+𝕋₀  =  𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)  =  11 primitives
+```
+
+### M3_BicephalousPerspective.jsonld — Reification of Stereopsis
+
+A third M3 file is added alongside EagleEye and SphinxEye:
+
+```
+M3_EagleEye.jsonld              →  Gt, ASFID, ×   (metaphor: Eagle Eye)
+M3_SphinxEye.jsonld             →  Gm, REVOI, +   (metaphor: Sphinx Eye)
+M3_BicephalousPerspective.jsonld →  Gs, {T}, |    (metaphor: Bicephalous Perspective)
+```
+
+**Naming convention:** File names use *metaphorical* terminology
+(EagleEye, SphinxEye, Bicephalous). Internal content uses *formalism* terminology
+(Gt, Gm, Gs, ×, +, |, StereopsisEmptySet, T).
+
+**Gs is not a third head** — it is the **reification** of the stereopsic synergy
+between Eagle Eye and Sphinx Eye. The architecture remains bicephalous.
+
+### T — First Primitive of 𝕋₀(|)
+
+**T (Temporality)** is the first irreducible primitive of Gs:
+
+```
+T  :=  irreducible bicephalous type
+       manifests as F | Im  or  D | Im in context
+       used in:  m2:Gradient = F × T  or  I × T
+```
+
+T is primitive — not derived from other types. `F | Im` and `D | Im` are
+*manifestations* of T in specific contexts, not its definition.
+
+### Intra-grammar vs Inter-grammar Operators
+
+```
+×  :  intra-grammar  —  Gt × Gt → Gt   (closed — stays in Territory)
++  :  intra-grammar  —  Gm × Gm → Gm   (closed — stays in Map)
+|  :  inter-grammar  —  * × * → Gs      (open — always produces Bicephalous)
+```
+
+**Key clarification:** | has "extended rights" not as a privilege but as its
+*constitutive role* — it exists to traverse the Gt/Gm boundary. This is
+explained entirely within the Lambek calculus / free monoidal grammar framework.
+No tensor algebra, no multi-sorted algebra, no structure beyond free monoids
+is needed or claimed.
+
+**Coherence constraint:** | always produces a Gs type — never Territory nor Map.
+This preserves well-definedness despite | being inter-grammar.
+
+---
+## Summary
+
+### Before
+
+```
+⊗  =  "tensor product in a 25-dimensional Hilbert space"
+       (Phase 1: unjustifiable, no metric defined — ABANDONED)
+```
+
+### After
+
+```
+×, +, |  =  "structural operators of three free monoidal grammars (Lambek)"
+              (explicit, rigorous, no metric required, well-established)
+```
+
+### The Three Pillars of the New Foundation
+
+```
+1. THREE GRAMMARS        ─  Gt (×), Gm (+), Gs (|) — free monoidal (Lambek)
+2. THREE ALPHABETS       ─  𝕋₀(×)∪𝕋₀(+)∪𝕋₀(|) = 11 primitives incl. T
+3. FUNCTOR EVALUATION    ─  F_x : System → [0,1] at M0 (metric, legitimate)
+4. NATURAL TRANSFORMATION─  Φ/Ψ connecting Gt and Gm (Korzybski formalised)
+5. INTRA vs INTER        ─  ×,+ closed — | inter-grammar (Lambek framework only)
+```
+
+### Canonical Illustration
+
+The **Braille Structural Grammar** (©2022 Michel Kern) — created independently
+before TSCG was formalised — demonstrates empirically that a complete symbolic
+system with 26 elements can be generated from 2 primitives and 5 operations,
+with no metric structure required. This diagram is, in retrospect, an
+*unconscious anticipation* of the mathematical foundation that TSCG was always
+converging toward.
+
+```
+Braille  :  {S, A}  +  {+, −, SymH, SymV, Rot}   →  26 glyphs (complete)
+TSCG M2  :  {A,S,F,I,D,R,E,V,O,I}  +  {⊗, ⊗⇒, ^op}  →  ~80 concepts (complete)
+```
+
+Both are **Structural Grammars**. Neither requires a Hilbert space.
+
+---
+
+*TSCG Framework — Structural Grammar Foundation*  
+*Echopraxium with the collaboration of Claude AI — May 2026*
