@@ -1,237 +1,128 @@
-# M3_GenesisGrammar.jsonld — README
+# M3_GenesisGrammar.jsonld
 
-**Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 4.0.0
-**Date**: 2026-05-13
-**Layer**: M3 — Bicephalous Hub
-**Status**: Active (renamed from M3_GenesisSpace.jsonld)
-
----
-
-## Overview
-
-`M3_GenesisGrammar.jsonld` is the **bicephalous hub** of the M3 layer.
-It imports and connects the three foundational M3 ontologies:
-
-- `M3_GrammarFoundation.jsonld` — operators, type system, measurement properties
-- `M3_EagleEye.jsonld` — Territory Grammar Gt (ASFID primitives)
-- `M3_SphinxEye.jsonld` — Map Grammar Gm (REVOI primitives)
-
-It is the sole M3 file imported by `M2_GenericConcepts.jsonld`, making it
-the **gateway** through which all of M3 becomes available to the rest of
-the TSCG hierarchy.
-
-> **Renamed from `M3_GenesisSpace.jsonld`** (v4.0.0). The rename reflects
-> the formalism reform: the file no longer defines a "Hilbert space" but a
-> "Structural Grammar" in the Lambek / monoidal category sense.
+**Version:** 4.2.0  
+**Layer:** M3  
+**Type:** Bicephalous Grammar (Gt + Gm) with Stereopsis reification (Gs)  
+**Former name:** M3_GenesisSpace.jsonld  
+**Last Modified:** 2026-05-18
 
 ---
 
-## Position in the Import Hierarchy
+## 🎯 Role
+
+**M3_GenesisGrammar** is the **bicephalous aggregation** of Territory and Map
+grammars — the complete M3 layer foundation combining ASFID (Eagle Eye) and
+REVOI (Sphinx Eye) perspectives, with Gs (Stereopsis) as the reification of
+their synergy.
 
 ```
-M3_GrammarFoundation.jsonld   ─┐
-M3_EagleEye.jsonld            ─┤─→  M3_GenesisGrammar.jsonld   ← THIS FILE
-M3_SphinxEye.jsonld           ─┘             ↓ imported by
-                                     M2_GenericConcepts.jsonld
-                                             ↓
-                                     M1_CoreConcepts.jsonld
-                                             ↓
-                                     M1_xxx.jsonld  →  M0_xxx.jsonld
+M3_GenesisGrammar  =  Gt (Territory)  +  Gm (Map)
+                       ↕ Φ/Ψ enrichment loop
+                   Gs (Stereopsis) — reification of the synergy
 ```
+
+**Key insight:** Systems exist simultaneously in Territory (what they ARE)
+and Map (how we QUALIFY them). The Φ/Ψ enrichment loop between the two
+produces a third ontological level — Gs — which Genesis formalizes.
 
 ---
 
-## Grammar Foundation
+## 📐 Bicephalous Architecture
 
-```json
-"grammar_foundation": {
-  "formalism":    "Lambek Calculus / Free Commutative Monoidal Categories",
-  "architecture": "Bicephalous Structural Grammar: Gt (Territory) + Gm (Map)",
-  "grammars": {
-    "Gt": "Territory Grammar — primitives {A,S,F,I,D} — Eagle Eye — ontological",
-    "Gm": "Map Grammar     — primitives {R,E,V,O,I} — Sphinx Eye — epistemic"
-  },
-  "connection": {
-    "Phi": "Φ : Gt → Gm  (natural transformation — observation)",
-    "Psi": "Ψ : Gm → Gt  (natural transformation — interpretation)",
-    "epistemic_gap": "δ₁ = ||ASFID_mean − REVOI_mean|| / √2",
-    "korzybski":    "Φ is never a perfect isomorphism — the map is not the territory"
-  }
-}
 ```
+        🦅 Eagle Eye          🦁 Sphinx Eye
+        (Territory Gt)        (Map Gm)
+           ASFID               REVOI
+             │    Φ: Gt→Gm    │
+             │ ──────────────→ │
+             │ ←────────────── │
+             │    Ψ: Gm→Gt    │
+             └────────┬────────┘
+                      ↓
+               🔭 Stereopsis (Gs)
+               Reification of synergy
+               {T, ...}
+```
+
+**Natural transformations:**
+```
+Φ : Gt → Gm   (observation: Territory measurements inform Map)
+Ψ : Gm → Gt   (interpretation: Map predictions guide Territory)
+```
+
+The architecture is **bicephalous** — two heads, two perspectives.
+Gs is not a third head but the **reification** of what the two heads
+produce together through stereopsis.
 
 ---
 
-## Bicephalous Architecture
-
-The two grammars are **structurally separate** — this separation is
-fundamental, not a consequence of orthogonality.
-
-| Aspect | Territory Grammar Gt | Map Grammar Gm |
-|---|---|---|
-| File | `M3_EagleEye.jsonld` | `M3_SphinxEye.jsonld` |
-| Primitives | {A, S, F, I, D} | {R, E, V, O, I} |
-| Perspective | Ontological / empirical | Epistemic / representational |
-| Role | What systems ARE | How systems are REPRESENTED |
-| Eagle/Sphinx | Eagle Eye | Sphinx Eye |
-| Model/Reality | Reality | Model |
-| Analysis/Synthesis | Analysis | Synthesis |
-
-### Natural Transformations Φ and Ψ
+## 🏗️ Full Architecture
 
 ```
-Φ : Gt → Gm    Observation — Territory measurements inform Map construction
-               Example: neutron flux data (ASFID) → diffusion model (REVOI)
-
-Ψ : Gm → Gt    Interpretation — Map predictions guide Territory measurement
-               Example: oscillation model (REVOI) → install detectors (ASFID)
+M3_GrammarFoundation (apex)
+         ↓ imported by
+    ┌────┴────┬──────────┐
+    │         │          │
+M3_Eagle  M3_Sphinx  M3_Stereopsis
+(Gt/×)   (Gm/+)     (Gs/|)
+    └────────┴──────────┘
+         ↓ imported by
+M3_GenesisGrammar ← YOU ARE HERE
+         ↓ imported by
+M2_GenericConcepts
 ```
 
-Φ and Ψ are **natural transformations** in the categorical sense —
-structure-preserving maps between the two grammars.
+**Imports:** M3_GrammarFoundation, M3_EagleEye, M3_SphinxEye, M3_Stereopsis
 
-### Epistemic Gap δ₁
+---
+
+## 🎭 Korzybski Principle
+
+**"The map is not the territory"** — formalized as epistemic gap:
 
 ```
 δ₁ = ||ASFID_mean − REVOI_mean|| / √2
+
+SpectralClass:
+  Coherent       →  δ₁ ≈ 0   (StereopsisUniversalSet — Convergent Strabismus)
+  OnCriticalLine →  δ₁ ≈ 0.5
+  Incoherent     →  δ₁ ≈ 1   (StereopsisEmptySet — Divergent Strabismus)
 ```
 
-δ₁ measures the **non-isomorphism** of Φ — how far the Map is from
-perfectly capturing the Territory.
-
-| SpectralClass | δ₁ range | Interpretation |
-|---|---|---|
-| Coherent | [0.00, 0.05) | Near-perfect alignment |
-| OnCriticalLine | [0.05, 0.15) | Productive tension |
-| Liminal | [0.15, 0.30) | Significant gap |
-| Enigmatic | [0.30, 1.00) | Fundamental challenge |
+**Extended Korzybski:** "The map influences how we observe the territory"
+— the Φ/Ψ loop is never a perfect isomorphism.
 
 ---
 
-## TSCG Ontology Type System
+## 📚 Three Grammars Summary
 
-GenesisGrammar defines the complete taxonomy of TSCG ontology types
-via `m3:TscgOntologyType` and its 11 subclasses:
-
-| Type | Layer | Description |
-|---|---|---|
-| `m3:Genesis` | M3 | Foundational structural grammar files |
-| `m3:GenesisExtension` | M3 | Bicephalous components (EagleEye, SphinxEye) |
-| `m3:GenericConcepts` | M2 | Named product types (transdisciplinary patterns) |
-| `m3:DomainExtension` | M1 | Domain-specific concept sets |
-| `m3:SystemicFramework` | M1 | Established methodology mappings |
-| `m3:Poclet` | M0 | Minimal validated system instances |
-| `m3:CaseStudy` | M0 | Pedagogical examples |
-| `m3:RealWorldSystem` | M0 | Deployed system analyses |
-| `m3:SymbolicSystemGrammar` | M0 | Formal symbolic systems (I Ching, Braille...) |
-| `m3:TscgTool` | M0 | Software tools operating on TSCG itself |
-| `m3:TransDisclet` | M0 | Systems native to multiple disciplines |
+| Grammar | File | Primitives | Operator | Perspective |
+|---|---|---|---|---|
+| Gt (Territory) | M3_EagleEye.jsonld | {A, S, F, I, D} | × | What systems ARE |
+| Gm (Map) | M3_SphinxEye.jsonld | {R, E, V, O, Im} | + | How models QUALIFY |
+| Gs (Stereopsis) | M3_BicephalousPerspective.jsonld | {T} | \| | How they CORRESPOND |
 
 ---
 
-## Key Properties Defined
+## 🦅🦁 Bicephalous Metaphor
 
-GenesisGrammar defines the core M3 properties used throughout the hierarchy:
+Imagine a **giant human body** with:
+- **Two heads:** Eagle (left) and Sphinx (right)
+- **One eye per head:** Cyclops-like penetrating vision
+  - Eagle eye: Panoramic Territory vision (ASFID)
+  - Sphinx eye: Enigmatic Map wisdom (REVOI)
+- **Stereopsis:** the depth perception that emerges from their fusion — Gs
 
-| Property | Type | Description |
-|---|---|---|
-| `m3:ontologyType` | ObjectProperty | Architectural type of a TSCG ontology |
-| `m3:M3Dimension` | Class | Abstract primitive type (generator / functor) |
-| `m3:dimensionSymbol` | DatatypeProperty | Symbolic identifier for a primitive |
-| `m3:dimensionIndex` | DatatypeProperty | Position index within grammar |
-| `m3:dimensionExamples` | DatatypeProperty | Illustrative instances |
-| `m3:semanticSignature` | DatatypeProperty | Minimal sufficient characterisation |
-| `m3:AlignmentLoop` | Class | Φ/Ψ iterative refinement mechanism |
-| `m3:KorzybskiPrinciple` | Class | Formalisation of Map ≠ Territory |
+**One body, two perspectives, one stereopsic synergy.**
 
 ---
 
-## Category Theory Foundation
+## 📚 Key Takeaways
 
-GenesisGrammar formalises TSCG as a system of categories and functors:
+1. **Bicephalous aggregation** — Gt (Territory) + Gm (Map)
+2. **Gs reification** — Stereopsis Grammar formalizes the Φ/Ψ synergy
+3. **Natural transformations** — Φ/Ψ coupling (never a perfect isomorphism)
+4. **Korzybski formalized** — epistemic gap δ₁, SpectralClass
+5. **Complete M3 foundation** — imported by M2_GenericConcepts
 
-```
-Cat_TSCG         :  Category of TSCG layers {M3, M2, M1, M0}
-Cat_M3_ASFID     :  Category of Gt primitives {A, S, F, I, D}
-Cat_M3_REVOI     :  Category of Gm primitives {R, E, V, O, I}
-Cat_M2           :  Category of GenericConcepts (derived types 𝕋₁)
-Cat_KnowledgeField:  Category of knowledge domains
-
-F_structuralFormula : Cat_M3 → Cat_M2  (grammar operators create 𝕋₁ types)
-F_instantiation     : Cat_M2 → Cat_M1  (types → domain concepts)
-F_concretize        : Cat_M1 → Cat_M0  (concepts → instances)
-```
-
----
-
-## Epistemological Foundation
-
-GenesisGrammar grounds TSCG in five philosophical traditions:
-
-| Tradition | Connection |
-|---|---|
-| **Korzybski** | Map/Territory — Φ is never a perfect isomorphism |
-| **Constructivism** | Knowledge constructed through Map/Gm operations |
-| **Cybernetics** | Systems observed through ASFID/Gt feedback |
-| **Second-order cybernetics** | Observer part of observed system |
-| **Process philosophy** | Systems as processes, not static entities |
-
----
-
-## Validation Tests
-
-| Test | Method | Result |
-|---|---|---|
-| Primitive independence | Conceptual non-redundancy check | ✅ All 10 primitives independent |
-| Completeness | Domain coverage across 23+ poclets | ✅ Physical, biological, social, abstract |
-| Structural homology | Cross-domain formula verification | ✅ No contradictions |
-| Spanning | All system aspects expressible in Gt + Gm | ✅ Validated |
-
----
-
-## Migration Note (v3.9.0 → v4.0.0)
-
-This file was previously named `M3_GenesisSpace.jsonld`. The rename and
-formalism reform were applied simultaneously in v4.0.0:
-
-```
-REMOVED                              REPLACED WITH
-────────────────────────────────     ─────────────────────────────────────
-mathematical_properties (Hilbert)  → grammar_foundation (Lambek/monoidal)
-Σ coupling matrix (SVD)            → natural transformations Φ, Ψ
-orthogonal_union                   → structurally_complementary
-orthogonality_proof                → independence (conceptual)
-F_tensorization                    → F_structuralFormula
-"Tensor Product" altLabel          → "Structural Formula"
-"Hilbert Space Basis" altLabel     → "Structural Grammar Basis"
-H_ASFID, H_REVOI                   → Gt, Gm
-10D Hilbert space                  → bicephalous grammar Gt + Gm
-M3_GenesisSpace.jsonld             → M3_GenesisGrammar.jsonld
-```
-
-All formula VALUES (e.g. `D⊗I⊗F`) and all M2/M1/M0 data are unchanged.
-
----
-
-## Changelog
-
-| Version | Date | Changes |
-|---|---|---|
-| **4.0.0** | 2026-05-13 | FORMALISM REFORM + RENAME: GenesisSpace → GenesisGrammar. Added M3_GrammarFoundation.jsonld to imports. mathematical_properties → grammar_foundation. All Hilbert/SVD/tensor references replaced. Φ/Ψ reframed as natural transformations. |
-| **3.9.0** | 2026-03-23 | Flow (F) enriched: axiom relaxed F≥0, F_morphic annotation, F_potential/F_active spectrum. |
-| **3.8.0** | — | RENAMED m3:TransdisciplinaryMetaConcepts → m3:GenericConcepts. |
-
----
-
-## See Also
-
-- `M3_GrammarFoundation.jsonld` — apex (operators, type system, benchmark)
-- `M3_EagleEye.jsonld` — Territory Grammar Gt
-- `M3_SphinxEye.jsonld` — Map Grammar Gm
-- `TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md`
-- `TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md`
-
----
-
-*TSCG Framework — Echopraxium with the collaboration of Claude AI — May 2026*
+**Genesis is where Territory and Map unite — and Stereopsis is born.** 🌅

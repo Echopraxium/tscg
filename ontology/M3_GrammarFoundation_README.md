@@ -1,306 +1,207 @@
-# M3_GrammarFoundation.jsonld — README
+# M3_GrammarFoundation.jsonld
 
-**Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.1.0
-**Date**: 2026-05-13
-**Layer**: M3 — Apex Ontology
-**Status**: Active
-
----
-
-## Overview
-
-`M3_GrammarFoundation.jsonld` is the **apex ontology** of the TSCG hierarchy.
-It has no imports and no dependencies — every other TSCG ontology depends on it,
-directly or transitively.
-
-It defines the complete mathematical and epistemological foundation of the
-TSCG Structural Grammar: operators, abstract classes, type system, and
-measurement properties.
+**Version:** 1.3.0  
+**Layer:** M3  
+**Type:** Apex Ontology — Mathematical Foundation  
+**Created:** 2026-05-12  
+**Last Modified:** 2026-05-18  
+**Status:** Foundational — no imports
 
 ---
 
-## Position in the Import Hierarchy
+## 🎯 Role
 
-```
-M3_GrammarFoundation.jsonld        ← APEX (no owl:imports)
-        ↓ imported by
-   M3_EagleEye.jsonld              (Territory Grammar Gt, ASFID primitives)
-   M3_SphinxEye.jsonld             (Map Grammar Gm, REVOI primitives)
-   M3_GenesisGrammar.jsonld        (bicephalous hub)
-        ↓ imported by
-   M2_GenericConcepts.jsonld
-        ↓ imported by
-   M1_CoreConcepts.jsonld  →  M1_xxx.jsonld  →  M0_xxx.jsonld
-```
+**M3_GrammarFoundation** is the **mathematical foundation** for all TSCG M3-level
+grammars. It defines:
 
----
+- Lambek Calculus formalism (free commutative monoidal categories)
+- Three monoidal operators (×, +, |) with their neutral elements
+- **Three primitive alphabets** — one per operator
+- Abstract classes for M3 grammars and dimensions
+- Special elements (EmptyTerritory, EmptyMap, StereopsisEmptySet,
+  StereopsisUniversalSet)
 
-## Mathematical Foundation
-
-The TSCG Structural Grammar is rooted in two well-established theories:
-
-**Lambek Calculus** (Joachim Lambek, 1958)
-A typed logical calculus for syntactic composition. Originally designed for
-natural language grammars; adapted here for transdisciplinary concept grammars.
-Key property: complex types are built from primitive types using compositional
-operators — without any metric structure.
-
-**Free Commutative Monoidal Categories** (Saunders MacLane, 1963/1971)
-The algebraic framework underlying the `⊗` operator. A monoidal category
-requires only three axioms: associativity, commutativity, and a neutral element.
-No norm, no inner product, no scalar multiplication.
-
-### Why Not Tensor Products / Hilbert Spaces?
-
-```
-Hilbert space requires:    Monoidal category requires:
-  scalar multiplication  →    NOT needed in TSCG
-  vector addition        →    NOT needed in TSCG
-  inner product / norm   →    NOT needed in TSCG
-  metric structure       →    NOT needed in TSCG
-```
-
-The `⊗` symbol is shared with tensor algebra by notational convention only —
-exactly as `×` denotes both scalar multiplication and the vector cross product.
-The mathematical context is explicitly different and must be read as such.
+This apex ontology **resolves circular dependencies** by providing a common
+foundation imported by EagleEye, SphinxEye, Stereopsis, and GenesisGrammar.
 
 ---
 
-## Abstract Classes
+## 📐 Three Primitive Alphabets
 
-### `m3gf:M3Grammar`
+TSCG defines **three alphabets** — one per monoidal operator:
 
-Abstract base class for all M3-level structural grammars.
-Concrete subclasses defined in dependent files:
+```
+𝕋₀(×) = {A, S, F, I, D}      Territory primitives   (Eagle Eye)
+𝕋₀(+) = {R, E, V, O, Im}     Map primitives         (Sphinx Eye)
+𝕋₀(|) = {T}                   Bicephalous primitives (Stereopsis)
 
-| Subclass | File | Primitives |
-|---|---|---|
-| Territory Grammar Gt | `M3_EagleEye.jsonld` | {A, S, F, I, D} |
-| Map Grammar Gm | `M3_SphinxEye.jsonld` | {R, E, V, O, I} |
+𝕋₀ = 𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)  = 11 primitives total
+```
 
-A grammar is characterised by four elements:
-- **Primitives** — finite set of irreducible generators
-- **Monoidal product** `⊗ⁱ` — co-activation operator
-- **Emergence operator** `⊗ⁱ⇒` — produces emergent concept types
-- **Duality operator** `^opⁱ` — produces structural opposites
-
-### `m3gf:M3Dimension`
-
-Abstract base class for M3 primitive types.
-Plays two distinct mathematical roles depending on layer:
-
-| Layer | Role | Mathematical object | Metric? |
+| Alphabet | Operator | Neutral | Perspective |
 |---|---|---|---|
-| M3 / M2 | Generator of type expressions | Primitive type in a monoidal grammar | ❌ None |
-| M0 | Evaluation function | Functor `F_x : System → [0,1]` | ✅ Real-valued |
-
-> The word "dimension" is used in the **analytical sense** (independent axis
-> of characterisation), NOT in the metric/Hilbert sense.
+| 𝕋₀(×) | `×` | EmptyTerritory | What systems ARE |
+| 𝕋₀(+) | `+` | EmptyMap | How models QUALIFY |
+| 𝕋₀(\|) | `\|` | EmptyStereopsis | How Territory and Map CORRESPOND |
 
 ---
 
-## The Six Indexed Operators
+## ⊗ Three Monoidal Operators
 
-All operators carry an index `i ∈ {t, m}` indicating whether they operate
-in the Territory Grammar (Gt) or Map Grammar (Gm).
-
-### `⊗ⁱ` — Monoidal Product (Co-activation)
+### × — Territory structural product (intra-ASFID)
 
 ```
-⊗ᵗ  :  Territory co-activation   (Eagle Eye / ASFID)
-⊗ᵐ  :  Map co-activation         (Sphinx Eye / REVOI)
-⊗ⁱ  :  general indexed form
+D × I × F = Process      (Territory formula)
+A × S × F = Homeostasis
 ```
 
 **Axioms:**
 ```
-Associativity  :  (A ⊗ B) ⊗ C  =  A ⊗ (B ⊗ C)
-Commutativity  :  A ⊗ B  =  B ⊗ A
-Neutral element:  A ⊗ 1  =  A
-No metric      :  no norm, no inner product, no scalar multiplication
+(A × B) × C  =  A × (B × C)    associativity
+A × B        =  B × A           commutativity
+A × EmptyTerritory  =  A        neutral element
 ```
 
-**Meaning**: both primitive types are simultaneously active in the concept
-signature.
-
-**Example**: `Process = D ⊗ᵗ I ⊗ᵗ F`
-(Process mobilises Dynamics, Information, and Flow together)
-
----
-
-### `⊗ⁱ⇒` — Emergence Operator
+### + — Map structural sum (intra-REVOI)
 
 ```
-⊗ᵗ⇒  :  Territory emergence   (ontological)
-⊗ᵐ⇒  :  Map emergence         (epistemic)
-⊗ⁱ⇒  :  general indexed form
+R + E = ModelQuality    (Map formula)
+O + R + Im + E = Context
 ```
 
-**Meaning**: produces a derived concept whose properties are **irreducible**
-to the sum of its parts. Corresponds to the function type `(→)` in the
-Curry-Howard correspondence.
+**Axioms:** same structure as ×, over Map primitives.
 
-**Examples**:
-```
-⊗ᵗ⇒(Memory, Entropy)           =  Inertia
-⊗ᵐ⇒(Representable, Verifiable) =  ModelQuality
-```
-
----
-
-### `^opⁱ` — Duality Operator
+### | — Stereopsic fusion (bicephalous, inter-space)
 
 ```
-^opᵗ  :  Territory duality
-^opᵐ  :  Map duality
-^opⁱ  :  general indexed form
+A × S | R + O = Coherence    (bicephalous formula)
+F × T         = Gradient     (Territory × Bicephalous)
 ```
 
-**Meaning**: produces the **polar opposite** of a concept type within the
-same dimensional space. Corresponds to negation in propositional logic via
-the Curry-Howard correspondence.
+**Asymmetric:** left side = Territory/Bicephalous expression,
+right side = Map/Bicephalous expression.
 
-**Examples**:
+**Neutral element:** EmptyStereopsis = EmptyTerritory | EmptyMap
+
+### ×⇒ and +⇒ — Emergence operators
+
 ```
-Coherence^opᵗ   =  Incoherence
-Observable^opᵐ  =  Unobservable
-Entropy^opᵗ     =  NegEntropy  (e.g. information, life)
+×⇒(Memory, Entropy)        = Inertia         (Territory emergence)
++⇒(Representable, Verifiable) = ModelQuality  (Map emergence)
+```
+
+### ^op — Duality operator
+
+```
+Coherence^op  = Incoherence
 ```
 
 ---
 
-## Type System Hierarchy
+## 🌀 Special Elements
 
-The three operators generate a complete four-level type system:
-
-```
-𝕋₀  Primitive Types       M3   {A, S, F, I, D, R, E, V, O, I}
-                                10 generators, no metric
-
-𝕋₁  Derived Types         M2   τ₁ ⊗ⁱ τ₂ ⊗ⁱ ... ⊗ⁱ τₙ  |  τᵢ ∈ 𝕋₀
-                                ~80 M2 GenericConcepts (named product types)
-
-𝕋₂  Compound Types        M1   τ₁ ⊗ⁱ⇒ τ₂  |  τᵢ ∈ 𝕋₁
-                                M1 GenericConceptCombos (emergent types)
-
-𝕄₀  Terms (Proof Terms)   M0   poclets inhabiting a type τ ∈ 𝕋₁ ∪ 𝕋₂
-                                instances that prove a system fits a type
-```
-
-### Curry-Howard Correspondence
-
-Under this type system, TSCG acquires a logical interpretation:
-
-| Type Theory | TSCG |
-|---|---|
-| Primitive type | ASFID/REVOI dimension |
-| Product type `τ₁ ⊗ τ₂` | M2 structural formula |
-| Named type | M2 GenericConcept |
-| Term inhabiting a type | M0 Poclet |
-| Proof of a proposition | Poclet demonstrating system fits type |
-| Degree of proof | Epistemic gap δ₁ |
-
-A poclet does not merely *describe* a system — it *proves* that the system
-inhabits a conceptual type. δ₁ measures how strongly.
-
----
-
-## Measurement Properties
-
-### `m3gf:intersubjectiveBenchmark`
-
-Domain-contextualized canonical poclet used as scoring reference for M0
-instances. Grounds TSCG measurement in **norm-referenced intersubjective
-consensus**.
-
-**Canon resolution order (default = DomainSpecific):**
-```
-1. DomainSpecific  —  same M1 domain as the poclet          ← DEFAULT
-2. CrossDomain     —  adjacent M1 domain
-3. Universal       —  e.g. M0_AdaptiveImmuneResponse
-4. Free scoring    —  with explicit justification            ← last resort
-```
-
-**Objectivity levels:**
-```
-Subjective              →  single expert, no reference
-MultiExpertConsensus    →  several experts, same setup
-CanonCalibrated         →  scored against domain benchmark
-ContextualizedBenchmark →  multi-cook, multi-setup convergence  ← default
-```
-
-### `m3gf:defeasibilityStatus`
-
-Explicit declaration that a benchmark is **provisional** — valid until
-superseded by broader consensus.
-
-```json
-{
-  "status":          "provisional",
-  "validUntil":      "superseded_by_better_consensus",
-  "revisionTrigger": [
-    "new_canonical_poclet_identified",
-    "expert_consensus_challenged",
-    "domain_expansion",
-    "corpus_maturation"
-  ]
-}
-```
-
-This is not a weakness — it is the normal epistemic status of scientific,
-legal, and practical knowledge. Analogous to:
-- *Stare decisis* in law (precedent holds until overruled)
-- Scientific paradigms (Kuhn: valid until anomalies accumulate)
-- Peirce: truth as the limit of indefinite communal inquiry
-
----
-
-## Properties Summary
-
-| Property | Type | Defined on | Description |
+| Element | Role | Visual | δ₁ |
 |---|---|---|---|
-| `m3gf:grammarType` | DatatypeProperty | M3Grammar | e.g. `free_commutative_monoidal` |
-| `m3gf:monoidalProduct` | DatatypeProperty | M3Grammar | `⊗ⁱ` operator definition |
-| `m3gf:emergenceOperator` | DatatypeProperty | M3Grammar | `⊗ⁱ⇒` operator definition |
-| `m3gf:dualityOperator` | DatatypeProperty | M3Grammar | `^opⁱ` operator definition |
-| `m3gf:intersubjectiveBenchmark` | ObjectProperty | M0 instances | benchmark reference |
-| `m3gf:defeasibilityStatus` | DatatypeProperty | M0 instances | provisional status |
+| `EmptyTerritory` | Neutral of × | Black (no color) | — |
+| `EmptyMap` | Neutral of + | Empty pentagon | — |
+| `EmptyStereopsis` | Neutral of \| | Black + Empty pentagon | max |
+| `StereopsisUniversalSet` | Perfect alignment | White + Full pentagon | 0 |
+
+```
+EmptyStereopsis  =  EmptyTerritory | EmptyMap
+
+StereopsisUniversalSet  →  Convergent Strabismus (δ₁ = 0)
+EmptyStereopsis         →  Divergent Strabismus  (δ₁ = max)
+```
 
 ---
 
-## Changelog
+## 🏗️ Architecture Position
 
-| Version | Date | Changes |
-|---|---|---|
-| **1.1.0** | 2026-05-13 | MAJOR UPDATE: dcterms metadata, 6 indexed operators (⊗ᵗ ⊗ᵐ ⊗ᵗ⇒ ⊗ᵐ⇒ ^opᵗ ^opᵐ), type system 𝕋₀/𝕋₁/𝕋₂/𝕄₀, intersubjectiveBenchmark, defeasibilityStatus. Apex position confirmed. |
-| **1.0.0** | 2026-05-12 | Initial skeleton: M3Grammar, M3Dimension, grammarType, monoidalProduct. |
-
----
-
-## References
-
-- Lambek, J. (1958). *The mathematics of sentence structure.*
-  American Mathematical Monthly, 65(3), 154–170.
-- MacLane, S. (1963). *Natural associativity and commutativity.*
-  Rice University Studies.
-- MacLane, S. (1971). *Categories for the Working Mathematician.* Springer.
-- Howard, W. (1980). *The formulae-as-types notion of construction.*
-- Stevens, S.S. (1946). *On the theory of scales of measurement.*
-  Science, 103(2684), 677–680.
-- Peirce, C.S. (1878). *How to Make Our Ideas Clear.*
-  Popular Science Monthly.
+```
+M3_GrammarFoundation ← YOU ARE HERE (apex — no imports)
+         ↓ imported by
+    ┌────┴────┬──────────┬──────────┐
+    │         │          │          │
+M3_Eagle  M3_Sphinx  M3_Stereo  M3_Genesis
+(Gt/×)   (Gm/+)    (Gs/|)       (aggregates all)
+    └────────┴──────────┴──────────┘
+         ↓ imported by
+    M2_GenericConcepts
+```
 
 ---
 
-## See Also
+## 📚 Why Monoidal (not Vectorial)?
 
-- `TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md`
-- `TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md`
-- `M3_EagleEye.jsonld` — Territory Grammar Gt
-- `M3_SphinxEye.jsonld` — Map Grammar Gm
-- `M3_GenesisGrammar.jsonld` — Bicephalous hub
+TSCG uses **monoidal categories** because:
+
+```
+Monoidal Category ← TSCG uses this
+    ↓ add structure
+Group
+    ↓ add scalar field
+Module / Vector Space
+    ↓ add inner product
+Hilbert Space  ← former (abandoned) TSCG formalism
+```
+
+Monoidal categories are **minimal** — just enough for composition, nothing
+artificial. No scalar multiplication, no metric, no inner product required.
 
 ---
 
-*TSCG Framework — Echopraxium with the collaboration of Claude AI — May 2026*
+## 📚 Key Takeaways
+
+1. **Apex ontology** — imported by all M3 grammars, no dependencies
+2. **Three operators** × (Territory), + (Map), | (Stereopsis)
+3. **Three alphabets** — 𝕋₀(×), 𝕋₀(+), 𝕋₀(|) — 11 primitives total
+4. **Three monoids** with explicit neutral elements
+5. **Lambek Calculus** — free commutative monoidal categories
+6. **Minimal structure** — just enough, nothing artificial
+
+**M3_GrammarFoundation is where TSCG's mathematical rigour becomes explicit.** 🌟
+
+---
+
+## Intra-grammar vs Inter-grammar Operators
+
+### The asymmetry of |
+
+```
+× : intra-grammar  →  operates within Gt, result stays in Gt
++ : intra-grammar  →  operates within Gm, result stays in Gm
+| : inter-grammar  →  connects Gt, Gm and Gs — result always in Gs
+```
+
+× and + are **closed** within their grammar.
+| is **open** — its constitutive role is to cross the Gt/Gm boundary.
+
+### This is NOT tensor algebra or multi-sorted algebra
+
+This asymmetry is explained **entirely within the Lambek calculus /
+free monoidal grammar framework** — no tensor product, no algebraic
+structure beyond free monoids is needed or assumed.
+
+| is simply a monoidal product whose domain spans multiple grammars —
+exactly as stereopsic fusion spans both Territory (Eagle Eye) and
+Map (Sphinx Eye) to produce the Bicephalous Perspective.
+
+### Why | must be inter-grammar
+
+If | could only operate within 𝕋₀(|) = {T}, it could not traverse
+the Gt/Gm boundary — and it would lose its constitutive role as
+the stereopsic fusion operator. The asymmetry is **intentional and
+necessary**, not a privilege.
+
+### Coherence constraint
+
+| always produces a type of Gs — never Territory nor Map:
+
+```
+expr_Gt | expr_Gm  →  Gs type  ✓
+expr_Gs | expr_Gm  →  Gs type  ✓
+expr_Gt | expr_Gs  →  Gs type  ✓
+```
+
+This constraint preserves well-definedness despite | being inter-grammar.

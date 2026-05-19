@@ -13,16 +13,17 @@
     {
       "@id": "m3:GenesisGrammar",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "4.0.0",
+      "owl:versionInfo": "4.2.0",
       "dcterms:created": "2026-01-21",
-      "dcterms:modified": "2026-05-13",
+      "dcterms:modified": "2026-05-18",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Genesis Grammar - Bicephalous Structural Grammar",
       "dcterms:description": "Complete orthogonal basis for the TSCG framework, consisting of two complementary perspectives: Eagle Eye (ASFID) for Territory measurement and Sphinx Eye (REVOI) for Map construction. Integrates Category Theory formalization as mathematical foundation (definitions included in this file) for functors, morphisms, and categorical structure of TSCG layers.",
       "owl:imports": [
         "M3_GrammarFoundation.jsonld",
         "M3_EagleEye.jsonld",
-        "M3_SphinxEye.jsonld"
+        "M3_SphinxEye.jsonld",
+        "M3_BicephalousPerspective.jsonld"
       ],
       "rdfs:label": "Genesis Grammar - Bicephalous Structural Grammar",
       "rdfs:comment": "M3 Genesis Grammar provides the bicephalous structural grammar for TSCG: Territory Grammar Gt (Eagle Eye / ASFID) and Map Grammar Gm (Sphinx Eye / REVOI), connected via natural transformations Φ and Ψ",
@@ -38,17 +39,18 @@
         ],
         "description": "Complete orthogonal basis for the TSCG framework, consisting of two complementary perspectives: Eagle Eye (ASFID) for Territory measurement and Sphinx Eye (REVOI) for Map construction. Integrates Category Theory formalization as mathematical foundation (definitions included in this file) for functors, morphisms, and categorical structure of TSCG layers.",
         "changelog": {
-          "v4.0.0": "FORMALISM REFORM + RENAME: GenesisSpace → GenesisGrammar. Added M3_GrammarFoundation.jsonld to owl:imports. mathematical_properties (Hilbert/SVD) → grammar_foundation (Lambek/monoidal). Φ/Ψ reframed as natural transformations. All tensor/Hilbert/orthonormal/SVD/structural references replaced with structural grammar equivalents. m3: namespace updated. See TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md.",
-          "v3.9.0": "ARCHITECTURAL: Flow (F) dimension enriched with 3 amendments from Ranaora & Yii poclet session (2026-03-23). F axiom relaxed F≠0→F≥0. F_morphic annotation. F_potential/F_active spectrum.",
-          "v3.8.0": "RENAMED m3:TransdisciplinaryMetaConcepts → m3:GenericConcepts. Aligns with framework-wide MetaConcept→GenericConcept terminology migration."
+          "v4.2.0": "STEREOPSIS GRAMMAR: Added M3_BicephalousPerspective.jsonld to owl:imports. Added Gs to grammar_foundation.grammars. Added Cat_M3_Gs. Updated TypeSystem T0 to 11 primitives. Gs declared as reification of stereopsic synergy.",
+          "v4.1.0": "OPERATOR REFORM: ⊗ᵗ → ×, ⊗ᵐ → +, ⊕ → |. All formulas and examples updated.",
+          "v4.0.0": "FORMALISM REFORM + RENAME: GenesisSpace → GenesisGrammar. mathematical_properties → grammar_foundation."
         }
       },
       "grammar_foundation": {
         "formalism": "Lambek Calculus / Free Commutative Monoidal Categories",
-        "architecture": "Bicephalous Structural Grammar: Gt (Territory) + Gm (Map)",
+        "architecture": "Bicephalous Structural Grammar: Gt (Territory) + Gm (Map) — Gs is the reification of their stereopsic synergy",
         "grammars": {
           "Gt": "Territory Grammar — primitives {A,S,F,I,D} — Eagle Eye — ontological",
-          "Gm": "Map Grammar     — primitives {R,E,V,O,I} — Sphinx Eye — epistemic"
+          "Gm": "Map Grammar     — primitives {R,E,V,O,I} — Sphinx Eye — epistemic",
+          "Gs": "Stereopsis Grammar — primitives {T} — Reification of stereopsic synergy — relational"
         },
         "connection": {
           "Phi": "Φ : Gt → Gm  (natural transformation — observation: Territory → Map)",
@@ -101,6 +103,12 @@
             "convergence": "δ₁ → 0 represents epistemic equilibrium (Map ≈ Territory)",
             "korzybski_principle": "Map influences how we observe Territory, Territory observations refine Map"
           }
+        },
+        "stereopsis_reification": {
+          "description": "Gs (Stereopsis Grammar) is the reification of the stereopsic synergy between Eagle Eye and Sphinx Eye. TSCG remains bicephalous — Gs does not add a third head but formalizes what the two heads produce together.",
+          "grammar": "Gs over {T}",
+          "operator": "|",
+          "see_also": "M3_BicephalousPerspective.jsonld"
         }
       },
       "category_theory_foundation": {
@@ -124,10 +132,11 @@
           "Cat_M3_ASFID": "Category of Territory Grammar Gt primitives {A, S, F, I, D}",
           "Cat_M3_REVOI": "Category of Map Grammar Gm primitives {R, E, V, O, I}",
           "Cat_M2": "Category of metaconcepts (defined in M2)",
-          "Cat_KnowledgeField": "Category of knowledge fields (defined in M2)"
+          "Cat_KnowledgeField": "Category of knowledge fields (defined in M2)",
+          "Cat_M3_Gs": "Category of Stereopsis Grammar Gs primitives {T} — bicephalous relational types"
         },
         "functors": {
-          "F_structuralFormula": "F_⊗: Cat_M3 → Cat_M2 (structural grammar operators create GenericConcept types)",
+          "F_structuralFormula": "F_×: Cat_M3 → Cat_M2 (structural grammar operators create GenericConcept types)",
           "F_instantiation": "F_inst: Cat_M2 → Cat_M1 (metaconcepts → domain concepts)",
           "F_concretize": "Cat_M1 → Cat_M0 (concepts → concrete instances)"
         },
@@ -135,7 +144,7 @@
           "inclusion": "↪ (e.g., Homeostasis ↪ Regulation)",
           "composition": "∘ (e.g., Learning = Memory ∘ Adaptation)",
           "duality": "op (e.g., Divergence = Convergence^op)",
-          "emergence": "⇒ (e.g., MetaconceptCombo: M_A ⊗ M_B ⇒ M_C)"
+          "emergence": "⇒ (e.g., MetaconceptCombo: M_A × M_B ⇒ M_C)"
         },
         "reification": {
           "description": "Objects in categories are reifications (concrete instances)",
@@ -171,17 +180,17 @@
             {
               "source": "m3:eagle_eye:EagleEye",
               "operation": "projects_onto",
-              "formula": "Gt primitives → 𝕋₁ type expressions via ⊗ᵗ",
+              "formula": "Gt primitives → 𝕋₁ type expressions via ×",
               "description": "Each ASFID dimension projects onto all M2 metaconcepts, creating 5D analytical perspective on each metaconcept"
             },
             {
               "source": "m3:sphinx_eye:SphinxEye",
               "operation": "constructs_from",
-              "formula": "Gm primitives → 𝕋₁ type expressions via ⊗ᵐ",
+              "formula": "Gm primitives → 𝕋₁ type expressions via +",
               "description": "REVOI operations compose M2 metaconcepts into domain-specific patterns through synthetic construction"
             }
           ],
-          "mathematical_relationship": "M2 types are derived from M3 primitive types via ⊗ᵗ and ⊗ᵐ",
+          "mathematical_relationship": "M2 types are derived from M3 primitive types via ×, + and | (including Gs bicephalous primitives from M3_BicephalousPerspective.jsonld)",
           "structural_grammar": "M2 GenericConcepts are named product types in the TSCG type system (𝕋₁)"
         }
       ],
@@ -194,7 +203,7 @@
         "completeness_test": {
           "status": "passed",
           "method": "Verification across multiple poclets (Fire Triangle, Exposure Triangle, etc.)",
-          "result": "All system aspects expressible in ASFID ⊕ REVOI"
+          "result": "All system aspects expressible in ASFID | REVOI"
         },
         "independence_test": {
           "status": "passed",
@@ -274,14 +283,14 @@
       },
       "m2:changelog": [
         {
-          "version": "16.2.0",
-          "date": "2026-05-16",
-          "changes": "FORMALISM REFORM: dimensionSymbol skos:example updated — ket notation |X⟩ (Hilbert/Dirac) replaced by single-letter type atoms (Structural Grammar / Lambek calculus). F_ArchitecturalAmendments: F≥0 scalar constraint replaced by qualitative structural optionality rule."
+          "version": "16.4.0",
+          "date": "2026-05-18",
+          "changes": "STEREOPSIS GRAMMAR: M3_BicephalousPerspective.jsonld imported. Gs added to grammars. Cat_M3_Gs added. TypeSystem T0 updated to 11 primitives ({A,S,F,I,D,R,E,V,O,Im,T})."
         },
         {
-          "version": "16.1.0",
-          "date": "2026-05-16",
-          "changes": "FORMALISM REFORM: M3Dimension rdfs:comment and skos:definition updated — removed [0,1] evaluation functor reference from M3 layer. Numeric scoring belongs to M0 ValueSpace only."
+          "version": "16.3.0",
+          "date": "2026-05-18",
+          "changes": "OPERATOR REFORM: ⊗ᵗ → ×, ⊗ᵐ → +, ⊕ → |. All formula strings updated."
         }
       ]
     },
@@ -308,7 +317,7 @@
       "@id": "m3:dimensionSymbol",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Dimension Symbol",
-      "rdfs:comment": "Single-letter type atom identifying an M3 structural primitive in the Structural Grammar. Used as generator in monoidal type expressions (e.g., A ⊗ S ⊗ F). Replaces the ket notation |X⟩ of the former Hilbert space formalism.",
+      "rdfs:comment": "Single-letter type atom identifying an M3 structural primitive in the Structural Grammar. Used as generator in monoidal type expressions (e.g., A × S × F). Replaces the ket notation |X⟩ of the former Hilbert space formalism.",
       "rdfs:domain": {
         "@id": "m3:M3Dimension"
       },
@@ -554,7 +563,7 @@
         "Structural Formula"
       ],
       "skos:definition": "Universal patterns derived as named product types (𝕋₁) from M3 primitive types via structural grammar operators, validated across multiple scientific disciplines.",
-      "rdfs:comment": "M2 layer ontologies containing GenericConcepts — named product types in the TSCG type system. Each concept is expressible as a structural formula combining M3 primitive types (e.g., Homeostasis = A⊗ᵗS⊗ᵗF).",
+      "rdfs:comment": "M2 layer ontologies containing GenericConcepts — named product types in the TSCG type system. Each concept is expressible as a structural formula combining M3 primitive types (e.g., Homeostasis = A×S×F).",
       "m3:semanticSignature": "named_product_type(𝕋₁) + domain_agnostic + validated_across_disciplines",
       "skos:notation": "M2",
       "skos:example": [
@@ -589,7 +598,7 @@
         "Domain Instance"
       ],
       "skos:definition": "Domain-specific ontologies that specialize M2 metaconcepts for particular scientific or professional fields. Each is an instance of the m2:Domain metaconcept with specific 5D structural composition.",
-      "rdfs:comment": "M1 layer ontologies that bridge transdisciplinary metaconcepts (M2) with concrete systems (M0). Examples include Biology, Chemistry, Optics, Photography, Mythology. Each domain has characteristic ASFID⊗REVOI coupling.",
+      "rdfs:comment": "M1 layer ontologies that bridge transdisciplinary metaconcepts (M2) with concrete systems (M0). Examples include Biology, Chemistry, Optics, Photography, Mythology. Each domain has characteristic ASFID|REVOI coupling.",
       "m3:semanticSignature": "domain_specific + specializes_M2_metaconcepts + bridges_M2_to_M0",
       "skos:notation": "M1",
       "skos:example": [
@@ -661,7 +670,7 @@
       "m3:integrationGuidelines": {
         "step1": "Identify framework's core concepts and relationships",
         "step2": "Map framework concepts to M2 metaconcepts",
-        "step3": "Express framework operations as structural formulas (⊗ᵗ, ⊗ᵐ operators)",
+        "step3": "Express framework operations as structural formulas (×, + operators)",
         "step4": "Validate mapping with framework experts",
         "step5": "Document epistemic gaps and alignment scores"
       },
@@ -1028,8 +1037,8 @@
       "m3:tscgExamples": [
         "Cat_KnowledgeField: Ob = {Chemistry, Biology, Optics...}, Mor = knowledge transfers",
         "Cat_M2: Ob = {Link, Processor, Component...}, Mor = metaconcept inclusions",
-        "Cat_M3_ASFID: Ob = {A, S, F, I, D} (Gt primitives), Mor = ⊗ᵗ structural products",
-        "Cat_TSCG: Ob = {M3, M2, M1, M0}, Mor = functors F_⊗, F_inst"
+        "Cat_M3_ASFID: Ob = {A, S, F, I, D} (Gt primitives), Mor = × structural products",
+        "Cat_TSCG: Ob = {M3, M2, M1, M0}, Mor = functors F_×, F_inst"
       ]
     },
     {
@@ -1074,8 +1083,8 @@
         "inclusion": "↪ (e.g., Homeostasis ↪ Regulation)",
         "composition": "∘ (e.g., Learning = Memory ∘ Adaptation)",
         "duality": "op (e.g., Divergence = Convergence^op)",
-        "emergence": "⇒ (e.g., MetaconceptCombo: M_A ⊗ M_B ⇒ M_C)",
-        "structuralComposition": "⊗ (combination of objects)",
+        "emergence": "⇒ (e.g., MetaconceptCombo: M_A × M_B ⇒ M_C)",
+        "structuralComposition": "× or + (combination of objects)",
         "instantiation": "inst (M2 concept → M1 concept → M0 instance)"
       }
     },
@@ -1083,7 +1092,7 @@
       "@id": "m3:Functor",
       "@type": "owl:Class",
       "rdfs:label": "Functor",
-      "rdfs:comment": "A structure-preserving map between categories. Functors map objects to objects and morphisms to morphisms, preserving identity and composition. In TSCG: F_⊗ (structural composition M3→M2), F_inst (instantiation M2→M1), domain projection functors.",
+      "rdfs:comment": "A structure-preserving map between categories. Functors map objects to objects and morphisms to morphisms, preserving identity and composition. In TSCG: F_× (structural composition M3→M2), F_inst (instantiation M2→M1), domain projection functors.",
       "m3:formalDefinition": "F: C → D mapping Ob(C) → Ob(D) and Mor(C) → Mor(D)",
       "m3:functorLaws": [
         "Object mapping: F: Ob(C) → Ob(D)",
@@ -1101,9 +1110,9 @@
       },
       "m3:tscgFunctors": {
         "F_structuralFormula_examples": {
-          "signature": "F_⊗: Cat_M3 → Cat_M2",
+          "signature": "F_×: Cat_M3 → Cat_M2",
           "description": "Maps ASFID dimensions to metaconcepts via structural composition",
-          "example": "F_⊗(S ⊗ F) = Link (metaconcept from structural composition of Structure and Flow)"
+          "example": "F_×(S × F) = Link (metaconcept from structural composition of Structure and Flow)"
         },
         "F_instantiation": {
           "signature": "F_inst: Cat_M2 → Cat_M1",
@@ -1311,7 +1320,7 @@
         "M0"
       ],
       "m3:morphisms": [
-        "F_⊗: M3→M2",
+        "F_×: M3→M2",
         "F_inst: M2→M1",
         "F_concretize: M1→M0"
       ]
@@ -1389,15 +1398,15 @@
       "rdfs:comment": "Functor mapping M3 dimensions to M2 metaconcepts via structural composition.",
       "m3:functorType": "covariant",
       "m3:functorSourceCategory": "m3:Cat_M3_ASFID",
-      "m3:signature": "F_⊗: Cat_M3 → Cat_M2",
+      "m3:signature": "F_×: Cat_M3 → Cat_M2",
       "m3:examples": [
-        "F_⊗(S ⊗ F) = Link",
-        "F_⊗(A ⊗ S ⊗ F) = Reservoir",
-        "F_⊗(S ⊗ I ⊗ D ⊗ F) = Processor (v3.9.0)",
-        "F_⊗(F ⊗ S ⊗ I) = Transducer (v3.9.0)",
-        "F_⊗(F ⊗ I ⊗ D) = Entropy (v3.9.0)",
-        "F_⊗(S ⊗ A) = Stase — F=0 ground state (v3.9.0)",
-        "F_⊗(A ⊗ S ⊗ I ⊗ R ⊗ O) = Coherence (v3.9.0)"
+        "F_×(S × F) = Link",
+        "F_×(A × S × F) = Reservoir",
+        "F_×(S × I × D × F) = Processor (v3.9.0)",
+        "F_×(F × S × I) = Transducer (v3.9.0)",
+        "F_×(F × I × D) = Entropy (v3.9.0)",
+        "F_×(S × A) = Stase — F=0 ground state (v3.9.0)",
+        "F_×(A × S × I | R + O) = Coherence (v3.9.0)"
       ]
     },
     {
@@ -1434,13 +1443,13 @@
         "rationale": "F=0 represents the lowest degraded energy level of a system, not its absence. Examples: tardigrade cryptobiosis, quantum ground state |0⟩, suspended thread, dormant seed. The old axiom was over-restrictive — it excluded legitimate resting states from TSCG modeling.",
         "groundState": {
           "name": "Stase",
-          "m2Formula": "S⊗A",
+          "m2Formula": "S×A",
           "m2Reference": "m2:Stase",
           "reversibility": "necessarily reversible — D absent from structural formula by construction"
         },
         "sealedGroundState": {
           "name": "Absorbing State",
-          "m2Formula": "S⊗A⊗F⊗I⊗D",
+          "m2Formula": "S×A×F×I×D",
           "m2Reference": "m2:AbsorbingState",
           "reversibility": "irreversible — Entropy seals return path"
         }
@@ -1464,7 +1473,7 @@
         "status": "DECIDED",
         "rationale": "F is not binary (present/absent) but a continuous spectrum. The F_crit threshold separates latent from effective modes. This resolves the 'Category 3 tension': M2 concepts where F seemed contradictory (Resource, Storage, Hub, Stateful, Environment) represent F_potential states.",
         "spectrum": {
-          "F_equals_0": "Stase — ground state, reversible (m2:Stase S⊗A)",
+          "F_equals_0": "Stase — ground state, reversible (m2:Stase S×A)",
           "F_potential": "0 < F < F_crit — latent reserve, entity nature",
           "F_crit": "Threshold of Potentialization (m2:Threshold + m2:Potentialization)",
           "F_active": "F > F_crit — effective morphism, transport operator",
@@ -1504,7 +1513,7 @@
         "fiber": "{F} — morphism-space (flows over each state)",
         "interpretation": "Each system state (point in base) has a fiber of possible flows (F-values, from 0 to F_max)"
       },
-      "m3:implicationForStructuralComposition": "F-containing M2 structural formulas naturally encode morphic capacity. M2 = ⊗-products of object-dimensions (static) ⊕ F (dynamic relational component). This is consistent with existing structural composition — it adds interpretive depth, not contradiction.",
+      "m3:implicationForStructuralComposition": "F-containing M2 structural formulas naturally encode morphic capacity. M2 = ×-products of object-dimensions (static) combined with F (dynamic relational component). This is consistent with existing structural composition — it adds interpretive depth, not contradiction.",
       "m3:riskAssessment": "Low — the amendment is interpretive and additive. All existing M2 structural formulas remain valid. No refactoring of M3_EagleEye.jsonld required.",
       "m3:futureWork": "Formal proof of M3 as fibered category. Expert review of F ∈ Mor(Cat_M3) ∩ Ob(Cat_M3) axiom. Investigation of higher-order morphisms in M3."
     }
