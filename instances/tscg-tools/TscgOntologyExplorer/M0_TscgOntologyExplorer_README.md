@@ -143,11 +143,11 @@ This loop makes `M0_TscgOntologyExplorer.jsonld` both the **product** (formal sp
 
 | Dim | Score | Justification |
 |-----|-------|---------------|
-| A   | 0.85  | Strong dual attractor: Browse mode (navigation) and Edit mode (modification) are clearly defined stable goals |
-| S   | 0.90  | Well-defined 3-column architecture with explicit drawer and tab structure |
-| F   | 0.80  | Clear flow: Load → Select → Display → (Edit → Validate → Save). Cross-layer navigation adds secondary flow. |
-| It  | 0.85  | Rich information: JSON-LD graph, ASFID/REVOI scores, δ₁, SpectralClass, layer relationships |
-| D   | 0.70  | Mode switching, cross-layer navigation, SHACL feedback — moderate complexity, not fully stabilized at v1.0 |
+| A_score   | 0.85  | Strong dual attractor: Browse mode (navigation) and Edit mode (modification) are clearly defined stable goals |
+| S_score   | 0.90  | Well-defined 3-column architecture with explicit drawer and tab structure |
+| F_score   | 0.80  | Clear flow: Load → Select → Display → (Edit → Validate → Save). Cross-layer navigation adds secondary flow. |
+| It_score  | 0.85  | Rich information: JSON-LD graph, ASFID/REVOI scores, δ₁, SpectralClass, layer relationships |
+| D_score   | 0.70  | Mode switching, cross-layer navigation, SHACL feedback — moderate complexity, not fully stabilized at v1.0 |
 
 **Mean:** 0.82
 
@@ -155,11 +155,11 @@ This loop makes `M0_TscgOntologyExplorer.jsonld` both the **product** (formal sp
 
 | Dim | Score | Justification |
 |-----|-------|---------------|
-| R   | 0.80  | M0 faithfully represents architecture, UI layout, modes, and bootstrap. Minor gap: dynamic state (current selection, navigation history) not representable statically. |
-| E   | 0.90  | Highest score: bootstrap mechanism is the core design — every iteration refines the specification |
-| V   | 0.85  | SHACL gate before any save. The tool is itself SHACL-validatable, closing the reflexive loop. |
-| O   | 0.80  | Active ontology, selected object, mode, validation status all visible at all times |
-| Im  | 0.75  | ElectronJS + JSON-LD (W3C) + SHACL (W3C). Slight reduction: TSCG-specific conventions limit portability. |
+| R_score   | 0.80  | M0 faithfully represents architecture, UI layout, modes, and bootstrap. Minor gap: dynamic state (current selection, navigation history) not representable statically. |
+| E_score   | 0.90  | Highest score: bootstrap mechanism is the core design — every iteration refines the specification |
+| V_score   | 0.85  | SHACL gate before any save. The tool is itself SHACL-validatable, closing the reflexive loop. |
+| O_score   | 0.80  | Active ontology, selected object, mode, validation status all visible at all times |
+| Im_score  | 0.75  | ElectronJS + JSON-LD (W3C) + SHACL (W3C). Slight reduction: TSCG-specific conventions limit portability. |
 
 **Mean:** 0.82
 

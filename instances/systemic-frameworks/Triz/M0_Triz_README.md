@@ -38,13 +38,13 @@ TRIZ is primarily a **Map** (methodology) that operates on **Territories** (tech
 
 | Dimension | Score | Justification |
 |-----------|-------|---------------|
-| **A — Attractor** | 5.0 | 40 principles as solution attractors; contradiction resolution as ultimate attractor |
-| **S — Structure** | 5.0 | Triple hierarchy: 39×39 matrix + 40 principles + evolution laws |
-| **F — Flow** | 4.0 | Unidirectional flow (problem→solution); no internal feedback loop |
-| **I — Information** | 5.0 | Systematic codification: 39 parameters encode problems, 40 principles encode solutions |
-| **D — Dynamics** | 3.0 | Evolution laws present but external to framework; no autonomous dynamics |
+| **A_score — Attractor** | 1.0 | 40 principles as solution attractors; contradiction resolution as ultimate attractor |
+| **S_score — Structure** | 1.0 | Triple hierarchy: 39×39 matrix + 40 principles + evolution laws |
+| **F_score — Flow** | 0.8 | Unidirectional flow (problem→solution); no internal feedback loop |
+| **It_score — Information** | 1.0 | Systematic codification: 39 parameters encode problems, 40 principles encode solutions |
+| **D_score — Dynamics** | 0.6 | Evolution laws present but external to framework; no autonomous dynamics |
 
-**ASFID Mean:** 4.4
+**ASFID Mean:** 0.88
 
 ---
 
@@ -52,13 +52,13 @@ TRIZ is primarily a **Map** (methodology) that operates on **Territories** (tech
 
 | Dimension | Score | Justification |
 |-----------|-------|---------------|
-| **R — Representability** | 5.0 | Principles encode solution classes bidirectionally; matrix represents problem→solution space |
-| **E — Evolvability** | 4.0 | Framework has evolved (TRIZ extensions); evolution driven by community, not autonomous |
-| **V — Verifiability** | 5.0 | Massive empirical validation (200,000+ patents); cross-domain reproducibility |
-| **O — Observability** | 5.0 | Principles observable in patents; applications observable in products; fully transparent methodology |
-| **Im — Interoperability** | 5.0 | Transdisciplinary by design; compatible with other frameworks (QFD, Lean, Six Sigma) |
+| **R_score — Representability** | 1.0 | Principles encode solution classes bidirectionally; matrix represents problem→solution space |
+| **E_score — Evolvability** | 0.8 | Framework has evolved (TRIZ extensions); evolution driven by community, not autonomous |
+| **V_score — Verifiability** | 1.0 | Massive empirical validation (200,000+ patents); cross-domain reproducibility |
+| **O_score — Observability** | 1.0 | Principles observable in patents; applications observable in products; fully transparent methodology |
+| **Im_score — Interoperability** | 1.0 | Transdisciplinary by design; compatible with other frameworks (QFD, Lean, Six Sigma) |
 
-**REVOI Mean:** 4.8
+**REVOI Mean:** 0.96
 
 ---
 
@@ -66,7 +66,7 @@ TRIZ is primarily a **Map** (methodology) that operates on **Territories** (tech
 
 ```
 δ₁ = |ASFID_mean - REVOI_mean| / max(ASFID_mean, REVOI_mean)
-δ₁ = |4.4 - 4.8| / 4.8 = 0.083
+δ₁ = |0.88 − 0.96| / √2 = 0.057
 ```
 
 **Spectral Class:** **OnCriticalLine** [0.05, 0.15)
@@ -295,7 +295,7 @@ instances/systemic-frameworks/Triz/
 ### v1.0.0 (2026-04-20)
 - Initial TRIZ SystemicFramework modeling
 - Complete 40 inventive principles with abbreviated codes
-- ASFID/REVOI scoring (4.4 / 4.8, δ₁=0.083)
+- ASFID/REVOI scoring (0.88 / 0.96, δ₁=0.057)
 - 6 principle families with GenericConceptCombo mapping
 - M1 extension created (M1_SystemicModeling.jsonld)
 - 3 new M1 Core GenericConceptCombos added
@@ -305,4 +305,4 @@ instances/systemic-frameworks/Triz/
 
 **TSCG Architecture:** M3 (Genesis) → M2 (GenericConcepts) → M1 (Domains/Combos) → M0 (TRIZ Instance)
 
-**Epistemic Status:** OnCriticalLine (δ₁=0.083) — Coherent bicephalous alignment between Map and Territory
+**Epistemic Status:** OnCriticalLine (δ₁=0.057) — Coherent bicephalous alignment between Map and Territory

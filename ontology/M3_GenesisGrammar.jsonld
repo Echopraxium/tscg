@@ -160,7 +160,7 @@
         },
         "axis_2": {
           "name": "Analysis vs Synthesis",
-          "eagle_position": "Analysis (decomposes into ASFID dimensions)",
+          "eagle_position": "Analysis (decomposes into ASFID types)",
           "sphinx_position": "Synthesis (composes via REVOI operations)"
         },
         "quadrants": [
@@ -181,7 +181,7 @@
               "source": "m3:eagle_eye:EagleEye",
               "operation": "projects_onto",
               "formula": "Gt primitives → 𝕋₁ type expressions via ×",
-              "description": "Each ASFID dimension projects onto all M2 metaconcepts, creating 5D analytical perspective on each metaconcept"
+              "description": "Each ASFID types projects onto all M2 metaconcepts, creating 5D analytical perspective on each metaconcept"
             },
             {
               "source": "m3:sphinx_eye:SphinxEye",
@@ -208,7 +208,7 @@
         "independence_test": {
           "status": "passed",
           "method": "Linear independence check",
-          "result": "No ASFID dimension expressible via REVOI and vice versa"
+          "result": "No ASFID types expressible via REVOI and vice versa"
         },
         "spanning_test": {
           "status": "passed",
@@ -258,8 +258,8 @@
         "v3.0.1": {
           "date": "2026-02-16",
           "changes": [
-            "Factorized M3Dimension class into GenesisSpace",
-            "Centralized common dimension properties",
+            "Factorized MonoidalType class into GenesisSpace",
+            "Centralized common type properties",
             "Improved architectural coherence"
           ]
         }
@@ -295,15 +295,15 @@
       ]
     },
     {
-      "@id": "m3:M3Dimension",
+      "@id": "m3:MonoidalType",
       "@type": "owl:Class",
-      "rdfs:label": "M3 Dimension",
+      "rdfs:label": "M3 MonoidalType",
       "rdfs:comment": "A primitive type in the TSCG Structural Grammar. At M2/M3: generator of type expressions (qualitative, no metric). At M0: instantiation functors map structural primitives to observable instance values (quantitative scoring belongs to the M0 ValueSpace, not to the M3 structural grammar). Belongs to either Territory Grammar Gt (ASFID) or Map Grammar Gm (REVOI).",
       "rdfs:subClassOf": {
         "@id": "owl:Thing"
       },
       "skos:definition": "A primitive type generator of the TSCG Structural Grammar. Independence verified (analytical, not metric). Two roles: (1) type generator at M2 level; (2) structural primitive instantiated at M0 level, where observable values are produced by evaluation functors belonging to the M0 ValueSpace (not to the M3 structural grammar).",
-      "skos:scopeNote": "This class has exactly 10 instances: 5 ASFID dimensions (Attractor, Structure, Flow, Information, Dynamics) defined in M3_EagleEye.jsonld, and 5 REVOI dimensions (Representable, Evolvable, Verifiable, Observable, Interoperable) defined in M3_SphinxEye.jsonld.",
+      "skos:scopeNote": "This class has exactly 10 instances: 5 ASFID types (Attractor, Structure, Flow, Information, Dynamics) defined in M3_EagleEye.jsonld, and 5 REVOI types (Representable, Evolvable, Verifiable, Observable, Interoperable) defined in M3_SphinxEye.jsonld.",
       "dcterms:created": "2026-02-16",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "skos:example": [
@@ -314,12 +314,12 @@
       ]
     },
     {
-      "@id": "m3:dimensionSymbol",
+      "@id": "m3:typeSymbol",
       "@type": "owl:DatatypeProperty",
-      "rdfs:label": "Dimension Symbol",
+      "rdfs:label": "Type Symbol",
       "rdfs:comment": "Single-letter type atom identifying an M3 structural primitive in the Structural Grammar. Used as generator in monoidal type expressions (e.g., A × S × F). Replaces the ket notation |X⟩ of the former Hilbert space formalism.",
       "rdfs:domain": {
-        "@id": "m3:M3Dimension"
+        "@id": "m3:MonoidalType"
       },
       "rdfs:range": {
         "@id": "xsd:string"
@@ -340,12 +340,12 @@
       "dcterms:created": "2026-02-16"
     },
     {
-      "@id": "m3:dimensionIndex",
+      "@id": "m3:typeIndex",
       "@type": "owl:DatatypeProperty",
-      "rdfs:label": "Dimension Index",
-      "rdfs:comment": "Numerical index of the dimension within its basis (1-5 for ASFID, 1-5 for REVOI)",
+      "rdfs:label": "Type Index",
+      "rdfs:comment": "Numerical index of the type within its basis (1-5 for ASFID, 1-5 for REVOI)",
       "rdfs:domain": {
-        "@id": "m3:M3Dimension"
+        "@id": "m3:MonoidalType"
       },
       "rdfs:range": {
         "@id": "xsd:integer"
@@ -354,17 +354,17 @@
       "dcterms:created": "2026-02-16"
     },
     {
-      "@id": "m3:dimensionExamples",
+      "@id": "m3:typeExamples",
       "@type": "owl:DatatypeProperty",
-      "rdfs:label": "Dimension Examples",
-      "rdfs:comment": "Concrete system instances illustrating the dimension with typical measurement or quality values",
+      "rdfs:label": "Type Examples",
+      "rdfs:comment": "Concrete system instances illustrating the type with typical measurement or quality values",
       "rdfs:domain": {
-        "@id": "m3:M3Dimension"
+        "@id": "m3:MonoidalType"
       },
       "rdfs:range": {
         "@id": "xsd:string"
       },
-      "skos:definition": "Real-world examples showing how the dimension applies across different domains and scales (for ASFID) or different types of Maps and representations (for REVOI)",
+      "skos:definition": "Real-world examples showing how the type applies across different domains and scales (for ASFID) or different types of Maps and representations (for REVOI)",
       "dcterms:created": "2026-02-16"
     },
     {
@@ -698,7 +698,7 @@
         "Validation Instance"
       ],
       "skos:definition": "Minimal yet complete system instances that serve the triple role of (1) framework proof-of-concept, (2) M2 metaconcept identification, and (3) M1 core concept population.",
-      "rdfs:comment": "M0 layer ontologies representing concrete, well-understood systems used to validate TSCG framework. Must be minimal (no unnecessary components) yet complete (all ASFID dimensions present). Examples: Fire Triangle, Butterfly Metamorphosis, Four-Stroke Engine.",
+      "rdfs:comment": "M0 layer ontologies representing concrete, well-understood systems used to validate TSCG framework. Must be minimal (no unnecessary components) yet complete (all ASFID types present). Examples: Fire Triangle, Butterfly Metamorphosis, Four-Stroke Engine.",
       "m3:semanticSignature": "minimal + complete(all_ASFID_dimensions) + triple_role(validation+M2_discovery+M1_population)",
       "skos:notation": "M0_Poclet",
       "skos:example": [
@@ -744,7 +744,7 @@
         "Educational Example",
         "Application Demonstration"
       ],
-      "skos:definition": "M0 ontologies created primarily for educational, illustrative, or exploratory purposes. Unlike Poclets, Case Studies may be incomplete (missing ASFID dimensions) or over-specified (non-minimal).",
+      "skos:definition": "M0 ontologies created primarily for educational, illustrative, or exploratory purposes. Unlike Poclets, Case Studies may be incomplete (missing ASFID types) or over-specified (non-minimal).",
       "rdfs:comment": "Case Studies demonstrate TSCG application without the rigor required of Poclets. They serve pedagogical or experimental roles and may evolve into full Poclets after validation.",
       "m3:semanticSignature": "pedagogical + may_be_incomplete + evolves_toward_Poclet",
       "skos:notation": "M0_Case",
@@ -981,7 +981,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Bicephalous Coupling (Natural Transformations)",
       "rdfs:comment": "Natural transformations Φ and Ψ encoding bidirectional connection between Territory Grammar Gt and Map Grammar Gm.",
-      "skos:definition": "Æ’ᵢⱼ represents coupling strength between ASFID dimension i and REVOI dimension j",
+      "skos:definition": "Æ’ᵢⱼ represents coupling strength between ASFID types i and REVOI types j",
       "m3:mathematicalForm": "Φ : Gt → Gm, Ψ : Gm → Gt (natural transformations), δ₁ = ||ASFID_mean − REVOI_mean|| / √2",
       "m3:role": "Encodes Map/Territory bidirectional epistemological connection"
     },
@@ -1019,7 +1019,7 @@
       "@id": "m3:MathematicalCategory",
       "@type": "owl:Class",
       "rdfs:label": "Mathematical Category",
-      "rdfs:comment": "A category in the mathematical sense: a collection of objects (Ob(C)) and morphisms (Mor(C)) between them, satisfying identity and associativity axioms. In TSCG: Cat_M3 (ASFID dimensions), Cat_M2 (metaconcepts), Cat_M1 (concepts), Cat_KnowledgeField (Chemistry, Biology, Optics...).",
+      "rdfs:comment": "A category in the mathematical sense: a collection of objects (Ob(C)) and morphisms (Mor(C)) between them, satisfying identity and associativity axioms. In TSCG: Cat_M3 (ASFID types), Cat_M2 (metaconcepts), Cat_M1 (concepts), Cat_KnowledgeField (Chemistry, Biology, Optics...).",
       "m3:structure": {
         "objects": "Collection Ob(C) of category objects",
         "morphisms": "Collection Mor(C) of arrows between objects",
@@ -1111,7 +1111,7 @@
       "m3:tscgFunctors": {
         "F_structuralFormula_examples": {
           "signature": "F_×: Cat_M3 → Cat_M2",
-          "description": "Maps ASFID dimensions to metaconcepts via structural composition",
+          "description": "Maps ASFID types to metaconcepts via structural composition",
           "example": "F_×(S × F) = Link (metaconcept from structural composition of Structure and Flow)"
         },
         "F_instantiation": {
@@ -1331,8 +1331,8 @@
         "owl:NamedIndividual",
         "m3:MathematicalCategory"
       ],
-      "rdfs:label": "Category of ASFID Dimensions",
-      "rdfs:comment": "Category whose objects are ASFID dimensions and morphisms are structural compositions.",
+      "rdfs:label": "Category of ASFID Types",
+      "rdfs:comment": "Category whose objects are ASFID types and morphisms are structural compositions.",
       "m3:categoryName": "Cat_M3_ASFID",
       "m3:objects": [
         "Attractor",
@@ -1341,12 +1341,12 @@
         "Information",
         "Dynamics"
       ],
-      "m3:dimensionAsymmetryNote": {
+      "m3:typeAsymmetryNote": {
         "date": "2026-03-23",
         "discovery": "emergent",
-        "statement": "ASFID dimensions are NOT homogeneous — Flow (F) has a unique dual ontological nature absent from the other 4.",
+        "statement": "ASFID types are NOT homogeneous — Flow (F) has a unique dual ontological nature absent from the other 4.",
         "objectDimensions": {
-          "dimensions": [
+          "types": [
             "Attractor (A)",
             "Structure (S)",
             "Information (I)",
@@ -1356,7 +1356,7 @@
           "question": "A: toward what? S: how organized? I: what known? D: how evolving?"
         },
         "morphismDimension": {
-          "dimension": "Flow (F)",
+          "type": "Flow (F)",
           "nature": "describes transformations between states — Mor(Cat_M3) AND Ob(Cat_M3)",
           "question": "F: what is transported? (requires source AND target — intrinsically relational)",
           "formalAxiom": "F ∈ Mor(Cat_M3) ∩ Ob(Cat_M3)",
@@ -1364,8 +1364,8 @@
         },
         "fiberBundleInterpretation": {
           "status": "hypothesis — requires expert mathematical review",
-          "base": "{A,S,I,D} — object-space dimensions",
-          "fiber": "{F} — morphism-space dimension over each state",
+          "base": "{A,S,I,D} — object-space types",
+          "fiber": "{F} — morphism-space type over each state",
           "model": "M3 as fibered space rather than a homogeneous metric space (see Structural Grammar reform)"
         },
         "riskLevel": "low — additive annotation, does not invalidate existing ASFID structural composition"
@@ -1377,8 +1377,8 @@
         "owl:NamedIndividual",
         "m3:MathematicalCategory"
       ],
-      "rdfs:label": "Category of REVOI Dimensions",
-      "rdfs:comment": "Category whose objects are REVOI dimensions and morphisms are structural compositions.",
+      "rdfs:label": "Category of REVOI Types",
+      "rdfs:comment": "Category whose objects are REVOI types and morphisms are structural compositions.",
       "m3:categoryName": "Cat_M3_REVOI",
       "m3:objects": [
         "Representable",
@@ -1428,12 +1428,12 @@
     {
       "@id": "m3:F_ArchitecturalAmendments",
       "@type": "owl:NamedIndividual",
-      "rdfs:label": "Flow Dimension Architectural Amendments v3.9.0",
-      "rdfs:comment": "Three additive amendments to the Flow (F) dimension of ASFID, emerging from the Ranaora & Yii poclet session (2026-03-23). All amendments are non-destructive — existing M2 structural compositions remain valid.",
+      "rdfs:label": "Flow Type Architectural Amendments v3.9.0",
+      "rdfs:comment": "Three additive amendments to the Flow (F) type of ASFID, emerging from the Ranaora & Yii poclet session (2026-03-23). All amendments are non-destructive — existing M2 structural compositions remain valid.",
       "dcterms:date": "2026-03-23",
       "dcterms:source": "DOI: 10.5281/zenodo.19160047",
       "m3:amendmentType": "additive",
-      "m3:targetDimension": "F (Flow) — Eagle Eye / ASFID",
+      "m3:targetType": "F (Flow) — Eagle Eye / ASFID",
       "m3:amendment_1": {
         "id": "F_axiom_relaxation",
         "title": "F Axiom Relaxed: F structurally optional in ground states",
@@ -1459,12 +1459,12 @@
         "title": "F Morphic Capacity: F ∈ Mor(Cat_M3) ∩ Ob(Cat_M3)",
         "status": "DECIDED",
         "formalAxiom": "F ∈ Mor(Cat_M3) ∩ Ob(Cat_M3)",
-        "rationale": "F is the only ASFID dimension whose definition structurally requires a source AND a target. A flux cannot exist without transport direction. A, S, I, D can describe static states — F is intrinsically relational. This emergent asymmetry was not designed but discovered through analysis.",
+        "rationale": "F is the only ASFID types whose definition structurally requires a source AND a target. A flux cannot exist without transport direction. A, S, I, D can describe static states — F is intrinsically relational. This emergent asymmetry was not designed but discovered through analysis.",
         "consequence_forM2": "Any M2 structural formula containing F is a natural candidate for dual entity/morphism ontological nature. M2 property m2:ontologicalNature='entity_and_morphism' applies to all F-containing structural formulas.",
         "consequence_forF0": "F=0 means no active morphisms: Mor_active(Cat_M3) = ∅. System in Stase (ground state) — valid per Amendment 1.",
         "dimensionRoles": {
-          "A_S_I_D": "object dimensions — describe system states",
-          "F": "morphism dimension — describes transitions between states"
+          "A_S_I_D": "object types — describe system states",
+          "F": "morphism type — describes transitions between states"
         }
       },
       "m3:amendment_3": {
@@ -1504,7 +1504,7 @@
       "@id": "m3:F_CategoryTheoryNote",
       "@type": "owl:Annotation",
       "rdfs:label": "M3 Categorical Structure — Theoretical Note on F Asymmetry",
-      "rdfs:comment": "The F_morphic amendment (v3.9.0) reveals that M3 has richer categorical structure than a pure homogeneous metric space. ASFID dimensions are not equivalent: {A,S,I,D} describe objects, {F} describes morphisms. This suggests M3 is closer to an enriched category or fibered space than to a simple cartesian product of homogeneous dimensions.",
+      "rdfs:comment": "The F_morphic amendment (v3.9.0) reveals that M3 has richer categorical structure than a pure homogeneous metric space. ASFID types are not equivalent: {A,S,I,D} describe objects, {F} describes morphisms. This suggests M3 is closer to an enriched category or fibered space than to a simple cartesian product of homogeneous dimensions.",
       "m3:status": "HYPOTHESIS — requires expert mathematical review",
       "m3:currentModel": "M3 as Structural Grammar G_T (Territory) + G_M (Map) — free commutative monoidal (post-reform)",
       "m3:proposedModel": "M3 as enriched category Cat_M3 with Ob={A,S,I,D}-described states and Mor={F}-described transitions",

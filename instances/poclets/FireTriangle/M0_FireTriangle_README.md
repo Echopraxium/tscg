@@ -95,11 +95,11 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 
 | Dimension | Score | Interpretation |
 |-----------|-------|----------------|
-| **A** (Attractor) | 0.85 | Strong thermal attractors; system drawn to equilibrium temperature |
-| **S** (Structure) | 0.70 | Moderate structural organization (flame geometry, fuel arrangement) |
-| **F** (Flow) | 0.90 | Very high flow intensity (heat, gases, air convection) |
-| **I** (Information) | 0.65 | Moderate information content (chemical signatures, spectral data) |
-| **D** (Dynamics) | 0.75 | Substantial dynamic behavior (rapid state changes, feedback loops) |
+| **A_score** (Attractor) | 0.85 | Strong thermal attractors; system drawn to equilibrium temperature |
+| **S_score** (Structure) | 0.70 | Moderate structural organization (flame geometry, fuel arrangement) |
+| **F_score** (Flow) | 0.90 | Very high flow intensity (heat, gases, air convection) |
+| **It_score** (Information) | 0.65 | Moderate information content (chemical signatures, spectral data) |
+| **D_score** (Dynamics) | 0.75 | Substantial dynamic behavior (rapid state changes, feedback loops) |
 
 **Norm**: 1.734
 
@@ -122,11 +122,11 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 
 | Dimension | Score | Interpretation |
 |-----------|-------|----------------|
-| **O** (Observability) | 0.80 | Fire Triangle is highly observable as a model - can be drawn, visualized, taught. The triangle shape is immediately perceptible. |
-| **R** (Representability) | 0.90 | Excellently representable - simple geometric diagram with 3 labeled vertices. Minimal symbolism (triangle + 3 words). |
-| **I** (Interoperability) | 0.90 | Highly shareable - Fire Triangle is international standard in fire safety. Same model used globally by firefighters, chemists, educators. |
-| **V** (Verifiability) | 0.95 | Extremely verifiable - Popper gold standard. Falsifiable prediction: "Remove ANY component → fire stops." Testable experimentally. |
-| **E** (Evolvability) | 0.70 | Moderately evolvable - Model extended to Fire Tetrahedron (+Chain Reaction). Triangle remains dominant in pedagogy. |
+| **O_score** (Observability) | 0.80 | Fire Triangle is highly observable as a model - can be drawn, visualized, taught. The triangle shape is immediately perceptible. |
+| **R_score** (Representability) | 0.90 | Excellently representable - simple geometric diagram with 3 labeled vertices. Minimal symbolism (triangle + 3 words). |
+| **It_score** (Interoperability) | 0.90 | Highly shareable - Fire Triangle is international standard in fire safety. Same model used globally by firefighters, chemists, educators. |
+| **V_score** (Verifiability) | 0.95 | Extremely verifiable - Popper gold standard. Falsifiable prediction: "Remove ANY component → fire stops." Testable experimentally. |
+| **E_score** (Evolvability) | 0.70 | Moderately evolvable - Model extended to Fire Tetrahedron (+Chain Reaction). Triangle remains dominant in pedagogy. |
 
 **REVOI Mean**: **0.85** → Very high-quality Map
 
@@ -160,9 +160,9 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 
 | Dimension | Divergence | Reason |
 |-----------|------------|--------|
-| **S** (Structure) | -0.20 | Triangle = perfect geometry; Real fire = irregular, fluctuating |
-| **F** (Flow) | +0.30 | Real fire = massive flows (gases, heat); Model = conceptual flows |
-| **D** (Dynamics) | +0.25 | Real fire = rapid, chaotic dynamics; Model = static representation |
+| **S_score** (Structure) | -0.20 | Triangle = perfect geometry; Real fire = irregular, fluctuating |
+| **F_score** (Flow) | +0.30 | Real fire = massive flows (gases, heat); Model = conceptual flows |
+| **D_score** (Dynamics) | +0.25 | Real fire = rapid, chaotic dynamics; Model = static representation |
 
 ---
 
@@ -219,18 +219,18 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 ## Alternative Observer Perspectives
 
 ### 1. Ant Perspective
-- **ASFID State**: (A:0.90, S:0.30, F:0.85, I:0.40, D:0.70)
+- **ASFID State**: (A_score:0.90, S_score:0.30, F_score:0.85, It_score:0.40, D_score:0.70)
 - **Differences**: Higher A (danger), lower S (scale), lower I (complexity)
 - **Interpretation**: Heat gradient danger, chemical threat
 
 ### 2. IR Sensor Perspective
-- **ASFID State**: (A:0.60, S:0.40, F:0.95, I:0.90, D:0.50)
+- **ASFID State**: (A_score:0.60, S_score:0.40, F_score:0.95, It_score:0.90, D_score:0.50)
 - **Differences**: Very high F (radiative flux), high I (spectral info), lower D (static)
 - **Interpretation**: Thermal radiation spectrum analysis
 
 ### 3. Firefighter Perspective
 - **Basis**: REVOI (Sphinx Eye) — Map perspective
-- **REVOI State**: (R:0.80, E:0.75, V:0.85, O:0.85, I:0.60)
+- **REVOI State**: (R_score:0.80, E_score:0.75, V_score:0.85, O_score:0.85, It_score:0.60)
 - **State Vector**: |M_firefighter⟩_REVOI = 0.80|R⟩ + 0.75|E⟩ + 0.85|V⟩ + 0.85|O⟩ + 0.60|Im⟩
 - **Differences**: High O/V (threat visible and testable), lower I (action-focused, not a universal standard)
 - **Interpretation**: Operational threat model (Map quality, not Territory measurement)

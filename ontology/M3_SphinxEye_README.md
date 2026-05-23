@@ -89,7 +89,7 @@ formalized in Gs (M3_BicephalousPerspective.jsonld).
 
 ---
 
-## 📐 REVOI Dimensions
+## 📐 REVOI Types
 
 | Dim | Full name | Adjective form | Epistemic role |
 |---|---|---|---|

@@ -17,7 +17,7 @@ grammars. It defines:
 - Lambek Calculus formalism (free commutative monoidal categories)
 - Three monoidal operators (×, +, |) with their neutral elements
 - **Three primitive alphabets** — one per operator
-- Abstract classes for M3 grammars and dimensions
+- Abstract classes for M3 grammars and MonoidalTypes
 - Special elements (EmptyTerritory, EmptyMap, StereopsisEmptySet,
   StereopsisUniversalSet)
 
@@ -33,9 +33,9 @@ TSCG defines **three alphabets** — one per monoidal operator:
 ```
 𝕋₀(×) = {A, S, F, I, D}      Territory primitives   (Eagle Eye)
 𝕋₀(+) = {R, E, V, O, Im}     Map primitives         (Sphinx Eye)
-𝕋₀(|) = {T}                   Bicephalous primitives (Stereopsis)
+𝕋₀(|) = {T, _^, _$}                   Bicephalous primitives (Stereopsis)
 
-𝕋₀ = 𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)  = 11 primitives total
+𝕋₀ = 𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)  = 13 primitives total
 ```
 
 | Alphabet | Operator | Neutral | Perspective |
@@ -83,18 +83,20 @@ right side = Map/Bicephalous expression.
 
 **Neutral element:** EmptyStereopsis = EmptyTerritory | EmptyMap
 
-### ×⇒ and +⇒ — Emergence operators
+### _(removed — see PotentialRefinements_MonoidalOperators.md)_
 
 ```
-×⇒(Memory, Entropy)        = Inertia         (Territory emergence)
-+⇒(Representable, Verifiable) = ModelQuality  (Map emergence)
+_(×⇒ and +⇒ removed — no corpus usage. See PotentialRefinements_MonoidalOperators.md Refinement 8.)_
 ```
 
-### ^op — Duality operator
+### _^ / _$ — Pole primitives (replaces former ^op)
 
 ```
-Coherence^op  = Incoherence
+A × S × It | R + O | _^   =  Coherence    (positive pole)
+A × S × It | R + O | _$   =  Incoherence  (negative pole)
 ```
+
+`^op` was a vestige of tensor algebra — abandoned. `_^` and `_$` are proper primitives of 𝕋₀(|).
 
 ---
 
@@ -108,10 +110,16 @@ Coherence^op  = Incoherence
 | `StereopsisUniversalSet` | Perfect alignment | White + Full pentagon | 0 |
 
 ```
-EmptyStereopsis  =  EmptyTerritory | EmptyMap
+EmptyStereopsis        =  EmptyTerritory | EmptyMap          (neutral of |)
+StereopsisUniversalSet =  𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|) = 𝕋₀      (pseudo-absorbent of |)
 
-StereopsisUniversalSet  →  Convergent Strabismus (δ₁ = 0)
-EmptyStereopsis         →  Divergent Strabismus  (δ₁ = max)
+StereopsisUniversalSet | a  =  StereopsisUniversalSet  for all a
+→ "empty of meaning" — contains ALL types, discriminates nothing
+→ Borges 1:1 paradox — a DEGENERATE LIMIT, not a semantic ideal
+→ distinct from δ₁ ≈ 0 (SpectralClass Coherent — desirable alignment)
+
+EmptyStereopsis        →  Divergent Strabismus  (δ₁ = max) — neutral
+StereopsisUniversalSet →  Convergent Strabismus (δ₁ = 0)  — pseudo-absorbent
 ```
 
 ---
@@ -155,7 +163,7 @@ artificial. No scalar multiplication, no metric, no inner product required.
 
 1. **Apex ontology** — imported by all M3 grammars, no dependencies
 2. **Three operators** × (Territory), + (Map), | (Stereopsis)
-3. **Three alphabets** — 𝕋₀(×), 𝕋₀(+), 𝕋₀(|) — 11 primitives total
+3. **Three alphabets** — 𝕋₀(×), 𝕋₀(+), 𝕋₀(|) — 13 primitives total
 4. **Three monoids** with explicit neutral elements
 5. **Lambek Calculus** — free commutative monoidal categories
 6. **Minimal structure** — just enough, nothing artificial
@@ -189,7 +197,7 @@ Map (Sphinx Eye) to produce the Bicephalous Perspective.
 
 ### Why | must be inter-grammar
 
-If | could only operate within 𝕋₀(|) = {T}, it could not traverse
+If | could only operate within 𝕋₀(|) = {T, _^, _$}, it could not traverse
 the Gt/Gm boundary — and it would lose its constitutive role as
 the stereopsic fusion operator. The asymmetry is **intentional and
 necessary**, not a privilege.

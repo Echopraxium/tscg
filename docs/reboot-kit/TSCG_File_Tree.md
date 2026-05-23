@@ -1,81 +1,90 @@
 # 📁 TSCG Framework - Complete File Tree
 
-**Date:** 2026-05-13  
-**Framework Version:** TSCG v16.0.0  
-**Total Files:** ~640
+**Date:** 2026-05-23
+**Framework Version:** TSCG v16.1.0
+**Total Files:** ~964
 
 ---
 
 ## 📊 Project Statistics
 
 **Ontology Files:**
-- M3 Layer: 5 files (M3_GrammarFoundation **NEW apex**, M3_EagleEye, M3_GenesisGrammar *(ex-GenesisSpace)*, M3_SphinxEye) + 4 README files + StructuralGrammar/ documentation folder
+- M3 Layer: 6 files (M3_GrammarFoundation apex, M3_EagleEye, M3_GenesisGrammar, M3_SphinxEye, **M3_BicephalousPerspective NEW**) + README files + StructuralGrammar/ documentation folder
 - M2 Layer: 1 main file (M2_GenericConcepts) + 1 standalone (M2_Calibration) + archived versions in docs/
-- M1 Layer: 2 root files (M1_CoreConcepts, M1_Domains) + 13 domain extensions (biology, chemistry, economics, education, electronics, energy_generators, **geology** NEW, music, mythology, optics, photography, physics, **system_modeling** NEW) — @base factorised in all files
-- M0 Layer: 23 poclets (instances/poclets/) + TSCG Tools (instances/tscg-tools/) + 1 VSM systemic framework + 1 symbolic grammar
+- M1 Layer: 2 root files (M1_CoreConcepts, M1_Domains) + 13 domain extensions (biology, chemistry, economics, education, electronics, energy_generators, geology, music, mythology, optics, photography, physics, system_modeling) — @base factorised in all files
+- M0 Layer: **26 poclets** (instances/poclets/) + **3 TscgTools active + 1 stub** (instances/tscg-tools/) + **2 systemic frameworks** (Vsm, Triz) + 1 symbolic grammar (IChing)
 
-**Documentation:** ~125 files  
-**Source Code:** extensive `src/tscg/` Python package  
-**Scripts & Tools:** 30+ files  
+**Documentation:** ~150 files (+ docs/CoreHypotheses/ NEW)
+**Source Code:** extensive `src/tscg/` Python package
+**Scripts & Tools:** 40+ files
 **Root & Config:** 10 files
 
-**Total:** 618 files
+**Total:** ~964 files
 
 ---
 
-## 🆕 What's New (vs v15.10.0)
+## 🆕 What's New (vs v16.0.0)
 
-### v16.0.0 (2026-05-13) — Current
+### v16.1.0 (2026-05-23) — Current
+
+**SCORE CONVENTION REFORM + CORPUS EXPANSION + TOOLING**
+
+- ✅ **Convention Option B** — Score alias disambiguation across ALL 36 M0 instances:
+  - `A`, `S`, `F`, `It`, `D`, `R`, `E`, `V`, `O`, `Im` (short aliases → MonoidalTypes) replaced by
+  - `A_score`, `S_score`, `F_score`, `It_score`, `D_score`, `R_score`, `E_score`, `V_score`, `O_score`, `Im_score` (→ `m0:score*` DatatypeProperties, distinct from MonoidalTypes)
+  - TRIZ scores normalized from 0–5 scale to 0–1 (÷5); δ₁ recalculated
+  - 36 `.jsonld` + 31 `_README.md` migrated (4 lots)
+- ✅ **NEW poclets:** `Ptoe/` (Periodic Table), `PlateTectonics/`, `NuclearReactorsTypology/`
+- ✅ **NEW poclet stub:** `Theremin/` (`_static/` only)
+- ✅ **NEW systemic framework:** `instances/systemic-frameworks/Triz/` (TRIZ icosahedron)
+- ✅ **NEW TscgTool stubs:** `instances/tscg-tools/TscgOntologyAPIServer/` (Phase 3 planned)
+- ✅ **NEW TscgTools modeled:** TscgOntologyExplorer + TscgPocletGenerator + TscgPocletMiner (m3:TscgTool instances)
+- ✅ **NEW `docs/CoreHypotheses/`** — 8 theoretical foundation documents
+- ✅ **NEW `ontology/TSCG_InstanceGrammar/`** — SHACL grammar + migration tools (reorganized from `ontology/` root)
+- ✅ **NEW `ontology/InstanceSimulations/`** — UX knowledge base (4 files, mandatory for simulation creation)
+- ✅ **NEW `ontology/M3_BicephalousPerspective.jsonld`** + README
+- ✅ **NEW `ontology/OntologyModeling_Guidelines.md`**
+- ✅ **UPDATED `ontology/StructuralGrammar/`** — 2 new files (PotentialRefinements, MonoidalOperators README)
+- ✅ **NEW `instances/tscg-tools/TscgOntologyExplorer/dev/tscg-python-bridge/`:**
+  - Phase 2: `TscgStore` (pyoxigraph named-graph triple store) in `bridge_server.py`
+  - `/corpus/*` endpoints (load, list, sparql, reload)
+  - `_run_tests.py` interactive test runner (menu 1–4)
+  - `tests/` full test suite (58 tests: test_expand_iri, test_tscg_store, test_endpoints)
+  - `requirements.txt` updated with `pyoxigraph>=0.5.0`
+  - `_plugins_setup.bat` updated with pyoxigraph install + optional test run
+- ✅ **NEW `instances/tscg-tools/TscgOntologyExplorer/docs/UserManual.md`**
+- ✅ **NEW `docs/papers/preprints/TSCG_Research_Paper_Draft_v5.md`** (v4.0 on Zenodo DOI:10.5281/zenodo.18471860)
+- ✅ **NEW `docs/papers/preprints/HAL/`** folder
+- ✅ **NEW `domain_format_fix_backups/`** backup folder
+- ✅ Smart Prompt v16.0.0 added to `docs/reboot-kit/SmartPrompts/`
+
+### v16.0.0 (2026-05-13)
 
 **FORMALISM REFORM: Tensor Product → Structural Grammar (Lambek Calculus)**
 
-- ✅ **NEW** `ontology/M3_GrammarFoundation.jsonld` — apex ontology (no imports), defines 6 indexed operators (⊗ᵗ ⊗ᵐ ⊗ᵗ⇒ ⊗ᵐ⇒ ^opᵗ ^opᵐ), type system 𝕋₀/𝕋₁/𝕋₂/𝕄₀, `m3gf:intersubjectiveBenchmark`, `m3gf:defeasibilityStatus`
-- ✅ **RENAMED** `M3_GenesisSpace.jsonld` → `M3_GenesisGrammar.jsonld` (v4.0.0) — Hilbert/SVD replaced by Lambek grammar foundation
-- ✅ **UPDATED** `M3_EagleEye.jsonld` (v2.5.0) — Territory Grammar Gt, imports GrammarFoundation
-- ✅ **UPDATED** `M3_SphinxEye.jsonld` (v3.3.0) — Map Grammar Gm, imports GrammarFoundation
-- ✅ **UPDATED** `M2_GenericConcepts.jsonld` (v15.12.0) — `hasTensorFormula` → `hasStructuralFormula` (250 occurrences)
-- ✅ **NEW** `ontology/StructuralGrammar/` — documentation folder (5 READMEs + session transcript)
-- ✅ **NEW** README files for all M3 files and M2_GenericConcepts
-- ✅ **UPDATED** All 15 M1 files — `@base` added/factorised uniformly; M1_Economics hasTensorFormula fixed
-- ✅ **NEW** `cli_tools/verify_migration/` — post-migration validation CLI tool
-- ✅ **UPDATED** `cli_tools/migrate_properties/` — rename CLI tool (README added)
-- ✅ **NEW** `.claude/skills/tscg-tensor-to-structural-grammar-migration/` — migration SKILL
-- ❌ `M3_GenesisSpace.jsonld` removed from `ontology/` root (archived in `Ref/`)
+- ✅ **NEW** `ontology/M3_GrammarFoundation.jsonld` — apex ontology, 6 indexed operators, type system 𝕋₀/𝕋₁/𝕋₂/𝕄₀
+- ✅ **RENAMED** `M3_GenesisSpace.jsonld` → `M3_GenesisGrammar.jsonld` (v4.0.0)
+- ✅ **UPDATED** `M3_EagleEye.jsonld` (v2.5.0) + `M3_SphinxEye.jsonld` (v3.3.0)
+- ✅ **UPDATED** `M2_GenericConcepts.jsonld` (v15.12.0) — `hasTensorFormula` → `hasStructuralFormula`
+- ✅ **NEW** `ontology/StructuralGrammar/` — Lambek Calculus documentation
+- ✅ **NEW** `.claude/skills/tscg-tensor-to-structural-grammar-migration/`
 
 ### v15.10.1 (2026-03-23)
-- ✅ New poclet: `CounterPoint/` (M0_Counterpoint.jsonld + README + static/sounds scripts)
-- ✅ New poclet: `NakamotoConsensus/` (M0_Poclet_NakamotoConsensus.jsonld + README)
-- ✅ New TSCG tool: `TscgPocletMiner/` (M0_TscgPocletMiner.jsonld + README + tools/rebuild_m2_corpus.py)
-- ✅ New M1 extension: `music/M1_music.jsonld`
-- ✅ New session README: `TSCG_Session_README_2026-03-23.md` added to reboot-kit
-- ✅ New Smart Prompt: `TSCG_Smart_Prompt_v15_10_1.md` added to reboot-kit/SmartPrompts/
-- ✅ New CLI tool: `cli_tools/generate_index-html/` (_Generate_Index-html.bat)
-- ✅ New root script: `_serve_index-html.bat`
+- New poclets: `CounterPoint/` + `NakamotoConsensus/`
+- New TSCG tool: `TscgPocletMiner/`; New M1 extension: `music/`
+- New CLI tool: `cli_tools/generate_index-html/`
 
 ### v15.10.0 (2026-03-16)
-- ✅ New poclet: `TrophicPyramid/` (M0_TrophicPyramid.jsonld + README + sim/)
-- ✅ New poclet: `TvTestPattern/` (M0_TVTestPattern.jsonld + README + tv_test_pattern_sim.py)
-- ✅ New TSCG tool: `TscgPocletGenerator/` (M0_TscgPocletGenerator.jsonld + tscg_poclet_generator.py + tscg_rag_augmentor.py)
-- ✅ New TSCG tool stub: `TscgPocletExplorer/` (00_Run.bat)
-- ✅ New standalone M2 file: `ontology/M2_Calibration.jsonld`
-- ✅ Smart Prompt v15.9.0 added to reboot-kit
-- ✅ `M2_GenericConcepts.jsonld` and `M2_FormulasReference_v15.10.0.md` added to reboot-kit
+- New poclets: `TrophicPyramid/` + `TvTestPattern/`
+- New TSCG tools: `TscgPocletGenerator/` + `TscgPocletExplorer/` stub
+- New standalone M2 file: `M2_Calibration.jsonld`
 
 ### v15.9.0 (2026-03-01)
-- ✅ New M1 extension: `economics/` (M1_Economics.jsonld + M1_Economics_README.md)
-- ✅ New poclet: `KindlebergerMinsky/` (M0 + simulation)
-- ✅ New section: `instances/tscg-tools/TscgExplorer/` (M0_TscgExplorer + tscg_explorer.py)
-- ❌ `instances/validation/` directory removed (validated poclets now live only in `poclets/`)
-- ❌ `.ttl` twins removed for `M3_EagleEye` and `M3_GenesisSpace` in `ontology/`
-- ❌ `.ttl` twins removed for several poclets (ColorSynthesis, ComplexChemicalSynapse, Tpack, Vco, PhaseTransition, MtgColorWheel)
+- New M1 extension: `economics/`; New poclet: `KindlebergerMinsky/`
 
 ---
 
 ## 🏛️ M3 Layer - Genesis Grammar (Structural Grammar Foundation)
-
-Core foundation defining the bicephalous architecture (Territory Grammar Gt / Map Grammar Gm).
-Mathematical foundation: **Lambek Calculus** / Free Commutative Monoidal Categories.
-Operator `⊗` is a monoidal product — NOT an algebraic tensor product.
 
 ### Main ontology/ — Import hierarchy
 ```
@@ -83,557 +92,320 @@ M3_GrammarFoundation.jsonld  ← APEX (no imports)
         ↓ imported by
 M3_EagleEye.jsonld  +  M3_SphinxEye.jsonld
         ↓ imported by
-M3_GenesisGrammar.jsonld
+M3_GenesisGrammar.jsonld  +  M3_BicephalousPerspective.jsonld  ← NEW
         ↓ imported by
 M2_GenericConcepts.jsonld → M1 → M0
 ```
 
-- [M3_GrammarFoundation.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GrammarFoundation.jsonld) **NEW — APEX** — 6 operators (⊗ᵗ ⊗ᵐ ⊗ᵗ⇒ ⊗ᵐ⇒ ^opᵗ ^opᵐ), type system 𝕋₀/𝕋₁/𝕋₂/𝕄₀, intersubjectiveBenchmark
-- [M3_GrammarFoundation_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GrammarFoundation_README.md) **NEW**
+- [M3_GrammarFoundation.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GrammarFoundation.jsonld) — APEX, 6 operators, type system 𝕋₀/𝕋₁/𝕋₂/𝕄₀, intersubjectiveBenchmark
+- [M3_GrammarFoundation_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GrammarFoundation_README.md)
 - [M3_EagleEye.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_EagleEye.jsonld) v2.5.0 — Territory Grammar Gt, primitive types {A,S,F,I,D}
-- [M3_EagleEye_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_EagleEye_README.md) **NEW**
-- [M3_GenesisGrammar.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld) v4.0.0 **NEW** *(renamed from M3_GenesisSpace)* — bicephalous hub, imports GrammarFoundation+EagleEye+SphinxEye
-- [M3_GenesisGrammar_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GenesisGrammar_README.md) **NEW**
+- [M3_EagleEye_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_EagleEye_README.md)
 - [M3_SphinxEye.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld) v3.3.0 — Map Grammar Gm, primitive types {R,E,V,O,I}
-- [M3_SphinxEye_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_SphinxEye_README.md) **NEW**
+- [M3_SphinxEye_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_SphinxEye_README.md)
+- [M3_GenesisGrammar.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld) v4.0.0 *(renamed from M3_GenesisSpace)* — bicephalous hub
+- [M3_GenesisGrammar_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_GenesisGrammar_README.md)
+- [M3_BicephalousPerspective.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_BicephalousPerspective.jsonld) **NEW** — Eagle Eye ⊕ Sphinx Eye unified perspective
+- [M3_BicephalousPerspective_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M3_BicephalousPerspective_README.md) **NEW**
+- [OntologyModeling_Guidelines.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/OntologyModeling_Guidelines.md) **NEW**
+- [TSCG_Reference_Corpus.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_Reference_Corpus.md) **NEW**
 
-### ontology/StructuralGrammar/ **NEW — Formalism documentation**
-- [Structural_Grammar_Foundation.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/Structural_Grammar_Foundation.md) — Lambek Calculus / monoidal categories technical foundation
-- [TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md) — comprehensive 12-section reform documentation
-- [TSCG_Mathematical_Legitimacy_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/TSCG_Mathematical_Legitimacy_Summary.md) — before/after legitimacy assessment
-- [TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md) — measurement epistemology
-- [_00_Session_Claude_GrammaireStructurelle.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/_00_Session_Claude_GrammaireStructurelle.md) — session transcript (FR)
+### ontology/StructuralGrammar/ (updated)
+- [Structural_Grammar_Foundation.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/Structural_Grammar_Foundation.md)
+- [Structural_Grammar_Foundation_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/Structural_Grammar_Foundation_README.md)
+- [TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md)
+- [TSCG_Mathematical_Legitimacy_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/TSCG_Mathematical_Legitimacy_Summary.md)
+- [TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md)
+- [StructuralGrammar_MonoidalOperators_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/StructuralGrammar_MonoidalOperators_README.md) **NEW**
+- [PotentialRefinements_MonoidalOperators.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/PotentialRefinements_MonoidalOperators.md) **NEW**
+- [_00_Session_Claude_GrammaireStructurelle.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/_00_Session_Claude_GrammaireStructurelle.md)
+
+### ontology/InstanceSimulations/ **NEW — UX knowledge base for simulations**
+- [M0_InstanceSimulations.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/InstanceSimulations/M0_InstanceSimulations.jsonld) — Catalog of all instance simulations
+- [M0_InstanceSimulations_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/InstanceSimulations/M0_InstanceSimulations_README.md)
+- [M0_InstanceSimulation_UXControls.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/InstanceSimulations/M0_InstanceSimulation_UXControls.jsonld) — UX controls catalog (mandatory consultation during simulation creation)
+- [M0_InstanceSimulation_UXControls_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/InstanceSimulations/M0_InstanceSimulation_UXControls_README.md)
+
+### ontology/TSCG_InstanceGrammar/ **NEW — SHACL grammar + migration tools**
+- [M0_Instances_Schema.shacl.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl) — SHACL grammar v1.0 FINAL (9 mandatory constraints)
+- [M0_POCLET_TEMPLATE.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/M0_POCLET_TEMPLATE.jsonld) + [M0_TEMPLATES_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/M0_TEMPLATES_README.md) + [M0_TEMPLATES_USAGE_GUIDE.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/M0_TEMPLATES_USAGE_GUIDE.md)
+- [TSCG_Grammar_Extraction_Final_Report.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/TSCG_Grammar_Extraction_Final_Report.md)
+- [MIGRATION_GUIDE_It_Im.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/MIGRATION_GUIDE_It_Im.md) — It (Information/Territory) vs Im (Interoperable/Map) disambiguation guide
+- [RECAPITULATIF_EXECUTIF.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/RECAPITULATIF_EXECUTIF.md)
+- **Migration scripts:** `automated_migration_easy_instances.py`, `fix_domain_format.py`, `migrate_m1_namespaces.py`, `migrate_simulation_titles.py`, `audit_m1_namespaces.py`, `diagnose_scores.py`, `validate_m0_instance.py`, `validate_context_urls.py`
 
 ### ontology/Ref/ (reference copies)
-- [M2_GenericConcepts_2026_02_17_17h-00min.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M2_GenericConcepts_2026_02_17_17h-00min.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M2_GenericConcepts_2026_02_17_17h-00min.ttl)
-- [M2_MetaConcepts_Ref.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M2_MetaConcepts_Ref.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M2_MetaConcepts_Ref.ttl)
-- [M3_GenesisSpace_Ref.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M3_GenesisSpace_Ref.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M3_GenesisSpace_Ref.ttl)
+- M2_GenericConcepts (2026-02-17) / M2_MetaConcepts_Ref / M3_GenesisSpace_Ref (archived)
 
 ---
 
 ## 🌐 M2 Layer - Universal GenericConcepts
 
-### Main ontology/ files
-- [M2_GenericConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld) v15.12.0 — ~84 named product types (𝕋₁); `hasStructuralFormula` (ex-hasTensorFormula, 250 renames) *(primary)*
-- [M2_GenericConcepts_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M2_GenericConcepts_README.md) **NEW**
-- [M2_Calibration.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M2_Calibration.jsonld) - Calibration standalone metaconcept
+- [M2_GenericConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld) v15.12.0 — 75+ atomic GenericConcepts; `hasStructuralFormula`
+- [M2_GenericConcepts_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M2_GenericConcepts_README.md)
+- [M2_Calibration.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M2_Calibration.jsonld) — standalone Calibration metaconcept (A ⊗ F ⊗ It ⊗ D)
 
-### ontology/sparql/ (SPARQL tools)
-- [M2_MetaConcepts_2026_02_08_encoding_lint_ok.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_MetaConcepts_2026_02_08_encoding_lint_ok.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_MetaConcepts_2026_02_08_encoding_lint_ok.ttl)
-- [M2_MetaConcepts_v15_0_0_WITH_Processor.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_MetaConcepts_v15_0_0_WITH_Processor.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_MetaConcepts_v15_0_0_WITH_Processor.ttl)
-- [M2_Processor.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_Processor.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_Processor.ttl)
-- [M2_MetaConcepts_SPARQL_Querie_README.txt](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_MetaConcepts_SPARQL_Querie_README.txt)
-- [SPARQL_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/SPARQL_README.md)
-- [m2_sparql_analysis.py](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/m2_sparql_analysis.py)
-
-### ontology/tools/
-- [M2_MetaConcepts_Ref.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/tools/M2_MetaConcepts_Ref.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/tools/M2_MetaConcepts_Ref.ttl)
-
-### M2 Documentation (ontology/docs/)
-- [M2_Architecture_Specification_v9.1.0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Architecture_Specification_v9.1.0.md)
-- [M2_Behavioral_Sequential_Metaconcepts_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Behavioral_Sequential_Metaconcepts_README.md)
-- [M2_Behavioral_Visual_Guide.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Behavioral_Visual_Guide.md)
-- [M2_Candidates_Analysis_Layer_Switch_Mode (1).md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Candidates_Analysis_Layer_Switch_Mode%20(1).md)
-- [M2_Coherence_Analysis.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Coherence_Analysis.md)
-- [M2_Component_Channel_Addition_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Component_Channel_Addition_Summary.md)
-- [M2_Dual_ORIVE_Proposals.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Dual_ORIVE_Proposals.md)
-- [M2_FormulasReference_v15.10.0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_FormulasReference_v15.10.0.md)
-- [M2_GenericConcepts_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_GenericConcepts_README.md)
-- [M2_Generation_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Generation_Summary.md)
-- [M2_Imbrication_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Imbrication_README.md)
-- [M2_KnowledgeField_Integration_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_KnowledgeField_Integration_Summary.md)
-- [M2_KnowledgeField_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_KnowledgeField_README.md)
-- [M2_MetaConcepts_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaConcepts_README.md)
-- [M2_OntologyCategory_Proposal (1).md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_OntologyCategory_Proposal%20(1).md)
-- [M2_Scope_Metaconcept_Proposal.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Scope_Metaconcept_Proposal.md)
-- [MetaconceptPair_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/MetaconceptPair_README.md)
-
-**M2 Archived Ontology Files (ontology/docs/):**
-- [M2_KnowledgeField_KnowledgeFieldMetaCombo_v15_2_0.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_KnowledgeField_KnowledgeFieldMetaCombo_v15_2_0.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_KnowledgeField_KnowledgeFieldMetaCombo_v15_2_0.ttl)
-- [M2_MetaConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaConcepts.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaConcepts.ttl) *(archived)*
-- [M2_MetaConcepts_2026_02_06_encoding_lint_checked.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaConcepts_2026_02_06_encoding_lint_checked.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaConcepts_2026_02_06_encoding_lint_checked.ttl)
-- [M2_MetaConcepts_2026_03_04_FixedEncoding_validéLint.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaConcepts_2026_03_04_FixedEncoding_validéLint.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaConcepts_2026_03_04_FixedEncoding_validéLint.ttl)
-- [M2_MetaconceptCombo.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaconceptCombo.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_MetaconceptCombo.ttl)
-- [M2_Metaconcepts_v13.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Metaconcepts_v13.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Metaconcepts_v13.ttl)
-- [M2_New_5_Metaconcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_New_5_Metaconcepts.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_New_5_Metaconcepts.ttl)
-- [M2_Pattern_metaconcept.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Pattern_metaconcept.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/M2_Pattern_metaconcept.ttl)
-- [m2_Imbrication_entry.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/m2_Imbrication_entry.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/docs/m2_Imbrication_entry.ttl)
+### ontology/sparql/ + ontology/tools/ + ontology/docs/
+*(unchanged from v16.0.0 — see archived documentation)*
 
 ---
 
 ## 🎯 M1 Layer - Domain Extensions
 
-### Core Concepts (ontology/)
-- [M1_CoreConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld) - Core domain-agnostic concepts
+### Root (ontology/)
+- [M1_CoreConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld) + [M1_CoreConcepts_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_CoreConcepts_README.md)
+- [M1_Domains.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_Domains.jsonld) + [M1_Domains_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_Domains_README.md) — 19 registered domains
 
-### M1 Extensions Root (ontology/M1_extensions/)
-- [M1_CoreConcepts_NuclearUpdate.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/M1_CoreConcepts_NuclearUpdate.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/M1_CoreConcepts_NuclearUpdate.ttl)
-- [M1_Extensions_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/M1_Extensions_Summary.md)
+### Domain Extensions (ontology/M1_extensions/)
 
-### Domain Extensions
-
-**Biology (M1_extensions/biology/):**
-- [M1_Biology.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.ttl)
-- [M2_MetaConcepts_Alignment.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/biology/M2_MetaConcepts_Alignment.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/biology/M2_MetaConcepts_Alignment.ttl)
-
-**Chemistry (M1_extensions/chemistry/):**
-- [M1_Chemistry.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/chemistry/M1_Chemistry.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/chemistry/M1_Chemistry.ttl)
-
-**Economics (M1_extensions/economics/):**
-- [M1_Economics.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.ttl)
-- [M1_Economics_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics_README.md)
-
-**Education (M1_extensions/education/):**
-- [M1_Education.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/education/M1_Education.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/education/M1_Education.ttl)
-- [M1_Education_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/education/M1_Education_README.md)
-
-**Electronics (M1_extensions/electronics/):**
-- [M1_Electronics.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/electronics/M1_Electronics.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/electronics/M1_Electronics.ttl) — 17 KnowledgeFieldConcepts : ActiveComponent, Amplifier, Filter, ElectronicOscillator, VoltageControlledOscillator, LFO, FeedbackOscillator, WaveformMode, AudioSignal, ControlVoltage, PitchCV, ExponentialConverter, ModulationSource, EurorackModule, SignalChain, FrequencyModulation, SignalProcessor
-- [M1_Electronics_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/electronics/M1_Electronics_README.md)
-
-**Energy Generators (M1_extensions/energy_generators/):**
-- [M1_EnergyGenerators.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/energy_generators/M1_EnergyGenerators.ttl)
-
-**Geology (M1_extensions/geology/) — NEW:**
-- [M1_Geology.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/geology/M1_Geology.jsonld)
-
-**Music (M1_extensions/music/):**
-- [M1_music.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/music/M1_Music.jsonld)
-
-**Mythology (M1_extensions/mythology/):**
-- [M1_Mythology.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology.ttl)
-- [M1_Mythology_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/mythology/M1_Mythology_README.md)
-
-**Optics (M1_extensions/optics/):**
-- [M1_Optics.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/optics/M1_Optics.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/optics/M1_Optics.ttl)
-
-**Photography (M1_extensions/photography/):**
-- [M1_Photography.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/photography/M1_Photography.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/photography/M1_Photography.ttl)
-
-**Physics (M1_extensions/physics/):**
-- [M1_Physics.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/physics/M1_Physics.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/physics/M1_Physics.ttl)
-- [M1_Physics_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/M1_extensions/physics/M1_Physics_README.md)
+| Extension | File | Notes |
+|---|---|---|
+| **biology** | M1_Biology.jsonld | |
+| **chemistry** | M1_Chemistry.jsonld + .ttl | |
+| **economics** | M1_Economics.jsonld + README | |
+| **education** | M1_Education.jsonld + README | |
+| **electronics** | M1_Electronics.jsonld + README | |
+| **energy_generators** | M1_EnergyGenerators.jsonld | |
+| **geology** | M1_Geology.jsonld | |
+| **music** | M1_Music.jsonld | |
+| **mythology** | M1_Mythology.jsonld + README | |
+| **optics** | M1_Optics.jsonld | |
+| **photography** | M1_Photography.jsonld | |
+| **physics** | M1_Physics.jsonld + README | |
+| **system_modeling** | M1_SystemicModeling.jsonld | |
 
 ---
 
-## 🔬 M0 Layer - System Models
+## 📦 M0 Layer - Instances
 
-### Systemic Frameworks (instances/systemic-frameworks/Vsm/)
+### instances/poclets/ — 26 validated poclets
 
-- [M0_VSM.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/Vsm/M0_VSM.jsonld) - Viable System Model (Stafford Beer)
-- [M0_VSM.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/Vsm/M0_VSM.ttl)
-- [M0_VSM_Metaconcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/Vsm/M0_VSM_Metaconcepts.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/Vsm/M0_VSM_Metaconcepts.ttl)
-- [M0_VSM_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/Vsm/M0_VSM_README.md)
-- [M0_VSM_README_Metaconcepts.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/Vsm/M0_VSM_README_Metaconcepts.md)
-- [Session_VSM_Capacity_Evaluation.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/systemic-frameworks/Vsm/Session_VSM_Capacity_Evaluation.md)
+| Folder | Domain | Scores | Simulation |
+|---|---|---|---|
+| AdaptativeImmuneResponse | Biology | — | — |
+| BloodPressureControl | Physiology | — | — |
+| ButterflyMetamorphosis | Biology | — | — |
+| CellSignalingModes | Biology | — | — |
+| ColorSynthesis/ | Art (federated: RGB, HSL, CMY, CMYK) | ✓ | static/ |
+| ComplexChemicalSynapse | Neuroscience | ✓ | pygame |
+| CounterPoint | Music | ✓ | static/ (Tone.js) |
+| ExposureTriangle | Photography | ✓ | static/ |
+| FireTriangle | Chemistry | ✓ | static/ |
+| FourStrokeEngine | Engineering | ✓ | sim/ + static/ |
+| Kidneys | Physiology | ✓ | — |
+| KindlebergerMinsky | Economics | — | sim/ + static/ |
+| MtgColorWheel | Game Theory | — | sim/ + static/ |
+| NakamotoConsensus | Blockchain | — | static/ |
+| NuclearReactorsTypology | Nuclear Engineering | ✓ | static/ |
+| PhaseTransition | Physics/Chemistry | — | sim/ + static/ |
+| PlateTectonics | Geology | — | _static/ |
+| Ptoe | Chemistry | ✓ | static/ (BabylonJS) |
+| Raas | Physiology | ✓ | — |
+| Theremin | Electronics | — | _static/ stub |
+| Tpack | Pedagogy | — | pygame |
+| Transistor | Electronics | ✓ | sim/ + static/ |
+| TrophicPyramid | Ecology | — | sim/ + static/ |
+| TvTestPattern | Art/Electronics | — | pygame |
+| Vco | Electronics | — | sim/ + static/ |
+| Yggdrasil | Mythology | — | — |
 
-### Symbolic System Grammars (instances/symbolic-system-grammars/)
+### instances/symbolic-system-grammars/
+- **Iching/** — M0_IChing.jsonld + README (64 hexagrams, m3:SymbolicSystemGrammar)
 
-**I-Ching (symbolic-system-grammars/Iching/):**
-- [M0_IChing.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/symbolic-system-grammars/Iching/M0_IChing.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/symbolic-system-grammars/Iching/M0_IChing.ttl)
-- [M0_IChing_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/symbolic-system-grammars/Iching/M0_IChing_README.md)
+### instances/systemic-frameworks/
+- **Vsm/** — M0_Vsm.jsonld + README + _sim/ (Viable System Model, m3:SystemicFramework)
+- **Triz/** — M0_Triz.jsonld + README + Triz_Description.md + static/ (TRIZ icosahedron, m3:SystemicFramework) **NEW**
+  - Scores normalized 0–5 → 0–1: ASFID mean=0.88, REVOI mean=0.96, δ₁=0.057 (OnCriticalLine)
 
-### TSCG Tools (instances/tscg-tools/)
+### instances/tscg-tools/
 
-**TSCG Explorer (tscg-tools/TscgExplorer/):**
-- [M0_TscgExplorer.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgExplorer/M0_TscgExplorer.jsonld) / [.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgExplorer/M0_TscgExplorer.ttl) - Meta-analytical poclet (TSCG analyzing itself)
-- [M0_TscgExplorer_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgExplorer/M0_TscgExplorer_README.md)
-- [TSCG_Explorer_Simulation_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgExplorer/TSCG_Explorer_Simulation_README.md)
-- [tscg_explorer.py](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgExplorer/tscg_explorer.py)
-- _00_Run_Simulation.bat, _00_setup_notes.txt, _open_cmd_window.bat, requirements.txt
+| Tool | Status | Type | Key Files |
+|---|---|---|---|
+| **TscgOntologyExplorer/** | Active v1.0 | m3:TscgTool | ElectronJS browser/editor |
+| **TscgOntologyAPIServer/** | Stub (Phase 3) | m3:TscgTool | `_open_cmd_window.bat` only |
+| **TscgPocletGenerator/** | Active v1.0 | m3:TscgTool | PySide6 + RAG pipeline |
+| **TscgPocletMiner/** | Active v1.2 | m3:TscgTool | ElectronJS 5-round wizard |
 
-**TSCG Poclet Explorer (tscg-tools/TscgPocletExplorer/):**
-- [00_Run.bat](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletExplorer/00_Run.bat)
+#### TscgOntologyExplorer/ — detail
 
-**TSCG Poclet Generator (tscg-tools/TscgPocletGenerator/):**
-- [M0_TscgPocletGenerator.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletGenerator/M0_TscgPocletGenerator.jsonld)
-- [M0_TscgPocletGenerator_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletGenerator/M0_TscgPocletGenerator_README.md)
-- [tscg_poclet_generator.py](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletGenerator/tscg_poclet_generator.py)
-- [tscg_rag_augmentor.py](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletGenerator/tscg_rag_augmentor.py)
-- _00_Run_Simulation.bat, _00_setup_notes.txt, _google_cloud_login.bat, _open_cmd_window.bat, _open_powershell.bat, requirements.txt
-
-**TSCG Poclet Miner (tscg-tools/TscgPocletMiner/) — NEW:**
-- [M0_TscgPocletMiner.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletMiner/M0_TscgPocletMiner.jsonld)
-- [M0_TscgPocletMiner_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletMiner/M0_TscgPocletMiner_README.md)
-- [tools/rebuild_m2_corpus.py](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/tscg-tools/TscgPocletMiner/tools/rebuild_m2_corpus.py)
-- 00_Run.bat
-
-### Experimental Poclets (instances/poclets/)
-
-Each poclet folder contains `.jsonld`, `_README.md` and sometimes simulation scripts. `.ttl` twins are present only for certain poclets (see individual entries). Folder names use CamelCase as in the repository.
-
-**Active poclets (23 total):**
-- `AdaptativeImmuneResponse/` — M0_AdaptiveImmuneResponse.jsonld / .ttl + README
-- `BloodPressureControl/` — M0_BloodPressureControl.jsonld / .ttl + README
-- `ButterflyMetamorphosis/` — M0_ButterflyMetamorphosis.jsonld / .ttl + README + executive summary
-- `CellSignalingModes/` — M0_CellSignalingModes.jsonld / .ttl + README
-- `ColorSynthesis/` — CMYK, CMY, ColorSynthesis_Federated, HSL, RGB (.jsonld only) + READMEs *(sim lives in src/tscg/simulation-engine/)*
-- `ComplexChemicalSynapse/` — M0_ComplexChemicalSynapse.jsonld / .ttl + README + complex_chemical_synapse_sim.py
-- `CounterPoint/` — M0_Counterpoint.jsonld + README + static/ (sound scripts) — **NEW**
-- `ExposureTriangle/` — M0_ExposureTriangle.jsonld + README *(sim lives in src/tscg/simulation-engine/)*
-- `FireTriangle/` — M0_FireTriangle.jsonld + README *(sim lives in src/tscg/simulation-engine/)*
-- `FourStrokeEngine/` — M0_FourStrokeEngine.jsonld / .ttl + README + four_stroke_engine_sim.py
-- `Kidneys/` — M0_Kidneys.jsonld / .ttl + README
-- `KindlebergerMinsky/` — M0_KindlebergerMinsky.jsonld / .ttl + README + KindlebergerMinsky_Simulation_README + kindleberger_minsky_sim.py + companion doc
-- `MtgColorWheel/` — M0_MtgColorWheel.jsonld + README + sim_mtg_color_wheel.py
-- `NakamotoConsensus/` — M0_Poclet_NakamotoConsensus.jsonld + README — **NEW**
-- `NuclearReactorsTypology/` — M0_NuclearReactorTypology.jsonld / .ttl + README
-- `PhaseTransition/` — M0_PhaseTransition.jsonld / .ttl + README + phase_transition_sim.py
-- `Raas/` — M0_RAAS.jsonld + README
-- `Tpack/` — M0_TPACK.jsonld / .ttl + README + tpack_sim.py
-- `Transistor/` — M0_Transistor.jsonld / .ttl + README + transistor_sim.py + companion doc
-- `TrophicPyramid/` — M0_TrophicPyramid.jsonld + README + sim/ (INSTALL.md, MIGRATION_GUIDE.md)
-- `TvTestPattern/` — M0_TVTestPattern.jsonld + README + tv_test_pattern_sim.py
-- `Vco/` — M0_VCO.jsonld / .ttl + README + VCO_Simulation_README + vco_sim.py *(first m2:Oscillator instantiation)*
-- `Yggdrasil/` — M0_Yggdrasil.jsonld / .ttl + README + companion documents
-
-**Yggdrasil companion documents:**
-- [Heimdall_Interface_Constraint_Analysis.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/Yggdrasil/Heimdall_Interface_Constraint_Analysis.md)
-- [Loki_As_Representation_Transformer.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/Yggdrasil/Loki_As_Representation_Transformer.md)
-- [Yggdrasil_7_vs_9_Analysis.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/Yggdrasil/Yggdrasil_7_vs_9_Analysis.md)
-- [Yggdrasil_Discussion_Points.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/Yggdrasil/Yggdrasil_Discussion_Points.md)
-- [Yggdrasil_Reformulation_Analysis.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/Yggdrasil/Yggdrasil_Reformulation_Analysis.md)
-
-**Poclets documentation (instances/poclets/_00_docs/):**
-- [poclet_terminology.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/_00_docs/poclet_terminology.md)
-- [minimal_systems_engineering_frameworks.md](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/_00_docs/minimal_systems_engineering_frameworks.md)
-- [Poclet Ideas.txt](https://raw.githubusercontent.com/echopraxium/tscg/main/instances/poclets/_00_docs/Poclet%20Ideas.txt)
-
----
-
-## 💻 Source Code (src/tscg/)
-
-Full Python package structure for the TSCG engine.
-
-### Engine (src/tscg/engine/)
-- `core/` — models.py, ontology_loader.py
-- `analysis/` — metrics/orthogonality.py, sparql/executor.py
-- `classifier/` — metaconcept_classifier.py
-- `exporters/` — turtle_exporter.py
-- `facade/` — export.py, metrics.py, ontology.py, query.py, rag.py
-- `math/` — category/, spaces/, tensor/
-- `rag/` — embeddings.py, retrieval.py, vector_store.py
-- `reasoner/` — reasoner.py
-
-### CLI (src/tscg/cli/)
-- `batch/`, `repl/` (context.py, interpreter.py), `utils/`
-
-### Demos (src/tscg/demos/)
-- basic_usage.py, rag_demo.py
-
-### Web API (src/tscg/webapi/)
-- middleware/, routes/, schemas/
-
-### Ontology Tools (src/tscg/ontology_tools/)
-
-**JSON-LD to OWL/Turtle converter (jsonld-to-owl/):**
-- [jsonld_to_turtle.py](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/ontology_tools/jsonld-to-owl/jsonld_to_turtle.py)
-- [GUIDE_FR.md](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/ontology_tools/jsonld-to-owl/GUIDE_FR.md), [README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/ontology_tools/jsonld-to-owl/README.md), [CHANGELOG.md](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/ontology_tools/jsonld-to-owl/CHANGELOG.md)
-- test_converter.py, requirements.txt
-
-**Migration tools (migration/):**
-- [tscg_migration.py](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/ontology_tools/migration/tscg_migration.py)
-- [TSCG_migration_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/ontology_tools/migration/TSCG_migration_README.md)
-
-### RAG (src/tscg/rag/)
-- [create_tscg_rag.py](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/rag/create_tscg_rag.py)
-- [query_tscg_rag.py](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/rag/query_tscg_rag.py)
-- [rebuild_corpus.py](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/rag/rebuild_corpus.py)
-- [TSCG_RAG_Segmentation_Guide.md](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/rag/TSCG_RAG_Segmentation_Guide.md)
-- [TSCG_RAG_Standalone_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/src/tscg/rag/TSCG_RAG_Standalone_README.md)
-
-### Simulation Engine (src/tscg/simulation-engine/)
-
-Shared simulation scripts (poclets with no local `poclet_parser.py` dependency use their own folder).
-
-- color_synthesis_sim.py, complex_chemical_synapse_sim.py, exposure_triangle_sim.py
-- fire_triangle_sim.py, four_stroke_engine_sim.py, phase_transition_sim.py
-- tpack_sim.py, transistor_sim.py
-- poclet_parser.py, requirements.txt, setup_notes.txt
-
-> **Note:** `vco_sim.py` and `kindleberger_minsky_sim.py` live in their respective poclet folders (no dependency on `poclet_parser.py`). `tv_test_pattern_sim.py` likewise lives in `TvTestPattern/`.
-
-### Tests (src/tscg/tests/)
-- test_facades.py
+```
+TscgOntologyExplorer/
+├── M0_TscgOntologyExplorer.jsonld / _README.md
+├── PLUGINS_README.md
+├── _00_run.bat / _plugins_setup.bat (updated: pyoxigraph + test runner)
+├── docs/
+│   └── UserManual.md                        ← NEW
+└── dev/tscg-python-bridge/
+    ├── bridge_server.py                     ← Phase 2: TscgStore + /corpus/* endpoints
+    ├── requirements.txt                     ← + pyoxigraph>=0.5.0
+    ├── _run_tests.py                        ← NEW interactive test runner (menu 1–4)
+    ├── _00_run_tests.bat
+    └── tests/                               ← NEW full test suite (58 tests)
+        ├── conftest.py
+        ├── test_expand_iri.py               ← 18 tests (_expand_iri strategies 1/2/3)
+        ├── test_tscg_store.py               ← 20 tests (TscgStore, pyoxigraph)
+        ├── test_endpoints.py                ← 20 tests (FastAPI integration)
+        └── fixtures/
+            ├── minimal_m2.jsonld
+            ├── minimal_m1_edu.jsonld
+            └── minimal_m1_chem.jsonld
+```
 
 ---
 
 ## 📚 Documentation
 
-### Reboot Kit (docs/reboot-kit/)
+### docs/CoreHypotheses/ **NEW — Theoretical foundations**
+- [_00_TSCG_as_StereoscopicGlasses.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/CoreHypotheses/_00_TSCG_as_StereoscopicGlasses.md) — Primary metaphor
+- [_01_Narcissus_and_Icarus_as_Safeguards.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/CoreHypotheses/_01_Narcissus_and_Icarus_as_Safeguards.md)
+- [TerritoryMap_Dichotomy.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/CoreHypotheses/TerritoryMap_Dichotomy.md)
+- [SystemicEsperanto.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/CoreHypotheses/SystemicEsperanto.md)
+- [LegoTechnic_Modularity.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/CoreHypotheses/LegoTechnic_Modularity.md)
+- [Archetypes_as_CrossCultural_Artifacts.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/CoreHypotheses/Archetypes_as_CrossCultural_Artifacts.md)
+- [CredibilityAccretion_Process.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/CoreHypotheses/CredibilityAccretion_Process.md)
+- [MultisubjectiveScoreEvaluationProtocol.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/CoreHypotheses/MultisubjectiveScoreEvaluationProtocol.md)
 
-**Essential Quick-Start Package** - Complete framework context in one directory.
+### docs/reboot-kit/SmartPrompts/
+- Smart_Prompt_2026_01_17.md through TSCG_Smart_Prompt_v16_0_0.md (full history)
 
-**Core Documentation:**
-- [TSCG_Session_README_2026-03-23.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Session_README_2026-03-23.md) — **NEW**
-- [00_TSCG_M3_Bicephalous_Architecture.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/00_TSCG_M3_Bicephalous_Architecture.md)
-- [00_TSCG_Map_Territory_Theoretical_Foundation.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/00_TSCG_Map_Territory_Theoretical_Foundation.md)
-- [00_Map_Territory_v1.2_Update_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/00_Map_Territory_v1.2_Update_Summary.md)
-- [00_M3_Cyclops_Correction_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/00_M3_Cyclops_Correction_Summary.md)
-- [Cascade_Modeling_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/Cascade_Modeling_README.md)
-- [ENCODING_CORRESPONDANCES.txt](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/ENCODING_CORRESPONDANCES.txt)
-- [TSCG_ValueSpace_Quick_Reference.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_ValueSpace_Quick_Reference.md)
-- [TSCG_ValueSpace_User_Guide.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_ValueSpace_User_Guide.md)
-
-**M2 GenericConcepts Documentation:**
-- [Domain_Hybrid_Tensor_Product_5D_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/Domain_Hybrid_Tensor_Product_5D_README.md)
-- [HYBRID_FORMULAS_NOTATION_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/HYBRID_FORMULAS_NOTATION_README.md)
-- [Amplification_Integration_Summary (1).md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/Amplification_Integration_Summary%20(1).md)
-- [ValueSpace_Integration_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/ValueSpace_Integration_Summary.md)
-- [M2_OntologyCategory_Proposal.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_OntologyCategory_Proposal.md)
-- [M2_FormulasReference_v15.10.0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_FormulasReference_v15.10.0.md)
-- [M2_GenericConcepts_README (1).md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_GenericConcepts_README%20(1).md)
-
-**M0 VSM Documentation:**
-- [M0_VSM_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M0_VSM_README.md)
-
-**Project Management:**
-- [TSCG_File_Tree.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_File_Tree.md) - **This file (v15.10.1)**
-- [TO_DO.txt](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TO_DO.txt)
-- [poclet_terminology.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/poclet_terminology.md)
-- [Namespace_Refactoring_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/Namespace_Refactoring_Summary.md)
-- [Session_Summary_TSCG_v14.2.0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/Session_Summary_TSCG_v14.2.0.md)
-- [check_encoding_issues.py](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/check_encoding_issues.py)
-- [files.txt](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/files.txt)
-- [macros.txt](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/macros.txt)
-
-**Smart Prompts (docs/reboot-kit/SmartPrompts/):**
-- [SmartPrompts/TSCG_Smart_Prompt_v15_10_1.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/SmartPrompts/TSCG_Smart_Prompt_v15_10_1.md) — **NEW**
-- [TSCG_Smart_Prompt_v15_9_0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v15_9_0.md)
-- [TSCG_Smart_Prompt_v15_8_0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v15_8_0.md)
-- [TSCG_Smart_Prompt_v15_7_0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v15_7_0.md)
-- [TSCG_Smart_Prompt_v15_1_0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v15_1_0.md)
-- [SmartPrompts/Smart_Prompt_2026_01_17.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/SmartPrompts/Smart_Prompt_2026_01_17.md)
-- [SmartPrompts/TSCG_Smart_Prompt_11_0_0.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/SmartPrompts/TSCG_Smart_Prompt_11_0_0.md)
-- [SmartPrompts/TSCG_Smart_Prompt_v14.2_Step.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/SmartPrompts/TSCG_Smart_Prompt_v14.2_Step.md)
-- [SmartPrompts/TSCG_Smart_Prompt_v14_Domain.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/SmartPrompts/TSCG_Smart_Prompt_v14_Domain.md)
-- [SmartPrompts/macros.txt](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/SmartPrompts/macros.txt)
-- [SmartPrompts/macros_extended.txt](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/SmartPrompts/macros_extended.txt)
-
-**Ontology Files (Reboot Kit Copies):**
-- [00_M3_Philosophical_Basis_Sketch.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/00_M3_Philosophical_Basis_Sketch.jsonld)
-- [M0_VSM.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M0_VSM.jsonld)
-- [M1_CoreConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M1_CoreConcepts.jsonld)
-- [M2_MetaConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_MetaConcepts.jsonld)
-- [M2_GenericConcepts.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_GenericConcepts.jsonld)
-- [M2_MetaconceptCombo.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_MetaconceptCombo.jsonld)
-- [M2_Pattern_metaconcept.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M2_Pattern_metaconcept.jsonld)
-- [M3_EagleEye.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M3_EagleEye.jsonld)
-- [M3_GenesisSpace.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M3_GenesisSpace.jsonld)
-- [M3_SphinxEye.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/reboot-kit/M3_SphinxEye.jsonld)
-
-### Methodology (docs/methodology/)
-- [Bicephalous_Integration_Guide.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/methodology/Bicephalous_Integration_Guide.md)
-- [M2_Completeness_and_3D_Visualization_Strategy.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/methodology/M2_Completeness_and_3D_Visualization_Strategy.md)
-- [M2_Component_Addition.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/methodology/M2_Component_Addition.jsonld)
-- [Standard_Referencing_Pattern.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/methodology/Standard_Referencing_Pattern.md)
-
-### Orchestration (docs/Orchestration/)
-- [Multi-Conversation_Orchestration_Guide.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/Orchestration/Multi-Conversation_Orchestration_Guide.md)
-
-### Papers (docs/papers/)
-
-**Preprints (docs/papers/preprints/):**
-- [TSCG_Research_Paper_Draft_v3.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/preprints/TSCG_Research_Paper_Draft_v3.md) *(current)*
-- [new draft specification.txt](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/preprints/new%20draft%20specification.txt)
-- [HAL Guidelines.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/preprints/HAL%20Guidelines.md)
-- [TSCG_HAL_Additions_v1.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/preprints/TSCG_HAL_Additions_v1.md)
-
-**Previous versions (docs/papers/preprints/previous/):**
-- [TSCG_Research_Paper_Draft_v1.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/preprints/previous/TSCG_Research_Paper_Draft_v1.md)
-- [TSCG_Research_Paper_Draft_v2.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/preprints/previous/TSCG_Research_Paper_Draft_v2.md)
-
-**White Paper:**
-- [TSCG_WhitePaper.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/white-paper/TSCG_WhitePaper.md)
-
-**Input Sources (docs/papers/inputs/):**
-- [00_M3_Cyclops_Correction_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/inputs/00_M3_Cyclops_Correction_Summary.md)
-- [00_M3_Philosophical_Basis_Sketch.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/inputs/00_M3_Philosophical_Basis_Sketch.jsonld)
-- [00_Map_Territory_v1.2_Update_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/inputs/00_Map_Territory_v1.2_Update_Summary.md)
-- [00_TSCG_M3_Bicephalous_Architecture.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/inputs/00_TSCG_M3_Bicephalous_Architecture.md)
-- [00_TSCG_Map_Territory_Theoretical_Foundation.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/inputs/00_TSCG_Map_Territory_Theoretical_Foundation.md)
-- [M2_v7.2.0_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/inputs/M2_v7.2.0_Summary.md)
-- [M2_v8.0.0_Update_Guide.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/inputs/M2_v8.0.0_Update_Guide.md)
-- [TSCG-M3_Ontology_Documentation.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/inputs/TSCG-M3_Ontology_Documentation.md)
-- [TSCG_Session_Complete_Summary_Claude_2025_01_14.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/inputs/TSCG_Session_Complete_Summary_Claude_2025_01_14.md)
-- [Network_Decomposition_Report.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/papers/inputs/Network_Decomposition_Report.md)
-
-### Other Documentation
-- [docs/M2_MetaConcepts_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/M2_MetaConcepts_README.md)
-- [docs/TSCG_M2_Category_Taxonomy.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/TSCG_M2_Category_Taxonomy.md)
-- [docs/TSCG_Session_Complete_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/TSCG_Session_Complete_Summary.md)
-- [docs/TSCG_Update_v11_Summary.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/TSCG_Update_v11_Summary.md)
-- [docs/TSCG_File_Tree.md](https://raw.githubusercontent.com/echopraxium/tscg/main/docs/TSCG_File_Tree.md) *(copy in docs/ root)*
+### docs/papers/
+- `preprints/TSCG_Research_Paper_Draft_v5.md` **NEW**
+- `preprints/HAL/` **NEW** — HAL submission materials + TSCG_Research_Paper_Draft_v4.md
+- `preprints/Zenodo/` — v3.0 DOI: 10.5281/zenodo.18471860 (published)
+- `preprints/previous/` — v1, v2 archived
 
 ---
 
-## 📈 Repository Structure
+## 🛠️ CLI Tools
+
+### cli_tools/
+- `generate_index-html/` — Gallery generator (`_Generate_Index-html.bat`)
+- `migrate_properties/` — Property rename CLI (README added)
+- `ontology-linter/` — JSON-LD linting
+- `owl_reasoning_test/` — OWL reasoning validation
+- `verify_migration/` — Post-migration validation
+
+---
+
+## 🌳 Directory Tree (simplified)
 
 ```
-echopraxium/tscg/                      # Repository root
-├── CLAUDE.md                          # Claude AI instructions
-├── README.md
-├── _open_cmd_window.bat
-├── _Run_Poclet_Explorer.bat
-├── _serve_index-html.bat              # NEW
-├── claude_setup.txt
-├── files.txt                          # Complete file list
-├── create_files_URIS.py
-├── cli_tools/
-│   ├── _open_cmd_window.bat
-│   ├── generate_index-html/           # gallery generator
-│   │   ├── _Generate_Index-html.bat
-│   │   └── _open_cmd_window.bat
-│   ├── migrate_properties/            # UPDATED — rename hasTensorFormula→hasStructuralFormula
-│   │   ├── migrate_properties.py
-│   │   └── README.md
-│   ├── migrate_ontologyCategory_to_ontologyType.py
-│   ├── ontology-linter/               # JSON-LD linter
-│   └── verify_migration/              # NEW — post-migration validator
-│       ├── verify_migration.py
-│       └── README.md
-├── ontology/                          # Reference ontologies (M3, M2, M1)
-│   ├── M1_CoreConcepts.jsonld         # @base factorised (v16.0.0)
-│   ├── M1_Domains.jsonld              # @base factorised (v16.0.0)
-│   ├── M2_GenericConcepts.jsonld      # v15.12.0 — hasStructuralFormula
-│   ├── M2_GenericConcepts_README.md   # NEW
-│   ├── M2_Calibration.jsonld
-│   ├── M3_EagleEye.jsonld             # v2.5.0 — Territory Grammar Gt
-│   ├── M3_EagleEye_README.md          # NEW
-│   ├── M3_GenesisGrammar.jsonld       # v4.0.0 NEW (ex-GenesisSpace)
-│   ├── M3_GenesisGrammar_README.md    # NEW
-│   ├── M3_GrammarFoundation.jsonld    # v1.1.0 NEW — APEX ontology
-│   ├── M3_GrammarFoundation_README.md # NEW
-│   ├── M3_SphinxEye.jsonld            # v3.3.0 — Map Grammar Gm
-│   ├── M3_SphinxEye_README.md         # NEW
-│   ├── M1_extensions/                 # Domain-specific extensions (@base factorised)
-│   │   ├── M1_CoreConcepts_NuclearUpdate.jsonld/ttl
-│   │   ├── biology/
-│   │   ├── chemistry/
-│   │   ├── economics/                 # hasStructuralFormula fixed
-│   │   ├── education/
-│   │   ├── electronics/               # trailing comma fixed
-│   │   ├── energy_generators/
-│   │   ├── geology/                   # NEW
-│   │   ├── music/
-│   │   ├── mythology/
-│   │   ├── optics/
-│   │   ├── photography/
-│   │   ├── physics/
-│   │   └── system_modeling/           # NEW
-│   ├── Ref/                           # Reference copies
-│   │   ├── M2_GenericConcepts_2026_02_17_17h-00min.jsonld/ttl
-│   │   ├── M2_MetaConcepts_Ref.jsonld/ttl
-│   │   └── M3_GenesisSpace_Ref.jsonld/ttl   # archived ex-GenesisSpace
-│   ├── StructuralGrammar/             # NEW — formalism documentation
-│   │   ├── Structural_Grammar_Foundation.md
-│   │   ├── TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md
-│   │   ├── TSCG_Mathematical_Legitimacy_Summary.md
-│   │   ├── TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md
-│   │   └── _00_Session_Claude_GrammaireStructurelle.md
-│   ├── docs/                          # Ontology documentation & archives
-│   ├── sparql/                        # SPARQL queries & enriched ontologies
-│   └── tools/                         # Reference tool files
+tscg/
+├── .claude/skills/                    # Claude AI skills
+│   ├── tscg-article-pipeline/
+│   ├── tscg-create-instance-simulation/
+│   ├── tscg-generate-Mn-grammars/
+│   ├── tscg-instance-pipeline/
+│   ├── tscg-ontology-diagnosis-pipeline/
+│   └── tscg-tensor-to-structural-grammar-migration/
+├── cli_tools/                         # Command-line tools
+│   ├── generate_index-html/
+│   ├── migrate_properties/
+│   ├── ontology-linter/
+│   ├── owl_reasoning_test/
+│   └── verify_migration/
+├── domain_format_fix_backups/         # NEW — domain format fix backups
 ├── instances/                         # System instances (M0 layer)
-│   ├── poclets/                       # 23 experimental models (CamelCase subfolders)
-│   │   ├── _00_docs/                  # Poclets documentation
+│   ├── poclets/                       # 26 validated poclets
 │   │   ├── AdaptativeImmuneResponse/
 │   │   ├── BloodPressureControl/
 │   │   ├── ButterflyMetamorphosis/
 │   │   ├── CellSignalingModes/
-│   │   ├── ColorSynthesis/
+│   │   ├── ColorSynthesis/            # federated (RGB, HSL, CMY, CMYK)
 │   │   ├── ComplexChemicalSynapse/
-│   │   ├── CounterPoint/              # NEW
+│   │   ├── CounterPoint/
 │   │   ├── ExposureTriangle/
 │   │   ├── FireTriangle/
 │   │   ├── FourStrokeEngine/
 │   │   ├── Kidneys/
 │   │   ├── KindlebergerMinsky/
 │   │   ├── MtgColorWheel/
-│   │   ├── NakamotoConsensus/         # NEW
-│   │   ├── NuclearReactorsTypology/
+│   │   ├── NakamotoConsensus/
+│   │   ├── NuclearReactorsTypology/   # NEW
 │   │   ├── PhaseTransition/
+│   │   ├── PlateTectonics/            # NEW
+│   │   ├── Ptoe/                      # NEW — Periodic Table (BabylonJS 3D)
 │   │   ├── Raas/
+│   │   ├── Theremin/                  # NEW stub
 │   │   ├── Tpack/
 │   │   ├── Transistor/
 │   │   ├── TrophicPyramid/
 │   │   ├── TvTestPattern/
 │   │   ├── Vco/
 │   │   └── Yggdrasil/
-│   ├── tscg-tools/                    # TSCG meta-analytical tools
-│   │   ├── TscgExplorer/              # TSCG Explorer (self-analysis)
-│   │   ├── TscgPocletExplorer/        # Stub launcher
-│   │   ├── TscgPocletGenerator/       # AI-powered poclet generation
-│   │   └── TscgPocletMiner/           # NEW — corpus mining & rebuild
-│   ├── systemic-frameworks/Vsm/       # VSM framework integration
-│   └── symbolic-system-grammars/      # I-Ching and similar systems
+│   ├── tscg-tools/
+│   │   ├── TscgOntologyAPIServer/     # NEW stub (Phase 3)
+│   │   ├── TscgOntologyExplorer/      # ElectronJS browser/editor
+│   │   │   ├── dev/tscg-python-bridge/
+│   │   │   │   ├── bridge_server.py   # Phase 2: TscgStore + /corpus/*
+│   │   │   │   ├── _run_tests.py      # NEW interactive test menu
+│   │   │   │   └── tests/             # NEW 58 tests
+│   │   │   └── docs/UserManual.md     # NEW
+│   │   ├── TscgPocletGenerator/
+│   │   └── TscgPocletMiner/
+│   ├── systemic-frameworks/
+│   │   ├── Triz/                      # NEW — TRIZ icosahedron
+│   │   └── Vsm/
+│   └── symbolic-system-grammars/
 │       └── Iching/
+├── migration_backups/                 # Migration history
+├── ontology/                          # Core ontologies
+│   ├── InstanceSimulations/           # NEW — UX knowledge base
+│   ├── M3_GrammarFoundation.jsonld    # APEX
+│   ├── M3_EagleEye.jsonld
+│   ├── M3_SphinxEye.jsonld
+│   ├── M3_GenesisGrammar.jsonld
+│   ├── M3_BicephalousPerspective.jsonld  # NEW
+│   ├── M2_GenericConcepts.jsonld
+│   ├── M2_Calibration.jsonld
+│   ├── M1_CoreConcepts.jsonld
+│   ├── M1_Domains.jsonld
+│   ├── M1_extensions/                 # 13 domain extensions
+│   ├── Ref/                           # Reference copies
+│   ├── StructuralGrammar/             # Lambek documentation (+ 2 NEW)
+│   ├── TSCG_InstanceGrammar/          # NEW — SHACL + migration tools
+│   ├── docs/                          # Ontology documentation
+│   ├── sparql/                        # SPARQL queries
+│   └── tools/
 ├── src/tscg/                          # Python package
 │   ├── engine/                        # Core engine (analysis, RAG, math, reasoner)
-│   ├── cli/                           # Command-line interface
+│   ├── cli/
 │   ├── demos/
 │   ├── webapi/
-│   ├── ontology_tools/                # jsonld-to-owl converter, migration tools
-│   ├── rag/                           # Standalone RAG scripts
-│   ├── simulation-engine/             # Shared pygame simulations
+│   ├── ontology_tools/
+│   ├── rag/
+│   ├── simulation-engine/
 │   └── tests/
-└── docs/                              # Main documentation
-    ├── reboot-kit/                    # Quick-start package
-    │   └── SmartPrompts/              # Smart Prompt history
-    ├── methodology/                   # Development guides
-    ├── Orchestration/                 # Multi-agent coordination
-    └── papers/                        # Academic papers & white papers
+└── docs/
+    ├── CoreHypotheses/                # NEW — 8 theoretical foundation docs
+    ├── methodology/
+    ├── Orchestration/
+    ├── reboot-kit/
+    │   └── SmartPrompts/              # Smart Prompt history (v11 → v16.0.0)
+    └── papers/
         ├── inputs/
         ├── preprints/
-        │   └── previous/              # Archived v1 & v2
+        │   ├── HAL/                   # NEW — HAL submission
+        │   ├── Zenodo/                # v3.0 published (DOI: 10.5281/zenodo.18471860)
+        │   ├── TSCG_Research_Paper_Draft_v5.md  # NEW
+        │   └── previous/              # v1, v2 archived
         └── white-paper/
 ```
 
 ---
 
-## 🔄 Version History
+## 🔄 Version History (summary)
 
-### v16.0.0 (2026-05-13) — Current
-
-**FORMALISM REFORM: Tensor Product → Structural Grammar (Lambek Calculus)**
-
-- ✅ **NEW** `ontology/M3_GrammarFoundation.jsonld` — apex ontology (no imports), defines 6 indexed operators (⊗ᵗ ⊗ᵐ ⊗ᵗ⇒ ⊗ᵐ⇒ ^opᵗ ^opᵐ), type system 𝕋₀/𝕋₁/𝕋₂/𝕄₀, `m3gf:intersubjectiveBenchmark`, `m3gf:defeasibilityStatus`
-- ✅ **RENAMED** `M3_GenesisSpace.jsonld` → `M3_GenesisGrammar.jsonld` (v4.0.0) — Hilbert/SVD replaced by Lambek grammar foundation
-- ✅ **UPDATED** `M3_EagleEye.jsonld` (v2.5.0) — Territory Grammar Gt, imports GrammarFoundation
-- ✅ **UPDATED** `M3_SphinxEye.jsonld` (v3.3.0) — Map Grammar Gm, imports GrammarFoundation
-- ✅ **UPDATED** `M2_GenericConcepts.jsonld` (v15.12.0) — `hasTensorFormula` → `hasStructuralFormula` (250 occurrences)
-- ✅ **NEW** `ontology/StructuralGrammar/` — documentation folder (5 READMEs + session transcript)
-- ✅ **NEW** README files for all M3 files and M2_GenericConcepts
-- ✅ **UPDATED** All 15 M1 files — `@base` added/factorised uniformly; M1_Economics hasTensorFormula fixed
-- ✅ **NEW** `cli_tools/verify_migration/` — post-migration validation CLI tool
-- ✅ **UPDATED** `cli_tools/migrate_properties/` — rename CLI tool (README added)
-- ✅ **NEW** `.claude/skills/tscg-tensor-to-structural-grammar-migration/` — migration SKILL
-- ❌ `M3_GenesisSpace.jsonld` removed from `ontology/` root (archived in `Ref/`)
-
-### v15.10.1 (2026-03-23)
-
-- New poclets: `CounterPoint/` (music, static sound scripts) + `NakamotoConsensus/` (blockchain consensus)
-- New TSCG tool: `TscgPocletMiner/` (corpus mining + rebuild_m2_corpus.py)
-- New M1 extension: `music/M1_music.jsonld`
-- New session README: `TSCG_Session_README_2026-03-23.md` + Smart Prompt v15.10.1 in reboot-kit
-- New CLI tool: `cli_tools/generate_index-html/` + `_serve_index-html.bat` at root
-
-### v15.10.0 (2026-03-16)
-
-- New poclets: `TrophicPyramid/` + `TvTestPattern/` (tv_test_pattern_sim.py)
-- New TSCG tools: `TscgPocletGenerator/` (AI-powered generation) + `TscgPocletExplorer/` (stub)
-- New standalone M2 file: `M2_Calibration.jsonld`
-- Reboot-kit enriched: Smart Prompt v15.9.0, M2_GenericConcepts.jsonld copy, M2_FormulasReference_v15.10.0.md
-
-### v15.9.0 (2026-03-01)
-
-- New M1 extension: `economics/` (M1_Economics.jsonld + README)
-- New poclet: `KindlebergerMinsky/` (M0 + simulation)
-- New section: `instances/tscg-tools/TscgExplorer/` (meta-analytical tool)
-- `instances/validation/` directory removed
+| Version | Date | Key Changes |
+|---|---|---|
+| **v16.1.0** | 2026-05-23 | Score convention Option B (A_score/S_score), 26 poclets, Triz, TscgTools modeled, TSCG_InstanceGrammar/, CoreHypotheses/, InstanceSimulations/, BicephalousPerspective, python-bridge Phase 2 |
+| v16.0.0 | 2026-05-13 | Structural Grammar reform (Lambek), M3_GrammarFoundation, hasTensorFormula→hasStructuralFormula |
+| v15.10.1 | 2026-03-23 | CounterPoint, NakamotoConsensus, TscgPocletMiner, M1_music |
+| v15.10.0 | 2026-03-16 | TrophicPyramid, TvTestPattern, TscgPocletGenerator, M2_Calibration |
+| v15.9.0 | 2026-03-01 | KindlebergerMinsky, M1_Economics, TscgExplorer |
 
 ---
 
-**Generated:** 2026-05-13  
-**Framework:** TSCG v16.0.0  
+**Generated:** 2026-05-23
+**Framework:** TSCG v16.1.0
 **Author:** Echopraxium with the collaboration of Claude AI

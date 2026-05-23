@@ -35,11 +35,11 @@ The VCO is a **system component** — a bounded, identifiable, patchable module,
 
 | Dim | Score | Interpretation |
 |---|---|---|
-| **A** | 0.90 | Target frequency `f = f₀ × 2^(CV)` — circular attractor |
-| **S** | 0.75 | Integrator core, V/Oct converter, waveform shaper, buffers |
-| **F** | 0.85 | Audio output ±5V, CV input, FM input |
-| **I** | 0.80 | Phase φ(t), waveform shape, pitch CV |
-| **D** | 0.90 | V/Oct law: `f(CV) = f₀ × 2^(CV/1V)` |
+| **A_score** | 0.90 | Target frequency `f = f₀ × 2^(CV)` — circular attractor |
+| **S_score** | 0.75 | Integrator core, V/Oct converter, waveform shaper, buffers |
+| **F_score** | 0.85 | Audio output ±5V, CV input, FM input |
+| **It_score** | 0.80 | Phase φ(t), waveform shape, pitch CV |
+| **D_score** | 0.90 | V/Oct law: `f(CV) = f₀ × 2^(CV/1V)` |
 | **Total** | **0.84** | Epistemic gap: **0.16** |
 
 ---
@@ -48,11 +48,11 @@ The VCO is a **system component** — a bounded, identifiable, patchable module,
 
 | Dim | Score | Interpretation |
 |---|---|---|
-| **R** | 0.90 | Closed-form formula, analytic Fourier waveforms |
-| **E** | 0.85 | FM, hard sync, PWM, wavetable extend cleanly |
-| **V** | 0.95 | Frequency counter, oscilloscope, FFT |
-| **O** | 0.95 | All state variables directly measurable |
-| **I** | 0.95 | V/Oct universal Eurorack standard |
+| **R_score** | 0.90 | Closed-form formula, analytic Fourier waveforms |
+| **E_score** | 0.85 | FM, hard sync, PWM, wavetable extend cleanly |
+| **V_score** | 0.95 | Frequency counter, oscilloscope, FFT |
+| **O_score** | 0.95 | All state variables directly measurable |
+| **It_score** | 0.95 | V/Oct universal Eurorack standard |
 | **Total** | **0.92** | Map-strong: highest REVOI in Combo family |
 
 ---

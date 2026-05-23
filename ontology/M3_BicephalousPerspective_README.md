@@ -54,7 +54,7 @@ It | V + O + R + Im = ValueSpace (Territory | Map)
 **T (Temporality)** is the first and currently only primitive of 𝕋₀(|):
 
 ```
-𝕋₀(|) = {T}
+𝕋₀(|) = {T, _^, _$}
 ```
 
 ### T is irreducible
@@ -115,12 +115,14 @@ M3_GenesisGrammar
 
 | Element | Role | Metaphor | δ₁ |
 |---|---|---|---|
-| `EmptyStereopsis` | Neutral of \| | **Divergent Strabismus** — both eyes look in opposite directions, no fusion possible | max |
-| `StereopsisUniversalSet` | Semantic limit | **Convergent Strabismus** — both eyes converge perfectly, Map = Territory (Borges 1:1 map) | 0 |
+| `EmptyStereopsis` | Neutral of \| | **Divergent Strabismus** — both eyes diverge, no fusion possible | max |
+| `StereopsisUniversalSet` | **Pseudo-absorbent of \|** | **Convergent Strabismus** — degenerate limit: 𝕋₀ = all types, empty of meaning (Borges paradox) | 0 |
 
 ```
-EmptyStereopsis       =  EmptyTerritory | EmptyMap  (δ₁ = max)
-StereopsisUniversalSet                               (δ₁ = 0)
+EmptyStereopsis        =  EmptyTerritory | EmptyMap          (neutral of |,    δ₁ = max)
+StereopsisUniversalSet =  𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)              (pseudo-absorbent, δ₁ = 0)
+                          StereopsisUniversalSet | a = StereopsisUniversalSet
+                          "empty of meaning" — NOT a semantic ideal, a degenerate limit
 ```
 
 ---

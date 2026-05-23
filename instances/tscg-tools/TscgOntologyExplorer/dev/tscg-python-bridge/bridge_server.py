@@ -14,17 +14,67 @@ from typing import Optional
 
 import rdflib
 import warnings
+import io
 from rdflib import Graph, ConjunctiveGraph, URIRef, Literal, BNode, Namespace
 from rdflib.plugins.sparql import prepareQuery
+import pyoxigraph as ox
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+
+# ── Global IRI expansion helper (reused across endpoints) ─────
+def _expand_iri(node_id: str, ctx: dict, base: str) -> str:
+    """Expand a compact IRI using @context and @base.
+    Strategy 1: longest exact prefix match.
+    Strategy 2: shared namespace inference (handles m1.ext:chemistry:Foo,
+                m1:edu:Foo when ctx has m1:edu or m1.ext:chemistry:name).
+    Strategy 3: @base fallback.
+    """
+    if not node_id or node_id.startswith(("http://", "https://")):
+        return node_id
+    if isinstance(ctx, dict) and ":" in node_id:
+        # Strategy 1: longest exact prefix
+        for ctx_key in sorted(ctx.keys(), key=len, reverse=True):
+            if node_id.startswith(ctx_key + ":"):
+                local      = node_id[len(ctx_key) + 1:]
+                prefix_uri = ctx[ctx_key]
+                if not isinstance(prefix_uri, str) or not prefix_uri:
+                    continue
+                if prefix_uri.startswith(("http://", "https://")):
+                    return prefix_uri + local
+                elif base:
+                    return base.rstrip("/") + "/" + prefix_uri.lstrip("./") + local
+        # Strategy 2: shared namespace inference
+        node_parts = node_id.split(":")
+        best_uri   = None
+        best_shared = 0
+        for ctx_key, prefix_uri in ctx.items():
+            if not isinstance(prefix_uri, str) or not prefix_uri.startswith("http"):
+                continue
+            ctx_parts = ctx_key.split(":")
+            shared = 0
+            for a, b in zip(node_parts[:-1], ctx_parts[:-1]):
+                if a == b: shared += 1
+                else: break
+            if shared > best_shared and shared == len(node_parts) - 1:
+                best_shared = shared
+                best_uri    = prefix_uri
+        if best_uri:
+            return best_uri.rstrip("#") + "#" + node_parts[-1]
+    # Strategy 3: @base fallback
+    if base:
+        return base.rstrip("/") + "/" + node_id.lstrip("./")
+    return node_id
+
+
 # ── CLI args ───────────────────────────────────────────────────
 parser = argparse.ArgumentParser()
-parser.add_argument('--port', type=int, default=7432)
-args = parser.parse_args()
+parser.add_argument('--port',      type=int, default=7432)
+parser.add_argument('--corpus-db', type=str, default=None,
+                    help='Path to persistent TscgStore DB. Omit for in-memory mode.')
+args, _unknown = parser.parse_known_args()  # parse_known_args ignores pytest args
 
 # ── App ────────────────────────────────────────────────────────
 app = FastAPI(title='TscgOntologyEditor Python Bridge', version='1.0.0')
@@ -38,6 +88,168 @@ app.add_middleware(
 # ── In-memory ontology store ───────────────────────────────────
 # key: absolute file path (str)  value: rdflib.ConjunctiveGraph
 ontology_store: dict[str, ConjunctiveGraph] = {}
+
+# ── TscgStore — Phase 2 (pyoxigraph persistent triple store) ────
+# Isolated from ontology_store — zero regression risk.
+# Each file loaded as a named graph. Persists to disk between sessions.
+# Ready for Phase 3 extraction as TscgOntologyAPIServer.
+
+try:
+    import pyoxigraph as ox
+    _OX_AVAILABLE = True
+except ImportError:
+    _OX_AVAILABLE = False
+    print('[bridge] pyoxigraph not found — corpus endpoints unavailable', flush=True)
+
+BASE_IRI = 'https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/'
+
+def _rdflib_to_ox(term):
+    """Convert rdflib term to pyoxigraph term, skip invalid IRIs."""
+    if isinstance(term, rdflib.URIRef):
+        s = str(term)
+        return ox.NamedNode(s) if s.startswith(('http://','https://','urn:')) else None
+    if isinstance(term, rdflib.BNode):
+        return ox.BlankNode(str(term))
+    if isinstance(term, rdflib.Literal):
+        if term.datatype and str(term.datatype).startswith('http'):
+            return ox.Literal(str(term), datatype=ox.NamedNode(str(term.datatype)))
+        if term.language:
+            return ox.Literal(str(term), language=term.language)
+        return ox.Literal(str(term))
+    return None
+
+class TscgStore:
+    """
+    Persistent triple store for TSCG corpus queries.
+    Each JSON-LD file = one named graph (identified by its canonical IRI).
+    Backed by pyoxigraph for persistence across bridge restarts.
+    Designed to be extractable as TscgOntologyAPIServer (Phase 3).
+    """
+    def __init__(self, db_path: str | None = None):
+        if not _OX_AVAILABLE:
+            raise RuntimeError('pyoxigraph not installed')
+        self._db_path = db_path
+        self._store   = ox.Store(db_path) if db_path else ox.Store()
+        self._loaded_files: dict[str, float] = {}  # path → mtime
+
+    # ── File loading ───────────────────────────────────────────
+    def load_file(self, file_path: str) -> dict:
+        """Parse a JSON-LD file and load it as a named graph."""
+        import time
+        p = Path(file_path)
+        if not p.exists():
+            raise FileNotFoundError(f'Not found: {file_path}')
+        graph_iri_str = self._file_to_iri(file_path)
+        graph_iri     = ox.NamedNode(graph_iri_str)
+        # Remove old graph if re-loading
+        if self._store.contains_named_graph(graph_iri):
+            self._store.clear_graph(graph_iri)
+        # Parse + load
+        g = rdflib.Graph()
+        g.parse(file_path, format='json-ld')
+        loaded = skipped = 0
+        for s, p_, o in g:
+            os_, op_, oo_ = _rdflib_to_ox(s), _rdflib_to_ox(p_), _rdflib_to_ox(o)
+            if os_ and op_ and oo_:
+                try: self._store.add(ox.Quad(os_, op_, oo_, graph_iri)); loaded += 1
+                except: skipped += 1
+            else: skipped += 1
+        self._store.flush()
+        self._loaded_files[file_path] = time.time()
+        return {'file': p.name, 'graph': graph_iri_str,
+                'triples_loaded': loaded, 'skipped': skipped}
+
+    def load_pattern(self, root: str, patterns: list[str],
+                     recursive: bool = True) -> dict:
+        """Load all files matching glob patterns under root."""
+        root_p = Path(root)
+        files  = []
+        for pattern in patterns:
+            fname = pattern.split('/')[-1]
+            if recursive:
+                hits = list(root_p.rglob(fname))
+            else:
+                hits = list(root_p.glob(pattern))
+            files.extend(hits)
+        # Deduplicate
+        files = list({str(f): f for f in files if f.suffix == '.jsonld'}.values())
+        results = []
+        errors  = []
+        for f in sorted(files):
+            try:
+                r = self.load_file(str(f))
+                results.append(r)
+            except Exception as e:
+                errors.append({'file': f.name, 'error': str(e)})
+        self._store.flush()
+        return {
+            'files_loaded': len(results),
+            'total_triples': len(self._store),
+            'graphs': len(list(self._store.named_graphs())),
+            'files': [r['file'] for r in results],
+            'errors': errors,
+        }
+
+    def reload_file(self, file_path: str) -> dict:
+        """Reload a single file (clears its named graph first)."""
+        return self.load_file(file_path)
+
+    # ── SPARQL ─────────────────────────────────────────────────
+    def query(self, sparql: str):
+        """Execute SPARQL on the full corpus."""
+        return self._store.query(sparql)
+
+    # ── Introspection ──────────────────────────────────────────
+    def stats(self) -> dict:
+        graphs = list(self._store.named_graphs())
+        return {
+            'total_triples': len(self._store),
+            'named_graphs':  len(graphs),
+            'db_path':       self._db_path,
+            'persistent':    self._db_path is not None,
+        }
+
+    def graph_list(self) -> list[str]:
+        return [str(g) for g in self._store.named_graphs()]
+
+    def remove_graph(self, file_path: str):
+        iri = ox.NamedNode(self._file_to_iri(file_path))
+        if self._store.contains_named_graph(iri):
+            self._store.remove_graph(iri)
+            self._store.flush()
+            self._loaded_files.pop(file_path, None)
+
+    def clear(self):
+        for g in list(self._store.named_graphs()):
+            self._store.remove_graph(g)
+        self._store.flush()
+        self._loaded_files.clear()
+
+    # ── Helpers ────────────────────────────────────────────────
+    def _file_to_iri(self, file_path: str) -> str:
+        """Convert a local file path to its canonical TSCG IRI."""
+        p = Path(file_path)
+        # Try to derive from BASE_IRI using filename
+        for base_suffix in ['ontology/', 'tscg/']:
+            s = str(p).replace(chr(92), '/')
+            if base_suffix in s:
+                rel = s.split(base_suffix)[-1]
+                return BASE_IRI + rel
+        return Path(file_path).as_uri()
+
+# ── Single shared TscgStore instance ─────────────────────────
+# db_path can be set via --corpus-db CLI arg (see bottom of file)
+_tscg_store: TscgStore | None = None
+
+def _get_tscg_store() -> TscgStore:
+    global _tscg_store
+    if _tscg_store is None:
+        raise HTTPException(status_code=503,
+            detail='TscgStore not initialized. Bridge started without pyoxigraph?')
+    return _tscg_store
+
+# Legacy Phase 1 corpus_store kept as alias for compatibility
+corpus_store: dict = {}  # unused in Phase 2 but keeps imports safe
 
 # ── Request models ─────────────────────────────────────────────
 class LoadRequest(BaseModel):
@@ -54,6 +266,19 @@ class SparqlRequest(BaseModel):
 class ValidateRequest(BaseModel):
     data_file_path: str
     shacl_file_path: Optional[str] = None
+
+class CorpusLoadRequest(BaseModel):
+    ontology_root: str                # local path to ontology/ folder
+    patterns: list[str]               # glob patterns e.g. ["M1_extensions/**/M1_*.jsonld"]
+    recursive: bool = True
+    corpus_name: str = "default"      # kept for API compatibility
+
+class CorpusSparqlRequest(BaseModel):
+    query: str
+    corpus_name: str = "default"      # kept for API compatibility
+
+class CorpusReloadRequest(BaseModel):
+    file_path: str
 
 # ── Helpers ────────────────────────────────────────────────────
 def _get_graph(file_path: str) -> ConjunctiveGraph:
@@ -155,29 +380,7 @@ def load_ontology(req: LoadRequest):
             graph_nodes = raw.get('@graph', [raw])
 
             def expand_id(node_id):
-                """Expand compact IRI using @context and @base.
-                Handles both absolute and relative prefix URIs.
-                e.g. m2:ConceptContract where m2=M2_GenericConcepts.jsonld# (relative)
-                resolves against @base to produce the full absolute IRI.
-                """
-                if not node_id or node_id.startswith(("http://", "https://")):
-                    return node_id
-                # Try prefix expansion: "m2:Foo" -> look up "m2" in @context
-                if isinstance(ctx, dict) and ":" in node_id:
-                    prefix, local = node_id.split(":", 1)
-                    prefix_uri = ctx.get(prefix, "")
-                    if isinstance(prefix_uri, str) and prefix_uri:
-                        if prefix_uri.startswith(("http://", "https://")):
-                            return prefix_uri + local   # already absolute
-                        elif base:
-                            # Relative prefix -> resolve against @base
-                            abs_prefix = base.rstrip("/") + "/" + prefix_uri.lstrip("./")
-                            print(f"[bridge expand_id] {node_id} -> {abs_prefix + local}", flush=True)
-                            return abs_prefix + local
-                # @base fallback
-                if base:
-                    return base.rstrip("/") + "/" + node_id.lstrip("./")
-                return node_id
+                return _expand_iri(node_id, ctx if isinstance(ctx, dict) else {}, base)
 
             for node in graph_nodes:
                 node_id   = expand_id(node.get('@id', ''))
@@ -196,18 +399,14 @@ def load_ontology(req: LoadRequest):
         except Exception as e:
             print(f'[bridge] Warning building objects: {e}', flush=True)
 
-    # ── Add owl:Thing if it appears as a parent in rdfs:subClassOf ──
-    # owl:Thing is a real OWL built-in class — include it as root node
-    # when any class in this ontology is a direct subclass of it.
+    # ── Inject owl:Thing as root node whenever owl:Class nodes exist ──
+    # ObjectExplorer requires owl:Thing in byIri to render the class tree.
+    # Do not wait for an explicit rdfs:subClassOf owl:Thing triple —
+    # many M1 extension files don't declare it but still have owl:Class nodes.
     OWL_THING_IRI = 'http://www.w3.org/2002/07/owl#Thing'
-    RDFS_SUBCLASSOF = rdflib.URIRef('http://www.w3.org/2000/01/rdf-schema#subClassOf')
-    OWL_THING_REF   = rdflib.URIRef(OWL_THING_IRI)
-
-    has_thing_children = any(
-        o == OWL_THING_REF
-        for _, _, o in g.triples((None, RDFS_SUBCLASSOF, None))
-    )
-    if has_thing_children:
+    has_classes   = any(obj.get('type') == 'owl:Class' for obj in objects)
+    has_owl_thing = any(obj.get('id')   == OWL_THING_IRI for obj in objects)
+    if has_classes and not has_owl_thing:
         objects.insert(0, {
             'id':    OWL_THING_IRI,
             'type':  'owl:Class',
@@ -314,18 +513,7 @@ def _get_properties_from_json(file_path: str, subject_uri: str) -> list:
     base = ctx.get('@base', '') if isinstance(ctx, dict) else ''
 
     def compact_to_full(ciri: str) -> str:
-        if ciri.startswith('http'): return ciri
-        if ':' in ciri:
-            pfx, local = ciri.split(':', 1)
-            expansion = ctx.get(pfx, '') if isinstance(ctx, dict) else ''
-            if expansion:
-                full = expansion + local
-                # Expansion may itself be relative — resolve against @base
-                if not full.startswith('http') and base:
-                    full = base.rstrip('/') + '/' + full.lstrip('./')
-                return full
-        # Bare name — resolve against @base
-        return (base.rstrip('/') + '/' + ciri) if base else ciri
+        return _expand_iri(ciri, ctx if isinstance(ctx, dict) else {}, base)
 
     props = []
     seen  = set()
@@ -594,9 +782,14 @@ def get_imports(file_path: str):
                 if is_local:
                     uri_base   = uri.split('#')[0].rstrip('/')
                     filename   = uri_base.split('/')[-1]
+                    # Try direct parent first, then recursive search (for M1 extensions)
                     candidate  = str(p.parent / filename)
                     if pathlib.Path(candidate).exists():
                         local_path = candidate.replace('\\', '/')
+                    else:
+                        found = list(p.parent.rglob(filename))
+                        if found:
+                            local_path = str(found[0]).replace('\\', '/')
                 result['namespaces'].append({
                     'prefix':     prefix,
                     'uri':        uri,
@@ -626,6 +819,11 @@ def get_imports(file_path: str):
                     candidate = str(p.parent / filename)
                     if pathlib.Path(candidate).exists():
                         local_path = str(pathlib.Path(candidate).resolve()).replace('\\', '/')
+                    else:
+                        # Search recursively (M1 extensions in subdirectories)
+                        found = list(p.parent.rglob(filename))
+                        if found:
+                            local_path = str(found[0].resolve()).replace('\\', '/')
 
                 result['owl_imports'].append({
                     'uri':        uri,       # canonical absolute IRI
@@ -656,9 +854,121 @@ def get_hierarchy(file_path: str):
         }
     """
     pairs = []
+    external_parents = {}   # IRI → label for cross-file parent nodes
     for row in g.query(q):
-        pairs.append({ 'child': str(row.child), 'parent': str(row.parent) })
-    return { 'pairs': pairs, 'count': len(pairs) }
+        child_iri  = str(row.child)
+        parent_iri = str(row.parent)
+        pairs.append({ 'child': child_iri, 'parent': parent_iri })
+        # Collect external parents (not defined in this file)
+        # so ObjectExplorer can inject ghost nodes for them
+        local_iris = {str(s) for s in g.subjects()}
+        if parent_iri not in local_iris and parent_iri not in external_parents:
+            # Derive a readable label from the IRI
+            label = parent_iri.split('#')[-1].split('/')[-1]
+            external_parents[parent_iri] = label
+    return {
+        'pairs':            pairs,
+        'count':            len(pairs),
+        'external_parents': [{'id': iri, 'label': lbl}
+                              for iri, lbl in external_parents.items()]
+    }
+
+# ── Corpus endpoints (Phase 2 — TscgStore / pyoxigraph) ────────
+# Same REST API as Phase 1 — drop-in compatible with renderer.js.
+# Backed by TscgStore (pyoxigraph) for persistence across sessions.
+
+@app.post('/corpus/load')
+def corpus_load(req: CorpusLoadRequest):
+    """Load a file corpus into the persistent TscgStore."""
+    store = _get_tscg_store()
+    root  = Path(req.ontology_root)
+    if not root.exists():
+        raise HTTPException(status_code=404, detail=f'Root not found: {req.ontology_root}')
+    result = store.load_pattern(str(root), req.patterns, req.recursive)
+    stats  = store.stats()
+    print(f'[bridge] Corpus loaded: {result["files_loaded"]} files, '
+          f'{stats["total_triples"]} triples total', flush=True)
+    return {**result, 'persistent': stats['persistent'], 'db_path': stats['db_path']}
+
+
+@app.get('/corpus/list')
+def corpus_list():
+    """List named graphs in the TscgStore."""
+    store = _get_tscg_store()
+    stats = store.stats()
+    return {
+        'corpora': [{
+            'name':    'default',
+            'triples': stats['total_triples'],
+            'graphs':  stats['named_graphs'],
+            'persistent': stats['persistent'],
+        }],
+        'graphs': store.graph_list(),
+    }
+
+
+@app.post('/corpus/reload')
+def corpus_reload(req: CorpusReloadRequest):
+    """Reload a single file into the TscgStore (after modification)."""
+    store  = _get_tscg_store()
+    result = store.reload_file(req.file_path)
+    print(f'[bridge] Reloaded: {result["file"]} — {result["triples_loaded"]} triples',
+          flush=True)
+    return result
+
+
+@app.delete('/corpus/clear')
+def corpus_clear():
+    """Clear all graphs from the TscgStore."""
+    store = _get_tscg_store()
+    store.clear()
+    return {'cleared': True}
+
+
+@app.delete('/corpus/{corpus_name}')
+def corpus_unload(corpus_name: str):
+    """Alias for /corpus/clear (Phase 1 API compatibility)."""
+    store = _get_tscg_store()
+    store.clear()
+    return {'unloaded': corpus_name}
+
+
+@app.post('/corpus/sparql')
+def corpus_sparql(req: CorpusSparqlRequest):
+    """Execute a SPARQL SELECT/ASK/CONSTRUCT on the full TscgStore corpus.
+    Supports GRAPH ?g { ... } patterns for cross-file queries.
+    Drop-in compatible with Phase 1 response format.
+    """
+    store = _get_tscg_store()
+    try:
+        results = store.query(req.query)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f'SPARQL error: {e}')
+
+    def ox_to_value(term):
+        if term is None: return None
+        if isinstance(term, ox.NamedNode):  return str(term)
+        if isinstance(term, ox.BlankNode):  return f'_:{term}'
+        if isinstance(term, ox.Literal):    return str(term)
+        return str(term)
+
+    if isinstance(results, bool):
+        return {'query_type': 'ASK', 'result': results, 'corpus': 'default'}
+
+    if hasattr(results, 'variables'):
+        vars_  = [str(v) for v in results.variables]
+        rows   = [{str(v): ox_to_value(row[i])
+                   for i, v in enumerate(results.variables)}
+                  for row in results]
+        return {'query_type': 'SELECT', 'vars': vars_,
+                'results': rows, 'count': len(rows), 'corpus': 'default'}
+
+    # CONSTRUCT
+    triple_rows = [{'s': ox_to_value(s), 'p': ox_to_value(p), 'o': ox_to_value(o)}
+                   for s, p, o, *_ in results]
+    return {'query_type': 'CONSTRUCT', 'vars': ['s','p','o'],
+            'results': triple_rows, 'count': len(triple_rows), 'corpus': 'default'}
+
 
 # ── Export endpoint ────────────────────────────────────────────
 
@@ -757,6 +1067,27 @@ def list_export_formats():
 # =============================================================
 # ENTRY POINT
 # =============================================================
+def _init_tscg_store():
+    global _tscg_store
+    if not _OX_AVAILABLE:
+        print('[bridge] pyoxigraph not available — /corpus/* endpoints disabled',
+              flush=True)
+        return
+    try:
+        db = getattr(args, 'corpus_db', None)
+        _tscg_store = TscgStore(db_path=db)
+        if db:
+            st = _tscg_store.stats()
+            print(f'[bridge] TscgStore: persistent → {db} '
+                  f'({st["total_triples"]} triples, {st["named_graphs"]} graphs)',
+                  flush=True)
+        else:
+            print('[bridge] TscgStore: in-memory '
+                  '(use --corpus-db <path> for persistence)', flush=True)
+    except Exception as e:
+        print(f'[bridge] TscgStore init failed: {e}', flush=True)
+
 if __name__ == '__main__':
+    _init_tscg_store()
     print(f'[bridge] Starting on port {args.port}', flush=True)
     uvicorn.run(app, host='127.0.0.1', port=args.port, log_level='warning')

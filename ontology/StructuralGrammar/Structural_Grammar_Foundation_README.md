@@ -46,9 +46,9 @@ rather than Hilbert spaces or tensor algebra.
 ```
 Gt  (Eagle Eye)              ×   𝕋₀(×) = {A, S, F, I, D}
 Gm  (Sphinx Eye)             +   𝕋₀(+) = {R, E, V, O, Im}
-Gs  (Bicephalous Perspective) |   𝕋₀(|) = {T}
+Gs  (Bicephalous Perspective) |   𝕋₀(|) = {T, _^, _$}
 
-𝕋₀ = 11 primitives total
+𝕋₀ = 13 primitives total
 ```
 
 **Gs is the reification of stereopsis** — not a third head, but what the
@@ -79,7 +79,7 @@ Michel Kern's 2022 Braille Structural Grammar — created independently
 
 ```
 Braille : {S, A}  +  {+, −, SymH, SymV, Rot}  →  26 glyphs (complete)
-TSCG M2 : 𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)  +  {×, +, |, ×⇒, +⇒, ^op}  →  80+ GenericConcepts
+TSCG M2 : 𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)  +  {×, +, |, _^, _$}  (^op replaced by _^ and _$)  →  80+ GenericConcepts
 ```
 
 Both are **Structural Grammars**. Neither requires a Hilbert space.
@@ -93,7 +93,7 @@ Both are **Structural Grammars**. Neither requires a Hilbert space.
 | The Problem | Why tensor/Hilbert formalism was indefensible |
 | The Anticipation | Braille grammar as unconscious anticipation of TSCG |
 | The Solution | Structural grammar formalism — core redefinition |
-| Mathematical Foundation | Lambek calculus, Curry-Howard, Category Theory |
+| Mathematical Foundation | Lambek calculus, Curry-Howard, Category Theory, Bridge to Dirac notation |
 | ASFID/REVOI Dimensions | Two roles: types at M2, evaluators at M0 |
 | Epistemic Gap δ₁ | Unchanged — never required Hilbert formalism |
 | Impact on M3 | M3_EagleEye, M3_SphinxEye, M3_BicephalousPerspective |
@@ -124,7 +124,7 @@ Both are **Structural Grammars**. Neither requires a Hilbert space.
 2. **No Hilbert space** — dimensions are primitive types, not basis vectors
 3. **Three operators** — ×, +, | replacing the single ambiguous ⊗
 4. **Intra vs inter-grammar** — × and + are closed, | is open (Lambek framework only)
-5. **T (Temporality)** — first primitive of Gs, used in m2:Gradient = F × T
+5. **T (Time)** — first primitive of Gs, used in m2:Gradient = F × T
 6. **Braille analogy** — canonical illustration of structural grammar principle
 
 **This document is the "why" — the ontology files are the "what".** 🌟

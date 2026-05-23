@@ -86,11 +86,11 @@ Negative Feedback → Renin ↓
 
 | Dimension | Score | Justification |
 |-----------|-------|---------------|
-| **A** (Attractor) | 0.9 | Very clear BP setpoint (93 mmHg MAP), measurable, stable |
-| **S** (Structure) | 0.8 | Well-defined architecture (JGA → cascade → effectors) |
-| **F** (Flow) | 0.7 | Measurable hormonal flux but complex tracing |
-| **I** (Information) | 0.8 | Encoded signals ([hormone]), moderate noise |
-| **D** (Dynamics) | 0.9 | Well-characterised temporal evolution |
+| **A_score** (Attractor) | 0.9 | Very clear BP setpoint (93 mmHg MAP), measurable, stable |
+| **S_score** (Structure) | 0.8 | Well-defined architecture (JGA → cascade → effectors) |
+| **F_score** (Flow) | 0.7 | Measurable hormonal flux but complex tracing |
+| **It_score** (Information) | 0.8 | Encoded signals ([hormone]), moderate noise |
+| **D_score** (Dynamics) | 0.9 | Well-characterised temporal evolution |
 | **MEAN** | **0.82** | **Very well understood system** |
 
 ### 2.2 Detailed Breakdown
@@ -480,8 +480,8 @@ If BP < Setpoint:
 
 | Dimension | Parents | Effect |
 |-----------|---------|--------|
-| **D** | Process, Step, Trajectory | Triplet coupling |
-| **F** | Process, Trajectory | Pairwise coupling |
+| **D_score** | Process, Step, Trajectory | Triplet coupling |
+| **F_score** | Process, Trajectory | Pairwise coupling |
 
 **Result**:
 ```
@@ -496,12 +496,12 @@ But 5D (synergistic coupling)
 
 | Stage | Input | Output | Dimensions |
 |-------|-------|--------|------------|
-| 0 | BP sensor | BP signal | I |
+| 0 | BP sensor | BP signal | It_score |
 | 1 | BP↓ | [Renin] | S,I,D,F |
 | 2 | [Renin] | [Ang I] | S,I,D,F |
 | 3 | [Ang I] | [Ang II] | S,I,D,F |
 | 4 | [Ang II] | Effects | A,D,F (branching) |
-| 5 | Effects | BP↑ | A |
+| 5 | Effects | BP↑ | A_score |
 | FB | BP | Renin↓ | A,D |
 
 **All dimensions used** ✓

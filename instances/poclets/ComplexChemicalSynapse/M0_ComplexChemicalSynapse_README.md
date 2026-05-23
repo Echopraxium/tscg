@@ -79,10 +79,10 @@ Nearly all psychotropic drugs act on one of these 5 poles:
 
 ### Territory Reality: The Synaptic Transmission Process
 
-**ASFID State Vector**: |Ω_synapse⟩ = 0.65|A⟩ + 0.75|S⟩ + 0.90|F⟩ + 0.70|I⟩ + 0.80|D⟩
+**ASFID State Vector**: |Ω_synapse⟩ = 0.65|A_score⟩ + 0.75|S_score⟩ + 0.90|F_score⟩ + 0.70|It_score⟩ + 0.80|D_score⟩
 **ASFID mean** = (0.65 + 0.75 + 0.90 + 0.70 + 0.80) / 5 = **0.76** — Good Territory accessibility
 
-#### A — Attractor (0.65) — Moderate-High
+#### A_score — Attractor (0.65) — Moderate-High
 
 Homeostatic set-point of synaptic strength (synaptic weight). Multiple negative feedback loops stabilize transmission amplitude: autoreceptors sense excess NT and reduce release probability; synaptic fatigue limits runaway potentiation; LTD (long-term depression) counterbalances LTP. Pathological attractors exist: LTP-locked states in PTSD; sensitization trajectory in addiction.
 
@@ -90,7 +90,7 @@ Observability barrier: requires specialized equipment (patch-clamp, EM, optogene
 
 Formula: `A = S ⊗ I ⊗ A`
 
-#### S — Structure (0.75) — High
+#### S_score — Structure (0.75) — High
 
 The five-pole architecture is evolutionarily conserved across >500 million years (from C. elegans to Homo sapiens). Hierarchical organization spans multiple scales: molecular (SNARE proteins, receptor subunit composition), subcellular (active zone geometry, postsynaptic density), and cellular (synapse morphology, spine structure). Quantal size is stereotyped (~7000 NT molecules per vesicle).
 
@@ -98,7 +98,7 @@ Variability source: synaptic plasticity (controlled, functional change in S) vs.
 
 Formula: `S = S ⊗ I`
 
-#### F — Flow (0.90) — Very High
+#### F_score — Flow (0.90) — Very High
 
 Multiple concurrent material, energy, and information flows:
 - Precursor → NT synthesis (Pole 1 metabolic flow)
@@ -112,7 +112,7 @@ Quantifiable fluxes: 1–10 vesicle fusions per ms at high-activity active zones
 
 Formula: `F = F ⊗ D`
 
-#### I — Information (0.70) — High
+#### It_score — Information (0.70) — High
 
 Multiple information coding modalities operating simultaneously:
 - Frequency coding: spike rate encodes signal magnitude
@@ -124,7 +124,7 @@ Postsynaptic integration: summation of 100s–1000s of synaptic inputs (spatial 
 
 Formula: `I = I ⊗ F`
 
-#### D — Dynamics (0.80) — High
+#### D_score — Dynamics (0.80) — High
 
 Causal chain is highly deterministic at ensemble level:
 - Action potential → Ca²⁺ entry: deterministic (voltage-gated channel physics)
@@ -144,16 +144,16 @@ Formula: `D = D ⊗ I ⊗ F`
 
 This model extends the simpler neuromuscular junction model by incorporating neuromodulation and feedback complexity.
 
-**REVOI State Vector**: |Π_synapse⟩ = 0.90|R⟩ + 0.80|E⟩ + 0.90|V⟩ + 0.85|O⟩ + 0.90|I⟩
+**REVOI State Vector**: |Π_synapse⟩ = 0.90|R_score⟩ + 0.80|E_score⟩ + 0.90|V_score⟩ + 0.85|O_score⟩ + 0.90|It_score⟩
 **REVOI mean** = (0.90 + 0.80 + 0.90 + 0.85 + 0.90) / 5 = **0.87** — Excellent Map quality
 
-#### R — Representability (0.90) — Excellent
+#### R_score — Representability (0.90) — Excellent
 
 The 5-pole model is semantically transparent: each pole maps unambiguously to a distinct molecular mechanism and anatomical compartment. The model can be fully encoded in molecular terms (specific proteins: ChAT, VMAT, SNARE, AMPAR, SERT) and decoded with equal clarity. Compatible with multiple representation formalisms: circuit diagrams, kinetic differential equations, semantic web ontologies, pharmacokinetic models.
 
 Limitation: glial contributions (astrocyte glutamate uptake, K⁺ buffering, gliotransmission) are underrepresented in the 5-pole encoding.
 
-#### E — Evolvability (0.80) — Good
+#### E_score — Evolvability (0.80) — Good
 
 The model naturally supports extensions without core restructuring:
 - 6-pole model: add Pole 6 (Glial Modulation — astrocyte uptake, microglia pruning)
@@ -163,7 +163,7 @@ The model naturally supports extensions without core restructuring:
 
 The core 5-pole structure is stable and provides a reliable scaffold for evolution.
 
-#### V — Verifiability (0.90) — Highly Validated
+#### V_score — Verifiability (0.90) — Highly Validated
 
 Extensive empirical validation spanning over a century:
 - Classic electrophysiology: Loewi (1921), Dale (1935), Katz (1969 Nobel — quantal hypothesis)
@@ -177,7 +177,7 @@ Pharmacological validation (strongest evidence):
 - Predictive power: blocking Pole 3 (BoTox) → complete transmission failure as predicted
 - Blocking Pole 5 (SERT) → measurable ↑ synaptic [5-HT] (microdialysis data)
 
-#### O — Observability (0.85) — Highly Observable
+#### O_score — Observability (0.85) — Highly Observable
 
 Each pole independently observable with appropriate techniques:
 - Pole 1: enzyme activity assays (ChAT, TH); immunohistochemistry
@@ -188,7 +188,7 @@ Each pole independently observable with appropriate techniques:
 
 Limitation: nanoscale synaptic cleft (~20 nm width) requires electron microscopy; millisecond timescales require high-speed electrophysiology or optogenetics.
 
-#### I — Interoperability (0.90) — Outstanding
+#### It_score — Interoperability (0.90) — Outstanding
 
 The 5-pole model connects multiple scientific domains:
 - Neurobiology: molecular → cellular → circuit levels

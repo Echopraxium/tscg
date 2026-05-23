@@ -38,30 +38,30 @@ perceived color. It is the complement of RGB additive synthesis.
 ### Territory Space — Eagle Eye (ASFID)
 
 ```
-|Ω_pigment⟩ = 0.65|A⟩ + 0.75|S⟩ + 0.70|F⟩ + 0.80|I⟩ + 0.30|D⟩
+|Ω_pigment⟩ = 0.65|A_score⟩ + 0.75|S_score⟩ + 0.70|F_score⟩ + 0.80|It_score⟩ + 0.30|D_score⟩
 ```
 
 | Dimension | Score | Justification |
 |---|---|---|
-| A (Attractor) | 0.65 | Moderate (color stability under illumination) |
-| S (Structure) | 0.75 | Pigment particle organization, surface texture |
-| F (Flow) | 0.70 | Incident white light, reflected spectrum |
-| I (Information) | 0.80 | Spectral absorption profile |
-| D (Dynamics) | 0.30 | Low (pigments stable) |
+| A_score (Attractor) | 0.65 | Moderate (color stability under illumination) |
+| S_score (Structure) | 0.75 | Pigment particle organization, surface texture |
+| F_score (Flow) | 0.70 | Incident white light, reflected spectrum |
+| It_score (Information) | 0.80 | Spectral absorption profile |
+| D_score (Dynamics) | 0.30 | Low (pigments stable) |
 
 ### Map Space — Sphinx Eye (REVOI)
 
 ```
-|M_CMY⟩_REVOI = 0.85|R⟩ + 0.60|E⟩ + 0.75|V⟩ + 0.70|O⟩ + 0.80|I⟩
+|M_CMY⟩_REVOI = 0.85|R_score⟩ + 0.60|E_score⟩ + 0.75|V_score⟩ + 0.70|O_score⟩ + 0.80|It_score⟩
 ```
 
 | Dimension | Score | Justification |
 |---|---|---|
-| R (Representability) | 0.85 | Well representable as (C%, M%, Y%) |
-| E (Evolvability) | 0.60 | Low — largely superseded by CMYK |
-| V (Verifiability) | 0.75 | Partial (black failure test is instructive) |
-| O (Observability) | 0.70 | Requires pigments/inks to observe |
-| I (Interoperability) | 0.80 | Standard in color theory education |
+| R_score (Representability) | 0.85 | Well representable as (C%, M%, Y%) |
+| E_score (Evolvability) | 0.60 | Low — largely superseded by CMYK |
+| V_score (Verifiability) | 0.75 | Partial (black failure test is instructive) |
+| O_score (Observability) | 0.70 | Requires pigments/inks to observe |
+| It_score (Interoperability) | 0.80 | Standard in color theory education |
 
 **REVOI mean ≈ 0.74** — Good theoretical Map, poor practical Map.  
 **Epistemic Gap:** `ΔΘ ≈ 0.28` — Small gap for ideal pigments; larger for real materials.

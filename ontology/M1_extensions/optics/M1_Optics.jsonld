@@ -54,8 +54,8 @@
       "@id": "m1.ext:optics:AdditiveColorSynthesis",
       "@type": "owl:Class",
       "rdfs:label": "Additive Color Synthesis",
-      "rdfs:comment": "Pattern where colored lights combine to produce resultant color. Adding all primaries Ã¢â€ â€™ white. Used in displays (RGB).",
-      "m1:principle": "Light addition: R + G + B Ã¢â€ â€™ White",
+      "rdfs:comment": "Pattern where colored lights combine to produce resultant color. Adding all primaries → white. Used in displays (RGB).",
+      "m1:principle": "Light addition: R + G + B → White",
       "m1:formula": "C_result = C_R + C_G + C_B (vector addition in color space)",
       "m1:primaries": [
         "Red (~700nm)",
@@ -71,7 +71,7 @@
         },
         "HSL": {
           "application": "Color pickers, design tools",
-          "transformation": "RGB Ã¢â€ â€™ HSL (Hue, Saturation, Lightness)",
+          "transformation": "RGB → HSL (Hue, Saturation, Lightness)",
           "ORIVE": 0.89,
           "M0_instance": "M0_HSL_Additive.jsonld"
         }
@@ -97,8 +97,8 @@
       "@id": "m1.ext:optics:SubtractiveColorSynthesis",
       "@type": "owl:Class",
       "rdfs:label": "Subtractive Color Synthesis",
-      "rdfs:comment": "Pattern where pigments/filters absorb wavelengths from white light. Subtracting all primaries Ã¢â€ â€™ black. Used in printing (CMYK).",
-      "m1:principle": "Light absorption: C + M + Y Ã¢â€ â€™ Black (theoretically)",
+      "rdfs:comment": "Pattern where pigments/filters absorb wavelengths from white light. Subtracting all primaries → black. Used in printing (CMYK).",
+      "m1:principle": "Light absorption: C + M + Y → Black (theoretically)",
       "m1:formula": "C_result = White - (C_absorbed + M_absorbed + Y_absorbed)",
       "m1:primaries": [
         "Cyan (absorbs Red)",
@@ -108,7 +108,7 @@
       "m1:examples": {
         "CMY": {
           "application": "Theoretical color model",
-          "limitation": "Pure CMY Ã¢â€ â€™ muddy brown (not true black)",
+          "limitation": "Pure CMY → muddy brown (not true black)",
           "ORIVE": 0.74,
           "M0_instance": "M0_CMY_Subtractive.jsonld",
           "status": "Abandoned in practice"
@@ -123,7 +123,7 @@
       },
       "m1:contrastedWith": "m1:AdditiveColorSynthesis (lights add)",
       "m1:physicalBasis": "Selective absorption of wavelengths by molecular pigments",
-      "m1:practicalChallenge": "Pigment impurity Ã¢â€ â€™ CMY mix doesn't yield true black",
+      "m1:practicalChallenge": "Pigment impurity → CMY mix doesn't yield true black",
       "m1:validatedPoclets": 2,
       "rdfs:subClassOf": "m2:GenericConcept",
       "m2:characterizedBy": [
@@ -143,13 +143,13 @@
       "@type": "owl:Class",
       "rdfs:label": "Compensatory Triplet (Exposure Triangle)",
       "rdfs:comment": "Pattern where three parameters maintain constant output through reciprocal balance. Changing one requires adjusting others. Contrast with Synergistic Triplet (Fire Triangle).",
-      "m1:principle": "Reciprocal balance: Aperture Ãƒâ€” Shutter Ãƒâ€” ISO = Exposure (constant)",
-      "m1:formula": "E = (L Ãƒâ€” t Ãƒâ€” A) / (NÃ‚Â² Ãƒâ€” S) where E=constant requires compensation",
+      "m1:principle": "Reciprocal balance: Aperture × Shutter × ISO = Exposure (constant)",
+      "m1:formula": "E = (L × t × A) / (N² × S) where E=constant requires compensation",
       "m1:parameters": {
         "Aperture": {
           "symbol": "f/N (f-number)",
           "function": "Light quantity per unit time",
-          "scale": "f/1.4, f/2, f/2.8, f/4, f/5.6, f/8, f/11, f/16 (Ã¢Ë†Å¡2 steps)",
+          "scale": "f/1.4, f/2, f/2.8, f/4, f/5.6, f/8, f/11, f/16 (√2 steps)",
           "sideEffect": "Depth of field, diffraction"
         },
         "ShutterSpeed": {
@@ -166,7 +166,7 @@
         }
       },
       "m1:interactionMode": "COMPENSATORY (not synergistic)",
-      "m1:example": "ISO 100Ã¢â€ â€™200 (+1 stop) + Shutter 1/125Ã¢â€ â€™1/250 (-1 stop) = same exposure",
+      "m1:example": "ISO 100→200 (+1 stop) + Shutter 1/125→1/250 (-1 stop) = same exposure",
       "m1:contrastedWith": {
         "pattern": "Synergistic Triplet (Fire Triangle)",
         "difference": "Fire requires ALL three simultaneously. Exposure balances three reciprocally."
@@ -191,27 +191,27 @@
       "@id": "m1.ext:optics:LogarithmicScaling",
       "@type": "owl:Class",
       "rdfs:label": "Logarithmic Scaling Pattern (Photographic Stops)",
-      "rdfs:comment": "Parameters scaled logarithmically (doubling/halving) to match human perception. Each 'stop' represents 2Ãƒâ€” change in physical quantity but equal perceptual step.",
-      "m1:principle": "Weber-Fechner Law: Perceived intensity Ã¢Ë†Â log(stimulus)",
-      "m1:formula": "ÃŽâ€Perception = k Ãƒâ€” log(StimulusÃ¢â€šâ€š / StimulusÃ¢â€šÂ)",
+      "rdfs:comment": "Parameters scaled logarithmically (doubling/halving) to match human perception. Each 'stop' represents 2× change in physical quantity but equal perceptual step.",
+      "m1:principle": "Weber-Fechner Law: Perceived intensity ∝ log(stimulus)",
+      "m1:formula": "ΔPerception = k × log(Stimulus₂ / Stimulus₁)",
       "m1:scales": {
         "fStops": {
-          "physicalChange": "Each stop = Ã¢Ë†Å¡2 Ãƒâ€” diameter = 2Ãƒâ€” light area",
+          "physicalChange": "Each stop = √2 × diameter = 2× light area",
           "perceptualChange": "Equal brightness steps",
           "sequence": "f/1.4, f/2, f/2.8, f/4, f/5.6, f/8, f/11, f/16, f/22"
         },
         "shutterSpeeds": {
-          "physicalChange": "Each stop = 2Ãƒâ€” time",
+          "physicalChange": "Each stop = 2× time",
           "perceptualChange": "Equal exposure steps",
           "sequence": "1/1000, 1/500, 1/250, 1/125, 1/60, 1/30, 1/15, 1/8, 1/4, 1/2, 1s"
         },
         "ISO": {
-          "physicalChange": "Each stop = 2Ãƒâ€” sensitivity",
+          "physicalChange": "Each stop = 2× sensitivity",
           "perceptualChange": "Equal brightness steps",
           "sequence": "100, 200, 400, 800, 1600, 3200, 6400, 12800"
         }
       },
-      "m1:advantage": "Equal control adjustments Ã¢â€ â€™ equal perceptual changes",
+      "m1:advantage": "Equal control adjustments → equal perceptual changes",
       "m1:transdisciplinary": [
         "Decibels (sound intensity)",
         "Astronomical magnitude (stellar brightness)",
@@ -238,11 +238,11 @@
       "@type": "owl:Class",
       "rdfs:label": "Channel Multiplexing (RGB/CMYK Channels)",
       "rdfs:comment": "Independent channels carry orthogonal information dimensions. Each channel isolates one component, filters content, has finite capacity.",
-      "m1:principle": "Orthogonal decomposition: Signal = Ã¢Ë†â€˜ ChannelÃ¡ÂµÂ¢ (ideally independent)",
+      "m1:principle": "Orthogonal decomposition: Signal = ∑ Channelᵢ (ideally independent)",
       "m1:properties": {
         "dimensionality": "Each channel isolates ONE dimension (R, G, B or C, M, Y, K)",
-        "orthogonality": "Ideally independent (R Ã¢Å Â¥ G Ã¢Å Â¥ B)",
-        "capacity": "Finite bandwidth per channel (Shannon: C = B logÃ¢â€šâ€š(1+SNR))",
+        "orthogonality": "Ideally independent (R ⊥ G ⊥ B)",
+        "capacity": "Finite bandwidth per channel (Shannon: C = B logâ''(1+SNR))",
         "selectivity": "Each channel filters specific wavelengths",
         "permanence": "Structure persists independently of signal content"
       },
@@ -272,7 +272,7 @@
       "m1:transdisciplinary": [
         "Audio stereo (Left/Right channels)",
         "Telecommunications (frequency multiplexing)",
-        "Biology (ion channels: NaÃ¢ÂÂº, KÃ¢ÂÂº, CaÃ‚Â²Ã¢ÂÂº)",
+        "Biology (ion channels: Na⁺, K⁺, Ca²⁺)",
         "Economics (distribution channels)"
       ],
       "m1:validatedDomains": 6,
@@ -298,7 +298,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Side Effect Coupling (Photography)",
       "rdfs:comment": "Primary parameter function coupled with unintended secondary effects. Mastery = using side effects creatively.",
-      "m1:principle": "Control(Primary) Ã¢â€ â€™ Triggers(SideEffect) unavoidably",
+      "m1:principle": "Control(Primary) → Triggers(SideEffect) unavoidably",
       "m1:couplings": {
         "Aperture": {
           "primary": "Control light quantity (photon flux)",
@@ -345,10 +345,10 @@
       "@type": "owl:Class",
       "rdfs:label": "Color Space Transformation",
       "rdfs:comment": "Invertible mapping between different color representations preserving perceived color. Different spaces optimize for different purposes.",
-      "m1:principle": "Same perceptual color Ã¢â€ â€™ multiple mathematical representations",
+      "m1:principle": "Same perceptual color → multiple mathematical representations",
       "m1:transformations": {
         "RGB_to_HSL": {
-          "formula": "H = arctan2(G-B, R-0.5Ãƒâ€”(G+B)), S = chroma/max, L = (max+min)/2",
+          "formula": "H = arctan2(G-B, R-0.5×(G+B)), S = chroma/max, L = (max+min)/2",
           "purpose": "Human-intuitive color picking (artists, designers)",
           "invertible": true,
           "lossless": true,
@@ -388,11 +388,11 @@
       "@id": "m1:MapTerritory_Optics",
       "@type": "owl:Class",
       "rdfs:label": "Map-Territory Distinction (Optics)",
-      "rdfs:comment": "One Territory (perceived color) Ã¢â€ â€™ Multiple Maps (RGB, HSL, CMY, CMYK). Maps differ in ORIVE quality despite representing same Territory.",
-      "m1:principle": "Map Ã¢â€°Â  Territory (Korzybski 1933). Territory is phenomenon, Map is model.",
+      "rdfs:comment": "One Territory (perceived color) → Multiple Maps (RGB, HSL, CMY, CMYK). Maps differ in ORIVE quality despite representing same Territory.",
+      "m1:principle": "Map ≠ Territory (Korzybski 1933). Territory is phenomenon, Map is model.",
       "m1:caseStudy_ColorSynthesis": {
         "territory": {
-          "phenomenon": "Perceived color (wavelength distribution Ã¢â€ â€™ human perception)",
+          "phenomenon": "Perceived color (wavelength distribution → human perception)",
           "ASFID": "Same for all observers",
           "objectivity": "Physical (photons) + Biological (retinal cones)"
         },
@@ -423,9 +423,9 @@
             "M0_instance": "M0_CMYK_Subtractive.jsonld"
           }
         },
-        "insight": "One Territory, Four Maps. Smaller gap Ã¢â€°Â  better Map universally. Context matters."
+        "insight": "One Territory, Four Maps. Smaller gap ≠ better Map universally. Context matters."
       },
-      "m1:epistemicGap": "ÃŽâ€ÃŽËœ = Ã¢â‚¬â€“Territory_ASFID - Map_ORIVEÃ¢â‚¬â€“ quantifies model limitation",
+      "m1:epistemicGap": "ΔΘ = ‖Territory_ASFID - Map_ORIVE‖ quantifies model limitation",
       "m1:M0_instance": "M0_ColorSynthesis_Federated.jsonld",
       "m1:validatedPoclets": 1,
       "rdfs:subClassOf": "m2:GenericConcept",
@@ -446,16 +446,16 @@
       "@type": "owl:Class",
       "rdfs:label": "Perceptual Non-linearity (Gamma Correction)",
       "rdfs:comment": "Human perception is non-linear in light intensity. Displays/encodings apply gamma to match perception.",
-      "m1:principle": "Perceived brightness Ã¢Ë†Â Intensity^(1/ÃŽÂ³) where ÃŽÂ³ Ã¢â€°Ë† 2.2",
+      "m1:principle": "Perceived brightness ∝ Intensity^(1/γ) where γ ≈ 2.2",
       "m1:formula": {
         "physical": "Light intensity I (linear)",
         "perceived": "Brightness B = I^(1/2.2) (non-linear)",
-        "encoded": "Digital value V = I^(1/ÃŽÂ³) for perceptual uniformity"
+        "encoded": "Digital value V = I^(1/γ) for perceptual uniformity"
       },
       "m1:gammaValues": {
-        "sRGB": "ÃŽÂ³ = 2.2 (standard for displays)",
-        "Rec709": "ÃŽÂ³ = 2.4 (HD video)",
-        "Linear": "ÃŽÂ³ = 1.0 (physically accurate, not perceptually uniform)"
+        "sRGB": "γ = 2.2 (standard for displays)",
+        "Rec709": "γ = 2.4 (HD video)",
+        "Linear": "γ = 1.0 (physically accurate, not perceptually uniform)"
       },
       "m1:purpose": "More encoding bits for shadows (perceptually sensitive) vs highlights",
       "m1:M0_relevance": "RGB, HSL models use gamma-corrected values, not linear light",
@@ -488,15 +488,15 @@
         "M0_ExposureTriangle_Photography.jsonld"
       ],
       "m1:patternStatus": {
-        "AdditiveColorSynthesis": "Ã¢Å“â€¦ Validated (RGB, HSL poclets)",
-        "SubtractiveColorSynthesis": "Ã¢Å“â€¦ Validated (CMY, CMYK poclets)",
-        "CompensatoryTriplet": "Ã¢Å“â€¦ Validated (Exposure Triangle poclet)",
-        "LogarithmicScaling": "Ã¢Å“â€¦ Validated (Exposure Triangle poclet)",
-        "ChannelMultiplexing": "Ã¢Å“â€¦ Validated (RGB, CMYK poclets, 6 domains)",
-        "SideEffectCoupling": "Ã¢Å“â€¦ Validated (Exposure Triangle poclet)",
-        "ColorSpaceTransformation": "Ã¢Å“â€¦ Validated (ColorSynthesis poclet)",
-        "MapTerritoryOptics": "Ã¢Å“â€¦ Validated (ColorSynthesis poclet)",
-        "PerceptualNonlinearity": "Ã¢ÂÂ³ Proposed (no dedicated poclet yet)"
+        "AdditiveColorSynthesis": "✅ Validated (RGB, HSL poclets)",
+        "SubtractiveColorSynthesis": "✅ Validated (CMY, CMYK poclets)",
+        "CompensatoryTriplet": "✅ Validated (Exposure Triangle poclet)",
+        "LogarithmicScaling": "✅ Validated (Exposure Triangle poclet)",
+        "ChannelMultiplexing": "✅ Validated (RGB, CMYK poclets, 6 domains)",
+        "SideEffectCoupling": "✅ Validated (Exposure Triangle poclet)",
+        "ColorSpaceTransformation": "✅ Validated (ColorSynthesis poclet)",
+        "MapTerritoryOptics": "✅ Validated (ColorSynthesis poclet)",
+        "PerceptualNonlinearity": "⏳ Proposed (no dedicated poclet yet)"
       },
       "m1:nextSteps": [
         "Create M1 patterns for other domains (Chemistry, Economics, Biology)",

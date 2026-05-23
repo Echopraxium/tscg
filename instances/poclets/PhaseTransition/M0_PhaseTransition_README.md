@@ -180,11 +180,11 @@ Seven substances were selected to illustrate diverse phase transition behaviors:
 
 | Dimension | Phase Transition Manifestation | Score |
 |-----------|-------------------------------|-------|
-| **A — Attractor** | 4 stable Gibbs energy basins in (T,P) space | 0.90 |
-| **S — Structure** | Crystalline → amorphous → disordered → ionized | 0.88 |
-| **F — Flow** | Latent heat flows; ideal gas compressible flow | 0.85 |
-| **I — Information** | Entropy as thermodynamic information; Boltzmann S = k_B ln(Ω) | 0.82 |
-| **D — Dynamics** | Nucleation/growth kinetics; Maxwell-Boltzmann distribution | 0.87 |
+| **A_score — Attractor** | 4 stable Gibbs energy basins in (T,P) space | 0.90 |
+| **S_score — Structure** | Crystalline → amorphous → disordered → ionized | 0.88 |
+| **F_score — Flow** | Latent heat flows; ideal gas compressible flow | 0.85 |
+| **It_score — Information** | Entropy as thermodynamic information; Boltzmann S = k_B ln(Ω) | 0.82 |
+| **D_score — Dynamics** | Nucleation/growth kinetics; Maxwell-Boltzmann distribution | 0.87 |
 | **ASFID Total** | | **0.86** |
 
 ### Key Tensor Formula
@@ -200,11 +200,11 @@ Structural Order = S ⊗ I  (Encoded structural information)
 
 | Dimension | Phase Transition Manifestation | Score |
 |-----------|-------------------------------|-------|
-| **R — Representability** | P-T phase diagram: complete 2D encoding of all phase regions | 0.92 |
-| **E — Evolvability** | Extensible to binary systems, quantum phases, non-equilibrium | 0.78 |
-| **V — Verifiability** | DSC, X-ray diffraction, PVT apparatus; pV=nRT < 1% error | 0.95 |
-| **O — Observability** | Direct: color, opacity, density jump, latent heat plateau | 0.90 |
-| **I — Interoperability** | Universally applicable: chemistry, astrophysics, geology, biology | 0.85 |
+| **R_score — Representability** | P-T phase diagram: complete 2D encoding of all phase regions | 0.92 |
+| **E_score — Evolvability** | Extensible to binary systems, quantum phases, non-equilibrium | 0.78 |
+| **V_score — Verifiability** | DSC, X-ray diffraction, PVT apparatus; pV=nRT < 1% error | 0.95 |
+| **O_score — Observability** | Direct: color, opacity, density jump, latent heat plateau | 0.90 |
+| **It_score — Interoperability** | Universally applicable: chemistry, astrophysics, geology, biology | 0.85 |
 | **REVOI Total** | | **0.88** |
 
 **Epistemic Gap (ΔΘ):** 0.12 (very low — well-constrained system)

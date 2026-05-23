@@ -235,13 +235,13 @@ Can exceed 10,000 (40 dB)!
 
 | Dimension | Score | Justification |
 |-----------|-------|---------------|
-| **A** (Attractor) | 0.70 | Moderate: Operating point (Q-point) stabilized by bias network, not strict homeostasis |
-| **S** (Structure) | 0.90 | Well-defined: 3 terminals, 2 PN junctions, distinct depletion/neutral regions |
-| **F** (Flow) | 0.95 | Continuous electron/hole flow (drift + diffusion currents), high bandwidth (MHz-GHz) |
-| **I** (Information) | 0.85 | Current/voltage relationships encoded in Ebers-Moll equations, I_C = f(I_B, V_CE) |
-| **D** (Dynamics) | 0.80 | Dynamic behavior: switching speed (ns-μs), frequency response (f_T cutoff), transient response |
+| **A_score** (Attractor) | 0.70 | Moderate: Operating point (Q-point) stabilized by bias network, not strict homeostasis |
+| **S_score** (Structure) | 0.90 | Well-defined: 3 terminals, 2 PN junctions, distinct depletion/neutral regions |
+| **F_score** (Flow) | 0.95 | Continuous electron/hole flow (drift + diffusion currents), high bandwidth (MHz-GHz) |
+| **It_score** (Information) | 0.85 | Current/voltage relationships encoded in Ebers-Moll equations, I_C = f(I_B, V_CE) |
+| **D_score** (Dynamics) | 0.80 | Dynamic behavior: switching speed (ns-μs), frequency response (f_T cutoff), transient response |
 
-### 3.1 Attractor (A = 0.70)
+### 3.1 Attractor (A_score = 0.70)
 
 **Operating Point (Q-Point)**:
 - Not a natural attractor (unlike homeostasis)
@@ -262,7 +262,7 @@ V_CE = V_CC - I_C × R_C
 
 **Attractor strength**: Moderate (external stabilization required)
 
-### 3.2 Structure (S = 0.90)
+### 3.2 Structure (S_score = 0.90)
 
 **Geometric Structure**:
 
@@ -301,7 +301,7 @@ V_CE = V_CC - I_C × R_C
 
 **Structural complexity**: High (3D semiconductor crystal lattice with doping gradients)
 
-### 3.3 Flow (F = 0.95)
+### 3.3 Flow (F_score = 0.95)
 
 **Current Flows**:
 
@@ -336,7 +336,7 @@ I_C = 100 mA
 - **Bandwidth**: f_T = 1/(2π × τ_total) ≈ 100 MHz - 10 GHz
 - **Parasitic capacitances**: C_be (diffusion), C_bc (depletion) limit high-frequency response
 
-### 3.4 Information (I = 0.85)
+### 3.4 Information (It_score = 0.85)
 
 **I-V Relationships** (Ebers-Moll model):
 
@@ -366,7 +366,7 @@ h_re ≈ 0                    (reverse voltage gain, negligible)
 
 **Information encoding**: Current/voltage relationships fully characterized by semiconductor physics
 
-### 3.5 Dynamics (D = 0.80)
+### 3.5 Dynamics (D_score = 0.80)
 
 **Temporal Behavior**:
 
@@ -398,13 +398,13 @@ h_re ≈ 0                    (reverse voltage gain, negligible)
 
 | Dimension | Score | Justification |
 |-----------|-------|---------------|
-| **R** (Representability) | 0.95 | Excellent: Standardized symbols (IEEE), SPICE models, datasheets (β, V_BE, I_C, f_T) |
-| **E** (Evolvability) | 0.60 | Limited: Fixed β at manufacture, aging degrades parameters, no adaptation or self-repair |
-| **V** (Verifiability) | 0.90 | Highly verifiable: Curve tracer I-V measurements, β testing, frequency response (Bode plots) |
-| **O** (Observability) | 0.90 | Observable: Oscilloscope (waveforms), multimeter (DC I/V), thermal imaging (junction temp) |
-| **I** (Interoperability) | 0.95 | Excellent: Industry-standard pinouts (TO-92, SOT-23, TO-220), TTL/CMOS compatible, universal SPICE integration |
+| **R_score** (Representability) | 0.95 | Excellent: Standardized symbols (IEEE), SPICE models, datasheets (β, V_BE, I_C, f_T) |
+| **E_score** (Evolvability) | 0.60 | Limited: Fixed β at manufacture, aging degrades parameters, no adaptation or self-repair |
+| **V_score** (Verifiability) | 0.90 | Highly verifiable: Curve tracer I-V measurements, β testing, frequency response (Bode plots) |
+| **O_score** (Observability) | 0.90 | Observable: Oscilloscope (waveforms), multimeter (DC I/V), thermal imaging (junction temp) |
+| **It_score** (Interoperability) | 0.95 | Excellent: Industry-standard pinouts (TO-92, SOT-23, TO-220), TTL/CMOS compatible, universal SPICE integration |
 
-### 4.1 Representability (R = 0.95)
+### 4.1 Representability (R_score = 0.95)
 
 **Circuit Symbol** (IEEE Std 315):
 ```
@@ -454,7 +454,7 @@ h_re ≈ 0                    (reverse voltage gain, negligible)
 - Electrical characteristics (β min/typ/max, V_CE(sat), f_T)
 - I-V curves (family of curves for different I_B)
 
-### 4.2 Evolvability (E = 0.60)
+### 4.2 Evolvability (E_score = 0.60)
 
 **Limited Adaptability**:
 
@@ -468,7 +468,7 @@ h_re ≈ 0                    (reverse voltage gain, negligible)
 
 **Evolvability score moderate** due to no intrinsic adaptation.
 
-### 4.3 Verifiability (V = 0.90)
+### 4.3 Verifiability (V_score = 0.90)
 
 **Measurement Techniques**:
 
@@ -492,7 +492,7 @@ h_re ≈ 0                    (reverse voltage gain, negligible)
 
 **Verifiability excellent** due to mature test equipment and standards.
 
-### 4.4 Observability (O = 0.90)
+### 4.4 Observability (O_score = 0.90)
 
 **Observable Quantities**:
 
@@ -507,7 +507,7 @@ h_re ≈ 0                    (reverse voltage gain, negligible)
 
 **Internal states**: Not directly observable (carrier concentrations require destructive testing)
 
-### 4.5 Interoperability (I = 0.95)
+### 4.5 Interoperability (It_score = 0.95)
 
 **Standardized Interfaces**:
 

@@ -388,7 +388,7 @@ To qualify as a generator of the bicephalous monoid, a type must:
 
 ### Candidate analysis
 
-#### T — Temporality (Refinement 5)
+#### T — Time (Refinement 5)
 
 ```
 T := F | Im  ≡  D | Im
@@ -490,7 +490,7 @@ Option A closes it minimally.
 
 **Architecture decision pending — Michel.**
 
-The gap is confirmed real. T (Temporality) is the first and currently
+The gap is confirmed real. T (Time) is the first and currently
 strongest candidate for 𝕋₀(|). Further candidates to be discovered through
 corpus analysis of poclets with hybrid/dual perspectives.
 
@@ -517,7 +517,7 @@ corpus analysis of poclets with hybrid/dual perspectives.
 
 > Formally declare a **third alphabet** — the Bicephalous Alphabet — alongside
 > the ASFID alphabet {A, S, F, I, D} and the REVOI alphabet {R, E, V, O, Im}.
-> **T (Temporality)** is its first and currently only member.
+> **T (Time)** is its first and currently only member.
 > Further members will emerge naturally from corpus analysis, not from
 > systematic search.
 
@@ -596,7 +596,7 @@ If the cell membrane analogy holds, Gs primitives are not arbitrary — they
 correspond to **interface functionalities** that emerge from the Territory/Map
 boundary:
 
-- **T (Temporality)** → temporal gating of the interface (ion channel kinetics)
+- **T (Time)** → temporal gating of the interface (ion channel kinetics)
 - Future Gs primitives → other interface functionalities yet to be discovered
 
 This gives a principled criterion for what qualifies as a Gs primitive:
@@ -625,3 +625,58 @@ illuminating metaphor that:
 | T emergent bicephalous type | **Decided** | M3_BicephalousPerspective.jsonld | Axiom pending |
 | Bicephalous alphabet gap | **Decided** | 𝕋₀(\|)={T} declared | Further primitives from corpus |
 | Cell membrane analogy for \| | **Documented** | This section | Poclet Osmosis/Reverse Osmosis |
+
+---
+
+## Refinement 8 — Emergence Operators ×⇒ and +⇒
+
+### Origin
+
+`×⇒` (Territory emergence) and `+⇒` (Map emergence) were defined in
+`M3_GrammarFoundation.jsonld` as operators producing derived concepts
+whose properties are irreducible to the sum of their parts.
+
+```
+×⇒(Memory, Entropy)            =  Inertia       (Territory emergence)
++⇒(Representable, Verifiable)  =  ModelQuality  (Map emergence)
+```
+
+Correspondence in Curry-Howard: ×⇒ corresponds to the function type (→)
+— "from A × B, construct C by emergence."
+
+### Why removed from M3
+
+A full corpus audit (M2 GenericConcepts, M1 extensions, M0 poclets) found
+**zero usages** of ×⇒ or +⇒ in any structural formula. The examples
+(Inertia, ModelQuality) are not GenericConcepts in the current corpus.
+
+Keeping formally defined operators with no instanciations is "prospective bullshit"
+— mathematical formalism without empirical grounding in TSCG's own corpus.
+
+### Conditions for re-introduction
+
+×⇒ and +⇒ may be re-introduced if:
+1. At least 2 GenericConcepts are identified whose properties are demonstrably
+   irreducible to simple monoidal composition (× or +)
+2. The emergence is validated across ≥ 3 unrelated domains
+3. The distinction from simple × (co-presence) is formally justified
+
+### Current status
+
+**Removed from M3_GrammarFoundation.jsonld (v1.8.0, 2026-05-20).**
+Documented here for future consideration.
+
+---
+
+## Summary Table (updated)
+
+| Refinement | Status | Action taken | Open question |
+|---|---|---|---|
+| ∩ Intersection operator | **Open** | None | Needs 2+ use cases |
+| Gradient formula | **Resolved** | `F × T / I × T` | — |
+| Missing Temporality dimension | **Closed** | No change | — |
+| abs() M0 magnitude extractor | **Open** | None (M0 scope) | Validate on 2+ poclets |
+| T emergent bicephalous type | **Decided** | M3_BicephalousPerspective.jsonld | — |
+| Bicephalous alphabet gap | **Decided** | 𝕋₀(\|)={T,_^,_$} declared | — |
+| Cell membrane analogy for \| | **Documented** | Three READMEs updated | Poclet Osmosis |
+| Emergence operators ×⇒, +⇒ | **Resolved** | Replaced by Fm2 (M2) and Fm1m2 (M1/M2) morphisms | — |

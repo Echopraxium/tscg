@@ -209,20 +209,20 @@ npm start
 
 | Dim | Score | Rationale |
 |---|---|---|
-| A — Attractor | 0.80 | Convergence toward accept/reject verdict via wizard + RAG + paste analysis |
-| S — Structure | 0.90 | 5-round wizard, corpus JSON, invariant grid, RAG engine, paste zone |
-| F — Flow | 0.88 | User input -> paste -> RAG -> ASFID pre-score -> invariants -> verdict -> export |
-| I — Information | 0.85 | ASFID scores, RAG results, keyword hits, gap flags, verdict levels |
-| D — Dynamics | 0.75 | RAG adapts per query; corpus grows; paste zone re-triggers RAG in real time |
+| A_score — Attractor | 0.80 | Convergence toward accept/reject verdict via wizard + RAG + paste analysis |
+| S_score — Structure | 0.90 | 5-round wizard, corpus JSON, invariant grid, RAG engine, paste zone |
+| F_score — Flow | 0.88 | User input -> paste -> RAG -> ASFID pre-score -> invariants -> verdict -> export |
+| It_score — Information | 0.85 | ASFID scores, RAG results, keyword hits, gap flags, verdict levels |
+| D_score — Dynamics | 0.75 | RAG adapts per query; corpus grows; paste zone re-triggers RAG in real time |
 
 **Sphinx Eye (Map)**
 
 | Dim | Score | Rationale |
 |---|---|---|
-| R — Representability | 0.90 | Wizard steps, RAG results, ASFID chips all visible and human-readable |
-| E — Evolvability | 0.88 | Corpus auto-rebuilds; M2 corpus refreshable; paste zone enriches context |
-| V — Verifiability | 0.92 | Deterministic scoring + RAG traceable to ontology files + web confirmation |
-| O — Observability | 0.90 | Every score, RAG result, keyword hit, and step displayed transparently |
-| I — Interoperability | 0.82 | JSON export feeds Stage 2 (Claude AI); corpus scripts reusable by other tools |
+| R_score — Representability | 0.90 | Wizard steps, RAG results, ASFID chips all visible and human-readable |
+| E_score — Evolvability | 0.88 | Corpus auto-rebuilds; M2 corpus refreshable; paste zone enriches context |
+| V_score — Verifiability | 0.92 | Deterministic scoring + RAG traceable to ontology files + web confirmation |
+| O_score — Observability | 0.90 | Every score, RAG result, keyword hit, and step displayed transparently |
+| It_score — Interoperability | 0.82 | JSON export feeds Stage 2 (Claude AI); corpus scripts reusable by other tools |
 
 **Epistemic gap delta = 0.05** — Reduced from v1.1.0 (0.06): paste zone provides richer semantic context, narrowing the gap between the candidate description and the TSCG analysis.

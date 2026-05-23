@@ -140,31 +140,62 @@ window.tscgAPI.onExportAs(async () => {
 // =============================================================
 // 6. LAYER NAVIGATION BUTTONS
 // =============================================================
-document.getElementById('btn-m3').addEventListener('click', () => registry.execute('file.openM3'))
-document.getElementById('btn-m2').addEventListener('click', () => registry.execute('file.openM2'))
-document.getElementById('btn-m1').addEventListener('click', async (e) => {
-  // Remove any existing dropdown
-  document.getElementById('m1-ext-dropdown')?.remove()
-  const btn     = e.currentTarget
-  const btnRect = btn.getBoundingClientRect()
 
+// ── Shared dropdown builder ────────────────────────────────────
+function buildDropdown (dropId, anchorEl) {
+  document.getElementById(dropId)?.remove()
+  const rect = anchorEl.getBoundingClientRect()
   const drop = document.createElement('div')
-  drop.id = 'm1-ext-dropdown'
+  drop.id = dropId
   Object.assign(drop.style, {
-    position: 'fixed', top: `${btnRect.bottom + 4}px`, left: `${btnRect.left}px`,
+    position: 'fixed', top: `${rect.bottom + 4}px`, left: `${rect.left}px`,
     minWidth: '220px', maxHeight: '320px', overflowY: 'auto',
     background: 'var(--bg-drawer)', border: '1px solid var(--accent)',
     borderRadius: '6px', boxShadow: '0 4px 16px rgba(0,0,0,.4)',
     zIndex: '9999', fontSize: '11px',
   })
 
-  const addSection = (label) => {
-    const h = document.createElement('div')
-    Object.assign(h.style, { padding: '5px 12px 3px', color: 'var(--text-muted)',
-      fontSize: '10px', fontWeight: '700', borderBottom: '1px solid var(--border)' })
-    h.textContent = label; drop.appendChild(h)
+  // ── Section header — label + optional X button on same line ──
+  let firstSection = true
+  const addSection = (label, withClose = false) => {
+    const row = document.createElement('div')
+    Object.assign(row.style, {
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      padding: '5px 8px 4px 12px',
+      borderBottom: '1px solid var(--border)',
+      marginTop: firstSection ? '0' : '2px',
+    })
+    firstSection = false
+
+    const lbl = document.createElement('span')
+    Object.assign(lbl.style, {
+      color: 'var(--text-secondary, #d0d8e8)',   // light label
+      fontSize: '10px', fontWeight: '700', letterSpacing: '0.04em',
+      textTransform: 'uppercase',
+    })
+    lbl.textContent = label
+    row.appendChild(lbl)
+
+    if (withClose) {
+      const x = document.createElement('button')
+      x.textContent = '✕'
+      Object.assign(x.style, {
+        background: 'none', border: 'none', cursor: 'pointer',
+        color: 'var(--text-secondary, #b0b8c8)', fontSize: '11px',
+        lineHeight: '1', padding: '1px 4px', borderRadius: '3px',
+        flexShrink: '0',
+      })
+      x.title = 'Close'
+      x.onmouseenter = () => { x.style.color = 'var(--text-primary)'; x.style.background = 'var(--bg-hover)' }
+      x.onmouseleave = () => { x.style.color = 'var(--text-secondary, #b0b8c8)'; x.style.background = 'none' }
+      x.addEventListener('click', (e) => { e.stopPropagation(); drop.remove() })
+      row.appendChild(x)
+    }
+    drop.appendChild(row)
   }
+
   const addItem = (label, filePath, accent = false) => {
+    if (!filePath) return
     const item = document.createElement('div')
     Object.assign(item.style, { padding: '7px 16px', cursor: 'pointer',
       color: accent ? 'var(--accent)' : 'var(--text-primary)',
@@ -175,36 +206,217 @@ document.getElementById('btn-m1').addEventListener('click', async (e) => {
     item.addEventListener('click', () => { drop.remove(); loadFile(filePath) })
     drop.appendChild(item)
   }
+  const addSep = () => {
+    const s = document.createElement('div')
+    s.style.cssText = 'height:1px;background:var(--border);margin:2px 0'
+    drop.appendChild(s)
+  }
+  return { drop, addSection, addItem, addSep }
+}
 
-  addSection('M1 Layer')
+function attachDropdownClose (drop, btn) {
+  document.body.appendChild(drop)
+  const close = (ev) => {
+    if (!drop.contains(ev.target) && ev.target !== btn) {
+      drop.remove()
+      document.removeEventListener('click', close, true)
+    }
+  }
+  setTimeout(() => document.addEventListener('click', close, true), 10)
+}
+
+// ── btn-m3 — dropdown (same behaviour as btn-m1) ───────────────
+document.getElementById('btn-m3').addEventListener('click', async (e) => {
+  const btn = e.currentTarget
+  const { drop, addSection, addItem, addSep } = buildDropdown('m3-dropdown', btn)
   const ontRoot = getOntologyRoot()
-  if (ontRoot) addItem('M1_CoreConcepts  ★', ontRoot + '/M1_CoreConcepts.jsonld', true)
 
-  const sep = document.createElement('div')
-  sep.style.cssText = 'height:1px;background:var(--border);margin:2px 0'
-  drop.appendChild(sep)
+  addSection('M3 Layer', true)
+  if (ontRoot) {
+    addItem('M3_GenesisGrammar  ★',          ontRoot + '/M3_GenesisGrammar.jsonld', true)
+    addSep()
+    addSection('Grammars')
+    addItem('GrammarFoundation',             ontRoot + '/M3_GrammarFoundation.jsonld')
+    addItem('EagleEye  (Gt / ASFID / ×)',    ontRoot + '/M3_EagleEye.jsonld')
+    addItem('SphinxEye  (Gm / REVOI / +)',   ontRoot + '/M3_SphinxEye.jsonld')
+    addItem('BicephalousPerspective  (Gs / |)', ontRoot + '/M3_BicephalousPerspective.jsonld')
+  } else {
+    const h = document.createElement('div')
+    h.style.cssText = 'padding:10px 16px;color:var(--text-muted);font-size:11px'
+    h.textContent = '(ontology root not set)'; drop.appendChild(h)
+  }
+
+  attachDropdownClose(drop, btn)
+})
+
+// ── btn-m2 — direct load ───────────────────────────────────────
+document.getElementById('btn-m2').addEventListener('click', () => registry.execute('file.openM2'))
+
+// ── btn-m1 — dropdown with extensions ─────────────────────────
+document.getElementById('btn-m1').addEventListener('click', async (e) => {
+  const btn = e.currentTarget
+  const { drop, addSection, addItem, addSep } = buildDropdown('m1-ext-dropdown', btn)
+  const ontRoot = getOntologyRoot()
+
+  addSection('M1 Layer', true)
+  if (ontRoot) {
+    addItem('M1_CoreConcepts  ★', ontRoot + '/M1_CoreConcepts.jsonld', true)
+    addItem('M1_Domains',         ontRoot + '/M1_Domains.jsonld')
+  }
+  addSep()
   addSection('Extensions')
 
   try {
     const exts = await window.tscgAPI.listM1Extensions()
     if (!exts?.length) {
-      addItem('(no extensions found)', null)
+      const h = document.createElement('div')
+      h.style.cssText = 'padding:7px 16px;color:var(--text-muted)'
+      h.textContent = '(no extensions found)'; drop.appendChild(h)
     } else {
       for (const ext of exts)
         addItem(ext.name.replace(/^M1_/, ''), ext.path)
     }
   } catch (err) {
-    addItem('Error: ' + err.message, null)
+    const h = document.createElement('div')
+    h.style.cssText = 'padding:7px 16px;color:var(--danger)'
+    h.textContent = 'Error: ' + err.message; drop.appendChild(h)
   }
 
-  document.body.appendChild(drop)
-  const close = (ev) => {
-    if (!drop.contains(ev.target) && ev.target !== btn) {
-      drop.remove(); document.removeEventListener('click', close, true)
-    }
-  }
-  setTimeout(() => document.addEventListener('click', close, true), 10)
+  attachDropdownClose(drop, btn)
 })
+
+// ── Adjacent Layers panel ─────────────────────────────────────
+// One dropdown button per adjacent layer (combolist style)
+function renderAdjacentLayers (currentLayer) {
+  const panel = document.getElementById('adjacent-layers-content')
+  if (!panel) return
+  panel.innerHTML = ''
+  const ontRoot = getOntologyRoot()
+  if (!ontRoot) { panel.innerHTML = '<p class="placeholder">Ontology root not set.</p>'; return }
+
+  const layers = {
+    M3: {
+      label: 'M3',
+      staticFiles: [
+        { name: 'GenesisGrammar ★',                 file: 'M3_GenesisGrammar.jsonld',            accent: true },
+        { name: 'GrammarFoundation',                 file: 'M3_GrammarFoundation.jsonld' },
+        { name: 'EagleEye  (Gt / ASFID / ×)',        file: 'M3_EagleEye.jsonld' },
+        { name: 'SphinxEye  (Gm / REVOI / +)',       file: 'M3_SphinxEye.jsonld' },
+        { name: 'BicephalousPerspective  (Gs / |)',  file: 'M3_BicephalousPerspective.jsonld' },
+      ]
+    },
+    M2: {
+      label: 'M2',
+      staticFiles: [
+        { name: 'GenericConcepts ★', file: 'M2_GenericConcepts.jsonld', accent: true },
+      ]
+    },
+    M1: {
+      label: 'M1',
+      staticFiles: [
+        { name: 'CoreConcepts ★', file: 'M1_CoreConcepts.jsonld', accent: true },
+        { name: 'Domains',        file: 'M1_Domains.jsonld' },
+      ],
+      dynamicExtensions: true
+    },
+  }
+
+  const adjacentMap = {
+    M0: ['M1'],
+    M1: ['M2'],
+    M2: ['M3', 'M1'],
+    M3: ['M2'],
+  }
+  const adjacent = adjacentMap[currentLayer] || []
+
+  if (!adjacent.length) {
+    panel.innerHTML = '<p class="placeholder">No adjacent layers.</p>'
+    return
+  }
+
+  const buttonsRow = document.createElement('div')
+  Object.assign(buttonsRow.style, { display: 'flex', flexDirection: 'column', gap: '6px', padding: '8px' })
+
+  for (const layerKey of adjacent) {
+    const layer = layers[layerKey]
+    if (!layer) continue
+
+    const btn = document.createElement('button')
+    btn.textContent = `${layer.label} ▾`
+    Object.assign(btn.style, {
+      display: 'block', width: '100%', textAlign: 'left',
+      padding: '7px 12px', cursor: 'pointer',
+      background: 'var(--bg-input)', border: '1px solid var(--border)',
+      borderRadius: '5px', color: 'var(--text-primary)',
+      fontSize: '12px', fontWeight: '600',
+    })
+    btn.onmouseenter = () => { btn.style.borderColor = 'var(--accent)' }
+    btn.onmouseleave = () => { btn.style.borderColor = 'var(--border)' }
+
+    btn.addEventListener('click', async () => {
+      const dropId = `adj-drop-${layerKey}`
+      if (document.getElementById(dropId)) {
+        document.getElementById(dropId)?.remove()
+        btn.textContent = `${layer.label} ▾`
+        return
+      }
+      btn.textContent = `${layer.label} ▴`
+      const { drop, addSection, addItem, addSep } = buildDropdown(dropId, btn)
+
+      if (layer.staticFiles.length) {
+        addSection(layer.label + ' Layer', true)
+        for (const f of layer.staticFiles)
+          addItem(f.name, ontRoot + '/' + f.file, f.accent || false)
+      }
+      if (layer.dynamicExtensions) {
+        addSep()
+        addSection('Extensions')
+        try {
+          const exts = await window.tscgAPI.listM1Extensions()
+          if (!exts?.length) {
+            const h = document.createElement('div')
+            h.style.cssText = 'padding:7px 16px;color:var(--text-muted);font-size:11px'
+            h.textContent = '(no extensions)'; drop.appendChild(h)
+          } else {
+            for (const ext of exts) addItem(ext.name.replace(/^M1_/, ''), ext.path)
+          }
+        } catch (err) {
+          const h = document.createElement('div')
+          h.style.cssText = 'padding:7px 16px;color:var(--danger)'
+          h.textContent = 'Error: ' + err.message; drop.appendChild(h)
+        }
+      }
+
+      document.body.appendChild(drop)
+      const close = (ev) => {
+        if (!drop.contains(ev.target) && ev.target !== btn) {
+          drop.remove()
+          btn.textContent = `${layer.label} ▾`
+          document.removeEventListener('click', close, true)
+        }
+      }
+      setTimeout(() => document.addEventListener('click', close, true), 10)
+      drop.addEventListener('click', () => setTimeout(() => { btn.textContent = `${layer.label} ▾` }, 50))
+    })
+
+    buttonsRow.appendChild(btn)
+  }
+  panel.appendChild(buttonsRow)
+}
+
+// Hook into document activation to update Adjacent Layers
+docManager.onChange((type, doc) => {
+  if (type === 'activate' && doc?.layerName) {
+    renderAdjacentLayers(doc.layerName)
+  }
+})
+
+// Rename "Neighbor Layers" → "Adjacent Layers" in DOM if present
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-label="Neighbor Layers"], #neighbor-layers-title').forEach(el => {
+    el.textContent = 'Adjacent Layers'
+  })
+}, { once: true })
 
 window.tscgAPI.onLoadLayer(async (layerName) => {
   setLabel(`${layerName} loading…`)
@@ -648,25 +860,25 @@ SELECT ?dim (GROUP_CONCAT(?label; separator=", ") AS ?concepts) WHERE {
   m3_dimensions: `PREFIX m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?dim ?label ?symbol WHERE {
-  ?dim a m3:M3Dimension .
+  ?dim a m3:MonoidalType .
   OPTIONAL { ?dim rdfs:label ?label }
-  OPTIONAL { ?dim m3:dimensionSymbol ?symbol }
+  OPTIONAL { ?dim m3:typeSymbol ?symbol }
 } ORDER BY ?symbol`,
 
   asfid_dims: `PREFIX m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?dim ?label ?symbol WHERE {
-  ?dim a m3:M3Dimension .
+  ?dim a m3:MonoidalType .
   OPTIONAL { ?dim rdfs:label ?label }
-  OPTIONAL { ?dim m3:dimensionSymbol ?symbol }
+  OPTIONAL { ?dim m3:typeSymbol ?symbol }
 } ORDER BY ?symbol`,
 
   revoi_dims: `PREFIX m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?dim ?label ?symbol WHERE {
-  ?dim a m3:M3Dimension .
+  ?dim a m3:MonoidalType .
   OPTIONAL { ?dim rdfs:label ?label }
-  OPTIONAL { ?dim m3:dimensionSymbol ?symbol }
+  OPTIONAL { ?dim m3:typeSymbol ?symbol }
 } ORDER BY ?symbol`,
 
   // M0 Instances
@@ -705,6 +917,43 @@ SELECT ?version ?creator ?created WHERE {
   OPTIONAL { ?ont dcterms:creator ?creator }
   OPTIONAL { ?ont dcterms:created ?created }
 }`,
+
+  // ── Corpus presets (multi-file SPARQL) ────────────────────────
+  corpus_m1_classes: `PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?graph ?class ?label WHERE {
+  GRAPH ?graph { ?class a owl:Class ; rdfs:label ?label }
+} ORDER BY ?graph ?label`,
+
+  corpus_all_formulas: `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?graph ?label ?formula WHERE {
+  GRAPH ?graph {
+    ?x rdfs:label ?label .
+    ?x ?prop ?formula .
+    FILTER(CONTAINS(LCASE(STR(?prop)), 'structuralgrammarformula'))
+  }
+} ORDER BY ?graph ?label`,
+
+  corpus_shared_formulas: `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?formula (COUNT(DISTINCT ?graph) AS ?count) WHERE {
+  GRAPH ?graph {
+    ?x ?prop ?formula .
+    FILTER(CONTAINS(LCASE(STR(?prop)), 'structuralgrammarformula'))
+  }
+} GROUP BY ?formula HAVING(?count > 1) ORDER BY DESC(?count)`,
+
+  corpus_transdisciplinary: `PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?label (COUNT(DISTINCT ?graph) AS ?files) WHERE {
+  GRAPH ?graph { ?x a owl:Class ; rdfs:label ?label }
+} GROUP BY ?label HAVING(?files >= 2) ORDER BY DESC(?files)`,
+
+  corpus_structural_homology: `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?formula ?label1 ?label2 WHERE {
+  GRAPH ?g1 { ?x1 ?p1 ?formula ; rdfs:label ?label1 . FILTER(CONTAINS(LCASE(STR(?p1)),'formula')) }
+  GRAPH ?g2 { ?x2 ?p2 ?formula ; rdfs:label ?label2 . FILTER(CONTAINS(LCASE(STR(?p2)),'formula')) }
+  FILTER(?g1 < ?g2)
+} ORDER BY ?formula`,
 }
 
 document.getElementById('sparql-presets')?.addEventListener('change', (e) => {
@@ -756,17 +1005,158 @@ document.getElementById('btn-sparql-save')?.addEventListener('click', async () =
   await window.tscgAPI.saveSparqlOutput({ filename, content: fileContent })
 })
 
+// ── Corpus UI logic ───────────────────────────────────────────
+let _activeCorpus = null   // name of currently loaded corpus
+
+const CORPUS_PRESETS = [
+  { id: 'M1_all',  label: 'M1 — All extensions',
+    patterns: ['M1_extensions/**/M1_*.jsonld'] },
+  { id: 'M0_all',  label: 'M0 — All instances',
+    patterns: ['instances/**/*.jsonld', 'system-models/**/*.jsonld'] },
+  { id: 'M3_all',  label: 'M3 — All grammar files',
+    patterns: ['M3_*.jsonld'] },
+  { id: 'full',    label: 'Full corpus (M3+M2+M1+M0)',
+    patterns: ['M3_*.jsonld', 'M2_GenericConcepts.jsonld',
+               'M1_extensions/**/M1_*.jsonld',
+               'instances/**/*.jsonld'] },
+]
+
+document.getElementById('btn-corpus-load')?.addEventListener('click', async (e) => {
+  const btn    = e.currentTarget
+  const dropId = 'corpus-dropdown'
+  if (document.getElementById(dropId)) { document.getElementById(dropId)?.remove(); return }
+
+  const { drop, addSection, addItem } = buildDropdown(dropId, btn)
+  addSection('Load Corpus', true)
+
+  const ontRoot = getOntologyRoot()
+  if (!ontRoot) {
+    const h = document.createElement('div')
+    h.style.cssText = 'padding:8px 16px;color:var(--text-muted);font-size:11px'
+    h.textContent = 'Ontology root not set'; drop.appendChild(h)
+  } else {
+    for (const preset of CORPUS_PRESETS) {
+      const item = document.createElement('div')
+      Object.assign(item.style, { padding: '7px 16px', cursor: 'pointer',
+        color: _activeCorpus === preset.id ? 'var(--accent)' : 'var(--text-primary)',
+        fontWeight: _activeCorpus === preset.id ? '700' : '400' })
+      item.textContent = (_activeCorpus === preset.id ? '✓ ' : '') + preset.label
+      item.onmouseenter = () => { item.style.background = 'var(--bg-hover)' }
+      item.onmouseleave = () => { item.style.background = '' }
+      item.addEventListener('click', async () => {
+        drop.remove()
+        await _loadCorpus(preset.id, preset.label, preset.patterns, ontRoot)
+      })
+      drop.appendChild(item)
+    }
+    if (_activeCorpus) {
+      const sep = document.createElement('div')
+      sep.style.cssText = 'height:1px;background:var(--border);margin:2px 0'
+      drop.appendChild(sep)
+      const unload = document.createElement('div')
+      Object.assign(unload.style, { padding: '7px 16px', cursor: 'pointer',
+        color: 'var(--danger, #e06c75)' })
+      unload.textContent = '✕ Unload corpus'
+      unload.onmouseenter = () => { unload.style.background = 'var(--bg-hover)' }
+      unload.onmouseleave = () => { unload.style.background = '' }
+      unload.addEventListener('click', async () => {
+        drop.remove()
+        await _unloadCorpus()
+      })
+      drop.appendChild(unload)
+    }
+  }
+  attachDropdownClose(drop, btn)
+})
+
+async function _loadCorpus (name, label, patterns, ontRoot) {
+  const status = document.getElementById('corpus-status')
+  status.textContent = `Loading ${label}…`
+  try {
+    const res = await fetch(`${window._bridgeUrl}/corpus/load`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ corpus_name: name, ontology_root: ontRoot,
+                             patterns, recursive: true })
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.detail || 'Load failed')
+    _activeCorpus = name
+    const persist = data.persistent ? ' 💾' : ''
+    status.textContent = `📚 ${label} — ${data.files_loaded} files, ${data.triples} triples${persist}`
+    status.style.color = 'var(--accent)'
+    document.getElementById('btn-corpus-clear').style.display = 'inline-block'
+  } catch (e) {
+    status.textContent = `Error: ${e.message}`
+    status.style.color = 'var(--danger, #e06c75)'
+  }
+}
+
+async function _unloadCorpus () {
+  if (!_activeCorpus) return
+  try {
+    await fetch(`${window._bridgeUrl}/corpus/${_activeCorpus}`, { method: 'DELETE' })
+  } catch (_) {}
+  _activeCorpus = null
+  const status = document.getElementById('corpus-status')
+  status.textContent = 'No corpus loaded'
+  status.style.color = 'var(--text-muted)'
+  document.getElementById('btn-corpus-clear').style.display = 'none'
+}
+
+document.getElementById('btn-corpus-clear')?.addEventListener('click', _unloadCorpus)
+async function _reloadCorpusFile (filePath) {
+  const bridgeUrl = window._bridgeUrl || getBridgeUrl()
+  if (!bridgeUrl || !filePath) return
+  try {
+    await fetch(`${bridgeUrl}/corpus/reload`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ file_path: filePath })
+    })
+    console.log('[corpus] reloaded:', filePath)
+  } catch (e) { console.warn('[corpus] reload failed:', e) }
+}
+// Auto-reload corpus when a file is saved/loaded in the editor
+window.addEventListener('tscg:file-saved', (e) => {
+  if (_activeCorpus && e.detail?.filePath) _reloadCorpusFile(e.detail.filePath)
+})
+
+
 document.getElementById('btn-sparql-run')?.addEventListener('click', async () => {
   const query   = document.getElementById('sparql-query')?.value?.trim()
   const results = document.getElementById('sparql-results')
   const status  = document.getElementById('sparql-status')
   const activeDoc = docManager.active
 
-  if (!query)           { if (status) status.textContent = 'Enter a query.'; return }
-  if (!activeDoc?.filePath) { if (status) status.textContent = 'Load an ontology first.'; return }
+  if (!query) { if (status) status.textContent = 'Enter a query.'; return }
 
   const bridgeUrl = getBridgeUrl()
-  if (!bridgeUrl)       { if (status) status.textContent = 'Bridge not ready.'; return }
+  if (!bridgeUrl) { if (status) status.textContent = 'Bridge not ready.'; return }
+
+  // ── Route to corpus if active ─────────────────────────────────
+  if (_activeCorpus) {
+    if (status) status.textContent = `Running on corpus "${_activeCorpus}"…`
+    if (results) results.innerHTML = ''
+    try {
+      const res = await fetch(`${bridgeUrl}/corpus/sparql`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ corpus_name: _activeCorpus, query })
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.detail || 'Query failed')
+      renderSparqlResults(data, results)
+      if (status) status.textContent =
+        `${data.count ?? '?'} result(s) — corpus: ${_activeCorpus}`
+    } catch (e) {
+      if (status) status.textContent = `Error: ${e.message}`
+    }
+    return
+  }
+
+  // ── Single-file mode (unchanged) ─────────────────────────────
+  if (!activeDoc?.filePath) { if (status) status.textContent = 'Load an ontology first.'; return }
 
   if (status) status.textContent = 'Running…'
   if (results) results.innerHTML = ''

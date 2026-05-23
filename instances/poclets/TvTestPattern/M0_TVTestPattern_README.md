@@ -78,22 +78,22 @@ This is the only known TSCG poclet where the same physical artefact occupies bot
 
 | Dim | Score | Rationale |
 |---|---|---|
-| **A** Attractor | **0.95** | Externally imposed, sovereign reference: IRE levels, EBU colour vectors, spatial frequencies — all normalised and certified. Exceptionally high: the reference is physically instantiated and unambiguous. |
-| **S** Structure | **0.85** | Sequential chain topology clearly defined: Generator → Encoder → Transmission → Decoder → Display. Each link independently isolable for diagnosis. |
-| **F** Flow | **0.90** | Composite analogue video signal (Y+C+sync): continuous, structured in lines/fields, physically measurable at every node with a waveform monitor. |
-| **I** Information | **0.90** | Rich Territory information: IRE levels, chrominance vectors, frequency response, geometry — all captured quantitatively by calibrated instruments. |
-| **D** Dynamics | **0.80** | Iterative correction loop (measure → adjust → re-measure → iterate). Slightly lower due to human-in-the-loop latency and non-automated convergence. |
+| **A_score** Attractor | **0.95** | Externally imposed, sovereign reference: IRE levels, EBU colour vectors, spatial frequencies — all normalised and certified. Exceptionally high: the reference is physically instantiated and unambiguous. |
+| **S_score** Structure | **0.85** | Sequential chain topology clearly defined: Generator → Encoder → Transmission → Decoder → Display. Each link independently isolable for diagnosis. |
+| **F_score** Flow | **0.90** | Composite analogue video signal (Y+C+sync): continuous, structured in lines/fields, physically measurable at every node with a waveform monitor. |
+| **It_score** Information | **0.90** | Rich Territory information: IRE levels, chrominance vectors, frequency response, geometry — all captured quantitatively by calibrated instruments. |
+| **D_score** Dynamics | **0.80** | Iterative correction loop (measure → adjust → re-measure → iterate). Slightly lower due to human-in-the-loop latency and non-automated convergence. |
 | **Mean** | **0.88** | All 5 ASFID dimensions robustly present — poclet completeness criterion satisfied. |
 
 ### Sphinx Eye — REVOI Scoring (Map)
 
 | Dim | Score | Rationale |
 |---|---|---|
-| **R** Representability | **0.90** | The test pattern directly encodes every parameter it tests — the model is visually and electronically readable in the signal itself. |
-| **E** Evolvability | **0.75** | Standards have evolved (EBU, SMPTE, ITU updates; extension to HD). Moderate: constrained by regulatory and interoperability requirements. |
-| **V** Verifiability | **0.95** | Exceptional: all deviations quantifiable in IRE, degrees of chrominance phase, TVL. Pass/fail defined by broadcast specification. Highest REVOI dimension. |
-| **O** Observability | **0.90** | Waveform monitor, vectorscope, spectrum analyser make every internal chain state directly observable and quantitative. |
-| **I** Interoperability | **0.85** | EBU/SMPTE standards are globally recognised. Slight penalty: NTSC/PAL/SECAM incompatibility across regions. |
+| **R_score** Representability | **0.90** | The test pattern directly encodes every parameter it tests — the model is visually and electronically readable in the signal itself. |
+| **E_score** Evolvability | **0.75** | Standards have evolved (EBU, SMPTE, ITU updates; extension to HD). Moderate: constrained by regulatory and interoperability requirements. |
+| **V_score** Verifiability | **0.95** | Exceptional: all deviations quantifiable in IRE, degrees of chrominance phase, TVL. Pass/fail defined by broadcast specification. Highest REVOI dimension. |
+| **O_score** Observability | **0.90** | Waveform monitor, vectorscope, spectrum analyser make every internal chain state directly observable and quantitative. |
+| **It_score** Interoperability | **0.85** | EBU/SMPTE standards are globally recognised. Slight penalty: NTSC/PAL/SECAM incompatibility across regions. |
 | **Mean** | **0.87** | Strong Map quality — consistent with δ = 0.13. |
 
 ### Epistemic Gap
@@ -114,11 +114,11 @@ The exceptionally low δ reflects the near-identity of Territory and Map in this
 
 | Component | ASFID role | Description |
 |---|---|---|
-| **Reference Pattern** (mire) | **A** + F | The external Attractor and the injected stimulus simultaneously. Contains all calibration parameters. |
-| **Signal Chain** | **S** | Generator → Encoder → Transmission → Decoder → Display. Sequential, isolable topology. |
-| **Composite Video Signal** | **F** | Y + C + sync waveform. Continuous, measurable at every node. |
-| **Measurement Instruments** | **I** | Waveform monitor, vectorscope, resolution reader, spectrum analyser. |
-| **Correction Loop** | **D** | Iterative measure → adjust → re-measure cycle until convergence within tolerance. |
+| **Reference Pattern** (mire) | **A_score** + F | The external Attractor and the injected stimulus simultaneously. Contains all calibration parameters. |
+| **Signal Chain** | **S_score** | Generator → Encoder → Transmission → Decoder → Display. Sequential, isolable topology. |
+| **Composite Video Signal** | **F_score** | Y + C + sync waveform. Continuous, measurable at every node. |
+| **Measurement Instruments** | **It_score** | Waveform monitor, vectorscope, resolution reader, spectrum analyser. |
+| **Correction Loop** | **D_score** | Iterative measure → adjust → re-measure cycle until convergence within tolerance. |
 
 ### Measurement Instruments Detail
 
@@ -157,10 +157,10 @@ This poclet confirms the following architectural decisions made during the creat
 
 | Dimension | Concrete instantiation |
 |---|---|
-| **A** | The test pattern reference (IRE levels, EBU colour bars, resolution spec) |
-| **F** | The composite video signal injected into the chain |
-| **It** | The received/displayed signal measured by waveform monitor and vectorscope |
-| **D** | The engineer's iterative adjustment loop (gain, gamma, phase, geometry) |
+| **A_score** | The test pattern reference (IRE levels, EBU colour bars, resolution spec) |
+| **F_score** | The composite video signal injected into the chain |
+| **It_score** | The received/displayed signal measured by waveform monitor and vectorscope |
+| **D_score** | The engineer's iterative adjustment loop (gain, gamma, phase, geometry) |
 
 **Sphinx Eye — `V ⊗ O` belongs to REVOI poclet scoring, NOT to `m2:Calibration` — CONFIRMED ✅**
 
@@ -192,7 +192,7 @@ V (Verifiability, 0.95) and O (Observability, 0.90) characterise the quality of 
 
 The TV test pattern demonstrates that the `m2:Calibration` pattern A ⊗ F ⊗ It ⊗ D is identical in structure across domains:
 
-| Domain | A (Reference) | F (Stimulus) | It (Measurement) | D (Correction) |
+| Domain | Domain | A (Reference) | F (Stimulus) | It (Measurement) | D (Correction) |Reference) | Domain | A (Reference) | F (Stimulus) | It (Measurement) | D (Correction) |Stimulus) | Domain | A (Reference) | F (Stimulus) | It (Measurement) | D (Correction) |Measurement) | Domain | A (Reference) | F (Stimulus) | It (Measurement) | D (Correction) |Correction) |
 |---|---|---|---|---|
 | **Video Engineering** | Test pattern (IRE / EBU) | Composite video signal | Waveform monitor reading | Gain, gamma, phase adjustment |
 | **Metrology** | SI etalon (kelvin, metre…) | Reference signal | Instrument reading | Scale factor / offset |

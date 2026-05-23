@@ -56,11 +56,11 @@ Without the Rules: autonomous voices produce chaos. Without autonomy: the Rules 
 
 | Dimension | Score | Interpretation |
 |-----------|-------|----------------|
-| **A** Attractor | **0.87** | Tonic key = global attractor. All harmonic motion departs from and returns to it. Consonant intervals are local attractors within voice pairs. |
-| **S** Structure | **0.90** | Multi-layered: N simultaneous voices (vertical) × 4-pole formal lifecycle (horizontal) × Subject/Answer/Countersubject motivic hierarchy. |
-| **F** Flow | **0.85** | Each voice maintains its own melodic flow trajectory. Sequential episode patterns create directional momentum. Stretto accelerates flow to maximum density. |
-| **I** Information | **0.93** | The Fugue Subject is the system's primary information unit — announced once, then propagated and transformed. The entire fugue is a single information token unfolding through time. |
-| **D** Dynamics | **0.88** | Tension/resolution cycle is the fundamental dynamic engine. Energy curve: Exposition(0.4) → Development(0.6) → Stretto(0.95) → Resolution(0.1). |
+| **A_score** Attractor | **0.87** | Tonic key = global attractor. All harmonic motion departs from and returns to it. Consonant intervals are local attractors within voice pairs. |
+| **S_score** Structure | **0.90** | Multi-layered: N simultaneous voices (vertical) × 4-pole formal lifecycle (horizontal) × Subject/Answer/Countersubject motivic hierarchy. |
+| **F_score** Flow | **0.85** | Each voice maintains its own melodic flow trajectory. Sequential episode patterns create directional momentum. Stretto accelerates flow to maximum density. |
+| **It_score** Information | **0.93** | The Fugue Subject is the system's primary information unit — announced once, then propagated and transformed. The entire fugue is a single information token unfolding through time. |
+| **D_score** Dynamics | **0.88** | Tension/resolution cycle is the fundamental dynamic engine. Energy curve: Exposition(0.4) → Development(0.6) → Stretto(0.95) → Resolution(0.1). |
 
 **ASFID mean = 0.886**
 
@@ -68,11 +68,11 @@ Without the Rules: autonomous voices produce chaos. Without autonomy: the Rules 
 
 | Dimension | Score | Interpretation |
 |-----------|-------|----------------|
-| **R** Representability | **0.95** | Musical notation is one of humanity's oldest and most precise symbolic systems. A fugue score is a complete, lossless representation of the system. |
-| **E** Evolvability | **0.88** | 600+ years of continuous evolution: strict species counterpoint (Fux) → Baroque tonal fugue (Bach) → Romantic chromatic → atonal (Schoenberg) → jazz modal (Davis, Hancock). ASFID tensor invariant across all evolutions. |
-| **V** Verifiability | **0.92** | Species counterpoint rules fully explicit and mechanically verifiable. Parallel fifths, parallel octaves, unresolved dissonances are algorithmically detectable. |
-| **O** Observability | **0.78** | Directly audible + score-transparent + visually observable in simulation. Main limit: untrained listeners cannot consciously isolate individual voices (perceptual fusion). The Piano Roll simulation directly compensates this limit. |
-| **I** Interoperability | **0.82** | Bridges harmony theory, formal analysis, orchestration, jazz improvisation, algorithmic composition, and cognitive science (auditory scene analysis). |
+| **R_score** Representability | **0.95** | Musical notation is one of humanity's oldest and most precise symbolic systems. A fugue score is a complete, lossless representation of the system. |
+| **E_score** Evolvability | **0.88** | 600+ years of continuous evolution: strict species counterpoint (Fux) → Baroque tonal fugue (Bach) → Romantic chromatic → atonal (Schoenberg) → jazz modal (Davis, Hancock). ASFID tensor invariant across all evolutions. |
+| **V_score** Verifiability | **0.92** | Species counterpoint rules fully explicit and mechanically verifiable. Parallel fifths, parallel octaves, unresolved dissonances are algorithmically detectable. |
+| **O_score** Observability | **0.78** | Directly audible + score-transparent + visually observable in simulation. Main limit: untrained listeners cannot consciously isolate individual voices (perceptual fusion). The Piano Roll simulation directly compensates this limit. |
+| **It_score** Interoperability | **0.82** | Bridges harmony theory, formal analysis, orchestration, jazz improvisation, algorithmic composition, and cognitive science (auditory scene analysis). |
 
 **REVOI mean = 0.870**
 
@@ -106,7 +106,7 @@ Exceptionally low gap — one of the most mature and formalized domains in TSCG.
 | `m2:Attractor`   | A ⊗ D   | Tonic key = global attractor; consonances = local attractors |
 | `m2:Compression` | D ⊗ F   | Stretto = temporal compression driving climactic intensification |
 | `m2:Cycle`       | D ⊗ F   | Tension → Dissonance → Resolution recurring dynamic engine |
-| `m2:Layer`       | S       | N simultaneous voice layers |
+| `m2:Layer`       | S_score       | N simultaneous voice layers |
 | `m2:Sequence`    | F ⊗ I   | Sequential episode patterns (descending-fifth chains) |
 | `m2:Pattern`     | S ⊗ I   | Subject = recurring recognizable pattern |
 | `m2:Threshold`   | A ⊗ D   | Consonance/dissonance boundary; resolution trigger |

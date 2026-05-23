@@ -45,11 +45,11 @@ The Nakamoto Consensus is the distributed agreement mechanism underpinning Bitco
 
 | Dim | Score | Justification |
 |-----|-------|---------------|
-| **A** Attractor | 0.92 | Longest-chain rule = global consensus attractor; Ginzburg-Landau order parameter |
-| **S** Structure | 0.89 | Merkle-tree chain + P2P gossip topology; Table I structural homology |
-| **F** Flow | 0.95 | Hash computation as continuous F_active; F_potential in mining pools (F ≥ 0 discovery) |
-| **I** Information | 0.91 | Nonce entropy, block propagation, difficulty bits as information encoding |
-| **D** Dynamics | 0.93 | Real-time difficulty adjustment, fork race, irreversible PoW entropy production |
+| **A_score** Attractor | 0.92 | Longest-chain rule = global consensus attractor; Ginzburg-Landau order parameter |
+| **S_score** Structure | 0.89 | Merkle-tree chain + P2P gossip topology; Table I structural homology |
+| **F_score** Flow | 0.95 | Hash computation as continuous F_active; F_potential in mining pools (F ≥ 0 discovery) |
+| **It_score** Information | 0.91 | Nonce entropy, block propagation, difficulty bits as information encoding |
+| **D_score** Dynamics | 0.93 | Real-time difficulty adjustment, fork race, irreversible PoW entropy production |
 
 **Mean ASFID:** 0.920
 
@@ -57,11 +57,11 @@ The Nakamoto Consensus is the distributed agreement mechanism underpinning Bitco
 
 | Dim | Score | Justification |
 |-----|-------|---------------|
-| **R** Representability | 0.91 | Full Ginzburg-Landau 1D formalism; Table I isomorphism dictionary |
-| **E** Evolvability | 0.83 | Framework extendable to PoS, DAG (lower score: extensions require new formalisms) |
-| **V** Verifiability | 0.95 | 5 explicit falsifiable predictions (§VII.D of source paper) |
-| **O** Observability | 0.89 | All parameters observable on-chain (hash rate, block time, fork rate) |
-| **Im** Interoperability | 0.85 | Direct connection with Cryptocalc; bridges 4 transdisciplinary domains |
+| **R_score** Representability | 0.91 | Full Ginzburg-Landau 1D formalism; Table I isomorphism dictionary |
+| **E_score** Evolvability | 0.83 | Framework extendable to PoS, DAG (lower score: extensions require new formalisms) |
+| **V_score** Verifiability | 0.95 | 5 explicit falsifiable predictions (§VII.D of source paper) |
+| **O_score** Observability | 0.89 | All parameters observable on-chain (hash rate, block time, fork rate) |
+| **Im_score** Interoperability | 0.85 | Direct connection with Cryptocalc; bridges 4 transdisciplinary domains |
 
 **Mean REVOI:** 0.890
 
@@ -120,7 +120,7 @@ The near-zero gap confirms that the Ginzburg-Landau formalism provides a genuine
 
 ## Key Insights
 
-1. **F ≥ 0 axiom** — This poclet forced the relaxation of the TSCG M3 axiom `F ≠ 0` to `F ≥ 0`: chain stasis (F=0) is a valid fundamental state (no new blocks), while active mining is F_active, and mining pool reserves are F_potential.
+1. **F ≥ 0 axiom** — This poclet forced the relaxation of the TSCG M3 axiom `F ≠ 0` to `F ≥ 0`: chain stasis (F_score=0) is a valid fundamental state (no new blocks), while active mining is F_active, and mining pool reserves are F_potential.
 
 2. **F as morphic dimension** — F is the sole ASFID dimension that structurally requires a source→target relation: `F ∈ Mor(Cat_M3) ∩ Ob(Cat_M3)`. All M2 concepts containing F are natural candidates for entity/morphism duality.
 
@@ -128,7 +128,7 @@ The near-zero gap confirms that the Ginzburg-Landau formalism provides a genuine
 
 4. **Topological defect** — A blockchain fork is a KT vortex: local Incoherence protected by a discrete topological invariant (chain index n ∈ ℤ), non-eliminable by continuous deformation.
 
-5. **Falsifiability** — 5 explicit falsifiable predictions in §VII.D of the source paper make this one of the highest-V poclets in the catalogue (V = 0.95).
+5. **Falsifiability** — 5 explicit falsifiable predictions in §VII.D of the source paper make this one of the highest-V poclets in the catalogue (V_score = 0.95).
 
 ---
 

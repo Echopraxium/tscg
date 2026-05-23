@@ -69,22 +69,22 @@ tool, producing a `m3:TscgTool` ontology that describes the tool that generates 
 
 | Dimension | Score | Rationale |
 |-----------|-------|-----------|
-| **A** Attractor  | 0.88 | Converges toward a validated poclet deliverable set. RAG augmentation reinforces this attractor by grounding LLM output in validated TSCG examples. |
-| **S** Structure  | 0.92 | 8-component modular architecture with clear separation of concerns. Layered: UI / Generation Logic / LLM Backend / RAG Pipeline. |
-| **F** Flow       | 0.90 | Unidirectional pipeline: Request → RAG → Prompt → LLM → Parse → Display. Well-bounded sequential stages. |
-| **I** Information| 0.93 | High information density: natural language → JSON-LD + scored vectors + tensor formulas + Pygame code. |
-| **D** Dynamics   | 0.82 | Non-blocking QThread, lazy RAG init, settings persistence, history. Slightly lower: dynamics are sequential rather than adaptive. |
+| **A_score** Attractor  | 0.88 | Converges toward a validated poclet deliverable set. RAG augmentation reinforces this attractor by grounding LLM output in validated TSCG examples. |
+| **S_score** Structure  | 0.92 | 8-component modular architecture with clear separation of concerns. Layered: UI / Generation Logic / LLM Backend / RAG Pipeline. |
+| **F_score** Flow       | 0.90 | Unidirectional pipeline: Request → RAG → Prompt → LLM → Parse → Display. Well-bounded sequential stages. |
+| **It_score** Information| 0.93 | High information density: natural language → JSON-LD + scored vectors + tensor formulas + Pygame code. |
+| **D_score** Dynamics   | 0.82 | Non-blocking QThread, lazy RAG init, settings persistence, history. Slightly lower: dynamics are sequential rather than adaptive. |
 | **Mean**         | **0.89** | |
 
 ### Sphinx Eye — Map Space (REVOI)
 
 | Dimension | Score | Rationale |
 |-----------|-------|-----------|
-| **R** Representability | 0.90 | Well-modeled as a pipeline FSM. TSCG framework provides its own representational vocabulary for this analysis. |
-| **E** Evolvability     | 0.92 | Highly modular: new backends, templates, RAG sources, output formats addable with minimal coupling. |
-| **V** Verifiability    | 0.84 | JSON-LD outputs are OWL/SPARQL-validatable. No automated test suite yet, hence 0.84. |
-| **O** Observability    | 0.88 | Multiple surfaces: status bar, progress bar, RAG chunk display with relevance scores, history panel, syntax highlighting. |
-| **I** Interoperability | 0.93 | 4 standard LLM protocols + PySide6 cross-platform + standard JSON-LD + Markdown output. |
+| **R_score** Representability | 0.90 | Well-modeled as a pipeline FSM. TSCG framework provides its own representational vocabulary for this analysis. |
+| **E_score** Evolvability     | 0.92 | Highly modular: new backends, templates, RAG sources, output formats addable with minimal coupling. |
+| **V_score** Verifiability    | 0.84 | JSON-LD outputs are OWL/SPARQL-validatable. No automated test suite yet, hence 0.84. |
+| **O_score** Observability    | 0.88 | Multiple surfaces: status bar, progress bar, RAG chunk display with relevance scores, history panel, syntax highlighting. |
+| **It_score** Interoperability | 0.93 | 4 standard LLM protocols + PySide6 cross-platform + standard JSON-LD + Markdown output. |
 | **Mean**               | **0.894** | |
 
 ### Epistemic Gap δ

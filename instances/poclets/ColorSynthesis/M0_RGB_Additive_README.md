@@ -32,30 +32,30 @@ and is the primary member of the [Color Synthesis Federated Poclet](./M0_ColorSy
 ### Territory Space — Eagle Eye (ASFID)
 
 ```
-|Ω_RGB⟩ = 0.75|A⟩ + 0.85|S⟩ + 0.95|F⟩ + 0.95|I⟩ + 0.40|D⟩
+|Ω_RGB⟩ = 0.75|A_score⟩ + 0.85|S_score⟩ + 0.95|F_score⟩ + 0.95|It_score⟩ + 0.40|D_score⟩
 ```
 
 | Dimension | Score | Justification |
 |---|---|---|
-| A (Attractor) | 0.75 | Strong perceptual attractor (trichromatic vision) |
-| S (Structure) | 0.85 | Well-structured 3-channel architecture |
-| F (Flow) | 0.95 | Dominant photon flux (light emission) |
-| I (Information) | 0.95 | High information content (3 × 8-bit channels) |
-| D (Dynamics) | 0.40 | Low dynamics (static model) |
+| A_score (Attractor) | 0.75 | Strong perceptual attractor (trichromatic vision) |
+| S_score (Structure) | 0.85 | Well-structured 3-channel architecture |
+| F_score (Flow) | 0.95 | Dominant photon flux (light emission) |
+| It_score (Information) | 0.95 | High information content (3 × 8-bit channels) |
+| D_score (Dynamics) | 0.40 | Low dynamics (static model) |
 
 ### Map Space — Sphinx Eye (REVOI)
 
 ```
-|M_RGB⟩_REVOI = 0.90|R⟩ + 0.95|E⟩ + 0.95|V⟩ + 0.90|O⟩ + 0.95|I⟩
+|M_RGB⟩_REVOI = 0.90|R_score⟩ + 0.95|E_score⟩ + 0.95|V_score⟩ + 0.90|O_score⟩ + 0.95|It_score⟩
 ```
 
 | Dimension | Score | Justification |
 |---|---|---|
-| R (Representability) | 0.90 | Excellent — RGB triplet, hex notation, widely understood |
-| E (Evolvability) | 0.95 | Spawned HSL, sRGB, HDR standards |
-| V (Verifiability) | 0.95 | Directly measurable with spectrophotometers |
-| O (Observability) | 0.90 | Directly visible on any screen |
-| I (Interoperability) | 0.95 | Universal standard (CSS, OpenGL, web, cameras) |
+| R_score (Representability) | 0.90 | Excellent — RGB triplet, hex notation, widely understood |
+| E_score (Evolvability) | 0.95 | Spawned HSL, sRGB, HDR standards |
+| V_score (Verifiability) | 0.95 | Directly measurable with spectrophotometers |
+| O_score (Observability) | 0.90 | Directly visible on any screen |
+| It_score (Interoperability) | 0.95 | Universal standard (CSS, OpenGL, web, cameras) |
 
 ---
 
