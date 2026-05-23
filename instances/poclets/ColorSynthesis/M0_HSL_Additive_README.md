@@ -34,7 +34,7 @@ human perception and artistic manipulation rather than hardware rendering.
 ### Territory Space — Eagle Eye (ASFID)
 
 ```
-|Ω_color⟩ = 0.70|A⟩ + 0.85|S⟩ + 0.90|F⟩ + 0.95|I⟩ + 0.40|D⟩
+|Ω_color⟩ = 0.70|A_score⟩ + 0.85|S_score⟩ + 0.90|F_score⟩ + 0.95|It_score⟩ + 0.40|D_score⟩
 ```
 
 *Identical to RGB Territory — same physical light, same perception.*
@@ -42,16 +42,16 @@ human perception and artistic manipulation rather than hardware rendering.
 ### Map Space — Sphinx Eye (REVOI)
 
 ```
-|M_HSL⟩_REVOI = 0.90|R⟩ + 0.95|E⟩ + 0.85|V⟩ + 0.85|O⟩ + 0.90|I⟩
+|M_HSL⟩_REVOI = 0.90|R_score⟩ + 0.95|E_score⟩ + 0.85|V_score⟩ + 0.85|O_score⟩ + 0.90|It_score⟩
 ```
 
 | Dimension | Score | Justification |
 |---|---|---|
-| R (Representability) | 0.90 | (H°, S%, L%) matches human perceptual language |
-| E (Evolvability) | 0.95 | Spawned HSV, HSI, HSB variants; RGB → HSL demonstrates Map evolution |
-| V (Verifiability) | 0.85 | Testable via bijective RGB conversion |
-| O (Observability) | 0.85 | Directly observable in all color pickers (Photoshop, CSS) |
-| I (Interoperability) | 0.90 | CSS3 `hsl()`, standard in all design tools |
+| R_score (Representability) | 0.90 | (H°, S%, L%) matches human perceptual language |
+| E_score (Evolvability) | 0.95 | Spawned HSV, HSI, HSB variants; RGB → HSL demonstrates Map evolution |
+| V_score (Verifiability) | 0.85 | Testable via bijective RGB conversion |
+| O_score (Observability) | 0.85 | Directly observable in all color pickers (Photoshop, CSS) |
+| It_score (Interoperability) | 0.90 | CSS3 `hsl()`, standard in all design tools |
 
 **Epistemic Gap:** `ΔΘ ≈ 0.37` — Small gap; HSL is a good perceptual model.
 

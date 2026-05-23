@@ -264,6 +264,31 @@ TSCG is currently a **single-developer project** (Michel/Echopraxium) with Claud
 
 ---
 
+## 🔍 For the Curious Reader
+
+If the three pillars above sparked genuine questions — *"But is this
+scientifically legitimate?"*, *"What exactly does TSCG claim?"*,
+*"How do I know this isn't circular?"* — two documents in
+`docs/CoreHypotheses/` are written precisely for you:
+
+**[What TSCG Is — and What It Is Not](docs/CoreHypotheses/_00_TSCG_as_StereoscopicGlasses.md)**  
+The clearest one-page answer to *"what does TSCG actually do?"* —
+stereoscopic glasses, Eiffel Tower maquettes, and why reformulating
+without proving is already ambitious enough.
+
+**[Narcissus and Icarus as Safeguards](docs/CoreHypotheses/_01_Narcissus_and_Icarus_as_Safeguards.md)**  
+An honest, no-concessions diagnosis of the project: what it genuinely
+contributes, what it does not, and the architectural mechanisms that
+prevent it from becoming what most transdisciplinary frameworks
+eventually become — a mirror admiring its own reflection.
+
+> *These are not marketing documents. They are the questions a sceptical
+> reviewer would ask — asked first, from the inside.*
+>
+> *If you find something we missed — that is a contribution, not a refutation.*
+
+---
+
 ## 🦇 Final Thought
 
 > *"The bat doesn't see the cave.  

@@ -420,11 +420,11 @@ The Artifact demonstrates the boundary condition of the Color Pie system: what e
 
 | Dim | Score | Interpretation |
 |---|---|---|
-| **A** (Attractor) | 0.65 | 5 primary + 10 guild attractor basins; philosophical value equilibria |
-| **S** (Structure) | 0.80 | Pentagon topology, 10 explicit guild edges, Artifact neutral node |
-| **F** (Flow) | 0.45 | Mana flow (gameplay); guild mechanics as channels; no thermodynamic flow |
-| **I** (Information) | 0.85 | Very high: encoded meaning per color/guild/artifact; philosophy density |
-| **D** (Dynamics) | 0.50 | 30-year evolution; color pie shifts; guild power dynamics across editions |
+| **A_score** (Attractor) | 0.65 | 5 primary + 10 guild attractor basins; philosophical value equilibria |
+| **S_score** (Structure) | 0.80 | Pentagon topology, 10 explicit guild edges, Artifact neutral node |
+| **F_score** (Flow) | 0.45 | Mana flow (gameplay); guild mechanics as channels; no thermodynamic flow |
+| **It_score** (Information) | 0.85 | Very high: encoded meaning per color/guild/artifact; philosophy density |
+| **D_score** (Dynamics) | 0.50 | 30-year evolution; color pie shifts; guild power dynamics across editions |
 
 **ASFID vector:** `(0.65, 0.80, 0.45, 0.85, 0.50)` — mean **0.65**
 
@@ -432,11 +432,11 @@ The Artifact demonstrates the boundary condition of the Color Pie system: what e
 
 | Dim | Score | Interpretation |
 |---|---|---|
-| **R** (Representability) | 0.90 | Colors/guilds/Artifact are immediately communicable across cultures |
-| **E** (Evolvability) | 0.85 | 30 years of controlled evolution; guilds added without disrupting core |
-| **V** (Verifiability) | 0.70 | Philosophical claims normative, not empirical; guild synergies design-validated |
-| **O** (Observability) | 0.75 | Guild mechanics directly observable in gameplay; philosophy inferred |
-| **I** (Interoperability) | 0.90 | Maps onto psychology, political theory, ethics, ecology across 10 guild pairs |
+| **R_score** (Representability) | 0.90 | Colors/guilds/Artifact are immediately communicable across cultures |
+| **E_score** (Evolvability) | 0.85 | 30 years of controlled evolution; guilds added without disrupting core |
+| **V_score** (Verifiability) | 0.70 | Philosophical claims normative, not empirical; guild synergies design-validated |
+| **O_score** (Observability) | 0.75 | Guild mechanics directly observable in gameplay; philosophy inferred |
+| **It_score** (Interoperability) | 0.90 | Maps onto psychology, political theory, ethics, ecology across 10 guild pairs |
 
 **REVOI vector:** `(0.90, 0.85, 0.70, 0.75, 0.90)` — mean **0.82**
 

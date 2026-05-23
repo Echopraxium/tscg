@@ -190,11 +190,11 @@ Result: REVOI(TPACK) = 0.94 — **prediction confirmed** ✅
 
 | Dimension | Score | Justification |
 |-----------|:-----:|---------------|
-| **A** (Attractor) | 0.75 | Clear goal: effective teaching with defined standards and benchmarks |
-| **S** (Structure) | 0.90 | Three knowledge domains with 7 defined intersections |
-| **F** (Flow) | 0.70 | Knowledge exchange: teacher ↔ students, teacher ↔ technology, teacher ↔ content |
-| **I** (Information) | 0.85 | Rich knowledge across all three domains |
-| **D** (Dynamics) | 0.65 | Teaching evolves (TK especially), but PK/CK core is more stable |
+| **A_score** (Attractor) | 0.75 | Clear goal: effective teaching with defined standards and benchmarks |
+| **S_score** (Structure) | 0.90 | Three knowledge domains with 7 defined intersections |
+| **F_score** (Flow) | 0.70 | Knowledge exchange: teacher ↔ students, teacher ↔ technology, teacher ↔ content |
+| **It_score** (Information) | 0.85 | Rich knowledge across all three domains |
+| **D_score** (Dynamics) | 0.65 | Teaching evolves (TK especially), but PK/CK core is more stable |
 
 **Observables**: lesson plans showing T-P-C alignment · classroom observations · student outcomes · TPACK self-efficacy surveys · artifact analysis  
 **Instruments**: Schmidt et al. (2009) TPACK surveys · observation protocols (RTOP, ICALT) · lesson design rubrics
@@ -205,11 +205,11 @@ Result: REVOI(TPACK) = 0.94 — **prediction confirmed** ✅
 
 | Dimension | Score | Justification |
 |-----------|:-----:|---------------|
-| **A** (Attractor) | 0.80 | Framework aims toward integrated teaching competence |
-| **S** (Structure) | 0.95 | Elegant Venn diagram — 3 circles, 7 regions, clear boundaries |
-| **F** (Flow) | 0.60 | Framework guides concept-to-practice transfer (static diagram) |
-| **I** (Information) | 0.90 | Encodes rich knowledge about T, P, C integration |
-| **D** (Dynamics) | 0.55 | Framework structure stable since 2006 (evolved slowly) |
+| **A_score** (Attractor) | 0.80 | Framework aims toward integrated teaching competence |
+| **S_score** (Structure) | 0.95 | Elegant Venn diagram — 3 circles, 7 regions, clear boundaries |
+| **F_score** (Flow) | 0.60 | Framework guides concept-to-practice transfer (static diagram) |
+| **It_score** (Information) | 0.90 | Encodes rich knowledge about T, P, C integration |
+| **D_score** (Dynamics) | 0.55 | Framework structure stable since 2006 (evolved slowly) |
 
 ### Epistemic Gap
 
@@ -310,7 +310,7 @@ TPACK (REVOI = 0.94) is the strongest validation point: we independently know it
 
 Across all poclets, **R (Representability) correlates most strongly with real-world adoption**:
 
-| Poclet | R | REVOI | Real-world status |
+| Poclet | Poclet | R | REVOI | Real-world status | REVOI | Real-world status |
 |--------|:--:|:-----:|-------------------|
 | TPACK | 0.98 | 0.94 | 50,000+ citations, global |
 | RGB Color | 0.95 | 0.92 | Universal standard |
@@ -352,11 +352,11 @@ TPACK is a Map for constructing instructional Maps (lesson plans, curricula). If
 
 | Dimension | Score | Grade |
 |-----------|:-----:|-------|
-| R (Representability) | 0.98 | Exceptional ⭐ |
-| E (Evolvability) | 0.92 | Exceptional |
-| V (Verifiability) | 0.90 | Excellent |
-| O (Observability) | 0.95 | Exceptional |
-| I (Interoperability) | 0.95 | Exceptional |
+| R_score (Representability) | 0.98 | Exceptional ⭐ |
+| E_score (Evolvability) | 0.92 | Exceptional |
+| V_score (Verifiability) | 0.90 | Excellent |
+| O_score (Observability) | 0.95 | Exceptional |
+| It_score (Interoperability) | 0.95 | Exceptional |
 | **REVOI mean** | **0.94** | **Exceptional (highest)** |
 
 ### Cross-Poclet REVOI Benchmark
@@ -542,11 +542,11 @@ A **good Map** (model, framework, theory) is:
 
 | Dimension | Question | TPACK answer |
 |-----------|----------|-------------|
-| **R** Representability | Can it be drawn, encoded, decoded? | ✅ Venn diagram in 30 seconds (R = 0.98) |
-| **E** Evolvability | Does it survive paradigm shifts? | ✅ 18 years, 7+ extensions (E = 0.92) |
-| **V** Verifiability | Can it be tested and falsified? | ✅ 193 validation studies (V = 0.90) |
-| **O** Observability | Can its constructs be measured? | ✅ Surveys, rubrics, observations (O = 0.95) |
-| **I** Interoperability | Does it integrate with other systems? | ✅ 50+ countries, compatible with ISTE, UDL (I = 0.95) |
+| **R_score** Representability | Can it be drawn, encoded, decoded? | ✅ Venn diagram in 30 seconds (R_score = 0.98) |
+| **E_score** Evolvability | Does it survive paradigm shifts? | ✅ 18 years, 7+ extensions (E_score = 0.92) |
+| **V_score** Verifiability | Can it be tested and falsified? | ✅ 193 validation studies (V_score = 0.90) |
+| **O_score** Observability | Can its constructs be measured? | ✅ Surveys, rubrics, observations (O_score = 0.95) |
+| **It_score** Interoperability | Does it integrate with other systems? | ✅ 50+ countries, compatible with ISTE, UDL (It_score = 0.95) |
 
 ### Refined Korzybski Principle
 

@@ -1,9 +1,0 @@
-# Patch à appliquer dans src/main.js
-# Dans le bloc mainWindow.webContents.on('did-finish-load', () => { ... })
-# Ajouter après l'envoi de renderer-plugins-list :
-
-    # Envoyer le repo root au renderer pour résoudre les chemins d'ontologie
-    # __dirname = .../instances/tscg-tools/TscgOntologyEditor/src
-    # On remonte de 3 niveaux pour atteindre la racine du repo tscg
-    const repoRoot = path.join(__dirname, '..', '..', '..', '..')
-    mainWindow.webContents.send('plugin:repo-root', { root: repoRoot })

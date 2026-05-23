@@ -1,0 +1,174 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m3": "M3_GenesisGrammar.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "m3:stereopsis:BicephalousPerspective",
+      "@type": "owl:Ontology",
+      "owl:versionInfo": "1.1.0",
+      "dcterms:created": "2026-05-18",
+      "dcterms:modified": "2026-05-20",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:title": "TSCG M3 Bicephalous Perspective Grammar Gs",
+      "dcterms:description": "Reification of stereopsic synergy. Gs formalizes the stereopsic synergy as a free monoidal grammar with operator |, neutral EmptyStereopsis, and primitive alphabet {T, _^ (PositivePole), _$ (NegativePole)}. Symbols _^ and _$ are string notations for formulas only — not URIs.",
+      "owl:imports": [
+        "M3_GrammarFoundation.jsonld",
+        "M3_EagleEye.jsonld",
+        "M3_SphinxEye.jsonld"
+      ],
+      "rdfs:label": "Bicephalous Perspective — Stereopsis Grammar Gs",
+      "rdfs:comment": "Reification of stereopsic synergy between Eagle Eye (Gt) and Sphinx Eye (Gm). TSCG architecture remains bicephalous — Gs formalizes what the two heads produce together.",
+      "grammar_properties": {
+        "grammar_name": "Stereopsis Grammar Gs",
+        "grammar_type": "free_monoidal",
+        "primitives": [
+          "Time",
+          "PositivePole",
+          "NegativePole"
+        ],
+        "primitives_symbols_note": "Symbolic notation: T (Time), _^ (PositivePole), _$ (NegativePole) — string values in formulas only",
+        "product": "|",
+        "neutral": "m3gf:StereopsisEmptySet",
+        "primitive_role": "Gs type generators — relational types between Territory and Map",
+        "perspective": "bicephalous / relational",
+        "independence": "verified — T, _^, _$ are not derivable from ASFID or REVOI",
+        "mathematical_foundation": "Lambek Calculus / free monoidal category — third grammar Gs",
+        "operator": "| (Stereopsic fusion — inter-grammar)",
+        "neutral_element": "m3gf:StereopsisEmptySet",
+        "neutral_element_label": "Stereopsis Empty Set (neutral of |)",
+        "neutral_element_semantic": "Divergent Strabismus — EmptyTerritory | EmptyMap"
+      },
+      "associativity": {
+        "property": "| is associative: (a | b) | c = a | (b | c)",
+        "consequence": "Parentheses optional for chained |. Left-associative by convention.",
+        "pole_pattern_positive": "expr | _^   e.g. A × S × It | R + O | _^  = Coherence",
+        "pole_pattern_negative": "expr | _$   e.g. A × S × It | R + O | _$  = Incoherence"
+      },
+      "parent_ontology": {
+        "@id": "m3:genesis_space:GenesisGrammar",
+        "relationship": "component_of"
+      },
+      "complementary_grammars": {
+        "territory": "M3_EagleEye.jsonld — Gt, ASFID, ×",
+        "map": "M3_SphinxEye.jsonld — Gm, REVOI, +",
+        "architecture": "TSCG Bicephalous = Gt + Gm — Gs is reification of stereopsic synergy"
+      },
+      "m2:changelog": [
+        {
+          "version": "1.1.0",
+          "date": "2026-05-20",
+          "changes": "Added PositivePole (_^) and NegativePole (_$) as Gs type primitives. typeSymbol and typeIndex (not dimensionSymbol/dimensionIndex). Dimensions embedded in root node following EagleEye pattern. Symbols _^ and _$ are string notations only — not URIs."
+        },
+        {
+          "version": "1.0.0",
+          "date": "2026-05-18",
+          "changes": "Initial release. T (Time) as first Gs primitive."
+        }
+      ]
+    },
+    {
+      "@id": "m3:typeSymbol",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Type Symbol (Gs)",
+      "rdfs:comment": "String symbol for a Gs (Stereopsis Grammar) primitive type. Analogous to m3:dimensionSymbol for ASFID/REVOI, but for Gs types. Values: T, _^, _$ — always string literals, never URIs.",
+      "rdfs:domain": {
+        "@id": "m3:MonoidalType"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "dcterms:created": "2026-05-20"
+    },
+    {
+      "@id": "m3:typeIndex",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Type Index (Gs)",
+      "rdfs:comment": "Integer index for a Gs (Stereopsis Grammar) primitive type. Analogous to m3:dimensionIndex for ASFID/REVOI, but for Gs types.",
+      "rdfs:domain": {
+        "@id": "m3:MonoidalType"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      },
+      "dcterms:created": "2026-05-20"
+    },
+    {
+      "@id": "m3:stereopsis:typeT",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Time (T)",
+      "m3:typeSymbol": "T",
+      "m3:typeIndex": 1,
+      "rdfs:comment": "𝕋₀(|) generator — Pure time: temporal interface between Territory and Map. Used in Gradient: F × T.",
+      "skos:example": "Music: rhythm, Digital: clock signal, Biology: circadian rhythm",
+      "rdfs:domain": {
+        "@id": "m3:MonoidalType"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "m3:stereopsis:typePositivePole",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Positive Pole (_^)",
+      "m3:typeSymbol": "_^",
+      "m3:typeIndex": 2,
+      "rdfs:comment": "𝕋₀(|) generator — Positive/onset pole of a GenericConcept pair. Applied as: formula | _^. String notation only — not a URI.",
+      "skos:example": "A × S × It | R + O | _^ = Coherence",
+      "rdfs:domain": {
+        "@id": "m3:MonoidalType"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "m3:stereopsis:typeNegativePole",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Negative Pole (_$)",
+      "m3:typeSymbol": "_$",
+      "m3:typeIndex": 3,
+      "rdfs:comment": "𝕋₀(|) generator — Negative/terminus pole of a GenericConcept pair. Applied as: formula | _$. String notation only — not a URI.",
+      "skos:example": "A × S × It | R + O | _$ = Incoherence",
+      "rdfs:domain": {
+        "@id": "m3:MonoidalType"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "m3:stereopsis:operator",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Operator | (Stereopsic fusion)",
+      "rdfs:comment": "Inter-grammar operator of Gs. Traverses Gt/Gm boundary. Associative. Precedence: lowest (× > + > |). Always produces Gs types.",
+      "skos:example": "A × S × It | R + O | _^ = Coherence",
+      "rdfs:domain": {
+        "@id": "m3:MonoidalType"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "m3:stereopsis:neutralElement",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Neutral Element (EmptyStereopsis)",
+      "rdfs:comment": "Neutral element of |: StereopsisEmptySet = EmptyTerritory | EmptyMap. Divergent Strabismus (δ₁=max).",
+      "rdfs:domain": {
+        "@id": "m3:MonoidalType"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    }
+  ]
+}

@@ -165,11 +165,11 @@ Each hexagram carries 4 interpretive layers:
 
 | Dimension | Score | Key finding |
 |-----------|-------|-------------|
-| **Attractor (A)** | 0.85 | 64 local attractors (hexagrams as named stable states). No global attractor — cyclical ergodicity: all 64 states reachable from any starting hexagram |
-| **Structure (S)** | **0.97** | Highest score. 3-level strict hierarchy, binary isomorphism {0,1}⁶, 4 polar pairs, 3 structural symmetries (nuclear / inverse / reversed hexagram) |
-| **Flow (F)** | 0.72 | Two flows: divinatory (coins/yarrow → hexagram, procedural) and transformative (H_primary → H_derived, symbolic) |
-| **Information (I)** | 0.91 | 6 bits per hexagram (maximal Shannon entropy for 64 states), 4 semantic layers, ~18 interpretive channels per hexagram |
-| **Dynamics (D)** | 0.80 | Line polarity dynamics (Young/Old inversion) + inter-hexagram dynamics (4096 transitions). Meta-dynamic: #64 encodes perpetual incompletion as generative principle |
+| **Attractor (A_score)** | 0.85 | 64 local attractors (hexagrams as named stable states). No global attractor — cyclical ergodicity: all 64 states reachable from any starting hexagram |
+| **Structure (S_score)** | **0.97** | Highest score. 3-level strict hierarchy, binary isomorphism {0,1}⁶, 4 polar pairs, 3 structural symmetries (nuclear / inverse / reversed hexagram) |
+| **Flow (F_score)** | 0.72 | Two flows: divinatory (coins/yarrow → hexagram, procedural) and transformative (H_primary → H_derived, symbolic) |
+| **Information (It_score)** | 0.91 | 6 bits per hexagram (maximal Shannon entropy for 64 states), 4 semantic layers, ~18 interpretive channels per hexagram |
+| **Dynamics (D_score)** | 0.80 | Line polarity dynamics (Young/Old inversion) + inter-hexagram dynamics (4096 transitions). Meta-dynamic: #64 encodes perpetual incompletion as generative principle |
 
 ---
 
@@ -177,11 +177,11 @@ Each hexagram carries 4 interpretive layers:
 
 | Dimension | Score | Key finding |
 |-----------|-------|-------------|
-| **Representability (R)** | **0.95** | Exhaustive by construction: {Yin,Yang}⁶ = 64 = complete 6-bit space. Any situation mappable to one of 64 hexagrams; changing lines add temporal resolution |
-| **Evolvability (E)** | 0.88 | Built-in evolution engine: changing lines generate the transformation vector at each reading. Grammar frozen since ~800 BCE; interpretive layers continuously evolving over 3000 years |
-| **Verifiability (V)** | 0.50 | Deliberately low — the defining characteristic of symbolic arbitration. Formal grammar is perfectly verifiable (64 = 2⁶, provable). Oracular claims are not empirically falsifiable — this is a feature |
-| **Observability (O)** | 0.78 | Structural observability HIGH (64 symbols enumerable, visually distinct). Interpretive observability MEDIUM. Outcome observability LOW |
-| **Interoperability (I)** | **0.90** | Exceptional cross-domain reach: binary mathematics (Leibniz 1703), quantum complementarity (Bohr), Jungian archetypes (Jung 1949), Chinese medicine, cybernetics, chaos theory |
+| **Representability (R_score)** | **0.95** | Exhaustive by construction: {Yin,Yang}⁶ = 64 = complete 6-bit space. Any situation mappable to one of 64 hexagrams; changing lines add temporal resolution |
+| **Evolvability (E_score)** | 0.88 | Built-in evolution engine: changing lines generate the transformation vector at each reading. Grammar frozen since ~800 BCE; interpretive layers continuously evolving over 3000 years |
+| **Verifiability (V_score)** | 0.50 | Deliberately low — the defining characteristic of symbolic arbitration. Formal grammar is perfectly verifiable (64 = 2⁶, provable). Oracular claims are not empirically falsifiable — this is a feature |
+| **Observability (O_score)** | 0.78 | Structural observability HIGH (64 symbols enumerable, visually distinct). Interpretive observability MEDIUM. Outcome observability LOW |
+| **Interoperability (It_score)** | **0.90** | Exceptional cross-domain reach: binary mathematics (Leibniz 1703), quantum complementarity (Bohr), Jungian archetypes (Jung 1949), Chinese medicine, cybernetics, chaos theory |
 
 ---
 

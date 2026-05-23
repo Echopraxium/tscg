@@ -87,7 +87,7 @@ While the table itself is static, **property gradients** encode directional tend
 
 | Property | Horizontal Trend (→) | Vertical Trend (↓) | Example Range |
 |----------|----------------------|---------------------|---------------|
-| **Electronegativity χ** | Increases (more EN) | Decreases (less EN) | F (3.98) → Cs (0.79) |
+| **Electronegativity χ** | Increases (more EN) | Decreases (less EN) | F_score (3.98) → Cs (0.79) |
 | **Atomic Radius r** | Decreases (smaller) | Increases (larger) | He (31 pm) → Fr (~260 pm) |
 | **Ionization Energy IE** | Increases (harder to ionize) | Decreases (easier) | He (2372 kJ/mol) → Cs (376 kJ/mol) |
 | **Metallic Character** | Decreases (less metallic) | Increases (more metallic) | Cs (100%) → F (0%) |
@@ -172,7 +172,7 @@ Radioactive elements in the f-block (atomic numbers 89-103, Ac to Lr). Elements 
 | **O (Observability)** | 0.90 | Most properties directly observable: (1) Atomic number Z: X-ray spectroscopy (Moseley's law); (2) Mass: Mass spectrometry; (3) Electron configuration: Photoelectron spectroscopy (PES), X-ray absorption fine structure (XAFS); (4) Chemical properties: Reactivity assays, solubility tests, titrations; (5) Physical properties: Melting/boiling points (calorimetry), density (pycnometry), color (spectrophotometry), magnetism (SQUID), conductivity. Limitations: Some properties calculated not measured (electron affinity EA for some elements — indirect); superheavy elements (Z > 100): Observe decay products only. |
 | **I (Interoperability)** | 0.85 | Seamless interface across disciplines: (1) Chemistry (Mendeleev table, IUPAC nomenclature), Physics (quantum mechanics, nuclear shell model), Materials Science (crystal structures, band theory), Biology (essential elements C/H/N/O/P/S), Geology (geochemistry, isotope ratios), Astrophysics (nucleosynthesis); (2) Cross-notation translation: Chemical symbol ↔ Atomic number ↔ Electron configuration ↔ IUPAC name ↔ CAS registry ↔ PubChem CID; (3) Computational interoperability: RDF/OWL ontologies, SPARQL queries. Score 0.85 because some domain encodings are lossy (reducing Pt to "transition metal" loses 5d⁹ 6s¹ nuances). |
 
-**Key Insight**: The Periodic Table achieves **exceptional map quality** across all REVOI dimensions. It is near-perfectly representable (R=0.95), highly evolvable (E=0.80), exceptionally verifiable (V=0.95), strongly observable (O=0.90), and highly interoperable (I=0.85) across scientific disciplines.
+**Key Insight**: The Periodic Table achieves **exceptional map quality** across all REVOI dimensions. It is near-perfectly representable (R_score=0.95), highly evolvable (E_score=0.80), exceptionally verifiable (V_score=0.95), strongly observable (O_score=0.90), and highly interoperable (It_score=0.85) across scientific disciplines.
 
 ---
 
@@ -290,15 +290,15 @@ REVOI_mean = (0.95 + 0.80 + 0.95 + 0.90 + 0.85) / 5 = 0.89
 
 ## Key Insights
 
-1. **Information-Structure Duality**: The Periodic Table exemplifies the tight coupling between **Structure** (S=0.90) and **Information** (I=0.95). Position in the grid is information — each cell encodes 10-15 distinct properties deducible from (period, group) coordinates.
+1. **Information-Structure Duality**: The Periodic Table exemplifies the tight coupling between **Structure** (S_score=0.90) and **Information** (It_score=0.95). Position in the grid is information — each cell encodes 10-15 distinct properties deducible from (period, group) coordinates.
 
-2. **Attractors as Organizing Principle**: Noble gas configurations (He, Ne, Ar, Kr, Xe, Rn, Og) act as **stability attractors** (A=0.85) that organize the entire table. Chemical reactivity is understood as the tendency of elements to approach these filled-shell states through electron transfer (ionization, electron gain) or sharing (covalent bonding).
+2. **Attractors as Organizing Principle**: Noble gas configurations (He, Ne, Ar, Kr, Xe, Rn, Og) act as **stability attractors** (A_score=0.85) that organize the entire table. Chemical reactivity is understood as the tendency of elements to approach these filled-shell states through electron transfer (ionization, electron gain) or sharing (covalent bonding).
 
 3. **Emergent Periodicity from Quantum Constraints**: The periodic repetition (periods of 2, 8, 8, 18, 18, 32, 32 elements) emerges from quantum mechanical constraints (Pauli principle, 2n² shell capacity rule), not from arbitrary design. This is a **bottom-up emergent structure**, not a top-down classification.
 
-4. **Gradient Encoding of Latent Flow**: While the table appears static, property gradients (∇χ, ∇r, ∇IE) encode **latent flow** (F=0.70) — directional tendencies that manifest when elements interact. Electronegativity gradient, for instance, predicts electron density shifts in chemical bonds (e.g., H-Cl bond is polarized H^δ⁺-Cl^δ⁻ because χ_Cl > χ_H).
+4. **Gradient Encoding of Latent Flow**: While the table appears static, property gradients (∇χ, ∇r, ∇IE) encode **latent flow** (F_score=0.70) — directional tendencies that manifest when elements interact. Electronegativity gradient, for instance, predicts electron density shifts in chemical bonds (e.g., H-Cl bond is polarized H^δ⁺-Cl^δ⁻ because χ_Cl > χ_H).
 
-5. **Predictive Power as Information Anticipation**: Mendeleev's 1869 table predicted the existence and properties of Ga (gallium), Sc (scandium), and Ge (germanium) **before their discovery** (1875, 1879, 1886 respectively). This demonstrates that the table encodes **information that anticipates reality** (I=0.95, V=0.95) — a hallmark of mature scientific frameworks.
+5. **Predictive Power as Information Anticipation**: Mendeleev's 1869 table predicted the existence and properties of Ga (gallium), Sc (scandium), and Ge (germanium) **before their discovery** (1875, 1879, 1886 respectively). This demonstrates that the table encodes **information that anticipates reality** (It_score=0.95, V=0.95) — a hallmark of mature scientific frameworks.
 
 6. **Minimal Completeness**: 118 elements form a **closed, bounded system** (atomic number Z ∈ [1, 118]). No element can be removed without loss (minimality), and all elements with Z ≤ 118 are included (completeness). Elements 119-120 are predicted but not yet synthesized.
 
@@ -312,7 +312,7 @@ REVOI_mean = (0.95 + 0.80 + 0.95 + 0.90 + 0.85) / 5 = 0.89
 
 1. **FireTriangle** (Chemistry/Physics)
    - **Similarity**: Both have ternary structure (Fire: 3 components fuel/O₂/heat; Ptoe: 3 main blocks s/p/d with f as extension). Both exhibit synergy (Fire: combination → combustion; Ptoe: Z+configuration → properties). Both have attractors (Fire: stable burning; Ptoe: noble gases).
-   - **Difference**: FireTriangle is highly dynamic (D=0.90); Ptoe is static (D=0.65). Fire has strong material flow (F=0.95); Ptoe has gradient flow (F=0.70).
+   - **Difference**: FireTriangle is highly dynamic (D_score=0.90); Ptoe is static (D_score=0.65). Fire has strong material flow (F_score=0.95); Ptoe has gradient flow (F_score=0.70).
 
 2. **ColorSynthesis** (Optics)
    - **Similarity**: Both are classification systems organizing fundamental elements (Color: RGB primaries; Ptoe: 118 elements). Both have additive/subtractive logic (Color: RGB vs CMYK; Ptoe: cations vs anions). Both exhibit gradients (Color: hue wheel; Ptoe: electronegativity). Both are highly representable (R ≈ 0.95).

@@ -38,22 +38,22 @@ industry standard for all printed materials.
 ### Territory Space — Eagle Eye (ASFID)
 
 ```
-|Ω_print⟩ = 0.70|A⟩ + 0.80|S⟩ + 0.65|F⟩ + 0.85|I⟩ + 0.25|D⟩
+|Ω_print⟩ = 0.70|A_score⟩ + 0.80|S_score⟩ + 0.65|F_score⟩ + 0.85|It_score⟩ + 0.25|D_score⟩
 ```
 
 ### Map Space — Sphinx Eye (REVOI)
 
 ```
-|M_CMYK⟩_REVOI = 0.90|R⟩ + 0.85|E⟩ + 0.90|V⟩ + 0.85|O⟩ + 0.95|I⟩
+|M_CMYK⟩_REVOI = 0.90|R_score⟩ + 0.85|E_score⟩ + 0.90|V_score⟩ + 0.85|O_score⟩ + 0.95|It_score⟩
 ```
 
 | Dimension | Score | Justification |
 |---|---|---|
-| R (Representability) | 0.90 | (C%, M%, Y%, K%) — printer-intuitive notation |
-| E (Evolvability) | 0.85 | CMY→CMYK; spawned hexachrome; GCR/UCR algorithms refined |
-| V (Verifiability) | 0.90 | Measured with densitometers; ISO 12647 compliance |
-| O (Observability) | 0.85 | Ubiquitous in printed materials; halftone dots visible under loupe |
-| I (Interoperability) | 0.95 | ISO 12647, SWOP, Fogra — global standards |
+| R_score (Representability) | 0.90 | (C%, M%, Y%, K%) — printer-intuitive notation |
+| E_score (Evolvability) | 0.85 | CMY→CMYK; spawned hexachrome; GCR/UCR algorithms refined |
+| V_score (Verifiability) | 0.90 | Measured with densitometers; ISO 12647 compliance |
+| O_score (Observability) | 0.85 | Ubiquitous in printed materials; halftone dots visible under loupe |
+| It_score (Interoperability) | 0.95 | ISO 12647, SWOP, Fogra — global standards |
 
 **REVOI mean ≈ 0.89** — Excellent Map quality (best subtractive model).  
 **Epistemic Gap:** `ΔΘ ≈ 0.27` — Small gap; CMYK is an excellent practical model.

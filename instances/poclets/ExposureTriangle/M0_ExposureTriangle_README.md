@@ -95,15 +95,15 @@ This is the fundamental **Trade-off** (m2:Trade-off): infinite equivalent exposu
 
 ## 3. ASFID Analysis (Eagle Eye — Territory)
 
-Territory state vector: `|Ω_exposure⟩ = 0.80|A⟩ + 0.85|S⟩ + 0.95|F⟩ + 0.75|I⟩ + 0.60|D⟩`
+Territory state vector: `|Ω_exposure⟩ = 0.80|A_score⟩ + 0.85|S_score⟩ + 0.95|F_score⟩ + 0.75|It_score⟩ + 0.60|D_score⟩`
 
 | Dimension | Score | Justification |
 |-----------|-------|---------------|
-| **A** Attractor | 0.80 | System converges toward correct exposure (metering system acts as set-point) |
-| **S** Structure | 0.85 | Three-parameter coupling ISO × Aperture × Time with well-defined logarithmic interdependence |
-| **F** Flow | 0.95 | Massive photon flux (10¹⁵–10¹⁸ photons per typical exposure) — dominant physical phenomenon |
-| **I** Information | 0.75 | Spatial + spectral + temporal information encoded in captured photons |
-| **D** Dynamics | 0.60 | Exposure spans milliseconds to seconds — present but not fast-changing dynamics |
+| **A_score** Attractor | 0.80 | System converges toward correct exposure (metering system acts as set-point) |
+| **S_score** Structure | 0.85 | Three-parameter coupling ISO × Aperture × Time with well-defined logarithmic interdependence |
+| **F_score** Flow | 0.95 | Massive photon flux (10¹⁵–10¹⁸ photons per typical exposure) — dominant physical phenomenon |
+| **It_score** Information | 0.75 | Spatial + spectral + temporal information encoded in captured photons |
+| **D_score** Dynamics | 0.60 | Exposure spans milliseconds to seconds — present but not fast-changing dynamics |
 
 **ASFID completeness:** All 5 dimensions present ✅
 
@@ -111,29 +111,29 @@ Territory state vector: `|Ω_exposure⟩ = 0.80|A⟩ + 0.85|S⟩ + 0.95|F⟩ + 0
 
 ## 4. REVOI Analysis (Sphinx Eye — Map)
 
-Map state vector: `|M_triangle⟩_REVOI = 0.95|R⟩ + 0.85|E⟩ + 0.95|V⟩ + 0.95|O⟩ + 0.90|I⟩`
+Map state vector: `|M_triangle⟩_REVOI = 0.95|R_score⟩ + 0.85|E_score⟩ + 0.95|V_score⟩ + 0.95|O_score⟩ + 0.90|It_score⟩`
 
 **REVOI_mean = 0.92 → Exceptional Map quality**
 
 | Dimension | Score | Justification |
 |-----------|-------|---------------|
-| **R** Representability | 0.95 | Perfectly representable: triangular diagram, stop arithmetic (±1, ±2, ±3 stops), log₂ formula. `spaceCoverage ≈ 0.65` (covers 3 parameters + trade-offs; omits scene luminance, metering, optical physics) |
-| **E** Evolvability | 0.85 | Evolved from film to digital (ISO now variable per shot). Extends gracefully to computational photography (HDR, AI metering) without becoming obsolete |
-| **V** Verifiability | 0.95 | Predictions testable instantly: change any parameter → immediate visual feedback (histogram, chimping). Reproduced by millions of photographers daily |
-| **O** Observability | 0.95 | Ubiquitous in every photography textbook, tutorial, camera manual. Photographers internalize it as muscle memory through practice |
-| **I** Interoperability | 0.90 | Lingua franca of photography. Works across film/digital, all camera brands. Formalized in EXIF standard (ISO 12234) |
+| **R_score** Representability | 0.95 | Perfectly representable: triangular diagram, stop arithmetic (±1, ±2, ±3 stops), log₂ formula. `spaceCoverage ≈ 0.65` (covers 3 parameters + trade-offs; omits scene luminance, metering, optical physics) |
+| **E_score** Evolvability | 0.85 | Evolved from film to digital (ISO now variable per shot). Extends gracefully to computational photography (HDR, AI metering) without becoming obsolete |
+| **V_score** Verifiability | 0.95 | Predictions testable instantly: change any parameter → immediate visual feedback (histogram, chimping). Reproduced by millions of photographers daily |
+| **O_score** Observability | 0.95 | Ubiquitous in every photography textbook, tutorial, camera manual. Photographers internalize it as muscle memory through practice |
+| **It_score** Interoperability | 0.90 | Lingua franca of photography. Works across film/digital, all camera brands. Formalized in EXIF standard (ISO 12234) |
 
 ### REVOI Map Analysis State (also encoded in ASFID for comparison)
 
-Map ASFID state: `|M_triangle⟩ = 0.85|A⟩ + 0.95|S⟩ + 0.70|F⟩ + 0.85|I⟩ + 0.50|D⟩`
+Map ASFID state: `|M_triangle⟩ = 0.85|A_score⟩ + 0.95|S_score⟩ + 0.70|F_score⟩ + 0.85|It_score⟩ + 0.50|D_score⟩`
 
 | Dimension | Score | Justification |
 |-----------|-------|---------------|
-| **A** | 0.85 | Strong pedagogical attractor — teaches correct exposure with high clarity |
-| **S** | 0.95 | Perfect triangular geometry (3 vertices, 3 edges — minimal and complete) |
-| **F** | 0.70 | Moderate — conceptual flow only (no actual photon flux in the diagram) |
-| **I** | 0.85 | High — encodes 3 parameters + trade-off relationships |
-| **D** | 0.50 | Low — static diagram (does not model the temporal adjustment process) |
+| **A_score** | 0.85 | Strong pedagogical attractor — teaches correct exposure with high clarity |
+| **S_score** | 0.95 | Perfect triangular geometry (3 vertices, 3 edges — minimal and complete) |
+| **F_score** | 0.70 | Moderate — conceptual flow only (no actual photon flux in the diagram) |
+| **It_score** | 0.85 | High — encodes 3 parameters + trade-off relationships |
+| **D_score** | 0.50 | Low — static diagram (does not model the temporal adjustment process) |
 
 > **Sphinx Eye insight:** Why does the Exposure Triangle work so well as a teaching tool?
 > 1. Reduces complex optics physics to 3 intuitive parameters  

@@ -323,9 +323,9 @@ Neither **Interface alone** (no selectivity) nor **Constraint alone** (no passag
 
 | Dimension | Ragnarök Manifestation |
 |-----------|------------------------|
-| **S** (Structure) | 7-pole Yggdrasil system, 9 Worlds structure fragments and burns |
-| **D** (Dynamics) | Ultimate conflict (gods vs giants), fires, floods, systemic collapse |
-| **F** (Flow/Threshold) | Composite triggers exceed critical threshold |
+| **S_score** (Structure) | 7-pole Yggdrasil system, 9 Worlds structure fragments and burns |
+| **D_score** (Dynamics) | Ultimate conflict (gods vs giants), fires, floods, systemic collapse |
+| **F_score** (Flow/Threshold) | Composite triggers exceed critical threshold |
 
 ### Trigger Mechanism (AND Logic)
 
@@ -373,11 +373,11 @@ Neither **Interface alone** (no selectivity) nor **Constraint alone** (no passag
 
 | Dimension | Value | Meaning |
 |-----------|-------|---------|
-| **A** (Attractor) | 0.95 | System drawn to destruction (inevitable fate) |
-| **S** (Structure) | 0.5 | Structure collapses (fragmenting) |
-| **F** (Flow) | 0.95 | Maximum flux (fire, flood, combat) |
-| **I** (Information) | 0.9 | High information (prophecy, signals, combat intelligence) |
-| **D** (Dynamics) | 1.0 | **Maximum dynamics** (ultimate transformation) |
+| **A_score** (Attractor) | 0.95 | System drawn to destruction (inevitable fate) |
+| **S_score** (Structure) | 0.5 | Structure collapses (fragmenting) |
+| **F_score** (Flow) | 0.95 | Maximum flux (fire, flood, combat) |
+| **It_score** (Information) | 0.9 | High information (prophecy, signals, combat intelligence) |
+| **D_score** (Dynamics) | 1.0 | **Maximum dynamics** (ultimate transformation) |
 
 ### Systemic Role
 

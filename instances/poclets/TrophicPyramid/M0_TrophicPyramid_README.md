@@ -88,11 +88,11 @@ A fourth constraint governs the anthropogenic dimension:
 
 | Dimension | Score | Interpretation |
 |-----------|-------|----------------|
-| **A** Attractor | **0.97** | Dual attractor: Lindeman's thermodynamic basin (universal) + anthropogenic meta-attractor (global ecosystem dominance by humanity). No ecosystem escapes either basin. |
-| **S** Structure | **0.92** | Discrete, ordered strata stable across biomes + humanity's meta-layer (agriculture, cities, fishing fleets) overlying all natural levels. |
-| **F** Flow | **0.97** | Bottom-up energy flow + top-down cascades + fossil-fuel bypass (~20 000 kJ/m²/yr exceeding natural primary production). |
-| **I** Information | **0.90** | Trophic position encodes metabolic role + biomagnification of toxins. Humanity adds unprecedented information processing (technology, global monitoring, conservation science). |
-| **D** Dynamics | **0.95** | Lotka-Volterra oscillations, trophic cascades + 6th mass extinction, climate change, habitat destruction. Anthropocene dynamics now dominate. |
+| **A_score** Attractor | **0.97** | Dual attractor: Lindeman's thermodynamic basin (universal) + anthropogenic meta-attractor (global ecosystem dominance by humanity). No ecosystem escapes either basin. |
+| **S_score** Structure | **0.92** | Discrete, ordered strata stable across biomes + humanity's meta-layer (agriculture, cities, fishing fleets) overlying all natural levels. |
+| **F_score** Flow | **0.97** | Bottom-up energy flow + top-down cascades + fossil-fuel bypass (~20 000 kJ/m²/yr exceeding natural primary production). |
+| **It_score** Information | **0.90** | Trophic position encodes metabolic role + biomagnification of toxins. Humanity adds unprecedented information processing (technology, global monitoring, conservation science). |
+| **D_score** Dynamics | **0.95** | Lotka-Volterra oscillations, trophic cascades + 6th mass extinction, climate change, habitat destruction. Anthropocene dynamics now dominate. |
 
 **ASFID mean = 0.94**
 
@@ -100,11 +100,11 @@ A fourth constraint governs the anthropogenic dimension:
 
 | Dimension | Score | Interpretation |
 |-----------|-------|----------------|
-| **R** Representability | **0.85** | Classic pyramid diagram iconic but strained by humanity as meta-level: a single species commanding all levels simultaneously challenges standard representational conventions. |
-| **E** Evolvability | **0.80** | Core thermodynamic structure constrained (Lindeman). Model gains evolvability: Anthropocene scenarios, rewilding, climate-driven trophic shifts, AP trajectory modelling. |
-| **V** Verifiability | **0.85** | Lindeman's law validated across hundreds of ecosystems. Human impact harder to quantify: HANPP estimated at 30–40% globally; AP calibration requires Earth System Science methods. |
-| **O** Observability | **0.90** | Species identifiable, populations countable. Human activities highly observable via satellite, fishery data, IUCN Red List, Living Planet Index. |
-| **I** Interoperability | **0.95** | Bridges thermodynamics, evolutionary biology, biogeochemistry, conservation biology, economics (ecosystem services), Earth System Science, *Limits to Growth* modelling. |
+| **R_score** Representability | **0.85** | Classic pyramid diagram iconic but strained by humanity as meta-level: a single species commanding all levels simultaneously challenges standard representational conventions. |
+| **E_score** Evolvability | **0.80** | Core thermodynamic structure constrained (Lindeman). Model gains evolvability: Anthropocene scenarios, rewilding, climate-driven trophic shifts, AP trajectory modelling. |
+| **V_score** Verifiability | **0.85** | Lindeman's law validated across hundreds of ecosystems. Human impact harder to quantify: HANPP estimated at 30–40% globally; AP calibration requires Earth System Science methods. |
+| **O_score** Observability | **0.90** | Species identifiable, populations countable. Human activities highly observable via satellite, fishery data, IUCN Red List, Living Planet Index. |
+| **It_score** Interoperability | **0.95** | Bridges thermodynamics, evolutionary biology, biogeochemistry, conservation biology, economics (ecosystem services), Earth System Science, *Limits to Growth* modelling. |
 
 **REVOI mean = 0.87**
 
@@ -135,7 +135,7 @@ Gap increased from 0.05 (v1.0.0, Coherent) to 0.07 (v2.x, OnCriticalLine) with t
 | GenericConcept | Formula | Role |
 |----------------|---------|------|
 | `m2:Hierarchy` | A⊗S | Positional ordering base → apex |
-| `m2:Flow` | F | Energy/biomass transfer between levels |
+| `m2:Flow` | F_score | Energy/biomass transfer between levels |
 | `m2:Gradient` | ⊗₂F | Energy density gradient from base to apex |
 | `m2:Homeostasis` | A⊗S⊗F⊗I⊗D | Ecosystem equilibrium under perturbation |
 | `m2:Regulation` | A⊗S⊗F | Predator-prey feedback loops + anthropogenic meta-regulation |
@@ -145,7 +145,7 @@ Gap increased from 0.05 (v1.0.0, Coherent) to 0.07 (v2.x, OnCriticalLine) with t
 | `m2:Emergence` | — | Ecosystem services (pollination, carbon sequestration) |
 | `m2:Transducer` | F⊗I | Humanity converts geological energy into trophic control (fossil-fuel bypass) |
 | `m2:Entropy` | D⊗F | Accelerated irreversibility: mass extinction = absorbing state; AP ≥ 0.70 seals cascade |
-| `m2:Processor` | I | Humanity's technological information processing enabling supra-trophic strategy |
+| `m2:Processor` | It_score | Humanity's technological information processing enabling supra-trophic strategy |
 
 **Total M2 GenericConcepts mobilised: 15**
 

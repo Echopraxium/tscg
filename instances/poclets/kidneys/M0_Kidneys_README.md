@@ -179,11 +179,11 @@ OUTPUTS (N=2):
 
 | Dimension | Score | Justification |
 |-----------|-------|---------------|
-| **A** (Attractor) | 0.90 | Strong homeostatic attractors: osmolality (280-300 mOsm/kg), pH (7.35-7.45), electrolyte balance, blood volume |
-| **S** (Structure) | 0.85 | Complex organization: 1M nephrons/kidney, 3-stage processing (glomerulus, tubule, collecting duct), distinct anatomical regions |
-| **F** (Flow) | 0.95 | Continuous blood flow (1200 mL/min), urine production (1 mL/min), sustained 24/7 operation |
-| **I** (Information) | 0.80 | Hormonal control (ADH, aldosterone, ANP), sensor feedback (osmoreceptors, baroreceptors), concentration gradients |
-| **D** (Dynamics) | 0.85 | Dynamic regulation: GFR varies with BP, reabsorption varies with hormones, circadian rhythm in filtration |
+| **A_score** (Attractor) | 0.90 | Strong homeostatic attractors: osmolality (280-300 mOsm/kg), pH (7.35-7.45), electrolyte balance, blood volume |
+| **S_score** (Structure) | 0.85 | Complex organization: 1M nephrons/kidney, 3-stage processing (glomerulus, tubule, collecting duct), distinct anatomical regions |
+| **F_score** (Flow) | 0.95 | Continuous blood flow (1200 mL/min), urine production (1 mL/min), sustained 24/7 operation |
+| **It_score** (Information) | 0.80 | Hormonal control (ADH, aldosterone, ANP), sensor feedback (osmoreceptors, baroreceptors), concentration gradients |
+| **D_score** (Dynamics) | 0.85 | Dynamic regulation: GFR varies with BP, reabsorption varies with hormones, circadian rhythm in filtration |
 
 ### 3.1 Attractor (A = 0.90)
 
@@ -312,11 +312,11 @@ Nephron (functional unit, N=1M per kidney)
 
 | Dimension | Score | Justification |
 |-----------|-------|---------------|
-| **R** (Representability) | 0.90 | Well-characterized models: clearance formulas, Starling forces, Michaelis-Menten kinetics |
-| **E** (Evolvability) | 0.70 | Moderate: adapts to hydration/BP, but limited regeneration after damage (no stem cell renewal in adults) |
-| **V** (Verifiability) | 0.95 | Highly verifiable: GFR measurement (creatinine clearance), urine analysis, blood chemistry |
-| **O** (Observability) | 0.85 | Observable via: urine output, blood tests, imaging (ultrasound, CT), biopsy histology |
-| **I** (Interoperability) | 0.90 | Strong interfaces with cardiovascular, endocrine, nervous systems via standardized biochemical signals |
+| **R_score** (Representability) | 0.90 | Well-characterized models: clearance formulas, Starling forces, Michaelis-Menten kinetics |
+| **E_score** (Evolvability) | 0.70 | Moderate: adapts to hydration/BP, but limited regeneration after damage (no stem cell renewal in adults) |
+| **V_score** (Verifiability) | 0.95 | Highly verifiable: GFR measurement (creatinine clearance), urine analysis, blood chemistry |
+| **O_score** (Observability) | 0.85 | Observable via: urine output, blood tests, imaging (ultrasound, CT), biopsy histology |
+| **It_score** (Interoperability) | 0.90 | Strong interfaces with cardiovascular, endocrine, nervous systems via standardized biochemical signals |
 
 ### 4.1 Representability (R = 0.90)
 

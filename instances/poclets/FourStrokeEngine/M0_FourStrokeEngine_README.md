@@ -45,11 +45,11 @@ The Four-Stroke Engine consists of **4 sequential strokes** (minimal configurati
 
 | Dimension | Score | Description |
 |-----------|-------|-------------|
-| **A**ttractor | 0.85 | Steady-state rotation (target RPM), conversion of heat → mechanical work |
-| **S**tructure | 0.90 | Piston-cylinder assembly, valves, connecting rod, crankshaft; cyclic topology |
-| **F**low | 0.95 | Air-fuel intake, exhaust gas output, energy flow (chemical → heat → work) |
-| **I**nformation | 0.80 | Valve timing, ignition timing, compression ratio, P-V-T state variables |
-| **D**ynamics | 0.85 | 4-stroke sequence, 2 crankshaft revolutions per cycle, combustion bifurcation |
+| **A_score**ttractor | 0.85 | Steady-state rotation (target RPM), conversion of heat → mechanical work |
+| **S_score**tructure | 0.90 | Piston-cylinder assembly, valves, connecting rod, crankshaft; cyclic topology |
+| **F_score**low | 0.95 | Air-fuel intake, exhaust gas output, energy flow (chemical → heat → work) |
+| **It_score**nformation | 0.80 | Valve timing, ignition timing, compression ratio, P-V-T state variables |
+| **D_score**ynamics | 0.85 | 4-stroke sequence, 2 crankshaft revolutions per cycle, combustion bifurcation |
 
 **Territory ASFID Vector**: `(0.85, 0.90, 0.95, 0.80, 0.85)`
 `‖ASFID‖ = 1.969`
@@ -57,15 +57,15 @@ The Four-Stroke Engine consists of **4 sequential strokes** (minimal configurati
 ## REVOI Analysis (Sphinx Eye — Map)
 
 > **Note v1.1.0**: The Map perspective acronym is **REVOI** (canonical TSCG notation), not ORIVE.  
-> Dimension definitions: **R**epresentability · **E**volvability · **V**erifiability · **O**bservability · **I**nteroperability
+> Dimension definitions: **R_score**epresentability · **E_score**volvability · **V_score**erifiability · **O_score**bservability · **It_score**nteroperability
 
 | Dimension | Score | Description |
 |-----------|-------|-------------|
-| **R**epresentability | 0.90 | Highly encodable via P-V diagrams, T-s diagrams, thermodynamic equations, animations |
-| **E**volvability | 0.85 | Base model readily extended to VVT, GDI, turbocharging, hybrid powertrains |
-| **V**erifiability | 0.90 | Validated by 150+ years of engineering practice; matches First & Second Law predictions |
-| **O**bservability | 0.90 | Measurable via RPM, cylinder pressure, temperature, airflow sensors |
-| **I**nteroperability | 0.85 | Modular design (1-cyl, 4-cyl, V6, V8), fuel flexibility (gasoline, E85, methanol) |
+| **R_score**epresentability | 0.90 | Highly encodable via P-V diagrams, T-s diagrams, thermodynamic equations, animations |
+| **E_score**volvability | 0.85 | Base model readily extended to VVT, GDI, turbocharging, hybrid powertrains |
+| **V_score**erifiability | 0.90 | Validated by 150+ years of engineering practice; matches First & Second Law predictions |
+| **O_score**bservability | 0.90 | Measurable via RPM, cylinder pressure, temperature, airflow sensors |
+| **It_score**nteroperability | 0.85 | Modular design (1-cyl, 4-cyl, V6, V8), fuel flexibility (gasoline, E85, methanol) |
 
 **Map REVOI Vector**: `(0.90, 0.85, 0.90, 0.90, 0.85)`
 `‖REVOI‖ = 1.969`

@@ -88,7 +88,7 @@ formalized in Gs (M3_BicephalousPerspective.jsonld).
 
 ---
 
-## ⚡ F — The Morphic Dimension
+## ⚡ F — The Morphic Type
 
 Flow (F) has a unique dual ontological nature in Gt:
 ```
@@ -119,6 +119,6 @@ The eagle flies high above the territory, seeing vast landscapes with clarity:
 3. **× operator** — structural product (replaces former ⊗ᵗ notation)
 4. **EmptyTerritory** — neutral element of × (Black in symbolic grammar)
 5. **Φ coupling** — natural transformation to Map Grammar
-6. **F morphic** — only dimension with entity AND morphism nature
+6. **F morphic** — only type with entity AND morphism nature
 
 **The Eagle sees the Territory as it is.** 🦅

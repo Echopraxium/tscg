@@ -13,7 +13,47 @@
     "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "A_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
+      "@type": "xsd:float"
+    },
+    "S_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
+      "@type": "xsd:float"
+    },
+    "F_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
+      "@type": "xsd:float"
+    },
+    "It_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
+      "@type": "xsd:float"
+    },
+    "D_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
+      "@type": "xsd:float"
+    },
+    "R_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
+      "@type": "xsd:float"
+    },
+    "E_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
+      "@type": "xsd:float"
+    },
+    "V_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
+      "@type": "xsd:float"
+    },
+    "O_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
+      "@type": "xsd:float"
+    },
+    "Im_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
+      "@type": "xsd:float"
+    }
   },
   "@graph": [
     {
@@ -64,7 +104,91 @@
           "changes": "Initial TRIZ SystemicFramework (Option C architecture). 40 inventive principles defined as M1 instances (M1_SystemicModeling.jsonld), M0 references them. 3-5 char codes with conventions (#=tion, %=ing, Y=y, $=ics, ==Through, :=Change, &=and, *=ant, @=rial). ASFID/REVOI scoring complete. GenericConcept mapping (3 in M1_CoreConcepts, 6 in M1_SystemicModeling). Prepared for icosahedron simulation."
         }
       ],
-      "m1core:simulationTitle": "TRIZ — Theory of Inventive Problem Solving"
+      "m1core:simulationTitle": "TRIZ — Theory of Inventive Problem Solving",
+      "m0:asfidScores": {
+        "A_score": {
+          "@value": "1.0",
+          "@type": "xsd:float"
+        },
+        "S_score": {
+          "@value": "1.0",
+          "@type": "xsd:float"
+        },
+        "F_score": {
+          "@value": "0.80",
+          "@type": "xsd:float"
+        },
+        "It_score": {
+          "@value": "1.0",
+          "@type": "xsd:float"
+        },
+        "D_score": {
+          "@value": "0.60",
+          "@type": "xsd:float"
+        },
+        "m0:mean": {
+          "@value": "0.88",
+          "@type": "xsd:float"
+        },
+        "m0:justification": {
+          "A_score": "40 inventive principles as solution attractors; contradiction resolution as ultimate attractor.",
+          "S_score": "Triple hierarchy: 39×39 contradiction matrix + 40 principles + 8 evolution laws.",
+          "F_score": "Unidirectional flow (problem→solution); no internal feedback loop. Normalized: 4/5.",
+          "It_score": "Systematic codification: 39 parameters encode problems, 40 principles encode solutions.",
+          "D_score": "Evolution laws present but external to framework; no autonomous dynamics. Normalized: 3/5."
+        }
+      },
+      "m0:revoiScores": {
+        "R_score": {
+          "@value": "1.0",
+          "@type": "xsd:float"
+        },
+        "E_score": {
+          "@value": "0.80",
+          "@type": "xsd:float"
+        },
+        "V_score": {
+          "@value": "1.0",
+          "@type": "xsd:float"
+        },
+        "O_score": {
+          "@value": "1.0",
+          "@type": "xsd:float"
+        },
+        "Im_score": {
+          "@value": "1.0",
+          "@type": "xsd:float"
+        },
+        "m0:mean": {
+          "@value": "0.96",
+          "@type": "xsd:float"
+        },
+        "m0:justification": {
+          "R_score": "Principles encode solution classes bidirectionally; matrix represents full problem→solution space.",
+          "E_score": "Framework evolved (TRIZ extensions); driven by community. Normalized: 4/5.",
+          "V_score": "Massive empirical validation (200,000+ patents); cross-domain reproducibility.",
+          "O_score": "Principles observable in patents; applications observable in products; fully transparent.",
+          "Im_score": "Transdisciplinary by design; compatible with QFD, Lean, Six Sigma."
+        }
+      },
+      "m0:epistemicGap": {
+        "m3:formula": "δ₁ = |ASFID_mean − REVOI_mean| / √2",
+        "m3:asfidMean": {
+          "@value": "0.88",
+          "@type": "xsd:float"
+        },
+        "m3:revoiMean": {
+          "@value": "0.96",
+          "@type": "xsd:float"
+        },
+        "m3:norm": {
+          "@value": "0.057",
+          "@type": "xsd:float"
+        },
+        "m3:spectralClass": "OnCriticalLine",
+        "m3:normalization": "Original Altshuller 0-5 scale normalized to 0-1 (÷5). A=1.0, S=1.0, F=0.80, It=1.0, D=0.60 | R=1.0, E=0.80, V=1.0, O=1.0, Im=1.0",
+        "m3:interpretation": "REVOI (0.96) slightly dominates ASFID (0.88) — expected for a prescriptive framework: TRIZ IS primarily an epistemic construction (Map). The slight gap (δ₁=0.057) reflects that F and D dimensions of the Territory are not fully captured by the Map."
+      }
     },
     {
       "@id": "m0triz:TRIZ_ASFID_Scores",

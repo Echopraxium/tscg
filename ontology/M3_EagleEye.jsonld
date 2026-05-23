@@ -13,11 +13,11 @@
     {
       "@id": "m3:eagle_eye:EagleEye",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.7.0",
+      "owl:versionInfo": "2.8.0",
       "dcterms:created": "2026-01-21",
-      "dcterms:modified": "2026-05-18",
+      "dcterms:modified": "2026-05-20",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:description": "Territory Grammar Gt: free commutative monoidal grammar over primitive types {A, S, F, I, D}. Provides the ontological/empirical perspective on systems-as-territory. Each primitive type instantiates at M0 as an evaluation functor F_x : System → [0,1].",
+      "dcterms:description": "Territory Grammar Gt: free commutative monoidal grammar over primitive types {A, S, F, I, D} (Territory types 𝕋₀(×)). Provides the ontological/empirical perspective on systems-as-territory. Each primitive type instantiates at M0 as an evaluation functor F_x : System → [0,1].",
       "m3:ontologyCategory": {
         "@id": "m3:GenesisExtension"
       },
@@ -39,7 +39,7 @@
         "changelog": {
           "v2.5.0": "IMPORT UPDATE: owl:imports changed from M3_GenesisSpace.jsonld to M3_GrammarFoundation.jsonld (apex ontology). m3: namespace updated to M3_GenesisGrammar.jsonld. Aligns with new M3 architecture: GrammarFoundation (apex) → EagleEye/SphinxEye → GenesisGrammar.",
           "v2.4.0": "FORMALISM REFORM: Replaced Hilbert space / orthonormal basis framing with Structural Grammar (Lambek calculus). basis_properties → grammar_properties (Territory Grammar Gt). Removed hilbert_space, orthonormality fields. coupling_with_REVOI reframed: SVD/Sigma removed, Phi/Psi recast as natural transformations. orthogonality_matrix → independence_matrix. See TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md.",
-          "v2.3.0": "REFACTORING: Removed m3:eagle_eye:M3Dimension class (now m3:M3Dimension in GenesisSpace). Removed common properties (symbol, index, examples - now m3:dimensionSymbol, m3:dimensionIndex, m3:dimensionExamples in GenesisSpace). Kept ASFID-specific properties (physicalInterpretation, rangeAnalog, criticalAxiom)."
+          "v2.3.0": "REFACTORING: Removed m3:eagle_eye:M3Dimension class (now m3:MonoidalType in GenesisSpace). Removed common properties (symbol, index, examples - now m3:dimensionSymbol, m3:dimensionIndex, m3:dimensionExamples in GenesisSpace). Kept ASFID-specific properties (physicalInterpretation, rangeAnalog, criticalAxiom)."
         }
       },
       "parent_ontology": {
@@ -57,12 +57,16 @@
           "I",
           "D"
         ],
-        "product": "×  (structural product, Territory — intra-ASFID)",
+        "product": "×",
         "primitive_role": "generators of Territory type expressions (M2 structural formulas)",
         "functor_role": "F_A, F_S, F_F, F_I, F_D : System → (M0 numeric ValueSpace)  (evaluation morphisms at M0)",
         "perspective": "ontological / empirical",
         "independence": "verified  (no primitive derivable from others)",
-        "mathematical_foundation": "Lambek Calculus / free commutative monoidal categories (Lambek 1958, MacLane 1963)"
+        "mathematical_foundation": "Lambek Calculus / free commutative monoidal categories (Lambek 1958, MacLane 1963)",
+        "operator": "× (Territory structural product — intra-ASFID)",
+        "neutral_element": "m3gf:EmptyTerritory",
+        "neutral_element_label": "Empty Territory (neutral of ×)",
+        "neutral_element_semantic": "Black — absence of all ASFID types"
       },
       "coupling_with_MapGrammar": {
         "description": "Territory Grammar Gt and Map Grammar Gm are connected via natural transformations (category theory). Gt and Gm are structurally separate grammars — their separation is fundamental, not a consequence of orthogonality.",
@@ -101,101 +105,6 @@
         "analysis_synthesis_axis": "Analysis",
         "quadrant": "Analysis of Reality (Territory)"
       },
-      "dimensions": [
-        {
-          "@id": "m3:eagle_eye:Attractor",
-          "@type": [
-            "owl:NamedIndividual",
-            "m3:M3Dimension"
-          ],
-          "rdfs:label": "Attractor",
-          "m3:dimensionSymbol": "A",
-          "m3:dimensionIndex": 1,
-          "rdfs:comment": "Asymptotic convergence tendency. Measures stability landscape and equilibrium attraction.",
-          "m3:eagle_eye:physicalInterpretation": "Stability basin, attractor state, homeostatic set-point",
-          "m3:eagle_eye:rangeAnalog": "qualitative spectrum: minimal=chaos/instability, 1=perfect stability",
-          "m3:dimensionExamples": [
-            "Thermostat set-point (high A)",
-            "Strange attractor in chaos (low A)",
-            "Biological homeostasis (medium-high A)"
-          ]
-        },
-        {
-          "@id": "m3:eagle_eye:Structure",
-          "@type": [
-            "owl:NamedIndividual",
-            "m3:M3Dimension"
-          ],
-          "rdfs:label": "Structure",
-          "m3:dimensionSymbol": "S",
-          "m3:dimensionIndex": 2,
-          "rdfs:comment": "Topological organization and connectivity. Measures internal arrangement and relational patterns.",
-          "m3:eagle_eye:physicalInterpretation": "Network topology, crystalline order, organizational hierarchy",
-          "m3:eagle_eye:rangeAnalog": "qualitative spectrum: minimal=gas (no structure), 1=crystal (perfect lattice)",
-          "m3:dimensionExamples": [
-            "Gas molecules (S≈0.1)",
-            "Liquid water (S≈0.4)",
-            "Biological cell (S≈0.7)",
-            "Diamond crystal (S≈0.95)"
-          ]
-        },
-        {
-          "@id": "m3:eagle_eye:Flow",
-          "@type": [
-            "owl:NamedIndividual",
-            "m3:M3Dimension"
-          ],
-          "rdfs:label": "Flow",
-          "m3:dimensionSymbol": "F",
-          "m3:dimensionIndex": 3,
-          "rdfs:comment": "Exchange rate with environment. Measures openness and dissipation. AXIOM: F ≥ 0.1 (Universal Openness).",
-          "m3:eagle_eye:physicalInterpretation": "Matter/energy/information flux across boundary",
-          "m3:eagle_eye:rangeAnalog": "[0.1,1] where 0.1=quasi-closed, 1=maximally dissipative",
-          "m3:eagle_eye:criticalAxiom": "F cannot be absent from any non-degenerate system",
-          "m3:dimensionExamples": [
-            "Thermos flask (F≈0.15 - quasi-closed)",
-            "Human body (F≈0.6 - moderate exchange)",
-            "Tornado (F≈0.95 - highly dissipative)"
-          ]
-        },
-        {
-          "@id": "m3:eagle_eye:Information",
-          "@type": [
-            "owl:NamedIndividual",
-            "m3:M3Dimension"
-          ],
-          "rdfs:label": "Information",
-          "m3:dimensionSymbol": "I",
-          "m3:dimensionIndex": 4,
-          "rdfs:comment": "State complexity (synchronic). Measures variety, diversity, Shannon entropy at fixed time.",
-          "m3:eagle_eye:physicalInterpretation": "Configurational entropy, state-space volume, variety",
-          "m3:eagle_eye:rangeAnalog": "qualitative spectrum: minimal=trivial/simple, 1=maximally complex",
-          "m3:dimensionExamples": [
-            "Single atom (I≈0.05)",
-            "Binary switch (I≈0.1)",
-            "Human genome (I≈0.8)",
-            "Brain neural state (I≈0.9)"
-          ]
-        },
-        {
-          "@id": "m3:eagle_eye:Dynamics",
-          "@type": [
-            "owl:NamedIndividual",
-            "m3:M3Dimension"
-          ],
-          "rdfs:label": "Dynamics",
-          "m3:dimensionSymbol": "D",
-          "m3:dimensionIndex": 5,
-          "rdfs:comment": "State evolution (diachronic). Measures temporal change and transformation rate.",
-          "m3:eagle_eye:physicalInterpretation": "Phase velocity, reaction rate, evolutionary trajectory",
-          "m3:eagle_eye:rangeAnalog": "qualitative spectrum: minimal=static/frozen, 1=rapid change",
-          "m3:dimensionExamples": [
-            "Geological processes (D≈0.1 - slow)",
-            "Chemical reactions (D≈0.5 - moderate)",
-            "Neural firing (D≈0.9 - rapid)"
-          ]
-        }
-      ],
       "independence_matrix": {
         "description": "The 5 primitive types {A,S,F,I,D} are analytically independent — no primitive type is derivable from the others",
         "verified": "true",
@@ -205,17 +114,22 @@
         "@id": "m3:sphinx_eye:SphinxEye",
         "description": "Sphinx Eye provides Map Grammar Gm over primitive types {R,E,V,O,I}, complementing Eagle's Territory Grammar Gt",
         "relationship": "structurally_complementary",
-        "complete_architecture": "TSCG Bicephalous Architecture = Gt (Territory) + Gm (Map) — Gs (Stereopsis) is the reification of their stereopsic synergy"
+        "complete_architecture": "TSCG Bicephalous Grammar = Gt (Territory) + Gm (Map)"
       },
       "m2:changelog": [
         {
-          "version": "2.9.0",
-          "date": "2026-05-18",
-          "changes": "STEREOPSIS: complete_architecture updated to reference Gs as reification of stereopsic synergy."
+          "version": "2.8.0",
+          "date": "2026-05-20",
+          "changes": "CLEANUP: dimensionSymbol→typeSymbol, dimensionIndex→typeIndex, dimensions→types. Removed Hilbert-space refs, scalar axioms (F≥0.1), numeric rangeAnalog. Aligned with Lambek/structural grammar formalism."
         },
         {
-          "version": "2.8.0",
+          "version": "2.7.0",
           "date": "2026-05-18",
+          "changes": "complete_architecture updated to reference Gs as reification of stereopsic synergy."
+        },
+        {
+          "version": "2.6.0",
+          "date": "2026-05-13",
           "changes": "OPERATOR REFORM: product notation ⊗ᵗ → × (structural product, Territory)."
         }
       ]
@@ -224,14 +138,14 @@
       "@id": "m3:eagle_eye:physicalInterpretation",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Physical Interpretation (ASFID)",
-      "rdfs:comment": "Concrete physical manifestations or analogues of the ASFID dimension in Territory",
+      "rdfs:comment": "Concrete physical manifestations or analogues of the ASFID types in Territory",
       "rdfs:domain": {
-        "@id": "m3:M3Dimension"
+        "@id": "m3:MonoidalType"
       },
       "rdfs:range": {
         "@id": "xsd:string"
       },
-      "skos:definition": "Description of how the ASFID dimension manifests in physical, biological, or social systems as observable Territory phenomena",
+      "skos:definition": "Description of how the ASFID types manifests in physical, biological, or social systems as observable Territory phenomena",
       "skos:example": "Attractor → Stability basin, homeostatic set-point",
       "dcterms:created": "2026-02-16"
     },
@@ -239,9 +153,9 @@
       "@id": "m3:eagle_eye:rangeAnalog",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Qualitative Range (ASFID)",
-      "rdfs:comment": "Qualitative structural domain of the ASFID dimension in Territory — expressed as a spectrum, not a numeric scale.",
+      "rdfs:comment": "Qualitative structural domain of the ASFID types in Territory — expressed as a spectrum, not a numeric scale.",
       "rdfs:domain": {
-        "@id": "m3:M3Dimension"
+        "@id": "m3:MonoidalType"
       },
       "rdfs:range": {
         "@id": "xsd:string"
@@ -254,9 +168,9 @@
       "@id": "m3:eagle_eye:criticalAxiom",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Structural Axiom (ASFID)",
-      "rdfs:comment": "Universal structural principle or necessity governing the presence and role of this ASFID dimension in any non-degenerate system.",
+      "rdfs:comment": "Universal structural principle or necessity governing the presence and role of this ASFID types in any non-degenerate system.",
       "rdfs:domain": {
-        "@id": "m3:M3Dimension"
+        "@id": "m3:MonoidalType"
       },
       "rdfs:range": {
         "@id": "xsd:string"
@@ -264,6 +178,101 @@
       "skos:definition": "A structural necessity or universal principle — expressed as a qualitative rule, not a numeric inequality — that must hold for this ASFID dimension in any observable system. Replaces scalar constraints (e.g., F ≥ 0.1) of the former Hilbert-space formalism with structural grammar rules.",
       "skos:example": "Flow (F) — Universal Openness Axiom: F is structurally necessary in any observable system; no real system is perfectly isolated from its environment. Expressed structurally: F cannot be absent from the structural formula of any non-degenerate system.",
       "dcterms:created": "2026-02-16"
+    },
+    {
+      "@id": "m3:eagle_eye:typeA",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Attractor (A)",
+      "m3:typeSymbol": "A",
+      "m3:typeIndex": 1,
+      "rdfs:comment": "𝕋₀(×) generator — Convergence points, stable states, equilibria.",
+      "rdfs:domain": {
+        "@id": "m3:MonoidalType"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "m3:eagle_eye:typeS",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Structure (S)",
+      "m3:typeSymbol": "S",
+      "m3:typeIndex": 2,
+      "rdfs:comment": "𝕋₀(×) generator — Spatial or topological organisation.",
+      "rdfs:domain": {
+        "@id": "m3:MonoidalType"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "m3:eagle_eye:typeF",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Flow (F)",
+      "m3:typeSymbol": "F",
+      "m3:typeIndex": 3,
+      "rdfs:comment": "𝕋₀(×) generator — Exchange with environment: matter, energy or information flux.",
+      "rdfs:domain": {
+        "@id": "m3:MonoidalType"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "m3:eagle_eye:typeI",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Information (I)",
+      "m3:typeSymbol": "I",
+      "m3:typeIndex": 4,
+      "rdfs:comment": "𝕋₀(×) generator — Encoded content distinguishing this system state from alternatives.",
+      "rdfs:domain": {
+        "@id": "m3:MonoidalType"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "m3:eagle_eye:typeD",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Dynamics (D)",
+      "m3:typeSymbol": "D",
+      "m3:typeIndex": 5,
+      "rdfs:comment": "𝕋₀(×) generator — Temporal evolution capacity.",
+      "rdfs:domain": {
+        "@id": "m3:MonoidalType"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "m3:eagle_eye:operator",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Operator × (Territory product)",
+      "rdfs:comment": "Monoidal operator of Gt. Intra-ASFID — closed within Territory. Precedence: highest (× > + > |).",
+      "skos:example": "A × S × It × F = Homeostasis",
+      "rdfs:domain": {
+        "@id": "m3:MonoidalType"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "m3:eagle_eye:neutralElement",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Neutral Element (EmptyTerritory)",
+      "rdfs:comment": "Neutral element of ×: EmptyTerritory. Symbolic: Black (absence of all ASFID types). A × EmptyTerritory = A.",
+      "rdfs:domain": {
+        "@id": "m3:MonoidalType"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     }
   ]
 }

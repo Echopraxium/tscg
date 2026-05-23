@@ -346,7 +346,7 @@ alongside the Territory and Map alphabets.
 ```
 Alphabet ×  =  {A, S, F, I, D}      6 types (5 primitives + EmptyTerritory)
 Alphabet +  =  {R, E, V, O, Im}     6 types (5 primitives + EmptyMap)
-Alphabet |  =  {T}                   2 types (1 primitive + EmptyStereopsis)
+Alphabet |  =  {T, _^, _$}                   2 types (1 primitive + EmptyStereopsis)
 ```
 
 ### T — Temporality (first bicephalous primitive)
@@ -402,7 +402,7 @@ An apparent asymmetry exists between the three operators:
 grammar. | is **open** by definition — its constitutive role is to connect
 two structurally separate grammars (Gt and Map Gm) to produce types in Gs.
 
-If | could only operate on 𝕋₀(|) = {T}, it could not traverse the
+If | could only operate on 𝕋₀(|) = {T, _^, _$}, it could not traverse the
 Gt/Gm boundary — it would lose its defining purpose.
 
 ```
@@ -477,3 +477,98 @@ Reverse osmosis  →  Ψ : Gm → Gt   (imposed flow, Map → Territory)
 ```
 
 This would be the first poclet directly modelling the Φ/Ψ bicephalous dynamics.
+
+---
+
+## Operator Precedence in Structural Formulas (formally documented 2026-05-20)
+
+### Rule
+
+```
+×  >  +  >  |       (highest to lowest binding strength)
+```
+
+| Rank | Operator | Role | Binding |
+|---|---|---|---|
+| 1 | `×` | Territory product | Tightest |
+| 2 | `+` | Map sum | Medium |
+| 3 | `\|` | Stereopsic fusion | Loosest — always outermost |
+
+### Reading rule for hybrid formulas
+
+`|` is always the **main separator** between Territory (left) and Map (right):
+
+```
+A × S × It | R + O   =   (A × S × I) | (R + O)
+                          ↑ Territory    ↑ Map
+```
+
+### Why parentheses are not needed
+
+Two mechanisms eliminate ambiguity:
+
+1. **Alphabet constraints**: × operates only on ASFID types, + only on REVOI types.
+   Cross-alphabet combinations (e.g. `O × I`) are **invalid by construction**.
+
+2. **Precedence rule**: | always binds loosest → always the outermost operator.
+
+### Verification on all hybrid formulas
+
+```
+A × S × It | R + O        =  (A × S × I) | (R + O)      ✓
+S × It × F | V + E        =  (S × I × F) | (V + E)      ✓
+Ft × D × It | R + O      =  (Ft × D × It) | (R + O)    ✓
+It | V + O + R + Im      =  It | (V + O + R + Im)       ✓
+S × I × F × D | V        =  (S × I × F × D) | V        ✓
+```
+
+### This rule was formerly only implicit
+
+It is now formally documented here and in:
+- `M3_GrammarFoundation.jsonld` — `operator_grammar_types.precedence`
+- `ontology/docs/OntologyModeling_Guidelines.md` — Guideline 8
+
+---
+
+## Pole Primitives _^ and _$ (formalized 2026-05-20)
+
+### 𝕋₀(|) = {T, _^, _$}
+
+Two new primitives of the Stereopsis Grammar Gs:
+
+| Symbol | Name | Role |
+|---|---|---|
+| `_^` | Positive Pole | onset/amplifying pole of a GenericConcept pair |
+| `_$` | Negative Pole | terminus/attenuating pole of a GenericConcept pair |
+
+### Usage in structural formulas
+
+```
+formula | _^   →  positive pole  (e.g. Coherence)
+formula | _$   →  negative pole  (e.g. Incoherence)
+```
+
+**Examples:**
+```
+A × S × It | R + O | _^   =  Coherence
+A × S × It | R + O | _$   =  Incoherence
+A × S × F  | _^           =  Homeostasis
+A × S × F  | _$           =  Dysregulation
+```
+
+### Why _^ and _$ replace ^op
+
+`^op` was a vestige of the former tensor algebra formalism.
+In the structural grammar, types cannot have their polarity "inverted"
+(types are not vectors). `_^` and `_$` are proper type primitives of
+𝕋₀(|) — they select a pole without inverting anything.
+
+### It / Im disambiguation rule
+
+From v16.10.8, all hybrid formulas (containing |) use `It` and `Im`
+systematically to avoid confusion with the | operator:
+
+```
+It  =  Information  (Territory / Eagle Eye / Gt)
+Im  =  Interoperable (Map / Sphinx Eye / Gm)
+```

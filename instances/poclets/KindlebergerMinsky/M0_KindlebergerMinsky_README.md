@@ -79,11 +79,11 @@ Propagation:    SubThreshold ─────────────────
 
 | Dimension | Score | Justification |
 |-----------|-------|--------------|
-| **A** Attractor | 0.92 | Three explicit attractors: speculative bubble (Euphoria), Minsky Moment bifurcation (Distress), post-crash equilibrium (Revulsion). R₀>1 during Boom, R₀<1 after Minsky Moment |
-| **S** Structure | 0.85 | Interbank network topology, leverage ratios, market architecture. Slightly reduced by shadow banking opacity |
-| **F** Flow | 0.92 | Credit flows (Boom), capital flight (Revulsion) — among the most measurable financial quantities |
-| **I** Information | 0.90 | Market narratives, speculative signals central but partially opaque (Shiller: quantifiable via surveys/media) |
-| **D** Dynamics | 0.95 | Best-formalized dimension: SIR-like epidemic models, Minsky phase taxonomy, quantitative chronologies |
+| **A_score** Attractor | 0.92 | Three explicit attractors: speculative bubble (Euphoria), Minsky Moment bifurcation (Distress), post-crash equilibrium (Revulsion). R₀>1 during Boom, R₀<1 after Minsky Moment |
+| **S_score** Structure | 0.85 | Interbank network topology, leverage ratios, market architecture. Slightly reduced by shadow banking opacity |
+| **F_score** Flow | 0.92 | Credit flows (Boom), capital flight (Revulsion) — among the most measurable financial quantities |
+| **It_score** Information | 0.90 | Market narratives, speculative signals central but partially opaque (Shiller: quantifiable via surveys/media) |
+| **D_score** Dynamics | 0.95 | Best-formalized dimension: SIR-like epidemic models, Minsky phase taxonomy, quantitative chronologies |
 | **Mean** | **0.91** | Eagle-dominant: Territory well-observed retrospectively |
 
 ### Eagle Eye formula by pole
@@ -104,11 +104,11 @@ Revulsion:     F ⊗ D          — capital flight flux + crash dynamics
 
 | Dimension | Score | Justification |
 |-----------|-------|--------------|
-| **R** Representability | 0.85 | Framework well-encoded in literature, textbooks, policy papers. Shared vocabulary (Minsky Moment, displacement, euphoria) |
-| **E** Evolvability | 0.78 | Extended by Shiller (narratives), network contagion models; contested as predictive tool |
-| **V** Verifiability | 0.75 | **Retrospective**: strong (post-crisis). **Prospective**: very limited (bubble timing fundamentally unpredictable) |
-| **O** Observability | 0.82 | Observable via: leverage ratios, credit spreads, VIX, margin debt, P/E, P/Rent, Tobin's Q |
-| **Im** Interoperability | 0.88 | Framework applies across crises (1637, 1929, 1987, 2000, 2008, 2022) and crisis types |
+| **R_score** Representability | 0.85 | Framework well-encoded in literature, textbooks, policy papers. Shared vocabulary (Minsky Moment, displacement, euphoria) |
+| **E_score** Evolvability | 0.78 | Extended by Shiller (narratives), network contagion models; contested as predictive tool |
+| **V_score** Verifiability | 0.75 | **Retrospective**: strong (post-crisis). **Prospective**: very limited (bubble timing fundamentally unpredictable) |
+| **O_score** Observability | 0.82 | Observable via: leverage ratios, credit spreads, VIX, margin debt, P/E, P/Rent, Tobin's Q |
+| **Im_score** Interoperability | 0.88 | Framework applies across crises (1637, 1929, 1987, 2000, 2008, 2022) and crisis types |
 | **Mean** | **0.82** | Map-strong but V limited by fundamental forecasting opacity |
 
 ### Epistemic Gap
@@ -177,13 +177,13 @@ Panic fully propagates (Propagation → Saturated regime). Forced selling cascad
 
 | TSCG dimension | Financial mapping |
 |---------------|-------------------|
-| **S** | Interbank exposure network (bilateral credit lines, CDS, repo) |
-| **I** | Panic signal content (counterparty default risk, liquidity shortage) |
-| **A** | Minsky Moment threshold (R₀ = 1) and saturation (full panic) |
-| **D** | Panic dynamics: hours to days in acute phase |
-| **F** | Capital flight, margin calls, repo withdrawal between nodes |
-| **V** | Panic signal fidelity (high: legitimate risk; low: pure contagion) |
-| **Im** | Bank-to-bank compatibility: credit lines, CDS contracts, common exposures |
+| **S_score** | Interbank exposure network (bilateral credit lines, CDS, repo) |
+| **It_score** | Panic signal content (counterparty default risk, liquidity shortage) |
+| **A_score** | Minsky Moment threshold (R₀ = 1) and saturation (full panic) |
+| **D_score** | Panic dynamics: hours to days in acute phase |
+| **F_score** | Capital flight, margin calls, repo withdrawal between nodes |
+| **V_score** | Panic signal fidelity (high: legitimate risk; low: pure contagion) |
+| **Im_score** | Bank-to-bank compatibility: credit lines, CDS contracts, common exposures |
 
 **SIR epidemic analogy:**
 
@@ -207,14 +207,14 @@ R₀ equivalent  = Leverage ratio × exposure concentration / resolution speed
 
 | TSCG dimension | Financial mapping |
 |---------------|-------------------|
-| **S** | Market belief network topology (analyst consensus, media, social networks) |
-| **I** | Collective belief content (speculative thesis, valuation narrative) |
-| **D** | Temporal unfolding across 5 Minsky phases |
-| **F** | Narrative flux: financial media, analyst reports, social proof |
-| **V** | Narrative coherence (maximum in Euphoria; zero in Revulsion) |
-| **R** | Narrative encodability (Shiller: surveys, media analysis, Google Trends) |
-| **A** | Collapse attractor — Minsky Moment telos implicit in Euphoria structure |
-| **Im** | Shared market interpretation framework (Bloomberg, CNBC, analyst consensus) |
+| **S_score** | Market belief network topology (analyst consensus, media, social networks) |
+| **It_score** | Collective belief content (speculative thesis, valuation narrative) |
+| **D_score** | Temporal unfolding across 5 Minsky phases |
+| **F_score** | Narrative flux: financial media, analyst reports, social proof |
+| **V_score** | Narrative coherence (maximum in Euphoria; zero in Revulsion) |
+| **R_score** | Narrative encodability (Shiller: surveys, media analysis, Google Trends) |
+| **A_score** | Collapse attractor — Minsky Moment telos implicit in Euphoria structure |
+| **Im_score** | Shared market interpretation framework (Bloomberg, CNBC, analyst consensus) |
 
 **Narrative arc across phases:**
 

@@ -8,7 +8,7 @@
 > **v2 Update (2026-05-18):** This document covers two reform phases.
 > Phase 1 (2026-05-11): ⊗ redefined as monoidal product (Lambek), abandoning tensor/Hilbert formalism.
 > Phase 2 (2026-05-18): ⊗ *replaced* by three explicit operators ×, +, | — one per grammar.
-> New: M3_BicephalousPerspective.jsonld, T (Temporality) as first Gs primitive, intra vs inter-grammar distinction.
+> New: M3_BicephalousPerspective.jsonld, T (Time) as first Gs primitive, intra vs inter-grammar distinction.
 
 ---
 
@@ -234,8 +234,7 @@ Under the Structural Grammar formalism, TSCG has exactly three operators:
 | `×` | Territory product | ASFID types simultaneously present (intra-Gt) | `D × I × F` = Process |
 | `+` | Map sum | REVOI types simultaneously present (intra-Gm) | `O + R + Im` = Context |
 | `\|` | Stereopsic fusion | Inter-grammar — connects Gt, Gm, Gs | `A × S × I \| R + O` = Coherence |
-| `×⇒` | Territory emergence | Emergent Territory concept | `×⇒(Memory, Entropy)` = Inertia |
-| `+⇒` | Map emergence | Emergent Map concept | `+⇒(Representable, Verifiable)` = ModelQuality |
+| _(×⇒, +⇒)_ | _(Emergence — removed)_ | No corpus usage — see PotentialRefinements_MonoidalOperators.md Refinement 8 | — |
 | `^op` | Duality / Opposition | Polar opposite | `Coherence^op` = Incoherence |
 
 These three operators form the complete **operator vocabulary** of the TSCG
@@ -306,6 +305,27 @@ between functors:
 
 This is legitimate category theory — well-established, metric-free, and
 perfectly suited to the TSCG bicephalous architecture.
+
+---
+
+### Bridge to Dirac Notation (Pedagogic Note)
+
+For readers familiar with quantum categorical grammar (Coecke, Sadrzadeh,
+Clark — 2010), TSCG poclets map naturally to Dirac kets:
+
+```
+|P⟩ : I → ConceptType   (poclet as morphism from the unit object)
+```
+
+This correspondence holds in any compact closed monoidal category.
+However, TSCG deliberately uses plain Lambek calculus (free commutative
+monoidal categories) — a strictly weaker structure that requires no
+inner product, no Hilbert space, and no duality morphisms (cap/cup).
+
+The Curry-Howard reading (poclet = proof term) captures the same
+intuition more precisely and without quantum mechanics connotations.
+Dirac notation is noted here as a bridge for readers coming from
+physics or computational linguistics — not as a foundational claim.
 
 ---
 
@@ -614,7 +634,7 @@ between Eagle Eye and Sphinx Eye. The architecture remains bicephalous.
 
 ### T — First Primitive of 𝕋₀(|)
 
-**T (Temporality)** is the first irreducible primitive of Gs:
+**T (Time)** is the first irreducible primitive of Gs:
 
 ```
 T  :=  irreducible bicephalous type
@@ -643,6 +663,43 @@ is needed or claimed.
 This preserves well-definedness despite | being inter-grammar.
 
 ---
+---
+
+## One Free Monoid — Multiple Named Vocabularies
+
+### The single TSCG algebraic structure
+
+TSCG has **one** free monoid — not a separate monoid per layer:
+
+```
+𝕋₀  =  {A, S, F, I, D, R, E, V, O, Im, T, _^, _$}   13 generators (M3)
+𝕋*  =  free monoid on 𝕋₀ via ×, +, |                 all well-formed expressions
+
+𝕋ₙ  =  expressions of complexity n
+        𝕋₁ = one operator application  (e.g. D × It × F = Process)
+        𝕋₂ = two applications          (e.g. Process × Coherence)
+```
+
+### Layers as lexicons, not monoids
+
+The four TSCG layers are named vocabularies within 𝕋*, not separate monoids:
+
+```
+M3  →  defines 𝕋₀ and operators (×, +, |)          the monoid itself
+M2  →  lexicon of GenericConcepts in 𝕋*             named transdisciplinary expressions
+M1  →  lexicon of Combos and domain extensions      named disciplinary expressions
+M0  →  concrete instantiations of M2/M1 expressions poclets
+```
+
+### Why this matters
+
+M2 is not closed under × (Process × Coherence fails — cross-nature composition).
+M1 Combos are not a new monoid — they are named 𝕋₂/𝕋₃ expressions.
+
+When the TSCG grammar generates a new concept, it always operates within
+the single free monoid 𝕋* — it just gives a new name to an expression.
+
+
 ## Summary
 
 ### Before

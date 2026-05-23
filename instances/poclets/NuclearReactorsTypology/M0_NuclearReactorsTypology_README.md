@@ -36,7 +36,7 @@ The **Nuclear Reactor Typology** poclet is TSCG's first industrial energy system
 ✅ **Dual bicephalous architecture** - Territory (empirical fission dynamics) + Map (safety models, standards)  
 ✅ **6 M1 Core Concepts** - Transdisciplinary patterns (CriticalityRegime, SelfSustainingReaction, etc.)  
 ✅ **M1_EnergyGenerators** - New domain extension for all power generation technologies  
-✅ **Complete ASFID coverage** - All 5 dimensions present (A=0.95, S=0.90, F=0.90, I=0.85, D=0.90)  
+✅ **Complete ASFID coverage** - All 5 dimensions present (A_score=0.95, S=0.90, F=0.90, I=0.85, D=0.90)  
 ✅ **8 transdisciplinary domains** - Engineering, physics, economics, safety, politics, environment, control theory, materials  
 
 **Key Innovation**: Enneagram-inspired classification revealing philosophical design trade-offs (safety ↔ performance ↔ cost ↔ sustainability) embedded in technical choices.
@@ -74,11 +74,11 @@ The poclet includes **exactly 9 reactor types** representing distinct philosophi
 
 | Dimension | Nuclear Reactor Manifestation |
 |-----------|------------------------------|
-| **A** (Attractor) | Criticality k=1, power output setpoint, temperature equilibrium |
-| **S** (Structure) | Reactor vessel, fuel assemblies, moderator, coolant circuits, control rods |
-| **F** (Flow) | Neutron flux (10¹³-10¹⁴ n/cm²·s), thermal flux, coolant circulation |
-| **I** (Information) | Control signals, measurements (T, P, neutron flux, radiation) |
-| **D** (Dynamics) | Fission chain reaction, thermal transients, xenon oscillations |
+| **A_score** (Attractor) | Criticality k=1, power output setpoint, temperature equilibrium |
+| **S_score** (Structure) | Reactor vessel, fuel assemblies, moderator, coolant circuits, control rods |
+| **F_score** (Flow) | Neutron flux (10¹³-10¹⁴ n/cm²·s), thermal flux, coolant circulation |
+| **It_score** (Information) | Control signals, measurements (T, P, neutron flux, radiation) |
+| **D_score** (Dynamics) | Fission chain reaction, thermal transients, xenon oscillations |
 
 ---
 
@@ -1233,7 +1233,7 @@ DualCircuitArchitecture = Structure ⊗ Interface ⊗ Isolation
 | **Aviation** | Ram air turbine (wind-driven) | APU (powered generator) |
 | **Building** | Fire doors (fusible link) | Sprinkler pumps |
 | **Electronics** | Fuse (overcurrent melting) | Circuit breaker (trip mechanism) |
-| **Mechanical** | Dead man's switch (spring return) | E-stop button (operator action) |
+| **Mechanical** | Dead man's switch (spring return) | **Mechanical** | Dead man's switch (spring return) | E-stop button (operator action) |stop button (operator action) |
 
 **Design Philosophy**: **Fail-safe** (safe state is default, no energy required)
 
