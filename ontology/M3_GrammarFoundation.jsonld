@@ -8,11 +8,11 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "m3gf": "M3_GrammarFoundation.jsonld#"
+    "m3": "M3_GenesisGrammar.jsonld#"
   },
   "@graph": [
     {
-      "@id": "m3gf:GrammarFoundation",
+      "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
       "owl:versionInfo": "2.1.0",
       "dcterms:created": "2026-05-12",
@@ -38,7 +38,7 @@
           "M3_GenesisGrammar.jsonld"
         ],
         "changelog": {
-          "v1.1.0": "MAJOR UPDATE: Added dcterms metadata, skos namespace. Fixed owl:versionInfo prefix. Added 6 indexed operators (⊗ᵗ, ⊗ᵐ, Fm2, Fm2, _^ / _$, _^ / _$). Added type system hierarchy (𝕋₀/𝕋₁/𝕋₂/𝕄₀). Added m3gf:intersubjectiveBenchmark and m3gf:defeasibilityStatus. Confirmed apex position: no owl:imports.",
+          "v1.1.0": "MAJOR UPDATE: Added dcterms metadata, skos namespace. Fixed owl:versionInfo prefix. Added 6 indexed operators (⊗ᵗ, ⊗ᵐ, Fm2, Fm2, _^ / _$, _^ / _$). Added type system hierarchy (𝕋₀/𝕋₁/𝕋₂/𝕄₀). Added m3:grammar_foundation:intersubjectiveBenchmark and m3:grammar_foundation:defeasibilityStatus. Confirmed apex position: no owl:imports.",
           "v1.0.0": "Initial skeleton: M3Grammar and M3Dimension abstract classes, grammarType and monoidalProduct properties."
         }
       },
@@ -75,23 +75,23 @@
           "notation": "𝕋₀(×) = {A, S, F, I, D}",
           "grammar": "Territory Grammar Gt — Eagle Eye",
           "operator": "×",
-          "neutral": "m3gf:EmptyTerritory",
+          "neutral": "m3:grammar_foundation:EmptyTerritory",
           "perspective": "What systems ARE"
         },
         "map": {
           "notation": "𝕋₀(+) = {R, E, V, O, Im}",
           "grammar": "Map Grammar Gm — Sphinx Eye",
           "operator": "+",
-          "neutral": "m3gf:EmptyMap",
+          "neutral": "m3:grammar_foundation:EmptyMap",
           "perspective": "How models QUALIFY"
         },
         "stereopsis": {
           "notation": "𝕋₀(|) = {T, _^, _$}  — symbolic notation only, not URIs",
           "grammar": "Stereopsis Grammar Gs — Bicephalous Perspective",
           "operator": "|",
-          "neutral": "m3gf:StereopsisEmptySet",
+          "neutral": "m3:grammar_foundation:StereopsisEmptySet",
           "perspective": "How Territory and Map CORRESPOND",
-          "primitives_note": "T=Temporality, _^=PositivePole, _$=NegativePole. Symbols _^ and _$ are string notations only — OWL identifiers: m3:stereopsis:PositivePole, m3:stereopsis:NegativePole",
+          "primitives_note": "T=Temporality, _^=PositivePole, _$=NegativePole. Symbols _^ and _$ are string notations only — OWL identifiers: m3:bicephalous:PositivePole, m3:bicephalous:NegativePole",
           "see_also": "M3_BicephalousPerspective.jsonld"
         }
       },
@@ -141,14 +141,14 @@
       }
     },
     {
-      "@id": "m3gf:M3Grammar",
+      "@id": "m3:grammar_foundation:M3Grammar",
       "@type": "owl:Class",
       "rdfs:label": "M3 Grammar (Abstract)",
       "rdfs:comment": "Abstract base class for M3-level structural grammars. Concrete subclasses: TerritoryGrammar (Gt, ASFID primitives) and MapGrammar (Gm, REVOI primitives).",
-      "skos:definition": "A free commutative monoidal grammar over a finite set of primitive types. Characterized by: primitives (generators), monoidal product (⊗ⁱ), emergence operator (Fm2), and duality operator (_^ / _$)."
+      "skos:definition": "A free commutative monoidal grammar over a finite set of primitive types. Characterized by: primitives (generators), monoidal operator (× for Gt, + for Gm, | for Gs), composition morphism (Fm2), and pole primitives (_^ / _$)."
     },
     {
-      "@id": "m3gf:MonoidalType_base",
+      "@id": "m3:grammar_foundation:MonoidalType_base",
       "@type": "owl:Class",
       "rdfs:label": "Monoidal Type Base (formerly M3Dimension)",
       "rdfs:comment": "Abstract base class for M3 primitive types. At M2/M3: generators of structural formulas (qualitative, no metric). At M0: instantiation functors map structural primitives to observable instance values (quantitative scoring belongs to the M0 ValueSpace, not to the M3 structural grammar).",
@@ -156,12 +156,12 @@
       "skos:note": "The word 'dimension' is used in the analytical sense (independent axis of characterisation), NOT in the metric/Hilbert sense."
     },
     {
-      "@id": "m3gf:grammarType",
+      "@id": "m3:grammar_foundation:grammarType",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Grammar Type",
       "rdfs:comment": "Type of grammar — prevents collision between M3 structural grammar and M0 instance grammar (e.g. SHACL validation grammars).",
       "rdfs:domain": {
-        "@id": "m3gf:M3Grammar"
+        "@id": "m3:grammar_foundation:M3Grammar"
       },
       "rdfs:range": {
         "@id": "xsd:string"
@@ -169,65 +169,65 @@
       "skos:example": "free_commutative_monoidal"
     },
     {
-      "@id": "m3gf:monoidalProduct",
+      "@id": "m3:grammar_foundation:monoidalProduct",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Monoidal Operators ×, +, |",
       "rdfs:comment": "Three free commutative monoidal operators of TSCG — one per grammar. × (Territory, intra-ASFID), + (Map, intra-REVOI), | (Stereopsis, inter-grammar). Replaces former single indexed form ⊗ⁱ.",
       "rdfs:domain": {
-        "@id": "m3gf:M3Grammar"
+        "@id": "m3:grammar_foundation:M3Grammar"
       },
       "rdfs:range": {
         "@id": "xsd:string"
       },
       "skos:definition": "The structural co-activation operator of the TSCG Concept Grammar. Encodes simultaneous presence of multiple primitive types in a concept signature.",
-      "m3gf:indexed_forms": {
-        "territory": "⊗ᵗ  — Territory Grammar Gt co-activation",
-        "map": "⊗ᵐ  — Map Grammar Gm co-activation",
-        "general": "⊗ⁱ  — general form, i ∈ {t, m}"
-      },
-      "m3gf:axioms": {
-        "associativity": "(A ⊗ B) ⊗ C = A ⊗ (B ⊗ C)",
-        "commutativity": "A ⊗ B = B ⊗ A",
-        "neutral_element": "A ⊗ 1 = A",
+      "m3:grammar_foundation:axioms": {
+        "territory_associativity": "(A × B) × C = A × (B × C)",
+        "territory_commutativity": "A × B = B × A",
+        "territory_neutral": "A × EmptyTerritory = A",
+        "map_associativity": "(R + E) + V = R + (E + V)",
+        "map_commutativity": "R + E = E + R",
+        "map_neutral": "R + EmptyMap = R",
+        "stereopsis_associativity": "(a | b) | c = a | (b | c)",
+        "stereopsis_neutral": "x | StereopsisEmptySet = x",
         "no_metric": "no norm, no inner product, no scalar multiplication"
       },
-      "m3gf:operatorForms": {
+      "m3:grammar_foundation:operatorForms": {
         "territory": "×  — Territory structural product (intra-Gt, closed within ASFID)",
         "map": "+  — Map structural sum (intra-Gm, closed within REVOI)",
         "stereopsis": "|  — Stereopsic fusion (inter-grammar, always produces Gs)"
       },
-      "m3gf:precedence": "× > + > |  (highest to lowest binding strength)",
-      "m3gf:associativity": "All three are associative and commutative",
+      "m3:grammar_foundation:precedence": "× > + > |  (highest to lowest binding strength)",
+      "m3:grammar_foundation:associativity": "All three are associative and commutative",
       "skos:example": "D × It × F = Process  |  R + O = ModelQuality  |  A × S × It | R + O = Coherence"
     },
     {
-      "@id": "m3gf:dualityOperator",
+      "@id": "m3:grammar_foundation:dualityOperator",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Pole Primitives _^ and _$  (replaces former ^op)",
       "rdfs:comment": "Stereopsis Grammar Gs primitives _^ (PositivePole) and _$ (NegativePole). Applied as: formula | _^  (positive pole)  or  formula | _$  (negative pole). Replaces former duality operator _^ / _$ (vestige of tensor algebra). Defined in M3_BicephalousPerspective.jsonld.",
       "rdfs:domain": {
-        "@id": "m3gf:M3Grammar"
+        "@id": "m3:grammar_foundation:M3Grammar"
       },
       "rdfs:range": {
         "@id": "xsd:string"
       },
       "skos:definition": "Dual type operator: maps a concept type to its structural opposite. Corresponds to negation in propositional logic via the Curry-Howard correspondence.",
-      "m3gf:indexed_forms": {
-        "territory": "_^ / _$  — Territory duality",
-        "map": "_^ / _$  — Map duality",
-        "general": "_^ / _$  — general form, i ∈ {t, m}"
+      "m3:grammar_foundation:pole_forms": {
+        "positive": "_^  — PositivePole — applied as: formula | _^",
+        "negative": "_$  — NegativePole — applied as: formula | _$",
+        "note": "Both _^ and _$ are primitives of 𝕋₀(|) — string notations only, not URIs"
       },
       "skos:example": "A × S × It | R + O | _^  = Coherence  (positive pole)\nA × S × It | R + O | _$  = Incoherence  (negative pole)",
-      "m3gf:positivePolePrimitive": "_^  — PositivePole — onset/amplifying pole of a GenericConcept pair",
-      "m3gf:negativePolePrimitive": "_$  — NegativePole — terminus/attenuating pole of a GenericConcept pair"
+      "m3:grammar_foundation:positivePolePrimitive": "_^  — PositivePole — onset/amplifying pole of a GenericConcept pair",
+      "m3:grammar_foundation:negativePolePrimitive": "_$  — NegativePole — terminus/attenuating pole of a GenericConcept pair"
     },
     {
-      "@id": "m3gf:TypeSystem",
+      "@id": "m3:grammar_foundation:TypeSystem",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "TSCG Type System",
       "rdfs:comment": "Complete type hierarchy of the TSCG Structural Grammar across all layers.",
       "skos:definition": "Four-level type hierarchy derived from 10 primitive types via 3 operators.",
-      "m3gf:levels": {
+      "m3:grammar_foundation:levels": {
         "T0": {
           "label": "Primitive Types",
           "notation": "𝕋₀ = 13 primitives: {A,S,F,I,D} ∪ {R,E,V,O,Im} ∪ {T,_^,_$}  (symbolic — _^ _$ are string notations)",
@@ -242,12 +242,12 @@
         },
         "T1": {
           "label": "Derived Types (Named Product Types)",
-          "notation": "𝕋₁ = { τ₁ ⊗ᵢ τ₂ ⊗ᵢ ... ⊗ᵢ τₙ  |  τᵢ ∈ 𝕋₀ }",
+          "notation": "𝕋₁ = { τ₁ OP τ₂ OP ... OP τₙ  |  τᵢ ∈ 𝕋₀,  OP ∈ {×, +, |} }",
           "layer": "M2",
           "role": "M2 GenericConcepts — named structural formulas",
           "examples": [
-            "Process    = D ⊗ᵗ I ⊗ᵗ F",
-            "Coherence  = A ⊗ᵗ S ⊗ᵗ I ⊗ᵐ R ⊗ᵐ O",
+            "Process    = D × I × F",
+            "Coherence  = A × S × It | R + O",
             "Entropy    = D × F | _$"
           ]
         },
@@ -268,7 +268,7 @@
       }
     },
     {
-      "@id": "m3gf:intersubjectiveBenchmark",
+      "@id": "m3:grammar_foundation:intersubjectiveBenchmark",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "Intersubjective Benchmark",
       "rdfs:comment": "Domain-contextualized canonical poclet(s) used as scoring reference for M0 instances. Grounds TSCG measurement in norm-referenced intersubjective consensus. Defeasible by design — valid until superseded by broader consensus.",
@@ -276,7 +276,7 @@
       "rdfs:range": {
         "@id": "xsd:string"
       },
-      "m3gf:structure": {
+      "m3:grammar_foundation:structure": {
         "epistemicScore": {
           "property": "m0:epistemicGap",
           "formula": "||ASFID_mean - REVOI_mean|| / sqrt(2)",
@@ -306,7 +306,7 @@
           "method": "comparative | absolute | hybrid"
         }
       },
-      "m3gf:resolutionOrder": [
+      "m3:grammar_foundation:resolutionOrder": [
         "1. DomainSpecific benchmark  (M1 domain of the poclet)  <- DEFAULT",
         "2. CrossDomain benchmark     (adjacent M1 domain)",
         "3. Universal benchmark       (e.g. M0_AdaptiveImmuneResponse)",
@@ -315,7 +315,7 @@
       "skos:note": "Philosophical grounding: Popper (falsifiability), Kuhn (paradigm shifts), Peirce (limit of inquiry). Mathematical grounding: norm-referenced measurement (Stevens 1946), inter-rater reliability (ICC, Cohen kappa)."
     },
     {
-      "@id": "m3gf:defeasibilityStatus",
+      "@id": "m3:grammar_foundation:defeasibilityStatus",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Defeasibility Status",
       "rdfs:comment": "Explicit declaration that a benchmark or canonical reference is provisional — valid until superseded by broader consensus. Makes revisability a first-class property of TSCG measurements.",
@@ -323,7 +323,7 @@
         "@id": "xsd:string"
       },
       "skos:definition": "Defeasible knowledge: held as valid until defeated by stronger evidence or broader consensus. The normal epistemic status of scientific, legal, and practical knowledge.",
-      "m3gf:structure": {
+      "m3:grammar_foundation:structure": {
         "status": {
           "values": [
             "provisional",
@@ -354,14 +354,14 @@
       "dcterms:created": "2026-05-20"
     },
     {
-      "@id": "m3gf:Fm2",
+      "@id": "m3:grammar_foundation:Fm2",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Fm2 — GenericConcept Composition",
       "rdfs:comment": "Composition morphism for GenericConcepts (M2 level). Fm2 : 𝕋₁(M2)ⁿ → 𝕋₁(M2) — produces a new GenericConcept not reducible to simple juxtaposition of its arguments. Replaces former ⊗⇒ notation (which incorrectly suggested a monoidal operator). Fm2 is a morphism, not a monoidal operator — it operates at 𝕋₁ level, not 𝕋₀.",
       "skos:example": "Fm2(Memory, Entropy) = Inertia  |  Fm2(Incoherence, Invariant) = TopologicalDefect  |  Fm2(Process, Step, Trajectory) = PipelineProcess",
-      "m3gf:signature": "Fm2 : 𝕋₁(M2)ⁿ → 𝕋₁(M2)",
-      "m3gf:operatesAt": "𝕋₁ (GenericConcept level — not 𝕋₀ primitive level)",
-      "m3gf:morphismFamily": "Φ (Gt→Gm), Ψ (Gm→Gt), Fm2 (M2 composition), Fm1m2 (M1/M2 composition)",
+      "m3:grammar_foundation:signature": "Fm2 : 𝕋₁(M2)ⁿ → 𝕋₁(M2)",
+      "m3:grammar_foundation:operatesAt": "𝕋₁ (GenericConcept level — not 𝕋₀ primitive level)",
+      "m3:grammar_foundation:morphismFamily": "Φ (Gt→Gm), Ψ (Gm→Gt), Fm2 (M2 composition), Fm1m2 (M1/M2 composition)",
       "rdfs:domain": {
         "@id": "m3:MonoidalType"
       },
@@ -371,14 +371,14 @@
       "dcterms:created": "2026-05-20"
     },
     {
-      "@id": "m3gf:Fm1m2",
+      "@id": "m3:grammar_foundation:Fm1m2",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Fm1m2 — KnowledgeField + GenericConcept Composition",
       "rdfs:comment": "Composition morphism combining a KnowledgeField (M1) with one or more GenericConcepts (M2). Fm1m2 : 𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁ — produces a KnowledgeFieldConceptCombo. Crosses the M1/M2 boundary — analogous to | crossing the Gt/Gm boundary. Replaces former ⊗⇒ notation at M1 level.",
       "skos:example": "Fm1m2(Biology, Process) = BiologicalProcess  |  Fm1m2(Physics, Coherence) = LaserCoherence  |  Fm1m2(Education, Memory, Structure) = CurriculumDesign",
-      "m3gf:signature": "Fm1m2 : 𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁",
-      "m3gf:operatesAt": "M1/M2 boundary — domain-specific instantiation of generic patterns",
-      "m3gf:morphismFamily": "Φ (Gt→Gm), Ψ (Gm→Gt), Fm2 (M2 composition), Fm1m2 (M1/M2 composition)",
+      "m3:grammar_foundation:signature": "Fm1m2 : 𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁",
+      "m3:grammar_foundation:operatesAt": "M1/M2 boundary — domain-specific instantiation of generic patterns",
+      "m3:grammar_foundation:morphismFamily": "Φ (Gt→Gm), Ψ (Gm→Gt), Fm2 (M2 composition), Fm1m2 (M1/M2 composition)",
       "rdfs:domain": {
         "@id": "m3:MonoidalType"
       },
@@ -386,6 +386,55 @@
         "@id": "xsd:string"
       },
       "dcterms:created": "2026-05-20"
+    },
+    {
+      "@id": "m3:grammar_foundation:SpecialElements",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "TSCG Special Elements — Neutral and Limit Elements",
+      "rdfs:comment": "Registry of the four special elements of the TSCG monoidal grammar system: neutral elements of ×, +, | and the pseudo-absorbent of |.",
+      "dcterms:created": "2026-05-20",
+      "EmptyTerritory": {
+        "@id": "m3:grammar_foundation:EmptyTerritory",
+        "rdfs:label": "Empty Territory",
+        "rdfs:comment": "Neutral element of ×. Absence of all ASFID types. A × EmptyTerritory = A for all A ∈ 𝕋₀(×).",
+        "m3:grammar_foundation:grammar": "Gt",
+        "m3:grammar_foundation:operator": "×",
+        "m3:grammar_foundation:role": "neutral_element",
+        "m3:grammar_foundation:visual": "Black — absence of all ASFID types"
+      },
+      "EmptyMap": {
+        "@id": "m3:grammar_foundation:EmptyMap",
+        "rdfs:label": "Empty Map",
+        "rdfs:comment": "Neutral element of +. Absence of all REVOI types. R + EmptyMap = R for all R ∈ 𝕋₀(+).",
+        "m3:grammar_foundation:grammar": "Gm",
+        "m3:grammar_foundation:operator": "+",
+        "m3:grammar_foundation:role": "neutral_element",
+        "m3:grammar_foundation:visual": "Empty pentagon — absence of all REVOI types"
+      },
+      "StereopsisEmptySet": {
+        "@id": "m3:bicephalous:StereopsisEmptySet",
+        "rdfs:label": "Stereopsis Empty Set",
+        "rdfs:comment": "Neutral element of |. Defined as EmptyTerritory | EmptyMap. Divergent Strabismus — δ₁ = max. x | StereopsisEmptySet = x for all x.",
+        "m3:grammar_foundation:grammar": "Gs",
+        "m3:grammar_foundation:operator": "|",
+        "m3:grammar_foundation:role": "neutral_element",
+        "m3:grammar_foundation:visual": "Black + Empty pentagon",
+        "m3:grammar_foundation:epistemicGap": "δ₁ = max",
+        "m3:grammar_foundation:definition": "EmptyTerritory | EmptyMap",
+        "m3:grammar_foundation:semantics": "Divergent Strabismus — Territory and Map share nothing"
+      },
+      "StereopsisUniversalSet": {
+        "@id": "m3:bicephalous:StereopsisUniversalSet",
+        "rdfs:label": "Stereopsis Universal Set",
+        "rdfs:comment": "Pseudo-absorbent of |. Defined as 𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|) = 𝕋₀ (13 primitives). StereopsisUniversalSet | a = StereopsisUniversalSet for all a. Degenerate limit — Borges 1:1 map paradox. Distinct from SpectralClass Coherent (δ₁ ≈ 0).",
+        "m3:grammar_foundation:grammar": "Gs",
+        "m3:grammar_foundation:operator": "|",
+        "m3:grammar_foundation:role": "pseudo_absorbent",
+        "m3:grammar_foundation:visual": "White + Full pentagon",
+        "m3:grammar_foundation:epistemicGap": "δ₁ = 0",
+        "m3:grammar_foundation:definition": "𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)",
+        "m3:grammar_foundation:semantics": "Convergent Strabismus — degenerate limit, not a semantic ideal"
+      }
     }
   ]
 }

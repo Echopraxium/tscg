@@ -1,40 +1,81 @@
 {
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m1energy": "M1_extensions/energy/M1_EnergyGenerators.jsonld#",
-    "m1core": "M1_CoreConcepts.jsonld#",
-    "m2": "M2_GenericConcepts.jsonld#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m3": "M3_GenesisGrammar.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "m3:eagle_eye": "M3_EagleEye.jsonld#",
+    "m3:sphinx_eye": "M3_SphinxEye.jsonld#"
   },
   "@graph": [
     {
-      "@id": "m1energy:M1_EnergyGenerators",
+      "@id": "m1:extension:energy_generators:M1_EnergyGenerators",
       "@type": "owl:Ontology",
       "dcterms:title": "TSCG M1 Energy Generators Extension",
       "dcterms:description": "Domain extension for energy generation systems. Nuclear reactors fully modeled (9 types), fossil/renewable planned.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-10",
+      "dcterms:modified": "2026-02-10",
       "owl:versionInfo": "1.0.0",
+      "m3:ontologyType": {
+        "@id": "m3:DomainExtension"
+      },
       "owl:imports": [
-        "M1_CoreConcepts.jsonld",
-        "M2_GenericConcepts.jsonld"
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld"
+      ],
+      "m2:changelog": [
+        {
+          "version": "1.0.0",
+          "date": "2026-02-10",
+          "changes": "Initial release. EnergyGenerator base class + NuclearReactor subclass. Nuclear reactor typology (9 types) fully modeled in M0_NuclearReactorTypology. Fossil/renewable generators planned."
+        }
       ]
     },
     {
-      "@id": "m1energy:EnergyGenerator",
+      "@id": "m1:extension:energy_generators:EnergyGenerators",
+      "@type": [
+        "owl:NamedIndividual",
+        "m2:KnowledgeField"
+      ],
+      "rdfs:label": "Energy Generators",
+      "rdfs:comment": "Energy Generators as a Knowledge Field for TSCG domain modeling.",
+      "m2:knowledgeFieldRole": "NOUN",
+      "dcterms:created": "2026-05-26",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m1:extension:energy_generators:EnergyGenerator",
       "@type": "owl:Class",
       "rdfs:label": "Energy Generator",
       "rdfs:comment": "Abstract base class for all power generation systems. Subclass of m2:Processor.",
-      "rdfs:subClassOf": "m2:Processor"
+      "rdfs:subClassOf": "m2:Processor",
+      "skos:note": "Domain scope: nuclear, fossil, renewable, hydroelectric, geothermal. See M0_NuclearReactorTypology for first validated instance.",
+      "dcterms:created": "2026-02-10",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
     {
-      "@id": "m1energy:NuclearReactor",
-      "@type": "owl:Class",
+      "@id": "m1:extension:energy_generators:NuclearReactor",
+      "@type": [
+        "owl:Class",
+        "m2:KnowledgeFieldConceptCombo"
+      ],
+      "rdfs:subClassOf": [
+        "m2:KnowledgeFieldConceptCombo",
+        "m1:extension:energy_generators:EnergyGenerator"
+      ],
       "rdfs:label": "Nuclear Reactor",
-      "rdfs:comment": "Power generation via controlled nuclear fission. See M0_NuclearReactorTypology for 9 reactor types.",
-      "rdfs:subClassOf": "m1energy:EnergyGenerator"
+      "rdfs:comment": "Power generation via controlled nuclear fission. See M0_NuclearReactorTypology for 9 reactor types (PWR, BWR, CANDU, RBMK, VVER, HTGR, FBR, MSR, SMR).",
+      "m1:structuralGrammarFormula": "Fm1m2(EnergyGenerators, D × F × A | V + O)",
+      "skos:note": "Validated by M0_NuclearReactorTypology poclet (Étape 3 completed 2026-02-10).",
+      "dcterms:created": "2026-02-10",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     }
   ]
 }

@@ -1,17 +1,63 @@
-2026/05/23 18:57
+** TO_DO — Last updated: 2026-05-24 09:12 **
 
-*** Mise a jour de "TSCG_Reference_Corpus.md" avec Claude AI pour mettre a jour ET sélectionner les documents cruciaux
-*** Reprendre la modélisation et développement de "TscgOntologyAPIServer" (portage du "python-bridge" de TscgOntologyExplorer)
+** [NEW] Créer les READMEs des extensions M1 (template: M1_Extension_README_TEMPLATE.md)
+   - M1_Biology_README.md
+   - M1_Chemistry_README.md
+   - M1_Economics_README.md
+   - M1_Education_README.md
+   - M1_Electronics_README.md
+   - M1_EnergyGenerators_README.md
+   - M1_Geology_README.md
+   - M1_music_README.md
+   - M1_Mythology_README.md
+   - M1_Optics_README.md
+   - M1_Photography_README.md
+   - M1_Physics_README.md
+   - M1_SystemicModeling_README.md
 
-*** Dans "TscgOntologyExplorer": 
-    - Si "TscgOntologyAPIServer" est pret: Remplacement du plugin "python-bridge" par "launch-ontology-api-server" 
-    - Améliorations de l'ergonomie: permettre d'ouvrir des liens "cross ontology" (en Local)
-	- Commencer l'implémentation de l' "explorations des ontologies d'instance cad M0" et les difficulté ou non que cela induit		
-	- Etudier la pertinence d'afficher les "ontologies de réference" (ex: "rdfs", "dcterms", "owl" etc..) dans l'exploreteur
-      et les difficulté ou non que cela induit	
+** [NEW] M1_Chemistry.jsonld — migrer asfidSignature → structuralGrammarFormula
+   - Remplacer m1:extension:chemistry:asfidSignature par m1:structuralGrammarFormula
+   - Notation Fm1m2(Chemistry, ...) pour chaque concept
+   - Typer les concepts comme ["owl:Class", "m2:KnowledgeFieldConceptCombo"]
+   - Ajouter rdfs:subClassOf: "m2:KnowledgeFieldConceptCombo"
+
+** [NEW] M1_Domains.jsonld — ajouter nœuds manquants
+   - Mathematics et Anthropology référencés dans relatedDomains mais non définis
+   - Ajouter nœuds stub m1domain:Mathematics et m1domain:Anthropology
+   - Mettre à jour m1:domainCount en conséquence
+
+** [NEW] Migration formules M1_CoreConcepts.jsonld : ⊗ → ×/+/|
+   - m1:structuralGrammarFormulaExpanded contient encore ⊗ (notation tensorielle dépréciée)
+   - Remplacer par ×/+/| selon nature des dimensions (Territory/Map/bicephalous)
+   - Concerne : Cascade, Oscillator, Processor, LALI, ButterflyEffect, Propagation, Narration,
+     StratifiedDissipation, CascadeAmplification (9 combos)
+   - Note: formules mixtes ASFID+REVOI nécessitent analyse sémantique avant migration
+
+** [NEW] generate_formulas_reference.js (ou .py)
+   - Script de génération automatique de M2_FormulasReference depuis M2_GenericConcepts.jsonld
+   - Remplace M2_FormulasReference_v15_10_0.md et M2_FormulasReference_v15_10_0.json (archivés)
+   - Output : M2_FormulasReference_v<version>.md + .json
+   - Format : tableau Concept | Formule | Dims | Notes par famille
+   - A lancer à chaque mise à jour de M2_GenericConcepts.jsonld
+
+** [NEW] Réécriture M2_KnowledgeField_README.md [ARCHIVED → à réécrire]
+   - Corruption UTF-8 massive dans la version actuelle
+   - Formalisme Hilbert/SVD/tensor à remplacer par Lambek/monoïdal (×, +, |)
+   - Références obsolètes à corriger : M3_GenesisSpace → M3_GenesisGrammar,
+     M2_MetaConcepts → M2_GenericConcepts, Domain_Hybrid_Tensor_Product_5D_README → absent
+   - Conserver le contenu conceptuel (KnowledgeField NOUN/ADJECTIVE, KnowledgeFieldMetaCombo, ⊙ operator)
+   - Réécrire la formule de KnowledgeField en notation monoïdale TSCG
+
+** [DONE] Implémenter propriété m2:isStereopsic (flag booléen)
+   - true pour les 11 GenericConcepts utilisant | ou T
+   - Utile pour generate_index.js, TscgPocletMiner, galerie
+
+** [DONE] Migration "m3:ontologyCategory" ==> "m3:ontologyType"
+** [DONE] Migration "Tensor Algebra" ==> "Structural Grammar"
+** [DONE] Migration "m3gf:" ==> "m3:grammar_foundation:"
+** [DONE] Migration "m3:stereopsis:" ==> "m3:bicephalous:"
 
 ** Poclet: "Cell Membrane" (Membrane Cellulaire)
-   - Analogie directe avec l'operateur | (interface active Territory/Map)
    - Protéines de surface = types primitifs de Gs (T, ...)
    - Canaux ioniques = T (Temporalité) comme primitive bicéphale
    - Pompes = Ψ (interprétation Map → Territory)

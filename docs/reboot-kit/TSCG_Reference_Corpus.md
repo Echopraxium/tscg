@@ -1,299 +1,360 @@
 # TSCG Reference Documents
 **Author**: Echopraxium with the collaboration of Claude AI  
-**Date**: 2026-05-12  
-**Version**: 1.0.0
+**Date**: 2026-05-26  
+**Version**: 2.0.0
 
 ## Overview
-This document provides a comprehensive inventory of reference materials available in the TSCG (Transdisciplinary System Construction Game) project framework.
+Comprehensive inventory of reference materials for the TSCG (Transdisciplinary System Construction Game) framework v16.1.0.
+
+**Legend**: ✅ Active | ⚠️ `[ARCHIVED]` | ❌ Obsolete/removed
 
 ---
 
 ## 1. Theoretical Foundation & Architecture
 
 ### 1.1 Core Philosophical Basis
-- **`00_M3_Philosophical_Basis_Sketch.jsonld`**  
-  Philosophical foundations sketch for M3 meta-level architecture
+- **`00_M3_Philosophical_Basis_Sketch.jsonld`** ⚠️ `[ARCHIVED]`  
+  Historical sketch — ORIVE (not REVOI), Hilbert formalism, UTF-8 corruptions. Superseded by M3_GenesisGrammar.
 
-### 1.2 Bicephalous Architecture
-- **`00_TSCG_M3_Bicephalous_Architecture.md`**  
-  Detailed explanation of the dual M3 architecture (EagleEye/SphinxEye)
+### 1.2 Map-Territory Framework
+- **`TerritoryMap_Dichotomy.md`** ✅ v16.0+ (2026-05-23)  
+  Current foundational document for Map/Territory distinction (ASFID/REVOI). Supersedes the older theoretical foundation.
+- **`00_TSCG_Map_Territory_Theoretical_Foundation.md`** ⚠️ `[ARCHIVED]`  
+  v1.2 (Jan 2026) — ORIVE, Hilbert space ℂ⁵, "not yet implemented". Superseded by TerritoryMap_Dichotomy.md.
 
-### 1.3 Map-Territory Framework
-- **`00_TSCG_Map_Territory_Theoretical_Foundation.md`**  
-  Theoretical foundation for the Map (REVOI) vs Territory (ASFID) distinction
-- **`00_Map_Territory_v1_2_Update_Summary.md`**  
-  Summary of updates to the Map-Territory framework (v1.2)
+### 1.3 Conceptual Foundations (docs/CoreHypotheses/)
+- **`_00_TSCG_as_StereoscopicGlasses.md`** ✅ — Primary metaphor: TSCG as epistemic stereopsis
+- **`_01_Narcissus_and_Icarus_as_Safeguards.md`** ✅ — Epistemological safeguards
+- **`SystemicEsperanto.md`** ✅ — TSCG as transdisciplinary language
+- **`LegoTechnic_Modularity.md`** ✅ — Modularity and composability principles
+- **`Archetypes_as_CrossCultural_Artifacts.md`** ✅ — Cross-cultural archetype patterns
+- **`CredibilityAccretion_Process.md`** ✅ — Intersubjective validation process
+- **`MultisubjectiveScoreEvaluationProtocol.md`** ✅ — Score evaluation methodology
 
 ---
 
 ## 2. Mathematical Formalism & Notation
 
-### 2.1 Structural Grammar Foundation
-- **`Structural_Grammar_Foundation.md`**  
-  Foundation document for the Lambek calculus-based structural grammar replacing tensor product formalism
+### 2.1 Structural Grammar Foundation (ontology/StructuralGrammar/)
+- **`Structural_Grammar_Foundation.md`** ✅  
+  Lambek calculus-based structural grammar. Replaces tensor product formalism.
+- **`Structural_Grammar_Foundation_README.md`** ✅
+- **`TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md`** ✅
+- **`TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md`** ✅
+- **`Braille_StructuralGrammar.pdf`** ✅ — Structural grammar applied to Braille encoding
 
-### 2.2 Hybrid Formulas & Tensor Products
-- **`HYBRID_FORMULAS_NOTATION_README.md`**  
-  Notation system for hybrid formulas combining ASFID and REVOI dimensions
-- **`Domain_Hybrid_Tensor_Product_5D_README.md`**  
-  5D hybrid tensor product model for domain-specific applications
+### 2.2 Formula References ⚠️ `[ARCHIVED]`
+- **`M2_FormulasReference_v15_10_0.md`** ⚠️ `[ARCHIVED]`  
+  v15.10.0 — all formulas use deprecated ⊗ notation. TODO: generate from M2_GenericConcepts.jsonld via script.
+- **`M2_FormulasReference_v15_10_0.json`** ⚠️ `[ARCHIVED]`  
+  Doublon JSON du précédent. Même verdict.
 
-### 2.3 Formula References
-- **`M2_FormulasReference_v15_10_0.md`**  
-  Reference document for M2-level formulas (v15.10.0)
-- **`M2_FormulasReference_v15_10_0.json`**  
-  JSON-structured formula reference catalog
+### 2.3 KnowledgeField Documentation ⚠️ Pending rewrite
+- **`M2_KnowledgeField_README.md`** ⚠️ `[ARCHIVED]`  
+  UTF-8 corruption massive, Hilbert/SVD formalism, références invalides. TODO: réécriture en notation Lambek.
 
 ---
 
 ## 3. Methodology & Pipelines
 
 ### 3.1 Instance Analysis
-- **`Poclet_Analysis_Methodology.md`**  
-  Step-by-step methodology for analyzing systems as TSCG Poclets
+- **`Poclet_Analysis_Methodology.md`** ✅  
+  Step-by-step methodology for analyzing systems as TSCG instances.
 
 ### 3.2 Architectural Extensions
-- **`TSCG_Architectural_Extensions.md`**  
-  Documentation of architectural patterns and extension mechanisms
+- **`TSCG_Architectural_Extensions.md`** ✅  
+  Architectural patterns and extension mechanisms.
 
-### 3.3 Grammar Extraction
-- **`TSCG_Grammar_Extraction_Final_Report.md`**  
-  Final report on grammar extraction process and results
-
----
-
-## 4. ValueSpace System
-
-### 4.1 User Guides
-- **`TSCG_ValueSpace_User_Guide.md`**  
-  Comprehensive user guide for the TSCG ValueSpace scoring system
-- **`TSCG_ValueSpace_Quick_Reference.md`**  
-  Quick reference card for ValueSpace dimensions and scoring
+### 3.3 Concept Documentation
+- **`MetaconceptPair_README.md`** ✅
+- **`M2_KnowledgeField_README.md`** ⚠️ `[ARCHIVED]` → see §2.3
+- **`poclet_terminology.md`** ✅
 
 ---
 
-## 5. Ontology Files (JSON-LD)
+## 4. Ontology Files (JSON-LD)
 
-### 5.1 M3 Meta-Level (Foundation)
-- **`M3_GenesisSpace.jsonld`**  
-  Root ontology defining the bicephalous meta-framework
-- **`M3_EagleEye.jsonld`**  
-  ASFID (Attractor, Structure, Flow, Information, Dynamics) dimension definitions
-- **`M3_SphinxEye.jsonld`**  
-  REVOI (Representability, Evolvability, Verifiability, Observability, Interoperability) dimension definitions
+### 4.0 M3 Apex — Mathematical Foundation
+- **`M3_GrammarFoundation.jsonld`** ✅ v2.1.0  
+  Apex ontology — Lambek calculus, operators ×/+/|, type system 𝕋₀/𝕋₁/𝕋₂, `m3:grammar_foundation:` namespace
+- **`M3_GrammarFoundation_README.md`** ✅ v1.3.0
 
-### 5.2 M2 Meta-Level (Generic Concepts)
-- **`M2_GenericConcepts.jsonld`**  
-  80 atomic transdisciplinary GenericConcepts across 9 families
+### 4.1 M3 Meta-Level (Foundation)
 
-### 5.3 M1 Meta-Level (Domain Extensions)
-- **`M1_CoreConcepts.jsonld`**  
-  Core domain-agnostic concepts and GenericConceptCombos (v2.1.0+)
-- **`M1_Biology.jsonld`**  
-  Biology domain extension
-- **`M1_Chemistry.jsonld`**  
-  Chemistry domain extension
-- **`M1_Economics.jsonld`**  
-  Economics domain extension
-- **`M1_Education.jsonld`**  
-  Education domain extension
-- **`M1_Electronics.jsonld`**  
-  Electronics domain extension
-- **`M1_EnergyGenerators.jsonld`**  
-  Energy generation systems domain extension
-- **`M1_Geology.jsonld`**  
-  Geology domain extension
-- **`M1_music.jsonld`**  
-  Music domain extension
-- **`M1_Mythology.jsonld`**  
-  Mythology domain extension
-- **`M1_Optics.jsonld`**  
-  Optics domain extension
-- **`M1_Photography.jsonld`**  
-  Photography domain extension
-- **`M1_Physics.jsonld`**  
-  Physics domain extension
-- **`M1_SystemicModeling.jsonld`**  
-  Systemic modeling domain extension
-- **`M1_Domains.jsonld`**  
-  Domain registry and classification
+| File | Version | Role |
+|---|---|---|
+| `M3_EagleEye.jsonld` | 2.8.0 | Territory Grammar Gt — ASFID (×), `m3:eagle_eye:` |
+| `M3_EagleEye_README.md` | 2.8.0 | |
+| `M3_SphinxEye.jsonld` | 3.5.0 | Map Grammar Gm — REVOI (+), `m3:sphinx_eye:` |
+| `M3_SphinxEye_README.md` | 3.5.0 | |
+| `M3_BicephalousPerspective.jsonld` | 1.1.0 | Stereopsis Grammar Gs — {T,_^,_$} (\|), `m3:bicephalous:` |
+| `M3_BicephalousPerspective_README.md` | 1.1.0 | |
+| `M3_GenesisGrammar.jsonld` | 4.2.0 | Intégrateur — importe les 4 grammaires |
+| `M3_GenesisGrammar_README.md` | 4.2.0 | |
 
-### 5.4 M0 Meta-Level (Instance Schema)
-- **`M0_Instances_Schema_shacl.ttl`**  
-  SHACL schema for validating M0 instance structures (Turtle format)
+**Import hierarchy:**
+```
+M3_GrammarFoundation (apex)
+  ↑ imported by
+  ├── M3_EagleEye      (Gt, ×)
+  ├── M3_SphinxEye     (Gm, +)
+  ├── M3_BicephalousPerspective (Gs, |)
+  └── M3_GenesisGrammar (integrator)
+```
 
----
+**Obsolete:** `M3_GenesisSpace.jsonld` → renommé `M3_GenesisGrammar.jsonld`
 
-## 6. Version History & Integration Reports
+### 4.2 M2 Meta-Level (Generic Concepts)
+- **`M2_GenericConcepts.jsonld`** ✅ v16.10.8  
+  75 atomic GenericConcepts across 9 families. Lambek formalism. `m3:ontologyType: GenericConcepts`.
+- **`M2_GenericConcepts_README.md`** ✅ v16.10.8
 
-### 6.1 Version Summaries
-- **`TSCG_v15_1_0_Integration_Report.md`**  
-  Integration report for v15.1.0 release
-- **`TSCG_v15_1_0_Final_Classification.md`**  
-  Final classification system for v15.1.0
+### 4.3 M1 Meta-Level (Domain Extensions)
 
-### 6.2 M2 Update Analysis
-- **`Domain_M2_Update_Analysis_v15_1_0.md`**  
-  Analysis of M2 updates in v15.1.0 context
+#### Core Files
+- **`M1_CoreConcepts.jsonld`** ✅ v2.4.0  
+  9 GenericConceptCombos (Cascade, Oscillator, Processor, LALI, ButterflyEffect, Propagation, Narration, StratifiedDissipation, CascadeAmplification). Namespace umbrella `m1:`.
+- **`M1_CoreConcepts_README.md`** ✅ v2.4.0
+- **`M1_Domains.jsonld`** ✅ v1.2.0 — 20 domain entries. Namespace `m1:domain:`.
+- **`M1_Domains_README.md`** ✅ v1.2.0
 
----
+#### M1 Extension Files (namespace: `m1:extension:<domain>:`)
 
-## 7. Concept Documentation
+| Extension | File | Version | KFCC | Fm1m2 |
+|---|---|---|---|---|
+| Biology | `M1_Biology.jsonld` | 1.1.0 | 1 | ✅ |
+| Chemistry | `M1_Chemistry.jsonld` | 1.1.0 | 15 | ✅ |
+| Economics | `M1_Economics.jsonld` | 1.0.0 | 14 | ✅ |
+| Education | `M1_Education.jsonld` | 1.0.0 | 10 | ✅ |
+| Electronics | `M1_Electronics.jsonld` | 1.0.1 | 17 | ✅ |
+| EnergyGenerators | `M1_EnergyGenerators.jsonld` | 1.0.0 | 1 | ✅ |
+| Geology | `M1_Geology.jsonld` | 1.0.0 | 8 | ✅ |
+| Music | `M1_music.jsonld` | 1.0.0 | 8 | ✅ |
+| Mythology | `M1_Mythology.jsonld` | 1.1.0 | 11 | ✅ |
+| Optics | `M1_Optics.jsonld` | 1.1.0 | 9 | ✅ |
+| Photography | `M1_Photography.jsonld` | 1.1.0 | 11 | ✅ |
+| Physics | `M1_Physics.jsonld` | 1.1.0 | 6 | ✅ |
+| SystemicModeling | `M1_SystemicModeling.jsonld` | 1.1.0 | 4+40 | ✅ |
 
-### 7.1 Specialized Concepts
-- **`MetaconceptPair_README.md`**  
-  Documentation for MetaconceptPair pattern
-- **`M2_KnowledgeField_README.md`**  
-  Documentation for KnowledgeField concept in M2
-- **`poclet_terminology.md`**  
-  Terminology definitions specific to Poclet modeling
+**Template README:** `M1_Extension_README_TEMPLATE.md` — base pour créer les 13 READMEs d'extensions
 
----
+**Convention KFCC:**
+```json
+"@type": ["owl:Class", "m2:KnowledgeFieldConceptCombo"],
+"rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+"m1:structuralGrammarFormula": "Fm1m2(<Domain>, <formula>)"
+```
 
-## 8. Session & Development Reports
-
-### 8.1 Session Summaries
-- **`TSCG_Session_README_2026-03-23.md`**  
-  Session report from March 23, 2026
-- **`TSCG_Session_Summary_2026-04-18.md`**  
-  Session summary from April 18, 2026
-
-### 8.2 Mathematical Legitimacy
-- **`TSCG_Mathematical_Legitimacy_Summary.md`**  
-  Summary of mathematical foundations and legitimacy arguments
+### 4.4 M0 Schema & Grammar
+- **`M0_Instances_Schema_shacl.ttl`** ✅  
+  SHACL grammar — 9 mandatory constraints. Validates all M0 instance types.
+- **`M0_POCLET_TEMPLATE.jsonld`** ✅ — Template for new poclet instances
+- **`M0_InstanceSimulations.jsonld`** ✅ — Catalog of simulation instances
+- **`M0_InstanceSimulation_UXControls.jsonld`** ✅ — UX controls catalog (mandatory for simulation creation)
 
 ---
 
-## 9. Project Management & Corpus
+## 5. M0 Instances
 
-### 9.1 Project Organization
-- **`README.md`**  
-  Main project README
-- **`TSCG_File_Tree.md`**  
-  Complete file tree structure of the TSCG repository
-- **`TO_DO.txt`**  
-  Current development tasks and priorities
-
-### 9.2 Corpus Documentation
-- **`TSCG_Project_Corpus.md`**  
-  Inventory of project artifacts and deliverables
-- **`TSCG_Reference_Corpus.md`**  
-  Catalog of reference materials and citations
+**Score Convention (Option B — MANDATORY):** Scores au niveau racine du nœud `owl:Ontology` :
+```json
+"A_score": {"@value": "0.85", "@type": "xsd:float"}
+```
+**SpectralClass** : Coherent (δ₁<0.05) | OnCriticalLine (0.05≤δ₁<0.15) | Incoherent (δ₁≥0.15)
+**δ₁ formula** : `|ASFID_mean − REVOI_mean| / √2`
 
 ---
 
-## 10. Smart Prompt & AI Collaboration
+### 5.1 Poclets (instances/poclets/) — 26 validated
 
-### 10.1 Claude AI Integration
-- **`CLAUDE.md`**  
-  Guidelines for Claude AI collaboration on TSCG development
-- **`TSCG_Smart_Prompt_v16_0_0.md`**  
-  Smart prompt system for Claude AI v16.0.0
+| Poclet | Domain | δ₁ | SpectralClass | Simulation |
+|---|---|---|---|---|
+| AdaptativeImmuneResponse | Biology | — | pending | — |
+| BloodPressureControl | Physiology | — | pending | — |
+| ButterflyMetamorphosis | Biology | — | pending | — |
+| CellSignalingModes | Biology | — | pending | — |
+| ColorSynthesis (RGB/HSL/CMY/CMYK) | Art | ✓ | pending | static/ |
+| ComplexChemicalSynapse | Neuroscience | ✓ | pending | pygame |
+| CounterPoint | Music | ✓ | pending | static/ (Tone.js) |
+| ExposureTriangle | Photography | ✓ | pending | static/ |
+| FireTriangle | Chemistry | ✓ | pending | static/ |
+| FourStrokeEngine | Engineering | ✓ | pending | sim/ + static/ |
+| Kidneys | Physiology | ✓ | pending | — |
+| KindlebergerMinsky | Economics | — | pending | sim/ + static/ |
+| MtgColorWheel | Game Theory | — | pending | sim/ + static/ |
+| NakamotoConsensus | Blockchain | — | pending | static/ |
+| NuclearReactorsTypology | Nuclear Engineering | ✓ | pending | static/ |
+| PhaseTransition | Physics/Chemistry | — | pending | sim/ + static/ |
+| PlateTectonics | Geology | — | pending | _static/ |
+| Ptoe (Periodic Table) | Chemistry | ✓ | pending | static/ (BabylonJS) |
+| Raas | Physiology | ✓ | pending | — |
+| Theremin | Electronics | — | pending | _static/ (stub) |
+| Tpack | Pedagogy | — | pending | pygame |
+| Transistor | Electronics | ✓ | pending | sim/ + static/ |
+| TrophicPyramid | Ecology | — | pending | sim/ + static/ |
+| TvTestPattern | Art/Electronics | — | pygame |
+| Vco | Electronics | — | sim/ + static/ |
+| Yggdrasil | Mythology | — | — |
+
+### 5.2 SystemicFrameworks (instances/systemic-frameworks/)
+
+| Framework | Domain | A | S | F | It | D | R | E | V | O | Im | δ₁ | SpectralClass |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **Vsm** | Cybernetics | 0.95 | 0.98 | 0.85 | 0.98 | 0.88 | 0.95 | 0.92 | 0.70 | 0.82 | 0.85 | 0.057 | OnCriticalLine |
+| **Triz** | Innovation | 1.0 | 1.0 | 0.80 | 1.0 | 0.60 | 1.0 | 0.80 | 1.0 | 1.0 | 1.0 | 0.057 | OnCriticalLine |
+
+**Notes :**
+- TRIZ : scores normalisés depuis l'échelle Altshuller 0-5 (÷5). V=0.60 = F=4/5 (flux unidirectionnel sans boucle)
+- VSM : V=0.70 (vérification qualitative uniquement, pas de métriques quantitatives)
+
+### 5.3 SymbolicSystemGrammars (instances/symbolic-system-grammars/)
+
+| Grammar | Domain | A | S | F | It | D | R | E | V | O | Im | δ₁ | SpectralClass |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **IChing** | Philosophy/Divination | 0.85 | 0.97 | 0.72 | 0.91 | 0.80 | 0.95 | 0.88 | 0.50 | 0.78 | 0.90 | 0.034 | Coherent |
+
+**Note :** V=0.50 est un trait **constitutif** du SSG (arbitration symbolique, non empirique) — pas un défaut de modélisation.
+
+### 5.4 TscgTools (instances/tscg-tools/)
+
+| Tool | v | Stack | A | S | F | It | D | R | E | V | O | Im | δ₁ | Class |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **TscgOntologyExplorer** | 1.0 | ElectronJS+pyoxigraph | 0.85 | 0.90 | 0.80 | 0.85 | 0.70 | 0.80 | 0.90 | 0.85 | 0.80 | 0.75 | 0.022 | Coherent |
+| **TscgPocletGenerator** | 1.0 | PySide6+RAG | 0.88 | 0.92 | 0.90 | 0.93 | 0.82 | 0.90 | 0.92 | 0.84 | 0.88 | 0.93 | 0.096 | OnCriticalLine |
+| **TscgPocletMiner** | 1.1 | ElectronJS+WASM RAG | 0.75 | 0.90 | 0.88 | 0.85 | 0.75 | 0.90 | 0.88 | 0.92 | 0.90 | 0.82 | 0.042 | Coherent |
+| **TscgOntologyAPIServer** | stub | — | — | — | — | — | — | — | — | — | — | — | pending |
 
 ---
 
-## 11. Utilities & Scripts
+## 6. Version History & Classification
 
-### 11.1 Encoding Management
-- **`check_encoding_issues.py`**  
-  Python script for detecting encoding issues in ontology files
-- **`encoding_correspondances.json`**  
-  Mapping of encoding correspondences
-
-### 11.2 URI Generation
-- **`create_files_URIS.py`**  
-  Python script for generating standardized URIs
-
-### 11.3 Index Generation
-- **`generate_index.js`**  
-  Node.js script for generating instance gallery index
-
-### 11.4 Migration Tools
-- **`automated_migration_easy_instances.py`**  
-  Automated migration script for straightforward instances
+### 6.1 Version Reports
+- **`TSCG_v15_1_0_Final_Classification.md`** ✅
+- **`Domain_M2_Update_Analysis_v15_1_0.md`** ✅
+- **`TSCG_Session_README_2026-03-23.md`** ✅
 
 ---
 
-## 12. Document Conventions
+## 7. Project Management & Corpus
 
-### 12.1 URI Base
-All ontology files use the following base URI:
+### 7.1 Project Organization
+- **`README.md`** ✅ — Main project README
+- **`TSCG_File_Tree.md`** ✅ v16.1.0 (2026-05-23) — Complete file tree
+- **`TO_DO.txt`** ✅ — Current development tasks
+- **`CLAUDE.md`** ✅ — Guidelines for Claude AI collaboration
+- **`TSCG_Project_Corpus.md`** ✅ — Artifact inventory
+
+### 7.2 Smart Prompts
+- **`TSCG_Smart_Prompt_v16_1_0.md`** ✅ — Current smart prompt for Claude AI
+
+---
+
+## 8. Utilities & Scripts
+
+### 8.1 Migration Tools
+- **`automated_migration_easy_instances.py`** ✅ — Automated migration for M0 instances
+
+### 8.2 Gallery Generation
+- **`generate_index.js`** ✅ — Node.js gallery index generator
+
+### 8.3 RAG Pipeline
+- `create_tscg_rag.py`, `rebuild_corpus.py`, `restore_rag.js` — RAG pipeline for TscgPocletMiner
+
+---
+
+## 9. Pending / TO_DO (from current session 2026-05-26)
+
+| Task | Priority | Notes |
+|---|---|---|
+| Créer 13 READMEs extensions M1 | High | Template: `M1_Extension_README_TEMPLATE.md` |
+| Corpus réalignement 26 poclets | High | Namespaces, scores Option B, GenesisGrammar |
+| Analyser docs conceptuels (.md) | Medium | CoreHypotheses, SmartPrompts, méthodologies |
+| `generate_formulas_reference.js` | Medium | Script auto depuis M2_GenericConcepts.jsonld |
+| Réécrire `M2_KnowledgeField_README.md` | Medium | Lambek, UTF-8 propre |
+| Stub `M0_TscgOntologyAPIServer.jsonld` | Low | Phase 3 — créer le M0 quand implémenté |
+| Ajouter Mathematics/Anthropology à M1_Domains | Low | Nœuds manquants |
+
+---
+
+## 10. Document Conventions
+
+### 10.1 URI Base
 ```
 @base: "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"
 ```
 
-### 12.2 M1 Extension References
-M1 extensions are referenced in M0 ontologies using this pattern:
+### 10.2 Namespace Hierarchy
+```
+m3: → M3_GenesisGrammar.jsonld#           (M3 umbrella)
+  m3:eagle_eye:       → M3_EagleEye
+  m3:sphinx_eye:      → M3_SphinxEye
+  m3:bicephalous:     → M3_BicephalousPerspective
+  m3:grammar_foundation: → M3_GrammarFoundation
+
+m1: → M1_CoreConcepts.jsonld#             (M1 umbrella)
+  m1:domain:          → M1_Domains
+  m1:extension:<domain>: → M1 extensions
+```
+
+### 10.3 M1 Extension References
 ```
 "M1_extensions/<extension_name>/M1_<ExtensionName>.jsonld"
 ```
 Example: `"M1_extensions/biology/M1_Biology.jsonld"`
 
-### 12.3 Author Attribution
-All generated files use:
+### 10.4 Formula Convention
+```
+M2 GenericConcepts:       "formula": "S × It × D × F | V + O"
+M1 GenericConceptCombos:  "m1:structuralGrammarFormula": "Fm2(Process, Step, Trajectory)"
+M1 KFConceptCombos:       "m1:structuralGrammarFormula": "Fm1m2(<Domain>, S × It × D)"
+```
+
+### 10.5 Score Aliases (Option B — MANDATORY)
+```json
+"A_score": {"@id": ".../M0_Poclet#scoreA", "@type": "xsd:float"}
+```
+Applies to: A_score, S_score, F_score, It_score, D_score, R_score, E_score, V_score, O_score, Im_score
+
+### 10.6 Author Attribution
 ```
 "Author": "Echopraxium with the collaboration of Claude AI"
 ```
 
-### 12.4 Changelog Policy
-Maximum 3 most recent entries in `m2:changelog` fields
+### 10.7 Changelog Policy
+Maximum 3 most recent entries in `m2:changelog` fields.
 
 ---
 
-## 13. Document Categorization Summary
+## 11. Corpus Statistics
 
-| Category | Count | Purpose |
-|----------|-------|---------|
-| **Theoretical Foundation** | 4 | Core philosophical and architectural basis |
-| **Mathematical Formalism** | 5 | Notation, formulas, structural grammar |
-| **Methodology** | 3 | Analysis pipelines and architectural patterns |
-| **ValueSpace** | 2 | Scoring system documentation |
-| **M3 Ontologies** | 3 | Meta-framework foundation |
-| **M2 Ontology** | 1 | Generic transdisciplinary concepts |
-| **M1 Ontologies** | 15 | Domain-specific extensions |
-| **M0 Schema** | 1 | Instance validation |
-| **Version Reports** | 3 | Integration and classification |
-| **Concept Docs** | 3 | Specialized concept explanations |
-| **Session Reports** | 3 | Development history |
-| **Project Mgmt** | 4 | Organization and corpus |
-| **AI Collaboration** | 2 | Claude AI integration |
-| **Utilities** | 5 | Scripts and tools |
-| **TOTAL** | **54** | Complete reference corpus |
+| Category | Count | Status |
+|---|---|---|
+| M3 Ontologies | 5 .jsonld + 5 README | ✅ Tous corrigés (v2026-05-26) |
+| M2 Ontology | 1 .jsonld + 1 README | ✅ Corrigé |
+| M1 Extensions | 15 .jsonld + 2 README + 1 template | ✅ Tous migrés |
+| M0 Poclets | 26 | ⚠️ Corpus réalignement en attente |
+| M0 SystemicFrameworks | 2 (VSM + TRIZ) | ✅ Analysés + corrigés |
+| M0 SymbolicSystemGrammars | 1 (IChing) | ✅ Analysé + corrigé |
+| M0 TscgTools | 3 actifs + 1 stub | ✅ 3 analysés + corrigés |
+| Documents théoriques | 7 | ✅ |
+| Documents méthodologie | 5 | ✅ |
+| Scripts/outils | 8+ | ⚠️ Non analysés |
+| ARCHIVED | 6 | Marqués |
+| **TOTAL actifs** | **~85** | |
 
 ---
 
-## 14. Related Resources
+## 12. Related Resources
 
-### 14.1 External Publications
+### 12.1 External Publications
 - **Zenodo DOI**: 10.5281/zenodo.18471860 (v3.0)
 - **GitHub Repository**: https://github.com/Echopraxium/tscg
 - **GitHub Pages**: https://echopraxium.github.io/tscg/
 
-### 14.2 Current Development Version
-- **Framework Version**: v16.0.0
-- **Research Article**: v4.0 (~11,300 words, pending Zenodo submission)
+### 12.2 Current Development Version
+- **Framework Version**: v16.1.0
+- **Research Article**: v5.0 (preprint draft)
 
 ---
 
-## 15. Usage Guidelines
-
-### 15.1 For New Contributors
-1. Start with `README.md` for project overview
-2. Read `00_TSCG_M3_Bicephalous_Architecture.md` for core architecture
-3. Review `TSCG_ValueSpace_User_Guide.md` for scoring methodology
-4. Consult `Poclet_Analysis_Methodology.md` before creating instances
-
-### 15.2 For Ontology Development
-1. Review `M3_GenesisSpace.jsonld` structure
-2. Study relevant M1 domain extensions
-3. Follow conventions in `CLAUDE.md`
-4. Validate against `M0_Instances_Schema_shacl.ttl`
-
-### 15.3 For Simulation Development
-1. Consult UX Controls catalog: `ontology/InstanceSimulations/M0_InstanceSimulation_UXControls.jsonld`
-2. Reference existing simulation patterns (e.g., `M0_FireTriangle.html`, `MtgColorWheel_sim.html`)
-3. Follow BabylonJS 6.26.0 conventions
-
----
-
-*This reference document inventory is maintained as part of the TSCG v16.0.0 framework.*
+*TSCG_Reference_Corpus.md v2.0.0 — Updated 2026-05-26 during corpus analysis session with Claude AI*

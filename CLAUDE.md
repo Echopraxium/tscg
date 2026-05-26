@@ -418,26 +418,56 @@ Generates `index.html` with interactive gallery of all poclet simulations. Metad
 
 ## Critical Patterns
 
-### ASFID/REVOI Short-Key Aliases
+### M1 Extension Formula Convention (MANDATORY)
 
-M0 instances use short keys in `@context` that resolve to full M3 IRIs:
+**FORBIDDEN properties in M1 extension files:**
+- `m2Basis` / `m2:characterizedBy` — redundant with structural formula
+- `m1:extension:X:asfidSignature` — non-standard, replaced by formal formula
+- Any domain-prefixed formula property (e.g. `m1:extension:music:tensorFormula`)
+
+**MANDATORY for all M1 extension domain concepts:**
+```json
+"@type": ["owl:Class", "m2:KnowledgeFieldConceptCombo"],
+"rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+"m2:knowledgeField": {"@id": "m1:extension:<domain>:<KnowledgeField>"},
+"m1:structuralGrammarFormula": "Fm1m2(<Domain>, <ASFID-formula> | <REVOI-formula>)"
+```
+
+**In M1_CoreConcepts (GenericConceptCombos):**
+```json
+"@type": ["owl:Class", "m2:GenericConceptCombo"],
+"rdfs:subClassOf": "m2:GenericConceptCombo",
+"m1:structuralGrammarFormula": "Fm2(<Concept1>, <Concept2>, ...)"
+```
+
+Score DatatypeProperties are **distinct** from MonoidalTypes:
+- `m3:eagle_eye:Attractor` = MonoidalType (structural grammar primitive — never used as score property)
+- `m0:scoreA` = DatatypeProperty of scoring (distinct IRI)
+
+M0 instances use `_score` aliases in `@context` that resolve to dedicated scoring IRIs:
 
 ```json
 "@context": {
-  "A": "m3:eagle_eye:Attractor",
-  "S": "m3:eagle_eye:Structure",
-  "F": "m3:eagle_eye:Flow",
-  "It": "m3:eagle_eye:Information",
-  "D": "m3:eagle_eye:Dynamics",
-  "R": "m3:sphinx_eye:Representability",
-  "E": "m3:sphinx_eye:Evolvability",
-  "V": "m3:sphinx_eye:Verifiability",
-  "O": "m3:sphinx_eye:Observability",
-  "Im": "m3:sphinx_eye:Interoperability"
+  "A_score":  {"@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",  "@type": "xsd:float"},
+  "S_score":  {"@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",  "@type": "xsd:float"},
+  "F_score":  {"@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",  "@type": "xsd:float"},
+  "It_score": {"@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt", "@type": "xsd:float"},
+  "D_score":  {"@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",  "@type": "xsd:float"},
+  "R_score":  {"@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",  "@type": "xsd:float"},
+  "E_score":  {"@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",  "@type": "xsd:float"},
+  "V_score":  {"@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",  "@type": "xsd:float"},
+  "O_score":  {"@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",  "@type": "xsd:float"},
+  "Im_score": {"@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm", "@type": "xsd:float"}
 }
 ```
 
-**It/Im notation**: Disambiguates Information dimensions when both ASFID and REVOI appear in the same formula.
+**Score values format:** `{"@value": "0.85", "@type": "xsd:float"}`
+
+**In README tables:** `| A_score (Attractor) | 0.85 |` — NEVER bare `| A |`
+
+**It_score vs Im_score disambiguation:**
+- `It_score` = Information dimension score (Territory/ASFID)
+- `Im_score` = Interoperable dimension score (Map/REVOI)
 
 ### Epistemic Gap (δ₁)
 

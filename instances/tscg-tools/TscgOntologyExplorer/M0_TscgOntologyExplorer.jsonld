@@ -1,14 +1,18 @@
 {
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m3": "M3_GenesisGrammar.jsonld#",
+    "m3:eagle_eye": "M3_EagleEye.jsonld#",
+    "m3:sphinx_eye": "M3_SphinxEye.jsonld#",
+    "m2": "M2_GenericConcepts.jsonld#",
+    "m1": "M1_CoreConcepts.jsonld#",
+    "m0": "instances/tscg-tools/TscgOntologyExplorer/M0_TscgOntologyExplorer.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
-    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
-    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
     "A_score": {
       "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
       "@type": "xsd:float"
@@ -65,159 +69,104 @@
       },
       "m1:domain": "TSCG",
       "owl:imports": [
-        "M3_GenesisSpace.jsonld",
+        "M3_GenesisGrammar.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld"
       ],
-      "m2:changelog": [
-        {
-          "version": "1.0.1",
-          "date": "2026-05-15",
-          "changes": "Updated M3 preconfiguredPath from M3_GenesisSpace.jsonld to M3_GenesisGrammar.jsonld"
-        },
-        {
-          "version": "1.0.0",
-          "date": "2026-05-15",
-          "changes": "Initial M0 specification — dual-mode Browse/Edit, 3-column layout, bootstrap mechanism, ASFID/REVOI scoring"
-        }
-      ],
-      "m0:architecture": {
-        "m0:layout": "3-column: ObjectExplorer (left) | PropertyInspector (center) | TabbedPanel (right)",
-        "m0:columnRoles": {
-          "left": "Object Explorer — tree of objects in active ontology (expand/collapse, Blender Outliner style). Examples: 108 GenericConcepts in M2, poclet corpus in M0, ASFID/REVOI dimensions in M3.",
-          "center": "Property Inspector — collapsible drawers per property group (Blender Properties panel style). Drawers: @context, Metadata, OntologyType, Scores, Changelog, Imports, CustomProperties.",
-          "right": "Tabbed Panel — Description tab (label, comment, domain, version), EpistemicGap tab (ASFID/REVOI radar chart, delta-1, SpectralClass), NeighborLayer tab (adjacent layers with cross-layer navigation links)."
-        },
-        "m0:modes": {
-          "Browse": {
-            "description": "Read-only navigation of TSCG ontologies across the M3-M2-M1-M0 hierarchy. All properties rendered as formatted read-only fields.",
-            "entryPoints": [
-              "Preconfigured paths (M3/M2/M1)",
-              "File dialog (any .jsonld)"
-            ]
-          },
-          "Edit": {
-            "description": "SHACL-gated property editing. Properties rendered as editable form fields. Save blocked until pyshacl validation passes.",
-            "safetyGate": "pyshacl validation against M0_Instances_Schema.shacl.ttl before any disk write",
-            "supportedEdits": [
-              "rdfs:label",
-              "rdfs:comment",
-              "owl:versionInfo",
-              "m0:asfidScores",
-              "m0:revoiScores",
-              "m2:changelog"
-            ]
-          }
-        },
-        "m0:preconfiguredPaths": {
-          "M3": "M3_GenesisGrammar.jsonld",
-          "M2": "M2_GenericConcepts.jsonld",
-          "M1": "M1_CoreConcepts.jsonld"
-        },
-        "m0:fileDialogOverride": "User can open any .jsonld file via Electron dialog, overriding preconfigured paths"
+      "A_score": {
+        "@value": "0.85",
+        "@type": "xsd:float"
       },
-      "m0:neighborLayerNavigation": {
-        "description": "NeighborLayer tab in the right panel shows adjacent ontology layers as clickable links. Clicking a layer makes it the new active ontology in the Object Explorer.",
-        "layerMap": {
-          "M3_active": "No layer above M3 (genesis layer). Neighbors: M2 (below).",
-          "M2_active": "Neighbors: M3 (above), M1 CoreConcepts + domain extensions (below).",
-          "M1_active": "Neighbors: M2 (above), M0 instances using this extension (below).",
-          "M0_active": "Neighbors: M1 domain extension (above). No layer below M0."
-        },
-        "navigationHistory": "Back/Forward buttons maintain navigation history stack across layer switches."
+      "S_score": {
+        "@value": "0.90",
+        "@type": "xsd:float"
       },
-      "m0:bootstrapMechanism": {
-        "description": "TscgOntologyExplorer implements a Strange Loop (Hofstadter): the tool can load its own M0 specification (M0_TscgOntologyExplorer.jsonld) in Edit mode, modify it (e.g., add a new Attractor, refine a score), pass SHACL validation, save, and use the updated specification as the authoritative blueprint for the next development iteration.",
-        "bootstrapCycle": [
-          "1. Open M0_TscgOntologyExplorer.jsonld in Edit mode",
-          "2. Identify missing or underspecified feature (e.g., new Attractor)",
-          "3. Edit the M0 property in the Property Inspector",
-          "4. Trigger SHACL validation (automatic on save attempt)",
-          "5. Save if valid — M0 becomes updated specification",
-          "6. Implement the feature in ElectronJS codebase",
-          "7. Repeat from step 1"
-        ],
-        "philosophicalNote": "Reflexive self-specification: the M0 ontology is both the product (specification) and the subject (data processed by the tool). This is the TSCG TscgTool reflexivity principle."
+      "F_score": {
+        "@value": "0.80",
+        "@type": "xsd:float"
       },
-      "m0:technologyStack": {
-        "runtime": "ElectronJS (vanilla JS, no React, no bundlers — consistent with TscgPocletMiner)",
-        "jsonld": "jsonld npm package (JSON-LD parsing, compaction, expansion)",
-        "shacl": "pyshacl via child_process (Python subprocess, Edit mode gate)",
-        "charts": "Canvas 2D (radar chart for ASFID/REVOI in EpistemicGap tab)",
-        "ui": "Vanilla HTML/CSS — dark theme consistent with TSCG tools suite"
+      "It_score": {
+        "@value": "0.85",
+        "@type": "xsd:float"
       },
-      "m0:asfidScores": {
-        "A_score": {
-          "@value": "0.85",
-          "@type": "xsd:float"
-        },
-        "S_score": {
-          "@value": "0.9",
-          "@type": "xsd:float"
-        },
-        "F_score": {
-          "@value": "0.8",
-          "@type": "xsd:float"
-        },
-        "It_score": {
-          "@value": "0.85",
-          "@type": "xsd:float"
-        },
-        "D_score": {
-          "@value": "0.7",
-          "@type": "xsd:float"
-        },
-        "m0:mean": {
-          "@value": "0.82",
-          "@type": "xsd:float"
-        },
-        "m0:justification": {
-          "A_score": "Strong dual attractor: Browse mode (navigation goal) and Edit mode (modification goal) are clearly defined and stable",
-          "S_score": "Well-defined 3-column architecture — Object Explorer / Property Inspector / Tabbed Panel — with explicit drawer and tab structure",
-          "F_score": "Clear data flows: Load ontology → Select object → Display properties → (Edit → Validate → Save). Cross-layer navigation adds secondary flow.",
-          "It_score": "Rich ontological information displayed: JSON-LD graph, ASFID/REVOI scores, epistemic gap delta-1, SpectralClass, layer relationships",
-          "D_score": "Mode switching (Browse/Edit), cross-layer navigation, real-time SHACL feedback, navigation history — moderate complexity not yet fully stabilized at v1.0"
-        }
+      "D_score": {
+        "@value": "0.70",
+        "@type": "xsd:float"
       },
-      "m0:revoiScores": {
-        "R_score": {
-          "@value": "0.8",
-          "@type": "xsd:float"
-        },
-        "E_score": {
-          "@value": "0.9",
-          "@type": "xsd:float"
-        },
-        "V_score": {
-          "@value": "0.85",
-          "@type": "xsd:float"
-        },
-        "O_score": {
-          "@value": "0.8",
-          "@type": "xsd:float"
-        },
-        "Im_score": {
-          "@value": "0.75",
-          "@type": "xsd:float"
-        },
-        "m0:mean": {
-          "@value": "0.82",
-          "@type": "xsd:float"
-        },
-        "m0:justification": {
-          "R_score": "M0 JSON-LD faithfully represents the tool architecture, UI layout, modes, and bootstrap mechanism. Minor gap: dynamic state (navigation history, current selection) not representable in static ontology.",
-          "E_score": "Highest score: bootstrap mechanism is the core design principle — every iteration of the tool refines its own specification. The M0 is designed to evolve.",
-          "V_score": "SHACL validation gate before any save ensures ontological integrity. The tool is itself SHACL-validatable, closing the reflexive loop.",
-          "O_score": "Active ontology, selected object, current mode (Browse/Edit), validation status — all visible in the UI at all times. Navigation history browsable.",
-          "Im_score": "ElectronJS + JSON-LD (W3C standard) + SHACL (W3C standard) ensure broad interoperability. Slight reduction: TSCG-specific conventions (layer naming, score format) limit portability to non-TSCG tools."
-        }
+      "R_score": {
+        "@value": "0.80",
+        "@type": "xsd:float"
+      },
+      "E_score": {
+        "@value": "0.90",
+        "@type": "xsd:float"
+      },
+      "V_score": {
+        "@value": "0.85",
+        "@type": "xsd:float"
+      },
+      "O_score": {
+        "@value": "0.80",
+        "@type": "xsd:float"
+      },
+      "Im_score": {
+        "@value": "0.75",
+        "@type": "xsd:float"
+      },
+      "m0:asfidMean": {
+        "@value": "0.82",
+        "@type": "xsd:float"
+      },
+      "m0:revoiMean": {
+        "@value": "0.82",
+        "@type": "xsd:float"
       },
       "m0:epistemicGap": {
         "@value": "0.0316",
         "@type": "xsd:float"
       },
       "m0:spectralClass": "Coherent",
-      "m0:epistemicGapJustification": "Near-perfect Territory/Map alignment (delta-1 = 0.0316, Coherent class). The M0 specification faithfully captures the tool architecture and behavior. Residual gap on Dynamics (D=0.70 vs Im=0.75): cross-layer navigation complexity is slightly underrepresented in the Map. Residual gap on Interoperability (TSCG-specific conventions reduce portability).",
+      "m2:changelog": [
+        {
+          "version": "1.0.0",
+          "date": "2026-05-15",
+          "changes": "Initial M0 specification — dual-mode Browse/Edit, 3-column layout, bootstrap mechanism, ASFID/REVOI scoring. GenesisSpace → GenesisGrammar migration."
+        }
+      ],
+      "m0:scoreJustification": {
+        "A_score": "Strong dual attractor: Browse mode (navigation goal) and Edit mode (modification goal) are clearly defined and stable",
+        "S_score": "Well-defined 3-column architecture — Object Explorer / Property Inspector / Tabbed Panel — with explicit drawer and tab structure",
+        "F_score": "Clear data flows: Load ontology → Select object → Display properties → (Edit → Validate → Save). Cross-layer navigation adds secondary flow.",
+        "It_score": "Rich ontological information displayed: JSON-LD graph, ASFID/REVOI scores, epistemic gap delta-1, SpectralClass, layer relationships",
+        "D_score": "Mode switching (Browse/Edit), cross-layer navigation, real-time SHACL feedback, navigation history — moderate complexity not yet fully stabilized at v1.0",
+        "R_score": "M0 JSON-LD faithfully represents the tool architecture, UI layout, modes, and bootstrap mechanism",
+        "E_score": "Bootstrap mechanism is the core design principle — every iteration of the tool refines its own specification",
+        "V_score": "SHACL validation gate before any save ensures ontological integrity",
+        "O_score": "Active ontology, selected object, current mode, validation status — all visible in the UI at all times",
+        "Im_score": "ElectronJS + JSON-LD + SHACL (W3C standards). Slight reduction: TSCG-specific conventions limit portability"
+      },
+      "m0:architecture": {
+        "m0:layout": "3-column: ObjectExplorer (left) | PropertyInspector (center) | TabbedPanel (right)",
+        "m0:modes": {
+          "Browse": "Read-only navigation across M3-M2-M1-M0 hierarchy",
+          "Edit": "SHACL-gated property editing — save blocked until pyshacl validation passes"
+        },
+        "m0:preconfiguredPaths": {
+          "M3": "M3_GenesisGrammar.jsonld",
+          "M2": "M2_GenericConcepts.jsonld",
+          "M1": "M1_CoreConcepts.jsonld"
+        }
+      },
+      "m0:bootstrapMechanism": {
+        "description": "Strange Loop (Hofstadter): the tool can load its own M0 specification in Edit mode, modify it, pass SHACL validation, save, and use the updated specification as the authoritative blueprint for the next development iteration.",
+        "philosophicalNote": "Reflexive self-specification: the M0 ontology is both the product (specification) and the subject (data processed by the tool)."
+      },
+      "m0:technologyStack": {
+        "runtime": "ElectronJS (vanilla JS, no React, no bundlers)",
+        "jsonld": "jsonld npm package",
+        "shacl": "pyshacl via child_process (Python subprocess, Edit mode gate)",
+        "charts": "Canvas 2D (radar chart for ASFID/REVOI in EpistemicGap tab)"
+      },
       "rdfs:seeAlso": "instances/tscg-tools/TscgOntologyExplorer/M0_TscgOntologyExplorer_README.md"
     }
   ]

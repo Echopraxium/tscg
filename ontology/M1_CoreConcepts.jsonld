@@ -10,18 +10,21 @@
     "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m1core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#"
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#"
   },
   "@graph": [
     {
-      "@id": "m1core:M1_CoreConcepts_Ontology",
+      "@id": "m1:M1_CoreConcepts_Ontology",
       "@type": "owl:Ontology",
       "dcterms:title": "TSCG M1 Core Concepts Ontology",
       "dcterms:description": "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-04-28",
-      "owl:versionInfo": "2.2.0",
+      "dcterms:modified": "2026-05-17",
+      "owl:versionInfo": "2.4.0",
+      "m3:ontologyType": {
+        "@id": "m3:DomainExtension"
+      },
       "m1:layerPosition": {
         "above": "M0 (Poclets - concrete instantiations)",
         "below": "M2 (Metaconcepts - universal patterns)",
@@ -32,65 +35,101 @@
         "baseOntology": "M1_CoreConcepts.jsonld (this file) - Generic transdisciplinary concepts",
         "extensionOntologies": "M1_[Domain].jsonld files (specific to disciplines)",
         "importMechanism": "owl:imports from M1_CoreConcepts + domain-specific additions",
-        "namespaceStrategy": "Each M1 extension has own namespace (m1:optics:, m1:photo:, m1:mythology:, etc.)"
+        "namespaceStrategy": "Each M1 extension uses m1:extension:<domain>: namespace (e.g. m1:extension:optics:, m1:extension:mythology:)"
       },
       "m1:extensionOntologies": {
         "description": "Domain-specific M1 ontologies extending M1_CoreConcepts",
         "current": [
           {
+            "ontology": "M1_Biology.jsonld",
+            "namespace": "m1:extension:biology:",
+            "domain": "Biology / Ecology / Cellular Systems",
+            "status": "Active"
+          },
+          {
+            "ontology": "M1_Chemistry.jsonld",
+            "namespace": "m1:extension:chemistry:",
+            "domain": "Chemistry / Thermodynamics / Reactions",
+            "status": "Active"
+          },
+          {
+            "ontology": "M1_Economics.jsonld",
+            "namespace": "m1:extension:economics:",
+            "domain": "Economics / Market Theory / Trade",
+            "status": "Active"
+          },
+          {
+            "ontology": "M1_Education.jsonld",
+            "namespace": "m1:extension:education:",
+            "domain": "Education / Pedagogy / Learning Systems",
+            "status": "Active"
+          },
+          {
+            "ontology": "M1_Electronics.jsonld",
+            "namespace": "m1:extension:electronics:",
+            "domain": "Electronics / Circuits / Signal Processing",
+            "status": "Active"
+          },
+          {
+            "ontology": "M1_EnergyGenerators.jsonld",
+            "namespace": "m1:extension:energy_generators:",
+            "domain": "Energy Generation / Power Systems",
+            "status": "Active"
+          },
+          {
+            "ontology": "M1_Geology.jsonld",
+            "namespace": "m1:extension:geology:",
+            "domain": "Geology / Earth Sciences / Tectonics",
+            "status": "Active"
+          },
+          {
+            "ontology": "M1_music.jsonld",
+            "namespace": "m1:extension:music:",
+            "domain": "Music / Acoustics / Composition",
+            "status": "Active"
+          },
+          {
+            "ontology": "M1_Mythology.jsonld",
+            "namespace": "m1:extension:mythology:",
+            "domain": "Mythology / Cosmology / Spiritual Systems",
+            "status": "Active"
+          },
+          {
             "ontology": "M1_Optics.jsonld",
-            "namespace": "m1:optics:",
+            "namespace": "m1:extension:optics:",
             "domain": "Optics / Color Theory / Light Physics",
-            "patterns": 8,
             "status": "Active"
           },
           {
             "ontology": "M1_Photography.jsonld",
-            "namespace": "m1:photo:",
+            "namespace": "m1:extension:photography:",
             "domain": "Photography / Camera Technology / Exposure Control",
-            "patterns": 10,
+            "status": "Active"
+          },
+          {
+            "ontology": "M1_Physics.jsonld",
+            "namespace": "m1:extension:physics:",
+            "domain": "Physics / Mechanics / Thermodynamics",
+            "status": "Active"
+          },
+          {
+            "ontology": "M1_SystemicModeling.jsonld",
+            "namespace": "m1:extension:systemic_modeling:",
+            "domain": "Systemic Modeling / Cybernetics / Systems Theory",
             "status": "Active"
           }
         ],
         "proposed": [
           {
-            "ontology": "M1_Mythology.jsonld",
-            "namespace": "m1:mythology:",
-            "domain": "Mythology / Cosmology / Spiritual Systems",
-            "patterns": 5,
-            "status": "Proposed (needed for Yggdrasil poclet)"
-          },
-          {
             "ontology": "M1_Philosophy.jsonld",
-            "namespace": "m1:phil:",
+            "namespace": "m1:extension:philosophy:",
             "domain": "Philosophy / Ethics / Value Systems",
             "patterns": "TBD",
             "status": "Proposed (needed for Magic Color Wheel)"
           },
           {
-            "ontology": "M1_Chemistry.jsonld",
-            "namespace": "m1:chem:",
-            "domain": "Chemistry / Thermodynamics / Reactions",
-            "patterns": "TBD",
-            "status": "Proposed (needed for Fire Triangle extension)"
-          },
-          {
-            "ontology": "M1_Biology.jsonld",
-            "namespace": "m1:bio:",
-            "domain": "Biology / Ecology / Cellular Systems",
-            "patterns": "TBD",
-            "status": "Proposed (needed for Cell Signaling, Predator-Prey)"
-          },
-          {
-            "ontology": "M1_Economics.jsonld",
-            "namespace": "m1:econ:",
-            "domain": "Economics / Market Theory / Trade",
-            "patterns": "TBD",
-            "status": "Proposed"
-          },
-          {
             "ontology": "M1_PoliticalScience.jsonld",
-            "namespace": "m1:polisci:",
+            "namespace": "m1:extension:political_science:",
             "domain": "Political Science / Governance / Power",
             "patterns": "TBD",
             "status": "Proposed (needed for Political Compass)"
@@ -181,7 +220,7 @@
         "m1:conceptsValidated": 11,
         "m1:genericConceptCombos": 9,
         "m1:patterns": 2,
-        "m1:note": "9 instances of m2:GenericConceptCombo + 2 instances of m1core:CorePattern"
+        "m1:note": "9 instances of m2:GenericConceptCombo + 2 instances of m1:CorePattern"
       },
       "m1:changelog": {
         "v2.2.0": {
@@ -194,7 +233,7 @@
         "v2.1.0": {
           "date": "2026-03-13",
           "changes": [
-            "REMOVED: m1core:TransdisciplinaryCombo class (redundant with m2:GenericConceptCombo defined in M2)",
+            "REMOVED: m1:core:TransdisciplinaryCombo class (redundant with m2:GenericConceptCombo defined in M2)",
             "FIXED: all 9 combo instances now typed as ['owl:Class', 'm2:GenericConceptCombo']",
             "ARCHITECTURE: M2 defines GenericConceptCombo + KnowledgeFieldConceptCombo; M1 hosts instances"
           ]
@@ -202,10 +241,10 @@
         "v2.0.0": {
           "date": "2026-03-13",
           "changes": [
-            "MAJOR: Added m1core:TransdisciplinaryCombo class — hosts synergistic N-ary combos migrated from M2",
+            "MAJOR: Added m1:core:TransdisciplinaryCombo class — hosts synergistic N-ary combos migrated from M2",
             "MIGRATED from M2 Combo family: Cascade, Processor, LALI, ButterflyEffect, Oscillator, Propagation, Narration",
-            "NEW: StratifiedDissipation (S⊗I⊗A⊗D⊗F⊗V⊗R, 7D) and CascadeAmplification (⊗²⇒(Cascade,Amplification)|gain>1)",
-            "@base added | m1:core: → m1core: | m2: URI updated to M2_GenericConcepts.jsonld",
+            "NEW: StratifiedDissipation (S × I × A × D × F | V + R (7D) and CascadeAmplification (Fm2²(Cascade,Amplification)|gain>1)",
+            "@base added | m1:core: → m1:core: | m2: URI updated to M2_GenericConcepts.jsonld",
             "M2 Combo family fully suppressed — M2 is now atomic-only"
           ]
         }
@@ -219,7 +258,7 @@
       ]
     },
     {
-      "@id": "m1core:simulationTitle",
+      "@id": "m1:simulationTitle",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Simulation Title",
       "rdfs:comment": "Short human-readable title for displaying instances in simulation galleries and user interfaces. Typically shorter and more user-friendly than the formal rdfs:label. Used by generate_index.js and other gallery/presentation tools.",
@@ -237,7 +276,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
     {
-      "@id": "m1core:CoreConcept",
+      "@id": "m1:CoreConcept",
       "@type": "owl:Class",
       "rdfs:label": "M1 Core Concept",
       "rdfs:comment": "A domain-bounded but transdisciplinary concept that instantiates one or more M2 metaconcepts. Core concepts are reusable patterns that appear across multiple domains but don't achieve the full universality of M2 metaconcepts. Examples: Oscillator (appears in physics, biology, economics), Multipolar Network (appears in mythology, game design, education).",
@@ -251,57 +290,57 @@
       ]
     },
     {
-      "@id": "m1core:DomainPattern",
+      "@id": "m1:DomainPattern",
       "@type": "owl:Class",
       "rdfs:label": "Domain-Specific Pattern",
       "rdfs:comment": "A pattern specific to a particular domain (e.g., Additive Color Synthesis in optics, Compensatory Triplet in photography). Lives in domain-specific M1 extensions (M1_Optics, M1_Photography, etc.) rather than M1_CoreConcepts.",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": "m1:CoreConcept",
       "m1:note": "Domain patterns extend CoreConcept but are defined in M1_[Domain].jsonld files, not here."
     },
     {
-      "@id": "m1core:GenericMechanism",
+      "@id": "m1:GenericMechanism",
       "@type": "owl:Class",
       "rdfs:label": "Generic Mechanism",
       "rdfs:comment": "Reusable operational mechanism appearing across multiple domains. Examples: Oscillator (pendulum, AC current, predator-prey cycles, business cycles), Amplifier (electronic amplifier, biological cascade, social amplification).",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": "m1:CoreConcept",
       "skos:note": "To be populated with specific mechanisms as they are discovered through poclet analysis."
     },
     {
-      "@id": "m1core:StructuralTemplate",
+      "@id": "m1:StructuralTemplate",
       "@type": "owl:Class",
       "rdfs:label": "Structural Template",
       "rdfs:comment": "Common architectural pattern for system organization. Examples: Feedback Loop (control systems, ecosystems, markets), Cascade (signal transduction, waterfall, information flow), Hierarchy (organizational charts, taxonomies, file systems), Multipolar Network (Yggdrasil, Magic Color Wheel, TPACK).",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": "m1:CoreConcept",
       "skos:note": "Now includes 1 validated concept: Multipolar Network. Additional templates to be populated through poclet analysis."
     },
     {
-      "@id": "m1core:RelationalPattern",
+      "@id": "m1:RelationalPattern",
       "@type": "owl:Class",
       "rdfs:label": "Relational Pattern",
       "rdfs:comment": "Generic type of relationship between entities. Examples: Competition (species, companies, ideas), Cooperation (mutualism, trade, collaboration), Parasitism (biological, economic extraction).",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": "m1:CoreConcept",
       "skos:note": "To be populated with specific patterns as they are discovered through poclet analysis."
     },
     {
-      "@id": "m1core:ProcessArchetype",
+      "@id": "m1:ProcessArchetype",
       "@type": "owl:Class",
       "rdfs:label": "Process Archetype",
       "rdfs:comment": "Generic transformational process. Examples: Growth (population, economic, crystal), Decay (radioactive, ecological succession, market correction), Saturation (carrying capacity, market saturation, chemical equilibrium), Cyclic Tension (Yggdrasil wear-repair, cell maintenance, market corrections).",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": "m1:CoreConcept",
       "skos:note": "Now includes 1 validated concept: Cyclic Tension. Additional archetypes to be populated through poclet analysis."
     },
     {
-      "@id": "m1core:CorePattern",
+      "@id": "m1:CorePattern",
       "@type": "owl:Class",
       "rdfs:label": "Core Pattern",
-      "rdfs:subClassOf": "m1core:CoreConcept",
+      "rdfs:subClassOf": "m1:CoreConcept",
       "rdfs:comment": "Recurrent structural or process archetype discovered empirically through poclet analysis and validated across ≥3 domains. Unlike TransdisciplinaryCombo (explicit N-ary formula), a CorePattern is identified through cross-domain pattern recognition. Examples: MultipolarNetwork, CyclicTension."
     },
     {
-      "@id": "m1core:MultipolarNetwork",
+      "@id": "m1:MultipolarNetwork",
       "@type": [
         "owl:NamedIndividual",
-        "m1core:CorePattern"
+        "m1:CorePattern"
       ],
       "rdfs:label": "Multipolar Network",
       "rdfs:comment": "System organized around N ≥ 3 distinct poles (nodes, centers, principles) with interdependent relationships forming a coherent whole. Unlike bipolar systems (duality) or hierarchies (tree), multipolar networks distribute significance across multiple equivalent or complementary poles without central dominance. Each pole contributes essential function; removing any pole destabilizes the entire system.",
@@ -310,7 +349,7 @@
         "m2:Information (I) - Distinctions between pole identities",
         "m2:Attractor (A) - System equilibrium across poles"
       ],
-      "m1:structuralGrammarFormula": "S⊗I⊗A",
+      "m1:structuralGrammarFormula": "S × I × A",
       "m1:principle": "Distributed equilibrium across N ≥ 3 interdependent poles where each pole is irreducible and contributes unique function to system stability",
       "m1:characteristicProperties": {
         "minimumPolarity": "N ≥ 3 (below 3 reduces to simple duality)",
@@ -356,10 +395,10 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
     {
-      "@id": "m1core:CyclicTension",
+      "@id": "m1:CyclicTension",
       "@type": [
         "owl:NamedIndividual",
-        "m1core:CorePattern"
+        "m1:CorePattern"
       ],
       "rdfs:label": "Cyclic Tension",
       "rdfs:comment": "Perpetual alternation between opposing processes (typically destruction/degradation →” restoration/construction) maintaining system viability through dynamic equilibrium. Unlike simple oscillation (periodic without degradation) or homeostasis (static equilibrium), cyclic tension involves genuine wear-and-repair cycles essential to system persistence. The 'stress' is not pathological but constitutive - the system exists *because* of this tension, not despite it.",
@@ -368,7 +407,7 @@
         "m2:Attractor (A) - Equilibrium maintained through opposition",
         "m2:Flow (F) - Energy/matter exchange during degradation and restoration"
       ],
-      "m1:structuralGrammarFormula": "D⊗A⊗F",
+      "m1:structuralGrammarFormula": "D × A × F",
       "m1:principle": "System viability maintained through perpetual opposition of degradative and restorative processes, where neither can permanently dominate. Equilibrium is dynamic, not static - the system is never 'finished' but perpetually in process.",
       "m1:characteristicProperties": {
         "bidirectionality": "Two opposed processes (not unidirectional decay or growth)",
@@ -414,21 +453,22 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
     {
-      "@id": "m1core:Cascade",
+      "@id": "m1:Cascade",
       "@type": [
         "owl:Class",
         "m2:GenericConceptCombo"
       ],
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
       "rdfs:label": "Cascade",
-      "rdfs:comment": "Sequential multi-stage process where output of each step becomes input of next step, following a trajectory toward goal state. Synergistic ternary combination: Process (temporal evolution with flow) + Step (structured stages with information transfer) + Trajectory (goal-directed path through state space). Covers ALL five ASFID dimensions. Distinguished from binary Process ⊗ Step by addition of Attractor dimension, enabling goal-directed cascades (e.g., homeostatic regulation, development toward mature state). May or may not include amplification at each stage.",
+      "rdfs:comment": "Sequential multi-stage process where output of each step becomes input of next step, following a trajectory toward goal state. Synergistic ternary combination: Process (temporal evolution with flow) + Step (structured stages with information transfer) + Trajectory (goal-directed path through state space). Covers ALL five ASFID dimensions. Distinguished from binary Fm2(Process, Step) by addition of Attractor dimension, enabling goal-directed cascades (e.g., homeostatic regulation, development toward mature state). May or may not include amplification at each stage.",
       "m1:comboOf": [
         "m2:Process",
         "m2:Step",
         "m2:Trajectory"
       ],
       "m1:structuralGrammarFormula": "Fm2(Process, Step, Trajectory)",
-      "m1:structuralGrammarFormulaExpanded": "S ⊗ I ⊗ A ⊗ D ⊗ F",
-      "m1:structuralGrammarFormulaTeX": "S \\otimes I \\otimes A \\otimes D \\otimes F",
+      "m1:structuralGrammarFormulaExpanded": "S × I × A × D × F",
+      "m1:structuralGrammarFormulaTeX": "S \\times I \\times A \\times D \\times F",
       "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F",
       "m1:hasEpistemicGap": 0.2,
       "m1:hasPolarity": "dual",
@@ -479,10 +519,10 @@
         "actualDomains": 5
       },
       "m1:distinctionFromRelated": {
-        "vs_Process": "Process (D ⊗ F) lacks structure and goal; Cascade adds discrete stages (S, I) and target state (A)",
-        "vs_Step": "Step (S ⊗ I ⊗ D) lacks flow and goal; Cascade adds material/energy flow (F) and attractor (A)",
-        "vs_Trajectory": "Trajectory (A ⊗ D ⊗ F) lacks staged structure; Cascade adds discrete steps (S) and information transfer (I)",
-        "vs_Workflow": "Workflow (S ⊗ D ⊗ F) is prescriptive map structure; Cascade adds goal (A) and explicit information transfer (I), and is dual (map+territory)",
+        "vs_Process": "Process (D × F) lacks structure and goal; Cascade adds discrete stages (S, I) and target state (A)",
+        "vs_Step": "Step (S × I × D) lacks flow and goal; Cascade adds material/energy flow (F) and attractor (A)",
+        "vs_Trajectory": "Trajectory (A × D × F) lacks staged structure; Cascade adds discrete steps (S) and information transfer (I)",
+        "vs_Workflow": "Workflow (S × D × F) is prescriptive map structure; Cascade adds goal (A) and explicit information transfer (I), and is dual (map+territory)",
         "vs_Amplification": "Amplification is gain operation; Cascade is sequential structure (may or may not amplify, see 'amplifying' attribute)",
         "vs_Path": "Path is planned route on map; Cascade is observed sequential process toward goal in territory"
       },
@@ -534,37 +574,38 @@
       "m1:parentGenericConcepts": [
         {
           "@id": "m2:Process",
-          "formula": "D ⊗ F",
+          "formula": "D × F",
           "contribution": "Temporal evolution with flow - provides continuous dynamics and material/energy/signal flow through cascade"
         },
         {
           "@id": "m2:Step",
-          "formula": "S ⊗ I ⊗ D",
+          "formula": "S × I × D",
           "contribution": "Structured sequential stages with information transfer - provides discrete stage decomposition and inter-stage signal transfer"
         },
         {
           "@id": "m2:Trajectory",
-          "formula": "A ⊗ D ⊗ F",
+          "formula": "A × D × F",
           "contribution": "Goal-directed evolution through state space - provides attractor (target state) toward which cascade evolves"
         }
       ]
     },
     {
-      "@id": "m1core:Oscillator",
+      "@id": "m1:Oscillator",
       "@type": [
         "owl:Class",
         "m2:GenericConceptCombo"
       ],
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
       "rdfs:label": "Oscillator",
-      "rdfs:comment": "A system component that sustains periodic return to previous states through a cyclic trajectory around an attractor. Subclass of Component (S ⊗ I): the Oscillator has a structural identity within a larger system and a functional role (producing periodicity). Emergent combination of Component (S ⊗ I), Process (D ⊗ I ⊗ F) and Trajectory constrained to Circular shape (A ⊗ D ⊗ F). Shared dimensions D, F, I couple across parents; the union yields full ASFID coverage (S ⊗ A ⊗ I ⊗ D ⊗ F). Emergent properties irreducible to any single parent: period T, amplitude A, phase φ. Characterised by four ValueSpace attributes: frequency, amplitude, phase, damping_ratio.",
+      "rdfs:comment": "A system component that sustains periodic return to previous states through a cyclic trajectory around an attractor. Subclass of Component (S × I): the Oscillator has a structural identity within a larger system and a functional role (producing periodicity). Emergent combination of Component (S × I), Process (D × I × F) and Trajectory constrained to Circular shape (A × D × F). Shared dimensions D, F, I couple across parents; the union yields full ASFID coverage (S × A × I × D × F). Emergent properties irreducible to any single parent: period T, amplitude A, phase φ. Characterised by four ValueSpace attributes: frequency, amplitude, phase, damping_ratio.",
       "m1:comboOf": [
         "m2:Component",
         "m2:Process",
         "m2:Trajectory"
       ],
       "m1:structuralGrammarFormula": "Fm2(Component, Process, Trajectory) | trajectoryShape=Circular",
-      "m1:structuralGrammarFormulaExpanded": "S ⊗ A ⊗ I ⊗ D ⊗ F",
-      "m1:structuralGrammarFormulaTeX": "\\otimes\\Rightarrow(\\text{Component}, \\text{Process}, \\text{Trajectory}) \\;|\\; \\text{trajectoryShape}=\\text{Circular}",
+      "m1:structuralGrammarFormulaExpanded": "S × A × I × D × F",
+      "m1:structuralGrammarFormulaTeX": "\\times\\Rightarrow(\\text{Component}, \\text{Process}, \\text{Trajectory}) \\;|\\; \\text{trajectoryShape}=\\text{Circular}",
       "m1:structuralGrammarFormulaRawText": "(x)=>(Component, Process, Trajectory) | trajectoryShape=Circular",
       "m1:hasEpistemicGap": 0.2,
       "m1:hasPolarity": "neutral",
@@ -816,33 +857,34 @@
       "m1:parentGenericConcepts": [
         {
           "@id": "m2:Component",
-          "formula": "S ⊗ I",
+          "formula": "S × I",
           "contribution": "Structural identity within a larger system + functional role — provides S (the Oscillator as a bounded, identifiable part) and reinforces I (functional information encoding what the component does)"
         },
         {
           "@id": "m2:Process",
-          "formula": "D ⊗ I ⊗ F",
+          "formula": "D × I × F",
           "contribution": "Temporal evolution with flow — provides continuous dynamics and energy/signal flow through each cycle"
         },
         {
           "@id": "m2:Trajectory",
-          "formula": "A ⊗ D ⊗ F",
+          "formula": "A × D × F",
           "contribution": "Goal-directed path through state space constrained to Circular shape — the attractor closes the path back to its origin, producing periodicity"
         }
       ]
     },
     {
-      "@id": "m1core:Processor",
+      "@id": "m1:Processor",
       "@type": [
         "owl:Class",
         "m2:GenericConceptCombo"
       ],
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
       "rdfs:label": "Processor",
-      "rdfs:comment": "Generic system with inputs and outputs that transforms/processes incoming resources, signals, or matter into outputs. Dual synergistic combinations: Territory (Transformation ⊗ Flow ⊗ Resource) provides empirical processing dynamics, Map (Transformation ⊗ Representation ⊗ Interoperability) provides conceptual interface model. Distinct from pure Transformation (abstract process) by being a concrete entity that IMPLEMENTS transformations while managing flows and interfacing with environment.",
+      "rdfs:comment": "Generic system with inputs and outputs that transforms/processes incoming resources, signals, or matter into outputs. Dual synergistic combinations: Territory (Fm2(Transformation, Flow, Resource)) provides empirical processing dynamics, Map (Fm2(Transformation, Representation, Interoperability)) provides conceptual interface model. Distinct from pure Transformation (abstract process) by being a concrete entity that IMPLEMENTS transformations while managing flows and interfacing with environment.",
       "m1:comboOf": [],
-      "m1:structuralGrammarFormula": "S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ R",
+      "m1:structuralGrammarFormula": "Fm2(Process, Structure, Information) | V + R",
       "m1:structuralGrammarFormulaExpanded": "",
-      "m1:structuralGrammarFormulaTeX": "S \\otimes I \\otimes D \\otimes F \\otimes V \\otimes R",
+      "m1:structuralGrammarFormulaTeX": "S \\times I \\times D \\times F \\times V \\times R",
       "m1:structuralGrammarFormulaRawText": "S (x) I (x) D (x) F (x) V (x) R",
       "m1:hasEpistemicGap": 0.15,
       "m1:hasPolarity": "dual",
@@ -955,11 +997,12 @@
       }
     },
     {
-      "@id": "m1core:LocalActivationLateralInhibition",
+      "@id": "m1:LocalActivationLateralInhibition",
       "@type": [
         "owl:Class",
         "m2:GenericConceptCombo"
       ],
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
       "rdfs:label": "LocalActivationLateralInhibition (LALI)",
       "rdfs:comment": "Binary GenericConceptCombo in which a local self-reinforcing process (Amplification, short range) is structurally coupled to a longer-range inhibitory process (Regulation), producing stable periodic spatial or functional patterns from an initially homogeneous state. The essential and irreducible structural constraint is the range asymmetry: range(F_Amplification) << range(F_Regulation). Without this asymmetry the combination reduces to simple Amplification+Regulation co-presence without emergent pattern formation. LALI explains spontaneous symmetry breaking into ordered patterns across 8+ disciplines. First identified in Turing reaction-diffusion systems (1952); the abstract principle recognized as transdisciplinary. Structural dual counterpart: ButterflyEffect (Amplification without lateral Regulation constraint → chaos instead of order).",
       "m1:comboOf": [
@@ -968,7 +1011,7 @@
       ],
       "m1:structuralGrammarFormula": "Fm2(Amplification, Regulation) | range(F_A) << range(F_R)",
       "m1:structuralGrammarFormulaExpanded": "",
-      "m1:structuralGrammarFormulaTeX": "\\otimes\\Rightarrow(\\text{Amplification}, \\text{Regulation}) \\;|\\; \\|\\text{range}(F_A)\\| \\ll \\|\\text{range}(F_R)\\|",
+      "m1:structuralGrammarFormulaTeX": "\\times\\Rightarrow(\\text{Amplification}, \\text{Regulation}) \\;|\\; \\|\\text{range}(F_A)\\| \\ll \\|\\text{range}(F_R)\\|",
       "m1:structuralGrammarFormulaRawText": "(x)=>(Amplification, Regulation) | range(F_A) << range(F_R)",
       "m1:hasEpistemicGap": 0.2,
       "m1:hasPolarity": "dual",
@@ -1050,7 +1093,7 @@
         "vs_Amplification": "Amplification alone is unconstrained positive feedback (divergent or chaotic). LALI adds the Regulation constraint with range asymmetry, channeling amplification into a stable periodic attractor. Amplification ⊂ LALI (as component).",
         "vs_Regulation": "Regulation alone drives system toward a single equilibrium (homeostasis). LALI uses Regulation laterally as the pattern-spacing mechanism, not as a global stabilizer. Regulation ⊂ LALI (as component).",
         "vs_Homeostasis": "Homeostasis = dynamic regulation toward a single fixed point (scalar attractor). LALI = emergence of a spatially distributed multi-point attractor (pattern). Homeostasis is what the emergent LALI pattern exhibits once formed; LALI is the construction mechanism.",
-        "vs_Balance": "Balance (A ⊗ S ⊗ F) is a static equilibrium between opposing flows. LALI is a dynamic self-organizing process producing a spatially structured non-uniform equilibrium. Balance describes the endpoint of each local region in a LALI pattern.",
+        "vs_Balance": "Balance (A × S × F) is a static equilibrium between opposing flows. LALI is a dynamic self-organizing process producing a spatially structured non-uniform equilibrium. Balance describes the endpoint of each local region in a LALI pattern.",
         "vs_ButterflyEffect": "ButterflyEffect = Fm2(Amplification, Trajectory(chaotic)): local amplification without lateral Regulation constraint → exponential divergence, chaos. LALI = Fm2(Amplification, Regulation) with range constraint → convergence to ordered pattern. They are structural duals sharing the Amplification parent. LALI: δ≈0.20 (predictable). ButterflyEffect: δ≈0.85 (unpredictable)."
       },
       "m1:migrationNote": "Migrated from m2:LocalActivationLateralInhibition (M2 Combo family) to M1_CoreConcepts v2.0.0 — 2026-03-13",
@@ -1069,18 +1112,19 @@
         },
         {
           "@id": "m2:Regulation",
-          "formula": "A ⊗ S ⊗ F",
+          "formula": "A × S × F",
           "contribution": "Provides inhibitory negative feedback. Acts at LONG range via flow (F). Prevents global runaway and constrains pattern spacing.",
           "role": "Lateral inhibitor dynamics"
         }
       ]
     },
     {
-      "@id": "m1core:ButterflyEffect",
+      "@id": "m1:ButterflyEffect",
       "@type": [
         "owl:Class",
         "m2:GenericConceptCombo"
       ],
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
       "rdfs:label": "ButterflyEffect (Sensitive Dependence on Initial Conditions)",
       "rdfs:comment": "Binary GenericConceptCombo in which unconstrained local positive feedback (Amplification) is coupled with a chaotic system trajectory (Trajectory with trajectoryShape=Chaotic and Lyapunov exponent λ > 0), producing exponential divergence of initially nearby system trajectories and intrinsic long-term unpredictability. The essential structural property is the ABSENCE of a lateral Regulation constraint: amplification is unbounded in its range. Named after Lorenz (1963) sensitivity observation: a butterfly flapping its wings in Brazil could set off a tornado in Texas. The abstract pattern appears wherever unconstrained positive feedback operates within a nonlinear deterministic system. Structural dual of LALI: both share Amplification, but LALI adds lateral Regulation (range constraint) → order; ButterflyEffect lacks this constraint → chaos.",
       "m1:comboOf": [
@@ -1089,7 +1133,7 @@
       ],
       "m1:structuralGrammarFormula": "Fm2(Amplification, Trajectory) | trajectoryShape=Chaotic ∧ λ > 0",
       "m1:structuralGrammarFormulaExpanded": "",
-      "m1:structuralGrammarFormulaTeX": "\\otimes\\Rightarrow(\\text{Amplification}, \\text{Trajectory}) \\;|\\; \\text{trajectoryShape}=\\text{Chaotic} \\wedge \\lambda > 0",
+      "m1:structuralGrammarFormulaTeX": "\\times\\Rightarrow(\\text{Amplification}, \\text{Trajectory}) \\;|\\; \\text{trajectoryShape}=\\text{Chaotic} \\wedge \\lambda > 0",
       "m1:structuralGrammarFormulaRawText": "(x)=>(Amplification, Trajectory) | trajectoryShape=Chaotic AND lambda > 0",
       "m1:hasEpistemicGap": 0.85,
       "m1:hasPolarity": "dual",
@@ -1162,11 +1206,11 @@
       },
       "m1:distinctionFromRelated": {
         "vs_Amplification": "Amplification is the local positive feedback component. ButterflyEffect is the emergent system behavior when Amplification operates without lateral Regulation within a nonlinear Trajectory. Amplification ⊂ ButterflyEffect (as parent genericConcept).",
-        "vs_Trajectory": "Trajectory (A ⊗ D ⊗ F) is the path through state space. ButterflyEffect specifies trajectoryShape=Chaotic with λ>0 AND couples with Amplification to explain trajectory divergence. Trajectory ⊂ ButterflyEffect (as parent).",
-        "vs_Cascade": "Cascade (S ⊗ I ⊗ A ⊗ D ⊗ F) is staged amplification toward a defined fixed attractor. ButterflyEffect is continuous amplification on a strange attractor with no stable endpoint - the opposite of Cascade's goal-directed convergence.",
-        "vs_Divergence": "Divergence (A ⊗ D) is the general genericConcept for moving away from equilibrium. ButterflyEffect adds the strange-attractor bounding structure (Trajectory parent) and the specific amplification mechanism. ButterflyEffect implies Divergence but is more specific.",
+        "vs_Trajectory": "Trajectory (A × D × F) is the path through state space. ButterflyEffect specifies trajectoryShape=Chaotic with λ>0 AND couples with Amplification to explain trajectory divergence. Trajectory ⊂ ButterflyEffect (as parent).",
+        "vs_Cascade": "Cascade (S × I × A × D × F) is staged amplification toward a defined fixed attractor. ButterflyEffect is continuous amplification on a strange attractor with no stable endpoint - the opposite of Cascade's goal-directed convergence.",
+        "vs_Divergence": "Divergence (A × D) is the general genericConcept for moving away from equilibrium. ButterflyEffect adds the strange-attractor bounding structure (Trajectory parent) and the specific amplification mechanism. ButterflyEffect implies Divergence but is more specific.",
         "vs_LALI": "LALI = Fm2(Amplification, Regulation) with range constraint → stable periodic pattern, δ≈0.20. ButterflyEffect = Fm2(Amplification, Trajectory(chaotic)) without range constraint → chaos, δ≈0.85. They are structural DUALS sharing the Amplification parent. The sole bifurcation: presence vs absence of lateral Regulation range constraint.",
-        "vs_Emergence": "Emergence (A ⊗ I ⊗ D) = spontaneous appearance of new macroscopic ORDER from microscopic interactions. ButterflyEffect = spontaneous appearance of macroscopic DISORDER from deterministic rules. They are complementary: Emergence → order from disorder; ButterflyEffect → disorder from order."
+        "vs_Emergence": "Emergence (A × I × D) = spontaneous appearance of new macroscopic ORDER from microscopic interactions. ButterflyEffect = spontaneous appearance of macroscopic DISORDER from deterministic rules. They are complementary: Emergence → order from disorder; ButterflyEffect → disorder from order."
       },
       "m1:migrationNote": "Migrated from m2:ButterflyEffect (M2 Combo family) to M1_CoreConcepts v2.0.0 — 2026-03-13",
       "dcterms:created": "2026-03-13",
@@ -1184,18 +1228,19 @@
         },
         {
           "@id": "m2:Trajectory",
-          "formula": "A ⊗ D ⊗ F",
+          "formula": "A × D × F",
           "contribution": "Provides the chaotic phase-space path: strange attractor (A) bounds the trajectory (F) which evolves deterministically but never repeats (D). trajectoryShape=Chaotic, λ > 0.",
           "role": "Geometric structure of chaos (strange attractor)"
         }
       ]
     },
     {
-      "@id": "m1core:Propagation",
+      "@id": "m1:Propagation",
       "@type": [
         "owl:Class",
         "m2:GenericConceptCombo"
       ],
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
       "rdfs:label": "Propagation",
       "rdfs:comment": "Branching spread of a faithfully copied entity through a network, where each receiving node becomes a new emitter. Synergistic ternary combination: Cascade (sequential chain mechanics + goal attractor) + Duplication (1→N faithful copying at each node) + Network (topological substrate with compatible nodes). Unique dimensional contributions: A from Cascade (propagation threshold and saturation attractor), V from Duplication (copy fidelity — distinguishes propagation from random diffusion), Im from Network (node compatibility — receivers can become emitters). Distinguished from Cascade (linear, no branching) and from Diffusion (no fidelity, no structured topology). Domain-specific instances: m1:Contagion (biological/social), wave propagation (physics), viral spread (computing).",
       "m1:comboOf": [
@@ -1204,8 +1249,8 @@
         "m2:Network"
       ],
       "m1:structuralGrammarFormula": "Fm2(Cascade, Duplication, Network)",
-      "m1:structuralGrammarFormulaExpanded": "S ⊗ I ⊗ A ⊗ D ⊗ F ⊗ V ⊗ Im",
-      "m1:structuralGrammarFormulaTeX": "S \\otimes I \\otimes A \\otimes D \\otimes F \\otimes V \\otimes I_m",
+      "m1:structuralGrammarFormulaExpanded": "S × I × A × D × F | V + Im",
+      "m1:structuralGrammarFormulaTeX": "S \\times I \\times A \\times D \\times F \\times V \\times I_m",
       "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F (x) V (x) Im",
       "m1:hasEpistemicGap": 0.2,
       "m1:hasPolarity": "dual",
@@ -1313,30 +1358,31 @@
       "m1:parentGenericConcepts": [
         {
           "@id": "m2:Cascade",
-          "formula": "S ⊗ I ⊗ A ⊗ D ⊗ F",
+          "formula": "S × I × A × D × F",
           "uniqueContribution": "A (Attractor)",
           "contribution": "Sequential chain mechanics + propagation threshold (R₀=1) and saturation attractor (herd immunity, network saturation)"
         },
         {
           "@id": "m2:Duplication",
-          "formula": "S ⊗ I ⊗ F ⊗ D ⊗ V",
+          "formula": "S × I × F × D | V",
           "uniqueContribution": "V (Verifiability of fidelity)",
           "contribution": "1→N branching copy: each receiver becomes a new emitter. V = fidelity discriminant — distinguishes propagation from random diffusion"
         },
         {
           "@id": "m2:Network",
-          "formula": "S ⊗ I ⊗ F ⊗ D ⊗ Im",
+          "formula": "S × I × F × D | Im",
           "uniqueContribution": "Im (Interoperability)",
           "contribution": "Topological substrate. Im = nodes are structurally compatible to receive AND re-emit the copied entity"
         }
       ]
     },
     {
-      "@id": "m1core:Narration",
+      "@id": "m1:Narration",
       "@type": [
         "owl:Class",
         "m2:GenericConceptCombo"
       ],
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
       "rdfs:label": "Narration",
       "rdfs:comment": "Temporal transformation of a semantic network of Representations and their Relations — a semantic network morphism unfolding over time. Synergistic ternary combination: Transformation (process that evolves the network) + Representation (nodes carrying decodable semantic content) + Relation (arcs linking nodes into coherent structure). Unique contributions: D+F from Transformation (temporal unfolding and narrative flux), R from Representation (semantic encodability/decodability of nodes), A+Im from Relation (narrative attractor — resolution/telos — and interoperability enabling shared understanding). Distinguished from Signal (1:1, no network), Pattern (static template), Language (combinatorial system without directed transformation). Named Narration (process noun) over Narrative (artifact noun): consistent with M2 process vocabulary.",
       "m1:comboOf": [
@@ -1345,8 +1391,8 @@
         "m2:Relation"
       ],
       "m1:structuralGrammarFormula": "Fm2(Transformation, Representation, Relation)",
-      "m1:structuralGrammarFormulaExpanded": "S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ R ⊗ A ⊗ Im",
-      "m1:structuralGrammarFormulaTeX": "S \\otimes I \\otimes D \\otimes F \\otimes V \\otimes R \\otimes A \\otimes I_m",
+      "m1:structuralGrammarFormulaExpanded": "S × I × D × F × A | V + R + Im",
+      "m1:structuralGrammarFormulaTeX": "S \\times I \\times D \\times F \\times V \\times R \\times A \\times I_m",
       "m1:structuralGrammarFormulaRawText": "S (x) I (x) D (x) F (x) V (x) R (x) A (x) Im",
       "m1:hasEpistemicGap": 0.35,
       "m1:hasPolarity": "neutral",
@@ -1403,9 +1449,9 @@
         "count": 6
       },
       "m1:distinctionFromRelated": {
-        "vs_Signal": "Signal (F⊗I⊗R) is 1:1 transmission of a single representation. Narration is a NETWORK of representations linked by relations, transformed over time toward a telos.",
+        "vs_Signal": "Signal (F × I | R) is 1:1 transmission of a single representation. Narration is a NETWORK of representations linked by relations, transformed over time toward a telos.",
         "vs_Pattern": "Pattern is a static reusable template. Narration is a DYNAMIC TRANSFORMATION — the semantic network evolves.",
-        "vs_Language": "Language (S⊗I⊗F⊗A⊗R) is the formal combinatorial system. Narration uses Language as substrate but adds directed temporal transformation (D), coherence (V), and interoperability (Im).",
+        "vs_Language": "Language (S × I × F × A | R) is the formal combinatorial system. Narration uses Language as substrate but adds directed temporal transformation (D), coherence (V), and interoperability (Im).",
         "vs_Memory": "Memory stores and retrieves past states. Narration actively transforms and reconstructs representations into a directed semantic network with telos.",
         "vs_Propagation": "Propagation COPIES faithfully — content preserved. Narration TRANSFORMS — content evolves toward a telos. In Kindleberger-Minsky: panic PROPAGATES; collective market beliefs are NARRATED."
       },
@@ -1506,50 +1552,51 @@
       "m1:parentGenericConcepts": [
         {
           "@id": "m2:Transformation",
-          "formula": "S ⊗ I ⊗ D ⊗ F ⊗ V",
+          "formula": "S × I × D × F | V",
           "uniqueContribution": "D (Dynamics), F (Flow)",
           "contribution": "The process evolving the semantic network over time. D = temporal unfolding (beginning, middle, end). F = narrative flux (what flows from one representation to the next). Without Transformation, the semantic network is static — a map, not a narration."
         },
         {
           "@id": "m2:Representation",
-          "formula": "S ⊗ I ⊗ V ⊗ R",
+          "formula": "S × I | V + R",
           "uniqueContribution": "R (Representability)",
           "contribution": "The nodes of the semantic network — decodable semantic units (words, images, symbols, events). R = semantic encodability/decodability of each node."
         },
         {
           "@id": "m2:Relation",
-          "formula": "S ⊗ I ⊗ A ⊗ Im",
+          "formula": "S × I × A | Im",
           "uniqueContribution": "A (Attractor), Im (Interoperability)",
           "contribution": "The arcs of the semantic network (causality, temporality, contrast, analogy). A = narrative telos (resolution, moral, conclusion). Im = shared understanding between emitter and receiver."
         }
       ]
     },
     {
-      "@id": "m1core:StratifiedDissipation",
+      "@id": "m1:StratifiedDissipation",
       "@type": [
         "owl:Class",
         "m2:GenericConceptCombo"
       ],
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
       "rdfs:label": "StratifiedDissipation",
-      "rdfs:comment": "Layered dissipation process where energy or matter is progressively absorbed across ordered strata, each stratum capturing a fraction of the incoming flow. Synergistic binary combination: Layer (S⊗I⊗A⊗R) ⊗² Dissipation (F⊗D). Emergent property: the positional ordering (A from Layer) creates a differential dissipation gradient across strata — a property absent from either Layer or Dissipation alone. The V dimension (Verifiability) is contributed by the ordered measurability of dissipation per stratum.",
+      "rdfs:comment": "Layered dissipation process where energy or matter is progressively absorbed across ordered strata, each stratum capturing a fraction of the incoming flow. Synergistic binary combination: Layer (S × I × A | R) Fm2² Dissipation (F × D). Emergent property: the positional ordering (A from Layer) creates a differential dissipation gradient across strata — a property absent from either Layer or Dissipation alone. The V dimension (Verifiability) is contributed by the ordered measurability of dissipation per stratum.",
       "m1:comboOf": [
         "m2:Layer",
         "m2:Dissipation"
       ],
-      "m1:structuralGrammarFormula": "⊗²⇒(Layer, Dissipation)",
-      "m1:structuralGrammarFormulaExpanded": "S ⊗ I ⊗ A ⊗ D ⊗ F ⊗ V ⊗ R",
-      "m1:structuralGrammarFormulaTeX": "S \\otimes I \\otimes A \\otimes D \\otimes F \\otimes V \\otimes R",
+      "m1:structuralGrammarFormula": "Fm2²(Layer, Dissipation)",
+      "m1:structuralGrammarFormulaExpanded": "S × I × A × D × F | V + R",
+      "m1:structuralGrammarFormulaTeX": "S \\times I \\times A \\times D \\times F \\times V \\times R",
       "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F (x) V (x) R",
       "m1:dimensions": 7,
       "m1:parentGenericConcepts": [
         {
           "@id": "m2:Layer",
-          "formula": "S ⊗ I ⊗ A ⊗ R",
+          "formula": "S × I × A | R",
           "contribution": "Structural partition (S), stratum identity (I), positional order (A), representability (R)"
         },
         {
           "@id": "m2:Dissipation",
-          "formula": "F ⊗ D",
+          "formula": "F × D",
           "contribution": "Energy/matter flux (F) and temporal dynamics of loss (D)"
         }
       ],
@@ -1571,8 +1618,8 @@
         ]
       },
       "m1:distinctionFromRelated": {
-        "vs_Dissipation": "Dissipation (F⊗D) is unstructured energy loss; StratifiedDissipation adds positional ordering (A) producing a gradient",
-        "vs_Layer": "Layer (S⊗I⊗A⊗R) is static structural partition; StratifiedDissipation adds dynamics (D) and flux (F)",
+        "vs_Dissipation": "Dissipation (F × D) is unstructured energy loss; StratifiedDissipation adds positional ordering (A) producing a gradient",
+        "vs_Layer": "Layer (S × I × A | R) is static structural partition; StratifiedDissipation adds dynamics (D) and flux (F)",
         "vs_Cascade": "Cascade involves step-by-step transformation (signal propagation); StratifiedDissipation involves progressive energy absorption"
       },
       "m1:migrationNote": "New concept v2.0.0 — not migrated from M2 (discovered during Trophic Pyramid analysis)",
@@ -1580,31 +1627,32 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
     {
-      "@id": "m1core:CascadeAmplification",
+      "@id": "m1:CascadeAmplification",
       "@type": [
         "owl:Class",
         "m2:GenericConceptCombo"
       ],
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
       "rdfs:label": "CascadeAmplification",
-      "rdfs:comment": "Sequential multi-stage process where each stage amplifies the output of the previous, producing exponential cumulative gain. Synergistic binary combination: Cascade (S⊗I⊗A⊗D⊗F) ⊗² Amplification (Ft⊗D⊗It⊗R⊗O). Constraint: gain per stage > 1. Emergent property: exponential overall gain G_total = ∏ᵢ gᵢ — absent from Cascade alone (no gain) and Amplification alone (no stage structure).",
+      "rdfs:comment": "Sequential multi-stage process where each stage amplifies the output of the previous, producing exponential cumulative gain. Synergistic binary combination: Cascade (S × I × A × D × F) Fm2² Amplification (Ft × D × It | R + O). Constraint: gain per stage > 1. Emergent property: exponential overall gain G_total = ∏ᵢ gᵢ — absent from Cascade alone (no gain) and Amplification alone (no stage structure).",
       "m1:comboOf": [
         "m2:Cascade",
         "m2:Amplification"
       ],
-      "m1:structuralGrammarFormula": "⊗²⇒(Cascade, Amplification) | gain_per_stage > 1",
-      "m1:structuralGrammarFormulaExpanded": "S ⊗ I ⊗ A ⊗ D ⊗ F ⊗ R ⊗ O",
-      "m1:structuralGrammarFormulaTeX": "S \\otimes I \\otimes A \\otimes D \\otimes F \\otimes R \\otimes O",
+      "m1:structuralGrammarFormula": "Fm2²(Cascade, Amplification) | gain_per_stage > 1",
+      "m1:structuralGrammarFormulaExpanded": "S × I × A × D × F | R + O",
+      "m1:structuralGrammarFormulaTeX": "S \\times I \\times A \\times D \\times F \\times R \\times O",
       "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F (x) R (x) O",
       "m1:dimensions": 7,
       "m1:parentGenericConcepts": [
         {
           "@id": "m2:Cascade",
-          "formula": "S ⊗ I ⊗ A ⊗ D ⊗ F",
+          "formula": "S × I × A × D × F",
           "contribution": "Stage-by-stage propagation structure (S, I, A, D, F)"
         },
         {
           "@id": "m2:Amplification",
-          "formula": "Ft ⊗ D ⊗ It ⊗ R ⊗ O",
+          "formula": "Ft × D × It | R + O",
           "contribution": "Gain > 1 per stage, with representability (R) and observability (O)"
         }
       ],
