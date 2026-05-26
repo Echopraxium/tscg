@@ -1,0 +1,423 @@
+# ============================================================================
+# M1_Schema.shacl.ttl
+# SHACL Grammar for TSCG M1 Layer
+# Covers: M1_CoreConcepts.jsonld + all M1 Extension files
+# ============================================================================
+# Author : Echopraxium with the collaboration of Claude AI
+# Version: 1.0.0
+# Date   : 2026-05-26
+# Status : Active
+# ============================================================================
+
+@prefix sh:      <http://www.w3.org/ns/shacl#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+
+@prefix m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#> .
+@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
+@prefix m1: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#> .
+
+
+# ============================================================================
+# SHAPE 1 : M1 Ontology Node (owl:Ontology)
+# Applies to ALL M1 files (CoreConcepts + Extensions)
+# ============================================================================
+
+m1:M1OntologyShape
+    a sh:NodeShape ;
+    sh:name "M1OntologyShape" ;
+    sh:description "Validates the owl:Ontology header node of any M1 file." ;
+    sh:targetClass owl:Ontology ;
+
+    # --- Mandatory metadata ---
+    sh:property [
+        sh:path dcterms:creator ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:pattern "^Echopraxium with the collaboration of Claude AI$" ;
+        sh:message "REQUIRED: dcterms:creator must be 'Echopraxium with the collaboration of Claude AI'."
+    ] ;
+    sh:property [
+        sh:path dcterms:created ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:pattern "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" ;
+        sh:message "REQUIRED: dcterms:created must be ISO 8601 date (YYYY-MM-DD)."
+    ] ;
+    sh:property [
+        sh:path owl:versionInfo ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:pattern "^[0-9]+\\.[0-9]+\\.[0-9]+$" ;
+        sh:message "REQUIRED: owl:versionInfo must use semver format (X.Y.Z)."
+    ] ;
+    sh:property [
+        sh:path m3:ontologyType ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "REQUIRED: m3:ontologyType must be declared exactly once."
+    ] ;
+
+    # --- m3:ontologyType must be DomainExtension or CoreConcepts ---
+    sh:property [
+        sh:path m3:ontologyType ;
+        sh:in (
+            <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#DomainExtension>
+            <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#CoreConcepts>
+        ) ;
+        sh:message "FORBIDDEN: m3:ontologyType value must be m3:DomainExtension or m3:CoreConcepts."
+    ] ;
+
+    # --- owl:imports must reference M3_GenesisGrammar (not GenesisSpace) ---
+    sh:sparql [
+        sh:select """
+            PREFIX owl: <http://www.w3.org/2002/07/owl#>
+            SELECT $this ?import
+            WHERE {
+                $this owl:imports ?import .
+                FILTER(CONTAINS(STR(?import), "M3_GenesisSpace"))
+            }
+        """ ;
+        sh:message "FORBIDDEN: owl:imports references M3_GenesisSpace.jsonld — use M3_GenesisGrammar.jsonld instead."
+    ] ;
+
+    # --- m2:changelog must be present for extensions ---
+    sh:property [
+        sh:path m2:changelog ;
+        sh:minCount 0 ;
+        sh:message "RECOMMENDED: m2:changelog should be present and use array of objects format."
+    ] ;
+
+    # --- FORBIDDEN: GenesisSpace references ---
+    sh:not [
+        sh:property [
+            sh:path rdfs:comment ;
+            sh:pattern "GenesisSpace" ;
+            sh:minCount 1
+        ]
+    ] ;
+    sh:message "FORBIDDEN: M3_GenesisSpace reference — use M3_GenesisGrammar." ;
+.
+
+
+# ============================================================================
+# SHAPE 2 : GenericConceptCombo (M1_CoreConcepts only)
+# Pattern: ["owl:Class", "m2:GenericConceptCombo"]
+# Formula: Fm2(...)
+# ============================================================================
+
+m1:GenericConceptComboShape
+    a sh:NodeShape ;
+    sh:name "GenericConceptComboShape" ;
+    sh:description "Validates GenericConceptCombo instances in M1_CoreConcepts.jsonld." ;
+    sh:targetClass m2:GenericConceptCombo ;
+
+    # --- Must be also typed as owl:Class ---
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue owl:Class ;
+        sh:minCount 1 ;
+        sh:message "REQUIRED: GenericConceptCombo must also be typed as owl:Class."
+    ] ;
+
+    # --- Must declare rdfs:subClassOf m2:GenericConceptCombo ---
+    sh:property [
+        sh:path rdfs:subClassOf ;
+        sh:hasValue m2:GenericConceptCombo ;
+        sh:minCount 1 ;
+        sh:message "REQUIRED: rdfs:subClassOf must point to m2:GenericConceptCombo for OWL hierarchy visibility."
+    ] ;
+
+    # --- rdfs:label mandatory ---
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "REQUIRED: rdfs:label must be present (PascalCase concept name)."
+    ] ;
+
+    # --- rdfs:comment mandatory ---
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "REQUIRED: rdfs:comment must define the concept."
+    ] ;
+
+    # --- m1:structuralGrammarFormula: must start with Fm2( ---
+    sh:property [
+        sh:path m1:structuralGrammarFormula ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:pattern "^Fm2[²]?\\(" ;
+        sh:message "REQUIRED: m1:structuralGrammarFormula must use Fm2(...) notation for GenericConceptCombos."
+    ] ;
+
+    # --- FORBIDDEN: ⊗ in formulas ---
+    sh:property [
+        sh:path m1:structuralGrammarFormula ;
+        sh:not [
+            sh:pattern "⊗"
+        ] ;
+        sh:message "FORBIDDEN: ⊗ tensor notation in structuralGrammarFormula — use × / + / |."
+    ] ;
+.
+
+
+# ============================================================================
+# SHAPE 3 : KnowledgeFieldConceptCombo (M1 Extensions)
+# Pattern: ["owl:Class", "m2:KnowledgeFieldConceptCombo"]
+# Formula: Fm1m2(<Domain>, ...)
+# ============================================================================
+
+m1:KnowledgeFieldConceptComboShape
+    a sh:NodeShape ;
+    sh:name "KnowledgeFieldConceptComboShape" ;
+    sh:description "Validates KnowledgeFieldConceptCombo instances in M1 extension files." ;
+    sh:targetClass m2:KnowledgeFieldConceptCombo ;
+
+    # --- Must also be typed as owl:Class ---
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue owl:Class ;
+        sh:minCount 1 ;
+        sh:message "REQUIRED: KnowledgeFieldConceptCombo must also be typed as owl:Class."
+    ] ;
+
+    # --- rdfs:subClassOf → m2:KnowledgeFieldConceptCombo (OWL hierarchy) ---
+    sh:property [
+        sh:path rdfs:subClassOf ;
+        sh:hasValue m2:KnowledgeFieldConceptCombo ;
+        sh:minCount 1 ;
+        sh:message "REQUIRED: rdfs:subClassOf must point to m2:KnowledgeFieldConceptCombo for OWL hierarchy visibility."
+    ] ;
+
+    # --- m2:knowledgeField mandatory ---
+    sh:property [
+        sh:path m2:knowledgeField ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "REQUIRED: m2:knowledgeField must reference the domain KnowledgeField instance."
+    ] ;
+
+    # --- rdfs:label mandatory ---
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "REQUIRED: rdfs:label must be present (PascalCase concept name)."
+    ] ;
+
+    # --- m1:structuralGrammarFormula: must start with Fm1m2( ---
+    sh:property [
+        sh:path m1:structuralGrammarFormula ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:pattern "^Fm1m2\\(" ;
+        sh:message "REQUIRED: m1:structuralGrammarFormula must use Fm1m2(<Domain>, ...) notation for KnowledgeFieldConceptCombos."
+    ] ;
+
+    # --- FORBIDDEN: ⊗ in formulas ---
+    sh:property [
+        sh:path m1:structuralGrammarFormula ;
+        sh:not [
+            sh:pattern "⊗"
+        ] ;
+        sh:message "FORBIDDEN: ⊗ tensor notation in structuralGrammarFormula — use × / + / |."
+    ] ;
+
+    # --- FORBIDDEN: old asfidSignature property ---
+    sh:not [
+        sh:property [
+            sh:path <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#asfidSignature> ;
+            sh:minCount 1
+        ]
+    ] ;
+    sh:message "FORBIDDEN: asfidSignature is deprecated — use m1:structuralGrammarFormula." ;
+.
+
+
+# ============================================================================
+# SHAPE 4 : KnowledgeField Instance
+# Pattern: ["owl:NamedIndividual", "m2:KnowledgeField"]
+# ============================================================================
+
+m1:KnowledgeFieldInstanceShape
+    a sh:NodeShape ;
+    sh:name "KnowledgeFieldInstanceShape" ;
+    sh:description "Validates KnowledgeField instances (NOUN/ADJECTIVE forms)." ;
+    sh:targetClass m2:KnowledgeField ;
+
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue owl:NamedIndividual ;
+        sh:minCount 1 ;
+        sh:message "REQUIRED: KnowledgeField must also be typed as owl:NamedIndividual."
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "REQUIRED: KnowledgeField must have rdfs:label."
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "REQUIRED: KnowledgeField must have rdfs:comment."
+    ] ;
+.
+
+
+# ============================================================================
+# SHAPE 5 : owl:Class general (plain domain classes in extensions)
+# Applies to owl:Class nodes that are NOT GenericConceptCombo or KFCC
+# ============================================================================
+
+m1:PlainDomainClassShape
+    a sh:NodeShape ;
+    sh:name "PlainDomainClassShape" ;
+    sh:description "Validates plain owl:Class nodes (non-combo specializations) in M1 extensions." ;
+
+    # Target: owl:Class that is NOT a KnowledgeFieldConceptCombo
+    sh:targetSubjectsOf rdfs:subClassOf ;
+
+    # --- rdfs:label mandatory ---
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:message "REQUIRED: All M1 classes must have rdfs:label."
+    ] ;
+
+    # --- rdfs:comment mandatory ---
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:message "RECOMMENDED: M1 classes should have rdfs:comment."
+    ] ;
+.
+
+
+# ============================================================================
+# SHAPE 6 : Namespace Purity — FORBIDDEN patterns
+# ============================================================================
+
+m1:NamespacePurityShape
+    a sh:NodeShape ;
+    sh:name "NamespacePurityShape" ;
+    sh:description "Enforces M1 namespace conventions and forbids obsolete patterns." ;
+    sh:targetSubjectsOf rdf:type ;
+
+    # FORBIDDEN: m2:characterizedBy
+    sh:not [
+        sh:property [
+            sh:path m2:characterizedBy ;
+            sh:minCount 1
+        ]
+    ] ;
+    sh:message "FORBIDDEN: m2:characterizedBy is deprecated — remove it (Fm1m2() formula captures the relationship)." ;
+
+    # FORBIDDEN: tensorFormula
+    sh:not [
+        sh:property [
+            sh:path m1:tensorFormula ;
+            sh:minCount 1
+        ]
+    ] ;
+    sh:message "FORBIDDEN: m1:tensorFormula is obsolete — use m1:structuralGrammarFormula." ;
+
+    # FORBIDDEN: hasTensorFormula
+    sh:not [
+        sh:property [
+            sh:path m2:hasTensorFormula ;
+            sh:minCount 1
+        ]
+    ] ;
+    sh:message "FORBIDDEN: m2:hasTensorFormula is obsolete — use m1:structuralGrammarFormula." ;
+.
+
+
+# ============================================================================
+# SHAPE 7 : m1:structuralGrammarFormula property constraints
+# ============================================================================
+
+m1:StructuralGrammarFormulaShape
+    a sh:NodeShape ;
+    sh:name "StructuralGrammarFormulaShape" ;
+    sh:description "Validates m1:structuralGrammarFormula values across M1 files." ;
+    sh:targetSubjectsOf m1:structuralGrammarFormula ;
+
+    sh:property [
+        sh:path m1:structuralGrammarFormula ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:pattern "^(Fm1m2|Fm2)\\(" ;
+        sh:message "REQUIRED: structuralGrammarFormula must start with Fm1m2( or Fm2(."
+    ] ;
+
+    # FORBIDDEN: raw ⊗ tensor product
+    sh:property [
+        sh:path m1:structuralGrammarFormula ;
+        sh:not [ sh:pattern "⊗" ] ;
+        sh:message "FORBIDDEN: ⊗ in structuralGrammarFormula — replace with × (product) / | (bridge) / + (sum)."
+    ] ;
+
+    # FORBIDDEN: ORIVE (should be REVOI)
+    sh:property [
+        sh:path m1:structuralGrammarFormula ;
+        sh:not [ sh:pattern "ORIVE" ] ;
+        sh:message "FORBIDDEN: ORIVE terminology — use REVOI (Representability, Evolvability, Verifiability, Observability, Interoperability)."
+    ] ;
+.
+
+
+# ============================================================================
+# CHANGELOG
+# ============================================================================
+#
+# v1.0.0 (2026-05-26)
+#   Initial M1 SHACL grammar. 7 shapes covering:
+#   - M1OntologyShape          : owl:Ontology header validation
+#   - GenericConceptComboShape  : Fm2() combos in CoreConcepts
+#   - KFConceptComboShape       : Fm1m2() combos in Extensions
+#   - KnowledgeFieldShape       : NOUN/ADJECTIVE KF instances
+#   - PlainDomainClassShape     : specialization classes
+#   - NamespacePurityShape      : forbidden deprecated patterns
+#   - StructuralGrammarShape    : formula format validation
+#
+# ============================================================================
+
+# ============================================================================
+# SHAPE 8 : m1:CorePattern NamedIndividual
+# CorePatterns are NamedIndividuals with raw structural formulas (no Fm2 wrapping)
+# ============================================================================
+
+m1:CorePatternShape
+    a sh:NodeShape ;
+    sh:name "CorePatternShape" ;
+    sh:description "Validates m1:CorePattern NamedIndividuals in M1_CoreConcepts." ;
+    sh:targetClass m1:CorePattern ;
+
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue owl:NamedIndividual ;
+        sh:minCount 1 ;
+        sh:message "REQUIRED: CorePattern must be typed as owl:NamedIndividual."
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "REQUIRED: CorePattern must have rdfs:label."
+    ] ;
+    sh:property [
+        sh:path m1:structuralGrammarFormula ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+        sh:message "OPTIONAL: CorePattern may have a raw structural formula (× / + / | notation)."
+    ] ;
+.
