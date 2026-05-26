@@ -1,10 +1,10 @@
 # M3_BicephalousPerspective.jsonld
 
-**Version:** 1.0.0  
+**Version:** 1.1.0  
 **Layer:** M3  
 **Type:** Stereopsis Grammar (Gs) — Reification of stereopsic synergy  
 **Created:** 2026-05-18  
-**Last Modified:** 2026-05-18
+**Last Modified:** 2026-05-20
 
 ---
 
@@ -24,7 +24,7 @@ Stereopsis = the depth perception born from binocular fusion
 the foundational metaphor — two eyes, two perspectives. Stereopsis is the
 **synergy** that emerges from their fusion. Gs **reifies** that synergy as a
 first-class algebraic structure with its own operator (|), neutral element
-(EmptyStereopsis), and primitive alphabet {T}.
+(EmptyStereopsis), and primitive alphabet {T, _^, _$}.
 
 ---
 
@@ -45,7 +45,7 @@ F × T          =  Gradient      (Territory × Gs primitive)
 It | V + O + R + Im = ValueSpace (Territory | Map)
 ```
 
-**Neutral element:** `m3:StereopsisEmptySet = EmptyTerritory | EmptyMap`
+**Neutral element:** `m3:bicephalous:StereopsisEmptySet = EmptyTerritory | EmptyMap`
 
 ---
 

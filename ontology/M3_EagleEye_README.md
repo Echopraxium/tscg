@@ -1,10 +1,10 @@
 # M3_EagleEye.jsonld
 
-**Version:** 2.7.0  
+**Version:** 2.8.0  
 **Layer:** M3  
 **Type:** Territory Grammar (Gt)  
-**Created:** 2024  
-**Last Modified:** 2026-05-18
+**Created:** 2026-01-21  
+**Last Modified:** 2026-05-20
 
 ---
 

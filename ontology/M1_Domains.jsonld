@@ -7,8 +7,7 @@
     "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "m1": "M1_CoreConcepts.jsonld#",
-    "m1domain": "M1_Domains.jsonld#"
+    "m1": "M1_CoreConcepts.jsonld#"
   },
   "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
   "@graph": [
@@ -19,7 +18,9 @@
       "rdfs:comment": "Centralized, evolving registry of knowledge domains identified through TSCG poclet corpus analysis. Each domain entry documents subdomains, related domains, and poclet usage statistics. Domains are M1-level concepts (disciplinary extensions) that bridge M2 transdisciplinary GenericConcepts and M0 concrete poclet instances.",
       "owl:versionInfo": "1.2.0",
       "dcterms:created": "2026-04-18",
+      "dcterms:modified": "2026-04-26",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m3:ontologyType": {"@id": "m3:DomainExtension"},
       "m1:changelog": [
         {
           "version": "1.2.0",
@@ -37,8 +38,8 @@
           "changes": "Initial complete registry extracted from full corpus: 24 poclets + 2 other instances (26 total). 18 primary domains identified with subdomains, cross-references, and exact poclet counts. Based on exhaustive analysis of all M0 files."
         }
       ],
-      "m1:domainCount": 19,
-      "m1:totalPoclets": 25,
+      "m1:domainCount": 20,
+      "m1:totalInstances": 25,
       "m1:otherInstances": 2,
       "m1:corpusComplete": true,
       "m1:usageNote": "Domains are referenced in M0 instances via m1:domain property (migrated from m0:domain). Accepts single string ('Biology') or array for multi-domain poclets (['Biology', 'Chemistry']). Subdomains are defined here (M1 level), not in individual M0 instances.",
@@ -46,7 +47,7 @@
       "owl:imports": []
     },
     {
-      "@id": "m1domain:Biology",
+      "@id": "m1:domain:Biology",
       "@type": "m1:Domain",
       "rdfs:label": "Biology",
       "rdfs:comment": "Science of living organisms, their structure, function, growth, evolution, and interactions with their environment",
@@ -67,16 +68,16 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Chemistry"
+          "@id": "m1:domain:Chemistry"
         },
         {
-          "@id": "m1domain:Physics"
+          "@id": "m1:domain:Physics"
         },
         {
-          "@id": "m1domain:Ecology"
+          "@id": "m1:domain:Ecology"
         },
         {
-          "@id": "m1domain:Neurobiology"
+          "@id": "m1:domain:Neurobiology"
         }
       ],
       "m1:pocletExamples": [
@@ -91,7 +92,7 @@
       "m1:ext": "M1_Biology.jsonld"
     },
     {
-      "@id": "m1domain:Ecology",
+      "@id": "m1:domain:Ecology",
       "@type": "m1:Domain",
       "rdfs:label": "Ecology",
       "rdfs:comment": "Science of interactions between organisms and their environment, including energy flow and material cycling in ecosystems",
@@ -105,10 +106,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Biology"
+          "@id": "m1:domain:Biology"
         },
         {
-          "@id": "m1domain:SystemsTheory"
+          "@id": "m1:domain:SystemsTheory"
         }
       ],
       "m1:pocletExamples": [
@@ -118,7 +119,7 @@
       "m1:note": "Often paired with Biology domain in multi-domain poclets"
     },
     {
-      "@id": "m1domain:Chemistry",
+      "@id": "m1:domain:Chemistry",
       "@type": "m1:Domain",
       "rdfs:label": "Chemistry",
       "rdfs:comment": "Science of matter, its properties, composition, structure, and transformations through chemical reactions",
@@ -135,13 +136,13 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Physics"
+          "@id": "m1:domain:Physics"
         },
         {
-          "@id": "m1domain:Biology"
+          "@id": "m1:domain:Biology"
         },
         {
-          "@id": "m1domain:Neurobiology"
+          "@id": "m1:domain:Neurobiology"
         }
       ],
       "m1:pocletExamples": [
@@ -155,7 +156,7 @@
       "m1:note": "PhaseTransition spans Physical Chemistry and Physics. ComplexChemicalSynapse spans Chemistry and Neurobiology. Ptoe (Periodic Table) demonstrates atomic structure and periodic properties."
     },
     {
-      "@id": "m1domain:Physics",
+      "@id": "m1:domain:Physics",
       "@type": "m1:Domain",
       "rdfs:label": "Physics",
       "rdfs:comment": "Science of matter, energy, space, time, and their interactions",
@@ -171,10 +172,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Chemistry"
+          "@id": "m1:domain:Chemistry"
         },
         {
-          "@id": "m1domain:Engineering"
+          "@id": "m1:domain:Engineering"
         }
       ],
       "m1:pocletExamples": [
@@ -185,7 +186,7 @@
       "m1:note": "Thermodynamics subdomain overlaps with Chemistry and Engineering"
     },
     {
-      "@id": "m1domain:Electronics",
+      "@id": "m1:domain:Electronics",
       "@type": "m1:Domain",
       "rdfs:label": "Electronics",
       "rdfs:comment": "Science and technology of controlling electric current flow and designing electronic circuits and systems",
@@ -200,13 +201,13 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Physics"
+          "@id": "m1:domain:Physics"
         },
         {
-          "@id": "m1domain:Engineering"
+          "@id": "m1:domain:Engineering"
         },
         {
-          "@id": "m1domain:MusicTheory"
+          "@id": "m1:domain:MusicTheory"
         }
       ],
       "m1:pocletExamples": [
@@ -217,7 +218,7 @@
       "m1:note": "VCO bridges Electronics and Music Theory domains"
     },
     {
-      "@id": "m1domain:Optics",
+      "@id": "m1:domain:Optics",
       "@type": "m1:Domain",
       "rdfs:label": "Optics",
       "rdfs:comment": "Science of light, its properties, behavior, and interactions with matter",
@@ -233,10 +234,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Physics"
+          "@id": "m1:domain:Physics"
         },
         {
-          "@id": "m1domain:Photography"
+          "@id": "m1:domain:Photography"
         }
       ],
       "m1:pocletExamples": [
@@ -247,7 +248,7 @@
       "m1:ext": "M1_Optics.jsonld"
     },
     {
-      "@id": "m1domain:Photography",
+      "@id": "m1:domain:Photography",
       "@type": "m1:Domain",
       "rdfs:label": "Photography",
       "rdfs:comment": "Art and science of capturing images using light-sensitive materials or sensors",
@@ -261,7 +262,7 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Optics"
+          "@id": "m1:domain:Optics"
         }
       ],
       "m1:pocletExamples": [
@@ -271,7 +272,7 @@
       "m1:ext": "M1_Photography.jsonld"
     },
     {
-      "@id": "m1domain:Engineering",
+      "@id": "m1:domain:Engineering",
       "@type": "m1:Domain",
       "rdfs:label": "Engineering",
       "rdfs:comment": "Application of scientific principles to design, build, and maintain systems, structures, and devices",
@@ -286,10 +287,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Physics"
+          "@id": "m1:domain:Physics"
         },
         {
-          "@id": "m1domain:Chemistry"
+          "@id": "m1:domain:Chemistry"
         }
       ],
       "m1:pocletExamples": [
@@ -299,7 +300,7 @@
       "m1:pocletCount": 2
     },
     {
-      "@id": "m1domain:ComputerScience",
+      "@id": "m1:domain:ComputerScience",
       "@type": "m1:Domain",
       "rdfs:label": "Computer Science",
       "rdfs:comment": "Study of computation, information processing, and the design of computer systems",
@@ -315,13 +316,13 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Mathematics"
+          "@id": "m1:domain:Mathematics"
         },
         {
-          "@id": "m1domain:Economics"
+          "@id": "m1:domain:Economics"
         },
         {
-          "@id": "m1domain:Physics"
+          "@id": "m1:domain:Physics"
         }
       ],
       "m1:pocletExamples": [
@@ -331,7 +332,7 @@
       "m1:note": "NakamotoConsensus spans Distributed Systems, Statistical Physics, and Information Theory"
     },
     {
-      "@id": "m1domain:Economics",
+      "@id": "m1:domain:Economics",
       "@type": "m1:Domain",
       "rdfs:label": "Economics",
       "rdfs:comment": "Social science studying production, distribution, and consumption of goods and services",
@@ -346,10 +347,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Mathematics"
+          "@id": "m1:domain:Mathematics"
         },
         {
-          "@id": "m1domain:SystemsTheory"
+          "@id": "m1:domain:SystemsTheory"
         }
       ],
       "m1:pocletExamples": [
@@ -359,7 +360,7 @@
       "m1:ext": "M1_Economics.jsonld"
     },
     {
-      "@id": "m1domain:MusicTheory",
+      "@id": "m1:domain:MusicTheory",
       "@type": "m1:Domain",
       "rdfs:label": "Music Theory",
       "rdfs:comment": "Study of practices and possibilities of music, including composition techniques and harmonic structures",
@@ -374,10 +375,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Mathematics"
+          "@id": "m1:domain:Mathematics"
         },
         {
-          "@id": "m1domain:Electronics"
+          "@id": "m1:domain:Electronics"
         }
       ],
       "m1:pocletExamples": [
@@ -387,7 +388,7 @@
       "m1:pocletCount": 2
     },
     {
-      "@id": "m1domain:GameTheory",
+      "@id": "m1:domain:GameTheory",
       "@type": "m1:Domain",
       "rdfs:label": "Game Theory",
       "rdfs:comment": "Mathematical modeling of strategic interactions among rational decision-makers, including trading card games",
@@ -400,13 +401,13 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Mathematics"
+          "@id": "m1:domain:Mathematics"
         },
         {
-          "@id": "m1domain:Economics"
+          "@id": "m1:domain:Economics"
         },
         {
-          "@id": "m1domain:Philosophy"
+          "@id": "m1:domain:Philosophy"
         }
       ],
       "m1:pocletExamples": [
@@ -416,7 +417,7 @@
       "m1:note": "Magic: The Gathering color wheel analyzed as cultural artifact with philosophical dimensions"
     },
     {
-      "@id": "m1domain:Geology",
+      "@id": "m1:domain:Geology",
       "@type": "m1:Domain",
       "rdfs:label": "Geology",
       "rdfs:comment": "Science of Earth's physical structure, substance, history, and processes",
@@ -433,10 +434,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Physics"
+          "@id": "m1:domain:Physics"
         },
         {
-          "@id": "m1domain:Chemistry"
+          "@id": "m1:domain:Chemistry"
         }
       ],
       "m1:pocletExamples": [
@@ -445,7 +446,7 @@
       "m1:pocletCount": 1
     },
     {
-      "@id": "m1domain:Television",
+      "@id": "m1:domain:Television",
       "@type": "m1:Domain",
       "rdfs:label": "Television Engineering",
       "rdfs:comment": "Science and technology of television systems, video signal processing, and broadcasting standards",
@@ -461,10 +462,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Electronics"
+          "@id": "m1:domain:Electronics"
         },
         {
-          "@id": "m1domain:Optics"
+          "@id": "m1:domain:Optics"
         }
       ],
       "m1:pocletExamples": [
@@ -474,7 +475,7 @@
       "m1:note": "TVTestPattern is a calibration system poclet analyzing broadcast test patterns"
     },
     {
-      "@id": "m1domain:Education",
+      "@id": "m1:domain:Education",
       "@type": "m1:Domain",
       "rdfs:label": "Education",
       "rdfs:comment": "Science and practice of teaching, learning, and instructional design",
@@ -487,10 +488,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:ComputerScience"
+          "@id": "m1:domain:ComputerScience"
         },
         {
-          "@id": "m1domain:SystemsTheory"
+          "@id": "m1:domain:SystemsTheory"
         }
       ],
       "m1:pocletExamples": [
@@ -500,7 +501,7 @@
       "m1:note": "TPACK: Technological Pedagogical Content Knowledge framework"
     },
     {
-      "@id": "m1domain:Neurobiology",
+      "@id": "m1:domain:Neurobiology",
       "@type": "m1:Domain",
       "rdfs:label": "Neurobiology",
       "rdfs:comment": "Study of the nervous system, neural communication, and brain function",
@@ -513,10 +514,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Biology"
+          "@id": "m1:domain:Biology"
         },
         {
-          "@id": "m1domain:Chemistry"
+          "@id": "m1:domain:Chemistry"
         }
       ],
       "m1:pocletExamples": [
@@ -526,7 +527,7 @@
       "m1:note": "Overlap with Biology domain; ComplexChemicalSynapse spans Neurobiology, Cellular Communication, and Pharmacology"
     },
     {
-      "@id": "m1domain:SystemsTheory",
+      "@id": "m1:domain:SystemsTheory",
       "@type": "m1:Domain",
       "rdfs:label": "Systems Theory",
       "rdfs:comment": "Interdisciplinary study of complex systems, their organization, and emergent properties",
@@ -540,16 +541,16 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Biology"
+          "@id": "m1:domain:Biology"
         },
         {
-          "@id": "m1domain:Engineering"
+          "@id": "m1:domain:Engineering"
         },
         {
-          "@id": "m1domain:ComputerScience"
+          "@id": "m1:domain:ComputerScience"
         },
         {
-          "@id": "m1domain:Ecology"
+          "@id": "m1:domain:Ecology"
         }
       ],
       "m1:pocletExamples": [
@@ -560,7 +561,7 @@
       "m1:note": "VSM is not a poclet but a systemic framework instance. Transdisciplinary by nature."
     },
     {
-      "@id": "m1domain:Philosophy",
+      "@id": "m1:domain:Philosophy",
       "@type": "m1:Domain",
       "rdfs:label": "Philosophy",
       "rdfs:comment": "Study of fundamental questions about existence, knowledge, values, reason, and reality",
@@ -578,10 +579,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Mathematics"
+          "@id": "m1:domain:Mathematics"
         },
         {
-          "@id": "m1domain:Mythology"
+          "@id": "m1:domain:Mythology"
         }
       ],
       "m1:pocletExamples": [
@@ -592,7 +593,7 @@
       "m1:note": "I Ching is a symbolic system grammar, not a poclet. Foundation of Chinese cosmology and divination."
     },
     {
-      "@id": "m1domain:Mythology",
+      "@id": "m1:domain:Mythology",
       "@type": "m1:Domain",
       "rdfs:label": "Mythology",
       "rdfs:comment": "Study of traditional narratives, symbols, and cosmological frameworks across cultures",
@@ -606,10 +607,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:Philosophy"
+          "@id": "m1:domain:Philosophy"
         },
         {
-          "@id": "m1domain:Anthropology"
+          "@id": "m1:domain:Anthropology"
         }
       ],
       "m1:pocletExamples": [
@@ -620,7 +621,7 @@
       "m1:note": "Often analyzed through symbolic system grammars"
     },
     {
-      "@id": "m1domain:Blockchain",
+      "@id": "m1:domain:Blockchain",
       "@type": "m1:Domain",
       "rdfs:label": "Blockchain",
       "rdfs:comment": "Distributed ledger technology and decentralized consensus mechanisms",
@@ -635,13 +636,13 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1domain:ComputerScience"
+          "@id": "m1:domain:ComputerScience"
         },
         {
-          "@id": "m1domain:Economics"
+          "@id": "m1:domain:Economics"
         },
         {
-          "@id": "m1domain:GameTheory"
+          "@id": "m1:domain:GameTheory"
         }
       ],
       "m1:pocletExamples": [

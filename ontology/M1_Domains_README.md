@@ -1,8 +1,8 @@
 # M1_Domains.jsonld — README
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.0.0
-**Date**: 2026-05-14
+**Version**: 1.2.0
+**Date**: 2026-04-26
 **Layer**: M1 — Domain Registry
 **Status**: Active
 
@@ -24,8 +24,8 @@ a structured overview of which fields of knowledge have been formalized in TSCG.
 ```
 M3_GrammarFoundation.jsonld  ─┐
 M3_EagleEye.jsonld           ─┤→  M3_GenesisGrammar.jsonld
-M3_SphinxEye.jsonld          ─┘           ↓ imported by
-                                  M2_GenericConcepts.jsonld
+M3_SphinxEye.jsonld          ─┤           ↓ imported by
+M3_BicephalousPerspective    ─┘  M2_GenericConcepts.jsonld
                                            ↓ imported by
                                   M1_CoreConcepts.jsonld
                                   M1_Domains.jsonld         ← THIS FILE (peer to CoreConcepts)
@@ -111,37 +111,40 @@ M1_Domains.jsonld provides the **index** to this structure.
 
 ---
 
-## Current Domain Coverage (as of v1.0.0)
+## Current Domain Coverage (as of v1.2.0)
 
 ### **Natural Sciences**
-- ✅ **Biology** — organisms, evolution, genetics, ecology
-- ✅ **Physics** — mechanics, thermodynamics, electromagnetism, quantum
-- ✅ **Chemistry** — reactions, bonds, molecular structures
+- ✅ **Biology** — organisms, evolution, cellular systems, physiology
+- ✅ **Chemistry** — reactions, thermodynamics, atomic structure, periodic properties
+- ✅ **Physics** — mechanics, thermodynamics, electromagnetism, optics
 - ✅ **Ecology** — ecosystems, populations, environmental systems
+- ✅ **Geology** — earth sciences, tectonics, stratigraphy
 
-### **Formal Sciences**
-- ✅ **Mathematics** — structures, operations, proofs, abstractions
+### **Formal & Engineering Sciences**
+- ✅ **Mathematics** — structures, operations, proofs (referenced, stub)
+- ✅ **Electronics** — circuits, signal processing, components
+- ✅ **Engineering** — design, optimization, control systems
 - ✅ **Computer Science** — algorithms, data structures, architectures
+- ✅ **Blockchain** — cryptography, distributed systems, consensus algorithms
 
-### **Social Sciences**
-- ✅ **Psychology** — cognition, behavior, development, perception
-- ✅ **Sociology** — groups, institutions, culture, power
+### **Social & Human Sciences**
 - ✅ **Economics** — markets, production, exchange, value
-- ✅ **Politics** — governance, authority, collective decision-making
-
-### **Applied Sciences**
-- ✅ **Engineering** — design, optimization, control, systems
-- ✅ **Medicine** — diagnosis, treatment, physiology, disease
-
-### **Humanities**
+- ✅ **Education** — pedagogy, learning systems, knowledge transfer
 - ✅ **Philosophy** — ontology, epistemology, ethics, logic
-- ✅ **Linguistics** — language, grammar, semantics, pragmatics
+- ✅ **Mythology** — cosmology, archetypes, spiritual systems
+- ✅ **GameTheory** — strategy, decision theory, equilibria
+
+### **Perceptual & Creative Sciences**
+- ✅ **Optics** — color theory, light physics, wave phenomena
+- ✅ **Photography** — camera technology, exposure control, image formation
+- ✅ **MusicTheory** — acoustics, composition, harmony
+- ✅ **Television** — signal transmission, broadcasting, display systems
 
 ### **Interdisciplinary**
-- 🔄 **Neuroscience** — brain, cognition, neural networks (planned)
-- 🔄 **Cognitive Science** — mind, representation, computation (planned)
+- ✅ **Neurobiology** — brain, neural circuits, neurochemistry
+- ✅ **SystemsTheory** — cybernetics, feedback, emergence
 
-*Legend: ✅ Active | 🔄 Planned*
+*Legend: ✅ Active registry entry*
 
 ---
 
@@ -154,7 +157,7 @@ M1_Domains.jsonld provides the **index** to this structure.
 
 **No corrections needed** — M1_Domains.jsonld was already OWL-compliant.
 
-For validation details, see: `TSCG_OWL_Validation_Session_Summary.md`
+For validation details, see: `CLAUDE.md` and `M0_Instances_Schema_shacl.ttl`.
 
 ---
 
@@ -192,7 +195,7 @@ Before loading a domain extension, check its dependencies:
 ```sparql
 SELECT ?dependency
 WHERE {
-  m1:biology m1:dependsOn ?dependency .
+  m1:domain:Biology m1:dependsOn ?dependency .
 }
 ```
 
@@ -259,13 +262,13 @@ New domains can be added without breaking existing structure:
 
 ### **During Instance Creation (M0)**
 
-When creating poclets, M1_Domains helps identify which extension to use:
+When creating instances, M1_Domains helps identify which extension to use:
 
 ```
 System to model: "E. coli glucose metabolism"
 Query M1_Domains → identifies M1_Biology.jsonld
 Import M1_Biology → access DNA_Replication, Glycolysis, etc.
-Create poclet → M0_Ecoli_Glucose_Metabolism.jsonld
+Create instance → M0_Ecoli_Glucose_Metabolism.jsonld
 ```
 
 ### **During Validation**
@@ -320,8 +323,9 @@ Don't include:
 
 | Version | Date | Changes |
 |---|---|---|
-| **1.0.0** | 2026-05-14 | OWL/RDFS validation complete. Already clean (0 errors). OWL Pellet: PASSED. Production-ready. Domain registry structure formalized. 14 active domains documented. |
-| **0.9.x** | 2026-03-xx | Initial registry development. Core domain set defined. Metadata schema established. |
+| **1.2.0** | 2026-04-26 | Added Ptoe to Chemistry. Updated Chemistry subdomains. Chemistry instanceCount: 3→4. M1_Chemistry enriched to v1.1.0. |
+| **1.1.0** | 2026-04-19 | Added Blockchain domain (6 subdomains). First instance: M0_NakamotoConsensus. |
+| **1.0.0** | 2026-04-18 | Initial complete registry: 20 primary domains, 26 total instances. Based on exhaustive corpus analysis. |
 
 ---
 
@@ -332,7 +336,7 @@ Don't include:
 - `M1_Physics.jsonld` — Physical domain concepts
 - `M2_GenericConcepts.jsonld` — Transdisciplinary derived types
 - `M3_GenesisGrammar.jsonld` — Structural grammar foundation
-- `TSCG_OWL_Validation_Session_Summary.md` — Validation methodology
+- `CLAUDE.md` — Modeling conventions and authoring rules
 
 ---
 

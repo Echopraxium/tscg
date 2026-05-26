@@ -1,10 +1,10 @@
 # M2_GenericConcepts.jsonld
 
-**Version:** 16.10.7  
+**Version:** 16.10.8  
 **Layer:** M2  
 **Type:** Generic Concepts Ontology  
 **Created:** 2026-01-14  
-**Last Modified:** 2026-05-18
+**Last Modified:** 2026-05-20
 
 ---
 
@@ -88,7 +88,7 @@ T = pure temporal interface between Territory and Map
 ```
 
 T supersedes the former approximation `F × D / I × D` by isolating the
-temporal component precisely. See `PotentialRefinements_MonoidalOperators.md`.
+temporal component precisely.
 
 ---
 
@@ -110,16 +110,16 @@ Layer      =  S × It × A | R    (bicephalous — I = Information, R = Represen
 
 ---
 
-## 📊 Statistics (v16.10.6)
+## 📊 Statistics (v16.10.8)
 
 | Metric | Value |
 |---|---|
-| Total GenericConcepts | 80+ atomic, 8 combos |
+| Total GenericConcepts | 75 atomic, 8 combos |
 | GenericConcept families | 9 |
 | Bicephalous formulas (\|) | 10 |
 | Gs primitive T used | 1 (m2:Gradient) |
 | `isStereopsic=true` | 11 GenericConcepts |
-| M3 primitives available | 11 (𝕋₀) |
+| M3 primitives available | 13 (𝕋₀) |
 | Notation formats | 3 (Standard, TeX, RawText) |
 
 
@@ -211,8 +211,7 @@ Therefore E (Evolvable) is **intentionally absent** from ValueSpace:
 `It | V + O + R + Im` — the ValueSpace does not generate predictions;
 it provides the fixed frame within which observations are made.
 
-See `ontology/docs/OntologyModeling_Guidelines.md` for the full set of
-modeling rules.
+See `CLAUDE.md` for the full set of modeling rules and conventions.
 
 ---
 
@@ -232,7 +231,7 @@ modeling rules.
 ### v16.10.5 (2026-05-18) — **GRADIENT REFINEMENT**
 - `m2:Gradient` formula: `F × D / I × D` → `F × T / I × T`
 - T (Temporality, 𝕋₀(|)) replaces D as temporal component
-- `m2:hasDominantM3` updated to include `m3:stereopsis:Time`
+- `m2:hasDominantM3` updated to include `m3:bicephalous:Time`
 
 ### v16.10.4 (2026-05-18) — **GRADIENT FIX**
 - Invalid `⊗₂F / ⊗₂I` notation replaced by `F × D / I × D`

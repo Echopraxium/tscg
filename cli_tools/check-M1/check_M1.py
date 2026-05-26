@@ -3,7 +3,7 @@
 check_M1.py — TSCG M1 Layer Validation & Correction Script
 ===========================================================
 Author  : Echopraxium with the collaboration of Claude AI
-Version : 1.1.0
+Version : 1.4.0
 Date    : 2026-05-26
 Location: cli_tools/check-M1/check_M1.py
 
@@ -72,7 +72,7 @@ M1_FILES = {
     "M1_Optics.jsonld":            "M1_extensions/optics/M1_Optics.jsonld",
     "M1_Photography.jsonld":       "M1_extensions/photography/M1_Photography.jsonld",
     "M1_Physics.jsonld":           "M1_extensions/physics/M1_Physics.jsonld",
-    "M1_SystemicModeling.jsonld":  "M1_extensions/systemic-modeling/M1_SystemicModeling.jsonld",
+    "M1_SystemicModeling.jsonld":  "M1_extensions/system_modeling/M1_SystemicModeling.jsonld",
 }
 
 # Core files that don't need m3:eagle_eye / m3:sphinx_eye in @context
@@ -226,6 +226,7 @@ class M1Checker:
             ntype = node.get("@type", [])
             if isinstance(ntype, str):
                 ntype = [ntype]
+            # Exact match on type — avoid substring issues
             if "m2:GenericConceptCombo" not in ntype:
                 continue
             nid = node.get("@id", "?")
@@ -261,23 +262,31 @@ class M1Checker:
             ntype = node.get("@type", [])
             if isinstance(ntype, str):
                 ntype = [ntype]
+            # Exact match — avoid substring match with KnowledgeFieldConceptCombo
             if "m2:KnowledgeFieldConceptCombo" not in ntype:
                 continue
             nid = node.get("@id", "?")
 
-            # rdfs:subClassOf
+            # rdfs:subClassOf → must CONTAIN m2:KnowledgeFieldConceptCombo
+            # (may be string OR array if node also has semantic domain subClassOf)
             subclass = node.get("rdfs:subClassOf")
             if subclass is None:
                 self.issues.append(Issue("ERROR", "KFCC001",
                     f"KFCC missing rdfs:subClassOf: {nid}",
-                    fix="Add rdfs:subClassOf: m2:KnowledgeFieldConceptCombo",
-                    auto_fixable=False))
+                    fix="Add m2:KnowledgeFieldConceptCombo to rdfs:subClassOf",
+                    auto_fixable=True))
+            else:
+                # Normalize to list for uniform check
+                sub_list = subclass if isinstance(subclass, list) else [subclass]
+                sub_vals = [s.get("@id", s) if isinstance(s, dict) else s for s in sub_list]
+                if not any("KnowledgeFieldConceptCombo" in str(v) for v in sub_vals):
+                    self.issues.append(Issue("ERROR", "KFCC001b",
+                        f"KFCC rdfs:subClassOf does not include m2:KnowledgeFieldConceptCombo: {nid}",
+                        fix="Add m2:KnowledgeFieldConceptCombo to rdfs:subClassOf array",
+                        auto_fixable=True))
 
-            # m2:knowledgeField
-            if "m2:knowledgeField" not in node:
-                self.issues.append(Issue("ERROR", "KFCC002",
-                    f"KFCC missing m2:knowledgeField: {nid}",
-                    auto_fixable=False))
+            # NOTE: m2:knowledgeField is NOT a defined M2 property.
+            # The KFCC is identified by @type + rdfs:subClassOf only.
 
             # structuralGrammarFormula
             formula = node.get("m1:structuralGrammarFormula", "")
@@ -441,7 +450,34 @@ class M1Checker:
             return True
         return False
 
-    def fix_imports_genesis(self):
+    def fix_kfcc_subclassof(self):
+        """Add m2:KnowledgeFieldConceptCombo to rdfs:subClassOf of all KFCC nodes."""
+        MARKER = "m2:KnowledgeFieldConceptCombo"
+        graph = self.data.get("@graph", [])
+        count = 0
+        for node in graph:
+            ntype = node.get("@type", [])
+            if isinstance(ntype, str): ntype = [ntype]
+            if MARKER not in ntype:
+                continue
+            sub = node.get("rdfs:subClassOf")
+            if sub is None:
+                node["rdfs:subClassOf"] = MARKER
+                count += 1
+            elif isinstance(sub, str):
+                if sub != MARKER:
+                    node["rdfs:subClassOf"] = [MARKER, sub]
+                    count += 1
+            elif isinstance(sub, list):
+                vals = [s.get("@id", s) if isinstance(s, dict) else s for s in sub]
+                if not any("KnowledgeFieldConceptCombo" in str(v) for v in vals):
+                    node["rdfs:subClassOf"] = [MARKER] + sub
+                    count += 1
+        if count:
+            self.modified = True
+        return count
+
+
         changed = False
         graph = self.data.get("@graph", [])
         for node in graph:
@@ -502,6 +538,9 @@ class M1Checker:
                 fixes_applied.append("@base corrected")
             if self.fix_imports_genesis():
                 fixes_applied.append("owl:imports GenesisSpace → GenesisGrammar")
+            n = self.fix_kfcc_subclassof()
+            if n:
+                fixes_applied.append(f"rdfs:subClassOf += m2:KnowledgeFieldConceptCombo ({n} nodes)")
 
             for fix_msg in fixes_applied:
                 print(FIX(f"  {fix_msg}"))

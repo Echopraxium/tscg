@@ -4,6 +4,7 @@
 **Layer:** M3  
 **Type:** Bicephalous Grammar (Gt + Gm) with Stereopsis reification (Gs)  
 **Former name:** M3_GenesisSpace.jsonld  
+**Created:** 2026-01-21  
 **Last Modified:** 2026-05-18
 
 ---
@@ -63,7 +64,7 @@ M3_GrammarFoundation (apex)
          ↓ imported by
     ┌────┴────┬──────────┐
     │         │          │
-M3_Eagle  M3_Sphinx  M3_Stereopsis
+M3_Eagle  M3_Sphinx  M3_Bicephalous
 (Gt/×)   (Gm/+)     (Gs/|)
     └────────┴──────────┘
          ↓ imported by
@@ -72,7 +73,7 @@ M3_GenesisGrammar ← YOU ARE HERE
 M2_GenericConcepts
 ```
 
-**Imports:** M3_GrammarFoundation, M3_EagleEye, M3_SphinxEye, M3_Stereopsis
+**Imports:** M3_GrammarFoundation, M3_EagleEye, M3_SphinxEye, M3_BicephalousPerspective
 
 ---
 
@@ -100,7 +101,7 @@ SpectralClass:
 |---|---|---|---|---|
 | Gt (Territory) | M3_EagleEye.jsonld | {A, S, F, I, D} | × | What systems ARE |
 | Gm (Map) | M3_SphinxEye.jsonld | {R, E, V, O, Im} | + | How models QUALIFY |
-| Gs (Stereopsis) | M3_BicephalousPerspective.jsonld | {T} | \| | How they CORRESPOND |
+| Gs (Stereopsis) | M3_BicephalousPerspective.jsonld | {T, _^, _$} | \| | How they CORRESPOND |
 
 ---
 

@@ -1,8 +1,8 @@
 # M1_CoreConcepts.jsonld — README
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.0.0
-**Date**: 2026-05-14
+**Version**: 2.4.0
+**Date**: 2026-05-17
 **Layer**: M1 — Domain-Neutral Core Concepts
 **Status**: Active
 
@@ -138,7 +138,7 @@ M0 Instances           →  concrete systems (E_coli_metabolism, Uranium_235_dec
 In the TSCG type system hierarchy:
 
 ```
-𝕋₀  Primitive Types      M3   {A, S, F, I, D, R, E, V, O, I}
+𝕋₀  Primitive Types      M3   {A, S, F, It, D, R, E, V, O, Im}
 𝕋₁  Derived Types        M2   Process, Homeostasis, FeedbackLoop...
 𝕋₁⁺ Core Categories      M1   GenericMechanism, ProcessArchetype...    ← THIS LEVEL
 𝕋₂  Domain Concepts      M1   DNA_Replication, Newton_Second_Law...
@@ -153,24 +153,42 @@ categories that group domain concepts by their structural role.
 ## Compound Types (𝕋₂)
 
 M1_CoreConcepts also defines **compound types** using the emergence operator
-`⊗ⁱ⇒`:
+`Fm2()`:
 
 ### **GenericConceptCombo**
 
 Previously defined in M2, these emergent concept types were migrated to M1 to
 preserve M2's purity constraint (only simple product types in M2).
 
-**Structure:**
+**OWL typing pattern:**
+```json
+"@type": ["owl:Class", "m2:GenericConceptCombo"],
+"rdfs:subClassOf": "m2:GenericConceptCombo",
+"m1:structuralGrammarFormula": "Fm2(<Concept1>, <Concept2>, ...)"
 ```
-𝕋₂ = τ₁ ⊗ⁱ⇒ τ₂  where τᵢ ∈ 𝕋₁ (M2 GenericConcepts)
-```
+
+→ Appear as **child classes of `m2:GenericConceptCombo`** in OWL explorers (Protégé).
 
 **Examples:**
 ```
-SelfOrganization = ⊗ᵗ⇒(Emergence, Coherence)
-Inertia          = ⊗ᵗ⇒(Memory, Entropy)
-Adaptation       = ⊗ᵗ⇒(Information, Flow, Dynamics)
+Cascade          = Fm2(Process, Step, Trajectory)
+Oscillator       = Fm2(Component, Process, Trajectory) | trajectoryShape=Circular
+LALI             = Fm2(Amplification, Regulation) | range(F_A) << range(F_R)
+ButterflyEffect  = Fm2(Amplification, Trajectory) | trajectoryShape=Chaotic ∧ λ > 0
 ```
+
+### **KnowledgeFieldConceptCombo** (in M1 extensions)
+
+Domain-specific concepts in M1 extension files follow the **`Fm1m2`** morphism:
+
+```json
+"@type": ["owl:Class", "m2:KnowledgeFieldConceptCombo"],
+"rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+"m2:knowledgeField": {"@id": "m1:extension:<domain>:<KnowledgeField>"},
+"m1:structuralGrammarFormula": "Fm1m2(<Domain>, <ASFID-formula> | <REVOI-formula>)"
+```
+
+→ Appear as **child classes of `m2:KnowledgeFieldConceptCombo`** in OWL explorers.
 
 These types exhibit **emergent properties** irreducible to their components —
 corresponding to function types `(→)` in the Curry-Howard correspondence.
@@ -183,7 +201,7 @@ corresponding to function types `(→)` in the Curry-Howard correspondence.
 
 ```json
 {
-  "@id": "m1core:simulationTitle",
+  "@id": "m1:simulationTitle",
   "@type": "owl:DatatypeProperty",
   "rdfs:domain": {"@id": "owl:Ontology"},
   "rdfs:range": {"@id": "xsd:string"},
@@ -208,7 +226,7 @@ corresponding BabylonJS/Three.js 3D simulations.
 - 1 `rdfs:domain` literal → URI reference
 - 1 `rdfs:range` literal → URI reference
 
-For validation details, see: `TSCG_OWL_Validation_Session_Summary.md`
+For validation details, see: `CLAUDE.md` (conventions) and `M0_Instances_Schema_shacl.ttl` (SHACL schema).
 
 ---
 
@@ -221,11 +239,12 @@ entire M3 layer:
 M3_GrammarFoundation  (operators, type system)
 M3_EagleEye           (ASFID primitives)
 M3_SphinxEye          (REVOI primitives)
+M3_BicephalousPerspective (Gs primitives — T, _^, _$)
 M3_GenesisGrammar     (Φ/Ψ, epistemic gap)
          ↓
-M2_GenericConcepts    (80 derived types)
+M2_GenericConcepts    (75 derived types)
          ↓
-M1_CoreConcepts       (16 core categories + combo types)
+M1_CoreConcepts       (16 core categories + 9 combo types)
 ```
 
 All M3 dimensions and M2 GenericConcepts are available for use in
@@ -239,13 +258,13 @@ Domain-specific M1 extensions (M1_Biology, M1_Physics, etc.) instantiate
 M1_CoreConcepts classes:
 
 ```turtle
-m1bio:DNA_Replication a m1core:GenericMechanism ;
-    rdfs:subClassOf m2:Process ;
-    m2:hasStructuralFormula "D ⊗ᵗ I ⊗ᵗ F" .
+m1:extension:biology:DNA_Replication a owl:Class, m2:KnowledgeFieldConceptCombo ;
+    rdfs:subClassOf m2:KnowledgeFieldConceptCombo ;
+    m1:structuralGrammarFormula "Fm1m2(Biology, D × It × F)" .
 
-m1phys:Wave_Particle_Duality a m1core:DomainPattern ;
-    rdfs:subClassOf m2:Duality ;
-    m2:hasStructuralFormula "S^opᵗ ⊗ᵗ F^opᵗ" .
+m1:extension:physics:Wave_Particle_Duality a owl:Class, m2:KnowledgeFieldConceptCombo ;
+    rdfs:subClassOf m2:KnowledgeFieldConceptCombo ;
+    m1:structuralGrammarFormula "Fm1m2(Physics, S × F)" .
 ```
 
 ---
@@ -297,7 +316,7 @@ Each core concept category has a clear structural role:
 - `M1_Biology.jsonld` — Biological domain concepts
 - `M1_Physics.jsonld` — Physical domain concepts
 - `M3_GenesisGrammar.jsonld` — M3 structural grammar foundation
-- `TSCG_OWL_Validation_Session_Summary.md` — Validation methodology
+- `CLAUDE.md` — Modeling conventions and authoring rules
 
 ---
 
