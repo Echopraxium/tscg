@@ -71,7 +71,7 @@ calculus / free monoidal grammar framework.
 
 ## 🌟 The Braille Anticipation
 
-Michel Kern's 2022 Braille Structural Grammar — created independently
+Michel Kern's 2022 Braille Structural Grammar (recently updated May 2026)— created independently
 **before TSCG** — demonstrates empirically that:
 
 > *A complete symbolic system can be generated from a small set of

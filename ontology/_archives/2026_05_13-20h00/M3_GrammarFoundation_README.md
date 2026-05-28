@@ -170,7 +170,7 @@ Base class for M3 primitive dimensions.
 
 ## 📚 Historical Foundation
 
-**Braille Structural Grammar (2022-07)**  
+**Braille Structural Grammar (2022-07, updated 2026-5)**  
 `ontology/StructuralGrammar/Braille_StructuralGrammar.pdf`
 
 The Lambek Calculus formalism was **empirically validated** through the Braille writing system modeling — a complete 6-dot structural grammar demonstrating:

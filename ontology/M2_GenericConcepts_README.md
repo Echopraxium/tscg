@@ -1,10 +1,10 @@
 # M2_GenericConcepts.jsonld
 
-**Version:** 16.10.8  
+**Version:** 16.11.0  
 **Layer:** M2  
 **Type:** Generic Concepts Ontology  
 **Created:** 2026-01-14  
-**Last Modified:** 2026-05-20
+**Last Modified:** 2026-05-27
 
 ---
 
@@ -21,17 +21,30 @@ as **structural grammar formulas**.
 
 ---
 
-## 📐 Three Primitive Alphabets in M2 Formulas
+## 📐 Three Primitive Alphabets in M2 Formulas — Base16
 
-M2 formulas draw from all three M3 alphabets:
+M2 formulas draw from all three M3 alphabets, **16 primitives total (Base16)**:
 
 ```
-𝕋₀(×) = {A, S, F, I, D}      Territory (Eagle Eye / Gt)
-𝕋₀(+) = {R, E, V, O, Im}     Map       (Sphinx Eye / Gm)
-𝕋₀(|) = {T, _^, _$}                   Stereopsis (Gs — reification of stereopsic synergy)
+𝕋₀(×) = {A, S, F, I, D}      Territory (Eagle Eye / Gt)  — ASFID
+𝕋₀(+) = {R, E, V, O, Im}     Map       (Sphinx Eye / Gm)  — REVOI
+𝕋₀(|) = {T, _^, _$, K, Ss, L}  Stereopsis (Gs)           — TKSL + poles
 
-𝕋₀ = 13 primitives total
+𝕋₀ = 16 primitives total (Base16)
 ```
+
+**Notation convention — hybrid formulas (with `|`):**
+
+In any formula containing `|`, Territory types that could be confused with
+new Gs type `Ss` carry their monoid index:
+
+| Symbol | Indexed | Why |
+|---|---|---|
+| `S` (Structure/Gt) | `St` | avoids confusion with `Ss` (Symbol/Gs) |
+| `I` (Information/Gt) | `It` | avoids confusion with `Im` (Interoperability/Gm) |
+| `O` (Observability/Gm) | `O` | no ambiguity — unchanged |
+
+Pure intra-monoid formulas and ASFID/REVOI scoring terminology are **unaffected**.
 
 **Formula types:**
 
@@ -39,8 +52,8 @@ M2 formulas draw from all three M3 alphabets:
 |---|---|---|
 | Pure Territory | `D × I × F` (Process) | × only |
 | Pure Map | `O + R + Im + E` (Context) | + only |
-| Bicephalous | `A × S × I \| R + O` (Coherence) | × and + and \| |
-| With Gs primitive | `F × T` (Gradient) | × with T |
+| Bicephalous | `A × St × It \| R + O` (Coherence) | × and + and \| |
+| With Gs primitive | `F × T` (Gradient), `It × Ss` (Code), `St \| L` (Topology) | × or \| with Gs type |
 
 ---
 
@@ -64,31 +77,31 @@ V + E           =  Invariant (Map perspective)
 ### | — Stereopsic fusion (bicephalous)
 
 ```
-A × S × It | R + O  =  Coherence
-S × It × A | R      =  Layer
-F × T              =  Gradient  (Territory × Gs primitive)
+A × St × It | R + O  =  Coherence
+St × It × A | R      =  Layer
+F × T                =  Gradient  (Territory × Gs primitive T)
+D × F | L            =  Bifurcation  (new — Gs primitive L)
+It × Ss              =  Code         (new — Gs primitive Ss)
+Ss × F | K           =  Language     (new — Gs primitives Ss + K)
 ```
 
-**10 GenericConcepts** currently use | in their primary formula:
-Layer, Resource, Interoperability, Scope, Duplication, Identity,
-ValueSpace, Amplification, Coherence, TopologicalDefect.
+**28 GenericConcepts** currently use `|` or a Gs primitive (K, Ss, L, T).
 
 ---
 
-## 🔭 T — Stereopsis Primitive in M2
+## 🔭 Gs Primitives in M2 — T, K, Ss, L
 
-**T (Time)** is the first primitive of 𝕋₀(|) — defined in
-`M3_BicephalousPerspective.jsonld`. It appears in M2 as the refined Gradient formula:
+The 4 nominal Gs primitives (TKSL) each appear in M2 formulas as inter-grammar mediators:
 
-```
-m2:Gradient  =  F × T   or   I × T
+| Primitive | Question | M2 usage | Example formula |
+|---|---|---|---|
+| **T** | When? | Temporal interface Gt↔Gm | `F × T` (Gradient) |
+| **K** | What? | Cognitive contextualisation of It | `Ss × F \| K` (Language), `St × It × D \| K` (Agent), `St × It × A \| K` (Pattern), `F × It \| K` (Mediator), `Ss \| K` (Role) |
+| **Ss** | Sign? | Semiotic bridge signifier↔signified | `It × Ss` (Code), `It × Ss \| V` (Signature), `St × Ss` (Relation), `St × F \| Ss` (Channel) |
+| **L** | Converging? | Cybernetic convergence toward A | `St × It \| L` (Node/Component/Capacity), `St \| L` (Topology/Space/Constraint), `A × St × F \| L` (Homeostasis), `D × F \| L` (Bifurcation) |
 
-T = pure temporal interface between Territory and Map
-  = irreducible bicephalous primitive (not derived from F, D, or Im)
-```
-
-T supersedes the former approximation `F × D / I × D` by isolating the
-temporal component precisely.
+T supersedes the former approximation `F × D / I × D` for Gradient by isolating
+the temporal component precisely.
 
 ---
 
@@ -110,16 +123,16 @@ Layer      =  S × It × A | R    (bicephalous — I = Information, R = Represen
 
 ---
 
-## 📊 Statistics (v16.10.8)
+## 📊 Statistics (v16.11.0)
 
 | Metric | Value |
 |---|---|
 | Total GenericConcepts | 75 atomic, 8 combos |
 | GenericConcept families | 9 |
-| Bicephalous formulas (\|) | 10 |
-| Gs primitive T used | 1 (m2:Gradient) |
-| `isStereopsic=true` | 11 GenericConcepts |
-| M3 primitives available | 13 (𝕋₀) |
+| Bicephalous formulas (`\|`) | 25 |
+| Gs primitives used | 4 (T, K, Ss, L) |
+| `isStereopsic=true` | 28 GenericConcepts |
+| M3 primitives available | 16 — Base16 (𝕋₀) |
 | Notation formats | 3 (Standard, TeX, RawText) |
 
 
@@ -127,29 +140,40 @@ Layer      =  S × It × A | R    (bicephalous — I = Information, R = Represen
 
 ## 🔭 m2:isStereopsic — Stereopsic Flag
 
-**`m2:isStereopsic`** is a boolean property marking GenericConcepts whose
-structural formula uses the `|` operator or a Gs primitive (T):
+**`m2:isStereopsic`** marks GenericConcepts whose structural formula uses
+`|` or any Gs primitive (T, K, Ss, L):
 
 ```
-m2:isStereopsic = true   →  formula contains | or T
+m2:isStereopsic = true   →  formula contains | or any of {T, K, Ss, L}
 m2:isStereopsic = false  →  formula is purely Territory (×) or Map (+)
 ```
 
-### The 11 stereopsic GenericConcepts
+### The 28 stereopsic GenericConcepts (v16.11.0)
 
-| GenericConcept | Formula | Reason |
+**Original 11 (| operator):** Layer, Resource, Interoperability, Scope,
+Duplication, Identity, ValueSpace, Amplification, Coherence, TopologicalDefect, Gradient (T)
+
+**17 new (Base16 extension — K, Ss, L):**
+
+| GenericConcept | New Formula | Gs primitive |
 |---|---|---|
-| Layer | `S × I × A \| R` | uses \| |
-| Resource | `F × I \| R` | uses \| |
-| Interoperability | `S × I × F \| V + E` | uses \| |
-| Scope | `S × I × A \| R` | uses \| |
-| Duplication | `S × I × F × D \| V` | uses \| |
-| Identity | `S × I × A \| V + E` | uses \| |
-| ValueSpace | `It \| V + O + R + Im` | uses \| |
-| Amplification | `Ft × D × It \| R + O` | uses \| |
-| Coherence | `A × S × I \| R + O` | uses \| |
-| TopologicalDefect | `S × A × I \| R + O` | uses \| |
-| **Gradient** | `F × T  or  I × T` | uses **T** (Gs primitive) |
+| Code | `It × Ss` | Ss |
+| Signature | `It × Ss \| V` | Ss |
+| Relation | `St × Ss` | Ss |
+| Channel | `St × F \| Ss` | Ss |
+| Language | `Ss × F \| K` | Ss + K |
+| Role | `Ss \| K` | Ss + K |
+| Agent | `St × It × D \| K` | K |
+| Pattern | `St × It × A \| K` | K |
+| Mediator | `F × It \| K` | K |
+| Node | `St × It \| L` | L |
+| Component | `St × It \| L` | L |
+| Capacity | `St × It \| L` | L |
+| Topology | `St \| L` | L |
+| Space | `St \| L` | L |
+| Constraint | `St \| L` | L |
+| Homeostasis | `A × St × F \| L` | L |
+| Bifurcation | `D × F \| L` | L |
 
 ### Usage
 
@@ -217,28 +241,23 @@ See `CLAUDE.md` for the full set of modeling rules and conventions.
 
 ## 🔄 Recent Changes
 
-### v16.10.7 (2026-05-18) — **isStereopsic FLAG**
+### v16.11.0 (2026-05-27) — **BASE16 EXTENSION**
+- **25 formula updates** across 4 groups :
+  - Groupe A (8) : St/It indexation in existing hybrid formulas (S→St)
+  - Groupe B (6) : S×I resolved via `Ss` — Code, Signature, Language, Relation, Channel, Role
+  - Groupe C (8) : S×I resolved via `L` — Node, Component, Capacity, Topology, Space, Constraint, Homeostasis, Bifurcation
+  - Groupe D (3) : S×I resolved via `K` — Agent, Pattern, Mediator
+  - Amplification: `Ft` → `F`
+- **17 new** `m2:isStereopsic=True` (total: 28)
+- Notation convention: St/It in hybrid formulas
+
+### v16.10.8 (2026-05-20) — **isStereopsic FLAG**
 - Added `m2:isStereopsic` boolean property
 - Set to `true` for 11 GenericConcepts using `|` or Gs primitive T
-- Property definition includes `skos:definition`, `m2:stereopsicCriteria`
 
-### v16.10.6 (2026-05-18) — **DESCRIPTION UPDATE**
+### v16.10.7 (2026-05-18) — **DESCRIPTION UPDATE**
 - `dcterms:description` and `rdfs:comment` updated: 13 primitives (𝕋₀),
   Stereopsis Grammar Gs, T primitive, bicephalous architecture
-- `m2:structuralSpace` updated to reflect full 𝕋₀
-- `m2:categoryTheory` functors updated: F_×, F_+, F_|
-
-### v16.10.5 (2026-05-18) — **GRADIENT REFINEMENT**
-- `m2:Gradient` formula: `F × D / I × D` → `F × T / I × T`
-- T (Temporality, 𝕋₀(|)) replaces D as temporal component
-- `m2:hasDominantM3` updated to include `m3:bicephalous:Time`
-
-### v16.10.4 (2026-05-18) — **GRADIENT FIX**
-- Invalid `⊗₂F / ⊗₂I` notation replaced by `F × D / I × D`
-
-### v16.10.3 (2026-05-18) — **OPERATOR REFORM**
-- `⊗` → `×` (intra-ASFID), `+` (intra-REVOI), `|` (bicephalous boundary)
-- 301 occurrences migrated. Formulas migrated: ×, +, | applied correctly
 
 ---
 
@@ -265,10 +284,10 @@ via M3_GenesisGrammar — no direct import of M3_BicephalousPerspective needed.
 
 1. **M2 = Transdisciplinary patterns** as structural grammar formulas
 2. **Three operators** ×, +, | — three alphabets from three M3 grammars
-3. **13 primitives** in 𝕋₀ — including T (Time) from Gs
-4. **It/Im distinction is crucial** for bicephalous formulas
-5. **10 bicephalous GenericConcepts** use | in their primary formula
-6. **Gradient = F × T** — first M2 formula using a Gs primitive
-7. **`m2:isStereopsic`** — boolean flag for GenericConcepts using `|` or T
+3. **16 primitives (Base16)** in 𝕋₀ — ASFID(5) + REVOI(5) + TKSL+poles(6)
+4. **It/Im distinction is crucial** for hybrid formulas
+5. **Notation convention** — St/It in hybrid formulas; ASFID/REVOI unaffected
+6. **28 stereopsic GenericConcepts** use `|` or a Gs primitive (T, K, Ss, L)
+7. **S×I collision resolved** — 33 former collisions disambiguated via Ss, L, K
 
 **M2 is where TSCG's transdisciplinary power becomes explicit.** 🌟

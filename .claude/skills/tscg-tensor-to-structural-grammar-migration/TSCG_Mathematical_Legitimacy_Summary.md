@@ -56,7 +56,7 @@ position** — which is an entirely different level of legitimacy.
 
 Your 2022 Braille diagram (©2022 Michel Kern) is the most compelling empirical
 demonstration of this legitimacy: you had *already built* such a grammar —
-independently, before TSCG was even formulated.
+independently, before TSCG was even formulated (even though this document has been updated un May 2026).
 
 A complete symbolic system, 26 elements, generated from 2 primitives and
 5 operations, with no metric structure required. This is not coincidence —

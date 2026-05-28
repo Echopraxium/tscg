@@ -1,10 +1,10 @@
 # M3_GrammarFoundation.jsonld
 
-**Version:** 1.3.0  
+**Version:** 2.2.0  
 **Layer:** M3  
 **Type:** Apex Ontology — Mathematical Foundation  
 **Created:** 2026-05-12  
-**Last Modified:** 2026-05-18  
+**Last Modified:** 2026-05-27  
 **Status:** Foundational — no imports
 
 ---
@@ -26,23 +26,41 @@ foundation imported by EagleEye, SphinxEye, Stereopsis, and GenesisGrammar.
 
 ---
 
-## 📐 Three Primitive Alphabets
+## 📐 Three Primitive Alphabets — Base16
 
-TSCG defines **three alphabets** — one per monoidal operator:
+TSCG defines **three alphabets** — one per monoidal operator, **16 primitives total (Base16)**:
 
 ```
-𝕋₀(×) = {A, S, F, I, D}      Territory primitives   (Eagle Eye)
-𝕋₀(+) = {R, E, V, O, Im}     Map primitives         (Sphinx Eye)
-𝕋₀(|) = {T, _^, _$}                   Bicephalous primitives (Stereopsis)
+𝕋₀(×) = {A, St, F, It, D}           5 Territory primitives   (Eagle Eye  — ASFID)
+𝕋₀(+) = {R, E, V, O, Im}           5 Map primitives         (Sphinx Eye — REVOI)
+𝕋₀(|) = {T, _^, _$, K, Ss, L}       6 Stereopsis primitives  (Bicephalous — TKSL + poles)
 
-𝕋₀ = 𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)  = 13 primitives total
+𝕋₀ = 𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)  =  16 primitives total
 ```
 
-| Alphabet | Operator | Neutral | Perspective |
+| Alphabet | Operator | Neutral | Acronym | Perspective |
+|---|---|---|---|---|
+| 𝕋₀(×) | `×` | EmptyTerritory | **ASFID** | What systems ARE |
+| 𝕋₀(+) | `+` | EmptyMap | **REVOI** | How models QUALIFY |
+| 𝕋₀(\|) | `\|` | EmptyStereopsis | **TKSL** (+ poles _^/_$) | How Territory and Map CORRESPOND |
+
+**Why 5-5-6 asymmetry?** Gs carries 6 primitives because the inter-grammar axis encodes
+convergence discrimination (L) that presupposes both Gt and Gm to make sense.
+The asymmetry is semantically justified, not an artefact.
+
+### TKSL — Gs Nominal Primitives
+
+The 4 nominal Gs primitives each answer a **transcendental question** about Territory/Map correspondence:
+
+| Symbol | Name | Question | Theoretical Basis |
 |---|---|---|---|
-| 𝕋₀(×) | `×` | EmptyTerritory | What systems ARE |
-| 𝕋₀(+) | `+` | EmptyMap | How models QUALIFY |
-| 𝕋₀(\|) | `\|` | EmptyStereopsis | How Territory and Map CORRESPOND |
+| **T** | Temporality | When? | Pure temporal interface Gt↔Gm |
+| **K** | Knowledge | What? | Cognitive contextualisation of It into meaning |
+| **Ss** | Symbol *(Stereopsic)* | Sign? | Semiotic bridge signifier(Gt)↔signified(Gm) — Peirce |
+| **L** | Localizability | Converging? | Cybernetic convergence toward A — Wiener 1948, Ashby 1956 |
+
+The poles **_^** (PositivePole) and **_$** (NegativePole) are polarity modifiers — they
+mark onset/terminus of a conceptual pair but do not answer a transcendental question.
 
 ---
 
@@ -92,11 +110,32 @@ _(×⇒ and +⇒ removed — no corpus usage. See PotentialRefinements_MonoidalO
 ### _^ / _$ — Pole primitives (replaces former ^op)
 
 ```
-A × S × It | R + O | _^   =  Coherence    (positive pole)
-A × S × It | R + O | _$   =  Incoherence  (negative pole)
+A × St × It | R + O | _^   =  Coherence    (positive pole)
+A × St × It | R + O | _$   =  Incoherence  (negative pole)
 ```
 
 `^op` was a vestige of tensor algebra — abandoned. `_^` and `_$` are proper primitives of 𝕋₀(|).
+
+---
+
+## 📏 Notation Convention — St / It / O in Hybrid Formulas
+
+**Rule:** In any formula containing `|` (hybrid/bicephalous formula), Territory and Map
+types that could be ambiguous with new Gs type `Ss` carry their monoid index:
+
+| Bare symbol | Indexed | Monoid | Used in |
+|---|---|---|---|
+| `S` | `St` | Territory (Gt) | Hybrid formulas only |
+| `I` | `It` | Territory (Gt) | Hybrid formulas only |
+| `O` | `O` | Map (Gm) | Hybrid formulas only |
+
+```
+HYBRID   (with |): A × St × F × It × D | V        ← St and It indexed
+PURE Gt  (no |):   A × S × F × I × D              ← no change (ASFID unaffected)
+SCORING           ASFID / REVOI terminology        ← no change
+```
+
+This convention is **backward-compatible** — only hybrid formulas are affected.
 
 ---
 
@@ -114,7 +153,7 @@ EmptyStereopsis        =  EmptyTerritory | EmptyMap          (neutral of |)
 StereopsisUniversalSet =  𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|) = 𝕋₀      (pseudo-absorbent of |)
 
 StereopsisUniversalSet | a  =  StereopsisUniversalSet  for all a
-→ "empty of meaning" — contains ALL types, discriminates nothing
+→ "empty of meaning" — contains ALL 16 types (Base16), discriminates nothing
 → Borges 1:1 paradox — a DEGENERATE LIMIT, not a semantic ideal
 → distinct from δ₁ ≈ 0 (SpectralClass Coherent — desirable alignment)
 
@@ -163,10 +202,12 @@ artificial. No scalar multiplication, no metric, no inner product required.
 
 1. **Apex ontology** — imported by all M3 grammars, no dependencies
 2. **Three operators** × (Territory), + (Map), | (Stereopsis)
-3. **Three alphabets** — 𝕋₀(×), 𝕋₀(+), 𝕋₀(|) — 13 primitives total
-4. **Three monoids** with explicit neutral elements
-5. **Lambek Calculus** — free commutative monoidal categories
-6. **Minimal structure** — just enough, nothing artificial
+3. **Three alphabets** — 𝕋₀(×), 𝕋₀(+), 𝕋₀(|) — **16 primitives total (Base16)**
+4. **Three acronyms** — ASFID (Gt/5), REVOI (Gm/5), TKSL (Gs nominal/4) + poles _^/_$
+5. **Three monoids** with explicit neutral elements
+6. **Lambek Calculus** — free commutative monoidal categories
+7. **Notation convention** — St/It/O in hybrid formulas (containing |)
+8. **Minimal structure** — just enough, nothing artificial
 
 **M3_GrammarFoundation is where TSCG's mathematical rigour becomes explicit.** 🌟
 
@@ -197,7 +238,7 @@ Map (Sphinx Eye) to produce the Bicephalous Perspective.
 
 ### Why | must be inter-grammar
 
-If | could only operate within 𝕋₀(|) = {T, _^, _$}, it could not traverse
+If | could only operate within 𝕋₀(|) = {T, _^, _$, K, Ss, L}, it could not traverse
 the Gt/Gm boundary — and it would lose its constitutive role as
 the stereopsic fusion operator. The asymmetry is **intentional and
 necessary**, not a privilege.
