@@ -14,9 +14,9 @@
     {
       "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.1.0",
+      "owl:versionInfo": "2.2.0",
       "dcterms:created": "2026-05-12",
-      "dcterms:modified": "2026-05-20",
+      "dcterms:modified": "2026-05-27",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Grammar Foundation",
       "dcterms:description": "Apex ontology of the TSCG hierarchy — no imports, no dependencies. Defines the Lambek Calculus mathematical foundation (free commutative monoidal categories), the six indexed operators (×, +, |), abstract classes M3Grammar and MonoidalType, the TSCG type system hierarchy (𝕋₀→𝕄₀), and the intersubjective benchmark properties. Imported by M3_EagleEye, M3_SphinxEye, and M3_GenesisGrammar.",
@@ -25,10 +25,10 @@
       "metadata": {
         "layer": "M3",
         "name": "Grammar Foundation",
-        "version": "1.1.0",
+        "version": "2.2.0",
         "architecture": "apex — no owl:imports",
         "date_created": "2026-05-12",
-        "date_modified": "2026-05-13",
+        "date_modified": "2026-05-27",
         "authors": [
           "Echopraxium with the collaboration of Claude AI"
         ],
@@ -54,6 +54,11 @@
       },
       "m2:changelog": [
         {
+          "version": "2.2.0",
+          "date": "2026-05-27",
+          "changes": "BASE16 EXTENSION: Gs alphabet extended from 3 to 6 primitives. Three new Gs types: K (Knowledge, idx 3), Ss (Symbol/Stereopsic, idx 4), L (Localizability, idx 5). 𝕋₀ cardinality: 13 → 16. TKSL acronym for the 4 nominal Gs primitives. Transcendental questions map: {T: When?, K: What?, Ss: Sign?, L: Converging?}. 5-5-6 asymmetry documented."
+        },
+        {
           "version": "2.1.0",
           "date": "2026-05-20",
           "changes": "OPERATOR MIGRATION: monoidalProduct ⊗ⁱ → ×/+/| (three explicit operators). dualityOperator ^opⁱ → _^/_$ (Gs pole primitives). emergenceOperator ⊗ⁱ⇒ removed (replaced by Fm2/Fm1m2). TypeSystem T2 cleaned."
@@ -62,11 +67,6 @@
           "version": "2.0.0",
           "date": "2026-05-20",
           "changes": "RENAME: m3:M3Dimension → m3:MonoidalType. MonoidalType class defined."
-        },
-        {
-          "version": "1.9.1",
-          "date": "2026-05-20",
-          "changes": "Fm2/Fm1m2 morphisms, three_alphabets Gs, StereopsisUniversalSet pseudo-absorbent."
         }
       ],
       "three_alphabets": {
@@ -86,12 +86,21 @@
           "perspective": "How models QUALIFY"
         },
         "stereopsis": {
-          "notation": "𝕋₀(|) = {T, _^, _$}  — symbolic notation only, not URIs",
+          "notation": "𝕋₀(|) = {T, _^, _$, K, Ss, L}  — symbolic notation only, not URIs",
           "grammar": "Stereopsis Grammar Gs — Bicephalous Perspective",
           "operator": "|",
           "neutral": "m3:grammar_foundation:StereopsisEmptySet",
           "perspective": "How Territory and Map CORRESPOND",
-          "primitives_note": "T=Temporality, _^=PositivePole, _$=NegativePole. Symbols _^ and _$ are string notations only — OWL identifiers: m3:bicephalous:PositivePole, m3:bicephalous:NegativePole",
+          "cardinality": 6,
+          "asymmetry_note": "5-5-6 asymmetry: Gs has 6 primitives because the inter-grammar axis requires encoding convergence discrimination (L) that presupposes both Gt and Gm",
+          "acronym": "TKSL — the 4 nominal Gs primitives (T=Temporality, K=Knowledge, Ss=Symbol, L=Localizability). Poles _^/_$ are polarity modifiers, not nominal primitives.",
+          "transcendental_questions": {
+            "T": "When?",
+            "K": "What?",
+            "Ss": "Sign?",
+            "L": "Converging?"
+          },
+          "primitives_note": "T=Temporality, _^=PositivePole, _$=NegativePole, K=Knowledge, Ss=Symbol(Stereopsic), L=Localizability. Symbols _^/_$ are string notations only — OWL identifiers: m3:bicephalous:PositivePole, m3:bicephalous:NegativePole",
           "see_also": "M3_BicephalousPerspective.jsonld"
         }
       },
@@ -230,16 +239,24 @@
       "m3:grammar_foundation:levels": {
         "T0": {
           "label": "Primitive Types",
-          "notation": "𝕋₀ = 13 primitives: {A,S,F,I,D} ∪ {R,E,V,O,Im} ∪ {T,_^,_$}  (symbolic — _^ _$ are string notations)",
-          "cardinality": 13,
+          "notation": "𝕋₀ = 16 primitives (Base16): {A,St,F,It,D} ∪ {R,E,V,O,Im} ∪ {T,_^,_$,K,Ss,L}  (symbolic — _^ _$ are string notations)",
+          "cardinality": 16,
           "layer": "M3",
           "role": "generators of the TSCG Structural Grammar",
+          "acronyms": {
+            "territory": "ASFID — Attractor, Structure, Flow, Information, Dynamics",
+            "map": "REVOI — Representability, Evolvability, Verifiability, Observability, Interoperability",
+            "stereopsis_nominal": "TKSL — Temporality, Knowledge, Symbol(Ss), Localizability",
+            "stereopsis_poles": "_^/_$ — PositivePole / NegativePole (polarity modifiers)"
+          },
           "subsets": {
-            "territory": "{A, S, F, I, D} — 𝕋₀(×) Gt",
-            "map": "{R, E, V, O, Im} — 𝕋₀(+) Gm",
-            "stereopsis": "𝕋₀(|) Gs — 3 primitives: T (Time), _^ (PositivePole), _$ (NegativePole)"
-          }
-        },
+            "territory": "{A, St, F, It, D} — 𝕋₀(×) Gt  (5 primitives — ASFID)",
+            "map": "{R, E, V, O, Im} — 𝕋₀(+) Gm  (5 primitives — REVOI)",
+            "stereopsis": "𝕋₀(|) Gs — 6 primitives: T (Temporality), _^ (PositivePole), _$ (NegativePole), K (Knowledge), Ss (Symbol/Stereopsic), L (Localizability)  [TKSL + poles]"
+          },
+          "notation_convention": "In hybrid formulas (containing |), Territory and Map types carry their monoid index: It (Information/Territory), St (Structure/Territory), O (Observability/Map). Pure intra-monoid formulas (A×S×F) and ASFID/REVOI scoring terminology are unaffected."
+        }
+        ,
         "T1": {
           "label": "Derived Types (Named Product Types)",
           "notation": "𝕋₁ = { τ₁ OP τ₂ OP ... OP τₙ  |  τᵢ ∈ 𝕋₀,  OP ∈ {×, +, |} }",
@@ -346,7 +363,7 @@
       "@id": "m3:MonoidalType",
       "@type": "owl:Class",
       "rdfs:label": "Monoidal Type",
-      "rdfs:comment": "Abstract class for all primitive types of the TSCG free monoidal grammars. Replaces former m3:M3Dimension (vestige of Hilbert-space / tensor formalism). Subclasses: types of Gt (ASFID — ×), types of Gm (REVOI — +), types of Gs (T, _^, _$ — |). A MonoidalType is a generator of the free monoid 𝕋* on 𝕋₀.",
+      "rdfs:comment": "Abstract class for all primitive types of the TSCG free monoidal grammars. Replaces former m3:M3Dimension (vestige of Hilbert-space / tensor formalism). Subclasses: types of Gt (ASFID — ×), types of Gm (REVOI — +), types of Gs (TKSL + poles: T, K, Ss, L, _^, _$ — |). A MonoidalType is a generator of the free monoid 𝕋* on 𝕋₀. Total: 16 primitives (Base16).",
       "skos:definition": "A generator of one of the three TSCG free monoidal grammars (Gt, Gm, Gs). MonoidalTypes are the atomic, irreducible elements from which all structural formula expressions are built via ×, +, and |.",
       "owl:equivalentClass": {
         "rdfs:comment": "Formerly named m3:M3Dimension — renamed to reflect Lambek/monoidal formalism"
@@ -426,7 +443,7 @@
       "StereopsisUniversalSet": {
         "@id": "m3:bicephalous:StereopsisUniversalSet",
         "rdfs:label": "Stereopsis Universal Set",
-        "rdfs:comment": "Pseudo-absorbent of |. Defined as 𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|) = 𝕋₀ (13 primitives). StereopsisUniversalSet | a = StereopsisUniversalSet for all a. Degenerate limit — Borges 1:1 map paradox. Distinct from SpectralClass Coherent (δ₁ ≈ 0).",
+        "rdfs:comment": "Pseudo-absorbent of |. Defined as 𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|) = 𝕋₀ (16 primitives — Base16). StereopsisUniversalSet | a = StereopsisUniversalSet for all a. Degenerate limit — Borges 1:1 map paradox. Distinct from SpectralClass Coherent (δ₁ ≈ 0).",
         "m3:grammar_foundation:grammar": "Gs",
         "m3:grammar_foundation:operator": "|",
         "m3:grammar_foundation:role": "pseudo_absorbent",

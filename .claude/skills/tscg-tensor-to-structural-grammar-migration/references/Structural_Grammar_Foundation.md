@@ -148,7 +148,8 @@ letters), **complete** (all 26 letters are reachable), and **minimal**
 
 ### Why This is Remarkable
 
-This diagram was created **before TSCG was formulated**. It demonstrates,
+This diagram was created **before TSCG was formulated** (even if recently updated in May 2026). 
+It demonstrates,
 empirically and independently, the exact structural principle that TSCG
 needed as its mathematical foundation:
 
@@ -584,7 +585,7 @@ for f in Path("ontology").rglob("*.jsonld"):
 
 ### Canonical Illustration
 
-The **Braille Structural Grammar** (©2022 Michel Kern) — created independently
+The **Braille Structural Grammar** (©2022 Michel Kern, updated in May 2026) — created independently
 before TSCG was formalised — demonstrates empirically that a complete symbolic
 system with 26 elements can be generated from 2 primitives and 5 operations,
 with no metric structure required. This diagram is, in retrospect, an

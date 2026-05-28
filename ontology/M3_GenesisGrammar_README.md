@@ -1,11 +1,11 @@
 # M3_GenesisGrammar.jsonld
 
-**Version:** 4.2.0  
+**Version:** 4.3.0  
 **Layer:** M3  
 **Type:** Bicephalous Grammar (Gt + Gm) with Stereopsis reification (Gs)  
 **Former name:** M3_GenesisSpace.jsonld  
 **Created:** 2026-01-21  
-**Last Modified:** 2026-05-18
+**Last Modified:** 2026-05-27
 
 ---
 
