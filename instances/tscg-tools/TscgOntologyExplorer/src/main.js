@@ -91,7 +91,7 @@ function createWindow () {
     const ontRoot = config.get('ontologyRootPath')
     if (ontRoot) mainWindow.webContents.send('ontology-root', ontRoot)
 
-    // Auto-load default ontology on startup (local path or URL)
+    // Auto-load default ontology on startup
     const defaultOntology = config.get('defaultLoadedOntology')
     if (defaultOntology) {
       mainWindow.webContents.send('auto-load-ontology', defaultOntology)

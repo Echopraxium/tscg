@@ -1,11 +1,11 @@
 {
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m3": "M3_GenesisGrammar.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m3:eagle_eye": "M3_EagleEye.jsonld#",
     "m3:sphinx_eye": "M3_SphinxEye.jsonld#",
-    "m2": "M2_GenericConcepts.jsonld#",
-    "m1": "M1_CoreConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m0": "instances/tscg-tools/TscgOntologyAPIServer/M0_TscgOntologyAPIServer.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -58,21 +58,21 @@
     {
       "@id": "instances/tscg-tools/TscgOntologyAPIServer/M0_TscgOntologyAPIServer.jsonld",
       "@type": "owl:Ontology",
-      "rdfs:label": "TscgOntologyAPIServer",
-      "rdfs:comment": "Standalone FastAPI REST server exposing the TSCG ontology graph via SPARQL 1.1 and corpus endpoints. Uses pyoxigraph as named-graph triple store with file persistence. Self-documenting via Swagger UI (OpenAPI). Controlled via Python CLI (start/stop/restart/status). Designed for third-party client interoperability.",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:created": "2026-05-26",
-      "dcterms:modified": "2026-05-26",
-      "owl:versionInfo": "1.0.0",
-      "m3:ontologyType": {
-        "@id": "m3:TscgTool"
-      },
-      "m1:domain": "TSCG",
       "owl:imports": [
         "M3_GenesisGrammar.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld"
       ],
+      "m3:ontologyType": {
+        "@id": "m3:TscgTool"
+      },
+      "rdfs:label": "TscgOntologyAPIServer",
+      "rdfs:comment": "Standalone FastAPI REST server exposing the TSCG ontology graph via SPARQL 1.1 and corpus endpoints. Uses pyoxigraph as named-graph triple store with optional persistence. Self-documenting via Swagger UI (OpenAPI). Controlled via Python CLI (tscg_api_cli.py: start/stop/restart/status/reload/export) or via the tscg-api-bridge Electron plugin in TscgOntologyExplorer. src/ layout: tscg_api_server.py, tscg_api_cli.py, tscg_api_client_example.py, requirements.txt.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-05-26",
+      "owl:versionInfo": "1.1.0",
+      "m1:domain": "TSCG",
+      "dcterms:modified": "2026-05-29",
       "m1:simulationTitle": "TSCG Ontology API Server",
       "A_score": {
         "@value": "0.82",
@@ -128,6 +128,11 @@
       },
       "m0:spectralClass": "Coherent",
       "m2:changelog": [
+        {
+          "version": "1.1.0",
+          "date": "2026-05-29",
+          "changes": "Phase 3 implementation: tscg_api_server.py standalone (promoted from bridge_server.py Phase 2). src/ layout with tscg_api_cli.py (start/stop/restart/status/reload/export), tscg_api_client_example.py, requirements.txt. tscg-api-bridge Electron plugin replaces tscg-python-bridge in TscgOntologyExplorer."
+        },
         {
           "version": "1.0.0",
           "date": "2026-05-26",

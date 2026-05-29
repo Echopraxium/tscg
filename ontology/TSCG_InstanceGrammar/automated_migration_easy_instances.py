@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-TSCG Automated Realignment Script - All Instance Types (v2.7.0)
+TSCG Automated Realignment Script - All Instance Types (v3.0.0)
 Author: Echopraxium with the collaboration of Claude AI
-Date: 2026-04-19 (v2.5.0), 2026-04-20 (v2.6.0, v2.7.0)
-Version: 2.7.0 - Include manually fixed poclets (BloodPressureControl, ButterflyMetamorphosis, CellSignalingModes)
+Date: 2026-04-19 (v2.5.0), 2026-04-20 (v2.6.0, v2.7.0), 2026-05-29 (v3.0.0)
+Version: 3.0.0 - Fix @base missing, M3_GenesisSpace → M3_GenesisGrammar migration
 
 FIXES:
 - Modifies @graph[0] instead of root level
@@ -46,7 +46,18 @@ SYSTEMIC_FRAMEWORKS_DIR = REPO_ROOT / "instances/systemic-frameworks"
 
 ONTOLOGY_DIR = REPO_ROOT / "ontology"
 BACKUP_DIR = REPO_ROOT / "migration_backups" / datetime.now().strftime("%Y%m%d_%H%M%S")
-SHACL_SCHEMA = ONTOLOGY_DIR / "TSCG_Grammar/M0_Instances_Schema.shacl.ttl"
+# v3.0.0: Updated path — SHACL schema is in TSCG_InstanceGrammar/ folder
+SHACL_SCHEMA = ONTOLOGY_DIR / "TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl"
+if not SHACL_SCHEMA.exists():
+    # Fallback: search common locations
+    for candidate in [
+        ONTOLOGY_DIR / "TSCG_Grammar/M0_Instances_Schema.shacl.ttl",
+        ONTOLOGY_DIR / "M0_Instances_Schema.shacl.ttl",
+        REPO_ROOT / "ontology/TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl",
+    ]:
+        if candidate.exists():
+            SHACL_SCHEMA = candidate
+            break
 
 # Instance types configuration
 INSTANCE_TYPES = {
@@ -64,11 +75,17 @@ INSTANCE_TYPES = {
         "dir": SYSTEMIC_FRAMEWORKS_DIR,
         "ontology_type": "m3:SystemicFramework",
         "prefix": "M0_"
+    },
+    "tscg_tool": {
+        "dir": REPO_ROOT / "instances" / "tscg-tools",
+        "ontology_type": "m3:TscgTool",
+        "prefix": "M0_"
     }
 }
 
 # Instances to EXCLUDE (require manual intervention)
 # v2.7.0: All problematic instances have been manually fixed with specialized scripts
+# v3.0.0: Theremin excluded — M0_Theremin.jsonld stub not yet created
 MANUAL_INSTANCES = {
     # BloodPressureControl - FIXED with fix_bloodpressure_namespace.py (141 tscg: → m0:)
     # ButterflyMetamorphosis - FIXED with fix_butterfly_classes.py (custom classes removed)
@@ -76,8 +93,9 @@ MANUAL_INSTANCES = {
 }
 
 # Instances already fully compliant (skip migration)
+# v3.0.0: AdaptativeImmuneResponse removed — still contains M3_GenesisSpace + m1:Poclet in @type
 COMPLIANT_INSTANCES = {
-    "AdaptiveImmuneResponse",  # 100% compliant reference (validated v1.0)
+    # Empty — all instances need v3.0.0 migration
 }
 
 # ============================================================================
@@ -133,14 +151,28 @@ class TransformationRules:
     
     @staticmethod
     def fix_type_ontology(ontology):
-        """@type: owl:NamedIndividual → owl:Ontology"""
-        if "@type" in ontology:
-            if ontology["@type"] == "owl:NamedIndividual":
-                ontology["@type"] = "owl:Ontology"
+        """Fix @type:
+        - owl:NamedIndividual → owl:Ontology
+        - m0:Poclet → owl:Ontology
+        - ["owl:Ontology", "m1:Poclet", ...] → "owl:Ontology" (remove forbidden types)
+        """
+        if "@type" not in ontology:
+            return False
+        t = ontology["@type"]
+        FORBIDDEN = {"owl:NamedIndividual", "m0:Poclet", "m1:Poclet",
+                     "m1:core:Poclet", "m3:Poclet"}
+        if isinstance(t, list):
+            cleaned = [x for x in t if x not in FORBIDDEN]
+            if "owl:Ontology" not in cleaned:
+                cleaned.insert(0, "owl:Ontology")
+            # Flatten to string if only one element
+            result = cleaned[0] if len(cleaned) == 1 else cleaned
+            if result != t:
+                ontology["@type"] = result
                 return True
-            elif ontology["@type"] == "m0:Poclet":
-                ontology["@type"] = "owl:Ontology"
-                return True
+        elif t in FORBIDDEN:
+            ontology["@type"] = "owl:Ontology"
+            return True
         return False
     
     @staticmethod
@@ -343,7 +375,7 @@ class TransformationRules:
         
         # Add m3: if absent (ABSOLUTE URL)
         if "m3" not in context:
-            context["m3"] = "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#"
+            context["m3"] = "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#"
             modified = True
         
         return modified
@@ -354,19 +386,77 @@ class TransformationRules:
         modified = False
         
         # Mapping of relative → absolute URLs
+        # All known relative → absolute mappings (including already-renamed GenesisGrammar)
         namespace_mappings = {
-            "m1": ("M1_CoreConcepts.jsonld#", "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#"),
-            "m3": ("M3_GenesisSpace.jsonld#", "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#"),
-            "m2": ("M2_GenericConcepts.jsonld#", "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#"),
+            "m1": [
+                ("M1_CoreConcepts.jsonld#", "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#"),
+            ],
+            "m3": [
+                ("M3_GenesisSpace.jsonld#",   "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#"),
+                ("M3_GenesisGrammar.jsonld#", "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#"),
+            ],
+            "m2": [
+                ("M2_GenericConcepts.jsonld#", "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#"),
+            ],
         }
-        
-        for ns_key, (relative_url, absolute_url) in namespace_mappings.items():
-            if ns_key in context and context[ns_key] == relative_url:
-                context[ns_key] = absolute_url
-                modified = True
+
+        for ns_key, mappings in namespace_mappings.items():
+            if ns_key in context:
+                for relative_url, absolute_url in mappings:
+                    if context[ns_key] == relative_url:
+                        context[ns_key] = absolute_url
+                        modified = True
+                        break
         
         return modified
     
+    @staticmethod
+    def fix_genesis_space_to_grammar(context):
+        """Migrate M3_GenesisSpace.jsonld → M3_GenesisGrammar.jsonld in @context. (v3.0.0)"""
+        modified = False
+        OLD_FULL = "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#"
+        NEW_FULL = "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#"
+        OLD_REL  = "M3_GenesisSpace.jsonld#"
+        NEW_REL  = "M3_GenesisGrammar.jsonld#"
+        for key in list(context.keys()):
+            val = context[key]
+            if not isinstance(val, str): continue
+            if OLD_FULL in val:
+                context[key] = val.replace(OLD_FULL, NEW_FULL)
+                modified = True
+            elif OLD_REL in val and not val.startswith("http"):
+                context[key] = val.replace(OLD_REL, NEW_REL)
+                modified = True
+        return modified
+
+    @staticmethod
+    def fix_genesis_space_in_body(data):
+        """Migrate M3_GenesisSpace.jsonld references in the full @graph body. (v3.0.0)
+        Uses full JSON serialization for safety — covers all nested occurrences.
+        """
+        OLD = "M3_GenesisSpace.jsonld"
+        NEW = "M3_GenesisGrammar.jsonld"
+        serialized = json.dumps(data, ensure_ascii=False)
+        if OLD in serialized:
+            return True, json.loads(serialized.replace(OLD, NEW))
+        return False, data
+
+    @staticmethod
+    def add_base_if_missing(context):
+        """Add canonical @base to @context if absent or incorrect. (v3.0.0)
+        Required for pyoxigraph/TscgOntologyAPIServer: without @base, relative @id
+        values resolve to file:///local/path instead of the canonical GitHub IRI.
+        """
+        BASE = "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"
+        if "@base" not in context:
+            context["@base"] = BASE
+            return True
+        current = context.get("@base", "")
+        if current and "raw.githubusercontent.com/Echopraxium/tscg" not in current:
+            context["@base"] = BASE
+            return True
+        return False
+
     @staticmethod
     def fix_changelog_format(ontology):
         """Convert m2:changelog from object to array format"""
@@ -498,8 +588,14 @@ class InstanceMigrator:
         
         # Fix @context
         if rules.fix_base_url(context):
-            modifications.append("@context: Fixed @base URL")
-        
+            modifications.append("@context: Fixed @base URL (aladas-org → Echopraxium)")
+
+        if rules.add_base_if_missing(context):
+            modifications.append("@context: Added missing @base (canonical https://raw.githubusercontent.com/...)")
+
+        if rules.fix_genesis_space_to_grammar(context):
+            modifications.append("@context: M3_GenesisSpace.jsonld → M3_GenesisGrammar.jsonld")
+
         if rules.add_missing_namespaces(context):
             modifications.append("@context: Added missing m1:/m3: namespaces")
         
@@ -557,11 +653,38 @@ class InstanceMigrator:
         try:
             with open(filepath, 'r', encoding='utf-8') as f:
                 data = json.load(f)
+        except UnicodeDecodeError:
+            # Fallback: try with cp1252 then re-encode to utf-8
+            try:
+                with open(filepath, 'r', encoding='cp1252') as f:
+                    raw = f.read()
+                data = json.loads(raw)
+                # Re-write as clean UTF-8 immediately
+                with open(filepath, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, indent=2, ensure_ascii=False)
+                    f.write(chr(10))
+            except Exception as e2:
+                return False, [f"Encoding error in {filepath}: {str(e2)}"]
         except Exception as e:
             return False, [f"Failed to read {filepath}: {str(e)}"]
         
         modifications = []
         
+        # STEP 0 (v3.0.0): Full-body replacement of M3_GenesisSpace → M3_GenesisGrammar
+        body_changed, data = TransformationRules.fix_genesis_space_in_body(data)
+        if body_changed:
+            modifications.append("JSON-LD body: M3_GenesisSpace.jsonld → M3_GenesisGrammar.jsonld")
+
+        # STEP 0b (v3.0.0): Remove stray root-level properties (outside @graph)
+        # Some files have m3:ontologyType at root level — invalid, must be in @graph[0]
+        root_stray = []
+        for key in list(data.keys()):
+            if key not in ("@context", "@graph", "@id", "@type"):
+                root_stray.append(key)
+                del data[key]
+        if root_stray:
+            modifications.append(f"Removed stray root-level properties: {', '.join(root_stray)}")
+
         # STEP 1: Migrate m0:domain from @graph[1+] to @graph[0] as m1:domain
         # (Must happen BEFORE other transformations that operate on @graph[0])
         migrated, domain_value = TransformationRules.migrate_domain_from_graph_objects(data)
@@ -678,8 +801,14 @@ class InstanceMigrator:
             
             if "Conforms: True" in result.stdout:
                 return True, "SHACL validation passed"
+            elif result.returncode != 0 and not result.stdout:
+                return False, f"pyshacl error (returncode={result.returncode}):\n{result.stderr[:500]}"
             else:
-                return False, f"SHACL validation failed:\n{result.stdout}"
+                # Show only first violation message for brevity
+                lines = result.stdout.split("\n")
+                msgs = [l for l in lines if "Message:" in l or "Constraint Violation" in l]
+                summary = "\n".join(msgs[:3]) if msgs else result.stdout[:300]
+                return False, f"SHACL validation failed:\n{summary}"
                 
         except Exception as e:
             return False, f"SHACL validation error: {str(e)}"
@@ -721,6 +850,55 @@ class InstanceMigrator:
         except Exception as e:
             return False, f"HTML validation error: {str(e)}"
     
+    def dry_run(self):
+        """Simulate migration — read and analyse without writing any file."""
+        if not self.jsonld_path.exists():
+            print(f"  ⚠ {self.instance_name}: JSON-LD not found ({self.jsonld_path})")
+            return False
+
+        try:
+            with open(self.jsonld_path, 'r', encoding='utf-8') as f:
+                import copy
+                data = copy.deepcopy(json.load(f))
+        except Exception as e:
+            print(f"  ✗ {self.instance_name}: read error — {e}")
+            return False
+
+        # Run STEP 0
+        body_changed, data2 = TransformationRules.fix_genesis_space_in_body(data)
+
+        # Run context + graph[0] transformations on a deep copy
+        context  = data2.get("@context", {})
+        ontology = data2.get("@graph", [{}])[0] if "@graph" in data2 else {}
+        rules    = TransformationRules()
+        mods = []
+
+        if rules.fix_base_url(context):           mods.append("@context: Fixed @base URL")
+        if rules.add_base_if_missing(context):    mods.append("@context: Added missing @base")
+        if rules.fix_genesis_space_to_grammar(context): mods.append("@context: GenesisSpace → GenesisGrammar")
+        if rules.add_missing_namespaces(context): mods.append("@context: Added missing namespaces")
+        if rules.fix_relative_namespaces(context):mods.append("@context: Relative → absolute URLs")
+        if rules.fix_type_ontology(ontology):     mods.append("@type → owl:Ontology")
+        if rules.fix_version_property(ontology):  mods.append("m0:version → owl:versionInfo")
+        if rules.remove_ontology_category(ontology): mods.append("Removed ontologyCategory")
+        if rules.fix_ontology_type_namespace(ontology): mods.append("m2:ontologyType → m3:ontologyType")
+        if rules.fix_domain_namespace(ontology):  mods.append("m0:domain → m1:domain")
+        if rules.fix_title_to_label(ontology):    mods.append("dcterms:title → rdfs:label")
+        if rules.fix_description_to_comment(ontology): mods.append("dcterms:description → rdfs:comment")
+        if rules.add_ontology_type(ontology, self.type_config["ontology_type"]): mods.append(f"Added {self.type_config['ontology_type']}")
+        if rules.fix_changelog_format(ontology):  mods.append("changelog → array format")
+        if body_changed: mods.insert(0, "JSON-LD body: GenesisSpace → GenesisGrammar")
+
+        if mods:
+            print(f"  🔧 {self.instance_name}: {len(mods)} change(s) would be applied:")
+            for m in mods:
+                print(f"     • {m}")
+        else:
+            print(f"  ✅ {self.instance_name}: already compliant — no changes needed")
+
+        self.modifications = mods
+        return True
+
     def migrate(self):
         """Execute full migration pipeline with checkpoints."""
         print(f"\n{'='*70}")
@@ -749,6 +927,7 @@ class InstanceMigrator:
         valid, message = self.validate_jsonld()
         if not valid:
             print(f"   ❌ {message}")
+            self.errors.append(f"SHACL: {message}")
             print("\n⚠️  ROLLBACK: Restoring from backup...")
             self.rollback(backup_dir)
             return False
@@ -792,32 +971,45 @@ class InstanceMigrator:
 # MAIN EXECUTION
 # ============================================================================
 
+def _has_jsonld(base_dir, name, instance_type):
+    """Check if the expected JSON-LD file exists for an instance."""
+    type_dirs = {
+        "poclet":          POCLETS_DIR,
+        "symbolic_grammar": SYMBOLIC_GRAMMARS_DIR,
+        "systemic_framework": SYSTEMIC_FRAMEWORKS_DIR,
+        "tscg_tool":       REPO_ROOT / "instances" / "tscg-tools",
+    }
+    base = type_dirs.get(instance_type, base_dir)
+    jsonld = base / name / f"M0_{name}.jsonld"
+    return jsonld.exists()
+
+
 def get_easy_instances():
     """Get list of instances suitable for automated migration.
     Returns list of tuples: (instance_name, instance_type)
+    Automatically excludes directories without a M0_<Name>.jsonld file.
     """
     instances = []
-    
-    # Poclets
-    poclet_dirs = [d.name for d in POCLETS_DIR.iterdir() if d.is_dir()]
-    for name in poclet_dirs:
-        if name not in MANUAL_INSTANCES and name not in COMPLIANT_INSTANCES:
-            instances.append((name, "poclet"))
-    
-    # Symbolic Grammars
-    if SYMBOLIC_GRAMMARS_DIR.exists():
-        grammar_dirs = [d.name for d in SYMBOLIC_GRAMMARS_DIR.iterdir() if d.is_dir()]
-        for name in grammar_dirs:
-            if name not in MANUAL_INSTANCES and name not in COMPLIANT_INSTANCES:
-                instances.append((name, "symbolic_grammar"))
-    
-    # Systemic Frameworks
-    if SYSTEMIC_FRAMEWORKS_DIR.exists():
-        framework_dirs = [d.name for d in SYSTEMIC_FRAMEWORKS_DIR.iterdir() if d.is_dir()]
-        for name in framework_dirs:
-            if name not in MANUAL_INSTANCES and name not in COMPLIANT_INSTANCES:
-                instances.append((name, "systemic_framework"))
-    
+
+    def _collect(base_dir, instance_type):
+        if not base_dir.exists():
+            return
+        for d in sorted(base_dir.iterdir()):
+            if not d.is_dir() or d.name.startswith('_'):
+                continue
+            name = d.name
+            if name in MANUAL_INSTANCES or name in COMPLIANT_INSTANCES:
+                continue
+            if not _has_jsonld(base_dir, name, instance_type):
+                print(f"  ⚠ Skipping {name} ({instance_type}): no M0_{name}.jsonld found")
+                continue
+            instances.append((name, instance_type))
+
+    _collect(POCLETS_DIR,            "poclet")
+    _collect(SYMBOLIC_GRAMMARS_DIR,  "symbolic_grammar")
+    _collect(SYSTEMIC_FRAMEWORKS_DIR, "systemic_framework")
+    _collect(REPO_ROOT / "instances" / "tscg-tools", "tscg_tool")
+
     return instances
 
 def generate_report(results):
@@ -825,7 +1017,7 @@ def generate_report(results):
     report_path = BACKUP_DIR / "MIGRATION_REPORT.md"
     
     with open(report_path, 'w', encoding='utf-8') as f:
-        f.write("# TSCG Automated Migration Report (v2.7.0 - Complete Migration)\n\n")
+        f.write("# TSCG Automated Migration Report (v3.0.0 - GenesisGrammar + @base)\n\n")
         f.write(f"**Date:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         f.write(f"**Backup Location:** {BACKUP_DIR}\n\n")
         
@@ -855,10 +1047,10 @@ def generate_report(results):
                     f.write(f"- {err}\n")
                 f.write("\n")
         
-        f.write("## Fixes Applied in v2.7.0\n\n")
-        f.write("1. ✅ Included 3 manually fixed poclets (BloodPressureControl, ButterflyMetamorphosis, CellSignalingModes)\n")
-        f.write("2. ✅ Complete migration of 26 instances: 24 poclets + 1 SymbolicSystemGrammar + 1 SystemicFramework\n")
-        f.write("3. ✅ All v2.6.0 features maintained (multi-type support, domain cross-object migration)\n\n")
+        f.write("## Fixes Applied in v3.0.0\n\n")
+        f.write("1. ✅ Added missing @base in @context (required for TscgOntologyAPIServer/pyoxigraph)\n")
+        f.write("2. ✅ Migrated M3_GenesisSpace.jsonld → M3_GenesisGrammar.jsonld throughout\n")
+        f.write("3. ✅ All v2.7.0 features maintained (multi-type support, domain migration)\n\n")
         
         f.write("## Next Steps\n\n")
         f.write("1. Review this report\n")
@@ -920,17 +1112,22 @@ def main():
     import argparse
     
     parser = argparse.ArgumentParser(
-        description="TSCG Automated Migration v2.7.0 - Complete Migration (26 instances)"
+        description="TSCG Automated Migration v3.0.0 - GenesisGrammar + @base migration"
     )
     parser.add_argument(
         "--continue-on-error",
         action="store_true",
         help="Continue migration even if errors occur (default: stop on first error)"
     )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Simulate migration without modifying any file — shows what would be changed"
+    )
     args = parser.parse_args()
     
     print("="*70)
-    print("TSCG AUTOMATED MIGRATION v2.7.0 - Complete migration (26 instances)")
+    print("TSCG AUTOMATED MIGRATION v3.0.0 - GenesisGrammar + @base migration")
     print("="*70)
     
     # Get instances to migrate
@@ -941,27 +1138,34 @@ def main():
     print(f"   Excluding {len(COMPLIANT_INSTANCES)} compliant instances: {', '.join(COMPLIANT_INSTANCES)}")
     
     # Confirm
-    print(f"\n⚠️  This will modify {len(easy_instances)} instances.")
-    print(f"   Backups will be created in: {BACKUP_DIR}")
-    
+    if args.dry_run:
+        print(f"\n🔍 DRY-RUN MODE — no files will be modified")
+        print(f"   Simulating migration of {len(easy_instances)} instances...")
+    else:
+        print(f"\n⚠️  This will modify {len(easy_instances)} instances.")
+        print(f"   Backups will be created in: {BACKUP_DIR}")
+
     if args.continue_on_error:
         print(f"   ⚠️  MODE: Continue on error (--continue-on-error)")
     else:
         print(f"   🛡️  MODE: Stop on first error (default)")
-    
-    response = input("\nProceed? [y/N]: ")
-    if response.lower() != 'y':
-        print("❌ Migration cancelled")
-        return 1
-    
-    # Create backup directory
-    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
-    
+
+    if not args.dry_run:
+        response = input("\nProceed? [y/N]: ")
+        if response.lower() != 'y':
+            print("❌ Migration cancelled")
+            return 1
+        # Create backup directory
+        BACKUP_DIR.mkdir(parents=True, exist_ok=True)
+
     # Migrate each instance
     results = {}
     for instance_name, instance_type in easy_instances:
         migrator = InstanceMigrator(instance_name, instance_type)
-        success = migrator.migrate()
+        if args.dry_run:
+            success = migrator.dry_run()
+        else:
+            success = migrator.migrate()
         
         results[instance_name] = {
             'status': 'success' if success else 'failed',
@@ -979,11 +1183,19 @@ def main():
     
     # Generate reports
     print("\n" + "="*70)
-    print("GENERATING REPORTS")
+    if args.dry_run:
+        print("DRY-RUN SUMMARY")
+    else:
+        print("GENERATING REPORTS")
     print("="*70)
-    
-    report_path = generate_report(results)
-    checklist_path = generate_test_checklist(easy_instances)
+
+    if args.dry_run:
+        report_path = None
+        checklist_path = None
+        print("\n(No files written — dry-run mode)")
+    else:
+        report_path = generate_report(results)
+        checklist_path = generate_test_checklist(easy_instances)
     
     # Summary
     success_count = sum(1 for r in results.values() if r['status'] == 'success')
@@ -991,10 +1203,14 @@ def main():
     print("\n" + "="*70)
     print("MIGRATION COMPLETE")
     print("="*70)
-    print(f"\n✅ Successfully migrated: {success_count}/{len(easy_instances)} instances")
-    print(f"\n📁 Backups: {BACKUP_DIR}")
-    print(f"📄 Report: {report_path}")
-    print(f"📋 Test checklist: {checklist_path}")
+    if args.dry_run:
+        print(f"\n🔍 Would migrate: {success_count}/{len(easy_instances)} instances")
+        print(f"   (no files written — use without --dry-run to apply)")
+    else:
+        print(f"\n✅ Successfully migrated: {success_count}/{len(easy_instances)} instances")
+        print(f"\n📁 Backups: {BACKUP_DIR}")
+        print(f"📄 Report: {report_path}")
+        print(f"📋 Test checklist: {checklist_path}")
     
     print("\n🧪 NEXT STEPS:")
     print("1. Review the migration report")

@@ -182,19 +182,19 @@ export async function loadFile (absPath) {
     const data = await res.json()
     _activeFile = absPath
 
-    // Fetch hierarchy (rdfs:subClassOf pairs) for tree view
-    let pairs = []
-    try {
-      const hRes = await fetch(`${_bridgeUrl}/hierarchy?file_path=${encodeURIComponent(absPath)}`)
-      if (hRes.ok) { const hData = await hRes.json(); pairs = hData.pairs || [] }
-    } catch { /* hierarchy optional */ }
+    // ── subClassOf pairs — extracted by /load via the same expand_id() ──
+    const pairs             = data.subclass_pairs     || []
+    const externalParents   = data.external_parents   || []
+    const instanceOfTargets = data.instanceof_targets || []
+    if (pairs.length > 0)
+      console.log(`[OntologyLoader] ${pairs.length} pairs, ${externalParents.length} ext-parents, ${instanceOfTargets.length} instanceOf`)
 
     setStatus(`${data.objects.length} objects — ${data.triples} triples`)
-    populateObjectExplorer(data.objects, pairs)
+    populateObjectExplorer(data.objects, pairs, externalParents)
 
     // Cache the loaded data for fast tab switching
-    _isDirty = true  // mark as fresh load in progress
-    _docCache.set(absPath, { objects: data.objects, pairs })
+    _isDirty = true
+    _docCache.set(absPath, { objects: data.objects, pairs, externalParents, instanceOfTargets })
 
     // Notify renderer to create/activate a document tab
     if (_onDocumentLoadedCb) {
@@ -225,16 +225,44 @@ export function onDocumentLoaded (cb)    { _onDocumentLoadedCb = cb }
 export function isDirtyLoad ()           { return _isDirty }
 export function clearDirtyLoad ()        { _isDirty = false }
 
+/**
+ * Find which cached document contains the given IRI as an object id.
+ * Priority: active file first, then all other cached docs.
+ * Returns the file path, or null if not found in any cached doc.
+ */
+export function findFileForIri (iri) {
+  // Check active file first
+  if (_activeFile && _docCache.has(_activeFile)) {
+    const { objects } = _docCache.get(_activeFile)
+    if (objects.some(o => o.id === iri)) return _activeFile
+  }
+  // Check all other cached docs
+  for (const [filePath, { objects }] of _docCache) {
+    if (filePath === _activeFile) continue
+    if (objects.some(o => o.id === iri)) return filePath
+  }
+  return null
+}
+
+/**
+ * Return m3:instanceOf targets for the given file (or active file).
+ * Used by Adjacent Layers tab to show M2 metaclass links for M0 instances.
+ * Returns array of { id, label, file_path_hint }.
+ */
+export function getInstanceOfTargets (filePath) {
+  const entry = _docCache.get(filePath || _activeFile)
+  return entry?.instanceOfTargets || []
+}
+
 // Activate a document from the cache (called when switching tabs)
 export async function activateDocument (filePath) {
   if (!filePath) return
 
   if (_docCache.has(filePath)) {
-    // Fast path: restore from cache
-    const { objects, pairs } = _docCache.get(filePath)
+    const { objects, pairs, externalParents, instanceOfTargets } = _docCache.get(filePath)
     _activeFile = filePath
     setStatus(`${objects.length} objects — cached`)
-    populateObjectExplorer(objects, pairs)
+    populateObjectExplorer(objects, pairs, externalParents || [])
     console.log('[OntologyLoader] Activated from cache:', filePath.split(/[/\\]/).pop())
   } else {
     // Cache miss: load from bridge
@@ -243,14 +271,19 @@ export async function activateDocument (filePath) {
   }
 }
 
-function populateObjectExplorer (objects, pairs) {
+function populateObjectExplorer (objects, pairs, externalParents) {
   if (_explorerRender) {
-    // OntologyLoader injects _activeFile so downstream callbacks have the correct path
     _explorerRender({
       objects,
-      pairs: pairs || [],
+      pairs:          pairs          || [],
+      externalParents: externalParents || [],
       onSelect: (obj) => {
         if (_onSelectCb) _onSelectCb({ ...obj, filePath: _activeFile })
+      },
+      onNavigateTo: async (filePath, iri) => {
+        // Load the target file, then select the node
+        setPendingSelectIri(iri)
+        await loadFile(filePath)
       }
     })
     return

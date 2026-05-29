@@ -44,6 +44,16 @@ class ServerPluginApi {
         if (self._onMenuChangedCb) self._onMenuChangedCb(self._menuItems)
       },
 
+      updateMenuItem (id, patch) {
+        const idx = self._menuItems.findIndex(i => i.id === id)
+        if (idx === -1) {
+          console.warn(`[ServerPlugin:${pluginName}] updateMenuItem: id not found: ${id}`)
+          return
+        }
+        self._menuItems[idx] = { ...self._menuItems[idx], ...patch }
+        if (self._onMenuChangedCb) self._onMenuChangedCb(self._menuItems)
+      },
+
       onAction (id, fn) {
         self._actionHandlers.set(id, fn)
       },

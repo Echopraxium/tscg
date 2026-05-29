@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://cdnjs.cloudflare.com;
+                 script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
+                 style-src  'self' 'unsafe-inline';
+                 img-src    'self' data: blob:;
+                 connect-src http://127.0.0.1:* ws://127.0.0.1:*;">
+  <title>TSCG &mdash; Exposure Triangle</title>
+
+  <!-- ── Inline styles.css (shared TSCG template) ──────────── -->
+  <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep:      #0d1117;
+  --bg-panel:     #161b22;
+  --bg-card:      #1c2130;
+  --bg-hover:     #21262d;
+  --border:       #30363d;
+  --border-light: #3d444f;
+  --eagle:        #f78166;
+  --sphinx:       #79c0ff;
+  --accent:       #56d364;
+  --warn:         #e3b341;
+  --muted:        #8b949e;
+  --text:         #e6edf3;
+  --text-dim:     #b1bac4;
+  --col-A: #f78166;
+  --col-S: #56d364;
+  --col-F: #79c0ff;
+  --col-I: #d2a8ff;
+  --col-D: #e3b341;
+  --col-R: #79c0ff;
+  --col-E: #56d364;
+  --col-V: #f78166;
+  --col-O: #d2a8ff;
+  --col-Im: #e3b341;
+  --header-h:   44px;
+  --controls-h: 64px;
+  --sidebar-w:  320px;
+  --gap:        8px;
+  --radius:     6px;
+  --font:       'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono:  'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+html, body {
+  height: 100%; overflow: hidden;
+  font-family: var(--font); background: var(--bg-deep);
+  color: var(--text); font-size: 13px; line-height: 1.5; user-select: none;
+}
+
+/* ── Layout shell ─────────────────────────────── */
+#app {
+  display: grid;
+  grid-template-rows: var(--header-h) 1fr auto var(--controls-h);
+  grid-template-columns: 1fr 5px var(--sidebar-w);
+  grid-template-areas:
+    "header   header   header"
+    "canvas   split    sidebar"
+    "compbar  compbar  compbar"
+    "controls controls controls";
+  height: 100vh; gap: 0;
+}
+
+/* ── Header ─────────────────────────────────────── */
+#header {
+  grid-area: header; display: flex; align-items: center;
+  padding: 0 16px; gap: 12px;
+  background: var(--bg-panel); border-bottom: 1px solid var(--border);
+}
+#header .tscg-logo { font-size:11px; font-weight:700; letter-spacing:.12em; color:var(--eagle); text-transform:uppercase; flex-shrink:0; }
+#header .sep       { color: var(--border-light); font-size:16px; }
+#header .poclet-name { font-size:14px; font-weight:600; color:var(--text); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#header .meta-chips  { display:flex; gap:6px; flex-shrink:0; }
+.chip { padding:2px 8px; border-radius:20px; font-size:11px; font-weight:500; border:1px solid transparent; }
+.chip.domain  { background:rgba(86,211,100,.12); border-color:rgba(86,211,100,.3);  color:var(--accent); }
+.chip.version { background:rgba(121,192,255,.12);border-color:rgba(121,192,255,.3); color:var(--sphinx); }
+.chip.type    { background:rgba(247,129,102,.12); border-color:rgba(247,129,102,.3); color:var(--eagle); }
+
+/* ── Canvas ──────────────────────────────────────── */
+#canvas-area { grid-area:canvas; position:relative; overflow:hidden; background:var(--bg-deep); min-width:200px; }
+#canvas-area canvas { position:absolute; top:0; left:0; }
+
+/* ── Splitter ────────────────────────────────────── */
+#splitter { grid-area:split; background:var(--border); cursor:col-resize; transition:background .15s; position:relative; z-index:10; }
+#splitter:hover, #splitter.dragging { background:var(--sphinx); }
+
+/* ── Sidebar ─────────────────────────────────────── */
+#sidebar { grid-area:sidebar; display:flex; flex-direction:column; background:var(--bg-panel); border-left:1px solid var(--border); overflow:hidden; min-width:180px; max-width:620px; }
+.tab-bar { display:flex; background:var(--bg-deep); border-bottom:1px solid var(--border); flex-shrink:0; }
+.tab-btn { flex:1; padding:8px 4px; font-size:12px; font-weight:600; background:none; border:none; border-bottom:2px solid transparent; color:var(--muted); cursor:pointer; transition:color .15s, border-color .15s; }
+.tab-btn:hover { color:var(--text-dim); }
+.tab-btn.active { color:var(--sphinx); border-bottom-color:var(--sphinx); }
+.tab-panel { display:none; flex-direction:column; flex:1; overflow-y:auto; padding:12px; gap:10px; }
+.tab-panel.active { display:flex; }
+
+/* Score bars */
+.score-group { display:flex; flex-direction:column; gap:5px; }
+.score-group-label { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); padding-bottom:4px; border-bottom:1px solid var(--border); margin-bottom:2px; }
+.score-group-label.eagle { color:var(--eagle); }
+.score-group-label.sphinx { color:var(--sphinx); }
+.score-row { display:flex; align-items:center; gap:8px; font-size:12px; }
+.score-dim  { width:20px; font-weight:700; font-family:var(--font-mono); font-size:11px; text-align:center; flex-shrink:0; }
+.score-bar-bg { flex:1; height:6px; background:var(--bg-card); border-radius:3px; overflow:hidden; }
+.score-bar-fill { height:100%; border-radius:3px; transition:width .6s ease; }
+.score-val  { width:30px; text-align:right; font-family:var(--font-mono); font-size:11px; color:var(--text-dim); flex-shrink:0; }
+.score-mean-row { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); padding-top:2px; font-family:var(--font-mono); }
+.score-mean-row span { color:var(--text); font-weight:600; }
+
+.gap-badge { display:flex; align-items:center; gap:10px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:8px 12px; font-size:12px; }
+.gap-badge .gap-label { color:var(--muted); }
+.gap-badge .gap-val   { font-family:var(--font-mono); font-weight:700; font-size:16px; color:var(--accent); }
+.gap-badge .gap-desc  { color:var(--text-dim); font-size:11px; }
+
+.gc-list { display:flex; flex-direction:column; gap:4px; }
+.gc-item { display:flex; align-items:flex-start; gap:8px; padding:6px 8px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border); cursor:default; transition:border-color .15s,background .15s; }
+.gc-item:hover { background:var(--bg-hover); border-color:var(--border-light); }
+.gc-item.primary   { border-left:3px solid var(--eagle); }
+.gc-item.secondary { border-left:3px solid var(--border-light); }
+.gc-name    { font-family:var(--font-mono); font-size:11px; font-weight:600; color:var(--sphinx); flex-shrink:0; min-width:100px; }
+.gc-formula { font-family:var(--font-mono); font-size:10px; color:var(--muted); flex-shrink:0; }
+.gc-role    { font-size:11px; color:var(--text-dim); line-height:1.4; }
+
+.readme-content { font-size:12px; line-height:1.7; color:var(--text-dim); white-space:pre-wrap; font-family:var(--font); }
+.readme-content h2    { font-size:13px; font-weight:700; color:var(--text); margin:12px 0 4px; padding-bottom:3px; border-bottom:1px solid var(--border); }
+.readme-content strong { color:var(--text); }
+.readme-content code  { font-family:var(--font-mono); font-size:10.5px; background:var(--bg-card); padding:1px 4px; border-radius:3px; color:var(--sphinx); }
+
+.synergy-box { background:var(--bg-card); border:1px solid var(--border); border-left:3px solid var(--warn); border-radius:var(--radius); padding:10px 12px; gap:6px; display:flex; flex-direction:column; }
+.synergy-label    { font-size:12px; font-weight:700; color:var(--warn); }
+.synergy-formula  { font-family:var(--font-mono); font-size:11.5px; color:var(--text); word-break:break-word; }
+.synergy-emergent { font-size:11px; color:var(--text-dim); }
+
+/* ── Parameters bar ──────────────────────────────── */
+#comp-bar  { grid-area:compbar; background:var(--bg-panel); border-top:1px solid var(--border); overflow:hidden; }
+#comp-inner { display:flex; align-items:center; gap:14px; padding:8px 16px; flex-wrap:nowrap; overflow-x:auto; }
+.comp-group { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+.comp-label { font-size:11px; color:var(--muted); white-space:nowrap; display:flex; align-items:center; gap:4px; }
+.comp-icon  { font-size:14px; }
+.comp-val   { font-size:11px; font-family:var(--font-mono); color:var(--text-dim); min-width:58px; text-align:right; }
+input[type="range"].comp-slider { -webkit-appearance:none; width:100px; height:4px; background:var(--bg-card); border-radius:2px; outline:none; }
+input[type="range"].comp-slider::-webkit-slider-thumb { -webkit-appearance:none; width:12px; height:12px; border-radius:50%; background:var(--sphinx); cursor:pointer; border:2px solid var(--bg-panel); }
+.comp-sep  { width:1px; height:24px; background:var(--border); flex-shrink:0; }
+#ev-display { font-size:13px; font-family:var(--font-mono); font-weight:700; color:var(--accent); flex-shrink:0; min-width:70px; }
+
+/* ── Controls ────────────────────────────────────── */
+#controls { grid-area:controls; display:flex; align-items:center; gap:10px; padding:0 16px; background:var(--bg-panel); border-top:1px solid var(--border); flex-wrap:nowrap; }
+.ctrl-btn { display:flex; align-items:center; gap:5px; padding:5px 12px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); color:var(--text-dim); font-size:12px; font-family:var(--font); cursor:pointer; transition:background .15s,color .15s,border-color .15s; white-space:nowrap; flex-shrink:0; }
+.ctrl-btn:hover  { background:var(--bg-hover); color:var(--text); border-color:var(--border-light); }
+.ctrl-btn.active { background:rgba(86,211,100,.1); border-color:var(--accent); color:var(--accent); }
+.ctrl-sep  { width:1px; height:28px; background:var(--border); flex-shrink:0; }
+.ctrl-label { font-size:11px; color:var(--muted); white-space:nowrap; flex-shrink:0; }
+input[type="range"] { -webkit-appearance:none; width:80px; height:4px; background:var(--bg-card); border-radius:2px; outline:none; flex-shrink:0; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:12px; height:12px; border-radius:50%; background:var(--sphinx); cursor:pointer; border:2px solid var(--bg-panel); }
+
+.status-indicator { margin-left:auto; display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted); flex-shrink:0; }
+.status-dot { width:7px; height:7px; border-radius:50%; background:var(--muted); transition:background .3s; }
+.status-dot.running { background:var(--accent); animation:pulse 1.2s ease-in-out infinite; }
+.status-dot.cascade { background:var(--eagle);  animation:pulse  .6s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:4px; }
+::-webkit-scrollbar-thumb:hover { background:var(--muted); }
+
+.level-info-box { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:8px 10px; font-size:11px; line-height:1.6; color:var(--text-dim); }
+.level-info-box .level-title { font-size:12px; font-weight:700; color:var(--text); margin-bottom:4px; }
+.level-info-box .level-rank  { color:var(--sphinx); font-family:var(--font-mono); }
+
+/* ── Home button — SVG icon, visited-proof ── */
+#btn-home,
+#btn-home:link,
+#btn-home:visited,
+#btn-home:hover,
+#btn-home:active {
+  display: inline-flex;
+  align-items: center;
+  background: none !important;
+  border: none !important;
+  cursor: pointer;
+  padding: 4px 6px;
+  margin-right: 4px;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+  text-decoration: none !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  color: inherit !important;
+}
+#btn-home:hover { opacity: 1 !important; }
+#btn-home path, #btn-home:visited path { fill: #ffffff !important; }
+  
+/* TSCG logo — clickable link + tooltip */
+.tscg-logo-link, .titlebar-logo-link {
+  text-decoration: none; color: inherit; position: relative; cursor: pointer;
+  background: none; border: none; padding: 0;
+}
+
+</style>
+  <link rel="icon" href="data:,">
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <header id="header">
+    <button id="btn-home" onclick="window.location.href='https://echopraxium.github.io/tscg/'"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></button>
+    <button class="tscg-logo-link" onclick="window.open('https://github.com/Echopraxium/tscg','_blank')"><span class="tscg-logo">TSCG</span></button>
+    <span class="sep">&middot;</span>
+    <span class="poclet-name">Exposure Triangle &mdash; ExposureBalance Poclet</span>
+    <div class="meta-chips">
+      <span class="chip domain">Photography / Optics</span>
+      <span class="chip type">m3:Poclet</span>
+      <span class="chip version">v1.1.0</span>
+    </div>
+  </header>
+
+  <!-- CANVAS -->
+  <div id="canvas-area"></div>
+
+  <!-- SPLITTER -->
+  <div id="splitter"></div>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="description">Description</button>
+      <button class="tab-btn" data-tab="concepts">Concepts</button>
+      <button class="tab-btn" data-tab="synergy">Synergy</button>
+      <button class="tab-btn" data-tab="scores">Scores</button>
+    </nav>
+
+    <!-- Description -->
+    <div id="panel-description" class="tab-panel active">
+      <div class="readme-content">
+<h2>System</h2>
+The <strong>Exposure Triangle</strong> is the canonical photographic model:
+three parameters (<em>ISO, Aperture, Shutter Speed</em>) must balance to achieve
+correct exposure. Unlike the Fire Triangle (synergistic), this is
+<strong>compensatory</strong> &mdash; adjusting one requires compensating another.
+
+<h2>Reciprocity Law</h2>
+<code>EV = log&#x2082;(ISO) + log&#x2082;(1/f&#xB2;) + log&#x2082;(t) = const</code>
+Infinite combinations yield the same EV but different image qualities.
+
+<h2>Three Parameters</h2>
+<code>ISO</code> Sensor gain &mdash; sensitivity vs noise/grain
+<code>Aperture</code> f-number &mdash; light flux vs depth of field
+<code>Shutter</code> Exposure time &mdash; light vs motion blur
+
+<h2>Trade-offs (m2:Trade-off)</h2>
+Cannot simultaneously maximize:
+&bull; <strong>DoF</strong> (deep focus) &rarr; narrow aperture (f/11+)
+&bull; <strong>Freeze motion</strong> &rarr; fast shutter (1/1000s+)
+&bull; <strong>Low noise</strong> &rarr; low ISO (100&ndash;400)
+
+<h2>EV Gauge (left)</h2>
+Shows signed offset from daylight baseline (ISO&nbsp;400, f/5.6, 1/250s):
+0&nbsp;= correctly exposed &middot; &minus;&nbsp;= under &middot; +&nbsp;= over
+
+<h2>Controls</h2>
+<strong>Drag</strong> any vertex radially &middot; <strong>Sliders</strong> below canvas
+
+<h2>Analogy to Fire Triangle</h2>
+Both use 3-component triangular models &mdash; but Fire Triangle is
+<em>synergistic</em> (all must co-exist), Exposure Triangle is <em>compensatory</em>
+(any one can compensate another). Same geometry, different logic.
+
+<h2>Photo Panel</h2>
+Gradient placeholder (standalone mode) &mdash; shows grain, blur and vignette effects.
+
+<h2>Reference</h2>
+Adams A. (1981) &mdash; <em>The Negative</em>; ISO 12232:2019
+      </div>
+    </div>
+
+    <!-- Concepts -->
+    <div id="panel-concepts" class="tab-panel">
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:4px">Primary &mdash; 3 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item primary"><span class="gc-name">m2:Balance</span><div><div class="gc-formula">A&otimes;S&otimes;F</div><div class="gc-role">Correct exposure: ISO &times; Aperture &times; Time = constant (scene-dependent)</div></div></div>
+        <div class="gc-item primary"><span class="gc-name">m2:Trade-off</span><div><div class="gc-formula">R&otimes;V&otimes;E</div><div class="gc-role">Cannot simultaneously maximize DoF, freeze motion, and minimize noise</div></div></div>
+        <div class="gc-item primary"><span class="gc-name">m2:Invariant</span><div><div class="gc-formula">S&otimes;A</div><div class="gc-role">EV = log&#x2082;(ISO/f&#xB2;/t) constant across equivalent settings</div></div></div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin:8px 0 4px">Secondary &mdash; 8 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item secondary"><span class="gc-name">m2:Amplification</span><div><div class="gc-formula">Ft&otimes;D&otimes;It</div><div class="gc-role">ISO sensor gain: each stop = 2&times; signal amplification</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:FeedbackLoop</span><div><div class="gc-formula">P&otimes;Al&otimes;H</div><div class="gc-role">Camera metering: negative feedback correcting toward target EV</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Threshold</span><div><div class="gc-formula">A&otimes;I</div><div class="gc-role">1/focal_length rule, ISO&ge;1600 (noise), f/16+ (diffraction)</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Regulation</span><div><div class="gc-formula">A&otimes;S&otimes;F</div><div class="gc-role">Auto-exposure modes (Av, Tv, P) maintain target EV</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Polarity</span><div><div class="gc-formula">S&otimes;I&otimes;A</div><div class="gc-role">Stops scale: +EV = over, 0 = correct, &minus;EV = under</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Transformation</span><div><div class="gc-formula">D&otimes;I&otimes;S</div><div class="gc-role">Equivalent settings: ISO400/f4/1/250 &harr; ISO800/f5.6/1/250</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Component</span><div><div class="gc-formula">S&otimes;I</div><div class="gc-role">ISO, Aperture, Shutter as distinct elementary parameters</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Signal</span><div><div class="gc-formula">I&otimes;F</div><div class="gc-role">Photon flux as information carrier (luminance, color, spatial data)</div></div></div>
+      </div>
+    </div>
+
+    <!-- Synergy -->
+    <div id="panel-synergy" class="tab-panel">
+      <div class="synergy-box">
+        <div class="synergy-label">KnowledgeFieldConceptCombo</div>
+        <div class="synergy-formula">ExposureBalance</div>
+        <div class="synergy-formula" style="font-size:10px;color:var(--muted)">
+          = Photography &odot; (Balance &otimes; Trade-off)<br>
+          compiled: A&otimes;S&otimes;F&otimes;I&otimes;D
+        </div>
+        <div class="synergy-emergent"><strong>Emergent property:</strong> Correct exposure &mdash; infinite parameter combinations yield the same EV, each producing different image qualities (DoF, motion, noise).</div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--sphinx)">
+        <div class="synergy-label" style="color:var(--sphinx)">Reciprocity Law</div>
+        <div class="synergy-formula">EV = log&#x2082;(ISO) + log&#x2082;(1/f&#xB2;) + log&#x2082;(t) = const</div>
+        <div class="synergy-emergent">Each stop compensates: +1 stop ISO &rarr; &minus;1 stop Aperture or Shutter. Infinite equivalent settings for the same scene luminance.</div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--warn)">
+        <div class="synergy-label" style="color:var(--warn)">Analogy &mdash; Fire Triangle vs Exposure Triangle</div>
+        <div class="synergy-formula">Synergy vs Compensation</div>
+        <div class="synergy-emergent">Fire Triangle: <em>all three must co-exist</em> (synergistic &rarr; AND logic). Exposure Triangle: <em>any one can compensate another</em> (compensatory &rarr; arithmetic balance). Same ternary geometry, fundamentally different dynamics.</div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--eagle)">
+        <div class="synergy-label" style="color:var(--eagle)">Transdisciplinary reach</div>
+        <div class="synergy-formula">Balance &otimes; Trade-off pattern</div>
+        <div class="synergy-emergent">
+          The same compensatory ternary structure recurs in:<br>
+          &bull; Cognitive load (time &times; difficulty &times; experience)<br>
+          &bull; Pharmacokinetics (dose &times; frequency &times; bioavailability)<br>
+          &bull; Software (speed &times; memory &times; correctness &mdash; pick two)
+        </div>
+      </div>
+    </div>
+
+    <!-- Scores -->
+    <div id="panel-scores" class="tab-panel">
+      <div class="score-group">
+        <div class="score-group-label eagle">Eagle Eye &mdash; ASFID (Territory)</div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-A)">A</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:var(--col-A)"></div></div><div class="score-val">0.80</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-S)">S</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-S)"></div></div><div class="score-val">0.85</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-F)">F</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-F)"></div></div><div class="score-val">0.95</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-I)">I</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:75%;background:var(--col-I)"></div></div><div class="score-val">0.75</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-D)">D</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:var(--col-D)"></div></div><div class="score-val">0.60</div></div>
+        <div class="score-mean-row"><span>ASFID mean</span><span>0.79</span></div>
+      </div>
+      <div class="score-group">
+        <div class="score-group-label sphinx">Sphinx Eye &mdash; REVOI (Map)</div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-R)">R</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-R)"></div></div><div class="score-val">0.90</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-E)">E</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:var(--col-E)"></div></div><div class="score-val">0.70</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-V)">V</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-V)"></div></div><div class="score-val">0.90</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-O)">O</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-O)"></div></div><div class="score-val">0.85</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-Im)">I</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:var(--col-Im)"></div></div><div class="score-val">0.80</div></div>
+        <div class="score-mean-row"><span>REVOI mean</span><span>0.83</span></div>
+      </div>
+      <div class="gap-badge">
+        <div><div class="gap-label">Epistemic Gap &delta;</div><div class="gap-val">0.32</div></div>
+        <div class="gap-desc">Moderate &mdash; triangle omits scene luminance, metering, diffraction, reciprocity failure</div>
+      </div>
+      <div id="pole-info">
+        <div class="level-info-box">
+          <span style="color:var(--muted)">Click a vertex in the canvas to inspect its pole</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- PARAMETERS BAR -->
+  <div id="comp-bar">
+    <div id="comp-inner">
+      <div class="comp-group">
+        <div class="comp-label"><span class="comp-icon">🎮</span> ISO</div>
+        <input type="range" id="sl-iso" class="comp-slider" min="0" max="1" step="0.01" value="0.333">
+        <div class="comp-val" id="sl-iso-val">ISO&nbsp;400</div>
+      </div>
+      <div class="comp-sep"></div>
+      <div class="comp-group">
+        <div class="comp-label"><span class="comp-icon">🔬</span> Aperture</div>
+        <input type="range" id="sl-aperture" class="comp-slider" min="0" max="1" step="0.01" value="0.497">
+        <div class="comp-val" id="sl-aperture-val">f/5.6</div>
+      </div>
+      <div class="comp-sep"></div>
+      <div class="comp-group">
+        <div class="comp-label"><span class="comp-icon">⏱</span> Shutter</div>
+        <input type="range" id="sl-shutter" class="comp-slider" min="0" max="1" step="0.01" value="0.237">
+        <div class="comp-val" id="sl-shutter-val">1/250&Prime;</div>
+      </div>
+      <div class="comp-sep"></div>
+      <div id="ev-display">EV +0.00</div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <footer id="controls">
+    <button class="ctrl-btn active" id="btn-play">&#9646;&#9646; Pause</button>
+    <button class="ctrl-btn" id="btn-reset">&#8634; Reset</button>
+    <div class="ctrl-sep"></div>
+    <span class="ctrl-label">Speed</span>
+    <input type="range" id="speed-slider" min="0.2" max="3.0" step="0.2" value="1.0">
+    <span class="ctrl-label" id="speed-label">&times;1.0</span>
+    <div class="ctrl-sep"></div>
+    <button class="ctrl-btn" id="btn-explorer"
+            style="opacity:0.4;cursor:not-allowed"
+            title="Poclet Explorer — not available in standalone mode">&#10799; Poclet Explorer</button>
+    <div class="status-indicator">
+      <div class="status-dot running" id="status-dot"></div>
+      <span id="status-label">Correct EV</span>
+    </div>
+  </footer>
+
+</div><!-- #app -->
+
+<!-- ── p5.js from CDN ─────────────────────────────────────── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+
+<!-- ── Inline metadata.js ────────────────────────────────── -->
+<script>
+'use strict';
+
+const POCLET_METADATA = {
+  id:        'M0_ExposureTriangle',
+  label:     'Exposure Triangle (Photography)',
+  version:   '1.1.0',
+  domain:    'Photography / Optics / Image Formation',
+  type:      'Poclet',
+  date:      '2026-01-20',
+  author:    'Echopraxium with the collaboration of Claude AI',
+  reference: 'Adams (1981) \u2014 The Negative; Peterson (2016) \u2014 Understanding Exposure',
+
+  synergy: {
+    formula:          'ExposureBalance = Photography \u2299 (Balance \u2297 Trade-off)',
+    compiledTensor:   'A \u2297 S \u2297 F \u2297 I \u2297 D',
+    emergentProperty: 'Correct exposure \u2014 infinite combinations yield the same EV, each with different image qualities',
+    empiricalLaw:     'Reciprocity law: EV = log\u2082(ISO/f\u00b2/t) = constant for a given scene'
+  },
+
+  asfid: { A: 0.80, S: 0.85, F: 0.95, I: 0.75, D: 0.60, mean: 0.79 },
+  revoi: { R: 0.90, E: 0.70, V: 0.90, O: 0.85, I: 0.80, mean: 0.83 },
+  epistemicGap:     0.32,
+  epistemicGapDesc: 'Moderate gap \u2014 triangle omits scene luminance, metering, diffraction, reciprocity failure',
+
+  primaryGenericConcepts: [
+    { name: 'm2:Balance',   formula: 'A\u2297S\u2297F', role: 'Correct exposure: ISO \u00d7 Aperture_Area \u00d7 Time = constant (scene-dependent)' },
+    { name: 'm2:Trade-off', formula: 'R\u2297V\u2297E', role: 'Cannot simultaneously maximize DoF, freeze motion and minimize noise' },
+    { name: 'm2:Invariant', formula: 'S\u2297A',        role: 'EV = log\u2082(ISO/f\u00b2/t) stays constant across equivalent settings' }
+  ],
+
+  secondaryGenericConcepts: [
+    { name: 'm2:Amplification', formula: 'Ft\u2297D\u2297It', role: 'ISO sensor gain: each stop = 2\u00d7 signal amplification' },
+    { name: 'm2:FeedbackLoop',  formula: 'P\u2297Al\u2297H',  role: 'Camera metering: negative feedback loop correcting toward target EV' },
+    { name: 'm2:Threshold',     formula: 'A\u2297I',          role: '1/focal_length rule (shake), ISO\u22651600 (noise), f/16+ (diffraction)' },
+    { name: 'm2:Regulation',    formula: 'A\u2297S\u2297F',   role: 'Auto-exposure modes (Av, Tv, P) maintain target EV' },
+    { name: 'm2:Polarity',      formula: 'S\u2297I\u2297A',   role: 'Stops scale: +EV=over, 0=correct, -EV=under' },
+    { name: 'm2:Transformation',formula: 'D\u2297I\u2297S',   role: 'Equivalent settings: ISO400/f4/1/250 \u2194 ISO800/f5.6/1/250' },
+    { name: 'm2:Component',     formula: 'S\u2297I',          role: 'ISO, Aperture, Shutter as distinct elementary parameters' },
+    { name: 'm2:Signal',        formula: 'I\u2297F',          role: 'Photon flux as information carrier (scene luminance, color, spatial data)' }
+  ],
+
+  poles: [
+    {
+      id:           'iso',
+      label:        'ISO',
+      sublabel:     'Sensor Gain / Sensitivity',
+      emoji:        '\uD83C\uDF9E',
+      color:        '#50d2d2',
+      description:  'Amplifies the electrical signal from photons. Higher ISO = brighter image in low light, but more grain/noise. Each stop = 2\u00d7 gain. Digital cameras adjust per frame; film is fixed per roll.',
+      tradeoff:     'Sensitivity \u2194 Image Quality (grain/noise)',
+      examples:     'ISO 100: bright sunlight (clean) \u00b7 ISO 400: overcast \u00b7 ISO 1600: indoor \u00b7 ISO 6400: concert/astro',
+      compMin:      100,
+      compMax:      6400,
+      baselineComp: 0.333,
+      asfid: { A: 0.75, S: 0.80, F: 0.85, I: 0.90, D: 0.60 }
+    },
+    {
+      id:           'aperture',
+      label:        'Aperture',
+      sublabel:     'f-number / Lens Opening',
+      emoji:        '\uD83D\uDD2C',
+      color:        '#ffaf2d',
+      description:  'Controls light flux entering the lens (Area \u221d 1/f\u00b2). Wider aperture (lower f-number) = more light + shallow depth of field. Narrow = less light + deep focus. Full stops: f/1.4, f/2, f/2.8, f/4, f/5.6, f/8, f/11, f/16, f/22.',
+      tradeoff:     'Light gathering (wide) \u2194 Depth of Field (narrow)',
+      examples:     'f/1.4: portrait bokeh \u00b7 f/5.6: street \u00b7 f/11: landscape \u00b7 f/22: macro (max DoF)',
+      compMin:      22,
+      compMax:      1.4,
+      baselineComp: 0.497,
+      asfid: { A: 0.80, S: 0.90, F: 0.95, I: 0.75, D: 0.55 }
+    },
+    {
+      id:           'shutter',
+      label:        'Shutter',
+      sublabel:     'Exposure Time / Duration',
+      emoji:        '\u23F1',
+      color:        '#c86eff',
+      description:  'Duration the sensor is exposed to light (temporal integration). Fast shutter freezes motion. Slow shutter accumulates light but introduces motion blur and camera shake. Rule: min speed = 1/focal_length.',
+      tradeoff:     'Motion freeze (fast) \u2194 Light gathering (slow)',
+      examples:     '1/8000s: hummingbird \u00b7 1/250s: general \u00b7 1/30s: handheld limit \u00b7 20s: Milky Way',
+      compMin:      1/4000,
+      compMax:      30,
+      baselineComp: 0.237,
+      asfid: { A: 0.80, S: 0.75, F: 0.95, I: 0.70, D: 0.85 }
+    }
+  ],
+
+  presets: [
+    { id:'portrait',  label:'\uD83D\uDC64 Portrait',  iso:400,  f:2.8, t:1/1000, note:'Wide aperture \u2192 shallow DoF. Fast shutter freezes subtle motion.' },
+    { id:'landscape', label:'\uD83C\uDFD4 Landscape', iso:100,  f:11,  t:1/16,   note:'Narrow aperture \u2192 deep DoF. Low ISO for cleanest image. Tripod required.' },
+    { id:'sport',     label:'\uD83C\uDFC3 Sport',     iso:1600, f:4,   t:1/2000, note:'Fast shutter freezes action. Accept higher ISO noise.' },
+    { id:'astro',     label:'\uD83C\uDF0C Astro',     iso:3200, f:2.8, t:20,     note:'Wide + high ISO + very long shutter for dark sky. High EV offset vs daylight.' }
+  ]
+};
+</script>
+
+<!-- ── Inline renderer.js ─────────────────────────────────── -->
+<script>
+'use strict';
+
+// ── Physical constants ──────────────────────────────────────
+const BASELINE = { iso: 400, f: 5.6, t: 1 / 250 };
+const ISO_MIN  = 100,    ISO_MAX = 6400;
+const F_MIN    = 1.4,    F_MAX   = 22;
+const T_MIN    = 1/4000, T_MAX   = 30;
+
+function isoVal(v)  { return ISO_MIN * Math.pow(ISO_MAX / ISO_MIN, v); }
+function isoComp(x) { return Math.log(x / ISO_MIN) / Math.log(ISO_MAX / ISO_MIN); }
+function fnumVal(v) { return F_MAX * Math.pow(F_MIN / F_MAX, v); }
+function fComp(f)   { return Math.log(F_MAX / f) / Math.log(F_MAX / F_MIN); }
+function tVal(v)    { return T_MIN * Math.pow(T_MAX / T_MIN, v); }
+function tComp(t)   { return Math.log(t / T_MIN) / Math.log(T_MAX / T_MIN); }
+
+function evOffset() {
+  const iso = isoVal(COMP.iso);
+  const f   = fnumVal(COMP.aperture);
+  const t   = tVal(COMP.shutter);
+  return (Math.log2(iso / BASELINE.iso)
+        + 2 * Math.log2(BASELINE.f / f)
+        + Math.log2(t / BASELINE.t));
+}
+
+function fmtISO(v)     { return 'ISO\u00a0' + Math.round(isoVal(v)); }
+function fmtFNum(v)    { return 'f/' + fnumVal(v).toFixed(1); }
+function fmtShutter(v) {
+  const t = tVal(v);
+  if (t >= 1) return t.toFixed(1) + '\u2033';
+  return '1/' + Math.round(1 / t) + '\u2033';
+}
+
+function evColor(ev) {
+  const t = Math.max(0, Math.min(1, (ev + 3) / 6));
+  if (t < 0.5) {
+    const f = t / 0.5;
+    return [Math.round(25 + f * 230), Math.round(30 + f * 145), Math.round(110 - f * 90)];
+  }
+  const f = (t - 0.5) / 0.5;
+  return [255, Math.round(175 + f * 80), Math.round(20 + f * 235)];
+}
+
+const SIM = { running: true, speed: 1.0, time: 0, selectedPole: null };
+
+const COMP  = { iso: isoComp(BASELINE.iso), aperture: fComp(BASELINE.f), shutter: tComp(BASELINE.t) };
+const SAVED = { iso: COMP.iso, aperture: COMP.aperture, shutter: COMP.shutter };
+
+let particles  = [];
+let p5Instance = null;
+const MAX_PARTS = 180;
+
+class Particle {
+  constructor(x, y, vx, vy, col, maxLife, size) {
+    this.x = x; this.y = y; this.vx = vx; this.vy = vy;
+    this.col = col; this.life = maxLife; this.maxLife = maxLife; this.size = size || 4;
+  }
+  update(dt) { this.x += this.vx * dt; this.y += this.vy * dt; this.life -= dt; }
+  draw(p) {
+    const a = Math.max(0, this.life / this.maxLife);
+    const [r, g, b] = hexRgb(this.col);
+    p.noStroke(); p.fill(r, g, b, a * 170);
+    p.ellipse(this.x, this.y, this.size * (0.4 + 0.6 * a));
+  }
+  isDead() { return this.life <= 0; }
+}
+
+function hexRgb(hex) {
+  return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
+}
+
+function updateStatusIndicator() {
+  const dot   = document.getElementById('status-dot');
+  const label = document.getElementById('status-label');
+  if (!dot || !label) return;
+  const ev = evOffset();
+  if (!SIM.running) { dot.className='status-dot'; label.textContent='Paused'; return; }
+  if (Math.abs(ev) < 0.5) {
+    dot.className = 'status-dot running'; label.textContent = 'Correct EV';
+  } else {
+    dot.className = 'status-dot cascade';
+    label.textContent = ev > 0 ? `Over +${ev.toFixed(1)} EV` : `Under ${ev.toFixed(1)} EV`;
+  }
+}
+
+function updatePoleInfoPanel(poleId) {
+  const box = document.getElementById('pole-info');
+  if (!box) return;
+  if (!poleId) {
+    box.innerHTML = '<div class="level-info-box"><span style="color:var(--muted)">Click a vertex to inspect its pole</span></div>';
+    return;
+  }
+  const pole = POCLET_METADATA.poles.find(p => p.id === poleId);
+  if (!pole) return;
+  const val = COMP[poleId];
+  let dispVal = '';
+  if (poleId === 'iso')      dispVal = fmtISO(val);
+  if (poleId === 'aperture') dispVal = fmtFNum(val);
+  if (poleId === 'shutter')  dispVal = fmtShutter(val);
+  box.innerHTML = `
+    <div class="level-info-box">
+      <div class="level-title">${pole.emoji} ${pole.label}
+        <span class="level-rank">[${pole.sublabel}]</span>
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px">${pole.description}</div>
+      <div style="font-size:10.5px;color:var(--warn);margin-bottom:3px">
+        \u2696\ufe0f Trade-off: ${pole.tradeoff}
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:4px">${pole.examples}</div>
+      <div style="font-size:10px;color:var(--muted)">
+        ASFID: A=${pole.asfid.A} S=${pole.asfid.S} F=${pole.asfid.F} I=${pole.asfid.I} D=${pole.asfid.D}
+      </div>
+      <div style="font-size:11px;color:var(--sphinx);margin-top:4px;font-weight:600">Current: ${dispVal} (${(val*100).toFixed(0)}%)</div>
+    </div>`;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  const btn = document.querySelector('[data-tab="scores"]');
+  if (btn) { btn.classList.add('active'); document.getElementById('panel-scores').classList.add('active'); }
+}
+
+function wireControls() {
+  const btnPlay     = document.getElementById('btn-play');
+  const btnReset    = document.getElementById('btn-reset');
+  const speedSlider = document.getElementById('speed-slider');
+
+  btnPlay.addEventListener('click', () => {
+    SIM.running = !SIM.running;
+    btnPlay.textContent = SIM.running ? '\u23f8 Pause' : '\u25b6 Play';
+    btnPlay.classList.toggle('active', SIM.running);
+    if (p5Instance) { SIM.running ? p5Instance.loop() : p5Instance.noLoop(); }
+    updateStatusIndicator();
+  });
+
+  btnReset.addEventListener('click', () => {
+    Object.assign(COMP, { iso: isoComp(BASELINE.iso), aperture: fComp(BASELINE.f), shutter: tComp(BASELINE.t) });
+    Object.assign(SAVED, COMP);
+    SIM.time = 0; SIM.selectedPole = null; particles = [];
+    syncCompSliders();
+    SIM.running = true; btnPlay.textContent = '\u23f8 Pause'; btnPlay.classList.add('active');
+    if (p5Instance) p5Instance.loop();
+    updatePoleInfoPanel(null); updateStatusIndicator();
+  });
+
+  speedSlider.addEventListener('input', () => {
+    SIM.speed = parseFloat(speedSlider.value);
+    document.getElementById('speed-label').textContent = '\u00d7' + SIM.speed.toFixed(1);
+  });
+}
+
+function initCompSliders() {
+  [['sl-iso','iso',fmtISO], ['sl-aperture','aperture',fmtFNum], ['sl-shutter','shutter',fmtShutter]].forEach(([id, key, fmt]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', () => {
+      COMP[key] = parseFloat(el.value);
+      const lbl = document.getElementById(id + '-val');
+      if (lbl) lbl.textContent = fmt(COMP[key]);
+      updateEVLabel();
+    });
+  });
+  syncCompSliders();
+}
+
+function syncCompSliders() {
+  [['sl-iso','iso',fmtISO], ['sl-aperture','aperture',fmtFNum], ['sl-shutter','shutter',fmtShutter]].forEach(([id, key, fmt]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = COMP[key];
+    const lbl = document.getElementById(id + '-val');
+    if (lbl) lbl.textContent = fmt(COMP[key]);
+  });
+  updateEVLabel();
+}
+
+function updateEVLabel() {
+  const ev = evOffset();
+  const el = document.getElementById('ev-display');
+  if (!el) return;
+  const col = Math.abs(ev) < 0.5 ? 'var(--accent)' : ev > 0 ? 'var(--eagle)' : 'var(--sphinx)';
+  el.textContent = `EV ${ev >= 0 ? '+' : ''}${ev.toFixed(2)}`;
+  el.style.color = col;
+}
+
+function initP5() {
+  const container = document.getElementById('canvas-area');
+
+  const sketch = function(p) {
+    let W, H, cx, cy, R;
+    let verts = [];
+    const POLE_ANGLES = [-Math.PI / 2, Math.PI / 2 + Math.PI / 3, Math.PI / 2 - Math.PI / 3];
+
+    let photoX, photoY, photoW, photoH;
+    const PHOTO_RATIO = 658 / 438;
+
+    function computeGeometry() {
+      W  = container.clientWidth  || 640;
+      H  = container.clientHeight || 560;
+      R  = Math.min(W, H) * 0.38;
+      cx = W * 0.34;
+      cy = H / 2 + R * 0.55;
+      const pad = 16;
+      photoW = Math.round(W * 0.44);
+      photoH = Math.round(photoW / PHOTO_RATIO);
+      photoX = W - pad - photoW;
+      photoY = pad;
+      verts = POCLET_METADATA.poles.map((pole, i) => ({
+        ...pole,
+        angle: POLE_ANGLES[i],
+        rx: cx + R * Math.cos(POLE_ANGLES[i]),
+        ry: cy + R * Math.sin(POLE_ANGLES[i]),
+        x:  cx + COMP[pole.id] * R * Math.cos(POLE_ANGLES[i]),
+        y:  cy + COMP[pole.id] * R * Math.sin(POLE_ANGLES[i])
+      }));
+    }
+
+    function updateVertPositions() {
+      verts.forEach(v => {
+        v.x = cx + COMP[v.id] * R * Math.cos(v.angle);
+        v.y = cy + COMP[v.id] * R * Math.sin(v.angle);
+      });
+    }
+
+    // No offscreen buffer — drawn directly on main canvas to avoid
+    // p.createGraphics() iframe issue in file:// context.
+    let baseImg = null;   // set in setup via native HTMLImageElement
+
+    let dragPole = null, didDrag = false;
+
+    function radialValue(v) {
+      const dx = p.mouseX - cx, dy = p.mouseY - cy;
+      return Math.max(0, Math.min(1, (dx * Math.cos(v.angle) + dy * Math.sin(v.angle)) / R));
+    }
+
+    p.setup = function() {
+      const cnv = p.createCanvas(container.clientWidth || 640, container.clientHeight || 560);
+      container.appendChild(cnv.elt);   // attach canvas — avoids p5 iframe in file://
+      cnv.canvas.style.position = 'absolute';
+      cnv.canvas.style.top      = '0';
+      cnv.canvas.style.left     = '0';
+      computeGeometry();
+      p.textFont('Segoe UI, system-ui, sans-serif');
+      new ResizeObserver(() => {
+        p.resizeCanvas(container.clientWidth, container.clientHeight);
+        computeGeometry();
+      }).observe(container);
+
+      // ── Load photo_sample.jpg via native HTMLImageElement ──────────
+      // new Image() + relative src works in file:// (no XHR/fetch needed).
+      // ctx.drawImage() works without pixel read → canvas stays untainted.
+      baseImg = null;
+      const htmlImg = new Image();
+      htmlImg.onload = () => { baseImg = htmlImg; };
+      htmlImg.onerror = () => {
+        console.warn('[TSCG] photo_sample.jpg not found — gradient placeholder used.');
+        baseImg = null;
+      };
+      htmlImg.src = 'photo_sample.jpg';   // relative to this HTML file
+    };
+
+    p.draw = function() {
+      if (!SIM.running) return;
+      SIM.time += SIM.speed * 0.016;
+      updateVertPositions();
+
+      const ev = evOffset();
+
+      p.background(13, 17, 23);
+      drawBackground(p, ev);
+      drawPhoto(p, ev);
+      if (particles.length < MAX_PARTS) spawnParticles(p);
+      particles = particles.filter(pt => !pt.isDead());
+      particles.forEach(pt => { pt.update(SIM.speed); pt.draw(p); });
+
+      drawTriangle(p, ev);
+      verts.forEach(v => drawVertex(p, v));
+      drawLabels(p, ev);
+      drawEVGauge(p, ev);
+
+      if (!dragPole) {
+        const near = verts.some(v => p.dist(p.mouseX, p.mouseY, v.x, v.y) < 44);
+        container.style.cursor = near ? 'grab' : 'default';
+      }
+      updateStatusIndicator();
+      syncCompSliders();
+    };
+
+    p.mousePressed = function() {
+      if (p.mouseX < 0 || p.mouseX > p.width || p.mouseY < 0 || p.mouseY > p.height) return;
+      verts.forEach(v => {
+        if (p.dist(p.mouseX, p.mouseY, v.x, v.y) < 44) {
+          dragPole = v.id; didDrag = false; container.style.cursor = 'grabbing';
+        }
+      });
+    };
+
+    p.mouseDragged = function() {
+      if (!dragPole) return;
+      didDrag = true;
+      const v = verts.find(vt => vt.id === dragPole);
+      COMP[dragPole] = radialValue(v);
+    };
+
+    p.mouseReleased = function() {
+      if (dragPole) container.style.cursor = 'default';
+      dragPole = null;
+    };
+
+    p.mouseClicked = function() {
+      if (didDrag) { didDrag = false; return; }
+      if (p.mouseX < 0 || p.mouseX > p.width || p.mouseY < 0 || p.mouseY > p.height) return;
+      let found = null;
+      verts.forEach(v => { if (p.dist(p.mouseX, p.mouseY, v.x, v.y) < 40) found = v.id; });
+      SIM.selectedPole = found;
+      updatePoleInfoPanel(found);
+    };
+
+    function drawBackground(p, ev) {
+      p.noStroke();
+      p.fill(13, 17, 23); p.rect(0, 0, W, H);
+      for (let y = 0; y < H; y += 2) {
+        const t = y / H;
+        p.stroke(15 + t * 18, 20 + t * 14, 40 + t * 8, 60);
+        p.line(0, y, W, y);
+      }
+      p.drawingContext.setLineDash([]);
+    }
+
+    function drawPhoto(p, ev) {
+      // ── Panel backdrop ─────────────────────────────────────
+      p.noStroke();
+      p.fill(8, 10, 16, 210);
+      p.rect(photoX - 6, photoY - 6, photoW + 12, photoH + 28, 8);
+
+      // ── Draw directly on main canvas via drawingContext clip ──
+      // Avoids p.createGraphics() (spawns iframe → blocked in file://)
+      // and loadPixels/getImageData (cross-origin blocked in file://).
+      const ctx = p.drawingContext;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(photoX, photoY, photoW, photoH);
+      ctx.clip();
+
+      // Base layer: photo if loaded, gradient fallback otherwise
+      if (baseImg && baseImg.complete && baseImg.naturalWidth > 0) {
+        ctx.drawImage(baseImg, photoX, photoY, photoW, photoH);
+      } else {
+        const grad = ctx.createLinearGradient(photoX, photoY, photoX, photoY + photoH);
+        grad.addColorStop(0,   'rgb(80,40,10)');
+        grad.addColorStop(0.5, 'rgb(115,58,18)');
+        grad.addColorStop(1,   'rgb(140,70,25)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(photoX, photoY, photoW, photoH);
+      }
+
+      // Brightness overlay (EV offset)
+      const brightness = Math.pow(2, ev * 0.80);
+      if (brightness > 1.05) {
+        ctx.fillStyle = 'rgba(255,255,255,' + Math.min(0.88, (brightness - 1) * 0.5).toFixed(3) + ')';
+        ctx.fillRect(photoX, photoY, photoW, photoH);
+      } else if (brightness < 0.95) {
+        ctx.fillStyle = 'rgba(0,0,0,' + Math.min(0.88, (1 - brightness) * 0.78).toFixed(3) + ')';
+        ctx.fillRect(photoX, photoY, photoW, photoH);
+      }
+
+      // Grain (ISO noise) — micro-dots, no pixel API needed
+      const isoStops   = Math.log2(Math.max(1, isoVal(COMP.iso) / 100));
+      const grainLevel = isoStops / Math.log2(64);
+      if (grainLevel > 0.05) {
+        const numDots = Math.round(grainLevel * 2400);
+        for (let i = 0; i < numDots; i++) {
+          const gx    = photoX + Math.random() * photoW;
+          const gy    = photoY + Math.random() * photoH;
+          const light = Math.random() > 0.5;
+          const alpha = (grainLevel * 0.22 * Math.random()).toFixed(3);
+          ctx.fillStyle = light ? ('rgba(255,255,245,' + alpha + ')') : ('rgba(0,0,0,' + alpha + ')');
+          ctx.fillRect(gx, gy, 1.5, 1.5);
+        }
+      }
+
+      // Vignette (wide aperture → shallow DoF) — radial gradient
+      const fnum = fnumVal(COMP.aperture);
+      if (fnum < 5.6) {
+        const vigStr = (5.6 - fnum) / (5.6 - F_MIN) * 0.72;
+        const vcx = photoX + photoW / 2;
+        const vcy = photoY + photoH / 2;
+        const rMax = Math.max(photoW, photoH) * 0.80;
+        const vgrd = ctx.createRadialGradient(vcx, vcy, rMax * 0.35, vcx, vcy, rMax);
+        vgrd.addColorStop(0, 'rgba(5,8,13,0)');
+        vgrd.addColorStop(1, 'rgba(5,8,13,' + (vigStr * 0.82).toFixed(2) + ')');
+        ctx.fillStyle = vgrd;
+        ctx.fillRect(photoX, photoY, photoW, photoH);
+      }
+
+      // Motion blur (slow shutter → horizontal streaks)
+      const tSec      = tVal(COMP.shutter);
+      const blurStops = Math.max(0, Math.log2(tSec / 0.02));
+      const blurAmt   = Math.min(1, blurStops / 4.5);
+      if (blurAmt > 0.05) {
+        const numS = Math.round(blurAmt * 50);
+        for (let i = 0; i < numS; i++) {
+          const sy = photoY + Math.random() * photoH;
+          const sw = photoW * blurAmt * (0.2 + Math.random() * 0.8);
+          const sx = photoX + Math.random() * (photoW - sw);
+          const g  = Math.round(150 + Math.random() * 80);
+          const sa = (blurAmt * 0.09 * Math.random()).toFixed(3);
+          ctx.fillStyle = 'rgba(' + g + ',' + g + ',' + Math.round(g*0.9) + ',' + sa + ')';
+          ctx.fillRect(sx, sy, sw, 3);
+        }
+      }
+
+      ctx.restore();
+
+      // Panel border
+      p.noFill();
+      p.stroke(60, 70, 90, 180); p.strokeWeight(1);
+      p.rect(photoX - 1, photoY - 1, photoW + 2, photoH + 2, 4);
+
+      // Effects legend
+      const legY      = photoY + photoH + 8;
+      const isoStops2 = Math.log2(Math.max(1, isoVal(COMP.iso) / 100));
+      const grainPct  = Math.round(isoStops2 / Math.log2(64) * 100);
+      const tSec2     = tVal(COMP.shutter);
+      const blurPct   = Math.round(Math.min(100, Math.max(0, Math.log2(tSec2 / 0.02)) / 4.5 * 100));
+      const fnum2     = fnumVal(COMP.aperture);
+      const vigPct    = fnum2 < 5.6 ? Math.round((5.6 - fnum2) / (5.6 - F_MIN) * 100) : 0;
+
+      p.textSize(10); p.textStyle(p.NORMAL); p.noStroke();
+      const legends = [
+        ['Grain ' + grainPct + '%', '#50d2d2'],
+        ['Blur '  + blurPct  + '%', '#c86eff'],
+        ['Vignette ' + vigPct + '%','#ffaf2d']
+      ];
+      let lx = photoX;
+      legends.forEach(([txt, col]) => {
+        const [r, g, b] = hexRgb(col);
+        p.fill(r, g, b, 200);
+        p.textAlign(p.LEFT, p.TOP);
+        p.text(txt, lx, legY);
+        lx += p.textWidth(txt) + 22;
+      });
+
+      p.fill(70, 80, 95, 180);
+      p.textAlign(p.RIGHT, p.TOP);
+      p.textSize(9);
+      const photoLabel = (baseImg && baseImg.complete && baseImg.naturalWidth > 0)
+        ? 'photo_sample.jpg · Territory view'
+        : 'gradient placeholder · Territory view';
+      p.text(photoLabel, photoX + photoW, legY);
+    }
+
+        function drawTriangle(p, ev) {
+      p.drawingContext.setLineDash([6, 5]);
+      p.stroke(121, 192, 255, 55); p.strokeWeight(1.2); p.noFill();
+      p.beginShape(); verts.forEach(v => p.vertex(v.rx, v.ry)); p.endShape(p.CLOSE);
+      p.drawingContext.setLineDash([]);
+
+      const [er, eg, eb] = evColor(ev);
+      p.noStroke();
+      p.fill(er, eg, eb, 28 + Math.abs(Math.sin(SIM.time * 1.2)) * 8);
+      p.beginShape(); verts.forEach(v => p.vertex(v.x, v.y)); p.endShape(p.CLOSE);
+
+      const vcols   = verts.map(v => hexRgb(v.color));
+      const burning = Math.abs(ev) < 0.5;
+
+      for (let i = 0; i < 3; i++) {
+        const j   = (i + 1) % 3;
+        const v1  = verts[i], v2 = verts[j];
+        const c1  = vcols[i], c2 = vcols[j];
+        const mix = c1.map((c, k) => Math.round((c + c2[k]) / 2));
+
+        if (burning) {
+          const pulse = 0.5 + 0.5 * Math.sin(SIM.time * 2.2 + i);
+          p.stroke(mix[0], mix[1], mix[2], (18 + 14 * pulse) | 0);
+          p.strokeWeight(10); p.noFill();
+          p.line(v1.x, v1.y, v2.x, v2.y);
+        }
+        p.stroke(mix[0], mix[1], mix[2], burning ? 210 : 160);
+        p.strokeWeight(burning ? 2.5 : 1.8); p.noFill();
+        p.line(v1.x, v1.y, v2.x, v2.y);
+      }
+      p.drawingContext.setLineDash([]);
+    }
+
+    function drawVertex(p, v) {
+      const val        = COMP[v.id];
+      const [r, g, b]  = hexRgb(v.color);
+      const isDragging = dragPole === v.id;
+      const selected   = SIM.selectedPole === v.id;
+      const pulse      = 0.5 + 0.5 * Math.sin(SIM.time * 2.6 + (v.id === 'iso' ? 0 : v.id === 'aperture' ? 2 : 4));
+      const cr         = (selected || isDragging) ? 22 : 18;
+
+      p.drawingContext.setLineDash([6, 4]);
+      p.stroke(r, g, b, isDragging ? 200 : 90);
+      p.strokeWeight(isDragging ? 1.8 : 1.3);
+      p.line(cx, cy, v.rx, v.ry);
+      p.drawingContext.setLineDash([]);
+
+      p.noStroke();
+      p.fill(r, g, b, (18 + 14 * pulse) | 0);
+      p.ellipse(v.x, v.y, (cr + 22) * 2, (cr + 22) * 2);
+
+      p.fill(r, g, b, 170);
+      if (selected || isDragging) { p.stroke(255, 255, 255, 180); p.strokeWeight(2); }
+      else                        { p.stroke(r, g, b, 220); p.strokeWeight(1.5); }
+      p.ellipse(v.x, v.y, cr * 2, cr * 2);
+
+      const arcAngle = val * p.TWO_PI;
+      p.noFill(); p.stroke(r, g, b, 220); p.strokeWeight(2.5);
+      p.arc(v.x, v.y, (cr + 8) * 2, (cr + 8) * 2, -p.HALF_PI, -p.HALF_PI + arcAngle);
+
+      const tickA = v.baselineComp * p.TWO_PI - p.HALF_PI;
+      const tr    = cr + 10;
+      p.stroke(227, 179, 65, 200); p.strokeWeight(2);
+      p.line(v.x + (tr - 5) * Math.cos(tickA), v.y + (tr - 5) * Math.sin(tickA),
+             v.x + (tr + 5) * Math.cos(tickA), v.y + (tr + 5) * Math.sin(tickA));
+    }
+
+    function drawLabels(p, ev) {
+      p.textAlign(p.CENTER, p.CENTER); p.noStroke();
+
+      verts.forEach(v => {
+        const [r, g, b] = hexRgb(v.color);
+        const dx = v.x - cx, dy = v.y - cy;
+        const len = Math.sqrt(dx * dx + dy * dy) || 1;
+        const lx  = v.x + (dx / len) * 54;
+        const ly  = v.y + (dy / len) * 54;
+
+        p.fill(r, g, b, 240); p.textSize(13); p.textStyle(p.BOLD);
+        p.text(v.emoji + '\u00a0' + v.label, lx, ly);
+
+        let dispVal = '';
+        if (v.id === 'iso')      dispVal = fmtISO(COMP[v.id]);
+        if (v.id === 'aperture') dispVal = fmtFNum(COMP[v.id]);
+        if (v.id === 'shutter')  dispVal = fmtShutter(COMP[v.id]);
+        p.fill(220, 230, 235, 210); p.textSize(11); p.textStyle(p.NORMAL);
+        p.text(dispVal, lx, ly + 17);
+      });
+
+      p.textAlign(p.CENTER, p.CENTER);
+      const [er, eg, eb] = evColor(ev);
+      const evText = Math.abs(ev) < 0.5
+        ? 'BALANCED'
+        : ev > 0 ? `+${ev.toFixed(1)} EV  OVER` : `${ev.toFixed(1)} EV  UNDER`;
+      const pulse = 0.6 + 0.4 * Math.sin(SIM.time * 3);
+      p.fill(er, eg, eb, (210 * (Math.abs(ev) < 0.5 ? 1 : pulse)) | 0);
+      p.textSize(14); p.textStyle(p.BOLD);
+      p.text(evText, cx, cy + R * 0.38);
+
+      p.fill(100, 110, 120, 90); p.textSize(9); p.textStyle(p.NORMAL);
+      p.text('m2:Balance', cx, cy - R * 0.38);
+    }
+
+    function drawEVGauge(p, ev) {
+      const gx   = 38, gW = 14;
+      const gTop = H * 0.12, gBot = H * 0.82;
+      const gH   = gBot - gTop;
+      const gCy  = gTop + gH / 2;
+      const EV_MAX = 4;
+
+      p.noStroke(); p.fill(28, 33, 45, 200);
+      p.rect(gx - gW / 2 - 2, gTop - 4, gW + 4, gH + 8, 5);
+
+      const fillH = Math.min(gH / 2, (Math.abs(ev) / EV_MAX) * gH / 2);
+      if (ev > 0.1) {
+        const steps = Math.max(1, Math.round(fillH));
+        for (let i = 0; i < steps; i++) {
+          const frac = i / Math.max(1, steps - 1);
+          const col  = evColor(frac * EV_MAX);
+          p.fill(col[0], col[1], col[2], 200);
+          p.rect(gx - gW / 2, gCy - i - 1, gW, 2);
+        }
+      } else if (ev < -0.1) {
+        const steps = Math.max(1, Math.round(fillH));
+        for (let i = 0; i < steps; i++) {
+          const frac = i / Math.max(1, steps - 1);
+          const col  = evColor(-frac * EV_MAX);
+          p.fill(col[0], col[1], col[2], 200);
+          p.rect(gx - gW / 2, gCy + i - 1, gW, 2);
+        }
+      } else {
+        const pulse = 0.5 + 0.5 * Math.sin(SIM.time * 3);
+        p.fill(86, 211, 100, (160 + 60 * pulse) | 0);
+        p.rect(gx - gW / 2, gCy - 4, gW, 8, 3);
+      }
+
+      p.noFill(); p.stroke(60, 70, 90, 180); p.strokeWeight(1);
+      p.rect(gx - gW / 2 - 2, gTop - 4, gW + 4, gH + 8, 5);
+
+      [-3,-2,-1,0,1,2,3].forEach(tv => {
+        const ty      = gCy - (tv / EV_MAX) * gH / 2;
+        const reached = (tv > 0 && ev >= tv) || (tv < 0 && ev <= tv) || tv === 0;
+        const isZero  = tv === 0;
+        p.stroke(reached ? 200 : 55, isZero ? 211 : reached ? 200 : 65,
+                 isZero ? 100 : reached ? 200 : 80, reached ? 180 : 80);
+        p.strokeWeight(isZero ? 1.5 : 1);
+        p.line(gx - gW / 2 - 2, ty, gx + gW / 2 + 6, ty);
+        p.noStroke();
+        p.fill(reached ? 180 : 70, reached ? 185 : 80, reached ? 195 : 90, reached ? 200 : 110);
+        p.textAlign(p.LEFT, p.CENTER); p.textSize(9); p.textStyle(p.NORMAL);
+        p.text((tv > 0 ? '+' : '') + tv, gx + gW / 2 + 9, ty);
+      });
+
+      const [er, eg, eb] = evColor(ev);
+      p.noStroke(); p.fill(er, eg, eb, 240);
+      p.textAlign(p.CENTER, p.BOTTOM); p.textSize(11); p.textStyle(p.BOLD);
+      p.text((ev >= 0 ? '+' : '') + ev.toFixed(2) + ' EV', gx, gTop - 10);
+
+      p.fill(120, 130, 145, 180);
+      p.textAlign(p.CENTER, p.BOTTOM); p.textSize(8); p.textStyle(p.NORMAL);
+      p.text('EXPOSURE', gx, gTop - 22);
+
+      const bCol = evColor(ev);
+      p.noStroke(); p.fill(bCol[0], bCol[1], bCol[2], 210);
+      p.ellipse(gx, gBot + 10, 20, 20);
+      p.stroke(60, 70, 90, 150); p.strokeWeight(1); p.noFill();
+      p.ellipse(gx, gBot + 10, 20, 20);
+    }
+
+    function spawnParticles(p) {
+      const dt = SIM.speed;
+      verts.forEach(v => {
+        const val = COMP[v.id];
+        if (val < 0.08) return;
+        const rate = 0.20 * val;
+        if (Math.random() > rate * dt) return;
+        const angle = Math.atan2(cy - v.y, cx - v.x) + (Math.random() - 0.5) * 0.6;
+        const speed = 1.0 + Math.random() * 1.5;
+        particles.push(new Particle(
+          v.x + (Math.random() - 0.5) * 18,
+          v.y + (Math.random() - 0.5) * 18,
+          Math.cos(angle) * speed, Math.sin(angle) * speed,
+          v.color, 30 + Math.random() * 25, 3 + Math.random() * 4
+        ));
+      });
+    }
+
+  }; // end sketch
+
+  p5Instance = new p5(sketch);  // no container arg — avoids iframe in file://
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  wireControls();
+  initCompSliders();
+  initP5();
+});
+</script>
+
+<!-- ── Tab switching + splitter ──────────────────────────── -->
+<script>
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + t).classList.add('active');
+  });
+});
+(function() {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-tab="description"]').classList.add('active');
+  document.getElementById('panel-description').classList.add('active');
+})();
+
+// Home / Explorer — no-op in standalone mode
+document.getElementById('btn-explorer').addEventListener('click', () => {});
+
+// Splitter
+(function() {
+  const splitter = document.getElementById('splitter');
+  const app      = document.getElementById('app');
+  let dragging = false, startX = 0, startW = 0;
+  splitter.addEventListener('mousedown', e => {
+    dragging = true; startX = e.clientX;
+    startW = document.getElementById('sidebar').getBoundingClientRect().width;
+    splitter.classList.add('dragging');
+    document.body.style.cssText = 'cursor:col-resize;user-select:none';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const newW = Math.max(180, Math.min(620, startW + (startX - e.clientX)));
+    app.style.setProperty('--sidebar-w', newW + 'px');
+  });
+  document.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false; splitter.classList.remove('dragging');
+    document.body.style.cssText = '';
+  });
+})();
+</script>
+
+<!-- Home button tooltip -->
+<div id="home-tip" style="
+  position:fixed; z-index:999999;
+  background:#1c2130; color:#e6edf3;
+  border:1px solid #3d444f; border-radius:6px;
+  padding:4px 10px; font-size:11px; font-weight:500;
+  letter-spacing:0.04em; white-space:nowrap;
+  pointer-events:none; opacity:0; transition:opacity 0.18s;
+">Back to Poclet Gallery</div>
+
+<!-- TSCG logo tooltip -->
+<div id="tscg-tip" style="
+  position:fixed; z-index:999999;
+  background:#1c2130; color:#e6edf3;
+  border:1px solid #3d444f; border-radius:6px;
+  padding:4px 10px; font-size:11px; font-weight:500;
+  letter-spacing:0.04em; white-space:nowrap;
+  pointer-events:none; opacity:0; transition:opacity 0.18s;
+  transform:translateX(-50%);
+">TSCG Github repository</div>
+
+<script>
+(function(){
+  const home    = document.getElementById('btn-home');
+  const homeTip = document.getElementById('home-tip');
+  if (home && homeTip) {
+    home.addEventListener('mouseenter', function() {
+      const r = home.getBoundingClientRect();
+      homeTip.style.left = Math.max(8, r.left) + 'px';
+      homeTip.style.top  = (r.bottom + 6) + 'px';
+      homeTip.style.opacity = '1';
+    });
+    home.addEventListener('mouseleave', function() { homeTip.style.opacity = '0'; });
+  }
+  const logo = document.querySelector('.tscg-logo-link');
+  const tip  = document.getElementById('tscg-tip');
+  if (logo && tip) {
+    logo.addEventListener('mouseenter', function() {
+      const r = logo.getBoundingClientRect();
+      tip.style.left = (r.left + r.width / 2) + 'px';
+      tip.style.top  = (r.bottom + 6) + 'px';
+      tip.style.opacity = '1';
+    });
+    logo.addEventListener('mouseleave', function() { tip.style.opacity = '0'; });
+  }
+})();
+</script>
+</body>
+</html>
