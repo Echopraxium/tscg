@@ -1,8 +1,8 @@
 # M1_Domains.jsonld — README
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.2.0
-**Date**: 2026-04-26
+**Version**: 1.3.0
+**Date**: 2026-05-27
 **Layer**: M1 — Domain Registry
 **Status**: Active
 
@@ -323,9 +323,9 @@ Don't include:
 
 | Version | Date | Changes |
 |---|---|---|
+| **1.3.0** | 2026-05-27 | BASE16 NOTATION: 6 extension versions bumped (Chemistry→1.1.1, Economics→1.0.1, Mythology→1.1.1, Optics→1.1.1, Photography→1.1.1, SystemicModeling→1.1.1). S→St indexation in hybrid formulas across corpus. |
 | **1.2.0** | 2026-04-26 | Added Ptoe to Chemistry. Updated Chemistry subdomains. Chemistry instanceCount: 3→4. M1_Chemistry enriched to v1.1.0. |
 | **1.1.0** | 2026-04-19 | Added Blockchain domain (6 subdomains). First instance: M0_NakamotoConsensus. |
-| **1.0.0** | 2026-04-18 | Initial complete registry: 20 primary domains, 26 total instances. Based on exhaustive corpus analysis. |
 
 ---
 

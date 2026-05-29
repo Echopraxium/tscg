@@ -1,87 +1,81 @@
 @echo off
+REM =============================================================
+REM TscgOntologyExplorer — _plugins_setup.bat
+REM Installe ou met a jour les plugins dans le dossier AppData
+REM de TscgOntologyExplorer, et desinstalle les anciens plugins.
+REM
+REM A placer a la racine de : TscgOntologyExplorer\
+REM Usage : double-cliquer ou lancer depuis cmd.exe
+REM
+REM Author: Echopraxium with the collaboration of Claude AI
+REM =============================================================
+
 setlocal
+cd /d "%~dp0"
 
-set PLUGINS_DIR=%LOCALAPPDATA%\TscgOntologyExplorer\plugins
-set BRIDGE_SRC=dev\tscg-python-bridge
+REM ── Chemins ──────────────────────────────────────────────────
+set REPO_PLUGINS=%~dp0plugins
+set APP_PLUGINS=%LOCALAPPDATA%\TscgOntologyExplorer\plugins
 
 echo.
-echo === TscgOntologyExplorer - Dev Plugins Setup ===
-echo Target: %PLUGINS_DIR%
+echo ============================================================
+echo  TscgOntologyExplorer -- Plugins Setup
+echo ============================================================
+echo.
+echo  Source  : %REPO_PLUGINS%
+echo  Cible   : %APP_PLUGINS%
 echo.
 
-if not exist "%PLUGINS_DIR%" (
-    mkdir "%PLUGINS_DIR%"
-    echo [OK] Created plugins directory
+REM ── Creer le dossier cible si necessaire ─────────────────────
+if not exist "%APP_PLUGINS%" (
+    echo Création du dossier plugins AppData...
+    mkdir "%APP_PLUGINS%"
 )
 
-echo [..] Installing tscg-dummy-server...
-xcopy /E /I /Y dev\dummy-plugin-server "%PLUGINS_DIR%\tscg-dummy-server" >nul
-if %errorlevel%==0 (echo [OK] tscg-dummy-server installed) else (echo [ERR] tscg-dummy-server failed)
+REM ── Nettoyer AppData (supprime tous les plugins existants) ───
+echo [1/3] Nettoyage des plugins AppData...
 
-echo [..] Installing tscg-dummy-renderer...
-xcopy /E /I /Y dev\dummy-plugin-renderer "%PLUGINS_DIR%\tscg-dummy-renderer" >nul
-if %errorlevel%==0 (echo [OK] tscg-dummy-renderer installed) else (echo [ERR] tscg-dummy-renderer failed)
-
-echo [..] Installing tscg-python-bridge...
-xcopy /E /I /Y "%BRIDGE_SRC%" "%PLUGINS_DIR%\tscg-python-bridge" >nul
-if %errorlevel%==0 (echo [OK] tscg-python-bridge installed) else (echo [ERR] tscg-python-bridge failed)
-
+for /d %%P in ("%APP_PLUGINS%\*") do (
+    echo   Suppression : %%~nxP
+    rmdir /S /Q "%%P"
+)
+echo   AppData plugins : nettoye
 echo.
-echo [..] Installing Python dependencies...
-pip install -r "%BRIDGE_SRC%\requirements.txt"
-if %errorlevel%==0 (echo [OK] Python dependencies installed) else (echo [ERR] pip install failed)
 
-echo.
-echo [..] Installing pyoxigraph (Phase 2 triple store - required for /corpus/* endpoints)...
-pip show pyoxigraph >nul 2>&1
-if %errorlevel%==0 (
-    echo [OK] pyoxigraph already installed
-) else (
-    pip install pyoxigraph
-    if %errorlevel%==0 (
-        echo [OK] pyoxigraph installed
+REM ── Installer / mettre a jour les plugins ────────────────────
+echo [2/3] Installation des plugins...
+
+for /d %%P in ("%REPO_PLUGINS%\*") do (
+    set PLUGIN_NAME=%%~nxP
+    REM Ignorer les dossiers commencant par "_" (ex: _archives)
+    echo %%~nxP | findstr /B "_" >nul
+    if errorlevel 1 (
+        echo   Installation : %%~nxP
+        if exist "%APP_PLUGINS%\%%~nxP" (
+            rmdir /S /Q "%APP_PLUGINS%\%%~nxP"
+        )
+        xcopy /E /I /Q "%%P" "%APP_PLUGINS%\%%~nxP"
+        echo   OK
     ) else (
-        echo [WARN] pyoxigraph installation failed
-        echo        /corpus/* endpoints will be unavailable but the bridge will still run
-        echo        Retry manually: pip install pyoxigraph
+        echo   Ignore       : %%~nxP
     )
 )
-
-echo.
-echo [..] Installing test dependencies (pytest, httpx)...
-pip install pytest pytest-asyncio httpx --quiet
-if %errorlevel%==0 (echo [OK] Test dependencies installed) else (echo [WARN] Test dependencies failed)
-
-echo.
-echo === Setup complete. Run "npm start" to launch. ===
-echo.
-echo Tip: for persistent triple store across sessions, start the bridge with:
-echo   python bridge_server.py --port 7432 --corpus-db "%%APPDATA%%\tscg\corpus.db"
 echo.
 
-REM ── Optional: run unit tests ─────────────────────────────────────
-echo Run unit tests now? [Y/N]
-set /p RUN_TESTS="> "
-if /i "%RUN_TESTS%"=="Y" (
-    echo.
-    echo === Running unit tests ===
-    cd "%BRIDGE_SRC%"
-    pytest tests\ -v --tb=short
-    set TEST_RESULT=%errorlevel%
-    cd ..\..
-    echo.
-    if %TEST_RESULT%==0 (
-        echo [OK] All tests passed ^^!
-    ) else (
-        echo [WARN] Some tests failed - see output above
-    )
-    echo.
-    echo Useful test commands:
-    echo   All tests        : cd %BRIDGE_SRC% ^& pytest tests\ -v
-    echo   One module       : cd %BRIDGE_SRC% ^& pytest tests\test_expand_iri.py -v
-    echo   Stop on 1st fail : cd %BRIDGE_SRC% ^& pytest tests\ -x
-    echo   With coverage    : cd %BRIDGE_SRC% ^& pytest tests\ --cov=bridge_server --cov-report=term-missing
-    echo.
+REM ── Verification ─────────────────────────────────────────────
+echo [3/3] Plugins installes dans AppData :
+echo.
+for /d %%P in ("%APP_PLUGINS%\*") do (
+    echo   + %%~nxP
+    for %%F in ("%%P\*") do echo       %%~nxF
 )
+
+echo.
+echo ============================================================
+echo  Setup termine !
+echo  Relancez TscgOntologyExplorer pour activer les plugins.
+echo ============================================================
+echo.
 
 pause
+endlocal

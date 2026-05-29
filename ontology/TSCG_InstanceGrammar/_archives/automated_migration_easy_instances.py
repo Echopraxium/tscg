@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-TSCG Automated Realignment Script - Easy Instances (CORRECTED)
+TSCG Automated Realignment Script - All Instance Types (v2.7.0)
 Author: Echopraxium with the collaboration of Claude AI
-Date: 2026-04-19
-Version: 2.5.0 - m0:domain cross-object migration (@graph[1+] → @graph[0])
+Date: 2026-04-19 (v2.5.0), 2026-04-20 (v2.6.0, v2.7.0)
+Version: 2.7.0 - Include manually fixed poclets (BloodPressureControl, ButterflyMetamorphosis, CellSignalingModes)
 
 FIXES:
 - Modifies @graph[0] instead of root level
@@ -21,6 +21,8 @@ FIXES:
 - FIX: Removes rdf:type when it's an object {"@id": "m3:Poclet"} (v2.4.3)
 - FIX: Property ordering works even without owl:imports (v2.4.3)
 - NEW: Migrates m0:domain from @graph[1+] to @graph[0] as m1:domain (v2.5.0)
+- NEW: Supports SymbolicSystemGrammars (Iching) and SystemicFrameworks (Vsm) (v2.6.0)
+- NEW: Includes manually fixed poclets (BloodPressureControl, ButterflyMetamorphosis, CellSignalingModes) (v2.7.0)
 """
 
 import json
@@ -36,22 +38,46 @@ import sys
 # ============================================================================
 
 REPO_ROOT = Path("E:/_00_Michel/_00_Lab/_00_GitHub/tscg")
-INSTANCES_DIR = REPO_ROOT / "instances/poclets"
+
+# Instance type directories
+POCLETS_DIR = REPO_ROOT / "instances/poclets"
+SYMBOLIC_GRAMMARS_DIR = REPO_ROOT / "instances/symbolic-system-grammars"
+SYSTEMIC_FRAMEWORKS_DIR = REPO_ROOT / "instances/systemic-frameworks"
+
 ONTOLOGY_DIR = REPO_ROOT / "ontology"
 BACKUP_DIR = REPO_ROOT / "migration_backups" / datetime.now().strftime("%Y%m%d_%H%M%S")
 SHACL_SCHEMA = ONTOLOGY_DIR / "TSCG_Grammar/M0_Instances_Schema.shacl.ttl"
 
+# Instance types configuration
+INSTANCE_TYPES = {
+    "poclet": {
+        "dir": POCLETS_DIR,
+        "ontology_type": "m3:Poclet",
+        "prefix": "M0_"
+    },
+    "symbolic_grammar": {
+        "dir": SYMBOLIC_GRAMMARS_DIR,
+        "ontology_type": "m3:SymbolicSystemGrammar",
+        "prefix": "M0_"
+    },
+    "systemic_framework": {
+        "dir": SYSTEMIC_FRAMEWORKS_DIR,
+        "ontology_type": "m3:SystemicFramework",
+        "prefix": "M0_"
+    }
+}
+
 # Instances to EXCLUDE (require manual intervention)
+# v2.7.0: All problematic instances have been manually fixed with specialized scripts
 MANUAL_INSTANCES = {
-    "BloodPressureControl",  # 50+ tscg:* namespace violations
-    "ButterflyMetamorphosis",  # 10+ custom classes to reclassify
-    "CellSignalingModes",  # Inline components restructuring
-    "VSM_Metaconcepts",  # ORIVE → REVOI terminology change
+    # BloodPressureControl - FIXED with fix_bloodpressure_namespace.py (141 tscg: → m0:)
+    # ButterflyMetamorphosis - FIXED with fix_butterfly_classes.py (custom classes removed)
+    # CellSignalingModes - FIXED with fix_cellsignaling_inline.py (inline components extracted)
 }
 
 # Instances already fully compliant (skip migration)
 COMPLIANT_INSTANCES = {
-    "AdaptiveImmuneResponse",  # 100% compliant reference
+    "AdaptiveImmuneResponse",  # 100% compliant reference (validated v1.0)
 }
 
 # ============================================================================
@@ -237,8 +263,8 @@ class TransformationRules:
         return False
     
     @staticmethod
-    def add_ontology_type(ontology):
-        """Add m3:ontologyType: {"@id": "m3:Poclet"} if absent"""
+    def add_ontology_type(ontology, ontology_type_value="m3:Poclet"):
+        """Add m3:ontologyType if absent. Supports Poclet, SymbolicSystemGrammar, SystemicFramework"""
         if "m3:ontologyType" not in ontology:
             # Clean up incorrect @type values (m1:Poclet should not be in @type)
             if "@type" in ontology:
@@ -253,21 +279,21 @@ class TransformationRules:
             if "rdf:type" in ontology:
                 rdf_type_value = ontology["rdf:type"]
                 
-                # Case 1: String value "m3:Poclet"
-                if rdf_type_value == "m3:Poclet":
+                # Case 1: String value "m3:Poclet" (or other types)
+                if rdf_type_value in ["m3:Poclet", "m3:SymbolicSystemGrammar", "m3:SystemicFramework"]:
                     del ontology["rdf:type"]
                 
-                # Case 2: Object value {"@id": "m3:Poclet"}
-                elif isinstance(rdf_type_value, dict) and rdf_type_value.get("@id") == "m3:Poclet":
+                # Case 2: Object value {"@id": "m3:Poclet"} (or other types)
+                elif isinstance(rdf_type_value, dict) and rdf_type_value.get("@id") in ["m3:Poclet", "m3:SymbolicSystemGrammar", "m3:SystemicFramework"]:
                     del ontology["rdf:type"]
                 
                 # Case 3: Any other rdf:type pointing to a Poclet-like IRI
                 elif isinstance(rdf_type_value, dict) and "@id" in rdf_type_value:
-                    if "Poclet" in rdf_type_value["@id"]:
+                    if any(t in rdf_type_value["@id"] for t in ["Poclet", "SymbolicSystemGrammar", "SystemicFramework"]):
                         del ontology["rdf:type"]
             
             # Add correct m3:ontologyType
-            ontology["m3:ontologyType"] = {"@id": "m3:Poclet"}
+            ontology["m3:ontologyType"] = {"@id": ontology_type_value}
             return True
         return False
     
@@ -368,17 +394,20 @@ class TransformationRules:
 class InstanceMigrator:
     """Handles migration of a single instance (JSON-LD + README + HTML)."""
     
-    def __init__(self, instance_name):
+    def __init__(self, instance_name, instance_type="poclet"):
         self.instance_name = instance_name
-        self.instance_dir = INSTANCES_DIR / instance_name
+        self.instance_type = instance_type
+        self.type_config = INSTANCE_TYPES[instance_type]
+        self.instance_dir = self.type_config["dir"] / instance_name
         self.modifications = []
         self.errors = []
         
         # File paths
-        self.jsonld_path = self.instance_dir / f"M0_{instance_name}.jsonld"
-        self.readme_path = self.instance_dir / f"M0_{instance_name}_README.md"
-        self.html_path = self.instance_dir / f"M0_{instance_name}.html"
-        self.html_static_path = self.instance_dir / "static" / f"M0_{instance_name}.html"
+        file_prefix = self.type_config["prefix"]
+        self.jsonld_path = self.instance_dir / f"{file_prefix}{instance_name}.jsonld"
+        self.readme_path = self.instance_dir / f"{file_prefix}{instance_name}_README.md"
+        self.html_path = self.instance_dir / f"{file_prefix}{instance_name}.html"
+        self.html_static_path = self.instance_dir / "static" / f"{file_prefix}{instance_name}.html"
         
         # Determine actual HTML location
         if self.html_static_path.exists():
@@ -499,8 +528,8 @@ class InstanceMigrator:
         if rules.fix_description_to_comment(ontology):
             modifications.append("JSON-LD: dcterms:description → rdfs:comment")
         
-        if rules.add_ontology_type(ontology):
-            modifications.append("JSON-LD: Added m3:ontologyType")
+        if rules.add_ontology_type(ontology, self.type_config["ontology_type"]):
+            modifications.append(f"JSON-LD: Added {self.type_config['ontology_type']}")
         
         if rules.add_domain(ontology):
             modifications.append("JSON-LD: Added m1:domain")
@@ -764,22 +793,39 @@ class InstanceMigrator:
 # ============================================================================
 
 def get_easy_instances():
-    """Get list of instances suitable for automated migration."""
-    all_instances = [d.name for d in INSTANCES_DIR.iterdir() if d.is_dir()]
+    """Get list of instances suitable for automated migration.
+    Returns list of tuples: (instance_name, instance_type)
+    """
+    instances = []
     
-    easy_instances = [
-        name for name in all_instances 
-        if name not in MANUAL_INSTANCES and name not in COMPLIANT_INSTANCES
-    ]
+    # Poclets
+    poclet_dirs = [d.name for d in POCLETS_DIR.iterdir() if d.is_dir()]
+    for name in poclet_dirs:
+        if name not in MANUAL_INSTANCES and name not in COMPLIANT_INSTANCES:
+            instances.append((name, "poclet"))
     
-    return easy_instances
+    # Symbolic Grammars
+    if SYMBOLIC_GRAMMARS_DIR.exists():
+        grammar_dirs = [d.name for d in SYMBOLIC_GRAMMARS_DIR.iterdir() if d.is_dir()]
+        for name in grammar_dirs:
+            if name not in MANUAL_INSTANCES and name not in COMPLIANT_INSTANCES:
+                instances.append((name, "symbolic_grammar"))
+    
+    # Systemic Frameworks
+    if SYSTEMIC_FRAMEWORKS_DIR.exists():
+        framework_dirs = [d.name for d in SYSTEMIC_FRAMEWORKS_DIR.iterdir() if d.is_dir()]
+        for name in framework_dirs:
+            if name not in MANUAL_INSTANCES and name not in COMPLIANT_INSTANCES:
+                instances.append((name, "systemic_framework"))
+    
+    return instances
 
 def generate_report(results):
     """Generate migration summary report."""
     report_path = BACKUP_DIR / "MIGRATION_REPORT.md"
     
     with open(report_path, 'w', encoding='utf-8') as f:
-        f.write("# TSCG Automated Migration Report (v2.0 - CORRECTED)\n\n")
+        f.write("# TSCG Automated Migration Report (v2.7.0 - Complete Migration)\n\n")
         f.write(f"**Date:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         f.write(f"**Backup Location:** {BACKUP_DIR}\n\n")
         
@@ -793,7 +839,8 @@ def generate_report(results):
         
         f.write("## Detailed Results\n\n")
         for instance, result in results.items():
-            f.write(f"### {instance}\n")
+            instance_type = result.get('type', 'unknown')
+            f.write(f"### {instance} ({instance_type})\n")
             f.write(f"**Status:** {'✅ Success' if result['status'] == 'success' else '❌ Failed'}\n\n")
             
             if result['modifications']:
@@ -808,11 +855,10 @@ def generate_report(results):
                     f.write(f"- {err}\n")
                 f.write("\n")
         
-        f.write("## Fixes Applied in v2.0\n\n")
-        f.write("1. ✅ Modifications now target @graph[0] (ontology level)\n")
-        f.write("2. ✅ Added m2:ontologyType → m3:ontologyType rename\n")
-        f.write("3. ✅ Added m0:domain → m1:domain rename\n")
-        f.write("4. ✅ All transformations working at correct JSON level\n\n")
+        f.write("## Fixes Applied in v2.7.0\n\n")
+        f.write("1. ✅ Included 3 manually fixed poclets (BloodPressureControl, ButterflyMetamorphosis, CellSignalingModes)\n")
+        f.write("2. ✅ Complete migration of 26 instances: 24 poclets + 1 SymbolicSystemGrammar + 1 SystemicFramework\n")
+        f.write("3. ✅ All v2.6.0 features maintained (multi-type support, domain cross-object migration)\n\n")
         
         f.write("## Next Steps\n\n")
         f.write("1. Review this report\n")
@@ -824,15 +870,19 @@ def generate_report(results):
     return report_path
 
 def generate_test_checklist(migrated_instances):
-    """Generate HTML testing checklist."""
+    """Generate HTML testing checklist.
+    
+    Args:
+        migrated_instances: List of (instance_name, instance_type) tuples
+    """
     checklist_path = BACKUP_DIR / "TEST_CHECKLIST.md"
     
     # Filter instances that have HTML files
     html_instances = []
-    for instance in migrated_instances:
-        migrator = InstanceMigrator(instance)
+    for instance_name, instance_type in migrated_instances:
+        migrator = InstanceMigrator(instance_name, instance_type)
         if migrator.html_path and migrator.html_path.exists():
-            html_instances.append(instance)
+            html_instances.append((instance_name, instance_type))
     
     with open(checklist_path, 'w', encoding='utf-8') as f:
         f.write("# HTML Simulation Testing Checklist\n\n")
@@ -848,9 +898,9 @@ def generate_test_checklist(migrated_instances):
         f.write("6. ✅ Visual simulation renders correctly\n\n")
         
         f.write("## Instances to Test\n\n")
-        for i, instance in enumerate(html_instances, 1):
-            migrator = InstanceMigrator(instance)
-            f.write(f"### {i}. {instance}\n\n")
+        for i, (instance_name, instance_type) in enumerate(html_instances, 1):
+            migrator = InstanceMigrator(instance_name, instance_type)
+            f.write(f"### {i}. {instance_name} ({instance_type})\n\n")
             f.write(f"**File:** `{migrator.html_path.relative_to(REPO_ROOT)}`\n\n")
             f.write("**Test results:**\n")
             f.write("- [ ] Page loads\n")
@@ -870,7 +920,7 @@ def main():
     import argparse
     
     parser = argparse.ArgumentParser(
-        description="TSCG Automated Migration v2.5.0"
+        description="TSCG Automated Migration v2.7.0 - Complete Migration (26 instances)"
     )
     parser.add_argument(
         "--continue-on-error",
@@ -880,7 +930,7 @@ def main():
     args = parser.parse_args()
     
     print("="*70)
-    print("TSCG AUTOMATED MIGRATION v2.5.0 - @graph cross-object migration")
+    print("TSCG AUTOMATED MIGRATION v2.7.0 - Complete migration (26 instances)")
     print("="*70)
     
     # Get instances to migrate
@@ -909,19 +959,20 @@ def main():
     
     # Migrate each instance
     results = {}
-    for instance in easy_instances:
-        migrator = InstanceMigrator(instance)
+    for instance_name, instance_type in easy_instances:
+        migrator = InstanceMigrator(instance_name, instance_type)
         success = migrator.migrate()
         
-        results[instance] = {
+        results[instance_name] = {
             'status': 'success' if success else 'failed',
+            'type': instance_type,
             'modifications': migrator.modifications,
             'errors': migrator.errors
         }
         
         # Stop on error (unless --continue-on-error flag set)
         if not success and not args.continue_on_error:
-            print(f"\n❌ MIGRATION STOPPED: {instance} failed")
+            print(f"\n❌ MIGRATION STOPPED: {instance_name} ({instance_type}) failed")
             print(f"   Errors: {migrator.errors}")
             print(f"\n💡 To continue despite errors, use: --continue-on-error")
             break

@@ -9,7 +9,7 @@ import { createRendererApiFor, dispatchAction,
 import { initSplitters }                                from './Splitter.js'
 import { setBridgeUrl, getBridgeUrl, getOntologyRoot, setRepoRoot, setLayerPaths, setBridgeButtonsEnabled,
          setExplorerRenderer, onDocumentLoaded, activateDocument, isDirtyLoad, clearDirtyLoad,
-         loadLayer, loadFile, onObjectSelected } from './OntologyLoader.js'
+         loadLayer, loadFile, onObjectSelected, findFileForIri, getInstanceOfTargets } from './OntologyLoader.js'
 import { renderObjectExplorer, selectObjectByIri, setPendingSelectIri, applyPendingSelect, filterObjectTree } from './ObjectExplorer.js'
 import { registry }                                     from '../commands/CommandRegistry.js'
 import { docManager, renderTabBar }                     from './DocumentManager.js'
@@ -32,9 +32,32 @@ window.tscgAPI.onThemeChanged(applyTheme)
 initSplitters()
 
 // Wire ObjectExplorer — OntologyLoader injects filePath into onSelect automatically
-setExplorerRenderer(({ objects, pairs, onSelect }) => {
-  renderObjectExplorer({ objects, pairs, onSelect })
+setExplorerRenderer(({ objects, pairs, externalParents, onSelect, onNavigateTo }) => {
+  renderObjectExplorer({ objects, pairs, externalParents, onSelect, onNavigateTo })
 })
+
+// Ghost node styles (cross-file superclass links)
+;(function injectGhostStyles () {
+  if (document.getElementById('ghost-node-styles')) return
+  const s = document.createElement('style')
+  s.id = 'ghost-node-styles'
+  s.textContent = `
+    .oe-ghost { opacity: 0.82; cursor: pointer; }
+    .oe-ghost:hover { opacity: 1; }
+    .oe-ghost-lbl { color: var(--accent, #7eb8f7); font-style: italic; }
+    .oe-ghost-badge {
+      margin-left: 6px; font-size: 10px; opacity: 0.6;
+      background: var(--bg-input, #2a2a2e); border-radius: 3px;
+      padding: 1px 5px; vertical-align: middle;
+    }
+    .oe-ghost-sep {
+      padding: 6px 8px 3px 8px; font-size: 10px; font-weight: 600;
+      opacity: 0.5; text-transform: uppercase; letter-spacing: .05em;
+      border-top: 1px solid var(--border, #3a3a3e); margin-top: 6px;
+    }
+  `
+  document.head.appendChild(s)
+})()
 
 // Wire document tab creation + populate Imports tab after each ontology load
 onDocumentLoaded(({ filePath, label }) => {
@@ -49,6 +72,8 @@ onDocumentLoaded(({ filePath, label }) => {
   activateDocument(filePath)  // ensure Object Explorer shows the new doc
   clearDirtyLoad()              // allow tab-switch activations again
   populateImportsTab(filePath)
+  // Switch to Imports tab automatically on load
+  activateTab('imports')
 })
   setTimeout(() => applyPendingSelect(), 250)  // cross-doc navigation
 
@@ -62,6 +87,24 @@ window.tscgAPI.onFromServer('bridge-ready', ({ url }) => {
   console.log('[renderer] Python bridge ready:', url)
   setBridgeUrl(url)
   document.getElementById('status-msg').textContent = `Python bridge ready — ${url}`
+})
+
+// tscg-api-bridge (replaces tscg-python-bridge)
+window.tscgAPI.onFromServer('api-server-ready', ({ url }) => {
+  console.log('[renderer] TscgOntologyAPIServer ready:', url)
+  setBridgeUrl(url)
+  window._bridgeUrl = url
+  setBridgeButtonsEnabled(true)
+  document.getElementById('status-msg').textContent = `API Server ready — ${url}`
+  // Trigger deferred auto-load: read defaultLoadedOntology from config and load it
+  window.tscgAPI.config.get('defaultLoadedOntology').then(pathOrUrl => {
+    if (pathOrUrl) {
+      console.log('[renderer] API server ready — auto-loading:', pathOrUrl)
+      const label = pathOrUrl.split(/[/\\]/).pop()
+      setLabel(`${label} loading…`)
+      loadFile(pathOrUrl).then(() => setLabel(label.replace(/\.jsonld$/i, '')))
+    }
+  }).catch(e => console.warn('[renderer] auto-load config error:', e))
 })
 
 // =============================================================
@@ -287,12 +330,58 @@ document.getElementById('btn-m1').addEventListener('click', async (e) => {
 
 // ── Adjacent Layers panel ─────────────────────────────────────
 // One dropdown button per adjacent layer (combolist style)
-function renderAdjacentLayers (currentLayer) {
+function renderAdjacentLayers (currentLayer, filePath) {
   const panel = document.getElementById('adjacent-layers-content')
   if (!panel) return
   panel.innerHTML = ''
   const ontRoot = getOntologyRoot()
   if (!ontRoot) { panel.innerHTML = '<p class="placeholder">Ontology root not set.</p>'; return }
+
+  // ── M2 Metaclass section (m3:instanceOf) — M0 instances only ─
+  const ioTargets = filePath ? getInstanceOfTargets(filePath) : []
+  if (ioTargets.length > 0) {
+    const metaSection = document.createElement('div')
+    Object.assign(metaSection.style, { padding: '8px 8px 4px 8px' })
+
+    const metaTitle = document.createElement('div')
+    metaTitle.textContent = '↑ M2 Metaclass (instanceOf)'
+    Object.assign(metaTitle.style, {
+      fontSize: '10px', fontWeight: '700', textTransform: 'uppercase',
+      letterSpacing: '.05em', opacity: '.55', marginBottom: '5px',
+      color: 'var(--text-primary)'
+    })
+    metaSection.appendChild(metaTitle)
+
+    for (const target of ioTargets) {
+      const chip = document.createElement('div')
+      chip.textContent = `↗ ${target.label}`
+      chip.title = (target.file_path_hint
+        ? target.file_path_hint.split(/[/\\]/).pop() + ' — '
+        : '') + target.id + '\nClick to open'
+      Object.assign(chip.style, {
+        display: 'inline-block', margin: '2px 3px',
+        padding: '3px 10px', borderRadius: '4px', cursor: 'pointer',
+        fontSize: '12px', fontStyle: 'italic',
+        background: 'var(--bg-input)', border: '1px solid var(--accent, #7eb8f7)',
+        color: 'var(--accent, #7eb8f7)'
+      })
+      chip.onmouseenter = () => { chip.style.opacity = '1'; chip.style.background = 'var(--bg-hover, #2a2a3a)' }
+      chip.onmouseleave = () => { chip.style.opacity = '.9'; chip.style.background = 'var(--bg-input)' }
+      chip.addEventListener('click', () => {
+        if (target.file_path_hint) {
+          setPendingSelectIri(target.id)
+          loadFile(target.file_path_hint)
+        }
+      })
+      metaSection.appendChild(chip)
+    }
+
+    // Separator between metaclass section and standard layers
+    const sep = document.createElement('hr')
+    Object.assign(sep.style, { border: 'none', borderTop: '1px solid var(--border)', margin: '8px 0 4px 0' })
+    metaSection.appendChild(sep)
+    panel.appendChild(metaSection)
+  }
 
   const layers = {
     M3: {
@@ -407,7 +496,7 @@ function renderAdjacentLayers (currentLayer) {
 // Hook into document activation to update Adjacent Layers
 docManager.onChange((type, doc) => {
   if (type === 'activate' && doc?.layerName) {
-    renderAdjacentLayers(doc.layerName)
+    renderAdjacentLayers(doc.layerName, doc.filePath)
   }
 })
 
@@ -505,6 +594,15 @@ function populatePropertyInspector (obj, properties) {
 
   // Group properties by predicate namespace for separate drawers
   const groups = { Label: {}, Metadata: {}, Other: {} }
+  const addProp = (group, key, val) => {
+    if (group[key] === undefined) {
+      group[key] = val
+    } else {
+      // Second occurrence — promote to array (e.g. polar formula pairs)
+      if (!Array.isArray(group[key])) group[key] = [group[key]]
+      group[key].push(val)
+    }
+  }
   for (const { predicate, object } of properties) {
     const pred  = predicate.value
     const short = pred.split('#').pop().split('/').pop()
@@ -513,11 +611,11 @@ function populatePropertyInspector (obj, properties) {
       : `<${object.value}>`
 
     if (pred.includes('label') || pred.includes('comment')) {
-      groups.Label[short] = val
+      addProp(groups.Label, short, val)
     } else if (pred.includes('type') || pred.includes('version') || pred.includes('creator') || pred.includes('created')) {
-      groups.Metadata[short] = val
+      addProp(groups.Metadata, short, val)
     } else {
-      groups.Other[short] = val
+      addProp(groups.Other, short, val)
     }
   }
 
@@ -553,6 +651,43 @@ function createDrawer (title, props) {
 
     const strVal = v ?? '—'
 
+    // ── Array value — polar formula pair (or other multi-value property) ──
+    if (Array.isArray(v)) {
+      const isPolarFormula = k.toLowerCase().includes('structuralgrammarformula')
+        && v.length === 2
+        && v.some(f => f.includes('_^') || f.includes('_$') || f.includes('_{+}') || f.includes('_{-}'))
+
+      if (isPolarFormula) {
+        // Render as a 2-element array table — full formula on each row
+        const table = document.createElement('table')
+        table.style.cssText = 'width:100%;border-collapse:collapse;font-size:11px;margin-top:2px'
+        for (const [i, formula] of v.entries()) {
+          const isPos  = formula.includes('_^') || formula.includes('_{+}')
+          const color  = isPos ? 'var(--success, #4caf82)' : 'var(--danger, #e07070)'
+          const tr     = document.createElement('tr')
+          const tdIdx  = document.createElement('td')
+          tdIdx.textContent = `[${i}]`
+          tdIdx.style.cssText = `width:24px;color:var(--text-muted);padding:2px 6px 2px 0;font-size:10px;vertical-align:top`
+          const tdForm = document.createElement('td')
+          tdForm.textContent = formula
+          tdForm.style.cssText = `font-family:monospace;color:${color};padding:2px 0`
+          tr.appendChild(tdIdx); tr.appendChild(tdForm)
+          table.appendChild(tr)
+        }
+        row.appendChild(keyEl)
+        row.appendChild(table)
+        body.appendChild(row)
+        continue
+      }
+
+      // Generic array — join with newlines
+      valEl.textContent = v.join('\n')
+      valEl.style.whiteSpace = 'pre-wrap'
+      row.appendChild(keyEl); row.appendChild(valEl)
+      body.appendChild(row)
+      continue
+    }
+
     if (isUri(strVal)) {
       const isInternal = strVal.includes('echopraxium') || strVal.includes('raw.githubusercontent')
       const sep    = Math.max(strVal.lastIndexOf('#'), strVal.lastIndexOf('/'))
@@ -577,10 +712,41 @@ function createDrawer (title, props) {
         row.style.cursor = 'pointer'
         row.addEventListener('click', () => selectObjectByIri(strVal))
       } else if (isInternal) {
-        // Cross-document internal URI → plain text (no chip, no broken nav)
+        // Cross-document internal URI → clickable chip (same style as Imports tab)
+        // Derive local file path: extract .jsonld filename from IRI, join with ontology root
+        const fileBase  = strVal.split('#')[0].split('/').pop()   // e.g. "M2_GenericConcepts.jsonld"
+        const ontRoot   = getOntologyRoot()
+        const localPath = (ontRoot && fileBase.endsWith('.jsonld'))
+          ? ontRoot + '/' + fileBase
+          : null
+
+        valEl.className   = 'imports-chip'
         valEl.textContent = prefix ? `${prefix}:${local}` : local
-        valEl.title       = strVal
-        valEl.style.color = 'var(--text-secondary)'
+        valEl.title       = (localPath
+          ? `${localPath.split(/[/\\]/).pop()}\nClick to open and navigate`
+          : strVal)
+        valEl.style.cursor = 'pointer'
+        valEl.style.margin = '2px 0'
+
+        if (localPath) {
+          const navigate = (e) => {
+            e?.stopPropagation()
+            // Check if the IRI is already in a loaded document (e.g. m1:extension:biology:Hormone
+            // expands to M1_CoreConcepts.jsonld#... but the class lives in M1_Biology.jsonld)
+            const cachedFile = findFileForIri(strVal)
+            if (cachedFile) {
+              // Found in a cached doc — activate it and select the node
+              activateDocument(cachedFile).then(() => selectObjectByIri(strVal))
+            } else {
+              // Not in cache — load the file derived from the IRI
+              setPendingSelectIri(strVal)
+              loadFile(localPath)
+            }
+          }
+          valEl.addEventListener('click', navigate)
+          row.style.cursor = 'pointer'
+          row.addEventListener('click', navigate)
+        }
       } else {
         // External URI → open in browser on click
         valEl.textContent = strVal
@@ -764,13 +930,16 @@ function injectPluginTabs () {
 
 function rebindTabHandlers () {
   document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.onclick = () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
-      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'))
-      btn.classList.add('active')
-      document.getElementById(`tab-${btn.dataset.tab}`)?.classList.add('active')
-    }
+    btn.onclick = () => activateTab(btn.dataset.tab)
   })
+}
+
+function activateTab (tabId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'))
+  const btn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`)
+  if (btn) btn.classList.add('active')
+  document.getElementById(`tab-${tabId}`)?.classList.add('active')
 }
 rebindTabHandlers()
 

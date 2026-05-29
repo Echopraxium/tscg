@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://cdnjs.cloudflare.com;
+                 script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
+                 style-src  'self' 'unsafe-inline';
+                 img-src    'self' data: blob:;
+                 connect-src http://127.0.0.1:* ws://127.0.0.1:*;">
+  <title>TSCG — MTG Color Wheel</title>
+<style>
+/* ── Reset & Globals ─────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-deep:#3a3f47;--bg-panel:#161b22;--bg-card:#1c2130;--bg-hover:#21262d;
+  --border:#30363d;--border-light:#3d444f;
+  --eagle:#f78166;--sphinx:#79c0ff;--accent:#56d364;--warn:#e3b341;
+  --muted:#8b949e;--text:#e6edf3;--text-dim:#b1bac4;
+  --col-A:#f78166;--col-S:#56d364;--col-F:#79c0ff;--col-I:#d2a8ff;--col-D:#e3b341;
+  --col-R:#79c0ff;--col-E:#56d364;--col-V:#f78166;--col-O:#d2a8ff;--col-Im:#e3b341;
+  --header-h:44px;--btnbar-h:116px;--controls-h:52px;--sidebar-w:320px;
+  --radius:6px;--font:'Segoe UI',system-ui,sans-serif;--font-mono:'Cascadia Code','Fira Code','Consolas',monospace;
+}
+html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg-deep);color:var(--text);font-size:13px;line-height:1.5;user-select:none}
+
+#app{display:grid;grid-template-rows:var(--header-h) 1fr var(--controls-h);
+  grid-template-columns:1fr 5px var(--sidebar-w);
+  grid-template-areas:"header header header" "canvas split sidebar" "ctrl ctrl ctrl";height:100vh}
+
+/* Header */
+#header{grid-area:header;display:flex;align-items:center;padding:0 12px;gap:10px;
+  background:var(--bg-panel);border-bottom:1px solid var(--border)}
+/* Home button — SVG icon, visited-proof */
+#btn-home{display:inline-flex;align-items:center;background:none;border:none;cursor:pointer;
+  padding:4px 6px;margin-right:2px;opacity:.85;transition:opacity .15s;text-decoration:none}
+#btn-home:hover{opacity:1}
+/* TSCG logo — clickable + tooltip */
+.tscg-logo-link{text-decoration:none;color:inherit;position:relative;cursor:pointer;background:none;border:none;padding:0}
+.tscg-logo{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--eagle);text-transform:uppercase;flex-shrink:0}
+.sep{color:var(--border-light);font-size:16px}
+.poclet-name{font-size:14px;font-weight:600;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta-chips{display:flex;gap:5px;flex-shrink:0}
+.chip{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid transparent}
+.chip.domain{background:rgba(86,211,100,.12);border-color:rgba(86,211,100,.3);color:var(--accent)}
+.chip.version{background:rgba(121,192,255,.12);border-color:rgba(121,192,255,.3);color:var(--sphinx)}
+.chip.type{background:rgba(247,129,102,.12);border-color:rgba(247,129,102,.3);color:var(--eagle)}
+#sel-chip{display:none;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;
+  border:1px solid rgba(227,179,65,.5);background:rgba(227,179,65,.12);color:var(--warn)}
+
+/* Canvas area */
+#canvas-area{grid-area:canvas;display:flex;flex-direction:column;overflow:hidden;background:var(--bg-deep);min-width:200px}
+
+/* Button grid (3×5) */
+#btn-grid{flex-shrink:0;display:grid;grid-template-rows:repeat(3,34px);grid-template-columns:repeat(5,1fr);
+  gap:3px;padding:5px;background:var(--bg-panel);border-bottom:1px solid var(--border)}
+.mcw-btn{display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--radius);cursor:pointer;font-size:10.5px;font-weight:700;
+  font-family:var(--font);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  padding:0 4px;transition:border-color .15s,box-shadow .15s,filter .15s}
+.mcw-btn:hover{filter:brightness(1.2);border-color:rgba(255,255,255,.35)}
+.mcw-btn.active{border-color:#e3b341 !important;box-shadow:0 0 0 2px rgba(227,179,65,.5),0 0 8px rgba(227,179,65,.4);filter:brightness(1.15)}
+.row-label{display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;
+  letter-spacing:.08em;color:var(--muted);text-transform:uppercase;background:transparent;border:none;cursor:default}
+
+/* BabylonJS canvas wrapper + canvas — absolute comme FireTriangle */
+#canvas-wrap{flex:1;position:relative;overflow:hidden;min-height:0}
+#renderCanvas{position:absolute;top:0;left:0;width:100%;height:100%;outline:none;display:block}
+
+/* Splitter */
+#splitter{grid-area:split;background:var(--border);cursor:col-resize;transition:background .15s;position:relative;z-index:10}
+#splitter:hover,#splitter.dragging{background:var(--sphinx)}
+
+/* Sidebar */
+#sidebar{grid-area:sidebar;display:flex;flex-direction:column;background:var(--bg-panel);
+  border-left:1px solid var(--border);overflow:hidden;min-width:180px;max-width:640px}
+.tab-bar{display:flex;background:var(--bg-deep);border-bottom:1px solid var(--border);flex-shrink:0}
+.tab-btn{flex:1;padding:7px 4px;font-size:11.5px;font-weight:600;background:none;border:none;
+  border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;transition:color .15s,border-color .15s}
+.tab-btn:hover{color:var(--text-dim)}
+.tab-btn.active{color:var(--sphinx);border-bottom-color:var(--sphinx)}
+.tab-panel{display:none;flex-direction:column;flex:1;overflow-y:auto;padding:12px;gap:9px}
+.tab-panel.active{display:flex}
+
+/* Score rows */
+.score-group{display:flex;flex-direction:column;gap:5px}
+.score-group-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);padding-bottom:4px;border-bottom:1px solid var(--border);margin-bottom:2px}
+.score-group-label.eagle{color:var(--eagle)}.score-group-label.sphinx{color:var(--sphinx)}
+.score-row{display:flex;align-items:center;gap:8px;font-size:12px}
+.score-dim{width:20px;font-weight:700;font-family:var(--font-mono);font-size:11px;text-align:center;flex-shrink:0}
+.score-bar-bg{flex:1;height:6px;background:var(--bg-card);border-radius:3px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;transition:width .6s ease}
+.score-val{width:30px;text-align:right;font-family:var(--font-mono);font-size:11px;color:var(--text-dim);flex-shrink:0}
+.gap-badge{display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:8px 12px;font-size:12px}
+.gap-label{color:var(--muted)}.gap-val{font-family:var(--font-mono);font-weight:700;font-size:16px;color:var(--accent)}
+.gap-desc{color:var(--text-dim);font-size:11px}
+
+/* GenericConcepts */
+.gc-list{display:flex;flex-direction:column;gap:4px}
+.gc-item{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;background:var(--bg-card);
+  border-radius:var(--radius);border:1px solid var(--border)}
+.gc-item.primary{border-left:3px solid var(--eagle)}.gc-item.secondary{border-left:3px solid var(--border-light)}
+.gc-name{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--sphinx);flex-shrink:0;min-width:110px}
+.gc-formula{font-family:var(--font-mono);font-size:10px;color:var(--muted);flex-shrink:0}
+.gc-role{font-size:11px;color:var(--text-dim);line-height:1.4}
+
+/* README/Detail tab */
+.detail-panel{font-size:12px;line-height:1.75;color:var(--text-dim);padding:2px 0}
+.detail-panel h1{font-size:15px;font-weight:700;color:var(--text);margin:0 0 8px;padding-bottom:6px;border-bottom:2px solid var(--border)}
+.detail-panel h2{font-size:13px;font-weight:700;color:var(--eagle);margin:14px 0 4px;padding-bottom:3px;border-bottom:1px solid var(--border)}
+.detail-panel h3{font-size:12px;font-weight:700;color:var(--sphinx);margin:10px 0 3px}
+.detail-panel p{margin-bottom:6px}
+.detail-panel em{color:var(--warn);font-style:italic}
+.detail-panel strong{color:var(--text)}
+.detail-panel code{font-family:var(--font-mono);font-size:10.5px;background:var(--bg-card);padding:1px 4px;border-radius:3px;color:var(--sphinx)}
+.detail-panel table{width:100%;border-collapse:collapse;font-size:11px;margin:6px 0}
+.detail-panel th{background:var(--bg-card);color:var(--text-dim);padding:4px 6px;border:1px solid var(--border);text-align:left}
+.detail-panel td{padding:3px 6px;border:1px solid var(--border);color:var(--text-dim)}
+.sec-anchor{display:block;padding-top:4px}
+.color-swatch{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:middle;margin-right:4px;border:1px solid rgba(255,255,255,.2)}
+.guild-badge{display:inline-flex;gap:3px;align-items:center;font-family:var(--font-mono);font-size:10px}
+.guild-pip{width:8px;height:8px;border-radius:50%;border:1px solid rgba(255,255,255,.2)}
+
+/* Controls */
+#controls{grid-area:ctrl;display:flex;align-items:center;gap:8px;padding:0 14px;
+  background:var(--bg-panel);border-top:1px solid var(--border);flex-wrap:nowrap}
+.ctrl-btn{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:var(--radius);color:var(--text-dim);
+  font-size:12px;font-family:var(--font);cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;flex-shrink:0}
+.ctrl-btn:hover{background:var(--bg-hover);color:var(--text);border-color:var(--border-light)}
+.ctrl-btn.active{background:rgba(86,211,100,.1);border-color:var(--accent);color:var(--accent)}
+.ctrl-sep{width:1px;height:26px;background:var(--border);flex-shrink:0}
+.ctrl-label{font-size:11px;color:var(--muted);white-space:nowrap;flex-shrink:0}
+.status-indicator{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);flex-shrink:0}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.status-dot.live{background:var(--accent)}
+#sel-info{font-size:11px;color:var(--text-dim);flex:1;text-align:center;font-family:var(--font-mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ═══ HEADER ═══════════════════════════════════════════════════════════ -->
+<div id="header">
+  <button id="btn-home" onclick="window.location.href='https://echopraxium.github.io/tscg/'"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></button>
+  <button class="tscg-logo-link" onclick="window.open('https://github.com/Echopraxium/tscg','_blank')"><span class="tscg-logo">TSCG</span></button>
+  <span class="sep">&middot;</span>
+  <div class="poclet-name">MTG Color Wheel</div>
+  <div class="meta-chips">
+    <span class="chip domain">Game / Philosophy</span>
+    <span class="chip version">v1.2.0</span>
+    <span class="chip type">Liminal δ=0.17</span>
+    <span id="sel-chip"></span>
+  </div>
+</div>
+
+<!-- ═══ CANVAS AREA ══════════════════════════════════════════════════════ -->
+<div id="canvas-area">
+  <!-- 15 Buttons — 3 rows × 5 cols -->
+  <div id="btn-grid">
+    <!-- Row 1: Primary Colors -->
+    <button class="mcw-btn" data-id="white"    style="background:#D8D4C8;color:#111">W&nbsp;White</button>
+    <button class="mcw-btn" data-id="blue"     style="background:#3A7FD5;color:#fff">U&nbsp;Blue</button>
+    <button class="mcw-btn" data-id="black"    style="background:#2A1F28;color:#ccc">B&nbsp;Black</button>
+    <button class="mcw-btn" data-id="red"      style="background:#C82020;color:#fff">R&nbsp;Red</button>
+    <button class="mcw-btn" data-id="green"    style="background:#1A7A40;color:#fff">G&nbsp;Green</button>
+    <!-- Row 2: Allied Guilds (adjacent) -->
+    <button class="mcw-btn" data-id="azorius"  style="background:linear-gradient(90deg,#D8D4C8,#3A7FD5);color:#fff;text-shadow:0 1px 3px #000">Azorius</button>
+    <button class="mcw-btn" data-id="dimir"    style="background:linear-gradient(90deg,#3A7FD5,#2A1F28);color:#ccc;text-shadow:0 1px 3px #000">Dimir</button>
+    <button class="mcw-btn" data-id="rakdos"   style="background:linear-gradient(90deg,#2A1F28,#C82020);color:#ccc;text-shadow:0 1px 3px #000">Rakdos</button>
+    <button class="mcw-btn" data-id="gruul"    style="background:linear-gradient(90deg,#C82020,#1A7A40);color:#fff;text-shadow:0 1px 3px #000">Gruul</button>
+    <button class="mcw-btn" data-id="selesnya" style="background:linear-gradient(90deg,#1A7A40,#D8D4C8);color:#fff;text-shadow:0 1px 3px #000">Selesnya</button>
+    <!-- Row 3: Enemy Guilds (diagonal) — dashed border to distinguish -->
+    <button class="mcw-btn" data-id="orzhov"   style="background:linear-gradient(90deg,#D8D4C8,#2A1F28);color:#ccc;text-shadow:0 1px 3px #000;border-style:dashed">Orzhov</button>
+    <button class="mcw-btn" data-id="izzet"    style="background:linear-gradient(90deg,#3A7FD5,#C82020);color:#fff;text-shadow:0 1px 3px #000;border-style:dashed">Izzet</button>
+    <button class="mcw-btn" data-id="golgari"  style="background:linear-gradient(90deg,#2A1F28,#1A7A40);color:#ccc;text-shadow:0 1px 3px #000;border-style:dashed">Golgari</button>
+    <button class="mcw-btn" data-id="boros"    style="background:linear-gradient(90deg,#C82020,#D8D4C8);color:#fff;text-shadow:0 1px 3px #000;border-style:dashed">Boros</button>
+    <button class="mcw-btn" data-id="simic"    style="background:linear-gradient(90deg,#3A7FD5,#1A7A40);color:#fff;text-shadow:0 1px 3px #000;border-style:dashed">Simic</button>
+  </div>
+  <!-- BabylonJS 3D canvas -->
+  <div id="canvas-wrap">
+    <canvas id="renderCanvas" touch-action="none"></canvas>
+  </div>
+</div>
+
+<!-- ═══ SPLITTER ═════════════════════════════════════════════════════════ -->
+<div id="splitter"></div>
+
+<!-- ═══ SIDEBAR ══════════════════════════════════════════════════════════ -->
+<div id="sidebar">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="activateTab(0)">Description</button>
+    <button class="tab-btn" onclick="activateTab(1)">Scores</button>
+    <button class="tab-btn" onclick="activateTab(2)">Concepts</button>
+    <button class="tab-btn" onclick="activateTab(3)">Detail</button>
+  </div>
+
+  <!-- Tab 0: Description -->
+  <div class="tab-panel active" id="tab-desc">
+    <div style="font-size:13px;font-weight:700;color:var(--text)">MTG Color Wheel</div>
+    <div style="font-size:11px;color:var(--text-dim);line-height:1.7">
+      The <strong>Magic: The Gathering Color Wheel</strong> is a pentagonal philosophical framework mapping five
+      value identities onto an irreducible 5-pole system. Thirty years of stable design have proven its robustness.<br><br>
+      <strong>5 primary colors</strong> (vertices) + <strong>10 bicolor guilds</strong> (edges: 5 adjacent + 5 diagonal)
+      + <strong>Artifact</strong> (colorless pseudo-color, central dodecahedron).<br><br>
+      <em>Click any sphere, dodecahedron, or button to explore an identity.</em>
+    </div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px">Legend</div>
+    <div style="font-size:11px;color:var(--text-dim);line-height:1.9">
+      <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#aaa;vertical-align:middle;margin-right:5px;border:2px solid #eee"></span>Large spheres — Primary colors<br>
+      <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,#D8D4C8,#3A7FD5);vertical-align:middle;margin-right:5px;border:1px solid #888"></span>Small split spheres — Bicolor guilds (solid border = allied, dashed = enemy)<br>
+      <span style="display:inline-block;width:10px;height:10px;background:#e8e4d8;vertical-align:middle;margin-right:5px;border:1px solid #888"></span>Central dodecahedron — Artifact (colorless)
+    </div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px">Controls</div>
+    <div style="font-size:11px;color:var(--text-dim)">Drag to rotate · Scroll to zoom · Click sphere or button to select</div>
+  </div>
+
+  <!-- Tab 1: Scores -->
+  <div class="tab-panel" id="tab-scores">
+    <div class="score-group">
+      <div class="score-group-label eagle">ASFID — Territory (Eagle Eye)</div>
+      <div class="score-row"><span class="score-dim" style="color:var(--col-A)">A</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:65%;background:var(--col-A)"></div></div><span class="score-val">0.65</span></div>
+      <div class="score-row"><span class="score-dim" style="color:var(--col-S)">S</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:var(--col-S)"></div></div><span class="score-val">0.80</span></div>
+      <div class="score-row"><span class="score-dim" style="color:var(--col-F)">F</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:45%;background:var(--col-F)"></div></div><span class="score-val">0.45</span></div>
+      <div class="score-row"><span class="score-dim" style="color:var(--col-I)">I</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-I)"></div></div><span class="score-val">0.85</span></div>
+      <div class="score-row"><span class="score-dim" style="color:var(--col-D)">D</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:50%;background:var(--col-D)"></div></div><span class="score-val">0.50</span></div>
+      <div style="font-size:11px;color:var(--muted);text-align:right;font-family:var(--font-mono)">mean = <span style="color:var(--text)">0.65</span></div>
+    </div>
+    <div class="score-group">
+      <div class="score-group-label sphinx">REVOI — Map (Sphinx Eye)</div>
+      <div class="score-row"><span class="score-dim" style="color:var(--col-R)">R</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-R)"></div></div><span class="score-val">0.90</span></div>
+      <div class="score-row"><span class="score-dim" style="color:var(--col-E)">E</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-E)"></div></div><span class="score-val">0.85</span></div>
+      <div class="score-row"><span class="score-dim" style="color:var(--col-V)">V</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:var(--col-V)"></div></div><span class="score-val">0.70</span></div>
+      <div class="score-row"><span class="score-dim" style="color:var(--col-O)">O</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:75%;background:var(--col-O)"></div></div><span class="score-val">0.75</span></div>
+      <div class="score-row"><span class="score-dim" style="color:var(--col-Im)">I</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-Im)"></div></div><span class="score-val">0.90</span></div>
+      <div style="font-size:11px;color:var(--muted);text-align:right;font-family:var(--font-mono)">mean = <span style="color:var(--text)">0.82</span></div>
+    </div>
+    <div class="gap-badge">
+      <div><div class="gap-label">Epistemic Gap δ₁</div><div class="gap-val">0.17</div></div>
+      <div><div style="font-size:11px;color:var(--sphinx);font-weight:600">Liminal</div><div class="gap-desc">Map-dominant — REVOI 0.82 &gt; ASFID 0.65<br>Generative conceptual framework</div></div>
+    </div>
+  </div>
+
+  <!-- Tab 2: GenericConcepts -->
+  <div class="tab-panel" id="tab-concepts">
+    <div style="font-size:11px;color:var(--muted)">30 M2 instantiations · 3 new candidates</div>
+    <div class="gc-list">
+      <div class="gc-item primary"><span class="gc-name">Polarity-N</span><span class="gc-formula">S⊗I⊗A</span><span class="gc-role">N-ary polarity (N=5); paradigm shift for TSCG</span></div>
+      <div class="gc-item primary"><span class="gc-name">Synergy</span><span class="gc-formula">A⊗S⊗I</span><span class="gc-role">Guild emergent identities exceed color components</span></div>
+      <div class="gc-item primary"><span class="gc-name">Complementarity</span><span class="gc-formula">I⊗S</span><span class="gc-role">Allied guild pairs — reinforcing philosophical bonds</span></div>
+      <div class="gc-item primary"><span class="gc-name">Opposition</span><span class="gc-formula">I⊗D</span><span class="gc-role">Enemy guild pairs — productive philosophical tension</span></div>
+      <div class="gc-item primary"><span class="gc-name">Mediation</span><span class="gc-formula">A⊗F⊗I</span><span class="gc-role">Artifact as universal mediator across all colors</span></div>
+      <div class="gc-item secondary"><span class="gc-name">Structure</span><span class="gc-formula">S</span><span class="gc-role">Pentagon topology (C₅ symmetry), 10 guild edges</span></div>
+      <div class="gc-item secondary"><span class="gc-name">Attractor</span><span class="gc-formula">A</span><span class="gc-role">5 philosophical value basins + 10 guild attractors</span></div>
+      <div class="gc-item secondary"><span class="gc-name">Identity</span><span class="gc-formula">I</span><span class="gc-role">Color identity as stable philosophical archetype</span></div>
+      <div class="gc-item secondary"><span class="gc-name">Alliance</span><span class="gc-formula">I⊗S*</span><span class="gc-role">Candidate: structural compatibility bond vs Synergy</span></div>
+      <div class="gc-item secondary"><span class="gc-name">Antagonism</span><span class="gc-formula">I⊗D*</span><span class="gc-role">Candidate: dynamic conflict vs static Opposition</span></div>
+      <div class="gc-item secondary"><span class="gc-name">Symmetry</span><span class="gc-formula">S⊗I</span><span class="gc-role">C₅ rotational symmetry — no privileged color</span></div>
+      <div class="gc-item secondary"><span class="gc-name">Emergence</span><span class="gc-formula">D⊗S⊗I</span><span class="gc-role">Guild identities emerge from color combinations</span></div>
+      <div class="gc-item secondary"><span class="gc-name">Equilibrium</span><span class="gc-formula">A⊗D</span><span class="gc-role">Color pie balance maintained across 30 years</span></div>
+      <div class="gc-item secondary"><span class="gc-name">Substrate</span><span class="gc-formula">S</span><span class="gc-role">Artifact as zero-philosophy material base</span></div>
+    </div>
+  </div>
+
+  <!-- Tab 3: Detail (README with sections) -->
+  <div class="tab-panel" id="tab-detail">
+    <div class="detail-panel" id="readme-content">
+      <span id="sec-overview" class="sec-anchor"></span>
+      <h1>MTG Color Wheel — TSCG Poclet</h1>
+      <p>The <strong>Magic: The Gathering Color Wheel</strong> is one of the most elegant philosophical frameworks in game design: five primary colors, ten bicolor guilds, and the Artifact pseudo-color as colorless neutral substrate. Designed in 1993, stable for 30+ years.</p>
+      <p><code>ASFID (0.65, 0.80, 0.45, 0.85, 0.50)</code> · <code>REVOI (0.90, 0.85, 0.70, 0.75, 0.90)</code> · <code>δ₁ = 0.17 Liminal</code></p>
+
+      <!-- PRIMARY COLORS -->
+      <h2>Primary Colors</h2>
+
+      <span id="sec-white" class="sec-anchor"></span>
+      <h3><span class="color-swatch" style="background:#D8D4C8"></span>White (W) — Order &amp; Collective</h3>
+      <p>Pentagon position 0 (top) · Allies: Blue, Green · Enemies: Black, Red</p>
+      <p><strong>Values:</strong> Structure · Peace · Community · Absolute Morality<br>
+      <strong>Methods:</strong> Laws, Institutions, Collective Work, Discipline<br>
+      <strong>Excesses:</strong> Conformism, Dogmatism, Sacrifice of the Individual<br>
+      <strong>Mechanics:</strong> Life gain, protection, small creatures, removal</p>
+      <p><em>"The many are stronger than the one. Order brings peace."</em></p>
+
+      <span id="sec-blue" class="sec-anchor"></span>
+      <h3><span class="color-swatch" style="background:#3A7FD5"></span>Blue (U) — Perfection &amp; Knowledge</h3>
+      <p>Pentagon position 1 · Allies: White, Black · Enemies: Red, Green</p>
+      <p><strong>Values:</strong> Knowledge · Perfection · Progress · Intellect<br>
+      <strong>Methods:</strong> Study, Technology, Magic, Manipulation<br>
+      <strong>Excesses:</strong> Coldness, Manipulation, Perfectionism<br>
+      <strong>Mechanics:</strong> Card draw, counterspells, flying, artifact affinity</p>
+      <p><em>"Everything can be improved. Knowledge is power."</em></p>
+
+      <span id="sec-black" class="sec-anchor"></span>
+      <h3><span class="color-swatch" style="background:#2A1F28;border-color:#666"></span>Black (B) — Ambition &amp; Individual</h3>
+      <p>Pentagon position 2 · Allies: Blue, Red · Enemies: White, Green</p>
+      <p><strong>Values:</strong> Power · Achievement · Pragmatism<br>
+      <strong>Methods:</strong> Power at any cost, Resource exploitation<br>
+      <strong>Excesses:</strong> Egoism, Cynicism, Parasitism<br>
+      <strong>Mechanics:</strong> Destruction, discard, reanimation, sacrifice</p>
+      <p><em>"Every being has the right to do whatever it takes. Death is a resource."</em></p>
+
+      <span id="sec-red" class="sec-anchor"></span>
+      <h3><span class="color-swatch" style="background:#C82020"></span>Red (R) — Freedom &amp; Passion</h3>
+      <p>Pentagon position 3 · Allies: Black, Green · Enemies: White, Blue</p>
+      <p><strong>Values:</strong> Freedom · Emotion · Spontaneity · Action<br>
+      <strong>Methods:</strong> Intuition, Passion, Creative Destruction<br>
+      <strong>Excesses:</strong> Chaos, Impulsivity, Anarchy<br>
+      <strong>Mechanics:</strong> Direct damage, haste, chaos, artifact destruction</p>
+      <p><em>"Feel, don't think. Act now, worry later."</em></p>
+
+      <span id="sec-green" class="sec-anchor"></span>
+      <h3><span class="color-swatch" style="background:#1A7A40"></span>Green (G) — Nature &amp; Growth</h3>
+      <p>Pentagon position 4 · Allies: Red, White · Enemies: Blue, Black</p>
+      <p><strong>Values:</strong> Nature · Tradition · Organic Growth · Destiny<br>
+      <strong>Methods:</strong> Adaptation, Ecosystem Reliance, Acceptance<br>
+      <strong>Excesses:</strong> Fatalism, Progress Rejection, Law of the Jungle<br>
+      <strong>Mechanics:</strong> Large creatures, mana acceleration, enchantments</p>
+      <p><em>"Everything has its place. Growth through time, not force."</em></p>
+
+      <!-- ALLIED GUILDS -->
+      <h2>Allied Guilds (Adjacent Pairs)</h2>
+      <p>Adjacent colors share philosophical DNA — their guild identities reinforce each other.</p>
+
+      <span id="sec-azorius" class="sec-anchor"></span>
+      <h3><span class="guild-badge"><span class="guild-pip" style="background:#D8D4C8"></span><span class="guild-pip" style="background:#3A7FD5"></span></span> Azorius (W+U)</h3>
+      <p><strong>Ravnica:</strong> The Senate — legislative body<br>
+      <strong>Synthesis:</strong> Law + Knowledge = <em>Rational Governance</em><br>
+      Civilization requires both the enforcement of rules (W) and the wisdom to design them well (U).<br>
+      <strong>Themes:</strong> Law, bureaucracy, order, jurisdiction, institution<br>
+      <strong>Mechanics:</strong> Control, detain, flying, permission magic<br>
+      <strong>Analogues:</strong> Constitutional democracies, international law</p>
+
+      <span id="sec-dimir" class="sec-anchor"></span>
+      <h3><span class="guild-badge"><span class="guild-pip" style="background:#3A7FD5"></span><span class="guild-pip" style="background:#2A1F28;border-color:#666"></span></span> Dimir (U+B)</h3>
+      <p><strong>Ravnica:</strong> The Secret Guild — officially doesn't exist<br>
+      <strong>Synthesis:</strong> Knowledge + Ambition = <em>Strategic Manipulation</em><br>
+      Information asymmetry is the ultimate power. Control what others believe.<br>
+      <strong>Themes:</strong> Secrecy, espionage, mind control, information asymmetry<br>
+      <strong>Mechanics:</strong> Mill, discard, surveil, cipher<br>
+      <strong>Analogues:</strong> Intelligence agencies, corporate espionage</p>
+
+      <span id="sec-rakdos" class="sec-anchor"></span>
+      <h3><span class="guild-badge"><span class="guild-pip" style="background:#2A1F28;border-color:#666"></span><span class="guild-pip" style="background:#C82020"></span></span> Rakdos (B+R)</h3>
+      <p><strong>Ravnica:</strong> The Cult — demonic circus; entertainment through mayhem<br>
+      <strong>Synthesis:</strong> Ambition + Passion = <em>Hedonistic Chaos</em><br>
+      Pleasure with no moral constraints. Destruction as entertainment.<br>
+      <strong>Themes:</strong> Chaos, hedonism, spectacle, violence as art<br>
+      <strong>Mechanics:</strong> Direct damage, sacrifice, haste, chaos<br>
+      <strong>Analogues:</strong> Extreme hedonism, nihilism, transgressive art</p>
+
+      <span id="sec-gruul" class="sec-anchor"></span>
+      <h3><span class="guild-badge"><span class="guild-pip" style="background:#C82020"></span><span class="guild-pip" style="background:#1A7A40"></span></span> Gruul (R+G)</h3>
+      <p><strong>Ravnica:</strong> The Clans — exiled warriors in Ravnica's ruins<br>
+      <strong>Synthesis:</strong> Passion + Nature = <em>Primal Rage</em><br>
+      Civilization is the disease; wildness is the cure. Ecology expressed through strength.<br>
+      <strong>Themes:</strong> Wildness, rage, primitivism, tribal loyalty<br>
+      <strong>Mechanics:</strong> Large creatures, trample, haste, bloodrush<br>
+      <strong>Analogues:</strong> Anarcho-primitivism, ecological militancy</p>
+
+      <span id="sec-selesnya" class="sec-anchor"></span>
+      <h3><span class="guild-badge"><span class="guild-pip" style="background:#1A7A40"></span><span class="guild-pip" style="background:#D8D4C8"></span></span> Selesnya (G+W)</h3>
+      <p><strong>Ravnica:</strong> The Conclave — nature-based spiritual community<br>
+      <strong>Synthesis:</strong> Nature + Community = <em>Communal Harmony</em><br>
+      The greatest expression of nature is collective living rooted in shared purpose.<br>
+      <strong>Themes:</strong> Community, nature-worship, unity, stewardship<br>
+      <strong>Mechanics:</strong> Token generation, convoke, life gain, populate<br>
+      <strong>Analogues:</strong> Eco-villages, religious communities, cooperatives</p>
+
+      <!-- ENEMY GUILDS -->
+      <h2>Enemy Guilds (Diagonal Pairs)</h2>
+      <p>Colors two steps apart on the pentagon. Their philosophical tension generates the richest identities.</p>
+
+      <span id="sec-orzhov" class="sec-anchor"></span>
+      <h3><span class="guild-badge"><span class="guild-pip" style="background:#D8D4C8"></span><span class="guild-pip" style="background:#2A1F28;border-color:#666"></span></span> Orzhov (W+B)</h3>
+      <p><strong>Ravnica:</strong> The Syndicate — ghost-run banking and religion<br>
+      <strong>Tension:</strong> Collectivism (W) vs. Individualism (B)<br>
+      <strong>Resolution:</strong> <em>Institutional Power</em> — law as instrument of personal enrichment<br>
+      <strong>Themes:</strong> Wealth, organized religion, debt, class hierarchy<br>
+      <strong>Mechanics:</strong> Life drain, spirit tokens, extort, haunt</p>
+
+      <span id="sec-izzet" class="sec-anchor"></span>
+      <h3><span class="guild-badge"><span class="guild-pip" style="background:#3A7FD5"></span><span class="guild-pip" style="background:#C82020"></span></span> Izzet (U+R)</h3>
+      <p><strong>Ravnica:</strong> The League — eccentric mages led by dragon Niv-Mizzet<br>
+      <strong>Tension:</strong> Calculation (U) vs. Impulse (R)<br>
+      <strong>Resolution:</strong> <em>Mad Science</em> — each fuels the other; explosive brilliance<br>
+      <strong>Themes:</strong> Innovation, experiments, creative chaos, overengineering<br>
+      <strong>Mechanics:</strong> Instants/sorceries, overload, jump-start, storm</p>
+
+      <span id="sec-golgari" class="sec-anchor"></span>
+      <h3><span class="guild-badge"><span class="guild-pip" style="background:#2A1F28;border-color:#666"></span><span class="guild-pip" style="background:#1A7A40"></span></span> Golgari (B+G)</h3>
+      <p><strong>Ravnica:</strong> The Swarm — undead farmers, underground agriculture<br>
+      <strong>Tension:</strong> Ambition (B) vs. Acceptance (G)<br>
+      <strong>Resolution:</strong> <em>Life-Death Cycle</em> — decay IS the engine of renewal<br>
+      <strong>Themes:</strong> Decay, scavenging, necromancy, abundance from rot<br>
+      <strong>Mechanics:</strong> Graveyard recursion, scavenge, dredge, undergrowth</p>
+
+      <span id="sec-boros" class="sec-anchor"></span>
+      <h3><span class="guild-badge"><span class="guild-pip" style="background:#C82020"></span><span class="guild-pip" style="background:#D8D4C8"></span></span> Boros (R+W)</h3>
+      <p><strong>Ravnica:</strong> The Legion — angelic military, zealous law enforcement<br>
+      <strong>Tension:</strong> Freedom (R) vs. Order (W)<br>
+      <strong>Resolution:</strong> <em>Righteous Force</em> — order enforced with burning conviction<br>
+      <strong>Themes:</strong> Military, justice, angels, crusade, zeal<br>
+      <strong>Mechanics:</strong> Aggressive creatures, battalion, mentor, haste</p>
+
+      <span id="sec-simic" class="sec-anchor"></span>
+      <h3><span class="guild-badge"><span class="guild-pip" style="background:#3A7FD5"></span><span class="guild-pip" style="background:#1A7A40"></span></span> Simic (U+G)</h3>
+      <p><strong>Ravnica:</strong> The Combine — biomancers redesigning life<br>
+      <strong>Tension:</strong> Progress (U) vs. Tradition (G)<br>
+      <strong>Resolution:</strong> <em>Guided Evolution</em> — nature's potential refined by design<br>
+      <strong>Themes:</strong> Bio-engineering, hybridization, guided evolution<br>
+      <strong>Mechanics:</strong> +1/+1 counters, evolve, adapt, hybrid creatures</p>
+
+      <!-- ARTIFACT -->
+      <h2>Artifact (Pseudo-Color)</h2>
+      <span id="sec-artifact" class="sec-anchor"></span>
+      <h3><span class="color-swatch" style="background:#e8e4d8;border-color:#888"></span>Artifact — Colorless</h3>
+      <p><strong>Symbol:</strong> <code>{C}</code> · <strong>Geometry:</strong> Dodecahedron (12 pentagonal faces)</p>
+      <p>Artifacts are <strong>philosophically agnostic</strong> — pure technology divorced from any value position. A sword is neither White nor Black; only its use reveals a color identity. Any color can create or use artifacts, making them the <em>universal language</em> of the Color Pie.</p>
+      <table>
+        <tr><th>Color</th><th>Relationship with Artifact</th></tr>
+        <tr><td><span class="color-swatch" style="background:#D8D4C8"></span>White</td><td>Institutional tools — weapons of order</td></tr>
+        <tr><td><span class="color-swatch" style="background:#3A7FD5"></span>Blue</td><td>Strongest affinity — artifact as intellect extension</td></tr>
+        <tr><td><span class="color-swatch" style="background:#2A1F28;border-color:#666"></span>Black</td><td>Power tools — weapons, necromantic machinery</td></tr>
+        <tr><td><span class="color-swatch" style="background:#C82020"></span>Red</td><td>Ambivalent — creates chaotically, destroys gleefully</td></tr>
+        <tr><td><span class="color-swatch" style="background:#1A7A40"></span>Green</td><td>Most hostile — unnatural imposition on organic order</td></tr>
+      </table>
+      <p><em>TSCG note: Artifact models a zero-philosophy substrate — pure Structure (S) with minimal Attractor (A). The material layer beneath the information layer of the Color Pie.</em></p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTROLS ══════════════════════════════════════════════════════════ -->
+<div id="controls">
+  <button class="ctrl-btn" id="btn-autorot" onclick="toggleAutoRotate()">⟳ Auto-Rotate</button>
+  <div class="ctrl-sep"></div>
+  <button class="ctrl-btn" onclick="resetView()">⌖ Reset View</button>
+  <button class="ctrl-btn" onclick="clearSelection()">✕ Deselect</button>
+  <div class="ctrl-sep"></div>
+  <span id="sel-info" style="font-size:11px;color:var(--muted)">Click a sphere or button to explore an identity</span>
+  <div class="status-indicator">
+    <div class="status-dot live" id="statusDot"></div>
+    <span id="statusText">3D Ready</span>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<!-- ─── BabylonJS ─────────────────────────────────────────────────────── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/6.26.0/babylon.min.js"></script>
+
+<script>
+'use strict';
+// ═══════════════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════════════
+const MANA = [
+  {id:'white', label:'White (W)',  hex:'#D8D4C8', pos:0},
+  {id:'blue',  label:'Blue (U)',   hex:'#3A7FD5', pos:1},
+  {id:'black', label:'Black (B)', hex:'#2A1F28', pos:2},
+  {id:'red',   label:'Red (R)',    hex:'#C82020', pos:3},
+  {id:'green', label:'Green (G)', hex:'#1A7A40', pos:4},
+];
+
+const GUILDS_ADJ = [
+  {id:'azorius',  label:'Azorius',  hex1:'#D8D4C8', hex2:'#3A7FD5', i:0, j:1},
+  {id:'dimir',    label:'Dimir',    hex1:'#3A7FD5', hex2:'#2A1F28', i:1, j:2},
+  {id:'rakdos',   label:'Rakdos',   hex1:'#2A1F28', hex2:'#C82020', i:2, j:3},
+  {id:'gruul',    label:'Gruul',    hex1:'#C82020', hex2:'#1A7A40', i:3, j:4},
+  {id:'selesnya', label:'Selesnya', hex1:'#1A7A40', hex2:'#D8D4C8', i:4, j:0},
+];
+
+const GUILDS_ENE = [
+  {id:'orzhov',  label:'Orzhov',  hex1:'#D8D4C8', hex2:'#2A1F28', i:0, k:2},
+  {id:'izzet',   label:'Izzet',   hex1:'#3A7FD5', hex2:'#C82020', i:1, k:3},
+  {id:'golgari', label:'Golgari', hex1:'#2A1F28', hex2:'#1A7A40', i:2, k:4},
+  {id:'boros',   label:'Boros',   hex1:'#C82020', hex2:'#D8D4C8', i:3, k:0},
+  {id:'simic',   label:'Simic',   hex1:'#3A7FD5', hex2:'#1A7A40', i:1, k:4},
+];
+
+const ITEM_MAP = {};
+[...MANA, ...GUILDS_ADJ, ...GUILDS_ENE,
+ {id:'artifact', label:'Artifact (Colorless)'}
+].forEach(x => ITEM_MAP[x.id] = x);
+
+// ═══════════════════════════════════════════════════════════════════
+// GEOMETRY CONSTANTS
+// ═══════════════════════════════════════════════════════════════════
+const N    = 5;
+const R1   = 1.5 * 1.17 * 1.09;  // +17% +9% — color wheel size
+const Y1   = 0;
+const R_ARC  = 0.04;
+const R_DIAG = 0.03;
+const S_PRI = 0.26;
+const S_BIC = 0.17;
+const S_DOD = 0.20 * 1.12;  // +12% artifact (after wheel resize)
+
+// Pentagon angles & positions
+const ANGLES = Array.from({length:N}, (_,i) => (2*Math.PI*i/N) - Math.PI/2);
+
+// ═══════════════════════════════════════════════════════════════════
+// BABYLON SCENE
+// ═══════════════════════════════════════════════════════════════════
+const canvas = document.getElementById('renderCanvas');
+const engine = new BABYLON.Engine(canvas, true, {preserveDrawingBuffer:true});
+
+let scene, cam, autoRotate = false, dragging = false;
+const meshRegistry = {};
+let currentSel = null;
+
+function createScene() {
+  scene = new BABYLON.Scene(engine);
+  scene.clearColor = new BABYLON.Color4(0.227, 0.247, 0.278, 1);  // #3a3f47 medium grey
+
+  // Camera — ArcRotate (drag + zoom built-in)
+  cam = new BABYLON.ArcRotateCamera('cam', -Math.PI/2 + 0.28, 1.05, 6.8, new BABYLON.Vector3(0, 0.35, 0), scene);
+  cam.attachControl(canvas, true);
+  cam.lowerRadiusLimit = 3;
+  cam.upperRadiusLimit = 18;
+  cam.wheelPrecision = 50;
+
+  // Lights
+  const hemi = new BABYLON.HemisphericLight('hemi', new BABYLON.Vector3(0,1,0), scene);
+  hemi.intensity = 0.7;
+  const sun = new BABYLON.DirectionalLight('sun', new BABYLON.Vector3(-0.6,-1,-0.8).normalize(), scene);
+  sun.intensity = 0.85;
+  const fill = new BABYLON.DirectionalLight('fill', new BABYLON.Vector3(0.7,-0.3,0.6).normalize(), scene);
+  fill.intensity = 0.38;
+
+  buildWheel();
+
+  // Pointer picking + click-outside deselect
+  scene.onPointerDown = function(evt, pickResult) {
+    if (pickResult.hit && pickResult.pickedMesh && pickResult.pickedMesh.metadata && pickResult.pickedMesh.metadata.id) {
+      selectItem(pickResult.pickedMesh.metadata.id);
+    } else {
+      clearSelection();
+    }
+  };
+
+  // Drag detection (to pause auto-rotate)
+  canvas.addEventListener('pointerdown', () => { dragging = true; });
+  canvas.addEventListener('pointerup',   () => { dragging = false; });
+
+  return scene;
+}
+
+// ─── Arc path generator ──────────────────────────────────────────
+function arcPath(R, Y, a0, a1, steps) {
+  steps = steps || 20;
+  return Array.from({length:steps+1}, function(_,i) {
+    const a = a0 + (a1-a0)*i/steps;
+    return new BABYLON.Vector3(Math.cos(a)*R, Y, Math.sin(a)*R);
+  });
+}
+
+// ─── Pentagon vertex positions ───────────────────────────────────
+function pentaPos(i) {
+  const a = ANGLES[i];
+  return new BABYLON.Vector3(Math.cos(a)*R1, Y1, Math.sin(a)*R1);
+}
+
+// ─── Make a tube along a path with a given color ─────────────────
+function makeTube(name, path, radius, hexColor) {
+  // BabylonJS CreateTube needs at least 2 distinct points
+  if (path.length < 2) return null;
+  const tube = BABYLON.MeshBuilder.CreateTube(name, {
+    path: path, radius: radius, tessellation: 8, cap: BABYLON.Mesh.CAP_ALL, updatable: false
+  }, scene);
+  const mat = new BABYLON.StandardMaterial(name+'_m', scene);
+  mat.diffuseColor = BABYLON.Color3.FromHexString(hexColor);
+  tube.material = mat;
+  return tube;
+}
+
+// ─── Split arc tube (two colored halves) ─────────────────────────
+function makeSplitArcTube(R, Y, a0, a1, hex1, hex2, tubeR, baseName) {
+  const amid = (a0+a1)/2;
+  makeTube(baseName+'_1', arcPath(R, Y, a0, amid, 14), tubeR, hex1);
+  makeTube(baseName+'_2', arcPath(R, Y, amid, a1, 14), tubeR, hex2);
+}
+
+// ─── Split straight tube (two colored halves) ─────────────────────
+function makeSplitStraightTube(pA, pB, hex1, hex2, tubeR, baseName) {
+  const mid = BABYLON.Vector3.Lerp(pA, pB, 0.5);
+  makeTube(baseName+'_1', [pA.clone(), mid.clone()], tubeR, hex1);
+  makeTube(baseName+'_2', [mid.clone(), pB.clone()], tubeR, hex2);
+}
+
+// ─── Helper: solid material ───────────────────────────────────────
+function solidMat(name, hex) {
+  const m = new BABYLON.StandardMaterial(name, scene);
+  m.diffuseColor = BABYLON.Color3.FromHexString(hex);
+  return m;
+}
+
+// ─── Unified octahedron = two square-based pyramids tip-to-tip ────
+// BabylonJS CreateCylinder(tessellation=4) places corners at 0°,90°,180°,270°
+// (NOT at 45° as initially assumed). So LOCAL_OFFSET = 0:
+//   quat = Ry(rotY)  →  local(1,0,0) maps to world angle rotY = atan2(pos.z,pos.x) ✓
+function makeOctaParts(name, pos, r, hex1, hex2, rotY) {
+  const BASE_D  = r * 1.80;
+  const HEIGHT  = r * 0.90;
+  const OFFSET  = HEIGHT / 2;
+  const quat = BABYLON.Quaternion.RotationAxis(BABYLON.Vector3.Up(), rotY);  // LOCAL_OFFSET = 0
+
+  const top = BABYLON.MeshBuilder.CreateCylinder(name+'_ot', {
+    diameterTop:0, diameterBottom:BASE_D, height:HEIGHT, tessellation:4, cap:0
+  }, scene);
+  top.position           = new BABYLON.Vector3(pos.x, pos.y + OFFSET, pos.z);
+  top.rotationQuaternion = quat.clone();
+  top.material           = solidMat(name+'_ot_m', hex1);
+  top.isVisible          = false;
+  top.enableEdgesRendering();
+  top.edgesWidth = 1.0;
+  top.edgesColor = new BABYLON.Color4(0, 0, 0, 1);
+
+  const bot = BABYLON.MeshBuilder.CreateCylinder(name+'_ob', {
+    diameterTop:BASE_D, diameterBottom:0, height:HEIGHT, tessellation:4, cap:0
+  }, scene);
+  bot.position           = new BABYLON.Vector3(pos.x, pos.y - OFFSET, pos.z);
+  bot.rotationQuaternion = quat.clone();
+  bot.material           = solidMat(name+'_ob_m', hex2);
+  bot.isVisible          = false;
+  bot.enableEdgesRendering();
+  bot.edgesWidth = 1.0;
+  bot.edgesColor = new BABYLON.Color4(0, 0, 0, 1);
+
+  return [top, bot];
+}
+// Convenience alias — EXACT same formula as bicolor (hex1=hex2 = solid color)
+// edgeColor optional — passed through to makeBicolorOctaParts
+function makeSolidOctaParts(name, pos, r, hex, rotY, edgeColor) {
+  return makeBicolorOctaParts(name, pos, r, hex, hex, rotY, edgeColor);
+}
+
+// ─── Bicolor octahedron — tangential color split ──────────────────
+// Colors separate LEFT/RIGHT (tangentially) rather than TOP/BOTTOM.
+// edgeColor: optional BABYLON.Color4 — defaults to black if not provided.
+function makeBicolorOctaParts(name, pos, r, hex1, hex2, rotY, edgeColor) {
+  const BASE_D = r * 1.80;
+  const HEIGHT = r * 0.90;
+  const OFFSET = HEIGHT / 2;
+  const LOCAL_OFFSET = Math.PI / 4;
+  const eCol = edgeColor || new BABYLON.Color4(0, 0, 0, 1);
+
+  // Step 1 — align diagonal with radial direction (same as solid)
+  const baseQuat = BABYLON.Quaternion.RotationAxis(
+    BABYLON.Vector3.Up(), rotY - LOCAL_OFFSET
+  );
+  // Step 2 — tilt π/2 around the radial axis → vertical split becomes tangential
+  const radialAxis = new BABYLON.Vector3(Math.cos(rotY), 0, Math.sin(rotY));
+  const tiltQuat   = BABYLON.Quaternion.RotationAxis(radialAxis, Math.PI / 2);
+  const quat = tiltQuat.multiply(baseQuat);
+
+  const tx = -Math.sin(rotY), tz = Math.cos(rotY);
+
+  // Pyramid 1 (tip in +tangential) → hex2
+  const top = BABYLON.MeshBuilder.CreateCylinder(name+'_ot', {
+    diameterTop:0, diameterBottom:BASE_D, height:HEIGHT, tessellation:4, cap:0
+  }, scene);
+  top.rotationQuaternion = quat.clone();
+  top.position  = new BABYLON.Vector3(pos.x + tx*OFFSET, pos.y, pos.z + tz*OFFSET);
+  top.material  = solidMat(name+'_ot_m', hex2);
+  top.isVisible = false;
+  top.enableEdgesRendering();
+  top.edgesWidth = 1.0;
+  top.edgesColor = eCol;
+
+  // Pyramid 2 (tip in -tangential) → hex1
+  const bot = BABYLON.MeshBuilder.CreateCylinder(name+'_ob', {
+    diameterTop:BASE_D, diameterBottom:0, height:HEIGHT, tessellation:4, cap:0
+  }, scene);
+  bot.rotationQuaternion = quat.clone();
+  bot.position  = new BABYLON.Vector3(pos.x - tx*OFFSET, pos.y, pos.z - tz*OFFSET);
+  bot.material  = solidMat(name+'_ob_m', hex1);
+  bot.isVisible = false;
+  bot.enableEdgesRendering();
+  bot.edgesWidth = 1.0;
+  bot.edgesColor = eCol;
+
+  return [top, bot];
+}
+
+// ─── Bicolor edge color: white if average luminance of both colors is dark ─
+function bicolorEdgeColor(hex1, hex2) {
+  function lum(h) {
+    const r=parseInt(h.slice(1,3),16)/255, g=parseInt(h.slice(3,5),16)/255, b=parseInt(h.slice(5,7),16)/255;
+    return 0.299*r + 0.587*g + 0.114*b;
+  }
+  return (lum(hex1) + lum(hex2)) / 2 < 0.35
+    ? new BABYLON.Color4(1,1,1,1)   // white for dark pairs (Dimir, Rakdos, Golgari, Izzet, Simic)
+    : new BABYLON.Color4(0,0,0,1);  // black otherwise
+}
+// ─── Universal selection rings (white) for any pole ──────────────
+// Two rings: equatorial (flat in XZ) + polar (upright in XY).
+// r = sphere radius of the pole.
+// Thickness factor includes all cumulative adjustments: 0.055 × 1.18 × 1.12
+function makeRingPair(name, pos, r) {
+  const rTube = r * 0.055 * 1.18 * 1.12;
+  const rRing = r * 1.30 * 1.20;
+  const MAT = new BABYLON.StandardMaterial(name+'_ring_m', scene);
+  MAT.diffuseColor  = new BABYLON.Color3(1, 1, 1);
+  MAT.emissiveColor = new BABYLON.Color3(0.25, 0.25, 0.25);
+
+  // Equatorial — flat in XZ plane (no rotation)
+  const eq = BABYLON.MeshBuilder.CreateTorus(name+'_req', {
+    diameter: rRing*2, thickness: rTube, tessellation: 48
+  }, scene);
+  eq.position   = pos.clone();
+  eq.material   = MAT;
+  eq.isVisible  = false;
+  eq.isPickable = false;
+
+  // Polar ring — perpendicular to radial direction center→pole
+  // Normal must equal radial unit vector (cos θ, 0, sin θ).
+  // Rotate torus normal from (0,1,0) to (cos θ, 0, sin θ):
+  //   axis = (0,1,0) × (cos θ, 0, sin θ) normalized = (sin θ, 0, -cos θ)
+  //   angle = π/2  (dot product = 0 → 90° rotation)
+  const pol = BABYLON.MeshBuilder.CreateTorus(name+'_rpol', {
+    diameter: rRing*2, thickness: rTube, tessellation: 48
+  }, scene);
+  pol.position   = pos.clone();
+  pol.isPickable = false;
+  const angle = Math.atan2(pos.z, pos.x);
+  const axis  = new BABYLON.Vector3(Math.sin(angle), 0, -Math.cos(angle));
+  pol.rotationQuaternion = BABYLON.Quaternion.RotationAxis(axis, Math.PI / 2);
+  pol.material  = MAT;
+  pol.isVisible = false;
+
+  return [eq, pol];
+}
+
+// ─── Contrast edge color ──────────────────────────────────────────
+function contrastEdgeColor(hex) {
+  const r = parseInt(hex.slice(1,3), 16) / 255;
+  const g = parseInt(hex.slice(3,5), 16) / 255;
+  const b = parseInt(hex.slice(5,7), 16) / 255;
+  const lum = 0.299*r + 0.587*g + 0.114*b;
+  return lum > 0.45
+    ? new BABYLON.Color4(0, 0, 0, 1)    // black wireframe for light colors (White)
+    : new BABYLON.Color4(1, 1, 1, 1);   // white wireframe for dark colors (Black, Blue, Red, Green)
+}
+
+// ─── Primary solid sphere ─────────────────────────────────────────
+function makePrimarySphere(pos, hex, r, id, label) {
+  const sp = BABYLON.MeshBuilder.CreateSphere(id+'_sp', {diameter:r*2, segments:24}, scene);
+  sp.position  = pos.clone();
+  sp.material  = solidMat(id+'_sp_m', hex);
+  sp.metadata  = {id:id, label:label};
+
+  const rings = makeRingPair(id, pos, r);
+  meshRegistry[id] = {sphere:sp, rings:rings};
+}
+
+// ─── Bicolor split sphere ─────────────────────────────────────────
+function makeSplitSphere(pos, hex1, hex2, r, id, label, dirVec) {
+  let rotY = 0;
+  if (dirVec) {
+    const l = Math.sqrt(dirVec.x*dirVec.x + dirVec.z*dirVec.z);
+    if (l > 0.0001) rotY = Math.atan2(-dirVec.z/l, dirVec.x/l) + Math.PI/2 + Math.PI/2 + Math.PI/4 + Math.PI/4;
+  }
+
+  // Sphere with left/right split texture
+  const dt  = new BABYLON.DynamicTexture(id+'_tex', {width:256, height:128}, scene, false);
+  const ctx = dt.getContext();
+  ctx.fillStyle = hex1; ctx.fillRect(0,0,128,128);
+  ctx.fillStyle = hex2; ctx.fillRect(128,0,128,128);
+  dt.update();
+
+  const sp = BABYLON.MeshBuilder.CreateSphere(id+'_sp', {diameter:r*2, segments:28}, scene);
+  sp.position   = pos.clone();
+  sp.rotation.y = rotY;
+  const spMat   = new BABYLON.StandardMaterial(id+'_sp_m', scene);
+  spMat.diffuseTexture = dt;
+  sp.material   = spMat;
+  sp.metadata   = {id:id, label:label};
+
+  const rings = makeRingPair(id, pos, r);
+  meshRegistry[id] = {sphere:sp, rings:rings};
+}
+
+// ─── Artifact ─────────────────────────────────────────────────────
+function makeArtifact() {
+  const BEIGE = '#C4A86A';
+  const pos   = new BABYLON.Vector3(0, Y1, 0);
+
+  const sp = BABYLON.MeshBuilder.CreateSphere('art_sp', {diameter:S_DOD*2*0.91, segments:24}, scene);
+  sp.position = pos.clone();
+  sp.material = solidMat('art_sp_m', BEIGE);
+  sp.metadata = {id:'artifact', label:'Artifact'};
+
+  // White selection rings only (same as all other poles)
+  const rings = makeRingPair('artifact', pos, S_DOD * 0.91);
+
+  meshRegistry['artifact'] = {sphere:sp, rings:rings};
+}
+
+// ─── Build the entire wheel ───────────────────────────────────────
+function buildWheel() {
+  // 1. Arc tubes — 5 adjacent pairs
+  for (let i=0; i<N; i++) {
+    const j = (i+1)%N;
+    let a0 = ANGLES[i], a1 = ANGLES[j];
+    if (a1 < a0) a1 += 2*Math.PI;
+    makeSplitArcTube(R1, Y1, a0, a1, MANA[i].hex, MANA[j].hex, R_ARC, 'arc'+i);
+  }
+  // 2. Straight tubes — 5 diagonal pairs
+  for (let i=0; i<N; i++) {
+    const k = (i+2)%N;
+    makeSplitStraightTube(pentaPos(i), pentaPos(k), MANA[i].hex, MANA[k].hex, R_DIAG, 'diag'+i);
+  }
+  // 3. Adjacent guild bicolor spheres
+  GUILDS_ADJ.forEach(function(g) {
+    const i=g.i, j=g.j;
+    let a0=ANGLES[i], a1=ANGLES[j];
+    if (a1 < a0) a1 += 2*Math.PI;
+    const amid = (a0+a1)/2;
+    const pos   = new BABYLON.Vector3(Math.cos(amid)*R1, Y1, Math.sin(amid)*R1);
+    const pi    = pentaPos(i), pj = pentaPos(j);
+    const dir   = new BABYLON.Vector3(pi.x-pj.x, 0, pi.z-pj.z);
+    makeSplitSphere(pos, g.hex1, g.hex2, S_BIC, g.id, g.label, dir);
+  });
+  // 4. Enemy guild bicolor spheres
+  GUILDS_ENE.forEach(function(g) {
+    const pi = pentaPos(g.i), pk = pentaPos(g.k);
+    const pos  = BABYLON.Vector3.Lerp(pi, pk, 0.5);
+    const dir  = new BABYLON.Vector3(pi.x-pk.x, 0, pi.z-pk.z);
+    makeSplitSphere(pos, g.hex1, g.hex2, S_BIC, g.id, g.label, dir);
+  });
+  // 5. Primary solid spheres
+  MANA.forEach(function(m,i) {
+    makePrimarySphere(pentaPos(i), m.hex, S_PRI, m.id, m.label);
+  });
+  // 6. Artifact (center)
+  makeArtifact();
+}
+
+createScene();
+engine.resize();  // force correct sizing inside #canvas-wrap
+document.getElementById('statusText').textContent = '3D Live';
+
+// ─── Render loop (après createScene — cam et scene sont définis) ──
+engine.runRenderLoop(function() {
+  if (!scene || !cam) return;
+  if (autoRotate && !dragging) cam.alpha += 0.0018;
+  scene.render();
+});
+window.addEventListener('resize', function() { engine.resize(); });
+
+// ═══════════════════════════════════════════════════════════════════
+// SELECTION SYSTEM
+// ═══════════════════════════════════════════════════════════════════
+
+// Selection = show/hide white rings around the sphere
+function applyHighlight(id, on) {
+  const entry = meshRegistry[id];
+  if (!entry) return;
+  entry.rings.forEach(function(r) { r.isVisible = on; });
+}
+
+function selectItem(id) {
+  // Toggle: click same pole again → deselect
+  if (currentSel === id) { clearSelection(); return; }
+
+  // Deselect previous
+  if (currentSel) {
+    applyHighlight(currentSel, false);
+    const prevBtn = document.querySelector('.mcw-btn[data-id="'+currentSel+'"]');
+    if (prevBtn) prevBtn.classList.remove('active');
+  }
+
+  currentSel = id;
+  applyHighlight(id, true);
+
+  // Activate button (if it exists — artifact has no button)
+  const btn = document.querySelector('.mcw-btn[data-id="'+id+'"]');
+  if (btn) btn.classList.add('active');
+
+  // Update header chip
+  const info = ITEM_MAP[id];
+  const chip = document.getElementById('sel-chip');
+  chip.textContent = info ? info.label : id;
+  chip.style.display = 'inline-block';
+
+  // Update status bar
+  document.getElementById('sel-info').textContent = info ? info.label : id;
+  document.getElementById('sel-info').style.color = 'var(--warn)';
+
+  // Navigate Detail tab to the section
+  navigateToSection(id);
+}
+
+function clearSelection() {
+  if (currentSel) {
+    applyHighlight(currentSel, false);
+    const prevBtn = document.querySelector('.mcw-btn[data-id="'+currentSel+'"]');
+    if (prevBtn) prevBtn.classList.remove('active');
+    currentSel = null;
+  }
+  document.getElementById('sel-chip').style.display = 'none';
+  document.getElementById('sel-info').textContent = 'Click a sphere or button to explore an identity';
+  document.getElementById('sel-info').style.color = 'var(--muted)';
+}
+
+function navigateToSection(id) {
+  activateTab(3);
+  setTimeout(function() {
+    const el = document.getElementById('sec-'+id) || document.getElementById('sec-overview');
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 60);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════════════════════════
+function activateTab(idx) {
+  const tabs   = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+  tabs.forEach(function(t,i)   { t.classList.toggle('active', i===idx); });
+  panels.forEach(function(p,i) { p.classList.toggle('active', i===idx); });
+}
+
+function toggleAutoRotate() {
+  autoRotate = !autoRotate;
+  document.getElementById('btn-autorot').classList.toggle('active', autoRotate);
+}
+
+function resetView() {
+  if (!cam) return;
+  cam.alpha  = -Math.PI/2 + 0.28;
+  cam.beta   = 1.05;
+  cam.radius = 6.8;
+  cam.setTarget(new BABYLON.Vector3(0, 0.35, 0));
+}
+
+// Wire up buttons
+document.querySelectorAll('.mcw-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    selectItem(this.dataset.id);
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// SPLITTER (drag to resize sidebar)
+// ═══════════════════════════════════════════════════════════════════
+(function() {
+  const splitter = document.getElementById('splitter');
+  const app      = document.getElementById('app');
+  let draggingSp = false, startX = 0, startW = 0;
+  const MIN_W = 180, MAX_W = 560;
+
+  splitter.addEventListener('mousedown', function(e) {
+    draggingSp = true;
+    startX = e.clientX;
+    startW = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-w')) || 320;
+    splitter.classList.add('dragging');
+    e.preventDefault();
+  });
+  window.addEventListener('mousemove', function(e) {
+    if (!draggingSp) return;
+    const dx = startX - e.clientX;
+    const nw = Math.min(MAX_W, Math.max(MIN_W, startW + dx));
+    document.documentElement.style.setProperty('--sidebar-w', nw+'px');
+  });
+  window.addEventListener('mouseup', function() {
+    draggingSp = false;
+    splitter.classList.remove('dragging');
+  });
+})();
+</script>
+<!-- Home button tooltip -->
+<div id="home-tip" style="
+  position:fixed;z-index:999999;
+  background:#1c2130;color:#e6edf3;
+  border:1px solid #3d444f;border-radius:6px;
+  padding:4px 10px;font-size:11px;font-weight:500;
+  letter-spacing:.04em;white-space:nowrap;
+  pointer-events:none;opacity:0;transition:opacity .18s;
+">Back to Poclet Gallery</div>
+
+<!-- TSCG logo tooltip -->
+<div id="tscg-tip" style="
+  position:fixed;z-index:999999;
+  background:#1c2130;color:#e6edf3;
+  border:1px solid #3d444f;border-radius:6px;
+  padding:4px 10px;font-size:11px;font-weight:500;
+  letter-spacing:.04em;white-space:nowrap;
+  pointer-events:none;opacity:0;transition:opacity .18s;
+  transform:translateX(-50%);
+">TSCG Github repository</div>
+
+<script>
+(function(){
+  const home    = document.getElementById('btn-home');
+  const homeTip = document.getElementById('home-tip');
+  if (home && homeTip) {
+    home.addEventListener('mouseenter', function() {
+      const r = home.getBoundingClientRect();
+      homeTip.style.left = Math.max(8, r.left) + 'px';
+      homeTip.style.top  = (r.bottom + 6) + 'px';
+      homeTip.style.opacity = '1';
+    });
+    home.addEventListener('mouseleave', function() { homeTip.style.opacity = '0'; });
+  }
+  const logo = document.querySelector('.tscg-logo-link');
+  const tip  = document.getElementById('tscg-tip');
+  if (logo && tip) {
+    logo.addEventListener('mouseenter', function() {
+      const r = logo.getBoundingClientRect();
+      tip.style.left = (r.left + r.width / 2) + 'px';
+      tip.style.top  = (r.bottom + 6) + 'px';
+      tip.style.opacity = '1';
+    });
+    logo.addEventListener('mouseleave', function() { tip.style.opacity = '0'; });
+  }
+})();
+</script>
+</body>
+</html>

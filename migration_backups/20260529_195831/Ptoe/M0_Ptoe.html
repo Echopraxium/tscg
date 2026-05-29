@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TSCG | Periodic Table of Elements</title>
+  <link rel="stylesheet" href="src/ptoe.css">
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+</head>
+<body>
+
+<!-- ── TSCG Header ── -->
+<div id="tscg-header">
+  <a id="home-btn" href="https://echopraxium.github.io/tscg/" target="_blank" title="TSCG Home"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:block;vertical-align:middle"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></a>
+  <span class="hbar-sep">|</span>
+  <a id="tscg-badge" href="https://github.com/Echopraxium/tscg" target="_blank" title="TSCG on GitHub">TSCG</a>
+  <span class="hbar-sep">|</span>
+  <span id="page-title">Periodic Table of Elements</span>
+  <div id="header-chips">
+    <span class="hchip">118 Elements</span>
+    <span class="hchip">7 Periods</span>
+    <span class="hchip" id="chip-elem">H — Hydrogen</span>
+  </div>
+</div>
+
+<!-- ── Main layout ── -->
+<div id="layout">
+
+  <!-- Left panel -->
+  <div id="left-panel">
+
+    <!-- Atomic tile -->
+    <div id="atomic-tile">
+      <span id="at-z">1</span>
+      <div id="at-sym-wrap">
+        <span id="at-sym" data-tooltip="Show Element characteristics">H</span>
+      </div>
+      <div id="at-name">Hydrogen</div>
+      <div id="at-mass">1.008</div>
+    </div>
+
+    <!-- Nav row -->
+    <div id="nav-row">
+      <span id="ac-z-label">Z = 1</span>
+      <button class="ac-arr" id="ac-left">◄</button>
+      <button class="ac-arr" id="ac-right">►</button>
+      <select id="orbital-mode-inline">
+        <option value="orbital">Orbitals</option>
+        <option value="bohr">Bohr Model</option>
+      </select>
+    </div>
+
+    <!-- Category row -->
+    <div id="at-cat-row">Nonmetal</div>
+    <div id="at-blk-row">Block-s · Period 1 · Group 1</div>
+
+    <!-- Combo row -->
+    <div id="combo-row">
+      <select id="elem-select"></select>
+      <button id="ac-clear-sel" title="Reset to H">✕</button>
+    </div>
+
+    <!-- Hovered element indicator -->
+    <div id="hovered-strip">
+      <span id="hovered-label">Hovered Elt:</span>
+      <span id="hovered-val">—</span>
+    </div>
+
+    <div class="ldiv" style="margin-top: 16px;"></div>
+
+    <!-- Families -->
+    <div id="families-header">
+      <span id="families-title">Families</span>
+      <button id="legend-clear" title="Clear family selection">✕</button>
+    </div>
+    <div id="families-list"></div>
+  </div>
+
+  <!-- Center canvas (main 3D) -->
+  <div id="view-main">
+    <canvas id="canvas-a"></canvas>
+    <!-- Orbital mode selector overlay — shown only when orbital is main view -->
+    <div id="main-orb-bar" style="display:none;position:absolute;top:10px;left:10px;z-index:20;">
+      <select id="orbital-mode-main"
+        style="background:rgba(6,11,24,0.92);border:1px solid rgba(130,108,48,0.35);
+               border-radius:8px;color:rgba(210,185,120,0.92);font-size:11px;
+               font-family:inherit;padding:5px 12px;cursor:pointer;outline:none;
+               appearance:none;-webkit-appearance:none;backdrop-filter:blur(8px);
+               box-shadow:0 2px 12px rgba(0,0,0,0.5);">
+        <option value="bohr" selected>Bohr Model</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Splitter -->
+  <div id="splitter"></div>
+
+  <!-- Sidebar TSCG (tabs) -->
+  <div id="sidebar">
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="activateTab(0)">Description</button>
+      <button class="tab-btn" onclick="activateTab(1)">Scores</button>
+      <button class="tab-btn" onclick="activateTab(2)">Concepts</button>
+      <button class="tab-btn" onclick="activateTab(3)">User's Guide</button>
+    </div>
+
+    <div class="tab-content">
+      <!-- Tab 0: Description -->
+      <div class="tab-panel active">
+        <h3>Periodic Table of Elements</h3>
+        <p>The Periodic Table is a TSCG instance modeling chemistry's foundational framework, demonstrating how quantum constraints generate emergent periodic patterns across 118 elements.</p>
+        
+        <h4 style="margin-top: 16px; color: rgba(255,255,255,0.7); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;">Element Families</h4>
+        
+        <div id="family-am" style="margin-top: 12px;">
+          <h4 style="color: #FF4422; font-size: 13px;">Alkali Metals</h4>
+          <p style="font-size: 12px; line-height: 1.6;">Highly reactive metals in Group 1 with one valence electron. They form +1 cations and react vigorously with water, producing hydrogen gas and metal hydroxides. These soft, low-density metals have low melting points and are excellent electrical conductors. Their reactivity increases down the group as the valence electron becomes easier to remove. Examples: Li, Na, K, Rb, Cs, Fr.</p>
+        </div>
+        <div id="family-ae" style="margin-top: 12px;">
+          <h4 style="color: #FF9900; font-size: 13px;">Alkaline Earth Metals</h4>
+          <p style="font-size: 12px; line-height: 1.6;">Reactive metals in Group 2 with two valence electrons. They form +2 cations and are less reactive than alkali metals but still highly reactive with water and oxygen. Their compounds are important in biological systems (Ca²⁺, Mg²⁺) and construction materials (CaO, CaCO₃). They have higher melting points and densities than alkali metals. Examples: Be, Mg, Ca, Sr, Ba, Ra.</p>
+        </div>
+        <div id="family-tm" style="margin-top: 12px;">
+          <h4 style="color: #FFD030; font-size: 13px;">Transition Metals</h4>
+          <p style="font-size: 12px; line-height: 1.6;">Metals in Groups 3-12 with variable oxidation states due to involvement of d-electrons in bonding. They have partially filled d-orbitals which enable colored compounds, catalytic activity, and complex formation. These metals are typically hard, dense, with high melting points, and excellent conductors. Many are essential for biological catalysis (Fe in hemoglobin, Cu in oxidases). Examples: Fe, Cu, Zn, Ag, Au, Pt.</p>
+        </div>
+        <div id="family-pt" style="margin-top: 12px;">
+          <h4 style="color: #55CC33; font-size: 13px;">Post-Transition Metals</h4>
+          <p style="font-size: 12px; line-height: 1.6;">Metals in Groups 13-15 that are softer and have lower melting points than transition metals. They form predominantly ionic compounds and lack the variable oxidation states characteristic of transition metals. These elements bridge the gap between transition metals and metalloids. Examples: Al, Ga, In, Sn, Tl, Pb, Bi.</p>
+        </div>
+        <div id="family-md" style="margin-top: 12px;">
+          <h4 style="color: #3399FF; font-size: 13px;">Metalloids</h4>
+          <p style="font-size: 12px; line-height: 1.6;">Elements with properties intermediate between metals and nonmetals, exhibiting amphoteric behavior. They are semiconductors, crucial for modern electronics (Si chips, Ge transistors). Under different conditions, they can behave as metals or nonmetals, making them versatile in material applications. Examples: B, Si, Ge, As, Sb, Te.</p>
+        </div>
+        <div id="family-nm" style="margin-top: 12px;">
+          <h4 style="color: #66EEFF; font-size: 13px;">Nonmetals</h4>
+          <p style="font-size: 12px; line-height: 1.6;">Elements that gain electrons in reactions to form anions or share electrons in covalent bonds. They form covalent bonds with each other and are essential for life (C-based organic chemistry, O for respiration, N for proteins). They have high ionization energies and electronegativities, and exist in various physical states at room temperature. Examples: C, N, O, P, S, Se.</p>
+        </div>
+        <div id="family-ha" style="margin-top: 12px;">
+          <h4 style="color: #CC33FF; font-size: 13px;">Halogens</h4>
+          <p style="font-size: 12px; line-height: 1.6;">Highly reactive nonmetals in Group 17 with seven valence electrons. They form -1 anions by gaining one electron to achieve noble gas configuration. They exist as diatomic molecules (F₂, Cl₂, Br₂, I₂) and are powerful oxidizing agents. Reactivity decreases down the group. They form salts with metals (hence "halogen" = salt-former). Examples: F, Cl, Br, I, At.</p>
+        </div>
+        <div id="family-ng" style="margin-top: 12px;">
+          <h4 style="color: #FF44BB; font-size: 13px;">Noble Gases</h4>
+          <p style="font-size: 12px; line-height: 1.6;">Inert gases in Group 18 with full valence shells (ns² np⁶), making them exceptionally stable. They rarely form compounds due to their complete electron configuration. Monoatomic at room temperature, they are colorless, odorless, and have very low boiling points. He and Ne form virtually no compounds; Xe can form compounds with highly electronegative elements (XeF₄, XeO₃). Examples: He, Ne, Ar, Kr, Xe, Rn.</p>
+        </div>
+        <div id="family-ln" style="margin-top: 12px;">
+          <h4 style="color: #22FFCC; font-size: 13px;">Lanthanides</h4>
+          <p style="font-size: 12px; line-height: 1.6;">Rare earth metals in the f-block (atomic numbers 57-71, La to Lu). They have similar chemical properties due to their [Xe] 4f^n 5d^0-1 6s² electron configurations, making chemical separation extremely difficult. They are used in magnets (Nd), phosphors (Eu, Tb), and electronics. Despite the name "rare earth," they are relatively abundant but difficult to extract economically. Examples: Ce, Nd, Eu, Gd, Tb.</p>
+        </div>
+        <div id="family-ac" style="margin-top: 12px;">
+          <h4 style="color: #44AAFF; font-size: 13px;">Actinides</h4>
+          <p style="font-size: 12px; line-height: 1.6;">Radioactive elements in the f-block (atomic numbers 89-103, Ac to Lr). Elements beyond uranium (Z=92) are synthetic and progressively more unstable. They include nuclear fuels (U-235, Pu-239) and have applications in nuclear energy and weapons. Their chemistry is complex due to multiple accessible oxidation states and radioactive decay. Examples: Th, U, Np, Pu, Am, Cm.</p>
+        </div>
+      </div>
+
+      <!-- Tab 1: Scores -->
+      <div class="tab-panel">
+        <div class="score-group">
+          <div class="score-group-label eagle">ASFID — Territory (Eagle Eye)</div>
+          <div class="score-row"><span class="score-dim" style="color:#f78166">A</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:92%; background:#f78166"></div></div><span class="score-val">0.92</span></div>
+          <div class="score-row"><span class="score-dim" style="color:#56d364">S</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%; background:#56d364"></div></div><span class="score-val">0.85</span></div>
+          <div class="score-row"><span class="score-dim" style="color:#79c0ff">F</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:75%; background:#79c0ff"></div></div><span class="score-val">0.75</span></div>
+          <div class="score-row"><span class="score-dim" style="color:#d2a8ff">I</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:70%; background:#d2a8ff"></div></div><span class="score-val">0.70</span></div>
+          <div class="score-row"><span class="score-dim" style="color:#e3b341">D</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:83%; background:#e3b341"></div></div><span class="score-val">0.83</span></div>
+          <div style="font-size:11px; color:rgba(139,148,158,0.8); text-align:right; margin-top:8px;">mean = <span style="color:rgba(230,237,243,0.9)">0.81</span></div>
+        </div>
+        <div class="score-group">
+          <div class="score-group-label sphinx">REVOI — Map (Sphinx Eye)</div>
+          <div class="score-row"><span class="score-dim" style="color:#79c0ff">R</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%; background:#79c0ff"></div></div><span class="score-val">0.95</span></div>
+          <div class="score-row"><span class="score-dim" style="color:#56d364">E</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:88%; background:#56d364"></div></div><span class="score-val">0.88</span></div>
+          <div class="score-row"><span class="score-dim" style="color:#f78166">V</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:82%; background:#f78166"></div></div><span class="score-val">0.82</span></div>
+          <div class="score-row"><span class="score-dim" style="color:#d2a8ff">O</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:92%; background:#d2a8ff"></div></div><span class="score-val">0.92</span></div>
+          <div class="score-row"><span class="score-dim" style="color:#e3b341">I</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%; background:#e3b341"></div></div><span class="score-val">0.90</span></div>
+          <div style="font-size:11px; color:rgba(139,148,158,0.8); text-align:right; margin-top:8px;">mean = <span style="color:rgba(230,237,243,0.9)">0.89</span></div>
+        </div>
+        <div class="gap-badge">
+          <div class="gap-label">Epistemic Gap δ₁</div>
+          <div class="gap-val">0.08</div>
+          <div class="gap-desc">OnCriticalLine — REVOI 0.89 ≈ ASFID 0.81<br>Map and Territory balanced — robust framework</div>
+        </div>
+      </div>
+
+      <!-- Tab 2: M2 Concepts -->
+      <div class="tab-panel">
+        <h3>M2 GenericConcepts Mobilized</h3>
+        <p style="font-size: 12px; color: rgba(200,220,255,0.7); margin-bottom: 16px;">
+          This instance mobilizes <strong>19 GenericConcepts</strong> from the M2 layer across <strong>6 families</strong> 
+          (10 Structural, 4 Informational, 3 Ontological, 2 Regulatory).
+        </p>
+
+        <!-- Structural Family (10 concepts) -->
+        <div class="concept-family" style="margin-bottom: 20px;">
+          <h4 style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; 
+                      color: #56d364; margin-bottom: 10px; padding-bottom: 6px; 
+                      border-bottom: 1px solid rgba(86,211,100,0.2);">
+            ● Structural (10)
+          </h4>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Component</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">S ⊗ I</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Elementary constitutive part of a system with functional role in the whole. Distinguished from arbitrary partition by having meaningful function.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> 118 chemical elements as individual components
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Hierarchy</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">S ⊗ A</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Nested levels of organization with vertical control relations.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Multi-level organization (periods > groups > blocks > elements)
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Modularity</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">S ⊗ I</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Decomposition into semi-independent functional units.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Block structure (s, p, d, f) as modular units
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Topology</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">S ⊗ I</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Classification of structural properties preserved under continuous deformations: connectivity, compactness, genus. Captures the TYPE or CLASS of structure independent of metric.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> 2D grid topology with lanthanide/actinide gaps
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Symmetry</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">S</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Invariance under transformation.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Periodic repetition (2n² shell capacity rule)
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Segmentation</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">S ⊗ I ⊗ D</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Partition of a whole into homogeneous segments according to similarity, continuity, or structural criteria. Analytical decomposition producing distinct but exhaustive regions.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Division into blocks by orbital type (l quantum number)
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Node</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">S ⊗ I</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Elementary entity or point in a network structure, serving as connection endpoint.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Each (period, group) position as a node
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Network</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">S ⊗ I ⊗ F</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Set of nodes connected by edges enabling distributed interactions.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Chemical family relationships (alkali metals, halogens, etc.)
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Layer</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">S ⊗ I ⊗ A ⊗ R</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Stable, ordered positional partition in a stack: each layer has characteristic content and occupies a fixed rank defined by an attractor. No subordination (unlike Hierarchy): layers are co-equal strata.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Electron shells as concentric layers (K, L, M, N, O, P, Q)
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Identity</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">S → I → A → V → E</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Persistent property that makes an entity distinguishable and self-restoring across transformations. An entity remains itself despite internal changes.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Unique identity per element (Z, symbol, name)
+            </p>
+          </div>
+        </div>
+
+        <!-- Informational Family (4 concepts) -->
+        <div class="concept-family" style="margin-bottom: 20px;">
+          <h4 style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; 
+                      color: #d2a8ff; margin-bottom: 10px; padding-bottom: 6px; 
+                      border-bottom: 1px solid rgba(210,168,255,0.2);">
+            ● Informational (4)
+          </h4>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Code</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">I ⊗ S</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              System of rules for systematic transformation between domains.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Chemical symbols (H, He, Li...) as encoding system
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Pattern</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">S → I → A</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Recurring structural motif identifiable across instances and reusable as a template. Exists as an observable regularity in Territory (Eagle Eye) and as a reusable archetype in Map (Sphinx Eye).
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Periodic trends (χ, r, IE gradients)
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Signature</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">I ⊗ S</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Characteristic pattern enabling unique identification.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Electron configuration as unique signature
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">State</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">I</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Instantaneous configuration of system variables.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Oxidation states, phase states (gas/liquid/solid)
+            </p>
+          </div>
+        </div>
+
+        <!-- Ontological Family (3 concepts) -->
+        <div class="concept-family" style="margin-bottom: 20px;">
+          <h4 style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; 
+                      color: #79c0ff; margin-bottom: 10px; padding-bottom: 6px; 
+                      border-bottom: 1px solid rgba(121,192,255,0.2);">
+            ● Ontological (3)
+          </h4>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Gradient</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">⊗₂F or ⊗₂I</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Spatial or temporal variation creating driving force for flows.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Property gradients (∇χ, ∇r, ∇IE)
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Space</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">S ⊗ I</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Dimensional framework in which system states and trajectories exist (state space, phase space).
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Configuration space (n, l, m, s quantum numbers)
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Resource</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">F ⊗ I ⊗ R</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              A quantifiable entity available to, consumed by, or produced by a system. Characterized by Flow (F), Information (I), and Representability (R).
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Natural abundance, economic value of elements
+            </p>
+          </div>
+        </div>
+
+        <!-- Regulatory Family (2 concepts) -->
+        <div class="concept-family" style="margin-bottom: 20px;">
+          <h4 style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; 
+                      color: #f78166; margin-bottom: 10px; padding-bottom: 6px; 
+                      border-bottom: 1px solid rgba(247,129,102,0.2);">
+            ● Regulatory (2)
+          </h4>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Constraint</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">S ⊗ I</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Restriction on possible system states or trajectories, limiting degrees of freedom.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Quantum rules (Pauli, Aufbau, Hund)
+            </p>
+          </div>
+
+          <div class="concept-item" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: rgba(255,255,255,0.95);">Threshold</strong>
+              <span style="font-size: 10px; color: rgba(150,170,255,0.5);">A ⊗ I</span>
+            </div>
+            <p style="font-size: 12px; line-height: 1.5; color: rgba(200,220,255,0.8); margin: 0 0 4px 0;">
+              Critical value triggering qualitative change in system behavior.
+            </p>
+            <p style="font-size: 11px; color: rgba(170,190,255,0.6); font-style: italic; margin: 0;">
+              <strong>Role:</strong> Noble gas configurations as stability thresholds
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: User's Guide -->
+      <div class="tab-panel">
+        <h3>Interactive Controls</h3>
+        <h4 style="margin-top:14px; font-size:12px; color:rgba(255,255,255,0.8);">🌀 Nautilus View (Main)</h4>
+        <ul style="font-size:12px; line-height:1.7; list-style:none; padding:0;">
+          <li>• <strong>Drag</strong> — Rotate the spiral shell</li>
+          <li>• <strong>Scroll</strong> — Zoom in/out</li>
+          <li>• <strong>Hover ring</strong> — See element info below</li>
+          <li>• <strong>Click ring</strong> — Select element and show details</li>
+        </ul>
+        <h4 style="margin-top:14px; font-size:12px; color:rgba(255,255,255,0.8);">⚛️ Orbital View (Bottom-Left)</h4>
+        <ul style="font-size:12px; line-height:1.7; list-style:none; padding:0;">
+          <li>• <strong>Bohr Model</strong> — Electron shells with nucleus</li>
+          <li>• <strong>Drag</strong> — Rotate the atomic model</li>
+          <li>• <strong>Scroll</strong> — Zoom in/out</li>
+          <li>• <strong>Resize handle</strong> (↙️) — Drag to resize panel</li>
+        </ul>
+        <h4 style="margin-top:14px; font-size:12px; color:rgba(255,255,255,0.8);">🎨 Element Families</h4>
+        <ul style="font-size:12px; line-height:1.7; list-style:none; padding:0;">
+          <li>• <strong>Click family name</strong> — Highlight family in Nautilus</li>
+          <li>• <strong>Wireframe mode</strong> — Shell becomes translucent</li>
+          <li>• <strong>Luminous path</strong> — Lines connect family elements</li>
+          <li>• <strong>✕ button</strong> — Clear family selection</li>
+        </ul>
+        <h4 style="margin-top:14px; font-size:12px; color:rgba(255,255,255,0.8);">🔄 View Controls</h4>
+        <ul style="font-size:12px; line-height:1.7; list-style:none; padding:0;">
+          <li>• <strong>⇄ Swap</strong> — Exchange main and orbital views</li>
+          <li>• <strong>↺ Reset</strong> — Return to hydrogen (H), reset layout</li>
+          <li>• <strong>⟳ Auto Rotate</strong> — Enable/disable automatic rotation</li>
+          <li>• <strong>Speed slider</strong> — Adjust rotation speed (0.5× to 6×)</li>
+        </ul>
+        <h4 style="margin-top:14px; font-size:12px; color:rgba(255,255,255,0.8);">📊 Element Selection</h4>
+        <ul style="font-size:12px; line-height:1.7; list-style:none; padding:0;">
+          <li>• <strong>Dropdown</strong> — Select element by name/symbol</li>
+          <li>• <strong>◀ ▶ buttons</strong> — Navigate previous/next element</li>
+          <li>• <strong>Atomic tile</strong> (top-left) — Shows current selection</li>
+        </ul>
+        <p style="margin-top:16px; font-size:11px; color:rgba(170,200,255,0.6); line-height:1.6;"><em>Tip:</em> Combine family selection with element navigation to explore periodic patterns. The Nautilus spiral reveals the emergence of periodicity from quantum shell filling.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end #layout -->
+
+<!-- NE panel (floating orbital) -->
+<div id="view-ne">
+  <div id="ne-titlebar" class="bar-expanded">
+    <button id="ne-toggle" title="Expand / Collapse">-</button>
+    <button id="swap-btn" title="Swap views">⇄</button>
+    <select id="orbital-mode-sel">
+      <option value="bohr" selected>Bohr Model</option>
+    </select>
+  </div>
+  <div id="ne-body">
+    <canvas id="canvas-b"></canvas>
+    <div id="ne-resize-handle"></div>
+  </div>
+</div>
+
+<!-- Bottom bar -->
+<div id="bottom-bar">
+  <div id="hint">Drag · Scroll · Hover · Click to select · ⇄ Swap</div>
+  <button class="bbtn" id="btn-reset">↺ Reset</button>
+  <button class="bbtn" id="btn-autorot">⟳ Auto Rotate</button>
+  <label style="color: rgba(210,185,120,0.8); font-size: 11px; margin-left: 12px;">
+    Speed:
+    <input type="range" id="rotation-speed-slider" min="0.5" max="6" step="0.1" value="1.17" 
+           style="width: 80px; vertical-align: middle; margin-left: 6px;">
+  </label>
+  <span id="engine-badge">BabylonJS 6.26</span>
+</div>
+
+<script src="https://cdn.babylonjs.com/babylon.js"></script>
+<script src="src/ptoe.js"></script>
+</body>
+</html>

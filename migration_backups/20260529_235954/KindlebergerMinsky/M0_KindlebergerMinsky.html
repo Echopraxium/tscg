@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://cdnjs.cloudflare.com;
+                 script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
+                 style-src  'self' 'unsafe-inline';
+                 img-src    'self' data: blob:;
+                 connect-src http://127.0.0.1:* ws://127.0.0.1:*;">
+  <title>TSCG &mdash; Kindleberger-Minsky</title>
+  <link rel="icon" href="data:,">
+  <style>
+/* ── Reset & Globals ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep:      #0d1117;
+  --bg-panel:     #161b22;
+  --bg-card:      #1c2130;
+  --bg-hover:     #21262d;
+  --border:       #30363d;
+  --border-light: #3d444f;
+  --eagle:        #f78166;
+  --sphinx:       #79c0ff;
+  --accent:       #56d364;
+  --warn:         #e3b341;
+  --muted:        #8b949e;
+  --text:         #e6edf3;
+  --text-dim:     #b1bac4;
+  --col-A: #ffb840;
+  --col-S: #64c8ff;
+  --col-F: #3dc896;
+  --col-I: #c882ff;
+  --col-D: #ff6464;
+  --col-R: #79c0ff;
+  --col-E: #56d364;
+  --col-V: #f78166;
+  --col-O: #d2a8ff;
+  --col-Im: #e3b341;
+  --ph-0: #4A90E2;
+  --ph-1: #22C97A;
+  --ph-2: #F5A623;
+  --ph-3: #E64141;
+  --ph-4: #A855F7;
+  --header-h:   44px;
+  --controls-h: 52px;
+  --compbar-h:  52px;
+  --sidebar-w:  340px;
+  --gap: 8px;
+  --radius: 6px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+html, body { height: 100%; overflow: hidden; font-family: var(--font);
+  background: var(--bg-deep); color: var(--text); font-size: 13px;
+  line-height: 1.5; user-select: none; }
+
+#app {
+  display: grid;
+  grid-template-rows: var(--header-h) 1fr var(--compbar-h) var(--controls-h);
+  grid-template-columns: 1fr 5px var(--sidebar-w);
+  grid-template-areas:
+    "header   header   header"
+    "canvas   split    sidebar"
+    "compbar  compbar  compbar"
+    "controls controls controls";
+  height: 100vh;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+#header {
+  grid-area: header;
+  display: flex; align-items: center; padding: 0 16px; gap: 12px;
+  background: var(--bg-panel); border-bottom: 1px solid var(--border);
+}
+#btn-home {
+  display: inline-flex; align-items: center; background: none; border: none;
+  cursor: pointer; padding: 4px 6px; margin-right: 4px; opacity: .85;
+  transition: opacity .15s; text-decoration: none; flex-shrink: 0;
+}
+#btn-home:hover { opacity: 1; }
+.tscg-logo-link { text-decoration: none; color: inherit; position: relative;
+  cursor: pointer; background: none; border: none; padding: 0; }
+.tscg-logo { font-size:11px; font-weight:700; letter-spacing:.12em;
+  color:var(--eagle); text-transform:uppercase; flex-shrink:0; }
+.sep { color:var(--border-light); font-size:16px; }
+.poclet-name { font-size:14px; font-weight:600; color:var(--text);
+  flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.meta-chips { display:flex; gap:6px; flex-shrink:0; }
+.chip { padding:2px 8px; border-radius:20px; font-size:11px; font-weight:500; border:1px solid transparent; }
+.chip.domain  { background:rgba(86,211,100,.12); border-color:rgba(86,211,100,.3); color:var(--accent); }
+.chip.version { background:rgba(121,192,255,.12); border-color:rgba(121,192,255,.3); color:var(--sphinx); }
+.chip.type    { background:rgba(247,129,102,.12); border-color:rgba(247,129,102,.3); color:var(--eagle); }
+
+/* ── Canvas ──────────────────────────────────────────────────── */
+#canvas-area { grid-area:canvas; position:relative; overflow:hidden;
+  background:var(--bg-deep); min-width:200px; }
+#canvas-area canvas { position:absolute; top:0; left:0; }
+
+/* ── Tooltip ─────────────────────────────────────────────────── */
+#chart-tooltip {
+  position:absolute; pointer-events:none; display:none;
+  background:rgba(22,27,34,.94); border:1px solid var(--border-light);
+  border-radius:var(--radius); padding:6px 10px; font-size:11px;
+  font-family:var(--font-mono); color:var(--text); white-space:nowrap;
+  z-index:10; box-shadow:0 2px 8px rgba(0,0,0,.5);
+}
+
+/* ── Splitter ─────────────────────────────────────────────────── */
+#splitter { grid-area:split; background:var(--border); cursor:col-resize;
+  transition:background .15s; position:relative; z-index:10; }
+#splitter:hover, #splitter.dragging { background:var(--sphinx); }
+
+/* ── Sidebar ─────────────────────────────────────────────────── */
+#sidebar { grid-area:sidebar; display:flex; flex-direction:column;
+  background:var(--bg-panel); border-left:1px solid var(--border);
+  overflow:hidden; min-width:180px; max-width:620px; }
+.tab-bar { display:flex; background:var(--bg-deep); border-bottom:1px solid var(--border); flex-shrink:0; }
+.tab-btn { flex:1; padding:8px 4px; font-size:12px; font-weight:600;
+  background:none; border:none; border-bottom:2px solid transparent;
+  color:var(--muted); cursor:pointer; transition:color .15s,border-color .15s; }
+.tab-btn:hover { color:var(--text-dim); }
+.tab-btn.active { color:var(--sphinx); border-bottom-color:var(--sphinx); }
+.tab-panel { display:none; flex-direction:column; flex:1; overflow-y:auto; padding:12px; gap:10px; }
+.tab-panel.active { display:flex; }
+
+/* ── Score bars ──────────────────────────────────────────────── */
+.score-group { display:flex; flex-direction:column; gap:5px; }
+.score-group-label { font-size:10px; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted);
+  padding-bottom:4px; border-bottom:1px solid var(--border); margin-bottom:2px; }
+.score-group-label.eagle { color:var(--eagle); }
+.score-group-label.sphinx { color:var(--sphinx); }
+.score-row { display:flex; align-items:center; gap:8px; font-size:12px; }
+.score-dim { width:20px; font-weight:700; font-family:var(--font-mono); font-size:11px; text-align:center; flex-shrink:0; }
+.score-bar-bg { flex:1; height:6px; background:var(--bg-card); border-radius:3px; overflow:hidden; }
+.score-bar-fill { height:100%; border-radius:3px; transition:width .25s ease; }
+.score-val { width:30px; text-align:right; font-family:var(--font-mono); font-size:11px; color:var(--text-dim); flex-shrink:0; }
+.score-mean-row { display:flex; justify-content:space-between; font-size:11px; color:var(--muted);
+  padding-top:2px; font-family:var(--font-mono); }
+.score-mean-row span { color:var(--text); font-weight:600; }
+.gap-badge { display:flex; align-items:center; gap:10px; background:var(--bg-card);
+  border:1px solid var(--border); border-radius:var(--radius); padding:8px 12px; font-size:12px; }
+.gap-badge .gap-label { color:var(--muted); }
+.gap-badge .gap-val { font-family:var(--font-mono); font-weight:700; font-size:16px; color:var(--accent); }
+.gap-badge .gap-desc { color:var(--text-dim); font-size:11px; }
+
+/* ── Concept list ─────────────────────────────────────────────── */
+.gc-section-label { font-size:10px; color:var(--muted); text-transform:uppercase;
+  letter-spacing:.1em; font-weight:700; margin-bottom:4px; }
+.gc-list { display:flex; flex-direction:column; gap:4px; }
+.gc-item { display:flex; align-items:flex-start; gap:8px; padding:6px 8px;
+  background:var(--bg-card); border-radius:var(--radius);
+  border:1px solid var(--border); transition:border-color .15s,background .15s; }
+.gc-item:hover { background:var(--bg-hover); border-color:var(--border-light); }
+.gc-item.primary   { border-left:3px solid var(--eagle); }
+.gc-item.secondary { border-left:3px solid var(--border-light); }
+.gc-item.ph-active { border-left:3px solid; background:var(--bg-hover); }
+.gc-item.ph-dim    { opacity:.45; }
+.gc-name    { font-family:var(--font-mono); font-size:11px; font-weight:600; color:var(--sphinx); flex-shrink:0; min-width:116px; }
+.gc-formula { font-family:var(--font-mono); font-size:10px; color:var(--muted); flex-shrink:0; }
+.gc-role    { font-size:11px; color:var(--text-dim); line-height:1.4; }
+
+/* ── README prose ─────────────────────────────────────────────── */
+.readme-content { font-size:12px; line-height:1.7; color:var(--text-dim); }
+.readme-content h2 { font-size:13px; font-weight:700; color:var(--text);
+  margin:12px 0 4px; padding-bottom:3px; border-bottom:1px solid var(--border); }
+.readme-content strong { color:var(--text); }
+.readme-content code { font-family:var(--font-mono); font-size:10.5px;
+  background:var(--bg-card); padding:1px 4px; border-radius:3px; color:var(--sphinx); }
+.readme-content p { margin-bottom:6px; }
+
+/* ── Synergy boxes ────────────────────────────────────────────── */
+.synergy-box { background:var(--bg-card); border:1px solid var(--border);
+  border-left:3px solid var(--warn); border-radius:var(--radius);
+  padding:10px 12px; gap:6px; display:flex; flex-direction:column; }
+.synergy-label   { font-size:12px; font-weight:700; color:var(--warn); }
+.synergy-formula { font-family:var(--font-mono); font-size:11.5px; color:var(--text); word-break:break-word; }
+.synergy-emergent{ font-size:11px; color:var(--text-dim); line-height:1.5; }
+
+/* ── Live status / metrics ────────────────────────────────────── */
+.live-status-box { background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:8px 10px; font-size:11px; line-height:1.8; }
+.live-status-box .ls-title { font-size:12px; font-weight:700; color:var(--text); margin-bottom:4px; }
+.ls-row { display:flex; justify-content:space-between; gap:8px; }
+.ls-key { color:var(--muted); }
+.ls-val { font-family:var(--font-mono); color:var(--text); }
+
+/* ── Phase narrative card ─────────────────────────────────────── */
+.narrative-card { background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:8px 12px; }
+.narrative-label { font-size:10px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+.narrative-text { font-size:12px; font-style:italic; color:#c8b46a; line-height:1.5; }
+.driver-text    { font-size:11px; color:var(--text-dim); line-height:1.5; margin-top:4px; }
+
+/* ── Wiki links ───────────────────────────────────────────────── */
+.wiki-link { display:flex; align-items:center; padding:4px 8px;
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius);
+  color:#5090d0; font-size:11px; text-decoration:none; gap:6px;
+  transition:background .15s,border-color .15s,color .15s; }
+.wiki-link:hover { background:var(--bg-hover); border-color:var(--border-light); color:var(--sphinx); }
+
+/* ── Phase info row ───────────────────────────────────────────── */
+.phase-info-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.phase-badge { padding:2px 8px; border-radius:4px; font-size:11px; font-weight:700;
+  font-family:var(--font-mono); }
+
+/* ── Compbar ──────────────────────────────────────────────────── */
+#comp-bar { grid-area:compbar; background:var(--bg-panel); border-top:1px solid var(--border); overflow:hidden; }
+#comp-inner { display:flex; align-items:center; gap:8px; padding:6px 16px;
+  flex-wrap:nowrap; overflow-x:auto; height:100%; }
+.comp-label { font-size:11px; color:var(--muted); white-space:nowrap; flex-shrink:0; }
+.comp-sep { width:1px; height:28px; background:var(--border); flex-shrink:0; }
+
+/* ── Bubble tabs ──────────────────────────────────────────────── */
+.bubble-tab {
+  padding:4px 10px; border-radius:4px; font-size:11px; font-weight:600;
+  border:1px solid transparent; cursor:pointer; font-family:var(--font-mono);
+  transition:opacity .15s,border-color .15s,background .15s; opacity:.55;
+  flex-shrink:0; white-space:nowrap;
+}
+.bubble-tab:hover  { opacity:.85; }
+.bubble-tab.active { opacity:1; border-color:rgba(255,255,255,.3); }
+
+/* ── Phase jump buttons ───────────────────────────────────────── */
+.phase-btn {
+  padding:3px 9px; border-radius:4px; font-size:10px; font-weight:700;
+  border:1px solid transparent; cursor:pointer; font-family:var(--font-mono);
+  transition:opacity .15s,border-color .15s; opacity:.5; flex-shrink:0;
+  white-space:nowrap;
+}
+.phase-btn:hover  { opacity:.8; }
+.phase-btn.active { opacity:1; border-color:rgba(255,255,255,.35); }
+
+/* ── Controls ─────────────────────────────────────────────────── */
+#controls {
+  grid-area:controls; display:flex; align-items:center; gap:6px; padding:0 16px;
+  background:var(--bg-panel); border-top:1px solid var(--border); flex-wrap:nowrap;
+}
+.ctrl-btn { display:flex; align-items:center; gap:5px; padding:4px 10px;
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius);
+  color:var(--text-dim); font-size:12px; font-family:var(--font); cursor:pointer;
+  transition:background .15s,color .15s,border-color .15s; white-space:nowrap; flex-shrink:0; }
+.ctrl-btn:hover { background:var(--bg-hover); color:var(--text); border-color:var(--border-light); }
+.ctrl-btn.active { background:rgba(86,211,100,.1); border-color:var(--accent); color:var(--accent); }
+.ctrl-btn.spd-active { background:rgba(160,220,80,.15); border-color:rgba(160,220,80,.5); color:rgba(160,220,80,1); }
+.ctrl-sep  { width:1px; height:28px; background:var(--border); flex-shrink:0; }
+.ctrl-label{ font-size:11px; color:var(--muted); white-space:nowrap; flex-shrink:0; }
+.progress-track { flex:1; position:relative; height:6px; background:var(--bg-card);
+  border-radius:3px; overflow:hidden; min-width:60px; cursor:pointer; }
+#progress-fill { height:100%; width:0%; background:var(--sphinx); border-radius:3px; transition:width .05s; }
+.status-indicator { margin-left:auto; display:flex; align-items:center; gap:6px;
+  font-size:11px; color:var(--muted); flex-shrink:0; }
+.status-dot { width:7px; height:7px; border-radius:50%; background:var(--muted); transition:background .3s; }
+.status-dot.running { background:var(--accent); animation:pulse 1.2s ease-in-out infinite; }
+.status-dot.paused  { background:var(--warn); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:4px; }
+::-webkit-scrollbar-thumb:hover { background:var(--muted); }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <header id="header">
+    <button id="btn-home" onclick="window.location.href='https://echopraxium.github.io/tscg/'">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+      </svg>
+    </button>
+    <button class="tscg-logo-link" onclick="window.open('https://github.com/Echopraxium/tscg','_blank')">
+      <span class="tscg-logo">TSCG</span>
+    </button>
+    <span class="sep">&middot;</span>
+    <span class="poclet-name">Kindleberger-Minsky &mdash; Financial Crisis Cycle Poclet</span>
+    <div class="meta-chips">
+      <span class="chip domain">Finance / Economics</span>
+      <span class="chip type">m3:Poclet</span>
+      <span class="chip version">v1.0.0</span>
+    </div>
+  </header>
+
+  <!-- CANVAS -->
+  <div id="canvas-area">
+    <div id="chart-tooltip"></div>
+  </div>
+
+  <!-- SPLITTER -->
+  <div id="splitter"></div>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="description">Description</button>
+      <button class="tab-btn"        data-tab="concepts">Concepts</button>
+      <button class="tab-btn"        data-tab="synergy">Synergy</button>
+      <button class="tab-btn"        data-tab="scores">Scores</button>
+    </nav>
+
+    <!-- ── Description ─────────────────────────────────────────── -->
+    <div id="panel-description" class="tab-panel active">
+      <div class="readme-content">
+        <h2>System</h2>
+        <p>The <strong>Kindleberger-Minsky cycle</strong> is a recurrent 5-phase pattern
+        in which a financial system transitions from stable equilibrium through speculative
+        excess to systemic collapse. Driven by <code>m2:Narration</code> (collective belief
+        propagation) and <code>m2:Propagation</code> (panic cascade).</p>
+        <h2>Theoretical Basis</h2>
+        <p><strong>Hyman Minsky</strong> (1986) — <em>Financial Instability Hypothesis</em>:
+        stability is destabilizing; firms evolve hedge&nbsp;&rarr;&nbsp;speculative&nbsp;&rarr;&nbsp;Ponzi.<br>
+        <strong>Charles Kindleberger</strong> (1978) — 5-phase cycle, international contagion.<br>
+        <strong>Robert Shiller</strong> (2019) — Narrative Economics, market narratives as causal forces.<br>
+        <strong>Irving Fisher</strong> (1933) — Debt-deflation theory, Revulsion amplification.<br>
+        <strong>Walter Bagehot</strong> (1873) — Lender of Last Resort (<code>m2:Regulation</code>).</p>
+      </div>
+      <div id="desc-episode"></div>
+      <div id="desc-phase-info"></div>
+      <div id="desc-wiki" style="display:flex;flex-direction:column;gap:4px;"></div>
+    </div>
+
+    <!-- ── Concepts ──────────────────────────────────────────────── -->
+    <div id="panel-concepts" class="tab-panel">
+      <div class="gc-section-label">Primary M2 &mdash; one per phase (active highlighted)</div>
+      <div class="gc-list" id="primary-concepts-list"></div>
+      <div class="gc-section-label" style="margin-top:8px">Secondary M2 &mdash; 12 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Cascade</span>
+          <div><div class="gc-formula">F&otimes;D&otimes;S</div>
+          <div class="gc-role">Panic cascade mechanism — sequential institution failures</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Network</span>
+          <div><div class="gc-formula">S&otimes;I&otimes;F</div>
+          <div class="gc-role">Interbank exposure network — bilateral credit/CDS/repo</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Threshold</span>
+          <div><div class="gc-formula">A&otimes;I</div>
+          <div class="gc-role">Credit threshold (Boom) and Minsky Moment (Distress)</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Trigger</span>
+          <div><div class="gc-formula">D&otimes;I</div>
+          <div class="gc-role">Exogenous shock (Displacement) / forced seller event (Distress)</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Oscillator</span>
+          <div><div class="gc-formula">A&otimes;D&otimes;F</div>
+          <div class="gc-role">Financial cycle periodicity across history</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Emergence</span>
+          <div><div class="gc-formula">I&otimes;S&otimes;D</div>
+          <div class="gc-role">Systemic risk emerges from individual leverage decisions</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Memory</span>
+          <div><div class="gc-formula">I&otimes;S</div>
+          <div class="gc-role">Institutional forgetting — "this time is different"</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Regulation</span>
+          <div><div class="gc-formula">A&otimes;S&otimes;I</div>
+          <div class="gc-role">Lender of Last Resort — central bank counter-force</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Dissipation</span>
+          <div><div class="gc-formula">F&otimes;D</div>
+          <div class="gc-role">Wealth destruction in Revulsion phase</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:FeedbackLoop</span>
+          <div><div class="gc-formula">Process&otimes;Alignment&otimes;Homeostasis</div>
+          <div class="gc-role">Pro-cyclical credit: rising prices &rarr; more collateral &rarr; more credit</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Duplication</span>
+          <div><div class="gc-formula">I&otimes;S&otimes;F</div>
+          <div class="gc-role">Panic receiver becomes new emitter — branching spread</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Identity</span>
+          <div><div class="gc-formula">S&otimes;I&otimes;A</div>
+          <div class="gc-role">Collective identity crystallization at Euphoria peak</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Synergy ────────────────────────────────────────────────── -->
+    <div id="panel-synergy" class="tab-panel">
+      <div class="synergy-box">
+        <div class="synergy-label">Primary Pattern &mdash; m2:Propagation</div>
+        <div class="synergy-formula">S &otimes; I &otimes; A &otimes; D &otimes; F &otimes; V &otimes; Im</div>
+        <div class="synergy-emergent">
+          <strong>Panic spreads through the interbank network:</strong> each receiver becomes
+          a new emitter (<code>m2:Duplication</code>). The Minsky Moment is the
+          threshold attractor where R<sub>0</sub>&nbsp;&gt;&nbsp;1. Copy fidelity V = panic
+          signal integrity; Im = bilateral bank exposures.
+        </div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--sphinx)">
+        <div class="synergy-label" style="color:var(--sphinx)">Primary Pattern &mdash; m2:Narration</div>
+        <div class="synergy-formula">S &otimes; I &otimes; D &otimes; F &otimes; V &otimes; R &otimes; A &otimes; Im</div>
+        <div class="synergy-emergent">
+          <strong>Collective market belief morphism across 5 phases:</strong>
+          <em>"New paradigm"</em> &rarr; <em>"This time is different"</em> &rarr;
+          <em>"Panic"</em> &rarr; <em>"Never again."</em>
+          The Collapse attractor (A) is structurally implicit at Euphoria peak.
+          Topology = Linear. Shiller (2019): quantifiable via media analysis &amp; surveys.
+        </div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--ph-2)">
+        <div class="synergy-label" style="color:var(--ph-2)">Narrative Arc &mdash; all 5 phases</div>
+        <div class="synergy-formula" style="font-size:11px">
+          DISPLACEMENT &rarr; BOOM &rarr; EUPHORIA &rarr; DISTRESS &rarr; REVULSION
+        </div>
+        <div class="synergy-emergent">
+          &ldquo;Unprecedented opportunity&rdquo; &rarr;
+          &ldquo;New paradigm — metrics obsolete&rdquo; &rarr;
+          &ldquo;This time is different&rdquo; &rarr;
+          &ldquo;Isolated problem — buy the dip&rdquo; &rarr;
+          &ldquo;Total fraud — never again&rdquo;
+        </div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--accent)">
+        <div class="synergy-label" style="color:var(--accent)">Transdisciplinary Analogies</div>
+        <div class="synergy-formula" style="font-size:10.5px">Structural isomorphism across 6 domains</div>
+        <div class="synergy-emergent">
+          &bull; <strong>Epidemiology</strong>: SIR model &equiv; Boom&rarr;Euphoria&rarr;Revulsion<br>
+          &bull; <strong>Ecology</strong>: predator-prey bust, invasive species collapse<br>
+          &bull; <strong>Technology</strong>: Gartner Hype Cycle, trough of disillusionment<br>
+          &bull; <strong>Sociology</strong>: moral panics (Cohen), social movement collapse<br>
+          &bull; <strong>Military</strong>: war cycles mobilization&rarr;peak&rarr;exhaustion<br>
+          &bull; <strong>Climatology</strong>: El Ni&ntilde;o oscillation cycles
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Scores ─────────────────────────────────────────────────── -->
+    <div id="panel-scores" class="tab-panel">
+      <div class="score-group">
+        <div class="score-group-label eagle">
+          Eagle Eye &mdash; ASFID (Territory)
+          <span style="font-size:9px;color:var(--accent);margin-left:6px">&#9679; LIVE</span>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-A)">A</div>
+          <div class="score-bar-bg"><div id="bar-A" class="score-bar-fill" style="background:var(--col-A)"></div></div>
+          <div class="score-val" id="val-A">—</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-S)">S</div>
+          <div class="score-bar-bg"><div id="bar-S" class="score-bar-fill" style="background:var(--col-S)"></div></div>
+          <div class="score-val" id="val-S">—</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-F)">F</div>
+          <div class="score-bar-bg"><div id="bar-F" class="score-bar-fill" style="background:var(--col-F)"></div></div>
+          <div class="score-val" id="val-F">—</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-I)">I</div>
+          <div class="score-bar-bg"><div id="bar-I" class="score-bar-fill" style="background:var(--col-I)"></div></div>
+          <div class="score-val" id="val-I">—</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-D)">D</div>
+          <div class="score-bar-bg"><div id="bar-D" class="score-bar-fill" style="background:var(--col-D)"></div></div>
+          <div class="score-val" id="val-D">—</div>
+        </div>
+        <div class="score-mean-row"><span>ASFID mean</span><span id="asfid-mean">—</span></div>
+      </div>
+
+      <div class="score-group">
+        <div class="score-group-label sphinx">Sphinx Eye &mdash; REVOI (Map, global)</div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-R)">R</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-R)"></div></div>
+          <div class="score-val">0.85</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-E)">E</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:78%;background:var(--col-E)"></div></div>
+          <div class="score-val">0.78</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-V)">V</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:75%;background:var(--col-V)"></div></div>
+          <div class="score-val">0.75</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-O)">O</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:82%;background:var(--col-O)"></div></div>
+          <div class="score-val">0.82</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-Im)">Im</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:88%;background:var(--col-Im)"></div></div>
+          <div class="score-val">0.88</div>
+        </div>
+        <div class="score-mean-row"><span>REVOI mean</span><span>0.82</span></div>
+      </div>
+
+      <div class="gap-badge">
+        <div>
+          <div class="gap-label">Epistemic Gap &delta;&Theta;</div>
+          <div class="gap-val">0.09</div>
+        </div>
+        <div class="gap-desc">SpectralClass: <strong>Coherent</strong> &mdash; Legitimate Eagle-dominant gap. V=0.75 reflects fundamental forecasting opacity.</div>
+      </div>
+
+      <div class="live-status-box">
+        <div class="ls-title">Live Metrics</div>
+        <div class="ls-row"><span class="ls-key">Episode</span><span class="ls-val" id="ls-episode">—</span></div>
+        <div class="ls-row"><span class="ls-key">Phase</span><span class="ls-val" id="ls-phase">—</span></div>
+        <div class="ls-row"><span class="ls-key">Formula</span><span class="ls-val" id="ls-formula">—</span></div>
+        <div class="ls-row"><span class="ls-key">R&#8320; panic</span><span class="ls-val" id="ls-r0p">—</span></div>
+        <div class="ls-row"><span class="ls-key">R&#8320; narrative</span><span class="ls-val" id="ls-r0n">—</span></div>
+        <div class="ls-row"><span class="ls-key">Regime</span><span class="ls-val" id="ls-regime" style="font-size:10px">—</span></div>
+      </div>
+
+      <div class="live-status-box">
+        <div class="ls-title">Cycle Statistics</div>
+        <div class="ls-row"><span class="ls-key">Asset</span><span class="ls-val" id="ls-asset" style="font-size:10px">—</span></div>
+        <div class="ls-row"><span class="ls-key">Peak</span><span class="ls-val" id="ls-peak">—</span></div>
+        <div class="ls-row"><span class="ls-key">Trough</span><span class="ls-val" id="ls-trough">—</span></div>
+        <div class="ls-row"><span class="ls-key">Drawdown</span><span class="ls-val" id="ls-drawdown" style="color:var(--ph-3)">—</span></div>
+        <div class="ls-row"><span class="ls-key">Multiplier</span><span class="ls-val" id="ls-mult" style="color:var(--accent)">—</span></div>
+      </div>
+    </div>
+  </aside><!-- #sidebar -->
+
+  <!-- COMPBAR: bubble selector + phase jumps -->
+  <div id="comp-bar">
+    <div id="comp-inner">
+      <span class="comp-label">Episode:</span>
+      <div id="bubble-tabs" style="display:flex;gap:5px;flex-shrink:0;"></div>
+      <div class="comp-sep"></div>
+      <span class="comp-label">Phase:</span>
+      <div id="phase-jumps" style="display:flex;gap:4px;flex-shrink:0;"></div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <footer id="controls">
+    <button class="ctrl-btn" id="btn-play" onclick="togglePlay()">&#9654; Play</button>
+    <button class="ctrl-btn" onclick="resetSim()">&#8635; Reset</button>
+    <div class="ctrl-sep"></div>
+    <span class="ctrl-label">Speed:</span>
+    <button class="ctrl-btn" id="spd-05" onclick="setSpeed(0.5)">&times;&frac12;</button>
+    <button class="ctrl-btn spd-active" id="spd-1" onclick="setSpeed(1)">&times;1</button>
+    <button class="ctrl-btn" id="spd-2" onclick="setSpeed(2)">&times;2</button>
+    <button class="ctrl-btn" id="spd-4" onclick="setSpeed(4)">&times;4</button>
+    <div class="ctrl-sep"></div>
+    <div class="progress-track" id="progress-track">
+      <div id="progress-fill"></div>
+    </div>
+    <div class="status-indicator">
+      <div class="status-dot" id="status-dot"></div>
+      <span id="status-label">Stopped</span>
+    </div>
+  </footer>
+
+</div><!-- #app -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+<script>
+'use strict';
+
+// ── Phase definitions ─────────────────────────────────────────────────────────
+const PHASE_NAMES  = ['DISPLACEMENT', 'BOOM', 'EUPHORIA', 'DISTRESS', 'REVULSION'];
+const PHASE_SHORT  = ['DISP', 'BOOM', 'EUPH', 'DIST', 'REVLS'];
+const PH_COL_HEX   = ['#4A90E2', '#22C97A', '#F5A623', '#E64141', '#A855F7'];
+const PH_COL_MUTED = ['#1e3a5c', '#0f3d28', '#4a3200', '#3d1010', '#2e1450'];
+
+const PRIMARY_M2 = [
+  { name:'m2:Event',         formula:'I⊗D',       role:'Exogenous shock opens profit opportunity',         ph:0 },
+  { name:'m2:Amplification', formula:'F⊗D⊗A',     role:'Credit-driven positive feedback, leverage cascade', ph:1 },
+  { name:'m2:Narration',     formula:'S⊗I⊗D⊗F',   role:'Self-reinforcing belief system, R₀ >> 1',          ph:2 },
+  { name:'m2:Bifurcation',   formula:'∂D/∂F',      role:'Minsky Moment — system crosses instability threshold', ph:3 },
+  { name:'m2:Propagation',   formula:'S⊗I⊗A⊗D⊗F', role:'Panic contagion cascade across institutions',      ph:4 },
+];
+
+// ── Bubble data ───────────────────────────────────────────────────────────────
+const BUBBLES = [
+  {
+    id:'southsea', name:'South Sea Bubble', short:'S.SEA 1720',
+    color:'#50C8B4',
+    asset:'South Sea Company stock', unit:'GBP / share',
+    peak:1050, trough:100, drawdown_pct:-90.5, multiplier:10.5,
+    total_cycle:'~10 years (1711–1720)',
+    description:'The South Sea Company was granted a British government monopoly on trade with Spanish South America in 1711. In 1720 it proposed to absorb the national debt, fuelling massive speculation. Directors bribed officials and created installment plans enabling leverage. King George I served as governor. Isaac Newton lost £20,000 — "I can calculate the movement of stars, but not the madness of men." The Bubble Act of June 1720 restricted competing companies, ironically accelerating the crash.',
+    wiki:[
+      ['South Sea Company','https://en.wikipedia.org/wiki/South_Sea_Company'],
+      ['South Sea bubble','https://en.wikipedia.org/wiki/South_Sea_bubble'],
+      ['Bubble Act','https://en.wikipedia.org/wiki/Bubble_Act'],
+    ],
+    phases:[
+      { date:'1711 – Jan 1719', months:96,  v_pct:0.3,  vol_norm:1.0,  volatility:0,
+        formula:'I ⊗ D', primary_m2:'m2:Event', secondary_m2:['m2:Trigger','m2:Narration'],
+        narrative:'"Colonial trade monopoly — guaranteed returns"',
+        asfid:{A:0.65,S:0.60,F:0.70,I:0.90,D:0.85}, r0_panic:0.05, r0_narr:0.5, r0_regime:'SubThreshold',
+        force:'Parliamentary monopoly grant on South American trade',
+        events:[[0,'Company chartered 1711'],[60,'Debt conversion talks begin']] },
+      { date:'Jan 1719 – Mar 1720', months:15, v_pct:10, vol_norm:5.0,  volatility:1,
+        formula:'F ⊗ D ⊗ A', primary_m2:'m2:Amplification', secondary_m2:['m2:Cascade','m2:Network','m2:Propagation'],
+        narrative:'"National debt will be absorbed — guaranteed profit"',
+        asfid:{A:0.82,S:0.78,F:0.92,I:0.85,D:0.90}, r0_panic:0.1, r0_narr:1.8, r0_regime:'Supercritical (narrative)',
+        force:'Installment purchase plan + director insider buying',
+        events:[[0,'Debt conversion plan announced'],[8,'King George I as governor']] },
+      { date:'Apr – Jun 24, 1720', months:3, v_pct:60, vol_norm:10.0, volatility:2,
+        formula:'A ⊗ S', primary_m2:'m2:Narration', secondary_m2:['m2:Oscillator','m2:Emergence','m2:Identity'],
+        narrative:'"This is the greatest investment of the century"',
+        asfid:{A:0.96,S:0.90,F:0.85,I:0.87,D:0.88}, r0_panic:0.1, r0_narr:5.0, r0_regime:'Supercritical — peak',
+        force:'Aristocracy publicly invested; bubble companies proliferate',
+        events:[[0,'300→1050 in 3 months'],[2.5,'Peak: £1050, Jun 24']] },
+      { date:'Jun 24 – Sep 1720', months:3, v_pct:-15, vol_norm:5.0, volatility:2,
+        formula:'I ⊗ D ⊗ A', primary_m2:'m2:Bifurcation', secondary_m2:['m2:Trigger','m2:Threshold','m2:Propagation'],
+        narrative:'"Insider selling — something is wrong"',
+        asfid:{A:0.93,S:0.85,F:0.88,I:0.94,D:0.96}, r0_panic:2.0, r0_narr:0.3, r0_regime:'Supercritical (panic)',
+        force:'Bubble Act (Jun 1720) triggers capital repatriation',
+        events:[[0,'Bubble Act restricts competitors'],[1,'Director selling revealed']] },
+      { date:'Sep – Dec 1720', months:4, v_pct:-30, vol_norm:0.1, volatility:2,
+        formula:'F ⊗ D', primary_m2:'m2:Propagation', secondary_m2:['m2:Cascade','m2:Dissipation','m2:Regulation'],
+        narrative:'"Fraud — Parliament to investigate"',
+        asfid:{A:0.86,S:0.82,F:0.96,I:0.87,D:0.97}, r0_panic:0.3, r0_narr:0.05, r0_regime:'Saturated → SubThreshold',
+        force:'Parliamentary inquiry; directors flee; Newton loses £20K',
+        events:[[0,'Directors flee country'],[2,'Parliamentary inquiry opens']] },
+    ]
+  },
+  {
+    id:'rubber', name:'Brazilian Rubber Boom', short:'RUBBER 1912',
+    color:'#50C864',
+    asset:'Pará rubber (Hevea brasiliensis)', unit:'GBP / long ton',
+    peak:12.0, trough:0.45, drawdown_pct:-96.3, multiplier:26.7,
+    total_cycle:'~20 years (1895–1915)',
+    description:'The Amazon basin held a near-monopoly on Hevea brasiliensis. Demand from bicycle and automobile tyre industries created a global supply crisis. Manaus became one of the wealthiest cities on Earth — the Teatro Amazonas opera house shipped Italian marble and Venetian glass to the jungle. British botanist Henry Wickham had secretly exported 70,000 Hevea seeds to Kew Gardens in 1876. Plantations in Malaya and Ceylon reached productive scale in 1912. Asian rubber at 1/10th the Brazilian cost instantly collapsed world prices.',
+    wiki:[
+      ['Amazon rubber boom','https://en.wikipedia.org/wiki/Amazon_rubber_boom'],
+      ['Hevea brasiliensis','https://en.wikipedia.org/wiki/Hevea_brasiliensis'],
+      ['Teatro Amazonas','https://en.wikipedia.org/wiki/Amazon_Theatre'],
+    ],
+    phases:[
+      { date:'1895 – 1904', months:108, v_pct:1.0, vol_norm:1.0, volatility:0,
+        formula:'I ⊗ D', primary_m2:'m2:Event', secondary_m2:['m2:Trigger','m2:Narration','m2:Information'],
+        narrative:'"Amazon rubber — the empire of the tyre age"',
+        asfid:{A:0.68,S:0.62,F:0.72,I:0.90,D:0.85}, r0_panic:0.05, r0_narr:0.6, r0_regime:'SubThreshold',
+        force:'Bicycle + automobile tyre demand creates global rubber shortage',
+        events:[[0,'Dunlop pneumatic tyre 1888'],[48,'Benz mass production 1901'],[96,'Manaus opera house 1896']] },
+      { date:'1905 – 1909', months:60, v_pct:3.5, vol_norm:4.0, volatility:1,
+        formula:'F ⊗ D ⊗ A', primary_m2:'m2:Amplification', secondary_m2:['m2:Cascade','m2:Network','m2:Propagation','m2:Narration'],
+        narrative:'"Brazilian monopoly — no alternative source possible"',
+        asfid:{A:0.82,S:0.76,F:0.90,I:0.84,D:0.90}, r0_panic:0.08, r0_narr:1.8, r0_regime:'Supercritical (narrative)',
+        force:'Seringalistas debt-bond indigenous tappers; Ford investment',
+        events:[[0,'Rubber prices double 1905'],[36,'Ford Motor buys Amazon concession'],[48,'London rubber futures opens']] },
+      { date:'1910 – mid 1912', months:30, v_pct:8, vol_norm:10.0, volatility:1,
+        formula:'A ⊗ S', primary_m2:'m2:Narration', secondary_m2:['m2:Oscillator','m2:Emergence','m2:Identity'],
+        narrative:'"Amazon rubber is irreplaceable — monopoly forever"',
+        asfid:{A:0.95,S:0.88,F:0.84,I:0.86,D:0.83}, r0_panic:0.1, r0_narr:4.0, r0_regime:'Supercritical — peak',
+        force:'Peak price £12/long ton; London exchange speculation; Manaus luxury peak',
+        events:[[0,'Peak £12/ton 1910'],[18,'Malayan plantations reach full production 1912']] },
+      { date:'Jul – Dec 1912', months:6, v_pct:-25, vol_norm:8.0, volatility:2,
+        formula:'I ⊗ D ⊗ A', primary_m2:'m2:Bifurcation', secondary_m2:['m2:Trigger','m2:Threshold','m2:Propagation'],
+        narrative:'"Asian supply flooding market — Amazon cannot compete"',
+        asfid:{A:0.90,S:0.82,F:0.85,I:0.92,D:0.93}, r0_panic:3.5, r0_narr:0.1, r0_regime:'MINSKY MOMENT — R₀>1',
+        force:'Malayan plantation rubber at 1/10th Amazon cost hits London exchange',
+        events:[[0,'Malayan rubber undercuts Amazon Jul 1912'],[4,'London exchange panic selling Nov 1912']] },
+      { date:'1913 – 1915', months:24, v_pct:-15, vol_norm:0.5, volatility:1,
+        formula:'F ⊗ D', primary_m2:'m2:Propagation', secondary_m2:['m2:Cascade','m2:Dissipation'],
+        narrative:'"Amazon rubber is finished — Manaus is a ghost city"',
+        asfid:{A:0.85,S:0.80,F:0.94,I:0.85,D:0.95}, r0_panic:0.2, r0_narr:0.05, r0_regime:'Saturated → SubThreshold',
+        force:'Prices collapse to £0.45/ton; seringalistas bankrupt; indigenous debt-slaves released',
+        events:[[0,'Seringalistas mass bankruptcy 1913'],[12,'Manaus luxury economy collapses 1914']] },
+    ]
+  },
+  {
+    id:'wall1929', name:'Wall St / Great Depression', short:'NYSE 1929',
+    color:'#FF8C3C',
+    asset:'Dow Jones Industrial Average', unit:'USD (index points)',
+    peak:381.2, trough:41.22, drawdown_pct:-89.2, multiplier:4.0,
+    total_cycle:'~11 years (1922–1932)',
+    description:'Post-WWI prosperity, electrification, and automobile mass production drove the Roaring Twenties boom. Millions of Americans bought stocks on margin (10:1 leverage). Investment trusts created additional leverage. Irving Fisher declared a "permanently high plateau" one week before the crash. Black Thursday (Oct 24, 1929): 12.9 million NYSE shares traded. Black Monday & Tuesday (Oct 28-29): DJIA -25% in two days. The Great Depression saw 9,000 US bank failures and 25% unemployment.',
+    wiki:[
+      ['Wall Street Crash of 1929','https://en.wikipedia.org/wiki/Wall_Street_Crash_of_1929'],
+      ['Great Depression','https://en.wikipedia.org/wiki/Great_Depression'],
+      ['Roaring Twenties','https://en.wikipedia.org/wiki/Roaring_Twenties'],
+    ],
+    phases:[
+      { date:'1922 – 1925', months:48, v_pct:1.2, vol_norm:1.0, volatility:0,
+        formula:'I ⊗ D', primary_m2:'m2:Event', secondary_m2:['m2:Trigger','m2:Narration','m2:Amplification'],
+        narrative:'"Industrial revolution — prosperity for all"',
+        asfid:{A:0.70,S:0.65,F:0.75,I:0.95,D:0.90}, r0_panic:0.05, r0_narr:0.7, r0_regime:'SubThreshold',
+        force:'Post-WWI boom: Ford, electrification, Fed easy money',
+        events:[[0,'Fed eases post-WWI'],[24,'Radio stocks surge']] },
+      { date:'1926 – 1928', months:36, v_pct:2.0, vol_norm:2.5, volatility:1,
+        formula:'F ⊗ D ⊗ A', primary_m2:'m2:Amplification', secondary_m2:['m2:Cascade','m2:Network','m2:Propagation'],
+        narrative:'"Margin accounts for everyone — stocks only go up"',
+        asfid:{A:0.85,S:0.80,F:0.95,I:0.85,D:0.95}, r0_panic:0.1, r0_narr:2.0, r0_regime:'Supercritical (narrative)',
+        force:'10:1 margin accounts; investment trusts; broker call money',
+        events:[[0,'NYSE volume doubles'],[18,'Investment trusts proliferate']] },
+      { date:'Jan – Sep 3, 1929', months:8, v_pct:1.5, vol_norm:4.0, volatility:1,
+        formula:'A ⊗ S', primary_m2:'m2:Narration', secondary_m2:['m2:Oscillator','m2:Emergence','m2:Memory'],
+        narrative:'"Permanently high plateau" — Irving Fisher, Sep 1929',
+        asfid:{A:0.98,S:0.92,F:0.85,I:0.88,D:0.85}, r0_panic:0.1, r0_narr:4.0, r0_regime:'Supercritical — peak',
+        force:'DJIA peak Sep 3 at 381.17 pts; margin debt at record high',
+        events:[[0,'DJIA 300 pts'],[7,'Peak: Sep 3, 381.17 pts']] },
+      { date:'Sep 4 – Oct 24, 1929', months:2, v_pct:-4.0, vol_norm:6.0, volatility:2,
+        formula:'I ⊗ D ⊗ A', primary_m2:'m2:Bifurcation', secondary_m2:['m2:Trigger','m2:Threshold','m2:Propagation'],
+        narrative:'"Margin calls — forced liquidations cascade"',
+        asfid:{A:0.95,S:0.85,F:0.88,I:0.95,D:0.98}, r0_panic:3.0, r0_narr:0.2, r0_regime:'MINSKY MOMENT — R₀>1',
+        force:'Margin calls → broker loan recalls → bank strain',
+        events:[[0,'Selling pressure starts'],[1.7,'Black Thursday Oct 24: 12.9M shares']] },
+      { date:'Oct 1929 – Jul 1932', months:33, v_pct:-3.0, vol_norm:0.5, volatility:2,
+        formula:'F ⊗ D', primary_m2:'m2:Propagation', secondary_m2:['m2:Cascade','m2:Dissipation'],
+        narrative:'"Banks collapsing — Great Depression"',
+        asfid:{A:0.88,S:0.82,F:0.98,I:0.88,D:0.98}, r0_panic:0.3, r0_narr:0.05, r0_regime:'Saturated → SubThreshold',
+        force:'9000 bank failures; Smoot-Hawley tariffs; debt deflation spiral',
+        events:[[0,'Black Mon-Tue: -25% in 2 days'],[6,"Hoover: 'Prosperity is near'"],[33,'DJIA trough: 41.22 pts']] },
+    ]
+  },
+  {
+    id:'japan', name:'Japanese Asset Bubble', short:'NIKKEI 1989',
+    color:'#FF6464',
+    asset:'Nikkei 225 Index', unit:'JPY (index points)',
+    peak:38915, trough:14309, drawdown_pct:-63.2, multiplier:3.8,
+    total_cycle:'~8 years (1984–1992)',
+    description:"Japan in the 1980s was the world's second-largest economy. The 1985 Plaza Accord forced yen appreciation (USD/JPY: 240→120). The Bank of Japan cut rates to 2.5% (1987), flooding the economy with credit. Easy money poured into equities and real estate. The Imperial Palace grounds were theoretically worth more than all California real estate. Nikkei 225 peaked at 38,915 on December 29, 1989. Japan entered a 30-year deflationary stagnation — zombie banks, balance-sheet recession, the 'Lost Decade'.",
+    wiki:[
+      ['Japanese asset price bubble','https://en.wikipedia.org/wiki/Japanese_asset_price_bubble'],
+      ['Plaza Accord','https://en.wikipedia.org/wiki/Plaza_Accord'],
+      ['Lost Decade (Japan)','https://en.wikipedia.org/wiki/Lost_Decade_(Japan)'],
+    ],
+    phases:[
+      { date:'1984 – 1986', months:36, v_pct:1.8, vol_norm:1.0, volatility:0,
+        formula:'I ⊗ D', primary_m2:'m2:Event', secondary_m2:['m2:Trigger','m2:Narration','m2:Information'],
+        narrative:'"Japan Inc. — world champion exporter, unstoppable economy"',
+        asfid:{A:0.70,S:0.65,F:0.74,I:0.92,D:0.87}, r0_panic:0.05, r0_narr:0.7, r0_regime:'SubThreshold',
+        force:'Plaza Accord 1985: yen doubles vs USD; BoJ cuts rates to offset',
+        events:[[0,'Plaza Accord Sep 1985'],[12,'BoJ cuts to 2.5% 1986'],[24,'Zaitech speculation begins']] },
+      { date:'1987 – mid 1988', months:18, v_pct:3.5, vol_norm:3.5, volatility:1,
+        formula:'F ⊗ D ⊗ A', primary_m2:'m2:Amplification', secondary_m2:['m2:Cascade','m2:Network','m2:Propagation'],
+        narrative:'"Japanese banks and real estate — permanently appreciating"',
+        asfid:{A:0.84,S:0.80,F:0.93,I:0.85,D:0.92}, r0_panic:0.08, r0_narr:2.0, r0_regime:'Supercritical (narrative)',
+        force:'Zaitech: corporations use equity as collateral to buy more equity',
+        events:[[0,'Black Monday 1987: Japan barely affected'],[12,'Imperial Palace > California value']] },
+      { date:'mid 1988 – Dec 29, 1989', months:18, v_pct:4.5, vol_norm:8.0, volatility:1,
+        formula:'A ⊗ S', primary_m2:'m2:Narration', secondary_m2:['m2:Oscillator','m2:Emergence','m2:Identity','m2:Memory'],
+        narrative:'"Japan will overtake America — the 21st century belongs to Japan"',
+        asfid:{A:0.96,S:0.91,F:0.84,I:0.87,D:0.83}, r0_panic:0.1, r0_narr:4.5, r0_regime:'Supercritical — peak',
+        force:'Nikkei: 10K→38,915; Tokyo land = 4× all US land; golf club memberships $3M',
+        events:[[0,'Nikkei crosses 30,000 pts'],[15,'Peak: Nikkei 38,915 Dec 29, 1989']] },
+      { date:'Jan 1990 – Dec 1990', months:12, v_pct:-4.5, vol_norm:6.0, volatility:2,
+        formula:'I ⊗ D ⊗ A', primary_m2:'m2:Bifurcation', secondary_m2:['m2:Trigger','m2:Threshold','m2:Propagation'],
+        narrative:'"BoJ hiking — land prices falling — bank collateral worthless"',
+        asfid:{A:0.93,S:0.84,F:0.87,I:0.94,D:0.96}, r0_panic:3.0, r0_narr:0.15, r0_regime:'MINSKY MOMENT — R₀>1',
+        force:'BoJ raises rates 5 times in 15 months (2.5%→6%); real estate lending capped',
+        events:[[0,'BoJ raises rates Jan 1990'],[6,'Nikkei -30% by Jun 1990'],[10,'Real estate crash begins']] },
+      { date:'1991 – 1992', months:24, v_pct:-5.0, vol_norm:1.5, volatility:2,
+        formula:'F ⊗ D', primary_m2:'m2:Propagation', secondary_m2:['m2:Cascade','m2:Dissipation','m2:Regulation'],
+        narrative:'"Zombie banks — bad loans impossible to write off — Lost Decade"',
+        asfid:{A:0.86,S:0.81,F:0.96,I:0.86,D:0.97}, r0_panic:0.25, r0_narr:0.05, r0_regime:'Saturated → SubThreshold',
+        force:'¥87T non-performing loans; zombie banks; Jusen housing lenders collapse',
+        events:[[0,'Nikkei trough 14,309 Aug 1992'],[12,'Jusen scandal 1992']] },
+    ]
+  },
+  {
+    id:'dotcom', name:'Dot-com Bubble', short:'NASDAQ 2000',
+    color:'#37C8FF',
+    asset:'NASDAQ Composite', unit:'USD (index points)',
+    peak:5132.52, trough:1114.11, drawdown_pct:-78.3, multiplier:7.3,
+    total_cycle:'~9 years (1993–2002)',
+    description:"The commercialisation of the World Wide Web (Netscape IPO 1995) created a 'new economy' narrative: traditional valuation metrics (P/E, profit) were declared obsolete. Companies with '.com' in their name saw IPOs soar regardless of revenues. P/E ratios of 200-500x for unprofitable companies. Day trading democratised by online brokers. NASDAQ peak: 5,132 on March 10, 2000. Pets.com, Webvan, Kozmo went bankrupt. WorldCom and Enron frauds compounded the collapse. $5 trillion in market cap destroyed.",
+    wiki:[
+      ['Dot-com bubble','https://en.wikipedia.org/wiki/Dot-com_bubble'],
+      ['NASDAQ Composite','https://en.wikipedia.org/wiki/Nasdaq_Composite'],
+      ['Netscape','https://en.wikipedia.org/wiki/Netscape'],
+    ],
+    phases:[
+      { date:'1993 – 1996', months:48, v_pct:1.5, vol_norm:1.0, volatility:0,
+        formula:'I ⊗ D', primary_m2:'m2:Event', secondary_m2:['m2:Trigger','m2:Narration','m2:Information'],
+        narrative:'"Internet will transform commerce"',
+        asfid:{A:0.68,S:0.62,F:0.72,I:0.95,D:0.88}, r0_panic:0.05, r0_narr:0.6, r0_regime:'SubThreshold',
+        force:'Netscape IPO Aug 1995 — $2.9B for unprofitable browser company',
+        events:[[0,'Mosaic browser released 1993'],[24,'Netscape IPO Aug 1995'],[36,'Amazon IPO May 1997']] },
+      { date:'1997 – 1998', months:24, v_pct:3.5, vol_norm:10.0, volatility:1,
+        formula:'F ⊗ D ⊗ A', primary_m2:'m2:Amplification', secondary_m2:['m2:Cascade','m2:Network','m2:Propagation','m2:Narration'],
+        narrative:'"New economy — eyeballs replace revenue"',
+        asfid:{A:0.83,S:0.79,F:0.94,I:0.84,D:0.93}, r0_panic:0.1, r0_narr:2.2, r0_regime:'Supercritical (narrative)',
+        force:'Day trading platforms; VC money floods .com companies',
+        events:[[0,'Yahoo! IPO Apr 1996'],[12,'Asian financial crisis barely impacts tech']] },
+      { date:'1999 – Mar 10, 2000', months:15, v_pct:6.0, vol_norm:25.0, volatility:2,
+        formula:'A ⊗ S', primary_m2:'m2:Narration', secondary_m2:['m2:Oscillator','m2:Emergence','m2:Identity','m2:Memory'],
+        narrative:'"Traditional metrics are obsolete — revenue doesn\'t matter"',
+        asfid:{A:0.98,S:0.93,F:0.86,I:0.89,D:0.87}, r0_panic:0.1, r0_narr:5.0, r0_regime:'Supercritical — peak',
+        force:'AOL-Time Warner $165B merger (Jan 2000); NASDAQ 2.5B shares/day',
+        events:[[0,'NASDAQ 2500→4000'],[12,'AOL-Time Warner Jan 2000'],[14,'Peak Mar 10: 5132']] },
+      { date:'Mar 11 – Jun 2000', months:4, v_pct:-8.0, vol_norm:20.0, volatility:2,
+        formula:'I ⊗ D ⊗ A', primary_m2:'m2:Bifurcation', secondary_m2:['m2:Trigger','m2:Threshold','m2:Propagation'],
+        narrative:'"Earnings misses — these companies have no future"',
+        asfid:{A:0.94,S:0.84,F:0.87,I:0.94,D:0.97}, r0_panic:3.5, r0_narr:0.2, r0_regime:'MINSKY MOMENT — R₀>1',
+        force:'Institutional sell orders Mar 13; Microsoft antitrust ruling',
+        events:[[0,'Mar 13: massive institutional sell'],[2,'Microsoft antitrust Apr 2000']] },
+      { date:'Jul 2000 – Oct 9, 2002', months:28, v_pct:-3.0, vol_norm:8.0, volatility:2,
+        formula:'F ⊗ D', primary_m2:'m2:Propagation', secondary_m2:['m2:Cascade','m2:Dissipation'],
+        narrative:'"Fraud and bankruptcy — dot-com is dead"',
+        asfid:{A:0.87,S:0.81,F:0.97,I:0.87,D:0.97}, r0_panic:0.3, r0_narr:0.05, r0_regime:'Saturated → SubThreshold',
+        force:'Pets.com, Webvan, Kozmo bankrupt; WorldCom/Enron frauds; 9/11',
+        events:[[2,'Pets.com bankrupt Jul 2000'],[8,'9/11 Sep 2001'],[14,'WorldCom fraud Jun 2002'],[28,'Trough Oct 9, 2002: 1114']] },
+    ]
+  },
+  {
+    id:'gfc', name:'Global Financial Crisis', short:'GFC 2008',
+    color:'#E66464',
+    asset:'S&P 500 Index', unit:'USD (index points)',
+    peak:1565.0, trough:666.79, drawdown_pct:-57.4, multiplier:1.8,
+    total_cycle:'~9 years (2001–2009)',
+    description:"Post-dot-com crash and 9/11, the Fed cut rates to 1% (2003-2004). Financial innovation created MBS, CDO, and CDO-squared instruments. Subprime mortgages were extended to NINJA borrowers (No Income, No Job or Assets). Investment banks ran at 30:1-40:1 leverage. Bernanke: 'Subprime is contained' (March 2007). Lehman Brothers filed for bankruptcy September 15, 2008. Money market funds 'broke the buck'. TED spread hit 460 bps. $700B TARP bailout; Fed QE1 November 2008. The VIX reached 89.53.",
+    wiki:[
+      ['2007-2008 financial crisis','https://en.wikipedia.org/wiki/2007%E2%80%932008_financial_crisis'],
+      ['Lehman Brothers','https://en.wikipedia.org/wiki/Lehman_Brothers'],
+      ['Subprime mortgage crisis','https://en.wikipedia.org/wiki/Subprime_mortgage_crisis'],
+    ],
+    phases:[
+      { date:'2001 – 2004', months:48, v_pct:0.6, vol_norm:1.0, volatility:0,
+        formula:'I ⊗ D', primary_m2:'m2:Event', secondary_m2:['m2:Trigger','m2:Narration','m2:Information'],
+        narrative:'"Housing always appreciates — safe as houses"',
+        asfid:{A:0.68,S:0.62,F:0.73,I:0.92,D:0.88}, r0_panic:0.05, r0_narr:0.6, r0_regime:'SubThreshold',
+        force:'Fed Funds Rate at 1% (2003-04); FSMA 1999; MBS innovation',
+        events:[[0,'Fed cuts to 1% after 9/11'],[36,'Subprime lending explodes']] },
+      { date:'2005 – 2006', months:24, v_pct:1.1, vol_norm:2.5, volatility:0,
+        formula:'F ⊗ D ⊗ A', primary_m2:'m2:Amplification', secondary_m2:['m2:Cascade','m2:Network','m2:Propagation'],
+        narrative:'"CDOs rated AAA — risk has been eliminated"',
+        asfid:{A:0.82,S:0.78,F:0.93,I:0.83,D:0.92}, r0_panic:0.08, r0_narr:1.7, r0_regime:'Supercritical (narrative)',
+        force:'MBS/CDO $2.5T/yr issuance; shadow banking leverage 30:1',
+        events:[[0,'CDO-squared invented'],[20,'Case-Shiller index peaks']] },
+      { date:'Jan – Jul 2007', months:7, v_pct:0.3, vol_norm:1.3, volatility:0,
+        formula:'A ⊗ S', primary_m2:'m2:Narration', secondary_m2:['m2:Oscillator','m2:Emergence','m2:Memory'],
+        narrative:'"Subprime is contained" — Bernanke, Mar 2007',
+        asfid:{A:0.97,S:0.91,F:0.84,I:0.87,D:0.84}, r0_panic:0.2, r0_narr:2.5, r0_regime:'Supercritical — peak',
+        force:'S&P 500 peak Oct 2007 at 1565; VIX deceptively low (<15)',
+        events:[[0,'Case-Shiller peaks Jul 2007'],[5,'Bear Stearns hedge funds collapse']] },
+      { date:'Aug 2007 – Sep 15, 2008', months:14, v_pct:-2.0, vol_norm:2.0, volatility:2,
+        formula:'I ⊗ D ⊗ A', primary_m2:'m2:Bifurcation', secondary_m2:['m2:Trigger','m2:Threshold','m2:Propagation'],
+        narrative:'"Counterparty risk unknown — who is solvent?"',
+        asfid:{A:0.94,S:0.84,F:0.87,I:0.95,D:0.97}, r0_panic:4.0, r0_narr:0.1, r0_regime:'MINSKY MOMENT — R₀>1',
+        force:'BNP Paribas freeze → Bear Stearns → Fannie/Freddie → Lehman',
+        events:[[0,'BNP freezes funds Aug 9, 2007'],[7,'Bear Stearns rescued Mar 2008'],[14,'LEHMAN Sep 15, 2008']] },
+      { date:'Sep 2008 – Mar 9, 2009', months:6, v_pct:-8.0, vol_norm:0.3, volatility:3,
+        formula:'F ⊗ D', primary_m2:'m2:Propagation', secondary_m2:['m2:Cascade','m2:Dissipation','m2:Regulation'],
+        narrative:'"Global recession — Great Recession"',
+        asfid:{A:0.87,S:0.81,F:0.98,I:0.87,D:0.98}, r0_panic:0.3, r0_narr:0.05, r0_regime:'Saturated → SubThreshold',
+        force:'VIX: 89.53; TARP $700B; Fed QE1 Nov 2008; 8.7M jobs lost',
+        events:[[0,"Money market 'breaks buck'"],[1,'TARP $700B approved'],[6,"S&P trough Mar 9: 666"]] },
+    ]
+  },
+  {
+    id:'crypto', name:'Crypto Bubble 2019-2022', short:'BTC 2021',
+    color:'#FFA528',
+    asset:'Bitcoin (BTC)', unit:'USD / BTC',
+    peak:69044.0, trough:15599.0, drawdown_pct:-77.5, multiplier:19.7,
+    total_cycle:'~4 years (2019–2022)',
+    description:'DeFi emergence (Uniswap, Compound 2019), Bitcoin halving (May 2020), and institutional adoption (MicroStrategy, Tesla, PayPal) drove a supercycle. NFT boom (Beeple: $69M March 2021), Coinbase IPO, and El Salvador BTC legal tender. Bitcoin peaked at $69,044 November 10, 2021. The Fed\'s rate hike cycle, Terra/LUNA collapse ($40B in 72h), Celsius freeze, Three Arrows insolvency, and FTX collapse ($32B, Nov 2022) created a cascading crypto contagion destroying $2T in market cap.',
+    wiki:[
+      ['Cryptocurrency bubble','https://en.wikipedia.org/wiki/Cryptocurrency_bubble'],
+      ['Terra (blockchain)','https://en.wikipedia.org/wiki/Terra_(blockchain)'],
+      ['FTX (company)','https://en.wikipedia.org/wiki/FTX_(company)'],
+    ],
+    phases:[
+      { date:'Jan 2019 – Oct 2020', months:22, v_pct:7, vol_norm:1.0, volatility:1,
+        formula:'I ⊗ D', primary_m2:'m2:Event', secondary_m2:['m2:Trigger','m2:Narration','m2:Information'],
+        narrative:'"DeFi will replace traditional finance"',
+        asfid:{A:0.71,S:0.66,F:0.76,I:0.92,D:0.91}, r0_panic:0.1, r0_narr:0.8, r0_regime:'SubThreshold',
+        force:'DeFi protocols launch; Bitcoin halving May 2020; PayPal crypto',
+        events:[[0,'Uniswap V1 launch'],[12,'Bitcoin halving May 2020'],[18,'PayPal crypto support Oct 2020']] },
+      { date:'Nov 2020 – Mar 2021', months:5, v_pct:50, vol_norm:5.0, volatility:2,
+        formula:'F ⊗ D ⊗ A', primary_m2:'m2:Amplification', secondary_m2:['m2:Cascade','m2:Network','m2:Propagation','m2:Narration'],
+        narrative:'"Institutional adoption — BTC is digital gold"',
+        asfid:{A:0.84,S:0.80,F:0.95,I:0.86,D:0.94}, r0_panic:0.1, r0_narr:2.5, r0_regime:'Supercritical (narrative)',
+        force:'MicroStrategy $1B BTC; Tesla $1.5B; Coinbase IPO April 2021',
+        events:[[0,'MicroStrategy buys $1B BTC'],[3,'Tesla $1.5B BTC Feb 2021'],[5,'BTC first peak: $64K Apr 2021']] },
+      { date:'Apr – Nov 10, 2021', months:8, v_pct:4, vol_norm:20.0, volatility:3,
+        formula:'A ⊗ S', primary_m2:'m2:Narration', secondary_m2:['m2:Oscillator','m2:Emergence','m2:Duplication','m2:Identity'],
+        narrative:'"Crypto is the future — HODL everything"',
+        asfid:{A:0.97,S:0.90,F:0.84,I:0.87,D:0.85}, r0_panic:0.1, r0_narr:5.0, r0_regime:'Supercritical — peak',
+        force:'Beeple NFT $69M; El Salvador legal tender; meme coins',
+        events:[[0,'Beeple NFT $69M Mar 2021'],[2,'Coinbase IPO Apr 2021'],[4,'El Salvador legal tender'],[8,'Peak: $69,044, Nov 10, 2021']] },
+      { date:'Nov 2021 – May 12, 2022', months:6, v_pct:-10, vol_norm:10.0, volatility:3,
+        formula:'I ⊗ D ⊗ A', primary_m2:'m2:Bifurcation', secondary_m2:['m2:Trigger','m2:Threshold','m2:Propagation'],
+        narrative:'"Stablecoin depeg — systemic contagion"',
+        asfid:{A:0.94,S:0.84,F:0.87,I:0.95,D:0.97}, r0_panic:5.0, r0_narr:0.1, r0_regime:'MINSKY MOMENT — R₀>>1',
+        force:'Terra/LUNA collapse May 9-12 2022: $40B destroyed in 72h',
+        events:[[0,'Fed begins rate hikes Mar 2022'],[5,'LUNA/UST collapse May 9-12: $40B']] },
+      { date:'May – Nov 2022', months:6, v_pct:-8, vol_norm:2.0, volatility:3,
+        formula:'F ⊗ D', primary_m2:'m2:Propagation', secondary_m2:['m2:Cascade','m2:Dissipation'],
+        narrative:'"FTX fraud — the whole industry is rotten"',
+        asfid:{A:0.87,S:0.81,F:0.97,I:0.87,D:0.97}, r0_panic:0.3, r0_narr:0.05, r0_regime:'Saturated → SubThreshold',
+        force:'Celsius freeze Jun; 3AC insolvency; Voyager Jul; FTX collapse Nov 8-11: $32B→$0',
+        events:[[0,'Celsius Network freezes Jun 2022'],[1,'3 Arrows Capital insolvent'],[5,'FTX collapse Nov 8-11'],[6,'BTC trough: $15,599']] },
+    ]
+  },
+];
+
+// ── Seeded PRNG (mulberry32) ───────────────────────────────────────────────────
+function makePRNG(seed) {
+  let s = seed >>> 0;
+  return function() {
+    s = (s + 0x6D2B79F5) >>> 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function gauss(rng, sigma) {
+  let u1, u2;
+  do { u1 = rng(); } while (u1 <= 1e-10);
+  u2 = rng();
+  return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2) * sigma;
+}
+const VOL_SIGMA = [0.004, 0.010, 0.022, 0.045];
+const STEPS_PER_MONTH = 8;
+
+function generateCurves(bubble) {
+  const rng = makePRNG(2026);
+  const price = [], vol = [], bounds = [], evts = [];
+  let p = 100.0;
+  bubble.phases.forEach((ph, pi) => {
+    bounds.push(price.length);
+    const nSteps = Math.max(6, Math.round(ph.months * STEPS_PER_MONTH));
+    const sigma   = VOL_SIGMA[ph.volatility];
+    const vStep   = ph.v_pct / 100.0 / STEPS_PER_MONTH;
+    ph.events.forEach(([em, el]) => {
+      evts.push([bounds[pi] + Math.round(em * STEPS_PER_MONTH), el]);
+    });
+    for (let i = 0; i < nSteps; i++) {
+      p = Math.max(0.5, p * (1.0 + vStep + gauss(rng, sigma)));
+      price.push(p);
+      const t = i / Math.max(1, nSteps);
+      vol.push(ph.vol_norm * (0.7 + 0.5 * rng() + 0.3 * Math.sin(t * 4)));
+    }
+  });
+  return { price, vol, bounds, evts };
+}
+
+function phaseAtPoint(ptIdx, bounds) {
+  let ph = 0;
+  for (let i = 0; i < bounds.length; i++) { if (ptIdx >= bounds[i]) ph = i; }
+  return ph;
+}
+
+// ── App state ──────────────────────────────────────────────────────────────────
+const ALL_CURVES = {};
+BUBBLES.forEach(b => { ALL_CURVES[b.id] = generateCurves(b); });
+
+let activeBubbleIdx  = 0;
+let currentPt        = 0.0;
+let currentPhaseIdx  = 0;
+let lastPhaseIdx     = -1;
+let playing          = false;
+let speed            = 1.0;
+let hoverPt          = -1;
+
+// ── Build compbar UI ───────────────────────────────────────────────────────────
+function buildUI() {
+  // Bubble tabs
+  const btEl = document.getElementById('bubble-tabs');
+  BUBBLES.forEach((b, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'bubble-tab' + (i === 0 ? ' active' : '');
+    btn.id = 'bubble-tab-' + i;
+    btn.textContent = b.short;
+    btn.style.background = hexToRgba(b.color, 0.12);
+    btn.style.borderColor = hexToRgba(b.color, 0.25);
+    btn.style.color       = b.color;
+    btn.onclick = () => selectBubble(i);
+    btEl.appendChild(btn);
+  });
+
+  // Phase jump buttons
+  const pjEl = document.getElementById('phase-jumps');
+  PHASE_NAMES.forEach((nm, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'phase-btn' + (i === 0 ? ' active' : '');
+    btn.id = 'phase-btn-' + i;
+    btn.textContent = (i+1) + ' ' + nm;
+    btn.style.background   = hexToRgba(PH_COL_HEX[i], 0.12);
+    btn.style.borderColor  = hexToRgba(PH_COL_HEX[i], 0.25);
+    btn.style.color        = PH_COL_HEX[i];
+    btn.onclick = () => jumpPhase(i);
+    pjEl.appendChild(btn);
+  });
+
+  // Build primary concepts list
+  const pcEl = document.getElementById('primary-concepts-list');
+  PRIMARY_M2.forEach(m => {
+    const div = document.createElement('div');
+    div.className = 'gc-item primary';
+    div.id = 'gc-primary-' + m.ph;
+    div.innerHTML = `<span class="gc-name">${m.name}</span>
+      <div><div class="gc-formula">${m.formula}</div>
+      <div class="gc-role">${PHASE_NAMES[m.ph]}: ${m.role}</div></div>`;
+    div.style.borderLeftColor = PH_COL_HEX[m.ph];
+    pcEl.appendChild(div);
+  });
+
+  // Progress bar click
+  document.getElementById('progress-track').addEventListener('click', e => {
+    const curves = ALL_CURVES[BUBBLES[activeBubbleIdx].id];
+    const rect = e.currentTarget.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    currentPt = ratio * (curves.price.length - 1);
+    currentPhaseIdx = phaseAtPoint(Math.floor(currentPt), curves.bounds);
+    onPhaseChange();
+    updateProgress();
+  });
+}
+
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+// ── Controls ───────────────────────────────────────────────────────────────────
+function togglePlay() {
+  playing = !playing;
+  const btn = document.getElementById('btn-play');
+  const dot = document.getElementById('status-dot');
+  const lbl = document.getElementById('status-label');
+  if (playing) {
+    const curves = ALL_CURVES[BUBBLES[activeBubbleIdx].id];
+    if (currentPt >= curves.price.length - 1) { currentPt = 0; currentPhaseIdx = 0; onPhaseChange(); }
+    btn.textContent = '⏸ Pause';
+    btn.classList.add('active');
+    dot.className = 'status-dot running';
+    lbl.textContent = 'Playing';
+  } else {
+    btn.textContent = '▶ Play';
+    btn.classList.remove('active');
+    dot.className = 'status-dot paused';
+    lbl.textContent = 'Paused';
+  }
+}
+
+function resetSim() {
+  playing = false;
+  currentPt = 0; currentPhaseIdx = 0; lastPhaseIdx = -1;
+  const btn = document.getElementById('btn-play');
+  btn.textContent = '▶ Play'; btn.classList.remove('active');
+  document.getElementById('status-dot').className = 'status-dot';
+  document.getElementById('status-label').textContent = 'Stopped';
+  document.getElementById('progress-fill').style.width = '0%';
+  onPhaseChange();
+  updatePhaseJumps();
+}
+
+function setSpeed(s) {
+  speed = s;
+  ['spd-05','spd-1','spd-2','spd-4'].forEach(id => document.getElementById(id).classList.remove('spd-active'));
+  const map = {0.5:'spd-05', 1:'spd-1', 2:'spd-2', 4:'spd-4'};
+  if (map[s]) document.getElementById(map[s]).classList.add('spd-active');
+}
+
+function selectBubble(idx) {
+  activeBubbleIdx = idx;
+  playing = false; currentPt = 0; currentPhaseIdx = 0; lastPhaseIdx = -1;
+  BUBBLES.forEach((_, i) => {
+    document.getElementById('bubble-tab-'+i).classList.toggle('active', i === idx);
+  });
+  const btn = document.getElementById('btn-play');
+  btn.textContent = '▶ Play'; btn.classList.remove('active');
+  document.getElementById('status-dot').className = 'status-dot';
+  document.getElementById('status-label').textContent = 'Stopped';
+  document.getElementById('progress-fill').style.width = '0%';
+  onPhaseChange();
+  updatePhaseJumps();
+}
+
+function jumpPhase(ph) {
+  const b = BUBBLES[activeBubbleIdx];
+  const curves = ALL_CURVES[b.id];
+  currentPt = curves.bounds[ph];
+  currentPhaseIdx = ph;
+  onPhaseChange();
+  updatePhaseJumps();
+  updateProgress();
+}
+
+function updatePhaseJumps() {
+  PHASE_NAMES.forEach((_, i) => {
+    document.getElementById('phase-btn-'+i).classList.toggle('active', i === currentPhaseIdx);
+  });
+}
+
+function updateProgress() {
+  const curves = ALL_CURVES[BUBBLES[activeBubbleIdx].id];
+  const pct = curves.price.length > 1 ? (currentPt / (curves.price.length - 1)) * 100 : 0;
+  document.getElementById('progress-fill').style.width = Math.min(100, pct) + '%';
+}
+
+// ── Sidebar updates ────────────────────────────────────────────────────────────
+function onPhaseChange() {
+  const b  = BUBBLES[activeBubbleIdx];
+  const ph = b.phases[currentPhaseIdx];
+  updateDescription(b, ph, currentPhaseIdx);
+  updateConceptsTab(currentPhaseIdx);
+  updateScores(ph);
+  updateLiveState(b, ph);
+  updateCycleStats(b);
+}
+
+function fmtPrice(p, unit) {
+  let s = p >= 10000 ? p.toLocaleString('en-US',{maximumFractionDigits:0})
+        : p >= 100   ? p.toLocaleString('en-US',{maximumFractionDigits:1})
+        : p.toFixed(2);
+  return s + ' ' + unit;
+}
+
+function updateDescription(b, ph, pi) {
+  const col = PH_COL_HEX[pi];
+  document.getElementById('desc-episode').innerHTML = `
+    <div class="narrative-card" style="border-color:${b.color}33">
+      <div class="narrative-label" style="color:${b.color}">&#9654; ${b.short} — ${b.total_cycle}</div>
+      <div style="font-size:12px;color:var(--text);font-weight:600;margin-bottom:4px">${b.asset} &mdash; ${b.unit}</div>
+      <div style="font-size:11px;color:var(--text-dim);line-height:1.6">${b.description}</div>
+    </div>`;
+
+  document.getElementById('desc-phase-info').innerHTML = `
+    <div class="narrative-card" style="border-color:${col}33">
+      <div class="phase-info-row" style="margin-bottom:6px">
+        <span class="phase-badge" style="background:${hexToRgba(col,0.15)};color:${col}">${PHASE_NAMES[pi]}</span>
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">${ph.date}</span>
+      </div>
+      <div class="narrative-label">Narrative</div>
+      <div class="narrative-text">${ph.narrative}</div>
+      <div class="narrative-label" style="margin-top:6px">Driver</div>
+      <div class="driver-text">${ph.force}</div>
+      <div class="narrative-label" style="margin-top:6px">TSCG Formula</div>
+      <div style="font-family:var(--font-mono);font-size:12px;color:${col};margin-top:2px">${ph.formula}</div>
+    </div>`;
+
+  const wikiEl = document.getElementById('desc-wiki');
+  wikiEl.innerHTML = '';
+  b.wiki.forEach(([label, url]) => {
+    const a = document.createElement('a');
+    a.href = url; a.target = '_blank'; a.className = 'wiki-link';
+    a.innerHTML = `↗&nbsp;${label}`;
+    wikiEl.appendChild(a);
+  });
+}
+
+function updateConceptsTab(pi) {
+  PRIMARY_M2.forEach(m => {
+    const el = document.getElementById('gc-primary-' + m.ph);
+    if (!el) return;
+    el.classList.toggle('ph-active', m.ph === pi);
+    el.classList.toggle('ph-dim', m.ph !== pi);
+    el.style.borderLeftColor = PH_COL_HEX[m.ph];
+    if (m.ph === pi) {
+      el.style.boxShadow = `0 0 0 1px ${hexToRgba(PH_COL_HEX[pi], 0.3)}`;
+      el.style.background = hexToRgba(PH_COL_HEX[pi], 0.08);
+    } else {
+      el.style.boxShadow = '';
+      el.style.background = '';
+    }
+  });
+}
+
+function updateScores(ph) {
+  const asfid = ph.asfid;
+  const dims = ['A','S','F','I','D'];
+  dims.forEach(d => {
+    const v = asfid[d];
+    document.getElementById('bar-'+d).style.width = (v*100)+'%';
+    document.getElementById('val-'+d).textContent = v.toFixed(2);
+  });
+  const mean = dims.reduce((s,d) => s + asfid[d], 0) / 5;
+  document.getElementById('asfid-mean').textContent = mean.toFixed(2);
+}
+
+function updateLiveState(b, ph) {
+  const pi = currentPhaseIdx;
+  const col = PH_COL_HEX[pi];
+  const lsPhEl = document.getElementById('ls-phase');
+  lsPhEl.textContent = PHASE_NAMES[pi];
+  lsPhEl.style.color = col;
+  document.getElementById('ls-episode').textContent = b.short;
+  document.getElementById('ls-formula').textContent = ph.formula;
+  const r0pEl = document.getElementById('ls-r0p');
+  r0pEl.textContent = ph.r0_panic.toFixed(2);
+  r0pEl.style.color = ph.r0_panic > 1 ? 'var(--ph-3)' : 'var(--accent)';
+  document.getElementById('ls-r0n').textContent = ph.r0_narr.toFixed(2);
+  const regEl = document.getElementById('ls-regime');
+  regEl.textContent = ph.r0_regime;
+  regEl.style.color = ph.r0_regime.includes('MINSKY') ? 'var(--ph-3)' : 'var(--text-dim)';
+}
+
+function updateCycleStats(b) {
+  document.getElementById('ls-asset').textContent = b.asset;
+  document.getElementById('ls-peak').textContent = fmtPrice(b.peak, b.unit);
+  document.getElementById('ls-trough').textContent = fmtPrice(b.trough, b.unit);
+  document.getElementById('ls-drawdown').textContent = b.drawdown_pct.toFixed(1) + '%';
+  document.getElementById('ls-mult').textContent = '×' + b.multiplier.toFixed(1);
+}
+
+// ── Splitter ───────────────────────────────────────────────────────────────────
+function initSplitter() {
+  const splitter = document.getElementById('splitter');
+  const sidebar  = document.getElementById('sidebar');
+  let dragging   = false;
+  splitter.addEventListener('mousedown', e => {
+    dragging = true; splitter.classList.add('dragging');
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const appRect = document.getElementById('app').getBoundingClientRect();
+    const newSidebarW = Math.max(180, Math.min(620, appRect.right - e.clientX));
+    document.documentElement.style.setProperty('--sidebar-w', newSidebarW + 'px');
+    if (window._p5Instance) window._p5Instance.windowResized();
+  });
+  document.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false; splitter.classList.remove('dragging');
+  });
+}
+
+// ── Tab switching ──────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+tab).classList.add('active');
+  });
+});
+
+// ── Keyboard ───────────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+  if (e.code === 'KeyR') resetSim();
+  if (e.code >= 'Digit1' && e.code <= 'Digit5') jumpPhase(+e.code.slice(-1) - 1);
+  const bIdx = ['KeyQ','KeyW','KeyE','KeyA','KeyS','KeyD','KeyF'].indexOf(e.code);
+  if (bIdx >= 0) selectBubble(bIdx);
+});
+
+// ── p5.js sketch ───────────────────────────────────────────────────────────────
+new p5(function(p) {
+  const PHASE_BAR_H = 24;
+  const PAD_L = 52, PAD_R = 16, PAD_T = 6, PAD_B = 6;
+  let canvasW = 0, canvasH = 0;
+  let tooltip = document.getElementById('chart-tooltip');
+  let mouseInChart = false;
+  let mouseChartX = 0, mouseChartY = 0;
+
+  p.setup = function() {
+    const ca = document.getElementById('canvas-area');
+    const cv = p.createCanvas(ca.offsetWidth, ca.offsetHeight);
+    cv.parent('canvas-area');
+    canvasW = ca.offsetWidth; canvasH = ca.offsetHeight;
+    p.textFont('Segoe UI, system-ui, sans-serif');
+    p.frameRate(60);
+    window._p5Instance = p;
+  };
+
+  p.windowResized = function() {
+    const ca = document.getElementById('canvas-area');
+    p.resizeCanvas(ca.offsetWidth, ca.offsetHeight);
+    canvasW = ca.offsetWidth; canvasH = ca.offsetHeight;
+  };
+
+  p.draw = function() {
+    p.background(13, 17, 23);
+
+    const b      = BUBBLES[activeBubbleIdx];
+    const curves = ALL_CURVES[b.id];
+    const total  = curves.price.length;
+
+    // Advance playhead
+    if (playing) {
+      currentPt = Math.min(currentPt + speed * 0.5, total - 1);
+      const newPh = phaseAtPoint(Math.floor(currentPt), curves.bounds);
+      if (newPh !== currentPhaseIdx) {
+        currentPhaseIdx = newPh;
+        updatePhaseJumps();
+        onPhaseChange();
+      }
+      updateProgress();
+      if (currentPt >= total - 1) {
+        playing = false;
+        document.getElementById('btn-play').textContent = '▶ Play';
+        document.getElementById('btn-play').classList.remove('active');
+        document.getElementById('status-dot').className = 'status-dot paused';
+        document.getElementById('status-label').textContent = 'Ended';
+      }
+    }
+
+    // Layout
+    const chartTop   = PHASE_BAR_H;
+    const chartH     = canvasH - chartTop;
+    const priceH     = Math.floor(chartH * 0.76);
+    const volH       = chartH - priceH - 2;
+    const priceTop   = chartTop + PAD_T;
+    const priceBot   = chartTop + priceH - PAD_B;
+    const volTop     = chartTop + priceH + 2;
+    const volBot     = canvasH - 2;
+    const cLeft      = PAD_L;
+    const cRight     = canvasW - PAD_R;
+    const cWidth     = cRight - cLeft;
+
+    const xOf = i => cLeft + (i / Math.max(1, total-1)) * cWidth;
+    const maxP = Math.max(...curves.price);
+    const minP = Math.min(...curves.price) * 0.98;
+    const yOfP = v => priceBot - ((v - minP) / (maxP - minP + 1e-9)) * (priceBot - priceTop);
+    const maxV = Math.max(...curves.vol);
+    const yOfV = v => volBot - (v / (maxV + 1e-9)) * (volBot - volTop) * 0.92;
+
+    // ── Phase bar ─────────────────────────────────────────────────────────────
+    const totalMonths = b.phases.reduce((s, ph) => s + ph.months, 0);
+    let bx = cLeft;
+    b.phases.forEach((ph, i) => {
+      const segW = (ph.months / totalMonths) * cWidth;
+      const isActive = i === currentPhaseIdx;
+      const [r,g,bb_] = hexToRGB(PH_COL_HEX[i]);
+      p.fill(r, g, bb_, isActive ? 210 : 60);
+      p.noStroke();
+      p.rect(bx, 0, segW, PHASE_BAR_H);
+      // Phase label
+      const label = segW > 90 ? PHASE_NAMES[i] : PHASE_SHORT[i];
+      p.fill(isActive ? 230 : 110, isActive ? 235 : 120, isActive ? 245 : 135, isActive ? 240 : 140);
+      p.noStroke();
+      p.textSize(isActive ? 9.5 : 8.5);
+      p.textAlign(p.CENTER, p.CENTER);
+      p.textStyle(isActive ? p.BOLD : p.NORMAL);
+      p.text(label, bx + segW/2, PHASE_BAR_H/2);
+      // Separator
+      if (i < 4) {
+        p.stroke(30, 36, 50, 180);
+        p.strokeWeight(1);
+        p.line(bx + segW, 0, bx + segW, PHASE_BAR_H);
+      }
+      bx += segW;
+    });
+    // Phase bar bottom border
+    p.stroke(48, 56, 90, 120);
+    p.strokeWeight(1);
+    p.line(cLeft, PHASE_BAR_H, cRight, PHASE_BAR_H);
+
+    // ── Phase backgrounds (price chart) ───────────────────────────────────────
+    b.phases.forEach((ph, i) => {
+      const x0 = xOf(curves.bounds[i]);
+      const x1 = i < 4 ? xOf(curves.bounds[i+1]) : xOf(total-1);
+      const [r,g,bb_] = hexToRGB(PH_COL_HEX[i]);
+      const isActive = i === currentPhaseIdx;
+      p.fill(r, g, bb_, isActive ? 22 : 8);
+      p.noStroke();
+      p.rect(x0, priceTop, x1 - x0, priceBot - priceTop);
+    });
+
+    // ── Y-axis grid & labels (price) ─────────────────────────────────────────
+    p.textAlign(p.RIGHT, p.CENTER);
+    p.textSize(9); p.textStyle(p.NORMAL);
+    const nGridLines = 5;
+    for (let g = 0; g <= nGridLines; g++) {
+      const v = minP + (maxP - minP) * (g / nGridLines);
+      const y = yOfP(v);
+      p.stroke(48, 56, 90, 50); p.strokeWeight(1);
+      p.line(cLeft, y, cRight, y);
+      const label = v >= 10000 ? (v/1000).toFixed(0)+'K'
+                  : v >= 1000  ? (v/1000).toFixed(1)+'K'
+                  : v >= 100   ? v.toFixed(0)
+                  : v.toFixed(1);
+      p.fill(100, 115, 135, 200); p.noStroke();
+      p.text(label, cLeft - 3, y);
+    }
+
+    // ── Price curve (3 passes) ────────────────────────────────────────────────
+    const ptNow = Math.floor(currentPt);
+    // Pass 1: future (very dim)
+    // p.noFill(); p.stroke(220, 225, 240, 28); p.strokeWeight(1);
+	p.noFill(); p.stroke(220, 225, 240, 75); p.strokeWeight(1);
+    p.beginShape();
+    for (let i = ptNow; i < total; i++) p.vertex(xOf(i), yOfP(curves.price[i]));
+    p.endShape();
+
+    // Pass 2: played past phases (medium)
+    b.phases.forEach((ph, i) => {
+      if (i >= currentPhaseIdx) return;
+      const start = curves.bounds[i];
+      const end   = i < 4 ? curves.bounds[i+1] : total;
+      const [r,g,bb_] = hexToRGB(PH_COL_HEX[i]);
+      p.stroke(r, g, bb_, 90); p.strokeWeight(1.5);
+      p.beginShape();
+      for (let j = start; j < end && j < ptNow; j++) p.vertex(xOf(j), yOfP(curves.price[j]));
+      p.endShape();
+    });
+
+    // Pass 3: current phase (bright)
+    const phStart = curves.bounds[currentPhaseIdx];
+    const phEnd   = currentPhaseIdx < 4 ? curves.bounds[currentPhaseIdx+1] : total;
+    const [cr,cg,cb_] = hexToRGB(PH_COL_HEX[currentPhaseIdx]);
+    p.stroke(cr, cg, cb_, 230); p.strokeWeight(2.5);
+    p.beginShape();
+    for (let j = phStart; j <= Math.min(ptNow, phEnd-1); j++) p.vertex(xOf(j), yOfP(curves.price[j]));
+    p.endShape();
+
+    // Playhead dot
+    if (ptNow > 0 && ptNow < total) {
+      const px = xOf(ptNow), py = yOfP(curves.price[ptNow]);
+      p.fill(cr, cg, cb_, 255); p.noStroke();
+      p.circle(px, py, 8);
+      p.fill(13, 17, 23); p.circle(px, py, 3);
+    }
+
+    // ── Event markers ─────────────────────────────────────────────────────────
+    curves.evts.forEach(([evPt, label]) => {
+      if (evPt >= total) return;
+      const ex = xOf(evPt);
+      const phOfEv = phaseAtPoint(evPt, curves.bounds);
+      const [er,eg,eb_] = hexToRGB(PH_COL_HEX[phOfEv]);
+      const played = evPt <= ptNow;
+      p.stroke(er, eg, eb_, played ? 120 : 40);
+      p.strokeWeight(1);
+      for (let y = priceTop; y < priceBot; y += 6) p.line(ex, y, ex, Math.min(y+3, priceBot));
+      if (played && ex > cLeft + 10 && ex < cRight - 10) {
+        p.noStroke(); p.fill(er, eg, eb_, 160);
+        p.textSize(8.5); p.textAlign(p.CENTER, p.BOTTOM);
+        p.textStyle(p.NORMAL);
+        const ly = priceTop + 12;
+        p.text(label, Math.max(cLeft+30, Math.min(cRight-30, ex)), ly);
+      }
+    });
+
+    // ── Price chart border ────────────────────────────────────────────────────
+    p.stroke(48, 56, 90, 60); p.strokeWeight(1); p.noFill();
+    p.rect(cLeft, priceTop, cWidth, priceBot - priceTop);
+
+    // ── Volume separator ──────────────────────────────────────────────────────
+    p.stroke(48, 56, 90, 80); p.strokeWeight(1);
+    p.line(cLeft, volTop - 1, cRight, volTop - 1);
+    p.fill(100, 115, 135, 120); p.noStroke();
+    p.textSize(8.5); p.textAlign(p.LEFT, p.TOP); p.textStyle(p.NORMAL);
+    p.text('VOLUME', cLeft, volTop);
+
+    // ── Volume bars ────────────────────────────────────────────────────────────
+    const BAR_STEP = 6;
+    const barW = Math.max(1, cWidth / (total / BAR_STEP) - 0.5);
+    for (let i = 0; i < total; i += BAR_STEP) {
+      const phOfBar = phaseAtPoint(i, curves.bounds);
+      const [vr,vg,vb_] = hexToRGB(PH_COL_HEX[phOfBar]);
+      const isActive = phOfBar === currentPhaseIdx;
+      const isFuture = i > ptNow;
+      const alpha = isFuture ? 25 : (isActive ? 150 : 55);
+      const avgVol = curves.vol.slice(i, i + BAR_STEP).reduce((s,v) => s+v, 0) / BAR_STEP;
+      const bh = Math.max(1, (avgVol / (maxV + 1e-9)) * (volBot - volTop) * 0.9);
+      p.fill(vr, vg, vb_, alpha); p.noStroke();
+      p.rect(xOf(i), volBot - bh, barW, bh);
+    }
+
+    // ── Crosshair ────────────────────────────────────────────────────────────
+    const mx = p.mouseX, my = p.mouseY;
+    if (mx >= cLeft && mx <= cRight && my >= chartTop && my < priceBot) {
+      mouseInChart = true;
+      const fraction = (mx - cLeft) / cWidth;
+      const hovPt = Math.round(fraction * (total - 1));
+      hoverPt = hovPt;
+      p.stroke(180, 195, 220, 100); p.strokeWeight(1);
+      p.line(mx, priceTop, mx, priceBot);
+      p.line(cLeft, my, cRight, my);
+      // Price label on Y axis
+      const hPrice = curves.price[hovPt] || 0;
+      const priceLabel = hPrice >= 10000 ? hPrice.toLocaleString('en-US',{maximumFractionDigits:0})
+                       : hPrice >= 100 ? hPrice.toFixed(1) : hPrice.toFixed(2);
+      p.fill(30, 36, 46); p.noStroke();
+      p.rect(0, my - 8, PAD_L - 2, 16, 3);
+      p.fill(200, 215, 235); p.textSize(9); p.textAlign(p.RIGHT, p.CENTER);
+      p.text(priceLabel, PAD_L - 4, my);
+      // Tooltip
+      const phHov = phaseAtPoint(hovPt, curves.bounds);
+      tooltip.style.display = 'block';
+      tooltip.style.left = (mx + 14) + 'px';
+      tooltip.style.top  = Math.max(chartTop + 4, my - 32) + 'px';
+      tooltip.innerHTML = `<span style="color:${PH_COL_HEX[phHov]}">${PHASE_NAMES[phHov]}</span>&nbsp; price:&nbsp;<strong>${priceLabel}</strong>`;
+    } else {
+      mouseInChart = false;
+      tooltip.style.display = 'none';
+    }
+
+    // ── Phase bar hover (click to jump) ──────────────────────────────────────
+    if (mx >= cLeft && mx <= cRight && my >= 0 && my < PHASE_BAR_H) {
+      const frac = (mx - cLeft) / cWidth;
+      const totalM = b.phases.reduce((s,ph) => s + ph.months, 0);
+      let cumFrac = 0, hoverPh = 0;
+      for (let i = 0; i < 5; i++) {
+        cumFrac += b.phases[i].months / totalM;
+        if (frac <= cumFrac) { hoverPh = i; break; }
+        hoverPh = i;
+      }
+      p.fill(255, 255, 255, 20); p.noStroke();
+      let bxH = cLeft, segsDrawn = 0;
+      for (let i = 0; i < hoverPh; i++) bxH += (b.phases[i].months / totalM) * cWidth;
+      const segWH = (b.phases[hoverPh].months / totalM) * cWidth;
+      p.rect(bxH, 0, segWH, PHASE_BAR_H);
+    }
+  };
+
+  p.mousePressed = function() {
+    const mx = p.mouseX, my = p.mouseY;
+    const ca  = document.getElementById('canvas-area');
+    const curves = ALL_CURVES[BUBBLES[activeBubbleIdx].id];
+    const total  = curves.price.length;
+    const cLeft  = PAD_L, cRight = ca.offsetWidth - PAD_R;
+    const cWidth = cRight - cLeft;
+
+    if (mx >= cLeft && mx <= cRight) {
+      const frac = (mx - cLeft) / cWidth;
+      if (my >= PHASE_BAR_H) {
+        // Scrub price chart
+        currentPt = frac * (total - 1);
+        const newPh = phaseAtPoint(Math.floor(currentPt), curves.bounds);
+        if (newPh !== currentPhaseIdx) { currentPhaseIdx = newPh; onPhaseChange(); updatePhaseJumps(); }
+        updateProgress();
+      } else {
+        // Click phase bar
+        const totalM = BUBBLES[activeBubbleIdx].phases.reduce((s,ph) => s + ph.months, 0);
+        let cumFrac = 0;
+        for (let i = 0; i < 5; i++) {
+          cumFrac += BUBBLES[activeBubbleIdx].phases[i].months / totalM;
+          if (frac <= cumFrac) { jumpPhase(i); break; }
+        }
+      }
+    }
+  };
+
+  function hexToRGB(hex) {
+    return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
+  }
+
+}, document.getElementById('canvas-area'));
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+window.addEventListener('load', function() {
+  buildUI();
+  onPhaseChange();   // initialise sidebar with first bubble/phase
+});
+</script>
+</body>
+</html>

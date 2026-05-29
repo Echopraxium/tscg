@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://cdnjs.cloudflare.com;
+                 script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
+                 style-src  'self' 'unsafe-inline';
+                 img-src    'self' data: blob:;
+                 connect-src http://127.0.0.1:* ws://127.0.0.1:*;">
+  <title>TSCG &mdash; Four-Stroke Engine</title>
+  <style>
+/* ── Reset & Globals ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep:      #0d1117;
+  --bg-panel:     #161b22;
+  --bg-card:      #1c2130;
+  --bg-hover:     #21262d;
+  --border:       #30363d;
+  --border-light: #3d444f;
+  --eagle:        #f78166;
+  --sphinx:       #79c0ff;
+  --accent:       #56d364;
+  --warn:         #e3b341;
+  --muted:        #8b949e;
+  --text:         #e6edf3;
+  --text-dim:     #b1bac4;
+  --col-A: #ffb840;
+  --col-S: #64c8ff;
+  --col-F: #3dc896;
+  --col-I: #c882ff;
+  --col-D: #ff6464;
+  --col-R: #79c0ff;
+  --col-E: #56d364;
+  --col-V: #f78166;
+  --col-O: #d2a8ff;
+  --col-Im: #e3b341;
+  --c-intake:   #3cb4ff;
+  --c-compress: #ffc832;
+  --c-power:    #ff503c;
+  --c-exhaust:  #8cc878;
+  --header-h:   44px;
+  --controls-h: 58px;
+  --compbar-h:  54px;
+  --sidebar-w:  310px;
+  --gap: 8px;
+  --radius: 6px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+html, body { height: 100%; overflow: hidden; font-family: var(--font);
+  background: var(--bg-deep); color: var(--text); font-size: 13px;
+  line-height: 1.5; user-select: none; }
+
+#app {
+  display: grid;
+  grid-template-rows: var(--header-h) 1fr var(--compbar-h) var(--controls-h);
+  grid-template-columns: 1fr 5px var(--sidebar-w);
+  grid-template-areas:
+    "header   header   header"
+    "canvas   split    sidebar"
+    "compbar  compbar  compbar"
+    "controls controls controls";
+  height: 100vh;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+#header {
+  grid-area: header;
+  display: flex; align-items: center; padding: 0 16px; gap: 12px;
+  background: var(--bg-panel); border-bottom: 1px solid var(--border);
+}
+#header .tscg-logo { font-size:11px;font-weight:700;letter-spacing:.12em;
+  color:var(--eagle);text-transform:uppercase;flex-shrink:0; }
+#header .sep { color:var(--border-light);font-size:16px; }
+#header .poclet-name { font-size:14px;font-weight:600;color:var(--text);
+  flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+#header .meta-chips { display:flex;gap:6px;flex-shrink:0; }
+.chip { padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid transparent; }
+.chip.domain  { background:rgba(86,211,100,.12);border-color:rgba(86,211,100,.3);color:var(--accent); }
+.chip.version { background:rgba(121,192,255,.12);border-color:rgba(121,192,255,.3);color:var(--sphinx); }
+.chip.type    { background:rgba(247,129,102,.12);border-color:rgba(247,129,102,.3);color:var(--eagle); }
+
+/* ── Canvas ─────────────────────────────────────────────────── */
+#canvas-area { grid-area:canvas;position:relative;overflow:hidden;background:var(--bg-deep);min-width:200px; }
+#canvas-area canvas { position:absolute;top:0;left:0; }
+
+/* ── Splitter ─────────────────────────────────────────────────*/
+#splitter { grid-area:split;background:var(--border);cursor:col-resize;
+  transition:background .15s;position:relative;z-index:10; }
+#splitter:hover, #splitter.dragging { background:var(--sphinx); }
+
+/* ── Sidebar ─────────────────────────────────────────────────── */
+#sidebar { grid-area:sidebar;display:flex;flex-direction:column;
+  background:var(--bg-panel);border-left:1px solid var(--border);
+  overflow:hidden;min-width:180px;max-width:620px; }
+.tab-bar { display:flex;background:var(--bg-deep);border-bottom:1px solid var(--border);flex-shrink:0; }
+.tab-btn { flex:1;padding:8px 4px;font-size:12px;font-weight:600;
+  background:none;border:none;border-bottom:2px solid transparent;
+  color:var(--muted);cursor:pointer;transition:color .15s,border-color .15s; }
+.tab-btn:hover { color:var(--text-dim); }
+.tab-btn.active { color:var(--sphinx);border-bottom-color:var(--sphinx); }
+.tab-panel { display:none;flex-direction:column;flex:1;overflow-y:auto;padding:12px;gap:10px; }
+.tab-panel.active { display:flex; }
+
+/* ── Score bars ─────────────────────────────────────────────── */
+.score-group { display:flex;flex-direction:column;gap:5px; }
+.score-group-label { font-size:10px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);
+  padding-bottom:4px;border-bottom:1px solid var(--border);margin-bottom:2px; }
+.score-group-label.eagle { color:var(--eagle); }
+.score-group-label.sphinx { color:var(--sphinx); }
+.score-row { display:flex;align-items:center;gap:8px;font-size:12px; }
+.score-dim { width:20px;font-weight:700;font-family:var(--font-mono);font-size:11px;text-align:center;flex-shrink:0; }
+.score-bar-bg { flex:1;height:6px;background:var(--bg-card);border-radius:3px;overflow:hidden; }
+.score-bar-fill { height:100%;border-radius:3px;transition:width .1s linear; }
+.score-val { width:30px;text-align:right;font-family:var(--font-mono);font-size:11px;color:var(--text-dim);flex-shrink:0; }
+.score-mean-row { display:flex;justify-content:space-between;font-size:11px;color:var(--muted);
+  padding-top:2px;font-family:var(--font-mono); }
+.score-mean-row span { color:var(--text);font-weight:600; }
+.gap-badge { display:flex;align-items:center;gap:10px;background:var(--bg-card);
+  border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-size:12px; }
+.gap-badge .gap-label { color:var(--muted); }
+.gap-badge .gap-val { font-family:var(--font-mono);font-weight:700;font-size:16px;color:var(--accent); }
+.gap-badge .gap-desc { color:var(--text-dim);font-size:11px; }
+
+/* ── Concept list ────────────────────────────────────────────── */
+.gc-section-label { font-size:10px;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.1em;font-weight:700;margin-bottom:4px; }
+.gc-list { display:flex;flex-direction:column;gap:4px; }
+.gc-item { display:flex;align-items:flex-start;gap:8px;padding:6px 8px;
+  background:var(--bg-card);border-radius:var(--radius);
+  border:1px solid var(--border);transition:border-color .15s,background .15s; }
+.gc-item:hover { background:var(--bg-hover);border-color:var(--border-light); }
+.gc-item.primary   { border-left:3px solid var(--eagle); }
+.gc-item.secondary { border-left:3px solid var(--border-light); }
+.gc-name    { font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--sphinx);flex-shrink:0;min-width:110px; }
+.gc-formula { font-family:var(--font-mono);font-size:10px;color:var(--muted);flex-shrink:0; }
+.gc-role    { font-size:11px;color:var(--text-dim);line-height:1.4; }
+
+/* ── README prose ────────────────────────────────────────────── */
+.readme-content { font-size:12px;line-height:1.7;color:var(--text-dim);white-space:pre-wrap; }
+.readme-content h2 { font-size:13px;font-weight:700;color:var(--text);
+  margin:12px 0 4px;padding-bottom:3px;border-bottom:1px solid var(--border); }
+.readme-content strong { color:var(--text); }
+.readme-content code { font-family:var(--font-mono);font-size:10.5px;
+  background:var(--bg-card);padding:1px 4px;border-radius:3px;color:var(--sphinx); }
+
+/* ── Synergy boxes ───────────────────────────────────────────── */
+.synergy-box { background:var(--bg-card);border:1px solid var(--border);
+  border-left:3px solid var(--warn);border-radius:var(--radius);
+  padding:10px 12px;gap:6px;display:flex;flex-direction:column; }
+.synergy-label   { font-size:12px;font-weight:700;color:var(--warn); }
+.synergy-formula { font-family:var(--font-mono);font-size:11.5px;color:var(--text);word-break:break-word; }
+.synergy-emergent{ font-size:11px;color:var(--text-dim); }
+
+/* ── Live status ─────────────────────────────────────────────── */
+.live-status-box { background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:8px 10px;font-size:11px;line-height:1.8; }
+.live-status-box .ls-title { font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px; }
+.ls-row { display:flex;justify-content:space-between;gap:8px; }
+.ls-key { color:var(--muted); }
+.ls-val { font-family:var(--font-mono);color:var(--text); }
+
+/* ── Comp bar ────────────────────────────────────────────────── */
+#comp-bar { grid-area:compbar;background:var(--bg-panel);border-top:1px solid var(--border);overflow:hidden; }
+#comp-inner { display:flex;align-items:center;gap:10px;padding:6px 16px;flex-wrap:nowrap;overflow-x:auto; }
+.comp-group { display:flex;align-items:center;gap:6px;flex-shrink:0; }
+.comp-label { font-size:11px;color:var(--muted);white-space:nowrap; }
+.comp-val   { font-size:11px;font-family:var(--font-mono);color:var(--text-dim);min-width:56px;text-align:right; }
+input[type="range"].comp-slider {
+  -webkit-appearance:none;width:90px;height:4px;
+  background:var(--bg-card);border-radius:2px;outline:none;flex-shrink:0;
+}
+input[type="range"].comp-slider::-webkit-slider-thumb {
+  -webkit-appearance:none;width:12px;height:12px;border-radius:50%;
+  background:var(--sphinx);cursor:pointer;border:2px solid var(--bg-panel);
+}
+.comp-sep { width:1px;height:28px;background:var(--border);flex-shrink:0; }
+
+/* ── Stroke jump buttons ─────────────────────────────────────── */
+.stroke-jump-group { display:flex;align-items:center;gap:5px;flex-shrink:0; }
+.stroke-jump-label { font-size:11px;color:var(--muted);margin-right:2px; }
+.stroke-btn {
+  padding:3px 9px;border-radius:4px;font-size:11px;font-weight:600;
+  border:1px solid transparent;cursor:pointer;font-family:var(--font);
+  transition:opacity .15s,border-color .15s;opacity:.6;
+}
+.stroke-btn:hover  { opacity:1; }
+.stroke-btn.active { opacity:1;border-color:rgba(255,255,255,.4); }
+.stroke-btn.intake   { background:rgba(60,180,255,.15);color:var(--c-intake);border-color:rgba(60,180,255,.3); }
+.stroke-btn.compress { background:rgba(255,200,50,.15); color:var(--c-compress);border-color:rgba(255,200,50,.3); }
+.stroke-btn.power    { background:rgba(255,80,60,.15);  color:var(--c-power);  border-color:rgba(255,80,60,.3); }
+.stroke-btn.exhaust  { background:rgba(140,200,120,.15);color:var(--c-exhaust);border-color:rgba(140,200,120,.3); }
+
+/* ── Controls ────────────────────────────────────────────────── */
+#controls {
+  grid-area:controls;display:flex;align-items:center;gap:6px;padding:0 16px;
+  background:var(--bg-panel);border-top:1px solid var(--border);flex-wrap:nowrap;
+}
+.ctrl-btn { display:flex;align-items:center;gap:5px;padding:4px 10px;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--text-dim);font-size:12px;font-family:var(--font);cursor:pointer;
+  transition:background .15s,color .15s,border-color .15s;white-space:nowrap;flex-shrink:0; }
+.ctrl-btn:hover { background:var(--bg-hover);color:var(--text);border-color:var(--border-light); }
+.ctrl-btn.active { background:rgba(86,211,100,.1);border-color:var(--accent);color:var(--accent); }
+.ctrl-btn.spd-active { background:rgba(160,220,80,.15);border-color:rgba(160,220,80,.5);color:rgba(160,220,80,1); }
+.ctrl-sep  { width:1px;height:28px;background:var(--border);flex-shrink:0; }
+.ctrl-label{ font-size:11px;color:var(--muted);white-space:nowrap;flex-shrink:0; }
+.status-indicator { margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);flex-shrink:0; }
+.status-dot { width:7px;height:7px;border-radius:50%;background:var(--muted);transition:background .3s; }
+.status-dot.running { background:var(--accent);animation:pulse 1.2s ease-in-out infinite; }
+.status-dot.paused  { background:var(--warn); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+#crank-display { font-family:var(--font-mono);font-size:11px;color:var(--text-dim);flex-shrink:0;min-width:70px; }
+
+::-webkit-scrollbar { width:5px;height:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border-light);border-radius:4px; }
+::-webkit-scrollbar-thumb:hover { background:var(--muted); }
+
+/* ── Home button — SVG icon, visited-proof ── */
+#btn-home {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  margin-right: 4px;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+  text-decoration: none;
+}
+#btn-home:hover { opacity: 1; }
+  
+/* TSCG logo — clickable link + tooltip */
+.tscg-logo-link, .titlebar-logo-link {
+  text-decoration: none; color: inherit; position: relative; cursor: pointer;
+  background: none; border: none; padding: 0;
+}
+
+</style>
+  <link rel="icon" href="data:,">
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <header id="header">
+    <button id="btn-home" onclick="window.location.href='https://echopraxium.github.io/tscg/'"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></button>
+    <button class="tscg-logo-link" onclick="window.open('https://github.com/Echopraxium/tscg','_blank')"><span class="tscg-logo">TSCG</span></button>
+    <span class="sep">&middot;</span>
+    <span class="poclet-name">Four-Stroke Engine &mdash; Otto Cycle Poclet</span>
+    <div class="meta-chips">
+      <span class="chip domain">Thermodynamics</span>
+      <span class="chip type">m3:Poclet</span>
+      <span class="chip version">v1.2.0</span>
+    </div>
+  </header>
+
+  <!-- CANVAS -->
+  <div id="canvas-area"></div>
+
+  <!-- SPLITTER -->
+  <div id="splitter"></div>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="description">Description</button>
+      <button class="tab-btn" data-tab="concepts">Concepts</button>
+      <button class="tab-btn" data-tab="synergy">Synergy</button>
+      <button class="tab-btn" data-tab="scores">Scores</button>
+    </nav>
+
+    <!-- ── Description ── -->
+    <div id="panel-description" class="tab-panel active">
+      <div class="readme-content">
+<h2>System</h2>
+The <strong>Four-Stroke Engine</strong> converts chemical energy (fuel) into continuous
+mechanical rotation through four sequential phases:
+<code>Intake</code> &rarr; <code>Compression</code> &rarr; <code>Power</code> &rarr; <code>Exhaust</code>
+
+Two crankshaft revolutions (720&deg;) complete one full cycle.
+
+<h2>Otto Cycle Thermodynamics</h2>
+<code>1&rarr;2</code> Isentropic compression &mdash; PV<sup>&gamma;</sup> = const
+<code>2&rarr;3</code> Isochoric heat addition &mdash; spark ignition
+<code>3&rarr;4</code> Isentropic expansion &mdash; power stroke
+<code>4&rarr;1</code> Isochoric heat rejection &mdash; exhaust
+
+Ideal efficiency: <code>&eta; = 1 &minus; 1/r<sup>(&gamma;&minus;1)</sup></code>
+where r = compression ratio, &gamma; = 1.4 (air)
+
+<h2>TSCG Insight</h2>
+Primary pattern: <code>m2:Workflow</code> + <code>m2:FeedbackLoop</code>
+The 4-stroke sequence is a <em>structured ordered workflow</em> (Workflow) that
+periodically returns to its initial state (FeedbackLoop). Continuous crankshaft
+rotation emerges from 4 discrete strokes &mdash; a canonical <code>m2:Emergence</code>.
+
+<h2>Controls</h2>
+Adjust <strong>RPM</strong>, <strong>r</strong>, and <strong>Load</strong> sliders below.
+Click stroke buttons to jump to any phase. Transport: <strong>&laquo;</strong> step back,
+<strong>&raquo;</strong> step forward, <strong>&#9646;&#9646;</strong> pause/resume.
+
+<h2>Reference</h2>
+Heywood J.B. (1988) &mdash; <em>Internal Combustion Engine Fundamentals</em>. McGraw-Hill.
+      </div>
+    </div>
+
+    <!-- ── Concepts ── -->
+    <div id="panel-concepts" class="tab-panel">
+      <div class="gc-section-label">Dynamic &mdash; 6 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item primary">
+          <span class="gc-name">m2:Workflow</span>
+          <div><div class="gc-formula">S&otimes;D&otimes;F</div>
+          <div class="gc-role">Strict ordering: Intake &rarr; Compress &rarr; Power &rarr; Exhaust</div></div>
+        </div>
+        <div class="gc-item primary">
+          <span class="gc-name">m2:FeedbackLoop</span>
+          <div><div class="gc-formula">Process&otimes;Alignment&otimes;Homeostasis</div>
+          <div class="gc-role">Periodic return to initial state &mdash; defines cyclicity</div></div>
+        </div>
+        <div class="gc-item primary">
+          <span class="gc-name">m2:Transformation</span>
+          <div><div class="gc-formula">D&otimes;S&otimes;I</div>
+          <div class="gc-role">Chemical &rarr; Thermal &rarr; Mechanical work</div></div>
+        </div>
+        <div class="gc-item primary">
+          <span class="gc-name">m2:Bifurcation</span>
+          <div><div class="gc-formula">&part;D/&part;F</div>
+          <div class="gc-role">Rapid combustion transition at power stroke onset</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Process</span>
+          <div><div class="gc-formula">D&otimes;F</div>
+          <div class="gc-role">Each stroke as a temporal sub-process</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Step</span>
+          <div><div class="gc-formula">S&otimes;I&otimes;D</div>
+          <div class="gc-role">Each stroke as elementary unit in the Workflow</div></div>
+        </div>
+      </div>
+
+      <div class="gc-section-label" style="margin-top:6px">Structural &mdash; 4 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Component</span>
+          <div><div class="gc-formula">S&otimes;I</div>
+          <div class="gc-role">4 strokes as elementary parts of the cycle</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Composition</span>
+          <div><div class="gc-formula">S&otimes;I&otimes;A</div>
+          <div class="gc-role">Piston + connecting rod + crankshaft assembly</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Symmetry</span>
+          <div><div class="gc-formula">S</div>
+          <div class="gc-role">Cylindrical geometry of piston-cylinder system</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Modularity</span>
+          <div><div class="gc-formula">S&otimes;I</div>
+          <div class="gc-role">Single-cylinder principle scales to I4, V6, V8&hellip;</div></div>
+        </div>
+      </div>
+
+      <div class="gc-section-label" style="margin-top:6px">Regulatory &mdash; 4 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Constraint</span>
+          <div><div class="gc-formula">S&otimes;I</div>
+          <div class="gc-role">Fixed cylinder volume; compression ratio r</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Threshold</span>
+          <div><div class="gc-formula">A&otimes;I</div>
+          <div class="gc-role">Ignition point &mdash; spark timing (BTDC)</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Trigger</span>
+          <div><div class="gc-formula">D&otimes;I</div>
+          <div class="gc-role">Spark plug initiates combustion event</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Alignment</span>
+          <div><div class="gc-formula">I&otimes;A&otimes;S</div>
+          <div class="gc-role">Valve/ignition/piston timing coordination</div></div>
+        </div>
+      </div>
+
+      <div class="gc-section-label" style="margin-top:6px">Energetic &mdash; 3 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Channel</span>
+          <div><div class="gc-formula">S&otimes;I&otimes;F</div>
+          <div class="gc-role">Intake path (air-fuel) + exhaust conduit</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Dissipation</span>
+          <div><div class="gc-formula">F&otimes;D</div>
+          <div class="gc-role">Heat loss through cylinder walls (~70% of fuel energy)</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Gradient</span>
+          <div><div class="gc-formula">&otimes;&sub;2&thinsp;F</div>
+          <div class="gc-role">Pressure gradient drives piston on power stroke</div></div>
+        </div>
+      </div>
+
+      <div class="gc-section-label" style="margin-top:6px">Teleonomic &mdash; 3 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item primary">
+          <span class="gc-name">m2:Emergence</span>
+          <div><div class="gc-formula">I&otimes;S&otimes;D</div>
+          <div class="gc-role">Continuous rotation emerges from 4 discrete strokes</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Trade-off</span>
+          <div><div class="gc-formula">A&otimes;I&otimes;F</div>
+          <div class="gc-role">Higher r &rarr; higher &eta; BUT higher knock risk</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <span class="gc-name">m2:Balance</span>
+          <div><div class="gc-formula">A&otimes;S&otimes;F</div>
+          <div class="gc-role">Valve timing / ignition / piston synchronization</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Synergy ── -->
+    <div id="panel-synergy" class="tab-panel">
+      <div class="synergy-box">
+        <div class="synergy-label">GenericConceptCombo &mdash; CyclicWorkflow</div>
+        <div class="synergy-formula">Workflow &otimes; FeedbackLoop</div>
+        <div class="synergy-formula" style="font-size:10px;color:var(--muted)">
+          = (S&otimes;D&otimes;F) &otimes; (Process&otimes;Alignment&otimes;Homeostasis)
+        </div>
+        <div class="synergy-emergent">
+          <strong>Emergent property:</strong> The 4-stroke sequence is both <em>ordered</em>
+          (Workflow &mdash; steps cannot be reordered) and <em>cyclic</em>
+          (FeedbackLoop &mdash; after Exhaust the system is identical to before Intake).
+          Neither property alone is sufficient.
+        </div>
+      </div>
+
+      <div class="synergy-box" style="border-left-color:var(--c-power)">
+        <div class="synergy-label" style="color:var(--c-power)">Transformation Chain</div>
+        <div class="synergy-formula">Chemical &rarr; Thermal &rarr; Mechanical</div>
+        <div class="synergy-emergent">
+          Three successive <code>m2:Transformation</code> events, each converting energy form.
+          The chain is irreversible: heat cannot spontaneously reconvert to fuel
+          (Second Law of Thermodynamics).
+        </div>
+      </div>
+
+      <div class="synergy-box" style="border-left-color:var(--accent)">
+        <div class="synergy-label" style="color:var(--accent)">Emergence &mdash; Rotation</div>
+        <div class="synergy-formula">4 discrete strokes &rArr; continuous rotation</div>
+        <div class="synergy-emergent">
+          The crankshaft converts 4 non-simultaneous linear impulses into a smooth
+          rotational trajectory. The emergent smoothness requires the flywheel (momentum
+          storage) &mdash; a second-order emergence.
+        </div>
+      </div>
+
+      <div class="synergy-box" style="border-left-color:var(--sphinx)">
+        <div class="synergy-label" style="color:var(--sphinx)">Transdisciplinary reach</div>
+        <div class="synergy-formula">Workflow + FeedbackLoop pattern</div>
+        <div class="synergy-emergent">
+          The same 4-phase cyclic pattern recurs in:<br>
+          &bull; <strong>Cardiology</strong>: cardiac cycle (atrial/ventricular diastole/systole)<br>
+          &bull; <strong>Economics</strong>: business cycle (expansion, peak, contraction, trough)<br>
+          &bull; <strong>Biochemistry</strong>: Na&sup+;/K&sup+;-ATPase pump (4 conformational states)<br>
+          &bull; <strong>Climatology</strong>: seasonal cycle (Spring, Summer, Fall, Winter)
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Scores ── -->
+    <div id="panel-scores" class="tab-panel">
+      <div class="score-group">
+        <div class="score-group-label eagle">
+          Eagle Eye &mdash; ASFID (Territory)
+          <span style="font-size:9px;color:var(--accent);margin-left:6px">&#9679; LIVE</span>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-A)">A</div>
+          <div class="score-bar-bg"><div id="bar-A" class="score-bar-fill" style="width:85%;background:var(--col-A)"></div></div>
+          <div class="score-val" id="val-A">0.85</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-S)">S</div>
+          <div class="score-bar-bg"><div id="bar-S" class="score-bar-fill" style="width:90%;background:var(--col-S)"></div></div>
+          <div class="score-val" id="val-S">0.90</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-F)">F</div>
+          <div class="score-bar-bg"><div id="bar-F" class="score-bar-fill" style="width:95%;background:var(--col-F)"></div></div>
+          <div class="score-val" id="val-F">0.95</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-I)">I</div>
+          <div class="score-bar-bg"><div id="bar-I" class="score-bar-fill" style="width:80%;background:var(--col-I)"></div></div>
+          <div class="score-val" id="val-I">0.80</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-D)">D</div>
+          <div class="score-bar-bg"><div id="bar-D" class="score-bar-fill" style="width:85%;background:var(--col-D)"></div></div>
+          <div class="score-val" id="val-D">0.85</div>
+        </div>
+        <div class="score-mean-row"><span>ASFID mean</span><span id="asfid-mean">0.87</span></div>
+      </div>
+
+      <div class="score-group">
+        <div class="score-group-label sphinx">Sphinx Eye &mdash; REVOI (Map)</div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-R)">R</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-R)"></div></div>
+          <div class="score-val">0.90</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-E)">E</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-E)"></div></div>
+          <div class="score-val">0.85</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-V)">V</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-V)"></div></div>
+          <div class="score-val">0.90</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-O)">O</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-O)"></div></div>
+          <div class="score-val">0.90</div>
+        </div>
+        <div class="score-row">
+          <div class="score-dim" style="color:var(--col-Im)">I</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-Im)"></div></div>
+          <div class="score-val">0.85</div>
+        </div>
+        <div class="score-mean-row"><span>REVOI mean</span><span>0.88</span></div>
+      </div>
+
+      <div class="gap-badge">
+        <div>
+          <div class="gap-label">Epistemic Gap &delta;</div>
+          <div class="gap-val">0.132</div>
+        </div>
+        <div class="gap-desc">SpectralClass: <strong>OnCriticalLine</strong> &mdash; excellent Territory&ndash;Map alignment</div>
+      </div>
+
+      <div class="live-status-box">
+        <div class="ls-title">Live State</div>
+        <div class="ls-row"><span class="ls-key">Stroke</span><span class="ls-val" id="ls-stroke" style="color:var(--c-intake)">Intake</span></div>
+        <div class="ls-row"><span class="ls-key">Crank</span><span class="ls-val" id="ls-crank">0°</span></div>
+        <div class="ls-row"><span class="ls-key">RPM</span><span class="ls-val" id="ls-rpm">2000</span></div>
+        <div class="ls-row"><span class="ls-key">r</span><span class="ls-val" id="ls-r">10.0:1</span></div>
+        <div class="ls-row"><span class="ls-key">P_cur</span><span class="ls-val" id="ls-p">1.00 P_atm</span></div>
+        <div class="ls-row"><span class="ls-key">V_cur</span><span class="ls-val" id="ls-v">1.000 V_max</span></div>
+        <div class="ls-row"><span class="ls-key">&eta; ideal</span><span class="ls-val" id="ls-eta" style="color:var(--accent)">60.2%</span></div>
+        <div class="ls-row"><span class="ls-key">P_max</span><span class="ls-val" id="ls-pmax">—</span></div>
+      </div>
+    </div>
+  </aside><!-- #sidebar -->
+
+  <!-- COMP BAR -->
+  <div id="comp-bar">
+    <div id="comp-inner">
+      <!-- RPM -->
+      <div class="comp-group">
+        <div class="comp-label">&#128260; RPM</div>
+        <input type="range" id="sl-rpm" class="comp-slider" min="600" max="6000" step="100" value="2000">
+        <div class="comp-val" id="sl-rpm-val">2000 rpm</div>
+      </div>
+      <div class="comp-sep"></div>
+      <!-- Compression ratio -->
+      <div class="comp-group">
+        <div class="comp-label">&#9881; r</div>
+        <input type="range" id="sl-r" class="comp-slider" min="6" max="14" step="0.5" value="10">
+        <div class="comp-val" id="sl-r-val">10.0:1</div>
+      </div>
+      <div class="comp-sep"></div>
+      <!-- Load -->
+      <div class="comp-group">
+        <div class="comp-label">&#128293; Load</div>
+        <input type="range" id="sl-load" class="comp-slider" min="0.1" max="1.0" step="0.05" value="0.7">
+        <div class="comp-val" id="sl-load-val">70%</div>
+      </div>
+      <div class="comp-sep"></div>
+      <!-- Stroke jump buttons -->
+      <div class="stroke-jump-group">
+        <span class="stroke-jump-label">Jump:</span>
+        <button class="stroke-btn intake active"  id="jmp-0" onclick="jumpToStroke(0)">1. Intake</button>
+        <button class="stroke-btn compress"        id="jmp-1" onclick="jumpToStroke(1)">2. Compress</button>
+        <button class="stroke-btn power"           id="jmp-2" onclick="jumpToStroke(2)">3. Power</button>
+        <button class="stroke-btn exhaust"         id="jmp-3" onclick="jumpToStroke(3)">4. Exhaust</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <footer id="controls">
+    <button class="ctrl-btn" id="btn-back30" title="&minus;30&deg;">&#171;&#171;</button>
+    <button class="ctrl-btn" id="btn-back5"  title="&minus;5&deg;">&#171;</button>
+    <button class="ctrl-btn active" id="btn-play">&#9646;&#9646; Pause</button>
+    <button class="ctrl-btn" id="btn-fwd5"   title="+5&deg;">&#187;</button>
+    <button class="ctrl-btn" id="btn-fwd30"  title="+30&deg;">&#187;&#187;</button>
+    <div class="ctrl-sep"></div>
+    <span class="ctrl-label">Speed</span>
+    <button class="ctrl-btn" id="spd-0" data-idx="0">&times;0.02</button>
+    <button class="ctrl-btn" id="spd-1" data-idx="1">&times;0.05</button>
+    <button class="ctrl-btn spd-active" id="spd-2" data-idx="2">&times;0.1</button>
+    <button class="ctrl-btn" id="spd-3" data-idx="3">&times;0.2</button>
+    <button class="ctrl-btn" id="spd-4" data-idx="4">&times;0.5</button>
+    <button class="ctrl-btn" id="spd-5" data-idx="5">&times;1</button>
+    <div class="ctrl-sep"></div>
+    <span id="crank-display">Crank: 0&deg;</span>
+    <!-- Explorer button: disabled in standalone -->
+    <button class="ctrl-btn" style="opacity:.35;cursor:not-allowed;">&#10799; Poclet Explorer</button>
+    <div class="status-indicator">
+      <div class="status-dot running" id="status-dot"></div>
+      <span id="status-label">Running</span>
+    </div>
+  </footer>
+
+</div><!-- #app -->
+
+<!-- p5.js from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+
+<script>
+'use strict';
+
+// ── Poclet data (from M0_FourStrokeEngine.jsonld v1.2.0) ─────────────────────
+const POCLET = {
+  label:  'Four-Stroke Engine',
+  domain: 'Thermodynamics',
+  asfid:  [0.85, 0.90, 0.95, 0.80, 0.85],
+  revoi:  [0.90, 0.85, 0.90, 0.90, 0.85],
+  gap:    0.132,
+  version: '1.2.0'
+};
+
+// ── Stroke definitions ───────────────────────────────────────────────────────
+const STROKES = [
+  { label:'Intake',      col:[60,180,255],  hexCol:'#3cb4ff', start:0,   end:180, intakeOpen:true,  exhaustOpen:false, note:'Air-fuel in, piston down'       },
+  { label:'Compression', col:[255,200,50],  hexCol:'#ffc832', start:180, end:360, intakeOpen:false, exhaustOpen:false, note:'Adiabatic: PV\u03b3 = const'    },
+  { label:'Power',       col:[255,80,60],   hexCol:'#ff503c', start:360, end:540, intakeOpen:false, exhaustOpen:false, note:'Combustion \u2192 work output'   },
+  { label:'Exhaust',     col:[140,200,120], hexCol:'#8cc878', start:540, end:720, intakeOpen:false, exhaustOpen:true,  note:'Burnt gas out, piston up'        },
+];
+const STROKE_JUMPS = [0, 180, 360, 540];
+const SPEED_STEPS  = [0.004, 0.01, 0.02, 0.04, 0.1, 0.2];
+
+// ── Global simulation state ──────────────────────────────────────────────────
+let crankDeg  = 0;
+let paused    = false;
+let speedIdx  = 2;
+let rpm       = 2000;
+let rComp     = 10.0;
+let loadVal   = 0.7;
+let asfidLive = [...POCLET.asfid];
+
+// ── Physics (direct port from four_stroke_engine_sim.py) ────────────────────
+const GAMMA = 1.4;
+const P_ATM = 1.0;
+const T_AMB = 300.0;
+
+function ottoStates(r, load) {
+  const V1 = 1.0, V2 = V1 / r;
+  const P1 = P_ATM, T1 = T_AMB;
+  const P2 = P1 * Math.pow(r, GAMMA);
+  const T2 = T1 * Math.pow(r, GAMMA - 1);
+  const qRatio = 1.0 + load * 2.5;
+  const P3 = P2 * qRatio, T3 = T2 * qRatio;
+  const P4 = P3 * Math.pow(V2 / V1, GAMMA);
+  const T4 = T3 * Math.pow(V2 / V1, GAMMA - 1);
+  const eta = 1.0 - 1.0 / Math.pow(r, GAMMA - 1);
+  return { P1, P2, P3, P4, V1, V2, T1, T2, T3, T4, eta, r, load };
+}
+
+function pistonPos(cdeg) {
+  return 0.5 * (1.0 - Math.cos(cdeg * Math.PI / 180));
+}
+
+function currentPV(cdeg, st) {
+  const c   = ((cdeg % 720) + 720) % 720;
+  const pos = pistonPos(c);
+  const Vc  = st.V2 + pos * (st.V1 - st.V2);
+  let   Pc;
+  if (c < 180)       { Pc = P_ATM; }
+  else if (c < 360)  { Pc = st.P1 * Math.pow(st.V1 / Math.max(Vc, 1e-9), GAMMA); }
+  else if (c < 540)  { Pc = (c === 360) ? st.P3 : st.P3 * Math.pow(st.V2 / Math.max(Vc, 1e-9), GAMMA); }
+  else               { Pc = P_ATM; }
+  return { V: Vc, P: Pc };
+}
+
+function crankToStrokeIdx(cdeg) {
+  const c = ((cdeg % 720) + 720) % 720;
+  if (c < 180) return 0;
+  if (c < 360) return 1;
+  if (c < 540) return 2;
+  return 3;
+}
+
+function clamp(v, lo = 0, hi = 1) { return Math.max(lo, Math.min(hi, v)); }
+
+function computeLiveASFID(cdeg, ba, rpmVal, sidx) {
+  const c       = ((cdeg % 720) + 720) % 720;
+  const isPower = sidx === 2;
+  const isInEx  = sidx === 0 || sidx === 3;
+  const rpmNorm = (rpmVal - 600) / (6000 - 600);
+  const fFac    = Math.abs(Math.sin(c * Math.PI / 180));
+  const nearTdc = Math.max(0, 1 - Math.min(c % 180, 180 - c % 180) / 30);
+  return [
+    clamp(ba[0] * (0.3 + 0.7 * (isPower ? 1.0 : 0.4))),
+    ba[1],
+    clamp(ba[2] * (0.1 + 0.9 * (isInEx ? fFac : 0.2))),
+    clamp(ba[3] * (0.3 + 0.7 * nearTdc)),
+    clamp(ba[4] * (0.2 + 0.8 * rpmNorm)),
+  ];
+}
+
+// ── p5.js sketch ────────────────────────────────────────────────────────────
+new p5(function(p) {
+  const CZONE_W = 230;
+  const PAD     = 12;
+  const COLORS  = {
+    bg:      [12, 12, 18],
+    panel:   [22, 22, 32],
+    border:  [55, 55, 75],
+    text:    [220, 220, 230],
+    dim:     [130, 130, 150],
+    gold:    [255, 200, 50],
+    green:   [80, 200, 120],
+    sliderBg:[38, 38, 52],
+  };
+
+  let st = ottoStates(rComp, loadVal);
+
+  p.setup = function() {
+    const ca = document.getElementById('canvas-area');
+    const cv = p.createCanvas(ca.offsetWidth, ca.offsetHeight);
+    cv.parent('canvas-area');
+    p.textFont('Segoe UI, system-ui, sans-serif');
+  };
+
+  p.draw = function() {
+    // ── Advance crank ──────────────────────────────────────────────────────
+    if (!paused) {
+      const dt      = p.deltaTime / 1000;
+      const degSec  = rpm * 360 / 60 * 2;           // 720° per full cycle
+      crankDeg = (crankDeg + degSec * dt * SPEED_STEPS[speedIdx]) % 720;
+    }
+
+    // ── Compute state ─────────────────────────────────────────────────────
+    st = ottoStates(rComp, loadVal);
+    const sidx  = crankToStrokeIdx(crankDeg);
+    const pv    = currentPV(crankDeg, st);
+    asfidLive   = computeLiveASFID(crankDeg, POCLET.asfid, rpm, sidx);
+
+    // ── Draw ──────────────────────────────────────────────────────────────
+    p.background(...COLORS.bg);
+    drawCylinderZone(sidx);
+    drawDivider();
+    drawPVZone(st, pv, sidx);
+
+    // ── Update DOM ────────────────────────────────────────────────────────
+    updateDOM(sidx, pv, st);
+  };
+
+  // ── Cylinder zone (left 230px) ───────────────────────────────────────────
+  function drawCylinderZone(sidx) {
+    const stroke = STROKES[sidx];
+    const col    = stroke.col;
+
+    // Stroke label (top)
+    p.noStroke();
+    p.fill(...col);
+    p.textSize(14);
+    p.textStyle(p.BOLD);
+    p.textAlign(p.CENTER);
+    p.text(stroke.label, CZONE_W / 2, 22);
+    p.textStyle(p.NORMAL);
+
+    // Cylinder schematic
+    const cx = CZONE_W / 2;
+    const cy = p.height / 2 - 40;
+    drawCylinder(cx, cy, sidx);
+
+    // Crank angle progress bar
+    const caY  = cy + 125;
+    const barW = CZONE_W - PAD * 2;
+    const fw   = ((crankDeg % 720) / 720) * barW;
+
+    p.fill(...COLORS.dim);
+    p.textSize(11);
+    p.textAlign(p.LEFT);
+    p.text(`Crank: ${Math.floor((crankDeg % 720))}°`, PAD, caY);
+
+    p.noStroke();
+    p.fill(...COLORS.sliderBg);
+    p.rect(PAD, caY + 8, barW, 5, 3);
+    if (fw > 0) {
+      p.fill(...col);
+      p.rect(PAD, caY + 8, fw, 5, 3);
+    }
+
+    // Stroke note
+    p.fill(...COLORS.dim);
+    p.textSize(10);
+    p.textAlign(p.CENTER);
+    p.text(stroke.note, CZONE_W / 2, caY + 24);
+  }
+
+  function drawCylinder(cx, cy, sidx) {
+    const cw = 52, ch = 82, wt = 5;
+    const stroke = STROKES[sidx];
+    const col    = stroke.col;
+    const wallC  = [80, 90, 110];
+
+    // Walls
+    p.noStroke();
+    p.fill(...wallC);
+    p.rect(cx - cw/2 - wt, cy - ch/2,      wt, ch);         // left
+    p.rect(cx + cw/2,       cy - ch/2,      wt, ch);         // right
+    p.rect(cx - cw/2 - wt,  cy - ch/2, cw + wt*2, wt);      // head
+
+    // Piston position
+    const pos   = pistonPos(crankDeg % 720);
+    const pistY = cy - ch/2 + wt + pos * (ch - wt - 12);
+
+    // Gas fill
+    if (pistY > cy - ch/2 + wt + 2) {
+      const gH = pistY - (cy - ch/2 + wt);
+      p.fill(col[0], col[1], col[2], 38);
+      p.rect(cx - cw/2, cy - ch/2 + wt, cw, gH);
+    }
+
+    // Spark plug
+    if (sidx === 2) {
+      p.stroke(255, 255, 100);
+      p.strokeWeight(2);
+      p.line(cx, cy - ch/2, cx, cy - ch/2 + wt + 6);
+      if (pos < 0.1) {
+        for (const r of [11, 7, 4]) {
+          p.fill(255, 255, 100, 20 + r * 9);
+          p.noStroke();
+          p.circle(cx, cy - ch/2 + 3, r * 2);
+        }
+      }
+    } else {
+      p.stroke(80, 80, 80);
+      p.strokeWeight(2);
+      p.line(cx, cy - ch/2, cx, cy - ch/2 + wt + 6);
+    }
+
+    // Valve indicators (top corners of cylinder head)
+    const ivC = stroke.intakeOpen  ? [60, 220, 100] : [100, 40, 40];
+    const evC = stroke.exhaustOpen ? [60, 220, 100] : [100, 40, 40];
+    p.noStroke();
+    p.fill(...ivC);  p.circle(cx - cw/2 + 8, cy - ch/2 + 4, 9);
+    p.fill(...evC);  p.circle(cx + cw/2 - 8, cy - ch/2 + 4, 9);
+
+    p.textSize(10);
+    p.textAlign(p.CENTER);
+    p.fill(...ivC); p.text('IN', cx - cw/2 + 8, cy - ch/2 - 4);
+    p.fill(...evC); p.text('EX', cx + cw/2 - 8, cy - ch/2 - 4);
+
+    // Piston block
+    p.fill(...col);
+    p.noStroke();
+    p.rect(cx - cw/2 + 2, pistY, cw - 4, 12, 3);
+    p.stroke(220, 220, 230); p.strokeWeight(1); p.noFill();
+    p.rect(cx - cw/2 + 2, pistY, cw - 4, 12, 3);
+
+    // Connecting rod + crankshaft
+    const crankR  = 15;
+    const crankCY = cy + ch/2 + crankR + 8;
+    const theta   = (crankDeg % 720) * Math.PI / 180;
+    const cPX     = cx + crankR * Math.sin(theta);
+    const cPY     = crankCY - crankR * Math.cos(theta);
+
+    p.stroke(100, 100, 140); p.strokeWeight(2);
+    p.line(cx, pistY + 12, cPX, cPY);
+
+    // Crankshaft circle
+    p.fill(60, 60, 90); p.stroke(80, 80, 100); p.strokeWeight(1);
+    p.circle(cx, crankCY, crankR * 2);
+
+    // Crankshaft pin
+    p.fill(...col); p.noStroke();
+    p.circle(cPX, cPY, 8);
+  }
+
+  function drawDivider() {
+    p.stroke(...COLORS.border);
+    p.strokeWeight(1);
+    p.line(CZONE_W, 0, CZONE_W, p.height);
+  }
+
+  // ── P-V Diagram zone (right of CZONE_W) ─────────────────────────────────
+  function drawPVZone(st, pv, sidx) {
+    const stroke = STROKES[sidx];
+    const col    = stroke.col;
+    const pvX    = CZONE_W;
+    const pvW    = p.width - CZONE_W;
+
+    // Title
+    p.noStroke();
+    p.fill(...col);
+    p.textSize(15);
+    p.textStyle(p.BOLD);
+    p.textAlign(p.LEFT);
+    p.text(`Otto Cycle P-V Diagram   [${stroke.label}]`, pvX + 12, 22);
+    p.textStyle(p.NORMAL);
+
+    // Params line
+    p.fill(...COLORS.gold);
+    p.textSize(12);
+    p.text(
+      `\u03b7\u2091\u2090\u2090\u2091 = ${(st.eta * 100).toFixed(1)}%   r = ${rComp.toFixed(1)}:1   load = ${Math.round(loadVal * 100)}%`,
+      pvX + 12, 40
+    );
+
+    // Plot area
+    const pL = pvX + 54, pT = 56;
+    const pR = p.width - 16, pB = p.height - 50;
+    const pW = pR - pL, pH = pB - pT;
+
+    const Vmax = st.V1;
+    const Pmax = st.P3 * 1.15;
+
+    function toSc(V, P) {
+      return {
+        x: pL + (V / Vmax) * pW,
+        y: pB - clamp(P / Pmax) * pH,
+      };
+    }
+
+    // Plot background + border
+    p.fill(18, 18, 26);
+    p.noStroke();
+    p.rect(pL, pT, pW, pH);
+    p.stroke(...COLORS.border);
+    p.strokeWeight(1);
+    p.noFill();
+    p.rect(pL, pT, pW, pH);
+
+    // Grid
+    p.stroke(30, 30, 42); p.strokeWeight(1);
+    for (let i = 1; i < 5; i++) {
+      const gx = pL + (i / 5) * pW;
+      const gy = pT + (i / 5) * pH;
+      p.line(gx, pT, gx, pB);
+      p.line(pL, gy, pR, gy);
+    }
+
+    // Axis tick labels
+    p.noStroke(); p.fill(...COLORS.dim); p.textSize(10);
+    p.textAlign(p.CENTER);
+    for (let i = 0; i <= 4; i++) {
+      const v  = Vmax * i / 4;
+      const px = pL + (i / 4) * pW;
+      p.text(v.toFixed(2), px, pB + 13);
+    }
+    p.textAlign(p.RIGHT);
+    for (let i = 0; i <= 4; i++) {
+      const pr2 = Pmax * i / 4;
+      const py2 = pB - (i / 4) * pH;
+      p.text(pr2.toFixed(1), pL - 4, py2 + 4);
+    }
+
+    // Axis labels
+    p.textAlign(p.CENTER);
+    p.fill(180, 150, 80);
+    p.text('Volume (V_max=1)', pL + pW / 2, pB + 26);
+    p.fill(80, 180, 140);
+    p.push(); p.translate(pL - 40, pT + pH / 2); p.rotate(-Math.PI / 2);
+    p.text('P/P_atm', 0, 0); p.pop();
+
+    // ── Otto cycle curves ─────────────────────────────────────────────────
+    const N = 200;
+    const V1 = st.V1, V2 = st.V2;
+
+    function drawCurve(pts, c2, w) {
+      p.stroke(...c2); p.strokeWeight(w); p.noFill();
+      p.beginShape();
+      pts.forEach(pt => p.vertex(pt.x, pt.y));
+      p.endShape();
+    }
+
+    // 1→2 Compression
+    const pts12 = [];
+    for (let k = 0; k <= N; k++) {
+      const V = V1 - (V1 - V2) * k / N;
+      const P = st.P1 * Math.pow(V1 / Math.max(V, 1e-9), GAMMA);
+      pts12.push(toSc(V, P));
+    }
+    drawCurve(pts12, STROKES[1].col, 2);
+
+    // 2→3 Isochoric combustion (vertical at V2)
+    const pts23 = [];
+    for (let k = 0; k <= N; k++) {
+      pts23.push(toSc(V2, st.P2 + (st.P3 - st.P2) * k / N));
+    }
+    drawCurve(pts23, STROKES[2].col, 2);
+
+    // 3→4 Expansion
+    const pts34 = [];
+    for (let k = 0; k <= N; k++) {
+      const V = V2 + (V1 - V2) * k / N;
+      const P = st.P3 * Math.pow(V2 / Math.max(V, 1e-9), GAMMA);
+      pts34.push(toSc(V, P));
+    }
+    drawCurve(pts34, STROKES[2].col, 2);
+
+    // 4→1 Isochoric heat rejection
+    const pts41 = [];
+    for (let k = 0; k <= N; k++) {
+      pts41.push(toSc(V1, st.P4 + (st.P1 - st.P4) * k / N));
+    }
+    drawCurve(pts41, STROKES[1].col, 2);
+
+    // Intake + Exhaust at P_atm (horizontal lines)
+    const atmL = toSc(V2, P_ATM), atmR = toSc(V1, P_ATM);
+    p.stroke(...STROKES[0].col); p.strokeWeight(1);
+    p.line(atmL.x, atmL.y, atmR.x, atmR.y);
+    p.stroke(...STROKES[3].col);
+    p.line(atmR.x, atmR.y, atmL.x, atmL.y);
+
+    // State point labels (1..4)
+    const stPts = [
+      { lbl:'1', V:V1, P:st.P1 },
+      { lbl:'2', V:V2, P:st.P2 },
+      { lbl:'3', V:V2, P:st.P3 },
+      { lbl:'4', V:V1, P:st.P4 },
+    ];
+    stPts.forEach(sp => {
+      const pt = toSc(sp.V, sp.P);
+      p.fill(220, 220, 230); p.noStroke();
+      p.circle(pt.x, pt.y, 8);
+      p.fill(...COLORS.gold);
+      p.textSize(11); p.textAlign(p.LEFT);
+      p.text(sp.lbl, pt.x + 7, pt.y - 3);
+    });
+
+    // ── Q-point ───────────────────────────────────────────────────────────
+    const qPt = toSc(pv.V, pv.P);
+
+    // Crosshairs
+    p.stroke(col[0], col[1], col[2], 70); p.strokeWeight(1);
+    p.line(pL, qPt.y, pR, qPt.y);
+    p.line(qPt.x, pT, qPt.x, pB);
+
+    // Halo
+    for (const r of [13, 9, 6]) {
+      p.fill(col[0], col[1], col[2], 25 + r * 7); p.noStroke();
+      p.circle(qPt.x, qPt.y, r * 2);
+    }
+    // Dot
+    p.fill(...col); p.noStroke();
+    p.circle(qPt.x, qPt.y, 14);
+    p.stroke(220, 220, 230); p.strokeWeight(1); p.noFill();
+    p.circle(qPt.x, qPt.y, 14);
+
+    // Q label
+    const qLbl = `(${pv.V.toFixed(2)}, ${pv.P.toFixed(1)})`;
+    p.fill(...col); p.noStroke();
+    p.textSize(11); p.textAlign(p.LEFT);
+    const qlx = Math.min(qPt.x + 12, pR - 90);
+    const qly = Math.max(qPt.y - 14, pT + 14);
+    p.text(qLbl, qlx, qly);
+
+    // ── Legend ────────────────────────────────────────────────────────────
+    const legY = pB + 4;
+    let   legX = pL;
+    STROKES.forEach(s => {
+      p.fill(...s.col); p.noStroke();
+      p.textSize(11); p.textAlign(p.LEFT);
+      const lbl = `\u25cf ${s.label}`;
+      p.text(lbl, legX, legY + 13);
+      legX += p.textWidth(lbl) + 16;
+    });
+
+    // ── Efficiency bar ────────────────────────────────────────────────────
+    const effY = pB + 26;
+    p.fill(160, 200, 140); p.textSize(11); p.textAlign(p.LEFT);
+    p.text(
+      `Ideal efficiency: ${(st.eta*100).toFixed(1)}%  |  Real ~${(st.eta*0.45*100).toFixed(0)}% (accounting for losses)`,
+      pL, effY
+    );
+    p.fill(...COLORS.sliderBg); p.noStroke();
+    p.rect(pL, effY + 10, pW, 7, 3);
+    p.fill(80, 200, 120);
+    p.rect(pL, effY + 10, st.eta * pW, 7, 3);
+    p.fill(255, 140, 40);
+    p.rect(pL, effY + 20, st.eta * 0.45 * pW, 4, 2);
+    p.fill(...COLORS.dim); p.textSize(10);
+    p.text('ideal (green)  |  real estimate (orange)', pL, effY + 34);
+
+    // Source
+    p.fill(50, 50, 70); p.textSize(10); p.textAlign(p.LEFT);
+    p.text('Source: M0_FourStrokeEngine.jsonld  v1.2.0', pL, p.height - 5);
+  }
+
+  p.windowResized = function() {
+    const ca = document.getElementById('canvas-area');
+    p.resizeCanvas(ca.offsetWidth, ca.offsetHeight);
+  };
+
+}, 'canvas-area');
+
+// ── DOM update (called from p5 draw loop via global asfidLive) ──────────────
+const ASFID_DIMS   = ['A','S','F','I','D'];
+const STROKE_CSS   = ['intake','compress','power','exhaust'];
+const STROKE_HEXES = ['#3cb4ff','#ffc832','#ff503c','#8cc878'];
+
+function updateDOM(sidx, pv, st) {
+  // ASFID live bars
+  ASFID_DIMS.forEach((d, i) => {
+    const pct = (asfidLive[i] * 100).toFixed(0);
+    const bar = document.getElementById(`bar-${d}`);
+    if (bar) bar.style.width = pct + '%';
+    const val = document.getElementById(`val-${d}`);
+    if (val) val.textContent = asfidLive[i].toFixed(2);
+  });
+
+  // ASFID mean
+  const mean = asfidLive.reduce((a,b) => a+b, 0) / 5;
+  const mEl  = document.getElementById('asfid-mean');
+  if (mEl) mEl.textContent = mean.toFixed(2);
+
+  // Live status
+  const lsStroke = document.getElementById('ls-stroke');
+  if (lsStroke) {
+    lsStroke.textContent = STROKES[sidx].label;
+    lsStroke.style.color = STROKE_HEXES[sidx];
+  }
+  setText('ls-crank', `${Math.floor((crankDeg % 720))}°`);
+  setText('ls-rpm',   `${Math.round(rpm)}`);
+  setText('ls-r',     `${rComp.toFixed(1)}:1`);
+  setText('ls-p',     `${pv.P.toFixed(2)} P_atm`);
+  setText('ls-v',     `${pv.V.toFixed(3)} V_max`);
+  setText('ls-eta',   `${(st.eta * 100).toFixed(1)}%`);
+  setText('ls-pmax',  `${st.P3.toFixed(1)} P_atm`);
+
+  // Crank display in controls footer
+  setText('crank-display', `Crank: ${Math.floor((crankDeg % 720))}°`);
+
+  // Stroke jump button active state
+  const btns = document.querySelectorAll('.stroke-btn');
+  btns.forEach((b, i) => {
+    b.classList.toggle('active', i === sidx);
+  });
+
+  // Status dot / label
+  const dot = document.getElementById('status-dot');
+  const lbl = document.getElementById('status-label');
+  if (paused) {
+    dot.classList.replace('running','paused');
+    lbl.textContent = 'Paused';
+  } else {
+    if (!dot.classList.contains('running')) dot.classList.replace('paused','running');
+    lbl.textContent = 'Running';
+  }
+}
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+// ── Jump to stroke ───────────────────────────────────────────────────────────
+function jumpToStroke(idx) {
+  crankDeg = STROKE_JUMPS[idx];
+}
+
+// ── Slider events ────────────────────────────────────────────────────────────
+document.getElementById('sl-rpm').addEventListener('input', function() {
+  rpm = parseFloat(this.value);
+  document.getElementById('sl-rpm-val').textContent = `${Math.round(rpm)} rpm`;
+});
+document.getElementById('sl-r').addEventListener('input', function() {
+  rComp = parseFloat(this.value);
+  document.getElementById('sl-r-val').textContent = `${rComp.toFixed(1)}:1`;
+});
+document.getElementById('sl-load').addEventListener('input', function() {
+  loadVal = parseFloat(this.value);
+  document.getElementById('sl-load-val').textContent = `${Math.round(loadVal*100)}%`;
+});
+
+// ── Transport controls ───────────────────────────────────────────────────────
+document.getElementById('btn-play').addEventListener('click', function() {
+  paused = !paused;
+  this.textContent = paused ? '▶ Play' : '⏸ Pause';
+  this.classList.toggle('active', !paused);
+});
+document.getElementById('btn-back5').addEventListener('click',  () => { paused = true; crankDeg = (crankDeg - 5  + 720) % 720; });
+document.getElementById('btn-fwd5').addEventListener('click',   () => { paused = true; crankDeg = (crankDeg + 5)  % 720; });
+document.getElementById('btn-back30').addEventListener('click', () => { paused = true; crankDeg = (crankDeg - 30 + 720) % 720; });
+document.getElementById('btn-fwd30').addEventListener('click',  () => { paused = true; crankDeg = (crankDeg + 30) % 720; });
+
+// ── Speed buttons ────────────────────────────────────────────────────────────
+document.querySelectorAll('[id^="spd-"]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    speedIdx = parseInt(this.dataset.idx);
+    document.querySelectorAll('[id^="spd-"]').forEach(b => b.classList.remove('spd-active'));
+    this.classList.add('spd-active');
+  });
+});
+
+// ── Sidebar tabs ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const tab = this.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById(`panel-${tab}`).classList.add('active');
+  });
+});
+
+// ── Splitter drag ─────────────────────────────────────────────────────────────
+(function() {
+  const splitter = document.getElementById('splitter');
+  const app      = document.getElementById('app');
+  let dragging   = false;
+  splitter.addEventListener('mousedown', e => { dragging = true; splitter.classList.add('dragging'); e.preventDefault(); });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const rect  = app.getBoundingClientRect();
+    const total = rect.width;
+    const sideW = Math.min(600, Math.max(180, total - e.clientX + rect.left));
+    app.style.gridTemplateColumns = `1fr 5px ${sideW}px`;
+    window.dispatchEvent(new Event('resize'));
+  });
+  document.addEventListener('mouseup', () => { dragging = false; splitter.classList.remove('dragging'); });
+})();
+
+// ── Keyboard shortcuts ───────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space')       { e.preventDefault(); document.getElementById('btn-play').click(); }
+  if (e.code === 'ArrowLeft')   { paused = true; crankDeg = (crankDeg - (e.shiftKey ? 30 : 5) + 720) % 720; }
+  if (e.code === 'ArrowRight')  { paused = true; crankDeg = (crankDeg + (e.shiftKey ? 30 : 5)) % 720; }
+  if (e.key === ',')            { speedIdx = Math.max(0, speedIdx - 1); document.getElementById(`spd-${speedIdx}`).click(); }
+  if (e.key === '.')            { speedIdx = Math.min(SPEED_STEPS.length - 1, speedIdx + 1); document.getElementById(`spd-${speedIdx}`).click(); }
+});
+</script>
+
+<!-- Home button tooltip -->
+<div id="home-tip" style="
+  position:fixed; z-index:999999;
+  background:#1c2130; color:#e6edf3;
+  border:1px solid #3d444f; border-radius:6px;
+  padding:4px 10px; font-size:11px; font-weight:500;
+  letter-spacing:0.04em; white-space:nowrap;
+  pointer-events:none; opacity:0; transition:opacity 0.18s;
+">Back to Poclet Gallery</div>
+
+<!-- TSCG logo tooltip -->
+<div id="tscg-tip" style="
+  position:fixed; z-index:999999;
+  background:#1c2130; color:#e6edf3;
+  border:1px solid #3d444f; border-radius:6px;
+  padding:4px 10px; font-size:11px; font-weight:500;
+  letter-spacing:0.04em; white-space:nowrap;
+  pointer-events:none; opacity:0; transition:opacity 0.18s;
+  transform:translateX(-50%);
+">TSCG Github repository</div>
+
+<script>
+(function(){
+  const home    = document.getElementById('btn-home');
+  const homeTip = document.getElementById('home-tip');
+  if (home && homeTip) {
+    home.addEventListener('mouseenter', function() {
+      const r = home.getBoundingClientRect();
+      homeTip.style.left = Math.max(8, r.left) + 'px';
+      homeTip.style.top  = (r.bottom + 6) + 'px';
+      homeTip.style.opacity = '1';
+    });
+    home.addEventListener('mouseleave', function() { homeTip.style.opacity = '0'; });
+  }
+  const logo = document.querySelector('.tscg-logo-link');
+  const tip  = document.getElementById('tscg-tip');
+  if (logo && tip) {
+    logo.addEventListener('mouseenter', function() {
+      const r = logo.getBoundingClientRect();
+      tip.style.left = (r.left + r.width / 2) + 'px';
+      tip.style.top  = (r.bottom + 6) + 'px';
+      tip.style.opacity = '1';
+    });
+    logo.addEventListener('mouseleave', function() { tip.style.opacity = '0'; });
+  }
+})();
+</script>
+</body>
+</html>

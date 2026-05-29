@@ -1,8 +1,8 @@
 # M1_CoreConcepts.jsonld — README
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 2.4.0
-**Date**: 2026-05-17
+**Version**: 2.4.1
+**Date**: 2026-05-27
 **Layer**: M1 — Domain-Neutral Core Concepts
 **Status**: Active
 
@@ -138,7 +138,7 @@ M0 Instances           →  concrete systems (E_coli_metabolism, Uranium_235_dec
 In the TSCG type system hierarchy:
 
 ```
-𝕋₀  Primitive Types      M3   {A, S, F, It, D, R, E, V, O, Im}
+𝕋₀  Primitive Types      M3   {A, St, F, It, D} ∪ {R, E, V, O, Im} ∪ {T, _^, _$, K, Ss, L}  — Base16 (16)
 𝕋₁  Derived Types        M2   Process, Homeostasis, FeedbackLoop...
 𝕋₁⁺ Core Categories      M1   GenericMechanism, ProcessArchetype...    ← THIS LEVEL
 𝕋₂  Domain Concepts      M1   DNA_Replication, Newton_Second_Law...
@@ -239,7 +239,7 @@ entire M3 layer:
 M3_GrammarFoundation  (operators, type system)
 M3_EagleEye           (ASFID primitives)
 M3_SphinxEye          (REVOI primitives)
-M3_BicephalousPerspective (Gs primitives — T, _^, _$)
+M3_BicephalousPerspective (Gs primitives — TKSL + poles: T, _^, _$, K, Ss, L — Base16)
 M3_GenesisGrammar     (Φ/Ψ, epistemic gap)
          ↓
 M2_GenericConcepts    (75 derived types)
@@ -304,6 +304,7 @@ Each core concept category has a clear structural role:
 
 | Version | Date | Changes |
 |---|---|---|
+| **2.4.1** | 2026-05-27 | BASE16: no formula changes (Fm2/Fm1m2 formulas use M2 concept names). README updated: type system table updated to 16 primitives (Base16), Gs primitives reference updated to TKSL+poles. |
 | **1.0.0** | 2026-05-14 | OWL/RDFS validation complete. 9 errors corrected (7 subClassOf, 1 domain, 1 range). RDFS: 0 errors. OWL Pellet: PASSED. Production-ready. |
 | **0.9.x** | 2026-03-xx | Initial development. GenericConceptCombo types migrated from M2. Core categories defined. |
 

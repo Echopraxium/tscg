@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSCG &mdash; BJT NPN / MOSFET NMOS &mdash; Operating Modes</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg-deep:      #0d1117;
+  --bg-panel:     #161b22;
+  --bg-card:      #1c2130;
+  --bg-hover:     #21262d;
+  --border:       #30363d;
+  --border-light: #3d444f;
+  --eagle:        #f78166;
+  --sphinx:       #79c0ff;
+  --accent:       #56d364;
+  --warn:         #e3b341;
+  --muted:        #8b949e;
+  --text:         #e6edf3;
+  --text-dim:     #b1bac4;
+  --col-A: #ffb43c; --col-S: #64c8ff; --col-F: #3cc8a0;
+  --col-I: #c882ff; --col-D: #ff6464;
+  --col-R: #64b4ff; --col-E: #b4ff78; --col-V: #ffdc50;
+  --col-O: #ff82c8; --col-Im:#82dcff;
+  --header-h: 44px;
+  --left-w:   290px;
+  --sidebar-w:330px;
+  --font:     'Segoe UI',system-ui,sans-serif;
+  --font-mono:'Cascadia Code','Fira Code',Consolas,monospace;
+  --radius:   6px;
+}
+html,body { height:100%; overflow:hidden; font-family:var(--font);
+  background:var(--bg-deep); color:var(--text); font-size:13px;
+  line-height:1.5; user-select:none; }
+
+/* APP GRID */
+#app {
+  display:grid;
+  grid-template-rows: var(--header-h) 1fr;
+  grid-template-columns: var(--left-w) 1fr 5px var(--sidebar-w);
+  grid-template-areas:
+    "header header header header"
+    "left   center split  sidebar";
+  height:100vh;
+}
+
+/* HEADER */
+#header {
+  grid-area:header; display:flex; align-items:center; gap:10px;
+  padding:0 14px; background:var(--bg-panel);
+  border-bottom:1px solid var(--border);
+}
+#btn-home {
+  display:inline-flex; align-items:center; background:none; border:none;
+  cursor:pointer; padding:4px 6px; margin-right:2px;
+  opacity:.8; transition:opacity .15s; text-decoration:none; flex-shrink:0;
+}
+#btn-home:hover { opacity:1; }
+.tscg-logo { font-size:11px; font-weight:700; letter-spacing:.12em;
+  color:var(--eagle); text-transform:uppercase; flex-shrink:0; }
+.hdr-sep { color:var(--border-light); font-size:16px; }
+.poclet-name { font-size:14px; font-weight:600; flex:1;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.meta-chips { display:flex; gap:6px; flex-shrink:0; }
+.chip { padding:2px 8px; border-radius:20px; font-size:11px;
+  font-weight:500; border:1px solid transparent; }
+.chip.domain  { background:rgba(86,211,100,.12); border-color:rgba(86,211,100,.3);  color:var(--accent); }
+.chip.version { background:rgba(121,192,255,.12);border-color:rgba(121,192,255,.3); color:var(--sphinx); }
+.chip.type    { background:rgba(247,129,102,.12);border-color:rgba(247,129,102,.3); color:var(--eagle); }
+
+/* LEFT PANEL */
+#left {
+  grid-area:left; background:var(--bg-panel);
+  border-right:1px solid var(--border);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+#left-header { padding:9px 12px 6px; border-bottom:1px solid var(--border); flex-shrink:0; }
+#device-title { font-size:17px; font-weight:700; color:var(--warn); letter-spacing:.3px; }
+#device-subtitle { font-size:10px; color:var(--muted); margin-top:1px; }
+
+#controls-section { padding:8px 12px; border-bottom:1px solid var(--border); flex-shrink:0; }
+.section-title { font-size:11px; font-weight:700; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.08em; margin-bottom:7px; }
+
+.slider-group { margin-bottom:13px; }
+.slider-group:last-child { margin-bottom:0; }
+.slider-header { display:flex; justify-content:space-between; margin-bottom:4px; }
+.slider-label { font-size:11px; color:var(--text-dim); }
+.slider-value { font-size:11px; font-weight:600; font-family:var(--font-mono); }
+input[type=range] {
+  -webkit-appearance:none; width:100%; height:5px; border-radius:3px;
+  background:var(--bg-card); outline:none; cursor:pointer; display:block;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
+  background:var(--thumb-col,#4080ff); border:2px solid var(--bg-panel);
+  cursor:pointer; box-shadow:0 0 5px var(--thumb-col,#4080ff);
+}
+
+#schematic-wrap {
+  display:flex; justify-content:center; align-items:center;
+  height:114px; flex-shrink:0; border-bottom:1px solid var(--border);
+}
+#schematic-svg { width:210px; height:108px; }
+
+#modes-section { flex:1; padding:6px 10px 4px; overflow:hidden;
+  display:flex; flex-direction:column; min-height:0; }
+.modes-header { display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:5px; flex-shrink:0; }
+.modes-hint { font-size:9px; color:#64884e; font-style:italic; }
+#mode-rows-scroll { overflow-y:auto; flex:1; min-height:0; }
+
+.mode-row { border-radius:5px; padding:5px 8px 4px; margin-bottom:3px;
+  cursor:pointer; border:1.5px solid transparent;
+  transition:filter .12s; position:relative; }
+.mode-row:hover { filter:brightness(1.3); }
+.mode-badge { position:absolute; left:0; top:0; bottom:0;
+  width:5px; border-radius:4px 0 0 4px; }
+.mode-row-label { font-size:11px; font-weight:700; padding-left:12px; }
+.mode-row-cond  { font-size:9px; color:var(--muted); padding-left:12px;
+  margin-top:1px; font-family:var(--font-mono); }
+
+#live-status { flex-shrink:0; border-top:1px solid var(--border);
+  padding:5px 12px 6px; font-family:var(--font-mono); font-size:11px; }
+.st-row { display:flex; justify-content:space-between; margin-bottom:1px; }
+.st-eq  { font-size:9.5px; color:var(--muted); margin-top:3px; line-height:1.55; }
+
+/* CENTER */
+#center {
+  grid-area:center; background:#0f1016;
+  display:flex; flex-direction:column; overflow:hidden;
+}
+#tabs-row { display:flex; gap:6px; padding:6px 10px 5px;
+  border-bottom:1px solid var(--border); flex-shrink:0; }
+.dev-tab { padding:4px 20px; border-radius:5px; border:2px solid var(--border);
+  background:transparent; color:var(--muted); font-family:var(--font-mono);
+  font-size:12px; font-weight:600; cursor:pointer; transition:all .15s; }
+.dev-tab.active-bjt { border-color:#3c78c8; background:#1e2a3a; color:var(--text); }
+.dev-tab.active-mos { border-color:#3ca064; background:#1a2a22; color:var(--text); }
+
+#canvas-wrap { flex:1; overflow:hidden; padding:4px 10px 0; min-height:0; }
+#iv-canvas   { display:block; width:100%; height:100%; }
+
+#legend-row { display:flex; gap:12px; padding:3px 58px 2px;
+  flex-shrink:0; flex-wrap:wrap; }
+.legend-item { font-size:10px; display:flex; align-items:center; gap:4px; }
+.legend-dot  { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+#warn-banner { background:rgba(255,200,0,.07);
+  border-top:1px solid rgba(255,200,0,.15); padding:4px 8px;
+  font-size:9.5px; color:#b4a032; flex-shrink:0;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* SPLITTER */
+#splitter { grid-area:split; background:var(--border);
+  cursor:col-resize; transition:background .15s; position:relative; z-index:10; }
+#splitter:hover, #splitter.dragging { background:var(--sphinx); }
+
+/* SIDEBAR */
+#sidebar { grid-area:sidebar; display:flex; flex-direction:column;
+  background:var(--bg-panel); border-left:1px solid var(--border);
+  overflow:hidden; min-width:180px; max-width:640px; }
+
+.tab-bar { display:flex; background:var(--bg-deep);
+  border-bottom:1px solid var(--border); flex-shrink:0; }
+.tab-btn { flex:1; padding:8px 4px; font-size:12px; font-weight:600;
+  background:none; border:none; border-bottom:2px solid transparent;
+  color:var(--muted); cursor:pointer;
+  transition:color .15s,border-color .15s; font-family:var(--font); }
+.tab-btn:hover { color:var(--text-dim); }
+.tab-btn.active { color:var(--sphinx); border-bottom-color:var(--sphinx); }
+
+.tab-panel { display:none; flex-direction:column; flex:1; overflow-y:auto;
+  padding:12px; gap:10px; }
+.tab-panel.active { display:flex; }
+
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:4px; }
+::-webkit-scrollbar-thumb:hover { background:var(--muted); }
+
+/* Description */
+.readme-content { font-size:12px; line-height:1.7; color:var(--text-dim); }
+.readme-content h2 { font-size:11px; font-weight:700; color:var(--text);
+  margin:12px 0 4px; padding-bottom:3px; border-bottom:1px solid var(--border);
+  text-transform:uppercase; letter-spacing:.08em; }
+.readme-content h2:first-child { margin-top:0; }
+.readme-content strong { color:var(--text); }
+.readme-content code { font-family:var(--font-mono); font-size:10.5px;
+  background:var(--bg-card); padding:1px 4px; border-radius:3px; color:var(--sphinx); }
+.readme-content ul  { padding-left:16px; margin:4px 0; }
+.readme-content li  { margin-bottom:2px; }
+.readme-content table { width:100%; border-collapse:collapse; font-size:10.5px; margin:6px 0; }
+.readme-content th  { background:var(--bg-card); color:var(--text);
+  padding:4px 6px; border:1px solid var(--border); text-align:left; }
+.readme-content td  { padding:3px 6px; border:1px solid var(--border); color:var(--text-dim); }
+
+/* Concepts */
+.gc-section-label { font-size:10px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--muted); padding-bottom:4px;
+  border-bottom:1px solid var(--border); margin-bottom:4px; }
+.gc-list { display:flex; flex-direction:column; gap:4px; margin-bottom:10px; }
+.gc-item { display:flex; align-items:flex-start; gap:8px; padding:6px 8px;
+  background:var(--bg-card); border-radius:var(--radius);
+  border:1px solid var(--border); transition:border-color .15s,background .15s; }
+.gc-item:hover { background:var(--bg-hover); border-color:var(--border-light); }
+.gc-item.primary   { border-left:3px solid var(--eagle); }
+.gc-item.secondary { border-left:3px solid var(--border-light); }
+.gc-name { font-family:var(--font-mono); font-size:11px; font-weight:600;
+  color:var(--sphinx); flex-shrink:0; min-width:118px; }
+.gc-role { font-size:11px; color:var(--text-dim); line-height:1.4; }
+
+/* Synergy */
+.synergy-box { background:var(--bg-card); border:1px solid var(--border);
+  border-left:3px solid var(--warn); border-radius:var(--radius);
+  padding:10px 12px; display:flex; flex-direction:column; gap:6px; }
+.synergy-label   { font-size:12px; font-weight:700; color:var(--warn); }
+.synergy-formula { font-family:var(--font-mono); font-size:11.5px;
+  color:var(--text); word-break:break-word; }
+.synergy-note    { font-size:11px; color:var(--text-dim); line-height:1.5; }
+
+/* Scores */
+.score-group { display:flex; flex-direction:column; gap:5px; }
+.score-group-label { font-size:10px; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted); padding-bottom:4px;
+  border-bottom:1px solid var(--border); margin-bottom:2px; }
+.score-group-label.eagle  { color:var(--eagle);  }
+.score-group-label.sphinx { color:var(--sphinx); }
+.score-row { display:flex; align-items:center; gap:8px; }
+.score-dim { width:18px; font-weight:700; font-family:var(--font-mono);
+  font-size:11px; text-align:center; flex-shrink:0; }
+.score-bar-bg { flex:1; height:6px; background:var(--bg-card);
+  border-radius:3px; overflow:hidden; position:relative; }
+.score-bar-fill { height:100%; border-radius:3px; transition:width .3s; }
+.score-bar-base { position:absolute; top:0; bottom:0; width:1.5px;
+  background:rgba(220,220,220,.55); }
+.score-val { width:30px; text-align:right; font-family:var(--font-mono);
+  font-size:11px; color:var(--text-dim); flex-shrink:0; }
+.score-mean-row { display:flex; justify-content:space-between;
+  font-size:11px; color:var(--muted); padding-top:2px;
+  font-family:var(--font-mono); }
+.score-mean-row span { color:var(--text); font-weight:600; }
+
+.gap-badge { display:flex; align-items:center; gap:12px;
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:8px 12px; }
+.gap-val  { font-family:var(--font-mono); font-weight:700;
+  font-size:18px; color:var(--accent); }
+.gap-lbl  { font-size:11px; color:var(--muted); }
+.gap-desc { font-size:11px; color:var(--text-dim); }
+
+/* TSCG logo — clickable link + tooltip */
+.tscg-logo-link, .titlebar-logo-link {
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  cursor: pointer;
+}
+.tscg-logo-link::after, .titlebar-logo-link::after {
+  content: 'Github repository';
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1c2130;
+  color: #e6edf3;
+  border: 1px solid #3d444f;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s;
+  z-index: 9999;
+}
+.tscg-logo-link:hover::after, .titlebar-logo-link:hover::after {
+  opacity: 1;
+}
+
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- HEADER ─────────────────────────────────────────────────────── -->
+<header id="header">
+  <a id="btn-home" href="https://echopraxium.github.io/tscg/"
+     title="Back to Poclet Gallery" target="_self">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff"
+         xmlns="http://www.w3.org/2000/svg" style="display:block">
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+  </a>
+  <a class="tscg-logo-link" href="https://github.com/Echopraxium/tscg" target="_blank" rel="noopener noreferrer"><span class="tscg-logo">TSCG</span></a>
+  <span class="hdr-sep">&middot;</span>
+  <span class="poclet-name">BJT NPN / MOSFET NMOS &mdash; Operating Modes</span>
+  <div class="meta-chips">
+    <span class="chip domain">Electronics</span>
+    <span class="chip type">m3:Poclet</span>
+    <span class="chip version">v15.2.0</span>
+  </div>
+</header>
+
+<!-- LEFT PANEL ─────────────────────────────────────────────────── -->
+<div id="left">
+  <div id="left-header">
+    <div id="device-title">&#9889; <span id="lbl-device">BJT NPN</span></div>
+    <div id="device-subtitle">Domain: Electronics &nbsp;|&nbsp; &#916;&#920; = 0.01</div>
+  </div>
+  <div id="controls-section">
+    <div class="section-title">Parameter Controls</div>
+    <div id="slider-container"></div>
+  </div>
+  <div id="schematic-wrap">
+    <svg id="schematic-svg" viewBox="0 0 210 108" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+  <div id="modes-section">
+    <div class="modes-header">
+      <span class="section-title" style="margin-bottom:0">Operating Modes</span>
+      <span class="modes-hint">&#8592; click to apply</span>
+    </div>
+    <div id="mode-rows-scroll"><div id="mode-rows"></div></div>
+  </div>
+  <div id="live-status">
+    <div id="st-vals"></div>
+    <div id="st-eqs" class="st-eq"></div>
+  </div>
+</div>
+
+<!-- CENTER ─────────────────────────────────────────────────────── -->
+<div id="center">
+  <div id="tabs-row">
+    <button class="dev-tab active-bjt" id="tab-bjt" onclick="setDevice(0)">BJT NPN</button>
+    <button class="dev-tab"            id="tab-mos" onclick="setDevice(1)">MOSFET NMOS</button>
+  </div>
+  <div id="canvas-wrap"><canvas id="iv-canvas"></canvas></div>
+  <div id="legend-row"></div>
+  <div id="warn-banner">
+    &#9888;&#65039; &nbsp;'Saturation' means OPPOSITE things: &nbsp;
+    BJT Sat. = switch ON (orange) &nbsp;|&nbsp; MOSFET Sat. = amplifier (blue)
+    &nbsp;&#8212;&nbsp; BJT Active &#8596; MOSFET Saturation (both amplifiers, both blue)
+  </div>
+</div>
+
+<!-- SPLITTER ───────────────────────────────────────────────────── -->
+<div id="splitter"></div>
+
+<!-- SIDEBAR ────────────────────────────────────────────────────── -->
+<aside id="sidebar">
+  <nav class="tab-bar">
+    <button class="tab-btn active" data-tab="description">Description</button>
+    <button class="tab-btn"        data-tab="concepts">Concepts</button>
+    <button class="tab-btn"        data-tab="synergy">Synergy</button>
+    <button class="tab-btn"        data-tab="scores">Scores</button>
+  </nav>
+
+  <!-- Description ──────────────────────────────────────────────── -->
+  <div id="panel-description" class="tab-panel active">
+    <div class="readme-content">
+<h2>System</h2>
+This poclet presents the <strong>first electronic validation of the Processor GenericConcept</strong>
+using the <strong>Bipolar Junction Transistor (BJT)</strong> and <strong>MOSFET NMOS</strong>
+as minimal complete semiconductor processors demonstrating dual-mode operation
+(analog amplification + digital switching).
+<ul>
+  <li><strong>Ternary inputs</strong> (I_B, V_CE, V_E) &rarr; single output I_C</li>
+  <li><strong>Bicephalous ternary hybrid formulas</strong> for Territory and Map</li>
+  <li><strong>Exceptional scores</strong>: ASFID 0.85 &middot; REVOI 0.86 &middot; &delta; 0.01</li>
+</ul>
+
+<h2>BJT NPN &mdash; Four Operating Modes</h2>
+<table>
+  <tr><th>Mode</th><th>B-E</th><th>B-C</th><th>State</th></tr>
+  <tr><td><span style="color:#505070">&#9632;</span> <strong>Cutoff</strong></td><td>Reverse</td><td>Reverse</td><td>Open switch</td></tr>
+  <tr><td><span style="color:#4080ff">&#9632;</span> <strong>Forward Active</strong></td><td>Forward</td><td>Reverse</td><td>Amplifier</td></tr>
+  <tr><td><span style="color:#ff8c00">&#9632;</span> <strong>Saturation</strong></td><td>Forward</td><td>Forward</td><td>Closed switch</td></tr>
+  <tr><td><span style="color:#9040c0">&#9632;</span> <strong>Reverse Active</strong></td><td>Reverse</td><td>Forward</td><td>Poor amplifier (rare)</td></tr>
+</table>
+
+<h2>MOSFET NMOS &mdash; Three Operating Modes</h2>
+<table>
+  <tr><th>Mode</th><th>Condition</th><th>State</th></tr>
+  <tr><td><span style="color:#505070">&#9632;</span> <strong>Cutoff</strong></td><td>V_GS &lt; V_th</td><td>Open switch</td></tr>
+  <tr><td><span style="color:#50c878">&#9632;</span> <strong>Triode / Linear</strong></td><td>V_DS &lt; V_GS&minus;V_th</td><td>Voltage-ctrl. resistor</td></tr>
+  <tr><td><span style="color:#4080ff">&#9632;</span> <strong>Saturation (Amp)</strong></td><td>V_DS &ge; V_GS&minus;V_th</td><td>Amplifier</td></tr>
+</table>
+
+<h2>&#9888; Naming Inversion</h2>
+<strong>BJT &ldquo;Saturation&rdquo;</strong> (switch fully ON) &ne;
+<strong>MOSFET &ldquo;Saturation&rdquo;</strong> (amplifier region).
+Both amplifier modes share <span style="color:#4080ff"><strong>blue</strong></span>
+to encode functional equivalence visually.
+
+<h2>Processor Architecture</h2>
+<code>Transformation: I_B (&mu;A) &rarr; I_C (mA)</code><br>
+<code>Gain: &beta; = I_C / I_B &asymp; 100 (typical)</code><br>
+<code>Power gain: A_p &asymp; 10,000 (40 dB)</code>
+
+<h2>Key Facts (2N3904)</h2>
+<ul>
+  <li>Current gain &beta;: 100&ndash;300</li>
+  <li>I_C max: 200 mA &nbsp;&middot;&nbsp; V_CE max: 40 V</li>
+  <li>Switching speed: ~200 MHz (f_T)</li>
+  <li>V_BE threshold: &asymp; 0.6&ndash;0.7 V</li>
+</ul>
+
+<h2>Historical Significance</h2>
+Invented 1947 (Bardeen, Brattain, Shockley &mdash; Bell Labs). Nobel Prize 1956.
+<strong>&gt;10&sup2;&sup1; transistors manufactured</strong> &mdash; most produced device in history.
+
+<h2>TSCG Connections</h2>
+<code>m2:Mode</code> &mdash; same device, different operating regime<br>
+<code>m2:Threshold</code> &mdash; sharp V_BE onset (exponential I_C(V_BE))<br>
+<code>m2:Amplification</code> &mdash; peaks in Active / MOSFET-Saturation region<br>
+<code>m2:Polarity</code> &mdash; Reverse Active: B-E &harr; B-C roles swapped
+
+<h2>Reference</h2>
+Sedra &amp; Smith &mdash; <em>Microelectronic Circuits</em> (8th ed.)<br>
+Horowitz &amp; Hill &mdash; <em>The Art of Electronics</em> (3rd ed.)
+    </div>
+  </div>
+
+  <!-- Concepts ─────────────────────────────────────────────────── -->
+  <div id="panel-concepts" class="tab-panel">
+    <div class="gc-section-label">Primary &mdash; 3 concepts</div>
+    <div class="gc-list">
+      <div class="gc-item primary">
+        <span class="gc-name">m2:Processor</span>
+        <div><div class="gc-role">Core concept: I_B &rarr; I_C via minority carrier injection. Ternary hybrid formulas (Territory + Map)</div></div>
+      </div>
+      <div class="gc-item primary">
+        <span class="gc-name">m2:Amplification</span>
+        <div><div class="gc-role">Current gain &beta; = I_C/I_B (50&ndash;500). Power gain &gt;10,000. Peaks in Forward Active / MOSFET Saturation</div></div>
+      </div>
+      <div class="gc-item primary">
+        <span class="gc-name">m2:Threshold</span>
+        <div><div class="gc-role">Sharp Cutoff&rarr;Active transition. Exponential I_C(V_BE): I_C &prop; exp(V_BE/V_T), V_T &asymp; 26 mV</div></div>
+      </div>
+    </div>
+    <div class="gc-section-label">Secondary &mdash; 8 concepts</div>
+    <div class="gc-list">
+      <div class="gc-item secondary">
+        <span class="gc-name">m2:Transformation</span>
+        <div><div class="gc-role">Abstract current gain formula I_C = &beta; &times; I_B and voltage relationships</div></div>
+      </div>
+      <div class="gc-item secondary">
+        <span class="gc-name">m2:Flow</span>
+        <div><div class="gc-role">Continuous electron/hole flow (drift + diffusion currents), high bandwidth MHz&ndash;GHz</div></div>
+      </div>
+      <div class="gc-item secondary">
+        <span class="gc-name">m2:Resource</span>
+        <div><div class="gc-role">Electrical energy from V_CE supply, dissipated as heat (P = V_CE &times; I_C)</div></div>
+      </div>
+      <div class="gc-item secondary">
+        <span class="gc-name">m2:Representation</span>
+        <div><div class="gc-role">Standardized circuit symbol (B/C/E), Ebers-Moll model, hybrid-&pi; equivalent circuit</div></div>
+      </div>
+      <div class="gc-item secondary">
+        <span class="gc-name">m2:Interoperability</span>
+        <div><div class="gc-role">Standard pinouts (TO-92, SOT-23), TTL/CMOS compatible, universal SPICE models</div></div>
+      </div>
+      <div class="gc-item secondary">
+        <span class="gc-name">m2:Mode</span>
+        <div><div class="gc-role">4 BJT modes / 3 MOSFET modes &mdash; same device, different operating regimes</div></div>
+      </div>
+      <div class="gc-item secondary">
+        <span class="gc-name">m2:Signal</span>
+        <div><div class="gc-role">Analog input I_B (continuous current modulation) &rarr; analog output I_C</div></div>
+      </div>
+      <div class="gc-item secondary">
+        <span class="gc-name">m2:Polarity</span>
+        <div><div class="gc-role">Reverse Active mode: B-E &harr; B-C roles inverted (degenerate case)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Synergy ──────────────────────────────────────────────────── -->
+  <div id="panel-synergy" class="tab-panel">
+    <div class="synergy-box">
+      <div class="synergy-label">Territory &mdash; Ternary Hybrid Formula</div>
+      <div class="synergy-formula">Processor_Territory</div>
+      <div class="synergy-formula" style="font-size:10px;color:var(--muted)">= Transformation &otimes; Flow &otimes; Resource</div>
+      <div class="synergy-note">
+        <strong>Empirical semiconductor physics:</strong>
+        I_B &rarr; I_C via minority carrier injection (Transformation);
+        electron/hole drift + diffusion currents (Flow);
+        V_CE power supply heat dissipation P = V_CE &times; I_C (Resource).
+      </div>
+    </div>
+    <div class="synergy-box" style="border-left-color:var(--sphinx)">
+      <div class="synergy-label" style="color:var(--sphinx)">Map &mdash; Ternary Hybrid Formula</div>
+      <div class="synergy-formula">Processor_Map</div>
+      <div class="synergy-formula" style="font-size:10px;color:var(--muted)">= Transformation &otimes; Representation &otimes; Interoperability</div>
+      <div class="synergy-note">
+        <strong>Circuit model emphasis:</strong>
+        abstract current gain formula I_C = &beta; &times; I_B (Transformation);
+        standardized symbol + SPICE models (Representation);
+        IEEE pinouts + TTL/CMOS compatibility (Interoperability).
+      </div>
+    </div>
+    <div class="synergy-box" style="border-left-color:#ff8c00">
+      <div class="synergy-label" style="color:#ff8c00">&#9888; Naming Inversion Trap</div>
+      <div class="synergy-formula" style="font-size:11px">
+        BJT &ldquo;Saturation&rdquo; = switch ON &#9632; orange<br>
+        MOSFET &ldquo;Saturation&rdquo; = amplifier &#9632; blue
+      </div>
+      <div class="synergy-note">
+        Same word, opposite function. Color semantics encode the truth:
+        <strong style="color:#4080ff">blue = amplifier</strong> in both devices,
+        <strong style="color:#ff8c00">orange = BJT switch ON</strong>,
+        <strong style="color:#50c878">green = MOSFET switch ON</strong>.
+      </div>
+    </div>
+    <div class="synergy-box" style="border-left-color:var(--accent)">
+      <div class="synergy-label" style="color:var(--accent)">Transdisciplinary Reach</div>
+      <div class="synergy-formula" style="font-size:11px">Processor pattern across 4 domains</div>
+      <div class="synergy-note">
+        &bull; <strong>Electronics</strong> &mdash; BJT / MOSFET (I_B &rarr; I_C)<br>
+        &bull; <strong>Biology</strong> &mdash; neurons (dendritic input &rarr; axon spike)<br>
+        &bull; <strong>Hydraulics</strong> &mdash; pilot valve (control pressure &rarr; main flow)<br>
+        &bull; <strong>Acoustics</strong> &mdash; acoustic amplifier (control wave &rarr; output)
+      </div>
+    </div>
+  </div>
+
+  <!-- Scores ───────────────────────────────────────────────────── -->
+  <div id="panel-scores" class="tab-panel">
+    <div class="score-group">
+      <div class="score-group-label eagle">Eagle Eye &mdash; ASFID (Territory) &mdash; live</div>
+      <div id="asfid-bars"></div>
+      <div class="score-mean-row" id="asfid-mean-row">
+        <span>ASFID mean (live)</span><span>0.85</span>
+      </div>
+    </div>
+    <div class="score-group">
+      <div class="score-group-label sphinx">Sphinx Eye &mdash; REVOI (Map)</div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-R)">R</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-R)"></div></div>
+        <div class="score-val">0.95</div>
+      </div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-E)">E</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:var(--col-E)"></div></div>
+        <div class="score-val">0.60</div>
+      </div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-V)">V</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-V)"></div></div>
+        <div class="score-val">0.90</div>
+      </div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-O)">O</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-O)"></div></div>
+        <div class="score-val">0.90</div>
+      </div>
+      <div class="score-row">
+        <div class="score-dim" style="color:var(--col-Im)">I</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-Im)"></div></div>
+        <div class="score-val">0.95</div>
+      </div>
+      <div class="score-mean-row"><span>REVOI mean</span><span>0.86</span></div>
+    </div>
+    <div class="gap-badge">
+      <div>
+        <div class="gap-lbl">Epistemic Gap &delta;</div>
+        <div class="gap-val">0.01</div>
+      </div>
+      <div class="gap-desc">Near-zero &mdash; one of the two best in the framework (with M0_Kidneys). 75+ years of semiconductor theory.</div>
+    </div>
+  </div>
+
+</aside>
+</div><!-- /app -->
+
+<script>
+// ─── Poclet data (M0_Transistor.jsonld v15.2.0) ──────────────────
+const POCLET = {
+  asfid:{ A:0.70, S:0.90, F:0.95, I:0.85, D:0.80 },
+  revoi:{ R:0.95, E:0.60, V:0.90, O:0.90, I:0.95 }
+};
+
+// ─── Physics ─────────────────────────────────────────────────────
+const VCE_SAT=0.2, VCE_MAX=20, IB_MAX=100, BETA_MIN=50, BETA_MAX=500;
+const IB_REFS=[10,20,30,40,60,80,100];
+const VGS_MAX=5, VDS_MAX=10, VTH_MIN=0.5, VTH_MAX=3.0, KN=1.5;
+const VGS_REFS=[1.0,1.5,2.0,2.5,3.0,3.5,4.0];
+
+const bjtIc=(ib,vce,beta)=>{
+  if(ib<1)return 0;
+  const ia=beta*ib/1000;
+  return vce<VCE_SAT?ia*(vce/VCE_SAT)*0.9:ia*(1+vce/80);
+};
+const bjtRegion=(ib,vce)=>ib<1?'Cutoff':vce<VCE_SAT?'Saturation':'Forward Active';
+const mosfetId=(vgs,vds,vth)=>{
+  const vov=vgs-vth; if(vov<=0)return 0;
+  return vds<vov?KN*(vov*vds-.5*vds*vds):.5*KN*vov*vov;
+};
+const mosfetRegion=(vgs,vds,vth)=>{
+  const vov=vgs-vth;
+  return vov<=0?'Cutoff':vds<vov?'Triode':'Saturation';
+};
+const clamp=(v,lo=0,hi=1)=>Math.max(lo,Math.min(hi,v));
+
+// ─── Colors ──────────────────────────────────────────────────────
+const C={
+  CUTOFF:'#505070',ACTIVE:'#4080ff',SAT_BJT:'#ff8c00',
+  TRIODE:'#50c878',REVERSE:'#9040c0',
+  IB:'#50d2d2',VCE:'#ffaf2d',BETA:'#c86eff',
+  VGS:'#50c896',VDS:'#ffaf2d',VTH:'#ff6464',
+  TEXT:'#e6edf3',DIM:'#8b949e'
+};
+const CURVE_PAL=['#ff6464','#ffa53c','#ffdc3c','#82dc82','#50c8dc','#7890ff','#c882ff'];
+const ASFID_COLS={A:'#ffb43c',S:'#64c8ff',F:'#3cc8a0',I:'#c882ff',D:'#ff6464'};
+
+const rCol=(r,dev)=>dev===0
+  ?({Cutoff:C.CUTOFF,'Forward Active':C.ACTIVE,Saturation:C.SAT_BJT,'Reverse Active':C.REVERSE}[r]||C.CUTOFF)
+  :({Cutoff:C.CUTOFF,Triode:C.TRIODE,Saturation:C.ACTIVE}[r]||C.CUTOFF);
+
+function hexA(hex,a){
+  return `rgba(${parseInt(hex.slice(1,3),16)},${parseInt(hex.slice(3,5),16)},${parseInt(hex.slice(5,7),16)},${a})`;
+}
+
+// ─── Mode definitions ────────────────────────────────────────────
+const BJT_MODES=[
+  {lbl:'Cutoff',         col:C.CUTOFF,  cond:'V_BE < 0.6 V  \u2013  I_C \u2248 0'},
+  {lbl:'Forward Active', col:C.ACTIVE,  cond:'V_BE\u22480.7V, V_CE>0.2V  \u2013  I_C=\u03b2\u00b7I_B'},
+  {lbl:'Saturation',     col:C.SAT_BJT, cond:'V_CE\u22480.2V  \u2013  fully ON, I_C max'},
+  {lbl:'Reverse Active', col:C.REVERSE, cond:'V_BC\u22480.7V  \u2013  low \u03b2, rare'},
+];
+const MOS_MODES=[
+  {lbl:'Cutoff',           col:C.CUTOFF, cond:'V_GS < V_th  \u2013  I_D = 0'},
+  {lbl:'Triode / Linear',  col:C.TRIODE, cond:'V_DS < V_GS\u2212V_th  \u2013  V-ctrl resistor'},
+  {lbl:'Saturation (Amp)', col:C.ACTIVE, cond:'V_DS \u2265 V_GS\u2212V_th  \u2013  I_D=k_n/2\u00b7V_ov\u00b2'},
+];
+const BJT_PRESETS={
+  'Cutoff':         {ib:0,   vce:10, beta:150},
+  'Forward Active': {ib:40,  vce:5,  beta:150},
+  'Saturation':     {ib:80,  vce:0.1,beta:150},
+  'Reverse Active': {ib:0.5, vce:0.5,beta:20},
+};
+const MOS_PRESETS={
+  'Cutoff':     {vgs:0.3,vds:5,  vth:1},
+  'Triode':     {vgs:3,  vds:0.5,vth:1},
+  'Saturation': {vgs:3,  vds:5,  vth:1},
+};
+
+// ─── State ───────────────────────────────────────────────────────
+let deviceIdx=0;
+let state={ib:40,vce:5,beta:150,vgs:2.5,vds:3,vth:1};
+
+// ─── Sliders ─────────────────────────────────────────────────────
+const SDEFS=[
+  [
+    {id:'ib',  lbl:'Base Current (I_B)',        mn:0,       mx:100,     st:0.1,  col:C.IB,  fmt:v=>`${v.toFixed(1)} \u03bcA`},
+    {id:'vce', lbl:'Coll-Emit Voltage (V_CE)',  mn:0,       mx:20,      st:0.01, col:C.VCE, fmt:v=>`${v.toFixed(2)} V`},
+    {id:'beta',lbl:'Current Gain (\u03b2)',     mn:BETA_MIN,mx:BETA_MAX,st:1,    col:C.BETA,fmt:v=>`\u03b2 = ${Math.round(v)}`},
+  ],[
+    {id:'vgs', lbl:'Gate-Source V (V_GS)',      mn:0,       mx:5,       st:0.01, col:C.VGS, fmt:v=>`${v.toFixed(2)} V`},
+    {id:'vds', lbl:'Drain-Source V (V_DS)',     mn:0,       mx:10,      st:0.01, col:C.VDS, fmt:v=>`${v.toFixed(2)} V`},
+    {id:'vth', lbl:'Threshold V (V_th)',        mn:VTH_MIN, mx:VTH_MAX, st:0.01, col:C.VTH, fmt:v=>`${v.toFixed(2)} V`},
+  ]
+];
+
+function buildSliders(){
+  const c=document.getElementById('slider-container'); c.innerHTML='';
+  SDEFS[deviceIdx].forEach(d=>{
+    const v=state[d.id], pct=(v-d.mn)/(d.mx-d.mn)*100;
+    const g=document.createElement('div'); g.className='slider-group';
+    g.innerHTML=`
+      <div class="slider-header">
+        <span class="slider-label">${d.lbl}</span>
+        <span class="slider-value" style="color:${d.col}" id="sv-${d.id}">${d.fmt(v)}</span>
+      </div>
+      <input type="range" id="sl-${d.id}" min="${d.mn}" max="${d.mx}" step="${d.st}" value="${v}"
+        style="--thumb-col:${d.col};background:linear-gradient(to right,${d.col} ${pct}%,#1c2130 0%)"
+        oninput="onSlider('${d.id}',this.value,this)">`;
+    c.appendChild(g);
+  });
+}
+
+function onSlider(id,v,el){
+  state[id]=parseFloat(v);
+  const d=SDEFS[deviceIdx].find(x=>x.id===id);
+  document.getElementById(`sv-${id}`).textContent=d.fmt(state[id]);
+  el.style.background=`linear-gradient(to right,${d.col} ${(state[id]-d.mn)/(d.mx-d.mn)*100}%,#1c2130 0%)`;
+  update();
+}
+
+// ─── Mode rows ───────────────────────────────────────────────────
+function buildModeRows(ar){
+  const c=document.getElementById('mode-rows'); c.innerHTML='';
+  (deviceIdx===0?BJT_MODES:MOS_MODES).forEach(m=>{
+    const act=ar.startsWith(m.lbl)||m.lbl.startsWith(ar)||ar.includes(m.lbl.split(' ')[0]);
+    const row=document.createElement('div'); row.className='mode-row';
+    row.style.background=hexA(m.col,act?.18:.06);
+    row.style.borderColor=hexA(m.col,act?.75:.18);
+    row.innerHTML=`<div class="mode-badge" style="background:${act?m.col:hexA(m.col,.22)}"></div>
+      <div class="mode-row-label" style="color:${m.col}">${m.lbl}</div>
+      <div class="mode-row-cond">${m.cond}</div>`;
+    row.onclick=()=>applyPreset(m.lbl);
+    c.appendChild(row);
+  });
+}
+
+function applyPreset(label){
+  const p=deviceIdx===0?BJT_PRESETS:MOS_PRESETS;
+  const k=Object.keys(p).find(k=>label.includes(k)||k.includes(label));
+  if(k){Object.assign(state,p[k]); buildSliders(); update();}
+}
+
+function buildLegend(){
+  document.getElementById('legend-row').innerHTML=
+    (deviceIdx===0?BJT_MODES:MOS_MODES).map(m=>`
+      <div class="legend-item">
+        <div class="legend-dot" style="background:${m.col}"></div>
+        <span style="color:${m.col}">${m.lbl}</span>
+      </div>`).join('');
+}
+
+// ─── ASFID live ──────────────────────────────────────────────────
+function calcAsfid(region){
+  const ba=POCLET.asfid;
+  if(deviceIdx===0){
+    const amp=(region==='Forward Active');
+    const icN=clamp(bjtIc(state.ib,state.vce,state.beta)/(state.beta*IB_MAX/1000+1e-9));
+    return {A:clamp(ba.A*(.3+.7*(amp?1:.2))),S:ba.S,
+      F:clamp(ba.F*(.1+.9*icN)),
+      I:clamp(ba.I*(.2+.8*(state.beta-BETA_MIN)/(BETA_MAX-BETA_MIN))),
+      D:clamp(ba.D*(.1+.9*state.vce/VCE_MAX))};
+  }
+  const amp=(region==='Saturation');
+  const idMax=.5*KN*Math.pow(VGS_MAX-state.vth,2)+1e-9;
+  const idN=clamp(mosfetId(state.vgs,state.vds,state.vth)/idMax);
+  return {A:clamp(ba.A*(.3+.7*(amp?1:.2))),S:ba.S,
+    F:clamp(ba.F*(.05+.95*idN)),
+    I:clamp(ba.I*(.2+.8*state.vgs/VGS_MAX)),
+    D:clamp(ba.D*(.1+.9*state.vds/VDS_MAX))};
+}
+
+function updateAsfid(live){
+  const c=document.getElementById('asfid-bars'); c.innerHTML='';
+  const ba=POCLET.asfid; let sum=0;
+  Object.entries(live).forEach(([k,lv])=>{
+    sum+=lv; const bv=ba[k]; const col=ASFID_COLS[k];
+    c.insertAdjacentHTML('beforeend',`
+      <div class="score-row">
+        <div class="score-dim" style="color:${col}">${k}</div>
+        <div class="score-bar-bg">
+          <div class="score-bar-fill" style="width:${lv*100}%;background:${col}"></div>
+          <div class="score-bar-base" style="left:${bv*100}%"></div>
+        </div>
+        <div class="score-val" style="color:${col}">${lv.toFixed(2)}</div>
+      </div>`);
+  });
+  document.getElementById('asfid-mean-row').innerHTML=
+    `<span>ASFID mean (live)</span><span>${(sum/5).toFixed(2)}</span>`;
+}
+
+// ─── Live status (left panel) ────────────────────────────────────
+function updateStatus(region,vals,eqs){
+  const rc=rCol(region,deviceIdx);
+  document.getElementById('st-vals').innerHTML=
+    `<div class="st-row" style="margin-bottom:3px">
+       <span style="color:#e3b341;font-weight:700">${deviceIdx===0?'BJT':'MOSFET'}</span>
+       <span style="color:${rc};font-weight:700">${region}</span>
+     </div>`+
+    vals.map(([l,c])=>`<div class="st-row"><span style="color:${c}">${l}</span></div>`).join('');
+  document.getElementById('st-eqs').innerHTML=eqs.join('<br>');
+}
+
+// ─── Canvas ───────────────────────────────────────────────────────
+const canvas=document.getElementById('iv-canvas');
+const ctx=canvas.getContext('2d');
+
+function resize(){
+  const w=document.getElementById('canvas-wrap');
+  canvas.width=w.clientWidth; canvas.height=w.clientHeight;
+}
+
+function axes(pr,xmax,ymax,xl,yl){
+  ctx.fillStyle='#0c0e14'; ctx.fillRect(pr.x,pr.y,pr.w,pr.h);
+  ctx.strokeStyle='#30363d'; ctx.lineWidth=1; ctx.strokeRect(pr.x,pr.y,pr.w,pr.h);
+  ctx.strokeStyle='#1a1e28';
+  for(let i=1;i<5;i++){
+    let g=pr.x+pr.w*i/5; ctx.beginPath();ctx.moveTo(g,pr.y);ctx.lineTo(g,pr.y+pr.h);ctx.stroke();
+    g=pr.y+pr.h*(1-i/5);  ctx.beginPath();ctx.moveTo(pr.x,g);ctx.lineTo(pr.x+pr.w,g);ctx.stroke();
+  }
+  ctx.font='10px Consolas,monospace'; ctx.fillStyle=C.DIM; ctx.textAlign='center';
+  for(let i=0;i<=4;i++) ctx.fillText((xmax*i/4).toFixed(0),pr.x+pr.w*i/4,pr.y+pr.h+13);
+  ctx.fillStyle='#ffaf2d'; ctx.fillText(xl,pr.x+pr.w/2,pr.y+pr.h+25);
+  ctx.fillStyle=C.DIM; ctx.textAlign='right';
+  for(let i=0;i<=4;i++) ctx.fillText((ymax*i/4).toFixed(0),pr.x-5,pr.y+pr.h*(1-i/4)+4);
+  ctx.save(); ctx.translate(pr.x-25,pr.y+pr.h/2); ctx.rotate(-Math.PI/2);
+  ctx.fillStyle='#50d2d2'; ctx.textAlign='center'; ctx.fillText(yl,0,0); ctx.restore();
+}
+
+function px(v,i,xmax,ymax,pr){ return [pr.x+v/xmax*pr.w, pr.y+pr.h-clamp(i/ymax)*pr.h]; }
+
+function qpt(qx,qy,rc,lbl,pr){
+  ctx.strokeStyle=hexA(rc,.35); ctx.lineWidth=1; ctx.setLineDash([3,3]);
+  ctx.beginPath();ctx.moveTo(pr.x,qy);ctx.lineTo(pr.x+pr.w,qy);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(qx,pr.y);ctx.lineTo(qx,pr.y+pr.h);ctx.stroke();
+  ctx.setLineDash([]);
+  [13,9,6].forEach(r=>{
+    ctx.beginPath();ctx.arc(qx,qy,r,0,2*Math.PI);
+    ctx.fillStyle=hexA(rc,r===13?.07:r===9?.13:.2);ctx.fill();
+  });
+  ctx.beginPath();ctx.arc(qx,qy,7,0,2*Math.PI);
+  ctx.fillStyle=rc;ctx.fill();
+  ctx.strokeStyle=C.TEXT;ctx.lineWidth=1.5;ctx.stroke();
+  ctx.fillStyle=rc;ctx.font='10px Consolas,monospace';ctx.textAlign='left';
+  ctx.fillText(lbl,Math.min(qx+10,pr.x+pr.w-95),Math.max(qy-10,pr.y+12));
+}
+
+function bjtIV(pr){
+  const icMax=Math.max(bjtIc(IB_REFS[IB_REFS.length-1],VCE_MAX,state.beta)*1.25,5);
+  axes(pr,VCE_MAX,icMax,'V_CE (V)','I_C (mA)');
+  const sx=pr.x+VCE_SAT/VCE_MAX*pr.w;
+  ctx.strokeStyle='#4a3018';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(sx,pr.y);ctx.lineTo(sx,pr.y+pr.h);ctx.stroke();
+  ctx.fillStyle='#5a3c1e';ctx.font='9px Consolas';ctx.textAlign='center';
+  ctx.fillText('Sat.',sx,pr.y+pr.h+12);
+  IB_REFS.forEach((rib,idx)=>{
+    const col=CURVE_PAL[idx%CURVE_PAL.length];
+    ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.beginPath();let f=true;
+    for(let k=0;k<=300;k++){
+      const v=VCE_MAX*k/300;const[a,b]=px(v,bjtIc(rib,v,state.beta),VCE_MAX,icMax,pr);
+      f?ctx.moveTo(a,b):ctx.lineTo(a,b);f=false;
+    }
+    ctx.stroke();
+    const[lx,ly]=px(VCE_MAX,bjtIc(rib,VCE_MAX,state.beta),VCE_MAX,icMax,pr);
+    ctx.fillStyle=col;ctx.font='9px Consolas';ctx.textAlign='right';
+    ctx.fillText(`${rib}\u03bcA`,lx-2,ly-4);
+  });
+  const region=bjtRegion(state.ib,state.vce);
+  const rc=rCol(region,0);
+  const icV=bjtIc(state.ib,state.vce,state.beta);
+  const[qx,qy]=px(state.vce,icV,VCE_MAX,icMax,pr);
+  qpt(qx,qy,rc,`Q(${state.vce.toFixed(1)}V, ${icV.toFixed(2)}mA)`,pr);
+  return {region,ic:icV};
+}
+
+function mosIV(pr){
+  const allI=VGS_REFS.map(dv=>mosfetId(dv+state.vth,VDS_MAX,state.vth));
+  const idMax=Math.max(...allI)*1.25||5;
+  axes(pr,VDS_MAX,idMax,'V_DS (V)','I_D (mA)');
+  VGS_REFS.forEach((dvg,idx)=>{
+    const vgA=dvg+state.vth; if(vgA>VGS_MAX+.1)return;
+    const col=CURVE_PAL[idx%CURVE_PAL.length];
+    ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.beginPath();let f=true;
+    for(let k=0;k<=300;k++){
+      const v=VDS_MAX*k/300;const[a,b]=px(v,mosfetId(vgA,v,state.vth),VDS_MAX,idMax,pr);
+      f?ctx.moveTo(a,b):ctx.lineTo(a,b);f=false;
+    }
+    ctx.stroke();
+    const vov=vgA-state.vth;
+    if(vov<VDS_MAX){
+      const[kx,ky]=px(vov,mosfetId(vgA,vov,state.vth),VDS_MAX,idMax,pr);
+      ctx.fillStyle=col;ctx.font='9px Consolas';ctx.textAlign='left';
+      ctx.fillText(`${vgA.toFixed(1)}V`,kx+3,ky-4);
+    }
+  });
+  const bp=[];
+  for(let k=0;k<=300;k++){
+    const vov=VDS_MAX*k/300,vg=vov+state.vth;
+    if(vg>VGS_MAX)break;
+    bp.push(px(vov,mosfetId(vg,vov,state.vth),VDS_MAX,idMax,pr));
+  }
+  if(bp.length>2){
+    ctx.strokeStyle='#6e6e37';ctx.lineWidth=1;ctx.beginPath();
+    ctx.moveTo(...bp[0]);bp.slice(1).forEach(p=>ctx.lineTo(...p));ctx.stroke();
+    ctx.fillStyle='#6e6e37';ctx.font='9px Consolas';ctx.textAlign='left';
+    ctx.fillText('Triode | Saturation',pr.x+6,pr.y+14);
+  }
+  const region=mosfetRegion(state.vgs,state.vds,state.vth);
+  const rc=rCol(region,1);
+  const idV=mosfetId(state.vgs,state.vds,state.vth);
+  const[qx,qy]=px(state.vds,idV,VDS_MAX,idMax,pr);
+  qpt(qx,qy,rc,`Q(${state.vds.toFixed(1)}V, ${idV.toFixed(2)}mA)`,pr);
+  return {region,id:idV};
+}
+
+function drawIV(){
+  resize();
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const pr={x:52,y:22,w:canvas.width-76,h:canvas.height-64};
+  return deviceIdx===0?bjtIV(pr):mosIV(pr);
+}
+
+// ─── SVG Schematics ───────────────────────────────────────────────
+function bjtSch(region){
+  const rc=rCol(region,0),cx=105,cy=50,br=28,bx=cx-11;
+  const ex=cx+br-4,ey=cy+20,ccx=cx+br-4,ccy=cy-20;
+  const ang=Math.atan2(ey-(cy+9),ex-bx);
+  const a1x=ex-Math.round(8*Math.cos(ang+.4)),a1y=ey-Math.round(8*Math.sin(ang+.4));
+  const a2x=ex-Math.round(8*Math.cos(ang-.4)),a2y=ey-Math.round(8*Math.sin(ang-.4));
+  document.getElementById('schematic-svg').innerHTML=`
+    <circle cx="${cx}" cy="${cy}" r="${br}" fill="#14161f" stroke="${rc}" stroke-width="2"/>
+    <line x1="${bx}" y1="${cy-19}" x2="${bx}" y2="${cy+19}" stroke="${rc}" stroke-width="2.5"/>
+    <line x1="${bx}" y1="${cy+9}" x2="${ex}" y2="${ey}" stroke="${rc}" stroke-width="2"/>
+    <line x1="${a1x}" y1="${a1y}" x2="${ex}" y2="${ey}" stroke="${rc}" stroke-width="2"/>
+    <line x1="${a2x}" y1="${a2y}" x2="${ex}" y2="${ey}" stroke="${rc}" stroke-width="2"/>
+    <line x1="${bx}" y1="${cy-9}" x2="${ccx}" y2="${ccy}" stroke="${rc}" stroke-width="2"/>
+    <line x1="${cx-br-18}" y1="${cy}" x2="${bx}" y2="${cy}" stroke="${C.IB}" stroke-width="2"/>
+    <line x1="${ccx}" y1="${ccy}" x2="${ccx}" y2="${ccy-18}" stroke="${C.VCE}" stroke-width="2"/>
+    <line x1="${ccx}" y1="${ccy-18}" x2="${ccx+12}" y2="${ccy-18}" stroke="${C.VCE}" stroke-width="2"/>
+    <text x="${ccx+6}" y="${ccy-22}" fill="${C.VCE}" font-size="9" font-family="Consolas,monospace">VCC</text>
+    <line x1="${ex-12}" y1="${ey+15}" x2="${ex+12}" y2="${ey+15}" stroke="${C.VCE}" stroke-width="2"/>
+    <line x1="${ex-8}"  y1="${ey+21}" x2="${ex+8}"  y2="${ey+21}" stroke="${C.VCE}" stroke-width="2"/>
+    <line x1="${ex-4}"  y1="${ey+27}" x2="${ex+4}"  y2="${ey+27}" stroke="${C.VCE}" stroke-width="2"/>
+    <text x="${cx-br-28}" y="${cy+4}" fill="${C.IB}" font-size="9" font-family="Consolas,monospace">B</text>
+    <text x="${ccx+4}" y="${ccy-4}" fill="${C.VCE}" font-size="9" font-family="Consolas,monospace">C</text>
+    <text x="${ex+4}" y="${ey+6}" fill="${C.VCE}" font-size="9" font-family="Consolas,monospace">E</text>
+    ${region!=='Cutoff'?`
+    <line x1="${ccx}" y1="${ccy-5}" x2="${ccx}" y2="${ccy+8}" stroke="${C.IB}" stroke-width="2"/>
+    <polygon points="${ccx},${ccy+8} ${ccx-4},${ccy+1} ${ccx+4},${ccy+1}" fill="${C.IB}"/>`:``}
+    <text x="${cx}" y="${cy+br+14}" fill="${rc}" font-size="9" font-family="Consolas,monospace" text-anchor="middle">${region}</text>`;
+}
+
+function mosSch(region,vov){
+  const rc=rCol(region,1),gx=64,cy=50,ox=gx+9,chx=ox+9;
+  const chC=(region!=='Cutoff')?rc:'#232338';
+  document.getElementById('schematic-svg').innerHTML=`
+    <line x1="${gx-18}" y1="${cy}" x2="${gx}" y2="${cy}" stroke="${C.VGS}" stroke-width="2"/>
+    <line x1="${gx}" y1="${cy-20}" x2="${gx}" y2="${cy+20}" stroke="${C.VGS}" stroke-width="2.5"/>
+    ${[...Array(11)].map((_,i)=>`<line x1="${ox}" y1="${cy-20+i*4}" x2="${ox}" y2="${cy-18+i*4}" stroke="#555570" stroke-width="1"/>`).join('')}
+    <line x1="${chx}" y1="${cy-20}" x2="${chx}" y2="${cy+20}" stroke="${chC}" stroke-width="4"/>
+    <line x1="${chx}" y1="${cy-20}" x2="${chx+26}" y2="${cy-20}" stroke="${C.VDS}" stroke-width="2"/>
+    <line x1="${chx}" y1="${cy+20}" x2="${chx+26}" y2="${cy+20}" stroke="${C.VDS}" stroke-width="2"/>
+    <line x1="${chx+26}" y1="${cy-20}" x2="${chx+26}" y2="${cy-44}" stroke="${C.VDS}" stroke-width="2"/>
+    <text x="${chx+14}" y="${cy-47}" fill="${C.VDS}" font-size="9" font-family="Consolas,monospace">V_DD</text>
+    <line x1="${chx+12}" y1="${cy+36}" x2="${chx+40}" y2="${cy+36}" stroke="${C.VDS}" stroke-width="2"/>
+    <line x1="${chx+16}" y1="${cy+42}" x2="${chx+36}" y2="${cy+42}" stroke="${C.VDS}" stroke-width="2"/>
+    <line x1="${chx+20}" y1="${cy+48}" x2="${chx+32}" y2="${cy+48}" stroke="${C.VDS}" stroke-width="2"/>
+    <text x="${gx-28}" y="${cy+4}" fill="${C.VGS}" font-size="9" font-family="Consolas,monospace">G</text>
+    <text x="${chx+30}" y="${cy-16}" fill="${C.VDS}" font-size="9" font-family="Consolas,monospace">D</text>
+    <text x="${chx+30}" y="${cy+24}" fill="${C.VDS}" font-size="9" font-family="Consolas,monospace">S</text>
+    ${vov>0?`<text x="${gx-18}" y="${cy+38}" fill="${rc}" font-size="9" font-family="Consolas,monospace">V_ov=${vov.toFixed(2)}V</text>`:''}
+    <text x="${(gx+chx+26)/2}" y="${cy+64}" fill="${rc}" font-size="9" font-family="Consolas,monospace" text-anchor="middle">${region}</text>`;
+}
+
+// ─── Master update ────────────────────────────────────────────────
+function update(){
+  const res=drawIV();
+  const{region}=res;
+  buildModeRows(region);
+
+  if(deviceIdx===0){
+    bjtSch(region);
+    const ic=res.ic, pd=state.vce*ic;
+    updateStatus(region,[
+      [`I_B  = ${state.ib.toFixed(1)} \u03bcA`, C.IB],
+      [`V_CE = ${state.vce.toFixed(2)} V`,       C.VCE],
+      [`\u03b2    = ${Math.round(state.beta)}`,   C.BETA],
+      [`I_C  = ${ic.toFixed(2)} mA`,             '#56d364'],
+      [`P_D  = ${pd.toFixed(1)} mW`,             '#f78166'],
+    ],['I_C = \u03b2\u00b7I_B  (active)','P_D = V_CE\u00b7I_C']);
+  } else {
+    const vov=Math.max(state.vgs-state.vth,0);
+    mosSch(region,vov);
+    const id=res.id, pd=state.vds*id;
+    updateStatus(region,[
+      [`V_GS = ${state.vgs.toFixed(2)} V`, C.VGS],
+      [`V_DS = ${state.vds.toFixed(2)} V`, C.VDS],
+      [`V_th = ${state.vth.toFixed(2)} V`, C.VTH],
+      [`V_ov = ${vov.toFixed(2)} V`,       '#56d364'],
+      [`I_D  = ${id.toFixed(2)} mA`,       '#56d364'],
+      [`P_D  = ${pd.toFixed(1)} mW`,       '#f78166'],
+    ],['I_D = k_n/2\u00b7V_ov\u00b2  (sat.)','I_D = k_n\u00b7(V_ov\u00b7V_DS\u2212V_DS\u00b2/2)  (triode)','P_D = V_DS\u00b7I_D']);
+  }
+  updateAsfid(calcAsfid(region));
+}
+
+// ─── Device switch ────────────────────────────────────────────────
+function setDevice(idx){
+  deviceIdx=idx;
+  document.getElementById('lbl-device').textContent=idx===0?'BJT NPN':'MOSFET NMOS';
+  document.getElementById('tab-bjt').className='dev-tab'+(idx===0?' active-bjt':'');
+  document.getElementById('tab-mos').className='dev-tab'+(idx===1?' active-mos':'');
+  buildSliders(); buildLegend(); update();
+}
+
+// ─── Sidebar tabs ─────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const t=btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+t).classList.add('active');
+  });
+});
+
+// ─── Splitter ─────────────────────────────────────────────────────
+(()=>{
+  const spl=document.getElementById('splitter');
+  const app=document.getElementById('app');
+  let drag=false,startX=0,startW=0;
+  spl.addEventListener('mousedown',e=>{
+    drag=true; startX=e.clientX;
+    startW=document.getElementById('sidebar').getBoundingClientRect().width;
+    spl.classList.add('dragging');
+    document.body.style.cssText='cursor:col-resize;user-select:none';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!drag)return;
+    app.style.setProperty('--sidebar-w',Math.max(180,Math.min(640,startW+(startX-e.clientX)))+'px');
+    update();
+  });
+  document.addEventListener('mouseup',()=>{
+    if(!drag)return; drag=false;
+    spl.classList.remove('dragging');
+    document.body.style.cssText='';
+  });
+})();
+
+// ─── Init ─────────────────────────────────────────────────────────
+buildSliders(); buildLegend(); update();
+window.addEventListener('resize',()=>update());
+</script>
+</body>
+</html>

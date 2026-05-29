@@ -1,10 +1,10 @@
 # M2_GenericConcepts.jsonld
 
-**Version:** 16.11.0  
+**Version:** 16.13.0  
 **Layer:** M2  
 **Type:** Generic Concepts Ontology  
 **Created:** 2026-01-14  
-**Last Modified:** 2026-05-27
+**Last Modified:** 2026-05-28
 
 ---
 
@@ -80,12 +80,38 @@ V + E           =  Invariant (Map perspective)
 A × St × It | R + O  =  Coherence
 St × It × A | R      =  Layer
 F × T                =  Gradient  (Territory × Gs primitive T)
-D × F | L            =  Bifurcation  (new — Gs primitive L)
-It × Ss              =  Code         (new — Gs primitive Ss)
-Ss × F | K           =  Language     (new — Gs primitives Ss + K)
+D × F | L            =  Bifurcation  (Gs primitive L)
+It × Ss              =  Code         (Gs primitive Ss)
+Ss × F | K           =  Language     (Gs primitives Ss + K)
 ```
 
-**28 GenericConcepts** currently use `|` or a Gs primitive (K, Ss, L, T).
+**36 GenericConcepts** currently use `|` or a Gs primitive (K, Ss, L, T) — including the 11 dual-polarity pairs (see below).
+
+---
+
+## ⊕⊖ Dual-Polarity Formulas — `_^` and `_$`
+
+**11 GenericConcepts** are defined as **dual-polarity pairs** — their formula takes
+two forms, one per Gs pole primitive. The property `m2:hasStructuralGrammarFormula`
+is stored as a **2-element array** `[formula | _^, formula | _$]` :
+
+| Concept (pair) | `_^` pole | `_$` pole |
+|---|---|---|
+| Coherence / Incoherence | `A × St × It \| R + O \| _^` | `A × St × It \| R + O \| _$` |
+| Amplification / Attenuation | `F × D × It \| R + O \| _^` | `F × D × It \| R + O \| _$` |
+| Pattern (Recognition/Reuse) | `St × It × A \| K \| _^` | `St × It × A \| K \| _$` |
+| Activation / Inhibition | `A × D \| _^` | `A × D \| _$` |
+| Convergence / Divergence | `F × D \| _^` | `F × D \| _$` |
+| Coding (Encoding/Decoding) | `It × St × D \| _^` | `It × St × D \| _$` |
+| Fusion / Fission | `St × D \| _^` | `St × D \| _$` |
+| Composition / Decomposition | `St × It × A \| _^` | `St × It × A \| _$` |
+| Entropy / Negentropy | `F × It × D \| _^` | `F × It × D \| _$` |
+| Synergy (Positive/Negative) | `It × D \| _^` | `It × D \| _$` |
+| Potentialization / F-Depletion | `A × D × F \| _^` | `A × D × F \| _$` |
+
+**Note Entropy :** `_^` = Entropy (augmentation naturelle du désordre) / `_$` = Negentropy (ordre artificiel).
+
+All 11 dual-polarity concepts have `m2:isStereopsic = true` (formula contains `|`).
 
 ---
 
@@ -123,17 +149,18 @@ Layer      =  S × It × A | R    (bicephalous — I = Information, R = Represen
 
 ---
 
-## 📊 Statistics (v16.11.0)
+## 📊 Statistics (v16.13.0)
 
 | Metric | Value |
 |---|---|
 | Total GenericConcepts | 75 atomic, 8 combos |
 | GenericConcept families | 9 |
-| Bicephalous formulas (`\|`) | 25 |
-| Gs primitives used | 4 (T, K, Ss, L) |
-| `isStereopsic=true` | 28 GenericConcepts |
+| Bicephalous formulas (`\|`) | 36 |
+| Gs primitives used | 6 (T, _^, _$, K, Ss, L) |
+| `isStereopsic=true` | 36 GenericConcepts |
+| Dual-polarity pairs (`[f\|_^, f\|_$]`) | 11 |
 | M3 primitives available | 16 — Base16 (𝕋₀) |
-| Notation formats | 3 (Standard, TeX, RawText) |
+| Formula notation | 1 (Standard — `×`, `+`, `\|`) |
 
 
 ---
@@ -148,14 +175,14 @@ m2:isStereopsic = true   →  formula contains | or any of {T, K, Ss, L}
 m2:isStereopsic = false  →  formula is purely Territory (×) or Map (+)
 ```
 
-### The 28 stereopsic GenericConcepts (v16.11.0)
+### The 36 stereopsic GenericConcepts (v16.13.0)
 
-**Original 11 (| operator):** Layer, Resource, Interoperability, Scope,
+**Original 11 (`|` operator):** Layer, Resource, Interoperability, Scope,
 Duplication, Identity, ValueSpace, Amplification, Coherence, TopologicalDefect, Gradient (T)
 
-**17 new (Base16 extension — K, Ss, L):**
+**17 (Base16 extension — K, Ss, L):**
 
-| GenericConcept | New Formula | Gs primitive |
+| GenericConcept | Formula | Gs primitive |
 |---|---|---|
 | Code | `It × Ss` | Ss |
 | Signature | `It × Ss \| V` | Ss |
@@ -174,6 +201,9 @@ Duplication, Identity, ValueSpace, Amplification, Coherence, TopologicalDefect, 
 | Constraint | `St \| L` | L |
 | Homeostasis | `A × St × F \| L` | L |
 | Bifurcation | `D × F \| L` | L |
+
+**8 (Polar extension — `_^`/`_$` added):**
+Activation, Convergence, Coding, Fusion, Composition, Entropy, Synergy, Potentialization
 
 ### Usage
 
@@ -210,7 +240,7 @@ If an ASFID types is absent from a M2 formula, it likely belongs
 to the implementation (M1/M0), not the observable phenomenon:
 
 ```
-m2:Amplification  =  Ft × D × It | R + O
+m2:Amplification  =  F × D × It | R + O
                       ↑
                       S (circuit structure) is ABSENT — intentional
                       The transistor, op-amp, enzymatic cascade are M0 realizations
@@ -241,23 +271,22 @@ See `CLAUDE.md` for the full set of modeling rules and conventions.
 
 ## 🔄 Recent Changes
 
+### v16.13.0 (2026-05-28) — **CLEANUP: RawText & TeX removed**
+- `m2:hasStructuralGrammarFormulaRawText` supprimée (83 valeurs + nœud `owl:DatatypeProperty`)
+- `m2:hasStructuralGrammarFormulaTeX` supprimée (82 valeurs + nœud `owl:DatatypeProperty`)
+- La formule standard (`×`, `|`, `St`, `It`) est désormais la seule représentation
+
+### v16.12.0 (2026-05-28) — **DUAL-POLARITY FORMULAS**
+- **11 concepts duaux** : `m2:hasStructuralGrammarFormula` → array `[f | _^, f | _$]`
+- 3 déjà hybrides (`Coherence`, `Amplification`, `Pattern`) — trivial
+- 8 nouveaux hybrides (ajout de `|` + pôles) : `Activation`, `Convergence`, `Coding`, `Fusion`, `Composition`, `Entropy`, `Synergy`, `Potentialization`
+- `isStereopsic=True` pour les 8 nouveaux (total : **36**)
+- Entropy : `_^`=Entropy / `_$`=Negentropy
+
 ### v16.11.0 (2026-05-27) — **BASE16 EXTENSION**
-- **25 formula updates** across 4 groups :
-  - Groupe A (8) : St/It indexation in existing hybrid formulas (S→St)
-  - Groupe B (6) : S×I resolved via `Ss` — Code, Signature, Language, Relation, Channel, Role
-  - Groupe C (8) : S×I resolved via `L` — Node, Component, Capacity, Topology, Space, Constraint, Homeostasis, Bifurcation
-  - Groupe D (3) : S×I resolved via `K` — Agent, Pattern, Mediator
-  - Amplification: `Ft` → `F`
-- **17 new** `m2:isStereopsic=True` (total: 28)
+- 25 formulas updated (St/It indexation + S×I collision resolution via Ss, L, K)
+- 17 new `isStereopsic=True` (total was 28)
 - Notation convention: St/It in hybrid formulas
-
-### v16.10.8 (2026-05-20) — **isStereopsic FLAG**
-- Added `m2:isStereopsic` boolean property
-- Set to `true` for 11 GenericConcepts using `|` or Gs primitive T
-
-### v16.10.7 (2026-05-18) — **DESCRIPTION UPDATE**
-- `dcterms:description` and `rdfs:comment` updated: 13 primitives (𝕋₀),
-  Stereopsis Grammar Gs, T primitive, bicephalous architecture
 
 ---
 
@@ -287,7 +316,9 @@ via M3_GenesisGrammar — no direct import of M3_BicephalousPerspective needed.
 3. **16 primitives (Base16)** in 𝕋₀ — ASFID(5) + REVOI(5) + TKSL+poles(6)
 4. **It/Im distinction is crucial** for hybrid formulas
 5. **Notation convention** — St/It in hybrid formulas; ASFID/REVOI unaffected
-6. **28 stereopsic GenericConcepts** use `|` or a Gs primitive (T, K, Ss, L)
-7. **S×I collision resolved** — 33 former collisions disambiguated via Ss, L, K
+6. **36 stereopsic GenericConcepts** use `|` or a Gs primitive (T, K, Ss, L, _^, _$)
+7. **11 dual-polarity pairs** — `hasStructuralGrammarFormula` is a 2-element array `[f|_^, f|_$]`
+8. **S×I collision resolved** — 33 former collisions disambiguated via Ss, L, K
+9. **Single formula notation** — `m2:hasStructuralGrammarFormula` only (RawText & TeX removed)
 
 **M2 is where TSCG's transdisciplinary power becomes explicit.** 🌟

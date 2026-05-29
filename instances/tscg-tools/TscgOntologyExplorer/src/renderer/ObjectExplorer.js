@@ -18,6 +18,7 @@
 const OWL_THING = 'http://www.w3.org/2002/07/owl#Thing'
 
 let _onSelectCb     = null
+let _onNavigateTo   = null   // (filePath, iri) → navigate cross-file
 let _selectedGroups = new Set()
 let _expanded       = new Set()
 
@@ -112,10 +113,17 @@ function buildGroupMap (level1, children, byIri) {
 }
 
 // ── Public API ─────────────────────────────────────────────────
-export function renderObjectExplorer ({ objects, pairs, onSelect }) {
-  _onSelectCb = onSelect
+export function renderObjectExplorer ({ objects, pairs, externalParents, onSelect, onNavigateTo }) {
+  _onSelectCb     = onSelect
+  _onNavigateTo   = onNavigateTo || null
   const treeEl = document.getElementById('object-tree')
   if (!treeEl) return
+
+  // Build ghost-node map: parent IRI → { label, filePath }
+  const ghostMap = new Map()
+  for (const ep of (externalParents || [])) {
+    if (ep.file_path_hint) ghostMap.set(ep.id, { label: ep.label, filePath: ep.file_path_hint })
+  }
 
   const { byIri, nonClassByIri, children, level1, typeGroups } = buildHierarchy(objects, pairs)
   const groupMap   = buildGroupMap(level1, children, byIri)
@@ -125,6 +133,8 @@ export function renderObjectExplorer ({ objects, pairs, onSelect }) {
   treeEl.innerHTML = ''
   _expanded.add(OWL_THING)
   for (const iri of level1) _expanded.add(iri)
+  // Also expand ghost nodes by default
+  for (const iri of ghostMap.keys()) _expanded.add(iri)
 
   // ── Mode selector ─────────────────────────────────────────────
   const modeRow = document.createElement('div')
@@ -178,7 +188,7 @@ export function renderObjectExplorer ({ objects, pairs, onSelect }) {
   treeEl.appendChild(treeBody)
 
   // Store context for selectObjectByIri re-render
-  _currentRenderCtx = { treeBody, byIri, children, classCount, groupMap, level1 }
+  _currentRenderCtx = { treeBody, byIri, children, classCount, groupMap, level1, ghostMap }
 
   const redraw = () => {
     const mode = modeSel.value
@@ -187,8 +197,8 @@ export function renderObjectExplorer ({ objects, pairs, onSelect }) {
     pillsEl.innerHTML = '<span class="oe-pills-empty">All groups visible</span>'
     clearBtn.disabled = true
     if (mode === 'classes') {
-      _currentRenderCtx = { treeBody, byIri, children, classCount, groupMap, level1 }
-      _renderTree(treeBody, byIri, children, classCount, groupMap, level1)
+      _currentRenderCtx = { treeBody, byIri, children, classCount, groupMap, level1, ghostMap }
+      _renderTree(treeBody, byIri, children, classCount, groupMap, level1, ghostMap)
     } else {
       _renderFlatList(treeBody, typeGroups[mode] || [], nonClassByIri, mode)
     }
@@ -203,17 +213,17 @@ export function renderObjectExplorer ({ objects, pairs, onSelect }) {
     if (val && !_selectedGroups.has(val)) {
       _selectedGroups.add(val); groupSel.value = ''
       _renderPills(pillsEl, clearBtn, () => {
-        _renderTree(treeBody, byIri, children, classCount, groupMap, level1)
+        _renderTree(treeBody, byIri, children, classCount, groupMap, level1, ghostMap)
       })
-      _renderTree(treeBody, byIri, children, classCount, groupMap, level1)
+      _renderTree(treeBody, byIri, children, classCount, groupMap, level1, ghostMap)
     }
   })
   clearBtn.addEventListener('click', () => {
     _selectedGroups.clear()
     _renderPills(pillsEl, clearBtn, () => {
-      _renderTree(treeBody, byIri, children, classCount, groupMap, level1)
+      _renderTree(treeBody, byIri, children, classCount, groupMap, level1, ghostMap)
     })
-    _renderTree(treeBody, byIri, children, classCount, groupMap, level1)
+    _renderTree(treeBody, byIri, children, classCount, groupMap, level1, ghostMap)
   })
 }
 
@@ -252,7 +262,7 @@ export function selectObjectByIri (iri) {
     }
 
     // Re-render the tree with expanded ancestors
-    _renderTree(treeBody, byIri, children, classCount, groupMap, level1)
+    _renderTree(treeBody, byIri, children, classCount, groupMap, level1, ghostMap)
     nodeEl = treeBody.querySelector(`[data-iri="${safeIri}"]`)
   }
 
@@ -288,7 +298,7 @@ export function filterObjectTree (query) {
   if (raw && _currentRenderCtx) {
     const { byIri, children, classCount, groupMap, level1 } = _currentRenderCtx
     for (const iri of byIri.keys()) _expanded.add(iri)
-    _renderTree(treeBody, byIri, children, classCount, groupMap, level1)
+    _renderTree(treeBody, byIri, children, classCount, groupMap, level1, ghostMap)
   }
 
   // ── 2. Build regex ────────────────────────────────────────────
@@ -447,7 +457,8 @@ function _isVisible (iri, groupMap) {
   return _selectedGroups.has(groupMap.get(iri))
 }
 
-function _renderTree (treeBody, byIri, children, classCount, groupMap, level1) {
+function _renderTree (treeBody, byIri, children, classCount, groupMap, level1, ghostMap) {
+  ghostMap = ghostMap || new Map()
   treeBody.innerHTML = ''
   let visibleCount   = 0
 
@@ -455,6 +466,55 @@ function _renderTree (treeBody, byIri, children, classCount, groupMap, level1) {
     if (iri === OWL_THING) return true
     if (_selectedGroups.size === 0) return true
     return _selectedGroups.has(groupMap.get(iri))
+  }
+
+  // ── Ghost node renderer (external parent, cross-file link) ────
+  const renderGhostNode = (parentIri, ghost, depth) => {
+    const localKids = (children.get(parentIri) || []).filter(c => byIri.has(c))
+    if (localKids.length === 0) return   // no local children — no point showing
+
+    const expanded  = _expanded.has(parentIri)
+    const nodeEl    = document.createElement('div')
+    nodeEl.className = 'oe-node oe-ghost'
+    nodeEl.style.paddingLeft = `${6 + depth * 18}px`
+    nodeEl.dataset.iri = parentIri
+    nodeEl.title = `External class — click to open ${ghost.filePath?.split(/[/\\]/).pop() || 'file'}`
+
+    const tri = document.createElement('span')
+    tri.className = 'oe-tri'
+    tri.textContent = expanded ? '▼' : '▶'
+    tri.addEventListener('click', e => {
+      e.stopPropagation()
+      if (_expanded.has(parentIri)) _expanded.delete(parentIri)
+      else                           _expanded.add(parentIri)
+      _renderTree(treeBody, byIri, children, classCount, groupMap, level1, ghostMap)
+    })
+
+    const lbl = document.createElement('span')
+    lbl.className   = 'oe-lbl oe-ghost-lbl'
+    lbl.textContent = `↗ ${ghost.label}`
+
+    const badge = document.createElement('span')
+    badge.className   = 'oe-ghost-badge'
+    badge.textContent = ghost.filePath ? ghost.filePath.split(/[/\\]/).pop() : '(external)'
+
+    nodeEl.appendChild(tri); nodeEl.appendChild(lbl); nodeEl.appendChild(badge)
+
+    // Click → navigate to external file and select the class
+    nodeEl.addEventListener('click', () => {
+      treeBody.querySelectorAll('.oe-node.selected').forEach(n => n.classList.remove('selected'))
+      nodeEl.classList.add('selected')
+      if (_onNavigateTo && ghost.filePath) {
+        _onNavigateTo(ghost.filePath, parentIri)
+      }
+    })
+
+    treeBody.appendChild(nodeEl)
+    if (expanded) {
+      for (const c of localKids.sort((a,b) => nodeLabel(a).localeCompare(nodeLabel(b))))
+        renderNode(c, depth + 1)
+    }
+    visibleCount++
   }
 
   const renderNode = (iri, depth) => {
@@ -482,7 +542,7 @@ function _renderTree (treeBody, byIri, children, classCount, groupMap, level1) {
         e.stopPropagation()
         if (_expanded.has(iri)) _expanded.delete(iri)
         else                    _expanded.add(iri)
-        _renderTree(treeBody, byIri, children, classCount, groupMap, level1)
+        _renderTree(treeBody, byIri, children, classCount, groupMap, level1, ghostMap)
       })
     } else {
       tri.textContent = '–'; tri.style.opacity = '0.2'; tri.style.cursor = 'default'
@@ -505,6 +565,19 @@ function _renderTree (treeBody, byIri, children, classCount, groupMap, level1) {
   }
 
   renderNode(OWL_THING, 0)
+
+  // ── Ghost nodes — external parents with local children ────────
+  // Rendered after the local tree, grouped under a separator
+  const ghostEntries = [...ghostMap.entries()]
+    .filter(([iri]) => (children.get(iri) || []).some(c => byIri.has(c)))
+    .sort(([,a],[,b]) => a.label.localeCompare(b.label))
+  if (ghostEntries.length > 0) {
+    const sep = document.createElement('div')
+    sep.className   = 'oe-ghost-sep'
+    sep.textContent = '↑ Superclasses (external files)'
+    treeBody.appendChild(sep)
+    for (const [iri, ghost] of ghostEntries) renderGhostNode(iri, ghost, 0)
+  }
 
   const badge = document.createElement('div')
   badge.className   = 'oe-count'
