@@ -121,9 +121,21 @@ function _pushLog (line, api) {
 async function startServer (api) {
   if (_proc) { api.warn('[tscg-api-bridge] Already running'); return }
 
-  // Merge api.pluginMeta (may be empty) with local package.json meta
-  const localMeta  = _readLocalMeta()
-  const meta       = Object.assign({}, localMeta, api.pluginMeta || {})
+  // Merge: package.json meta + environment variables (set by launcher.py) + api.pluginMeta
+  const localMeta   = _readLocalMeta()
+  const meta        = Object.assign({}, localMeta, api.pluginMeta || {})
+
+  // Override with environment variables set by launcher.py sub-shell
+  // TSCG_API_PORT       → port to use (8000 or 8001)
+  // TSCG_API_IN_MEMORY  → "true" = use in-memory store, clear store path
+  if (process.env.TSCG_API_PORT) {
+    meta['tscg-api-port'] = process.env.TSCG_API_PORT
+    console.log(`[tscg-api-bridge] Port from launcher env: ${process.env.TSCG_API_PORT}`)
+  }
+  if (process.env.TSCG_API_IN_MEMORY === 'true') {
+    meta['tscg-api-store-path'] = ''
+    console.log('[tscg-api-bridge] In-memory mode (from launcher env TSCG_API_IN_MEMORY)')
+  }
   console.log('[tscg-api-bridge] meta tscg-repo-root:', meta['tscg-repo-root'])
   const pythonExe  = meta['tscg-python-executable'] || 'python'
   const host       = meta['tscg-api-host']          || '127.0.0.1'
