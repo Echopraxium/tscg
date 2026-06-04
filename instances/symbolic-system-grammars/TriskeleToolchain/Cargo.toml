@@ -1,0 +1,41 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/triskele-common",
+    "crates/triskele-vm",
+    "crates/tsk-asm",
+    "crates/tsk-dis",
+    "crates/tsk-link",
+    "crates/tsk-build",
+    "crates/wolf3d-demo",
+    "crates/tsk-cc",
+]
+
+[workspace.package]
+version  = "0.3.0"
+edition  = "2021"
+authors  = ["Echopraxium with the collaboration of Claude AI"]
+homepage = "https://github.com/Echopraxium/tscg"
+license  = "MIT" 
+
+[workspace.dependencies]
+serde      = { version = "1", features = ["derive"] }
+serde_yaml = "0.9"
+clap       = { version = "4", features = ["derive"] }
+anyhow     = "1"
+thiserror  = "1"
+colored    = "2"
+rustyline  = "14"
+memmap2    = "0.9"
+fnv        = "1"
+log        = "0.4"
+env_logger = "0.11"
+sdl2       = { version = "0.36", features = ["unsafe_textures"] }
+libloading = "0.8"
+triskele-common = { path = "crates/triskele-common" }
+
+[profile.release]
+opt-level     = 3
+lto           = true
+codegen-units = 1
+panic         = "abort"

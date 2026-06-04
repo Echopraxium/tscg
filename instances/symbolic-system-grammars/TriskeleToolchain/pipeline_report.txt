@@ -1,0 +1,484 @@
+TriskeleToolchain Pipeline Report
+Date     : 2026-06-04 14:28:54
+Workspace: E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain
+
+============================================================
+[1/4 clang] clang -O0 -S -emit-llvm -o lib/samples/test_main.ll lib/samples/test_main.c
+============================================================
+✅ [1/4 clang] OK
+
+============================================================
+[  clean tsk-cc] cargo clean -p tsk-cc
+============================================================
+     Removed 135 files, 87.3MiB total
+✅ [  clean tsk-cc] OK
+
+============================================================
+[  clean tsk-link] cargo clean -p tsk-link
+============================================================
+     Removed 129 files, 80.2MiB total
+✅ [  clean tsk-link] OK
+
+============================================================
+[2/4 tsk-cc] cargo run -p tsk-cc -- lib/samples/test_main.ll -o lib/samples/test_main.tobj --verbose --dump-asm
+============================================================
+   Compiling tsk-cc v0.3.0 (E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\crates\tsk-cc)
+warning: variable `rel_offset` is assigned to, but never used
+   --> crates\tsk-cc\src\main.rs:193:9
+    |
+193 |     let mut rel_offset: u32 = 0;
+    |         ^^^^^^^^^^^^^^
+    |
+    = note: consider using `_rel_offset` instead
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: value assigned to `rel_offset` is never read
+   --> crates\tsk-cc\src\main.rs:200:9
+    |
+200 |         rel_offset += ((func_code.len() as u32) + 3) & !3;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: maybe it is overwritten before being read?
+    = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `params` is never read
+   --> crates\tsk-cc\src\codegen.rs:202:5
+    |
+191 | struct RegAlloc {
+    |        -------- field in this struct
+...
+202 |     params:     HashSet<String>,
+    |     ^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `tsk-cc` (bin "tsk-cc") generated 3 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.15s
+     Running `target\debug\tsk-cc.exe lib/samples/test_main.ll -o lib/samples/test_main.tobj --verbose --dump-asm`
+[tsk-cc] Parsing lib/samples/test_main.ll  (8484 bytes)
+[tsk-cc] Module: 1 global(s), 4 function(s)
+  define  @ScaleDiv  (2 params, 4 blocks)
+  define  @IsSolid  (2 params, 7 blocks)
+  define  @SumTiles  (4 params, 9 blocks)
+  define  @main  (0 params, 11 blocks)
+  global @tilemap  (4096 bytes)
+[tsk-cc] Generating bytecode...
+[tsk-cc] Generated 4 function(s):
+  @ScaleDiv  160 bytes  (40 instructions)
+  --- @ScaleDiv ---
+       0  08000000  A_ENTER          R0 R0 R0  imm=+0
+       4  41C00018  D_MOV_I          R24 R0 R0  imm=+24
+       8  4FEF7000  D_SUB            R29 R29 R24  imm=-36864
+      12  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+      16  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      20  4AC04000  D_STORE32        R24 R1 R0  imm=+16384
+      24  41C00010  D_MOV_I          R24 R0 R0  imm=+16
+      28  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      32  4AC00000  D_STORE32        R24 R0 R0  imm=+0
+      36  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+      40  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      44  46160000  D_LOAD32         R2 R24 R0  imm=-131072
+      48  41C80000  D_MOV_I          R25 R0 R0  imm=+0
+      52  7000B200  V_CMP            R0 R2 R25  imm=+45568
+      56  7318B200  V_EQ             R3 R2 R25  imm=+45568
+      60  71180000  V_CMP_I          R3 R0 R0  imm=+0
+      64  26000008  F_JNZ            R0 R0 R0  imm=+8
+      68  20000018  F_JMP            R0 R0 R0  imm=+24
+      72  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+      76  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      80  41C80000  D_MOV_I          R25 R0 R0  imm=+0
+      84  4AC64000  D_STORE32        R24 R25 R0  imm=-114688
+      88  20000030  F_JMP            R0 R0 R0  imm=+48
+      92  41C00010  D_MOV_I          R24 R0 R0  imm=+16
+      96  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     100  461E0000  D_LOAD32         R3 R24 R0  imm=-131072
+     104  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     108  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     112  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
+     116  1C00C200  D_DIV            R0 R3 R1  imm=+49664
+     120  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+     124  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     128  4AC00000  D_STORE32        R24 R0 R0  imm=+0
+     132  20000004  F_JMP            R0 R0 R0  imm=+4
+     136  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+     140  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     144  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
+     148  40004000  D_MOV            R0 R1 R0  imm=+16384
+     152  09000000  A_LEAVE          R0 R0 R0  imm=+0
+     156  23000000  F_RET            R0 R0 R0  imm=+0
+  @IsSolid  328 bytes  (82 instructions)
+  --- @IsSolid ---
+       0  08000000  A_ENTER          R0 R0 R0  imm=+0
+       4  41C00018  D_MOV_I          R24 R0 R0  imm=+24
+       8  4FEF7000  D_SUB            R29 R29 R24  imm=-36864
+      12  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+      16  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      20  4AC04000  D_STORE32        R24 R1 R0  imm=+16384
+      24  41C00010  D_MOV_I          R24 R0 R0  imm=+16
+      28  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      32  4AC00000  D_STORE32        R24 R0 R0  imm=+0
+      36  41C00010  D_MOV_I          R24 R0 R0  imm=+16
+      40  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      44  46160000  D_LOAD32         R2 R24 R0  imm=-131072
+      48  41C80000  D_MOV_I          R25 R0 R0  imm=+0
+      52  7000B200  V_CMP            R0 R2 R25  imm=+45568
+      56  7518B200  V_LT             R3 R2 R25  imm=+45568
+      60  71180000  V_CMP_I          R3 R0 R0  imm=+0
+      64  26000074  F_JNZ            R0 R0 R0  imm=+116
+      68  20000004  F_JMP            R0 R0 R0  imm=+4
+      72  41C00010  D_MOV_I          R24 R0 R0  imm=+16
+      76  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      80  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
+      84  41C80040  D_MOV_I          R25 R0 R0  imm=+64
+      88  70007200  V_CMP            R0 R1 R25  imm=+29184
+      92  78007200  V_GTE            R0 R1 R25  imm=+29184
+      96  71000000  V_CMP_I          R0 R0 R0  imm=+0
+     100  26000050  F_JNZ            R0 R0 R0  imm=+80
+     104  20000004  F_JMP            R0 R0 R0  imm=+4
+     108  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     112  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     116  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
+     120  41C80000  D_MOV_I          R25 R0 R0  imm=+0
+     124  70007200  V_CMP            R0 R1 R25  imm=+29184
+     128  75007200  V_LT             R0 R1 R25  imm=+29184
+     132  71000000  V_CMP_I          R0 R0 R0  imm=+0
+     136  2600002C  F_JNZ            R0 R0 R0  imm=+44
+     140  20000004  F_JMP            R0 R0 R0  imm=+4
+     144  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     148  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     152  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
+     156  41C80040  D_MOV_I          R25 R0 R0  imm=+64
+     160  70007200  V_CMP            R0 R1 R25  imm=+29184
+     164  78007200  V_GTE            R0 R1 R25  imm=+29184
+     168  71000000  V_CMP_I          R0 R0 R0  imm=+0
+     172  26000008  F_JNZ            R0 R0 R0  imm=+8
+     176  20000018  F_JMP            R0 R0 R0  imm=+24
+     180  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+     184  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     188  41C80001  D_MOV_I          R25 R0 R0  imm=+1
+     192  4AC64000  D_STORE32        R24 R25 R0  imm=-114688
+     196  2000006C  F_JMP            R0 R0 R0  imm=+108
+     200  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     204  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     208  46060000  D_LOAD32         R0 R24 R0  imm=-131072
+     212  41C80040  D_MOV_I          R25 R0 R0  imm=+64
+     216  41C00040  D_MOV_I          R24 R0 R0  imm=+64
+     220  1B083000  D_MUL            R1 R0 R24  imm=+12288
+     224  41C00010  D_MOV_I          R24 R0 R0  imm=+16
+     228  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     232  46160000  D_LOAD32         R2 R24 R0  imm=-131072
+     236  4E184400  D_ADD            R3 R1 R2  imm=+17408
+     240  4020C000  D_MOV            R4 R3 R0  imm=+49152
+     244  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+     248  402E0000  D_MOV            R5 R24 R0  imm=-131072
+     252  41C80001  D_MOV_I          R25 R0 R0  imm=+1
+     256  1BC93200  D_MUL            R25 R4 R25  imm=+78336
+     260  4E297200  D_ADD            R5 R5 R25  imm=+94720
+     264  44314000  D_LOAD8          R6 R5 R0  imm=+81920
+     268  58398000  R_ZERO8          R7 R6 R0  imm=+98304
+     272  41C80000  D_MOV_I          R25 R0 R0  imm=+0
+     276  7001F200  V_CMP            R0 R7 R25  imm=+127488
+     280  7441F200  V_NEQ            R8 R7 R25  imm=+127488
+     284  584A0000  R_ZERO8          R9 R8 R0  imm=+131072
+     288  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+     292  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     296  4AC24000  D_STORE32        R24 R9 R0  imm=+147456
+     300  20000004  F_JMP            R0 R0 R0  imm=+4
+     304  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+     308  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     312  461E0000  D_LOAD32         R3 R24 R0  imm=-131072
+     316  4000C000  D_MOV            R0 R3 R0  imm=+49152
+     320  09000000  A_LEAVE          R0 R0 R0  imm=+0
+     324  23000000  F_RET            R0 R0 R0  imm=+0
+  @SumTiles  464 bytes  (116 instructions)
+  --- @SumTiles ---
+       0  08000000  A_ENTER          R0 R0 R0  imm=+0
+       4  41C00038  D_MOV_I          R24 R0 R0  imm=+56
+       8  4FEF7000  D_SUB            R29 R29 R24  imm=-36864
+      12  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+      16  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      20  4AC0C000  D_STORE32        R24 R3 R0  imm=+49152
+      24  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+      28  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      32  4AC08000  D_STORE32        R24 R2 R0  imm=+32768
+      36  41C00010  D_MOV_I          R24 R0 R0  imm=+16
+      40  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      44  4AC04000  D_STORE32        R24 R1 R0  imm=+16384
+      48  41C00018  D_MOV_I          R24 R0 R0  imm=+24
+      52  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      56  4AC00000  D_STORE32        R24 R0 R0  imm=+0
+      60  41C00020  D_MOV_I          R24 R0 R0  imm=+32
+      64  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      68  41C80000  D_MOV_I          R25 R0 R0  imm=+0
+      72  4AC64000  D_STORE32        R24 R25 R0  imm=-114688
+      76  41C00010  D_MOV_I          R24 R0 R0  imm=+16
+      80  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      84  46260000  D_LOAD32         R4 R24 R0  imm=-131072
+      88  41C00030  D_MOV_I          R24 R0 R0  imm=+48
+      92  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      96  4AC10000  D_STORE32        R24 R4 R0  imm=+65536
+     100  20000004  F_JMP            R0 R0 R0  imm=+4
+     104  41C00030  D_MOV_I          R24 R0 R0  imm=+48
+     108  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     112  46260000  D_LOAD32         R4 R24 R0  imm=-131072
+     116  41C00010  D_MOV_I          R24 R0 R0  imm=+16
+     120  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     124  46160000  D_LOAD32         R2 R24 R0  imm=-131072
+     128  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+     132  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     136  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
+     140  4E008200  D_ADD            R0 R2 R1  imm=+33280
+     144  70010000  V_CMP            R0 R4 R0  imm=+65536
+     148  75190000  V_LT             R3 R4 R0  imm=+65536
+     152  71180000  V_CMP_I          R3 R0 R0  imm=+0
+     156  26000008  F_JNZ            R0 R0 R0  imm=+8
+     160  20000118  F_JMP            R0 R0 R0  imm=+280
+     164  41C00018  D_MOV_I          R24 R0 R0  imm=+24
+     168  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     172  46060000  D_LOAD32         R0 R24 R0  imm=-131072
+     176  41C00028  D_MOV_I          R24 R0 R0  imm=+40
+     180  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     184  4AC00000  D_STORE32        R24 R0 R0  imm=+0
+     188  20000004  F_JMP            R0 R0 R0  imm=+4
+     192  41C00028  D_MOV_I          R24 R0 R0  imm=+40
+     196  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     200  46060000  D_LOAD32         R0 R24 R0  imm=-131072
+     204  41C00018  D_MOV_I          R24 R0 R0  imm=+24
+     208  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     212  461E0000  D_LOAD32         R3 R24 R0  imm=-131072
+     216  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     220  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     224  46160000  D_LOAD32         R2 R24 R0  imm=-131072
+     228  4E08C400  D_ADD            R1 R3 R2  imm=+50176
+     232  70000200  V_CMP            R0 R0 R1  imm=+512
+     236  75200200  V_LT             R4 R0 R1  imm=+512
+     240  71200000  V_CMP_I          R4 R0 R0  imm=+0
+     244  26000008  F_JNZ            R0 R0 R0  imm=+8
+     248  20000094  F_JMP            R0 R0 R0  imm=+148
+     252  41C00030  D_MOV_I          R24 R0 R0  imm=+48
+     256  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     260  46260000  D_LOAD32         R4 R24 R0  imm=-131072
+     264  41C80040  D_MOV_I          R25 R0 R0  imm=+64
+     268  41C00040  D_MOV_I          R24 R0 R0  imm=+64
+     272  1B093000  D_MUL            R1 R4 R24  imm=+77824
+     276  41C00028  D_MOV_I          R24 R0 R0  imm=+40
+     280  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     284  461E0000  D_LOAD32         R3 R24 R0  imm=-131072
+     288  4E004600  D_ADD            R0 R1 R3  imm=+17920
+     292  40100000  D_MOV            R2 R0 R0  imm=+0
+     296  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+     300  402E0000  D_MOV            R5 R24 R0  imm=-131072
+     304  41C80001  D_MOV_I          R25 R0 R0  imm=+1
+     308  1BC8B200  D_MUL            R25 R2 R25  imm=+45568
+     312  4E297200  D_ADD            R5 R5 R25  imm=+94720
+     316  44314000  D_LOAD8          R6 R5 R0  imm=+81920
+     320  58398000  R_ZERO8          R7 R6 R0  imm=+98304
+     324  41C00020  D_MOV_I          R24 R0 R0  imm=+32
+     328  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     332  46460000  D_LOAD32         R8 R24 R0  imm=-131072
+     336  4E4A0E00  D_ADD            R9 R8 R7  imm=+134656
+     340  41C00020  D_MOV_I          R24 R0 R0  imm=+32
+     344  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     348  4AC24000  D_STORE32        R24 R9 R0  imm=+147456
+     352  20000004  F_JMP            R0 R0 R0  imm=+4
+     356  41C00028  D_MOV_I          R24 R0 R0  imm=+40
+     360  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     364  464E0000  D_LOAD32         R9 R24 R0  imm=-131072
+     368  41C80001  D_MOV_I          R25 R0 R0  imm=+1
+     372  41C00001  D_MOV_I          R24 R0 R0  imm=+1
+     376  4E427000  D_ADD            R8 R9 R24  imm=+159744
+     380  41C00028  D_MOV_I          R24 R0 R0  imm=+40
+     384  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     388  4AC20000  D_STORE32        R24 R8 R0  imm=+131072
+     392  20FFFF38  F_JMP            R31 R31 R31  imm=-200
+     396  20000004  F_JMP            R0 R0 R0  imm=+4
+     400  41C00030  D_MOV_I          R24 R0 R0  imm=+48
+     404  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     408  46460000  D_LOAD32         R8 R24 R0  imm=-131072
+     412  41C80001  D_MOV_I          R25 R0 R0  imm=+1
+     416  41C00001  D_MOV_I          R24 R0 R0  imm=+1
+     420  4E4A3000  D_ADD            R9 R8 R24  imm=+143360
+     424  41C00030  D_MOV_I          R24 R0 R0  imm=+48
+     428  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     432  4AC24000  D_STORE32        R24 R9 R0  imm=+147456
+     436  20FFFEB4  F_JMP            R31 R31 R31  imm=-332
+     440  41C00020  D_MOV_I          R24 R0 R0  imm=+32
+     444  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     448  46460000  D_LOAD32         R8 R24 R0  imm=-131072
+     452  40020000  D_MOV            R0 R8 R0  imm=+131072
+     456  09000000  A_LEAVE          R0 R0 R0  imm=+0
+     460  23000000  F_RET            R0 R0 R0  imm=+0
+  @main  528 bytes  (132 instructions)
+  --- @main ---
+       0  08000000  A_ENTER          R0 R0 R0  imm=+0
+       4  41C00010  D_MOV_I          R24 R0 R0  imm=+16
+       8  4FEF7000  D_SUB            R29 R29 R24  imm=-36864
+      12  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+      16  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      20  41C80000  D_MOV_I          R25 R0 R0  imm=+0
+      24  4AC64000  D_STORE32        R24 R25 R0  imm=-114688
+      28  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+      32  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      36  41C80000  D_MOV_I          R25 R0 R0  imm=+0
+      40  4AC64000  D_STORE32        R24 R25 R0  imm=-114688
+      44  41C0000A  D_MOV_I          R24 R0 R0  imm=+10
+      48  40060000  D_MOV            R0 R24 R0  imm=-131072
+      52  41C00002  D_MOV_I          R24 R0 R0  imm=+2
+      56  400E0000  D_MOV            R1 R24 R0  imm=-131072
+      60  22000000  F_CALL           R0 R0 R0  imm=+0
+      64  41C80005  D_MOV_I          R25 R0 R0  imm=+5
+      68  70003200  V_CMP            R0 R0 R25  imm=+12800
+      72  73083200  V_EQ             R1 R0 R25  imm=+12800
+      76  71080000  V_CMP_I          R1 R0 R0  imm=+0
+      80  26000008  F_JNZ            R0 R0 R0  imm=+8
+      84  2000002C  F_JMP            R0 R0 R0  imm=+44
+      88  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+      92  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+      96  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
+     100  41C80001  D_MOV_I          R25 R0 R0  imm=+1
+     104  41C00001  D_MOV_I          R24 R0 R0  imm=+1
+     108  35007000  D_OR             R0 R1 R24  imm=+28672
+     112  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     116  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     120  4AC00000  D_STORE32        R24 R0 R0  imm=+0
+     124  20000004  F_JMP            R0 R0 R0  imm=+4
+     128  41C00007  D_MOV_I          R24 R0 R0  imm=+7
+     132  40060000  D_MOV            R0 R24 R0  imm=-131072
+     136  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+     140  400E0000  D_MOV            R1 R24 R0  imm=-131072
+     144  22000000  F_CALL           R0 R0 R0  imm=+0
+     148  41C80000  D_MOV_I          R25 R0 R0  imm=+0
+     152  70003200  V_CMP            R0 R0 R25  imm=+12800
+     156  73083200  V_EQ             R1 R0 R25  imm=+12800
+     160  71080000  V_CMP_I          R1 R0 R0  imm=+0
+     164  26000008  F_JNZ            R0 R0 R0  imm=+8
+     168  2000002C  F_JMP            R0 R0 R0  imm=+44
+     172  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     176  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     180  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
+     184  41C80002  D_MOV_I          R25 R0 R0  imm=+2
+     188  41C00002  D_MOV_I          R24 R0 R0  imm=+2
+     192  35007000  D_OR             R0 R1 R24  imm=+28672
+     196  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     200  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     204  4AC00000  D_STORE32        R24 R0 R0  imm=+0
+     208  20000004  F_JMP            R0 R0 R0  imm=+4
+     212  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+     216  41C80143  D_MOV_I          R25 R0 R0  imm=+323
+     220  4EC63200  D_ADD            R24 R24 R25  imm=-118272
+     224  41C80009  D_MOV_I          R25 R0 R0  imm=+9
+     228  48C64000  D_STORE8         R24 R25 R0  imm=-114688
+     232  41C00003  D_MOV_I          R24 R0 R0  imm=+3
+     236  40060000  D_MOV            R0 R24 R0  imm=-131072
+     240  41C00005  D_MOV_I          R24 R0 R0  imm=+5
+     244  400E0000  D_MOV            R1 R24 R0  imm=-131072
+     248  22000000  F_CALL           R0 R0 R0  imm=+0
+     252  41C80001  D_MOV_I          R25 R0 R0  imm=+1
+     256  70003200  V_CMP            R0 R0 R25  imm=+12800
+     260  73083200  V_EQ             R1 R0 R25  imm=+12800
+     264  71080000  V_CMP_I          R1 R0 R0  imm=+0
+     268  26000008  F_JNZ            R0 R0 R0  imm=+8
+     272  2000002C  F_JMP            R0 R0 R0  imm=+44
+     276  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     280  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     284  46060000  D_LOAD32         R0 R24 R0  imm=-131072
+     288  41C80004  D_MOV_I          R25 R0 R0  imm=+4
+     292  41C00004  D_MOV_I          R24 R0 R0  imm=+4
+     296  35083000  D_OR             R1 R0 R24  imm=+12288
+     300  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     304  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     308  4AC04000  D_STORE32        R24 R1 R0  imm=+16384
+     312  20000004  F_JMP            R0 R0 R0  imm=+4
+     316  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+     320  40060000  D_MOV            R0 R24 R0  imm=-131072
+     324  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+     328  400E0000  D_MOV            R1 R24 R0  imm=-131072
+     332  22000000  F_CALL           R0 R0 R0  imm=+0
+     336  40080000  D_MOV            R1 R0 R0  imm=+0
+     340  41C80000  D_MOV_I          R25 R0 R0  imm=+0
+     344  70007200  V_CMP            R0 R1 R25  imm=+29184
+     348  73007200  V_EQ             R0 R1 R25  imm=+29184
+     352  71000000  V_CMP_I          R0 R0 R0  imm=+0
+     356  26000008  F_JNZ            R0 R0 R0  imm=+8
+     360  2000002C  F_JMP            R0 R0 R0  imm=+44
+     364  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     368  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     372  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
+     376  41C80008  D_MOV_I          R25 R0 R0  imm=+8
+     380  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     384  35007000  D_OR             R0 R1 R24  imm=+28672
+     388  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     392  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     396  4AC00000  D_STORE32        R24 R0 R0  imm=+0
+     400  20000004  F_JMP            R0 R0 R0  imm=+4
+     404  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+     408  40060000  D_MOV            R0 R24 R0  imm=-131072
+     412  41C00000  D_MOV_I          R24 R0 R0  imm=+0
+     416  400E0000  D_MOV            R1 R24 R0  imm=-131072
+     420  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     424  40160000  D_MOV            R2 R24 R0  imm=-131072
+     428  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     432  401E0000  D_MOV            R3 R24 R0  imm=-131072
+     436  22000000  F_CALL           R0 R0 R0  imm=+0
+     440  40080000  D_MOV            R1 R0 R0  imm=+0
+     444  41C80009  D_MOV_I          R25 R0 R0  imm=+9
+     448  70007200  V_CMP            R0 R1 R25  imm=+29184
+     452  73007200  V_EQ             R0 R1 R25  imm=+29184
+     456  71000000  V_CMP_I          R0 R0 R0  imm=+0
+     460  26000008  F_JNZ            R0 R0 R0  imm=+8
+     464  2000002C  F_JMP            R0 R0 R0  imm=+44
+     468  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     472  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     476  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
+     480  41C80010  D_MOV_I          R25 R0 R0  imm=+16
+     484  41C00010  D_MOV_I          R24 R0 R0  imm=+16
+     488  35007000  D_OR             R0 R1 R24  imm=+28672
+     492  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     496  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     500  4AC00000  D_STORE32        R24 R0 R0  imm=+0
+     504  20000004  F_JMP            R0 R0 R0  imm=+4
+     508  41C00008  D_MOV_I          R24 R0 R0  imm=+8
+     512  4EC77000  D_ADD            R24 R29 R24  imm=-36864
+     516  46060000  D_LOAD32         R0 R24 R0  imm=-131072
+     520  09000000  A_LEAVE          R0 R0 R0  imm=+0
+     524  23000000  F_RET            R0 R0 R0  imm=+0
+[tsk-cc] Data section: 4096 bytes
+[tsk-cc] lib/samples/test_main.ll → lib/samples/test_main.tobj  (5926 bytes)
+✅ [2/4 tsk-cc] OK
+
+============================================================
+[3/4 tsk-link] cargo run -p tsk-link -- lib/samples/test_main.tobj -o lib/samples/test_main.tvmx --entry main
+============================================================
+   Compiling tsk-link v0.3.0 (E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\crates\tsk-link)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.78s
+     Running `target\debug\tsk-link.exe lib/samples/test_main.tobj -o lib/samples/test_main.tvmx --entry main`
+[tsk-link] reloc sym='tilemap' base='tilemap' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
+[tsk-link] resolved @tilemap → 0x15C8
+[tsk-link] reloc sym='tilemap' base='tilemap' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
+[tsk-link] resolved @tilemap → 0x15C8
+[tsk-link] reloc sym='ScaleDiv' base='ScaleDiv' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
+[tsk-link] resolved @ScaleDiv → 0x1000
+[tsk-link] reloc sym='ScaleDiv' base='ScaleDiv' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
+[tsk-link] resolved @ScaleDiv → 0x1000
+[tsk-link] reloc sym='tilemap' base='tilemap' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
+[tsk-link] resolved @tilemap → 0x15C8
+[tsk-link] reloc sym='IsSolid' base='IsSolid' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
+[tsk-link] resolved @IsSolid → 0x10A0
+[tsk-link] reloc sym='IsSolid' base='IsSolid' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
+[tsk-link] resolved @IsSolid → 0x10A0
+[tsk-link] reloc sym='SumTiles' base='SumTiles' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
+[tsk-link] resolved @SumTiles → 0x11E8
+[tsk-link] 1 input(s) → lib/samples/test_main.tvmx  (5795 bytes)
+✅ [3/4 tsk-link] OK
+
+============================================================
+[4/4 tskvm] cargo run -p triskele-vm -- lib/samples/test_main.tvmx
+============================================================
+warning: triskele-vm@0.3.0: exe_dir=E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\target\debug
+warning: triskele-vm@0.3.0: SDL2.dll OK -> E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\target\debug\SDL2.dll
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
+     Running `target\debug\tskvm.exe lib/samples/test_main.tvmx`
+error: process didn't exit successfully: `target\debug\tskvm.exe lib/samples/test_main.tvmx` (exit code: 31)
+
+── VM Exit Code: 31 (0x1F) ──
+✅ ALL TESTS PASSED (0x1F = 31)

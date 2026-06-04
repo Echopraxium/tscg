@@ -1,0 +1,44 @@
+; sdl_test.tasm — framebuffer rouge
+.module  sdl_test
+.type    executable
+.section .code
+.entry   main
+
+main:
+    ; Alloue framebuffer 320x200x4 = 256000 bytes
+    D_MOV_I  R1, 256000
+    A_ALLOC  R0, R1
+
+    ; Remplis R=255 G=0 B=0 A=255
+    ; RGBA en mémoire = 0xFF 0x00 0x00 0xFF
+    ; D_MEMSET ne peut remplir qu'avec un seul byte
+    ; On remplit d'abord tout à 0, puis on met R et A
+
+    ; Tout à zéro
+    D_MOV_I  R2, 0
+    D_MOV_I  R3, 256000
+    D_MEMSET R0, R2, R3
+
+    ; Remplis les canaux R et A (offset 0 et 3 de chaque pixel)
+    D_MOV_I  R4, 0           ; pixel index
+    D_MOV_I  R5, 64000       ; nb pixels
+    D_MOV_I  R6, 255         ; valeur 0xFF
+pixel_loop:
+    ; addr = R0 + R4
+    D_ADD    R7, R0, R4
+    D_STORE8 R7, R6, 0       ; R = 255
+    D_STORE8 R7, R6, 3       ; A = 255
+    D_ADD_I  R4, 4
+    D_SUB_I  R5, 1
+    V_CMP_I  R5, 0
+    F_JNZ    pixel_loop
+
+frame_loop:
+    Im_FB_BLIT  R0
+    D_MOV_I     R8, 35
+    T_FRAME_SYN R8
+    Im_INPUT_RD R9
+    V_CMP_I     R9, 0
+    F_JZ        frame_loop
+    D_MOV_I     R0, 0
+    F_HALT
