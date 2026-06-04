@@ -1,4 +1,20 @@
-** TO_DO — Last updated: 2026-05-24 09:12 **
+** TO_DO — Last updated: 2026-05-31 **
+
+** [NEW] Skill Rust pour TriskeleToolchain
+   - Créer /mnt/skills/user/rust-vm/SKILL.md
+   - Couvrir : structure Cargo workspace, unsafe FFI, callbacks C→Rust,
+     arènes mémoire, boucle d'interprétation register-based,
+     bindings SDL2 (sdl2 crate), libloading (E_LOAD_MOD),
+     conventions de nommage ISA Triskele dans le code Rust
+   - Inclure patterns spécifiques TriskeleVM :
+     Im_REGISTER_CB (unsafe extern "C" fn),
+     _^_ARENA_B/_$_ARENA_E (Z_Malloc style),
+     T_FRAME_SYN (SDL2 timing loop)
+
+** [NEW] README TriskeleToolchain — FAIT (v0.2.0)
+   - M0_TriskeleToolchain_README.md mis à jour
+   - Documenter le processus de spécification + stress test ISA
+   - Stocker sous instances/symbolic-system-grammars/TriskeleToolchain/
 
 ** [NEW] Créer les READMEs des extensions M1 (template: M1_Extension_README_TEMPLATE.md)
    - M1_Biology_README.md
@@ -44,112 +60,67 @@
    - Corruption UTF-8 massive dans la version actuelle
    - Formalisme Hilbert/SVD/tensor à remplacer par Lambek/monoïdal (×, +, |)
    - Références obsolètes à corriger : M3_GenesisSpace → M3_GenesisGrammar,
-     M2_MetaConcepts → M2_GenericConcepts, Domain_Hybrid_Tensor_Product_5D_README → absent
-   - Conserver le contenu conceptuel (KnowledgeField NOUN/ADJECTIVE, KnowledgeFieldMetaCombo, ⊙ operator)
+     M2_MetaConcepts → M2_GenericConcepts
+   - Conserver le contenu conceptuel (KnowledgeField NOUN/ADJECTIVE, etc.)
    - Réécrire la formule de KnowledgeField en notation monoïdale TSCG
 
 ** [DONE] Implémenter propriété m2:isStereopsic (flag booléen)
-   - true pour les 11 GenericConcepts utilisant | ou T
-   - Utile pour generate_index.js, TscgPocletMiner, galerie
-
 ** [DONE] Migration "m3:ontologyCategory" ==> "m3:ontologyType"
 ** [DONE] Migration "Tensor Algebra" ==> "Structural Grammar"
 ** [DONE] Migration "m3gf:" ==> "m3:grammar_foundation:"
 ** [DONE] Migration "m3:stereopsis:" ==> "m3:bicephalous:"
 
 ** Poclet: "Cell Membrane" (Membrane Cellulaire)
-   - Protéines de surface = types primitifs de Gs (T, ...)
-   - Canaux ioniques = T (Temporalité) comme primitive bicéphale
-   - Pompes = Ψ (interprétation Map → Territory)
-   - Voir Refinement 7 dans PotentialRefinements_MonoidalOperators.md
-
 ** Poclet: "Osmosis / Reverse Osmosis" (validé 2026-05-18)
-   - Osmose  →  Φ : Gt → Gm  (flux naturel, observation)
-   - Osmose inverse  →  Ψ : Gm → Gt  (flux imposé, interprétation)
-   - Premier poclet modélisant directement la dynamique Φ/Ψ bicéphale
-   - Connexion avec Cell Membrane et l'operateur |
-
-** Valider T (Temporalité) sur 2+ poclets (condition d'adoption officielle)
-   - Candidat 1 : Osmose/Osmose inverse  (F × T)
-   - Candidat 2 : à identifier dans le corpus
-
-** Implémenter propriété m2:isStereopsic (flag booléen)
-   - true pour les 11 GenericConcepts utilisant | ou T
-   - Utile pour generate_index.js, TscgPocletMiner, galerie
-
+** Valider T (Temporalité) sur 2+ poclets
 ** Mise a jour du README du projet TSCG
 
 **** Ontology Pitfall scanner
      https://github.com/oeg-upm/OOPS
-	 
+
 **** TSCG "Composite Pattern" Typeface
-**** "Braille Alchemist": Simumation/Game (ontologyType)
+**** "Braille Alchemist": Simulation/Game (ontologyType)
 
-**** Migration "m3:ontologyCategory" ==> "m3:ontologyType"
-**** Migration "Tensor Algebra" ==> "Structural Grammar"
-
-** Vérifier si apres migration (avec grammaire SHACL) il y a des impacts sur les fichiers README et simulation en Html statique
+** Vérifier si apres migration (avec grammaire SHACL) il y a des impacts
+   sur les fichiers README et simulation en Html statique
 
 ** "M1_Extensions"
-   - utiliser la propriété "m3:ontologyType" avec la valeur "m3:DomainExtension" (déja créé dans "M3_GenesisSpace.jsonld")
+   - utiliser la propriété "m3:ontologyType" avec la valeur "m3:DomainExtension"
    - script python de migration des extension M1
    - script python de validation des extension M1
 
 ** Mise a jour du "Smart Prompt"
-** Demander la traduction an anglais du 2 skill Claude "tscg-article-pipeline"  
+** Demander la traduction en anglais du skill "tscg-article-pipeline"
 
-** Bug Grammaire SHACL: 
-   - URL absolus/relatifs dans les namespaces, il faut migrer vers URLs relatifs et pour nouveaux poclets: URLs relatifs 
-   - dans "M0_Ptoe.jsonld" généré avec pipeline: 
-     Erreur: "m0:Ptoe": "instances/poclets/Ptoe/M0_Ptoe.jsonld#"	
-	 
-** Dans le "tscg-instance-pipeline": ajouter la mise a jour de "M1_Domains.jsonld" quand une extension M1 est identifiée ou étendue	 
+** Bug Grammaire SHACL:
+   - URL absolus/relatifs dans les namespaces
+   - dans "M0_Ptoe.jsonld": Erreur m0:Ptoe IRI
+
+** Dans le "tscg-instance-pipeline": ajouter mise à jour M1_Domains.jsonld
 
 ** Reprendre la mise au point / développement de "TscgPocletMiner"
-** Documenter un "pipeline de création de poclet" pour un utilisateur de TSCG
-
+** Documenter un "pipeline de création de poclet" pour un utilisateur TSCG
 ** Reprendre la mise au point du poclet "PlateTectonics"
-
-** modifier le script de migration pour qu'il ait une option avec un seul fichier jsonld a valider 
-** Ajouter la validation avec la grammaire SHACL dans le pipeline d'analyse/modelisation/simulation d'un poclet  
+** modifier le script de migration: option un seul fichier jsonld
+** Ajouter validation SHACL dans le pipeline d'analyse/modelisation/simulation
 
 ** VSM: Simulation
-
-** Poclet :"Osmosis et Reverse Osmosis"
-
+** Poclet: "Osmosis et Reverse Osmosis"
 ** Poclet sur les "cardinaux hyperinaccessibles" / John Conway
-
-** Poclet sur "Rubik"s Cube" vs "Théorie des groupes"
-
+** Poclet sur "Rubik's Cube" vs "Théorie des groupes"
 ** Exemple d'instance de type "Automaton": Game of Life
+** Identification de "Patterns systémiques" émergents de l'analyse des poclets
 
-** Identification de "Patterns systémiques" émergents de l'analyse des "poclets"
-
-* Utilisation de SHACL pour "encoder" les formules mathématiques contenues dans les ontologies M3, M2, M1, M0 
-
-* "_Run_Poclet_Explorer .bat": identification des prérequis manquants:
-  - "NodeJS" non installé
-  - "npm install" n'a pas été fait au préalable  
-* Poclet Explorer: filtres par tags (ex: "biology" etc...)
-* Poclet Miner
-* Poclets: Regenerer les .jsonld et README du fait de la migration des "KnowledgeFieldConceptCombo" dans M1_CoreConcepts.jsonld
+* Utilisation de SHACL pour encoder les formules mathématiques M3/M2/M1/M0
+* "_Run_Poclet_Explorer.bat": identification des prérequis manquants
+* Poclet Explorer: filtres par tags
+* Poclets: Regenerer .jsonld et README suite migration KnowledgeFieldConceptCombo
 * Continuer la conversion des simulations de poclet de Python vers ElectronJS
 
-* Dans les "Inputs":
-  - Rédiger un "TSCG_Modelling_Genesis.md"
+* Dans les "Inputs": Rédiger un "TSCG_Modelling_Genesis.md"
 
-** Reformuler ce 'Poclet': "M0_Yggdrasil.jsonld" avec des "Poles" pour les "Mondes"   
+** Reformuler "M0_Yggdrasil.jsonld" avec des "Poles" pour les "Mondes"
 
-* ----------  Suggestion de "Poclets" ---------- 
-- "Couleurs des Quarks"  
-- Plaque Motrice
-	Modèle à 5 Pôles (Vision Intégrée la Plus Complète)
-	On ajoute ici les éléments en amont et en aval immédiats, essentiels au fonctionnement du système.
-	Pôle de Commande (Segment initial de l'axone) : Génère et propage le potentiel d'action qui va déclencher toute la cascade. C'est le "bouton GO".
-	Pôle de Stockage & Libération (Bouton présynaptique) : Contient les vésicules d'ACh et le mécanisme d'exocytose dépendant du calcium.
-	Pôle de Transmission & Dégradation (Fente Synaptique) : Assure la diffusion de l'ACh et son découpage enzymatique ultra-rapide par l'AChE.
-	Pôle de Détection & Conversion (Membrane Post-synaptique) : Contient les récepteurs nAChR qui génèrent le Potentiel de Plaque Motrice.
-	Pôle d'Intégration & Propagation (Membrane Musculaire Périphérique) : Zone autour de la plaque motrice où le Potentiel de Plaque Motrice déclenche un véritable potentiel d'action musculaire qui se propagera le long de la fibre et dans les tubules T.
-	  
-
-
+* ----------  Suggestion de "Poclets" ----------
+- "Couleurs des Quarks"
+- Plaque Motrice (modèle à 5 pôles)
