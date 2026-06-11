@@ -32,6 +32,13 @@ fn main() {
 
     let total = HEAP_BASE + HEAP_SIZE - NULL_PAGE_END;
     let mut mem = Memory::new(NULL_PAGE_END, total);
+
+    // Add libc segment at 0xE000_0000 (tsk-libc stubs injected by build_cpu)
+    use triskele_vm::libc::{LIBC_BASE, ALL_SYSCALLS, STUB_SIZE};
+    // Taille = (max_syscall_id + 1) * STUB_SIZE  — les adresses sont LIBC_BASE + id * STUB_SIZE
+    let max_id = ALL_SYSCALLS.iter().map(|sc| *sc as u64).max().unwrap_or(0);
+    let libc_size = (max_id + 2) * STUB_SIZE;  // +2 pour marge
+    mem.add_segment(LIBC_BASE, libc_size);
     let mut load_ptr = NULL_PAGE_END;
 
     if let Some(rodata) = tvm.find_section(SectionType::Rodata) {
@@ -48,7 +55,8 @@ fn main() {
     mem.write_bytes(load_ptr, &code.data).expect("code");
 
     // Also load Data section (globals like @tilemap) after code
-    let mut data_ptr = load_ptr + ((code.data.len() as u64 + 7) & !7);
+    // Alignment must match tsk-link's data_base = code_base + code_offset (aligned to 4, not 8)
+    let mut data_ptr = load_ptr + ((code.data.len() as u64 + 3) & !3);
     if let Some(data_sec) = tvm.find_section(SectionType::Data) {
         if !data_sec.data.is_empty() {
             mem.write_bytes(data_ptr, &data_sec.data).expect("data");

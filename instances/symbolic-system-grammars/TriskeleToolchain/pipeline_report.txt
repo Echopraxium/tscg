@@ -1,484 +1,843 @@
 TriskeleToolchain Pipeline Report
-Date     : 2026-06-04 14:28:54
+Date     : 2026-06-12 00:10:10
 Workspace: E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain
+Project  : doom-generic/vm-porting/tests/doom_math  [c]
 
 ============================================================
-[1/4 clang] clang -O0 -S -emit-llvm -o lib/samples/test_main.ll lib/samples/test_main.c
+[clang m_fixed] clang -O0 -S -emit-llvm -o E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_fixed.ll E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\src/m_fixed.c -I E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\include
 ============================================================
-✅ [1/4 clang] OK
+✅ [clang m_fixed] OK
 
 ============================================================
-[  clean tsk-cc] cargo clean -p tsk-cc
+[tsk-cc m_fixed] cargo run --release -p tsk-cc -- E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_fixed.ll -o E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_fixed.tobj --verbose
 ============================================================
-     Removed 135 files, 87.3MiB total
-✅ [  clean tsk-cc] OK
-
-============================================================
-[  clean tsk-link] cargo clean -p tsk-link
-============================================================
-     Removed 129 files, 80.2MiB total
-✅ [  clean tsk-link] OK
-
-============================================================
-[2/4 tsk-cc] cargo run -p tsk-cc -- lib/samples/test_main.ll -o lib/samples/test_main.tobj --verbose --dump-asm
-============================================================
-   Compiling tsk-cc v0.3.0 (E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\crates\tsk-cc)
-warning: variable `rel_offset` is assigned to, but never used
-   --> crates\tsk-cc\src\main.rs:193:9
-    |
-193 |     let mut rel_offset: u32 = 0;
-    |         ^^^^^^^^^^^^^^
-    |
-    = note: consider using `_rel_offset` instead
-    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
-
-warning: value assigned to `rel_offset` is never read
-   --> crates\tsk-cc\src\main.rs:200:9
-    |
-200 |         rel_offset += ((func_code.len() as u32) + 3) & !3;
-    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |
-    = help: maybe it is overwritten before being read?
-    = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
-
-warning: field `params` is never read
-   --> crates\tsk-cc\src\codegen.rs:202:5
-    |
-191 | struct RegAlloc {
-    |        -------- field in this struct
-...
-202 |     params:     HashSet<String>,
-    |     ^^^^^^
-    |
-    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
-
-warning: `tsk-cc` (bin "tsk-cc") generated 3 warnings
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.15s
-     Running `target\debug\tsk-cc.exe lib/samples/test_main.ll -o lib/samples/test_main.tobj --verbose --dump-asm`
-[tsk-cc] Parsing lib/samples/test_main.ll  (8484 bytes)
-[tsk-cc] Module: 1 global(s), 4 function(s)
-  define  @ScaleDiv  (2 params, 4 blocks)
-  define  @IsSolid  (2 params, 7 blocks)
-  define  @SumTiles  (4 params, 9 blocks)
-  define  @main  (0 params, 11 blocks)
-  global @tilemap  (4096 bytes)
+    Finished `release` profile [optimized] target(s) in 0.10s
+     Running `target\release\tsk-cc.exe E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_fixed.ll -o E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_fixed.tobj --verbose`
+[tsk-cc] Parsing E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_fixed.ll  (3848 bytes)
+[tsk-cc] function @FixedMul: 1 blocks
+  block 'entry': 12 instrs, last=Some("Ret { ty: I32, val: Some(Reg(\"11\")) }")
+[tsk-cc] function @FixedDiv: 4 blocks
+  block 'entry': 13 instrs, last=Some("BrCond { cond: Reg(\"12\"), then_bb: \"13\",")
+  block '13': 8 instrs, last=Some("BrUncond { target: \"29\" }")
+  block '20': 11 instrs, last=Some("BrUncond { target: \"29\" }")
+  block '29': 2 instrs, last=Some("Ret { ty: I32, val: Some(Reg(\"30\")) }")
+[tsk-cc] Module: 0 global(s), 3 function(s)
+  define  @FixedMul  (2 params, 1 blocks)
+  define  @FixedDiv  (2 params, 4 blocks)
+  declare @llvm.abs.i32  (2 params, 0 blocks [external])
 [tsk-cc] Generating bytecode...
-[tsk-cc] Generated 4 function(s):
-  @ScaleDiv  160 bytes  (40 instructions)
-  --- @ScaleDiv ---
-       0  08000000  A_ENTER          R0 R0 R0  imm=+0
-       4  41C00018  D_MOV_I          R24 R0 R0  imm=+24
-       8  4FEF7000  D_SUB            R29 R29 R24  imm=-36864
-      12  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-      16  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      20  4AC04000  D_STORE32        R24 R1 R0  imm=+16384
-      24  41C00010  D_MOV_I          R24 R0 R0  imm=+16
-      28  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      32  4AC00000  D_STORE32        R24 R0 R0  imm=+0
-      36  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-      40  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      44  46160000  D_LOAD32         R2 R24 R0  imm=-131072
-      48  41C80000  D_MOV_I          R25 R0 R0  imm=+0
-      52  7000B200  V_CMP            R0 R2 R25  imm=+45568
-      56  7318B200  V_EQ             R3 R2 R25  imm=+45568
-      60  71180000  V_CMP_I          R3 R0 R0  imm=+0
-      64  26000008  F_JNZ            R0 R0 R0  imm=+8
-      68  20000018  F_JMP            R0 R0 R0  imm=+24
-      72  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-      76  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      80  41C80000  D_MOV_I          R25 R0 R0  imm=+0
-      84  4AC64000  D_STORE32        R24 R25 R0  imm=-114688
-      88  20000030  F_JMP            R0 R0 R0  imm=+48
-      92  41C00010  D_MOV_I          R24 R0 R0  imm=+16
-      96  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     100  461E0000  D_LOAD32         R3 R24 R0  imm=-131072
-     104  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     108  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     112  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
-     116  1C00C200  D_DIV            R0 R3 R1  imm=+49664
-     120  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-     124  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     128  4AC00000  D_STORE32        R24 R0 R0  imm=+0
-     132  20000004  F_JMP            R0 R0 R0  imm=+4
-     136  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-     140  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     144  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
-     148  40004000  D_MOV            R0 R1 R0  imm=+16384
-     152  09000000  A_LEAVE          R0 R0 R0  imm=+0
-     156  23000000  F_RET            R0 R0 R0  imm=+0
-  @IsSolid  328 bytes  (82 instructions)
-  --- @IsSolid ---
-       0  08000000  A_ENTER          R0 R0 R0  imm=+0
-       4  41C00018  D_MOV_I          R24 R0 R0  imm=+24
-       8  4FEF7000  D_SUB            R29 R29 R24  imm=-36864
-      12  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-      16  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      20  4AC04000  D_STORE32        R24 R1 R0  imm=+16384
-      24  41C00010  D_MOV_I          R24 R0 R0  imm=+16
-      28  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      32  4AC00000  D_STORE32        R24 R0 R0  imm=+0
-      36  41C00010  D_MOV_I          R24 R0 R0  imm=+16
-      40  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      44  46160000  D_LOAD32         R2 R24 R0  imm=-131072
-      48  41C80000  D_MOV_I          R25 R0 R0  imm=+0
-      52  7000B200  V_CMP            R0 R2 R25  imm=+45568
-      56  7518B200  V_LT             R3 R2 R25  imm=+45568
-      60  71180000  V_CMP_I          R3 R0 R0  imm=+0
-      64  26000074  F_JNZ            R0 R0 R0  imm=+116
-      68  20000004  F_JMP            R0 R0 R0  imm=+4
-      72  41C00010  D_MOV_I          R24 R0 R0  imm=+16
-      76  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      80  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
-      84  41C80040  D_MOV_I          R25 R0 R0  imm=+64
-      88  70007200  V_CMP            R0 R1 R25  imm=+29184
-      92  78007200  V_GTE            R0 R1 R25  imm=+29184
-      96  71000000  V_CMP_I          R0 R0 R0  imm=+0
-     100  26000050  F_JNZ            R0 R0 R0  imm=+80
-     104  20000004  F_JMP            R0 R0 R0  imm=+4
-     108  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     112  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     116  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
-     120  41C80000  D_MOV_I          R25 R0 R0  imm=+0
-     124  70007200  V_CMP            R0 R1 R25  imm=+29184
-     128  75007200  V_LT             R0 R1 R25  imm=+29184
-     132  71000000  V_CMP_I          R0 R0 R0  imm=+0
-     136  2600002C  F_JNZ            R0 R0 R0  imm=+44
-     140  20000004  F_JMP            R0 R0 R0  imm=+4
-     144  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     148  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     152  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
-     156  41C80040  D_MOV_I          R25 R0 R0  imm=+64
-     160  70007200  V_CMP            R0 R1 R25  imm=+29184
-     164  78007200  V_GTE            R0 R1 R25  imm=+29184
-     168  71000000  V_CMP_I          R0 R0 R0  imm=+0
-     172  26000008  F_JNZ            R0 R0 R0  imm=+8
-     176  20000018  F_JMP            R0 R0 R0  imm=+24
-     180  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-     184  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     188  41C80001  D_MOV_I          R25 R0 R0  imm=+1
-     192  4AC64000  D_STORE32        R24 R25 R0  imm=-114688
-     196  2000006C  F_JMP            R0 R0 R0  imm=+108
-     200  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     204  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     208  46060000  D_LOAD32         R0 R24 R0  imm=-131072
-     212  41C80040  D_MOV_I          R25 R0 R0  imm=+64
-     216  41C00040  D_MOV_I          R24 R0 R0  imm=+64
-     220  1B083000  D_MUL            R1 R0 R24  imm=+12288
-     224  41C00010  D_MOV_I          R24 R0 R0  imm=+16
-     228  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     232  46160000  D_LOAD32         R2 R24 R0  imm=-131072
-     236  4E184400  D_ADD            R3 R1 R2  imm=+17408
-     240  4020C000  D_MOV            R4 R3 R0  imm=+49152
-     244  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-     248  402E0000  D_MOV            R5 R24 R0  imm=-131072
-     252  41C80001  D_MOV_I          R25 R0 R0  imm=+1
-     256  1BC93200  D_MUL            R25 R4 R25  imm=+78336
-     260  4E297200  D_ADD            R5 R5 R25  imm=+94720
-     264  44314000  D_LOAD8          R6 R5 R0  imm=+81920
-     268  58398000  R_ZERO8          R7 R6 R0  imm=+98304
-     272  41C80000  D_MOV_I          R25 R0 R0  imm=+0
-     276  7001F200  V_CMP            R0 R7 R25  imm=+127488
-     280  7441F200  V_NEQ            R8 R7 R25  imm=+127488
-     284  584A0000  R_ZERO8          R9 R8 R0  imm=+131072
-     288  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-     292  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     296  4AC24000  D_STORE32        R24 R9 R0  imm=+147456
-     300  20000004  F_JMP            R0 R0 R0  imm=+4
-     304  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-     308  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     312  461E0000  D_LOAD32         R3 R24 R0  imm=-131072
-     316  4000C000  D_MOV            R0 R3 R0  imm=+49152
-     320  09000000  A_LEAVE          R0 R0 R0  imm=+0
-     324  23000000  F_RET            R0 R0 R0  imm=+0
-  @SumTiles  464 bytes  (116 instructions)
-  --- @SumTiles ---
-       0  08000000  A_ENTER          R0 R0 R0  imm=+0
-       4  41C00038  D_MOV_I          R24 R0 R0  imm=+56
-       8  4FEF7000  D_SUB            R29 R29 R24  imm=-36864
-      12  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-      16  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      20  4AC0C000  D_STORE32        R24 R3 R0  imm=+49152
-      24  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-      28  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      32  4AC08000  D_STORE32        R24 R2 R0  imm=+32768
-      36  41C00010  D_MOV_I          R24 R0 R0  imm=+16
-      40  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      44  4AC04000  D_STORE32        R24 R1 R0  imm=+16384
-      48  41C00018  D_MOV_I          R24 R0 R0  imm=+24
-      52  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      56  4AC00000  D_STORE32        R24 R0 R0  imm=+0
-      60  41C00020  D_MOV_I          R24 R0 R0  imm=+32
-      64  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      68  41C80000  D_MOV_I          R25 R0 R0  imm=+0
-      72  4AC64000  D_STORE32        R24 R25 R0  imm=-114688
-      76  41C00010  D_MOV_I          R24 R0 R0  imm=+16
-      80  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      84  46260000  D_LOAD32         R4 R24 R0  imm=-131072
-      88  41C00030  D_MOV_I          R24 R0 R0  imm=+48
-      92  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      96  4AC10000  D_STORE32        R24 R4 R0  imm=+65536
-     100  20000004  F_JMP            R0 R0 R0  imm=+4
-     104  41C00030  D_MOV_I          R24 R0 R0  imm=+48
-     108  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     112  46260000  D_LOAD32         R4 R24 R0  imm=-131072
-     116  41C00010  D_MOV_I          R24 R0 R0  imm=+16
-     120  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     124  46160000  D_LOAD32         R2 R24 R0  imm=-131072
-     128  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-     132  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     136  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
-     140  4E008200  D_ADD            R0 R2 R1  imm=+33280
-     144  70010000  V_CMP            R0 R4 R0  imm=+65536
-     148  75190000  V_LT             R3 R4 R0  imm=+65536
-     152  71180000  V_CMP_I          R3 R0 R0  imm=+0
-     156  26000008  F_JNZ            R0 R0 R0  imm=+8
-     160  20000118  F_JMP            R0 R0 R0  imm=+280
-     164  41C00018  D_MOV_I          R24 R0 R0  imm=+24
-     168  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     172  46060000  D_LOAD32         R0 R24 R0  imm=-131072
-     176  41C00028  D_MOV_I          R24 R0 R0  imm=+40
-     180  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     184  4AC00000  D_STORE32        R24 R0 R0  imm=+0
-     188  20000004  F_JMP            R0 R0 R0  imm=+4
-     192  41C00028  D_MOV_I          R24 R0 R0  imm=+40
-     196  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     200  46060000  D_LOAD32         R0 R24 R0  imm=-131072
-     204  41C00018  D_MOV_I          R24 R0 R0  imm=+24
-     208  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     212  461E0000  D_LOAD32         R3 R24 R0  imm=-131072
-     216  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     220  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     224  46160000  D_LOAD32         R2 R24 R0  imm=-131072
-     228  4E08C400  D_ADD            R1 R3 R2  imm=+50176
-     232  70000200  V_CMP            R0 R0 R1  imm=+512
-     236  75200200  V_LT             R4 R0 R1  imm=+512
-     240  71200000  V_CMP_I          R4 R0 R0  imm=+0
-     244  26000008  F_JNZ            R0 R0 R0  imm=+8
-     248  20000094  F_JMP            R0 R0 R0  imm=+148
-     252  41C00030  D_MOV_I          R24 R0 R0  imm=+48
-     256  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     260  46260000  D_LOAD32         R4 R24 R0  imm=-131072
-     264  41C80040  D_MOV_I          R25 R0 R0  imm=+64
-     268  41C00040  D_MOV_I          R24 R0 R0  imm=+64
-     272  1B093000  D_MUL            R1 R4 R24  imm=+77824
-     276  41C00028  D_MOV_I          R24 R0 R0  imm=+40
-     280  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     284  461E0000  D_LOAD32         R3 R24 R0  imm=-131072
-     288  4E004600  D_ADD            R0 R1 R3  imm=+17920
-     292  40100000  D_MOV            R2 R0 R0  imm=+0
-     296  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-     300  402E0000  D_MOV            R5 R24 R0  imm=-131072
-     304  41C80001  D_MOV_I          R25 R0 R0  imm=+1
-     308  1BC8B200  D_MUL            R25 R2 R25  imm=+45568
-     312  4E297200  D_ADD            R5 R5 R25  imm=+94720
-     316  44314000  D_LOAD8          R6 R5 R0  imm=+81920
-     320  58398000  R_ZERO8          R7 R6 R0  imm=+98304
-     324  41C00020  D_MOV_I          R24 R0 R0  imm=+32
-     328  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     332  46460000  D_LOAD32         R8 R24 R0  imm=-131072
-     336  4E4A0E00  D_ADD            R9 R8 R7  imm=+134656
-     340  41C00020  D_MOV_I          R24 R0 R0  imm=+32
-     344  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     348  4AC24000  D_STORE32        R24 R9 R0  imm=+147456
-     352  20000004  F_JMP            R0 R0 R0  imm=+4
-     356  41C00028  D_MOV_I          R24 R0 R0  imm=+40
-     360  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     364  464E0000  D_LOAD32         R9 R24 R0  imm=-131072
-     368  41C80001  D_MOV_I          R25 R0 R0  imm=+1
-     372  41C00001  D_MOV_I          R24 R0 R0  imm=+1
-     376  4E427000  D_ADD            R8 R9 R24  imm=+159744
-     380  41C00028  D_MOV_I          R24 R0 R0  imm=+40
-     384  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     388  4AC20000  D_STORE32        R24 R8 R0  imm=+131072
-     392  20FFFF38  F_JMP            R31 R31 R31  imm=-200
-     396  20000004  F_JMP            R0 R0 R0  imm=+4
-     400  41C00030  D_MOV_I          R24 R0 R0  imm=+48
-     404  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     408  46460000  D_LOAD32         R8 R24 R0  imm=-131072
-     412  41C80001  D_MOV_I          R25 R0 R0  imm=+1
-     416  41C00001  D_MOV_I          R24 R0 R0  imm=+1
-     420  4E4A3000  D_ADD            R9 R8 R24  imm=+143360
-     424  41C00030  D_MOV_I          R24 R0 R0  imm=+48
-     428  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     432  4AC24000  D_STORE32        R24 R9 R0  imm=+147456
-     436  20FFFEB4  F_JMP            R31 R31 R31  imm=-332
-     440  41C00020  D_MOV_I          R24 R0 R0  imm=+32
-     444  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     448  46460000  D_LOAD32         R8 R24 R0  imm=-131072
-     452  40020000  D_MOV            R0 R8 R0  imm=+131072
-     456  09000000  A_LEAVE          R0 R0 R0  imm=+0
-     460  23000000  F_RET            R0 R0 R0  imm=+0
-  @main  528 bytes  (132 instructions)
-  --- @main ---
-       0  08000000  A_ENTER          R0 R0 R0  imm=+0
-       4  41C00010  D_MOV_I          R24 R0 R0  imm=+16
-       8  4FEF7000  D_SUB            R29 R29 R24  imm=-36864
-      12  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-      16  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      20  41C80000  D_MOV_I          R25 R0 R0  imm=+0
-      24  4AC64000  D_STORE32        R24 R25 R0  imm=-114688
-      28  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-      32  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      36  41C80000  D_MOV_I          R25 R0 R0  imm=+0
-      40  4AC64000  D_STORE32        R24 R25 R0  imm=-114688
-      44  41C0000A  D_MOV_I          R24 R0 R0  imm=+10
-      48  40060000  D_MOV            R0 R24 R0  imm=-131072
-      52  41C00002  D_MOV_I          R24 R0 R0  imm=+2
-      56  400E0000  D_MOV            R1 R24 R0  imm=-131072
-      60  22000000  F_CALL           R0 R0 R0  imm=+0
-      64  41C80005  D_MOV_I          R25 R0 R0  imm=+5
-      68  70003200  V_CMP            R0 R0 R25  imm=+12800
-      72  73083200  V_EQ             R1 R0 R25  imm=+12800
-      76  71080000  V_CMP_I          R1 R0 R0  imm=+0
-      80  26000008  F_JNZ            R0 R0 R0  imm=+8
-      84  2000002C  F_JMP            R0 R0 R0  imm=+44
-      88  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-      92  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-      96  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
-     100  41C80001  D_MOV_I          R25 R0 R0  imm=+1
-     104  41C00001  D_MOV_I          R24 R0 R0  imm=+1
-     108  35007000  D_OR             R0 R1 R24  imm=+28672
-     112  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     116  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     120  4AC00000  D_STORE32        R24 R0 R0  imm=+0
-     124  20000004  F_JMP            R0 R0 R0  imm=+4
-     128  41C00007  D_MOV_I          R24 R0 R0  imm=+7
-     132  40060000  D_MOV            R0 R24 R0  imm=-131072
-     136  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-     140  400E0000  D_MOV            R1 R24 R0  imm=-131072
-     144  22000000  F_CALL           R0 R0 R0  imm=+0
-     148  41C80000  D_MOV_I          R25 R0 R0  imm=+0
-     152  70003200  V_CMP            R0 R0 R25  imm=+12800
-     156  73083200  V_EQ             R1 R0 R25  imm=+12800
-     160  71080000  V_CMP_I          R1 R0 R0  imm=+0
-     164  26000008  F_JNZ            R0 R0 R0  imm=+8
-     168  2000002C  F_JMP            R0 R0 R0  imm=+44
-     172  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     176  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     180  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
-     184  41C80002  D_MOV_I          R25 R0 R0  imm=+2
-     188  41C00002  D_MOV_I          R24 R0 R0  imm=+2
-     192  35007000  D_OR             R0 R1 R24  imm=+28672
-     196  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     200  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     204  4AC00000  D_STORE32        R24 R0 R0  imm=+0
-     208  20000004  F_JMP            R0 R0 R0  imm=+4
-     212  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-     216  41C80143  D_MOV_I          R25 R0 R0  imm=+323
-     220  4EC63200  D_ADD            R24 R24 R25  imm=-118272
-     224  41C80009  D_MOV_I          R25 R0 R0  imm=+9
-     228  48C64000  D_STORE8         R24 R25 R0  imm=-114688
-     232  41C00003  D_MOV_I          R24 R0 R0  imm=+3
-     236  40060000  D_MOV            R0 R24 R0  imm=-131072
-     240  41C00005  D_MOV_I          R24 R0 R0  imm=+5
-     244  400E0000  D_MOV            R1 R24 R0  imm=-131072
-     248  22000000  F_CALL           R0 R0 R0  imm=+0
-     252  41C80001  D_MOV_I          R25 R0 R0  imm=+1
-     256  70003200  V_CMP            R0 R0 R25  imm=+12800
-     260  73083200  V_EQ             R1 R0 R25  imm=+12800
-     264  71080000  V_CMP_I          R1 R0 R0  imm=+0
-     268  26000008  F_JNZ            R0 R0 R0  imm=+8
-     272  2000002C  F_JMP            R0 R0 R0  imm=+44
-     276  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     280  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     284  46060000  D_LOAD32         R0 R24 R0  imm=-131072
-     288  41C80004  D_MOV_I          R25 R0 R0  imm=+4
-     292  41C00004  D_MOV_I          R24 R0 R0  imm=+4
-     296  35083000  D_OR             R1 R0 R24  imm=+12288
-     300  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     304  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     308  4AC04000  D_STORE32        R24 R1 R0  imm=+16384
-     312  20000004  F_JMP            R0 R0 R0  imm=+4
-     316  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-     320  40060000  D_MOV            R0 R24 R0  imm=-131072
-     324  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-     328  400E0000  D_MOV            R1 R24 R0  imm=-131072
-     332  22000000  F_CALL           R0 R0 R0  imm=+0
-     336  40080000  D_MOV            R1 R0 R0  imm=+0
-     340  41C80000  D_MOV_I          R25 R0 R0  imm=+0
-     344  70007200  V_CMP            R0 R1 R25  imm=+29184
-     348  73007200  V_EQ             R0 R1 R25  imm=+29184
-     352  71000000  V_CMP_I          R0 R0 R0  imm=+0
-     356  26000008  F_JNZ            R0 R0 R0  imm=+8
-     360  2000002C  F_JMP            R0 R0 R0  imm=+44
-     364  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     368  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     372  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
-     376  41C80008  D_MOV_I          R25 R0 R0  imm=+8
-     380  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     384  35007000  D_OR             R0 R1 R24  imm=+28672
-     388  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     392  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     396  4AC00000  D_STORE32        R24 R0 R0  imm=+0
-     400  20000004  F_JMP            R0 R0 R0  imm=+4
-     404  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-     408  40060000  D_MOV            R0 R24 R0  imm=-131072
-     412  41C00000  D_MOV_I          R24 R0 R0  imm=+0
-     416  400E0000  D_MOV            R1 R24 R0  imm=-131072
-     420  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     424  40160000  D_MOV            R2 R24 R0  imm=-131072
-     428  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     432  401E0000  D_MOV            R3 R24 R0  imm=-131072
-     436  22000000  F_CALL           R0 R0 R0  imm=+0
-     440  40080000  D_MOV            R1 R0 R0  imm=+0
-     444  41C80009  D_MOV_I          R25 R0 R0  imm=+9
-     448  70007200  V_CMP            R0 R1 R25  imm=+29184
-     452  73007200  V_EQ             R0 R1 R25  imm=+29184
-     456  71000000  V_CMP_I          R0 R0 R0  imm=+0
-     460  26000008  F_JNZ            R0 R0 R0  imm=+8
-     464  2000002C  F_JMP            R0 R0 R0  imm=+44
-     468  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     472  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     476  460E0000  D_LOAD32         R1 R24 R0  imm=-131072
-     480  41C80010  D_MOV_I          R25 R0 R0  imm=+16
-     484  41C00010  D_MOV_I          R24 R0 R0  imm=+16
-     488  35007000  D_OR             R0 R1 R24  imm=+28672
-     492  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     496  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     500  4AC00000  D_STORE32        R24 R0 R0  imm=+0
-     504  20000004  F_JMP            R0 R0 R0  imm=+4
-     508  41C00008  D_MOV_I          R24 R0 R0  imm=+8
-     512  4EC77000  D_ADD            R24 R29 R24  imm=-36864
-     516  46060000  D_LOAD32         R0 R24 R0  imm=-131072
-     520  09000000  A_LEAVE          R0 R0 R0  imm=+0
-     524  23000000  F_RET            R0 R0 R0  imm=+0
-[tsk-cc] Data section: 4096 bytes
-[tsk-cc] lib/samples/test_main.ll → lib/samples/test_main.tobj  (5926 bytes)
-✅ [2/4 tsk-cc] OK
+[tsk-cc] Generated 2 function(s):
+  @FixedMul  100 bytes  (25 instructions)
+  @FixedDiv  368 bytes  (92 instructions)
+[tsk-cc] E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_fixed.ll → E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_fixed.tobj  (622 bytes)
+✅ [tsk-cc m_fixed] OK
 
 ============================================================
-[3/4 tsk-link] cargo run -p tsk-link -- lib/samples/test_main.tobj -o lib/samples/test_main.tvmx --entry main
+[clang m_random] clang -O0 -S -emit-llvm -o E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_random.ll E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\src/m_random.c -I E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\include
 ============================================================
-   Compiling tsk-link v0.3.0 (E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\crates\tsk-link)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.78s
-     Running `target\debug\tsk-link.exe lib/samples/test_main.tobj -o lib/samples/test_main.tvmx --entry main`
-[tsk-link] reloc sym='tilemap' base='tilemap' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
-[tsk-link] resolved @tilemap → 0x15C8
-[tsk-link] reloc sym='tilemap' base='tilemap' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
-[tsk-link] resolved @tilemap → 0x15C8
-[tsk-link] reloc sym='ScaleDiv' base='ScaleDiv' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
-[tsk-link] resolved @ScaleDiv → 0x1000
-[tsk-link] reloc sym='ScaleDiv' base='ScaleDiv' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
-[tsk-link] resolved @ScaleDiv → 0x1000
-[tsk-link] reloc sym='tilemap' base='tilemap' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
-[tsk-link] resolved @tilemap → 0x15C8
-[tsk-link] reloc sym='IsSolid' base='IsSolid' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
-[tsk-link] resolved @IsSolid → 0x10A0
-[tsk-link] reloc sym='IsSolid' base='IsSolid' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
-[tsk-link] resolved @IsSolid → 0x10A0
-[tsk-link] reloc sym='SumTiles' base='SumTiles' off=0 known_syms=["SumTiles", "ScaleDiv", "main", "tilemap", "IsSolid"]
-[tsk-link] resolved @SumTiles → 0x11E8
-[tsk-link] 1 input(s) → lib/samples/test_main.tvmx  (5795 bytes)
-✅ [3/4 tsk-link] OK
+✅ [clang m_random] OK
 
 ============================================================
-[4/4 tskvm] cargo run -p triskele-vm -- lib/samples/test_main.tvmx
+[tsk-cc m_random] cargo run --release -p tsk-cc -- E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_random.ll -o E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_random.tobj --verbose
 ============================================================
-warning: triskele-vm@0.3.0: exe_dir=E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\target\debug
-warning: triskele-vm@0.3.0: SDL2.dll OK -> E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\target\debug\SDL2.dll
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.05s
-     Running `target\debug\tskvm.exe lib/samples/test_main.tvmx`
-error: process didn't exit successfully: `target\debug\tskvm.exe lib/samples/test_main.tvmx` (exit code: 31)
+    Finished `release` profile [optimized] target(s) in 0.05s
+     Running `target\release\tsk-cc.exe E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_random.ll -o E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_random.tobj --verbose`
+[tsk-cc] Parsing E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_random.ll  (3543 bytes)
+[tsk-cc] function @P_Random: 1 blocks
+  block 'entry': 10 instrs, last=Some("Ret { ty: I32, val: Some(Reg(\"8\")) }")
+[tsk-cc] function @M_Random: 1 blocks
+  block 'entry': 10 instrs, last=Some("Ret { ty: I32, val: Some(Reg(\"8\")) }")
+[tsk-cc] function @M_ClearRandom: 1 blocks
+  block 'entry': 3 instrs, last=Some("Ret { ty: Void, val: None }")
+[tsk-cc] Module: 3 global(s), 3 function(s)
+  define  @P_Random  (0 params, 1 blocks)
+  define  @M_Random  (0 params, 1 blocks)
+  define  @M_ClearRandom  (0 params, 1 blocks)
+  global @rndindex  (4 bytes)
+  global @prndindex  (4 bytes)
+  global @rndtable  (256 bytes)
+[tsk-cc] Generating bytecode...
+[tsk-cc] Generated 3 function(s):
+  @P_Random  88 bytes  (22 instructions)
+  @M_Random  88 bytes  (22 instructions)
+  @M_ClearRandom  28 bytes  (7 instructions)
+[tsk-cc] Data section: 272 bytes
+[tsk-cc] E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_random.ll → E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_random.tobj  (886 bytes)
+✅ [tsk-cc m_random] OK
 
-── VM Exit Code: 31 (0x1F) ──
-✅ ALL TESTS PASSED (0x1F = 31)
+============================================================
+[clang test_doom_math] clang -O0 -S -emit-llvm -o E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\test_doom_math.ll E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\src/test_doom_math.c -I E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\include
+============================================================
+✅ [clang test_doom_math] OK
+
+============================================================
+[tsk-cc test_doom_math] cargo run --release -p tsk-cc -- E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\test_doom_math.ll -o E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\test_doom_math.tobj --verbose
+============================================================
+    Finished `release` profile [optimized] target(s) in 0.05s
+     Running `target\release\tsk-cc.exe E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\test_doom_math.ll -o E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\test_doom_math.tobj --verbose`
+[tsk-cc] Parsing E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\test_doom_math.ll  (6980 bytes)
+[tsk-cc] function @main: 18 blocks
+  block 'entry': 26 instrs, last=Some("BrCond { cond: Reg(\"20\"), then_bb: \"21\",")
+  block '21': 4 instrs, last=Some("BrUncond { target: \"24\" }")
+  block '24': 8 instrs, last=Some("BrCond { cond: Reg(\"29\"), then_bb: \"30\",")
+  block '30': 4 instrs, last=Some("BrUncond { target: \"33\" }")
+  block '33': 5 instrs, last=Some("BrCond { cond: Reg(\"36\"), then_bb: \"37\",")
+  block '37': 4 instrs, last=Some("BrUncond { target: \"40\" }")
+  block '40': 5 instrs, last=Some("BrCond { cond: Reg(\"43\"), then_bb: \"44\",")
+  block '44': 4 instrs, last=Some("BrUncond { target: \"47\" }")
+  block '47': 6 instrs, last=Some("BrCond { cond: Reg(\"50\"), then_bb: \"51\",")
+  block '51': 4 instrs, last=Some("BrUncond { target: \"54\" }")
+  block '54': 8 instrs, last=Some("BrCond { cond: Reg(\"59\"), then_bb: \"60\",")
+  block '60': 4 instrs, last=Some("BrUncond { target: \"63\" }")
+  block '63': 12 instrs, last=Some("BrCond { cond: Reg(\"69\"), then_bb: \"70\",")
+  block '70': 3 instrs, last=Some("BrCond { cond: Reg(\"72\"), then_bb: \"73\",")
+  block '73': 3 instrs, last=Some("BrCond { cond: Reg(\"75\"), then_bb: \"76\",")
+  block '76': 3 instrs, last=Some("BrCond { cond: Reg(\"78\"), then_bb: \"79\",")
+  block '79': 4 instrs, last=Some("BrUncond { target: \"82\" }")
+  block '82': 2 instrs, last=Some("Ret { ty: I32, val: Some(Reg(\"83\")) }")
+[tsk-cc] Module: 0 global(s), 6 function(s)
+  define  @main  (0 params, 18 blocks)
+  declare @FixedMul  (2 params, 0 blocks [external])
+  declare @FixedDiv  (2 params, 0 blocks [external])
+  declare @M_ClearRandom  (0 params, 0 blocks [external])
+  declare @M_Random  (0 params, 0 blocks [external])
+  declare @P_Random  (0 params, 0 blocks [external])
+[tsk-cc] Generating bytecode...
+[tsk-cc] Generated 1 function(s):
+  @main  1108 bytes  (277 instructions)
+[tsk-cc] E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\test_doom_math.ll → E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\test_doom_math.tobj  (1487 bytes)
+✅ [tsk-cc test_doom_math] OK
+
+============================================================
+[tsk-link] cargo run --release -p tsk-link -- E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_fixed.tobj E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_random.tobj E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\test_doom_math.tobj -o E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\doom_math.tvmx --entry main --verbose --dump-symbols
+============================================================
+    Finished `release` profile [optimized] target(s) in 0.06s
+     Running `target\release\tsk-link.exe E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_fixed.tobj E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_random.tobj E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\test_doom_math.tobj -o E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\doom_math.tvmx --entry main --verbose --dump-symbols`
+[tsk-link] loaded E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_fixed.tobj — 468 bytes code, 0 bytes data, 2 symbols
+  @FixedMul             offset 0x00000000
+  @FixedDiv             offset 0x00000064
+[tsk-link] loaded E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\m_random.tobj — 204 bytes code, 272 bytes data, 6 symbols
+  @P_Random             offset 0x00000000
+  @M_Random             offset 0x00000058
+  @M_ClearRandom        offset 0x000000B0
+  @rndindex             offset 0x80000000
+  @prndindex            offset 0x80000008
+  @rndtable             offset 0x80000010
+[tsk-link] loaded E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\test_doom_math.tobj — 1108 bytes code, 0 bytes data, 1 symbols
+  @main                 offset 0x00000000
+[tsk-link] code sym @FixedDiv → 0x00001064
+[tsk-link] code sym @FixedMul → 0x00001000
+[tsk-link] code sym @M_ClearRandom → 0x00001284
+[tsk-link] code sym @P_Random → 0x000011D4
+[tsk-link] code sym @M_Random → 0x0000122C
+[tsk-link] code sym @main → 0x000012A0
+[tsk-link] data sym @rndtable → 0x00001704
+[tsk-link] data sym @prndindex → 0x000016FC
+[tsk-link] data sym @rndindex → 0x000016F4
+[tsk-link] DEBUG Phase3: final_code.len()=1780 code_offset=1780 n_trampolines=0
+[tsk-link] entry = 0x000012A0 (offset 0x2A0)
+[tsk-link] code  = 1780 bytes at 0x1000
+[tsk-link] data  = 272 bytes at 0x16F4
+[tsk-link] 3 input(s) → E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\doom_math.tvmx  (2860 bytes)
+[tsk-link] Symbol map:
+  0x00001000  @FixedMul
+  0x00001064  @FixedDiv
+  0x000011D4  @P_Random
+  0x0000122C  @M_Random
+  0x00001284  @M_ClearRandom
+  0x000012A0  @main
+  0x000016F4  @rndindex
+  0x000016FC  @prndindex
+  0x00001704  @rndtable
+  0xE0000008  @memset
+  0xE0000010  @memcpy
+  0xE0000018  @memmove
+  0xE0000020  @memcmp
+  0xE0000080  @strlen
+  0xE0000088  @strcpy
+  0xE0000090  @strncpy
+  0xE0000098  @strcmp
+  0xE00000A0  @strncmp
+  0xE00000A8  @strchr
+  0xE00000B0  @strrchr
+  0xE00000B8  @strstr
+  0xE00000C0  @strdup
+  0xE00000C8  @strcasecmp
+  0xE00000D0  @strncasecmp
+  0xE00000D8  @strlcat
+  0xE00000E0  @strlcpy
+  0xE0000180  @abs
+  0xE0000188  @rand
+  0xE0000190  @srand
+  0xE0000198  @malloc
+  0xE00001A0  @free
+  0xE00001A8  @exit
+  0xE00001B0  @atoi
+  0xE00001B8  @strtol
+  0xE0000200  @printf
+  0xE0000208  @fprintf
+  0xE0000210  @vfprintf
+  0xE0000218  @sprintf
+  0xE0000220  @puts
+  0xE0000228  @vsprintf
+  0xE0000230  @snprintf
+  0xE0000238  @vsnprintf
+  0xE0000280  @toupper
+  0xE0000288  @tolower
+  0xE0000290  @isspace
+  0xE0000298  @isdigit
+  0xE00002A0  @isalpha
+  0xE00002A8  @isprint
+  0xE0000300  @fopen
+  0xE0000308  @fclose
+  0xE0000310  @fread
+  0xE0000318  @fwrite
+  0xE0000320  @fseek
+  0xE0000328  @ftell
+  0xE0000330  @feof
+  0xE0000338  @fflush
+✅ [tsk-link] OK
+
+============================================================
+[tskvm] cargo run --release -p triskele-vm -- E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\doom_math.tvmx --trace
+============================================================
+warning: triskele-vm@0.3.5: exe_dir=E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\target\release
+warning: triskele-vm@0.3.5: SDL2.dll OK -> E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\target\release\SDL2.dll
+    Finished `release` profile [optimized] target(s) in 0.06s
+     Running `target\release\tskvm.exe E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\doom_math.tvmx --trace`
+[TRACE] PC=0x00001804 word=0x22FFFA9C "F_CALL"
+[TRACE] PC=0x000012A0 word=0x08000000 "A_ENTER"
+[TRACE] PC=0x000012A4 word=0x41C00078 "D_MOV_I"
+[TRACE] PC=0x000012A8 word=0x4FEF7000 "D_SUB"
+[TRACE] PC=0x000012AC word=0x41C7FF88 "D_MOV_I"
+[TRACE] PC=0x000012B0 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000012B4 word=0x41C80000 "D_MOV_I"
+[TRACE] PC=0x000012B8 word=0x4AC64000 "D_STORE32"
+[TRACE] PC=0x000012BC word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x000012C0 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000012C4 word=0x41C80000 "D_MOV_I"
+[TRACE] PC=0x000012C8 word=0x4AC64000 "D_STORE32"
+[TRACE] PC=0x000012CC word=0x41C7FF98 "D_MOV_I"
+[TRACE] PC=0x000012D0 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000012D4 word=0x41C90000 "D_MOV_I"
+[TRACE] PC=0x000012D8 word=0x4AC64000 "D_STORE32"
+[TRACE] PC=0x000012DC word=0x41C7FFA0 "D_MOV_I"
+[TRACE] PC=0x000012E0 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000012E4 word=0x41CA0000 "D_MOV_I"
+[TRACE] PC=0x000012E8 word=0x4AC64000 "D_STORE32"
+[TRACE] PC=0x000012EC word=0x41C7FFA0 "D_MOV_I"
+[TRACE] PC=0x000012F0 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000012F4 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x000012F8 word=0x41C7FF98 "D_MOV_I"
+[TRACE] PC=0x000012FC word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001300 word=0x460E0000 "D_LOAD32"
+[TRACE] PC=0x00001304 word=0x40C04000 "D_MOV"
+[TRACE] PC=0x00001308 word=0x40C80000 "D_MOV"
+[TRACE] PC=0x0000130C word=0x40060000 "D_MOV"
+[TRACE] PC=0x00001310 word=0x400E4000 "D_MOV"
+[TRACE] PC=0x00001314 word=0x22FFFCEC "F_CALL"
+[TRACE] PC=0x00001000 word=0x08000000 "A_ENTER"
+[TRACE] PC=0x00001004 word=0x41C00010 "D_MOV_I"
+[TRACE] PC=0x00001008 word=0x4FEF7000 "D_SUB"
+[TRACE] PC=0x0000100C word=0x41C7FFF0 "D_MOV_I"
+[TRACE] PC=0x00001010 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001014 word=0x4AC04000 "D_STORE32"
+[TRACE] PC=0x00001018 word=0x41C7FFF8 "D_MOV_I"
+[TRACE] PC=0x0000101C word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001020 word=0x4AC00000 "D_STORE32"
+[TRACE] PC=0x00001024 word=0x41C7FFF8 "D_MOV_I"
+[TRACE] PC=0x00001028 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x0000102C word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x00001030 word=0x40188000 "D_MOV"
+[TRACE] PC=0x00001034 word=0x41C7FFF0 "D_MOV_I"
+[TRACE] PC=0x00001038 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x0000103C word=0x46260000 "D_LOAD32"
+[TRACE] PC=0x00001040 word=0x40290000 "D_MOV"
+[TRACE] PC=0x00001044 word=0x1B30CA00 "D_MUL"
+[TRACE] PC=0x00001048 word=0x41C80010 "D_MOV_I"
+[TRACE] PC=0x0000104C word=0x41C00010 "D_MOV_I"
+[TRACE] PC=0x00001050 word=0x3F39B000 "D_SHR"
+[TRACE] PC=0x00001054 word=0x4041C000 "D_MOV"
+[TRACE] PC=0x00001058 word=0x40020000 "D_MOV"
+[TRACE] PC=0x0000105C word=0x09000000 "A_LEAVE"
+[TRACE] PC=0x00001060 word=0x23000000 "F_RET"
+[TRACE] PC=0x00001318 word=0x40080000 "D_MOV"
+[TRACE] PC=0x0000131C word=0x41C7FFA8 "D_MOV_I"
+[TRACE] PC=0x00001320 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001324 word=0x4AC04000 "D_STORE32"
+[TRACE] PC=0x00001328 word=0x41C7FFA8 "D_MOV_I"
+[TRACE] PC=0x0000132C word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001330 word=0x460E0000 "D_LOAD32"
+[TRACE] PC=0x00001334 word=0x41CA0000 "D_MOV_I"
+[TRACE] PC=0x00001338 word=0x70007200 "V_CMP"
+[TRACE] PC=0x0000133C word=0x73007200 "V_EQ"
+[TRACE] PC=0x00001340 word=0x71000000 "V_CMP_I"
+[TRACE] PC=0x00001344 word=0x26000008 "F_JNZ"
+[TRACE] PC=0x0000134C word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x00001350 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001354 word=0x460E0000 "D_LOAD32"
+[TRACE] PC=0x00001358 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x0000135C word=0x41C00001 "D_MOV_I"
+[TRACE] PC=0x00001360 word=0x35007000 "D_OR"
+[TRACE] PC=0x00001364 word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x00001368 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x0000136C word=0x4AC00000 "D_STORE32"
+[TRACE] PC=0x00001370 word=0x20000004 "F_JMP"
+[TRACE] PC=0x00001374 word=0x41C7FFB0 "D_MOV_I"
+[TRACE] PC=0x00001378 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x0000137C word=0x41C88000 "D_MOV_I"
+[TRACE] PC=0x00001380 word=0x4AC64000 "D_STORE32"
+[TRACE] PC=0x00001384 word=0x41C7FFB0 "D_MOV_I"
+[TRACE] PC=0x00001388 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x0000138C word=0x460E0000 "D_LOAD32"
+[TRACE] PC=0x00001390 word=0x41C7FFB0 "D_MOV_I"
+[TRACE] PC=0x00001394 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001398 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x0000139C word=0x40C00000 "D_MOV"
+[TRACE] PC=0x000013A0 word=0x40C84000 "D_MOV"
+[TRACE] PC=0x000013A4 word=0x40060000 "D_MOV"
+[TRACE] PC=0x000013A8 word=0x400E4000 "D_MOV"
+[TRACE] PC=0x000013AC word=0x22FFFC54 "F_CALL"
+[TRACE] PC=0x00001000 word=0x08000000 "A_ENTER"
+[TRACE] PC=0x00001004 word=0x41C00010 "D_MOV_I"
+[TRACE] PC=0x00001008 word=0x4FEF7000 "D_SUB"
+[TRACE] PC=0x0000100C word=0x41C7FFF0 "D_MOV_I"
+[TRACE] PC=0x00001010 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001014 word=0x4AC04000 "D_STORE32"
+[TRACE] PC=0x00001018 word=0x41C7FFF8 "D_MOV_I"
+[TRACE] PC=0x0000101C word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001020 word=0x4AC00000 "D_STORE32"
+[TRACE] PC=0x00001024 word=0x41C7FFF8 "D_MOV_I"
+[TRACE] PC=0x00001028 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x0000102C word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x00001030 word=0x40188000 "D_MOV"
+[TRACE] PC=0x00001034 word=0x41C7FFF0 "D_MOV_I"
+[TRACE] PC=0x00001038 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x0000103C word=0x46260000 "D_LOAD32"
+[TRACE] PC=0x00001040 word=0x40290000 "D_MOV"
+[TRACE] PC=0x00001044 word=0x1B30CA00 "D_MUL"
+[TRACE] PC=0x00001048 word=0x41C80010 "D_MOV_I"
+[TRACE] PC=0x0000104C word=0x41C00010 "D_MOV_I"
+[TRACE] PC=0x00001050 word=0x3F39B000 "D_SHR"
+[TRACE] PC=0x00001054 word=0x4041C000 "D_MOV"
+[TRACE] PC=0x00001058 word=0x40020000 "D_MOV"
+[TRACE] PC=0x0000105C word=0x09000000 "A_LEAVE"
+[TRACE] PC=0x00001060 word=0x23000000 "F_RET"
+[TRACE] PC=0x000013B0 word=0x40080000 "D_MOV"
+[TRACE] PC=0x000013B4 word=0x41C7FFB8 "D_MOV_I"
+[TRACE] PC=0x000013B8 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000013BC word=0x4AC04000 "D_STORE32"
+[TRACE] PC=0x000013C0 word=0x41C7FFB8 "D_MOV_I"
+[TRACE] PC=0x000013C4 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000013C8 word=0x460E0000 "D_LOAD32"
+[TRACE] PC=0x000013CC word=0x41C84000 "D_MOV_I"
+[TRACE] PC=0x000013D0 word=0x70007200 "V_CMP"
+[TRACE] PC=0x000013D4 word=0x73007200 "V_EQ"
+[TRACE] PC=0x000013D8 word=0x71000000 "V_CMP_I"
+[TRACE] PC=0x000013DC word=0x26000008 "F_JNZ"
+[TRACE] PC=0x000013E4 word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x000013E8 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000013EC word=0x460E0000 "D_LOAD32"
+[TRACE] PC=0x000013F0 word=0x41C80002 "D_MOV_I"
+[TRACE] PC=0x000013F4 word=0x41C00002 "D_MOV_I"
+[TRACE] PC=0x000013F8 word=0x35007000 "D_OR"
+[TRACE] PC=0x000013FC word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x00001400 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001404 word=0x4AC00000 "D_STORE32"
+[TRACE] PC=0x00001408 word=0x20000004 "F_JMP"
+[TRACE] PC=0x0000140C word=0x41C00004 "D_MOV_I"
+[TRACE] PC=0x00001410 word=0x41C80010 "D_MOV_I"
+[TRACE] PC=0x00001414 word=0x3EC63200 "D_SHL"
+[TRACE] PC=0x00001418 word=0x41CA0000 "D_MOV_I"
+[TRACE] PC=0x0000141C word=0x40060000 "D_MOV"
+[TRACE] PC=0x00001420 word=0x400E4000 "D_MOV"
+[TRACE] PC=0x00001424 word=0x22FFFC40 "F_CALL"
+[TRACE] PC=0x00001064 word=0x08000000 "A_ENTER"
+[TRACE] PC=0x00001068 word=0x41C00020 "D_MOV_I"
+[TRACE] PC=0x0000106C word=0x4FEF7000 "D_SUB"
+[TRACE] PC=0x00001070 word=0x41C7FFE8 "D_MOV_I"
+[TRACE] PC=0x00001074 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001078 word=0x4AC04000 "D_STORE32"
+[TRACE] PC=0x0000107C word=0x41C7FFF0 "D_MOV_I"
+[TRACE] PC=0x00001080 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001084 word=0x4AC00000 "D_STORE32"
+[TRACE] PC=0x00001088 word=0x41C7FFF0 "D_MOV_I"
+[TRACE] PC=0x0000108C word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001090 word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x00001094 word=0x71100000 "V_CMP_I"
+[TRACE] PC=0x00001098 word=0x26000010 "F_JNZ"
+[TRACE] PC=0x000010A8 word=0x40188000 "D_MOV"
+[TRACE] PC=0x000010AC word=0x41C8000E "D_MOV_I"
+[TRACE] PC=0x000010B0 word=0x41C0000E "D_MOV_I"
+[TRACE] PC=0x000010B4 word=0x3F10F000 "D_SHR"
+[TRACE] PC=0x000010B8 word=0x41C7FFE8 "D_MOV_I"
+[TRACE] PC=0x000010BC word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000010C0 word=0x46260000 "D_LOAD32"
+[TRACE] PC=0x000010C4 word=0x71200000 "V_CMP_I"
+[TRACE] PC=0x000010C8 word=0x26000010 "F_JNZ"
+[TRACE] PC=0x000010D8 word=0x40290000 "D_MOV"
+[TRACE] PC=0x000010DC word=0x70008A00 "V_CMP"
+[TRACE] PC=0x000010E0 word=0x78208A00 "V_GTE"
+[TRACE] PC=0x000010E4 word=0x71200000 "V_CMP_I"
+[TRACE] PC=0x000010E8 word=0x26000008 "F_JNZ"
+[TRACE] PC=0x000010EC word=0x20000074 "F_JMP"
+[TRACE] PC=0x00001160 word=0x41C7FFF0 "D_MOV_I"
+[TRACE] PC=0x00001164 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001168 word=0x462E0000 "D_LOAD32"
+[TRACE] PC=0x0000116C word=0x40114000 "D_MOV"
+[TRACE] PC=0x00001170 word=0x41C80010 "D_MOV_I"
+[TRACE] PC=0x00001174 word=0x41C00010 "D_MOV_I"
+[TRACE] PC=0x00001178 word=0x3E30B000 "D_SHL"
+[TRACE] PC=0x0000117C word=0x41C7FFE8 "D_MOV_I"
+[TRACE] PC=0x00001180 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001184 word=0x46260000 "D_LOAD32"
+[TRACE] PC=0x00001188 word=0x40390000 "D_MOV"
+[TRACE] PC=0x0000118C word=0x1C198E00 "D_DIV"
+[TRACE] PC=0x00001190 word=0x41C7FFF8 "D_MOV_I"
+[TRACE] PC=0x00001194 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001198 word=0x4BC0C000 "D_STORE64"
+[TRACE] PC=0x0000119C word=0x41C7FFF8 "D_MOV_I"
+[TRACE] PC=0x000011A0 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000011A4 word=0x471E0000 "D_LOAD64"
+[TRACE] PC=0x000011A8 word=0x4040C000 "D_MOV"
+[TRACE] PC=0x000011AC word=0x41C7FFE0 "D_MOV_I"
+[TRACE] PC=0x000011B0 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000011B4 word=0x4AC20000 "D_STORE32"
+[TRACE] PC=0x000011B8 word=0x20000004 "F_JMP"
+[TRACE] PC=0x000011BC word=0x41C7FFE0 "D_MOV_I"
+[TRACE] PC=0x000011C0 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000011C4 word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x000011C8 word=0x40008000 "D_MOV"
+[TRACE] PC=0x000011CC word=0x09000000 "A_LEAVE"
+[TRACE] PC=0x000011D0 word=0x23000000 "F_RET"
+[TRACE] PC=0x00001428 word=0x40080000 "D_MOV"
+[TRACE] PC=0x0000142C word=0x41C7FFC0 "D_MOV_I"
+[TRACE] PC=0x00001430 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001434 word=0x4AC04000 "D_STORE32"
+[TRACE] PC=0x00001438 word=0x41C7FFC0 "D_MOV_I"
+[TRACE] PC=0x0000143C word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001440 word=0x460E0000 "D_LOAD32"
+[TRACE] PC=0x00001444 word=0x41CA0000 "D_MOV_I"
+[TRACE] PC=0x00001448 word=0x70007200 "V_CMP"
+[TRACE] PC=0x0000144C word=0x73007200 "V_EQ"
+[TRACE] PC=0x00001450 word=0x71000000 "V_CMP_I"
+[TRACE] PC=0x00001454 word=0x26000008 "F_JNZ"
+[TRACE] PC=0x0000145C word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x00001460 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001464 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x00001468 word=0x41C80004 "D_MOV_I"
+[TRACE] PC=0x0000146C word=0x41C00004 "D_MOV_I"
+[TRACE] PC=0x00001470 word=0x35083000 "D_OR"
+[TRACE] PC=0x00001474 word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x00001478 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x0000147C word=0x4AC04000 "D_STORE32"
+[TRACE] PC=0x00001480 word=0x20000004 "F_JMP"
+[TRACE] PC=0x00001484 word=0x41C07FFF "D_MOV_I"
+[TRACE] PC=0x00001488 word=0x41C80010 "D_MOV_I"
+[TRACE] PC=0x0000148C word=0x3EC63200 "D_SHL"
+[TRACE] PC=0x00001490 word=0x41C8FFFF "D_MOV_I"
+[TRACE] PC=0x00001494 word=0x35C63200 "D_OR"
+[TRACE] PC=0x00001498 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x0000149C word=0x40060000 "D_MOV"
+[TRACE] PC=0x000014A0 word=0x400E4000 "D_MOV"
+[TRACE] PC=0x000014A4 word=0x22FFFBC0 "F_CALL"
+[TRACE] PC=0x00001064 word=0x08000000 "A_ENTER"
+[TRACE] PC=0x00001068 word=0x41C00020 "D_MOV_I"
+[TRACE] PC=0x0000106C word=0x4FEF7000 "D_SUB"
+[TRACE] PC=0x00001070 word=0x41C7FFE8 "D_MOV_I"
+[TRACE] PC=0x00001074 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001078 word=0x4AC04000 "D_STORE32"
+[TRACE] PC=0x0000107C word=0x41C7FFF0 "D_MOV_I"
+[TRACE] PC=0x00001080 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001084 word=0x4AC00000 "D_STORE32"
+[TRACE] PC=0x00001088 word=0x41C7FFF0 "D_MOV_I"
+[TRACE] PC=0x0000108C word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001090 word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x00001094 word=0x71100000 "V_CMP_I"
+[TRACE] PC=0x00001098 word=0x26000010 "F_JNZ"
+[TRACE] PC=0x000010A8 word=0x40188000 "D_MOV"
+[TRACE] PC=0x000010AC word=0x41C8000E "D_MOV_I"
+[TRACE] PC=0x000010B0 word=0x41C0000E "D_MOV_I"
+[TRACE] PC=0x000010B4 word=0x3F10F000 "D_SHR"
+[TRACE] PC=0x000010B8 word=0x41C7FFE8 "D_MOV_I"
+[TRACE] PC=0x000010BC word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000010C0 word=0x46260000 "D_LOAD32"
+[TRACE] PC=0x000010C4 word=0x71200000 "V_CMP_I"
+[TRACE] PC=0x000010C8 word=0x26000010 "F_JNZ"
+[TRACE] PC=0x000010D8 word=0x40290000 "D_MOV"
+[TRACE] PC=0x000010DC word=0x70008A00 "V_CMP"
+[TRACE] PC=0x000010E0 word=0x78208A00 "V_GTE"
+[TRACE] PC=0x000010E4 word=0x71200000 "V_CMP_I"
+[TRACE] PC=0x000010E8 word=0x26000008 "F_JNZ"
+[TRACE] PC=0x000010F0 word=0x41C7FFF0 "D_MOV_I"
+[TRACE] PC=0x000010F4 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000010F8 word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x000010FC word=0x41C7FFE8 "D_MOV_I"
+[TRACE] PC=0x00001100 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001104 word=0x46260000 "D_LOAD32"
+[TRACE] PC=0x00001108 word=0x36288800 "D_XOR"
+[TRACE] PC=0x0000110C word=0x41C80000 "D_MOV_I"
+[TRACE] PC=0x00001110 word=0x70017200 "V_CMP"
+[TRACE] PC=0x00001114 word=0x75197200 "V_LT"
+[TRACE] PC=0x00001118 word=0x5830C000 "R_ZERO8"
+[TRACE] PC=0x0000111C word=0x71180000 "V_CMP_I"
+[TRACE] PC=0x00001120 word=0x26000020 "F_JNZ"
+[TRACE] PC=0x00001124 word=0x41C87FFF "D_MOV_I"
+[TRACE] PC=0x00001128 word=0x41C00010 "D_MOV_I"
+[TRACE] PC=0x0000112C word=0x3ECE7000 "D_SHL"
+[TRACE] PC=0x00001130 word=0x41C0FFFF "D_MOV_I"
+[TRACE] PC=0x00001134 word=0x35CE7000 "D_OR"
+[TRACE] PC=0x00001138 word=0x403E4000 "D_MOV"
+[TRACE] PC=0x0000113C word=0x20000014 "F_JMP"
+[TRACE] PC=0x00001150 word=0x41C7FFE0 "D_MOV_I"
+[TRACE] PC=0x00001154 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001158 word=0x4AC1C000 "D_STORE32"
+[TRACE] PC=0x0000115C word=0x20000060 "F_JMP"
+[TRACE] PC=0x000011BC word=0x41C7FFE0 "D_MOV_I"
+[TRACE] PC=0x000011C0 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000011C4 word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x000011C8 word=0x40008000 "D_MOV"
+[TRACE] PC=0x000011CC word=0x09000000 "A_LEAVE"
+[TRACE] PC=0x000011D0 word=0x23000000 "F_RET"
+[TRACE] PC=0x000014A8 word=0x41C7FFC8 "D_MOV_I"
+[TRACE] PC=0x000014AC word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000014B0 word=0x4AC00000 "D_STORE32"
+[TRACE] PC=0x000014B4 word=0x41C7FFC8 "D_MOV_I"
+[TRACE] PC=0x000014B8 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000014BC word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x000014C0 word=0x41C87FFF "D_MOV_I"
+[TRACE] PC=0x000014C4 word=0x41C00010 "D_MOV_I"
+[TRACE] PC=0x000014C8 word=0x3ECE7000 "D_SHL"
+[TRACE] PC=0x000014CC word=0x41C0FFFF "D_MOV_I"
+[TRACE] PC=0x000014D0 word=0x35CE7000 "D_OR"
+[TRACE] PC=0x000014D4 word=0x70003200 "V_CMP"
+[TRACE] PC=0x000014D8 word=0x73083200 "V_EQ"
+[TRACE] PC=0x000014DC word=0x71080000 "V_CMP_I"
+[TRACE] PC=0x000014E0 word=0x26000008 "F_JNZ"
+[TRACE] PC=0x000014E8 word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x000014EC word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000014F0 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x000014F4 word=0x41C80008 "D_MOV_I"
+[TRACE] PC=0x000014F8 word=0x41C00008 "D_MOV_I"
+[TRACE] PC=0x000014FC word=0x35083000 "D_OR"
+[TRACE] PC=0x00001500 word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x00001504 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001508 word=0x4AC04000 "D_STORE32"
+[TRACE] PC=0x0000150C word=0x20000004 "F_JMP"
+[TRACE] PC=0x00001510 word=0x22FFFD74 "F_CALL"
+[TRACE] PC=0x00001284 word=0x41C016FC "D_MOV_I"
+[TRACE] PC=0x00001288 word=0x41C80000 "D_MOV_I"
+[TRACE] PC=0x0000128C word=0x4AC64000 "D_STORE32"
+[TRACE] PC=0x00001290 word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001294 word=0x41C80000 "D_MOV_I"
+[TRACE] PC=0x00001298 word=0x4AC64000 "D_STORE32"
+[TRACE] PC=0x0000129C word=0x23000000 "F_RET"
+[TRACE] PC=0x00001514 word=0x22FFFD18 "F_CALL"
+[TRACE] PC=0x0000122C word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001230 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x00001234 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x00001238 word=0x41C00001 "D_MOV_I"
+[TRACE] PC=0x0000123C word=0x4E083000 "D_ADD"
+[TRACE] PC=0x00001240 word=0x41C800FF "D_MOV_I"
+[TRACE] PC=0x00001244 word=0x41C000FF "D_MOV_I"
+[TRACE] PC=0x00001248 word=0x34107000 "D_AND"
+[TRACE] PC=0x0000124C word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001250 word=0x4AC08000 "D_STORE32"
+[TRACE] PC=0x00001254 word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001258 word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x0000125C word=0x40188000 "D_MOV"
+[TRACE] PC=0x00001260 word=0x41C01704 "D_MOV_I"
+[TRACE] PC=0x00001264 word=0x40260000 "D_MOV"
+[TRACE] PC=0x00001268 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x0000126C word=0x1BC8F200 "D_MUL"
+[TRACE] PC=0x00001270 word=0x4E213200 "D_ADD"
+[TRACE] PC=0x00001274 word=0x44290000 "D_LOAD8"
+[TRACE] PC=0x00001278 word=0x58314000 "R_ZERO8"
+[TRACE] PC=0x0000127C word=0x40018000 "D_MOV"
+[TRACE] PC=0x00001280 word=0x23000000 "F_RET"
+[TRACE] PC=0x00001518 word=0x41C7FFD0 "D_MOV_I"
+[TRACE] PC=0x0000151C word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001520 word=0x4AC00000 "D_STORE32"
+[TRACE] PC=0x00001524 word=0x41C7FFD0 "D_MOV_I"
+[TRACE] PC=0x00001528 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x0000152C word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x00001530 word=0x41C80008 "D_MOV_I"
+[TRACE] PC=0x00001534 word=0x70003200 "V_CMP"
+[TRACE] PC=0x00001538 word=0x73083200 "V_EQ"
+[TRACE] PC=0x0000153C word=0x71080000 "V_CMP_I"
+[TRACE] PC=0x00001540 word=0x26000008 "F_JNZ"
+[TRACE] PC=0x00001548 word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x0000154C word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001550 word=0x460E0000 "D_LOAD32"
+[TRACE] PC=0x00001554 word=0x41C80010 "D_MOV_I"
+[TRACE] PC=0x00001558 word=0x41C00010 "D_MOV_I"
+[TRACE] PC=0x0000155C word=0x35007000 "D_OR"
+[TRACE] PC=0x00001560 word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x00001564 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001568 word=0x4AC00000 "D_STORE32"
+[TRACE] PC=0x0000156C word=0x20000004 "F_JMP"
+[TRACE] PC=0x00001570 word=0x22FFFCBC "F_CALL"
+[TRACE] PC=0x0000122C word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001230 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x00001234 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x00001238 word=0x41C00001 "D_MOV_I"
+[TRACE] PC=0x0000123C word=0x4E083000 "D_ADD"
+[TRACE] PC=0x00001240 word=0x41C800FF "D_MOV_I"
+[TRACE] PC=0x00001244 word=0x41C000FF "D_MOV_I"
+[TRACE] PC=0x00001248 word=0x34107000 "D_AND"
+[TRACE] PC=0x0000124C word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001250 word=0x4AC08000 "D_STORE32"
+[TRACE] PC=0x00001254 word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001258 word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x0000125C word=0x40188000 "D_MOV"
+[TRACE] PC=0x00001260 word=0x41C01704 "D_MOV_I"
+[TRACE] PC=0x00001264 word=0x40260000 "D_MOV"
+[TRACE] PC=0x00001268 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x0000126C word=0x1BC8F200 "D_MUL"
+[TRACE] PC=0x00001270 word=0x4E213200 "D_ADD"
+[TRACE] PC=0x00001274 word=0x44290000 "D_LOAD8"
+[TRACE] PC=0x00001278 word=0x58314000 "R_ZERO8"
+[TRACE] PC=0x0000127C word=0x40018000 "D_MOV"
+[TRACE] PC=0x00001280 word=0x23000000 "F_RET"
+[TRACE] PC=0x00001574 word=0x40080000 "D_MOV"
+[TRACE] PC=0x00001578 word=0x22FFFCB4 "F_CALL"
+[TRACE] PC=0x0000122C word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001230 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x00001234 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x00001238 word=0x41C00001 "D_MOV_I"
+[TRACE] PC=0x0000123C word=0x4E083000 "D_ADD"
+[TRACE] PC=0x00001240 word=0x41C800FF "D_MOV_I"
+[TRACE] PC=0x00001244 word=0x41C000FF "D_MOV_I"
+[TRACE] PC=0x00001248 word=0x34107000 "D_AND"
+[TRACE] PC=0x0000124C word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001250 word=0x4AC08000 "D_STORE32"
+[TRACE] PC=0x00001254 word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001258 word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x0000125C word=0x40188000 "D_MOV"
+[TRACE] PC=0x00001260 word=0x41C01704 "D_MOV_I"
+[TRACE] PC=0x00001264 word=0x40260000 "D_MOV"
+[TRACE] PC=0x00001268 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x0000126C word=0x1BC8F200 "D_MUL"
+[TRACE] PC=0x00001270 word=0x4E213200 "D_ADD"
+[TRACE] PC=0x00001274 word=0x44290000 "D_LOAD8"
+[TRACE] PC=0x00001278 word=0x58314000 "R_ZERO8"
+[TRACE] PC=0x0000127C word=0x40018000 "D_MOV"
+[TRACE] PC=0x00001280 word=0x23000000 "F_RET"
+[TRACE] PC=0x0000157C word=0x40080000 "D_MOV"
+[TRACE] PC=0x00001580 word=0x22FFFD04 "F_CALL"
+[TRACE] PC=0x00001284 word=0x41C016FC "D_MOV_I"
+[TRACE] PC=0x00001288 word=0x41C80000 "D_MOV_I"
+[TRACE] PC=0x0000128C word=0x4AC64000 "D_STORE32"
+[TRACE] PC=0x00001290 word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001294 word=0x41C80000 "D_MOV_I"
+[TRACE] PC=0x00001298 word=0x4AC64000 "D_STORE32"
+[TRACE] PC=0x0000129C word=0x23000000 "F_RET"
+[TRACE] PC=0x00001584 word=0x22FFFCA8 "F_CALL"
+[TRACE] PC=0x0000122C word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001230 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x00001234 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x00001238 word=0x41C00001 "D_MOV_I"
+[TRACE] PC=0x0000123C word=0x4E083000 "D_ADD"
+[TRACE] PC=0x00001240 word=0x41C800FF "D_MOV_I"
+[TRACE] PC=0x00001244 word=0x41C000FF "D_MOV_I"
+[TRACE] PC=0x00001248 word=0x34107000 "D_AND"
+[TRACE] PC=0x0000124C word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001250 word=0x4AC08000 "D_STORE32"
+[TRACE] PC=0x00001254 word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001258 word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x0000125C word=0x40188000 "D_MOV"
+[TRACE] PC=0x00001260 word=0x41C01704 "D_MOV_I"
+[TRACE] PC=0x00001264 word=0x40260000 "D_MOV"
+[TRACE] PC=0x00001268 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x0000126C word=0x1BC8F200 "D_MUL"
+[TRACE] PC=0x00001270 word=0x4E213200 "D_ADD"
+[TRACE] PC=0x00001274 word=0x44290000 "D_LOAD8"
+[TRACE] PC=0x00001278 word=0x58314000 "R_ZERO8"
+[TRACE] PC=0x0000127C word=0x40018000 "D_MOV"
+[TRACE] PC=0x00001280 word=0x23000000 "F_RET"
+[TRACE] PC=0x00001588 word=0x40080000 "D_MOV"
+[TRACE] PC=0x0000158C word=0x41C7FFD8 "D_MOV_I"
+[TRACE] PC=0x00001590 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001594 word=0x4AC04000 "D_STORE32"
+[TRACE] PC=0x00001598 word=0x41C7FFD8 "D_MOV_I"
+[TRACE] PC=0x0000159C word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000015A0 word=0x460E0000 "D_LOAD32"
+[TRACE] PC=0x000015A4 word=0x41C80008 "D_MOV_I"
+[TRACE] PC=0x000015A8 word=0x70007200 "V_CMP"
+[TRACE] PC=0x000015AC word=0x73007200 "V_EQ"
+[TRACE] PC=0x000015B0 word=0x71000000 "V_CMP_I"
+[TRACE] PC=0x000015B4 word=0x26000008 "F_JNZ"
+[TRACE] PC=0x000015BC word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x000015C0 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000015C4 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x000015C8 word=0x41C80020 "D_MOV_I"
+[TRACE] PC=0x000015CC word=0x41C00020 "D_MOV_I"
+[TRACE] PC=0x000015D0 word=0x35083000 "D_OR"
+[TRACE] PC=0x000015D4 word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x000015D8 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000015DC word=0x4AC04000 "D_STORE32"
+[TRACE] PC=0x000015E0 word=0x20000004 "F_JMP"
+[TRACE] PC=0x000015E4 word=0x22FFFCA0 "F_CALL"
+[TRACE] PC=0x00001284 word=0x41C016FC "D_MOV_I"
+[TRACE] PC=0x00001288 word=0x41C80000 "D_MOV_I"
+[TRACE] PC=0x0000128C word=0x4AC64000 "D_STORE32"
+[TRACE] PC=0x00001290 word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001294 word=0x41C80000 "D_MOV_I"
+[TRACE] PC=0x00001298 word=0x4AC64000 "D_STORE32"
+[TRACE] PC=0x0000129C word=0x23000000 "F_RET"
+[TRACE] PC=0x000015E8 word=0x22FFFC44 "F_CALL"
+[TRACE] PC=0x0000122C word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001230 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x00001234 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x00001238 word=0x41C00001 "D_MOV_I"
+[TRACE] PC=0x0000123C word=0x4E083000 "D_ADD"
+[TRACE] PC=0x00001240 word=0x41C800FF "D_MOV_I"
+[TRACE] PC=0x00001244 word=0x41C000FF "D_MOV_I"
+[TRACE] PC=0x00001248 word=0x34107000 "D_AND"
+[TRACE] PC=0x0000124C word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001250 word=0x4AC08000 "D_STORE32"
+[TRACE] PC=0x00001254 word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001258 word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x0000125C word=0x40188000 "D_MOV"
+[TRACE] PC=0x00001260 word=0x41C01704 "D_MOV_I"
+[TRACE] PC=0x00001264 word=0x40260000 "D_MOV"
+[TRACE] PC=0x00001268 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x0000126C word=0x1BC8F200 "D_MUL"
+[TRACE] PC=0x00001270 word=0x4E213200 "D_ADD"
+[TRACE] PC=0x00001274 word=0x44290000 "D_LOAD8"
+[TRACE] PC=0x00001278 word=0x58314000 "R_ZERO8"
+[TRACE] PC=0x0000127C word=0x40018000 "D_MOV"
+[TRACE] PC=0x00001280 word=0x23000000 "F_RET"
+[TRACE] PC=0x000015EC word=0x41C7FFE0 "D_MOV_I"
+[TRACE] PC=0x000015F0 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000015F4 word=0x4AC00000 "D_STORE32"
+[TRACE] PC=0x000015F8 word=0x22FFFBDC "F_CALL"
+[TRACE] PC=0x000011D4 word=0x41C016FC "D_MOV_I"
+[TRACE] PC=0x000011D8 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x000011DC word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x000011E0 word=0x41C00001 "D_MOV_I"
+[TRACE] PC=0x000011E4 word=0x4E083000 "D_ADD"
+[TRACE] PC=0x000011E8 word=0x41C800FF "D_MOV_I"
+[TRACE] PC=0x000011EC word=0x41C000FF "D_MOV_I"
+[TRACE] PC=0x000011F0 word=0x34107000 "D_AND"
+[TRACE] PC=0x000011F4 word=0x41C016FC "D_MOV_I"
+[TRACE] PC=0x000011F8 word=0x4AC08000 "D_STORE32"
+[TRACE] PC=0x000011FC word=0x41C016FC "D_MOV_I"
+[TRACE] PC=0x00001200 word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x00001204 word=0x40188000 "D_MOV"
+[TRACE] PC=0x00001208 word=0x41C01704 "D_MOV_I"
+[TRACE] PC=0x0000120C word=0x40260000 "D_MOV"
+[TRACE] PC=0x00001210 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x00001214 word=0x1BC8F200 "D_MUL"
+[TRACE] PC=0x00001218 word=0x4E213200 "D_ADD"
+[TRACE] PC=0x0000121C word=0x44290000 "D_LOAD8"
+[TRACE] PC=0x00001220 word=0x58314000 "R_ZERO8"
+[TRACE] PC=0x00001224 word=0x40018000 "D_MOV"
+[TRACE] PC=0x00001228 word=0x23000000 "F_RET"
+[TRACE] PC=0x000015FC word=0x41C7FFE8 "D_MOV_I"
+[TRACE] PC=0x00001600 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001604 word=0x4AC00000 "D_STORE32"
+[TRACE] PC=0x00001608 word=0x22FFFC24 "F_CALL"
+[TRACE] PC=0x0000122C word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001230 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x00001234 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x00001238 word=0x41C00001 "D_MOV_I"
+[TRACE] PC=0x0000123C word=0x4E083000 "D_ADD"
+[TRACE] PC=0x00001240 word=0x41C800FF "D_MOV_I"
+[TRACE] PC=0x00001244 word=0x41C000FF "D_MOV_I"
+[TRACE] PC=0x00001248 word=0x34107000 "D_AND"
+[TRACE] PC=0x0000124C word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001250 word=0x4AC08000 "D_STORE32"
+[TRACE] PC=0x00001254 word=0x41C016F4 "D_MOV_I"
+[TRACE] PC=0x00001258 word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x0000125C word=0x40188000 "D_MOV"
+[TRACE] PC=0x00001260 word=0x41C01704 "D_MOV_I"
+[TRACE] PC=0x00001264 word=0x40260000 "D_MOV"
+[TRACE] PC=0x00001268 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x0000126C word=0x1BC8F200 "D_MUL"
+[TRACE] PC=0x00001270 word=0x4E213200 "D_ADD"
+[TRACE] PC=0x00001274 word=0x44290000 "D_LOAD8"
+[TRACE] PC=0x00001278 word=0x58314000 "R_ZERO8"
+[TRACE] PC=0x0000127C word=0x40018000 "D_MOV"
+[TRACE] PC=0x00001280 word=0x23000000 "F_RET"
+[TRACE] PC=0x0000160C word=0x41C7FFF0 "D_MOV_I"
+[TRACE] PC=0x00001610 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001614 word=0x4AC00000 "D_STORE32"
+[TRACE] PC=0x00001618 word=0x22FFFBBC "F_CALL"
+[TRACE] PC=0x000011D4 word=0x41C016FC "D_MOV_I"
+[TRACE] PC=0x000011D8 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x000011DC word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x000011E0 word=0x41C00001 "D_MOV_I"
+[TRACE] PC=0x000011E4 word=0x4E083000 "D_ADD"
+[TRACE] PC=0x000011E8 word=0x41C800FF "D_MOV_I"
+[TRACE] PC=0x000011EC word=0x41C000FF "D_MOV_I"
+[TRACE] PC=0x000011F0 word=0x34107000 "D_AND"
+[TRACE] PC=0x000011F4 word=0x41C016FC "D_MOV_I"
+[TRACE] PC=0x000011F8 word=0x4AC08000 "D_STORE32"
+[TRACE] PC=0x000011FC word=0x41C016FC "D_MOV_I"
+[TRACE] PC=0x00001200 word=0x46160000 "D_LOAD32"
+[TRACE] PC=0x00001204 word=0x40188000 "D_MOV"
+[TRACE] PC=0x00001208 word=0x41C01704 "D_MOV_I"
+[TRACE] PC=0x0000120C word=0x40260000 "D_MOV"
+[TRACE] PC=0x00001210 word=0x41C80001 "D_MOV_I"
+[TRACE] PC=0x00001214 word=0x1BC8F200 "D_MUL"
+[TRACE] PC=0x00001218 word=0x4E213200 "D_ADD"
+[TRACE] PC=0x0000121C word=0x44290000 "D_LOAD8"
+[TRACE] PC=0x00001220 word=0x58314000 "R_ZERO8"
+[TRACE] PC=0x00001224 word=0x40018000 "D_MOV"
+[TRACE] PC=0x00001228 word=0x23000000 "F_RET"
+[TRACE] PC=0x0000161C word=0x41C7FFF8 "D_MOV_I"
+[TRACE] PC=0x00001620 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001624 word=0x4AC00000 "D_STORE32"
+[TRACE] PC=0x00001628 word=0x41C7FFE0 "D_MOV_I"
+[TRACE] PC=0x0000162C word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001630 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x00001634 word=0x41C80008 "D_MOV_I"
+[TRACE] PC=0x00001638 word=0x70003200 "V_CMP"
+[TRACE] PC=0x0000163C word=0x73083200 "V_EQ"
+[TRACE] PC=0x00001640 word=0x71080000 "V_CMP_I"
+[TRACE] PC=0x00001644 word=0x26000008 "F_JNZ"
+[TRACE] PC=0x0000164C word=0x41C7FFE8 "D_MOV_I"
+[TRACE] PC=0x00001650 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001654 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x00001658 word=0x41C80008 "D_MOV_I"
+[TRACE] PC=0x0000165C word=0x70003200 "V_CMP"
+[TRACE] PC=0x00001660 word=0x73083200 "V_EQ"
+[TRACE] PC=0x00001664 word=0x71080000 "V_CMP_I"
+[TRACE] PC=0x00001668 word=0x26000008 "F_JNZ"
+[TRACE] PC=0x00001670 word=0x41C7FFF0 "D_MOV_I"
+[TRACE] PC=0x00001674 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x00001678 word=0x460E0000 "D_LOAD32"
+[TRACE] PC=0x0000167C word=0x41C8006D "D_MOV_I"
+[TRACE] PC=0x00001680 word=0x70007200 "V_CMP"
+[TRACE] PC=0x00001684 word=0x73007200 "V_EQ"
+[TRACE] PC=0x00001688 word=0x71000000 "V_CMP_I"
+[TRACE] PC=0x0000168C word=0x26000008 "F_JNZ"
+[TRACE] PC=0x00001694 word=0x41C7FFF8 "D_MOV_I"
+[TRACE] PC=0x00001698 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x0000169C word=0x460E0000 "D_LOAD32"
+[TRACE] PC=0x000016A0 word=0x41C8006D "D_MOV_I"
+[TRACE] PC=0x000016A4 word=0x70007200 "V_CMP"
+[TRACE] PC=0x000016A8 word=0x73007200 "V_EQ"
+[TRACE] PC=0x000016AC word=0x71000000 "V_CMP_I"
+[TRACE] PC=0x000016B0 word=0x26000008 "F_JNZ"
+[TRACE] PC=0x000016B8 word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x000016BC word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000016C0 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x000016C4 word=0x41C80040 "D_MOV_I"
+[TRACE] PC=0x000016C8 word=0x41C00040 "D_MOV_I"
+[TRACE] PC=0x000016CC word=0x35083000 "D_OR"
+[TRACE] PC=0x000016D0 word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x000016D4 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000016D8 word=0x4AC04000 "D_STORE32"
+[TRACE] PC=0x000016DC word=0x20000004 "F_JMP"
+[TRACE] PC=0x000016E0 word=0x41C7FF90 "D_MOV_I"
+[TRACE] PC=0x000016E4 word=0x4EC73000 "D_ADD"
+[TRACE] PC=0x000016E8 word=0x46060000 "D_LOAD32"
+[TRACE] PC=0x000016EC word=0x09000000 "A_LEAVE"
+[TRACE] PC=0x000016F0 word=0x23000000 "F_RET"
+[TRACE] PC=0x00001808 word=0x9F000000 "Im_EXIT"
+error: process didn't exit successfully: `target\release\tskvm.exe E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\symbolic-system-grammars\TriskeleToolchain\projects\doom-generic/vm-porting/tests/doom_math\target\doom_math.tvmx --trace` (exit code: 127)
+
+── VM Exit Code: 127 (0x7F) ──
+✅ ALL TESTS PASSED (0x7F = 127)

@@ -1,3 +1,4 @@
+#![allow(unused_assignments, dead_code)]
 // wolf3d-demo/src/main.rs
 // Author: Echopraxium with the collaboration of Claude AI
 // Version: 0.3.0
@@ -76,6 +77,7 @@ impl Player {
 struct Keys {
     w: bool, a: bool, s: bool, d: bool,
     left: bool, right: bool,
+    #[allow(dead_code)]
     quit: bool,
 }
 
@@ -101,7 +103,8 @@ fn cast_ray(px: f32, py: f32, ray_angle: f32, player_angle: f32) -> Hit {
     let mut sx = if ca < 0.0 { (px - mx as f32) * dx } else { (mx as f32 + 1.0 - px) * dx };
     let mut sy = if sa < 0.0 { (py - my as f32) * dy } else { (my as f32 + 1.0 - py) * dy };
 
-    let mut ns = false;
+    let mut ns = false; // wolf3d raycaster: north-south hit flag
+    #[allow(unused_assignments)]
     loop {
         if sx < sy { sx += dx; mx += step_x; ns = false; }
         else        { sy += dy; my += step_y; ns = true;  }

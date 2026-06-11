@@ -1,38 +1,28 @@
 #!/usr/bin/env python3
 # update_toolchain.py
 # Author: Echopraxium with the collaboration of Claude AI
-# Extracts Cargo.toml, crates/ and lib/ from a TriskeleToolchain zip.
+# Version: 0.3.2
+# Extracts Cargo.toml, crates/, lib/, projects/ and run_pipeline.py
+# from a TriskeleToolchain zip.
 # Usage: python update_toolchain.py <path_to_zip> [dest_dir]
-#   dest_dir defaults to the directory containing this script.
 
-import sys
-import os
-import zipfile
-import shutil
-import datetime
+import sys, os, zipfile, shutil, datetime, glob, time
 
-def log(msg=""):
-    print(msg)
+def log(msg=""): print(msg)
 
 def usage():
     print("Usage: python update_toolchain.py <path_to_zip> [dest_dir]")
-    print("   Ex: python update_toolchain.py C:\\Downloads\\crates_v030_sb.zip")
     sys.exit(1)
 
-if len(sys.argv) < 2:
-    usage()
+if len(sys.argv) < 2: usage()
 
 zip_path = sys.argv[1]
 dest_dir = sys.argv[2] if len(sys.argv) >= 3 else os.path.dirname(os.path.abspath(__file__))
 
-# ── Validation ─────────────────────────────────────────────────────────────────
 if not os.path.isfile(zip_path):
-    log(f"❌ File not found: {zip_path}")
-    sys.exit(1)
-
+    log(f"❌ File not found: {zip_path}"); sys.exit(1)
 if not zipfile.is_zipfile(zip_path):
-    log(f"❌ Not a valid zip file: {zip_path}")
-    sys.exit(1)
+    log(f"❌ Not a valid zip: {zip_path}"); sys.exit(1)
 
 log()
 log("TriskeleToolchain Update")
@@ -41,43 +31,79 @@ log(f"Zip      : {zip_path}")
 log(f"Dest     : {dest_dir}")
 
 # ── Detect zip root prefix ─────────────────────────────────────────────────────
+# A zip may have a wrapping root folder (e.g. "tscg_v031/crates/...").
+# BUT if the root prefix is itself a target (e.g. "projects/"), do NOT strip it.
+TARGETS_CLEAN = ['crates/', 'lib/', 'Cargo.toml', 'run_pipeline.py']
+TARGETS_MERGE = ['projects/']
+ALL_TARGETS   = TARGETS_CLEAN + TARGETS_MERGE
+
 with zipfile.ZipFile(zip_path, 'r') as z:
     all_names = z.namelist()
 
-prefixes = set(name.split('/')[0] for name in all_names if '/' in name)
-zip_root = (prefixes.pop() + '/') if len(prefixes) == 1 else ''
+top_dirs = set(name.split('/')[0] + '/' for name in all_names if '/' in name)
+# Strip zip_root only if it's NOT itself a target
+single_top = top_dirs.pop() if len(top_dirs) == 1 else None
+if single_top and single_top not in ALL_TARGETS and single_top + '/' not in ALL_TARGETS:
+    zip_root = single_top
+else:
+    zip_root = ''
+
 log(f"Zip root : '{zip_root}' ({len(all_names)} entries)")
 
-# ── Targets to replace ─────────────────────────────────────────────────────────
-TARGETS = ['crates/', 'lib/', 'Cargo.toml']
+# ── Detect which targets are actually present in this zip ─────────────────────
+zip_has = set()
+for entry in all_names:
+    rel = entry[len(zip_root):] if zip_root and entry.startswith(zip_root) else entry
+    if not rel: continue
+    for t in ALL_TARGETS:
+        if rel == t or rel.startswith(t):
+            zip_has.add(t)
+            break
 
-# Delete existing targets before extraction (clean replace)
-for target in TARGETS:
+log(f"Zip has  : {sorted(zip_has)}")
+
+# ── Clean targets (only those present in the zip) ─────────────────────────────
+for target in TARGETS_CLEAN:
+    if target not in zip_has:
+        log(f"   Skipping (not in zip): {target}")
+        continue
     full = os.path.join(dest_dir, target.rstrip('/'))
     if os.path.isdir(full):
-        log(f"   Removing dir  : {target}")
-        shutil.rmtree(full)
+        log(f"   Removing dir  : {target}"); shutil.rmtree(full)
     elif os.path.isfile(full):
-        log(f"   Removing file : {target}")
-        os.remove(full)
+        log(f"   Removing file : {target}"); os.remove(full)
+
+# ── Merge targets: remove only project subdirs present in the zip ──────────────
+zip_projects = set()
+for entry in all_names:
+    rel = entry[len(zip_root):] if zip_root and entry.startswith(zip_root) else entry
+    if rel.startswith('projects/'):
+        parts = rel.split('/')
+        if len(parts) >= 2 and parts[1]:
+            zip_projects.add(parts[1])
+
+for proj in zip_projects:
+    full = os.path.join(dest_dir, 'projects', proj)
+    if os.path.isdir(full):
+        log(f"   Updating project: projects/{proj}/"); shutil.rmtree(full)
 
 # ── Extract ────────────────────────────────────────────────────────────────────
-extracted = 0
-skipped   = 0
+extracted = skipped = 0
 
 with zipfile.ZipFile(zip_path, 'r') as z:
-    for entry in z.namelist():
+    for entry in all_names:
         rel = entry[len(zip_root):] if zip_root and entry.startswith(zip_root) else entry
         if not rel:
             continue
+        # Handle run_pipeline_new.py → run_pipeline.py rename
+        if os.path.basename(rel) == 'run_pipeline_new.py':
+            rel = os.path.join(os.path.dirname(rel), 'run_pipeline.py').replace('\\','/')
 
-        matched = any(rel == t or rel.startswith(t) for t in TARGETS)
+        matched = any(rel == t or rel.startswith(t) for t in ALL_TARGETS)
         if not matched:
-            skipped += 1
-            continue
+            skipped += 1; continue
 
         dest = os.path.join(dest_dir, rel)
-
         if entry.endswith('/'):
             os.makedirs(dest, exist_ok=True)
         else:
@@ -90,13 +116,11 @@ log()
 log(f"✅ Extracted : {extracted} files")
 log(f"   Skipped  : {skipped} entries (outside targets)")
 
-# Touch all modified .rs files to ensure cargo detects changes
-import glob, time
+# Touch .rs files
 rs_files = glob.glob(os.path.join(dest_dir, "crates/**/*.rs"), recursive=True)
 now = time.time()
-for f in rs_files:
-    os.utime(f, (now, now))
-log(f"   Touched  : {len(rs_files)} .rs files (force cargo rebuild)")
-
+for f in rs_files: os.utime(f, (now, now))
+log(f"   Touched  : {len(rs_files)} .rs files")
 log()
-log("Ready — run: python run_pipeline.py")
+log("Ready — run: python run_pipeline.py --list")
+log("             python run_pipeline.py test_main")

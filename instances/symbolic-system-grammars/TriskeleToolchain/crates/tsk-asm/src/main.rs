@@ -162,14 +162,26 @@ pub fn assemble_str_with_symbols(
             asm_out.rodata,
         );
     }
-    let tvx = builder
-        .add_section(
-            SectionType::Code,
-            section_flags::READABLE | section_flags::EXECUTABLE,
-            asm_out.code,
-        )
-        .entry(asm_out.entry_offset)
-        .build();
+    // Build symtab section: [name\0][u32 offset] — format attendu par tsk-link
+    let mut symtab: Vec<u8> = Vec::new();
+    for (name, addr) in &asm_out.symbol_table {
+        symtab.extend_from_slice(name.as_bytes());
+        symtab.push(0u8);
+        symtab.extend_from_slice(&(*addr as u32).to_le_bytes());
+    }
+
+    let mut b = builder.add_section(
+        SectionType::Code,
+        section_flags::READABLE | section_flags::EXECUTABLE,
+        asm_out.code,
+    )
+    .entry(asm_out.entry_offset);
+
+    if !symtab.is_empty() {
+        b = b.add_section(SectionType::Symtab, 0x06, symtab);
+    }
+
+    let tvx = b.build();
     Ok((tvx, asm_out.symbol_table))
 }
 

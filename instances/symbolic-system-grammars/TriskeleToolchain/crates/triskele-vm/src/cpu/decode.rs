@@ -12,6 +12,7 @@
 
 use triskele_common::isa::Opcode;
 use triskele_common::error::VmError;
+use triskele_common::{decode_imm19, decode_offset24};
 
 /// Decoded instruction (typed union).
 #[derive(Debug, Clone, Copy)]
@@ -60,13 +61,13 @@ pub fn decode(word: u32) -> Result<Instruction, VmError> {
         .ok_or(VmError::InvalidOpcode(opcode_byte))?;
 
     if is_jump_opcode(opcode) {
-        let offset = sign_extend_24((word & 0x00FF_FFFF) as i32);
+        let offset = decode_offset24(word);
         return Ok(Instruction::J { opcode, offset });
     }
 
     if is_immediate_opcode(opcode) {
         let dst = ((word >> 19) & 0x1F) as u8;
-        let imm = sign_extend_19((word & 0x0007_FFFF) as i32);
+        let imm = decode_imm19(word);
         return Ok(Instruction::I { opcode, dst, imm });
     }
 
@@ -78,24 +79,18 @@ pub fn decode(word: u32) -> Result<Instruction, VmError> {
     Ok(Instruction::R { opcode, dst, src1, src2, flags })
 }
 
-/// Sign-extend a 24-bit value to i32.
+/// Deprecated — use triskele_common::decode_offset24 on the full word instead.
+/// Kept for backward compatibility with tsk-asm / tsk-dis call sites.
 #[inline]
 pub fn sign_extend_24(v: i32) -> i32 {
-    if v & 0x0080_0000 != 0 {
-        v | !0x00FF_FFFFi32
-    } else {
-        v
-    }
+    if v & 0x0080_0000 != 0 { v | !0x00FF_FFFFi32 } else { v }
 }
 
-/// Sign-extend a 19-bit value to i32.
+/// Deprecated — use triskele_common::decode_imm19 on the full word instead.
+/// Kept for backward compatibility with tsk-asm / tsk-dis call sites.
 #[inline]
 pub fn sign_extend_19(v: i32) -> i32 {
-    if v & 0x0004_0000 != 0 {
-        v | !0x0007_FFFFi32
-    } else {
-        v
-    }
+    if v & 0x0004_0000 != 0 { v | !0x0007_FFFFi32 } else { v }
 }
 
 /// True if this opcode uses the Type J (24-bit offset) format.
@@ -114,31 +109,25 @@ pub fn is_immediate_opcode(op: Opcode) -> bool {
         Opcode::D_MovI    | Opcode::D_MovI64  |
         Opcode::A_PushI   |
         Opcode::V_CmpI    |
+        Opcode::Im_Syscall |              // id encoded in imm19
         Opcode::L_Glob    | Opcode::F_Trap    |
         Opcode::F_RetN    | Opcode::F_Switch
     )
 }
 
 /// Encode a Type R instruction (for tsk-asm / tests).
+/// Deprecated — use triskele_common::encode_r.
+/// Kept for tsk-asm / tsk-dis call sites (Opcode wrapper).
 pub fn encode_r(opcode: Opcode, dst: u8, src1: u8, src2: u8, flags: u16) -> u32 {
-    ((opcode as u32) << 24)
-        | ((dst  as u32) << 19)
-        | ((src1 as u32) << 14)
-        | ((src2 as u32) <<  9)
-        | (flags as u32 & 0x1FF)
+    triskele_common::encode_r(opcode as u8, dst, src1, src2, flags)
 }
-
-/// Encode a Type I instruction.
+/// Deprecated — use triskele_common::encode_i.
 pub fn encode_i(opcode: Opcode, dst: u8, imm: i32) -> u32 {
-    ((opcode as u32) << 24)
-        | ((dst as u32) << 19)
-        | (imm as u32 & 0x0007_FFFF)
+    triskele_common::encode_i(opcode as u8, dst, imm)
 }
-
-/// Encode a Type J instruction.
+/// Deprecated — use triskele_common::encode_j.
 pub fn encode_j(opcode: Opcode, offset: i32) -> u32 {
-    ((opcode as u32) << 24)
-        | (offset as u32 & 0x00FF_FFFF)
+    triskele_common::encode_j(opcode as u8, offset)
 }
 
 #[cfg(test)]
@@ -197,5 +186,28 @@ mod tests {
     fn test_sign_extend_19_negative() {
         let v = sign_extend_19(0x0007_FFFF);  // all bits set = -1
         assert_eq!(v, -1);
+    }
+
+    // ── triskele_common::decode_* integration ────────────────────────────────
+
+    #[test]
+    fn test_decode_imm19_negative5() {
+        // D_MOV_I R24, -5 — exact word from test_select trace
+        let word: u32 = 0x41C7_FFFB;
+        assert_eq!(decode_imm19(word), -5);
+    }
+
+    #[test]
+    fn test_decode_offset24_forward() {
+        // F_JNZ +8 — exact word from test_select trace
+        let word: u32 = 0x2600_0008;
+        assert_eq!(decode_offset24(word), 8);
+    }
+
+    #[test]
+    fn test_decode_imm19_minus32() {
+        // D_MOV_I R24, -32 — frame slot 0
+        let word: u32 = 0x41C7_FFE0;
+        assert_eq!(decode_imm19(word), -32);
     }
 }

@@ -169,8 +169,10 @@ impl<'a> Lexer<'a> {
 // ─────────────────────────────────────────────────────────────────────────────
 
 pub struct Parser {
-    tokens: Vec<Tok>,
-    pos:    usize,
+    tokens:    Vec<Tok>,
+    pos:       usize,
+    /// Named struct type definitions: "struct.actor_t" → IrType::Struct([...])
+    type_defs: std::collections::HashMap<String, IrType>,
 }
 
 impl Parser {
@@ -182,7 +184,7 @@ impl Parser {
             if t == Tok::Eof { tokens.push(Tok::Eof); break; }
             tokens.push(t);
         }
-        Self { tokens, pos: 0 }
+        Self { tokens, pos: 0, type_defs: std::collections::HashMap::new() }
     }
 
     fn peek(&self) -> &Tok {
@@ -296,11 +298,17 @@ impl Parser {
                 Ok(IrType::Struct(fields))
             }
             Tok::LocalReg(name) => {
-                // %struct.foo — named struct, treat as opaque ptr-sized
+                // %struct.foo — look up in type_defs; if not yet defined, emit Named for
+                // later resolution by FuncGen::resolve_type (handles forward references).
                 let name = name.clone();
                 self.advance();
-                log::debug!("named struct type %{} → i64", name);
-                Ok(IrType::I64)
+                if let Some(ty) = self.type_defs.get(&name).cloned() {
+                    log::debug!("named struct type %{} → {:?}", name, ty);
+                    Ok(ty)
+                } else {
+                    log::debug!("named struct type %{} → Named (forward ref)", name);
+                    Ok(IrType::Named(name))
+                }
             }
             _ => Ok(IrType::I64), // fallback
         }
@@ -355,6 +363,29 @@ impl Parser {
                             }
                             other => Ok(other),
                         }
+                    }
+                    // Constant expression: inttoptr (i64 N to ptr) → Value::Const(N)
+                    // Example: store ptr inttoptr (i64 1 to ptr), ptr %6
+                    "inttoptr" => {
+                        self.eat(&Tok::LParen);
+                        let _ = self.parse_type();   // i64
+                        let val = self.parse_value()?; // N
+                        while !matches!(self.peek(), Tok::RParen | Tok::Eof) {
+                            self.advance();
+                        }
+                        self.eat(&Tok::RParen);
+                        Ok(val)  // treat inttoptr(i64 N) as Value::Const(N)
+                    }
+                    // Constant expression: ptrtoint (ptr @x to i64) → Value::Global(x)
+                    "ptrtoint" => {
+                        self.eat(&Tok::LParen);
+                        let _ = self.parse_type();   // ptr
+                        let val = self.parse_value()?; // @global or %reg
+                        while !matches!(self.peek(), Tok::RParen | Tok::Eof) {
+                            self.advance();
+                        }
+                        self.eat(&Tok::RParen);
+                        Ok(val)
                     }
                     other => Ok(Value::Reg(other.to_string())),
                 }
@@ -456,6 +487,39 @@ impl Parser {
                     }
                     _ => bail!("malformed br"),
                 }
+            }
+
+
+            // ── Switch ───────────────────────────────────────────────────
+            "switch" => {
+                let _ty = self.parse_type()?;
+                let cond = self.parse_value()?;
+                self.eat(&Tok::Comma);
+                self.eat_ident("label");
+                let default_bb = match self.advance().clone() {
+                    Tok::LocalReg(s) => s,
+                    t => bail!("switch: expected default label, got {:?}", t),
+                };
+                let mut cases = Vec::new();
+                if self.eat(&Tok::LBracket) {
+                    loop {
+                        if self.eat(&Tok::RBracket) { break; }
+                        let _case_ty = self.parse_type()?;
+                        let val = match self.advance().clone() {
+                            Tok::Integer(n) => n,
+                            t => bail!("switch: expected case value, got {:?}", t),
+                        };
+                        self.eat(&Tok::Comma);
+                        self.eat_ident("label");
+                        let bb = match self.advance().clone() {
+                            Tok::LocalReg(s) => s,
+                            t => bail!("switch: expected case label, got {:?}", t),
+                        };
+                        cases.push((val, bb));
+                        self.eat(&Tok::Comma);
+                    }
+                }
+                Ok(Instr::Switch { cond, default_bb, cases })
             }
 
             // ── PHI ──────────────────────────────────────────────────────
@@ -575,11 +639,50 @@ impl Parser {
             }
 
             // ── Call ─────────────────────────────────────────────────────
+            // ── Select (C ternary) ────────────────────────────────────────
+            // %r = select i1 %cond, ty %true_val, ty %false_val
+            "select" => {
+                self.skip_flags();
+                let _cond_ty = self.parse_type()?;  // always i1
+                let cond = self.parse_value()?;
+                self.eat(&Tok::Comma);
+                let ty = self.parse_type()?;
+                let true_val = self.parse_value()?;
+                self.eat(&Tok::Comma);
+                let _false_ty = self.parse_type()?;
+                let false_val = self.parse_value()?;
+                Ok(Instr::Select {
+                    dst: dst.unwrap_or_default(),
+                    cond, ty, true_val, false_val,
+                })
+            }
+
+            // ── Call ─────────────────────────────────────────────────────
             "call" | "tail" | "musttail" => {
                 if op != "call" { self.eat_ident("call"); }
                 self.skip_flags();
                 let ret_ty = self.parse_type()?;
-                let func   = self.parse_value()?;
+                // Handle LLVM variadic call syntax: call i32 (ptr, ...) @func(args)
+                // After the return type, if we see '(' it's a function type signature
+                // (not a value). Skip it entirely and then parse the actual function value.
+                // Example: call i32 (ptr, ...) @printf(...)
+                //                   ^^^^^^^^^^  ← skip this
+                if matches!(self.peek(), Tok::LParen) {
+                    let mut depth = 0i32;
+                    loop {
+                        match self.peek() {
+                            Tok::LParen => { depth += 1; self.advance(); }
+                            Tok::RParen => {
+                                self.advance();
+                                depth -= 1;
+                                if depth <= 0 { break; }
+                            }
+                            Tok::Eof => break,
+                            _ => { self.advance(); }
+                        }
+                    }
+                }
+                let func = self.parse_value()?;
                 // argument list
                 self.eat(&Tok::LParen);
                 let mut args = Vec::new();
@@ -593,6 +696,125 @@ impl Parser {
                     if !self.eat(&Tok::Comma) {
                         self.eat(&Tok::RParen);
                         break;
+                    }
+                }
+                // Intercept LLVM intrinsics before emitting a Call node
+                if let Value::Global(ref fname) = func {
+                    // llvm.memset.p0.i64 / llvm.memset.p0i8.i64 etc.
+                    if fname.starts_with("llvm.memset") && args.len() >= 3 {
+                        let dst_ptr  = args[0].1.clone();
+                        let byte_val = args[1].1.clone();
+                        let len      = args[2].1.clone();
+                        return Ok(Instr::MemSet { dst_ptr, byte_val, len });
+                    }
+                    // llvm.memcpy.p0.p0.i64 etc.
+                    if fname.starts_with("llvm.memcpy") && args.len() >= 3 {
+                        let dst_ptr = args[0].1.clone();
+                        let src_ptr = args[1].1.clone();
+                        let len     = args[2].1.clone();
+                        return Ok(Instr::MemCpy { dst_ptr, src_ptr, len });
+                    }
+                    // llvm.va_start.p0(ptr %slot) — capture vararg area pointer
+                    if fname.starts_with("llvm.va_start") && args.len() >= 1 {
+                        let slot = args[0].1.clone();
+                        return Ok(Instr::VaStart { slot });
+                    }
+                    // llvm.va_end.p0(ptr %slot) — no-op on TriskeleVM
+                    if fname.starts_with("llvm.va_end") {
+                        return Ok(Instr::Unreachable);
+                    }
+                    // llvm.abs.i32 / llvm.abs.i64 — abs(val)
+                    // Signature: i32 @llvm.abs.i32(i32 %val, i1 immarg %is_poison)
+                    // We ignore the is_poison flag (always false in clang -O0).
+                    if fname.starts_with("llvm.abs") && args.len() >= 1 {
+                        let val = args[0].1.clone();
+                        let ty  = args[0].0.clone();
+                        let d   = dst.unwrap_or_else(|| "__abs_unused".to_string());
+                        return Ok(Instr::Abs { dst: d, ty, val });
+                    }
+                    // Windows CRT: __acrt_iob_func(n) — returns FILE* (stderr=2, stdout=1)
+                    // We return a sentinel value; tsk-libc fprintf ignores the FILE* arg.
+                    if fname == "__acrt_iob_func" {
+                        // dst = sentinel constant 0xE0 (libc area — not dereferenced)
+                        if let Some(ref d) = dst {
+                            return Ok(Instr::BinOp {
+                                dst: d.clone(),
+                                op: crate::ir::BinOpKind::Or,
+                                ty: IrType::Ptr,
+                                lhs: Value::Const(0xE000_0000),
+                                rhs: Value::Const(0),
+                            });
+                        }
+                        return Ok(Instr::Unreachable);
+                    }
+                    // Windows CRT vprintf family — redirect to tsk-libc syscalls.
+                    // _vfprintf_l(file, fmt, locale, va_ptr) → fprintf(file, fmt, va_ptr_args...)
+                    // _vsprintf_l(buf, fmt, locale, va_ptr)  → sprintf(buf, fmt, va_ptr_args...)
+                    // _vsnprintf_l(buf,n,fmt,locale,va_ptr)  → sprintf(buf, fmt, va_ptr_args...)
+                    // __stdio_common_vfprintf(opts,file,fmt,locale,va_ptr) → fprintf
+                    // __stdio_common_vsprintf(opts,buf,n,fmt,locale,va_ptr) → sprintf
+                    // Strategy: rewrite as Call to our tsk-libc symbol with remapped args.
+                    if fname == "_vfprintf_l" || fname == "__stdio_common_vfprintf" {
+                        // Map to @fprintf(file, fmt, va_ptr) — tsk-libc 0x41 handles it
+                        let (file_arg, fmt_arg, va_arg) = if fname == "_vfprintf_l" {
+                            // _vfprintf_l(file, fmt, locale, va_ptr)
+                            (args.get(0).map(|a| a.1.clone()).unwrap_or(Value::Const(0)),
+                             args.get(1).map(|a| a.1.clone()).unwrap_or(Value::Const(0)),
+                             args.get(3).map(|a| a.1.clone()).unwrap_or(Value::Const(0)))
+                        } else {
+                            // __stdio_common_vfprintf(opts, file, fmt, locale, va_ptr)
+                            (args.get(1).map(|a| a.1.clone()).unwrap_or(Value::Const(0)),
+                             args.get(2).map(|a| a.1.clone()).unwrap_or(Value::Const(0)),
+                             args.get(4).map(|a| a.1.clone()).unwrap_or(Value::Const(0)))
+                        };
+                        return Ok(Instr::Call {
+                            dst,
+                            ret_ty: IrType::I32,
+                            func: Value::Global("vfprintf".to_string()),
+                            args: vec![
+                                (IrType::Ptr, file_arg),
+                                (IrType::Ptr, fmt_arg),
+                                (IrType::Ptr, va_arg),
+                            ],
+                        });
+                    }
+                    if fname == "_vsprintf_l" || fname == "_vsnprintf_l"
+                        || fname == "__stdio_common_vsprintf"
+                    {
+                        // Map to @sprintf(buf, fmt, va_ptr)
+                        let (buf_arg, fmt_arg, va_arg) = if fname == "_vsprintf_l" {
+                            // _vsprintf_l(buf, fmt, locale, va_ptr)
+                            (args.get(0).map(|a| a.1.clone()).unwrap_or(Value::Const(0)),
+                             args.get(1).map(|a| a.1.clone()).unwrap_or(Value::Const(0)),
+                             args.get(3).map(|a| a.1.clone()).unwrap_or(Value::Const(0)))
+                        } else if fname == "_vsnprintf_l" {
+                            // _vsnprintf_l(buf, n, fmt, locale, va_ptr)
+                            (args.get(0).map(|a| a.1.clone()).unwrap_or(Value::Const(0)),
+                             args.get(2).map(|a| a.1.clone()).unwrap_or(Value::Const(0)),
+                             args.get(4).map(|a| a.1.clone()).unwrap_or(Value::Const(0)))
+                        } else {
+                            // __stdio_common_vsprintf(opts, buf, n, fmt, locale, va_ptr)
+                            (args.get(1).map(|a| a.1.clone()).unwrap_or(Value::Const(0)),
+                             args.get(3).map(|a| a.1.clone()).unwrap_or(Value::Const(0)),
+                             args.get(5).map(|a| a.1.clone()).unwrap_or(Value::Const(0)))
+                        };
+                        return Ok(Instr::Call {
+                            dst,
+                            ret_ty: IrType::I32,
+                            func: Value::Global("vsprintf".to_string()),
+                            args: vec![
+                                (IrType::Ptr, buf_arg),
+                                (IrType::Ptr, fmt_arg),
+                                (IrType::Ptr, va_arg),
+                            ],
+                        });
+                    }
+                    // llvm.lifetime.start/end, llvm.dbg.* — silently drop
+                    if fname.starts_with("llvm.lifetime")
+                        || fname.starts_with("llvm.dbg")
+                        || fname.starts_with("llvm.assume")
+                    {
+                        return Ok(Instr::Unreachable);
                     }
                 }
                 Ok(Instr::Call { dst, ret_ty, func, args })
@@ -647,7 +869,7 @@ impl Parser {
                     // Otherwise it's an instruction without LHS assignment
                     match tok {
                         Tok::Ident(ref s) if matches!(s.as_str(),
-                            "ret"|"br"|"store"|"call"|"unreachable"|"tail"|"musttail") =>
+                            "ret"|"br"|"store"|"call"|"unreachable"|"tail"|"musttail"|"switch") =>
                         {
                             match self.parse_instr(None) {
                                 Ok(i)  => instrs.push(i),
@@ -720,12 +942,60 @@ impl Parser {
             if !self.eat(&Tok::Comma) { self.eat(&Tok::RParen); break; }
         }
 
-        if is_decl {
-            // Skip attributes
-            loop {
-                match self.peek() {
-                    Tok::Ident(_) => { self.advance(); }
-                    _ => break,
+        // Windows CRT functions defined inline by clang (linkonce_odr) but whose
+        // bodies use unsupported patterns or are redirected at call sites.
+        // Treat them as extern declarations — tsk-libc stubs handle them.
+        // CRT/stdio functions whose bodies should be skipped.
+        // tsk-libc provides these as syscall stubs (Im_SYSCALL).
+        // By treating them as extern decls here, tsk-link resolves the
+        // call sites directly to tsk-libc without any compiled wrapper.
+        //
+        // Rule: ANY function that ends up calling __stdio_common_* (which is
+        // an extern CRT DLL symbol) must be stubbed — otherwise tsk-link
+        // cannot resolve the chain.
+        // CRT/stdio functions whose bodies are skipped.
+        // tsk-libc provides these as syscall stubs.
+        // IMPORTANT: sprintf/printf/vsprintf etc. are compiled as linkonce_odr
+        // with bodies that call _vsprintf_l → _vsnprintf_l → __stdio_common_vsprintf
+        // (an external CRT DLL function). We must skip ALL of these bodies and
+        // let tsk-link resolve directly to our libc stubs.
+        const CRT_STUBS: &[&str] = &[
+            // CRT internals (use __stdio_common_* which is extern DLL)
+            "_vfprintf_l", "_vsprintf_l", "_vsnprintf_l", "_vsnprintf",
+            "__stdio_common_vfprintf", "__stdio_common_vsprintf",
+            "__local_stdio_printf_options",
+            "_snprintf", "_snprintf_l",
+            // Standard wrappers — ALL skip to tsk-libc
+            "printf",  "fprintf",  "sprintf",  "snprintf",
+            "vprintf", "vfprintf", "vsprintf", "vsnprintf",
+            // MSVC-specific (sometimes appear inline)
+            "_printf_l", "_fprintf_l", "_sprintf_l", "_snprintf_l",
+        ];
+        let force_decl = CRT_STUBS.contains(&name.as_str());
+
+        if is_decl || force_decl {
+            if force_decl && !is_decl {
+                // Skip the entire function body (scan to matching '}')
+                let mut depth = 0i32;
+                loop {
+                    match self.peek() {
+                        Tok::LBrace => { depth += 1; self.advance(); }
+                        Tok::RBrace => {
+                            self.advance();
+                            depth -= 1;
+                            if depth <= 0 { break; }
+                        }
+                        Tok::Eof => break,
+                        _ => { self.advance(); }
+                    }
+                }
+            } else {
+                // Skip attributes for declare
+                loop {
+                    match self.peek() {
+                        Tok::Ident(_) => { self.advance(); }
+                        _ => break,
+                    }
                 }
             }
             return Ok(Function { name, ret_ty, params, blocks: vec![], is_decl: true });
@@ -801,6 +1071,8 @@ impl Parser {
             }
         }
 
+        eprintln!("[tsk-cc] function @{}: {} blocks", name, blocks.len());
+        for b in &blocks { eprintln!("  block '{}': {} instrs, last={:?}", b.label, b.instrs.len(), b.instrs.last().map(|i| format!("{:?}", i).chars().take(40).collect::<String>())); }
         Ok(Function { name, ret_ty, params, blocks, is_decl: false })
     }
 
@@ -809,12 +1081,14 @@ impl Parser {
     // ─────────────────────────────────────────────────────────────────────────
 
     fn parse_global(&mut self, name: String) -> Result<Global> {
-        // @name = [dso_local] [global|constant] type [initializer] [, align N]
+        // @name = [linkage] [dso_local] [global|constant] type [initializer] [, align N]
         loop {
             match self.peek() {
                 Tok::Ident(s) if matches!(s.as_str(),
                     "dso_local"|"local_unnamed_addr"|"unnamed_addr"|
-                    "private"|"internal"|"hidden"|"external"|"common") => { self.advance(); }
+                    "private"|"internal"|"hidden"|"external"|"common"|
+                    "linkonce_odr"|"linkonce"|"weak"|"weak_odr"|"available_externally"|
+                    "appending"|"extern_weak") => { self.advance(); }
                 _ => break,
             }
         }
@@ -835,6 +1109,20 @@ impl Parser {
             }
             Tok::Integer(n) => {
                 self.advance(); GlobalInit::Integer(n)
+            }
+            // LLVM byte-string literal: c"%d\0A\00" (array of i8 constants)
+            // Tokenized as Ident("c") followed by quoted string content in Ident
+            Tok::Ident(s) if s == "c" => {
+                self.advance(); // consume "c"
+                match self.peek().clone() {
+                    Tok::Ident(raw) => {
+                        // The lexer already decoded hex escapes in read_quoted()
+                        let bytes: Vec<u8> = raw.chars().map(|c| c as u8).collect();
+                        self.advance();
+                        GlobalInit::Bytes(bytes)
+                    }
+                    _ => GlobalInit::ZeroInit,
+                }
             }
             _ => GlobalInit::ZeroInit,
         };
@@ -866,6 +1154,45 @@ impl Parser {
     pub fn parse_module(&mut self) -> Result<Module> {
         let mut module = Module::default();
 
+        // ── Pre-pass: collect ALL type definitions first ──────────────────────
+        // LLVM IR may place type declarations after function definitions
+        // (e.g. forward references). By collecting types in one pass and
+        // resetting position, we guarantee type_defs is fully populated
+        // before any function body references a named struct type.
+        let saved_pos = self.pos;
+        loop {
+            match self.peek().clone() {
+                Tok::Eof => break,
+                Tok::LocalReg(name) => {
+                    let name = name.clone();
+                    self.advance();
+                    if self.eat(&Tok::Equals) {
+                        if let Tok::Ident(s) = self.peek().clone() {
+                            if s == "type" {
+                                self.advance();
+                                match self.parse_type() {
+                                    Ok(ty) => {
+                                        log::debug!("pre-pass type def %{} = {:?}", name, ty);
+                                        eprintln!("[tsk-cc] type_def: %{} = {:?}", name, ty);
+                                        self.type_defs.insert(name, ty);
+                                    }
+                                    Err(e) => { log::warn!("pre-pass type def error: {}", e); }
+                                }
+                                continue;
+                            }
+                        }
+                    }
+                    // Not a type def — skip to next line
+                    while !matches!(self.peek(), Tok::Eof | Tok::Ident(_) | Tok::GlobalRef(_) | Tok::LocalReg(_)) {
+                        self.advance();
+                    }
+                }
+                _ => { self.advance(); }
+            }
+        }
+        // Reset to beginning for the main parse pass
+        self.pos = saved_pos;
+
         loop {
             match self.peek().clone() {
                 Tok::Eof => break,
@@ -884,6 +1211,29 @@ impl Parser {
                         Ok(f)  => module.functions.push(f),
                         Err(e) => { log::warn!("declare parse error: {}", e); }
                     }
+                }
+
+                // Type definition: %struct.foo = type { i64, i64, i32 }
+                Tok::LocalReg(name) => {
+                    let name = name.clone();
+                    self.advance();
+                    if self.eat(&Tok::Equals) {
+                        if let Tok::Ident(s) = self.peek().clone() {
+                            if s == "type" {
+                                self.advance();
+                                match self.parse_type() {
+                                    Ok(ty) => {
+                                        log::debug!("type def %{} = {:?}", name, ty);
+                                        self.type_defs.insert(name, ty);
+                                    }
+                                    Err(e) => { log::warn!("type def parse error: {}", e); }
+                                }
+                                continue;
+                            }
+                        }
+                    }
+                    // Not a type def — skip line
+                    self.skip_to_keyword(&["define","declare"]);
                 }
 
                 Tok::GlobalRef(name) => {
@@ -906,6 +1256,9 @@ impl Parser {
                 _ => { self.advance(); }
             }
         }
+
+        // Transfer type definitions to module for use by codegen (GEP struct offsets)
+        module.type_defs = std::mem::take(&mut self.type_defs);
 
         Ok(module)
     }
