@@ -581,7 +581,7 @@ impl Opcode {
             Self::Im_FileOp   => "Im_FILE_OP",
             Self::Im_RegisterCb=>"Im_REGISTER_CB",
             Self::Im_KeyQuery => "Im_KEY_QUERY",
-            Self::Im_CbInvoke => "Im_CB_INVOKE",
+            Self::Im_CbInvoke => "Im_CALL_R",  // doubles as indirect call via register
             Self::Im_MemMap   => "Im_MEM_MAP",
             Self::Im_Shared   => "Im_SHARED",
             Self::Im_TimeHost => "Im_TIME_HOST",

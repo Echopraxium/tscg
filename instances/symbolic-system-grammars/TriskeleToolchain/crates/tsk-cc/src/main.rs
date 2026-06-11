@@ -190,14 +190,9 @@ fn build_tobj(cg: &codegen::CodegenOutput) -> Result<Vec<u8>> {
     // tsk-link will patch D_MOV_I/F_CALL instructions at these offsets
     // with the resolved symbol addresses.
     let mut reltab: Vec<u8> = Vec::new();
-    let mut rel_offset: u32 = 0;
     for (name, func_code) in &cg.functions {
-        // Collect fixups from the emitter — stored in call_fixups
-        // Format: (code_byte_offset_within_function, symbol_name)
-        // We need to re-expose fixups from CodegenOutput
         let _ = name;
         let _ = func_code;
-        rel_offset += ((func_code.len() as u32) + 3) & !3;
     }
     // Use cg.relocations if available
     for (abs_offset, sym_name) in &cg.relocations {

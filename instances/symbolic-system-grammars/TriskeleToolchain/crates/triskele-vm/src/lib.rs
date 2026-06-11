@@ -1,26 +1,29 @@
 // triskele-vm/src/lib.rs
 // Author: Echopraxium with the collaboration of Claude AI
-// Version: 0.2.0
+// Version: 0.3.1
 
 pub mod cpu;
 pub mod memory;
 pub mod ffi;
 pub mod io;
+pub mod libc;
 
 pub use cpu::Cpu;
 pub use memory::Memory;
 pub use ffi::sdl2::Sdl2Context;
 
-/// Factory: create a Cpu, optionally attaching SDL2.
-/// Called from main.rs to avoid cross-module visibility issues.
+/// Factory: create a Cpu, inject tsk-libc stubs, optionally attach SDL2.
 pub fn build_cpu(
-    mem:       Memory,
+    mut mem:   Memory,
     entry_pc:  u64,
     debug:     bool,
     trace:     bool,
     sdl_dim:   Option<&str>,
     title:     &str,
 ) -> anyhow::Result<Cpu> {
+    // Inject tsk-libc stubs into the libc segment (0xE000_0000)
+    libc::inject_stubs(&mut mem)?;
+
     let mut cpu = Cpu::new(mem, entry_pc, debug);
     cpu.trace = trace;
 

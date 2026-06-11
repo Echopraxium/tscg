@@ -1,0 +1,23 @@
+# projects/test_doom_libc/pipeline.toml
+# Author: Echopraxium with the collaboration of Claude AI
+# DoomGeneric libc coverage — exit code 511 (0x1FF) = 9 tests passed
+name    = "test_doom_libc"
+type    = "c"
+sources = ["src/test_doom_libc.c"]
+entry   = "main"
+libs    = ["tsk-libc.tvml"]
+sdl2    = false
+
+[validation]
+expected_exit = 511
+tests = [
+    "atoi basic",
+    "toupper / tolower",
+    "isspace / isdigit / isalpha",
+    "strcasecmp",
+    "strncasecmp",
+    "strstr",
+    "strdup",
+    "strlcpy",
+    "snprintf",
+]

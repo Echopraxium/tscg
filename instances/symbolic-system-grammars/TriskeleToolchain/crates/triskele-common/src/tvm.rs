@@ -45,9 +45,10 @@ pub enum SectionType {
     Tscg    = 0x09,  // .tscg — TSCG semantic annotations
     GcRoots = 0x0A,  // .gc_roots — GC roots table
     Unwind  = 0x0B,  // .unwind — exception unwind tables
-    Import  = 0x0C,  // .import — FFI import declarations
-    Export  = 0x0D,  // .export — exported symbols
-    Raw     = 0xFF,  // .raw — binary assets (textures, sounds, DLLs)
+    Import      = 0x0C,  // .import      — FFI import declarations
+    Export      = 0x0D,  // .export      — exported symbols
+    NativeDeps  = 0x0E,  // .native_deps — list of native DLL/SO deps for .tvml native
+    Raw         = 0xFF,  // .raw         — binary assets (textures, sounds, DLLs)
 }
 
 impl SectionType {
@@ -66,6 +67,7 @@ impl SectionType {
             0x0B => Some(Self::Unwind),
             0x0C => Some(Self::Import),
             0x0D => Some(Self::Export),
+            0x0E => Some(Self::NativeDeps),
             0xFF => Some(Self::Raw),
             _    => None,
         }
@@ -84,9 +86,10 @@ impl SectionType {
             Self::Tscg    => ".tscg",
             Self::GcRoots => ".gc_roots",
             Self::Unwind  => ".unwind",
-            Self::Import  => ".import",
-            Self::Export  => ".export",
-            Self::Raw     => ".raw",
+            Self::Import      => ".import",
+            Self::Export      => ".export",
+            Self::NativeDeps  => ".native_deps",
+            Self::Raw         => ".raw",
         }
     }
 }
@@ -111,11 +114,12 @@ pub mod file_flags {
     pub const HAS_DEBUG_INFO:   u32 = 1 << 0;
     pub const HAS_SYMBOL_TABLE: u32 = 1 << 1;
     pub const HAS_RAW_ASSETS:   u32 = 1 << 2;
-    pub const IS_LIBRARY:       u32 = 1 << 3;
+    pub const IS_LIBRARY:       u32 = 1 << 3;  // .tvml — no entry point
     pub const IS_POSITION_INDEP:u32 = 1 << 4;
     pub const HAS_GC_METADATA:  u32 = 1 << 5;
     pub const HAS_TSCG_ANNOT:   u32 = 1 << 6;
     pub const HAS_EXCEPTIONS:   u32 = 1 << 7;
+    pub const IS_NATIVE:        u32 = 1 << 8;  // .tvml native — has .native_deps + Im_FfiCall stubs
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -162,11 +166,16 @@ pub struct TvmFile {
 impl TvmFile {
     /// Load a .tobj/.tvmx binary from a file path.
     pub fn load_from_file(path: &str) -> Result<Self, VmError> {
-        let mut f = std::fs::File::open(path)?;
-        Self::load_from_reader(&mut f)
+        let data = std::fs::read(path)
+            .map_err(|e| VmError::FfiError(format!("cannot read {}: {}", path, e)))?;
+        Self::load_from_bytes(&data)
     }
 
-    /// Load a .tobj/.tvmx binary from any reader.
+    /// Load a .tobj/.tvmx/.tvml binary from a byte slice.
+    pub fn load_from_bytes(data: &[u8]) -> Result<Self, VmError> {
+        Self::load_from_reader(&mut std::io::Cursor::new(data))
+    }
+    /// Load a .tobj/.tvmx/.tvml binary from any reader.
     pub fn load_from_reader<R: Read + Seek>(r: &mut R) -> Result<Self, VmError> {
         // Magic
         let mut magic = [0u8; 4];
@@ -242,6 +251,27 @@ impl TvmFile {
     pub fn is_library(&self) -> bool {
         self.flags & file_flags::IS_LIBRARY != 0
     }
+
+    /// True if this is a native bridge library (.tvml native).
+    /// Contains Im_FfiCall stubs + .native_deps section listing DLL/SO names.
+    pub fn is_native(&self) -> bool {
+        self.flags & file_flags::IS_NATIVE != 0
+    }
+
+    /// Parse .native_deps section: returns list of native library names.
+    /// Format: null-terminated UTF-8 strings, concatenated.
+    /// e.g. "SDL2.dll\0OpenAL32.dll\0"
+    pub fn native_deps(&self) -> Vec<String> {
+        match self.find_section(SectionType::NativeDeps) {
+            None => vec![],
+            Some(sec) => {
+                sec.data.split(|&b| b == 0)
+                    .filter(|s| !s.is_empty())
+                    .map(|s| String::from_utf8_lossy(s).into_owned())
+                    .collect()
+            }
+        }
+    }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -249,13 +279,20 @@ impl TvmFile {
 // ─────────────────────────────────────────────────────────────────────────────
 
 pub struct TvmBuilder {
-    sections: Vec<(SectionType, u32, Vec<u8>)>,  // (type, flags, data)
+    sections:     Vec<(SectionType, u32, Vec<u8>)>,
     entry_offset: u32,
+    file_flags:   u32,
 }
 
 impl TvmBuilder {
     pub fn new() -> Self {
-        Self { sections: Vec::new(), entry_offset: 0 }
+        Self { sections: Vec::new(), entry_offset: 0, file_flags: 0 }
+    }
+
+    /// Set file-level flags (IS_LIBRARY, IS_NATIVE, HAS_SYMBOL_TABLE, ...).
+    pub fn with_flags(mut self, flags: u32) -> Self {
+        self.file_flags = flags;
+        self
     }
 
     pub fn add_section(mut self, stype: SectionType, flags: u32, data: Vec<u8>) -> Self {
@@ -276,10 +313,15 @@ impl TvmBuilder {
 
         // Magic
         out[0..4].copy_from_slice(TVM_MAGIC);
-        // Version 0.2.0.0
-        out[4..8].copy_from_slice(&[0, 2, 0, 0]);
-        // Flags: has_symbol_table
-        out[8..12].copy_from_slice(&(file_flags::HAS_SYMBOL_TABLE).to_le_bytes());
+        // Version 0.3.1.0
+        out[4..8].copy_from_slice(&[0, 3, 1, 0]);
+        // File flags (caller-specified via with_flags())
+        let flags_out = if self.file_flags != 0 {
+            self.file_flags
+        } else {
+            file_flags::HAS_SYMBOL_TABLE  // default for backwards compat
+        };
+        out[8..12].copy_from_slice(&flags_out.to_le_bytes());
         // Section count
         out[12..16].copy_from_slice(&n.to_le_bytes());
         // Entry section index = 0 (first section = .code)

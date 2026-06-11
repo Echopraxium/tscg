@@ -1,6 +1,6 @@
 // triskele-vm/src/cpu/mod.rs
 // Author: Echopraxium with the collaboration of Claude AI
-// Version: 0.2.0
+// Version: 0.3.1
 //
 // TriskeleVM interpreter — register-based, 32-bit fixed instruction width.
 // Main loop: fetch → decode → execute.
@@ -21,6 +21,7 @@ use crate::memory::{
     heap::Heap, stack::Stack, arena::ArenaAllocator,
 };
 use crate::ffi::Sdl2Context;
+use crate::libc::LibcState;
 
 /// Maximum instructions per run (safety — prevents infinite loops in tests).
 const MAX_STEPS: u64 = 100_000_000;
@@ -32,18 +33,30 @@ pub type VmResult = Result<i32, VmError>;
 // Cpu
 // ─────────────────────────────────────────────────────────────────────────────
 
+/// One Im_FfiCall slot — a native function loaded via libloading.
+pub struct FfiSlot {
+    pub lib_name: String,
+    pub fn_name:  String,
+    /// Raw function pointer (unsafe to call — caller must know ABI).
+    pub fn_ptr:   unsafe extern "C" fn() -> u64,
+}
+
 pub struct Cpu {
-    pub regs:   RegisterFile,
-    pub mem:    Memory,
-    pub stack:  Stack,
-    pub heap:   Heap,
-    pub arenas: ArenaAllocator,
-    pub debug:  bool,
-    pub trace:  bool,
-    pub ticks:  u64,
-    pub sdl:    Option<Sdl2Context>,   // None in headless/test mode
-    /// O_LOG / O_LOG_S sink. Defaults to stdout; tests inject a Vec<u8>.
-    pub output: Box<dyn Write + Send>,
+    pub regs:      RegisterFile,
+    pub mem:       Memory,
+    pub stack:     Stack,
+    pub heap:      Heap,
+    pub arenas:    ArenaAllocator,
+    pub debug:     bool,
+    pub trace:     bool,
+    pub ticks:     u64,
+    pub sdl:       Option<Sdl2Context>,
+    pub output:    Box<dyn Write + Send>,
+    /// tsk-libc runtime state (rand seed, etc.)
+    pub libc_state: LibcState,
+    /// Im_FfiCall dispatch table: slot → (lib_name, fn_name, fn_ptr)
+    /// Populated at startup when loading .tvml native libraries.
+    pub ffi_slots:  Vec<FfiSlot>,
 }
 
 impl Cpu {
@@ -53,8 +66,14 @@ impl Cpu {
         let stack  = Stack::new(STACK_TOP, STACK_SIZE);
         let heap   = Heap::new(HEAP_BASE, HEAP_SIZE);
         let arenas = ArenaAllocator::new(0xA000_0000, 0x0100_0000);
-        Self { regs, mem, stack, heap, arenas, debug, trace: false, ticks: 0, sdl: None,
-               output: Box::new(std::io::stdout()) }
+        Self {
+            regs, mem, stack, heap, arenas,
+            debug, trace: false, ticks: 0,
+            sdl: None,
+            output: Box::new(std::io::stdout()),
+            libc_state: LibcState::new(),
+            ffi_slots:  Vec::new(),
+        }
     }
 
     /// Attach an SDL2 context (call before run() for graphical programs).
@@ -174,14 +193,22 @@ impl Cpu {
                 self.regs.set(d, r)?;
             }
             Opcode::D_Shl => {
-                // imm in flags[4:0]
-                let shift = (_flags & 0x1F) as u32;
+                // shift amount: src2 register (preferred) or flags[4:0] (legacy)
+                let shift = if s2 != 0 {
+                    (self.regs.get(s2)? & 0x3F) as u32
+                } else {
+                    (_flags & 0x1F) as u32
+                };
                 let r = self.regs.get(s1)? << shift;
                 self.regs.set(d, r)?;
             }
             Opcode::D_Shr => {
-                // arithmetic shift right — imm in flags[4:0]
-                let shift = (_flags & 0x1F) as u32;
+                // shift amount: src2 register (preferred) or flags[4:0] (legacy)
+                let shift = if s2 != 0 {
+                    (self.regs.get(s2)? & 0x3F) as u32
+                } else {
+                    (_flags & 0x1F) as u32
+                };
                 let r = ((self.regs.get(s1)? as i64) >> shift) as u64;
                 self.regs.set(d, r)?;
             }
@@ -587,6 +614,60 @@ impl Cpu {
                 return Err(VmError::Halted(code));
             }
 
+            // ── Im_CbInvoke / indirect JMP via register ──────────────────────
+            // Im_CbInvoke Rn — jumps to address in Rn WITHOUT touching LR.
+            // Type R: opcode(8) | d=0 | s1=reg | s2=0 | flags=0
+            //
+            // Used by tsk-link trampolines for far calls to libc stubs:
+            //   F_CALL from main → trampoline (sets LR=main return addr)
+            //   trampoline loads target addr into R24
+            //   Im_CbInvoke R24 → jumps to libc stub (LR unchanged)
+            //   libc stub: Im_Syscall + F_Ret → F_Ret uses original LR → returns to main
+            //
+            // NOTE: this is a JUMP (not a call) — LR is intentionally preserved.
+            Opcode::Im_CbInvoke => {
+                let target = self.regs.get(s1)?;
+                self.regs.set_pc(target);
+                return Ok(());
+            }
+
+            // ── Im_Syscall — tsk-libc pure dispatch ──────────────────────────
+            // Im_Syscall <id> — encoded as Type I (dst=0, imm=syscall_id)
+            // Handled in exec_i below; this arm covers the Type R path (should not occur).
+            Opcode::Im_Syscall => {
+                // Normally encoded as Type I — but handle defensively here too.
+                let id = dst as u16;  // flags field carries id in Type R path
+                crate::libc::dispatch(id, &mut self.mem, &mut self.regs, &mut self.libc_state)?;
+            }
+
+            // ── Im_FfiCall — native library dispatch ─────────────────────────
+            // Im_FfiCall <slot> — calls a native function loaded via libloading.
+            // Slot index encoded in dst field.
+            // Calling convention: R0..Rn = args, R0 = return value.
+            // Safety: the native function must follow cdecl ABI with u64 args/ret.
+            Opcode::Im_FfiCall => {
+                let slot = dst as usize;
+                if slot >= self.ffi_slots.len() {
+                    return Err(VmError::FfiError(
+                        format!("Im_FfiCall: slot {} out of range (table has {} entries)",
+                            slot, self.ffi_slots.len())));
+                }
+                // Collect args from R0..R7 (max 8 args — sufficient for C89)
+                let a0 = self.regs.get(0)?;
+                let a1 = self.regs.get(1)?;
+                let a2 = self.regs.get(2)?;
+                let a3 = self.regs.get(3)?;
+                // Safety: caller must ensure correct ABI
+                let ret = unsafe {
+                    let f = self.ffi_slots[slot].fn_ptr;
+                    // Variadic-style call via transmute to match arg count
+                    let f6: unsafe extern "C" fn(u64,u64,u64,u64) -> u64 =
+                        std::mem::transmute(f);
+                    f6(a0, a1, a2, a3)
+                };
+                self.regs.set(0, ret)?;
+            }
+
             // Unimplemented — trap in debug, silently skip in release
             _ => {
                 if self.debug {
@@ -664,6 +745,19 @@ impl Cpu {
                 let sp = self.regs.sp().wrapping_add(imm as u64 * 8);
                 self.regs.set_sp(sp);
             }
+
+            // ── Im_Syscall — tsk-libc pure dispatch (normal Type I path) ─────
+            // Encoding: opcode=Im_Syscall, dst=0, imm19=syscall_id
+            Opcode::Im_Syscall => {
+                let id = imm as u16;
+                crate::libc::dispatch(id, &mut self.mem, &mut self.regs, &mut self.libc_state)
+                    .map_err(|e| match e {
+                        // Halted must propagate as-is (e.g. from exit() syscall)
+                        VmError::Halted(code) => VmError::Halted(code),
+                        other => VmError::FfiError(other.to_string()),
+                    })?;
+            }
+
             _ => {
                 if self.debug {
                     eprintln!("[WARN] unimplemented Type I opcode: {:?}", op);
