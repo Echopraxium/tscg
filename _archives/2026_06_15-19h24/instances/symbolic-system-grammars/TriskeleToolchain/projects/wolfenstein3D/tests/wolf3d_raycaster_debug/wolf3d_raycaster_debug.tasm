@@ -1,0 +1,965 @@
+; wolf3d_raycaster.tasm
+; Author: Echopraxium with the collaboration of Claude AI
+; Version: 0.1.0
+; Wolf3D-style raycaster — DDA algorithm, fixed-point 16.16
+
+#define SCREEN_W   320
+#define SCREEN_H   200
+#define FB_SIZE    256000
+#define MAP_SIZE   8
+#define FOV_HALF   30
+#define MAX_STEPS  80
+
+.module  wolf3d
+.type    executable
+
+.section .rodata
+
+tilemap:
+  .byte 1
+  .byte 1
+  .byte 1
+  .byte 1
+  .byte 1
+  .byte 1
+  .byte 1
+  .byte 1
+  .byte 1
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 1
+  .byte 1
+  .byte 0
+  .byte 1
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 1
+  .byte 1
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 1
+  .byte 0
+  .byte 1
+  .byte 1
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 1
+  .byte 1
+  .byte 0
+  .byte 0
+  .byte 1
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 1
+  .byte 1
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 0
+  .byte 1
+  .byte 1
+  .byte 1
+  .byte 1
+  .byte 1
+  .byte 1
+  .byte 1
+  .byte 1
+  .byte 1
+
+.align 4
+
+sin_table:
+  .dword 0
+  .dword 1144
+  .dword 2287
+  .dword 3430
+  .dword 4572
+  .dword 5712
+  .dword 6850
+  .dword 7987
+  .dword 9121
+  .dword 10252
+  .dword 11380
+  .dword 12505
+  .dword 13626
+  .dword 14742
+  .dword 15855
+  .dword 16962
+  .dword 18064
+  .dword 19161
+  .dword 20252
+  .dword 21336
+  .dword 22415
+  .dword 23486
+  .dword 24550
+  .dword 25607
+  .dword 26656
+  .dword 27697
+  .dword 28729
+  .dword 29753
+  .dword 30767
+  .dword 31772
+  .dword 32768
+  .dword 33754
+  .dword 34729
+  .dword 35693
+  .dword 36647
+  .dword 37590
+  .dword 38521
+  .dword 39441
+  .dword 40348
+  .dword 41243
+  .dword 42126
+  .dword 42995
+  .dword 43852
+  .dword 44695
+  .dword 45525
+  .dword 46341
+  .dword 47143
+  .dword 47930
+  .dword 48703
+  .dword 49461
+  .dword 50203
+  .dword 50931
+  .dword 51643
+  .dword 52339
+  .dword 53020
+  .dword 53684
+  .dword 54332
+  .dword 54963
+  .dword 55578
+  .dword 56175
+  .dword 56756
+  .dword 57319
+  .dword 57865
+  .dword 58393
+  .dword 58903
+  .dword 59396
+  .dword 59870
+  .dword 60326
+  .dword 60764
+  .dword 61183
+  .dword 61584
+  .dword 61966
+  .dword 62328
+  .dword 62672
+  .dword 62997
+  .dword 63303
+  .dword 63589
+  .dword 63856
+  .dword 64104
+  .dword 64332
+  .dword 64540
+  .dword 64729
+  .dword 64898
+  .dword 65048
+  .dword 65177
+  .dword 65287
+  .dword 65376
+  .dword 65446
+  .dword 65496
+  .dword 65526
+  .dword 65536
+  .dword 65526
+  .dword 65496
+  .dword 65446
+  .dword 65376
+  .dword 65287
+  .dword 65177
+  .dword 65048
+  .dword 64898
+  .dword 64729
+  .dword 64540
+  .dword 64332
+  .dword 64104
+  .dword 63856
+  .dword 63589
+  .dword 63303
+  .dword 62997
+  .dword 62672
+  .dword 62328
+  .dword 61966
+  .dword 61584
+  .dword 61183
+  .dword 60764
+  .dword 60326
+  .dword 59870
+  .dword 59396
+  .dword 58903
+  .dword 58393
+  .dword 57865
+  .dword 57319
+  .dword 56756
+  .dword 56175
+  .dword 55578
+  .dword 54963
+  .dword 54332
+  .dword 53684
+  .dword 53020
+  .dword 52339
+  .dword 51643
+  .dword 50931
+  .dword 50203
+  .dword 49461
+  .dword 48703
+  .dword 47930
+  .dword 47143
+  .dword 46341
+  .dword 45525
+  .dword 44695
+  .dword 43852
+  .dword 42995
+  .dword 42126
+  .dword 41243
+  .dword 40348
+  .dword 39441
+  .dword 38521
+  .dword 37590
+  .dword 36647
+  .dword 35693
+  .dword 34729
+  .dword 33754
+  .dword 32768
+  .dword 31772
+  .dword 30767
+  .dword 29753
+  .dword 28729
+  .dword 27697
+  .dword 26656
+  .dword 25607
+  .dword 24550
+  .dword 23486
+  .dword 22415
+  .dword 21336
+  .dword 20252
+  .dword 19161
+  .dword 18064
+  .dword 16962
+  .dword 15855
+  .dword 14742
+  .dword 13626
+  .dword 12505
+  .dword 11380
+  .dword 10252
+  .dword 9121
+  .dword 7987
+  .dword 6850
+  .dword 5712
+  .dword 4572
+  .dword 3430
+  .dword 2287
+  .dword 1144
+  .dword 0
+  .dword -1144
+  .dword -2287
+  .dword -3430
+  .dword -4572
+  .dword -5712
+  .dword -6850
+  .dword -7987
+  .dword -9121
+  .dword -10252
+  .dword -11380
+  .dword -12505
+  .dword -13626
+  .dword -14742
+  .dword -15855
+  .dword -16962
+  .dword -18064
+  .dword -19161
+  .dword -20252
+  .dword -21336
+  .dword -22415
+  .dword -23486
+  .dword -24550
+  .dword -25607
+  .dword -26656
+  .dword -27697
+  .dword -28729
+  .dword -29753
+  .dword -30767
+  .dword -31772
+  .dword -32768
+  .dword -33754
+  .dword -34729
+  .dword -35693
+  .dword -36647
+  .dword -37590
+  .dword -38521
+  .dword -39441
+  .dword -40348
+  .dword -41243
+  .dword -42126
+  .dword -42995
+  .dword -43852
+  .dword -44695
+  .dword -45525
+  .dword -46341
+  .dword -47143
+  .dword -47930
+  .dword -48703
+  .dword -49461
+  .dword -50203
+  .dword -50931
+  .dword -51643
+  .dword -52339
+  .dword -53020
+  .dword -53684
+  .dword -54332
+  .dword -54963
+  .dword -55578
+  .dword -56175
+  .dword -56756
+  .dword -57319
+  .dword -57865
+  .dword -58393
+  .dword -58903
+  .dword -59396
+  .dword -59870
+  .dword -60326
+  .dword -60764
+  .dword -61183
+  .dword -61584
+  .dword -61966
+  .dword -62328
+  .dword -62672
+  .dword -62997
+  .dword -63303
+  .dword -63589
+  .dword -63856
+  .dword -64104
+  .dword -64332
+  .dword -64540
+  .dword -64729
+  .dword -64898
+  .dword -65048
+  .dword -65177
+  .dword -65287
+  .dword -65376
+  .dword -65446
+  .dword -65496
+  .dword -65526
+  .dword -65536
+  .dword -65526
+  .dword -65496
+  .dword -65446
+  .dword -65376
+  .dword -65287
+  .dword -65177
+  .dword -65048
+  .dword -64898
+  .dword -64729
+  .dword -64540
+  .dword -64332
+  .dword -64104
+  .dword -63856
+  .dword -63589
+  .dword -63303
+  .dword -62997
+  .dword -62672
+  .dword -62328
+  .dword -61966
+  .dword -61584
+  .dword -61183
+  .dword -60764
+  .dword -60326
+  .dword -59870
+  .dword -59396
+  .dword -58903
+  .dword -58393
+  .dword -57865
+  .dword -57319
+  .dword -56756
+  .dword -56175
+  .dword -55578
+  .dword -54963
+  .dword -54332
+  .dword -53684
+  .dword -53020
+  .dword -52339
+  .dword -51643
+  .dword -50931
+  .dword -50203
+  .dword -49461
+  .dword -48703
+  .dword -47930
+  .dword -47143
+  .dword -46341
+  .dword -45525
+  .dword -44695
+  .dword -43852
+  .dword -42995
+  .dword -42126
+  .dword -41243
+  .dword -40348
+  .dword -39441
+  .dword -38521
+  .dword -37590
+  .dword -36647
+  .dword -35693
+  .dword -34729
+  .dword -33754
+  .dword -32768
+  .dword -31772
+  .dword -30767
+  .dword -29753
+  .dword -28729
+  .dword -27697
+  .dword -26656
+  .dword -25607
+  .dword -24550
+  .dword -23486
+  .dword -22415
+  .dword -21336
+  .dword -20252
+  .dword -19161
+  .dword -18064
+  .dword -16962
+  .dword -15855
+  .dword -14742
+  .dword -13626
+  .dword -12505
+  .dword -11380
+  .dword -10252
+  .dword -9121
+  .dword -7987
+  .dword -6850
+  .dword -5712
+  .dword -4572
+  .dword -3430
+  .dword -2287
+  .dword -1144
+
+cos_table:
+  .dword 65536
+  .dword 65526
+  .dword 65496
+  .dword 65446
+  .dword 65376
+  .dword 65287
+  .dword 65177
+  .dword 65048
+  .dword 64898
+  .dword 64729
+  .dword 64540
+  .dword 64332
+  .dword 64104
+  .dword 63856
+  .dword 63589
+  .dword 63303
+  .dword 62997
+  .dword 62672
+  .dword 62328
+  .dword 61966
+  .dword 61584
+  .dword 61183
+  .dword 60764
+  .dword 60326
+  .dword 59870
+  .dword 59396
+  .dword 58903
+  .dword 58393
+  .dword 57865
+  .dword 57319
+  .dword 56756
+  .dword 56175
+  .dword 55578
+  .dword 54963
+  .dword 54332
+  .dword 53684
+  .dword 53020
+  .dword 52339
+  .dword 51643
+  .dword 50931
+  .dword 50203
+  .dword 49461
+  .dword 48703
+  .dword 47930
+  .dword 47143
+  .dword 46341
+  .dword 45525
+  .dword 44695
+  .dword 43852
+  .dword 42995
+  .dword 42126
+  .dword 41243
+  .dword 40348
+  .dword 39441
+  .dword 38521
+  .dword 37590
+  .dword 36647
+  .dword 35693
+  .dword 34729
+  .dword 33754
+  .dword 32768
+  .dword 31772
+  .dword 30767
+  .dword 29753
+  .dword 28729
+  .dword 27697
+  .dword 26656
+  .dword 25607
+  .dword 24550
+  .dword 23486
+  .dword 22415
+  .dword 21336
+  .dword 20252
+  .dword 19161
+  .dword 18064
+  .dword 16962
+  .dword 15855
+  .dword 14742
+  .dword 13626
+  .dword 12505
+  .dword 11380
+  .dword 10252
+  .dword 9121
+  .dword 7987
+  .dword 6850
+  .dword 5712
+  .dword 4572
+  .dword 3430
+  .dword 2287
+  .dword 1144
+  .dword 0
+  .dword -1144
+  .dword -2287
+  .dword -3430
+  .dword -4572
+  .dword -5712
+  .dword -6850
+  .dword -7987
+  .dword -9121
+  .dword -10252
+  .dword -11380
+  .dword -12505
+  .dword -13626
+  .dword -14742
+  .dword -15855
+  .dword -16962
+  .dword -18064
+  .dword -19161
+  .dword -20252
+  .dword -21336
+  .dword -22415
+  .dword -23486
+  .dword -24550
+  .dword -25607
+  .dword -26656
+  .dword -27697
+  .dword -28729
+  .dword -29753
+  .dword -30767
+  .dword -31772
+  .dword -32768
+  .dword -33754
+  .dword -34729
+  .dword -35693
+  .dword -36647
+  .dword -37590
+  .dword -38521
+  .dword -39441
+  .dword -40348
+  .dword -41243
+  .dword -42126
+  .dword -42995
+  .dword -43852
+  .dword -44695
+  .dword -45525
+  .dword -46341
+  .dword -47143
+  .dword -47930
+  .dword -48703
+  .dword -49461
+  .dword -50203
+  .dword -50931
+  .dword -51643
+  .dword -52339
+  .dword -53020
+  .dword -53684
+  .dword -54332
+  .dword -54963
+  .dword -55578
+  .dword -56175
+  .dword -56756
+  .dword -57319
+  .dword -57865
+  .dword -58393
+  .dword -58903
+  .dword -59396
+  .dword -59870
+  .dword -60326
+  .dword -60764
+  .dword -61183
+  .dword -61584
+  .dword -61966
+  .dword -62328
+  .dword -62672
+  .dword -62997
+  .dword -63303
+  .dword -63589
+  .dword -63856
+  .dword -64104
+  .dword -64332
+  .dword -64540
+  .dword -64729
+  .dword -64898
+  .dword -65048
+  .dword -65177
+  .dword -65287
+  .dword -65376
+  .dword -65446
+  .dword -65496
+  .dword -65526
+  .dword -65536
+  .dword -65526
+  .dword -65496
+  .dword -65446
+  .dword -65376
+  .dword -65287
+  .dword -65177
+  .dword -65048
+  .dword -64898
+  .dword -64729
+  .dword -64540
+  .dword -64332
+  .dword -64104
+  .dword -63856
+  .dword -63589
+  .dword -63303
+  .dword -62997
+  .dword -62672
+  .dword -62328
+  .dword -61966
+  .dword -61584
+  .dword -61183
+  .dword -60764
+  .dword -60326
+  .dword -59870
+  .dword -59396
+  .dword -58903
+  .dword -58393
+  .dword -57865
+  .dword -57319
+  .dword -56756
+  .dword -56175
+  .dword -55578
+  .dword -54963
+  .dword -54332
+  .dword -53684
+  .dword -53020
+  .dword -52339
+  .dword -51643
+  .dword -50931
+  .dword -50203
+  .dword -49461
+  .dword -48703
+  .dword -47930
+  .dword -47143
+  .dword -46341
+  .dword -45525
+  .dword -44695
+  .dword -43852
+  .dword -42995
+  .dword -42126
+  .dword -41243
+  .dword -40348
+  .dword -39441
+  .dword -38521
+  .dword -37590
+  .dword -36647
+  .dword -35693
+  .dword -34729
+  .dword -33754
+  .dword -32768
+  .dword -31772
+  .dword -30767
+  .dword -29753
+  .dword -28729
+  .dword -27697
+  .dword -26656
+  .dword -25607
+  .dword -24550
+  .dword -23486
+  .dword -22415
+  .dword -21336
+  .dword -20252
+  .dword -19161
+  .dword -18064
+  .dword -16962
+  .dword -15855
+  .dword -14742
+  .dword -13626
+  .dword -12505
+  .dword -11380
+  .dword -10252
+  .dword -9121
+  .dword -7987
+  .dword -6850
+  .dword -5712
+  .dword -4572
+  .dword -3430
+  .dword -2287
+  .dword -1144
+  .dword 0
+  .dword 1144
+  .dword 2287
+  .dword 3430
+  .dword 4572
+  .dword 5712
+  .dword 6850
+  .dword 7987
+  .dword 9121
+  .dword 10252
+  .dword 11380
+  .dword 12505
+  .dword 13626
+  .dword 14742
+  .dword 15855
+  .dword 16962
+  .dword 18064
+  .dword 19161
+  .dword 20252
+  .dword 21336
+  .dword 22415
+  .dword 23486
+  .dword 24550
+  .dword 25607
+  .dword 26656
+  .dword 27697
+  .dword 28729
+  .dword 29753
+  .dword 30767
+  .dword 31772
+  .dword 32768
+  .dword 33754
+  .dword 34729
+  .dword 35693
+  .dword 36647
+  .dword 37590
+  .dword 38521
+  .dword 39441
+  .dword 40348
+  .dword 41243
+  .dword 42126
+  .dword 42995
+  .dword 43852
+  .dword 44695
+  .dword 45525
+  .dword 46341
+  .dword 47143
+  .dword 47930
+  .dword 48703
+  .dword 49461
+  .dword 50203
+  .dword 50931
+  .dword 51643
+  .dword 52339
+  .dword 53020
+  .dword 53684
+  .dword 54332
+  .dword 54963
+  .dword 55578
+  .dword 56175
+  .dword 56756
+  .dword 57319
+  .dword 57865
+  .dword 58393
+  .dword 58903
+  .dword 59396
+  .dword 59870
+  .dword 60326
+  .dword 60764
+  .dword 61183
+  .dword 61584
+  .dword 61966
+  .dword 62328
+  .dword 62672
+  .dword 62997
+  .dword 63303
+  .dword 63589
+  .dword 63856
+  .dword 64104
+  .dword 64332
+  .dword 64540
+  .dword 64729
+  .dword 64898
+  .dword 65048
+  .dword 65177
+  .dword 65287
+  .dword 65376
+  .dword 65446
+  .dword 65496
+  .dword 65526
+
+.section .code
+.entry main
+
+main:
+    D_MOV_I  R1, FB_SIZE
+    A_ALLOC  R19, R1
+    L_LEA    R16, sin_table
+    L_LEA    R17, cos_table
+    L_LEA    R18, tilemap
+    D_MOV_I  R6, 163840
+    D_MOV_I  R7, 163840
+    D_MOV_I  R5, 0
+
+frame_loop:
+    ; Sky: fill top half blue
+    D_MOV_I  R1, 57
+    D_MOV_I  R2, 128000
+    D_MEMSET R19, R1, R2
+    ; Floor: fill bottom half dark
+    D_MOV_I  R1, 128000
+    D_ADD    R1, R19, R1
+    D_MOV_I  R2, 40
+    D_MOV_I  R3, 128000
+    D_MEMSET R1, R2, R3
+
+    D_MOV_I  R4, 0
+
+cast_loop:
+    ; ray_angle = player_angle - 30 + col*3/16
+    D_MOV    R8, R4
+    D_ADD    R8, R8, R4
+    D_ADD    R8, R8, R4
+    D_SHR    R8, R8, 4
+    D_MOV    R9, R5
+    D_MOV_I  R3, FOV_HALF
+    D_SUB    R9, R9, R3
+    D_ADD    R9, R9, R8
+
+    ; Normalize angle
+angle_norm:
+    V_CMP_I  R9, 0
+    F_JGE    angle_pos
+    D_MOV_I  R3, 360
+    D_ADD    R9, R9, R3
+    F_JMP    angle_norm
+angle_pos:
+    V_CMP_I  R9, 360
+    F_JL     angle_ok
+    D_MOV_I  R3, 360
+    D_SUB    R9, R9, R3
+    F_JMP    angle_pos
+angle_ok:
+
+    ; Fetch cos/sin: offset = angle*4
+    D_MOV    R0, R9
+    D_ADD    R0, R0, R0
+    D_ADD    R0, R0, R0
+    D_ADD    R1, R17, R0
+    D_LOAD32 R1, R1, 0
+    D_ADD    R2, R16, R0
+    D_LOAD32 R2, R2, 0
+
+    ; ray pos = player pos
+    D_MOV    R12, R6
+    D_MOV    R13, R7
+    D_MOV_I  R15, 0
+
+    ; step = cos/8, sin/8
+    D_SHR    R10, R1, 3
+    D_SHR    R11, R2, 3
+
+dda_loop:
+    D_ADD    R12, R12, R10
+    D_ADD    R13, R13, R11
+
+    D_SHR    R0, R12, 16
+    D_SHR    R3, R13, 16
+
+    V_CMP_I  R0, 0
+    F_JL     dda_wall
+    V_CMP_I  R0, MAP_SIZE
+    F_JGE    dda_wall
+    V_CMP_I  R3, 0
+    F_JL     dda_wall
+    V_CMP_I  R3, MAP_SIZE
+    F_JGE    dda_wall
+
+    ; tile = tilemap[y*8+x]
+    D_MOV    R14, R3
+    D_ADD    R14, R14, R14
+    D_ADD    R14, R14, R14
+    D_ADD    R14, R14, R14
+    D_ADD    R14, R14, R0
+    D_ADD    R14, R18, R14
+    D_LOAD8  R14, R14, 0
+
+    V_CMP_I  R14, 0
+    F_JNZ    dda_wall
+
+    D_ADD_I  R15, 1
+    V_CMP_I  R15, MAX_STEPS
+    F_JL     dda_loop
+
+dda_wall:
+    ; DEBUG: fixed height 100 to test draw_col
+    D_MOV_I  R10, 100
+clamp_hi_ok:
+clamp_lo_ok:
+
+    D_MOV_I  R0, 200
+    D_SUB    R0, R0, R10
+    D_SHR    R0, R0, 1
+    D_ADD    R3, R0, R10
+    D_MOV    R11, R0
+
+draw_col:
+    V_CMP    R11, R3
+    F_JGE    draw_col_done
+
+    ; ptr = fb + (y*320+col)*4 = fb + (y*256+y*64+col)*4
+    D_MOV    R14, R11
+    D_SHL    R0, R14, 8
+    D_SHL    R14, R14, 6
+    D_ADD    R14, R14, R0
+    D_ADD    R14, R14, R4
+    D_SHL    R14, R14, 2
+    D_ADD    R14, R19, R14
+
+    D_MOV_I  R0, 200
+    D_STORE8 R14, R0, 0
+    D_MOV_I  R0, 60
+    D_STORE8 R14, R0, 1
+    D_MOV_I  R0, 60
+    D_STORE8 R14, R0, 2
+    D_MOV_I  R0, 255
+    D_STORE8 R14, R0, 3
+
+    D_ADD_I  R11, 1
+    F_JMP    draw_col
+
+draw_col_done:
+    D_ADD_I  R4, 1
+    V_CMP_I  R4, SCREEN_W
+    F_JL     cast_loop
+
+    Im_FB_BLIT  R19
+    D_MOV_I     R1, 35
+    T_FRAME_SYN R1
+    Im_INPUT_RD R11
+    V_CMP_I     R11, 0
+    F_JNZ       quit
+    F_JMP       frame_loop
+
+quit:
+    D_MOV_I  R0, 0
+    F_HALT

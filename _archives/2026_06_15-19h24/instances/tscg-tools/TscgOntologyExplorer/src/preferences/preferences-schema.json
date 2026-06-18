@@ -1,0 +1,126 @@
+{
+  "version": "1.0.0",
+  "sections": [
+    {
+      "id":    "appearance",
+      "label": "Appearance",
+      "icon":  "🎨",
+      "settings": [
+        {
+          "id":          "theme",
+          "label":       "Theme",
+          "type":        "enum",
+          "values":      ["night", "day"],
+          "labels":      ["Night (dark)", "Day (beige)"],
+          "default":     "night",
+          "description": "Colour theme for the editor.",
+          "livePreview": true
+        }
+      ]
+    },
+    {
+      "id":    "paths",
+      "label": "Paths",
+      "icon":  "📁",
+      "settings": [
+        {
+          "id":          "defaultLoadedOntology",
+          "label":       "Default Ontology",
+          "type":        "file-or-url",
+          "default":     "",
+          "placeholder": "E:\\tscg\\ontology\\M2_GenericConcepts.jsonld  or  https://…",
+          "description": "Ontology loaded automatically on startup. Accepts a local absolute path or an http(s):// URL.",
+          "browse":      true,
+          "filters":     [{ "name": "JSON-LD", "extensions": ["jsonld", "json"] }]
+        },
+        {
+          "id":          "ontologyRootPath",
+          "label":       "Ontology Root Path",
+          "type":        "directory",
+          "default":     "",
+          "placeholder": "E:\\tscg\\ontology",
+          "description": "Absolute path to the ontology/ folder in your local TSCG repository. Leave empty to auto-detect from application location.",
+          "browse":      true
+        }
+      ]
+    },
+    {
+      "id":    "bridge",
+      "label": "Python Bridge",
+      "icon":  "🐍",
+      "settings": [
+        {
+          "id":          "pythonExecutable",
+          "label":       "Python Executable",
+          "type":        "string",
+          "default":     "python",
+          "placeholder": "python",
+          "description": "Command or absolute path to the Python executable."
+        },
+        {
+          "id":          "bridgePort",
+          "label":       "Default Port",
+          "type":        "number",
+          "default":     7432,
+          "min":         1024,
+          "max":         65535,
+          "description": "Default port for the FastAPI bridge server. A free port is found automatically if busy."
+        },
+        {
+          "id":          "_bridgeStatus",
+          "label":       "Bridge Status",
+          "type":        "action",
+          "actionLabel": "Restart Bridge",
+          "actionId":    "restartBridge",
+          "description": "Current status of the Python bridge server."
+        }
+      ]
+    },
+    {
+      "id":    "plugins",
+      "label": "Plugins",
+      "icon":  "🔌",
+      "settings": [
+        {
+          "id":          "pluginsDirectory",
+          "label":       "Plugins Directory",
+          "type":        "directory",
+          "default":     "",
+          "description": "Directory where installed plugins are stored.",
+          "browse":      true,
+          "readonly":    true
+        },
+        {
+          "id":          "_pluginsList",
+          "label":       "Loaded Plugins",
+          "type":        "info-list",
+          "dataSource":  "listPlugins",
+          "description": "Plugins currently installed."
+        }
+      ]
+    },
+    {
+      "id":    "editor",
+      "label": "Editor",
+      "icon":  "✏️",
+      "settings": [
+        {
+          "id":          "maxUndoHistory",
+          "label":       "Max Undo History",
+          "type":        "number",
+          "default":     100,
+          "min":         10,
+          "max":         500,
+          "description": "Maximum number of undo steps retained in memory."
+        },
+        {
+          "id":          "autoLoadLastFile",
+          "label":       "Reopen last file on startup",
+          "type":        "boolean",
+          "default":     false,
+          "description": "Automatically reopen the last loaded ontology when the application starts."
+        }
+      ]
+    }
+  ]
+}

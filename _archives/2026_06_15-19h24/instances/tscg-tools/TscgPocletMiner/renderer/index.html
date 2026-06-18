@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self' 'unsafe-inline';
+                 style-src  'self' 'unsafe-inline';
+                 img-src    'self' data: blob:;
+                 connect-src http://localhost:* http://127.0.0.1:* https://api.anthropic.com https://api.deepseek.com https://generativelanguage.googleapis.com;">
+  <title>TSCG — Poclet Miner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ═══ HEADER ════════════════════════════════════════════════════════ -->
+  <header id="header">
+    <button id="btn-home" title="TSCG GitHub">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </button>
+    <button class="tscg-logo-btn" id="btn-tscg-logo">TSCG</button>
+    <span class="hdr-sep">|</span>
+    <span class="hdr-title">Poclet Miner</span>
+    <span class="chip chip-llm" id="chip-llm">🏠 Ollama</span>
+    <span class="chip chip-rag off" id="chip-rag">RAG ✗</span>
+    <button id="btn-settings">⚙ Settings</button>
+  </header>
+
+  <!-- ═══ MAIN ══════════════════════════════════════════════════════════ -->
+  <main id="main">
+
+    <!-- Round stepper -->
+    <div id="stepper">
+      <div class="step locked" data-round="1" id="step-1">
+        <div class="step-dot">1</div>
+        <div class="step-label">System<br>ID</div>
+      </div>
+      <div class="step-conn" id="conn-1"></div>
+      <div class="step locked" data-round="2" id="step-2">
+        <div class="step-dot">2</div>
+        <div class="step-label">ASFID<br>Score</div>
+      </div>
+      <div class="step-conn" id="conn-2"></div>
+      <div class="step locked" data-round="3" id="step-3">
+        <div class="step-dot">3</div>
+        <div class="step-label">REVOI<br>Score</div>
+      </div>
+      <div class="step-conn" id="conn-3"></div>
+      <div class="step locked" data-round="4" id="step-4">
+        <div class="step-dot">4</div>
+        <div class="step-label">M2<br>Concepts</div>
+      </div>
+      <div class="step-conn" id="conn-4"></div>
+      <div class="step locked" data-round="5" id="step-5">
+        <div class="step-dot">5</div>
+        <div class="step-label">JSON-LD<br>Output</div>
+      </div>
+    </div>
+
+    <!-- Round content -->
+    <div id="round-content">
+      <div class="placeholder" id="placeholder-start">
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+        </svg>
+        <div class="placeholder-title">Ready to mine a new poclet</div>
+        <div class="placeholder-sub">Configure your LLM backend in Settings,<br>then click <strong>New Session</strong> to start.</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ═══ SPLITTER ══════════════════════════════════════════════════════ -->
+  <div id="splitter"></div>
+
+  <!-- ═══ SIDEBAR ═══════════════════════════════════════════════════════ -->
+  <aside id="sidebar">
+    <div class="tab-bar">
+      <div class="tab active" data-tab="summary">Summary</div>
+      <div class="tab" data-tab="settings">Settings</div>
+      <div class="tab" data-tab="log">Log</div>
+    </div>
+
+    <!-- Summary tab -->
+    <div class="tab-panel active" id="tab-summary">
+      <div class="sb-section" id="sb-poclet-info" style="display:none">
+        <div class="sb-section-title">Current Poclet</div>
+        <div class="sb-row"><span class="sb-key">Name</span><span class="sb-val" id="sb-name">—</span></div>
+        <div class="sb-row"><span class="sb-key">Domain</span><span class="sb-val" id="sb-domain">—</span></div>
+        <div class="sb-row"><span class="sb-key">Type</span><span class="sb-val" id="sb-type">—</span></div>
+        <div class="sb-row"><span class="sb-key">SpectralClass</span><span class="sb-val" id="sb-spectral">—</span></div>
+        <div class="sb-row"><span class="sb-key">δ (gap)</span><span class="sb-val" id="sb-gap">—</span></div>
+        <hr class="divider">
+        <div class="sb-section-title">ASFID mean</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap" id="sb-asfid-chips"></div>
+        <hr class="divider" style="margin-top:10px">
+        <div class="sb-section-title">REVOI mean</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap" id="sb-revoi-chips"></div>
+      </div>
+      <div id="sb-empty" style="color:var(--muted);font-size:12px;margin-top:20px;text-align:center">
+        Start a session to see the poclet summary here.
+      </div>
+    </div>
+
+    <!-- Settings tab -->
+    <div class="tab-panel" id="tab-settings">
+
+      <div class="sb-section">
+        <div class="sb-section-title">LLM Backend</div>
+        <div class="form-group">
+          <label class="form-label">Provider</label>
+          <select class="form-select" id="provider-select">
+            <!-- Populated dynamically by renderer.js -->
+          </select>
+        </div>
+        <!-- Provider info box -->
+        <div id="provider-info-box" style="margin-top:8px; padding:10px; background:var(--bg-alt); border:1px solid var(--border); border-radius:6px; font-size:11px; line-height:1.6;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+            <span id="provider-info-icon" style="font-size:18px;"></span>
+            <span id="provider-info-name" style="font-weight:600; color:var(--fg);"></span>
+          </div>
+          <div id="provider-info-desc" style="color:var(--muted);"></div>
+          <div id="provider-info-meta" style="margin-top:4px; color:var(--sphinx); font-size:10px;"></div>
+        </div>
+      </div>
+
+      <!-- Gemini -->
+      <div id="key-section-gemini" class="sb-section" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Google AI Studio API Key</label>
+          <input class="form-input mono" id="input-gemini-key" type="password" placeholder="AIzaSy...">
+          <div style="margin-top:4px;font-size:10px;color:var(--sphinx)">
+            🆓 Gratuit sur <a id="lnk-gemini" href="#" style="color:var(--sphinx)">aistudio.google.com</a>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Model</label>
+          <select class="form-select" id="input-gemini-model">
+            <option value="gemini-2.5-flash">Gemini 2.5 Flash — 250 req/day (recommandé)</option>
+            <option value="gemini-2.5-pro">Gemini 2.5 Pro — 100 req/day (meilleure qualité)</option>
+          </select>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="btn-test-gemini">Test connection</button>
+        <div style="margin-top:8px;font-size:10px;color:var(--warn);line-height:1.5">
+          ⚠ Sur le tier gratuit, les données peuvent être utilisées par Google pour améliorer ses modèles.
+        </div>
+      </div>
+
+      <!-- Ollama -->
+      <div id="key-section-ollama" class="sb-section" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Model (Ollama)</label>
+          <select class="form-select" id="input-ollama-model">
+            <option value="phi3.5:3.8b-mini-instruct-q4_K_M">Phi-3.5 Mini 3.8B Q4 (recommandé, 4 GB VRAM)</option>
+            <option value="smollm2:1.7b-instruct-q4_K_M">SmolLM2 1.7B Q4 (ultra-léger, 1.2 GB VRAM)</option>
+          </select>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="btn-test-ollama">Test connection</button>
+        <div style="margin-top:8px;font-size:10px;color:var(--muted);line-height:1.5">
+          Install: <a id="lnk-ollama" href="#" style="color:var(--sphinx)">ollama.com</a><br>
+          Puis: <code style="font-family:var(--mono)">ollama pull phi3.5:3.8b-mini-instruct-q4_K_M</code>
+        </div>
+      </div>
+
+      <!-- DeepSeek -->
+      <div id="key-section-deepseek" class="sb-section" style="display:none">
+        <div class="form-group">
+          <label class="form-label">DeepSeek API Key</label>
+          <input class="form-input mono" id="input-deepseek-key" type="password" placeholder="sk-...">
+          <div style="margin-top:4px;font-size:10px;color:var(--muted)">
+            <a id="lnk-deepseek" href="#" style="color:var(--sphinx)">platform.deepseek.com</a>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Model</label>
+          <select class="form-select" id="input-deepseek-model">
+            <option value="deepseek-chat">DeepSeek V3 (recommandé)</option>
+            <option value="deepseek-reasoner">DeepSeek R1 (raisonnement avancé)</option>
+          </select>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="btn-test-deepseek">Test connection</button>
+      </div>
+
+      <!-- Anthropic -->
+      <div id="key-section-anthropic" class="sb-section" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Anthropic API Key</label>
+          <input class="form-input mono" id="input-anthropic-key" type="password" placeholder="sk-ant-...">
+          <div style="margin-top:4px;font-size:10px;color:var(--muted)">
+            <a id="lnk-anthropic" href="#" style="color:var(--sphinx)">console.anthropic.com</a>
+            &nbsp;·&nbsp; Compte séparé du Pro
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Model</label>
+          <select class="form-select" id="input-anthropic-model">
+            <option value="claude-haiku-4-5-20251001">Claude Haiku 4.5 (rapide, économique)</option>
+            <option value="claude-sonnet-4-6">Claude Sonnet 4.6 (qualité maximale)</option>
+          </select>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="btn-test-anthropic">Test connection</button>
+      </div>
+
+      <hr class="divider">
+
+      <div class="sb-section">
+        <div class="sb-section-title">TSCG Repository</div>
+        <div class="form-group">
+          <label class="form-label">Local repo root</label>
+          <div style="display:flex;gap:6px">
+            <input class="form-input mono" id="input-repo-root" placeholder="E:\...\tscg" style="flex:1;min-width:0">
+            <button class="btn btn-ghost btn-sm" id="btn-browse-repo">…</button>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-sm btn-full" id="btn-build-rag">⚡ Build RAG Index</button>
+        <div id="rag-status-line" style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center"></div>
+      </div>
+
+      <hr class="divider">
+
+      <button class="btn btn-success btn-sm btn-full" id="btn-save-settings">Save Settings</button>
+    </div>
+
+    <!-- Log tab -->
+    <div class="tab-panel" id="tab-log">
+      <div style="display:flex;flex-direction:column;gap:6px;height:100%">
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <button class="btn btn-ghost btn-sm" id="btn-copy-log" style="flex:1">⎘ Copy log</button>
+          <button class="btn btn-ghost btn-sm" id="btn-clear-log">✕ Clear</button>
+        </div>
+        <div class="log-area" id="log-area" style="max-height:none;flex:1;height:0">
+          <span class="log-info">TscgPocletMiner ready.</span>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ═══ FOOTER / Controls ════════════════════════════════════════════ -->
+  <footer id="footer">
+    <div class="footer-status">
+      <div class="spinner" id="footer-spinner" style="display:none"></div>
+      <span id="footer-msg">Ready</span>
+    </div>
+    <div class="footer-actions">
+      <button class="btn btn-ghost" id="btn-new-session">+ New Session</button>
+      <button class="btn btn-ghost" id="btn-prev" disabled>← Prev</button>
+      <button class="btn btn-primary" id="btn-run" disabled>▶ Run Round 1</button>
+      <button class="btn btn-ghost" id="btn-next" disabled>Next →</button>
+      <button class="btn btn-success" id="btn-save-jsonld" disabled>💾 Save JSON-LD</button>
+    </div>
+  </footer>
+
+</div><!-- #app -->
+
+<!-- Tooltip -->
+<div id="tooltip"></div>
+
+<!-- Script -->
+<script src="renderer.js"></script>
+</body>
+</html>

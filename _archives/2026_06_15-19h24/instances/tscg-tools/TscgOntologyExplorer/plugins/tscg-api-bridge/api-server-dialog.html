@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<!-- =============================================================
+     TscgOntologyAPIServer — Control Panel Dialog
+     Injected into TscgOntologyExplorer main BrowserWindow.
+     Communicates with main process via window.__tscgApiBridge.*
+     Author: Echopraxium with the collaboration of Claude AI
+     ============================================================= -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            tscg: { dark: '#0f172a', panel: '#1e293b', border: '#334155',
+                    accent: '#6366f1', ok: '#22c55e', warn: '#f59e0b',
+                    err: '#ef4444', muted: '#94a3b8' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+    #tscg-api-dialog-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,.65);
+      display: flex; align-items: center; justify-content: center;
+    }
+    #tscg-api-dialog {
+      width: min(860px, 96vw);
+      max-height: 90vh;
+      display: flex; flex-direction: column;
+      background: #1e293b; border: 1px solid #334155;
+      border-radius: 10px; box-shadow: 0 24px 64px rgba(0,0,0,.6);
+      overflow: hidden;
+    }
+    .tab-btn { transition: background .15s, color .15s; }
+    .tab-btn.active { background: #6366f1 !important; color: #fff !important; }
+    #log-area {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 12px; line-height: 1.5;
+      background: #0f172a; color: #94a3b8;
+      padding: 10px; overflow-y: auto;
+      height: 220px; white-space: pre-wrap; word-break: break-all;
+    }
+    #swagger-frame { width: 100%; height: 340px; border: none;
+      background: #fff; border-radius: 4px; }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%;
+      display: inline-block; margin-right: 6px; }
+    .input-field {
+      background: #0f172a; border: 1px solid #334155; color: #e2e8f0;
+      border-radius: 5px; padding: 5px 9px; font-size: 13px; width: 100%;
+      outline: none;
+    }
+    .input-field:focus { border-color: #6366f1; }
+    .btn { border-radius: 5px; padding: 6px 14px; font-size: 13px;
+      font-weight: 600; cursor: pointer; transition: opacity .15s; }
+    .btn:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-primary  { background: #6366f1; color: #fff; border: none; }
+    .btn-success  { background: #16a34a; color: #fff; border: none; }
+    .btn-danger   { background: #dc2626; color: #fff; border: none; }
+    .btn-warn     { background: #d97706; color: #fff; border: none; }
+    .btn-ghost    { background: transparent; color: #94a3b8;
+      border: 1px solid #334155; }
+    .btn:not(:disabled):hover { opacity: .85; }
+  </style>
+</head>
+<body style="margin:0;padding:0;background:#1e293b;">
+<div id="tscg-api-dialog-overlay" style="display:flex;align-items:flex-start;justify-content:center;min-height:100vh;">
+  <div id="tscg-api-dialog" style="width:100%;max-height:100vh;display:flex;flex-direction:column;background:#1e293b;overflow:hidden;">
+
+    <!-- ── Title bar ────────────────────────────────────────── -->
+    <div class="flex items-center justify-between px-5 py-3"
+         style="background:#0f172a; border-bottom:1px solid #334155;">
+      <div class="flex items-center gap-3">
+        <span style="font-size:18px;">⚙️</span>
+        <span class="font-bold text-white text-sm tracking-wide">
+          TscgOntologyAPIServer — Control Panel
+        </span>
+        <span id="tscg-version-badge"
+              class="text-xs px-2 py-0.5 rounded-full"
+              style="background:#1e293b; color:#94a3b8; border:1px solid #334155;">
+          v1.1.0
+        </span>
+      </div>
+      <button onclick="window.__tscgApiBridge.closeDialog()"
+              class="btn btn-ghost" style="padding:3px 10px; font-size:16px;">✕</button>
+    </div>
+
+    <!-- ── Tab bar ──────────────────────────────────────────── -->
+    <div class="flex gap-1 px-4 pt-3 pb-0"
+         style="background:#1e293b; border-bottom:1px solid #334155;">
+      <button class="tab-btn active btn btn-ghost text-xs px-4 py-1.5"
+              onclick="switchTab('status')" id="tab-status">📊 Status</button>
+      <button class="tab-btn btn btn-ghost text-xs px-4 py-1.5"
+              onclick="switchTab('config')" id="tab-config">🔧 Config</button>
+      <button class="tab-btn btn btn-ghost text-xs px-4 py-1.5"
+              onclick="switchTab('logs')" id="tab-logs">📋 Logs</button>
+      <button class="tab-btn btn btn-ghost text-xs px-4 py-1.5"
+              onclick="switchTab('swagger')" id="tab-swagger">📖 Swagger UI</button>
+    </div>
+
+    <!-- ── Tab content ──────────────────────────────────────── -->
+    <div class="overflow-y-auto flex-1 p-5" style="min-height:0;">
+
+      <!-- STATUS tab -->
+      <div id="pane-status">
+        <!-- Server state banner -->
+        <div id="state-banner"
+             class="flex items-center gap-3 rounded-lg px-4 py-3 mb-5"
+             style="background:#0f172a; border:1px solid #334155;">
+          <span class="status-dot" id="state-dot"
+                style="background:#94a3b8;"></span>
+          <span id="state-label" class="font-semibold text-sm"
+                style="color:#94a3b8;">Checking…</span>
+          <span id="state-url" class="text-xs ml-auto"
+                style="color:#64748b;"></span>
+        </div>
+
+        <!-- Controls row -->
+        <div class="flex gap-2 mb-5">
+          <button id="btn-start"   class="btn btn-success"
+                  onclick="doAction('start')">▶ Start</button>
+          <button id="btn-stop"    class="btn btn-danger"
+                  onclick="doAction('stop')">■ Stop</button>
+          <button id="btn-restart" class="btn btn-warn"
+                  onclick="doAction('restart')">↺ Restart</button>
+          <button class="btn btn-ghost ml-auto"
+                  onclick="refreshStatus()">⟳ Refresh</button>
+        </div>
+
+        <!-- Stats grid -->
+        <div class="grid grid-cols-2 gap-3 mb-5" id="stats-grid">
+          <div class="rounded p-3" style="background:#0f172a; border:1px solid #334155;">
+            <div class="text-xs mb-1" style="color:#64748b;">URL</div>
+            <div id="s-url" class="text-sm font-mono" style="color:#e2e8f0;">—</div>
+          </div>
+          <div class="rounded p-3" style="background:#0f172a; border:1px solid #334155;">
+            <div class="text-xs mb-1" style="color:#64748b;">Uptime</div>
+            <div id="s-uptime" class="text-sm font-mono" style="color:#e2e8f0;">—</div>
+          </div>
+          <div class="rounded p-3" style="background:#0f172a; border:1px solid #334155;">
+            <div class="text-xs mb-1" style="color:#64748b;">Named Graphs</div>
+            <div id="s-graphs" class="text-sm font-mono" style="color:#e2e8f0;">—</div>
+          </div>
+          <div class="rounded p-3" style="background:#0f172a; border:1px solid #334155;">
+            <div class="text-xs mb-1" style="color:#64748b;">Triples</div>
+            <div id="s-triples" class="text-sm font-mono" style="color:#e2e8f0;">—</div>
+          </div>
+          <div class="rounded p-3" style="background:#0f172a; border:1px solid #334155;">
+            <div class="text-xs mb-1" style="color:#64748b;">Persistent</div>
+            <div id="s-persistent" class="text-sm font-mono" style="color:#e2e8f0;">—</div>
+          </div>
+          <div class="rounded p-3" style="background:#0f172a; border:1px solid #334155;">
+            <div class="text-xs mb-1" style="color:#64748b;">Store path</div>
+            <div id="s-storepath" class="text-xs font-mono truncate"
+                 style="color:#94a3b8;">—</div>
+          </div>
+        </div>
+
+        <!-- Layer map -->
+        <div class="rounded p-3" style="background:#0f172a; border:1px solid #334155;">
+          <div class="text-xs font-semibold mb-2" style="color:#64748b;">
+            GRAPH LAYERS
+          </div>
+          <div class="flex gap-4" id="layer-map">
+            <span class="text-xs" style="color:#94a3b8;">—</span>
+          </div>
+        </div>
+      </div><!-- /pane-status -->
+
+      <!-- CONFIG tab -->
+      <div id="pane-config" class="hidden">
+        <p class="text-xs mb-4" style="color:#64748b;">
+          These values are read-only — they come from the plugin's
+          <code class="px-1 rounded" style="background:#0f172a;">pluginMeta</code>
+          config. Edit <code>pluginMeta</code> in TscgOntologyExplorer and
+          restart the server to apply changes.
+        </p>
+        <div class="flex flex-col gap-3" id="config-fields"></div>
+        <div class="mt-5 p-3 rounded text-xs" style="background:#0f172a;
+             border:1px solid #334155; color:#64748b;">
+          💡 To persist the triple store across restarts, set
+          <code>tscg-api-store-path</code>. Default:
+          <span id="conf-default-store" style="color:#94a3b8;"></span>
+        </div>
+      </div><!-- /pane-config -->
+
+      <!-- LOGS tab -->
+      <div id="pane-logs" class="hidden">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs font-semibold" style="color:#64748b;">
+            SERVER STDOUT / STDERR
+          </span>
+          <button class="btn btn-ghost text-xs" onclick="clearLogs()">
+            🗑 Clear
+          </button>
+        </div>
+        <div id="log-area">Waiting for server output…</div>
+      </div><!-- /pane-logs -->
+
+      <!-- SWAGGER tab -->
+      <div id="pane-swagger" class="hidden">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-xs" style="color:#64748b;">
+            Swagger UI embedded — or
+          </span>
+          <button class="btn btn-ghost text-xs"
+                  onclick="openSwaggerExternal()">
+            🔗 Open in browser
+          </button>
+        </div>
+        <div id="swagger-placeholder"
+             class="flex items-center justify-center rounded"
+             style="height:340px; background:#0f172a; border:1px solid #334155;
+                    color:#64748b; font-size:13px;">
+          ⚠️ Server not running — start it first
+        </div>
+        <iframe id="swagger-frame" class="hidden rounded"
+                style="height:340px;"></iframe>
+      </div><!-- /pane-swagger -->
+
+    </div><!-- /tab content -->
+
+    <!-- ── Footer ───────────────────────────────────────────── -->
+    <div class="flex justify-between items-center px-5 py-2"
+         style="background:#0f172a; border-top:1px solid #334155;">
+      <span class="text-xs" style="color:#475569;">
+        tscg-api-bridge • TscgOntologyExplorer plugin
+      </span>
+      <span id="footer-status" class="text-xs" style="color:#475569;">—</span>
+    </div>
+
+  </div><!-- /#tscg-api-dialog -->
+</div><!-- /#overlay -->
+
+<script>
+// ── Tab switching ──────────────────────────────────────────────
+const TABS = ['status', 'config', 'logs', 'swagger']
+function switchTab (name) {
+  TABS.forEach(t => {
+    document.getElementById('pane-' + t).classList.toggle('hidden', t !== name)
+    document.getElementById('tab-'  + t).classList.toggle('active', t === name)
+  })
+  if (name === 'swagger') loadSwagger()
+  if (name === 'status')  refreshStatus()
+}
+
+// ── Bridge calls (populated by main process before injection) ─
+// window.__tscgApiBridge is set by the injecting JS in index.js
+
+function doAction (action) {
+  setFooter('⏳ ' + action + '…')
+  window.__tscgApiBridge.action(action)
+    .then(() => { setFooter('✔ ' + action + ' done'); refreshStatus() })
+    .catch(e  => { setFooter('✗ ' + e.message) })
+}
+
+function refreshStatus () {
+  window.__tscgApiBridge.getStatus()
+    .then(renderStatus)
+    .catch(() => renderStatus(null))
+}
+
+function renderStatus (data) {
+  const dot   = document.getElementById('state-dot')
+  const label = document.getElementById('state-label')
+  const url   = document.getElementById('state-url')
+
+  if (!data || !data.running) {
+    dot.style.background   = '#ef4444'
+    label.style.color      = '#ef4444'
+    label.textContent      = 'STOPPED'
+    url.textContent        = ''
+    document.getElementById('btn-start').disabled   = false
+    document.getElementById('btn-stop').disabled    = true
+    document.getElementById('btn-restart').disabled = true
+    ;['s-url','s-uptime','s-graphs','s-triples','s-persistent','s-storepath']
+      .forEach(id => document.getElementById(id).textContent = '—')
+    document.getElementById('layer-map').innerHTML =
+      '<span class="text-xs" style="color:#94a3b8;">—</span>'
+    return
+  }
+
+  dot.style.background   = '#22c55e'
+  label.style.color      = '#22c55e'
+  label.textContent      = 'RUNNING'
+  url.textContent        = data.url
+  document.getElementById('btn-start').disabled   = true
+  document.getElementById('btn-stop').disabled    = false
+  document.getElementById('btn-restart').disabled = false
+
+  document.getElementById('s-url').textContent        = data.url || '—'
+  document.getElementById('s-uptime').textContent     = data.health?.uptime + 's' || '—'
+  document.getElementById('s-graphs').textContent     = data.health?.graph_count ?? '—'
+  document.getElementById('s-triples').textContent    = data.health?.triple_count ?? '—'
+  document.getElementById('s-persistent').textContent = data.health?.persistent ? 'Yes ✔' : 'No (in-memory)'
+  document.getElementById('s-storepath').textContent  = data.info?.store_path || '(in-memory)'
+
+  // Layer map
+  if (data.layers) {
+    const colors = { M3:'#6366f1', M2:'#06b6d4', M1:'#22c55e', M0:'#f59e0b', other:'#94a3b8' }
+    document.getElementById('layer-map').innerHTML =
+      Object.entries(data.layers).map(([k, v]) =>
+        `<span class="text-xs font-mono" style="color:${colors[k]||'#94a3b8'}">
+           ${k}: <b>${v}</b>
+         </span>`
+      ).join('')
+  }
+
+  setFooter('Last refresh: ' + new Date().toLocaleTimeString())
+}
+
+// ── Config tab ────────────────────────────────────────────────
+function renderConfig (cfg) {
+  const container = document.getElementById('config-fields')
+  container.innerHTML = ''
+  const labels = {
+    'tscg-python-executable': 'Python executable',
+    'tscg-api-host':          'Bind host',
+    'tscg-api-port':          'Bind port',
+    'tscg-api-store-path':    'Store path (.oxg)',
+    'tscg-api-ontology-dir':  'Ontology directory',
+    'tscg-api-log-level':     'Log level (uvicorn)',
+  }
+  Object.entries(labels).forEach(([key, lbl]) => {
+    const val = cfg[key] || ''
+    const div = document.createElement('div')
+    div.innerHTML = `
+      <label class="text-xs font-semibold block mb-1"
+             style="color:#94a3b8;">${lbl}</label>
+      <input class="input-field" readonly value="${val || '(default)'}"
+             title="${key}"/>
+      <div class="text-xs mt-0.5" style="color:#475569;">${key}</div>`
+    container.appendChild(div)
+  })
+  document.getElementById('conf-default-store').textContent =
+    cfg['__defaultStorePath'] || ''
+}
+
+// ── Logs tab ──────────────────────────────────────────────────
+function appendLog (line) {
+  const el = document.getElementById('log-area')
+  el.textContent += line + '\n'
+  el.scrollTop = el.scrollHeight
+}
+function clearLogs () {
+  document.getElementById('log-area').textContent = ''
+}
+
+// ── Swagger tab ───────────────────────────────────────────────
+function loadSwagger () {
+  const frame       = document.getElementById('swagger-frame')
+  const placeholder = document.getElementById('swagger-placeholder')
+  window.__tscgApiBridge.getStatus().then(data => {
+    if (data && data.running && data.url) {
+      frame.src = data.url + '/docs'
+      frame.classList.remove('hidden')
+      placeholder.classList.add('hidden')
+    } else {
+      frame.classList.add('hidden')
+      placeholder.classList.remove('hidden')
+    }
+  })
+}
+function openSwaggerExternal () {
+  window.__tscgApiBridge.openSwagger()
+}
+
+// ── Footer helper ─────────────────────────────────────────────
+function setFooter (msg) {
+  document.getElementById('footer-status').textContent = msg
+}
+
+// Overlay click-to-close disabled — this is a dedicated window
+
+// ── Init ──────────────────────────────────────────────────────
+window.addEventListener('tscg-api-log', e => appendLog(e.detail))
+
+window.__tscgApiBridge.getConfig().then(renderConfig)
+refreshStatus()
+</script>
+</body>
+</html>

@@ -251,47 +251,50 @@ impl Cpu {
                 self.regs.set(d, a.wrapping_div(b) as u64)?;
             }
             Opcode::D_Rem => {
-                let a = self.regs.get(s1)? as i64;
-                let b = self.regs.get(s2)? as i64;
+                // Use unsigned modulo (u64) — IR emits urem, not srem.
+                // Signed rem would give wrong results for hash values > 2^31
+                // when they have been sign-extended from i32 to u64.
+                let a = self.regs.get(s1)?;  // u64 (unsigned)
+                let b = self.regs.get(s2)?;  // u64 (unsigned)
                 if b == 0 { return Err(VmError::DivisionByZero); }
-                self.regs.set(d, a.wrapping_rem(b) as u64)?;
+                self.regs.set(d, a % b)?;
             }
-            // D_LOAD8/16/32/64 Rdst, Rsrc, offset  — Type R, offset in flags field
-            Opcode::D_Load8 => {
-                let addr = self.regs.get(s1)?.wrapping_add(_flags as u64);
+Opcode::D_Load8 => {
+                let addr = self.regs.get(s1)?.wrapping_add((if _flags >= 256 { (_flags as i16).wrapping_sub(512) } else { _flags as i16 }) as i64 as u64);
                 let v = self.mem.read_u8(addr)? as u64;
                 self.regs.set(d, v)?;
             }
             Opcode::D_Load16 => {
-                let addr = self.regs.get(s1)?.wrapping_add(_flags as u64);
+                let addr = self.regs.get(s1)?.wrapping_add((if _flags >= 256 { (_flags as i16).wrapping_sub(512) } else { _flags as i16 }) as i64 as u64);
                 let v = self.mem.read_u16(addr)? as u64;
                 self.regs.set(d, v)?;
             }
             Opcode::D_Load32 => {
-                let addr = self.regs.get(s1)?.wrapping_add(_flags as u64);
+                let addr = self.regs.get(s1)?.wrapping_add((if _flags >= 256 { (_flags as i16).wrapping_sub(512) } else { _flags as i16 }) as i64 as u64);
                 let v = self.mem.read_u32(addr)? as i32 as i64 as u64;  // sign-extend
                 self.regs.set(d, v)?;
             }
             Opcode::D_Load64 => {
-                let addr = self.regs.get(s1)?.wrapping_add(_flags as u64);
+                let addr = self.regs.get(s1)?.wrapping_add((if _flags >= 256 { (_flags as i16).wrapping_sub(512) } else { _flags as i16 }) as i64 as u64);
                 let v = self.mem.read_u64(addr)?;
                 self.regs.set(d, v)?;
             }
             // D_STORE8/16/32/64 Raddr, Rsrc, offset  — Type R
             Opcode::D_Store8 => {
-                let addr = self.regs.get(d)?.wrapping_add(_flags as u64);
+                let addr = self.regs.get(d)?.wrapping_add((if _flags >= 256 { (_flags as i16).wrapping_sub(512) } else { _flags as i16 }) as i64 as u64);
                 let v = self.regs.get(s1)? as u8;
                 self.mem.write_u8(addr, v)?;
             }
             Opcode::D_Store32 => {
-                let addr = self.regs.get(d)?.wrapping_add(_flags as u64);
+                let addr = self.regs.get(d)?.wrapping_add((if _flags >= 256 { (_flags as i16).wrapping_sub(512) } else { _flags as i16 }) as i64 as u64);
                 let v = self.regs.get(s1)? as u32;
+
                 self.mem.write_u32(addr, v)?;
             }
             Opcode::D_Store64 => {
-                let addr = self.regs.get(d)?.wrapping_add(_flags as u64);
+                let addr = self.regs.get(d)?.wrapping_add((if _flags >= 256 { (_flags as i16).wrapping_sub(512) } else { _flags as i16 }) as i64 as u64);
                 let v = self.regs.get(s1)?;
-                self.mem.write_u64(addr, v)?;
+self.mem.write_u64(addr, v)?;
             }
             Opcode::D_Memcpy => {
                 let dst_addr = self.regs.get(d)?;

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<!--
+  index.html
+  ==========
+  TSCG Poclet Simulation — Color Synthesis Federated (Electron)
+  Author: Echopraxium with the collaboration of Claude AI
+
+  Structure:
+    ┌─────────────────────── Title Bar ───────────────────────────┐
+    │ 🎨 TSCG · Color Synthesis Federated   [M0]   [ ⌂ Home ]   │
+    ├─────────────┬────────────────────────┬───────────────────────┤
+    │  LEFT       │  CENTER                │  RIGHT                │
+    │  300px      │  flex                  │  480px                │
+    │  Sliders    │  Tabs RGB/HSL/CMY/CMYK │  [Description]        │
+    │  + Swatch   │  RGB Cube (draggable)  │  [Concepts  ]         │
+    │  + Codes    │  Named Colors          │  [Scores    ]         │
+    └─────────────┴────────────────────────┴───────────────────────┘
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TSCG · Color Synthesis Federated</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     TITLE BAR
+══════════════════════════════════════════════ -->
+<div class="titlebar">
+  <button id="btn-home" title="Poclet Explorer (Ctrl+Shift+E)"
+          style="-webkit-app-region:no-drag; background:none; border:none; cursor:pointer;
+                 padding:4px 6px; margin-right:4px; border-radius:5px;
+                 color:#8b949e; font-size:23px; line-height:1;
+                 transition:color .15s, background .15s;"
+          onmouseover="this.style.color='#79c0ff';this.style.background='rgba(121,192,255,0.1)'"
+          onmouseout="this.style.color='#8b949e';this.style.background='none'">&#8962;</button>
+  <span class="titlebar-title">
+    TSCG &middot; Color Synthesis Federated
+    <span class="titlebar-badge">M0 &middot; Federated Poclet</span>
+  </span>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     THREE-PANEL SHELL
+══════════════════════════════════════════════ -->
+<div class="shell">
+
+  <!-- ══ LEFT — Sliders ══ -->
+  <div class="panel-left">
+    <div class="title-area">
+      <h1>🎨 Color Synthesis Federated</h1>
+      <p class="domain-lbl">Domain: Optics / Color Science</p>
+    </div>
+    <div class="divider-v"></div>
+    <div class="model-lbl" id="modelLbl">RGB Controls</div>
+
+    <div class="sliders-area">
+
+      <!-- RGB -->
+      <div class="slider-group active" data-m="RGB">
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Red</span>
+            <span class="s-val" id="vr" style="color:#ff6464">180</span>
+          </div>
+          <input type="range" id="sr" min="0" max="255" value="180"
+                 oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Green</span>
+            <span class="s-val" id="vg" style="color:#50c850">80</span>
+          </div>
+          <input type="range" id="sg" min="0" max="255" value="80"
+                 oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Blue</span>
+            <span class="s-val" id="vb" style="color:#6478ff">220</span>
+          </div>
+          <input type="range" id="sb" min="0" max="255" value="220"
+                 oninput="onSlide()">
+        </div>
+      </div>
+
+      <!-- HSL -->
+      <div class="slider-group" data-m="HSL">
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Hue</span>
+            <span class="s-val" id="vh" style="color:#c8b464">0°</span>
+          </div>
+          <input type="range" id="sh" min="0" max="360" value="0"
+                 oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Saturation</span>
+            <span class="s-val" id="vs" style="color:#b482dc">50%</span>
+          </div>
+          <input type="range" id="ss" min="0" max="100" value="50"
+                 oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Lightness</span>
+            <span class="s-val" id="vl" style="color:#b4dcb4">50%</span>
+          </div>
+          <input type="range" id="sl" min="0" max="100" value="50"
+                 oninput="onSlide()">
+        </div>
+      </div>
+
+      <!-- CMY -->
+      <div class="slider-group" data-m="CMY">
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Cyan</span>
+            <span class="s-val" id="vcy" style="color:#3cc8c8">0%</span>
+          </div>
+          <input type="range" id="scy" min="0" max="100" value="0"
+                 oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Magenta</span>
+            <span class="s-val" id="vmg" style="color:#dc3cb4">0%</span>
+          </div>
+          <input type="range" id="smg" min="0" max="100" value="0"
+                 oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Yellow</span>
+            <span class="s-val" id="vyw" style="color:#dcc83c">0%</span>
+          </div>
+          <input type="range" id="syw" min="0" max="100" value="0"
+                 oninput="onSlide()">
+        </div>
+      </div>
+
+      <!-- CMYK -->
+      <div class="slider-group" data-m="CMYK">
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Cyan</span>
+            <span class="s-val" id="vck" style="color:#3cc8c8">0%</span>
+          </div>
+          <input type="range" id="sck" min="0" max="100" value="0"
+                 oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Magenta</span>
+            <span class="s-val" id="vmk" style="color:#dc3cb4">0%</span>
+          </div>
+          <input type="range" id="smk" min="0" max="100" value="0"
+                 oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Yellow</span>
+            <span class="s-val" id="vyk" style="color:#dcc83c">0%</span>
+          </div>
+          <input type="range" id="syk" min="0" max="100" value="0"
+                 oninput="onSlide()">
+        </div>
+        <div class="slider-item">
+          <div class="slider-row">
+            <span class="s-lbl">Black (K)</span>
+            <span class="s-val" id="vkk" style="color:#a0a0a0">0%</span>
+          </div>
+          <input type="range" id="skk" min="0" max="100" value="0"
+                 oninput="onSlide()">
+        </div>
+      </div>
+
+    </div><!-- /sliders-area -->
+
+    <!-- Color readout -->
+    <div class="color-readout">
+      <div class="swatch" id="swatch">
+        <span id="hex-val">#B450DC</span>
+        <button id="btn-eyedropper" title="Pick color from screen"
+                onclick="pickColor()"
+                style="background:none; border:none; cursor:pointer; padding:2px 4px;
+                       font-size:16px; line-height:1; border-radius:4px; margin-left:6px;
+                       opacity:0.7; transition:opacity .15s, background .15s;"
+                onmouseover="this.style.opacity='1';this.style.background='rgba(255,255,255,0.15)'"
+                onmouseout="this.style.opacity='0.7';this.style.background='none'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+     xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;pointer-events:none">
+  <!-- Pipette style Material "colorize" / ColorPicker -->
+  <!-- Corps principal (polygone fermé, incliné 45°) -->
+  <path d="M20.71 5.63l-2.34-2.34a1 1 0 0 0-1.41 0l-3.12 3.12-1.41-1.42-1.42 1.42
+           1.41 1.41-6.6 6.6A2 2 0 0 0 5 16v3h3a2 2 0 0 0 1.42-.59l6.6-6.6
+           1.41 1.42 1.42-1.42-1.42-1.41 3.12-3.12a1 1 0 0 0 0-1.65z"
+        fill="currentColor"/>
+  <!-- Petite goutte en bas à gauche -->
+  <circle cx="6.5" cy="17.5" r="1" fill="currentColor" opacity="0.7"/>
+</svg></button>
+      </div>
+      <div class="code-row" id="code-rgb">
+        <span class="c-lbl" style="color:var(--rgb-c)">RGB:</span>
+        <span class="c-val"></span>
+      </div>
+      <div class="code-row" id="code-hsl">
+        <span class="c-lbl" style="color:var(--hsl-c)">HSL:</span>
+        <span class="c-val"></span>
+      </div>
+      <div class="code-row" id="code-cmy">
+        <span class="c-lbl" style="color:var(--cmy-c)">CMY:</span>
+        <span class="c-val"></span>
+      </div>
+      <div class="code-row" id="code-cmyk">
+        <span class="c-lbl" style="color:var(--cmyk-c)">CMYK:</span>
+        <span class="c-val"></span>
+      </div>
+    </div>
+
+    <!-- Reset button -->
+    <div style="padding: 0 var(--pad) var(--pad);">
+      <button onclick="resetColor()"
+              style="width:100%; height:30px; background:var(--panel2);
+                     border:1px solid var(--border); border-radius:5px;
+                     color:var(--text); font-size:12px; font-family:'Segoe UI',sans-serif;
+                     cursor:pointer; letter-spacing:0.3px;
+                     transition:border-color .12s, color .12s;"
+              onmouseover="this.style.borderColor='#ffc832';this.style.color='#ffc832'"
+              onmouseout="this.style.borderColor='#373750';this.style.color='#dcdce6'">
+        &#8634; Reset
+      </button>
+    </div>
+  </div><!-- /panel-left -->
+
+  <!-- Splitter redimensionnable left / center -->
+  <div id="splitter-lc"></div>
+
+  <!-- ══ CENTER — Cube + Named Colors ══ -->
+  <div class="panel-center">
+
+    <div class="tabs" id="tabBar">
+      <button class="tab active" data-m="RGB"  onclick="setModel('RGB')">RGB</button>
+      <button class="tab"        data-m="HSL"  onclick="setModel('HSL')">HSL</button>
+      <button class="tab"        data-m="CMY"  onclick="setModel('CMY')">CMY</button>
+      <button class="tab"        data-m="CMYK" onclick="setModel('CMYK')">CMYK</button>
+    </div>
+
+    <div class="cube-wrapper">
+      <div class="cube-title">
+        RGB Color Cube &nbsp;
+        <span id="dragHint" style="opacity:0.6">[drag to rotate]</span>
+      </div>
+      <canvas id="cubeCanvas" width="492"></canvas>
+      <div class="principle-lbl" id="principleLbl">Principle: Additive (light)</div>
+    </div>
+
+    <div id="splitter-tb"></div>
+
+    <div class="named-area" id="namedArea">
+      <div class="named-title">Named Colors</div>
+      <div class="named-grid" id="namedGrid"></div>
+      <div class="source-lbl">
+        Sources: M0_RGB / M0_HSL / M0_CMY / M0_CMYK + M0_ColorSynthesis_Federated
+      </div>
+    </div>
+
+  </div><!-- /panel-center -->
+
+  <!-- Splitter redimensionnable center / right -->
+  <div id="splitter-cr"></div>
+
+  <!-- ══ RIGHT — Onglets Description / Concepts / Scores ══ -->
+  <div class="panel-right">
+
+    <!-- Barre d'onglets -->
+    <div class="rtab-bar">
+      <button class="rtab active" data-tab="description"
+              onclick="setRTab('description')">Description</button>
+      <button class="rtab"        data-tab="concepts"
+              onclick="setRTab('concepts')">Concepts</button>
+      <button class="rtab"        data-tab="scores"
+              onclick="setRTab('scores')">Scores</button>
+    </div>
+
+    <!-- Contenu Description (README du modèle actif) -->
+    <div class="rtab-content active" data-tab="description" id="rtab-description">
+      <!-- rempli dynamiquement par updateDescriptionTab() -->
+    </div>
+
+    <!-- Contenu Concepts (GenericConcepts par catégorie) -->
+    <div class="rtab-content" data-tab="concepts" id="rtab-concepts">
+      <!-- rempli dynamiquement par updateConceptsTab() -->
+    </div>
+
+    <!-- Contenu Scores (ASFID + REVOI + ΔΘ) -->
+    <div class="rtab-content" data-tab="scores" id="rtab-scores">
+      <!-- rempli dynamiquement par updateScoresTab() -->
+    </div>
+
+  </div><!-- /panel-right -->
+
+</div><!-- /shell -->
+
+<script src="renderer.js"></script>
+<script>
+  function goHome() { try { require('electron').ipcRenderer.send('go-home'); } catch(e) {} }
+  document.getElementById('btn-home').addEventListener('click', goHome);
+</script>
+</body>
+</html>
