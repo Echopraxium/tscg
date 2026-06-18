@@ -48,10 +48,16 @@ def run_project(path, expected_exit, clean=False):
     if clean:
         cmd.append("--clean")
     result = subprocess.run(cmd, capture_output=False)
-    ok = (result.returncode == expected_exit)
+    # run_pipeline.py already validates the VM's exit code against
+    # expected_exit internally (see its run_vm()/main()) and translates
+    # the result to 0 (pass) / 1 (fail) — NOT the raw VM exit code.
+    # So here we just check for that pass/fail signal; the raw VM exit
+    # code and the detailed per-test breakdown are visible in
+    # run_pipeline.py's own printed report / pipeline_report.txt.
+    ok = (result.returncode == 0)
     status = f"{GREEN}✅{RESET}" if ok else f"{RED}❌{RESET}"
-    print(f"  {status}  {path:<55}  exit={result.returncode}"
-          + ("" if ok else f"  (expected {expected_exit})"))
+    print(f"  {status}  {path:<55}  pipeline_exit={result.returncode}"
+          + ("" if ok else f"  (expected VM exit {expected_exit} — see report above)"))
     return ok
 
 # ── Main ──────────────────────────────────────────────────────────────────────

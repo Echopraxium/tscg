@@ -1,0 +1,16 @@
+name    = "wolf3d"
+type    = "c"
+sources = ["src/wolf3d_sample.c", "src/wolf3d_test.c"]
+include_dirs = ["include"]
+entry   = "main"
+libs    = []
+sdl2    = false
+
+[validation]
+expected_exit = 15
+tests = [
+    "ScaleDiv(10,2) == 5",
+    "IsSolid(0,0) == 0",
+    "MoveActor(&a,5,3) → a.x>>16==15 && a.y>>16==23",
+    "SumTiles(0,0,8,8) == 0",
+]

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TSCG Theremin - Interactive Prototype</title>
+  <link rel="stylesheet" href="src/Theremin_Prototype.css">
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <div id="header">
+    <div id="nav-left">
+      <button id="home-btn" title="Home">🏠</button>
+      <a href="https://github.com/Echopraxium/tscg" target="_blank" id="tscg-badge" title="TSCG Repository">TSCG</a>
+    </div>
+    <div id="title">Theremin - Interactive Musical Instrument</div>
+  </div>
+
+  <!-- Main content -->
+  <div id="main-content">
+    <!-- BabylonJS Canvas -->
+    <div id="canvas-container">
+      <canvas id="canvas-main"></canvas>
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <div id="sidebar-tabs">
+        <button class="tab-btn active" onclick="activateTab(0)">Description</button>
+        <button class="tab-btn" onclick="activateTab(1)">Controls</button>
+        <button class="tab-btn" onclick="activateTab(2)">Audio</button>
+        <button class="tab-btn" onclick="activateTab(3)">About</button>
+      </div>
+
+      <!-- Tab 0: Description -->
+      <div class="tab-content active" id="tab-0">
+        <h3>Theremin Simulation</h3>
+        <p>The theremin is an electronic musical instrument controlled without physical contact. The performer's hand position relative to two metal antennas controls frequency (pitch) and amplitude (volume).</p>
+        <h4>How it works:</h4>
+        <ul>
+          <li><strong>Right antenna (vertical):</strong> Controls pitch - move closer for higher notes</li>
+          <li><strong>Left antenna (horizontal loop):</strong> Controls volume - move hand up to increase volume</li>
+        </ul>
+        <p>This simulation uses <strong>3D cursors</strong> as visual guides to control both parameters.</p>
+        <h4>Electromagnetic Fields:</h4>
+        <p>The visualization shows the <strong>capacitive fields</strong> around each antenna. These fields detect hand proximity and convert it into electrical signals:</p>
+        <ul>
+          <li><strong>Green field (pitch):</strong> Vertical ellipsoid around the straight antenna</li>
+          <li><strong>Blue field (volume):</strong> Torus around the loop antenna</li>
+          <li>Particle density increases when cursors are being moved</li>
+        </ul>
+      </div>
+
+      <!-- Tab 1: Controls -->
+      <div class="tab-content" id="tab-1">
+        <h3>User's Guide</h3>
+        <h4>Camera Controls:</h4>
+        <ul>
+          <li><strong>Left Click + Drag:</strong> Rotate camera</li>
+          <li><strong>Right Click + Drag:</strong> Pan camera</li>
+          <li><strong>Scroll Wheel:</strong> Zoom in/out</li>
+        </ul>
+        <h4>Theremin Controls:</h4>
+        <ul>
+          <li><strong>Click & Drag</strong> the <span style="color: #4CAF50;">green sphere</span> (pitch cursor) up/down to change note frequency</li>
+          <li><strong>Click & Drag</strong> the <span style="color: #2196F3;">blue cylinder</span> (volume cursor) up/down to adjust loudness</li>
+          <li>Audio starts automatically when you move the cursors</li>
+        </ul>
+      </div>
+
+      <!-- Tab 2: Audio -->
+      <div class="tab-content" id="tab-2">
+        <h3>Audio Parameters</h3>
+        <div class="param-group">
+          <label for="waveform-select">Waveform:</label>
+          <select id="waveform-select">
+            <option value="sine">Sine (Pure)</option>
+            <option value="triangle">Triangle (Soft)</option>
+            <option value="sawtooth">Sawtooth (Bright)</option>
+            <option value="square">Square (Harsh)</option>
+          </select>
+        </div>
+        <div class="param-group">
+          <label>Frequency Range:</label>
+          <div class="value-display" id="freq-display">440 Hz (A4)</div>
+        </div>
+        <div class="param-group">
+          <label>Volume:</label>
+          <div class="value-display" id="volume-display">50%</div>
+        </div>
+        <div class="param-group">
+          <label>
+            <input type="checkbox" id="reverb-cb">
+            Enable Reverb (experimental)
+          </label>
+        </div>
+      </div>
+
+      <!-- Tab 3: About -->
+      <div class="tab-content" id="tab-3">
+        <h3>Technical Info</h3>
+        <p><strong>Technology Stack:</strong></p>
+        <ul>
+          <li>BabylonJS 3D engine</li>
+          <li>Web Audio API (oscillator + gain)</li>
+          <li>Interactive 3D cursors</li>
+        </ul>
+        <p><strong>Prototype Status:</strong></p>
+        <p>This is a technical prototype validating the feasibility of simulating a theremin in a web browser using 3D cursors for intuitive control.</p>
+        <p><strong>Author:</strong> Echopraxium with the collaboration of Claude AI</p>
+        <p><strong>Framework:</strong> TSCG (Transdisciplinary System Construction Game)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div id="bottom-bar">
+    <button id="reset-btn">Reset</button>
+    <button id="play-demo-btn">▶ Play Demo</button>
+    <select id="melody-select">
+      <option value="bumblebee">Vol du Bourdon (Rimsky-Korsakov)</option>
+      <option value="clair">Clair de Lune (Debussy)</option>
+      <option value="fur_elise">Für Elise (Beethoven)</option>
+      <option value="gymnopédie">Gymnopédie No.1 (Satie)</option>
+      <option value="canon">Canon en Ré (Pachelbel)</option>
+      <option value="turkish">Marche Turque (Mozart)</option>
+      <option value="prelude">Prélude en Do (Bach)</option>
+      <option value="clair_lune">Au Clair de la Lune (Trad.)</option>
+      <option value="ode">Ode à la Joie (Beethoven)</option>
+      <option value="swan">Le Cygne (Saint-Saëns)</option>
+    </select>
+    <label>
+      <input type="checkbox" id="auto-rotate-cb">
+      Auto Rotate
+    </label>
+    <label>
+      <input type="checkbox" id="show-grid-cb" checked>
+      Show Grid
+    </label>
+    <label>
+      <input type="checkbox" id="show-fields-cb" checked>
+      EM Fields
+    </label>
+    <button id="play-sound-btn">Start Sound</button>
+  </div>
+
+  <script src="src/Theremin_Prototype.js"></script>
+</body>
+</html>

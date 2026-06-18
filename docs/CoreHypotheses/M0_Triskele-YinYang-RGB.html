@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Triyin 3D</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body { width:100%; height:100%; background:#000; overflow:hidden; touch-action:none; }
+canvas { display:block; }
+#ui { position:fixed; top:14px; left:50%; transform:translateX(-50%);
+  text-align:center; pointer-events:none; z-index:10; }
+#ui h1 { font-family:'Georgia',serif; font-size:0.9rem; letter-spacing:0.45em;
+  text-transform:uppercase; color:#888; }
+#ui p { font-family:sans-serif; font-size:0.5rem; letter-spacing:0.15em; color:#333; margin-top:3px; }
+</style>
+</head>
+<body>
+<div id="ui"><h1>Triyin</h1><p>Trois virgules · Bouteilles de Klein · R·G·B</p></div>
+<script type="importmap">
+{ "imports": { "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setClearColor(0x000000);
+document.body.prepend(renderer.domElement);
+
+const scene  = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.1, 200);
+camera.position.set(0, 11, 13);
+camera.lookAt(0,0,0);
+
+scene.add(new THREE.AmbientLight(0xffffff, 3));
+const key = new THREE.DirectionalLight(0xffffff, 4); key.position.set(5,10,7); scene.add(key);
+const fil = new THREE.DirectionalLight(0xffffff, 2); fil.position.set(-6,3,-5); scene.add(fil);
+
+// ── PARAMÈTRES ────────────────────────────────────────────────────────────────
+const R  = 3.8;
+const R2 = R / 2;
+const r6 = R / 6;  // rayon du point
+const toRad = d => d * Math.PI / 180;
+
+// 3 frontières à 90°, 210°, 330° — identique au 2D
+const PHI = [toRad(90), toRad(210), toRad(330)];
+
+// ── CONSTRUCTION DE LA SPINE D'UNE VIRGULE ───────────────────────────────────
+// Virgule i :
+//   - Section entre PHI[i] (gauche) et PHI[(i+1)%3] (droite)
+//   - "Bosse gauche"  : demi-cercle R2, bombe vers int. section
+//   - "Arc ext"       : 120° sur cercle R
+//   - "Bosse droite"  : demi-cercle R2, bombe vers int. section (retour)
+//   - "Boucle Klein"  : arc 3D sous le plan du centre vers dotCenter
+//   - "Point"         : cercle r6 autour de dotCenter
+//
+// IMPORTANT : les 3 spines sont identiques, juste tournées de 0°/120°/240°
+// On construit UNE spine canonique (virgule 0) puis on la tourne.
+
+function buildCanonicalSpine(N=30) {
+  // Virgule canonique : PHI[0]=90°(haut), PHI[1]=210°(bas-gauche)
+  // = section entre 90° et 210°
+  const phiL = PHI[0];   // 90°
+  const phiR = PHI[1];   // 210°
+
+  const pts = [];
+
+  // 1. Bosse gauche : demi-cercle R2, centre à (R2·cosPhiL, 0, R2·sinPhiL)
+  //    de (0,0,0) vers (R·cosPhiL, 0, R·sinPhiL)
+  //    arc horaire (bombe vers l'intérieur de la section)
+  {
+    const cx = R2*Math.cos(phiL), cz = R2*Math.sin(phiL);
+    for(let i=0;i<=N;i++){
+      const a = (phiL+Math.PI) - Math.PI*(i/N); // de phiL+π à phiL
+      pts.push(new THREE.Vector3(cx+R2*Math.cos(a), 0, cz+R2*Math.sin(a)));
+    }
+  }
+
+  // 2. Arc extérieur : R, de phiL à phiR (sens horaire = angle croissant)
+  {
+    for(let i=1;i<=N*2;i++){
+      const a = phiL + (phiR-phiL)*(i/(N*2));
+      pts.push(new THREE.Vector3(R*Math.cos(a), 0, R*Math.sin(a)));
+    }
+  }
+
+  // 3. Bosse droite : demi-cercle R2, centre à (R2·cosPhiR, 0, R2·sinPhiR)
+  //    de (R·cosPhiR, 0, R·sinPhiR) vers (0,0,0)
+  {
+    const cx = R2*Math.cos(phiR), cz = R2*Math.sin(phiR);
+    for(let i=1;i<=N;i++){
+      const a = phiR + Math.PI*(i/N); // de phiR à phiR+π
+      pts.push(new THREE.Vector3(cx+R2*Math.cos(a), 0, cz+R2*Math.sin(a)));
+    }
+  }
+
+  // 4. Boucle Klein : arc 3D du centre (0,0,0) vers le dotCenter
+  //    dotCenter = centre du demi-cercle du point = (R2·cosPhiL, 0, R2·sinPhiL)
+  {
+    const ex = R2*Math.cos(phiL), ez = R2*Math.sin(phiL);
+    const depth = -R * 0.9;
+    for(let i=1;i<=N*2;i++){
+      const t = i/(N*2);
+      pts.push(new THREE.Vector3(
+        ex*t,
+        depth * Math.sin(Math.PI*t),
+        ez*t
+      ));
+    }
+  }
+
+  // 5. Cercle du point : autour de (R2·cosPhiL, 0, R2·sinPhiL), rayon r6
+  //    dans le plan horizontal
+  {
+    const cx = R2*Math.cos(phiL), cz = R2*Math.sin(phiL);
+    // Orientation du cercle : dans le plan XZ mais orienté perpendiculaire à la direction phiL
+    const perpX = -Math.sin(phiL), perpZ = Math.cos(phiL);
+    const dirX  =  Math.cos(phiL), dirZ  = Math.sin(phiL);
+    for(let i=1;i<=N;i++){
+      const a = Math.PI*2*(i/N);
+      pts.push(new THREE.Vector3(
+        cx + r6*(Math.cos(a)*perpX + Math.sin(a)*dirX),
+        0,
+        cz + r6*(Math.cos(a)*perpZ + Math.sin(a)*dirZ)
+      ));
+    }
+  }
+
+  return pts;
+}
+
+// Tourne une liste de points autour de Y de `angle` radians
+function rotateSpine(pts, angle) {
+  const c = Math.cos(angle), s = Math.sin(angle);
+  return pts.map(p => new THREE.Vector3(
+    p.x*c - p.z*s,
+    p.y,
+    p.x*s + p.z*c
+  ));
+}
+
+// ── SHADER ────────────────────────────────────────────────────────────────────
+// uv.x = position normalisée sur le tube (0=début=bosse gauche, 1=fin=point)
+// Le tube a 3 zones sémantiques :
+//   Zone "queue" (arc ext) : uv.x ~ 0.15 .. 0.65
+//   Zone "point"           : uv.x ~ 0.85 .. 1.0
+//
+// Couleurs : à chaque instant, le liquide tourne :
+//   uShift [0..1] : 0→ couleur propre, 1→ couleur suivante
+//   On veut que le "point" et la "queue" soient toujours bien colorés
+
+const vert = `
+  varying vec2 vUv;
+  varying vec3 vNormal;
+  void main() {
+    vUv     = uv;
+    vNormal = normalize(normalMatrix * normal);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+  }
+`;
+
+// 3 couleurs indexées, rotation par uShift
+// Virgule i contient toujours ses 2 couleurs (i) et (i+1)%3
+// uShift fait tourner quelle couleur est "devant"
+const frag = `
+  uniform vec3  uColOwn;
+  uniform vec3  uColNext;
+  uniform float uShift;
+  uniform float uTime;
+  varying vec2  vUv;
+  varying vec3  vNormal;
+
+  float hash(vec2 p) {
+    p = fract(p * vec2(127.1, 311.7));
+    p += dot(p, p + 19.19);
+    return fract(p.x * p.y);
+  }
+
+  void main() {
+    float pos = vUv.x;
+    float blend = smoothstep(uShift-0.08, uShift+0.08, pos);
+    vec3 liquid = mix(uColOwn, uColNext, blend);
+
+    // Paillettes : 3 échelles de scintillement
+    float sparkle = 0.0;
+
+    vec2 g1 = floor(vUv * vec2(180.0, 12.0));
+    float h1 = hash(g1 + floor(uTime * 3.0));
+    sparkle += smoothstep(0.93, 1.0, h1) * (1.0 - fract(uTime*3.0)) * 2.5;
+
+    vec2 g2 = floor(vUv * vec2(320.0, 20.0));
+    float h2 = hash(g2 + floor(uTime * 5.0 + 1.3));
+    sparkle += smoothstep(0.91, 1.0, h2) * (1.0 - fract(uTime*5.0)) * 1.5;
+
+    vec2 g3 = floor(vUv * vec2(600.0, 30.0));
+    float h3 = hash(g3 + floor(uTime * 9.0 + 2.7));
+    sparkle += smoothstep(0.95, 1.0, h3) * 1.0;
+
+    vec3 sparkColor = mix(vec3(1.0), mix(uColNext, uColOwn, blend), 0.4);
+    liquid += sparkColor * sparkle * 0.9;
+
+    vec3 L    = normalize(vec3(0.7, 1.2, 0.8));
+    vec3 N    = normalize(vNormal);
+    float diff= max(dot(N,L), 0.0);
+    vec3  H   = normalize(L + vec3(0,0,1));
+    float spec= pow(max(dot(N,H),0.0), 60.0) * 0.6;
+    vec3 col  = liquid*(0.45 + diff*0.65) + vec3(spec);
+    gl_FragColor = vec4(col, 1.0);
+  }
+`;
+
+// Couleurs pures
+const COLS = [
+  new THREE.Color(1.0, 0.05, 0.05),  // Rouge
+  new THREE.Color(0.05, 1.0, 0.05),  // Vert
+  new THREE.Color(0.05, 0.15, 1.0),  // Bleu
+];
+
+// ── ASSEMBLAGE ────────────────────────────────────────────────────────────────
+const pivot = new THREE.Group();
+scene.add(pivot);
+
+const canonPts = buildCanonicalSpine(30);
+const allUniforms = [];
+
+for(let i=0;i<3;i++){
+  // La virgule i est la spine canonique tournée de i*120°
+  const angle = toRad(i * 120);
+  const spinePts = rotateSpine(canonPts, angle);
+
+  const curve = new THREE.CatmullRomCurve3(spinePts, false, 'catmullrom', 0.5);
+  const geo   = new THREE.TubeGeometry(curve, spinePts.length*2, 0.28, 10, false);
+
+  const uniforms = {
+    uColOwn:  { value: COLS[i] },
+    uColNext: { value: COLS[(i+1)%3] },
+    uShift:   { value: 0.0 },
+    uTime:    { value: 0.0 },
+  };
+  allUniforms.push(uniforms);
+
+  const mat = new THREE.ShaderMaterial({
+    vertexShader: vert, fragmentShader: frag,
+    uniforms, side: THREE.DoubleSide
+  });
+  pivot.add(new THREE.Mesh(geo, mat));
+}
+
+// ── STARS ─────────────────────────────────────────────────────────────────────
+{
+  const n=500, p=new Float32Array(n*3);
+  for(let i=0;i<n;i++){
+    const r=16+Math.random()*10, t=Math.random()*Math.PI*2, ph=Math.random()*Math.PI;
+    p[i*3]=r*Math.sin(ph)*Math.cos(t); p[i*3+1]=r*Math.cos(ph)*0.6; p[i*3+2]=r*Math.sin(ph)*Math.sin(t);
+  }
+  const sg=new THREE.BufferGeometry(); sg.setAttribute('position',new THREE.Float32BufferAttribute(p,3));
+  scene.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0x223344,size:0.06,transparent:true,opacity:0.5})));
+}
+
+// ── INTERACTION ───────────────────────────────────────────────────────────────
+const quat=new THREE.Quaternion();
+let dragging=false, prevX=0, prevY=0, prevPinch=null;
+renderer.domElement.addEventListener('pointerdown',e=>{ dragging=true; prevX=e.clientX; prevY=e.clientY; });
+renderer.domElement.addEventListener('pointermove',e=>{
+  if(!dragging) return;
+  const dx=(e.clientX-prevX)/innerWidth*Math.PI*2;
+  const dy=(e.clientY-prevY)/innerHeight*Math.PI*2;
+  prevX=e.clientX; prevY=e.clientY;
+  quat.premultiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),dx));
+  quat.premultiply(new THREE.Quaternion().setFromAxisAngle(
+    new THREE.Vector3(1,0,0).applyQuaternion(camera.quaternion),dy));
+});
+renderer.domElement.addEventListener('pointerup',  ()=>dragging=false);
+renderer.domElement.addEventListener('pointerleave',()=>dragging=false);
+renderer.domElement.addEventListener('touchmove',e=>{
+  if(e.touches.length===2){
+    const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+    if(prevPinch!==null) camera.position.z=Math.max(5,Math.min(30,camera.position.z+(prevPinch-d)*0.05));
+    prevPinch=d;
+  } else prevPinch=null;
+},{passive:true});
+renderer.domElement.addEventListener('touchend',()=>prevPinch=null,{passive:true});
+renderer.domElement.addEventListener('wheel',e=>{
+  camera.position.z=Math.max(5,Math.min(30,camera.position.z+e.deltaY*0.015));
+},{passive:true});
+
+// ── ANIMATE ───────────────────────────────────────────────────────────────────
+const clock=new THREE.Clock(); let t=0;
+function animate(){
+  requestAnimationFrame(animate);
+  t += clock.getDelta();
+  pivot.quaternion.copy(quat);
+
+  // uShift oscille 0→1→0 : le front de couleur parcourt le tube
+  // Phase décalée de 120° entre les 3 virgules
+  // À tout moment chaque virgule montre une proportion différente de Own/Next
+  allUniforms.forEach((u,i)=>{
+    const phase = i * Math.PI*2/3;
+    u.uShift.value = 0.5 + 0.5*Math.sin(t*0.4 + phase);
+    u.uTime.value  = t;
+  });
+
+  renderer.render(scene,camera);
+}
+animate();
+
+window.addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+name         = "test_variadic"
+type         = "c"
+sources      = ["src/test_variadic.c"]
+include_dirs = []
+entry        = "main"
+libs         = []
+sdl2         = false
+
+[validation]
+expected_exit = 255
+tests = [
+    "Test 1 (bit 0): printf('%d\\n', 42) returns n >= 2",
+    "Test 2 (bit 1): sprintf(buf, '%d', 99) -> '99\\0'",
+    "Test 3 (bit 2): sprintf(buf, '%s', 'hello') -> 'hello'",
+    "Test 4 (bit 3): sprintf(buf, '%d+%d=%d', 1,2,3) -> '1+2=3'",
+    "Test 5 (bit 4): my_format(buf, 'val=%d', 7) -> 'val=7'",
+    "Test 6 (bit 5): my_format(buf, '%s:%d', 'x', 5) -> 'x:5'",
+    "Test 7 (bit 6): printf('ok\\n') returns n >= 2",
+    "Test 8 (bit 7): my_error_str(buf, 'err=%d', 42) -> 'err=42'",
+]

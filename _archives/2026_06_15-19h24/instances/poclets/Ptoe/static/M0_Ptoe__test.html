@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TSCG | Periodic Table of Elements</title>
+  <link rel="stylesheet" href="src/ptoe.css">
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+</head>
+<body>
+
+<!-- ── TSCG Header ── -->
+<div id="tscg-header">
+  <a id="home-btn" href="https://echopraxium.github.io/tscg/" target="_blank" title="TSCG Home"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:block;vertical-align:middle"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></a>
+  <span class="hbar-sep">|</span>
+  <a id="tscg-badge" href="https://github.com/Echopraxium/tscg" target="_blank" title="TSCG on GitHub">TSCG</a>
+  <span class="hbar-sep">|</span>
+  <span id="page-title">Periodic Table of Elements</span>
+  <div id="header-chips">
+    <span class="hchip">118 Elements</span>
+    <span class="hchip">7 Periods</span>
+    <span class="hchip" id="chip-elem">H — Hydrogen</span>
+  </div>
+</div>
+
+<!-- ── Main layout ── -->
+<div id="layout">
+
+  <!-- Left panel -->
+  <div id="left-panel">
+
+    <!-- Atomic tile -->
+    <div id="atomic-tile">
+      <span id="at-z">1</span>
+      <div id="at-sym-wrap">
+        <span id="at-sym" data-tooltip="Show Element characteristics">H</span>
+      </div>
+      <div id="at-name">Hydrogen</div>
+      <div id="at-mass">1.008</div>
+    </div>
+
+    <!-- Nav row -->
+    <div id="nav-row">
+      <span id="ac-z-label">Z = 1</span>
+      <button class="ac-arr" id="ac-left">◄</button>
+      <button class="ac-arr" id="ac-right">►</button>
+      <select id="orbital-mode-inline">
+        <option value="orbital">Orbitals</option>
+        <option value="bohr">Bohr Model</option>
+      </select>
+    </div>
+
+    <!-- Category row -->
+    <div id="at-cat-row">Nonmetal</div>
+    <div id="at-blk-row">Block-s · Period 1 · Group 1</div>
+
+    <!-- Combo row -->
+    <div id="combo-row">
+      <select id="elem-select"></select>
+      <button id="ac-clear-sel" title="Reset to H">✕</button>
+    </div>
+
+    <!-- Hovered element indicator -->
+    <div id="hovered-strip">
+      <span id="hovered-label">Hovered Elt:</span>
+      <span id="hovered-val">—</span>
+    </div>
+
+    <div class="ldiv" style="margin-top: 16px;"></div>
+
+    <!-- Families -->
+    <div id="families-header">
+      <span id="families-title">Families</span>
+      <button id="legend-clear" title="Clear family selection">✕</button>
+    </div>
+    <div id="families-list"></div>
+  </div>
+
+  <!-- Center canvas (main 3D) -->
+  <div id="view-main">
+    <canvas id="canvas-a"></canvas>
+    <!-- Orbital mode selector overlay — shown only when orbital is main view -->
+    <div id="main-orb-bar" style="display:none;position:absolute;top:10px;left:10px;z-index:20;">
+      <select id="orbital-mode-main"
+        style="background:rgba(6,11,24,0.92);border:1px solid rgba(130,108,48,0.35);
+               border-radius:8px;color:rgba(210,185,120,0.92);font-size:11px;
+               font-family:inherit;padding:5px 12px;cursor:pointer;outline:none;
+               appearance:none;-webkit-appearance:none;backdrop-filter:blur(8px);
+               box-shadow:0 2px 12px rgba(0,0,0,0.5);">
+        <option value="bohr" selected>Bohr Model</option>
+      </select>
+    </div>
+  </div>
+
+
+  <!-- ═══ SPLITTER ═══ -->
+  <div id="splitter"></div>
+
+  <!-- ═══ SIDEBAR TSCG (tabs) ═══ -->
+  <div id="sidebar">
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="activateTab(0)">Description</button>
+      <button class="tab-btn" onclick="activateTab(1)">Scores</button>
+      <button class="tab-btn" onclick="activateTab(2)">M2 Concepts</button>
+      <button class="tab-btn" onclick="activateTab(3)">M1 Core</button>
+    </div>
+
+    <!-- Tab panels -->
+    <div class="tab-content">
+      <!-- Tab 0: Description -->
+      <div class="tab-panel active">
+        <h3>Periodic Table of Elements</h3>
+        <p>The Periodic Table is a TSCG instance modeling chemistry's foundational framework, demonstrating how quantum constraints generate emergent periodic patterns across 118 elements.</p>
+      </div>
+
+      <!-- Tab 1: Scores -->
+      <div class="tab-panel">
+        <h3>ASFID + REVOI Scores</h3>
+        <p><strong>Epistemic Gap δ₁:</strong> 0.08 (OnCriticalLine)</p>
+        <p><strong>ASFID_mean:</strong> 0.81</p>
+        <p><strong>REVOI_mean:</strong> 0.89</p>
+      </div>
+
+      <!-- Tab 2: M2 Concepts -->
+      <div class="tab-panel">
+        <h3>M2 GenericConcepts</h3>
+        <ul>
+          <li>Pattern</li>
+          <li>Hierarchy</li>
+          <li>Structure</li>
+          <li>Periodicity</li>
+        </ul>
+      </div>
+
+      <!-- Tab 3: M1 Core -->
+      <div class="tab-panel">
+        <h3>M1 Core Concepts</h3>
+        <ul>
+          <li>ChemicalElement</li>
+          <li>AtomicNumber</li>
+          <li>ElectronConfiguration</li>
+          <li>PeriodicLaw</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end #layout -->
+<div id="view-ne">
+  <!-- Title bar: toggle | combolist | swap -->
+  <div id="ne-titlebar" class="bar-expanded">
+    <button id="ne-toggle" title="Expand / Collapse">-</button>
+    <button id="swap-btn" title="Swap views">⇄</button>
+    <select id="orbital-mode-sel">
+      <option value="bohr" selected>Bohr Model</option>
+    </select>
+  </div>
+  <!-- Body: canvas + resize handle -->
+  <div id="ne-body">
+    <canvas id="canvas-b"></canvas>
+    <div id="ne-resize-handle"></div>
+  </div>
+</div>
+
+<!-- ── Bottom bar ── -->
+<div id="bottom-bar">
+  <div id="hint">Drag · Scroll · Hover · Click to select · ⇄ Swap</div>
+  <button class="bbtn" id="btn-reset">↺ Reset</button>
+  <button class="bbtn" id="btn-autorot">⟳ Auto Rotate</button>
+  <label style="color: rgba(210,185,120,0.8); font-size: 11px; margin-left: 12px;">
+    Speed:
+    <input type="range" id="rotation-speed-slider" min="0.5" max="3" step="0.1" value="1.18" 
+           style="width: 80px; vertical-align: middle; margin-left: 6px;">
+  </label>
+  <span id="engine-badge">BabylonJS 6.26</span>
+</div>
+
+<script src="https://cdn.babylonjs.com/babylon.js"></script>
+<script src="src/ptoe.js"></script>
+</body>
+</html>

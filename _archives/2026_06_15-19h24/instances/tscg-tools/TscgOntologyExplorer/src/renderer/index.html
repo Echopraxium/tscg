@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TscgOntologyExplorer</title>
+  <!-- Theme stylesheet — href updated dynamically by renderer.js -->
+  <link id="theme-stylesheet" rel="stylesheet" href="themes/night.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ── Top bar ─────────────────────────────────────────────── -->
+  <header id="topbar">
+    <div id="layer-buttons">
+      <button id="btn-m3" title="Load M3 Grammar (dropdown)">M3</button>
+      <button id="btn-m2" title="Load M2 GenericConcepts">M2</button>
+      <button id="btn-m1" title="Load M1 CoreConcepts">M1</button>
+    </div>
+
+    <span id="active-ontology-label">—</span>
+  </header>
+
+  <!-- ── Document tab bar (MDI) ─────────────────────────────── -->
+  <div id="doc-tab-bar">
+    <!-- tabs injected by DocumentManager.renderTabBar() -->
+    <!-- use File > Open to open additional documents -->
+  </div>
+
+  <!-- ── 3-column workspace ─────────────────────────────────── -->
+  <main id="workspace">
+
+    <!-- Left: Object Explorer -->
+    <section id="object-explorer">
+      <div class="panel-header">Object Explorer</div>
+      <div id="oe-search-bar" class="oe-search-bar" style="display:none">
+        <input id="oe-search-input" class="oe-search-input" type="text"
+               placeholder="Search… ^start  end$  /regex/  (Esc)" autocomplete="off" spellcheck="false">
+        <span id="oe-search-count" class="oe-search-count"></span>
+        <button id="oe-search-close" class="oe-search-close" title="Close (Esc)">✕</button>
+      </div>
+      <div id="object-tree">
+        <p class="placeholder">Load an ontology to browse its objects.</p>
+      </div>
+    </section>
+
+    <div class="splitter" id="splitter-lc"></div>
+
+    <!-- Center: Property Inspector -->
+    <section id="property-inspector">
+      <div class="panel-header">Property Inspector</div>
+      <div id="property-drawers">
+        <p class="placeholder">Select an object to inspect its properties.</p>
+      </div>
+    </section>
+
+    <div class="splitter" id="splitter-cr"></div>
+
+    <!-- Right: Tabbed panel -->
+    <section id="right-panel">
+      <div id="tab-bar">
+        <button class="tab-btn" data-tab="description">Description</button>
+        <button class="tab-btn active" data-tab="imports">Imports</button>
+        <button class="tab-btn" data-tab="neighbor-layer" id="btn-neighbor-tab">Adjacent Layers ↕</button>
+        <button class="tab-btn" data-tab="sparql">SPARQL</button>
+      </div>
+      <div id="tab-content">
+        <div id="tab-description"    class="tab-pane">
+          <p class="placeholder">Select an object.</p>
+        </div>
+        <div id="tab-imports" class="tab-pane active">
+          <p class="placeholder">Select an object to see its imports.</p>
+        </div>
+        <div id="tab-neighbor-layer" class="tab-pane">
+          <div id="adjacent-layers-content"><p class="placeholder">No active ontology.</p></div>
+        </div>
+        <div id="tab-sparql" class="tab-pane">
+          <div id="sparql-panel">
+            <!-- ── Corpus loader row ───────────────────────────── -->
+            <div id="corpus-row" style="display:flex;gap:6px;align-items:center;margin-bottom:4px">
+              <button id="btn-corpus-load" title="Load a file corpus for multi-file SPARQL"
+                style="font-size:11px;padding:3px 8px;border-radius:4px;
+                       background:var(--bg-input);border:1px solid var(--border);
+                       color:var(--text-primary);cursor:pointer">
+                📚 Corpus ▾
+              </button>
+              <span id="corpus-status" style="font-size:10px;color:var(--text-muted)">
+                No corpus loaded
+              </span>
+              <button id="btn-corpus-clear" title="Unload corpus"
+                style="font-size:10px;padding:2px 6px;border-radius:3px;display:none;
+                       background:none;border:1px solid var(--border);
+                       color:var(--text-muted);cursor:pointer">✕</button>
+            </div>
+            <div id="sparql-presets-row">
+              <select id="sparql-presets" class="sparql-preset-select">
+                <option value="">— Predefined queries —</option>
+                <optgroup label="🔍 Exploration">
+                  <option value="all_classes">List all Classes</option>
+                  <option value="all_properties">List all Properties</option>
+                  <option value="class_hierarchy">Class Hierarchy (subClassOf)</option>
+                  <option value="all_triples">All Triples (LIMIT 20)</option>
+                </optgroup>
+                <optgroup label="⬡ TSCG — M2 GenericConcepts">
+                  <option value="generic_concepts">All GenericConcepts</option>
+                  <option value="by_family">GenericConcepts by Family</option>
+                  <option value="structural_formulas">Structural Grammar Formulas</option>
+                  <option value="dual_polarity">Dual-polarity Concepts</option>
+                  <option value="dominant_m3">Concepts by dominant M3 type</option>
+                </optgroup>
+                <optgroup label="🦅 TSCG — M3 Types">
+                  <option value="m3_dimensions">All M3 MonoidalTypes</option>
+                  <option value="asfid_dims">ASFID Types (Eagle Eye)</option>
+                  <option value="revoi_dims">REVOI Types (Sphinx Eye)</option>
+                </optgroup>
+                <optgroup label="📦 TSCG — Instances (M0)">
+                  <option value="poclets">List Poclets</option>
+                  <option value="asfid_scores">ASFID Scores of an instance</option>
+                </optgroup>
+                <optgroup label="🔧 Utilities">
+                  <option value="named_graphs">Named Graphs in document</option>
+                  <option value="owl_imports">owl:imports</option>
+                  <option value="ontology_meta">Ontology metadata</option>
+                </optgroup>
+                <optgroup label="📚 Corpus — Multi-file">
+                  <option value="corpus_m1_classes">All M1 Classes (corpus)</option>
+                  <option value="corpus_all_formulas">All Structural Formulas (corpus)</option>
+                  <option value="corpus_shared_formulas">Shared Formulas (corpus)</option>
+                  <option value="corpus_transdisciplinary">Transdisciplinary Patterns (corpus)</option>
+                  <option value="corpus_structural_homology">Structural Homology (corpus)</option>
+                </optgroup>
+              </select>
+            </div>
+            <textarea id="sparql-query" class="sparql-editor" spellcheck="false"
+              placeholder="SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 10"></textarea>
+            <div id="sparql-actions">
+              <button id="btn-sparql-run" class="sparql-btn">▶ Run</button>
+              <button id="btn-sparql-clear" class="sparql-btn sparql-btn-sec">Clear</button>
+              <button id="btn-sparql-save" class="sparql-btn sparql-btn-sec" disabled>Save As…</button>
+              <span id="sparql-status" class="sparql-status"></span>
+            </div>
+            <div id="sparql-results"></div>
+          </div>
+        </div>
+      </div>
+      <div id="right-panel-extra"></div>
+    </section>
+
+  </main>
+
+  <!-- ── Status bar ─────────────────────────────────────────── -->
+  <footer id="statusbar">
+    <span id="status-msg">Ready.</span>
+    <span id="bridge-indicator" title="Python Bridge status">● Bridge</span>
+  </footer>
+
+  <!-- ── Popup overlay ──────────────────────────────────────── -->
+  <div id="popup-overlay" hidden>
+    <div id="popup-box">
+      <p id="popup-message"></p>
+      <p id="popup-from" class="popup-from"></p>
+      <button id="popup-close">Close</button>
+    </div>
+  </div>
+
+  <script type="module" src="renderer.js"></script>
+</body>
+</html>

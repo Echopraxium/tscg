@@ -79,12 +79,34 @@ impl<'a> Lexer<'a> {
             match self.advance_ch() {
                 Some('"') => break,
                 Some('\\') => {
-                    // \XX hex escape
-                    let h1 = self.advance_ch().unwrap_or('0');
-                    let h2 = self.advance_ch().unwrap_or('0');
-                    let hex = format!("{}{}", h1, h2);
-                    if let Ok(b) = u8::from_str_radix(&hex, 16) {
-                        s.push(b as char);
+                    // LLVM IR / clang string escape handling:
+                    //   \XX  (backslash + 2 hex digits) → byte 0xXX (LLVM hex escape)
+                    //   \\  (two backslashes)           → one backslash 0x5C
+                    //         (clang Linux encodes C-level \\ as \\\\ in IR)
+                    //   otherwise                         → literal backslash
+                    let h1 = self.peek_ch().unwrap_or('\0');
+                    if h1 == '\\' {
+                        // Two backslashes → one literal backslash
+                        self.advance_ch(); // consume second backslash
+                        s.push('\\');
+                    } else {
+                        // Try \XX hex escape
+                        let h2 = {
+                            let saved = self.pos;
+                            self.advance_ch();
+                            let c = self.peek_ch().unwrap_or('\0');
+                            self.pos = saved;
+                            c
+                        };
+                        let hex = format!("{}{}", h1, h2);
+                        if let Ok(b) = u8::from_str_radix(&hex, 16) {
+                            self.advance_ch(); // consume h1
+                            self.advance_ch(); // consume h2
+                            s.push(b as char);
+                        } else {
+                            // Not valid hex: treat as literal backslash
+                            s.push('\\');
+                        }
                     }
                 }
                 Some(c) => s.push(c),
@@ -1082,13 +1104,18 @@ impl Parser {
 
     fn parse_global(&mut self, name: String) -> Result<Global> {
         // @name = [linkage] [dso_local] [global|constant] type [initializer] [, align N]
+        let mut is_external_linkage = false;
         loop {
             match self.peek() {
                 Tok::Ident(s) if matches!(s.as_str(),
                     "dso_local"|"local_unnamed_addr"|"unnamed_addr"|
-                    "private"|"internal"|"hidden"|"external"|"common"|
+                    "private"|"internal"|"hidden"|"common"|
                     "linkonce_odr"|"linkonce"|"weak"|"weak_odr"|"available_externally"|
                     "appending"|"extern_weak") => { self.advance(); }
+                Tok::Ident(s) if s == "external" => {
+                    is_external_linkage = true;
+                    self.advance();
+                }
                 _ => break,
             }
         }
@@ -1100,7 +1127,11 @@ impl Parser {
 
         let ty = self.parse_type()?;
 
-        let init = match self.peek().clone() {
+        // External declarations have no initializer and must not emit data.
+        let init = if is_external_linkage {
+            // Skip any remaining tokens on this line (e.g. alignment)
+            GlobalInit::External
+        } else { match self.peek().clone() {
             Tok::Ident(s) if s == "zeroinitializer" => {
                 self.advance(); GlobalInit::ZeroInit
             }
@@ -1124,8 +1155,66 @@ impl Parser {
                     _ => GlobalInit::ZeroInit,
                 }
             }
+            // Array initializer: [N x ptr] [ptr @sym0, ptr @sym1, ...]
+            // This is an array of pointers to named globals — emit data relocs.
+            Tok::LBracket => {
+                self.advance(); // consume '['
+                let mut ptrs: Vec<String> = Vec::new();
+                // Parse: ptr @sym0, ptr @sym1, ... until ']'
+                loop {
+                    match self.peek().clone() {
+                        Tok::RBracket => { self.advance(); break; }
+                        Tok::Comma => { self.advance(); }
+                        Tok::Ident(kw) if kw == "ptr" || kw == "i64" || kw == "i32" || kw == "i8" => {
+                            self.advance(); // consume type keyword
+                            // '@name' is lexed as Tok::GlobalRef(name)
+                            match self.peek().clone() {
+                                Tok::GlobalRef(sym) => {
+                                    ptrs.push(sym.clone());
+                                    self.advance();
+                                }
+                                Tok::Ident(kw2) if kw2 == "null" || kw2 == "zeroinitializer" => {
+                                    ptrs.push(String::new()); // null ptr slot
+                                    self.advance();
+                                }
+                                Tok::Integer(_) => {
+                                    ptrs.push(String::new()); // integer in ptr slot
+                                    self.advance();
+                                }
+                                _ => {} // skip unknown
+                            }
+                        }
+                        Tok::Ident(kw) if kw == "null" || kw == "zeroinitializer" => {
+                            ptrs.push(String::new());
+                            self.advance();
+                        }
+                        _ => { self.advance(); } // skip unknown tokens
+                    }
+                }
+                if ptrs.is_empty() {
+                    GlobalInit::ZeroInit
+                } else {
+                    GlobalInit::PointerArray(ptrs)
+                }
+            }
+            // Single pointer initializer: ptr @sym (lexed as GlobalRef)
+            Tok::Ident(kw) if kw == "ptr" => {
+                self.advance(); // consume 'ptr'
+                match self.peek().clone() {
+                    Tok::GlobalRef(sym) => {
+                        let s = sym.clone();
+                        self.advance();
+                        GlobalInit::PointerTo(s)
+                    }
+                    Tok::Ident(kw2) if kw2 == "null" => {
+                        self.advance();
+                        GlobalInit::ZeroInit
+                    }
+                    _ => GlobalInit::ZeroInit,
+                }
+            }
             _ => GlobalInit::ZeroInit,
-        };
+        } }; // close match + else
 
         let mut align = ty.byte_size().max(1);
         loop {

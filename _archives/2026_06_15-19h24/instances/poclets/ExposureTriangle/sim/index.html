@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self' 'unsafe-inline' file:;
+                 style-src  'self' 'unsafe-inline';
+                 img-src    'self' data: blob:;
+                 connect-src 'none';">
+  <title>TSCG &mdash; Exposure Triangle</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    #app {
+      display: grid;
+      grid-template-rows: var(--header-h) 1fr auto var(--controls-h);
+      grid-template-columns: 1fr 5px var(--sidebar-w);
+      grid-template-areas:
+        "header   header   header"
+        "canvas   split    sidebar"
+        "compbar  compbar  compbar"
+        "controls controls controls";
+      height: 100vh;
+    }
+    #canvas-area { grid-area: canvas; position: relative; overflow: hidden; min-width: 200px; }
+    #canvas-area canvas { position: absolute; top: 0; left: 0; }
+
+    /* Parameters bar — always visible */
+    #comp-bar {
+      grid-area: compbar;
+      background: var(--bg-panel);
+      border-top: 1px solid var(--border);
+      overflow: hidden;
+    }
+    #comp-inner {
+      display: flex; align-items: center; gap: 14px;
+      padding: 8px 16px; flex-wrap: nowrap; overflow-x: auto;
+    }
+    .comp-group { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .comp-label { font-size: 11px; color: var(--muted); white-space: nowrap; display: flex; align-items: center; gap: 4px; }
+    .comp-icon  { font-size: 14px; }
+    .comp-val   { font-size: 11px; font-family: var(--font-mono); color: var(--text-dim); min-width: 58px; text-align: right; }
+    input[type="range"].comp-slider {
+      -webkit-appearance: none; width: 100px; height: 4px;
+      background: var(--bg-card); border-radius: 2px; outline: none;
+    }
+    input[type="range"].comp-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
+      background: var(--sphinx); cursor: pointer; border: 2px solid var(--bg-panel);
+    }
+    .comp-sep { width: 1px; height: 24px; background: var(--border); flex-shrink: 0; }
+    #ev-display {
+      font-size: 13px; font-family: var(--font-mono); font-weight: 700;
+      color: var(--accent); flex-shrink: 0; min-width: 70px;
+    }
+
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <header id="header">
+    <button id="btn-home" title="Poclet Explorer (Ctrl+Shift+E)"
+            style="-webkit-app-region:no-drag; background:none; border:none; cursor:pointer;
+                   padding:4px 6px; margin-right:4px; border-radius:5px;
+                   color:#8b949e; font-size:23px; line-height:1;
+                   transition:color .15s, background .15s;"
+            onmouseover="this.style.color='#79c0ff';this.style.background='rgba(121,192,255,0.1)'"
+            onmouseout="this.style.color='#8b949e';this.style.background='none'">&#8962;</button>
+    <span class="tscg-logo">TSCG</span>
+    <span class="sep">&middot;</span>
+    <span class="poclet-name">Exposure Triangle &mdash; ExposureBalance Poclet</span>
+    <div class="meta-chips">
+      <span class="chip domain">Photography / Optics</span>
+      <span class="chip type">m3:Poclet</span>
+      <span class="chip version">v1.1.0</span>
+    </div>
+  </header>
+
+  <!-- CANVAS -->
+  <div id="canvas-area"></div>
+
+  <!-- SPLITTER -->
+  <div id="splitter"></div>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="description">Description</button>
+      <button class="tab-btn" data-tab="concepts">Concepts</button>
+      <button class="tab-btn" data-tab="synergy">Synergy</button>
+      <button class="tab-btn" data-tab="scores">Scores</button>
+    </nav>
+
+    <!-- Description -->
+    <div id="panel-description" class="tab-panel active">
+      <div class="readme-content">
+<h2>System</h2>
+The <strong>Exposure Triangle</strong> is the canonical photographic model:
+three parameters (<em>ISO, Aperture, Shutter Speed</em>) must balance to achieve
+correct exposure. Unlike the Fire Triangle (synergistic), this is
+<strong>compensatory</strong> &mdash; adjusting one requires compensating another.
+
+<h2>Reciprocity Law</h2>
+<code>EV = log&#x2082;(ISO) + log&#x2082;(1/f&#xB2;) + log&#x2082;(t) = const</code>
+Infinite combinations yield the same EV but different image qualities.
+
+<h2>Three Parameters</h2>
+<code>ISO</code> Sensor gain &mdash; sensitivity vs noise/grain
+<code>Aperture</code> f-number &mdash; light flux vs depth of field
+<code>Shutter</code> Exposure time &mdash; light vs motion blur
+
+<h2>Trade-offs (m2:Trade-off)</h2>
+Cannot simultaneously maximize:
+&bull; <strong>DoF</strong> (deep focus) &rarr; narrow aperture (f/11+)
+&bull; <strong>Freeze motion</strong> &rarr; fast shutter (1/1000s+)
+&bull; <strong>Low noise</strong> &rarr; low ISO (100&ndash;400)
+
+<h2>EV Gauge (left)</h2>
+Shows signed offset from daylight baseline (ISO&nbsp;400, f/5.6, 1/250s):
+0&nbsp;= correctly exposed &middot; &minus;&nbsp;= under &middot; +&nbsp;= over
+
+<h2>Controls</h2>
+<strong>Drag</strong> any vertex radially &middot; <strong>Sliders</strong> below canvas
+
+<h2>Analogy to Fire Triangle</h2>
+Both use 3-component triangular models &mdash; but Fire Triangle is
+<em>synergistic</em> (all must co-exist), Exposure Triangle is <em>compensatory</em>
+(any one can compensate another). Same geometry, different logic.
+
+<h2>Reference</h2>
+Adams A. (1981) &mdash; <em>The Negative</em>; ISO 12232:2019
+      </div>
+    </div>
+
+    <!-- Concepts -->
+    <div id="panel-concepts" class="tab-panel">
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:4px">Primary &mdash; 3 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item primary"><span class="gc-name">m2:Balance</span><div><div class="gc-formula">A&otimes;S&otimes;F</div><div class="gc-role">Correct exposure: ISO &times; Aperture &times; Time = constant (scene-dependent)</div></div></div>
+        <div class="gc-item primary"><span class="gc-name">m2:Trade-off</span><div><div class="gc-formula">R&otimes;V&otimes;E</div><div class="gc-role">Cannot simultaneously maximize DoF, freeze motion, and minimize noise</div></div></div>
+        <div class="gc-item primary"><span class="gc-name">m2:Invariant</span><div><div class="gc-formula">S&otimes;A</div><div class="gc-role">EV = log&#x2082;(ISO/f&#xB2;/t) constant across equivalent settings</div></div></div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin:8px 0 4px">Secondary &mdash; 8 concepts</div>
+      <div class="gc-list">
+        <div class="gc-item secondary"><span class="gc-name">m2:Amplification</span><div><div class="gc-formula">Ft&otimes;D&otimes;It</div><div class="gc-role">ISO sensor gain: each stop = 2&times; signal amplification</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:FeedbackLoop</span><div><div class="gc-formula">P&otimes;Al&otimes;H</div><div class="gc-role">Camera metering: negative feedback correcting toward target EV</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Threshold</span><div><div class="gc-formula">A&otimes;I</div><div class="gc-role">1/focal_length rule, ISO&ge;1600 (noise), f/16+ (diffraction)</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Regulation</span><div><div class="gc-formula">A&otimes;S&otimes;F</div><div class="gc-role">Auto-exposure modes (Av, Tv, P) maintain target EV</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Polarity</span><div><div class="gc-formula">S&otimes;I&otimes;A</div><div class="gc-role">Stops scale: +EV = over, 0 = correct, &minus;EV = under</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Transformation</span><div><div class="gc-formula">D&otimes;I&otimes;S</div><div class="gc-role">Equivalent settings: ISO400/f4/1/250 &harr; ISO800/f5.6/1/250</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Component</span><div><div class="gc-formula">S&otimes;I</div><div class="gc-role">ISO, Aperture, Shutter as distinct elementary parameters</div></div></div>
+        <div class="gc-item secondary"><span class="gc-name">m2:Signal</span><div><div class="gc-formula">I&otimes;F</div><div class="gc-role">Photon flux as information carrier (luminance, color, spatial data)</div></div></div>
+      </div>
+    </div>
+
+    <!-- Synergy -->
+    <div id="panel-synergy" class="tab-panel">
+      <div class="synergy-box">
+        <div class="synergy-label">KnowledgeFieldConceptCombo</div>
+        <div class="synergy-formula">ExposureBalance</div>
+        <div class="synergy-formula" style="font-size:10px;color:var(--muted)">
+          = Photography &odot; (Balance &otimes; Trade-off)<br>
+          compiled: A&otimes;S&otimes;F&otimes;I&otimes;D
+        </div>
+        <div class="synergy-emergent"><strong>Emergent property:</strong> Correct exposure &mdash; infinite parameter combinations yield the same EV, each producing different image qualities (DoF, motion, noise).</div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--sphinx)">
+        <div class="synergy-label" style="color:var(--sphinx)">Reciprocity Law</div>
+        <div class="synergy-formula">EV = log&#x2082;(ISO) + log&#x2082;(1/f&#xB2;) + log&#x2082;(t) = const</div>
+        <div class="synergy-emergent">Each stop compensates: +1 stop ISO &rarr; &minus;1 stop Aperture or Shutter. Infinite equivalent settings for the same scene luminance.</div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--warn)">
+        <div class="synergy-label" style="color:var(--warn)">Analogy &mdash; Fire Triangle vs Exposure Triangle</div>
+        <div class="synergy-formula">Synergy vs Compensation</div>
+        <div class="synergy-emergent">Fire Triangle: <em>all three must co-exist</em> (synergistic &rarr; AND logic). Exposure Triangle: <em>any one can compensate another</em> (compensatory &rarr; arithmetic balance). Same ternary geometry, fundamentally different dynamics.</div>
+      </div>
+      <div class="synergy-box" style="border-left-color:var(--eagle)">
+        <div class="synergy-label" style="color:var(--eagle)">Transdisciplinary reach</div>
+        <div class="synergy-formula">Balance &otimes; Trade-off pattern</div>
+        <div class="synergy-emergent">
+          The same compensatory ternary structure recurs in:<br>
+          &bull; Cognitive load (time &times; difficulty &times; experience)<br>
+          &bull; Pharmacokinetics (dose &times; frequency &times; bioavailability)<br>
+          &bull; Software (speed &times; memory &times; correctness &mdash; pick two)
+        </div>
+      </div>
+    </div>
+
+    <!-- Scores -->
+    <div id="panel-scores" class="tab-panel">
+      <div class="score-group">
+        <div class="score-group-label eagle">Eagle Eye &mdash; ASFID (Territory)</div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-A)">A</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:var(--col-A)"></div></div><div class="score-val">0.80</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-S)">S</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-S)"></div></div><div class="score-val">0.85</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-F)">F</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:95%;background:var(--col-F)"></div></div><div class="score-val">0.95</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-I)">I</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:75%;background:var(--col-I)"></div></div><div class="score-val">0.75</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-D)">D</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:var(--col-D)"></div></div><div class="score-val">0.60</div></div>
+        <div class="score-mean-row"><span>ASFID mean</span><span>0.79</span></div>
+      </div>
+      <div class="score-group">
+        <div class="score-group-label sphinx">Sphinx Eye &mdash; REVOI (Map)</div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-R)">R</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-R)"></div></div><div class="score-val">0.90</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-E)">E</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:var(--col-E)"></div></div><div class="score-val">0.70</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-V)">V</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-V)"></div></div><div class="score-val">0.90</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-O)">O</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-O)"></div></div><div class="score-val">0.85</div></div>
+        <div class="score-row"><div class="score-dim" style="color:var(--col-Im)">I</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:var(--col-Im)"></div></div><div class="score-val">0.80</div></div>
+        <div class="score-mean-row"><span>REVOI mean</span><span>0.83</span></div>
+      </div>
+      <div class="gap-badge">
+        <div><div class="gap-label">Epistemic Gap &delta;</div><div class="gap-val">0.32</div></div>
+        <div class="gap-desc">Moderate &mdash; triangle omits scene luminance, metering, diffraction, reciprocity failure</div>
+      </div>
+      <div id="pole-info">
+        <div class="level-info-box">
+          <span style="color:var(--muted)">Click a vertex in the canvas to inspect its pole</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- PARAMETERS BAR (always visible) -->
+  <div id="comp-bar">
+    <div id="comp-inner">
+      <div class="comp-group">
+        <div class="comp-label"><span class="comp-icon">🎮</span> ISO</div>
+        <input type="range" id="sl-iso" class="comp-slider" min="0" max="1" step="0.01" value="0.333">
+        <div class="comp-val" id="sl-iso-val">ISO&nbsp;400</div>
+      </div>
+      <div class="comp-sep"></div>
+      <div class="comp-group">
+        <div class="comp-label"><span class="comp-icon">🔬</span> Aperture</div>
+        <input type="range" id="sl-aperture" class="comp-slider" min="0" max="1" step="0.01" value="0.497">
+        <div class="comp-val" id="sl-aperture-val">f/5.6</div>
+      </div>
+      <div class="comp-sep"></div>
+      <div class="comp-group">
+        <div class="comp-label"><span class="comp-icon">⏱</span> Shutter</div>
+        <input type="range" id="sl-shutter" class="comp-slider" min="0" max="1" step="0.01" value="0.237">
+        <div class="comp-val" id="sl-shutter-val">1/250&Prime;</div>
+      </div>
+      <div class="comp-sep"></div>
+      <div id="ev-display">EV +0.00</div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <footer id="controls">
+    <button class="ctrl-btn active" id="btn-play">&#9646;&#9646; Pause</button>
+    <button class="ctrl-btn" id="btn-reset">&#8634; Reset</button>
+    <div class="ctrl-sep"></div>
+    <span class="ctrl-label">Speed</span>
+    <input type="range" id="speed-slider" min="0.2" max="3.0" step="0.2" value="1.0">
+    <span class="ctrl-label" id="speed-label">&times;1.0</span>
+    <div class="ctrl-sep"></div>
+    <button class="ctrl-btn" id="btn-explorer" title="Poclet Explorer (Ctrl+Shift+E)">&#10799; Poclet Explorer</button>
+    <div class="status-indicator">
+      <div class="status-dot running" id="status-dot"></div>
+      <span id="status-label">Correct EV</span>
+    </div>
+  </footer>
+
+</div>
+
+<!-- p5.js -->
+<script>
+(function() {
+  const path = require('path');
+  const { pathToFileURL } = require('url');
+  const repo = path.resolve(__dirname, '..', '..', '..', '..');
+  const p5   = path.join(repo, 'node_modules', 'p5', 'lib', 'p5.min.js');
+  document.write('<script src="' + pathToFileURL(p5).href + '"><\/script>');
+})();
+</script>
+<script src="./metadata.js"></script>
+<script src="./renderer.js"></script>
+<script>
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + t).classList.add('active');
+  });
+});
+
+// Ensure Description active on startup
+(function() {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-tab="description"]').classList.add('active');
+  document.getElementById('panel-description').classList.add('active');
+})();
+
+// Home / Explorer
+function goHome() { try { require('electron').ipcRenderer.send('go-home'); } catch(e) {} }
+document.getElementById('btn-home').addEventListener('click', goHome);
+document.getElementById('btn-explorer').addEventListener('click', goHome);
+
+// Splitter
+(function() {
+  const splitter = document.getElementById('splitter');
+  const app = document.getElementById('app');
+  let dragging = false, startX = 0, startW = 0;
+  splitter.addEventListener('mousedown', e => {
+    dragging = true; startX = e.clientX;
+    startW = document.getElementById('sidebar').getBoundingClientRect().width;
+    splitter.classList.add('dragging');
+    document.body.style.cssText = 'cursor:col-resize;user-select:none';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const newW = Math.max(180, Math.min(620, startW + (startX - e.clientX)));
+    app.style.setProperty('--sidebar-w', newW + 'px');
+  });
+  document.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false; splitter.classList.remove('dragging');
+    document.body.style.cssText = '';
+  });
+})();
+</script>
+</body>
+</html>

@@ -186,17 +186,19 @@ fn build_tobj(cg: &codegen::CodegenOutput) -> Result<Vec<u8>> {
         symtab.extend_from_slice(&flagged.to_le_bytes());
     }
 
-    // Build relocation table: [u32 code_offset][symbol_name\0] for each fixup
-    // tsk-link will patch D_MOV_I/F_CALL instructions at these offsets
-    // with the resolved symbol addresses.
+    // Build relocation table: [u32 offset][symbol_name\0] for each fixup.
+    // Code relocations (bit 30 clear): linker patches D_MOV_I/F_CALL in code section.
+    // Data relocations (bit 30 set):   linker patches 8-byte ptr slot in data section.
     let mut reltab: Vec<u8> = Vec::new();
-    for (name, func_code) in &cg.functions {
-        let _ = name;
-        let _ = func_code;
-    }
-    // Use cg.relocations if available
     for (abs_offset, sym_name) in &cg.relocations {
         reltab.extend_from_slice(&(*abs_offset as u32).to_le_bytes());
+        reltab.extend_from_slice(sym_name.as_bytes());
+        reltab.push(0);
+    }
+    // Data relocations: offset | 0x4000_0000 flag distinguishes from code relocs.
+    for (data_offset, sym_name) in &cg.data_relocations {
+        let flagged = (*data_offset as u32) | 0x4000_0000u32;
+        reltab.extend_from_slice(&flagged.to_le_bytes());
         reltab.extend_from_slice(sym_name.as_bytes());
         reltab.push(0);
     }

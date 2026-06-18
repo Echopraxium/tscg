@@ -46,6 +46,9 @@ pub const LIBC_SYMBOLS: &[LibcSym] = &[
     LibcSym { name: "strdup",        id: 0x18 },
     LibcSym { name: "strcasecmp",    id: 0x19 },
     LibcSym { name: "strncasecmp",   id: 0x1A },
+    // MSVC aliases — clang on Windows emits _stricmp / _strnicmp
+    LibcSym { name: "_stricmp",      id: 0x19 },  // alias for strcasecmp
+    LibcSym { name: "_strnicmp",     id: 0x1A },  // alias for strncasecmp
     LibcSym { name: "strlcat",       id: 0x1B },
     LibcSym { name: "strlcpy",       id: 0x1C },
     // ── Stdlib ──────────────────────────────────────────────────
@@ -85,6 +88,8 @@ pub const LIBC_SYMBOLS: &[LibcSym] = &[
     // ── String utils (Doom m_config.c) ───────────────────────────────────
     LibcSym { name: "strerror",      id: 0x68 },
     LibcSym { name: "sscanf",        id: 0x69 },
+    // ── stdlib extra ─────────────────────────────────────────────────────
+    LibcSym { name: "calloc",        id: 0x6A },
 ];
 
 /// Look up a symbol by name. Returns its stub address if found.

@@ -1,0 +1,689 @@
+/* TscgOntologyExplorer — style.css — Layout & structural CSS only */
+/* Color variables are defined in themes/night.css and themes/day.css */
+/* Author: Echopraxium with the collaboration of Claude AI           */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size:   13px;
+  background:  var(--bg-base);
+  color:       var(--text-primary);
+  display:     flex;
+  flex-direction: column;
+  height:      100vh;
+  overflow:    hidden;
+}
+
+/* ── Top bar ────────────────────────────────────────────────── */
+#topbar {
+  display:     flex;
+  align-items: center;
+  gap:         12px;
+  height:      44px;
+  background:  var(--bg-header);
+  border-bottom: 1px solid var(--border);
+  padding:     0 12px;
+  flex-shrink: 0;
+  -webkit-app-region: drag;
+}
+
+.app-title {
+  font-weight: 600;
+  color:       var(--accent);
+  font-size:   14px;
+  min-width:   160px;
+}
+
+#layer-buttons, #mode-toggle {
+  display: flex;
+  gap:     4px;
+  -webkit-app-region: no-drag;
+}
+
+button {
+  background:    var(--btn-bg);
+  color:         var(--text-primary);
+  border:        1px solid var(--border);
+  border-radius: 4px;
+  padding:       4px 10px;
+  cursor:        pointer;
+  font-size:     12px;
+  transition:    background 0.15s;
+}
+button:hover    { background: var(--btn-hover); }
+button.active   { background: var(--mode-active); border-color: var(--accent); color: var(--btn-active-color); }
+button:disabled { opacity: 0.5; cursor: default; }
+
+#active-ontology-label {
+  margin-left: auto;
+  color:       var(--text-secondary);
+  font-size:   11px;
+  font-style:  italic;
+  -webkit-app-region: no-drag;
+}
+
+/* ── 3-column workspace ─────────────────────────────────────── */
+#workspace {
+  display:  flex;
+  flex:     1;
+  overflow: hidden;
+}
+
+section {
+  display:        flex;
+  flex-direction: column;
+  background:     var(--bg-panel);
+  overflow:       hidden;
+}
+
+#object-explorer    { width: 260px; min-width: 120px; border-right: 1px solid var(--border); }
+#property-inspector { flex: 1;      min-width: 200px; border-right: 1px solid var(--border); }
+#right-panel        { width: 320px; min-width: 200px; }
+
+.panel-header {
+  height:      32px;
+  line-height: 32px;
+  padding:     0 10px;
+  background:  var(--bg-header);
+  border-bottom: 1px solid var(--border);
+  font-size:   11px;
+  font-weight: 600;
+  color:       var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.placeholder {
+  color:      var(--text-muted);
+  padding:    16px;
+  font-style: italic;
+  font-size:  12px;
+}
+
+#object-tree, #property-drawers { flex: 1; overflow-y: auto; padding: 4px 0; }
+
+/* ── Splitters ──────────────────────────────────────────────── */
+.splitter {
+  width:       5px;
+  cursor:      col-resize;
+  background:  var(--splitter);
+  transition:  background 0.15s;
+  flex-shrink: 0;
+}
+.splitter:hover    { background: var(--accent); }
+.splitter.dragging { background: var(--accent); }
+
+/* ── Right panel tabs ───────────────────────────────────────── */
+#tab-bar {
+  display:       flex;
+  background:    var(--bg-header);
+  border-bottom: 1px solid var(--border);
+  flex-shrink:   0;
+  overflow-x:    auto;
+}
+
+.tab-btn {
+  flex:          0 0 auto;
+  border:        none;
+  border-radius: 0;
+  background:    transparent;
+  color:         var(--text-secondary);
+  font-size:     11px;
+  padding:       8px 10px;
+  border-bottom: 2px solid transparent;
+  white-space:   nowrap;
+}
+.tab-btn:hover  { background: var(--bg-hover); }
+.tab-btn.active {
+  color:         var(--text-primary);
+  background:    var(--tab-active-bg);
+  border-bottom: 2px solid var(--accent);
+}
+.tab-btn[data-plugin]::after {
+  content:  ' ⬡';
+  font-size: 9px;
+  color:     var(--accent);
+  opacity:   0.7;
+}
+
+#tab-content       { flex: 1; overflow: hidden; position: relative; }
+#right-panel-extra { flex-shrink: 0; }
+
+.tab-pane {
+  display:    none;
+  height:     100%;
+  overflow-y: auto;
+  padding:    12px;
+}
+.tab-pane.active { display: block; }
+
+/* ── Radar canvas ───────────────────────────────────────────── */
+#radar-canvas { display: block; margin: 12px auto; }
+#gap-info     { text-align: center; font-size: 13px; color: var(--text-secondary); }
+
+/* ── Status bar ─────────────────────────────────────────────── */
+#statusbar {
+  display:     flex;
+  align-items: center;
+  height:      24px;
+  background:  var(--bg-header);
+  border-top:  1px solid var(--border);
+  padding:     0 10px;
+  font-size:   11px;
+  color:       var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* ── Popup overlay ──────────────────────────────────────────── */
+#popup-overlay {
+  position:        fixed;
+  inset:           0;
+  background:      rgba(0,0,0,0.6);
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  z-index:         1000;
+}
+#popup-overlay[hidden] { display: none; }
+
+#popup-box {
+  background:    var(--bg-panel);
+  border:        1px solid var(--accent);
+  border-radius: 8px;
+  padding:       28px 36px;
+  min-width:     320px;
+  text-align:    center;
+  box-shadow:    0 8px 32px rgba(0,0,0,0.5);
+}
+#popup-message {
+  font-size:     16px;
+  margin-bottom: 8px;
+  color:         var(--text-primary);
+  white-space:   pre-line;
+}
+.popup-from {
+  font-size:     11px;
+  color:         var(--text-muted);
+  margin-bottom: 20px;
+  font-style:    italic;
+}
+#popup-close {
+  background: var(--accent);
+  border:     none;
+  color:      white;
+  padding:    8px 24px;
+  font-size:  13px;
+}
+#popup-close:hover { background: var(--accent-hover); }
+
+/* ── Edit mode ──────────────────────────────────────────────── */
+body[data-mode="edit"] #property-inspector .panel-header::after {
+  content:     ' [EDIT]';
+  color:       var(--danger);
+  font-weight: 700;
+}
+
+/* ── Object tree ─────────────────────────────────────────────── */
+.tree-group-header {
+  padding:     6px 10px;
+  font-size:   11px;
+  font-weight: 600;
+  color:       var(--accent);
+  cursor:      pointer;
+  user-select: none;
+  background:  var(--bg-drawer);
+  border-bottom: 1px solid var(--border);
+}
+.tree-group-header:hover { background: var(--bg-hover); }
+
+.tree-item {
+  padding:     5px 10px 5px 20px;
+  font-size:   12px;
+  color:       var(--text-secondary);
+  cursor:      pointer;
+  white-space: nowrap;
+  overflow:    hidden;
+  text-overflow: ellipsis;
+}
+.tree-item:hover    { background: var(--bg-hover); color: var(--text-primary); }
+.tree-item.selected {
+  background:  var(--tab-active-bg);
+  color:       var(--text-primary);
+  border-left: 2px solid var(--accent);
+}
+
+/* ── Property Inspector drawers ─────────────────────────────── */
+.drawer { border-bottom: 1px solid var(--border); }
+
+.drawer-header {
+  padding:     6px 10px;
+  font-size:   11px;
+  font-weight: 600;
+  color:       var(--text-secondary);
+  cursor:      pointer;
+  user-select: none;
+  background:  var(--bg-drawer);
+}
+.drawer-header:hover { background: var(--bg-hover); }
+
+.drawer-body { padding: 4px 0; }
+
+.drawer-row {
+  display:       flex;
+  padding:       4px 10px;
+  gap:           8px;
+  font-size:     12px;
+  border-bottom: 1px solid var(--border);
+  align-items:   flex-start;
+}
+.drawer-key {
+  color:       var(--accent);
+  min-width:   120px;
+  flex-shrink: 0;
+  word-break:  break-all;
+  font-size:   11px;
+}
+.drawer-val {
+  color:      var(--text-primary);
+  word-break: break-all;
+  flex:       1;
+}
+
+/* ── Description tab ─────────────────────────────────────────── */
+.desc-block   { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.desc-label   { font-size: 10px; color: var(--accent);
+                text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.desc-value   { font-size: 13px; color: var(--text-primary); word-break: break-all; }
+.desc-iri     { font-size: 11px; color: var(--text-secondary); font-family: monospace; }
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--splitter); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── Document tab bar (MDI) ─────────────────────────────────── */
+#doc-tab-bar {
+  display:       flex;
+  align-items:   center;
+  background:    var(--bg-header);
+  border-bottom: 1px solid var(--border);
+  height:        32px;
+  overflow-x:    auto;
+  flex-shrink:   0;
+  padding:       0 4px;
+  gap:           2px;
+}
+
+.doc-tab {
+  display:       flex;
+  align-items:   center;
+  gap:           6px;
+  height:        26px;
+  padding:       0 10px 0 12px;
+  background:    var(--btn-bg);
+  border:        1px solid var(--border);
+  border-radius: 4px 4px 0 0;
+  cursor:        pointer;
+  font-size:     11px;
+  color:         var(--text-secondary);
+  white-space:   nowrap;
+  max-width:     200px;
+  transition:    background 0.15s;
+}
+.doc-tab:hover  { background: var(--bg-hover); color: var(--text-primary); }
+.doc-tab.active { background: var(--bg-panel); color: var(--text-primary);
+                  border-bottom-color: var(--bg-panel); }
+
+.doc-tab-label  { overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+
+.doc-tab-close  {
+  background: transparent; border: none; color: var(--text-muted);
+  font-size: 13px; padding: 0 2px; line-height: 1; cursor: pointer;
+  border-radius: 3px; flex-shrink: 0;
+}
+.doc-tab-close:hover { background: var(--bg-hover); color: var(--danger); }
+
+#doc-tab-add {
+  background: transparent; border: 1px solid transparent;
+  color: var(--text-muted); font-size: 16px; padding: 0 8px;
+  height: 26px; border-radius: 4px; cursor: pointer; flex-shrink: 0;
+}
+#doc-tab-add:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+/* ── Bridge indicator (status bar) ─────────────────────────── */
+#bridge-indicator {
+  margin-left: auto;
+  font-size:   11px;
+  color:       var(--text-muted);
+}
+
+/* ── Clickable URI values in Property Inspector ─────────────── */
+.drawer-val-uri {
+  color:       var(--accent);
+  cursor:      pointer;
+  text-decoration: underline dotted;
+  font-family: monospace;
+  font-size:   11px;
+  word-break:  break-all;
+}
+.drawer-val-uri:hover  { color: var(--accent-hover); text-decoration: underline; }
+
+/* ── Object Explorer (ObjectExplorer.js) ────────────────────── */
+#object-tree        { display: flex; flex-direction: column; overflow: hidden; }
+
+.oe-filter-bar {
+  padding:       6px 8px 4px;
+  border-bottom: 1px solid var(--border);
+  background:    var(--bg-header);
+  flex-shrink:   0;
+}
+
+.oe-select-row  { display: flex; gap: 6px; margin-bottom: 6px; }
+
+.oe-type-select {
+  flex:          1;
+  background:    var(--bg-drawer);
+  border:        1px solid var(--border);
+  border-radius: 4px;
+  color:         var(--text-primary);
+  font-size:     11px;
+  padding:       4px 6px;
+  cursor:        pointer;
+  font-family:   var(--font-family, 'Segoe UI', sans-serif);
+}
+.oe-type-select:focus { border-color: var(--accent); outline: none; }
+
+.oe-clear-btn {
+  padding:       4px 8px;
+  font-size:     10px;
+  background:    var(--btn-bg);
+  border:        1px solid var(--border);
+  border-radius: 4px;
+  color:         var(--text-muted);
+  cursor:        pointer;
+  white-space:   nowrap;
+}
+.oe-clear-btn:hover:not(:disabled) { background: var(--btn-hover); color: var(--danger); }
+.oe-clear-btn:disabled { opacity: 0.4; cursor: default; }
+
+.oe-pills       { display: flex; flex-wrap: wrap; gap: 4px; min-height: 20px; }
+.oe-pills-empty { font-size: 10px; color: var(--text-muted); font-style: italic; }
+
+.oe-pill {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           4px;
+  padding:       2px 8px;
+  border-radius: 10px;
+  font-size:     10px;
+  font-weight:   600;
+  color:         white;
+  cursor:        default;
+}
+.oe-pill-x {
+  cursor:      pointer;
+  opacity:     0.7;
+  font-size:   9px;
+  line-height: 1;
+}
+.oe-pill-x:hover { opacity: 1; }
+
+/* ── Tree body ──────────────────────────────────────────────── */
+.oe-tree-body { flex: 1; overflow-y: auto; padding-bottom: 8px; }
+
+.oe-node {
+  display:     flex;
+  align-items: center;
+  gap:         5px;
+  min-height:  24px;
+  cursor:      pointer;
+  padding-top: 2px; padding-bottom: 2px;
+  padding-right: 8px;
+  border-left: 2px solid transparent;
+}
+.oe-node:hover    { background: var(--bg-hover); }
+.oe-node.selected {
+  background:  var(--tab-active-bg);
+  border-left: 2px solid var(--accent);
+}
+
+/* Big triangle — key improvement over previous small ▾ */
+.oe-tri {
+  font-size:   14px;
+  min-width:   18px;
+  text-align:  center;
+  line-height: 1;
+  color:       var(--accent);
+  flex-shrink: 0;
+  cursor:      pointer;
+  user-select: none;
+}
+.oe-tri:hover { color: var(--accent-hover); }
+
+.oe-lbl {
+  font-size:    12px;
+  color:        var(--text-primary);
+  overflow:     hidden;
+  text-overflow: ellipsis;
+  white-space:  nowrap;
+  flex:         1;
+}
+
+.oe-count {
+  font-size:  10px;
+  color:      var(--text-muted);
+  text-align: right;
+  padding:    6px 10px 4px;
+  font-style: italic;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+}
+
+/* ── Imports tab ─────────────────────────────────────────────── */
+/* Chip row: wraps prefix/suffix chips horizontally */
+.imports-chips {
+  display:    flex;
+  flex-wrap:  wrap;
+  gap:        6px;
+  padding:    6px 12px 10px;
+}
+
+/* Chip: compact clickable badge */
+.imports-chip {
+  display:       inline-block;
+  padding:       3px 9px;
+  border-radius: 10px;
+  font-size:     11px;
+  font-weight:   600;
+  background:    var(--btn-bg);
+  border:        1px solid var(--border);
+  color:         var(--text-secondary);
+  cursor:        pointer;
+  white-space:   nowrap;
+  transition:    background 0.15s, color 0.15s;
+}
+.imports-chip:hover          { background: var(--bg-hover);    color: var(--text-primary); }
+.imports-chip-local          { background: var(--accent);      color: white; border-color: var(--accent); }
+.imports-chip-local:hover    { background: var(--accent-hover); }
+.imports-row {
+  display:       flex;
+  align-items:   flex-start;
+  gap:           8px;
+  padding:       4px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size:     11px;
+}
+.imports-prefix {
+  color:       var(--accent);
+  min-width:   60px;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+.imports-uri {
+  word-break: break-all;
+  flex:       1;
+}
+
+/* ── Object Explorer mode selector ─────────────────────────────── */
+.oe-mode-row {
+  padding:       4px 8px;
+  background:    var(--bg-header);
+  border-bottom: 1px solid var(--border);
+  flex-shrink:   0;
+}
+.oe-mode-select {
+  width:         100%;
+  background:    var(--bg-drawer);
+  border:        1px solid var(--border);
+  border-radius: 4px;
+  color:         var(--text-primary);
+  font-size:     11px;
+  font-weight:   600;
+  padding:       4px 6px;
+  cursor:        pointer;
+  font-family:   var(--font-family, 'Segoe UI', sans-serif);
+}
+.oe-mode-select:focus { border-color: var(--accent); outline: none; }
+
+/* ── SPARQL panel ────────────────────────────────────────────── */
+#sparql-panel {
+  display:        flex;
+  flex-direction: column;
+  height:         100%;
+  padding:        8px;
+  gap:            6px;
+  box-sizing:     border-box;
+}
+.sparql-editor {
+  flex:           0 0 120px;
+  width:          100%;
+  background:     var(--bg-drawer);
+  border:         1px solid var(--border);
+  border-radius:  4px;
+  color:          var(--text-primary);
+  font-family:    monospace;
+  font-size:      11px;
+  padding:        8px;
+  resize:         vertical;
+  box-sizing:     border-box;
+  outline:        none;
+}
+.sparql-editor:focus { border-color: var(--accent); }
+
+#sparql-actions {
+  display:     flex;
+  align-items: center;
+  gap:         6px;
+  flex-shrink: 0;
+}
+.sparql-btn {
+  padding:       4px 12px;
+  border-radius: 4px;
+  border:        1px solid var(--accent);
+  background:    var(--accent);
+  color:         white;
+  font-size:     11px;
+  font-weight:   600;
+  cursor:        pointer;
+}
+.sparql-btn:hover    { background: var(--accent-hover); }
+.sparql-btn-sec      { background: var(--btn-bg); color: var(--text-secondary); border-color: var(--border); }
+.sparql-btn-sec:hover{ background: var(--btn-hover); }
+.sparql-status       { font-size: 11px; color: var(--text-muted); font-style: italic; }
+
+#sparql-results {
+  flex:           1;
+  overflow:       auto;
+  font-size:      11px;
+}
+.sparql-table {
+  width:           100%;
+  border-collapse: collapse;
+}
+.sparql-table th {
+  background:    var(--bg-header);
+  color:         var(--accent);
+  padding:       4px 8px;
+  text-align:    left;
+  font-size:     10px;
+  font-weight:   700;
+  border-bottom: 1px solid var(--border);
+  position:      sticky;
+  top:           0;
+}
+.sparql-table td {
+  padding:       3px 8px;
+  border-bottom: 1px solid var(--border);
+  color:         var(--text-secondary);
+  word-break:    break-all;
+  max-width:     200px;
+  overflow:      hidden;
+  text-overflow: ellipsis;
+  white-space:   nowrap;
+}
+.sparql-table tr:hover td { background: var(--bg-hover); }
+
+/* ── SPARQL preset queries combobox ─────────────────────────── */
+#sparql-presets-row {
+  flex-shrink: 0;
+}
+.sparql-preset-select {
+  width:         100%;
+  background:    var(--bg-drawer);
+  border:        1px solid var(--border);
+  border-radius: 4px;
+  color:         var(--text-secondary);
+  font-size:     11px;
+  padding:       4px 6px;
+  cursor:        pointer;
+  font-family:   var(--font-family, 'Segoe UI', sans-serif);
+}
+.sparql-preset-select:focus  { border-color: var(--accent); outline: none; }
+.sparql-preset-select optgroup { color: var(--accent); font-weight: 700; }
+.sparql-preset-select option   { color: var(--text-primary); }
+
+/* ── Object Explorer search bar ────────────────────────────── */
+.oe-search-bar {
+  display:        flex;
+  align-items:    center;
+  gap:            6px;
+  padding:        4px 8px;
+  background:     var(--bg-header);
+  border-bottom:  1px solid var(--accent);
+  flex-shrink:    0;
+}
+.oe-search-input {
+  flex:           1;
+  background:     var(--bg-drawer);
+  border:         1px solid var(--accent);
+  border-radius:  4px;
+  color:          var(--text-primary);
+  font-size:      11px;
+  padding:        3px 7px;
+  outline:        none;
+}
+.oe-search-count {
+  font-size:      10px;
+  color:          var(--accent);
+  font-weight:    700;
+  white-space:    nowrap;
+  min-width:      40px;
+  text-align:     right;
+}
+.oe-search-close {
+  background:     none;
+  border:         none;
+  color:          var(--text-muted);
+  cursor:         pointer;
+  font-size:      12px;
+  padding:        0 2px;
+  line-height:    1;
+}
+.oe-search-close:hover { color: var(--text-primary); }
+
+/* Highlight matched text in tree */
+.oe-match { background: var(--accent); color: white; border-radius: 2px; padding: 0 2px; }
+.oe-node-dimmed { opacity: 0.25; }

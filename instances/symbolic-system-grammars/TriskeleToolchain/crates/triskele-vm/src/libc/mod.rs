@@ -112,6 +112,8 @@ pub enum LibcSyscall {
     // String utils (Doom m_config.c and others)
     Strerror = 0x68,
     Sscanf   = 0x69,
+    // stdlib extra
+    Calloc   = 0x6A,
 }
 
 impl LibcSyscall {
@@ -147,6 +149,7 @@ impl LibcSyscall {
             0x64 => Some(Self::Fseek),     0x65 => Some(Self::Ftell),
             0x66 => Some(Self::Feof),      0x67 => Some(Self::Fflush),
             0x68 => Some(Self::Strerror),  0x69 => Some(Self::Sscanf),
+            0x6A => Some(Self::Calloc),
             _ => None,
         }
     }
@@ -187,6 +190,7 @@ impl LibcSyscall {
             Self::Fseek     => "fseek",     Self::Ftell     => "ftell",
             Self::Feof      => "feof",      Self::Fflush    => "fflush",
             Self::Strerror  => "strerror",  Self::Sscanf    => "sscanf",
+            Self::Calloc    => "calloc",
         }
     }
 
@@ -219,6 +223,7 @@ pub const ALL_SYSCALLS: &[LibcSyscall] = &[
     LibcSyscall::Fread,    LibcSyscall::Fwrite,
     LibcSyscall::Fseek,    LibcSyscall::Ftell,    LibcSyscall::Feof,    LibcSyscall::Fflush,
     LibcSyscall::Strerror, LibcSyscall::Sscanf,
+    LibcSyscall::Calloc,
 ];
 
 /// Inject all libc stubs into VM memory at LIBC_BASE.
@@ -226,7 +231,7 @@ pub const ALL_SYSCALLS: &[LibcSyscall] = &[
 pub fn inject_stubs(mem: &mut Memory) -> anyhow::Result<()> {
     // Im_Syscall encoding: Type I  →  opcode(8) | dst(5) | imm19
     // We encode the syscall ID in the imm19 field.
-    // Highest discriminant: 0x69 (Sscanf) → segment size = (0x6A) * STUB_SIZE
+    // Highest discriminant: 0x6A (Calloc) → segment size = (0x6B) * STUB_SIZE
     // F_Ret encoding:      Type R  →  opcode(8) | 0 | 0 | 0 | 0
     let f_ret_word: u32 = (Opcode::F_Ret as u32) << 24;
 
@@ -1013,10 +1018,18 @@ pub fn dispatch(
             // FILE* fopen(const char* path, const char* mode) → R0 = vm_fp or 0
             let path_ptr = regs.get(0)?;
             let mode_ptr = regs.get(1)?;
-            // Read path
+            // Read path (bounded to prevent runaway on corrupted pointer)
             let mut path_bytes = Vec::new();
             let mut i = 0u64;
             loop {
+                if i > 4096 {
+                    // Defensive bound: path exceeds 4096 bytes without a null
+                    // terminator. This indicates a corrupted/invalid pointer
+                    // upstream; fail fast (fopen returns NULL) instead of
+                    // growing path_bytes unboundedly.
+                    regs.set(0, 0)?;
+                    return Ok(());
+                }
                 let b = mem.read_u8(path_ptr + i)?;
                 if b == 0 { break; }
                 path_bytes.push(b);
@@ -1063,11 +1076,18 @@ pub fn dispatch(
             let total   = item_sz * count;
             let mut buf = vec![0u8; total];
             let n_read = if let Some(fh) = state.get_handle_mut(vm_fp) {
-                match fh.file.read(&mut buf) {
-                    Ok(0)  => { fh.eof = true; 0 }
-                    Ok(n)  => n,
-                    Err(_) => { 0 }
+                // read() is NOT guaranteed to fill the buffer in one call —
+                // loop until full, EOF, or error (matches libc fread semantics).
+                let mut off = 0usize;
+                loop {
+                    if off >= total { break; }
+                    match fh.file.read(&mut buf[off..]) {
+                        Ok(0) => { fh.eof = true; break; }
+                        Ok(n) => { off += n; }
+                        Err(_) => { break; }
+                    }
                 }
+                off
             } else { 0 };
             mem.write_bytes(dst_ptr, &buf[..n_read])?;
             regs.set(0, (if item_sz > 0 { n_read / item_sz } else { 0 }) as u64)?;
@@ -1271,6 +1291,36 @@ pub fn dispatch(
             regs.set(0, items_assigned)?;
         }
 
+        // ── calloc ────────────────────────────────────────────────────────
+
+        LibcSyscall::Calloc => {
+            // void* calloc(size_t nmemb, size_t size) → R0 = ptr or 0
+            // Equivalent to malloc(nmemb * size) + memset(ptr, 0, nmemb * size)
+            let nmemb = regs.get(0)?;
+            let size  = regs.get(1)?;
+            let total = nmemb.saturating_mul(size);
+            let ptr = if total == 0 {
+                0u64
+            } else {
+                let p = state.heap_bump;
+                // Align to 8 bytes
+                let p_aligned = (p + 7) & !7;
+                let next = p_aligned + total;
+                if next > state.heap_ceil {
+                    0u64
+                } else {
+                    state.heap_bump = next;
+                    // Zero-initialise (calloc guarantee)
+                    for i in 0..total {
+                        mem.write_u8(p_aligned + i, 0)
+                            .map_err(|e| VmError::FfiError(format!("calloc: zero-init fault: {}", e)))?;
+                    }
+                    p_aligned
+                }
+            };
+            regs.set(0, ptr)?;
+        }
+
         // ── snprintf / vsnprintf ───────────────────────────────────────────
 
         LibcSyscall::Snprintf => {
@@ -1350,7 +1400,7 @@ mod tests {
     fn setup_mem() -> (Memory, RegisterFile, LibcState) {
         let mut mem = Memory::new(NULL_PAGE_END, 0x0010_0000);
         // Segment must cover the highest discriminant (0x45=Vsprintf)
-        mem.add_segment(LIBC_BASE, (0x6A_u64) * STUB_SIZE);  // highest = 0x69 (Sscanf)
+        mem.add_segment(LIBC_BASE, (0x6B_u64) * STUB_SIZE);  // highest = 0x6A (Calloc)
         let regs = RegisterFile::new(STACK_TOP, NULL_PAGE_END);
         let state = LibcState::new();
         (mem, regs, state)
@@ -1364,7 +1414,7 @@ mod tests {
         // Heap segment
         mem.add_segment(HEAP_BASE, HEAP_SIZE);
         // Libc stubs segment
-        mem.add_segment(LIBC_BASE, (0x6A_u64) * STUB_SIZE);  // highest = 0x69 (Sscanf)
+        mem.add_segment(LIBC_BASE, (0x6B_u64) * STUB_SIZE);  // highest = 0x6A (Calloc)
         let regs = RegisterFile::new(STACK_TOP, NULL_PAGE_END);
         let state = LibcState::new();
         (mem, regs, state)

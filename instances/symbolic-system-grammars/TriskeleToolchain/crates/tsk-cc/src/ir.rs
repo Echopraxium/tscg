@@ -186,8 +186,17 @@ pub enum GlobalInit {
     ZeroInit,
     Integer(i64),
     Undef,
+    /// External reference — declared in another object file; no data emitted here.
+    External,
     /// Byte array initializer — used for string literals like c"%d\0"
     Bytes(Vec<u8>),
+    /// Array of pointers to named globals: [N x ptr] [ptr @a, ptr @b, ...]
+    /// Each String is the target symbol name; the linker patches each slot
+    /// with the final VM address of that symbol.
+    PointerArray(Vec<String>),
+    /// Single pointer to a named global: ptr @sym
+    /// Used for globals initialized with a ptr to another global.
+    PointerTo(String),
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
