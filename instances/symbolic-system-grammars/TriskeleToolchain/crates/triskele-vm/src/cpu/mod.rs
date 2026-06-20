@@ -1,6 +1,6 @@
 // triskele-vm/src/cpu/mod.rs
 // Author: Echopraxium with the collaboration of Claude AI
-// Version: 0.3.1
+// Version: 0.3.11
 //
 // TriskeleVM interpreter — register-based, 32-bit fixed instruction width.
 // Main loop: fetch → decode → execute.
@@ -20,7 +20,7 @@ use crate::memory::{
     Memory, HEAP_BASE, HEAP_SIZE, STACK_TOP, STACK_SIZE, NULL_PAGE_END,
     heap::Heap, stack::Stack, arena::ArenaAllocator,
 };
-use crate::ffi::Sdl2Context;
+use crate::display::DisplayBackend;
 use crate::libc::LibcState;
 
 /// Maximum instructions per run (safety — prevents infinite loops in tests).
@@ -34,6 +34,8 @@ pub type VmResult = Result<i32, VmError>;
 // ─────────────────────────────────────────────────────────────────────────────
 
 /// One Im_FfiCall slot — a native function loaded via libloading.
+/// Not available in WASM builds (no dlopen).
+#[cfg(feature = "native")]
 pub struct FfiSlot {
     pub lib_name: String,
     pub fn_name:  String,
@@ -50,12 +52,14 @@ pub struct Cpu {
     pub debug:     bool,
     pub trace:     bool,
     pub ticks:     u64,
-    pub sdl:       Option<Sdl2Context>,
+    /// Display backend — None for headless (tests, CI, WASM without canvas),
+    /// Some for graphical runs. Type-erased via Box<dyn DisplayBackend>.
+    pub display:   Option<Box<dyn DisplayBackend>>,
     pub output:    Box<dyn Write + Send>,
     /// tsk-libc runtime state (rand seed, etc.)
     pub libc_state: LibcState,
-    /// Im_FfiCall dispatch table: slot → (lib_name, fn_name, fn_ptr)
-    /// Populated at startup when loading .tvml native libraries.
+    /// Im_FfiCall dispatch table — native only (no dlopen in WASM).
+    #[cfg(feature = "native")]
     pub ffi_slots:  Vec<FfiSlot>,
 }
 
@@ -69,16 +73,36 @@ impl Cpu {
         Self {
             regs, mem, stack, heap, arenas,
             debug, trace: false, ticks: 0,
-            sdl: None,
+            display: None,
             output: Box::new(std::io::stdout()),
             libc_state: LibcState::new(),
+            #[cfg(feature = "native")]
             ffi_slots:  Vec::new(),
         }
     }
 
-    /// Attach an SDL2 context (call before run() for graphical programs).
-    pub fn with_sdl(mut self, sdl: Sdl2Context) -> Self {
-        self.sdl = Some(sdl);
+    /// Create a new VM with a custom stack top address.
+    /// Used by build_cpu_headless for WASM builds where STACK_TOP (0x7000_0000)
+    /// is outside the allocated memory range.
+    pub fn new_with_stack(mem: Memory, entry_pc: u64, stack_top: u64, debug: bool) -> Self {
+        let regs   = RegisterFile::new(stack_top, entry_pc);
+        let stack  = Stack::new(stack_top, STACK_SIZE);
+        let heap   = Heap::new(HEAP_BASE, HEAP_SIZE);
+        let arenas = ArenaAllocator::new(0xA000_0000, 0x0100_0000);
+        Self {
+            regs, mem, stack, heap, arenas,
+            debug, trace: false, ticks: 0,
+            display: None,
+            output: Box::new(std::io::stdout()),
+            libc_state: LibcState::new(),
+            #[cfg(feature = "native")]
+            ffi_slots:  Vec::new(),
+        }
+    }
+
+    /// Attach a display backend (call before run() for graphical programs).
+    pub fn with_display(mut self, display: Box<dyn DisplayBackend>) -> Self {
+        self.display = Some(display);
         self
     }
 
@@ -493,8 +517,8 @@ self.mem.write_u64(addr, v)?;
                 // T_FRAME_SYN R0 — sync to R0 fps (or 35 if R0=0)
                 let fps = self.regs.get(d)? as u32;
                 let fps = if fps == 0 { 35 } else { fps };
-                if let Some(sdl) = self.sdl.as_mut() {
-                    sdl.frame_sync(fps);
+                if let Some(display) = self.display.as_mut() {
+                    display.frame_sync(fps);
                 }
             }
 
@@ -567,10 +591,10 @@ self.mem.write_u64(addr, v)?;
 
             // ── Im_ Interoperability ──────────────────────────────────────────
             Opcode::Im_FbBlit => {
-                // Im_FB_BLIT R0 — blit framebuffer at address R0 to SDL2 window
+                // Im_FB_BLIT R0 — blit framebuffer at address R0 to display window
                 let fb_ptr = self.regs.get(d)?;
-                if let Some(sdl) = self.sdl.as_mut() {
-                    sdl.fb_blit(&self.mem, fb_ptr)
+                if let Some(display) = self.display.as_mut() {
+                    display.fb_blit(&self.mem, fb_ptr)
                         .map_err(|e| VmError::FfiError(e.to_string()))?;
                 }
             }
@@ -578,15 +602,15 @@ self.mem.write_u64(addr, v)?;
                 // Im_FB_CLEAR R0, R1 — clear framebuffer at R0 with color R1 (RGBA)
                 let fb_ptr = self.regs.get(d)?;
                 let color  = self.regs.get(s1)? as u32;
-                if let Some(sdl) = self.sdl.as_mut() {
-                    sdl.fb_clear(&mut self.mem, fb_ptr, color)
+                if let Some(display) = self.display.as_mut() {
+                    display.fb_clear(&mut self.mem, fb_ptr, color)
                         .map_err(|e| VmError::FfiError(e.to_string()))?;
                 }
             }
             Opcode::Im_InputRd => {
-                // Im_INPUT_RD — poll SDL2 events, store quit flag in R0
-                let quit = if let Some(sdl) = self.sdl.as_mut() {
-                    sdl.poll_events() as u64
+                // Im_INPUT_RD — poll display events, store quit flag in R0
+                let quit = if let Some(display) = self.display.as_mut() {
+                    display.poll_events() as u64
                 } else { 0 };
                 self.regs.set(d, quit)?;
                 if quit != 0 {
@@ -597,17 +621,17 @@ self.mem.write_u64(addr, v)?;
                 // Im_REGISTER_CB R0, R1 — register VM func at R1 for event_id R0
                 let event_id = self.regs.get(d)? as u32;
                 let vm_addr  = self.regs.get(s1)?;
-                if let Some(sdl) = self.sdl.as_mut() {
-                    sdl.register_callback(event_id, vm_addr);
+                if let Some(display) = self.display.as_mut() {
+                    display.register_callback(event_id, vm_addr);
                 }
             }
             Opcode::Im_KeyQuery => {
                 // Im_KEY_QUERY Rdst, Rsrc — Rsrc holds scancode (u8)
                 // Rdst ← 1 if key held, 0 otherwise
-                // Works only when SDL2 context is attached (headless → always 0)
+                // Works only when a display backend is attached (headless → always 0)
                 let sc = self.regs.get(s1)? as u8;
-                let pressed = self.sdl.as_ref()
-                    .map(|sdl| sdl.key_query(sc))
+                let pressed = self.display.as_ref()
+                    .map(|display| display.key_query(sc))
                     .unwrap_or(0);
                 self.regs.set(d, pressed)?;
             }
@@ -645,9 +669,8 @@ self.mem.write_u64(addr, v)?;
 
             // ── Im_FfiCall — native library dispatch ─────────────────────────
             // Im_FfiCall <slot> — calls a native function loaded via libloading.
-            // Slot index encoded in dst field.
-            // Calling convention: R0..Rn = args, R0 = return value.
-            // Safety: the native function must follow cdecl ABI with u64 args/ret.
+            // Not available in WASM builds (no dlopen).
+            #[cfg(feature = "native")]
             Opcode::Im_FfiCall => {
                 let slot = dst as usize;
                 if slot >= self.ffi_slots.len() {
@@ -655,20 +678,21 @@ self.mem.write_u64(addr, v)?;
                         format!("Im_FfiCall: slot {} out of range (table has {} entries)",
                             slot, self.ffi_slots.len())));
                 }
-                // Collect args from R0..R7 (max 8 args — sufficient for C89)
                 let a0 = self.regs.get(0)?;
                 let a1 = self.regs.get(1)?;
                 let a2 = self.regs.get(2)?;
                 let a3 = self.regs.get(3)?;
-                // Safety: caller must ensure correct ABI
                 let ret = unsafe {
                     let f = self.ffi_slots[slot].fn_ptr;
-                    // Variadic-style call via transmute to match arg count
                     let f6: unsafe extern "C" fn(u64,u64,u64,u64) -> u64 =
                         std::mem::transmute(f);
                     f6(a0, a1, a2, a3)
                 };
                 self.regs.set(0, ret)?;
+            }
+            #[cfg(not(feature = "native"))]
+            Opcode::Im_FfiCall => {
+                return Err(VmError::FfiError("Im_FfiCall not supported in WASM".into()));
             }
 
             // Unimplemented — trap in debug, silently skip in release

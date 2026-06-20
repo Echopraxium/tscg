@@ -262,7 +262,8 @@ pub fn symbol_table() -> Vec<(&'static str, u64)> {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /// Runtime state for libc (rand seed, heap bump allocator, etc.).
-/// File handle table entry.
+/// File handle table entry — native only (no std::fs in WASM).
+#[cfg(feature = "native")]
 #[derive(Debug)]
 pub struct FileHandle {
     /// Host-side file (using std::fs::File).
@@ -277,13 +278,11 @@ pub const MAX_FILE_HANDLES: usize = 32;
 pub struct LibcState {
     rand_seed:  u64,
     /// Bump-pointer heap for malloc — grows from HEAP_BASE upward.
-    /// Simple: no free, no coalesce. Suitable for Doom/Wolf3D patterns
-    /// where Z_Malloc is the primary allocator and libc malloc is rarely used.
     heap_bump:  u64,
     /// Heap ceiling (exclusive).
     heap_ceil:  u64,
-    /// Open file handles — index 0 reserved (NULL FILE*).
-    /// VM FILE* = index + FILE_HANDLE_BASE.
+    /// Open file handles — native only (no std::fs in WASM).
+    #[cfg(feature = "native")]
     pub file_handles: Vec<Option<FileHandle>>,
 }
 
@@ -293,17 +292,21 @@ pub const FILE_HANDLE_BASE: u64 = 0xF000_0000;
 impl LibcState {
     pub fn new() -> Self {
         use super::memory::{HEAP_BASE, HEAP_SIZE};
-        let mut handles = Vec::with_capacity(MAX_FILE_HANDLES);
-        for _ in 0..MAX_FILE_HANDLES { handles.push(None); }
         Self {
             rand_seed: 12345,
             heap_bump: HEAP_BASE,
             heap_ceil: HEAP_BASE + HEAP_SIZE,
-            file_handles: handles,
+            #[cfg(feature = "native")]
+            file_handles: {
+                let mut handles = Vec::with_capacity(MAX_FILE_HANDLES);
+                for _ in 0..MAX_FILE_HANDLES { handles.push(None); }
+                handles
+            },
         }
     }
 
     /// Allocate a new file handle slot. Returns VM FILE* address, or 0 on failure.
+    #[cfg(feature = "native")]
     pub fn alloc_handle(&mut self, fh: FileHandle) -> u64 {
         for (i, slot) in self.file_handles.iter_mut().enumerate() {
             if slot.is_none() {
@@ -315,12 +318,14 @@ impl LibcState {
     }
 
     /// Resolve VM FILE* to mutable handle reference.
+    #[cfg(feature = "native")]
     pub fn get_handle_mut(&mut self, vm_fp: u64) -> Option<&mut FileHandle> {
         let idx = vm_fp.checked_sub(FILE_HANDLE_BASE)? as usize;
         self.file_handles.get_mut(idx)?.as_mut()
     }
 
     /// Close and free a handle by VM FILE*.
+    #[cfg(feature = "native")]
     pub fn free_handle(&mut self, vm_fp: u64) -> bool {
         let idx = match vm_fp.checked_sub(FILE_HANDLE_BASE) {
             Some(i) => i as usize,
@@ -1012,21 +1017,21 @@ pub fn dispatch(
             regs.set(0, if c >= 0x20 && c < 0x7F { 1 } else { 0 })?;
         }
 
-        // ── File I/O ───────────────────────────────────────────────────────
+        // ── File I/O — native only (no std::fs in WASM) ───────────────────
+        // In WASM builds these syscalls are unreachable (tsk-libc.tvml is not
+        // linked, so no program can call them). If somehow reached, return
+        // an error rather than failing to compile.
 
         LibcSyscall::Fopen => {
+            #[cfg(feature = "native")]
+            {
             // FILE* fopen(const char* path, const char* mode) → R0 = vm_fp or 0
             let path_ptr = regs.get(0)?;
             let mode_ptr = regs.get(1)?;
-            // Read path (bounded to prevent runaway on corrupted pointer)
             let mut path_bytes = Vec::new();
             let mut i = 0u64;
             loop {
                 if i > 4096 {
-                    // Defensive bound: path exceeds 4096 bytes without a null
-                    // terminator. This indicates a corrupted/invalid pointer
-                    // upstream; fail fast (fopen returns NULL) instead of
-                    // growing path_bytes unboundedly.
                     regs.set(0, 0)?;
                     return Ok(());
                 }
@@ -1036,7 +1041,6 @@ pub fn dispatch(
                 i += 1;
             }
             let path_str = String::from_utf8_lossy(&path_bytes).to_string();
-            // Read mode
             let mode0 = mem.read_u8(mode_ptr)?;
             let vm_fp = match mode0 {
                 b'r' => {
@@ -1057,18 +1061,25 @@ pub fn dispatch(
                 _ => 0,
             };
             regs.set(0, vm_fp)?;
+            }
+            #[cfg(not(feature = "native"))]
+            { regs.set(0, 0)?; } // fopen returns NULL in WASM
         }
 
         LibcSyscall::Fclose => {
-            // int fclose(FILE* stream) → R0 = 0 on success, EOF on error
+            #[cfg(feature = "native")]
+            {
             let vm_fp = regs.get(0)?;
             let ok = state.free_handle(vm_fp);
-            regs.set(0, if ok { 0 } else { u64::MAX })?; // EOF = -1
+            regs.set(0, if ok { 0 } else { u64::MAX })?;
+            }
+            #[cfg(not(feature = "native"))]
+            { regs.set(0, u64::MAX)?; }
         }
 
         LibcSyscall::Fread => {
-            // size_t fread(void* ptr, size_t size, size_t count, FILE* stream)
-            // R0=ptr, R1=size, R2=count, R3=stream → R0=items read
+            #[cfg(feature = "native")]
+            {
             let dst_ptr = regs.get(0)?;
             let item_sz = regs.get(1)? as usize;
             let count   = regs.get(2)? as usize;
@@ -1076,8 +1087,6 @@ pub fn dispatch(
             let total   = item_sz * count;
             let mut buf = vec![0u8; total];
             let n_read = if let Some(fh) = state.get_handle_mut(vm_fp) {
-                // read() is NOT guaranteed to fill the buffer in one call —
-                // loop until full, EOF, or error (matches libc fread semantics).
                 let mut off = 0usize;
                 loop {
                     if off >= total { break; }
@@ -1091,11 +1100,14 @@ pub fn dispatch(
             } else { 0 };
             mem.write_bytes(dst_ptr, &buf[..n_read])?;
             regs.set(0, (if item_sz > 0 { n_read / item_sz } else { 0 }) as u64)?;
+            }
+            #[cfg(not(feature = "native"))]
+            { regs.set(0, 0)?; }
         }
 
         LibcSyscall::Fwrite => {
-            // size_t fwrite(const void* ptr, size_t size, size_t count, FILE* stream)
-            // R0=ptr, R1=size, R2=count, R3=stream → R0=items written
+            #[cfg(feature = "native")]
+            {
             let src_ptr = regs.get(0)?;
             let item_sz = regs.get(1)? as usize;
             let count   = regs.get(2)? as usize;
@@ -1109,11 +1121,14 @@ pub fn dispatch(
                 }
             } else { 0 };
             regs.set(0, (if item_sz > 0 { n_written / item_sz } else { 0 }) as u64)?;
+            }
+            #[cfg(not(feature = "native"))]
+            { regs.set(0, 0)?; }
         }
 
         LibcSyscall::Fseek => {
-            // int fseek(FILE* stream, long offset, int whence) → R0=0 or -1
-            // R0=stream, R1=offset, R2=whence (0=SET,1=CUR,2=END)
+            #[cfg(feature = "native")]
+            {
             let vm_fp  = regs.get(0)?;
             let offset = regs.get(1)? as i64;
             let whence = regs.get(2)?;
@@ -1128,34 +1143,48 @@ pub fn dispatch(
                 match fh.file.seek(seek_from) { Ok(_) => 0u64, Err(_) => u64::MAX }
             } else { u64::MAX };
             regs.set(0, result)?;
+            }
+            #[cfg(not(feature = "native"))]
+            { regs.set(0, u64::MAX)?; }
         }
 
         LibcSyscall::Ftell => {
-            // long ftell(FILE* stream) → R0 = position or -1
+            #[cfg(feature = "native")]
+            {
             let vm_fp = regs.get(0)?;
             let pos = if let Some(fh) = state.get_handle_mut(vm_fp) {
                 match fh.file.stream_position() { Ok(p) => p, Err(_) => u64::MAX }
             } else { u64::MAX };
             regs.set(0, pos)?;
+            }
+            #[cfg(not(feature = "native"))]
+            { regs.set(0, u64::MAX)?; }
         }
 
         LibcSyscall::Feof => {
-            // int feof(FILE* stream) → R0 = non-zero if EOF
+            #[cfg(feature = "native")]
+            {
             let vm_fp = regs.get(0)?;
             let eof = if let Some(fh) = state.get_handle_mut(vm_fp) { fh.eof } else { true };
             regs.set(0, if eof { 1 } else { 0 })?;
+            }
+            #[cfg(not(feature = "native"))]
+            { regs.set(0, 1)?; }
         }
 
         LibcSyscall::Fflush => {
-            // int fflush(FILE* stream) → R0 = 0 or EOF
+            #[cfg(feature = "native")]
+            {
             let vm_fp = regs.get(0)?;
             let result = if vm_fp == 0 {
-                // fflush(NULL) — flush all; no-op for VM
                 0u64
             } else if let Some(fh) = state.get_handle_mut(vm_fp) {
                 match fh.file.flush() { Ok(_) => 0, Err(_) => u64::MAX }
             } else { u64::MAX };
             regs.set(0, result)?;
+            }
+            #[cfg(not(feature = "native"))]
+            { regs.set(0, 0)?; }
         }
 
         // ── strerror ──────────────────────────────────────────────────────

@@ -8,6 +8,11 @@ build   = "build.rs"
 [[bin]]
 name = "tskvm"
 path = "src/main.rs"
+required-features = ["native"]
+
+[features]
+default  = ["native"]
+native   = ["dep:sdl2", "dep:libloading"]
 
 [dependencies]
 triskele-common = { path = "../triskele-common" }
@@ -15,5 +20,5 @@ anyhow          = { workspace = true }
 clap            = { workspace = true }
 log             = { workspace = true }
 env_logger      = { workspace = true }
-sdl2            = { workspace = true }
-libloading      = { workspace = true }
+sdl2            = { workspace = true, optional = true }
+libloading      = { workspace = true, optional = true }

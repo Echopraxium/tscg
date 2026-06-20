@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TriskeleVM — WASM Hello World</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    h1 { color: #00d4ff; }
+    .subtitle { color: #888; font-size: 0.9em; margin-bottom: 30px; }
+    #drop-zone {
+      border: 2px dashed #00d4ff;
+      border-radius: 8px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: background 0.2s;
+    }
+    #drop-zone:hover, #drop-zone.drag-over {
+      background: rgba(0, 212, 255, 0.1);
+    }
+    #run-btn {
+      background: #00d4ff;
+      color: #1a1a2e;
+      border: none;
+      padding: 10px 24px;
+      font-family: monospace;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    #run-btn:hover { background: #00b8d9; }
+    #output {
+      background: #0d0d1a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 16px;
+      min-height: 80px;
+      white-space: pre-wrap;
+      color: #00ff88;
+    }
+    #status { color: #888; font-size: 0.85em; margin-top: 8px; }
+    .error { color: #ff6b6b !important; }
+    .info  { color: #ffd700; }
+  </style>
+</head>
+<body>
+
+<h1>⚡ TriskeleVM — WASM</h1>
+<p class="subtitle">Hello World spike — runs a compiled .tvmx bytecode in your browser</p>
+
+<div id="drop-zone" onclick="document.getElementById('file-input').click()">
+  <p>📂 Drop a <strong>.tvmx</strong> file here, or click to browse</p>
+  <p style="color:#666;font-size:0.8em">Compile one with: clang → tsk-cc → tsk-link</p>
+  <input type="file" id="file-input" accept=".tvmx" style="display:none">
+</div>
+
+<button id="run-btn" onclick="runTvmx()">▶ Run</button>
+
+<div id="output">Waiting for .tvmx file...</div>
+<div id="status"></div>
+
+<script type="module">
+  import init, { run_tvmx } from './pkg/triskele_vm_wasm.js';
+
+  let tvmxBytes = null;
+
+  async function initWasm() {
+    try {
+      await init();
+      setStatus('WASM loaded ✓ — drop a .tvmx file to run it', 'info');
+    } catch(e) {
+      setStatus('Failed to load WASM: ' + e, 'error');
+    }
+  }
+
+  function setStatus(msg, cls) {
+    const el = document.getElementById('status');
+    el.textContent = msg;
+    el.className = cls || '';
+  }
+
+  function setOutput(text, cls) {
+    const el = document.getElementById('output');
+    el.textContent = text;
+    el.className = cls || '';
+  }
+
+  // Expose run function globally for the button
+  window.runTvmx = function() {
+    if (!tvmxBytes) { setStatus('No file loaded', 'error'); return; }
+    setStatus('Running...', 'info');
+    try {
+      const result = run_tvmx(tvmxBytes);
+      setOutput(result);
+      setStatus('Done', '');
+    } catch(e) {
+      setOutput('Error: ' + e, 'error');
+      setStatus('Error', 'error');
+    }
+  };
+
+  // File drop / select
+  function handleFile(file) {
+    if (!file.name.endsWith('.tvmx')) {
+      setStatus('Please select a .tvmx file', 'error');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      tvmxBytes = new Uint8Array(e.target.result);
+      setStatus(`Loaded: ${file.name} (${tvmxBytes.length} bytes)`, 'info');
+      setOutput(`Ready to run: ${file.name}\nClick ▶ Run`);
+      document.getElementById('run-btn').style.display = 'inline-block';
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('drag-over');
+  });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', (e) => {
+    if (e.target.files[0]) handleFile(e.target.files[0]);
+  });
+
+  initWasm();
+</script>
+
+</body>
+</html>
