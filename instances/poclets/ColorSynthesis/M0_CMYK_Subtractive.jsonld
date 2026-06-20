@@ -8,49 +8,11 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
-    "m0:color_synthesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/ColorSynthesis/M0_CMYK_Subtractive.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "A_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
-      "@type": "xsd:float"
-    },
-    "S_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
-      "@type": "xsd:float"
-    },
-    "F_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
-      "@type": "xsd:float"
-    },
-    "It_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
-      "@type": "xsd:float"
-    },
-    "D_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
-      "@type": "xsd:float"
-    },
-    "R_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
-      "@type": "xsd:float"
-    },
-    "E_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
-      "@type": "xsd:float"
-    },
-    "V_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
-      "@type": "xsd:float"
-    },
-    "O_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
-      "@type": "xsd:float"
-    },
-    "Im_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
-      "@type": "xsd:float"
-    },
-    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+    "m0.cMYK_Subtractive": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/CMYK_Subtractive/M0_CMYK_Subtractive.jsonld#",
+    "m0.cmykSubtractive": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/CMYK_Subtractive/M0_CMYK_Subtractive.jsonld#"
   },
   "@graph": [
     {
@@ -319,25 +281,7 @@
           "note": "4D space requires projection for visualization (e.g., 3D subspaces for fixed K)"
         }
       },
-      "m0:epistemicGap": {
-        "formula": "ΔΘ = ‖|Ω_print⟩ - |M_CMYK⟩‖",
-        "deltaVector": "(-0.05, -0.15, +0.20, -0.05, +0.05)",
-        "norm": "≈ 0.27",
-        "interpretation": "Small gap (ΔΘ < 0.3) - CMYK is excellent practical model",
-        "assessment": "CMYK best subtractive model for printing (better than CMY)",
-        "advantages": [
-          "True black (K channel)",
-          "Cost-effective (less total ink)",
-          "Standardized (ISO 12647, SWOP, etc.)",
-          "Mature technology (decades of optimization)"
-        ],
-        "limitations": [
-          "Smaller gamut than RGB (not all screen colors printable)",
-          "Paper-dependent (color varies with substrate)",
-          "Viewing condition dependent (illumination affects appearance)",
-          "Dot gain and ink spread (predictable but must be compensated)"
-        ]
-      },
+      "m0:epistemicGap": 0.27,
       "m0:revoiAnalysis": {
         "description": "Sphinx Eye evaluation of CMYK Map quality (ORIVE Map-Space)",
         "perspective": "Philosophical interpretation using ORIVE basis",
@@ -575,6 +519,9 @@
           "date": "2026-01-17",
           "changes": "Initial creation — CMYK Subtractive poclet with 15 GenericConcepts, 4D hypercube model, Key-channel Optimization pattern"
         }
+      ],
+      "owl:imports": [
+        "M0_Common.jsonld"
       ]
     }
   ]

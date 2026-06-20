@@ -1,10 +1,7 @@
 {
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "sm": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/NuclearReactorsTypology/M0_NuclearReactorTypology.jsonld#",
-    "m1energy": "M1_extensions/energy_generators/M1_EnergyGenerators.jsonld#",
-    "m1core": "M1_CoreConcepts.jsonld#",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3eagle": "M3_EagleEye.jsonld#",
     "m3sphinx": "M3_SphinxEye.jsonld#",
@@ -15,52 +12,16 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
-    "A_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
-      "@type": "xsd:float"
-    },
-    "S_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
-      "@type": "xsd:float"
-    },
-    "F_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
-      "@type": "xsd:float"
-    },
-    "It_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
-      "@type": "xsd:float"
-    },
-    "D_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
-      "@type": "xsd:float"
-    },
-    "R_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
-      "@type": "xsd:float"
-    },
-    "E_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
-      "@type": "xsd:float"
-    },
-    "V_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
-      "@type": "xsd:float"
-    },
-    "O_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
-      "@type": "xsd:float"
-    },
-    "Im_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
-      "@type": "xsd:float"
-    }
+    "m0.nuclearReactorsTypology": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/NuclearReactorsTypology/M0_NuclearReactorsTypology.jsonld#",
+    "m1.extensions.energy-generators": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/energy-generators/M1_EnergyGenerators.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   },
   "@graph": [
     {
       "@id": "m0:NuclearReactorTypology",
       "@type": "owl:Ontology",
       "owl:imports": [
+        "M0_Common.jsonld",
         "M1_extensions/energy/M1_EnergyGenerators.jsonld",
         "M1_CoreConcepts.jsonld",
         "M2_GenericConcepts.jsonld"
@@ -141,59 +102,9 @@
         "D_Dynamics": "Fission chain reaction, thermal transients, xenon oscillations, startup/shutdown"
       },
       "m0:epistemicGap": 0.01,
-      "m1core:simulationTitle": "Nuckear Reactors Typology",
-      "m0:asfidScores": {
-        "m0:scoreA": {
-          "@value": 0.95,
-          "@type": "xsd:float"
-        },
-        "m0:scoreS": {
-          "@value": 0.9,
-          "@type": "xsd:float"
-        },
-        "m0:scoreF": {
-          "@value": 0.9,
-          "@type": "xsd:float"
-        },
-        "m0:scoreIt": {
-          "@value": 0.85,
-          "@type": "xsd:float"
-        },
-        "m0:scoreD": {
-          "@value": 0.9,
-          "@type": "xsd:float"
-        },
-        "mean": {
-          "@value": 0.9,
-          "@type": "xsd:float"
-        }
-      },
-      "m0:revoiScores": {
-        "m0:scoreR": {
-          "@value": 0.95,
-          "@type": "xsd:float"
-        },
-        "m0:scoreE": {
-          "@value": 0.85,
-          "@type": "xsd:float"
-        },
-        "m0:scoreV": {
-          "@value": 0.9,
-          "@type": "xsd:float"
-        },
-        "m0:scoreO": {
-          "@value": 0.9,
-          "@type": "xsd:float"
-        },
-        "It_score": {
-          "@value": 0.85,
-          "@type": "xsd:float"
-        },
-        "mean": {
-          "@value": 0.89,
-          "@type": "xsd:float"
-        }
-      }
+      "m0:asfidMean": 0.9,
+      "m0:revoiMean": 0.89,
+      "m1:simulationTitle": "Nuckear Reactors Typology"
     },
     {
       "@id": "m0:PWR_Reactor",
@@ -217,13 +128,6 @@
         "Neutron_radiation",
         "Heated_pressurized_water (primary circuit)"
       ],
-      "m1energy:moderatorType": "Light_Water",
-      "m1energy:coolantType": "Light_Water_Pressurized",
-      "m1energy:neutronSpectrum": "Thermal",
-      "m1energy:fuelEnrichment": "3-5% U-235",
-      "m1energy:criticalityControl": "Control rods + soluble boron",
-      "m1energy:thermalEfficiency": "33-37%",
-      "m1energy:typicalPower": "1000-1650 MWe",
       "m0:safetyFeatures": [
         "Negative temperature coefficient",
         "Containment building",
@@ -248,7 +152,14 @@
         "Russian VVER-1000/1200"
       ],
       "m0:historicalLineage": "Generation II/III/III+",
-      "m0:geographicDeployment": "France (56), USA (65), China (30+), Russia (20+)"
+      "m0:geographicDeployment": "France (56), USA (65), China (30+), Russia (20+)",
+      "m1.extensions.energy-generators:moderatorType": "Light_Water",
+      "m1.extensions.energy-generators:coolantType": "Light_Water_Pressurized",
+      "m1.extensions.energy-generators:neutronSpectrum": "Thermal",
+      "m1.extensions.energy-generators:fuelEnrichment": "3-5% U-235",
+      "m1.extensions.energy-generators:criticalityControl": "Control rods + soluble boron",
+      "m1.extensions.energy-generators:thermalEfficiency": "33-37%",
+      "m1.extensions.energy-generators:typicalPower": "1000-1650 MWe"
     },
     {
       "@id": "m0:BWR_Reactor",
@@ -272,13 +183,6 @@
         "Fission_products",
         "Radioactive_steam"
       ],
-      "m1energy:moderatorType": "Light_Water",
-      "m1energy:coolantType": "Light_Water_Boiling",
-      "m1energy:neutronSpectrum": "Thermal",
-      "m1energy:fuelEnrichment": "2.5-3.5% U-235",
-      "m1energy:criticalityControl": "Control rods + recirculation flow",
-      "m1energy:thermalEfficiency": "33-34%",
-      "m1energy:typicalPower": "800-1400 MWe",
       "m0:safetyFeatures": [
         "Negative void coefficient",
         "Isolation condensers",
@@ -303,7 +207,14 @@
         "Nordic Forsmark/Oskarshamn"
       ],
       "m0:historicalLineage": "Generation II/III",
-      "m0:geographicDeployment": "Japan (20+), USA (32), Sweden/Finland (10)"
+      "m0:geographicDeployment": "Japan (20+), USA (32), Sweden/Finland (10)",
+      "m1.extensions.energy-generators:moderatorType": "Light_Water",
+      "m1.extensions.energy-generators:coolantType": "Light_Water_Boiling",
+      "m1.extensions.energy-generators:neutronSpectrum": "Thermal",
+      "m1.extensions.energy-generators:fuelEnrichment": "2.5-3.5% U-235",
+      "m1.extensions.energy-generators:criticalityControl": "Control rods + recirculation flow",
+      "m1.extensions.energy-generators:thermalEfficiency": "33-34%",
+      "m1.extensions.energy-generators:typicalPower": "800-1400 MWe"
     },
     {
       "@id": "m0:FNR_Reactor",
@@ -327,13 +238,6 @@
         "Fission_products",
         "Actinide_transmutation_potential"
       ],
-      "m1energy:moderatorType": "None",
-      "m1energy:coolantType": "Liquid_Sodium",
-      "m1energy:neutronSpectrum": "Fast",
-      "m1energy:fuelEnrichment": "20% Pu-239 or depleted U-238",
-      "m1energy:criticalityControl": "Control rods (B4C)",
-      "m1energy:thermalEfficiency": "40-42%",
-      "m1energy:typicalPower": "600-1500 MWe",
       "m0:safetyFeatures": [
         "Passive decay heat removal",
         "Pool-type design (some models)",
@@ -359,7 +263,14 @@
         "CEFR (China, 25 MWe, experimental)"
       ],
       "m0:historicalLineage": "Generation IV",
-      "m0:geographicDeployment": "Russia (2 operational), India (PFBR under construction)"
+      "m0:geographicDeployment": "Russia (2 operational), India (PFBR under construction)",
+      "m1.extensions.energy-generators:moderatorType": "None",
+      "m1.extensions.energy-generators:coolantType": "Liquid_Sodium",
+      "m1.extensions.energy-generators:neutronSpectrum": "Fast",
+      "m1.extensions.energy-generators:fuelEnrichment": "20% Pu-239 or depleted U-238",
+      "m1.extensions.energy-generators:criticalityControl": "Control rods (B4C)",
+      "m1.extensions.energy-generators:thermalEfficiency": "40-42%",
+      "m1.extensions.energy-generators:typicalPower": "600-1500 MWe"
     },
     {
       "@id": "m0:PHWR_Reactor",
@@ -383,13 +294,6 @@
         "Plutonium_production (weapon-grade possible)",
         "Tritium_byproduct"
       ],
-      "m1energy:moderatorType": "Heavy_Water",
-      "m1energy:coolantType": "Heavy_Water or Light_Water",
-      "m1energy:neutronSpectrum": "Thermal",
-      "m1energy:fuelEnrichment": "Natural (0.7% U-235)",
-      "m1energy:criticalityControl": "Control rods + liquid zone",
-      "m1energy:thermalEfficiency": "29-32%",
-      "m1energy:typicalPower": "600-900 MWe",
       "m0:safetyFeatures": [
         "Online refueling (high availability)",
         "Low excess reactivity",
@@ -415,7 +319,14 @@
         "Argentine Embalse (CANDU-6)"
       ],
       "m0:historicalLineage": "Generation II/III",
-      "m0:geographicDeployment": "Canada (19), India (18), South Korea (4), China (2)"
+      "m0:geographicDeployment": "Canada (19), India (18), South Korea (4), China (2)",
+      "m1.extensions.energy-generators:moderatorType": "Heavy_Water",
+      "m1.extensions.energy-generators:coolantType": "Heavy_Water or Light_Water",
+      "m1.extensions.energy-generators:neutronSpectrum": "Thermal",
+      "m1.extensions.energy-generators:fuelEnrichment": "Natural (0.7% U-235)",
+      "m1.extensions.energy-generators:criticalityControl": "Control rods + liquid zone",
+      "m1.extensions.energy-generators:thermalEfficiency": "29-32%",
+      "m1.extensions.energy-generators:typicalPower": "600-900 MWe"
     },
     {
       "@id": "m0:RBMK_Reactor",
@@ -439,13 +350,6 @@
         "Fission_products",
         "Weapons_grade_Pu (RBMK capability)"
       ],
-      "m1energy:moderatorType": "Graphite",
-      "m1energy:coolantType": "Light_Water or CO2_Gas",
-      "m1energy:neutronSpectrum": "Thermal",
-      "m1energy:fuelEnrichment": "2% (RBMK) or Natural (Magnox)",
-      "m1energy:criticalityControl": "Control rods",
-      "m1energy:thermalEfficiency": "31-33%",
-      "m1energy:typicalPower": "1000 MWe (RBMK)",
       "m0:safetyFeatures": [
         "Large core size (distributed fuel)",
         "Online refueling capability",
@@ -470,7 +374,14 @@
         "French UNGG (Chinon, decommissioned 1990s)"
       ],
       "m0:historicalLineage": "Generation I (Magnox/UNGG) / Generation II (RBMK)",
-      "m0:geographicDeployment": "Russia (10 RBMK remaining, to be phased out by 2034)"
+      "m0:geographicDeployment": "Russia (10 RBMK remaining, to be phased out by 2034)",
+      "m1.extensions.energy-generators:moderatorType": "Graphite",
+      "m1.extensions.energy-generators:coolantType": "Light_Water or CO2_Gas",
+      "m1.extensions.energy-generators:neutronSpectrum": "Thermal",
+      "m1.extensions.energy-generators:fuelEnrichment": "2% (RBMK) or Natural (Magnox)",
+      "m1.extensions.energy-generators:criticalityControl": "Control rods",
+      "m1.extensions.energy-generators:thermalEfficiency": "31-33%",
+      "m1.extensions.energy-generators:typicalPower": "1000 MWe (RBMK)"
     },
     {
       "@id": "m0:HTR_Reactor",
@@ -494,13 +405,6 @@
         "Minimal_fission_products (TRISO containment)",
         "Process_heat (H₂ production, desalination)"
       ],
-      "m1energy:moderatorType": "Graphite",
-      "m1energy:coolantType": "Helium_Gas",
-      "m1energy:neutronSpectrum": "Thermal",
-      "m1energy:fuelEnrichment": "8-20% U-235",
-      "m1energy:criticalityControl": "Control rods + reactivity feedback",
-      "m1energy:thermalEfficiency": "45-50% (Brayton cycle)",
-      "m1energy:typicalPower": "100-300 MWe",
       "m0:safetyFeatures": [
         "TRISO fuel (1600°C meltdown-proof)",
         "Passive decay heat removal",
@@ -526,7 +430,14 @@
         "HTR-PM (China, 2×250 MWe, operational 2021)"
       ],
       "m0:historicalLineage": "Generation IV",
-      "m0:geographicDeployment": "China (HTR-PM operational), Japan (HTTR research)"
+      "m0:geographicDeployment": "China (HTR-PM operational), Japan (HTTR research)",
+      "m1.extensions.energy-generators:moderatorType": "Graphite",
+      "m1.extensions.energy-generators:coolantType": "Helium_Gas",
+      "m1.extensions.energy-generators:neutronSpectrum": "Thermal",
+      "m1.extensions.energy-generators:fuelEnrichment": "8-20% U-235",
+      "m1.extensions.energy-generators:criticalityControl": "Control rods + reactivity feedback",
+      "m1.extensions.energy-generators:thermalEfficiency": "45-50% (Brayton cycle)",
+      "m1.extensions.energy-generators:typicalPower": "100-300 MWe"
     },
     {
       "@id": "m0:SMR_Reactor",
@@ -550,13 +461,6 @@
         "District_heating potential",
         "Desalination_capability"
       ],
-      "m1energy:moderatorType": "Light_Water or Graphite",
-      "m1energy:coolantType": "Light_Water or Liquid_Metal or Gas",
-      "m1energy:neutronSpectrum": "Thermal or Fast",
-      "m1energy:fuelEnrichment": "5-20% U-235",
-      "m1energy:criticalityControl": "Passive systems + control rods",
-      "m1energy:thermalEfficiency": "33-45%",
-      "m1energy:typicalPower": "50-300 MWe",
       "m0:safetyFeatures": [
         "Passive cooling (natural circulation)",
         "Underground siting (some designs)",
@@ -582,7 +486,14 @@
         "ARC-100 (Canada, 100 MWe fast SMR)"
       ],
       "m0:historicalLineage": "Generation III+/IV",
-      "m0:geographicDeployment": "Under development (USA, UK, Canada, Argentina, China)"
+      "m0:geographicDeployment": "Under development (USA, UK, Canada, Argentina, China)",
+      "m1.extensions.energy-generators:moderatorType": "Light_Water or Graphite",
+      "m1.extensions.energy-generators:coolantType": "Light_Water or Liquid_Metal or Gas",
+      "m1.extensions.energy-generators:neutronSpectrum": "Thermal or Fast",
+      "m1.extensions.energy-generators:fuelEnrichment": "5-20% U-235",
+      "m1.extensions.energy-generators:criticalityControl": "Passive systems + control rods",
+      "m1.extensions.energy-generators:thermalEfficiency": "33-45%",
+      "m1.extensions.energy-generators:typicalPower": "50-300 MWe"
     },
     {
       "@id": "m0:MSR_Reactor",
@@ -606,13 +517,6 @@
         "Fission_products (continuously removed)",
         "U-233 (from Th-232 breeding)"
       ],
-      "m1energy:moderatorType": "Graphite or None (fast MSR)",
-      "m1energy:coolantType": "Molten_Fluoride_Salt",
-      "m1energy:neutronSpectrum": "Thermal or Fast",
-      "m1energy:fuelEnrichment": "Variable (can use Pu, U-233, Th)",
-      "m1energy:criticalityControl": "Fuel concentration + freeze plug",
-      "m1energy:thermalEfficiency": "44-50%",
-      "m1energy:typicalPower": "100-1000 MWe (proposed)",
       "m0:safetyFeatures": [
         "Passive freeze plug shutdown",
         "Low pressure operation (1-5 bar)",
@@ -638,7 +542,14 @@
         "TMSR (China, 2 MWth experimental)"
       ],
       "m0:historicalLineage": "Generation IV",
-      "m0:geographicDeployment": "Under development (China, USA, Europe)"
+      "m0:geographicDeployment": "Under development (China, USA, Europe)",
+      "m1.extensions.energy-generators:moderatorType": "Graphite or None (fast MSR)",
+      "m1.extensions.energy-generators:coolantType": "Molten_Fluoride_Salt",
+      "m1.extensions.energy-generators:neutronSpectrum": "Thermal or Fast",
+      "m1.extensions.energy-generators:fuelEnrichment": "Variable (can use Pu, U-233, Th)",
+      "m1.extensions.energy-generators:criticalityControl": "Fuel concentration + freeze plug",
+      "m1.extensions.energy-generators:thermalEfficiency": "44-50%",
+      "m1.extensions.energy-generators:typicalPower": "100-1000 MWe (proposed)"
     },
     {
       "@id": "m0:AGR_Reactor",
@@ -662,13 +573,6 @@
         "Steam (550°C)",
         "Fission_products"
       ],
-      "m1energy:moderatorType": "Graphite",
-      "m1energy:coolantType": "CO2_Gas",
-      "m1energy:neutronSpectrum": "Thermal",
-      "m1energy:fuelEnrichment": "2.5-3.5% U-235",
-      "m1energy:criticalityControl": "Control rods",
-      "m1energy:thermalEfficiency": "41-42%",
-      "m1energy:typicalPower": "500-660 MWe",
       "m0:safetyFeatures": [
         "Concrete pressure vessel",
         "Online refueling",
@@ -693,7 +597,14 @@
         "Torness (UK, 2×682 MWe, operational)"
       ],
       "m0:historicalLineage": "Generation II",
-      "m0:geographicDeployment": "UK only (6 AGR stations, all decommissioning by 2030)"
+      "m0:geographicDeployment": "UK only (6 AGR stations, all decommissioning by 2030)",
+      "m1.extensions.energy-generators:moderatorType": "Graphite",
+      "m1.extensions.energy-generators:coolantType": "CO2_Gas",
+      "m1.extensions.energy-generators:neutronSpectrum": "Thermal",
+      "m1.extensions.energy-generators:fuelEnrichment": "2.5-3.5% U-235",
+      "m1.extensions.energy-generators:criticalityControl": "Control rods",
+      "m1.extensions.energy-generators:thermalEfficiency": "41-42%",
+      "m1.extensions.energy-generators:typicalPower": "500-660 MWe"
     },
     {
       "@id": "m0:ReactorTypology_Relationships",
@@ -814,9 +725,6 @@
             "SMR (7)"
           ]
         }
-      },
-      "m3:ontologyType": {
-        "@id": "m3:Poclet"
       }
     },
     {
@@ -875,9 +783,6 @@
         "Energy storage systems (batteries, pumped hydro, thermal)",
         "Hybrid systems (cogeneration, integrated energy)"
       ],
-      "m3:ontologyType": {
-        "@id": "m3:Poclet"
-      },
       "m1:domain": "Nuclear Engineering"
     }
   ]

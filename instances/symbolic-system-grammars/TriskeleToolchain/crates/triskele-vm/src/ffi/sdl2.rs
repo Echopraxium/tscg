@@ -1,6 +1,6 @@
 // triskele-vm/src/ffi/sdl2.rs
 // Author: Echopraxium with the collaboration of Claude AI
-// Version: 0.2.0
+// Version: 0.3.11
 //
 // SDL2 binding for TriskeleVM.
 // Implements:
@@ -9,6 +9,11 @@
 //   Im_InputRd   (0x94) — read keyboard state
 //   Im_RegisterCb(0x99) — register VM callback for SDL2 event
 //   T_FrameSyn   (0xA6) — synchronize to target FPS (Wolf3D: 35fps)
+//
+// Version 0.3.11 (TODO-3, Handover v0.3.22 §3): implements DisplayBackend
+// trait instead of being referenced by concrete type from cpu/mod.rs and
+// wolf3d/mod.rs. The canvas() accessor is removed; the wolf3d direct blit
+// path now goes through fb_blit_pixels() instead.
 
 use std::collections::HashMap;
 use std::time::{Duration, Instant};
@@ -18,6 +23,7 @@ use sdl2::pixels::PixelFormatEnum;
 use sdl2::render::Canvas;
 use sdl2::video::Window;
 use crate::memory::Memory;
+use crate::display::DisplayBackend;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SDL2 event IDs (used by Im_RegisterCb)
@@ -102,16 +108,25 @@ impl Sdl2Context {
         })
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Im_FbBlit (0x92) — blit VM framebuffer → SDL2 window
-    // fb_ptr : VM address of RGBA framebuffer (w × h × 4 bytes)
-    // ─────────────────────────────────────────────────────────────────────────
+    pub fn get_callback(&self, event_id: u32) -> Option<u64> {
+        self.callbacks.get(&event_id).copied()
+    }
 
-    pub fn fb_blit(&mut self, mem: &Memory, fb_ptr: u64) -> anyhow::Result<()> {
+    pub fn is_quit(&self) -> bool { self.kbd.quit }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DisplayBackend implementation for Sdl2Context
+// ─────────────────────────────────────────────────────────────────────────────
+
+impl DisplayBackend for Sdl2Context {
+    // ── Framebuffer ────────────────────────────────────────────────────────
+
+    /// Im_FbBlit (0x92) — blit VM framebuffer → SDL2 window
+    fn fb_blit(&mut self, mem: &Memory, fb_ptr: u64) -> anyhow::Result<()> {
         let w = self.fb_w;
         let h = self.fb_h;
         let size = (w * h * 4) as usize;
-
         let data = mem.read_bytes(fb_ptr, size)?;
 
         let texture_creator = self.canvas.texture_creator();
@@ -130,12 +145,28 @@ impl Sdl2Context {
         Ok(())
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Im_FbClear (0x93) — fill framebuffer with solid color
-    // color : RGBA u32 (0xRRGGBBAA)
-    // ─────────────────────────────────────────────────────────────────────────
+    /// Direct pixel blit — used by Wolf3D Phase-1 loop (owns its own Framebuffer).
+    /// Replaces the canvas() accessor that previously broke encapsulation.
+    fn fb_blit_pixels(&mut self, pixels: &[u8], width: u32, height: u32)
+        -> anyhow::Result<()>
+    {
+        let texture_creator = self.canvas.texture_creator();
+        let mut texture = texture_creator
+            .create_texture_streaming(PixelFormatEnum::RGBA32, width, height)
+            .map_err(|e| anyhow::anyhow!("texture: {}", e))?;
 
-    pub fn fb_clear(&mut self, mem: &mut Memory, fb_ptr: u64, color: u32)
+        texture.with_lock(None, |buf, _| {
+            buf.copy_from_slice(pixels);
+        }).map_err(|e| anyhow::anyhow!("tex lock: {}", e))?;
+
+        self.canvas.copy(&texture, None, None)
+            .map_err(|e| anyhow::anyhow!("copy: {}", e))?;
+        self.canvas.present();
+        Ok(())
+    }
+
+    /// Im_FbClear (0x93) — fill framebuffer with solid color
+    fn fb_clear(&mut self, mem: &mut Memory, fb_ptr: u64, color: u32)
         -> anyhow::Result<()>
     {
         let size = (self.fb_w * self.fb_h) as usize;
@@ -153,12 +184,11 @@ impl Sdl2Context {
         Ok(())
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Im_InputRd (0x94) — poll SDL2 events, update keyboard state
-    // Returns true if quit was requested
-    // ─────────────────────────────────────────────────────────────────────────
+    // ── Input ──────────────────────────────────────────────────────────────
 
-    pub fn poll_events(&mut self) -> bool {
+    /// Im_InputRd (0x94) — poll SDL2 events, update keyboard state.
+    /// Returns true if quit was requested.
+    fn poll_events(&mut self) -> bool {
         let mut event_pump = match self.sdl.event_pump() {
             Ok(p) => p,
             Err(_) => return false,
@@ -188,24 +218,20 @@ impl Sdl2Context {
         self.kbd.quit
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Im_RegisterCb (0x99) — register VM function for SDL2 event
-    // ─────────────────────────────────────────────────────────────────────────
-
-    pub fn register_callback(&mut self, event_id: u32, vm_addr: u64) {
+    /// Im_RegisterCb (0x99) — register VM function for SDL2 event.
+    fn register_callback(&mut self, event_id: u32, vm_addr: u64) {
         self.callbacks.insert(event_id, vm_addr);
     }
 
-    pub fn get_callback(&self, event_id: u32) -> Option<u64> {
-        self.callbacks.get(&event_id).copied()
+    /// Im_KeyQuery (0x9A) — test single key by scancode.
+    fn key_query(&self, sc: u8) -> u64 {
+        self.kbd.is_pressed(sc) as u64
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // T_FrameSyn (0xA6) — sleep to maintain target FPS
-    // target_fps : 35 for Wolf3D, 35 for Doom
-    // ─────────────────────────────────────────────────────────────────────────
+    // ── Timing ─────────────────────────────────────────────────────────────
 
-    pub fn frame_sync(&mut self, target_fps: u32) {
+    /// T_FrameSyn (0xA6) — sleep to maintain target FPS.
+    fn frame_sync(&mut self, target_fps: u32) {
         let frame_dur = Duration::from_micros(1_000_000 / target_fps as u64);
         let elapsed = self.frame_timer.elapsed();
         if elapsed < frame_dur {
@@ -214,34 +240,14 @@ impl Sdl2Context {
         self.frame_timer = Instant::now();
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Accessors
-    // ─────────────────────────────────────────────────────────────────────────
+    // ── Dimensions ─────────────────────────────────────────────────────────
 
-    pub fn is_quit(&self) -> bool { self.kbd.quit }
-
-    // ─────────────────────────────────────────────────────────────────────────
-    // Direct canvas access — wolf3d::mod uses this for Phase 1 blit
-    // (Phase 2 will route through VM Memory + Im_FB_BLIT opcode)
-    // ─────────────────────────────────────────────────────────────────────────
-
-    pub fn canvas(&mut self) -> &mut Canvas<Window> {
-        &mut self.canvas
-    }
-
-    // ─────────────────────────────────────────────────────────────────────────
-    // Im_KeyQuery (0x9A) — test single key by Wolf3D scancode
-    // Returns 1 if the key is currently held down, 0 otherwise.
-    // Scancodes defined in the scancode:: module (WASD, arrows, ESC, SPACE, ENTER).
-    // ─────────────────────────────────────────────────────────────────────────
-
-    pub fn key_query(&self, sc: u8) -> u64 {
-        self.kbd.is_pressed(sc) as u64
-    }
+    fn width(&self)  -> u32 { self.fb_w }
+    fn height(&self) -> u32 { self.fb_h }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Keycode → scancode mapping (Wolf3D keys)
+// Keyboard scancodes (Wolf3D / DOOM compatible)
 // ─────────────────────────────────────────────────────────────────────────────
 
 pub mod scancode {
@@ -274,3 +280,4 @@ fn keycode_to_scancode(kc: Keycode) -> Option<u8> {
         _ => None,
     }
 }
+

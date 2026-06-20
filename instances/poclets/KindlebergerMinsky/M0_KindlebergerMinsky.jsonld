@@ -1,9 +1,7 @@
 {
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m0": "M0_KindlebergerMinsky.jsonld#",
-    "m1core": "M1_CoreConcepts.jsonld#",
-    "m1econ": "M1_extensions/economics/M1_Economics.jsonld#",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -12,52 +10,16 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "A_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
-      "@type": "xsd:float"
-    },
-    "S_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
-      "@type": "xsd:float"
-    },
-    "F_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
-      "@type": "xsd:float"
-    },
-    "It_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
-      "@type": "xsd:float"
-    },
-    "D_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
-      "@type": "xsd:float"
-    },
-    "R_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
-      "@type": "xsd:float"
-    },
-    "E_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
-      "@type": "xsd:float"
-    },
-    "V_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
-      "@type": "xsd:float"
-    },
-    "O_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
-      "@type": "xsd:float"
-    },
-    "Im_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
-      "@type": "xsd:float"
-    }
+    "m0.kindlebergerMinsky": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/KindlebergerMinsky/M0_KindlebergerMinsky.jsonld#",
+    "m1.extensions.economics": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   },
   "@graph": [
     {
       "@id": "m0:KindlebergerMinsky",
       "@type": "owl:Ontology",
       "owl:imports": [
+        "M0_Common.jsonld",
         "M3_GenesisGrammar.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld",
@@ -82,7 +44,7 @@
           "changes": "Initial version. 5 poles, 6 historical instances with full simulation markers (dateRange, assetPrice, transactionVolume, dynamics). Primary M2: Propagation + Narration. ASFID mean=0.91, REVOI mean=0.82, δΘ=0.09."
         }
       ],
-      "m1core:simulationTitle": "Kindleberger-Minsky: Financial Bubble Cycle"
+      "m1:simulationTitle": "Kindleberger-Minsky: Financial Bubble Cycle"
     },
     {
       "@id": "m0:System",
@@ -225,58 +187,8 @@
         "m0:Instance_GFC2008",
         "m0:Instance_Crypto2021"
       ],
-      "m0:asfidScores": {
-        "m0:scoreA": {
-          "@value": 0.92,
-          "@type": "xsd:float"
-        },
-        "m0:scoreS": {
-          "@value": 0.85,
-          "@type": "xsd:float"
-        },
-        "m0:scoreF": {
-          "@value": 0.92,
-          "@type": "xsd:float"
-        },
-        "m0:scoreIt": {
-          "@value": 0.9,
-          "@type": "xsd:float"
-        },
-        "m0:scoreD": {
-          "@value": 0.95,
-          "@type": "xsd:float"
-        },
-        "mean": {
-          "@value": 0.91,
-          "@type": "xsd:float"
-        }
-      },
-      "m0:revoiScores": {
-        "m0:scoreR": {
-          "@value": 0.85,
-          "@type": "xsd:float"
-        },
-        "m0:scoreE": {
-          "@value": 0.78,
-          "@type": "xsd:float"
-        },
-        "m0:scoreV": {
-          "@value": 0.75,
-          "@type": "xsd:float"
-        },
-        "m0:scoreO": {
-          "@value": 0.82,
-          "@type": "xsd:float"
-        },
-        "m0:scoreIm": {
-          "@value": 0.88,
-          "@type": "xsd:float"
-        },
-        "mean": {
-          "@value": 0.82,
-          "@type": "xsd:float"
-        }
-      }
+      "m0:asfidMean": 0.91,
+      "m0:revoiMean": 0.82
     },
     {
       "@id": "m0:Pole_Displacement",
@@ -473,32 +385,7 @@
           }
         }
       },
-      "m0:asfidScores": {
-        "m0:scoreA": {
-          "@value": 0.7,
-          "@type": "xsd:float"
-        },
-        "m0:scoreS": {
-          "@value": 0.65,
-          "@type": "xsd:float"
-        },
-        "m0:scoreF": {
-          "@value": 0.75,
-          "@type": "xsd:float"
-        },
-        "m0:scoreIt": {
-          "@value": 0.95,
-          "@type": "xsd:float"
-        },
-        "m0:scoreD": {
-          "@value": 0.9,
-          "@type": "xsd:float"
-        },
-        "mean": {
-          "@value": 0.79,
-          "@type": "xsd:float"
-        }
-      }
+      "m0:asfidMean": 0.79
     },
     {
       "@id": "m0:Pole_Boom",
@@ -697,32 +584,7 @@
           }
         }
       },
-      "m0:asfidScores": {
-        "m0:scoreA": {
-          "@value": 0.85,
-          "@type": "xsd:float"
-        },
-        "m0:scoreS": {
-          "@value": 0.8,
-          "@type": "xsd:float"
-        },
-        "m0:scoreF": {
-          "@value": 0.95,
-          "@type": "xsd:float"
-        },
-        "m0:scoreIt": {
-          "@value": 0.85,
-          "@type": "xsd:float"
-        },
-        "m0:scoreD": {
-          "@value": 0.95,
-          "@type": "xsd:float"
-        },
-        "mean": {
-          "@value": 0.88,
-          "@type": "xsd:float"
-        }
-      }
+      "m0:asfidMean": 0.88
     },
     {
       "@id": "m0:Pole_Euphoria",
@@ -920,32 +782,7 @@
           }
         }
       },
-      "m0:asfidScores": {
-        "m0:scoreA": {
-          "@value": 0.98,
-          "@type": "xsd:float"
-        },
-        "m0:scoreS": {
-          "@value": 0.92,
-          "@type": "xsd:float"
-        },
-        "m0:scoreF": {
-          "@value": 0.85,
-          "@type": "xsd:float"
-        },
-        "m0:scoreIt": {
-          "@value": 0.88,
-          "@type": "xsd:float"
-        },
-        "m0:scoreD": {
-          "@value": 0.85,
-          "@type": "xsd:float"
-        },
-        "mean": {
-          "@value": 0.9,
-          "@type": "xsd:float"
-        }
-      }
+      "m0:asfidMean": 0.9
     },
     {
       "@id": "m0:Pole_Distress",
@@ -1143,32 +980,7 @@
           }
         }
       },
-      "m0:asfidScores": {
-        "m0:scoreA": {
-          "@value": 0.95,
-          "@type": "xsd:float"
-        },
-        "m0:scoreS": {
-          "@value": 0.85,
-          "@type": "xsd:float"
-        },
-        "m0:scoreF": {
-          "@value": 0.88,
-          "@type": "xsd:float"
-        },
-        "m0:scoreIt": {
-          "@value": 0.95,
-          "@type": "xsd:float"
-        },
-        "m0:scoreD": {
-          "@value": 0.98,
-          "@type": "xsd:float"
-        },
-        "mean": {
-          "@value": 0.92,
-          "@type": "xsd:float"
-        }
-      }
+      "m0:asfidMean": 0.92
     },
     {
       "@id": "m0:Pole_Revulsion",
@@ -1366,32 +1178,7 @@
           }
         }
       },
-      "m0:asfidScores": {
-        "m0:scoreA": {
-          "@value": 0.88,
-          "@type": "xsd:float"
-        },
-        "m0:scoreS": {
-          "@value": 0.82,
-          "@type": "xsd:float"
-        },
-        "m0:scoreF": {
-          "@value": 0.98,
-          "@type": "xsd:float"
-        },
-        "m0:scoreIt": {
-          "@value": 0.88,
-          "@type": "xsd:float"
-        },
-        "m0:scoreD": {
-          "@value": 0.98,
-          "@type": "xsd:float"
-        },
-        "mean": {
-          "@value": 0.91,
-          "@type": "xsd:float"
-        }
-      }
+      "m0:asfidMean": 0.91
     },
     {
       "@id": "m0:SimulationParameters",

@@ -1,10 +1,19 @@
 // triskele-vm/build.rs
 // Author: Echopraxium with the collaboration of Claude AI
-// Version: 0.2.0
+// Version: 0.3.11
 
 use std::path::PathBuf;
 
 fn main() {
+    // Only link SDL2 for native builds (feature "native").
+    // WASM builds (triskele-vm-wasm) do not have SDL2.
+    let is_native = std::env::var("CARGO_FEATURE_NATIVE").is_ok();
+
+    if !is_native {
+        println!("cargo:rerun-if-changed=build.rs");
+        return;
+    }
+
     let manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let workspace_root = manifest_dir
         .parent().unwrap()
@@ -19,13 +28,10 @@ fn main() {
         let dll_src = lib_dir.join("SDL2.dll");
         if dll_src.exists() {
             let out_dir = PathBuf::from(std::env::var("OUT_DIR").unwrap());
-            // OUT_DIR = target\debug\build\triskele-vm-{hash}\out
-            // tskvm.exe is at target\debug\
-            // 3 levels up: out → triskele-vm-{hash} → build → debug
             let exe_dir = out_dir
                 .parent().unwrap()  // triskele-vm-{hash}
                 .parent().unwrap()  // build
-                .parent().unwrap(); // debug  ← tskvm.exe lives here
+                .parent().unwrap(); // debug or release
 
             println!("cargo:warning=exe_dir={}", exe_dir.display());
 

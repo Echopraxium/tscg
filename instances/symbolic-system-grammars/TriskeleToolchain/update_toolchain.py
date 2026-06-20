@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # update_toolchain.py
 # Author: Echopraxium with the collaboration of Claude AI
-# Version: 0.3.2
+# Version: 0.3.4
 # Extracts Cargo.toml, crates/, lib/, projects/ and run_pipeline.py
 # from a TriskeleToolchain zip.
 # Usage: python update_toolchain.py <path_to_zip> [dest_dir]
@@ -33,8 +33,15 @@ log(f"Dest     : {dest_dir}")
 # ── Detect zip root prefix ─────────────────────────────────────────────────────
 # A zip may have a wrapping root folder (e.g. "tscg_v031/crates/...").
 # BUT if the root prefix is itself a target (e.g. "projects/"), do NOT strip it.
-TARGETS_CLEAN = ['crates/', 'lib/', 'Cargo.toml', 'run_pipeline.py']
-TARGETS_MERGE = ['projects/']
+#
+# v0.3.3 fix: 'crates/' and 'lib/' moved from TARGETS_CLEAN to TARGETS_MERGE.
+# Rationale: patch zips typically contain only a subset of crates (e.g. 2 of 10).
+# Cleaning the entire crates/ directory before extraction would delete the crates
+# NOT present in the zip — causing the workspace to lose triskele-common, tsk-cc,
+# etc. on every patch apply. The merge strategy (used for projects/) is correct:
+# remove only the specific sub-directories present in the zip, then extract.
+TARGETS_CLEAN = ['Cargo.toml', 'run_pipeline.py']
+TARGETS_MERGE = ['crates/', 'lib/', 'projects/']
 ALL_TARGETS   = TARGETS_CLEAN + TARGETS_MERGE
 
 with zipfile.ZipFile(zip_path, 'r') as z:
@@ -73,19 +80,20 @@ for target in TARGETS_CLEAN:
     elif os.path.isfile(full):
         log(f"   Removing file : {target}"); os.remove(full)
 
-# ── Merge targets: remove only project subdirs present in the zip ──────────────
-zip_projects = set()
-for entry in all_names:
-    rel = entry[len(zip_root):] if zip_root and entry.startswith(zip_root) else entry
-    if rel.startswith('projects/'):
-        parts = rel.split('/')
-        if len(parts) >= 2 and parts[1]:
-            zip_projects.add(parts[1])
-
-for proj in zip_projects:
-    full = os.path.join(dest_dir, 'projects', proj)
-    if os.path.isdir(full):
-        log(f"   Updating project: projects/{proj}/"); shutil.rmtree(full)
+# ── Merge targets: overwrite only the individual files present in the zip ──────
+# v0.3.4 fix: previously removed entire sub-directories (e.g. crates/triskele-vm/)
+# before extraction, which deleted files NOT in the zip (main.rs, build.rs,
+# decode.rs, etc.). Now we only remove the specific files that will be
+# overwritten — preserving everything else in the directory.
+for merge_target in TARGETS_MERGE:
+    for entry in all_names:
+        rel = entry[len(zip_root):] if zip_root and entry.startswith(zip_root) else entry
+        if not rel.startswith(merge_target) or entry.endswith('/'):
+            continue
+        full = os.path.join(dest_dir, rel)
+        if os.path.isfile(full):
+            log(f"   Updating file : {rel}")
+            os.remove(full)
 
 # ── Extract ────────────────────────────────────────────────────────────────────
 extracted = skipped = 0

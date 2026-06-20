@@ -241,30 +241,30 @@ pub fn render_frame(fb: &mut Framebuffer, player: &PlayerState) {
 // Uses Im_KeyQuery scancode constants from ffi::sdl2::scancode
 // ─────────────────────────────────────────────────────────────────────────────
 
-use crate::ffi::sdl2::Sdl2Context;
+use crate::display::DisplayBackend;
 use crate::ffi::sdl2::scancode;
 
-pub fn process_input(player: &mut PlayerState, sdl: &Sdl2Context) {
+pub fn process_input(player: &mut PlayerState, display: &dyn DisplayBackend) {
     // Forward / Backward — WASD + arrow keys
     let forward_back = {
-        let fwd = sdl.key_query(scancode::W) != 0
-               || sdl.key_query(scancode::UP) != 0;
-        let back = sdl.key_query(scancode::S) != 0
-                || sdl.key_query(scancode::DOWN) != 0;
+        let fwd = display.key_query(scancode::W) != 0
+               || display.key_query(scancode::UP) != 0;
+        let back = display.key_query(scancode::S) != 0
+                || display.key_query(scancode::DOWN) != 0;
         if fwd { 1.0f32 } else if back { -1.0f32 } else { 0.0f32 }
     };
 
     // Strafe — A / D
     let strafe = {
-        let left  = sdl.key_query(scancode::A) != 0;
-        let right = sdl.key_query(scancode::D) != 0;
+        let left  = display.key_query(scancode::A) != 0;
+        let right = display.key_query(scancode::D) != 0;
         if right { 1.0f32 } else if left { -1.0f32 } else { 0.0f32 }
     };
 
     // Rotation — Left / Right arrows
     let rot = {
-        let left  = sdl.key_query(scancode::LEFT) != 0;
-        let right = sdl.key_query(scancode::RIGHT) != 0;
+        let left  = display.key_query(scancode::LEFT) != 0;
+        let right = display.key_query(scancode::RIGHT) != 0;
         if right { 1.0f32 } else if left { -1.0f32 } else { 0.0f32 }
     };
 

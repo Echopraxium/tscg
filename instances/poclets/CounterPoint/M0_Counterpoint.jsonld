@@ -9,50 +9,11 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
-    "m1core": "M1_CoreConcepts.jsonld#",
     "m1music": "M1_extensions/music/M1_Music.jsonld#",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/Music/M0_Counterpoint.jsonld#",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "A_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
-      "@type": "xsd:float"
-    },
-    "S_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
-      "@type": "xsd:float"
-    },
-    "F_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
-      "@type": "xsd:float"
-    },
-    "It_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
-      "@type": "xsd:float"
-    },
-    "D_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
-      "@type": "xsd:float"
-    },
-    "R_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
-      "@type": "xsd:float"
-    },
-    "E_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
-      "@type": "xsd:float"
-    },
-    "V_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
-      "@type": "xsd:float"
-    },
-    "O_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
-      "@type": "xsd:float"
-    },
-    "Im_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
-      "@type": "xsd:float"
-    }
+    "m0.counterPoint": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/CounterPoint/M0_CounterPoint.jsonld#",
+    "m0.counterpoint": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/Counterpoint/M0_Counterpoint.jsonld#"
   },
   "@graph": [
     {
@@ -79,8 +40,10 @@
       "m0:minimality": "4 poles necessary and sufficient: Exposition, Development, Stretto, Resolution",
       "m0:pedagogy": "First aesthetic domain poclet — demonstrates TSCG applicability beyond natural sciences",
       "m0:observer": "Human (musicological/systemic perspective)",
-      "m0:epistemicGap": "0.016",
-      "m0:spectralClass": "Coherent [0, 0.05)",
+      "m0:epistemicGap": 0.016,
+      "m0:spectralClass": {
+        "@id": "m0:spectralClass.Coherent"
+      },
       "m0:enigmaCandidate": true,
       "m0:changelog": [
         {
@@ -400,51 +363,10 @@
         "Miles Davis (1965-68) — E.S.P., Miles Smiles, Nefertiti (modal jazz contrapuntal ensemble)",
         "Bregman A.S. (1990) — Auditory Scene Analysis (perceptual basis of voice streaming)"
       ],
-      "m1core:simulationTitle": "Counterpoint",
-      "m0:asfidScores": {
-        "m0:scoreA": {
-          "@value": 0.87,
-          "@type": "xsd:float"
-        },
-        "m0:scoreS": {
-          "@value": 0.9,
-          "@type": "xsd:float"
-        },
-        "m0:scoreF": {
-          "@value": 0.85,
-          "@type": "xsd:float"
-        },
-        "m0:scoreIt": {
-          "@value": 0.93,
-          "@type": "xsd:float"
-        },
-        "m0:scoreD": {
-          "@value": 0.88,
-          "@type": "xsd:float"
-        }
-      },
-      "m0:revoiScores": {
-        "m0:scoreR": {
-          "@value": 0.95,
-          "@type": "xsd:float"
-        },
-        "m0:scoreE": {
-          "@value": 0.88,
-          "@type": "xsd:float"
-        },
-        "m0:scoreV": {
-          "@value": 0.92,
-          "@type": "xsd:float"
-        },
-        "m0:scoreO": {
-          "@value": 0.78,
-          "@type": "xsd:float"
-        },
-        "It_score": {
-          "@value": 0.82,
-          "@type": "xsd:float"
-        }
-      }
+      "m1:simulationTitle": "Counterpoint",
+      "owl:imports": [
+        "M0_Common.jsonld"
+      ]
     }
   ]
 }

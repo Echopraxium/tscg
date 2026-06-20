@@ -2,63 +2,23 @@
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
-    "m3:eagle_eye": "M3_EagleEye.jsonld#",
-    "m3:sphinx_eye": "M3_SphinxEye.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m0": "instances/symbolic-system-grammars/TriskeleToolchain/M0_TriskeleToolchain.jsonld#",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "A_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
-      "@type": "xsd:float"
-    },
-    "S_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
-      "@type": "xsd:float"
-    },
-    "F_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
-      "@type": "xsd:float"
-    },
-    "It_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
-      "@type": "xsd:float"
-    },
-    "D_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
-      "@type": "xsd:float"
-    },
-    "R_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
-      "@type": "xsd:float"
-    },
-    "E_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
-      "@type": "xsd:float"
-    },
-    "V_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
-      "@type": "xsd:float"
-    },
-    "O_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
-      "@type": "xsd:float"
-    },
-    "Im_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
-      "@type": "xsd:float"
-    }
+    "m0.triskeleToolchain": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/symbolic-system-grammars/TriskeleToolchain/M0_TriskeleToolchain.jsonld#"
   },
   "@graph": [
     {
       "@id": "instances/symbolic-system-grammars/TriskeleToolchain/M0_TriskeleToolchain.jsonld",
       "@type": "owl:Ontology",
       "owl:imports": [
+        "M0_Common.jsonld",
         "M3_GenesisGrammar.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld"
@@ -73,19 +33,12 @@
       "owl:versionInfo": "0.1.0",
       "m1:domain": "Virtual machine design, compiler theory, symbolic computation, formal grammars, game engine",
       "dcterms:modified": "2026-05-30",
-      "m0:asfidMean": {
-        "@value": "0.90",
-        "@type": "xsd:float"
+      "m0:asfidMean": 0.9,
+      "m0:revoiMean": 0.864,
+      "m0:epistemicGap": 0.0255,
+      "m0:spectralClass": {
+        "@id": "m0:spectralClass.Coherent"
       },
-      "m0:revoiMean": {
-        "@value": "0.864",
-        "@type": "xsd:float"
-      },
-      "m0:epistemicGap": {
-        "@value": "0.0255",
-        "@type": "xsd:float"
-      },
-      "m0:spectralClass": "Coherent",
       "m0:spectralClassNote": "δ₁ = |0.90 − 0.864| / √2 = 0.0255. High S_score (0.95) reflects the rigorous structural specification of ISA, format .tvm and register file. High It_score (0.92) reflects the information-theoretic grounding (Base16 = log₂(16) = 4 bits per symbol). V_score (0.82) is lower than R/E/O because formal verification of the full toolchain is pending (Wolf3D PoC not yet executed). Im_score (0.87) reflects the SDL2/FFI interoperability design — high but not maximal since native bindings are not yet validated.",
       "m2:changelog": [
         {
@@ -324,50 +277,6 @@
             "role": "δ₁ epistemic gap — measures alignment between ISA design (map) and execution behavior (territory)"
           }
         ]
-      },
-      "m0:asfidScores": {
-        "m0:scoreA": {
-          "@value": 0.9,
-          "@type": "xsd:float"
-        },
-        "m0:scoreS": {
-          "@value": 0.95,
-          "@type": "xsd:float"
-        },
-        "m0:scoreF": {
-          "@value": 0.88,
-          "@type": "xsd:float"
-        },
-        "m0:scoreIt": {
-          "@value": 0.92,
-          "@type": "xsd:float"
-        },
-        "m0:scoreD": {
-          "@value": 0.85,
-          "@type": "xsd:float"
-        }
-      },
-      "m0:revoiScores": {
-        "m0:scoreR": {
-          "@value": 0.88,
-          "@type": "xsd:float"
-        },
-        "m0:scoreE": {
-          "@value": 0.9,
-          "@type": "xsd:float"
-        },
-        "m0:scoreV": {
-          "@value": 0.82,
-          "@type": "xsd:float"
-        },
-        "m0:scoreO": {
-          "@value": 0.85,
-          "@type": "xsd:float"
-        },
-        "m0:scoreIm": {
-          "@value": 0.87,
-          "@type": "xsd:float"
-        }
       }
     },
     {

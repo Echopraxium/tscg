@@ -8,49 +8,11 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
-    "m0:color_synthesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/ColorSynthesis/M0_HSL_Additive.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "A_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
-      "@type": "xsd:float"
-    },
-    "S_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
-      "@type": "xsd:float"
-    },
-    "F_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
-      "@type": "xsd:float"
-    },
-    "It_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
-      "@type": "xsd:float"
-    },
-    "D_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
-      "@type": "xsd:float"
-    },
-    "R_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
-      "@type": "xsd:float"
-    },
-    "E_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
-      "@type": "xsd:float"
-    },
-    "V_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
-      "@type": "xsd:float"
-    },
-    "O_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
-      "@type": "xsd:float"
-    },
-    "Im_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
-      "@type": "xsd:float"
-    },
-    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+    "m0.hSL_Additive": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/HSL_Additive/M0_HSL_Additive.jsonld#",
+    "m0.hslAdditive": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/HSL_Additive/M0_HSL_Additive.jsonld#"
   },
   "@graph": [
     {
@@ -291,19 +253,7 @@
           }
         }
       },
-      "m0:epistemicGap": {
-        "formula": "ΔΘ = ‖|Ω_color⟩ - |M_HSL⟩‖",
-        "deltaVector": "(-0.05, -0.05, +0.35, +0.10, +0.05)",
-        "norm": "≈ 0.37",
-        "interpretation": "Small gap - HSL is good perceptual model",
-        "comparisonToRGB": "ΔΘ_HSL ≈ ΔΘ_RGB (similar quality)",
-        "assessment": "HSL more intuitive for humans, mathematically equivalent to RGB",
-        "limitations": [
-          "Not perceptually uniform (equal HSL distance ≠ equal perceived difference)",
-          "H undefined at gray axis (S=0 singularity)",
-          "Derived from RGB (not direct physical measurement)"
-        ]
-      },
+      "m0:epistemicGap": 0.37,
       "m0:revoiAnalysis": {
         "description": "Sphinx Eye evaluation of HSL Map quality (ORIVE Map-Space)",
         "perspective": "Philosophical interpretation using ORIVE basis",
@@ -546,6 +496,9 @@
           "date": "2026-01-17",
           "changes": "Initial creation — HSL Additive poclet with 14 GenericConcepts, cylindrical color space, perceptual Channel/Signal pattern"
         }
+      ],
+      "owl:imports": [
+        "M0_Common.jsonld"
       ]
     }
   ]
