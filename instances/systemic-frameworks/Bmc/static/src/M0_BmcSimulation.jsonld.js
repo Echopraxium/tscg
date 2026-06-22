@@ -1,0 +1,1562 @@
+/**
+ * M0_BmcSimulation.jsonld.js
+ * TSCG M0 Instance — Business Model Canvas Simulation
+ * Author: Echopraxium with the collaboration of Claude AI
+ * Date: 2026-06-22
+ *
+ * This file wraps a JSON-LD document in a JS const for static HTML loading.
+ * Use exportAsJsonLD() to extract the pure JSON-LD for SHACL validation.
+ *
+ * Namespaces:
+ *   sim:   simulation-specific classes/properties
+ *   m0:    M0_Common.jsonld# (shared TSCG M0 namespace)
+ *   m0.bmc: this file's instance namespace
+ *   dcterms: Dublin Core Terms (bibliographic references)
+ */
+
+'use strict';
+
+const BMC_SIMULATION_ONTOLOGY = {
+  "@context": {
+    "@base":    "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m0":       "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+    "m0.bmc":   "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/systemic-frameworks/Bmc/M0_BmcSimulation.jsonld#",
+    "m1":       "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m3":       "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "sim":      "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/systemic-frameworks/Bmc/simulation#",
+    "owl":      "http://www.w3.org/2002/07/owl#",
+    "dcterms":  "http://purl.org/dc/terms/",
+    "xsd":      "http://www.w3.org/2001/XMLSchema#",
+    "rdfs":     "http://www.w3.org/2000/01/rdf-schema#",
+    "sim:vp":           { "@type": "xsd:float" },
+    "sim:conv":         { "@type": "xsd:float" },
+    "sim:cross":        { "@type": "xsd:float" },
+    "sim:net":          { "@type": "xsd:float" },
+    "sim:cost":         { "@type": "xsd:float" },
+    "sim:phaseIndex":   { "@type": "xsd:integer" },
+    "sim:transitionIndex": { "@type": "xsd:integer" }
+  },
+  "@graph": [
+
+    // ── Ontology header ────────────────────────────────────────────────────
+    {
+      "@id":   "m0.bmc:BmcSimulationOntology",
+      "@type": "owl:Ontology",
+      "dcterms:title":    "TSCG BMC Simulation — M0 Instance",
+      "dcterms:creator":  "Echopraxium with the collaboration of Claude AI",
+      "dcterms:date":     "2026-06-22",
+      "dcterms:description": "M0 simulation data for the Business Model Canvas SystemicFramework. Extends Osterwalder PhD ontology (2004) with lifecycle phases, transitions, and ASFID/REVOI scores.",
+      "owl:versionInfo":  "1.0.0",
+      "rdfs:seeAlso":     "https://github.com/Echopraxium/tscg"
+    },
+
+    // ── sim:outcome enum values ────────────────────────────────────────────
+    { "@id": "sim:outcome.Success",    "@type": "sim:TransitionOutcome", "rdfs:label": "Success" },
+    { "@id": "sim:outcome.Failure",    "@type": "sim:TransitionOutcome", "rdfs:label": "Failure" },
+    { "@id": "sim:outcome.InProgress", "@type": "sim:TransitionOutcome", "rdfs:label": "InProgress" },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // ── CASE 1 — Netflix ───────────────────────────────────────────────────
+    // ═══════════════════════════════════════════════════════════════════════
+    {
+      "@id":   "m0.bmc:case_Netflix",
+      "@type": "sim:SimulationCase",
+      "sim:caseName": "Netflix",
+      "sim:short":    "Netflix",
+      "sim:pattern":  "BusinessModelMutation ×3 — DVD → Streaming → Studio",
+      "sim:sources": {
+        "general": [
+          { "@type": "dcterms:BibliographicResource",
+            "dcterms:title":     "No Rules Rules: Netflix and the Culture of Reinvention",
+            "dcterms:creator":   "Reed Hastings & Erin Meyer",
+            "dcterms:date":      "2020",
+            "dcterms:publisher": "Penguin Press",
+            "dcterms:identifier":"ISBN 978-1984877864" },
+          { "@type": "dcterms:BibliographicResource",
+            "dcterms:title":     "Netflix: The Epic Battle for America's Eyeballs",
+            "dcterms:creator":   "Gina Keating",
+            "dcterms:date":      "2012",
+            "dcterms:publisher": "Portfolio/Penguin" }
+        ]
+      },
+      "sim:phases": [
+        {
+          "@type": "sim:Phase",
+          "sim:phaseIndex": 0, "sim:phaseName": "Startup",
+          "sim:vp": 0.55, "sim:conv": 0.50, "sim:cross": 0.10, "sim:net": 0.20, "sim:cost": 0.70,
+          "sim:narrative": "State 0 (1997) — 'No late fees, huge catalog, home delivery.' DVD-by-mail.",
+          "sim:driver":    "USPS as critical KP. Physical logistics KA. $15.99/mo subscription RS.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["No late fees ✓","100K+ catalog","Home delivery 2 days"],
+                     "desc": "No late fees. Huge catalog (100K+ DVDs). Home delivery in 2 days.",
+                     "osterwalder": { "valueLevel": "customization", "priceLvl": "market" } },
+            "RS":  { "bullets": ["$15.99/mo unlimited","$9.99 limited plan","Subscription anchor"],
+                     "desc": "$15.99/month unlimited. $9.99 limited. No late fees = VP anchor.",
+                     "osterwalder": { "revenueType": "subscription", "pricingMech": "fixed" } },
+            "CS":  { "bullets": ["US movie enthusiasts","Tech-savvy early adopters","Blockbuster defectors"],
+                     "desc": "US movie enthusiasts, tech-savvy early adopters, Blockbuster defectors.",
+                     "osterwalder": { "segmentType": "niche" } },
+            "CR":  { "bullets": ["Self-service web","CineMatch recommendations","No human contact"],
+                     "desc": "Self-service web, personal recommendations (CineMatch), no human contact.",
+                     "osterwalder": { "relType": "self-service" } },
+            "KP":  { "bullets": ["USPS (delivery)","Film studios (DVD licensing)","Credit card processors"],
+                     "desc": "USPS for delivery, film studios for DVD licensing, credit card processors." },
+            "KA":  { "bullets": ["DVD warehouse mgmt","Returns processing","Catalog curation"],
+                     "desc": "DVD warehouse management, returns processing, catalog curation." },
+            "KR":  { "bullets": ["100K+ DVD titles","CineMatch algorithm","Distribution centers"],
+                     "desc": "DVD inventory (100K+ titles), CineMatch algorithm, distribution centers." },
+            "CH":  { "bullets": ["Website only","DVDs by USPS mail","No streaming yet"],
+                     "desc": "Website only. DVDs by USPS mail. No streaming." },
+            "CS$": { "bullets": ["DVD procurement","Warehouse + USPS $0.55/env","Tech infrastructure"],
+                     "desc": "DVD procurement, warehouse ops, USPS postage (~$0.55/envelope)." }
+          }
+        },
+        {
+          "@type": "sim:Phase",
+          "sim:phaseIndex": 1, "sim:phaseName": "Growth",
+          "sim:vp": 0.80, "sim:conv": 0.65, "sim:cross": 0.15, "sim:net": 0.45, "sim:cost": 0.55,
+          "sim:narrative": "State 1 (2007) — 'Instant unlimited streaming, any device.' Digital pivot.",
+          "sim:driver":    "CDN replaces USPS. AWS as KP. Recommendation algorithm becomes core KR.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["Instant 10K+ titles","Any device, no ads","Cancel anytime"],
+                     "desc": "Instant access to 10K+ titles. Any device. No ads. Cancel anytime.",
+                     "osterwalder": { "valueLevel": "excellence", "priceLvl": "economy" } },
+            "RS":  { "bullets": ["$7.99/$11.99/$15.99","3-tier subscription","Tiered by screens"],
+                     "desc": "$7.99 (1 screen) / $11.99 (2 screens) / $15.99 (4 screens HD).",
+                     "osterwalder": { "revenueType": "subscription", "pricingMech": "fixed" } },
+            "CS":  { "bullets": ["Cord-cutters","Families & millennials","US → international"],
+                     "desc": "Cord-cutters, families, millennials. US-only then international begins.",
+                     "osterwalder": { "segmentType": "segmented" } },
+            "CR":  { "bullets": ["Fully automated","Algorithm recommendations","No human needed"],
+                     "desc": "Fully automated, algorithm recommendations, no human interaction.",
+                     "osterwalder": { "relType": "automated" } },
+            "KP":  { "bullets": ["AWS (CDN infra)","Film/TV studios","Device makers (Roku)"],
+                     "desc": "AWS for CDN, film/TV studios for streaming licenses, device makers." },
+            "KA":  { "bullets": ["Content licensing","CDN management","Algorithm development"],
+                     "desc": "Content licensing negotiation, CDN management, algorithm development." },
+            "KR":  { "bullets": ["Streaming tech","License library 10K+","Recommendation engine"],
+                     "desc": "Streaming tech, license library, recommendation engine, brand." },
+            "CH":  { "bullets": ["Smart TV apps","Web browser","Game consoles (PS3)"],
+                     "desc": "Smart TV apps, web browser, mobile app, game consoles." },
+            "CS$": { "bullets": ["Licensing fees ↑↑","AWS CDN costs","Tech R&D"],
+                     "desc": "Licensing fees (exploding), AWS CDN, tech R&D, device partnerships." }
+          }
+        },
+        {
+          "@type": "sim:Phase",
+          "sim:phaseIndex": 2, "sim:phaseName": "Maturity",
+          "sim:vp": 0.92, "sim:conv": 0.78, "sim:cross": 0.20, "sim:net": 0.72, "sim:cost": 0.60,
+          "sim:narrative": "State 2 (2013) — 'Original exclusive content + global catalog.' Studio model.",
+          "sim:driver":    "House of Cards: $100M. Content production KA. 190-country RS.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["Exclusive originals","Stranger Things / Squid Game","Download offline"],
+                     "desc": "Exclusive originals (Stranger Things, Squid Game). Global catalog. Offline download.",
+                     "osterwalder": { "valueLevel": "innovation", "priceLvl": "market" } },
+            "RS":  { "bullets": ["$8.99–$22.99 / 4 tiers","190 countries","avg ARPU $11.50"],
+                     "desc": "$8.99-$22.99/month (4 tiers). 190 countries × avg $11.50 ARPU.",
+                     "osterwalder": { "revenueType": "subscription", "pricingMech": "fixed" } },
+            "CS":  { "bullets": ["220M subscribers","All demographics","60%+ international"],
+                     "desc": "220M subscribers. All demographics. Key: international (60%+ of base).",
+                     "osterwalder": { "segmentType": "mass" } },
+            "CR":  { "bullets": ["80% algo-driven","Hyper-personalized","No human needed"],
+                     "desc": "Hyper-personalized (80% of streams from algorithm). No human needed.",
+                     "osterwalder": { "relType": "automated" } },
+            "KP":  { "bullets": ["Production studios","AWS infra","ISPs (net neutrality)"],
+                     "desc": "Production studios, AWS, ISPs (net neutrality battles)." },
+            "KA":  { "bullets": ["Original content $17B/yr","Global distribution","Localization 40+ lang"],
+                     "desc": "Original content ($17B/yr), global distribution, localization (40+ languages)." },
+            "KR":  { "bullets": ["6K+ original titles","Proprietary algorithm","Global brand"],
+                     "desc": "Content library (6K+ titles), proprietary algorithm, global brand." },
+            "CH":  { "bullets": ["190 countries","All devices","Mobile-first emerging"],
+                     "desc": "190 countries. All major devices. Smart TV preloaded. Mobile-first." },
+            "CS$": { "bullets": ["Content $17B","Tech + G&A $4B","Marketing $2.5B"],
+                     "desc": "Content spend $17B. Tech + G&A $4B. Marketing $2.5B." }
+          }
+        },
+        {
+          "@type": "sim:Phase",
+          "sim:phaseIndex": 3, "sim:phaseName": "Decline",
+          "sim:vp": 0.68, "sim:conv": 0.55, "sim:cross": 0.18, "sim:net": 0.50, "sim:cost": 0.65,
+          "sim:narrative": "Relative Decline (2022+) — Password crackdown, ad-supported tier pressure.",
+          "sim:driver":    "StrategicTension: $17B content spend vs. 1M subscriber loss Q1 2022."
+        }
+      ],
+      "sim:transitions": [
+        {
+          "@type": "sim:Transition",
+          "sim:transitionIndex": 0,
+          "sim:transitionLabel": "Mutation State 1 — DVD → Streaming",
+          "sim:fromPhase": "Startup", "sim:toPhase": "Growth",
+          "sim:outcome": { "@id": "sim:outcome.Success" },
+          "sim:instableBlocks":  ["VP","KP","KA","KR","CH"],
+          "sim:emergingFluxes":  ["vp_ch","net_fx"],
+          "sim:fadingFluxes":    ["kp_ka","ka_cost"],
+          "sim:vp": 0.55, "sim:conv": 0.50, "sim:cross": 0.10, "sim:net": 0.20, "sim:cost": 0.70,
+          "rdfs:comment": "AWS replaces USPS. Digital distribution eliminates physical logistics entirely.",
+          "sim:sources": [
+            { "@type": "dcterms:BibliographicResource",
+              "dcterms:title":   "Netflix and the DVD Business",
+              "dcterms:creator": "Harvard Business School Case 9-607-138",
+              "dcterms:date":    "2007" }
+          ]
+        },
+        {
+          "@type": "sim:Transition",
+          "sim:transitionIndex": 1,
+          "sim:transitionLabel": "Mutation State 2 — Streaming → Studio",
+          "sim:fromPhase": "Growth", "sim:toPhase": "Maturity",
+          "sim:outcome": { "@id": "sim:outcome.Success" },
+          "sim:instableBlocks":  ["VP","KA","KR","CS$"],
+          "sim:emergingFluxes":  ["ka_vp","vp_cr"],
+          "sim:fadingFluxes":    ["kp_ka"],
+          "sim:vp": 0.80, "sim:conv": 0.65, "sim:cross": 0.15, "sim:net": 0.45, "sim:cost": 0.55,
+          "rdfs:comment": "House of Cards $100M investment. Netflix becomes content producer, not just distributor.",
+          "sim:sources": [
+            { "@type": "dcterms:BibliographicResource",
+              "dcterms:title":   "No Rules Rules",
+              "dcterms:creator": "Reed Hastings & Erin Meyer",
+              "dcterms:date":    "2020",
+              "dcterms:publisher": "Penguin Press",
+              "dcterms:identifier": "ISBN 978-1984877864" }
+          ]
+        },
+        {
+          "@type": "sim:Transition",
+          "sim:transitionIndex": 2,
+          "sim:transitionLabel": "Mutation State 3 — hybrid streaming + live events",
+          "sim:fromPhase": "Decline", "sim:toPhase": "Transition",
+          "sim:outcome": { "@id": "sim:outcome.InProgress" },
+          "sim:instableBlocks":  ["VP","RS","CR"],
+          "sim:emergingFluxes":  ["rs_sub","net_fx"],
+          "sim:fadingFluxes":    ["ka_cost"],
+          "sim:vp": 0.50, "sim:conv": 0.48, "sim:cross": 0.25, "sim:net": 0.55, "sim:cost": 0.60,
+          "rdfs:comment": "Ad-supported tier, Netflix Games, WWE live rights. VP expanding beyond streaming.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["Film + Series","+ Games","+ Live events ⟳"],
+                     "desc": "Entertainment super-app: films + series + games + live events.",
+                     "osterwalder": { "valueLevel": "innovation", "priceLvl": "economy" } },
+            "RS":  { "bullets": ["Subscription","+ Ads (new)","+ Games / Live (future)"],
+                     "desc": "Subscription + Ads + Games (future) + Live PPV (potential).",
+                     "osterwalder": { "revenueType": "cross-subsidy", "pricingMech": "dynamic" } },
+            "CS":  { "bullets": ["Gamers (new)","Live sports fans (new)","Gen Z engagement"],
+                     "desc": "Gamers, live sports fans, younger demographics (Gen Z engagement).",
+                     "osterwalder": { "segmentType": "diversified" } },
+            "CR":  { "bullets": ["Live community","Games daily engagement","Password → paid"],
+                     "desc": "Live community (real-time engagement), Games (daily active).",
+                     "osterwalder": { "relType": "community" } }
+          },
+          "sim:sources": [
+            { "@type": "dcterms:BibliographicResource",
+              "dcterms:title":   "Netflix Q4 2023 Earnings Letter",
+              "dcterms:creator": "Netflix Inc.",
+              "dcterms:date":    "2024",
+              "sim:url":         "https://ir.netflix.net/ir/doc/q4-23-shareholder-letter" }
+          ]
+        }
+      ]
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // ── CASE 2 — Nokia ─────────────────────────────────────────────────────
+    // ═══════════════════════════════════════════════════════════════════════
+    {
+      "@id":   "m0.bmc:case_Nokia",
+      "@type": "sim:SimulationCase",
+      "sim:caseName": "Nokia (1865→2024)",
+      "sim:short":    "Nokia",
+      "sim:pattern":  "BusinessModelMutation ×4 — Conglomerate → Mobile Leader → Collapse → Networks",
+      "sim:sources": {
+        "general": [
+          { "@type": "dcterms:BibliographicResource",
+            "dcterms:title":     "The Nokia Revolution",
+            "dcterms:creator":   "Dan Steinbock",
+            "dcterms:date":      "2001",
+            "dcterms:publisher": "AMACOM",
+            "dcterms:identifier":"ISBN 978-0814405895" },
+          { "@type": "dcterms:BibliographicResource",
+            "dcterms:title":     "Nokia: The Inside Story",
+            "dcterms:creator":   "Martti Häikiö",
+            "dcterms:date":      "2002",
+            "dcterms:publisher": "Edita Publishing" },
+          { "@type": "dcterms:BibliographicResource",
+            "dcterms:title":     "The Real Cause of Nokia's Failure",
+            "dcterms:creator":   "Quy Huy & Timo Vuori",
+            "dcterms:date":      "2015",
+            "sim:url":           "https://hbr.org/2015/09/the-real-cause-of-nokias-failure",
+            "dcterms:publisher": "Harvard Business Review" },
+          { "@type": "dcterms:BibliographicResource",
+            "dcterms:title":     "Tekes — Finnish Funding Agency for Technology and Innovation Annual Reports 1994-2000",
+            "dcterms:creator":   "Tekes (now Business Finland)",
+            "dcterms:date":      "1994-2000",
+            "rdfs:comment":      "Nokia received ~40% of Tekes total R&D funding 1992-2000, enabling the mobile pivot" }
+        ]
+      },
+      "sim:phases": [
+        {
+          "@type": "sim:Phase",
+          "sim:phaseIndex": 0, "sim:phaseName": "Startup",
+          "sim:vp": 0.35, "sim:conv": 0.30, "sim:cross": 0.05, "sim:net": 0.15, "sim:cost": 0.70,
+          "sim:narrative": "State 0 (1865–1991) — Paper mills, rubber boots, cables, consumer electronics. Unfocused conglomerate.",
+          "sim:driver":    "No dominant VP. Revenue from 5 unrelated divisions. No competitive moat.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["Paper + rubber + cables","Consumer electronics","No coherent VP"],
+                     "desc": "Highly diversified conglomerate with no dominant VP: paper, rubber boots, cables, consumer electronics, mobile.",
+                     "osterwalder": { "valueLevel": "commodity", "priceLvl": "market" } },
+            "RS":  { "bullets": ["Multi-division revenues","No dominant RS","Commodity pricing"],
+                     "desc": "Fragmented revenues across 5+ unrelated divisions. No platform RS.",
+                     "osterwalder": { "revenueType": "asset-sale", "pricingMech": "fixed" } },
+            "CS":  { "bullets": ["Industrial buyers","Consumer goods markets","Finnish domestic base"],
+                     "desc": "Industrial buyers (cables, paper), consumer goods markets, Finnish domestic base.",
+                     "osterwalder": { "segmentType": "diversified" } },
+            "CR":  { "bullets": ["B2B industrial sales","Dealer networks","No platform CR"],
+                     "desc": "B2B industrial sales, dealer networks, no platform customer relationship.",
+                     "osterwalder": { "relType": "personal" } },
+            "KP":  { "bullets": ["Finnish state (stability)","Raw material suppliers","Industrial partners"],
+                     "desc": "Finnish state for stability, raw material suppliers, industrial partners." },
+            "KA":  { "bullets": ["Manufacturing (5 divisions)","Industrial R&D","Sales force"],
+                     "desc": "Manufacturing across 5 divisions, industrial R&D, traditional sales force." },
+            "KR":  { "bullets": ["Manufacturing facilities","Finnish workforce","Brand (Finland)"],
+                     "desc": "Manufacturing facilities, skilled Finnish workforce, domestic brand." },
+            "CH":  { "bullets": ["Wholesale distributors","Retail dealers","B2B direct sales"],
+                     "desc": "Wholesale distributors, retail dealers, B2B direct sales." },
+            "CS$": { "bullets": ["Manufacturing capex","Multi-division overheads","Raw materials"],
+                     "desc": "Manufacturing capex, multi-division overheads, raw material costs." }
+          }
+        },
+        {
+          "@type": "sim:Phase",
+          "sim:phaseIndex": 1, "sim:phaseName": "Growth",
+          "sim:vp": 0.88, "sim:conv": 0.72, "sim:cross": 0.20, "sim:net": 0.65, "sim:cost": 0.50,
+          "sim:narrative": "State 1 (1992–2000) — 'Mobile phone for everyone.' World leader with 40% market share.",
+          "sim:driver":    "Ollila sells all non-telecom divisions. Tekes funds 40% of R&D. GSM standard leadership.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["'Connecting People'","GSM world standard","Affordable mobile for all"],
+                     "desc": "'Connecting People' — affordable mobile phones for everyone. GSM world standard leadership.",
+                     "osterwalder": { "valueLevel": "excellence", "priceLvl": "economy" } },
+            "RS":  { "bullets": ["Hardware unit sales","40% global market share","Carrier subsidies RS"],
+                     "desc": "Hardware unit sales. 40% global market share. Carrier subsidy model (operators pay).",
+                     "osterwalder": { "revenueType": "asset-sale", "pricingMech": "fixed" } },
+            "CS":  { "bullets": ["Telecom operators (B2B)","Mass consumer market","Emerging markets pioneer"],
+                     "desc": "Telecom operators (B2B contracts), mass consumer market, emerging markets pioneer.",
+                     "osterwalder": { "segmentType": "mass" } },
+            "CR":  { "bullets": ["Operator-mediated","Retail self-service","Brand loyalty strong"],
+                     "desc": "Operator-mediated relationship, retail self-service, strong brand loyalty.",
+                     "osterwalder": { "relType": "self-service" } },
+            "KP":  { "bullets": ["Tekes (40% R&D funding)","Finnish state support","Component suppliers"],
+                     "desc": "Tekes (Finnish Funding Agency) funded ~40% of Nokia R&D 1992-2000. Finnish state strategic support. Component suppliers.",
+                     "rdfs:comment": "State subsidy was critical to the mobile pivot — without Tekes funding, Nokia lacked capital to divest all non-telecom divisions simultaneously." },
+            "KA":  { "bullets": ["Mobile handset R&D","GSM standard lobbying","Global manufacturing scale"],
+                     "desc": "Mobile handset R&D, GSM standard lobbying in ETSI, global manufacturing scale." },
+            "KR":  { "bullets": ["GSM patents portfolio","Brand 'Nokia'","Global distribution 130 countries"],
+                     "desc": "GSM patents portfolio, Nokia brand (trusted worldwide), global distribution (130 countries)." },
+            "CH":  { "bullets": ["Telecom operators (primary)","Retail chains","130 country distribution"],
+                     "desc": "Telecom operators as primary channel, retail chains, 130 country distribution network." },
+            "CS$": { "bullets": ["Handset manufacturing","R&D (Tekes co-funded)","Global logistics"],
+                     "desc": "Handset manufacturing, R&D (40% co-funded by Tekes), global logistics." }
+          }
+        },
+        {
+          "@type": "sim:Phase",
+          "sim:phaseIndex": 2, "sim:phaseName": "Maturity",
+          "sim:vp": 0.75, "sim:conv": 0.62, "sim:cross": 0.15, "sim:net": 0.50, "sim:cost": 0.58,
+          "sim:narrative": "Competition (2004–2007) — Motorola RAZR, early smartphones. VP eroding at high end.",
+          "sim:driver":    "Symbian aging. Microsoft Windows Mobile emerging. iPhone not yet launched.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["Feature phones still dominant","Symbian (aging platform)","N-series multimedia"],
+                     "desc": "Feature phones dominant. Symbian platform aging vs emerging Windows Mobile. N-series multimedia attempt.",
+                     "osterwalder": { "valueLevel": "excellence", "priceLvl": "market" } },
+            "RS":  { "bullets": ["Hardware margin declining","Volume still high","Software lagging"],
+                     "desc": "Hardware margin declining. Volume still high but ASP (average selling price) under pressure.",
+                     "osterwalder": { "revenueType": "asset-sale", "pricingMech": "dynamic" } },
+            "CS":  { "bullets": ["Mass market (dominant)","Business users (eroding)","Emerging markets (strong)"],
+                     "desc": "Mass market dominant. Business users beginning to prefer BlackBerry. Emerging markets strong.",
+                     "osterwalder": { "segmentType": "mass" } },
+            "CR":  { "bullets": ["Operator-mediated","No direct app ecosystem","Brand still trusted"],
+                     "desc": "Operator-mediated. No direct app ecosystem vs emerging App Store concept.",
+                     "osterwalder": { "relType": "self-service" } },
+            "KP":  { "bullets": ["Symbian consortium","Telecom operators","Component suppliers"],
+                     "desc": "Symbian Ltd consortium (Nokia, Sony Ericsson, Samsung), telecom operators, component suppliers." },
+            "KA":  { "bullets": ["Handset design","Symbian development","Carrier negotiation"],
+                     "desc": "Handset design, Symbian OS development, carrier negotiation." },
+            "KR":  { "bullets": ["Symbian platform","Manufacturing scale","Brand"],
+                     "desc": "Symbian platform (aging), manufacturing scale, Nokia brand." },
+            "CH":  { "bullets": ["Operators (primary)","Retail","Online (embryonic)"],
+                     "desc": "Telecom operators (primary), retail chains, online (embryonic)." },
+            "CS$": { "bullets": ["Symbian R&D (heavy)","Manufacturing","Marketing"],
+                     "desc": "Symbian R&D (very heavy, ~5,000 engineers), manufacturing, marketing." }
+          }
+        },
+        {
+          "@type": "sim:Phase",
+          "sim:phaseIndex": 3, "sim:phaseName": "Decline",
+          "sim:vp": 0.40, "sim:conv": 0.35, "sim:cross": 0.08, "sim:net": 0.20, "sim:cost": 0.80,
+          "sim:narrative": "Collapse (2007–2013) — iPhone (2007) then Android destroy Nokia's VP. Symbian cannot compete.",
+          "sim:driver":    "'Burning platform' memo (Elop, 2011). Market share: 40% → 3%. Sold to Microsoft 2013 for €5.44B.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["Symbian = obsolete","No app ecosystem","Touch UX inferior"],
+                     "desc": "Symbian fatally inferior to iOS and Android. No app ecosystem. Touch UX deeply inferior.",
+                     "osterwalder": { "valueLevel": "commodity", "priceLvl": "economy" } },
+            "RS":  { "bullets": ["Market share 40% → 3%","Price war (low-end)","$0 smartphone RS"],
+                     "desc": "Market share collapsed from 40% to 3%. Forced into price war at low end. Zero premium smartphone revenue.",
+                     "osterwalder": { "revenueType": "asset-sale", "pricingMech": "dynamic" } },
+            "CS":  { "bullets": ["Only low-end survivors","Lost enterprise","Lost youth segment"],
+                     "desc": "Only low-end price-sensitive CS remaining. Lost enterprise (→BlackBerry/iPhone). Lost youth (→Android/iPhone).",
+                     "osterwalder": { "segmentType": "niche" } },
+            "CR":  { "bullets": ["Operator-mediated (dying)","No developer ecosystem","Brand eroding fast"],
+                     "desc": "Operator-mediated only. No developer ecosystem. Nokia brand eroding rapidly.",
+                     "osterwalder": { "relType": "self-service" } },
+            "KP":  { "bullets": ["Microsoft (Windows Phone)","Telecom operators (declining)","Component suppliers"],
+                     "desc": "Microsoft (Windows Phone partnership), telecom operators (declining), component suppliers." },
+            "KA":  { "bullets": ["Windows Phone migration","Lumia development","Restructuring (10K layoffs)"],
+                     "desc": "Painful migration to Windows Phone, Lumia development, massive restructuring (10,000+ layoffs)." },
+            "KR":  { "bullets": ["Patent portfolio (valuable)","Manufacturing (selling)","Brand (declining)"],
+                     "desc": "Patent portfolio (still valuable — sold to Microsoft). Manufacturing (being divested). Brand declining." },
+            "CH":  { "bullets": ["Operators (shrinking)","Retail (shrinking)","No online direct"],
+                     "desc": "Shrinking operator channel, shrinking retail, no competitive online direct channel." },
+            "CS$": { "bullets": ["Restructuring charges","Windows Phone R&D","Operating losses"],
+                     "desc": "Massive restructuring charges, Windows Phone R&D, growing operating losses." }
+          }
+        }
+      ],
+      "sim:transitions": [
+        {
+          "@type": "sim:Transition",
+          "sim:transitionIndex": 0,
+          "sim:transitionLabel": "Mutation T1 — Conglomerate → Mobile (1992)",
+          "sim:fromPhase": "Startup", "sim:toPhase": "Growth",
+          "sim:outcome": { "@id": "sim:outcome.Success" },
+          "sim:instableBlocks":  ["VP","KP","KA","KR","RS"],
+          "sim:emergingFluxes":  ["ka_vp","vp_ch"],
+          "sim:fadingFluxes":    ["kp_ka","kr_cost"],
+          "sim:vp": 0.35, "sim:conv": 0.30, "sim:cross": 0.05, "sim:net": 0.15, "sim:cost": 0.70,
+          "rdfs:comment": "Jorma Ollila sells all non-telecom divisions (1991-1994). Tekes state funding enables full mobile pivot. Radical but successful BM redesign.",
+          "sim:sources": [
+            { "@type": "dcterms:BibliographicResource",
+              "dcterms:title":     "The Nokia Revolution",
+              "dcterms:creator":   "Dan Steinbock",
+              "dcterms:date":      "2001",
+              "dcterms:publisher": "AMACOM" },
+            { "@type": "dcterms:BibliographicResource",
+              "dcterms:title":     "Tekes Annual Report 1994 — Nokia R&D Funding",
+              "dcterms:creator":   "Tekes — Finnish Funding Agency for Technology and Innovation",
+              "dcterms:date":      "1994",
+              "rdfs:comment":      "Nokia received 40% of Tekes total budget 1992-2000 (~€500M). Without this state support the simultaneous divestiture of all non-telecom divisions would have been financially impossible." }
+          ]
+        },
+        {
+          "@type": "sim:Transition",
+          "sim:transitionIndex": 1,
+          "sim:transitionLabel": "Mutation T2 — Mobile Leader collapse (2007-2011)",
+          "sim:fromPhase": "Maturity", "sim:toPhase": "Decline",
+          "sim:outcome": { "@id": "sim:outcome.Failure" },
+          "sim:instableBlocks":  ["VP","KR","KA","CS"],
+          "sim:emergingFluxes":  [],
+          "sim:fadingFluxes":    ["vp_ch","net_fx","cs_rs"],
+          "sim:vp": 0.75, "sim:conv": 0.62, "sim:cross": 0.15, "sim:net": 0.50, "sim:cost": 0.58,
+          "rdfs:comment": "iPhone (2007) then Android (2008) made Symbian obsolete. Nokia had internal touch prototypes but organizational fear paralyzed decision-making (Huy & Vuori, HBR 2015).",
+          "sim:sources": [
+            { "@type": "dcterms:BibliographicResource",
+              "dcterms:title":     "The Real Cause of Nokia's Failure",
+              "dcterms:creator":   "Quy Huy & Timo Vuori",
+              "dcterms:date":      "2015",
+              "dcterms:publisher": "Harvard Business Review",
+              "sim:url":           "https://hbr.org/2015/09/the-real-cause-of-nokias-failure",
+              "rdfs:comment":      "Fear-based organizational culture prevented middle managers from reporting VP erosion to top management. Classic Innovator's Dilemma compounded by internal communication failure." }
+          ]
+        },
+        {
+          "@type": "sim:Transition",
+          "sim:transitionIndex": 2,
+          "sim:transitionLabel": "Mutation T3 — Windows Phone pivot (2011-2013)",
+          "sim:fromPhase": "Decline", "sim:toPhase": "Transition",
+          "sim:outcome": { "@id": "sim:outcome.Failure" },
+          "sim:instableBlocks":  ["VP","KP","KA","KR"],
+          "sim:emergingFluxes":  ["ka_vp"],
+          "sim:fadingFluxes":    ["cs_rs","vp_ch"],
+          "sim:vp": 0.30, "sim:conv": 0.25, "sim:cross": 0.08, "sim:net": 0.15, "sim:cost": 0.82,
+          "rdfs:comment": "Stephen Elop 'burning platform' memo (Feb 2011). Windows Phone partnership with Microsoft failed to gain market share. Nokia mobile sold to Microsoft Sept 2013 for €5.44B.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["Lumia + Windows Phone","'Third ecosystem' bet","VS iOS+Android: failed"],
+                     "desc": "Lumia line with Windows Phone. Bet on 'third ecosystem' failed vs iOS+Android duopoly.",
+                     "osterwalder": { "valueLevel": "customization", "priceLvl": "economy" } },
+            "RS":  { "bullets": ["Lumia hardware sales","Microsoft subsidies","Collapsing volume"],
+                     "desc": "Lumia hardware sales (declining), Microsoft subsidies, collapsing volume.",
+                     "osterwalder": { "revenueType": "asset-sale", "pricingMech": "fixed" } },
+            "KP":  { "bullets": ["Microsoft (Windows Phone)","Qualcomm (chips)","Carriers (weakening)"],
+                     "desc": "Microsoft as strategic KP (Windows Phone OS), Qualcomm for chips, weakening carrier relationships." },
+            "KA":  { "bullets": ["Lumia hardware design","Windows Phone integration","Global restructuring"],
+                     "desc": "Lumia hardware design, Windows Phone integration, painful global restructuring (10,000+ layoffs)." }
+          },
+          "sim:sources": [
+            { "@type": "dcterms:BibliographicResource",
+              "dcterms:title":     "Stephen Elop 'Burning Platform' Internal Memo",
+              "dcterms:creator":   "Stephen Elop (Nokia CEO)",
+              "dcterms:date":      "2011-02-08",
+              "sim:url":           "https://www.theverge.com/2011/2/8/1983171/nokias-elop-our-platform-is-burning" }
+          ]
+        },
+        {
+          "@type": "sim:Transition",
+          "sim:transitionIndex": 3,
+          "sim:transitionLabel": "Mutation T4 — Nokia Networks + 5G (2014+)",
+          "sim:fromPhase": "Transition", "sim:toPhase": "Growth",
+          "sim:outcome": { "@id": "sim:outcome.Success" },
+          "sim:instableBlocks":  ["VP","KA","KR","RS","CS"],
+          "sim:emergingFluxes":  ["ka_vp","vp_ch","net_fx"],
+          "sim:fadingFluxes":    ["cs_rs"],
+          "sim:vp": 0.65, "sim:conv": 0.55, "sim:cross": 0.20, "sim:net": 0.45, "sim:cost": 0.55,
+          "rdfs:comment": "Nokia divests mobile to Microsoft. Acquires NSN (Nokia Siemens Networks) then Alcatel-Lucent (2016) for €15.6B. Becomes global #2 telecom equipment maker. Nokia Bell Labs (patent licensing) + HMD Global (Nokia phone brand licensing).",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["5G network equipment","Nokia Bell Labs IP","Brand licensing (HMD)"],
+                     "desc": "5G network equipment (Ericsson/Huawei competitor). Nokia Bell Labs patent licensing. Nokia brand licensed to HMD Global.",
+                     "osterwalder": { "valueLevel": "excellence", "priceLvl": "high-end" } },
+            "RS":  { "bullets": ["Equipment sales ($22B)","Patent licensing (Bell Labs)","Software/services"],
+                     "desc": "Network equipment sales ($22B revenue 2023). Patent licensing via Nokia Bell Labs. Software/services growing.",
+                     "osterwalder": { "revenueType": "licensing", "pricingMech": "fixed" } },
+            "CS":  { "bullets": ["Telecom operators (5G)","Enterprise private networks","Governments (defense)"],
+                     "desc": "Telecom operators (5G rollout), enterprise private networks, government/defense.",
+                     "osterwalder": { "segmentType": "segmented" } },
+            "KP":  { "bullets": ["Alcatel-Lucent (acquired)","HMD Global (brand license)","Qualcomm (chips)"],
+                     "desc": "Alcatel-Lucent acquisition (2016, €15.6B), HMD Global (brand licensee), Qualcomm." }
+          },
+          "sim:sources": [
+            { "@type": "dcterms:BibliographicResource",
+              "dcterms:title":     "Nokia Annual Report 2023",
+              "dcterms:creator":   "Nokia Corporation",
+              "dcterms:date":      "2024",
+              "sim:url":           "https://www.nokia.com/investors/key-documents/annual-report/" },
+            { "@type": "dcterms:BibliographicResource",
+              "dcterms:title":     "Nokia acquires Alcatel-Lucent: press release",
+              "dcterms:creator":   "Nokia Corporation",
+              "dcterms:date":      "2016-01-14",
+              "sim:url":           "https://www.nokia.com/about-us/news/releases/2016/01/14/" }
+          ]
+        }
+      ]
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // ── CASE 3 — Nintendo ──────────────────────────────────────────────────
+    // ═══════════════════════════════════════════════════════════════════════
+    {
+      "@id":   "m0.bmc:case_Nintendo",
+      "@type": "sim:SimulationCase",
+      "sim:caseName": "Nintendo (1889→2024)",
+      "sim:short":    "Nintendo",
+      "sim:pattern":  "BusinessModelMutation ×4 — Playing cards → GameBoy → Wii → Switch",
+      "sim:sources": {
+        "general": [
+          { "@type": "dcterms:BibliographicResource",
+            "dcterms:title":     "Game Over: How Nintendo Conquered the World",
+            "dcterms:creator":   "David Sheff",
+            "dcterms:date":      "1993",
+            "dcterms:publisher": "Random House" },
+          { "@type": "dcterms:BibliographicResource",
+            "dcterms:title":     "The History of Nintendo Vol.1",
+            "dcterms:creator":   "Florent Gorges",
+            "dcterms:date":      "2010",
+            "dcterms:publisher": "Pix'n Love Publishing" }
+        ]
+      },
+      "sim:phases": [
+        {
+          "@type": "sim:Phase",
+          "sim:phaseIndex": 0, "sim:phaseName": "Startup",
+          "sim:vp": 0.45, "sim:conv": 0.40, "sim:cross": 0.10, "sim:net": 0.25, "sim:cost": 0.60,
+          "sim:narrative": "State 0 (1889–1980) — Hanafuda playing cards → toys → Donkey Kong arcade.",
+          "sim:driver":    "Hiroshi Yamauchi pivots from cards to electronic toys. Donkey Kong (1981) = first VP signal.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["Hanafuda playing cards","Toy experimentation (1960s)","Donkey Kong (1981)"],
+                     "desc": "Playing cards (Hanafuda) → toys → first arcade game Donkey Kong (1981). VP discovering entertainment.",
+                     "osterwalder": { "valueLevel": "customization", "priceLvl": "economy" } },
+            "RS":  { "bullets": ["Card sales (commodity)","Toy sales (trial/error)","Arcade licensing (new)"],
+                     "desc": "Card commodity sales, toy sales (trial/error), arcade cabinet licensing emerging.",
+                     "osterwalder": { "revenueType": "asset-sale", "pricingMech": "fixed" } },
+            "KP":  { "bullets": ["Mitsubishi (distribution)","Marufuku (card paper supplier)","Atari (licensing deal)"],
+                     "desc": "Mitsubishi for distribution, Marufuku for card paper, Atari for early licensing deal." },
+            "CS":  { "bullets": ["Japanese card players","Toy market (children)","Arcades (early adopters)"],
+                     "desc": "Japanese card players, toy market (children), arcade operators (early adopters).",
+                     "osterwalder": { "segmentType": "niche" } },
+            "CR":  { "bullets": ["Retail-mediated","No direct CR","Arcade operator B2B"],
+                     "desc": "Retail-mediated relationship, no direct CR, arcade operator B2B.",
+                     "osterwalder": { "relType": "self-service" } }
+          }
+        },
+        {
+          "@type": "sim:Phase",
+          "sim:phaseIndex": 1, "sim:phaseName": "Growth",
+          "sim:vp": 0.90, "sim:conv": 0.75, "sim:cross": 0.45, "sim:net": 0.70, "sim:cost": 0.45,
+          "sim:narrative": "State 1 (1983–2005) — NES → SNES → N64 → GameBoy. Nintendo = console market.",
+          "sim:driver":    "Razor/blade model: cheap console, expensive cartridges. Mario/Zelda IP = ultimate KR.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["NES revives console market","Mario/Zelda exclusive IP","GameBoy portable"],
+                     "desc": "NES revives US console market (1985, after 1983 crash). Mario/Zelda exclusive IP. GameBoy dominates portable.",
+                     "osterwalder": { "valueLevel": "innovation", "priceLvl": "economy" } },
+            "RS":  { "bullets": ["Console hardware (razor)","Game cartridges (blade, 30% margin)","Licensing fees (3rd party)"],
+                     "desc": "Console hardware at near-cost (razor). Game cartridges at high margin (blade). Third-party licensing fees.",
+                     "osterwalder": { "revenueType": "cross-subsidy", "pricingMech": "fixed" } },
+            "CS":  { "bullets": ["Children 6-14 (primary)","Casual family gamers","Portable gaming (GameBoy)"],
+                     "desc": "Children 6-14 (primary), casual family gamers, portable gaming (GameBoy global market).",
+                     "osterwalder": { "segmentType": "mass" } },
+            "CR":  { "bullets": ["Nintendo Power magazine","Retail (Toys R Us)","No internet yet"],
+                     "desc": "Nintendo Power magazine (direct to fans), retail (Toys R Us, KB Toys), no internet.",
+                     "osterwalder": { "relType": "community" } },
+            "KP":  { "bullets": ["HAL Laboratory","Rare (exclusive dev)","Toy R Us (retail partner)"],
+                     "desc": "HAL Laboratory (Kirby, Smash Bros), Rare (exclusive developer), Toys R Us retail partner." },
+            "KA":  { "bullets": ["First-party game development","Console hardware R&D","Strict 3rd-party licensing"],
+                     "desc": "First-party game development, console hardware R&D, strict third-party licensing control." },
+            "KR":  { "bullets": ["Mario/Zelda/Pokemon IP","Hardware patents","Manufacturing scale"],
+                     "desc": "Mario, Zelda, Pokemon IP (priceless). Hardware patents. Manufacturing scale." },
+            "CH":  { "bullets": ["Toy/retail stores","Nintendo Power","GameBoy everywhere"],
+                     "desc": "Toy/retail stores, Nintendo Power magazine, GameBoy distribution everywhere." },
+            "CS$": { "bullets": ["Console manufacturing","First-party dev studios","Marketing (Nintendo Power)"],
+                     "desc": "Console manufacturing, first-party dev studios, Nintendo Power magazine marketing." }
+          }
+        },
+        {
+          "@type": "sim:Phase",
+          "sim:phaseIndex": 2, "sim:phaseName": "Maturity",
+          "sim:vp": 0.82, "sim:conv": 0.68, "sim:cross": 0.35, "sim:net": 0.55, "sim:cost": 0.52,
+          "sim:narrative": "Competition (2000–2006) — PS2 and Xbox compete. GameCube underperforms. DS dual-screen.",
+          "sim:driver":    "Sony/Microsoft winning hardcore gamer CS. Nintendo must differentiate or lose.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["GameCube (underperforms)","DS dual-screen innovation","Pokémon global phenomenon"],
+                     "desc": "GameCube underperforms vs PS2. DS dual-screen innovative. Pokémon global phenomenon saves handheld.",
+                     "osterwalder": { "valueLevel": "excellence", "priceLvl": "economy" } },
+            "RS":  { "bullets": ["GameCube below PS2","DS (strong handheld RS)","3rd party fees declining"],
+                     "desc": "GameCube hardware underperforms. DS strong handheld RS. Third party fees declining on console.",
+                     "osterwalder": { "revenueType": "cross-subsidy", "pricingMech": "fixed" } },
+            "CS":  { "bullets": ["Children + casual (GameCube)","DS expands to new segments","Lost: hardcore gamers (PS2)"],
+                     "desc": "Children + casual on GameCube. DS expanding to new segments (adults, women). Lost hardcore gamers to PS2.",
+                     "osterwalder": { "segmentType": "segmented" } },
+            "CR":  { "bullets": ["nintendo.com emerging","Pokémon community","Less Nintendo Power"],
+                     "desc": "Nintendo.com emerging, Pokémon community events, Nintendo Power declining.",
+                     "osterwalder": { "relType": "community" } }
+          }
+        },
+        {
+          "@type": "sim:Phase",
+          "sim:phaseIndex": 3, "sim:phaseName": "Decline",
+          "sim:vp": 0.55, "sim:conv": 0.42, "sim:cross": 0.20, "sim:net": 0.35, "sim:cost": 0.65,
+          "sim:narrative": "Wii U failure (2012–2016) — confusing VP, poor developer support, sales 13M vs Wii 101M.",
+          "sim:driver":    "Wii U GamePad concept unclear. 3rd party deserted. PS4/Xbox One dominate.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["Wii U GamePad (confusing)","Is it a tablet or a console?","3rd party abandon"],
+                     "desc": "Wii U GamePad concept deeply confusing (tablet? controller?). Third parties abandoned. VP unclear vs PS4/Xbox One.",
+                     "osterwalder": { "valueLevel": "customization", "priceLvl": "market" } },
+            "RS":  { "bullets": ["13M units (vs Wii 101M)","Operating losses 2012-2016","eShop weak"],
+                     "desc": "Only 13.56M units sold (vs Wii 101M). Operating losses 2012-2016. eShop underperforming.",
+                     "osterwalder": { "revenueType": "cross-subsidy", "pricingMech": "fixed" } },
+            "CS":  { "bullets": ["Core Nintendo fans only","Lost: casual (Wii)","Lost: 3rd party devs"],
+                     "desc": "Only core Nintendo fans. Lost casual/family segment from Wii. Lost third-party developers.",
+                     "osterwalder": { "segmentType": "niche" } },
+            "CR":  { "bullets": ["Miiverse (Nintendo social)","eShop","Direct videos (new)"],
+                     "desc": "Miiverse social platform, eShop, Nintendo Direct videos (innovative CR that survived Wii U).",
+                     "osterwalder": { "relType": "community" } }
+          }
+        }
+      ],
+      "sim:transitions": [
+        {
+          "@type": "sim:Transition",
+          "sim:transitionIndex": 0,
+          "sim:transitionLabel": "Mutation T1 — Cards → Console (1983)",
+          "sim:fromPhase": "Startup", "sim:toPhase": "Growth",
+          "sim:outcome": { "@id": "sim:outcome.Success" },
+          "sim:instableBlocks":  ["VP","KA","KR","RS"],
+          "sim:emergingFluxes":  ["ka_vp","vp_ch"],
+          "sim:fadingFluxes":    ["kp_ka"],
+          "sim:vp": 0.45, "sim:conv": 0.40, "sim:cross": 0.10, "sim:net": 0.25, "sim:cost": 0.60,
+          "rdfs:comment": "NES (Famicom) launches 1983 in Japan, 1985 in US after market crash. Razor/blade model invented for consoles.",
+          "sim:sources": [
+            { "@type": "dcterms:BibliographicResource",
+              "dcterms:title":     "Game Over: How Nintendo Conquered the World",
+              "dcterms:creator":   "David Sheff",
+              "dcterms:date":      "1993",
+              "dcterms:publisher": "Random House",
+              "dcterms:identifier":"ISBN 0-679-40469-4" }
+          ]
+        },
+        {
+          "@type": "sim:Transition",
+          "sim:transitionIndex": 1,
+          "sim:transitionLabel": "Mutation T2 — Wii Revolution: casual gaming (2006)",
+          "sim:fromPhase": "Maturity", "sim:toPhase": "Growth",
+          "sim:outcome": { "@id": "sim:outcome.Success" },
+          "sim:instableBlocks":  ["VP","CS","KA","CH"],
+          "sim:emergingFluxes":  ["vp_cr","net_fx","vp_ch"],
+          "sim:fadingFluxes":    ["kr_cost"],
+          "sim:vp": 0.82, "sim:conv": 0.68, "sim:cross": 0.35, "sim:net": 0.55, "sim:cost": 0.52,
+          "rdfs:comment": "Wii motion controls expand CS from children to families/seniors/women. Blue ocean strategy (Kim & Mauborgne). Wii Sports pre-installed = instant mass market VP.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["Motion controls (gyroscope)","Wii Sports pre-installed","Anyone can play"],
+                     "desc": "Wii motion controls accessible to all. Wii Sports pre-installed = instant VP clarity. 'Anyone can play' blue ocean.",
+                     "osterwalder": { "valueLevel": "innovation", "priceLvl": "economy" } },
+            "CS":  { "bullets": ["Families + seniors (new)","Women 25-45 (new)","Casual gamers worldwide"],
+                     "desc": "New CS never captured before: families, seniors, women 25-45, casual gamers. Blue ocean vs Sony/Microsoft.",
+                     "osterwalder": { "segmentType": "mass" } },
+            "KA":  { "bullets": ["Motion control R&D","Wii Sports development","Mass-market UX design"],
+                     "desc": "Motion control R&D (accelerometer+IR), Wii Sports development, mass-market UX design." },
+            "RS":  { "bullets": ["Wii: 101M units sold","Hardware profit (unusual)","Wii Sports/Wii Fit"],
+                     "desc": "101M units sold. Hardware profitable (unlike Xbox/PS3). Wii Sports, Wii Fit = blockbuster RS.",
+                     "osterwalder": { "revenueType": "cross-subsidy", "pricingMech": "fixed" } }
+          },
+          "sim:sources": [
+            { "@type": "dcterms:BibliographicResource",
+              "dcterms:title":     "Blue Ocean Strategy",
+              "dcterms:creator":   "W. Chan Kim & Renée Mauborgne",
+              "dcterms:date":      "2005",
+              "dcterms:publisher": "Harvard Business Review Press",
+              "rdfs:comment":      "Nintendo Wii cited as canonical blue ocean case: non-customers become customers by redefining the value curve" }
+          ]
+        },
+        {
+          "@type": "sim:Transition",
+          "sim:transitionIndex": 2,
+          "sim:transitionLabel": "Mutation T3 — Wii U failure (2012)",
+          "sim:fromPhase": "Growth", "sim:toPhase": "Decline",
+          "sim:outcome": { "@id": "sim:outcome.Failure" },
+          "sim:instableBlocks":  ["VP","KP","CS"],
+          "sim:emergingFluxes":  [],
+          "sim:fadingFluxes":    ["vp_ch","net_fx","cs_rs"],
+          "sim:vp": 0.82, "sim:conv": 0.68, "sim:cross": 0.35, "sim:net": 0.55, "sim:cost": 0.52,
+          "rdfs:comment": "Wii U GamePad concept unclear: not a separate tablet, not just a controller. Marketing confused consumers. Third parties (EA, Activision, Ubisoft) quickly abandoned. Only 13.56M sold vs target 100M+.",
+          "sim:sources": [
+            { "@type": "dcterms:BibliographicResource",
+              "dcterms:title":     "Nintendo Wii U — Wikipedia",
+              "dcterms:creator":   "Wikipedia contributors",
+              "sim:url":           "https://en.wikipedia.org/wiki/Wii_U",
+              "rdfs:comment":      "13.56M units lifetime sales (2012-2017). Discontinued March 2017." }
+          ]
+        },
+        {
+          "@type": "sim:Transition",
+          "sim:transitionIndex": 3,
+          "sim:transitionLabel": "Mutation T4 — Switch hybrid console (2017)",
+          "sim:fromPhase": "Decline", "sim:toPhase": "Growth",
+          "sim:outcome": { "@id": "sim:outcome.Success" },
+          "sim:instableBlocks":  ["VP","KA","CH","CS"],
+          "sim:emergingFluxes":  ["vp_ch","net_fx","vp_cr"],
+          "sim:fadingFluxes":    ["kr_cost"],
+          "sim:vp": 0.55, "sim:conv": 0.42, "sim:cross": 0.20, "sim:net": 0.35, "sim:cost": 0.65,
+          "rdfs:comment": "Switch hybrid (home+portable) clarifies VP vs Wii U confusion. Zelda: Breath of the Wild = launch title. Nintendo Online subscription = new RS. 140M+ units sold.",
+          "sim:blockContent": {
+            "VP":  { "bullets": ["Home AND portable (hybrid)","Zelda: Breath of the Wild","Play anywhere"],
+                     "desc": "Switch hybrid: one device for TV and portable play. Zelda: BotW = defining launch title. 'Play anywhere' clear VP.",
+                     "osterwalder": { "valueLevel": "innovation", "priceLvl": "market" } },
+            "RS":  { "bullets": ["140M+ units sold","Nintendo Switch Online subscription","eShop digital (40% of sales)"],
+                     "desc": "140M+ units sold. Nintendo Switch Online subscription ($20-50/yr). eShop digital sales (40% of games).",
+                     "osterwalder": { "revenueType": "cross-subsidy", "pricingMech": "fixed" } },
+            "CS":  { "bullets": ["Core gamers (back)","Casual/families (retained)","Indie developers (new)"],
+                     "desc": "Core gamers returned. Casual/families retained. Indie developers (new KP through eShop).",
+                     "osterwalder": { "segmentType": "mass" } },
+            "KA":  { "bullets": ["Joy-Con hardware R&D","Nintendo Online service","First-party exclusives cadence"],
+                     "desc": "Joy-Con hardware R&D, Nintendo Switch Online service, disciplined first-party exclusives release cadence." }
+          },
+          "sim:sources": [
+            { "@type": "dcterms:BibliographicResource",
+              "dcterms:title":     "Nintendo Switch — Wikipedia",
+              "dcterms:creator":   "Wikipedia contributors",
+              "sim:url":           "https://en.wikipedia.org/wiki/Nintendo_Switch",
+              "rdfs:comment":      "140M+ units sold as of 2024, becoming Nintendo's best-selling console ever." },
+            { "@type": "dcterms:BibliographicResource",
+              "dcterms:title":     "Nintendo Annual Report 2024",
+              "dcterms:creator":   "Nintendo Co., Ltd.",
+              "dcterms:date":      "2024",
+              "sim:url":           "https://www.nintendo.co.jp/ir/en/report/annual/index.html" }
+          ]
+        }
+      ]
+    }
+
+  ]  // end @graph
+};
+
+// ── buildCasesFromOntology ────────────────────────────────────────────────
+// Converts JSON-LD @graph to the CASES array format used by Bmc.js
+function buildCasesFromOntology() {
+  const graph = BMC_SIMULATION_ONTOLOGY['@graph'];
+  const cases = graph.filter(n => n['@type'] === 'sim:SimulationCase');
+
+  return cases.map(c => {
+    // Build phases array
+    const phases = (c['sim:phases'] || []).map(ph => {
+      const t = c['sim:transitions'] ? c['sim:transitions'].find(
+        tx => tx['sim:fromPhase'] === ph['sim:phaseName'] &&
+              tx['sim:outcome'] && tx['sim:outcome']['@id'] !== 'sim:outcome.Failure'
+      ) : null;
+
+      return {
+        vp:    ph['sim:vp']    || 0.5,
+        conv:  ph['sim:conv']  || 0.4,
+        cross: ph['sim:cross'] || 0.2,
+        net:   ph['sim:net']   || 0.3,
+        cost:  ph['sim:cost']  || 0.5,
+        narrative:      ph['sim:narrative'] || '',
+        driver:         ph['sim:driver']    || '',
+        blockContent:   ph['sim:blockContent'] || null,
+        // Transition data (populated separately below)
+      };
+    });
+
+    // Attach transition data to matching Transition phase
+    const transitions = c['sim:transitions'] || [];
+
+    // Build transitions list for combobox
+    const transitionList = transitions.map((tx, i) => ({
+      index:          tx['sim:transitionIndex'] || i,
+      label:          tx['sim:transitionLabel'] || `Transition ${i+1}`,
+      fromPhase:      tx['sim:fromPhase'],
+      toPhase:        tx['sim:toPhase'],
+      outcome:        tx['sim:outcome'] ? tx['sim:outcome']['@id'].replace('sim:outcome.','') : 'Success',
+      instableBlocks: tx['sim:instableBlocks'] || [],
+      emergingFluxes: tx['sim:emergingFluxes'] || [],
+      fadingFluxes:   tx['sim:fadingFluxes']   || [],
+      vp:    tx['sim:vp']    || null,
+      conv:  tx['sim:conv']  || null,
+      cross: tx['sim:cross'] || null,
+      net:   tx['sim:net']   || null,
+      cost:  tx['sim:cost']  || null,
+      blockContent: tx['sim:blockContent'] || null,
+      sources: tx['sim:sources'] || [],
+    }));
+
+    return {
+      id:          c['@id'].replace('m0.bmc:case_','').toLowerCase(),
+      name:        c['sim:caseName'],
+      short:       c['sim:short'] || c['sim:caseName'],
+      pattern:     c['sim:pattern'] || '',
+      sources:     c['sim:sources'] || {},
+      phases,
+      transitions: transitionList,
+    };
+  });
+}
+
+// ── exportAsJsonLD ────────────────────────────────────────────────────────
+// Downloads the pure JSON-LD document (without the JS wrapper)
+// Validates against TSCG SHACL grammar for M0 instances
+function exportAsJsonLD() {
+  const jsonld = JSON.stringify(BMC_SIMULATION_ONTOLOGY, null, 2);
+  const blob   = new Blob([jsonld], { type: 'application/ld+json' });
+  const url    = URL.createObjectURL(blob);
+  const a      = document.createElement('a');
+  a.href       = url;
+  a.download   = 'M0_BmcSimulation.jsonld';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// CASES is mutable — Bmc.js async init will overwrite it after GitHub fetch
+// (or keep this local version if GitHub is unavailable)
+let CASES = buildCasesFromOntology();
+
+// NOTE: Additional cases appended below the initial IIFE
+// They are injected into BMC_SIMULATION_ONTOLOGY['@graph'] at load time
+;(function appendCases() {
+  const G = BMC_SIMULATION_ONTOLOGY['@graph'];
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // CASE 4 — Apple
+  // ═══════════════════════════════════════════════════════════════════════
+  G.push({
+    "@id": "m0.bmc:case_Apple", "@type": "sim:SimulationCase",
+    "sim:caseName": "Apple (1976→2024)", "sim:short": "Apple",
+    "sim:pattern": "VerticalIntegration + Ecosystem lock-in — 4 mutations",
+    "sim:sources": { "general": [
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"Steve Jobs","dcterms:creator":"Walter Isaacson","dcterms:date":"2011","dcterms:publisher":"Simon & Schuster","dcterms:identifier":"ISBN 978-1451648539" },
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"After Steve: How Apple Became a Trillion-Dollar Company","dcterms:creator":"Tripp Mickle","dcterms:date":"2022","dcterms:publisher":"William Morrow" }
+    ]},
+    "sim:phases": [
+      { "@type":"sim:Phase","sim:phaseIndex":0,"sim:phaseName":"Startup",
+        "sim:vp":0.50,"sim:conv":0.45,"sim:cross":0.10,"sim:net":0.30,"sim:cost":0.70,
+        "sim:narrative":"Startup (1976–1997) — Mac hardware. 'Insanely great' but niche VP.",
+        "sim:driver":"Jobs ousted 1985. Near-bankruptcy 1997. Hardware KA, dealer CH. RS=unit sales only.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["Mac = insanely great","Niche premium hardware","Desktop publishing"],"osterwalder":{"valueLevel":"excellence","priceLvl":"high-end"}},
+          "RS":  {"bullets":["Mac unit sales","No recurring RS","Dealer margin"],"osterwalder":{"revenueType":"asset-sale","pricingMech":"fixed"}},
+          "CS":  {"bullets":["Creative professionals","Education sector","Desktop publishing niche"],"osterwalder":{"segmentType":"niche"}},
+          "CR":  {"bullets":["Dealer-mediated","Apple resellers","Limited direct CR"],"osterwalder":{"relType":"self-service"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":1,"sim:phaseName":"Growth",
+        "sim:vp":0.85,"sim:conv":0.70,"sim:cross":0.25,"sim:net":0.55,"sim:cost":0.55,
+        "sim:narrative":"Growth (2001–2010) — iPod+iTunes, iPhone (2007). Ecosystem VP emerges.",
+        "sim:driver":"iTunes CrossSubsidy: iPod hardware margin funds cheap music. App Store 2008: 30% commission.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["iPod + iTunes ecosystem","iPhone = category creator","App Store 500K apps"],"osterwalder":{"valueLevel":"innovation","priceLvl":"high-end"}},
+          "RS":  {"bullets":["iPod/iPhone hardware","iTunes $0.99/song","App Store 30% cut"],"osterwalder":{"revenueType":"cross-subsidy","pricingMech":"fixed"}},
+          "CS":  {"bullets":["Music lovers (iPod)","Smartphone early majority","Developers (App Store)"],"osterwalder":{"segmentType":"segmented"}},
+          "CR":  {"bullets":["Apple Store (in-person)","Genius Bar support","Developer community"],"osterwalder":{"relType":"personal"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":2,"sim:phaseName":"Maturity",
+        "sim:vp":0.95,"sim:conv":0.82,"sim:cross":0.40,"sim:net":0.82,"sim:cost":0.45,
+        "sim:narrative":"Maturity (2012+) — $3T market cap. iOS ↔ Mac ↔ Watch ↔ iCloud ecosystem.",
+        "sim:driver":"VerticalIntegration: Apple Silicon (M1/M2/M3). 500+ stores. Services RS $85B (2023).",
+        "sim:blockContent":{
+          "VP":  {"bullets":["iOS ecosystem lock-in","Apple Silicon M1/M2/M3","Services: $85B/yr"],"osterwalder":{"valueLevel":"excellence","priceLvl":"high-end"}},
+          "RS":  {"bullets":["iPhone $200B+ (2023)","Services $85B","Mac + iPad + Watch"],"osterwalder":{"revenueType":"cross-subsidy","pricingMech":"high-end"}},
+          "CS":  {"bullets":["iPhone: mass premium","34M registered developers","Enterprise (Mac + MDM)"],"osterwalder":{"segmentType":"diversified"}},
+          "CR":  {"bullets":["500+ Apple Stores","AppleCare (dedicated)","iCloud auto-renewal"],"osterwalder":{"relType":"personal"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":3,"sim:phaseName":"Decline",
+        "sim:vp":0.85,"sim:conv":0.75,"sim:cross":0.38,"sim:net":0.78,"sim:cost":0.50,
+        "sim:narrative":"Relative Decline (2023+) — iPhone saturation. China CS risk. Antitrust App Store.",
+        "sim:driver":"Hardware saturation. Services RS growth 15%/yr but antitrust pressure. DOJ lawsuit 2024."
+      }
+    ],
+    "sim:transitions": [
+      { "@type":"sim:Transition","sim:transitionIndex":0,
+        "sim:transitionLabel":"Mutation T1 — Hardware → iPod+iTunes",
+        "sim:fromPhase":"Startup","sim:toPhase":"Growth","sim:outcome":{"@id":"sim:outcome.Success"},
+        "sim:instableBlocks":["VP","RS","KA","CH"],"sim:emergingFluxes":["vp_ch","net_fx"],"sim:fadingFluxes":["kp_ka"],
+        "sim:vp":0.50,"sim:conv":0.45,"sim:cross":0.10,"sim:net":0.30,"sim:cost":0.70,
+        "rdfs:comment":"Jobs returns 1997. iMac (1998). iPod (2001) + iTunes Store (2003) = CrossSubsidy model birth.",
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"Steve Jobs","dcterms:creator":"Walter Isaacson","dcterms:date":"2011","dcterms:publisher":"Simon & Schuster"}]
+      },
+      { "@type":"sim:Transition","sim:transitionIndex":1,
+        "sim:transitionLabel":"Mutation T2 — iPod → iPhone platform",
+        "sim:fromPhase":"Growth","sim:toPhase":"Maturity","sim:outcome":{"@id":"sim:outcome.Success"},
+        "sim:instableBlocks":["VP","KA","CS","RS"],"sim:emergingFluxes":["net_fx","vp_cr"],"sim:fadingFluxes":["ch_cs"],
+        "sim:vp":0.85,"sim:conv":0.70,"sim:cross":0.25,"sim:net":0.55,"sim:cost":0.55,
+        "rdfs:comment":"iPhone (2007) + App Store (2008) = platform revolution. 'This is the day I've been looking forward to for two and a half years.' — Steve Jobs keynote Jan 9 2007.",
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"iPhone Keynote 2007","dcterms:creator":"Steve Jobs","dcterms:date":"2007","sim:url":"https://www.youtube.com/watch?v=MnrJzXM7a6o"}]
+      },
+      { "@type":"sim:Transition","sim:transitionIndex":2,
+        "sim:transitionLabel":"Mutation T3 — iPhone → Services + Silicon",
+        "sim:fromPhase":"Maturity","sim:toPhase":"Decline","sim:outcome":{"@id":"sim:outcome.Success"},
+        "sim:instableBlocks":["VP","KR","RS"],"sim:emergingFluxes":["ka_vp","rs_sub"],"sim:fadingFluxes":["kp_ka"],
+        "sim:vp":0.95,"sim:conv":0.82,"sim:cross":0.40,"sim:net":0.82,"sim:cost":0.45,
+        "rdfs:comment":"Tim Cook era: Services pivot. Apple Silicon (M1 2020). Services $85B (2023) now larger than Mac+iPad+Watch combined.",
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"Apple Q4 2023 Earnings Report","dcterms:publisher":"Apple Inc.","dcterms:date":"2023","sim:url":"https://investor.apple.com/sec-filings/annual-reports"}]
+      },
+      { "@type":"sim:Transition","sim:transitionIndex":3,
+        "sim:transitionLabel":"Mutation T4 — Smartphone → Spatial Computing + AI",
+        "sim:fromPhase":"Decline","sim:toPhase":"Transition","sim:outcome":{"@id":"sim:outcome.InProgress"},
+        "sim:instableBlocks":["VP","KR","KA"],"sim:emergingFluxes":["vp_ch","net_fx"],"sim:fadingFluxes":["ch_cs"],
+        "sim:vp":0.78,"sim:conv":0.70,"sim:cross":0.42,"sim:net":0.75,"sim:cost":0.52,
+        "sim:blockContent":{
+          "VP":  {"bullets":["Vision Pro: spatial computing","Apple Intelligence (AI)","visionOS ecosystem"],"osterwalder":{"valueLevel":"innovation","priceLvl":"high-end"}},
+          "RS":  {"bullets":["Vision Pro $3499","Apple Intelligence (Premium tier?)","Spatial apps (App Store)"],"osterwalder":{"revenueType":"cross-subsidy","pricingMech":"high-end"}},
+          "CS":  {"bullets":["Enterprise (Vision Pro B2B)","Developers (visionOS)","AI power users"],"osterwalder":{"segmentType":"niche"}},
+          "CR":  {"bullets":["Vision Pro in-store demo","visionOS developer labs","Apple Intelligence beta"],"osterwalder":{"relType":"personal"}}
+        },
+        "rdfs:comment":"Vision Pro launched Feb 2024 at $3499. Apple Intelligence announced WWDC 2024. New VP category: spatial computing.",
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"Apple Vision Pro Introduction","dcterms:publisher":"Apple Inc.","dcterms:date":"2023","sim:url":"https://www.apple.com/apple-vision-pro/"}]
+      }
+    ]
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // CASE 5 — Amazon
+  // ═══════════════════════════════════════════════════════════════════════
+  G.push({
+    "@id": "m0.bmc:case_Amazon", "@type": "sim:SimulationCase",
+    "sim:caseName": "Amazon (1994→2024)", "sim:short": "Amazon",
+    "sim:pattern": "3 Transitions — Books → Marketplace → AWS → Multi-domain",
+    "sim:sources": { "general": [
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"The Everything Store: Jeff Bezos and the Age of Amazon","dcterms:creator":"Brad Stone","dcterms:date":"2013","dcterms:publisher":"Little, Brown and Company","dcterms:identifier":"ISBN 978-0316219266" },
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"Working Backwards","dcterms:creator":"Colin Bryar & Bill Carr","dcterms:date":"2021","dcterms:publisher":"St. Martin's Press" }
+    ]},
+    "sim:phases": [
+      { "@type":"sim:Phase","sim:phaseIndex":0,"sim:phaseName":"Startup",
+        "sim:vp":0.50,"sim:conv":0.40,"sim:cross":0.15,"sim:net":0.30,"sim:cost":0.70,
+        "sim:narrative":"Startup (1994–2000) — Earth's biggest bookstore. Direct retail only.",
+        "sim:driver":"Inventory KR. Warehouse KA. No third-party sellers. Losses $1.4B in 2000.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["Earth's biggest bookstore","1M+ titles online","Lower prices than retail"],"osterwalder":{"valueLevel":"excellence","priceLvl":"economy"}},
+          "RS":  {"bullets":["Book retail margin","Losses $1.4B (2000)","Investing in growth"],"osterwalder":{"revenueType":"asset-sale","pricingMech":"fixed"}},
+          "CS":  {"bullets":["Online book buyers","Early internet adopters","Students + academics"],"osterwalder":{"segmentType":"niche"}},
+          "CR":  {"bullets":["Customer reviews (1995)","1-Click ordering","Email confirmation"],"osterwalder":{"relType":"self-service"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":1,"sim:phaseName":"Growth",
+        "sim:vp":0.75,"sim:conv":0.60,"sim:cross":0.30,"sim:net":0.55,"sim:cost":0.60,
+        "sim:narrative":"Growth (2000–2010) — Marketplace launch. 3rd-party = 35% of units. Prime.",
+        "sim:driver":"PlatformDuality: Buyers ↔ Sellers. Commission RS 8-15%. Prime 2005 = flywheel.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["Earth's biggest selection","Prime: 2-day free delivery","1-Click ordering"],"osterwalder":{"valueLevel":"excellence","priceLvl":"economy"}},
+          "RS":  {"bullets":["Retail margin (1P)","Marketplace commission 8-15%","Prime $139/yr"],"osterwalder":{"revenueType":"brokerage","pricingMech":"fixed"}},
+          "CS":  {"bullets":["Online shoppers (B2C)","Third-party sellers (B2B)","Prime members"],"osterwalder":{"segmentType":"multi-sided"}},
+          "CR":  {"bullets":["Automated (algorithm)","Reviews (co-creation)","Prime = loyalty"],"osterwalder":{"relType":"automated"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":2,"sim:phaseName":"Maturity",
+        "sim:vp":0.92,"sim:conv":0.78,"sim:cross":0.50,"sim:net":0.82,"sim:cost":0.42,
+        "sim:narrative":"Maturity (2015+) — FBA VerticalIntegration. AWS $91B. Ads $47B.",
+        "sim:driver":"AWS funds retail expansion. FBA: sellers pay Amazon fulfillment. Ads RS = new profit engine.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["Same-day delivery","Amazon Ads platform","FBA: fulfillment as service"],"osterwalder":{"valueLevel":"excellence","priceLvl":"economy"}},
+          "RS":  {"bullets":["Marketplace $140B (2023)","Amazon Ads $47B","AWS $91B"],"osterwalder":{"revenueType":"brokerage","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["310M active customers","2M+ marketplace sellers","Enterprise (AWS)"],"osterwalder":{"segmentType":"diversified"}},
+          "CR":  {"bullets":["Alexa (automated)","Seller Central self-service","AWS Enterprise TAM"],"osterwalder":{"relType":"automated"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":3,"sim:phaseName":"Decline",
+        "sim:vp":0.82,"sim:conv":0.70,"sim:cross":0.45,"sim:net":0.75,"sim:cost":0.48,
+        "sim:narrative":"Relative Decline (2023+) — Antitrust FTC lawsuit. Private label StrategicTension.",
+        "sim:driver":"FTC sues Amazon Sept 2023. EU DMA compliance. Core retail growth slowing post-COVID."
+      }
+    ],
+    "sim:transitions": [
+      { "@type":"sim:Transition","sim:transitionIndex":0,
+        "sim:transitionLabel":"Mutation T1 — Bookstore → Marketplace + AWS",
+        "sim:fromPhase":"Startup","sim:toPhase":"Growth","sim:outcome":{"@id":"sim:outcome.Success"},
+        "sim:instableBlocks":["VP","KA","RS","CS"],"sim:emergingFluxes":["net_fx","ka_vp"],"sim:fadingFluxes":["kp_ka"],
+        "sim:vp":0.50,"sim:conv":0.40,"sim:cross":0.15,"sim:net":0.30,"sim:cost":0.70,
+        "rdfs:comment":"Amazon opens Marketplace to third-party sellers in 2000. AWS launched 2006. Two simultaneous BM mutations.",
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"The Everything Store","dcterms:creator":"Brad Stone","dcterms:date":"2013","dcterms:publisher":"Little, Brown"}]
+      },
+      { "@type":"sim:Transition","sim:transitionIndex":1,
+        "sim:transitionLabel":"Mutation T2 — Marketplace → FBA + Ads vertical integration",
+        "sim:fromPhase":"Growth","sim:toPhase":"Maturity","sim:outcome":{"@id":"sim:outcome.Success"},
+        "sim:instableBlocks":["KA","RS","KR"],"sim:emergingFluxes":["ka_vp","rs_sub"],"sim:fadingFluxes":["kp_ka"],
+        "sim:vp":0.75,"sim:conv":0.60,"sim:cross":0.30,"sim:net":0.55,"sim:cost":0.60,
+        "rdfs:comment":"FBA (Fulfillment by Amazon) 2006 makes Amazon the logistics KR. Sponsored Products ads 2012 = new RS. Prime flywheel accelerates.",
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"Working Backwards","dcterms:creator":"Colin Bryar & Bill Carr","dcterms:date":"2021","dcterms:publisher":"St. Martin's Press"}]
+      },
+      { "@type":"sim:Transition","sim:transitionIndex":2,
+        "sim:transitionLabel":"Mutation T3 — e-commerce → multi-domain daily services",
+        "sim:fromPhase":"Decline","sim:toPhase":"Transition","sim:outcome":{"@id":"sim:outcome.InProgress"},
+        "sim:instableBlocks":["VP","CS","CH"],"sim:emergingFluxes":["vp_cr","ka_vp"],"sim:fadingFluxes":["kp_ka"],
+        "sim:vp":0.75,"sim:conv":0.65,"sim:cross":0.48,"sim:net":0.72,"sim:cost":0.50,
+        "sim:blockContent":{
+          "VP":  {"bullets":["Healthcare (One Medical)","Grocery (Whole Foods)","B2B ($35B Amazon Business)"],"osterwalder":{"valueLevel":"innovation","priceLvl":"economy"}},
+          "RS":  {"bullets":["Amazon Business $35B","Healthcare RS (new)","Bedrock AI (new)"],"osterwalder":{"revenueType":"brokerage","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["Healthcare patients (new)","B2B enterprises (new)","AI builders (new)"],"osterwalder":{"segmentType":"diversified"}},
+          "CR":  {"bullets":["One Medical (personal)","Amazon Business portal","Bedrock API (self-service)"],"osterwalder":{"relType":"automated"}}
+        }
+      }
+    ]
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // CASE 6 — Google
+  // ═══════════════════════════════════════════════════════════════════════
+  G.push({
+    "@id": "m0.bmc:case_Google", "@type": "sim:SimulationCase",
+    "sim:caseName": "Google (1998→2024)", "sim:short": "Google",
+    "sim:pattern": "3 Transitions — PageRank → AdWords → Ecosystem → AI-first",
+    "sim:sources": { "general": [
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"In the Plex","dcterms:creator":"Steven Levy","dcterms:date":"2011","dcterms:publisher":"Simon & Schuster","dcterms:identifier":"ISBN 978-1416596585" }
+    ]},
+    "sim:phases": [
+      { "@type":"sim:Phase","sim:phaseIndex":0,"sim:phaseName":"Startup",
+        "sim:vp":0.55,"sim:conv":0.20,"sim:cross":0.25,"sim:net":0.40,"sim:cost":0.70,
+        "sim:narrative":"Startup (1998–2002) — PageRank: better search results. No RS.",
+        "sim:driver":"VC-funded. KR=PageRank algorithm. CS=web users. RS=zero initially."
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":1,"sim:phaseName":"Growth",
+        "sim:vp":0.82,"sim:conv":0.45,"sim:cross":0.60,"sim:net":0.70,"sim:cost":0.55,
+        "sim:narrative":"Growth (2003–2010) — AdWords + AdSense. CrossSubsidy model matures.",
+        "sim:driver":"Free search subsidized by CPC ads. Two-sided: Users ↔ Advertisers.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["Free Search+Maps+Gmail","Relevance via PageRank","AdSense (publishers)"],"osterwalder":{"valueLevel":"excellence","priceLvl":"free"}},
+          "RS":  {"bullets":["AdWords pay-per-click","AdSense publisher network","$5B revenue (2006)"],"osterwalder":{"revenueType":"advertising","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["100M+ daily searchers","Advertisers (SMB + brands)","Publishers (AdSense)"],"osterwalder":{"segmentType":"multi-sided"}},
+          "CR":  {"bullets":["Fully automated","Algorithm-driven","No human contact"],"osterwalder":{"relType":"automated"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":2,"sim:phaseName":"Maturity",
+        "sim:vp":0.93,"sim:conv":0.60,"sim:cross":0.78,"sim:net":0.88,"sim:cost":0.40,
+        "sim:narrative":"Maturity (2012+) — 92% market share. $224B ad revenue (2023).",
+        "sim:driver":"Network FX: more searches → better data → better ads → more advertisers.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["Search+Maps+Gmail+YouTube","92% market share","Free ecosystem lock-in"],"osterwalder":{"valueLevel":"excellence","priceLvl":"free"}},
+          "RS":  {"bullets":["$224B ad revenue (2023)","YouTube ads $32B","Search dominant 57%"],"osterwalder":{"revenueType":"advertising","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["4B+ users (free search)","10M+ advertisers","YouTube creators"],"osterwalder":{"segmentType":"multi-sided"}},
+          "CR":  {"bullets":["Zero human (search)","Creator Studio (YouTube)","Business console"],"osterwalder":{"relType":"automated"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":3,"sim:phaseName":"Decline",
+        "sim:vp":0.78,"sim:conv":0.50,"sim:cross":0.65,"sim:net":0.75,"sim:cost":0.50,
+        "sim:narrative":"Partial Decline (2023+) — ChatGPT threatens VP. AI answers reduce clicks.",
+        "sim:driver":"StrategicTension: AI answers reduce ad clicks. Bing+ChatGPT gains 3pts."
+      }
+    ],
+    "sim:transitions": [
+      { "@type":"sim:Transition","sim:transitionIndex":0,
+        "sim:transitionLabel":"Mutation T1 — Search → AdWords CrossSubsidy",
+        "sim:fromPhase":"Startup","sim:toPhase":"Growth","sim:outcome":{"@id":"sim:outcome.Success"},
+        "sim:instableBlocks":["RS","CS"],"sim:emergingFluxes":["rs_sub","net_fx"],"sim:fadingFluxes":["ka_cost"],
+        "sim:vp":0.55,"sim:conv":0.20,"sim:cross":0.25,"sim:net":0.40,"sim:cost":0.70,
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"In the Plex","dcterms:creator":"Steven Levy","dcterms:date":"2011","dcterms:publisher":"Simon & Schuster"}]
+      },
+      { "@type":"sim:Transition","sim:transitionIndex":1,
+        "sim:transitionLabel":"Mutation T2 — AdWords → Free services ecosystem",
+        "sim:fromPhase":"Growth","sim:toPhase":"Maturity","sim:outcome":{"@id":"sim:outcome.Success"},
+        "sim:instableBlocks":["VP","CS","KA"],"sim:emergingFluxes":["net_fx","vp_cr"],"sim:fadingFluxes":["ka_cost"],
+        "sim:vp":0.82,"sim:conv":0.45,"sim:cross":0.60,"sim:net":0.70,"sim:cost":0.55,
+        "rdfs:comment":"Gmail (2004), Maps (2005), YouTube acquisition (2006), Android (2008). Each free service = more data = better ads."
+      },
+      { "@type":"sim:Transition","sim:transitionIndex":2,
+        "sim:transitionLabel":"Mutation T3 — sponsored links → AI-first search",
+        "sim:fromPhase":"Decline","sim:toPhase":"Transition","sim:outcome":{"@id":"sim:outcome.InProgress"},
+        "sim:instableBlocks":["VP","RS","KR"],"sim:emergingFluxes":["vp_cr","net_fx"],"sim:fadingFluxes":["cs_rs","rs_sub"],
+        "sim:vp":0.65,"sim:conv":0.45,"sim:cross":0.60,"sim:net":0.70,"sim:cost":0.55,
+        "sim:blockContent":{
+          "VP":  {"bullets":["AI Overview (SGE)","Gemini integration","Answer not link"],"osterwalder":{"valueLevel":"innovation","priceLvl":"free"}},
+          "RS":  {"bullets":["Ads at risk (↓ clicks)","Google One AI premium","Workspace AI ($30/user)"],"osterwalder":{"revenueType":"advertising","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["AI-first users (new)","Gemini API developers","Enterprise (Workspace)"],"osterwalder":{"segmentType":"diversified"}},
+          "CR":  {"bullets":["Gemini (conversational)","AI Studio developers","Workspace admins"],"osterwalder":{"relType":"automated"}}
+        }
+      }
+    ]
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // CASE 7 — Microsoft
+  // ═══════════════════════════════════════════════════════════════════════
+  G.push({
+    "@id": "m0.bmc:case_Microsoft", "@type": "sim:SimulationCase",
+    "sim:caseName": "Microsoft (1975→2024)", "sim:short": "Microsoft",
+    "sim:pattern": "3 Transitions — OS monopoly → Stagnation (Ballmer) → Cloud+AI (Nadella)",
+    "sim:sources": { "general": [
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"Hit Refresh","dcterms:creator":"Satya Nadella","dcterms:date":"2017","dcterms:publisher":"HarperBusiness","dcterms:identifier":"ISBN 978-0062717795" },
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"Microsoft's Lost Decade","dcterms:creator":"Kurt Eichenwald","dcterms:date":"2012","dcterms:publisher":"Vanity Fair","sim:url":"https://archive.vanityfair.com/article/2012/8/microsofts-lost-decade" }
+    ]},
+    "sim:phases": [
+      { "@type":"sim:Phase","sim:phaseIndex":0,"sim:phaseName":"Startup",
+        "sim:vp":0.65,"sim:conv":0.60,"sim:cross":0.10,"sim:net":0.40,"sim:cost":0.55,
+        "sim:narrative":"Startup (1975–1990) — DOS + BASIC licensing. IBM partnership defines PC era.",
+        "sim:driver":"Gates licenses DOS to IBM (1981). Software licensing model invented.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["MS-DOS (IBM compatible)","BASIC interpreter","Software licensing model"],"osterwalder":{"valueLevel":"innovation","priceLvl":"market"}},
+          "RS":  {"bullets":["OS licensing per OEM","BASIC language sales","Per-seat licensing"],"osterwalder":{"revenueType":"licensing","pricingMech":"fixed"}},
+          "CS":  {"bullets":["IBM (primary OEM)","PC clone manufacturers","Enterprise IT"],"osterwalder":{"segmentType":"segmented"}},
+          "CR":  {"bullets":["OEM licensing (B2B)","No end-user CR","Developer documentation"],"osterwalder":{"relType":"self-service"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":1,"sim:phaseName":"Growth",
+        "sim:vp":0.92,"sim:conv":0.85,"sim:cross":0.20,"sim:net":0.70,"sim:cost":0.45,
+        "sim:narrative":"Growth (1990–2000) — Windows + Office dominance. Wintel monopoly.",
+        "sim:driver":"Windows 95 launch 1995. Office = productivity standard. IE browser war. DOJ antitrust 1998.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["Windows = PC standard","Office = productivity suite","IE bundled (antitrust)"],"osterwalder":{"valueLevel":"excellence","priceLvl":"market"}},
+          "RS":  {"bullets":["Windows OEM licensing","Office perpetual license","Server licenses"],"osterwalder":{"revenueType":"licensing","pricingMech":"fixed"}},
+          "CS":  {"bullets":["Enterprise IT (primary)","Consumer PC users","PC OEMs (Wintel)"],"osterwalder":{"segmentType":"mass"}},
+          "CR":  {"bullets":["Enterprise volume licensing","Retail boxed software","MSDN developer program"],"osterwalder":{"relType":"self-service"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":2,"sim:phaseName":"Maturity",
+        "sim:vp":0.65,"sim:conv":0.55,"sim:cross":0.15,"sim:net":0.35,"sim:cost":0.60,
+        "sim:narrative":"Stagnation / Ballmer era (2000–2014) — Missed mobile, search, cloud, tablet.",
+        "sim:driver":"Stack ranking kills innovation. Market cap flat $230B for 14 years. Vanity Fair lost decade.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["Windows Vista (failed)","Windows Phone (failed)","Bing (marginal)"],"osterwalder":{"valueLevel":"customization","priceLvl":"market"}},
+          "RS":  {"bullets":["Office + Windows (stable)","Server licenses","Xbox (niche)"],"osterwalder":{"revenueType":"licensing","pricingMech":"fixed"}},
+          "CS":  {"bullets":["Enterprise (loyal)","Consumer (losing to Apple)","Developers (alienated)"],"osterwalder":{"segmentType":"segmented"}},
+          "CR":  {"bullets":["Enterprise support contracts","Stack ranking toxic culture","Developer relations weak"],"osterwalder":{"relType":"self-service"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":3,"sim:phaseName":"Decline",
+        "sim:vp":0.60,"sim:conv":0.50,"sim:cross":0.10,"sim:net":0.30,"sim:cost":0.65,
+        "sim:narrative":"Relative Decline (2012–2014) — Ballmer exit. Market cap $230B (vs $600B peak).",
+        "sim:driver":"Ballmer retires Oct 2013. Nadella appointed CEO Feb 2014. Cloud First, Mobile First declared."
+      }
+    ],
+    "sim:transitions": [
+      { "@type":"sim:Transition","sim:transitionIndex":0,
+        "sim:transitionLabel":"Mutation T1 — DOS → Windows + Office monopoly",
+        "sim:fromPhase":"Startup","sim:toPhase":"Growth","sim:outcome":{"@id":"sim:outcome.Success"},
+        "sim:instableBlocks":["VP","RS","CS"],"sim:emergingFluxes":["net_fx","vp_cr"],"sim:fadingFluxes":["kp_ka"],
+        "sim:vp":0.65,"sim:conv":0.60,"sim:cross":0.10,"sim:net":0.40,"sim:cost":0.55,
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"Gates: How Microsoft's Mogul Reinvented an Industry","dcterms:creator":"Stephen Manes & Paul Andrews","dcterms:date":"1993","dcterms:publisher":"Doubleday"}]
+      },
+      { "@type":"sim:Transition","sim:transitionIndex":1,
+        "sim:transitionLabel":"Mutation T2 — Monopoly → Missed mobile/cloud (failed)",
+        "sim:fromPhase":"Maturity","sim:toPhase":"Decline","sim:outcome":{"@id":"sim:outcome.Failure"},
+        "sim:instableBlocks":["VP","KA","KR"],"sim:emergingFluxes":[],"sim:fadingFluxes":["net_fx","vp_ch"],
+        "sim:vp":0.92,"sim:conv":0.85,"sim:cross":0.20,"sim:net":0.70,"sim:cost":0.45,
+        "rdfs:comment":"Missed: Google search, iPhone, iPad, AWS. Stack ranking (Ballmer) documented by Eichenwald 2012 as key cause of innovation paralysis.",
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"Microsoft's Lost Decade","dcterms:creator":"Kurt Eichenwald","dcterms:date":"2012","dcterms:publisher":"Vanity Fair","sim:url":"https://archive.vanityfair.com/article/2012/8/microsofts-lost-decade"}]
+      },
+      { "@type":"sim:Transition","sim:transitionIndex":2,
+        "sim:transitionLabel":"Mutation T3 — Nadella: Cloud First + OpenAI",
+        "sim:fromPhase":"Decline","sim:toPhase":"Transition","sim:outcome":{"@id":"sim:outcome.Success"},
+        "sim:instableBlocks":["VP","KA","KR","RS"],"sim:emergingFluxes":["ka_vp","net_fx","rs_sub"],"sim:fadingFluxes":["kp_ka"],
+        "sim:vp":0.93,"sim:conv":0.82,"sim:cross":0.40,"sim:net":0.78,"sim:cost":0.48,
+        "sim:blockContent":{
+          "VP":  {"bullets":["Azure #2 cloud (23%)","Microsoft 365 subscription","OpenAI Copilot everywhere"],"osterwalder":{"valueLevel":"innovation","priceLvl":"market"}},
+          "RS":  {"bullets":["Azure $100B+ ARR","Microsoft 365 $100/yr","OpenAI Copilot $30/user/mo"],"osterwalder":{"revenueType":"subscription","pricingMech":"fixed"}},
+          "CS":  {"bullets":["Enterprise IT (back)","AI-first developers (new)","SMB (Teams/M365)"],"osterwalder":{"segmentType":"diversified"}},
+          "CR":  {"bullets":["GitHub Copilot (developers)","Azure portal (self-service)","Enterprise SA teams"],"osterwalder":{"relType":"community"}}
+        },
+        "rdfs:comment":"Nadella kills stack ranking. OpenAI $13B investment (2019-2023). GitHub $7.5B, LinkedIn $26B. Market cap $230B → $3T (2024).",
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"Hit Refresh","dcterms:creator":"Satya Nadella","dcterms:date":"2017","dcterms:publisher":"HarperBusiness","dcterms:identifier":"ISBN 978-0062717795"}]
+      }
+    ]
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // CASE 8 — IBM
+  // ═══════════════════════════════════════════════════════════════════════
+  G.push({
+    "@id": "m0.bmc:case_IBM", "@type": "sim:SimulationCase",
+    "sim:caseName": "IBM (1911→2024)", "sim:short": "IBM",
+    "sim:pattern": "3 Transitions — Hardware → Services (Gerstner) → Consulting → Hybrid Cloud",
+    "sim:sources": { "general": [
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"Who Says Elephants Can't Dance?","dcterms:creator":"Lou Gerstner","dcterms:date":"2002","dcterms:publisher":"HarperBusiness","dcterms:identifier":"ISBN 978-0060523800" }
+    ]},
+    "sim:phases": [
+      { "@type":"sim:Phase","sim:phaseIndex":0,"sim:phaseName":"Startup",
+        "sim:vp":0.70,"sim:conv":0.65,"sim:cross":0.05,"sim:net":0.35,"sim:cost":0.60,
+        "sim:narrative":"Hardware era (1911–1990) — Mainframes, punch cards, then PCs. IBM = computing.",
+        "sim:driver":"System/360 mainframe (1964) = industry standard. PC (1981) but clones commoditize.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["Mainframe = enterprise standard","System/360 architecture","IBM PC (1981)"],"osterwalder":{"valueLevel":"innovation","priceLvl":"high-end"}},
+          "RS":  {"bullets":["Mainframe hardware leasing","System/360 licensing","PC hardware sales"],"osterwalder":{"revenueType":"asset-sale","pricingMech":"fixed"}},
+          "CS":  {"bullets":["Large enterprises","Government agencies","Banks + insurance"],"osterwalder":{"segmentType":"niche"}},
+          "CR":  {"bullets":["Dedicated IBM account reps","Maintenance contracts","No Buy IBM = fired culture"],"osterwalder":{"relType":"dedicated"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":1,"sim:phaseName":"Growth",
+        "sim:vp":0.82,"sim:conv":0.72,"sim:cross":0.10,"sim:net":0.45,"sim:cost":0.55,
+        "sim:narrative":"Gerstner pivot (1993–2002) — Near-bankruptcy reversed. Services over hardware.",
+        "sim:driver":"Gerstner: do NOT break up IBM. IBM Global Services = #1 revenue by 1995.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["IBM Global Services","End-to-end IT solutions","e-business consulting"],"osterwalder":{"valueLevel":"excellence","priceLvl":"high-end"}},
+          "RS":  {"bullets":["Services contracts (recurring)","Software licenses (growing)","Hardware (declining)"],"osterwalder":{"revenueType":"subscription","pricingMech":"fixed"}},
+          "CS":  {"bullets":["Global 2000 enterprises","Government IT contracts","Financial services"],"osterwalder":{"segmentType":"niche"}},
+          "CR":  {"bullets":["Long-term service contracts","IBM Global Services reps","Outsourcing relationships"],"osterwalder":{"relType":"dedicated"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":2,"sim:phaseName":"Maturity",
+        "sim:vp":0.78,"sim:conv":0.68,"sim:cross":0.10,"sim:net":0.40,"sim:cost":0.55,
+        "sim:narrative":"Consulting + Software maturity (2003–2018) — Sold PC (2004), x86 servers (2014).",
+        "sim:driver":"Sells PC to Lenovo $1.75B. Watson AI (2011). 22 consecutive quarters revenue decline."
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":3,"sim:phaseName":"Decline",
+        "sim:vp":0.62,"sim:conv":0.52,"sim:cross":0.08,"sim:net":0.30,"sim:cost":0.62,
+        "sim:narrative":"Relative Decline (2012–2019) — 22 consecutive quarters revenue decline.",
+        "sim:driver":"Cloud shift: AWS/Azure commoditize IBM services. Watson overpromised, underdelivered."
+      }
+    ],
+    "sim:transitions": [
+      { "@type":"sim:Transition","sim:transitionIndex":0,
+        "sim:transitionLabel":"Mutation T1 — Hardware → Global Services (Gerstner 1993)",
+        "sim:fromPhase":"Startup","sim:toPhase":"Growth","sim:outcome":{"@id":"sim:outcome.Success"},
+        "sim:instableBlocks":["VP","KA","RS"],"sim:emergingFluxes":["ka_vp","vp_cr"],"sim:fadingFluxes":["kr_cost"],
+        "sim:vp":0.70,"sim:conv":0.65,"sim:cross":0.05,"sim:net":0.35,"sim:cost":0.60,
+        "rdfs:comment":"Gerstner arrives April 1993 when IBM near bankruptcy. Reverses planned break-up. Creates IBM Global Services. Sells IBM Federal Systems, Lexmark (printers).",
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"Who Says Elephants Can't Dance?","dcterms:creator":"Lou Gerstner","dcterms:date":"2002","dcterms:publisher":"HarperBusiness","dcterms:identifier":"ISBN 978-0060523800"}]
+      },
+      { "@type":"sim:Transition","sim:transitionIndex":1,
+        "sim:transitionLabel":"Mutation T2 — Services → Consulting + Software (exit hardware)",
+        "sim:fromPhase":"Growth","sim:toPhase":"Maturity","sim:outcome":{"@id":"sim:outcome.Success"},
+        "sim:instableBlocks":["VP","KR","CS$"],"sim:emergingFluxes":["ka_vp"],"sim:fadingFluxes":["ka_cost","kr_cost"],
+        "sim:vp":0.82,"sim:conv":0.72,"sim:cross":0.10,"sim:net":0.45,"sim:cost":0.55,
+        "rdfs:comment":"Sells PC division to Lenovo $1.75B (2004). Sells x86 servers to Lenovo (2014). Acquires PwC Consulting $3.5B (2002). Pure B2B consulting + software.",
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"IBM Sells PC Division to Lenovo","dcterms:publisher":"IBM Corp.","dcterms:date":"2004-12-08","sim:url":"https://newsroom.ibm.com"}]
+      },
+      { "@type":"sim:Transition","sim:transitionIndex":2,
+        "sim:transitionLabel":"Mutation T3 — Consulting → Hybrid Cloud + watsonx AI",
+        "sim:fromPhase":"Decline","sim:toPhase":"Transition","sim:outcome":{"@id":"sim:outcome.InProgress"},
+        "sim:instableBlocks":["VP","KA","KP"],"sim:emergingFluxes":["net_fx","ka_vp"],"sim:fadingFluxes":["kp_ka"],
+        "sim:vp":0.72,"sim:conv":0.62,"sim:cross":0.15,"sim:net":0.45,"sim:cost":0.55,
+        "sim:blockContent":{
+          "VP":  {"bullets":["Red Hat OpenShift (hybrid cloud)","watsonx AI platform","IBM Consulting + AI"],"osterwalder":{"valueLevel":"excellence","priceLvl":"high-end"}},
+          "RS":  {"bullets":["Software $26B (2023)","Consulting $18B (2023)","Infrastructure $15B (Kyndryl)"],"osterwalder":{"revenueType":"subscription","pricingMech":"fixed"}},
+          "CS":  {"bullets":["Regulated industries (banking)","Governments (hybrid cloud)","Enterprises (AI adoption)"],"osterwalder":{"segmentType":"niche"}},
+          "CR":  {"bullets":["IBM Consulting (dedicated)","watsonx self-service (new)","Red Hat community"],"osterwalder":{"relType":"dedicated"}}
+        },
+        "rdfs:comment":"Acquires Red Hat $34B (2019). Spins off Kyndryl (infrastructure services, 2021). Focus: hybrid cloud (Red Hat OpenShift) + watsonx enterprise AI.",
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"IBM closes Red Hat acquisition","dcterms:publisher":"IBM Corp.","dcterms:date":"2019-07-09","sim:url":"https://newsroom.ibm.com/2019-07-09-IBM-Closes-Landmark-Acquisition-of-Red-Hat"}]
+      }
+    ]
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // CASE 9 — Kodak (1 transition — failed)
+  // ═══════════════════════════════════════════════════════════════════════
+  G.push({
+    "@id": "m0.bmc:case_Kodak", "@type": "sim:SimulationCase",
+    "sim:caseName": "Kodak (1888→2012)", "sim:short": "Kodak",
+    "sim:pattern": "1 Failed Transition — Invented digital photography, failed to cannibalize film",
+    "sim:sources": { "general": [
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"The Innovator's Dilemma","dcterms:creator":"Clayton M. Christensen","dcterms:date":"1997","dcterms:publisher":"Harvard Business School Press","dcterms:identifier":"ISBN 978-0875845852" },
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"Kodak's Downfall Wasn't About Technology","dcterms:creator":"Scott Anthony","dcterms:date":"2016","dcterms:publisher":"Harvard Business Review","sim:url":"https://hbr.org/2016/07/kodaks-downfall-wasnt-about-technology" },
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"Electronic Still Camera Patent US4131919","dcterms:creator":"Steven Sasson (Eastman Kodak)","dcterms:date":"1978","rdfs:comment":"First digital camera prototype built by Steve Sasson at Kodak in 1975. Management response: 'do not tell anyone about this.'" }
+    ]},
+    "sim:phases": [
+      { "@type":"sim:Phase","sim:phaseIndex":0,"sim:phaseName":"Startup",
+        "sim:vp":0.70,"sim:conv":0.65,"sim:cross":0.20,"sim:net":0.30,"sim:cost":0.55,
+        "sim:narrative":"Startup (1888–1940) — 'You press the button, we do the rest.' Film + processing.",
+        "sim:driver":"George Eastman democratizes photography. Brownie camera $1 (1900). CrossSubsidy: cheap camera → recurring film RS.",
+        "sim:blockContent":{
+          "VP":  {"bullets":['"You press the button"',"Brownie camera $1 (1900)","Family memories"],"osterwalder":{"valueLevel":"innovation","priceLvl":"economy"}},
+          "RS":  {"bullets":["Film rolls (recurring, 70% margin)","Processing + printing","Camera hardware (loss-leader)"],"osterwalder":{"revenueType":"cross-subsidy","pricingMech":"fixed"}},
+          "CS":  {"bullets":["Mass consumer market","Professional photographers","Government / military (X-ray)"],"osterwalder":{"segmentType":"mass"}},
+          "CR":  {"bullets":["Drugstore processing network","Kodak moments emotional brand","Mail-order processing"],"osterwalder":{"relType":"self-service"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":1,"sim:phaseName":"Growth",
+        "sim:vp":0.88,"sim:conv":0.80,"sim:cross":0.35,"sim:net":0.45,"sim:cost":0.48,
+        "sim:narrative":"Growth (1940–1980) — Kodachrome, Instamatic, Super 8. Kodak = photography.",
+        "sim:driver":"Kodachrome color (1935). Instamatic (1963) = 50M units. Super 8 home movies. 90% US market.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["Kodachrome color film","Instamatic (50M sold)","Super 8 home movies"],"osterwalder":{"valueLevel":"excellence","priceLvl":"market"}},
+          "RS":  {"bullets":["Film: 70% gross margin","Processing: high margin","90% US market share"],"osterwalder":{"revenueType":"cross-subsidy","pricingMech":"fixed"}},
+          "CS":  {"bullets":["American families (primary)","Professional photographers","Medical imaging (X-ray)"],"osterwalder":{"segmentType":"mass"}},
+          "CR":  {"bullets":["Kodak moments advertising","Drugstore network","Professional services"],"osterwalder":{"relType":"self-service"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":2,"sim:phaseName":"Maturity",
+        "sim:vp":0.85,"sim:conv":0.75,"sim:cross":0.30,"sim:net":0.40,"sim:cost":0.50,
+        "sim:narrative":"Maturity (1980–1996) — Peak film. Kodak invents digital 1975 but suppresses it.",
+        "sim:driver":"Steve Sasson: first digital camera 1975. Management: 'do not tell anyone.' Film: $16B revenue peak 1996.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["Film = global standard","Digital invented but suppressed","Fuji starts price war"],"osterwalder":{"valueLevel":"excellence","priceLvl":"market"}},
+          "RS":  {"bullets":["Film $16B peak (1996)","Processing network","Digital camera (launched 1991 too late)"],"osterwalder":{"revenueType":"cross-subsidy","pricingMech":"fixed"}},
+          "CS":  {"bullets":["Mass market global","Professional (under Fuji threat)","Medical imaging (stable)"],"osterwalder":{"segmentType":"mass"}},
+          "CR":  {"bullets":["Emotional brand (Kodak moments)","Drugstore processing","No digital community"],"osterwalder":{"relType":"self-service"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":3,"sim:phaseName":"Decline",
+        "sim:vp":0.35,"sim:conv":0.30,"sim:cross":0.10,"sim:net":0.15,"sim:cost":0.75,
+        "sim:narrative":"Decline (1996–2012) — Digital destroys film. Chapter 11 bankruptcy January 2012.",
+        "sim:driver":"Digital camera adoption: 1% (1996) → 90% (2007). Film revenue collapses. Bankruptcy Jan 2012."
+      }
+    ],
+    "sim:transitions": [
+      { "@type":"sim:Transition","sim:transitionIndex":0,
+        "sim:transitionLabel":"Mutation — Film CrossSubsidy → Digital (FAILED)",
+        "sim:fromPhase":"Maturity","sim:toPhase":"Decline","sim:outcome":{"@id":"sim:outcome.Failure"},
+        "sim:instableBlocks":["VP","RS","KA","CS$"],"sim:emergingFluxes":[],"sim:fadingFluxes":["vp_ch","rs_sub","net_fx"],
+        "sim:vp":0.20,"sim:conv":0.20,"sim:cross":0.05,"sim:net":0.10,"sim:cost":0.70,
+        "sim:blockContent":{
+          "VP":  {"bullets":["Film declining","Digital EasyShare (2001) too late","Patent litigation vs Apple"],"osterwalder":{"valueLevel":"commodity","priceLvl":"economy"}},
+          "RS":  {"bullets":["Film RS collapsing","Digital cameras (insufficient margin)","Patent licensing (last resort)"],"osterwalder":{"revenueType":"asset-sale","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["Shrinking mass market","Professional (→ digital SLR)","Medical imaging (sold)"],"osterwalder":{"segmentType":"niche"}},
+          "CR":  {"bullets":["Kodak moments (dying brand)","EasyShare ecosystem (too late)","Patent trolling (desperate)"],"osterwalder":{"relType":"self-service"}}
+        },
+        "rdfs:comment":"Canonical Innovator's Dilemma (Christensen 1997). Kodak launched digital cameras in 1991 but priced them to protect film margins. Filed Chapter 11 bankruptcy January 2012. Sold patents to Apple/Google/Microsoft consortium for $525M.",
+        "sim:sources":[
+          {"@type":"dcterms:BibliographicResource","dcterms:title":"Kodak Chapter 11 Bankruptcy Filing","dcterms:publisher":"US Bankruptcy Court SDNY","dcterms:date":"2012-01-19"},
+          {"@type":"dcterms:BibliographicResource","dcterms:title":"The Innovator's Dilemma","dcterms:creator":"Clayton M. Christensen","dcterms:date":"1997","dcterms:publisher":"Harvard Business School Press","dcterms:identifier":"ISBN 978-0875845852"}
+        ]
+      }
+    ]
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // CASE 10 — Xerox
+  // ═══════════════════════════════════════════════════════════════════════
+  G.push({
+    "@id": "m0.bmc:case_Xerox", "@type": "sim:SimulationCase",
+    "sim:caseName": "Xerox (1906→2024)", "sim:short": "Xerox",
+    "sim:pattern": "PARC inventions given away (failed) + Managed Print Services (successful)",
+    "sim:sources": { "general": [
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"Fumbling the Future","dcterms:creator":"Douglas Smith & Robert Alexander","dcterms:date":"1988","dcterms:publisher":"William Morrow","dcterms:identifier":"ISBN 978-0688069599" },
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"Dealers of Lightning: Xerox PARC and the Dawn of the Computer Age","dcterms:creator":"Michael Hiltzik","dcterms:date":"1999","dcterms:publisher":"HarperBusiness","dcterms:identifier":"ISBN 978-0887309892" }
+    ]},
+    "sim:phases": [
+      { "@type":"sim:Phase","sim:phaseIndex":0,"sim:phaseName":"Startup",
+        "sim:vp":0.75,"sim:conv":0.70,"sim:cross":0.15,"sim:net":0.35,"sim:cost":0.55,
+        "sim:narrative":"Xerography monopoly (1959–1975) — Haloid → Xerox. 914 copier = office revolution.",
+        "sim:driver":"Chester Carlson invents xerography 1938. 914 copier (1959) = best selling product in US history.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["Plain paper copying","Office document revolution","Xerox 914 = category creator"],"osterwalder":{"valueLevel":"innovation","priceLvl":"high-end"}},
+          "RS":  {"bullets":["Copier leasing (not sale)","Per-copy charges","Toner + paper consumables"],"osterwalder":{"revenueType":"usage","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["Large corporations","Government agencies","Universities + law firms"],"osterwalder":{"segmentType":"niche"}},
+          "CR":  {"bullets":["Dedicated Xerox sales reps","Xerox service contracts","Zero competition 1959-1975"],"osterwalder":{"relType":"dedicated"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":1,"sim:phaseName":"Growth",
+        "sim:vp":0.70,"sim:conv":0.65,"sim:cross":0.10,"sim:net":0.30,"sim:cost":0.60,
+        "sim:narrative":"PARC era + Xerography decline (1970–1990) — Invents the future, gives it away.",
+        "sim:driver":"PARC: GUI (1973), Ethernet (1973), laser printer (1971). Japanese copiers (Canon) commoditize.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["Copier still dominant","PARC: GUI+Ethernet (not commercialized)","Japanese competition rising"],"osterwalder":{"valueLevel":"excellence","priceLvl":"market"}},
+          "RS":  {"bullets":["Copier lease + per-copy","Laser printer hardware","No PARC tech monetized"],"osterwalder":{"revenueType":"usage","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["Enterprise document management","Government contracts","PARC gifted to Silicon Valley"],"osterwalder":{"segmentType":"segmented"}},
+          "CR":  {"bullets":["Enterprise account management","Copier service contracts","PARC academic community"],"osterwalder":{"relType":"dedicated"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":2,"sim:phaseName":"Maturity",
+        "sim:vp":0.60,"sim:conv":0.55,"sim:cross":0.08,"sim:net":0.25,"sim:cost":0.62,
+        "sim:narrative":"Near-bankruptcy (1990–2001) — $273M loss (2000). Anne Mulcahy saves Xerox.",
+        "sim:driver":"Canon, Ricoh, HP undercut pricing. Digital disrupts workflow. SEC accounting scandal."
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":3,"sim:phaseName":"Decline",
+        "sim:vp":0.50,"sim:conv":0.45,"sim:cross":0.05,"sim:net":0.20,"sim:cost":0.68,
+        "sim:narrative":"Continued Decline (2010–2020) — Xerox splits. HP acquisition bid failed.",
+        "sim:driver":"Xerox splits into Xerox Holdings + Conduent (2017). Carl Icahn activist. HP bid failed 2020."
+      }
+    ],
+    "sim:transitions": [
+      { "@type":"sim:Transition","sim:transitionIndex":0,
+        "sim:transitionLabel":"Mutation T1 — PARC inventions not commercialized (failed)",
+        "sim:fromPhase":"Growth","sim:toPhase":"Maturity","sim:outcome":{"@id":"sim:outcome.Failure"},
+        "sim:instableBlocks":["VP","KR","KA"],"sim:emergingFluxes":[],"sim:fadingFluxes":["net_fx","vp_ch"],
+        "sim:vp":0.70,"sim:conv":0.65,"sim:cross":0.10,"sim:net":0.30,"sim:cost":0.60,
+        "rdfs:comment":"Xerox PARC: Alto (1973) first PC with GUI, Ethernet (1973), laser printer (1971), object-oriented programming (SmallTalk), mouse, PostScript. All exploited by Apple, Microsoft, 3Com, Adobe. Xerox kept copier focus. Steve Jobs PARC visit 1979 = Macintosh.",
+        "sim:sources":[
+          {"@type":"dcterms:BibliographicResource","dcterms:title":"Dealers of Lightning","dcterms:creator":"Michael Hiltzik","dcterms:date":"1999","dcterms:publisher":"HarperBusiness"},
+          {"@type":"dcterms:BibliographicResource","dcterms:title":"Fumbling the Future","dcterms:creator":"Douglas Smith & Robert Alexander","dcterms:date":"1988","dcterms:publisher":"William Morrow"}
+        ]
+      },
+      { "@type":"sim:Transition","sim:transitionIndex":1,
+        "sim:transitionLabel":"Mutation T2 — Copier hardware → Managed Print Services",
+        "sim:fromPhase":"Maturity","sim:toPhase":"Transition","sim:outcome":{"@id":"sim:outcome.Success"},
+        "sim:instableBlocks":["VP","RS","KA"],"sim:emergingFluxes":["vp_cr","ka_vp"],"sim:fadingFluxes":["kr_cost"],
+        "sim:vp":0.62,"sim:conv":0.55,"sim:cross":0.10,"sim:net":0.35,"sim:cost":0.58,
+        "sim:blockContent":{
+          "VP":  {"bullets":["Managed Print Services (MPS)","Pay-per-page model","Outsource all printing"],"osterwalder":{"valueLevel":"excellence","priceLvl":"market"}},
+          "RS":  {"bullets":["Pay-per-page (outcome)","MPS contracts (recurring)","Software (DocuShare)"],"osterwalder":{"revenueType":"usage","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["Large enterprise IT","Government print fleets","Healthcare (HIPAA print)"],"osterwalder":{"segmentType":"segmented"}},
+          "CR":  {"bullets":["Dedicated MPS account manager","Remote monitoring (automated)","SLA-guaranteed outcomes"],"osterwalder":{"relType":"dedicated"}}
+        },
+        "rdfs:comment":"Xerox MPS mirrors Michelin Pay-Per-Km: outcome-based service replaces hardware sale. Saves Xerox from bankruptcy (2001). Anne Mulcahy turnaround. Similar to IBM's Gerstner pivot.",
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"Xerox Managed Print Services","dcterms:publisher":"Xerox Corporation","dcterms:date":"2002","sim:url":"https://www.xerox.com/en-us/services/managed-print-services"}]
+      }
+    ]
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // CASE 11 — Michelin
+  // ═══════════════════════════════════════════════════════════════════════
+  G.push({
+    "@id": "m0.bmc:case_Michelin", "@type": "sim:SimulationCase",
+    "sim:caseName": "Michelin (1889→2024)", "sim:short": "Michelin",
+    "sim:pattern": "2 Transitions — Asset sale → Pay-Per-Km → EV Fleet Energy",
+    "sim:sources": { "general": [
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"Michelin Fleet Solutions: Pay-per-Kilometer Case","dcterms:publisher":"IMD Business School Case IMD-6-0276","dcterms:date":"2003" }
+    ]},
+    "sim:phases": [
+      { "@type":"sim:Phase","sim:phaseIndex":0,"sim:phaseName":"Startup",
+        "sim:vp":0.60,"sim:conv":0.55,"sim:cross":0.05,"sim:net":0.20,"sim:cost":0.60,
+        "sim:narrative":"State 0 (pre-1999) — High-performance durable tires. Pure asset sale.",
+        "sim:driver":"Dealer network CH. KA=manufacturing+R&D. RS=tire unit price. No IoT.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["High-perf tires","Durable & safe","Michelin Stars brand"],"osterwalder":{"valueLevel":"excellence","priceLvl":"high-end"}},
+          "RS":  {"bullets":["Tire unit price","Dealer margin","One-time asset sale"],"osterwalder":{"revenueType":"asset-sale","pricingMech":"fixed"}},
+          "CS":  {"bullets":["Car manufacturers (OEM)","Fleet operators","Premium car owners"],"osterwalder":{"segmentType":"segmented"}},
+          "CR":  {"bullets":["Dealer-mediated","No direct CR","Brand-driven loyalty"],"osterwalder":{"relType":"self-service"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":1,"sim:phaseName":"Growth",
+        "sim:vp":0.78,"sim:conv":0.65,"sim:cross":0.15,"sim:net":0.35,"sim:cost":0.55,
+        "sim:narrative":"State 1 (1999) — Pay-Per-Km + fleet optimization. Outcome-based VP.",
+        "sim:driver":"IoT sensors KA. Telematics KP. RS=€/km. VerticalIntegration downstream.",
+        "sim:blockContent":{
+          "VP":  {"bullets":['"Guaranteed cost/km"',"Fleet optimization included","No tire management needed"],"osterwalder":{"valueLevel":"innovation","priceLvl":"market"}},
+          "RS":  {"bullets":["€/km outcome contract","Predictive maintenance fee","Fleet data upsell"],"osterwalder":{"revenueType":"usage","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["Logistics fleets (trucks)","Bus operators","Mining / industrial"],"osterwalder":{"segmentType":"niche"}},
+          "CR":  {"bullets":["Dedicated fleet manager","SLA guaranteed","IoT monitoring 24/7"],"osterwalder":{"relType":"dedicated"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":2,"sim:phaseName":"Maturity",
+        "sim:vp":0.88,"sim:conv":0.72,"sim:cross":0.20,"sim:net":0.50,"sim:cost":0.50,
+        "sim:narrative":"Maturity — Fleet solutions leader. 500K+ trucks. Predictive maintenance.",
+        "sim:driver":"Stable recurring RS. Data as proprietary KR. Multi-year contracts."
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":3,"sim:phaseName":"Decline",
+        "sim:vp":0.72,"sim:conv":0.60,"sim:cross":0.15,"sim:net":0.40,"sim:cost":0.58,
+        "sim:narrative":"Partial Decline — EV disruption. Tire longevity +40% for EVs.",
+        "sim:driver":"EV contracts incompatible with ICE Pay-Per-Km model. BM redesign required."
+      }
+    ],
+    "sim:transitions": [
+      { "@type":"sim:Transition","sim:transitionIndex":0,
+        "sim:transitionLabel":"Mutation T1 — Asset sale → Pay-Per-Km outcome service (1999)",
+        "sim:fromPhase":"Startup","sim:toPhase":"Growth","sim:outcome":{"@id":"sim:outcome.Success"},
+        "sim:instableBlocks":["VP","RS","KA","CR"],"sim:emergingFluxes":["net_fx","vp_cr"],"sim:fadingFluxes":["kp_ka","kr_cost"],
+        "sim:vp":0.60,"sim:conv":0.55,"sim:cross":0.05,"sim:net":0.20,"sim:cost":0.60,
+        "rdfs:comment":"First outcome-based tire contract with Eurostar (UK) 1999. Pioneered 'servitization' in the tire industry — selling km driven instead of tires sold.",
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"Michelin Fleet Solutions IMD Case","dcterms:publisher":"IMD Business School Case IMD-6-0276","dcterms:date":"2003"}]
+      },
+      { "@type":"sim:Transition","sim:transitionIndex":1,
+        "sim:transitionLabel":"Mutation T2 — Pay-Per-Km → EV Fleet Energy Management (2024+)",
+        "sim:fromPhase":"Decline","sim:toPhase":"Transition","sim:outcome":{"@id":"sim:outcome.InProgress"},
+        "sim:instableBlocks":["VP","KP","KA"],"sim:emergingFluxes":["net_fx","vp_cr"],"sim:fadingFluxes":["kp_ka","kr_cost"],
+        "sim:vp":0.62,"sim:conv":0.55,"sim:cross":0.20,"sim:net":0.45,"sim:cost":0.55,
+        "sim:blockContent":{
+          "VP":  {"bullets":["Tire + Battery + Charging","EV fleet health management","Total EV TCO ↓"],"osterwalder":{"valueLevel":"innovation","priceLvl":"high-end"}},
+          "RS":  {"bullets":["EV fleet contract (new)","Battery health monitoring fee","Charging optimization RS"],"osterwalder":{"revenueType":"usage","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["EV fleet operators (new)","Last-mile delivery (e-van)","Public EV bus fleets"],"osterwalder":{"segmentType":"diversified"}},
+          "KP":  {"bullets":["Tesla/BYD (EV OEM)","Charging network operators","Battery analytics firms"]}
+        }
+      }
+    ]
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // CASE 12 — Airbnb
+  // ═══════════════════════════════════════════════════════════════════════
+  G.push({
+    "@id": "m0.bmc:case_Airbnb", "@type": "sim:SimulationCase",
+    "sim:caseName": "Airbnb (2008→2024)", "sim:short": "Airbnb",
+    "sim:pattern": "PlatformDuality Hosts ↔ Guests — 2 Transitions",
+    "sim:sources": { "general": [
+      { "@type":"dcterms:BibliographicResource","dcterms:title":"The Airbnb Story","dcterms:creator":"Leigh Gallagher","dcterms:date":"2017","dcterms:publisher":"Houghton Mifflin Harcourt","dcterms:identifier":"ISBN 978-0544725560" }
+    ]},
+    "sim:phases": [
+      { "@type":"sim:Phase","sim:phaseIndex":0,"sim:phaseName":"Startup",
+        "sim:vp":0.40,"sim:conv":0.30,"sim:cross":0.10,"sim:net":0.15,"sim:cost":0.60,
+        "sim:narrative":"Startup (2008) — Air mattress in our apartment. SXSW hack.",
+        "sim:driver":"Founders as KR. Trust=zero. CS=conference attendees.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["👥 Cheap bed alternative","🏠 Earn from spare room","No trust yet"],"osterwalder":{"valueLevel":"customization","priceLvl":"economy"}},
+          "RS":  {"bullets":["$80 × 3 air mattresses","Obama O's cereal stunt","Near zero RS"],"osterwalder":{"revenueType":"brokerage","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["👥 SXSW conference attendees","🏠 People with spare space","Niche bootstrap"],"osterwalder":{"segmentType":"niche"}},
+          "CR":  {"bullets":["Founders reply personally","Direct email only","Zero automation"],"osterwalder":{"relType":"personal"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":1,"sim:phaseName":"Growth",
+        "sim:vp":0.72,"sim:conv":0.58,"sim:cross":0.35,"sim:net":0.60,"sim:cost":0.50,
+        "sim:narrative":"Growth (2010–2014) — Book unique homes worldwide. Platform emerges.",
+        "sim:driver":"Photography program (KA) solves trust. Network FX accelerating.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["👥 'Belong anywhere'","🏠 Earn + safety guarantee","Local experience"],"osterwalder":{"valueLevel":"excellence","priceLvl":"economy"}},
+          "RS":  {"bullets":["3% host fee","6-12% guest fee","CrossSubsidy: guests → platform"],"osterwalder":{"revenueType":"brokerage","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["👥 Budget travelers/millennials","🏠 Urban homeowners","Experience-seekers"],"osterwalder":{"segmentType":"multi-sided"}},
+          "CR":  {"bullets":["Self-service platform","Host forums","Review system ★★★★★"],"osterwalder":{"relType":"community"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":2,"sim:phaseName":"Maturity",
+        "sim:vp":0.88,"sim:conv":0.72,"sim:cross":0.45,"sim:net":0.78,"sim:cost":0.42,
+        "sim:narrative":"Maturity (2015–2019) — 4M hosts, 150M users. Platform leader.",
+        "sim:driver":"CrossSubsidy: 3% host + 14-16% guest. Zero real estate KR. $31B valuation.",
+        "sim:blockContent":{
+          "VP":  {"bullets":["👥 7M+ listings, 220 countries","🏠 AirCover $3M insurance","Experiences"],"osterwalder":{"valueLevel":"excellence","priceLvl":"market"}},
+          "RS":  {"bullets":["3% host service fee","14-16% guest fee","avg $150 × 3 nights"],"osterwalder":{"revenueType":"brokerage","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["👥 150M+ users, families","🏠 4M hosts (70% individual)","Business travelers"],"osterwalder":{"segmentType":"multi-sided"}},
+          "CR":  {"bullets":["Smart Pricing (automated)","Superhost community","AirCover claims (human)"],"osterwalder":{"relType":"community"}}
+        }
+      },
+      { "@type":"sim:Phase","sim:phaseIndex":3,"sim:phaseName":"Decline",
+        "sim:vp":0.72,"sim:conv":0.60,"sim:cross":0.38,"sim:net":0.65,"sim:cost":0.52,
+        "sim:narrative":"Partial Decline (2020+) — COVID-19, urban regulation (NYC 30-day rule).",
+        "sim:driver":"StrategicTension: urban regulation vs VP. Long-stay segment emerges."
+      }
+    ],
+    "sim:transitions": [
+      { "@type":"sim:Transition","sim:transitionIndex":0,
+        "sim:transitionLabel":"Mutation T1 — Air mattress → Global trust platform",
+        "sim:fromPhase":"Startup","sim:toPhase":"Growth","sim:outcome":{"@id":"sim:outcome.Success"},
+        "sim:instableBlocks":["VP","CS","KR"],"sim:emergingFluxes":["net_fx","vp_cr"],"sim:fadingFluxes":["ch_cs"],
+        "sim:vp":0.40,"sim:conv":0.30,"sim:cross":0.10,"sim:net":0.15,"sim:cost":0.60,
+        "rdfs:comment":"Photography program (founders photographed NYC listings themselves in 2009) solved trust. PlatformDuality (Hosts ↔ Guests) emerged. Series A Sequoia $7.2M (2009).",
+        "sim:sources":[{"@type":"dcterms:BibliographicResource","dcterms:title":"The Airbnb Story","dcterms:creator":"Leigh Gallagher","dcterms:date":"2017","dcterms:publisher":"Houghton Mifflin Harcourt"}]
+      },
+      { "@type":"sim:Transition","sim:transitionIndex":1,
+        "sim:transitionLabel":"Mutation T2 — Accommodation → Experiences + community",
+        "sim:fromPhase":"Decline","sim:toPhase":"Transition","sim:outcome":{"@id":"sim:outcome.InProgress"},
+        "sim:instableBlocks":["VP","CS","CH"],"sim:emergingFluxes":["vp_cr","net_fx"],"sim:fadingFluxes":["ch_cs"],
+        "sim:vp":0.65,"sim:conv":0.55,"sim:cross":0.40,"sim:net":0.60,"sim:cost":0.50,
+        "sim:blockContent":{
+          "VP":  {"bullets":["👥 Stay + experience anywhere","🏠 3 revenue streams","Airbnb Rooms (budget)"],"osterwalder":{"valueLevel":"innovation","priceLvl":"market"}},
+          "RS":  {"bullets":["Stays (declining %)","+ Experiences (growing)","+ Rooms (new budget)"],"osterwalder":{"revenueType":"brokerage","pricingMech":"dynamic"}},
+          "CS":  {"bullets":["👥 Remote workers 28+ nights","🏠 Experience providers (new)","Budget travelers (Rooms)"],"osterwalder":{"segmentType":"multi-sided"}},
+          "CR":  {"bullets":["Community-first (local hosts)","Co-created experiences","AI-personalized"],"osterwalder":{"relType":"co-creation"}}
+        }
+      }
+    ]
+  });
+
+})(); // end appendCases IIFE
