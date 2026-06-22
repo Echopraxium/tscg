@@ -1,1 +1,0 @@
-start python four_stroke_engine_sim.py

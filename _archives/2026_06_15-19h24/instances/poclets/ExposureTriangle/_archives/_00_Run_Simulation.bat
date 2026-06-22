@@ -1,1 +1,0 @@
-start python exposure_triangle_sim.py

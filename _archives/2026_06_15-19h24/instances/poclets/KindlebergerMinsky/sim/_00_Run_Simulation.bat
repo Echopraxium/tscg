@@ -1,1 +1,0 @@
-start python kindleberger_minsky_sim.py

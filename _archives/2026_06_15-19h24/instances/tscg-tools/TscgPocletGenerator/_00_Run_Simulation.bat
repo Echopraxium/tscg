@@ -1,1 +1,0 @@
-start python tscg_poclet_generator.py
