@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://cdnjs.cloudflare.com;
+                 script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
+                 style-src  'self' 'unsafe-inline';
+                 img-src    'self' data: blob:;
+                 connect-src http://127.0.0.1:* ws://127.0.0.1:*;">
+  <title>TSCG &mdash; Business Model Canvas</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="src/Bmc.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <header id="header">
+    <button id="btn-home" onclick="window.location.href='https://echopraxium.github.io/tscg/'">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" style="display:block">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+      </svg>
+    </button>
+    <button class="tscg-logo-link" onclick="window.open('https://github.com/Echopraxium/tscg','_blank')">
+      <span class="tscg-logo">TSCG</span>
+    </button>
+    <span class="sep">&middot;</span>
+    <span class="poclet-name">Business Model Canvas &mdash; SystemicFramework</span>
+    <div class="meta-chips">
+      <span class="chip domain">Business Strategy</span>
+      <span class="chip type">m3:SystemicFramework</span>
+      <span class="chip version">v1.0.0</span>
+    </div>
+  </header>
+
+  <!-- CANVAS -->
+  <div id="canvas-area">
+    <div id="p5-container"></div>
+    <div id="block-tooltip"></div>
+  </div>
+
+  <!-- SPLITTER -->
+  <div id="splitter"></div>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="activateTab(0)">Description</button>
+      <button class="tab-btn"        onclick="activateTab(1)">Scores</button>
+      <button class="tab-btn"        onclick="activateTab(2)">M2 Concepts</button>
+      <button class="tab-btn"        onclick="activateTab(3)">Guide</button>
+    </div>
+
+    <!-- TAB 0 — Description -->
+    <div class="tab-panel active" id="tab-0">
+      <div class="narrative-card" id="phase-narrative">
+        <div class="narrative-label">Current Phase</div>
+        <div class="narrative-text" id="phase-narrative-text">—</div>
+        <div class="driver-text"   id="phase-driver-text">—</div>
+      </div>
+
+      <!-- Dynamic case card — updates when case or phase changes -->
+      <div class="case-card" id="case-card">
+        <div class="case-card-name" id="cc-name">—</div>
+        <div class="case-card-pattern" id="cc-pattern">—</div>
+        <div class="case-card-sep"></div>
+        <div class="case-card-phases" id="cc-phases"></div>
+        <div class="case-card-sep"></div>
+        <div class="case-card-label">Next Phase</div>
+        <div class="case-card-next" id="cc-next">—</div>
+      </div>
+
+      <div class="readme-content">
+        <h2>Business Model Canvas</h2>
+        <p>The <strong>BMC</strong> (Osterwalder &amp; Pigneur, 2010) describes how an organization
+        <strong>creates, delivers, and captures value</strong> through 9 interconnected blocks.</p>
+        <h2>Flux Colors (ASFID)</h2>
+        <p>
+          <span style="color:#ffb840">■ A — Attractor (VP pull)</span><br>
+          <span style="color:#64c8ff">■ S — Structure (block coupling)</span><br>
+          <span style="color:#3dc896">■ F — Flow (value &amp; cost)</span><br>
+          <span style="color:#c882ff">■ It — Information (CS signals)</span><br>
+          <span style="color:#ff6464">■ D — Dynamics (lifecycle)</span>
+        </p>
+      </div>
+      <div class="live-status-box">
+        <div class="ls-title">Live Metrics</div>
+        <div class="ls-row"><span class="ls-key">Case</span>     <span class="ls-val" id="ls-case">—</span></div>
+        <div class="ls-row"><span class="ls-key">Phase</span>    <span class="ls-val" id="ls-phase">—</span></div>
+        <div class="ls-row"><span class="ls-key">Particles</span><span class="ls-val" id="ls-particles">—</span></div>
+        <div class="ls-row"><span class="ls-key">RS/C$ ratio</span><span class="ls-val" id="ls-ratio">—</span></div>
+      </div>
+    </div>
+
+    <!-- TAB 1 — Scores -->
+    <div class="tab-panel" id="tab-1">
+      <div class="score-group">
+        <div class="score-group-label eagle">ASFID — Eagle Eye (Territory)</div>
+        <div class="score-row"><span class="score-dim" style="color:var(--col-A)">A</span>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-A)"></div></div>
+          <span class="score-val">0.85</span></div>
+        <div class="score-row"><span class="score-dim" style="color:var(--col-S)">S</span>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-S)"></div></div>
+          <span class="score-val">0.90</span></div>
+        <div class="score-row"><span class="score-dim" style="color:var(--col-F)">F</span>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:78%;background:var(--col-F)"></div></div>
+          <span class="score-val">0.78</span></div>
+        <div class="score-row"><span class="score-dim" style="color:var(--col-I)">It</span>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:82%;background:var(--col-I)"></div></div>
+          <span class="score-val">0.82</span></div>
+        <div class="score-row"><span class="score-dim" style="color:var(--col-D)">D</span>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:var(--col-D)"></div></div>
+          <span class="score-val">0.80</span></div>
+        <div class="score-mean-row"><span>ASFID Mean</span><span>0.830</span></div>
+      </div>
+      <div class="score-group">
+        <div class="score-group-label sphinx">REVOI — Sphinx Eye (Map)</div>
+        <div class="score-row"><span class="score-dim" style="color:var(--col-R)">R</span>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:var(--col-R)"></div></div>
+          <span class="score-val">0.90</span></div>
+        <div class="score-row"><span class="score-dim" style="color:var(--col-E)">E</span>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:88%;background:var(--col-E)"></div></div>
+          <span class="score-val">0.88</span></div>
+        <div class="score-row"><span class="score-dim" style="color:var(--col-V)">V</span>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:var(--col-V)"></div></div>
+          <span class="score-val">0.85</span></div>
+        <div class="score-row"><span class="score-dim" style="color:var(--col-O)">O</span>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:87%;background:var(--col-O)"></div></div>
+          <span class="score-val">0.87</span></div>
+        <div class="score-row"><span class="score-dim" style="color:var(--col-Im)">Im</span>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:87%;background:var(--col-Im)"></div></div>
+          <span class="score-val">0.87</span></div>
+        <div class="score-mean-row"><span>REVOI Mean</span><span>0.874</span></div>
+      </div>
+      <div class="gap-badge">
+        <span class="gap-label">δ₁</span>
+        <span class="gap-val">0.031</span>
+        <span class="gap-desc">Coherent · SlightlyHyperopic (SFE=0.813)</span>
+      </div>
+      <div class="synergy-box">
+        <div class="synergy-label">Structural Grammar Formula</div>
+        <div class="synergy-formula">BMC = BusinessModeling ⊙ (A × St × F × It × D | R + E + V + O + Im)</div>
+        <div class="synergy-emergent">SlightlyHyperopic: REVOI > ASFID by design — the BMC is a Map tool (canvas) rather than a Territory simulator.</div>
+      </div>
+    </div>
+
+    <!-- TAB 2 — M2 Concepts -->
+    <div class="tab-panel" id="tab-2">
+      <div class="gc-section-label">Stereopsic (Eagle Eye + Sphinx Eye)</div>
+      <div class="gc-list">
+        <div class="gc-item primary">
+          <div><div class="gc-name">m2:Synergy</div><div class="gc-formula">A × F × D × It</div>
+          <div class="gc-role">PlatformDuality — two-sided network value exceeds sum of sides</div></div>
+        </div>
+        <div class="gc-item primary">
+          <div><div class="gc-name">m2:Emergence</div><div class="gc-formula">D × St × F</div>
+          <div class="gc-role">Network effects — platform lock-in not predictable from individual blocks</div></div>
+        </div>
+        <div class="gc-item primary">
+          <div><div class="gc-name">m2:Amplification</div><div class="gc-formula">A × F × D</div>
+          <div class="gc-role">CrossSubsidy — dual-polarity: one segment funds another</div></div>
+        </div>
+      </div>
+      <div class="gc-section-label" style="margin-top:8px">ASFID Families</div>
+      <div class="gc-list">
+        <div class="gc-item secondary">
+          <div><div class="gc-name">m2:Attractor</div><div class="gc-formula">A</div>
+          <div class="gc-role">VP as convergence basin — all blocks organized around it</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <div><div class="gc-name">m2:Equilibrium</div><div class="gc-formula">A × D</div>
+          <div class="gc-role">RS ↔ C$ balance — sustainability attractor</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <div><div class="gc-name">m2:Structure</div><div class="gc-formula">St</div>
+          <div class="gc-role">9-block canonical topology</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <div><div class="gc-name">m2:Flow</div><div class="gc-formula">F</div>
+          <div class="gc-role">Value flow (VP→CH→CS) and cost flow (KR+KA→C$)</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <div><div class="gc-name">m2:Transformation</div><div class="gc-formula">D × F × St</div>
+          <div class="gc-role">BusinessModelMutation — phase transition between BM states</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <div><div class="gc-name">m2:Polarity</div><div class="gc-formula">D × A</div>
+          <div class="gc-role">StrategicTension — VP (maximize) ↔ C$ (minimize)</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <div><div class="gc-name">m2:Information</div><div class="gc-formula">It</div>
+          <div class="gc-role">VP signal + Customer Segment perceptual map</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <div><div class="gc-name">m2:Feedback</div><div class="gc-formula">D × F</div>
+          <div class="gc-role">CR lifecycle — acquisition → retention → churn loop</div></div>
+        </div>
+        <div class="gc-item secondary">
+          <div><div class="gc-name">m2:Cascade</div><div class="gc-formula">F × St</div>
+          <div class="gc-role">VerticalIntegration — value chain internalization flow</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3 — Guide -->
+    <div class="tab-panel" id="tab-3">
+      <div class="readme-content">
+        <h2>Case Selector</h2>
+        <p>Choose a real-world business model from the dropdown. Each case loads specific
+        flux intensities and lifecycle parameters reflecting its actual configuration.</p>
+        <h2>Phase Timeline</h2>
+        <p>Click <strong>phase buttons</strong> or drag the <strong>progress bar</strong>
+        to navigate the business model lifecycle. The morphism animates flux transitions
+        between phases over ~2 seconds.</p>
+        <h2>Cursors</h2>
+        <p><strong>VP Pull:</strong> Attractor strength — particle density on VP→CH→CS paths.<br>
+        <strong>Conversion:</strong> CS→RS conversion rate — RS flow intensity.<br>
+        <strong>CrossSubsidy:</strong> Subsidy flow between segments (platforms only).<br>
+        <strong>Network FX:</strong> Multiplier on CS coupling (multi-sided platforms).<br>
+        <strong>Cost Burden:</strong> KA+KR→C$ flow intensity vs RS.</p>
+        <h2>Block Hover</h2>
+        <p>Hover over any block to see its ASFID primary dimension, active M2 concepts,
+        and current flux intensity.</p>
+        <h2>Play / Pause</h2>
+        <p>The player auto-advances through phases at the selected speed. During morphism,
+        all flux paths interpolate simultaneously.</p>
+      </div>
+    </div>
+  </aside>
+
+</div><!-- #app -->
+
+<!-- COMPBAR -->
+<div id="comp-bar">
+  <div id="comp-inner">
+    <span class="comp-label">Case:</span>
+    <select id="case-select" class="ctrl-select"></select>
+    <div class="comp-sep"></div>
+    <span class="comp-label">Phase:</span>
+    <div id="phase-btns"></div>
+    <div class="comp-sep"></div>
+    <span class="comp-label">Pattern:</span>
+    <span id="case-pattern" style="font-size:11px;color:#79c0ff;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px"></span>
+    <div class="comp-sep"></div>
+    <button class="ctrl-btn pillars-btn" id="btn-pillars"
+            onclick="togglePillars()">⬡ Pillars</button>
+    <div class="comp-sep"></div>
+    <span id="ontology-source" class="ontology-badge badge-offline"
+          title="Ontology source">💾 local</span>
+    <button class="ctrl-btn" onclick="exportAsJsonLD()"
+            title="Export the M0_BmcSimulation.jsonld ontology (pure JSON-LD, SHACL-validable)">
+      ⬇ JSON-LD
+    </button>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div id="controls">
+  <button class="ctrl-btn" id="btn-play" onclick="togglePlay()">▶ Play</button>
+  <button class="ctrl-btn" onclick="resetSim()">↺ Reset</button>
+  <div class="ctrl-sep"></div>
+
+  <span class="ctrl-label" title="Attractor pull of VP — particle density on VP→CH→CS paths">VP Pull</span>
+  <input type="range" class="ctrl-slider" id="sl-vp" min="0" max="1" step="0.05" value="0.8"
+    title="VP Pull: strength of Value Proposition as attractor. High = dense flux toward customers. ASFID: A (Attractor).">
+  <div class="ctrl-sep"></div>
+
+  <span class="ctrl-label" title="CS→RS conversion — fraction of customers generating revenue">Conversion</span>
+  <input type="range" class="ctrl-slider" id="sl-conv" min="0" max="1" step="0.05" value="0.6"
+    title="Conversion: CS→RS flow intensity. High = strong revenue capture. Low = acquisition without monetization.">
+  <div class="ctrl-sep"></div>
+
+  <span class="ctrl-label" title="CrossSubsidy — one segment subsidizes another (free tier funded by paying users)">CrossSubsidy</span>
+  <input type="range" class="ctrl-slider" id="sl-cross" min="0" max="1" step="0.05" value="0.4"
+    title="CrossSubsidy: RS→CS feedback loop. High = strong platform subsidy (Spotify free, Google search, Gillette razor).">
+  <div class="ctrl-sep"></div>
+
+  <span class="ctrl-label" title="Network Effect — more users → more VP value (platform dynamics: Visa, Airbnb, Uber)">Network FX</span>
+  <input type="range" class="ctrl-slider" id="sl-net" min="0" max="1" step="0.05" value="0.5"
+    title="Network FX: CS→VP feedback multiplier. High = strong network effect. Zero = no platform dynamics.">
+  <div class="ctrl-sep"></div>
+
+  <span class="ctrl-label" title="Cost burden — KA+KR→C$ flow intensity vs Revenue Streams">Cost Burden</span>
+  <input type="range" class="ctrl-slider" id="sl-cost" min="0" max="1" step="0.05" value="0.5"
+    title="Cost Burden: KA+KR→C$ flow. High = heavy infrastructure costs. Compare with Conversion to see RS/C$ sustainability.">
+  <div class="ctrl-sep"></div>
+
+  <span class="ctrl-label">Speed</span>
+  <button class="ctrl-btn" id="btn-spd1" onclick="setSpeed(1)" >×1</button>
+  <button class="ctrl-btn" id="btn-spd2" onclick="setSpeed(2)">×2</button>
+  <button class="ctrl-btn" id="btn-spd4" onclick="setSpeed(4)">×4</button>
+  <div class="ctrl-sep"></div>
+
+  <div id="progress-track" onclick="seekProgress(event)">
+    <div id="progress-fill"></div>
+  </div>
+
+  <div class="status-indicator">
+    <div class="status-dot" id="status-dot"></div>
+    <span id="status-label">Stopped</span>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+<script src="src/M0_BmcSimulation.jsonld.js"></script>
+<script src="src/Bmc.js"></script>
+</body>
+</html>
