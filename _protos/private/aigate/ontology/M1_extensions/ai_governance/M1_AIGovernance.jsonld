@@ -1,0 +1,273 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/_protos/private/aigate/ontology/",
+    "m1gov": "M1_extensions/ai_governance/M1_AIGovernance.jsonld#",
+    "m1core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
+    "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+
+    {
+      "@id": "m1gov:M1_AIGovernance",
+      "@type": "owl:Ontology",
+      "rdfs:label": "TSCG M1 AI Governance Extension",
+      "rdfs:comment": "Domain-specific concepts for AI governance, multi-agent trust architectures, and sociotechnical accountability systems. Discovery context: M0_GovernanceTrinity poclet analysis (2026-03-25), based on AIGATE whitepaper (SEERAVERSE Research Group, v2.2, November 2025).",
+      "dcterms:title": "TSCG M1 AI Governance — Domain-Specific Concepts for Trustworthy AI Systems",
+      "dcterms:description": "Extension of the TSCG framework with AI governance-specific concepts. Covers trust protocols, intent declaration, risk classification, liability tracing, veto authority, and architectural ethical constraints. First TSCG domain extension in the AI Governance / Sociotechnical Systems field. Prototype status — under the _protos/private/aigate subtree.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-03-25",
+      "dcterms:modified": "2026-03-25",
+      "owl:versionInfo": "1.0.0",
+      "m2:changelog": {
+        "v1_0_0": {
+          "date": "2026-03-25",
+          "description": "Initial version. 8 domain concepts extracted from M0_GovernanceTrinity poclet analysis. 4 concept families: Protocol (2), Adjudication (2), Accountability (2), Ethics (2). KnowledgeField NOUN + ADJECTIVE instances."
+        }
+      },
+      "owl:imports": [
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld"
+      ]
+    },
+
+    {
+      "@id": "m1gov:AIGovernance",
+      "@type": ["owl:NamedIndividual", "m2:KnowledgeField"],
+      "rdfs:label": "AI Governance",
+      "rdfs:comment": "Interdisciplinary field addressing the design of normative, procedural, and architectural mechanisms ensuring that autonomous AI agents act within intended, safe, and accountable boundaries. As a KnowledgeField, AI Governance is natively bicephalous: Territory (ASFID) captures observable agent behaviors and system dynamics; Map (REVOI) captures trust frameworks, compliance models, and audit representations.",
+      "m2:knowledgeFieldRole": "NOUN",
+      "m2:hasTensorFormula": "∑ᵢ σᵢ |uᵢ⟩⊗|vᵢ⟩",
+      "m2:sigma_mean": 0.76,
+      "m2:alignmentAngle": "~30°",
+      "m2:maturityLevel": "emerging",
+      "m2:maturityNote": "Mature in protocol and cryptographic accountability (σ_mean~0.88); nascent in cultural-fit calibration and AGI governance (σ_mean~0.50). Rapidly evolving field driven by regulatory pressure (EU AI Act).",
+      "m2:dominantASFID": ["m3eagle:Structure", "m3eagle:Information", "m3eagle:Attractor"],
+      "m2:dominantREVOI": ["m3sphinx:Verifiability", "m3sphinx:Representability", "m3sphinx:Interoperability"],
+      "m2:epistemicDepth": "Medium-High — Reflexivity challenge: governance frameworks shape the agents they govern, creating co-evolutionary dynamics that resist purely static modeling.",
+      "dcterms:created": "2026-03-25",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1gov:Governance",
+      "@type": ["owl:NamedIndividual", "m2:KnowledgeField"],
+      "rdfs:label": "Governance",
+      "rdfs:comment": "Disciplinary qualifier (ADJECTIVE form) for use in KnowledgeFieldConceptCombo patterns. Derived from m1gov:AIGovernance, generalized to governance mechanisms across sociotechnical systems.",
+      "m2:knowledgeFieldRole": "ADJECTIVE",
+      "m2:derivedFrom": "m1gov:AIGovernance",
+      "m2:qualifier": "Pertaining to normative control, authority structures, accountability mechanisms, and rule enforcement in autonomous systems.",
+      "dcterms:created": "2026-03-25",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1gov:TrustProtocol",
+      "@type": "owl:Class",
+      "rdfs:label": "Trust Protocol",
+      "rdfs:comment": "A mandatory communication wrapper that transforms a bare imperative command into a verifiable, context-rich request by explicitly declaring Civilizational Variables (Intent, Risk, Liability, Cultural-Context) before execution. Architectural solution to the 'trustless state' of inter-agent communication. In AIGATE: ASTP (Agent Safety Trust Protocol), described as 'Ethical HTTP'. The protocol does not merely describe intent — it enforces it at kernel level, making non-compliant requests technically unroutable.",
+      "m2:characterizedBy": ["m2:Constraint", "m2:Alignment", "m2:Protocol"],
+      "m1gov:tensorFormula": "S ⊗ I ⊗ F ⊗ V ⊗ R",
+      "m1gov:conceptFamily": "Protocol",
+      "m1gov:mandatoryFields": [
+        "intent_id (URN — standardized purpose vocabulary)",
+        "risk_profile (Enum — harm classification)",
+        "liability_owner (URN — designated responsible entity)",
+        "trace_signature (HMAC — integrity + non-repudiation)"
+      ],
+      "m1gov:optionalFields": [
+        "authority_request (Array<URN> — domain permissions required)",
+        "cultural_context (ISO 3166-1 — target cultural sphere)",
+        "data_sovereignty (Enum — data handling policy)"
+      ],
+      "m1gov:solvedProblem": "Intent Drift — ensures the 'Why' is never lost or corrupted during task decomposition and delegation",
+      "m1gov:analogy": "ASTP:AI Communication = HTTP:Web Communication = Constitution:Legislation",
+      "m1gov:transdisciplinaryInstances": [
+        "AIGATE: ASTP header",
+        "Legal: Court filing with mandatory jurisdiction, cause of action, liable parties",
+        "Medicine: Informed consent form (procedure, risks, alternatives, patient authority)",
+        "Finance: SWIFT message (mandatory sender, receiver, amount, purpose code)",
+        "Nuclear: IAEA safeguards declaration (mandatory material/facility/activity reporting)"
+      ],
+      "dcterms:created": "2026-03-25",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1gov:RiskProfile",
+      "@type": "owl:Class",
+      "rdfs:label": "Risk Profile",
+      "rdfs:comment": "A standardized, hierarchical classification of the potential harm (ethical, legal, financial, cultural) of an autonomous action. Declared by the requesting agent in the TrustProtocol header. Serves as the primary triage signal for the adjudication layer: it determines whether a task auto-passes, triggers soft-block review, or receives a hard-block veto. The self-declaration principle creates accountability: an agent that misclassifies its own risk is traceable via the Immutable Ledger.",
+      "m2:characterizedBy": ["m2:Threshold", "m2:Scope", "m2:Signal"],
+      "m1gov:tensorFormula": "A ⊗ I ⊗ O",
+      "m1gov:conceptFamily": "Protocol",
+      "m1gov:levels": [
+        { "level": "None",             "action": "Auto-Pass",   "scope": "Read-only, non-sensitive" },
+        { "level": "Low",              "action": "Auto-Pass",   "scope": "Analysis, non-public content generation" },
+        { "level": "Medium",           "action": "Soft-Block",  "scope": "Internal data modification, non-critical code" },
+        { "level": "High-Financial",   "action": "Hard-Block",  "scope": "Trades, financial records, high-budget allocation" },
+        { "level": "High-Legal",       "action": "Hard-Block",  "scope": "Contracts, patents, regulatory submissions" },
+        { "level": "Critical-Ethical", "action": "Hard-Block",  "scope": "PII, medical data, surveillance, bias risk" },
+        { "level": "Critical-Military","action": "SHALL VETO",  "scope": "Any military/coercive/destructive purpose" }
+      ],
+      "m1gov:solvedProblem": "Governance Collapse — enables the adjudication layer to instantly triage whether a task auto-executes or requires judicial review",
+      "m1gov:transdisciplinaryInstances": [
+        "AIGATE: ASTP Risk-Profile field",
+        "Medicine: Triage levels (P1 immediate / P2 urgent / P3 delayed / P4 expectant)",
+        "Finance: Basel III risk weights (0% sovereign / 20% bank / 100% corporate)",
+        "Aviation: HAZMAT classification (Packing Groups I/II/III)",
+        "Cybersecurity: CVSS score bands (Critical/High/Medium/Low/None)"
+      ],
+      "dcterms:created": "2026-03-25",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1gov:DeliberativeVeto",
+      "@type": "owl:Class",
+      "rdfs:label": "Deliberative Veto",
+      "rdfs:comment": "A collective, multi-agent adjudication mechanism that halts a high-risk task pending review by a dynamically assembled jury of specialized personas. Distinguished from single-arbiter models by its anti-fragile design: no single AI bias can dominate. Operates at two levels — Soft-Block (temporary injunction pending consensus) and Hard-Block (absolute constitutional veto, non-appealable). In AIGATE: the Guardian Ensemble. The adjudication is not post-hoc but in-line: it intercepts before execution, not after failure.",
+      "m2:characterizedBy": ["m2:Regulation", "m2:Agent", "m2:Threshold", "m2:Resilience"],
+      "m1gov:tensorFormula": "A ⊗ S ⊗ F ⊗ V ⊗ R",
+      "m1gov:conceptFamily": "Adjudication",
+      "m1gov:vetoTypes": {
+        "SoftBlock": "Temporary halt. Task queued for Ensemble review. Proceeds on majority consensus. Promotes to Hard-Block if Ensemble votes veto.",
+        "HardBlock": "Absolute, non-appealable. No override by any AI or human persona. Recorded as critical security event. Triggered by SHALL clauses."
+      },
+      "m1gov:ensembleComposition": "Dynamically assembled per task context (Intent-ID + Risk-Profile). Minimum 1 persona (Medium risk) to full multi-domain jury (Critical risk).",
+      "m1gov:solvedProblem": "Governance Collapse — provides real-time in-line judicial oversight preventing cascading failures from locally-rational but globally-harmful agent decisions",
+      "m1gov:analogy": "Guardian Ensemble:AI Risk = Supreme Court:Constitutional Questions = Peer Review:Scientific Publication",
+      "m1gov:transdisciplinaryInstances": [
+        "AIGATE: Guardian Ensemble (Ch. 7)",
+        "Law: Grand jury (collective indictment decision, no single prosecutor)",
+        "Finance: Credit committee (multi-member loan approval for large exposures)",
+        "Medicine: Tumor board (multi-specialty consensus for complex oncology cases)",
+        "Aviation: Accident investigation board (NTSB multi-disciplinary panel)"
+      ],
+      "dcterms:created": "2026-03-25",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1gov:IntentDeclaration",
+      "@type": "owl:Class",
+      "rdfs:label": "Intent Declaration",
+      "rdfs:comment": "An explicit, standardized, machine-verifiable statement of the ultimate purpose (the 'Why') behind a task request, encoded as a registered URN vocabulary entry (Intent-ID). Immutable once declared: even if the task is decomposed into 100 sub-tasks, the Intent-ID propagates unchanged. Transforms tacit purpose into a computable, verifiable, and governable first-class citizen of the operating system. Without explicit intent declaration, agents optimize on metrics while violating unstated purposes — the 'Sorcerer's Apprentice' failure mode.",
+      "m2:characterizedBy": ["m2:Alignment", "m2:Constraint", "m2:Code"],
+      "m1gov:tensorFormula": "I ⊗ A ⊗ S ⊗ V ⊗ R",
+      "m1gov:conceptFamily": "Adjudication",
+      "m1gov:intentVocabularyExamples": [
+        "aigate.intent:financial.analysis.quarterly",
+        "aigate.intent:legal.draft.contract",
+        "aigate.intent:marketing.create_copy",
+        "aigate.intent:core.code.generate",
+        "aigate.intent:gov.guardian.summon"
+      ],
+      "m1gov:solvedProblem": "Intent Drift — prevents 'metric-hacking' (optimizing a measurable proxy while violating the unstated purpose)",
+      "m1gov:transdisciplinaryInstances": [
+        "AIGATE: ASTP Intent-ID field (URN vocabulary)",
+        "Law: Causa in contract law (required statement of purpose for legal validity)",
+        "Medicine: Informed consent (patient's declared intent for procedure authorization)",
+        "Project management: Project charter (documented purpose before resource allocation)",
+        "Science: Pre-registration (declared hypothesis before data collection, prevents HARKing)"
+      ],
+      "dcterms:created": "2026-03-25",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1gov:LiabilityChain",
+      "@type": "owl:Class",
+      "rdfs:label": "Liability Chain",
+      "rdfs:comment": "A cryptographically secured, append-only, tamper-resistant sequence of Decision Blocks that records the complete chain of custody for every autonomous decision: who requested what, why (Intent-ID), which agent executed, who adjudicated the risk (Guardian signatures), and what the outcome was. Transforms 'emergent negligence' (the system is negligent in effect though no single component was negligent in design) into assignable, insurable, legally traceable accountability. In AIGATE: the Immutable Ledger. The term 'chain' is precise: each block cryptographically references its predecessor, making retroactive falsification computationally infeasible.",
+      "m2:characterizedBy": ["m2:Memory", "m2:Signature", "m2:Process", "m2:Traceability"],
+      "m1gov:tensorFormula": "D ⊗ F ⊗ S ⊗ I ⊗ A ⊗ O",
+      "m1gov:conceptFamily": "Accountability",
+      "m1gov:decisionBlockFields": [
+        "block_id (UUID)",
+        "previous_block_hash (SHA-256)",
+        "task_id (UUID — links to ASTP request)",
+        "event_type (Enum: TASK_REQUEST / GUARDIAN_VETO / GUARDIAN_APPROVE / CODE_CRYSTALLIZE / ...)",
+        "astp_header_snapshot (full ASTP header verbatim)",
+        "guardian_signatures (Array — votes + reasoning hashes)",
+        "block_hash (SHA-256 of current block)"
+      ],
+      "m1gov:solvedProblem": "Liability Diffusion — transforms 'black box' multi-agent decisions into auditable, insurable chains of custody",
+      "m1gov:analogy": "Immutable Ledger:AI Decisions = Blockchain:Financial Transactions = Flight Recorder:Aviation Events = Court Transcript:Legal Proceedings",
+      "m1gov:transdisciplinaryInstances": [
+        "AIGATE: Immutable Ledger (Ch. 8)",
+        "Finance: Blockchain / distributed ledger (non-repudiable transaction history)",
+        "Aviation: Flight Data Recorder + CVR (mandatory append-only event log)",
+        "Medicine: Surgical log / anesthesia record (timestamped, signed, immutable)",
+        "Law: Chain of custody documentation (evidence handling in criminal proceedings)",
+        "Nuclear: Operator log (IAEA-required append-only record of reactor state changes)"
+      ],
+      "dcterms:created": "2026-03-25",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1gov:ArchitecturalEthics",
+      "@type": "owl:Class",
+      "rdfs:label": "Architectural Ethics",
+      "rdfs:comment": "The encoding of ethical constraints directly into the system architecture (kernel layer) rather than as external policies, guidelines, or application-level rules. An architectural ethical constraint is technically non-bypassable: it does not ask agents if they 'feel like' complying — it prevents non-compliant requests from ever being processed. Transforms ethics from a 'suggestion' (a policy document no one reads) into an 'immovable structural wall'. In AIGATE: the ASTP Non-Military Constraint (SHALL clause) and the Guardian Hard-Block Veto for Critical-Military / Critical-Ethical risk profiles.",
+      "m2:characterizedBy": ["m2:Constraint", "m2:Regulation", "m2:Scope"],
+      "m1gov:tensorFormula": "S ⊗ I ⊗ F ⊗ V ⊗ R",
+      "m1gov:conceptFamily": "Ethics",
+      "m1gov:shallClauses": [
+        "AIGATE-SHALL-001: No system SHALL be employed for military, coercive, or surveillance purposes",
+        "ASTP technical rejection: HTTP 451-style 'Unavailable For Legal/Ethical Reasons'",
+        "Guardian Hard-Block: Auto-veto for Critical-Military, non-appealable, logged as critical security event"
+      ],
+      "m1gov:policyVsArchitecture": {
+        "policy": "A statement of intent. Can be ignored, misinterpreted, or overridden by sufficiently motivated actors.",
+        "architecture": "A structural impossibility. The system physically cannot process the prohibited request. No human override path exists below root administrator level."
+      },
+      "m1gov:solvedProblem": "Ethical compliance theater — replaces unverifiable claims ('our AI is ethical') with auditable technical proofs",
+      "m1gov:transdisciplinaryInstances": [
+        "AIGATE: ASTP SHALL clause + Guardian Hard-Block (Ch. 6.3, 7.3)",
+        "Aviation: Hardware interlock preventing engine start without landing gear retraction",
+        "Nuclear: Physical key-and-switch two-person rule (launch cannot proceed with one key alone)",
+        "Medicine: Medication dispensing system: blocks lethal dose regardless of prescriber authority level",
+        "Finance: Circuit breaker (NYSE Rule 48): trading halt hardwired at 7%/13%/20% S&P drops"
+      ],
+      "dcterms:created": "2026-03-25",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+
+    {
+      "@id": "m1gov:CulturalFitCalibration",
+      "@type": "owl:Class",
+      "rdfs:label": "Cultural Fit Calibration",
+      "rdfs:comment": "The dynamic adjustment of an autonomous agent's behavior, communication style, and output to align with the specific cultural norms, values, and expectations of the target context. A computable 'Civilizational Variable' — culturally-neutral at kernel level (universal protocol), culturally-aware at execution level (context-dependent persona selection and output filtering). Absence of cultural calibration produces 'Ethical Imperialism': the imposition of one culture's values (often WEIRD — Western, Educated, Industrialized, Rich, Democratic) onto all contexts. In AIGATE: the ACC (Autonomous Cultural-fit Calibrator) in Engine G.",
+      "m2:characterizedBy": ["m2:Calibration", "m2:Adaptation", "m2:Context"],
+      "m1gov:tensorFormula": "A ⊗ I ⊗ V ⊗ F ⊗ D",
+      "m1gov:conceptFamily": "Ethics",
+      "m1gov:calibrationStages": [
+        "Context Declaration: Cultural-Context field in TrustProtocol header (ISO 3166-1)",
+        "Persona Calibration: MMAS queries Cultural_Fit_Score per target culture",
+        "Output Filtering: Guardian Cultural-Fit Persona reviews output against cultural knowledge base",
+        "Feedback: Veto/correction recorded in LiabilityChain → updates Cultural_Fit_Score"
+      ],
+      "m1gov:solvedProblem": "Contextual Drift at cultural level — prevents globally-correct but locally-inappropriate AI outputs",
+      "m1gov:transdisciplinaryInstances": [
+        "AIGATE: ACC framework + Cultural-Context ASTP field (Ch. 14)",
+        "Diplomacy: Protocol adjustments per host nation customs (forms of address, gift-giving norms)",
+        "Marketing: Glocalization (adapt global brand messaging to local cultural values)",
+        "Medicine: Cultural competence in clinical communication (direct vs indirect communication styles)",
+        "Education: Culturally responsive pedagogy (adapt teaching style to cultural learning norms)"
+      ],
+      "dcterms:created": "2026-03-25",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    }
+
+  ]
+}
