@@ -1,1 +1,0 @@
-start python transistor_sim.py
