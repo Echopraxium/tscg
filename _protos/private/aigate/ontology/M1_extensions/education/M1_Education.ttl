@@ -1,0 +1,230 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
+@prefix ns1: <m1:edu:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ns1:AssessmentStrategy a owl:Class ;
+    rdfs:label "Assessment Strategy" ;
+    rdfs:comment "A method for gathering evidence of student learning and providing feedback to inform instruction or certify achievement. Characterized by m2:Signature (capturing a learner's competence state), m2:Observer (positioning the teacher/system as measurement agent), and m2:Threshold (discriminating levels of achievement). Assessment is the primary feedback mechanism in education." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    m2:characterizedBy m2:Observer,
+        m2:Signature,
+        m2:Threshold ;
+    ns1:asfidBasis [ ] ;
+    ns1:assessmentTypes [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:feedbackLoop "Assessment -> feedback -> instruction adjustment -> reassessment (m2:FeedbackLoop pattern)" ;
+    ns1:pocletEvidence "M0_TPACK: Assessment instruments (TPACK surveys, rubrics) verify Teacher TPACK competence" ;
+    ns1:tensorFormula "I⊗S⊗A" .
+
+ns1:CommunityOfPractice a owl:Class ;
+    rdfs:label "Community of Practice" ;
+    rdfs:comment "A social learning structure in which practitioners with shared goals and concerns deepen their knowledge and expertise through sustained interaction, sharing of practice, and collective problem-solving. Characterized by m2:Network (distributed learning community), m2:Role (legitimate peripheral participation progression), and m2:Synergy (collective knowledge exceeds individual contributions). Relevant both as a learning theory (Lave & Wenger) and as a professional development model for teachers." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    m2:characterizedBy m2:Network,
+        m2:Role,
+        m2:Synergy ;
+    ns1:asfidBasis [ ] ;
+    ns1:participationModel "Legitimate Peripheral Participation: newcomer -> full member progression (m2:Trajectory + m2:Role)" ;
+    ns1:pocletEvidence "M0_TPACK: CommunityOfPractice is the TPACK distribution mechanism (how TPACK spreads globally)" ;
+    ns1:teacherApplication "Professional Learning Communities (PLCs) for teacher TPACK development" ;
+    ns1:tensorFormula "S⊗I⊗F" ;
+    ns1:wegerElements [ ],
+        [ ],
+        [ ] .
+
+ns1:CurriculumStructure a owl:Class ;
+    rdfs:label "Curriculum Structure" ;
+    rdfs:comment "The organized framework of content, learning objectives, and progressions that define what is taught, in what order, and at what depth across a course or program. Characterized by m2:Hierarchy (scope and sequence across levels), m2:Composition (assembly of units and lessons), and m2:Scope (boundaries of content coverage at each level). Curriculum structure is the top-level organization of Content Knowledge (CK) in TPACK." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    m2:characterizedBy m2:Composition,
+        m2:Hierarchy,
+        m2:Scope ;
+    ns1:asfidBasis [ ] ;
+    ns1:organizationalPrinciples [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:pocletEvidence "M0_TPACK: CK component - Content Knowledge is structured through curriculum" ;
+    ns1:tensorFormula "S⊗I⊗A" .
+
+ns1:Education a owl:Class ;
+    rdfs:label "Education" ;
+    rdfs:comment "KnowledgeField declaration for the Education domain. Enables KnowledgeFieldGenericCombos of the form Education x m2:GenericConcept. Encompasses instructional design, pedagogy, educational technology, learning science, and curriculum development." ;
+    rdfs:subClassOf "m1:core:KnowledgeField" ;
+    ns1:subfields "Curriculum Development",
+        "Educational Technology",
+        "Instructional Design",
+        "Learning Science",
+        "Teacher Education" .
+
+ns1:EducationalBalance a owl:Class ;
+    rdfs:label "Educational Balance" ;
+    rdfs:comment "KnowledgeFieldGenericCombo: Education x m2:Balance. Captures the domain-specific manifestation of Balance in educational contexts - the T-P-C equilibrium principle central to TPACK, and more broadly any multi-factor equilibrium in instructional design (depth vs. breadth, engagement vs. rigor, individual vs. group, formative vs. summative)." ;
+    rdfs:subClassOf "m1:core:KnowledgeFieldGenericCombo" ;
+    m2:characterizedBy m2:Balance ;
+    ns1:instances "Content coverage vs. pedagogical exploration balance",
+        "Depth vs. breadth balance in curriculum",
+        "Formative vs. summative assessment balance",
+        "Student-centered vs. teacher-centered balance",
+        "T-P-C balance (TPACK sweet spot)" ;
+    ns1:pocletEvidence "M0_TPACK: m0:balancePrinciple - core TPACK design constraint" ;
+    ns1:qualificationFormula "Education ⊙ m2:Balance" .
+
+ns1:EducationalSynergy a owl:Class ;
+    rdfs:label "Educational Synergy" ;
+    rdfs:comment "KnowledgeFieldGenericCombo: Education x m2:Synergy. Captures the domain-specific manifestation of non-additive combination in educational contexts. The classic case is TPACK itself: T+P+C combined synergistically yields TPACK, which enables teaching impossible with any single domain alone. Also manifests in collaborative learning (peer x peer > individual) and cross-disciplinary teaching (Science x Art > either alone)." ;
+    rdfs:subClassOf "m1:core:KnowledgeFieldGenericCombo" ;
+    m2:characterizedBy m2:Synergy ;
+    ns1:emergenceSignature "Synergy is recognized when the integration enables NEW instructional possibilities absent from any single component" ;
+    ns1:instances "Collaborative learning: peer group > sum of individuals (Vygotsky, Dillenbourg)",
+        "Flipped classroom: pre-class video + in-class application > lecture OR practice alone",
+        "Interdisciplinary projects: STEM = Science x Technology x Engineering x Mathematics",
+        "PCK = PK x CK >> PK + CK (Shulman, 1986 - original synergy insight)",
+        "TPACK = TK x PK x CK >> TK + PK + CK (Mishra & Koehler, 2006)" ;
+    ns1:pocletEvidence "M0_TPACK: m0:intersections - PCK, TCK, TPK, TPACK all demonstrate synergistic emergence" ;
+    ns1:qualificationFormula "Education ⊙ m2:Synergy" .
+
+ns1:EducationalTradeOff a owl:Class ;
+    rdfs:label "Educational Trade-off" ;
+    rdfs:comment "KnowledgeFieldGenericCombo: Education x m2:Trade-off. Captures the domain-specific manifestation of competing objectives and Pareto constraints in educational design. Teachers cannot simultaneously maximize TK mastery, PK sophistication, CK breadth, time efficiency, and equity - they must navigate trade-offs under real-world constraints." ;
+    rdfs:subClassOf "m1:core:KnowledgeFieldGenericCombo" ;
+    m2:characterizedBy m2:Trade-off ;
+    ns1:decisionFramework "Backward design minimizes trade-off costs by anchoring decisions to learning goals first" ;
+    ns1:instances "Depth of understanding vs. pace of curriculum coverage",
+        "PK exploration (inquiry) vs. CK coverage (direct instruction is faster)",
+        "Personalization vs. scalability (individual tutoring vs. class instruction)",
+        "TK breadth vs. CK depth (technology exploration takes time from content)",
+        "Technology sophistication vs. equity (advanced tools require access)" ;
+    ns1:pocletEvidence "M0_TPACK: m0:tradeoffPrinciple - competing objectives in teacher instructional design" ;
+    ns1:qualificationFormula "Education ⊙ m2:Trade-off" .
+
+ns1:InstructionalDesign a owl:Class ;
+    rdfs:label "Instructional Design" ;
+    rdfs:comment "The systematic process of creating learning experiences and environments. Applies m2:Workflow (structured design process) and m2:Composition (assembling instructional components into coherent units) to the challenge of producing effective instruction. Bridges learning theory and classroom practice." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    m2:characterizedBy m2:Composition,
+        m2:Hierarchy,
+        m2:Workflow ;
+    ns1:alignmentPrinciple "Constructive alignment: learning objectives, activities, and assessments must be coherent" ;
+    ns1:asfidBasis [ ] ;
+    ns1:models [ ],
+        [ ],
+        [ ] ;
+    ns1:pocletEvidence "M0_TPACK: InstructionalDesign is the practice layer where TPACK knowledge is applied" ;
+    ns1:tensorFormula "S⊗D⊗F" .
+
+ns1:KnowledgeIntegration a owl:Class ;
+    rdfs:label "Knowledge Integration" ;
+    rdfs:comment "The synergistic synthesis of knowledge from multiple distinct domains into a coherent, emergent competence that exceeds the sum of the contributing domains. This concept is the formal TSCG articulation of TPACK's core claim: T x P x C produces something qualitatively new (TPACK) that is not reducible to T+P+C. Characterized by m2:Balance (equilibrium between domains), m2:Trade-off (competing demands under constraints), m2:Synergy (non-additive combination), and m2:Emergence (qualitatively new capability)." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    m2:characterizedBy m2:Balance,
+        m2:Emergence,
+        m2:Synergy,
+        m2:Trade-off ;
+    ns1:asfidBasis [ ] ;
+    ns1:pocletEvidence "M0_TPACK: Central concept - the formal TSCG representation of TPACK itself" ;
+    ns1:tensorFormula "A⊗S⊗F⊗I⊗D" ;
+    ns1:tpackFormalization [ ] ;
+    ns1:transdisciplinaryScope "KnowledgeIntegration applies beyond education: scientific discovery (Physics x Mathematics x Experiment), engineering design (Science x Engineering x Art - STEM/STEAM), medical diagnosis (Biology x Psychology x Technology)" .
+
+ns1:LearnerModel a owl:Class ;
+    rdfs:label "Learner Model" ;
+    rdfs:comment "A representation of a learner's current knowledge state, skills, prior knowledge, learning preferences, and zone of proximal development. Characterized by m2:State (current competence level), m2:Memory (prior knowledge and experience), and m2:Gradient (the gap between current state and learning goal). Learner models are foundational to differentiated instruction and adaptive learning systems." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    m2:characterizedBy m2:Gradient,
+        m2:Memory,
+        m2:State ;
+    ns1:adaptiveLearning "AI-based adaptive systems (Khan Academy, Duolingo) continuously update LearnerModel to personalize instruction" ;
+    ns1:asfidBasis [ ] ;
+    ns1:keyConstructs [ ],
+        [ ],
+        [ ] ;
+    ns1:pocletEvidence "M0_TPACK: PK requires understanding learner needs; TCK can personalize to learner model" ;
+    ns1:tensorFormula "I⊗A⊗D" .
+
+ns1:LearningTheory a owl:Class ;
+    rdfs:label "Learning Theory" ;
+    rdfs:comment "A formal model of how learning occurs - the cognitive, behavioral, or social mechanisms by which knowledge is acquired, retained, and applied. Grounds pedagogical strategy in empirical and theoretical claims about the learner. Characterized by m2:Representation (encodes assumptions about cognition) and m2:Pattern (identifies recurring learning mechanisms)." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    m2:characterizedBy m2:Adaptation,
+        m2:Pattern,
+        m2:Representation ;
+    ns1:asfidBasis [ ] ;
+    ns1:majorTheories [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:pocletEvidence "M0_TPACK: PK foundation - Learning theories inform pedagogical choices" ;
+    ns1:tensorFormula "I⊗S⊗D" .
+
+ns1:M1_Education a owl:Ontology ;
+    rdfs:label "TSCG M1 Education Extension" ;
+    dcterms:created "2026-02-26" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Extension of the TSCG framework with education-specific concepts including pedagogical strategies, instructional design, technology integration, assessment, and knowledge domain integration (TPACK). All concepts are characterized by M2 GenericConcepts via m2:characterizedBy." ;
+    dcterms:title "TSCG M1 Education - Domain-Specific Educational Concepts" ;
+    rdfs:comment "Domain-specific educational concepts for the TSCG framework. Captures patterns from instructional design, pedagogy, educational technology, and learning science. Primary motivation: TPACK poclet analysis (M0_TPACK.jsonld), which identified 20 GenericConcepts active in education - including Balance, Trade-off, Synergy, Emergence, Transformation - warranting a dedicated M1 extension." ;
+    owl:imports "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld" ;
+    owl:versionInfo "1.0.0" ;
+    m2:changelog "v1.0.0 (2026-02-26): EducationalBalance, EducationalTradeOff, EducationalSynergy KnowledgeFieldGenericCombos formalized",
+        "v1.0.0 (2026-02-26): Initial creation - 10 KnowledgeFieldConcepts + 3 KnowledgeFieldGenericCombos derived from M0_TPACK analysis",
+        "v1.0.0 (2026-02-26): KnowledgeField:Education declared; SAMR levels as ScaffoldingMechanism sub-hierarchy added" .
+
+ns1:PedagogicalStrategy a owl:Class ;
+    rdfs:label "Pedagogical Strategy" ;
+    rdfs:comment "A principled approach to organizing learning activities and teacher-student interactions. Specifies HOW instruction is structured to achieve learning goals. Represents an operational pattern that instantiates m2:Behavior and m2:Pattern at the level of classroom practice." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    m2:characterizedBy m2:Behavior,
+        m2:Pattern,
+        m2:Workflow ;
+    ns1:asfidBasis [ ] ;
+    ns1:examples "Collaborative learning: peer discussion and joint problem-solving (Vygotsky ZPD)",
+        "Direct instruction: explicit teaching followed by guided practice and independent application",
+        "Flipped classroom: content delivery outside class, active problem-solving in class",
+        "Inquiry-based learning: student-driven questioning, investigation, and knowledge construction" ;
+    ns1:pocletEvidence "M0_TPACK: PK (Pedagogical Knowledge) component - core of TPACK framework" ;
+    ns1:subclasses "CollaborativeLearning",
+        "DifferentiatedInstruction",
+        "DirectInstruction",
+        "FlippedClassroom",
+        "InquiryBasedLearning",
+        "ProjectBasedLearning" ;
+    ns1:tensorFormula "S⊗I⊗D⊗F" .
+
+ns1:ScaffoldingMechanism a owl:Class ;
+    rdfs:label "Scaffolding Mechanism" ;
+    rdfs:comment "Temporary instructional support structures that enable learners to accomplish tasks beyond their independent capability, within the Zone of Proximal Development. Scaffolds are progressively faded as learner competence grows. Characterized by m2:Constraint (temporary limitation on problem complexity), m2:Gradient (support levels tuned to the ZPD gradient), and m2:Adaptation (fading strategy as competence develops)." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    m2:characterizedBy m2:Adaptation,
+        m2:Constraint,
+        m2:Gradient ;
+    ns1:asfidBasis [ ] ;
+    ns1:fadingPrinciple "Scaffolds must be temporary - their goal is to make themselves unnecessary (m2:Adaptation -> autonomy)" ;
+    ns1:pocletEvidence "M0_TPACK: TPK scaffolds technology adoption; PCK scaffolds content understanding" ;
+    ns1:scaffoldTypes [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:tensorFormula "S⊗I⊗A⊗D" .
+
+ns1:TechnologyIntegration a owl:Class ;
+    rdfs:label "Technology Integration" ;
+    rdfs:comment "The embedding of digital tools and platforms into instructional contexts in ways that transform learning experiences. Characterized by m2:Transformation (technology changes what is pedagogically possible), m2:Adaptation (progressive uptake of tools), and m2:Interoperability (compatibility across platforms and pedagogical frameworks). Corresponds directly to TPACK's TK-PK-CK intersections (TCK, TPK)." ;
+    rdfs:subClassOf "m2:GenericConcept" ;
+    m2:characterizedBy m2:Adaptation,
+        m2:Interoperability,
+        m2:Transformation ;
+    ns1:asfidBasis [ ] ;
+    ns1:designPrinciple "Technology integration is not neutral - it transforms both content representation (TCK) and pedagogical possibilities (TPK)" ;
+    ns1:pocletEvidence "M0_TPACK: TK component + TCK and TPK intersections - the Technology axis of TPACK" ;
+    ns1:samrLevels [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    ns1:tensorFormula "D⊗S⊗I⊗F" .
+

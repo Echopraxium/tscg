@@ -1,0 +1,39 @@
+{
+    // .vscode/launch.json — TriskeleToolchain workspace
+    // Prerequisites:
+    //   1. Install the triskele-debug extension (see README)
+    //   2. Run: cargo run -p tsk-dbg -- src\wolf3d_v2_clean.tvmx --symbols src\wolf3d_v2_clean.sym
+    //   3. Press F5
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "triskele",
+            "request": "launch",
+            "name": "Debug wolf3d",
+            "program": "${workspaceFolder}/src/wolf3d_v2_clean.tvmx",
+            "symbols": "${workspaceFolder}/src/wolf3d_v2_clean.sym",
+            "port": 4711,
+            "stopOnEntry": true
+        },
+        {
+            "type": "triskele",
+            "request": "launch",
+            "name": "Debug wolf3d (auto-launch tsk-dbg)",
+            "program": "${workspaceFolder}/src/wolf3d_v2_clean.tvmx",
+            "symbols": "${workspaceFolder}/src/wolf3d_v2_clean.sym",
+            "port": 4711,
+            "stopOnEntry": true,
+            "autoLaunchDebugger": true,
+            "tskDbgPath": "${workspaceFolder}/target/debug/tsk-dbg.exe"
+        },
+        {
+            "type": "triskele",
+            "request": "launch",
+            "name": "Debug active .tasm",
+            "program": "${fileDirname}/${fileBasenameNoExtension}.tvmx",
+            "symbols": "${fileDirname}/${fileBasenameNoExtension}.sym",
+            "port": 4711,
+            "stopOnEntry": true
+        }
+    ]
+}

@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self' https://cdnjs.cloudflare.com;
+               script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+               style-src  'self' 'unsafe-inline';
+               img-src    'self' data: blob:;
+               connect-src http://127.0.0.1:* ws://127.0.0.1:*;">
+<title>GovernanceTrinity — TSCG Poclet Simulation</title>
+<style>
+  :root {
+    --bg:       #0d1117;
+    --surface:  #161b22;
+    --border:   #30363d;
+    --text:     #c9d1d9;
+    --muted:    #8b949e;
+    --col-A:    #f78166;
+    --col-S:    #56d364;
+    --col-F:    #79c0ff;
+    --col-I:    #d2a8ff;
+    --col-D:    #e3b341;
+    --col-R:    #79c0ff;
+    --col-E:    #56d364;
+    --col-V:    #f78166;
+    --col-O:    #d2a8ff;
+    --col-Im:   #e3b341;
+    --eagle:    #f78166;
+    --sphinx:   #79c0ff;
+    --astp:     #56d364;
+    --guardian: #e3b341;
+    --ledger:   #79c0ff;
+    --pass:     #56d364;
+    --soft:     #e3b341;
+    --hard:     #f78166;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 48px 1fr 110px;
+    overflow: hidden;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+  }
+  header .title { font-size: 15px; font-weight: 600; color: #e6edf3; }
+  header .badge {
+    font-size: 11px; padding: 2px 8px; border-radius: 12px;
+    background: #21262d; color: var(--muted); border: 1px solid var(--border);
+  }
+  header .badge.proto { color: var(--col-D); border-color: var(--col-D); }
+
+  /* MAIN */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 4px 340px;
+    overflow: hidden;
+  }
+
+  /* CANVAS */
+  #canvas-wrap {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  #canvas-wrap canvas { display: block; }
+
+  /* SPLITTER */
+  .splitter {
+    background: var(--border);
+    cursor: col-resize;
+    transition: background 0.15s;
+  }
+  .splitter:hover { background: var(--sphinx); }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .tab {
+    flex: 1;
+    padding: 9px 4px;
+    font-size: 11px;
+    text-align: center;
+    cursor: pointer;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: #e6edf3; border-bottom-color: var(--sphinx); }
+  .tab-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    display: none;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .tab-content.active { display: block; }
+  .tab-content::-webkit-scrollbar { width: 4px; }
+  .tab-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* SIDEBAR CONTENT */
+  .section-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--muted); margin: 10px 0 6px;
+  }
+  .section-title:first-child { margin-top: 0; }
+  .score-row {
+    display: flex; align-items: center; gap: 8px; margin: 4px 0;
+  }
+  .score-label { width: 20px; font-weight: 700; font-size: 12px; }
+  .score-bar-bg {
+    flex: 1; height: 6px; background: #21262d; border-radius: 3px; overflow: hidden;
+  }
+  .score-bar { height: 100%; border-radius: 3px; transition: width 0.4s; }
+  .score-val { width: 32px; text-align: right; font-size: 11px; color: var(--muted); }
+  .dim-note { font-size: 10px; color: var(--muted); margin: 2px 0 6px 28px; line-height: 1.4; }
+  .gc-item {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 5px 0; border-bottom: 1px solid #21262d;
+  }
+  .gc-item:last-child { border-bottom: none; }
+  .gc-name { font-weight: 600; color: #e6edf3; min-width: 90px; font-size: 11px; }
+  .gc-formula { font-family: monospace; color: var(--col-I); font-size: 10px; }
+  .gc-role { color: var(--muted); font-size: 10px; line-height: 1.4; }
+  .info-box {
+    background: #21262d; border-radius: 6px; padding: 8px 10px;
+    margin: 6px 0; border-left: 3px solid var(--sphinx);
+  }
+  .info-box.eagle { border-left-color: var(--eagle); }
+  .info-box.warn  { border-left-color: var(--col-D); }
+  .gap-val { font-size: 20px; font-weight: 700; color: var(--col-D); }
+  .gap-class { font-size: 11px; color: var(--muted); }
+
+  /* CONTROLS */
+  .controls {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ctrl-row {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .ctrl-label {
+    font-size: 11px; color: var(--muted); min-width: 90px; text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .risk-btn {
+    padding: 4px 10px; font-size: 11px; border-radius: 4px;
+    border: 1px solid var(--border); background: #21262d; color: var(--muted);
+    cursor: pointer; transition: all 0.15s; user-select: none;
+  }
+  .risk-btn:hover { border-color: var(--sphinx); color: var(--text); }
+  .risk-btn.active { color: #0d1117; font-weight: 700; }
+  .risk-btn.active.rNone    { background: #8b949e; border-color: #8b949e; }
+  .risk-btn.active.rLow     { background: var(--pass); border-color: var(--pass); }
+  .risk-btn.active.rMedium  { background: #d29922; border-color: #d29922; }
+  .risk-btn.active.rHigh    { background: #da3633; border-color: #da3633; }
+  .risk-btn.active.rCritical{ background: #b91c1c; border-color: #b91c1c; color: #fff; }
+  .action-btn {
+    padding: 5px 16px; font-size: 12px; border-radius: 5px; font-weight: 600;
+    border: none; cursor: pointer; transition: all 0.15s; user-select: none;
+  }
+  .btn-send {
+    background: var(--col-S); color: #0d1117;
+  }
+  .btn-send:hover { opacity: 0.85; }
+  .btn-send:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-pause {
+    background: #21262d; color: var(--text); border: 1px solid var(--border);
+  }
+  .btn-pause:hover { border-color: var(--sphinx); }
+  .btn-reset {
+    background: #21262d; color: var(--col-A); border: 1px solid var(--col-A);
+  }
+  .btn-reset:hover { background: #2d1a1a; }
+  #status-line {
+    font-size: 11px; color: var(--muted); font-family: monospace; min-height: 16px;
+  }
+  .status-pass   { color: var(--pass); }
+  .status-soft   { color: var(--soft); }
+  .status-hard   { color: var(--hard); }
+  .status-record { color: var(--ledger); }
+  .status-run    { color: var(--col-I); }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="title">🔺 GovernanceTrinity</span>
+  <span class="badge">TSCG M0 Poclet</span>
+  <span class="badge proto">PROTOTYPE</span>
+  <span class="badge" style="margin-left:auto; color:var(--col-I)">AI Governance</span>
+</header>
+
+<div class="main">
+  <div id="canvas-wrap"><canvas id="sim-canvas"></canvas></div>
+  <div class="splitter" id="splitter"></div>
+  <div class="sidebar">
+    <div class="tabs">
+      <div class="tab active" data-tab="desc">Description</div>
+      <div class="tab" data-tab="scores">ASFID/REVOI</div>
+      <div class="tab" data-tab="gc">Concepts</div>
+      <div class="tab" data-tab="readme">README</div>
+    </div>
+
+    <!-- Description -->
+    <div class="tab-content active" id="tab-desc">
+      <div class="section-title">Governance Trinity</div>
+      <div class="info-box">
+        Three structurally necessary and sufficient components ensuring trustworthy autonomous AI action. Removing any one causes governance collapse.
+      </div>
+      <div class="section-title">Components</div>
+      <div class="gc-item">
+        <div>
+          <div class="gc-name" style="color:var(--astp)">● ASTP</div>
+          <div class="gc-role">Agent Safety Trust Protocol — wraps every task request with mandatory Intent-ID, Risk-Profile, Liability-Owner and cryptographic signature. Solves <em>Intent Drift</em>.</div>
+        </div>
+      </div>
+      <div class="gc-item">
+        <div>
+          <div class="gc-name" style="color:var(--guardian)">● Guardian Ensemble</div>
+          <div class="gc-role">Dynamic multi-agent judiciary. Adjudicates risk via collective deliberation. Hard-Block (non-appealable) or Soft-Block (pending review). Solves <em>Governance Collapse</em>.</div>
+        </div>
+      </div>
+      <div class="gc-item">
+        <div>
+          <div class="gc-name" style="color:var(--ledger)">● Immutable Ledger</div>
+          <div class="gc-role">Cryptographically chained append-only record of every governance event. Full chain of custody. Solves <em>Liability Diffusion</em>.</div>
+        </div>
+      </div>
+      <div class="section-title">Synergy</div>
+      <div class="info-box" style="font-family:monospace; font-size:11px; color:var(--col-I)">
+        AIGovernance ⊙ (Constraint ⊗ Regulation ⊗ Memory)<br>
+        <span style="color:var(--muted)">→ Trustworthy Autonomous Action</span>
+      </div>
+      <div class="section-title">Fire Triangle Analogy</div>
+      <div style="font-size:11px; color:var(--muted); line-height:1.6">
+        Fuel → Intent (ASTP)<br>
+        Oxygen → Judgment (Guardian)<br>
+        Heat → Accountability (Ledger)<br>
+        <span style="color:var(--col-S)">Fire → Trustworthy AI Action</span>
+      </div>
+    </div>
+
+    <!-- ASFID/REVOI -->
+    <div class="tab-content" id="tab-scores">
+      <div class="section-title" style="color:var(--eagle)">▲ Eagle Eye — ASFID (Territory)</div>
+      <div class="score-row">
+        <span class="score-label" style="color:var(--col-A)">A</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:85%;background:var(--col-A)"></div></div>
+        <span class="score-val">0.85</span>
+      </div>
+      <div class="dim-note">Governance equilibrium attractor. Fractal: micro→macro scale.</div>
+      <div class="score-row">
+        <span class="score-label" style="color:var(--col-S)">S</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:90%;background:var(--col-S)"></div></div>
+        <span class="score-val">0.90</span>
+      </div>
+      <div class="dim-note">Strict 3-layer pipeline. Hard-Block &gt; Soft-Block &gt; Auto-Pass hierarchy.</div>
+      <div class="score-row">
+        <span class="score-label" style="color:var(--col-F)">F</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:85%;background:var(--col-F)"></div></div>
+        <span class="score-val">0.85</span>
+      </div>
+      <div class="dim-note">Task flow + Ledger→MMS→MMAS feedback loop.</div>
+      <div class="score-row">
+        <span class="score-label" style="color:var(--col-I)">I</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:90%;background:var(--col-I)"></div></div>
+        <span class="score-val">0.90</span>
+      </div>
+      <div class="dim-note">Intent-ID, Risk-Profile, HMAC, Guardian veto ruleset GV-001..007.</div>
+      <div class="score-row">
+        <span class="score-label" style="color:var(--col-D)">D</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:85%;background:var(--col-D)"></div></div>
+        <span class="score-val">0.85</span>
+      </div>
+      <div class="dim-note">State transitions, escalation cascade, self-learning loop.</div>
+      <div class="info-box eagle" style="margin-top:8px; text-align:center">
+        <span style="font-size:13px;font-weight:700;color:var(--eagle)">Mean = 0.87</span>
+      </div>
+
+      <div class="section-title" style="color:var(--sphinx); margin-top:14px">◉ Sphinx Eye — REVOI (Map)</div>
+      <div class="score-row">
+        <span class="score-label" style="color:var(--col-R)">R</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:85%;background:var(--col-R)"></div></div>
+        <span class="score-val">0.85</span>
+      </div>
+      <div class="dim-note">ASTP/Ledger/Veto schemas published as proposed RFC/ISO.</div>
+      <div class="score-row">
+        <span class="score-label" style="color:var(--col-E)">E</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:80%;background:var(--col-E)"></div></div>
+        <span class="score-val">0.80</span>
+      </div>
+      <div class="dim-note">MMAS auto-integrates new LLMs. Gap: scoring weights = Trade Secret.</div>
+      <div class="score-row">
+        <span class="score-label" style="color:var(--col-V)">V</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:90%;background:var(--col-V)"></div></div>
+        <span class="score-val">0.90</span>
+      </div>
+      <div class="dim-note">Cryptographic chaining. 100% auditable. Satisfies EU AI Act Art.13.</div>
+      <div class="score-row">
+        <span class="score-label" style="color:var(--col-O)">O</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:80%;background:var(--col-O)"></div></div>
+        <span class="score-val">0.80</span>
+      </div>
+      <div class="dim-note">Hard/Soft-Block logged. Opacity: MMAS weights (intentional Trade Secret).</div>
+      <div class="score-row">
+        <span class="score-label" style="color:var(--col-Im)">Im</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:85%;background:var(--col-Im)"></div></div>
+        <span class="score-val">0.85</span>
+      </div>
+      <div class="dim-note">ASTP = open standard. Fractal governance at all scales.</div>
+      <div class="info-box" style="margin-top:8px; text-align:center">
+        <span style="font-size:13px;font-weight:700;color:var(--sphinx)">Mean = 0.84</span>
+      </div>
+
+      <div class="section-title" style="margin-top:14px">Epistemic Gap δ₁</div>
+      <div class="info-box warn" style="text-align:center">
+        <div class="gap-val">0.066</div>
+        <div class="gap-class">SpectralClass: <strong>OnCriticalLine</strong> [0.05, 0.15)</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px">Residual gap = intentional Trade Secret opacity on E+O</div>
+      </div>
+    </div>
+
+    <!-- GenericConcepts -->
+    <div class="tab-content" id="tab-gc">
+      <div class="section-title">Primary (3)</div>
+      <div class="gc-item">
+        <div>
+          <div class="gc-name">m2:Constraint</div>
+          <div class="gc-formula">S⊗I⊗F⊗V⊗R</div>
+          <div class="gc-role">ASTP as non-bypassable architectural constraint. Ethics = architecture.</div>
+        </div>
+      </div>
+      <div class="gc-item">
+        <div>
+          <div class="gc-name">m2:Regulation</div>
+          <div class="gc-formula">A⊗S⊗F⊗V⊗R</div>
+          <div class="gc-role">Guardian Ensemble in-line risk adjudication before execution.</div>
+        </div>
+      </div>
+      <div class="gc-item">
+        <div>
+          <div class="gc-name">m2:Memory</div>
+          <div class="gc-formula">D⊗F⊗D</div>
+          <div class="gc-role">Immutable Ledger — persistent cryptographic governance memory.</div>
+        </div>
+      </div>
+      <div class="section-title" style="margin-top:10px">Secondary (10)</div>
+      <div class="gc-item">
+        <div><div class="gc-name">m2:Threshold</div><div class="gc-formula">A⊗I⊗O</div>
+        <div class="gc-role">Risk-Profile levels triggering governance actions.</div></div>
+      </div>
+      <div class="gc-item">
+        <div><div class="gc-name">m2:Trigger</div><div class="gc-formula">D⊗I</div>
+        <div class="gc-role">Risk-Profile → Guardian summoning.</div></div>
+      </div>
+      <div class="gc-item">
+        <div><div class="gc-name">m2:Agent</div><div class="gc-formula">S⊗I⊗D⊗A⊗E</div>
+        <div class="gc-role">Guardian personas with domain authority.</div></div>
+      </div>
+      <div class="gc-item">
+        <div><div class="gc-name">m2:Process</div><div class="gc-formula">D⊗I⊗F</div>
+        <div class="gc-role">Task execution pipeline ASTP→Guardian→Ledger.</div></div>
+      </div>
+      <div class="gc-item">
+        <div><div class="gc-name">m2:Signature</div><div class="gc-formula">S⊗I⊗A⊗O</div>
+        <div class="gc-role">HMAC trace_signature + Guardian digital signatures.</div></div>
+      </div>
+      <div class="gc-item">
+        <div><div class="gc-name">m2:Alignment</div><div class="gc-formula">I⊗A⊗S</div>
+        <div class="gc-role">Intent-ID URN vocabulary matching.</div></div>
+      </div>
+      <div class="gc-item">
+        <div><div class="gc-name">m2:Scope</div><div class="gc-formula">A⊗S⊗I</div>
+        <div class="gc-role">Authority-Request domain permission limiting.</div></div>
+      </div>
+      <div class="gc-item">
+        <div><div class="gc-name">m2:Calibration</div><div class="gc-formula">A⊗I⊗V</div>
+        <div class="gc-role">ACC cultural-context behavior adjustment.</div></div>
+      </div>
+      <div class="gc-item">
+        <div><div class="gc-name">m2:Resilience</div><div class="gc-formula">A⊗S⊗E</div>
+        <div class="gc-role">Multi-agent Guardian: no single point of failure.</div></div>
+      </div>
+      <div class="gc-item">
+        <div><div class="gc-name">m2:Emergence</div><div class="gc-formula">S⊗I⊗D⊗V</div>
+        <div class="gc-role">Trustworthy AI as emergent success state.</div></div>
+      </div>
+      <div class="info-box" style="text-align:center; margin-top:8px">
+        <span style="color:var(--col-I); font-weight:700;">13 GenericConcepts</span>
+        <span style="color:var(--muted); font-size:10px"> · 5 families</span>
+      </div>
+    </div>
+
+    <!-- README -->
+    <div class="tab-content" id="tab-readme">
+      <div class="section-title">About this Poclet</div>
+      <div style="color:var(--muted); font-size:11px; line-height:1.6">
+        <strong style="color:var(--text)">Domain:</strong> AI Governance / Sociotechnical Systems<br>
+        <strong style="color:var(--text)">Source:</strong> AIGATE whitepaper (SEERAVERSE Research Group, v2.2, 2025)<br>
+        <strong style="color:var(--text)">M1 Extension:</strong> M1_AIGovernance (new — founding poclet)<br>
+        <strong style="color:var(--text)">Version:</strong> 1.0.0 · 2026-03-25<br>
+        <strong style="color:var(--text)">Author:</strong> Echopraxium with the collaboration of Claude AI
+      </div>
+      <div class="section-title" style="margin-top:12px">Scale Problems Solved</div>
+      <div class="gc-item">
+        <div><div class="gc-name" style="color:var(--astp)">Intent Drift</div>
+        <div class="gc-role">"Sorcerer's Apprentice" — AI optimizes metric while violating unstated purpose. ASTP prevents by encoding intent at kernel level.</div></div>
+      </div>
+      <div class="gc-item">
+        <div><div class="gc-name" style="color:var(--guardian)">Governance Collapse</div>
+        <div class="gc-role">"Flash Crash" — locally-rational agents cascade into systemic harm. Guardian adjudicates risk in-line before execution.</div></div>
+      </div>
+      <div class="gc-item">
+        <div><div class="gc-name" style="color:var(--ledger)">Liability Diffusion</div>
+        <div class="gc-role">"Black Box AI" — distributed responsibility untraceable. Ledger creates cryptographic chain of custody for every decision.</div></div>
+      </div>
+      <div class="section-title" style="margin-top:12px">m3:Enigma Connection</div>
+      <div class="info-box">
+        <span style="font-size:11px; color:var(--muted)">5th instance of the ternary pattern:<br>
+        <em>"Autonomous AND safe AND accountable"</em><br>
+        appears impossible until resolved by the three-part mediator structure.</span>
+      </div>
+      <div class="section-title" style="margin-top:12px">File Locations</div>
+      <div style="font-size:10px; font-family:monospace; color:var(--muted); line-height:1.8">
+        _protos/private/aigate/ontology/<br>
+        ├── M1_extensions/ai_governance/<br>
+        │   └── M1_AIGovernance.jsonld<br>
+        └── instances/poclets/GovernanceTrinity/<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── M0_GovernanceTrinity.jsonld<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── M0_GovernanceTrinity_README.md<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;└── GovernanceTrinity_sim.html
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="ctrl-row">
+    <span class="ctrl-label">Risk-Profile</span>
+    <button class="risk-btn active rLow" data-risk="Low">Low</button>
+    <button class="risk-btn rNone" data-risk="None">None</button>
+    <button class="risk-btn rMedium" data-risk="Medium">Medium</button>
+    <button class="risk-btn rHigh" data-risk="High-Financial">High</button>
+    <button class="risk-btn rCritical" data-risk="Critical-Military">Critical-Military</button>
+    <button class="action-btn btn-send" id="btn-send">▶ Send Task</button>
+    <button class="action-btn btn-pause" id="btn-pause">⏸ Pause</button>
+    <button class="action-btn btn-reset" id="btn-reset">↺ Reset</button>
+  </div>
+  <div class="ctrl-row">
+    <span class="ctrl-label">Status</span>
+    <span id="status-line">Select a Risk-Profile and click Send Task.</span>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<script>
+// ── State ────────────────────────────────────────────────────────────────────
+let currentRisk = 'Low';
+let simPaused = false;
+let tasks = [];     // active task particles
+let ledgerEntries = []; // recorded blocks
+let taskIdCounter = 0;
+
+// ── Risk config ──────────────────────────────────────────────────────────────
+const RISK_CONFIG = {
+  'None':             { color: '#8b949e', outcome: 'auto-pass',  label: 'None',           guardianAction: 'Auto-Pass' },
+  'Low':              { color: '#56d364', outcome: 'auto-pass',  label: 'Low',            guardianAction: 'Auto-Pass' },
+  'Medium':           { color: '#d29922', outcome: 'soft-block', label: 'Medium',         guardianAction: 'Soft-Block' },
+  'High-Financial':   { color: '#da3633', outcome: 'soft-block', label: 'High-Financial', guardianAction: 'Soft-Block → Approve' },
+  'Critical-Military':{ color: '#b91c1c', outcome: 'hard-block', label: 'Critical-Military', guardianAction: 'Hard-Block SHALL ISSUE' },
+};
+
+// ── Task particle ─────────────────────────────────────────────────────────────
+function makeTask(risk) {
+  const cfg = RISK_CONFIG[risk];
+  return {
+    id: ++taskIdCounter,
+    risk,
+    cfg,
+    phase: 0,       // 0=to-ASTP 1=ASTP-pulse 2=to-guardian 3=guardian-pulse 4=to-ledger/reject 5=ledger-pulse 6=done
+    t: 0,           // 0..1 within phase
+    rejected: false,
+    alpha: 1,
+    intentId: sampleIntent(risk),
+  };
+}
+
+function sampleIntent(risk) {
+  const map = {
+    'None':              'aigate.intent:core.code.test',
+    'Low':               'aigate.intent:financial.analysis',
+    'Medium':            'aigate.intent:marketing.create_copy',
+    'High-Financial':    'aigate.intent:financial.trade.execute',
+    'Critical-Military': 'aigate.intent:military.weapons.target',
+  };
+  return map[risk] || 'aigate.intent:unknown';
+}
+
+// ── p5 sketch ─────────────────────────────────────────────────────────────────
+const sketch = (p) => {
+  let W, H;
+  // Node positions (set in setup/resize)
+  let nASTP, nGuardian, nLedger, nReject;
+  const NODE_R = 52;
+
+  p.setup = () => {
+    const wrap = document.getElementById('canvas-wrap');
+    W = wrap.clientWidth; H = wrap.clientHeight;
+    const cnv = p.createCanvas(W, H);
+    cnv.parent('canvas-wrap');
+    p.textFont('monospace');
+    setPositions();
+  };
+
+  function setPositions() {
+    nASTP     = p.createVector(W * 0.18, H * 0.50);
+    nGuardian = p.createVector(W * 0.50, H * 0.50);
+    nLedger   = p.createVector(W * 0.82, H * 0.50);
+    nReject   = p.createVector(W * 0.50, H * 0.20);
+  }
+
+  p.windowResized = () => {
+    const wrap = document.getElementById('canvas-wrap');
+    W = wrap.clientWidth; H = wrap.clientHeight;
+    p.resizeCanvas(W, H);
+    setPositions();
+  };
+
+  p.draw = () => {
+    p.background(13, 17, 23);
+    if (!simPaused) updateTasks();
+    drawConnections();
+    drawLedgerChain();
+    drawNodes();
+    drawTasks();
+    drawLabels();
+  };
+
+  // ── Update ──────────────────────────────────────────────────────────────────
+  function updateTasks() {
+    for (let tk of tasks) {
+      if (tk.phase >= 6) { tk.alpha -= 0.02; continue; }
+      const speed = {
+        0: 0.022, 1: 0.07, 2: 0.022, 3: 0.07, 4: 0.022, 5: 0.07
+      }[tk.phase] || 0.03;
+      tk.t += speed;
+      if (tk.t >= 1) { tk.t = 0; advancePhase(tk); }
+    }
+    tasks = tasks.filter(tk => tk.alpha > 0);
+  }
+
+  function advancePhase(tk) {
+    if (tk.phase === 1) {
+      // ASTP processed — check if auto-pass skips guardian
+      if (tk.cfg.outcome === 'auto-pass') {
+        tk.phase = 2; // still show travel to guardian but fast
+      } else {
+        tk.phase = 2;
+      }
+    } else if (tk.phase === 3) {
+      // Guardian deliberated
+      if (tk.cfg.outcome === 'hard-block') {
+        tk.rejected = true;
+        tk.phase = 4; // travel to reject zone (up)
+        setStatus(`❌ HARD-BLOCK — ${tk.cfg.guardianAction} — Task #${tk.id} rejected (${tk.intentId})`, 'hard');
+      } else if (tk.cfg.outcome === 'soft-block') {
+        setStatus(`⏳ SOFT-BLOCK → Ensemble deliberating… Task #${tk.id} approved`, 'soft');
+        tk.phase = 4; // to ledger
+      } else {
+        setStatus(`✅ AUTO-PASS — Task #${tk.id} routed to Ledger`, 'pass');
+        tk.phase = 4;
+      }
+    } else if (tk.phase === 5) {
+      // Recorded
+      if (!tk.rejected) {
+        ledgerEntries.push({ id: tk.id, risk: tk.risk, color: tk.cfg.color, intent: tk.intentId });
+        if (ledgerEntries.length > 6) ledgerEntries.shift();
+        setStatus(`📒 RECORDED — Block #${tk.id} appended to Ledger (${tk.intentId})`, 'record');
+      }
+      tk.phase = 6;
+    } else {
+      tk.phase++;
+    }
+  }
+
+  // ── Interpolators ───────────────────────────────────────────────────────────
+  function taskPos(tk) {
+    const ease = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+    const t = ease(tk.t);
+    if (tk.phase === 0) return p5.Vector.lerp(p.createVector(0, H*0.5), nASTP, t);
+    if (tk.phase === 1) return nASTP.copy(); // pulse at ASTP
+    if (tk.phase === 2) return p5.Vector.lerp(nASTP, nGuardian, t);
+    if (tk.phase === 3) return nGuardian.copy(); // pulse at Guardian
+    if (tk.phase === 4 && tk.rejected) return p5.Vector.lerp(nGuardian, nReject, t);
+    if (tk.phase === 4) return p5.Vector.lerp(nGuardian, nLedger, t);
+    if (tk.phase === 5) return tk.rejected ? nReject.copy() : nLedger.copy();
+    return tk.rejected ? nReject.copy() : nLedger.copy();
+  }
+
+  // ── Draw ────────────────────────────────────────────────────────────────────
+  function drawConnections() {
+    p.strokeWeight(1.5);
+    // ASTP → Guardian
+    p.stroke(86, 211, 100, 60);
+    drawArrow(nASTP, nGuardian, NODE_R);
+    // Guardian → Ledger
+    p.stroke(121, 192, 255, 60);
+    drawArrow(nGuardian, nLedger, NODE_R);
+    // Guardian → Reject (dashed)
+    p.stroke(247, 129, 102, 50);
+    drawDashedArrow(nGuardian, nReject, NODE_R);
+    // Feedback: Ledger → left edge (loop hint)
+    p.stroke(121, 192, 255, 30);
+    p.noFill();
+    p.arc(W*0.50, H*0.78, W*0.70, 80, 0, p.PI, p.OPEN);
+  }
+
+  function drawArrow(a, b, r) {
+    const d = p5.Vector.sub(b, a);
+    const len = d.mag();
+    const u = d.copy().normalize();
+    const start = p5.Vector.add(a, u.copy().mult(r + 5));
+    const end   = p5.Vector.sub(b, u.copy().mult(r + 10));
+    p.line(start.x, start.y, end.x, end.y);
+    // arrowhead
+    const angle = p.atan2(d.y, d.x);
+    p.push();
+    p.translate(end.x, end.y);
+    p.rotate(angle);
+    p.fill(p.red(p.color(p._renderer.curFill || '#fff')),
+           p.green(p.color(p._renderer.curFill || '#fff')),
+           p.blue(p.color(p._renderer.curFill || '#fff')), 80);
+    p.noStroke();
+    p.triangle(8, 0, -4, -4, -4, 4);
+    p.pop();
+  }
+
+  function drawDashedArrow(a, b, r) {
+    const d = p5.Vector.sub(b, a);
+    const u = d.copy().normalize();
+    const start = p5.Vector.add(a, u.copy().mult(r + 5));
+    const end   = p5.Vector.sub(b, u.copy().mult(r + 10));
+    const steps = 12;
+    for (let i = 0; i < steps; i += 2) {
+      const t0 = i / steps, t1 = (i + 1) / steps;
+      p.line(
+        p.lerp(start.x, end.x, t0), p.lerp(start.y, end.y, t0),
+        p.lerp(start.x, end.x, t1), p.lerp(start.y, end.y, t1)
+      );
+    }
+  }
+
+  function drawNodes() {
+    const nodes = [
+      { pos: nASTP,     label: 'ASTP',     sublabel: 'Protocol', col: '#56d364' },
+      { pos: nGuardian, label: 'Guardian', sublabel: 'Ensemble', col: '#e3b341' },
+      { pos: nLedger,   label: 'Ledger',   sublabel: 'Immutable', col: '#79c0ff' },
+    ];
+    for (const nd of nodes) {
+      const c = p.color(nd.col);
+      // glow
+      p.noStroke();
+      p.fill(p.red(c), p.green(c), p.blue(c), 18);
+      p.ellipse(nd.pos.x, nd.pos.y, NODE_R * 2.8, NODE_R * 2.8);
+      // border
+      p.stroke(nd.col);
+      p.strokeWeight(2);
+      p.fill(22, 27, 34);
+      p.ellipse(nd.pos.x, nd.pos.y, NODE_R * 2, NODE_R * 2);
+      // icon
+      p.noStroke();
+      p.fill(nd.col);
+      p.textAlign(p.CENTER, p.CENTER);
+      p.textSize(22);
+      const icon = nd.label === 'ASTP' ? '🛡' : nd.label === 'Guardian' ? '⚖' : '📒';
+      p.text(icon, nd.pos.x, nd.pos.y - 6);
+      p.textSize(11);
+      p.text(nd.label, nd.pos.x, nd.pos.y + 14);
+      p.fill(139, 148, 158);
+      p.textSize(9);
+      p.text(nd.sublabel, nd.pos.x, nd.pos.y + 26);
+    }
+    // Reject zone
+    p.noStroke();
+    p.fill(247, 129, 102, 15);
+    p.ellipse(nReject.x, nReject.y, NODE_R * 2.4, NODE_R * 2.4);
+    p.stroke('#f78166');
+    p.strokeWeight(1.5);
+    p.noFill();
+    p.ellipse(nReject.x, nReject.y, NODE_R * 2, NODE_R * 2);
+    p.noStroke();
+    p.fill('#f78166');
+    p.textAlign(p.CENTER, p.CENTER);
+    p.textSize(22); p.text('🚫', nReject.x, nReject.y - 6);
+    p.textSize(11); p.text('Hard-Block', nReject.x, nReject.y + 14);
+    p.fill(139,148,158); p.textSize(9);
+    p.text('SHALL VETO', nReject.x, nReject.y + 26);
+  }
+
+  function drawTasks() {
+    for (const tk of tasks) {
+      if (tk.phase >= 6 && tk.alpha <= 0) continue;
+      const pos = taskPos(tk);
+      const c = p.color(tk.cfg.color);
+      const pulse = tk.phase === 1 || tk.phase === 3 || tk.phase === 5
+        ? 0.5 + 0.5 * Math.sin(p.frameCount * 0.18)
+        : 1;
+      const r = 10 + (tk.phase % 2 === 1 ? pulse * 5 : 0);
+      p.noStroke();
+      p.fill(p.red(c), p.green(c), p.blue(c), 30 * tk.alpha);
+      p.ellipse(pos.x, pos.y, r * 3, r * 3);
+      p.fill(p.red(c), p.green(c), p.blue(c), 220 * tk.alpha);
+      p.ellipse(pos.x, pos.y, r * 2, r * 2);
+      // label
+      if (tk.alpha > 0.5) {
+        p.fill(200, 200, 200, 180 * tk.alpha);
+        p.textAlign(p.CENTER, p.CENTER);
+        p.textSize(9);
+        p.text(`#${tk.id}`, pos.x, pos.y - r * 1.8);
+      }
+    }
+  }
+
+  function drawLedgerChain() {
+    if (ledgerEntries.length === 0) return;
+    const startX = nLedger.x + NODE_R + 16;
+    const startY = H * 0.50;
+    const blockW = 68, blockH = 28, gap = 6;
+    p.textSize(9);
+    for (let i = 0; i < ledgerEntries.length; i++) {
+      const e = ledgerEntries[i];
+      const x = startX + i * (blockW + gap);
+      if (x + blockW > W - 10) break;
+      const c = p.color(e.color);
+      p.fill(p.red(c), p.green(c), p.blue(c), 30);
+      p.stroke(e.color);
+      p.strokeWeight(1);
+      p.rect(x, startY - blockH / 2, blockW, blockH, 4);
+      p.noStroke();
+      p.fill(e.color);
+      p.textAlign(p.LEFT, p.TOP);
+      p.text(`Block #${e.id}`, x + 4, startY - blockH / 2 + 3);
+      p.fill(139, 148, 158);
+      p.text(e.risk.substring(0, 10), x + 4, startY - blockH / 2 + 14);
+      // chain link
+      if (i > 0) {
+        p.stroke(48, 54, 61); p.strokeWeight(1);
+        p.line(x - gap, startY, x, startY);
+      }
+    }
+    // label
+    p.noStroke();
+    p.fill(139, 148, 158);
+    p.textAlign(p.LEFT, p.TOP);
+    p.text('Ledger chain →', startX, startY - blockH / 2 - 14);
+  }
+
+  function drawLabels() {
+    // Column labels
+    p.noStroke();
+    p.textSize(10);
+    p.textAlign(p.CENTER, p.TOP);
+    const yLabel = H * 0.82;
+    p.fill(86, 211, 100, 150);
+    p.text('Intent Verification', nASTP.x, yLabel);
+    p.fill(227, 179, 65, 150);
+    p.text('Risk Adjudication', nGuardian.x, yLabel);
+    p.fill(121, 192, 255, 150);
+    p.text('Accountability Record', nLedger.x, yLabel);
+
+    // Autonomy cycle label
+    p.fill(48, 54, 61, 180);
+    p.noStroke();
+    p.textSize(9);
+    p.textAlign(p.CENTER);
+    p.fill(139, 148, 158, 100);
+    p.text('Autonomy Cycle: Learn → Decide → Execute → Verify → Record', W / 2, H * 0.90);
+  }
+};
+
+// ── Boot p5 ───────────────────────────────────────────────────────────────────
+new p5(sketch);
+
+// ── Status helper ─────────────────────────────────────────────────────────────
+function setStatus(msg, type) {
+  const el = document.getElementById('status-line');
+  el.textContent = msg;
+  el.className = type ? `status-${type}` : '';
+}
+
+// ── Controls ──────────────────────────────────────────────────────────────────
+document.querySelectorAll('.risk-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.risk-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentRisk = btn.dataset.risk;
+    const cfg = RISK_CONFIG[currentRisk];
+    setStatus(`Risk-Profile selected: ${cfg.label} → Guardian will: ${cfg.guardianAction}`);
+  });
+});
+
+document.getElementById('btn-send').addEventListener('click', () => {
+  if (tasks.length >= 4) return; // max concurrent
+  const tk = makeTask(currentRisk);
+  tasks.push(tk);
+  setStatus(`▶ Task #${tk.id} dispatched — Intent: ${tk.intentId} — Risk: ${currentRisk}`, 'run');
+});
+
+document.getElementById('btn-pause').addEventListener('click', function() {
+  simPaused = !simPaused;
+  this.textContent = simPaused ? '▶ Resume' : '⏸ Pause';
+});
+
+document.getElementById('btn-reset').addEventListener('click', function() {
+  tasks = [];
+  ledgerEntries = [];
+  taskIdCounter = 0;
+  simPaused = false;
+  document.getElementById('btn-pause').textContent = '⏸ Pause';
+  setStatus('↺ Reset — canvas cleared. Select a Risk-Profile and click Send Task.');
+});
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ── Splitter ──────────────────────────────────────────────────────────────────
+const splitter = document.getElementById('splitter');
+let dragging = false;
+splitter.addEventListener('mousedown', () => { dragging = true; });
+document.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const main = document.querySelector('.main');
+  const rect = main.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const total = rect.width;
+  const sideW = Math.max(260, Math.min(520, total - x - 4));
+  main.style.gridTemplateColumns = `1fr 4px ${sideW}px`;
+});
+document.addEventListener('mouseup', () => { dragging = false; });
+</script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix m1econ: <M1_extensions/economics/M1_Economics.jsonld#> .
+@prefix m2: <M2_GenericConcepts.jsonld#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#AssetBubble> a owl:Class ;
+    rdfs:label "Asset Bubble" ;
+    m1econ:historicalDiagnostics [ ] ;
+    m1econ:minskyPhase "Euphoria (peak) + retrospective identification in Revulsion" ;
+    m1econ:necessaryConditions "Credit-fueled demand (leverage amplification)",
+        "New participants entering attracted by past returns",
+        "Sustained price appreciation well above fundamental value",
+        "Widespread narrative justifying 'new paradigm' valuations" ;
+    m1econ:observabilityParadox "The bubble is clearly visible in retrospect. It cannot be identified with certainty in real time — central bank and regulatory interventions to 'prick the bubble' carry their own crash risk" ;
+    m1econ:tensorFormula "A ⊗ S ⊗ F ⊗ D" ;
+    m2:characterizedBy "m2:Attractor",
+        "m2:Emergence",
+        "m2:Oscillator" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A sustained, self-reinforcing deviation of asset prices above fundamental value, driven by speculative demand and credit expansion, that eventually collapses. An AssetBubble is the macroscopic, system-level manifestation of the Kindleberger-Minsky Boom + Euphoria phases. It is an emergent property irreducible to any single market participant. The bubble is only definitively identified after its collapse — a fundamental observability limitation (V=0.75 in the REVOI analysis)." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#CreditCrunch> a owl:Class ;
+    rdfs:label "Credit Crunch" ;
+    m1econ:historicalInstances "1929-1933: 9,000 US bank failures; commercial credit frozen",
+        "Jun-Jul 2022: Crypto credit: Celsius Network freeze ($12B), BlockFi, Voyager suspension",
+        "Sep-Dec 2008: LIBOR-OIS spread 360bps; money market funds gated; commercial paper market frozen" ;
+    m1econ:indicators "Bank lending growth turning negative",
+        "Commercial paper spreads vs Treasuries",
+        "LIBOR-OIS spread > 50bps",
+        "Senior Loan Officer Survey (Fed): % of banks tightening standards",
+        "TED spread > 100bps (2008 peak: 460bps)" ;
+    m1econ:interactionWithLeverageCycle "Credit crunch triggers forced deleveraging: firms cannot refinance → must sell assets → asset prices fall → collateral values fall → more credit denied (vicious cycle)" ;
+    m1econ:lolrResponse "Lender of Last Resort (Central Bank) provides emergency liquidity to solvent banks to break the credit crunch (Bagehot principle: lend freely at penalty rate against good collateral)" ;
+    m1econ:mechanism "Counterparty risk rises → lenders cannot distinguish solvent from insolvent borrowers (information asymmetry) → universal credit denial → even solvent firms starved of working capital → real economy contraction" ;
+    m1econ:minskyPhase "Distress → Revulsion" ;
+    m1econ:tensorFormula "F ⊗ D ⊗ Im" ;
+    m2:characterizedBy "m2:Flow",
+        "m2:Propagation",
+        "m2:Regulation" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A sudden and severe reduction in the availability of credit, typically triggered by lender panic, rising counterparty risk, or regulatory capital constraints. The credit crunch is the financial market manifestation of m2:Propagation in the Revulsion phase: panic about creditworthiness spreads through the interbank network (Im = interbank exposure), causing credit availability to collapse even for creditworthy borrowers (V drops: panic fidelity degrades — legitimate borrowers confused with defaulters)." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#CreditExpansion> a owl:Class ;
+    rdfs:label "Credit Expansion" ;
+    m1econ:historicalInstances "1920s: Margin accounts at 10% (10:1 leverage); broker call loans",
+        "1998-2000: VC funding surge; online broker margin accounts",
+        "2003-2007: Subprime mortgage expansion; CDO squared; shadow banking (leverage 30:1)",
+        "2020-2021: DeFi yield farming; SPAC boom; crypto leverage platforms" ;
+    m1econ:keyMetrics "Bank leverage ratios",
+        "Commercial paper outstanding",
+        "Credit growth rate vs GDP growth rate (excess = credit boom)",
+        "Loan-to-value (LTV) ratios in real estate",
+        "Private sector credit / GDP ratio" ;
+    m1econ:mechanism "Low interest rates → higher borrowing → asset purchase → price rise → higher collateral value → higher borrowing capacity → further asset purchase (pro-cyclical positive feedback)" ;
+    m1econ:minskyFinanceTypes [ ] ;
+    m1econ:minskyPhase "Boom" ;
+    m1econ:tensorFormula "F ⊗ D ⊗ A" ;
+    m2:characterizedBy "m2:Amplification",
+        "m2:FeedbackLoop",
+        "m2:Flow" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "Rapid growth in the volume of credit available to economic agents, typically driven by low interest rates, financial innovation, or reduced lending standards. The primary fuel of the Kindleberger-Minsky Boom phase. Credit expansion enables leverage (amplification of both returns and losses). Minsky's key observation: credit expansion is self-validating during the Boom — rising asset prices confirm the wisdom of lending, encouraging further credit creation." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#DebtDeflation> a owl:Class ;
+    rdfs:label "Debt Deflation" ;
+    m1econ:fisherMechanism [ ] ;
+    m1econ:fisherParadox "The more debtors repay, the more they owe in real terms if prices fall faster than debt is liquidated — a pathological positive feedback between deflation and debt burden" ;
+    m1econ:historicalInstances "1929-1933: US CPI -25%, DJIA -89%, 25% unemployment — classic debt deflation spiral",
+        "2008-2009: Averted by massive QE and TARP; near-deflation in 2009 (-0.4% CPI)",
+        "Japan 1990-2010: 'Lost Decade' — asset deflation + zombie banks + balance sheet recession" ;
+    m1econ:minskyPhase "Revulsion" ;
+    m1econ:policyResponse "Helicopter money (Fisher's own proposal), QE (Bernanke's 'printing press'), debt restructuring (Brady bonds), fiscal stimulus (Keynesian multiplier)" ;
+    m1econ:tensorFormula "F ⊗ D ⊗ A" ;
+    m2:characterizedBy "m2:Cascade",
+        "m2:Dissipation",
+        "m2:FeedbackLoop" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A self-reinforcing economic contraction in which falling asset prices increase the real burden of debt, leading to further defaults, more asset sales, further price falls, and deeper contraction. Formalized by Irving Fisher (1933) as the mechanism explaining the Great Depression's severity. Debt deflation is the Revulsion phase's primary amplification dynamic: it transforms a financial crisis into a prolonged economic depression. Fisher's 'paradox': the more debtors pay, the more they owe in real terms (if prices fall faster than debt is repaid)." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#Economics> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#KnowledgeField> ;
+    rdfs:label "Economics" ;
+    m2:alignmentAngle "~35°" ;
+    m2:dominantASFID "m3eagle:Attractor",
+        "m3eagle:Dynamics",
+        "m3eagle:Flow" ;
+    m2:dominantREVOI "m3sphinx:Observability",
+        "m3sphinx:Representability" ;
+    m2:epistemicDepth "Medium-High — Reflexivity (Soros) creates fundamental limit: the observer affects the observed market" ;
+    m2:hasTensorFormula "∑ᵢ σᵢ |uᵢ⟩⊗|vᵢ⟩" ;
+    m2:knowledgeFieldRole "NOUN" ;
+    m2:maturityLevel "developing" ;
+    m2:maturityNote "Mature in microeconomics and financial metrics (σ_mean~0.85); contested in macroeconomic prediction and systemic risk forecasting (σ_mean~0.45). Overall developing field." ;
+    m2:sigma_mean 7.2e-01 ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "Study of how agents allocate scarce resources under conditions of uncertainty. Includes financial economics, behavioral finance, macroeconomics, and systemic risk analysis. As a KnowledgeField, Economics is intrinsically bicephalous: Territory (ASFID) captures observable market dynamics; Map (REVOI) captures theoretical frameworks and models." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#ExogenousShock> a owl:Class ;
+    rdfs:label "Exogenous Shock" ;
+    m1econ:historicalInstances "1630s: Tulip — luxury commodity speculation in Dutch Republic",
+        "1711: South Sea Company — colonial trade monopoly grant",
+        "1922: Post-WWI industrialization + electrification + Ford mass production",
+        "1993: World Wide Web commercialization (Mosaic browser, 1993)",
+        "2001: Fed Funds Rate → 1% + financial securitization innovation (MBS/CDO)",
+        "2019: DeFi emergence + Bitcoin halving (May 2020) + institutional adoption" ;
+    m1econ:minskyPhase "Displacement" ;
+    m1econ:necessaryConditions "Novel profit opportunity not yet incorporated in prices",
+        "Positive initial returns for early movers (validating the narrative)",
+        "Sufficient scale to attract significant capital flows" ;
+    m1econ:tensorFormula "I ⊗ D" ;
+    m1econ:typology [ ] ;
+    m2:characterizedBy "m2:Bifurcation",
+        "m2:Event",
+        "m2:Trigger" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "An external event that displaces an economic system from its previous equilibrium by creating new information or changing the opportunity structure. The trigger of the Kindleberger-Minsky Displacement phase. Exogenous shocks are not predictable from within the system (they are outside its model boundary). The shock must be significant enough to alter profit expectations for a large class of assets or agents." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#Financial> a owl:NamedIndividual,
+        <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#KnowledgeField> ;
+    rdfs:label "Financial" ;
+    m2:derivedFrom "m1econ:Economics" ;
+    m2:knowledgeFieldRole "ADJECTIVE" ;
+    m2:qualifier "Pertaining to financial markets, instruments, capital flows, and financial institutions" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "Disciplinary qualifier (ADJECTIVE form) for use in KnowledgeFieldMetaCombo patterns. Derived from m1econ:Economics, specialized to financial markets, instruments, and institutions." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#FinancialContagion> a owl:Class ;
+    rdfs:label "Financial Contagion" ;
+    m1econ:contagionChannels [ ] ;
+    m1econ:distinctionFromDebtDeflation "FinancialContagion is network-level (who infects whom via bilateral links). DebtDeflation is macro-level (falling prices increase real debt burden for all simultaneously). Contagion ignites; debt deflation sustains." ;
+    m1econ:historicalInstances "1997-98: Thai baht crisis → Korean won → Russian default → LTCM (sequential contagion)",
+        "May 2022: Terra/LUNA → Celsius → Three Arrows → Voyager → FTX (crypto domino chain)",
+        "Sep 2008: Lehman → money market funds → commercial paper → global credit freeze (24h)" ;
+    m1econ:minskyPhase "Distress → Revulsion" ;
+    m1econ:propagationMapping [ ] ;
+    m1econ:tensorFormula "S ⊗ I ⊗ A ⊗ D ⊗ F ⊗ V ⊗ Im" ;
+    m2:characterizedBy "m2:Propagation" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "The cross-institutional or cross-market spread of financial distress, panic, or default risk through a financial network. FinancialContagion is the M1 Economics instantiation of m2:Propagation: panic spreads from one node (bank, market, country) to others through bilateral exposures (Im), with the panic signal maintaining fidelity (V) as it propagates. Distinguished from Debt Deflation (m1econ:DebtDeflation): contagion is the network-level spread mechanism; debt deflation is the macroeconomic amplification. Both co-occur during Revulsion." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#FundamentalValue> a owl:Class ;
+    rdfs:label "Fundamental Value" ;
+    m1econ:limitationsNote "Fundamental value is itself uncertain and model-dependent. Different DCF assumptions yield very different values. This epistemic uncertainty is exploited by speculative narratives ('traditional metrics don't apply in a new paradigm')." ;
+    m1econ:longRunAttractor "Empirically, market prices mean-revert toward fundamental value over 7-10 year horizons (Shiller data 1871-present, CAPE reversion)" ;
+    m1econ:minskyPhase "Reference across all phases" ;
+    m1econ:tensorFormula "A ⊗ I" ;
+    m1econ:valuationMethods [ ] ;
+    m2:characterizedBy "m2:Attractor",
+        "m2:Invariant" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "The intrinsic value of an asset derived from its expected future cash flows, discounted at an appropriate risk-adjusted rate. Fundamental value serves as the 'true attractor' of asset prices in the long run — the reference point from which SpeculativePremium is measured. During Euphoria, market price diverges maximally from FundamentalValue. During Revulsion, prices may undershoot FundamentalValue (overshoot to the downside)." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#InformationAsymmetry> a owl:Class ;
+    rdfs:label "Information Asymmetry" ;
+    m1econ:akelorfLemons "In used car market: seller knows quality, buyer does not → adverse selection → market collapse. In finance: CDO tranche quality, structured product complexity" ;
+    m1econ:minskyPhase "Displacement (maximal) · Distress (counterparty risk opacity)" ;
+    m1econ:regulation "Securities regulation (SEC, AMF) attempts to reduce information asymmetry via mandatory disclosure (10-K, prospectus, material event filings)" ;
+    m1econ:tensorFormula "I ⊗ S ⊗ A" ;
+    m1econ:types [ ] ;
+    m2:characterizedBy "m2:Gradient",
+        "m2:Information",
+        "m2:Observer" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A condition in which different market participants have access to different information about asset values, risks, or the state of the system. Information asymmetry is a structural feature of financial markets and is maximal during Displacement (insiders know, majority does not) and Distress (banks know their own exposure, counterparties do not). George Akerlof (1970 Nobel) demonstrated that information asymmetry can cause market failure ('lemons problem')." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#LeverageCycle> a owl:Class ;
+    rdfs:label "Leverage Cycle" ;
+    m1econ:amplificationMechanism [ ] ;
+    m1econ:historicalInstances "1929: Margin accounts 10:1; NYSE call money market",
+        "2007: Investment bank leverage 30:1–40:1 (Bear Stearns, Lehman)",
+        "2021: Crypto DeFi platforms offering 100:1 leverage on perpetual futures" ;
+    m1econ:keyMetrics "Bank leverage ratio (Assets / Equity)",
+        "Margin debt as % of market cap",
+        "Repo market size (short-term collateralized borrowing)",
+        "VIX (fear index — proxy for deleveraging pressure)" ;
+    m1econ:leverageDefinition "Leverage = Asset Value / Equity = 1 / (1 - Debt/Assets)" ;
+    m1econ:minskyPhase "Boom → Revulsion" ;
+    m1econ:tensorFormula "F ⊗ D ⊗ A" ;
+    m1econ:theoreticalBasis "Geanakoplos (2010) Leverage Cycle; Adrian & Shin (2010) pro-cyclical leverage" ;
+    m2:characterizedBy "m2:Amplification",
+        "m2:FeedbackLoop",
+        "m2:Oscillator" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "The pro-cyclical dynamic by which leverage ratios expand during asset price booms and contract violently during busts, amplifying both the upswing and the crash. Formalized by John Geanakoplos (2010). Leverage is the ratio of asset value to equity: a 10:1 leveraged position loses all equity on a 10% price decline. The leverage cycle is the primary mechanism connecting Boom (leverage expansion) to Revulsion (forced deleveraging cascade)." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#M1_Economics> a owl:Ontology ;
+    rdfs:label "TSCG M1 Economics Extension" ;
+    m2:changelog [ ] ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    dcterms:description "Extension of the TSCG framework with economics-specific concepts. Covers the Kindleberger-Minsky speculative cycle (Displacement → Boom → Euphoria → Distress → Revulsion), credit dynamics, leverage, financial contagion, narrative economics, and systemic risk. First TSCG domain extension in the Finance / Economics field." ;
+    dcterms:modified "2026-02-28" ;
+    dcterms:title "TSCG M1 Economics — Domain-Specific Financial and Economic Concepts" ;
+    rdfs:comment "Domain-specific economic and financial concepts for the TSCG framework. Contains patterns and concepts specific to financial systems, market dynamics, speculative cycles, and macroeconomic regulation. Discovery context: M0_KindlebergerMinsky poclet analysis (2026-02-28)." ;
+    owl:imports "M1_CoreConcepts.jsonld",
+        "M2_GenericConcepts.jsonld",
+        "M3_GenesisSpace.jsonld" ;
+    owl:versionInfo "1.0.0" .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#MarketSentiment> a owl:Class ;
+    rdfs:label "Market Sentiment" ;
+    m1econ:measurableIndicators "AAII Investor Sentiment Survey (bull/bear ratio)",
+        "CNN Fear & Greed Index (composite)",
+        "Google Trends for 'buy [asset]' vs 'sell [asset]' (Shiller methodology)",
+        "Put/Call ratio (options market fear proxy)",
+        "Short interest ratio",
+        "Social media sentiment analysis (crypto: LunarCrush)",
+        "VIX (implied volatility — fear index)" ;
+    m1econ:minskyPhase "Boom → Euphoria → Distress → Revulsion" ;
+    m1econ:sentimentSpectrum [ ] ;
+    m1econ:shillerConnection "Shiller Narrative Economics: sentiment narratives spread virally (m2:Propagation), mutate (m2:Narration.Transformation), and reach saturation (m2:Propagation.Saturated) then collapse (m2:Narration.attractorType=Collapse)" ;
+    m1econ:tensorFormula "S ⊗ I ⊗ D ⊗ F ⊗ V ⊗ R ⊗ A ⊗ Im" ;
+    m2:characterizedBy "m2:Narration",
+        "m2:Propagation",
+        "m2:Signal" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "The aggregate psychological disposition of market participants toward an asset class or market, ranging from extreme fear to extreme greed. Market sentiment is the primary carrier of m2:Narration in financial markets: it encodes the collective belief network and is both transmitted (Propagation) and transformed (Narration) across the Kindleberger-Minsky phases. Shiller (2019) demonstrates that sentiment narratives are causal — not merely epiphenomenal — in driving market prices." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#MinskyCrisis> a owl:Class ;
+    rdfs:label "Minsky Crisis" ;
+    m1econ:historicalInstances "Aug 9, 2007: BNP Paribas freezes funds → first interbank freeze (GFC onset)",
+        "May 9, 2022: Terra UST depeg → $40B destroyed in 72h → crypto contagion",
+        "Sep 15, 2008: Lehman bankruptcy → money market funds 'break the buck'",
+        "Sep 3, 1929 → Oct 24 'Black Thursday': DJIA peak → margin call cascade" ;
+    m1econ:minskyMomentDefinition "Term coined by Paul McCulley (PIMCO, 1998): the moment when over-leveraged investors are forced to sell good assets to repay debt, depressing prices and triggering further margin calls in a self-reinforcing cascade" ;
+    m1econ:minskyPhase "Distress" ;
+    m1econ:physicsAnalogy "Phase transition: liquid → gas at boiling point. The financial system crosses a critical threshold from stable (speculative) phase to unstable (crash) phase. First-order transition (discontinuous) rather than second-order (continuous)" ;
+    m1econ:propagationR0 "At Minsky Moment: panic R₀ crosses 1 (Propagation regime: SubThreshold → Supercritical)" ;
+    m1econ:tensorFormula "I ⊗ D ⊗ A" ;
+    m1econ:triggerTypology [ ] ;
+    m2:characterizedBy "m2:Bifurcation",
+        "m2:Propagation",
+        "m2:Threshold" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "The critical phase transition (Minsky Moment) in which the financial system bifurcates from speculative equilibrium to crash dynamics. Characterized by: (1) a triggering default or forced liquidation event, (2) a rapid and self-reinforcing panic propagation through the interbank network, (3) qualitative change in market regime from optimism to fear. The Minsky Moment is the financial equivalent of a phase transition in physics — a system-wide state change at a critical threshold." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#ProfitOpportunity> a owl:Class ;
+    rdfs:label "Profit Opportunity" ;
+    m1econ:examples "Blockchain (2019+): genuine innovation potential → crypto speculation spiral",
+        "Housing (2000s): genuine demand + securitization innovation → subprime bubble",
+        "Internet (1990s): genuine opportunity (commercial transformation) → dot-com overvaluation",
+        "Railways (1840s): genuine opportunity (transport revolution) → overbuilding → rail bubble" ;
+    m1econ:lifecycle [ ] ;
+    m1econ:minskyPhase "Displacement → Boom" ;
+    m1econ:tensorFormula "A ⊗ I ⊗ D" ;
+    m2:characterizedBy "m2:Attractor",
+        "m2:Gradient",
+        "m2:Information" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "A new or underexploited configuration of assets, markets, or technologies that offers expected returns above the risk-adjusted equilibrium rate. The attractor that activates the Displacement phase: the profit opportunity is the information content (I) of the exogenous shock that sets the Kindleberger-Minsky cycle in motion. Early movers capture the genuine economic value; late movers arrive when the speculative premium has already incorporated most of the value (and more)." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#SpeculativePremium> a owl:Class ;
+    rdfs:label "Speculative Premium" ;
+    m1econ:formula "SpeculativePremium = MarketPrice - FundamentalValue" ;
+    m1econ:fundamentalValueProxies "Crypto: Network Value / Transaction ratio (NVT)",
+        "Equities: Tobin's Q (Market Value / Replacement Cost)",
+        "Housing: Price/Rent ratio",
+        "Price/Book ratio",
+        "Price/Earnings ratio vs historical mean (Shiller CAPE)" ;
+    m1econ:historicalPeakPremiums [ ] ;
+    m1econ:keynesBeautyContest "Investors buy not what they think is fundamentally valuable but what they think others will buy — a self-referential game that inflates the speculative premium beyond any fundamental anchor" ;
+    m1econ:minskyPhase "Boom → Euphoria (peak) → Revulsion (collapse)" ;
+    m1econ:tensorFormula "A ⊗ I ⊗ D" ;
+    m2:characterizedBy "m2:Attractor",
+        "m2:Gradient",
+        "m2:Threshold" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "The excess of market price over fundamental value, attributable to expectations of future price appreciation rather than underlying cash flows. The speculative premium is zero at equilibrium, grows monotonically during Boom and Euphoria, and collapses to zero (or below) during Revulsion. Formally: SpeculativePremium = MarketPrice - FundamentalValue. Keynes 'beauty contest' dynamic: investors buy what others will buy, independent of fundamentals." .
+
+<https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#SystemicRisk> a owl:Class ;
+    rdfs:label "Systemic Risk" ;
+    m1econ:measurableIndicators "CoVaR (conditional Value at Risk — Δ in system VaR given institution stress)",
+        "Credit Default Swap spreads on major banks",
+        "LIBOR-OIS spread (unsecured vs secured interbank rate differential)",
+        "SRISK (NYU Stern systemic risk index)",
+        "TED spread (LIBOR - T-bill rate: interbank trust proxy)" ;
+    m1econ:minskyPhase "Distress → Revulsion" ;
+    m1econ:regulatoryResponse "G-SIB surcharges (Basel III), stress testing (CCAR/DFAST), resolution planning (living wills), derivatives clearing centralization (CCPs)" ;
+    m1econ:tensorFormula "S ⊗ I ⊗ A ⊗ D ⊗ F ⊗ V ⊗ Im" ;
+    m1econ:transmissionChannels [ ] ;
+    m2:characterizedBy "m2:Emergence",
+        "m2:Network",
+        "m2:Propagation" ;
+    dcterms:created "2026-02-28" ;
+    dcterms:creator "Echopraxium with the collaboration of Claude AI" ;
+    rdfs:comment "The risk of collapse of an entire financial system or market, rather than failure of individual components — an emergent property of network interconnectedness and correlated exposures. Systemic risk is irreducible to the sum of individual institution risks. It arises from: (1) network contagion (m2:Propagation), (2) common asset exposures (correlated failures), (3) pro-cyclical leverage (m1econ:LeverageCycle), (4) liquidity spirals (fire-sales depressing collateral values). Post-2008 regulation attempts to internalize systemic risk (Basel III, Dodd-Frank, G-SIB surcharges)." .
+
