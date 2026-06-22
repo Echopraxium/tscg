@@ -15,8 +15,99 @@
 const MORPH_MS    = 3500;   // morphism duration in ms — slow enough to see block changes
 const MAX_PARTS   = 280;    // particle pool size
 const PHASE_NAMES  = ['Startup', 'Growth', 'Maturity', 'Decline', 'Transition'];
+
+// ── Osterwalder taxonomy constants (moved from usecases.js) ──────────────────
+const VALUE_LEVELS       = ['commodity','customization','excellence','innovation'];
+const VALUE_LEVEL_LABELS = { commodity:'Commodity', customization:'Customization',
+                              excellence:'Excellence', innovation:'Innovation' };
+const VALUE_LEVEL_IDX    = { commodity:0, customization:1, excellence:2, innovation:3 };
+const PRICE_LEVEL_ICONS  = { free:'🆓', economy:'💲', market:'💲💲', 'high-end':'💲💲💲' };
+const REVENUE_ICONS      = { 'asset-sale':'📦', usage:'⏱', subscription:'🔄',
+                              licensing:'©', brokerage:'🔀', advertising:'📣',
+                              'cross-subsidy':'⚖' };
+const SEGMENT_ICONS      = { mass:'👥', niche:'🎯', segmented:'◑',
+                              diversified:'🔀', 'multi-sided':'⇄' };
+const REL_ICONS          = { personal:'🤝', dedicated:'⭐', 'self-service':'🔧',
+                              automated:'🤖', community:'🌐', 'co-creation':'🔨' };
+
+// ── Generic TSCG block descriptions (tooltip fallback) ───────────────────────
+const BLOCK_DESC = {
+  KP:   'Network of suppliers & partners. Primary dim: S (Structure). m2:Structure, m2:Synergy.',
+  KA:   'Most important actions to make BM work. Primary dim: F (Flow). m2:Flow, m2:Process.',
+  KR:   'Most important assets required. Primary dim: S (Structure). m2:Structure, m2:Reservoir.',
+  VP:   'Bundle of products/services creating value. Primary dim: A (Attractor). m2:Attractor, m2:Information.',
+  CR:   'Relationships established with Customer Segments. Primary dim: D (Dynamics). m2:Dynamics, m2:Feedback.',
+  CH:   'How the company reaches Customer Segments. Primary dim: F (Flow). m2:Flow, m2:Cascade.',
+  CS:   'Distinct groups the business creates value for. Primary dim: It (Information). m2:Information, m2:Boundary.',
+  'CS$':'All costs to operate the BM. Primary dim: F (Flow). m2:Equilibrium, m2:Polarity (vs VP).',
+  RS:   'Cash generated from each Customer Segment. Primary dim: F (Flow). m2:Flow, m2:Amplification.',
+};
+
+// ── Generic phase block content (fallback when case has no blockContent) ─────
+const GENERIC_BLOCKS = [
+  // Phase 0 — Startup
+  {
+    KP:   { bullets:['Early suppliers','Angel investors','Founding team'], desc:'Early suppliers, incubator, angel investors, founding team.' },
+    KA:   { bullets:['Build MVP','Customer discovery','Fundraising'], desc:'Product development, customer discovery, MVP iteration, fundraising.' },
+    KR:   { bullets:['Founder expertise','Seed funding','Early prototype'], desc:'Founding team expertise, seed funding, early IP, brand embryo.' },
+    VP:   { bullets:['Hypothesis only','Problem/solution?','Unvalidated'], desc:'Hypothesis: we solve [problem] for [segment]. Not yet validated.', osterwalder:{ valueLevel:'customization', priceLvl:'economy' } },
+    CR:   { bullets:['Hands-on','Founders onboard','White-glove'], desc:'Founders personally onboard every customer.', osterwalder:{ relType:'personal' } },
+    CH:   { bullets:['Direct outreach','Founder network','ProductHunt'], desc:'Direct outreach, founder network, early adopter communities.' },
+    CS:   { bullets:['Niche early adopters','Innovators 1-3%','Narrow ICP'], desc:'Niche early adopters, innovators (1-3% of TAM), narrow ICP.', osterwalder:{ segmentType:'niche' } },
+    'CS$':{ bullets:['High burn rate','Team salaries','Prototyping'], desc:'High burn rate. Fixed: team salaries. Variable: infra, prototyping.' },
+    RS:   { bullets:['Near zero / seed','Pilot contracts','Grants'], desc:'Minimal or zero. Pilot contracts. Grants.', osterwalder:{ revenueType:'asset-sale', pricingMech:'fixed' } },
+  },
+  // Phase 1 — Growth
+  {
+    KP:   { bullets:['Channel partners','Key suppliers','Strategic investors'], desc:'Channel partners, resellers, key suppliers, strategic investors.' },
+    KA:   { bullets:['Scale operations','Process build','Team growth'], desc:'Sales scaling, marketing automation, hiring, process standardization.' },
+    KR:   { bullets:['Sales playbook','Customer data','Brand growing'], desc:'Growing team, sales playbook, customer data, brand recognition.' },
+    VP:   { bullets:['PMF validated ✓','Customers pay','Clear differentiation'], desc:'PMF achieved. Customers pay. Clear differentiation vs. alternatives.', osterwalder:{ valueLevel:'excellence', priceLvl:'market' } },
+    CR:   { bullets:['Self-service','CS team','Community building'], desc:'Transition to self-service onboarding, customer success team, community.', osterwalder:{ relType:'self-service' } },
+    CH:   { bullets:['SEO + paid ads','Partner channels','Word of mouth'], desc:'SEO, content, paid acquisition (CAC < LTV), partner channels emerging.' },
+    CS:   { bullets:['Early majority','Multiple segments','ICP refined'], desc:'Early majority entering. Multiple segments identified. ICP refined.', osterwalder:{ segmentType:'segmented' } },
+    'CS$':{ bullets:['CAC dominant','Unit economics ↑','Burn ↑ (growth)'], desc:'Burn increasing. CAC dominant. Unit economics improving.' },
+    RS:   { bullets:['MRR growing','Subscription / repeat','RS > COGS ✓'], desc:'Growing MRR. Subscription or repeat transactions. RS > COGS crossed.', osterwalder:{ revenueType:'subscription', pricingMech:'fixed' } },
+  },
+  // Phase 2 — Maturity
+  {
+    KP:   { bullets:['Ecosystem partners','OEM / white-label','Strategic alliances'], desc:'Ecosystem partners, OEM, white-label, strategic alliances.' },
+    KA:   { bullets:['Optimize + retain','Upsell / expand','International'], desc:'Process optimization, customer retention, upsell/cross-sell, international.' },
+    KR:   { bullets:['Brand (moat)','Proprietary data','Distribution'], desc:'Brand moat, customer relationships, data advantage, distribution network.' },
+    VP:   { bullets:['Category leader','Defensible VP','Switching costs'], desc:'Category leader. VP well-defined and defensible. Switching costs established.', osterwalder:{ valueLevel:'excellence', priceLvl:'market' } },
+    CR:   { bullets:['Automated low-touch','Account mgmt enterprise','Self-serve community'], desc:'Automated low-touch, account management for enterprise, self-serve community.', osterwalder:{ relType:'automated' } },
+    CH:   { bullets:['Omni-channel','Partners 40%+','International CH'], desc:'Omni-channel. Partners 40%+. Direct 60%. International channels established.' },
+    CS:   { bullets:['Mass market','Enterprise + SMB','International'], desc:'Mass market. Multiple segments. Enterprise + SMB + consumer. International.', osterwalder:{ segmentType:'mass' } },
+    'CS$':{ bullets:['Optimized costs','Fixed costs spread','EBITDA positive'], desc:'Optimized. Fixed costs spread over large revenue base. EBITDA positive.' },
+    RS:   { bullets:['Diversified RS','Recurring dominant','International'], desc:'Diversified: core + upsell + services + international. Recurring dominant.', osterwalder:{ revenueType:'subscription', pricingMech:'fixed' } },
+  },
+  // Phase 3 — Decline
+  {
+    KP:   { bullets:['Partners leaving ↓','Supplier leverage ↑','M&A targets'], desc:'Partners leaving for alternatives. Suppliers with more leverage.' },
+    KA:   { bullets:['Cost-cutting','Restructuring','Defend core market'], desc:'Cost-cutting, restructuring, defending core market, M&A for growth.' },
+    KR:   { bullets:['Eroding brand','Aging tech stack','Talent attrition'], desc:'Eroding brand, aging tech stack, shrinking customer base, talent attrition.' },
+    VP:   { bullets:['Commoditized','Disrupted VP','Competitors cheaper'], desc:'Commoditized or disrupted. Competitors offer more for less.', osterwalder:{ valueLevel:'commodity', priceLvl:'economy' } },
+    CR:   { bullets:['Automated only','Low investment','Churn > acquisition'], desc:'Automated (cost-driven). Low investment. Churn > acquisition.', osterwalder:{ relType:'automated' } },
+    CH:   { bullets:['Existing only','No new investment','Channel decay'], desc:'Existing channels only. No investment in new channels.' },
+    CS:   { bullets:['Shrinking CS','Late majority only','Competitors win'], desc:'Shrinking. Late majority / laggards only. Segments captured by competitors.', osterwalder:{ segmentType:'segmented' } },
+    'CS$':{ bullets:['Rigid fixed costs','RS < C$ gap ↑','Margin compression'], desc:"Cost rigidity: fixed costs don't scale as fast as RS declines." },
+    RS:   { bullets:['RS declining ↓','Price pressure','Churn accelerating'], desc:'Declining. Price pressure. Volume loss. Customer churn accelerating.', osterwalder:{ revenueType:'asset-sale', pricingMech:'dynamic' } },
+  },
+  // Phase 4 — Transition
+  {
+    KP:   { bullets:['New strategic KP','Pivot investors','Capability partners'], desc:'New strategic partners for the pivot. Investors supporting transformation.' },
+    KA:   { bullets:['BM redesign ⟳','New capability build','Org restructuring'], desc:'Business model redesign, new capability building, organizational restructuring.' },
+    KR:   { bullets:['New tech/IP ⟳','Brand repositioning','Transition assets'], desc:'New technology or capability being acquired/built. Brand repositioning.' },
+    VP:   { bullets:['VP IN FLUX ⟳','Old VP weakening','New VP hypothesis'], desc:'IN FLUX: old VP weakening. New VP hypothesis being tested.', osterwalder:{ valueLevel:'innovation', priceLvl:'market' } },
+    CR:   { bullets:['Old CS retained','New segment acquired','CR in transition ⟳'], desc:'Transitional: some old customers retained, new segment being acquired.', osterwalder:{ relType:'co-creation' } },
+    CH:   { bullets:['Old CH phased out ⟳','New CH emerging','Dual-mode CH'], desc:'Old channels being phased out. New channels being established.' },
+    CS:   { bullets:['CS segment shift ⟳','New B2B/B2C balance','CS in flux'], desc:'Segment shift: losing some, targeting new. Potentially new B2B/B2C balance.', osterwalder:{ segmentType:'diversified' } },
+    'CS$':{ bullets:['Transition costs ↑ ⟳','Dual-mode ops','Restructuring charges'], desc:'Transition costs high. Restructuring charges. Dual-mode ops (old + new model).' },
+    RS:   { bullets:['Revenue dip ⚠','New RS not at scale','Critical period'], desc:'Revenue dip during transition. New RS not yet at scale. Critical period.', osterwalder:{ revenueType:'cross-subsidy', pricingMech:'dynamic' } },
+  },
+];
 const PH_COLORS    = ['#4A90E2', '#22C97A', '#F5A623', '#E64141', '#E8A020'];
-const PHASE_TRANSITION_IDX = 4;  // index of Transition phase
+const PHASE_TRANSITION_IDX = 4;  // index of Transition phase — keep only this one
 
 // ASFID color palette
 const COL = {
@@ -69,7 +160,10 @@ const FLUX_PATHS = [
 let caseIdx       = 0;
 let fluxLayout    = 'experimental';  // always experimental flux
 let pillarsVisible = false;          // pillars OFF by default
-let selectedPillar = null;           // id of selected pillar or null
+let selectedPillar    = null;
+let transitionStartMs = null;
+const TRANSITION_DURATION_MS = 5000;
+let fluxVisible       = true;   // flux paths shown by default
 let phaseIdx   = 0;
 let playing    = false;
 let speed      = 1;
@@ -133,13 +227,19 @@ const sketch = (p) => {
 
   p.draw = () => {
     p.background(13, 17, 23);
+    const now = performance.now();
+    const dt  = now - (p._lastDrawMs || now);
+    p._lastDrawMs = now;
+
     updateMorph();
     updatePlay();
+    checkTransitionTimer();
+    checkDeclineCondition(dt);
     spawnParticles(p);
     updateParticles();
-    drawFluxPaths(p);
+    if (fluxVisible) drawFluxPaths(p);
     drawBlocks(p);
-    drawParticles(p);
+    if (fluxVisible) drawParticles(p);
     if (pillarsVisible) drawPillars(p);  // on top — borders + labels visible
     updateLiveMetrics();
   };
@@ -537,7 +637,7 @@ function drawBlocks(p) {
     {
       const ost = getOsterwalderAttrs(b.id);
       if (ost) {
-        const BADGE_SZ = 9;
+        const BADGE_SZ = Math.round(9 * 1.15);  // +15% → ~10px
         const BADGE_LH = BADGE_SZ + 5;
         let badgeY = bulletEndY + 6;
         p.textFont('Arial');
@@ -1179,6 +1279,7 @@ function startMorph(fromParams, toParams) {
 }
 
 function updateMorph() {
+  const wasMorphing = morphT < 1;
   if (morphT >= 1) return;
   const elapsed = performance.now() - morphStart;
   morphT = Math.min(1, elapsed / MORPH_MS);
@@ -1188,13 +1289,17 @@ function updateMorph() {
     params[k] = morphFrom[k] + (morphTo[k] - morphFrom[k]) * ease;
   });
 
-  // If user hasn't overridden sliders, animate them too
   if (!sliderOverride) {
     document.getElementById('sl-vp').value    = params.vp;
     document.getElementById('sl-conv').value  = params.conv;
     document.getElementById('sl-cross').value = params.cross;
     document.getElementById('sl-net').value   = params.net;
     document.getElementById('sl-cost').value  = params.cost;
+  }
+
+  // Start transition countdown as soon as morphism completes
+  if (wasMorphing && morphT >= 1 && phaseIdx === PHASE_TRANSITION_IDX) {
+    transitionStartMs = performance.now();
   }
 
   // Update morph bar
@@ -1214,7 +1319,7 @@ function updatePlay() {
   const now  = performance.now();
   const dt   = now - lastFrameMs;
   lastFrameMs = now;
-  if (dt > 200) return;  // tab was hidden
+  if (dt > 200) return;
 
   playT += dt * speed;
   const dur = PHASE_DURATION;
@@ -1223,9 +1328,16 @@ function updatePlay() {
 
   const newPhase = Math.min(PHASE_NAMES.length - 1, Math.floor(playT / dur));
   if (newPhase !== phaseIdx) {
-    jumpPhase(newPhase);
+    // Skip Decline (idx 3) in sequential play — Decline is cursor-induced only
+    if (newPhase === 3) {
+      playT = 4 * dur;  // skip straight to Transition
+      jumpPhase(4);
+    } else {
+      jumpPhase(newPhase);
+    }
   }
 
+  // Auto-stop at end of sequence (after Transition)
   if (playT >= dur * PHASE_NAMES.length) {
     playing = false;
     document.getElementById('btn-play').textContent = '▶ Play';
@@ -1233,6 +1345,185 @@ function updatePlay() {
     document.getElementById('status-dot').className = 'status-dot paused';
     document.getElementById('status-label').textContent = 'Done';
   }
+}
+
+// ── Transition combolist ───────────────────────────────────────────────────
+function updateTransitionSelect() {
+  const sel = document.getElementById('transition-select');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">— None —</option>';
+
+  const cs = CASES[caseIdx];
+  if (!cs || !cs.transitions || cs.transitions.length === 0) return;
+
+  cs.transitions.forEach((t, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    const icon = t.outcome === 'Success'     ? '✅'
+               : t.outcome === 'Failure'     ? '❌'
+               : '🔄';
+    opt.textContent = icon + ' T' + (t.index + 1) + ' — ' + t.label;
+    opt.title       = t.fromPhase + ' → ' + t.toPhase;
+    sel.appendChild(opt);
+  });
+}
+
+window.applyTransition = function(val) {
+  if (val === '' || val === null) return;
+  const cs = CASES[caseIdx];
+  if (!cs) return;
+  const t = cs.transitions[parseInt(val)];
+  if (!t) return;
+
+  // Ensure a Transition phase exists at index 4 (create synthetically if missing)
+  if (!cs.phases[PHASE_TRANSITION_IDX]) {
+    cs.phases[PHASE_TRANSITION_IDX] = {
+      vp: t.vp ?? 0.45, conv: t.conv ?? 0.40,
+      cross: t.cross ?? 0.20, net: t.net ?? 0.30, cost: t.cost ?? 0.65,
+      narrative: 'Transition — ' + (t.label || ''),
+      driver:    t.fromPhase + ' → ' + t.toPhase,
+      blockContent: t.blockContent || null,
+      transitionLabel:  t.label,
+      instableBlocks:   t.instableBlocks  || [],
+      emergingFluxes:   t.emergingFluxes  || [],
+      fadingFluxes:     t.fadingFluxes    || [],
+      _transitionOutcome: t.outcome,
+      _transitionFrom:    t.fromPhase,
+      _transitionTo:      t.toPhase,
+    };
+  } else {
+    // Update existing Transition phase with this transition's data
+    const transPhase = cs.phases[PHASE_TRANSITION_IDX];
+    if (t.vp !== null && t.vp !== undefined) {
+      transPhase.vp    = t.vp;
+      transPhase.conv  = t.conv;
+      transPhase.cross = t.cross;
+      transPhase.net   = t.net;
+      transPhase.cost  = t.cost;
+    }
+    transPhase.narrative         = 'Transition — ' + (t.label || '');
+    transPhase.driver            = t.fromPhase + ' → ' + t.toPhase;
+    transPhase.transitionLabel   = t.label;
+    transPhase.instableBlocks    = t.instableBlocks  || [];
+    transPhase.emergingFluxes    = t.emergingFluxes  || [];
+    transPhase.fadingFluxes      = t.fadingFluxes    || [];
+    transPhase.blockContent      = t.blockContent    || transPhase.blockContent || null;
+    transPhase._transitionOutcome = t.outcome;
+    transPhase._transitionFrom    = t.fromPhase;
+    transPhase._transitionTo      = t.toPhase;
+  }
+
+  // Jump to the Transition phase
+  jumpPhase(PHASE_TRANSITION_IDX);
+};
+
+// Sync sliders to current params (after applyTransition)
+function syncSliders() {
+  const s = {vp:'sl-vp', conv:'sl-conv', cross:'sl-cross', net:'sl-net', cost:'sl-cost'};
+  Object.entries(s).forEach(([k, id]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = params[k];
+  });
+}
+
+// ── Post-Transition routing ────────────────────────────────────────────────
+// Called when user clicks "Exit Transition" or outcome button
+function exitTransition() {
+  const cs = CASES[caseIdx];
+  if (!cs) return;
+  const transPhase = cs.phases[PHASE_TRANSITION_IDX];
+  const outcome    = transPhase?._transitionOutcome || 'Success';
+  const toPhase    = transPhase?._transitionTo      || '';
+
+  // Map toPhase name → phase index
+  const nameToIdx = { Startup:0, Growth:1, Maturity:2, Decline:3, Transition:4 };
+  let targetPhaseIdx;
+  if (outcome === 'Success') {
+    // Find the named target phase, default to Growth
+    targetPhaseIdx = nameToIdx[toPhase] ?? 1;
+    if (targetPhaseIdx === PHASE_TRANSITION_IDX) targetPhaseIdx = 1; // avoid loop
+  } else if (outcome === 'Failure') {
+    targetPhaseIdx = 3;  // Decline
+  } else {
+    targetPhaseIdx = nameToIdx[toPhase] ?? 2;  // InProgress → Maturity or named
+  }
+
+  // Clamp to available phases
+  targetPhaseIdx = Math.max(0, Math.min(cs.phases.length - 2, targetPhaseIdx));
+
+  jumpPhase(targetPhaseIdx);
+  playT = targetPhaseIdx * PHASE_DURATION;
+
+  // Reset combolist
+  const sel = document.getElementById('transition-select');
+  if (sel) sel.value = '';
+}
+window.exitTransition = exitTransition;
+
+// ── Transition auto-exit timer ─────────────────────────────────────────────
+function checkTransitionTimer() {
+  if (phaseIdx !== PHASE_TRANSITION_IDX) return;
+  if (transitionStartMs === null) return;
+  if (morphT < 1) return;  // wait for morphism to complete first
+
+  const elapsed = performance.now() - transitionStartMs;
+  // Show countdown in pattern label
+  const remaining = Math.max(0, TRANSITION_DURATION_MS - elapsed);
+  const patEl = document.getElementById('case-pattern');
+  if (patEl && remaining > 0) {
+    const cs = CASES[caseIdx];
+    const ph = cs?.phases[PHASE_TRANSITION_IDX];
+    const label = ph?.transitionLabel || 'Transition';
+    patEl.textContent = '⟳ ' + label + ' — ' + Math.ceil(remaining / 1000) + 's';
+  }
+
+  if (elapsed >= TRANSITION_DURATION_MS) {
+    transitionStartMs = null;
+    exitTransition();
+  }
+}
+
+// ── Decline auto-trigger ───────────────────────────────────────────────────
+const DECLINE_VP_THRESHOLD   = 0.35;  // VP must be below this
+const DECLINE_COST_THRESHOLD = 0.70;  // Cost must be above this
+let   declineHoldMs  = 0;
+const DECLINE_HOLD_REQUIRED  = 4000;  // ms sustained before triggering
+
+function checkDeclineCondition(dt) {
+  // Only trigger from Maturity (phase 2) — not from other phases
+  if (phaseIdx !== 2) { declineHoldMs = 0; return; }
+  if (playing)        { declineHoldMs = 0; return; }  // let Play handle sequencing
+
+  const vpLow   = params.vp   < DECLINE_VP_THRESHOLD;
+  const costHigh = params.cost > DECLINE_COST_THRESHOLD;
+
+  if (vpLow && costHigh) {
+    declineHoldMs += dt;
+    if (declineHoldMs >= DECLINE_HOLD_REQUIRED) {
+      declineHoldMs = 0;
+      triggerDecline();
+    }
+  } else {
+    declineHoldMs = 0;
+  }
+}
+
+function triggerDecline() {
+  // Flash alert on Decline button
+  const declineBtn = document.querySelector('.phase-btn[data-phase-idx="3"], .phase-btn:nth-child(4)');
+  if (declineBtn) {
+    declineBtn.style.opacity = '1';
+    declineBtn.style.boxShadow = '0 0 10px rgba(230,65,65,0.8)';
+    setTimeout(() => {
+      declineBtn.style.opacity = '0.45';
+      declineBtn.style.boxShadow = '';
+    }, 2000);
+  }
+  jumpPhase(3);
+  playT = 3 * PHASE_DURATION;
+  // Show alert in narrative
+  document.getElementById('phase-narrative-text').textContent =
+    '⚠ Decline triggered — VP too low + costs too high. Adjust sliders or trigger a Transition.';
 }
 
 // ── Phase jump ─────────────────────────────────────────────────────────────
@@ -1256,6 +1547,15 @@ function jumpPhase(idx) {
   document.getElementById('phase-driver-text').textContent    = next.driver;
   document.getElementById('ls-phase').textContent = PHASE_NAMES[phaseIdx];
 
+  // Update header title
+  const headerInfo = document.getElementById('header-case-info');
+  if (headerInfo) {
+    const cs = CASES[caseIdx];
+    headerInfo.textContent = cs
+      ? cs.short + ' — phase: ' + PHASE_NAMES[phaseIdx]
+      : '';
+  }
+
   // Show transition label in compbar if Transition phase
   const patEl = document.getElementById('case-pattern');
   if (phaseIdx === PHASE_TRANSITION_IDX && next.transitionLabel) {
@@ -1271,6 +1571,14 @@ function jumpPhase(idx) {
 
   sliderOverride = false;
   updateCaseCard();
+  updateTransitionSelect();
+
+  // Auto-exit Transition after 5 seconds (timer starts when morphism completes)
+  if (phaseIdx === PHASE_TRANSITION_IDX) {
+    transitionStartMs = null;  // will be set when morphT reaches 1
+  } else {
+    transitionStartMs = null;
+  }
 }
 
 // ── Case selection ─────────────────────────────────────────────────────────
@@ -1314,6 +1622,7 @@ function selectCase(idx) {
   document.getElementById('progress-fill').style.width = '0%';
   document.getElementById('morph-bar-fill') && (document.getElementById('morph-bar-fill').style.width = '0%');
   updateCaseCard();
+  updateTransitionSelect();
 }
 
 // ── Update sidebar case card ───────────────────────────────────────────────
@@ -1330,8 +1639,6 @@ function updateCaseCard() {
   cs.phases.forEach((ph, i) => {
     const row = document.createElement('div');
     row.className = 'case-phase-row' + (i === phaseIdx ? ' active' : '');
-    row.style.cursor = 'pointer';
-    row.onclick = () => { jumpPhase(i); playT = i * PHASE_DURATION; };
 
     const dot = document.createElement('div');
     dot.className = 'case-phase-dot';
@@ -1346,6 +1653,20 @@ function updateCaseCard() {
     const narr  = ph.narrative || '';
     const short = narr.includes('—') ? narr.split('—').slice(1).join('—').trim() : narr;
     txt.textContent = short.substring(0, 55) + (short.length > 55 ? '…' : '');
+
+    if (i === 3) {
+      // Decline — display only, not clickable
+      row.style.opacity = '0.5';
+      row.style.cursor  = 'default';
+      row.title = 'Decline is induced automatically by slider manipulation';
+      const tag = document.createElement('span');
+      tag.style.cssText = 'font-size:8px;color:#E64141;margin-left:4px;opacity:0.8';
+      tag.textContent = '⚙ auto';
+      name.appendChild(tag);
+    } else {
+      row.style.cursor = 'pointer';
+      row.onclick = () => { jumpPhase(i); playT = i * PHASE_DURATION; };
+    }
 
     row.appendChild(dot); row.appendChild(name); row.appendChild(txt);
     phasesEl.appendChild(row);
@@ -1534,6 +1855,16 @@ function hideTooltip() {
 }
 
 // ── Public controls (called from HTML) ────────────────────────────────────
+window.toggleFlux = function() {
+  fluxVisible = !fluxVisible;
+  const btn = document.getElementById('btn-flux');
+  if (btn) {
+    btn.style.opacity     = fluxVisible ? '1' : '0.4';
+    btn.style.borderColor = fluxVisible ? '#79c0ff' : '';
+    btn.style.color       = fluxVisible ? '#79c0ff' : '';
+  }
+};
+
 window.togglePillars = function() {
   pillarsVisible = !pillarsVisible;
   const btn = document.getElementById('btn-pillars');
@@ -1637,15 +1968,17 @@ function buildUI() {
   });
   sel.addEventListener('change', () => selectCase(parseInt(sel.value)));
 
-  // Phase buttons
+  // Phase buttons — Decline (idx 3) and Transition (idx 4) not shown as buttons
   const pb = document.getElementById('phase-btns');
   PHASE_NAMES.forEach((nm, i) => {
+    if (i === 3 || i === 4) return;  // Decline: cursor-induced. Transition: combolist-triggered.
     const btn = document.createElement('button');
     btn.className = 'phase-btn' + (i === 0 ? ' active' : '');
     btn.textContent = (i + 1) + ' ' + nm;
-    btn.style.background   = hexAlpha(PH_COLORS[i], 0.12);
-    btn.style.borderColor  = hexAlpha(PH_COLORS[i], 0.25);
-    btn.style.color        = PH_COLORS[i];
+    btn.dataset.phaseIdx = i;
+    btn.style.background  = hexAlpha(PH_COLORS[i], 0.12);
+    btn.style.borderColor = hexAlpha(PH_COLORS[i], 0.25);
+    btn.style.color       = PH_COLORS[i];
     btn.onclick = () => { jumpPhase(i); playT = i * PHASE_DURATION; };
     pb.appendChild(btn);
   });
