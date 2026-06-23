@@ -1,0 +1,21 @@
+# doom_argv/pipeline.toml
+# Author: Echopraxium with the collaboration of Claude AI
+# DoomGeneric m_argv.c — exit code 63 (0x3F) = 6 tests
+name         = "doom_argv"
+type         = "c"
+sources      = ["src/m_argv.c", "src/test_doom_argv.c"]
+include_dirs = ["include", "src"]
+entry        = "main"
+libs         = ["tsk-libc.tvml"]
+sdl2         = false
+
+[validation]
+expected_exit = 63
+tests = [
+    "Test 1 (bit 0): M_CheckParm finds existing param",
+    "Test 2 (bit 1): M_CheckParm returns 0 for missing param",
+    "Test 3 (bit 2): M_CheckParmWithArgs respects num_args margin",
+    "Test 4 (bit 3): M_ParmExists returns true for present param",
+    "Test 5 (bit 4): M_ParmExists returns false for absent param",
+    "Test 6 (bit 5): M_GetExecutableName strips directory prefix",
+]

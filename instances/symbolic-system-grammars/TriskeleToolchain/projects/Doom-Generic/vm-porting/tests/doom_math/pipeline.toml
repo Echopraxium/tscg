@@ -1,0 +1,22 @@
+# projects/doom_math/pipeline.toml
+# Author: Echopraxium with the collaboration of Claude AI
+# Real DoomGeneric m_fixed.c + m_random.c — exit code 127 (0x7F) = 7 tests
+name         = "doom_math"
+type         = "c"
+sources      = ["src/m_fixed.c", "src/m_random.c", "src/test_doom_math.c"]
+include_dirs = ["include"]
+entry        = "main"
+libs         = ["tsk-libc.tvml"]
+sdl2         = false
+
+[validation]
+expected_exit = 127
+tests = [
+    "FixedMul(1.0, 2.0) = 2.0",
+    "FixedMul(0.5, 0.5) = 0.25",
+    "FixedDiv(4.0, 2.0) = 2.0",
+    "FixedDiv overflow → INT_MAX",
+    "M_Random() = 8 (rndtable[1])",
+    "M_ClearRandom resets sequence",
+    "P_Random independent from M_Random",
+]
