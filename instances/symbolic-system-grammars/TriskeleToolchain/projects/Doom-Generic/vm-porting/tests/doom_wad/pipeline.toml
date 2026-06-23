@@ -1,0 +1,30 @@
+# doom_wad/pipeline.toml
+# Author: Echopraxium with the collaboration of Claude AI
+# DoomGeneric WAD loader — exit code 255 (0xFF) = 8 tests
+name         = "doom_wad"
+type         = "c"
+sources      = [
+    "src/z_zone.c",
+    "src/m_argv.c",
+    "src/w_file_stdc.c",
+    "src/w_file.c",
+    "src/w_wad.c",
+    "src/test_doom_wad.c",
+]
+include_dirs = ["include", "src"]
+entry        = "main"
+libs         = ["tsk-libc.tvml"]
+sdl2         = false
+
+[validation]
+expected_exit = 255
+tests = [
+    "Test 1 (bit 0): W_AddFile returns non-NULL wad_file_t",
+    "Test 2 (bit 1): numlumps == 2 after W_AddFile",
+    "Test 3 (bit 2): W_CheckNumForName finds PLAYPAL lump",
+    "Test 4 (bit 3): W_GetNumForName returns same index",
+    "Test 5 (bit 4): W_LumpLength returns correct size",
+    "Test 6 (bit 5): W_ReadLump reads correct data bytes",
+    "Test 7 (bit 6): W_GenerateHashTable + hash lookup still works",
+    "Test 8 (bit 7): W_CacheLumpNum returns non-NULL pointer",
+]

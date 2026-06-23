@@ -1,0 +1,20 @@
+name         = "doom_alloc"
+type         = "c"
+sources      = ["src/doom_alloc.c", "src/doom_alloc_test.c"]
+include_dirs = ["include"]
+entry        = "main"
+libs         = []
+sdl2         = false
+
+[validation]
+expected_exit = 255
+tests = [
+    "Test 1 (bit 0): Z_Malloc non-NULL  — pointer comparison rover==start (do/while exit)",
+    "Test 2 (bit 1): Z_Free clears *user — byte-cast (byte*)ptr - sizeof(memblock_t)",
+    "Test 3 (bit 2): *block->user == p3  — double indirection write in Z_Malloc",
+    "Test 4 (bit 3): p2 > p1             — block split, MINFRAGMENT, ptr comparison",
+    "Test 5 (bit 4): free_after > free_before — Z_Free prev-coalesce",
+    "Test 6 (bit 5): free_after > free_before — Z_Free next-coalesce",
+    "Test 7 (bit 6): 0 < Z_FreeMemory < HEAP_SIZE — linked-list walk accumulate",
+    "Test 8 (bit 7): p2 == p1            — alloc-after-free reuses rover region",
+]

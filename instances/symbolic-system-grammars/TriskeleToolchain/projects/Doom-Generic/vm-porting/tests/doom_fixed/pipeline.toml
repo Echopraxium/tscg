@@ -1,0 +1,19 @@
+name         = "doom_fixed"
+type         = "c"
+sources      = ["src/m_fixed.c", "src/doom_fixed_test.c"]
+include_dirs = ["include"]
+entry        = "main"
+libs         = []
+sdl2         = false
+
+[validation]
+expected_exit = 127
+tests = [
+    "FixedMul(1.0, 2.0) == 2.0        [all literals in imm19]",
+    "FixedMul(-1.0, 3.0) == -3.0      [all literals in imm19]",
+    "FixedMul(0, 1.0) == 0             [all literals in imm19]",
+    "FixedDiv(2.0, 1.0) == 2.0        [all literals in imm19]",
+    "FixedDiv(-2.0, 1.0) == -2.0      [all literals in imm19]",
+    "FixedDiv overflow same sign → r > 0   [sign check, no INT_MAX literal]",
+    "FixedDiv overflow opp. sign → r < 0   [sign check, no INT_MIN literal]",
+]
