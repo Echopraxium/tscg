@@ -14,12 +14,12 @@
     {
       "@id": "m3:bicephalous:BicephalousPerspective",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "1.2.0",
+      "owl:versionInfo": "1.3.0",
       "dcterms:created": "2026-05-18",
-      "dcterms:modified": "2026-05-27",
+      "dcterms:modified": "2026-06-23",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Stereopsis Grammar — Bicephalous Perspective",
-      "dcterms:description": "Reification of the stereopsic synergy between Territory Grammar (Gt / Eagle Eye) and Map Grammar (Gm / Sphinx Eye). Defines the Stereopsis Grammar Gs with operator | and the Base16 Gs alphabet: 6 primitives — T (Temporality), _^ (PositivePole), _$ (NegativePole), K (Knowledge), Ss (Symbol/Stereopsic), L (Localizability). TKSL acronym for the 4 nominal Gs primitives. Each Gs primitive is an irreducible inter-grammar mediator — not derivable from ASFID (Gt) or REVOI (Gm).",
+      "dcterms:description": "Reification of the stereopsic synergy between Territory Grammar (Gt / Eagle Eye) and Map Grammar (Gm / Sphinx Eye). Defines the Stereopsis Grammar Gs with operator | and the Base16 Gs alphabet: 6 primitives — T (Temporality), _^ (PositivePole), _$ (NegativePole), K (Knowledge), Ss (Symbol/Stereopsic), L (Localizability). TKSL acronym for the 4 nominal Gs primitives. Each Gs primitive is an irreducible inter-grammar mediator — not derivable from ASFID (Gt) or REVOI (Gm). v1.3.0: EquilibriumPole (_0 = _^ | _$) added as named derived Gs element (m3:DerivedGsElement) — not a primitive, Base16 preserved.",
       "rdfs:label": "M3 Bicephalous Perspective — Stereopsis Grammar Gs",
       "rdfs:comment": "Third grammar of the TSCG tricephalous architecture. Gs formalizes what the Eagle Eye and Sphinx Eye produce together — the stereopsic depth born from their binocular fusion. 𝕋₀(|) = {T, _^, _$, K, Ss, L} — 6 primitives. Operator: | (stereopsic fusion, inter-grammar).",
       "grammar_properties": {
@@ -54,7 +54,20 @@
           "L": "Converging?"
         },
         "transcendental_questions_note": "4 of the 6 Gs primitives answer transcendental questions about the Territory/Map correspondence. The poles _^/_$ encode polarity (onset/terminus) rather than answering a transcendental question.",
-        "asymmetry_justification": "5-5-6 asymmetry: Gs carries 6 primitives vs 5 for Gt and Gm. This is semantically justified — Gs is the inter-grammar axis by nature; the 6th primitive L (Localizability) encodes convergence discrimination that requires both Gt (Attractor A) and Gm (Map representation) to make sense."
+        "asymmetry_justification": "5-5-6 asymmetry: Gs carries 6 primitives vs 5 for Gt and Gm. This is semantically justified — Gs is the inter-grammar axis by nature; the 6th primitive L (Localizability) encodes convergence discrimination that requires both Gt (Attractor A) and Gm (Map representation) to make sense.",
+        "derived_elements": {
+          "description": "Named derived elements of Gs — not primitives, Base16 preserved",
+          "elements": [
+            {
+              "symbol": "_0",
+              "name": "EquilibriumPole",
+              "definition": "_^ | _$",
+              "semantics": "The optimal central state — fusion of PositivePole and NegativePole. Encodes the equilibrium optimum in a triadic balance.",
+              "analogy": "As StereopsisEmptySet = EmptyTerritory | EmptyMap is the neutral element, _0 = _^ | _$ is the equilibrium element",
+              "usage": "TriadicBalance | _0 (optimal state), Balance | _0 (equilibrium point)"
+            }
+          ]
+        }
       },
       "associativity": {
         "property": "| is associative: (a | b) | c = a | (b | c)",
@@ -80,6 +93,11 @@
       },
       "m2:changelog": [
         {
+          "version": "1.3.0",
+          "date": "2026-06-23",
+          "changes": "DERIVED ELEMENT: EquilibriumPole (_0 = _^ | _$) added as m3:DerivedGsElement. Named constant of Gs monoide — not a primitive. Base16 preserved (6 primitives unchanged). Introduced to support m2:TriadicBalance and m2:Balance revision. DerivedGsElement class added."
+        },
+        {
           "version": "1.2.0",
           "date": "2026-05-27",
           "changes": "BASE16 EXTENSION: Three new Gs primitives added — K (Knowledge, idx 3), Ss (Symbol/Stereopsic, idx 4), L (Localizability, idx 5). TKSL acronym introduced for 4 nominal Gs primitives. Transcendental questions map updated: {T: When?, K: What?, Ss: Sign?, L: Converging?}. 5-5-6 asymmetry documented. Notation convention added: St/It/O indexation in hybrid formulas."
@@ -88,20 +106,19 @@
           "version": "1.1.0",
           "date": "2026-05-20",
           "changes": "Added PositivePole (_^) and NegativePole (_$) as Gs type primitives. typeSymbol and typeIndex (not dimensionSymbol/dimensionIndex). Symbols _^ and _$ are string notations only — not URIs."
-        },
-        {
-          "version": "1.0.0",
-          "date": "2026-05-18",
-          "changes": "Initial release. T (Temporality) as first Gs primitive."
         }
       ]
     },
-
     {
       "@id": "m3:bicephalous:typeT",
-      "@type": ["owl:Class", "m3:MonoidalType"],
+      "@type": [
+        "owl:Class",
+        "m3:MonoidalType"
+      ],
       "rdfs:label": "Temporality (T)",
-      "rdfs:subClassOf": {"@id": "m3:MonoidalType"},
+      "rdfs:subClassOf": {
+        "@id": "m3:MonoidalType"
+      },
       "m3:typeSymbol": "T",
       "m3:typeIndex": 0,
       "m3:grammar": "Gs",
@@ -120,12 +137,16 @@
       "dcterms:created": "2026-05-18",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
-
     {
       "@id": "m3:bicephalous:PositivePole",
-      "@type": ["owl:Class", "m3:MonoidalType"],
+      "@type": [
+        "owl:Class",
+        "m3:MonoidalType"
+      ],
       "rdfs:label": "Positive Pole (_^)",
-      "rdfs:subClassOf": {"@id": "m3:MonoidalType"},
+      "rdfs:subClassOf": {
+        "@id": "m3:MonoidalType"
+      },
       "m3:typeSymbol": "_^",
       "m3:typeIndex": 1,
       "m3:grammar": "Gs",
@@ -137,12 +158,16 @@
       "dcterms:created": "2026-05-20",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
-
     {
       "@id": "m3:bicephalous:NegativePole",
-      "@type": ["owl:Class", "m3:MonoidalType"],
+      "@type": [
+        "owl:Class",
+        "m3:MonoidalType"
+      ],
       "rdfs:label": "Negative Pole (_$)",
-      "rdfs:subClassOf": {"@id": "m3:MonoidalType"},
+      "rdfs:subClassOf": {
+        "@id": "m3:MonoidalType"
+      },
       "m3:typeSymbol": "_$",
       "m3:typeIndex": 2,
       "m3:grammar": "Gs",
@@ -154,12 +179,16 @@
       "dcterms:created": "2026-05-20",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
-
     {
       "@id": "m3:bicephalous:typeK",
-      "@type": ["owl:Class", "m3:MonoidalType"],
+      "@type": [
+        "owl:Class",
+        "m3:MonoidalType"
+      ],
       "rdfs:label": "Knowledge (K)",
-      "rdfs:subClassOf": {"@id": "m3:MonoidalType"},
+      "rdfs:subClassOf": {
+        "@id": "m3:MonoidalType"
+      },
       "m3:typeSymbol": "K",
       "m3:typeIndex": 3,
       "m3:grammar": "Gs",
@@ -185,12 +214,16 @@
       "dcterms:created": "2026-05-27",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
-
     {
       "@id": "m3:bicephalous:typeSs",
-      "@type": ["owl:Class", "m3:MonoidalType"],
+      "@type": [
+        "owl:Class",
+        "m3:MonoidalType"
+      ],
       "rdfs:label": "Symbol — Stereopsic (Ss)",
-      "rdfs:subClassOf": {"@id": "m3:MonoidalType"},
+      "rdfs:subClassOf": {
+        "@id": "m3:MonoidalType"
+      },
       "m3:typeSymbol": "Ss",
       "m3:typeIndex": 4,
       "m3:grammar": "Gs",
@@ -217,12 +250,16 @@
       "dcterms:created": "2026-05-27",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
-
     {
       "@id": "m3:bicephalous:typeL",
-      "@type": ["owl:Class", "m3:MonoidalType"],
+      "@type": [
+        "owl:Class",
+        "m3:MonoidalType"
+      ],
       "rdfs:label": "Localizability (L)",
-      "rdfs:subClassOf": {"@id": "m3:MonoidalType"},
+      "rdfs:subClassOf": {
+        "@id": "m3:MonoidalType"
+      },
       "m3:typeSymbol": "L",
       "m3:typeIndex": 5,
       "m3:grammar": "Gs",
@@ -252,7 +289,6 @@
       "dcterms:created": "2026-05-27",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
-
     {
       "@id": "m3:bicephalous:StereopsisEmptySet",
       "@type": "owl:NamedIndividual",
@@ -265,6 +301,60 @@
       "m3:epistemicGap": "δ₁ = max",
       "m3:semantics": "Divergent Strabismus — Territory and Map share nothing. Opposite of StereopsisUniversalSet.",
       "dcterms:created": "2026-05-18",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m3:bicephalous:DerivedGsElement",
+      "@type": "owl:Class",
+      "rdfs:label": "Derived Gs Element",
+      "rdfs:subClassOf": {
+        "@id": "owl:Thing"
+      },
+      "rdfs:comment": "A named element of the Gs monoide that is derivable from primitives of 𝕋₀(|) via the | operator. DerivedGsElements are NOT primitives — they do not extend Base16. They are named constants or expressions that appear frequently enough to deserve a canonical symbol. Analogous to named expressions in Gt (e.g. F × D = m2:Process) but at the M3 level.",
+      "skos:note": "Base16 is preserved when adding DerivedGsElements. Only additions to 𝕋₀(|) would extend the Base count.",
+      "dcterms:created": "2026-06-23",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m3:bicephalous:EquilibriumPole",
+      "@type": [
+        "owl:NamedIndividual",
+        "m3:bicephalous:DerivedGsElement"
+      ],
+      "rdfs:label": "Equilibrium Pole (_0)",
+      "rdfs:comment": "Named derived element of Gs — the equilibrium pole, fusion of PositivePole and NegativePole. Encodes the optimal central state in a triadic balance: neither excess (_^) nor deficit (_$) but their stereopsic fusion. Not a primitive of 𝕋₀(|) — Base16 is preserved.",
+      "m3:symbol": "_0",
+      "m3:grammar": "Gs",
+      "m3:role": "derived_equilibrium_constant",
+      "m3:definition": "_^ | _$",
+      "m3:derivation": {
+        "operator": "|",
+        "operands": [
+          "_^  (PositivePole)",
+          "_$  (NegativePole)"
+        ],
+        "result": "_0  (EquilibriumPole)",
+        "algebraic_note": "Associativity of | ensures (_^ | _$) is well-defined in the free monoide Gs"
+      },
+      "m3:semantics": "The stereopsic fusion of the two poles produces their synthesis — not their average (quantitative) but their qualitative resolution (optimal calibration). Territory excess (_^) and Territory deficit (_$) fuse into Map-Territory correspondence (_0).",
+      "m3:analogyInGs": "As StereopsisEmptySet = EmptyTerritory | EmptyMap is the neutral element of |, _0 = _^ | _$ is the equilibrium element — the point of optimal Territory/Map calibration.",
+      "m3:analogyInGt": "As F × D names m2:Process (a frequently used derived expression in Gt), _^ | _$ names _0 (a frequently used derived expression in Gs).",
+      "m3:usage": [
+        "m2:Balance = A × S × F | _0  (static equilibrium state)",
+        "m2:TriadicBalance | _0  (optimal central state of a triadic system)",
+        "m1:ConstraintBalance | _0  (BalancedConstraint — neither over nor under)"
+      ],
+      "m3:triadicPattern": {
+        "underPole": "_^  — excess of openness / under-constraint",
+        "equilibriumPole": "_0  — optimal calibration (_^ | _$)",
+        "overPole": "_$  — excess of closure / over-constraint"
+      },
+      "m3:openQuestion": {
+        "question": "Does _0 require a new Gs primitive (C=Calibration, As=Adjustment, N=Normativity) to fully encode the degree of Territory/Map fit?",
+        "status": "Deferred — _0 as derived element is sufficient for current corpus. Base16→Base17 transition requires broader validation.",
+        "resolution": "Best current answer — revisit when ≥3 M0 poclets demonstrate insufficiency of _0 as derived element."
+      },
+      "dcterms:created": "2026-06-23",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     }
   ]

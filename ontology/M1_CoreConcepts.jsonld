@@ -20,8 +20,8 @@
       "dcterms:description": "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-05-27",
-      "owl:versionInfo": "2.4.1",
+      "dcterms:modified": "2026-06-23",
+      "owl:versionInfo": "2.6.1",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -216,11 +216,11 @@
         ]
       },
       "m1:validationStatus": {
-        "m1:conceptsDefined": 11,
-        "m1:conceptsValidated": 11,
-        "m1:genericConceptCombos": 9,
+        "m1:conceptsDefined": 14,
+        "m1:conceptsValidated": 14,
+        "m1:genericConceptCombos": 12,
         "m1:patterns": 2,
-        "m1:note": "9 instances of m2:GenericConceptCombo + 2 instances of m1:CorePattern"
+        "m1:note": "11 instances of m2:GenericConceptCombo + 2 instances of m1:CorePattern"
       },
       "m1:changelog": {
         "v2.1.0": {
@@ -245,14 +245,19 @@
       },
       "m2:changelog": [
         {
-          "version": "2.4.1",
-          "date": "2026-05-27",
-          "changes": "BASE16 notation: no formula changes (Fm2/Fm1m2 formulas use M2 concept names, not raw ASFID symbols). Metadata updated: M3_BicephalousPerspective now has 6 Gs primitives (TKSL + poles). README updated."
+          "version": "2.6.1",
+          "date": "2026-06-23",
+          "changes": "CORRECTION: CascadeAmplification and Propagation reclassified Fm2→Fm1m2 (parent m1:Cascade is M1, not M2 atomic). StratifiedDissipation notation Fm2²→Fm2 (parents Layer+Dissipation are M2 atomics — no second-order composition). @type updated to KnowledgeFieldConceptCombo for Propagation and CascadeAmplification."
         },
         {
-          "version": "2.4.0",
-          "date": "2026-05-17",
-          "changes": "PROPERTY RENAME (M1): tensorFormula→structuralGrammarFormula, tensorFormulaTeX→structuralGrammarFormulaTeX, tensorFormulaASCII→structuralGrammarFormulaRawText, tensorFormulaExpanded→structuralGrammarFormulaExpanded. Full Structural Grammar formalism migration."
+          "version": "2.6.0",
+          "date": "2026-06-23",
+          "changes": "NEW: m1:ConstraintBalance — instance of m2:TriadicBalance. Triadic pattern: UnderConstrained/BalancedConstraint/OverConstrained. Core instance of Ontological Overfitting anti-pattern. Validated ≥6 domains."
+        },
+        {
+          "version": "2.5.0",
+          "date": "2026-06-23",
+          "changes": "MIGRATION: m2:TopologicalDefect → M1_CoreConcepts (too specialized). NEW: m1:Permeability = Fm2(Channel, Interface, Gradient) — ≥7 domains."
         }
       ]
     },
@@ -1237,17 +1242,17 @@
       "@id": "m1:Propagation",
       "@type": [
         "owl:Class",
-        "m2:GenericConceptCombo"
+        "m2:KnowledgeFieldConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:GenericConceptCombo",
+      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
       "rdfs:label": "Propagation",
       "rdfs:comment": "Branching spread of a faithfully copied entity through a network, where each receiving node becomes a new emitter. Synergistic ternary combination: Cascade (sequential chain mechanics + goal attractor) + Duplication (1→N faithful copying at each node) + Network (topological substrate with compatible nodes). Unique dimensional contributions: A from Cascade (propagation threshold and saturation attractor), V from Duplication (copy fidelity — distinguishes propagation from random diffusion), Im from Network (node compatibility — receivers can become emitters). Distinguished from Cascade (linear, no branching) and from Diffusion (no fidelity, no structured topology). Domain-specific instances: m1:Contagion (biological/social), wave propagation (physics), viral spread (computing).",
       "m1:comboOf": [
-        "m2:Cascade",
+        "m1:Cascade",
         "m2:Duplication",
         "m2:Network"
       ],
-      "m1:structuralGrammarFormula": "Fm2(Cascade, Duplication, Network)",
+      "m1:structuralGrammarFormula": "Fm1m2(Cascade, Duplication, Network)",
       "m1:structuralGrammarFormulaExpanded": "S × I × A × D × F | V + Im",
       "m1:structuralGrammarFormulaTeX": "S \\times I \\times A \\times D \\times F \\times V \\times I_m",
       "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F (x) V (x) Im",
@@ -1582,7 +1587,7 @@
         "m2:Layer",
         "m2:Dissipation"
       ],
-      "m1:structuralGrammarFormula": "Fm2²(Layer, Dissipation)",
+      "m1:structuralGrammarFormula": "Fm2(Layer, Dissipation)",
       "m1:structuralGrammarFormulaExpanded": "S × I × A × D × F | V + R",
       "m1:structuralGrammarFormulaTeX": "S \\times I \\times A \\times D \\times F \\times V \\times R",
       "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F (x) V (x) R",
@@ -1629,16 +1634,16 @@
       "@id": "m1:CascadeAmplification",
       "@type": [
         "owl:Class",
-        "m2:GenericConceptCombo"
+        "m2:KnowledgeFieldConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:GenericConceptCombo",
+      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
       "rdfs:label": "CascadeAmplification",
       "rdfs:comment": "Sequential multi-stage process where each stage amplifies the output of the previous, producing exponential cumulative gain. Synergistic binary combination: Cascade (S × I × A × D × F) Fm2² Amplification (Ft × D × It | R + O). Constraint: gain per stage > 1. Emergent property: exponential overall gain G_total = ∏ᵢ gᵢ — absent from Cascade alone (no gain) and Amplification alone (no stage structure).",
       "m1:comboOf": [
-        "m2:Cascade",
+        "m1:Cascade",
         "m2:Amplification"
       ],
-      "m1:structuralGrammarFormula": "Fm2²(Cascade, Amplification) | gain_per_stage > 1",
+      "m1:structuralGrammarFormula": "Fm1m2(Cascade, Amplification) | gain_per_stage > 1",
       "m1:structuralGrammarFormulaExpanded": "S × I × A × D × F | R + O",
       "m1:structuralGrammarFormulaTeX": "S \\times I \\times A \\times D \\times F \\times R \\times O",
       "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F (x) R (x) O",
@@ -1673,6 +1678,258 @@
       },
       "m1:migrationNote": "New concept v2.0.0 — not migrated from M2",
       "dcterms:created": "2026-03-13",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m1:Permeability",
+      "@type": [
+        "owl:Class",
+        "m2:GenericConceptCombo"
+      ],
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
+      "rdfs:label": "Permeability (Permeability/Impermeability)",
+      "rdfs:comment": "Structural property of a boundary that modulates flux passage — combining the conduit selectivity of Channel, the evolvable interface semantics of Interface, and the temporal flow variation of Gradient. Permeability is neither purely static (a Boundary) nor fully open (a Channel) — it is the dynamic, context-dependent capacity of a boundary to allow, filter, or block flow. Dual polarity: Permeability (_^, open regime) / Impermeability (_$, closed regime). Regime is state-dependent and history-sensitive (paper absorbing oil, cell membrane gating, market opening to capital).",
+      "m1:comboOf": [
+        "m2:Channel",
+        "m2:Interface",
+        "m2:Gradient"
+      ],
+      "m1:structuralGrammarFormula": "Fm2(Channel, Interface, Gradient)",
+      "m1:structuralGrammarFormulaExpanded": "St × It × F × T | Ss × (V + E)",
+      "m1:parentGenericConcepts": [
+        {
+          "@id": "m2:Channel",
+          "formula": "St × F | Ss",
+          "uniqueContribution": "Ss (semiotic selectivity)",
+          "contribution": "Structural conduit with semiotic selectivity — what type of flux is allowed through"
+        },
+        {
+          "@id": "m2:Interface",
+          "formula": "St × It × F | V + E",
+          "uniqueContribution": "It (selection criteria information), V (verifiability), E (evolvability)",
+          "contribution": "Boundary with information-bearing criteria for passage, verifiable and evolvable over time"
+        },
+        {
+          "@id": "m2:Gradient",
+          "formula": "F × T",
+          "uniqueContribution": "T (temporal variation)",
+          "contribution": "Temporal variation of flux — permeability changes as flux accumulates (papier huilé, membrane saturation)"
+        }
+      ],
+      "m1:sharedDimensions": {
+        "St": "Shared by Channel and Interface — structural boundary",
+        "F": "Shared by all three — flux being modulated"
+      },
+      "m1:emergentProperty": "Dynamic regime-switching capacity: the same boundary can transition between permeable and impermeable states depending on flux history (T), information criteria (It), and semiotic selectivity (Ss). Absent from Channel (no evolvability, no criteria), Interface (no temporal variation), and Gradient (no structural selectivity) individually.",
+      "m1:hasPolarity": "dual",
+      "m1:polarityDescription": {
+        "permeability": "Open regime — flux passes through (osmosis, open market, cultural receptivity)",
+        "impermeability": "Closed regime — flux blocked (waterproofing, capital controls, epistemic silo)"
+      },
+      "m1:hasAttribute": {
+        "regime": {
+          "@type": "m2:ValueSpace",
+          "m2:valueType": "Discrete symbolic",
+          "m2:description": "Temporal stability of the permeability state",
+          "m2:possibleValues": [
+            {
+              "value": "Static",
+              "description": "Permeability fixed by structure alone",
+              "examples": [
+                "Rock (geological porosity)",
+                "Coffee filter",
+                "Sieve"
+              ]
+            },
+            {
+              "value": "Threshold-dependent",
+              "description": "Permeability switches at a critical flux value",
+              "examples": [
+                "Cell membrane voltage-gated channel",
+                "Dam spillway",
+                "Credit scoring threshold"
+              ]
+            },
+            {
+              "value": "History-dependent",
+              "description": "Permeability changes irreversibly with accumulated flux",
+              "examples": [
+                "Paper absorbing oil (becomes translucent)",
+                "Soil saturation",
+                "Institutional lock-in"
+              ]
+            }
+          ],
+          "m2:default": "Static"
+        }
+      },
+      "m1:hasEpistemicGap": 0.15,
+      "m1:perspective": "territory",
+      "m1:distinctionFromRelated": {
+        "vs_Boundary": "Boundary (S × A) is static — it exists. Permeability is dynamic — it modulates flux through the boundary.",
+        "vs_Channel": "Channel is a dedicated open conduit (no blocking capacity). Permeability can switch between open and closed regimes.",
+        "vs_Constraint": "Constraint (St | L) blocks statically. Permeability is a property of regulated passage — not pure opposition.",
+        "vs_SelectiveGating": "SelectiveGating (active, agent-driven) is a further specialization of Permeability with Regulation added. Permeability is the passive/structural base."
+      },
+      "m1:transdisciplinaryValidation": {
+        "validated": true,
+        "actualDomains": 7,
+        "domains": [
+          "Physics — membrane permeability (osmosis, Darcy law for porous media)",
+          "Biology — cell membrane (aquaporins, ion channels, active vs passive transport)",
+          "Finance — capital market permeability (capital controls, credit scoring, market access)",
+          "Epistemology — disciplinary permeability (interdisciplinary openness vs epistemic silos)",
+          "Social — cultural boundary permeability (immigration, cultural integration)",
+          "Computing — API permeability (public endpoints vs air-gap systems, firewall rules)",
+          "Geology — rock permeability (aquifers, petroleum reservoirs, Darcy law)"
+        ]
+      },
+      "m1:migrationNote": "New concept v2.5.0 — discovered during transport phenomena analysis session (viscosity/conductivity/diffusion). Validated as M1_CoreConcepts combo after failing M2 atomicity test (reducible to Fm2(Channel, Interface, Gradient)).",
+      "dcterms:created": "2026-06-23",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m1:TopologicalDefect",
+      "@type": [
+        "owl:Class",
+        "m2:GenericConceptCombo"
+      ],
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
+      "rdfs:label": "Topological Defect",
+      "rdfs:comment": "Localized Incoherence whose singularity is protected by a discrete topological invariant (n ∈ ℤ) — not eliminable by continuous deformation of the surrounding field. The defect is LOCAL but its invariant is a GLOBAL property of the field: this local↔global tension is constitutive and irreducible. Stability arises not from energy minimization but from topological protection. Key: the order parameter field is undefined at the defect core. Migrated from M2 Combo family (v2.5.0): too specialized for M2 purity — requires topological knowledge to interpret, limiting transdisciplinary accessibility.",
+      "m1:comboOf": [
+        "m2:Coherence",
+        "m2:Invariant"
+      ],
+      "m1:structuralGrammarFormula": "Fm2(Incoherence, Invariant)",
+      "m1:structuralGrammarFormulaExpanded": "St × A × It | R + O",
+      "m1:parentGenericConcepts": [
+        {
+          "@id": "m2:Coherence",
+          "role": "Incoherence pole — local rupture of alignment",
+          "contribution": "Provides the localized disruption of structural/informational coherence at the defect core"
+        },
+        {
+          "@id": "m2:Invariant",
+          "role": "discrete topological invariant protecting stability",
+          "contribution": "Provides the global discrete invariant (winding number n ∈ ℤ) that topologically protects the defect against elimination"
+        }
+      ],
+      "m1:topologicalInvariant": "winding number n ∈ ℤ (or charge, index) — discrete, conserved, non-zero at defect core",
+      "m1:emergentProperty": "Topological protection: the defect cannot be eliminated by any continuous local transformation — stability is global, not energetic. Absent from Coherence (no invariant) and Invariant (no localized rupture) individually.",
+      "m1:hasEpistemicGap": 0.2,
+      "m1:hasPolarity": "neutral",
+      "m1:perspective": "dual",
+      "m1:distinctionFromRelated": {
+        "vs_Coherence": "Coherence is the global ordered state; TopologicalDefect is a localized incoherence within it, stable via topological protection",
+        "vs_Invariant": "Invariant (St × A) is a preserved property under transformation; TopologicalDefect is a singularity CARRYING a discrete invariant",
+        "vs_Bifurcation": "Bifurcation is a global state transition; TopologicalDefect is a localized persistent singularity in an otherwise ordered field"
+      },
+      "m1:transdisciplinaryValidation": {
+        "validated": true,
+        "actualDomains": 7,
+        "domains": [
+          "Condensed Matter Physics — Abrikosov vortex in type-II superconductor",
+          "Materials Science — crystal dislocation (edge/screw)",
+          "Soft Matter — liquid crystal disclination line",
+          "Cosmology — cosmic string / magnetic monopole",
+          "Distributed Systems — persistent fork in P2P blockchain network (Ranaora & Yii 2026)",
+          "Neuroscience — phase singularity in collective neural oscillations",
+          "Biology — morphogenetic singularity in cell orientation fields"
+        ]
+      },
+      "m1:migrationNote": "Migrated from m2:TopologicalDefect (M2 Combo family) to M1_CoreConcepts v2.5.0 — 2026-06-23. Migration rationale: M2 purity constraint requires concepts accessible without domain expertise. TopologicalDefect requires topological knowledge (winding numbers, order parameter fields) — this limits its transdisciplinary accessibility at the M2 level. Pattern remains valid and well-validated across ≥7 domains.",
+      "dcterms:created": "2026-06-23",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m1:ConstraintBalance",
+      "@type": [
+        "owl:Class",
+        "m2:GenericConceptCombo"
+      ],
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
+      "rdfs:label": "Constraint Balance (UnderConstrained / BalancedConstraint / OverConstrained)",
+      "rdfs:comment": "Triadic pattern describing the three qualitative states of a system with respect to the degree of constraint applied to it — instantiation of m2:TriadicBalance in the context of system design, modelling, and ontological construction. The three states are qualitatively distinct: UnderConstrained (too open, loses precision), BalancedConstraint (optimal — generalizes AND is precise), OverConstrained (too rigid, loses generalizability). Ontological Overfitting is the instance of OverConstrained applied to m2:Modelisation — adding one M2 concept per phenomenon.",
+      "m1:comboOf": [
+        "m2:TriadicBalance",
+        "m2:Constraint"
+      ],
+      "m1:structuralGrammarFormula": "Fm2(TriadicBalance, Constraint)",
+      "m1:structuralGrammarFormulaExpanded": "A × F × D × St | _0",
+      "m1:parentGenericConcepts": [
+        {
+          "@id": "m2:TriadicBalance",
+          "formula": "A × F × D | _0",
+          "contribution": "3-state topology with qualitative central optimum — the structural pattern"
+        },
+        {
+          "@id": "m2:Constraint",
+          "formula": "St | L",
+          "contribution": "The structural dimension being balanced — constraints applied to the system"
+        }
+      ],
+      "m1:triadicStates": {
+        "underConstrained": {
+          "symbol": "_^",
+          "label": "UnderConstrained",
+          "semantics": "Insufficient constraints — system too open, vague, loses precision and specificity",
+          "examples": [
+            "ML: underfitting model (too few parameters)",
+            "Law: legal vacuum (rules too vague)",
+            "TSCG: M2 concept with formula too general to be diagnostic",
+            "Biology: over-generalist species vulnerable to competition",
+            "Management: absence of governance (anomie)"
+          ]
+        },
+        "balancedConstraint": {
+          "symbol": "_0",
+          "label": "BalancedConstraint  (_^ | _$)",
+          "semantics": "Optimal constraint level — system generalizes AND is precise. The qualitative optimum emergent from the tension of both poles.",
+          "examples": [
+            "ML: well-fitted model (good bias-variance tradeoff)",
+            "Law: clear yet adaptable legal code",
+            "TSCG: M2 concept validated ≥6 domains, irréductible, atomic",
+            "Biology: species optimally adapted to its niche",
+            "Management: lean governance with clear accountability"
+          ]
+        },
+        "overConstrained": {
+          "symbol": "_$",
+          "label": "OverConstrained",
+          "semantics": "Excessive constraints — system too rigid, over-specified, loses generalizability and composability",
+          "examples": [
+            "ML: overfitting model (too many parameters for data)",
+            "Law: hyper-specific rule missing spirit of law",
+            "TSCG: Ontological Overfitting — one M2 concept per phenomenon (1:1 map/territory)",
+            "Biology: over-specialized species (extinction risk if niche disappears)",
+            "Management: paralysing bureaucracy"
+          ]
+        }
+      },
+      "m1:ontologicalOverfittingConnection": {
+        "description": "Ontological Overfitting is the instance of OverConstrained (_$) applied to m2:Modelisation. It occurs when a modeller adds one M2 concept per observed phenomenon instead of composing existing concepts — sacrificing E (Evolvability) and V (Verifiability) for local R (Representability).",
+        "antiPattern": "See OntologicalOverfitting.md in CoreHypotheses/",
+        "remedy": "Apply tscg-m2-candidate-filter skill: decomposability test + transdisciplinary test + atomicity test"
+      },
+      "m1:emergentProperty": "The BalancedConstraint state (_0) is qualitatively irreducible to its poles — it is not \"a little UnderConstrained AND a little OverConstrained\" but the stereopsic fusion of both: a system that simultaneously generalizes (_^) and specifies (_$). This emergent quality is absent from either pole individually.",
+      "m1:hasEpistemicGap": 0.15,
+      "m1:hasPolarity": "ternary",
+      "m1:perspective": "dual",
+      "m1:transdisciplinaryValidation": {
+        "validated": true,
+        "actualDomains": 6,
+        "domains": [
+          "Machine Learning (underfitting / good model / overfitting)",
+          "Law (legal vacuum / clear code / hyper-legalism)",
+          "TSCG Ontology (under-specified / balanced M2 / Ontological Overfitting)",
+          "Biology (over-generalist / niche-optimal / over-specialist)",
+          "Management (anomie / healthy governance / bureaucracy)",
+          "Mechanics (underdamped / critically damped / overdamped)"
+        ]
+      },
+      "m1:migrationNote": "New concept v2.6.0 — discovered during transport phenomena + Ontological Overfitting analysis session (2026-06-23). Instance of new m2:TriadicBalance.",
+      "dcterms:created": "2026-06-23",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     }
   ]

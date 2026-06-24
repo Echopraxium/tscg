@@ -1,8 +1,8 @@
 # M1_CoreConcepts.jsonld — README
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 2.4.1
-**Date**: 2026-05-27
+**Version**: 2.6.0
+**Date**: 2026-06-23
 **Layer**: M1 — Domain-Neutral Core Concepts
 **Status**: Active
 
@@ -10,14 +10,13 @@
 
 ## Overview
 
-`M1_CoreConcepts.jsonld` is the **foundational M1 ontology** that defines core
-transdisciplinary concept types shared across all knowledge domains. It sits
-between M2 (GenericConcepts) and the domain-specific M1 extensions (biology,
-physics, etc.).
+`M1_CoreConcepts.jsonld` is the **foundational M1 ontology** that defines:
+1. Abstract concept categories (CoreConcept, GenericMechanism, etc.)
+2. **GenericConceptCombos** — transdisciplinary patterns built from M2 concepts
+   via `Fm2(C1, C2, ...)` — the **M1 Safety Valve** against Ontological Overfitting
 
-This file declares abstract concept categories that serve as organizing
-principles for domain-specific knowledge, without being tied to any particular
-field of study.
+It sits between M2 (GenericConcepts) and the domain-specific M1 extensions
+(biology, physics, etc.).
 
 ---
 
@@ -27,6 +26,7 @@ field of study.
 M3_GrammarFoundation.jsonld  ─┐
 M3_EagleEye.jsonld           ─┤→  M3_GenesisGrammar.jsonld
 M3_SphinxEye.jsonld          ─┘           ↓ imported by
+M3_BicephalousPerspective.jsonld           ↓
                                   M2_GenericConcepts.jsonld
                                            ↓ imported by
                                   M1_CoreConcepts.jsonld    ← THIS FILE
@@ -39,264 +39,371 @@ M3_SphinxEye.jsonld          ─┘           ↓ imported by
 ```
 
 **Imports**: `M2_GenericConcepts.jsonld`
-**Imported by**: Domain-specific M1 extensions (biology, physics, chemistry...)
+**Imported by**: Domain-specific M1 extensions
+
+---
+
+## The M1 Safety Valve
+
+M1_CoreConcepts is architecturally designed as a **bidirectional safety valve**
+against Ontological Overfitting:
+
+```
+Pressure DOWN (M2 → M1):
+  Concepts too specialized for M2 purity migrate down
+  Example: TopologicalDefect (requires topological knowledge)
+
+Pressure UP (M1 → M2):
+  Combos validated in ≥6 domains may be promoted to M2
+  (requires passing the M2 Triple Filter)
+
+Absorption (lateral):
+  Non-atomic but transdisciplinary patterns created as GenericConceptCombos
+  Example: Permeability, ConstraintBalance, CascadeAmplification
+```
+
+A **healthy M2** layer shows more M1 combos than M2 concept additions.
+This is a sign the M2 filter is working, not that M2 is insufficient.
+
+See `OntologicalOverfitting.md` (CoreHypotheses/) for the full architectural
+rationale.
+
+---
+
+## GenericConceptCombos Catalogue (v2.6.0)
+
+**12 combos** defined — each built from M2 atomic concepts via `Fm2(...)`:
+
+| ID | Label | Formula | Parents |
+|---|---|---|---|
+| `m1:Cascade` | Cascade | `Fm2(Process, Step, Trajectory)` | Process, Step, Trajectory |
+| `m1:Oscillator` | Oscillator | `Fm2(Component, Process, Trajectory) \| trajectoryShape=Circular` | Component, Process, Trajectory |
+| `m1:Processor` | Processor | `Fm2(Process, Structure, Information) \| V + R` | Process, Structure, Information |
+| `m1:LocalActivationLateralInhibition` | LALI | `Fm2(Amplification, Regulation) \| range(F_A) << range(F_R)` | Amplification, Regulation |
+| `m1:ButterflyEffect` | ButterflyEffect | `Fm2(Amplification, Trajectory) \| trajectoryShape=Chaotic ∧ λ > 0` | Amplification, Trajectory |
+| `m1:Propagation` | Propagation | `Fm1m2(Cascade, Duplication, Network)` | Cascade (M1), Duplication, Network |
+| `m1:Narration` | Narration | `Fm2(Transformation, Representation, Relation)` | Transformation, Representation, Relation |
+| `m1:StratifiedDissipation` | StratifiedDissipation | `Fm2(Layer, Dissipation)` | Layer, Dissipation |
+| `m1:CascadeAmplification` | CascadeAmplification | `Fm1m2(Cascade, Amplification) \| gain_per_stage > 1` | Cascade (M1), Amplification |
+| `m1:TopologicalDefect` | Topological Defect | `Fm2(Coherence, Invariant)` | Coherence, Invariant |
+| `m1:Permeability` | Permeability (Permeability/Impermeability) | `Fm2(Channel, Interface, Gradient)` | Channel, Interface, Gradient |
+| `m1:ConstraintBalance` | Constraint Balance | `Fm2(TriadicBalance, Constraint)` | TriadicBalance, Constraint |
+
+---
+
+## GenericConceptCombos — Detailed Fiches
+
+### m1:Cascade
+
+```
+Formula  : Fm2(Process, Step, Trajectory)
+Parents  : Process, Step, Trajectory
+```
+
+Sequential multi-stage process where the output of each step becomes the
+input of the next, following a directed trajectory toward a goal state.
+The emergent property is **sequential dependency** — each stage is both
+consumer and producer, creating a directed causal chain absent from any
+single parent.
+
+---
+
+### m1:Oscillator
+
+```
+Formula  : Fm2(Component, Process, Trajectory) | trajectoryShape=Circular
+Parents  : Component, Process, Trajectory
+```
+
+A system component that sustains periodic return to previous states through
+a cyclic trajectory around an attractor. The emergent property is **sustained
+periodicity** — the circular trajectory is maintained without external driving,
+distinguishing it from a transient oscillation.
+
+---
+
+### m1:Processor
+
+```
+Formula  : Fm2(Process, Structure, Information) | V + R
+Parents  : Process, Structure, Information
+```
+
+Generic system with inputs and outputs that transforms incoming resources,
+signals, or matter into outputs. The `V + R` Map qualification encodes that
+the transformation must be verifiable and representable — a Processor is
+not a black box.
+
+---
+
+### m1:LocalActivationLateralInhibition (LALI)
+
+```
+Formula  : Fm2(Amplification, Regulation) | range(F_A) << range(F_R)
+Parents  : Amplification, Regulation
+```
+
+Binary combo where a local self-reinforcing process (Amplification, short
+range) is structurally coupled with a longer-range inhibitory process
+(Regulation). The range asymmetry `range(F_A) << range(F_R)` is the
+constitutive constraint — without it, the combo collapses to undifferentiated
+feedback. Canonical pattern for morphogenetic pattern formation (Turing, 1952),
+neural lateral inhibition, market concentration dynamics.
+
+---
+
+### m1:ButterflyEffect
+
+```
+Formula  : Fm2(Amplification, Trajectory) | trajectoryShape=Chaotic ∧ λ > 0
+Parents  : Amplification, Trajectory
+```
+
+Unconstrained local positive feedback (Amplification) coupled with a chaotic
+system trajectory (positive Lyapunov exponent λ > 0). The emergent property
+is **sensitive dependence on initial conditions** — infinitesimal differences
+in state diverge exponentially. Distinct from CascadeAmplification (bounded,
+staged) — ButterflyEffect is topologically chaotic, not merely cumulative.
+
+---
+
+### m1:Propagation
+
+```
+Formula  : Fm1m2(Cascade, Duplication, Network)
+Parents  : Cascade, Duplication, Network
+```
+
+Branching spread of a faithfully copied entity through a network, where each
+receiving node becomes a new emitter. The emergent property is **faithful
+branching** — the combination of Cascade (sequential direction), Duplication
+(faithful copying), and Network (branching topology) produces exponential
+spread with content preservation. Instance: biological contagion, meme
+propagation, blockchain consensus, rumour spreading.
+
+---
+
+### m1:Narration
+
+```
+Formula  : Fm2(Transformation, Representation, Relation)
+Parents  : Transformation, Representation, Relation
+```
+
+Temporal transformation of a semantic network of Representations and their
+Relations — a semantic network morphism unfolding over time. The emergent
+property is **semantic coherence through transformation** — the Relations
+between Representations are preserved (or meaningfully altered) as the
+narrative unfolds, distinguishing Narration from mere sequence.
+
+---
+
+### m1:StratifiedDissipation
+
+```
+Formula  : Fm2(Layer, Dissipation)
+Parents  : Layer, Dissipation
+```
+
+Layered dissipation process where energy or matter is progressively absorbed
+across ordered strata, each stratum capturing a portion of the incoming flux.
+`Fm2(Layer, Dissipation)` — both parents are M2 atomics
+level. The emergent property is **graduated absorption** — the stratification
+produces a spatial/structural profile of dissipation absent from undifferentiated
+Dissipation alone.
+
+---
+
+### m1:CascadeAmplification
+
+```
+Formula  : Fm1m2(Cascade, Amplification) | gain_per_stage > 1
+Parents  : Cascade, Amplification
+```
+
+Sequential multi-stage process where each stage amplifies the output of the
+previous, producing exponential cumulative gain. `gain_per_stage > 1` is the
+constitutive constraint. `Fm1m2` — m1:Cascade is an M1 combo, not a M2 atomic.
+The emergent property is **exponential cumulative gain** — absent from Cascade
+(neutral transfer) and Amplification (single-stage). Instance: transistor
+cascade, enzymatic signalling cascade, compound interest, nuclear chain reaction.
+
+---
+
+### m1:TopologicalDefect *(migrated from M2 v2.5.0)*
+
+```
+Formula  : Fm2(Coherence, Invariant)
+Expanded : St × A × It | R + O
+```
+
+Localized Incoherence whose singularity is topologically protected by a
+discrete invariant (winding number n ∈ ℤ). Not eliminable by continuous
+local transformation — stability is global, not energetic. Migrated from M2:
+too specialized (requires topological knowledge, limiting transdisciplinary
+accessibility at M2 level).
+
+**Validated ≥7 domains**: Condensed Matter (Abrikosov vortex), Materials
+(crystal dislocation), Soft Matter (liquid crystal disclination), Cosmology
+(cosmic string), Distributed Systems (blockchain persistent fork),
+Neuroscience (phase singularity in neural oscillations), Biology
+(morphogenetic singularity).
+
+---
+
+### m1:Permeability *(new v2.5.0)*
+
+```
+Formula  : Fm2(Channel, Interface, Gradient)
+Expanded : St × It × F × T | Ss × (V + E)
+Polarity : dual (_^ Permeability / _$ Impermeability)
+Regime   : Static | Threshold-dependent | History-dependent
+```
+
+Structural property of a boundary that modulates flux passage — neither
+purely static (a Boundary) nor fully open (a Channel). The `T` (Gradient
+inheritance) encodes that permeability changes as flux accumulates — the
+paper absorbing oil, the cell membrane gating, the market opening to capital.
+
+```
+Impermeability      (_$)  ←  regime: closed
+SelectivePermeability(_0) ←  selective — neither fully open nor closed
+Permeability        (_^)  →  regime: open
+```
+
+**Distinct from:**
+- `m2:Boundary` (S×A) — static existence of a frontier
+- `m2:Channel` (St×F|Ss) — dedicated open conduit, no blocking capacity
+- `m2:Constraint` (St|L) — static opposition to flux
+
+**Validated ≥7 domains**: Physics (osmosis, Darcy law), Biology (membranes,
+aquaporins), Finance (capital markets, credit scoring), Epistemology
+(disciplinary openness vs silos), Social (cultural boundaries),
+Computing (API/firewall), Geology (aquifers, petroleum reservoirs).
+
+---
+
+### m1:ConstraintBalance *(new v2.6.0)*
+
+```
+Formula  : Fm2(TriadicBalance, Constraint)
+Expanded : A × F × D × St | _0
+Polarity : ternary (_^, _0, _$)
+```
+
+Instance of `m2:TriadicBalance` in the context of system design and
+ontological modelling. Three qualitatively distinct states:
+
+| State | Symbol | Semantics | Examples |
+|---|---|---|---|
+| UnderConstrained | `_^` | Too open — loses precision | ML underfitting, legal vacuum, M2 concept too vague |
+| BalancedConstraint | `_0` | Optimal — generalizes AND is precise | Good ML model, clear law, validated M2 concept |
+| OverConstrained | `_$` | Too rigid — loses generalizability | ML overfitting, hyper-legalism, **Ontological Overfitting** |
+
+**Ontological Overfitting** is the instance of `OverConstrained (_$)` applied
+to `m2:Modelisation` — adding one M2 concept per phenomenon instead of
+composing existing ones.
+
+**Validated ≥6 domains**: Machine Learning, Law, TSCG Ontology,
+Biology, Management, Mechanics.
 
 ---
 
 ## Core Concept Categories
 
-M1_CoreConcepts defines 16 abstract concept classes that organize domain
-knowledge:
+M1_CoreConcepts defines 16 abstract concept classes:
 
-### **1. CoreConcept** (Base Class)
-
-Abstract superclass for all M1-level concepts. Serves as the common ancestor
-for domain-specific concepts across all knowledge fields.
-
-### **2. GenericMechanism**
-
-Represents transdisciplinary operational principles — "how things work" patterns
-that apply across domains.
-
-**Examples:**
-- Feedback loops (biology, engineering, economics)
-- Resonance (physics, psychology, social systems)
-- Catalysis (chemistry, social change, cognitive processes)
-
-### **3. StructuralTemplate**
-
-Represents organizational patterns and architectural blueprints that recur
-across different systems.
-
-**Examples:**
-- Hierarchical structures (biology, organizations, information systems)
-- Network topologies (neural, social, computational)
-- Modular architectures (software, organisms, ecosystems)
-
-### **4. ProcessArchetype**
-
-Represents canonical process patterns — temporal sequences that exhibit similar
-dynamics across domains.
-
-**Examples:**
-- Growth curves (biological, economic, technological)
-- Decay patterns (radioactive, institutional, memory)
-- Transformation sequences (metamorphosis, phase transitions, paradigm shifts)
-
-### **5. RelationalPattern**
-
-Represents fundamental relationship types that structure interactions between
-entities.
-
-**Examples:**
-- Competition/cooperation (ecology, economics, game theory)
-- Mutualism/parasitism (biology, social systems, information ecology)
-- Dependency/autonomy (development, systems, organizations)
-
-### **6. DomainPattern**
-
-Represents field-specific conceptual patterns that don't fit other categories
-but require formal representation.
-
-**Examples:**
-- Domain-specific heuristics
-- Field-specific methodologies
-- Discipline-native abstractions
-
-### **7-16. Additional Core Categories**
-
-The ontology includes additional abstract categories for organizing:
-- Measurement patterns
-- Transformation types
-- Constraint patterns
-- Emergence types
-- Adaptation mechanisms
-- Information patterns
-
-(Full list available in the `.jsonld` file)
+| Category | Role |
+|---|---|
+| `CoreConcept` | Abstract superclass — common ancestor |
+| `GenericMechanism` | How things work — operational principles |
+| `StructuralTemplate` | Organizational patterns and blueprints |
+| `ProcessArchetype` | Canonical temporal sequences |
+| `RelationalPattern` | Multi-entity interaction structures |
+| `TransformationPattern` | State-change patterns |
+| `RegulationPattern` | Control and feedback patterns |
+| `EmergencePattern` | Emergent property patterns |
+| `InformationPattern` | Information processing patterns |
+| `EnergyPattern` | Energy transfer and conversion patterns |
+| `BoundaryPattern` | Interface and frontier patterns |
+| `ScalePattern` | Multi-scale organisation patterns |
+| `TemporalPattern` | Time-based dynamics patterns |
+| `SpatialPattern` | Spatial organisation patterns |
+| `AdaptationPattern` | Adaptive response patterns |
+| `CollapsePattern` | Failure and dissolution patterns |
 
 ---
 
-## Role in TSCG Architecture
+## Ontology Statistics (v2.6.0)
 
-### **Bridging Layer**
-
-M1_CoreConcepts acts as a **conceptual bridge**:
-
-```
-M2 GenericConcepts     →  transdisciplinary named types (Process, Homeostasis)
-         ↓
-M1 CoreConcepts        →  organizational categories (Mechanism, Template)
-         ↓
-M1 Domain Extensions   →  domain-specific instances (DNA_Replication, Diffusion)
-         ↓
-M0 Instances           →  concrete systems (E_coli_metabolism, Uranium_235_decay)
-```
-
-### **Type System Position**
-
-In the TSCG type system hierarchy:
-
-```
-𝕋₀  Primitive Types      M3   {A, St, F, It, D} ∪ {R, E, V, O, Im} ∪ {T, _^, _$, K, Ss, L}  — Base16 (16)
-𝕋₁  Derived Types        M2   Process, Homeostasis, FeedbackLoop...
-𝕋₁⁺ Core Categories      M1   GenericMechanism, ProcessArchetype...    ← THIS LEVEL
-𝕋₂  Domain Concepts      M1   DNA_Replication, Newton_Second_Law...
-𝕄₀  Instances (Poclets)  M0   E_coli_glucose_metabolism, Uranium_fission...
-```
-
-M1_CoreConcepts defines **meta-types** (types of types) — organizational
-categories that group domain concepts by their structural role.
+| Metric | Value |
+|---|---|
+| Core concept categories | 16 |
+| GenericConceptCombos | 12 |
+| Total concepts defined | 14 (combos with full fiches) |
+| Properties | 1 (simulationTitle) |
+| Imports | M2_GenericConcepts.jsonld |
 
 ---
 
-## Compound Types (𝕋₂)
+## Design Principles
 
-M1_CoreConcepts also defines **compound types** using the emergence operator
-`Fm2()`:
+### 1. Domain Neutrality
 
-### **GenericConceptCombo**
+All GenericConceptCombos must apply across ≥6 distinct knowledge domains.
+Domain-specific patterns belong in M1 extensions (M1_Physics, M1_Biology...).
 
-Previously defined in M2, these emergent concept types were migrated to M1 to
-preserve M2's purity constraint (only simple product types in M2).
+### 2. Safety Valve Role
 
-**OWL typing pattern:**
-```json
-"@type": ["owl:Class", "m2:GenericConceptCombo"],
-"rdfs:subClassOf": "m2:GenericConceptCombo",
-"m1:structuralGrammarFormula": "Fm2(<Concept1>, <Concept2>, ...)"
+M1_CoreConcepts is the primary defense against Ontological Overfitting.
+When a candidate fails the M2 Triple Filter (Decomposability / Transdisciplinarity /
+Atomicity) but is still transdisciplinarily valuable — it lands here as a combo.
+
+### 3. Emergent Property Requirement
+
+Each GenericConceptCombo must have a documented `emergentProperty` — the
+quality the combo produces that neither parent concept has alone.
+A combo without emergent property is not a combo — it is redundant juxtaposition.
+
+### 4. Lego Systemic Principle
+
+M1 combos are **new bricks built from M2 bricks**. The phototransistor
+(Photodiode + Transistor) is the canonical illustration: two M0 components
+combine into a new M1-level functional brick with emergent amplification
+properties irreducible to either component.
+
+### 5. Fm2 vs Fm1m2 — Composition Types
+
+Two composition notations distinguish parent levels:
+
+```
+Fm2(C1, C2, ...)    all parents are M2 atomic concepts
+                     → @type: GenericConceptCombo
+
+Fm1m2(C1, C2, ...)  at least one parent is an M1 combo
+                     → @type: KnowledgeFieldConceptCombo
 ```
 
-→ Appear as **child classes of `m2:GenericConceptCombo`** in OWL explorers (Protégé).
+**Fm2 combos (10):** Cascade, Oscillator, Processor, LALI, ButterflyEffect,
+Narration, StratifiedDissipation, Permeability, TopologicalDefect, ConstraintBalance
 
-**Examples:**
+**Fm1m2 combos (2):**
 ```
-Cascade          = Fm2(Process, Step, Trajectory)
-Oscillator       = Fm2(Component, Process, Trajectory) | trajectoryShape=Circular
-LALI             = Fm2(Amplification, Regulation) | range(F_A) << range(F_R)
-ButterflyEffect  = Fm2(Amplification, Trajectory) | trajectoryShape=Chaotic ∧ λ > 0
+m1:Propagation        =  Fm1m2(Cascade, Duplication, Network)
+  m1:Cascade is M1 — Propagation composites an M1 combo with M2 concepts
+
+m1:CascadeAmplification  =  Fm1m2(Cascade, Amplification) | gain_per_stage > 1
+  Same pattern — m1:Cascade as M1 parent
 ```
-
-### **KnowledgeFieldConceptCombo** (in M1 extensions)
-
-Domain-specific concepts in M1 extension files follow the **`Fm1m2`** morphism:
-
-```json
-"@type": ["owl:Class", "m2:KnowledgeFieldConceptCombo"],
-"rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
-"m2:knowledgeField": {"@id": "m1:extension:<domain>:<KnowledgeField>"},
-"m1:structuralGrammarFormula": "Fm1m2(<Domain>, <ASFID-formula> | <REVOI-formula>)"
-```
-
-→ Appear as **child classes of `m2:KnowledgeFieldConceptCombo`** in OWL explorers.
-
-These types exhibit **emergent properties** irreducible to their components —
-corresponding to function types `(→)` in the Curry-Howard correspondence.
-
----
-
-## Properties Defined
-
-### **simulationTitle**
-
-```json
-{
-  "@id": "m1:simulationTitle",
-  "@type": "owl:DatatypeProperty",
-  "rdfs:domain": {"@id": "owl:Ontology"},
-  "rdfs:range": {"@id": "xsd:string"},
-  "rdfs:comment": "Human-readable title for interactive M0 simulations"
-}
-```
-
-Used to annotate M0 instance ontologies with display names for their
-corresponding BabylonJS/Three.js 3D simulations.
 
 ---
 
 ## Validation Status
 
 **OWL/RDFS Compliance:** ✅ Validated (May 14, 2026)
-- RDFS diagnostic: 0 errors (9 errors fixed)
+- RDFS diagnostic: 0 errors
 - OWL Pellet reasoning: PASSED
 - Protégé compatibility: Confirmed
-
-**Errors corrected:**
-- 7 `rdfs:subClassOf` literals → URI references
-- 1 `rdfs:domain` literal → URI reference
-- 1 `rdfs:range` literal → URI reference
-
-For validation details, see: `CLAUDE.md` (conventions) and `M0_Instances_Schema_shacl.ttl` (SHACL schema).
-
----
-
-## Import Dependencies
-
-M1_CoreConcepts imports M2_GenericConcepts, which transitively imports the
-entire M3 layer:
-
-```
-M3_GrammarFoundation  (operators, type system)
-M3_EagleEye           (ASFID primitives)
-M3_SphinxEye          (REVOI primitives)
-M3_BicephalousPerspective (Gs primitives — TKSL + poles: T, _^, _$, K, Ss, L — Base16)
-M3_GenesisGrammar     (Φ/Ψ, epistemic gap)
-         ↓
-M2_GenericConcepts    (75 derived types)
-         ↓
-M1_CoreConcepts       (16 core categories + 9 combo types)
-```
-
-All M3 dimensions and M2 GenericConcepts are available for use in
-M1_CoreConcepts definitions.
-
----
-
-## Usage in Domain Extensions
-
-Domain-specific M1 extensions (M1_Biology, M1_Physics, etc.) instantiate
-M1_CoreConcepts classes:
-
-```turtle
-m1:extension:biology:DNA_Replication a owl:Class, m2:KnowledgeFieldConceptCombo ;
-    rdfs:subClassOf m2:KnowledgeFieldConceptCombo ;
-    m1:structuralGrammarFormula "Fm1m2(Biology, D × It × F)" .
-
-m1:extension:physics:Wave_Particle_Duality a owl:Class, m2:KnowledgeFieldConceptCombo ;
-    rdfs:subClassOf m2:KnowledgeFieldConceptCombo ;
-    m1:structuralGrammarFormula "Fm1m2(Physics, S × F)" .
-```
-
----
-
-## Ontology Statistics
-
-**Classes:** 16
-**Properties:** 1 (simulationTitle)
-**Imports:** M2_GenericConcepts.jsonld
-**Triples:** 324
-
----
-
-## Design Principles
-
-### **1. Domain Neutrality**
-
-All concepts in M1_CoreConcepts must apply across ≥6 distinct knowledge domains.
-Domain-specific patterns belong in M1 extensions.
-
-### **2. Organizational Role**
-
-M1_CoreConcepts classes serve as **organizing categories**, not directly
-instantiable concepts. Actual domain concepts are defined in M1 extensions.
-
-### **3. Structural Clarity**
-
-Each core concept category has a clear structural role:
-- Mechanisms → operational principles
-- Templates → organizational patterns
-- Archetypes → process patterns
-- Patterns → relational structures
 
 ---
 
@@ -304,21 +411,22 @@ Each core concept category has a clear structural role:
 
 | Version | Date | Changes |
 |---|---|---|
-| **2.4.1** | 2026-05-27 | BASE16: no formula changes (Fm2/Fm1m2 formulas use M2 concept names). README updated: type system table updated to 16 primitives (Base16), Gs primitives reference updated to TKSL+poles. |
-| **1.0.0** | 2026-05-14 | OWL/RDFS validation complete. 9 errors corrected (7 subClassOf, 1 domain, 1 range). RDFS: 0 errors. OWL Pellet: PASSED. Production-ready. |
-| **0.9.x** | 2026-03-xx | Initial development. GenericConceptCombo types migrated from M2. Core categories defined. |
+| **2.6.0** | 2026-06-23 | NEW: m1:ConstraintBalance — instance of m2:TriadicBalance. Triadic pattern: UnderConstrained/BalancedConstraint/OverConstrained. Core instance of Ontological Overfitting anti-pattern. Validated ≥6 domains. |
+| **2.5.0** | 2026-06-23 | MIGRATION: m2:TopologicalDefect → M1_CoreConcepts (too specialized for M2 purity). NEW: m1:Permeability = Fm2(Channel, Interface, Gradient) — dynamic boundary flux property, ≥7 domains. |
+| **2.4.1** | 2026-05-27 | BASE16: formula notation updated (Fm2/Fm1m2 use M2 concept names). README: type system updated to 16 primitives, TKSL reference. |
 
 ---
 
 ## See Also
 
-- `M2_GenericConcepts.jsonld` — M2 derived types (structural formulas)
-- `M1_Domains.jsonld` — Domain registry and metadata
-- `M1_Biology.jsonld` — Biological domain concepts
-- `M1_Physics.jsonld` — Physical domain concepts
-- `M3_GenesisGrammar.jsonld` — M3 structural grammar foundation
+- `M2_GenericConcepts.jsonld` — M2 atomic concepts (source of Fm2 parents)
+- `M2_GenericConcepts_README.md` — M2 formulas reference
+- `M3_BicephalousPerspective.jsonld` — DerivedGsElement _0 = _^ | _$
+- `M1_Domains.jsonld` — Domain registry
+- `docs/CoreHypotheses/OntologicalOverfitting.md` — anti-pattern documentation
+- `skills/tscg-m2-candidate-filter/SKILL.md` — candidate evaluation pipeline
 - `CLAUDE.md` — Modeling conventions and authoring rules
 
 ---
 
-*TSCG Framework — Echopraxium with the collaboration of Claude AI — May 2026*
+*TSCG Framework — Echopraxium with the collaboration of Claude AI — June 2026*

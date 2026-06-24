@@ -63,6 +63,8 @@ const BMC_SIMULATION_ONTOLOGY = {
       "@type": "sim:SimulationCase",
       "sim:caseName": "Netflix",
       "sim:short":    "Netflix",
+    "sim:keyYears": [1997, 2007, 2013, 2022, 2024],
+    "sim:phaseYears": {0:1997,1:2007,2:2013,3:2022,4:2023},
       "sim:pattern":  "BusinessModelMutation ×3 — DVD → Streaming → Studio",
       "sim:sources": {
         "general": [
@@ -264,6 +266,8 @@ const BMC_SIMULATION_ONTOLOGY = {
       "@type": "sim:SimulationCase",
       "sim:caseName": "Nokia (1865→2024)",
       "sim:short":    "Nokia",
+    "sim:keyYears": [1992, 2000, 2007, 2011, 2014, 2024],
+    "sim:phaseYears": {0:1865,1:1992,2:2004,3:2007,4:2014},
       "sim:pattern":  "BusinessModelMutation ×4 — Conglomerate → Mobile Leader → Collapse → Networks",
       "sim:sources": {
         "general": [
@@ -446,6 +450,7 @@ const BMC_SIMULATION_ONTOLOGY = {
         {
           "@type": "sim:Transition",
           "sim:transitionIndex": 1,
+          "sim:fromYear": 2007, "sim:toYear": 2011,
           "sim:transitionLabel": "Mutation T2 — Mobile Leader collapse (2007-2011)",
           "sim:fromPhase": "Maturity", "sim:toPhase": "Decline",
           "sim:outcome": { "@id": "sim:outcome.Failure" },
@@ -467,6 +472,7 @@ const BMC_SIMULATION_ONTOLOGY = {
         {
           "@type": "sim:Transition",
           "sim:transitionIndex": 2,
+          "sim:fromYear": 2011, "sim:toYear": 2014,
           "sim:transitionLabel": "Mutation T3 — Windows Phone pivot (2011-2013)",
           "sim:fromPhase": "Decline", "sim:toPhase": "Transition",
           "sim:outcome": { "@id": "sim:outcome.Failure" },
@@ -498,6 +504,7 @@ const BMC_SIMULATION_ONTOLOGY = {
         {
           "@type": "sim:Transition",
           "sim:transitionIndex": 3,
+          "sim:fromYear": 2014, "sim:toYear": 2016,
           "sim:transitionLabel": "Mutation T4 — Nokia Networks + 5G (2014+)",
           "sim:fromPhase": "Transition", "sim:toPhase": "Growth",
           "sim:outcome": { "@id": "sim:outcome.Success" },
@@ -543,6 +550,8 @@ const BMC_SIMULATION_ONTOLOGY = {
       "@type": "sim:SimulationCase",
       "sim:caseName": "Nintendo (1889→2024)",
       "sim:short":    "Nintendo",
+    "sim:keyYears": [1983, 2006, 2012, 2017, 2024],
+    "sim:phaseYears": {0:1889,1:1983,2:2000,3:2012,4:2017},
       "sim:pattern":  "BusinessModelMutation ×4 — Playing cards → GameBoy → Wii → Switch",
       "sim:sources": {
         "general": [
@@ -680,6 +689,7 @@ const BMC_SIMULATION_ONTOLOGY = {
         {
           "@type": "sim:Transition",
           "sim:transitionIndex": 1,
+          "sim:fromYear": 2005, "sim:toYear": 2006,
           "sim:transitionLabel": "Mutation T2 — Wii Revolution: casual gaming (2006)",
           "sim:fromPhase": "Maturity", "sim:toPhase": "Growth",
           "sim:outcome": { "@id": "sim:outcome.Success" },
@@ -713,6 +723,7 @@ const BMC_SIMULATION_ONTOLOGY = {
         {
           "@type": "sim:Transition",
           "sim:transitionIndex": 2,
+          "sim:fromYear": 2012, "sim:toYear": 2013,
           "sim:transitionLabel": "Mutation T3 — Wii U failure (2012)",
           "sim:fromPhase": "Growth", "sim:toPhase": "Decline",
           "sim:outcome": { "@id": "sim:outcome.Failure" },
@@ -732,6 +743,7 @@ const BMC_SIMULATION_ONTOLOGY = {
         {
           "@type": "sim:Transition",
           "sim:transitionIndex": 3,
+          "sim:fromYear": 2016, "sim:toYear": 2017,
           "sim:transitionLabel": "Mutation T4 — Switch hybrid console (2017)",
           "sim:fromPhase": "Decline", "sim:toPhase": "Growth",
           "sim:outcome": { "@id": "sim:outcome.Success" },
@@ -808,6 +820,8 @@ function buildCasesFromOntology() {
       label:          tx['sim:transitionLabel'] || `Transition ${i+1}`,
       fromPhase:      tx['sim:fromPhase'],
       toPhase:        tx['sim:toPhase'],
+      fromYear:       tx['sim:fromYear'] || null,  // explicit year override
+      toYear:         tx['sim:toYear']   || null,  // explicit year override
       outcome:        tx['sim:outcome'] ? tx['sim:outcome']['@id'].replace('sim:outcome.','') : 'Success',
       instableBlocks: tx['sim:instableBlocks'] || [],
       emergingFluxes: tx['sim:emergingFluxes'] || [],
@@ -826,6 +840,8 @@ function buildCasesFromOntology() {
       name:        c['sim:caseName'],
       short:       c['sim:short'] || c['sim:caseName'],
       pattern:     c['sim:pattern'] || '',
+      keyYears:    c['sim:keyYears']   || [],
+      phaseYears:  c['sim:phaseYears'] || {},
       sources:     c['sim:sources'] || {},
       phases,
       transitions: transitionList,
@@ -849,9 +865,9 @@ function exportAsJsonLD() {
   URL.revokeObjectURL(url);
 }
 
-// CASES is mutable — Bmc.js async init will overwrite it after GitHub fetch
-// (or keep this local version if GitHub is unavailable)
-let CASES = buildCasesFromOntology();
+// CASES is mutable — rebuilt AFTER appendCases() pushes all 12 cases into @graph
+// Bmc.js async init will overwrite it after GitHub fetch if available
+let CASES = [];  // populated below, after appendCases IIFE
 
 // NOTE: Additional cases appended below the initial IIFE
 // They are injected into BMC_SIMULATION_ONTOLOGY['@graph'] at load time
@@ -863,7 +879,7 @@ let CASES = buildCasesFromOntology();
   // ═══════════════════════════════════════════════════════════════════════
   G.push({
     "@id": "m0.bmc:case_Apple", "@type": "sim:SimulationCase",
-    "sim:caseName": "Apple (1976→2024)", "sim:short": "Apple",
+    "sim:caseName": "Apple (1976→2024)", "sim:short": "Apple", "sim:keyYears": [1997, 2001, 2007, 2016, 2024], "sim:phaseYears": {0:1976,1:2001,2:2012,3:2023,4:2024},
     "sim:pattern": "VerticalIntegration + Ecosystem lock-in — 4 mutations",
     "sim:sources": { "general": [
       { "@type":"dcterms:BibliographicResource","dcterms:title":"Steve Jobs","dcterms:creator":"Walter Isaacson","dcterms:date":"2011","dcterms:publisher":"Simon & Schuster","dcterms:identifier":"ISBN 978-1451648539" },
@@ -956,7 +972,7 @@ let CASES = buildCasesFromOntology();
   // ═══════════════════════════════════════════════════════════════════════
   G.push({
     "@id": "m0.bmc:case_Amazon", "@type": "sim:SimulationCase",
-    "sim:caseName": "Amazon (1994→2024)", "sim:short": "Amazon",
+    "sim:caseName": "Amazon (1994→2024)", "sim:short": "Amazon", "sim:keyYears": [1994, 2000, 2006, 2015, 2024], "sim:phaseYears": {0:1994,1:2000,2:2015,3:2023,4:2024},
     "sim:pattern": "3 Transitions — Books → Marketplace → AWS → Multi-domain",
     "sim:sources": { "general": [
       { "@type":"dcterms:BibliographicResource","dcterms:title":"The Everything Store: Jeff Bezos and the Age of Amazon","dcterms:creator":"Brad Stone","dcterms:date":"2013","dcterms:publisher":"Little, Brown and Company","dcterms:identifier":"ISBN 978-0316219266" },
@@ -1039,7 +1055,7 @@ let CASES = buildCasesFromOntology();
   // ═══════════════════════════════════════════════════════════════════════
   G.push({
     "@id": "m0.bmc:case_Google", "@type": "sim:SimulationCase",
-    "sim:caseName": "Google (1998→2024)", "sim:short": "Google",
+    "sim:caseName": "Google (1998→2024)", "sim:short": "Google", "sim:keyYears": [1998, 2003, 2008, 2023, 2024], "sim:phaseYears": {0:1998,1:2003,2:2012,3:2023,4:2024},
     "sim:pattern": "3 Transitions — PageRank → AdWords → Ecosystem → AI-first",
     "sim:sources": { "general": [
       { "@type":"dcterms:BibliographicResource","dcterms:title":"In the Plex","dcterms:creator":"Steven Levy","dcterms:date":"2011","dcterms:publisher":"Simon & Schuster","dcterms:identifier":"ISBN 978-1416596585" }
@@ -1113,7 +1129,7 @@ let CASES = buildCasesFromOntology();
   // ═══════════════════════════════════════════════════════════════════════
   G.push({
     "@id": "m0.bmc:case_Microsoft", "@type": "sim:SimulationCase",
-    "sim:caseName": "Microsoft (1975→2024)", "sim:short": "Microsoft",
+    "sim:caseName": "Microsoft (1975→2024)", "sim:short": "Microsoft", "sim:keyYears": [1990, 2000, 2014, 2020, 2024], "sim:phaseYears": {0:1975,1:1990,2:2000,3:2012,4:2014},
     "sim:pattern": "3 Transitions — OS monopoly → Stagnation (Ballmer) → Cloud+AI (Nadella)",
     "sim:sources": { "general": [
       { "@type":"dcterms:BibliographicResource","dcterms:title":"Hit Refresh","dcterms:creator":"Satya Nadella","dcterms:date":"2017","dcterms:publisher":"HarperBusiness","dcterms:identifier":"ISBN 978-0062717795" },
@@ -1197,7 +1213,7 @@ let CASES = buildCasesFromOntology();
   // ═══════════════════════════════════════════════════════════════════════
   G.push({
     "@id": "m0.bmc:case_IBM", "@type": "sim:SimulationCase",
-    "sim:caseName": "IBM (1911→2024)", "sim:short": "IBM",
+    "sim:caseName": "IBM (1911→2024)", "sim:short": "IBM", "sim:keyYears": [1993, 2004, 2019, 2024], "sim:phaseYears": {0:1911,1:1993,2:2003,3:2012,4:2019},
     "sim:pattern": "3 Transitions — Hardware → Services (Gerstner) → Consulting → Hybrid Cloud",
     "sim:sources": { "general": [
       { "@type":"dcterms:BibliographicResource","dcterms:title":"Who Says Elephants Can't Dance?","dcterms:creator":"Lou Gerstner","dcterms:date":"2002","dcterms:publisher":"HarperBusiness","dcterms:identifier":"ISBN 978-0060523800" }
@@ -1275,7 +1291,7 @@ let CASES = buildCasesFromOntology();
   // ═══════════════════════════════════════════════════════════════════════
   G.push({
     "@id": "m0.bmc:case_Kodak", "@type": "sim:SimulationCase",
-    "sim:caseName": "Kodak (1888→2012)", "sim:short": "Kodak",
+    "sim:caseName": "Kodak (1888→2012)", "sim:short": "Kodak", "sim:keyYears": [1960, 1975, 1996, 2007, 2012], "sim:phaseYears": {0:1888,1:1940,2:1980,3:1996,4:2000},
     "sim:pattern": "1 Failed Transition — Invented digital photography, failed to cannibalize film",
     "sim:sources": { "general": [
       { "@type":"dcterms:BibliographicResource","dcterms:title":"The Innovator's Dilemma","dcterms:creator":"Clayton M. Christensen","dcterms:date":"1997","dcterms:publisher":"Harvard Business School Press","dcterms:identifier":"ISBN 978-0875845852" },
@@ -1348,7 +1364,7 @@ let CASES = buildCasesFromOntology();
   // ═══════════════════════════════════════════════════════════════════════
   G.push({
     "@id": "m0.bmc:case_Xerox", "@type": "sim:SimulationCase",
-    "sim:caseName": "Xerox (1906→2024)", "sim:short": "Xerox",
+    "sim:caseName": "Xerox (1906→2024)", "sim:short": "Xerox", "sim:keyYears": [1959, 1973, 2001, 2017, 2024], "sim:phaseYears": {0:1959,1:1970,2:1990,3:2010,4:2002},
     "sim:pattern": "PARC inventions given away (failed) + Managed Print Services (successful)",
     "sim:sources": { "general": [
       { "@type":"dcterms:BibliographicResource","dcterms:title":"Fumbling the Future","dcterms:creator":"Douglas Smith & Robert Alexander","dcterms:date":"1988","dcterms:publisher":"William Morrow","dcterms:identifier":"ISBN 978-0688069599" },
@@ -1422,7 +1438,7 @@ let CASES = buildCasesFromOntology();
   // ═══════════════════════════════════════════════════════════════════════
   G.push({
     "@id": "m0.bmc:case_Michelin", "@type": "sim:SimulationCase",
-    "sim:caseName": "Michelin (1889→2024)", "sim:short": "Michelin",
+    "sim:caseName": "Michelin (1889→2024)", "sim:short": "Michelin", "sim:keyYears": [1889, 1999, 2015, 2024], "sim:phaseYears": {0:1889,1:1999,2:2010,3:2020,4:2024},
     "sim:pattern": "2 Transitions — Asset sale → Pay-Per-Km → EV Fleet Energy",
     "sim:sources": { "general": [
       { "@type":"dcterms:BibliographicResource","dcterms:title":"Michelin Fleet Solutions: Pay-per-Kilometer Case","dcterms:publisher":"IMD Business School Case IMD-6-0276","dcterms:date":"2003" }
@@ -1490,7 +1506,7 @@ let CASES = buildCasesFromOntology();
   // ═══════════════════════════════════════════════════════════════════════
   G.push({
     "@id": "m0.bmc:case_Airbnb", "@type": "sim:SimulationCase",
-    "sim:caseName": "Airbnb (2008→2024)", "sim:short": "Airbnb",
+    "sim:caseName": "Airbnb (2008→2024)", "sim:short": "Airbnb", "sim:keyYears": [2008, 2012, 2019, 2024], "sim:phaseYears": {0:2008,1:2010,2:2015,3:2020,4:2024},
     "sim:pattern": "PlatformDuality Hosts ↔ Guests — 2 Transitions",
     "sim:sources": { "general": [
       { "@type":"dcterms:BibliographicResource","dcterms:title":"The Airbnb Story","dcterms:creator":"Leigh Gallagher","dcterms:date":"2017","dcterms:publisher":"Houghton Mifflin Harcourt","dcterms:identifier":"ISBN 978-0544725560" }
@@ -1560,3 +1576,6 @@ let CASES = buildCasesFromOntology();
   });
 
 })(); // end appendCases IIFE
+
+// Build CASES now that all 12 cases are in @graph
+CASES = buildCasesFromOntology();
