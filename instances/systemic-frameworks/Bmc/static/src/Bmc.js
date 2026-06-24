@@ -568,30 +568,40 @@ function drawBlocks(p) {
     // ── Abbreviation — top of block, not centered ─────────────────────────
     const ABBR_SIZE  = b.id === 'CS$' ? 18 : 22;
     const LABEL_SIZE = Math.round(11 * 1.18);  // +18% → ~13px
-    const CONTENT_X  = r.x + 18;   // left margin — closer to left edge
+    const CONTENT_X  = r.x + 18;   // left margin
     const CONTENT_W  = r.w - 22;   // usable width
 
-    const TITLE_TOP = r.y + 10;    // abbr starts near top
+    const TITLE_TOP = r.y + 10;
+
+    // Sub-title lines — computed first to measure width for centering
+    const maxChars  = Math.max(8, Math.floor(CONTENT_W / (LABEL_SIZE * 0.6)));
+    const lines     = wrapText(b.label, maxChars);
+    const lineH     = LABEL_SIZE * 1.15;
+    const SUBTITLE_TOP = TITLE_TOP + ABBR_SIZE * 1.1;
+
+    // Measure subtitle width to center abbr above it
+    p.textFont('Arial');
+    p.textSize(LABEL_SIZE);
+    p.textStyle(p.NORMAL);
+    const subtitleW = Math.max(...lines.map(ln => p.textWidth(ln)));
+
+    // Abbreviation — centered over subtitle text
+    p.textSize(ABBR_SIZE);
+    p.textStyle(p.BOLD);
+    const abbrW  = p.textWidth(b.abbr);
+    const abbrX  = CONTENT_X + subtitleW / 2 - abbrW / 2;
 
     const abbrevCol = isInstable ? p.color('#E8A020') : p.color(col);
     abbrevCol.setAlpha(220);
     p.fill(abbrevCol);
-    p.textFont('Arial');
-    p.textSize(ABBR_SIZE);
     p.textAlign(p.LEFT, p.TOP);
-    p.textStyle(p.BOLD);
-    p.text(b.abbr, CONTENT_X, TITLE_TOP);
+    p.text(b.abbr, abbrX, TITLE_TOP);
 
-    // Sub-title (Key Partners...) — directly under abbr, tight interligne
-    const SUBTITLE_TOP = TITLE_TOP + ABBR_SIZE * 1.1;
+    // Sub-title
     p.fill(190, 200, 215);
-    p.textFont('Arial');
     p.textSize(LABEL_SIZE);
     p.textStyle(p.NORMAL);
     p.textAlign(p.LEFT, p.TOP);
-    const maxChars = Math.max(8, Math.floor(CONTENT_W / (LABEL_SIZE * 0.6)));
-    const lines = wrapText(b.label, maxChars);
-    const lineH = LABEL_SIZE * 1.15;   // tight interligne
     lines.forEach((ln, i) => {
       p.text(ln, CONTENT_X, SUBTITLE_TOP + i * lineH);
     });
@@ -741,9 +751,11 @@ function spawnParticles(p) {
 }
 
 function updateParticles() {
+  const df = declineFactor();
+  const speedMult = 1 - df * 0.6;  // up to 60% slower in full Decline
   particles.forEach(pt => {
     const intensity = pathIntensity(pt.path);
-    pt.update(intensity);
+    pt.update(intensity * speedMult);
   });
   particles = particles.filter(pt => pt.alive);
 }
@@ -763,37 +775,35 @@ function tangentLine(A, B) {
 }
 
 function drawParticles(p) {
+  const df = declineFactor();  // 0=normal, 1=full hibernation
   particles.forEach(pt => {
     const pos   = lerpPath(pt.path, pt.t);
     const angle = tangentPath(pt.path, pt.t);
     const intensity = pathIntensity(pt.path);
 
-    // Chevron size: base 10px, scales with intensity and particle alpha
-    const sz    = (8 + intensity * 6) * pt.alpha;
-    const col   = p.color(COL[pt.path.dim] || '#ffffff');
+    // Hibernation: shrink size by up to 50%, dim alpha
+    const hibScale = 1 - df * 0.5;
+    const sz    = (8 + intensity * 6) * pt.alpha * hibScale;
+    const alpha = pt.alpha * (1 - df * 0.35);
+
+    const col = p.color(COL[pt.path.dim] || '#ffffff');
 
     // Glow halo
-    col.setAlpha(pt.alpha * 45);
-    p.noStroke();
-    p.fill(col);
+    col.setAlpha(alpha * 45);
+    p.noStroke(); p.fill(col);
     p.circle(pos.x, pos.y, sz * 2.2);
 
-    // Chevron — drawn as two lines forming a "›" shape, rotated to tangent
-    col.setAlpha(pt.alpha * 220);
-    p.stroke(col);
-    p.strokeWeight(1.8);
-    p.noFill();
-
+    // Chevron
+    col.setAlpha(alpha * 220);
+    p.stroke(col); p.strokeWeight(1.8); p.noFill();
     p.push();
     p.translate(pos.x, pos.y);
     p.rotate(angle);
-    // Chevron: two strokes meeting at tip (right), opening to left
-    const h = sz * 0.45;  // half-height of chevron opening
-    const w = sz * 0.55;  // depth of chevron
-    p.line(-w, -h,  0, 0);  // top arm → tip
-    p.line(-w,  h,  0, 0);  // bottom arm → tip
+    const h = sz * 0.45;
+    const w = sz * 0.55;
+    p.line(-w, -h, 0, 0);
+    p.line(-w,  h, 0, 0);
     p.pop();
-
     p.noStroke();
   });
 }
@@ -820,7 +830,7 @@ function handlePillarClick(mx, my) {
 function drawPillars(p) {
   if (!blockRects['KP']) return;
 
-  const CRAN = 8;  // 1 cran = 8px vertical offset
+  const CRAN = 8;  // 1 cran = 8px
 
   const PILLAR_DEFS = [
     {
@@ -828,7 +838,7 @@ function drawPillars(p) {
       label: 'Infrastructure Management',
       color: [100, 160, 255],
       blocks: ['KP','KA','KR','CS$'],
-      bottomOffset: CRAN * 1,   // 1 cran down — avoids overlap with Financial top
+      bottomOffset: CRAN * 1,   // 1 cran down
     },
     {
       id: 'product',
@@ -842,7 +852,7 @@ function drawPillars(p) {
       label: 'Customer Interface',
       color: [100, 220, 160],
       blocks: ['CS','CR','CH','RS'],
-      bottomOffset: CRAN * 2,   // 2 crans down — visually distinct from Infrastructure
+      bottomOffset: CRAN * 0.5,  // ½ cran (was 2) — less cut off at bottom
     },
     {
       id: 'financial',
@@ -850,7 +860,8 @@ function drawPillars(p) {
       color: [200, 130, 255],
       blocks: ['CS$','RS'],
       bottomOffset: 0,
-      rightOffset: CRAN * 1,   // 1 cran right — avoids overlap with Customer Interface
+      rightOffset:  CRAN * 1,    // 1 cran right
+      leftOffset:   CRAN * 0.75, // ¾ cran right — avoids overlap with Infrastructure left border
     },
   ];
 
@@ -868,21 +879,22 @@ function drawPillars(p) {
     });
     if (minX === Infinity) return;
 
-    const zx = minX - PAD;
+    const leftOff = pillar.leftOffset || 0;
+    const zx = minX - PAD + leftOff;
     const zy = minY - PAD;
-    const zw = maxX - minX + PAD * 2 + (pillar.rightOffset || 0);
+    const zw = maxX - minX + PAD * 2 + (pillar.rightOffset || 0) - leftOff;
     const zh = maxY - minY + PAD * 2 + (pillar.bottomOffset || 0);
     const [rv, gv, bv] = pillar.color;
 
     const isSelected = selectedPillar === pillar.id;
-    const osc        = 0.5 + 0.5 * Math.sin(p.millis() * 0.006);  // ~1Hz
+    const osc        = 0.5 + 0.5 * Math.sin(p.millis() * 0.006);
 
-    // Translucent fill — brighter when selected
+    // Translucent fill
     p.noStroke();
     p.fill(rv, gv, bv, isSelected ? 45 : 28);
     p.rect(zx, zy, zw, zh, 10);
 
-    // Dashed border — oscillating thickness when selected
+    // Dashed border
     const borderAlpha = isSelected ? 180 + osc * 75 : 160;
     const borderW     = isSelected ? 1.5 + osc * 2.5 : 2;
     p.stroke(rv, gv, bv, borderAlpha);
@@ -899,12 +911,12 @@ function drawPillars(p) {
       p.line(zx + zw, y, zx + zw, Math.min(y + DASH, zy + zh));
     p.noStroke();
 
-    // Label banner
-    const LABEL_SZ    = 11;
+    // Label banner — reduced height (10px, +4 padding = 14px total vs previous 17px)
+    const LABEL_SZ    = 10;
     const lx          = zx + zw / 2;
     const isFinancial = pillar.id === 'financial';
-    const bannerH     = LABEL_SZ + 6;
-    const bannerW     = Math.min(zw - 8, pillar.label.length * LABEL_SZ * 0.62 + 20);
+    const bannerH     = LABEL_SZ + 4;  // 14px — was 17px
+    const bannerW     = Math.min(zw - 8, pillar.label.length * LABEL_SZ * 0.62 + 16);
     const bannerY     = isFinancial
       ? zy + zh - bannerH * 0.25
       : zy      - bannerH * 0.75;
@@ -1387,9 +1399,19 @@ window.applyTransition = function(val) {
       instableBlocks:   t.instableBlocks  || [],
       emergingFluxes:   t.emergingFluxes  || [],
       fadingFluxes:     t.fadingFluxes    || [],
-      _transitionOutcome: t.outcome,
-      _transitionFrom:    t.fromPhase,
-      _transitionTo:      t.toPhase,
+      _transitionOutcome:  t.outcome,
+      _transitionFrom:     t.fromPhase,
+      _transitionTo:       t.toPhase,
+      _transitionFromYear: (() => {
+        if (t.fromYear) return t.fromYear;
+        const ni = { Startup:0, Growth:1, Maturity:2, Decline:3, Transition:4 };
+        return (cs.phaseYears || {})[ni[t.fromPhase] ?? 0] || null;
+      })(),
+      _transitionToYear: (() => {
+        if (t.toYear) return t.toYear;
+        const ni = { Startup:0, Growth:1, Maturity:2, Decline:3, Transition:4 };
+        return (cs.phaseYears || {})[ni[t.toPhase] ?? 1] || null;
+      })(),
     };
   } else {
     // Update existing Transition phase with this transition's data
@@ -1411,6 +1433,13 @@ window.applyTransition = function(val) {
     transPhase._transitionOutcome = t.outcome;
     transPhase._transitionFrom    = t.fromPhase;
     transPhase._transitionTo      = t.toPhase;
+    // Explicit years override phaseYears defaults
+    const nameToIdx2 = { Startup:0, Growth:1, Maturity:2, Decline:3, Transition:4 };
+    const fromIdx2   = nameToIdx2[t.fromPhase] ?? 0;
+    const toIdx2     = nameToIdx2[t.toPhase]   ?? 1;
+    const py2        = cs.phaseYears || {};
+    transPhase._transitionFromYear = t.fromYear || py2[fromIdx2] || null;
+    transPhase._transitionToYear   = t.toYear   || py2[toIdx2]   || null;
   }
 
   // Jump to the Transition phase
@@ -1434,29 +1463,47 @@ function exitTransition() {
   const transPhase = cs.phases[PHASE_TRANSITION_IDX];
   const outcome    = transPhase?._transitionOutcome || 'Success';
   const toPhase    = transPhase?._transitionTo      || '';
+  const toYear     = transPhase?._transitionToYear  || null;  // year after transition
 
   // Map toPhase name → phase index
   const nameToIdx = { Startup:0, Growth:1, Maturity:2, Decline:3, Transition:4 };
   let targetPhaseIdx;
   if (outcome === 'Success') {
-    // Find the named target phase, default to Growth
     targetPhaseIdx = nameToIdx[toPhase] ?? 1;
-    if (targetPhaseIdx === PHASE_TRANSITION_IDX) targetPhaseIdx = 1; // avoid loop
+    if (targetPhaseIdx === PHASE_TRANSITION_IDX) targetPhaseIdx = 1;
   } else if (outcome === 'Failure') {
-    targetPhaseIdx = 3;  // Decline
+    targetPhaseIdx = 3;
   } else {
-    targetPhaseIdx = nameToIdx[toPhase] ?? 2;  // InProgress → Maturity or named
+    targetPhaseIdx = nameToIdx[toPhase] ?? 2;
   }
 
-  // Clamp to available phases
   targetPhaseIdx = Math.max(0, Math.min(cs.phases.length - 2, targetPhaseIdx));
 
   jumpPhase(targetPhaseIdx);
   playT = targetPhaseIdx * PHASE_DURATION;
 
+  // Force year to transition target year (overrides phaseYears default)
+  if (toYear) {
+    const sel = document.getElementById('year-select');
+    if (sel) {
+      // Add year if not already in list
+      let found = false;
+      for (const opt of sel.options) { if (parseInt(opt.value) === toYear) { found = true; break; } }
+      if (!found) {
+        const opt = document.createElement('option');
+        opt.value = toYear; opt.textContent = toYear;
+        sel.appendChild(opt);
+        Array.from(sel.options).sort((a,b) => a.value - b.value)
+          .forEach(o => sel.appendChild(o));
+      }
+      sel.value = toYear;
+      updateHeaderTitle();
+    }
+  }
+
   // Reset combolist
-  const sel = document.getElementById('transition-select');
-  if (sel) sel.value = '';
+  const tsel = document.getElementById('transition-select');
+  if (tsel) tsel.value = '';
 }
 window.exitTransition = exitTransition;
 
@@ -1546,15 +1593,12 @@ function jumpPhase(idx) {
   document.getElementById('phase-narrative-text').textContent = next.narrative;
   document.getElementById('phase-driver-text').textContent    = next.driver;
   document.getElementById('ls-phase').textContent = PHASE_NAMES[phaseIdx];
+  updateHeaderTitle();
+  updateYearSelect();
 
-  // Update header title
-  const headerInfo = document.getElementById('header-case-info');
-  if (headerInfo) {
-    const cs = CASES[caseIdx];
-    headerInfo.textContent = cs
-      ? cs.short + ' — phase: ' + PHASE_NAMES[phaseIdx]
-      : '';
-  }
+  // Track decline start for hibernation effect
+  if (phaseIdx === 3) { if (!declineStartMs) declineStartMs = performance.now(); }
+  else declineStartMs = null;
 
   // Show transition label in compbar if Transition phase
   const patEl = document.getElementById('case-pattern');
@@ -1610,6 +1654,7 @@ function selectCase(idx) {
   document.getElementById('phase-driver-text').textContent    = ph.driver;
   document.getElementById('ls-case').textContent  = cs.name;
   document.getElementById('ls-phase').textContent = PHASE_NAMES[0];
+  updateHeaderTitle();  // sync title immediately on case change
 
   // Show pattern in compbar
   const patEl = document.getElementById('case-pattern');
@@ -1623,6 +1668,7 @@ function selectCase(idx) {
   document.getElementById('morph-bar-fill') && (document.getElementById('morph-bar-fill').style.width = '0%');
   updateCaseCard();
   updateTransitionSelect();
+  updateYearSelect();
 }
 
 // ── Update sidebar case card ───────────────────────────────────────────────
@@ -1684,6 +1730,63 @@ function updateCaseCard() {
   } else {
     nextEl.textContent = '— end of lifecycle —';
   }
+}
+
+// ── Header title sync ─────────────────────────────────────────────────────
+function updateHeaderTitle() {
+  const el = document.getElementById('header-case-info');
+  if (!el) return;
+  const cs = CASES[caseIdx];
+  if (!cs) { el.textContent = ''; return; }
+  const yr    = getSelectedYear();
+  const yrStr = yr ? ' (' + yr + ')' : '';
+  el.textContent = cs.short + ' — phase: ' + PHASE_NAMES[phaseIdx] + yrStr;
+}
+
+function getSelectedYear() {
+  const sel = document.getElementById('year-select');
+  return sel ? (sel.value || '') : '';
+}
+
+// ── Year combolist ────────────────────────────────────────────────────────
+function updateYearSelect() {
+  const sel = document.getElementById('year-select');
+  if (!sel) return;
+  sel.innerHTML = '';
+  const cs = CASES[caseIdx];
+  if (!cs) return;
+
+  const phYear = (() => {
+    // During Transition phase: show the fromYear (start of transition)
+    if (phaseIdx === PHASE_TRANSITION_IDX) {
+      const transPhase = cs.phases[PHASE_TRANSITION_IDX];
+      if (transPhase?._transitionFromYear) return transPhase._transitionFromYear;
+    }
+    return cs.phaseYears ? (cs.phaseYears[phaseIdx] || cs.phaseYears[0]) : null;
+  })();
+  const defaultYr = phYear || new Date().getFullYear();
+
+  const allYears = new Set(cs.keyYears || []);
+  if (cs.phaseYears) Object.values(cs.phaseYears).forEach(y => allYears.add(y));
+  const sorted = [...allYears].sort((a, b) => a - b);
+
+  sorted.forEach(yr => {
+    const opt = document.createElement('option');
+    opt.value = yr; opt.textContent = yr;
+    if (yr === defaultYr) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  updateHeaderTitle();
+}
+
+window.onYearChange = function() { updateHeaderTitle(); };
+
+// ── Decline hibernation factor ────────────────────────────────────────────
+let declineStartMs = null;
+function declineFactor() {
+  if (phaseIdx !== 3) return 0;
+  if (!declineStartMs) return 0;
+  return Math.min(1, (performance.now() - declineStartMs) / 2000);
 }
 
 // ── Live metrics ───────────────────────────────────────────────────────────
@@ -1905,13 +2008,13 @@ window.togglePlay = function() {
 };
 
 window.resetSim = function() {
-  playing = false; selectedPillar = null;
+  playing = false; selectedPillar = null; declineStartMs = null;
   playT   = 0; phaseIdx = 0;
   document.getElementById('btn-play').textContent = '▶ Play';
   document.getElementById('btn-play').classList.remove('active');
   document.getElementById('status-dot').className = 'status-dot';
   document.getElementById('status-label').textContent = 'Stopped';
-  selectCase(caseIdx);
+  selectCase(caseIdx);  // re-selects current case at phase 0, resets sliders + title + year
   particles = [];
 };
 

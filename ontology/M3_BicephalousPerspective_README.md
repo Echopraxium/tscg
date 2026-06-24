@@ -1,10 +1,11 @@
 # M3_BicephalousPerspective.jsonld
 
-**Version:** 1.2.0  
-**Layer:** M3  
-**Type:** Stereopsis Grammar (Gs) — Reification of stereopsic synergy  
-**Created:** 2026-05-18  
-**Last Modified:** 2026-05-27
+**Version:** 1.3.0
+**Layer:** M3
+**Type:** Stereopsis Grammar (Gs) — Reification of stereopsic synergy
+**Created:** 2026-05-18
+**Last Modified:** 2026-06-23
+**Author:** Echopraxium with the collaboration of Claude AI
 
 ---
 
@@ -53,7 +54,7 @@ a bicephalous (Gs) type expression.
 **TKSL acronym** — the 4 nominal Gs primitives (T, K, Ss, L). The poles _^/_$
 are polarity modifiers and not included in the acronym.
 
-**Example formulas (updated with St/It/O indexation):**
+**Example formulas (with St/It/O indexation):**
 ```
 A × St × It | R + O | _^  =  Coherence      (bicephalous + positive pole)
 F × T                      =  Gradient        (Territory × Gs primitive T)
@@ -62,230 +63,187 @@ St × It | L                =  Node/Component  (structure+info, converging)
 It × Ss                    =  Code            (information encoded as symbol)
 Ss × F | K                 =  Language        (symbol-flow in knowledge context)
 A × St × F | L             =  Homeostasis     (attractor+structure+flow, converging)
+A × S × F | _0             =  Balance         (equilibrium — _0 = _^ | _$)
+A × F × D | _0             =  TriadicBalance  (3-state optimum)
 ```
 
 **Neutral element:** `m3:bicephalous:StereopsisEmptySet = EmptyTerritory | EmptyMap`
 
 ---
 
-## 🔭 T — First Primitive of Gs (Temporality)
+## 🆕 v1.3.0 — Derived Gs Elements
 
-**T (Temporality)** is the first primitive of 𝕋₀(|):
+### DerivedGsElement — a new category
 
-```
-𝕋₀(|) = {T, _^, _$, K, Ss, L}   ← Base16 alphabet
-```
-
-### T is irreducible
-
-T cannot be derived from ASFID or REVOI primitives — it is a genuinely new
-ontological category. Like A (Attractor) in Gt which is not defined by other
-ASFID types, T is primitive and manifests in different contexts:
+A **DerivedGsElement** is a named constant of the Gs monoide that is expressible
+from primitives of 𝕋₀(|) via the `|` operator. It is **not a primitive** —
+it does not extend Base16.
 
 ```
-F | Im   →  manifestation of T in Territory/Map context
-             (flux temporality seen through interoperability lens)
-D | Im   →  manifestation of T in Territory/Map context
-             (dynamic temporality seen through interoperability lens)
+DerivedGsElement  ≠  new primitive
+                  =  named expression in 𝕋₀(|)
+
+Analogy in Gt:  F × D  names  m2:Process   (derived expression, not new primitive)
+Analogy in Gs:  _^ | _$  names  _0         (derived element, not new primitive)
 ```
 
-**F|Im and D|Im are manifestations of T, not its definition.**
+Base16 is **preserved** when adding DerivedGsElements.
 
-### T semantic definition
+### _0 — EquilibriumPole
 
-> Pure Temporality — the temporal interface that emerges from the fusion
-> of Territory time (as flow/evolution: F, D) and Map time (as
-> synchronisation/interoperability: Im). T captures what is relational
-> in time — not what a system does in time (F, D) nor how a model
-> qualifies time (Im) but how Territory and Map *correspond* temporally.
+```
+_0  =  _^ | _$   (EquilibriumPole)
+```
 
-### T in practice
-
-| Domain | T manifestation |
+| Property | Value |
 |---|---|
-| Music | Rhythm — temporal interface between sound flux (F) and listener synchronisation (Im) |
-| Digital circuits | Clock signal — coordination between data flow (F) and system interoperability (Im) |
-| Biology | Circadian rhythm — temporal binding between metabolic dynamics (D) and inter-cellular synchronisation (Im) |
-| Distributed systems | Consensus timing — alignment between state evolution (D) and node interoperability (Im) |
+| Symbol | `_0` |
+| Name | EquilibriumPole |
+| Definition | `_^ | _$` |
+| Type | `m3:DerivedGsElement` |
+| Base16 impact | None — derived, not primitive |
+
+**Semantics**: The stereopsic fusion of the two poles produces their synthesis —
+not their average (quantitative) but their qualitative resolution.
+The PositivePole (_^) encodes excess / onset; the NegativePole (_$) encodes
+deficit / terminus. Their fusion `_0` encodes the **optimal calibration** between
+Territory and Map — the point where neither excess nor deficit dominates.
+
+**Triadic pattern** — the three states of any system with a qualitative optimum:
+
+```
+_^   →  Under-pole   (insufficient constraint, excess openness)
+_0   →  Equilibrium  (_^ | _$  — qualitative optimum, emergent from tension)
+_$   →  Over-pole    (excessive constraint, excess closure)
+```
+
+**Usage in M2:**
+- `m2:Balance = A × S × F | _0` — static equilibrium state (Territory/Map optimal correspondence)
+- `m2:TriadicBalance = A × F × D | _0` — structural topology with intrinsic 3-state optimum
+
+**Open question (deferred)**: Does _0 require a new Gs primitive (C=Calibration,
+As=Adjustment, N=Normativity) to fully encode the *degree* of Territory/Map fit?
+Current solution (_0 as DerivedGsElement) is sufficient for the current M0 corpus.
+Base16→Base17 transition requires ≥3 M0 poclets demonstrating insufficiency.
 
 ---
 
-## 🧠 K — Knowledge (idx 3)
+## 🔭 T — Temporality
 
-**K (Knowledge)** is the cognitive interface primitive of 𝕋₀(|):
+**T (Temporality)** answers: *When?*
 
-> Contextualisation of raw Information (It, Territory) into meaning.
-> K is the act that transforms It into something a Map can interpret.
+The temporal inter-grammar mediator — bridges Territory's dynamic `D` (state
+evolution) with Map's recording of temporal observations. Key: `T` is a
+**relational** primitive (bridges Gt↔Gm), unlike `D` which is pure Territory.
 
-### K is irreducible
+```
+D  (Territory)  =  "the system state evolves"
+T  (Gs)         =  "when does this Gt↔Gm correspondence occur?"
+```
 
-K cannot be derived from It (Territory) nor from R/E (Map):
-- `It` = raw data, signal, information as observed
-- `R` = representability quality of the Map
-- `K` = the cognitive bridge that makes It *meaningful* within a Map context
-
-### K semantic definition
-
-> Pure Knowledge Interface — the cognitive act that contextualises Territory
-> information (It) into Map-interpretable meaning. Not the information itself
-> (It) nor its representational quality (R/E), but how observation becomes
-> understanding.
-
-*Theoretical basis: Maturana/Varela (cognition as enaction), Husserl (intentionality),
-Peirce (interpretant — the meaning produced in a mind by a sign).*
-
-### K in practice
-
-| Domain | K manifestation |
-|---|---|
-| Immune system | Antigen recognition — molecular It → 'self/non-self' K |
-| Natural language | Tokenisation — raw signal It → semantic unit K |
-| Science | Paradigm (Kuhn) — raw observations It → theory-laden K |
-| Medicine | Diagnosis — symptom It → clinical meaning K in nosological frame |
-| Music | Melodic perception — sound waves It → pattern K in tonal context |
-| Law | Interpretation — statute text It → legal meaning K in jurisdictional context |
+**Formula role**: `F × T = m2:Gradient` — the most common T-containing formula.
+Gradient captures variation of a flux **in time** (temporal derivative F→Gm).
 
 ---
 
-## 🔣 Ss — Symbol / Stereopsic (idx 4)
+## 🔭 _^ and _$ — PositivePole and NegativePole
 
-**Ss (Symbol)** is the semiotic interface primitive of 𝕋₀(|):
+**_^ (PositivePole)** and **_$ (NegativePole)** are polarity modifiers.
 
-> The sign-relation between signifier (Territory/Gt) and signified (Map/Gm).
-> Ss formalises the Peircean sign at the M3 level.
+They appear as suffixes in formula expressions:
 
-**Notation disambiguation:** `Ss` (subscript s = Stereopsic) vs `St` (subscript t =
-Territory/Structure). In hybrid formulas containing `|`, always use `St` for Structure
-and `Ss` for Symbol. In pure intra-Territory formulas, `S` remains unindexed (ASFID).
+```
+expr | _^   →  positive/amplifying/onset pole
+expr | _$   →  negative/attenuating/terminus pole
+```
 
-### Ss is irreducible
+**Key distinction from T, K, Ss, L**: The poles are not inter-grammar
+mediators answering a transcendental question — they are **polarity discriminators**
+applied to an already-complete expression. Hence excluded from TKSL acronym.
 
-- `St` (Territory Structure) = physical/structural organisation
-- `R` (Map Representability) = representational quality
-- `Ss` = neither — it is the semiotic convention that makes St *carry* Gm meaning
-
-### Ss semantic definition
-
-> Pure Semiotic Interface — the sign-relation between a Territory signifier
-> and a Map signified. Not the structure (St) nor the representation (R),
-> but the conventional bond that makes one stand for the other.
-
-*Theoretical basis: Peirce (sign = signifier + signified + interpretant),
-Saussure (signifier/signified — arbitrary but systematic), Eco (semiotics of culture).*
-
-### Ss in practice
-
-| Domain | Ss manifestation |
-|---|---|
-| Natural language | Words (St signifiers) ↔ concepts (Gm signified) |
-| DNA | Codons (St) ↔ amino acids (Gm) — biochemical semiosis |
-| Mathematics | Symbols (St) ↔ mathematical objects (Gm) |
-| Music | Notation (St) ↔ sonic events (Gm) — semiotic convention |
-| Traffic | Signs (St) ↔ traffic rules (Gm) — social convention |
-| Computing | Tokens (St) ↔ computational operations (Gm) |
+**Derived element**: `_0 = _^ | _$` — the equilibrium pole (v1.3.0).
 
 ---
 
-## 📍 L — Localizability (idx 5)
+## 🔭 K — Knowledge
 
-**L (Localizability)** is the cybernetic interface primitive of 𝕋₀(|):
+**K (Knowledge)** answers: *What?*
 
-> Ordinal discrimination of convergence direction toward an Attractor (A)
-> by successive state comparison. **No metric required** — purely ordinal:
-> closer / farther, not *how much* closer.
+The cognitive inter-grammar mediator — contextualises raw Territory Information
+(`It`) into Map-level meaning. K is the Gs primitive that formalises the
+Bateson sense: *"a difference that makes a difference."*
 
-### L is irreducible
+```
+It  (Territory)  =  raw data
+K   (Gs)         =  "what does this It mean in a Map context?"
+```
 
-- `A` (Territory Attractor) = the goal/equilibrium state
-- `V` (Map Verifiability) = quality of model verification
-- `L` = neither — it is the cybernetic comparison that tests
-  whether the current trajectory is converging or diverging relative to A
-
-### L semantic definition
-
-> Pure Localizability Interface — ordinal convergence discrimination.
-> Answers "Is the current state trajectory approaching the Attractor?"
-> without requiring a distance metric. Based on successive state comparison
-> (Wiener 1948 negative feedback; Ashby 1956 regulation principle).
-
-**Rejected names:** *Groundedness* (Hilbert-space trap), *Origin* (implies metric).
-
-*Theoretical basis: Wiener (1948) Cybernetics, Ashby (1956) Introduction to Cybernetics,
-Conant & Ashby (1970) Every Good Regulator must be a Model of the System.*
-
-### L in practice
-
-| Domain | L manifestation |
-|---|---|
-| Thermostat | Temperature vs setpoint — converging/diverging, no metric |
-| Immune response | Inflammation → homeostasis A — ordinal, not quantified |
-| Evolution | Population trajectory → fitness peak A |
-| Navigation | Bearing correction → destination A without exact distance |
-| Economics | Wicksell rate — convergence toward equilibrium, no exact measure |
-| Neural RL | Reward signal — converging toward policy optimum A |
+Theoretical basis: Maturana/Varela (cognition as enaction), Husserl
+(intentionality), Peirce (interpretant), Bateson (meaningful difference).
 
 ---
 
-## 📏 Notation Convention — St / It / O in Hybrid Formulas
+## 🔭 Ss — Symbol (Stereopsic)
 
-**Rule:** In any formula containing `|`, Territory and Map types carry their monoid
-index to prevent ambiguity with new Gs type `Ss`:
+**Ss (Symbol/Stereopsic)** answers: *Sign?*
 
-```
-In hybrid formulas (with |):
-  S  →  St   (Structure/Territory — subscript t)
-  I  →  It   (Information/Territory — subscript t)
-  O  →  O   (Observability/Map — subscript t... wait: O = Observability/Map, subscript m)
+The semiotic inter-grammar mediator — the sign-relation between a Territory
+entity (signifier) and a Map meaning (signified). Formalises Peirce's triad
+(sign / object / interpretant) at the M3 level.
 
-Examples:
-  A × St × It × D | V        ✅  (was: A × S × I × D | V)
-  St × F × It | Im           ✅  (was: S × F × I | Im)
-  A × St × F × It × D | R+V  ✅  (was: A × S × F × I × D | R+V)
-
-Pure Territory (no |):
-  A × S × F                  ✅  (unchanged — ASFID unaffected)
-  D × I × F                  ✅  (unchanged)
-```
-
-This convention is **backward-compatible**: scoring (ASFID/REVOI), pure intra-monoid
-formulas, and instance files are all unaffected.
+**Notation disambiguation**: `Ss` (subscript s = Stereopsic) vs `St` (subscript
+t = Territory/Structure). In pure intra-Territory formulas: `S` remains unindexed.
+In hybrid formulas (containing `|`): `St` for Structure, `Ss` for Symbol.
 
 ---
 
-## 🏗️ Architecture
+## 🔭 L — Localizability
+
+**L (Localizability)** answers: *Converging?*
+
+The cybernetic inter-grammar mediator — ordinal discrimination of convergence
+direction toward an Attractor (A). L answers *converging or diverging?* without
+requiring a metric (purely ordinal, not quantitative).
 
 ```
-M3_GrammarFoundation (apex)
-         ↓ imported by
-    ┌────┴────────────────┐
-    │                     │
-M3_EagleEye         M3_SphinxEye
-(Gt/×, ASFID)      (Gm/+, REVOI)
-    │                     │
-    └──────────┬──────────┘
-               ↓ both imported by
-M3_BicephalousPerspective ← YOU ARE HERE
-(Gs/|, TKSL={T,K,Ss,L} + poles _^/_$)
-               ↓ imported by
-M3_GenesisGrammar
+A  (Territory)  =  the goal state
+V  (Map)        =  the model's verifiability
+L  (Gs)         =  "is the system converging toward A as defined in the Map?"
 ```
+
+Theoretical basis: Wiener (1948 cybernetics), Ashby (1956 regulation),
+Conant & Ashby (good regulator theorem), Powers (perceptual control theory).
 
 ---
 
-## 🌀 Special Elements of |
+## 🔵 Special Elements
 
-| Element | Role | Metaphor | δ₁ |
-|---|---|---|---|
-| `EmptyStereopsis` | Neutral of \| | **Divergent Strabismus** — both eyes diverge, no fusion possible | max |
-| `StereopsisUniversalSet` | **Pseudo-absorbent of \|** | **Convergent Strabismus** — degenerate limit: 𝕋₀ = all types, empty of meaning (Borges paradox) | 0 |
+### Neutral element — StereopsisEmptySet
 
 ```
-EmptyStereopsis        =  EmptyTerritory | EmptyMap          (neutral of |,    δ₁ = max)
-StereopsisUniversalSet =  𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)              (pseudo-absorbent, δ₁ = 0)
-                          = all 16 primitives (Base16)
-                          StereopsisUniversalSet | a = StereopsisUniversalSet
-                          "empty of meaning" — NOT a semantic ideal, a degenerate limit
+EmptyStereopsis  =  EmptyTerritory | EmptyMap   (neutral of |, δ₁ = max)
+x | EmptyStereopsis  =  x  for all x
 ```
+
+*Divergent Strabismus* — Territory and Map share nothing. Opposite of Universal.
+
+### Pseudo-absorbent — StereopsisUniversalSet
+
+```
+StereopsisUniversalSet  =  𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)  =  all 16 Base16 primitives
+StereopsisUniversalSet | a  =  StereopsisUniversalSet
+```
+
+*Convergent Strabismus* — degenerate limit: everything is said, nothing means
+anything (Borges 1:1 map paradox). NOT a semantic ideal.
+
+### DerivedGsElement — EquilibriumPole _0 (v1.3.0)
+
+```
+_0  =  _^ | _$   (EquilibriumPole — named derived constant)
+```
+
+See [v1.3.0 section](#-v130--derived-gs-elements) above.
 
 ---
 
@@ -312,12 +270,28 @@ Analogously in TSCG:
    structure of what two heads produce together
 2. **Bicephalous monoid** (Gs, |, EmptyStereopsis) — closes the structural gap
 3. **Base16 alphabet** — 𝕋₀(|) = {T, _^, _$, K, Ss, L} — **6 primitives**
-4. **TKSL acronym** — 4 nominal Gs primitives (T=Temporality, K=Knowledge,
-   Ss=Symbol, L=Localizability), each answering a transcendental question
+4. **TKSL acronym** — 4 nominal Gs primitives (T, K, Ss, L), each answering
+   a transcendental question
 5. **5-5-6 asymmetry** — Gs has 6 primitives vs 5 for Gt/Gm; semantically justified
-6. **Notation convention** — St/It/O in hybrid formulas (containing |); ASFID/REVOI scoring unaffected
+6. **Notation convention** — St/It in hybrid formulas; ASFID/REVOI scoring unaffected
 7. **| is universal** — operates across all three grammars, always produces Gs types
-8. **Divergent/Convergent Strabismus** — documentation metaphors for EmptyStereopsis
-   and StereopsisUniversalSet (now 16 primitives)
+8. **DerivedGsElement** (v1.3.0) — named Gs constants derived from primitives;
+   Base16 preserved. First instance: `_0 = _^ | _$` (EquilibriumPole)
+9. **Divergent/Convergent Strabismus** — documentation metaphors for Empty/Universal
 
 **Stereopsis is where Territory and Map fuse into something neither is alone.** 🔭
+
+---
+
+## 📋 Changelog
+
+| Version | Date | Changes |
+|---|---|---|
+| **1.3.0** | 2026-06-23 | NEW: `m3:DerivedGsElement` class — named Gs constants derived from primitives, Base16 preserved. NEW: `_0 = _^ | _$` (EquilibriumPole) as first DerivedGsElement. Supports m2:Balance revision and m2:TriadicBalance (M2 v16.14.0). Open question documented: Base16→Base17 deferred. |
+| **1.2.0** | 2026-05-27 | BASE16 EXTENSION: K (Knowledge), Ss (Symbol/Stereopsic), L (Localizability) added. TKSL acronym. Transcendental questions map. 5-5-6 asymmetry documented. St/It/O notation convention. |
+| **1.1.0** | 2026-05-20 | PositivePole (_^) and NegativePole (_$) added as Gs type primitives. |
+| **1.0.0** | 2026-05-18 | Initial release. T (Temporality) as first Gs primitive. |
+
+---
+
+*TSCG Framework — Echopraxium with the collaboration of Claude AI — June 2026*
