@@ -1,7 +1,9 @@
 {
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+    "m0": "M0_KindlebergerMinsky.jsonld#",
+    "m1core": "M1_CoreConcepts.jsonld#",
+    "m1econ": "M1_extensions/economics/M1_Economics.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -10,16 +12,52 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m0.kindlebergerMinsky": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/KindlebergerMinsky/M0_KindlebergerMinsky.jsonld#",
-    "m1.extensions.economics": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/economics/M1_Economics.jsonld#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    "A_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
+      "@type": "xsd:float"
+    },
+    "S_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
+      "@type": "xsd:float"
+    },
+    "F_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
+      "@type": "xsd:float"
+    },
+    "It_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
+      "@type": "xsd:float"
+    },
+    "D_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
+      "@type": "xsd:float"
+    },
+    "R_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
+      "@type": "xsd:float"
+    },
+    "E_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
+      "@type": "xsd:float"
+    },
+    "V_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
+      "@type": "xsd:float"
+    },
+    "O_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
+      "@type": "xsd:float"
+    },
+    "Im_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
+      "@type": "xsd:float"
+    }
   },
   "@graph": [
     {
       "@id": "m0:KindlebergerMinsky",
       "@type": "owl:Ontology",
       "owl:imports": [
-        "M0_Common.jsonld",
         "M3_GenesisGrammar.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld",
@@ -32,19 +70,25 @@
       "rdfs:comment": "TSCG M0 poclet modeling the Kindleberger-Minsky 5-phase speculative cycle (Displacement → Boom → Euphoria → Distress → Revulsion). Primary M2 patterns: m2:Propagation (panic through interbank network) and m2:Narration (collective belief transformation). Includes simulation markers (date, asset price, transaction volume, dynamics) for 6 historical instances across all 5 phases.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-28",
-      "owl:versionInfo": "1.0.0",
+      "owl:versionInfo": "1.0.1",
       "m1:domain": [
         "Economics"
       ],
       "dcterms:modified": "2026-02-28",
       "m2:changelog": [
         {
+          "version": "1.0.1",
+          "date": "2026-06-26",
+          "changes": "ACTION3: Added m0:focalApplicable=true."
+        },
+        {
           "version": "1.0.0",
           "date": "2026-02-28",
           "changes": "Initial version. 5 poles, 6 historical instances with full simulation markers (dateRange, assetPrice, transactionVolume, dynamics). Primary M2: Propagation + Narration. ASFID mean=0.91, REVOI mean=0.82, δΘ=0.09."
         }
       ],
-      "m1:simulationTitle": "Kindleberger-Minsky: Financial Bubble Cycle"
+      "m1core:simulationTitle": "Kindleberger-Minsky: Financial Bubble Cycle",
+      "m0:focalApplicable": true
     },
     {
       "@id": "m0:System",
@@ -64,6 +108,22 @@
         "Irving Fisher — Debt Deflation Theory (1933)",
         "Walter Bagehot — Lender of Last Resort principle (1873)"
       ],
+      "m0:asfidScores": {
+        "A": 0.92,
+        "S": 0.85,
+        "F": 0.92,
+        "I": 0.9,
+        "D": 0.95,
+        "mean": 0.91
+      },
+      "m0:revoiScores": {
+        "R": 0.85,
+        "E": 0.78,
+        "V": 0.75,
+        "O": 0.82,
+        "Im": 0.88,
+        "mean": 0.82
+      },
       "m0:epistemicGap": 0.09,
       "m0:primaryMetaconcepts": [
         {
@@ -186,9 +246,7 @@
         "m0:Instance_Dotcom",
         "m0:Instance_GFC2008",
         "m0:Instance_Crypto2021"
-      ],
-      "m0:asfidMean": 0.91,
-      "m0:revoiMean": 0.82
+      ]
     },
     {
       "@id": "m0:Pole_Displacement",
@@ -197,6 +255,14 @@
       "rdfs:comment": "Exogenous shock creates new profit opportunity. Information asymmetry: early movers informed, majority not yet aware. Narration begins: initial semantic network 'unprecedented opportunity' forms. Dynamics: low but positive price acceleration, low volume.",
       "m0:poleIndex": 1,
       "m0:asfidFormula": "I ⊗ D",
+      "m0:asfidScores": {
+        "A": 0.7,
+        "S": 0.65,
+        "F": 0.75,
+        "I": 0.95,
+        "D": 0.9,
+        "mean": 0.79
+      },
       "m0:primaryM2": "m2:Event",
       "m0:secondaryM2": [
         "m2:Trigger",
@@ -384,8 +450,7 @@
             "dominantForce": "DeFi emergence (Uniswap, Compound), institutional interest (MicroStrategy), Bitcoin halving (May 2020)"
           }
         }
-      },
-      "m0:asfidMean": 0.79
+      }
     },
     {
       "@id": "m0:Pole_Boom",
@@ -394,6 +459,14 @@
       "rdfs:comment": "Easy credit fuels investment. Leverage amplifies returns. 'Stability is destabilizing' (Minsky): absence of crisis encourages risk-taking. Narration in Supercritical regime: 'new paradigm' spreads. Price velocity increasing, volume surging, acceleration strongly positive.",
       "m0:poleIndex": 2,
       "m0:asfidFormula": "F ⊗ D ⊗ A",
+      "m0:asfidScores": {
+        "A": 0.85,
+        "S": 0.8,
+        "F": 0.95,
+        "I": 0.85,
+        "D": 0.95,
+        "mean": 0.88
+      },
       "m0:primaryM2": "m2:Amplification",
       "m0:secondaryM2": [
         "m2:Cascade",
@@ -583,8 +656,7 @@
             "dominantForce": "Institutional adoption (Tesla, MicroStrategy), PayPal crypto launch, low-rate environment, retail FOMO"
           }
         }
-      },
-      "m0:asfidMean": 0.88
+      }
     },
     {
       "@id": "m0:Pole_Euphoria",
@@ -593,6 +665,14 @@
       "rdfs:comment": "'This time is different.' Speculative attractor fully dominates. Narration at maximum density. New participants enter (taxi drivers, retail). Prices decouple from fundamentals. Price velocity peaks then begins first signs of deceleration. Volume at maximum. Insiders quietly sell.",
       "m0:poleIndex": 3,
       "m0:asfidFormula": "A ⊗ S",
+      "m0:asfidScores": {
+        "A": 0.98,
+        "S": 0.92,
+        "F": 0.85,
+        "I": 0.88,
+        "D": 0.85,
+        "mean": 0.9
+      },
       "m0:primaryM2": "m2:Narration",
       "m0:secondaryM2": [
         "m2:Oscillator",
@@ -781,8 +861,7 @@
             "dominantForce": "NFT boom (Beeple $69M Mar 2021), Coinbase IPO, El Salvador BTC legal tender, Shiba Inu +1000%"
           }
         }
-      },
-      "m0:asfidMean": 0.9
+      }
     },
     {
       "@id": "m0:Pole_Distress",
@@ -791,6 +870,14 @@
       "rdfs:comment": "Bifurcation: first major default or forced seller reveals systemic fragility. Panic propagation begins (R₀ crosses 1). Narration Collapse attractor becomes manifest. Price velocity reverses sharply negative. Volume spikes (distressed selling). Dynamics chaotic.",
       "m0:poleIndex": 4,
       "m0:asfidFormula": "I ⊗ D ⊗ A",
+      "m0:asfidScores": {
+        "A": 0.95,
+        "S": 0.85,
+        "F": 0.88,
+        "I": 0.95,
+        "D": 0.98,
+        "mean": 0.92
+      },
       "m0:primaryM2": "m2:Bifurcation",
       "m0:secondaryM2": [
         "m2:Trigger",
@@ -979,8 +1066,7 @@
             "dominantForce": "May 9-12 2022: Terra UST depeg ($40B wiped) → contagion to Celsius, Three Arrows Capital, Voyager; Fed rate hike cycle (risk-off)"
           }
         }
-      },
-      "m0:asfidMean": 0.92
+      }
     },
     {
       "@id": "m0:Pole_Revulsion",
@@ -989,6 +1075,14 @@
       "rdfs:comment": "Panic fully propagates (Propagation.Saturated). Forced selling cascade. Credit freeze (Im≈0). Narration Collapse attractor reached. Debt deflation (Fisher). Price velocity at maximum negative. Volume at maximum (fire sales). Central Bank LOLR intervention may truncate.",
       "m0:poleIndex": 5,
       "m0:asfidFormula": "F ⊗ D",
+      "m0:asfidScores": {
+        "A": 0.88,
+        "S": 0.82,
+        "F": 0.98,
+        "I": 0.88,
+        "D": 0.98,
+        "mean": 0.91
+      },
       "m0:primaryM2": "m2:Propagation",
       "m0:secondaryM2": [
         "m2:Cascade",
@@ -1177,8 +1271,7 @@
             "dominantForce": "Celsius freeze (Jun), Three Arrows Capital insolvency (Jun), Voyager bankruptcy (Jul), FTX collapse ($32B → $0, Nov 8-11 2022) — complete trust destruction"
           }
         }
-      },
-      "m0:asfidMean": 0.91
+      }
     },
     {
       "@id": "m0:SimulationParameters",

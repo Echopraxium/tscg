@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-TSCG M0 Instance Checker — v1.5.0
+TSCG M0 Instance Checker — v1.5.1
 Author: Echopraxium with the collaboration of Claude AI
-Date: 2026-06-20
+Date: 2026-06-26
 
 Analyses all M0 instance JSON-LD files and reports their compliance
 with the v1.5 conventions (M0_Common namespace, bare numerics, enum IRIs).
@@ -19,16 +19,16 @@ Checks performed (each reported as PASS / WARN / FAIL):
   C09  owl:imports includes M0_Common.jsonld
   C10  Score values are bare numerics (not {"@value":..., "@type":xsd:float})
   C11  Enum values are IRIs (not bare strings "Coherent")
-  C12  m2:hasTensorFormula absent (must be hasStructuralGrammarFormula)
+  C12  No tensor formula remnants:
+         (a) m2:hasTensorFormula absent in ALL graph nodes
+         (b) "tensorFormula" key absent in nested objects (NakamotoConsensus pattern)
+         (c) "⊗" operator absent from all formula values
   C13  m3:ontologyType absent from sub-nodes (@graph[1+])
-  C14  m2:changelog ≤ 3 entries
+  C14  m2:changelog <= 3 entries
   C15  SHACL v1.5 validation (optional — requires pyshacl)
 
-Output modes:
-  Default   : summary table (one line per instance)
-  --verbose : full check detail per instance
-  --scores  : show parsed ASFID/REVOI scores for each instance
-  --fails   : only show instances with at least one FAIL
+Changes vs v1.5.0:
+  C12: Extended to detect tensorFormula in nested objects and ⊗ in formula values
 
 Usage:
     python check_m0_instances_v1_5.py [options]
@@ -54,12 +54,11 @@ from datetime import datetime
 # CONFIGURATION
 # ============================================================================
 
-REPO_ROOT     = Path("E:/_00_Michel/_00_Lab/_00_GitHub/tscg")
+REPO_ROOT      = Path("E:/_00_Michel/_00_Lab/_00_GitHub/tscg")
 INSTANCES_ROOT = REPO_ROOT / "instances"
-ONTOLOGY_DIR  = REPO_ROOT / "ontology"
-SCRIPT_DIR    = Path(__file__).parent.resolve()
+ONTOLOGY_DIR   = REPO_ROOT / "ontology"
+SCRIPT_DIR     = Path(__file__).parent.resolve()
 
-# SHACL schema discovery order
 def _find_shacl():
     for candidate in [
         SCRIPT_DIR / "M0_Instances_Schema_shacl_v1.5.ttl",
@@ -74,7 +73,6 @@ def _find_shacl():
 
 DEFAULT_SHACL = _find_shacl()
 
-# Canonical constants
 BASE_ONTOLOGY  = "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"
 BASE_INSTANCES = "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/"
 M0_COMMON_URL  = BASE_ONTOLOGY + "M0_Common.jsonld#"
@@ -138,7 +136,6 @@ class InstanceReport:
     parse_error:   str  = ""
 
     def status_summary(self):
-        """FAIL > WARN > PASS > N/A"""
         statuses = {c.status for c in self.checks}
         if FAIL in statuses: return FAIL
         if WARN in statuses: return WARN
@@ -170,13 +167,11 @@ class InstanceChecker:
     def run(self, run_shacl=True, shacl_schema=None) -> InstanceReport:
         rep = InstanceReport(name=self.name, itype=self.itype, path=self.path)
 
-        # Parse JSON-LD
         try:
             with open(self.path, "r", encoding="utf-8") as f:
                 data = json.load(f)
         except Exception as e:
             rep.parse_error = str(e)
-            # All checks FAIL if unreadable
             for code, name in CHECKS_META:
                 rep.checks.append(Check(code, name, FAIL, f"Parse error: {e}"))
             return rep
@@ -185,48 +180,40 @@ class InstanceChecker:
         graph    = data.get("@graph", [])
         ontology = graph[0] if graph else {}
 
-        # ── C01: @base ────────────────────────────────────────────────────────
+        # ── C01 ───────────────────────────────────────────────────────────────
         base = ctx.get("@base", "")
         if base == BASE_ONTOLOGY:
             rep.checks.append(Check("C01","@base canonical", PASS))
         elif base and "Echopraxium/tscg" in base:
-            rep.checks.append(Check("C01","@base canonical", WARN,
-                                    f"Present but non-standard: {base}"))
+            rep.checks.append(Check("C01","@base canonical", WARN, f"Non-standard: {base}"))
         elif base:
-            rep.checks.append(Check("C01","@base canonical", FAIL,
-                                    f"Wrong @base: {base}"))
+            rep.checks.append(Check("C01","@base canonical", FAIL, f"Wrong @base: {base}"))
         else:
             rep.checks.append(Check("C01","@base canonical", FAIL, "@base absent"))
 
-        # ── C02: m0: → M0_Common.jsonld# ─────────────────────────────────────
+        # ── C02 ───────────────────────────────────────────────────────────────
         m0_val = ctx.get("m0", "")
         if m0_val == M0_COMMON_URL:
             rep.checks.append(Check("C02","m0: = M0_Common#", PASS))
         elif "M0_Common" in m0_val:
-            rep.checks.append(Check("C02","m0: = M0_Common#", WARN,
-                                    f"Points to M0_Common but non-canonical: {m0_val}"))
+            rep.checks.append(Check("C02","m0: = M0_Common#", WARN, f"Non-canonical: {m0_val}"))
         elif m0_val:
-            rep.checks.append(Check("C02","m0: = M0_Common#", FAIL,
-                                    f"m0: → {m0_val}  (expected M0_Common.jsonld#)"))
+            rep.checks.append(Check("C02","m0: = M0_Common#", FAIL, f"m0: → {m0_val}"))
         else:
-            rep.checks.append(Check("C02","m0: = M0_Common#", FAIL,
-                                    "m0: alias absent from @context"))
+            rep.checks.append(Check("C02","m0: = M0_Common#", FAIL, "m0: absent"))
 
-        # ── C03: m0.<instance>: local alias ───────────────────────────────────
+        # ── C03 ───────────────────────────────────────────────────────────────
         camel     = self._camel()
         local_key = f"m0.{camel}"
         local_val = ctx.get(local_key, "")
         if local_val and BASE_INSTANCES in local_val and "M0_" in local_val:
-            rep.checks.append(Check("C03","m0.<inst>: local alias", PASS,
-                                    f"{local_key}: {local_val}"))
+            rep.checks.append(Check("C03","m0.<inst>: local alias", PASS, f"{local_key}"))
         elif local_val:
-            rep.checks.append(Check("C03","m0.<inst>: local alias", WARN,
-                                    f"Present but unexpected IRI: {local_val}"))
+            rep.checks.append(Check("C03","m0.<inst>: local alias", WARN, f"Unexpected IRI: {local_val}"))
         else:
-            rep.checks.append(Check("C03","m0.<inst>: local alias", FAIL,
-                                    f"Missing: {local_key}: in @context"))
+            rep.checks.append(Check("C03","m0.<inst>: local alias", FAIL, f"Missing: {local_key}"))
 
-        # ── C04–C06: Standard namespaces ─────────────────────────────────────
+        # ── C04–C06 ───────────────────────────────────────────────────────────
         STD_NS = {
             "C04": ("m1", BASE_ONTOLOGY + "M1_CoreConcepts.jsonld#"),
             "C05": ("m2", BASE_ONTOLOGY + "M2_GenericConcepts.jsonld#"),
@@ -238,103 +225,109 @@ class InstanceChecker:
             if val == expected:
                 rep.checks.append(Check(code, label, PASS))
             elif val.startswith("http"):
-                rep.checks.append(Check(code, label, WARN,
-                                        f"{alias}: {val}  (expected {expected})"))
+                rep.checks.append(Check(code, label, WARN, f"{alias}: {val}"))
             elif val:
-                rep.checks.append(Check(code, label, FAIL,
-                                        f"{alias}: relative URL: {val}"))
+                rep.checks.append(Check(code, label, FAIL, f"{alias}: relative URL"))
             else:
                 rep.checks.append(Check(code, label, FAIL, f"{alias}: absent"))
 
-        # ── C07: Obsolete aliases absent ──────────────────────────────────────
+        # ── C07 ───────────────────────────────────────────────────────────────
         found_obsolete = [a for a in OBSOLETE_ALIASES if a in ctx]
         if found_obsolete:
-            rep.checks.append(Check("C07","No obsolete aliases", FAIL,
-                                    f"Found: {', '.join(found_obsolete)}"))
+            rep.checks.append(Check("C07","No obsolete aliases", FAIL, f"Found: {', '.join(found_obsolete)}"))
         else:
             rep.checks.append(Check("C07","No obsolete aliases", PASS))
 
-        # ── C08: m1.extensions.<domain>: pattern ─────────────────────────────
+        # ── C08 ───────────────────────────────────────────────────────────────
         old_ext = [a for a in OLD_EXT_ALIASES if a in ctx]
         new_ext = [k for k in ctx if k.startswith("m1.extensions.")]
         if old_ext:
-            rep.checks.append(Check("C08","m1.extensions. pattern", FAIL,
-                                    f"Old aliases still present: {', '.join(old_ext)}"))
-        elif not new_ext:
-            # No M1 extensions used — that's OK
-            rep.checks.append(Check("C08","m1.extensions. pattern", PASS,
-                                    "No M1 extension aliases (none needed)"))
+            rep.checks.append(Check("C08","m1.extensions. pattern", FAIL, f"Old aliases: {', '.join(old_ext)}"))
         else:
             rep.checks.append(Check("C08","m1.extensions. pattern", PASS,
-                                    f"{len(new_ext)} extension(s): {', '.join(new_ext)}"))
+                                    f"{len(new_ext)} extension(s)" if new_ext else "None needed"))
 
-        # ── C09: owl:imports M0_Common ────────────────────────────────────────
+        # ── C09 ───────────────────────────────────────────────────────────────
         imports = ontology.get("owl:imports", [])
-        if isinstance(imports, str):
-            imports = [imports]
-        has_common = any("M0_Common" in str(i) for i in imports)
-        if has_common:
+        if isinstance(imports, str): imports = [imports]
+        if any("M0_Common" in str(i) for i in imports):
             rep.checks.append(Check("C09","owl:imports M0_Common", PASS))
         else:
-            rep.checks.append(Check("C09","owl:imports M0_Common", FAIL,
-                                    "M0_Common.jsonld not in owl:imports"))
+            rep.checks.append(Check("C09","owl:imports M0_Common", FAIL, "M0_Common not in imports"))
 
-        # ── C10: Score values bare numerics ───────────────────────────────────
-        typed_scores = []
-        for prop in SCORE_PROPS:
-            val = ontology.get(prop)
-            if isinstance(val, dict) and "@value" in val:
-                typed_scores.append(prop)
+        # ── C10 ───────────────────────────────────────────────────────────────
+        typed_scores = [p for p in SCORE_PROPS
+                        if isinstance(ontology.get(p), dict) and "@value" in ontology[p]]
         if typed_scores:
-            rep.checks.append(Check("C10","Score bare numerics", FAIL,
-                                    f"Typed values in: {', '.join(typed_scores)}"))
+            rep.checks.append(Check("C10","Score bare numerics", FAIL, f"Typed: {', '.join(typed_scores)}"))
         else:
             rep.checks.append(Check("C10","Score bare numerics", PASS))
 
-        # Collect score values for --scores output
         for prop in SCORE_PROPS:
             val = ontology.get(prop)
-            if val is not None:
-                if isinstance(val, (int, float)):
-                    rep.scores[prop] = val
-                elif isinstance(val, dict) and "@value" in val:
-                    try:
-                        rep.scores[prop] = float(val["@value"])
-                    except Exception:
-                        pass
-            # Also check @graph[1+] nodes (some instances store scores in sub-nodes)
-            if prop not in rep.scores:
-                for node in graph[1:]:
-                    v = node.get(prop)
-                    if isinstance(v, (int, float)):
-                        rep.scores[prop] = v
-                        break
+            if isinstance(val, (int, float)):
+                rep.scores[prop] = val
+            elif isinstance(val, dict) and "@value" in val:
+                try: rep.scores[prop] = float(val["@value"])
+                except: pass
 
-        # ── C11: Enum values as IRIs ──────────────────────────────────────────
+        # ── C11 ───────────────────────────────────────────────────────────────
         string_enums = []
         for prop, prefix in ENUM_PROPS.items():
             val = ontology.get(prop)
             if isinstance(val, str) and not val.startswith(prefix):
                 string_enums.append(f"{prop}={val!r}")
         if string_enums:
-            rep.checks.append(Check("C11","Enum values as IRIs", FAIL,
-                                    f"String values: {', '.join(string_enums)}"))
+            rep.checks.append(Check("C11","Enum values as IRIs", FAIL, f"String values: {', '.join(string_enums)}"))
         else:
             rep.checks.append(Check("C11","Enum values as IRIs", PASS))
 
-        # ── C12: No hasTensorFormula ──────────────────────────────────────────
-        tensor_nodes = []
+        # ── C12: No tensor formula remnants (v1.5.1 — extended) ──────────────
+        # Detects three patterns:
+        #   (a) m2:hasTensorFormula key in any graph node       (AdaptativeImmuneResponse)
+        #   (b) "tensorFormula" key in nested concept objects   (NakamotoConsensus)
+        #   (c) "⊗" operator in any string value               (both)
+        tensor_issues = []
+
+        # (a) Direct m2:hasTensorFormula property on any graph node
         for i, node in enumerate(graph):
             if "m2:hasTensorFormula" in node:
                 label = node.get("rdfs:label", node.get("@id", f"node[{i}]"))
-                tensor_nodes.append(str(label))
-        if tensor_nodes:
-            rep.checks.append(Check("C12","No hasTensorFormula", FAIL,
-                                    f"Still present in: {', '.join(tensor_nodes)}"))
-        else:
-            rep.checks.append(Check("C12","No hasTensorFormula", PASS))
+                tensor_issues.append(f"m2:hasTensorFormula in '{label}'")
 
-        # ── C13: m3:ontologyType only in @graph[0] ────────────────────────────
+        # (b) "tensorFormula" key in any nested object (recursive scan)
+        def _scan_tensor_key(obj, path=""):
+            if isinstance(obj, dict):
+                for k, v in obj.items():
+                    if k == "tensorFormula":
+                        tensor_issues.append(f"tensorFormula key at {path}")
+                    else:
+                        _scan_tensor_key(v, f"{path}.{k}")
+            elif isinstance(obj, list):
+                for idx, item in enumerate(obj):
+                    _scan_tensor_key(item, f"{path}[{idx}]")
+
+        for i, node in enumerate(graph):
+            _scan_tensor_key(node, f"@graph[{i}]")
+
+        # (c) "⊗" tensor product operator in any formula value
+        raw_str = json.dumps(graph)
+        if "\u2297" in raw_str:  # ⊗ = U+2297
+            count = raw_str.count("\u2297")
+            tensor_issues.append(f"\u2297 operator found ({count} occurrence(s)) — migrate to \u00d7/+/|")
+
+        # Deduplicate preserving order
+        tensor_issues = list(dict.fromkeys(tensor_issues))
+
+        if tensor_issues:
+            summary = "; ".join(tensor_issues[:3])
+            if len(tensor_issues) > 3:
+                summary += f" (+{len(tensor_issues)-3} more)"
+            rep.checks.append(Check("C12","No tensor remnants", FAIL, summary))
+        else:
+            rep.checks.append(Check("C12","No tensor remnants", PASS))
+
+        # ── C13 ───────────────────────────────────────────────────────────────
         subnode_ont_type = []
         for i, node in enumerate(graph[1:], start=1):
             if "m3:ontologyType" in node:
@@ -342,43 +335,31 @@ class InstanceChecker:
                 subnode_ont_type.append(str(label))
         if subnode_ont_type:
             rep.checks.append(Check("C13","ontologyType only in @graph[0]", FAIL,
-                                    f"Found in sub-nodes: {', '.join(subnode_ont_type)}"))
+                                    f"Found in: {', '.join(subnode_ont_type)}"))
         else:
             rep.checks.append(Check("C13","ontologyType only in @graph[0]", PASS))
 
-        # ── C14: changelog ≤ 3 entries ────────────────────────────────────────
+        # ── C14 ───────────────────────────────────────────────────────────────
         cl = ontology.get("m2:changelog")
         if isinstance(cl, list):
             if len(cl) > 3:
-                rep.checks.append(Check("C14","changelog ≤ 3 entries", FAIL,
-                                        f"{len(cl)} entries (max 3)"))
+                rep.checks.append(Check("C14","changelog <= 3 entries", FAIL, f"{len(cl)} entries"))
             else:
-                rep.checks.append(Check("C14","changelog ≤ 3 entries", PASS,
-                                        f"{len(cl)} entr{'y' if len(cl)==1 else 'ies'}"))
+                rep.checks.append(Check("C14","changelog <= 3 entries", PASS, f"{len(cl)} entr{'y' if len(cl)==1 else 'ies'}"))
         else:
-            # Absent or not a list — N/A (not required, not a violation)
-            rep.checks.append(Check("C14","changelog ≤ 3 entries", NA,
-                                    "m2:changelog absent (optional)"))
+            rep.checks.append(Check("C14","changelog <= 3 entries", NA, "absent (optional)"))
 
-        # ── C15: SHACL validation ─────────────────────────────────────────────
+        # ── C15 ───────────────────────────────────────────────────────────────
         if run_shacl:
             schema = shacl_schema or DEFAULT_SHACL
             if schema and schema.exists():
                 passed, msg = self._run_shacl(schema)
-                if passed is True:
-                    rep.shacl_status = PASS
-                    rep.shacl_msg    = "Conforms"
-                elif passed is False:
-                    rep.shacl_status = FAIL
-                    rep.shacl_msg    = msg
-                else:
-                    rep.shacl_status = WARN
-                    rep.shacl_msg    = msg
-                rep.checks.append(Check("C15","SHACL v1.5", rep.shacl_status,
-                                        rep.shacl_msg[:120]))
+                status = PASS if passed is True else (FAIL if passed is False else WARN)
+                rep.shacl_status = status
+                rep.shacl_msg    = msg
+                rep.checks.append(Check("C15","SHACL v1.5", status, msg[:120]))
             else:
-                rep.checks.append(Check("C15","SHACL v1.5", NA,
-                                        f"Schema not found: {schema}"))
+                rep.checks.append(Check("C15","SHACL v1.5", NA, f"Schema not found"))
 
         return rep
 
@@ -387,15 +368,13 @@ class InstanceChecker:
         try:
             result = subprocess.run(
                 ["pyshacl", "-s", str(schema), "-df", "json-ld", str(self.path)],
-                capture_output=True, text=True, cwd=str(ONTOLOGY_DIR),
-                timeout=30
+                capture_output=True, text=True, cwd=str(ONTOLOGY_DIR), timeout=30
             )
             if "Conforms: True" in result.stdout:
                 return True, "Conforms"
             lines = result.stdout.split("\n")
             msgs  = [l for l in lines if "Message:" in l or "Constraint Violation" in l]
-            summary = "; ".join(msgs[:3]) if msgs else result.stdout[:300]
-            return False, summary
+            return False, "; ".join(msgs[:3]) if msgs else result.stdout[:300]
         except subprocess.TimeoutExpired:
             return None, "pyshacl timeout"
         except Exception as e:
@@ -403,7 +382,7 @@ class InstanceChecker:
 
 
 # ============================================================================
-# CHECK METADATA (code + display name — drives ordering and headers)
+# CHECK METADATA
 # ============================================================================
 
 CHECKS_META = [
@@ -418,13 +397,13 @@ CHECKS_META = [
     ("C09","owl:imports M0_Common"),
     ("C10","Score bare numerics"),
     ("C11","Enum values as IRIs"),
-    ("C12","No hasTensorFormula"),
+    ("C12","No tensor remnants"),
     ("C13","ontologyType only in @graph[0]"),
-    ("C14","changelog ≤ 3 entries"),
+    ("C14","changelog <= 3 entries"),
     ("C15","SHACL v1.5"),
 ]
 
-STATUS_ICON = {PASS: "✅", WARN: "⚠️ ", FAIL: "❌", NA: "──"}
+STATUS_ICON = {PASS: "OK", WARN: "WN", FAIL: "XX", NA: "--"}
 
 
 # ============================================================================
@@ -432,25 +411,16 @@ STATUS_ICON = {PASS: "✅", WARN: "⚠️ ", FAIL: "❌", NA: "──"}
 # ============================================================================
 
 def discover_instances(only_name=None):
-    """
-    Supports two layouts:
-      Layout A (sub-folder per instance): instances/poclets/FireTriangle/M0_FireTriangle.jsonld
-      Layout A+ (federated poclet):       instances/poclets/ColorSynthesis/M0_*.jsonld  (multiple)
-      Layout B (flat):                    instances/poclets/M0_FireTriangle.jsonld
-    Folders with no M0_*.jsonld are silently skipped.
-    """
     seen = set()
     for itype, (base_dir, _) in INSTANCE_DIRS.items():
         if not base_dir.exists():
             continue
-
-        # Layout A / A+ — sub-folder(s) per instance
         for d in sorted(base_dir.iterdir()):
             if not d.is_dir() or d.name.startswith("_"):
                 continue
             jsonld_files = sorted(d.glob("M0_*.jsonld"))
             if not jsonld_files:
-                continue  # not an instance folder
+                continue
             for jsonld in jsonld_files:
                 name = jsonld.stem[3:]
                 if only_name and name != only_name and d.name != only_name:
@@ -459,8 +429,6 @@ def discover_instances(only_name=None):
                 if key not in seen:
                     seen.add(key)
                     yield jsonld, name, itype
-
-        # Layout B — flat
         for jsonld in sorted(base_dir.glob("M0_*.jsonld")):
             name = jsonld.stem[3:]
             if only_name and name != only_name:
@@ -472,104 +440,72 @@ def discover_instances(only_name=None):
 
 
 # ============================================================================
-# OUTPUT FORMATTERS
+# OUTPUT
 # ============================================================================
 
 def print_summary_table(reports):
-    """One-line-per-instance summary with check columns."""
     CODES = [c for c,_ in CHECKS_META]
-    col_w = 22
-
-    # Header
-    header_name = "Instance".ljust(col_w)
-    header_type = "Type".ljust(16)
-    header_chk  = "".join(c.ljust(5) for c in CODES)
-    print(f"\n{'─'*90}")
-    print(f"{'Instance':<22} {'Type':<18} {'C01':>4} {'C02':>4} {'C03':>4} "
-          f"{'C04':>4} {'C05':>4} {'C06':>4} {'C07':>4} {'C08':>4} "
-          f"{'C09':>4} {'C10':>4} {'C11':>4} {'C12':>4} {'C13':>4} "
-          f"{'C14':>4} {'C15':>4}  Status")
-    print(f"{'─'*90}")
-
-    icons = {PASS:"✅", WARN:"⚠", FAIL:"❌", NA:"──"}
-
+    icons = {PASS:"OK", WARN:"WN", FAIL:"XX", NA:"--"}
+    print(f"\n{'─'*95}")
+    print(f"{'Instance':<22} {'Type':<18} " + " ".join(f"{c:>4}" for c in CODES) + "  Status")
+    print(f"{'─'*95}")
     for r in reports:
-        # Build check lookup
         chk = {c.code: c.status for c in r.checks}
-        cols = "  ".join(icons.get(chk.get(code, NA), "──") for code in CODES)
+        cols = " ".join(f"{icons.get(chk.get(code, NA), '--'):>4}" for code in CODES)
         overall = r.status_summary()
-        ov_icon = icons[overall]
+        ov_icon = {"PASS":"OK","WARN":"WN","FAIL":"XX","N/A":"--"}.get(overall, "--")
         print(f"  {r.name:<20} {r.itype:<18} {cols}  {ov_icon} {overall}")
-
-    print(f"{'─'*90}")
+    print(f"{'─'*95}")
 
 
 def print_verbose(rep: InstanceReport, show_scores=False):
-    """Full check detail for one instance."""
     overall = rep.status_summary()
+    icon = {"PASS":"OK","WARN":"WN","FAIL":"XX","N/A":"--"}.get(overall, "--")
     print(f"\n{'='*70}")
-    print(f"  {rep.name}  [{rep.itype}]  →  {STATUS_ICON[overall]} {overall}")
+    print(f"  {rep.name}  [{rep.itype}]  -> [{icon}] {overall}")
     print(f"  {rep.path}")
     print(f"{'='*70}")
-
     if rep.parse_error:
-        print(f"  ❌ PARSE ERROR: {rep.parse_error}")
+        print(f"  XX PARSE ERROR: {rep.parse_error}")
         return
-
     for c in rep.checks:
-        icon = STATUS_ICON.get(c.status, "  ")
-        line = f"  {icon} [{c.code}] {c.name}"
+        icon = {"PASS":"OK","WARN":"WN","FAIL":"XX","N/A":"--"}.get(c.status, "--")
+        line = f"  [{icon}] [{c.code}] {c.name}"
         if c.detail:
             line += f"\n         {c.detail}"
         print(line)
-
     if show_scores and rep.scores:
-        print(f"\n  📊 Scores:")
-        asfid_keys = ["m0:scoreA","m0:scoreS","m0:scoreF","m0:scoreIt","m0:scoreD","m0:asfidMean"]
-        revoi_keys = ["m0:scoreR","m0:scoreE","m0:scoreV","m0:scoreO","m0:scoreIm","m0:revoiMean"]
-        other_keys = ["m0:epistemicGap","m0:focalScore","m0:focalBias","m0:stereopsicDepth"]
-        for group, keys in [("ASFID", asfid_keys), ("REVOI", revoi_keys), ("Other", other_keys)]:
-            vals = [(k.split(":")[-1], rep.scores[k]) for k in keys if k in rep.scores]
-            if vals:
-                parts = "  ".join(f"{k}={v:.3f}" for k,v in vals)
-                print(f"     {group}: {parts}")
+        print(f"\n  Scores:")
+        for k, v in rep.scores.items():
+            print(f"    {k}: {v:.3f}")
 
 
 def print_compact_fails(reports):
-    """Only show instances with at least one FAIL."""
     failed = [r for r in reports if r.status_summary() == FAIL]
     if not failed:
-        print("\n✅ All instances compliant — no FAILures found.")
+        print("\n[OK] All instances compliant.")
         return
     for r in failed:
         fails = [c for c in r.checks if c.status == FAIL]
-        print(f"\n❌ {r.name} [{r.itype}] — {len(fails)} FAIL(s):")
+        print(f"\n[XX] {r.name} [{r.itype}] — {len(fails)} FAIL(s):")
         for c in fails:
             print(f"   [{c.code}] {c.name}: {c.detail}")
 
 
-# ============================================================================
-# JSON REPORT
-# ============================================================================
-
 def write_json_report(reports, path):
     def ser_rep(r):
         return {
-            "name":    r.name,
-            "type":    r.itype,
-            "path":    str(r.path),
-            "status":  r.status_summary(),
-            "counts":  {"pass": r.count(PASS), "warn": r.count(WARN), "fail": r.count(FAIL)},
-            "checks":  [{"code":c.code,"name":c.name,"status":c.status,"detail":c.detail}
-                        for c in r.checks],
-            "scores":  r.scores,
-            "shacl":   {"status": r.shacl_status, "message": r.shacl_msg},
+            "name": r.name, "type": r.itype, "path": str(r.path),
+            "status": r.status_summary(),
+            "counts": {"pass": r.count(PASS), "warn": r.count(WARN), "fail": r.count(FAIL)},
+            "checks": [{"code":c.code,"name":c.name,"status":c.status,"detail":c.detail} for c in r.checks],
+            "scores": r.scores,
+            "shacl":  {"status": r.shacl_status, "message": r.shacl_msg},
         }
-
     out = {
         "generated": datetime.now().isoformat(),
-        "total":     len(reports),
-        "summary":   {
+        "total": len(reports),
+        "summary": {
             "pass": sum(1 for r in reports if r.status_summary() == PASS),
             "warn": sum(1 for r in reports if r.status_summary() == WARN),
             "fail": sum(1 for r in reports if r.status_summary() == FAIL),
@@ -578,7 +514,7 @@ def write_json_report(reports, path):
     }
     with open(path, "w", encoding="utf-8") as f:
         json.dump(out, f, indent=2, ensure_ascii=False)
-    print(f"\n📄 JSON report: {path}")
+    print(f"\nJSON report: {path}")
 
 
 # ============================================================================
@@ -586,60 +522,40 @@ def write_json_report(reports, path):
 # ============================================================================
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="TSCG M0 Instance Checker v1.5 — compliance diagnostics"
-    )
-    parser.add_argument("--instance",    metavar="NAME",
-                        help="Check only one instance")
-    parser.add_argument("--verbose",     action="store_true",
-                        help="Full check detail per instance")
-    parser.add_argument("--scores",      action="store_true",
-                        help="Show parsed ASFID/REVOI scores")
-    parser.add_argument("--fails",       action="store_true",
-                        help="Only show instances with at least one FAIL")
-    parser.add_argument("--no-shacl",    action="store_true",
-                        help="Skip SHACL validation")
-    parser.add_argument("--shacl-schema", metavar="PATH",
-                        help="Override SHACL schema path")
-    parser.add_argument("--json",        metavar="PATH",
-                        help="Write JSON report to file")
+    parser = argparse.ArgumentParser(description="TSCG M0 Instance Checker v1.5.1")
+    parser.add_argument("--instance",    metavar="NAME")
+    parser.add_argument("--verbose",     action="store_true")
+    parser.add_argument("--scores",      action="store_true")
+    parser.add_argument("--fails",       action="store_true")
+    parser.add_argument("--no-shacl",    action="store_true")
+    parser.add_argument("--shacl-schema", metavar="PATH")
+    parser.add_argument("--json",        metavar="PATH")
     args = parser.parse_args()
 
     shacl_schema = Path(args.shacl_schema) if args.shacl_schema else DEFAULT_SHACL
     run_shacl    = not args.no_shacl
 
     print("=" * 70)
-    print("TSCG M0 INSTANCE CHECKER — v1.5.0")
+    print("TSCG M0 INSTANCE CHECKER — v1.5.1")
+    print("C12 extended: hasTensorFormula + tensorFormula key + ⊗ operator")
     print("=" * 70)
-    if run_shacl:
-        if shacl_schema and shacl_schema.exists():
-            print(f"  SHACL schema: {shacl_schema.name}")
-        else:
-            print(f"  ⚠️  SHACL schema not found — C15 will be N/A")
-            print(f"     Expected: {shacl_schema}")
-    else:
-        print("  SHACL: disabled (--no-shacl)")
 
     instances = list(discover_instances(only_name=args.instance))
     if not instances:
-        target = args.instance or "any instance"
-        print(f"\n⚠️  No JSON-LD files found for: {target}")
+        print(f"\n[WN] No JSON-LD files found for: {args.instance or 'any instance'}")
         return 1
 
-    print(f"\n📊 Checking {len(instances)} instance(s)...\n")
+    print(f"\nChecking {len(instances)} instance(s)...\n")
 
     reports = []
     for jsonld_path, name, itype in instances:
         checker = InstanceChecker(jsonld_path, name, itype)
         rep     = checker.run(run_shacl=run_shacl, shacl_schema=shacl_schema)
         reports.append(rep)
-
-        # Progress dot
         overall = rep.status_summary()
-        icon    = STATUS_ICON.get(overall, "  ")
-        print(f"  {icon} {name:<28} [{itype}]")
+        icon    = {"PASS":"OK","WARN":"WN","FAIL":"XX","N/A":"--"}.get(overall, "--")
+        print(f"  [{icon}] {name:<28} [{itype}]")
 
-    # ── Output ───────────────────────────────────────────────────────────────
     if args.verbose:
         for r in reports:
             print_verbose(r, show_scores=args.scores)
@@ -647,33 +563,26 @@ def main():
         print_compact_fails(reports)
     else:
         print_summary_table(reports)
-        if args.scores:
-            for r in [r for r in reports if r.scores]:
-                print_verbose(r, show_scores=True)
 
-    # ── Global summary ───────────────────────────────────────────────────────
     n_pass = sum(1 for r in reports if r.status_summary() == PASS)
     n_warn = sum(1 for r in reports if r.status_summary() == WARN)
     n_fail = sum(1 for r in reports if r.status_summary() == FAIL)
 
     print(f"\n{'='*70}")
-    print(f"RESULTS: ✅ {n_pass} PASS  ⚠️  {n_warn} WARN  ❌ {n_fail} FAIL  "
-          f"(total: {len(reports)})")
+    print(f"RESULTS: [OK] {n_pass} PASS  [WN] {n_warn} WARN  [XX] {n_fail} FAIL  (total: {len(reports)})")
 
-    # Per-check aggregates
-    print(f"\nPer-check failure counts:")
     fail_by_check = {}
     for r in reports:
         for c in r.checks:
             if c.status == FAIL:
                 fail_by_check[c.code] = fail_by_check.get(c.code, 0) + 1
-    for code, cname in CHECKS_META:
-        count = fail_by_check.get(code, 0)
-        if count:
-            print(f"  [{code}] {cname}: {count} FAIL(s)")
-    print()
+    if fail_by_check:
+        print(f"\nPer-check failure counts:")
+        for code, cname in CHECKS_META:
+            count = fail_by_check.get(code, 0)
+            if count:
+                print(f"  [{code}] {cname}: {count} FAIL(s)")
 
-    # JSON report
     if args.json:
         write_json_report(reports, Path(args.json))
 

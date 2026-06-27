@@ -1,7 +1,8 @@
 {
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+    "sm": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/PhaseTransition/M0_PhaseTransition.jsonld#",
     "dcterms": "http://purl.org/dc/terms/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -10,17 +11,56 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m1core": "M1_CoreConcepts.jsonld#",
+    "m1chem": "M1_extensions/chemistry/M1_Chemistry.jsonld#",
+    "m1phys": "M1_extensions/physics/M1_Physics.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m0.phaseTransition": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/PhaseTransition/M0_PhaseTransition.jsonld#",
-    "m1.extensions.chemistry": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/chemistry/M1_Chemistry.jsonld#",
-    "m1.extensions.physics": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/physics/M1_Physics.jsonld#"
+    "A_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
+      "@type": "xsd:float"
+    },
+    "S_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
+      "@type": "xsd:float"
+    },
+    "F_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
+      "@type": "xsd:float"
+    },
+    "It_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
+      "@type": "xsd:float"
+    },
+    "D_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
+      "@type": "xsd:float"
+    },
+    "R_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
+      "@type": "xsd:float"
+    },
+    "E_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
+      "@type": "xsd:float"
+    },
+    "V_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
+      "@type": "xsd:float"
+    },
+    "O_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
+      "@type": "xsd:float"
+    },
+    "Im_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
+      "@type": "xsd:float"
+    }
   },
   "@graph": [
     {
       "@id": "m0:PhaseTransition",
       "@type": "owl:Ontology",
       "owl:imports": [
-        "M0_Common.jsonld",
         "M3_GenesisGrammar.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld",
@@ -34,7 +74,7 @@
       "rdfs:comment": "TSCG M0 poclet modeling matter phase transitions (Solid, Liquid, Gas) governed by temperature and pressure, with ideal gas law (pV=nRT) formalization and 7 reference substances",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-26",
-      "owl:versionInfo": "1.1.0",
+      "owl:versionInfo": "1.1.1",
       "m1:domain": [
         "Chemistry",
         "Physics"
@@ -42,11 +82,16 @@
       "m0:primaryPhenomenon": "Discontinuous change of macroscopic state (solid -> liquid -> gas) driven by temperature and pressure, governed by latent heat absorption/release and the Clausius-Clapeyron equation",
       "m0:governingLaw": "Ideal Gas Law: pV = nRT (R = 8.314 J/mol/K)",
       "m2:changelog": [
+        {
+          "version": "1.1.1",
+          "date": "2026-06-26",
+          "changes": "ACTION3: Added m0:focalApplicable=true."
+        },
         "1.1.0 (2026-02-26): Added TSCG bicephalous synthesis, synergyFormula, M2 candidates (SymmetryBreaking), M1_Physics imports, keyInsights; fixed stateSpace count (3 phases)",
-        "1.1.0 (2026-02-26): Simplified to 3 phases (solid/liquid/gas) — plasma removed",
-        "1.0.0 (2026-02-26): Initial creation — ideal gas law, seven reference substances"
+        "1.1.0 (2026-02-26): Simplified to 3 phases (solid/liquid/gas) — plasma removed"
       ],
-      "m1:simulationTitle": "Phase Transition"
+      "m1core:simulationTitle": "Phase Transition",
+      "m0:focalApplicable": true
     },
     {
       "@id": "m0:System",
@@ -343,14 +388,14 @@
       "m0:gibbsPhaseRule": "F = C - P + 2 = 1 - 3 + 2 = 0 (invariant — zero degrees of freedom)",
       "m0:waterTriplePoint": "273.16 K / 611.73 Pa (defined standard of Kelvin scale until 2019 BIPM redefinition)",
       "m3:asfid_dimension": "Attractor (unique thermodynamic fixed point — equal depth of all three basins)",
+      "m1phys:concept": {
+        "@id": "m1phys:TriplePoint"
+      },
       "m0:m2basis": [
         "m2:Attractor",
         "m2:Polarity",
         "m2:Threshold"
-      ],
-      "m1.extensions.physics:concept": {
-        "@id": "m1phys:TriplePoint"
-      }
+      ]
     },
     {
       "@id": "m0:Point_CriticalPoint",
@@ -361,14 +406,14 @@
       "m0:waterCriticalPoint": "647.1 K / 220.6 atm",
       "m0:supercriticalFluid": "Above Tc and Pc: liquid-like density, gas-like diffusivity; applications in extraction (SC-CO2, decaffeination)",
       "m3:asfid_dimension": "Bifurcation + CriticalityRegime (topology change: 2-phase coexistence curve terminates; Switch between L and G disappears)",
+      "m1phys:concept": {
+        "@id": "m1phys:CriticalPoint"
+      },
       "m0:m2basis": [
         "m2:CriticalityRegime",
         "m2:Bifurcation",
         "m2:Threshold"
-      ],
-      "m1.extensions.physics:concept": {
-        "@id": "m1phys:CriticalPoint"
-      }
+      ]
     },
     {
       "@id": "m0:Substance_Water",

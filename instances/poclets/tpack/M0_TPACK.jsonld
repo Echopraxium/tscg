@@ -9,10 +9,49 @@
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m1:edu": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/education/M1_Education.jsonld#",
+    "m0:tpack": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/tpack/M0_TPACK.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
-    "m0.tpack": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/Tpack/M0_Tpack.jsonld#"
+    "A_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
+      "@type": "xsd:float"
+    },
+    "S_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
+      "@type": "xsd:float"
+    },
+    "F_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
+      "@type": "xsd:float"
+    },
+    "It_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
+      "@type": "xsd:float"
+    },
+    "D_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
+      "@type": "xsd:float"
+    },
+    "R_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
+      "@type": "xsd:float"
+    },
+    "E_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
+      "@type": "xsd:float"
+    },
+    "V_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
+      "@type": "xsd:float"
+    },
+    "O_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
+      "@type": "xsd:float"
+    },
+    "Im_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
+      "@type": "xsd:float"
+    },
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"
   },
   "@graph": [
     {
@@ -25,7 +64,7 @@
       "rdfs:comment": "CRITICAL TEST CASE for REVOI validation. TPACK is a pedagogical FRAMEWORK (Map) for understanding teacher knowledge domains in technology-integrated teaching. It is a Map-of-a-Map — a meta-model for designing instructional models. Demonstrates BALANCE (Territory: observable teacher competencies) and TRADE-OFF (Map: design decisions balancing T, P, C constraints). TPACK tests whether REVOI dimensions capture Map quality for conceptual frameworks.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-20",
-      "owl:versionInfo": "1.1.0",
+      "owl:versionInfo": "1.1.1",
       "m1:domain": [
         "Education",
         "Instructional Design",
@@ -34,9 +73,13 @@
       "rdf:type": "m0:Poclet",
       "dcterms:modified": "2026-02-26",
       "m2:changelog": [
+        {
+          "version": "1.1.1",
+          "date": "2026-06-26",
+          "changes": "ACTION3: Added m0:focalApplicable=true."
+        },
         "v1.1.0 (2026-02-26): ORIVE notation replaced by canonical REVOI; m1:edu namespace added; stateVector encoding fixed; changelog added",
-        "v1.0.1 (2026-02-10): GenericConcept terminology aligned with TSCG v15.7.0 (MetaConcept -> GenericConcept); creator attribution corrected",
-        "v1.0.0 (2026-01-20): Initial poclet creation - TPACK as REVOI validation test case, bicephalous analysis, 20 GenericConcepts identified"
+        "v1.0.1 (2026-02-10): GenericConcept terminology aligned with TSCG v15.7.0 (MetaConcept -> GenericConcept); creator attribution corrected"
       ],
       "m0:pocletType": "Conceptual Framework (Meta-Model)",
       "m0:principle": "Integration of Technology, Pedagogy, and Content knowledge through synergistic intersections",
@@ -442,7 +485,37 @@
         },
         "visualMetaphor": "Venn diagram communicates intersections, overlaps, synergies visually"
       },
-      "m0:epistemicGap": 0.17,
+      "m0:epistemicGap": {
+        "formula": "Delta_Theta = ||Omega_teaching> - |M_tpack>||",
+        "deltaVector": "(-0.05, -0.05, +0.10, -0.05, +0.10)",
+        "norm": "approx 0.17",
+        "interpretation": "Small gap (Delta_Theta approx 0.17) - TPACK framework is EXCELLENT model of teaching competencies",
+        "assessment": "TPACK captures essential structure of technology-integrated teaching. Gap reflects abstraction (framework simplifies messiness of real classrooms).",
+        "majorDivergences": [
+          {
+            "dimension": "F (Flow)",
+            "divergence": "+0.10",
+            "reason": "Territory has dynamic knowledge exchange (teacher-student, teacher-tech); Map is static diagram"
+          },
+          {
+            "dimension": "D (Dynamics)",
+            "divergence": "+0.10",
+            "reason": "Territory evolves rapidly (especially TK - new technologies); Map structure stable"
+          }
+        ],
+        "strengths": [
+          "Captures core knowledge domains (T, P, C) accurately",
+          "Intersections model synergies well (PCK, TCK, TPK, TPACK)",
+          "Simple enough to communicate, rich enough to guide practice",
+          "Empirically validated across contexts (K-12, higher ed, disciplines)"
+        ],
+        "limitations": [
+          "Context underspecified (doesn't explicitly model student characteristics, institutional constraints, cultural factors)",
+          "Static diagram doesn't show development pathway (how do teachers grow TPACK?)",
+          "Boundaries fuzzy in practice (where does TK end and TCK begin?)",
+          "Doesn't model affective factors (teacher beliefs, attitudes, anxiety about technology)"
+        ]
+      },
       "m0:revioAnalysis": {
         "description": "CRITICAL TEST: Sphinx Eye evaluation of TPACK framework quality using REVOI basis",
         "perspective": "Philosophical interpretation - Can REVOI distinguish good conceptual frameworks from poor ones?",
@@ -845,9 +918,7 @@
         "Willermark, S. (2018). Technological pedagogical and content knowledge: A review of empirical studies published from 2011 to 2016. Journal of Educational Computing Research, 56(3), 315-343.",
         "Angeli, C., & Valanides, N. (2009). Epistemological and methodological issues for the conceptualization, development, and assessment of ICT-TPCK. Computers & Education, 52(1), 154-168."
       ],
-      "owl:imports": [
-        "M0_Common.jsonld"
-      ]
+      "m0:focalApplicable": true
     }
   ]
 }

@@ -8,11 +8,49 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m0:color_synthesis": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/ColorSynthesis/M0_RGB_Additive.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
-    "m0.rGB_Additive": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/RGB_Additive/M0_RGB_Additive.jsonld#",
-    "m0.rgbAdditive": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/RGB_Additive/M0_RGB_Additive.jsonld#"
+    "A_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
+      "@type": "xsd:float"
+    },
+    "S_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
+      "@type": "xsd:float"
+    },
+    "F_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
+      "@type": "xsd:float"
+    },
+    "It_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
+      "@type": "xsd:float"
+    },
+    "D_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
+      "@type": "xsd:float"
+    },
+    "R_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
+      "@type": "xsd:float"
+    },
+    "E_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
+      "@type": "xsd:float"
+    },
+    "V_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
+      "@type": "xsd:float"
+    },
+    "O_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
+      "@type": "xsd:float"
+    },
+    "Im_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
+      "@type": "xsd:float"
+    },
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"
   },
   "@graph": [
     {
@@ -25,7 +63,7 @@
       "rdfs:comment": "Additive color synthesis using Red, Green, Blue light primaries. Each channel is a SIGNAL (m2:Signal) carrying intensity information. The three signals undergo COMPOSITION (m2:Composition) to produce emergent perceived color. Canonical model for displays and light-emitting devices.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-17",
-      "owl:versionInfo": "1.1.0",
+      "owl:versionInfo": "1.1.1",
       "m1:domain": "Optics / Color Science",
       "rdf:type": "m0:Poclet",
       "m0:pocletType": "Composite (Specialized)",
@@ -262,7 +300,31 @@
           }
         }
       },
-      "m0:epistemicGap": 0.35,
+      "m0:epistemicGap": {
+        "formula": "ΔΘ = ‖|Ω_color⟩ - |M_RGB⟩‖",
+        "deltaVector": "(-0.10, -0.10, +0.30, +0.05, +0.10)",
+        "norm": "≈ 0.35",
+        "interpretation": "Small gap (ΔΘ < 0.4) - RGB is good model for perceived color",
+        "assessment": "RGB captures color well but simplifies continuous spectrum to discrete channels",
+        "majorDivergences": [
+          {
+            "dimension": "F (Flow)",
+            "divergence": "+0.30",
+            "reason": "Territory has massive photon flux; Map is discrete numerical values"
+          },
+          {
+            "dimension": "S (Structure)",
+            "divergence": "-0.10",
+            "reason": "Map has perfect cube structure; Territory has biological complexity"
+          }
+        ],
+        "limitations": [
+          "Perceptual non-uniformity (equal RGB distance ≠ equal perceived difference)",
+          "Gamut limitations (not all visible colors representable)",
+          "Device dependence (RGB values depend on display calibration)",
+          "Metamerism ignored (different spectra can produce same RGB)"
+        ]
+      },
       "m0:revoiAnalysis": {
         "description": "Sphinx Eye evaluation of RGB Map quality (ORIVE Map-Space)",
         "perspective": "Philosophical interpretation using ORIVE basis",
@@ -523,6 +585,11 @@
       "dcterms:modified": "2026-02-25",
       "m2:changelog": [
         {
+          "version": "1.1.1",
+          "date": "2026-06-26",
+          "changes": "ACTION3: Added m0:focalApplicable=true."
+        },
+        {
           "version": "1.1.0",
           "date": "2026-02-25",
           "changes": "Corrected dcterms:creator; renamed m0:oriveAnalysis to m0:revoiAnalysis (canonical REVOI notation); added m2:changelog"
@@ -531,16 +598,9 @@
           "version": "1.0.1",
           "date": "2026-01-20",
           "changes": "Minor editorial corrections in GenericConceptsMobilized descriptions; added owl:versionInfo"
-        },
-        {
-          "version": "1.0.0",
-          "date": "2026-01-17",
-          "changes": "Initial creation — RGB Additive poclet with 15 GenericConcepts, ASFID+REVOI dual-space analysis, Signal/Fusion/Synergy core pattern"
         }
       ],
-      "owl:imports": [
-        "M0_Common.jsonld"
-      ]
+      "m0:focalApplicable": true
     }
   ]
 }

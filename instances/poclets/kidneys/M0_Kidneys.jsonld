@@ -1,7 +1,9 @@
 {
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+    "sm": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/kidneys/M0_Kidneys.jsonld#",
+    "m1bio": "M1_extensions/biology/M1_Biology.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3eagle": "M3_EagleEye.jsonld#",
     "m3sphinx": "M3_SphinxEye.jsonld#",
@@ -12,16 +14,52 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m0.kidneys": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/Kidneys/M0_Kidneys.jsonld#",
-    "m1.extensions.biology": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    "A_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
+      "@type": "xsd:float"
+    },
+    "S_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
+      "@type": "xsd:float"
+    },
+    "F_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
+      "@type": "xsd:float"
+    },
+    "It_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
+      "@type": "xsd:float"
+    },
+    "D_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
+      "@type": "xsd:float"
+    },
+    "R_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
+      "@type": "xsd:float"
+    },
+    "E_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
+      "@type": "xsd:float"
+    },
+    "V_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
+      "@type": "xsd:float"
+    },
+    "O_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
+      "@type": "xsd:float"
+    },
+    "Im_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
+      "@type": "xsd:float"
+    }
   },
   "@graph": [
     {
       "@id": "m0:Kidneys",
       "@type": "owl:Ontology",
       "owl:imports": [
-        "M0_Common.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld",
         "M1_extensions/biology/M1_Biology.jsonld"
@@ -33,7 +71,7 @@
       "rdfs:comment": "Kidneys as biological Processor: Input (blood + water) → Filtration + Reabsorption + Secretion → Output (filtered blood + urine). First poclet validating Processor GenericConcept with dual N-ary inputs/outputs and bicephalous ternary hybrid formulas. Demonstrates processor's ability to simultaneously purify and regulate (homeostatic processing).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-07",
-      "owl:versionInfo": "15.0.0",
+      "owl:versionInfo": "15.0.1",
       "m1:domain": "Biology",
       "m0:subdomains": [
         "Renal Physiology",
@@ -166,6 +204,66 @@
             "Representation": "Nephron architecture and filtration model",
             "Interoperability": "Blood-kidney interface (pressure, osmolality, pH compatibility with circulatory system)"
           }
+        }
+      },
+      "m0:asfidScores": {
+        "A_score": {
+          "@value": "0.9",
+          "@type": "xsd:float"
+        },
+        "S_score": {
+          "@value": "0.85",
+          "@type": "xsd:float"
+        },
+        "F_score": {
+          "@value": "0.95",
+          "@type": "xsd:float"
+        },
+        "D_score": {
+          "@value": "0.85",
+          "@type": "xsd:float"
+        },
+        "mean": 0.87,
+        "m0:justification": {
+          "A_score": "Strong attractors: osmolality homeostasis (280-300 mOsm/kg), pH (7.35-7.45), electrolyte balance",
+          "S_score": "Complex structure: 1M nephrons/kidney, 3-stage processing (glomerulus, tubule, collecting duct)",
+          "F_score": "Continuous blood flow (1200 mL/min), urine production (1 mL/min), sustained 24/7",
+          "It_score": "Hormonal control (ADH, aldosterone, ANP), sensor feedback (osmoreceptors, baroreceptors)",
+          "D_score": "Dynamic regulation: GFR varies with BP, reabsorption varies with hormones, circadian rhythm"
+        },
+        "It_score": {
+          "@value": "0.8",
+          "@type": "xsd:float"
+        }
+      },
+      "m0:revoiScores": {
+        "R_score": {
+          "@value": "0.9",
+          "@type": "xsd:float"
+        },
+        "E_score": {
+          "@value": "0.7",
+          "@type": "xsd:float"
+        },
+        "V_score": {
+          "@value": "0.95",
+          "@type": "xsd:float"
+        },
+        "O_score": {
+          "@value": "0.85",
+          "@type": "xsd:float"
+        },
+        "mean": 0.86,
+        "m0:justification": {
+          "R_score": "Well-characterized model: clearance formulas, filtration coefficients, Starling forces",
+          "E_score": "Moderate evolvability: adaptation to hydration status, limited regeneration after damage",
+          "V_score": "Highly verifiable: GFR measurement (creatinine clearance), urine analysis, blood tests",
+          "O_score": "Observable via: urine output, blood chemistry, imaging (ultrasound, CT), biopsy",
+          "It_score": "Strong interoperability: interfaces with circulatory, endocrine, nervous systems via standardized biochemical signals"
+        },
+        "It_score": {
+          "@value": "0.9",
+          "@type": "xsd:float"
         }
       },
       "m0:epistemicGap": 0.01,
@@ -345,8 +443,14 @@
         "Kidneys exemplify 'intelligent processor': not just filtering, but adaptive regulation (hormone-responsive)",
         "Relationship to RAAS: kidneys are BOTH a processor (filtration) AND cascade initiator (renin secretion)"
       ],
-      "m0:asfidMean": 0.87,
-      "m0:revoiMean": 0.86
+      "m0:focalApplicable": true,
+      "m2:changelog": [
+        {
+          "version": "15.0.1",
+          "date": "2026-06-26",
+          "changes": "ACTION3: Added m0:focalApplicable=true."
+        }
+      ]
     }
   ],
   "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Kidneys.jsonld"

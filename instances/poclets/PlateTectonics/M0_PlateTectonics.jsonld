@@ -1,7 +1,9 @@
 {
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+    "m0": "instances/poclets/PlateTectonics/M0_PlateTectonics.jsonld#",
+    "m1geo": "M1_extensions/geology/M1_Geology.jsonld#",
+    "m1core": "M1_CoreConcepts.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3eagle": "M3_EagleEye.jsonld#",
     "m3sphinx": "M3_SphinxEye.jsonld#",
@@ -13,15 +15,52 @@
     "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m0.plateTectonics": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/PlateTectonics/M0_PlateTectonics.jsonld#",
-    "m1.extensions.geology": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/geology/M1_Geology.jsonld#"
+    "A_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
+      "@type": "xsd:float"
+    },
+    "S_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
+      "@type": "xsd:float"
+    },
+    "F_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
+      "@type": "xsd:float"
+    },
+    "It_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
+      "@type": "xsd:float"
+    },
+    "D_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
+      "@type": "xsd:float"
+    },
+    "R_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
+      "@type": "xsd:float"
+    },
+    "E_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
+      "@type": "xsd:float"
+    },
+    "V_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
+      "@type": "xsd:float"
+    },
+    "O_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
+      "@type": "xsd:float"
+    },
+    "Im_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
+      "@type": "xsd:float"
+    }
   },
   "@graph": [
     {
       "@id": "m0:PlateTectonics",
       "@type": "owl:Ontology",
       "owl:imports": [
-        "M0_Common.jsonld",
         "M3_GenesisGrammar.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld",
@@ -34,13 +73,18 @@
       "rdfs:comment": "Plate tectonics system (Wilson 1963, Morgan 1968). 5-pole geodynamic model demonstrating the interplay of Accretion (mid-ocean ridges), Transformation (subduction zones), thermodynamic driving (mantle convection), gravitational equilibrium (isostasy), and stress release (seismic faults). Primary validation domain for m1core:Accretion. Introduces M1_Geology extension and GeologicalAccretion KnowledgeFieldConceptCombo. Environmental significance: tectonic carbon cycle and geohazard generation.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-04-05",
-      "owl:versionInfo": "1.1.0",
+      "owl:versionInfo": "1.1.1",
       "m1:domain": [
         "Geology",
         "Geophysics"
       ],
       "dcterms:modified": "2026-04-05",
       "m2:changelog": [
+        {
+          "version": "1.1.1",
+          "date": "2026-06-26",
+          "changes": "ACTION3: Added m0:focalApplicable=true."
+        },
         {
           "version": "1.1.0",
           "date": "2026-04-05",
@@ -51,7 +95,8 @@
           "date": "2026-04-05",
           "changes": "Initial version. 5-pole system (LithosphericPlate, MidOceanRidge, SubductionZone, MantleConvectionCell, SeismicFault). ASFID mean=0.89, REVOI mean=0.854, delta=0.078 (OnCriticalLine). Primary validation of m1core:Accretion. Introduces M1_Geology extension."
         }
-      ]
+      ],
+      "m0:focalApplicable": true
     },
     {
       "@id": "m0:PlateTectonicsSystem",

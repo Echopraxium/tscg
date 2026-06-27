@@ -113,7 +113,48 @@ hr { border: none; border-top: 1px solid #ddd; margin: 1.5em 0; }
   nav#TOC { page-break-after: always; }
 }
 
-/* Bibliographie — interligne reduit + retrait suspendu */
+/* ============================================
+   FIGURES — centrage + légendes
+   ============================================ */
+
+/* Conteneur figure centré */
+div[style*="text-align:center"] {
+  text-align: center;
+  margin: 1.2em auto;
+}
+
+/* Images dans figures */
+div[style*="text-align:center"] img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+/* Légendes italiques après figure */
+div[style*="text-align:center"] + p > em,
+div[style*="text-align:center"] + p:has(em) {
+  display: block;
+  text-align: center;
+  font-size: 9pt;
+  color: #444;
+  margin-top: 0.3em;
+  margin-bottom: 1.2em;
+}
+
+@media print {
+  div[style*="text-align:center"] {
+    page-break-inside: avoid;
+  }
+  div[style*="text-align:center"] img {
+    max-width: 100%;
+  }
+}
+
+/* ============================================
+   Bibliographie — interligne reduit + retrait suspendu */
 div#refs, div.references {
   font-size: 10pt;
   line-height: 1.25;

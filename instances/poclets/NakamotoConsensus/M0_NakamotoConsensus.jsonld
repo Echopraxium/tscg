@@ -7,11 +7,48 @@
     "dcterms": "http://purl.org/dc/terms/",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+    "m0": "M0_Poclets.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m0.nakamotoConsensus": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/NakamotoConsensus/M0_NakamotoConsensus.jsonld#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "A_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
+      "@type": "xsd:float"
+    },
+    "S_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
+      "@type": "xsd:float"
+    },
+    "F_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
+      "@type": "xsd:float"
+    },
+    "It_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
+      "@type": "xsd:float"
+    },
+    "D_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
+      "@type": "xsd:float"
+    },
+    "R_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
+      "@type": "xsd:float"
+    },
+    "E_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
+      "@type": "xsd:float"
+    },
+    "V_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
+      "@type": "xsd:float"
+    },
+    "O_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
+      "@type": "xsd:float"
+    },
+    "Im_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
+      "@type": "xsd:float"
+    }
   },
   "@graph": [
     {
@@ -145,6 +182,13 @@
       },
       "m0:territorySpace": {
         "description": "Eagle Eye — ASFID analysis of Nakamoto consensus",
+        "asfidScores": {
+          "A": 0.95,
+          "S": 0.92,
+          "F": 0.97,
+          "I": 0.93,
+          "D": 0.95
+        },
         "asfidRationale": {
           "A": "Canonical chain as strong attractor of the free-energy landscape. SSB double-well selects unique history. KT ordered phase. Score 0.95 — attractor is probabilistic, not absolute.",
           "S": "1D GL functional F[ϕ]; small-world P2P topology; UTXO Markov blanket; correlation length ξ; mass gap m. Score 0.92 — phenomenological, not microscopic.",
@@ -155,6 +199,13 @@
       },
       "m0:mapSpace": {
         "description": "Sphinx Eye — ORIVE analysis",
+        "revoiScores": {
+          "R": 0.95,
+          "E": 0.85,
+          "V": 0.93,
+          "O": 0.92,
+          "I": 0.88
+        },
         "revoiRationale": {
           "R": "Table I is an explicit isomorphism dictionary. GL functional, order parameter, partition function all formally defined. Score 0.95.",
           "E": "Framework extends to neural synchronization, cellular proofreading (ribosome PoW). Protocol-agnostic structure. Score 0.85 — limited to PoW systems currently.",
@@ -163,94 +214,99 @@
           "I": "Bridges statistical mechanics ↔ distributed systems ↔ information theory ↔ biology. Open-source code repository. Score 0.88 — specialized to Bitcoin protocol."
         }
       },
-      "m0:epistemicGap": 0.072,
+      "m0:epistemicGap": {
+        "norm": 0.072,
+        "deltaVector": "(−0.05, −0.08, −0.03, −0.07, −0.05)",
+        "interpretation": "Very small epistemic gap — the phenomenological model closely follows observable network reality. Main discrepancy on S axis: microscopic Hamiltonian not derived, structural claims are coarse-grained approximations.",
+        "assessment": "Exceptionally well-modeled system for a phenomenological framework. The isomorphism dictionary (Table I) is dimensionally consistent and operationally testable."
+      },
       "m0:genericConceptsMobilized": {
         "total": 17,
         "concepts": [
           {
             "name": "Dissipation",
-            "tensorFormula": "F⊗D",
-            "role": "Σ(B) as path-weighting functional. Q̇_diss >> kBTsub·ln2 — deliberate inflation of Landauer cost by protocol. Core mechanism of consensus stability."
+            "role": "Σ(B) as path-weighting functional. Q̇_diss >> kBTsub·ln2 — deliberate inflation of Landauer cost by protocol. Core mechanism of consensus stability.",
+            "structuralGrammarFormula": "F × D"
           },
           {
             "name": "Entropy",
-            "tensorFormula": "F⊗I⊗D",
-            "role": "Irreversibility measure (Feynman). ΔS_irrev in Crooks fluctuation theorem. History entropy S_history maximized in Sybil regime (T→∞). Pivot of immutability chain."
+            "role": "Irreversibility measure (Feynman). ΔS_irrev in Crooks fluctuation theorem. History entropy S_history maximized in Sybil regime (T→∞). Pivot of immutability chain.",
+            "structuralGrammarFormula": "F × It × D | _^/_$"
           },
           {
             "name": "Coherence/Incoherence",
-            "tensorFormula": "A⊗S⊗I⊗R⊗O",
-            "role": "Global consensus coherence (Φ→1 ordered phase) vs incoherence (fork proliferation). Topological defects = persistent incoherence in P2P phase field."
+            "role": "Global consensus coherence (Φ→1 ordered phase) vs incoherence (fork proliferation). Topological defects = persistent incoherence in P2P phase field.",
+            "structuralGrammarFormula": "A × St × It | R + O | _^/_$"
           },
           {
             "name": "Phase Transition",
-            "tensorFormula": "A⊗S⊗D",
-            "role": "SSB mempool→blockchain (continuous ordering transition). KT transition under partition. Directed Percolation (fork→absorbing canonical chain)."
+            "role": "SSB mempool→blockchain (continuous ordering transition). KT transition under partition. Directed Percolation (fork→absorbing canonical chain).",
+            "structuralGrammarFormula": "A × S × D"
           },
           {
             "name": "Emergence",
-            "tensorFormula": "A⊗D",
-            "role": "Time as emergent coarse-grained variable (Thermal Time Hypothesis, Connes-Rovelli). Canonical history as emergent from stochastic PoW process."
+            "role": "Time as emergent coarse-grained variable (Thermal Time Hypothesis, Connes-Rovelli). Canonical history as emergent from stochastic PoW process.",
+            "structuralGrammarFormula": "It × S × D | _0 | L"
           },
           {
             "name": "Markov Blanket",
-            "tensorFormula": "S⊗I",
-            "role": "UTXO set as ∂V — compressed state description for validation. RG flow decimation: ∂Vt = R(Vt-1 ∪ Bt). Saturation → consensus fracture."
+            "role": "UTXO set as ∂V — compressed state description for validation. RG flow decimation: ∂Vt = R(Vt-1 ∪ Bt). Saturation → consensus fracture.",
+            "structuralGrammarFormula": "S × I"
           },
           {
             "name": "Constraint",
-            "tensorFormula": "S⊗F",
-            "role": "VB,crit as upper bound on block volume. γ (validation latency) as irreducible constraint even at infinite bandwidth (Cnode→∞)."
+            "role": "VB,crit as upper bound on block volume. γ (validation latency) as irreducible constraint even at infinite bandwidth (Cnode→∞).",
+            "structuralGrammarFormula": "St × A × D | O + V"
           },
           {
             "name": "Inertia",
-            "tensorFormula": "S⊗F⊗I⊗D",
-            "role": "M_eff^(phen) = SPoW/(e_mfg·τB). Phenomenological mass of the ledger — resistance to history reversal grows with accumulated PoW dissipation."
+            "role": "M_eff^(phen) = SPoW/(e_mfg·τB). Phenomenological mass of the ledger — resistance to history reversal grows with accumulated PoW dissipation.",
+            "structuralGrammarFormula": "S × F × I × D"
           },
           {
             "name": "Absorbing State",
-            "tensorFormula": "S⊗A⊗F⊗I⊗D",
-            "role": "Canonical chain as absorbing state of Directed Percolation. Forks = active states decaying irreversibly toward absorption. 51% attack = supercritical → absorbing state lost."
+            "role": "Canonical chain as absorbing state of Directed Percolation. Forks = active states decaying irreversibly toward absorption. 51% attack = supercritical → absorbing state lost.",
+            "structuralGrammarFormula": "S × A × F × I × D"
           },
           {
             "name": "Topological Defect",
-            "tensorFormula": "S⊗A⊗I⊗R⊗O",
-            "role": "Persistent forks as vortices (n≠0) in P2P consensus phase field θᵢ. KT transition: free vortex proliferation at Teff>TKT destroys global phase coherence."
+            "role": "Persistent forks as vortices (n≠0) in P2P consensus phase field θᵢ. KT transition: free vortex proliferation at Teff>TKT destroys global phase coherence.",
+            "structuralGrammarFormula": "St × A × It | R + O"
           },
           {
             "name": "Self-Organization",
-            "tensorFormula": "A⊗S⊗D",
-            "role": "Dissipative structure maintaining order via continuous exergy injection. DAA as self-organizing thermostat. Small-world topology as self-organized spatial structure."
+            "role": "Dissipative structure maintaining order via continuous exergy injection. DAA as self-organizing thermostat. Small-world topology as self-organized spatial structure.",
+            "structuralGrammarFormula": "A × I × D"
           },
           {
             "name": "Feedback Loop",
-            "tensorFormula": "A⊗S⊗F⊗I⊗D",
-            "role": "DAA as non-linear negative feedback controller: NH(D) adjusted to maintain τB≈600s. Thermostat damping Halving quench relaxation."
+            "role": "DAA as non-linear negative feedback controller: NH(D) adjusted to maintain τB≈600s. Thermostat damping Halving quench relaxation.",
+            "structuralGrammarFormula": "A × S × F × It × D"
           },
           {
             "name": "Processor",
-            "tensorFormula": "S⊗I⊗F⊗D",
-            "role": "Mining nodes as processors transforming electrical energy into cryptographic proofs. Network as distributed processor implementing Maxwell's Demon sorting."
+            "role": "Mining nodes as processors transforming electrical energy into cryptographic proofs. Network as distributed processor implementing Maxwell's Demon sorting.",
+            "structuralGrammarFormula": "S × I × F × D"
           },
           {
             "name": "Transducer",
-            "tensorFormula": "F⊗S⊗I",
-            "role": "ASIC hardware as Transducer: electrical energy → hash computation → heat. Dissipation as degrading Transducer: exergy → entropy."
+            "role": "ASIC hardware as Transducer: electrical energy → hash computation → heat. Dissipation as degrading Transducer: exergy → entropy.",
+            "structuralGrammarFormula": "F × S × I"
           },
           {
             "name": "Stase",
-            "tensorFormula": "S⊗A",
-            "role": "Quantum ground state |0⟩ analogy for minimal hashrate. F=0 regime = system in Stase. Relevant for analyzing network shutdown scenarios."
+            "role": "Quantum ground state |0⟩ analogy for minimal hashrate. F=0 regime = system in Stase. Relevant for analyzing network shutdown scenarios.",
+            "structuralGrammarFormula": "S × A"
           },
           {
             "name": "Potentialization",
-            "tensorFormula": "A⊗D⊗F",
-            "role": "Halving anticipatory phase: miners pre-deploy hardware (F_potential→F_active). Compression of anticipation horizon 14→1 epoch reflects industrial maturation."
+            "role": "Halving anticipatory phase: miners pre-deploy hardware (F_potential→F_active). Compression of anticipation horizon 14→1 epoch reflects industrial maturation.",
+            "structuralGrammarFormula": "A × D × F | _^/_$"
           },
           {
             "name": "Renormalization Group",
-            "tensorFormula": "S⊗I⊗D",
-            "role": "UTXO decimation operator R as non-invertible RG flow: ∂Vt = R(Vt-1 ∪ Bt). Integrates out inactive degrees of freedom — essential to keep VB < VB,crit."
+            "role": "UTXO decimation operator R as non-invertible RG flow: ∂Vt = R(Vt-1 ∪ Bt). Integrates out inactive degrees of freedom — essential to keep VB < VB,crit.",
+            "structuralGrammarFormula": "S × I × D"
           }
         ]
       },
@@ -321,19 +377,14 @@
           }
         ]
       },
-      "m0:scoreA": 0.95,
-      "m0:scoreS": 0.92,
-      "m0:scoreF": 0.97,
-      "m0:scoreIt": 0.93,
-      "m0:scoreD": 0.95,
-      "m0:scoreR": 0.95,
-      "m0:scoreE": 0.85,
-      "m0:scoreV": 0.93,
-      "m0:scoreO": 0.92,
-      "m0:scoreIm": 0.88,
-      "m1:simulationTitle": "Nakamoto Consensus as Dissipative Structure",
-      "owl:imports": [
-        "M0_Common.jsonld"
+      "m1core:simulationTitle": "Nakamoto Consensus as Dissipative Structure",
+      "m0:focalApplicable": true,
+      "m2:changelog": [
+        {
+          "version": "0.3.0",
+          "date": "2026-06-26",
+          "changes": "REALIGNMENT: tensorFormula → structuralGrammarFormula (17 concepts). Operators: ⊗ → ×/+/| per Structural Grammar. Hybrid formulas corrected: Entropy (| _^/_$), Coherence (| R+O | _^/_$), Topological Defect (| R+O), Potentialization (| _^/_$), Emergence (| _0 | L), Constraint (St×A×D | O+V — M2 updated). Added focalApplicable=true."
+        }
       ]
     }
   ]
