@@ -6,8 +6,6 @@
 # ============================================
 # CHANGELOG
 # ============================================
-# v1.5.1 (2026-06-20): FIX xsd:double — rdflib parses bare JSON-LD numerics as xsd:double
-#   not xsd:float. All sh:datatype xsd:float → sh:or([xsd:float][xsd:double]) for score props
 # v1.5 (2026-06-19): M0_Common.jsonld + ENUMERATION TYPES
 #   - BREAKING: m0: prefix updated from M0_Poclet# → M0_Common.jsonld# (canonical source of truth)
 #   - BREAKING: m0:spectralClass now owl:ObjectProperty — value MUST be sh:nodeKind sh:IRI
@@ -42,7 +40,7 @@
 #     - m0:focalApplicable (boolean, always)
 #     - m0:stereopsicDepth [0,1]
 #     - m0:focalBias [-1,1]  — signed: REVOI_mean - ASFID_mean
-#     - m0:focalScore [0,1]  — SFE = stereopsicDepth × (1 - |focalBias|)
+#     - m0:focalScore [0,1]  — EFS = stereopsicDepth × (1 - |focalBias|)
 #     - m0:focalClass enum (Emmetropic|SlightlyMyopic|SlightlyHyperopic|Myopic|Hyperopic|Astigmatic)
 #     - m0:stereopsicDepthProfile (object)
 #   - Updated corpus stats: 33 instances (26 poclets + 2 SF + 1 SSG + 3 TscgTools + 1 stub)
@@ -219,7 +217,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:scoreA ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -229,7 +227,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:scoreS ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -239,7 +237,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:scoreF ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -249,7 +247,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:scoreIt ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -259,7 +257,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:scoreD ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -271,7 +269,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:scoreR ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -281,7 +279,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:scoreE ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -291,7 +289,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:scoreV ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -301,7 +299,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:scoreO ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -311,7 +309,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:scoreIm ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -323,7 +321,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:asfidMean ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -333,7 +331,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:revoiMean ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -345,7 +343,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:epistemicGap ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -394,7 +392,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:stereopsicDepth ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -404,7 +402,7 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:focalBias ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive -1.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
@@ -414,12 +412,12 @@ m0:TscgInstanceShape
 
   sh:property [
     sh:path m0:focalScore ;
-    sh:or ( [sh:datatype xsd:float] [sh:datatype xsd:double] ) ;
+    sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "m0:focalScore: Epistemic Focal Score (SFE) [0,1]. Formula: stereopsicDepth × (1 - |focalBias|). 1=Emmetropic (sharp combined image), 0=Astigmatic (no stereopsic depth) or strongly biased. Only present when m0:focalApplicable=true."
+    sh:message "m0:focalScore: Epistemic Focal Score (EFS) [0,1]. Formula: stereopsicDepth × (1 - |focalBias|). 1=Emmetropic (sharp combined image), 0=Astigmatic (no stereopsic depth) or strongly biased. Only present when m0:focalApplicable=true."
   ] ;
 
   sh:property [
@@ -435,7 +433,7 @@ m0:TscgInstanceShape
     ) ;
     sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "m0:focalClass MUST be an IRI from m0:FocalClass enumeration. Use: m0:focalClass.Emmetropic (SFE≥0.70), m0:focalClass.SlightlyMyopic/.SlightlyHyperopic (0.50≤SFE<0.70), m0:focalClass.Myopic/.Hyperopic (0.30≤SFE<0.50), m0:focalClass.Astigmatic (SFE<0.30). Only present when m0:focalApplicable=true. FORBIDDEN: bare string — use IRI with @id."
+    sh:message "m0:focalClass MUST be an IRI from m0:FocalClass enumeration. Use: m0:focalClass.Emmetropic (EFS≥0.70), m0:focalClass.SlightlyMyopic/.SlightlyHyperopic (0.50≤EFS<0.70), m0:focalClass.Myopic/.Hyperopic (0.30≤EFS<0.50), m0:focalClass.Astigmatic (EFS<0.30). Only present when m0:focalApplicable=true. FORBIDDEN: bare string — use IRI with @id."
   ] .
 
 # ============================================
@@ -696,12 +694,12 @@ m0:ForbidStringFocalClassShape
 #   BMC: focalApplicable=true, focalScore≈0.716, focalClass=SlightlyHyperopic
 #
 # FocalClass IRI values (v1.5 — owl:NamedIndividual in M0_Common.jsonld):
-#   m0:focalClass.Emmetropic        SFE ≥ 0.70
-#   m0:focalClass.SlightlyMyopic    0.50 ≤ SFE < 0.70 AND focalBias < 0
-#   m0:focalClass.SlightlyHyperopic 0.50 ≤ SFE < 0.70 AND focalBias > 0
-#   m0:focalClass.Myopic            0.30 ≤ SFE < 0.50 AND focalBias < 0
-#   m0:focalClass.Hyperopic         0.30 ≤ SFE < 0.50 AND focalBias > 0
-#   m0:focalClass.Astigmatic        SFE < 0.30 (regardless of bias)
+#   m0:focalClass.Emmetropic        EFS ≥ 0.70
+#   m0:focalClass.SlightlyMyopic    0.50 ≤ EFS < 0.70 AND focalBias < 0
+#   m0:focalClass.SlightlyHyperopic 0.50 ≤ EFS < 0.70 AND focalBias > 0
+#   m0:focalClass.Myopic            0.30 ≤ EFS < 0.50 AND focalBias < 0
+#   m0:focalClass.Hyperopic         0.30 ≤ EFS < 0.50 AND focalBias > 0
+#   m0:focalClass.Astigmatic        EFS < 0.30 (regardless of bias)
 #
 # SpectralClass IRI values (v1.5 — owl:NamedIndividual in M0_Common.jsonld):
 #   m0:spectralClass.Coherent       δ₁ < 0.05

@@ -62,7 +62,7 @@ The **epistemic gap (δ₁)** between these perspectives tells us how aligned ou
 
 This creates a **layered model** (M3 → M2 → M1 → M0) where universal foundations cascade into domain-specific applications.
 
-#### 🔭 The Third Eye: Stereopsic Focal Score (δ₂ / SFE)
+#### 🔭 The Third Eye: Epistemic Focal Score (δ₂ / EFS)
 
 Beyond the bicephalous duality, TSCG introduces a **third perspective** — the **Stereopsis Grammar Gs** — which formalizes the synergy that emerges from fusing Eagle Eye and Sphinx Eye:
 
@@ -72,10 +72,10 @@ Stereopsis = the depth perception born from binocular fusion
            = Base16 alphabet: 𝕋₀(|) = {T, _^, _$, K, Ss, L}
 ```
 
-The **Epistemic Focal Score (SFE)** — or **δ₂** — measures the *sharpness* of this binocular fusion using an ophthalmic metaphor:
+The **Epistemic Focal Score (EFS)** — or **δ₂** — measures the *sharpness* of this binocular fusion using an ophthalmic metaphor:
 
 ```
-δ₂ = SFE = stereopsicDepth × (1 − |focalBias|)
+δ₂ = EFS = stereopsicDepth × (1 − |focalBias|)
 ```
 
 Where:
@@ -86,12 +86,12 @@ Where:
   - Negative → **Myopic** (Territory too detailed, Map inadequate)
   - Zero → **Emmetropic candidate** (perfect balance)
 
-| Focal Class | SFE Range | Meaning |
+| Focal Class | EFS Range | Meaning |
 |-------------|-----------|---------|
-| **Emmetropic** | SFE ≥ 0.70 | Sharp combined image — Map+Territory in focus |
-| **SlightlyMyopic / SlightlyHyperopic** | 0.50 ≤ SFE < 0.70 | Slight bias toward Territory or Map |
-| **Myopic / Hyperopic** | 0.30 ≤ SFE < 0.50 | Significant Map/Territory imbalance |
-| **Astigmatic** | SFE < 0.30 | Insufficient Gs depth — no stereopsis possible |
+| **Emmetropic** | EFS ≥ 0.70 | Sharp combined image — Map+Territory in focus |
+| **SlightlyMyopic / SlightlyHyperopic** | 0.50 ≤ EFS < 0.70 | Slight bias toward Territory or Map |
+| **Myopic / Hyperopic** | 0.30 ≤ EFS < 0.50 | Significant Map/Territory imbalance |
+| **Astigmatic** | EFS < 0.30 | Insufficient Gs depth — no stereopsis possible |
 
 The **TKSL primitives** (4 nominal Gs generators) each answer a transcendental question:
 
@@ -102,12 +102,12 @@ The **TKSL primitives** (4 nominal Gs generators) each answer a transcendental q
 | **Ss** | Symbol *(Stereopsic)* | *Sign?* — semiotic bridge signifier↔signified |
 | **L** | Localizability | *Converging?* — cybernetic convergence toward Attractor |
 
-δ₂/SFE is **optional** and **conditional**: only present in M0 instances that mobilize at least one stereopsic GenericConcept (`m0:focalApplicable = true`). The two scores are complementary:
+δ₂/EFS is **optional** and **conditional**: only present in M0 instances that mobilize at least one stereopsic GenericConcept (`m0:focalApplicable = true`). The two scores are complementary:
 
 | Score | Formula | Measures |
 |-------|---------|---------|
 | **δ₁** (epistemic gap) | `|ASFID_mean − REVOI_mean| / √2` | Map/Territory *alignment* (distance) |
-| **δ₂ / SFE** (focal score) | `stereopsicDepth × (1 − |focalBias|)` | Map+Territory *fusion sharpness* (binocular depth) |
+| **δ₂ / EFS** (focal score) | `stereopsicDepth × (1 − |focalBias|)` | Map+Territory *fusion sharpness* (binocular depth) |
 
 ---
 
@@ -245,9 +245,9 @@ Want to model a system with TSCG? Follow the **bat's cycle**:
 ### 3. **Compute the gap (Calculate δ₁ and δ₂)**
    - **δ₁** (epistemic gap) = `|ASFID_mean − REVOI_mean| / √2`
      - Spectral classes: **Coherent** (δ₁ < 0.05) | **OnCriticalLine** (0.05–0.15) | **Liminal** (0.15–0.30) | **Enigmatic** (≥ 0.30)
-   - **δ₂ / SFE** (focal score, optional) = `stereopsicDepth × (1 − |focalBias|)`
+   - **δ₂ / EFS** (focal score, optional) = `stereopsicDepth × (1 − |focalBias|)`
      - Only when stereopsic GenericConcepts are mobilized (`focalApplicable = true`)
-     - Focal classes: **Emmetropic** (SFE ≥ 0.70) → **Astigmatic** (SFE < 0.30)
+     - Focal classes: **Emmetropic** (EFS ≥ 0.70) → **Astigmatic** (EFS < 0.30)
 
 ### 4. **Correct your flight (Refine the model)**
    - Use the gap to identify mismatches

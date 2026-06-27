@@ -1,9 +1,11 @@
 {
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+    "m0": "instances/poclets/tv_test_pattern/M0_TVTestPattern.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
+    "m3:eagle_eye": "M3_EagleEye.jsonld#",
+    "m3:sphinx_eye": "M3_SphinxEye.jsonld#",
     "dcterms": "http://purl.org/dc/terms/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -11,15 +13,53 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m0.tvTestPattern": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/TvTestPattern/M0_TvTestPattern.jsonld#",
-    "m1.extensions.electronics": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/electronics/M1_Electronics.jsonld#"
+    "m1.ext:electronics": "M1_extensions/electronics/M1_Electronics.jsonld#",
+    "A_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
+      "@type": "xsd:float"
+    },
+    "S_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
+      "@type": "xsd:float"
+    },
+    "F_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
+      "@type": "xsd:float"
+    },
+    "It_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
+      "@type": "xsd:float"
+    },
+    "D_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
+      "@type": "xsd:float"
+    },
+    "R_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
+      "@type": "xsd:float"
+    },
+    "E_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
+      "@type": "xsd:float"
+    },
+    "V_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
+      "@type": "xsd:float"
+    },
+    "O_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
+      "@type": "xsd:float"
+    },
+    "Im_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
+      "@type": "xsd:float"
+    }
   },
   "@graph": [
     {
       "@id": "m0:TVTestPattern_Poclet",
       "@type": "owl:Ontology",
       "owl:imports": [
-        "M0_Common.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld",
         "M1_extensions/electronics/M1_Electronics.jsonld"
@@ -31,7 +71,7 @@
       "rdfs:comment": "Poclet modeling the analogue television test pattern (mire) as a full-chain calibration system. Primary validator for m2:Calibration (A⊗F⊗It⊗D). Architecturally remarkable: the test pattern artefact is simultaneously the Territory Flow (a physical analogue signal subject to degradation) and the external Attractor (the normative reference standard the chain must reproduce). This self-referential duality — the Map acting as Territory — makes this poclet an ideal bicephalous validation case with an exceptionally low epistemic gap (δ=0.13).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-03-02",
-      "owl:versionInfo": "1.0.0",
+      "owl:versionInfo": "1.0.1",
       "m1:domain": [
         "Signal Engineering",
         "Broadcast Television"
@@ -39,11 +79,17 @@
       "dcterms:modified": "2026-03-02",
       "m2:changelog": [
         {
+          "version": "1.0.1",
+          "date": "2026-06-26",
+          "changes": "ACTION3: Added m0:focalApplicable=true."
+        },
+        {
           "version": "1.0.0",
           "date": "2026-03-02",
           "changes": "Initial version. Primary validator for m2:Calibration (A⊗F⊗It⊗D, territory). ASFID=0.88, REVOI=0.87, δ=0.13. 11 M2 GenericConcepts mobilized. Triggered by TV test pattern analysis session leading to creation of m2:Calibration v15.10.0."
         }
-      ]
+      ],
+      "m0:focalApplicable": true
     },
     {
       "@id": "m0:TVTestPattern",
@@ -74,6 +120,24 @@
       },
       "m0:calibrationFormula": "A ⊗ F ⊗ It ⊗ D",
       "m0:bicephalousArchitectureNote": "The TV test pattern is a unique instance of self-referential duality in the TSCG framework. The same physical artefact occupies two ontological roles simultaneously: (1) Eagle Eye / Territory: the test pattern IS a physical analogue signal (voltage waveform) that propagates through the chain and can be degraded, distorted, or noised; (2) Sphinx Eye / Map: the test pattern IS the external Attractor — the normative reference the chain must faithfully reproduce. The residual gap between emitted and received pattern is therefore both a Territory measurement (waveform deviation) and a Map quality metric (epistemic gap δ). This is the reason M0_TVTestPattern is the ideal validation poclet for m2:Calibration.",
+      "m0:asfidScores": {
+        "A": 0.95,
+        "S": 0.85,
+        "F": 0.9,
+        "I": 0.9,
+        "D": 0.8,
+        "mean": 0.88,
+        "interpretation": "All five ASFID dimensions robustly present. A is exceptionally high (0.95): the external reference is a sovereign, precisely normalised standard (IRE levels, EBU colour vectors, certified spatial frequencies). D slightly lower (0.80): adjustment loop involves human-in-the-loop latency and iterative re-measurement."
+      },
+      "m0:revoiScores": {
+        "R": 0.9,
+        "E": 0.75,
+        "V": 0.95,
+        "O": 0.9,
+        "I": 0.85,
+        "mean": 0.87,
+        "interpretation": "V exceptionally high (0.95): residual deviations are quantifiable in IRE, degrees of chrominance phase, and TVL — pass/fail is defined by broadcast specification. E moderate (0.75): standards are evolvable (SMPTE, EBU updates) but constrained by regulatory and interoperability requirements. I slightly penalised (0.85) due to NTSC/PAL/SECAM incompatibility across regions."
+      },
       "m0:epistemicGap": {
         "delta": 0.13,
         "formula": "δ = 1 − (ASFID_mean + REVOI_mean) / 2 = 1 − (0.88 + 0.87) / 2",
@@ -339,10 +403,7 @@
       },
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-03-02",
-      "dcterms:modified": "2026-03-02",
-      "m0:asfidMean": 0.88,
-      "m0:scoreIm": 0.85,
-      "m0:revoiMean": 0.87
+      "dcterms:modified": "2026-03-02"
     }
   ]
 }

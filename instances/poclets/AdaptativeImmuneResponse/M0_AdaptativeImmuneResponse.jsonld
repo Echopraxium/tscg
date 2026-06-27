@@ -1,25 +1,25 @@
 {
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
-    "m0.adaptativeImmuneResponse": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/AdaptativeImmuneResponse/M0_AdaptativeImmuneResponse.jsonld#",
-    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m1.extensions.biology": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
-    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
+    "sm": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/AdaptativeImmuneResponse/M0_AdaptativeImmuneResponse.jsonld#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "owl": "http://www.w3.org/2002/07/owl#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m0:adaptive_immune_response": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/adaptive_immune_response/M0_AdaptativeImmuneResponse.jsonld#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m1.ext:biology": "M1_extensions/biology/M1_CoreConcepts.jsonld#"
   },
   "@graph": [
     {
-      "@id": "m0.adaptativeImmuneResponse:AdaptativeImmuneResponse",
+      "@id": "m0:adaptive_immune_response:AdaptativeImmuneResponse",
       "@type": "owl:Ontology",
       "owl:imports": [
-        "M0_Common.jsonld",
         "M3_GenesisGrammar.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld",
@@ -34,74 +34,69 @@
       "dcterms:created": "2026-01-24",
       "owl:versionInfo": "1.0.0",
       "m1:domain": "Biology",
-      "m0:scoreA": 0.95,
-      "m0:scoreS": 0.9,
-      "m0:scoreF": 0.85,
-      "m0:scoreIt": 0.95,
-      "m0:scoreD": 0.9,
-      "m0:scoringStatus": {
-        "@id": "m0:scoringStatus.Partial"
-      },
-      "m0:asfidMean": 0.91,
-      "m2:changelog": [
-        {
-          "version": "1.1.0",
-          "date": "2026-06-19",
-          "changes": "Namespace migration to M0_Common.jsonld# convention. m0: now points to shared properties. m0.adaptativeImmuneResponse: is the instance-local namespace. Scores flattened from m0:asfidScores{} to root (Option B). m2:hasTensorFormula → m2:hasStructuralGrammarFormula throughout. Removed m3:ontologyType from sub-nodes. REVOI scores pending (m0:scoringStatus=partial). owl:imports M0_Common.jsonld added."
-        },
-        {
-          "version": "1.0.0",
-          "date": "2026-01-24",
-          "changes": "Initial version. Network with Central Orchestrator pattern. 4 cellular poles, 4 mediators, 4 triggers, 1 environment. HIV/AIDS validates CD4+ orchestrator essentiality."
-        }
-      ],
-      "m0.adaptativeImmuneResponse:pocletCharacteristics": {
+      "m1:pocletCharacteristics": {
         "phenomenon": "Specific pathogen eradication and establishment of durable immunological memory",
         "criticalProperty": "Absence of any single pole (esp. CD4+ T cell) disorganizes and paralyzes entire system (AIDS example)",
         "domain": "Immunology / Biology",
         "architecture": "Network with Central Orchestrator (T CD4+)",
         "complexity": "High - Multi-pole, multi-mediator, spatially organized"
-      }
+      },
+      "m1:asfidScoring": {
+        "attractor": 0.95,
+        "structure": 0.9,
+        "flow": 0.85,
+        "information": 0.95,
+        "dynamics": 0.9,
+        "overall": 0.91,
+        "interpretation": "Highly observable, well-characterized biological system with clear functional goals"
+      },
+      "m0:focalApplicable": true,
+      "m2:changelog": [
+        {
+          "version": "1.1.0",
+          "date": "2026-06-26",
+          "changes": "REALIGNMENT: m2:hasTensorFormula → m2:hasStructuralGrammarFormula (15 nodes). Operator ⊗ → × (all pure Gt formulas). Added focalApplicable=true."
+        }
+      ]
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:AdaptiveImmuneSystem",
+      "@id": "m0:adaptive_immune_response:AdaptiveImmuneSystem",
       "@type": [
         "owl:NamedIndividual",
         "m2:System"
       ],
       "rdfs:label": "Adaptive Immune System",
       "rdfs:comment": "The focal system - vertebrate adaptive immunity with antigen specificity and memory",
-      "m2:hasStructuralGrammarFormula": "S⊗F",
-      "m2:hasBoundary": "m0.adaptativeImmuneResponse:InnateBoundary",
-      "m2:hasEnvironment": "m0.adaptativeImmuneResponse:LymphoidOrgans"
+      "m2:hasBoundary": "m0:adaptive_immune_response:InnateBoundary",
+      "m2:hasEnvironment": "m0:adaptive_immune_response:LymphoidOrgans",
+      "m2:hasStructuralGrammarFormula": "S×F"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:CellularNetwork",
+      "@id": "m0:adaptive_immune_response:CellularNetwork",
       "@type": [
         "owl:NamedIndividual",
         "m2:Network"
       ],
       "rdfs:label": "Immune Cell Interaction Network",
       "rdfs:comment": "Network structure of cellular poles with T CD4+ as central orchestrator hub",
-      "m2:hasStructuralGrammarFormula": "S⊗I⊗F",
       "m2:hasNode": [
-        "m0.adaptativeImmuneResponse:Pole_APC",
-        "m0.adaptativeImmuneResponse:Pole_TCD4",
-        "m0.adaptativeImmuneResponse:Pole_TCD8",
-        "m0.adaptativeImmuneResponse:Pole_BCell"
+        "m0:adaptive_immune_response:Pole_APC",
+        "m0:adaptive_immune_response:Pole_TCD4",
+        "m0:adaptive_immune_response:Pole_TCD8",
+        "m0:adaptive_immune_response:Pole_BCell"
       ],
       "m2:hasTopology": "Star topology with CD4+ as hub",
-      "m2:orchestrator": "m0.adaptativeImmuneResponse:Pole_TCD4"
+      "m2:orchestrator": "m0:adaptive_immune_response:Pole_TCD4",
+      "m2:hasStructuralGrammarFormula": "S×I×F"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:Pole_APC",
+      "@id": "m0:adaptive_immune_response:Pole_APC",
       "@type": [
         "owl:NamedIndividual",
         "m2:Pole"
       ],
       "rdfs:label": "Pole 1: Antigen-Presenting Cell (APC)",
       "rdfs:comment": "Initiating pole - captures, processes, presents antigen via MHC. Examples: macrophages, dendritic cells.",
-      "m2:hasStructuralGrammarFormula": "S⊗I⊗A",
       "m2:poleRole": "Initiation and information presentation",
       "m2:asfidDecomposition": {
         "structure": "Phagocytic machinery, MHC class II expression, costimulatory molecules (B7)",
@@ -112,17 +107,17 @@
         "Dendritic cells (professional APCs)",
         "Macrophages",
         "B cells (can also present)"
-      ]
+      ],
+      "m2:hasStructuralGrammarFormula": "S×I×A"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:Pole_TCD4",
+      "@id": "m0:adaptive_immune_response:Pole_TCD4",
       "@type": [
         "owl:NamedIndividual",
         "m2:Pole"
       ],
       "rdfs:label": "Pole 2: Helper T Lymphocyte (CD4+) - ORCHESTRATOR",
       "rdfs:comment": "Central coordination pole. Orchestrates entire adaptive response via cytokine secretion patterns. Absolute essentiality demonstrated by HIV/AIDS.",
-      "m2:hasStructuralGrammarFormula": "S⊗I⊗A",
       "m2:poleRole": "Orchestration and meta-coordination",
       "m2:orchestratorStatus": "Central hub of network",
       "m2:asfidDecomposition": {
@@ -141,34 +136,34 @@
         "mechanism": "Viral destruction of CD4+ T cells",
         "consequence": "Complete collapse of adaptive immunity despite intact other poles",
         "validation": "Proves orchestrator role and absolute essentiality"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "S×I×A"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:Pole_TCD8",
+      "@id": "m0:adaptive_immune_response:Pole_TCD8",
       "@type": [
         "owl:NamedIndividual",
         "m2:Pole"
       ],
       "rdfs:label": "Pole 3: Cytotoxic T Lymphocyte (CD8+)",
       "rdfs:comment": "Cellular destruction pole - eliminates infected or cancerous cells. Often activated via T helper coordination.",
-      "m2:hasStructuralGrammarFormula": "S⊗I⊗A",
       "m2:poleRole": "Cell-mediated cytotoxicity",
       "m2:asfidDecomposition": {
         "structure": "TCR, CD8 co-receptor, cytotoxic granules (perforin, granzymes)",
         "information": "Recognition of MHC-I-antigen complexes on target cells",
         "attractor": "Elimination of infected/cancerous cells via apoptosis induction"
       },
-      "m2:activationDependency": "Often requires CD4+ T cell help for full activation"
+      "m2:activationDependency": "Often requires CD4+ T cell help for full activation",
+      "m2:hasStructuralGrammarFormula": "S×I×A"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:Pole_BCell",
+      "@id": "m0:adaptive_immune_response:Pole_BCell",
       "@type": [
         "owl:NamedIndividual",
         "m2:Pole"
       ],
       "rdfs:label": "Pole 4: B Lymphocyte",
       "rdfs:comment": "Humoral immunity pole - produces neutralizing and opsonizing antibodies. Requires T helper assistance for most antigens.",
-      "m2:hasStructuralGrammarFormula": "S⊗I⊗A",
       "m2:poleRole": "Antibody production (humoral immunity)",
       "m2:asfidDecomposition": {
         "structure": "BCR (B Cell Receptor), antibody secretion machinery, somatic hypermutation system",
@@ -176,17 +171,17 @@
         "attractor": "Production of high-affinity antibodies (IgG, IgM, IgA, IgE)"
       },
       "m2:activationDependency": "T-dependent antigens require CD4+ T cell help; T-independent antigens bypass this",
-      "m2:effectorProduct": "Antibodies (immunoglobulins)"
+      "m2:effectorProduct": "Antibodies (immunoglobulins)",
+      "m2:hasStructuralGrammarFormula": "S×I×A"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:Mediator_Cytokines",
+      "@id": "m0:adaptive_immune_response:Mediator_Cytokines",
       "@type": [
         "owl:NamedIndividual",
         "m2:Mediator"
       ],
       "rdfs:label": "Mediator 1: Cytokines",
       "rdfs:comment": "Primary communication molecules - enable indirect signaling between cellular poles. Predominantly secreted by CD4+ T orchestrator.",
-      "m2:hasStructuralGrammarFormula": "F⊗I⊗S",
       "m2:mediatorType": "Soluble molecular messengers",
       "m2:fisDecomposition": {
         "flow": "Diffusion gradients, concentration-dependent signaling, paracrine/autocrine",
@@ -200,17 +195,17 @@
         "IFN-γ (Th1 activation, macrophage activation)",
         "TNF-α (inflammatory response)"
       ],
-      "m2:primarySource": "m0.adaptativeImmuneResponse:Pole_TCD4"
+      "m2:primarySource": "m0:adaptive_immune_response:Pole_TCD4",
+      "m2:hasStructuralGrammarFormula": "F×I×S"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:Mediator_MHCTCR",
+      "@id": "m0:adaptive_immune_response:Mediator_MHCTCR",
       "@type": [
         "owl:NamedIndividual",
         "m2:Mediator"
       ],
       "rdfs:label": "Mediator 2: MHC-TCR Interface",
       "rdfs:comment": "Molecular interface enabling APC-T cell communication via antigen presentation",
-      "m2:hasStructuralGrammarFormula": "F⊗I⊗S",
       "m2:mediatorType": "Molecular recognition interface",
       "m2:fisDecomposition": {
         "flow": "Signal transduction cascade (CD3 complex, ZAP-70 kinase)",
@@ -221,17 +216,17 @@
         "MHC-II-peptide → TCR (CD4+ T cells)",
         "MHC-I-peptide → TCR (CD8+ T cells)"
       ],
-      "m2:activationModel": "Two-signal paradigm: Signal 1 (TCR-MHC) + Signal 2 (co-stimulation B7-CD28)"
+      "m2:activationModel": "Two-signal paradigm: Signal 1 (TCR-MHC) + Signal 2 (co-stimulation B7-CD28)",
+      "m2:hasStructuralGrammarFormula": "F×I×S"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:Mediator_Antibodies",
+      "@id": "m0:adaptive_immune_response:Mediator_Antibodies",
       "@type": [
         "owl:NamedIndividual",
         "m2:Mediator"
       ],
       "rdfs:label": "Mediator 3: Antibodies (Immunoglobulins)",
       "rdfs:comment": "B cell products mediating pathogen neutralization and immune effector recruitment",
-      "m2:hasStructuralGrammarFormula": "F⊗I⊗S",
       "m2:mediatorType": "Secreted recognition molecules",
       "m2:fisDecomposition": {
         "flow": "Serum circulation, tissue diffusion, half-life dynamics",
@@ -250,17 +245,17 @@
         "Complement activation",
         "ADCC (antibody-dependent cellular cytotoxicity)"
       ],
-      "m2:producer": "m0.adaptativeImmuneResponse:Pole_BCell"
+      "m2:producer": "m0:adaptive_immune_response:Pole_BCell",
+      "m2:hasStructuralGrammarFormula": "F×I×S"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:Mediator_Complement",
+      "@id": "m0:adaptive_immune_response:Mediator_Complement",
       "@type": [
         "owl:NamedIndividual",
         "m2:Mediator"
       ],
       "rdfs:label": "Mediator 4: Complement System",
       "rdfs:comment": "Cascade amplification system bridging innate and adaptive immunity. Proteins C1-C9 forming enzymatic cascade.",
-      "m2:hasStructuralGrammarFormula": "F⊗I⊗S",
       "m2:mediatorType": "Enzymatic cascade amplifier",
       "m2:fisDecomposition": {
         "flow": "Sequential enzymatic activation (classical, alternative, lectin pathways)",
@@ -281,17 +276,17 @@
         "Classical (antibody-activated)",
         "Alternative (direct pathogen surface)",
         "Lectin (mannose-binding lectin)"
-      ]
+      ],
+      "m2:hasStructuralGrammarFormula": "F×I×S"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:Trigger_APC_Recognition",
+      "@id": "m0:adaptive_immune_response:Trigger_APC_Recognition",
       "@type": [
         "owl:NamedIndividual",
         "m2:Trigger"
       ],
       "rdfs:label": "Trigger 1: Antigen Recognition by APC",
       "rdfs:comment": "Initiating event - APC captures pathogen or antigen",
-      "m2:hasStructuralGrammarFormula": "D⊗I",
       "m2:diDecomposition": {
         "dynamics": "Phagocytosis, receptor-mediated endocytosis, macropinocytosis",
         "information": "PAMP (Pathogen-Associated Molecular Pattern) recognition via PRRs (Pattern Recognition Receptors)"
@@ -300,17 +295,17 @@
         "TLRs (Toll-like receptors)",
         "C-type lectin receptors",
         "Scavenger receptors"
-      ]
+      ],
+      "m2:hasStructuralGrammarFormula": "D×I"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:Trigger_TCR_Activation",
+      "@id": "m0:adaptive_immune_response:Trigger_TCR_Activation",
       "@type": [
         "owl:NamedIndividual",
         "m2:Trigger"
       ],
       "rdfs:label": "Trigger 2: TCR Activation",
       "rdfs:comment": "T cell activation via MHC-antigen complex recognition",
-      "m2:hasStructuralGrammarFormula": "D⊗I",
       "m2:diDecomposition": {
         "dynamics": "Signal transduction (CD3 complex phosphorylation, ZAP-70 activation, calcium flux)",
         "information": "TCR recognition of specific MHC-peptide complex"
@@ -319,17 +314,17 @@
         "signal1": "TCR-MHC-peptide engagement",
         "signal2": "Co-stimulation (B7-CD28)",
         "threshold": "Both signals required for full activation (prevents autoimmunity)"
-      }
+      },
+      "m2:hasStructuralGrammarFormula": "D×I"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:Trigger_BCR_Engagement",
+      "@id": "m0:adaptive_immune_response:Trigger_BCR_Engagement",
       "@type": [
         "owl:NamedIndividual",
         "m2:Trigger"
       ],
       "rdfs:label": "Trigger 3: B Cell Receptor Engagement",
       "rdfs:comment": "B cell activation via antigen binding to BCR",
-      "m2:hasStructuralGrammarFormula": "D⊗I",
       "m2:diDecomposition": {
         "dynamics": "BCR cross-linking, internalization, antigen processing and presentation",
         "information": "Epitope recognition with high specificity"
@@ -337,32 +332,32 @@
       "m2:mechanismTypes": [
         "T-dependent activation (requires CD4+ T cell help)",
         "T-independent activation (polysaccharide antigens, no T help needed)"
-      ]
+      ],
+      "m2:hasStructuralGrammarFormula": "D×I"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:Trigger_Complement_Initiation",
+      "@id": "m0:adaptive_immune_response:Trigger_Complement_Initiation",
       "@type": [
         "owl:NamedIndividual",
         "m2:Trigger"
       ],
       "rdfs:label": "Trigger 4: Complement Cascade Initiation",
       "rdfs:comment": "Activation of complement system via classical pathway",
-      "m2:hasStructuralGrammarFormula": "D⊗I",
       "m2:diDecomposition": {
         "dynamics": "C1 complex activation → enzymatic cascade (C1→C4→C2→C3→C5-C9)",
         "information": "Recognition of antibody-antigen immune complexes (IgM or IgG)"
       },
-      "m2:note": "Also alternative and lectin pathways, but classical is most relevant for adaptive immunity"
+      "m2:note": "Also alternative and lectin pathways, but classical is most relevant for adaptive immunity",
+      "m2:hasStructuralGrammarFormula": "D×I"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:LymphoidOrgans",
+      "@id": "m0:adaptive_immune_response:LymphoidOrgans",
       "@type": [
         "owl:NamedIndividual",
         "m2:Environment"
       ],
       "rdfs:label": "Environment: Lymphoid Organs",
       "rdfs:comment": "Spatial coordination platform providing organized microenvironments for rare cell-cell interactions. NOT a functional pole but an enabling structure.",
-      "m2:hasStructuralGrammarFormula": "F⊗I",
       "m2:fiDecomposition": {
         "flow": "Lymphatic circulation, cell trafficking (chemokine gradients CCL19, CCL21, CXCL13)",
         "information": "Spatial organization signals, T zones vs B zones, germinal center niches"
@@ -379,10 +374,11 @@
         "B cell follicles",
         "Germinal centers (site of affinity maturation)",
         "Medullary cords"
-      ]
+      ],
+      "m2:hasStructuralGrammarFormula": "F×I"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:InnateBoundary",
+      "@id": "m0:adaptive_immune_response:InnateBoundary",
       "@type": [
         "owl:NamedIndividual",
         "m2:Boundary"
@@ -399,7 +395,7 @@
       "m2:interfaceMechanism": "Complement system (Mediator 4) bridges both systems"
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:GenericConceptInventory",
+      "@id": "m0:adaptive_immune_response:GenericConceptInventory",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "GenericConcept Mobilization Summary",
       "m2:GenericConceptUsage": {
@@ -413,10 +409,13 @@
         "Orchestrator_pattern": 1
       },
       "m2:totalGenericConcepts": 8,
-      "m2:architecturalPattern": "Network with Central Orchestrator + Rich Mediator Layer + Spatial Environment"
+      "m2:architecturalPattern": "Network with Central Orchestrator + Rich Mediator Layer + Spatial Environment",
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      }
     },
     {
-      "@id": "m0.adaptativeImmuneResponse:KeyInsights",
+      "@id": "m0:adaptive_immune_response:KeyInsights",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "Key TSCG Insights",
       "m2:insights": [
@@ -427,7 +426,10 @@
         "Two-Signal Paradigm: Safety mechanism (prevents autoimmunity) modeled as Threshold GenericConcept",
         "Innate-Adaptive Bridge: Complement system exemplifies Mediator bridging distinct subsystems"
       ],
-      "m2:validationStrength": "Very strong - CD4+ essentiality demonstrated by real pathology (AIDS), not theoretical speculation"
+      "m2:validationStrength": "Very strong - CD4+ essentiality demonstrated by real pathology (AIDS), not theoretical speculation",
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      }
     }
   ]
 }

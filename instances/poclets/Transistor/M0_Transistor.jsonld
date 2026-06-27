@@ -1,7 +1,8 @@
 {
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/transistor/M0_Transistor.jsonld#",
+    "m1elec": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Electronics.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3eagle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
     "m3sphinx": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
@@ -12,16 +13,52 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m0.transistor": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/Transistor/M0_Transistor.jsonld#",
-    "m1.extensions.electronics": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/electronics/M1_Electronics.jsonld#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    "A_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
+      "@type": "xsd:float"
+    },
+    "S_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
+      "@type": "xsd:float"
+    },
+    "F_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
+      "@type": "xsd:float"
+    },
+    "It_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
+      "@type": "xsd:float"
+    },
+    "D_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
+      "@type": "xsd:float"
+    },
+    "R_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
+      "@type": "xsd:float"
+    },
+    "E_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
+      "@type": "xsd:float"
+    },
+    "V_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
+      "@type": "xsd:float"
+    },
+    "O_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
+      "@type": "xsd:float"
+    },
+    "Im_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
+      "@type": "xsd:float"
+    }
   },
   "@graph": [
     {
       "@id": "m0:Transistor_BJT",
       "@type": "owl:Ontology",
       "owl:imports": [
-        "M0_Common.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld"
       ],
@@ -32,7 +69,7 @@
       "rdfs:comment": "BJT as electronic Processor: Input (base current, collector voltage) → Amplification/Switching → Output (collector current). Minimal complete semiconductor processor demonstrating dual modes (linear amplification vs digital switching). Validates Processor GenericConcept with continuous analog inputs/outputs and transformation via charge carrier control.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-07",
-      "owl:versionInfo": "15.2.0",
+      "owl:versionInfo": "15.2.1",
       "m1:domain": [
         "Electronics",
         "Semiconductor Physics",
@@ -41,9 +78,13 @@
         "Circuit Theory"
       ],
       "m2:changelog": [
+        {
+          "version": "15.2.1",
+          "date": "2026-06-26",
+          "changes": "ACTION3: Added m0:focalApplicable=true."
+        },
         "2026-02-24: v15.2.0 — Replaced m0:dualModes with comprehensive m0:operatingModes covering BJT (4 modes: Cutoff, Forward Active, Saturation, Reverse Active) and MOSFET NMOS (3 modes: Cutoff, Triode, Saturation). Added namingConventionNote on BJT/MOSFET Saturation inversion. Added comparativeTable (BJT↔MOSFET mode equivalences). Updated m0:simulation for new device-selector tab (BJT/MOSFET) and mode panel. versionInfo 15.1.0 → 15.2.0.",
-        "2026-02-24: v15.1.0 — Fixed @context URIs to canonical tscg GitHub raw path. Added m0:simulation property documenting transistor_sim.py (I-V characteristic curves, live operating-point display, ASFID/REVOI panels). Added m0:operatingRegionColors for simulation. versionInfo bumped 15.0.0 → 15.1.0.",
-        "2026-02-07: v15.0.0 — Initial creation. BJT as first electronic Processor poclet. Validates Processor ternary hybrid formulas (Territory: Transformation⊗Flow⊗Resource; Map: Transformation⊗Representation⊗Interoperability). 11 GenericConcepts. ASFID=0.85, REVOI=0.86, ΔΘ=0.01."
+        "2026-02-24: v15.1.0 — Fixed @context URIs to canonical tscg GitHub raw path. Added m0:simulation property documenting transistor_sim.py (I-V characteristic curves, live operating-point display, ASFID/REVOI panels). Added m0:operatingRegionColors for simulation. versionInfo bumped 15.0.0 → 15.1.0."
       ],
       "m0:simulation": {
         "filename": "transistor_sim.py",
@@ -475,6 +516,62 @@
           "naming_trap": "BJT 'Saturation' ↔ MOSFET 'Triode' (both = switch ON). BJT 'Active' ↔ MOSFET 'Saturation' (both = amplifier). Naming is historically inconsistent."
         }
       },
+      "m0:asfidScores": {
+        "A_score": {
+          "@value": "0.7",
+          "@type": "xsd:float"
+        },
+        "A_justification": "Moderate attractor: Operating point (Q-point) stabilized by bias network, not strict homeostasis",
+        "S_score": {
+          "@value": "0.9",
+          "@type": "xsd:float"
+        },
+        "S_justification": "Well-defined structure: 3 terminals (B, C, E), 2 PN junctions, depletion/neutral regions",
+        "F_score": {
+          "@value": "0.95",
+          "@type": "xsd:float"
+        },
+        "F_justification": "Continuous electron/hole flow (drift + diffusion currents), high bandwidth (MHz-GHz)",
+        "It_score": {
+          "@value": "0.85",
+          "@type": "xsd:float"
+        },
+        "I_justification": "Current/voltage relationships encoded in Ebers-Moll equations, I_C = f(I_B, V_CE)",
+        "D_score": {
+          "@value": "0.8",
+          "@type": "xsd:float"
+        },
+        "D_justification": "Dynamic behavior: switching speed (ns-μs), frequency response (f_T cutoff), transient response",
+        "mean": 0.85
+      },
+      "m0:revoiScores": {
+        "R_score": {
+          "@value": "0.95",
+          "@type": "xsd:float"
+        },
+        "R_justification": "Excellent representability: standardized symbols, SPICE models, datasheets (β, V_BE, I_C)",
+        "E_score": {
+          "@value": "0.6",
+          "@type": "xsd:float"
+        },
+        "E_justification": "Limited evolvability: fixed β at manufacture, aging degrades parameters, no adaptation",
+        "V_score": {
+          "@value": "0.9",
+          "@type": "xsd:float"
+        },
+        "V_justification": "Highly verifiable: curve tracer measurements, I-V characteristics, β testing",
+        "O_score": {
+          "@value": "0.9",
+          "@type": "xsd:float"
+        },
+        "O_justification": "Observable via: oscilloscope (waveforms), multimeter (DC currents/voltages), thermal imaging (heat)",
+        "It_score": {
+          "@value": "0.95",
+          "@type": "xsd:float"
+        },
+        "I_justification": "Excellent interoperability: industry-standard pinouts (TO-92, SOT-23), TTL/CMOS compatible, universal circuit integration",
+        "mean": 0.86
+      },
       "m0:epistemicGap": 0.01,
       "m0:epistemicGap_comment": "Transistor physics is one of the most thoroughly understood domains in engineering. Ebers-Moll model provides complete analytical prediction. Minimal gap reflects 75+ years of semiconductor theory and industrial optimization.",
       "m0:processorAttributes": {
@@ -637,9 +734,8 @@
         "Sharp threshold despite continuous physics enables digital computing foundation",
         "Interoperability dimension justifies inclusion: standardization critical for transistor ubiquity (>10^21 manufactured)"
       ],
-      "m0:asfidMean": 0.85,
-      "m0:revoiMean": 0.86,
-      "m1:simulationTitle": "Transistor"
+      "m1core:simulationTitle": "Transistor",
+      "m0:focalApplicable": true
     }
   ],
   "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/transistor/M0_Transistor.jsonld"

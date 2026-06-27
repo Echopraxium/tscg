@@ -1,10 +1,10 @@
 # M2_GenericConcepts.jsonld
 
-**Version:** 16.14.0
+**Version:** 16.16.0
 **Layer:** M2
 **Type:** Generic Concepts Ontology
 **Created:** 2026-01-14
-**Last Modified:** 2026-06-23
+**Last Modified:** 2026-06-26
 **Author:** Echopraxium with the collaboration of Claude AI
 
 ---
@@ -84,10 +84,11 @@ Ss × F | K             =  Language      (Gs primitives Ss + K)
 A × S × F | _0         =  Balance       (DerivedGsElement _0)      ← v16.14.0
 A × F × D | _0         =  TriadicBalance (DerivedGsElement _0)     ← v16.14.0
 D × F × It | R + V + E =  Modelisation  (functionally stereopsic)  ← v16.14.0
+St × A × D | O + V     =  Constraint    (bicephalous)               ← v16.16.0
 ```
 
-**38 GenericConcepts** currently use `|` or a Gs primitive — including
-11 dual-polarity pairs and 2 ternary-polarity concepts (v16.14.0).
+**39 GenericConcepts** currently use `|` or a Gs primitive — including
+11 dual-polarity pairs and 2 ternary-polarity concepts (v16.16.0).
 
 ---
 
@@ -227,7 +228,7 @@ The 4 nominal Gs primitives (TKSL) each appear in M2 formulas as inter-grammar m
 | **T** | When? | Temporal interface Gt↔Gm | `F × T` (Gradient) |
 | **K** | What? | Cognitive contextualisation of It | `Ss × F \| K` (Language), `St × It × D \| K` (Agent), `St × It × A \| K` (Pattern), `F × It \| K` (Mediator), `Ss \| K` (Role) |
 | **Ss** | Sign? | Semiotic bridge signifier↔signified | `It × Ss` (Code), `It × Ss \| V` (Signature), `St × Ss` (Relation), `St × F \| Ss` (Channel) |
-| **L** | Converging? | Cybernetic convergence toward A | `St × It \| L` (Node/Component/Capacity), `St \| L` (Topology/Space/Constraint), `A × St × F \| L` (Homeostasis), `D × F \| L` (Bifurcation) |
+| **L** | Converging? | Cybernetic convergence toward A | `St × It \| L` (Node/Component/Capacity), `St \| L` (Topology/Space), `A × St × F \| L` (Homeostasis), `D × F \| L` (Bifurcation) |
 
 T supersedes the former approximation `F × D / I × D` for Gradient by isolating
 the temporal component precisely.
@@ -252,9 +253,9 @@ Both ASFID and REVOI have an "I" type — M2 distinguishes them explicitly:
 | Total atomic GenericConcepts | 82 |
 | GenericConcept combos | 4 |
 | GenericConcept families | 9 |
-| Bicephalous formulas (`\|`) | 38 |
+| Bicephalous formulas (`\|`) | 39 |
 | Gs primitives used | 6 + _0 (derived) |
-| `isStereopsic=true` | 38 GenericConcepts |
+| `isStereopsic=true` | 39 GenericConcepts |
 | Dual-polarity pairs (`[f\|_^, f\|_$]`) | 11 |
 | Ternary-polarity (`_^`, `_0`, `_$`) | 1 (TriadicBalance) |
 | M3 primitives available | 16 — Base16 (𝕋₀) |
@@ -354,8 +355,58 @@ via M3_GenesisGrammar — no direct import of M3_BicephalousPerspective needed.
 9. **1 functionally stereopsic** — Modelisation reifies Φ: Gt→Gm (v16.14.0)
 10. **_0 = _^ | _$** — DerivedGsElement, Base16 preserved (v16.14.0)
 11. **Triple Filter** guards M2 against Ontological Overfitting
+12. **Constraint revised** (v16.16.0) — `St × A × D | O + V` (bicephalous, 6 domains validated)
 
 **M2 is where TSCG's transdisciplinary power becomes explicit.** 🌟
+
+---
+
+---
+
+## 🆕 v16.16.0 — Constraint Formula Revision
+
+### m2:Constraint (REVISED)
+
+```
+Formula (old): St | L
+Formula (new): St × A × D | O + V
+perspective:   territory → bicephalous
+isStereopsic:  true (unchanged)
+eagleView:     St × A × D (IMMUTABLE)
+sphinxView:    O + V (VALIDATED)
+```
+
+**Rationale**: The canonical formula `St | L` captured structural fixity and
+convergence but missed three essential dimensions of Constraint:
+
+- **A (Attractor)** — a Constraint always has *directional pull*: toward an
+  objective to reach, or away from a boundary not to cross
+- **D (Dynamics)** — a Constraint expresses itself over time, guiding a
+  trajectory (not a static snapshot)
+- **O (Observability)** — a Constraint must be *identifiable* — one must
+  be able to detect that it is active
+- **V (Verifiability)** — a Constraint must be *testable* — one must be
+  able to verify whether it is respected or violated
+
+The new formula emerged from the NakamotoConsensus instance analysis
+(blockchain proof-of-work difficulty rule) and was validated against
+≥6 unrelated domains:
+
+| Domain | St | A | D | O | V |
+|--------|----|---|---|---|---|
+| Blockchain | Difficulty rule | Hash target | 2016-block adjustment | Mempool observable | Node-verifiable |
+| Law | Legal norm | Sanction/reward | Procedure | Applicable | Falsifiable |
+| Mechanics | Physical stop | Equilibrium point | Constrained trajectory | Measurable | Testable |
+| Optimization | Inequality | Feasible region | Gradient | Detectable | Verifiable |
+| Biology | Metabolic limit | Homeostasis target | Regulation | Observable | Measurable |
+| Music | Interval rule | Resolution | Melodic progression | Audible | Analyzable |
+
+**Distinct from:**
+- `m2:Homeostasis` (A×St×F|L) — actively *maintained* equilibrium via regulator;
+  Constraint defines the *rule*, not the maintaining process
+- `m2:Regulation` (A×S×F|R+V+E) — Regulation *enacts* the response to constraint;
+  Constraint defines the *boundary*
+- `m2:Threshold` (A×I) — a Threshold is a *point*; a Constraint is a *rule with trajectory*
 
 ---
 
@@ -363,9 +414,9 @@ via M3_GenesisGrammar — no direct import of M3_BicephalousPerspective needed.
 
 | Version | Date | Changes |
 |---|---|---|
+| **16.16.0** | 2026-06-26 | REVISION: m2:Constraint St\|L → St×A×D\|O+V (bicephalous, eagleView St×A×D + sphinxView O+V). isStereopsic unchanged (true). Stereotype count: 38→39. Six-domain validation: blockchain, law, mechanics, optimization, biology, music. |
+| **16.15.0** | 2026-06-26 | STATUS: sphinxView 'PROPOSITION' → 'VALIDATED' (36 nodes). ACRONYM: SFE → EFS (Epistemic Focal Score) in labels and comments. |
 | **16.14.0** | 2026-06-23 | REVISION: m2:Balance A×S×F → A×S×F\|_0 (isStereopsic=true). NEW: m2:Modelisation (D×F×It\|R+V+E, functionally stereopsic). NEW: m2:TriadicBalance (A×F×D\|_0, ternary polarity). DerivedGsElement _0=_^\|_$ introduced (M3_BicephalousPerspective v1.3.0). Anti-Ontological Overfitting Triple Filter documented. |
-| **16.13.0** | 2026-05-28 | CLEANUP: m2:hasStructuralGrammarFormulaRawText and m2:hasStructuralGrammarFormulaTeX removed (83+82 nodes). Standard formula notation is now the sole representation. |
-| **16.12.0** | 2026-05-28 | DUAL-POLARITY: 11 concepts updated. hasStructuralGrammarFormula → array [f\|_^, f\|_$]. 8 new stereopsic (Activation, Convergence, Coding, Fusion, Composition, Entropy, Synergy, Potentialization). isStereopsic total: 36. |
 
 ---
 

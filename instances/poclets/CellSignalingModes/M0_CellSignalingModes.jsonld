@@ -1,7 +1,8 @@
 {
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+    "sm": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/CellSignalingModes/M0_CellSignalingModes.jsonld#",
     "dcterms": "http://purl.org/dc/terms/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -10,16 +11,15 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m0:cell_signaling_modes": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/CellSignalingModes/M0_CellSignalingModes.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m0.cellSignalingModes": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/CellSignalingModes/M0_CellSignalingModes.jsonld#",
-    "m1.extensions.biology": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/biology/M1_Biology.jsonld#"
+    "m1.ext:biology": "M1_extensions/biology/M1_Biology.jsonld#"
   },
   "@graph": [
     {
       "@id": "m0:CellSignalingModes:CellSignalingModes",
       "@type": "owl:Ontology",
       "owl:imports": [
-        "M0_Common.jsonld",
         "M3_GenesisGrammar.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld",
@@ -32,7 +32,7 @@
       "rdfs:comment": "Fundamental biological system demonstrating BALANCE (Territory) between four modes of cellular communication: Autocrine, Paracrine, Neuroendocrine, and Endocrine. The system exhibits TRADE-OFFs (Map) between signal transmission speed and spatial range. Canonical pedagogical model in endocrinology and cell biology, analogous to Fire Triangle in combustion and Exposure Triangle in photography.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-20",
-      "owl:versionInfo": "1.1.0",
+      "owl:versionInfo": "1.1.1",
       "m1:domain": [
         "Endocrinology",
         "Cell Biology",
@@ -237,7 +237,34 @@
           }
         }
       },
-      "m0:epistemicGap": 0.3,
+      "m0:epistemicGap": {
+        "formula": "ΔΘ = ‖|Ω_signaling⟩ - |M_4modes⟩‖",
+        "deltaVector": "(-0.05, -0.10, +0.25, 0.00, +0.15)",
+        "norm": "≈ 0.30",
+        "interpretation": "Moderate gap (ΔΘ ≈ 0.3) - Four-modes model is good pedagogical simplification but omits complexity",
+        "assessment": "Model captures essential distance-dependent organization but simplifies molecular mechanisms and crosstalk",
+        "majorDivergences": [
+          {
+            "dimension": "F (Flow)",
+            "divergence": "+0.25",
+            "reason": "Territory has massive molecular flux (10¹² molecules/s, 5 L/min blood); Map is abstract categories"
+          },
+          {
+            "dimension": "D (Dynamics)",
+            "divergence": "+0.15",
+            "reason": "Territory has continuous temporal dynamics; Map is static classification"
+          }
+        ],
+        "limitations": [
+          "Omits hybrid modes (e.g., juxtacrine - membrane-bound signals)",
+          "Ignores crosstalk between modes (e.g., paracrine cytokines inducing endocrine cortisol)",
+          "Simplifies receptor diversity (hundreds of GPCRs, receptor tyrosine kinases, nuclear receptors)",
+          "Doesn't model signal integration (multiple hormones converging on same pathway)",
+          "Static - doesn't show temporal evolution (pulsatile secretion, circadian rhythms)",
+          "Omits negative/positive feedback complexity"
+        ],
+        "pedagogicalStrength": "Despite limitations, excellent teaching tool - simple, memorable, transdisciplinary"
+      },
       "m0:oriveAnalysis": {
         "description": "Sphinx Eye evaluation of Four-Modes Model quality",
         "perspective": "Philosophical interpretation using ORIVE basis",
@@ -652,7 +679,15 @@
         "m0:NeuroendocrineSignaling",
         "m0:EndocrineSignaling"
       ],
-      "dcterms:modified": "2026-04-20"
+      "dcterms:modified": "2026-04-20",
+      "m0:focalApplicable": true,
+      "m2:changelog": [
+        {
+          "version": "1.1.1",
+          "date": "2026-06-26",
+          "changes": "ACTION3: Added m0:focalApplicable=true."
+        }
+      ]
     },
     {
       "@id": "m0:AutocrineSignaling",

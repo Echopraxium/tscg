@@ -8,10 +8,49 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m0:exposure-triangle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/ExposureTriangle/M0_ExposureTriangle.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
-    "m0.exposureTriangle": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/ExposureTriangle/M0_ExposureTriangle.jsonld#"
+    "A_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreA",
+      "@type": "xsd:float"
+    },
+    "S_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreS",
+      "@type": "xsd:float"
+    },
+    "F_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreF",
+      "@type": "xsd:float"
+    },
+    "It_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIt",
+      "@type": "xsd:float"
+    },
+    "D_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreD",
+      "@type": "xsd:float"
+    },
+    "R_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreR",
+      "@type": "xsd:float"
+    },
+    "E_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreE",
+      "@type": "xsd:float"
+    },
+    "V_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreV",
+      "@type": "xsd:float"
+    },
+    "O_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreO",
+      "@type": "xsd:float"
+    },
+    "Im_score": {
+      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#scoreIm",
+      "@type": "xsd:float"
+    },
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"
   },
   "@graph": [
     {
@@ -24,7 +63,7 @@
       "rdfs:comment": "Fundamental photographic system demonstrating BALANCE (Territory) between three parameters: ISO, Aperture, Shutter Speed. Photographers make conscious TRADE-OFFs (Map) between competing image qualities: depth of field, motion blur, grain/noise. Canonical pedagogical model in photography, analogous to Fire Triangle in combustion.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-20",
-      "owl:versionInfo": "1.1.0",
+      "owl:versionInfo": "1.1.1",
       "m1:domain": [
         "Photography",
         "Optics",
@@ -304,7 +343,33 @@
           "center": "Balanced exposure state"
         }
       },
-      "m0:epistemicGap": 0.32,
+      "m0:epistemicGap": {
+        "formula": "ΔΘ = ‖|Ω_exposure⟩ - |M_triangle⟩‖",
+        "deltaVector": "(-0.05, -0.10, +0.25, +0.10, +0.10)",
+        "norm": "≈ 0.32",
+        "interpretation": "Moderate gap (ΔΘ ≈ 0.3) - Triangle is good pedagogical model but simplifies physics",
+        "assessment": "Triangle captures essential relationships but omits scene luminance, metering, optical physics",
+        "majorDivergences": [
+          {
+            "dimension": "F (Flow)",
+            "divergence": "+0.25",
+            "reason": "Territory has massive photon flux (10¹⁸ photons); Map is abstract diagram (no actual flow)"
+          },
+          {
+            "dimension": "S (Structure)",
+            "divergence": "-0.10",
+            "reason": "Territory has complex sensor/lens physics; Map is simplified triangle"
+          }
+        ],
+        "limitations": [
+          "Omits scene luminance (ambient light level)",
+          "Ignores metering systems (how camera measures light)",
+          "Simplifies optical physics (diffraction, lens aberrations)",
+          "Doesn't model reciprocity failure (film limitation)",
+          "Static model - doesn't show dynamic adjustment process"
+        ],
+        "pedagogicalStrength": "Despite limitations, Triangle is excellent teaching tool (like Fire Triangle for combustion)"
+      },
       "m0:revoiAnalysis": {
         "description": "Sphinx Eye evaluation of Exposure Triangle Map quality",
         "perspective": "Epistemological interpretation using REVOI basis (Representability, Evolvability, Verifiability, Observability, Interoperability)",
@@ -673,9 +738,14 @@
         "Langford, M. (2010). Langford's Basic Photography (9th ed.)",
         "ISO 12232:2019 (Photography - Digital still cameras - Determination of exposure index)"
       ],
-      "m1:simulationTitle": "Exposure Triangle",
-      "owl:imports": [
-        "M0_Common.jsonld"
+      "m1core:simulationTitle": "Exposure Triangle",
+      "m0:focalApplicable": true,
+      "m2:changelog": [
+        {
+          "version": "1.1.1",
+          "date": "2026-06-26",
+          "changes": "ACTION3: Added m0:focalApplicable=true."
+        }
       ]
     }
   ]
