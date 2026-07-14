@@ -21,8 +21,8 @@
       "dcterms:description": "Domain-specific instantiation of M2 GenericConcepts for chemistry. Defines chemical processes, reactions, substances, and transformations using TSCG M2 GenericConcepts as foundation.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-17",
-      "dcterms:modified": "2026-05-27",
-      "owl:versionInfo": "1.1.1",
+      "dcterms:modified": "2026-07-12",
+      "owl:versionInfo": "1.2.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -50,6 +50,11 @@
       ],
       "m2:changelog": [
         {
+          "version": "1.2.0",
+          "date": "2026-07-12",
+          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
+        },
+        {
           "version": "1.1.1",
           "date": "2026-05-27",
           "changes": "BASE16 NOTATION: 5 formula(s) updated — S→St in hybrid formulas (containing |). Convention: in hybrid formulas, St (Structure/Territory) to avoid collision with Ss (Symbol/Stereopsic/Gs)."
@@ -58,12 +63,6 @@
           "version": "1.1.0",
           "date": "2026-04-26",
           "description": "ENRICHMENT for Ptoe poclet: Added 8 atomic structure concepts (Element, ElectronConfiguration, NobleGas, OrbitalBlock, ChemicalFamily, AtomicProperty, OxidationState, QuantumNumbers). Extends M1_Chemistry scope from chemical reactions to atomic/periodic organization."
-        },
-        {
-          "p3_20260224": {
-            "date": "2026-02-24",
-            "description": "Phase 3 migration: (1) Non-standard @types converted to owl:Class. (2) rdfs:subClassOf m2:GenericConcept added to root concepts. (3) m2Basis fields unified → m2:characterizedBy. (4) Wrong IS-A to M2 classes moved to m2:characterizedBy. Renamed DomainConcept → KnowledgeFieldConcept throughout."
-          }
         }
       ]
     },
@@ -71,7 +70,7 @@
       "@id": "m1:extension:chemistry:ChemicalReaction",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Chemical Reaction",
       "skos:altLabel": [
@@ -124,7 +123,7 @@
         "CaCO1ƒ → CaO + CO2 (thermal decomposition)",
         "CH1„ + 2O1‚ → CO2 + 2H2O (methane combustion)"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Chemistry, A × St × F × It × D | V)",
       "m2:knowledgeField": {
         "@id": "m1:extension:chemistry:Chemistry"
@@ -134,9 +133,9 @@
       "@id": "m1:extension:chemistry:Combustion",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Combustion",
       "skos:altLabel": [
         "Burning",
@@ -329,9 +328,9 @@
       "@id": "m1:extension:chemistry:Oxidation",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Oxidation",
       "skos:altLabel": [
         "Electron Loss",
@@ -362,9 +361,9 @@
       "@id": "m1:extension:chemistry:Reduction",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Reduction",
       "skos:altLabel": [
         "Electron Gain",
@@ -391,7 +390,7 @@
       "@id": "m1:extension:chemistry:ChemicalSpecies",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Chemical Species",
       "skos:altLabel": [
@@ -425,7 +424,7 @@
         "NaCl (sodium chloride)",
         "H+ (proton)"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Chemistry, S × It)",
       "m2:knowledgeField": {
         "@id": "m1:extension:chemistry:Chemistry"
@@ -435,9 +434,9 @@
       "@id": "m1:extension:chemistry:Catalyst",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Catalyst",
       "rdfs:comment": "Chemical species that increases reaction rate without being consumed. Instantiates M2:Catalysis and M2:Mediator.",
       "m1:extension:chemistry:properties": {
@@ -459,7 +458,7 @@
       "@id": "m1:extension:chemistry:ReactionMechanism",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Reaction Mechanism",
       "rdfs:comment": "Step-by-step sequence of elementary reactions constituting overall chemical transformation.",
@@ -468,7 +467,7 @@
         "m1:extension:chemistry:intermediates": "Transient species formed and consumed",
         "m1:extension:chemistry:rateDeterminingStep": "Slowest step controlling overall rate"
       },
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Chemistry, A × F × D)",
       "m2:knowledgeField": {
         "@id": "m1:extension:chemistry:Chemistry"
@@ -478,9 +477,9 @@
       "@id": "m1:extension:chemistry:Element",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Chemical Element",
       "skos:altLabel": [
         "Atom",
@@ -502,7 +501,7 @@
       "@id": "m1:extension:chemistry:ElectronConfiguration",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Electron Configuration",
       "skos:altLabel": [
@@ -514,7 +513,7 @@
         "Ne: [He] 2s² 2p⁶",
         "Fe: [Ar] 3d⁶ 4s²"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Chemistry, St × It | V)",
       "m2:knowledgeField": {
         "@id": "m1:extension:chemistry:Chemistry"
@@ -524,9 +523,9 @@
       "@id": "m1:extension:chemistry:NobleGas",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Noble Gas",
       "skos:altLabel": [
         "Inert Gas",
@@ -551,7 +550,7 @@
       "@id": "m1:extension:chemistry:OrbitalBlock",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Orbital Block",
       "skos:altLabel": [
@@ -564,7 +563,7 @@
         "d-block (10)",
         "f-block (14)"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Chemistry, A × S × It × D)",
       "m2:knowledgeField": {
         "@id": "m1:extension:chemistry:Chemistry"
@@ -574,7 +573,7 @@
       "@id": "m1:extension:chemistry:ChemicalFamily",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Chemical Family",
       "skos:altLabel": [
@@ -587,7 +586,7 @@
         "Halogens (Group 17)",
         "Transition metals (Groups 3-12)"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Chemistry, A × S × F × It × D)",
       "m2:knowledgeField": {
         "@id": "m1:extension:chemistry:Chemistry"
@@ -597,7 +596,7 @@
       "@id": "m1:extension:chemistry:AtomicProperty",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Atomic Property",
       "rdfs:comment": "Measurable characteristic of elements: electronegativity, atomic radius, ionization energy, etc.",
@@ -607,7 +606,7 @@
         "Ionization energy (IE)",
         "Electron affinity (EA)"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Chemistry, F × It × D | V + O)",
       "m2:knowledgeField": {
         "@id": "m1:extension:chemistry:Chemistry"
@@ -617,7 +616,7 @@
       "@id": "m1:extension:chemistry:OxidationState",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Oxidation State",
       "skos:altLabel": [
@@ -630,7 +629,7 @@
         "Cl: -1",
         "O: -2"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Chemistry, A × It)",
       "m2:knowledgeField": {
         "@id": "m1:extension:chemistry:Chemistry"
@@ -640,7 +639,7 @@
       "@id": "m1:extension:chemistry:QuantumNumbers",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Quantum Numbers",
       "rdfs:comment": "Set of 4 numbers (n, l, m, s) fully specifying electron state in atom.",
@@ -650,7 +649,7 @@
         "m": "Magnetic (orbital: -l to +l)",
         "s": "Spin (±1/2)"
       },
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Chemistry, A × S × It × D)",
       "m2:knowledgeField": {
         "@id": "m1:extension:chemistry:Chemistry"

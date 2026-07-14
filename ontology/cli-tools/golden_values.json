@@ -1,0 +1,46 @@
+{
+  "_measured": "2026-07-13, real repository (E:\\...\\tscg), after SC-1",
+  "_note": "Reference values, TriskeleVM-style. 163 is GREEN. 162 is RED. 164 is RED. A count that DROPS is as suspicious as one that rises: either a deliberate fix (then --update-golden, and the drop is recorded) or a validator that stopped biting.",
+  "M3": {
+    "status": "NOT_INSTRUMENTED",
+    "note": "No M3 checker. M3_Schema.shacl.ttl exists (2026-07-03, CONFORMS:True, 13 shapes) but no runner wraps it. An un-instrumented layer is not a passing layer — it is an unmeasured one."
+  },
+  "M2": {
+    "status": "NOT_INSTRUMENTED",
+    "note": "No M2 checker. The tscg-generate-mn-grammars skill can produce the SHACL; no runner yet."
+  },
+  "M1": {
+    "status": "INSTRUMENTED",
+    "files": 16,
+    "errors": 163,
+    "warnings": 3,
+    "by_code": {
+      "DCC006": 127,
+      "DCC010": 18,
+      "EXP001": 12,
+      "GCC009": 4,
+      "DCC009": 1,
+      "DCC008": 1,
+      "CTX001": 3
+    },
+    "note": "This is the SC-6 BACKLOG, measured on the real repo (an earlier sandbox estimate of 126 was WRONG). Expected to be non-zero. Lower it ONLY by repairing formulas — never by loosening a shape.",
+    "breakdown": {
+      "DCC006": "monoidal operator inside a signature — the bulk of SC-6",
+      "DCC010": "Fm1m2's first argument is not a registered Domain. FOUR PHANTOM DOMAINS: 'Music' (registry says MusicTheory), 'SystemicModeling' (registry says SystemsTheory), 'EnergyGenerators' (absent), 'Cascade' (not a domain at all — that Fm1m2 is an Fm2).",
+      "EXP001": "retired m1:structuralGrammarFormulaExpanded (D8) — nothing to expand",
+      "GCC009/DCC009": "guards appended after the signature. SCALAR guards = M0 measurements leaking into M1 → delete. QUALITATIVE guards (trajectoryShape=Circular) = real semantics → DO NOT DELETE, pending D11/SC-3.",
+      "DCC008": "Amplifier: nested parentheses + `Ft`, which is not a TSCG primitive at all",
+      "CTX001": "3 WARNINGS (not errors): M1_Domains lacks the 'm2' key in its @context; M1_BusinessModeling lacks 'm3:eagle_eye' and 'm3:sphinx_eye'. Counted in `warnings: 3`, and therefore in by_code too — by_code counts ALL codes emitted, warnings included. Omitting them from the golden set made the gate fail on a reference that was itself incomplete."
+    }
+  },
+  "M0": {
+    "status": "INSTRUMENTED",
+    "note": "check_m0_instances.py runs; golden counts not yet captured. Run --update-golden once, REVIEW the numbers, then trust them."
+  },
+  "_known_pre_existing_not_counted_here": {
+    "SHACL_subClassOf_literal": "~500 SHACL violations: rdfs:subClassOf is serialised as a string literal, not an IRI. The 2026-07-03 handover already diagnosed the fix: ONE @context line per file — \"rdfs:subClassOf\":{\"@type\":\"@id\"}.",
+    "SHACL_phantom_knowledgeField": "m2:knowledgeField is a phantom property → SC-5 (Domain fusion).",
+    "SHAPE2_vs_SHAPE3": "sh:targetClass follows subclasses, so every extension combo is validated TWICE with mutually exclusive requirements. ~256 violations of pure noise → SC-5 must make SHAPE 2 exclude the subclass.",
+    "invalid_URI_warning": "'does not look like a valid URI' — @base resolves to a Windows path. Separate IRI bug."
+  }
+}

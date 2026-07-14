@@ -1,11 +1,21 @@
-# TSCG Instances - Complete Grammar SHACL Schema v1.5
+# TSCG Instances - Complete Grammar SHACL Schema v1.6
 # Author: Echopraxium with the collaboration of Claude AI
-# Date: 2026-06-19
+# Date: 2026-06-28
 # Status: ACTIVE
 #
 # ============================================
 # CHANGELOG
 # ============================================
+# v1.6 (2026-06-28): DEMOCRATIZATION FACET CONTRACT
+#   - NEW: m0:DemocratizationFacetContractShape — SPARQL constraint enforcing
+#     m0:illustratesConcept (minCount 1) when m0:hasFacet = m0:facet.Democratization
+#   - NEW: m0:ForbidStringHasFacetShape — m0:hasFacet must be IRI, never string
+#   - NEW: m0:RoleGroundingShape — validates m0:roleGrounding enum (Reused|Designed)
+#   - NEW: m0:ForbidStringRoleGroundingShape — m0:roleGrounding must be IRI
+#   - Infrastructure: m0:Facet class + m0:hasFacet + m0:facet.Democratization
+#     + m0:illustratesConcept + m0:RoleGrounding defined in M0_Common.jsonld v1.2.0
+#   - Facets are orthogonal to m3:ontologyType — applicable to all instance types
+#
 # v1.5 (2026-06-19): M0_Common.jsonld + ENUMERATION TYPES
 #   - BREAKING: m0: prefix updated from M0_Poclet# → M0_Common.jsonld# (canonical source of truth)
 #   - BREAKING: m0:spectralClass now owl:ObjectProperty — value MUST be sh:nodeKind sh:IRI
@@ -40,7 +50,7 @@
 #     - m0:focalApplicable (boolean, always)
 #     - m0:stereopsicDepth [0,1]
 #     - m0:focalBias [-1,1]  — signed: REVOI_mean - ASFID_mean
-#     - m0:focalScore [0,1]  — EFS = stereopsicDepth × (1 - |focalBias|)
+#     - m0:focalScore [0,1]  — SFE = stereopsicDepth × (1 - |focalBias|)
 #     - m0:focalClass enum (Emmetropic|SlightlyMyopic|SlightlyHyperopic|Myopic|Hyperopic|Astigmatic)
 #     - m0:stereopsicDepthProfile (object)
 #   - Updated corpus stats: 33 instances (26 poclets + 2 SF + 1 SSG + 3 TscgTools + 1 stub)
@@ -417,7 +427,7 @@ m0:TscgInstanceShape
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "m0:focalScore: Epistemic Focal Score (EFS) [0,1]. Formula: stereopsicDepth × (1 - |focalBias|). 1=Emmetropic (sharp combined image), 0=Astigmatic (no stereopsic depth) or strongly biased. Only present when m0:focalApplicable=true."
+    sh:message "m0:focalScore: Epistemic Focal Score (SFE) [0,1]. Formula: stereopsicDepth × (1 - |focalBias|). 1=Emmetropic (sharp combined image), 0=Astigmatic (no stereopsic depth) or strongly biased. Only present when m0:focalApplicable=true."
   ] ;
 
   sh:property [
@@ -433,7 +443,7 @@ m0:TscgInstanceShape
     ) ;
     sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "m0:focalClass MUST be an IRI from m0:FocalClass enumeration. Use: m0:focalClass.Emmetropic (EFS≥0.70), m0:focalClass.SlightlyMyopic/.SlightlyHyperopic (0.50≤EFS<0.70), m0:focalClass.Myopic/.Hyperopic (0.30≤EFS<0.50), m0:focalClass.Astigmatic (EFS<0.30). Only present when m0:focalApplicable=true. FORBIDDEN: bare string — use IRI with @id."
+    sh:message "m0:focalClass MUST be an IRI from m0:FocalClass enumeration. Use: m0:focalClass.Emmetropic (SFE≥0.70), m0:focalClass.SlightlyMyopic/.SlightlyHyperopic (0.50≤SFE<0.70), m0:focalClass.Myopic/.Hyperopic (0.30≤SFE<0.50), m0:focalClass.Astigmatic (SFE<0.30). Only present when m0:focalApplicable=true. FORBIDDEN: bare string — use IRI with @id."
   ] .
 
 # ============================================
@@ -596,6 +606,76 @@ m0:FocalScoreCoherenceShape
     """
   ] .
 
+# ============================================
+# DEMOCRATIZATION FACET CONTRACT (v1.6)
+# ============================================
+# When m0:hasFacet = m0:facet.Democratization, m0:illustratesConcept REQUIRED (minCount 1).
+# m0:roleGrounding OPTIONAL — must be a valid enum IRI when present.
+# Facet infrastructure defined in M0_Common.jsonld v1.2.0:
+#   m0:Facet (abstract class) + m0:hasFacet (ObjectProperty)
+#   m0:facet.Democratization (NamedIndividual, anchored on m2:Role Ss|K)
+#   m0:illustratesConcept (AnnotationProperty, required by contract)
+#   m0:RoleGrounding (enum class) + m0:roleGrounding (ObjectProperty)
+#   m0:roleGrounding.Reused | m0:roleGrounding.Designed
+
+m0:DemocratizationFacetContractShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "DEMOCRATIZATION FACET CONTRACT (v1.6): When m0:hasFacet includes m0:facet.Democratization, m0:illustratesConcept MUST be present (minCount 1). Declare which systemic concept(s) or principle(s) this instance illustrates for a novice audience. Accepted values: IRI of an m2:GenericConcept (e.g. m2:Balance) OR a descriptive string (e.g. 'ASFID completeness')." ;
+    sh:select """
+      PREFIX m0: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#>
+      SELECT $this
+      WHERE {
+        $this m0:hasFacet m0:facet.Democratization .
+        FILTER NOT EXISTS { $this m0:illustratesConcept ?concept }
+      }
+    """
+  ] .
+
+# FORBIDDEN: string value for m0:hasFacet
+m0:ForbidStringHasFacetShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:not [
+    sh:property [
+      sh:path m0:hasFacet ;
+      sh:datatype xsd:string ;
+      sh:minCount 1
+    ]
+  ] ;
+  sh:message "FORBIDDEN (v1.6): m0:hasFacet must be an IRI (e.g. {'@id': 'm0:facet.Democratization'}), NOT a string literal. Use @id notation." .
+
+# m0:roleGrounding enum validation
+m0:RoleGroundingShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:property [
+    sh:path m0:roleGrounding ;
+    sh:nodeKind sh:IRI ;
+    sh:in (
+      m0:roleGrounding.Reused
+      m0:roleGrounding.Designed
+    ) ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "m0:roleGrounding MUST be an IRI from m0:RoleGrounding enumeration: m0:roleGrounding.Reused (role externally conferred by pedagogical usage) or m0:roleGrounding.Designed (role teleologically intrinsic by conception). Only meaningful when m0:hasFacet includes m0:facet.Democratization. FORBIDDEN: bare string."
+  ] .
+
+# FORBIDDEN: string value for m0:roleGrounding
+m0:ForbidStringRoleGroundingShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:not [
+    sh:property [
+      sh:path m0:roleGrounding ;
+      sh:datatype xsd:string ;
+      sh:minCount 1
+    ]
+  ] ;
+  sh:message "FORBIDDEN (v1.6): m0:roleGrounding must be an IRI (e.g. {'@id': 'm0:roleGrounding.Reused'}), NOT a string literal. Use @id notation." .
+
 
 # ============================================
 # M0_Common.jsonld IMPORT CONSTRAINT (v1.5)
@@ -694,12 +774,12 @@ m0:ForbidStringFocalClassShape
 #   BMC: focalApplicable=true, focalScore≈0.716, focalClass=SlightlyHyperopic
 #
 # FocalClass IRI values (v1.5 — owl:NamedIndividual in M0_Common.jsonld):
-#   m0:focalClass.Emmetropic        EFS ≥ 0.70
-#   m0:focalClass.SlightlyMyopic    0.50 ≤ EFS < 0.70 AND focalBias < 0
-#   m0:focalClass.SlightlyHyperopic 0.50 ≤ EFS < 0.70 AND focalBias > 0
-#   m0:focalClass.Myopic            0.30 ≤ EFS < 0.50 AND focalBias < 0
-#   m0:focalClass.Hyperopic         0.30 ≤ EFS < 0.50 AND focalBias > 0
-#   m0:focalClass.Astigmatic        EFS < 0.30 (regardless of bias)
+#   m0:focalClass.Emmetropic        SFE ≥ 0.70
+#   m0:focalClass.SlightlyMyopic    0.50 ≤ SFE < 0.70 AND focalBias < 0
+#   m0:focalClass.SlightlyHyperopic 0.50 ≤ SFE < 0.70 AND focalBias > 0
+#   m0:focalClass.Myopic            0.30 ≤ SFE < 0.50 AND focalBias < 0
+#   m0:focalClass.Hyperopic         0.30 ≤ SFE < 0.50 AND focalBias > 0
+#   m0:focalClass.Astigmatic        SFE < 0.30 (regardless of bias)
 #
 # SpectralClass IRI values (v1.5 — owl:NamedIndividual in M0_Common.jsonld):
 #   m0:spectralClass.Coherent       δ₁ < 0.05

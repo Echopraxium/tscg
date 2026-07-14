@@ -21,7 +21,7 @@
       "dcterms:description": "Domain-specific patterns for optics, color theory, photography, and visual perception. M1 layer instantiates M2 GenericConcepts into concrete optical/photographic patterns.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-20",
-      "owl:versionInfo": "1.1.1",
+      "owl:versionInfo": "1.2.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -45,8 +45,13 @@
       },
       "m1:patternCount": 8,
       "rdfs:comment": "M1 layer bridges abstract M2 GenericConcepts to concrete M0 instances. Optics domain demonstrates color synthesis, exposure control, channel multiplexing, and perceptual scaling patterns.",
-      "dcterms:modified": "2026-05-27",
+      "dcterms:modified": "2026-07-12",
       "m2:changelog": [
+        {
+          "version": "1.2.0",
+          "date": "2026-07-12",
+          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
+        },
         {
           "version": "1.1.1",
           "date": "2026-05-27",
@@ -56,11 +61,6 @@
           "version": "1.1.0",
           "date": "2026-05-26",
           "changes": "Namespace migration: m1.ext:optics: → m1:extension:optics:. Fixed wrong filenames. ORIVE → REVOI. Fm1m2(Optics,...) formulas added. KFCC typing applied."
-        },
-        {
-          "version": "1.0.0",
-          "date": "2026-01-20",
-          "changes": "Initial release. 8 optics patterns: ColorSynthesis, ExposureControl, ChannelMultiplexing, PerceptualScaling, ColorSubtraction, ApertureControl, ShutterControl, ISOSensitivity."
         }
       ]
     },
@@ -68,7 +68,7 @@
       "@id": "m1:extension:optics:AdditiveColorSynthesis",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Additive Color Synthesis",
       "rdfs:comment": "Pattern where colored lights combine to produce resultant color. Adding all primaries Ã¢â€ â€™ white. Used in displays (RGB).",
@@ -97,7 +97,7 @@
       "m1:physicalBasis": "Electromagnetic waves superposition (constructive interference)",
       "m1:perceptualBasis": "Trichromatic vision (3 cone types in human retina)",
       "m1:validatedPoclets": 2,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Optics, A × St × F × It | R + O)",
       "m2:knowledgeField": {
         "@id": "m1:extension:optics:Optics"
@@ -107,7 +107,7 @@
       "@id": "m1:extension:optics:SubtractiveColorSynthesis",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Subtractive Color Synthesis",
       "rdfs:comment": "Pattern where pigments/filters absorb wavelengths from white light. Subtracting all primaries Ã¢â€ â€™ black. Used in printing (CMYK).",
@@ -138,7 +138,7 @@
       "m1:physicalBasis": "Selective absorption of wavelengths by molecular pigments",
       "m1:practicalChallenge": "Pigment impurity Ã¢â€ â€™ CMY mix doesn't yield true black",
       "m1:validatedPoclets": 2,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Optics, A × St × F × It | R + O)",
       "m2:knowledgeField": {
         "@id": "m1:extension:optics:Optics"
@@ -148,7 +148,7 @@
       "@id": "m1:extension:optics:CompensatoryTriplet",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Compensatory Triplet (Exposure Triangle)",
       "rdfs:comment": "Pattern where three parameters maintain constant output through reciprocal balance. Changing one requires adjusting others. Contrast with Synergistic Triplet (Fire Triangle).",
@@ -183,7 +183,7 @@
       "m1:M0_instance": "M0_ExposureTriangle_Photography.jsonld",
       "m1:REVOI": 0.89,
       "m1:validatedPoclets": 1,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Optics, A × St × It | R)",
       "m2:knowledgeField": {
         "@id": "m1:extension:optics:Optics"
@@ -193,7 +193,7 @@
       "@id": "m1:extension:optics:LogarithmicScaling",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Logarithmic Scaling Pattern (Photographic Stops)",
       "rdfs:comment": "Parameters scaled logarithmically (doubling/halving) to match human perception. Each 'stop' represents 2Ãƒâ€” change in physical quantity but equal perceptual step.",
@@ -225,7 +225,7 @@
       ],
       "m1:M0_instance": "M0_ExposureTriangle_Photography.jsonld",
       "m1:validatedPoclets": 1,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m2:knowledgeField": {
         "@id": "m1:extension:optics:Optics"
       },
@@ -235,7 +235,7 @@
       "@id": "m1:extension:optics:ChannelMultiplexing",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Channel Multiplexing (RGB/CMYK Channels)",
       "rdfs:comment": "Independent channels carry orthogonal information dimensions. Each channel isolates one component, filters content, has finite capacity.",
@@ -281,7 +281,7 @@
         "M0_RGB_Additive.jsonld",
         "M0_CMYK_Subtractive.jsonld"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Optics, St × F × It | Im)",
       "m2:knowledgeField": {
         "@id": "m1:extension:optics:Optics"
@@ -291,7 +291,7 @@
       "@id": "m1:extension:optics:SideEffectCoupling",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Side Effect Coupling (Photography)",
       "rdfs:comment": "Primary parameter function coupled with unintended secondary effects. Mastery = using side effects creatively.",
@@ -327,7 +327,7 @@
       "m1:mastery": "Expert photographers use side effects as creative tools, not obstacles",
       "m1:M0_instance": "M0_ExposureTriangle_Photography.jsonld",
       "m1:validatedPoclets": 1,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m2:knowledgeField": {
         "@id": "m1:extension:optics:Optics"
       },
@@ -337,7 +337,7 @@
       "@id": "m1:extension:optics:ColorSpaceTransformation",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Color Space Transformation",
       "rdfs:comment": "Invertible mapping between different color representations preserving perceived color. Different spaces optimize for different purposes.",
@@ -367,7 +367,7 @@
       "m1:purposeDriven": "No 'best' color space - depends on application (display, print, editing)",
       "m1:M0_instance": "M0_ColorSynthesis_Federated.jsonld",
       "m1:validatedPoclets": 1,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m2:knowledgeField": {
         "@id": "m1:extension:optics:Optics"
       },
@@ -377,7 +377,7 @@
       "@id": "m1:MapTerritory_Optics",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Map-Territory Distinction (Optics)",
       "rdfs:comment": "One Territory (perceived color) Ã¢â€ â€™ Multiple Maps (RGB, HSL, CMY, CMYK). Maps differ in REVOI quality despite representing same Territory.",
@@ -420,7 +420,7 @@
       "m1:epistemicGap": "ÃŽâ€ÃŽËœ = Ã¢â‚¬â€“Territory_ASFID - Map_REVOIÃ¢â‚¬â€“ quantifies model limitation",
       "m1:M0_instance": "M0_ColorSynthesis_Federated.jsonld",
       "m1:validatedPoclets": 1,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m2:knowledgeField": {
         "@id": "m1:extension:optics:Optics"
       },
@@ -430,7 +430,7 @@
       "@id": "m1:extension:optics:PerceptualNonlinearity",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Perceptual Non-linearity (Gamma Correction)",
       "rdfs:comment": "Human perception is non-linear in light intensity. Displays/encodings apply gamma to match perception.",
@@ -448,7 +448,7 @@
       "m1:purpose": "More encoding bits for shadows (perceptually sensitive) vs highlights",
       "m1:M0_relevance": "RGB, HSL models use gamma-corrected values, not linear light",
       "m1:validatedPoclets": 0,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m2:knowledgeField": {
         "@id": "m1:extension:optics:Optics"
       },

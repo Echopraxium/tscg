@@ -23,12 +23,17 @@
       "dcterms:description": "Extension of TSCG framework with music-specific concepts including polyphony, counterpoint, fugue structure, harmonic relationships, and voice independence. Primary focus on counterpoint as a system of constrained autonomous agents producing emergent coherence.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-03-20",
-      "owl:versionInfo": "1.0.0",
-      "dcterms:modified": "2026-03-20",
+      "owl:versionInfo": "1.1.0",
+      "dcterms:modified": "2026-07-12",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m2:changelog": [
+        {
+          "version": "1.1.0",
+          "date": "2026-07-12",
+          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
+        },
         {
           "version": "1.0.0",
           "date": "2026-03-20",
@@ -56,9 +61,9 @@
       "@id": "m1:extension:music:Polyphony",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Polyphony",
       "rdfs:comment": "Musical texture in which multiple independent melodic voices sound simultaneously. Each voice maintains its own identity while contributing to a collective harmonic whole. The defining structural property of counterpoint.",
       "m1:structuralGrammarFormula": "Fm1m2(Music, S × F × It)",
@@ -102,9 +107,9 @@
       "@id": "m1:extension:music:MusicalMotif",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Musical Motif",
       "rdfs:comment": "Minimal melodic or rhythmic unit that carries recognizable identity and can be propagated, transformed, or developed across voices and time. The atomic unit of musical information.",
       "m1:structuralGrammarFormula": "Fm1m2(Music, It × S)",
@@ -204,9 +209,9 @@
       "@id": "m1:extension:music:Imitation",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Imitation",
       "rdfs:comment": "Contrapuntal technique in which a melodic idea presented in one voice is immediately repeated in another voice, while the first continues. Unlike Canon, imitation need not be strict or perpetual. The foundational mechanism of all imitative polyphony.",
       "m1:structuralGrammarFormula": "Fm1m2(Music, I × F)",
@@ -220,9 +225,9 @@
       "@id": "m1:extension:music:Consonance",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Consonance",
       "rdfs:comment": "Harmonic state of stability and resolution between simultaneously sounding pitches. Consonant intervals are perceived as restful and require no resolution. In tonal counterpoint, consonances define the attractor states of harmonic motion.",
       "m1:structuralGrammarFormula": "Fm1m2(Music, A × S)",
@@ -244,9 +249,9 @@
       "@id": "m1:extension:music:Dissonance",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Dissonance",
       "rdfs:comment": "Harmonic state of tension between simultaneously sounding pitches. Dissonant intervals are perceived as unstable and require resolution toward consonance. In counterpoint, dissonances are the dynamic engine — they generate motion by demanding resolution.",
       "m1:structuralGrammarFormula": "Fm1m2(Music, D × A)",
@@ -269,9 +274,9 @@
       "@id": "m1:extension:music:HarmonicResolution",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Harmonic Resolution",
       "rdfs:comment": "The movement from a dissonant interval to a consonant one. Resolution is the fundamental dynamic cycle of tonal music: tension → release. It is the attractor mechanism that gives counterpoint its sense of directed motion.",
       "m1:structuralGrammarFormula": "Fm1m2(Music, D × A × F)",
@@ -285,9 +290,9 @@
       "@id": "m1:extension:music:CounterpointRule",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Counterpoint Rule",
       "rdfs:comment": "A normative constraint governing simultaneous motion between voices. Counterpoint rules collectively define the 'grammar' of polyphonic composition: what is permitted, what is forbidden, and what must eventually occur. In TSCG Enigma terms, the set of Counterpoint Rules is the mandatory ternary Mediator between Voice Autonomy and Harmonic Coherence.",
       "m1:structuralGrammarFormula": "Fm1m2(Music, S × It × D)",
@@ -330,9 +335,9 @@
       "@id": "m1:extension:music:GroundBass",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Ground Bass",
       "rdfs:comment": "A repeating bass line (ostinato) over which upper voices develop freely. Creates a structural attractor in the lowest register while allowing emergent variation above. Found in Baroque and in jazz as the 'changes' or harmonic grid.",
       "m1:structuralGrammarFormula": "Fm1m2(Music, A × S × F)",

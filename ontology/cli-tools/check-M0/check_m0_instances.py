@@ -54,36 +54,38 @@ from datetime import datetime
 # CONFIGURATION
 # ============================================================================
 
-REPO_ROOT      = Path("E:/_00_Michel/_00_Lab/_00_GitHub/tscg")
-INSTANCES_ROOT = REPO_ROOT / "instances"
-ONTOLOGY_DIR   = REPO_ROOT / "ontology"
-SCRIPT_DIR     = Path(__file__).parent.resolve()
+# Paths are resolved by tscg_paths (see ontology/cli-tools/tscg_paths.py).
+# The former hardcoded REPO_ROOT = Path("E:/_00_Michel/...") is gone: the repo
+# root is now discovered by walking UP from this file until a directory holding
+# both ontology/ and instances/ is found. The script is therefore relocatable and
+# machine-independent. Override with the TSCG_REPO_ROOT env var if ever needed.
+# --- bootstrap: tscg_paths lives one level up, in ontology/cli-tools/ ----------
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent.parent))
+# ------------------------------------------------------------------------------
+from tscg_paths import (                      # noqa: E402
+    REPO_ROOT, ONTOLOGY_DIR, INSTANCES_ROOT, CLI_TOOLS_DIR,
+    BASE_ONTOLOGY, BASE_INSTANCES, INSTANCE_DIRS, find_schema, verify_layout,
+)
 
-def _find_shacl():
-    for candidate in [
-        SCRIPT_DIR / "M0_Instances_Schema_shacl_v1.5.ttl",
-        SCRIPT_DIR / "M0_Instances_Schema_shacl.ttl",
-        SCRIPT_DIR / "M0_Instances_Schema.shacl.ttl",
-        ONTOLOGY_DIR / "M0_Instances_Schema_shacl.ttl",
-        ONTOLOGY_DIR / "M0_Instances_Schema.shacl.ttl",
-    ]:
-        if candidate.exists():
-            return candidate
-    return None
+SCRIPT_DIR = CLI_TOOLS_DIR
 
-DEFAULT_SHACL = _find_shacl()
+DEFAULT_SHACL = find_schema(
+    "M0_Instances_Schema_shacl_v1.5.ttl",
+    "M0_Instances_Schema_shacl.ttl",
+    "M0_Instances_Schema.shacl.ttl",
+    script_dir=_Path(__file__).parent,
+)
 
-BASE_ONTOLOGY  = "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"
-BASE_INSTANCES = "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/"
-M0_COMMON_URL  = BASE_ONTOLOGY + "M0_Common.jsonld#"
+M0_COMMON_URL = BASE_ONTOLOGY + "M0_Common.jsonld#"
 
-INSTANCE_DIRS = {
-    "poclet":            (INSTANCES_ROOT / "poclets",                  "m3:Poclet"),
-    "systemic_framework":(INSTANCES_ROOT / "systemic-frameworks",      "m3:SystemicFramework"),
-    "symbolic_grammar":  (INSTANCES_ROOT / "symbolic-system-grammar", "m3:SymbolicSystemGrammar"),
-    "tscg_tool":         (INSTANCES_ROOT / "tscg-tools",               "m3:TscgTool"),
-    "transdisclet":      (INSTANCES_ROOT / "transdisclet",             "m3:TransDisclet"),
-}
+# NOTE: INSTANCE_DIRS now lives in tscg_paths. It also fixes a SILENT BUG: this
+# script used to look for "symbolic-system-grammar" (SINGULAR) while the real
+# directory is "symbolic-system-grammars" (PLURAL). discover_instances() skips a
+# non-existent base_dir without a word, so the whole SymbolicSystemGrammar
+# category — Iching, TriskeleToolchain — was never checked. verify_layout() now
+# reports any missing compartment instead of swallowing it.
 
 OBSOLETE_ALIASES = {
     "A_score","S_score","F_score","It_score","D_score",
@@ -522,7 +524,7 @@ def write_json_report(reports, path):
 # ============================================================================
 
 def main():
-    parser = argparse.ArgumentParser(description="TSCG M0 Instance Checker v1.5.1")
+    parser = argparse.ArgumentParser(description="TSCG M0 Instance Checker v1.6.0")
     parser.add_argument("--instance",    metavar="NAME")
     parser.add_argument("--verbose",     action="store_true")
     parser.add_argument("--scores",      action="store_true")

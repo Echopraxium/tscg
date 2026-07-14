@@ -1,8 +1,8 @@
 # M1_CoreConcepts.jsonld — README
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 2.6.0
-**Date**: 2026-06-23
+**Version**: 2.7.0
+**Date**: 2026-07-12
 **Layer**: M1 — Domain-Neutral Core Concepts
 **Status**: Active
 
@@ -381,7 +381,7 @@ Fm2(C1, C2, ...)    all parents are M2 atomic concepts
                      → @type: GenericConceptCombo
 
 Fm1m2(C1, C2, ...)  at least one parent is an M1 combo
-                     → @type: KnowledgeFieldConceptCombo
+                     → @type: DomainConceptCombo
 ```
 
 **Fm2 combos (10):** Cascade, Oscillator, Processor, LALI, ButterflyEffect,
@@ -407,13 +407,54 @@ m1:CascadeAmplification  =  Fm1m2(Cascade, Amplification) | gain_per_stage > 1
 
 ---
 
+
+## 🧩 The Functional Grammar — combos are function signatures (SC-1, 2026-07-12)
+
+```
+Fm2   : GenericConcept²⁺            ->  m2:GenericConceptCombo   (>= 2 concepts)
+Fm1m2 : Domain+ , GenericConcept+   ->  m2:DomainConceptCombo    (>= 1 Domain AND >= 1 concept)
+```
+
+- **Atoms** carry a **monoidal formula** (`x`, `+`, `|`). **Combos** carry a **function signature**.
+  A combo has **NO monoidal formula and NO monoidal expansion**: `Fm2`/`Fm1m2` are **functions,
+  not functors** — emergence is *non-compositional* (the arguments are **combined, not associated**),
+  and a functor must *preserve* composition. `m1:structuralGrammarFormulaExpanded` is therefore
+  **retired** (D8): there was never anything to expand.
+- **Arguments are NAMED CONCEPTS** from `M2_GenericConcepts.jsonld` or `M1_CoreConcepts.jsonld` —
+  never primitives, never a monoidal expression, **comma-juxtaposed**, never joined by an operator.
+- **`Fm1` does not exist.** Multi-domain conjunction = juxtaposed domain arguments.
+
+### ⚠️ What distinguishes `Fm1m2` from `Fm2` (correction of a propagated error)
+
+**`Fm1m2` is NOT "the function that crosses the M1/M2 boundary."** That reading was graved in
+`M3_GrammarFoundation` (`Fm1m2 : T1(M1) x T1(M2)^n -> T1`) and applied faithfully in v1.4.0 of this
+file, which "corrected" `Propagation` and `CascadeAmplification` from `Fm2` to `Fm1m2` *"because the
+parent m1:Cascade is M1, not an M2 atomic"*. **That correction was itself the error.**
+
+What distinguishes `Fm1m2` is **DOMAIN QUALIFICATION** — nothing else. An `Fm2` argument may
+legitimately be a named concept from `M1_CoreConcepts`, so "crossing M1/M2" distinguishes nothing.
+
+```
+BAD   Fm1m2(Cascade, Duplication, Network)      no Domain -> this is an Fm2
+BAD   Fm1m2(Optics, A x St x F x It | R + O)    monoidal expression as argument
+BAD   Fm1m2(Cascade, Amplification) | gain > 1  scalar guard -> an M0 measurement leaking into M1
+GOOD  Fm2(Cascade, Duplication, Network)        >= 2 named concepts (Cascade is M1_Core: legal)
+GOOD  Fm1m2(Optics, Refraction)                 >= 1 Domain + >= 1 named concept
+```
+
+These are **flagged by the SHACL (v1.1.0), not repaired here** — repair belongs to **SC-6**.
+
+Full rationale: `StructuralGrammar/Functional_Grammar_Model.md`.
+
+---
+
 ## Changelog
 
 | Version | Date | Changes |
 |---|---|---|
+| **2.7.0** | 2026-07-12 | SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): `m2:KnowledgeFieldConceptCombo` → `m2:DomainConceptCombo`, **re-defined** by its `Fm1m2` formula (hybrid ≥1 Domain + ≥1 GenericConcept — domain qualification, NOT parent provenance). ⚠️ The v1.4.0 "CORRECTION" (Propagation/CascadeAmplification `Fm2`→`Fm1m2` *"because parent m1:Cascade is M1"*) **is itself erroneous** and traces back to a wrong `Fm1m2` definition in M3_GrammarFoundation (now fixed, v2.4.0). `Fm2` arguments may legitimately come from M1_CoreConcepts. Flagged by SHACL v1.1.0, **repair = SC-6**. Also retired: `m1:structuralGrammarFormulaExpanded` (no monoidal expansion) and the scalar guards. |
 | **2.6.0** | 2026-06-23 | NEW: m1:ConstraintBalance — instance of m2:TriadicBalance. Triadic pattern: UnderConstrained/BalancedConstraint/OverConstrained. Core instance of Ontological Overfitting anti-pattern. Validated ≥6 domains. |
 | **2.5.0** | 2026-06-23 | MIGRATION: m2:TopologicalDefect → M1_CoreConcepts (too specialized for M2 purity). NEW: m1:Permeability = Fm2(Channel, Interface, Gradient) — dynamic boundary flux property, ≥7 domains. |
-| **2.4.1** | 2026-05-27 | BASE16: formula notation updated (Fm2/Fm1m2 use M2 concept names). README: type system updated to 16 primitives, TKSL reference. |
 
 ---
 

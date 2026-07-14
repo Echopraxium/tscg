@@ -4,8 +4,8 @@
 # Covers: M1_CoreConcepts.jsonld + all M1 Extension files
 # ============================================================================
 # Author : Echopraxium with the collaboration of Claude AI
-# Version: 1.0.0
-# Date   : 2026-05-26
+# Version: 1.1.0
+# Date   : 2026-07-12
 # Status : Active
 # ============================================================================
 
@@ -168,31 +168,34 @@ m1:GenericConceptComboShape
 
 
 # ============================================================================
-# SHAPE 3 : KnowledgeFieldConceptCombo (M1 Extensions)
-# Pattern: ["owl:Class", "m2:KnowledgeFieldConceptCombo"]
-# Formula: Fm1m2(<Domain>, ...)
+# SHAPE 3 : DomainConceptCombo (M1 Extensions)          [renamed v1.1.0 — SC-1]
+# Pattern: ["owl:Class", "m2:DomainConceptCombo"]
+# Formula: Fm1m2(<Domain>+, <GenericConcept>+)
+# NOTE: the m2:knowledgeField requirement below is a KNOWN PHANTOM (SC-5 fixes it,
+#       replacing it with m2:appliesToDomains). Left untouched on purpose: SC-1
+#       renames the combo class only and does not resolve the Domain duplicate.
 # ============================================================================
 
-m1:KnowledgeFieldConceptComboShape
+m1:DomainConceptComboShape
     a sh:NodeShape ;
-    sh:name "KnowledgeFieldConceptComboShape" ;
-    sh:description "Validates KnowledgeFieldConceptCombo instances in M1 extension files." ;
-    sh:targetClass m2:KnowledgeFieldConceptCombo ;
+    sh:name "DomainConceptComboShape" ;
+    sh:description "Validates DomainConceptCombo instances in M1 extension files." ;
+    sh:targetClass m2:DomainConceptCombo ;
 
     # --- Must also be typed as owl:Class ---
     sh:property [
         sh:path rdf:type ;
         sh:hasValue owl:Class ;
         sh:minCount 1 ;
-        sh:message "REQUIRED: KnowledgeFieldConceptCombo must also be typed as owl:Class."
+        sh:message "REQUIRED: DomainConceptCombo must also be typed as owl:Class."
     ] ;
 
     # --- rdfs:subClassOf → m2:KnowledgeFieldConceptCombo (OWL hierarchy) ---
     sh:property [
         sh:path rdfs:subClassOf ;
-        sh:hasValue m2:KnowledgeFieldConceptCombo ;
+        sh:hasValue m2:DomainConceptCombo ;
         sh:minCount 1 ;
-        sh:message "REQUIRED: rdfs:subClassOf must point to m2:KnowledgeFieldConceptCombo for OWL hierarchy visibility."
+        sh:message "REQUIRED: rdfs:subClassOf must point to m2:DomainConceptCombo for OWL hierarchy visibility."
     ] ;
 
     # --- m2:knowledgeField mandatory ---
@@ -216,7 +219,7 @@ m1:KnowledgeFieldConceptComboShape
         sh:datatype xsd:string ;
         sh:minCount 1 ; sh:maxCount 1 ;
         sh:pattern "^Fm1m2\\(" ;
-        sh:message "REQUIRED: m1:structuralGrammarFormula must use Fm1m2(<Domain>, ...) notation for KnowledgeFieldConceptCombos."
+        sh:message "REQUIRED: m1:structuralGrammarFormula must use Fm1m2(<Domain>, ...) notation for DomainConceptCombos."
     ] ;
 
     # --- FORBIDDEN: ⊗ in formulas ---
@@ -419,5 +422,84 @@ m1:CorePatternShape
         sh:datatype xsd:string ;
         sh:minCount 0 ;
         sh:message "OPTIONAL: CorePattern may have a raw structural formula (× / + / | notation)."
+    ] ;
+.
+
+# ============================================================================
+# SHAPE 9 : ComboFormulaShape  — A COMBO'S FORMULA *IS* A FUNCTION SIGNATURE
+# ----------------------------------------------------------------------------
+# SC-1, 2026-07-12. See StructuralGrammar/Functional_Grammar_Model.md.
+#
+#   Fm2   : GenericConcept²⁺           -> m2:GenericConceptCombo
+#   Fm1m2 : Domain⁺, GenericConcept⁺   -> m2:DomainConceptCombo
+#
+# Fm2/Fm1m2 are FUNCTIONS, not functors: emergence is non-compositional, so a
+# combo has NO monoidal expansion. Its formula is the signature — nothing else.
+# Arguments are NAMED CONCEPTS, juxtaposed by comma, never joined by an operator.
+# ============================================================================
+
+m1:ComboFormulaShape
+    a sh:NodeShape ;
+    sh:name "ComboFormulaShape" ;
+    sh:description "A combo's structuralGrammarFormula is a function signature: no monoidal operator, no primitive as argument, correct arity." ;
+    sh:targetClass m2:GenericConceptCombo ;   # inherited by m2:DomainConceptCombo
+
+    # --- FORBIDDEN: monoidal operators inside a signature -------------------
+    # x / + / | belong to ATOM formulas only. In a signature they would assert
+    # the compositional (functorial) reading that SC-1 retires.
+    sh:property [
+        sh:path m1:structuralGrammarFormula ;
+        sh:not [ sh:pattern "[×+|⊗]" ] ;
+        sh:severity sh:Violation ;
+        sh:message "FORBIDDEN (SC-1): monoidal operator (× / + / | / ⊗) inside a combo formula. A combo's formula IS a function signature — arguments are juxtaposed by comma, never joined by a grammar operator. Monoidal formulas belong to ATOMS only."
+    ] ;
+
+    # --- FORBIDDEN: a bare primitive type as an argument ---------------------
+    # ASFID {A,S,F,I,D} + REVOI {R,E,V,O,Im} + TKSL {T,K,Ss,L} + subscripted
+    # {St,It,Ss,Im}. A primitive is a generative DIMENSION of a grammar, not a
+    # GenericConcept, hence not a legal argument.
+    sh:property [
+        sh:path m1:structuralGrammarFormula ;
+        sh:not [ sh:pattern "[(,][ ]*(A|S|F|I|D|R|E|V|O|T|K|L|St|Ss|It|Im)[ ]*[,)]" ] ;
+        sh:severity sh:Violation ;
+        sh:message "FORBIDDEN (SC-1): primitive type used as an argument of Fm2/Fm1m2. Arguments must be NAMED CONCEPTS declared in M2_GenericConcepts.jsonld or M1_CoreConcepts.jsonld."
+    ] ;
+
+    # --- REQUIRED: a well-formed signature, correct arity (D5) ---------------
+    # Fm2   : >= 2 concept arguments  -> at least one comma
+    # Fm1m2 : >= 1 domain AND >= 1 concept -> at least one comma
+    # (A domain-less Fm1m2 is an Fm2 that mislabelled itself.)
+    sh:property [
+        sh:path m1:structuralGrammarFormula ;
+        sh:pattern "^(Fm2|Fm1m2)\\([^,()]+,[^()]+\\)$" ;
+        sh:severity sh:Violation ;
+        sh:message "REQUIRED (SC-1): formula must be a well-formed signature Fm2(a, b, ...) or Fm1m2(Domain, a, ...) with at least two arguments. Fm2 needs >= 2 concepts (an emergence needs two ingredients); Fm1m2 needs >= 1 Domain AND >= 1 GenericConcept."
+    ] ;
+.
+
+
+# ============================================================================
+# SHAPE 10 : NoMonoidalExpansionShape  — m1:structuralGrammarFormulaExpanded
+# ----------------------------------------------------------------------------
+# SC-1 / Decision D8, 2026-07-12.
+# This property stored the "expansion" of a combo as a monoidal formula, e.g.
+# "S × I × A × D × F" — i.e. lattice_join(dims(parents)), the union of the
+# parents' dimensions. That is precisely the COMPOSITIONAL thesis SC-1 retires
+# (with m2:morphism_emergence, from which it descends). If emergence is
+# non-compositional, there is nothing to expand: the property has no referent,
+# which is why half its occurrences are empty strings.
+# ============================================================================
+
+m1:NoMonoidalExpansionShape
+    a sh:NodeShape ;
+    sh:name "NoMonoidalExpansionShape" ;
+    sh:description "A combo has no monoidal expansion (emergence is non-compositional)." ;
+    sh:targetClass m2:GenericConceptCombo ;
+
+    sh:property [
+        sh:path m1:structuralGrammarFormulaExpanded ;
+        sh:maxCount 0 ;
+        sh:severity sh:Violation ;
+        sh:message "FORBIDDEN (SC-1/D8): m1:structuralGrammarFormulaExpanded is retired. A combo has NO monoidal expansion — the arguments are combined, not associated. Superseded by the function signature carried by m1:structuralGrammarFormula."
     ] ;
 .

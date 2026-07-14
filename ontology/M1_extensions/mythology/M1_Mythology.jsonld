@@ -21,8 +21,8 @@
       "dcterms:description": "Domain-specific M1 ontology for mythology, cosmology, and spiritual systems. Defines transdisciplinary patterns (Deity, MythicalCreature, Trickster, Gatekeeper) and mythology-specific concepts reusable across cultures (Norse, Greek, Egyptian, Hindu, etc.). Extends M1_CoreConcepts with domain-bounded but cross-cultural mythology patterns.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-04",
-      "dcterms:modified": "2026-05-27",
-      "owl:versionInfo": "1.1.1",
+      "dcterms:modified": "2026-07-12",
+      "owl:versionInfo": "1.2.0",
       "owl:imports": [
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld"
@@ -74,20 +74,14 @@
         "poclets": 1,
         "note": "M1_Mythology v1.0 validated through M0_Yggdrasil poclet"
       },
-      "m1:changelog": {
-        "v1.0.0": {
-          "date": "2026-02-04",
-          "changes": [
-            "INITIAL RELEASE: M1_Mythology domain extension",
-            "ENTITY TYPES: 6 core classes (Deity, MythicalCreature, PrimordialBeing, CosmicForce, MythicalArtifact, MythicalPlace)",
-            "DEITY: 5 sub-types (Supreme, Major, Minor, Chthonian, Deified)",
-            "CREATURE: 8 sub-types (Dragon, Serpent, Wolf, Hybrid, Giant, Bird, Messenger, Guardian)",
-            "PATTERNS: 2 validated (Trickster, Gatekeeper)",
-            "VALIDATION: M0_Yggdrasil poclet (Norse mythology)",
-            "FOUNDATION: Ready for extension to Greek, Egyptian, Hindu mythologies"
-          ]
-        }
-      },
+      "m1:changelog": [
+        {
+          "version": "1.2.0",
+          "date": "2026-07-12",
+          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
+        },
+        "v1.0.0"
+      ],
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -100,7 +94,7 @@
         {
           "version": "1.1.0",
           "date": "2026-05-26",
-          "changes": "Namespace migration: m1.ext:mythology: → m1:extension:mythology:. Added Fm1m2(Mythology,...) formulas to all 22 concepts. KnowledgeFieldConceptCombo typing added. m2:characterizedBy removed."
+          "changes": "Namespace migration: m1.ext:mythology: → m1:extension:mythology:. Added Fm1m2(Mythology,...) formulas to all 22 concepts. DomainConceptCombo typing added. m2:characterizedBy removed."
         },
         {
           "version": "1.0.0",
@@ -113,11 +107,11 @@
       "@id": "m1:extension:mythology:MythologicalEntity",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Mythological Entity",
       "rdfs:comment": "Root abstract class for all entities appearing in mythological systems. Encompasses deities, creatures, artifacts, places, and abstract forces. All instances instantiate one or more M2 GenericConcepts (typically Agent, Identity, Role) and have cultural origin, symbolic meaning, and appear in documented myths.",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:properties": [
         "m1:hasCulturalOrigin - Which mythology (Norse, Greek, etc.)",
         "m1:hasSymbolicRole - What it represents symbolically",
@@ -134,11 +128,11 @@
       "@id": "m1:extension:mythology:Deity",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Deity (God/Goddess)",
       "rdfs:comment": "Agent with supernatural powers, persistent identity, and cosmic role. Transcends mortal limits but remains subject to cosmic laws (fate, cycles, apocalypse). Instantiates Agent (autonomy), Identity (persistence), and Role (function). Distinguished from MythicalCreature by: worship potential, cosmic governance role, immortality (typically), and higher agency.",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:formula": "Agent + Identity + Role + SupernaturalPower",
       "m1:characteristicProperties": {
         "immortality": "Typically immortal or very long-lived (temporal transcendence)",
@@ -215,11 +209,11 @@
       "@id": "m1:extension:mythology:MythicalCreature",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Mythical Creature",
       "rdfs:comment": "Non-human being with extraordinary properties (unique morphology, supernatural powers, symbolic role). Distinguished from deities by: not worshiped, often mortal or limited, specific function rather than cosmic governance. Instantiates Entity (if passive) or Agent (if autonomous) plus Identity (unique morphology).",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:formula": "Entity + Identity + ExtraordinaryProperty",
       "m1:characteristicProperties": {
         "extraordinaryMorphology": "Unique/impossible form (8 legs, giant serpent, dragon)",
@@ -296,11 +290,11 @@
       "@id": "m1:extension:mythology:Messenger",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Messenger Creature",
       "rdfs:comment": "Entity specializing in information transport between realms/entities. Examples: Ratatosk (squirrel), Hermes in animal form, Sleipnir.",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, F × It × A | Im)",
       "m2:knowledgeField": {
         "@id": "m1:extension:mythology:Mythology"
@@ -310,11 +304,11 @@
       "@id": "m1:extension:mythology:Guardian",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Guardian Creature",
       "rdfs:comment": "Entity protecting boundary, treasure, or sacred place. Examples: Cerberus (Hades gate), Sphinx (riddle guardian), Fu Dogs.",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × St × D | V)",
       "m2:knowledgeField": {
         "@id": "m1:extension:mythology:Mythology"
@@ -324,11 +318,11 @@
       "@id": "m1:extension:mythology:PrimordialBeing",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Primordial Being",
       "rdfs:comment": "Ancient entity predating current cosmic order. Neither fully deity nor creature - exists in liminal category. Often giants or titans. Examples: Jotunn (Norse), Titans (Greek), Asuras (Hindu). Some worshiped (Mimir), most not.",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "skos:note": "Borderline cases between Deity and Creature. Often adversaries of gods but possess god-like attributes.",
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × S × D)",
       "m2:knowledgeField": {
@@ -339,11 +333,11 @@
       "@id": "m1:extension:mythology:CosmicForce",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Cosmic Force",
       "rdfs:comment": "Impersonal principle or abstract entity governing cosmic function. Not individual agents but forces/concepts. Examples: Nornes (Fate weavers), Moirai (Greek Fates), Karma (Hindu principle), Wyrd (Fate itself).",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "skos:note": "Often personified but fundamentally impersonal. Operate mechanically rather than through personal will.",
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × F × D)",
       "m2:knowledgeField": {
@@ -354,11 +348,11 @@
       "@id": "m1:extension:mythology:MythicalArtifact",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Mythical Artifact",
       "rdfs:comment": "Object with supernatural properties and persistent identity. Often divine weapons, tools, or cosmic structures. Instantiates Identity (persistence) and may have Power. Examples: Mjolnir, Gungnir, Excalibur, Vajra.",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, St × It | R)",
       "m2:knowledgeField": {
         "@id": "m1:extension:mythology:Mythology"
@@ -368,11 +362,11 @@
       "@id": "m1:extension:mythology:MythicalPlace",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Mythical Place",
       "rdfs:comment": "Location with cosmic significance. Underworlds, paradises, sacred sites, wells. Examples: Valhalla, Hades, Elysium, Urdarbrunnr, Mount Meru.",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × St × It | R)",
       "m2:knowledgeField": {
         "@id": "m1:extension:mythology:Mythology"
@@ -382,7 +376,7 @@
       "@id": "m1:extension:mythology:Trickster",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Trickster Archetype",
       "rdfs:comment": "Agent specialized in manipulating Representation (perception, truth, identity) rather than direct Territory transformation. Uses deception, shapeshifting, and illusion to achieve goals. Boundary-crossing figure operating between categories (realms, species, genders, moral alignments). Embodies necessary chaos testing and strengthening system through violation.",
@@ -464,7 +458,7 @@
       ],
       "dcterms:created": "2026-02-04",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × St × F × It × D | R + V)",
       "m2:knowledgeField": {
         "@id": "m1:extension:mythology:Mythology"
@@ -474,7 +468,7 @@
       "@id": "m1:extension:mythology:Gatekeeper",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Gatekeeper Archetype",
       "rdfs:comment": "Agent implementing Constrained Interface at critical system boundary. Enables legitimate passage while blocking threats. Combines Interface (connection) with Constraint (selectivity) through active Agent enforcement. Not passive barrier nor neutral mediator - intelligent selective gateway.",
@@ -560,7 +554,7 @@
       ],
       "dcterms:created": "2026-02-04",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × St × It | V)",
       "m2:knowledgeField": {
         "@id": "m1:extension:mythology:Mythology"

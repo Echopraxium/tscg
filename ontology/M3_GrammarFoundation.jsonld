@@ -14,9 +14,9 @@
     {
       "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.2.0",
+      "owl:versionInfo": "2.4.0",
       "dcterms:created": "2026-05-12",
-      "dcterms:modified": "2026-05-27",
+      "dcterms:modified": "2026-07-12",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Grammar Foundation",
       "dcterms:description": "Apex ontology of the TSCG hierarchy — no imports, no dependencies. Defines the Lambek Calculus mathematical foundation (free commutative monoidal categories), the six indexed operators (×, +, |), abstract classes M3Grammar and MonoidalType, the TSCG type system hierarchy (𝕋₀→𝕄₀), and the intersubjective benchmark properties. Imported by M3_EagleEye, M3_SphinxEye, and M3_GenesisGrammar.",
@@ -53,6 +53,16 @@
         "see_also": "ontology/StructuralGrammar/TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md"
       },
       "m2:changelog": [
+        {
+          "version": "2.4.0",
+          "date": "2026-07-12",
+          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL — M3 correction. ⚠ Fm2 and Fm1m2 were declared MORPHISMS ('Fm2 is a morphism, not a monoidal operator'); they are FUNCTIONS. A morphism/functor must preserve composition; emergence is non-compositional (arguments are COMBINED, not associated). Φ and Ψ remain genuine morphisms — the family is now split, not purged. ⚠ Fm1m2 was defined as 'Fm1m2 : 𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁, crosses the M1/M2 boundary'. THIS WAS THE ROOT ERROR: it propagated into M1_CoreConcepts v1.4.0, which 'corrected' Propagation/CascadeAmplification Fm2→Fm1m2 'because parent m1:Cascade is M1, not M2 atomic'. Fm1m2 is distinguished by DOMAIN QUALIFICATION, not by crossing a layer boundary; an Fm2 argument may legitimately come from M1_CoreConcepts. Corrected signatures: Fm2 : GenericConcept²⁺ → GenericConceptCombo; Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo. The × separating the signature slots is also removed (× is reserved to the Gt monoid and is never overloaded). RENAME: m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. See StructuralGrammar/Functional_Grammar_Model.md."
+        },
+        {
+          "version": "2.3.0",
+          "date": "2026-07-12",
+          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:DomainConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
+        },
         {
           "version": "2.2.0",
           "date": "2026-05-27",
@@ -131,22 +141,27 @@
           }
         }
       },
-      "m2_morphisms": {
-        "description": "Composition morphisms at M2/M1 level — distinct from monoidal operators.",
+      "m2_functions_and_morphisms": {
+        "note": "Φ and Ψ are MORPHISMS (structure-preserving maps between grammars — they compose). Fm2 and Fm1m2 are FUNCTIONS, NOT morphisms and NOT functors: their essence is combination with emergence, which is non-compositional, whereas a morphism/functor must preserve composition. The two families are kept separate on purpose. See StructuralGrammar/Functional_Grammar_Model.md.",
+        "description": "Combination FUNCTIONS at M2/M1 level (Fm2, Fm1m2) alongside the genuine inter-grammar MORPHISMS (Φ, Ψ). Distinct from the monoidal operators ×/+/|, which act at 𝕋₀ on atoms. Fm2/Fm1m2 are functions, not morphisms: emergence is non-compositional.",
         "Fm2": {
-          "signature": "Fm2 : 𝕋₁(M2)ⁿ → 𝕋₁(M2)",
+          "signature": "Fm2 : GenericConcept²⁺ → GenericConceptCombo",
           "description": "GenericConcept composition. Replaces former ⊗⇒ notation.",
           "example_1": "Fm2(Memory, Entropy) = Inertia",
           "example_2": "Fm2(Incoherence, Invariant) = TopologicalDefect",
-          "example_3": "Fm2(Process, Step, Trajectory) = PipelineProcess"
+          "example_3": "Fm2(Process, Step, Trajectory) = PipelineProcess",
+          "kind": "function (not a morphism, not a functor) — emergence is non-compositional",
+          "arity": "≥ 2 named concepts (M2_GenericConcepts or M1_CoreConcepts). Never primitives. Never joined by ×/+/|."
         },
         "Fm1m2": {
-          "signature": "Fm1m2 : 𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁",
+          "signature": "Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo",
           "description": "KnowledgeField + GenericConcept composition.",
           "example_1": "Fm1m2(Biology, Process) = BiologicalProcess",
-          "example_2": "Fm1m2(Physics, Coherence) = LaserCoherence"
+          "example_2": "Fm1m2(Physics, Coherence) = LaserCoherence",
+          "kind": "function (not a morphism, not a functor) — emergence is non-compositional",
+          "arity": "≥ 1 Domain AND ≥ 1 named concept. Domain QUALIFICATION is what distinguishes Fm1m2 from Fm2 — NOT 'crossing the M1/M2 boundary' (an Fm2 argument may itself come from M1_CoreConcepts)."
         },
-        "family": "Φ (Gt→Gm), Ψ (Gm→Gt), Fm2 (𝕋₁ composition), Fm1m2 (M1/M2 composition)"
+        "family": "MORPHISMS: Φ (Gt→Gm), Ψ (Gm→Gt) — structure-preserving, they compose. FUNCTIONS: Fm2, Fm1m2 — emergence, non-compositional, they do NOT compose."
       }
     },
     {
@@ -154,7 +169,7 @@
       "@type": "owl:Class",
       "rdfs:label": "M3 Grammar (Abstract)",
       "rdfs:comment": "Abstract base class for M3-level structural grammars. Concrete subclasses: TerritoryGrammar (Gt, ASFID primitives) and MapGrammar (Gm, REVOI primitives).",
-      "skos:definition": "A free commutative monoidal grammar over a finite set of primitive types. Characterized by: primitives (generators), monoidal operator (× for Gt, + for Gm, | for Gs), composition morphism (Fm2), and pole primitives (_^ / _$)."
+      "skos:definition": "A free commutative monoidal grammar over a finite set of primitive types. Characterized by: primitives (generators), monoidal operator (× for Gt, + for Gm, | for Gs), combination function (Fm2 — emergence, non-compositional), and pole primitives (_^ / _$)."
     },
     {
       "@id": "m3:grammar_foundation:MonoidalType_base",
@@ -255,8 +270,7 @@
             "stereopsis": "𝕋₀(|) Gs — 6 primitives: T (Temporality), _^ (PositivePole), _$ (NegativePole), K (Knowledge), Ss (Symbol/Stereopsic), L (Localizability)  [TKSL + poles]"
           },
           "notation_convention": "In hybrid formulas (containing |), Territory and Map types carry their monoid index: It (Information/Territory), St (Structure/Territory), O (Observability/Map). Pure intra-monoid formulas (A×S×F) and ASFID/REVOI scoring terminology are unaffected."
-        }
-        ,
+        },
         "T1": {
           "label": "Derived Types (Named Product Types)",
           "notation": "𝕋₁ = { τ₁ OP τ₂ OP ... OP τₙ  |  τᵢ ∈ 𝕋₀,  OP ∈ {×, +, |} }",
@@ -273,7 +287,7 @@
           "notation": "𝕋₂ = compositions of 𝕋₁ expressions via ×, +, |",
           "layer": "M1",
           "role": "M1 GenericConceptCombos — emergent compound concepts",
-          "description": "Higher-order types — complex compositions of 𝕋₁. Emergence operators (Fm2) were defined here but removed (no corpus usage). Composition of GenericConcepts is now expressed via Fm2 and Fm1m2 morphisms."
+          "description": "Higher-order types — complex compositions of 𝕋₁. Emergence operators (Fm2) were defined here but removed (no corpus usage). Composition of GenericConcepts is now expressed via the Fm2 and Fm1m2 FUNCTIONS (not morphisms — emergence is non-compositional)."
         },
         "M0": {
           "label": "Terms (Proof Terms)",
@@ -373,36 +387,38 @@
     {
       "@id": "m3:grammar_foundation:Fm2",
       "@type": "owl:DatatypeProperty",
-      "rdfs:label": "Fm2 — GenericConcept Composition",
-      "rdfs:comment": "Composition morphism for GenericConcepts (M2 level). Fm2 : 𝕋₁(M2)ⁿ → 𝕋₁(M2) — produces a new GenericConcept not reducible to simple juxtaposition of its arguments. Replaces former ⊗⇒ notation (which incorrectly suggested a monoidal operator). Fm2 is a morphism, not a monoidal operator — it operates at 𝕋₁ level, not 𝕋₀.",
+      "rdfs:label": "Fm2 — GenericConcept Combination (function)",
+      "rdfs:comment": "Producing FUNCTION for GenericConceptCombos. Fm2 : GenericConcept²⁺ → GenericConceptCombo. Fm2 is NOT a morphism and NOT a functor: its essence is combination with EMERGENCE, which is non-compositional, while a morphism/functor must preserve composition. (The word 'functor' stays reserved for M0 dimension evaluation F_x : System → Score.) Consequently a combo has NO monoidal expansion: its formula IS this signature. Arguments are ≥2 NAMED CONCEPTS declared in M2_GenericConcepts.jsonld or M1_CoreConcepts.jsonld — never primitive types, never a monoidal expression, juxtaposed by comma and never joined by a grammar operator (×, +, |). Supersedes the retired ⊗⇒ notation.",
       "skos:example": "Fm2(Memory, Entropy) = Inertia  |  Fm2(Incoherence, Invariant) = TopologicalDefect  |  Fm2(Process, Step, Trajectory) = PipelineProcess",
-      "m3:grammar_foundation:signature": "Fm2 : 𝕋₁(M2)ⁿ → 𝕋₁(M2)",
+      "m3:grammar_foundation:signature": "Fm2 : GenericConcept²⁺ → GenericConceptCombo",
       "m3:grammar_foundation:operatesAt": "𝕋₁ (GenericConcept level — not 𝕋₀ primitive level)",
-      "m3:grammar_foundation:morphismFamily": "Φ (Gt→Gm), Ψ (Gm→Gt), Fm2 (M2 composition), Fm1m2 (M1/M2 composition)",
       "rdfs:domain": {
         "@id": "m3:MonoidalType"
       },
       "rdfs:range": {
         "@id": "xsd:string"
       },
-      "dcterms:created": "2026-05-20"
+      "dcterms:created": "2026-05-20",
+      "m3:grammar_foundation:kind": "function",
+      "m3:grammar_foundation:functionFamily": "MORPHISMS: Φ (Gt→Gm), Ψ (Gm→Gt) — structure-preserving, they compose. FUNCTIONS: Fm2, Fm1m2 — emergence, non-compositional, they do NOT compose."
     },
     {
       "@id": "m3:grammar_foundation:Fm1m2",
       "@type": "owl:DatatypeProperty",
-      "rdfs:label": "Fm1m2 — KnowledgeField + GenericConcept Composition",
-      "rdfs:comment": "Composition morphism combining a KnowledgeField (M1) with one or more GenericConcepts (M2). Fm1m2 : 𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁ — produces a KnowledgeFieldConceptCombo. Crosses the M1/M2 boundary — analogous to | crossing the Gt/Gm boundary. Replaces former ⊗⇒ notation at M1 level.",
+      "rdfs:label": "Fm1m2 — Domain + GenericConcept Combination (function)",
+      "rdfs:comment": "Producing FUNCTION for DomainConceptCombos. Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo. A HYBRID of at least one Domain and at least one GenericConcept. ⚠ CORRECTION (SC-1, 2026-07-12): Fm1m2 does NOT mean 'the function that crosses the M1/M2 boundary'. That earlier reading was wrong and propagated into the corpus (e.g. Fm1m2(Cascade, Duplication, Network), which has no Domain and is really an Fm2). What distinguishes Fm1m2 from Fm2 is DOMAIN QUALIFICATION — nothing else. An Fm2 argument may legitimately be a named concept from M1_CoreConcepts, so 'crossing M1/M2' distinguishes nothing. Both slots are non-empty; the Domain × Concept hybridisation IS the emergence, so one concept argument suffices. Multi-domain conjunction is carried by juxtaposed domain arguments — Fm1m2(Biology, Chemistry, Catalysis); there is no Fm1 and no reification of composite domains. Fm1m2 is NOT a morphism and NOT a functor (emergence is non-compositional). Supersedes the retired ⊗⇒ notation.",
       "skos:example": "Fm1m2(Biology, Process) = BiologicalProcess  |  Fm1m2(Physics, Coherence) = LaserCoherence  |  Fm1m2(Education, Memory, Structure) = CurriculumDesign",
-      "m3:grammar_foundation:signature": "Fm1m2 : 𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁",
+      "m3:grammar_foundation:signature": "Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo",
       "m3:grammar_foundation:operatesAt": "M1/M2 boundary — domain-specific instantiation of generic patterns",
-      "m3:grammar_foundation:morphismFamily": "Φ (Gt→Gm), Ψ (Gm→Gt), Fm2 (M2 composition), Fm1m2 (M1/M2 composition)",
       "rdfs:domain": {
         "@id": "m3:MonoidalType"
       },
       "rdfs:range": {
         "@id": "xsd:string"
       },
-      "dcterms:created": "2026-05-20"
+      "dcterms:created": "2026-05-20",
+      "m3:grammar_foundation:kind": "function",
+      "m3:grammar_foundation:functionFamily": "MORPHISMS: Φ (Gt→Gm), Ψ (Gm→Gt) — structure-preserving, they compose. FUNCTIONS: Fm2, Fm1m2 — emergence, non-compositional, they do NOT compose."
     },
     {
       "@id": "m3:grammar_foundation:SpecialElements",

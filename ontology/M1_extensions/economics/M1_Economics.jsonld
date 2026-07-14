@@ -24,12 +24,17 @@
       "dcterms:description": "Extension of the TSCG framework with economics-specific concepts. Covers the Kindleberger-Minsky speculative cycle (Displacement → Boom → Euphoria → Distress → Revulsion), credit dynamics, leverage, financial contagion, narrative economics, and systemic risk. First TSCG domain extension in the Finance / Economics field.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-28",
-      "dcterms:modified": "2026-05-27",
-      "owl:versionInfo": "1.0.1",
+      "dcterms:modified": "2026-07-12",
+      "owl:versionInfo": "1.1.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m2:changelog": [
+        {
+          "version": "1.1.0",
+          "date": "2026-07-12",
+          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
+        },
         {
           "version": "1.0.1",
           "date": "2026-05-27",
@@ -92,9 +97,9 @@
       "@id": "m1:extension:economics:ExogenousShock",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Exogenous Shock",
       "rdfs:comment": "An external event that displaces an economic system from its previous equilibrium by creating new information or changing the opportunity structure. The trigger of the Kindleberger-Minsky Displacement phase. Exogenous shocks are not predictable from within the system (they are outside its model boundary). The shock must be significant enough to alter profit expectations for a large class of assets or agents.",
       "m1:structuralGrammarFormula": "Fm1m2(Economics, It × D)",
@@ -125,9 +130,9 @@
       "@id": "m1:extension:economics:CreditExpansion",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Credit Expansion",
       "rdfs:comment": "Rapid growth in the volume of credit available to economic agents, typically driven by low interest rates, financial innovation, or reduced lending standards. The primary fuel of the Kindleberger-Minsky Boom phase. Credit expansion enables leverage (amplification of both returns and losses). Minsky's key observation: credit expansion is self-validating during the Boom — rising asset prices confirm the wisdom of lending, encouraging further credit creation.",
       "m1:structuralGrammarFormula": "Fm1m2(Economics, F × D × A)",
@@ -158,9 +163,9 @@
       "@id": "m1:extension:economics:LeverageCycle",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Leverage Cycle",
       "rdfs:comment": "The pro-cyclical dynamic by which leverage ratios expand during asset price booms and contract violently during busts, amplifying both the upswing and the crash. Formalized by John Geanakoplos (2010). Leverage is the ratio of asset value to equity: a 10:1 leveraged position loses all equity on a 10% price decline. The leverage cycle is the primary mechanism connecting Boom (leverage expansion) to Revulsion (forced deleveraging cascade).",
       "m1:structuralGrammarFormula": "Fm1m2(Economics, F × D × A)",
@@ -189,9 +194,9 @@
       "@id": "m1:extension:economics:MarketSentiment",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Market Sentiment",
       "rdfs:comment": "The aggregate psychological disposition of market participants toward an asset class or market, ranging from extreme fear to extreme greed. Market sentiment is the primary carrier of m2:Narration in financial markets: it encodes the collective belief network and is both transmitted (Propagation) and transformed (Narration) across the Kindleberger-Minsky phases. Shiller (2019) demonstrates that sentiment narratives are causal — not merely epiphenomenal — in driving market prices.",
       "m1:structuralGrammarFormula": "Fm1m2(Economics, St × It × D × F × A | V + R + Im)",
@@ -220,9 +225,9 @@
       "@id": "m1:extension:economics:SpeculativePremium",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Speculative Premium",
       "rdfs:comment": "The excess of market price over fundamental value, attributable to expectations of future price appreciation rather than underlying cash flows. The speculative premium is zero at equilibrium, grows monotonically during Boom and Euphoria, and collapses to zero (or below) during Revulsion. Formally: SpeculativePremium = MarketPrice - FundamentalValue. Keynes 'beauty contest' dynamic: investors buy what others will buy, independent of fundamentals.",
       "m1:structuralGrammarFormula": "Fm1m2(Economics, A × It × D)",
@@ -249,9 +254,9 @@
       "@id": "m1:extension:economics:FundamentalValue",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Fundamental Value",
       "rdfs:comment": "The intrinsic value of an asset derived from its expected future cash flows, discounted at an appropriate risk-adjusted rate. Fundamental value serves as the 'true attractor' of asset prices in the long run — the reference point from which SpeculativePremium is measured. During Euphoria, market price diverges maximally from FundamentalValue. During Revulsion, prices may undershoot FundamentalValue (overshoot to the downside).",
       "m1:structuralGrammarFormula": "Fm1m2(Economics, A × It)",
@@ -271,9 +276,9 @@
       "@id": "m1:extension:economics:AssetBubble",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Asset Bubble",
       "rdfs:comment": "A sustained, self-reinforcing deviation of asset prices above fundamental value, driven by speculative demand and credit expansion, that eventually collapses. An AssetBubble is the macroscopic, system-level manifestation of the Kindleberger-Minsky Boom + Euphoria phases. It is an emergent property irreducible to any single market participant. The bubble is only definitively identified after its collapse — a fundamental observability limitation (V=0.75 in the REVOI analysis).",
       "m1:structuralGrammarFormula": "Fm1m2(Economics, A × S × F × D)",
@@ -298,9 +303,9 @@
       "@id": "m1:extension:economics:InformationAsymmetry",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Information Asymmetry",
       "rdfs:comment": "A condition in which different market participants have access to different information about asset values, risks, or the state of the system. Information asymmetry is a structural feature of financial markets and is maximal during Displacement (insiders know, majority does not) and Distress (banks know their own exposure, counterparties do not). George Akerlof (1970 Nobel) demonstrated that information asymmetry can cause market failure ('lemons problem').",
       "m1:structuralGrammarFormula": "Fm1m2(Economics, It × S × A)",
@@ -320,9 +325,9 @@
       "@id": "m1:extension:economics:MinskyCrisis",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Minsky Crisis",
       "rdfs:comment": "The critical phase transition (Minsky Moment) in which the financial system bifurcates from speculative equilibrium to crash dynamics. Characterized by: (1) a triggering default or forced liquidation event, (2) a rapid and self-reinforcing panic propagation through the interbank network, (3) qualitative change in market regime from optimism to fear. The Minsky Moment is the financial equivalent of a phase transition in physics — a system-wide state change at a critical threshold.",
       "m1:structuralGrammarFormula": "Fm1m2(Economics, It × D × A)",
@@ -352,9 +357,9 @@
       "@id": "m1:extension:economics:SystemicRisk",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Systemic Risk",
       "rdfs:comment": "The risk of collapse of an entire financial system or market, rather than failure of individual components — an emergent property of network interconnectedness and correlated exposures. Systemic risk is irreducible to the sum of individual institution risks. It arises from: (1) network contagion (m2:Propagation), (2) common asset exposures (correlated failures), (3) pro-cyclical leverage (m1:extension:economics:LeverageCycle), (4) liquidity spirals (fire-sales depressing collateral values). Post-2008 regulation attempts to internalize systemic risk (Basel III, Dodd-Frank, G-SIB surcharges).",
       "m1:structuralGrammarFormula": "Fm1m2(Economics, St × It × A × D × F | V + Im)",
@@ -380,9 +385,9 @@
       "@id": "m1:extension:economics:CreditCrunch",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Credit Crunch",
       "rdfs:comment": "A sudden and severe reduction in the availability of credit, typically triggered by lender panic, rising counterparty risk, or regulatory capital constraints. The credit crunch is the financial market manifestation of m2:Propagation in the Revulsion phase: panic about creditworthiness spreads through the interbank network (Im = interbank exposure), causing credit availability to collapse even for creditworthy borrowers (V drops: panic fidelity degrades — legitimate borrowers confused with defaulters).",
       "m1:structuralGrammarFormula": "Fm1m2(Economics, F × D | Im)",
@@ -409,9 +414,9 @@
       "@id": "m1:extension:economics:DebtDeflation",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Debt Deflation",
       "rdfs:comment": "A self-reinforcing economic contraction in which falling asset prices increase the real burden of debt, leading to further defaults, more asset sales, further price falls, and deeper contraction. Formalized by Irving Fisher (1933) as the mechanism explaining the Great Depression's severity. Debt deflation is the Revulsion phase's primary amplification dynamic: it transforms a financial crisis into a prolonged economic depression. Fisher's 'paradox': the more debtors pay, the more they owe in real terms (if prices fall faster than debt is repaid).",
       "m1:structuralGrammarFormula": "Fm1m2(Economics, F × D × A)",
@@ -440,9 +445,9 @@
       "@id": "m1:extension:economics:FinancialContagion",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Financial Contagion",
       "rdfs:comment": "The cross-institutional or cross-market spread of financial distress, panic, or default risk through a financial network. FinancialContagion is the M1 Economics instantiation of m2:Propagation: panic spreads from one node (bank, market, country) to others through bilateral exposures (Im), with the panic signal maintaining fidelity (V) as it propagates. Distinguished from Debt Deflation (m1:extension:economics:DebtDeflation): contagion is the network-level spread mechanism; debt deflation is the macroeconomic amplification. Both co-occur during Revulsion.",
       "m1:structuralGrammarFormula": "Fm1m2(Economics, St × It × A × D × F | V + Im)",
@@ -475,9 +480,9 @@
       "@id": "m1:extension:economics:ProfitOpportunity",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Profit Opportunity",
       "rdfs:comment": "A new or underexploited configuration of assets, markets, or technologies that offers expected returns above the risk-adjusted equilibrium rate. The attractor that activates the Displacement phase: the profit opportunity is the information content (I) of the exogenous shock that sets the Kindleberger-Minsky cycle in motion. Early movers capture the genuine economic value; late movers arrive when the speculative premium has already incorporated most of the value (and more).",
       "m1:structuralGrammarFormula": "Fm1m2(Economics, A × It × D)",

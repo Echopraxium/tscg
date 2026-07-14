@@ -20,8 +20,8 @@
       "dcterms:description": "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-06-23",
-      "owl:versionInfo": "2.6.1",
+      "dcterms:modified": "2026-07-12",
+      "owl:versionInfo": "2.7.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -228,7 +228,7 @@
           "changes": [
             "REMOVED: m1:core:TransdisciplinaryCombo class (redundant with m2:GenericConceptCombo defined in M2)",
             "FIXED: all 9 combo instances now typed as ['owl:Class', 'm2:GenericConceptCombo']",
-            "ARCHITECTURE: M2 defines GenericConceptCombo + KnowledgeFieldConceptCombo; M1 hosts instances"
+            "ARCHITECTURE: M2 defines GenericConceptCombo + DomainConceptCombo; M1 hosts instances"
           ]
         },
         "v2.0.0": {
@@ -245,19 +245,19 @@
       },
       "m2:changelog": [
         {
+          "version": "2.7.0",
+          "date": "2026-07-12",
+          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo (4 occurrences: Propagation, CascadeAmplification). The class is also RE-DEFINED: a DomainConceptCombo is now defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept. Domain qualification, NOT parent provenance, is the membership criterion. ⚠ CONSEQUENCE — the v1.4.0 'CORRECTION' below is itself ERRONEOUS: reclassifying Propagation and CascadeAmplification Fm2→Fm1m2 'because parent m1:Cascade is M1, not M2 atomic' rests on a misreading of Fm1m2 (it is NOT 'the function for M1 arguments'; it is 'the function with a Domain argument'). Fm2 arguments may legitimately be named concepts from M2_GenericConcepts OR M1_CoreConcepts, so m1:Cascade is a legal Fm2 argument. Fm1m2(Cascade, Duplication, Network) has no Domain and is therefore an Fm2. FLAGGED, NOT FIXED HERE — repair belongs to SC-6. Also flagged by the new SHACL (v1.1.0): m1:structuralGrammarFormulaExpanded is retired (no monoidal expansion — emergence is non-compositional), and the scalar guards (| gain_per_stage > 1, | λ > 0, | range(F_A) << range(F_R)) are M0 measurements leaking into M1. See StructuralGrammar/Functional_Grammar_Model.md."
+        },
+        {
           "version": "2.6.1",
           "date": "2026-06-23",
-          "changes": "CORRECTION: CascadeAmplification and Propagation reclassified Fm2→Fm1m2 (parent m1:Cascade is M1, not M2 atomic). StratifiedDissipation notation Fm2²→Fm2 (parents Layer+Dissipation are M2 atomics — no second-order composition). @type updated to KnowledgeFieldConceptCombo for Propagation and CascadeAmplification."
+          "changes": "CORRECTION: CascadeAmplification and Propagation reclassified Fm2→Fm1m2 (parent m1:Cascade is M1, not M2 atomic). StratifiedDissipation notation Fm2²→Fm2 (parents Layer+Dissipation are M2 atomics — no second-order composition). @type updated to DomainConceptCombo for Propagation and CascadeAmplification."
         },
         {
           "version": "2.6.0",
           "date": "2026-06-23",
           "changes": "NEW: m1:ConstraintBalance — instance of m2:TriadicBalance. Triadic pattern: UnderConstrained/BalancedConstraint/OverConstrained. Core instance of Ontological Overfitting anti-pattern. Validated ≥6 domains."
-        },
-        {
-          "version": "2.5.0",
-          "date": "2026-06-23",
-          "changes": "MIGRATION: m2:TopologicalDefect → M1_CoreConcepts (too specialized). NEW: m1:Permeability = Fm2(Channel, Interface, Gradient) — ≥7 domains."
         }
       ]
     },
@@ -1242,9 +1242,9 @@
       "@id": "m1:Propagation",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Propagation",
       "rdfs:comment": "Branching spread of a faithfully copied entity through a network, where each receiving node becomes a new emitter. Synergistic ternary combination: Cascade (sequential chain mechanics + goal attractor) + Duplication (1→N faithful copying at each node) + Network (topological substrate with compatible nodes). Unique dimensional contributions: A from Cascade (propagation threshold and saturation attractor), V from Duplication (copy fidelity — distinguishes propagation from random diffusion), Im from Network (node compatibility — receivers can become emitters). Distinguished from Cascade (linear, no branching) and from Diffusion (no fidelity, no structured topology). Domain-specific instances: m1:Contagion (biological/social), wave propagation (physics), viral spread (computing).",
       "m1:comboOf": [
@@ -1634,9 +1634,9 @@
       "@id": "m1:CascadeAmplification",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "CascadeAmplification",
       "rdfs:comment": "Sequential multi-stage process where each stage amplifies the output of the previous, producing exponential cumulative gain. Synergistic binary combination: Cascade (S × I × A × D × F) Fm2² Amplification (Ft × D × It | R + O). Constraint: gain per stage > 1. Emergent property: exponential overall gain G_total = ∏ᵢ gᵢ — absent from Cascade alone (no gain) and Amplification alone (no stage structure).",
       "m1:comboOf": [

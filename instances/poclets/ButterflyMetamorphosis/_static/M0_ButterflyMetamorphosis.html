@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Butterfly Metamorphosis — TSCG Poclet Simulation</title>
+  <link rel="stylesheet" href="src/ButterflyMetamorphosis.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- ═══ Header (40px) ═══ -->
+    <div id="header">
+      <a class="home-btn" href="https://echopraxium.github.io/tscg/" title="Gallery">&#8962;</a>
+      <a class="tscg-badge" href="https://github.com/Echopraxium/tscg" title="TSCG repository">TSCG</a>
+      <span id="title">Butterfly Metamorphosis &middot; 6-Pole Holometabolous Lifecycle</span>
+      <span id="chip-species" class="chip">Monarch</span>
+      <span class="chip">6 Poles</span>
+    </div>
+
+    <!-- ═══ Canonical grid: left panel | canvas | splitter | sidebar ═══ -->
+    <div id="layout">
+
+      <div id="left-panel">
+        <div class="lp-group">
+          <div class="lp-label">Species</div>
+          <div class="combo-row">
+            <select id="species-select" title="Species">
+              <option value="monarch" selected>Monarch</option>
+              <option value="swallowtail">Old World Swallowtail</option>
+              <option value="morpho">Blue Morpho</option>
+              <option value="peacock">European Peacock</option>
+              <option value="paintedlady">Painted Lady</option>
+            </select>
+            <button id="species-clear" title="Reset to Monarch">&#10005;</button>
+          </div>
+          <div id="latin-name" class="lp-sub">Danaus plexippus</div>
+        </div>
+
+        <div class="lp-group">
+          <div class="lp-label">Metamorphosis speed</div>
+          <div class="speed-group">
+            <button class="speed-btn active" data-speed="1">x1</button>
+            <button class="speed-btn" data-speed="2">x2</button>
+            <button class="speed-btn" data-speed="3">x3</button>
+            <button class="speed-btn" data-speed="5">x5</button>
+          </div>
+        </div>
+
+        <div class="lp-group">
+          <div class="lp-label">View</div>
+          <button id="rotate-btn" class="toggle-btn">&#8635; Auto-Rotate</button>
+        </div>
+
+        <div class="lp-group">
+          <div class="lp-label">Current pole</div>
+          <div id="status-line">1 / 6 &middot; Egg</div>
+        </div>
+      </div>
+
+      <div id="view-main"><canvas id="canvas-main"></canvas></div>
+
+      <div id="splitter" title="Drag to resize"></div>
+
+      <aside id="sidebar">
+        <div id="tabs">
+          <button class="tab-btn active">Description</button>
+          <button class="tab-btn">Scores</button>
+          <button class="tab-btn">M2</button>
+          <button class="tab-btn">Guide</button>
+        </div>
+        <div id="tab-body">
+          <div class="tab-panel active" id="tab-description"></div>
+          <div class="tab-panel" id="tab-scores"></div>
+          <div class="tab-panel" id="tab-concepts"></div>
+          <div class="tab-panel" id="tab-guide"></div>
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- ═══ Bottom bar: Reset | Play | Timeline (6 poles) ═══ -->
+    <div id="bottom-bar">
+      <button id="reset-btn" title="Reset">Reset</button>
+      <button id="play-btn">&#9654; Play</button>
+      <div id="milestones">
+        <button class="milestone" title="Egg"><span class="dot"></span><span class="ml-txt">1&middot;Egg</span></button>
+        <button class="milestone" title="Larva (Caterpillar)"><span class="dot"></span><span class="ml-txt">2&middot;Larva</span></button>
+        <button class="milestone" title="Pre-Pupa"><span class="dot"></span><span class="ml-txt">3&middot;Pre-Pupa</span></button>
+        <button class="milestone" title="Pupa (Chrysalis)"><span class="dot"></span><span class="ml-txt">4&middot;Pupa</span></button>
+        <button class="milestone" title="Emergence (Eclosion)"><span class="dot"></span><span class="ml-txt">5&middot;Emerge</span></button>
+        <button class="milestone" title="Imago (Adult)"><span class="dot"></span><span class="ml-txt">6&middot;Imago</span></button>
+      </div>
+      <span id="phase-label">1 / 6 &middot; Egg</span>
+    </div>
+
+  </div>
+
+  <!-- ═══ Scripts ═══ -->
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="src/butterfly_data.js"></script>
+  <script src="src/ButterflyMetamorphosis.js"></script>
+</body>
+</html>

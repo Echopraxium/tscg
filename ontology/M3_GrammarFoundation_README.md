@@ -1,11 +1,57 @@
 # M3_GrammarFoundation.jsonld
 
-**Version:** 2.2.0  
+**Version:** 2.4.0  
 **Layer:** M3  
 **Type:** Apex Ontology — Mathematical Foundation  
 **Created:** 2026-05-12  
 **Last Modified:** 2026-05-27  
 **Status:** Foundational — no imports
+
+---
+
+
+## ⚠️ Fm2 / Fm1m2 are FUNCTIONS, not morphisms (v2.4.0 — SC-1, 2026-07-12)
+
+Two foundational errors, corrected in this version. Both had **propagated into the corpus**.
+
+### Error 1 — they were declared morphisms
+
+The file stated *"Fm2 is a morphism, not a monoidal operator"*, grouped `Fm2`/`Fm1m2` in an
+`m2_morphisms` block with a `morphismFamily` property.
+
+A **morphism composes**. An **emergence does not**. `Fm2`/`Fm1m2` combine named concepts to produce
+semantics **irreducible to any subset of their arguments** — that is non-compositional, hence
+**non-functorial**, hence **not a morphism**. (The word *functor* stays reserved for M0 dimension
+evaluation `F_x : System -> Score`.)
+
+**The family is now split, not purged** — this matters:
+
+| | | |
+|---|---|---|
+| **Morphisms** | `Φ (Gt -> Gm)`, `Ψ (Gm -> Gt)` | structure-preserving — **they compose** |
+| **Functions** | `Fm2`, `Fm1m2` | emergence — **they do not compose** |
+
+`Φ` and `Ψ` are genuine morphisms and are untouched.
+
+### Error 2 — `Fm1m2` was defined as "crossing the M1/M2 boundary" ← **the root error**
+
+```
+BEFORE   Fm1m2 : T1(M1) x T1(M2)^n -> T1     "Crosses the M1/M2 boundary"
+AFTER    Fm1m2 : Domain+, GenericConcept+ -> DomainConceptCombo
+```
+
+This is where the corpus defect was born. `M1_CoreConcepts` v1.4.0 applied this definition
+*faithfully*, "correcting" `Propagation` and `CascadeAmplification` from `Fm2` to `Fm1m2`
+**"because the parent m1:Cascade is M1, not an M2 atomic"** — producing
+`Fm1m2(Cascade, Duplication, Network)`, a domain-less `Fm1m2`.
+
+What distinguishes `Fm1m2` is **domain qualification**, nothing else. An `Fm2` argument may
+legitimately be a named concept from `M1_CoreConcepts`, so "crossing M1/M2" distinguishes **nothing**.
+
+The `x` that separated the signature slots is also gone: **`x` is reserved to the Gt monoid and is
+never overloaded** — not in signatures, not for domain conjunction.
+
+Full rationale: `StructuralGrammar/Functional_Grammar_Model.md`.
 
 ---
 

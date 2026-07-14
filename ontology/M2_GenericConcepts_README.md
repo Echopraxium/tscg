@@ -1,10 +1,10 @@
 # M2_GenericConcepts.jsonld
 
-**Version:** 16.16.0
+**Version:** 16.17.0
 **Layer:** M2
 **Type:** Generic Concepts Ontology
 **Created:** 2026-01-14
-**Last Modified:** 2026-06-26
+**Last Modified:** 2026-07-13
 **Author:** Echopraxium with the collaboration of Claude AI
 
 ---
@@ -55,7 +55,74 @@ Pure intra-monoid formulas and ASFID/REVOI scoring terminology are **unaffected*
 
 ---
 
-## 📐 The Three Operators
+## 🧩 Atoms vs Combos — the Functional Grammar (v16.17.0, SC-1)
+
+M2 holds **two kinds of concept**, written in **two different languages**. Conflating them
+was the framework's oldest ambiguity; v16.17.0 closes it.
+
+| | Written as | Example |
+|---|---|---|
+| **Atom** | a **monoidal formula** (`×`, `+`, `\|`) | `Process = D × F` |
+| **Combo** | a **function signature** | `Fm2(Cascade, Duplication, Network)` |
+
+### The two producing functions
+
+```
+Fm2   : GenericConcept²⁺             →  m2:GenericConceptCombo
+Fm1m2 : Domain⁺ , GenericConcept⁺    →  m2:DomainConceptCombo
+```
+
+Each combo class declares its own via **`m2:producingFunction`**.
+
+### Functions, **not** functors
+
+`Fm2`/`Fm1m2` produce **emergence**: semantics irreducible to any subset of the arguments.
+Emergence is **non-compositional** — and a functor must *preserve* composition. So these are
+**functions, not functors**, and *functor* stays reserved for M0 evaluation (`F_x : System → Score`).
+
+> **A combo has NO monoidal expansion.** The arguments are **combined, not associated**.
+
+This retires a whole family of compositional residue, all of it descending from one root,
+`m2:morphism_emergence`, which declared emergence to be a *morphism*:
+
+| Retired in v16.17.0 | Was |
+|---|---|
+| `m2:morphism_emergence` | `owl:deprecated` → superseded by `m2:producingFunction` |
+| `× ⁿ⇒(M₁,…,Mₙ) = lattice_join(…)` | the compositional definition of `GenericConceptCombo` |
+| "union of the parent type sets" | the compositional clause on `m2:hasComboComponent` |
+| the 4 operator-style `m2:comboFormula` | rewritten as `Fm2(…)` signatures |
+
+### The rules of a signature
+
+1. **Arguments are named concepts** — from `M2_GenericConcepts.jsonld` or `M1_CoreConcepts.jsonld`.
+   **Never primitive types** (`A`, `St`, `F`, `It`, …): a primitive is a *generative dimension*,
+   not a concept. *Consequence: M1 extensions are **leaves**.*
+2. **Arguments are juxtaposed by comma** — never joined by `×`, `+` or `|`. `×` is reserved to
+   the Gt monoid and is never overloaded.
+3. **Cardinality**: `Fm2` needs **≥ 2** concepts. `Fm1m2` needs **≥ 1 domain AND ≥ 1 concept** —
+   there, the *domain × concept hybridisation itself* is the emergence, so `1 + 1` suffices.
+4. **Free recursion** — every combo is a `GenericConcept`, hence a legal argument.
+5. **`Fm1` does not exist.** Multi-domain conjunction = juxtaposed domain arguments:
+   `Fm1m2(Biology, Chemistry, Catalysis)`.
+
+### `DomainConceptCombo` (renamed, and **re-defined**)
+
+`m2:KnowledgeFieldConceptCombo` → **`m2:DomainConceptCombo`** (hard rename, no alias).
+
+⚠️ The membership criterion **changed** — this is not a cosmetic rename:
+
+| | Criterion |
+|---|---|
+| Before | parents originating from **distinct epistemological domains** |
+| **Now** | the combo is **defined by an `Fm1m2` formula** — a **hybrid of ≥ 1 `Domain` and ≥ 1 `GenericConcept`** |
+
+A domain-less `Fm1m2` is simply an `Fm2` that mislabelled itself.
+
+📖 Full rationale: `StructuralGrammar/Functional_Grammar_Model.md`.
+
+---
+
+## 📐 The Three Operators (atoms only)
 
 ### × — Territory structural product
 
@@ -355,6 +422,9 @@ via M3_GenesisGrammar — no direct import of M3_BicephalousPerspective needed.
 9. **1 functionally stereopsic** — Modelisation reifies Φ: Gt→Gm (v16.14.0)
 10. **_0 = _^ | _$** — DerivedGsElement, Base16 preserved (v16.14.0)
 11. **Triple Filter** guards M2 against Ontological Overfitting
+12. **Atoms carry monoidal formulas; combos carry function signatures** — never both (v16.17.0)
+13. **Fm2 / Fm1m2 are functions, not functors** — emergence is non-compositional, so a combo has **no** monoidal expansion (v16.17.0)
+14. **`DomainConceptCombo`** (ex-`KnowledgeFieldConceptCombo`) = defined by its `Fm1m2` formula: **≥1 Domain + ≥1 GenericConcept** (v16.17.0)
 12. **Constraint revised** (v16.16.0) — `St × A × D | O + V` (bicephalous, 6 domains validated)
 
 **M2 is where TSCG's transdisciplinary power becomes explicit.** 🌟
@@ -414,9 +484,9 @@ The new formula emerged from the NakamotoConsensus instance analysis
 
 | Version | Date | Changes |
 |---|---|---|
+| **16.17.0** | 2026-07-13 | FUNCTIONAL GRAMMAR MODEL (SC-1). RENAME (hard): `m2:KnowledgeFieldConceptCombo` → `m2:DomainConceptCombo`, **re-defined** by its `Fm1m2` formula (hybrid ≥1 Domain + ≥1 GenericConcept), superseding the former "parents from distinct epistemological domains" criterion. NEW: `m2:producingFunction` — `Fm2 : GenericConcept²⁺ → GenericConceptCombo`; `Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo`. A combo's formula **is** the function signature: no monoidal formula, **no monoidal expansion** (emergence is non-compositional → functions, not functors). Arguments = named concepts from M2 or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/\|. `Fm1` does not exist. DEPRECATED: `m2:morphism_emergence` (the root of the tensor-era residue) → superseded by `m2:producingFunction`. PURGED: the `lattice_join` definition, the "union of the parent type sets" clause, and the 4 operator-style `m2:comboFormula`. |
 | **16.16.0** | 2026-06-26 | REVISION: m2:Constraint St\|L → St×A×D\|O+V (bicephalous, eagleView St×A×D + sphinxView O+V). isStereopsic unchanged (true). Stereotype count: 38→39. Six-domain validation: blockchain, law, mechanics, optimization, biology, music. |
 | **16.15.0** | 2026-06-26 | STATUS: sphinxView 'PROPOSITION' → 'VALIDATED' (36 nodes). ACRONYM: SFE → EFS (Epistemic Focal Score) in labels and comments. |
-| **16.14.0** | 2026-06-23 | REVISION: m2:Balance A×S×F → A×S×F\|_0 (isStereopsic=true). NEW: m2:Modelisation (D×F×It\|R+V+E, functionally stereopsic). NEW: m2:TriadicBalance (A×F×D\|_0, ternary polarity). DerivedGsElement _0=_^\|_$ introduced (M3_BicephalousPerspective v1.3.0). Anti-Ontological Overfitting Triple Filter documented. |
 
 ---
 

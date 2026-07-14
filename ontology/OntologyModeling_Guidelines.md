@@ -378,7 +378,7 @@ M3  →  defines 𝕋₀ and the operators (×, +, |)
 M2  →  named subset of 𝕋*: GenericConcepts
         (frequently-occurring, transdisciplinary expressions of 𝕋*)
 M1  →  named subset of 𝕋*: Combos, domain extensions
-        (disciplinary expressions, KnowledgeFieldConceptCombo)
+        (disciplinary expressions, DomainConceptCombo)
 M0  →  concrete instantiations of M2/M1 expressions (Poclets)
 ```
 
@@ -446,8 +446,40 @@ Fm1m2(Physics, Coherence)            = LaserCoherence
 Fm1m2(Education, Memory, Structure)  = CurriculumDesign
 ```
 
-Use Fm1m2 for KnowledgeFieldConceptCombo — domain-specific instantiations
-of generic patterns (M1 KnowledgeField combined with M2 GenericConcept(s)).
+Use Fm1m2 for DomainConceptCombo — a HYBRID of at least one Domain and at least
+one GenericConcept. Domain qualification (not parent heterogeneity) is the membership
+criterion. A domain-less Fm1m2 is an Fm2 that mislabelled itself.
+
+### Functional Grammar — combos are function signatures (SC-1, 2026-07-12)
+
+```
+Fm2   : GenericConcept²⁺            ->  m2:GenericConceptCombo    (>= 2 concepts)
+Fm1m2 : Domain+ , GenericConcept+   ->  m2:DomainConceptCombo     (>= 1 domain AND >= 1 concept)
+```
+
+- **Atoms** carry a **monoidal formula** (`x`, `+`, `|`) — e.g. `Process = D x F`.
+- **Combos** carry a **function signature** — e.g. `Fm2(Cascade, Duplication, Network)`.
+  A combo has **NO monoidal formula and NO monoidal expansion**: `Fm2`/`Fm1m2` are
+  **functions, not functors** (emergence is non-compositional — the arguments are
+  *combined, not associated*). "Functor" stays reserved for M0 evaluation `F_x`.
+- **Arguments are NAMED CONCEPTS** declared in `M2_GenericConcepts.jsonld` or
+  `M1_CoreConcepts.jsonld` — **never primitive types** (`A`, `St`, `F`, `It`, ...),
+  **never a monoidal expression**. Consequence: **M1 extensions are leaves**.
+- **Arguments are juxtaposed by comma**, never joined by a grammar operator.
+  `x` is reserved to the Gt monoid and is never overloaded.
+- **`Fm1` does not exist.** Multi-domain conjunction = juxtaposed domain arguments:
+  `Fm1m2(Biology, Chemistry, Catalysis)`.
+- `m1:structuralGrammarFormulaExpanded` is **retired** (D8): there is nothing to expand.
+
+```
+BAD   Fm1m2(Optics, A x St x F x It | R + O)     monoidal expression as argument
+BAD   Fm1m2(Cascade, Duplication, Network)       no Domain -> this is an Fm2
+GOOD  Fm1m2(Optics, Refraction)                  >= 1 domain + >= 1 named concept
+GOOD  Fm2(Cascade, Duplication, Network)         >= 2 named concepts
+```
+
+Full rationale: `StructuralGrammar/Functional_Grammar_Model.md`.
+
 
 ### TSCG function family
 

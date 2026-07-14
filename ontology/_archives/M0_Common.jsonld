@@ -1,0 +1,753 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "M0_Common.jsonld",
+      "@type": "owl:Ontology",
+      "rdfs:label": "TSCG M0 Common — Shared Property Definitions",
+      "rdfs:comment": "Canonical source of truth for all shared properties used across TSCG M0 instances (Poclets, SystemicFrameworks, SymbolicSystemGrammars, TscgTools). Defines the m0: namespace as the unique, stable namespace for cross-instance properties. All M0 instances MUST import this file and declare m0: pointing to this ontology. Instance-local properties use a distinct alias m0.<instanceName>: pointing to the instance file itself.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19",
+      "owl:versionInfo": "1.1.0",
+      "m3:ontologyType": {
+        "@id": "m3:CommonVocabulary"
+      },
+      "owl:imports": [
+        "M3_GenesisGrammar.jsonld",
+        "M2_GenericConcepts.jsonld",
+        "M1_CoreConcepts.jsonld"
+      ],
+      "m2:changelog": [
+        {
+          "version": "1.1.0",
+          "date": "2026-06-19",
+          "changes": "ENUMERATION TYPES: spectralClass, focalClass, scoringStatus converted from owl:DatatypeProperty(xsd:string) to owl:ObjectProperty with owl:oneOf enumeration classes. Naming convention: m0:<propertyName>.<ValuePascalCase> (e.g. m0:spectralClass.Coherent). All float score properties now use bare numeric values (no @type annotation needed — rdfs:range declared in ontology). Removed @type:xsd:float annotation requirement."
+        },
+        {
+          "version": "1.0.0",
+          "date": "2026-06-19",
+          "changes": "Initial version. Extracts all shared M0 properties from individual instance files into single canonical source. Defines m0: namespace as M0_Common.jsonld# (replaces phantom M0_Poclet# target). 3 property families: Scoring (ASFID+REVOI+Aggregates), EpistemicGap, FocalScore (Gs stereopsis). Namespace convention: m0: = shared, m0.<instance>: = local."
+        }
+      ],
+      "m0:namespaceConvention": {
+        "shared": {
+          "alias": "m0:",
+          "resolves_to": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+          "contains": "Properties shared across ALL M0 instances (scores, gap, focal, meta)",
+          "usage": "m0:scoreA, m0:epistemicGap, m0:focalScore..."
+        },
+        "local": {
+          "alias": "m0.<instanceName>:",
+          "resolves_to": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/<type>/<name>/M0_<Name>.jsonld#",
+          "contains": "Properties specific to ONE instance (components, local concepts, domain data)",
+          "usage": "m0.bmc:Block_VP, m0.yggdrasil:Pole, m0.fourStrokeEngine:CompressionRatio..."
+        },
+        "forbidden": [
+          "m0: pointing to an instance file (was: instances/.../M0_Xxx.jsonld#)",
+          "M0_Poclet# as target (phantom file — replaced by M0_Common.jsonld#)",
+          "A_score / S_score / ... as @context aliases (replaced by m0:scoreA / m0:scoreS...)",
+          "m1core: as alias (replaced by m1:)"
+        ]
+      }
+    },
+    {
+      "@id": "m0:InstanceProperty",
+      "@type": "owl:Class",
+      "rdfs:label": "M0 Instance Property",
+      "rdfs:comment": "Abstract superclass of all shared M0 properties defined in M0_Common. Provides a common type for SPARQL queries across all M0 instances.",
+      "rdfs:subClassOf": {
+        "@id": "owl:Thing"
+      }
+    },
+    {
+      "@id": "m0:ScoringProperty",
+      "@type": "owl:Class",
+      "rdfs:label": "M0 Scoring Property",
+      "rdfs:comment": "Superclass of all ASFID and REVOI score properties. All scoring properties have domain=owl:Ontology and range=xsd:float in [0.0, 1.0].",
+      "rdfs:subClassOf": {
+        "@id": "m0:InstanceProperty"
+      }
+    },
+    {
+      "@id": "m0:FocalProperty",
+      "@type": "owl:Class",
+      "rdfs:label": "M0 Focal Score Property",
+      "rdfs:comment": "Superclass of all focal score properties (Gs stereopsis). Only applicable when m0:focalApplicable=true.",
+      "rdfs:subClassOf": {
+        "@id": "m0:InstanceProperty"
+      }
+    },
+    {
+      "@id": "m0:scoreA",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:ScoringProperty"
+      },
+      "rdfs:label": "Attractor Score (A)",
+      "rdfs:comment": "ASFID/Gt score for the Attractor dimension. Measures the presence and strength of equilibrium states or basins of attraction in the modeled system. Range: [0.0, 1.0]. 0.0 = no identifiable attractor; 1.0 = strong, well-defined attractor(s).",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:asfidDimension": "A",
+      "m0:monoid": "Gt (Eagle Eye / Territory)",
+      "m0:scoringQuestion": "Does the system have clear equilibrium states or basins of attraction?",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:scoreS",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:ScoringProperty"
+      },
+      "rdfs:label": "Structure Score (S)",
+      "rdfs:comment": "ASFID/Gt score for the Structure dimension. Measures the formality and clarity of the system's architectural topology: components, their relationships, and invariant organization. Range: [0.0, 1.0].",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:asfidDimension": "S",
+      "m0:monoid": "Gt (Eagle Eye / Territory)",
+      "m0:scoringQuestion": "Is the architecture formal, well-defined, with explicit topology?",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:scoreF",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:ScoringProperty"
+      },
+      "rdfs:label": "Flow Score (F)",
+      "rdfs:comment": "ASFID/Gt score for the Flow dimension. Measures the presence and identifiability of material, energy, or information flows through the system. Range: [0.0, 1.0]. NOTE: F=0.0 is valid (Stase — no flow) and is not a special case or error.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:asfidDimension": "F",
+      "m0:monoid": "Gt (Eagle Eye / Territory)",
+      "m0:scoringQuestion": "Are there identifiable material, energy, or information flows?",
+      "m0:specialCase": "F=0.0 valid (Stase — no flow is a legitimate system state)",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:scoreIt",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:ScoringProperty"
+      },
+      "rdfs:label": "Information Score (It)",
+      "rdfs:comment": "ASFID/Gt score for the Information dimension (Territory side). Measures the degree to which the system encodes, processes, or transmits information signals. Range: [0.0, 1.0]. CRITICAL: It = Information (Territory/ASFID). NEVER confuse with Im (Interoperability/REVOI). In hybrid formulas: always use It explicitly.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:asfidDimension": "It",
+      "m0:monoid": "Gt (Eagle Eye / Territory)",
+      "m0:scoringQuestion": "Does the system encode, process, or transmit information signals?",
+      "m0:disambiguation": "It = Information (Territory). Im = Interoperability (Map). Never use bare 'I'.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:scoreD",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:ScoringProperty"
+      },
+      "rdfs:label": "Dynamics Score (D)",
+      "rdfs:comment": "ASFID/Gt score for the Dynamics dimension. Measures the presence of feedback loops, phase transitions, temporal evolution, and self-modifying behavior. Range: [0.0, 1.0].",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:asfidDimension": "D",
+      "m0:monoid": "Gt (Eagle Eye / Territory)",
+      "m0:scoringQuestion": "Are there feedback loops, phase transitions, or temporal evolution?",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:scoreR",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:ScoringProperty"
+      },
+      "rdfs:label": "Representability Score (R)",
+      "rdfs:comment": "REVOI/Gm score for the Representability dimension. Measures how formally the system can be encoded in diagrams, equations, ontologies, or other notations. Range: [0.0, 1.0]. CRITICAL: R = Representability. NEVER Reproducibility.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:revoiDimension": "R",
+      "m0:monoid": "Gm (Sphinx Eye / Map)",
+      "m0:scoringQuestion": "Can the system be formally encoded in diagrams, equations, or ontologies?",
+      "m0:disambiguation": "R = Representability. NEVER Reproducibility.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:scoreE",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:ScoringProperty"
+      },
+      "rdfs:label": "Evolvability Score (E)",
+      "rdfs:comment": "REVOI/Gm score for the Evolvability dimension. Measures how extensible, parametrizable, and version-capable the model is. Range: [0.0, 1.0].",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:revoiDimension": "E",
+      "m0:monoid": "Gm (Sphinx Eye / Map)",
+      "m0:scoringQuestion": "Can the model be extended, parameterized, or versioned?",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:scoreV",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:ScoringProperty"
+      },
+      "rdfs:label": "Verifiability Score (V)",
+      "rdfs:comment": "REVOI/Gm score for the Verifiability dimension. Measures how empirically testable or falsifiable the model is (Popper criterion). Range: [0.0, 1.0].",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:revoiDimension": "V",
+      "m0:monoid": "Gm (Sphinx Eye / Map)",
+      "m0:scoringQuestion": "Is the model empirically testable or falsifiable?",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:scoreO",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:ScoringProperty"
+      },
+      "rdfs:label": "Observability Score (O)",
+      "rdfs:comment": "REVOI/Gm score for the Observability dimension. Measures how directly the system's state variables can be measured or instrumented. Range: [0.0, 1.0].",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:revoiDimension": "O",
+      "m0:monoid": "Gm (Sphinx Eye / Map)",
+      "m0:scoringQuestion": "Are state variables measurable or instrumentable?",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:scoreIm",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:ScoringProperty"
+      },
+      "rdfs:label": "Interoperability Score (Im)",
+      "rdfs:comment": "REVOI/Gm score for the Interoperability dimension (Map side). Measures compatibility with other frameworks, methodologies, and models. Range: [0.0, 1.0]. CRITICAL: Im = Interoperability (Map/REVOI). NEVER confuse with It (Information/Territory/ASFID).",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:revoiDimension": "Im",
+      "m0:monoid": "Gm (Sphinx Eye / Map)",
+      "m0:scoringQuestion": "Is the model compatible with other frameworks or methodologies?",
+      "m0:disambiguation": "Im = Interoperability (Map). It = Information (Territory). Never use bare 'I'.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:asfidMean",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:ScoringProperty"
+      },
+      "rdfs:label": "ASFID Mean",
+      "rdfs:comment": "Arithmetic mean of the 5 ASFID scores: (scoreA + scoreS + scoreF + scoreIt + scoreD) / 5. Represents the overall Territory (Eagle Eye / Gt) alignment of the instance. Range: [0.0, 1.0].",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:formula": "(m0:scoreA + m0:scoreS + m0:scoreF + m0:scoreIt + m0:scoreD) / 5",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:revoiMean",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:ScoringProperty"
+      },
+      "rdfs:label": "REVOI Mean",
+      "rdfs:comment": "Arithmetic mean of the 5 REVOI scores: (scoreR + scoreE + scoreV + scoreO + scoreIm) / 5. Represents the overall Map (Sphinx Eye / Gm) alignment of the instance. Range: [0.0, 1.0].",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:formula": "(m0:scoreR + m0:scoreE + m0:scoreV + m0:scoreO + m0:scoreIm) / 5",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:epistemicGap",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Epistemic Gap (δ₁)",
+      "rdfs:comment": "Normalized distance between ASFID mean and REVOI mean: |asfidMean − revoiMean| / √2. Measures the alignment between Territory (Eagle Eye) and Map (Sphinx Eye) perspectives. Range: [0.0, 1.0]. Small gap = good Map/Territory coherence.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:formula": "|m0:asfidMean − m0:revoiMean| / √2",
+      "m0:spectralClassThresholds": {
+        "Coherent": "δ₁ < 0.05",
+        "OnCriticalLine": "0.05 ≤ δ₁ < 0.15",
+        "Liminal": "0.15 ≤ δ₁ < 0.30",
+        "Enigmatic": "δ₁ ≥ 0.30"
+      },
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:scoreJustification",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Score Justification",
+      "rdfs:comment": "Human-readable justification object for each of the 10 ASFID/REVOI scores. Structure: {A_score: string, S_score: string, ..., Im_score: string}. One sentence per dimension explaining the score value.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:stereopsicDepth",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:FocalProperty"
+      },
+      "rdfs:label": "Stereopsic Depth (Gs)",
+      "rdfs:comment": "Depth of Gs (stereopsis) engagement in this instance, computed from the TKSL primitives active in the mobilized stereopsic GenericConcepts. Formula: (T_present × 0.25) + (K_present × 0.25) + (Ss_present × 0.25) + (L_present × 0.25). Range: [0.0, 1.0]. Only present when m0:focalApplicable=true.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:formula": "(T_present × 0.25) + (K_present × 0.25) + (Ss_present × 0.25) + (L_present × 0.25)",
+      "m0:gsPrimitives": {
+        "T": "Temporality — temporal dimension active",
+        "K": "Knowledge — cognitive/epistemic dimension active",
+        "Ss": "Symbol — semiotic/sign dimension active",
+        "L": "Localizability — convergence toward attractor active"
+      },
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:focalBias",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:FocalProperty"
+      },
+      "rdfs:label": "Focal Bias",
+      "rdfs:comment": "Signed Map/Territory imbalance: m0:revoiMean − m0:asfidMean. Range: [−1.0, +1.0]. Positive = Map dominant (Hyperopic — model abstracts beyond observable territory). Negative = Territory dominant (Myopic — territory detail exceeds model capacity). Zero = perfect balance (Emmetropic candidate). Only present when m0:focalApplicable=true.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:formula": "m0:revoiMean − m0:asfidMean",
+      "m0:interpretation": {
+        "positive": "Map dominant → Hyperopic (model too abstract)",
+        "negative": "Territory dominant → Myopic (model too concrete)",
+        "zero": "Balanced → Emmetropic candidate"
+      },
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:focalScore",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:FocalProperty"
+      },
+      "rdfs:label": "Focal Score (EFS)",
+      "rdfs:comment": "Epistemic Focal Score — measures the sharpness of the combined Map+Territory image through the Gs stereopsis lens. Formula: m0:stereopsicDepth × (1 − |m0:focalBias|). Range: [0.0, 1.0]. 1.0 = Emmetropic (sharp binocular fusion). 0.0 = Astigmatic (no Gs depth) or strongly biased (blind spot). Analogous to visual acuity in ophthalmic metaphor. Only present when m0:focalApplicable=true.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:float"
+      },
+      "m0:formula": "m0:stereopsicDepth × (1 − |m0:focalBias|)",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:stereopsicDepthProfile",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "m0:FocalProperty"
+      },
+      "rdfs:label": "Stereopsic Depth Profile",
+      "rdfs:comment": "Detailed breakdown of which Gs TKSL primitives are active in the mobilized stereopsic GenericConcepts. Structure: {T_present: bool, K_present: bool, Ss_present: bool, L_present: bool, mobilizedStereopsicGC: int, stereopsicGCNames: [string]}. Only present when m0:focalApplicable=true.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:contextBlock",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "Canonical @context Block for M0 Instances",
+      "rdfs:comment": "Reference @context block to copy into any M0 instance. Replace <instanceName> and <instancePath> with actual values. This ensures consistent namespace declarations across all instances.",
+      "skos:example": {
+        "@context-template": {
+          "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+          "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+          "m0.<instanceName>": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/<type>/<instanceName>/M0_<InstanceName>.jsonld#",
+          "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+          "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+          "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
+          "m1.extensions.<domain>": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/<domain>/M1_<Domain>.jsonld#",
+          "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+          "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+          "owl": "http://www.w3.org/2002/07/owl#",
+          "xsd": "http://www.w3.org/2001/XMLSchema#",
+          "dcterms": "http://purl.org/dc/terms/",
+          "skos": "http://www.w3.org/2004/02/skos/core#"
+        }
+      },
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:SpectralClass",
+      "@type": "owl:Class",
+      "rdfs:label": "Spectral Class",
+      "rdfs:comment": "Enumeration of epistemic gap (δ₁) qualitative classifications. Derived from m0:epistemicGap value. Naming convention: m0:spectralClass.<Value>.",
+      "owl:oneOf": [
+        {
+          "@id": "m0:spectralClass.Coherent"
+        },
+        {
+          "@id": "m0:spectralClass.OnCriticalLine"
+        },
+        {
+          "@id": "m0:spectralClass.Liminal"
+        },
+        {
+          "@id": "m0:spectralClass.Enigmatic"
+        }
+      ],
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:spectralClass.Coherent",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:SpectralClass"
+      ],
+      "rdfs:label": "Coherent",
+      "rdfs:comment": "δ₁ < 0.05 — excellent Map/Territory alignment, strong epistemic coherence",
+      "m0:threshold": "δ₁ < 0.05",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:spectralClass.OnCriticalLine",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:SpectralClass"
+      ],
+      "rdfs:label": "OnCriticalLine",
+      "rdfs:comment": "0.05 ≤ δ₁ < 0.15 — good alignment with notable gap, on the epistemic boundary",
+      "m0:threshold": "0.05 ≤ δ₁ < 0.15",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:spectralClass.Liminal",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:SpectralClass"
+      ],
+      "rdfs:label": "Liminal",
+      "rdfs:comment": "0.15 ≤ δ₁ < 0.30 — significant gap, Map and Territory partially misaligned",
+      "m0:threshold": "0.15 ≤ δ₁ < 0.30",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:spectralClass.Enigmatic",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:SpectralClass"
+      ],
+      "rdfs:label": "Enigmatic",
+      "rdfs:comment": "δ₁ ≥ 0.30 — large gap, Map and Territory strongly divergent",
+      "m0:threshold": "δ₁ ≥ 0.30",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:spectralClass",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "spectral Class",
+      "rdfs:comment": "Qualitative classification of the epistemic gap δ₁ between ASFID and REVOI perspectives. Use enumeration values: m0:spectralClass.Coherent, m0:spectralClass.OnCriticalLine, m0:spectralClass.Liminal, m0:spectralClass.Enigmatic.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "m0:SpectralClass"
+      },
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:FocalClass",
+      "@type": "owl:Class",
+      "rdfs:label": "Focal Class",
+      "rdfs:comment": "Enumeration of epistemic focal score (EFS) ophthalmic classifications. Derived from m0:focalScore and sign of m0:focalBias. Naming convention: m0:focalClass.<Value>. Only applicable when m0:focalApplicable=true.",
+      "owl:oneOf": [
+        {
+          "@id": "m0:focalClass.Emmetropic"
+        },
+        {
+          "@id": "m0:focalClass.SlightlyMyopic"
+        },
+        {
+          "@id": "m0:focalClass.SlightlyHyperopic"
+        },
+        {
+          "@id": "m0:focalClass.Myopic"
+        },
+        {
+          "@id": "m0:focalClass.Hyperopic"
+        },
+        {
+          "@id": "m0:focalClass.Astigmatic"
+        }
+      ],
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:focalClass.Emmetropic",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:FocalClass"
+      ],
+      "rdfs:label": "Emmetropic",
+      "rdfs:comment": "EFS ≥ 0.70 — sharp combined Map+Territory image through Gs stereopsis",
+      "m0:derivationRule": "EFS ≥ 0.70",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:focalClass.SlightlyMyopic",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:FocalClass"
+      ],
+      "rdfs:label": "SlightlyMyopic",
+      "rdfs:comment": "0.50 ≤ EFS < 0.70 AND focalBias < 0 — Territory slightly dominant, Map slightly blurred",
+      "m0:derivationRule": "0.50 ≤ EFS < 0.70, bias < 0",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:focalClass.SlightlyHyperopic",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:FocalClass"
+      ],
+      "rdfs:label": "SlightlyHyperopic",
+      "rdfs:comment": "0.50 ≤ EFS < 0.70 AND focalBias > 0 — Map slightly dominant, Territory slightly blurred",
+      "m0:derivationRule": "0.50 ≤ EFS < 0.70, bias > 0",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:focalClass.Myopic",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:FocalClass"
+      ],
+      "rdfs:label": "Myopic",
+      "rdfs:comment": "0.30 ≤ EFS < 0.50 AND focalBias < 0 — Territory dominant, Map significantly blurred",
+      "m0:derivationRule": "0.30 ≤ EFS < 0.50, bias < 0",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:focalClass.Hyperopic",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:FocalClass"
+      ],
+      "rdfs:label": "Hyperopic",
+      "rdfs:comment": "0.30 ≤ EFS < 0.50 AND focalBias > 0 — Map dominant, Territory significantly blurred",
+      "m0:derivationRule": "0.30 ≤ EFS < 0.50, bias > 0",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:focalClass.Astigmatic",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:FocalClass"
+      ],
+      "rdfs:label": "Astigmatic",
+      "rdfs:comment": "EFS < 0.30 — insufficient Gs stereopsic depth regardless of Map/Territory bias",
+      "m0:derivationRule": "EFS < 0.30",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:focalClass",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "focal Class",
+      "rdfs:comment": "Ophthalmic classification of the epistemic focal score (EFS). Use enumeration values: m0:focalClass.Emmetropic, m0:focalClass.SlightlyMyopic, etc. Only present when m0:focalApplicable=true.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "m0:FocalClass"
+      },
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:ScoringStatus",
+      "@type": "owl:Class",
+      "rdfs:label": "Scoring Status",
+      "rdfs:comment": "Enumeration of ASFID/REVOI score completion states for an M0 instance. Naming convention: m0:scoringStatus.<Value>.",
+      "owl:oneOf": [
+        {
+          "@id": "m0:scoringStatus.Complete"
+        },
+        {
+          "@id": "m0:scoringStatus.Partial"
+        },
+        {
+          "@id": "m0:scoringStatus.Pending"
+        }
+      ],
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:scoringStatus.Complete",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:ScoringStatus"
+      ],
+      "rdfs:label": "Complete",
+      "rdfs:comment": "All 10 ASFID+REVOI scores present. m0:asfidMean, m0:revoiMean, m0:epistemicGap, m0:spectralClass computed.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:scoringStatus.Partial",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:ScoringStatus"
+      ],
+      "rdfs:label": "Partial",
+      "rdfs:comment": "Some scores present (typically 5 ASFID without REVOI, or vice versa). Means and gap not yet computable.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:scoringStatus.Pending",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:ScoringStatus"
+      ],
+      "rdfs:label": "Pending",
+      "rdfs:comment": "No scores present. Stub instance awaiting full ASFID/REVOI analysis session.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:scoringStatus",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "scoring Status",
+      "rdfs:comment": "Completion state of ASFID/REVOI scoring for this M0 instance. Use enumeration values: m0:scoringStatus.Complete, m0:scoringStatus.Partial, m0:scoringStatus.Pending.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "m0:ScoringStatus"
+      },
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    },
+    {
+      "@id": "m0:focalApplicable",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "focal Applicable",
+      "rdfs:comment": "Boolean flag: true if instance mobilizes at least one stereopsic GenericConcept (m2:isStereopsic=true) AND all 10 scores are present. When false, all other m0:focal* and m0:stereopsic* properties MUST be absent.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      },
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-19"
+    }
+  ]
+}

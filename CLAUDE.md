@@ -72,14 +72,46 @@ Files:
 - **Temporal**: time and rhythm patterns
 - **Relational**: connection and interaction patterns
 
-The Combo family has been **removed from M2** and migrated to M1 (now hosted in `M1_CoreConcepts.jsonld` as `m2:GenericConceptCombo` and `m2:KnowledgeFieldConceptCombo` instances).
+The Combo family has been **removed from M2** and migrated to M1 (now hosted in `M1_CoreConcepts.jsonld` as `m2:GenericConceptCombo` and `m2:DomainConceptCombo` instances).
 
 The production file is `M2_GenericConcepts.jsonld`. Draft/experimental work lives in `ontology/docs/`.
 
 ### M1: Domain Extensions
 
 Domain-specific concept extensions that specialize M2 GenericConcepts:
-- `M1_CoreConcepts.jsonld` — Hosts all GenericConceptCombo and KnowledgeFieldConceptCombo instances
+- `M1_CoreConcepts.jsonld` — Hosts all GenericConceptCombo and DomainConceptCombo instances
+
+### Functional Grammar — combos are function signatures (SC-1, 2026-07-12)
+
+```
+Fm2   : GenericConcept²⁺            ->  m2:GenericConceptCombo    (>= 2 concepts)
+Fm1m2 : Domain+ , GenericConcept+   ->  m2:DomainConceptCombo     (>= 1 domain AND >= 1 concept)
+```
+
+- **Atoms** carry a **monoidal formula** (`x`, `+`, `|`) — e.g. `Process = D x F`.
+- **Combos** carry a **function signature** — e.g. `Fm2(Cascade, Duplication, Network)`.
+  A combo has **NO monoidal formula and NO monoidal expansion**: `Fm2`/`Fm1m2` are
+  **functions, not functors** (emergence is non-compositional — the arguments are
+  *combined, not associated*). "Functor" stays reserved for M0 evaluation `F_x`.
+- **Arguments are NAMED CONCEPTS** declared in `M2_GenericConcepts.jsonld` or
+  `M1_CoreConcepts.jsonld` — **never primitive types** (`A`, `St`, `F`, `It`, ...),
+  **never a monoidal expression**. Consequence: **M1 extensions are leaves**.
+- **Arguments are juxtaposed by comma**, never joined by a grammar operator.
+  `x` is reserved to the Gt monoid and is never overloaded.
+- **`Fm1` does not exist.** Multi-domain conjunction = juxtaposed domain arguments:
+  `Fm1m2(Biology, Chemistry, Catalysis)`.
+- `m1:structuralGrammarFormulaExpanded` is **retired** (D8): there is nothing to expand.
+
+```
+BAD   Fm1m2(Optics, A x St x F x It | R + O)     monoidal expression as argument
+BAD   Fm1m2(Cascade, Duplication, Network)       no Domain -> this is an Fm2
+GOOD  Fm1m2(Optics, Refraction)                  >= 1 domain + >= 1 named concept
+GOOD  Fm2(Cascade, Duplication, Network)         >= 2 named concepts
+```
+
+Full rationale: `StructuralGrammar/Functional_Grammar_Model.md`.
+
+
 - `M1_Biology.jsonld`, `M1_Chemistry.jsonld`, `M1_Physics.jsonld`, etc. — Domain vocabularies
 - All M1 extensions stored in: `ontology/M1_extensions/<domain>/M1_<Domain>.jsonld`
 
@@ -236,6 +268,54 @@ Reference documents for TSCG development workflows:
 - **`tscg-create-instance-simulation` skill** — 4-step BabylonJS simulation pipeline
 - **`M0_InstanceSimulation_UXControls.jsonld`** — Living catalog of reusable UI patterns
 
+## Nested CLAUDE.md — scoped contexts
+
+`CLAUDE.md` files are **hierarchical**: Claude Code loads the repository-root file
+**and** the nearest one up the tree from the working directory. They compose; they do
+not replace each other. Keep them separate — do **not** merge them into one file.
+
+| Scope | File | Owns |
+|---|---|---|
+| **Repository root** (this file) | `CLAUDE.md` | TSCG ontology: JSON-LD, SHACL, the M0–M3 stack, the Python engine, instance pipelines |
+| **TriskeleToolchain** | `instances/symbolic-system-grammars/TriskeleToolchain/CLAUDE.md` | The Rust toolchain + VM: ISA, septuple validation, WASM/Z-Machine roadmap, ADR-WASM-001/002/003 |
+
+**Boundary, both ways** — this is the point of the split:
+
+- Working in `TriskeleToolchain/`? Its file **wins on toolchain matters**, and **ontology
+  work (JSON-LD, SHACL, M0–M3) is out of scope there**. Its acceptance gate is
+  `python run_all_tests.py --clean` (septuple validation), not `pyshacl`.
+- Working on the ontology? The toolchain rules (ISA notation `St_`/`It_`/`Ss_`/`Im_`,
+  milestone ladder, `HostIo` HAL) do **not** apply.
+
+What they **share**: `dcterms:creator` = "Echopraxium with the collaboration of Claude AI";
+generated files in **English**, conversation in **French**; **surgical edits** over
+rewrites; **honest negative results** preferred over enthusiastic validation.
+
+---
+
+## File & Folder Conventions
+
+### Underscore prefix = hidden from the gallery
+
+A leading `_` on a folder is **functional**, not decorative: the poclet-gallery index
+generator (`cli_tools/generate_index-html/`) **skips underscore-prefixed folders**.
+
+| Folder | Meaning |
+|---|---|
+| `_static/` | **prototype** simulation — NOT published in the gallery |
+| `static/` | **finished** simulation — published |
+| `_archives/` | superseded copies — not published |
+
+**Renaming `_static/` → `static/` publishes the prototype.** Never do it as a "cleanup".
+Conversely, a simulation is promoted to the gallery by dropping the underscore — that is the
+switch, and it is the only one.
+
+Each poclet therefore carries **two distinct READMEs**, and they must not be merged:
+- `M0_<Name>_README.md` — the **ontology** (poles, GenericConcepts, ASFID/REVOI, combos)
+- `_static/M0_<Name>_Simulation_README.md` — the **simulation** (engine, controls, visuals)
+
+---
+
 ## Repository Structure
 
 ```
@@ -297,7 +377,7 @@ tscg/
 │
 ├── generate_index.js               # Gallery generator
 ├── create_files_URIS.py            # URI generator
-└── CLAUDE.md                       # This file
+└── CLAUDE.md                       # This file (root scope — see 'Nested CLAUDE.md' above)
 ```
 
 ## Key File URIs
@@ -427,8 +507,8 @@ Generates `index.html` with interactive gallery of all poclet simulations. Metad
 
 **MANDATORY for all M1 extension domain concepts:**
 ```json
-"@type": ["owl:Class", "m2:KnowledgeFieldConceptCombo"],
-"rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+"@type": ["owl:Class", "m2:DomainConceptCombo"],
+"rdfs:subClassOf": "m2:DomainConceptCombo",
 "m2:knowledgeField": {"@id": "m1:extension:<domain>:<KnowledgeField>"},
 "m1:structuralGrammarFormula": "Fm1m2(<Domain>, <ASFID-formula> | <REVOI-formula>)"
 ```
