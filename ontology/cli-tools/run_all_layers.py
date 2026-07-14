@@ -71,7 +71,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from tscg_paths import REPO_ROOT, ONTOLOGY_DIR, CLI_TOOLS_DIR, verify_layout  # noqa: E402
 
-__version__ = "1.2.0"
+__version__ = "1.3.0"
 
 GOLDEN_FILE = CLI_TOOLS_DIR / "golden_values.json"
 
@@ -99,6 +99,7 @@ DEFAULT_GOLDEN = {
         "files": 16,
         "errors": 163,
         "warnings": 3,
+        "shacl_violations": 502,
         "by_code": {
             "DCC006": 127,   # monoidal operator inside a signature  → SC-6 (the bulk)
             "DCC010": 18,    # Fm1m2's first argument is not a registered Domain
@@ -192,8 +193,15 @@ def run_m1() -> dict | None:
 
     by_code = Counter(re.findall(r"\[((?:GCC|DCC|EXP|CTX|ONT|FRBDN|NS|ENC|JSON)\d+[a-z]?)\]", out))
 
+    # SHACL violations are reported PER FILE ("SHACL: 46 violations") and are NOT part
+    # of check_M1's own error count. Tracking only `errors` left the gate blind to half
+    # the signal: on 2026-07-14, M1_CoreConcepts went from UNREASONABLE to Pellet-clean,
+    # and the dashboard said "nothing changed". A counter blind to half its subject is
+    # exactly the failure mode this gate exists to prevent — so count them separately.
+    shacl = sum(int(m) for m in re.findall(r"SHACL:\s*(\d+)\s+violations?", out))
+
     return {"files": files, "errors": errors, "warnings": warnings,
-            "by_code": dict(by_code)}
+            "shacl_violations": shacl, "by_code": dict(by_code)}
 
 
 def run_m0() -> dict | None:
@@ -271,7 +279,7 @@ def compare(layer: str, actual: dict, golden: dict, verbose: bool) -> bool:
         return False
 
     ok = True
-    for key in ("files", "errors", "warnings"):
+    for key in ("files", "errors", "warnings", "shacl_violations"):
         exp, got = g.get(key), actual.get(key)
         if exp is None or got is None:
             continue
@@ -341,12 +349,26 @@ def main() -> int:
         ok &= compare(layer, results.get(layer), golden, args.verbose)
 
     if args.update_golden:
+        # ⚠ Capture EVERY tracked counter, not a hand-written subset. On 2026-07-14 this
+        # list read ("files", "errors", "warnings") — it omitted `shacl_violations`, so
+        # the 502 → 476 drop was NOT recorded anywhere. The one mechanism whose entire
+        # purpose is to make a lowered reference REVIEWABLE quietly failed to review it.
+        # A gate that forgets why a number went down is a gate that has stopped working.
+        TRACKED = ("files", "errors", "warnings", "shacl_violations")
         for layer, res in results.items():
             if res and "_error" not in res and golden.get(layer, {}).get("status") == "INSTRUMENTED":
-                old = {k: golden[layer].get(k) for k in ("files", "errors", "warnings")}
-                golden[layer].update({k: v for k, v in res.items() if not k.startswith("_")})
+                old = {k: golden[layer].get(k) for k in TRACKED if k in golden[layer]}
+                new = {k: v for k, v in res.items() if not k.startswith("_")}
+                deltas = {k: f"{old[k]} -> {new[k]}" for k in TRACKED
+                          if k in old and k in new and old[k] != new[k]}
+                golden[layer].update(new)
                 golden[layer]["_previous"] = old
+                golden[layer]["_delta"] = deltas or "no change"
                 golden[layer]["_updated"] = str(date.today())
+                if deltas:
+                    print(f"\n  {C_WARN}[!!] {layer}: {deltas}{C_END}")
+                    print(f"     {C_DIM}Recorded under '_previous' and '_delta'. WRITE DOWN WHY, "
+                          f"in the commit message.{C_END}")
         golden["_measured"] = f"{date.today()}, real repository (--update-golden)"
         save_golden(golden)
         print(f"\n{C_WARN}[!!] Golden values REWRITTEN → {GOLDEN_FILE}{C_END}")

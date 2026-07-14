@@ -1,4 +1,4 @@
-** TO_DO — Last updated: 2026-07-13 **
+** TO_DO — Last updated: 2026-07-14 **
 ** [consolidé : base 2026-05-31 + détails restaurés du 2026-05-24 + SC-1] **
 
 ** [SC-1 FAIT — 2026-07-12] Modèle de grammaire fonctionnelle
@@ -27,13 +27,30 @@
    - DCC008 =   1 : Fm1m2(Electronics, S × (Ft × D × It) × F) — parenthèses imbriquées
                     + 'Ft', qui n'est PAS une primitive TSCG (ni ASFID, ni REVOI, ni TKSL)
 
-** [SC-1.5 — MEILLEUR RATIO DU CHANTIER] UNE ligne de @context
-   "rdfs:subClassOf": {"@type": "@id"}
-   → ~500 violations SHACL tombent d'un coup (elles disent toutes
-     "rdfs:subClassOf must point to m2:DomainConceptCombo" — parce que la valeur est
-     sérialisée en LITTÉRAL, pas en IRI).
-   Le handover du 2026-07-03 l'avait déjà diagnostiqué et personne ne l'a fait.
-   Tant qu'elles sont là, le SHACL hurle trop pour être lu — donc il n'est pas lu.
+** [SC-1.5 — FAIT le 2026-07-14] Coercion @context de M1_CoreConcepts (v2.8.0)
+   "rdfs:subClassOf": {"@type": "@id"}    (+ rdfs:domain, rdfs:range)
+   ⚠ CORRECTION D'UNE AFFIRMATION FAUSSE : j'avais annoncé (en reprenant le handover
+     du 2026-07-03 SANS LE VÉRIFIER) que cette ligne ferait tomber ~500 violations SHACL.
+     C'EST FAUX. Seul M1_CoreConcepts avait le défaut ; les 15 extensions utilisaient
+     déjà {"@id": ...} et passaient Pellet. Le compteur SHACL n'a PAS baissé.
+   MAIS le gain est ailleurs, et il est énorme :
+     M1_CoreConcepts est passé de INANALYSABLE (Pellet plantait, ses 19 axiomes
+     rdfs:subClassOf étaient IGNORÉS, sa hiérarchie de classes INVISIBLE au raisonneur)
+     à LOGIQUEMENT COHÉRENT. Gain d'EXISTENCE, pas de quantité : la couche pouvait
+     être fausse sans que personne puisse le savoir.
+   → Pellet passe désormais sur M2 (16.17.0), M3 (2.4.0) et M1_CoreConcepts (2.8.0).
+   ⚠ owl:imports N'EST PAS coercé, DÉLIBÉRÉMENT : le coercer en fait une vraie IRI,
+     qu'Owlready tente de résoudre SUR LE RÉSEAU (il télécharge l'URL GitHub, reçoit du
+     JSON-LD, essaie de le lire en N-Triples, et meurt). Conséquence à retenir :
+     LE GRAPHE owl:imports DE TSCG EST DÉCORATIF. M1_CoreConcepts déclare importer M2
+     depuis toujours — et ne l'a JAMAIS fait. Chaque couche est raisonnée EN ISOLATION,
+     jamais avec sa fondation. Le rendre vivant demande un CATALOGUE LOCAL
+     (rediriger l'URL GitHub vers le fichier sur disque). Vrai chantier.
+
+** [SC-5 — LE VRAI GISEMENT] 502 violations SHACL mesurées (2026-07-14)
+   ~256 d'entre elles sont un BUG DU VALIDATEUR, pas des défauts de données.
+   C'est le meilleur ratio effort/dette du chantier — pas la ligne de @context.
+   Tant qu'elles hurlent, le SHACL est illisible, donc il n'est pas lu.
    C'EST LA CAUSE PROFONDE DE SIX MOIS DE DETTE INVISIBLE.
 
 ** [SC-5 — trouvaille SC-1] BUG du SHACL M1, pas des données
@@ -42,6 +59,18 @@
    - ~256 des 479 violations préexistantes sont ce bruit. SHAPE 2 doit exclure la sous-classe.
    - Ajouter aussi "KnowledgeFieldMetaCombo" à l'inventaire des formes KnowledgeField*
    - Les 4 domaines fantômes (ci-dessus) sont le doublon Domain/KnowledgeField qui affleure
+   - ~77 violations : m2:knowledgeField est une propriété FANTÔME (jamais déclarée en M2)
+
+** [BUG SCRIPT — check_M1.py] "does not look like a valid URI" sur les 16 fichiers
+   rdflib construit l'IRI de base à partir du CHEMIN WINDOWS (E:\...) au lieu du @base
+   déclaré. Toutes les IRI M1 sont donc forgées sous E:\... et NE CORRESPONDENT PAS à
+   celles que M2/M3 utilisent. Correctif : passer publicID= à rdflib.parse().
+   Peut expliquer une partie des violations restantes — NON VÉRIFIÉ.
+
+** [BUG SCRIPT — check_M1.py] meurt dès qu'on redirige sa sortie (cp1252)
+   `python check_M1.py > fichier.txt` → UnicodeEncodeError. Il marche en interactif,
+   il meurt quand on veut garder une trace. Correctif : sys.stdout.reconfigure(
+   encoding='utf-8', errors='replace') en tête de script.
 
 ** [RÈGLE D'OR — apprise à la dure le 2026-07-13]
    /mnt/project/ (project knowledge) N'EST PAS UNE AUTORITÉ.
