@@ -5,6 +5,15 @@
     "m3:sphinx_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "rdfs:subClassOf": {
+      "@type": "@id"
+    },
+    "rdfs:domain": {
+      "@type": "@id"
+    },
+    "rdfs:range": {
+      "@type": "@id"
+    },
     "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
@@ -20,8 +29,8 @@
       "dcterms:description": "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-07-12",
-      "owl:versionInfo": "2.7.0",
+      "dcterms:modified": "2026-07-14",
+      "owl:versionInfo": "2.8.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -245,6 +254,11 @@
       },
       "m2:changelog": [
         {
+          "version": "2.8.0",
+          "date": "2026-07-14",
+          "changes": "SC-1.5 — @context COERCION: added \"rdfs:subClassOf\": {\"@type\": \"@id\"}. All 19 rdfs:subClassOf values were serialised as STRING LITERALS instead of IRIs. Consequences, both silent until now: (1) the Pellet OWL reasoner IGNORED EVERY subClassOf axiom in this file (\"Ignoring subClassOf axiom because the object is not a class\"), so the class hierarchy was INVISIBLE to it and reasoning crashed outright — M1_CoreConcepts was not merely inconsistent, it was UNANALYSABLE; (2) it is the root of the bulk of the pre-existing SHACL violations (\"rdfs:subClassOf must point to m2:DomainConceptCombo\"). M2 and M3 already used {\"@id\": ...} objects, which is why they passed Pellet and this file did not. Also coerced rdfs:domain and rdfs:range, which had the SAME defect: \"rdfs:domain\": \"owl:Ontology\" reached Pellet as an xsd:string and killed the run outright (\"Unknown concept type: literal(owl:Ontology)\"). THREE @context lines fix all of it at once (rdfs:subClassOf, rdfs:domain, rdfs:range) — no data edit, no 500-value migration script. Diagnosed in the 2026-07-03 handover; applied here. ⚠ owl:imports is DELIBERATELY NOT coerced. Coercing it turns the string into a real IRI, which makes Owlready2 try to RESOLVE it over the network — it fetches the raw.githubusercontent.com URL, gets JSON-LD, tries to parse it as N-Triples, and dies. The import has been inert all along; making it live would require a proper local catalog/redirect. Out of scope here: leave it inert, and fix it deliberately when the import graph is actually wired up."
+        },
+        {
           "version": "2.7.0",
           "date": "2026-07-12",
           "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo (4 occurrences: Propagation, CascadeAmplification). The class is also RE-DEFINED: a DomainConceptCombo is now defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept. Domain qualification, NOT parent provenance, is the membership criterion. ⚠ CONSEQUENCE — the v1.4.0 'CORRECTION' below is itself ERRONEOUS: reclassifying Propagation and CascadeAmplification Fm2→Fm1m2 'because parent m1:Cascade is M1, not M2 atomic' rests on a misreading of Fm1m2 (it is NOT 'the function for M1 arguments'; it is 'the function with a Domain argument'). Fm2 arguments may legitimately be named concepts from M2_GenericConcepts OR M1_CoreConcepts, so m1:Cascade is a legal Fm2 argument. Fm1m2(Cascade, Duplication, Network) has no Domain and is therefore an Fm2. FLAGGED, NOT FIXED HERE — repair belongs to SC-6. Also flagged by the new SHACL (v1.1.0): m1:structuralGrammarFormulaExpanded is retired (no monoidal expansion — emergence is non-compositional), and the scalar guards (| gain_per_stage > 1, | λ > 0, | range(F_A) << range(F_R)) are M0 measurements leaking into M1. See StructuralGrammar/Functional_Grammar_Model.md."
@@ -253,11 +267,6 @@
           "version": "2.6.1",
           "date": "2026-06-23",
           "changes": "CORRECTION: CascadeAmplification and Propagation reclassified Fm2→Fm1m2 (parent m1:Cascade is M1, not M2 atomic). StratifiedDissipation notation Fm2²→Fm2 (parents Layer+Dissipation are M2 atomics — no second-order composition). @type updated to DomainConceptCombo for Propagation and CascadeAmplification."
-        },
-        {
-          "version": "2.6.0",
-          "date": "2026-06-23",
-          "changes": "NEW: m1:ConstraintBalance — instance of m2:TriadicBalance. Triadic pattern: UnderConstrained/BalancedConstraint/OverConstrained. Core instance of Ontological Overfitting anti-pattern. Validated ≥6 domains."
         }
       ]
     },

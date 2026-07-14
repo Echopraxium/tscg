@@ -1,6 +1,6 @@
 {
-  "_measured": "2026-07-13, real repository (E:\\...\\tscg), after SC-1",
-  "_note": "Reference values, TriskeleVM-style. 163 is GREEN. 162 is RED. 164 is RED. A count that DROPS is as suspicious as one that rises: either a deliberate fix (then --update-golden, and the drop is recorded) or a validator that stopped biting.",
+  "_measured": "2026-07-14, real repository, after SC-1 + SC-1.5",
+  "_note": "Reference values, TriskeleVM-style. EXACT match required. A count that DROPS is as suspicious as one that rises: either a deliberate fix (then --update-golden, and the drop is recorded under '_previous'/'_delta') or a validator that stopped biting. A silently shrinking count is the most dangerous signal in this repo — it looks like progress.",
   "M3": {
     "status": "NOT_INSTRUMENTED",
     "note": "No M3 checker. M3_Schema.shacl.ttl exists (2026-07-03, CONFORMS:True, 13 shapes) but no runner wraps it. An un-instrumented layer is not a passing layer — it is an unmeasured one."
@@ -23,7 +23,7 @@
       "DCC008": 1,
       "CTX001": 3
     },
-    "note": "This is the SC-6 BACKLOG, measured on the real repo (an earlier sandbox estimate of 126 was WRONG). Expected to be non-zero. Lower it ONLY by repairing formulas — never by loosening a shape.",
+    "note": "SC-6 BACKLOG (163 check_M1 errors) + SHACL DEBT (476 violations), both measured on the real repo. Both are EXPECTED to be non-zero. Lower them ONLY by repairing data or by fixing a SHACL bug — never by loosening a shape.",
     "breakdown": {
       "DCC006": "monoidal operator inside a signature — the bulk of SC-6",
       "DCC010": "Fm1m2's first argument is not a registered Domain. FOUR PHANTOM DOMAINS: 'Music' (registry says MusicTheory), 'SystemicModeling' (registry says SystemsTheory), 'EnergyGenerators' (absent), 'Cascade' (not a domain at all — that Fm1m2 is an Fm2).",
@@ -31,16 +31,28 @@
       "GCC009/DCC009": "guards appended after the signature. SCALAR guards = M0 measurements leaking into M1 → delete. QUALITATIVE guards (trajectoryShape=Circular) = real semantics → DO NOT DELETE, pending D11/SC-3.",
       "DCC008": "Amplifier: nested parentheses + `Ft`, which is not a TSCG primitive at all",
       "CTX001": "3 WARNINGS (not errors): M1_Domains lacks the 'm2' key in its @context; M1_BusinessModeling lacks 'm3:eagle_eye' and 'm3:sphinx_eye'. Counted in `warnings: 3`, and therefore in by_code too — by_code counts ALL codes emitted, warnings included. Omitting them from the golden set made the gate fail on a reference that was itself incomplete."
-    }
+    },
+    "shacl_violations": 476,
+    "_previous": {
+      "files": 16,
+      "errors": 163,
+      "warnings": 3,
+      "shacl_violations": 502
+    },
+    "_delta": {
+      "shacl_violations": "502 -> 476"
+    },
+    "_delta_reason": "SC-1.5, 2026-07-14: M1_CoreConcepts v2.8.0 — @context coercion (\"rdfs:subClassOf\"/\"rdfs:domain\"/\"rdfs:range\": {\"@type\":\"@id\"}). Its 26 violations were ALL 'rdfs:subClassOf must point to ...', caused by IRIs serialised as string literals. The file is now the ONLY SHACL-conformant M1 file. VERIFIED TARGETED: the other 15 files' counts are IDENTICAL to the digit (46·2·4·30·58·42·104·6·18·32·36·24·20·24·30). Same fix made M1_CoreConcepts reasonable by Pellet for the first time — it had been UNANALYSABLE, all 19 subClassOf axioms silently ignored.",
+    "_updated": "2026-07-14"
   },
   "M0": {
     "status": "INSTRUMENTED",
     "note": "check_m0_instances.py runs; golden counts not yet captured. Run --update-golden once, REVIEW the numbers, then trust them."
   },
   "_known_pre_existing_not_counted_here": {
-    "SHACL_subClassOf_literal": "~500 SHACL violations: rdfs:subClassOf is serialised as a string literal, not an IRI. The 2026-07-03 handover already diagnosed the fix: ONE @context line per file — \"rdfs:subClassOf\":{\"@type\":\"@id\"}.",
-    "SHACL_phantom_knowledgeField": "m2:knowledgeField is a phantom property → SC-5 (Domain fusion).",
-    "SHAPE2_vs_SHAPE3": "sh:targetClass follows subclasses, so every extension combo is validated TWICE with mutually exclusive requirements. ~256 violations of pure noise → SC-5 must make SHAPE 2 exclude the subclass.",
-    "invalid_URI_warning": "'does not look like a valid URI' — @base resolves to a Windows path. Separate IRI bug."
+    "SHAPE2_vs_SHAPE3": "~256 of the 502 SHACL violations are a VALIDATOR BUG, not data defects. sh:targetClass follows subclasses, so every extension combo is validated TWICE — by SHAPE 2 (which demands Fm2( ) and SHAPE 3 (which demands Fm1m2( ) — mutually exclusive. No extension combo can satisfy both. SHAPE 2 must exclude the subclass. → SC-5. THIS IS THE REAL GOLDMINE: ~256 violations that describe no defect at all.",
+    "phantom_knowledgeField": "~77 violations: m2:knowledgeField is a phantom property (never declared in M2) → SC-5 (Domain fusion).",
+    "CORRECTED_2026-07-14": "An earlier claim — repeated several times and taken from the 2026-07-03 handover WITHOUT VERIFICATION — held that ONE @context line (\"rdfs:subClassOf\":{\"@type\":\"@id\"}) would dissolve ~500 SHACL violations. THAT WAS WRONG. Only M1_CoreConcepts had the literal-serialisation defect; the 15 extensions already used {\"@id\": ...} and pass Pellet. Fixing it did NOT drop the SHACL count — but it took M1_CoreConcepts from UNREASONABLE (Pellet crashed, all 19 subClassOf axioms ignored, class hierarchy invisible) to logically consistent. The gain was existential, not quantitative: the layer could have been wrong with no way to find out.",
+    "invalid_URI_warning": "'<path> does not look like a valid URI' on all 16 files: rdflib builds the base IRI from the WINDOWS PATH instead of the declared @base. Every M1 IRI is therefore minted under E:\\... and does not match the IRIs M2/M3 use. Fix is in the script (pass publicID= to rdflib.parse), not in the data. May account for some of the remaining violations — UNVERIFIED."
   }
 }

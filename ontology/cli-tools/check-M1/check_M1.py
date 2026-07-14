@@ -26,6 +26,23 @@ Options
   -v, --verbose    Show all checks (including passed)
 """
 
+# --- stdout/stderr UTF-8, whatever the destination -----------------------------
+# Windows: when this script writes to a TERMINAL, Python uses the console encoding.
+# When it writes to a PIPE or a FILE (`> report.txt`, or a subprocess capture), it
+# falls back to the ANSI code page — cp1252 — where '⊗', 'ℹ️', '≥' do not exist. The
+# script then dies with UnicodeEncodeError.
+#
+# The perverse shape of this bug: `python check_M1.py` works, and the SAME command
+# with `> out.txt` CRASHES. A validator that works interactively and dies the moment
+# you try to KEEP A RECORD of it. It bit twice on 2026-07-13/14.
+import sys as _sys                                        # noqa: E402
+for _stream in (_sys.stdout, _sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+# ------------------------------------------------------------------------------
+
 # --- bootstrap: tscg_paths lives one level up, in ontology/cli-tools/ ----------
 import sys as _sys
 from pathlib import Path as _Path
@@ -784,13 +801,42 @@ class M1Checker:
         return len([i for i in self.issues if i.severity == "ERROR"]) == 0
 
 # ── SHACL validation ──────────────────────────────────────────────────────────
+def _public_id(file_path: Path) -> str:
+    r"""
+    The IRI the file DECLARES for itself (its @context @base), not the path it happens
+    to sit at.
+
+    Handing pyshacl a file PATH makes rdflib mint the base IRI from that path — on
+    Windows, an E:/... filesystem path. rdflib even says so, sixteen times
+    per run: "<path> does not look like a valid URI, trying to serialize this will
+    break." Every M1 IRI was therefore minted under `E:\...` and did NOT match the
+    IRIs M2 and M3 use, which is a quiet way of making cross-file references fail to
+    resolve during validation.
+
+    So: read the declared @base and pass it as publicID.
+    """
+    try:
+        data = json.loads(file_path.read_text(encoding="utf-8"))
+        base = data.get("@context", {}).get("@base")
+        if base:
+            return str(base) + file_path.name
+    except Exception:
+        pass
+    return "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/" + file_path.name
+
+
 def run_shacl(file_path: Path, shacl_path: Path) -> Tuple[bool, List[str]]:
     try:
         from pyshacl import validate
+        from rdflib import Graph
+
+        data_graph = Graph()
+        data_graph.parse(str(file_path), format="json-ld",
+                         publicID=_public_id(file_path))
+
         conforms, _, results_text = validate(
-            str(file_path),
+            data_graph,
             shacl_graph=str(shacl_path),
-            data_graph_format="json-ld",
             shacl_graph_format="turtle",
             inference="none",
         )
