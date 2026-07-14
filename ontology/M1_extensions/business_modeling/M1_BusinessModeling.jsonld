@@ -16,11 +16,11 @@
       "@id": "M1_extensions/business-modeling/M1_BusinessModeling.jsonld",
       "@type": "owl:Ontology",
       "rdfs:label": "TSCG M1 Business Modeling Extension",
-      "rdfs:comment": "Domain-specific concepts for business strategy and business model design. Contains 9 KnowledgeFieldConceptCombos derived from the Business Model Canvas (Osterwalder & Pigneur, 2010), covering value creation, delivery, and capture mechanisms. Discovery context: M0_Bmc SystemicFramework analysis (2026-06-20).",
+      "rdfs:comment": "Domain-specific concepts for business strategy and business model design. Contains 9 DomainConceptCombos derived from the Business Model Canvas (Osterwalder & Pigneur, 2010), covering value creation, delivery, and capture mechanisms. Discovery context: M0_Bmc SystemicFramework analysis (2026-06-20).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-20",
-      "dcterms:modified": "2026-06-20",
-      "owl:versionInfo": "1.0.0",
+      "dcterms:modified": "2026-07-12",
+      "owl:versionInfo": "1.1.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -30,6 +30,11 @@
         "M1_CoreConcepts.jsonld"
       ],
       "m2:changelog": [
+        {
+          "version": "1.1.0",
+          "date": "2026-07-12",
+          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
+        },
         {
           "version": "1.0.0",
           "date": "2026-06-20",
@@ -67,7 +72,7 @@
         "m2:KnowledgeField"
       ],
       "rdfs:label": "Strategic",
-      "rdfs:comment": "Disciplinary qualifier (ADJECTIVE form) for use in KnowledgeFieldConceptCombo patterns. Derived from m1:extension:business_modeling:BusinessModeling, specialized to strategic positioning, competitive dynamics, and long-term value architecture.",
+      "rdfs:comment": "Disciplinary qualifier (ADJECTIVE form) for use in DomainConceptCombo patterns. Derived from m1:extension:business_modeling:BusinessModeling, specialized to strategic positioning, competitive dynamics, and long-term value architecture.",
       "m2:knowledgeFieldRole": "ADJECTIVE",
       "m2:derivedFrom": {
         "@id": "m1:extension:business_modeling:BusinessModeling"
@@ -80,11 +85,13 @@
       "@id": "m1:extension:business_modeling:ValueProposition",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
-        { "@id": "m1:Attractor" }
+        "m2:DomainConceptCombo",
+        {
+          "@id": "m1:Attractor"
+        }
       ],
       "rdfs:label": "Value Proposition",
       "rdfs:comment": "The specific bundle of products, services, and experiences that resolves a customer's job-to-be-done, relieves a pain, or creates a gain. The primary attractor of the BMC system: all other 8 blocks are organized around the ValueProposition as their convergence point. A well-defined VP creates a stable basin of attraction in the customer's decision space — alternatives lose competitive pull once the VP is compelling enough. In TSCG terms, it is simultaneously an informational construct (It: what promise is communicated) and an attractor (A: what equilibrium state is targeted).",
@@ -104,9 +111,9 @@
       "@id": "m1:extension:business_modeling:CustomerSegment",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Customer Segment",
       "rdfs:comment": "A distinct group of people or organizations that share common needs, behaviors, or attributes and for which a business creates value. CustomerSegments define the Information boundary of the BMC system: they determine which signals (customer needs, willingness-to-pay, usage patterns) are relevant inputs to the model. In multi-sided platforms, multiple CustomerSegments interact — their coupling creates emergent network effects (m2:Emergence) that are not reducible to individual segment analysis.",
       "m1:structuralGrammarFormula": "Fm1m2(BusinessModeling, It × St)",
@@ -126,9 +133,9 @@
       "@id": "m1:extension:business_modeling:RevenueStream",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Revenue Stream",
       "rdfs:comment": "The cash a company generates from each Customer Segment in exchange for delivered Value Propositions. RevenueStreams are the Flow manifestation of successful value exchange — they quantify the economic signal that the VP has achieved sufficient attractor pull. The typology of revenue mechanisms (transactional vs recurring) directly maps to the Dynamics dimension: recurring revenues (subscription, licensing) create stable limit cycles; transactional revenues create episodic flow pulses.",
       "m1:structuralGrammarFormula": "Fm1m2(BusinessModeling, F × A)",
@@ -149,9 +156,9 @@
       "@id": "m1:extension:business_modeling:CrossSubsidy",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Cross Subsidy",
       "rdfs:comment": "A business instantiation of m2:Amplification with dual polarity: one segment (or service) is deliberately priced below cost (subsidy pole) to attract volume, while another segment (or service) is priced above marginal cost (capture pole) to generate surplus that funds the subsidy. CrossSubsidy creates a structural asymmetry in RevenueStreams: the flow from the capture segment amplifies the volume of the subsidized segment, which in turn increases total network value. The classic form is the multi-sided platform razor/blade or freemium architecture.",
       "m1:structuralGrammarFormula": "Fm1m2(BusinessModeling, A × F × D)",
@@ -171,9 +178,9 @@
       "@id": "m1:extension:business_modeling:PlatformDuality",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Platform Duality",
       "rdfs:comment": "The structural property of multi-sided platform business models in which two or more distinct customer segments interact through a common infrastructure, and the value created for each side depends on the presence and activity of the other sides. PlatformDuality is the M1 instantiation of m2:Synergy in the business domain: the combined value of the two-sided network exceeds the sum of each side considered independently. The TSCG Sphinx Eye (Map) dimension is particularly relevant here — the platform IS a map (representational infrastructure) that enables territory-side interactions to occur.",
       "m1:structuralGrammarFormula": "Fm1m2(BusinessModeling, St × F × D | Im)",
@@ -196,9 +203,9 @@
       "@id": "m1:extension:business_modeling:BusinessModelPattern",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Business Model Pattern",
       "rdfs:comment": "A recurring, transferable configuration of the 9 BMC building blocks that has proven viability across multiple industries and contexts. BusinessModelPatterns are the structural invariants of the business modeling domain — they correspond to m2:Modularity at the meta-level: reusable blueprints that can be combined and adapted. Osterwalder identifies ~55 patterns (freemium, long tail, open business model, subscription, etc.). In TSCG terms, a pattern is a compressed structural grammar formula that encodes the essential attractor-flow-dynamics relationship of a business archetype.",
       "m1:structuralGrammarFormula": "Fm1m2(BusinessModeling, St × It | R)",
@@ -217,9 +224,9 @@
       "@id": "m1:extension:business_modeling:StrategicTension",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Strategic Tension",
       "rdfs:comment": "A structural antagonism between two or more BMC blocks that generates productive creative pressure when balanced, or system-level instability when unresolved. StrategicTension is the M1 instantiation of m2:Polarity in the business domain. The most fundamental BMC tension is between the Cost Structure block (minimize) and the Value Proposition block (maximize) — any VP enhancement typically increases costs. Secondary tensions: scale vs quality (CustomerRelationships), openness vs control (KeyPartnerships), flexibility vs efficiency (KeyActivities). A healthy business model transforms tension into competitive advantage rather than resolving it by sacrificing one pole.",
       "m1:structuralGrammarFormula": "Fm1m2(BusinessModeling, D × A | St)",
@@ -238,9 +245,9 @@
       "@id": "m1:extension:business_modeling:BusinessModelMutation",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Business Model Mutation",
       "rdfs:comment": "A significant, non-incremental reconfiguration of multiple BMC blocks that produces a qualitatively different attractor state. BusinessModelMutation is the M1 instantiation of m2:Transformation in the business domain: the system traverses a bifurcation point beyond which the previous equilibrium is no longer accessible. Distinguished from incremental optimization (which stays in the same basin of attraction) and from strategic pivots (which may involve only VP change). True mutation involves structural change to KeyActivities, KeyPartnerships, and/or RevenueStream simultaneously — at least 3 of the 9 blocks are reconfigured.",
       "m1:structuralGrammarFormula": "Fm1m2(BusinessModeling, D × F × St)",
@@ -268,9 +275,9 @@
       "@id": "m1:extension:business_modeling:VerticalIntegration",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "rdfs:label": "Vertical Integration",
       "rdfs:comment": "The strategic acquisition or development of capabilities at adjacent stages of the value chain (upstream toward suppliers or downstream toward customers), reducing dependence on external KeyPartners and converting external flows into internal KeyActivities. VerticalIntegration is the M1 instantiation of m2:Cascade in the business domain: the flow of value through previously external interfaces is internalized, creating a longer and more controlled internal cascade. In the BMC, VerticalIntegration transforms KeyPartnerships into KeyResources + KeyActivities — the structural boundary of the firm extends to encompass the previously external stage.",
       "m1:structuralGrammarFormula": "Fm1m2(BusinessModeling, F × St × A)",

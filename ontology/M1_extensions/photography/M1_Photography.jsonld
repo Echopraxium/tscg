@@ -21,7 +21,7 @@
       "dcterms:description": "Domain-specific patterns for photography, camera operation, exposure control, and image quality trade-offs. M1 layer instantiates M2 GenericConcepts into concrete photographic patterns.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "owl:versionInfo": "1.1.1",
+      "owl:versionInfo": "1.2.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -40,8 +40,13 @@
       },
       "m1:extension:photography:patternCount": 10,
       "rdfs:comment": "M1 Photography bridges abstract M2 GenericConcepts to concrete photographic practice. Core patterns include exposure control, compensatory triplets, logarithmic scaling, and image quality trade-offs.",
-      "dcterms:modified": "2026-05-27",
+      "dcterms:modified": "2026-07-12",
       "m2:changelog": [
+        {
+          "version": "1.2.0",
+          "date": "2026-07-12",
+          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
+        },
         {
           "version": "1.1.1",
           "date": "2026-05-27",
@@ -51,11 +56,6 @@
           "version": "1.1.0",
           "date": "2026-05-26",
           "changes": "Namespace migration: m1.ext:photography: → m1:extension:photography:. ORIVE → REVOI. Fm1m2(Photography,...) formulas. KFCC typing. m2:characterizedBy removed."
-        },
-        {
-          "version": "1.0.0",
-          "date": "2026-01-22",
-          "changes": "Initial release. 10 photography patterns from M0_ExposureTriangle analysis."
         }
       ]
     },
@@ -63,7 +63,7 @@
       "@id": "m1:extension:photography:CompensatoryTriplet",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Compensatory Triplet (Exposure Control)",
       "rdfs:comment": "Pattern where three parameters (ISO, Aperture, Shutter Speed) must balance to achieve correct exposure. Adjusting one requires compensating with others. Multiplicative relationship: Exposure ∝ ISO × Area × Time.",
@@ -108,7 +108,7 @@
       },
       "m1:extension:photography:validatedPoclets": 1,
       "m1:extension:photography:transdisciplinaryAnalogy": "Fire Triangle (Fuel âŠ— Oâ‚‚ âŠ— Heat â†’ Fire)",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
       "m2:knowledgeField": {
         "@id": "m1:extension:photography:Photography"
@@ -118,7 +118,7 @@
       "@id": "m1:extension:photography:LogarithmicScaling",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Logarithmic Scaling (Stop System)",
       "rdfs:comment": "Photographic parameters scaled logarithmically base-2. Each 'stop' represents doubling/halving of light. Aligns with Weber-Fechner law of perception.",
@@ -137,7 +137,7 @@
       ],
       "m1:extension:photography:advantage": "Uniform additive arithmetic: Î”Stops_total = Î”Stops_ISO + Î”Stops_Aperture + Î”Stops_Shutter",
       "m1:extension:photography:validatedPoclets": 1,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
       "m2:knowledgeField": {
         "@id": "m1:extension:photography:Photography"
@@ -147,7 +147,7 @@
       "@id": "m1:extension:photography:DepthOfFieldControl",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Depth of Field Control",
       "rdfs:comment": "Range of distances appearing acceptably sharp in image. Controlled primarily by aperture, with secondary effects from focal length and subject distance.",
@@ -178,7 +178,7 @@
       },
       "m1:extension:photography:tradeoff": "Light gathering (wide aperture) â†” Depth of field (narrow aperture)",
       "m1:extension:photography:validatedPoclets": 1,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
       "m2:knowledgeField": {
         "@id": "m1:extension:photography:Photography"
@@ -188,7 +188,7 @@
       "@id": "m1:extension:photography:MotionBlurControl",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Motion Blur Control",
       "rdfs:comment": "Degree of blur from subject/camera motion during exposure. Controlled by shutter speed. Can be aesthetic choice (motion blur) or technical requirement (freeze motion).",
@@ -216,7 +216,7 @@
       "m1:extension:photography:handheldRule": "Minimum shutter â‰ˆ 1/focal_length (e.g., 50mm lens â†’ 1/60s minimum)",
       "m1:extension:photography:tradeoff": "Light accumulation (slow shutter) â†” Motion freeze (fast shutter)",
       "m1:extension:photography:validatedPoclets": 1,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × D × F | O + V)",
       "m2:knowledgeField": {
         "@id": "m1:extension:photography:Photography"
@@ -226,7 +226,7 @@
       "@id": "m1:extension:photography:NoiseGrainControl",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Noise/Grain Control (ISO)",
       "rdfs:comment": "Image degradation from sensor amplification (digital noise) or film grain. Controlled by ISO sensitivity. Trade-off between low-light capability and image quality.",
@@ -261,7 +261,7 @@
       ],
       "m1:extension:photography:tradeoff": "Low-light capability (high ISO) â†” Image quality (low ISO)",
       "m1:extension:photography:validatedPoclets": 1,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
       "m2:knowledgeField": {
         "@id": "m1:extension:photography:Photography"
@@ -271,7 +271,7 @@
       "@id": "m1:extension:photography:ExposureCompensation",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Exposure Compensation",
       "rdfs:comment": "Deliberate override of camera's automatic exposure metering. Allows photographer to bias exposure lighter (+EV) or darker (-EV) by specified stops.",
@@ -292,7 +292,7 @@
         "spot": "Measures small area - precise but requires skill"
       },
       "m1:extension:photography:validatedPoclets": 0,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × D × F | V + O)",
       "m2:knowledgeField": {
         "@id": "m1:extension:photography:Photography"
@@ -302,7 +302,7 @@
       "@id": "m1:extension:photography:CreativeExposureModes",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Creative Exposure Modes (PASM)",
       "rdfs:comment": "Camera operating modes giving photographer control over exposure parameters. P (Program), A/Av (Aperture Priority), S/Tv (Shutter Priority), M (Manual).",
@@ -335,7 +335,7 @@
       ],
       "m1:extension:photography:autoISOInteraction": "Modern cameras: Auto-ISO works in A, S, M modes (acts as 'safety net')",
       "m1:extension:photography:validatedPoclets": 1,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
       "m2:knowledgeField": {
         "@id": "m1:extension:photography:Photography"
@@ -345,7 +345,7 @@
       "@id": "m1:extension:photography:DynamicRangeCapture",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Dynamic Range Capture",
       "rdfs:comment": "Camera/sensor ability to capture detail in both shadows and highlights simultaneously. Limited by sensor technology. Extended via HDR (High Dynamic Range) techniques.",
@@ -364,7 +364,7 @@
       },
       "m1:extension:photography:limitation": "Scene luminance range often exceeds sensor capability â†’ Trade-off required",
       "m1:extension:photography:validatedPoclets": 0,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
       "m2:knowledgeField": {
         "@id": "m1:extension:photography:Photography"
@@ -374,7 +374,7 @@
       "@id": "m1:extension:photography:BokehQuality",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Bokeh Quality (Out-of-Focus Rendering)",
       "rdfs:comment": "Aesthetic quality of out-of-focus areas (blur). Affected by aperture shape (blade count), lens design, aperture size. Subjective but recognizable.",
@@ -391,7 +391,7 @@
       },
       "m1:extension:photography:culturalContext": "Japanese aesthetic term ('ãƒœã‚±' = blur); highly valued in portrait/macro",
       "m1:extension:photography:validatedPoclets": 0,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
       "m2:knowledgeField": {
         "@id": "m1:extension:photography:Photography"
@@ -401,7 +401,7 @@
       "@id": "m1:extension:photography:ExposureLatitude",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Exposure Latitude (Forgiveness)",
       "rdfs:comment": "Tolerance of capture medium to exposure errors. High latitude (film negative) â†’ forgiving; low latitude (slide film, digital highlights) â†’ unforgiving.",
@@ -425,7 +425,7 @@
       },
       "m1:extension:photography:bestPractice": "Expose to the right (ETTR) for digital - maximize signal, avoid highlight clipping",
       "m1:extension:photography:validatedPoclets": 0,
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
       "m2:knowledgeField": {
         "@id": "m1:extension:photography:Photography"
@@ -435,7 +435,7 @@
       "@id": "m1:extension:photography:ValidationSummary",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "M1 Photography Patterns - Validation Summary",
       "m1:extension:photography:totalPatterns": 10,
@@ -465,7 +465,7 @@
         "Balance (Territory) - discovered via Exposure Triangle",
         "Trade-off (Map) - discovered via Exposure Triangle"
       ],
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
       "m2:knowledgeField": {
         "@id": "m1:extension:photography:Photography"

@@ -1,5 +1,32 @@
 # TSCG Structural Grammar as Mathematical Foundation
 
+> ### ⚠️ SUPERSEDED SECTIONS — read before using this document (2026-07-12, SC-1)
+>
+> This document is a **historical record of a reform in progress** and its body has
+> fallen behind its own header. Two corrections apply:
+>
+> **1. `⊗` is RETIRED (2026-07-06), not "kept and recontextualised".**
+> Where the body below still says the `⊗` symbol is *kept* with a new meaning, it is
+> **stale**: Phase 2 replaced it with the three explicit operators **`×` (Gt, Territory),
+> `+` (Gm, Map), `|` (Gs, Stereopsis)** — one per grammar. The `⊗` occurrences that
+> remain legitimately below are **citations of the refuted Hilbert/tensor formalism**
+> (the exhibit, not the endorsement). Full purge = sub-worksite **SC-9**.
+>
+> **2. `⊗⇒` NO LONGER EXISTS.** It was glossed here as the "function type (emergence)"
+> operator. There is **no operator** between the arguments of an emergence — there is a
+> **named function**:
+>
+> ```
+> Fm2   : GenericConcept²⁺           →  GenericConceptCombo
+> Fm1m2 : Domain⁺ , GenericConcept⁺  →  DomainConceptCombo
+> ```
+>
+> `Fm2`/`Fm1m2` are **functions, not functors**: emergence is *non-compositional*
+> (the arguments are combined, not associated), and a functor must preserve
+> composition. A combo therefore has **no monoidal expansion**.
+> See `StructuralGrammar/Functional_Grammar_Model.md`.
+
+
 **Author**: Echopraxium with the collaboration of Claude AI  
 **Date**: 2026-05-11  
 **Framework**: TSCG (Transdisciplinary System Construction Game) v16.0.0+  
@@ -133,7 +160,7 @@ The system is **closed** (all results are valid Braille letters), **complete**
 | Braille Grammar | TSCG Structural Grammar |
 |---|---|
 | 2 primitives `{S, A}` | 10 primitive types `{A,S,F,I,D,R,E,V,O,I}` |
-| Operations: `+`, `−`, `SymH`, `SymV`, `Rot` | Operators: `⊗`, `⊗⇒`, `^op` |
+| Operations: `+`, `−`, `SymH`, `SymV`, `Rot` | Operators: `×`, `+`, `\|` (monoidal, atoms) ; functions `Fm2` / `Fm1m2` (emergence, combos) ; `^op` (duality) |
 | 26 derived glyphs | ~80 M2 GenericConcepts |
 | Complexity levels (1–5 dots) | Formula arity (2–5 dimensions) |
 | Morphisms between glyphs (SymH, SymV...) | Structural relations between concepts |
@@ -157,7 +184,7 @@ The entire TSCG Concept Grammar is built on exactly three operators:
 | Operator | Type-theoretic role | Meaning | Example |
 |---|---|---|---|
 | `⊗` | Product type (conjunction) | Both dimensions simultaneously active | `D⊗I⊗F` = Process |
-| `⊗⇒` | Function type (emergence) | Concept emerges from combination | `⊗⇒(Emergence, Coherence)` = SelfOrganization |
+| **`Fm2` / `Fm1m2`** | **Emergence — a FUNCTION, not an operator** | A named concept is *produced* by combining named concepts (non-compositional: combined, not associated). Formerly written `⊗⇒`, retired. | `Fm2(Emergence, Coherence)` = SelfOrganization |
 | `^op` | Dual type (opposition) | Structural polar opposite | `Coherence^op` = Incoherence |
 
 ### Formal Definition of `⊗`
@@ -271,7 +298,7 @@ not a basis vector of a metric space."*
 ```
 𝕋₀  Primitive Types    :  A, S, F, I, D, R, E, V, O, I          (M3 — 10 generators)
 𝕋₁  Derived Types      :  τ₁⊗τ₂⊗...⊗τₙ  |  τᵢ ∈ 𝕋₀             (M2 — ~80 GenericConcepts)
-𝕋₂  Compound Types     :  τ₁ ⊗⇒ τ₂  |  τᵢ ∈ 𝕋₁                 (M1 — GenericConceptCombos)
+𝕋₂  Compound Types     :  Fm2(τ₁, …, τₙ)  |  τᵢ ∈ 𝕋₁          (M1 — GenericConceptCombos)
 𝕄₀  Terms              :  poclets inhabiting a type τ ∈ 𝕋₁ ∪ 𝕋₂  (M0 — instances)
 ```
 
@@ -534,7 +561,7 @@ was always rightfully its own:
 
 ```
 Braille (2022, M. Kern) :  {S, A}  +  {+,−,SymH,SymV,Rot}  →  26 glyphs
-TSCG M2                 :  {A,S,F,I,D,R,E,V,O,I}  +  {⊗,⊗⇒,^op}  →  ~80 types
+TSCG M2                 :  {A,S,F,I,D,R,E,V,O,I}  +  {×,+,|,^op}  +  Fm2/Fm1m2  →  ~80 types
 ```
 
 Both are Structural Grammars. Neither requires a Hilbert space. And the first

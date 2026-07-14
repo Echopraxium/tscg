@@ -1,5 +1,32 @@
 # TSCG Structural Grammar Foundation
 
+> ### ⚠️ SUPERSEDED SECTIONS — read before using this document (2026-07-12, SC-1)
+>
+> This document is a **historical record of a reform in progress** and its body has
+> fallen behind its own header. Two corrections apply:
+>
+> **1. `⊗` is RETIRED (2026-07-06), not "kept and recontextualised".**
+> Where the body below still says the `⊗` symbol is *kept* with a new meaning, it is
+> **stale**: Phase 2 replaced it with the three explicit operators **`×` (Gt, Territory),
+> `+` (Gm, Map), `|` (Gs, Stereopsis)** — one per grammar. The `⊗` occurrences that
+> remain legitimately below are **citations of the refuted Hilbert/tensor formalism**
+> (the exhibit, not the endorsement). Full purge = sub-worksite **SC-9**.
+>
+> **2. `⊗⇒` NO LONGER EXISTS.** It was glossed here as the "function type (emergence)"
+> operator. There is **no operator** between the arguments of an emergence — there is a
+> **named function**:
+>
+> ```
+> Fm2   : GenericConcept²⁺           →  GenericConceptCombo
+> Fm1m2 : Domain⁺ , GenericConcept⁺  →  DomainConceptCombo
+> ```
+>
+> `Fm2`/`Fm1m2` are **functions, not functors**: emergence is *non-compositional*
+> (the arguments are combined, not associated), and a functor must preserve
+> composition. A combo therefore has **no monoidal expansion**.
+> See `StructuralGrammar/Functional_Grammar_Model.md`.
+
+
 **Author**: Echopraxium with the collaboration of Claude AI  
 **Date**: 2026-05-18 (v2 — Operator Notation Reform)  
 **Framework**: TSCG (Transdisciplinary System Construction Game) v16.0.0+  
@@ -168,7 +195,7 @@ The parallel to TSCG is exact:
 | Braille Grammar | TSCG Structural Grammar |
 |---|---|
 | 2 primitives `{S, A}` | 10 primitive dimensions `{A,S,F,I,D,R,E,V,O,I}` |
-| Operations: `+`, `−`, `SymH`, `SymV`, `Rot` | Operators: `⊗`, `⊗⇒`, `^op` |
+| Operations: `+`, `−`, `SymH`, `SymV`, `Rot` | Operators: `×`, `+`, `\|` (monoidal, atoms) ; functions `Fm2` / `Fm1m2` (emergence, combos) ; `^op` (duality) |
 | 26 derived glyphs | ~80 M2 GenericConcepts |
 | Complexity levels (1–5 points) | Formula arity (2–5 dimensions) |
 | Closure: all results are valid Braille | Closure: all formulas are valid concept signatures |
@@ -737,7 +764,7 @@ converging toward.
 
 ```
 Braille  :  {S, A}  +  {+, −, SymH, SymV, Rot}   →  26 glyphs (complete)
-TSCG M2  :  {A,S,F,I,D,R,E,V,O,I}  +  {⊗, ⊗⇒, ^op}  →  ~80 concepts (complete)
+TSCG M2  :  {A,S,F,I,D,R,E,V,O,I}  +  {×, +, |, ^op}  +  Fm2/Fm1m2  →  ~80 concepts (complete)
 ```
 
 Both are **Structural Grammars**. Neither requires a Hilbert space.

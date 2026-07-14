@@ -3,7 +3,8 @@
 
 **Author**: Echopraxium with the collaboration of Claude AI  
 **Date**: 2026-01-23  
-**Version**: 1.0.0  
+**Version**: 1.2.0  
+**Updated**: 2026-07-07 (REVOI→REVOI migration, Structural Grammar)  
 **Domain**: M1_Biology  
 **Status**: VALIDATED  
 
@@ -104,7 +105,7 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
 
 **M2 GenericConcepts Activated**:
 - `m2:Flow` - Material, energy, and information flows
-- `m2:Cycle` - Biochemical recycling during pupation
+- `m2:Behavior` - Coordinated flux network (biochemical recycling during pupation); *ex-`m2:Cycle`, retired*
 - `m2:Regulation` - Hormonal control of transitions
 
 ### 2.4 Information (I) - Score: 0.96
@@ -133,7 +134,7 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
 - `m2:Code` - Genetic program encodes transformation
 - `m2:Memory` - Developmental history retained in CNS and imaginal discs
 - `m2:Signal` - Hormonal and environmental cues
-- `m2:Switch` - Discrete state transitions via threshold responses
+- `m2:Step` / `m2:Threshold` - Discrete state transitions via threshold responses; *ex-`m2:Switch`, retired*
 
 ### 2.5 Dynamics (D) - Score: 0.94
 **Dominant M3 Dimension**: Strong temporal evolution with phase transitions
@@ -176,221 +177,63 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
 
 ---
 
-## 3. ORIVE ANALYSIS (Sphinx Eye - Map Perspective)
+## 3. REVOI ANALYSIS (Sphinx Eye - Map Perspective)
 
-### 3.1 Observability (O) - Score: 0.85
-**Map Quality**: High but with hidden internal processes
+> **Migration note (v1.2.0):** the Sphinx basis is now **REVOI = { R, E, V, O, Im }** per M2 v16.16.0 — Representability, Evolvability, Verifiability, Observability, Interoperability. The former ORIVE axes *Validity*, *Expressiveness* and *Reproducibility* were **not** REVOI dimensions and have been removed. **O** and **Im** carry over; **R / E / V** are re-derived. Scores below are **PROVISIONAL**, pending validation.
 
-**Analysis**:
-- **Directly Observable**:
-  - External morphology of all 6 poles
-  - Feeding behavior (larva)
-  - Emergence event (dramatic visual)
-  - Flight behavior (imago)
-- **Indirectly Observable** (require instrumentation):
-  - Hormonal concentrations (ELISA, LC-MS)
-  - Imaginal disc activity (histology, fluorescence microscopy)
-  - Gene expression (RNA-seq, qPCR)
-  - Internal reorganization during pupation (X-ray imaging, MRI)
-- **Unobservable**:
-  - Subjective experience (if any) during transformation
-  - Precise molecular events during histogenesis
-- **Observer Independence**: High (process occurs regardless of observation)
+### 3.1 Representability (R) - Score: 0.90
+Can the system be encoded, named, described? The 6-pole model is highly representable: established terminology (instar, ecdysis, eclosion), canonical diagrams, and an elegant formal lifecycle notation. Rich semantic decodability across morphological, hormonal, genetic and ecological registers.
 
-**M2 GenericConcepts Activated**:
-- `m2:Observability` (ORIVE dimension) - Mixed direct/indirect access
-- `m2:Transparency` - External states clear, internal processes opaque
-- `m2:Interface` - Chrysalis case obscures internal transformation
+### 3.2 Evolvability (E) - Score: 0.74
+Can the model reconfigure as observations accumulate? Metamorphosis is a settled paradigm, so the capacity to revise is moderate rather than high — the coarse 6-pole structure is stable, while molecular choreography and the evolutionary origin of holometaboly are the parts still refining the map.
 
-### 3.2 Reproducibility (R) - Score: 0.98
-**Map Quality**: Exceptionally reproducible biological process
+### 3.3 Verifiability (V) - Score: 0.92
+Can the map be tested against the Territory? Strongly: hormonal manipulations (JH analogs disrupt metamorphosis predictably), imaginal-disc fate maps, and temperature / emergence-timing models all yield falsifiable predictions. This axis inherits the empirical strength formerly (mis)labelled *Validity*.
 
-**Analysis**:
-- **High Reproducibility**:
-  - Lepidopteran metamorphosis conserved across ~180,000 species
-  - 6-pole structure universal in holometabolous insects (>800,000 species)
-  - Hormonal mechanisms consistent (JH/Ecdysone cascade)
-  - Imaginal disc development stereotyped
-- **Environmental Variance**:
-  - Temperature affects **rate** but not **sequence**
-  - Nutrition affects **size** but not **structure**
-  - Photoperiod affects **timing** (diapause) but not **program**
-- **Genetic Robustness**:
-  - Canalized developmental pathway (Waddington)
-  - Mutation-resistant due to deep evolutionary conservation
-- **Experimental Reproducibility**:
-  - Lab-reared populations show consistent metamorphosis
-  - Surgical/hormonal manipulations yield predictable outcomes
+### 3.4 Observability (O) - Score: 0.85
+External morphology and behaviour are directly observable across all six poles; the internal reorganization (hormone titres, imaginal-disc activity, gene expression, histolysis/histogenesis) requires instrumentation (ELISA/LC-MS, histology, RNA-seq, imaging).
 
-**M2 GenericConcepts Activated**:
-- `m2:Reproducibility` (ORIVE dimension) - High experimental reliability
-- `m2:Invariance` - Core program invariant across conditions
-- `m2:Robustness` - Developmental canalization
+### 3.5 Interoperability (Im) - Score: 0.78
+Strong integration within the life sciences (evo-devo, endocrinology, cell biology, ecology); moderate with systems biology and biomechanics; low with quantum biology and cosmology. Conceptual bridges: phase transition (thermodynamics), stem-cell niches (regenerative medicine), self-assembly (materials science).
 
-### 3.3 Interoperability (I) - Score: 0.78
-**Map Quality**: Moderate integration with broader frameworks
-
-**Analysis**:
-- **High Interoperability**:
-  - **Evo-Devo**: Metamorphosis as case study in developmental evolution
-  - **Endocrinology**: Model system for hormonal regulation
-  - **Cell Biology**: Apoptosis (histolysis) and proliferation (histogenesis)
-  - **Ecology**: Life history theory (r/K strategies, resource allocation)
-- **Moderate Interoperability**:
-  - **Systems Biology**: Network models of gene regulation during metamorphosis
-  - **Biomechanics**: Wing deployment as hydraulic/mechanical system
-- **Low Interoperability**:
-  - **Quantum Biology**: No known quantum effects in metamorphosis
-  - **Cosmology**: No macroscale analogues
-- **Conceptual Bridges**:
-  - Metamorphosis as **phase transition** (thermodynamics analogy)
-  - Imaginal discs as **stem cell niches** (regenerative medicine link)
-  - Emergence as **self-assembly** (materials science parallel)
-
-**M2 GenericConcepts Activated**:
-- `m2:Interoperability` (ORIVE dimension) - Strong within life sciences
-- `m2:Context` - Domain-specific (biology) but conceptually exportable
-- `m2:Analogy` - Phase transition metaphor
-
-### 3.4 Validity (V) - Score: 0.92
-**Map Quality**: High empirical and theoretical validity
-
-**Analysis**:
-- **Empirical Validity**:
-  - Anatomical descriptions: >250 years (Malpighi, Swammerdam, 1600s)
-  - Hormonal mechanisms: Validated since Wigglesworth (1930s-1950s)
-  - Genetic basis: Confirmed via molecular biology (1980s-present)
-  - Imaginal disc concept: Validated through transplantation experiments
-- **Theoretical Coherence**:
-  - Consistent with evolutionary theory (adaptation to ecological niches)
-  - Aligns with developmental biology principles (cell differentiation, morphogenesis)
-  - Fits life history theory (optimal resource allocation across stages)
-- **Predictive Power**:
-  - Hormonal manipulations (JH analogs) disrupt metamorphosis predictably
-  - Temperature models accurately predict emergence timing
-  - Imaginal disc fate maps enable surgical outcome prediction
-- **Remaining Uncertainties**:
-  - Precise molecular choreography of histolysis (~10% unexplained variance)
-  - Evolutionary origin of complete metamorphosis (debated)
-  - Consciousness/sentience during transformation (philosophically unclear)
-
-**M2 GenericConcepts Activated**:
-- `m2:Validity` (ORIVE dimension) - Strong empirical support
-- `m2:Coherence` - Integrates multiple levels (molecular → organismal)
-- `m2:Prediction` - Enables accurate forecasting
-
-### 3.5 Expressiveness (E) - Score: 0.88
-**Map Quality**: Rich but complex conceptual model
-
-**Analysis**:
-- **High Expressiveness**:
-  - **6-pole model**: Captures full lifecycle elegantly
-  - **Emergence as distinct pole**: Highlights critical vulnerability/transition
-  - **Hierarchical organization**: Poles → substages (instars) → molecular events
-  - **Multiple perspectives**: Morphological, hormonal, genetic, ecological
-- **Conceptual Richness**:
-  - Metamorphosis as **transformation** archetype (cultural resonance)
-  - Imaginal discs as **latent potential** (philosophical depth)
-  - Emergence as **becoming** (existential metaphor)
-- **Communication Challenges**:
-  - Technical terminology barrier (histolysis, ecdysis, hemolymph)
-  - Chrysalis vs. cocoon confusion (common misconception)
-  - Internal processes invisible (requires expert interpretation)
-- **Pedagogical Power**:
-  - Visual accessibility (caterpillar → butterfly easily observed)
-  - Narrative arc (dramatic transformation story)
-  - Cross-cultural symbolic significance (rebirth, transformation)
-
-**M2 GenericConcepts Activated**:
-- `m2:Expressiveness` (ORIVE dimension) - Rich conceptual model
-- `m2:Representation` - Multiple valid representations (genetic, hormonal, morphological)
-- `m2:Symbol` - Cultural/psychological significance
-
-### 3.6 ORIVE Summary
+### 3.6 REVOI Summary
 | Dimension | Score | Dominant Characteristic |
 |-----------|-------|------------------------|
-| **O**bservability | 0.85 | External states clear, internal opaque |
-| **R**eproducibility | 0.98 | Highly conserved across species/conditions |
-| **I**nteroperability | 0.78 | Strong within biology, moderate beyond |
-| **V**alidity | 0.92 | Well-validated empirically and theoretically |
-| **E**xpressiveness | 0.88 | Rich model with cultural resonance |
-| **ORIVE Mean** | **0.88** | **High-quality conceptual model** |
+| **R**epresentability | 0.90 | Elegant, well-named, fully encodable |
+| **E**volvability | 0.74 | Settled paradigm; refines at the molecular edge |
+| **V**erifiability | 0.92 | Falsifiable; strong experimental leverage |
+| **O**bservability | 0.85 | External clear, internal instrumented |
+| **I**nteroperability (Im) | 0.78 | Strong in biology, moderate beyond |
+| **REVOI Mean** | **0.84** | **High-quality Map (provisional)** |
 
 ---
 
 ## 4. M2 GenericConcept IDENTIFICATION
 
-### 4.1 Primary GenericConcepts (Dominance > 0.8)
+Aligned with **M2 v16.16.0** (Structural Grammar notation ×, |). The formal activation set of this poclet:
 
-1. **Transformation** (D⊗S⊗I) - **0.96**
-   - Fundamental change in structure, function, and identity
-   - Irreversible progression through states
-   - Categorical reorganization (larva ≠ imago)
+| # | GenericConcept | Formula | Dominance | Role |
+|---|----------------|---------|-----------|------|
+| 1 | **Transformation** | `D × S × I` | 0.96 | Irreversible change of structure, function and identity |
+| 2 | **Emergence** | `I × S × D` | 0.94 | Adult structures emerge from imaginal discs |
+| 3 | **Regulation** | `A × S × F` | 0.93 | JH / Ecdysone hormonal cascade controls transitions |
+| 4 | **Behavior** | `S × D × F` | 0.92 | Ordered network of Steps (the 6 poles); M2 discoveryContext cites this poclet |
+| 5 | **Threshold** | `A × I` | 0.88 | Hormonal thresholds trigger all-or-nothing commitment |
+| 6 | **Layer** | `St × It × A \| R` | 0.87 | Nested levels: molecular → cellular → tissue → organism |
+| 7 | **Step** | `S × I × D` | 0.86 | Each pole is a Step; M2 example: "Butterfly egg stage" |
+| 8 | **Stase** | `S × A` | 0.82 | Imaginal discs dormant, reversible (F=0) |
+| 9 | **Potentialization** | `A × D × F \| _^` | 0.80 | Activation of dormant discs at emergence (F=0 → F_active) |
+| 10 | **Memory** | `∫(D−F)dτ` | 0.75 | Larval learning retained through CNS continuity |
 
-2. **Cycle** (D⊗F) - **0.90**
-   - Lifecycle returns to reproductive stage (egg production by imago)
-   - Generational iteration (population-level cyclicity)
-   - Biochemical recycling (larval proteins → adult tissues)
+### 4.1 Retirements & remap (v1.2.0)
+- **Switch / Mode / Cycle / Latency** are retired: absent from or superseded in M2 v16.16.0.
+- **Mode** (6 discrete operational states) → subsumed by **Behavior** + **Step**.
+- **Switch** (discrete state transitions) → **Threshold** (trigger) + inter-Step transitions.
+- **Cycle** (generational loop) → expressed by the ordered **Behavior** network + lifecycle closure (Imago → Egg). *(call to confirm)*
+- **Latency** (candidate; imaginal discs as latent potential) → **not lost but absorbed** by the existing pair **Stase** (`S × A`, dormant/reversible) + **Potentialization** (`A × D × F`, activation). No new M2 candidate required.
 
-3. **Mode** (S⊗I) - **0.92**
-   - Distinct operational states (feeding mode, transformation mode, reproduction mode)
-   - N-ary polarity (6 discrete modes)
-   - Mode-specific morphology and behavior
-
-4. **Emergence** (S⊗I⊗E) - **0.94**
-   - Adult structures emerge from latent imaginal discs
-   - Eclosion event as dramatic emergence moment
-   - Novel properties in imago (flight, sexual reproduction) absent in larva
-
-5. **Threshold** (A⊗D) - **0.88**
-   - Critical points triggering state transitions (hormonal thresholds)
-   - All-or-nothing commitment (ecdysis irreversibility)
-   - Environmental thresholds (temperature, photoperiod for diapause)
-
-6. **Regulation** (A⊗S⊗F) - **0.93**
-   - Hormonal control (JH/Ecdysone cascade)
-   - Developmental checkpoints (size threshold for pupation)
-   - Gene regulatory networks (temporal control of expression)
-
-7. **Switch** (I⊗D) - **0.89**
-   - Discrete state transitions (larva → pupa, pupa → imago)
-   - Bistable genetic states (larval gene program OFF, adult gene program ON)
-   - Hormonal switches (JH drop triggers metamorphosis)
-
-8. **Layer** (S) - **0.87**
-   - Nested organizational levels: molecular → cellular → tissue → organ → organism
-   - Temporal layers: embryonic determination → larval growth → pupal reorganization → adult function
-   - Protective layers: chorion (egg), cuticle (larva), chrysalis (pupa)
-
-### 4.2 Secondary GenericConcepts (Dominance 0.6-0.8)
-
-9. **Memory** (I⊗D) - **0.75**
-   - Larval learning retained in adult (CNS continuity)
-   - Imaginal disc "memory" of adult structures (embryonic determination)
-   - Epigenetic memory (chromatin states through metamorphosis)
-
-10. **Code** (I) - **0.78**
-    - Genetic code orchestrates transformation
-    - Hormonal code (JH/Ecdysone ratio) signals developmental stage
-    - Morphogenetic code (positional information in imaginal discs)
-
-11. **Vulnerability** (A⊗S) - **0.72**
-    - Emergence as maximum vulnerability window
-    - Pupal immobility (predation risk)
-    - Cryptic coloration as defense (chrysalis camouflage)
-
-12. **Trade-off** (Multiple) - **0.70**
-    - Larval feeding efficiency vs. adult mobility
-    - Growth rate vs. developmental stability
-    - Size vs. emergence timing (seasonal constraints)
-
-### 4.3 Emergent GenericConcepts (Novel or Strengthened)
-
-**Candidate for New M2 GenericConcept**:
-- **Latency** (I⊗D) - Imaginal discs as latent adult structures
-  - Dormant potential awaiting activation
-  - Temporal separation between determination and expression
-  - Appears in: stem cells, seed dormancy, volcanic systems, disease latency
+### 4.2 Informal observations (not in the formal activation)
+Vulnerability, Trade-off and Code appear descriptively in the analysis but are not part of the validated M2 activation set for this poclet.
 
 ---
 
@@ -401,7 +244,7 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
 - **Observable**: External transformations, behavior shifts
 - **Empirical**: Experimental manipulations (surgical, hormonal, genetic)
 
-### 5.2 Sphinx Eye (ORIVE - Map) Dominant Aspects
+### 5.2 Sphinx Eye (REVOI - Map) Dominant Aspects
 - **Conceptual**: Developmental program, genetic blueprint
 - **Representational**: Multiple models (morphological, hormonal, genetic)
 - **Cultural**: Transformation symbolism, metamorphosis metaphor
@@ -409,14 +252,14 @@ The butterfly metamorphosis represents the complete holometabolous lifecycle tra
 ### 5.3 Synthesis: Bicephalous Unity
 The butterfly metamorphosis poclet exemplifies **perfect bicephalous balance**:
 - **Territory (ASFID)**: Exceptionally measurable and observable (0.95 mean)
-- **Map (ORIVE)**: High-quality conceptual model with cultural depth (0.88 mean)
-- **Coupling**: Strong ASFID↔ORIVE correspondence
+- **Map (REVOI)**: high-quality Map (0.84 mean, provisional)
+- **Coupling**: Strong ASFID↔REVOI correspondence
   - Morphological states (S) ↔ Developmental stages (model construct)
   - Hormonal flows (F) ↔ Regulatory logic (conceptual framework)
   - Genetic program (I) ↔ Theoretical blueprint (map abstraction)
 
 ### 5.4 Epistemic Gap Analysis
-**Epistemic Gap (θ)**: ~25° (Low-Moderate)
+**Epistemic Gap (δ₁)**: ~0.22 / ~22° (provisional)
 
 **What We Know (Low Gap)**:
 - Morphological sequence (98% reproducible)
@@ -449,13 +292,13 @@ Following the Domain Hybrid Tensor Product 5D framework:
 - **D** (Dynamics): Temporal progression
 
 **Map-Dominant Dimensions**:
-- **R** (Reproducibility): Developmental canalization
+- **R** (Representability): Encodable lifecycle notation
 - **O** (Observability): Mixed external/internal
 
-**Key Couplings** (ASFID⊗ORIVE):
-1. **S⊗R**: Structural invariance across species
-2. **D⊗O**: Temporal observability (external states clear, transitions rapid)
-3. **I⊗V**: Genetic code validity (well-validated molecular basis)
+**Key Couplings** (ASFID×REVOI, provisional):
+1. **S × R**: Structural invariance across species
+2. **D × O**: Temporal observability (external states clear, transitions rapid)
+3. **I × V**: Genetic basis verifiable (well-validated molecular basis)
 
 **Coupling Matrix Rank**: ~6 (rich biological domain)
 
@@ -486,7 +329,7 @@ Following the Domain Hybrid Tensor Product 5D framework:
 - **Validates**: TSCG framework handles multi-pole developmental systems
 - **Contributes**:
   - M2 validation: Confirms Transformation, Emergence, Mode, Switch, Layer
-  - M2 candidates: Latency (potential new GenericConcept)
+  - M2 reuse: Stase + Potentialization (absorb the former Latency candidate)
   - M1 population: Developmental biology concepts (histolysis, imaginal disc, ecdysis)
 
 ---
@@ -515,7 +358,7 @@ Following the Domain Hybrid Tensor Product 5D framework:
 
 ### 9.1 TSCG Teaching Applications
 - **Introductory**: Demonstrates all ASFID dimensions clearly
-- **Intermediate**: ORIVE analysis reveals map-territory distinctions
+- **Intermediate**: REVOI analysis reveals map-territory distinctions
 - **Advanced**: M2 GenericConcept identification practice
 
 ### 9.2 Broader Educational Use
@@ -528,7 +371,7 @@ Following the Domain Hybrid Tensor Product 5D framework:
 ## 10. FUTURE RESEARCH DIRECTIONS
 
 ### 10.1 TSCG Framework Refinement
-- **Latency GenericConcept**: Validate across multiple domains
+- **Stase / Potentialization** (imaginal-disc dormancy → activation): further cross-domain validation of the F=0 ↔ F_active transition
   - Biological: Seed dormancy, viral latency, stem cells
   - Physical: Metastable states, supercooling
   - Social: Hidden potentials, latent conflicts
@@ -552,14 +395,14 @@ Following the Domain Hybrid Tensor Product 5D framework:
 The **Butterfly Metamorphosis (6-Pole Model)** is an **exceptional poclet** for TSCG:
 - ✓ **Minimal**: 6 poles necessary and sufficient
 - ✓ **Complete**: All ASFID dimensions strongly present (mean: 0.95)
-- ✓ **Valid**: High ORIVE scores (mean: 0.88)
+- ✓ **Valid**: High REVOI scores (mean: 0.84, provisional)
 - ✓ **Bicephalous Balance**: Strong Territory and Map perspectives
 - ✓ **Educational**: Clear demonstration of transformation principles
 - ✓ **Generative**: Contributes M2 validation and candidates
 
 ### 11.2 Key Insights
 1. **Emergence Matters**: Treating emergence as a distinct pole (not just transition) captures critical vulnerability and deployment dynamics
-2. **Latency as M2 Candidate**: Imaginal discs exemplify latent potential as transdisciplinary pattern
+2. **Dormancy → Activation**: imaginal discs modelled by **Stase** (`S × A`) + **Potentialization** (`A × D × F`) — the former *Latency* candidate, now absorbed by existing M2 concepts
 3. **6-Pole Architecture**: Optimal granularity for complete holometaboly (neither oversimplified nor overcomplicated)
 4. **Cultural-Scientific Bridge**: Metamorphosis serves as both rigorous biological model and rich cultural metaphor
 
@@ -567,7 +410,7 @@ The **Butterfly Metamorphosis (6-Pole Model)** is an **exceptional poclet** for 
 This poclet **validates** TSCG's capacity to:
 - Handle multi-pole developmental systems
 - Integrate Territory (observable biology) and Map (conceptual models)
-- Identify transdisciplinary GenericConcepts (Transformation, Emergence, Latency)
+- Identify transdisciplinary GenericConcepts (Transformation, Emergence, Behavior, Stase/Potentialization)
 - Bridge scientific precision and cultural meaning
 
 ### 11.4 Recommendation
@@ -586,9 +429,9 @@ This poclet **validates** TSCG's capacity to:
 - Nijhout, H. F. (1994). *Insect Hormones*. Princeton University Press.
 
 ### 12.2 TSCG Framework
-- `M2_GenericConcepts.jsonld` - Version 14.0.0
+- `M2_GenericConcepts.jsonld` - Version 16.16.0
 - `M3_EagleEye.jsonld` - ASFID dimensions
-- `M3_SphinxEye.jsonld` - ORIVE dimensions
+- `M3_SphinxEye.jsonld` - REVOI dimensions
 - `poclet_terminology.md` - Poclet definition and methodology
 
 ---
@@ -613,21 +456,15 @@ This poclet **validates** TSCG's capacity to:
 | 20-Hydroxyecdysone | Peripheral tissues | Active form, initiates metamorphosis |
 | PTTH | Brain neurosecretory cells | Stimulates ecdysone release |
 
-### Appendix C: ASFID-ORIVE Coupling Matrix
-```
-        O     R     I     V     E
-A    0.70  0.85  0.60  0.75  0.65
-S    0.90  0.95  0.75  0.88  0.82
-F    0.65  0.90  0.70  0.85  0.60
-I    0.80  0.92  0.85  0.90  0.88
-D    0.78  0.88  0.72  0.85  0.80
-```
-**Dominant Couplings**:
-1. **S⊗R**: 0.95 (Structural reproducibility)
-2. **I⊗R**: 0.92 (Information reproducibility)
-3. **S⊗O**: 0.90 (Structural observability)
-4. **I⊗V**: 0.90 (Information validity)
-5. **I⊗E**: 0.88 (Information expressiveness)
+### Appendix C: ASFID×REVOI Key Couplings (provisional)
+Re-derived onto REVOI (R = Representability). Full 5×5 matrix to be recomputed after REVOI validation.
+
+1. **S × R**: 0.92 (structure highly representable)
+2. **I × V**: 0.92 (information basis verifiable)
+3. **S × O**: 0.90 (structural states observable)
+4. **D × E**: 0.74 (temporal model moderately evolvable)
+5. **I × Im**: 0.78 (informational cross-domain interoperability)
+
 
 ---
 

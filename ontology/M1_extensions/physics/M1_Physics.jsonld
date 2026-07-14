@@ -23,11 +23,16 @@
       "dcterms:description": "Extension of the TSCG framework with physics-specific concepts. Initial focus: thermodynamics and phase transition theory (6 concepts). Each concept is grounded in M2 metaconcepts and applicable across Physics subdomains (thermodynamics, statistical mechanics, materials science, physical chemistry).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-26",
-      "owl:versionInfo": "1.1.0",
+      "owl:versionInfo": "1.2.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m2:changelog": [
+        {
+          "version": "1.2.0",
+          "date": "2026-07-12",
+          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
+        },
         {
           "version": "1.1.0",
           "date": "2026-05-26",
@@ -45,13 +50,14 @@
       ],
       "skos:scopeNote": "Physics subdomain concepts. v1.0.0 covers Thermodynamics / Phase Transitions. Future planned extensions: Mechanics (Newton, Lagrangian), Electromagnetism (Maxwell), Optics (may integrate with M1_Optics), Quantum Mechanics (Schrodinger, Heisenberg), Statistical Mechanics.",
       "m1:extension:physics:bootstrapSource": "M0_PhaseTransition v1.1.0",
-      "m1:extension:physics:conceptCount": 6
+      "m1:extension:physics:conceptCount": 6,
+      "dcterms:modified": "2026-07-12"
     },
     {
       "@id": "m1:extension:physics:LatentHeat",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Latent Heat",
       "rdfs:comment": "Energy absorbed or released during a first-order phase transition at constant temperature and pressure. The word 'latent' (hidden) reflects that no temperature change accompanies the energy transfer — the energy is entirely consumed in structural reorganization. LatentHeat is the thermodynamic observable signature of the Switch M2 metaconcept.",
@@ -76,7 +82,7 @@
       "m1:extension:physics:pocletOrigin": "M0_PhaseTransition v1.1.0",
       "m1:extension:physics:measuredBy": "Differential Scanning Calorimetry (DSC); isothermal calorimetry",
       "m1:structuralGrammarFormula": "Fm1m2(Physics, A × D × F)",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m2:knowledgeField": {
         "@id": "m1:extension:physics:Physics"
       }
@@ -85,7 +91,7 @@
       "@id": "m1:extension:physics:TriplePoint",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Triple Point",
       "rdfs:comment": "The unique temperature T_tp and pressure P_tp at which all three classical phases (Solid, Liquid, Gas) coexist in thermodynamic equilibrium. By Gibbs phase rule (F = C - Ph + 2), a single-component system (C=1) with three coexisting phases (Ph=3) has F=0 degrees of freedom: the triple point is a fully invariant thermodynamic point. It validates Polarity(N=3) for the phase system: the only (T,P) where the three Attractor basins have equal Gibbs free energy.",
@@ -106,7 +112,7 @@
       "m1:extension:physics:pocletOrigin": "M0_PhaseTransition v1.1.0",
       "m1:extension:physics:metrologyNote": "Water triple point defined the Kelvin until 2019 SI redefinition; still used as practical calibration reference",
       "m1:structuralGrammarFormula": "Fm1m2(Physics, A × S × It × D)",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m2:knowledgeField": {
         "@id": "m1:extension:physics:Physics"
       }
@@ -115,7 +121,7 @@
       "@id": "m1:extension:physics:CriticalPoint",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Critical Point",
       "rdfs:comment": "The temperature T_c and pressure P_c above which the distinction between liquid and gas phases vanishes: a single supercritical fluid phase exists with properties intermediate between liquid and gas. The CriticalPoint marks the end of the Liquid/Gas coexistence curve. At T_c, the first-order Liquid/Gas transition (with latent heat and Switch) becomes a second-order continuous transition. It directly validates the CriticalityRegime M2 metaconcept: the Switch between liquid and gas ceases to exist above T_c.",
@@ -146,7 +152,7 @@
       ],
       "m1:extension:physics:pocletOrigin": "M0_PhaseTransition v1.1.0",
       "m1:structuralGrammarFormula": "Fm1m2(Physics, A × D × F)",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m2:knowledgeField": {
         "@id": "m1:extension:physics:Physics"
       }
@@ -155,7 +161,7 @@
       "@id": "m1:extension:physics:OrderParameter",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Order Parameter",
       "rdfs:comment": "A measurable physical quantity that is zero in the high-symmetry (disordered) phase and non-zero in the low-symmetry (ordered) phase. The OrderParameter quantifies the degree of broken symmetry following a SymmetryBreaking event. In the TSCG framework, it operationalizes two M2 metaconcepts simultaneously: it encodes which Attractor basin the system occupies (m2:Attractor) and measures how much structural information the phase contains (m2:Information).",
@@ -177,7 +183,7 @@
       ],
       "m1:extension:physics:pocletOrigin": "M0_PhaseTransition v1.1.0",
       "m1:structuralGrammarFormula": "Fm1m2(Physics, A × S × It)",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m2:knowledgeField": {
         "@id": "m1:extension:physics:Physics"
       }
@@ -186,7 +192,7 @@
       "@id": "m1:extension:physics:PhaseDiagram",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Phase Diagram",
       "rdfs:comment": "A graphical Map in state-variable space (typically T-P axes) that shows the stability domains of each phase (Attractor regions), the coexistence boundaries (Thresholds), the triple point, and the critical point. The PhaseDiagram is the canonical REVOI (Sphinx Eye / Map) representation of the ASFID (Eagle Eye / Territory) attractor landscape. It embodies the core TSCG principle: the Sphinx Eye maps what the Eagle Eye observes.",
@@ -211,7 +217,7 @@
       ],
       "m1:extension:physics:pocletOrigin": "M0_PhaseTransition v1.1.0",
       "m1:structuralGrammarFormula": "Fm1m2(Physics, A × D | R)",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m2:knowledgeField": {
         "@id": "m1:extension:physics:Physics"
       }
@@ -220,7 +226,7 @@
       "@id": "m1:extension:physics:Nucleation",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:label": "Nucleation",
       "rdfs:comment": "The kinetic mechanism by which a new phase begins to form within a parent phase at a phase transition. A microscopic fluctuation must overcome an energy barrier (the nucleation barrier) to form a stable embryo of the new phase. Nucleation reveals the kinetic dimension of the Switch M2 metaconcept: the thermodynamic Threshold can be crossed while the actual Switch is delayed by the barrier, enabling metastable states (supercooling, superheating, supersaturation).",
@@ -259,7 +265,7 @@
       ],
       "m1:extension:physics:pocletOrigin": "M0_PhaseTransition v1.1.0",
       "m1:structuralGrammarFormula": "Fm1m2(Physics, A × D × F)",
-      "rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+      "rdfs:subClassOf": "m2:DomainConceptCombo",
       "m2:knowledgeField": {
         "@id": "m1:extension:physics:Physics"
       }

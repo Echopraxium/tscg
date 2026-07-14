@@ -1,11 +1,54 @@
 # M0_TrophicPyramid — TSCG Poclet
 
 **File:** `instances/poclets/TrophicPyramid/M0_TrophicPyramid.jsonld`
-**Version:** 2.1.0 · **Date:** 2026-04-02
+**Version:** 2.2.0 · **Date:** 2026-07-12
 **Author:** Echopraxium with the collaboration of Claude AI
 **Domain:** Ecology / Biology — Trophodynamics, Community Ecology, Thermodynamics of Ecosystems, Anthropocene Ecology
 **Reference (trophic model):** Lindeman R.L. (1942) *The Trophic-Dynamic Aspect of Ecology*, Ecology 23(4):399–417
 **Reference (AP model):** Meadows D.H. et al. (1972) *The Limits to Growth*, Club of Rome / Universe Books, New York
+
+---
+
+
+---
+
+## ⚠️ Notation update — SC-1 (2026-07-12)
+
+This README was written in the **retired tensor notation**. It carried, in one file,
+every member of a residue family that traces back to a single false thesis
+(`m2:morphism_emergence`: *"emergence is a category-theoretic morphism"*):
+
+| Was | Is | Why |
+|---|---|---|
+| `Biology ⊙ (Layer ⊗ Dissipation)` | **`Fm1m2(Biology, Layer, Dissipation)`** | `⊙` was the **disciplinary qualification operator** — i.e. the ancestor of `Fm1m2`. Same job, unnamed. |
+| `⊗⇒(Process, Step, Trajectory)` | **`Fm2(Process, Step, Trajectory)`** | `⊗⇒` was the "emergence function type". There is **no operator** between a function's arguments — there is a **name** in front of them. |
+| `Compiled tensor: S ⊗ I ⊗ A ⊗ R ⊗ F ⊗ D` | **deleted (D8)** | This was `lattice_join(dims(parents))` — the union of the parents' dimensions. It asserts that a combo is fully **computable from its parts**, i.e. that **no emergence occurs**. A combo has **no monoidal expansion**. |
+| `⊗` (atoms) | `×` (Gt) / `+` (Gm) / `\|` (Gs) | one operator per grammar; `⊗` was retired 2026-07-06. |
+
+`Fm2` and `Fm1m2` are **functions, not functors**: emergence is *non-compositional*
+(the arguments are **combined, not associated**), and a functor must *preserve*
+composition. The model did not appear from nowhere — it **names** what `⊙` was already
+doing, and removes the part that was false.
+
+**The GenericConcept formulas below were also RESYNCHRONISED against
+`M2_GenericConcepts.jsonld` v16.15.0** — not merely transliterated. Several had drifted:
+
+| This README said | M2 actually says |
+|---|---|
+| `Homeostasis = A⊗S⊗F⊗I⊗D` | `A × St × F \| L` — 5 dimensions claimed, 4 real, and the `L` pole missing |
+| `Transducer = F⊗I` | `F × S × I` — `S` was missing |
+| `Threshold = A⊗I⊗F` | `A × I` — `F` was spurious |
+| `Entropy = D⊗F` | `F × It × D \| _^` / `\| _$` — `It` and both poles missing |
+| `Gradient = ⊗₂F` | `F × T` — `⊗₂F` is not a formula in any notation |
+
+A mechanical `⊗ → ×` substitution would have preserved every one of these errors in
+modern dress. **The stale notation was hiding stale content.**
+
+*Note*: bare `S` / `I` still appear in a few M2 formulas above (`Hierarchy`, `Regulation`,
+`Threshold`, `Network`, `Transducer`). They are quoted **verbatim from M2 v16.15.0**.
+Monoid subscripting (`St`/`Ss`, `It`/`Im`) is **SC-2**, not SC-1 — this README will follow M2.
+
+Rationale: `ontology/StructuralGrammar/Functional_Grammar_Model.md`
 
 ---
 
@@ -27,11 +70,9 @@ The pyramid is simultaneously:
 ### TSCG Synergy Formulas
 
 ```
-StratifiedDissipation   = Biology ⊙ (m2:Layer ⊗ m2:Dissipation)
-Compiled tensor:          S ⊗ I ⊗ A ⊗ R ⊗ F ⊗ D
+StratifiedDissipation   = Fm1m2(Biology, Layer, Dissipation)
 
-AnthropogenicDomination = Biology ⊙ (m2:Transducer ⊗ m2:Regulation ⊗ m2:Entropy)
-Compiled tensor:          F ⊗ I ⊗ A ⊗ S ⊗ D
+AnthropogenicDomination = Fm1m2(Biology, Transducer, Regulation, Entropy)
 ```
 
 ---
@@ -126,41 +167,39 @@ Gap increased from 0.05 (v1.0.0, Coherent) to 0.07 (v2.x, OnCriticalLine) with t
 
 | GenericConcept | Formula | Role in Trophic Pyramid |
 |----------------|---------|------------------------|
-| `m2:Layer` | S⊗I⊗A⊗R | **Structural backbone** — each trophic level IS a Layer. 5 ordered positional partitions. |
-| `m2:Dissipation` | F⊗D | **Core mechanism** — ~90% energy lost as heat at each trophic boundary. Lindeman's 10% rule. |
-| `m2:Context` | O⊗R⊗Im⊗E | **Epistemic frame** — the biome context (tropical, arctic, marine) determines which species fill each Layer. Same trophic structure, different species across contexts. |
+| `m2:Layer` | `St × It × A \| R` | **Structural backbone** — each trophic level IS a Layer. 5 ordered positional partitions. |
+| `m2:Dissipation` | `F × D` | **Core mechanism** — ~90% energy lost as heat at each trophic boundary. Lindeman's 10% rule. |
+| `m2:Context` | `O + R + Im + E` | **Epistemic frame** — the biome context (tropical, arctic, marine) determines which species fill each Layer. Same trophic structure, different species across contexts. |
 
 ### Secondary
 
 | GenericConcept | Formula | Role |
 |----------------|---------|------|
-| `m2:Hierarchy` | A⊗S | Positional ordering base → apex |
+| `m2:Hierarchy` | `S × A` | Positional ordering base → apex |
 | `m2:Flow` | F_score | Energy/biomass transfer between levels |
-| `m2:Gradient` | ⊗₂F | Energy density gradient from base to apex |
-| `m2:Homeostasis` | A⊗S⊗F⊗I⊗D | Ecosystem equilibrium under perturbation |
-| `m2:Regulation` | A⊗S⊗F | Predator-prey feedback loops + anthropogenic meta-regulation |
-| `m2:Cascade` | ⊗⇒(Process,Step,Trajectory) | Natural trophic cascade + Anthropogenic super-cascade |
-| `m2:Threshold` | A⊗I⊗F | Minimum viable population; AP_crit = 0.70 (irreversible collapse) |
-| `m2:Network` | S⊗F⊗I | Food web underlying the pyramid |
+| `m2:Gradient` | `F × T` | Energy density gradient from base to apex |
+| `m2:Homeostasis` | `A × St × F \| L` | Ecosystem equilibrium under perturbation |
+| `m2:Regulation` | `A × S × F` | Predator-prey feedback loops + anthropogenic meta-regulation |
+| `m2:Cascade` | `Fm2(Process, Step, Trajectory)` *(m1:Cascade — M1_CoreConcepts)* | Natural trophic cascade + Anthropogenic super-cascade |
+| `m2:Threshold` | `A × I` | Minimum viable population; AP_crit = 0.70 (irreversible collapse) |
+| `m2:Network` | `S × I × F` | Food web underlying the pyramid |
 | `m2:Emergence` | — | Ecosystem services (pollination, carbon sequestration) |
-| `m2:Transducer` | F⊗I | Humanity converts geological energy into trophic control (fossil-fuel bypass) |
-| `m2:Entropy` | D⊗F | Accelerated irreversibility: mass extinction = absorbing state; AP ≥ 0.70 seals cascade |
+| `m2:Transducer` | `F × S × I` | Humanity converts geological energy into trophic control (fossil-fuel bypass) |
+| `m2:Entropy` | `F × It × D \| _^` / `\| _$` | Accelerated irreversibility: mass extinction = absorbing state; AP ≥ 0.70 seals cascade |
 | `m2:Processor` | It_score | Humanity's technological information processing enabling supra-trophic strategy |
 
 **Total M2 GenericConcepts mobilised: 15**
 
 ---
 
-## 5. KnowledgeFieldConceptCombos
+## 5. DomainConceptCombos
 
 ### 5.1 StratifiedDissipation
 
-**StratifiedDissipation** is the core `KnowledgeFieldConceptCombo` introduced by this poclet, defined in `M1_Biology.jsonld`:
+**StratifiedDissipation** is the core `DomainConceptCombo` introduced by this poclet, defined in `M1_Biology.jsonld`:
 
 ```
-StratifiedDissipation = Biology ⊙ (Layer ⊗ Dissipation)
-Qualification operator:  ⊙ (disciplinary, not tensor product)
-Compiled tensor formula: S ⊗ I ⊗ A ⊗ R ⊗ F ⊗ D
+StratifiedDissipation = Fm1m2(Biology, Layer, Dissipation)
 Dominant dimensions:     S, I, A (Layer scaffold) + F, D (Dissipation engine)
 ```
 
@@ -168,11 +207,10 @@ Dominant dimensions:     S, I, A (Layer scaffold) + F, D (Dissipation engine)
 
 ### 5.2 AnthropogenicDomination
 
-**AnthropogenicDomination** is the second `KnowledgeFieldConceptCombo`, capturing humanity's supra-trophic role:
+**AnthropogenicDomination** is the second `DomainConceptCombo`, capturing humanity's supra-trophic role:
 
 ```
-AnthropogenicDomination = Biology ⊙ (Transducer ⊗ Regulation ⊗ Entropy)
-Compiled tensor formula:  F ⊗ I ⊗ A ⊗ S ⊗ D
+AnthropogenicDomination = Fm1m2(Biology, Transducer, Regulation, Entropy)
 Dominant dimensions:      F, I, A, D
 ```
 
@@ -243,7 +281,7 @@ GenericConcepts mobilised by cascade: `m2:Cascade`, `m2:Threshold`, `m2:Regulati
 
 ## 8. m2:Context — Biome-Dependent Layer Filling
 
-The `m2:Context` GenericConcept (O⊗R⊗Im⊗E) finds its clearest ecological instantiation in the biome-specific filling of trophic Layers:
+The `m2:Context` GenericConcept (`O + R + Im + E`) finds its clearest ecological instantiation in the biome-specific filling of trophic Layers:
 
 | Context (Biome) | Level 1 | Level 2 | Level 3 | Level 4 | Humanity (Level 6) |
 |-----------------|---------|---------|---------|---------|-------------------|
@@ -251,7 +289,7 @@ The `m2:Context` GenericConcept (O⊗R⊗Im⊗E) finds its clearest ecological i
 | Arctic Tundra | Mosses, lichens, sedges | Lemmings, caribou | Arctic fox | Polar bear, wolf | Oil extraction, climate forcing, trophy hunting |
 | Open Ocean | Phytoplankton | Zooplankton, krill | Herring, anchovy | Tuna, sharks, orca | Industrial fishing, ocean acidification, plastic pollution |
 
-Same `m2:Layer` hierarchy; radically different species filling each stratum. The **Context** (`O⊗R⊗Im⊗E`) is the epistemic frame that conditions which species are observable, representable, interoperable across scientific communities, and evolvable over geological time.
+Same `m2:Layer` hierarchy; radically different species filling each stratum. The **Context** (`O + R + Im + E`) is the epistemic frame that conditions which species are observable, representable, interoperable across scientific communities, and evolvable over geological time.
 
 ---
 
@@ -259,11 +297,11 @@ Same `m2:Layer` hierarchy; radically different species filling each stratum. The
 
 | Layer | Contribution | Type |
 |-------|-------------|------|
-| **M2** | `m2:Layer` (S⊗I⊗A⊗R) — validated by Trophic Pyramid + 6 other domains | GenericConcept |
-| **M2** | `m2:Context` (O⊗R⊗Im⊗E) — validated across biomes and disciplines | GenericConcept |
+| **M2** | `m2:Layer` (`St × It × A | R`) — validated by Trophic Pyramid + 6 other domains | GenericConcept |
+| **M2** | `m2:Context` (`O + R + Im + E`) — validated across biomes and disciplines | GenericConcept |
 | **M2** | `m2:Transducer`, `m2:Entropy`, `m2:Processor` — mobilised by humanity / AP model | GenericConcepts |
-| **M1_Biology** | `StratifiedDissipation` — KnowledgeFieldConceptCombo (Biology ⊙ Layer⊗Dissipation) | New M1 concept |
-| **M1_Biology** | `AnthropogenicDomination` — KnowledgeFieldConceptCombo (Biology ⊙ Transducer⊗Regulation⊗Entropy) | New M1 concept |
+| **M1_Biology** | `StratifiedDissipation` — DomainConceptCombo `Fm1m2(Biology, Layer, Dissipation)` | New M1 concept |
+| **M1_Biology** | `AnthropogenicDomination` — DomainConceptCombo `Fm1m2(Biology, Transducer, Regulation, Entropy)` | New M1 concept |
 | **M0** | `M0_TrophicPyramid.jsonld` — 6-pole poclet with AP model, trophic cascade, humanity as super-predator | Poclet |
 
 ---

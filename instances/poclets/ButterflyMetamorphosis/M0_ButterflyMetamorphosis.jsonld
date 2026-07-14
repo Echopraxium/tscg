@@ -32,29 +32,34 @@
       "rdfs:comment": "6-pole model of butterfly metamorphosis from egg to adult imago, including critical emergence phase. Demonstrates complete transformation with radical structural reorganization, hormonal regulation, and imaginal disc-based development. Validated poclet for TSCG framework.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-24",
-      "owl:versionInfo": "1.1.1",
+      "owl:versionInfo": "1.2.0",
       "m1:domain": "m1.ext:biology:DevelopmentalBiology",
       "m0:check_following_attributes:START": "",
       "m0:status": "VALIDATED",
       "m0:poleCount": 6,
       "m0:metamorphosisType": "Holometabolous",
       "m0:asfidMean": 0.95,
-      "m0:oriveMean": 0.88,
-      "m0:epistemicGap": 0.25,
+      "m0:epistemicGap": 0.22,
       "rdfs:seeAlso": [
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_Biology.jsonld",
         "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld"
       ],
       "m0:check_following_attributes:END": "",
-      "dcterms:modified": "2026-04-20",
+      "dcterms:modified": "2026-07-07",
       "m0:focalApplicable": true,
       "m2:changelog": [
+        {
+          "version": "1.2.0",
+          "date": "2026-07-07",
+          "changes": "MIGRATION: ORIVE -> REVOI (R/E/V/O/Im per M2 v16.16.0). Obsolete axes (Validity, Expressiveness, Reproducibility) removed; Sphinx scores re-derived (PROVISIONAL, pending validation). M2 activation set updated: Switch/Mode/Cycle/Latency retired; added Behavior, Step, Stase, Potentialization. tensorFormula (⊗) -> hasStructuralGrammarFormula (×, |)."
+        },
         {
           "version": "1.1.1",
           "date": "2026-06-26",
           "changes": "ACTION3: Added m0:focalApplicable=true."
         }
-      ]
+      ],
+      "m0:revoiMean": 0.84
     },
     {
       "@id": "m0:pole_1_egg",
@@ -346,7 +351,7 @@
       },
       "m0:m2_GenericConcepts": [
         "m2:Flow",
-        "m2:Cycle",
+        "m2:Behavior",
         "m2:Regulation"
       ]
     },
@@ -378,7 +383,7 @@
         "m2:Code",
         "m2:Memory",
         "m2:Signal",
-        "m2:Switch"
+        "m2:Step"
       ]
     },
     {
@@ -413,165 +418,60 @@
       ]
     },
     {
-      "@id": "m0:ORIVEAnalysis",
+      "@id": "m0:REVOIAnalysis",
       "@type": "owl:Class",
-      "rdfs:label": "ORIVE Analysis (Sphinx Eye - Map Perspective)",
-      "rdfs:comment": "Five-dimensional evaluation of conceptual model quality: Observability, Reproducibility, Interoperability, Validity, Expressiveness."
+      "rdfs:label": "REVOI Analysis (Sphinx Eye - Map Perspective)",
+      "rdfs:comment": "Five-dimensional evaluation of Map quality: Representability, Evolvability, Verifiability, Observability, Interoperability (M2 v16.16.0)."
     },
     {
-      "@id": "m0:orive_observability",
+      "@id": "m0:revoi_representability",
       "@type": [
-        "m0:ORIVEAnalysis"
+        "m0:REVOIAnalysis"
+      ],
+      "rdfs:label": "Representability (R)",
+      "m0:score": 0.9,
+      "m0:dominantM3": "m3:sphinx_eye:Representability",
+      "rdfs:comment": "The 6-pole model is elegantly encodable/nameable: established terminology (instar, ecdysis, eclosion), canonical diagrams, formal lifecycle notation. High semantic decodability."
+    },
+    {
+      "@id": "m0:revoi_evolvability",
+      "@type": [
+        "m0:REVOIAnalysis"
+      ],
+      "rdfs:label": "Evolvability (E)",
+      "m0:score": 0.74,
+      "m0:dominantM3": "m3:sphinx_eye:Evolvability",
+      "rdfs:comment": "The model is a settled paradigm; moderate capacity to reconfigure as molecular / evo-devo observations accumulate (histogenesis detail, holometaboly origin still refine it)."
+    },
+    {
+      "@id": "m0:revoi_verifiability",
+      "@type": [
+        "m0:REVOIAnalysis"
+      ],
+      "rdfs:label": "Verifiability (V)",
+      "m0:score": 0.92,
+      "m0:dominantM3": "m3:sphinx_eye:Verifiability",
+      "rdfs:comment": "Strongly testable against Territory: hormonal manipulations (JH analogs), imaginal-disc fate maps, temperature / emergence-timing models yield falsifiable predictions. Inherits the strength formerly mislabelled 'Validity'."
+    },
+    {
+      "@id": "m0:revoi_observability",
+      "@type": [
+        "m0:REVOIAnalysis"
       ],
       "rdfs:label": "Observability (O)",
       "m0:score": 0.85,
-      "m0:dominantM3": "m3:Observability",
-      "rdfs:comment": "High observability for external states, moderate for internal processes. Directly observable: external morphology (all poles), feeding behavior, emergence, flight. Indirectly observable (instrumentation required): hormone titers, imaginal disc activity, gene expression, internal reorganization. Unobservable: subjective experience, precise molecular events.",
-      "m0:directlyObservable": [
-        "External morphology (all poles)",
-        "Feeding behavior (larva)",
-        "Emergence event",
-        "Flight behavior (imago)"
-      ],
-      "m0:indirectlyObservable": [
-        "Hormonal concentrations (ELISA, LC-MS)",
-        "Imaginal disc activity (histology, microscopy)",
-        "Gene expression (RNA-seq)",
-        "Internal reorganization (X-ray, MRI)"
-      ],
-      "m0:unobservable": [
-        "Subjective experience (if any)",
-        "Precise molecular choreography"
-      ],
-      "m0:m2_GenericConcepts": [
-        "m2:Observability",
-        "m2:Transparency",
-        "m2:Interface"
-      ]
+      "m0:dominantM3": "m3:sphinx_eye:Observability",
+      "rdfs:comment": "External morphology and behaviour directly observable across all poles; internal reorganization (hormone titres, imaginal-disc activity, gene expression) requires instrumentation."
     },
     {
-      "@id": "m0:orive_reproducibility",
+      "@id": "m0:revoi_interoperability",
       "@type": [
-        "m0:ORIVEAnalysis"
+        "m0:REVOIAnalysis"
       ],
-      "rdfs:label": "Reproducibility (R)",
-      "m0:score": 0.98,
-      "m0:dominantM3": "m3:Reproducibility",
-      "rdfs:comment": "Exceptionally reproducible biological process. Lepidopteran metamorphosis conserved across ~180,000 species. 6-pole structure universal in holometabolous insects (>800,000 species). Hormonal mechanisms consistent (JH/Ecdysone cascade). Environmental variance affects RATE/SIZE but not SEQUENCE. Canalized developmental pathway (Waddington).",
-      "m0:biologicalConservation": "Lepidoptera (~180,000 species), Holometabola (>800,000 species)",
-      "m0:hormonalConsistency": "JH/Ecdysone cascade universal",
-      "m0:environmentalRobustness": {
-        "temperature": "Affects RATE but not SEQUENCE",
-        "nutrition": "Affects SIZE but not STRUCTURE",
-        "photoperiod": "Affects TIMING (diapause) but not PROGRAM"
-      },
-      "m0:developmentalCanalization": "Waddington canalization - mutation-resistant",
-      "m0:m2_GenericConcepts": [
-        "m2:Reproducibility",
-        "m2:Invariance",
-        "m2:Robustness"
-      ]
-    },
-    {
-      "@id": "m0:orive_interoperability",
-      "@type": [
-        "m0:ORIVEAnalysis"
-      ],
-      "rdfs:label": "Interoperability (I)",
+      "rdfs:label": "Interoperability (Im)",
       "m0:score": 0.78,
-      "m0:dominantM3": "m3:Interoperability",
-      "rdfs:comment": "Strong integration within life sciences, moderate beyond. High: Evo-Devo, Endocrinology, Cell Biology, Ecology. Moderate: Systems Biology, Biomechanics. Low: Quantum Biology, Cosmology. Conceptual bridges: phase transition (thermodynamics), stem cell niches (regenerative medicine), self-assembly (materials science).",
-      "m0:highInteroperability": [
-        "Evo-Devo (developmental evolution)",
-        "Endocrinology (hormonal regulation)",
-        "Cell Biology (apoptosis, proliferation)",
-        "Ecology (life history theory)"
-      ],
-      "m0:moderateInteroperability": [
-        "Systems Biology (gene regulatory networks)",
-        "Biomechanics (wing deployment)"
-      ],
-      "m0:lowInteroperability": [
-        "Quantum Biology (no known quantum effects)",
-        "Cosmology (no macroscale analogues)"
-      ],
-      "m0:conceptualBridges": {
-        "phaseTransition": "Thermodynamics analogy",
-        "stemCellNiches": "Imaginal discs → regenerative medicine",
-        "selfAssembly": "Materials science parallel"
-      },
-      "m0:m2_GenericConcepts": [
-        "m2:Interoperability",
-        "m2:Context",
-        "m2:Analogy"
-      ]
-    },
-    {
-      "@id": "m0:orive_validity",
-      "@type": [
-        "m0:ORIVEAnalysis"
-      ],
-      "rdfs:label": "Validity (V)",
-      "m0:score": 0.92,
-      "m0:dominantM3": "m3:Validity",
-      "rdfs:comment": "High empirical and theoretical validity. Anatomical descriptions: >250 years (Malpighi, Swammerdam, 1600s). Hormonal mechanisms: validated since Wigglesworth (1930s-1950s). Genetic basis: confirmed via molecular biology (1980s-present). Strong predictive power (hormonal manipulations, temperature models, fate maps). Remaining uncertainties: precise molecular choreography (~10% unexplained), evolutionary origin (debated), consciousness (philosophically unclear).",
-      "m0:empiricalValidation": {
-        "anatomy": ">250 years (Malpighi, Swammerdam)",
-        "hormones": "Wigglesworth (1930s-1950s)",
-        "genetics": "Molecular biology (1980s-present)",
-        "imaginalDiscs": "Transplantation experiments"
-      },
-      "m0:theoreticalCoherence": [
-        "Evolutionary theory",
-        "Developmental biology principles",
-        "Life history theory"
-      ],
-      "m0:predictivePower": [
-        "Hormonal manipulations",
-        "Temperature models",
-        "Imaginal disc fate maps"
-      ],
-      "m0:remainingUncertainties": [
-        "Molecular choreography (~10% unexplained)",
-        "Evolutionary origin (debated)",
-        "Consciousness (philosophically unclear)"
-      ],
-      "m0:m2_GenericConcepts": [
-        "m2:Validity",
-        "m2:Coherence",
-        "m2:Prediction"
-      ]
-    },
-    {
-      "@id": "m0:orive_expressiveness",
-      "@type": [
-        "m0:ORIVEAnalysis"
-      ],
-      "rdfs:label": "Expressiveness (E)",
-      "m0:score": 0.88,
-      "m0:dominantM3": "m3:Expressiveness",
-      "rdfs:comment": "Rich conceptual model with cultural depth. 6-pole model captures full lifecycle elegantly. Emergence as distinct pole highlights critical vulnerability. Hierarchical organization: poles → substages → molecular events. Multiple perspectives: morphological, hormonal, genetic, ecological. Cultural resonance: transformation archetype, rebirth symbolism. Communication challenges: technical terminology, chrysalis/cocoon confusion.",
-      "m0:modelElegance": "6 poles necessary and sufficient",
-      "m0:conceptualRichness": {
-        "transformation": "Archetype with cultural resonance",
-        "imaginalDiscs": "Latent potential (philosophical depth)",
-        "emergence": "Becoming (existential metaphor)"
-      },
-      "m0:communicationChallenges": [
-        "Technical terminology (histolysis, ecdysis)",
-        "Chrysalis vs cocoon confusion",
-        "Internal processes invisible"
-      ],
-      "m0:pedagogicalPower": [
-        "Visual accessibility (caterpillar → butterfly)",
-        "Narrative arc (transformation story)",
-        "Cross-cultural symbolism (rebirth)"
-      ],
-      "m0:m2_GenericConcepts": [
-        "m2:Expressiveness",
-        "m2:Representation",
-        "m2:Symbol"
-      ]
+      "m0:dominantM3": "m3:sphinx_eye:Interoperability",
+      "rdfs:comment": "Strong integration within life sciences (evo-devo, endocrinology, cell biology, ecology); moderate beyond (systems biology, biomechanics); low with quantum biology / cosmology."
     },
     {
       "@id": "m0:M2GenericConceptActivation",
@@ -587,28 +487,7 @@
       "m0:GenericConcept": "m2:Transformation",
       "m0:dominance": 0.96,
       "rdfs:comment": "Fundamental change in structure, function, and identity. Irreversible progression through states. Categorical reorganization (larva ≠ imago).",
-      "m0:tensorFormula": "D⊗S⊗I"
-    },
-    {
-      "@id": "m0:m2_cycle",
-      "@type": [
-        "m0:M2GenericConceptActivation"
-      ],
-      "m0:GenericConcept": "m2:Cycle",
-      "m0:dominance": 0.9,
-      "rdfs:comment": "Lifecycle returns to reproductive stage (egg production by imago). Generational iteration. Biochemical recycling (larval proteins → adult tissues).",
-      "m0:tensorFormula": "D⊗F"
-    },
-    {
-      "@id": "m0:m2_mode",
-      "@type": [
-        "m0:M2GenericConceptActivation"
-      ],
-      "m0:GenericConcept": "m2:Mode",
-      "m0:dominance": 0.92,
-      "rdfs:comment": "Distinct operational states (feeding, transformation, reproduction). N-ary polarity (6 discrete modes). Mode-specific morphology and behavior.",
-      "m0:tensorFormula": "S⊗I",
-      "m0:polarity": "N-ary (N=6 poles)"
+      "m0:hasStructuralGrammarFormula": "D × S × I"
     },
     {
       "@id": "m0:m2_emergence",
@@ -618,7 +497,7 @@
       "m0:GenericConcept": "m2:Emergence",
       "m0:dominance": 0.94,
       "rdfs:comment": "Adult structures emerge from latent imaginal discs. Eclosion event as dramatic emergence moment. Novel properties in imago (flight, sexual reproduction) absent in larva.",
-      "m0:tensorFormula": "S⊗I⊗E"
+      "m0:hasStructuralGrammarFormula": "I × S × D"
     },
     {
       "@id": "m0:m2_threshold",
@@ -628,7 +507,7 @@
       "m0:GenericConcept": "m2:Threshold",
       "m0:dominance": 0.88,
       "rdfs:comment": "Critical points triggering state transitions (hormonal thresholds). All-or-nothing commitment. Environmental thresholds (temperature, photoperiod for diapause).",
-      "m0:tensorFormula": "A⊗D"
+      "m0:hasStructuralGrammarFormula": "A × I"
     },
     {
       "@id": "m0:m2_regulation",
@@ -638,17 +517,7 @@
       "m0:GenericConcept": "m2:Regulation",
       "m0:dominance": 0.93,
       "rdfs:comment": "Hormonal control (JH/Ecdysone cascade). Developmental checkpoints (size threshold for pupation). Gene regulatory networks (temporal expression control).",
-      "m0:tensorFormula": "A⊗S⊗F"
-    },
-    {
-      "@id": "m0:m2_switch",
-      "@type": [
-        "m0:M2GenericConceptActivation"
-      ],
-      "m0:GenericConcept": "m2:Switch",
-      "m0:dominance": 0.89,
-      "rdfs:comment": "Discrete state transitions (larva → pupa, pupa → imago). Bistable genetic states (larval genes OFF, adult genes ON). Hormonal switches (JH drop triggers metamorphosis).",
-      "m0:tensorFormula": "I⊗D"
+      "m0:hasStructuralGrammarFormula": "A × S × F"
     },
     {
       "@id": "m0:m2_layer",
@@ -658,7 +527,7 @@
       "m0:GenericConcept": "m2:Layer",
       "m0:dominance": 0.87,
       "rdfs:comment": "Nested organizational levels: molecular → cellular → tissue → organ → organism. Temporal layers: embryonic → larval → pupal → adult. Protective layers: chorion, cuticle, chrysalis.",
-      "m0:tensorFormula": "S"
+      "m0:hasStructuralGrammarFormula": "St × It × A | R"
     },
     {
       "@id": "m0:m2_memory",
@@ -668,24 +537,53 @@
       "m0:GenericConcept": "m2:Memory",
       "m0:dominance": 0.75,
       "rdfs:comment": "Larval learning retained in adult (CNS continuity). Imaginal disc 'memory' of adult structures (embryonic determination). Epigenetic memory (chromatin states through metamorphosis).",
-      "m0:tensorFormula": "I⊗D"
+      "m0:hasStructuralGrammarFormula": "∫(D−F)dτ"
     },
     {
-      "@id": "m0:m2_latency",
+      "@id": "m0:m2_behavior",
       "@type": [
         "m0:M2GenericConceptActivation"
       ],
-      "m0:GenericConcept": "m0:Latency_Candidate",
+      "m0:GenericConcept": "m2:Behavior",
+      "m0:dominance": 0.92,
+      "rdfs:comment": "The lifecycle as an ordered network of Steps (6 poles). M2 v16.16.0 discoveryContext explicitly cites butterfly metamorphosis. Replaces the retired Mode (the 6 discrete operational states).",
+      "m0:hasStructuralGrammarFormula": "S × D × F"
+    },
+    {
+      "@id": "m0:m2_step",
+      "@type": [
+        "m0:M2GenericConceptActivation"
+      ],
+      "m0:GenericConcept": "m2:Step",
+      "m0:dominance": 0.86,
+      "rdfs:comment": "Each pole is a Step (Node specialized for sequential context). M2 v16.16.0 example: 'Butterfly egg stage'. Inter-Step transitions absorb the former Switch semantics (with Threshold).",
+      "m0:hasStructuralGrammarFormula": "S × I × D"
+    },
+    {
+      "@id": "m0:m2_stase",
+      "@type": [
+        "m0:M2GenericConceptActivation"
+      ],
+      "m0:GenericConcept": "m2:Stase",
       "m0:dominance": 0.82,
-      "rdfs:comment": "CANDIDATE FOR NEW M2 GenericConcept. Imaginal discs as latent adult structures. Dormant potential awaiting activation. Temporal separation between determination and expression. Cross-domain validation needed: stem cells, seed dormancy, volcanic systems, disease latency.",
-      "m0:tensorFormula": "I⊗D (proposed)",
-      "m0:status": "M2_CANDIDATE - Requires validation across multiple domains"
+      "rdfs:comment": "Imaginal discs as F=0 dormant potential, reversible (S × A, D absent = reversible by construction). Replaces the retired candidate 'Latency' — dormancy half.",
+      "m0:hasStructuralGrammarFormula": "S × A"
+    },
+    {
+      "@id": "m0:m2_potentialization",
+      "@type": [
+        "m0:M2GenericConceptActivation"
+      ],
+      "m0:GenericConcept": "m2:Potentialization",
+      "m0:dominance": 0.8,
+      "rdfs:comment": "Activation of dormant imaginal discs at emergence: F=0 -> F_active. Replaces the retired candidate 'Latency' — activation half.",
+      "m0:hasStructuralGrammarFormula": "A × D × F | _^"
     },
     {
       "@id": "m0:BicephalousPerspective",
       "@type": "owl:Class",
       "rdfs:label": "Bicephalous Perspective Integration",
-      "rdfs:comment": "Synthesis of Eagle Eye (ASFID - Territory) and Sphinx Eye (ORIVE - Map) perspectives."
+      "rdfs:comment": "Synthesis of Eagle Eye (ASFID - Territory) and Sphinx Eye (REVOI - Map) perspectives."
     },
     {
       "@id": "m0:bicephalous_synthesis",
@@ -693,16 +591,16 @@
         "m0:BicephalousPerspective"
       ],
       "rdfs:label": "Eagle-Sphinx Synthesis",
-      "rdfs:comment": "Perfect bicephalous balance: Territory (ASFID mean 0.95) exceptionally measurable/observable, Map (ORIVE mean 0.88) high-quality conceptual model with cultural depth. Strong ASFID↔ORIVE correspondence.",
+      "rdfs:comment": "Bicephalous balance: Territory (ASFID mean 0.95) exceptionally measurable, Map (REVOI mean 0.84, provisional) high-quality model. Strong ASFID<->REVOI correspondence.",
       "m0:territoryStrength": 0.95,
-      "m0:mapStrength": 0.88,
-      "m0:epistemicGap": 0.25,
+      "m0:mapStrength": 0.84,
+      "m0:epistemicGap": 0.22,
       "m0:keyCouplings": [
-        "S⊗R: 0.95 (Structural reproducibility)",
-        "I⊗R: 0.92 (Information reproducibility)",
-        "S⊗O: 0.90 (Structural observability)",
-        "I⊗V: 0.90 (Information validity)",
-        "I⊗E: 0.88 (Information expressiveness)"
+        "S × R: 0.92 (structure is highly representable)",
+        "I × V: 0.92 (information basis is verifiable)",
+        "S × O: 0.90 (structural states observable)",
+        "D × E: 0.74 (temporal model moderately evolvable)",
+        "I × Im: 0.78 (informational cross-domain interoperability)"
       ],
       "m0:gapAnalysis": {
         "lowGap": [
@@ -737,14 +635,23 @@
         "M2_validation": [
           "Transformation",
           "Emergence",
-          "Mode",
-          "Switch",
+          "Regulation",
+          "Threshold",
           "Layer",
-          "Cycle",
-          "Regulation"
+          "Behavior",
+          "Step",
+          "Memory"
         ],
-        "M2_candidates": [
-          "Latency"
+        "M2_reused_from_v16_16_0": [
+          "Stase",
+          "Potentialization"
+        ],
+        "M2_candidates": [],
+        "M2_retired": [
+          "Switch",
+          "Mode",
+          "Cycle",
+          "Latency (absorbed by Stase + Potentialization)"
         ],
         "M1_population": [
           "Histolysis",
@@ -755,7 +662,7 @@
           "Sclerotization"
         ]
       },
-      "m0:overallStatus": "VALIDATED - Exceptional poclet for TSCG (ASFID: 0.95, ORIVE: 0.88)"
+      "m0:overallStatus": "VALIDATED - Exceptional poclet for TSCG (ASFID: 0.95, REVOI: 0.84 provisional)"
     },
     {
       "@id": "m0:ComparativeAnalysis",
@@ -790,7 +697,7 @@
       ],
       "rdfs:label": "Teaching Applications",
       "m0:introductory": "Demonstrates all ASFID dimensions clearly",
-      "m0:intermediate": "ORIVE analysis reveals map-territory distinctions",
+      "m0:intermediate": "REVOI analysis reveals map-territory distinctions",
       "m0:advanced": "M2 GenericConcept identification practice",
       "m0:broaderEducation": [
         "Biology (canonical developmental biology example)",

@@ -23,8 +23,8 @@
       "dcterms:description": "Extension of the TSCG framework with electronics-specific concepts: active components, signal manipulation, oscillator types, modulation, and modular synthesis architecture. Serves as M1 foundation for M0 poclets: VCO, VCF, VCA, LFO, Transistor, etc.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-27",
-      "owl:versionInfo": "1.0.1",
-      "dcterms:modified": "2026-03-13",
+      "owl:versionInfo": "1.1.0",
+      "dcterms:modified": "2026-07-12",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -44,12 +44,14 @@
         "M0_Transistor.jsonld",
         "M0_VCO.jsonld"
       ],
-      "m1:extension:electronics:changelogLegacy": {
-        "v1_0_0": {
-          "date": "2026-02-27",
-          "description": "Initial creation. 18 KnowledgeFieldConcepts across 5 categories. Bootstrapped from M0_Transistor and M0_VCO poclet analysis. Covers ActiveComponent, ElectronicOscillator, SignalProcessor, Amplifier, Filter, VoltageControlledOscillator, VoltageControlledFilter, VoltageControlledAmplifier, LFO, WaveformMode, ModulationSource, PitchCV, ExponentialConverter, FeedbackOscillator, SignalChain, EurorackModule, AudioSignal, ControlVoltage."
-        }
-      },
+      "m1:extension:electronics:changelogLegacy": [
+        {
+          "version": "1.1.0",
+          "date": "2026-07-12",
+          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
+        },
+        "v1_0_0"
+      ],
       "m2:changelog": [
         {
           "version": "1.0.1",
@@ -74,10 +76,10 @@
       "@id": "m1:extension:electronics:ActiveComponent",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m2:Component"
       ],
       "rdfs:label": "Active Component",
@@ -106,10 +108,10 @@
       "@id": "m1:extension:electronics:Amplifier",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m1:extension:electronics:ActiveComponent"
       ],
       "rdfs:label": "Amplifier",
@@ -134,10 +136,10 @@
       "@id": "m1:extension:electronics:Filter",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m1:extension:electronics:SignalProcessor"
       ],
       "rdfs:label": "Filter",
@@ -166,10 +168,10 @@
       "@id": "m1:extension:electronics:SignalProcessor",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m1:extension:electronics:ActiveComponent"
       ],
       "rdfs:label": "Signal Processor",
@@ -190,10 +192,10 @@
       "@id": "m1:extension:electronics:ElectronicOscillator",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m1:extension:electronics:ActiveComponent",
         "m2:Oscillator"
       ],
@@ -224,10 +226,10 @@
       "@id": "m1:extension:electronics:VoltageControlledOscillator",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m1:extension:electronics:ElectronicOscillator"
       ],
       "rdfs:label": "Voltage Controlled Oscillator (VCO)",
@@ -270,10 +272,10 @@
       "@id": "m1:extension:electronics:LFO",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m1:extension:electronics:ElectronicOscillator"
       ],
       "rdfs:label": "Low Frequency Oscillator (LFO)",
@@ -304,10 +306,10 @@
       "@id": "m1:extension:electronics:FeedbackOscillator",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m1:extension:electronics:ElectronicOscillator"
       ],
       "rdfs:label": "Feedback Oscillator",
@@ -326,10 +328,10 @@
       "@id": "m1:extension:electronics:WaveformMode",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m2:Mode"
       ],
       "rdfs:label": "Waveform Mode",
@@ -369,10 +371,10 @@
       "@id": "m1:extension:electronics:AudioSignal",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m2:Signal"
       ],
       "rdfs:label": "Audio Signal",
@@ -393,10 +395,10 @@
       "@id": "m1:extension:electronics:ControlVoltage",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m2:Signal"
       ],
       "rdfs:label": "Control Voltage (CV)",
@@ -419,10 +421,10 @@
       "@id": "m1:extension:electronics:PitchCV",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m1:extension:electronics:ControlVoltage"
       ],
       "rdfs:label": "Pitch CV (V/Oct)",
@@ -443,10 +445,10 @@
       "@id": "m1:extension:electronics:ExponentialConverter",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m1:extension:electronics:SignalProcessor"
       ],
       "rdfs:label": "Exponential Converter",
@@ -465,10 +467,10 @@
       "@id": "m1:extension:electronics:ModulationSource",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m2:Signal"
       ],
       "rdfs:label": "Modulation Source",
@@ -493,10 +495,10 @@
       "@id": "m1:extension:electronics:EurorackModule",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m2:Component"
       ],
       "rdfs:label": "Eurorack Module",
@@ -537,10 +539,10 @@
       "@id": "m1:extension:electronics:SignalChain",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m2:Cascade"
       ],
       "rdfs:label": "Signal Chain",
@@ -559,10 +561,10 @@
       "@id": "m1:extension:electronics:FrequencyModulation",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:KnowledgeFieldConceptCombo",
+        "m2:DomainConceptCombo",
         "m2:Process"
       ],
       "rdfs:label": "Frequency Modulation (FM)",

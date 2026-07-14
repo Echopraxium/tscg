@@ -20,19 +20,24 @@
       "rdfs:label": "TSCG M1 Geology Extension",
       "rdfs:comment": "Domain-specific geological and geophysical concepts for the TSCG framework. Contains patterns and concepts specific to plate tectonics, geodynamics, mineralogy, and Earth system science. Discovery context: M0_PlateTectonics poclet analysis (2026-04-05).",
       "dcterms:title": "TSCG M1 Geology — Domain-Specific Geological and Geophysical Concepts",
-      "dcterms:description": "Extension of the TSCG framework with geology-specific concepts. Covers plate tectonics (lithospheric plates, subduction, mid-ocean ridges, mantle convection), geodynamic equilibria (isostasy), seismotectonics (faults), and orogenic processes. First TSCG domain extension in the Earth Sciences field. Introduces the GeologicalAccretion KnowledgeFieldConceptCombo, linking m1:Accretion to its geological instantiation.",
+      "dcterms:description": "Extension of the TSCG framework with geology-specific concepts. Covers plate tectonics (lithospheric plates, subduction, mid-ocean ridges, mantle convection), geodynamic equilibria (isostasy), seismotectonics (faults), and orogenic processes. First TSCG domain extension in the Earth Sciences field. Introduces the GeologicalAccretion DomainConceptCombo, linking m1:Accretion to its geological instantiation.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-04-05",
-      "dcterms:modified": "2026-04-05",
-      "owl:versionInfo": "1.0.0",
+      "dcterms:modified": "2026-07-12",
+      "owl:versionInfo": "1.1.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m2:changelog": [
         {
+          "version": "1.1.0",
+          "date": "2026-07-12",
+          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
+        },
+        {
           "version": "1.0.0",
           "date": "2026-04-05",
-          "changes": "Initial version. 9 domain concepts from M0_PlateTectonics analysis. 2 KnowledgeField instances (Geology/Geological). 7 KnowledgeFieldConcepts: LithosphericPlate, SubductionZone, MidOceanRidge, MantleConvectionCell, IsostasyEquilibrium, SeismicFault, Orogeny. 1 KnowledgeFieldConceptCombo: GeologicalAccretion."
+          "changes": "Initial version. 9 domain concepts from M0_PlateTectonics analysis. 2 KnowledgeField instances (Geology/Geological). 7 KnowledgeFieldConcepts: LithosphericPlate, SubductionZone, MidOceanRidge, MantleConvectionCell, IsostasyEquilibrium, SeismicFault, Orogeny. 1 DomainConceptCombo: GeologicalAccretion."
         }
       ],
       "owl:imports": [
@@ -75,7 +80,7 @@
         "m2:KnowledgeField"
       ],
       "rdfs:label": "Geological",
-      "rdfs:comment": "Disciplinary qualifier (ADJECTIVE form) for use in KnowledgeFieldConceptCombo patterns. Derived from m1:extension:geology:Geology, qualifying concepts operating within geological time scales, spatial scales (km to 10^4 km), and material domains (rock, mineral, magma, fluid).",
+      "rdfs:comment": "Disciplinary qualifier (ADJECTIVE form) for use in DomainConceptCombo patterns. Derived from m1:extension:geology:Geology, qualifying concepts operating within geological time scales, spatial scales (km to 10^4 km), and material domains (rock, mineral, magma, fluid).",
       "m2:knowledgeFieldRole": "ADJECTIVE",
       "m2:derivedFrom": "m1:extension:geology:Geology",
       "m2:qualifier": "Pertaining to Earth materials, geodynamic processes, geological time scales (ka to Ga), and lithospheric to mantle spatial scales",
@@ -86,10 +91,10 @@
       "@id": "m1:extension:geology:LithosphericPlate",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": {
-        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#KnowledgeFieldConceptCombo"
+        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
       "rdfs:label": "Lithospheric Plate",
       "rdfs:comment": "Rigid segment of the Earth's outer shell (lithosphere = crust + upper mantle) moving as a coherent unit on the underlying asthenosphere. Each plate is bounded by divergent, convergent, or transform boundaries. Plates are the fundamental structural units of the plate tectonics system — they ARE the mobile S elements.",
@@ -119,10 +124,10 @@
       "@id": "m1:extension:geology:MidOceanRidge",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": {
-        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#KnowledgeFieldConceptCombo"
+        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
       "rdfs:label": "Mid-Ocean Ridge",
       "rdfs:comment": "Divergent plate boundary where two lithospheric plates move apart, allowing hot asthenospheric material to upwell, decompress, and solidify as new oceanic crust. The primary geological instantiation of m1:Accretion: new crustal material continuously accretes to both plates at the ridge axis, progressively building the ocean floor. Generates ~60% of Earth's volcanic activity.",
@@ -148,10 +153,10 @@
       "@id": "m1:extension:geology:SubductionZone",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": {
-        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#KnowledgeFieldConceptCombo"
+        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
       "rdfs:label": "Subduction Zone",
       "rdfs:comment": "Convergent plate boundary where a denser lithospheric plate (typically oceanic) descends beneath a less dense plate (oceanic or continental) into the asthenosphere. The primary geological instantiation of m2:Transformation: solid lithosphere is progressively transformed into molten asthenosphere through pressure-temperature increase along the Wadati-Benioff zone. Generates ~90% of Earth's seismicity and most arc volcanism.",
@@ -178,10 +183,10 @@
       "@id": "m1:extension:geology:MantleConvectionCell",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": {
-        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#KnowledgeFieldConceptCombo"
+        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
       "rdfs:label": "Mantle Convection Cell",
       "rdfs:comment": "Large-scale thermally-driven circulation of solid-but-viscous mantle material. The primary thermodynamic motor of plate tectonics: hot mantle material rises (low density), spreads laterally, cools, and sinks (high density) at subduction zones, driving plate motion through viscous coupling and slab pull. Operates on timescales of millions of years at strain rates of 10⁻¹⁵ s⁻¹.",
@@ -211,10 +216,10 @@
       "@id": "m1:extension:geology:IsostasyEquilibrium",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": {
-        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#KnowledgeFieldConceptCombo"
+        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
       "rdfs:label": "Isostasy Equilibrium",
       "rdfs:comment": "Gravitational equilibrium between the Earth's lithosphere and the underlying asthenosphere, analogous to Archimedes' principle for solid crust floating on viscous mantle. Acts as the primary attractor of the plate tectonics system: any perturbation (erosion, ice loading, crustal thickening) triggers compensatory vertical adjustment (glacial rebound, mountain subsidence) restoring isostatic balance.",
@@ -239,10 +244,10 @@
       "@id": "m1:extension:geology:SeismicFault",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": {
-        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#KnowledgeFieldConceptCombo"
+        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
       "rdfs:label": "Seismic Fault",
       "rdfs:comment": "A planar discontinuity in Earth's crust along which rock masses have moved relative to each other, accumulating elastic strain energy that is episodically released as seismic waves (earthquakes). Transform plate boundaries ARE seismic faults at the largest scale; faults also occur within plates. Instantiates m2:Threshold: strain accumulates continuously (slow dynamics) until a critical stress threshold is exceeded, triggering sudden rupture (fast dynamics).",
@@ -267,10 +272,10 @@
       "@id": "m1:extension:geology:Orogeny",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": {
-        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#KnowledgeFieldConceptCombo"
+        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
       "rdfs:label": "Orogeny",
       "rdfs:comment": "The process of mountain belt formation through tectonic convergence, crustal thickening, and lithospheric deformation. Orogeny is the largest-scale manifestation of convergent plate dynamics: when two continental plates collide (neither can subduct efficiently due to low density), crustal material is compressed, folded, thrust-faulted, and uplifted. Represents the culmination of the m2:Transformation process at the continental collision stage.",
@@ -295,13 +300,13 @@
       "@id": "m1:extension:geology:GeologicalAccretion",
       "@type": [
         "owl:Class",
-        "m2:KnowledgeFieldConceptCombo"
+        "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": {
-        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#KnowledgeFieldConceptCombo"
+        "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
       "rdfs:label": "Geological Accretion",
-      "rdfs:comment": "Domain-specific instantiation of m1:Accretion in the geological context: the continuous addition of new solid material (oceanic crust, sediment, or continental fragments) to the boundary of an existing lithospheric structure, driven by mantle convection and governed by thermodynamic Negentropy. The canonical geological example is mid-ocean ridge spreading. A KnowledgeFieldConceptCombo combining the Geological KnowledgeField with the Accretion GenericConceptCombo.",
+      "rdfs:comment": "Domain-specific instantiation of m1:Accretion in the geological context: the continuous addition of new solid material (oceanic crust, sediment, or continental fragments) to the boundary of an existing lithospheric structure, driven by mantle convection and governed by thermodynamic Negentropy. The canonical geological example is mid-ocean ridge spreading. A DomainConceptCombo combining the Geological KnowledgeField with the Accretion GenericConceptCombo.",
       "m2:genericConceptCombo": {
         "@id": "m1:Accretion"
       },

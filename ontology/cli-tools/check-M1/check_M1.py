@@ -26,6 +26,13 @@ Options
   -v, --verbose    Show all checks (including passed)
 """
 
+# --- bootstrap: tscg_paths lives one level up, in ontology/cli-tools/ ----------
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent.parent))
+from tscg_paths import REPO_ROOT, ONTOLOGY_DIR, find_schema   # noqa: E402
+# ------------------------------------------------------------------------------
+
 import argparse
 import json
 import os
@@ -67,12 +74,27 @@ M1_FILES = {
     "M1_Electronics.jsonld":       "M1_extensions/electronics/M1_Electronics.jsonld",
     "M1_EnergyGenerators.jsonld":  "M1_extensions/energy_generators/M1_EnergyGenerators.jsonld",
     "M1_Geology.jsonld":           "M1_extensions/geology/M1_Geology.jsonld",
+    # The tracked file is "M1_music.jsonld" (LOWERCASE m) — verified with `git ls-files`.
+    # ⚠ DO NOT also list "M1_Music.jsonld": on a case-INSENSITIVE filesystem (Windows)
+    # both entries resolve to the SAME file, which is then validated TWICE and its errors
+    # double-counted (the 2026-07-13 run reported 17 files instead of 16). One spelling,
+    # one entry.
     "M1_music.jsonld":             "M1_extensions/music/M1_music.jsonld",
+    # ⚠ SC-1 fix: M1_BusinessModeling was ABSENT from this map entirely — the file
+    # exists, carries 20 DomainConceptCombos, and was NEVER validated by this script.
+    "M1_BusinessModeling.jsonld":  "M1_extensions/business_modeling/M1_BusinessModeling.jsonld",
     "M1_Mythology.jsonld":         "M1_extensions/mythology/M1_Mythology.jsonld",
     "M1_Optics.jsonld":            "M1_extensions/optics/M1_Optics.jsonld",
     "M1_Photography.jsonld":       "M1_extensions/photography/M1_Photography.jsonld",
     "M1_Physics.jsonld":           "M1_extensions/physics/M1_Physics.jsonld",
-    "M1_SystemicModeling.jsonld":  "M1_extensions/system_modeling/M1_SystemicModeling.jsonld",
+    # ⚠ SC-1 FIX (2026-07-13): the map said "system_modeling" (no "ic"). `git ls-files`
+    # says the tracked directory is "systemic_modeling" — consistent with the concept IRIs
+    # (m1:extension:systemic_modeling:TrizPrinciple). The wrong path made the file simply
+    # NOT FOUND, which is only a WARNING, so M1_SystemicModeling was NEVER VALIDATED. It
+    # appeared in the 163-error baseline only because a `system_modeling/` folder had been
+    # created by hand while investigating — remove that folder and 14 errors vanish, which
+    # looks exactly like progress. Verify paths with `git ls-files`, never by intuition.
+    "M1_SystemicModeling.jsonld":  "M1_extensions/systemic_modeling/M1_SystemicModeling.jsonld",
 }
 
 # Core files that don't need m3:eagle_eye / m3:sphinx_eye in @context
@@ -93,6 +115,47 @@ class Issue:
         return icon(f"[{self.code}] {self.message}")
 
 # ── Checker ───────────────────────────────────────────────────────────────────
+
+# ---------------------------------------------------------------------------
+# Domain registry (SC-1, DCC010)
+#
+# Fm1m2's distinguishing feature is DOMAIN QUALIFICATION. But a formula's
+# arguments live only as TEXT inside a string — never as IRIs (m2:hasComboComponent
+# is absent from all of M1; see decision D10). So no purely syntactic check can
+# tell a Domain from a Concept, and a domain-less Fm1m2 like
+#     Fm1m2(Cascade, Duplication, Network)
+# passes every string test: correct prefix, >= 2 arguments, no operator.
+#
+# The registry IS available, though: M1_Domains.jsonld. Loading it lets us assert
+# what the grammar actually requires — that the first argument names a REGISTERED
+# DOMAIN. This is the closest we can get to D6/D10 without reifying the arguments.
+# ---------------------------------------------------------------------------
+
+_DOMAIN_REGISTRY = None
+
+def load_domain_registry(ontology_dir):
+    """Names of every Domain declared in M1_Domains.jsonld (lowercased)."""
+    global _DOMAIN_REGISTRY
+    if _DOMAIN_REGISTRY is not None:
+        return _DOMAIN_REGISTRY
+    names = set()
+    path = Path(ontology_dir) / "M1_Domains.jsonld"
+    if path.exists():
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+            for node in data.get("@graph", []):
+                nid = str(node.get("@id", ""))
+                if ":domain:" in nid or ":extension:" in nid:
+                    names.add(nid.rsplit(":", 1)[-1].lower())
+                label = node.get("rdfs:label")
+                if label and ("Domain" in str(node.get("@type", ""))):
+                    names.add(str(label).lower())
+        except Exception:
+            pass
+    _DOMAIN_REGISTRY = names
+    return names
+
+
 class M1Checker:
 
     def __init__(self, path: Path, dry_run: bool = False, verbose: bool = False):
@@ -239,71 +302,204 @@ class M1Checker:
                     fix="Add rdfs:subClassOf: m2:GenericConceptCombo",
                     auto_fixable=False))
 
-            # structuralGrammarFormula
+            # structuralGrammarFormula — SC-1: a combo's formula IS a function signature
             formula = node.get("m1:structuralGrammarFormula", "")
             if not formula:
                 self.issues.append(Issue("WARNING", "GCC002",
                     f"GenericConceptCombo missing m1:structuralGrammarFormula: {nid}",
                     auto_fixable=False))
-            elif not re.match(r"^Fm2[²]?\(", formula):
+            elif not re.match(r"^Fm2\(", formula):
+                # NOTE (SC-1): "Fm2²" is NO LONGER accepted. It never appeared in a
+                # single real formula — only in prose, as an INFIX operator between
+                # two monoidal expressions ("Layer (S × I × A | R) Fm2² Dissipation
+                # (F × D)"), which is the ⊗⇒ structure all over again. The corpus
+                # changelog had already retired it. Only Fm2 and Fm1m2 exist.
                 self.issues.append(Issue("WARNING", "GCC003",
                     f"GenericConceptCombo formula not Fm2(...): {nid} → {formula[:50]}",
                     auto_fixable=False))
+            self._check_signature(nid, formula, "Fm2", "GCC")
 
-            # No ⊗
-            if "⊗" in formula:
-                self.issues.append(Issue("ERROR", "GCC004",
-                    f"⊗ tensor notation in formula: {nid}",
-                    fix="Replace ⊗ with × / + / |", auto_fixable=True))
+    def check_dcc_nodes(self):
+        """
+        DomainConceptCombo (ex-KnowledgeFieldConceptCombo, renamed in SC-1).
 
-    def check_kfcc_nodes(self):
+        SC-1 model (see StructuralGrammar/Functional_Grammar_Model.md):
+            Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo
+        A DomainConceptCombo is defined BY its Fm1m2 formula — a hybrid of at least
+        one Domain and at least one GenericConcept. Domain QUALIFICATION is the
+        membership criterion, NOT the heterogeneity of the parents.
+        """
         graph = self.data.get("@graph", [])
         for node in graph:
             ntype = node.get("@type", [])
             if isinstance(ntype, str):
                 ntype = [ntype]
-            # Exact match — avoid substring match with KnowledgeFieldConceptCombo
-            if "m2:KnowledgeFieldConceptCombo" not in ntype:
+
+            # Legacy name → hard error (SC-1 renamed the class; there is no alias).
+            # NB: this literal MUST stay the OLD name — it is what we are hunting.
+            if "m2:KnowledgeFieldConceptCombo" in ntype:
+                self.issues.append(Issue("ERROR", "DCC000",
+                    f"Retired class m2:KnowledgeFieldConceptCombo: {node.get('@id','?')}",
+                    fix="Rename to m2:DomainConceptCombo (SC-1, hard rename, no alias)",
+                    auto_fixable=True))
+
+            if "m2:DomainConceptCombo" not in ntype:
                 continue
             nid = node.get("@id", "?")
 
-            # rdfs:subClassOf → must CONTAIN m2:KnowledgeFieldConceptCombo
-            # (may be string OR array if node also has semantic domain subClassOf)
             subclass = node.get("rdfs:subClassOf")
             if subclass is None:
-                self.issues.append(Issue("ERROR", "KFCC001",
-                    f"KFCC missing rdfs:subClassOf: {nid}",
-                    fix="Add m2:KnowledgeFieldConceptCombo to rdfs:subClassOf",
+                self.issues.append(Issue("ERROR", "DCC001",
+                    f"DomainConceptCombo missing rdfs:subClassOf: {nid}",
+                    fix="Add m2:DomainConceptCombo to rdfs:subClassOf",
                     auto_fixable=True))
             else:
-                # Normalize to list for uniform check
                 sub_list = subclass if isinstance(subclass, list) else [subclass]
                 sub_vals = [s.get("@id", s) if isinstance(s, dict) else s for s in sub_list]
-                if not any("KnowledgeFieldConceptCombo" in str(v) for v in sub_vals):
-                    self.issues.append(Issue("ERROR", "KFCC001b",
-                        f"KFCC rdfs:subClassOf does not include m2:KnowledgeFieldConceptCombo: {nid}",
-                        fix="Add m2:KnowledgeFieldConceptCombo to rdfs:subClassOf array",
+                if not any("DomainConceptCombo" in str(v) for v in sub_vals):
+                    self.issues.append(Issue("ERROR", "DCC001b",
+                        f"DomainConceptCombo rdfs:subClassOf does not include m2:DomainConceptCombo: {nid}",
+                        fix="Add m2:DomainConceptCombo to rdfs:subClassOf array",
                         auto_fixable=True))
 
-            # NOTE: m2:knowledgeField is NOT a defined M2 property.
-            # The KFCC is identified by @type + rdfs:subClassOf only.
+            # NOTE: m2:knowledgeField remains a PHANTOM property (never defined in
+            # M2). SC-5 (Domain fusion) replaces it with m2:appliesToDomains. Not
+            # checked here — SC-1 renames the combo class only.
 
-            # structuralGrammarFormula
             formula = node.get("m1:structuralGrammarFormula", "")
             if not formula:
-                self.issues.append(Issue("WARNING", "KFCC003",
-                    f"KFCC missing m1:structuralGrammarFormula: {nid}",
+                self.issues.append(Issue("WARNING", "DCC003",
+                    f"DomainConceptCombo missing m1:structuralGrammarFormula: {nid}",
                     auto_fixable=False))
             elif not re.match(r"^Fm1m2\(", formula):
-                self.issues.append(Issue("WARNING", "KFCC004",
-                    f"KFCC formula not Fm1m2(...): {nid} → {formula[:50]}",
+                self.issues.append(Issue("WARNING", "DCC004",
+                    f"DomainConceptCombo formula not Fm1m2(...): {nid} → {formula[:50]}",
                     auto_fixable=False))
+            self._check_signature(nid, formula, "Fm1m2", "DCC")
 
-            # No ⊗
-            if "⊗" in formula:
-                self.issues.append(Issue("ERROR", "KFCC005",
-                    f"⊗ tensor notation in formula: {nid}",
-                    fix="Replace ⊗ with × / + / |", auto_fixable=True))
+    # ------------------------------------------------------------------------
+    # SC-1 — the signature rules, shared by Fm2 and Fm1m2
+    # ------------------------------------------------------------------------
+
+    # ASFID + REVOI + TKSL, bare and monoid-subscripted.
+    _PRIMITIVES = r"A|S|F|I|D|R|E|V|O|T|K|L|St|Ss|It|Im"
+    _BARE_PRIMITIVE_ARG = re.compile(rf"[(,]\s*({_PRIMITIVES})\s*[,)]")
+    _MONOIDAL_OP = re.compile(r"[×+|⊗]")
+    _ARITY_2PLUS = re.compile(r"^Fm(?:2|1m2)\([^,()]+,[^()]+\)$")
+
+    def _check_signature(self, nid, formula, fname, code):
+        """
+        SC-1: a combo's formula IS the signature of the function that produces it.
+        No monoidal operator, no primitive as argument, correct arity.
+
+        Fm2/Fm1m2 are FUNCTIONS, not functors: emergence is non-compositional (the
+        arguments are COMBINED, not associated), whereas a functor must preserve
+        composition. Hence a combo has NO monoidal expansion, ever.
+        """
+        if not formula:
+            return
+
+        # ⊗ / ⊗⇒ — retired 2026-07-06
+        if "⊗" in formula:
+            self.issues.append(Issue("ERROR", f"{code}005",
+                f"Retired tensor notation ⊗ in formula: {nid}",
+                fix="A combo formula carries NO operator at all — it is a signature. "
+                    "Rewrite as a named-argument list.",
+                auto_fixable=False))
+
+        # A monoidal operator inside a signature (× / + / |).
+        # THIS IS THE BULK OF THE SC-6 BACKLOG (109 entries measured 2026-07-12).
+        inside = m.group(1) if (m := re.match(r"^(Fm(?:2|1m2)\([^()]*\))", formula)) else formula
+        if self._MONOIDAL_OP.search(inside):
+            self.issues.append(Issue("ERROR", f"{code}006",
+                f"Monoidal operator (× / + / |) inside a combo signature: {nid} → {inside[:60]}",
+                fix="Arguments are juxtaposed by COMMA, never joined by a grammar "
+                    "operator. × is reserved to the Gt monoid and is never overloaded. "
+                    "Monoidal formulas belong to ATOMS only. Repair = SC-6 (semantic: "
+                    "recover the right named M2 concepts).",
+                auto_fixable=False))
+
+        # A bare primitive type as an argument.
+        if self._BARE_PRIMITIVE_ARG.search(formula):
+            self.issues.append(Issue("ERROR", f"{code}007",
+                f"Primitive type used as an argument of {fname}: {nid} → {formula[:60]}",
+                fix="Arguments must be NAMED CONCEPTS declared in M2_GenericConcepts.jsonld "
+                    "or M1_CoreConcepts.jsonld. A primitive is a generative DIMENSION of a "
+                    "grammar, not a concept. (Consequence: M1 extensions are leaves.)",
+                auto_fixable=False))
+
+        # A signature ends at its closing parenthesis. Anything after it is a GUARD
+        # — e.g. "| gain_per_stage > 1", "| trajectoryShape=Circular". Two kinds:
+        #   · SCALAR guards  → ERROR: a scalar is an M0 MEASUREMENT that leaked into
+        #     M1. M1 describes structure, not values. Same residue class as the k·
+        #     coefficients purged in SC-8. Delete them.
+        #   · QUALITATIVE guards (controlled enumerated value) → real semantics (the
+        #     differentia specifica). DO NOT DELETE. Pending decision D11 (an options
+        #     slot? but an "option" IS a facet → ruled in SC-3).
+        # Either way the guard overloads `|`, which is reserved to the Gs monoid.
+        # Reported separately from arity so the message does not lie.
+        m = re.match(r"^(Fm(?:2|1m2)\([^()]*\))(.*)$", formula)
+        trailing = (m.group(2).strip() if m else "")
+        if trailing:
+            self.issues.append(Issue("ERROR", f"{code}009",
+                f"Guard appended after the {fname} signature: {nid} → {trailing[:40]}",
+                fix="A combo's formula IS the signature and ends at its closing "
+                    "parenthesis. Scalar guards (gain > 1, λ > 0) are M0 measurements "
+                    "leaking into M1 — delete them. Qualitative guards "
+                    "(trajectoryShape=Circular) carry real semantics — DO NOT DELETE, "
+                    "pending D11/SC-3.",
+                auto_fixable=False))
+
+
+        # DCC010 — Fm1m2's first argument MUST be a registered Domain.
+        if fname == "Fm1m2":
+            sig = re.match(r"^Fm1m2\(([^()]*)\)", formula)
+            if sig:
+                args = [a.strip() for a in sig.group(1).split(",") if a.strip()]
+                registry = load_domain_registry(ONTOLOGY_DIR)
+                if args and registry and args[0].lower() not in registry:
+                    self.issues.append(Issue("ERROR", f"{code}010",
+                        f"Fm1m2 first argument is not a registered Domain: {nid} → '{args[0]}'",
+                        fix="Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo. What "
+                            "distinguishes Fm1m2 from Fm2 is DOMAIN QUALIFICATION — not "
+                            "'crossing the M1/M2 boundary' (that reading was graved in "
+                            "M3_GrammarFoundation and is the ROOT of this defect; fixed in "
+                            "v2.4.0). An Fm2 argument may legitimately come from "
+                            "M1_CoreConcepts. A domain-less Fm1m2 is an Fm2. Register the "
+                            "domain in M1_Domains.jsonld, or change the function to Fm2.",
+                        auto_fixable=False))
+
+        # Arity (D5): Fm2 needs >= 2 concepts; Fm1m2 needs >= 1 domain AND >= 1 concept.
+        # Checked on the SIGNATURE ONLY, guard stripped — otherwise a well-formed
+        # signature carrying a guard would be mis-reported as an arity error.
+        signature = m.group(1) if m else formula
+        if re.match(r"^Fm(?:2|1m2)\(", signature) and not self._ARITY_2PLUS.match(signature):
+            hint = ("Fm2 needs >= 2 named concepts (an emergence needs two ingredients; "
+                    "Fm2(X) would be an identity)."
+                    if fname == "Fm2" else
+                    "Fm1m2 needs >= 1 Domain AND >= 1 GenericConcept — both slots non-empty. "
+                    "A domain-less Fm1m2 is an Fm2 that mislabelled itself.")
+            self.issues.append(Issue("ERROR", f"{code}008",
+                f"Wrong arity for {fname}: {nid} → {signature[:60]}",
+                fix=hint, auto_fixable=False))
+
+    def check_no_monoidal_expansion(self):
+        """
+        SC-1 / Decision D8 — m1:structuralGrammarFormulaExpanded is RETIRED.
+
+        It stored lattice_join(dims(parents)) — the union of the parents' dimensions,
+        i.e. the COMPOSITIONAL thesis, as data. If emergence is non-compositional
+        there is nothing to expand, which is exactly why half its values in the
+        corpus were empty strings.
+        """
+        for node in self.data.get("@graph", []):
+            if "m1:structuralGrammarFormulaExpanded" in node:
+                self.issues.append(Issue("ERROR", "EXP001",
+                    f"Retired property m1:structuralGrammarFormulaExpanded: {node.get('@id','?')}",
+                    fix="A combo has NO monoidal expansion (D8). Remove the property — "
+                        "do NOT migrate its ⊗ notation to ×/+/|: there was never anything "
+                        "to expand.",
+                    auto_fixable=True))
 
     def check_forbidden_patterns(self):
         """Check forbidden patterns as JSON property KEYS (not text content)."""
@@ -450,9 +646,46 @@ class M1Checker:
             return True
         return False
 
-    def fix_kfcc_subclassof(self):
-        """Add m2:KnowledgeFieldConceptCombo to rdfs:subClassOf of all KFCC nodes."""
-        MARKER = "m2:KnowledgeFieldConceptCombo"
+    def fix_imports_genesis(self):
+        """
+        Rewrite owl:imports entries still pointing at the DEAD M3_GenesisSpace.
+
+        ⚠ THIS METHOD DID NOT EXIST in check_M1.py v1.0.0, although run() called it.
+        The script therefore raised AttributeError on the first file it loaded, in the
+        auto-fix path — so NONE of the seven documented auto-fixes ever ran. The tool
+        meant to repair M1 was itself broken, which is part of why the M1 debt kept
+        growing while the checker "existed".
+
+        (fix_genesis_space() already rewrites the string globally, so by the time we
+        get here there is usually nothing left; this method exists to make the
+        owl:imports case explicit and idempotent, and to stop run() from crashing.)
+        """
+        changed = False
+        for node in self.data.get("@graph", []):
+            imports = node.get("owl:imports")
+            if imports is None:
+                continue
+            items = imports if isinstance(imports, list) else [imports]
+            new_items = []
+            for it in items:
+                if isinstance(it, dict) and "@id" in it:
+                    if GENESIS_SPACE in it["@id"]:
+                        it = {**it, "@id": it["@id"].replace(GENESIS_SPACE, GENESIS_GRAMMAR)}
+                        changed = True
+                elif isinstance(it, str) and GENESIS_SPACE in it:
+                    it = it.replace(GENESIS_SPACE, GENESIS_GRAMMAR)
+                    changed = True
+                new_items.append(it)
+            if changed:
+                node["owl:imports"] = new_items if isinstance(imports, list) else new_items[0]
+        if changed:
+            self.content = json.dumps(self.data, ensure_ascii=False, indent=2)
+            self.modified = True
+        return changed
+
+    def fix_dcc_subclassof(self):
+        """Add m2:DomainConceptCombo to rdfs:subClassOf of all DomainConceptCombo nodes."""
+        MARKER = "m2:DomainConceptCombo"
         graph = self.data.get("@graph", [])
         count = 0
         for node in graph:
@@ -470,7 +703,7 @@ class M1Checker:
                     count += 1
             elif isinstance(sub, list):
                 vals = [s.get("@id", s) if isinstance(s, dict) else s for s in sub]
-                if not any("KnowledgeFieldConceptCombo" in str(v) for v in vals):
+                if not any("DomainConceptCombo" in str(v) for v in vals):
                     node["rdfs:subClassOf"] = [MARKER] + sub
                     count += 1
         if count:
@@ -519,7 +752,8 @@ class M1Checker:
         self.check_context()
         self.check_ontology_node()
         self.check_generic_concept_combos()
-        self.check_kfcc_nodes()
+        self.check_dcc_nodes()
+        self.check_no_monoidal_expansion()
         self.check_forbidden_patterns()
         self.check_namespace_convention()
 
@@ -538,9 +772,9 @@ class M1Checker:
                 fixes_applied.append("@base corrected")
             if self.fix_imports_genesis():
                 fixes_applied.append("owl:imports GenesisSpace → GenesisGrammar")
-            n = self.fix_kfcc_subclassof()
+            n = self.fix_dcc_subclassof()
             if n:
-                fixes_applied.append(f"rdfs:subClassOf += m2:KnowledgeFieldConceptCombo ({n} nodes)")
+                fixes_applied.append(f"rdfs:subClassOf += m2:DomainConceptCombo ({n} nodes)")
 
             for fix_msg in fixes_applied:
                 print(FIX(f"  {fix_msg}"))
@@ -631,9 +865,18 @@ def main():
     if args.no_color:
         USE_COLOR = False
 
-    # Resolve script directory (SHACL lives next to this script)
+    # Resolve paths via tscg_paths (repo root discovered by walking up from this
+    # file — no hardcoded absolute path, works from ontology/cli-tools/check-M1/).
     script_dir = Path(__file__).parent
-    shacl_path = script_dir / "M1_Schema.shacl.ttl"
+    # BUGFIX: the script used to look for "M1_Schema.shacl.ttl" (DOT) while the
+    # file on disk is "M1_Schema_shacl.ttl" (UNDERSCORE). --shacl therefore never
+    # found its grammar and validated NOTHING, while still exiting 0. Both
+    # spellings are now tried, and a missing grammar is a hard error (see below).
+    shacl_path = find_schema(
+        "M1_Schema_shacl.ttl",
+        "M1_Schema.shacl.ttl",
+        script_dir=script_dir,
+    )
 
     # Determine files to process
     if args.file:
@@ -646,12 +889,16 @@ def main():
             sys.exit(1)
         files = [target]
     else:
-        # Auto-detect: look for ontology/ directory containing M1_CoreConcepts.jsonld
+        # tscg_paths resolves the repo root by walking UP from this file until it
+        # finds a directory holding both ontology/ and instances/. That makes the
+        # script relocatable: it works from ontology/cli-tools/check-M1/, from the
+        # old cli_tools/check-M1/, or from anywhere else, unchanged.
         candidates = [
-            script_dir.parent.parent / "ontology",   # cli_tools/check-M1/ → repo/ontology/
-            script_dir.parent / "ontology",           # one level up
-            Path.cwd() / "ontology",                  # cwd/ontology/
-            Path.cwd(),                               # current dir
+            ONTOLOGY_DIR,                             # ← authoritative
+            script_dir.parent.parent / "ontology",    # legacy: cli_tools/check-M1/
+            script_dir.parent / "ontology",
+            Path.cwd() / "ontology",
+            Path.cwd(),
             script_dir,
         ]
         base_dir = None

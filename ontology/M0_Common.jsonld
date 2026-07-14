@@ -31,6 +31,11 @@
       ],
       "m2:changelog": [
         {
+          "version": "1.2.0",
+          "date": "2026-06-28",
+          "changes": "FACET INFRASTRUCTURE: Added orthogonal facet mechanism (faceted classification, Ranganathan). New abstract class m0:Facet + property m0:hasFacet (owl:ObjectProperty). First registered facet: m0:facet.Democratization (anchored on m2:Role Ss|K, perspective map). Contract fields: m0:illustratesConcept (required when facet declared, SHACL-enforced), m0:roleGrounding enum {Reused, Designed} (optional). Facets are orthogonal to m3:ontologyType — applicable to all instance types."
+        },
+        {
           "version": "1.1.0",
           "date": "2026-06-19",
           "changes": "ENUMERATION TYPES: spectralClass, focalClass, scoringStatus converted from owl:DatatypeProperty(xsd:string) to owl:ObjectProperty with owl:oneOf enumeration classes. Naming convention: m0:<propertyName>.<ValuePascalCase> (e.g. m0:spectralClass.Coherent). All float score properties now use bare numeric values (no @type annotation needed — rdfs:range declared in ontology). Removed @type:xsd:float annotation requirement."
@@ -417,7 +422,7 @@
       "rdfs:subPropertyOf": {
         "@id": "m0:FocalProperty"
       },
-      "rdfs:label": "Focal Score (EFS)",
+      "rdfs:label": "Focal Score (SFE)",
       "rdfs:comment": "Epistemic Focal Score — measures the sharpness of the combined Map+Territory image through the Gs stereopsis lens. Formula: m0:stereopsicDepth × (1 − |m0:focalBias|). Range: [0.0, 1.0]. 1.0 = Emmetropic (sharp binocular fusion). 0.0 = Astigmatic (no Gs depth) or strongly biased (blind spot). Analogous to visual acuity in ophthalmic metaphor. Only present when m0:focalApplicable=true.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
@@ -559,7 +564,7 @@
       "@id": "m0:FocalClass",
       "@type": "owl:Class",
       "rdfs:label": "Focal Class",
-      "rdfs:comment": "Enumeration of epistemic focal score (EFS) ophthalmic classifications. Derived from m0:focalScore and sign of m0:focalBias. Naming convention: m0:focalClass.<Value>. Only applicable when m0:focalApplicable=true.",
+      "rdfs:comment": "Enumeration of epistemic focal score (SFE) ophthalmic classifications. Derived from m0:focalScore and sign of m0:focalBias. Naming convention: m0:focalClass.<Value>. Only applicable when m0:focalApplicable=true.",
       "owl:oneOf": [
         {
           "@id": "m0:focalClass.Emmetropic"
@@ -590,8 +595,8 @@
         "m0:FocalClass"
       ],
       "rdfs:label": "Emmetropic",
-      "rdfs:comment": "EFS ≥ 0.70 — sharp combined Map+Territory image through Gs stereopsis",
-      "m0:derivationRule": "EFS ≥ 0.70",
+      "rdfs:comment": "SFE ≥ 0.70 — sharp combined Map+Territory image through Gs stereopsis",
+      "m0:derivationRule": "SFE ≥ 0.70",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
     },
@@ -602,8 +607,8 @@
         "m0:FocalClass"
       ],
       "rdfs:label": "SlightlyMyopic",
-      "rdfs:comment": "0.50 ≤ EFS < 0.70 AND focalBias < 0 — Territory slightly dominant, Map slightly blurred",
-      "m0:derivationRule": "0.50 ≤ EFS < 0.70, bias < 0",
+      "rdfs:comment": "0.50 ≤ SFE < 0.70 AND focalBias < 0 — Territory slightly dominant, Map slightly blurred",
+      "m0:derivationRule": "0.50 ≤ SFE < 0.70, bias < 0",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
     },
@@ -614,8 +619,8 @@
         "m0:FocalClass"
       ],
       "rdfs:label": "SlightlyHyperopic",
-      "rdfs:comment": "0.50 ≤ EFS < 0.70 AND focalBias > 0 — Map slightly dominant, Territory slightly blurred",
-      "m0:derivationRule": "0.50 ≤ EFS < 0.70, bias > 0",
+      "rdfs:comment": "0.50 ≤ SFE < 0.70 AND focalBias > 0 — Map slightly dominant, Territory slightly blurred",
+      "m0:derivationRule": "0.50 ≤ SFE < 0.70, bias > 0",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
     },
@@ -626,8 +631,8 @@
         "m0:FocalClass"
       ],
       "rdfs:label": "Myopic",
-      "rdfs:comment": "0.30 ≤ EFS < 0.50 AND focalBias < 0 — Territory dominant, Map significantly blurred",
-      "m0:derivationRule": "0.30 ≤ EFS < 0.50, bias < 0",
+      "rdfs:comment": "0.30 ≤ SFE < 0.50 AND focalBias < 0 — Territory dominant, Map significantly blurred",
+      "m0:derivationRule": "0.30 ≤ SFE < 0.50, bias < 0",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
     },
@@ -638,8 +643,8 @@
         "m0:FocalClass"
       ],
       "rdfs:label": "Hyperopic",
-      "rdfs:comment": "0.30 ≤ EFS < 0.50 AND focalBias > 0 — Map dominant, Territory significantly blurred",
-      "m0:derivationRule": "0.30 ≤ EFS < 0.50, bias > 0",
+      "rdfs:comment": "0.30 ≤ SFE < 0.50 AND focalBias > 0 — Map dominant, Territory significantly blurred",
+      "m0:derivationRule": "0.30 ≤ SFE < 0.50, bias > 0",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
     },
@@ -650,8 +655,8 @@
         "m0:FocalClass"
       ],
       "rdfs:label": "Astigmatic",
-      "rdfs:comment": "EFS < 0.30 — insufficient Gs stereopsic depth regardless of Map/Territory bias",
-      "m0:derivationRule": "EFS < 0.30",
+      "rdfs:comment": "SFE < 0.30 — insufficient Gs stereopsic depth regardless of Map/Territory bias",
+      "m0:derivationRule": "SFE < 0.30",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
     },
@@ -659,7 +664,7 @@
       "@id": "m0:focalClass",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "focal Class",
-      "rdfs:comment": "Ophthalmic classification of the epistemic focal score (EFS). Use enumeration values: m0:focalClass.Emmetropic, m0:focalClass.SlightlyMyopic, etc. Only present when m0:focalApplicable=true.",
+      "rdfs:comment": "Ophthalmic classification of the epistemic focal score (SFE). Use enumeration values: m0:focalClass.Emmetropic, m0:focalClass.SlightlyMyopic, etc. Only present when m0:focalApplicable=true.",
       "rdfs:domain": {
         "@id": "owl:Ontology"
       },
@@ -748,6 +753,114 @@
       },
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
+    },
+
+    {
+      "@id": "m0:Facet",
+      "@type": "owl:Class",
+      "rdfs:label": "M0 Facet",
+      "rdfs:comment": "Abstract superclass of all orthogonal facet types applicable to M0 instances. A Facet represents a cross-cutting dimension (orthogonal to m3:ontologyType) that instances may declare via m0:hasFacet. Each declared facet imposes contractual constraints on the instance (enforced via SHACL NodeShapes in M0_Instances_Schema.shacl.ttl). Conceptually grounded in faceted classification (Ranganathan, 1933). Semantically: facet values are roles in the BFO sense — externally conferred, contingent, Map-perspective — anchored on m2:Role (Ss | K). Distinct from m0:ScoringProperty (derived quality) and m0:FocalProperty (Gs stereopsis).",
+      "rdfs:subClassOf": {
+        "@id": "m0:InstanceProperty"
+      },
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-28"
+    },
+    {
+      "@id": "m0:hasFacet",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "has Facet",
+      "rdfs:comment": "Declares that this M0 instance conforms to one or more orthogonal facets. Values MUST be IRIs from registered m0:Facet individuals (e.g. m0:facet.Democratization). Each declared facet imposes contractual obligations enforced by SHACL. Anchored on m2:Role (Ss | K, perspective map): a facet is a role externally conferred by usage context. Multiple values allowed (array). Use @id notation: {'@id': 'm0:facet.Democratization'}. FORBIDDEN: bare string values.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "m0:Facet"
+      },
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-28"
+    },
+    {
+      "@id": "m0:facet.Democratization",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:Facet"
+      ],
+      "rdfs:label": "Democratization",
+      "rdfs:comment": "Facet: this instance serves a Democratization role — it makes systemic modeling accessible to non-specialists, particularly those working on environmental governance. Grounded on m2:Role (Ss | K): the instance functions as a Symbol carrying Knowledge for a novice audience. Declaring this facet obligates the instance to provide m0:illustratesConcept (SHACL-enforced, minCount 1). Orthogonal to m3:ontologyType — applicable to Poclet, SystemicFramework, SymbolicSystemGrammar, and TscgTool.",
+      "m0:facetAnchor": {
+        "@id": "m2:Role"
+      },
+      "m0:facetFormula": "Ss | K",
+      "m0:facetContractFields": [
+        "m0:illustratesConcept (REQUIRED — minCount 1)",
+        "m0:roleGrounding (OPTIONAL — IRI from m0:RoleGrounding)"
+      ],
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-28"
+    },
+    {
+      "@id": "m0:illustratesConcept",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "illustrates Concept",
+      "rdfs:comment": "Declares which systemic concept(s) or principle(s) this instance primarily illustrates for a novice audience. REQUIRED when m0:hasFacet includes m0:facet.Democratization (SHACL-enforced, minCount 1). Values: IRI of an m2:GenericConcept (e.g. {'@id': 'm2:Balance'}) OR a descriptive string for meta-concepts not yet reified in M2 (e.g. 'ASFID completeness', 'Map/Territory duality', 'Localizability primitive L'). Multiple values allowed.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-28"
+    },
+    {
+      "@id": "m0:RoleGrounding",
+      "@type": "owl:Class",
+      "rdfs:label": "Role Grounding",
+      "rdfs:comment": "Enumeration qualifying how the Democratization facet role is grounded. Reused: instance designed for its primary systemic purpose, proves effective pedagogically (role externally conferred — BFO role). Designed: instance specifically conceived for pedagogical purpose (role teleologically intrinsic — BFO function). Distinction matters for gap analysis: Reused instances are opportunistic assets; Designed instances are deliberate investments in the democratization mission.",
+      "owl:oneOf": [
+        {
+          "@id": "m0:roleGrounding.Reused"
+        },
+        {
+          "@id": "m0:roleGrounding.Designed"
+        }
+      ],
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-28"
+    },
+    {
+      "@id": "m0:roleGrounding.Reused",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:RoleGrounding"
+      ],
+      "rdfs:label": "Reused",
+      "rdfs:comment": "The democratization role is externally conferred by pedagogical usage — instance was designed for its primary systemic purpose and proves effective for teaching non-specialists. Examples: FireTriangle (illustrates ASFID completeness), ExposureTriangle (illustrates m2:Balance).",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-28"
+    },
+    {
+      "@id": "m0:roleGrounding.Designed",
+      "@type": [
+        "owl:NamedIndividual",
+        "m0:RoleGrounding"
+      ],
+      "rdfs:label": "Designed",
+      "rdfs:comment": "The democratization role is functionally intrinsic — instance was specifically designed to serve a pedagogical purpose for non-specialists. Example: 2D barcode decoder comparator (designed to illustrate Localizability / L primitive across QR, DataMatrix, MaxiCode).",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-28"
+    },
+    {
+      "@id": "m0:roleGrounding",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "role Grounding",
+      "rdfs:comment": "Optional qualifier for the Democratization facet. Specifies how the pedagogical role is grounded. Values: m0:roleGrounding.Reused (externally conferred by usage context) or m0:roleGrounding.Designed (teleologically intrinsic by conception). Only meaningful when m0:hasFacet includes m0:facet.Democratization. Use @id notation. Omit if grounding is unclear or irrelevant.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "m0:RoleGrounding"
+      },
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-06-28"
     }
   ]
 }

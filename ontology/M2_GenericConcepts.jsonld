@@ -17,8 +17,8 @@
       "dcterms:description": "Second layer of the TSCG framework. Defines transdisciplinary GenericConcepts emerging from structural composition of M3 primitive types. Uses all three M3 alphabets: 𝕋₀(×)={A,S,F,I,D} (Territory/Eagle Eye), 𝕋₀(+)={R,E,V,O,Im} (Map/Sphinx Eye), 𝕋₀(|)={T} (Stereopsis/Bicephalous Perspective). Introduces m2:isStereopsic flag for GenericConcepts using | or Gs primitives. M2 restricted to patterns valid across ALL knowledge fields without exception.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
-      "dcterms:modified": "2026-06-23",
-      "owl:versionInfo": "16.16.0",
+      "dcterms:modified": "2026-07-13",
+      "owl:versionInfo": "16.17.0",
       "owl:imports": [
         "M3_GenesisGrammar.jsonld"
       ],
@@ -71,8 +71,7 @@
         "m2:functor_instantiation": "F_inst: Cat_M2 → Cat_M1",
         "m2:morphism_inclusion": "↪ (e.g., Homeostasis ↪ Regulation)",
         "m2:morphism_composition": "∘ (e.g., Learning = Memory ∘ Adaptation)",
-        "m2:morphism_duality": "op (e.g., Divergence = Convergence^op)",
-        "m2:morphism_emergence": "⇒ (e.g., multiple ⇒ emergent)"
+        "m2:morphism_duality": "op (e.g., Divergence = Convergence^op)"
       },
       "m2:criticalDecisions": {
         "m2:time_external": "Time is parameter in M3, not a 6th primitive type. Temporal genericConcepts (Memory, Process) require integration → M2",
@@ -110,6 +109,11 @@
       },
       "m2:changelog": [
         {
+          "version": "16.17.0",
+          "date": "2026-07-13",
+          "changes": "FUNCTIONAL GRAMMAR MODEL (SC-1). RENAME (hard, no deprecation alias): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. RE-DEFINITION: DomainConceptCombo is now defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. PRODUCING FUNCTIONS declared: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). A combo's formula IS the function signature: no monoidal formula, no monoidal expansion (emergence is non-compositional → FUNCTIONS, not functors). Arguments are named concepts from M2_GenericConcepts or M1_CoreConcepts only — never primitive types, never a monoidal expression, juxtaposed by comma and never joined by ×/+/|. Fm1 does not exist. NEW PROPERTY: m2:producingFunction. DEPRECATED: m2:morphism_emergence (owl:deprecated true, supersededBy m2:producingFunction) and its entry in the header m2:categoryTheory block — it declared emergence as a category-theoretic morphism, the ROOT of the retired tensor-era notation; a morphism composes, an emergence does not. PURGE of the compositional residue: the n-ary emergence operator and its lattice-join definition in the combo class comments, the 'union of the parent type sets' clause on m2:hasComboComponent, and the 4 m2:comboFormula values, now rewritten as Fm2 signatures. See StructuralGrammar/Functional_Grammar_Model.md."
+        },
+        {
           "version": "16.16.0",
           "date": "2026-06-26",
           "changes": "UPDATE m2:Constraint: formula St|L → St×A×D|O+V. Perspective territory → bicephalous. eagleView St×A×D (IMMUTABLE) + sphinxView O+V (VALIDATED). Six-domain validation: blockchain, law, mechanics, optimization, biology, music. Comment and examples updated."
@@ -118,11 +122,6 @@
           "version": "16.14.0",
           "date": "2026-06-23",
           "changes": "REVISION: m2:Balance reformulated A×S×F → A×S×F|_0 (isStereopsic=true, _0=EquilibriumPole defined in M3_BicephalousPerspective v1.3.0). NEW: m2:Modelisation (D×F×It|R+V+E) — functionally stereopsic Process reifying Φ:Gt→Gm. NEW: m2:TriadicBalance (A×F×D|_0) — 3-state pattern with qualitative central optimum. Both validated ≥7 domains. Session: transport phenomena + Ontological Overfitting analysis."
-        },
-        {
-          "version": "16.13.0",
-          "date": "2026-05-28",
-          "changes": "CLEANUP: Removed m2:hasStructuralGrammarFormulaRawText (83 nodes) and m2:hasStructuralGrammarFormulaTeX (82 nodes). Both properties are now redundant — the standard formula (×, |, St, It notation) is self-sufficient."
         }
       ],
       "m2:bicephalousStrategy": {
@@ -160,23 +159,27 @@
         "@id": "m2:GenericConcept"
       },
       "rdfs:label": "GenericConceptCombo",
-      "rdfs:comment": "Class of synergistic N-ary combinations of M2 GenericConcepts that produce emergent semantics irreducible to any single parent. Operator: × ⁿ⇒(M₁,…,Mₙ) = lattice_join(dims(M₁) ∪ … ∪ dims(Mₙ)). Shared dimensions are contracted (Fᵢ⊔Fⱼ = F). Emergent contributions are the dimensions unique to each parent. Subclass of m2:GenericConcept. Instances are defined in M1_CoreConcepts.jsonld. Co-mobilisation rule: if the combination produces NO emergent semantics beyond its parents, it is NOT a GenericConceptCombo.",
+      "rdfs:comment": "Class of synergistic combinations of named GenericConcepts that produce emergent semantics irreducible to any single parent. PRODUCING FUNCTION: Fm2 : GenericConcept²⁺ → GenericConceptCombo. A GenericConceptCombo's structuralGrammarFormula IS the signature of the function that produces it (e.g. Fm2(Cascade, Duplication, Network)); it is NOT a monoidal formula and has NO monoidal expansion, because emergence is non-compositional (the arguments are combined, not associated). Arguments: at least two named concepts declared in M2_GenericConcepts.jsonld or M1_CoreConcepts.jsonld — never primitive types, never a monoidal expression, juxtaposed by comma and never joined by a grammar operator (×, +, |). Subclass of m2:GenericConcept, hence itself a legal argument (free recursion). Instances are defined in M1_CoreConcepts.jsonld. Co-mobilisation rule: if the combination produces NO emergent semantics beyond its parents, it is NOT a GenericConceptCombo. See StructuralGrammar/Functional_Grammar_Model.md.",
       "m2:hasFamily": "m2:Combo",
       "dcterms:created": "2026-01-15",
-      "dcterms:modified": "2026-05-13",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:modified": "2026-07-13",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:producingFunction": "Fm2 : GenericConcept²⁺ → m2:GenericConceptCombo"
     },
     {
-      "@id": "m2:KnowledgeFieldConceptCombo",
+      "@id": "m2:DomainConceptCombo",
       "@type": "owl:Class",
       "rdfs:subClassOf": {
         "@id": "m2:GenericConceptCombo"
       },
-      "rdfs:label": "KnowledgeFieldConceptCombo",
-      "rdfs:comment": "Subclass of GenericConceptCombo restricted to combinations that span knowledge field boundaries — i.e. whose parent GenericConcepts originate from distinct epistemological domains (e.g. physical + semiotic, biological + informational). A KnowledgeFieldConceptCombo is transdisciplinary by construction: its emergent semantics cannot be expressed within any single knowledge field. Instances are defined in M1_CoreConcepts.jsonld.",
+      "rdfs:label": "DomainConceptCombo",
+      "rdfs:comment": "Subclass of GenericConceptCombo defined by an Fm1m2 formula: a HYBRID of at least one Domain and at least one GenericConcept. PRODUCING FUNCTION: Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo. The membership criterion is DOMAIN QUALIFICATION, not the heterogeneity of the parents. Both slots are non-empty: a domain-less Fm1m2 is an Fm2 that mislabelled itself. The hybridisation Domain × Concept IS the emergence, so one concept argument suffices (Fm1m2(Optics, Refraction) is well-formed). Multi-domain conjunction is carried by juxtaposed domain arguments (Fm1m2(Biology, Chemistry, Catalysis)); there is no Fm1 and no reification of composite domains. Concept arguments must be named concepts declared in M2_GenericConcepts.jsonld or M1_CoreConcepts.jsonld — never primitive types, never a monoidal expression; consequently M1 extensions are leaves. Instances are defined in M1_CoreConcepts.jsonld and in the M1 extensions. See StructuralGrammar/Functional_Grammar_Model.md.",
       "m2:hasFamily": "m2:Combo",
       "dcterms:created": "2026-03-13",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "m2:producingFunction": "Fm1m2 : Domain⁺, GenericConcept⁺ → m2:DomainConceptCombo",
+      "m2:supersedes": "m2:KnowledgeFieldConceptCombo",
+      "dcterms:modified": "2026-07-13"
     },
     {
       "@id": "m2:Layer",
@@ -600,9 +603,14 @@
       "@id": "m2:morphism_emergence",
       "@type": "owl:AnnotationProperty",
       "rdfs:label": "morphism emergence",
-      "rdfs:comment": "Annotation string describing the emergence morphism operator (⇒) used in category-theoretic formalism of the TSCG M2 layer. Example: '⇒ (e.g., multiple ⇒ emergent)'.",
+      "rdfs:comment": "DEPRECATED (v16.17.0, SC-1). Formerly declared emergence as a category-theoretic MORPHISM with operator '⇒' — the origin of the retired tensor-era notation. The functional grammar model supersedes it: emergence is produced by the FUNCTIONS Fm2 and Fm1m2, which are non-compositional and therefore non-functorial; a morphism composes, an emergence does not. Superseded by m2:producingFunction. Retained only for rollback traceability; do not use.",
       "dcterms:created": "2026-02-24",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "owl:deprecated": true,
+      "m2:supersededBy": {
+        "@id": "m2:producingFunction"
+      },
+      "dcterms:modified": "2026-07-13"
     },
     {
       "@id": "m2:eagleView",
@@ -777,7 +785,7 @@
       "@id": "m2:hasComboComponent",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "has combo component",
-      "rdfs:comment": "Associates a GenericConceptCombo with one of its constituent parent GenericConcepts. Each component value is a structured object with '@id' (the parent GenericConcept) and 'm2:comboRole' (the semantic role of that component in the combo). The set of hasComboComponent values fully determines the combo's structural formula via union of the parent type sets.",
+      "rdfs:comment": "Associates a GenericConceptCombo with one of its constituent parent GenericConcepts. Each component value is a structured object with '@id' (the parent GenericConcept) and 'm2:comboRole' (the semantic role of that component in the combo). The set of hasComboComponent values corresponds to the argument list of the producing function (Fm2 / Fm1m2); it does NOT determine the combo's semantics by union of the parent type sets — emergence is non-compositional, so a combo has no monoidal expansion.",
       "rdfs:domain": {
         "@id": "m2:GenericConceptCombo"
       },
@@ -796,6 +804,20 @@
         "@id": "xsd:string"
       },
       "dcterms:created": "2026-02-24",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m2:producingFunction",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "producing function",
+      "rdfs:comment": "Declares the function that produces a combo class, as a signature. Fm2 : GenericConcept²⁺ → m2:GenericConceptCombo. Fm1m2 : Domain⁺, GenericConcept⁺ → m2:DomainConceptCombo. Fm2 and Fm1m2 are FUNCTIONS, not functors: their essence is combination with emergence, which is non-compositional, and a functor must preserve composition. The term 'functor' stays reserved for M0 dimension evaluation (F_x : System → Score). An instance's m1:structuralGrammarFormula is an application of its class's producing function.",
+      "rdfs:domain": {
+        "@id": "m2:GenericConceptCombo"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "dcterms:created": "2026-07-13",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
     {
@@ -1865,7 +1887,7 @@
         ],
         "count": 6
       },
-      "m2:discoveryContext": "Identified as missing M2 gap during construction of m2:Propagation as GenericConceptCombo × ⇒(Cascade, Duplication, Network). Duplication provides the branching parent: each node receiving a copy becomes a new emitter. The fidelity spectrum (V axis) formally connects Duplication to Bifurcation (degenerate V absent (fidelity lost) case).",
+      "m2:discoveryContext": "Identified as missing M2 gap during construction of m2:Propagation as the GenericConceptCombo Fm2(Cascade, Duplication, Network). Duplication provides the branching parent: each node receiving a copy becomes a new emitter. The fidelity spectrum (V axis) formally connects Duplication to Bifurcation (degenerate V absent (fidelity lost) case).",
       "m3:semanticSignature": "faithful_copy_production + informational_preservation + flux_driven + temporal_dynamics + fidelity_verifiable",
       "m2:hasStructuralGrammarFormula": "St × It × F × D | V",
       "m2:isStereopsic": true
@@ -6355,7 +6377,7 @@
           "role": "accumulated irreversibility"
         }
       ],
-      "m2:comboFormula": " × ⇒(Memory, Entropy)",
+      "m2:comboFormula": "Fm2(Memory, Entropy)",
       "m2:comboExpansion": "∫(D−F)dτ × (F × I × D) = S × F × I × D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -6400,7 +6422,7 @@
           "role": "temporal unfolding of flux mobilization"
         }
       ],
-      "m2:comboFormula": " × ⇒(Activation, Process)",
+      "m2:comboFormula": "Fm2(Activation, Process)",
       "m2:comboExpansion": "(A × D) × (D × F) = A × D × F",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Attractor",
@@ -6471,7 +6493,7 @@
           "role": "irreversible sealing operator"
         }
       ],
-      "m2:comboFormula": " × ⇒(Stase, Entropy)",
+      "m2:comboFormula": "Fm2(Stase, Entropy)",
       "m2:comboExpansion": "(S × A) × (F × I × D) = S × A × F × I × D",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -6517,7 +6539,7 @@
           "role": "discrete topological invariant protecting stability"
         }
       ],
-      "m2:comboFormula": " × ⇒(Incoherence, Invariant)",
+      "m2:comboFormula": "Fm2(Incoherence, Invariant)",
       "m2:comboExpansion": "¬(A × S × I | R | O) ∧ (S × A) → S × A × I | R + O",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",

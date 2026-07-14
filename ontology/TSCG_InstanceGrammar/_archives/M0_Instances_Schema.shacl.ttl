@@ -1,134 +1,181 @@
-# TSCG Instances - Complete Grammar SHACL Schema v1.6
-# Based on complete corpus analysis: 24 Poclets + 2 other instances (26 total)
+# TSCG Instances - Complete Grammar SHACL Schema v1.5
 # Author: Echopraxium with the collaboration of Claude AI
-# Date: 2026-04-13 (initial), 2026-04-18 (v1.1), 2026-04-19 (v1.2), 2026-05-13 (v1.4 - domain format enforcement), 2026-05-28 (v1.5 - m3:instanceOf metaclass pattern), 2026-05-29 (v1.6 - added m3:TscgTool/TransDisclet/Enigma to ontologyType sh:in)
-# Status: UPDATED - Added m3:instanceOf optional property for M0 metaclass/instance pattern
+# Date: 2026-06-19
+# Status: ACTIVE
+#
+# ============================================
+# CHANGELOG
+# ============================================
+# v1.5 (2026-06-19): M0_Common.jsonld + ENUMERATION TYPES
+#   - BREAKING: m0: prefix updated from M0_Poclet# → M0_Common.jsonld# (canonical source of truth)
+#   - BREAKING: m0:spectralClass now owl:ObjectProperty — value MUST be sh:nodeKind sh:IRI
+#     Valid IRIs: m0:spectralClass.Coherent | .OnCriticalLine | .Liminal | .Enigmatic
+#   - BREAKING: m0:focalClass now owl:ObjectProperty — value MUST be sh:nodeKind sh:IRI
+#     Valid IRIs: m0:focalClass.Emmetropic | .SlightlyMyopic | .SlightlyHyperopic | .Myopic | .Hyperopic | .Astigmatic
+#   - BREAKING: m0:scoringStatus now owl:ObjectProperty — value MUST be sh:nodeKind sh:IRI
+#     Valid IRIs: m0:scoringStatus.Complete | .Partial | .Pending
+#   - BREAKING: Score values are now bare numerics (no @type:xsd:float annotation needed)
+#     rdfs:range xsd:float declared in M0_Common.jsonld — parsers infer type
+#   - NEW: owl:imports M0_Common.jsonld REQUIRED in all M0 instances
+#   - UPDATED: Naming convention documented — camelCase.PascalCase for enum values
+#   - FORBIDDEN: A_score/S_score/... aliases (replaced by m0:scoreA/m0:scoreS/...)
+#   - FORBIDDEN: {"@value":"0.85","@type":"xsd:float"} — use bare 0.85
+#
+# v1.4 (2026-06-19): NAMESPACE IRI CONVENTION — m0.<instance>: and m1.extension.<domain>: enforcement
+#   - NEW: m0:CanonicalNamespaceShape — VIOLATION if any property IRI is not an absolute URL
+#   - NEW: m0:CanonicalTscgBaseShape  — WARNING if TSCG IRI uses non-canonical repo base
+#   - DOCUMENTED: 23/32 instances have namespace violations (unresolved @context aliases)
+#   - Root causes catalogued: m0: declared relative, m1core: undeclared, @base missing
+#   - Convention: m0.<instance>: and m1.extension.<domain>: aliases MUST resolve to HTTPS
+#
+# v1.3 (2026-06-19): SCORE CONVENTION ENFORCEMENT + FOCAL SCORE (Gs stereopsis)
+#   - BREAKING: m0:asfidScores{} and m0:revoiScores{} sub-objects → FORBIDDEN
+#   - BREAKING: eagle_eye:*/sphinx_eye:* as score properties → FORBIDDEN
+#   - NEW: Flat scores A_score..Im_score at owl:Ontology root level → STRONGLY RECOMMENDED
+#   - NEW: m0:asfidMean, m0:revoiMean → RECOMMENDED
+#   - NEW: m0:epistemicGap constraint tightened (coherence check documented)
+#   - NEW: m0:spectralClass enum constraint added
+#   - NEW: m0:scoringStatus → OPTIONAL ("complete"|"partial"|"pending")
+#   - NEW: Focal Score family (Gs stereopsis) → OPTIONAL, conditional on focalApplicable
+#     - m0:focalApplicable (boolean, always)
+#     - m0:stereopsicDepth [0,1]
+#     - m0:focalBias [-1,1]  — signed: REVOI_mean - ASFID_mean
+#     - m0:focalScore [0,1]  — EFS = stereopsicDepth × (1 - |focalBias|)
+#     - m0:focalClass enum (Emmetropic|SlightlyMyopic|SlightlyHyperopic|Myopic|Hyperopic|Astigmatic)
+#     - m0:stereopsicDepthProfile (object)
+#   - Updated corpus stats: 33 instances (26 poclets + 2 SF + 1 SSG + 3 TscgTools + 1 stub)
+#   - m3:ontologyType values extended: TscgTool added
+#
+# v1.2 (2026-04-19): Absolute URL requirements for pyshacl
+# v1.1 (2026-04-18): Domain property migration to M1 level (m0:domain → m1:domain)
+# v1.0 (2026-04-13): FINAL grammar after complete corpus analysis (26 instances)
+# ============================================
 
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh:      <http://www.w3.org/ns/shacl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix m0: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#> .
-@prefix m1: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#> .
-@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
-@prefix m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#> .
+@prefix m0:      <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#> .
+@prefix m1:      <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#> .
+@prefix m2:      <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
+@prefix m3:      <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#> .
 
 # ============================================
 # NAMESPACE POLICY (CRITICAL)
 # ============================================
 # ALLOWED NAMESPACES:
-# - Standard: owl, rdf, rdfs, skos, dcterms, xsd, etc.
-# - TSCG: m3, m2, m1 (+ extensions: m1bio, m1chem, m1optics, m1geo, etc.), m0
+#   Standard:  owl, rdf, rdfs, skos, dcterms, xsd
+#   TSCG:      m3, m2, m1 (+ extensions m1:extension:<domain>:), m0
 #
 # FORBIDDEN NAMESPACES:
-# - tscg: (source of confusion - use m0: for instance-specific properties)
+#   tscg:        → use m0: for instance-specific properties
+#   eagle_eye:*  → MonoidalTypes, NOT score properties (v1.3)
+#   sphinx_eye:* → MonoidalTypes, NOT score properties (v1.3)
 #
-# CANONICAL @base URL:
-# - https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/
-# - NOT: Echopraxium/tscg (obsolete repository - 3/26 violations detected)
+# @CONTEXT URL REQUIREMENTS (pyshacl — CRITICAL):
+#   ALL namespace URLs MUST be ABSOLUTE:
+#   ✅ "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#"
+#   ❌ "m3": "M3_GenesisGrammar.jsonld#"
 #
-# @CONTEXT URL REQUIREMENTS (CRITICAL FOR PYSHACL):
-# ALL namespace URLs in @context MUST be ABSOLUTE, not relative.
-# ✅ CORRECT:   "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#"
-# ❌ INCORRECT: "m3": "M3_GenesisGrammar.jsonld#"
-# 
-# Reason: pyshacl cannot resolve relative URLs when validating. Relative URLs
-# cause namespace resolution failures, making properties appear absent even when
-# present (e.g., m3:ontologyType, m1:domain).
+# SCORE CONVENTION (v1.5 MANDATORY):
+#   Scores MUST be flat at owl:Ontology root level as m0:scoreX bare numerics:
+#   m0:scoreA, m0:scoreS, m0:scoreF, m0:scoreIt, m0:scoreD  (ASFID / Gt)
+#   m0:scoreR, m0:scoreE, m0:scoreV, m0:scoreO, m0:scoreIm  (REVOI / Gm)
+#   Properties defined in M0_Common.jsonld with rdfs:range xsd:float.
+#   FORBIDDEN: A_score/S_score/... @context aliases (replaced by m0:scoreX directly)
+#   FORBIDDEN: m0:asfidScores{} and m0:revoiScores{} sub-objects.
+#   FORBIDDEN: {"@value":"0.85","@type":"xsd:float"} — use bare numeric 0.85
 #
-# Required absolute URLs:
-# - "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#"
-# - "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#"
-# - "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#"
+# ENUMERATION CONVENTION (v1.5 NEW):
+#   m0:spectralClass, m0:focalClass, m0:scoringStatus are owl:ObjectProperty.
+#   Values MUST be IRIs using pattern: m0:<propertyName>.<ValuePascalCase>
+#   ✅ "m0:spectralClass": {"@id": "m0:spectralClass.Coherent"}
+#   ❌ "m0:spectralClass": "Coherent"   (string — FORBIDDEN since v1.5)
+#   All enum individuals defined in M0_Common.jsonld.
+#
+# M0_Common.jsonld (v1.5 NEW — MANDATORY):
+#   All M0 instances MUST declare in @context:
+#     "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#"
+#   AND in owl:imports: "M0_Common.jsonld"
+#   Instance-local properties use: "m0.<instanceName>": "instances/.../M0_<Name>.jsonld#"
+#
+# FOCAL SCORE (v1.3 NEW — conditional):
+#   Only meaningful when stereopsic GenericConcepts (isStereopsic=true) are mobilized.
+#   m0:focalApplicable=true triggers the full focal score family.
+#   m0:focalApplicable=false → all other focal properties MUST be absent.
 # ============================================
 
 # ============================================
-# TSCG INSTANCE TYPES (6 validated types)
+# TSCG INSTANCE TYPES (v1.3 — 4 validated types)
 # ============================================
-# All TSCG instances MUST use m3:ontologyType with one of these values:
-# 1. m3:Poclet                - Primary TSCG instance type
-# 2. m3:SystemicFramework     - Systemic framework modeling (e.g. VSM)
-# 3. m3:SymbolicSystemGrammar - Symbolic system modeling (e.g. IChing)
-# 4. m3:TscgTool              - TSCG reflexive tool instances
-# 5. m3:TransDisclet          - Transdisciplinary concept instances
-# 6. m3:Enigma                - Planned: epistemic gap instances
-#
-# OBSOLETE PROPERTIES (NEVER USE):
-# - m3:ontologyCategory (1 violation detected in VSM - must be corrected)
-# - m2:ontologyCategory (5 violations detected in poclets - must be corrected)
-# - m2:ontologyType (incorrect namespace)
+# m3:Poclet              — primary M0 instance type (26 instances)
+# m3:SystemicFramework   — external methodology (Vsm, Triz, Bmc)
+# m3:SymbolicSystemGrammar — formal symbolic grammar (IChing)
+# m3:TscgTool            — reflexive TSCG tooling instances
 # ============================================
 
 # ============================================
 # COMMON TSCG INSTANCE SHAPE
 # ============================================
-# Applies to ALL TSCG instances (Poclets + SystemicFrameworks + SymbolicSystemGrammars)
 m0:TscgInstanceShape
   a sh:NodeShape ;
   sh:targetClass owl:Ontology ;
-  sh:name "TSCG Instance Common Shape" ;
-  sh:description "Common constraints for all TSCG instances. Based on 100% corpus analysis (26 instances: 24 Poclets + 2 other types)." ;
-  
-  # ===== MANDATORY PROPERTIES (Universal consensus ≥70%) =====
-  
-  # Type must be owl:Ontology (CRITICAL - only 58% conformance)
+  sh:name "TSCG Instance Common Shape v1.3" ;
+  sh:description "Common constraints for all TSCG instances. Score Convention Option B enforced. Focal Score (Gs) added as optional conditional block." ;
+
+  # ===== MANDATORY PROPERTIES =====
+
   sh:property [
     sh:path rdf:type ;
     sh:hasValue owl:Ontology ;
     sh:minCount 1 ;
-    sh:message "CRITICAL: All TSCG instances MUST have @type: owl:Ontology (never owl:NamedIndividual or m0:Poclet). Current conformance: 58% (14/24 poclets) + 100% (2/2 other instances). 10 poclets to correct."
+    sh:message "CRITICAL: All TSCG instances MUST have @type: owl:Ontology (never owl:NamedIndividual)."
   ] ;
-  
-  # Ontology type MUST use m3:ontologyType (CRITICAL - only 38% poclet conformance)
+
   sh:property [
     sh:path m3:ontologyType ;
     sh:nodeKind sh:IRI ;
-    sh:in ( m3:Poclet m3:SystemicFramework m3:SymbolicSystemGrammar m3:TscgTool m3:TransDisclet m3:Enigma ) ;
+    sh:in ( m3:Poclet m3:SystemicFramework m3:SymbolicSystemGrammar m3:TscgTool ) ;
     sh:minCount 1 ;
     sh:maxCount 1 ;
-    sh:message "CRITICAL: m3:ontologyType MUST be one of: m3:Poclet, m3:SystemicFramework, m3:SymbolicSystemGrammar, m3:TscgTool, m3:TransDisclet, m3:Enigma. This is the ONLY valid ontologyType property. Current conformance: 38% poclets (9/24) + 50% others (1/2). 15 poclets + VSM to correct. NEVER use m3:ontologyCategory or m2:ontologyCategory. IMPORTANT: If this validation fails but m3:ontologyType is present, check that 'm3:' namespace in @context uses ABSOLUTE URL (https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#) not relative URL (M3_GenesisGrammar.jsonld#) - pyshacl cannot resolve relative URLs."
+    sh:message "CRITICAL: m3:ontologyType MUST be one of: m3:Poclet, m3:SystemicFramework, m3:SymbolicSystemGrammar, m3:TscgTool. NEVER use m3:ontologyCategory or m2:ontologyCategory."
   ] ;
-  
-  # Label (standard: rdfs:label - threshold reached at 71%)
+
   sh:property [
     sh:path rdfs:label ;
     sh:datatype xsd:string ;
     sh:minCount 1 ;
     sh:maxCount 1 ;
-    sh:message "rdfs:label is MANDATORY (71% consensus on poclets + 100% other instances). Use rdfs:label, NOT dcterms:title."
+    sh:message "rdfs:label is MANDATORY. Use rdfs:label, NOT dcterms:title."
   ] ;
-  
-  # Comment (standard: rdfs:comment - 79% consensus)
+
   sh:property [
     sh:path rdfs:comment ;
     sh:datatype xsd:string ;
     sh:minCount 1 ;
-    sh:message "rdfs:comment is mandatory (79% consensus poclets + 100% other instances). Use rdfs:comment, NOT dcterms:description."
+    sh:message "rdfs:comment is MANDATORY. Use rdfs:comment, NOT dcterms:description."
   ] ;
-  
-  # Version info (semver - 83% consensus)
+
   sh:property [
     sh:path owl:versionInfo ;
     sh:datatype xsd:string ;
     sh:pattern "^[0-9]+\\.[0-9]+\\.[0-9]+$" ;
     sh:minCount 1 ;
     sh:maxCount 1 ;
-    sh:message "owl:versionInfo MUST follow semantic versioning X.Y.Z (83% consensus). Use owl:versionInfo, NOT m0:version."
+    sh:message "owl:versionInfo MUST follow semantic versioning X.Y.Z. Use owl:versionInfo, NOT m0:version."
   ] ;
-  
-  # Creator (universal 100% consensus)
+
   sh:property [
     sh:path dcterms:creator ;
     sh:datatype xsd:string ;
     sh:hasValue "Echopraxium with the collaboration of Claude AI" ;
     sh:minCount 1 ;
     sh:maxCount 1 ;
-    sh:message "dcterms:creator MUST be exactly 'Echopraxium with the collaboration of Claude AI' (100% consensus across all 26 instances). Variants like 'Claude Sonnet 4.6' are NOT accepted."
+    sh:message "dcterms:creator MUST be exactly 'Echopraxium with the collaboration of Claude AI'."
   ] ;
-  
-  # Created date (universal 100% consensus)
+
   sh:property [
     sh:path dcterms:created ;
     sh:or (
@@ -138,67 +185,162 @@ m0:TscgInstanceShape
     sh:pattern "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" ;
     sh:minCount 1 ;
     sh:maxCount 1 ;
-    sh:message "dcterms:created MUST be present in format YYYY-MM-DD (100% consensus)"
+    sh:message "dcterms:created MUST be present in format YYYY-MM-DD."
   ] ;
-  
-  # Domain (83% consensus on poclets - MIGRATED to M1 level)
-  # v1.3 CHANGE: Added pattern constraint to reject "/" separator in single string format
+
   sh:property [
     sh:path m1:domain ;
     sh:or (
-      # Single domain: string WITHOUT "/" separator
-      [ 
-        sh:datatype xsd:string ;
-        sh:pattern "^[^/]+$" ;  # Reject strings containing "/"
-        sh:message "Single domain must be a string WITHOUT '/' separator (e.g., 'Chemistry'). For multiple domains, use array format instead."
-      ]
-      # Multiple domains: array of strings
-      [ 
-        sh:nodeKind sh:Literal ;
-        sh:message "Multiple domains must use array format (e.g., ['Chemistry', 'Physics'])"
-      ]
+      [ sh:datatype xsd:string ]
+      [ sh:nodeKind sh:Literal ]
     ) ;
     sh:minCount 1 ;
-    sh:message "m1:domain is MANDATORY (M1-level property, not m0:domain). FORMATS: single string ('Chemistry') for one domain, OR array (['Chemistry', 'Physics']) for multiple domains. String format with '/' separator (e.g., 'Chemistry / Physics') is FORBIDDEN - use array format instead. Domain values are registered in M1_Domains.jsonld (evolving registry). Examples: 'Biology', 'Physics', 'Chemistry', 'Electronics', 'Economics', 'Optics', 'Music Theory', 'Game Theory', 'Computer Science', 'Geology', 'Engineering'. IMPORTANT: If this validation fails but m1:domain is present, check that 'm1:' namespace in @context uses ABSOLUTE URL (https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#) not relative URL (M1_CoreConcepts.jsonld#) - pyshacl cannot resolve relative URLs."
+    sh:message "m1:domain is MANDATORY (use m1:domain, NOT m0:domain). Accepts single string or array. Values registered in M1_Domains.jsonld."
   ] ;
-  
-  # ===== STRONGLY RECOMMENDED PROPERTIES (Consensus 70-89%) =====
-  
-  # Imports (75% consensus)
+
+  # ===== STRONGLY RECOMMENDED =====
+
   sh:property [
     sh:path owl:imports ;
     sh:minCount 0 ;
-    sh:message "owl:imports is strongly recommended (75% consensus) - should list M3, M2, M1 ontologies"
+    sh:message "owl:imports is strongly recommended — should list M3, M2, M1 ontologies."
   ] ;
-  
-  # Changelog (71% consensus - MUST be array format)
+
   sh:property [
     sh:path m2:changelog ;
     sh:minCount 0 ;
-    sh:message "m2:changelog is strongly recommended (71% consensus - threshold reached!). MUST use array format with version/date/changes objects, NOT object format with version keys. 76% use array format (13/17), 24% use object format (4/17 to convert)."
+    sh:message "m2:changelog is strongly recommended. MUST be array of {version, date, changes} objects. Max 3 entries (rolling). NOT a bare string array."
   ] ;
-  
-  # ===== OPTIONAL PROPERTIES (Poclets primarily) =====
-  
-  # ASFID Scores (50% of poclets have scores)
+
+  # ===== SCORES — FLAT AT ROOT LEVEL (Option B — v1.3) =====
+  # ASFID scores: A_score, S_score, F_score, It_score, D_score
+
   sh:property [
-    sh:path m0:asfidScores ;
-    sh:node m3:eagle_eye:AttractorsfidScoresShape ;
+    sh:path m0:scoreA ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "m0:asfidScores is recommended for poclets. Internal keys: m0:scoreA, m0:scoreS, m0:scoreF, m0:scoreIt, m0:scoreD (all xsd:float in [0.0, 1.0])."
+    sh:message "m0:scoreA (Attractor score). Bare numeric float in [0.0, 1.0]. Defined in M0_Common.jsonld. NO @type annotation needed. NOT inside m0:asfidScores{}."
   ] ;
-  
-  # REVOI Scores (50% of poclets have scores - NEVER ORIVE)
+
   sh:property [
-    sh:path m0:revoiScores ;
-    sh:node m3:eagle_eye:RepresentableevoiScoresShape ;
+    sh:path m0:scoreS ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "m0:revoiScores is recommended for poclets. Internal keys: m0:scoreR, m0:scoreE, m0:scoreV, m0:scoreO, m0:scoreIm (all xsd:float in [0.0, 1.0]). NEVER use ORIVE variants."
+    sh:message "m0:scoreS (Structure score). Bare numeric float in [0.0, 1.0]. Defined in M0_Common.jsonld."
   ] ;
-  
-  # Epistemic Gap
+
+  sh:property [
+    sh:path m0:scoreF ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "m0:scoreF (Flow score). Bare numeric float in [0.0, 1.0]. F=0.0 valid (Stase — no flow is legitimate). Defined in M0_Common.jsonld."
+  ] ;
+
+  sh:property [
+    sh:path m0:scoreIt ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "m0:scoreIt (Information/Territory score). NOT m0:scoreIm (Interoperability/Map). Bare numeric float [0.0, 1.0]."
+  ] ;
+
+  sh:property [
+    sh:path m0:scoreD ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "m0:scoreD (Dynamics score). Bare numeric float in [0.0, 1.0]. Defined in M0_Common.jsonld."
+  ] ;
+
+  # REVOI scores: R_score, E_score, V_score, O_score, Im_score
+
+  sh:property [
+    sh:path m0:scoreR ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "m0:scoreR (Representability score). R = Representability, NEVER Reproducibility. Bare numeric float [0.0, 1.0]."
+  ] ;
+
+  sh:property [
+    sh:path m0:scoreE ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "m0:scoreE (Evolvability score). Bare numeric float in [0.0, 1.0]. Defined in M0_Common.jsonld."
+  ] ;
+
+  sh:property [
+    sh:path m0:scoreV ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "m0:scoreV (Verifiability score). Bare numeric float in [0.0, 1.0]. Defined in M0_Common.jsonld."
+  ] ;
+
+  sh:property [
+    sh:path m0:scoreO ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "m0:scoreO (Observability score). Bare numeric float in [0.0, 1.0]. Defined in M0_Common.jsonld."
+  ] ;
+
+  sh:property [
+    sh:path m0:scoreIm ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "m0:scoreIm (Interoperability/Map score). NOT m0:scoreIt (Information/Territory). Bare numeric float [0.0, 1.0]."
+  ] ;
+
+  # Aggregate scores
+
+  sh:property [
+    sh:path m0:asfidMean ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "m0:asfidMean = (A_score + S_score + F_score + It_score + D_score) / 5. Recommended when scores present."
+  ] ;
+
+  sh:property [
+    sh:path m0:revoiMean ;
+    sh:datatype xsd:float ;
+    sh:minInclusive 0.0 ;
+    sh:maxInclusive 1.0 ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "m0:revoiMean = (R_score + E_score + V_score + O_score + Im_score) / 5. Recommended when scores present."
+  ] ;
+
+  # Epistemic gap δ₁
+
   sh:property [
     sh:path m0:epistemicGap ;
     sh:datatype xsd:float ;
@@ -206,160 +348,100 @@ m0:TscgInstanceShape
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "m0:epistemicGap (if present) must be a float in [0.0, 1.0]"
+    sh:message "m0:epistemicGap = |asfidMean - revoiMean| / √2. Must be float in [0.0, 1.0]. Recommended when asfidMean and revoiMean are present."
   ] ;
 
-  # ===== METACLASS PATTERN (m3:instanceOf) =====
-  # Links an M0 instance (class) to its M2 GenericConcept metaclass.
-  # Architecture: m2:FeedbackLoop (metaclass) ← m3:instanceOf — M0_BiologicalFeedbackLoop
-  # Semantics: NOT rdfs:subClassOf (not a type specialisation) but a domain reification
-  #            of a transdisciplinary M2 pattern.
-  # See: M3_BicephalousPerspective.jsonld for m3:instanceOf property definition.
   sh:property [
-    sh:path m3:instanceOf ;
+    sh:path m0:spectralClass ;
     sh:nodeKind sh:IRI ;
+    sh:in (
+      m0:spectralClass.Coherent
+      m0:spectralClass.OnCriticalLine
+      m0:spectralClass.Liminal
+      m0:spectralClass.Enigmatic
+    ) ;
     sh:minCount 0 ;
-    sh:message "m3:instanceOf (if present) must be an IRI pointing to a M2 GenericConcept metaclass (e.g. m2:FeedbackLoop). Use this when the M0 instance is a domain-specific reification of a M2 pattern. NOT the same as rdfs:subClassOf — this is a cross-layer metaclass link, not a type hierarchy."
-  ] .
+    sh:maxCount 1 ;
+    sh:message "m0:spectralClass MUST be an IRI from m0:SpectralClass enumeration. Use: m0:spectralClass.Coherent (δ₁<0.05), m0:spectralClass.OnCriticalLine (0.05≤δ₁<0.15), m0:spectralClass.Liminal (0.15≤δ₁<0.30), m0:spectralClass.Enigmatic (δ₁≥0.30). FORBIDDEN: bare string 'Coherent' — use IRI with @id."
+  ] ;
 
-# ============================================
-# ASFID SCORES SHAPE (v1.6 - corrected to m0:score* keys)
-# ============================================
-# ARCHITECTURAL DECISION: M0 instances use scalar score keys A_score, S_score etc.
-# which resolve to m0:scoreA, m0:scoreS etc. (NOT m3:eagle_eye:Attractor etc.)
-# m3:eagle_eye:* IRIs are reserved for M3-level structured scoring nodes.
-m3:eagle_eye:AttractorsfidScoresShape
-  a sh:NodeShape ;
-  sh:name "ASFID Scores Structure (M0 scalar format)" ;
-  sh:description "M0 scalar ASFID scoring using m0:scoreA/S/F/It/D keys." ;
+  # Scoring status (for stubs / incomplete instances)
 
   sh:property [
-    sh:path m0:scoreA ;
-    sh:datatype xsd:float ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 1 ;
+    sh:path m0:scoringStatus ;
+    sh:nodeKind sh:IRI ;
+    sh:in (
+      m0:scoringStatus.Complete
+      m0:scoringStatus.Partial
+      m0:scoringStatus.Pending
+    ) ;
+    sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "ASFID A score (m0:scoreA) must be a float in [0.0, 1.0]"
+    sh:message "m0:scoringStatus MUST be an IRI from m0:ScoringStatus enumeration. Use: m0:scoringStatus.Complete (all 10 scores), m0:scoringStatus.Partial (some scores), m0:scoringStatus.Pending (no scores — stub). FORBIDDEN: bare string 'complete' — use IRI with @id."
   ] ;
+
+  # ===== FOCAL SCORE — Gs Stereopsis (v1.3 NEW — OPTIONAL, CONDITIONAL) =====
+
   sh:property [
-    sh:path m0:scoreS ;
-    sh:datatype xsd:float ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 1 ;
+    sh:path m0:focalApplicable ;
+    sh:datatype xsd:boolean ;
+    sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "ASFID S score (m0:scoreS) must be a float in [0.0, 1.0]"
+    sh:message "m0:focalApplicable: true if instance mobilizes at least one stereopsic GenericConcept (isStereopsic=true in M2). false otherwise. When false, all other m0:focal* properties MUST be absent."
   ] ;
+
   sh:property [
-    sh:path m0:scoreF ;
-    sh:datatype xsd:float ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-    sh:message "ASFID F score (m0:scoreF) must be a float in [0.0, 1.0]. F=0 is valid (Stase)."
-  ] ;
-  sh:property [
-    sh:path m0:scoreIt ;
-    sh:datatype xsd:float ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-    sh:message "ASFID It score (m0:scoreIt) must be a float in [0.0, 1.0]"
-  ] ;
-  sh:property [
-    sh:path m0:scoreD ;
-    sh:datatype xsd:float ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-    sh:message "ASFID D score (m0:scoreD) must be a float in [0.0, 1.0]"
-  ] ;
-  sh:property [
-    sh:path m0:mean ;
+    sh:path m0:stereopsicDepth ;
     sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "ASFID mean (if present) must be in [0.0, 1.0]"
-  ] .
-
-# ============================================
-# REVOI SCORES SHAPE (v1.6 - corrected to m0:score* keys, NOT ORIVE)
-# ============================================
-# ARCHITECTURAL DECISION: M0 instances use scalar score keys R_score, E_score etc.
-# which resolve to m0:scoreR, m0:scoreE etc. (NOT m3:sphinx_eye:Representable etc.)
-# R = Representability (NOT Reproducibility). ORIVE is OBSOLETE — always use REVOI.
-m3:eagle_eye:RepresentableevoiScoresShape
-  a sh:NodeShape ;
-  sh:name "REVOI Scores Structure (M0 scalar format)" ;
-  sh:description "M0 scalar REVOI scoring using m0:scoreR/E/V/O/Im keys. NEVER ORIVE." ;
+    sh:message "m0:stereopsicDepth: Gs depth score [0,1]. Computed from TKSL primitives active in mobilized stereopsic GenericConcepts: (T×0.25 + K×0.25 + Ss×0.25 + L×0.25). Only present when m0:focalApplicable=true."
+  ] ;
 
   sh:property [
-    sh:path m0:scoreR ;
+    sh:path m0:focalBias ;
     sh:datatype xsd:float ;
-    sh:minInclusive 0.0 ;
+    sh:minInclusive -1.0 ;
     sh:maxInclusive 1.0 ;
-    sh:minCount 1 ;
+    sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "REVOI R score (m0:scoreR = Representability, NOT Reproducibility) must be [0.0, 1.0]"
+    sh:message "m0:focalBias = REVOI_mean - ASFID_mean. Signed float in [-1.0, 1.0]. Positive = Map dominant (Hyperopic). Negative = Territory dominant (Myopic). Only present when m0:focalApplicable=true."
   ] ;
+
   sh:property [
-    sh:path m0:scoreE ;
-    sh:datatype xsd:float ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-    sh:message "REVOI E score (m0:scoreE) must be a float in [0.0, 1.0]"
-  ] ;
-  sh:property [
-    sh:path m0:scoreV ;
-    sh:datatype xsd:float ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-    sh:message "REVOI V score (m0:scoreV) must be a float in [0.0, 1.0]"
-  ] ;
-  sh:property [
-    sh:path m0:scoreO ;
-    sh:datatype xsd:float ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-    sh:message "REVOI O score (m0:scoreO) must be a float in [0.0, 1.0]"
-  ] ;
-  sh:property [
-    sh:path m0:scoreIm ;
-    sh:datatype xsd:float ;
-    sh:minInclusive 0.0 ;
-    sh:maxInclusive 1.0 ;
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-    sh:message "REVOI Im score (m0:scoreIm = Interoperability) must be a float in [0.0, 1.0]"
-  ] ;
-  sh:property [
-    sh:path m0:mean ;
+    sh:path m0:focalScore ;
     sh:datatype xsd:float ;
     sh:minInclusive 0.0 ;
     sh:maxInclusive 1.0 ;
     sh:minCount 0 ;
     sh:maxCount 1 ;
-    sh:message "REVOI mean (if present) must be in [0.0, 1.0]"
+    sh:message "m0:focalScore: Epistemic Focal Score (EFS) [0,1]. Formula: stereopsicDepth × (1 - |focalBias|). 1=Emmetropic (sharp combined image), 0=Astigmatic (no stereopsic depth) or strongly biased. Only present when m0:focalApplicable=true."
+  ] ;
+
+  sh:property [
+    sh:path m0:focalClass ;
+    sh:nodeKind sh:IRI ;
+    sh:in (
+      m0:focalClass.Emmetropic
+      m0:focalClass.SlightlyMyopic
+      m0:focalClass.SlightlyHyperopic
+      m0:focalClass.Myopic
+      m0:focalClass.Hyperopic
+      m0:focalClass.Astigmatic
+    ) ;
+    sh:minCount 0 ;
+    sh:maxCount 1 ;
+    sh:message "m0:focalClass MUST be an IRI from m0:FocalClass enumeration. Use: m0:focalClass.Emmetropic (EFS≥0.70), m0:focalClass.SlightlyMyopic/.SlightlyHyperopic (0.50≤EFS<0.70), m0:focalClass.Myopic/.Hyperopic (0.30≤EFS<0.50), m0:focalClass.Astigmatic (EFS<0.30). Only present when m0:focalApplicable=true. FORBIDDEN: bare string — use IRI with @id."
   ] .
 
 # ============================================
-# FORBIDDEN PATTERNS (CRITICAL)
+# FORBIDDEN PATTERNS (v1.3 — extended)
 # ============================================
 
-# CRITICAL: Forbid owl:NamedIndividual at ontology level
-m3:eagle_eye:FloworbidNamedIndividualShape
+# FORBIDDEN: owl:NamedIndividual at ontology level
+m0:ForbidNamedIndividualShape
   a sh:NodeShape ;
   sh:targetClass owl:Ontology ;
   sh:not [
@@ -368,76 +450,34 @@ m3:eagle_eye:FloworbidNamedIndividualShape
       sh:hasValue owl:NamedIndividual
     ]
   ] ;
-  sh:message "CRITICAL ERROR: TSCG instances MUST use @type: owl:Ontology, NOT owl:NamedIndividual. Detected in 38% of poclets (9/24) - must be corrected. All other instances (2/2) are correct." .
+  sh:message "FORBIDDEN: TSCG instances MUST use @type: owl:Ontology, NOT owl:NamedIndividual." .
 
-# CRITICAL: Forbid @type: m0:Poclet at ontology level
-m3:eagle_eye:FloworbidM0PocletTypeShape
+# FORBIDDEN: m0:asfidScores{} sub-object (Pattern A — obsolete since v1.3)
+m0:ForbidAsfidScoresSubObjectShape
   a sh:NodeShape ;
   sh:targetClass owl:Ontology ;
   sh:not [
     sh:property [
-      sh:path rdf:type ;
-      sh:hasValue m0:Poclet
+      sh:path m0:asfidScores ;
+      sh:minCount 1
     ]
   ] ;
-  sh:message "CRITICAL ERROR: Do NOT use @type: m0:Poclet at ontology level. Use @type: owl:Ontology + m3:ontologyType: m3:Poclet instead. Detected in 1 poclet (NakamotoConsensus)." .
+  sh:message "FORBIDDEN (v1.3): m0:asfidScores{} sub-object is obsolete (Pattern A). Use flat scores A_score, S_score, F_score, It_score, D_score at owl:Ontology root level (Option B convention)." .
 
-# CRITICAL: Forbid obsolete ORIVE terminology (VSM violation)
-m3:eagle_eye:FloworbidOriveShape
+# FORBIDDEN: m0:revoiScores{} sub-object (Pattern A — obsolete since v1.3)
+m0:ForbidRevoiScoresSubObjectShape
   a sh:NodeShape ;
   sh:targetClass owl:Ontology ;
   sh:not [
-    sh:or (
-      [ sh:property [ sh:path m0:oriveScores ; sh:minCount 1 ] ]
-      [ sh:property [ sh:path m0:sphinxEye_ORIVE ; sh:minCount 1 ] ]
-      [ sh:property [ sh:path m3:sphinx_eye:ObservableRIVE_Global ; sh:minCount 1 ] ]
-    )
+    sh:property [
+      sh:path m0:revoiScores ;
+      sh:minCount 1
+    ]
   ] ;
-  sh:message "OBSOLETE TERMINOLOGY: Use m0:revoiScores, m0:sphinxEye_REVOI, m3:eagle_eye:RepresentableEVOI_Global - NOT ORIVE variants (ORIVE is deprecated). Detected in VSM SystemicFramework - must be corrected to REVOI throughout." .
+  sh:message "FORBIDDEN (v1.3): m0:revoiScores{} sub-object is obsolete (Pattern A). Use flat scores R_score, E_score, V_score, O_score, Im_score at owl:Ontology root level (Option B convention)." .
 
-# CRITICAL: Forbid tscg: namespace (92% clean)
-m3:eagle_eye:FloworbidTscgNamespaceShape
-  a sh:NodeShape ;
-  sh:targetClass owl:Ontology ;
-  sh:sparql [
-    a sh:SPARQLConstraint ;
-    sh:message "FORBIDDEN NAMESPACE: 'tscg:' namespace is not allowed (8% violation rate - 2/24 poclets). Use standard namespaces (owl, rdf, rdfs, skos, dcterms, xsd) or TSCG namespaces (m3, m2, m1, m1bio, m1chem, etc., m0)" ;
-    sh:select """
-      PREFIX tscg: <http://undefined.tscg.namespace/>
-      SELECT $this ?property ?value
-      WHERE {
-        $this ?property ?value .
-        FILTER(STRSTARTS(STR(?property), "http://undefined.tscg.namespace/") ||
-               REGEX(STR(?property), "tscg:", "i"))
-      }
-      LIMIT 1
-    """
-  ] .
-
-# CRITICAL: Forbid incorrect @base URL (88% correct)
-# NOTE: This constraint is commented out because SPARQL cannot reliably validate @base in JSON-LD @context
-# Manual verification required: @base must be 'https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/'
-# NOT 'Echopraxium/tscg' (obsolete repository)
-# Detected violations: 3/26 instances (RAAS, NuclearReactorTypology, Yggdrasil, IChing)
-#
-# m3:eagle_eye:FloworbidIncorrectBaseURLShape
-#   a sh:NodeShape ;
-#   sh:targetClass owl:Ontology ;
-#   sh:sparql [
-#     a sh:SPARQLConstraint ;
-#     sh:message "INCORRECT @base URL: Must use 'https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/', NOT 'Echopraxium/tscg' (obsolete repository). Detected in 13% of instances (3/26: RAAS, NuclearReactorTypology, Yggdrasil poclets + IChing)." ;
-#     sh:select """
-#       SELECT $this
-#       WHERE {
-#         # This constraint validates @base in @context, which requires custom validation logic
-#         # Flag any instance using Echopraxium/tscg base URL
-#         FILTER(false)  # Placeholder - actual validation requires JSON-LD context inspection
-#       }
-#     """
-#   ] .
-
-# CRITICAL: Forbid m3:ontologyCategory (VSM violation) and m2:ontologyCategory
-m3:eagle_eye:FloworbidObsoleteOntologyCategories
+# FORBIDDEN: m3:ontologyCategory and m2:ontologyCategory
+m0:ForbidObsoleteOntologyCategoriesShape
   a sh:NodeShape ;
   sh:targetClass owl:Ontology ;
   sh:not [
@@ -446,10 +486,10 @@ m3:eagle_eye:FloworbidObsoleteOntologyCategories
       [ sh:property [ sh:path m2:ontologyCategory ; sh:minCount 1 ] ]
     )
   ] ;
-  sh:message "FORBIDDEN PROPERTIES: m3:ontologyCategory and m2:ontologyCategory are obsolete. ONLY m3:ontologyType is allowed (defined in M3_GenesisGrammar.jsonld). Detected: m3:ontologyCategory in VSM (1), m2:ontologyCategory in 5 poclets." .
+  sh:message "FORBIDDEN: m3:ontologyCategory and m2:ontologyCategory are obsolete. Use m3:ontologyType exclusively." .
 
-# CRITICAL: Forbid dcterms:title at ontology level (71% use rdfs:label)
-m3:eagle_eye:FloworbidDctermsTitle
+# FORBIDDEN: dcterms:title at ontology level
+m0:ForbidDctermsTitleShape
   a sh:NodeShape ;
   sh:targetClass owl:Ontology ;
   sh:not [
@@ -458,10 +498,10 @@ m3:eagle_eye:FloworbidDctermsTitle
       sh:minCount 1
     ]
   ] ;
-  sh:message "FORBIDDEN at ontology level: Use rdfs:label instead of dcterms:title (38% minority usage detected - 9/24 poclets + 2/2 other instances = 11/26 total)" .
+  sh:message "FORBIDDEN: Use rdfs:label instead of dcterms:title at ontology level." .
 
-# CRITICAL: Forbid dcterms:description at ontology level (79% use rdfs:comment)
-m3:eagle_eye:FloworbidDctermsDescription
+# FORBIDDEN: dcterms:description at ontology level
+m0:ForbidDctermsDescriptionShape
   a sh:NodeShape ;
   sh:targetClass owl:Ontology ;
   sh:not [
@@ -470,10 +510,10 @@ m3:eagle_eye:FloworbidDctermsDescription
       sh:minCount 1
     ]
   ] ;
-  sh:message "FORBIDDEN at ontology level: Use rdfs:comment instead of dcterms:description (29% minority usage detected - 7/24 poclets + 2/2 other instances = 9/26 total)" .
+  sh:message "FORBIDDEN: Use rdfs:comment instead of dcterms:description at ontology level." .
 
-# CRITICAL: Forbid m0:version (83% use owl:versionInfo)
-m3:eagle_eye:FloworbidM0Version
+# FORBIDDEN: m0:version (use owl:versionInfo)
+m0:ForbidM0VersionShape
   a sh:NodeShape ;
   sh:targetClass owl:Ontology ;
   sh:not [
@@ -482,10 +522,10 @@ m3:eagle_eye:FloworbidM0Version
       sh:minCount 1
     ]
   ] ;
-  sh:message "FORBIDDEN: Use owl:versionInfo instead of m0:version (17% minority usage detected - 4/24 poclets)" .
+  sh:message "FORBIDDEN: Use owl:versionInfo instead of m0:version." .
 
-# CRITICAL: Forbid alternative ontologyType declarations
-m3:eagle_eye:FloworbidAlternativeOntologyTypes
+# FORBIDDEN: m2:ontologyType (wrong namespace)
+m0:ForbidM2OntologyTypeShape
   a sh:NodeShape ;
   sh:targetClass owl:Ontology ;
   sh:not [
@@ -496,92 +536,336 @@ m3:eagle_eye:FloworbidAlternativeOntologyTypes
   ] ;
   sh:message "FORBIDDEN: Only m3:ontologyType is valid. Do NOT use m2:ontologyType (wrong namespace)." .
 
-# CRITICAL: Forbid rdf:type with Poclet variants
-m3:eagle_eye:FloworbidRdfTypePoclet
+# FORBIDDEN: obsolete ORIVE terminology
+m0:ForbidOriveShape
   a sh:NodeShape ;
   sh:targetClass owl:Ontology ;
   sh:not [
     sh:or (
-      [ sh:property [ sh:path rdf:type ; sh:hasValue m0:Poclet ] ]
-      [ sh:property [ sh:path rdf:type ; sh:hasValue m1:core:Poclet ] ]
+      [ sh:property [ sh:path m0:oriveScores ; sh:minCount 1 ] ]
+      [ sh:property [ sh:path m0:sphinxEye_ORIVE ; sh:minCount 1 ] ]
     )
   ] ;
-  sh:message "FORBIDDEN: Do NOT use rdf:type: m0:Poclet or rdf:type: m1:core:Poclet at ontology level. Use m3:ontologyType: {\"@id\": \"m3:Poclet\"} instead." .
+  sh:message "FORBIDDEN: ORIVE is obsolete terminology. Use m0:revoiMean, R_score..Im_score, REVOI throughout. R = Representability (NEVER Reproducibility)." .
+
+# FORBIDDEN: tscg: namespace
+m0:ForbidTscgNamespaceShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "FORBIDDEN NAMESPACE: 'tscg:' namespace is not allowed. Use standard (owl/rdf/rdfs/skos/dcterms/xsd) or TSCG (m3/m2/m1/m0) namespaces." ;
+    sh:select """
+      SELECT $this ?property ?value
+      WHERE {
+        $this ?property ?value .
+        FILTER(STRSTARTS(STR(?property), "http://undefined.tscg.namespace/") ||
+               REGEX(STR(?property), "tscg:", "i"))
+      }
+      LIMIT 1
+    """
+  ] .
 
 # ============================================
-# FINAL STATISTICS (26 TSCG instances total)
+# FOCAL SCORE COHERENCE RULES (v1.3)
 # ============================================
-# 
-# INSTANCE TYPE DISTRIBUTION:
-# - Poclets (m3:Poclet): 24/26 (92%)
-# - SystemicFramework (m3:SystemicFramework): 1/26 (4%)
-# - SymbolicSystemGrammar (m3:SymbolicSystemGrammar): 1/26 (4%)
-#
-# CONSENSUS ACHIEVED (≥90%):
-# - dcterms:creator: 26/26 (100%)
-# - dcterms:created: 26/26 (100%)
-# - No tscg:* namespace: 24/26 (92%)
-#
-# STRONG CONSENSUS (70-89%):
-# - owl:versionInfo: 22/26 (85%)
-# - m1:domain: 22/26 (85%) [MIGRATED from m0:domain - M1-level property]
-# - rdfs:comment: 21/26 (81%)
-# - owl:imports: 20/26 (77%)
-# - rdfs:label: 19/26 (73%) ← THRESHOLD REACHED
-# - m2:changelog: 18/26 (69%) ← JUST BELOW threshold (71% poclets-only)
-#
-# CRITICAL NORMALIZATION NEEDED (<70%):
-# - @type: owl:Ontology: 16/26 (62%) ← MUST REACH 100% (10 to correct)
-# - m3:ontologyType correct: 10/26 (38%) ← CRITICAL PRIORITY (16 to correct)
-# - ASFID/REVOI scores: 14/26 (54%) ← RECOMMENDED
-#
-# FORBIDDEN PATTERNS DETECTED:
-# - owl:NamedIndividual: 9/24 poclets (38%) ← MUST ELIMINATE
-# - m3:ontologyCategory: 1/2 other (VSM) ← MUST ELIMINATE
-# - m2:ontologyCategory: 5/24 poclets (21%) ← MUST ELIMINATE
-# - dcterms:title: 11/26 (42%) ← MUST ELIMINATE
-# - dcterms:description: 9/26 (35%) ← MUST ELIMINATE
-# - m0:version: 4/24 poclets (17%) ← MUST ELIMINATE
-# - tscg:* namespace: 2/24 poclets (8%) ← MUST ELIMINATE
-# - @base incorrect: 4/26 (15%) ← MUST CORRECT
-# - m0:Poclet type: 1/24 poclets (4%) ← MUST ELIMINATE
-# - ORIVE terminology: 1/2 other (VSM) ← MUST CORRECT TO REVOI
-#
-# CHANGELOG FORMAT (among 18 with changelog):
-# - Array format: 14/18 (78%) ← STANDARD
-# - Object format: 4/18 (22%) ← TO CONVERT
-#
+# When focalApplicable=false, other focal props must be absent.
+# Expressed as SPARQL constraint for cross-property coherence.
+
+m0:FocalScoreCoherenceShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "FOCAL SCORE COHERENCE: When m0:focalApplicable=false, properties m0:focalScore, m0:focalClass, m0:stereopsicDepth, m0:focalBias MUST be absent." ;
+    sh:select """
+      PREFIX m0: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#>
+      SELECT $this
+      WHERE {
+        $this m0:focalApplicable false .
+        {
+          { $this m0:focalScore ?s }
+          UNION
+          { $this m0:focalClass ?c }
+          UNION
+          { $this m0:stereopsicDepth ?d }
+          UNION
+          { $this m0:focalBias ?b }
+        }
+      }
+    """
+  ] .
+
+
 # ============================================
-# CHANGELOG
+# M0_Common.jsonld IMPORT CONSTRAINT (v1.5)
 # ============================================
-# v1.6 (2026-05-29): Extended ontologyType vocabulary + removed sub-node validation for asfidScores/revoiScores
-#   - Added m3:TscgTool, m3:TransDisclet, m3:Enigma to sh:in for m3:ontologyType
-#   - Covers all currently active M3 ontology types in the corpus
+m0:RequireM0CommonImportShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:severity sh:Warning ;
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "M0_Common.jsonld IMPORT RECOMMENDED (v1.5): All M0 instances should declare owl:imports M0_Common.jsonld to inherit shared property definitions (m0:scoreA..m0:scoreIm, m0:epistemicGap, m0:focalScore, enumeration classes). Without this import, m0: properties may not resolve correctly in OWL reasoners." ;
+    sh:select """
+      PREFIX owl: <http://www.w3.org/2002/07/owl#>
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      SELECT $this
+      WHERE {
+        $this rdf:type owl:Ontology .
+        FILTER NOT EXISTS {
+          $this owl:imports ?imp .
+          FILTER(
+            CONTAINS(STR(?imp), "M0_Common") ||
+            CONTAINS(STR(?imp), "m0_common")
+          )
+        }
+      }
+    """
+  ] .
+
+# ============================================
+# FORBIDDEN: String values for enum properties (v1.5)
+# ============================================
+m0:ForbidStringSpectralClassShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:not [
+    sh:property [
+      sh:path m0:spectralClass ;
+      sh:datatype xsd:string ;
+      sh:minCount 1
+    ]
+  ] ;
+  sh:message "FORBIDDEN (v1.5): m0:spectralClass must be an IRI (e.g. {'@id': 'm0:spectralClass.Coherent'}), NOT a string literal ('Coherent'). Use @id notation." .
+
+m0:ForbidStringScoringStatusShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:not [
+    sh:property [
+      sh:path m0:scoringStatus ;
+      sh:datatype xsd:string ;
+      sh:minCount 1
+    ]
+  ] ;
+  sh:message "FORBIDDEN (v1.5): m0:scoringStatus must be an IRI (e.g. {'@id': 'm0:scoringStatus.Complete'}), NOT a string literal. Use @id notation." .
+
+m0:ForbidStringFocalClassShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:not [
+    sh:property [
+      sh:path m0:focalClass ;
+      sh:datatype xsd:string ;
+      sh:minCount 1
+    ]
+  ] ;
+  sh:message "FORBIDDEN (v1.5): m0:focalClass must be an IRI (e.g. {'@id': 'm0:focalClass.Emmetropic'}), NOT a string literal. Use @id notation." .
+
+# ============================================
+# FORBIDDEN: A_score/S_score/... aliases (v1.5)
+# ============================================
+# These were @context aliases resolving to M0_Poclet# (now replaced by m0:scoreX → M0_Common.jsonld#).
+# If still present as unresolved aliases, they appear as non-canonical IRIs
+# and are already caught by m0:CanonicalNamespaceShape.
+# Documented here for clarity.
 #
-# v1.4 (2026-05-13): M3 Architecture Update
-#   - Updated M3 namespace: M3_GenesisSpace.jsonld → M3_GenesisGrammar.jsonld
-#   - Aligns with TSCG structural grammar migration (tensor → monoidal product formalism)
-#   - No constraint changes, only namespace reference update
-#   - 5 occurrences updated across prefix declarations and documentation
+# FORBIDDEN aliases (must NOT appear in @context):
+#   "A_score", "S_score", "F_score", "It_score", "D_score"
+#   "R_score", "E_score", "V_score", "O_score", "Im_score"
+# CORRECT: use m0:scoreA, m0:scoreS, m0:scoreF, m0:scoreIt, m0:scoreD
+#          and m0:scoreR, m0:scoreE, m0:scoreV, m0:scoreO, m0:scoreIm directly
+
+# ============================================
+# STATISTICS (v1.5 — 2026-06-19)
+# ============================================
+# Corpus: 33 instances
+#   26 Poclets + 3 SystemicFrameworks (Vsm, Triz, Bmc)
+#   + 1 SymbolicSystemGrammar (IChing) + 3 TscgTools
 #
-# v1.3 (2026-04-25): Domain format enforcement
-#   - BREAKING CHANGE: Reject m1:domain strings containing "/" separator
-#   - Added pattern constraint "^[^/]+$" to enforce single domain string format
-#   - Multiple domains MUST use array format: ["Domain1", "Domain2"]
-#   - Detected issue: Some instances had "Domain1 / Domain2" format (incorrect)
-#   - Solution: Use fix_domain_format.py script to convert existing instances
-#   - Updated validation message with clear format requirements and examples
+# Score Convention Status:
+#   Pattern B (flat, correct):  Vsm, Triz, Bmc + ~20 poclets migrated
+#   Pattern A (sub-objects):    FireTriangle + ~6 older poclets → migrate
+#   No scores (pending):        ~5 stub poclets
 #
-# v1.2 (2026-04-19): Absolute URL requirements documentation
-#   - CRITICAL: Documented absolute URL requirement for @context namespaces
-#   - Added detailed explanation why pyshacl requires absolute URLs
-#   - Updated validation messages for m3:ontologyType and m1:domain
-#   - No constraint changes, only documentation improvements
+# Focal Score Status:
+#   Introduced in v1.3 — no instances scored yet.
+#   BMC: focalApplicable=true, focalScore≈0.716, focalClass=SlightlyHyperopic
 #
-# v1.1 (2026-04-18): Domain property migration to M1 level
-#   - BREAKING CHANGE: m0:domain → m1:domain (M1-level property, architectural correction)
-#   - Added m1: prefix declaration
-#   - Updated domain constraint to accept single string OR array (multi-domain support)
-#   - Domain values reference M1_Domains.jsonld (evolving registry)
-#   - Added comprehensive domain examples in validation message
-#   - Updated all statistics and documentation to reflect m1:domain
+# FocalClass IRI values (v1.5 — owl:NamedIndividual in M0_Common.jsonld):
+#   m0:focalClass.Emmetropic        EFS ≥ 0.70
+#   m0:focalClass.SlightlyMyopic    0.50 ≤ EFS < 0.70 AND focalBias < 0
+#   m0:focalClass.SlightlyHyperopic 0.50 ≤ EFS < 0.70 AND focalBias > 0
+#   m0:focalClass.Myopic            0.30 ≤ EFS < 0.50 AND focalBias < 0
+#   m0:focalClass.Hyperopic         0.30 ≤ EFS < 0.50 AND focalBias > 0
+#   m0:focalClass.Astigmatic        EFS < 0.30 (regardless of bias)
+#
+# SpectralClass IRI values (v1.5 — owl:NamedIndividual in M0_Common.jsonld):
+#   m0:spectralClass.Coherent       δ₁ < 0.05
+#   m0:spectralClass.OnCriticalLine 0.05 ≤ δ₁ < 0.15
+#   m0:spectralClass.Liminal        0.15 ≤ δ₁ < 0.30
+#   m0:spectralClass.Enigmatic      δ₁ ≥ 0.30
+#
+# ScoringStatus IRI values (v1.5 — owl:NamedIndividual in M0_Common.jsonld):
+#   m0:scoringStatus.Complete       all 10 scores present
+#   m0:scoringStatus.Partial        some scores present
+#   m0:scoringStatus.Pending        no scores (stub instance)
+# ============================================
+
+# ============================================
+# NAMESPACE IRI CONVENTION (v1.4 — 2026-06-19)
+# ============================================
+#
+# RULE: Every property IRI used in a TSCG M0 instance MUST begin with
+# one of the canonical HTTPS prefixes. An IRI that does NOT start with
+# "https://" signals a broken/unresolved @context alias or a relative
+# URL — both are forbidden.
+#
+# ALLOWED IRI prefixes (exhaustive):
+#   Standard W3C / Dublin Core:
+#     http://www.w3.org/1999/02/22-rdf-syntax-ns#   (rdf:)
+#     http://www.w3.org/2002/07/owl#                 (owl:)
+#     http://www.w3.org/2000/01/rdf-schema#          (rdfs:)
+#     http://www.w3.org/2004/02/skos/core#           (skos:)
+#     http://www.w3.org/ns/shacl#                    (sh:)
+#     http://www.w3.org/2001/XMLSchema#              (xsd:)
+#     http://purl.org/dc/terms/                      (dcterms:)
+#   TSCG canonical base (all m0/m1/m2/m3 namespaces resolve here):
+#     https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/
+#   TSCG instances (m0.<instance>: namespace):
+#     https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/
+#
+# FORBIDDEN patterns (what this constraint detects):
+#   ❌ "m1core:simulationTitle"     → @context alias unresolved
+#   ❌ "M0_Poclet#epistemicGap"     → relative URL (missing base)
+#   ❌ "M0_Vco.jsonld#A"            → relative filename (missing base)
+#   ❌ "m0bmc:Block_VP"             → short alias (deprecated, use m0.bmc:)
+#   ❌ "m1.ext:chemistry:Foo"       → dot-separated but non-canonical
+#   ❌ Anything not starting with http:// or https://
+#
+# NOTE on dot separator convention for local namespaces:
+#   Instance-local properties MUST use the pattern:
+#     m0.<instanceName>:   →  resolves to instances/.../M0_<Name>.jsonld#
+#   M1 extension properties MUST use:
+#     m1.extension.<domain>:  →  resolves to ontology/M1_extensions/.../M1_<D>.jsonld#
+#   These are @context ALIASES — the IRI they resolve to must be canonical HTTPS.
+#   The alias name convention (dot separator) is enforced by documentation
+#   and linting; SHACL enforces that the RESOLVED IRI is always canonical HTTPS.
+# ============================================
+
+m0:CanonicalNamespaceShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:severity sh:Violation ;
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "NAMESPACE VIOLATION (v1.4): Property IRI is not an absolute URL. This means an @context alias is unresolved (e.g. 'm1core:', 'm0bmc:') or a relative URL was used (e.g. 'M0_Poclet#foo', 'M0_Vco.jsonld#A'). Root causes: (1) m0: declared as relative 'M0_Poclet#' instead of absolute URL in @context; (2) alias not declared in @context at all; (3) @base missing or incorrect. Fix: declare ALL aliases with absolute HTTPS URLs in @context. Canonical prefixes: m0='.../M0_Poclet#', m1='.../M1_CoreConcepts.jsonld#', m1core='.../M1_CoreConcepts.jsonld#', m2='.../M2_GenericConcepts.jsonld#', m3='.../M3_GenesisGrammar.jsonld#'." ;
+    sh:select """
+      PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+
+      SELECT DISTINCT $this ?unresolved_property
+      WHERE {
+        $this rdf:type owl:Ontology .
+        $this ?unresolved_property ?value .
+
+        FILTER (
+          # Reject any IRI that is not an absolute URL (no http:// or https://)
+          !STRSTARTS(STR(?unresolved_property), "http://") &&
+          !STRSTARTS(STR(?unresolved_property), "https://")
+        )
+      }
+      LIMIT 5
+    """
+  ] .
+
+# ── ADDITIONAL: detect m0: resolved to non-canonical base ──────────────
+# When @context declares m0 with relative URL "M0_Poclet#" instead of
+# the canonical absolute URL, rdflib emits the alias name literally.
+# The constraint above catches this as a non-http IRI.
+# BUT: some rdflib versions DO partially resolve relative @context URLs,
+# producing IRIs like "M0_Poclet#epistemicGap" (still not absolute).
+# The filter !STRSTARTS(..., "http") catches both cases.
+#
+# CANONICAL m0: MUST resolve to:
+#   https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#
+# NOT: "M0_Poclet#" (relative) nor bare "m0:" (unresolved prefix)
+#
+# CANONICAL m0.<instance>: pattern (ALLOWED — these ARE absolute HTTPS IRIs):
+#   https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/...
+#   resolved from @context alias: "m0.bmc": "instances/systemic-frameworks/Bmc/M0_Bmc.jsonld#"
+#   with @base: "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"
+#   NOTE: The @base must be set so that relative instance paths resolve correctly.
+
+# ============================================
+# ADDITIONALLY: Detect relative-style IRIs that start with http://
+# but reference non-canonical TSCG namespaces (e.g. obsolete repos)
+# ============================================
+
+m0:CanonicalTscgBaseShape
+  a sh:NodeShape ;
+  sh:targetClass owl:Ontology ;
+  sh:severity sh:Warning ;
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "NAMESPACE WARNING (v1.4): TSCG property IRI references a non-canonical repository base. All TSCG-specific IRIs MUST use 'https://raw.githubusercontent.com/Echopraxium/tscg/main/' as base. Detected IRI uses an alternate path (old repo, local path, or incorrect branch). Fix: update @context to use canonical base URL." ;
+    sh:select """
+      PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+
+      SELECT DISTINCT $this ?non_canonical_property
+      WHERE {
+        $this rdf:type owl:Ontology .
+        $this ?non_canonical_property ?value .
+
+        # Detect TSCG-looking IRIs that don't use the canonical base
+        FILTER (
+          STRSTARTS(STR(?non_canonical_property), "https://") &&
+
+          # Contains "echopraxium" or "tscg" but NOT the canonical path
+          (
+            CONTAINS(LCASE(STR(?non_canonical_property)), "echopraxium") ||
+            CONTAINS(LCASE(STR(?non_canonical_property)), "tscg")
+          ) &&
+
+          # NOT the canonical base
+          !STRSTARTS(
+            STR(?non_canonical_property),
+            "https://raw.githubusercontent.com/Echopraxium/tscg/main/"
+          )
+        )
+      }
+      LIMIT 5
+    """
+  ] .
+
+# ============================================
+# SUMMARY OF NAMESPACE VIOLATIONS DETECTED IN CORPUS (v1.4 audit)
+# ============================================
+# Files with unresolved @context aliases (m1core:, m0:, relative URLs):
+#   FireTriangle       : m1core:simulationTitle, M0_Poclet#epistemicGap
+#   ColorSynthesis     : m1core:simulationTitle + m0: unresolved props
+#   Counterpoint       : M1_CoreConcepts.jsonld#simulationTitle (relative)
+#   FourStrokeEngine   : M1_CoreConcepts.jsonld#simulationTitle (relative)
+#   ExposureTriangle   : m1core:simulationTitle + m0: unresolved props
+#   KindlebergerMinsky : M0_KindlebergerMinsky.jsonld#xxx (relative)
+#   MtgColorWheel      : m1core:simulationTitle
+#   NakamotoConsensus  : M0_Poclets.jsonld#xxx (wrong filename, relative)
+#   Ptoe               : m1core:simulationTitle
+#   Transistor         : m1core:simulationTitle
+#   TrophicPyramid     : M1_CoreConcepts.jsonld#xxx (relative)
+#   Vco                : M0_Vco.jsonld#A/S/F... (relative scores!)
+#
+# Root causes:
+#   1. m1core: → not declared in @context with absolute URL
+#      Fix: add "m1core": "https://.../M1_CoreConcepts.jsonld#" to @context
+#      OR use m1:simulationTitle (m1: already declared with absolute URL)
+#
+#   2. M0_Xxx.jsonld#prop → @base not set, or @base set incorrectly
+#      Fix: ensure "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"
+#      Then instance-local prefix becomes: "m0.<instance>": "instances/.../M0_X.jsonld#"
+#
+#   3. M0_Poclets.jsonld (NakamotoConsensus) → wrong source file referenced
+#      Fix: update @context to reference M0_NakamotoConsensus.jsonld#
+# ============================================
