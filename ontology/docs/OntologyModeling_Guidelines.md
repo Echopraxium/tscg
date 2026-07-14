@@ -1,7 +1,7 @@
 # TSCG Ontology Modeling Guidelines
 
 **Author**: Echopraxium with the collaboration of Claude AI  
-**Version**: 1.4.0  
+**Version**: 1.5.0  
 **Created**: 2026-05-20  
 **Location**: `ontology/docs/OntologyModeling_Guidelines.md`  
 **Status**: Foundational — applies to all TSCG layers (M3, M2, M1, M0)
@@ -140,7 +140,7 @@ phenomena can share the same structural grammar while differing in meaning.
 
 ---
 
-## Guideline 5 — T (Temporality) Usage Criterion
+## Guideline 5 — T (Time) Usage Criterion
 
 ### Principle
 
@@ -378,7 +378,7 @@ M3  →  defines 𝕋₀ and the operators (×, +, |)
 M2  →  named subset of 𝕋*: GenericConcepts
         (frequently-occurring, transdisciplinary expressions of 𝕋*)
 M1  →  named subset of 𝕋*: Combos, domain extensions
-        (disciplinary expressions, KnowledgeFieldConceptCombo)
+        (disciplinary expressions, DomainConceptCombo)
 M0  →  concrete instantiations of M2/M1 expressions (Poclets)
 ```
 
@@ -409,66 +409,127 @@ the result a new name. The algebraic structure is always that of 𝕋*.
 
 ---
 
-## Guideline 12 — Composition Morphisms Fm2 and Fm1m2
+## Guideline 12 — Fm2 and Fm1m2: a combo's formula IS a function signature
 
 ### Principle
 
-> **Use Fm2 and Fm1m2 to express the composition of GenericConcepts —
-> not as monoidal operators but as morphisms at the M2/M1 level.**
-
-### Why not operators
-
-×, +, | operate on 𝕋₀ primitives and produce expressions in 𝕋*.
-Fm2 and Fm1m2 operate on 𝕋₁ expressions (GenericConcepts, KnowledgeFields)
-and produce new named 𝕋₁ expressions — they are morphisms, not operators.
-
-### Fm2 — GenericConcept composition
+> **`Fm2` and `Fm1m2` are FUNCTIONS. They are not operators, not morphisms, and not
+> functors.**
 
 ```
-Fm2 : 𝕋₁(M2) × 𝕋₁(M2)ⁿ → 𝕋₁(M2)
-
-Fm2(Memory, Entropy)            = Inertia
-Fm2(Incoherence, Invariant)     = TopologicalDefect
-Fm2(Process, Step, Trajectory)  = PipelineProcess
+Fm2   : GenericConcept²⁺            →  m2:GenericConceptCombo   (≥ 2 concepts)
+Fm1m2 : Domain⁺ , GenericConcept⁺   →  m2:DomainConceptCombo    (≥ 1 domain AND ≥ 1 concept)
 ```
 
-Use Fm2 when a concept emerges from two or more existing GenericConcepts
-with properties not reducible to their simple juxtaposition.
+### Why not a morphism
 
-### Fm1m2 — KnowledgeField + GenericConcept composition
+A morphism (and a functor) must **preserve composition**: `F(g ∘ f) = F(g) ∘ F(f)`. It
+transports a structure without creating anything that was not already there.
+
+`Fm2`/`Fm1m2` do the opposite. Their essence is **combination with emergence**: the
+output concept carries semantics **irreducible to any subset of its arguments**. There is
+no composition law over the arguments for a morphism to preserve. Emergence is therefore
+**non-compositional**, by definition and not by accident.
+
+> ⚠️ Version 1.4.0 of this guideline called them *"composition morphisms"*. **That was
+> wrong**, and it was not a wording slip: it descended from `m2:morphism_emergence`, the
+> M2 property that declared emergence to be a category-theoretic morphism — the root from
+> which `⊗⇒`, `lattice_join(dims(parents))` and `structuralGrammarFormulaExpanded` all
+> grew. That property is now `owl:deprecated` (M2 v16.17.0, SC-1).
+
+**`Φ` and `Ψ` remain genuine morphisms** — they are structure-preserving and they *do*
+compose. The two families are kept separate on purpose:
 
 ```
-Fm1m2 : 𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁(M1/M2)
-
-Fm1m2(Biology, Process)              = BiologicalProcess
-Fm1m2(Economics, Flow, Gradient)     = MarketFlow
-Fm1m2(Physics, Coherence)            = LaserCoherence
-Fm1m2(Education, Memory, Structure)  = CurriculumDesign
+MORPHISMS   Φ : Gt → Gm      Ψ : Gm → Gt          structure-preserving; they compose
+FUNCTIONS   Fm2              Fm1m2                emergence; they do NOT compose
 ```
 
-Use Fm1m2 for KnowledgeFieldConceptCombo — domain-specific instantiations
-of generic patterns (M1 KnowledgeField combined with M2 GenericConcept(s)).
+The word **functor** stays reserved for M0 dimension evaluation (`F_x : System → Score`),
+where it is used correctly.
 
-### TSCG function family
+### Atoms vs combos — two different languages
+
+| | Written as | Example |
+|---|---|---|
+| **Atom** | a **monoidal formula** (`×`, `+`, `\|`) | `Process = D × F` |
+| **Combo** | a **function signature** | `Fm2(Cascade, Duplication, Network)` |
+
+> **A combo has NO monoidal formula and NO monoidal expansion.** There is nothing to
+> develop *bout-à-bout*: the arguments are **combined, not associated**. Consequently
+> `m1:structuralGrammarFormulaExpanded` is **retired** — it stored
+> `lattice_join(dims(parents))`, i.e. the compositional thesis as data, which is exactly
+> what a combo is not. (Half its values in the corpus were empty strings. There was never
+> anything to compute.)
+
+### The rules of a signature
+
+1. **Arguments are NAMED CONCEPTS** declared in `M2_GenericConcepts.jsonld` or
+   `M1_CoreConcepts.jsonld`. **Never primitive types** (`A`, `St`, `F`, `It`, …): a
+   primitive is a *generative dimension of a grammar*, not a concept.
+   *Consequence: **M1 extensions are leaves*** — no combo-of-a-combo inside `M1_Optics`.
+2. **Arguments are juxtaposed by COMMA.** Never joined by `×`, `+` or `|`. `×` is reserved
+   to the Gt monoid and is **never overloaded** — not in signatures, not for domain
+   conjunction, not anywhere.
+3. **Cardinality.** `Fm2` needs **≥ 2** concepts (an emergence needs two ingredients;
+   `Fm2(X)` would be an identity). `Fm1m2` needs **≥ 1 Domain AND ≥ 1 GenericConcept` —
+   there, the *Domain × Concept hybridisation itself* is the emergence, so `1 + 1` suffices.
+4. **Free recursion.** Every combo is a `GenericConcept`, hence a legal argument. No
+   special case.
+5. **`Fm1` does not exist.** Composite domains are never reified. Multi-domain conjunction
+   is carried by **juxtaposed domain arguments**: `Fm1m2(Biology, Chemistry, Catalysis)`.
+
+### ⚠️ What `Fm1m2` does NOT mean
+
+**`Fm1m2` is not "the function that crosses the M1/M2 boundary."**
+
+That reading was graved in `M3_GrammarFoundation` (`Fm1m2 : 𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁`) and in
+v1.4.0 of this very guideline. It **propagated into the corpus**: `M1_CoreConcepts` v1.4.0
+"corrected" `Propagation` and `CascadeAmplification` from `Fm2` to `Fm1m2` *"because the
+parent `m1:Cascade` is M1, not an M2 atomic"* — producing `Fm1m2(Cascade, Duplication,
+Network)`, an `Fm1m2` with **no domain at all**.
+
+What distinguishes `Fm1m2` is **DOMAIN QUALIFICATION** — nothing else. An `Fm2` argument
+may legitimately be a named concept from `M1_CoreConcepts`, so "crossing M1/M2"
+distinguishes **nothing**.
+
+**And the Domain must be REGISTERED** in `M1_Domains.jsonld`. `DCC010` checks this, and it
+found four phantoms: `Music` (the registry says **MusicTheory**), `SystemicModeling`
+(**SystemsTheory**), `EnergyGenerators` (absent), `Cascade` (not a domain at all).
+
+### Examples
 
 ```
-Φ      : Gt → Gm                  M3 natural transformation (observation)
-Ψ      : Gm → Gt                  M3 natural transformation (interpretation)
-Fm2    : 𝕋₁(M2)ⁿ → 𝕋₁(M2)       M2 composition morphism
-Fm1m2  : 𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁  M1/M2 composition morphism
+GOOD  Fm2(Memory, Entropy)                       = Inertia
+GOOD  Fm2(Incoherence, Invariant)                = TopologicalDefect
+GOOD  Fm2(Cascade, Duplication, Network)         ≥ 2 named concepts (Cascade is M1_Core: legal)
+GOOD  Fm1m2(Optics, Refraction)                  ≥ 1 registered Domain + ≥ 1 named concept
+GOOD  Fm1m2(Economics, Flow, Gradient)           = MarketFlow
+GOOD  Fm1m2(Education, Memory, Structure)        = CurriculumDesign
+
+BAD   Fm1m2(Optics, A × St × F × It | R + O)     monoidal expression as an argument
+BAD   Fm1m2(Cascade, Duplication, Network)       no Domain → this is an Fm2
+BAD   Fm2(Cascade, Amplification) | gain > 1     scalar guard = an M0 measurement leaking into M1
+BAD   Fm2²(A, B)                                 RETIRED — there is no "second order"
+BAD   Fm1m2(Music, …)                            'Music' is not a registered Domain (→ MusicTheory)
 ```
 
-### Replaces former ⊗⇒ notation
+### Enforced by
 
-`⊗⇒` incorrectly suggested a monoidal operator. Fm2 and Fm1m2 make
-the functional nature and operating level explicit.
+`M1_Schema_shacl.ttl` v1.1.0 (`ComboFormulaShape`, `NoMonoidalExpansionShape`) and
+`ontology/cli-tools/check-M1/check_M1.py` v2.0.0 (`DCC006`–`DCC010`, `EXP001`).
+Run the gate: `ontology/cli-tools/_run_all_layers.bat`.
 
+Full rationale: `StructuralGrammar/Functional_Grammar_Model.md`.
+
+---
 
 ## Changelog
 
 | Version | Date | Changes |
 |---|---|---|
-| 1.4.0 | 2026-05-20 | Added Guideline 12: Fm2 and Fm1m2 composition morphisms. Replaces ⊗⇒. |
+| **1.5.0** | **2026-07-13** | **Guideline 12 REWRITTEN (SC-1).** `Fm2`/`Fm1m2` are **FUNCTIONS, not morphisms** — v1.4.0 called them "composition morphisms", which was wrong and descended from `m2:morphism_emergence` (now `owl:deprecated`). A morphism composes; an emergence does not. Signature corrected: `Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo` — it is **NOT** "the function that crosses the M1/M2 boundary" (`𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁`), a definition that had propagated into the corpus. A combo's formula **is** the signature: no monoidal formula, no monoidal expansion. Arguments are named concepts from M2 or M1_CoreConcepts, comma-juxtaposed. `Φ`/`Ψ` remain genuine morphisms — the family is **split, not purged**. |
+| 1.4.0 | 2026-05-20 | Added Guideline 12: Fm2 and Fm1m2 composition morphisms. Replaces ⊗⇒. **SUPERSEDED by 1.5.0 — the "morphism" framing was the error.** |
 | 1.3.0 | 2026-05-20 | Added Guideline 11: one free monoid, multiple named vocabularies. |
 | 1.2.0 | 2026-05-20 | Added Guidelines 9-10: It/Im disambiguation and _^/_$ pole primitives. |
 | 1.1.0 | 2026-05-20 | Added Guideline 8: operator precedence × > + > | — formally documents implicit rule. |
