@@ -1,4 +1,64 @@
-** TO_DO — Last updated: 2026-05-31 **
+** TO_DO — Last updated: 2026-07-13 **
+** [consolidé : base 2026-05-31 + détails restaurés du 2026-05-24 + SC-1] **
+
+** [SC-1 FAIT — 2026-07-12] Modèle de grammaire fonctionnelle
+   - Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts)
+   - Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domaine ET ≥1 concept)
+   - Fm2/Fm1m2 sont des FONCTIONS, pas des morphismes ni des foncteurs
+   - Rename KnowledgeFieldConceptCombo → DomainConceptCombo (26 fichiers)
+   - M3_GrammarFoundation v2.4.0, M2 v16.17.0, M1_CoreConcepts v2.7.0, SHACL v1.1.0
+   - NOUVEAU : ontology/cli-tools/ (tscg_paths, check-M0, check-M1, run_all_layers)
+   - GATE: PASS — M1 = 16 fichiers / 163 erreurs / 3 warnings (golden_values.json)
+   - ⚠ En attente : gates formels (linter, Pellet) + validation sémantique M3
+
+** [SC-6 — backlog exposé par SC-1] 163 erreurs M1  ← MESURÉ sur le repo réel
+   ⚠ L'estimation précédente de 126 venait d'une reconstruction partielle : elle était
+     FAUSSE (il manquait BusinessModeling, Music, MapTerritory_Optics). Seul le repo compte.
+   - DCC006 = 127 : opérateur monoïdal dans une signature (régime NORMAL des extensions)
+   - DCC010 =  18 : 1er argument de Fm1m2 n'est PAS un domaine enregistré
+                    → 4 DOMAINES FANTÔMES : 'Music' (le registre dit MusicTheory),
+                      'SystemicModeling' (le registre dit SystemsTheory),
+                      'EnergyGenerators' (absent du registre), 'Cascade' (pas un domaine)
+   - EXP001 =  12 : m1:structuralGrammarFormulaExpanded à supprimer (D8)
+   - GCC009 =   4 : garde après une signature Fm2
+   - DCC009 =   1 : garde après une signature Fm1m2
+                    ⚠ gardes SCALAIRES (gain > 1, λ > 0) = mesures M0 qui fuient en M1 → SUPPRIMER
+                    ⚠ gardes QUALITATIVES (trajectoryShape=Circular) = sémantique réelle → NE PAS SUPPRIMER (D11/SC-3)
+   - DCC008 =   1 : Fm1m2(Electronics, S × (Ft × D × It) × F) — parenthèses imbriquées
+                    + 'Ft', qui n'est PAS une primitive TSCG (ni ASFID, ni REVOI, ni TKSL)
+
+** [SC-1.5 — MEILLEUR RATIO DU CHANTIER] UNE ligne de @context
+   "rdfs:subClassOf": {"@type": "@id"}
+   → ~500 violations SHACL tombent d'un coup (elles disent toutes
+     "rdfs:subClassOf must point to m2:DomainConceptCombo" — parce que la valeur est
+     sérialisée en LITTÉRAL, pas en IRI).
+   Le handover du 2026-07-03 l'avait déjà diagnostiqué et personne ne l'a fait.
+   Tant qu'elles sont là, le SHACL hurle trop pour être lu — donc il n'est pas lu.
+   C'EST LA CAUSE PROFONDE DE SIX MOIS DE DETTE INVISIBLE.
+
+** [SC-5 — trouvaille SC-1] BUG du SHACL M1, pas des données
+   - sh:targetClass suit les sous-classes → SHAPE 2 et SHAPE 3 valident DEUX FOIS
+     chaque combo d'extension, avec des exigences incompatibles (Fm2( vs Fm1m2()
+   - ~256 des 479 violations préexistantes sont ce bruit. SHAPE 2 doit exclure la sous-classe.
+   - Ajouter aussi "KnowledgeFieldMetaCombo" à l'inventaire des formes KnowledgeField*
+   - Les 4 domaines fantômes (ci-dessus) sont le doublon Domain/KnowledgeField qui affleure
+
+** [RÈGLE D'OR — apprise à la dure le 2026-07-13]
+   /mnt/project/ (project knowledge) N'EST PAS UNE AUTORITÉ.
+   Il retardait de DEUX versions sur M2 (16.14.0 vs 16.16.0) et capitalisait M1_music.
+   Résultat : M2 écrasé, rattrapé de justesse par git diff --numstat.
+   → La SEULE autorité est `git show HEAD:<fichier>`. Vérifier AVANT d'éditer.
+
+** [SC-3 — D11] Slot d'"options" pour les gardes qualitatives
+   - Fm2(Component, Process, Trajectory, trajectoryShape=Circular) ?
+   - REPORTÉ : une "option" (axe orthogonal + valeurs contrôlées) EST une facette.
+     Trancher dans SC-3, sinon on recrée le doublon Domain/KnowledgeField.
+   - 2 occurrences, 1 seul axe → sous le seuil d'admission TSCG
+
+** [SC-9] Purge globale ⊗ — 39 fichiers
+   - ⚠ PAS de sed : dans Structural_Grammar_Foundation.md, ⊗ a DEUX rôles —
+     citation du formalisme réfuté (à GARDER, c'est la pièce à conviction)
+     vs opérateur TSCG courant (périmé). Trier un par un.
 
 ** Opérations sur les bits 
 - Bit-field Update & Extraction
@@ -47,20 +107,22 @@
 ** [NEW] M1_Chemistry.jsonld — migrer asfidSignature → structuralGrammarFormula
    - Remplacer m1:extension:chemistry:asfidSignature par m1:structuralGrammarFormula
    - Notation Fm1m2(Chemistry, ...) pour chaque concept
-   - Typer les concepts comme ["owl:Class", "m2:KnowledgeFieldConceptCombo"]
-   - Ajouter rdfs:subClassOf: "m2:KnowledgeFieldConceptCombo"
+   - Typer les concepts comme ["owl:Class", "m2:DomainConceptCombo"]
+   - Ajouter rdfs:subClassOf: "m2:DomainConceptCombo"
 
 ** [NEW] M1_Domains.jsonld — ajouter nœuds manquants
    - Mathematics et Anthropology référencés dans relatedDomains mais non définis
    - Ajouter nœuds stub m1domain:Mathematics et m1domain:Anthropology
    - Mettre à jour m1:domainCount en conséquence
 
-** [NEW] Migration formules M1_CoreConcepts.jsonld : ⊗ → ×/+/|
-   - m1:structuralGrammarFormulaExpanded contient encore ⊗ (notation tensorielle dépréciée)
-   - Remplacer par ×/+/| selon nature des dimensions (Territory/Map/bicephalous)
-   - Concerne : Cascade, Oscillator, Processor, LALI, ButterflyEffect, Propagation, Narration,
-     StratifiedDissipation, CascadeAmplification (9 combos)
-   - Note: formules mixtes ASFID+REVOI nécessitent analyse sémantique avant migration
+** [OBSOLETE — SC-1, 2026-07-12] Migration formules M1_CoreConcepts : ⊗ → ×/+/|
+   ⚠ SANS OBJET : m1:structuralGrammarFormulaExpanded est RETIRÉE (décision D8).
+   Un combo n'a AUCUNE expansion monoïdale — l'émergence est non-compositionnelle
+   (Fm2/Fm1m2 sont des FONCTIONS, pas des foncteurs). Il n'y avait rien à migrer :
+   la propriété stockait lattice_join(dims(parents)), c.-à-d. la thèse compositionnelle
+   elle-même. La moitié de ses valeurs étaient d'ailleurs des chaînes vides.
+   → SUPPRIMER la propriété des 12 occurrences (SC-6), ne pas migrer sa notation.
+   Voir StructuralGrammar/Functional_Grammar_Model.md
 
 ** [NEW] generate_formulas_reference.js (ou .py)
    - Script de génération automatique de M2_FormulasReference depuis M2_GenericConcepts.jsonld
@@ -84,8 +146,25 @@
 ** [DONE] Migration "m3:stereopsis:" ==> "m3:bicephalous:"
 
 ** Poclet: "Cell Membrane" (Membrane Cellulaire)
+   [détail restauré depuis TO_DO 2026-05-24 — perdu dans la compression du 31/05]
+   - Protéines de surface = types primitifs de Gs (T, ...)
+   - Canaux ioniques = T (Temporalité) comme primitive bicéphale
+   - Pompes = Ψ (interprétation Map → Territory)
+   - Voir Refinement 7 dans PotentialRefinements_MonoidalOperators.md
+
 ** Poclet: "Osmosis / Reverse Osmosis" (validé 2026-05-18)
-** Valider T (Temporalité) sur 2+ poclets
+   [détail restauré depuis TO_DO 2026-05-24]
+   - Osmose          →  Φ : Gt → Gm  (flux naturel, observation)
+   - Osmose inverse  →  Ψ : Gm → Gt  (flux imposé, interprétation)
+   - Premier poclet modélisant directement la dynamique Φ/Ψ bicéphale
+   - Connexion avec Cell Membrane et l'opérateur |
+   - NB (SC-1, 2026-07-12) : Φ et Ψ sont de VRAIS morphismes (ils composent),
+     contrairement à Fm2/Fm1m2 qui sont des FONCTIONS (l'émergence ne compose pas).
+     M3_GrammarFoundation v2.4.0 scinde désormais les deux familles.
+
+** Valider T (Temporalité) sur 2+ poclets (condition d'adoption officielle)
+   - Candidat 1 : Osmose / Osmose inverse  (F × T)
+   - Candidat 2 : à identifier dans le corpus
 ** Mise a jour du README du projet TSCG
 
 **** Ontology Pitfall scanner
@@ -106,8 +185,10 @@
 ** Demander la traduction en anglais du skill "tscg-article-pipeline"
 
 ** Bug Grammaire SHACL:
-   - URL absolus/relatifs dans les namespaces
-   - dans "M0_Ptoe.jsonld": Erreur m0:Ptoe IRI
+   - URL absolus/relatifs dans les namespaces : migrer vers URLs relatifs
+     (et pour les nouveaux poclets : URLs relatifs d'emblée)
+   - dans "M0_Ptoe.jsonld" généré avec le pipeline :
+     Erreur "m0:Ptoe" : "instances/poclets/Ptoe/M0_Ptoe.jsonld#"
 
 ** Dans le "tscg-instance-pipeline": ajouter mise à jour M1_Domains.jsonld
 
@@ -126,8 +207,10 @@
 
 * Utilisation de SHACL pour encoder les formules mathématiques M3/M2/M1/M0
 * "_Run_Poclet_Explorer.bat": identification des prérequis manquants
+  - "NodeJS" non installé
+  - "npm install" n'a pas été fait au préalable
 * Poclet Explorer: filtres par tags
-* Poclets: Regenerer .jsonld et README suite migration KnowledgeFieldConceptCombo
+* Poclets: Regenerer .jsonld et README suite migration DomainConceptCombo (SC-1)
 * Continuer la conversion des simulations de poclet de Python vers ElectronJS
 
 * Dans les "Inputs": Rédiger un "TSCG_Modelling_Genesis.md"
@@ -136,4 +219,19 @@
 
 * ----------  Suggestion de "Poclets" ----------
 - "Couleurs des Quarks"
-- Plaque Motrice (modèle à 5 pôles)
+
+- Plaque Motrice — Modèle à 5 Pôles (vision intégrée la plus complète)
+  [détail restauré depuis TO_DO 2026-05-24 — perdu dans la compression du 31/05]
+  On ajoute les éléments en amont et en aval immédiats, essentiels au fonctionnement
+  du système :
+  · Pôle de Commande (segment initial de l'axone) : génère et propage le potentiel
+    d'action qui déclenche toute la cascade. Le "bouton GO".
+  · Pôle de Stockage & Libération (bouton présynaptique) : vésicules d'ACh,
+    exocytose dépendante du calcium.
+  · Pôle de Transmission & Dégradation (fente synaptique) : diffusion de l'ACh et
+    découpage enzymatique ultra-rapide par l'AChE.
+  · Pôle de Détection & Conversion (membrane post-synaptique) : récepteurs nAChR,
+    génèrent le Potentiel de Plaque Motrice.
+  · Pôle d'Intégration & Propagation (membrane musculaire périphérique) : zone où le
+    Potentiel de Plaque Motrice déclenche un vrai potentiel d'action musculaire, qui
+    se propage le long de la fibre et dans les tubules T.

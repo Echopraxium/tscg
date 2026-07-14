@@ -1,7 +1,7 @@
 # 📁 TSCG Framework - Complete File Tree
 
-**Date:** 2026-05-23
-**Framework Version:** TSCG v16.1.0
+**Date:** 2026-07-13
+**Framework Version:** TSCG v16.17.0 (M2) — SC-1 Functional Grammar Model
 **Total Files:** ~964
 
 ---
@@ -23,9 +23,52 @@
 
 ---
 
-## 🆕 What's New (vs v16.0.0)
+## 🆕 What's New
 
-### v16.1.0 (2026-05-23) — Current
+### v16.17.0 (2026-07-13) — Current — **SC-1 · FUNCTIONAL GRAMMAR MODEL**
+
+**A combo's formula IS a function signature.**
+
+```
+Fm2   : GenericConcept²⁺            →  m2:GenericConceptCombo   (≥ 2 concepts)
+Fm1m2 : Domain⁺ , GenericConcept⁺   →  m2:DomainConceptCombo    (≥ 1 domain AND ≥ 1 concept)
+```
+
+`Fm2`/`Fm1m2` are **functions, not functors**: emergence is *non-compositional* (the
+arguments are **combined, not associated**), and a functor must *preserve* composition.
+A combo therefore has **no monoidal formula and no monoidal expansion**. Monoidal
+formulas (`×` Gt, `+` Gm, `|` Gs) belong to **atoms only**.
+
+- 🆕 **`ontology/StructuralGrammar/Functional_Grammar_Model.md`** — the foundation note (11 decisions)
+- 🆕 **`ontology/docs/_01_Worksite/`** — worksite maps and sub-worksite handovers (SC-0 … SC-9)
+- 🆕 **`ontology/cli-tools/`** — check/migrate tooling **relocated** here from `cli_tools/`
+- ✅ **RENAME (hard)** `m2:KnowledgeFieldConceptCombo` → **`m2:DomainConceptCombo`** (26 files, 304 occurrences)
+  — and **re-defined**: membership is now **domain qualification** (an `Fm1m2` formula), not "parents from distinct epistemological domains"
+- ✅ **`m2:producingFunction`** (new M2 property) declares each combo class's function
+- ✅ **DEPRECATED `m2:morphism_emergence`** — it declared emergence to be a category-theoretic *morphism*, and was the **root** from which `⊗⇒`, `lattice_join(dims(parents))`, the "union of the parent type sets" clause and `m1:structuralGrammarFormulaExpanded` all descended. A morphism composes; an emergence does not.
+- ✅ **M3 correction** (`M3_GrammarFoundation` v2.4.0) — `Fm1m2` was defined as *"crossing the M1/M2 boundary"*. **That was the root error**: it propagated into `M1_CoreConcepts` v1.4.0, which "corrected" `Propagation`/`CascadeAmplification` `Fm2`→`Fm1m2` *"because parent m1:Cascade is M1"*. `Φ`/`Ψ` remain **genuine morphisms** — the family is **split, not purged**.
+- ✅ **SHACL v1.1.0** — `ComboFormulaShape`, `NoMonoidalExpansionShape`; SHAPE 3 retargeted
+- 📊 **163 M1 errors exposed** — the SC-6 backlog, **measured on the real repository**
+  (`DCC006`=127 monoidal operator in a signature · `DCC010`=18 unregistered Domain ·
+  `EXP001`=12 retired expansion · guards=5 · `DCC008`=1). ⚠️ An earlier estimate of **126**
+  came from a partial sandbox reconstruction and was **wrong** — only the repo counts.
+- 🔍 **Four PHANTOM DOMAINS** found by `DCC010`: `Music` (the registry says *MusicTheory*),
+  `SystemicModeling` (*SystemsTheory*), `EnergyGenerators` (absent), `Cascade` (not a domain at
+  all). Formulas were qualifying concepts by domains registered nowhere — structurally
+  invisible until a validator compared the formula against `M1_Domains.jsonld`.
+- 🚦 **Acceptance gate**: `ontology/cli-tools/run_all_layers.py` + `golden_values.json`.
+  **163 is GREEN. 162 is RED. 164 is RED.** A count that *drops* is as suspicious as one that
+  rises: either a deliberate fix (`--update-golden`, and the drop is recorded) or a validator
+  that stopped biting. A silently shrinking error count is the most dangerous signal here —
+  **it looks like progress**.
+- ⚠️ **Finding for SC-5**: ~256 of the 479 pre-existing violations are a **SHACL bug**, not data defects — `sh:targetClass` follows subclasses, so SHAPE 2 and SHAPE 3 validate every extension combo **twice**, with mutually exclusive requirements
+
+**Version bumps**: M3_GrammarFoundation 2.2.0→**2.4.0** · M2_GenericConcepts 16.16.0→**16.17.0** ·
+M1_CoreConcepts 2.6.1→**2.7.0** · M1_Schema_shacl 1.0.0→**1.1.0** · check_M1 1.0.0→**2.0.0**
+
+---
+
+### v16.1.0 (2026-05-23)
 
 **SCORE CONVENTION REFORM + CORPUS EXPANSION + TOOLING**
 
@@ -119,6 +162,7 @@ M2_GenericConcepts.jsonld → M1 → M0
 - [StructuralGrammar_MonoidalOperators_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/StructuralGrammar_MonoidalOperators_README.md) **NEW**
 - [PotentialRefinements_MonoidalOperators.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/PotentialRefinements_MonoidalOperators.md) **NEW**
 - [_00_Session_Claude_GrammaireStructurelle.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/_00_Session_Claude_GrammaireStructurelle.md)
+- [Functional_Grammar_Model.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/StructuralGrammar/Functional_Grammar_Model.md) **NEW (SC-1)** — `Fm2`/`Fm1m2` as functions; formula-as-signature; the `⊗⇒` purge
 
 ### ontology/InstanceSimulations/ **NEW — UX knowledge base for simulations**
 - [M0_InstanceSimulations.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/InstanceSimulations/M0_InstanceSimulations.jsonld) — Catalog of all instance simulations
@@ -276,9 +320,52 @@ TscgOntologyExplorer/
 
 ---
 
+## 📁 Folder Conventions
+
+### Underscore prefix = hidden from the gallery
+
+A leading `_` on a folder is **functional**, not decorative: the poclet-gallery index
+generator (`cli_tools/generate_index-html/`) **skips underscore-prefixed folders**.
+
+| Folder | Meaning |
+|---|---|
+| `_static/` | **prototype** simulation — NOT published in the gallery |
+| `static/` | **finished** simulation — published |
+| `_archives/` | superseded copies — not published |
+
+**Renaming `_static/` → `static/` publishes the prototype.** Never do it as a "cleanup".
+Conversely, a simulation is promoted to the gallery by dropping the underscore — that is the
+switch, and it is the only one.
+
+Each poclet therefore carries **two distinct READMEs**, and they must not be merged:
+- `M0_<Name>_README.md` — the **ontology** (poles, GenericConcepts, ASFID/REVOI, combos)
+- `_static/M0_<Name>_Simulation_README.md` — the **simulation** (engine, controls, visuals)
+
+---
+
 ## 🛠️ CLI Tools
 
-### cli_tools/
+### ontology/cli-tools/ **NEW (SC-1)** — layer validation & migration
+- `tscg_paths.py` — **shared repo-root resolution**. Walks UP from the script until it finds a
+  directory holding both `ontology/` and `instances/`. Replaces the hardcoded
+  `REPO_ROOT = Path("E:/_00_Michel/…")`, so the tools are **relocatable and machine-independent**
+  (override: `TSCG_REPO_ROOT`).
+- `check-M0/` — `check_m0_instances.py` (v1.6.0), `migrate_m0_to_v1_5.py`, `M0_Instances_Schema_shacl.ttl`
+- `check-M1/` — `check_M1.py` (**v2.0.0**), `M1_Schema_shacl.ttl` (v1.1.0), `check_M1_README.md`
+
+> ⚠️ **Three pre-existing bugs fixed in SC-1** — all of the *silent failure* kind:
+> 1. `check_M1.run()` called `fix_imports_genesis()`, **never defined** → `AttributeError` on the
+>    first file, in the auto-fix path. **None of the 7 documented auto-fixes had ever run.**
+> 2. `check_M1` looked for `M1_Schema.shacl.ttl` (**dot**) while the file is `M1_Schema_shacl.ttl`
+>    (**underscore**) → `--shacl` never found its grammar, validated nothing, and exited 0.
+> 3. The M0 scripts looked for `symbolic-system-grammar` (**singular**); the directory is
+>    `symbolic-system-grammars` (**plural**) → the whole SymbolicSystemGrammar category
+>    (Iching, TriskeleToolchain) was **skipped without a word**.
+>
+> A validator that cannot find its grammar looks exactly like a validator that passed.
+> `verify_layout()` now reports missing compartments instead of swallowing them.
+
+### cli_tools/ (repo root — unchanged)
 - `generate_index-html/` — Gallery generator (`_Generate_Index-html.bat`)
 - `migrate_properties/` — Property rename CLI (README added)
 - `ontology-linter/` — JSON-LD linting
@@ -361,10 +448,17 @@ tscg/
 │   ├── M1_CoreConcepts.jsonld
 │   ├── M1_Domains.jsonld
 │   ├── M1_extensions/                 # 13 domain extensions
+│   ├── M1_Schema_shacl.ttl            # M1 SHACL grammar (v1.1.0 — SC-1)
 │   ├── Ref/                           # Reference copies
-│   ├── StructuralGrammar/             # Lambek documentation (+ 2 NEW)
-│   ├── TSCG_InstanceGrammar/          # NEW — SHACL + migration tools
+│   ├── StructuralGrammar/             # Lambek documentation
+│   │   └── Functional_Grammar_Model.md   # NEW (SC-1) — Fm2/Fm1m2 as functions
+│   ├── cli-tools/                     # NEW (SC-1) — layer validation & migration
+│   │   ├── tscg_paths.py              #   shared repo-root resolution
+│   │   ├── check-M0/                  #   check + migrate M0 instances
+│   │   └── check-M1/                  #   check M1 (v2.0.0) + SHACL v1.1.0
+│   ├── TSCG_InstanceGrammar/          # SHACL + migration tools
 │   ├── docs/                          # Ontology documentation
+│   │   └── _01_Worksite/              # NEW (SC-1) — worksite map + SC-* handovers
 │   ├── sparql/                        # SPARQL queries
 │   └── tools/
 ├── src/tscg/                          # Python package

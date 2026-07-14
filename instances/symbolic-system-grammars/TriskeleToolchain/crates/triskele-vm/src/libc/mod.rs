@@ -1,6 +1,6 @@
 // triskele-vm/src/libc/mod.rs
 // Author: Echopraxium with the collaboration of Claude AI
-// Version: 0.3.11
+// Version: 0.3.13
 //
 // tsk-libc — C89 standard library for TriskeleVM.
 //
@@ -35,6 +35,7 @@ use triskele_common::isa::Opcode;
 use triskele_common::registers::RegisterFile;
 use std::io::{Read, Write, Seek, SeekFrom};
 use super::memory::Memory;
+use crate::host::{HostIo, HostLine};
 
 /// Base VM address for libc stubs.
 pub const LIBC_BASE: u64 = 0xE000_0000;
@@ -114,6 +115,9 @@ pub enum LibcSyscall {
     Sscanf   = 0x69,
     // stdlib extra
     Calloc   = 0x6A,
+    // stdin (HostIo)
+    Fgets    = 0x6B,
+    Getchar  = 0x6C,
 }
 
 impl LibcSyscall {
@@ -150,6 +154,7 @@ impl LibcSyscall {
             0x66 => Some(Self::Feof),      0x67 => Some(Self::Fflush),
             0x68 => Some(Self::Strerror),  0x69 => Some(Self::Sscanf),
             0x6A => Some(Self::Calloc),
+            0x6B => Some(Self::Fgets),    0x6C => Some(Self::Getchar),
             _ => None,
         }
     }
@@ -191,6 +196,7 @@ impl LibcSyscall {
             Self::Feof      => "feof",      Self::Fflush    => "fflush",
             Self::Strerror  => "strerror",  Self::Sscanf    => "sscanf",
             Self::Calloc    => "calloc",
+            Self::Fgets     => "fgets",      Self::Getchar   => "getchar",
         }
     }
 
@@ -224,6 +230,7 @@ pub const ALL_SYSCALLS: &[LibcSyscall] = &[
     LibcSyscall::Fseek,    LibcSyscall::Ftell,    LibcSyscall::Feof,    LibcSyscall::Fflush,
     LibcSyscall::Strerror, LibcSyscall::Sscanf,
     LibcSyscall::Calloc,
+    LibcSyscall::Fgets,    LibcSyscall::Getchar,
 ];
 
 /// Inject all libc stubs into VM memory at LIBC_BASE.
@@ -281,6 +288,9 @@ pub struct LibcState {
     heap_bump:  u64,
     /// Heap ceiling (exclusive).
     heap_ceil:  u64,
+    /// getchar() line buffer, refilled from host.read_line().
+    input_buf:  std::collections::VecDeque<u8>,
+    input_eof:  bool,
     /// Open file handles — native only (no std::fs in WASM).
     #[cfg(feature = "native")]
     pub file_handles: Vec<Option<FileHandle>>,
@@ -296,6 +306,8 @@ impl LibcState {
             rand_seed: 12345,
             heap_bump: HEAP_BASE,
             heap_ceil: HEAP_BASE + HEAP_SIZE,
+            input_buf: std::collections::VecDeque::new(),
+            input_eof: false,
             #[cfg(feature = "native")]
             file_handles: {
                 let mut handles = Vec::with_capacity(MAX_FILE_HANDLES);
@@ -417,6 +429,7 @@ pub fn dispatch(
     mem:   &mut Memory,
     regs:  &mut RegisterFile,
     state: &mut LibcState,
+    host:  &mut dyn HostIo,
 ) -> Result<(), VmError> {
     let sc = LibcSyscall::from_u16(id)
         .ok_or(VmError::FfiError(format!("unknown libc syscall id: {:#04x}", id)))?;
@@ -675,7 +688,7 @@ pub fn dispatch(
             let args = [regs.get(1)?, regs.get(2)?, regs.get(3)?, regs.get(4)?];
             let out = format_printf(fmt_ptr, &args, mem)?;
             let char_count = out.len();
-            eprint!("{}", out);  // output to stderr (VM debug channel)
+            host.write_bytes(out.as_bytes()); host.flush();
             regs.set(0, char_count as u64)?;
         }
 
@@ -687,7 +700,7 @@ pub fn dispatch(
             let args = [regs.get(2)?, regs.get(3)?, regs.get(4)?, regs.get(5)?];
             let out = format_printf(fmt_ptr, &args, mem)?;
             let char_count = out.len();
-            eprint!("{}", out);
+            host.write_bytes(out.as_bytes()); host.flush();
             regs.set(0, char_count as u64)?;
         }
 
@@ -712,7 +725,7 @@ pub fn dispatch(
             };
             let out = format_printf(fmt_ptr, &args, mem)?;
             let char_count = out.len();
-            eprint!("{}", out);
+            host.write_bytes(out.as_bytes()); host.flush();
             regs.set(0, char_count as u64)?;
         }
 
@@ -1394,6 +1407,49 @@ pub fn dispatch(
             regs.set(0, bytes.len() as u64)?;
         }
 
+        LibcSyscall::Fgets => {
+            // char* fgets(char* buf, int size, FILE* stream)
+            // R0=buf, R1=size, R2=stream(ignored). Blocking line read via HostIo.
+            // Returns buf, or 0 (NULL) at EOF.
+            let buf  = regs.get(0)?;
+            let size = regs.get(1)? as usize;
+            if size == 0 {
+                regs.set(0, 0)?;
+            } else {
+                match host.read_line() {
+                    HostLine::Eof => { regs.set(0, 0)?; }
+                    HostLine::Line(line) => {
+                        let mut bytes = line.into_bytes();
+                        bytes.push(b'\n');               // fgets keeps the newline
+                        let n = bytes.len().min(size - 1); // leave room for NUL
+                        for i in 0..n {
+                            mem.write_u8(buf + i as u64, bytes[i])?;
+                        }
+                        mem.write_u8(buf + n as u64, 0)?;
+                        regs.set(0, buf)?;
+                    }
+                }
+            }
+        }
+
+        LibcSyscall::Getchar => {
+            // int getchar(void) -> next char, or EOF (-1).
+            // Buffered: refills one line at a time from HostIo.
+            if state.input_buf.is_empty() && !state.input_eof {
+                match host.read_line() {
+                    HostLine::Eof => { state.input_eof = true; }
+                    HostLine::Line(line) => {
+                        for b in line.into_bytes() { state.input_buf.push_back(b); }
+                        state.input_buf.push_back(b'\n');
+                    }
+                }
+            }
+            match state.input_buf.pop_front() {
+                Some(c) => regs.set(0, c as u64)?,
+                None    => regs.set(0, (-1i32) as u64)?,  // EOF
+            }
+        }
+
         LibcSyscall::Puts => {
             // int puts(const char* s)  — writes s + '\n' to stdout
             // R0 = str_ptr
@@ -1407,7 +1463,7 @@ pub fn dispatch(
                 i += 1;
             }
             s.push('\n');
-            eprint!("{}", s);
+            host.write_bytes(s.as_bytes()); host.flush();
             regs.set(0, s.len() as u64)?;
         }
     }
@@ -1429,7 +1485,7 @@ mod tests {
     fn setup_mem() -> (Memory, RegisterFile, LibcState) {
         let mut mem = Memory::new(NULL_PAGE_END, 0x0010_0000);
         // Segment must cover the highest discriminant (0x45=Vsprintf)
-        mem.add_segment(LIBC_BASE, (0x6B_u64) * STUB_SIZE);  // highest = 0x6A (Calloc)
+        mem.add_segment(LIBC_BASE, (0x6D_u64) * STUB_SIZE);  // highest = 0x6A (Calloc)
         let regs = RegisterFile::new(STACK_TOP, NULL_PAGE_END);
         let state = LibcState::new();
         (mem, regs, state)
@@ -1443,7 +1499,7 @@ mod tests {
         // Heap segment
         mem.add_segment(HEAP_BASE, HEAP_SIZE);
         // Libc stubs segment
-        mem.add_segment(LIBC_BASE, (0x6B_u64) * STUB_SIZE);  // highest = 0x6A (Calloc)
+        mem.add_segment(LIBC_BASE, (0x6D_u64) * STUB_SIZE);  // highest = 0x6A (Calloc)
         let regs = RegisterFile::new(STACK_TOP, NULL_PAGE_END);
         let state = LibcState::new();
         (mem, regs, state)
@@ -1486,7 +1542,7 @@ mod tests {
         regs.set(0, base).unwrap();          // dst
         regs.set(1, 0xAB).unwrap();          // val
         regs.set(2, 16).unwrap();            // n
-        dispatch(LibcSyscall::Memset as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Memset as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         for i in 0..16u64 {
             assert_eq!(mem.read_u8(base + i).unwrap(), 0xAB);
         }
@@ -1504,7 +1560,7 @@ mod tests {
         regs.set(0, dst).unwrap();
         regs.set(1, src).unwrap();
         regs.set(2, 8).unwrap();
-        dispatch(LibcSyscall::Memcpy as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Memcpy as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         for i in 0..8u64 {
             assert_eq!(mem.read_u8(dst + i).unwrap(), i as u8 + 1);
         }
@@ -1519,7 +1575,7 @@ mod tests {
         let s = b"Hello\0";
         mem.write_bytes(ptr, s).unwrap();
         regs.set(0, ptr).unwrap();
-        dispatch(LibcSyscall::Strlen as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Strlen as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(regs.get(0).unwrap(), 5);
     }
 
@@ -1529,7 +1585,7 @@ mod tests {
         let ptr = NULL_PAGE_END + 0x100;
         mem.write_u8(ptr, 0).unwrap();
         regs.set(0, ptr).unwrap();
-        dispatch(LibcSyscall::Strlen as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Strlen as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(regs.get(0).unwrap(), 0);
     }
 
@@ -1544,7 +1600,7 @@ mod tests {
         mem.write_bytes(b, b"wolf3d\0").unwrap();
         regs.set(0, a).unwrap();
         regs.set(1, b).unwrap();
-        dispatch(LibcSyscall::Strcmp as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Strcmp as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(regs.get(0).unwrap() as i32, 0);
     }
 
@@ -1557,7 +1613,7 @@ mod tests {
         mem.write_bytes(b, b"abd\0").unwrap();
         regs.set(0, a).unwrap();
         regs.set(1, b).unwrap();
-        dispatch(LibcSyscall::Strcmp as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Strcmp as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert!((regs.get(0).unwrap() as i32) < 0);
     }
 
@@ -1571,7 +1627,7 @@ mod tests {
         mem.write_bytes(src, b"TriskeleVM\0").unwrap();
         regs.set(0, dst).unwrap();
         regs.set(1, src).unwrap();
-        dispatch(LibcSyscall::Strcpy as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Strcpy as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         let result = &mem.read_bytes(dst, 11).unwrap();
         assert_eq!(*result, b"TriskeleVM\0");
     }
@@ -1586,7 +1642,7 @@ mod tests {
         mem.write_bytes(a, b"ABCD").unwrap();
         mem.write_bytes(b, b"ABCD").unwrap();
         regs.set(0, a).unwrap(); regs.set(1, b).unwrap(); regs.set(2, 4).unwrap();
-        dispatch(LibcSyscall::Memcmp as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Memcmp as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(regs.get(0).unwrap() as i32, 0);
     }
 
@@ -1596,7 +1652,7 @@ mod tests {
     fn test_libc_abs() {
         let (mut mem, mut regs, mut state) = setup_mem();
         regs.set(0, (-42i64) as u64).unwrap();
-        dispatch(LibcSyscall::Abs as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Abs as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(regs.get(0).unwrap(), 42);
     }
 
@@ -1607,11 +1663,11 @@ mod tests {
         let (mut mem, mut regs, mut state) = setup_mem();
         // Seed with srand(42)
         regs.set(0, 42).unwrap();
-        dispatch(LibcSyscall::Srand as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Srand as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         // Two calls to rand must produce non-zero, different values
-        dispatch(LibcSyscall::Rand as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Rand as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         let r1 = regs.get(0).unwrap();
-        dispatch(LibcSyscall::Rand as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Rand as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         let r2 = regs.get(0).unwrap();
         assert_ne!(r1, r2, "consecutive rand() calls must differ");
     }
@@ -1622,7 +1678,7 @@ mod tests {
     fn test_libc_sin_zero() {
         let (mut mem, mut regs, mut state) = setup_mem();
         regs.set(0, 0.0f64.to_bits()).unwrap();
-        dispatch(LibcSyscall::Sin as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Sin as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         let result = f64::from_bits(regs.get(0).unwrap());
         assert!((result - 0.0).abs() < 1e-10, "sin(0) must be ~0");
     }
@@ -1631,7 +1687,7 @@ mod tests {
     fn test_libc_cos_zero() {
         let (mut mem, mut regs, mut state) = setup_mem();
         regs.set(0, 0.0f64.to_bits()).unwrap();
-        dispatch(LibcSyscall::Cos as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Cos as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         let result = f64::from_bits(regs.get(0).unwrap());
         assert!((result - 1.0).abs() < 1e-10, "cos(0) must be ~1");
     }
@@ -1652,7 +1708,7 @@ mod tests {
         write_cstr(&mut mem, fmt, b"val=%d");
         regs.set(0, fmt).unwrap();
         regs.set(1, 42u64).unwrap();
-        dispatch(LibcSyscall::Printf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Printf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(regs.get(0).unwrap(), 6, "printf returns char count");  // "val=42" = 6 chars
     }
 
@@ -1665,7 +1721,7 @@ mod tests {
         write_cstr(&mut mem, msg, b"oops");
         regs.set(0, fmt).unwrap();
         regs.set(1, msg).unwrap();
-        dispatch(LibcSyscall::Printf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Printf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         // "err=oops!" = 9 chars
         assert_eq!(regs.get(0).unwrap(), 9);
     }
@@ -1677,7 +1733,7 @@ mod tests {
         write_cstr(&mut mem, fmt, b"0x%x");
         regs.set(0, fmt).unwrap();
         regs.set(1, 0xFF).unwrap();
-        dispatch(LibcSyscall::Printf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Printf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         // "0xff" = 4 chars
         assert_eq!(regs.get(0).unwrap(), 4);
     }
@@ -1688,7 +1744,7 @@ mod tests {
         let fmt = NULL_PAGE_END + 0x100;
         write_cstr(&mut mem, fmt, b"100%%");
         regs.set(0, fmt).unwrap();
-        dispatch(LibcSyscall::Printf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Printf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         // "100%" = 4 chars
         assert_eq!(regs.get(0).unwrap(), 4);
     }
@@ -1700,7 +1756,7 @@ mod tests {
         write_cstr(&mut mem, fmt, b"hello
 ");
         regs.set(0, fmt).unwrap();
-        dispatch(LibcSyscall::Printf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Printf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(regs.get(0).unwrap(), 6);
     }
 
@@ -1711,7 +1767,7 @@ mod tests {
         write_cstr(&mut mem, fmt, b"%d");
         regs.set(0, fmt).unwrap();
         regs.set(1, (-7i64) as u64).unwrap();
-        dispatch(LibcSyscall::Printf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Printf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(regs.get(0).unwrap(), 2); // "-7" = 2 chars
     }
 
@@ -1741,7 +1797,7 @@ mod tests {
         regs.set(0, buf).unwrap();   // buf
         regs.set(1, fmt).unwrap();   // fmt
         regs.set(2, 99u64).unwrap(); // arg
-        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(regs.get(0).unwrap(), 2, "sprintf returns char count");
         assert_eq!(read_cstr(&mem, buf), "99", "sprintf writes '99'");
         assert_eq!(mem.read_u8(buf + 2).unwrap(), 0, "null terminator present");
@@ -1759,7 +1815,7 @@ mod tests {
         regs.set(0, buf).unwrap();
         regs.set(1, fmt).unwrap();
         regs.set(2, arg).unwrap();
-        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(read_cstr(&mem, buf), "hello");
     }
 
@@ -1775,7 +1831,7 @@ mod tests {
         regs.set(2, 1u64).unwrap();
         regs.set(3, 2u64).unwrap();
         regs.set(4, 3u64).unwrap();
-        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(read_cstr(&mem, buf), "1+2=3");
         assert_eq!(regs.get(0).unwrap(), 5, "sprintf returns char count");
     }
@@ -1792,7 +1848,7 @@ mod tests {
         regs.set(0, buf).unwrap();
         regs.set(1, fmt).unwrap();
         regs.set(2, 42u64).unwrap();
-        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(mem.read_u8(buf).unwrap(), b'4', "buf[0] must be '4'");
         assert_eq!(mem.read_u8(buf + 1).unwrap(), b'2', "buf[1] must be '2'");
         assert_eq!(mem.read_u8(buf + 2).unwrap(), 0,   "buf[2] must be null");
@@ -1808,7 +1864,7 @@ mod tests {
         regs.set(0, buf).unwrap();
         regs.set(1, fmt).unwrap();
         regs.set(2, (-42i64) as u64).unwrap();
-        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(read_cstr(&mem, buf), "-42");
     }
 
@@ -1821,7 +1877,7 @@ mod tests {
         regs.set(0, buf).unwrap();
         regs.set(1, fmt).unwrap();
         regs.set(2, 0xDEADu64).unwrap();
-        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(read_cstr(&mem, buf), "0xdead");
     }
 
@@ -1843,7 +1899,7 @@ mod tests {
         regs.set(0, buf).unwrap();
         regs.set(1, fmt).unwrap();
         regs.set(2, va_area).unwrap();  // va_ptr != 0 → read from memory
-        dispatch(LibcSyscall::Vsprintf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Vsprintf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(read_cstr(&mem, buf), "42 ok");
     }
 
@@ -1858,7 +1914,7 @@ mod tests {
         regs.set(1, fmt).unwrap();
         regs.set(2, 0u64).unwrap();   // va_ptr = 0 → fallback
         regs.set(3, 7u64).unwrap();   // first fallback arg
-        dispatch(LibcSyscall::Vsprintf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Vsprintf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(read_cstr(&mem, buf), "val=7");
     }
 
@@ -1875,7 +1931,7 @@ mod tests {
         regs.set(0, 0u64).unwrap();    // file (ignored)
         regs.set(1, fmt).unwrap();
         regs.set(2, va_area).unwrap();
-        dispatch(LibcSyscall::Vfprintf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Vfprintf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(regs.get(0).unwrap(), 4, "vfprintf: 'n=99' = 4 chars");
     }
 
@@ -1885,7 +1941,7 @@ mod tests {
     fn test_malloc_returns_nonzero() {
         let (mut mem, mut regs, mut state) = setup_mem_with_heap();
         regs.set(0, 64u64).unwrap();   // size
-        dispatch(LibcSyscall::Malloc as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Malloc as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         let ptr = regs.get(0).unwrap();
         assert_ne!(ptr, 0, "malloc must return non-null for size > 0");
         assert!(ptr >= crate::memory::HEAP_BASE, "malloc returns heap address");
@@ -1895,7 +1951,7 @@ mod tests {
     fn test_malloc_zero_fills() {
         let (mut mem, mut regs, mut state) = setup_mem_with_heap();
         regs.set(0, 16u64).unwrap();
-        dispatch(LibcSyscall::Malloc as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Malloc as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         let ptr = regs.get(0).unwrap();
         for i in 0..16u64 {
             assert_eq!(mem.read_u8(ptr + i).unwrap(), 0,
@@ -1907,7 +1963,7 @@ mod tests {
     fn test_malloc_size_zero_returns_null() {
         let (mut mem, mut regs, mut state) = setup_mem_with_heap();
         regs.set(0, 0u64).unwrap();
-        dispatch(LibcSyscall::Malloc as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Malloc as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(regs.get(0).unwrap(), 0, "malloc(0) must return null");
     }
 
@@ -1915,10 +1971,10 @@ mod tests {
     fn test_malloc_two_calls_give_different_ptrs() {
         let (mut mem, mut regs, mut state) = setup_mem_with_heap();
         regs.set(0, 32u64).unwrap();
-        dispatch(LibcSyscall::Malloc as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Malloc as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         let p1 = regs.get(0).unwrap();
         regs.set(0, 32u64).unwrap();
-        dispatch(LibcSyscall::Malloc as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Malloc as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         let p2 = regs.get(0).unwrap();
         assert_ne!(p1, p2, "two malloc calls must return different pointers");
         assert!(p2 >= p1 + 32, "allocations must not overlap");
@@ -1929,7 +1985,7 @@ mod tests {
         // free() is a no-op (bump allocator) — should not crash
         let (mut mem, mut regs, mut state) = setup_mem();
         regs.set(0, 0x1234u64).unwrap();
-        dispatch(LibcSyscall::Free as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Free as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         // No assertion needed — just ensure it doesn't panic
     }
 
@@ -1941,7 +1997,7 @@ mod tests {
         let ptr = NULL_PAGE_END + 0x100;
         write_cstr(&mut mem, ptr, b"hi");
         regs.set(0, ptr).unwrap();
-        dispatch(LibcSyscall::Puts as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Puts as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(regs.get(0).unwrap(), 3, "puts('hi') = 3 (2 chars + newline)");
     }
 
@@ -1955,7 +2011,7 @@ mod tests {
         write_cstr(&mut mem, fmt, b"");
         regs.set(0, buf).unwrap();
         regs.set(1, fmt).unwrap();
-        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(regs.get(0).unwrap(), 0);
         assert_eq!(mem.read_u8(buf).unwrap(), 0, "empty fmt → just null terminator");
     }
@@ -1969,7 +2025,7 @@ mod tests {
         regs.set(0, buf).unwrap();
         regs.set(1, fmt).unwrap();
         regs.set(2, 0x1234u64).unwrap();
-        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         let result = read_cstr(&mem, buf);
         assert!(result.starts_with("0x"), "%%p must start with 0x: got '{result}'");
         assert!(result.contains("1234"), "%%p must contain address: got '{result}'");
@@ -1992,7 +2048,7 @@ mod tests {
         regs.set(0, buf).unwrap();
         regs.set(1, fmt).unwrap();
         regs.set(2, 42u64).unwrap();
-        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state).unwrap();
+        dispatch(LibcSyscall::Sprintf as u16, &mut mem, &mut regs, &mut state, &mut crate::host::NullHost).unwrap();
         assert_eq!(read_cstr(&mem, buf), "42");
         // Guards must be untouched
         for i in 0..8u64 {

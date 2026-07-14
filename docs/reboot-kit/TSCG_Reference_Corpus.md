@@ -140,8 +140,8 @@ M3_GrammarFoundation (apex)
 
 **Convention KFCC:**
 ```json
-"@type": ["owl:Class", "m2:KnowledgeFieldConceptCombo"],
-"rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+"@type": ["owl:Class", "m2:DomainConceptCombo"],
+"rdfs:subClassOf": "m2:DomainConceptCombo",
 "m1:structuralGrammarFormula": "Fm1m2(<Domain>, <formula>)"
 ```
 

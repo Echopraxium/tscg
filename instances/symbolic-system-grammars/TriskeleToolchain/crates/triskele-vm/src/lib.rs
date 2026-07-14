@@ -1,8 +1,9 @@
 // triskele-vm/src/lib.rs
 // Author: Echopraxium with the collaboration of Claude AI
-// Version: 0.3.11
+// Version: 0.3.13
 
 pub mod cpu;
+pub mod host;
 pub mod memory;
 pub mod display;
 pub mod io;
@@ -16,6 +17,7 @@ pub mod wolf3d;
 pub use cpu::Cpu;
 pub use memory::Memory;
 pub use display::DisplayBackend;
+pub use host::{HostIo, HostLine, NativeHost, NullHost};
 
 #[cfg(feature = "native")]
 pub use ffi::sdl2::Sdl2Context;

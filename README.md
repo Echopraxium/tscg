@@ -3,7 +3,7 @@
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](LICENSE)
 [![GitHub](https://img.shields.io/badge/GitHub-Echopraxium%2Ftscg-181717?logo=github)](https://github.com/Echopraxium/tscg)
-[![Version](https://img.shields.io/badge/Version-16.1.0-green.svg)](https://github.com/Echopraxium/tscg/releases)
+[![Version](https://img.shields.io/badge/Version-16.2.0-green.svg)](https://github.com/Echopraxium/tscg/releases)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18471860.svg)](https://doi.org/10.5281/zenodo.18471860)
 
 **Author:** Echopraxium with the collaboration of Claude AI
@@ -12,19 +12,42 @@
 
 ---
 
-## 🦇 The Bat's Lesson: Navigating Complexity Through Echolocation
+## 🦇 The Bat's Lesson
 
-In the silence of a cave, a bat emits an ultrasonic pulse. The sound bounces off invisible walls and returns transformed. In milliseconds, the bat **constructs a sonic map** of its environment. It never **sees** the cave directly — yet it navigates, hunts, and thrives.
+A bat navigates a pitch-black cave without ever seeing it. It emits a pulse, listens to the echo, and from the gap between what it sent and what returned, it builds a usable map of the dark. It never touches reality directly — yet it flies.
 
-**The bat teaches us something profound:** You don't need direct access to reality to navigate it effectively. You need:
-1. A **model** to emit (your hypothesis)
-2. **Echoes** to receive (measurements from reality)
-3. A way to compute the **gap** between model and measurement
-4. A process to **correct** and refine
+We are in the same position with complex systems. We never access them directly; we work with our **Maps** (how we represent them) and infer the **Territory** (what is actually there) from the gap between model and observation. TSCG borrows the bat's strategy — emit, measure, correct — and turns it into a disciplined workflow for building system models.
 
-**TSCG is the human version of echolocation for understanding complex systems.**
+---
 
-Just as the bat lives in the **hybrid space** between its emitted pulse and returning echo, we humans live in the hybrid space between our **Maps** (how we represent systems) and the **Territory** (what exists empirically). The gap between them is not a failure — it's the very mechanism that enables learning, navigation, and discovery.
+## An Invitation — Not a Universal Theory
+
+TSCG is a **proposal**, offered to a specific and probably small audience.
+
+If you build models of systems — as a researcher, engineer, inventor, or artist — and you have ever noticed the *same structural pattern* reappearing across unrelated fields (a feedback loop in an ecosystem, a market, and a circuit; a hierarchy in a cell, a company, and a myth), then TSCG offers two things: a shared vocabulary for naming those patterns, and a discipline for testing whether the resemblance is real or merely poetic.
+
+That is all it offers — and it is deliberate about not offering more.
+
+**This is likely not for most people.** In an era where LLMs have made it effortless to publish elaborate unifying frameworks, the honest thing to state up front is what TSCG does *not* do:
+
+- It discovers **no universal laws** and claims no theory that explains complex systems.
+- It has **not** been validated by controlled comparison — its value, if any, remains to be demonstrated by people other than its author.
+- It resists the "everything is a system" reflex: a pattern earns a place in the vocabulary only after surviving a **≥6-domain** cross-check, precisely so the framework cannot quietly become a mirror admiring its own generality.
+
+If that framing interests you, read on. If it reads like one more grand unified theory, your skepticism is well placed — and the two documents in [`docs/CoreHypotheses/`](docs/CoreHypotheses/) were written to meet it head-on rather than deflect it.
+
+---
+
+## Why TSCG?
+
+Complex systems are hard to reason about because we constantly confuse two things: the **system itself** (the Territory) and our **representation of it** (the Map). TSCG keeps them apart on purpose and turns the distinction into a repeatable workflow:
+
+1. **Build** a model of the system from shared building blocks.
+2. **Observe** how the real system behaves.
+3. **Measure** the gap between model and observation.
+4. **Refine** the model — and repeat.
+
+The goal is never a perfect representation. It is to make the gap *visible and measurable*, so that "my model is wrong here" becomes a precise, actionable statement instead of a vague unease.
 
 ---
 
@@ -32,14 +55,14 @@ Just as the bat lives in the **hybrid space** between its emitted pulse and retu
 
 ### 1️⃣ **An "Esperanto" for Systems Thinking**
 
-TSCG proposes a **universal transdisciplinary language** for describing any complex system — from chemical reactions to blockchain consensus, from cellular biology to musical counterpoint.
+TSCG proposes a **shared transdisciplinary vocabulary** for describing systems across the domains covered so far — from chemical reactions to blockchain consensus, from cellular biology to musical counterpoint.
 
 Just as Esperanto aims to bridge human languages, TSCG provides:
-- **Universal vocabulary**: ~80 atomic GenericConcepts (Feedback, Hierarchy, Flow, etc.)
+- **Shared vocabulary**: ~80 atomic GenericConcepts (Feedback, Hierarchy, Flow, etc.)
 - **Common grammar**: Structural rules for combining concepts (Lambek calculus / monoidal categories)
 - **Cross-domain translation**: The same pattern "Homeostasis" applies to thermostats, ecosystems, and economies
 
-**Key insight:** Most systems share the **same underlying patterns**. Once you speak TSCG, you can recognize these patterns anywhere.
+**Working hypothesis:** many systems share recurring structural patterns. TSCG's ≥6-domain validation rule exists precisely to *test* this claim concept by concept, rather than assume it — once a pattern is admitted, you can look for it in new domains and check whether it actually holds.
 
 ---
 
@@ -62,52 +85,16 @@ The **epistemic gap (δ₁)** between these perspectives tells us how aligned ou
 
 This creates a **layered model** (M3 → M2 → M1 → M0) where universal foundations cascade into domain-specific applications.
 
-#### 🔭 The Third Eye: Epistemic Focal Score (δ₂ / EFS)
+#### 🔭 A Third Measure: the Focal Score (δ₂)
 
-Beyond the bicephalous duality, TSCG introduces a **third perspective** — the **Stereopsis Grammar Gs** — which formalizes the synergy that emerges from fusing Eagle Eye and Sphinx Eye:
+Beyond the Map/Territory *gap* (δ₁), TSCG defines an optional second score, δ₂, that measures the *sharpness* of the fusion between the two perspectives — an ophthalmic metaphor borrowed from binocular vision. Where δ₁ asks "how far apart are Map and Territory?", δ₂ asks "how well do they fuse into a single, in-focus image?".
 
-```
-Stereopsis = the depth perception born from binocular fusion
-           = formally: the bicephalous monoid (Gs, |, EmptyStereopsis)
-           = Base16 alphabet: 𝕋₀(|) = {T, _^, _$, K, Ss, L}
-```
+| Score | Captures | Question |
+|-------|----------|----------|
+| **δ₁** (epistemic gap) | Map/Territory *alignment* | *How far apart?* |
+| **δ₂** (focal score) | Map/Territory *fusion sharpness* | *How in-focus?* |
 
-The **Epistemic Focal Score (EFS)** — or **δ₂** — measures the *sharpness* of this binocular fusion using an ophthalmic metaphor:
-
-```
-δ₂ = EFS = stereopsicDepth × (1 − |focalBias|)
-```
-
-Where:
-- **`stereopsicDepth`** — depth of Gs engagement, computed from active TKSL primitives:
-  `(T_present × 0.25) + (K_present × 0.25) + (Ss_present × 0.25) + (L_present × 0.25)`
-- **`focalBias`** — signed Map/Territory imbalance: `REVOI_mean − ASFID_mean` ∈ [−1, +1]
-  - Positive → **Hyperopic** (Map too abstract, Territory blurred)
-  - Negative → **Myopic** (Territory too detailed, Map inadequate)
-  - Zero → **Emmetropic candidate** (perfect balance)
-
-| Focal Class | EFS Range | Meaning |
-|-------------|-----------|---------|
-| **Emmetropic** | EFS ≥ 0.70 | Sharp combined image — Map+Territory in focus |
-| **SlightlyMyopic / SlightlyHyperopic** | 0.50 ≤ EFS < 0.70 | Slight bias toward Territory or Map |
-| **Myopic / Hyperopic** | 0.30 ≤ EFS < 0.50 | Significant Map/Territory imbalance |
-| **Astigmatic** | EFS < 0.30 | Insufficient Gs depth — no stereopsis possible |
-
-The **TKSL primitives** (4 nominal Gs generators) each answer a transcendental question:
-
-| Primitive | Name | Question |
-|-----------|------|----------|
-| **T** | Temporality | *When?* — temporal interface Gt↔Gm |
-| **K** | Knowledge | *What?* — cognitive contextualisation of Information |
-| **Ss** | Symbol *(Stereopsic)* | *Sign?* — semiotic bridge signifier↔signified |
-| **L** | Localizability | *Converging?* — cybernetic convergence toward Attractor |
-
-δ₂/EFS is **optional** and **conditional**: only present in M0 instances that mobilize at least one stereopsic GenericConcept (`m0:focalApplicable = true`). The two scores are complementary:
-
-| Score | Formula | Measures |
-|-------|---------|---------|
-| **δ₁** (epistemic gap) | `|ASFID_mean − REVOI_mean| / √2` | Map/Territory *alignment* (distance) |
-| **δ₂ / EFS** (focal score) | `stereopsicDepth × (1 − |focalBias|)` | Map+Territory *fusion sharpness* (binocular depth) |
+δ₂ is **optional and conditional** — it applies only to instances that mobilize at least one *stereopsic* GenericConcept. Its full definition (the Stereopsis grammar Gs, the TKSL primitives, focal classes from Emmetropic to Astigmatic, and the exact formulas) lives in **[Scoring System](docs/CoreHypotheses/ScoringSystem.md)** — deliberately kept out of this overview.
 
 ---
 
@@ -119,7 +106,7 @@ Think of TSCG as **LEGO Technic® for the mind**:
 |--------------|-----------------|---------|
 | **Basic bricks** | GenericConcepts (M2) | Feedback, Hierarchy, Transformation |
 | **Specialized kits** | Domain extensions (M1) | Biology, Chemistry, Electronics, Music, Mythology |
-| **Finished models** | Validated instances (M0) | Fire Triangle, Four-Stroke Engine, Cell Signaling |
+| **Finished models** | Grammatically-consistent instances (M0) | Fire Triangle, Four-Stroke Engine, Cell Signaling |
 | **Building instructions** | Structural Grammar (Lambek calculus) | How concepts combine via monoidal products |
 
 **Just like LEGO Technic® offers themed sets**, TSCG offers:
@@ -131,14 +118,14 @@ Think of TSCG as **LEGO Technic® for the mind**:
 - **M1_BusinessModeling**: BM Canvas, lifecycle phases, transitions ← *new*
 - ...and 13 other domains
 
-**The "Game" in TSCG**: Building minimal, validated system models (called **"Poclets"**) is like assembling a functional LEGO model — it must be coherent, complete, and actually work.
+**The "Game" in TSCG**: Building minimal, grammatically-consistent system models (called **"Poclets"**) is like assembling a functional LEGO model — it must be coherent, complete, and actually work.
 
 ---
 
 ## 🏗️ Architecture at a Glance
 
 ```
-M3 (Genesis Space)      → Universal foundation: ASFID ⊕ REVOI dimensions
+M3 (Genesis Space)      → Universal foundation: ASFID (Territory) and REVOI (Map) dimensions
                            Formalized via Lambek calculus / monoidal categories
                            Three monoids: Territory Gt (×, ASFID), Map Gm (+, REVOI), Stereopsis Gs (|, TKSL)
     ↓
@@ -148,13 +135,15 @@ M2 (GenericConcepts)    → ~80 transdisciplinary atomic patterns
 M1 (Extensions)         → 13+ domain-specific vocabularies
                            + M1_CoreConcepts (GenericConceptCombo instances)
     ↓
-M0 (Instances)          → 33+ validated system models
+M0 (Instances)          → 33+ grammatically-consistent system models
                            Poclets | SystemicFrameworks | SymbolicSystemGrammars | TscgTools
 ```
 
 ---
 
-## 📦 M0 Corpus — 33 Validated Instances
+## 📦 M0 Corpus — 33 Grammatically-Consistent Instances
+
+*"Grammatically consistent" means each instance conforms to the M0 **structural grammar** (validated via SHACL) and carries explicit ASFID/REVOI scores. It does **not** mean empirically confirmed — the scores are intersubjective judgments, revisable as the evaluating community grows.*
 
 ### Poclets (26) — `instances/poclets/`
 
@@ -205,7 +194,7 @@ Minimal yet complete system models spanning 15+ domains:
 
 ## 🎮 Interactive Simulations
 
-Every validated instance includes a **standalone HTML simulation** (no server required):
+Most instances include a **standalone HTML simulation** (no server required):
 
 | Technology | Use | Example |
 |------------|-----|---------|
@@ -242,12 +231,11 @@ Want to model a system with TSCG? Follow the **bat's cycle**:
    - Observe the real-world system
    - Score it on ASFID dimensions (0–1)
 
-### 3. **Compute the gap (Calculate δ₁ and δ₂)**
-   - **δ₁** (epistemic gap) = `|ASFID_mean − REVOI_mean| / √2`
-     - Spectral classes: **Coherent** (δ₁ < 0.05) | **OnCriticalLine** (0.05–0.15) | **Liminal** (0.15–0.30) | **Enigmatic** (≥ 0.30)
-   - **δ₂ / EFS** (focal score, optional) = `stereopsicDepth × (1 − |focalBias|)`
-     - Only when stereopsic GenericConcepts are mobilized (`focalApplicable = true`)
-     - Focal classes: **Emmetropic** (EFS ≥ 0.70) → **Astigmatic** (EFS < 0.30)
+### 3. **Compute the gap**
+   - **δ₁** — the epistemic gap between ASFID and REVOI means.
+     Small δ₁ (**Coherent**) means Map and Territory agree; large δ₁ (**Enigmatic**) flags a mismatch to investigate.
+   - **δ₂** *(optional)* — the focal score, when stereopsic concepts apply.
+   - Exact formulas, spectral classes and focal classes: see **[Scoring System](docs/CoreHypotheses/ScoringSystem.md)**.
 
 ### 4. **Correct your flight (Refine the model)**
    - Use the gap to identify mismatches
@@ -277,7 +265,7 @@ tscg/
 │   ├── TSCG_InstanceGrammar/          # SHACL v1.5 grammar + migration tools
 │   └── docs/                          # Theoretical foundations
 │
-├── instances/                         # M0 Layer — 33 validated instances
+├── instances/                         # M0 Layer — 33 grammatically-consistent instances
 │   ├── poclets/                       # 26 system models (Fire Triangle → Periodic Table)
 │   ├── systemic-frameworks/
 │   │   ├── Vsm/                       # Viable System Model
@@ -305,7 +293,7 @@ tscg/
 │   └── verify_migration/              # Post-migration validation
 │
 ├── docs/
-│   ├── CoreHypotheses/                # Theoretical foundation (8 documents)
+│   ├── CoreHypotheses/                # Theoretical foundation (+ ScoringSystem.md)
 │   └── methodology/                   # Poclet Analysis Methodology
 │
 └── index.html                         # Live gallery (auto-generated)
@@ -324,7 +312,7 @@ An Electron-based ontology browser dedicated to the TSCG framework:
 | **M3** | `M3_GenesisGrammar.jsonld`, `M3_EagleEye.jsonld`, `M3_SphinxEye.jsonld` | ASFID/REVOI structural primitives |
 | **M2** | `M2_GenericConcepts.jsonld` | ~80 GenericConcepts with structural formulas |
 | **M1** | `ontology/M1_extensions/` | Domain vocabularies (Biology, Physics…) |
-| **M0** | `instances/poclets/` | Validated Poclets with ASFID/REVOI scores |
+| **M0** | `instances/poclets/` | Grammatically-consistent Poclets with ASFID/REVOI scores |
 
 **Key features:**
 - **Object Explorer** — class hierarchy, mode selector, regex search
@@ -340,9 +328,10 @@ AI-powered corpus analysis — multi-backend LLM (Gemini Free Tier default | Oll
 
 ## 📚 Essential Documentation
 
-- **[Poclet Analysis Methodology](docs/methodology/Poclet_Analysis_Methodology.md)** — How to create a validated instance
+- **[Poclet Analysis Methodology](docs/methodology/Poclet_Analysis_Methodology.md)** — How to create a grammatically-consistent instance
 - **[M3 Bicephalous Architecture](ontology/docs/M3_BicephalousPerspective_README.md)** — Philosophical foundation
 - **[Structural Grammar Foundation](ontology/docs/Structural_Grammar_Foundation.md)** — Lambek calculus formalism
+- **[Scoring System](docs/CoreHypotheses/ScoringSystem.md)** — δ₁, δ₂/EFS, TKSL primitives, spectral & focal classes
 - **[UX Controls Catalog](ontology/InstanceSimulations/M0_InstanceSimulation_UXControls_README.md)** — Reusable simulation UI patterns
 
 **Research article (v4.0 submission pending):**
@@ -352,7 +341,7 @@ AI-powered corpus analysis — multi-backend LLM (Gemini Free Tier default | Oll
 
 ## 🔍 For the Curious Reader
 
-If the three pillars above sparked genuine questions — *"But is this scientifically legitimate?"*, *"What exactly does TSCG claim?"*, *"How do I know this isn't circular?"* — two documents in `docs/CoreHypotheses/` are written precisely for you:
+The [`An Invitation`](#an-invitation--not-a-universal-theory) section above already stated what TSCG does *not* claim. If you want the long-form version of that honesty — *"is this scientifically legitimate?"*, *"how do I know this isn't circular?"* — two documents in `docs/CoreHypotheses/` go further:
 
 **[What TSCG Is — and What It Is Not](docs/CoreHypotheses/_00_TSCG_as_StereoscopicGlasses.md)**
 The clearest one-page answer to *"what does TSCG actually do?"* — stereoscopic glasses, Eiffel Tower maquettes, and why reformulating without proving is already ambitious enough.
@@ -367,7 +356,7 @@ An honest, no-concessions diagnosis of the project: what it genuinely contribute
 ## 🤝 Contributing
 
 TSCG is currently a **single-developer project** (Michel/Echopraxium) with Claude AI collaboration. Contributions welcome through:
-- **Poclet proposals**: New validated system models
+- **Poclet proposals**: New grammatically-consistent system models
 - **M1 extensions**: New domain vocabularies (requires M2 compliance — ≥6 unrelated domains per concept)
 - **Documentation**: Clarifications, translations, educational materials
 - **Simulation improvements**: UI/UX enhancements, new visualization techniques
@@ -391,6 +380,19 @@ TSCG is currently a **single-developer project** (Michel/Echopraxium) with Claud
 
 ---
 
+## 🔄 A Framework That Expects to Be Superseded
+
+<!-- TRANSITIONAL / TO VALIDATE — new closing section (ModelSupersession + defeasible knowledge).
+     Keep, cut, or rework after re-reading. -->
+
+TSCG treats its own results the way it treats any model: as the **state of the art until further notice**. Every score is an intersubjective judgment, defeasible by better consensus; every Poclet is the best current reading of its system, not its final word.
+
+This is not a rhetorical disclaimer — it is built into the architecture. TSCG includes a formal **`ModelSupersession`** mechanism (M3 ontology type #12) whose job is to record, explicitly and traceably, when one model is superseded by another and *why*. A framework about the gap between Map and Territory has no honest choice but to apply that same discipline to itself: to keep, at all times, a Map of its own obsolescence.
+
+So the corpus you see here is a snapshot. If TSCG is doing its job, some of it should already be on its way to being replaced — and the framework is designed to say so out loud when it happens.
+
+---
+
 ## 🦇 Final Thought
 
 > *"The bat doesn't see the cave.
@@ -399,12 +401,12 @@ TSCG is currently a **single-developer project** (Michel/Echopraxium) with Claud
 
 **TSCG doesn't give you direct access to reality.**
 **It gives you a way to emit models, receive measurements, compute gaps, and refine your understanding.**
-**And that is enough to navigate any complex system.**
+**And that is often enough to navigate complexity.**
 
 ---
 
-**Version:** 16.1.0
-**Last Updated:** 2026-06-24
+**Version:** 16.2.0
+**Last Updated:** 2026-07-08
 **Framework Status:** Active development — v4.0 research article submission in progress
 
 *"The map is not the territory, but the echo is enough to fly."*

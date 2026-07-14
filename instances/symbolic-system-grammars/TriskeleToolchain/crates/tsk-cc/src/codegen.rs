@@ -1,6 +1,6 @@
 // tsk-cc/src/codegen.rs
 // Author: Echopraxium with the collaboration of Claude AI
-// Version: 0.3.3
+// Version: 0.3.4
 //
 // LLVM IR → TriskeleVM bytecode backend.
 //
@@ -1601,6 +1601,95 @@ pub struct CodegenOutput {
     pub data_relocations: Vec<(usize, String)>,
 }
 
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Dead alloca eliminator
+//
+// Removes alloca + store pairs where the alloca address is only used in a
+// single store (never loaded). This is the pattern clang -O0 generates for
+// the implicit return-value slot of main():
+//
+//   %1 = alloca i32, align 4
+//   store i32 0, ptr %1, align 4
+//   ret i32 0                    ← ret uses Const(0), not a load of %1
+//
+// Without this pass, tsk-cc generates a frame for the alloca then emits a
+// store to FP-8, which works in isolation but triggers a linker relocation
+// bug that patches the store address with the first data symbol address
+// (0x801000), causing a Memory fault at runtime.
+// ─────────────────────────────────────────────────────────────────────────────
+
+fn eliminate_dead_allocas(func: &mut crate::ir::Function) {
+    use std::collections::{HashMap, HashSet};
+    use crate::ir::{Instr, Value};
+
+    // For each block, collect alloca dsts and their use counts (loads vs stores)
+    for block in &mut func.blocks {
+        // Find alloca names
+        let alloca_names: HashSet<String> = block.instrs.iter()
+            .filter_map(|i| if let Instr::Alloca { dst, .. } = i { Some(dst.clone()) } else { None })
+            .collect();
+
+        if alloca_names.is_empty() { continue; }
+
+        // Count loads and stores for each alloca
+        let mut store_only: HashMap<String, bool> = alloca_names.iter()
+            .map(|n| (n.clone(), true)) // assume store-only until proven otherwise
+            .collect();
+
+        for instr in &block.instrs {
+            match instr {
+                Instr::Load { ptr: Value::Reg(name), .. } => {
+                    // A load of this alloca address — not store-only
+                    if store_only.contains_key(name) {
+                        store_only.insert(name.clone(), false);
+                    }
+                }
+                Instr::Call { args, .. } => {
+                    // If alloca address passed to a call — not store-only
+                    for (_, v) in args {
+                        if let Value::Reg(name) = v {
+                            if store_only.contains_key(name) {
+                                store_only.insert(name.clone(), false);
+                            }
+                        }
+                    }
+                }
+                Instr::Store { ptr: Value::Reg(name), .. } => {
+                    // A store TO this alloca address — expected, keep as store-only
+                    // (don't change store_only here)
+                    let _ = name;
+                }
+                _ => {
+                    // Any other use of the alloca address — not store-only
+                    for val in instr_uses(instr) {
+                        if store_only.contains_key(&val) {
+                            store_only.insert(val, false);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Collect names of truly dead allocas (store-only = true)
+        let dead: HashSet<String> = store_only.into_iter()
+            .filter(|(_, so)| *so)
+            .map(|(n, _)| n)
+            .collect();
+
+        if dead.is_empty() { continue; }
+
+        // Remove alloca instrs and their paired stores
+        block.instrs.retain(|instr| {
+            match instr {
+                Instr::Alloca { dst, .. } => !dead.contains(dst),
+                Instr::Store { ptr: Value::Reg(name), .. } => !dead.contains(name),
+                _ => true,
+            }
+        });
+    }
+}
+
 pub fn generate_module(module: &Module) -> Result<CodegenOutput> {
     // Build global address map (placeholder layout — linker resolves final addresses)
     let mut global_map: HashMap<String, usize> = HashMap::new();
@@ -1671,7 +1760,11 @@ pub fn generate_module(module: &Module) -> Result<CodegenOutput> {
             continue;
         }
         log::info!("generating @{} ({} blocks)", func.name, func.blocks.len());
-        let mut fg = FuncGen::new(func, &global_map, &module.type_defs);
+        // Eliminate dead alloca+store pairs (e.g. clang -O0 return-value slot)
+        // before register allocation so the frame is not unnecessarily grown.
+        let mut func_owned = func.clone();
+        eliminate_dead_allocas(&mut func_owned);
+        let mut fg = FuncGen::new(&func_owned, &global_map, &module.type_defs);
         match fg.generate() {
             Ok(code) => {
                 log::info!("  → {} bytes", code.len());

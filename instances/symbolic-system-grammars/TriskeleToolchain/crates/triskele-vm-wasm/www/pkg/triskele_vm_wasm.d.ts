@@ -2,16 +2,35 @@
 /* eslint-disable */
 
 /**
- * Run a .tvmx binary (passed as Uint8Array from JS).
- * Returns the captured stdout output (printf etc.) as a String.
+ * Create the stdin SAB — call this on the main thread, then transfer to the
+ * worker via postMessage.
+ */
+export function create_stdin_sab(): SharedArrayBuffer;
+
+/**
+ * Non-interactive one-shot run — stdin = EOF (patch-1 behaviour preserved).
  */
 export function run_tvmx(tvmx_bytes: Uint8Array): string;
+
+/**
+ * Interactive VM worker entry point — called by worker.js.
+ * Receives the .tvmx bytes and the stdin SAB.
+ * Sends postMessage events to the main thread hub:
+ *   { type: "output",   text: "…" }
+ *   { type: "needInput" }
+ *   { type: "halted",   exitCode: N }
+ */
+export function worker_entry(tvmx_bytes: Uint8Array, sab: SharedArrayBuffer): void;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
     readonly memory: WebAssembly.Memory;
+    readonly create_stdin_sab: () => any;
     readonly run_tvmx: (a: number, b: number) => [number, number];
+    readonly worker_entry: (a: number, b: number, c: any) => void;
+    readonly __wbindgen_exn_store: (a: number) => void;
+    readonly __externref_table_alloc: () => number;
     readonly __wbindgen_externrefs: WebAssembly.Table;
     readonly __wbindgen_malloc: (a: number, b: number) => number;
     readonly __wbindgen_free: (a: number, b: number, c: number) => void;

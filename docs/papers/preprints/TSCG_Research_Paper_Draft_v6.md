@@ -5,25 +5,14 @@
 **Date**: June 2026
 **Version**: 6.0
 **Smart Prompt Version**: TSCG v16.2.0 (June 2026)
-**DOI (Prior Work)**: 10.5281/zenodo.19544443
+**DOI (this version, v6.0)**: 10.5281/zenodo.21001944
+**DOI (all versions)**: 10.5281/zenodo.18471859
+**DOI (Prior Work, v5.0)**: 10.5281/zenodo.19544443
 **Repository**: https://github.com/Echopraxium/tscg
 **Live Demo**: https://echopraxium.github.io/tscg/
 **License**: CC BY 4.0 (document) — BSD 3-Clause Clear (source code)
 
 ---
-
-## Changelog
-
-### v6.0 — June 2026
-- Complete rewrite aligned with TSCG framework v16.2.0
-- Mathematical foundation migrated: Hilbert/tensor → Structural Grammar (Lambek calculus, free commutative monoidal categories)
-- M3: Gs/TKSL (Stereopsis grammar) fully documented as autonomous section
-- M2: 9 families, 80 GenericConcepts, formulas corrected to `×`/`+`/`|` operators
-- Corpus: 33 validated instances (25 Poclets, 3 SystemicFrameworks, 2 SymbolicSystemGrammars, 3 TscgTools)
-- Scoring: δ₁ SpectralClass thresholds corrected; δ₂/EFS (Epistemic Focal Score) fully documented
-- Acronym corrected: SFE → EFS (Epistemic Focal Score)
-- Author: "Michel Kern (aka Echopraxium) with the collaboration of Claude AI"
-- TriskeleToolchain added as SymbolicSystemGrammar — Base16 ISA validation
 
 ---
 
@@ -250,16 +239,14 @@ depth map. The same principle governs epistemic architecture.
 quantifying phenomena. Its eye, the **Eagle Eye**, operates through the five ASFID
 dimensions: Attractor, Structure, Flow, Information, Dynamics. It asks of any system:
 what draws it toward equilibrium? what organizes it? what flows through it? what
-information governs it? what dynamics evolve it? The Eagle Eye produces a Territory
-score vector — a quantified description of the system's observable behavior.
+information governs it? what dynamics evolve it? The Eagle Eye produces a **Territory score profile** — a quantified description of the system's observable behavior across the five ASFID dimensions.
 
 **The Sphinx Head** contemplates the world as it is *represented* — modeling,
 theorizing, interpreting. Its eye, the **Sphinx Eye**, operates through the five REVOI
 dimensions: Representability, Evolvability, Verifiability, Observability,
 Interoperability. It asks of any model: can this system be adequately represented?
 can the model evolve as the system does? can its predictions be verified? can its
-behavior be observed? can it communicate with other models? The Sphinx Eye produces a
-Map score vector — a quantified assessment of the model's epistemic quality.
+behavior be observed? can it communicate with other models? The Sphinx Eye produces a **Map score profile** — a quantified assessment of the model's epistemic quality across the five REVOI dimensions.
 
 Neither head can function alone. The Eagle Head without the Sphinx Head produces raw
 measurements with no interpretive framework — data without meaning. The Sphinx Head
@@ -289,8 +276,8 @@ monoidal grammar, Gs formalizes the act of *triangulation itself* — the stereo
 focal point where Territory and Map converge into actionable knowledge. Its four
 nominal primitives are: **T** (Temporality — *when?*), **K** (Knowledge — *what?*),
 **Ss** (Symbol — *what sign?*), and **L** (Localizability — *where does it
-converge?*). Two polar modifiers — **_^** (PositivePole, onset/amplifying) and
-**_$** (NegativePole, terminus/attenuating) — are not primitives but modifiers
+converge?*). Two polar modifiers — `_^` (PositivePole, onset/amplifying) and
+`_$` (NegativePole, terminus/attenuating) — are not primitives but modifiers
 governing polarity within Gs expressions.
 
 The quality of stereopsic fusion is measured by the **Epistemic Focal Score (EFS / δ₂)**:
@@ -310,22 +297,11 @@ Gs (Stereopsic fusion) — constitute the **Base16**: 16 primitives in total (13
 + 3 neutral operators), forming the complete generative vocabulary of the TSCG M3
 foundation.
 
-*Figure 1 illustrates this architecture as a hexagonal monoidal grid. Red hexagons
-represent Gt/ASFID Territory primitives; green hexagons represent Gm/REVOI Map
-primitives; blue hexagons represent Gs/TKSL Stereopsic primitives. The connecting
-lines — traversing all three grammars — illustrate how a GenericConcept simultaneously
-mobilizes primitives from multiple grammars, producing a cross-grammar monoidal
-expression.*
+*Figure 1 (below) shows the Base16 hexagonal monoidal grid. The connecting lines illustrate how **m2:Coherence** simultaneously mobilizes primitives from all three grammars: Territory (A, St, It), Map (R, O), and Stereopsis (polar modifiers).*
 
 <div style="text-align:center"><img src="Screenshot-TscgFoundationGrammar-M2ConceptOnMonodialGrid.png" width="88%" alt="Figure 1 — TSCG Base16 Hexagonal Monoidal Grid"/></div>
 
-*Figure 1 — The TSCG Base16 hexagonal monoidal grid. Red hexagons: Gt/ASFID Territory
-primitives (A, S, F, It, D). Green hexagons: Gm/REVOI Map primitives (R, E, V, O, Im).
-Blue hexagons: Gs/TKSL Stereopsic primitives (T, _^, _$, K, Ss, L). The connecting
-lines illustrate how a GenericConcept simultaneously mobilizes primitives from multiple
-grammars — here, the `×` (Territory) and `+` (Map) operators — producing a
-cross-grammar monoidal expression. The two operator nodes (dark circles labeled `×`
-and `+`) mark the monoidal fusion points.*
+*Figure 1 — Base16 hexagonal monoidal grid. Red = Gt/ASFID (A, S, F, It, D). Green = Gm/REVOI (R, E, V, O, Im). Blue = Gs/TKSL (T, _^, _$, K, Ss, L). The connecting lines illustrate m2:Coherence spanning all three grammars — dark circles mark the monoidal fusion points.*
 
 ---
 
@@ -367,13 +343,14 @@ typed primitives. The operator alone identifies the grammar: no prefix is needed
 Operator priority follows arithmetic convention: `×` binds tighter than `+`, which
 binds tighter than `|`. Thus `A × S + R | K` reads as `((A × S) + R) | K`.
 
-| Grammar | Operator | Neutral element | Acronym | Primitives | Count |
-|---------|----------|-----------------|---------|------------|-------|
-| **Gt** (Territory) | `×` | EmptyTerritory | **ASFID** | A, S, F, It, D | 5 |
-| **Gm** (Map) | `+` | EmptyMap | **REVOI** | R, E, V, O, Im | 5 |
-| **Gs** (Stereopsis) | `\|` | EmptyStereopsis | **TKSL** | T, _^, _$, K, Ss, L | 6 |
+<table>
+<tr><th>Grammar</th><th>Operator</th><th>Neutral element</th><th>Acronym</th><th>Primitives</th><th>Count</th></tr>
+<tr><td>**Gt** (Territory)</td><td><code>×</code></td><td>EmptyTerritory</td><td><strong>ASFID</strong></td><td>A, S, F, It, D</td><td>5</td></tr>
+<tr><td>**Gm** (Map)</td><td><code>+</code></td><td>EmptyMap</td><td><strong>REVOI</strong></td><td>R, E, V, O, Im</td><td>5</td></tr>
+<tr><td>**Gs** (Stereopsis)</td><td><code>|</code></td><td>EmptyStereopsis</td><td><strong>TKSL</strong></td><td>T, _^, _$, K, Ss, L</td><td>6</td></tr>
+</table>
 
-**Total: Base16 — 16 primitives** (13 typed + 3 neutral operators).
+**Total: Base16 — 16 typed primitives**: A, S, F, It, D (Gt) + R, E, V, O, Im (Gm) + T, K, Ss, L, _^, _$ (Gs). The three operators (×, +, |) identify the grammar but are not counted as primitives.
 
 A GenericConcept such as Homeostasis is written `A × St × F | L` — a monoidal
 expression whose meaning emerges from the simultaneous, non-separable co-presence
@@ -396,7 +373,7 @@ primitives decompose any system along independent dimensions:
 | **D** | Dynamics | How does it evolve temporally through state transitions? |
 
 Each primitive is scored on [0, 1] during instance analysis, producing the
-**ASFID score vector** that quantifies the Territory footprint of the system.
+**ASFID score profile** that quantifies the Territory footprint of the system.
 
 ⚠️ **It** (Information, Territory) is systematically distinguished from **Im**
 (Interoperability, Map) in all formulas and score properties (`m0:scoreIt` vs
@@ -416,9 +393,6 @@ assess the quality of any representation of a system:
 | **V** | Verifiability | Can the model's predictions be empirically tested? |
 | **O** | Observability | Can the system's relevant states be perceived and measured? |
 | **Im** | Interoperability | Can this model integrate with and translate to other models? |
-
-⚠️ **R = Representability** (semantic encodability/decodability) — never
-"Reproducibility".
 
 REVOI scores are inherently **observer-relative**: the same system may receive
 different REVOI scores from a biologist and an engineer. This relativity is a
@@ -441,8 +415,8 @@ Gs operates with the `|` operator (stereopsic fusion):
 | **K** | Primitive | Knowledge | *What?* | Maturana/Varela cognition |
 | **Ss** | Primitive | Symbol | *What sign?* | Peirce, Saussure |
 | **L** | Primitive | Localizability | *Where does it converge?* | Wiener, Ashby |
-| **_^** | Modifier | PositivePole | *(onset/amplifying)* | Polarity modifier |
-| **_$** | Modifier | NegativePole | *(terminus/attenuating)* | Polarity modifier |
+| `_^` | Modifier | PositivePole | *(onset/amplifying)* | Polarity modifier |
+| `_$` | Modifier | NegativePole | *(terminus/attenuating)* | Polarity modifier |
 
 Two special derived elements:
 
@@ -465,10 +439,7 @@ Hybrid:           A × St × It × D | K
 In hybrid formulas, Territory and Map primitives carry their monoid index (St, It)
 to avoid collision with Gs primitives sharing similar names.
 
-*Figure 1 illustrates the Base16 as a hexagonal monoidal grid: red hexagons =
-Gt/ASFID; green hexagons = Gm/REVOI; blue hexagons = Gs/TKSL. The connecting
-lines show how a GenericConcept simultaneously mobilizes primitives from multiple
-grammars, producing a cross-grammar monoidal expression.*
+*See Figure 1 (§1.3) for the Base16 hexagonal monoidal grid illustration.*
 
 ---
 
@@ -487,7 +458,8 @@ extensions cover Biology, Chemistry, Physics, Electronics, Economics, Photograph
 Music, Mythology, Optics, SystemicModeling, Education, Geology, and
 BusinessModeling. Each M1 extension defines **KnowledgeFieldConceptCombos** —
 domain-specific combinations of GenericConcepts validated within a single knowledge
-field.
+field. M1 is also governed by its own SHACL grammar (`M1_Schema.shacl.ttl`), enforcing
+structural consistency across all domain extensions.
 
 ---
 
@@ -547,7 +519,7 @@ each family with representative examples.
 
 **Structural** (23 concepts): Patterns governing the stable organization of components.
 *Examples*: Network (`S × I × F | O + R + Im + V`), Hierarchy (`S × A`),
-Coherence (`A × St × It | R + O | _^` / `_$`).
+Coherence (`A × St × It | R + O | _^/_$`).
 
 **Dynamic** (17 concepts): Patterns governing temporal transformation and process.
 *Examples*: Process (`D × F`), Bifurcation (`D × F | L`),
@@ -568,13 +540,13 @@ Language (`Ss × F | K`).
 *Examples*: Adaptation (`I × F × D`), Memory (`∫(D−F)dτ`), Resilience (`A × S`).
 
 **Energetic** (4 concepts): Patterns governing energy transformation and dissipation.
-*Examples*: Dissipation (`F × D`), Entropy (`F × It × D | _^` / `_$`),
+*Examples*: Dissipation (`F × D`), Entropy (`F × It × D | _^/_$`),
 Transducer (`F × S × I`).
 
 **Relational** (5 concepts): Patterns governing connections and interactions.
 *Examples*: Mediator (`F × It | K`), Agent (`St × It × D | K`), Role (`Ss | K`).
 
-**Teleonomic** (1 concept): Self-Organization (`A × I × D`).
+**Teleonomic** (1 concept): Self-Organization (`A × I × D`), Emergence (`It × S × D | _0 | L`).
 
 ---
 
@@ -585,7 +557,7 @@ These **bicephalous GenericConcepts** capture phenomena that are simultaneously
 territorial (observable) and cartographic (representational) by nature.
 
 The most architecturally significant example is **Coherence**
-(`A × St × It | R + O | _^` / `_$`):
+(`A × St × It | R + O | _^/_$`):
 
 - `A` → alignment toward a common attractor (Territory / Eagle Eye)
 - `St` → globally continuous structure (Territory / Eagle Eye)
@@ -616,7 +588,39 @@ Two v16.2.0 additions are notably bicephalous or cross-grammar:
 
 ---
 
-### 3.4 GenericConceptCombos
+### 3.4 M2 Population Control: Three Instruments
+
+M2 vocabulary growth is governed by three complementary instruments — each operating
+at a different level of generality, in the spirit of **LEGO Technic modularity**:
+atomic bricks that combine into assemblies that combine into systems.
+
+**Dual-polarity pairs** — 11 GenericConcepts are defined as paired opposites whose
+formula takes two forms via `_^` (onset) and `_$` (terminus) poles: Coherence/
+Incoherence, Entropy/Negentropy, Convergence/Divergence, Potentialization/F-Depletion,
+and seven others. This avoids proliferating separate M2 concepts for phenomena that
+are structurally identical but directionally opposed.
+
+**GenericConceptCombos** — synergistic combinations of two or more existing
+GenericConcepts that produce emergent patterns not reducible to their components.
+Defined in `M1_CoreConcepts.jsonld` as reusable bricks across all domains. Four
+validated Combos: Inertia ⇒(Memory, Entropy), Potentialization ⇒(Activation, Process),
+AbsorbingState ⇒(Stase, Entropy), TopologicalDefect ⇒(Incoherence, Invariant).
+
+**KnowledgeFieldConceptCombos (KFCCs)** — domain-specific assemblies of
+GenericConcepts, defined in M1 domain extensions (Biology, Economics, Music, etc.).
+KFCCs capture patterns that are transdisciplinary within a knowledge field but not
+across all fields — they belong in M1, not M2. They are the LEGO assemblies built
+from M2 atomic bricks, reusable within their domain.
+
+Together, these three instruments allow M2 to remain **compact and non-redundant**
+while the M1 layer absorbs domain-specific complexity. The M2 Purity Principle
+(§2.8) and the six-domain threshold (§6.2) enforce the boundary between the two layers.
+
+---
+
+### 3.5 GenericConceptCombos (detail)
+
+### 3.6 The Causal Chain for Irreversibility
 
 Beyond atomic GenericConcepts, M2 defines the **GenericConceptCombo** class for
 synergistic combinations producing emergent patterns not reducible to their
@@ -626,7 +630,7 @@ TSCG v16.2.0 defines four validated Combos:
 | Combo | Formula | Components | Polarity |
 |-------|---------|------------|----------|
 | **Inertia** | `S × F × I × D` | ⇒(Memory, Entropy) | Neutral |
-| **Potentialization** | `A × D × F | _^` / `_$` | ⇒(Activation, Process) | Dual |
+| **Potentialization** | `A × D × F | _^/_$` | ⇒(Activation, Process) | Dual |
 | **Absorbing State** | `S × A × F × I × D` | ⇒(Stase, Entropy) | Neutral |
 | **Topological Defect** | `St × A × It | R + O` | ⇒(Incoherence, Invariant) | Neutral |
 
@@ -640,7 +644,7 @@ to ordinary Stase (`S × A`) which remains reversible by construction (D absent)
 
 ---
 
-### 3.5 The Causal Chain for Irreversibility
+### 3.6 The Causal Chain for Irreversibility
 
 The analysis of the NakamotoConsensus instance produced the most significant single
 M2 expansion in the toolkit's history: five new atomic GenericConcepts and a
@@ -652,9 +656,9 @@ The five additions:
 |---------|---------|--------|-------------|
 | **Processor** | `S × I × F × D` | Dynamic | Generic transformer |
 | **Transducer** | `F × S × I` | Energetic | Converts flux type; subClassOf Processor |
-| **Entropy** | `F × It × D | _^` / `_$` | Energetic | Irreversibility measure |
+| **Entropy** | `F × It × D | _^/_$` | Energetic | Irreversibility measure |
 | **Stase** | `S × A` | Structural | F=0 reversible ground state |
-| **Coherence** | `A × St × It | R + O | _^` / `_$` | Structural | Bicephalous |
+| **Coherence** | `A × St × It | R + O | _^/_$` | Structural | Bicephalous |
 
 Together these constitute a **causal chain for irreversibility**:
 
@@ -684,7 +688,7 @@ Processor (S × I × F × D)
 
 ---
 
-### 3.6 M2 Purity and the Six-Domain Threshold
+### 3.7 M2 Purity and the Six-Domain Threshold
 
 A candidate GenericConcept earns M2 membership only by demonstrating structural
 relevance across **at least six unrelated knowledge fields**. This threshold
@@ -698,7 +702,7 @@ and mechanical engineering.
 
 ---
 
-### 3.7 Mathematical Validation Status
+### 3.8 Mathematical Validation Status
 
 The monoidal formulas in this section were developed collaboratively with Claude AI
 and carry the ontology's own assessment: *preliminary, AI-assisted, pending expert
@@ -866,8 +870,7 @@ including "All GenericConcepts", "Structural Grammar Formulas", "ASFID Scores of
 instance"). Note the `creator: "Echopraxium with the collaboration of Claude AI"`
 field — the authorship convention is machine-readable and enforced by SHACL.*
 
-**TscgOntologyAPIServer**: Local REST API server exposing the TSCG ontology for
-programmatic access.
+**TscgOntologyAPIServer**: Local REST API server (FastAPI + pyoxigraph) exposing the complete TSCG ontology corpus — all four layers M3→M0 — via SPARQL 1.1 queries and corpus management endpoints. The server was developed specifically to encourage third-party application development: any tool needing to query, navigate, or reason over the TSCG ontology layers can do so programmatically without parsing JSON-LD files directly. It uses pyoxigraph as a named-graph triple store with optional disk persistence, and is self-documented via Swagger UI.
 
 <div style="text-align:center"><img src="Screenshot-TscgOntologyAPIServer.png" width="100%" alt="Figure 4 — TscgOntologyAPIServer Swagger UI"/></div>
 
@@ -1175,6 +1178,18 @@ decompositions may exist and may prove superior.
 The migration from Hilbert-space approximation to Structural Grammar (Lambek calculus,
 free commutative monoidal categories) in v16.x represents the most significant
 foundational change in TSCG's history.
+
+An early intuition for this structural approach came from an independent project: the
+formalization of the **Braille alphabet as a structural grammar** (2022). The complete
+set of 26 Braille glyphs was derived from a single base glyph (A) through a small set
+of geometric operators — union (+), subtraction (−), 90° clockwise rotation (>),
+horizontal symmetry (−−), and vertical symmetry (||) — without any arbitrary
+assignments. This demonstrated empirically that a rich symbolic system could be
+generated from minimal primitives via formal composition rules. The schema was updated
+recently to use a single glyph as the generative matrix (*Braille Alphabet:
+Classification and Relations V3*, Michel Kern, 2026). This prior work validated the
+intuition that structural grammar — not arbitrary enumeration — was the right
+foundation for TSCG's formalism.
 
 The earlier formalism used tensor product notation and Hilbert space metaphors —
 a pragmatic choice that enabled rapid formalization but carried an implicit claim
@@ -1552,124 +1567,132 @@ Full ontology: `https://github.com/Echopraxium/tscg/blob/main/ontology/M2_Generi
 
 ### C.1 Structural Family (23 concepts)
 
-| Concept | Formula | Polarity |
-|---------|---------|----------|
-| Capacity | `St × It \| L` | neutral |
-| Channel | `St × F \| Ss` | neutral |
-| Cluster | `S × I × A` | neutral |
-| Coherence | `A × St × It \| R + O \| _^` / `_$` | dual |
-| Component | `St × It \| L` | neutral |
-| Composition | `St × It × A \| _^` / `_$` | dual |
-| Hierarchy | `S × A` | neutral |
-| Hub | `S × F` | neutral |
-| Identity | `St × It × A \| V + E` | dual |
-| Interoperability | `St × It × F \| V + E` | neutral |
-| Invariant | `S × A` | neutral |
-| Layer | `St × It × A \| R` | neutral |
-| Modularity | `S × I` | neutral |
-| Network | `S × I × F \| O + R + Im + V` | neutral |
-| Node | `St × It \| L` | neutral |
-| Path | `S × I × D` | neutral |
-| Polarity | `S × I × A` | n-ary |
-| Segmentation | `S × I × D` | neutral |
-| Stase | `S × A` | neutral |
-| Step | `S × I × D` | dual |
-| Symmetry | `S` | neutral |
-| Topology | `St \| L` | neutral |
-| Workflow | `S × D × F` | dual |
+<table>
+<tr><th>Concept</th><th>Formula</th><th>Polarity</th></tr>
+<tr><td>Capacity</td><td><code>St × It | L</code></td><td>neutral</td></tr>
+<tr><td>Channel</td><td><code>St × F | Ss</code></td><td>neutral</td></tr>
+<tr><td>Cluster</td><td><code>S × I × A</code></td><td>neutral</td></tr>
+<tr><td>Coherence</td><td><code>A × St × It | R + O | | _^ / _$</code></td><td>dual</td></tr>
+<tr><td>Component</td><td><code>St × It | L</code></td><td>neutral</td></tr>
+<tr><td>Composition</td><td><code>St × It × A | | _^ / _$</code></td><td>dual</td></tr>
+<tr><td>Hierarchy</td><td><code>S × A</code></td><td>neutral</td></tr>
+<tr><td>Hub</td><td><code>S × F</code></td><td>neutral</td></tr>
+<tr><td>Identity</td><td><code>St × It × A | V + E</code></td><td>dual</td></tr>
+<tr><td>Interoperability</td><td><code>St × It × F | V + E</code></td><td>neutral</td></tr>
+<tr><td>Invariant</td><td><code>S × A</code></td><td>neutral</td></tr>
+<tr><td>Layer</td><td><code>St × It × A | R</code></td><td>neutral</td></tr>
+<tr><td>Modularity</td><td><code>S × I</code></td><td>neutral</td></tr>
+<tr><td>Network</td><td><code>S × I × F | O + R + Im + V</code></td><td>neutral</td></tr>
+<tr><td>Node</td><td><code>St × It | L</code></td><td>neutral</td></tr>
+<tr><td>Path</td><td><code>S × I × D</code></td><td>neutral</td></tr>
+<tr><td>Polarity</td><td><code>S × I × A</code></td><td>n-ary</td></tr>
+<tr><td>Segmentation</td><td><code>S × I × D</code></td><td>neutral</td></tr>
+<tr><td>Stase</td><td><code>S × A</code></td><td>neutral</td></tr>
+<tr><td>Step</td><td><code>S × I × D</code></td><td>dual</td></tr>
+<tr><td>Symmetry</td><td><code>S</code></td><td>neutral</td></tr>
+<tr><td>Topology</td><td><code>St | L</code></td><td>neutral</td></tr>
+<tr><td>Workflow</td><td><code>S × D × F</code></td><td>dual</td></tr>
+</table>
 
 ### C.2 Dynamic Family (17 concepts)
 
-| Concept | Formula | Polarity |
-|---------|---------|----------|
-| Action | `D × I` | dual |
-| Alignment | `I × A × S` | neutral |
-| Amplification | `F × D × It \| R + O \| _^` / `_$` | hybrid |
-| Behavior | `S × D × F` | dual |
-| Bifurcation | `D × F \| L` | neutral |
-| Convergence | `F × D \| _^` / `_$` | dual |
-| Duplication | `St × It × F × D \| V` | neutral |
-| Event | `D × I` | neutral |
-| FeedbackLoop | `Process × Alignment × Homeostasis` | dual |
-| Fusion | `St × D \| _^` / `_$` | dual |
-| Modelisation | `D × F × It \| R + V + E` | neutral |
-| Process | `D × F` | neutral |
-| Processor | `S × I × F × D` | neutral |
-| Synergy | `It × D \| _^` / `_$` | dual |
-| Trajectory | `A × D × F` | neutral |
-| Transformation | `D × S × I` | neutral |
-| Tropism | `A × S × D × F` | dual |
+<table>
+<tr><th>Concept</th><th>Formula</th><th>Polarity</th></tr>
+<tr><td>Action</td><td><code>D × I</code></td><td>dual</td></tr>
+<tr><td>Alignment</td><td><code>I × A × S</code></td><td>neutral</td></tr>
+<tr><td>Amplification</td><td><code>F × D × It | R + O | | _^ / _$</code></td><td>hybrid</td></tr>
+<tr><td>Behavior</td><td><code>S × D × F</code></td><td>dual</td></tr>
+<tr><td>Bifurcation</td><td><code>D × F | L</code></td><td>neutral</td></tr>
+<tr><td>Convergence</td><td><code>F × D | | _^ / _$</code></td><td>dual</td></tr>
+<tr><td>Duplication</td><td><code>St × It × F × D | V</code></td><td>neutral</td></tr>
+<tr><td>Event</td><td><code>D × I</code></td><td>neutral</td></tr>
+<tr><td>FeedbackLoop</td><td><code>Process × Alignment × Homeostasis</code></td><td>dual</td></tr>
+<tr><td>Fusion</td><td><code>St × D | | _^ / _$</code></td><td>dual</td></tr>
+<tr><td>Modelisation</td><td><code>D × F × It | R + V + E</code></td><td>neutral</td></tr>
+<tr><td>Process</td><td><code>D × F</code></td><td>neutral</td></tr>
+<tr><td>Processor</td><td><code>S × I × F × D</code></td><td>neutral</td></tr>
+<tr><td>Synergy</td><td><code>It × D | | _^ / _$</code></td><td>dual</td></tr>
+<tr><td>Trajectory</td><td><code>A × D × F</code></td><td>neutral</td></tr>
+<tr><td>Transformation</td><td><code>D × S × I</code></td><td>neutral</td></tr>
+<tr><td>Tropism</td><td><code>A × S × D × F</code></td><td>dual</td></tr>
+</table>
 
 ### C.3 Ontological Family (10 concepts)
 
-| Concept | Formula | Polarity |
-|---------|---------|----------|
-| Context | `O + R + Im + E` | neutral |
-| Environment | `F × I` | neutral |
-| Gradient | `F × T` or `I × T` | neutral |
-| Imbrication | `S × S` | dual |
-| Observer | `I × A` | neutral |
-| Resource | `F × It \| R` | neutral |
-| Space | `St \| L` | neutral |
-| State | `I` | neutral |
-| Substrate | `S × F` | neutral |
-| System | `S × F` | neutral |
+<table>
+<tr><th>Concept</th><th>Formula</th><th>Polarity</th></tr>
+<tr><td>Context</td><td><code>O + R + Im + E</code></td><td>neutral</td></tr>
+<tr><td>Environment</td><td><code>F × I</code></td><td>neutral</td></tr>
+<tr><td>Gradient</td><td><code>F × T</code> or <code>I × T</code></td><td>neutral</td></tr>
+<tr><td>Imbrication</td><td><code>S × S</code></td><td>dual</td></tr>
+<tr><td>Observer</td><td><code>I × A</code></td><td>neutral</td></tr>
+<tr><td>Resource</td><td><code>F × It | R</code></td><td>neutral</td></tr>
+<tr><td>Space</td><td><code>St | L</code></td><td>neutral</td></tr>
+<tr><td>State</td><td><code>I</code></td><td>neutral</td></tr>
+<tr><td>Substrate</td><td><code>S × F</code></td><td>neutral</td></tr>
+<tr><td>System</td><td><code>S × F</code></td><td>neutral</td></tr>
+</table>
 
 ### C.4 Regulatory Family (10 concepts)
 
-| Concept | Formula | Polarity |
-|---------|---------|----------|
-| Activation | `A × D \| _^` / `_$` | dual |
-| Balance | `A × S × F \| _0` | dual |
-| Constraint | `St \| L` | neutral |
-| Homeostasis | `A × St × F \| L` | neutral |
-| Regulation | `A × S × F \| R + V + E` | neutral |
-| Scope | `St × It × A \| R + V` | neutral |
-| Threshold | `A × I` | neutral |
-| Trade-off | `A × I × F` | neutral |
-| TriadicBalance | `A × F × D \| _0` | ternary |
-| Trigger | `D × I` | neutral |
+<table>
+<tr><th>Concept</th><th>Formula</th><th>Polarity</th></tr>
+<tr><td>Activation</td><td><code>A × D | | _^ / _$</code></td><td>dual</td></tr>
+<tr><td>Balance</td><td><code>A × S × F | _0</code></td><td>dual</td></tr>
+<tr><td>Constraint</td><td><code>St × A × D | O + V</code></td><td>neutral</td></tr>
+<tr><td>Homeostasis</td><td><code>A × St × F | L</code></td><td>neutral</td></tr>
+<tr><td>Regulation</td><td><code>A × S × F | R + V + E</code></td><td>neutral</td></tr>
+<tr><td>Scope</td><td><code>St × It × A | R + V</code></td><td>neutral</td></tr>
+<tr><td>Threshold</td><td><code>A × I</code></td><td>neutral</td></tr>
+<tr><td>Trade-off</td><td><code>A × I × F</code></td><td>neutral</td></tr>
+<tr><td>TriadicBalance</td><td><code>A × F × D | _0</code></td><td>ternary</td></tr>
+<tr><td>Trigger</td><td><code>D × I</code></td><td>neutral</td></tr>
+</table>
 
 ### C.5 Informational Family (8 concepts)
 
-| Concept | Formula | Polarity |
-|---------|---------|----------|
-| Code | `It × Ss` | neutral |
-| Coding | `It × St × D \| _^` / `_$` | dual |
-| Language | `Ss × F \| K` | neutral |
-| Pattern | `St × It × A \| K \| _^` / `_$` | dual |
-| Representation | `I × S` | neutral |
-| Signal | `I × F` | neutral |
-| Signature | `It × Ss \| V` | neutral |
-| ValueSpace | `It \| V + O + R + Im` | hybrid |
+<table>
+<tr><th>Concept</th><th>Formula</th><th>Polarity</th></tr>
+<tr><td>Code</td><td><code>It × Ss</code></td><td>neutral</td></tr>
+<tr><td>Coding</td><td><code>It × St × D | | _^ / _$</code></td><td>dual</td></tr>
+<tr><td>Language</td><td><code>Ss × F | K</code></td><td>neutral</td></tr>
+<tr><td>Pattern</td><td><code>St × It × A | K | | _^ / _$</code></td><td>dual</td></tr>
+<tr><td>Representation</td><td><code>I × S</code></td><td>neutral</td></tr>
+<tr><td>Signal</td><td><code>I × F</code></td><td>neutral</td></tr>
+<tr><td>Signature</td><td><code>It × Ss | V</code></td><td>neutral</td></tr>
+<tr><td>ValueSpace</td><td><code>It | V + O + R + Im</code></td><td>hybrid</td></tr>
+</table>
 
 ### C.6 Adaptive Family (4 concepts)
 
-| Concept | Formula | Polarity |
-|---------|---------|----------|
-| Adaptation | `I × F × D` | neutral |
-| Emergence | `I × S × D` | neutral |
-| Memory | `∫(D−F)dτ` | neutral |
-| Resilience | `A × S` | neutral |
+<table>
+<tr><th>Concept</th><th>Formula</th><th>Polarity</th></tr>
+<tr><td>Adaptation</td><td><code>I × F × D</code></td><td>neutral</td></tr>
+<tr><td>Emergence</td><td><code>It × S × D | _0 | L</code></td><td>neutral</td></tr>
+<tr><td>Memory</td><td><code>∫(D−F)dτ</code></td><td>neutral</td></tr>
+<tr><td>Resilience</td><td><code>A × S</code></td><td>neutral</td></tr>
+</table>
 
 ### C.7 Energetic Family (4 concepts)
 
-| Concept | Formula | Polarity |
-|---------|---------|----------|
-| Dissipation | `F × D` | neutral |
-| Entropy | `F × It × D \| _^` / `_$` | dual |
-| Storage | `S × F` | neutral |
-| Transducer | `F × S × I` | neutral |
+<table>
+<tr><th>Concept</th><th>Formula</th><th>Polarity</th></tr>
+<tr><td>Dissipation</td><td><code>F × D</code></td><td>neutral</td></tr>
+<tr><td>Entropy</td><td><code>F × It × D | | _^ / _$</code></td><td>dual</td></tr>
+<tr><td>Storage</td><td><code>S × F</code></td><td>neutral</td></tr>
+<tr><td>Transducer</td><td><code>F × S × I</code></td><td>neutral</td></tr>
+</table>
 
 ### C.8 Relational Family (5 concepts)
 
-| Concept | Formula | Polarity |
-|---------|---------|----------|
-| Agent | `St × It × D \| K` | neutral |
-| Link | `S × I × F` | neutral |
-| Mediator | `F × It \| K` | neutral |
-| Relation | `St × Ss` | neutral |
-| Role | `Ss \| K` | neutral |
+<table>
+<tr><th>Concept</th><th>Formula</th><th>Polarity</th></tr>
+<tr><td>Agent</td><td><code>St × It × D | K</code></td><td>neutral</td></tr>
+<tr><td>Link</td><td><code>S × I × F</code></td><td>neutral</td></tr>
+<tr><td>Mediator</td><td><code>F × It | K</code></td><td>neutral</td></tr>
+<tr><td>Relation</td><td><code>St × Ss</code></td><td>neutral</td></tr>
+<tr><td>Role</td><td><code>Ss | K</code></td><td>neutral</td></tr>
+</table>
 
 ### C.9 Teleonomic Family (1 concept)
 
@@ -1679,12 +1702,13 @@ Full ontology: `https://github.com/Echopraxium/tscg/blob/main/ontology/M2_Generi
 
 ### C.10 Combo Family (4 validated GenericConceptCombos)
 
-| Combo | Formula | Components | Polarity |
-|-------|---------|------------|----------|
-| AbsorbingState | `S × A × F × I × D` | ⇒(Stase, Entropy) | neutral |
-| Inertia | `S × F × I × D` | ⇒(Memory, Entropy) | neutral |
-| Potentialization | `A × D × F \| _^` / `_$` | ⇒(Activation, Process) | dual |
-| TopologicalDefect | `St × A × It \| R + O` | ⇒(Incoherence, Invariant) | neutral |
+<table>
+<tr><th>Combo</th><th>Formula</th><th>Components</th><th>Polarity</th></tr>
+<tr><td>AbsorbingState</td><td><code>S × A × F × I × D</code></td><td>⇒(Stase, Entropy)</td><td>neutral</td></tr>
+<tr><td>Inertia</td><td><code>S × F × I × D</code></td><td>⇒(Memory, Entropy)</td><td>neutral</td></tr>
+<tr><td>Potentialization</td><td><code>A × D × F | | _^ / _$</code></td><td>⇒(Activation, Process)</td><td>dual</td></tr>
+<tr><td>TopologicalDefect</td><td><code>St × A × It | R + O</code></td><td>⇒(Incoherence, Invariant)</td><td>neutral</td></tr>
+</table>
 
 ---
 
@@ -1774,7 +1798,7 @@ instance with both δ₁ and δ₂ computed.
 | Multisubjective Protocol | 🔧 In dev | Inter-analyst variance quantification |
 | Simulation Gallery | ✅ Live | 12 simulations at echopraxium.github.io/tscg |
 | TriskeleToolchain | 🔄 Active | v0.3.8 — Wolf3D + Doom partial validation |
-| Zenodo publication | ✅ Published | DOI: 10.5281/zenodo.19544443 (v5.0); v6.0 pending |
+| Zenodo publication | ✅ Published | v6.0 DOI: 10.5281/zenodo.21001944 (Jun 2026); concept DOI: 10.5281/zenodo.18471859 |
 
 ---
 

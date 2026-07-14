@@ -1,13 +1,13 @@
 // triskele-vm/src/cpu/mod.rs
 // Author: Echopraxium with the collaboration of Claude AI
-// Version: 0.3.11
+// Version: 0.3.13
 //
 // TriskeleVM interpreter — register-based, 32-bit fixed instruction width.
 // Main loop: fetch → decode → execute.
 
 pub mod decode;
 
-use std::io::Write;
+use crate::host::{HostIo, NativeHost};
 
 use decode::{decode, Instruction};
 use triskele_common::{
@@ -55,7 +55,7 @@ pub struct Cpu {
     /// Display backend — None for headless (tests, CI, WASM without canvas),
     /// Some for graphical runs. Type-erased via Box<dyn DisplayBackend>.
     pub display:   Option<Box<dyn DisplayBackend>>,
-    pub output:    Box<dyn Write + Send>,
+    pub host:      Box<dyn HostIo + Send>,
     /// tsk-libc runtime state (rand seed, etc.)
     pub libc_state: LibcState,
     /// Im_FfiCall dispatch table — native only (no dlopen in WASM).
@@ -74,7 +74,7 @@ impl Cpu {
             regs, mem, stack, heap, arenas,
             debug, trace: false, ticks: 0,
             display: None,
-            output: Box::new(std::io::stdout()),
+            host: Box::new(NativeHost::new()),
             libc_state: LibcState::new(),
             #[cfg(feature = "native")]
             ffi_slots:  Vec::new(),
@@ -93,7 +93,7 @@ impl Cpu {
             regs, mem, stack, heap, arenas,
             debug, trace: false, ticks: 0,
             display: None,
-            output: Box::new(std::io::stdout()),
+            host: Box::new(NativeHost::new()),
             libc_state: LibcState::new(),
             #[cfg(feature = "native")]
             ffi_slots:  Vec::new(),
@@ -107,8 +107,8 @@ impl Cpu {
     }
 
     /// Redirect O_LOG / O_LOG_S to a custom writer (tests inject a Vec<u8>).
-    pub fn with_output(mut self, w: Box<dyn Write + Send>) -> Self {
-        self.output = w;
+    pub fn with_host(mut self, h: Box<dyn HostIo + Send>) -> Self {
+        self.host = h;
         self
     }
 
@@ -484,8 +484,8 @@ self.mem.write_u64(addr, v)?;
             Opcode::O_Log => {
                 // O_LOG R0 — write char in R0 (lo byte) to output sink
                 let c = self.regs.get(d)? as u8;
-                self.output.write_all(&[c]).ok();
-                self.output.flush().ok();
+                self.host.write_bytes(&[c]);
+                self.host.flush();
             }
             Opcode::O_LogS => {
                 // O_LOG_S Rdst — write null-terminated string at address in Rdst to output sink
@@ -493,10 +493,10 @@ self.mem.write_u64(addr, v)?;
                 loop {
                     let c = self.mem.read_u8(addr)?;
                     if c == 0 { break; }
-                    self.output.write_all(&[c]).ok();
+                    self.host.write_bytes(&[c]);
                     addr += 1;
                 }
-                self.output.flush().ok();
+                self.host.flush();
             }
             Opcode::O_TraceOn  => { self.trace = true; }
             Opcode::O_TraceOff => { self.trace = false; }
@@ -664,7 +664,7 @@ self.mem.write_u64(addr, v)?;
             Opcode::Im_Syscall => {
                 // Normally encoded as Type I — but handle defensively here too.
                 let id = dst as u16;  // flags field carries id in Type R path
-                crate::libc::dispatch(id, &mut self.mem, &mut self.regs, &mut self.libc_state)?;
+                crate::libc::dispatch(id, &mut self.mem, &mut self.regs, &mut self.libc_state, &mut *self.host)?;
             }
 
             // ── Im_FfiCall — native library dispatch ─────────────────────────
@@ -777,7 +777,7 @@ self.mem.write_u64(addr, v)?;
             // Encoding: opcode=Im_Syscall, dst=0, imm19=syscall_id
             Opcode::Im_Syscall => {
                 let id = imm as u16;
-                crate::libc::dispatch(id, &mut self.mem, &mut self.regs, &mut self.libc_state)
+                crate::libc::dispatch(id, &mut self.mem, &mut self.regs, &mut self.libc_state, &mut *self.host)
                     .map_err(|e| match e {
                         // Halted must propagate as-is (e.g. from exit() syscall)
                         VmError::Halted(code) => VmError::Halted(code),
@@ -882,17 +882,17 @@ mod tests {
     fn cpu_with_capture(code: &[u8], entry: u64) -> (Cpu, std::sync::Arc<std::sync::Mutex<Vec<u8>>>) {
         let buf = std::sync::Arc::new(std::sync::Mutex::new(Vec::<u8>::new()));
         let buf2 = buf.clone();
-        struct BufWriter(std::sync::Arc<std::sync::Mutex<Vec<u8>>>);
-        impl Write for BufWriter {
-            fn write(&mut self, data: &[u8]) -> std::io::Result<usize> {
+        struct CaptureHost(std::sync::Arc<std::sync::Mutex<Vec<u8>>>);
+        impl crate::host::HostIo for CaptureHost {
+            fn write_bytes(&mut self, data: &[u8]) {
                 self.0.lock().unwrap().extend_from_slice(data);
-                Ok(data.len())
             }
-            fn flush(&mut self) -> std::io::Result<()> { Ok(()) }
+            fn flush(&mut self) {}
+            fn read_line(&mut self) -> crate::host::HostLine { crate::host::HostLine::Eof }
         }
-        unsafe impl Send for BufWriter {}
+        unsafe impl Send for CaptureHost {}
         let cpu = Cpu::from_bytecode(code, entry, false)
-            .with_output(Box::new(BufWriter(buf2)));
+            .with_host(Box::new(CaptureHost(buf2)));
         (cpu, buf)
     }
 
