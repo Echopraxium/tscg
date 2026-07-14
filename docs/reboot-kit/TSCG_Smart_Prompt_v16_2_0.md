@@ -1,4 +1,4 @@
-# TSCG Smart Prompt v16.2.0 — Structural Grammar + BMC SystemicFramework + δ₂/EFS
+# TSCG Smart Prompt v16.2.0 — Structural Grammar + BMC SystemicFramework + δ₂/SFE
 
 **Framework**: TSCG (Transdisciplinary System Construction Game)
 **Version**: 16.2.0
@@ -12,7 +12,7 @@
 - ✅ **New SystemicFramework**: Bmc (Business Model Canvas) — total: 3 (Vsm + Triz + Bmc)
 - ✅ **M0_BmcSimulation.jsonld**: 12 companies × 5 phases × 34 transitions, JSON-LD SHACL-validable, sim: namespace
 - ✅ **New M1 extension**: M1_BusinessModeling.jsonld
-- ✅ **δ₂ / EFS (Focal Score)**: `m0:focalScore = stereopsicDepth × (1 − |focalBias|)` — 6 FocalClasses
+- ✅ **δ₂ / SFE (Focal Score)**: `m0:focalScore = stereopsicDepth × (1 − |focalBias|)` — 6 FocalClasses
 - ✅ **M0_Common.jsonld** canonical source for all shared M0 score properties
 - ✅ **M1_CoreConcepts.jsonld v2.6.1**: `m1:Permeability` validated as M1 GenericConceptCombo
 - ✅ **M3_GenesisGrammar.jsonld**: canonical name (replaces legacy `M3_GenesisSpace.jsonld`)
@@ -104,7 +104,7 @@ Score DatatypeProperties sourced from **`M0_Common.jsonld`** (canonical):
 
 **Flat storage** at `owl:Ontology` root level (never nested in sub-objects).
 
-### 7. δ₂ / EFS — Focal Score Properties (optional, conditional)
+### 7. δ₂ / SFE — Focal Score Properties (optional, conditional)
 
 Only when `m0:focalApplicable = true` (instance mobilizes ≥1 Gs/stereopsic GenericConcept):
 
@@ -138,7 +138,7 @@ M3_GenesisGrammar.jsonld      ← Mathematical foundation (Lambek calculus / mon
   └── M3_BicephalousPerspective (Gs, |, TKSL — Stereopsis)
         ↓ imports
 M2_GenericConcepts.jsonld     ← 80 atomic patterns (9 families)
-                                + m2:GenericConceptCombo + m2:KnowledgeFieldConceptCombo
+                                + m2:GenericConceptCombo + m2:DomainConceptCombo
         ↓ instantiates
 M1_CoreConcepts.jsonld        ← GenericConceptCombo instances + KnowledgeField roots
 M1_Domains.jsonld             ← 19 registered domains
@@ -207,10 +207,10 @@ instances/tscg-tools/         ← 3 TscgTools + 1 stub
 | `m0:spectralClass.Liminal` | [0.15, 0.30) | Significant gap |
 | `m0:spectralClass.Enigmatic` | [0.30, 1.0) | Fundamental challenge |
 
-### Focal Score δ₂ / EFS (Epistemic Focal Score)
+### Focal Score δ₂ / SFE (Stereopsic Focal Score)
 
 ```
-δ₂ = EFS = m0:stereopsicDepth × (1 − |m0:focalBias|)
+δ₂ = SFE = m0:stereopsicDepth × (1 − |m0:focalBias|)
 ```
 
 - **stereopsicDepth**: proportion of active TKSL primitives (T:0.25, K:0.25, Ss:0.25, L:0.25)
@@ -218,7 +218,7 @@ instances/tscg-tools/         ← 3 TscgTools + 1 stub
 
 **FocalClasses** (stored as OWL enum IRIs):
 
-| Class | EFS Range | Ophthalmic metaphor |
+| Class | SFE Range | Ophthalmic metaphor |
 |-------|-----------|---------------------|
 | `m0:focalClass.Emmetropic` | ≥ 0.70 | Perfect combined focus |
 | `m0:focalClass.SlightlyMyopic` | [0.55, 0.70) | Slight Territory bias |
@@ -276,8 +276,9 @@ Hybrid formula:  A × St × It × D | V     ← St, It indexed
 9. **Contextual** (6+): Envelope, Context, Constraint, Affordance, Niche, Scale, **Modelisation** ← new, **TriadicBalance** ← new
 
 **Combo Mechanisms**:
-- `m2:GenericConceptCombo` (owl:Class in M2, instances in M1_CoreConcepts): validated across ≥6 domains
-- `m2:KnowledgeFieldConceptCombo` (owl:Class in M2, instances in M1 extensions): domain-specific
+- `m2:GenericConceptCombo` (owl:Class in M2, instances in M1_CoreConcepts): produced by `Fm2 : GenericConcept²⁺ → GenericConceptCombo` (≥2 named concepts); validated across ≥6 domains
+- `m2:DomainConceptCombo` (owl:Class in M2, instances in M1 extensions): produced by `Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo` — a HYBRID of ≥1 Domain and ≥1 GenericConcept
+- **A combo's formula IS the function signature.** No monoidal formula, no monoidal expansion — `Fm2`/`Fm1m2` are FUNCTIONS, not functors (emergence is non-compositional). Arguments = named concepts from M2 or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/\|. `Fm1` does not exist. See `StructuralGrammar/Functional_Grammar_Model.md`.
 
 ---
 
@@ -440,7 +441,7 @@ Key architectural features:
 3. **M3 formalism**: Lambek calculus / monoidal product `⊗` — NOT Hilbert space / tensor product
 4. **M3_GenesisGrammar.jsonld**: canonical name — `M3_GenesisSpace.jsonld` is FORBIDDEN
 5. **St/It indexation**: mandatory in hybrid formulas containing `|`
-6. **δ₂ / EFS**: `focalScore = stereopsicDepth × (1 − |focalBias|)` — only when `focalApplicable = true`
+6. **δ₂ / SFE**: `focalScore = stereopsicDepth × (1 − |focalBias|)` — only when `focalApplicable = true`
 7. **focalBias sign**: positive = Hyperopic (Map bias), negative = Myopic (Territory bias)
 8. **sim: namespace**: used ONLY in Bmc simulation ontology — not in generic M0 instances
 9. **`m3:ontologyType`**: sole valid type property — NOT `m3:ontologyCategory`

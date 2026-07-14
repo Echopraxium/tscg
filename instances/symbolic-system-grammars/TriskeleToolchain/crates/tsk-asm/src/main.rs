@@ -215,7 +215,6 @@ main:
     /// O_LOG output is captured to a Vec<u8> to avoid Windows console UTF-8 issues.
     fn run_src(src: &str) -> anyhow::Result<(i32, triskele_vm::Cpu)> {
         use triskele_vm::memory::{HEAP_BASE, HEAP_SIZE};
-        use std::io::Write;
         use std::sync::{Arc, Mutex};
 
         let tvx = assemble_str(src, false)?;
@@ -238,16 +237,17 @@ main:
 
         // Inject a Vec<u8> output sink — avoids Windows console non-UTF8 panic
         struct BufSink(Arc<Mutex<Vec<u8>>>);
-        impl Write for BufSink {
-            fn write(&mut self, d: &[u8]) -> std::io::Result<usize> {
-                self.0.lock().unwrap().extend_from_slice(d); Ok(d.len())
+        impl triskele_vm::HostIo for BufSink {
+            fn write_bytes(&mut self, d: &[u8]) {
+                self.0.lock().unwrap().extend_from_slice(d);
             }
-            fn flush(&mut self) -> std::io::Result<()> { Ok(()) }
+            fn flush(&mut self) {}
+            fn read_line(&mut self) -> triskele_vm::HostLine { triskele_vm::HostLine::Eof }
         }
         unsafe impl Send for BufSink {}
         let sink = Arc::new(Mutex::new(Vec::<u8>::new()));
         let mut cpu = Cpu::new(mem, entry, false)
-            .with_output(Box::new(BufSink(sink.clone())));
+            .with_host(Box::new(BufSink(sink.clone())));
         let result = cpu.run()?;
         Ok((result, cpu))
     }
