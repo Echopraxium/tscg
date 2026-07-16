@@ -4,7 +4,9 @@
 # Covers: M1_CoreConcepts.jsonld + all M1 Extension files
 # ============================================================================
 # Author : Echopraxium with the collaboration of Claude AI
-# Version: 1.1.0
+# Version: 1.2.0
+# 1.2.0 (SC-5 pre-fix): SHAPE 2 no longer double-validates DomainConceptCombo
+#        (sh:or escape hatch). Removes ~256 spurious violations in merged-corpus runs.
 # Date   : 2026-07-12
 # Status : Active
 # ============================================================================
@@ -112,58 +114,41 @@ m1:M1OntologyShape
 m1:GenericConceptComboShape
     a sh:NodeShape ;
     sh:name "GenericConceptComboShape" ;
-    sh:description "Validates GenericConceptCombo instances in M1_CoreConcepts.jsonld." ;
+    sh:description "Validates GenericConceptCombo instances in M1_CoreConcepts.jsonld ONLY. DomainConceptCombo (extension combos) are a subclass and are validated by SHAPE 3 alone; the sh:or escape branch below prevents the subclass-following sh:targetClass from double-validating them (fixes the ~256 spurious violations, SC-5)." ;
     sh:targetClass m2:GenericConceptCombo ;
-
-    # --- Must be also typed as owl:Class ---
-    sh:property [
-        sh:path rdf:type ;
-        sh:hasValue owl:Class ;
-        sh:minCount 1 ;
-        sh:message "REQUIRED: GenericConceptCombo must also be typed as owl:Class."
-    ] ;
-
-    # --- Must declare rdfs:subClassOf m2:GenericConceptCombo ---
-    sh:property [
-        sh:path rdfs:subClassOf ;
-        sh:hasValue m2:GenericConceptCombo ;
-        sh:minCount 1 ;
-        sh:message "REQUIRED: rdfs:subClassOf must point to m2:GenericConceptCombo for OWL hierarchy visibility."
-    ] ;
-
-    # --- rdfs:label mandatory ---
-    sh:property [
-        sh:path rdfs:label ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ; sh:maxCount 1 ;
-        sh:message "REQUIRED: rdfs:label must be present (PascalCase concept name)."
-    ] ;
-
-    # --- rdfs:comment mandatory ---
-    sh:property [
-        sh:path rdfs:comment ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:message "REQUIRED: rdfs:comment must define the concept."
-    ] ;
-
-    # --- m1:structuralGrammarFormula: must start with Fm2( ---
-    sh:property [
-        sh:path m1:structuralGrammarFormula ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ; sh:maxCount 1 ;
-        sh:pattern "^Fm2[²]?\\(" ;
-        sh:message "REQUIRED: m1:structuralGrammarFormula must use Fm2(...) notation for GenericConceptCombos."
-    ] ;
-
-    # --- FORBIDDEN: ⊗ in formulas ---
-    sh:property [
-        sh:path m1:structuralGrammarFormula ;
-        sh:not [
-            sh:pattern "⊗"
-        ] ;
-        sh:message "FORBIDDEN: ⊗ tensor notation in structuralGrammarFormula — use × / + / |."
-    ] ;
+    sh:or (
+        # Escape hatch: a DomainConceptCombo is validated by SHAPE 3, NOT here.
+        [ sh:class m2:DomainConceptCombo ]
+        # Genuine (non-domain) GenericConceptCombo contract:
+        [
+            sh:property [
+                sh:path rdf:type ; sh:hasValue owl:Class ; sh:minCount 1 ;
+                sh:message "REQUIRED: GenericConceptCombo must also be typed as owl:Class."
+            ] ;
+            sh:property [
+                sh:path rdfs:subClassOf ; sh:hasValue m2:GenericConceptCombo ; sh:minCount 1 ;
+                sh:message "REQUIRED: rdfs:subClassOf must point to m2:GenericConceptCombo for OWL hierarchy visibility."
+            ] ;
+            sh:property [
+                sh:path rdfs:label ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ;
+                sh:message "REQUIRED: rdfs:label must be present (PascalCase concept name)."
+            ] ;
+            sh:property [
+                sh:path rdfs:comment ; sh:datatype xsd:string ; sh:minCount 1 ;
+                sh:message "REQUIRED: rdfs:comment must define the concept."
+            ] ;
+            sh:property [
+                sh:path m1:structuralGrammarFormula ; sh:datatype xsd:string ;
+                sh:minCount 1 ; sh:maxCount 1 ; sh:pattern "^Fm2[²]?\\(" ;
+                sh:message "REQUIRED: m1:structuralGrammarFormula must use Fm2(...) notation for GenericConceptCombos."
+            ] ;
+            sh:property [
+                sh:path m1:structuralGrammarFormula ; sh:not [ sh:pattern "⊗" ] ;
+                sh:message "FORBIDDEN: tensor notation in structuralGrammarFormula - use x / + / |."
+            ]
+        ]
+    ) ;
+    sh:message "GenericConceptCombo (non-domain, M1_CoreConcepts) must be an owl:Class, rdfs:subClassOf m2:GenericConceptCombo, carry rdfs:label + rdfs:comment, and use an Fm2(...) formula with no tensor operator." ;
 .
 
 
