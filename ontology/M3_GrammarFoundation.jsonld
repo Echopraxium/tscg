@@ -1,6 +1,6 @@
 {
   "@context": {
-    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/",
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
     "@vocab": "http://www.w3.org/2002/07/owl#",
     "dcterms": "http://purl.org/dc/terms/",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -8,15 +8,15 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "m3": "M3_GenesisGrammar.jsonld#"
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#"
   },
   "@graph": [
     {
       "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.4.0",
+      "owl:versionInfo": "2.4.1",
       "dcterms:created": "2026-05-12",
-      "dcterms:modified": "2026-07-12",
+      "dcterms:modified": "2026-07-18",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Grammar Foundation",
       "dcterms:description": "Apex ontology of the TSCG hierarchy — no imports, no dependencies. Defines the Lambek Calculus mathematical foundation (free commutative monoidal categories), the six indexed operators (×, +, |), abstract classes M3Grammar and MonoidalType, the TSCG type system hierarchy (𝕋₀→𝕄₀), and the intersubjective benchmark properties. Imported by M3_EagleEye, M3_SphinxEye, and M3_GenesisGrammar.",
@@ -53,6 +53,11 @@
         "see_also": "ontology/StructuralGrammar/TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md"
       },
       "m2:changelog": [
+        {
+          "version": "2.4.1",
+          "date": "2026-07-18",
+          "changes": "@context hygiene fix (CTX): 'm3' prefix made ABSOLUTE (https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#). It was relative and, combined with @vocab=owl#, resolved m3:* terms (incl. MonoidalType) against owl# instead of the M3 namespace — desynchronising this file's IRIs from EagleEye/SphinxEye. @base also repaired (.../main/ -> .../main/ontology/). Data graph unchanged."
+        },
         {
           "version": "2.4.0",
           "date": "2026-07-12",

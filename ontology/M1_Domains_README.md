@@ -1,8 +1,8 @@
 # M1_Domains.jsonld — README
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.3.0
-**Date**: 2026-05-27
+**Version**: 1.4.1
+**Date**: 2026-07-18
 **Layer**: M1 — Domain Registry
 **Status**: Active
 
@@ -111,7 +111,7 @@ M1_Domains.jsonld provides the **index** to this structure.
 
 ---
 
-## Current Domain Coverage (as of v1.2.0)
+## Current Domain Coverage (as of v1.4.0)
 
 ### **Natural Sciences**
 - ✅ **Biology** — organisms, evolution, cellular systems, physiology
@@ -150,7 +150,7 @@ M1_Domains.jsonld provides the **index** to this structure.
 
 ## Validation Status
 
-**OWL/RDFS Compliance:** ✅ Validated (May 14, 2026)
+**OWL/RDFS Compliance:** re-validation required (file modified 2026-07-18 — @context fix)
 - RDFS diagnostic: 0 errors (no errors found — already clean)
 - OWL Pellet reasoning: PASSED
 - Protégé compatibility: Confirmed
@@ -323,9 +323,9 @@ Don't include:
 
 | Version | Date | Changes |
 |---|---|---|
+| **1.4.1** | 2026-07-18 | @context hygiene fix (CTX): added absolute `m3` prefix — it was undeclared, so `m3:ontologyType`/`DomainExtension`/`SymbolicSystemGrammar`/`SystemicFramework` resolved to a bogus URI scheme, invisible to reasoners/SHACL. `m1` also made absolute. Data graph unchanged. |
+| **1.4.0** | 2026-06-20 | Added BusinessModeling domain (`M1_BusinessModeling.jsonld`), first SystemicFramework extension. Related: Economics, Management, SystemsTheory. Instance: `M0_Bmc`. domainCount 20→21, totalInstances 25→26. |
 | **1.3.0** | 2026-05-27 | BASE16 NOTATION: 6 extension versions bumped (Chemistry→1.1.1, Economics→1.0.1, Mythology→1.1.1, Optics→1.1.1, Photography→1.1.1, SystemicModeling→1.1.1). S→St indexation in hybrid formulas across corpus. |
-| **1.2.0** | 2026-04-26 | Added Ptoe to Chemistry. Updated Chemistry subdomains. Chemistry instanceCount: 3→4. M1_Chemistry enriched to v1.1.0. |
-| **1.1.0** | 2026-04-19 | Added Blockchain domain (6 subdomains). First instance: M0_NakamotoConsensus. |
 
 ---
 

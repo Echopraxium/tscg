@@ -6,8 +6,9 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "m1": "M1_CoreConcepts.jsonld#"
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#"
   },
   "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
   "@graph": [
@@ -16,14 +17,19 @@
       "@type": "owl:Ontology",
       "rdfs:label": "TSCG Knowledge Domains Registry",
       "rdfs:comment": "Centralized, evolving registry of knowledge domains identified through TSCG poclet corpus analysis. Each domain entry documents subdomains, related domains, and poclet usage statistics. Domains are M1-level concepts (disciplinary extensions) that bridge M2 transdisciplinary GenericConcepts and M0 concrete poclet instances.",
-      "owl:versionInfo": "1.4.0",
+      "owl:versionInfo": "1.4.1",
       "dcterms:created": "2026-04-18",
-      "dcterms:modified": "2026-06-20",
+      "dcterms:modified": "2026-07-18",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m1:changelog": [
+        {
+          "version": "1.4.1",
+          "date": "2026-07-18",
+          "changes": "@context hygiene fix (CTX family): added absolute 'm3' prefix (https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#) — it was undeclared, so m3:ontologyType, m3:DomainExtension, m3:SymbolicSystemGrammar and m3:SystemicFramework resolved to a bogus 'm3' URI scheme and were invisible to reasoners/SHACL. 'm1' prefix also made absolute. Data graph unchanged."
+        },
         {
           "version": "1.4.0",
           "date": "2026-06-20",
@@ -33,11 +39,6 @@
           "version": "1.3.0",
           "date": "2026-05-27",
           "changes": "BASE16 NOTATION UPDATE: 6 M1 extension versions bumped (Chemistry→1.1.1, Economics→1.0.1, Mythology→1.1.1, Optics→1.1.1, Photography→1.1.1, SystemicModeling→1.1.1). S→St indexation in hybrid formulas across corpus."
-        },
-        {
-          "version": "1.2.0",
-          "date": "2026-04-26",
-          "changes": "Added Ptoe (Periodic Table of Elements) to Chemistry domain. Updated Chemistry subdomains: added 'Atomic Structure' and 'Periodic Properties'. Chemistry pocletCount: 3→4. M1_Chemistry extension enriched to v1.1.0 with 8 atomic structure concepts."
         }
       ],
       "m1:domainCount": 21,
