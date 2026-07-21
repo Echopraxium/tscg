@@ -18,7 +18,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
       "dcterms:modified": "2026-07-13",
-      "owl:versionInfo": "16.17.0",
+      "owl:versionInfo": "16.18.0",
       "owl:imports": [
         "M3_GenesisGrammar.jsonld"
       ],
@@ -109,6 +109,11 @@
       },
       "m2:changelog": [
         {
+          "version": "16.18.0",
+          "date": "2026-07-18",
+          "changes": "M2 FORMULAS REVIEW WITH Gs (worksite opening, decision 1.B) — REMOVED the key 'formula' from all 66 m2:eagleView blocks. It was a FOSSIL DUPLICATE of m2:hasStructuralGrammarFormula: 38 were byte-identical, 28 had diverged, and in every divergent case the canonical formula was the up-to-date one (e.g. Layer canon 'St x It x A | R' vs eagle 'S x I x A x R'; Code canon 'It x Ss' vs eagle 'I x S'). 0 nodes carried an eagleView.formula without a canonical formula, so no information is lost. Same anti-pattern as the D8 triad retired from M1 (one claim stored twice, one copy drifting). Removing it BEFORE the SC-2 St/It migration is deliberate: migrating the 43 bare-S/I formulas first would have widened the divergence from 28 to ~50. PRESERVED (option 1.B, surgical): the eagleView block itself and its 'basis', 'role', 'status' keys (~20 roles carry real explanatory content). OUT OF SCOPE, still present: eagleView 'formulaComposition'/'formulaDecomposition' (1 node each, same D8 pattern) and the whole m2:sphinxView layer (43 blocks, split across two key names 'formulaPrimary' 36 / 'formula' 7) — separate decisions."
+        },
+        {
           "version": "16.17.0",
           "date": "2026-07-13",
           "changes": "FUNCTIONAL GRAMMAR MODEL (SC-1). RENAME (hard, no deprecation alias): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. RE-DEFINITION: DomainConceptCombo is now defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. PRODUCING FUNCTIONS declared: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). A combo's formula IS the function signature: no monoidal formula, no monoidal expansion (emergence is non-compositional → FUNCTIONS, not functors). Arguments are named concepts from M2_GenericConcepts or M1_CoreConcepts only — never primitive types, never a monoidal expression, juxtaposed by comma and never joined by ×/+/|. Fm1 does not exist. NEW PROPERTY: m2:producingFunction. DEPRECATED: m2:morphism_emergence (owl:deprecated true, supersededBy m2:producingFunction) and its entry in the header m2:categoryTheory block — it declared emergence as a category-theoretic morphism, the ROOT of the retired tensor-era notation; a morphism composes, an emergence does not. PURGE of the compositional residue: the n-ary emergence operator and its lattice-join definition in the combo class comments, the 'union of the parent type sets' clause on m2:hasComboComponent, and the 4 m2:comboFormula values, now rewritten as Fm2 signatures. See StructuralGrammar/Functional_Grammar_Model.md."
@@ -117,11 +122,6 @@
           "version": "16.16.0",
           "date": "2026-06-26",
           "changes": "UPDATE m2:Constraint: formula St|L → St×A×D|O+V. Perspective territory → bicephalous. eagleView St×A×D (IMMUTABLE) + sphinxView O+V (VALIDATED). Six-domain validation: blockchain, law, mechanics, optimization, biology, music. Comment and examples updated."
-        },
-        {
-          "version": "16.14.0",
-          "date": "2026-06-23",
-          "changes": "REVISION: m2:Balance reformulated A×S×F → A×S×F|_0 (isStereopsic=true, _0=EquilibriumPole defined in M3_BicephalousPerspective v1.3.0). NEW: m2:Modelisation (D×F×It|R+V+E) — functionally stereopsic Process reifying Φ:Gt→Gm. NEW: m2:TriadicBalance (A×F×D|_0) — 3-state pattern with qualitative central optimum. Both validated ≥7 domains. Session: transport phenomena + Ontological Overfitting analysis."
         }
       ],
       "m2:bicephalousStrategy": {
@@ -205,7 +205,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I × A × R",
         "role": "Measure the stack architecture (S), characteristic content of each stratum (I), positional attractor maintaining stacking order (A), and representability of stratum identity (R)",
         "status": "IMMUTABLE",
         "dimensionSemantics": {
@@ -950,7 +949,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "F × I",
         "role": "Measure observable resource in Territory — quantifiable flow of encoded content",
         "status": "IMMUTABLE"
       },
@@ -1006,7 +1004,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I × F",
         "role": "Measure observable interface structure — how information flows between systems",
         "status": "IMMUTABLE"
       },
@@ -1066,7 +1063,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "A × S × F",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -1106,7 +1102,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "A × S",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -1135,7 +1130,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "I × F × D",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -1164,7 +1158,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "I × S × D",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -1206,7 +1199,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "F × D",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -1240,7 +1232,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "A × S × F",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -1454,7 +1445,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "∫(D − F)dτ",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -1492,7 +1482,6 @@
       "m2:perspective": "bicephalous",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "St × A × D",
         "role": "Structural rule with directional pull and temporal trajectory",
         "status": "IMMUTABLE"
       },
@@ -1598,7 +1587,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "D × F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -1782,7 +1770,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I × F × D × V",
         "role": "Measure observable duplication in Territory: source structure copied, informational content preserved, transfer flux active, temporal dynamics tracked, fidelity verifiable between original and copy",
         "status": "IMMUTABLE"
       },
@@ -1913,7 +1900,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × A",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -1950,7 +1936,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I × F",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -2166,7 +2151,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -2346,7 +2330,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -2392,7 +2375,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -2431,7 +2413,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I × D",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -2460,7 +2441,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "D × S × I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -2491,7 +2471,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "I × S",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -2543,7 +2522,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "I × S × D",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -2765,7 +2743,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I × A",
         "role": "Measure observable recurring regularity in Territory",
         "status": "PRIMARY",
         "comment": "S = structural topology of the motif; I = informational content making it identifiable; A = attractor explaining recurrence (system returns to this configuration)"
@@ -2831,7 +2808,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "D × F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -2983,7 +2959,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "A × D × F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -3140,7 +3115,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "D × I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -3172,7 +3146,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "A × I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -3311,7 +3284,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "D × I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -3340,7 +3312,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -3369,7 +3340,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "F × I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -3431,7 +3401,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -3468,7 +3437,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -3498,7 +3466,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "F × T  or  I × T",
         "role": "Measure observable gradient: F × T (temporal gradient of Flow) or I × T (temporal gradient of Information), where T is the Time primitive of Gs (M3_BicephalousPerspective.jsonld)",
         "status": "IMMUTABLE"
       },
@@ -3686,7 +3653,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "I × S",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -3725,7 +3691,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "I × F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -3855,7 +3820,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "A × I × D",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -3896,7 +3860,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "I × D",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -3963,7 +3926,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × D",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -4031,7 +3993,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "A × D",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -4096,7 +4057,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "F × D",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -4238,7 +4198,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -4271,7 +4230,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -4302,7 +4260,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I × D",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -4408,7 +4365,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I × F",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -4446,7 +4402,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -4515,7 +4470,6 @@
       "m2:perspective": "map",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I × D",
         "role": "Measure structural configuration",
         "status": "IMMUTABLE"
       },
@@ -4573,7 +4527,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I × F",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -4614,7 +4567,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I × A",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -4662,7 +4614,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I",
         "role": "Measure territory perspective",
         "status": "IMMUTABLE"
       },
@@ -4705,7 +4656,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × F",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -4735,7 +4685,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -4892,7 +4841,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "A × S × F | _0",
         "role": "Measure observable equilibrium phenomenon",
         "status": "IMMUTABLE"
       },
@@ -5045,7 +4993,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "SIA",
         "role": "Measure territory perspective (observable oppositions/orientations)",
         "status": "IMMUTABLE"
       },
@@ -5136,7 +5083,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × S",
         "role": "Measure observable self-similar nesting in Territory",
         "status": "PRIMARY",
         "constraint": "Finite depth (n_max < ∞) due to physical limits"
@@ -5224,7 +5170,6 @@
       "m2:perspective": "hybrid",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I × A",
         "role": "Measure observable persistence of an entity in Territory",
         "status": "PRIMARY",
         "comment": "S = structure that persists (the unchanged thread); I = information that makes this entity unique among others; A = attractor toward which the entity returns after perturbation (self-restoration)"
@@ -5294,7 +5239,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × D × F",
         "role": "Measure observable behavioral phenomenon as structured network",
         "status": "PRIMARY"
       },
@@ -5360,7 +5304,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "A × S × D × F",
         "role": "Measure observable gradient-directed phenomenon",
         "status": "PRIMARY"
       },
@@ -5419,7 +5362,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × D × F",
         "role": "Measure observed workflow execution",
         "status": "SECONDARY"
       },
@@ -5474,7 +5416,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I × D",
         "role": "Measure observable step in sequence",
         "status": "PRIMARY"
       },
@@ -5546,7 +5487,6 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "D × I",
         "role": "Measure observable atomic operation",
         "status": "PRIMARY"
       },
@@ -5838,7 +5778,6 @@
       },
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "Ft × D × It",
         "role": "Measure observable amplification/attenuation in Territory",
         "status": "PRIMARY",
         "examples": {
@@ -6107,7 +6046,6 @@
       "m2:subClassHierarchy": "Processor ⊃ Transducer ⊃ Dissipation",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × I × F × D",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -6149,7 +6087,6 @@
       "m2:subClassHierarchy": "Processor ⊃ Transducer ⊃ Dissipation",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "F × S × I",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -6210,7 +6147,6 @@
       "m2:perspective": "territory",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "F × I × D",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -6254,7 +6190,6 @@
       "m2:m3Note": "F=0 is valid per revised M3 axiom (F≥0). Stase is the canonical F=0 state. Absence of D in structural formula guarantees reversibility by construction — no temporal sealing possible.",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "S × A",
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
@@ -6324,7 +6259,6 @@
       },
       "m2:eagleView": {
         "basis": "ASFID",
-        "formula": "A × S × I",
         "role": "Measure territorial coherence",
         "status": "IMMUTABLE"
       },
