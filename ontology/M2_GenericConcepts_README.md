@@ -1,10 +1,10 @@
 # M2_GenericConcepts.jsonld
 
-**Version:** 16.17.0
+**Version:** 16.18.0
 **Layer:** M2
 **Type:** Generic Concepts Ontology
 **Created:** 2026-01-14
-**Last Modified:** 2026-07-13
+**Last Modified:** 2026-07-18
 **Author:** Echopraxium with the collaboration of Claude AI
 
 ---
@@ -442,7 +442,7 @@ Formula (old): St | L
 Formula (new): St × A × D | O + V
 perspective:   territory → bicephalous
 isStereopsic:  true (unchanged)
-eagleView:     St × A × D (IMMUTABLE)
+eagleView:     status IMMUTABLE  (its `formula` key removed in v16.18.0)
 sphinxView:    O + V (VALIDATED)
 ```
 
@@ -484,9 +484,9 @@ The new formula emerged from the NakamotoConsensus instance analysis
 
 | Version | Date | Changes |
 |---|---|---|
+| **16.18.0** | 2026-07-18 | **M2 Formulas Review with Gs** (worksite opening, decision 1.B). REMOVED the `formula` key from all **66** `m2:eagleView` blocks: a **fossil duplicate** of `m2:hasStructuralGrammarFormula` — 38 byte-identical, **28 diverged**, and in every divergent case the canonical was the up-to-date one (e.g. `Layer` canon `St × It × A \| R` vs eagle `S × I × A × R`). **0** nodes had an `eagleView.formula` without a canonical formula → no information lost. Same anti-pattern as the D8 triad retired from M1: one claim stored twice, one copy drifting. Done **before** the SC-2 `St`/`It` migration deliberately — migrating the 43 bare-`S`/`I` formulas first would have widened the divergence from 28 to ~50. **PRESERVED** (surgical): the `eagleView` block itself with its `basis`, `role` (67, ~20 carrying real explanatory content) and `status` keys. **OUT OF SCOPE, still present**: `eagleView.formulaComposition`/`formulaDecomposition` (1 node, same D8 pattern) and the whole `m2:sphinxView` layer (43 blocks split across two key names — `formulaPrimary` 36 / `formula` 7) — separate decisions. See `M2_Formulas_Review_with_Gs_README.md`. |
 | **16.17.0** | 2026-07-13 | FUNCTIONAL GRAMMAR MODEL (SC-1). RENAME (hard): `m2:KnowledgeFieldConceptCombo` → `m2:DomainConceptCombo`, **re-defined** by its `Fm1m2` formula (hybrid ≥1 Domain + ≥1 GenericConcept), superseding the former "parents from distinct epistemological domains" criterion. NEW: `m2:producingFunction` — `Fm2 : GenericConcept²⁺ → GenericConceptCombo`; `Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo`. A combo's formula **is** the function signature: no monoidal formula, **no monoidal expansion** (emergence is non-compositional → functions, not functors). Arguments = named concepts from M2 or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/\|. `Fm1` does not exist. DEPRECATED: `m2:morphism_emergence` (the root of the tensor-era residue) → superseded by `m2:producingFunction`. PURGED: the `lattice_join` definition, the "union of the parent type sets" clause, and the 4 operator-style `m2:comboFormula`. |
 | **16.16.0** | 2026-06-26 | REVISION: m2:Constraint St\|L → St×A×D\|O+V (bicephalous, eagleView St×A×D + sphinxView O+V). isStereopsic unchanged (true). Stereotype count: 38→39. Six-domain validation: blockchain, law, mechanics, optimization, biology, music. |
-| **16.15.0** | 2026-06-26 | STATUS: sphinxView 'PROPOSITION' → 'VALIDATED' (36 nodes). ACRONYM: SFE → EFS (Epistemic Focal Score) in labels and comments. |
 
 ---
 
