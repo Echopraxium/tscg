@@ -1,10 +1,10 @@
 # M3_BicephalousPerspective.jsonld
 
-**Version:** 1.3.0
+**Version:** 1.3.1
 **Layer:** M3
 **Type:** Stereopsis Grammar (Gs) — Reification of stereopsic synergy
 **Created:** 2026-05-18
-**Last Modified:** 2026-06-23
+**Last Modified:** 2026-07-18
 **Author:** Echopraxium with the collaboration of Claude AI
 
 ---
@@ -287,6 +287,7 @@ Analogously in TSCG:
 
 | Version | Date | Changes |
 |---|---|---|
+| **1.3.1** | 2026-07-18 | @context hygiene fix (CTX): `m3` prefix made **absolute** (`.../ontology/M3_GenesisGrammar.jsonld#`). It was relative and, with `@vocab`=owl#, resolved `m3:*` terms (incl. `MonoidalType`) against owl# — desynchronising this file's IRIs from EagleEye/SphinxEye. Data graph unchanged. |
 | **1.3.0** | 2026-06-23 | NEW: `m3:DerivedGsElement` class — named Gs constants derived from primitives, Base16 preserved. NEW: `_0 = _^ | _$` (EquilibriumPole) as first DerivedGsElement. Supports m2:Balance revision and m2:TriadicBalance (M2 v16.14.0). Open question documented: Base16→Base17 deferred. |
 | **1.2.0** | 2026-05-27 | BASE16 EXTENSION: K (Knowledge), Ss (Symbol/Stereopsic), L (Localizability) added. TKSL acronym. Transcendental questions map. 5-5-6 asymmetry documented. St/It/O notation convention. |
 | **1.1.0** | 2026-05-20 | PositivePole (_^) and NegativePole (_$) added as Gs type primitives. |

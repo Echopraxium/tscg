@@ -1,10 +1,10 @@
 # M3_GrammarFoundation.jsonld
 
-**Version:** 2.4.0  
+**Version:** 2.4.1  
 **Layer:** M3  
 **Type:** Apex Ontology — Mathematical Foundation  
 **Created:** 2026-05-12  
-**Last Modified:** 2026-05-27  
+**Last Modified:** 2026-07-18  
 **Status:** Foundational — no imports
 
 ---
@@ -300,3 +300,18 @@ expr_Gt | expr_Gs  →  Gs type  ✓
 ```
 
 This constraint preserves well-definedness despite | being inter-grammar.
+
+---
+
+## Changelog
+
+*(Derived from `owl:versionInfo` / `m2:changelog` in `M3_GrammarFoundation.jsonld`.)*
+
+| Version | Date | Changes |
+|---|---|---|
+| **2.4.1** | 2026-07-18 | @context hygiene fix (CTX): `m3` prefix made **absolute** (`.../ontology/M3_GenesisGrammar.jsonld#`) and `@base` repaired (`.../main/` → `.../main/ontology/`). Both were relative/malformed and, with `@vocab`=owl#, left every `m3:*` term (incl. `MonoidalType`) resolving against owl# instead of the M3 namespace. Data graph unchanged. |
+| **2.4.0** | 2026-07-12 | SC-1 — `Fm2`/`Fm1m2` were declared **morphisms**; they are **functions** (emergence is non-compositional — arguments are combined, not associated). `Φ`/`Ψ` remain genuine morphisms (family split, not purged). Root error corrected: `Fm1m2` was defined as "crossing the M1/M2 boundary" — it is distinguished by **domain qualification**, nothing else. Signatures: `Fm2 : GenericConcept²⁺ → GenericConceptCombo`; `Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo`. The slot-separating `×` removed (`×` reserved to Gt). RENAME `m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo`. |
+| **2.3.0** | 2026-07-12 | SC-1 — `DomainConceptCombo` re-defined by its `Fm1m2` formula (≥1 Domain + ≥1 GenericConcept), superseding the "parents from distinct domains" criterion. A combo's formula **is** its function signature; no monoidal formula/expansion. Arguments = named concepts (comma-juxtaposed), never primitives, never `×`/`+`/`\|`. `Fm1` does not exist. File formulas flagged by SHACL v1.1.0, repair deferred to SC-6. |
+| **2.2.0** | 2026-05-27 | BASE16 EXTENSION: Gs alphabet 3 → 6 primitives — K (Knowledge, idx 3), Ss (Symbol/Stereopsic, idx 4), L (Localizability, idx 5). 𝕋₀ cardinality 13 → 16. TKSL acronym. Transcendental questions {T: When?, K: What?, Ss: Sign?, L: Converging?}. 5-5-6 asymmetry documented. |
+| **2.1.0** | 2026-05-20 | OPERATOR MIGRATION: `⊗ⁱ` → `×`/`+`/`\|` (three explicit operators). `^opⁱ` → `_^`/`_$` (Gs poles). `⊗ⁱ⇒` removed (replaced by `Fm2`/`Fm1m2`). |
+| **2.0.0** | 2026-05-20 | RENAME `m3:M3Dimension → m3:MonoidalType`. MonoidalType class defined. |
