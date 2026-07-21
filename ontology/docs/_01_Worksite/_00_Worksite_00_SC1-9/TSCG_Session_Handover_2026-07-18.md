@@ -205,3 +205,53 @@ Map had drifted from its Territory — the validator is δ₁ applied to the cor
 5. Execute SC-2 (§6) on the now-sound base.
 6. Grave GS-1/GS-2 in the Gs review worksite; continue the 97-formula review.
 7. Changelog normalisation (validator-assisted).
+
+---
+
+## 10. END-OF-SESSION STATE (git progress — added after §9)
+
+**Already COMMITTED** (one structural-hygiene commit):
+- Worksite reorg: `docs/_01_Worksite/` split into sub-folders
+  `_00_Worksite_00_SC1-9/`, `_01_Worksite_01/`, `_02_Worksite_02/` (git-tracked as
+  renames — history preserved).
+- **Untracked `ontology/_archives/`**: `.gitignore` += `ontology/_archives/` +
+  `git rm -r --cached ontology/_archives/`. Verified with `git check-ignore` (it bites).
+  Files remain on disk, invisible to Git. (`_archives/` held a graveyard of dead
+  variants — `M3_Eagle_Eye` AND `M3_EagleEye`, `M3_Mathematical_Eye`,
+  `M2_Calibration`… — exactly the snapshot-staleness trap; good riddance from tracking.)
+- `.gitignore` line fixed (was written with literal quotes by a Windows `echo`; the
+  rule was inert until corrected — a silent defect the tooling caught).
+
+**NOT yet committed**: the 12 ontology deliverables (present in the working tree,
+content verified — see below). To commit in the **3 isolated golden lots of §1**.
+
+**Placement decided**: `M0_TscgOntologyValidator_README.md` →
+`instances/tscg-tools/TscgOntologyValidator/` (peer of the other `Tscg*` tools).
+`M2_Formulas_Review_with_Gs_README.md` → `_02_Worksite_02/` (committed with the reorg).
+
+**Verification tool created**: `ontology/cli-tools/verify_session_2026-07-18.bat` —
+compares each local deliverable to its reference `git hash-object` (CRLF/LF-insensitive).
+A throwaway script, but a working **prototype of the validator's hash check**.
+Final run: **11/12 OK**. The 12th, `M2_GenericConcepts_README.md`, has correct content
+(v16.18.0 confirmed via `findstr`) but a byte-level mismatch (BOM/encoding) — cosmetic,
+non-blocking; may be normalised to UTF-8-without-BOM if desired.
+
+**REGRESSION AVOIDED (the tool earned its keep)**: `M1_CoreConcepts.jsonld` was sitting
+in the working tree at the **intermediate v2.9.0** (SC-6 cleanup only, WITHOUT the
+`@context` fix). The hash check flagged it → recopied to v2.9.1. Committing blind would
+have shipped the broken-IRI regression. Concrete argument for the validator's
+`--source head` hash check.
+
+## 11. HYGIENE FINDINGS FOR THE VALIDATOR (added this session)
+
+- **`_archives/` anti-pattern**: a whole file tracked twice (live + archive), destined
+  to drift — same shape as the retired eagleView/D8 duplicates. New STR check:
+  "ontology file duplicated under a tracked `_archives/`". Remedy adopted: Git IS the
+  archive; replace the copy-to-archive reflex with **commit-before-overwrite**.
+- **README ⇄ jsonld version drift** (STR check): e.g. `M1_CoreConcepts_README` 2.9.0 vs
+  jsonld 2.9.1; the M3 READMEs had missing/partial changelogs vs their jsonld
+  `m2:changelog`. Rule: `README.version == jsonld.owl:versionInfo`, README changelog
+  derived from the jsonld.
+- **Windows-shell command hygiene**: `echo "x" >> file` writes literal quotes under
+  `cmd`; and Git's `less` pager (`:` prompt) confuses non-experts. Note for future
+  sessions: give Windows-native commands, avoid Unix-shell defaults.
