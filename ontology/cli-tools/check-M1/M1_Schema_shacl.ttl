@@ -4,10 +4,14 @@
 # Covers: M1_CoreConcepts.jsonld + all M1 Extension files
 # ============================================================================
 # Author : Echopraxium with the collaboration of Claude AI
-# Version: 1.2.0
+# Version: 1.3.0
+# 1.3.0 (SC-5 hardening): SHAPE 10 extended to the full retired D8 serialisation triad
+#        (Expanded + TeX + RawText, not Expanded alone). NEW SHAPE 11 forbids the M0
+#        measurement m1/m2:hasEpistemicGap on M1 combo types (δ₁ is measured on an M0
+#        instance). Both were blind spots: only Expanded had a shape, hasEpistemicGap had none.
 # 1.2.0 (SC-5 pre-fix): SHAPE 2 no longer double-validates DomainConceptCombo
 #        (sh:or escape hatch). Removes ~256 spurious violations in merged-corpus runs.
-# Date   : 2026-07-12
+# Date   : 2026-07-17
 # Status : Active
 # ============================================================================
 
@@ -464,7 +468,8 @@ m1:ComboFormulaShape
 
 
 # ============================================================================
-# SHAPE 10 : NoMonoidalExpansionShape  — m1:structuralGrammarFormulaExpanded
+# SHAPE 10 : NoMonoidalExpansionShape  — retired D8 serialisation triad
+#            (structuralGrammarFormulaExpanded / TeX / RawText)
 # ----------------------------------------------------------------------------
 # SC-1 / Decision D8, 2026-07-12.
 # This property stored the "expansion" of a combo as a monoidal formula, e.g.
@@ -478,13 +483,69 @@ m1:ComboFormulaShape
 m1:NoMonoidalExpansionShape
     a sh:NodeShape ;
     sh:name "NoMonoidalExpansionShape" ;
-    sh:description "A combo has no monoidal expansion (emergence is non-compositional)." ;
+    sh:description "A combo has no monoidal expansion (emergence is non-compositional). Forbids the whole retired D8 triad: the expansion and its TeX/RawText serialisations." ;
     sh:targetClass m2:GenericConceptCombo ;
+    sh:targetClass m2:DomainConceptCombo ;   # per-file reach: extension combos are DomainConceptCombo
 
     sh:property [
         sh:path m1:structuralGrammarFormulaExpanded ;
         sh:maxCount 0 ;
         sh:severity sh:Violation ;
         sh:message "FORBIDDEN (SC-1/D8): m1:structuralGrammarFormulaExpanded is retired. A combo has NO monoidal expansion — the arguments are combined, not associated. Superseded by the function signature carried by m1:structuralGrammarFormula."
+    ] ;
+
+    sh:property [
+        sh:path m1:structuralGrammarFormulaTeX ;
+        sh:maxCount 0 ;
+        sh:severity sh:Violation ;
+        sh:message "FORBIDDEN (SC-1/D8): m1:structuralGrammarFormulaTeX is retired — the TeX serialisation of the non-existent monoidal expansion (several instances still carried the obsolete ×⇒ operator). Removed in M1_CoreConcepts v2.9.0."
+    ] ;
+
+    sh:property [
+        sh:path m1:structuralGrammarFormulaRawText ;
+        sh:maxCount 0 ;
+        sh:severity sh:Violation ;
+        sh:message "FORBIDDEN (SC-1/D8): m1:structuralGrammarFormulaRawText is retired — the plain-text serialisation of the same non-existent expansion. Removed in M1_CoreConcepts v2.9.0."
+    ] ;
+.
+
+
+# ============================================================================
+# SHAPE 11 : NoM0MeasurementInM1Shape  — m1/m2:hasEpistemicGap
+# ----------------------------------------------------------------------------
+# SC-5, 2026-07-17.
+# An epistemic gap (delta_1) is a Map/Territory divergence MEASURED on a concrete
+# modelled system — an M0 quantity. An M1 combo is an abstract TYPE; it has no
+# epistemic gap (measured on which system, by whom?). A scalar delta_1 sitting on
+# a combo is an M0 measurement leaking one storey up. Attested: 12 occurrences
+# removed from M1_CoreConcepts v2.9.0.
+# This shape is the ANCHOR for M0-measurement leaks into M1 — extend its
+# sh:property list as further leaks are ATTESTED (anti-overfitting: never
+# pre-emptively, only against a real residue).
+# NOTE: the property is declared m2:hasEpistemicGap but was serialised m1:...;
+# both spellings are forbidden here so neither can re-enter.
+# Scope: combo TYPES only (targetClass), NOT the owl:Ontology node — whose
+# numeric metadata (conceptsDefined, dimensions, ...) are legitimate file stats.
+# ============================================================================
+
+m1:NoM0MeasurementInM1Shape
+    a sh:NodeShape ;
+    sh:name "NoM0MeasurementInM1Shape" ;
+    sh:description "An M1 combo TYPE carries no M0 measurement (e.g. epistemic gap delta_1 is measured on a modelled M0 system, not on an abstract type)." ;
+    sh:targetClass m2:GenericConceptCombo ;
+    sh:targetClass m2:DomainConceptCombo ;   # per-file reach: extension combos are DomainConceptCombo
+
+    sh:property [
+        sh:path m1:hasEpistemicGap ;
+        sh:maxCount 0 ;
+        sh:severity sh:Violation ;
+        sh:message "FORBIDDEN (SC-5): m1:hasEpistemicGap is an M0 measurement (delta_1 = Map/Territory divergence of a modelled system) leaking into an abstract M1 combo type. Epistemic gap belongs to an M0 instance, not to a combo type. Removed in M1_CoreConcepts v2.9.0."
+    ] ;
+
+    sh:property [
+        sh:path m2:hasEpistemicGap ;
+        sh:maxCount 0 ;
+        sh:severity sh:Violation ;
+        sh:message "FORBIDDEN (SC-5): m2:hasEpistemicGap (declared IRI of the same delta_1 measurement) must not appear on an M1 combo type either. Epistemic gap is an M0 measurement."
     ] ;
 .
