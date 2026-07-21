@@ -1,8 +1,8 @@
 # M1_CoreConcepts.jsonld — README
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 2.7.0
-**Date**: 2026-07-12
+**Version**: 2.9.0
+**Date**: 2026-07-17
 **Layer**: M1 — Domain-Neutral Core Concepts
 **Status**: Active
 
@@ -419,7 +419,8 @@ Fm1m2 : Domain+ , GenericConcept+   ->  m2:DomainConceptCombo    (>= 1 Domain AN
   A combo has **NO monoidal formula and NO monoidal expansion**: `Fm2`/`Fm1m2` are **functions,
   not functors** — emergence is *non-compositional* (the arguments are **combined, not associated**),
   and a functor must *preserve* composition. `m1:structuralGrammarFormulaExpanded` is therefore
-  **retired** (D8): there was never anything to expand.
+  **retired** (D8) and, as of **v2.9.0**, **physically removed** from every combo
+  (together with its `TeX`/`RawText` siblings): there was never anything to expand.
 - **Arguments are NAMED CONCEPTS** from `M2_GenericConcepts.jsonld` or `M1_CoreConcepts.jsonld` —
   never primitives, never a monoidal expression, **comma-juxtaposed**, never joined by an operator.
 - **`Fm1` does not exist.** Multi-domain conjunction = juxtaposed domain arguments.
@@ -452,9 +453,9 @@ Full rationale: `StructuralGrammar/Functional_Grammar_Model.md`.
 
 | Version | Date | Changes |
 |---|---|---|
+| **2.9.0** | 2026-07-17 | SC-6 (partial) — **physically removed** the retired D8 property family from all 12 GenericConceptCombos: `m1:structuralGrammarFormulaExpanded`, `m1:structuralGrammarFormulaTeX`, `m1:structuralGrammarFormulaRawText`. A combo has no monoidal expansion; the live `m1:structuralGrammarFormula` (Fm2/Fm1m2 signature) carries all information (verified: 0 nodes left formula-less; 6 still held the obsolete `×⇒`/`(x)=>` residue, now gone). Also removed `m1:hasEpistemicGap` — a scalar δ₁ is an **M0** measurement (a modelled system), not a property of an abstract combo **type**: an M0 quantity leaking into M1. **Not touched**: the domain-less `Fm1m2` of Propagation/CascadeAmplification (separate SC-6 semantic repair). Golden: EXP001 drops 12 → 0 in `run_all_layers` (deliberate → `--update-golden`). Noted SHACL blind spot: `hasEpistemicGap` and the TeX/RawText siblings had no shape (SHAPE 10 covered only `Expanded`) → SC-5 hardening candidate. |
+| **2.8.0** | 2026-07-14 | SC-1.5 — **@context COERCION**: added `{"@type": "@id"}` for `rdfs:subClassOf` (and `rdfs:domain`, `rdfs:range`). All 19 `subClassOf` values were serialised as string literals instead of IRIs, so Pellet **ignored the entire class hierarchy** (the file was *unanalysable*, not merely inconsistent) and this was the root of most pre-existing SHACL `subClassOf` violations. Three `@context` lines fix all of it — no data migration. `owl:imports` **deliberately left un-coerced**: coercing it makes reasoners try to resolve it over the network and die; the import stays inert until the import graph is actually wired up. |
 | **2.7.0** | 2026-07-12 | SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): `m2:KnowledgeFieldConceptCombo` → `m2:DomainConceptCombo`, **re-defined** by its `Fm1m2` formula (hybrid ≥1 Domain + ≥1 GenericConcept — domain qualification, NOT parent provenance). ⚠️ The v1.4.0 "CORRECTION" (Propagation/CascadeAmplification `Fm2`→`Fm1m2` *"because parent m1:Cascade is M1"*) **is itself erroneous** and traces back to a wrong `Fm1m2` definition in M3_GrammarFoundation (now fixed, v2.4.0). `Fm2` arguments may legitimately come from M1_CoreConcepts. Flagged by SHACL v1.1.0, **repair = SC-6**. Also retired: `m1:structuralGrammarFormulaExpanded` (no monoidal expansion) and the scalar guards. |
-| **2.6.0** | 2026-06-23 | NEW: m1:ConstraintBalance — instance of m2:TriadicBalance. Triadic pattern: UnderConstrained/BalancedConstraint/OverConstrained. Core instance of Ontological Overfitting anti-pattern. Validated ≥6 domains. |
-| **2.5.0** | 2026-06-23 | MIGRATION: m2:TopologicalDefect → M1_CoreConcepts (too specialized for M2 purity). NEW: m1:Permeability = Fm2(Channel, Interface, Gradient) — dynamic boundary flux property, ≥7 domains. |
 
 ---
 

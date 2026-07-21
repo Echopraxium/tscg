@@ -1,6 +1,7 @@
 {
   "@context": {
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m3:eagle_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
     "m3:sphinx_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -30,7 +31,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
       "dcterms:modified": "2026-07-14",
-      "owl:versionInfo": "2.8.0",
+      "owl:versionInfo": "2.9.1",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -254,6 +255,11 @@
       },
       "m2:changelog": [
         {
+          "version": "2.9.0",
+          "date": "2026-07-17",
+          "changes": "SC-6 (partial) — REMOVED the retired D8 property family from all 12 GenericConceptCombos: m1:structuralGrammarFormulaExpanded (13), m1:structuralGrammarFormulaTeX (9), m1:structuralGrammarFormulaRawText (9). A combo has NO monoidal expansion (emergence is non-compositional); the live m1:structuralGrammarFormula (Fm2/Fm1m2 signature) carries all information and was preserved on every node (verified: 0 nodes left without a live formula). 6 of these still held the obsolete tensor-era operator (×⇒ / (x)=>) in their TeX/RawText, now gone. Also REMOVED m1:hasEpistemicGap (12): a scalar δ1 measurement is an M0 quantity (measured on a modelled system), not a property of an abstract combo TYPE — an M0 measurement leaking into M1, flagged in v2.7.0. NOT TOUCHED: the live Fm1m2 signatures of Propagation and CascadeAmplification (domain-less → should be Fm2), a separate SC-6 semantic repair. GOLDEN IMPACT: EXP001 drops 12 → 0 in run_all_layers — a DELIBERATE lowering, apply --update-golden with this reason recorded."
+        },
+        {
           "version": "2.8.0",
           "date": "2026-07-14",
           "changes": "SC-1.5 — @context COERCION: added \"rdfs:subClassOf\": {\"@type\": \"@id\"}. All 19 rdfs:subClassOf values were serialised as STRING LITERALS instead of IRIs. Consequences, both silent until now: (1) the Pellet OWL reasoner IGNORED EVERY subClassOf axiom in this file (\"Ignoring subClassOf axiom because the object is not a class\"), so the class hierarchy was INVISIBLE to it and reasoning crashed outright — M1_CoreConcepts was not merely inconsistent, it was UNANALYSABLE; (2) it is the root of the bulk of the pre-existing SHACL violations (\"rdfs:subClassOf must point to m2:DomainConceptCombo\"). M2 and M3 already used {\"@id\": ...} objects, which is why they passed Pellet and this file did not. Also coerced rdfs:domain and rdfs:range, which had the SAME defect: \"rdfs:domain\": \"owl:Ontology\" reached Pellet as an xsd:string and killed the run outright (\"Unknown concept type: literal(owl:Ontology)\"). THREE @context lines fix all of it at once (rdfs:subClassOf, rdfs:domain, rdfs:range) — no data edit, no 500-value migration script. Diagnosed in the 2026-07-03 handover; applied here. ⚠ owl:imports is DELIBERATELY NOT coerced. Coercing it turns the string into a real IRI, which makes Owlready2 try to RESOLVE it over the network — it fetches the raw.githubusercontent.com URL, gets JSON-LD, tries to parse it as N-Triples, and dies. The import has been inert all along; making it live would require a proper local catalog/redirect. Out of scope here: leave it inert, and fix it deliberately when the import graph is actually wired up."
@@ -262,11 +268,6 @@
           "version": "2.7.0",
           "date": "2026-07-12",
           "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo (4 occurrences: Propagation, CascadeAmplification). The class is also RE-DEFINED: a DomainConceptCombo is now defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept. Domain qualification, NOT parent provenance, is the membership criterion. ⚠ CONSEQUENCE — the v1.4.0 'CORRECTION' below is itself ERRONEOUS: reclassifying Propagation and CascadeAmplification Fm2→Fm1m2 'because parent m1:Cascade is M1, not M2 atomic' rests on a misreading of Fm1m2 (it is NOT 'the function for M1 arguments'; it is 'the function with a Domain argument'). Fm2 arguments may legitimately be named concepts from M2_GenericConcepts OR M1_CoreConcepts, so m1:Cascade is a legal Fm2 argument. Fm1m2(Cascade, Duplication, Network) has no Domain and is therefore an Fm2. FLAGGED, NOT FIXED HERE — repair belongs to SC-6. Also flagged by the new SHACL (v1.1.0): m1:structuralGrammarFormulaExpanded is retired (no monoidal expansion — emergence is non-compositional), and the scalar guards (| gain_per_stage > 1, | λ > 0, | range(F_A) << range(F_R)) are M0 measurements leaking into M1. See StructuralGrammar/Functional_Grammar_Model.md."
-        },
-        {
-          "version": "2.6.1",
-          "date": "2026-06-23",
-          "changes": "CORRECTION: CascadeAmplification and Propagation reclassified Fm2→Fm1m2 (parent m1:Cascade is M1, not M2 atomic). StratifiedDissipation notation Fm2²→Fm2 (parents Layer+Dissipation are M2 atomics — no second-order composition). @type updated to DomainConceptCombo for Propagation and CascadeAmplification."
         }
       ]
     },
@@ -480,10 +481,6 @@
         "m2:Trajectory"
       ],
       "m1:structuralGrammarFormula": "Fm2(Process, Step, Trajectory)",
-      "m1:structuralGrammarFormulaExpanded": "S × I × A × D × F",
-      "m1:structuralGrammarFormulaTeX": "S \\times I \\times A \\times D \\times F",
-      "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F",
-      "m1:hasEpistemicGap": 0.2,
       "m1:hasPolarity": "dual",
       "m1:perspective": "dual",
       "m1:transdisciplinaryValidation": {
@@ -617,10 +614,6 @@
         "m2:Trajectory"
       ],
       "m1:structuralGrammarFormula": "Fm2(Component, Process, Trajectory) | trajectoryShape=Circular",
-      "m1:structuralGrammarFormulaExpanded": "S × A × I × D × F",
-      "m1:structuralGrammarFormulaTeX": "\\times\\Rightarrow(\\text{Component}, \\text{Process}, \\text{Trajectory}) \\;|\\; \\text{trajectoryShape}=\\text{Circular}",
-      "m1:structuralGrammarFormulaRawText": "(x)=>(Component, Process, Trajectory) | trajectoryShape=Circular",
-      "m1:hasEpistemicGap": 0.2,
       "m1:hasPolarity": "neutral",
       "m1:perspective": "territory",
       "m1:transdisciplinaryValidation": {
@@ -896,10 +889,6 @@
       "rdfs:comment": "Generic system with inputs and outputs that transforms/processes incoming resources, signals, or matter into outputs. Dual synergistic combinations: Territory (Fm2(Transformation, Flow, Resource)) provides empirical processing dynamics, Map (Fm2(Transformation, Representation, Interoperability)) provides conceptual interface model. Distinct from pure Transformation (abstract process) by being a concrete entity that IMPLEMENTS transformations while managing flows and interfacing with environment.",
       "m1:comboOf": [],
       "m1:structuralGrammarFormula": "Fm2(Process, Structure, Information) | V + R",
-      "m1:structuralGrammarFormulaExpanded": "",
-      "m1:structuralGrammarFormulaTeX": "S \\times I \\times D \\times F \\times V \\times R",
-      "m1:structuralGrammarFormulaRawText": "S (x) I (x) D (x) F (x) V (x) R",
-      "m1:hasEpistemicGap": 0.15,
       "m1:hasPolarity": "dual",
       "m1:perspective": "dual",
       "m1:transdisciplinaryValidation": {
@@ -1023,10 +1012,6 @@
         "m2:Regulation"
       ],
       "m1:structuralGrammarFormula": "Fm2(Amplification, Regulation) | range(F_A) << range(F_R)",
-      "m1:structuralGrammarFormulaExpanded": "",
-      "m1:structuralGrammarFormulaTeX": "\\times\\Rightarrow(\\text{Amplification}, \\text{Regulation}) \\;|\\; \\|\\text{range}(F_A)\\| \\ll \\|\\text{range}(F_R)\\|",
-      "m1:structuralGrammarFormulaRawText": "(x)=>(Amplification, Regulation) | range(F_A) << range(F_R)",
-      "m1:hasEpistemicGap": 0.2,
       "m1:hasPolarity": "dual",
       "m1:perspective": "territory",
       "m1:transdisciplinaryValidation": {
@@ -1145,10 +1130,6 @@
         "m2:Trajectory"
       ],
       "m1:structuralGrammarFormula": "Fm2(Amplification, Trajectory) | trajectoryShape=Chaotic ∧ λ > 0",
-      "m1:structuralGrammarFormulaExpanded": "",
-      "m1:structuralGrammarFormulaTeX": "\\times\\Rightarrow(\\text{Amplification}, \\text{Trajectory}) \\;|\\; \\text{trajectoryShape}=\\text{Chaotic} \\wedge \\lambda > 0",
-      "m1:structuralGrammarFormulaRawText": "(x)=>(Amplification, Trajectory) | trajectoryShape=Chaotic AND lambda > 0",
-      "m1:hasEpistemicGap": 0.85,
       "m1:hasPolarity": "dual",
       "m1:perspective": "territory",
       "m1:transdisciplinaryValidation": {
@@ -1262,10 +1243,6 @@
         "m2:Network"
       ],
       "m1:structuralGrammarFormula": "Fm1m2(Cascade, Duplication, Network)",
-      "m1:structuralGrammarFormulaExpanded": "S × I × A × D × F | V + Im",
-      "m1:structuralGrammarFormulaTeX": "S \\times I \\times A \\times D \\times F \\times V \\times I_m",
-      "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F (x) V (x) Im",
-      "m1:hasEpistemicGap": 0.2,
       "m1:hasPolarity": "dual",
       "m1:perspective": "dual",
       "m1:transdisciplinaryValidation": {
@@ -1404,10 +1381,6 @@
         "m2:Relation"
       ],
       "m1:structuralGrammarFormula": "Fm2(Transformation, Representation, Relation)",
-      "m1:structuralGrammarFormulaExpanded": "S × I × D × F × A | V + R + Im",
-      "m1:structuralGrammarFormulaTeX": "S \\times I \\times D \\times F \\times V \\times R \\times A \\times I_m",
-      "m1:structuralGrammarFormulaRawText": "S (x) I (x) D (x) F (x) V (x) R (x) A (x) Im",
-      "m1:hasEpistemicGap": 0.35,
       "m1:hasPolarity": "neutral",
       "m1:perspective": "dual",
       "m1:transdisciplinaryValidation": {
@@ -1597,9 +1570,6 @@
         "m2:Dissipation"
       ],
       "m1:structuralGrammarFormula": "Fm2(Layer, Dissipation)",
-      "m1:structuralGrammarFormulaExpanded": "S × I × A × D × F | V + R",
-      "m1:structuralGrammarFormulaTeX": "S \\times I \\times A \\times D \\times F \\times V \\times R",
-      "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F (x) V (x) R",
       "m1:dimensions": 7,
       "m1:parentGenericConcepts": [
         {
@@ -1615,7 +1585,6 @@
       ],
       "m1:sharedDimensions": {},
       "m1:emergentProperty": "Positional dissipation gradient — each stratum absorbs a specific fraction of the incident flow, creating a measurable (V) cascade of absorption levels across the ordered stack (A). Absent from Layer (no dissipation) and Dissipation (no positional structure).",
-      "m1:hasEpistemicGap": 0.25,
       "m1:hasPolarity": "neutral",
       "m1:perspective": "territory",
       "m1:transdisciplinaryValidation": {
@@ -1653,9 +1622,6 @@
         "m2:Amplification"
       ],
       "m1:structuralGrammarFormula": "Fm1m2(Cascade, Amplification) | gain_per_stage > 1",
-      "m1:structuralGrammarFormulaExpanded": "S × I × A × D × F | R + O",
-      "m1:structuralGrammarFormulaTeX": "S \\times I \\times A \\times D \\times F \\times R \\times O",
-      "m1:structuralGrammarFormulaRawText": "S (x) I (x) A (x) D (x) F (x) R (x) O",
       "m1:dimensions": 7,
       "m1:parentGenericConcepts": [
         {
@@ -1670,7 +1636,6 @@
         }
       ],
       "m1:emergentProperty": "Exponential cumulative gain G_total = ∏ᵢ gᵢ where gᵢ > 1. Neither Cascade (gᵢ = 1) nor Amplification (single stage) alone produces this.",
-      "m1:hasEpistemicGap": 0.2,
       "m1:hasPolarity": "dual",
       "m1:perspective": "territory",
       "m1:transdisciplinaryValidation": {
@@ -1704,7 +1669,6 @@
         "m2:Gradient"
       ],
       "m1:structuralGrammarFormula": "Fm2(Channel, Interface, Gradient)",
-      "m1:structuralGrammarFormulaExpanded": "St × It × F × T | Ss × (V + E)",
       "m1:parentGenericConcepts": [
         {
           "@id": "m2:Channel",
@@ -1772,7 +1736,6 @@
           "m2:default": "Static"
         }
       },
-      "m1:hasEpistemicGap": 0.15,
       "m1:perspective": "territory",
       "m1:distinctionFromRelated": {
         "vs_Boundary": "Boundary (S × A) is static — it exists. Permeability is dynamic — it modulates flux through the boundary.",
@@ -1811,7 +1774,6 @@
         "m2:Invariant"
       ],
       "m1:structuralGrammarFormula": "Fm2(Incoherence, Invariant)",
-      "m1:structuralGrammarFormulaExpanded": "St × A × It | R + O",
       "m1:parentGenericConcepts": [
         {
           "@id": "m2:Coherence",
@@ -1826,7 +1788,6 @@
       ],
       "m1:topologicalInvariant": "winding number n ∈ ℤ (or charge, index) — discrete, conserved, non-zero at defect core",
       "m1:emergentProperty": "Topological protection: the defect cannot be eliminated by any continuous local transformation — stability is global, not energetic. Absent from Coherence (no invariant) and Invariant (no localized rupture) individually.",
-      "m1:hasEpistemicGap": 0.2,
       "m1:hasPolarity": "neutral",
       "m1:perspective": "dual",
       "m1:distinctionFromRelated": {
@@ -1865,7 +1826,6 @@
         "m2:Constraint"
       ],
       "m1:structuralGrammarFormula": "Fm2(TriadicBalance, Constraint)",
-      "m1:structuralGrammarFormulaExpanded": "A × F × D × St | _0",
       "m1:parentGenericConcepts": [
         {
           "@id": "m2:TriadicBalance",
@@ -1922,7 +1882,6 @@
         "remedy": "Apply tscg-m2-candidate-filter skill: decomposability test + transdisciplinary test + atomicity test"
       },
       "m1:emergentProperty": "The BalancedConstraint state (_0) is qualitatively irreducible to its poles — it is not \"a little UnderConstrained AND a little OverConstrained\" but the stereopsic fusion of both: a system that simultaneously generalizes (_^) and specifies (_$). This emergent quality is absent from either pole individually.",
-      "m1:hasEpistemicGap": 0.15,
       "m1:hasPolarity": "ternary",
       "m1:perspective": "dual",
       "m1:transdisciplinaryValidation": {
