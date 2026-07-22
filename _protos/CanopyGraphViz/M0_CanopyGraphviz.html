@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Canopy — graph star-map explorer</title>
+<link rel="stylesheet" href="src/canopy.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babylonjs/6.49.0/babylon.js"></script>
+</head>
+<body>
+<div id="stage"><canvas id="c" tabindex="0"></canvas></div>
+<div id="reticle"><div class="ring"></div></div>
+<div id="sliceLabels"></div>
+<div id="guide"><div class="arw"></div></div>
+<div id="guideLbl"></div>
+<div id="guideRing"></div>
+<div id="ctxmenu"></div>
+<div id="tip"></div>
+
+<aside id="panel">
+  <h1>Canopy</h1>
+  <div class="sub">TSCG layer-cake · star-map explorer</div>
+
+  <div class="grp" style="border-top:none">
+    <div class="lbl">Observer <b id="obsName">—</b></div>
+    <label class="toggle" style="margin-top:5px"><input type="checkbox" id="selCenter" />
+      Teleport mode <span style="color:var(--dim)">— double-click a star</span></label>
+    <div class="hint" style="margin-top:6px">Like following a hyperlink: the canopy re-forms around the star you land on.</div>
+  </div>
+
+  <div class="grp">
+    <div class="lbl">Arrangement <b id="vArr">canopy</b></div>
+    <select id="arr">
+      <option value="canopy">Canopy — trees from the observer</option>
+      <option value="clusters">Clusters — sectors by facet</option>
+      <option value="cone">Cone — stratified layers (genesis)</option>
+      <option value="nautilus">Nautilus — logarithmic shell</option>
+    </select>
+  </div>
+
+  <div class="grp">
+    <div class="lbl">Radial axis <b id="vRadial">tree depth</b></div>
+    <select id="radial">
+      <option value="tree">Tree depth (canopy trunks)</option>
+      <option value="subclass">Specialization (subClassOf ↦ depth)</option>
+      <option value="meta">Meta-level (M3 → M0)</option>
+      <option value="hops">Hops from observer (topology)</option>
+      <option value="trophic">Trophic level (directed flow ↦ height)</option>
+    </select>
+  </div>
+
+  <div class="grp">
+    <div class="lbl">Colour by <b id="vColorBy">facet</b></div>
+    <select id="colorBy">
+      <option value="facet">Facet (grammar / family / spectral)</option>
+      <option value="kind">Node kind (glyph colours)</option>
+    </select>
+    <div class="lbl" style="margin-top:8px">Facet <b id="vFacet">dominant grammar</b></div>
+    <select id="facet">
+      <option value="dominantM3">Dominant grammar (Territory/Map/Stereopsis)</option>
+      <option value="family">Concept family (9)</option>
+      <option value="layer">Meta-layer (M3/M2/M1/M0)</option>
+      <option value="ontologyType">Ontology type</option>
+      <option value="vocab">Source vocabulary</option>
+    </select>
+    <div class="hint" id="facetHint" style="margin-top:6px">In canopy, the facet drives colour; in clusters it also drives the angular sectors.</div>
+  </div>
+
+  <div class="grp">
+    <div class="lbl">Instrument <b id="vInstr">naked eye</b></div>
+    <input id="instr" type="range" min="35" max="190" value="150" step="3" />
+    <div class="hint" id="instrReadout" style="margin:2px 0 8px">scroll to zoom — wider field sees only the bright; narrowing to a telescope reveals the faint.</div>
+    <label class="toggle" style="margin-bottom:9px"><input type="checkbox" id="showAll" />
+      Show every node <span style="color:var(--dim)">— ignore the seeing limit</span></label>
+    <div class="lbl">Jetpack <b id="vDolly">at centre</b></div>
+    <div class="hint" style="margin:2px 0 8px">↑↓ or Z/X to fly along your gaze — back out to see the whole canopy, forward to plunge in.</div>
+    <div class="lbl">Focus distance <b id="vDepth">all</b></div>
+    <input id="depth" type="range" min="1" max="7" value="7" step="1" />
+  </div>
+
+  <div class="grp">
+    <div class="lbl">Object explorer <b id="vExpCount">—</b></div>
+    <select id="expLayer">
+      <option value="all">All layers</option>
+      <option value="m3">M3 — foundations</option>
+      <option value="m2">M2 — generic concepts</option>
+      <option value="m1">M1 — domains</option>
+      <option value="m0">M0 — instances</option>
+      <option value="VOCAB">Imported vocabulary</option>
+    </select>
+    <input id="expSearch" type="text" placeholder="filter…" />
+    <div id="expList"></div>
+    <div class="hint" id="expHint">Click to aim (an arrow guides your head) · <b style="color:#9fb0d0">Set centre</b> to teleport.</div>
+    <button id="expCentre" class="btn">Set centre on selection</button>
+  </div>
+
+  <div class="grp">
+    <div class="lbl">Constellations (relation types)</div>
+    <div class="checks" id="rels"></div>
+    <div class="lbl" style="margin-top:11px">Scaffolding (trunks &amp; branches) <b id="vScaf">15%</b></div>
+    <input id="scaf" type="range" min="0" max="60" value="15" step="1" />
+  </div>
+
+  <div class="grp">
+    <label class="toggle"><input type="checkbox" id="spectralT" />
+      Reveal hidden structure <span style="color:var(--dim)">(spectral)</span></label>
+    <div class="lbl" style="margin-top:9px">Clusters k <b id="vK">3</b></div>
+    <input id="kclusters" type="range" min="2" max="9" value="3" step="1" disabled />
+    <div class="hint" id="specReadout">Ignores declared facets. Builds the normalized
+      graph Laplacian, power-iterates its low modes, k-means on the embedding — then
+      colours by the clusters it <i>finds on its own</i>.</div>
+  </div>
+
+  <div class="grp">
+    <label class="toggle"><input type="checkbox" id="vocabT" />
+      Show imported vocabulary <span style="color:var(--dim)">(owl · rdfs · dcterms · xsd · skos)</span></label>
+    <div class="hint">Universal terms (<i>owl:Class</i>, <i>dcterms:creator</i>…) are the
+      hairball magnets — hidden until you aim at them.</div>
+  </div>
+
+  <div class="grp" id="coneGrp" style="display:none">
+    <div class="lbl">Slice focus <b id="vSlice">all strata</b></div>
+    <div style="display:flex;gap:5px;margin-top:4px">
+      <button id="slicePrev" class="btn" style="margin:0">◄</button>
+      <button id="sliceAll" class="btn" style="margin:0">All</button>
+      <button id="sliceNext" class="btn" style="margin:0">►</button>
+    </div>
+    <div class="hint" style="margin-top:7px">Isolating a stratum keeps its cross-layer links as <b style="color:#9fb0d0">stubs</b> — click one to jump to the other end.</div>
+    <div class="lbl" style="margin-top:9px">Travel the continuum</div>
+    <div style="display:flex;gap:5px;margin-top:4px">
+      <button id="travelBack" class="btn" style="margin:0">◄ retro</button>
+      <button id="travelFwd" class="btn" style="margin:0">chrono ►</button>
+    </div>
+  </div>
+
+  <div class="grp">
+    <div class="lbl">Folding <b id="vFold">—</b></div>
+    <select id="expandLimit">
+      <option value="1">Exclusive — one open at a time</option>
+      <option value="3">Up to 3 open</option>
+      <option value="5" selected>Up to 5 open</option>
+      <option value="10">Up to 10 open</option>
+      <option value="inf">No limit</option>
+    </select>
+    <div class="hint" style="margin:7px 0">Opening past the limit closes the oldest. <b style="color:#9fb0d0">Right-click a star</b> for its actions; folded stars grow brighter with what they hide.</div>
+    <button id="foldDepth" class="btn">Collapse all</button>
+    <button id="foldClear" class="btn">Expand all (no limit)</button>
+  </div>
+
+  <div class="grp">
+    <div class="lbl">Legend <span style="color:var(--dim)">reading guide</span></div>
+    <div id="legendBox"></div>
+  </div>
+
+  <div class="hint">Drag to look · <b style="color:#9fb0d0">↑↓ or Z/X</b> to fly, <b style="color:#9fb0d0">←→</b> to turn · <b style="color:#9fb0d0">scroll = zoom</b> (eye → telescope) · <b style="color:#9fb0d0">right-click a star</b> for actions · <b style="color:#9fb0d0">Teleport + double-click</b> to re-centre.</div>
+</aside>
+
+<div id="focusReadout">observer · <b id="focusName">GenericConcept</b></div>
+<div id="viewTitle"><b id="vtCount">—</b> nodes</div>
+
+<div id="radar-panel">
+  <div id="radar-bar">
+    <button id="radar-toggle" title="Expand / Collapse">−</button>
+    <span id="radar-count">—</span>
+  </div>
+  <div id="radar-body">
+    <canvas id="radar-canvas" width="236" height="188"></canvas>
+  </div>
+</div>
+
+<!-- load order matters: data → stylesheet → core -->
+<script src="src/canopy-data.js"></script>
+<script src="src/canopy-stylesheet.js"></script>
+<script src="src/canopy-core.js"></script>
+</body>
+</html>
