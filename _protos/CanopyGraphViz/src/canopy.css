@@ -1,0 +1,131 @@
+:root{
+    --void:#05070f; --void2:#0a0f1f; --ink:#c9d4ee; --dim:#5a6b8c;
+    --line:#1c2740; --panel:rgba(9,13,26,.82); --edge:#2a3a5e;
+    --terr:#e6a94b; --map:#48b6e8; --ster:#b96be0;   /* dominantM3 hues */
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;background:var(--void);
+    color:var(--ink);font-family:"Iosevka",ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+  #stage{position:fixed;inset:0}
+  canvas{width:100%;height:100%;display:block;outline:none;touch-action:none;
+    background:radial-gradient(120% 120% at 50% 42%,#0c1326 0%,#070a15 55%,#04060d 100%)}
+
+  /* instrument panel */
+  #panel{position:fixed;top:0;left:0;height:100%;width:298px;padding:18px 18px 24px;
+    background:var(--panel);backdrop-filter:blur(9px);
+    border-right:1px solid var(--line);overflow-y:auto;z-index:5}
+  #panel h1{font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+    font-weight:600;margin:2px 0 2px;color:#eef3ff}
+  #panel .sub{font-size:10.5px;color:var(--dim);letter-spacing:.05em;margin-bottom:16px}
+  .grp{border-top:1px solid var(--line);padding:13px 0 3px}
+  .grp:first-of-type{border-top:none}
+  .lbl{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);
+    display:flex;justify-content:space-between;margin-bottom:7px}
+  .lbl b{color:var(--ink);font-weight:600;letter-spacing:.02em;text-transform:none}
+  input[type=range]{width:100%;accent-color:#6ea8ff;margin:1px 0 4px}
+  select{width:100%;background:#0c1226;color:var(--ink);border:1px solid var(--line);
+    border-radius:5px;padding:6px 7px;font:inherit;font-size:11.5px}
+  .checks{display:flex;flex-direction:column;gap:4px;margin-top:2px}
+  .chk{display:flex;align-items:center;gap:8px;font-size:11.5px;cursor:pointer;color:#aebbd8}
+  .chk input{accent-color:#6ea8ff}
+  .chk .sw{width:16px;height:2px;border-radius:2px;flex:0 0 auto}
+  .toggle{display:flex;align-items:center;gap:8px;font-size:11.5px;cursor:pointer;color:#aebbd8}
+  #legend{display:flex;flex-direction:column;gap:5px;margin-top:4px}
+  #legendBox{display:flex;flex-direction:column;gap:4px;margin-top:3px}
+  .lgh{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin:3px 0 1px}
+  .lgy{display:flex;align-items:center;gap:8px;font-size:11px;color:#9fb0d0}
+  .lgy .gl{width:15px;text-align:center;flex:0 0 auto;font-size:13px;line-height:1}
+  .lgy .sw{width:16px;height:2px;border-radius:2px;flex:0 0 auto}
+  .lgy .dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto;box-shadow:0 0 7px currentColor}
+  .lg2{font-size:10.5px;color:#8ea0c4;padding-left:1px}
+  .leg{display:flex;align-items:center;gap:8px;font-size:11px;color:#9fb0d0}
+  .leg .dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto;
+    box-shadow:0 0 7px currentColor}
+  .hint{font-size:10px;color:var(--dim);line-height:1.5;margin-top:11px}
+
+  /* reticle + readout */
+  #reticle{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:70px;height:70px;pointer-events:none;z-index:3;opacity:.5}
+  #reticle:before,#reticle:after{content:"";position:absolute;background:#6ea8ff55}
+  #reticle:before{left:50%;top:0;width:1px;height:100%;transform:translateX(-.5px)}
+  #reticle:after{top:50%;left:0;height:1px;width:100%;transform:translateY(-.5px)}
+  #reticle .ring{position:absolute;inset:19px;border:1px solid #6ea8ff40;border-radius:50%}
+  #focusReadout{position:fixed;bottom:16px;left:316px;z-index:4;font-size:11px;
+    color:var(--dim);letter-spacing:.03em}
+  #focusReadout b{color:#cfe0ff;font-weight:600}
+
+
+  /* slice labels — one per stratum, always shown (few, and the cone is unreadable without) */
+  #sliceLabels{position:fixed;inset:0;pointer-events:none;z-index:3}
+  .slbl{position:absolute;transform:translate(-50%,-140%);white-space:nowrap;
+    font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:#8fa8d8;
+    text-shadow:0 1px 6px #000}
+  .slbl span{color:#5a6b8c;margin-left:7px;letter-spacing:0;text-transform:none}
+
+  /* object explorer */
+  #expSearch{width:100%;margin-top:6px;background:#0c1226;color:var(--ink);
+    border:1px solid var(--line);border-radius:5px;padding:5px 7px;font:inherit;font-size:11.5px}
+  #expList{max-height:168px;overflow-y:auto;margin-top:6px;
+    border:1px solid var(--line);border-radius:5px;background:rgba(6,10,22,.6)}
+  .exp{padding:4px 8px;font-size:11.5px;color:#9fb0d0;cursor:pointer;
+    display:flex;align-items:center;gap:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .exp:hover{background:rgba(110,168,255,.10);color:#dfe8ff}
+  .exp.sel{background:rgba(110,168,255,.18);color:#fff}
+  .exp .g{flex:0 0 auto;font-size:12px}
+  .btn{width:100%;margin-top:7px;background:#0c1226;color:#9fb0d0;border:1px solid var(--line);
+    border-radius:5px;padding:6px;font:inherit;font-size:11px;cursor:pointer}
+  .btn:hover{background:rgba(110,168,255,.14);color:#dfe8ff}
+  .btn:disabled{opacity:.4;cursor:default}
+
+  /* HUD guidance arrow toward the aimed target */
+  #guide{position:fixed;z-index:4;pointer-events:none;display:none}
+  #guide .arw{width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;
+    border-bottom:16px solid #9fe0b0;filter:drop-shadow(0 0 5px rgba(159,224,176,.6))}
+  #guideLbl{position:fixed;z-index:4;pointer-events:none;display:none;
+    font-size:11px;color:#9fe0b0;text-shadow:0 1px 6px #000}
+  #guideRing{position:fixed;z-index:4;pointer-events:none;display:none;
+    width:34px;height:34px;margin:-17px 0 0 -17px;border:2px solid #9fe0b0;border-radius:50%;
+    box-shadow:0 0 12px rgba(159,224,176,.5)}
+
+  /* 3D radar — floating collapsible panel (pattern from M0_Ptoe #view-ne) */
+  #radar-panel{position:fixed;right:0;bottom:0;z-index:30;width:236px;
+    background:rgba(6,10,22,.94);backdrop-filter:blur(8px);
+    border-left:1px solid var(--line);border-top:1px solid var(--line);
+    border-top-left-radius:10px;display:flex;flex-direction:column;user-select:none}
+  #radar-bar{height:30px;flex-shrink:0;display:flex;align-items:center;gap:7px;padding:0 9px;
+    background:rgba(8,12,24,.97);border-bottom:1px solid var(--line);border-radius:10px 0 0 0}
+  #radar-bar.collapsed{border-bottom:none;border-radius:10px 0 0 0}
+  #radar-toggle{background:none;border:1px solid var(--line);border-radius:5px;
+    color:#9fb0d0;font:inherit;font-size:13px;width:22px;height:20px;line-height:1;
+    display:flex;align-items:center;justify-content:center;cursor:pointer}
+  #radar-toggle:hover{background:rgba(110,168,255,.14);color:#dfe8ff}
+  #viewTitle{position:fixed;top:14px;right:18px;z-index:4;font-size:12px;
+    color:var(--dim);letter-spacing:.04em;text-align:right}
+  #viewTitle b{color:#cfe0ff;font-weight:600;font-size:14px}
+  #radar-title{display:none}
+  #radar-count{font-size:9.5px;color:#9fe0b0;white-space:nowrap;margin-left:auto;letter-spacing:.02em}
+  #radar-body{position:relative;padding:4px 0 6px}
+  #radar-canvas{display:block;margin:0 auto}
+  #tip{position:fixed;z-index:6;pointer-events:none;
+    background:rgba(9,13,26,.94);border:1px solid var(--line);border-radius:6px;
+    padding:8px 10px;font-size:11px;max-width:230px;display:none;color:var(--ink)}
+  #tip .t{color:#eef3ff;font-weight:600;margin-bottom:3px}
+  #tip .m{color:var(--dim);font-size:10px;line-height:1.5}
+  #tip .m i{color:#9fb0d0;font-style:normal}
+
+/* context menu on a star (replaces the pole-cube widgets) */
+#ctxmenu{position:fixed;z-index:40;display:none;min-width:186px;
+  background:rgba(10,15,30,.97);backdrop-filter:blur(8px);
+  border:1px solid var(--line);border-radius:7px;padding:5px;
+  box-shadow:0 10px 30px rgba(0,0,0,.55);font-size:11.5px}
+#ctxmenu .hd{padding:5px 9px 7px;color:#eef3ff;font-weight:600;
+  border-bottom:1px solid var(--line);margin-bottom:4px;
+  display:flex;align-items:center;gap:8px}
+#ctxmenu .hd .g{font-size:14px}
+#ctxmenu .hd small{color:var(--dim);font-weight:400;letter-spacing:.04em}
+#ctxmenu button{display:block;width:100%;text-align:left;background:none;border:none;
+  color:#aebbd8;font:inherit;font-size:11.5px;padding:6px 9px;border-radius:5px;cursor:pointer}
+#ctxmenu button:hover:not(:disabled){background:rgba(110,168,255,.14);color:#fff}
+#ctxmenu button:disabled{color:#4a5673;cursor:default}
+#ctxmenu button b{color:#9fe0b0;font-weight:600}
+#ctxmenu .sep{height:1px;background:var(--line);margin:4px 2px}

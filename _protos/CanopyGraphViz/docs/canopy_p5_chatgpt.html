@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisation de Graphe en Canopée</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #0a0a1a;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        #canvas-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        #controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 30, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 300px;
+        }
+        .slider-container {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="range"] {
+            width: 100%;
+        }
+        .tag-filters {
+            margin-top: 10px;
+        }
+        .tag-checkbox {
+            margin: 5px 0;
+        }
+        h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    <div id="controls">
+        <h3>Contrôles</h3>
+        <div class="slider-container">
+            <label for="distance">Distance de vue:</label>
+            <input type="range" id="distance" min="100" max="1000" value="500">
+        </div>
+        <div class="slider-container">
+            <label for="min-distance">Distance minimale:</label>
+            <input type="range" id="min-distance" min="10" max="500" value="50">
+        </div>
+        <div class="slider-container">
+            <label for="max-distance">Distance maximale:</label>
+            <input type="range" id="max-distance" min="100" max="2000" value="800">
+        </div>
+        <div class="tag-filters">
+            <h4>Filtres par tags:</h4>
+            <div id="tag-filters-container">
+                <!-- Les cases à cocher seront générées ici -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let nodes = [];
+        let edges = [];
+        let allTags = [];
+        let activeTags = {};
+        let mouseDragging = false;
+        let lastMouseX, lastMouseY;
+        let viewAngle = 0;
+        let viewTilt = Math.PI / 6; // Angle d'inclinaison de 30 degrés
+        let distanceScale = 500;
+        let minDistance = 50;
+        let maxDistance = 800;
+
+        // Configuration des données d'exemple
+        const NODE_COUNT = 200;
+        const EDGE_PROBABILITY = 0.02;
+        const TAGS = ['science', 'histoire', 'art', 'technologie', 'philosophie', 'nature', 'musique', 'mathématiques'];
+
+        function setup() {
+            let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
+            canvas.parent('canvas-container');
+            
+            // Générer des données d'exemple
+            generateSampleData();
+            
+            // Initialiser les filtres de tags
+            initializeTagFilters();
+            
+            // Configuration des écouteurs d'événements
+            setupEventListeners();
+        }
+
+        function draw() {
+            background(10, 10, 26);
+            
+            // Mettre à jour les paramètres depuis les sliders
+            updateParameters();
+            
+            // Contrôles de la caméra avec la souris
+            handleMouseControls();
+            
+            // Appliquer les rotations de la vue
+            rotateY(viewAngle);
+            rotateX(-viewTilt);
+            
+            // Dessiner les étoiles (nœuds) et les connexions
+            drawStarsAndConnections();
+        }
+
+        function generateSampleData() {
+            // Générer des nœuds avec des positions aléatoires en 3D
+            for (let i = 0; i < NODE_COUNT; i++) {
+                // Distance aléatoire avec distribution exponentielle pour avoir plus de points proches
+                let distance = minDistance + (maxDistance - minDistance) * Math.pow(Math.random(), 2);
+                
+                // Angles aléatoires pour la position sphérique
+                let theta = Math.random() * Math.PI * 2;
+                let phi = Math.acos(2 * Math.random() - 1);
+                
+                // Conversion en coordonnées cartésiennes
+                let x = distance * Math.sin(phi) * Math.cos(theta);
+                let y = distance * Math.sin(phi) * Math.sin(theta);
+                let z = distance * Math.cos(phi);
+                
+                // Sélectionner 1-3 tags aléatoires
+                let nodeTags = [];
+                let tagCount = Math.floor(Math.random() * 3) + 1;
+                for (let j = 0; j < tagCount; j++) {
+                    let randomTag = TAGS[Math.floor(Math.random() * TAGS.length)];
+                    if (!nodeTags.includes(randomTag)) {
+                        nodeTags.push(randomTag);
+                    }
+                }
+                
+                // Ajouter le nœud
+                nodes.push({
+                    id: i,
+                    x: x,
+                    y: y,
+                    z: z,
+                    tags: nodeTags,
+                    size: 3 + Math.random() * 5,
+                    color: color(
+                        150 + Math.random() * 100,
+                        150 + Math.random() * 100,
+                        200 + Math.random() * 55
+                    )
+                });
+            }
+            
+            // Générer des arêtes basées sur la proximité et les tags partagés
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    let nodeA = nodes[i];
+                    let nodeB = nodes[j];
+                    
+                    // Calculer la distance entre les nœuds
+                    let dx = nodeA.x - nodeB.x;
+                    let dy = nodeA.y - nodeB.y;
+                    let dz = nodeA.z - nodeB.z;
+                    let distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                    
+                    // Vérifier les tags communs
+                    let commonTags = nodeA.tags.filter(tag => nodeB.tags.includes(tag));
+                    
+                    // Probabilité de connexion basée sur la distance et les tags communs
+                    let connectionProbability = EDGE_PROBABILITY * (1 + commonTags.length * 2) * (1 - distance / 2000);
+                    
+                    if (Math.random() < connectionProbability) {
+                        edges.push({
+                            source: i,
+                            target: j,
+                            strength: 1 - (distance / 2000),
+                            tags: commonTags
+                        });
+                    }
+                }
+            }
+            
+            // Collecter tous les tags uniques
+            allTags = [...new Set(nodes.flatMap(node => node.tags))];
+        }
+
+        function initializeTagFilters() {
+            const container = document.getElementById('tag-filters-container');
+            
+            allTags.forEach(tag => {
+                // Activer tous les tags par défaut
+                activeTags[tag] = true;
+                
+                const div = document.createElement('div');
+                div.className = 'tag-checkbox';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `tag-${tag}`;
+                checkbox.checked = true;
+                checkbox.addEventListener('change', () => {
+                    activeTags[tag] = checkbox.checked;
+                });
+                
+                const label = document.createElement('label');
+                label.htmlFor = `tag-${tag}`;
+                label.textContent = tag;
+                
+                div.appendChild(checkbox);
+                div.appendChild(label);
+                container.appendChild(div);
+            });
+        }
+
+        function setupEventListeners() {
+            // Écouter les changements sur les sliders
+            document.getElementById('distance').addEventListener('input', updateParameters);
+            document.getElementById('min-distance').addEventListener('input', updateParameters);
+            document.getElementById('max-distance').addEventListener('input', updateParameters);
+            
+            // Gérer le redimensionnement de la fenêtre
+            window.addEventListener('resize', () => {
+                resizeCanvas(windowWidth, windowHeight);
+            });
+        }
+
+        function updateParameters() {
+            distanceScale = parseInt(document.getElementById('distance').value);
+            minDistance = parseInt(document.getElementById('min-distance').value);
+            maxDistance = parseInt(document.getElementById('max-distance').value);
+        }
+
+        function handleMouseControls() {
+            // Rotation avec la souris
+            if (mouseDragging) {
+                let dx = mouseX - lastMouseX;
+                let dy = mouseY - lastMouseY;
+                
+                viewAngle += dx * 0.01;
+                viewTilt += dy * 0.01;
+                
+                // Limiter l'angle d'inclinaison pour éviter les renversements
+                viewTilt = Math.max(-Math.PI/2 + 0.1, Math.min(Math.PI/2 - 0.1, viewTilt));
+                
+                lastMouseX = mouseX;
+                lastMouseY = mouseY;
+            }
+        }
+
+        function drawStarsAndConnections() {
+            // Trier les nœuds par distance (pour un rendu correct)
+            let sortedNodes = [...nodes].sort((a, b) => {
+                let distA = Math.sqrt(a.x*a.x + a.y*a.y + a.z*a.z);
+                let distB = Math.sqrt(b.x*b.x + b.y*b.y + b.z*b.z);
+                return distB - distA; // Dessiner les plus éloignés en premier
+            });
+            
+            // Dessiner les connexions d'abord (en arrière-plan)
+            stroke(200, 200, 255, 50);
+            strokeWeight(1);
+            noFill();
+            
+            for (let edge of edges) {
+                let source = nodes[edge.source];
+                let target = nodes[edge.target];
+                
+                // Vérifier si au moins un tag de la connexion est actif
+                let hasActiveTag = edge.tags.some(tag => activeTags[tag]);
+                
+                if (hasActiveTag) {
+                    // Ajuster l'opacité en fonction de la distance
+                    let sourceDist = Math.sqrt(source.x*source.x + source.y*source.y + source.z*source.z);
+                    let targetDist = Math.sqrt(target.x*target.x + target.y*target.y + target.z*target.z);
+                    
+                    let alpha = 150 * (1 - Math.max(sourceDist, targetDist) / maxDistance);
+                    stroke(200, 200, 255, alpha);
+                    
+                    beginShape();
+                    vertex(source.x, source.y, source.z);
+                    vertex(target.x, target.y, target.z);
+                    endShape();
+                }
+            }
+            
+            // Dessiner les nœuds
+            noStroke();
+            for (let node of sortedNodes) {
+                // Vérifier si au moins un tag du nœud est actif
+                let hasActiveTag = node.tags.some(tag => activeTags[tag]);
+                
+                if (hasActiveTag) {
+                    let dist = Math.sqrt(node.x*node.x + node.y*node.y + node.z*node.z);
+                    
+                    // Filtrer par distance
+                    if (dist >= minDistance && dist <= maxDistance) {
+                        // Ajuster la taille et l'opacité en fonction de la distance
+                        let size = map(dist, minDistance, maxDistance, node.size, node.size * 0.3);
+                        let alpha = map(dist, minDistance, maxDistance, 255, 100);
+                        
+                        fill(
+                            red(node.color),
+                            green(node.color),
+                            blue(node.color),
+                            alpha
+                        );
+                        
+                        push();
+                        translate(node.x, node.y, node.z);
+                        sphere(size);
+                        pop();
+                    }
+                }
+            }
+        }
+
+        // Gestion des interactions souris
+        function mousePressed() {
+            if (mouseButton === LEFT) {
+                mouseDragging = true;
+                lastMouseX = mouseX;
+                lastMouseY = mouseY;
+            }
+        }
+
+        function mouseReleased() {
+            if (mouseButton === LEFT) {
+                mouseDragging = false;
+            }
+        }
+
+        function mouseWheel(event) {
+            // Zoom avec la molette de la souris
+            distanceScale += event.delta * 0.5;
+            distanceScale = Math.max(100, Math.min(1000, distanceScale));
+            document.getElementById('distance').value = distanceScale;
+            return false; // Empêcher le défilement de la page
+        }
+    </script>
+</body>
+</html>
