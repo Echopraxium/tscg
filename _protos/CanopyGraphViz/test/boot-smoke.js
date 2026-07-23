@@ -75,3 +75,14 @@ state.arrangement='canopy'; state.radial='tree'; state.slice=null; relayout();
 try{ toggleFold('GenericConceptFamily'); console.log('  toggleFold OK  masques='+collapsedHidden.size); }
 catch(e){ console.log('  toggleFold ECHEC: '+e.message); }
 `,sandbox);
+vm.runInContext(`
+console.log('\\n=== noeud observateur (sous les pieds) ===');
+['canopy','clusters','cone','nautilus'].forEach(a=>{
+  state.arrangement=a; state.radial=(a==='cone'||a==='nautilus')?'meta':'tree';
+  relayout();
+  const p=pos[state.focus];
+  const vis=nodeVisible(byId[state.focus]);
+  console.log('  '+a.padEnd(10)+' position='+(p?('('+p.x.toFixed(1)+','+p.y.toFixed(1)+','+p.z.toFixed(1)+')'):'∅')
+    +'  visible='+vis+'  distance='+(p?p.length().toFixed(1):'-'));
+});
+`,sandbox);

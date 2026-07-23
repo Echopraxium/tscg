@@ -64,7 +64,6 @@ const state={
   coneDeg:40, depth:7, magFloor:0,
   showVocab:false,
   showAll:false,
-  selectCenter:false,
   arrangement:'canopy',
   edgeAlpha:0.15,
   colorBy:'facet',
@@ -424,6 +423,13 @@ function nautilusLayout(){
   });
 }
 function layout(){
+  layoutStrategy();
+  // The observer node used to be hidden, for a bad reason: it sat exactly at the camera
+  // position, so you were *inside* its mesh and saw nothing. Place it just under your feet
+  // instead — you stand on it, and looking down shows the body you are standing on.
+  if(pos[state.focus]) pos[state.focus]=new BABYLON.Vector3(0,-2.6,0);
+}
+function layoutStrategy(){
   if(state.arrangement==='canopy'){ canopyLayout(); return; }
   if(state.arrangement==='cone'){ coneLayout(); return; }
   if(state.arrangement==='nautilus'){ nautilusLayout(); return; }
@@ -609,7 +615,6 @@ function buildEdges(){
 /* ---- 6. VISIBILITY / MAGNITUDE / CONE ------------------------------------ */
 let hoverId=null;
 function nodeVisible(x){
-  if(x.id===state.focus) return false;          // the observer is standing on this node
   if(collapsedHidden.has(x.id)) return false;   // folded away behind a collapsed ancestor
   if(state.slice!==null && state.arrangement==='cone'
      && Math.max(0,Math.round(radialOf[x.id]||0))!==state.slice) return false;
@@ -674,10 +679,6 @@ function setCenter(id){ state.focus=id;
   cam.position=new BABYLON.Vector3(0,0,0.0001); applyCam();  // stand ON the new centre
   if(typeof updateDolly==='function') updateDolly();
   relayout();
-  // teleport is a one-shot: uncheck it so the next click doesn't teleport again
-  if(state.selectCenter){ state.selectCenter=false;
-    const cb=document.getElementById('selCenter'); if(cb)cb.checked=false;
-    canvas.style.cursor='default'; }
 }
 function pickMeshAt(e){ const r=canvas.getBoundingClientRect();
   const hit=scene.pick(e.clientX-r.left,e.clientY-r.top,m=>m.metadata&&m.metadata.id);
@@ -717,22 +718,17 @@ function toggleFold(id){
 (function firstPersonControls(){
   let drag=false,lx=0,ly=0,moved=0;
   canvas.addEventListener('pointerdown',e=>{
-    if(e.button===2){                          // right button → context menu, here (button is reliable)
+    if(e.button===2){                          // right button → context menu
       const id = hoverId || pickNear(e);
       tip.style.display='none';
-      // TEMP DIAGNOSTIC — surfaced on screen because the console shows nothing
-      const dbg=$('tip');
-      dbg.style.display='block'; dbg.style.left=(e.clientX+14)+'px'; dbg.style.top=(e.clientY-40)+'px';
-      dbg.innerHTML=`<b style="color:#e6c94b">right-click debug</b><br>hoverId: ${hoverId||'∅'}<br>`
-        +`pickNear: ${pickNear(e)||'∅'}<br>resolved: ${id||'∅'} → ${id?'OPEN':'no target, aborted'}`;
-      if(id){ ctxJustOpened=true; openCtxMenu(e,id); }
+      if(id) openCtxMenu(e,id);
       return;
     }
     const pm=pickMeshAt(e);
     if(pm && pm.metadata.stub){ jumpToSlice(pm.metadata.id); return; }        // hypertext jump
     drag=true; lx=e.clientX; ly=e.clientY; moved=0;
     const id=pm?pm.metadata.id:null, now=performance.now();
-    if(id && state.selectCenter && id===lastClickId && now-lastClickT<340) setCenter(id); // double-click
+    if(id && id===lastClickId && now-lastClickT<340) setCenter(id);   // double-click = teleport
     lastClickId=id; lastClickT=now;
   });
   addEventListener('pointerup',()=>{drag=false;});
@@ -808,9 +804,13 @@ function updateInstrument(){
 $('arr').onchange=e=>{state.arrangement=e.target.value;
   $('vArr').textContent={canopy:'canopy',clusters:'clusters',cone:'cone',nautilus:'nautilus'}[e.target.value];
   if(e.target.value!=='canopy' && state.radial==='tree'){ state.radial='hops'; $('radial').value='hops'; $('vRadial').textContent='hops'; }
-  if(e.target.value==='cone'){                   // stand at the apex, look down the axis
+  if(e.target.value==='cone'){
+    // Seen from the apex, every stratum projects onto every other and they read as one
+    // interleaved mass. The strata only separate from a SIDE vantage — which is exactly
+    // why the cosmic-history diagram is drawn side-on. So stand off-axis and look across.
     state.radial='meta'; $('radial').value='meta'; $('vRadial').textContent='meta-level';
-    yaw=0; pitch=0; cam.position=new BABYLON.Vector3(0,0,0.0001); applyCam(); updateDolly();
+    cam.position=new BABYLON.Vector3(-62,16,28);
+    yaw=Math.PI*0.42; pitch=-0.16; applyCam(); updateDolly();
   } else { state.slice=null; }
   if(e.target.value==='nautilus'){               // start at the umbilicus, looking outward
     state.radial='meta'; $('radial').value='meta'; $('vRadial').textContent='meta-level';
@@ -840,10 +840,10 @@ $('sliceNext').onclick=()=>shiftSlice(1);
 $('sliceAll').onclick=()=>setSlice(null);
 $('travelBack').onclick=()=>travel(-1);
 $('travelFwd').onclick=()=>travel(1);
+$('advMode').onchange=e=>{
+  document.body.classList.toggle('advanced',e.target.checked); };
 $('showAll').onchange=e=>{state.showAll=e.target.checked;updateInstrument();relayout();};
 $('vocabT').onchange=e=>{state.showVocab=e.target.checked;relayout();};
-$('selCenter').onchange=e=>{state.selectCenter=e.target.checked;
-  canvas.style.cursor=e.target.checked?'crosshair':'default';};
 
 // relation-type checkboxes
 const relsEl=$('rels');
@@ -902,6 +902,17 @@ $('radar-toggle').onclick=()=>{
   $('radar-toggle').textContent=radarCollapsed?'+':'−';
   if(!radarCollapsed) drawRadar();
 };
+// True when a world point actually falls inside the rendered viewport (in front of the
+// camera and within its rectangle) — the honest test for "what I can see right now".
+function onScreen(p){
+  if(!p)return false;
+  const v=BABYLON.Vector3.TransformCoordinates(p,scene.getViewMatrix());
+  if(v.z<=0)return false;
+  const W=engine.getRenderWidth(),H=engine.getRenderHeight();
+  const s=BABYLON.Vector3.Project(p,BABYLON.Matrix.Identity(),
+    scene.getTransformMatrix(),cam.viewport.toGlobal(W,H));
+  return s.x>=0 && s.x<=W && s.y>=0 && s.y<=H;
+}
 function drawRadar(){
   if(radarCollapsed)return;
   const W=radarCv.width,H=radarCv.height,cx=W/2,cy=H*0.56;
@@ -931,7 +942,9 @@ function drawRadar(){
     const px=cx+Math.sin(rel)*RX*f, py=cy-Math.cos(rel)*RY*f;
     const ty=py-(elev/(Math.PI/2))*STEM;
     const mg=magnitude(x), hot=(x.id===hoverId), aim=(x.id===aimedId);
-    const inFov=inCone(pos[x.id]); if(inFov) observed++;     // caught by the instrument's cone
+    // "Observed" = actually on screen. A circular cone test would under-count, because the
+    // viewport is a wide rectangle while fov describes the vertical angle only.
+    if(onScreen(pos[x.id])) observed++;
     rctx.strokeStyle=aim?'rgba(159,224,176,0.9)':(hot?'rgba(255,255,255,0.75)':'rgba(150,175,220,0.28)');
     rctx.beginPath(); rctx.moveTo(px,py); rctx.lineTo(px,ty); rctx.stroke();
     rctx.fillStyle=aim?'#9fe0b0':(hot?'#ffffff':colorOf(x));
@@ -1001,10 +1014,8 @@ function renderGuide(){
    because a fold whose effect you can't predict feels broken — which is exactly what
    happened with the earlier pole-cube widgets on a shallow subtree. */
 function closeCtxMenu(){ const m=$('ctxmenu'); if(m) m.style.display='none'; }
-let ctxJustOpened=false;
 addEventListener('pointerdown',e=>{
   if(e.button===2)return;                       // right-click: handled by the canvas opener
-  if(ctxJustOpened){ ctxJustOpened=false; return; }
   if(!e.target.closest||!e.target.closest('#ctxmenu')) closeCtxMenu();
 },true);
 addEventListener('keydown',e=>{ if(e.code==='Escape') closeCtxMenu(); });
@@ -1026,7 +1037,7 @@ function openCtxMenu(ev,id){
     rows.push(`<button disabled>No subtree to fold</button>`);
   }
   rows.push('<div class="sep"></div>');
-  rows.push(`<button data-a="centre">Observe from here</button>`);
+  rows.push(`<button data-a="centre">Teleport there</button>`);
   rows.push(`<button data-a="aim">Aim at this${aimedId===id?' ✓':''}</button>`);
   if(state.arrangement==='cone')
     rows.push(`<button data-a="slice">Isolate its stratum</button>`);
@@ -1211,27 +1222,37 @@ function stepGlide(){
 }
 
 /* ---- 9d. SELECTION ORBIT (polygon matches the glyph's own geometry) -------- */
-let orbitMesh=null, orbitFor=null;
+let orbitMesh=null, orbitPivot=null, orbitFor=null, orbitPhase=0;
 function updateOrbit(){
   const id=aimedId||hoverId;
   if(!id||!pos[id]||!meshes[id]||!meshes[id].isEnabled()){
-    if(orbitMesh)orbitMesh.setEnabled(false); orbitFor=null; return; }
+    if(orbitPivot)orbitPivot.setEnabled(false); orbitFor=null; return; }
   const g=STYLESHEET.nodes.kinds[kindOf(byId[id])]||STYLESHEET.nodes.kinds.other;
   if(orbitFor!==id){
-    if(orbitMesh)orbitMesh.dispose();
+    if(orbitPivot)orbitPivot.dispose();
+    // A torus aimed with lookAt puts its axis toward the camera, i.e. the ring is seen
+    // EDGE-ON and vanishes — which is why it only appeared once you had flown away and the
+    // angle happened to become favourable. Billboard the pivot instead and tilt the ring
+    // into the screen plane.
+    orbitPivot=new BABYLON.TransformNode('orbitPivot',scene);
+    orbitPivot.billboardMode=BABYLON.TransformNode.BILLBOARDMODE_ALL;
     orbitMesh=BABYLON.MeshBuilder.CreateTorus('orbit',
-      {diameter:2.5,thickness:0.075,tessellation:ORBIT_TESS[g.shape]||36},scene);
+      {diameter:2.5,thickness:0.13,tessellation:ORBIT_TESS[g.shape]||36},scene);
+    orbitMesh.parent=orbitPivot;
     const om=new BABYLON.StandardMaterial('orbitM',scene);
     om.disableLighting=true;
     om.emissiveColor=BABYLON.Color3.FromHexString(aimedId?'#9fe0b0':'#ffffff');
-    om.alpha=0.92; orbitMesh.material=om; orbitMesh.isPickable=false;
+    om.alpha=0.95; orbitMesh.material=om; orbitMesh.isPickable=false;
+    orbitMesh.renderingGroupId=1;              // draw above the bodies
     orbitFor=id;
   }
-  orbitMesh.setEnabled(true);
-  orbitMesh.position=pos[id];
-  orbitMesh.scaling.setAll(meshes[id].scaling.x*1.35);
+  orbitPivot.setEnabled(true);
+  orbitPivot.position.copyFrom(pos[id]);
+  orbitPivot.scaling.setAll(meshes[id].scaling.x*1.45);
+  // restore the gentle wobble: the ring sits in the screen plane and nods around it
+  orbitPhase+=0.03;
+  orbitMesh.rotation.x=Math.PI/2 + Math.sin(orbitPhase)*0.42;
   orbitMesh.rotation.y+=0.012;
-  orbitMesh.rotation.x=0.42;
 }
 
 /* ---- 10. RUN -------------------------------------------------------------- */

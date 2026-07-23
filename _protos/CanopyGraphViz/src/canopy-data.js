@@ -91,6 +91,58 @@ insts.forEach(([id,otype,ill,doms,facet])=>{
   if(facet) N[N.length-1].facet=facet;
 });
 
+/* --- scale-up: bring the fixture to the real corpus's shape ----------------
+   The real TSCG corpus is ~599 nodes and, crucially, **M1-heavy** (M1 ≈ 266, M0 ≈ 167,
+   M2 ≈ 110, M3 ≈ 42). The hand-written cake above is far too small and M2-dominant, which
+   made folding look inert and the cone's strata look thin. This block extends it to the
+   same proportions so layout, folding and slicing are exercised realistically. */
+(function scaleUp(){
+  const rnd=(s=>()=>((s=s*16807%2147483647)-1)/2147483646)(42);
+  const pick=a=>a[Math.floor(rnd()*a.length)];
+
+  // more M2 concepts, spread over the existing families and grammars
+  const roots=['Coupling','Resonance','Attractor','Threshold','Gradient','Cycle','Buffer',
+    'Redundancy','Delay','Saturation','Bifurcation','Symmetry','Cascade2','Filter',
+    'Amplification','Constraint','Invariant','Channel','Reservoir','Trigger','Coherence',
+    'Partition','Closure','Drift','Selection'];
+  const famList=['Structural','Dynamic','Regulatory','Adaptive','Energetic',
+                 'Informational','Ontological','Teleonomic','Relational'];
+  const grams=['Territory','Map','Stereopsis'];
+  roots.forEach((c,i)=>{ const f=famList[i%famList.length], d=grams[i%3];
+    n(c,c,M2,'m2',{family:f,dominantM3:d});
+    e(c,'GenericConcept','subClassOf'); e(c,f,'hasFamily'); e(c,d,'hasDominantM3'); });
+
+  // M1: many more domains, each with a real fan of domain concepts (the largest layer)
+  const moreDomains=['Geology','Mythology','Education','Electronics','Photography',
+    'BusinessModeling','EnergyGenerators','SystemicModeling','Cryptography','Ecology'];
+  moreDomains.forEach(d=>n(d,d,M1,'m1',{family:'—'}));
+  const allDomains=['Biology','Optics','Chemistry','Music','Economics','Physics'].concat(moreDomains);
+  const m2pool=N.filter(x=>x.layer===M2&&x.dominantM3).map(x=>x.id);
+  let dc=0;
+  allDomains.forEach(d=>{
+    const k=6+Math.floor(rnd()*4);                       // 6–9 concepts per domain
+    for(let i=0;i<k;i++){
+      const id=d+'_C'+(i+1); dc++;
+      n(id,d.slice(0,4)+'·'+(i+1),M1,'m1',{family:'—'});
+      e(id,d,'subClassOf');                              // single-valued containment
+      e(id,pick(m2pool),'illustratesConcept');           // lateral contract
+      if(rnd()<0.3) e(id,pick(allDomains),'relatedDomains');
+    }
+  });
+
+  // M0: instances, grouped under their ontologyType (single-valued containment)
+  const otypes=['Poclet','TscgTool','SystemicFramework','SymbolicSystemGrammar'];
+  const m1pool=N.filter(x=>x.layer===M1&&/_C\d+$/.test(x.id)).map(x=>x.id);
+  for(let i=0;i<58;i++){
+    const ot=pick(otypes), id='Inst_'+(i+1);
+    n(id,'Instance '+(i+1),M0,'m0',{ontologyType:ot});
+    e(id,ot,'ontologyType');
+    e(id,pick(m2pool),'illustratesConcept');
+    if(rnd()<0.7) e(id,pick(allDomains),'appliesToDomains');
+    if(rnd()<0.4) e(id,pick(m1pool),'relatedTo');
+  }
+})();
+
 /* --- imported vocabulary (hidden by default; the hairball magnets) --- */
 [['owl:Class','owl'],['owl:Ontology','owl'],['rdfs:subClassOf','rdfs'],
  ['rdfs:label','rdfs'],['dcterms:creator','dcterms'],['xsd:string','xsd'],
