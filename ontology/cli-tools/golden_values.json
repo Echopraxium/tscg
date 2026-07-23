@@ -1,5 +1,5 @@
 {
-  "_measured": "2026-07-21, real repository (--update-golden)",
+  "_measured": "2026-07-23, real repository (--update-golden)",
   "_note": "Reference values, TriskeleVM-style. EXACT match required. A count that DROPS is as suspicious as one that rises: either a deliberate fix (then --update-golden, and the drop is recorded under '_previous'/'_delta') or a validator that stopped biting. A silently shrinking count is the most dangerous signal in this repo — it looks like progress.",
   "M3": {
     "status": "NOT_INSTRUMENTED",
@@ -31,26 +31,25 @@
       "DCC008": "Amplifier: nested parentheses + `Ft`, which is not a TSCG primitive at all",
       "CTX001": "3 WARNINGS (not errors): M1_Domains lacks the 'm2' key in its @context; M1_BusinessModeling lacks 'm3:eagle_eye' and 'm3:sphinx_eye'. Counted in `warnings: 3`, and therefore in by_code too — by_code counts ALL codes emitted, warnings included. Omitting them from the golden set made the gate fail on a reference that was itself incomplete."
     },
-    "shacl_violations": 468,
+    "shacl_violations": 680,
     "_previous": {
       "files": 16,
-      "errors": 163,
+      "errors": 151,
       "warnings": 3,
-      "shacl_violations": 476
+      "shacl_violations": 468
     },
     "_delta": {
-      "errors": "163 -> 151",
-      "shacl_violations": "476 -> 468"
+      "shacl_violations": "468 -> 680"
     },
     "_delta_reason": "SC-1.5, 2026-07-14: M1_CoreConcepts v2.8.0 — @context coercion (\"rdfs:subClassOf\"/\"rdfs:domain\"/\"rdfs:range\": {\"@type\":\"@id\"}). Its 26 violations were ALL 'rdfs:subClassOf must point to ...', caused by IRIs serialised as string literals. The file is now the ONLY SHACL-conformant M1 file. VERIFIED TARGETED: the other 15 files' counts are IDENTICAL to the digit (46·2·4·30·58·42·104·6·18·32·36·24·20·24·30). Same fix made M1_CoreConcepts reasonable by Pellet for the first time — it had been UNANALYSABLE, all 19 subClassOf axioms silently ignored.",
-    "_updated": "2026-07-21"
+    "_updated": "2026-07-23"
   },
   "M0": {
     "status": "INSTRUMENTED",
     "note": "check_m0_instances.py runs; golden counts not yet captured. Run --update-golden once, REVIEW the numbers, then trust them.",
     "_previous": {},
     "_delta": "no change",
-    "_updated": "2026-07-21"
+    "_updated": "2026-07-23"
   },
   "_known_pre_existing_not_counted_here": {
     "SHAPE2_vs_SHAPE3": "~256 of the 502 SHACL violations are a VALIDATOR BUG, not data defects. sh:targetClass follows subclasses, so every extension combo is validated TWICE — by SHAPE 2 (which demands Fm2( ) and SHAPE 3 (which demands Fm1m2( ) — mutually exclusive. No extension combo can satisfy both. SHAPE 2 must exclude the subclass. → SC-5. THIS IS THE REAL GOLDMINE: ~256 violations that describe no defect at all.",

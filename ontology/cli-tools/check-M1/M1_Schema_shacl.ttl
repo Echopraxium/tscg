@@ -4,7 +4,13 @@
 # Covers: M1_CoreConcepts.jsonld + all M1 Extension files
 # ============================================================================
 # Author : Echopraxium with the collaboration of Claude AI
-# Version: 1.3.0
+# Version: 1.4.0
+# 1.4.0 (SC-1 enforcement fix): SHAPE 9 ComboFormulaShape given dual sh:targetClass
+#        (GenericConceptCombo + DomainConceptCombo). It had only the former with an
+#        "inherited by" comment, so the three SC-1 rules (no monoidal operator in a
+#        signature, no bare primitive as argument, correct arity) were enforced on
+#        M1_CoreConcepts ONLY and on NO M1 extension. RAISING change: expect new
+#        violations across the 14 extensions. Isolated golden lot.
 # 1.3.0 (SC-5 hardening): SHAPE 10 extended to the full retired D8 serialisation triad
 #        (Expanded + TeX + RawText, not Expanded alone). NEW SHAPE 11 forbids the M0
 #        measurement m1/m2:hasEpistemicGap on M1 combo types (δ₁ is measured on an M0
@@ -431,7 +437,14 @@ m1:ComboFormulaShape
     a sh:NodeShape ;
     sh:name "ComboFormulaShape" ;
     sh:description "A combo's structuralGrammarFormula is a function signature: no monoidal operator, no primitive as argument, correct arity." ;
-    sh:targetClass m2:GenericConceptCombo ;   # inherited by m2:DomainConceptCombo
+    # DUAL TARGET (v1.4.0): the "inherited by" assumption was FALSE in practice —
+    # SHAPE 9 never fired on any M1 extension (all extension combos are typed
+    # m2:DomainConceptCombo). Verified empirically 2026-07-22 on M1_Geology:
+    # 17 violations reported, ZERO from SHAPE 9, despite formulas that plainly
+    # violate SC-1 (monoidal operators + bare primitives as arguments).
+    # Same Fix-B trap already corrected on SHAPE 10 / SHAPE 11 in v1.3.0.
+    sh:targetClass m2:GenericConceptCombo ;
+    sh:targetClass m2:DomainConceptCombo ;
 
     # --- FORBIDDEN: monoidal operators inside a signature -------------------
     # x / + / | belong to ATOM formulas only. In a signature they would assert
