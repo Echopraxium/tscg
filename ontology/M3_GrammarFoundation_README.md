@@ -1,10 +1,11 @@
 # M3_GrammarFoundation.jsonld
 
-**Version:** 2.4.1  
+**Version:** 2.5.0  
 **Layer:** M3  
 **Type:** Apex Ontology — Mathematical Foundation  
 **Created:** 2026-05-12  
-**Last Modified:** 2026-07-18  
+**Last Modified:** 2026-07-23  
+**Author:** Echopraxium with the collaboration of Claude AI
 **Status:** Foundational — no imports
 
 ---
@@ -166,6 +167,8 @@ A × St × It | R + O | _$   =  Incoherence  (negative pole)
 
 ## 📏 Notation Convention — St / It / O in Hybrid Formulas
 
+> ⚠️ **Stale notation rule (SC-2 target).** The convention stated below is the *old* hybrid-only rule (`S` bare in pure-Territory formulas, indexed only in formulas containing `|`). SC-2 replaces it: **`S` and `I` are always monoid-subscripted in every ATOM formula** (`St`/`Ss`, `It`/`Im`); `A`/`F`/`D` stay bare. Combos are unaffected (function arguments are named concepts, not primitives). Not corrected here — it is SC-2's first step, and the value must change at the source in the `.jsonld`.
+
 **Rule:** In any formula containing `|` (hybrid/bicephalous formula), Territory and Map
 types that could be ambiguous with new Gs type `Ss` carry their monoid index:
 
@@ -305,10 +308,11 @@ This constraint preserves well-definedness despite | being inter-grammar.
 
 ## Changelog
 
-*(Derived from `owl:versionInfo` / `m2:changelog` in `M3_GrammarFoundation.jsonld`.)*
+*(Derived from `owl:versionInfo` / `m3:changelog` in `M3_GrammarFoundation.jsonld`.)*
 
 | Version | Date | Changes |
 |---|---|---|
+| **2.5.0** | 2026-07-23 | **`m3:changelog` DEFINED** (`owl:AnnotationProperty`). The `changelog` property was used corpus-wide but **declared nowhere**, in three competing spellings. Defined here, in the apex, so every lower layer (M2/M1/M0 — all importing M3) can use it as a legal downward reference. Also applied to this file: `m2:changelog` → `m3:changelog`, fixing a dependency inversion (M3 referencing M2) and a CTX-1 defect (`m2` prefix undeclared here). Aligned **in intent** with `adms:versionNotes`; no `rdfs:subPropertyOf` asserted (pending a decision on external vocabulary). **Known limits**: changelog entry objects still carry undeclared bare keys (`version`/`date`/`changes`) and stay invisible on expansion; this file still declares `@vocab = owl#`. Both deferred to the VOC worksite. |
 | **2.4.1** | 2026-07-18 | @context hygiene fix (CTX): `m3` prefix made **absolute** (`.../ontology/M3_GenesisGrammar.jsonld#`) and `@base` repaired (`.../main/` → `.../main/ontology/`). Both were relative/malformed and, with `@vocab`=owl#, left every `m3:*` term (incl. `MonoidalType`) resolving against owl# instead of the M3 namespace. Data graph unchanged. |
 | **2.4.0** | 2026-07-12 | SC-1 — `Fm2`/`Fm1m2` were declared **morphisms**; they are **functions** (emergence is non-compositional — arguments are combined, not associated). `Φ`/`Ψ` remain genuine morphisms (family split, not purged). Root error corrected: `Fm1m2` was defined as "crossing the M1/M2 boundary" — it is distinguished by **domain qualification**, nothing else. Signatures: `Fm2 : GenericConcept²⁺ → GenericConceptCombo`; `Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo`. The slot-separating `×` removed (`×` reserved to Gt). RENAME `m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo`. |
 | **2.3.0** | 2026-07-12 | SC-1 — `DomainConceptCombo` re-defined by its `Fm1m2` formula (≥1 Domain + ≥1 GenericConcept), superseding the "parents from distinct domains" criterion. A combo's formula **is** its function signature; no monoidal formula/expansion. Arguments = named concepts (comma-juxtaposed), never primitives, never `×`/`+`/`\|`. `Fm1` does not exist. File formulas flagged by SHACL v1.1.0, repair deferred to SC-6. |

@@ -1,10 +1,11 @@
 # M3_SphinxEye.jsonld
 
-**Version:** 3.5.0  
+**Version:** 3.6.0  
 **Layer:** M3  
 **Type:** Map Grammar (Gm)  
 **Created:** 2026-01-21  
-**Last Modified:** 2026-05-18
+**Last Modified:** 2026-07-23
+**Author:** Echopraxium with the collaboration of Claude AI
 
 ---
 
@@ -125,3 +126,17 @@ The Sphinx poses riddles at the crossroads, constructing understanding:
 6. **R = Representability** — never Reproducibility (critical invariant)
 
 **The Sphinx constructs the Map through enigmatic wisdom.** 🦁
+
+---
+
+## 📋 Changelog
+
+*(Derived from `owl:versionInfo` / `m3:changelog` in `M3_SphinxEye.jsonld`.)*
+
+| Version | Date | Changes |
+|---|---|---|
+| **3.6.0** | 2026-07-23 | LAYERING FIX + CTX-4. `m2:changelog` → **`m3:changelog`** (defined in `M3_GrammarFoundation` 2.5.0): an M3 file must not reference an M2 property (dependency inversion), and the `m2` prefix was undeclared here (CTX-1), so the key resolved to an opaque `m2:` URI scheme. **CTX-4 fix (required, not cosmetic):** the `m3` prefix was *relative*; a relative prefix resolves against `@base` in IDENTIFIER position but NOT in PREDICATE position, so every `m3:*` property here expanded to an unresolved IRI while `m3:*` classes expanded correctly. Prefix made absolute. Data graph unchanged. |
+
+---
+
+*TSCG Framework — Echopraxium with the collaboration of Claude AI*

@@ -1,11 +1,12 @@
 # M3_GenesisGrammar.jsonld
 
-**Version:** 4.3.0  
+**Version:** 4.5.0  
 **Layer:** M3  
 **Type:** Bicephalous Grammar (Gt + Gm) with Stereopsis reification (Gs)  
 **Former name:** M3_GenesisSpace.jsonld  
 **Created:** 2026-01-21  
-**Last Modified:** 2026-05-27
+**Last Modified:** 2026-07-23
+**Author:** Echopraxium with the collaboration of Claude AI
 
 ---
 
@@ -127,3 +128,18 @@ Imagine a **giant human body** with:
 5. **Complete M3 foundation** — imported by M2_GenericConcepts
 
 **Genesis is where Territory and Map unite — and Stereopsis is born.** 🌅
+
+---
+
+## 📋 Changelog
+
+*(Derived from `owl:versionInfo` / `m3:changelog` in `M3_GenesisGrammar.jsonld`.)*
+
+| Version | Date | Changes |
+|---|---|---|
+| **4.5.0** | 2026-07-23 | LAYERING FIX + CTX-4. `m2:changelog` → **`m3:changelog`** (defined in `M3_GrammarFoundation` 2.5.0): an M3 file must not reference an M2 property (dependency inversion), and the `m2` prefix was undeclared here (CTX-1), so the key resolved to an opaque `m2:` URI scheme. **CTX-4 fix (required, not cosmetic):** the `m3` prefix was *relative*; a relative prefix resolves against `@base` in IDENTIFIER position but NOT in PREDICATE position, so every `m3:*` property here expanded to an unresolved IRI while `m3:*` classes expanded correctly. Prefix made absolute. Data graph unchanged. |
+| **4.4.0** | 2026-06-29 | **F AMENDMENT 3 REDUCED**: removed the F continuous numeric spectrum (`F_crit`, `F_max`, the `0<F<F_crit` band, `F_total` conservation) as a scalar residue inconsistent with the monoidal formalism. *(Entry back-filled 2026-07-23: this README was 2 versions behind its `.jsonld`.)* |
+
+---
+
+*TSCG Framework — Echopraxium with the collaboration of Claude AI*
