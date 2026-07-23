@@ -1,5 +1,7 @@
 # TSCG — Vocabulary Consolidation (VOC worksite) — Scoping Note
 
+**File**: `ontology/docs/_01_Worksite/TSCG_VocabularyConsolidation_Worksite_README.md`
+
 **Author**: Echopraxium with the collaboration of Claude AI
 **Version**: 0.1.0 (SCOPING — no file edited yet)
 **Date**: 2026-07-22
