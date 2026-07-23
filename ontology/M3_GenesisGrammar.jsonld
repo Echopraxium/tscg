@@ -7,15 +7,15 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "m3": "M3_GenesisGrammar.jsonld#"
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#"
   },
   "@graph": [
     {
       "@id": "m3:GenesisGrammar",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "4.4.0",
+      "owl:versionInfo": "4.5.0",
       "dcterms:created": "2026-01-21",
-      "dcterms:modified": "2026-06-29",
+      "dcterms:modified": "2026-07-22",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Genesis Grammar - Bicephalous Structural Grammar",
       "dcterms:description": "Complete orthogonal basis for the TSCG framework, consisting of two complementary perspectives: Eagle Eye (ASFID) for Territory measurement and Sphinx Eye (REVOI) for Map construction. Integrates Category Theory formalization as mathematical foundation (definitions included in this file) for functors, morphisms, and categorical structure of TSCG layers.",
@@ -281,7 +281,12 @@
       "m3:ontologyType": {
         "@id": "m3:Genesis"
       },
-      "m2:changelog": [
+      "m3:changelog": [
+        {
+          "version": "4.5.0",
+          "date": "2026-07-22",
+          "changes": "LAYERING FIX: m2:changelog → m3:changelog. An M3 file must not reference an M2 property (dependency inversion: M3 is the foundational layer, M2 imports it). Compounding this, the 'm2' prefix was NOT declared in this @context (CTX-1), so the key resolved to an opaque 'm2:' URI scheme instead of the M2 namespace — invisible to any reasoner. m3:changelog is defined in M3_GrammarFoundation v2.5.0. CTX-4 FIX (required for the above to bind): the 'm3' prefix was RELATIVE in this @context. A relative prefix resolves against @base in IDENTIFIER position but NOT in PREDICATE position, so every m3:* PROPERTY in this file expanded to the unresolved IRI 'M3_GenesisGrammar.jsonld#...' while m3:* CLASSES expanded correctly — the file's predicates were silently desynchronised from the rest of M3. Prefix made ABSOLUTE. This is why the 2026-07-18 verification, which compared MonoidalType (an identifier), reported alignment that did not hold for properties."
+        },
         {
           "version": "4.4.0",
           "date": "2026-06-29",
