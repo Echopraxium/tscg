@@ -1,10 +1,10 @@
 # M3_BicephalousPerspective.jsonld
 
-**Version:** 1.3.1
+**Version:** 1.5.0
 **Layer:** M3
 **Type:** Stereopsis Grammar (Gs) — Reification of stereopsic synergy
 **Created:** 2026-05-18
-**Last Modified:** 2026-07-18
+**Last Modified:** 2026-07-23
 **Author:** Echopraxium with the collaboration of Claude AI
 
 ---
@@ -63,7 +63,7 @@ St × It | L                =  Node/Component  (structure+info, converging)
 It × Ss                    =  Code            (information encoded as symbol)
 Ss × F | K                 =  Language        (symbol-flow in knowledge context)
 A × St × F | L             =  Homeostasis     (attractor+structure+flow, converging)
-A × S × F | _0             =  Balance         (equilibrium — _0 = _^ | _$)
+A × St × F | _0            =  Balance         (equilibrium — _0 = _^ | _$)
 A × F × D | _0             =  TriadicBalance  (3-state optimum)
 ```
 
@@ -118,7 +118,7 @@ _$   →  Over-pole    (excessive constraint, excess closure)
 ```
 
 **Usage in M2:**
-- `m2:Balance = A × S × F | _0` — static equilibrium state (Territory/Map optimal correspondence)
+- `m2:Balance = A × St × F | _0` — static equilibrium state (Territory/Map optimal correspondence)
 - `m2:TriadicBalance = A × F × D | _0` — structural topology with intrinsic 3-state optimum
 
 **Open question (deferred)**: Does _0 require a new Gs primitive (C=Calibration,
@@ -191,9 +191,27 @@ The semiotic inter-grammar mediator — the sign-relation between a Territory
 entity (signifier) and a Map meaning (signified). Formalises Peirce's triad
 (sign / object / interpretant) at the M3 level.
 
-**Notation disambiguation**: `Ss` (subscript s = Stereopsic) vs `St` (subscript
-t = Territory/Structure). In pure intra-Territory formulas: `S` remains unindexed.
-In hybrid formulas (containing `|`): `St` for Structure, `Ss` for Symbol.
+**Notation disambiguation (SC-2 rule, v1.5.0)**: `S` and `I` are **always**
+monoid-subscripted in **every atom formula** — they are the only letters that collide
+across the three grammars:
+
+| Bare | Subscripted | Monoid | Meaning |
+|---|---|---|---|
+| `S` | `St` | Gt | Structure (Territory) |
+| `S` | `Ss` | Gs | Symbol (Stereopsic) |
+| `I` | `It` | Gt | Information (Territory) |
+| `I` | `Im` | Gm | Interoperability (Map) |
+
+`A`, `F` and `D` stay **bare** — no collision.
+
+**Scope**: atom formulas only (`m2:hasStructuralGrammarFormula`). Combos carry a
+function signature (`Fm2`/`Fm1m2`) whose arguments are **named concepts**, never
+primitives — no subscript applies there. ASFID/REVOI scoring terminology is unaffected.
+
+> **Retired rule (pre-v1.5.0)**: indexation used to be *context-dependent* — bare in
+> pure-Territory formulas, indexed only in formulas containing `|`. That gave one
+> primitive two spellings depending on its neighbours: ambiguous to read, impossible
+> to check mechanically.
 
 ---
 
@@ -273,7 +291,8 @@ Analogously in TSCG:
 4. **TKSL acronym** — 4 nominal Gs primitives (T, K, Ss, L), each answering
    a transcendental question
 5. **5-5-6 asymmetry** — Gs has 6 primitives vs 5 for Gt/Gm; semantically justified
-6. **Notation convention** — St/It in hybrid formulas; ASFID/REVOI scoring unaffected
+6. **Notation convention (SC-2)** — `S`/`I` always subscripted in every atom formula
+   (`St`/`Ss`, `It`/`Im`); `A`/`F`/`D` bare; ASFID/REVOI scoring unaffected
 7. **| is universal** — operates across all three grammars, always produces Gs types
 8. **DerivedGsElement** (v1.3.0) — named Gs constants derived from primitives;
    Base16 preserved. First instance: `_0 = _^ | _$` (EquilibriumPole)
@@ -287,6 +306,8 @@ Analogously in TSCG:
 
 | Version | Date | Changes |
 |---|---|---|
+| **1.5.0** | 2026-07-23 | **SC-2 STEP 1 — notation convention revised at the source.** `m3:notation_disambiguation` no longer states the retired hybrid-only rule. New rule: `S` and `I` are **always** monoid-subscripted in **every atom formula** (`St`/`Ss`, `It`/`Im`); `A`/`F`/`D` stay bare. Scope: atoms only — combo signatures take named concepts, not primitives. The old rule gave one primitive two spellings depending on its neighbours: ambiguous to read, unenforceable mechanically. Also corrected: the `m2:Balance` example read `A × S × F | _0`, now `A × St × F | _0`. Closes the contradiction opened by `M3_EagleEye` 2.10.0 (SC-2 step 2). NEXT: step 3 (SHACL `FormulaShape`), then step 4 (43 M2 atom formulas, gauge NOT-1 → 0). |
+| **1.4.0** | 2026-07-23 | **VOC/B1 — 19 properties declared.** This file used **24 `m3:*` keys with 0 declared**; 19 are now `owl:AnnotationProperty`: `role`, `semantics`, `symbol`, `grammar`, `visual`, `usage`, `derivation`, `formula_role`, `independence`, `analogyInGt`, `analogyInGs`, `pairWith`, `triadicPattern`, `theoretical_basis`, `transcendentalQuestion`, `openQuestion`, `rejected_names`, `notation_note`, `notation_disambiguation`. **Declaration only** — no usage, no data changed. HELD: `definition`, `examples` (Family-A candidates → `skos:definition`/`skos:example`), `epistemicGap`. EXCLUDED: `typeSymbol`/`typeIndex` (already defined in `M3_GenesisGrammar` — would have been an STR-1 duplicate). FLAGGED: `pairWith` carries a string where an `@id` is expected (latent reference defect). Also `m2:changelog` → `m3:changelog` (layer inversion + CTX-1). |
 | **1.3.1** | 2026-07-18 | @context hygiene fix (CTX): `m3` prefix made **absolute** (`.../ontology/M3_GenesisGrammar.jsonld#`). It was relative and, with `@vocab`=owl#, resolved `m3:*` terms (incl. `MonoidalType`) against owl# — desynchronising this file's IRIs from EagleEye/SphinxEye. Data graph unchanged. |
 | **1.3.0** | 2026-06-23 | NEW: `m3:DerivedGsElement` class — named Gs constants derived from primitives, Base16 preserved. NEW: `_0 = _^ | _$` (EquilibriumPole) as first DerivedGsElement. Supports m2:Balance revision and m2:TriadicBalance (M2 v16.14.0). Open question documented: Base16→Base17 deferred. |
 | **1.2.0** | 2026-05-27 | BASE16 EXTENSION: K (Knowledge), Ss (Symbol/Stereopsic), L (Localizability) added. TKSL acronym. Transcendental questions map. 5-5-6 asymmetry documented. St/It/O notation convention. |

@@ -14,9 +14,9 @@
     {
       "@id": "m3:bicephalous:BicephalousPerspective",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "1.4.0",
+      "owl:versionInfo": "1.5.0",
       "dcterms:created": "2026-05-18",
-      "dcterms:modified": "2026-07-22",
+      "dcterms:modified": "2026-07-23",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Stereopsis Grammar — Bicephalous Perspective",
       "dcterms:description": "Reification of the stereopsic synergy between Territory Grammar (Gt / Eagle Eye) and Map Grammar (Gm / Sphinx Eye). Defines the Stereopsis Grammar Gs with operator | and the Base16 Gs alphabet: 6 primitives — T (Temporality), _^ (PositivePole), _$ (NegativePole), K (Knowledge), Ss (Symbol/Stereopsic), L (Localizability). TKSL acronym for the 4 nominal Gs primitives. Each Gs primitive is an irreducible inter-grammar mediator — not derivable from ASFID (Gt) or REVOI (Gm). v1.3.0: EquilibriumPole (_0 = _^ | _$) added as named derived Gs element (m3:DerivedGsElement) — not a primitive, Base16 preserved.",
@@ -92,6 +92,11 @@
         "architecture": "TSCG Bicephalous = Gt + Gm — Gs is reification of stereopsic synergy"
       },
       "m3:changelog": [
+        {
+          "version": "1.5.0",
+          "date": "2026-07-23",
+          "changes": "SC-2 STEP 1 \u2014 NOTATION CONVENTION REVISED AT THE SOURCE. m3:notation_disambiguation no longer states the retired hybrid-only rule (S bare in pure-Territory formulas, indexed only in formulas containing |). New rule: S and I are ALWAYS monoid-subscripted in EVERY atom formula (St/Ss, It/Im); A/F/D stay bare. Scope is atoms only \u2014 combo signatures take named concepts, not primitives. Rationale: the old rule gave one primitive two spellings depending on its neighbours, which is ambiguous to read and unenforceable mechanically. Also corrected here: the m2:Balance usage example read A \u00d7 S \u00d7 F | _0 and is now A \u00d7 St \u00d7 F | _0. This closes the contradiction opened by M3_EagleEye 2.10.0 (SC-2 step 2), which already moved typeSymbol S\u2192St and I\u2192It. NEXT: SC-2 step 3 (SHACL FormulaShape forbidding bare S/I in atom formulas), then step 4 (43 M2 atom formulas, gauge NOT-1 \u2192 0)."
+        },
         {
           "version": "1.4.0",
           "date": "2026-07-22",
@@ -243,7 +248,7 @@
       "m3:typeIndex": 4,
       "m3:grammar": "Gs",
       "m3:transcendentalQuestion": "Sign?",
-      "m3:notation_disambiguation": "Ss (subscript s = Stereopsic) distinguishes from St (Structure/Territory, subscript t = Territory). In pure intra-Territory formulas, S remains unindexed (ASFID convention). In hybrid formulas containing |, use St for Structure and Ss for Symbol.",
+      "m3:notation_disambiguation": "SC-2 RULE (supersedes the former hybrid-only convention). S and I are ALWAYS monoid-subscripted in EVERY atom formula, because they are the only letters that collide across the three grammars: St (Structure/Gt) vs Ss (Symbol/Gs), and It (Information/Gt) vs Im (Interoperability/Gm). A, F and D stay bare \u2014 no collision. SCOPE: atom formulas only (m2:hasStructuralGrammarFormula). Combos carry a function signature (Fm2/Fm1m2) whose arguments are NAMED CONCEPTS, never primitives, so no subscript applies there. WHY THE OLD RULE WAS RETIRED: it made indexation context-dependent (bare in pure-Territory formulas, indexed only in formulas containing |), so the same primitive had two spellings depending on its neighbours \u2014 ambiguous to read and impossible to check mechanically. ASFID/REVOI scoring terminology is unaffected.",
       "skos:definition": "Semiotic interface — the sign-relation between signifier (Territory/Gt) and signified (Map/Gm). Ss is the Gs primitive that formalises the Peircean sign: a Territory entity (signifier) stands for a Map meaning (signified) for an interpreter. Not the structure itself (St) nor the representation (R), but the semiotic bridge that links them.",
       "rdfs:comment": "Fifth primitive of 𝕋₀(|). Ss is irreducible — not derivable from St (Territory structure) nor from R (Map representability). It answers 'What is the sign for?' — the semiotic question. Theoretical basis: Peirce (sign = signifier + signified + interpretant), Saussure (signifier/signified), Eco (semiotics of culture).",
       "m3:independence": "Ss cannot be derived from St or R. St (Territory) is physical/structural organisation; R (Map) is representational quality; Ss is neither — it is the semiotic bridge that makes St carry Gm meaning.",
@@ -355,7 +360,7 @@
       "m3:analogyInGs": "As StereopsisEmptySet = EmptyTerritory | EmptyMap is the neutral element of |, _0 = _^ | _$ is the equilibrium element — the point of optimal Territory/Map calibration.",
       "m3:analogyInGt": "As F × D names m2:Process (a frequently used derived expression in Gt), _^ | _$ names _0 (a frequently used derived expression in Gs).",
       "m3:usage": [
-        "m2:Balance = A × S × F | _0  (static equilibrium state)",
+        "m2:Balance = A × St × F | _0  (static equilibrium state)",
         "m2:TriadicBalance | _0  (optimal central state of a triadic system)",
         "m1:ConstraintBalance | _0  (BalancedConstraint — neither over nor under)"
       ],
@@ -411,7 +416,7 @@
         "@id": "m3:usage",
         "@type": "owl:AnnotationProperty",
         "rdfs:label": "usage",
-        "rdfs:comment": "List of attested formula-level usages of an element across the corpus (e.g. 'm2:Balance = A × S × F | _0').",
+        "rdfs:comment": "List of attested formula-level usages of an element across the corpus (e.g. 'm2:Balance = A × St × F | _0').",
         "dcterms:created": "2026-07-22"
       },
       {

@@ -13,11 +13,11 @@
     {
       "@id": "m3:eagle_eye:EagleEye",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.9.0",
+      "owl:versionInfo": "2.10.0",
       "dcterms:created": "2026-01-21",
-      "dcterms:modified": "2026-07-22",
+      "dcterms:modified": "2026-07-23",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:description": "Territory Grammar Gt: free commutative monoidal grammar over primitive types {A, S, F, I, D} (Territory types 𝕋₀(×)). Provides the ontological/empirical perspective on systems-as-territory. Each primitive type instantiates at M0 as an evaluation functor F_x : System → [0,1].",
+      "dcterms:description": "Territory Grammar Gt: free commutative monoidal grammar over primitive types {A, St, F, It, D} (Territory types 𝕋₀(×)). Provides the ontological/empirical perspective on systems-as-territory. Each primitive type instantiates at M0 as an evaluation functor F_x : System → [0,1].",
       "m3:ontologyCategory": {
         "@id": "m3:GenesisExtension"
       },
@@ -25,7 +25,7 @@
         "M3_GrammarFoundation.jsonld"
       ],
       "rdfs:label": "Eagle Eye - Territory Grammar Gt",
-      "rdfs:comment": "Territory Grammar Gt: free commutative monoidal grammar over primitive types {A,S,F,I,D}. Provides the ontological/empirical perspective on systems-as-territory. At M0, each primitive type instantiates as a structural grammar (qualitative, no numeric scoring at this level). Part of the TSCG bicephalous architecture (Gt + Gm). See TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md.",
+      "rdfs:comment": "Territory Grammar Gt: free commutative monoidal grammar over primitive types {A,St,F,It,D}. Provides the ontological/empirical perspective on systems-as-territory. At M0, each primitive type instantiates as a structural grammar (qualitative, no numeric scoring at this level). Part of the TSCG bicephalous architecture (Gt + Gm). See TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md.",
       "metadata": {
         "layer": "M3",
         "name": "Eagle Eye - ASFID Basis",
@@ -52,9 +52,9 @@
         "grammar_type": "free_commutative_monoidal",
         "primitives": [
           "A",
-          "S",
+          "St",
           "F",
-          "I",
+          "It",
           "D"
         ],
         "product": "×",
@@ -106,17 +106,22 @@
         "quadrant": "Analysis of Reality (Territory)"
       },
       "independence_matrix": {
-        "description": "The 5 primitive types {A,S,F,I,D} are analytically independent — no primitive type is derivable from the others",
+        "description": "The 5 primitive types {A,St,F,It,D} are analytically independent — no primitive type is derivable from the others",
         "verified": "true",
         "note": "Independence here means conceptual non-redundancy, not metric orthogonality. No inner product is defined or required."
       },
       "complementary_grammar": {
         "@id": "m3:sphinx_eye:SphinxEye",
-        "description": "Sphinx Eye provides Map Grammar Gm over primitive types {R,E,V,O,I}, complementing Eagle's Territory Grammar Gt",
+        "description": "Sphinx Eye provides Map Grammar Gm over primitive types {R,E,V,O,Im}, complementing Eagle's Territory Grammar Gt",
         "relationship": "structurally_complementary",
         "complete_architecture": "TSCG Bicephalous Grammar = Gt (Territory) + Gm (Map)"
       },
       "m3:changelog": [
+        {
+          "version": "2.10.0",
+          "date": "2026-07-23",
+          "changes": "SC-2 STEP 2 — MONOID QUALIFICATION AT THE SOURCE. m3:typeSymbol S \u2192 St (Structure/Territory) and I \u2192 It (Information/Territory), with matching rdfs:label updates and the alphabet listings {A,S,F,I,D} \u2192 {A,St,F,It,D}. ALSO FIXED (same rule, Map side): this file described Sphinx Eye's alphabet as {R,E,V,O,I} \u2014 the fifth REVOI primitive is Im (Interoperability), never a bare I. Corrected to {R,E,V,O,Im}, matching M3_GrammarFoundation and M3_SphinxEye. Rationale (SC-1.2): S and I are the only ASFID letters that collide across monoids (St/Ss, It/Im), so they are ALWAYS monoid-subscripted; A/F/D stay bare. This replaces the former context-dependent rule (bare in pure-Territory formulas, indexed only in hybrid formulas containing |). Class @id values (m3:eagle_eye:typeS / typeI) are UNCHANGED \u2014 only the symbol and its labels move, so no cross-file reference breaks. The half-migrated example formula \"A \u00d7 S \u00d7 It \u00d7 F = Homeostasis\" is completed to \"A \u00d7 St \u00d7 It \u00d7 F\". Historical changelog entries are left untouched (history, not defect). DEPENDENCY: SC-2 step 1 (notation_disambiguation in M3_BicephalousPerspective) must ship WITH this change \u2014 until it does, that file still states the retired hybrid-only rule and the two M3 files contradict each other."
+        },
         {
           "version": "2.9.0",
           "date": "2026-07-22",
@@ -201,8 +206,8 @@
     {
       "@id": "m3:eagle_eye:typeS",
       "@type": "owl:DatatypeProperty",
-      "rdfs:label": "Structure (S)",
-      "m3:typeSymbol": "S",
+      "rdfs:label": "Structure (St)",
+      "m3:typeSymbol": "St",
       "m3:typeIndex": 2,
       "rdfs:comment": "𝕋₀(×) generator — Spatial or topological organisation.",
       "rdfs:domain": {
@@ -229,8 +234,8 @@
     {
       "@id": "m3:eagle_eye:typeI",
       "@type": "owl:DatatypeProperty",
-      "rdfs:label": "Information (I)",
-      "m3:typeSymbol": "I",
+      "rdfs:label": "Information (It)",
+      "m3:typeSymbol": "It",
       "m3:typeIndex": 4,
       "rdfs:comment": "𝕋₀(×) generator — Encoded content distinguishing this system state from alternatives.",
       "rdfs:domain": {
@@ -259,7 +264,7 @@
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "Operator × (Territory product)",
       "rdfs:comment": "Monoidal operator of Gt. Intra-ASFID — closed within Territory. Precedence: highest (× > + > |).",
-      "skos:example": "A × S × It × F = Homeostasis",
+      "skos:example": "A × St × It × F = Homeostasis",
       "rdfs:domain": {
         "@id": "m3:MonoidalType"
       },
