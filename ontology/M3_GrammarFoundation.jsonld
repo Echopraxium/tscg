@@ -14,9 +14,9 @@
     {
       "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.4.1",
+      "owl:versionInfo": "2.5.0",
       "dcterms:created": "2026-05-12",
-      "dcterms:modified": "2026-07-18",
+      "dcterms:modified": "2026-07-22",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Grammar Foundation",
       "dcterms:description": "Apex ontology of the TSCG hierarchy — no imports, no dependencies. Defines the Lambek Calculus mathematical foundation (free commutative monoidal categories), the six indexed operators (×, +, |), abstract classes M3Grammar and MonoidalType, the TSCG type system hierarchy (𝕋₀→𝕄₀), and the intersubjective benchmark properties. Imported by M3_EagleEye, M3_SphinxEye, and M3_GenesisGrammar.",
@@ -52,7 +52,12 @@
         "operator_disclaimer": "⊗ shares notation with the algebraic tensor product but operates in a distinct context: a typed combinatorial grammar without metric structure. Analogous to how × denotes both scalar multiplication and vector cross product — same symbol, different mathematical contexts.",
         "see_also": "ontology/StructuralGrammar/TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md"
       },
-      "m2:changelog": [
+      "m3:changelog": [
+        {
+          "version": "2.5.0",
+          "date": "2026-07-22",
+          "changes": "CHANGELOG PROPERTY DEFINED: new m3:changelog (owl:AnnotationProperty). The changelog property was used corpus-wide but DECLARED NOWHERE. It is defined here, in the apex ontology, so that every lower layer (M2/M1/M0 — all of which import M3) can use it as a legal downward reference. Also applied to this file: m2:changelog → m3:changelog, fixing both a dependency inversion (M3 referencing M2) and a CTX-1 defect (the 'm2' prefix was undeclared here). KNOWN LIMITS, deferred to the undeclared-terms worksite: (a) changelog entry objects still carry undeclared bare keys (version/date/changes) and remain invisible on expansion; (b) this file still declares @vocab=owl#, so its bare terms — including the legacy metadata.changelog block — expand into the OWL namespace as owl:* properties."
+        },
         {
           "version": "2.4.1",
           "date": "2026-07-18",
@@ -388,6 +393,14 @@
         "rdfs:comment": "Formerly named m3:M3Dimension — renamed to reflect Lambek/monoidal formalism"
       },
       "dcterms:created": "2026-05-20"
+    },
+    {
+      "@id": "m3:changelog",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "changelog",
+      "rdfs:comment": "Ordered list of the most recent modifications to an ontology file, newest first. Declared in the apex ontology so that EVERY layer (M3, M2, M1, M0) can annotate its own owl:Ontology node without inverting the layer dependency: M2/M1/M0 all import M3, so m3:changelog is always a legal downward reference, whereas the former m2:changelog forced M3 files to depend on M2. RETENTION POLICY: the 3 most recent entries, except M3 files which keep up to 7 (rollback safety on the foundational layer). Declared as owl:AnnotationProperty rather than owl:DatatypeProperty because a changelog is documentation ABOUT the ontology, not an assertion about a domain entity \u2014 this keeps the corpus inside OWL DL. No rdfs:domain / rdfs:range axiom is asserted for the same reason; the intended domain is the owl:Ontology node.",
+      "skos:note": "Aligned IN INTENT with adms:versionNotes (http://www.w3.org/ns/adms#versionNotes \u2014 'a description of changes between this version and the previous version of the Asset'). No rdfs:subPropertyOf axiom is asserted: the alignment is documentary only, pending a decision on whether the corpus accepts external vocabulary dependencies beyond rdfs/owl/skos/dcterms.",
+      "dcterms:created": "2026-07-22"
     },
     {
       "@id": "m3:grammar_foundation:Fm2",

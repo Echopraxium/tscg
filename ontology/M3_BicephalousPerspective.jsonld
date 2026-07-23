@@ -14,9 +14,9 @@
     {
       "@id": "m3:bicephalous:BicephalousPerspective",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "1.3.1",
+      "owl:versionInfo": "1.4.0",
       "dcterms:created": "2026-05-18",
-      "dcterms:modified": "2026-07-18",
+      "dcterms:modified": "2026-07-22",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Stereopsis Grammar — Bicephalous Perspective",
       "dcterms:description": "Reification of the stereopsic synergy between Territory Grammar (Gt / Eagle Eye) and Map Grammar (Gm / Sphinx Eye). Defines the Stereopsis Grammar Gs with operator | and the Base16 Gs alphabet: 6 primitives — T (Temporality), _^ (PositivePole), _$ (NegativePole), K (Knowledge), Ss (Symbol/Stereopsic), L (Localizability). TKSL acronym for the 4 nominal Gs primitives. Each Gs primitive is an irreducible inter-grammar mediator — not derivable from ASFID (Gt) or REVOI (Gm). v1.3.0: EquilibriumPole (_0 = _^ | _$) added as named derived Gs element (m3:DerivedGsElement) — not a primitive, Base16 preserved.",
@@ -91,7 +91,17 @@
         "map": "M3_SphinxEye.jsonld — Gm, REVOI, +",
         "architecture": "TSCG Bicephalous = Gt + Gm — Gs is reification of stereopsic synergy"
       },
-      "m2:changelog": [
+      "m3:changelog": [
+        {
+          "version": "1.4.0",
+          "date": "2026-07-22",
+          "changes": "VOC/B1: declared 19 previously-undeclared m3:* documentation properties used in this file (role, semantics, symbol, grammar, visual, usage, derivation, formula_role, independence, analogyInGt, analogyInGs, pairWith, triadicPattern, theoretical_basis, transcendentalQuestion, openQuestion, rejected_names, notation_note, notation_disambiguation) as owl:AnnotationProperty. Declaration only — no usage or data changed. HELD for separate decisions: definition/examples (Family-A standard candidates skos:definition/skos:example), epistemicGap (δ₁ measurement, SC-6 sensitivity). EXCLUDED: typeSymbol/typeIndex (already defined in M3_GenesisGrammar). FLAGGED: pairWith carries a string where an @id is expected (latent reference defect)."
+        },
+        {
+          "version": "1.3.2",
+          "date": "2026-07-22",
+          "changes": "LAYERING FIX: m2:changelog → m3:changelog. An M3 file must not reference an M2 property (dependency inversion: M3 is the foundational layer, M2 imports it). Compounding this, the 'm2' prefix was NOT declared in this @context (CTX-1), so the key resolved to an opaque 'm2:' URI scheme instead of the M2 namespace — invisible to any reasoner. m3:changelog is defined in M3_GrammarFoundation v2.5.0."
+        },
         {
           "version": "1.3.1",
           "date": "2026-07-18",
@@ -361,6 +371,139 @@
       },
       "dcterms:created": "2026-06-23",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
-    }
+    },
+      {
+        "@id": "m3:role",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "role",
+        "rdfs:comment": "Documentary label for the functional role a primitive plays in a formula (e.g. 'polarity_modifier'). TSCG-native: distinct from prov:hadRole (role of an agent in an activity), verified 2026-07-22 — foreign ontology, not reused.",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:semantics",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "semantics",
+        "rdfs:comment": "Prose gloss of the semantic reading of a type or degenerate configuration (e.g. 'Divergent Strabismus — Territory and Map share nothing').",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:symbol",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "symbol",
+        "rdfs:comment": "The string notation of a primitive or derived element as it appears in formula values (e.g. '_0'). Notation only — never an OWL/RDF URI (see notation_note).",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:grammar",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "grammar",
+        "rdfs:comment": "Names which of the three monoidal grammars a type belongs to (Gt, Gm, Gs).",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:visual",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "visual",
+        "rdfs:comment": "Documentary description of the visual/glyph rendering of a type (e.g. 'Black + Empty pentagon').",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:usage",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "usage",
+        "rdfs:comment": "List of attested formula-level usages of an element across the corpus (e.g. 'm2:Balance = A × S × F | _0').",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:derivation",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "derivation",
+        "rdfs:comment": "Structured record of how a derived Gs element is obtained from primitives via a monoidal operator (operator / operands / result).",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:formula_role",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "formula_role",
+        "rdfs:comment": "Explains how a primitive behaves inside hybrid inter-grammar formulas (e.g. K as inter-grammar contextualisation).",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:independence",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "independence",
+        "rdfs:comment": "Justification that a primitive is genuinely irreducible — not derivable from the other grammars' primitives.",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:analogyInGt",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "analogyInGt",
+        "rdfs:comment": "Cross-grammar analogy expressed in the Territory grammar Gt, used to motivate a Gs construction by parallel with a known Gt expression.",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:analogyInGs",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "analogyInGs",
+        "rdfs:comment": "Cross-grammar analogy expressed in the Stereopsis grammar Gs, parallel to analogyInGt.",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:pairWith",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "pairWith",
+        "rdfs:comment": "Links a pole to its complementary pole. NOTE: currently carries a string ('m3:bicephalous:NegativePole') where an @id reference is expected — flagged as a latent reference defect (VOC/STR), declared here as AnnotationProperty pending a decision to promote it to owl:ObjectProperty.",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:triadicPattern",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "triadicPattern",
+        "rdfs:comment": "Structured description of an under-pole / equilibrium-pole / over-pole triad for a Gs polarity axis.",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:theoretical_basis",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "theoretical_basis",
+        "rdfs:comment": "List of external scholarly references grounding a construction (e.g. Maturana & Varela, Husserl).",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:transcendentalQuestion",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "transcendentalQuestion",
+        "rdfs:comment": "The Kantian-style category question a primitive answers (e.g. 'When?' for T).",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:openQuestion",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "openQuestion",
+        "rdfs:comment": "Structured record of an unresolved design question, with its status and provisional resolution.",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:rejected_names",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "rejected_names",
+        "rdfs:comment": "Structured record of candidate names that were considered and rejected for a concept, with the rejection rationale.",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:notation_note",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "notation_note",
+        "rdfs:comment": "Clarification about notation conventions (e.g. that a pole string is used in formula values only, never as a URI).",
+        "dcterms:created": "2026-07-22"
+      },
+      {
+        "@id": "m3:notation_disambiguation",
+        "@type": "owl:AnnotationProperty",
+        "rdfs:label": "notation_disambiguation",
+        "rdfs:comment": "Disambiguation rule for potentially colliding primitive notations (e.g. Ss vs St). NOTE: the value of this property is the target of SC-2, which revises the S/I subscription rule; SC-2 changes the VALUE, not this declaration.",
+        "dcterms:created": "2026-07-22"
+      }
   ]
 }
