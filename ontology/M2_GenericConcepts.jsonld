@@ -19,7 +19,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
       "dcterms:modified": "2026-07-24",
-      "owl:versionInfo": "16.18.1",
+      "owl:versionInfo": "16.19.0",
       "owl:imports": [
         "M3_GenesisGrammar.jsonld"
       ],
@@ -110,19 +110,19 @@
       },
       "m2:changelog": [
         {
+          "version": "16.19.0",
+          "date": "2026-07-24",
+          "changes": "SC-2 STEPS 3-4 — NOTATION REFORM (WS-0/SC-2). Bare monoidal generators S and I are now monoid-subscripted in every monoidal formula, per the convention graved in M3_BicephalousPerspective 1.5.0. MIGRATED 76 values: 58 in Gt segments (S -> St, I -> It) and 18 in Gm segments (I -> Im, operator '+', letters in REVOI). Of the 76, 43 sit on m2:hasStructuralGrammarFormula (gauge NOT-1: 43 -> 0); the other 33 sit in secondary formula fields, migrated so that the file does not DISPLAY the old notation where the graph carries the new one. DELETED 4 fields, all pure artifacts of the retired tensor notation: formulaTeX x2 and m2:expressionTeX x2 (all four carried \\otimes). Guard-before-delete satisfied on both nodes: m2:Composition keeps 'formula' and m2:expression (S x It x A^{p}), m2:FeedbackLoop keeps m2:expression. No information lost. CARVED OUT, deliberately NOT migrated, 9 occurrences recorded in M2_Formulas_Review_with_Gs_Residues.md 1.0.0: 5 m2:sphinxView blocks written in the ASFID alphabet with the Map operator (Behavior, Tropism, Workflow, Step, Action) - a view in the wrong grammar, not a notation defect; 2 indexed generators {S1 x ... x Sn} on m2:Fusion - indexed notation is undefined in M3; 2 prose glosses on vs_Signature. NOT CLOSED by this lot: Symmetry (St) and State (It) are correctly spelled and still single-primitive; m2:Gradient keeps the prose disjunction 'or'. Both are WS-3 items - a green NOT-1 gauge is not closure. Enforced by ontology/cli-tools/check-M2/M2_MonoidalFormula_Schema_shacl.ttl 0.1.0, run via tscg_metrics.py --shacl-path (interim, to be replaced by the WS-5 M2/M3 runner). Triples 2345 -> 2343: exactly the 2 m2:expressionTeX statements; formulaTeX is a bare key and reaches no graph."
+        },
+        {
           "version": "16.18.1",
           "date": "2026-07-24",
-          "changes": "PREFIX HYGIENE (WS-2, isolated lot; prerequisite of WS-0/SC-2 step 3). TWO named defects, no other change. (1) CTX-4 - 'm2' and 'm3' were RELATIVE prefixes. In JSON-LD a relative prefix resolves against @base in IDENTIFIER position but NOT in PREDICATE position, so every m2:/m3: KEY expanded to an unresolved IRI, invisible to SHACL and to any reasoner. Both now ABSOLUTE. (2) CTX-1 - 'skos' was USED (skos:definition, 1 occurrence) but never DECLARED; now declared with the value already used identically in M1_CoreConcepts, M1_Domains, M3_BicephalousPerspective, M3_EagleEye and M3_GenesisGrammar. This was the single corpus-wide CTX-1 occurrence: gauge 1 -> 0. VERIFIED: unresolved predicates 174 -> 0; triples unchanged at 2345 (no edge appears or disappears, they only acquire resolvable IRIs); identifiers unchanged (m2:Resilience expands to the same absolute IRI before and after, via @base), so no cross-file reference breaks. Measured effect: the SC-2 shape fires on 0 nodes before this fix and on 45 after - the same silent-blindness pattern as SHAPE 9. No run_all_layers golden impact (M2 NOT_INSTRUMENTED). NO formula migrated, NO field removed in this lot."
+          "changes": "PREFIX HYGIENE (WS-2, isolated lot; prerequisite of WS-0/SC-2 step 3). TWO named defects, no other change. (1) CTX-4 — the 'm2' and 'm3' prefixes were RELATIVE. In JSON-LD a relative prefix resolves against @base in IDENTIFIER position but NOT in PREDICATE position, so every m2:/m3: KEY expanded to an unresolved IRI, invisible to SHACL and to any reasoner. Both are now ABSOLUTE: unresolved predicates 174 -> 1. (2) CTX-1 — the 'skos' prefix was USED (skos:definition, 1 occurrence) but never DECLARED; now declared with the value already used identically in M1_CoreConcepts, M1_Domains, M3_BicephalousPerspective, M3_EagleEye and M3_GenesisGrammar. This was the single corpus-wide CTX-1 occurrence: gauge 1 -> 0. VERIFIED: triple count unchanged (2345 -> 2345) — no edge appears or disappears, they only acquire resolvable IRIs; identifiers unchanged (m2:Resilience expanded to the same absolute IRI before and after, via @base), so no cross-file reference breaks. Measured effect: a candidate SHACL shape on m2:hasStructuralGrammarFormula fires on 0 nodes before and 43 after — the same silent-blindness pattern as SHAPE 9. No run_all_layers golden impact (M2 is NOT_INSTRUMENTED). NO formula migrated, NO field removed in this lot."
         },
         {
           "version": "16.18.0",
           "date": "2026-07-18",
           "changes": "M2 FORMULAS REVIEW WITH Gs (worksite opening, decision 1.B) — REMOVED the key 'formula' from all 66 m2:eagleView blocks. It was a FOSSIL DUPLICATE of m2:hasStructuralGrammarFormula: 38 were byte-identical, 28 had diverged, and in every divergent case the canonical formula was the up-to-date one (e.g. Layer canon 'St x It x A | R' vs eagle 'S x I x A x R'; Code canon 'It x Ss' vs eagle 'I x S'). 0 nodes carried an eagleView.formula without a canonical formula, so no information is lost. Same anti-pattern as the D8 triad retired from M1 (one claim stored twice, one copy drifting). Removing it BEFORE the SC-2 St/It migration is deliberate: migrating the 43 bare-S/I formulas first would have widened the divergence from 28 to ~50. PRESERVED (option 1.B, surgical): the eagleView block itself and its 'basis', 'role', 'status' keys (~20 roles carry real explanatory content). OUT OF SCOPE, still present: eagleView 'formulaComposition'/'formulaDecomposition' (1 node each, same D8 pattern) and the whole m2:sphinxView layer (43 blocks, split across two key names 'formulaPrimary' 36 / 'formula' 7) — separate decisions."
-        },
-        {
-          "version": "16.17.0",
-          "date": "2026-07-13",
-          "changes": "FUNCTIONAL GRAMMAR MODEL (SC-1). RENAME (hard, no deprecation alias): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. RE-DEFINITION: DomainConceptCombo is now defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. PRODUCING FUNCTIONS declared: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). A combo's formula IS the function signature: no monoidal formula, no monoidal expansion (emergence is non-compositional → FUNCTIONS, not functors). Arguments are named concepts from M2_GenericConcepts or M1_CoreConcepts only — never primitive types, never a monoidal expression, juxtaposed by comma and never joined by ×/+/|. Fm1 does not exist. NEW PROPERTY: m2:producingFunction. DEPRECATED: m2:morphism_emergence (owl:deprecated true, supersededBy m2:producingFunction) and its entry in the header m2:categoryTheory block — it declared emergence as a category-theoretic morphism, the ROOT of the retired tensor-era notation; a morphism composes, an emergence does not. PURGE of the compositional residue: the n-ary emergence operator and its lattice-join definition in the combo class comments, the 'union of the parent type sets' clause on m2:hasComboComponent, and the 4 m2:comboFormula values, now rewritten as Fm2 signatures. See StructuralGrammar/Functional_Grammar_Model.md."
         }
       ],
       "m2:bicephalousStrategy": {
@@ -1107,7 +1107,7 @@
         "status": "IMMUTABLE"
       },
       "m3:semanticSignature": "return_to_attractor + structural_integrity",
-      "m2:hasStructuralGrammarFormula": "A × S"
+      "m2:hasStructuralGrammarFormula": "A × St"
     },
     {
       "@id": "m2:Adaptation",
@@ -1135,7 +1135,7 @@
         "status": "IMMUTABLE"
       },
       "m3:semanticSignature": "information_driven + flow_modification + dynamic_change",
-      "m2:hasStructuralGrammarFormula": "I × F × D"
+      "m2:hasStructuralGrammarFormula": "It × F × D"
     },
     {
       "@id": "m2:Emergence",
@@ -1163,7 +1163,7 @@
         "status": "IMMUTABLE"
       },
       "m3:semanticSignature": "information_integration + structural_reorganization + novel_dynamics",
-      "m2:hasStructuralGrammarFormula": "I × S × D"
+      "m2:hasStructuralGrammarFormula": "It × St × D"
     },
     {
       "@id": "m2:Dissipation",
@@ -1185,7 +1185,7 @@
       "m2:produces": {
         "@id": "m2:Entropy",
         "relation": "Dissipation is the generative mechanism of Entropy",
-        "formula": "Dissipation(F × D) × generates × Entropy(F × I × D)",
+        "formula": "Dissipation(F × D) × generates × Entropy(F × It × D)",
         "note": "I type emerges from accumulation of F × D — not present in Dissipation itself"
       },
       "m2:hasDominantM3": [
@@ -1423,7 +1423,7 @@
         }
       },
       "m3:semanticSignature": "attractor_control + structural_constraints + flow_modulation",
-      "m2:hasStructuralGrammarFormula": "A × S × F"
+      "m2:hasStructuralGrammarFormula": "A × St × F"
     },
     {
       "@id": "m2:Memory",
@@ -1907,13 +1907,13 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "O + R + I",
+          "formula": "O + R + Im",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
         }
       },
       "m3:semanticSignature": "structural_levels + attractor_ordering",
-      "m2:hasStructuralGrammarFormula": "S × A"
+      "m2:hasStructuralGrammarFormula": "St × A"
     },
     {
       "@id": "m2:Network",
@@ -1943,7 +1943,7 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "O + R + I + V",
+          "formula": "O + R + Im + V",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
         }
@@ -2130,7 +2130,7 @@
         }
       },
       "m3:semanticSignature": "structural_topology + information_routing + flow_distribution",
-      "m2:hasStructuralGrammarFormula": "S × I × F"
+      "m2:hasStructuralGrammarFormula": "St × It × F"
     },
     {
       "@id": "m2:Symmetry",
@@ -2308,7 +2308,7 @@
         }
       },
       "m3:semanticSignature": "structural_invariance_under_transformation",
-      "m2:hasStructuralGrammarFormula": "S"
+      "m2:hasStructuralGrammarFormula": "St"
     },
     {
       "@id": "m2:Modularity",
@@ -2337,13 +2337,13 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "R + I + V",
+          "formula": "R + Im + V",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
         }
       },
       "m3:semanticSignature": "structural_decomposability + informational_independence",
-      "m2:hasStructuralGrammarFormula": "S × I"
+      "m2:hasStructuralGrammarFormula": "St × It"
     },
     {
       "@id": "m2:Topology",
@@ -2418,7 +2418,7 @@
         "status": "IMMUTABLE"
       },
       "m3:semanticSignature": "structural_partition + informational_boundaries + dynamic_differentiation",
-      "m2:hasStructuralGrammarFormula": "S × I × D"
+      "m2:hasStructuralGrammarFormula": "St × It × D"
     },
     {
       "@id": "m2:Transformation",
@@ -2449,7 +2449,7 @@
       "m2:implements": {
         "@id": "m2:Triggerable"
       },
-      "m2:hasStructuralGrammarFormula": "D × S × I"
+      "m2:hasStructuralGrammarFormula": "D × St × It"
     },
     {
       "@id": "m2:Code",
@@ -2478,7 +2478,7 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "R + I + V + E",
+          "formula": "R + Im + V + E",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
         }
@@ -2529,7 +2529,7 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "R + I + E",
+          "formula": "R + Im + E",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
         }
@@ -2577,7 +2577,7 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "O + R + I",
+          "formula": "O + R + Im",
           "role": "Evaluate map quality",
           "status": "PROPOSITION (validation in progress)"
         }
@@ -2675,7 +2675,7 @@
           }
         }
       },
-      "m2:hasStructuralGrammarFormula": "I × S"
+      "m2:hasStructuralGrammarFormula": "It × St"
     },
     {
       "@id": "m2:Language",
@@ -2701,7 +2701,7 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "O + R + I + V",
+          "formula": "O + R + Im + V",
           "role": "Evaluate map quality",
           "status": "PROPOSITION (validation in progress)"
         }
@@ -2751,7 +2751,7 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "O + R + I",
+          "formula": "O + R + Im",
           "role": "Evaluate reusable template quality in Map",
           "status": "PROPOSITION (validation in progress)",
           "comment": "O = pattern must be perceptible in the model; R = its semantics must be decodable; I = it must be reusable cross-domain (interoperability)"
@@ -3123,7 +3123,7 @@
       "m2:implements": {
         "@id": "m2:Triggerable"
       },
-      "m2:hasStructuralGrammarFormula": "D × I"
+      "m2:hasStructuralGrammarFormula": "D × It"
     },
     {
       "@id": "m2:Threshold",
@@ -3261,7 +3261,7 @@
         }
       },
       "m3:semanticSignature": "attractor_boundary + information_criticality",
-      "m2:hasStructuralGrammarFormula": "A × I"
+      "m2:hasStructuralGrammarFormula": "A × It"
     },
     {
       "@id": "m2:Trigger",
@@ -3289,7 +3289,7 @@
         "status": "IMMUTABLE"
       },
       "m3:semanticSignature": "dynamic_activation + information_condition",
-      "m2:hasStructuralGrammarFormula": "D × I"
+      "m2:hasStructuralGrammarFormula": "D × It"
     },
     {
       "@id": "m2:System",
@@ -3317,7 +3317,7 @@
         "status": "IMMUTABLE"
       },
       "m3:semanticSignature": "structural_boundary + internal_flow",
-      "m2:hasStructuralGrammarFormula": "S × F"
+      "m2:hasStructuralGrammarFormula": "St × F"
     },
     {
       "@id": "m2:Environment",
@@ -3345,7 +3345,7 @@
         "status": "IMMUTABLE"
       },
       "m3:semanticSignature": "external_flow + contextual_information",
-      "m2:hasStructuralGrammarFormula": "F × I"
+      "m2:hasStructuralGrammarFormula": "F × It"
     },
     {
       "@id": "m2:Observer",
@@ -3370,7 +3370,7 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "O + I + V",
+          "formula": "O + Im + V",
           "role": "Evaluate map quality",
           "status": "PROPOSITION (validation in progress)"
         }
@@ -3379,7 +3379,7 @@
       "m2:implements": {
         "@id": "m2:Observable"
       },
-      "m2:hasStructuralGrammarFormula": "I × A"
+      "m2:hasStructuralGrammarFormula": "It × A"
     },
     {
       "@id": "m2:State",
@@ -3414,7 +3414,7 @@
           "@id": "m2:Stateful"
         }
       ],
-      "m2:hasStructuralGrammarFormula": "I"
+      "m2:hasStructuralGrammarFormula": "It"
     },
     {
       "@id": "m2:Substrate",
@@ -3442,7 +3442,7 @@
         "status": "IMMUTABLE"
       },
       "m3:semanticSignature": "structural_support + flow_medium",
-      "m2:hasStructuralGrammarFormula": "S × F"
+      "m2:hasStructuralGrammarFormula": "St × F"
     },
     {
       "@id": "m2:Gradient",
@@ -3598,7 +3598,7 @@
       "m2:implements": {
         "@id": "m2:Observable"
       },
-      "m2:hasStructuralGrammarFormula": "F × T  or  I × T",
+      "m2:hasStructuralGrammarFormula": "F × T  or  It × T",
       "m2:isStereopsic": true
     },
     {
@@ -3630,7 +3630,7 @@
         }
       },
       "m3:semanticSignature": "structural_persistence + attractor_stability",
-      "m2:hasStructuralGrammarFormula": "S × A"
+      "m2:hasStructuralGrammarFormula": "St × A"
     },
     {
       "@id": "m2:Signature",
@@ -3796,7 +3796,7 @@
         }
       },
       "m3:semanticSignature": "information_carrier + flow_transmission",
-      "m2:hasStructuralGrammarFormula": "I × F"
+      "m2:hasStructuralGrammarFormula": "It × F"
     },
     {
       "@id": "m2:Self-Organization",
@@ -3825,7 +3825,7 @@
         "status": "IMMUTABLE"
       },
       "m3:semanticSignature": "attractor_emergence + information_driven + dynamic_self_structuring",
-      "m2:hasStructuralGrammarFormula": "A × I × D"
+      "m2:hasStructuralGrammarFormula": "A × It × D"
     },
     {
       "@id": "m2:Synergy",
@@ -3875,12 +3875,12 @@
       "m2:poleMapping": {
         "p=0": {
           "name": "Positive Synergy",
-          "formula": "+(I × D)",
+          "formula": "+(It × D)",
           "semantics": "Combined effect > sum of parts: 1+1 > 2 (enhancement, amplification)"
         },
         "p=1": {
           "name": "Negative Synergy",
-          "formula": "-(I × D)",
+          "formula": "-(It × D)",
           "semantics": "Combined effect < sum of parts: 1+1 < 2 (antagonism, inhibition)"
         }
       },
@@ -4206,7 +4206,7 @@
       "m2:implements": {
         "@id": "m2:Stateful"
       },
-      "m2:hasStructuralGrammarFormula": "S × F"
+      "m2:hasStructuralGrammarFormula": "St × F"
     },
     {
       "@id": "m2:Capacity",
@@ -4267,7 +4267,7 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "O + R + I + V + E",
+          "formula": "O + R + Im + V + E",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
         }
@@ -4299,7 +4299,7 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "R + I",
+          "formula": "R + Im",
           "role": "Evaluate map quality",
           "status": "PROPOSITION (validation in progress)"
         }
@@ -4333,7 +4333,7 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "R + I + V",
+          "formula": "R + Im + V",
           "role": "Evaluate map quality",
           "status": "PROPOSITION (validation in progress)"
         }
@@ -4372,13 +4372,13 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "O + R + I",
+          "formula": "O + R + Im",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
         }
       },
       "m3:semanticSignature": "structural_connection + information_transfer + flow_path",
-      "m2:hasStructuralGrammarFormula": "S × I × F"
+      "m2:hasStructuralGrammarFormula": "St × It × F"
     },
     {
       "@id": "m2:Node",
@@ -4437,7 +4437,7 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "R + I",
+          "formula": "R + Im",
           "role": "Evaluate map quality",
           "status": "PROPOSITION (validation in progress)"
         }
@@ -4475,7 +4475,7 @@
         "status": "IMMUTABLE"
       },
       "m3:semanticSignature": "structural_route + information_sequence + dynamic_traversal",
-      "m2:hasStructuralGrammarFormula": "S × I × D"
+      "m2:hasStructuralGrammarFormula": "St × It × D"
     },
     {
       "@id": "m2:Channel",
@@ -4534,7 +4534,7 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "O + R + I + V",
+          "formula": "O + R + Im + V",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
         }
@@ -4572,7 +4572,7 @@
         "status": "IMMUTABLE"
       },
       "m3:semanticSignature": "structural_grouping + informational_cohesion + attractor_basin",
-      "m2:hasStructuralGrammarFormula": "S × I × A"
+      "m2:hasStructuralGrammarFormula": "St × It × A"
     },
     {
       "@id": "m2:Component",
@@ -4621,7 +4621,7 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "O + R + I",
+          "formula": "O + R + Im",
           "role": "Evaluate map perspective",
           "status": "PROPOSITION (validation in progress)"
         }
@@ -4661,7 +4661,7 @@
         "status": "IMMUTABLE"
       },
       "m3:semanticSignature": "high_connectivity_structure + flow_concentration",
-      "m2:hasStructuralGrammarFormula": "S × F"
+      "m2:hasStructuralGrammarFormula": "St × F"
     },
     {
       "@id": "m2:Space",
@@ -4702,7 +4702,7 @@
       "rdfs:label": "Composition (Composition/Decomposition)",
       "rdfs:comment": "Bidirectional structural operation forming the fundamental duality of assembly and disassembly. Composition (bottom-up): aggregation of elementary parts into an emergent whole — the whole acquires properties (Attractor) absent from parts alone (S × I × A). Decomposition (top-down): partition of a whole into its elementary constituents — the Attractor (emergent property) dissolves, leaving only structure and interfaces (S × I). The asymmetry between the two poles is ontological: composition requires an Attractor (emergent property that justifies the assembly), while decomposition loses it.",
       "m2:hasFamily": "m2:Structural",
-      "m2:hasStructuralFormulaNote": "Decomposition pole: S × I — see m2:polaritySemantics",
+      "m2:hasStructuralFormulaNote": "Decomposition pole: St × It — see m2:polaritySemantics",
       "m2:hasStructuralFormulaExpanded": "Structure × Information × Attractor",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -4714,8 +4714,7 @@
         "pole1": {
           "name": "Composition",
           "direction": "Bottom-up (parts → whole)",
-          "formula": "S × I × A",
-          "formulaTeX": "S \\otimes I \\otimes A",
+          "formula": "St × It × A",
           "dimensionSemantics": {
             "S": "Structural arrangement of parts in the assembly",
             "I": "Interfaces and binding information between parts",
@@ -4731,8 +4730,7 @@
         "pole2": {
           "name": "Decomposition",
           "direction": "Top-down (whole → parts)",
-          "formula": "S × I",
-          "formulaTeX": "S \\otimes I",
+          "formula": "St × It",
           "dimensionSemantics": {
             "S": "Structural inventory of recovered parts",
             "I": "Interface/bond information needed to identify parts"
@@ -4750,15 +4748,15 @@
       "m2:perspective": "dual",
       "m2:eagleView": {
         "basis": "ASFID",
-        "formulaComposition": "S × I × A",
-        "formulaDecomposition": "S × I",
+        "formulaComposition": "St × It × A",
+        "formulaDecomposition": "St × It",
         "role": "Measure structural assembly (composition) or disassembly (decomposition) in Territory",
         "status": "IMMUTABLE"
       },
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "R + I + V",
+          "formula": "R + Im + V",
           "role": "Evaluate Map: is the assembled whole Representable (R), are interfaces Interoperable (I), is the composition Verifiable (V)?",
           "status": "PROPOSITION (validation in progress)"
         }
@@ -4794,17 +4792,16 @@
       "m2:versionHistory": {
         "v15_3_2_2026-02-18": "FORMAT CORRECTION: m2:hasStructuralFormula was incorrectly encoding two pole formulas as a single concatenated string. Restructured using m2:polaritySemantics (pole1: S × I × A / pole2: S × I). Primary m2:hasStructuralFormula now holds the Composition pole (S × I × A) as canonical reference. m2:eagleView and m2:sphinxView updated consistently."
       },
-      "m2:expression": "S × I × A^{p}",
-      "m2:expressionTeX": "S \\otimes I \\otimes A^{p}",
+      "m2:expression": "St × It × A^{p}",
       "m2:poleMapping": {
         "p=1": {
           "name": "Composition",
-          "formula": "S × I × A",
+          "formula": "St × It × A",
           "semantics": "A present: assembly produces emergent property absent from parts alone"
         },
         "p=0": {
           "name": "Decomposition",
-          "formula": "S × I",
+          "formula": "St × It",
           "semantics": "A⁰ = 1 (neutral monoidal unit): emergent property dissolves, parts recovered"
         }
       },
@@ -4869,7 +4866,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified during analysis of Exposure Triangle poclet as fundamental genericConcept distinct from existing Homeostasis and Regulation",
       "m3:semanticSignature": "attractor_equilibrium + structural_symmetry + flow_compensation",
-      "m2:hasStructuralGrammarFormula": "A × S × F | _0",
+      "m2:hasStructuralGrammarFormula": "A × St × F | _0",
       "m2:isStereopsic": true,
       "m2:polaritySemantics": {
         "_0": "Balance — mutual compensation achieved, Territory/Map optimally calibrated",
@@ -4939,17 +4936,17 @@
       "m2:changeLog": {
         "v1": {
           "date": "2026-01-20",
-          "formula": "A × I × F × A × A",
+          "formula": "A × It × F × A × A",
           "issue": "Repetition of A has no structural semantics — A cannot encode multiple competing attractors by repetition"
         },
         "v2": {
           "date": "2026-02-18",
-          "formula": "A × I × F",
+          "formula": "A × It × F",
           "rationale": "A=target objective, I=knowledge of options and costs, F=resource allocation flux. Removes redundant A repetitions while preserving semantic intent."
         }
       },
       "m3:semanticSignature": "attractor_optimization + information_constraint + flow_cost",
-      "m2:hasStructuralGrammarFormula": "A × I × F"
+      "m2:hasStructuralGrammarFormula": "A × It × F"
     },
     {
       "@id": "m2:Polarity",
@@ -5051,7 +5048,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified during Magic: The Gathering Color Wheel poclet analysis. Revealed that binary polarity restriction was limiting framework's ability to model real philosophical/value systems. Validated across 10 domains with N ranging from 2 to 9.",
       "m3:semanticSignature": "structural_opposition + informational_contrast + attractor_poles(N-ary)",
-      "m2:hasStructuralGrammarFormula": "S × I × A"
+      "m2:hasStructuralGrammarFormula": "St × It × A"
     },
     {
       "@id": "m2:Imbrication",
@@ -5091,7 +5088,7 @@
       "m2:sphinxView": {
         "formulaPrimary": {
           "basis": "REVOI",
-          "formula": "R + I + V",
+          "formula": "R + Im + V",
           "role": "Construct and verify nested patterns in Map",
           "status": "PROPOSITION (validation in progress)",
           "constraint": "Potentially infinite depth in formal systems"
@@ -5132,7 +5129,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Emerged from VSM analysis where recursive viability is fundamental architectural principle. Generalizes to any system exhibiting structural self-similarity across scales.",
       "m3:semanticSignature": "recursive_structural_nesting",
-      "m2:hasStructuralGrammarFormula": "S × S"
+      "m2:hasStructuralGrammarFormula": "St × St"
     },
     {
       "@id": "m2:Identity",
@@ -5267,7 +5264,7 @@
       "m2:implements": {
         "@id": "m2:Observable"
       },
-      "m2:hasStructuralGrammarFormula": "S × D × F"
+      "m2:hasStructuralGrammarFormula": "St × D × F"
     },
     {
       "@id": "m2:Tropism",
@@ -5333,7 +5330,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Recognized as specialized Behavior pattern prevalent in biological systems (phototropism, chemotaxis, geotropism). Extends Behavior by adding Attractor type to capture directional constraint.",
       "m3:semanticSignature": "attractor_directed + structural_orientation + dynamic_response + flow_driven",
-      "m2:hasStructuralGrammarFormula": "A × S × D × F"
+      "m2:hasStructuralGrammarFormula": "A × St × D × F"
     },
     {
       "@id": "m2:Workflow",
@@ -5387,7 +5384,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Needed to distinguish prescriptive models (Workflow) from descriptive observations (Behavior). Both are structured networks of Steps, but serve different epistemic roles.",
       "m3:semanticSignature": "structured_sequence + dynamic_execution + flow_coordination",
-      "m2:hasStructuralGrammarFormula": "S × D × F"
+      "m2:hasStructuralGrammarFormula": "St × D × F"
     },
     {
       "@id": "m2:Step",
@@ -5458,7 +5455,7 @@
       "m2:implements": {
         "@id": "m2:Composable"
       },
-      "m2:hasStructuralGrammarFormula": "S × I × D"
+      "m2:hasStructuralGrammarFormula": "St × It × D"
     },
     {
       "@id": "m2:Action",
@@ -5518,7 +5515,7 @@
       "m2:implements": {
         "@id": "m2:Triggerable"
       },
-      "m2:hasStructuralGrammarFormula": "D × I"
+      "m2:hasStructuralGrammarFormula": "D × It"
     },
     {
       "@id": "m2:ValueSpace",
@@ -5928,7 +5925,7 @@
         "m2:Convergence": "Convergence concerns geometric focusing of trajectories; Alignment concerns structural/semantic correspondence between entities"
       },
       "m3:semanticSignature": "information_coherence + attractor_convergence + structural_correspondence",
-      "m2:hasStructuralGrammarFormula": "I × A × S"
+      "m2:hasStructuralGrammarFormula": "It × A × St"
     },
     {
       "@id": "m2:FeedbackLoop",
@@ -5949,12 +5946,12 @@
         },
         {
           "@id": "m2:Alignment",
-          "formula": "I × A × S",
+          "formula": "It × A × St",
           "contribution": "Error detection and reduction - comparison between actual state and target (set point)"
         },
         {
           "@id": "m2:Homeostasis",
-          "formula": "A × S × F",
+          "formula": "A × St × F",
           "contribution": "The regulatory target - maintains stable internal state despite perturbations"
         }
       ],
@@ -6010,7 +6007,6 @@
       "m2:architecturalNote": "m2:FeedbackLoop models systemic regulatory circuits across all domains. Distinct from m3:AlignmentLoop which is the epistemological Territory↔Map alignment mechanism intrinsic to TSCG architecture (see M3_GenesisGrammar).",
       "m2:fullName": "Feedback Loop (Negative / Positive)",
       "m2:expression": "k · (Process × Alignment × Homeostasis)",
-      "m2:expressionTeX": "\\cdot k \\cdot (\\text{Process} \\otimes \\text{Alignment} \\otimes \\text{Homeostasis})",
       "m2:poleMapping": {
         "p=1": {
           "name": "Negative Feedback",
@@ -6066,7 +6062,7 @@
         "m2:Agent": "Agent (S × I × D) is an autonomous actor; Processor is a transformation component (not necessarily autonomous)"
       },
       "m3:semanticSignature": "structural_transformation + information_processing + flow_throughput + temporal_unfolding",
-      "m2:hasStructuralGrammarFormula": "S × I × F × D"
+      "m2:hasStructuralGrammarFormula": "St × It × F × D"
     },
     {
       "@id": "m2:Transducer",
@@ -6106,7 +6102,7 @@
         "m2:Dissipation": "Dissipation is a degrading Transducer (F_active → F_degraded + Entropy); Transducer is the general flux-conversion case"
       },
       "m3:semanticSignature": "flux_type_conversion + coupling_structure + conversion_specification",
-      "m2:hasStructuralGrammarFormula": "F × S × I"
+      "m2:hasStructuralGrammarFormula": "F × St × It"
     },
     {
       "@id": "m2:Entropy",
@@ -6209,7 +6205,7 @@
         "m2:State": "State (S × A) is any instantaneous configuration; Stase specifically implies F=0 (flow suspension) as constitutive property"
       },
       "m3:semanticSignature": "structure_preserved + attractor_maintained + flow_suspended_reversibly",
-      "m2:hasStructuralGrammarFormula": "S × A"
+      "m2:hasStructuralGrammarFormula": "St × A"
     },
     {
       "@id": "m2:Coherence",
@@ -6336,7 +6332,7 @@
         "m2:Dissipation": "Dissipation is the instantaneous mechanism; Inertia is its temporally accumulated structural effect"
       },
       "m3:semanticSignature": "thermodynamic_memory + accumulated_entropy + structural_resistance_to_reversal",
-      "m2:hasStructuralGrammarFormula": "S × F × I × D"
+      "m2:hasStructuralGrammarFormula": "St × F × It × D"
     },
     {
       "@id": "m2:Potentialization",
@@ -6453,7 +6449,7 @@
         "m2:Constraint": "Constraint bounds accessible states; Absorbing State permanently forecloses all states except the terminal one"
       },
       "m3:semanticSignature": "terminal_stase + entropy_sealed + potentialization_impossible",
-      "m2:hasStructuralGrammarFormula": "S × A × F × I × D"
+      "m2:hasStructuralGrammarFormula": "St × A × F × It × D"
     },
     {
       "@id": "m2:TopologicalDefect",

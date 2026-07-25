@@ -4,8 +4,20 @@
 tscg_metrics.py — TSCG corpus metric board (deterministic gauges).
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 1.0.0
+Version: 1.1.0
 Project: TSCG (Transdisciplinary System Construction Game)
+
+CHANGELOG
+    1.1.0 (2026-07-24) — WS-0/SC-2. Gauge renamed
+        NOT1_bare_SI_in_atom_formula -> NOT1_bare_SI_in_monoidal_formula.
+        'atom' carried three senses in this corpus: the GENERATOR sense that
+        M3_GenesisGrammar defines ('MonoidalTypes are the atomic, irreducible
+        elements'), the non-combo sense used here, and the domain sense in
+        M1_Chemistry. Only the second was wrong. Verified: the old key appears
+        in NO golden_values.json entry, so no reference breaks — but a local
+        baseline.json saved with --save will show one gauge gone and one new.
+        The ban on 'atom' is a TOOLING constraint (forbidden_in: metric_names),
+        never a corpus-wide ban: M1_Chemistry's domain prose is legitimate.
 
 WHAT THIS IS
     A read-only measuring instrument. It counts, it never edits.
@@ -160,7 +172,7 @@ def measure(root):
         # DUP — retired duplicates
         "DUP1_D8_triad": 0,
         # NOT — notation
-        "NOT1_bare_SI_in_atom_formula": 0,
+        "NOT1_bare_SI_in_monoidal_formula": 0,
         # STR — structural / cross-file
         "STR_layer_inversion": 0,
         "STR_changelog_forms": {},
@@ -257,14 +269,14 @@ def measure(root):
             if key not in defined_properties:
                 M["VOC_prefixed_but_undefined"] += 1
 
-        # --- NOT-1 — bare S/I in ATOM formulas only ------------------------
-        # Atom formulas live in m2:hasStructuralGrammarFormula.
+        # --- NOT-1 — bare S/I in MONOIDAL formulas only ------------------------
+        # Monoidal formulas live in m2:hasStructuralGrammarFormula.
         # Combo signatures (m1:structuralGrammarFormula) are NOT in scope:
         # subscripts do not apply to function arguments.
         def visit_formula(key, value, _depth):
             if key.endswith("hasStructuralGrammarFormula") and isinstance(value, str):
                 if BARE_SI.search(value):
-                    M["NOT1_bare_SI_in_atom_formula"] += 1
+                    M["NOT1_bare_SI_in_monoidal_formula"] += 1
 
         walk_keys(doc.get("@graph", doc), visit_formula)
 
@@ -336,7 +348,7 @@ GAUGES = [
     ("FRB", "tensor operator (live)",         "FRB1_tensor_operator",           "0"),
     ("FRB", "legacy arrow",                   "FRB2_legacy_arrow",              "0"),
     ("DUP", "retired D8 triad",               "DUP1_D8_triad",                  "0"),
-    ("NOT", "bare S/I in atom formula (SC-2)","NOT1_bare_SI_in_atom_formula",   "0"),
+    ("NOT", "bare S/I in monoidal formula (SC-2)","NOT1_bare_SI_in_monoidal_formula",   "0"),
     ("STR", "layer inversion",                "STR_layer_inversion",            "0"),
 ]
 

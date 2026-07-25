@@ -1,10 +1,10 @@
 # M2_GenericConcepts.jsonld
 
-**Version:** 16.18.0
+**Version:** 16.19.0
 **Layer:** M2
 **Type:** Generic Concepts Ontology
 **Created:** 2026-01-14
-**Last Modified:** 2026-07-18
+**Last Modified:** 2026-07-24
 **Author:** Echopraxium with the collaboration of Claude AI
 
 ---
@@ -302,6 +302,49 @@ the temporal component precisely.
 
 ---
 
+## 🔤 Notation Convention — Subscripted Generators (SC-2, v16.19.0)
+
+**`S` and `I` are never bare in a monoidal formula. They carry a monoid subscript.**
+
+`S` and `I` are the only two letters that collide *across* the three grammars, so a
+bare occurrence is ambiguous:
+
+| bare | could mean | disambiguated as |
+|---|---|---|
+| **S** | Structure (Gt) *or* Symbol (Gs) | **St** / **Ss** |
+| **I** | Information (Gt) *or* Interoperability (Gm) | **It** / **Im** |
+
+`A`, `F`, `D` carry no subscript — they belong to a single grammar, no collision.
+
+The subscript is chosen by the **segment's operator**, which fixes the grammar:
+
+- `×` segment → Territory (Gt) → `S` becomes **St**, `I` becomes **It**
+  — e.g. `Resilience = A × St`, `Emergence = It × St × D`
+- `+` segment → Map (Gm) → `I` becomes **Im**
+  — e.g. `Hierarchy(Map view) = O + R + Im`
+- `|` segment → Stereopsis (Gs) → `S` becomes **Ss**
+
+**Scope — monoidal formulas only.** This rule governs monoidal formulas
+(`m2:hasStructuralGrammarFormula`). Combos carry a **function signature**
+(`Fm2`/`Fm1m2`) whose arguments are named concepts, not generators — subscripts do
+not apply there (see *Atoms vs Combos*).
+
+**Enforcement.** `ontology/cli-tools/check-M2/M2_MonoidalFormula_Schema_shacl.ttl`
+(SHAPE M2-1) rejects a bare `S`/`I` in a monoidal formula; the `NOT-1` gauge in
+`tscg_metrics.py` counts them. Both read **0** at v16.19.0.
+
+**What a green gauge does NOT mean.** Correct notation is not adequacy.
+`m2:Symmetry` (`St`) and `m2:State` (`It`) are correctly subscripted and still
+reduce to a single primitive; their semantic revision is deferred to the *M2
+Formulas Review with Gs* worksite. A gauge at 0 is not closure.
+
+**Vocabulary.** These subscripted letters are **MonoidalType generators**; a formula
+is *built from* them, it is not itself a MonoidalType. The rule therefore speaks of
+a *monoidal formula*, not an "atom formula" — "atom" carries an unrelated
+generator/non-combo/domain ambiguity elsewhere in the corpus.
+
+---
+
 ## 🔑 Critical: It vs Im Disambiguation
 
 Both ASFID and REVOI have an "I" type — M2 distinguishes them explicitly:
@@ -313,7 +356,7 @@ Both ASFID and REVOI have an "I" type — M2 distinguishes them explicitly:
 
 ---
 
-## 📊 Statistics (v16.14.0)
+## 📊 Statistics (v16.19.0)
 
 | Metric | Value |
 |---|---|
@@ -327,6 +370,10 @@ Both ASFID and REVOI have an "I" type — M2 distinguishes them explicitly:
 | Ternary-polarity (`_^`, `_0`, `_$`) | 1 (TriadicBalance) |
 | M3 primitives available | 16 — Base16 (𝕋₀) |
 | Functionally stereopsic | 1 (Modelisation) |
+| Bare `S`/`I` in monoidal formulas (NOT-1) | **0** (was 43 pre-SC-2) |
+| Monoidal formulas migrated (SC-2, v16.19.0) | 76 — 58 Gt (`St`/`It`), 18 Gm (`Im`) |
+| SC-2 carve-outs → Gs review worksite | 9 (5 sphinxView-in-ASFID, 2 indexed, 2 prose) |
+| TeX serialisation fields | 0 (`formulaTeX`, `m2:expressionTeX` retired, tensor-era) |
 
 ---
 
@@ -415,7 +462,7 @@ via M3_GenesisGrammar — no direct import of M3_BicephalousPerspective needed.
 2. **Three operators** ×, +, | — three alphabets from three M3 grammars
 3. **16 primitives (Base16)** in 𝕋₀ — ASFID(5) + REVOI(5) + TKSL+poles(6)
 4. **It/Im distinction is crucial** for hybrid formulas
-5. **Notation convention** — St/It in hybrid formulas; ASFID/REVOI unaffected
+5. **Notation convention** — `S`/`I` always subscripted (`St`/`It`/`Ss`/`Im`) in every monoidal formula; `A`/`F`/`D` bare (v16.19.0, SC-2)
 6. **38 stereopsic GenericConcepts** use `|` or a Gs primitive
 7. **11 dual-polarity pairs** — `hasStructuralGrammarFormula` is a 2-element array
 8. **1 ternary-polarity** — TriadicBalance with `_^/_0/_$` (v16.14.0)
@@ -425,7 +472,7 @@ via M3_GenesisGrammar — no direct import of M3_BicephalousPerspective needed.
 12. **Atoms carry monoidal formulas; combos carry function signatures** — never both (v16.17.0)
 13. **Fm2 / Fm1m2 are functions, not functors** — emergence is non-compositional, so a combo has **no** monoidal expansion (v16.17.0)
 14. **`DomainConceptCombo`** (ex-`KnowledgeFieldConceptCombo`) = defined by its `Fm1m2` formula: **≥1 Domain + ≥1 GenericConcept** (v16.17.0)
-12. **Constraint revised** (v16.16.0) — `St × A × D | O + V` (bicephalous, 6 domains validated)
+15. **Constraint revised** (v16.16.0) — `St × A × D | O + V` (bicephalous, 6 domains validated)
 
 **M2 is where TSCG's transdisciplinary power becomes explicit.** 🌟
 
@@ -484,9 +531,9 @@ The new formula emerged from the NakamotoConsensus instance analysis
 
 | Version | Date | Changes |
 |---|---|---|
+| **16.19.0** | 2026-07-24 | **SC-2 STEPS 3-4 — NOTATION REFORM.** Bare monoidal generators `S`/`I` now subscripted in every monoidal formula (`St`/`It`/`Ss`/`Im`), per `M3_BicephalousPerspective` 1.5.1. **MIGRATED 76** values: 58 Gt (`S→St`, `I→It`), 18 Gm (`I→Im`). Of these, 43 on `m2:hasStructuralGrammarFormula` → gauge **NOT-1 43→0**; 33 in secondary formula fields (so the file does not DISPLAY the old notation where the graph carries the new one). **DELETED 4** tensor-era fields: `formulaTeX`×2, `m2:expressionTeX`×2 (all carried `\otimes`); living twin `m2:expression` survives on both nodes in `×` notation. **CARVED OUT 9**, recorded in `M2_Formulas_Review_with_Gs_Residues.md`: 5 `m2:sphinxView` in the ASFID alphabet, 2 indexed generators, 2 prose glosses. **NOT closed**: `Symmetry`/`State` correctly spelled but single-primitive (→ Gs worksite); `Gradient` keeps prose `or`. Enforced by `check-M2/M2_MonoidalFormula_Schema_shacl.ttl` 0.1.0 via `tscg_metrics --shacl-path`. Triples 2345→2343 (the 2 `m2:expressionTeX`). Shipped with a prerequisite CTX fix (16.18.1, isolated lot): `m2`/`m3` prefixes made absolute + `skos` declared, unresolved predicates 174→0. |
 | **16.18.0** | 2026-07-18 | **M2 Formulas Review with Gs** (worksite opening, decision 1.B). REMOVED the `formula` key from all **66** `m2:eagleView` blocks: a **fossil duplicate** of `m2:hasStructuralGrammarFormula` — 38 byte-identical, **28 diverged**, and in every divergent case the canonical was the up-to-date one (e.g. `Layer` canon `St × It × A \| R` vs eagle `S × I × A × R`). **0** nodes had an `eagleView.formula` without a canonical formula → no information lost. Same anti-pattern as the D8 triad retired from M1: one claim stored twice, one copy drifting. Done **before** the SC-2 `St`/`It` migration deliberately — migrating the 43 bare-`S`/`I` formulas first would have widened the divergence from 28 to ~50. **PRESERVED** (surgical): the `eagleView` block itself with its `basis`, `role` (67, ~20 carrying real explanatory content) and `status` keys. **OUT OF SCOPE, still present**: `eagleView.formulaComposition`/`formulaDecomposition` (1 node, same D8 pattern) and the whole `m2:sphinxView` layer (43 blocks split across two key names — `formulaPrimary` 36 / `formula` 7) — separate decisions. See `M2_Formulas_Review_with_Gs_README.md`. |
 | **16.17.0** | 2026-07-13 | FUNCTIONAL GRAMMAR MODEL (SC-1). RENAME (hard): `m2:KnowledgeFieldConceptCombo` → `m2:DomainConceptCombo`, **re-defined** by its `Fm1m2` formula (hybrid ≥1 Domain + ≥1 GenericConcept), superseding the former "parents from distinct epistemological domains" criterion. NEW: `m2:producingFunction` — `Fm2 : GenericConcept²⁺ → GenericConceptCombo`; `Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo`. A combo's formula **is** the function signature: no monoidal formula, **no monoidal expansion** (emergence is non-compositional → functions, not functors). Arguments = named concepts from M2 or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/\|. `Fm1` does not exist. DEPRECATED: `m2:morphism_emergence` (the root of the tensor-era residue) → superseded by `m2:producingFunction`. PURGED: the `lattice_join` definition, the "union of the parent type sets" clause, and the 4 operator-style `m2:comboFormula`. |
-| **16.16.0** | 2026-06-26 | REVISION: m2:Constraint St\|L → St×A×D\|O+V (bicephalous, eagleView St×A×D + sphinxView O+V). isStereopsic unchanged (true). Stereotype count: 38→39. Six-domain validation: blockchain, law, mechanics, optimization, biology, music. |
 
 ---
 
