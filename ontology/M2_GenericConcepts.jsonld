@@ -6,8 +6,9 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "m3": "M3_GenesisGrammar.jsonld#",
-    "m2": "M2_GenericConcepts.jsonld#"
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
@@ -17,8 +18,8 @@
       "dcterms:description": "Second layer of the TSCG framework. Defines transdisciplinary GenericConcepts emerging from structural composition of M3 primitive types. Uses all three M3 alphabets: 𝕋₀(×)={A,S,F,I,D} (Territory/Eagle Eye), 𝕋₀(+)={R,E,V,O,Im} (Map/Sphinx Eye), 𝕋₀(|)={T} (Stereopsis/Bicephalous Perspective). Introduces m2:isStereopsic flag for GenericConcepts using | or Gs primitives. M2 restricted to patterns valid across ALL knowledge fields without exception.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
-      "dcterms:modified": "2026-07-13",
-      "owl:versionInfo": "16.18.0",
+      "dcterms:modified": "2026-07-24",
+      "owl:versionInfo": "16.18.1",
       "owl:imports": [
         "M3_GenesisGrammar.jsonld"
       ],
@@ -109,6 +110,11 @@
       },
       "m2:changelog": [
         {
+          "version": "16.18.1",
+          "date": "2026-07-24",
+          "changes": "PREFIX HYGIENE (WS-2, isolated lot; prerequisite of WS-0/SC-2 step 3). TWO named defects, no other change. (1) CTX-4 - 'm2' and 'm3' were RELATIVE prefixes. In JSON-LD a relative prefix resolves against @base in IDENTIFIER position but NOT in PREDICATE position, so every m2:/m3: KEY expanded to an unresolved IRI, invisible to SHACL and to any reasoner. Both now ABSOLUTE. (2) CTX-1 - 'skos' was USED (skos:definition, 1 occurrence) but never DECLARED; now declared with the value already used identically in M1_CoreConcepts, M1_Domains, M3_BicephalousPerspective, M3_EagleEye and M3_GenesisGrammar. This was the single corpus-wide CTX-1 occurrence: gauge 1 -> 0. VERIFIED: unresolved predicates 174 -> 0; triples unchanged at 2345 (no edge appears or disappears, they only acquire resolvable IRIs); identifiers unchanged (m2:Resilience expands to the same absolute IRI before and after, via @base), so no cross-file reference breaks. Measured effect: the SC-2 shape fires on 0 nodes before this fix and on 45 after - the same silent-blindness pattern as SHAPE 9. No run_all_layers golden impact (M2 NOT_INSTRUMENTED). NO formula migrated, NO field removed in this lot."
+        },
+        {
           "version": "16.18.0",
           "date": "2026-07-18",
           "changes": "M2 FORMULAS REVIEW WITH Gs (worksite opening, decision 1.B) — REMOVED the key 'formula' from all 66 m2:eagleView blocks. It was a FOSSIL DUPLICATE of m2:hasStructuralGrammarFormula: 38 were byte-identical, 28 had diverged, and in every divergent case the canonical formula was the up-to-date one (e.g. Layer canon 'St x It x A | R' vs eagle 'S x I x A x R'; Code canon 'It x Ss' vs eagle 'I x S'). 0 nodes carried an eagleView.formula without a canonical formula, so no information is lost. Same anti-pattern as the D8 triad retired from M1 (one claim stored twice, one copy drifting). Removing it BEFORE the SC-2 St/It migration is deliberate: migrating the 43 bare-S/I formulas first would have widened the divergence from 28 to ~50. PRESERVED (option 1.B, surgical): the eagleView block itself and its 'basis', 'role', 'status' keys (~20 roles carry real explanatory content). OUT OF SCOPE, still present: eagleView 'formulaComposition'/'formulaDecomposition' (1 node each, same D8 pattern) and the whole m2:sphinxView layer (43 blocks, split across two key names 'formulaPrimary' 36 / 'formula' 7) — separate decisions."
@@ -117,11 +123,6 @@
           "version": "16.17.0",
           "date": "2026-07-13",
           "changes": "FUNCTIONAL GRAMMAR MODEL (SC-1). RENAME (hard, no deprecation alias): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. RE-DEFINITION: DomainConceptCombo is now defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. PRODUCING FUNCTIONS declared: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). A combo's formula IS the function signature: no monoidal formula, no monoidal expansion (emergence is non-compositional → FUNCTIONS, not functors). Arguments are named concepts from M2_GenericConcepts or M1_CoreConcepts only — never primitive types, never a monoidal expression, juxtaposed by comma and never joined by ×/+/|. Fm1 does not exist. NEW PROPERTY: m2:producingFunction. DEPRECATED: m2:morphism_emergence (owl:deprecated true, supersededBy m2:producingFunction) and its entry in the header m2:categoryTheory block — it declared emergence as a category-theoretic morphism, the ROOT of the retired tensor-era notation; a morphism composes, an emergence does not. PURGE of the compositional residue: the n-ary emergence operator and its lattice-join definition in the combo class comments, the 'union of the parent type sets' clause on m2:hasComboComponent, and the 4 m2:comboFormula values, now rewritten as Fm2 signatures. See StructuralGrammar/Functional_Grammar_Model.md."
-        },
-        {
-          "version": "16.16.0",
-          "date": "2026-06-26",
-          "changes": "UPDATE m2:Constraint: formula St|L → St×A×D|O+V. Perspective territory → bicephalous. eagleView St×A×D (IMMUTABLE) + sphinxView O+V (VALIDATED). Six-domain validation: blockchain, law, mechanics, optimization, biology, music. Comment and examples updated."
         }
       ],
       "m2:bicephalousStrategy": {
