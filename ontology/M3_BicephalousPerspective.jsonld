@@ -14,9 +14,9 @@
     {
       "@id": "m3:bicephalous:BicephalousPerspective",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "1.5.0",
+      "owl:versionInfo": "1.5.1",
       "dcterms:created": "2026-05-18",
-      "dcterms:modified": "2026-07-23",
+      "dcterms:modified": "2026-07-24",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Stereopsis Grammar — Bicephalous Perspective",
       "dcterms:description": "Reification of the stereopsic synergy between Territory Grammar (Gt / Eagle Eye) and Map Grammar (Gm / Sphinx Eye). Defines the Stereopsis Grammar Gs with operator | and the Base16 Gs alphabet: 6 primitives — T (Temporality), _^ (PositivePole), _$ (NegativePole), K (Knowledge), Ss (Symbol/Stereopsic), L (Localizability). TKSL acronym for the 4 nominal Gs primitives. Each Gs primitive is an irreducible inter-grammar mediator — not derivable from ASFID (Gt) or REVOI (Gm). v1.3.0: EquilibriumPole (_0 = _^ | _$) added as named derived Gs element (m3:DerivedGsElement) — not a primitive, Base16 preserved.",
@@ -93,9 +93,14 @@
       },
       "m3:changelog": [
         {
+          "version": "1.5.1",
+          "date": "2026-07-24",
+          "changes": "VOCABULARY FIX (WS-0/SC-2). The rule graved in 1.5.0 used 'atom formula' in the NON-COMBO sense, inside the very layer where M3_GenesisGrammar defines 'atomic' as the GENERATOR sense: 'MonoidalTypes are the atomic, irreducible elements from which all structural formula expressions are built'. Two senses of the same word one file apart. The corpus carries a third, domain sense (atomic radius, M1_Chemistry). REPLACED 'atom formula(s)' by 'monoidal formula(s)' and 'scope: atoms only' by 'scope: monoidal formulas only'. Note the precise reading now available: S and I are MonoidalType GENERATORS and must be monoid-subscripted in every MONOIDAL FORMULA - a formula is not a MonoidalType, it is built from MonoidalTypes. No rule changed, no scope changed: wording only. The matching rename in tscg_metrics.py (NOT1_bare_SI_in_atom_formula -> NOT1_bare_SI_in_monoidal_formula) ships in the same lot; the ban is recorded as a tooling constraint (forbidden_in: metric_names), NOT as a corpus-wide ban - M1_Chemistry's domain prose is legitimate and must not be touched."
+        },
+        {
           "version": "1.5.0",
           "date": "2026-07-23",
-          "changes": "SC-2 STEP 1 \u2014 NOTATION CONVENTION REVISED AT THE SOURCE. m3:notation_disambiguation no longer states the retired hybrid-only rule (S bare in pure-Territory formulas, indexed only in formulas containing |). New rule: S and I are ALWAYS monoid-subscripted in EVERY atom formula (St/Ss, It/Im); A/F/D stay bare. Scope is atoms only \u2014 combo signatures take named concepts, not primitives. Rationale: the old rule gave one primitive two spellings depending on its neighbours, which is ambiguous to read and unenforceable mechanically. Also corrected here: the m2:Balance usage example read A \u00d7 S \u00d7 F | _0 and is now A \u00d7 St \u00d7 F | _0. This closes the contradiction opened by M3_EagleEye 2.10.0 (SC-2 step 2), which already moved typeSymbol S\u2192St and I\u2192It. NEXT: SC-2 step 3 (SHACL FormulaShape forbidding bare S/I in atom formulas), then step 4 (43 M2 atom formulas, gauge NOT-1 \u2192 0)."
+          "changes": "SC-2 STEP 1 — NOTATION CONVENTION REVISED AT THE SOURCE. m3:notation_disambiguation no longer states the retired hybrid-only rule (S bare in pure-Territory formulas, indexed only in formulas containing |). New rule: S and I are ALWAYS monoid-subscripted in EVERY monoidal formula (St/Ss, It/Im); A/F/D stay bare. Scope is monoidal formulas only — combo signatures take named concepts, not primitives. Rationale: the old rule gave one primitive two spellings depending on its neighbours, which is ambiguous to read and unenforceable mechanically. Also corrected here: the m2:Balance usage example read A × S × F | _0 and is now A × St × F | _0. This closes the contradiction opened by M3_EagleEye 2.10.0 (SC-2 step 2), which already moved typeSymbol S→St and I→It. NEXT: SC-2 step 3 (SHACL FormulaShape forbidding bare S/I in monoidal formulas), then step 4 (43 M2 monoidal formulas, gauge NOT-1 → 0)."
         },
         {
           "version": "1.4.0",
@@ -121,11 +126,6 @@
           "version": "1.2.0",
           "date": "2026-05-27",
           "changes": "BASE16 EXTENSION: Three new Gs primitives added — K (Knowledge, idx 3), Ss (Symbol/Stereopsic, idx 4), L (Localizability, idx 5). TKSL acronym introduced for 4 nominal Gs primitives. Transcendental questions map updated: {T: When?, K: What?, Ss: Sign?, L: Converging?}. 5-5-6 asymmetry documented. Notation convention added: St/It/O indexation in hybrid formulas."
-        },
-        {
-          "version": "1.1.0",
-          "date": "2026-05-20",
-          "changes": "Added PositivePole (_^) and NegativePole (_$) as Gs type primitives. typeSymbol and typeIndex (not dimensionSymbol/dimensionIndex). Symbols _^ and _$ are string notations only — not URIs."
         }
       ]
     },
@@ -248,7 +248,7 @@
       "m3:typeIndex": 4,
       "m3:grammar": "Gs",
       "m3:transcendentalQuestion": "Sign?",
-      "m3:notation_disambiguation": "SC-2 RULE (supersedes the former hybrid-only convention). S and I are ALWAYS monoid-subscripted in EVERY atom formula, because they are the only letters that collide across the three grammars: St (Structure/Gt) vs Ss (Symbol/Gs), and It (Information/Gt) vs Im (Interoperability/Gm). A, F and D stay bare \u2014 no collision. SCOPE: atom formulas only (m2:hasStructuralGrammarFormula). Combos carry a function signature (Fm2/Fm1m2) whose arguments are NAMED CONCEPTS, never primitives, so no subscript applies there. WHY THE OLD RULE WAS RETIRED: it made indexation context-dependent (bare in pure-Territory formulas, indexed only in formulas containing |), so the same primitive had two spellings depending on its neighbours \u2014 ambiguous to read and impossible to check mechanically. ASFID/REVOI scoring terminology is unaffected.",
+      "m3:notation_disambiguation": "SC-2 RULE (supersedes the former hybrid-only convention). S and I are ALWAYS monoid-subscripted in EVERY monoidal formula, because they are the only letters that collide across the three grammars: St (Structure/Gt) vs Ss (Symbol/Gs), and It (Information/Gt) vs Im (Interoperability/Gm). A, F and D stay bare — no collision. SCOPE: monoidal formulas only (m2:hasStructuralGrammarFormula). Combos carry a function signature (Fm2/Fm1m2) whose arguments are NAMED CONCEPTS, never primitives, so no subscript applies there. WHY THE OLD RULE WAS RETIRED: it made indexation context-dependent (bare in pure-Territory formulas, indexed only in formulas containing |), so the same primitive had two spellings depending on its neighbours — ambiguous to read and impossible to check mechanically. ASFID/REVOI scoring terminology is unaffected.",
       "skos:definition": "Semiotic interface — the sign-relation between signifier (Territory/Gt) and signified (Map/Gm). Ss is the Gs primitive that formalises the Peircean sign: a Territory entity (signifier) stands for a Map meaning (signified) for an interpreter. Not the structure itself (St) nor the representation (R), but the semiotic bridge that links them.",
       "rdfs:comment": "Fifth primitive of 𝕋₀(|). Ss is irreducible — not derivable from St (Territory structure) nor from R (Map representability). It answers 'What is the sign for?' — the semiotic question. Theoretical basis: Peirce (sign = signifier + signified + interpretant), Saussure (signifier/signified), Eco (semiotics of culture).",
       "m3:independence": "Ss cannot be derived from St or R. St (Territory) is physical/structural organisation; R (Map) is representational quality; Ss is neither — it is the semiotic bridge that makes St carry Gm meaning.",
@@ -377,138 +377,138 @@
       "dcterms:created": "2026-06-23",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
-      {
-        "@id": "m3:role",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "role",
-        "rdfs:comment": "Documentary label for the functional role a primitive plays in a formula (e.g. 'polarity_modifier'). TSCG-native: distinct from prov:hadRole (role of an agent in an activity), verified 2026-07-22 — foreign ontology, not reused.",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:semantics",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "semantics",
-        "rdfs:comment": "Prose gloss of the semantic reading of a type or degenerate configuration (e.g. 'Divergent Strabismus — Territory and Map share nothing').",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:symbol",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "symbol",
-        "rdfs:comment": "The string notation of a primitive or derived element as it appears in formula values (e.g. '_0'). Notation only — never an OWL/RDF URI (see notation_note).",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:grammar",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "grammar",
-        "rdfs:comment": "Names which of the three monoidal grammars a type belongs to (Gt, Gm, Gs).",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:visual",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "visual",
-        "rdfs:comment": "Documentary description of the visual/glyph rendering of a type (e.g. 'Black + Empty pentagon').",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:usage",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "usage",
-        "rdfs:comment": "List of attested formula-level usages of an element across the corpus (e.g. 'm2:Balance = A × St × F | _0').",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:derivation",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "derivation",
-        "rdfs:comment": "Structured record of how a derived Gs element is obtained from primitives via a monoidal operator (operator / operands / result).",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:formula_role",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "formula_role",
-        "rdfs:comment": "Explains how a primitive behaves inside hybrid inter-grammar formulas (e.g. K as inter-grammar contextualisation).",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:independence",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "independence",
-        "rdfs:comment": "Justification that a primitive is genuinely irreducible — not derivable from the other grammars' primitives.",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:analogyInGt",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "analogyInGt",
-        "rdfs:comment": "Cross-grammar analogy expressed in the Territory grammar Gt, used to motivate a Gs construction by parallel with a known Gt expression.",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:analogyInGs",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "analogyInGs",
-        "rdfs:comment": "Cross-grammar analogy expressed in the Stereopsis grammar Gs, parallel to analogyInGt.",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:pairWith",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "pairWith",
-        "rdfs:comment": "Links a pole to its complementary pole. NOTE: currently carries a string ('m3:bicephalous:NegativePole') where an @id reference is expected — flagged as a latent reference defect (VOC/STR), declared here as AnnotationProperty pending a decision to promote it to owl:ObjectProperty.",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:triadicPattern",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "triadicPattern",
-        "rdfs:comment": "Structured description of an under-pole / equilibrium-pole / over-pole triad for a Gs polarity axis.",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:theoretical_basis",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "theoretical_basis",
-        "rdfs:comment": "List of external scholarly references grounding a construction (e.g. Maturana & Varela, Husserl).",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:transcendentalQuestion",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "transcendentalQuestion",
-        "rdfs:comment": "The Kantian-style category question a primitive answers (e.g. 'When?' for T).",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:openQuestion",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "openQuestion",
-        "rdfs:comment": "Structured record of an unresolved design question, with its status and provisional resolution.",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:rejected_names",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "rejected_names",
-        "rdfs:comment": "Structured record of candidate names that were considered and rejected for a concept, with the rejection rationale.",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:notation_note",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "notation_note",
-        "rdfs:comment": "Clarification about notation conventions (e.g. that a pole string is used in formula values only, never as a URI).",
-        "dcterms:created": "2026-07-22"
-      },
-      {
-        "@id": "m3:notation_disambiguation",
-        "@type": "owl:AnnotationProperty",
-        "rdfs:label": "notation_disambiguation",
-        "rdfs:comment": "Disambiguation rule for potentially colliding primitive notations (e.g. Ss vs St). NOTE: the value of this property is the target of SC-2, which revises the S/I subscription rule; SC-2 changes the VALUE, not this declaration.",
-        "dcterms:created": "2026-07-22"
-      }
+    {
+      "@id": "m3:role",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "role",
+      "rdfs:comment": "Documentary label for the functional role a primitive plays in a formula (e.g. 'polarity_modifier'). TSCG-native: distinct from prov:hadRole (role of an agent in an activity), verified 2026-07-22 — foreign ontology, not reused.",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:semantics",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "semantics",
+      "rdfs:comment": "Prose gloss of the semantic reading of a type or degenerate configuration (e.g. 'Divergent Strabismus — Territory and Map share nothing').",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:symbol",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "symbol",
+      "rdfs:comment": "The string notation of a primitive or derived element as it appears in formula values (e.g. '_0'). Notation only — never an OWL/RDF URI (see notation_note).",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:grammar",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "grammar",
+      "rdfs:comment": "Names which of the three monoidal grammars a type belongs to (Gt, Gm, Gs).",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:visual",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "visual",
+      "rdfs:comment": "Documentary description of the visual/glyph rendering of a type (e.g. 'Black + Empty pentagon').",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:usage",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "usage",
+      "rdfs:comment": "List of attested formula-level usages of an element across the corpus (e.g. 'm2:Balance = A × St × F | _0').",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:derivation",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "derivation",
+      "rdfs:comment": "Structured record of how a derived Gs element is obtained from primitives via a monoidal operator (operator / operands / result).",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:formula_role",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "formula_role",
+      "rdfs:comment": "Explains how a primitive behaves inside hybrid inter-grammar formulas (e.g. K as inter-grammar contextualisation).",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:independence",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "independence",
+      "rdfs:comment": "Justification that a primitive is genuinely irreducible — not derivable from the other grammars' primitives.",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:analogyInGt",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "analogyInGt",
+      "rdfs:comment": "Cross-grammar analogy expressed in the Territory grammar Gt, used to motivate a Gs construction by parallel with a known Gt expression.",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:analogyInGs",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "analogyInGs",
+      "rdfs:comment": "Cross-grammar analogy expressed in the Stereopsis grammar Gs, parallel to analogyInGt.",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:pairWith",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "pairWith",
+      "rdfs:comment": "Links a pole to its complementary pole. NOTE: currently carries a string ('m3:bicephalous:NegativePole') where an @id reference is expected — flagged as a latent reference defect (VOC/STR), declared here as AnnotationProperty pending a decision to promote it to owl:ObjectProperty.",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:triadicPattern",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "triadicPattern",
+      "rdfs:comment": "Structured description of an under-pole / equilibrium-pole / over-pole triad for a Gs polarity axis.",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:theoretical_basis",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "theoretical_basis",
+      "rdfs:comment": "List of external scholarly references grounding a construction (e.g. Maturana & Varela, Husserl).",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:transcendentalQuestion",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "transcendentalQuestion",
+      "rdfs:comment": "The Kantian-style category question a primitive answers (e.g. 'When?' for T).",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:openQuestion",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "openQuestion",
+      "rdfs:comment": "Structured record of an unresolved design question, with its status and provisional resolution.",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:rejected_names",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "rejected_names",
+      "rdfs:comment": "Structured record of candidate names that were considered and rejected for a concept, with the rejection rationale.",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:notation_note",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "notation_note",
+      "rdfs:comment": "Clarification about notation conventions (e.g. that a pole string is used in formula values only, never as a URI).",
+      "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:notation_disambiguation",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "notation_disambiguation",
+      "rdfs:comment": "Disambiguation rule for potentially colliding primitive notations (e.g. Ss vs St). NOTE: the value of this property is the target of SC-2, which revises the S/I subscription rule; SC-2 changes the VALUE, not this declaration.",
+      "dcterms:created": "2026-07-22"
+    }
   ]
 }

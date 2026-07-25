@@ -1,0 +1,122 @@
+#############################################################################
+# M2_MonoidalFormula_Schema_shacl.ttl
+#
+# Author  : Echopraxium with the collaboration of Claude AI
+# Version : 0.1.0
+# Date    : 2026-07-24
+# Worksite: WS-0 / SC-2 / step 3
+#
+# SCOPE — READ THIS BEFORE TRUSTING A GREEN RESULT
+#
+# This file is NOT the M2 grammar. It carries two targeted constraints on
+# monoidal formulas and makes NO claim of coverage over M2.
+#
+# A full M2 grammar is blocked by WS-1 (VOC): 1695 of the 3480 key/value pairs
+# in M2_GenericConcepts.jsonld are bare keys that never reach RDF. A grammar
+# over that file would validate half of it and pass. That is why the file is
+# named after what it constrains rather than after the layer, leaving the name
+# M2_Schema_shacl.ttl free for the day a real grammar exists — the same reason
+# M0_Instances_Schema_shacl.ttl carries its own scope qualifier.
+#
+# RUNNER — interim
+#   python ontology/cli-tools/tscg_metrics.py --root ontology --shacl \
+#          --shacl-path ontology/cli-tools/check-M2/M2_MonoidalFormula_Schema_shacl.ttl
+# run_all_layers.py does NOT execute this file: M2 remains NOT_INSTRUMENTED,
+# which is the honest status. To be replaced by the WS-5 M2/M3 runner, which
+# should also give run_all_layers a third state (PARTIAL) between INSTRUMENTED
+# and NOT_INSTRUMENTED.
+#
+# HARD PREREQUISITE — verified 2026-07-24
+# These shapes only fire if the m2 prefix of the validated file is ABSOLUTE.
+# With a relative prefix (CTX-4), m2:hasStructuralGrammarFormula expands to an
+# unresolved IRI and SHAPE M2-1 below matches ZERO nodes while reporting
+# CONFORMS. Measured on M2_GenericConcepts v16.18.0: 0 violations before the
+# @context fix, 43 after. Fixed by that file's v16.18.1.
+# This is the same silent blindness that let SHAPE 9 fire on nothing for months.
+#############################################################################
+
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix m2:   <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
+
+#############################################################################
+# SHAPE M2-1 — MonoidalFormulaShape
+#
+# A monoidal formula must not carry a bare S or I.
+#
+# S and I are ambiguous ACROSS the three monoids: S is Structure in Gt and
+# Symbol in Gs; I is Information in Gt and Interoperability in Gm. The
+# subscript is what disambiguates: St, Ss, It, Im. The rule is graved in
+# M3_BicephalousPerspective 1.5.0 and the typeSymbols in M3_EagleEye 2.10.0.
+#
+# TARGETING — sh:targetSubjectsOf, deliberately NOT sh:targetClass.
+# Targeting by class is what made SHAPE 9, 10 and 11 fire on nothing:
+# pyshacl performs no RDFS entailment by default, so a subclass inherits no
+# target. Targeting by property makes the shape independent of typing.
+#
+# REGEX — XPath/SPARQL regex, NOT PCRE: no lookbehind is available.
+#   (^|[^A-Za-z_])[SI]([^A-Za-z0-9_]|$)
+# matches a bare S or I while leaving St, Ss, It, Im untouched. Cross-checked
+# against the NOT-1 gauge in tscg_metrics.py: same 43 hits on v16.18.0, 0 on
+# v16.19.0.
+#
+# WHAT THIS SHAPE DOES NOT SAY. A green result means the notation is correct.
+# It does NOT mean the formula is adequate: m2:Symmetry (St) and m2:State (It)
+# are correctly spelled and still reduce to a single primitive. Their semantic
+# revision is WS-3. A gauge at 0 is not closure.
+#############################################################################
+
+m2:MonoidalFormulaShape
+    a sh:NodeShape ;
+    sh:targetSubjectsOf m2:hasStructuralGrammarFormula ;
+    sh:property [
+        sh:path m2:hasStructuralGrammarFormula ;
+        sh:datatype xsd:string ;
+        sh:not [ sh:pattern "(^|[^A-Za-z_])[SI]([^A-Za-z0-9_]|$)" ] ;
+        sh:severity sh:Violation ;
+        sh:name "monoidal formula, subscripted generators" ;
+        sh:message "SC-2 / NOT-1: bare 'S' or 'I' in a monoidal formula. S and I are ambiguous across the monoids (S = Structure in Gt, Symbol in Gs; I = Information in Gt, Interoperability in Gm). Use St, Ss, It or Im. Combo signatures are NOT concerned: they carry named concepts, not generators." ;
+    ] ;
+.
+
+#############################################################################
+# SHAPE M2-2 — NoTeXSerialisationShape
+#
+# Re-entry guard. m2:expressionTeX was deleted in M2_GenericConcepts 16.19.0:
+# both occurrences were LaTeX serialisations carrying \otimes, the operator
+# permanently retired by the structural-grammar reform. The living twin
+# m2:expression survives on both nodes, already in × notation.
+#
+# WHY A GUARD RATHER THAN A PLAIN DELETION. The retired operator has come back
+# into this corpus more than once, and SHAPE 10 plays exactly this role on the
+# M1 side for the D8 triad. A deletion holds until someone re-adds a field.
+#
+# COVERAGE LIMIT, stated rather than assumed. The sibling key 'formulaTeX'
+# (2 occurrences, also deleted, also carrying \otimes) CANNOT be guarded here:
+# it is a bare key with no prefix, so it reaches no graph and no SHACL shape
+# can ever see it. Guarding it belongs to the document plane — a JSON Schema,
+# WS-5. Recorded so that a green result here is not read as covering both.
+#############################################################################
+
+m2:NoTeXSerialisationShape
+    a sh:NodeShape ;
+    sh:targetSubjectsOf m2:expression ;
+    sh:property [
+        sh:path m2:expressionTeX ;
+        sh:maxCount 0 ;
+        sh:severity sh:Violation ;
+        sh:name "no TeX serialisation" ;
+        sh:message "RETIRED (16.19.0): m2:expressionTeX was a LaTeX serialisation of the retired tensor operator. Use m2:expression, in × / + / | notation. Note the FRB gauge counts only the literal ⊗ (U+2297) and is blind to the \\otimes macro — that blindness is why this guard exists." ;
+    ] ;
+.
+
+#############################################################################
+# CHANGELOG
+#
+# 0.1.0 (2026-07-24) — File created for WS-0/SC-2 step 3. SHAPE M2-1
+#   MonoidalFormulaShape (NOT-1, targetSubjectsOf, lookbehind-free regex,
+#   cross-checked 43/43 against tscg_metrics). SHAPE M2-2
+#   NoTeXSerialisationShape (re-entry guard on m2:expressionTeX, with its
+#   coverage limit on the bare key formulaTeX stated explicitly).
+#   No coverage claim over M2.
+#############################################################################
