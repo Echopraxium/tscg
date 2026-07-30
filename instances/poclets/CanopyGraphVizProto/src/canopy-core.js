@@ -357,7 +357,14 @@ function coneLayout(){
   if(state.radial==='tree'){ radialOf={}; N.forEach(x=>radialOf[x.id]=treeDepth[x.id]); }
   else computeRadial();
   const groups={};
-  N.forEach(x=>{ const k=Math.max(0,Math.round(radialOf[x.id]||0)); (groups[k]=groups[k]||[]).push(x); });
+  N.forEach(x=>{
+    if(x.layer==='VOCAB' && !state.showVocab) return;      // imported vocab is not a stratum
+    // in meta mode the stratum IS the declared layer, so nothing can drift to a wrong slice
+    const k = state.radial==='meta'
+      ? LAYER_ORDER[x.layer]
+      : Math.max(0,Math.round(radialOf[x.id]||0));
+    (groups[k]=groups[k]||[]).push(x);
+  });
   const GA=Math.PI*(3-Math.sqrt(5));
   coneSlices=[];
   let prevRad=0;
@@ -373,9 +380,11 @@ function coneLayout(){
     const keys=Object.keys(sub).sort(), m=keys.length;
     keys.forEach((key,ci)=>{
       const cl=sub[key], cn=cl.length;
-      const cR=(m===1)?0:rad*0.60*Math.sqrt((ci+0.5)/m), cT=GA*ci;
+      // single cluster: fill the whole disc. Several: push them out toward the rim so the
+      // populous M1/M0 strata actually fill the cone instead of huddling near the axis.
+      const cR=(m===1)?0:rad*0.72*((ci+0.5)/m), cT=GA*ci*3.0;
       const cx=cR*Math.cos(cT), cy=cR*Math.sin(cT);
-      const sr=Math.min(rad*0.33,Math.max(1.5,1.45*Math.sqrt(cn)));
+      const sr=(m===1)? rad*0.92 : Math.min(rad*0.5,Math.max(2.0,1.7*Math.sqrt(cn)));
       cl.forEach((x,i)=>{
         const rr=(cn===1)?0:sr*Math.sqrt((i+0.5)/cn), th=GA*i;
         pos[x.id]=new BABYLON.Vector3(cx+rr*Math.cos(th),cy+rr*Math.sin(th),z);
@@ -771,13 +780,14 @@ function toggleFold(id){
 function relayout(){ rebuildFacetColors(); layout(); buildEdges(); buildSlices(); buildStubs(); buildLegend(); applyVisual();
   if(typeof updateFoldReadout==='function') updateFoldReadout(); }
 const $=id=>document.getElementById(id);
-$('radial').onchange=e=>{state.radial=e.target.value;
-  $('vRadial').textContent={tree:'tree depth',subclass:'specialization',meta:'meta-level',hops:'hops',trophic:'trophic flow'}[state.radial]; relayout();};
-$('facet').onchange=e=>{state.facet=e.target.value;
-  $('vFacet').textContent=e.target.selectedOptions[0].text.split(' (')[0].toLowerCase(); relayout();};
-$('colorBy').onchange=e=>{state.colorBy=e.target.value;
-  $('vColorBy').textContent=e.target.value; relayout();};
-$('spectralT').onchange=e=>{state.spectral.on=e.target.checked;
+// safe event binder: a single missing element must never abort the rest of the wiring
+// (that is what left the tabs dead when one button id was briefly out of sync).
+function on(id,ev,fn){ const el=$(id); if(el) el.addEventListener(ev,fn);
+  else console.warn('canopy: #'+id+' not found, handler skipped'); }
+on('radial','onchange',e=>{state.radial=e.target.value;
+  $('vRadial').textContent={tree:'tree depth',subclass:'specialization',meta:'meta-level',hops:'hops',trophic:'trophic flow'}[state.radial]; relayout();});on('facet','onchange',e=>{state.facet=e.target.value;
+  $('vFacet').textContent=e.target.selectedOptions[0].text.split(' (')[0].toLowerCase(); relayout();});on('colorBy','onchange',e=>{state.colorBy=e.target.value;
+  $('vColorBy').textContent=e.target.value; relayout();});on('spectralT','onchange',e=>{state.spectral.on=e.target.checked;
   $('kclusters').disabled=!e.target.checked;
   $('facet').disabled=e.target.checked;
   if(state.spectral.on){ $('vFacet').textContent='spectral clusters';
@@ -786,10 +796,8 @@ $('spectralT').onchange=e=>{state.spectral.on=e.target.checked;
     $('specReadout').innerHTML='Ignores declared facets. Builds the normalized graph Laplacian, '+
       'power-iterates its low modes, k-means on the embedding — then colours by the clusters it '+
       '<i>finds on its own</i>.'; }
-  relayout();};
-$('kclusters').oninput=e=>{state.spectral.k=+e.target.value;$('vK').textContent=state.spectral.k;
-  if(state.spectral.on){runSpectral();relayout();}};
-function updateInstrument(){
+  relayout();});on('kclusters','oninput',e=>{state.spectral.k=+e.target.value;$('vK').textContent=state.spectral.k;
+  if(state.spectral.on){runSpectral();relayout();}});function updateInstrument(){
   const fov=cam.fov;
   state.coneDeg=fov*180/Math.PI;                       // the emphasis cone IS the field of view
   const t=(fov-0.35)/(1.9-0.35);                        // 0 = telescope … 1 = naked eye
@@ -801,7 +809,7 @@ function updateInstrument(){
     + ` · showing ${N.filter(nodeVisible).length}/${N.length} nodes`;
   applyVisual(); buildLegend();
 }
-$('arr').onchange=e=>{state.arrangement=e.target.value;
+on('arr','onchange',e=>{state.arrangement=e.target.value;
   $('vArr').textContent={canopy:'canopy',clusters:'clusters',cone:'cone',nautilus:'nautilus'}[e.target.value];
   if(e.target.value!=='canopy' && state.radial==='tree'){ state.radial='hops'; $('radial').value='hops'; $('vRadial').textContent='hops'; }
   if(e.target.value==='cone'){
@@ -817,34 +825,116 @@ $('arr').onchange=e=>{state.arrangement=e.target.value;
     yaw=0; pitch=0.25; cam.position=new BABYLON.Vector3(0,0,0.0001); applyCam(); updateDolly();
   }
   $('coneGrp').style.display=(e.target.value==='cone')?'':'none';
-  relayout();};
-$('scaf').oninput=e=>{state.edgeAlpha=(+e.target.value)/100;$('vScaf').textContent=e.target.value+'%';applyVisual();};
-$('instr').oninput=e=>{ cam.fov=(+e.target.value)/100; updateInstrument(); };
-$('depth').oninput=e=>{state.depth=+e.target.value;
-  $('vDepth').textContent=state.depth>=7?'all':'≤ '+state.depth;applyVisual();buildLegend();};
-$('expandLimit').onchange=e=>{
+  relayout();});on('scaf','oninput',e=>{state.edgeAlpha=(+e.target.value)/100;$('vScaf').textContent=e.target.value+'%';applyVisual();});on('instr','oninput',e=>{ cam.fov=(+e.target.value)/100; updateInstrument(); });on('depth','oninput',e=>{state.depth=+e.target.value;
+  $('vDepth').textContent=state.depth>=7?'all':'≤ '+state.depth;applyVisual();buildLegend();});on('expandLimit','onchange',e=>{
   state.expandLimit = e.target.value==='inf'?Infinity:+e.target.value;
   if(state.expandOrder.length) enforceExpandLimit(state.expandOrder[state.expandOrder.length-1]);
-  relayout(); };
-$('foldDepth').onclick=()=>{ state.expandOrder=[]; state.forcedClosed=new Set();
-  state.autoOpenDepth=1; relayout(); };
-$('foldClear').onclick=()=>{ state.expandOrder=[]; state.forcedClosed=new Set();
-  state.autoOpenDepth=99; state.expandLimit=Infinity; $('expandLimit').value='inf'; relayout(); };
-function updateFoldReadout(){
+  relayout(); });on('foldDepth','onclick',()=>{ state.expandOrder=[]; state.forcedClosed=new Set();
+  state.autoOpenDepth=1; relayout(); });on('foldClear','onclick',()=>{ state.expandOrder=[]; state.forcedClosed=new Set();
+  state.autoOpenDepth=99; state.expandLimit=Infinity; $('expandLimit').value='inf'; relayout(); });function updateFoldReadout(){
   const open=N.filter(x=>(treeChildren[x.id]||[]).length&&isExpanded(x.id)).length;
   const lim=isFinite(state.expandLimit)?state.expandLimit:'∞';
   $('vFold').textContent=`${open} open / ${lim} · ${collapsedHidden.size} hidden`;
 }
-$('slicePrev').onclick=()=>shiftSlice(-1);
-$('sliceNext').onclick=()=>shiftSlice(1);
-$('sliceAll').onclick=()=>setSlice(null);
-$('travelBack').onclick=()=>travel(-1);
-$('travelFwd').onclick=()=>travel(1);
-$('advMode').onchange=e=>{
-  document.body.classList.toggle('advanced',e.target.checked); };
-$('showAll').onchange=e=>{state.showAll=e.target.checked;updateInstrument();relayout();};
-$('vocabT').onchange=e=>{state.showVocab=e.target.checked;relayout();};
+on('slicePrev','onclick',()=>shiftSlice(-1));on('sliceNext','onclick',()=>shiftSlice(1));on('sliceAll','onclick',()=>setSlice(null));on('travelBack','onclick',()=>travel(-1));on('travelFwd','onclick',()=>travel(1));on('teleOutside','onclick',()=>{
+  // Show the whole graph as the "history of the universe" cone, seen from outside.
+  // Switch the layout to cone, then stand on a line whose first point is the MIDDLE of the
+  // cone's axis and whose direction is orthogonal to the plane spanned by that axis and the
+  // base — i.e. look at the cone broadside, so the strata separate instead of overlapping.
+  state.arrangement='cone'; $('arr').value='cone'; $('vArr').textContent='cone';
+  state.radial='meta'; $('radial').value='meta'; $('vRadial').textContent='meta-level';
+  $('coneGrp').style.display=''; state.slice=null;
+  relayout();
+  // the cone is built along +z (apex z≈0, base at max z); its axis midpoint:
+  let zmin=1e9,zmax=-1e9,rmax=0;
+  N.forEach(x=>{ const p=pos[x.id]; if(!p)return;
+    zmin=Math.min(zmin,p.z); zmax=Math.max(zmax,p.z);
+    rmax=Math.max(rmax,Math.hypot(p.x,p.y)); });
+  const mid=new BABYLON.Vector3(0,0,(zmin+zmax)/2);
+  const span=(zmax-zmin)||60;
+  // step off along +x (orthogonal to the axis-and-base plane) far enough to frame it
+  cam.position=mid.add(new BABYLON.Vector3(span*0.9+rmax,rmax*0.35,0));
+  const dir=mid.subtract(cam.position).normalize();
+  yaw=Math.atan2(dir.x,dir.z); pitch=Math.asin(Math.max(-1,Math.min(1,dir.y)));
+  applyCam(); updateInstrument(); updateDolly();
+});
+on('resetView','onclick',()=>{
+  // back to the egocentric canopy at the centre, all filters cleared
+  state.arrangement='canopy'; $('arr').value='canopy'; $('vArr').textContent='canopy'; $('coneGrp').style.display='none';
+  state.radial='tree'; $('radial').value='tree'; $('vRadial').textContent='tree depth';
+  state.slice=null; state.expandOrder=[]; state.forcedClosed=new Set(); state.autoOpenDepth=2;
+  state.depth=7; $('depth').value=7; $('vDepth').textContent='all';
+  state.showAll=false; $('showAll').checked=false;
+  cam.fov=1.5; cam.position=new BABYLON.Vector3(0,0,0.0001); yaw=0; pitch=0;
+  applyCam(); updateInstrument(); relayout(); updateDolly();
+});// ---- panel tabs ----
+document.querySelectorAll('#tabs .tab').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('#tabs .tab').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.tabpane').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    document.getElementById('tab-'+b.dataset.t).classList.add('on');
+  };
+});
+$('helpBox').innerHTML = `
+<h4>What this is</h4>
+You stand <b>inside</b> the graph and look outward: nodes are bodies, relations are
+constellations. Instead of untangling a flat hairball, you fly through and aim an instrument.
 
+<h4>Moving</h4>
+<b>Drag</b> to look around · <span class="k">↑↓</span> or <span class="k">Z/X</span> fly
+forward/back along your gaze · <span class="k">←→</span> turn your head ·
+<span class="k">wheel</span> zooms the lens (not your position). Flying <b>back</b> far enough
+lifts you out of the graph to an outside view — the <b>Teleport outside</b> button does this in
+one step, pulling back by the graph's own size.
+
+<h4>Arrangement</h4>
+The same graph, laid out different ways. <b>Cone</b> stacks the M3→M0 layers as widening discs
+(a "genesis": few foundations, many instances) and is best seen side-on. <b>Canopy</b> grows a
+tree from you outward. <b>Clusters</b> groups by a facet. <b>Nautilus</b> coils the layers into
+a shell whose room grows geometrically.
+
+<h4>Radial axis <span style="color:#7f8ca8">(Advanced)</span></h4>
+The arrangement fixes <i>direction</i>; this fixes <i>distance from you</i> — tree depth,
+specialization, meta-level, hops, or trophic flow. Two independent choices, so you can ask e.g.
+"canopy shape, but distance = how specialized".
+
+<h4>Instrument</h4>
+Couples field of view to a <b>seeing limit</b>, like a telescope: a wide field shows only the
+bright (well-connected) bodies; narrowing reveals faint ones. <b>Show every node</b> ignores
+the limit. The readout shows how many nodes are visible vs. observed in your field.
+
+<h4>Focus distance</h4>
+Hides bodies beyond a chosen distance (in the current radial axis), to peel the graph outward
+shell by shell.
+
+<h4>Colour by <span style="color:#7f8ca8">(Advanced)</span></h4>
+Shape always encodes the <i>kind</i> of node (▲ concept, ◆ combo, ■ family, ● instance,
+⬢ foundation). Hue can encode a chosen facet (grammar, family, layer) <i>or</i> match the
+kind. Two channels read at once.
+
+<h4>Object explorer</h4>
+Filter nodes by layer and text, click to <b>aim</b> (an arrow guides your head to it), or set
+it as the new centre.
+
+<h4>Folding</h4>
+Right-click a star → <b>Expand/Collapse</b> its subtree. A folded star grows brighter with how
+much it hides, so you see where the mass is. The <b>limit</b> keeps only N branches open at
+once (opening past it closes the oldest), so the sky never floods.
+
+<h4>Constellations <span style="color:#7f8ca8">(Advanced)</span></h4>
+Toggle which relation types are drawn as edges. Edges show only near your gaze, so they never
+re-form the hairball.
+
+<h4>Reveal hidden structure <span style="color:#7f8ca8">(Advanced)</span></h4>
+Ignores the declared facets and re-discovers clusters from the link pattern alone (spectral
+clustering). The gap between what it finds and what was declared is a Map/Territory signal.
+
+<h4>Cone: slices &amp; travel</h4>
+Isolate one stratum; its cross-layer links become clickable <b>stubs</b> you can follow like
+hyperlinks. Or travel the continuum chronologically (toward M0) / retro (toward M3).
+`;
+on('showAll','onchange',e=>{state.showAll=e.target.checked;updateInstrument();relayout();});on('vocabT','onchange',e=>{state.showVocab=e.target.checked;relayout();});
 // relation-type checkboxes
 const relsEl=$('rels');
 REL_TYPES.filter(t=>!['a','authoredBy'].includes(t)).forEach(t=>{
@@ -895,14 +985,13 @@ function buildLegend(){
    vertical stem = elevation above/below the observer's horizontal plane. */
 const radarCv=$('radar-canvas'), rctx=radarCv.getContext('2d');
 let radarCollapsed=false;
-$('radar-toggle').onclick=()=>{
+on('radar-toggle','onclick',()=>{
   radarCollapsed=!radarCollapsed;
   $('radar-body').style.display=radarCollapsed?'none':'';
   $('radar-bar').classList.toggle('collapsed',radarCollapsed);
   $('radar-toggle').textContent=radarCollapsed?'+':'−';
   if(!radarCollapsed) drawRadar();
-};
-// True when a world point actually falls inside the rendered viewport (in front of the
+});// True when a world point actually falls inside the rendered viewport (in front of the
 // camera and within its rectangle) — the honest test for "what I can see right now".
 function onScreen(p){
   if(!p)return false;
@@ -975,12 +1064,9 @@ function buildExplorer(){
     el.appendChild(d);
   });
 }
-$('expLayer').onchange=buildExplorer;
-$('expSearch').oninput=buildExplorer;
-$('expCentre').onclick=()=>{ if(!aimedId)return;
+on('expLayer','onchange',buildExplorer);on('expSearch','oninput',buildExplorer);on('expCentre','onclick',()=>{ if(!aimedId)return;
   setCenter(aimedId); cam.position=new BABYLON.Vector3(0,0,0.0001); applyCam(); updateDolly();
-  aimedId=null; $('expCentre').disabled=true; buildExplorer(); };
-
+  aimedId=null; $('expCentre').disabled=true; buildExplorer(); });
 // HUD arrow: when the aimed node is off-screen or behind you, an arrow at the screen edge
 // points which way to turn your head; when it is in view, a ring marks it.
 function renderGuide(){
@@ -1039,12 +1125,14 @@ function openCtxMenu(ev,id){
   rows.push('<div class="sep"></div>');
   rows.push(`<button data-a="centre">Teleport there</button>`);
   rows.push(`<button data-a="aim">Aim at this${aimedId===id?' ✓':''}</button>`);
+  if(x.simUrl) rows.push(`<button data-a="sim">Open simulation ↗</button>`);
   if(state.arrangement==='cone')
     rows.push(`<button data-a="slice">Isolate its stratum</button>`);
   box.innerHTML=rows.join('');
   box.style.display='block';
   const w=box.offsetWidth||190, h=box.offsetHeight||150;
-  box.style.left=Math.min(ev.clientX+8, innerWidth-w-8)+'px';
+  const panelW=(document.getElementById('panel')||{}).offsetWidth||298;
+  box.style.left=Math.min(Math.max(ev.clientX+8,panelW+6), innerWidth-w-8)+'px';
   box.style.top =Math.min(ev.clientY+8, innerHeight-h-8)+'px';
   box.querySelectorAll('button[data-a]').forEach(b=>{
     b.onclick=()=>{
@@ -1055,6 +1143,7 @@ function openCtxMenu(ev,id){
       else if(a==='aim'){ aimedId=(aimedId===id?null:id); buildExplorer();
         $('expCentre').disabled=!aimedId; }
       else if(a==='slice') jumpToSlice(id);
+      else if(a==='sim' && x.simUrl) window.open(x.simUrl,'_blank','noopener');
     };
   });
 }
@@ -1222,46 +1311,48 @@ function stepGlide(){
 }
 
 /* ---- 9d. SELECTION ORBIT (polygon matches the glyph's own geometry) -------- */
-let orbitMesh=null, orbitPivot=null, orbitFor=null, orbitPhase=0;
+let orbitMesh=null, orbitFor=null, orbitPhase=0;
 function updateOrbit(){
   const id=aimedId||hoverId;
-  if(!id||!pos[id]||!meshes[id]||!meshes[id].isEnabled()){
-    if(orbitPivot)orbitPivot.setEnabled(false); orbitFor=null; return; }
+  if(!id||id===state.focus||!pos[id]||!meshes[id]||!meshes[id].isEnabled()){
+    if(orbitMesh)orbitMesh.setEnabled(false); orbitFor=null; return; }
   const g=STYLESHEET.nodes.kinds[kindOf(byId[id])]||STYLESHEET.nodes.kinds.other;
   if(orbitFor!==id){
-    if(orbitPivot)orbitPivot.dispose();
-    // A torus aimed with lookAt puts its axis toward the camera, i.e. the ring is seen
-    // EDGE-ON and vanishes — which is why it only appeared once you had flown away and the
-    // angle happened to become favourable. Billboard the pivot instead and tilt the ring
-    // into the screen plane.
-    orbitPivot=new BABYLON.TransformNode('orbitPivot',scene);
-    orbitPivot.billboardMode=BABYLON.TransformNode.BILLBOARDMODE_ALL;
+    if(orbitMesh)orbitMesh.dispose();
     orbitMesh=BABYLON.MeshBuilder.CreateTorus('orbit',
       {diameter:2.5,thickness:0.13,tessellation:ORBIT_TESS[g.shape]||36},scene);
-    orbitMesh.parent=orbitPivot;
     const om=new BABYLON.StandardMaterial('orbitM',scene);
     om.disableLighting=true;
     om.emissiveColor=BABYLON.Color3.FromHexString(aimedId?'#9fe0b0':'#ffffff');
     om.alpha=0.95; orbitMesh.material=om; orbitMesh.isPickable=false;
-    orbitMesh.renderingGroupId=1;              // draw above the bodies
+    om.disableDepthWrite=true; orbitMesh.material.forceDepthWrite=false;
+    orbitMesh.renderingGroupId=1;              // always drawn above the bodies
     orbitFor=id;
   }
-  orbitPivot.setEnabled(true);
-  orbitPivot.position.copyFrom(pos[id]);
-  orbitPivot.scaling.setAll(meshes[id].scaling.x*1.45);
-  // restore the gentle wobble: the ring sits in the screen plane and nods around it
+  orbitMesh.setEnabled(true);
+  orbitMesh.position.copyFrom(pos[id]);
+  const toCam=cam.position.subtract(pos[id]);
+  const yaw2=Math.atan2(toCam.x,toCam.z);
+  const pitch2=-Math.atan2(toCam.y,Math.hypot(toCam.x,toCam.z));
   orbitPhase+=0.03;
-  orbitMesh.rotation.x=Math.PI/2 + Math.sin(orbitPhase)*0.42;
-  orbitMesh.rotation.y+=0.012;
+  // a 4-segment torus is a diamond; rotate the square/diamond so a cube reads as a square
+  const spin = (g.shape==='cube') ? Math.PI/4 : 0;
+  orbitMesh.rotation.set(pitch2+Math.PI/2, yaw2, spin+Math.sin(orbitPhase)*0.35);
+  orbitMesh.scaling.setAll(Math.max(0.6,meshes[id].scaling.x)*1.5);
 }
 
 /* ---- 10. RUN -------------------------------------------------------------- */
 state.focus=graphBarycenter();
 document.getElementById('focusName').textContent=byId[state.focus].label;
 document.getElementById('obsName').textContent=byId[state.focus].label;
+// default: the egocentric canopy — you stand inside the graph. The outside view of the cone
+// is one click away via "Teleport outside" / the Arrangement selector.
+state.arrangement='canopy'; $('arr').value='canopy'; $('vArr').textContent='canopy';
 state.radial='tree'; $('radial').value='tree'; $('vRadial').textContent='tree depth';
+$('coneGrp').style.display='none';
 cam.fov=1.5;
-relayout();            // positions must exist before any applyVisual/inCone call
+cam.position=new BABYLON.Vector3(0,0,0.0001); yaw=0; pitch=0;
+relayout(); applyCam();   // positions must exist before any applyVisual/inCone call
 updateInstrument();
 buildExplorer(); updateDolly(); $('expCentre').disabled=true;
 scene.onBeforeRenderObservable.add(()=>{ applyCone(); });
