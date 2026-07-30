@@ -18,20 +18,21 @@
 <div id="tip"></div>
 
 <aside id="panel">
-  <h1>Canopy</h1>
-  <div class="sub">TSCG layer-cake · star-map explorer</div>
-
+  <div id="tabs">
+    <button class="tab on" data-t="nav">Exploration</button>
+    <button class="tab" data-t="adv">Advanced</button>
+    <button class="tab" data-t="help">Help</button>
+  </div>
+  <div class="tabpane on" id="tab-nav">
   <div class="grp" style="border-top:none">
     <div class="lbl">Observer <b id="obsName">—</b></div>
+    <div class="btnrow">
+      <button id="teleOutside" class="btn">Teleport outside</button>
+      <button id="resetView" class="btn">Reset</button>
+    </div>
   </div>
-
   <div class="grp">
-    <label class="toggle"><input type="checkbox" id="advMode" />
-      Advanced options <span style="color:var(--dim)">— axes, constellations, spectral</span></label>
-  </div>
-
-  <div class="grp">
-    <div class="lbl">Arrangement <b id="vArr">canopy</b></div>
+    <div class="lbl">Graph layout <b id="vArr">canopy</b></div>
     <select id="arr">
       <option value="canopy">Canopy — trees from the observer</option>
       <option value="clusters">Clusters — sectors by facet</option>
@@ -39,47 +40,16 @@
       <option value="nautilus">Nautilus — logarithmic shell</option>
     </select>
   </div>
-
-  <div class="grp adv">
-    <div class="lbl">Radial axis <b id="vRadial">tree depth</b></div>
-    <select id="radial">
-      <option value="tree">Tree depth (canopy trunks)</option>
-      <option value="subclass">Specialization (subClassOf ↦ depth)</option>
-      <option value="meta">Meta-level (M3 → M0)</option>
-      <option value="hops">Hops from observer (topology)</option>
-      <option value="trophic">Trophic level (directed flow ↦ height)</option>
-    </select>
-  </div>
-
-  <div class="grp adv">
-    <div class="lbl">Colour by <b id="vColorBy">facet</b></div>
-    <select id="colorBy">
-      <option value="facet">Facet (grammar / family / spectral)</option>
-      <option value="kind">Node kind (glyph colours)</option>
-    </select>
-    <div class="lbl" style="margin-top:8px">Facet <b id="vFacet">dominant grammar</b></div>
-    <select id="facet">
-      <option value="dominantM3">Dominant grammar (Territory/Map/Stereopsis)</option>
-      <option value="family">Concept family (9)</option>
-      <option value="layer">Meta-layer (M3/M2/M1/M0)</option>
-      <option value="ontologyType">Ontology type</option>
-      <option value="vocab">Source vocabulary</option>
-    </select>
-    <div class="hint" id="facetHint" style="margin-top:6px">In canopy, the facet drives colour; in clusters it also drives the angular sectors.</div>
-  </div>
-
   <div class="grp">
     <div class="lbl">Instrument <b id="vInstr">naked eye</b></div>
     <input id="instr" type="range" min="35" max="190" value="150" step="3" />
-    <div class="hint" id="instrReadout" style="margin:2px 0 8px">scroll to zoom — wider field sees only the bright; narrowing to a telescope reveals the faint.</div>
+    <div class="hint" id="instrReadout" style="margin:2px 0 8px">Scroll to zoom — a wide field sees only the bright; narrowing to a telescope reveals the faint.</div>
     <label class="toggle" style="margin-bottom:9px"><input type="checkbox" id="showAll" />
       Show every node <span style="color:var(--dim)">— ignore the seeing limit</span></label>
-    <div class="lbl">Jetpack <b id="vDolly">at centre</b></div>
-    <div class="hint" style="margin:2px 0 8px">↑↓ or Z/X to fly along your gaze — back out to see the whole canopy, forward to plunge in.</div>
     <div class="lbl">Focus distance <b id="vDepth">all</b></div>
     <input id="depth" type="range" min="1" max="7" value="7" step="1" />
+    <span id="vDolly" style="display:none">at centre</span>
   </div>
-
   <div class="grp">
     <div class="lbl">Object explorer <b id="vExpCount">—</b></div>
     <select id="expLayer">
@@ -95,31 +65,12 @@
     <div class="hint" id="expHint">Click to aim (an arrow guides your head) · <b style="color:#9fb0d0">Set centre</b> to teleport.</div>
     <button id="expCentre" class="btn">Set centre on selection</button>
   </div>
-
-  <div class="grp adv">
-    <div class="lbl">Constellations (relation types)</div>
-    <div class="checks" id="rels"></div>
-    <div class="lbl" style="margin-top:11px">Scaffolding (trunks &amp; branches) <b id="vScaf">15%</b></div>
-    <input id="scaf" type="range" min="0" max="60" value="15" step="1" />
-  </div>
-
-  <div class="grp adv">
-    <label class="toggle"><input type="checkbox" id="spectralT" />
-      Reveal hidden structure <span style="color:var(--dim)">(spectral)</span></label>
-    <div class="lbl" style="margin-top:9px">Clusters k <b id="vK">3</b></div>
-    <input id="kclusters" type="range" min="2" max="9" value="3" step="1" disabled />
-    <div class="hint" id="specReadout">Ignores declared facets. Builds the normalized
-      graph Laplacian, power-iterates its low modes, k-means on the embedding — then
-      colours by the clusters it <i>finds on its own</i>.</div>
-  </div>
-
   <div class="grp">
     <label class="toggle"><input type="checkbox" id="vocabT" />
       Show imported vocabulary <span style="color:var(--dim)">(owl · rdfs · dcterms · xsd · skos)</span></label>
     <div class="hint">Universal terms (<i>owl:Class</i>, <i>dcterms:creator</i>…) are the
       hairball magnets — hidden until you aim at them.</div>
   </div>
-
   <div class="grp" id="coneGrp" style="display:none">
     <div class="lbl">Slice focus <b id="vSlice">all strata</b></div>
     <div style="display:flex;gap:5px;margin-top:4px">
@@ -134,7 +85,6 @@
       <button id="travelFwd" class="btn" style="margin:0">chrono ►</button>
     </div>
   </div>
-
   <div class="grp">
     <div class="lbl">Folding <b id="vFold">—</b></div>
     <select id="expandLimit">
@@ -148,13 +98,58 @@
     <button id="foldDepth" class="btn">Collapse all</button>
     <button id="foldClear" class="btn">Expand all (no limit)</button>
   </div>
-
   <div class="grp">
     <div class="lbl">Legend <span style="color:var(--dim)">reading guide</span></div>
     <div id="legendBox"></div>
   </div>
+  </div>
+  <div class="tabpane" id="tab-adv">
+  <div class="grp">
+    <div class="lbl">Radial axis <b id="vRadial">tree depth</b></div>
+    <select id="radial">
+      <option value="tree">Tree depth (canopy trunks)</option>
+      <option value="subclass">Specialization (subClassOf ↦ depth)</option>
+      <option value="meta">Meta-level (M3 → M0)</option>
+      <option value="hops">Hops from observer (topology)</option>
+      <option value="trophic">Trophic level (directed flow ↦ height)</option>
+    </select>
+  </div>
+  <div class="grp">
+    <div class="lbl">Colour by <b id="vColorBy">facet</b></div>
+    <select id="colorBy">
+      <option value="facet">Facet (grammar / family / spectral)</option>
+      <option value="kind">Node kind (glyph colours)</option>
+    </select>
+    <div class="lbl" style="margin-top:8px">Facet <b id="vFacet">dominant grammar</b></div>
+    <select id="facet">
+      <option value="dominantM3">Dominant grammar (Territory/Map/Stereopsis)</option>
+      <option value="family">Concept family (9)</option>
+      <option value="layer">Meta-layer (M3/M2/M1/M0)</option>
+      <option value="ontologyType">Ontology type</option>
+      <option value="vocab">Source vocabulary</option>
+    </select>
+    <div class="hint" id="facetHint" style="margin-top:6px">In canopy, the facet drives colour; in clusters it also drives the angular sectors.</div>
+  </div>
+  <div class="grp">
+    <div class="lbl">Constellations (relation types)</div>
+    <div class="checks" id="rels"></div>
+    <div class="lbl" style="margin-top:11px">Scaffolding (trunks &amp; branches) <b id="vScaf">15%</b></div>
+    <input id="scaf" type="range" min="0" max="60" value="15" step="1" />
+  </div>
+  <div class="grp">
+    <label class="toggle"><input type="checkbox" id="spectralT" />
+      Reveal hidden structure <span style="color:var(--dim)">(spectral)</span></label>
+    <div class="lbl" style="margin-top:9px">Clusters k <b id="vK">3</b></div>
+    <input id="kclusters" type="range" min="2" max="9" value="3" step="1" disabled />
+    <div class="hint" id="specReadout">Ignores declared facets. Builds the normalized
+      graph Laplacian, power-iterates its low modes, k-means on the embedding — then
+      colours by the clusters it <i>finds on its own</i>.</div>
+  </div>
+  </div>
+  <div class="tabpane" id="tab-help">
+    <div id="helpBox"></div>
+  </div>
 
-  <div class="hint">Drag to look · <b style="color:#9fb0d0">↑↓ or Z/X</b> to fly, <b style="color:#9fb0d0">←→</b> to turn · <b style="color:#9fb0d0">scroll = zoom</b> (eye → telescope) · <b style="color:#9fb0d0">right-click a star</b> for actions.</div>
 </aside>
 
 <div id="focusReadout">observer · <b id="focusName">GenericConcept</b></div>

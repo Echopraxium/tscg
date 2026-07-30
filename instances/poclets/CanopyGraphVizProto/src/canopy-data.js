@@ -96,6 +96,10 @@ insts.forEach(([id,otype,ill,doms,facet])=>{
    M2 ≈ 110, M3 ≈ 42). The hand-written cake above is far too small and M2-dominant, which
    made folding look inert and the cone's strata look thin. This block extends it to the
    same proportions so layout, folding and slicing are exercised realistically. */
+const SIM_POCLETS={ColorSynthesis:1,FireTriangle:1,Counterpoint:1,ExposureTriangle:1,
+  NakamotoConsensus:1,Transistor:1,PhaseTransition:1,TrophicPyramid:1};
+const INSTANCE_NAMES=["FireTriangle","ColorSynthesis","Counterpoint","ExposureTriangle","NakamotoConsensus","Kidneys","Transistor","PhaseTransition","TrophicPyramid","FourStrokeEngine","Vsm","Triz","IChing","BloodPressure","Photosynthesis"];
+const DOMAIN_CONCEPTS={"Biology": ["Homeostasis", "Mitosis", "Osmosis", "Symbiosis", "Apoptosis", "Chemotaxis", "Phagocytosis", "Meiosis", "Endocytosis"], "Optics": ["Refraction", "Diffraction", "Reflection", "Dispersion", "Polarization", "Interference", "Absorption", "Scattering"], "Chemistry": ["Catalysis", "Oxidation", "Reduction", "Titration", "Precipitation", "Sublimation", "Ionization", "Distillation"], "Music": ["Counterpoint", "Modulation", "Cadence", "Syncopation", "Dissonance", "Resolution", "Polyphony", "Ostinato"], "Economics": ["Arbitrage", "Elasticity", "Liquidity", "Depreciation", "Externality", "Equilibrium", "Inflation", "Leverage"], "Physics": ["Entropy", "Resonance", "Inertia", "Momentum", "Diffusion", "Superposition", "Damping", "Fission"], "Geology": ["Subduction", "Erosion", "Sedimentation", "Metamorphism", "Weathering", "Faulting", "Uplift", "Crystallization"], "Mythology": ["Apotheosis", "Catabasis", "Theogony", "Metamorphosis", "Prophecy", "Trickster", "Deluge", "Psychopomp"], "Education": ["Scaffolding", "Assessment", "Differentiation", "Metacognition", "Feedback", "Rubric", "Mastery", "Inquiry"], "Electronics": ["Rectification", "Amplification", "Oscillation", "Modulation2", "Filtering", "Switching", "Impedance", "Feedback2"], "Photography": ["Exposure", "Aperture", "FocalDepth", "WhiteBalance", "Bokeh", "ShutterSpeed", "ISO", "Composition"], "BusinessModeling": ["ValueChain", "Segmentation", "Positioning", "Scalability", "ChurnRate", "Onboarding", "Retention", "Funnel"], "EnergyGenerators": ["Turbine", "Photovoltaics", "Fuelcell", "Cogeneration", "Rectifier", "Alternator", "Reactor", "Flywheel"], "SystemicModeling": ["Feedback3", "StockFlow", "Delay2", "Reinforcing", "Balancing", "Leverage2", "BoundedRational", "Overshoot"], "Cryptography": ["Encryption", "Hashing", "KeyExchange", "Signature", "ZeroKnowledge", "Nonce", "Salting", "Commitment"], "Ecology": ["TrophicCascade", "Succession", "Niche", "Keystone", "Symbiosis2", "Resilience", "Eutrophication", "Migration"]};
 (function scaleUp(){
   const rnd=(s=>()=>((s=s*16807%2147483647)-1)/2147483646)(42);
   const pick=a=>a[Math.floor(rnd()*a.length)];
@@ -120,10 +124,11 @@ insts.forEach(([id,otype,ill,doms,facet])=>{
   const m2pool=N.filter(x=>x.layer===M2&&x.dominantM3).map(x=>x.id);
   let dc=0;
   allDomains.forEach(d=>{
-    const k=6+Math.floor(rnd()*4);                       // 6–9 concepts per domain
+    const names=DOMAIN_CONCEPTS[d]||[];
+    const k=Math.min(names.length, 6+Math.floor(rnd()*4));  // 6–9 named concepts per domain
     for(let i=0;i<k;i++){
-      const id=d+'_C'+(i+1); dc++;
-      n(id,d.slice(0,4)+'·'+(i+1),M1,'m1',{family:'—'});
+      const id=d+'_'+names[i]; dc++;
+      n(id,names[i],M1,'m1',{family:'—',domain:d});
       e(id,d,'subClassOf');                              // single-valued containment
       e(id,pick(m2pool),'illustratesConcept');           // lateral contract
       if(rnd()<0.3) e(id,pick(allDomains),'relatedDomains');
@@ -132,10 +137,14 @@ insts.forEach(([id,otype,ill,doms,facet])=>{
 
   // M0: instances, grouped under their ontologyType (single-valued containment)
   const otypes=['Poclet','TscgTool','SystemicFramework','SymbolicSystemGrammar'];
-  const m1pool=N.filter(x=>x.layer===M1&&/_C\d+$/.test(x.id)).map(x=>x.id);
-  for(let i=0;i<58;i++){
+  const m1pool=N.filter(x=>x.layer===M1&&x.id.includes('_')&&!x.id.startsWith('Inst')).map(x=>x.id);
+  for(let i=0;i<150;i++){
     const ot=pick(otypes), id='Inst_'+(i+1);
-    n(id,'Instance '+(i+1),M0,'m0',{ontologyType:ot});
+    const base=INSTANCE_NAMES[i%INSTANCE_NAMES.length];
+    const label=base+' '+(1+Math.floor(i/INSTANCE_NAMES.length));
+    const attrs={ontologyType:ot};
+    if(SIM_POCLETS[base]) attrs.simUrl=`https://echopraxium.github.io/tscg/instances/poclets/${base}/static/M0_${base}.html`;
+    n(id,label,M0,'m0',attrs);
     e(id,ot,'ontologyType');
     e(id,pick(m2pool),'illustratesConcept');
     if(rnd()<0.7) e(id,pick(allDomains),'appliesToDomains');
