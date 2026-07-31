@@ -1,230 +1,98 @@
-import os
-from pathlib import Path
+import subprocess
+import sys
 
 def generate_github_urls():
     """
-    Génère un fichier files.txt avec les URLs GitHub raw pour tous les fichiers
-    .jsonld, .ttl, .txt, .md, .bat, .py en excluant certains dossiers LOCAUX
+    Génère files.txt avec les URLs raw GitHub des fichiers versionnés.
+
+    Source = `git ls-files` (et NON un os.walk du disque local).
+    Pourquoi : le disque local Windows peut diverger en CASSE de ce qui est
+    réellement versionné (ex. local `Kidneys/` vs repo `kidneys/`,
+    `M0_Vco.jsonld` vs `M0_VCO.jsonld`). GitHub raw est sensible à la casse,
+    donc lire le disque produit des URLs en 404. `git ls-files` donne les
+    chemins EXACTS du repo (casse comprise) et exclut automatiquement tout ce
+    qui est gitignoré (node_modules, _protos/private, etc.).
     """
-    
-    # Configuration
-    REPO_URL = "https://raw.githubusercontent.com/echopraxium/tscg/main/"
+
+    # ATTENTION à la casse du compte : GitHub raw est aussi sensible ici.
+    REPO_URL = "https://raw.githubusercontent.com/Echopraxium/tscg/main/"
     OUTPUT_FILE = "files.txt"
-    
-    # Extensions à inclure
+
     INCLUDED_EXTENSIONS = {'.jsonld', '.ttl', '.txt', '.md', '.bat', '.py'}
-    
-    # Dossiers LOCAUX à exclure (dans le système de fichiers)
-    EXCLUDED_LOCAL_DIRS = {
-        '.git',
-        '_archives',
-        'api_key',      # dossiers api_key (toute profondeur)
-    }
 
-    # Extensions de fichiers à exclure (sécurité)
-    EXCLUDED_EXTENSIONS = {
-        '.api_key',
-    }
+    # Segments de chemin à exclure malgré tout (au cas où ils seraient versionnés).
+    # node_modules / _protos/private ne sont normalement PAS versionnés -> git
+    # les exclut déjà ; ceci n'est qu'une ceinture supplémentaire.
+    EXCLUDED_PATH_SEGMENTS = {'.git', '_archives', 'api_key'}
+    EXCLUDED_EXTENSIONS = {'.api_key'}
+    EXCLUDED_NAME_PATTERNS = ['apik']
 
-    # Patterns de nom de fichier à exclure (insensible à la casse)
-    EXCLUDED_NAME_PATTERNS = [
-        'apik',         # ex: myapik, apik_secret, etc.
-    ]
-    
     print("=" * 60)
-    print("Génération de files.txt avec URLs raw GitHub")
+    print("Génération de files.txt depuis git ls-files (casse repo exacte)")
     print("=" * 60)
-    print()
-    print(f"Extensions incluses:  {', '.join(sorted(INCLUDED_EXTENSIONS))}")
-    print(f"Extensions exclues:   {', '.join(sorted(EXCLUDED_EXTENSIONS))}")
-    print(f"Patterns exclus:      {', '.join(EXCLUDED_NAME_PATTERNS)}")
-    print(f"Dossiers exclus:      {', '.join(sorted(EXCLUDED_LOCAL_DIRS))}")
-    print()
-    print("Note: Les URLs contenant ces mots (ex: .../.git/... ou .../_archives/...)")
-    print("      sont AUTORISÉES si elles viennent de GitHub")
-    print()
-    
-    # Répertoire courant
-    current_dir = Path.cwd()
-    print(f"Analyse du répertoire: {current_dir}")
-    
-    # Liste pour stocker les URLs générées
-    urls_generated = []
-    
-    # Parcourir le système de fichiers local
-    for root, dirs, files in os.walk(current_dir):
-        root_path = Path(root)
-        
-        # Vérifier si ce chemin local doit être exclu
-        skip_folder = False
-        for excluded_dir in EXCLUDED_LOCAL_DIRS:
-            # Vérifier si le dossier exclu fait partie du chemin local
-            if excluded_dir in root_path.parts:
-                skip_folder = True
-                break
-        
-        # Si c'est un dossier local exclu, on saute
-        if skip_folder:
-            # Ne pas parcourir les sous-dossiers
-            dirs.clear()
-            continue
-        
-        # Traiter les fichiers de ce dossier
-        for file_name in files:
-            file_path = root_path / file_name
-            
-            # Exclure les extensions sensibles
-            if file_path.suffix.lower() in EXCLUDED_EXTENSIONS:
-                continue
 
-            # Exclure les fichiers dont le nom contient un pattern sensible
-            name_lower = file_path.name.lower()
-            if any(pat in name_lower for pat in EXCLUDED_NAME_PATTERNS):
-                continue
-
-            # Vérifier l'extension incluse
-            if file_path.suffix.lower() not in INCLUDED_EXTENSIONS:
-                continue
-            
-            # Obtenir le chemin relatif
-            try:
-                relative_path = file_path.relative_to(current_dir)
-            except ValueError:
-                continue
-            
-            # Convertir pour URL
-            url_path = str(relative_path).replace('\\', '/')
-            
-            # Encoder les espaces
-            url_path = url_path.replace(' ', '%20')
-            
-            # Construire l'URL complète
-            full_url = f"{REPO_URL}{url_path}"
-            urls_generated.append(full_url)
-    
-    # Écrire toutes les URLs dans le fichier
-    with open(OUTPUT_FILE, 'w', encoding='utf-8') as f_out:
-        for url in sorted(urls_generated):  # Tri alphabétique
-            f_out.write(url + '\n')
-    
-    # Résultats
-    file_count = len(urls_generated)
-    print(f"\n✅ Terminé !")
-    print(f"URLs générées: {file_count}")
-    print(f"Fichier créé: {OUTPUT_FILE}")
-    
-    # ANALYSE des URLs générées
-    print("\n" + "=" * 60)
-    print("ANALYSE des URLs générées")
-    print("=" * 60)
-    
-    # 1. Vérifier qu'aucune URL sensible n'a été incluse
-    print("\n🔍 Vérification des exclusions LOCALES et de sécurité:")
-    issues = 0
-
-    for url in urls_generated:
-        path_part = url.split("/main/", 1)[-1] if "/main/" in url else url
-
-        # Dossiers exclus
-        parts = path_part.split('/')
-        for part in parts[:-1]:   # tous les segments sauf le nom de fichier
-            if part in EXCLUDED_LOCAL_DIRS:
-                print(f"❌ ERREUR dossier exclu: {url}")
-                issues += 1
-                break
-
-        # Extensions exclues
-        suffix = '.' + path_part.rsplit('.', 1)[-1] if '.' in path_part else ''
-        if suffix.lower() in EXCLUDED_EXTENSIONS:
-            print(f"❌ ERREUR extension sensible: {url}")
-            issues += 1
-
-        # Patterns de nom exclus
-        fname = path_part.split('/')[-1].lower()
-        if any(pat in fname for pat in EXCLUDED_NAME_PATTERNS):
-            print(f"❌ ERREUR nom sensible: {url}")
-            issues += 1
-
-    if issues == 0:
-        print("✅ OK: Aucune URL sensible détectée")
-    else:
-        print(f"⚠️  {issues} problème(s) trouvé(s)")
-    
-    # 2. Compter les URLs par type
-    print("\n📊 Répartition par extension:")
-    ext_counts = {}
-    for url in urls_generated:
-        for ext in INCLUDED_EXTENSIONS:
-            if url.endswith(ext):
-                ext_counts[ext] = ext_counts.get(ext, 0) + 1
-                break
-    
-    for ext in sorted(INCLUDED_EXTENSIONS):
-        count = ext_counts.get(ext, 0)
-        print(f"  {ext}: {count}")
-    
-    # 3. URLs intéressantes (contenant certains mots)
-    print("\n🔍 URLs contenant des mots-clés spécifiques:")
-    
-    keywords_to_check = ['git', 'archive', 'backup', 'temp']
-    for keyword in keywords_to_check:
-        matching = [url for url in urls_generated if keyword in url.lower()]
-        if matching:
-            print(f"  '{keyword}': {len(matching)} URL(s)")
-            for url in matching[:2]:  # Afficher 2 exemples max
-                print(f"    - {url}")
-            if len(matching) > 2:
-                print(f"    ... et {len(matching)-2} autres")
-        else:
-            print(f"  '{keyword}': 0 URL")
-    
-    # 4. Afficher un échantillon
-    print("\n📄 Échantillon des URLs (10 premières):")
-    print("-" * 60)
-    for i, url in enumerate(urls_generated[:10], 1):
-        print(f"{i:2}. {url}")
-    
-    if len(urls_generated) > 10:
-        print(f"... et {len(urls_generated) - 10} autres")
-    
-    print("\n" + "=" * 60)
-    
-    # Vérification manuelle optionnelle
-    print("\n🔎 Vérification manuelle recommandée:")
-    print(f"1. Ouvrez {OUTPUT_FILE}")
-    print(f"2. Cherchez '.git' (Ctrl+F)")
-    print(f"3. Cherchez '_archives'")
-    print(f"4. Vérifiez que seules les URLs GitHub sont présentes")
-    
-    # Message final
-    print("\n✅ Script terminé avec succès !")
-
-def main():
-    """Fonction principale"""
-    print("🚀 Générateur d'URLs GitHub Raw - Version personnalisée")
-    print("=" * 50)
-    print()
-    print("ATTENTION: Ce script exclut les dossiers LOCAUX (.git, _archives)")
-    print("mais les URLs GitHub contenant ces mots sont AUTORISÉES.")
-    print()
-    print("Exemple autorisé: https://raw.githubusercontent.com/.../.git/...")
-    print()
-    
-    # Demander confirmation
-    current_dir = Path.cwd()
-    print(f"Répertoire courant: {current_dir}")
-    print()
-    
-    response = input("Voulez-vous générer le fichier files.txt? (o/n): ")
-    
-    if response.lower() == 'o':
-        generate_github_urls()
-    else:
-        print("❌ Annulation.")
+    # 1. Récupérer les fichiers versionnés (chemins en '/' et casse du repo)
+    try:
+        raw = subprocess.check_output(
+            ["git", "ls-files"], text=True, encoding="utf-8"
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError) as e:
+        print(f"\n❌ Échec de `git ls-files` : {e}")
+        print("   Lance ce script depuis la racine du dépôt git.")
         return
-    
-    # Garder la fenêtre ouverte
-    input("\nAppuyez sur Entrée pour quitter...")
+    tracked = [p for p in raw.splitlines() if p.strip()]
+
+    # 2. Filtrer
+    urls = []
+    skipped_ext, skipped_seg, skipped_name = 0, 0, 0
+    for path in tracked:
+        segments = path.split("/")
+        fname = segments[-1]
+
+        ext = "." + fname.rsplit(".", 1)[-1].lower() if "." in fname else ""
+        if ext in EXCLUDED_EXTENSIONS:
+            skipped_ext += 1
+            continue
+        if any(pat in fname.lower() for pat in EXCLUDED_NAME_PATTERNS):
+            skipped_name += 1
+            continue
+        if ext not in INCLUDED_EXTENSIONS:
+            skipped_ext += 1
+            continue
+        if any(seg in EXCLUDED_PATH_SEGMENTS for seg in segments[:-1]):
+            skipped_seg += 1
+            continue
+
+        urls.append(REPO_URL + path.replace(" ", "%20"))
+
+    urls = sorted(set(urls))
+
+    # 3. Écrire en LF (jamais CRLF) pour des URLs propres et portables
+    with open(OUTPUT_FILE, "w", encoding="utf-8", newline="\n") as f:
+        for u in urls:
+            f.write(u + "\n")
+
+    # 4. Rapport
+    print(f"\n✅ {len(urls)} URLs écrites dans {OUTPUT_FILE}")
+    ext_counts = {}
+    for u in urls:
+        e = "." + u.rsplit(".", 1)[-1].lower()
+        ext_counts[e] = ext_counts.get(e, 0) + 1
+    print("\n📊 Répartition par extension :")
+    for e in sorted(INCLUDED_EXTENSIONS):
+        print(f"  {e}: {ext_counts.get(e, 0)}")
+    print(f"\n(ignorés : {skipped_ext} hors extension, "
+          f"{skipped_seg} segment exclu, {skipped_name} nom sensible)")
+
+    # 5. Garde-fou : casse du compte GitHub
+    print("\n🔎 Rappel : GitHub raw est sensible à la casse — pour le chemin ET")
+    print("   pour le nom du compte. Vérifie que 'Echopraxium' est la bonne casse.")
+    print("   Un échantillon à tester dans un navigateur :")
+    for u in urls[:3]:
+        print(f"     {u}")
+
 
 if __name__ == "__main__":
-    main()
+    generate_github_urls()
+    if sys.stdin and sys.stdin.isatty():
+        input("\nAppuyez sur Entrée pour quitter...")

@@ -1,6 +1,6 @@
 # TSCG — Worksite Map (Master Index)
 
-**Version**: 2.2.0
+**Version**: 2.2.1
 **Date**: 2026-07-30
 **Author**: Echopraxium with the collaboration of Claude AI
 **Project**: TSCG (Transdisciplinary System Construction Game)
@@ -360,6 +360,17 @@ SC-0 and SC-9 at Michel's convenience.
 - **Layered-architectures poclet** (candidate): m3:SystemicFramework instance
   generalising MOF/OSI/Marr/TriskeleToolchain/Semantic-Web/TSCG; taxonomy of layer
   relations. NOT StructuralGrammar/LayerCake (loaded names). Future.
+- **Case divergence, local disk vs versioned (Windows `core.ignorecase`)** — several
+  instance dirs/files differ in case between the working tree and what is committed:
+  `Kidneys`↔`kidneys`, `Vsm`↔`vsm`, `Raas`↔`raas`, `Tpack`↔`tpack`,
+  `Yggdrasil`↔`yggdrasil`, `Iching`↔`iching`, `M0_Vco`↔`M0_VCO`, `M1_Music`↔`M1_music`.
+  Invisible on a case-insensitive FS; surfaces at any clone on a case-sensitive FS
+  (Linux/CI) and made ~31 raw-GitHub URLs 404 (raw is case-sensitive). Fixed at source
+  by generating URL lists from `git ls-files` (repo case, gitignore-respecting) rather
+  than an `os.walk` of local disk — see `create_files_URIS.py`. Disk realignment (fresh
+  `git clone`) deferred until a multi-platform need arises. Repo case itself is
+  sometimes mixed (e.g. `raas/M0_RAAS.jsonld` + `M0_raas_README.md`) — full
+  normalisation is a separate small worksite.
 
 ---
 
@@ -379,6 +390,12 @@ M3/M2/M0 and would be hand-adjudicated without the engine (as SC-3's design was)
 ---
 
 ## CHANGELOG
+
+- **2.2.1** (2026-07-30) — Backlog (§8): recorded the local-vs-versioned **case
+  divergence** debt (Windows `core.ignorecase`), its consequence (404 raw URLs, since
+  raw GitHub is case-sensitive), the source fix (`git ls-files` in `create_files_URIS.py`),
+  and the deferred disk realignment. No worksite state changed.
+
 
 - **2.2.0** (2026-07-30) — Folded two states the v2.1.0 map predated. (1) **SC-2
   COMPLETE**: priority, register (§4), SC-2 subsection, dependency order (§7) and
