@@ -8,7 +8,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>TSCG | QR Code to Pocket City — build 2.0</title>
+  <title>TSCG | QR Code to Pocket City — build 2.2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cantata+One&display=swap" rel="stylesheet">
@@ -3826,7 +3826,7 @@ const QRCITY_STYLE_IDS = Object.keys(QRCITY_STYLESHEETS);
 
 // Shown in the header and the diagnostic log, so a cached or stale copy is
 // identifiable without guesswork.
-const BUILD = 'v2.0-single';
+const BUILD = 'v2.2-single';
 
 /* ═══════════════ 1. DETERMINISM ═══════════════ */
 // Mulberry32: same seed, same city — always, across sessions.
@@ -5374,12 +5374,26 @@ window.addEventListener('DOMContentLoaded', async () => {
     // qrcode and BabylonJS are required; earcut is not. It only serves the
     // arch geometry, so its absence disables arches rather than the city.
     TSCG.ok('QRCity ' + BUILD + ' — BabylonJS ' + BABYLON.Engine.Version);
+    TSCG.log('device pixel ratio ' + (window.devicePixelRatio || 1) +
+             ', rendering at ' + (1 / engine.getHardwareScalingLevel()).toFixed(2) + 'x');
     if (typeof earcut === 'undefined')
       TSCG.log('earcut unavailable — arch tunnels disabled, city otherwise intact');
 
     stage = 'engine';
     const canvas = $('canvas-main');
-    engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer:true, stencil:true });
+    // The fourth argument is adaptToDeviceRatio, and it defaults to FALSE.
+    // Left off, the WebGL backing store is sized in CSS pixels and the browser
+    // then resamples it up to physical pixels: invisible at 100% zoom on a 1x
+    // display, but a visible softening at any browser zoom and on every HiDPI
+    // screen — at dpr 2 only half the native detail is ever rendered.
+    engine = new BABYLON.Engine(canvas, true,
+      { preserveDrawingBuffer:true, stencil:true }, true);
+
+    // Rendering at dpr 3 or 4 costs a lot for very little gain, so the scale
+    // is clamped. hardwareScalingLevel is the inverse of the ratio: 0.5 means
+    // render at twice the CSS resolution.
+    const dpr = window.devicePixelRatio || 1;
+    engine.setHardwareScalingLevel(1 / Math.min(dpr, 2));
     scene  = new BABYLON.Scene(engine);
     scene.clearColor = new BABYLON.Color4(0.04,0.06,0.10,1);
 
@@ -5442,8 +5456,13 @@ window.addEventListener('DOMContentLoaded', async () => {
     // resize. A splitter drag changes the container without any window event,
     // which is what was squashing the view.
     const viewEl = $('view-main');
+    const applyScale = () => {
+      // Browser zoom and moving to another display both change devicePixelRatio
+      const r = window.devicePixelRatio || 1;
+      engine.setHardwareScalingLevel(1 / Math.min(r, 2));
+    };
     if (typeof ResizeObserver !== 'undefined') {
-      new ResizeObserver(() => { engine.resize(); fitOrtho(ST.n); }).observe(viewEl);
+      new ResizeObserver(() => { applyScale(); engine.resize(); fitOrtho(ST.n); }).observe(viewEl);
     } else {
       window.addEventListener('resize', () => { engine.resize(); fitOrtho(ST.n); });
     }
@@ -5485,18 +5504,27 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
 
   $('btn-reset').addEventListener('click', () => {
-    // Full restore: text, grid, theme, polarity, seed and view
+    // Full restore: text, grid, theme, polarity, seed and view.
+    //
+    // Order matters. setStyle() and generate() both rebuild, and a rebuild
+    // reaches syncViewSelect(), which reads the camera's current tilt and
+    // writes ST.mode. Setting the view first therefore had it overwritten
+    // before it could take effect. The view is restored LAST, explicitly,
+    // once nothing else will touch it.
+    if (AUTO.on) autoWalkStop();
+    $('btn-next-route').classList.remove('on');
+
     ST.inverted = false;
     $('btn-invert').classList.remove('on');
-    ST.forcedN = DEFAULTS.forcedN;
-    ST.mode    = DEFAULTS.mode;
-    orthoZoom  = 1;
-    if (AUTO.on) autoWalkStop();
-    $('text-input').value = DEFAULTS.text;
+    ST.forcedN  = DEFAULTS.forcedN;
+    orthoZoom   = 1;
+    $('text-input').value  = DEFAULTS.text;
     $('size-select').value = String(DEFAULTS.forcedN);
-    setStyle(DEFAULTS.styleId);        // unconditional: a guard here would
-                                       // silently skip if ST drifted
-    generate(DEFAULTS.text);           // regenerates the original seed too
+
+    setStyle(DEFAULTS.styleId);        // unconditional: a guard could skip
+    generate(DEFAULTS.text);           // restores the original seed too
+
+    setMode(DEFAULTS.mode);            // last word on the view
     setHint('Reset to defaults');
   });
 
