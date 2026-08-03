@@ -20,7 +20,7 @@
 
 // Shown in the header and the diagnostic log, so a cached or stale copy is
 // identifiable without guesswork.
-const BUILD = 'v2.2';
+const BUILD = 'v2.3';
 
 /* ═══════════════ 1. DETERMINISM ═══════════════ */
 // Mulberry32: same seed, same city — always, across sessions.
@@ -1568,8 +1568,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     // qrcode and BabylonJS are required; earcut is not. It only serves the
     // arch geometry, so its absence disables arches rather than the city.
     TSCG.ok('QRCity ' + BUILD + ' — BabylonJS ' + BABYLON.Engine.Version);
-    TSCG.log('device pixel ratio ' + (window.devicePixelRatio || 1) +
-             ', rendering at ' + (1 / engine.getHardwareScalingLevel()).toFixed(2) + 'x');
     if (typeof earcut === 'undefined')
       TSCG.log('earcut unavailable — arch tunnels disabled, city otherwise intact');
 
@@ -1588,6 +1586,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     // render at twice the CSS resolution.
     const dpr = window.devicePixelRatio || 1;
     engine.setHardwareScalingLevel(1 / Math.min(dpr, 2));
+    TSCG.log('device pixel ratio ' + dpr +
+             ', rendering at ' + (1 / engine.getHardwareScalingLevel()).toFixed(2) + 'x');
     scene  = new BABYLON.Scene(engine);
     scene.clearColor = new BABYLON.Color4(0.04,0.06,0.10,1);
 
@@ -1607,6 +1607,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     lightAmbient = new BABYLON.HemisphericLight('amb', new BABYLON.Vector3(0,1,0), scene);
     lightSun  = new BABYLON.DirectionalLight('sun',  new BABYLON.Vector3(-0.35,-0.85,-0.28), scene);
     lightFill = new BABYLON.DirectionalLight('fill', new BABYLON.Vector3( 0.45,-0.55, 0.40), scene);
+
+    const badge = $('engine-badge');
+    if (badge) badge.textContent = 'BabylonJS ' + BABYLON.Engine.Version;
 
     TSCG.engine = engine; TSCG.camera = camOrtho; TSCG.pocletId = 'qrcity';
     TSCG.initSplitter();
