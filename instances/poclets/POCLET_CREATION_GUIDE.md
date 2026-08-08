@@ -45,7 +45,7 @@ Pre-validated, well-structured templates that:
 
 ### Core Templates (v2 - It/Im Nomenclature)
 
-#### 1. **M0_POCLET_TEMPLATE_v2.jsonld**
+#### 1. **M0_INSTANCE_TEMPLATE.jsonld**
 **Purpose:** Complete poclet ontology structure
 
 **Includes:**
@@ -59,7 +59,7 @@ Pre-validated, well-structured templates that:
 
 ---
 
-#### 2. **M0_CONTEXT_TEMPLATE_v2.json**
+#### 2. **M0_CONTEXT_TEMPLATE.json**
 **Purpose:** @context block reference
 
 **Includes:**
@@ -74,7 +74,7 @@ Pre-validated, well-structured templates that:
 
 ### Supporting Scripts
 
-#### 1. **create_new_poclet.ps1** (PowerShell)
+#### 1. **create_new_instance.py** (Python)
 **Purpose:** Automated poclet scaffolding
 
 **Features:**
@@ -109,7 +109,7 @@ Pre-validated, well-structured templates that:
 cd E:\_00_Michel\_00_Lab\_00_GitHub\tscg
 
 # 2. Create poclet from template
-.\create_new_poclet.ps1 -Name "CrystalGrowth" -Domain "Chemistry"
+python ontology/TSCG_InstanceGrammar/create_new_instance.py --name CrystalGrowth --domain Chemistry
 
 # 3. Edit the generated file
 # - Fill in ASFID/REVOI scores
@@ -379,7 +379,7 @@ For interactive p5.js HTML simulations:
 ## ✅ Quality Checklist
 
 ### Ontology (JSON-LD)
-- [ ] Uses `M0_POCLET_TEMPLATE_v2.jsonld` as base
+- [ ] Uses `M0_INSTANCE_TEMPLATE.jsonld` as base
 - [ ] All metadata fields completed
 - [ ] ASFID scores justified (each dimension explained)
 - [ ] REVOI scores justified

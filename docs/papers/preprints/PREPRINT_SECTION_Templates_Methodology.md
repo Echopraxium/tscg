@@ -27,7 +27,7 @@ This complexity limits framework accessibility and **hinders replication studies
 
 ### 1.2 Solution: Standardized Templates
 
-We developed **pre-validated templates** (`M0_POCLET_TEMPLATE_v2.jsonld`, `M0_CONTEXT_TEMPLATE_v2.json`) that:
+We developed **pre-validated templates** (`M0_INSTANCE_TEMPLATE.jsonld`, `M0_CONTEXT_TEMPLATE.json`) that:
 
 - **Eliminate technical barriers:** Handle JSON-LD syntax, namespace declarations, and SHACL compliance
 - **Enforce architectural standards:** Implement It/Im nomenclature, float typing, and metadata requirements
@@ -137,7 +137,7 @@ The **epistemic gap** δ quantifies mismatch between Territory complexity and Ma
 
 ```json
 {
-  "@context": { /* from M0_CONTEXT_TEMPLATE_v2.json */ },
+  "@context": { /* from M0_CONTEXT_TEMPLATE.json */ },
   "@id": "",  // Empty (uses @base)
   "@type": "owl:Ontology",
   "m3:ontologyType": {"@id": "m3:Poclet"},
@@ -366,7 +366,7 @@ sh:or (
 
 ```bash
 # 1. Copy template
-cp M0_POCLET_TEMPLATE_v2.jsonld instances/poclets/NewPoclet/M0_NewPoclet.jsonld
+cp M0_INSTANCE_TEMPLATE.jsonld instances/poclets/NewPoclet/M0_NewPoclet.jsonld
 
 # 2. Edit metadata and scores
 # (Fill in: label, comment, domain, ASFID/REVOI scores, components)
@@ -382,7 +382,7 @@ pyshacl -s ontology/M0_Instances_Schema.shacl.ttl \
 ### 5.2 Detailed Checklist
 
 **Ontology (JSON-LD):**
-- [ ] Uses `M0_POCLET_TEMPLATE_v2.jsonld` as base
+- [ ] Uses `M0_INSTANCE_TEMPLATE.jsonld` as base
 - [ ] All metadata fields completed (rdfs:label, rdfs:comment, etc.)
 - [ ] ASFID scores justified (each dimension explained in m0:justification)
 - [ ] REVOI scores justified
@@ -515,9 +515,9 @@ The templates and methodology are **open-source** (BSD 3-Clause license), enabli
 
 **Templates and tools:**
 - Repository: https://github.com/Echopraxium/tscg
-- Templates: `ontology/TSCG_Grammar/M0_*_TEMPLATE_v2.*`
-- Validation schema: `ontology/TSCG_Grammar/M0_Instances_Schema.shacl.ttl`
-- Scripts: `ontology/TSCG_Grammar/*.py`
+- Templates: `ontology/TSCG_InstanceGrammar/M0_INSTANCE_TEMPLATE.jsonld`, `ontology/TSCG_InstanceGrammar/M0_CONTEXT_TEMPLATE.json`
+- Validation schema: `ontology/TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl`
+- Scripts: `ontology/TSCG_InstanceGrammar/*.py`
 
 **Validated corpus:**
 - 23+ poclets: `instances/poclets/*/M0_*.jsonld`
