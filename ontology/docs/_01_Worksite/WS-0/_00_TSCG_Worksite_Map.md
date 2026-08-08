@@ -1,13 +1,14 @@
 # TSCG — Worksite Map (Master Index)
 
-**Version**: 2.2.1
-**Date**: 2026-07-30
+**Version**: 2.3.0
+**Date**: 2026-08-08
 **Author**: Echopraxium with the collaboration of Claude AI
 **Project**: TSCG (Transdisciplinary System Construction Game)
-**Supersedes**: v2.1.0 (2026-07-24). Folds in (a) SC-2 completion — committed and
-pushed to origin/main per handover 2026-07-25, HEAD-confirmed 2026-07-30
-(M2_GenericConcepts 16.19.0); and (b) the SC-3 design decision (this session),
-recorded in `SC-3_Facet_Decision_Record.md` v1.0.0.
+**Current HEAD**: `0bb062c` (origin/main, 2026-08-08).
+**Supersedes**: v2.2.1 (2026-07-30). Folds in the 2026-08-08 session (six lots):
+WS-2/CTX-4 and CTX-4-bis **fully closed** (§2, §5, CHANGELOG); the poclet→instance
+template rename with the Python generator port; the docs alignment lot; the
+housekeeping lot; and a new **M0_Common refactor** backlog item (§8).
 
 **Authority reminder**: the only authority for corpus state is `git show HEAD:<file>`.
 SC-2 and SC-3 lines were re-measured at HEAD 2026-07-30 (M0_Common 1.1.0,
@@ -73,7 +74,7 @@ already realised. Disambiguation is a backlog item (§8).
 |---:|---|---|
 | ✅ | WS-0 / SC-2 | COMPLETE — committed, pushed origin/main (M2 16.19.0); gauge 43->0; verified 2026-07-30 |
 | 1 | WS-5 / Validator | every item below needs the same measurement primitives; building it first makes them cheap and reproducible. Reinforced by SC-3: its graving is a wide semantic migration, hand-adjudicated without the engine |
-| 2 | WS-2 / CTX-4 | prerequisite for SHACL enforcement above M1; cheap, net-negative |
+| ✅ | WS-2 / CTX-4 | COMPLETE 2026-08-08 — 10 M1 extensions (`c49386c`, golden-stable 151) + CTX-4-bis: 2 InstanceSimulations (`16c8ace`) and 11 poclet m0 self-prefixes (`0bb062c`). No relative mN prefix remains in the live corpus |
 | 4 | WS-0 / SC-6 | DCC006=127 monoidal-operator-in-signature (the bulk); heavy, semantic |
 | 5 | WS-1 / VOC | blocks the M2 graph grammar (SC-11b) |
 | 6 | WS-3 / Gs review | register opened; Michel's decisions, no deadline |
@@ -257,8 +258,11 @@ keys, an order past M1's 11 shapes; hand-writing = a second source of truth).
 
 - **WS-1 VOC** — bare keys 4281 occ / 1301 distinct; 693 family-A, 303 false friends,
   853 undefined-but-prefixed. Blocks SC-11b.
-- **WS-2 CTX** — CTX-1 fixed this session (single occurrence, gauge 1->0, Lot A).
-  CTX-4 21 (10 M1 extensions + this file). CTX-5 31.
+- **WS-2 CTX** — CTX-1 fixed (Lot A). **CTX-4 COMPLETE 2026-08-08**: 10 M1 extensions
+  absolutised (`c49386c`, golden-stable 151, linter + Pellet clean); CTX-4-bis
+  absolutised the 2 InstanceSimulations M0 files (`16c8ace`) and the 11 live poclet
+  m0 self-prefixes — fixing Canopy/TvTestPattern/Vco/iching case + Nakamoto wrong-file
+  (`0bb062c`). No relative mN prefix remains in the live corpus. CTX-5 (31) remains.
 - **WS-3 Gs review** — M2_Formulas_Review_with_Gs_Residues.md 1.0.0: pre-Gs cohort
   46/75 recorded before SC-2 erases the marker; 9 carve-outs; isomer classes;
   Gradient `or` debt.
@@ -333,6 +337,16 @@ SC-0 and SC-9 at Michel's convenience.
 
 ## 8. CROSS-CUTTING BACKLOG (not a worksite)
 
+- **`M0_Poclet#` score/gap @ids → refactor onto `M0_Common.jsonld`** (measured
+  2026-08-08, HEAD `0bb062c`) — **29 poclets, ~293 `@id`** point their score/gap/mean
+  properties at the non-existent namespace `.../ontology/M0_Poclet#` (`scoreA…scoreIm`,
+  `epistemicGap`, `mean`), a leftover from the old template. The canonical vocabulary
+  **already exists** in `ontology/M0_Common.jsonld` (`.../M0_Common.jsonld#scoreA…`,
+  `epistemicGap`, etc.), already referenced by ~10 poclets. Target = rebrand the 293
+  IRIs onto `M0_Common.jsonld#`. **Open sub-questions for the lot** (not mechanical):
+  (1) the poclets' `mean` has no 1:1 in M0_Common, which defines `asfidMean`/`revoiMean`
+  — decide mapping or add a `mean`; (2) align on how the ~10 already-wired poclets
+  reference M0_Common (owl:imports vs explicit IRI). Dedicated session, not a marathon tail.
 - **Stale "163" in golden note** — `golden_values.json` reads errors=151 (measured
   2026-07-23) but its prose `note` still says "163 check_M1 errors". The 12 EXP001
   (retired D8) were removed by SC-6-partial between 07-13 and 07-23; the drop is
@@ -376,13 +390,14 @@ SC-0 and SC-9 at Michel's convenience.
 
 ## 9. NEXT ACTION
 
-SC-2 shipped; SC-3 design decided (Decision Record 1.0.0, this session). Open ONE next
-worksite in a FRESH conversation anchored on HEAD:
+SC-2 shipped; SC-3 design decided (Decision Record 1.0.0); WS-2/CTX-4 + CTX-4-bis
+closed (2026-08-08). Open ONE next worksite in a FRESH conversation anchored on HEAD
+(`0bb062c`):
 
 - **WS-5 (Validator engine)** — recommended. Structural; unblocks cheap per-decision
   measurement for everything below, including the wide SC-3 graving.
-- **WS-2 / CTX-4** — cheaper alternative if a short, safe, net-negative lot is wanted
-  (~19 occ, mostly mechanical across M1 extensions).
+- **M0_Common refactor** (§8) — self-contained, well-scoped now that the target is known;
+  good candidate if a focused non-engine lot is wanted (but resolve the `mean` mapping first).
 
 Do NOT start the SC-3 GRAVING before WS-5: it is a wide ontologyType migration across
 M3/M2/M0 and would be hand-adjudicated without the engine (as SC-3's design was).
@@ -391,6 +406,18 @@ M3/M2/M0 and would be hand-adjudicated without the engine (as SC-3's design was)
 
 ## CHANGELOG
 
+- **2.3.0** (2026-08-08) — Session of six graved lots, all isolated and HEAD-verified.
+  **WS-2/CTX-4 + CTX-4-bis closed**: 10 M1 extensions absolutised (`c49386c`, golden 151,
+  linter + Pellet clean); poclet→instance template rename with Python generator
+  `create_new_instance.py` and `.ps1` retired (`ce94045`); docs alignment lot incl.
+  stale `_v2` and `TSCG_Grammar` path fixes + `files.txt` regen (`5dfb488`); housekeeping
+  (`63b6cdf`); the 2 InstanceSimulations M0 files (`16c8ace`); the 11 live poclet m0
+  self-prefixes with case/wrong-file fixes (`0bb062c`). §2/§5 mark CTX-4 ✅; §9 drops the
+  CTX-4 alternative. **New backlog (§8)**: `M0_Poclet#` → `M0_Common.jsonld` refactor
+  (29 files / ~293 @ids, with the `mean`→asfidMean/revoiMean open question). Recurring
+  operational note: the assistant's file-write path corrupts the literal `ORIVE`→`REVOI`
+  and masks it on re-read — parade used this session = a Python script run on the user's
+  machine, or a manual single-line edit, for any file containing `ORIVE`.
 - **2.2.1** (2026-07-30) — Backlog (§8): recorded the local-vs-versioned **case
   divergence** debt (Windows `core.ignorecase`), its consequence (404 raw URLs, since
   raw GitHub is case-sensitive), the source fix (`git ls-files` in `create_files_URIS.py`),
