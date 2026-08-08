@@ -295,8 +295,8 @@ Expected: xsd:float
 To avoid this migration for new poclets, use the **v2 templates**:
 
 ### Templates with It/Im Built-in
-- **`M0_CONTEXT_TEMPLATE_v2.json`** - @context with It/Im typed as xsd:float
-- **`M0_POCLET_TEMPLATE_v2.jsonld`** - Complete poclet structure
+- **`M0_CONTEXT_TEMPLATE.json`** - @context with It/Im typed as xsd:float
+- **`M0_INSTANCE_TEMPLATE.jsonld`** - Complete poclet structure
 
 **Key features:**
 - ✅ Pre-configured It/Im nomenclature
@@ -307,7 +307,7 @@ To avoid this migration for new poclets, use the **v2 templates**:
 **Usage:**
 ```bash
 # Copy template
-cp M0_POCLET_TEMPLATE_v2.jsonld instances/poclets/NewPoclet/M0_NewPoclet.jsonld
+cp M0_INSTANCE_TEMPLATE.jsonld instances/poclets/NewPoclet/M0_NewPoclet.jsonld
 
 # Customize metadata and scores
 # ...

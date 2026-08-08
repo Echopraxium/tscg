@@ -51,7 +51,7 @@ python fix_firetriangle_float.py
 
 **Utilisation:** Copier ce @context dans chaque nouveau poclet M0
 
-#### `M0_POCLET_TEMPLATE.jsonld`
+#### `M0_INSTANCE_TEMPLATE.jsonld`
 **Type:** Template JSON-LD complet  
 **Objectif:** Point de départ complet pour créer un nouveau poclet  
 **Contient:**
@@ -87,12 +87,12 @@ python fix_firetriangle_float.py
 
 ### 4. Outils d'Automatisation
 
-#### `create_new_poclet.ps1`
+#### `create_new_instance.py`
 **Type:** Script PowerShell  
 **Objectif:** Créer automatiquement un nouveau poclet à partir du template  
 **Utilisation:**
-```powershell
-.\create_new_poclet.ps1 -Name "NewPocletName" -Domain "Physics"
+```bash
+python ontology/TSCG_InstanceGrammar/create_new_instance.py --name NewPocletName --domain Physics
 ```
 
 **Options:**
@@ -105,7 +105,7 @@ python fix_firetriangle_float.py
 1. Crée le répertoire `instances/poclets/NewPocletName/`
 2. Copie le template vers `M0_NewPocletName.jsonld`
 3. Remplace automatiquement :
-   - POCLET_NAME → NewPocletName
+   - INSTANCE_NAME → NewPocletName
    - DOMAIN_NAME → Physics
    - Date → aujourd'hui
    - Labels/descriptions selon paramètres
@@ -160,14 +160,14 @@ pyshacl -s ontology/M0_Instances_Schema.shacl.ttl -df json-ld instances/poclets/
 ### Pour Créer un Nouveau Poclet
 
 **Option Automatique (Recommandée):**
-```powershell
-.\create_new_poclet.ps1 -Name "Crystallization" -Domain "Chemistry" -Label "Crystal Formation Process"
+```bash
+python ontology/TSCG_InstanceGrammar/create_new_instance.py --name Crystallization --domain Chemistry --label "Crystal Formation Process"
 # Puis éditer le fichier généré
 ```
 
 **Option Manuelle:**
 1. Créer `instances/poclets/NewPoclet/`
-2. Copier `M0_POCLET_TEMPLATE.jsonld` → `M0_NewPoclet.jsonld`
+2. Copier `M0_INSTANCE_TEMPLATE.jsonld` → `M0_NewPoclet.jsonld`
 3. Éditer selon `M0_TEMPLATES_USAGE_GUIDE.md`
 4. Valider avec SHACL
 
@@ -197,9 +197,9 @@ E:\_00_Michel\_00_Lab\_00_GitHub\tscg\
 ├── fix_float_typing.py                ← Script correction générique
 ├── fix_m0_float_typing.bat            ← Batch Windows
 ├── M0_CONTEXT_TEMPLATE.json           ← Template @context
-├── M0_POCLET_TEMPLATE.jsonld          ← Template poclet complet
+├── M0_INSTANCE_TEMPLATE.jsonld          ← Template poclet complet
 ├── M0_FireTriangle_CONTEXT_CORRECTED.json  ← Référence
-├── create_new_poclet.ps1              ← Script création poclet
+├── create_new_instance.py              ← Script création poclet
 ├── M0_TEMPLATES_USAGE_GUIDE.md        ← Guide d'utilisation
 └── GUIDE_FIX_FIRETRIANGLE.md          ← Guide correction FireTriangle
 ```

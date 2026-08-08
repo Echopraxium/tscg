@@ -7,7 +7,7 @@
 ## 📦 Templates Disponibles
 
 1. **`M0_CONTEXT_TEMPLATE.json`** - Template de `@context` standard avec tous les namespaces et typages float
-2. **`M0_POCLET_TEMPLATE.jsonld`** - Template complet de poclet M0 prêt à l'emploi
+2. **`M0_INSTANCE_TEMPLATE.jsonld`** - Template complet de poclet M0 prêt à l'emploi
 
 ## 🎯 Utilisation pour Créer un Nouveau Poclet
 
@@ -20,7 +20,7 @@ cd E:\_00_Michel\_00_Lab\_00_GitHub\tscg\instances\poclets
 mkdir NewPocletName
 
 # Copier le template
-copy ..\..\..\..\M0_POCLET_TEMPLATE.jsonld NewPocletName\M0_NewPocletName.jsonld
+copy ..\..\..\..\M0_INSTANCE_TEMPLATE.jsonld NewPocletName\M0_NewPocletName.jsonld
 ```
 
 ### Étape 2 : Personnaliser les Métadonnées
@@ -209,7 +209,7 @@ Pour créer rapidement un nouveau poclet :
 
 ```bash
 # Script PowerShell (à créer)
-.\create_new_poclet.ps1 -Name "NewPocletName" -Domain "Physics"
+python ontology/TSCG_InstanceGrammar/create_new_instance.py --name NewPocletName --domain Physics
 ```
 
 Ce script pourrait automatiquement :

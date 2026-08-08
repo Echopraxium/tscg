@@ -175,7 +175,7 @@ M2_GenericConcepts.jsonld → M1 → M0
 
 ### ontology/TSCG_InstanceGrammar/ **NEW — SHACL grammar + migration tools**
 - [M0_Instances_Schema.shacl.ttl](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl) — SHACL grammar v1.0 FINAL (9 mandatory constraints)
-- [M0_POCLET_TEMPLATE.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/M0_POCLET_TEMPLATE.jsonld) + [M0_TEMPLATES_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/M0_TEMPLATES_README.md) + [M0_TEMPLATES_USAGE_GUIDE.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/M0_TEMPLATES_USAGE_GUIDE.md)
+- [M0_INSTANCE_TEMPLATE.jsonld](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/M0_INSTANCE_TEMPLATE.jsonld) + [M0_TEMPLATES_README.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/M0_TEMPLATES_README.md) + [M0_TEMPLATES_USAGE_GUIDE.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/M0_TEMPLATES_USAGE_GUIDE.md)
 - [TSCG_Grammar_Extraction_Final_Report.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/TSCG_Grammar_Extraction_Final_Report.md)
 - [MIGRATION_GUIDE_It_Im.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/MIGRATION_GUIDE_It_Im.md) — It (Information/Territory) vs Im (Interoperable/Map) disambiguation guide
 - [RECAPITULATIF_EXECUTIF.md](https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/TSCG_InstanceGrammar/RECAPITULATIF_EXECUTIF.md)
