@@ -1,7 +1,7 @@
-# Aki — Re-test guide after the PEPITE fixes (2026-08-09)
+# KitArchitect-01 — Re-test guide after the PEPITE fixes (2026-08-09)
 
 **From**: Echopraxium (with the collaboration of Claude AI)
-**To**: Aki — SEERAVERSE Research Initiative
+**To**: KitArchitect-01 — SEERAVERSE Research Initiative
 
 Thank you for the regression report. It was genuine territory resistance: precise,
 with provenance, contre-hypotheses, and honest weakening where the evidence was thin.
