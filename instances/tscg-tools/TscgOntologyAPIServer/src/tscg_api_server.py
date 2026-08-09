@@ -32,6 +32,22 @@ BASE_IRI       = 'https://raw.githubusercontent.com/Echopraxium/tscg/main/ontolo
 SERVER_VERSION = '1.1.0'
 _start_time    = time.time()
 
+# Canonical "active corpus" scope. Directories whose *.jsonld are NOT live corpus
+# (backups, archives, reference snapshots, docs, simulation mirrors). Kept identical
+# to the WS-5 validator's _OUT_OF_SCOPE filter so "active corpus" means ONE thing
+# across the toolchain: the validator measures it, the API loads it. Fixes the
+# uncontrolled-recursive-discovery root cause (archives were being loaded and
+# amplified, surfacing stale/compact-IRI graphs in queries).
+_OUT_OF_SCOPE = (
+    'migration_backups/', 'domain_format_fix_backups/', '_archives/',
+    'docs/', '/static/', '/Ref/', 'reboot-kit/', '.pytest_cache/',
+)
+
+
+def _in_active_corpus(path: str) -> bool:
+    p = path.replace('\\', '/')
+    return not any(marker in p for marker in _OUT_OF_SCOPE)
+
 # Global store — populated in _init_store() called from __main__
 _tscg_store: Optional['TscgStore'] = None
 
@@ -114,7 +130,7 @@ def _ox_to_value(term) -> Optional[str]:
     - BlankNode: returns _:id
     """
     if term is None:                    return None
-    if isinstance(term, ox.NamedNode): return str(term)
+    if isinstance(term, ox.NamedNode): return term.value
     if isinstance(term, ox.BlankNode): return f'_:{term}'
     if isinstance(term, ox.Literal):
         # pyoxigraph str(Literal) includes quotes: '"value"' or '"value"@lang'
@@ -231,7 +247,7 @@ class TscgStore:
             fname = pattern.split('/')[-1]
             hits  = list(root_p.rglob(fname)) if recursive else list(root_p.glob(pattern))
             for f in hits:
-                if f.suffix == '.jsonld':
+                if f.suffix == '.jsonld' and _in_active_corpus(str(f)):
                     seen[str(f.resolve())] = f
 
         results, errors = [], []
@@ -295,13 +311,13 @@ class TscgStore:
         }
 
     def graph_list(self) -> list[str]:
-        return sorted(str(g) for g in self._store.named_graphs())
+        return sorted(g.value for g in self._store.named_graphs())
 
     def layer_map(self) -> dict:
         """Return {layer: count} grouping named graphs by M3/M2/M1/M0."""
         counts = {'M3': 0, 'M2': 0, 'M1': 0, 'M0': 0, 'other': 0}
         for g in self._store.named_graphs():
-            name = Path(str(g)).name
+            name = Path(g.value).name
             if   name.startswith('M3_'): counts['M3'] += 1
             elif name.startswith('M2_'): counts['M2'] += 1
             elif name.startswith('M1_'): counts['M1'] += 1
