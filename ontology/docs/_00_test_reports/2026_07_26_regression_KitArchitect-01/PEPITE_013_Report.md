@@ -5,7 +5,7 @@
 **Base**: repo HEAD `d5e81a7` (after the API-server fixes)
 **Golden**: M0-only change → the M1 golden gate (16/151/3) is NOT affected.
 
-## The defect (Aki's PEPITE-013)
+## The defect (KitArchitect-KitArchitect-01-01's PEPITE-KitArchitect-01-013)
 
 The `@context` of 6 M0 files coerces every `X_score` term to `@type: xsd:float`
 GLOBALLY. On numeric scores that is redundant (the data already carries
@@ -42,7 +42,7 @@ never as whole files.
 
 ```
 # from the repo root
-python fix_pepite_013.py .
+python fix_pepite_KitArchitect-01-013.py .
 git diff        # confirm: only '@type: xsd:float' removed from @context score DEFS,
                 #          no @value touched, no ORIVE line altered in M0_VSM
 ```
@@ -59,5 +59,5 @@ Then commit scoped to the 6 files.
    backlog. The WS-5 validator, extended to scan M0 and flag `M0_Poclet#` (which does
    not exist) vs `M0_Common` (which does), gives the 29→0 gauge and verifies it.
 2. **Validator TYP family** — detect "xsd:float coercion on a prose field" as the
-   durable guardian against 013 recurring (the corpus counterpart of the API regression
+   durable guardian against KitArchitect-01-013 recurring (the corpus counterpart of the API regression
    tests).

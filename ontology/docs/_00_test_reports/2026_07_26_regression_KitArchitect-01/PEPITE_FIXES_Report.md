@@ -1,4 +1,4 @@
-# TscgOntologyAPIServer — PEPITE fixes lot (Aki regression, 2026-07)
+# TscgOntologyAPIServer — PEPITE fixes lot (KitArchitect-01 regression, 2026-07)
 
 **Author**: Echopraxium with the collaboration of Claude AI
 **Date**: 2026-08-09
@@ -7,7 +7,7 @@
 
 ## What this lot fixes
 
-Closes **4 of Aki's 5 confirmed/design pépites** in pure server code — no corpus
+Closes **4 of KitArchitect-01's 5 confirmed/design pépites** in pure server code — no corpus
 change, no ORIVE discipline needed.
 
 ### PEPITE-001 — `<IRI>` serialization (CONFIRMED bug)
@@ -20,7 +20,7 @@ end-to-end store now returns bare IRIs and clean names.
 
 ### PEPITE-003 / 005 / 011 — archive amplification & compact IRIs (scope)
 `load_pattern()` used `rglob` with NO exclusion filter, so `Ref/`, `_archives/`,
-`docs/`, `/static/`, `migration_backups/` were all loaded and amplified. This is Aki's
+`docs/`, `/static/`, `migration_backups/` were all loaded and amplified. This is KitArchitect-01's
 root cause #1 (uncontrolled recursive discovery) and #2 (no canonical active-corpus
 manifest). **Fix**: a module-level `_in_active_corpus()` filter — **identical to the
 WS-5 validator's `_OUT_OF_SCOPE`** — applied in the loader. "Active corpus" now means
@@ -40,7 +40,7 @@ This single scope fix resolves:
   `M0_Poclet#` → `M0_Common` refactor. Larger, needs ORIVE-safe local scripting.
   Next chantier; the WS-5 validator will get a datatype family to gauge it.
 - **`ontology/ontology/` double segment** in some IRIs — NOT a code bug: it comes from
-  mounting `--ontology-dir` at the repo root instead of `.../ontology`. This is Aki's
+  mounting `--ontology-dir` at the repo root instead of `.../ontology`. This is KitArchitect-01's
   §9 Q1 (which roots for default startup). Recommendation: mount at the repo root and
   keep `ontology/`-prefixed patterns, OR mount at `.../ontology` with bare patterns —
   pick one canonical launch and document it.
@@ -50,6 +50,6 @@ This single scope fix resolves:
     tests/test_pepites_regression.py        (NEW — 5 regression tests)
 
 ## Commit & re-test
-Additive to server code + tests. After commit + push, give Aki the commit hash; he can
+Additive to server code + tests. After commit + push, give KitArchitect-01 the commit hash; he can
 re-run his suite against PEPITE-001/003/005/011 (expected: all cleared) and confirm
 013 remains the only open corpus item.
