@@ -1,0 +1,137 @@
+# TSCG Worksite — structured state layer
+#
+# Author: Echopraxium with the collaboration of Claude AI
+# This YAML is the SOURCE OF TRUTH for worksite STATE. The narrative map
+# (_00_TSCG_Worksite_Map.md) is derived from it / kept beside it: lessons,
+# rationales and the deprecated-term / notation-migration stories stay in prose,
+# NOT here.
+#
+# Scope of this file = the STATE LAYER only (design spec of the Map/Territory
+# split applied to our own process): what exists, its status, and the gauge each
+# item drives toward a target. Anything a human reads as narrative is out of scope.
+#
+# Addressing (from map §1): WS-n / sub-item / step. sub-item taxonomies are per
+# worksite (SC-n, CTX-n, VOC, …) and are NEVER renumbered.
+
+meta:
+  schema_version: "0.1.0"
+  schema_ratified: "2026-08-08"          # Michel: 2-level WS→sub-item; enum + gauge convention below
+  mirrors_map_version: "2.3.0"          # the prose map this state reflects
+  head: "f0daa1a"                        # HEAD at last sync; re-measure at session start
+  generated: "2026-08-08"
+  status_vocab: [done, design-decided, scoped, staged, todo, partial, blocked]
+  gauge_note: >
+    current: <n> = measured & reliable (source in measured_by).
+    current: null = not reliably measurable yet; measured_by names the validator
+    family that will provide it. NEVER put a raw git-grep count here — scope/prose
+    discipline (proven on CTX) is required first.
+
+worksites:
+
+  - id: WS-0
+    title: Structural Cleanup
+    readme: ontology/docs/_01_Worksite/WS-0/README.md
+    status: partial            # 2 of 11 done; bulk ahead
+    priority: mixed            # items span several ranks — see per-item rank
+    items:
+      - { id: SC-0,  title: "staging commit 2026-07-03",            status: staged }
+      - { id: SC-1,  title: "functional grammar (root result)",     status: done,
+          residual: "2 KnowledgeFieldConceptCombo" }
+      - { id: SC-2,  title: "monoid-qualification of atoms",        status: done,
+          rank: done, gauge: NOT-1, target: 0, current: 0, measured_by: "check_M1",
+          commit: "M2 16.19.0" }
+      - { id: SC-3,  title: "Facet as an M3 principle",             status: design-decided,
+          rank: 9, record: "SC-3_Facet_Decision_Record.md v1.0.0", grave_after: WS-5 }
+      - { id: SC-4,  title: "families-as-contracts + multi",        status: scoped, rank: 9 }
+      - { id: SC-5,  title: "domain-fusion Phase 0",                status: todo, rank: 9,
+          gauge: "KnowledgeField-live", target: 0, current: null,
+          measured_by: "validator/DUP+STR",
+          note: "KnowledgeField* alive, ~10 spellings; HIGH risk (couples SC-1 rename)" }
+      - { id: SC-6,  title: "M1 conformance (named args)",          status: todo, rank: 4,
+          gauge: DCC006, target: 0, current: 127, measured_by: "check_M1",
+          note: "the bulk of the 151 M1 golden errors; heavy, semantic" }
+      - { id: SC-7,  title: "ModelSupersession",                    status: staged, rank: 9,
+          note: "staged inside SC-0" }
+      - { id: SC-8,  title: "FeedbackLoop reclassification",        status: todo, rank: 9,
+          note: "FeedbackLoop still M2; formula not yet a signature" }
+      - { id: SC-9,  title: "tensor purge (⊗ / ⊗⇒)",               status: todo,
+          gauge: "tensor-live", target: 0, current: null, measured_by: "validator/FRB",
+          note: "canonical corpus ~13 occ (some prose); bulk in sidecars + M0 ket" }
+      - { id: SC-10, title: "M3 grammar",                           status: scoped, rank: 8,
+          note: "prerequisites met; plumbing, not arbitration" }
+      - { id: SC-11, title: "M2 grammar",                           status: partial,
+          note: "11a doc ready; 11b blocked by WS-1" }
+
+  # ---- WS-1..8: SKELETON (worksite level only; sub-items filled when each opens) ----
+
+  - id: WS-1
+    title: Vocabulary Consolidation (VOC)
+    readme: ontology/docs/_01_Worksite/TSCG_VocabularyConsolidation_Worksite_README.md
+    status: todo
+    priority: 5
+    note: "blocks the M2 graph grammar (SC-11b)"
+    items: []                  # VOC family — to be modelled
+
+  - id: WS-2
+    title: Context hygiene (CTX)
+    status: done
+    priority: done
+    note: "CTX-4 + CTX-4-bis closed 2026-08-08 (c49386c/16c8ace/0bb062c); no relative mN prefix remains"
+    items:
+      - { id: CTX-4, title: "absolutise relative mN prefixes", status: done, gauge: "relative-mN",
+          target: 0, current: 0, measured_by: "validator/CTX" }
+      - { id: CTX-5, title: "colon-named @context terms",       status: todo, gauge: "CTX-5",
+          target: 0, current: 28, measured_by: "validator/CTX",
+          note: "m3:eagle_eye / m3:sphinx_eye, 14 files x2 — scheduled as its own fix (R3)" }
+
+  - id: WS-3
+    title: Gs monoid review
+    readme: ontology/docs/_01_Worksite/WS-3/
+    status: scoped
+    priority: 6
+    note: "register opened; Michel's semantic decisions, no deadline"
+    items: []
+
+  - id: WS-4
+    title: GrammarSignature
+    status: scoped
+    priority: 7
+    note: "four open decisions, none blocking"
+    items: []
+
+  - id: WS-5
+    title: Ontology Validator engine
+    readme: ontology/docs/_01_Worksite/TSCG_OntologyValidator_Worksite_README.md
+    status: partial
+    priority: 1
+    note: "lot 1 (CTX + source switch) built & HEAD-verified 2026-08-08; FRB/DUP/NOT/STR pending"
+    items:
+      - { id: "lot1-CTX", title: "CTX family + --source switch", status: done,
+          gauge: "CTX-1", target: 0, current: 0, measured_by: "validator/CTX" }
+      - { id: "lot2-FRB", title: "retired-formalism traces",     status: todo,
+          note: "will make SC-9 (⊗/ket) measurable" }
+      - { id: "lot-DUP",  title: "duplicate retired properties", status: todo,
+          note: "D8 triad (8 in M1_Geology); will make SC-5 measurable" }
+      - { id: "lot-NOT",  title: "notation normalisation",       status: todo }
+      - { id: "lot-STR",  title: "cross-file consistency",       status: todo }
+
+  - id: WS-6
+    title: Changelog normalisation
+    status: todo
+    priority: 10
+    note: "unblocked since m3:changelog exists; canonical form = nested metadata block"
+    items: []
+
+  - id: WS-7
+    title: M3 F-axiom cleanup
+    status: todo
+    priority: 11
+    note: "deferred; F_CategoryTheoryNote scalar residue + preprint 1.5.7 stale"
+    items: []
+
+  - id: WS-8
+    title: Until Further Notice (continuous)
+    status: todo
+    priority: 11
+    note: "continuous / catch-all"
+    items: []
