@@ -1,0 +1,23 @@
+
+  - id: WS-10
+    title: M0 namespace harmonisation
+    status: scoped
+    priority: 11
+    note: >
+      Restore cross-poclet comparability. m0: MUST always resolve to M0_Common.jsonld#
+      (shared, joinable — the basis for inter-poclet pattern queries and, by analogy,
+      m1: for cross-domain queries). Local concepts use m0.<instance>: (DOT separator,
+      the only JSON-LD-valid form; the m0:instance: colon form is a parser error / CTX-5).
+      Validator confirms the SHACL's "23/32 violations": 25 poclets have m0 != M0_Common.
+      Approach: small lots (~5 poclets), validate 25->0 per lot, commit isolated.
+    items:
+      - { id: NS-1, title: "m0: -> M0_Common.jsonld# (shared)", status: todo,
+          gauge: "CTX-CANON(m0)", target: 0, current: 25, measured_by: "validator/CTX",
+          note: "the core violation; breaks inter-poclet joins. Elevate CTX-CANON to ERROR (validator lot) for a hard gate." }
+      - { id: NS-2, title: "local ns m0.<instance>: (dot form)", status: todo,
+          gauge: "CTX-5(local colon-name)", target: 0, current: null, measured_by: "validator/CTX",
+          note: "migrate m0:instance:Concept (broken colon form) -> m0.<instance>:Concept. Validator must separate local-ns colon-names from archaeological eagle_eye: ones." }
+      - { id: NS-3, title: "owl:imports M0_Common.jsonld (required)", status: todo,
+          note: "SHACL v1.5 requires it in all M0 instances" }
+      - { id: NS-4, title: "scores as m0:scoreA (shared vocab)", status: todo,
+          note: "after step 1 they are absolute M0_Common.jsonld#scoreA; re-express via m0: prefix once m0 is canonical" }

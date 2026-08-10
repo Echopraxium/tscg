@@ -58,9 +58,44 @@ def _gauge_cell(item: dict) -> str:
 
 
 def load() -> dict:
+    """Aggregate the central worksite.yaml (meta + inline worksites) with any
+    distributed per-worksite files at _01_Worksite/WS-*/worksite.yaml.
+
+    A worksite lives in EXACTLY ONE place (central inline OR its WS-n/ file); a
+    duplicate id is a hard error so the two sources never drift silently.
+    """
     if not YAML_PATH.exists():
         sys.exit(f"not found: {YAML_PATH}")
-    return yaml.safe_load(YAML_PATH.read_text(encoding="utf-8"))
+    doc = yaml.safe_load(YAML_PATH.read_text(encoding="utf-8")) or {}
+    worksites = list(doc.get("worksites", []))
+    seen = {w["id"] for w in worksites if isinstance(w, dict) and "id" in w}
+
+    ws_dir = YAML_PATH.parent
+    for wf in sorted(ws_dir.glob("WS-*/worksite.yaml")):
+        sub = yaml.safe_load(wf.read_text(encoding="utf-8"))
+        # a distributed file may be: a bare LIST of worksites (the delivered block
+        # format), a dict with a `worksites:` list, or a single bare mapping.
+        if isinstance(sub, list):
+            entries = sub
+        elif isinstance(sub, dict) and "worksites" in sub:
+            entries = sub["worksites"]
+        elif isinstance(sub, dict) and "id" in sub:
+            entries = [sub]
+        else:
+            entries = []
+        for w in entries:
+            wid = w.get("id")
+            if wid in seen:
+                sys.exit(f"duplicate worksite {wid!r}: in central AND {wf}")
+            seen.add(wid)
+            worksites.append(w)
+
+    doc["worksites"] = sorted(
+        worksites,
+        key=lambda w: int(str(w.get("id", "WS-999")).split("-")[-1])
+        if str(w.get("id", "")).split("-")[-1].isdigit() else 999,
+    )
+    return doc
 
 
 def render_text(doc: dict, only: str | None) -> str:
