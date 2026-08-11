@@ -24,8 +24,8 @@ cd tscg-retest
 git log -1 --format="%H %s"
 ```
 
-The HEAD should be at least **`83abd58a3101ebbfe1a17eaf7f4c0789207d76d4`**
-("APIServer: fix PEPITE-001 + scope filter"). If your existing clone is fine, instead:
+The HEAD should be at least **`9cc3868`** (or later on `main`). All five confirmed
+pépites plus the M0_Poclet# phantom-namespace repair are in by then. If your existing clone is fine, instead:
 `git fetch origin && git reset --hard origin/main` — but a fresh clone is cleaner.
 
 ## Step 2 — Install and run the server's own test suite
@@ -61,19 +61,27 @@ definition the WS-5 validator uses — one notion of "active corpus" across the 
 | **005** | query `owl:inverseOf` objects | resolve to full IRIs; the previously-compact `m2:…` cases were all in archives, now not loaded |
 | **013** | score fields typed `xsd:float` carrying prose | **FIXED** — coercion removed from @context; prose no longer cast |
 
-## Known, NOT yet fixed (please don't file as new)
+## Known / in progress (please don't file as new)
 
-- **PEPITE-013 (xsd:float on prose)** — FIXED. It was NOT 29 files: only 6 carried the
-  active defect (numeric scores + a `scoreJustification` reusing the `X_score` keys for
-  prose). The `@context` `xsd:float` coercion was removed from those score DEFS; numeric
-  scores keep their type via their local `@value`/`@type`, and the justification prose is
-  no longer cast. Verified by JSON-LD expansion (VSM: 10 prose-as-float → 0). The wider
-  `M0_Poclet#` → `M0_Common` namespace rebrand (29 files) is a separate, still-open lot.
-- **Double `ontology/ontology/` in some graph IRIs** — an addressing question
-  (`_file_to_iri`), not a code bug per se: it depends on how M0 instances should be
-  addressed (`.../ontology/instances/…` vs `.../instances/…`). This is an open
-  architecture decision (your §9 Q1), being decided separately. Please don't report it
-  as a regression.
+**Fixed since your last run (verify these are gone):** PEPITE-001, 003, 005, 011, and 013.
+The phantom `M0_Poclet#` namespace is also eradicated from the live corpus, the generation
+template, and the SHACL.
+
+**Still in progress — tracked, not bugs:**
+
+- **Cross-poclet comparability (worksite WS-10).** This is the important one for you. The
+  25 poclets still declare `m0` as their OWN local namespace, so `m0:scoreA` is a
+  DIFFERENT IRI in each poclet. Queries WITHIN a single poclet work; queries ACROSS
+  poclets (e.g. "which systems have scoreA > 0.8?") will NOT join yet, because there is
+  no shared `m0:` vocabulary. The fix (WS-10) makes `m0:` always resolve to
+  M0_Common.jsonld# (shared/joinable) and moves local concepts to `m0.<instance>:` (dot
+  form). Until WS-10 ships, treat inter-poclet pattern queries as not-yet-supported —
+  it's a planned worksite, not a defect.
+- **Double `ontology/ontology/` in some graph IRIs.** An addressing decision
+  (`_file_to_iri` + which root to mount), not a code bug. Being decided separately.
+- **Colon-named terms** (`m0:instance:...`, `eagle_eye:Attractor`) in un-harmonised
+  poclets — these are the CTX-5 defect WS-10 clears.
+
 
 ## Your §9 questions
 

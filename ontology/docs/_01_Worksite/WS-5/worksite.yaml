@@ -1,0 +1,34 @@
+  - id: WS-5
+    title: Ontology Validator engine
+    readme: ontology/docs/_01_Worksite/TSCG_OntologyValidator_Worksite_README.md
+    status: partial
+    priority: 1
+    note: >
+      lot 1 (CTX + --source switch) built & HEAD-verified 2026-08-08. Families are the
+      measuring instrument for the semantic worksites: a chantier (SC-n/WS-n) becomes a
+      gauge (X->0) via a check family. Naming: CTX=Context, FRB=Forbidden(retired
+      formalism), DUP=Duplicate(retired props), NOT=Notation, STR=Structure(cross-file),
+      TYP=Type(datatype-vs-value).
+    items:
+      - { id: lot1-CTX, title: "CTX family + --source switch", status: done,
+          gauge: "CTX-1", target: 0, current: 0, measured_by: "validator/CTX" }
+      - { id: lot2-FRB, title: "FRB — retired-formalism traces (tensor/ket)", status: todo,
+          note: "will make SC-9 measurable" }
+      - { id: lot-DUP, title: "DUP — duplicate retired properties", status: todo,
+          note: "D8 triad (8 in M1_Geology); will make SC-5 measurable" }
+      - { id: lot-NOT, title: "NOT — notation normalisation", status: todo }
+      - { id: lot-STR, title: "STR — cross-file consistency", status: todo }
+      - { id: lot-CANON-ERR, title: "elevate CTX-CANON INFO -> ERROR", status: todo,
+          note: "PREREQUISITE for WS-10: turns the m0!=M0_Common gauge (25->0) into a hard gate, not an advisory" }
+      - { id: lot-CTX5-split, title: "CTX-5: separate local-ns colon-names from archaeological ones", status: todo,
+          note: "CTX-5=42 mixes m0:instance (WS-10) with eagle_eye:Attractor (WS-9); split so each worksite's gauge is not polluted by the other" }
+      - { id: lot-TYP, title: "TYP family — xsd:float coercion on prose fields", status: todo,
+          note: "durable guardian against PEPITE-013 recurrence; first check to cross @context AND @graph (expansion bench)" }
+      - { id: lot-NSRESOLVE, title: "namespace-resolvable check (anti-phantom)", status: todo,
+          note: "would have caught M0_Poclet# automatically: an @id pointing at a non-existent file/namespace" }
+      - { id: lot-ADDR, title: "graph-IRI addressing check (double ontology/)", status: todo,
+          note: "flag when a graph IRI diverges from the declared canonical addressing (the ontology/ontology/ segment)" }
+      - { id: lot-GOLDEN, title: "unified golden_values.json", status: todo,
+          note: "single source of truth for all gauge thresholds (check_M1 + validator + ad-hoc), so any gauge regression is caught at once" }
+      - { id: lot-FEED, title: "feed worksite gauges from the validator", status: todo,
+          note: "MOST AMBITIOUS: gauges shown by worksite_report (CTX-CANON 25->0, DCC006 127->0) are hand-written; have the validator populate them so the roadmap is a LIVE dashboard, not a snapshot" }
