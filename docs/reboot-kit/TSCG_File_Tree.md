@@ -1,9 +1,11 @@
 # TSCG — Repository File Tree
 
-*Generated from a HEAD file listing (1037 files). Directory-level map; backup / `_sim` / cache folders are collapsed to a count. ★ = authority file (read from HEAD). This tree is a **repo artifact** — regenerate it from a listing; do not put it in the project corpus (it drifts on every add/remove).*
+*Generated from a HEAD file listing (1043 files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). This tree is a **repo artifact** — regenerate it from a listing; do not put it in the project corpus (it drifts on every add/remove).*
 
 - **.claude/**
   - **skills/**
+    - **head-over-memory/**
+      - SKILL.md
     - **tscg-article-pipeline/**
       - SKILL.md
     - **tscg-create-instance-simulation/**
@@ -32,6 +34,12 @@
       - TSCG_Mathematical_Legitimacy_Summary.md
     - **tscg-triskelevm-debug/**
       - SKILL.md
+- **_02_housekeeping/**
+  - **2026_08_12/**
+    - TSCG_Validation_HandOver - Part-1.md
+    - TSCG_Validation_HandOver - Part-2.md
+    - TSCG_Validation_HandOver.md
+    - _ACTION_corpus_cleanup_todo.md
 - **_protos/**
   - README.txt
 - **cli_tools/**
@@ -136,6 +144,8 @@
       - TSCG_Smart_Prompt_v15_8_0.md
       - TSCG_Smart_Prompt_v15_9_0.md
       - TSCG_Smart_Prompt_v16_2_0.md
+      - TSCG_Smart_Prompt_v16_3_0.md
+      - TSCG_Smart_Prompt_v17_0_0.md
       - macros.txt
       - macros_extended.txt
     - 00_M3_Cyclops_Correction_Summary.md
@@ -152,21 +162,22 @@
     - M0_VSM.jsonld
     - M0_VSM_README.md
     - M2_FormulasReference_v15.10.0.md
-    - M2_GenericConcepts.jsonld ★
+    - M2_GenericConcepts.jsonld
     - M2_MetaConcepts.jsonld
     - M2_MetaconceptCombo.jsonld
     - M2_OntologyCategory_Proposal.md
     - M2_Pattern_metaconcept.jsonld
-    - M3_EagleEye.jsonld ★
-    - M3_GenesisSpace.jsonld ★
-    - M3_SphinxEye.jsonld ★
+    - M3_EagleEye.jsonld
+    - M3_GenesisSpace.jsonld
+    - M3_SphinxEye.jsonld
     - Namespace_Refactoring_Summary.md
     - Session_Summary_TSCG_v14.2.0.md
     - TO_DO.txt
     - TSCG_File_Tree.md
-    - TSCG_Reference_Corpus.md
+    - TSCG_ReferenceCorpus.md
+    - TSCG_ReferenceCorpus_Bootstrap.md
     - TSCG_Session_README_2026-03-23.md
-    - TSCG_Smart_Prompt_v16_3_0.md
+    - TSCG_Smart_Prompt_v17_0_0.md
     - TSCG_Validation_Handoff_M1_M0.md
     - TSCG_ValueSpace_Quick_Reference.md
     - TSCG_ValueSpace_User_Guide.md
@@ -180,7 +191,7 @@
   - TSCG_M2_Category_Taxonomy.md
   - TSCG_Session_Complete_Summary.md
   - TSCG_Update_v11_Summary.md
-- **domain_format_fix_backups/** _(collapsed, 1 entries)_
+- **domain_format_fix_backups/** _(collapsed, 5 entries)_
 - **instances/**
   - **poclets/**
     - **AdaptativeImmuneResponse/**
@@ -261,8 +272,6 @@
       - _open_cmd_window.bat
     - **FireTriangle/**
       - **static/**
-        - M0_FireTriangle.jsonld
-        - M0_FireTriangle_README.md
         - _00_serve_poclet-sim.bat
       - M0_FireTriangle.jsonld
       - M0_FireTriangle_README.md
@@ -649,7 +658,7 @@
       - tscg_poclet_generator.py
       - tscg_rag_augmentor.py
     - **TscgPocletMiner/**
-      - **node_modules/** _(collapsed, 62 entries)_
+      - **node_modules/** _(collapsed, 91 entries)_
       - **renderer/**
         - UI_IMPROVEMENT_SELECT_PROVIDER.md
         - UI_IMPROVEMENT_V2_INFO_BOX.md
@@ -670,7 +679,7 @@
   - 2DBarcode_PedagogicalPoclet_DemocratizationFacet_README.md
   - QRCode_ExplorationSpaces_README.md
   - _open_cmd_window.bat
-- **migration_backups/** _(collapsed, 8 entries)_
+- **migration_backups/** _(collapsed, 86 entries)_
 - **ontology/**
   - **InstanceSimulations/**
     - M0_InstanceSimulation_UXControls.jsonld
@@ -718,7 +727,7 @@
     - M2_GenericConcepts_2026_02_17_17h-00min.ttl
     - M2_MetaConcepts_Ref.jsonld
     - M2_MetaConcepts_Ref.ttl
-    - M3_GenesisSpace_Ref.jsonld ★
+    - M3_GenesisSpace_Ref.jsonld
     - M3_GenesisSpace_Ref.ttl
   - **StructuralGrammar/**
     - Functional_Grammar_Model.md
@@ -767,18 +776,18 @@
     - validate_m0_instance.py
   - **cli-tools/**
     - **check-M0/**
-      - M0_Instances_Schema_shacl.ttl ★
+      - M0_Instances_Schema_shacl.ttl
       - check_m0_instances.py
       - migrate_m0_to_v1_5.py
     - **check-M1/**
-      - M1_Schema_shacl.ttl ★
+      - M1_Schema_shacl.ttl
       - _open_cmd_window.bat
       - after_publicid.txt
-      - check_M1.py ★
+      - check_M1.py
       - check_M1_README.md
       - shacl_after.txt
     - **check-M2/**
-      - M2_MonoidalFormula_Schema_shacl.ttl ★
+      - M2_MonoidalFormula_Schema_shacl.ttl
     - **validator/**
       - **checks/**
         - __init__.py
@@ -788,8 +797,8 @@
     - README.md
     - _00_open_cmd_window.bat
     - _run_all_layers.bat
-    - run_all_layers.py ★
-    - tscg_metrics.py ★
+    - run_all_layers.py
+    - tscg_metrics.py
     - tscg_metrics_README.md
     - tscg_paths.py
     - verify_session_2026-07-18.bat
@@ -853,7 +862,7 @@
     - HOWTO_Create_M1_Extension.md
     - HYBRID_FORMULAS_NOTATION_README (1).md
     - M0_VSM_Prerequisites_Analysis.md
-    - M1_CoreConcepts.jsonld ★
+    - M1_CoreConcepts.jsonld
     - M1_CoreConcepts_NuclearUpdate.jsonld
     - M1_CoreConcepts_updated.jsonld
     - M1_CoreConcepts_v1.2.0_Summary.md
@@ -882,14 +891,14 @@
     - M2_OntologyCategory_Proposal (1).md
     - M2_Pattern_metaconcept.jsonld
     - M2_Scope_Metaconcept_Proposal.md
-    - M3_CategoryTheory_v1_0_0.jsonld ★
+    - M3_CategoryTheory_v1_0_0.jsonld
     - M3_EagleEye_Update_Analysis_v15_1_0.md
     - M3_GenesisSpace_CategoryTheory_Integration.md
     - M3_GenesisSpace_CategoryTheory_Integration_Complete.md
     - M3_GenesisSpace_OptionA_Complete.md
     - M3_GenesisSpace_v3_1_0_Changes_Summary.md
     - M3_Genesis_Space_README.md
-    - M3_Philosophical_Eye.jsonld ★
+    - M3_Philosophical_Eye.jsonld
     - M3_SphinxEye_ORIVE_Correction_v2.2.0.md
     - M3_SystemicFramework_Category_Documentation.md
     - M3_TransdisciplinaryMetaConcepts_Renaming.md
@@ -1083,5 +1092,6 @@
 - before.txt
 - claude_setup.txt
 - create_files_URIS.py
+- files.txt
 - verify_migration_report.txt
 - verify_output.txt
