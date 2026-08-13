@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from a HEAD file listing (1043 files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). This tree is a **repo artifact** — regenerate it from a listing; do not put it in the project corpus (it drifts on every add/remove).*
+*Generated from a HEAD file listing (1052 files, including the `_00_UserGuide/` + poclet-template batch added in the same commit). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). This tree is a **repo artifact** — regenerate it from a listing; do not put it in the project corpus (it drifts on every add/remove).*
 
 - **.claude/**
   - **skills/**
@@ -34,6 +34,21 @@
       - TSCG_Mathematical_Legitimacy_Summary.md
     - **tscg-triskelevm-debug/**
       - SKILL.md
+- **_00_UserGuide/**
+  - **exercises/**
+    - **BubbleSort/**
+      - BubbleSort.md
+    - **Capacitor/**
+      - Capacitor.md
+    - **LogicGates/**
+      - LogicGates.md
+      - source_boolean_logic.md
+    - **Osmosis/**
+      - Osmosis.md
+    - **RubiksCube/**
+      - RubiksCube.md
+    - _00_exercise_template.md
+  - UserGuide.md
 - **_02_housekeeping/**
   - **2026_08_12/**
     - TSCG_Validation_HandOver - Part-1.md
@@ -428,6 +443,7 @@
       - M0_VCO_README.md
       - VCO_Simulation_README.md
     - **_00_template/**
+      - M0_Template.html
       - _00_serve_poclet-sim.bat
     - **kidneys/**
       - M0_Kidneys.jsonld

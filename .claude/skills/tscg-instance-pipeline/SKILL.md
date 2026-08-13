@@ -9,7 +9,15 @@ description: >
   think?" about a known system, or requests an HTML/Electron simulation of a TSCG system.
   Do NOT use for Case Studies or Real World Systems (too complex) — this pipeline is
   reserved for Instances.
+version: 2.1.0
 ---
+
+<!-- v2.1.0 (2026-08-13) — Notation-reform pass:
+     ⊗ → × / + / |  ·  M3_GenesisSpace → M3_GenesisGrammar  ·
+     KnowledgeFieldConceptCombo → DomainConceptCombo  ·  echopraxium → Echopraxium  ·
+     verified example formulas from HEAD  ·  @context pointer to FireTriangle.
+     Structural logic unchanged. -->
+
 
 # TSCG Instance Pipeline
 
@@ -19,14 +27,24 @@ description: >
 Each step may contain **human synchronization points** (⏸) that suspend
 the pipeline until Michel's explicit decision to continue.
 
+> **Notation (current — reformed 2026-08-13).** Structural grammar formulas use
+> three operators only: `×` (Territory / ASFID, monoid **Gt**), `+` (Map / REVOI,
+> monoid **Gm**), `|` (Stereopsis, monoid **Gs**). The operator **`⊗` is
+> forbidden** (superseded 2026-07-06). Atom subscripts disambiguate: `St`/`Ss`
+> (Structure vs Symbol), `It`/`Im` (Information vs Interoperability); `A`/`F`/`D`
+> stay bare. The live M3 file is **`M3_GenesisGrammar.jsonld`** (the old
+> `M3_GenesisGrammar.jsonld` is a dead vestige — do not reference it). M1 combos are
+> **`DomainConceptCombo`** (ex-`KnowledgeFieldConceptCombo`). Always verify any
+> formula, type name or version against **HEAD**, never from memory.
+
 ---
 
 ## GitHub References (raw URLs)
 
-Base: `https://raw.githubusercontent.com/echopraxium/tscg/main/`
+Base: `https://raw.githubusercontent.com/Echopraxium/tscg/main/`
 
 **Ontology:**
-- `ontology/M3_GenesisSpace.jsonld` — M3 genesis space
+- `ontology/M3_GenesisGrammar.jsonld` — M3 structural grammar (aggregator)
 - `ontology/M3_EagleEye.jsonld` — ASFID dimensions
 - `ontology/M3_SphinxEye.jsonld` — REVOI dimensions
 - `ontology/M2_GenericConcepts.jsonld` — 58+ GenericConcepts
@@ -126,7 +144,7 @@ File structure:
 - D (Dynamics): ...
 
 ## Anticipated M2 GenericConcepts
-- [Name] ([tensor formula]) — anticipated role
+- [Name] ([structural grammar formula]) — anticipated role
 
 ## Comparison with existing instances
 - [Similar instance]: [similarities / differences]
@@ -148,19 +166,20 @@ File structure:
 ### Internal Pipeline (sequential sub-steps)
 
 #### 3.1 — M2 Identification (GenericConcepts)
-- List relevant **existing GenericConcepts** with their tensor formula
-  (e.g., `Synergy = A⊗S⊗I`, `Trigger = D⊗I`, `Process = D⊗F`)
+- List relevant **existing GenericConcepts** with their structural grammar formula
+  (e.g., `Process = D × F`, `Trigger = D × It`, `Balance = A × St × F | _0`) —
+  verify each against `M2_GenericConcepts.jsonld` at HEAD; do not recite from memory
 - Identify **new candidates** if a necessary concept doesn't exist yet
 - Response format for new candidate:
   ```
   🆕 M2 Candidate: [Name]
-  Tensor formula: [e.g., S⊗I]
+  Structural grammar formula: [e.g., St × It]   # × Gt · + Gm · | Gs  (never ⊗)
   Role: [description]
   Status: "Proposal — to be validated"
   ```
 
-#### 3.2 — M1 Identification (KnowledgeFieldConceptCombos)
-- List used KnowledgeFieldConceptCombos (e.g., `m1:chemistry:Combustion`)
+#### 3.2 — M1 Identification (DomainConceptCombos)
+- List used DomainConceptCombos (e.g., `m1:chemistry:Combustion`)
 - Identify **new M1 candidates** if necessary
 - Identify if a **new M1 extension** is required or if an existing extension
   should be enriched (e.g., new class in `M1_Chemistry.jsonld`)
@@ -179,7 +198,7 @@ Follow **scrupulously** the FireTriangle pattern as reference template.
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m1:[domain]": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/M1_[Domain].jsonld#",
@@ -187,6 +206,13 @@ Follow **scrupulously** the FireTriangle pattern as reference template.
   }
 }
 ```
+
+> **Authoritative `@context`:** the block above is a simplified illustration. Copy
+> the real, current `@context` from `instances/poclets/FireTriangle/M0_FireTriangle.jsonld`
+> at HEAD — it includes `"@base"`, a bare `m1` (→ `M1_CoreConcepts.jsonld#`), `m0`
+> (→ `M0_Common.jsonld#`), the `m1.ext:<domain>` extension prefix, and the typed
+> `*_score` terms. (Note: JSON-LD term names containing `:` such as `m1:core` are a
+> known separate hygiene item — do not introduce new ones.)
 
 **Mandatory JSON-LD sections:**
 1. Metadata (`rdfs:label`, `rdfs:comment`, `dcterms:created`, `dcterms:creator`, `m2:changelog`)
@@ -262,7 +288,7 @@ python ontology/TSCG_Grammar/validate_m0_instance.py instances/poclets/FireTrian
 | "m3:ontologyType MUST be one of..." | Missing or wrong ontologyType | Add `"m3:ontologyType": {"@id": "m3:Poclet"}` |
 | "m1:domain is MANDATORY" | Missing domain property | Add `"m1:domain": "Chemistry"` |
 | "Use rdfs:label instead of dcterms:title" | Wrong property name | Rename `dcterms:title` → `rdfs:label` |
-| "pyshacl cannot resolve relative URLs" | Relative namespace URLs in @context | Replace `"M3_GenesisSpace.jsonld#"` with full `https://raw.githubusercontent.com/...` |
+| "pyshacl cannot resolve relative URLs" | Relative namespace URLs in @context | Replace `"M3_GenesisGrammar.jsonld#"` with full `https://raw.githubusercontent.com/...` |
 | "owl:Ontology required" | Wrong @type value | Change `"@type": "owl:NamedIndividual"` → `"owl:Ontology"` |
 
 > ⏸ **Mandatory sync point if validation fails repeatedly** — discuss structural
@@ -360,7 +386,7 @@ ANALYSIS → analysis.md
        ↓ (if Alignment)
 MODELING
   ├─ 3.1 M2 GenericConcepts (existing + candidates)
-  ├─ 3.2 M1 KnowledgeFieldConceptCombos (existing + candidates)
+  ├─ 3.2 M1 DomainConceptCombos (existing + candidates)
   ├─ 3.3 M0 JSON-LD  ← duo mode if blocking ⏸
   ├─ 3.4 README.md
   └─ 3.5 SHACL validation ← MANDATORY, must pass ✅⏸
