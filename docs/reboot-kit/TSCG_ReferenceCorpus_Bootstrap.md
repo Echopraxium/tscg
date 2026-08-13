@@ -1,8 +1,8 @@
-# TSCG — Corpus Reference (Bootstrap)
+# TSCG — Reference Corpus (Bootstrap)
 
 > Minimal orientation file. If this is the only TSCG document in context, it is
 > enough to avoid silent corruption. For anything operational (paths, tools,
-> procedures), see **`TSCG_CorpusReference.md`** (the complete index/router).
+> procedures), see **`TSCG_ReferenceCorpus.md`** (the complete index/router).
 
 ---
 
