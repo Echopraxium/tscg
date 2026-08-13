@@ -44,9 +44,9 @@ primitive alphabets, golden values — from memory or from the project corpus.
 unrestricted) or `git show HEAD:<file>` in a freshly-fetched clone.
 
 Durable invariants (notation, REVOI, namespaces, conventions) live in
-**`TSCG_CorpusReference_Bootstrap.md`** — read it, don't re-list it here.
+**`TSCG_ReferenceCorpus_Bootstrap.md`** — read it, don't re-list it here.
 The full routing table (which file owns which authority) lives in
-**`TSCG_CorpusReference.md`**.
+**`TSCG_ReferenceCorpus.md`**.
 
 Full discipline, including the verify-before-assert reflex and the executable
 checks: the **`head-over-memory`** skill.

@@ -1,4 +1,4 @@
-# TSCG — Corpus Reference (Complete)
+# TSCG — Reference Corpus (Complete)
 
 **Author**: Echopraxium with the collaboration of Claude AI · **Date**: 2026-08-11
 
@@ -6,7 +6,7 @@
 > so that live facts are read from HEAD, never recited from the corpus. It carries
 > no versions, counts, or golden values — those go dirty. For the hard invariants
 > (notation, REVOI, namespaces, conventions), see the companion
-> **`TSCG_CorpusReference_Bootstrap.md`**.
+> **`TSCG_ReferenceCorpus_Bootstrap.md`**.
 >
 > Paths below are tagged **[✓ HEAD 2026-08-11]** when confirmed live (HTTP 200 on
 > the raw CDN today) or **[⚠ unconfirmed]** when known only from memory — the
@@ -117,5 +117,5 @@ What remains in project knowledge after cleanup — durable *rationale*, no live
 
 ---
 
-*Companion: `TSCG_CorpusReference_Bootstrap.md` (invariants). Governing discipline:
+*Companion: `TSCG_ReferenceCorpus_Bootstrap.md` (invariants). Governing discipline:
 the `head-over-memory` skill.*
