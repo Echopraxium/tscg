@@ -3,7 +3,7 @@
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](LICENSE)
 [![GitHub](https://img.shields.io/badge/GitHub-Echopraxium%2Ftscg-181717?logo=github)](https://github.com/Echopraxium/tscg)
-[![Version](https://img.shields.io/badge/Version-16.2.0-green.svg)](https://github.com/Echopraxium/tscg/releases)
+[![Version](https://img.shields.io/badge/Version-16.3.0-green.svg)](https://github.com/Echopraxium/tscg/releases)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18471860.svg)](https://doi.org/10.5281/zenodo.18471860)
 
 **Author:** Echopraxium with the collaboration of Claude AI
@@ -125,7 +125,7 @@ Think of TSCG as **LEGO Technic® for the mind**:
 ## 🏗️ Architecture at a Glance
 
 ```
-M3 (Genesis Space)      → Universal foundation: ASFID (Territory) and REVOI (Map) dimensions
+M3 (Genesis Grammar)    → Universal foundation: ASFID (Territory) and REVOI (Map) dimensions
                            Formalized via Lambek calculus / monoidal categories
                            Three monoids: Territory Gt (×, ASFID), Map Gm (+, REVOI), Stereopsis Gs (|, TKSL)
     ↓
@@ -220,6 +220,12 @@ The most feature-rich TSCG simulation to date:
 ---
 
 ## 🚀 Quick Start: Your First "Echolocation"
+
+> 🐣 **New here?** The **[User Guide](_00_UserGuide/UserGuide.md)** walks you
+> through the whole journey step by step — installing the repository, setting up
+> Claude, and building your first Poclet with guided exercises (Logic Gates,
+> Bubble Sort, Capacitor, Osmosis, Rubik's Cube). The bat's cycle below is the
+> conceptual core it expands on.
 
 Want to model a system with TSCG? Follow the **bat's cycle**:
 
@@ -328,6 +334,7 @@ AI-powered corpus analysis — multi-backend LLM (Gemini Free Tier default | Oll
 
 ## 📚 Essential Documentation
 
+- **[User Guide](_00_UserGuide/UserGuide.md)** — *Start here.* The complete hands-on journey for newcomers: install the repo, set up Claude, and build your first Poclet or TscgTool, with worked exercises under [`_00_UserGuide/exercises/`](_00_UserGuide/exercises/)
 - **[Poclet Analysis Methodology](docs/methodology/Poclet_Analysis_Methodology.md)** — How to create a grammatically-consistent instance
 - **[M3 Bicephalous Architecture](ontology/docs/M3_BicephalousPerspective_README.md)** — Philosophical foundation
 - **[Structural Grammar Foundation](ontology/docs/Structural_Grammar_Foundation.md)** — Lambek calculus formalism
@@ -405,8 +412,8 @@ So the corpus you see here is a snapshot. If TSCG is doing its job, some of it s
 
 ---
 
-**Version:** 16.2.0
-**Last Updated:** 2026-07-08
+**Version:** 16.3.0
+**Last Updated:** 2026-08-13
 **Framework Status:** Active development — v4.0 research article submission in progress
 
 *"The map is not the territory, but the echo is enough to fly."*

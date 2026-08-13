@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     TSCG POCLET SIMULATION — TEMPLATE
+     Author: Echopraxium with the collaboration of Claude AI
+     Version: 1.0.0
+
+     This is the missing HTML entry point for instances/poclets/_00_template/.
+     It provides the standard chrome (header / left-panel / canvas / splitter /
+     tabbed sidebar / bottom-bar / diagnostic console) already styled by
+     src/tscg-shell.css and driven by src/tscg-shell.js.
+
+     HOW TO USE
+     1. Copy this whole _00_template/ folder to instances/poclets/<PocletName>/static/
+        (or keep src/ shared — adjust the two src="..." / href="..." paths below).
+     2. Replace every {{PLACEHOLDER}} token.
+     3. Fill the ASFID/REVOI scores from your M0_<PocletName>.jsonld (territorySpace
+        + mapSpace), and the GenericConcepts from GenericConceptsMobilized.
+     4. Replace the placeholder BabylonJS scene with the poclet's own 3D content
+        (use p5.js instead if the poclet is 2D — then drop babylon.js and the
+        screenshot button, which relies on BABYLON.Tools).
+
+     The scores object uses SC-2 notation: A,S,F,It,D  +  R,E,V,O,Im  (never bare S/I).
+     ═══════════════════════════════════════════════════════════════════════ -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Electron + standalone-file compatible CSP. Babylon from its own CDN. -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://cdn.babylonjs.com https://cdnjs.cloudflare.com;
+                 script-src  'self' 'unsafe-inline' https://cdn.babylonjs.com https://cdnjs.cloudflare.com;
+                 style-src   'self' 'unsafe-inline';
+                 img-src     'self' data: blob:;
+                 connect-src 'self' http://127.0.0.1:* ws://127.0.0.1:*;">
+  <title>{{PocletName}} — TSCG Poclet</title>
+  <link rel="stylesheet" href="src/tscg-shell.css">
+</head>
+<body>
+
+  <!-- ── HEADER ─────────────────────────────────────────────────────────── -->
+  <div id="tscg-header">
+    <a id="home-btn" href="../../../index.html" title="Poclet gallery">⌂</a>
+    <a id="tscg-badge" href="https://github.com/Echopraxium/tscg" target="_blank" rel="noopener">TSCG</a>
+    <span class="hbar-sep">/</span>
+    <span id="page-title">{{PocletName}}</span>
+    <div id="header-chips">
+      <span class="hchip type">{{ONTOLOGY_TYPE}}</span> <!-- e.g. POCLET -->
+      <span class="hchip">{{DOMAIN}}</span>              <!-- e.g. ELECTRONICS -->
+    </div>
+  </div>
+
+  <!-- ── LAYOUT: left-panel | canvas | splitter | sidebar ───────────────── -->
+  <div id="layout">
+
+    <!-- LEFT PANEL — poclet controls (placeholder widgets, replace freely) -->
+    <div id="left-panel">
+      <div class="lp-section">
+        <div class="lp-title">Playback</div>
+        <div class="lp-row">
+          <button class="lp-btn primary" id="btn-play">Play</button>
+          <button class="lp-btn" id="btn-reset">Reset</button>
+        </div>
+      </div>
+      <div class="ldiv"></div>
+      <div class="lp-section">
+        <div class="lp-title">Parameters</div>
+        <div class="lp-field">
+          <label for="param-speed">Speed</label>
+          <input class="lp-input" id="param-speed" type="range" min="0" max="100" value="50">
+        </div>
+        <!-- Add the poclet's own sliders / selects / toggles here -->
+      </div>
+      <div class="ldiv"></div>
+      <div class="lp-section">
+        <div class="lp-title">View</div>
+        <div class="lp-row">
+          <button class="lp-btn" id="btn-wire">Wireframe</button>
+          <button class="lp-btn" id="btn-labels">Labels</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN CANVAS -->
+    <div id="view-main">
+      <canvas id="canvas-main"></canvas>
+    </div>
+
+    <!-- SPLITTER (wired by TSCG.initSplitter) -->
+    <div id="splitter"></div>
+
+    <!-- SIDEBAR with 4 standard tabs -->
+    <div id="sidebar">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="activateTab(0)">Description</button>
+        <button class="tab-btn"        onclick="activateTab(1)">ASFID · REVOI</button>
+        <button class="tab-btn"        onclick="activateTab(2)">Concepts</button>
+        <button class="tab-btn"        onclick="activateTab(3)">README</button>
+      </div>
+      <div class="tab-content">
+
+        <!-- 0 — DESCRIPTION -->
+        <div class="tab-panel active">
+          <h3>{{PocletName}}</h3>
+          <p>{{ONE_PARAGRAPH_DESCRIPTION — what the system is, in plain terms.}}</p>
+          <h4>Components</h4>
+          <ul>
+            <li><strong>{{Component 1}}</strong> — {{role}}</li>
+            <li><strong>{{Component 2}}</strong> — {{role}}</li>
+            <li><strong>{{Component 3}}</strong> — {{role}}</li>
+          </ul>
+        </div>
+
+        <!-- 1 — ASFID / REVOI SCORES (rendered by the shell) -->
+        <div class="tab-panel">
+          <h3>Territory &amp; Map</h3>
+          <div id="scores-host"></div>
+        </div>
+
+        <!-- 2 — GENERIC CONCEPTS (rendered by the shell) -->
+        <div class="tab-panel">
+          <h3>GenericConcepts mobilised</h3>
+          <div id="concepts-host"></div>
+        </div>
+
+        <!-- 3 — README -->
+        <div class="tab-panel">
+          <h3>About this poclet</h3>
+          <p>{{Short README excerpt or a link to M0_{{PocletName}}_README.md.}}</p>
+          <h4>Source</h4>
+          <p><em>{{Reference / documentation used to build this poclet.}}</em></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BOTTOM BAR ─────────────────────────────────────────────────────── -->
+  <div id="bottom-bar">
+    <button class="bbtn" onclick="exportScreenshot()">Screenshot</button>
+    <button class="bbtn" id="btn-diag">Diagnostics</button>
+    <div id="hint">drag the splitter · double-click to reset width</div>
+    <span id="engine-badge">engine: —</span>
+  </div>
+
+  <!-- Diagnostic console (toggled by the Diagnostics button) -->
+  <div id="diag"></div>
+
+  <!-- ── SCRIPTS ────────────────────────────────────────────────────────── -->
+  <!-- BabylonJS first (the shell's screenshot helper needs BABYLON.Tools).
+       For a 2D poclet, replace this with p5.js from cdnjs.cloudflare.com. -->
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <!-- Shell BEFORE the poclet script — it exposes window.TSCG. -->
+  <script src="src/tscg-shell.js"></script>
+
+  <!-- ── POCLET SCRIPT (replace the placeholder scene) ──────────────────── -->
+  <script>
+  'use strict';
+  (function () {
+    TSCG.pocletId = '{{poclet_id}}';   // used for screenshot filenames
+
+    // Diagnostics toggle
+    document.getElementById('btn-diag').addEventListener('click', function () {
+      TSCG.toggleDiag();
+      this.classList.toggle('on');
+    });
+
+    // Working splitter between canvas and sidebar
+    TSCG.initSplitter();
+
+    // ── Scores — FILL FROM M0_{{PocletName}}.jsonld ──────────────────────
+    // territorySpace.stateVector → A,S,F,It,D   mapSpace.reviStateVector → R,E,V,O,Im
+    TSCG.renderScores('scores-host', {
+      A: 0.00, S: 0.00, F: 0.00, It: 0.00, D: 0.00,
+      R: 0.00, E: 0.00, V: 0.00, O: 0.00, Im: 0.00
+    });
+
+    // ── GenericConcepts — FILL FROM GenericConceptsMobilized ─────────────
+    TSCG.renderConcepts('concepts-host', [
+      {
+        name: '{{ConceptName}}',
+        formula: '{{formula, e.g. D × F}}',   // × Territory · + Map · | Stereopsis  (never ⊗)
+        family: '{{Family}}',
+        familyColor: '#79c0ff',
+        desc: '{{what this concept captures here}}',
+        role: '{{why it is mobilised in this poclet}}'
+      }
+      // add one object per mobilised GenericConcept
+    ]);
+
+    // ── Placeholder 3D scene (replace with the poclet's own visualisation) ─
+    try {
+      const canvas = document.getElementById('canvas-main');
+      const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true });
+      const scene  = new BABYLON.Scene(engine);
+      scene.clearColor = new BABYLON.Color4(0.024, 0.047, 0.094, 1);
+
+      const camera = new BABYLON.ArcRotateCamera(
+        'cam', Math.PI / 4, Math.PI / 3, 8, BABYLON.Vector3.Zero(), scene);
+      camera.attachControl(canvas, true);
+      camera.wheelPrecision = 40;
+
+      new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 0), scene);
+
+      // Placeholder object — a slowly rotating box. Delete when building the real scene.
+      const box = BABYLON.MeshBuilder.CreateBox('placeholder', { size: 2 }, scene);
+      const mat = new BABYLON.StandardMaterial('m', scene);
+      mat.diffuseColor = new BABYLON.Color3(0.96, 0.51, 0.40); // Attractor salmon
+      box.material = mat;
+      scene.registerBeforeRender(() => { box.rotation.y += 0.008; });
+
+      // Hand the engine/camera to the shell so Screenshot works
+      TSCG.engine = engine;
+      TSCG.camera = camera;
+      document.getElementById('engine-badge').textContent =
+        'engine: BabylonJS ' + (BABYLON.Engine.Version || '');
+
+      engine.runRenderLoop(() => scene.render());
+      window.addEventListener('resize', () => engine.resize());
+
+      TSCG.ok('{{PocletName}} scene ready');
+    } catch (err) {
+      TSCG.fail('Scene init', err && err.message ? err.message : String(err));
+    }
+  })();
+  </script>
+</body>
+</html>

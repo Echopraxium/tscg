@@ -73,6 +73,13 @@ git rm -r .claude/skills/tscg-poclet-pipeline
 git add .claude/skills/tscg-instance-pipeline
 ```
 
+## 📚 Key Changes (v2.1)
+
+- **Notation reform**: `⊗` → `× / + / |`; `M3_GenesisSpace` → `M3_GenesisGrammar`;
+  `KnowledgeFieldConceptCombo` → `DomainConceptCombo`; `echopraxium` → `Echopraxium`.
+  Example formulas re-verified from HEAD; `@context` now points to the authoritative
+  FireTriangle instance. Pipeline logic unchanged.
+
 ## 📚 Key Changes (v2.0)
 
 - **Renamed**: `tscg-poclet-pipeline` → `tscg-instance-pipeline`
@@ -89,6 +96,6 @@ For troubleshooting and detailed setup instructions:
 
 ---
 
-**Version:** 2.0.0  
-**Last updated:** 2026-04-20  
+**Version:** 2.1.0  
+**Last updated:** 2026-08-13  
 **Author:** Echopraxium with the collaboration of Claude AI
