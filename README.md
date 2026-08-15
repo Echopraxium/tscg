@@ -223,8 +223,9 @@ The most feature-rich TSCG simulation to date:
 
 > 🐣 **New here?** The **[User Guide](_00_UserGuide/UserGuide.md)** walks you
 > through the whole journey step by step — installing the repository, setting up
-> Claude, and building your first Poclet with guided exercises (Logic Gates,
-> Bubble Sort, Capacitor, Osmosis, Rubik's Cube). The bat's cycle below is the
+> Claude, and building your first Poclet with a catalogue of guided exercises —
+> from logic gates and sorting to cellular automata, fractals, dice probability
+> and maze solving. The bat's cycle below is the
 > conceptual core it expands on.
 
 Want to model a system with TSCG? Follow the **bat's cycle**:

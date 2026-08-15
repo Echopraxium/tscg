@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from a HEAD file listing (1052 files, including the `_00_UserGuide/` + poclet-template batch added in the same commit). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). This tree is a **repo artifact** — regenerate it from a listing; do not put it in the project corpus (it drifts on every add/remove).*
+*Generated from a HEAD file listing (1060 files, including the `_00_UserGuide/` + poclet-template batch added in the same commit). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). This tree is a **repo artifact** — regenerate it from a listing; do not put it in the project corpus (it drifts on every add/remove).*
 
 - **.claude/**
   - **skills/**
@@ -40,13 +40,29 @@
       - BubbleSort.md
     - **Capacitor/**
       - Capacitor.md
+    - **DiceSimulator/**
+      - DiceSimulator.md
+    - **FractalExplorer/**
+      - FractalExplorer.md
+    - **GameOfLife/**
+      - GameOfLife.md
+    - **ImageProcessing/**
+      - ImageProcessing.md
     - **LogicGates/**
       - LogicGates.md
       - source_boolean_logic.md
+    - **MazeGenerator/**
+      - MazeGenerator.md
+    - **MiniAlchemy/**
+      - MiniAlchemy.md
     - **Osmosis/**
       - Osmosis.md
+    - **QRCodeDecoding/**
+      - QRCodeDecoding.md
     - **RubiksCube/**
       - RubiksCube.md
+    - **TruchetPatterns/**
+      - TruchetPatterns.md
     - _00_exercise_template.md
   - UserGuide.md
 - **_02_housekeeping/**
