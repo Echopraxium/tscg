@@ -89,15 +89,30 @@ with **you as Head Chef** at every decision point.
 
 ### Step 1 — Choose an exercise
 
-Pick a starter from `_00_UserGuide/exercises/` (each has its own folder):
+Pick one from `_00_UserGuide/exercises/` (each has its own folder). The catalogue
+is grouped by theme — the **Starter** rows are the gentlest first dishes:
 
-| Exercise | Domain | Why it is a good first dish |
-|---|---|---|
-| **Logic Gates** | Digital electronics | Tiny, exact, a truth table you can verify by hand |
-| **Bubble Sort** | Computer science | A process with a clear "sorted" attractor — *and no domain yet*, so you'll meet the "new domain?" question |
-| **Capacitor** | Electronics | Charge/discharge equilibrium; classic dynamics |
-| **Osmosis / Reverse Osmosis** | Chemistry / Biology | A gradient, a flow, and a driven reversal |
-| **Rubik's Cube** | Combinatorics / puzzles | A huge state space with one solved attractor — *no domain yet either*, and a natural **3D** simulation |
+| Exercise | Domain | Level | What it teaches |
+|---|---|---|---|
+| **Logic Gates** | Digital electronics | Starter | Tiny, exact — a truth table you can verify by hand (Information-dominant) |
+| **Bubble Sort** | Computer science | Starter | A process converging to a "sorted" attractor |
+| **Maze Generator & Solver** | Graph algorithms | Intermediate | Build a structure, then search it — Map/Territory (path vs space) |
+| **Rubik's Cube** | Combinatorics / puzzles | Intermediate | A huge state space, one solved attractor — natural **3D** |
+| **Capacitor** | Electronics | Starter | Charge/discharge relaxation to equilibrium |
+| **Osmosis / Reverse Osmosis** | Chemistry / Biology | Intermediate | A gradient, a flow, and a driven reversal |
+| **Dice Simulator** | Probability | Starter | Convergence to a distribution (LLN / CLT) |
+| **Game of Life** | Cellular automata | Starter | Emergence: global patterns from simple local rules |
+| **Truchet Patterns** | Generative art / tiling | Starter | Emergence again — a generative (non-convergent) poclet |
+| **Fractal Explorer** | Mathematics | Intermediate | Iteration, self-similarity; a finite Map of an infinite Territory |
+| **QR / DataMatrix Decoding** | Coding theory | Intermediate | Redundancy and error-correction as robustness |
+| **Image Processing** | Image processing | Starter | Successive lossy reductions (colour → gray → ANSI) |
+| **Mini Alchemy** | Game / crafting | Starter | Combination and reachable-set closure |
+
+> Only three of these land in an existing M1 domain (`electronics`,
+> `chemistry`/`biology`); the rest have **no domain yet** — so they let you meet
+> the "is there a domain? / is this an M2 candidate?" question for real. Several
+> also **cluster** (algorithms: Bubble Sort · Rubik's Cube · Maze; emergence:
+> Game of Life · Truchet), which is useful evidence when weighing a new concept.
 
 Or bring **your own** system. A good first poclet is **minimal** (3–5 essential
 parts) and **complete** (it clearly has all five ASFID facets: an Attractor it
