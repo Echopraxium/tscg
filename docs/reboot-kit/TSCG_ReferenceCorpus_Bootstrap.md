@@ -27,32 +27,55 @@ M0  Instances            (poclets, TscgTools, systemic frameworks, SSGs)
 a conversation.** Everything that could be needed is either resident in the project
 or pulled from HEAD automatically. Set it up once, in three places:
 
-**A — Project custom instructions (the standing prompt for every conversation):**
-- `docs/reboot-kit/TSCG_SmartPrompt.md` — paste its content into the project's
-  **custom-instructions** field. It then applies to every conversation automatically
-  — no per-session paste. *(If your project has no custom-instructions field, keep it
-  as a resident knowledge file instead; it stays in context every time, just passively.)*
+**A — Project custom instructions (the standing prompt for every conversation).**
+Put a **short directive** in the project's custom-instructions field that tells Claude
+to fetch and follow the Smart Prompt from HEAD — this keeps the field small and the
+prompt always current (no drift):
+
+```
+This is a TSCG project. At the very start of every conversation, before anything else:
+1. Fetch https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/TSCG_SmartPrompt.md
+   and follow it as your session loader (it names the skills to load and the corpus to read).
+2. Governing rule: HEAD is the only authority — read framework facts from HEAD or the
+   resident corpus, never from memory.
+```
+
+Fetching the Smart Prompt is not the same as applying it — this directive is what makes
+Claude *adopt* it every conversation. *(Fallback, if the fetch-directive proves
+unreliable or web fetch is off: paste the full contents of `TSCG_SmartPrompt.md` into
+the custom-instructions field instead.)*
 
 **B — Resident in Project Knowledge (loaded once, always in context):**
 1. `TSCG_ReferenceCorpus_Bootstrap.md` — invariants (this file).
 2. `TSCG_ReferenceCorpus.md` — the HEAD router.
 3. `_00_UserGuide/UserGuide.md` — the workflow (the beginner's map).
 4. `docs/reboot-kit/TSCG_FileTree.md` — the repo path map.
-5. **All `_00_UserGuide/exercises/**` files** — so no exercise ever needs adding mid-chat.
 
-> Items 4–5 (and any other resident copy) **drift** as the repo evolves. That is the
-> **project owner's** occasional maintenance — regenerate/reload them after structural
-> changes — never the user's per-conversation burden.
+> Item 4 (and any other resident copy) **drifts** as the repo evolves. That is the
+> **project owner's** occasional maintenance — regenerate/reload it after structural
+> changes — never the user's per-conversation burden. Keep the resident set small —
+> **four files, not the whole repo.**
+>
+> **Do NOT load into the project:** the exercises (`_00_UserGuide/exercises/**`) or the
+> exercise template (`_00_exercise_template.md`). They are read from HEAD on demand (see
+> below) — loading them is pure bloat.
 
 **C — Provisioned once (not per conversation):** the skills `head-over-memory`,
 `tscg-ontology-diagnosis-pipeline`, `tscg-instance-pipeline`,
-`tscg-create-instance-simulation` (as enabled skills, or uploaded `SKILL.md`).
+`tscg-create-instance-simulation`. Provision them as **enabled project skills** (the
+project's skills panel) — that is the confirmed-working mode. *(Only if your setup has
+no skills panel: upload each `SKILL.md` into Project Knowledge as a fallback.)*
 
-**The one thing that cannot be pre-loaded:** the **live ontologies** (M3/M2/M1/M0),
-tools and SHACL. A resident copy would go stale and violate the head-over-memory
-rule, so they **must** be read from HEAD. **Enable web fetch** in the project and
-Claude pulls them itself — still with zero user action. This is the single
-unavoidable dependency; without it, ontology facts can't be read fresh.
+**Read from HEAD on demand (never loaded into the project):**
+- The **exercises** (`_00_UserGuide/exercises/**`) — there are many small files; loading
+  them all would bloat the project for no gain. When the user picks one, Claude reads
+  it from HEAD (the resident File Tree gives the exact path). Zero copying by the user.
+- The **live ontologies** (M3/M2/M1/M0), tools and SHACL — a resident copy would go
+  stale and violate the head-over-memory rule, so these **must** come from HEAD.
+
+**Enable web fetch** in the project so Claude pulls all of the above itself — still
+with zero user action. This is the single unavoidable dependency; without it,
+exercises and ontology facts can't be read.
 
 **Do not confuse this with two other sets:**
 - The **durable research corpus** (the rationale essays + ontology READMEs indexed
