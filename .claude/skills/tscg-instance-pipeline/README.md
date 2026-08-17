@@ -10,11 +10,11 @@ See **`SKILL.md`** in this directory for the complete skill specification.
 
 **For complete deployment instructions, see:**
 
-👉 **`ontology/TSCG_Grammar/DEPLOYMENT_GUIDE.md`**
+👉 **`ontology/TSCG_InstanceGrammar/DEPLOYMENT_GUIDE.md`**
 
 This deployment guide covers:
 - ✅ Skill deployment to `.claude/skills/tscg-instance-pipeline/`
-- ✅ Validation script deployment to `ontology/TSCG_Grammar/`
+- ✅ Validation script deployment to `ontology/TSCG_InstanceGrammar/`
 - ✅ Dependencies installation (`pyshacl`)
 - ✅ Testing procedures with existing instances
 - ✅ Git commit recommendations
@@ -33,7 +33,7 @@ This skill requires two components to be deployed:
 
 ### 2. Validation Script (in ontology)
 ```
-ontology/TSCG_Grammar/
+ontology/TSCG_InstanceGrammar/
 ├── M0_Instances_Schema.shacl.ttl    ← SHACL grammar schema
 ├── validate_m0_instance.py          ← Validation script
 └── DEPLOYMENT_GUIDE.md              ← Complete deployment guide
@@ -48,7 +48,7 @@ After deploying both components (see DEPLOYMENT_GUIDE.md):
 pip install pyshacl --break-system-packages
 
 # 2. Test validation script
-python ontology/TSCG_Grammar/validate_m0_instance.py \
+python ontology/TSCG_InstanceGrammar/validate_m0_instance.py \
     instances/poclets/FireTriangle/M0_FireTriangle.jsonld
 
 # 3. Use the skill in Claude.ai
@@ -73,6 +73,14 @@ git rm -r .claude/skills/tscg-poclet-pipeline
 git add .claude/skills/tscg-instance-pipeline
 ```
 
+## 📚 Key Changes (v2.1.1)
+
+- **Path fix**: `ontology/TSCG_Grammar/` → `ontology/TSCG_InstanceGrammar/` (the folder
+  was renamed; the old path 404'd). Applies to the validation script, SHACL schema and
+  deployment guide references.
+- **Doc fix**: corrected a self-contradictory line in `SKILL.md` (the dead vestige is
+  `M3_GenesisSpace.jsonld`, not `M3_GenesisGrammar.jsonld`).
+
 ## 📚 Key Changes (v2.1)
 
 - **Notation reform**: `⊗` → `× / + / |`; `M3_GenesisSpace` → `M3_GenesisGrammar`;
@@ -85,17 +93,17 @@ git add .claude/skills/tscg-instance-pipeline
 - **Renamed**: `tscg-poclet-pipeline` → `tscg-instance-pipeline`
 - **Language**: French → English
 - **New Step 3.5**: Mandatory SHACL validation before simulation
-- **New Script**: Standalone validation tool in `ontology/TSCG_Grammar/`
+- **New Script**: Standalone validation tool in `ontology/TSCG_InstanceGrammar/`
 
 ## 🆘 Support
 
 For troubleshooting and detailed setup instructions:
-- See `ontology/TSCG_Grammar/DEPLOYMENT_GUIDE.md`
-- Check SHACL schema: `ontology/TSCG_Grammar/M0_Instances_Schema.shacl.ttl`
+- See `ontology/TSCG_InstanceGrammar/DEPLOYMENT_GUIDE.md`
+- Check SHACL schema: `ontology/TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl`
 - Reference instance: `instances/poclets/FireTriangle/M0_FireTriangle.jsonld`
 
 ---
 
-**Version:** 2.1.0  
-**Last updated:** 2026-08-13  
+**Version:** 2.1.1  
+**Last updated:** 2026-08-16  
 **Author:** Echopraxium with the collaboration of Claude AI

@@ -9,9 +9,12 @@ description: >
   think?" about a known system, or requests an HTML/Electron simulation of a TSCG system.
   Do NOT use for Case Studies or Real World Systems (too complex) — this pipeline is
   reserved for Instances.
-version: 2.1.0
+version: 2.1.1
 ---
 
+<!-- v2.1.1 (2026-08-16) — Fixes on top of v2.1.0:
+     path `ontology/TSCG_Grammar/` → `ontology/TSCG_InstanceGrammar/` (old path 404'd)  ·
+     corrected self-contradictory dead-vestige line (dead = M3_GenesisSpace, live = M3_GenesisGrammar). -->
 <!-- v2.1.0 (2026-08-13) — Notation-reform pass:
      ⊗ → × / + / |  ·  M3_GenesisSpace → M3_GenesisGrammar  ·
      KnowledgeFieldConceptCombo → DomainConceptCombo  ·  echopraxium → Echopraxium  ·
@@ -33,7 +36,7 @@ the pipeline until Michel's explicit decision to continue.
 > forbidden** (superseded 2026-07-06). Atom subscripts disambiguate: `St`/`Ss`
 > (Structure vs Symbol), `It`/`Im` (Information vs Interoperability); `A`/`F`/`D`
 > stay bare. The live M3 file is **`M3_GenesisGrammar.jsonld`** (the old
-> `M3_GenesisGrammar.jsonld` is a dead vestige — do not reference it). M1 combos are
+> `M3_GenesisSpace.jsonld` is a dead vestige — do not reference it). M1 combos are
 > **`DomainConceptCombo`** (ex-`KnowledgeFieldConceptCombo`). Always verify any
 > formula, type name or version against **HEAD**, never from memory.
 
@@ -49,7 +52,7 @@ Base: `https://raw.githubusercontent.com/Echopraxium/tscg/main/`
 - `ontology/M3_SphinxEye.jsonld` — REVOI dimensions
 - `ontology/M2_GenericConcepts.jsonld` — 58+ GenericConcepts
 - `ontology/M1_CoreConcepts.jsonld` — core concepts
-- `ontology/M1_extensions/M1_Chemistry.jsonld` — domain extension example
+- `ontology/M1_extensions/chemistry/M1_Chemistry.jsonld` — domain extension example
 
 **Canonical reference instance:**
 - `instances/poclets/FireTriangle/M0_FireTriangle.jsonld`
@@ -67,8 +70,8 @@ Raas, Tpack, Transistor, TrophicPyramid, TvTestPattern, VCO
 - `docs/reboot-kit/SmartPrompts/` (Smart_Prompt_M3_M2_Updated.md if uploaded in session)
 
 **SHACL validation:**
-- `ontology/TSCG_Grammar/M0_Instances_Schema.shacl.ttl` — grammar schema
-- `ontology/TSCG_Grammar/validate_m0_instance.py` — validation script
+- `ontology/TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl` — grammar schema
+- `ontology/TSCG_InstanceGrammar/validate_m0_instance.py` — validation script
 
 **This skill (source of truth in repo):**
 - `.claude/skills/tscg-instance-pipeline/SKILL.md`
@@ -255,16 +258,16 @@ After JSON-LD validation, generate `M0_[InstanceName]_README.md` with:
 the TSCG SHACL grammar schema to ensure complete conformance.
 
 **Validation script location:**
-- `ontology/TSCG_Grammar/validate_m0_instance.py` (standalone Python script)
+- `ontology/TSCG_InstanceGrammar/validate_m0_instance.py` (standalone Python script)
 - **Note**: Script must be run from repository root directory
 
 **Usage:**
 ```bash
 # From repository root
-python ontology/TSCG_Grammar/validate_m0_instance.py instances/[type]/[InstanceName]/M0_[InstanceName].jsonld
+python ontology/TSCG_InstanceGrammar/validate_m0_instance.py instances/[type]/[InstanceName]/M0_[InstanceName].jsonld
 
 # Example
-python ontology/TSCG_Grammar/validate_m0_instance.py instances/poclets/FireTriangle/M0_FireTriangle.jsonld
+python ontology/TSCG_InstanceGrammar/validate_m0_instance.py instances/poclets/FireTriangle/M0_FireTriangle.jsonld
 ```
 
 **Expected outcome:**
@@ -400,9 +403,9 @@ SIMULATION
 
 ## Validation Script Requirements
 
-The `validate_m0_instance.py` script (located in `ontology/TSCG_Grammar/`) must:
+The `validate_m0_instance.py` script (located in `ontology/TSCG_InstanceGrammar/`) must:
 - Accept a single JSON-LD file path as argument
-- Auto-detect the SHACL schema in `ontology/TSCG_Grammar/M0_Instances_Schema.shacl.ttl`
+- Auto-detect the SHACL schema in `ontology/TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl`
 - Allow optional custom schema path via `--schema` argument
 - Use `pyshacl` library for validation
 - Display clear success/failure messages
@@ -416,7 +419,7 @@ pip install pyshacl --break-system-packages
 
 **Script location:**
 ```
-ontology/TSCG_Grammar/
+ontology/TSCG_InstanceGrammar/
 ├── M0_Instances_Schema.shacl.ttl    ← SHACL schema
 └── validate_m0_instance.py          ← validation script
 ```
@@ -428,7 +431,7 @@ TSCG M0 INSTANCE SHACL VALIDATION
 ======================================================================
 
 📄 Instance file: instances/poclets/FireTriangle/M0_FireTriangle.jsonld
-📋 Schema file:   ontology/TSCG_Grammar/M0_Instances_Schema.shacl.ttl
+📋 Schema file:   ontology/TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl
 
 ======================================================================
 
