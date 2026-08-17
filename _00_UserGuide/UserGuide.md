@@ -63,14 +63,23 @@ In your Claude account, create a new **Project** named **`TSCG Cyclop v0`**.
 This is your dedicated TSCG kitchen inside Claude — it keeps every session
 oriented and stops Claude from drifting or inventing framework facts.
 
-Add to the project's knowledge:
+Set it up **once** so that afterwards you never have to load anything into a
+conversation. The exact set is defined in `TSCG_ReferenceCorpus_Bootstrap.md` under
+*"Minimal project corpus"* (the single source of truth). In short:
 
-1. **The Reference Corpus** — `docs/reboot-kit/TSCG_ReferenceCorpus.md` and
-   `TSCG_ReferenceCorpus_Bootstrap.md` (the invariants and the router that tell
-   Claude where the authoritative files live).
-2. **The Smart Prompt** — the latest `docs/reboot-kit/SmartPrompts/TSCG_Smart_Prompt_*.md`,
-   which you paste (or which the project loads) at the start of a work session.
-3. Optionally, this User Guide and the exercise you are about to work on.
+1. **Project custom instructions** — paste `docs/reboot-kit/TSCG_SmartPrompt.md`
+   there. It then applies to every conversation automatically (no per-session paste).
+2. **Project Knowledge (resident, loaded once):** `TSCG_ReferenceCorpus_Bootstrap.md`,
+   `TSCG_ReferenceCorpus.md`, `_00_UserGuide/UserGuide.md`, `docs/reboot-kit/TSCG_FileTree.md`,
+   and **all the exercise files** — so nothing ever needs adding mid-chat.
+3. **Skills (provisioned once):** `head-over-memory`, `tscg-ontology-diagnosis-pipeline`,
+   `tscg-instance-pipeline`, `tscg-create-instance-simulation` (enabled skills or uploaded `SKILL.md`).
+4. **Enable web fetch** — the one unavoidable dependency: the live ontologies
+   (M3/M2/M1/M0) must be read from HEAD, and web fetch lets Claude pull them itself,
+   still with zero action from you.
+
+(The project owner refreshes the drift-prone resident copies — File Tree, exercises —
+after structural changes. Never your concern as a user.)
 
 > **Why "Cyclop"?** TSCG reads a system through *two eyes* (Territory + Map).
 > A fresh project with no context is one-eyed — it needs the corpus to gain

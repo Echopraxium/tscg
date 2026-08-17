@@ -21,6 +21,48 @@ M0  Instances            (poclets, TscgTools, systemic frameworks, SSGs)
 
 ---
 
+## Minimal project corpus (to bootstrap a fresh project)
+
+**Design goal: once the project is set up, the user never has to load anything into
+a conversation.** Everything that could be needed is either resident in the project
+or pulled from HEAD automatically. Set it up once, in three places:
+
+**A — Project custom instructions (the standing prompt for every conversation):**
+- `docs/reboot-kit/TSCG_SmartPrompt.md` — paste its content into the project's
+  **custom-instructions** field. It then applies to every conversation automatically
+  — no per-session paste. *(If your project has no custom-instructions field, keep it
+  as a resident knowledge file instead; it stays in context every time, just passively.)*
+
+**B — Resident in Project Knowledge (loaded once, always in context):**
+1. `TSCG_ReferenceCorpus_Bootstrap.md` — invariants (this file).
+2. `TSCG_ReferenceCorpus.md` — the HEAD router.
+3. `_00_UserGuide/UserGuide.md` — the workflow (the beginner's map).
+4. `docs/reboot-kit/TSCG_FileTree.md` — the repo path map.
+5. **All `_00_UserGuide/exercises/**` files** — so no exercise ever needs adding mid-chat.
+
+> Items 4–5 (and any other resident copy) **drift** as the repo evolves. That is the
+> **project owner's** occasional maintenance — regenerate/reload them after structural
+> changes — never the user's per-conversation burden.
+
+**C — Provisioned once (not per conversation):** the skills `head-over-memory`,
+`tscg-ontology-diagnosis-pipeline`, `tscg-instance-pipeline`,
+`tscg-create-instance-simulation` (as enabled skills, or uploaded `SKILL.md`).
+
+**The one thing that cannot be pre-loaded:** the **live ontologies** (M3/M2/M1/M0),
+tools and SHACL. A resident copy would go stale and violate the head-over-memory
+rule, so they **must** be read from HEAD. **Enable web fetch** in the project and
+Claude pulls them itself — still with zero user action. This is the single
+unavoidable dependency; without it, ontology facts can't be read fresh.
+
+**Do not confuse this with two other sets:**
+- The **durable research corpus** (the rationale essays + ontology READMEs indexed
+  in `TSCG_ReferenceCorpus.md`) — deep material for architecture work, *not* needed
+  by a beginner.
+- `_ACTION_corpus_cleanup_todo.md` — a one-off KEEP/REMOVE action list for pruning an
+  already-bloated project; a throwaway, not a corpus definition.
+
+---
+
 ## Hard invariants (must never drift)
 
 **Bicephalous basis.**
