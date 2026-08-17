@@ -67,24 +67,57 @@ Set it up **once** so that afterwards you never have to load anything into a
 conversation. The exact set is defined in `TSCG_ReferenceCorpus_Bootstrap.md` under
 *"Minimal project corpus"* (the single source of truth). In short:
 
-1. **Project custom instructions** — paste `docs/reboot-kit/TSCG_SmartPrompt.md`
-   there. It then applies to every conversation automatically (no per-session paste).
-2. **Project Knowledge (resident, loaded once):** `TSCG_ReferenceCorpus_Bootstrap.md`,
-   `TSCG_ReferenceCorpus.md`, `_00_UserGuide/UserGuide.md`, `docs/reboot-kit/TSCG_FileTree.md`,
-   and **all the exercise files** — so nothing ever needs adding mid-chat.
-3. **Skills (provisioned once):** `head-over-memory`, `tscg-ontology-diagnosis-pipeline`,
-   `tscg-instance-pipeline`, `tscg-create-instance-simulation` (enabled skills or uploaded `SKILL.md`).
-4. **Enable web fetch** — the one unavoidable dependency: the live ontologies
-   (M3/M2/M1/M0) must be read from HEAD, and web fetch lets Claude pull them itself,
-   still with zero action from you.
+1. **Project custom instructions** — this is the project's **instructions** field (the
+   standing prompt applied to *every* conversation), **not** the short "description"
+   label. Paste this directive into it:
 
-(The project owner refreshes the drift-prone resident copies — File Tree, exercises —
+   ```
+   This is a TSCG project. At the very start of every conversation, before anything else:
+   1. Fetch https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/TSCG_SmartPrompt.md
+      and follow it as your session loader (it names the skills to load and the corpus to read).
+   2. Governing rule: HEAD is the only authority — read framework facts from HEAD or the
+      resident corpus, never from memory.
+   ```
+
+   This keeps the field small and the Smart Prompt always current, and it applies
+   automatically — no per-session paste. (Fetching the prompt is not the same as
+   applying it; this directive is what makes Claude adopt it.)
+2. **Project Knowledge (resident, loaded once — four files):** `TSCG_ReferenceCorpus_Bootstrap.md`,
+   `TSCG_ReferenceCorpus.md`, `_00_UserGuide/UserGuide.md`, `docs/reboot-kit/TSCG_FileTree.md`.
+3. **Skills (provisioned once).** Four skills drive the workflow: `head-over-memory`
+   and `tscg-ontology-diagnosis-pipeline` (always), plus `tscg-instance-pipeline`
+   (to model) and `tscg-create-instance-simulation` (to simulate). They live in the
+   repo at `.claude/skills/<name>/SKILL.md`. Provision them in your project **either**
+   as enabled project skills, **or** — if your setup has no skills panel — by uploading
+   each `SKILL.md` into Project Knowledge. Either way, the Smart Prompt loads them by
+   name; if they aren't present, its first step fails.
+4. **Enable web fetch** — the one unavoidable dependency: the **exercises** and the
+   live ontologies (M3/M2/M1/M0) are read from HEAD on demand (the File Tree gives the
+   path), so web fetch lets Claude pull them itself — still with zero action from you,
+   and without bulk-loading 15 exercise files into the project.
+
+(The project owner refreshes the one drift-prone resident copy — the File Tree —
 after structural changes. Never your concern as a user.)
 
 > **Why "Cyclop"?** TSCG reads a system through *two eyes* (Territory + Map).
 > A fresh project with no context is one-eyed — it needs the corpus to gain
 > depth perception. Loading the corpus is what turns Cyclop into a proper
 > stereoscopic reader.
+
+### 2.4 Verify the setup before your first task
+
+Two things can silently be wrong: the **skills** may not be provisioned, and **web
+fetch** may be off (so Claude can't read exercises or ontologies from HEAD). Check
+both in one go: open a conversation and paste **`TSCG_Test_HandOver.md`** (in the
+repo root). Claude runs five checks and returns a PASS/FAIL table —
+
+- **check 3** confirms the four skills loaded (and tells you *how* they're provisioned);
+- **check 4** confirms Claude can fetch from HEAD (i.e. web fetch is on).
+
+If either fails, fix it before proceeding — the table says exactly what to do. For a
+quick manual web-fetch test without the HandOver, just ask: *"Fetch
+`https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld`
+and tell me its version."* If Claude can't reach it, web fetch is off.
 
 You are now ready to cook.
 
