@@ -149,6 +149,13 @@ is grouped by theme — the **Starter** rows are the gentlest first dishes:
 | **QR / DataMatrix Decoding** | Coding theory | Intermediate | Redundancy and error-correction as robustness |
 | **Image Processing** | Image processing | Starter | Successive lossy reductions (colour → gray → ANSI) |
 | **Mini Alchemy** | Game / crafting | Starter | Combination and reachable-set closure |
+| **Stroboscopic Yin-Yang** ★ | Perception | Intermediate | Map vs Territory made visible — a *worked* example (sample run in `workflow_run_sample/`) |
+
+> ★ **Stroboscopic Yin-Yang** is the one exercise shipped *with* a sample run: it exists
+> to **illustrate the workflow end to end**. Its `workflow_run_sample/` folder holds
+> *one* example resolution — a spoiler, and **not** a definitive answer (in TSCG another
+> modeller could legitimately model it differently). Do the exercise first if you want
+> the practice.
 
 > Only three of these land in an existing M1 domain (`electronics`,
 > `chemistry`/`biology`); the rest have **no domain yet** — so they let you meet
@@ -237,6 +244,23 @@ describing your poclet and attaching your files, rather than pushing directly.
 That lets a maintainer review it and place it correctly. Contributions —
 especially new domains or well-argued M2 candidates — are the whole point of the
 game.
+
+> **Publish poclets, not exercise answers.** If you solved one of the catalogue
+> exercises, **don't** publish your model beside its statement — that hands everyone an
+> answer and spoils the exercise. When a catalogue exercise ships an illustrative run, it
+> goes in a spoiler-marked `workflow_run_sample/` folder, framed as *one* example
+> resolution rather than *the* solution (TSCG has no single correct model — see
+> *Stroboscopic Yin-Yang* for the pattern). Only **out-of-catalogue** poclets — systems
+> you modelled that aren't in the exercise list — are published as normal contributions.
+
+### See it in action
+
+A full run of this workflow on the *Stroboscopic Yin-Yang* exercise — Claude loading
+itself from HEAD, then Proposition → Analysis → Modeling → Simulation — is shared here:
+**{{SHARE_URL}}**. Treat it as an illustrative snapshot (dated, may lag the current
+framework), not as authoritative reference — to *reproduce* it you still follow the
+project setup in section 2.
+
 
 ---
 
