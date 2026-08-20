@@ -13,10 +13,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
 <style>
   :root{
-    --bg:#0d1117; --panel:#161b22; --panel2:#0d1117; --border:#30363d;
+    --bg:#0d1117; --panel:#161b22; --border:#30363d;
     --text:#c9d1d9; --muted:#8b949e; --accent:#58a6ff;
     --col-A:#f78166; --col-S:#56d364; --col-F:#79c0ff; --col-I:#d2a8ff; --col-D:#e3b341;
-    --col-R:#79c0ff; --col-E:#56d364; --col-V:#f78166; --col-O:#d2a8ff; --col-Im:#e3b341;
     --eagle:#f78166; --sphinx:#79c0ff;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -31,10 +30,7 @@
     display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;
   }
   header h1{font-size:16px; font-weight:600}
-  header .badge{
-    font-size:11px; color:var(--muted); border:1px solid var(--border);
-    padding:2px 8px; border-radius:10px;
-  }
+  header .badge{font-size:11px; color:var(--muted); border:1px solid var(--border); padding:2px 8px; border-radius:10px}
   header .tag{font-size:12px;color:var(--muted)}
   header .tag b{color:var(--col-I)}
 
@@ -45,20 +41,20 @@
 
   aside{background:var(--panel); border-left:1px solid var(--border); display:flex; flex-direction:column; min-height:0}
   .tabs{display:flex; border-bottom:1px solid var(--border)}
-  .tabs button{
-    flex:1; background:transparent; color:var(--muted); border:none; padding:10px 6px;
-    font-size:12px; cursor:pointer; border-bottom:2px solid transparent;
-  }
+  .tabs button{flex:1; background:transparent; color:var(--muted); border:none; padding:10px 6px; font-size:12px; cursor:pointer; border-bottom:2px solid transparent}
   .tabs button.active{color:var(--text); border-bottom-color:var(--accent)}
   .tabpane{display:none; padding:16px; overflow:auto; font-size:13px; line-height:1.55}
   .tabpane.active{display:block}
   .tabpane h2{font-size:13px; margin:14px 0 6px; color:var(--accent)}
   .tabpane h2:first-child{margin-top:0}
-  .tabpane p{color:var(--text); margin-bottom:8px}
+  .tabpane p{margin-bottom:8px}
   .tabpane ul{margin:0 0 8px 18px}
   .tabpane li{margin-bottom:4px}
   .tabpane code{background:#0b0f14; border:1px solid var(--border); border-radius:4px; padding:1px 5px; font-size:12px}
   .muted{color:var(--muted)}
+  table.k{width:100%; border-collapse:collapse; font-size:12px; margin-bottom:8px}
+  table.k td{border-bottom:1px solid var(--border); padding:4px 2px}
+  table.k td:first-child{color:var(--accent); white-space:nowrap; width:38%}
 
   .bar{display:flex; align-items:center; gap:8px; margin:5px 0}
   .bar .lab{width:150px; font-size:12px}
@@ -66,37 +62,34 @@
   .bar .fill{height:100%}
   .bar .val{width:34px; text-align:right; font-size:12px; color:var(--muted)}
 
-  footer{
-    border-top:1px solid var(--border); background:var(--panel);
-    padding:12px 18px; display:grid; grid-template-columns:repeat(3,1fr) auto; gap:18px; align-items:center;
-  }
+  footer{border-top:1px solid var(--border); background:var(--panel); padding:12px 18px;
+         display:flex; align-items:flex-end; gap:16px; flex-wrap:wrap}
   .ctrl{display:flex; flex-direction:column; gap:6px}
+  .ctrl.grow{flex:1; min-width:260px}
   .ctrl label{font-size:12px; color:var(--muted); display:flex; justify-content:space-between}
   .ctrl label b{color:var(--text)}
   input[type=range]{width:100%; accent-color:var(--accent)}
+  input[type=range]:disabled{opacity:.45}
   .modes{display:flex; gap:6px}
-  .modes button{
-    background:#0b0f14; color:var(--muted); border:1px solid var(--border); border-radius:6px;
-    padding:7px 10px; font-size:12px; cursor:pointer;
-  }
+  .modes button{background:#0b0f14; color:var(--muted); border:1px solid var(--border); border-radius:6px;
+                padding:8px 12px; font-size:12px; cursor:pointer; white-space:nowrap}
   .modes button.active{color:var(--text); border-color:var(--accent); background:#111827}
-  .readout{
-    position:absolute; left:14px; top:12px; background:rgba(13,17,23,.82);
-    border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:12px; min-width:190px;
-  }
+
+  .readout{position:absolute; left:14px; top:12px; background:rgba(13,17,23,.82);
+           border:1px solid var(--border); border-radius:8px; padding:10px 12px; font-size:12px; min-width:200px}
   .readout .regime{font-size:15px; font-weight:700; margin-bottom:6px}
   .readout .row{display:flex; justify-content:space-between; gap:14px; color:var(--muted)}
   .readout .row b{color:var(--text)}
   .legend{position:absolute; right:14px; bottom:12px; font-size:11px; color:var(--muted); text-align:right; line-height:1.5}
   .legend .terr{color:var(--eagle)} .legend .map{color:var(--sphinx)}
-  @media (max-width:820px){ main{grid-template-columns:1fr} #splitter,aside{display:none} footer{grid-template-columns:1fr 1fr} }
+  @media (max-width:820px){ main{grid-template-columns:1fr} #splitter,aside{display:none} }
 </style>
 </head>
 <body>
 
 <header>
   <h1>Stroboscopic Yin-Yang</h1>
-  <span class="badge">TSCG Poclet · v1.0.0</span>
+  <span class="badge">TSCG Poclet · v1.1.0</span>
   <span class="tag">Domain <b>Perception</b> · Information/Dynamics-dominant · weak Attractor</span>
   <span class="tag">δ₁ = 0.106 · OnCriticalLine</span>
 </header>
@@ -105,14 +98,14 @@
   <div id="canvas-host">
     <div class="readout">
       <div class="regime" id="regime">—</div>
-      <div class="row"><span>Actual ω (Territory)</span><b id="ro-true">0.0</b></div>
-      <div class="row"><span>Perceived ω (Map)</span><b id="ro-perc">0.0</b></div>
-      <div class="row"><span>Sampling f_s</span><b id="ro-fs">0</b></div>
-      <div class="row"><span>ω / f_s</span><b id="ro-ratio">0.0</b></div>
+      <div class="row"><span>Δθ per frame</span><b id="ro-dtheta">0°</b></div>
+      <div class="row"><span>Perceived Δθ</span><b id="ro-perc">0°</b></div>
+      <div class="row"><span>Apparent figures</span><b id="ro-figs">—</b></div>
+      <div class="row"><span>Frames integrated</span><b id="ro-int">8</b></div>
     </div>
     <div class="legend">
-      <span class="terr">— outer tick = actual rotation (Territory)</span><br/>
-      <span class="map">— disc = what you perceive (Map)</span>
+      <span class="terr">— outer tick = true rotation direction (Territory)</span><br/>
+      <span class="map">— disc = what is perceived (Map)</span>
     </div>
   </div>
 
@@ -123,26 +116,30 @@
       <button class="active" data-tab="desc">Description</button>
       <button data-tab="asfid">ASFID / REVOI</button>
       <button data-tab="gc">Concepts</button>
-      <button data-tab="readme">README</button>
+      <button data-tab="readme">Notes</button>
     </div>
 
     <div class="tabpane active" id="desc">
-      <h2>The lesson: Territory → Map</h2>
-      <p>The disc rotates continuously (the <b>Territory</b>). Your eye — or a strobe —
-      <b>samples</b> it at rate <code>f_s</code>. What you see (the <b>Map</b>) is a
-      <i>reconstruction</i> from those samples, and it can diverge from reality.</p>
-      <h2>Find it yourself</h2>
-      <ul>
-        <li>Switch to <b>Strobe</b> mode and raise the <b>speed</b>.</li>
-        <li>At <code>ω = k · f_s</code> the disc appears to <b>freeze</b>.</li>
-        <li>Nudge just above — it appears to spin <b>backwards</b> (wagon-wheel effect).</li>
-        <li><b>Retinal persistence</b> mode instead <i>smears</i> the motion into a blur.</li>
-      </ul>
-      <p class="muted">Order-2 symmetry: the figure repeats every half-turn, so freeze and
-      reversal recur twice as often as for a single mark.</p>
-      <h2>Why Attractor is weak</h2>
-      <p>Nothing converges. The "frozen" figure is a fixed point of the <i>perception</i>,
-      not of the disc — an honest, low-A poclet.</p>
+      <h2>One parameter: Δθ, degrees per frame</h2>
+      <p>The frame <i>is</i> the sampler. Everything depends on how far the disc turns
+      between two frames — <code>Δθ</code>, swept automatically from 0° to 360° and looping.</p>
+      <h2>Landmarks</h2>
+      <table class="k">
+        <tr><td>0°</td><td>still — the plain yin-yang</td></tr>
+        <tr><td>22.5°</td><td>8 figures</td></tr>
+        <tr><td>45°</td><td>4 figures</td></tr>
+        <tr><td>60°</td><td>3 figures</td></tr>
+        <tr><td>90°</td><td>2 figures</td></tr>
+        <tr><td>180°</td><td>frozen (order-2 symmetry)</td></tr>
+        <tr><td>just under 180° / 360°</td><td>apparent reversal</td></tr>
+        <tr><td>360°</td><td>frozen — one full turn per frame</td></tr>
+      </table>
+      <h2>Prove the patterns are in the eye</h2>
+      <p>Press <b>⏸ Stop</b>: the rings and rays vanish and a plain yin-yang reappears. The
+      figure never changed — the patterns come from integrating successive frames, not from
+      the disc. Press <b>Speed Scan</b> to switch to <b>Select Speed</b> and hold any Δθ.</p>
+      <p class="muted">Because of the disc's order-2 symmetry, the whole ladder of patterns
+      repeats twice across 0–360°.</p>
     </div>
 
     <div class="tabpane" id="asfid">
@@ -154,19 +151,16 @@
       <div class="bar"><span class="lab">D — Dynamics</span><span class="track"><span class="fill" style="width:90%;background:var(--col-D)"></span></span><span class="val">.90</span></div>
       <p class="muted">asfidMean = 0.71</p>
       <h2>REVOI — Map (Sphinx Eye)</h2>
-      <div class="bar"><span class="lab">R — Representability</span><span class="track"><span class="fill" style="width:85%;background:var(--col-R)"></span></span><span class="val">.85</span></div>
-      <div class="bar"><span class="lab">E — Evolvability</span><span class="track"><span class="fill" style="width:75%;background:var(--col-E)"></span></span><span class="val">.75</span></div>
-      <div class="bar"><span class="lab">V — Verifiability</span><span class="track"><span class="fill" style="width:95%;background:var(--col-V)"></span></span><span class="val">.95</span></div>
-      <div class="bar"><span class="lab">O — Observability</span><span class="track"><span class="fill" style="width:90%;background:var(--col-O)"></span></span><span class="val">.90</span></div>
-      <div class="bar"><span class="lab">Im — Interoperability</span><span class="track"><span class="fill" style="width:85%;background:var(--col-Im)"></span></span><span class="val">.85</span></div>
-      <p class="muted">revoiMean = 0.86 · δ₁ = 0.106 (OnCriticalLine)</p>
-      <h2>Focal (Gs stereopsis)</h2>
-      <p>stereopsicDepth 0.75 · focalBias +0.15 · <b>focalScore 0.64 → SlightlyHyperopic</b>
-      — the Map slightly outweighs the Territory, which <i>is</i> the point.</p>
+      <div class="bar"><span class="lab">R — Representability</span><span class="track"><span class="fill" style="width:85%;background:var(--col-F)"></span></span><span class="val">.85</span></div>
+      <div class="bar"><span class="lab">E — Evolvability</span><span class="track"><span class="fill" style="width:75%;background:var(--col-S)"></span></span><span class="val">.75</span></div>
+      <div class="bar"><span class="lab">V — Verifiability</span><span class="track"><span class="fill" style="width:95%;background:var(--col-A)"></span></span><span class="val">.95</span></div>
+      <div class="bar"><span class="lab">O — Observability</span><span class="track"><span class="fill" style="width:90%;background:var(--col-I)"></span></span><span class="val">.90</span></div>
+      <div class="bar"><span class="lab">Im — Interoperability</span><span class="track"><span class="fill" style="width:85%;background:var(--col-D)"></span></span><span class="val">.85</span></div>
+      <p class="muted">revoiMean = 0.86 · δ₁ = 0.106 (OnCriticalLine) · focal 0.638 → SlightlyHyperopic</p>
     </div>
 
     <div class="tabpane" id="gc">
-      <h2>23 GenericConcepts (formulas from HEAD)</h2>
+      <h2>GenericConcepts (formulas from HEAD)</h2>
       <p class="muted">× Territory · + Map · | Stereopsis. ⊗ forbidden.</p>
       <p><b>Structural:</b> Symmetry <code>St</code>, Component <code>St × It | L</code>,
       System <code>St × F</code>, Topology <code>St | L</code></p>
@@ -181,196 +175,207 @@
       Coherence <code>A × St × It | R + O</code>, Modelisation <code>D × F × It | R + V + E</code></p>
       <h2>🆕 M2 candidate (flagged, not promoted)</h2>
       <p><b>Aliasing (Stroboscopic Sampling Artifact)</b> — proposal <code>F × D × It | Ss</code>.
-      Held under the anti-overfitting rule (≥6 domains needed).</p>
+      Held under the anti-overfitting rule (≥6 independent domains needed).</p>
     </div>
 
     <div class="tabpane" id="readme">
-      <h2>Overview</h2>
-      <p>How a spinning order-2 yin-yang, sampled by eye or strobe, yields smooth / frozen /
-      reversed perception — making <code>Φ: Gt → Gm</code> visible and self-verifiable.</p>
-      <h2>Mechanism</h2>
-      <p>Perceived per-sample advance = <code>ω/f_s</code>, reduced modulo the half-turn
-      symmetry period to the nearest value in (−¼,+¼] turn, times <code>f_s</code>.
-      Integer multiples → freeze; just above → reversal.</p>
+      <h2>How it renders</h2>
+      <p>Each frame the disc advances by Δθ. The display shows the <b>average of the last 8
+      frames</b> — a persistence-of-vision window. When Δθ ≈ 180°/q, those frames land on
+      <b>q distinct orientations</b> → q superimposed yin-yangs, with grey levels in steps of
+      1/q. Away from such ratios the copies spread → a grey wash.</p>
+      <h2>Territory reference</h2>
+      <p>The outer tick shows the true rotation direction. Its on-screen speed is capped so
+      the reference itself doesn't alias on your monitor.</p>
+      <h2>Honest limits</h2>
+      <ul>
+        <li>"Per frame" means <i>your</i> browser's frame — 60, 120 or 144 Hz. The patterns
+        depend only on Δθ, so they match; their scroll speed may not.</li>
+        <li>The yin-yang is angularly smooth, so high-q figures read mainly through the two
+        dots and the S-curve edges.</li>
+      </ul>
       <h2>Findings</h2>
       <ul>
         <li><b>New-domain (Gap):</b> no Perception M1 extension at HEAD (verified 404).</li>
         <li><b>M2 candidate:</b> Aliasing — flagged only.</li>
       </ul>
-      <p class="muted">SHACL: Conforms True against M0_Instances_Schema v1.6 (HEAD).</p>
+      <p class="muted">M0 SHACL: Conforms True against M0_Instances_Schema v1.6 (HEAD).</p>
     </div>
   </aside>
 </main>
 
 <footer>
   <div class="ctrl">
-    <label>Rotation speed ω <b><span id="v-omega">6.0</span> rev/s</b></label>
-    <input id="omega" type="range" min="0" max="30" step="0.1" value="6" />
+    <label>Sweep</label>
+    <div class="modes"><button id="m-scan" class="active">Speed Scan</button></div>
+  </div>
+  <div class="ctrl grow">
+    <label>Rotation per frame Δθ <b><span id="v-dtheta">0.0</span>°/frame</b></label>
+    <input id="dtheta" type="range" min="0" max="360" step="0.5" value="0" disabled />
   </div>
   <div class="ctrl">
-    <label>Sampling rate f_s <b><span id="v-fs">12</span> Hz</b></label>
-    <input id="fs" type="range" min="2" max="30" step="1" value="12" />
-  </div>
-  <div class="ctrl">
-    <label>Motion-blur window <b><span id="v-persist">1/16</span> s</b></label>
-    <input id="persist" type="range" min="4" max="30" step="1" value="16" />
-  </div>
-  <div class="ctrl">
-    <label>Sampling mode</label>
-    <div class="modes">
-      <button id="m-strobe" class="active">Strobe</button>
-      <button id="m-retina">Retinal persistence</button>
-    </div>
+    <label>Transport</label>
+    <div class="modes"><button id="m-run" class="active">&#10074;&#10074; Stop</button></div>
   </div>
 </footer>
 
 <script>
 // ---- state ----
-let omega = 6.0;      // rev/s (true, Territory)
-let fs = 12;          // Hz (sampling, Map)
-let persistHz = 16;   // retinal integration window = 1/persistHz s
-let mode = 'strobe';  // 'strobe' | 'retina'
+let dtheta = 0;                 // degrees the disc turns between two frames (THE parameter)
+let theta  = 0;                 // accumulated disc angle, degrees
+let tickDeg = 0;                // outer reference tick (visually speed-capped)
+let scanning = true;            // Speed Scan on by default
+let running  = true;            // transport
+let holdUntil = 0, lastFigs = -1;
 
-const SYM = 0.5;      // order-2 symmetry period, in turns (figure repeats every half-turn)
+const INTEGRATE = 8;            // frames averaged by the "retina" (persistence window)
+const SYM_DEG   = 180;          // order-2 symmetry period, in degrees
+const SCAN_STEP = 0.25;         // deg/frame added per frame while scanning (slow)
+const HOLD_MS   = 1300;         // pause on each new N-figure pattern
+const TICK_CAP  = 6;            // deg/frame cap for the reference tick
 
-let trueTurns = 0;        // accumulated true rotation, in turns (continuous)
-let displayTurns = 0;     // latched displayed rotation (strobe holds last sample)
-let sampleAcc = 0;        // time accumulator for sampling
-let lastMs = 0;
+let discG = null, discR = -1;
 
 function setup(){
   const host = document.getElementById('canvas-host');
   const c = createCanvas(host.clientWidth, host.clientHeight);
   c.parent(host);
+  c.elt.style.filter = 'contrast(2.1) brightness(1.03)';
   angleMode(RADIANS);
-  lastMs = millis();
+  document.getElementById('ro-int').textContent = INTEGRATE;
   window.addEventListener('resize', ()=>resizeCanvas(host.clientWidth, host.clientHeight));
 }
 
-function perceivedRevPerSec(){
-  // per-sample advance in turns, reduced modulo symmetry period to nearest in (-SYM/2, SYM/2]
-  let adv = omega / fs;                 // turns advanced per sample
-  let r = adv % SYM;
-  if (r < 0) r += SYM;
-  if (r > SYM/2) r -= SYM;              // -> (-0.25, 0.25]
-  return r * fs;                        // perceived rev/s
+// crisp opaque B&W yin-yang drawn once to an offscreen buffer
+function buildDisc(R){
+  const s = Math.ceil(R*2) + 2, c = s/2;
+  discG = createGraphics(s, s);
+  discG.noStroke();
+  discG.fill(230,230,235); discG.circle(c, c, R*2);
+  discG.fill(20,22,28);    discG.arc(c, c, R*2, R*2, -HALF_PI, HALF_PI, PIE);
+  discG.fill(20,22,28);    discG.circle(c, c - R/2, R);
+  discG.fill(230,230,235); discG.circle(c, c + R/2, R);
+  discG.fill(230,230,235); discG.circle(c, c - R/2, R*0.28);
+  discG.fill(20,22,28);    discG.circle(c, c + R/2, R*0.28);
+  discR = Math.round(R);
+}
+
+// perceived rotation per frame: fold Δθ into (-90°, +90°] (order-2 symmetry)
+function perceivedDeg(){
+  let r = dtheta % SYM_DEG;
+  if (r < 0) r += SYM_DEG;
+  if (r > SYM_DEG/2) r -= SYM_DEG;
+  return r;
+}
+
+// how many distinct orientations the frame sampling locks onto
+function apparentFigures(){
+  const frac = ((dtheta % SYM_DEG) + SYM_DEG) % SYM_DEG / SYM_DEG;
+  let best = 1, bestErr = 1;
+  for (let q = 1; q <= INTEGRATE; q++){
+    const p = Math.round(frac * q);
+    const err = Math.abs(frac - p/q);
+    if (err < bestErr - 1e-9){ bestErr = err; best = q; }
+  }
+  return { q: best, locked: bestErr < 0.015 };
 }
 
 function classify(){
-  const p = perceivedRevPerSec();
-  const eps = 0.15;                     // rev/s tolerance for "frozen"
-  const near = Math.abs(Math.abs((omega/fs) % SYM) - SYM/2); // closeness to the morph boundary (quarter-turn)
-  if (near < 0.03) return {name:'Morphing pattern', col:'#d2a8ff', p};
-  if (Math.abs(p) < eps) return {name:'Frozen figure', col:'#e3b341', p};
-  if (p < 0) return {name:'Apparent reversal', col:'#f78166', p};
-  if (Math.abs(p - omega) < 0.05) return {name:'Smooth rotation', col:'#56d364', p};
-  return {name:'Aliased (slowed) forward', col:'#79c0ff', p};
+  const p = perceivedDeg(), f = apparentFigures();
+  if (!running)              return {name:'Stopped — true figure', col:'#8b949e', q:1};
+  if (!f.locked)             return {name:'Unlocked (grey wash)',  col:'#8b949e', q:0};
+  if (f.q >= 2)              return {name:f.q + '-figure pattern', col:'#d2a8ff', q:f.q};
+  if (Math.abs(p) < 0.6)     return {name:'Frozen figure',         col:'#e3b341', q:1};
+  if (p < 0)                 return {name:'Apparent reversal',     col:'#f78166', q:1};
+  return {name:'Slow forward drift', col:'#56d364', q:1};
 }
 
 function draw(){
   const now = millis();
-  let dt = (now - lastMs)/1000; lastMs = now;
-  if (dt > 0.1) dt = 0.1;               // clamp after tab-away
 
-  trueTurns += omega * dt;              // Territory advances continuously
-
-  // sampling: latch displayTurns at each 1/fs interval
-  sampleAcc += dt;
-  const sampleDt = 1/fs;
-  while (sampleAcc >= sampleDt){
-    sampleAcc -= sampleDt;
-    displayTurns = trueTurns;           // a strobe flashes the true orientation, then holds it
+  if (scanning && running){
+    const f = apparentFigures();
+    const figs = f.locked ? f.q : 0;
+    if (figs !== lastFigs && figs > 1){ lastFigs = figs; holdUntil = now + HOLD_MS; }
+    if (now >= holdUntil){
+      dtheta += SCAN_STEP;
+      if (dtheta > 360) dtheta = 0;            // loop 0 -> 360 -> 0
+      syncSlider();
+    }
   }
 
-  background(0,0);
+  if (running){
+    theta   += dtheta;
+    tickDeg += Math.min(dtheta, TICK_CAP);     // capped so the reference doesn't self-alias
+  }
+
   clear();
   const cx = width/2, cy = height/2;
-  const R = Math.min(width, height)*0.32;
+  const R  = Math.min(width, height)*0.32;
+  if (!discG || discR !== Math.round(R)) buildDisc(R);
 
-  // --- outer tick: actual rotation (Territory) — always continuous ---
+  // --- outer reference tick (Territory) ---
   push();
   translate(cx, cy);
-  const trueAng = trueTurns * TWO_PI;
-  stroke('#f78166'); strokeWeight(4); noFill();
+  const ta = radians(tickDeg);
   const tr = R + 26;
-  const tx = Math.cos(trueAng - HALF_PI)*tr, ty = Math.sin(trueAng - HALF_PI)*tr;
-  line(0,0,tx,ty);
+  const tx = Math.cos(ta - HALF_PI)*tr, ty = Math.sin(ta - HALF_PI)*tr;
+  stroke('#f78166'); strokeWeight(4); line(0,0,tx,ty);
   noStroke(); fill('#f78166'); circle(tx,ty,10);
-  // faint reference ring
   noFill(); stroke(255,255,255,20); strokeWeight(1); circle(0,0,tr*2);
   pop();
 
-  // --- the disc (Map) ---
-  if (mode === 'retina'){
-    drawRetina(cx, cy, R);
-  } else {
-    drawYinYang(cx, cy, R, displayTurns * TWO_PI, 255);
+  // --- the perceived disc: average of the last INTEGRATE frames ---
+  // Stopped -> a single crisp copy (proves the patterns are produced by the integration).
+  const n = running ? INTEGRATE : 1;
+  imageMode(CENTER);
+  for (let i = 1; i <= n; i++){
+    const ang = radians(theta - (i-1) * dtheta);
+    push(); translate(cx, cy); rotate(ang);
+    tint(255, 255, 255, 255 / i);              // alpha 1/i -> exact running average
+    image(discG, 0, 0, R*2, R*2);
+    pop();
   }
+  noTint(); imageMode(CORNER);
 
   updateReadout();
 }
 
-// classic yin-yang with order-2 rotational symmetry
-function drawYinYang(cx, cy, R, ang, alpha){
-  push();
-  translate(cx, cy);
-  rotate(ang);
-  noStroke();
-  // outline
-  fill(230,230,235, alpha); circle(0,0, R*2);            // white base
-  // black half (right)
-  fill(20,22,28, alpha);
-  arc(0,0, R*2, R*2, -HALF_PI, HALF_PI, PIE);
-  // the two medium circles forming the S-curve
-  fill(20,22,28, alpha); circle(0, -R/2, R);             // black lobe (top)
-  fill(230,230,235, alpha); circle(0,  R/2, R);          // white lobe (bottom)
-  // the dots (eyes) — carry the order-2 symmetry
-  fill(230,230,235, alpha); circle(0, -R/2, R*0.28);     // white dot in black lobe
-  fill(20,22,28, alpha);    circle(0,  R/2, R*0.28);     // black dot in white lobe
-  pop();
-}
-
-// retinal persistence: overlay many low-alpha copies across the swept angle
-function drawRetina(cx, cy, R){
-  const windowS = 1/persistHz;                 // integration window
-  const sweep = omega * windowS * TWO_PI;      // radians swept in that window
-  const N = 26;
-  for (let i=0;i<N;i++){
-    const f = i/(N-1);
-    const a = (trueTurns*TWO_PI) - sweep*(1-f);
-    drawYinYang(cx, cy, R, a, 26);             // low alpha ghosts -> blur
-  }
+function syncSlider(){
+  document.getElementById('dtheta').value = dtheta;
+  document.getElementById('v-dtheta').textContent = dtheta.toFixed(1);
 }
 
 function updateReadout(){
-  const cinfo = classify();
+  const c = classify();
   const rEl = document.getElementById('regime');
-  rEl.textContent = cinfo.name; rEl.style.color = cinfo.col;
-  document.getElementById('ro-true').textContent = omega.toFixed(1) + ' rev/s';
-  document.getElementById('ro-perc').textContent = (mode==='retina' ? '— (blur)' : cinfo.p.toFixed(1)+' rev/s');
-  document.getElementById('ro-fs').textContent = fs + ' Hz';
-  document.getElementById('ro-ratio').textContent = (omega/fs).toFixed(2);
+  rEl.textContent = c.name; rEl.style.color = c.col;
+  document.getElementById('ro-dtheta').textContent = dtheta.toFixed(1) + '°';
+  document.getElementById('ro-perc').textContent   = perceivedDeg().toFixed(1) + '°';
+  document.getElementById('ro-figs').textContent   = !running ? '1 (true figure)'
+                                                   : (c.q > 1 ? c.q : (c.q === 1 ? '1' : '—'));
+  document.getElementById('ro-int').textContent    = running ? INTEGRATE : 1;
 }
 
 // ---- controls ----
-function bindRange(id, valId, fn, fmt){
-  const el = document.getElementById(id);
-  el.addEventListener('input', ()=>{ fn(parseFloat(el.value));
-    document.getElementById(valId).textContent = fmt(parseFloat(el.value)); });
-}
-bindRange('omega','v-omega', v=>omega=v, v=>v.toFixed(1));
-bindRange('fs','v-fs', v=>fs=v, v=>String(v));
-bindRange('persist','v-persist', v=>persistHz=v, v=>'1/'+v);
-
-document.getElementById('m-strobe').addEventListener('click', ()=>{
-  mode='strobe';
-  document.getElementById('m-strobe').classList.add('active');
-  document.getElementById('m-retina').classList.remove('active');
+document.getElementById('dtheta').addEventListener('input', e=>{
+  dtheta = parseFloat(e.target.value);
+  document.getElementById('v-dtheta').textContent = dtheta.toFixed(1);
 });
-document.getElementById('m-retina').addEventListener('click', ()=>{
-  mode='retina';
-  document.getElementById('m-retina').classList.add('active');
-  document.getElementById('m-strobe').classList.remove('active');
+
+document.getElementById('m-scan').addEventListener('click', ()=>{
+  scanning = !scanning;
+  const b = document.getElementById('m-scan');
+  b.textContent = scanning ? 'Speed Scan' : 'Select Speed';
+  b.classList.toggle('active', scanning);
+  document.getElementById('dtheta').disabled = scanning;   // manual only in Select Speed
+});
+
+document.getElementById('m-run').addEventListener('click', ()=>{
+  running = !running;
+  const b = document.getElementById('m-run');
+  b.innerHTML = running ? '&#10074;&#10074; Stop' : '&#9654; Run';
+  b.classList.toggle('active', running);
 });
 
 // tabs
@@ -395,8 +400,7 @@ document.querySelectorAll('.tabs button').forEach(b=>{
     const w = Math.min(Math.max(main.clientWidth - e.clientX, 260), 560);
     main.style.gridTemplateColumns = `1fr 6px ${w}px`;
     const host = document.getElementById('canvas-host');
-    if (window._p5sketchResize) window._p5sketchResize(host.clientWidth, host.clientHeight);
-    else resizeCanvas(host.clientWidth, host.clientHeight);
+    resizeCanvas(host.clientWidth, host.clientHeight);
   });
 })();
 </script>

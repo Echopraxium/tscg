@@ -96,6 +96,19 @@ Drivers: **ω** (rotation rate, Territory), **f_s** (sampling rate, Map), **φ**
 - **Self-verifying poclet.** The reader tests the model against their own perception —
   the reason V = 0.95.
 
+## Simulation
+
+An interactive p5.js visualization accompanies this model:
+`StroboscopicYinYang_sim.html`. Its design rationale — how the single parameter
+**Δθ (degrees per frame)** selects each perceived pattern — is documented separately in
+**`StroboscopicYinYang_Simulation_README.md`**.
+
+*Parameterization note:* this model describes the system with two drivers, **ω** (true
+rotation rate, Territory) and **f_s** (sampling rate, Map). The simulation collapses them
+into their ratio — `Δθ = 360° · ω / f_s` — because on screen the frame *is* the sampler.
+The two descriptions are equivalent; the model keeps them separate to preserve the
+Territory/Map distinction, the simulation merges them for a single-knob interface.
+
 ## Transdisciplinary Analogies
 
 The same aliasing artifact recurs across domains — the basis for the flagged M2
