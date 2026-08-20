@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from a HEAD file listing (1964 files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). This tree is a **repo artifact** — regenerate it from a listing; do not put it in the project corpus (it drifts on every add/remove).*
+*Generated from `git ls-files` (1732 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **"cli_tools/**
   - **generate_index-html/**
@@ -103,27 +103,33 @@
       - QRCodeDecoding.md
     - **RubiksCube/**
       - RubiksCube.md
+    - **StroboscopicYinYang/**
+      - **workflow_run_sample/**
+        - **Simulation/**
+          - **archives/**
+            - M0_StroboscopicYinYang_Simulation.html
+            - Screenshot.png
+          - _00_serve_poclet-sim.bat
+          - _open_cmd_window.bat
+          - M0_StroboscopicYinYang_Simulation.html
+          - Screenshot.png
+          - StroboscopicYinYang_Simulation_README.md
+        - _open_cmd_window.bat
+        - M0_StroboscopicYinYang.jsonld
+        - M0_StroboscopicYinYang_analysis.md
+        - M0_StroboscopicYinYang_README.md
+      - _open_cmd_window.bat
+      - StroboscopicYinYang.md
     - **TruchetPatterns/**
       - TruchetPatterns.md
     - _00_exercise_template.md
   - UserGuide.md
 - **_02_housekeeping/**
   - **2026_08_12/**
+    - _ACTION_corpus_cleanup_todo.md
     - TSCG_Validation_HandOver - Part-1.md
     - TSCG_Validation_HandOver - Part-2.md
     - TSCG_Validation_HandOver.md
-    - _ACTION_corpus_cleanup_todo.md
-- **_archives/**
-  - .gitignore
-  - CLAUDE.md
-  - README.md
-  - README_Bat_Metaphor.md
-  - README_User's_Guide.md
-  - README_previous.md
-  - create_RAG.py
-  - create_RAG_2026_02_08.py
-  - generate_files-txt - Copie.bat
-  - index.html
 - **_protos/**
   - README.txt
 - **cli_tools/**
@@ -134,37 +140,35 @@
     - _open_cmd_window.bat
     - bin - Raccourci.lnk
   - **generate_index-html/**
-    - **_archives/**
-      - generate_index.js
-    - Correction_Parsing_GraphZero.md
-    - README_Modifications.md
     - _Generate_Index-html.bat
     - _open_cmd_window.bat
     - apply_fixes.js
+    - Correction_Parsing_GraphZero.md
     - generate_index.js
+    - README_Modifications.md
   - **migrate_properties/**
     - _open_cmd_window.bat
     - migrate_properties.py
     - migrate_properties_README.md
   - **ontology-linter/**
-    - AI_OntologyEngineering_Pitfalls_and_Solutions_README.md
-    - Prerequisites_Setup_README.md
     - _00_open_cmd_window.bat
+    - AI_OntologyEngineering_Pitfalls_and_Solutions_README.md
     - ontology_linter.py
     - ontology_linter_README.md
+    - Prerequisites_Setup_README.md
   - **owl_reasoning_test/**
-    - HowTo.txt
-    - TSCG_OWL_Validation_Session_Summary.md
-    - TSCG_Validation_Handoff_M1_M0.md
     - _open_cmd_window.bat
     - convert_jsonld_to_turtle.py
     - fix_owl_literals.py
+    - HowTo.txt
     - owl_reasoning_test.py
     - owl_reasoning_test_README.md
     - rdfs_diagnostic.py
     - test_reasoning_M1_Core.txt
     - test_reasoning_M2.txt
     - test_reasoning_M3.txt
+    - TSCG_OWL_Validation_Session_Summary.md
+    - TSCG_Validation_Handoff_M1_M0.md
   - **verify_migration/**
     - _open_cmd_window.bat
     - verify_migration.py
@@ -172,6 +176,9 @@
   - _open_cmd_window.bat
 - **docs/**
   - **CoreHypotheses/**
+    - _00_serve_poclet-sim.bat
+    - _00_TSCG_as_StereoscopicGlasses.md
+    - _01_Narcissus_and_Icarus_as_Safeguards.md
     - Archetypes_as_CrossCultural_Artifacts.md
     - CredibilityAccretion_Process.md
     - LegoTechnic_Modularity.md
@@ -181,64 +188,49 @@
     - SystemicEsperanto.md
     - TerritoryMap_Dichotomy.md
     - The_Epistemic_Residue.md
-    - _00_TSCG_as_StereoscopicGlasses.md
-    - _00_serve_poclet-sim.bat
-    - _01_Narcissus_and_Icarus_as_Safeguards.md
-  - **Orchestration/**
-    - Multi-Conversation_Orchestration_Guide.md
   - **methodology/**
     - Bicephalous_Integration_Guide.md
     - M2_Completeness_and_3D_Visualization_Strategy.md
     - M2_Component_Addition.jsonld
     - Standard_Referencing_Pattern.md
+  - **Orchestration/**
+    - Multi-Conversation_Orchestration_Guide.md
   - **papers/**
-    - **_archives/**
-      - tscg-draft-v0.md
     - **inputs/**
-      - **_archives/**
-        - M2_Generation_Summary.md
-        - Map_Territory_v1.1_Update_Summary.md
       - 00_M3_Cyclops_Correction_Summary.md
       - 00_M3_Philosophical_Basis_Sketch.jsonld
       - 00_Map_Territory_v1.2_Update_Summary.md
       - 00_TSCG_M3_Bicephalous_Architecture.md
       - 00_TSCG_Map_Territory_Theoretical_Foundation.md
+      - deepseek_markdown_20260324_8860c7.md
       - M2_v7.2.0_Summary.md
       - M2_v8.0.0_Update_Guide.md
       - Network_Decomposition_Report.md
       - TSCG-M3_Ontology_Documentation.md
       - TSCG_Session_Complete_Summary_Claude_2025_01_14.md
-      - deepseek_markdown_20260324_8860c7.md
     - **preprints/**
       - **HAL/**
+        - _08_TSCG_HAL_Submission_Notice.md
         - HAL Guidelines.md
         - TSCG_HAL_Additions_v1.md
         - TSCG_Research_Paper_Draft_v4.md
-        - _08_TSCG_HAL_Submission_Notice.md
-      - **Zenodo/**
-        - _00_Zenodo - TSCG- The Transdisciplinary System Construction Game.url
-        - _05_TSCG_Zenodo_Submission_Notice.md
-      - **_archives/**
-        - 2026_02_29_TSCG_Research_Paper_Draft_v3.md
-        - 2026_02_29_TSCG_Research_Paper_Draft_v3.pdf
-        - TSCG-The Transdisciplinary System Construction Game-v5.0.pdf
-        - TSCG_ The Transdisciplinary System Construction Game_v6.pdf
-        - TSCG_ Transdisciplinary System Construction Game_v6.pdf
-        - TSCG_Research_Paper_Draft_v4.html
-        - TSCG_Research_Paper_Draft_v5.html
-        - TSCG_Research_Paper_Draft_v5.md
-        - TSCG_Research_Paper_Draft_v6.html
-        - The Transdisciplinary System Construction Game (TSCG) v4.0.pdf
-        - new draft specification.txt
       - **previous/**
         - SDAP DeepSeek Bootstrap v2 EN.pdf
         - SDAP Zenodo.18471860.url
         - TSCG_Research_Paper_Draft_v1.md
         - TSCG_Research_Paper_Draft_v2.md
         - TSCG_Research_Paper_Draft_v2.pdf
+      - **Zenodo/**
+        - _00_Zenodo - TSCG- The Transdisciplinary System Construction Game.url
+        - _05_TSCG_Zenodo_Submission_Notice.md
+      - _00_Convert_to_HTML_then_PDF.bat
+      - _00_open_cmd_window.bat
+      - _00_Zenodo - TSCG- The Transdisciplinary System Construction Game.url
+      - _02_Convert_to_PDF.bat
       - Convert your markdown files to PDF with our online converter for free!.url
-      - PREPRINT_SECTION_Templates_Methodology.md
       - Preamble.tex
+      - preprint.css
+      - PREPRINT_SECTION_Templates_Methodology.md
       - Screenshot-Ptoe-Poclet.png
       - Screenshot-Triz-SystemicFramework.png
       - Screenshot-TrophicPyramid-Poclet.png
@@ -248,22 +240,12 @@
       - TSCG_ The Transdisciplinary System Construction Game.pdf
       - TSCG_Research_Paper_Draft_v6.html
       - TSCG_Research_Paper_Draft_v6.md
-      - _00_Convert_to_HTML_then_PDF.bat
-      - _00_Zenodo - TSCG- The Transdisciplinary System Construction Game.url
-      - _00_open_cmd_window.bat
-      - _02_Convert_to_PDF.bat
-      - preprint.css
     - **white-paper/**
       - TSCG_WhitePaper.md
   - **reboot-kit/**
     - **SmartPrompts/**
-      - **_archives/**
-        - 00_Smart_Prompt_v10.0.0.md
-        - SmartPrompt_v8_to_v9_Changes.md
-        - Smart_Prompt_2025_01_15.md
-        - Smart_Prompt_M3_M2.md
-        - Smart_Prompt_M3_M2_2025_01_14_1.md
-        - TSCG_Smart_Prompt_11_0_0.md
+      - macros.txt
+      - macros_extended.txt
       - Smart_Prompt_2026_01_17.md
       - TSCG_Smart_Prompt_v14.2_Step.md
       - TSCG_Smart_Prompt_v14_Domain.md
@@ -275,50 +257,35 @@
       - TSCG_Smart_Prompt_v16_2_0.md
       - TSCG_Smart_Prompt_v16_3_0.md
       - TSCG_Smart_Prompt_v17_0_0.md
-      - macros.txt
-      - macros_extended.txt
-    - **_archives/**
-      - 00_Smart_Prompt_v10.0.0.md
-      - M2_MetaConcepts.jsonld
-      - M3_GenesisSpace.jsonld
-      - Smart_Prompt_2026_01_17.md
-      - Smart_Prompt_v9.0.0.md
-      - TSCG_File_Tree.md
-      - TSCG_Smart_Prompt_v14.2_Step.md
-      - TSCG_Smart_Prompt_v14.3.0.md
-      - TSCG_Smart_Prompt_v14_4_0.md
-      - TSCG_Smart_Prompt_v14_Domain.md
-      - TSCG_Smart_Prompt_v15_0_0.md
-      - TSCG_Smart_Prompt_v15_1_0.md
-      - TSCG_Smart_Prompt_v15_7_0.md
-      - TSCG_Smart_Prompt_v15_8_0.md
-      - TSCG_Smart_Prompt_v15_9_0.md
-      - TSCG_Smart_Prompt_v16_0_0.md
-      - TSCG_Smart_Prompt_v16_1_0.md
     - 00_M3_Cyclops_Correction_Summary.md
     - 00_M3_Philosophical_Basis_Sketch.jsonld
     - 00_Map_Territory_v1.2_Update_Summary.md
     - 00_TSCG_M3_Bicephalous_Architecture.md
     - 00_TSCG_Map_Territory_Theoretical_Foundation.md
+    - _000_TSCG_Context_Files.md
     - Amplification_Integration_Summary (1).md
-    - CLAUDE.md
     - Cascade_Modeling_README.md
+    - check_encoding_issues.py
+    - CLAUDE.md
     - Domain_Hybrid_Tensor_Product_5D_README.md
     - ENCODING_CORRESPONDANCES.txt
+    - files.txt
     - HYBRID_FORMULAS_NOTATION_README.md
     - M0_VSM.jsonld
     - M0_VSM_README.md
     - M2_FormulasReference_v15.10.0.json
     - M2_FormulasReference_v15.10.0.md
     - M2_GenericConcepts.jsonld
-    - M2_MetaConcepts.jsonld
     - M2_MetaconceptCombo.jsonld
+    - M2_MetaConcepts.jsonld
     - M2_OntologyCategory_Proposal.md
     - M2_Pattern_metaconcept.jsonld
     - M3_EagleEye.jsonld
     - M3_GenesisSpace.jsonld
     - M3_SphinxEye.jsonld
+    - macros.txt
     - Namespace_Refactoring_Summary.md
+    - poclet_terminology.md
     - Session_Summary_TSCG_v14.2.0.md
     - TO_DO.txt
     - TSCG_FileTree.md
@@ -330,11 +297,6 @@
     - TSCG_ValueSpace_Quick_Reference.md
     - TSCG_ValueSpace_User_Guide.md
     - ValueSpace_Integration_Summary.md
-    - _000_TSCG_Context_Files.md
-    - check_encoding_issues.py
-    - files.txt
-    - macros.txt
-    - poclet_terminology.md
   - M2_MetaConcepts_README.md
   - TSCG_M2_Category_Taxonomy.md
   - TSCG_Session_Complete_Summary.md
@@ -354,6 +316,12 @@
     - TscgExplorer_Simulation.png
     - VCO_Simulation.png
   - **poclets/**
+    - **_00_template/**
+      - **src/**
+        - tscg-shell.css
+        - tscg-shell.js
+      - _00_serve_poclet-sim.bat
+      - M0_Template.html
     - **AdaptativeImmuneResponse/**
       - M0_AdaptativeImmuneResponse.jsonld
       - M0_AdaptativeImmuneResponse_README.md
@@ -368,32 +336,32 @@
           - **Monarch/**
             - Egg to Monarch Butterfly - YouTube.url
             - Monarch Butterfly Metamorphosis time-lapse FYV - YouTube.url
+          - _0_Egg_Butterfly- A Life - National Geographic - YouTube.url
           - The Lifecycle of the Painted Lady Butterfly - YouTube.url
           - Watch This Caterpillar Turn Into A Hawk-Moth - The Dodo - YouTube.url
-          - _0_Egg_Butterfly- A Life - National Geographic - YouTube.url
         - **src/**
+          - butterfly_data.js
           - ButterflyMetamorphosis.css
           - ButterflyMetamorphosis.js
-          - butterfly_data.js
         - .eslintrc.json
+        - _00_serve_poclet-sim.bat
         - M0_ButterflyMetamorphosis.html
         - M0_ButterflyMetamorphosis_REVOI_migration.md
         - M0_ButterflyMetamorphosis_SimulationIssues.md
-        - _00_serve_poclet-sim.bat
+      - butterfly_metamorphosis_executive_summary.md
+      - M0_butterfly_metamorphosis_README.md
       - M0_ButterflyMetamorphosis.jsonld
       - M0_ButterflyMetamorphosis_REVOI_migration.md
-      - M0_butterfly_metamorphosis_README.md
-      - butterfly_metamorphosis_executive_summary.md
     - **CanopyGraphVizProto/**
       - **docs/**
         - **preprint/**
           - Canopy_Concept_Jetpack_and_Stylesheet.md
         - **references/**
-          - D3-Celestial Starmap.url
-          - Stereographic vs Horizon View.txt
           - _00_Your Sky.url
+          - D3-Celestial Starmap.url
           - ofrohn-d3-celestial- A star map with d3.js.url
           - projections.txt
+          - Stereographic vs Horizon View.txt
         - canopy_p5_chatgpt.html
       - **src/**
         - canopy-core.js
@@ -401,8 +369,10 @@
         - canopy-stylesheet.js
         - canopy.css
       - **test/**
-        - README.md
         - boot-smoke.js
+        - README.md
+      - _00_open_cmd_window.bat
+      - _00_serve_poclet-sim.bat
       - Canopee_Stylesheet_and_Legend_Spec.md
       - Canopy_Controls_Guide.md
       - Canopy_GraphViz_README.md
@@ -410,19 +380,12 @@
       - M0_TscgCanopyGraphVizProto.jsonld
       - M0_TscgCanopyGraphVizProto_README.md
       - MIGRATION_knowledgeField_to_domain.md
-      - _00_open_cmd_window.bat
-      - _00_serve_poclet-sim.bat
       - serve.js
     - **CellSignalingModes/**
       - Endocrine Signaling - GeeksforGeeks.url
       - M0_CellSignalingModes.jsonld
       - M0_CellSignalingModes_README.md
     - **ColorSynthesis/**
-      - **_archives/**
-        - ColorSynthesis_Simulation.png
-        - _00_Run_Simulation.bat
-        - color_synthesis_sim.py
-        - poclet_parser.py
       - **sim/**
         - index.html
         - main.js
@@ -430,35 +393,31 @@
         - renderer.js
         - styles.css
       - **static/**
-        - **_archives/**
-          - M0_ColorSynthesis.html
-        - M0_ColorSynthesis.html
         - _00_serve_poclet-sim.bat
-      - M0_CMYK_Subtractive.jsonld
-      - M0_CMYK_Subtractive_README.md
+        - M0_ColorSynthesis.html
+      - _00_Run.bat
+      - _open_cmd_window.bat
       - M0_CMY_Subtractive.jsonld
       - M0_CMY_Subtractive_README.md
+      - M0_CMYK_Subtractive.jsonld
+      - M0_CMYK_Subtractive_README.md
       - M0_ColorSynthesis.jsonld
       - M0_ColorSynthesis_README.md
       - M0_HSL_Additive.jsonld
       - M0_HSL_Additive_README.md
       - M0_RGB_Additive.jsonld
       - M0_RGB_Additive_README.md
-      - _00_Run.bat
-      - _open_cmd_window.bat
     - **ComplexChemicalSynapse/**
-      - ComplexChemicalSynapse_Simulation.png
-      - M0_ComplexChemicalSynapse.jsonld
-      - M0_ComplexChemicalSynapse_README.md
       - _00_Run_Simulation.bat
       - _00_setup_notes.txt
       - _open_cmd_window.bat
       - complex_chemical_synapse_sim.py
+      - ComplexChemicalSynapse_Simulation.png
+      - M0_ComplexChemicalSynapse.jsonld
+      - M0_ComplexChemicalSynapse_README.md
       - requirements.txt
     - **CounterPoint/**
       - **static/**
-        - **_archives/**
-          - M0_CounterPoint.html
         - **sounds/**
           - 0000_JCLive_sf2_file.js
           - 0060_GeneralUserGS_sf2_file.js
@@ -468,29 +427,22 @@
           - 0560_GeneralUserGS_sf2_file.js
           - 0730_JCLive_sf2_file.js
         - **voices/**
-          - Toccato-&-Fugue-in-D-Minor.mid
           - bitmidi.com.url
           - bwv565.json
           - bwv578.json
           - frere-jacques.json
           - jazz-modal.json
+          - Toccato-&-Fugue-in-D-Minor.mid
+        - _00_serve_poclet-sim.bat
+        - _download_sounds.bat
+        - _open_cmd_window.bat
         - M0_CounterPoint.html
         - M0_CounterPoint.jsonld
         - M0_CounterPoint_README.md
         - WebAudioFontPlayer.js
-        - _00_serve_poclet-sim.bat
-        - _download_sounds.bat
-        - _open_cmd_window.bat
       - M0_Counterpoint.jsonld
       - M0_Counterpoint_README.md
     - **ExposureTriangle/**
-      - **_archives/**
-        - ExposureTriangle_Simulation.png
-        - _00_Run_Simulation.bat
-        - _00_setup_notes.txt
-        - exposure_triangle_sim.py
-        - poclet_parser.py
-        - requirements.txt
       - **sim/**
         - index.html
         - main.js
@@ -500,60 +452,55 @@
         - renderer.js
         - styles.css
       - **static/**
-        - **_archives/**
-          - M0_ExposureTriangle.html
+        - _00_serve_poclet-sim.bat
         - M0_ExposureTriangle.html
         - M0_ExposureTriangle.jsonld
         - M0_ExposureTriangle_README.md
-        - _00_serve_poclet-sim.bat
         - photo_sample.jpg
-      - M0_ExposureTriangle.jsonld
-      - M0_ExposureTriangle_README.md
       - _00_Run.bat
       - _open_cmd_window.bat
+      - M0_ExposureTriangle.jsonld
+      - M0_ExposureTriangle_README.md
     - **FireTriangle/**
       - **static/**
-        - **_archives/**
-          - M0_FireTriangle.html
-        - M0_FireTriangle.html
         - _00_serve_poclet-sim.bat
+        - M0_FireTriangle.html
+      - _open_cmd_window.bat
       - M0_FireTriangle.jsonld
       - M0_FireTriangle_README.md
-      - _open_cmd_window.bat
     - **FourStrokeEngine/**
-      - **_archives/**
-        - M0_FourStrokeEngine.jsonld
-        - M0_FourStrokeEngine_README.md
       - **sim/**
-        - FourStrokeEngine_Simulation.png
         - _00_Run_Simulation.bat
         - _00_setup_notes.txt
         - four_stroke_engine_sim.py
+        - FourStrokeEngine_Simulation.png
         - poclet_parser.py
         - requirements.txt
       - **static/**
-        - **_archives/**
-          - M0_FourStrokeEngine.html
+        - _00_serve_poclet-sim.bat
         - M0_FourStrokeEngine.html
         - M0_FourStrokeEngine.jsonld
         - M0_FourStrokeEngine_README.md
-        - _00_serve_poclet-sim.bat
+      - _open_cmd_window.bat
       - M0_FourStrokeEngine.jsonld
       - M0_FourStrokeEngine_README.md
-      - _open_cmd_window.bat
+    - **kidneys/**
+      - M0_Kidneys.jsonld
+      - M0_Kidneys_README.md
+      - M0_Kidneys_README.pdf
     - **KindlebergerMinsky/**
       - **sim/**
-        - KindlebergMinsky_Simulation.png
         - _00_Run_Simulation.bat
         - _00_setup_notes.txt
         - _open_cmd_window.bat
         - kindleberger_minsky_sim.py
+        - KindlebergMinsky_Simulation.png
         - requirements.txt
       - **static/**
+        - _00_serve_poclet-sim.bat
         - M0_KindlebergerMinsky.html
         - M0_KindlebergerMinsky.jsonld
         - M0_KindlebergerMinsky_README.md
-        - _00_serve_poclet-sim.bat
       - 6 Financial Bubbles.md
       - KindlebergerMinsky_Simulation_README.md
       - M0_KindlebergerMinsky.jsonld
@@ -561,74 +508,60 @@
     - **MtgColorWheel/**
       - **3D_Rep/**
         - Good Orient.png
-        - MTGWheel_3D.js
-        - MTGWheel_3D_README.md
-        - MTGWheel_3D_orient.js
         - MTG_ColorWheel_3D.png
+        - MTGWheel_3D.js
+        - MTGWheel_3D_orient.js
+        - MTGWheel_3D_README.md
       - **sim/**
-        - MTG_ColorWheel_Simulation.png
         - _00_Run_Simulation.bat
         - _00_setup_notes.txt
         - _open_cmd_window.bat
+        - MTG_ColorWheel_Simulation.png
         - requirements.txt
         - sim_mtg_color_wheel.py
       - **static/**
+        - _00_serve_poclet-sim.bat
         - M0_MtgColorWheel.html
         - M0_MtgColorWheel.jsonld
         - M0_MtgColorWheel_README.md
-        - _00_serve_poclet-sim.bat
       - M0_MtgColorWheel.jsonld
       - M0_MtgColorWheel_README.md
     - **NakamotoConsensus/**
       - **static/**
+        - _00_serve_poclet-sim.bat
         - M0_NakamotoConsensus.html
         - M0_NakamotoConsensus.jsonld
         - M0_NakamotoConsensus_README.md
-        - _00_serve_poclet-sim.bat
       - A Phenomenological Statistical-Physics Framework for Distributed Consensus- Phase Transitions and Thermodynamic Stability.url
       - M0_NakamotoConsensus.jsonld
       - M0_NakamotoConsensus_README.md
     - **NuclearReactorsTypology/**
       - **static/**
-        - **_archives/**
-          - M0_NuclearReactorTypology.html
-          - M0_NuclearReactorTypology_ref1.html
+        - _00_serve_poclet-sim.bat
         - LABEL_ORIENTATION_DEBUG.md
         - M0_NuclearReactorTypology.html
         - PEDAGOGICAL_EVALUATION.md
         - Screenshot.png
-        - _00_serve_poclet-sim.bat
       - M0_NuclearReactorsTypology.jsonld
       - M0_NuclearReactorsTypology_README.md
     - **PhaseTransition/**
-      - **_archives/**
-        - phase_transition_sim.py
       - **sim/**
-        - PhaseTransition_Simulation.png
         - _00_Run_Simulation.bat
         - _00_setup_notes.txt
         - _open_cmd_window.bat
         - phase_transition_sim.py
         - phase_transition_simulation_README.md
+        - PhaseTransition_Simulation.png
         - requirements.txt
       - **static/**
-        - **_archives/**
-          - M0_PhaseTransition.html
+        - _00_serve_poclet-sim.bat
         - M0_PhaseTransition.html
         - M0_PhaseTransition.jsonld
         - M0_PhaseTransition_README.md
-        - _00_serve_poclet-sim.bat
       - M0_PhaseTransition.jsonld
       - M0_PhaseTransition_README.md
     - **PlateTectonics/**
-      - **_archives/**
-        - M0_PlateTectonics_README.md
       - **_static/**
-        - **_archives/**
-          - M0_PlateTectonics.html
-          - _00_serve_poclet-sim.bat
-          - app.js
-          - style.css
         - **_proto_ChatGPT/**
           - M0_PlateTectonics.html
         - **_proto_Claude/**
@@ -636,22 +569,6 @@
         - **_proto_DeepSeek/**
           - M0_PlateTectonics.html
         - **src/**
-          - **_archives/**
-            - buildings.js
-            - config.js
-            - geologyData.js
-            - helpers.js
-            - layerCakeUpdater.js
-            - main.js
-            - mantleGrid.js
-            - particles.js
-            - planet.js
-            - sceneBuilder.js
-            - state.js
-            - transformations.js
-            - uiControls.js
-            - utils.js
-            - wireframe.js
           - buildings.js
           - config.js
           - geologyData.js
@@ -667,34 +584,16 @@
           - uiControls.js
           - utils.js
           - wireframe.js
+        - _00_serve_poclet-sim.bat
         - FileTree.txt
         - M0_PlateTectonics.html
         - M0_PlateTectonics_Simulation_README.md
         - PlateTectonics_Model_FiniteElement.md
-        - _00_serve_poclet-sim.bat
         - style.css
       - M0_PlateTectonics.jsonld
       - M0_PlateTectonics_README.md
     - **Ptoe/**
-      - **_archives/**
-        - M0_Ptoe_1st_version_SHACL_errors.jsonld
       - **static/**
-        - **_archives/**
-          - **src/**
-            - **DeepSeek_Fix_AspectRatio_But_Flicker/**
-              - M0_Ptoe.html
-              - ptoe.css
-              - ptoe.js
-            - **ok/**
-              - M0_Ptoe.html
-              - ptoe.css
-              - ptoe.js
-            - **protos/**
-              - ptoe.css
-              - ptoe.js
-            - ptoe.css
-            - ptoe.js
-          - M0_Ptoe.html
         - **ok/**
           - **src/**
             - **DeepSeek_Fix_AspectRatio_But_Flicker/**
@@ -714,9 +613,9 @@
         - **screenshots/**
           - ResizeBug1.png
           - ResizeBug_Step2_After-Closing-Debug.png
-          - TransitionMetalsFamily.png
           - session_2026_05_02.html
           - traces_2026_05_02.html
+          - TransitionMetalsFamily.png
         - **src/**
           - **DeepSeek_Fix_AspectRatio_But_Flicker/**
             - M0_Ptoe.html
@@ -731,15 +630,15 @@
             - ptoe.js
           - ptoe.css
           - ptoe.js
+        - _00_Electron Orbital Simulator.url
+        - _00_serve_poclet-sim.bat
         - M0_Ptoe.html
-        - M0_Ptoe_Previous.html
         - M0_Ptoe__test.html
+        - M0_Ptoe_Previous.html
         - Microsoft Word - ov.doc.url
         - README.md
         - The Orbitron- 1s atomic orbital.url
         - The Orbitron- 3d atomic orbitals.url
-        - _00_Electron Orbital Simulator.url
-        - _00_serve_poclet-sim.bat
       - Files_Corrected_Summary.md
       - INTEGRATION_GUIDE.md
       - M0_Ptoe.jsonld
@@ -753,31 +652,28 @@
     - **QRCodeToPocketCity/**
       - **static/**
         - **lib/**
-          - README.md
           - earcut.min.js
           - qrcode.js
+          - README.md
         - **src/**
           - qrcity-stylesheets.js
           - qrcity.css
           - qrcity.js
           - tscg-shell.css
           - tscg-shell.js
+        - _00_serve_poclet-sim.bat
         - Browser Display Resolution per site.txt
         - M0_QRCodeToPocketCity.html
         - Screenshot-QR-3D.png
         - Simple_mode_0_0_32.gif
-        - _00_serve_poclet-sim.bat
       - M0_QRCodeToPocketCity.jsonld
       - M0_QRCodeToPocketCity_README.md
+    - **raas/**
+      - M0_RAAS.jsonld
+      - M0_raas_README.md
+      - M0_raas_README.pdf
     - **Theremin/**
       - **_static/**
-        - **_archives/**
-          - **src/**
-            - Theremin_Prototype.css
-            - Theremin_Prototype.js
-            - WebAudioFontPlayer.js
-          - M0_Theremin_Prototype.html
-          - _00_serve_poclet-sim.bat
         - **docs/**
           - **textures/**
             - Oak Veneered MDF - Architextures.url
@@ -794,104 +690,82 @@
           - Theremini Manual.pdf
           - Trapeze.png
         - **src/**
-          - **_archives/**
-            - 2026_05_10-22h20-Theremin_Prototype.js
           - **assets/**
             - oak-texture.jpg
           - Theremin_Prototype.css
           - Theremin_Prototype.js
           - WebAudioFontPlayer.js
+        - _00_serve_poclet-sim.bat
         - M0_Theremin_Prototype.html
         - README.md
-        - _00_serve_poclet-sim.bat
+    - **tpack/**
+      - _00_Run_Simulation.bat
+      - _00_setup_notes.txt
+      - _open_cmd_window.bat
+      - M0_TPACK.jsonld
+      - M0_tpack_README.md
+      - requirements.txt
+      - tpack_sim.py
+      - TPACK_Simulation.png
     - **Transistor/**
       - **sim/**
-        - Transistor types and modes.md
-        - Transistor_Simulation.png
         - _00_Run_Simulation.bat
         - _00_setup_notes.txt
         - _open_cmd_window.bat
         - poclet_parser.py
         - requirements.txt
+        - Transistor types and modes.md
         - transistor_sim.py
+        - Transistor_Simulation.png
       - **static/**
-        - **_archives/**
-          - M0_Transistor.html
-        - M0_Transistor.html
         - _00_serve_poclet-sim.bat
+        - M0_Transistor.html
       - M0_Transistor.jsonld
       - M0_Transistor_README.md
     - **TrophicPyramid/**
       - **sim/**
-        - INSTALL.md
-        - MIGRATION_GUIDE.md
         - _00_Run.bat
         - index.html
+        - INSTALL.md
         - main.js
         - metadata.js
+        - MIGRATION_GUIDE.md
         - package.json
         - poclets_registry.js
         - renderer.js
         - styles.css
       - **static/**
-        - **_archives/**
-          - M0_TrophicPyramid.html
+        - _00_serve_poclet-sim.bat
         - M0_TrophicPyramid.html
         - M0_TrophicPyramid.jsonld
         - M0_TrophicPyramid_README.md
-        - _00_serve_poclet-sim.bat
+      - _open_cmd_window.bat
       - M0_TrophicPyramid.jsonld
       - M0_TrophicPyramid_README.md
       - TrophicPyramid_Simulation.png
-      - _open_cmd_window.bat
     - **TvTestPattern/**
-      - M0_TVTestPattern.jsonld
-      - M0_TVTestPattern_README.md
       - _00_Run_Simulation.bat
       - _00_setup_notes.txt
       - _open_cmd_window.bat
+      - M0_TVTestPattern.jsonld
+      - M0_TVTestPattern_README.md
       - requirements.txt
       - tv_test_pattern_sim.py
     - **Vco/**
       - **sim/**
-        - VCO_Simulation.png
         - _00_Run_Simulation.bat
         - _00_setup_notes.txt
         - _open_cmd_window.bat
         - requirements.txt
         - vco_sim.py
+        - VCO_Simulation.png
       - **static/**
-        - **_archives/**
-          - M0_VCO.html
         - M0_VCO.html
         - M0_Vco.jsonld
         - M0_Vco_README.md
       - M0_VCO.jsonld
       - M0_VCO_README.md
       - VCO_Simulation_README.md
-    - **_00_template/**
-      - **src/**
-        - tscg-shell.css
-        - tscg-shell.js
-      - M0_Template.html
-      - _00_serve_poclet-sim.bat
-    - **kidneys/**
-      - M0_Kidneys.jsonld
-      - M0_Kidneys_README.md
-      - M0_Kidneys_README.pdf
-    - **raas/**
-      - M0_RAAS.jsonld
-      - M0_raas_README.md
-      - M0_raas_README.pdf
-    - **tpack/**
-      - M0_TPACK.jsonld
-      - M0_tpack_README.md
-      - TPACK_Simulation.png
-      - _00_Run_Simulation.bat
-      - _00_setup_notes.txt
-      - _open_cmd_window.bat
-      - requirements.txt
-      - tpack_sim.py
     - **yggdrasil/**
       - Heimdall_Interface_Constraint_Analysis.md
       - Loki_As_Representation_Transformer.md
@@ -901,11 +775,14 @@
       - Yggdrasil_7_vs_9_Analysis.md
       - Yggdrasil_Discussion_Points.md
       - Yggdrasil_Reformulation_Analysis.md
-    - POCLET_CREATION_GUIDE.md
-    - Select Map Projections.url
     - _00_serve_poclet-sim.bat
     - _open_cmd_window.bat
+    - POCLET_CREATION_GUIDE.md
+    - Select Map Projections.url
   - **symbolic-system-grammars/**
+    - **iching/**
+      - M0_IChing.jsonld
+      - M0_IChing_README.md
     - **TriskeleToolchain/**
       - **.cargo/**
         - config.toml
@@ -946,8 +823,8 @@
             - host.rs
             - lib.rs
             - main.rs
-          - Cargo.toml
           - build.rs
+          - Cargo.toml
         - **triskele-vm-wasm/**
           - **docs/**
             - **adr/**
@@ -963,16 +840,16 @@
             - index.html
             - server.py
             - worker.js
+          - _00_open_cmd_window.bat
           - Cargo.lock
           - Cargo.toml
-          - README_WASM.md
-          - _00_open_cmd_window.bat
           - hello.c
           - hello.ll
+          - README_WASM.md
         - **tsk-asm/**
           - **src/**
-            - Cargo.toml
             - assembler.rs
+            - Cargo.toml
             - encoder.rs
             - lexer.rs
             - main.rs
@@ -1007,8 +884,8 @@
             - main.rs
             - map.rs
           - Cargo.toml
-        - PATCH_NOTES.md
         - _00_open_cmd_window.bat
+        - PATCH_NOTES.md
       - **docs/**
         - Getting started - Rust Programming Language.url
         - migration_32_to_64_registers.md
@@ -1028,14 +905,6 @@
             - ubuntu.png
             - windows.png
           - **src/**
-            - Makefile
-            - Makefile.djgpp
-            - Makefile.emscripten
-            - Makefile.freebsd
-            - Makefile.linuxvt
-            - Makefile.sdl
-            - Makefile.soso
-            - Makefile.sosox
             - am_map.c
             - am_map.h
             - config.h
@@ -1139,6 +1008,14 @@
             - m_misc.h
             - m_random.c
             - m_random.h
+            - Makefile
+            - Makefile.djgpp
+            - Makefile.emscripten
+            - Makefile.freebsd
+            - Makefile.linuxvt
+            - Makefile.sdl
+            - Makefile.soso
+            - Makefile.sosox
             - memio.c
             - memio.h
             - mus2mid.c
@@ -1307,31 +1184,31 @@
                   - doom_zzone_test.c
                   - z_zone.c
                 - pipeline.toml
-          - LICENSE
-          - README.TXT
-          - README.md
           - _00_open_cmd_window.bat
           - doomgeneric.sln
+          - LICENSE
           - ozkl-doomgeneric- Easily portable doom.url
+          - README.md
+          - README.TXT
+        - **references/**
+          - 7 weirdest devices DOOM has been ported to that you can actually play.url
+          - Can It Run Doom- An Archive of All Known Ports-.url
         - **Tests_ZMachine/**
           - **hello/**
-            - README.txt
             - hello.c
             - hello.ll
             - hello.tvmx
-          - **hello_input/**
             - README.txt
+          - **hello_input/**
             - _00_open_cmd_window.bat
             - hello_input.c
             - hello_input.l
             - hello_input.ll
             - hello_input.tob
             - hello_input.tvmx
-          - README.txt
+            - README.txt
           - _00_open_cmd_window.bat
-        - **references/**
-          - 7 weirdest devices DOOM has been ported to that you can actually play.url
-          - Can It Run Doom- An Archive of All Known Ports-.url
+          - README.txt
         - **toolchain-tests/**
           - **asm/**
             - **hello/**
@@ -1418,32 +1295,32 @@
           - extension.js
         - **syntaxes/**
           - tasm.tmLanguage.json
-        - README.md
         - install-extension.bat
         - language-configuration.json
         - launch.json
         - package.json
-      - CHANGES_v0324.md
-      - CHANGES_v0325.md
-      - CLAUDE.md
-      - Cargo.lock
-      - Cargo.toml
-      - DeepSeek_WASM_README.md
-      - Deepseek_Feedback_README.md
-      - FileTree_v020.md
-      - Gemini_64bits_README.md
-      - HANDOVER_v0322.md
-      - M0_TriskeleToolchain.jsonld
-      - M0_TriskeleToolchain_README.md
-      - PATCH_NOTES.md
-      - PREREQUISITES.md
+        - README.md
       - _00_open_cmd_window.bat
       - _01_Howto.txt
       - _01_update_toolchain.bat
       - _02_run_pipeline.bat
       - build_log.txt
+      - Cargo.lock
+      - Cargo.toml
+      - CHANGES_v0324.md
+      - CHANGES_v0325.md
+      - CLAUDE.md
       - debug.txt
+      - Deepseek_Feedback_README.md
+      - DeepSeek_WASM_README.md
+      - FileTree_v020.md
+      - Gemini_64bits_README.md
+      - HANDOVER_v0322.md
       - hello_input.tvmx
+      - M0_TriskeleToolchain.jsonld
+      - M0_TriskeleToolchain_README.md
+      - PATCH_NOTES.md
+      - PREREQUISITES.md
       - reorganize_projects.py
       - run_all_tests.py
       - run_pipeline.py
@@ -1451,20 +1328,15 @@
       - tsk-libc.tvml
       - update_toolchain.py
     - **TscgFoundationGrammar/**
-      - **_archives/**
-        - MonoidsLayouts.svg
       - **_static/**
-        - HexGrid4x4Layout.png
-        - M0_base16_grid.html
         - _00_serve_poclet-sim.bat
         - _open_cmd_window.bat
         - _static.zip
+        - HexGrid4x4Layout.png
+        - M0_base16_grid.html
+      - _open_cmd_window.bat
       - AxialLayout.png
       - BugAxialLayout.png
-      - _open_cmd_window.bat
-    - **iching/**
-      - M0_IChing.jsonld
-      - M0_IChing_README.md
   - **systemic-frameworks/**
     - **Bmc/**
       - **docs/**
@@ -1473,85 +1345,34 @@
         - etude de limites du BLC plareforme web 2.url
         - osterwalder_phd_bm_ontology.pdf
       - **static/**
-        - **_archives/**
-          - **src/**
-            - Bmc.css
-            - Bmc.js
-            - usecases.js
-          - M0_Bmc.html
-          - _00_serve_poclet-sim.bat
         - **src/**
           - Bmc.css
           - Bmc.js
           - M0_BmcSimulation.jsonld.js
           - usecases.js
+        - _00_serve_poclet-sim.bat
         - M0_Bmc.html
         - Screenshot.png
-        - _00_serve_poclet-sim.bat
       - HANDOVER_2026-06-19.md
       - M0_Bmc.jsonld
-      - M0_BmcSimulation.jsonld
       - M0_Bmc_README.md
+      - M0_BmcSimulation.jsonld
       - Screenshot.png
     - **Triz/**
       - **static/**
-        - **_archives/**
-          - M0_Triz.html
-          - M0_Triz_Simulation_1.html
-          - M0_Triz_Simulation_10.html
-          - M0_Triz_Simulation_11.html
-          - M0_Triz_Simulation_12.html
-          - M0_Triz_Simulation_13.html
-          - M0_Triz_Simulation_14.html
-          - M0_Triz_Simulation_15.html
-          - M0_Triz_Simulation_16.html
-          - M0_Triz_Simulation_17.html
-          - M0_Triz_Simulation_18.html
-          - M0_Triz_Simulation_19.html
-          - M0_Triz_Simulation_2.html
-          - M0_Triz_Simulation_20.html
-          - M0_Triz_Simulation_21.html
-          - M0_Triz_Simulation_22.html
-          - M0_Triz_Simulation_23.html
-          - M0_Triz_Simulation_24.html
-          - M0_Triz_Simulation_25.html
-          - M0_Triz_Simulation_26.html
-          - M0_Triz_Simulation_27.html
-          - M0_Triz_Simulation_28.html
-          - M0_Triz_Simulation_29.html
-          - M0_Triz_Simulation_3.html
-          - M0_Triz_Simulation_30.html
-          - M0_Triz_Simulation_31.html
-          - M0_Triz_Simulation_32.html
-          - M0_Triz_Simulation_33.html
-          - M0_Triz_Simulation_34.html
-          - M0_Triz_Simulation_35.html
-          - M0_Triz_Simulation_36.html
-          - M0_Triz_Simulation_37.html
-          - M0_Triz_Simulation_38.html
-          - M0_Triz_Simulation_39.html
-          - M0_Triz_Simulation_4.html
-          - M0_Triz_Simulation_40.html
-          - M0_Triz_Simulation_41.html
-          - M0_Triz_Simulation_42.html
-          - M0_Triz_Simulation_5.html
-          - M0_Triz_Simulation_6.html
-          - M0_Triz_Simulation_7.html
-          - M0_Triz_Simulation_8.html
-          - M0_Triz_Simulation_9.html
         - **test/**
           - M0_Triz.html
+        - _00_serve_poclet-sim.bat
         - Aerogel.png
         - Fiberglass Composite.png
         - M0_Triz.html
-        - _00_serve_poclet-sim.bat
         - triz_icosahedron_1777047061826.png
       - M0_Triz.jsonld
       - M0_Triz_Examples.jsonld
       - M0_Triz_README.md
       - Triz_Description.md
     - **vsm/**
-      - **_sim/** _(collapsed, 3 entries)_
+      - **_sim/** _(collapsed, 2 entries)_
       - M0_VSM.jsonld
       - M0_VSM_README.md
       - M0_VSM_README.pdf
@@ -1565,14 +1386,14 @@
       - tscg_layercake_mcp_server_README.md
     - **TscgLittleBigBrain/**
       - **docs/**
+        - _00_TSCG_as_StereoscopicGlasses.md
+        - _01_Narcissus_and_Icarus_as_Safeguards.md
         - Archetypes_as_CrossCultural_Artifacts.md
         - CredibilityAccretion_Process.md
         - LegoTechnic_Modularity.md
         - MultisubjectiveScoreEvaluationProtocol.md
         - SystemicEsperanto.md
         - TerritoryMap_Dichotomy.md
-        - _00_TSCG_as_StereoscopicGlasses.md
-        - _01_Narcissus_and_Icarus_as_Safeguards.md
       - **examples/**
         - run_benchmark.py
       - **src/**
@@ -1584,25 +1405,25 @@
         - __init__.py
         - test_api_client.py
         - test_benchmark.py
-      - FileTree.txt
-      - M0_Triz_Examples.jsonld
-      - README.md
-      - TRIZ_vs_TSCG.py
       - _00_run.bat
       - _open_cmd_window.bat
       - detect_scores.py
       - diagnostic_scores.py
+      - FileTree.txt
       - instances_traversal.py
+      - M0_Triz_Examples.jsonld
+      - README.md
       - requirements.txt
       - restore_M0_bak.py
       - scores_migration.py
       - server.log
       - test_extract_score.py
+      - TRIZ_vs_TSCG.py
     - **TscgOntologyAPIServer/**
       - **src/**
-        - HowTo run tests.txt
         - _run_tests.bat
         - _setup.bat
+        - HowTo run tests.txt
         - requirements.txt
         - tscg_api_cli.py
         - tscg_api_client_example.py
@@ -1617,20 +1438,20 @@
         - test_expand_iri.py
         - test_pepites_regression.py
         - test_tscg_store.py
+      - _00_start_server.bat
+      - _01_run_client_example.bat
+      - _open_cmd_window.bat
+      - _setup.bat
       - FileTree.txt
       - M0_TscgOntologyAPIServer.jsonld
       - M0_TscgOntologyAPIServer_README.md
       - PEPITE_FIXES_Report.md
       - Swagger UI.url
-      - _00_start_server.bat
-      - _01_run_client_example.bat
-      - _open_cmd_window.bat
-      - _setup.bat
     - **TscgOntologyExplorer/**
       - **docs/**
-        - UserManual.md
         - __UserManual.html
         - markdown-viewer.html
+        - UserManual.md
       - **img/**
         - OrkaStompa.jpeg
       - **output/**
@@ -1638,32 +1459,6 @@
         - SPARQL_OUTPUT_2026-05-17T20-24-07.csv
         - SPARQL_OUTPUT_2026-05-18T10-57-43.csv
       - **plugins/**
-        - **_archives/**
-          - **tscg-python-bridge/**
-            - **.pytest_cache/**
-              - **v/**
-                - **cache/**
-                  - lastfailed
-                  - nodeids
-              - .gitignore
-              - CACHEDIR.TAG
-              - README.md
-            - **tests/**
-              - **fixtures/**
-                - minimal_m1_chem.jsonld
-                - minimal_m1_edu.jsonld
-                - minimal_m2.jsonld
-              - conftest.py
-              - test_endpoints.py
-              - test_expand_iri.py
-              - test_tscg_store.py
-            - _00_run_tests.bat
-            - _open_cmd_window.bat
-            - _run_tests.py
-            - bridge_server.py
-            - index.js
-            - package.json
-            - requirements.txt
         - **tscg-api-bridge/**
           - api-server-dialog.html
           - index.js
@@ -1693,36 +1488,36 @@
             - day.css
             - night.css
           - DocumentManager.js
-          - ObjectExplorer.js
-          - OntologyLoader.js
-          - RendererPluginApi.js
-          - Splitter.js
           - index.html
           - index.js
+          - ObjectExplorer.js
+          - OntologyLoader.js
           - renderer.js
+          - RendererPluginApi.js
+          - Splitter.js
           - style.css
         - _open_cmd_window.bat
         - launcher.py
         - main.js
         - preload.js
-      - M0_TscgOntologyExplorer.jsonld
-      - M0_TscgOntologyExplorer_README.md
-      - PLUGINS_README.md
-      - Swagger UI.url
       - _00_run.bat
       - _open_cmd_window.bat
       - _plugins_setup.bat
       - config.json.lnk
+      - M0_TscgOntologyExplorer.jsonld
+      - M0_TscgOntologyExplorer_README.md
       - package.json
+      - PLUGINS_README.md
+      - Swagger UI.url
     - **TscgPocletGenerator/**
-      - M0_TscgPocletGenerator.jsonld
-      - M0_TscgPocletGenerator.jsonld.bak
-      - M0_TscgPocletGenerator_README.md
       - _00_Run_Simulation.bat
       - _00_setup_notes.txt
       - _google_cloud_login.bat
       - _open_cmd_window.bat
       - _open_powershell.bat
+      - M0_TscgPocletGenerator.jsonld
+      - M0_TscgPocletGenerator.jsonld.bak
+      - M0_TscgPocletGenerator_README.md
       - requirements.txt
       - tscg_poclet_generator.py
       - tscg_rag_augmentor.py
@@ -1735,11 +1530,11 @@
         - renderer.js
         - restore_rag.js
       - **renderer/**
-        - UI_IMPROVEMENT_SELECT_PROVIDER.md
-        - UI_IMPROVEMENT_V2_INFO_BOX.md
         - index.html
         - renderer.js
         - style.css
+        - UI_IMPROVEMENT_SELECT_PROVIDER.md
+        - UI_IMPROVEMENT_V2_INFO_BOX.md
       - **src/**
         - **llm/**
           - AnthropicProvider.js
@@ -1751,68 +1546,204 @@
         - **rag/**
           - BUG_FIX_PATH_FRAGMENTS.md
           - BUG_FIX_TRAILING_SLASH.md
+          - RagBuilder.js
           - RAGBUILDER_DEBUG_ENHANCEMENTS.md
           - RAGBUILDER_DEBUG_NODEMODULES.md
-          - RagBuilder.js
           - TfIdfRetriever.js
         - **tscg/**
           - PocletPipeline.js
           - SystemPrompts.js
       - **tools/**
         - rebuild_m2_corpus.py
-      - M0_TscgPocletMiner.jsonld
-      - M0_TscgPocletMiner_README.md
-      - README_LLM_RAG.md
       - _000_Run.bat
       - _00_README_Run.txt
       - _open_cmd_window.bat
+      - M0_TscgPocletMiner.jsonld
+      - M0_TscgPocletMiner_README.md
       - m2_concepts_corpus.json
       - main.js
       - package-lock.json
       - package.json
       - poclet_corpus_profile.json
       - preload.js
-    - **_archives/**
-      - **2026_06_15-16h38/**
-        - **TscgOntologyAPIServer/**
-          - **.pytest_cache/**
-            - **v/**
-              - **cache/**
-                - lastfailed
-                - nodeids
-            - .gitignore
-            - CACHEDIR.TAG
-            - README.md
-          - **src/**
-            - HowTo run tests.txt
-            - _run_tests.bat
-            - _setup.bat
-            - requirements.txt
-            - tscg_api_cli.py
-            - tscg_api_client_example.py
-            - tscg_api_server.py
-          - **tests/**
-            - **fixtures/**
-              - minimal_m1_chem.jsonld
-              - minimal_m1_edu.jsonld
-              - minimal_m2.jsonld
-            - conftest.py
-            - test_endpoints.py
-            - test_expand_iri.py
-            - test_tscg_store.py
-          - FileTree.txt
-          - M0_TscgOntologyAPIServer.jsonld
-          - M0_TscgOntologyAPIServer_README.md
-          - Swagger UI.url
-          - _00_start_server.bat
-          - _01_run_client_example.bat
-          - _open_cmd_window.bat
-          - _setup.bat
+      - README_LLM_RAG.md
   - 2DBarcode_PedagogicalPoclet_DemocratizationFacet_README.md
-  - QRCode_ExplorationSpaces_README.md
   - _open_cmd_window.bat
+  - QRCode_ExplorationSpaces_README.md
 - **migration_backups/** _(collapsed, 86 entries)_
 - **ontology/**
+  - **cli-tools/**
+    - **check-M0/**
+      - check_m0_instances.py
+      - M0_Instances_Schema_shacl.ttl
+      - migrate_m0_to_v1_5.py
+    - **check-M1/**
+      - _open_cmd_window.bat
+      - after_publicid.txt
+      - check_M1.py
+      - check_M1_README.md
+      - M1_Schema_shacl.ttl
+      - shacl_after.txt
+    - **check-M2/**
+      - M2_MonoidalFormula_Schema_shacl.ttl
+    - **validator/**
+      - **checks/**
+        - __init__.py
+        - ctx.py
+      - sources.py
+      - tscg_validator.py
+    - _00_open_cmd_window.bat
+    - _run_all_layers.bat
+    - golden_values.json
+    - README.md
+    - run_all_layers.py
+    - tscg_metrics.py
+    - tscg_metrics_README.md
+    - tscg_paths.py
+    - verify_session_2026-07-18.bat
+    - worksite_report.py
+  - **docs/**
+    - **_00_test_reports/**
+      - **2026_07_26_regression_KitArchitect-01/**
+        - KitArchitect-01_retest_guide.md
+        - KitArchitect-01_top_pepites.md
+        - PEPITE_013_Report.md
+        - PEPITE_FIXES_Report.md
+        - TSCG_REGRESSION_VALIDATION_REPORT.md
+    - **_01_Worksite/**
+      - **WS-0/**
+        - **Next Conversation_2026_07_30/**
+          - SC-3_Facet_Decision_Record.md
+          - TSCG_Session_Handover_2026-07-30.md
+        - **Next Conversation_2026_08_08/**
+          - TSCG_Session_Handover_2026-08-08.md
+        - **Next Conversation_2026_08_09/**
+          - TSCG_Session_Handover_2026-08-09.md
+        - **Next Conversation_2026_08_11/**
+          - TSCG_Session_Handover_2026-08-11.md
+        - **SC-1/**
+          - _00_TSCG_Worksite_Map_SC1-9.md
+          - _open_cmd_window.bat
+          - SC-1_Completion_Report.md
+          - SC-1_FunctionalGrammar_Handover.md
+        - _00_open_cmd_window.bat
+        - _00_TSCG_Worksite_Map.md
+        - _01_Facet_as_M3_Principle_ArchitectureNote.md
+        - Functional_Grammar_Model.md
+        - M2_FeedbackLoop_Reclassification_README.md
+        - README.md
+        - SC-1_FunctionalGrammar_Handover.md
+        - TSCG_File_Tree.md
+        - TSCG_Session_Handover_2026-07-25.md
+      - **WS-10/**
+        - worksite.yaml
+      - **WS-11/**
+        - worksite.yaml
+      - **WS-3/**
+        - M2_Formulas_Review_with_Gs_README.md
+      - **WS-5/**
+        - worksite.yaml
+        - WS-5_LOT1_Report.md
+      - **WS-8/**
+        - Until_Further_Notice_WorksiteEntry.md
+      - **WS-9/**
+        - worksite.yaml
+      - _00_open_cmd_window.bat
+      - _open_cmd_window.bat
+      - TSCG_OntologyValidator_Worksite_README.md
+      - TSCG_VocabularyConsolidation_Worksite_README.md
+      - worksite.yaml
+    - Amplification_Integration_Summary.md
+    - Bicephalous_Integration_Guide.md
+    - Bicephalous_Refactoring_Summary.md
+    - Cascade_Modeling_README.md
+    - CatastrophicBifurcation_M1_Analysis.md
+    - CategoryTheory_KnowledgeField_Integration (1).md
+    - CategoryTheory_KnowledgeField_Integration.md
+    - Cyclic_Tension_Validation_Analysis.md
+    - Domain_M2_Update_Analysis_v15_1_0.md
+    - ENCODING_CORRECTION_REPORT.md
+    - encoding_correspondances.json
+    - ENCODING_CORRESPONDANCES.txt
+    - encoding_correspondances_2026_02_05.json
+    - Final_Corrections_Summary.md
+    - Fusion_vs_Composition_Correction.md
+    - HOWTO_Create_M1_Extension.md
+    - HYBRID_FORMULAS_NOTATION_README (1).md
+    - M0_VSM_Prerequisites_Analysis.md
+    - M1_CoreConcepts.jsonld
+    - M1_CoreConcepts_NuclearUpdate.jsonld
+    - M1_CoreConcepts_updated.jsonld
+    - M1_CoreConcepts_v1.2.0_Summary.md
+    - M1_Extensions_Summary.md
+    - M1_Mythology_Core_Concepts.md
+    - M2_Architecture_Specification_v9.1.0.md
+    - M2_Behavioral_Sequential_Metaconcepts_README.md
+    - M2_Behavioral_Visual_Guide.md
+    - M2_Calibration_FormulasRef_entry.json
+    - M2_Candidates_Analysis_Layer_Switch_Mode (1).md
+    - M2_Coherence_Analysis.md
+    - M2_Component_Channel_Addition_Summary.md
+    - M2_Dual_ORIVE_Proposals.md
+    - M2_FormulasReference.json
+    - M2_FormulasReference_v15.10.0.json
+    - M2_FormulasReference_v15.10.0.md
+    - M2_Generation_Summary.md
+    - M2_GenericConcepts_README.md
+    - m2_Imbrication_entry.jsonld
+    - M2_Imbrication_README.md
+    - M2_KnowledgeField_Integration_Summary.md
+    - M2_KnowledgeField_KnowledgeFieldMetaCombo_v15_2_0.jsonld
+    - M2_KnowledgeField_README.md
+    - M2_MetaconceptCombo.jsonld
+    - M2_MetaConcepts.jsonld
+    - M2_MetaConcepts_2026_02_06_encoding_lint_checked.jsonld
+    - M2_MetaConcepts_README.md
+    - M2_Metaconcepts_v13.jsonld
+    - M2_New_5_Metaconcepts.jsonld
+    - M2_OntologyCategory_Proposal (1).md
+    - m2_Oscillator_snippet.jsonld
+    - M2_Pattern_metaconcept.jsonld
+    - M2_Scope_Metaconcept_Proposal.md
+    - M3_CategoryTheory_v1_0_0.jsonld
+    - M3_EagleEye_Update_Analysis_v15_1_0.md
+    - M3_Genesis_Space_README.md
+    - M3_GenesisSpace_CategoryTheory_Integration.md
+    - M3_GenesisSpace_CategoryTheory_Integration_Complete.md
+    - M3_GenesisSpace_OptionA_Complete.md
+    - M3_GenesisSpace_v3_1_0_Changes_Summary.md
+    - M3_Philosophical_Eye.jsonld
+    - M3_SphinxEye_ORIVE_Correction_v2.2.0.md
+    - M3_SystemicFramework_Category_Documentation.md
+    - M3_TransdisciplinaryMetaConcepts_Renaming.md
+    - MetaconceptCombo_corrected.json
+    - MetaconceptPair_README.md
+    - Namespace_Collision_Fix_Summary.md
+    - Namespace_Refactoring_Summary.md
+    - ontology_analysis.md
+    - OntologyModeling_Guidelines.md
+    - ORIVE_Official_Reference_CORRECT.md
+    - Poclet_Analysis_Methodology.md
+    - README_v13_Delivery.md
+    - TSCG-M3_Ontology_Documentation.md
+    - TSCG_Architectural_Extensions.md
+    - TSCG_Documentation_Index.md
+    - TSCG_Formula_Encoding_Solution.md
+    - TSCG_Formula_Properties_Specification.jsonld
+    - TSCG_M1_Architecture.md
+    - TSCG_M2_MetaConcepts_README.md
+    - TSCG_Nary_Polarity_Paradigm_Shift.md
+    - TSCG_Smart_Prompt_v15_7_0.md
+    - TSCG_Update_v12_Summary.md
+    - TSCG_v14_3_0_Summary.md
+    - TSCG_v15_1_0_Final_Classification.md
+    - TSCG_v15_1_0_Integration_Report.md
+    - TSCG_ValueSpace_Quick_Reference.md
+    - TSCG_ValueSpace_User_Guide.md
+    - UPDATE_SUMMARY_v14_3_1.md
+    - UserManual.html
+    - ValueSpace_Enrichment_Final_Report.md
+    - ValueSpace_Integration_Summary.md
   - **InstanceSimulations/**
     - M0_InstanceSimulation_UXControls.jsonld
     - M0_InstanceSimulation_UXControls_README.md
@@ -1854,6 +1785,8 @@
       - M1_SystemicModeling.jsonld
     - M1_Extension_README_TEMPLATE.md
     - M1_Extensions_Summary.md
+  - **rebuild M2/**
+    - M2_ontology_header.json
   - **Ref/**
     - M2_GenericConcepts_2026_02_17_17h-00min.jsonld
     - M2_GenericConcepts_2026_02_17_17h-00min.ttl
@@ -1861,255 +1794,8 @@
     - M2_MetaConcepts_Ref.ttl
     - M3_GenesisSpace_Ref.jsonld
     - M3_GenesisSpace_Ref.ttl
-  - **StructuralGrammar/**
-    - **_archives/**
-      - Braille_StructuralGrammar_v0.pdf
-      - Braille_StructuralGrammar_v0.png
-      - Braille_StructuralGrammar_v0.pptx
-    - Braille_StructuralGrammar.pdf
-    - Braille_StructuralGrammar.png
-    - Braille_StructuralGrammar.pptx
-    - Functional_Grammar_Model.md
-    - HANDOVER_tscg_base16_session.md
-    - PotentialRefinements_MonoidalOperators.md
-    - StructuralGrammar_MonoidalOperators_README.md
-    - Structural_Grammar_Foundation.md
-    - Structural_Grammar_Foundation_README.md
-    - TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md
-    - TSCG_Mathematical_Legitimacy_Summary.md
-    - TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md
-    - _00_Session_Claude_GrammaireStructurelle.md
-  - **TSCG_InstanceGrammar/**
-    - **_archives/**
-      - 2026_04_25_M0_Instances_Schema.shacl.ttl
-      - FireTriangle_migrate_readme_html_to_it_im.py
-      - GUIDE_FIX_FIRETRIANGLE.md
-      - LOT4_Analysis_Report.md
-      - LOT5_Analysis_Report.md
-      - LOT6_FINAL_Analysis_Report.md
-      - M0_Instances_Schema.shacl.ttl
-      - M0_Realignment_Tracker.md
-      - automated_migration_easy_instances.py
-      - diagnose_firetriangle.py
-      - fix_bloodpressure_namespace.py
-      - fix_butterfly_classes.py
-      - fix_cellsignaling_inline.py
-      - fix_firetriangle_float.py
-      - fix_firetriangle_values.py
-      - fix_float_typing.py
-      - fix_m0_float_typing.bat
-      - fix_scores_final.py
-      - migrate_firetriangle_to_it_im.py
-      - show_keys.py
-    - CHANGEMENTS_v1_2_to_v1_3.md
-    - DEPLOYMENT_GUIDE.md
-    - FINIR_SHACL_GUIDE.md
-    - GUIDE_CORRECTION_DOMAIN_FORMAT.md
-    - M0_CONTEXT_TEMPLATE.json
-    - M0_INSTANCE_TEMPLATE.jsonld
-    - M0_Instances_Schema.shacl.ttl
-    - M0_TEMPLATES_README.md
-    - M0_TEMPLATES_USAGE_GUIDE.md
-    - M1_NAMESPACE_AUDIT_REPORT.md
-    - MIGRATION_GUIDE_It_Im.md
-    - MIGRATION_GUIDE_Simuation_Titles.md
-    - RECAPITULATIF_EXECUTIF.md
-    - TSCG_Grammar_Extraction_Final_Report.md
-    - _00_open_cmd_window.bat
-    - _00_start_M0_migration-dry-run.bat
-    - _00_start_M0_migration.bat
-    - _open_cmd_window.bat
-    - audit_m1_namespaces.py
-    - automated_migration_easy_instances.py
-    - check_graph_objects.py
-    - create_new_instance.py
-    - diagnose_migration_failures.py
-    - diagnose_scores.py
-    - domain_format_analysis.md
-    - fix_domain_format.py
-    - fix_tscgtools.py
-    - migrate_m1_namespaces.py
-    - migrate_simulation_titles.py
-    - result.txt
-    - test_shacl.bat
-    - test_shacl_validation.bat
-    - validate_context_urls.py
-    - validate_m0_instance.py
-  - **cli-tools/**
-    - **check-M0/**
-      - M0_Instances_Schema_shacl.ttl
-      - check_m0_instances.py
-      - migrate_m0_to_v1_5.py
-    - **check-M1/**
-      - M1_Schema_shacl.ttl
-      - _open_cmd_window.bat
-      - after_publicid.txt
-      - check_M1.py
-      - check_M1_README.md
-      - shacl_after.txt
-    - **check-M2/**
-      - M2_MonoidalFormula_Schema_shacl.ttl
-    - **validator/**
-      - **checks/**
-        - __init__.py
-        - ctx.py
-      - sources.py
-      - tscg_validator.py
-    - README.md
-    - _00_open_cmd_window.bat
-    - _run_all_layers.bat
-    - golden_values.json
-    - run_all_layers.py
-    - tscg_metrics.py
-    - tscg_metrics_README.md
-    - tscg_paths.py
-    - verify_session_2026-07-18.bat
-    - worksite_report.py
-  - **docs/**
-    - **_00_test_reports/**
-      - **2026_07_26_regression_KitArchitect-01/**
-        - KitArchitect-01_retest_guide.md
-        - KitArchitect-01_top_pepites.md
-        - PEPITE_013_Report.md
-        - PEPITE_FIXES_Report.md
-        - TSCG_REGRESSION_VALIDATION_REPORT.md
-    - **_01_Worksite/**
-      - **WS-0/**
-        - **Next Conversation_2026_07_30/**
-          - SC-3_Facet_Decision_Record.md
-          - TSCG_Session_Handover_2026-07-30.md
-        - **Next Conversation_2026_08_08/**
-          - TSCG_Session_Handover_2026-08-08.md
-        - **Next Conversation_2026_08_09/**
-          - TSCG_Session_Handover_2026-08-09.md
-        - **Next Conversation_2026_08_11/**
-          - TSCG_Session_Handover_2026-08-11.md
-        - **SC-1/**
-          - SC-1_Completion_Report.md
-          - SC-1_FunctionalGrammar_Handover.md
-          - _00_TSCG_Worksite_Map_SC1-9.md
-          - _open_cmd_window.bat
-        - Functional_Grammar_Model.md
-        - M2_FeedbackLoop_Reclassification_README.md
-        - README.md
-        - SC-1_FunctionalGrammar_Handover.md
-        - TSCG_File_Tree.md
-        - TSCG_Session_Handover_2026-07-25.md
-        - _00_TSCG_Worksite_Map.md
-        - _00_open_cmd_window.bat
-        - _01_Facet_as_M3_Principle_ArchitectureNote.md
-      - **WS-10/**
-        - worksite.yaml
-      - **WS-11/**
-        - worksite.yaml
-      - **WS-3/**
-        - M2_Formulas_Review_with_Gs_README.md
-      - **WS-5/**
-        - WS-5_LOT1_Report.md
-        - worksite.yaml
-      - **WS-8/**
-        - Until_Further_Notice_WorksiteEntry.md
-      - **WS-9/**
-        - worksite.yaml
-      - TSCG_OntologyValidator_Worksite_README.md
-      - TSCG_VocabularyConsolidation_Worksite_README.md
-      - _00_open_cmd_window.bat
-      - _open_cmd_window.bat
-      - worksite.yaml
-    - Amplification_Integration_Summary.md
-    - Bicephalous_Integration_Guide.md
-    - Bicephalous_Refactoring_Summary.md
-    - Cascade_Modeling_README.md
-    - CatastrophicBifurcation_M1_Analysis.md
-    - CategoryTheory_KnowledgeField_Integration (1).md
-    - CategoryTheory_KnowledgeField_Integration.md
-    - Cyclic_Tension_Validation_Analysis.md
-    - Domain_M2_Update_Analysis_v15_1_0.md
-    - ENCODING_CORRECTION_REPORT.md
-    - ENCODING_CORRESPONDANCES.txt
-    - Final_Corrections_Summary.md
-    - Fusion_vs_Composition_Correction.md
-    - HOWTO_Create_M1_Extension.md
-    - HYBRID_FORMULAS_NOTATION_README (1).md
-    - M0_VSM_Prerequisites_Analysis.md
-    - M1_CoreConcepts.jsonld
-    - M1_CoreConcepts_NuclearUpdate.jsonld
-    - M1_CoreConcepts_updated.jsonld
-    - M1_CoreConcepts_v1.2.0_Summary.md
-    - M1_Extensions_Summary.md
-    - M1_Mythology_Core_Concepts.md
-    - M2_Architecture_Specification_v9.1.0.md
-    - M2_Behavioral_Sequential_Metaconcepts_README.md
-    - M2_Behavioral_Visual_Guide.md
-    - M2_Calibration_FormulasRef_entry.json
-    - M2_Candidates_Analysis_Layer_Switch_Mode (1).md
-    - M2_Coherence_Analysis.md
-    - M2_Component_Channel_Addition_Summary.md
-    - M2_Dual_ORIVE_Proposals.md
-    - M2_FormulasReference.json
-    - M2_FormulasReference_v15.10.0.json
-    - M2_FormulasReference_v15.10.0.md
-    - M2_Generation_Summary.md
-    - M2_GenericConcepts_README.md
-    - M2_Imbrication_README.md
-    - M2_KnowledgeField_Integration_Summary.md
-    - M2_KnowledgeField_KnowledgeFieldMetaCombo_v15_2_0.jsonld
-    - M2_KnowledgeField_README.md
-    - M2_MetaConcepts.jsonld
-    - M2_MetaConcepts_2026_02_06_encoding_lint_checked.jsonld
-    - M2_MetaConcepts_README.md
-    - M2_MetaconceptCombo.jsonld
-    - M2_Metaconcepts_v13.jsonld
-    - M2_New_5_Metaconcepts.jsonld
-    - M2_OntologyCategory_Proposal (1).md
-    - M2_Pattern_metaconcept.jsonld
-    - M2_Scope_Metaconcept_Proposal.md
-    - M3_CategoryTheory_v1_0_0.jsonld
-    - M3_EagleEye_Update_Analysis_v15_1_0.md
-    - M3_GenesisSpace_CategoryTheory_Integration.md
-    - M3_GenesisSpace_CategoryTheory_Integration_Complete.md
-    - M3_GenesisSpace_OptionA_Complete.md
-    - M3_GenesisSpace_v3_1_0_Changes_Summary.md
-    - M3_Genesis_Space_README.md
-    - M3_Philosophical_Eye.jsonld
-    - M3_SphinxEye_ORIVE_Correction_v2.2.0.md
-    - M3_SystemicFramework_Category_Documentation.md
-    - M3_TransdisciplinaryMetaConcepts_Renaming.md
-    - MetaconceptCombo_corrected.json
-    - MetaconceptPair_README.md
-    - Namespace_Collision_Fix_Summary.md
-    - Namespace_Refactoring_Summary.md
-    - ORIVE_Official_Reference_CORRECT.md
-    - OntologyModeling_Guidelines.md
-    - Poclet_Analysis_Methodology.md
-    - README_v13_Delivery.md
-    - TSCG-M3_Ontology_Documentation.md
-    - TSCG_Architectural_Extensions.md
-    - TSCG_Documentation_Index.md
-    - TSCG_Formula_Encoding_Solution.md
-    - TSCG_Formula_Properties_Specification.jsonld
-    - TSCG_M1_Architecture.md
-    - TSCG_M2_MetaConcepts_README.md
-    - TSCG_Nary_Polarity_Paradigm_Shift.md
-    - TSCG_Smart_Prompt_v15_7_0.md
-    - TSCG_Update_v12_Summary.md
-    - TSCG_ValueSpace_Quick_Reference.md
-    - TSCG_ValueSpace_User_Guide.md
-    - TSCG_v14_3_0_Summary.md
-    - TSCG_v15_1_0_Final_Classification.md
-    - TSCG_v15_1_0_Integration_Report.md
-    - UPDATE_SUMMARY_v14_3_1.md
-    - UserManual.html
-    - ValueSpace_Enrichment_Final_Report.md
-    - ValueSpace_Integration_Summary.md
-    - encoding_correspondances.json
-    - encoding_correspondances_2026_02_05.json
-    - m2_Imbrication_entry.jsonld
-    - m2_Oscillator_snippet.jsonld
-    - ontology_analysis.md
-  - **rebuild M2/**
-    - M2_ontology_header.json
   - **sparql/**
+    - _open_cmd_window.bat
     - CountByCategory.sparql
     - CountOntologiesByCategory.sparql
     - FindAllM3Ontologies.sparql
@@ -2118,35 +1804,83 @@
     - HierarchicalQuery.sparql
     - ListAllExtensions.sparql
     - M2_Processor.jsonld
+    - m2_sparql_analysis.py
     - SPARQL Playground.url
     - SPARQL_README.md
-    - _open_cmd_window.bat
-    - m2_sparql_analysis.py
+  - **StructuralGrammar/**
+    - _00_Session_Claude_GrammaireStructurelle.md
+    - Braille_StructuralGrammar.pdf
+    - Braille_StructuralGrammar.png
+    - Braille_StructuralGrammar.pptx
+    - Functional_Grammar_Model.md
+    - HANDOVER_tscg_base16_session.md
+    - PotentialRefinements_MonoidalOperators.md
+    - Structural_Grammar_Foundation.md
+    - Structural_Grammar_Foundation_README.md
+    - StructuralGrammar_MonoidalOperators_README.md
+    - TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md
+    - TSCG_Mathematical_Legitimacy_Summary.md
+    - TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md
   - **tools/**
     - Best JSON Formatter and JSON Validator- Online JSON Formatter.url
     - JSONLint - The JSON Validator.url
     - M2_MetaConcepts_Ref.jsonld
     - M2_MetaConcepts_Ref.ttl
     - SPARQL Playground.url
+  - **TSCG_InstanceGrammar/**
+    - _00_open_cmd_window.bat
+    - _00_start_M0_migration-dry-run.bat
+    - _00_start_M0_migration.bat
+    - _open_cmd_window.bat
+    - audit_m1_namespaces.py
+    - automated_migration_easy_instances.py
+    - CHANGEMENTS_v1_2_to_v1_3.md
+    - check_graph_objects.py
+    - create_new_instance.py
+    - DEPLOYMENT_GUIDE.md
+    - diagnose_migration_failures.py
+    - diagnose_scores.py
+    - domain_format_analysis.md
+    - FINIR_SHACL_GUIDE.md
+    - fix_domain_format.py
+    - fix_tscgtools.py
+    - GUIDE_CORRECTION_DOMAIN_FORMAT.md
+    - M0_CONTEXT_TEMPLATE.json
+    - M0_INSTANCE_TEMPLATE.jsonld
+    - M0_Instances_Schema.shacl.ttl
+    - M0_TEMPLATES_README.md
+    - M0_TEMPLATES_USAGE_GUIDE.md
+    - M1_NAMESPACE_AUDIT_REPORT.md
+    - migrate_m1_namespaces.py
+    - migrate_simulation_titles.py
+    - MIGRATION_GUIDE_It_Im.md
+    - MIGRATION_GUIDE_Simuation_Titles.md
+    - RECAPITULATIF_EXECUTIF.md
+    - result.txt
+    - test_shacl.bat
+    - test_shacl_validation.bat
+    - TSCG_Grammar_Extraction_Final_Report.md
+    - validate_context_urls.py
+    - validate_m0_instance.py
+  - _00_open_cmd_window.bat
   - HANDOVER_2026-06-19 (1).md
   - M0_Common.jsonld ★
   - M1_CoreConcepts.jsonld ★
-  - M1_CoreConcepts_README.md
+  - M1_CoreConcepts_README.md ★
   - M1_Domains.jsonld ★
-  - M1_Domains_README.md
+  - M1_Domains_README.md ★
   - M2_GenericConcepts.jsonld ★
-  - M2_GenericConcepts_README.md
+  - M2_GenericConcepts_README.md ★
   - M3_BicephalousPerspective.jsonld ★
-  - M3_BicephalousPerspective_README.md
+  - M3_BicephalousPerspective_README.md ★
   - M3_EagleEye.jsonld ★
-  - M3_EagleEye_README.md
+  - M3_EagleEye_README.md ★
   - M3_GenesisGrammar.jsonld ★
-  - M3_GenesisGrammar_README.md
+  - M3_GenesisGrammar_README.md ★
   - M3_GrammarFoundation.jsonld ★
-  - M3_GrammarFoundation_README.md
+  - M3_GrammarFoundation_README.md ★
   - M3_SphinxEye.jsonld ★
-  - M3_SphinxEye_README.md
-  - _00_open_cmd_window.bat
+  - M3_SphinxEye_README.md ★
 - **src/**
   - **tscg/**
     - **cli/**
@@ -2210,73 +1944,47 @@
       - __init__.py
     - **ontology_tools/**
       - **jsonld-to-owl/**
-        - CHANGELOG.md
-        - GUIDE_FR.md
-        - INSTALL_QUICK.md
-        - NOTE_CORRECTIONS.md
-        - README.md
         - _00_open_cmd_window.bat
         - _convert_to_turtle.bat
+        - CHANGELOG.md
         - convert_to_turtle.sh
+        - GUIDE_FR.md
+        - INSTALL_QUICK.md
         - jsonld_to_turtle.py
+        - NOTE_CORRECTIONS.md
+        - README.md
         - requirements.txt
         - setup_notes.txt
         - test_converter.py
       - **migration/**
-        - TSCG_migration_README.md
-        - TSCG_migration_README.pdf
         - _00_open_cmd_window.bat
         - requirements.txt
         - tscg_migration.py
+        - TSCG_migration_README.md
+        - TSCG_migration_README.pdf
     - **rag/**
-      - **_archives/**
-        - **RAG-prev/**
-          - **_archives/**
-            - create_RAG.py
-            - create_RAG_2026_02_07.py
-            - create_RAG_2026_02_08.py
-          - .api_key
-          - RAG_file_tree.txt
-          - _CreateRAG.bat
-          - _open_cmd_window.bat
-          - common.py
-          - create_RAG.py
-          - create_RAG_README.txt
-          - create_RAG_lan.py
-          - rag_tool.py
-          - update_RAG.py
       - **code_for_ElectronJS/**
         - rebuild_corpus.js
         - restore_rag.js
-      - **db_extracted/**
-        - **db_tscg_rag/**
-          - **4cedd0d2-91e0-4b35-8cd1-ba3e45577893/**
-            - data_level0.bin
-            - header.bin
-            - index_metadata.pickle
-            - length.bin
-            - link_lists.bin
-          - metadata.json
-      - **db_tscg_rag/**
-        - metadata.json
+      - **db_extracted/** _(collapsed, 6 entries)_
+      - **db_tscg_rag/** _(collapsed, 1 entries)_
       - **high_compress/**
         - create_tscg_rag_high_compress.py
         - restore_tscg_rag_high_compress.py
-      - .api_key
-      - BUG_FIX_WINDOWS_PATH_SEPARATOR.md
-      - HF hub.txt
-      - TSCG_Complete_File_List.txt
-      - TSCG_RAG_Segmentation_Guide.md
-      - TSCG_RAG_Standalone_README.md
       - _00_Create_RAG.bat
-      - _00_Rebuild_Corpus_README.txt
       - _00_open_cmd_window.bat
+      - _00_Rebuild_Corpus_README.txt
+      - BUG_FIX_WINDOWS_PATH_SEPARATOR.md
       - create_rag_errors.txt
       - create_tscg_rag.py
+      - HF hub.txt
       - poclet_corpus_profile.json
       - query_tscg_rag.py
       - rebuild_corpus.py
       - restore_tscg_rag.py
+      - TSCG_Complete_File_List.txt
+      - TSCG_RAG_Segmentation_Guide.md
+      - TSCG_RAG_Standalone_README.md
     - **simulation-engine/**
       - _00_pipeline_from_patterns.txt
       - _00_question_pipeline.txt
@@ -2310,9 +2018,6 @@
 - .gitattributes
 - .gitignore
 - .nojekyll
-- CLAUDE.md
-- LICENSE
-- README.md
 - _00_Demo-Poclet-Gallery.url
 - _00_open_cmd_window.bat
 - _01_run_OntologyExplorer.bat
@@ -2321,12 +2026,13 @@
 - after_B.txt
 - baseline_HEAD.json
 - before.txt
+- CLAUDE.md
 - claude_setup.txt
-- create_files_URIS.py
-- files.txt
 - index.html
+- LICENSE
 - package-lock.json
 - package.json
+- README.md
 - serve.js
 - styles.css
 - tscg- github.url
