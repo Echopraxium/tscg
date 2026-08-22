@@ -22,13 +22,13 @@ Checks performed (each reported as PASS / WARN / FAIL):
   C12  No tensor formula remnants:
          (a) m2:hasTensorFormula absent in ALL graph nodes
          (b) "tensorFormula" key absent in nested objects (NakamotoConsensus pattern)
-         (c) "⊗" operator absent from all formula values
+         (c) "U+2297" (tensor-product) operator absent from all formula values
   C13  m3:ontologyType absent from sub-nodes (@graph[1+])
   C14  m2:changelog <= 3 entries
   C15  SHACL v1.5 validation (optional — requires pyshacl)
 
 Changes vs v1.5.0:
-  C12: Extended to detect tensorFormula in nested objects and ⊗ in formula values
+  C12: Extended to detect tensorFormula in nested objects and U+2297 in formula values
 
 Usage:
     python check_m0_instances_v1_5.py [options]
@@ -288,7 +288,7 @@ class InstanceChecker:
         # Detects three patterns:
         #   (a) m2:hasTensorFormula key in any graph node       (AdaptativeImmuneResponse)
         #   (b) "tensorFormula" key in nested concept objects   (NakamotoConsensus)
-        #   (c) "⊗" operator in any string value               (both)
+        #   (c) "U+2297" operator in any string value              (both)
         tensor_issues = []
 
         # (a) Direct m2:hasTensorFormula property on any graph node
@@ -312,9 +312,9 @@ class InstanceChecker:
         for i, node in enumerate(graph):
             _scan_tensor_key(node, f"@graph[{i}]")
 
-        # (c) "⊗" tensor product operator in any formula value
-        raw_str = json.dumps(graph)
-        if "\u2297" in raw_str:  # ⊗ = U+2297
+        # (c) "U+2297" tensor product operator in any formula value
+        raw_str = json.dumps(graph, ensure_ascii=False)
+        if "\u2297" in raw_str:  # U+2297 tensor-product operator
             count = raw_str.count("\u2297")
             tensor_issues.append(f"\u2297 operator found ({count} occurrence(s)) — migrate to \u00d7/+/|")
 
@@ -539,7 +539,6 @@ def main():
 
     print("=" * 70)
     print("TSCG M0 INSTANCE CHECKER — v1.5.1")
-    print("C12 extended: hasTensorFormula + tensorFormula key + ⊗ operator")
     print("=" * 70)
 
     instances = list(discover_instances(only_name=args.instance))
