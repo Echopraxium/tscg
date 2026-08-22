@@ -58,7 +58,7 @@ This poclet serves as:
 
 ### Flame Color by Temperature
 
-The visible color of a flame directly encodes its temperature — a **spectral Signature** (GenericConcept **I⊗F**) linking the Heat dimension to observable Information.
+The visible color of a flame directly encodes its temperature — a **spectral Signature** (GenericConcept **It × Ss | V**) linking the Heat dimension to observable Information.
 
 | Temperature Range | Color | Typical Context |
 |-------------------|-------|-----------------|
@@ -70,13 +70,13 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 
 **Physical basis**: Planck blackbody radiation combined with spectral line emission from excited combustion intermediates (OH\*, CH\*, C₂\*).
 
-**TSCG link**: Flame color is an *observable* (Eagle Eye / ASFID-I) that encodes temperature information, illustrating the **Signature** GenericConcept (I⊗F) — the system broadcasts its thermal state as a structured optical signal.
+**TSCG link**: Flame color is an *observable* (Eagle Eye / ASFID-I) that encodes temperature information, illustrating the **Signature** GenericConcept (It × Ss | V) — the system broadcasts its thermal state as a structured optical signal.
 
 > *Note*: Perceived color depends on the observer model (human photopic vision, camera CCD, spectrometer). The table above uses standard human vision as reference observer.
 
 ### Synergy Principle
 
-**Formula**: `Fuel ⊕ O₂ ⊕ Heat → Fire (emergent)`
+**Formula**: `Fuel × O₂ × Heat → Fire (emergent)`
 
 - **Description**: All three components required **simultaneously**
 - **Emergent Property**: Flame (self-sustaining exothermic reaction)
@@ -91,7 +91,7 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 
 **Observer**: Human with standard scientific instrumentation
 
-**ASFID State Vector**: `|Ω_fire⟩ = 0.85|A⟩ + 0.70|S⟩ + 0.90|F⟩ + 0.65|It⟩ + 0.75|D⟩`
+**ASFID scores** (Territory / Eagle Eye): A=0.85 · S=0.70 · F=0.90 · It=0.65 · D=0.75
 
 | Dimension | Score | Interpretation |
 |-----------|-------|----------------|
@@ -100,8 +100,6 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 | **F_score** (Flow) | 0.90 | Very high flow intensity (heat, gases, air convection) |
 | **It_score** (Information) | 0.65 | Moderate information content (chemical signatures, spectral data) |
 | **D_score** (Dynamics) | 0.75 | Substantial dynamic behavior (rapid state changes, feedback loops) |
-
-**Norm**: 1.734
 
 **Observable Phenomena**:
 - Flame (visible light emission)
@@ -118,13 +116,13 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 
 **Observer**: Western scientist (modern perspective)
 
-**REVOI State Vector**: `|M_triangle⟩_REVOI = 0.80|O⟩ + 0.90|R⟩ + 0.90|Im⟩ + 0.95|V⟩ + 0.70|E⟩`
+**REVOI scores** (Map / Sphinx Eye): R=0.90 · E=0.70 · V=0.95 · O=0.80 · Im=0.90
 
 | Dimension | Score | Interpretation |
 |-----------|-------|----------------|
 | **O_score** (Observability) | 0.80 | Fire Triangle is highly observable as a model - can be drawn, visualized, taught. The triangle shape is immediately perceptible. |
 | **R_score** (Representability) | 0.90 | Excellently representable - simple geometric diagram with 3 labeled vertices. Minimal symbolism (triangle + 3 words). |
-| **It_score** (Interoperability) | 0.90 | Highly shareable - Fire Triangle is international standard in fire safety. Same model used globally by firefighters, chemists, educators. |
+| **Im_score** (Interoperability) | 0.90 | Highly shareable - Fire Triangle is international standard in fire safety. Same model used globally by firefighters, chemists, educators. |
 | **V_score** (Verifiability) | 0.95 | Extremely verifiable - Popper gold standard. Falsifiable prediction: "Remove ANY component → fire stops." Testable experimentally. |
 | **E_score** (Evolvability) | 0.70 | Moderately evolvable - Model extended to Fire Tetrahedron (+Chain Reaction). Triangle remains dominant in pedagogy. |
 
@@ -138,23 +136,24 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 |--------|-------------------|-------------|
 | **What is measured** | Physical fire phenomenon | Fire Triangle model |
 | **Perspective** | Eagle Eye | Sphinx Eye |
-| **State Vector** | ASFID: (0.85, 0.70, 0.90, 0.65, 0.75) | REVOI: (0.90, 0.70, 0.95, 0.80, 0.90) · Map ASFID: (0.75, 0.90, 0.60, 0.80, 0.50) |
-| **Norm** | 1.734 | (calculated from REVOI) |
+| **Scores** | ASFID: (0.85, 0.70, 0.90, 0.65, 0.75) | REVOI: (0.90, 0.70, 0.95, 0.80, 0.90) · Map ASFID: (0.75, 0.90, 0.60, 0.80, 0.50) |
 | **Function** | Measure observable reality | Evaluate conceptual model quality |
 
 ---
 
 ## Epistemic Gap Analysis
 
-**Formula**: `ΔΘ = ‖|Ω_fire⟩ - |M_triangle⟩‖`
+**Canonical gap (root)**: `m0:epistemicGap = |asfidMean − revoiMean| / √2 = |0.71 − 0.85| / √2 = 0.099`
 
-**Delta Vector (Territory - Map)**: `(+0.10, -0.20, +0.30, -0.15, +0.25)`
+**Interpretation**: **Small gap** — the model's Territory-competence (asfidMean 0.71) and Map-competence (revoiMean 0.85) are close.
 
-**Gap Norm**: **0.474**
+### Territory-vs-Map per-dimension divergence
 
-**Interpretation**: **Moderate gap** (0 < ΔΘ < 0.5)
+Beyond the scalar gap, the model ASFID profile diverges from the observed-fire ASFID profile per dimension.
 
-**Assessment**: Model is reasonably good - captures essence but simplifies reality
+**Delta (observed − model)**: `(A +0.10, S −0.20, F +0.30, It −0.15, D +0.25)`
+
+**Assessment**: Model captures the essence but simplifies reality (largest divergences on F, D, S).
 
 ### Major Divergences
 
@@ -185,11 +184,11 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 
 | GenericConcept | Role | Formula |
 |-------------|------|---------|
-| **Component** | Identifies Fuel, O₂, Heat as elementary parts | S⊗I |
-| **Synergy** | Explains emergence (1+1+1 = Fire, not 3) | A⊗S⊗I |
-| **Composition** | Bottom-up assembly of components into system | S⊗I⊗A |
-| **Trigger** | Heat initiates process when threshold crossed | D⊗I |
-| **Process** | Combustion as dynamic transformation | D⊗F |
+| **Component** | Identifies Fuel, O₂, Heat as elementary parts | St × It \| L |
+| **Synergy** | Explains emergence (1+1+1 = Fire, not 3) | It × D \| _^ |
+| **Composition** | Bottom-up assembly of components into system | St × It × A \| _^ |
+| **Trigger** | Heat initiates process when threshold crossed | D × It |
+| **Process** | Combustion as dynamic transformation | D × F |
 
 ---
 
@@ -230,8 +229,7 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 
 ### 3. Firefighter Perspective
 - **Basis**: REVOI (Sphinx Eye) — Map perspective
-- **REVOI State**: (R_score:0.80, E_score:0.75, V_score:0.85, O_score:0.85, It_score:0.60)
-- **State Vector**: |M_firefighter⟩_REVOI = 0.80|R⟩ + 0.75|E⟩ + 0.85|V⟩ + 0.85|O⟩ + 0.60|Im⟩
+- **REVOI State**: (R_score:0.80, E_score:0.75, V_score:0.85, O_score:0.85, Im_score:0.60)
 - **Differences**: High O/V (threat visible and testable), lower I (action-focused, not a universal standard)
 - **Interpretation**: Operational threat model (Map quality, not Territory measurement)
 
@@ -282,7 +280,7 @@ The visible color of a flame directly encodes its temperature — a **spectral S
 | **Framework Fit** | ✅ | Perfect M3→M2→M1→M0 instantiation |
 
 **Overall Score**: **REVOI = 0.85** (Excellent)  
-**Epistemic Gap**: **ΔΘ = 0.474** (Moderate - acceptable)
+**Epistemic Gap**: **0.099** (Small - well-balanced)
 
 ---
 
@@ -356,7 +354,7 @@ M1 (Domain Concepts)
   └─ Chemistry Extension: Combustion, Chemical Species
       ↓
 M0 (Poclet Instance)
-  └─ Fire Triangle: Fuel ⊕ O₂ ⊕ Heat → Fire
+  └─ Fire Triangle: Fuel × O₂ × Heat → Fire
 ```
 
 ### Triple Role in TSCG Development
@@ -417,6 +415,6 @@ M0 (Poclet Instance)
 ---
 
 **File**: `M0_FireTriangle.jsonld`  
-**URI**: `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/poclets/FireTriangle/M0_FireTriangle.jsonld`  
-**Version**: 1.1  
-**Last Updated**: 2026-02-24
+**URI**: `https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/FireTriangle/M0_FireTriangle.jsonld`  
+**Version**: 2.0.0  
+**Last Updated**: 2026-08-21
