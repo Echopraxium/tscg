@@ -74,6 +74,21 @@ schema.
    `semantic_gaps` list flagging anything it will **not** fill in
    (`m1:domain`, `m3:ontologyType`).
 
+## Casing guardrail (folder vs file)
+
+The gate derives an instance's name from its **file** stem (`M0_<name>` →
+`<name>`), so a file whose casing differs from its folder — e.g. folder `Vco`
+with file `M0_VCO.jsonld` — resolves to `VCO` on case-sensitive Linux/CI but
+`Vco` on case-insensitive Windows. The two disagree on the expected
+`m0.<inst>:` alias, so the instance passes on one OS and fails on the other.
+
+To prevent this, the tool takes the instance identity from the **folder** (the
+stable identity per the repo layout `instances/<Cat>/<Instance>/M0_<Instance>.jsonld`)
+and computes the alias from it. If the file name is not the canonical
+`M0_<folder>.jsonld`, the report includes a **`CASING_WARNING`** with the exact
+case-safe two-step `git mv` to rename the file. Rename the file, then re-gate —
+the alias will match on every platform.
+
 ## What it does NOT do (by design)
 
 - It never invents **semantic** content. Missing `m1:domain` or

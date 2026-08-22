@@ -43,7 +43,12 @@ def load_whitelist() -> set:
     return {t for t in toks if not t.endswith("Shape")}
 
 def modernize(path: Path):
-    inst = path.name.replace("M0_", "").replace(".jsonld", "")
+    # Identity is the FOLDER name (the stable instance identity, per the repo layout
+    # instances/<Category>/<Instance>/M0_<Instance>.jsonld). The check-M0 gate derives
+    # the name from the file stem, so a file whose casing/name differs from its folder
+    # (e.g. folder 'Vco' + file 'M0_VCO.jsonld') passes on one OS and fails on another.
+    folder = path.parent.name
+    inst = folder
     cam = camel(inst)
     wl = load_whitelist()
     d = json.loads(path.read_text(encoding="utf-8"))
@@ -51,6 +56,17 @@ def modernize(path: Path):
     g = d.get("@graph", [])
     o = g[0] if g else {}
     report = {"instance": inst, "camel": cam}
+
+    # ---- casing guardrail ----
+    canonical_file = f"M0_{inst}.jsonld"
+    if path.name != canonical_file:
+        report["CASING_WARNING"] = (
+            f"file '{path.name}' does not match folder '{folder}'. The gate derives the "
+            f"instance name from the FILE, so this drifts across Windows/Linux. Canonical "
+            f"name is '{canonical_file}'. Rename it (two-step, case-safe):\n"
+            f"    git mv {path.parent.as_posix()}/{path.name} {path.parent.as_posix()}/_tmp_{inst}.jsonld\n"
+            f"    git mv {path.parent.as_posix()}/_tmp_{inst}.jsonld {path.parent.as_posix()}/{canonical_file}"
+        )
 
     # serialize early so alias body-migrations operate on text
     raw = json.dumps(d, ensure_ascii=False, indent=2)
@@ -81,11 +97,11 @@ def modernize(path: Path):
            (k.startswith("m0:") and k != "m0"):
             del ctx[k]
     ctx["m0"] = f"{BASE}/ontology/M0_Common.jsonld#"
-    # instance-file URL for the local alias: take the path from its 'instances/' segment
+    # instance-file URL for the local alias: use the CANONICAL file name (folder-aligned)
     rp = path.resolve().as_posix()
     idx = rp.find("/instances/")
-    rel = rp[idx + 1:] if idx >= 0 else f"instances/poclets/{inst}/{path.name}"
-    ctx[f"m0.{cam}"] = f"{BASE}/{rel}#"
+    reldir = rp[idx + 1:rp.rfind("/")] if idx >= 0 else f"instances/poclets/{inst}"
+    ctx[f"m0.{cam}"] = f"{BASE}/{reldir}/{canonical_file}#"
     # force core prefixes absolute
     for pfx, tgt in [("m1", "M1_CoreConcepts.jsonld#"), ("m2", "M2_GenericConcepts.jsonld#"),
                      ("m3", "M3_GenesisGrammar.jsonld#")]:
