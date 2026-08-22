@@ -6,52 +6,24 @@
     "m3:sphinx_eye": "M3_SphinxEye.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/tscg-tools/TscgPocletMiner/M0_TscgPocletMiner.jsonld#",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "A_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreA"
-    },
-    "S_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreS"
-    },
-    "F_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreF"
-    },
-    "It_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreIt"
-    },
-    "D_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreD"
-    },
-    "R_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreR"
-    },
-    "E_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreE"
-    },
-    "V_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreV"
-    },
-    "O_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreO"
-    },
-    "Im_score": {
-      "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#scoreIm"
-    }
+    "m0.tscgPocletMiner": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/tscg-tools/TscgPocletMiner/M0_TscgPocletMiner.jsonld#"
   },
   "@graph": [
     {
       "@id": "instances/tscg-tools/TscgPocletMiner/M0_TscgPocletMiner.jsonld",
       "@type": "owl:Ontology",
       "owl:imports": [
-        "M3_GenesisGrammar.jsonld",
-        "M2_GenericConcepts.jsonld",
-        "M1_CoreConcepts.jsonld"
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
+        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld"
       ],
       "m3:ontologyType": {
         "@id": "m3:TscgTool"
@@ -103,19 +75,12 @@
         "@value": "0.82",
         "@type": "xsd:float"
       },
-      "m0:asfidMean": {
-        "@value": "0.826",
-        "@type": "xsd:float"
+      "m0:asfidMean": 0.826,
+      "m0:revoiMean": 0.884,
+      "m0:epistemicGap": 0.06,
+      "m0:spectralClass": {
+        "@id": "m0:spectralClass.Coherent"
       },
-      "m0:revoiMean": {
-        "@value": "0.884",
-        "@type": "xsd:float"
-      },
-      "m0:epistemicGap": {
-        "@value": "0.06",
-        "@type": "xsd:float"
-      },
-      "m0:spectralClass": "Coherent",
       "m2:changelog": [
         {
           "version": "1.1.1",
@@ -133,7 +98,7 @@
           "changes": "Initial TscgPocletMiner instance. Electron/vanilla JS wizard with 5-round Q&A, ASFID pre-scoring, corpus gap analysis, web search and deterministic verdict engine."
         }
       ],
-      "m0:scoreJustification": {
+      "m0.tscgPocletMiner:scoreJustification": {
         "A_score": "Attractor: convergence toward scored verdict (accept/reject) via iterative Q&A + RAG enrichment",
         "S_score": "Structure: 5-round wizard, corpus JSON, invariant grid, RAG bridge, scoring engine",
         "F_score": "Flow: user input → Q&A → RAG queries → scoring → web search → verdict → export",
@@ -145,7 +110,7 @@
         "O_score": "Observability: every RAG result, score, and wizard step displayed transparently",
         "Im_score": "Interoperability: JSON export reusable; rag_bridge.py reusable by other tools"
       },
-      "m0:workflow": {
+      "m0.tscgPocletMiner:workflow": {
         "description": "5-round guided wizard producing scored verdict enriched by TSCG RAG context",
         "rounds": [
           {
@@ -177,14 +142,14 @@
           }
         ]
       },
-      "m0:techStack": [
+      "m0.tscgPocletMiner:techStack": [
         "Electron",
         "Node.js",
         "Vanilla JS",
         "Python (rag_bridge.py)",
         "@xenova/transformers WASM"
       ],
-      "m0:ragBackend": "all-MiniLM-L6-v2 (384-dim, WASM, in-process via @xenova/transformers)",
+      "m0.tscgPocletMiner:ragBackend": "all-MiniLM-L6-v2 (384-dim, WASM, in-process via @xenova/transformers)",
       "rdfs:seeAlso": "instances/tscg-tools/TscgPocletMiner/M0_TscgPocletMiner_README.md",
       "m0:focalApplicable": false
     }
