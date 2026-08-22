@@ -2,7 +2,6 @@
   "@context": {
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
     "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
-    "m0.qrcity": "instances/poclets/QRCodeToPocketCity/M0_QRCodeToPocketCity.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m1.ext:electronics": "M1_extensions/electronics/M1_Electronics.jsonld#",
     "m1.ext:optics": "M1_extensions/optics/M1_Optics.jsonld#",
@@ -15,7 +14,8 @@
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#"
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m0.qRCodeToPocketCity": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/QRCodeToPocketCity/M0_QRCodeToPocketCity.jsonld#"
   },
   "@graph": [
     {
@@ -36,7 +36,6 @@
         "@id": "m3:Poclet"
       },
       "m3:semanticSignature": "dual_encoding + constrained_generation + navigable_symbol",
-
       "m0:hasFacet": {
         "@id": "m0:facet.Democratization"
       },
@@ -52,32 +51,23 @@
           "@id": "m2:Invariant"
         }
       ],
-
-      "m1:hasDomain": [
-        {
-          "@id": "m1:domain:Electronics"
-        },
-        {
-          "@id": "m1:domain:Optics"
-        },
-        {
-          "@id": "m1:domain:ComputerScience"
-        }
+      "m1:domain": [
+        "Procedural Generation",
+        "Coding Theory"
       ],
-
       "m0:scoreA": 0.85,
       "m0:scoreS": 0.92,
-      "m0:scoreF": 0.70,
+      "m0:scoreF": 0.7,
       "m0:scoreIt": 0.88,
       "m0:scoreD": 0.72,
       "m0:scoreR": 0.95,
       "m0:scoreE": 0.88,
       "m0:scoreV": 0.92,
-      "m0:scoreO": 0.90,
+      "m0:scoreO": 0.9,
       "m0:scoreIm": 0.82,
       "m0:meanASFID": 0.814,
       "m0:meanREVOI": 0.894,
-      "m0:epistemicGap": 0.080,
+      "m0:epistemicGap": 0.08,
       "m0:spectralClass": {
         "@id": "m0:spectralClass.OnCriticalLine"
       },
@@ -85,9 +75,7 @@
         "@id": "m0:scoringStatus.Complete"
       },
       "m0:focalApplicable": false,
-
       "m0:scoringRationale": "S is highest on the Territory side: the module grid, finder patterns and building geometry are fully determined and inspectable. F is lowest: flow exists (the scanner's reading path, the explorer's traversal) but is not the system's centre of gravity. On the Map side V is exceptionally high because the model is directly falsifiable — point a scanner at the Bird's-eye view and it either decodes the payload or it does not. This is a rare case where a TSCG instance carries its own empirical test.",
-
       "m2:changelog": [
         {
           "version": "1.0.0",
@@ -95,22 +83,20 @@
           "changes": "Initial version. Poclet modelling the deterministic transformation of a QR code into a navigable 3D city under a top-view readability constraint. 12 M2 GenericConcepts mobilized. Carries the Democratization facet with roleGrounding=Designed — first instance designed primarily for pedagogical purpose. Companion BabylonJS simulation in static/."
         }
       ],
-
       "m0:note": "Candidate for a future m3:ExploratorySpace instance type (navigable artifact with Gs as primary grammar). Typed m3:Poclet pending the ≥3 instances required to admit a new type."
     },
-
     {
-      "@id": "m0.qrcity:Payload",
+      "@id": "m0.qRCodeToPocketCity:Payload",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "Payload",
       "rdfs:comment": "The text encoded in the QR code. It is simultaneously the message a scanner recovers and, hashed, the seed that determines the city. One string, two roles.",
       "m2:instantiates": {
         "@id": "m2:Code"
       },
-      "m0.qrcity:dualRole": "message (machine-readable) + seed (city identity)"
+      "m0.qRCodeToPocketCity:dualRole": "message (machine-readable) + seed (city identity)"
     },
     {
-      "@id": "m0.qrcity:ModuleGrid",
+      "@id": "m0.qRCodeToPocketCity:ModuleGrid",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "Module Grid",
       "rdfs:comment": "The QR matrix: n x n binary modules, n in {21,25,29,33,37,41,45,49} as fixed by the QR specification (n = 21 + 4(version-1)). Dark modules become built ground, light modules become streets. The grid pitch is the city's only unit of measure.",
@@ -122,10 +108,10 @@
           "@id": "m2:Invariant"
         }
       ],
-      "m0.qrcity:pitch": "1.0 (buildings inset to 0.998 to avoid coplanar z-fighting; roof caps at full 1.0 so blocks stay contiguous from above)"
+      "m0.qRCodeToPocketCity:pitch": "1.0 (buildings inset to 0.998 to avoid coplanar z-fighting; roof caps at full 1.0 so blocks stay contiguous from above)"
     },
     {
-      "@id": "m0.qrcity:FinderPattern",
+      "@id": "m0.qRCodeToPocketCity:FinderPattern",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "Finder Pattern",
       "rdfs:comment": "Three nested 7x7 squares at three corners. A scanner uses them to locate and orient itself; the city reuses them as its civic anchors (town hall, university, hospital...). The same structure serves localization in both encodings.",
@@ -137,10 +123,10 @@
           "@id": "m2:Role"
         }
       ],
-      "m0.qrcity:asymmetryNote": "Three corners rather than four: the missing fourth is what lets a scanner resolve rotation. Deliberate broken symmetry as an information-bearing feature."
+      "m0.qRCodeToPocketCity:asymmetryNote": "Three corners rather than four: the missing fourth is what lets a scanner resolve rotation. Deliberate broken symmetry as an information-bearing feature."
     },
     {
-      "@id": "m0.qrcity:ReadabilityConstraint",
+      "@id": "m0.qRCodeToPocketCity:ReadabilityConstraint",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "Top-View Readability Constraint",
       "rdfs:comment": "The binding rule of the whole system: a dark module must remain predominantly dark seen from directly above, a light module predominantly light. Everything else is free. This single constraint is what makes the generation disciplined rather than arbitrary, and it is empirically testable with any scanner.",
@@ -152,14 +138,14 @@
           "@id": "m2:Threshold"
         }
       ],
-      "m0.qrcity:enforcementConsequences": [
+      "m0.qRCodeToPocketCity:enforcementConsequences": [
         "Orthographic projection is mandatory: perspective makes off-centre buildings lean outward, so their roofs no longer cover their footprint",
         "Roofs are flat and dark; chimney caps match the roof exactly, since from above the cap is all that is visible",
         "Signs, doors and windows are vertical, therefore invisible from above and unconstrained"
       ]
     },
     {
-      "@id": "m0.qrcity:GenerativeSeed",
+      "@id": "m0.qRCodeToPocketCity:GenerativeSeed",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "Generative Seed",
       "rdfs:comment": "A 32-bit value derived from the payload. It drives every procedural decision — heights, fenestration, materials, landmark assignment, arch placement. Same seed, same city, always. Successive SHA-256 application walks an ordered sequence of distinct interpretations of one unchanged QR plan.",
@@ -171,10 +157,10 @@
           "@id": "m2:Signature"
         }
       ],
-      "m0.qrcity:determinism": "Mulberry32 PRNG; all procedural textures use fixed seeds so a city is reproducible across sessions and machines"
+      "m0.qRCodeToPocketCity:determinism": "Mulberry32 PRNG; all procedural textures use fixed seeds so a city is reproducible across sessions and machines"
     },
     {
-      "@id": "m0.qrcity:Stylesheet",
+      "@id": "m0.qRCodeToPocketCity:Stylesheet",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "Stylesheet",
       "rdfs:comment": "A declarative interpretation layer holding palettes, textures AND generation rules. Because the rules block drives geometry (heights, arch budget, fenestration density), a stylesheet does not repaint a city — it re-interprets the same seed into a different one. Layout is a style channel.",
@@ -186,10 +172,10 @@
           "@id": "m2:Transformation"
         }
       ],
-      "m0.qrcity:separationPrinciple": "DATA (QR matrix) / STYLE (stylesheet) / CORE (generator) — the generator never hardcodes an appearance value"
+      "m0.qRCodeToPocketCity:separationPrinciple": "DATA (QR matrix) / STYLE (stylesheet) / CORE (generator) — the generator never hardcodes an appearance value"
     },
     {
-      "@id": "m0.qrcity:ArchTunnel",
+      "@id": "m0.qRCodeToPocketCity:ArchTunnel",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "Arch Tunnel",
       "rdfs:comment": "A passage cut through a straight run of 2-4 dark modules that has open street at both ends. It adds an edge to the street connectivity graph that does not exist in the flat QR — the city acquires topology its source lacks, without altering any module's dark/light state.",
@@ -201,10 +187,10 @@
           "@id": "m2:Network"
         }
       ],
-      "m0.qrcity:topologicalClaim": "Strictly additive: the QR reading is untouched, but the traversable graph gains edges. The clearest demonstration that the city is a construction from the seed, not a depiction of it."
+      "m0.qRCodeToPocketCity:topologicalClaim": "Strictly additive: the QR reading is untouched, but the traversable graph gains edges. The clearest demonstration that the city is a construction from the seed, not a depiction of it."
     },
     {
-      "@id": "m0.qrcity:PolarityReading",
+      "@id": "m0.qRCodeToPocketCity:PolarityReading",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "Polarity Reading",
       "rdfs:comment": "The matrix may be read normally or inverted. Inverted, the built fabric becomes a continuous labyrinth and the street network fragments into isolated blocks. QR decodability is lost — deliberately: it marks the point where the artifact stops serving the code and serves the explorer instead.",
@@ -216,10 +202,10 @@
           "@id": "m2:Trade-off"
         }
       ],
-      "m0.qrcity:tradeOff": "Normal preserves the machine encoding; inverted sacrifices it for a richer navigable topology. The two readings cannot both hold."
+      "m0.qRCodeToPocketCity:tradeOff": "Normal preserves the machine encoding; inverted sacrifices it for a richer navigable topology. The two readings cannot both hold."
     },
     {
-      "@id": "m0.qrcity:NavigableSpace",
+      "@id": "m0.qRCodeToPocketCity:NavigableSpace",
       "@type": "owl:NamedIndividual",
       "rdfs:label": "Navigable Space",
       "rdfs:comment": "The city as inhabited extent rather than image: streets at eye level, arches to pass through, landmarks to steer by. What a scanner traverses as a bit sequence, a person traverses as a place.",
@@ -231,7 +217,7 @@
           "@id": "m2:Component"
         }
       ],
-      "m0.qrcity:viewModes": [
+      "m0.qRCodeToPocketCity:viewModes": [
         "Isometric — orthographic, obliquely, for reading the whole",
         "Bird's eye — orthographic, straight down, returns the source QR",
         "Walk — perspective, eye height locked, street level",
