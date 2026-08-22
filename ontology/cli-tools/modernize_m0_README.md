@@ -1,4 +1,4 @@
-# `modernize_m0.py` — M0 instance modernizer (check-M0, Path B)
+# `modernize_m0.py` — M0 instance modernizer (check-M0, Path B) · v2
 
 **Author:** Echopraxium with the collaboration of Claude AI
 **Location:** `ontology/cli-tools/modernize_m0.py`
@@ -16,8 +16,9 @@ invents semantics.
 A repo-wide scan showed most instances failing the check-M0 gate for the same
 recurring, structural reasons: the `m0:` prefix pointed at the **instance file**
 instead of `M0_Common#`, the local alias `m0.<inst>:` was missing, `owl:imports`
-lacked `M0_Common`, and retired `@context` aliases (`m1core:`, `m1chem:`, `sm:`,
-`*_score`) lingered. Fixing these by hand, instance by instance, is slow and
+lacked `M0_Common`, retired `@context` aliases (`m1core:`, `m1chem:`, `sm:`,
+`*_score`) lingered, scores were inline-typed or nested, and enum values were
+plain strings. Fixing these by hand, instance by instance, is slow and
 error-prone. This tool encodes the fix once.
 
 ## The core decision it implements — **Path B**
@@ -40,62 +41,95 @@ schema.
 ## What it does, step by step
 
 1. **`@context` surgery**
-   - `m0:` → `https://…/ontology/M0_Common.jsonld#` (fixes C02).
-   - adds `m0.<camelInstance>:` → the instance file's URL (fixes C03). The
+   - `m0:` → `https://…/ontology/M0_Common.jsonld#` (fixes **C02**).
+   - adds `m0.<camelInstance>:` → the instance file's URL (fixes **C03**). The
      camel form matches the gate's own `_camel()` (e.g. `BloodPressureControl`
-     → `m0.bloodPressureControl`, `VCO` → `m0.vCO`).
-   - **migrates or deletes** retired aliases (fixes C07/C08). Crucially it
+     → `m0.bloodPressureControl`).
+   - **migrates or deletes** retired aliases (fixes **C07/C08**). Crucially it
      *migrates* an alias that is still used in the body rather than deleting it
      (deleting a used alias would leave unresolved, non-absolute IRIs and fail
      C15): `m1core:` → `m1:`, and any `m1<domain>:` short alias → `m1.ext:<domain>:`
      (e.g. `m1phys:` → `m1.ext:physics:`). Unused aliases (and `sm:`, `*_score`)
      are dropped.
-   - forces `m1`/`m2`/`m3` prefixes to absolute HTTPS if they were relative.
+   - forces `m1`/`m2`/`m3` prefixes to absolute HTTPS if they were relative
+     (fixes **C05**).
 
-2. **`owl:imports`** — rewritten to absolute URLs and `M0_Common.jsonld` added
-   if missing (fixes C09).
+2. **`owl:imports`** — rewritten to absolute URLs, `M0_Common.jsonld` added if
+   missing (fixes **C09**).
 
 3. **Path B reclassification** — every `m0:X` token (property keys *and* `@id`
    values, including the double-colon `m0:<Inst>:Y` form) is kept under `m0:`
    if `X`'s first segment is in the whitelist, otherwise rewritten to
    `m0.<inst>:X`.
 
-4. **Tensor reform hooks (guarded, no-op when absent)** — renames the retired
+4. **Score normalization**
+   - **C10** — score props stored as `{"@value":…,"@type":"xsd:float"}` are
+     de-wrapped to bare numerics.
+   - **C15 (nested)** — obsolete `m0:asfidScores{}` / `m0:revoiScores{}`
+     sub-objects are flattened to the flat root props `m0:scoreA…m0:scoreIm`
+     (bare). Their `mean` becomes `m0:asfidMean` / `m0:revoiMean`, and
+     `m0:epistemicGap` is (re)computed as `|asfidMean − revoiMean| / √2` when
+     absent. (The retired `It_score` slot inside a `revoiScores` block maps to
+     `m0:scoreIm`.)
+
+5. **Enum → IRI (C11)** — string enum values are converted to IRI nodes using
+   the schema's dotted convention: `"m0:spectralClass": "OnCriticalLine"` →
+   `{"@id": "m0:spectralClass.OnCriticalLine"}`. Covers `spectralClass`,
+   `focalClass`, `scoringStatus`.
+
+6. **`ontologyType` dedup (C13)** — `m3:ontologyType` is stripped from every
+   `@graph` node except `@graph[0]` (it must live only on the ontology node).
+
+7. **Tensor reform hook (guarded, no-op when absent)** — renames the retired
    formula property `m0:tensorFormula` / `m0:hasStructuralGrammarFormula` to the
    canonical `m2:hasStructuralGrammarFormula`. *(The `⊗`→`×` reform of formula
-   **values** is not yet wired in here — see Limitations.)*
+   **values** is not yet wired in — see Limitations.)*
 
-5. **ORIVE hygiene** — replaces the vestige acronym `ORIVE` with `REVOI` in
+8. **ORIVE hygiene** — replaces the vestige acronym `ORIVE` with `REVOI` in
    prose values (the gate tolerates it inside a string, but the notation rule
    forbids it).
 
-6. **Reports, never guesses** — prints a JSON summary: how many properties were
-   reclassified, which aliases were migrated, residual `orive` count, and a
-   `semantic_gaps` list flagging anything it will **not** fill in
-   (`m1:domain`, `m3:ontologyType`).
+9. **Reports, never guesses** — prints a JSON summary: `reclassified_local`,
+   `alias_migrations`, `debared_scores`, `flattened_nested`, `enum_iris`,
+   `ontologyType_stripped`, `residual_orive`, and a `semantic_gaps` list flagging
+   anything it will **not** fill in (`m1:domain`, `m3:ontologyType`). Two
+   safety flags may also appear: `CASING_WARNING` and `UNRESOLVED_PREFIXES`.
+
+## Two safety nets
+
+- **`m1core` dangling-alias migration.** `m1core:` is a universally retired alias
+  for `M1_CoreConcepts`. The tool migrates `m1core:` → `m1:` in the body **even
+  when it was never declared in `@context`** (a dangling prefix such as
+  `m1core:simulationTitle`, which would otherwise fail C15 as a non-absolute IRI).
+
+- **Unresolved-prefix detector.** After all migrations, the tool checks every
+  `"<prefix>:` still used in the body against the declared/standard prefixes and
+  reports any leftovers as **`UNRESOLVED_PREFIXES`** — so a dangling alias is
+  surfaced in the report instead of silently failing the gate.
 
 ## Casing guardrail (folder vs file)
 
 The gate derives an instance's name from its **file** stem (`M0_<name>` →
-`<name>`), so a file whose casing differs from its folder — e.g. folder `Vco`
-with file `M0_VCO.jsonld` — resolves to `VCO` on case-sensitive Linux/CI but
-`Vco` on case-insensitive Windows. The two disagree on the expected
-`m0.<inst>:` alias, so the instance passes on one OS and fails on the other.
+`<name>`). A folder may hold several instances (e.g. `Bmc/` has `M0_Bmc` **and**
+`M0_BmcSimulation`), so the file stem — not the folder — is the identity. The
+only real hazard is a **case-only** drift of the *same* name: folder `Vco` with
+file `M0_VCO.jsonld` resolves to `VCO` on case-sensitive Linux/CI but `Vco` on
+case-insensitive Windows, so the expected `m0.<inst>:` alias disagrees across
+platforms.
 
-To prevent this, the tool takes the instance identity from the **folder** (the
-stable identity per the repo layout `instances/<Cat>/<Instance>/M0_<Instance>.jsonld`)
-and computes the alias from it. If the file name is not the canonical
-`M0_<folder>.jsonld`, the report includes a **`CASING_WARNING`** with the exact
-case-safe two-step `git mv` to rename the file. Rename the file, then re-gate —
-the alias will match on every platform.
+The tool detects exactly that case (folder and file stem equal
+case-insensitively but differ in case), takes the **folder** casing as canonical,
+and emits a **`CASING_WARNING`** with the exact case-safe two-step `git mv` to
+rename the file to `M0_<folder>.jsonld`. Rename the file, then re-gate — the
+alias will match on every platform. When folder and file names simply differ
+(multiple instances per folder), no warning is raised and the file stem is used.
 
 ## What it does NOT do (by design)
 
 - It never invents **semantic** content. Missing `m1:domain` or
   `m3:ontologyType`, and the **content** of formulas, are the Head Chef's
-  decisions — the tool flags them, you supply them.
-- It does not flatten nested `asfidScores`/`revoiScores` (none of the piloted
-  instances had them; add that step if you meet one, per the FireTriangle pass).
+  decisions — the tool flags them in `semantic_gaps`, you supply them.
+- It does not transform `⊗` inside formula **values** (see Limitations).
 
 ## Usage
 
@@ -106,19 +140,20 @@ the instance path:
 python ontology/cli-tools/modernize_m0.py instances/poclets/PhaseTransition/M0_PhaseTransition.jsonld
 ```
 
-It **rewrites the file in place**, then prints its report. Always re-gate after:
+It **rewrites the file in place**, then prints its report. Always re-gate after
+(both must be green):
 
 ```bash
 python ontology/cli-tools/check-M0/check_m0_instances.py --instance PhaseTransition
 python ontology/TSCG_InstanceGrammar/validate_m0_instance.py instances/poclets/PhaseTransition/M0_PhaseTransition.jsonld
 ```
 
-Both must be green (C01–C15 OK / `VALIDATION PASSED`). Then `git add` the single
-file by path and commit.
+Then `git add` the single file by path and commit.
 
 > **In place** means: work on a clean git tree so `git diff` shows exactly what
 > changed, and you can `git checkout --` to revert if a report flags something
-> you want to review first.
+> you want to review first. If the report shows a `CASING_WARNING`, do the
+> `git mv` it prints **before** committing.
 
 ## Provenance / safety notes
 
@@ -137,5 +172,7 @@ file by path and commit.
   `I→Im` reviewed case by case).
 - **Known data bug:** `TscgOntologyAPIServer` stores prose text in `xsd:float`
   fields — a separate authoring fix, not something this tool should paper over.
+- **Special structures** (e.g. `BmcSimulation`, a simulation-config instance)
+  may need bespoke handling beyond the mechanical passes.
 - Always **re-gate**; a green report from this tool is a claim, the gate is the
   proof.
