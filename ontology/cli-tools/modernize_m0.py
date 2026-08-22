@@ -43,12 +43,29 @@ def load_whitelist() -> set:
     return {t for t in toks if not t.endswith("Shape")}
 
 def modernize(path: Path):
-    # Identity is the FOLDER name (the stable instance identity, per the repo layout
-    # instances/<Category>/<Instance>/M0_<Instance>.jsonld). The check-M0 gate derives
-    # the name from the file stem, so a file whose casing/name differs from its folder
-    # (e.g. folder 'Vco' + file 'M0_VCO.jsonld') passes on one OS and fails on another.
+    # The check-M0 gate derives an instance's name from its FILE stem
+    # (M0_<name> -> <name>), so that is the identity. A folder may hold several
+    # instances (e.g. Bmc/ has M0_Bmc and M0_BmcSimulation), so the folder name
+    # is NOT a reliable identity. We only use the folder to detect a *case-only*
+    # drift of the same name (folder 'Vco' vs file 'M0_VCO.jsonld'), which passes
+    # on one OS and fails on another.
     folder = path.parent.name
-    inst = folder
+    file_inst = path.stem[3:] if path.stem.startswith("M0_") else path.stem
+    casing_warn = None
+    if folder.lower() == file_inst.lower() and folder != file_inst:
+        # case-only mismatch -> canonicalize to the folder's casing
+        inst = folder
+        canonical_file = f"M0_{folder}.jsonld"
+        casing_warn = (
+            f"file '{path.name}' differs from folder '{folder}' by case only. The gate "
+            f"derives the name from the FILE, so this drifts across Windows/Linux. "
+            f"Canonical name is '{canonical_file}'. Rename it (case-safe, two-step):\n"
+            f"    git mv {path.parent.as_posix()}/{path.name} {path.parent.as_posix()}/_tmp_{inst}.jsonld\n"
+            f"    git mv {path.parent.as_posix()}/_tmp_{inst}.jsonld {path.parent.as_posix()}/{canonical_file}"
+        )
+    else:
+        inst = file_inst
+        canonical_file = path.name
     cam = camel(inst)
     wl = load_whitelist()
     d = json.loads(path.read_text(encoding="utf-8"))
@@ -56,17 +73,8 @@ def modernize(path: Path):
     g = d.get("@graph", [])
     o = g[0] if g else {}
     report = {"instance": inst, "camel": cam}
-
-    # ---- casing guardrail ----
-    canonical_file = f"M0_{inst}.jsonld"
-    if path.name != canonical_file:
-        report["CASING_WARNING"] = (
-            f"file '{path.name}' does not match folder '{folder}'. The gate derives the "
-            f"instance name from the FILE, so this drifts across Windows/Linux. Canonical "
-            f"name is '{canonical_file}'. Rename it (two-step, case-safe):\n"
-            f"    git mv {path.parent.as_posix()}/{path.name} {path.parent.as_posix()}/_tmp_{inst}.jsonld\n"
-            f"    git mv {path.parent.as_posix()}/_tmp_{inst}.jsonld {path.parent.as_posix()}/{canonical_file}"
-        )
+    if casing_warn:
+        report["CASING_WARNING"] = casing_warn
 
     # serialize early so alias body-migrations operate on text
     raw = json.dumps(d, ensure_ascii=False, indent=2)
@@ -116,13 +124,87 @@ def modernize(path: Path):
         imp.append(f"{BASE}/ontology/M0_Common.jsonld")
     if imp: o["owl:imports"] = imp
 
+    # ---- v2 fixers on the root node + graph ----
+    def num(v):
+        if isinstance(v, dict) and "@value" in v:
+            try: return float(v["@value"])
+            except Exception: return v["@value"]
+        return v
+
+    # C10: SCORE props stored as {@value,@type} -> bare numeric
+    SCORE_PROPS = ["m0:scoreA","m0:scoreS","m0:scoreF","m0:scoreIt","m0:scoreD",
+                   "m0:scoreR","m0:scoreE","m0:scoreV","m0:scoreO","m0:scoreIm",
+                   "m0:asfidMean","m0:revoiMean","m0:epistemicGap",
+                   "m0:focalScore","m0:focalBias","m0:stereopsicDepth"]
+    debared = [p for p in SCORE_PROPS if isinstance(o.get(p), dict) and "@value" in o[p]]
+    for p in debared:
+        o[p] = num(o[p])
+
+    # C15: flatten nested asfidScores{}/revoiScores{} -> flat bare scores (+means/gap)
+    def flatten(block_key, mapping):
+        blk = o.pop(block_key, None)
+        if not isinstance(blk, dict): return None
+        for sub, target in mapping.items():
+            if sub in blk:
+                o[target] = num(blk[sub])
+        return num(blk.get("mean")) if "mean" in blk else None
+    flattened = False
+    if isinstance(o.get("m0:asfidScores"), dict):
+        am = flatten("m0:asfidScores",
+                     {"A_score":"m0:scoreA","S_score":"m0:scoreS","F_score":"m0:scoreF",
+                      "It_score":"m0:scoreIt","D_score":"m0:scoreD"})
+        if am is not None and "m0:asfidMean" not in o: o["m0:asfidMean"] = am
+        flattened = True
+    if isinstance(o.get("m0:revoiScores"), dict):
+        rm = flatten("m0:revoiScores",
+                     {"R_score":"m0:scoreR","E_score":"m0:scoreE","V_score":"m0:scoreV",
+                      "O_score":"m0:scoreO","It_score":"m0:scoreIm","Im_score":"m0:scoreIm"})
+        if rm is not None and "m0:revoiMean" not in o: o["m0:revoiMean"] = rm
+        flattened = True
+    if flattened and "m0:epistemicGap" not in o \
+       and isinstance(o.get("m0:asfidMean"), (int,float)) and isinstance(o.get("m0:revoiMean"), (int,float)):
+        o["m0:epistemicGap"] = round(abs(o["m0:asfidMean"] - o["m0:revoiMean"]) / (2**0.5), 3)
+    report["debared_scores"] = len(debared); report["flattened_nested"] = flattened
+
+    # C11: enum string values -> IRI nodes {"@id": "m0:<prop>.<PascalValue>"}
+    ENUM_PROPS = {"m0:spectralClass":"spectralClass","m0:focalClass":"focalClass",
+                  "m0:scoringStatus":"scoringStatus"}
+    fixed_enums = []
+    for p, short in ENUM_PROPS.items():
+        v = o.get(p)
+        if isinstance(v, str) and not v.startswith(f"m0:{short}."):
+            pv = v[:1].upper() + v[1:]
+            o[p] = {"@id": f"m0:{short}.{pv}"}
+            fixed_enums.append(f"{short}={v}")
+    report["enum_iris"] = fixed_enums
+
+    # C13: m3:ontologyType must live only in @graph[0] — strip from the rest
+    stripped = 0
+    for node in d["@graph"][1:]:
+        if isinstance(node, dict) and "m3:ontologyType" in node:
+            del node["m3:ontologyType"]; stripped += 1
+    report["ontologyType_stripped"] = stripped
+
     d["@graph"][0] = o
     s = json.dumps(d, ensure_ascii=False, indent=2)
 
     # ---- migrate old-alias body usages (m1core->m1, m1<dom>->m1.ext:<dom>) ----
+    # m1core is a universally retired alias for M1_CoreConcepts; migrate it even when it
+    # was never declared in @context (a dangling prefix, e.g. m1core:simulationTitle).
+    if '"m1core:' in s and ("m1core", "m1") not in body_migrations:
+        body_migrations.append(("m1core", "m1"))
     for old, new in body_migrations:
         s = s.replace('"%s:' % old, '"%s:' % new)
     report["alias_migrations"] = [f"{a}->{b}" for a, b in body_migrations]
+
+    # safety net: any remaining "<prefix>: whose prefix is not declared/standard
+    declared = set(json.loads(s).get("@context", {}).keys()) | {
+        "@base", "dcterms", "owl", "rdf", "rdfs", "skos", "xsd", "m0", "m1", "m2", "m3"}
+    used = set(re.findall(r'"([A-Za-z][A-Za-z0-9_.]*):[A-Za-z]', s))
+    unresolved = sorted(p for p in used if p not in declared and not p.startswith("m0.")
+                        and not p.startswith("m1.ext"))
+    if unresolved:
+        report["UNRESOLVED_PREFIXES"] = unresolved
 
     # ---- ORIVE prose hygiene (vestige acronym; keep the number) ----
     s = re.sub(r'\bORIVE\b', 'REVOI', s)
