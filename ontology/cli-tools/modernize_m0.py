@@ -136,6 +136,23 @@ def modernize(path: Path):
                    "m0:scoreR","m0:scoreE","m0:scoreV","m0:scoreO","m0:scoreIm",
                    "m0:asfidMean","m0:revoiMean","m0:epistemicGap",
                    "m0:focalScore","m0:focalBias","m0:stereopsicDepth"]
+
+    # Root obsolete score aliases (A_score..Im_score) holding the actual numeric
+    # scores -> migrate to m0:scoreX (bare). Only at the ROOT node; nested blocks
+    # keyed by these names (e.g. m0:scoreJustification) are left alone (their alias
+    # is dropped from @context below, so their sub-keys stop coercing to float).
+    ALIAS_SCORE = {"A_score":"m0:scoreA","S_score":"m0:scoreS","F_score":"m0:scoreF",
+                   "It_score":"m0:scoreIt","D_score":"m0:scoreD","R_score":"m0:scoreR",
+                   "E_score":"m0:scoreE","V_score":"m0:scoreV","O_score":"m0:scoreO",
+                   "Im_score":"m0:scoreIm"}
+    migrated_alias_scores = 0
+    for old, new in ALIAS_SCORE.items():
+        if old in o and isinstance(o.get(old), (int, float, dict)):
+            v = o.pop(old)
+            o[new] = num(v)
+            migrated_alias_scores += 1
+    report["alias_scores_migrated"] = migrated_alias_scores
+
     debared = [p for p in SCORE_PROPS if isinstance(o.get(p), dict) and "@value" in o[p]]
     for p in debared:
         o[p] = num(o[p])
