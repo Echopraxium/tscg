@@ -106,9 +106,6 @@
     - **StroboscopicYinYang/**
       - **workflow_run_sample/**
         - **Simulation/**
-          - **archives/**
-            - M0_StroboscopicYinYang_Simulation.html
-            - Screenshot.png
           - _00_serve_poclet-sim.bat
           - _open_cmd_window.bat
           - M0_StroboscopicYinYang_Simulation.html
@@ -763,7 +760,7 @@
         - M0_VCO.html
         - M0_Vco.jsonld
         - M0_Vco_README.md
-      - M0_VCO.jsonld
+      - M0_Vco.jsonld
       - M0_VCO_README.md
       - VCO_Simulation_README.md
     - **yggdrasil/**
@@ -1353,10 +1350,10 @@
         - _00_serve_poclet-sim.bat
         - M0_Bmc.html
         - Screenshot.png
+      - BmcSimulation.jsonld
       - HANDOVER_2026-06-19.md
       - M0_Bmc.jsonld
       - M0_Bmc_README.md
-      - M0_BmcSimulation.jsonld
       - Screenshot.png
     - **Triz/**
       - **static/**
@@ -1595,6 +1592,8 @@
     - _00_open_cmd_window.bat
     - _run_all_layers.bat
     - golden_values.json
+    - modernize_m0.py
+    - modernize_m0_README.md
     - README.md
     - run_all_layers.py
     - tscg_metrics.py
@@ -1847,7 +1846,6 @@
     - GUIDE_CORRECTION_DOMAIN_FORMAT.md
     - M0_CONTEXT_TEMPLATE.json
     - M0_INSTANCE_TEMPLATE.jsonld
-    - M0_Instances_Schema.shacl.ttl
     - M0_TEMPLATES_README.md
     - M0_TEMPLATES_USAGE_GUIDE.md
     - M1_NAMESPACE_AUDIT_REPORT.md
@@ -2036,5 +2034,6 @@
 - serve.js
 - styles.css
 - tscg- github.url
+- tscg_generate_filetree.py
 - verify_migration_report.txt
 - verify_output.txt
