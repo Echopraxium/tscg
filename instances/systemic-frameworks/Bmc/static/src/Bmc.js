@@ -2127,8 +2127,9 @@ function initSplitter() {
 // ── Init ───────────────────────────────────────────────────────────────────
 // ── Ontology loader — fetch from GitHub, fallback to local .jsonld.js ────────
 const JSONLD_URL =
-  'https://raw.githubusercontent.com/Echopraxium/tscg/main/' +
-  'instances/systemic-frameworks/Bmc/M0_BmcSimulation.jsonld';
+   'https://raw.githubusercontent.com/Echopraxium/tscg/main/' +
+   'instances/systemic-frameworks/Bmc/BmcSimulation.jsonld';
+// 'instances/systemic-frameworks/Bmc/M0_BmcSimulation.jsonld';
 
 async function loadCases() {
   // 1. Try GitHub raw (works for file:// too — CORS: Access-Control-Allow-Origin: *)
