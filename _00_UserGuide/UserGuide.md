@@ -150,12 +150,13 @@ is grouped by theme — the **Starter** rows are the gentlest first dishes:
 | **Image Processing** | Image processing | Starter | Successive lossy reductions (colour → gray → ANSI) |
 | **Mini Alchemy** | Game / crafting | Starter | Combination and reachable-set closure |
 | **Stroboscopic Yin-Yang** ★ | Perception | Intermediate | Map vs Territory made visible — a *worked* example (sample run in `workflow_run_sample/`) |
+| **PokerHand3D** ★ | Combinatorics / Card Games | Intermediate | The ten poker hand combinations as a 3D circular-pillar Map — meets the "is there a domain?" question head-on; the doubled Ace shows Map↔Territory fidelity (worked example in `workflow_run_sample/`) |
 
-> ★ **Stroboscopic Yin-Yang** is the one exercise shipped *with* a sample run: it exists
-> to **illustrate the workflow end to end**. Its `workflow_run_sample/` folder holds
-> *one* example resolution — a spoiler, and **not** a definitive answer (in TSCG another
-> modeller could legitimately model it differently). Do the exercise first if you want
-> the practice.
+> ★ **Stroboscopic Yin-Yang** and **PokerHand3D** are the exercises shipped *with* a
+> sample run: they exist to **illustrate the workflow end to end**. Each
+> `workflow_run_sample/` folder holds *one* example resolution — a spoiler, and
+> **not** a definitive answer (in TSCG another modeller could legitimately model it
+> differently). Do the exercise first if you want the practice.
 
 > Only three of these land in an existing M1 domain (`electronics`,
 > `chemistry`/`biology`); the rest have **no domain yet** — so they let you meet
