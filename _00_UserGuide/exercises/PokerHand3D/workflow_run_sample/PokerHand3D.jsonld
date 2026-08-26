@@ -1,0 +1,185 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "m0.pokerHand3D": "https://raw.githubusercontent.com/Echopraxium/tscg/main/_00_UserGuide/exercises/PokerHand3D/workflow_run_sample/PokerHand3D.jsonld#"
+  },
+  "@graph": [
+    {
+      "@id": "PokerHand3D.jsonld",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Poker Hand 3D — Combinations on a Circular Pillar",
+      "rdfs:comment": "Exercise reference solution. The 52-card deck is laid on a circular pillar: the four vertical edges are the four suits, the fourteen floors are the ranks with the Ace DOUBLED (bottom floor reserved for the wheel A-2-3-4-5, top floor otherwise). Each card is a point (rank x suit). The ten hand categories read as geometric figures: a pair is a cylinder, three/four of a kind a magenta triangle/square, a straight a snake of cylinders, a flush a stack of one-suit disks; the naming/tie-breaking card is caged in an octahedron. Because the Ace is doubled rather than identified, the illegal round-the-corner straight K-A-2-3-4 is visually impossible. A purely structural/informational poclet: it visualises the combinatorial grammar of 5-card hands, not the game of poker.",
+      "owl:versionInfo": "1.0.0",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-08-26",
+      "owl:imports": [
+        "M0_Common.jsonld",
+        "M1_CoreConcepts.jsonld",
+        "M2_GenericConcepts.jsonld",
+        "M3_GenesisGrammar.jsonld"
+      ],
+      "m3:ontologyType": {
+        "@id": "m3:Poclet"
+      },
+      "m3:semanticSignature": "structural_taxonomy + geometric_figures + doubled_ace_topology",
+      "m0:hasFacet": {
+        "@id": "m0:facet.Democratization"
+      },
+      "m0:roleGrounding": {
+        "@id": "m0:roleGrounding.Designed"
+      },
+      "m0:illustratesConcept": [
+        "Territory/Map duality — the pillar is an explicit Map of the combinatorial Territory of 5-card hands",
+        {
+          "@id": "m2:Topology"
+        },
+        {
+          "@id": "m2:Pattern"
+        },
+        {
+          "@id": "m2:Hierarchy"
+        }
+      ],
+      "m1:domain": [
+        "Combinatorics",
+        "Card Games"
+      ],
+      "m0:scoreA": 0.3,
+      "m0:scoreS": 0.95,
+      "m0:scoreF": 0.1,
+      "m0:scoreIt": 0.85,
+      "m0:scoreD": 0.1,
+      "m0:scoreR": 0.95,
+      "m0:scoreE": 0.55,
+      "m0:scoreV": 0.9,
+      "m0:scoreO": 0.9,
+      "m0:scoreIm": 0.65,
+      "m0:meanASFID": 0.46,
+      "m0:meanREVOI": 0.79,
+      "m0:epistemicGap": 0.23,
+      "m0:spectralClass": {
+        "@id": "m0:spectralClass.Liminal"
+      },
+      "m0:scoringStatus": {
+        "@id": "m0:scoringStatus.Complete"
+      },
+      "m0:focalApplicable": false,
+      "m0:scoringRationale": "Territory: S dominant (0.95) — pillar, floors and figures are fully determined and inspectable; It high (0.85) — classifying a hand is coding, the whole object is a representation; A modest (0.30) — the weak->strong ranking is an ordering, not a dynamical attractor; F and D near zero (0.10) — a static classification, no transfer, no evolution (legitimate Stase). Map: R 0.95 (the poclet IS a representation), V 0.90 (each classification is exactly checkable against poker rules), O 0.90 (3D interactive), Im 0.65 (hand ranking is a universal standard, the pillar mapping is specific), E 0.55 (extensible to multi-pillar, but the combinatorics is fixed). Map mean 0.79 > Territory mean 0.46: a Map-dominant instance, epistemicGap 0.23 -> Liminal — matching a structural/topological poclet whose value is how it makes the hand-space knowable.",
+      "m2:changelog": [
+        {
+          "version": "1.0.0",
+          "date": "2026-08-26",
+          "changes": "Initial reference solution for the PokerHand3D UserGuide exercise. Circular-pillar Map of 5-card poker combinations (edges=suits, floors=ranks with doubled Ace, cards=points, combinations=geometric figures, determining card=octahedron, strength gauge=inverse frequency). Structure+Information dominant, Map-dominant (Liminal). BabylonJS simulation delivered. Carries the Democratization facet."
+        }
+      ],
+      "m0:note": "UserGuide exercise (reference solution), not a gallery poclet: deliberately minimal and exact so a beginner meets the 'is there an M1 domain?' question for real. m1:domain uses descriptive strings (Combinatorics, Card Games) — this is part of the lesson; Combinatorics is noted as a future domain candidate. Future extension: several pillars in a ring for a 6-seat table, which would introduce hand comparison and engage the Dynamics/Attractor dimensions."
+    },
+    {
+      "@id": "m0.pokerHand3D:RankAxis",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Rank Axis",
+      "rdfs:comment": "Fourteen floors ordering the ranks A,2,...,K,A. The Ace is doubled: bottom floor reserved for the wheel (A low), top floor for the Ace high. The ordering is cyclic in spirit but CUT at the Ace — one cannot cross from K down to the low Ace, which is why K-A-2-3-4 is not a straight.",
+      "m2:instantiates": [
+        {
+          "@id": "m2:Hierarchy"
+        },
+        {
+          "@id": "m2:Topology"
+        }
+      ]
+    },
+    {
+      "@id": "m0.pokerHand3D:SuitEdges",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Suit Edges",
+      "rdfs:comment": "The four vertical edges, one per suit (clubs, hearts, diamonds, spades). They never meet, so each suit keeps its identity (a royal flush is of a specific suit). Positions of the edges are conventional; distances between suits carry no meaning.",
+      "m2:instantiates": [
+        {
+          "@id": "m2:Symmetry"
+        }
+      ]
+    },
+    {
+      "@id": "m0.pokerHand3D:Card",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Card",
+      "rdfs:comment": "An atomic point of the pillar located by (rank floor x suit edge), rendered as a small sphere coloured by suit.",
+      "m2:instantiates": [
+        {
+          "@id": "m2:Code"
+        },
+        {
+          "@id": "m2:Signature"
+        }
+      ]
+    },
+    {
+      "@id": "m0.pokerHand3D:Hand",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Hand",
+      "rdfs:comment": "A set of five cards — five points on the pillar. Its type is read from the geometric figure the five points form.",
+      "m2:instantiates": [
+        {
+          "@id": "m2:Pattern"
+        }
+      ]
+    },
+    {
+      "@id": "m0.pokerHand3D:CombinationType",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Combination Type",
+      "rdfs:comment": "One of the ten categories. Most are invariant under permutation of suits; the flush is the exception, defined by suit-equality.",
+      "m2:instantiates": [
+        {
+          "@id": "m2:Invariant"
+        },
+        {
+          "@id": "m2:Pattern"
+        }
+      ]
+    },
+    {
+      "@id": "m0.pokerHand3D:GeometricFigure",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Geometric Figure",
+      "rdfs:comment": "The visual signature of a combination: cylinder (pair), triangle (trips), square (quads), snake (straight), disks (flush). The figure IS the definition.",
+      "m2:instantiates": [
+        {
+          "@id": "m2:Representation"
+        }
+      ]
+    },
+    {
+      "@id": "m0.pokerHand3D:HandRanking",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Hand Ranking",
+      "rdfs:comment": "The weak->strong ordering of the ten categories, browsed by the two buttons. Explained by rarity — a strength gauge inverse to each type's frequency.",
+      "m2:instantiates": [
+        {
+          "@id": "m2:Hierarchy"
+        }
+      ]
+    },
+    {
+      "@id": "m0.pokerHand3D:DeterminingCard",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "Determining Card",
+      "rdfs:comment": "The card or sub-figure that names or breaks the tie, caged in an octahedron: high card / highest kicker / the triangle for a full house / the high pair for two pair. It DESIGNATES statically; it does not COMPARE hands.",
+      "m2:instantiates": [
+        {
+          "@id": "m2:Signature"
+        }
+      ]
+    }
+  ]
+}
