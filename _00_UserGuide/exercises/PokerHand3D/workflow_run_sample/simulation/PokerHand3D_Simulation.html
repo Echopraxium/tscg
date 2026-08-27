@@ -327,8 +327,9 @@ canvas { display:block; width:100%; height:100%; touch-action:none; }
 .count      { text-align:center; font-size:12px; color:var(--text-mute); margin:7px 0; }
 
 .legend     { list-style:none; font-size:11px; color:var(--text-dim); line-height:1.75; }
-.legend li  { padding-left:2px; }
+.legend li  { padding-left:2px; transition:color .15s ease; }
 .legend b   { color:var(--text); }
+.legend li.active, .legend li.active b { color:#22d3ee; }   /* active combination */
 
 .lp-btn.primary { background:var(--accent); border-color:var(--accent);
                   color:#12010e; font-weight:700; }
@@ -374,13 +375,13 @@ canvas { display:block; width:100%; height:100%; touch-action:none; }
       <div class="lp-section">
         <div class="lp-title">Shape grammar</div>
         <ul class="legend">
-          <li><b>Cylinder</b>: Pair segment</li>
-          <li><b>Triangle</b>: Three of a kind</li>
-          <li><b>Square</b>: Four of a kind</li>
-          <li><b>Snake</b>: straight (consecutive)</li>
-          <li><b>Disks</b>: Flush (one suit)</li>
-          <li><b>Octahedron</b>: Kicker</li>
-          <li><b>⊚</b> : Wheel</li>
+          <li data-fig="cyl"><b>Cylinder</b>: Pair segment</li>
+          <li data-fig="tri"><b>Triangle</b>: Three of a kind</li>
+          <li data-fig="sq"><b>Square</b>: Four of a kind</li>
+          <li data-fig="snake"><b>Snake</b>: straight (consecutive)</li>
+          <li data-fig="disks"><b>Disks</b>: Flush (one suit)</li>
+          <li data-fig="octa"><b>Octahedron</b>: Kicker</li>
+          <li data-fig="wheel"><b>⊚</b> : Wheel</li>
         </ul>
       </div>
     </div>
@@ -733,7 +734,7 @@ function exportScreenshot() { window.TSCG.exportScreenshot(); }
     var k=pick(RANKS.filter(function(r){return r!==p1&&r!==p2;}));
     var a=sample(SUIT_KEYS,2), b=sample(SUIT_KEYS,2);
     var cards=[[Lof(p1),a[0]],[Lof(p1),a[1]],[Lof(p2),b[0]],[Lof(p2),b[1]],[Lof(k),pick(SUIT_KEYS)]];
-    return { cards:cards, fills:[], mlines:[[0,1],[2,3]], wlines:[], octa:[0,1] };
+    return { cards:cards, fills:[], mlines:[[0,1],[2,3]], wlines:[], octa:[4] };
   }
   function genTrips(){
     var t=pick(RANKS), ts=sample(SUIT_KEYS,3);
@@ -835,13 +836,25 @@ function exportScreenshot() { window.TSCG.exportScreenshot(); }
 
   // Permanent frame: circular rings + suit edges + labels
   (function buildFrame(){
-    var GRAY  = new BABYLON.Color3(0.62, 0.66, 0.72);
-    var NOBLE = MAGENTA;                                 // Broadway floors (10,J,Q,K,A-high) — "more noble"
+    var GRAY = new BABYLON.Color3(0.62, 0.66, 0.72);
+    var dotMat = new BABYLON.StandardMaterial('bdm', scene);
+    dotMat.emissiveColor = MAGENTA; dotMat.disableLighting = true;
     for (var L=0; L<=13; L++){
-      var y=yOf(L), pts=[];
-      for (var a=0; a<=64; a++){ var t=a/64*Math.PI*2; pts.push(new BABYLON.Vector3(Math.cos(t)*RC, y, Math.sin(t)*RC)); }
-      var ring = BABYLON.MeshBuilder.CreateDashedLines('ring', {points:pts, dashSize:0.12, gapSize:0.10, dashNb:180}, scene);
-      ring.color = (L >= 9) ? NOBLE : GRAY;
+      var y = yOf(L);
+      if (L >= 9){                                          // Broadway (10,J,Q,K,A-high): magenta dotted ring
+        var n = 78;
+        for (var a=0; a<n; a++){
+          var t = a/n*Math.PI*2;
+          var dot = BABYLON.MeshBuilder.CreateSphere('bdot', {diameter:0.07, segments:6}, scene);
+          dot.position = new BABYLON.Vector3(Math.cos(t)*RC, y, Math.sin(t)*RC);
+          dot.material = dotMat;
+        }
+      } else {                                              // lower floors: subtle gray dashed ring
+        var pts=[];
+        for (var b=0; b<=64; b++){ var u=b/64*Math.PI*2; pts.push(new BABYLON.Vector3(Math.cos(u)*RC, y, Math.sin(u)*RC)); }
+        var ring = BABYLON.MeshBuilder.CreateDashedLines('ring', {points:pts, dashSize:0.12, gapSize:0.10, dashNb:180}, scene);
+        ring.color = GRAY;
+      }
     }
     SUIT_KEYS.forEach(function(sk){
       var rail = BABYLON.MeshBuilder.CreateDashedLines('rail', {points:[posOf(0,sk), posOf(13,sk)], dashSize:0.16, gapSize:0.12, dashNb:44}, scene);
@@ -852,9 +865,11 @@ function exportScreenshot() { window.TSCG.exportScreenshot(); }
     var RANKMARKS = [[0,'A \u229a'],[4,'5'],[6,'7'],[9,'10'],[10,'J'],[11,'Q'],[12,'K'],[13,'A']];
     RANKMARKS.forEach(function(o){
       var base = posOf(o[0],'c');                                   // point on the ring at this floor
-      var lab  = base.add(new BABYLON.Vector3(-0.6, 0, -0.6));      // label sits outward, same height
+      var off  = new BABYLON.Vector3(-0.6, 0, -0.6);
+      var lab  = base.add(off);                                     // label sits outward, same height
       makeLabel(o[1], '#c9d1d9', lab, 0.47);                        // rank labels (+50% then -25%)
-      var conn = BABYLON.MeshBuilder.CreateLines('conn', {points:[lab, base]}, scene);
+      var connEnd = base.add(off.scale(0.55));                      // stop short -> empty gap before the label
+      var conn = BABYLON.MeshBuilder.CreateLines('conn', {points:[base, connEnd]}, scene);
       conn.color = new BABYLON.Color3(0.62, 0.66, 0.72);
     });
   })();
@@ -950,6 +965,19 @@ function exportScreenshot() { window.TSCG.exportScreenshot(); }
       '1 hand in ' + Math.round(TOTAL/c).toLocaleString('en-US') + '  \u00b7  ' +
       (c/TOTAL*100).toLocaleString('en-US', {maximumSignificantDigits:3}) + ' %';
     document.getElementById('count').textContent = (i+1) + ' / ' + CATS.length;
+
+    // highlight the legend line(s) of the current figure in cyan
+    var figs = {};
+    if ((H.mlines||[]).length) figs.cyl = 1;
+    (H.fills||[]).forEach(function(f){ if (f.length===4) figs.sq = 1; else figs.tri = 1; });
+    if (H.snake) figs.snake = 1;
+    if (H.disks) figs.disks = 1;
+    if (H.cards.some(function(cd){ return cd[0]===0; })) figs.wheel = 1;
+    var lis = document.querySelectorAll('.legend li');
+    for (var q=0; q<lis.length; q++){
+      var k = lis[q].getAttribute('data-fig');
+      if (figs[k]) lis[q].classList.add('active'); else lis[q].classList.remove('active');
+    }
   }
 
   function go(d){ idx = (idx + d + CATS.length) % CATS.length; render(idx); }
