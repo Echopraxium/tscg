@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1732 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1746 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **"cli_tools/**
   - **generate_index-html/**
@@ -99,6 +99,14 @@
       - MiniAlchemy.md
     - **Osmosis/**
       - Osmosis.md
+    - **PokerHand3D/**
+      - **workflow_run_sample/**
+        - **simulation/**
+          - PokerHand3D_Simulation.html
+        - PokerHand3D.jsonld
+        - PokerHand3D_README.md
+        - Screenshot.png
+      - PokerHand3D.md
     - **QRCodeDecoding/**
       - QRCodeDecoding.md
     - **RubiksCube/**
@@ -127,6 +135,13 @@
     - TSCG_Validation_HandOver - Part-1.md
     - TSCG_Validation_HandOver - Part-2.md
     - TSCG_Validation_HandOver.md
+  - **2026_08_16/**
+    - TSCG_Test_HandOver.md
+  - **2026_08_17/**
+    - TSCG_Test_HandOver.md
+  - **2026_08_23/**
+    - README.txt
+    - TSCG_HandOver_CheckM0_Campaign.md
 - **_protos/**
   - README.txt
 - **cli_tools/**
@@ -312,6 +327,10 @@
     - Transistor_Simulation.png
     - TscgExplorer_Simulation.png
     - VCO_Simulation.png
+  - **_01_Worksite/**
+    - **2026_09_01/**
+      - Handover-SC3-Facet-1sept26.md
+      - TSCG_Session_Handover_2026-09-01_Facet-WS0_AntiAliasing.md
   - **poclets/**
     - **_00_template/**
       - **src/**
@@ -1586,6 +1605,7 @@
     - **validator/**
       - **checks/**
         - __init__.py
+        - axis.py
         - ctx.py
       - sources.py
       - tscg_validator.py
@@ -1611,6 +1631,8 @@
         - TSCG_REGRESSION_VALIDATION_REPORT.md
     - **_01_Worksite/**
       - **WS-0/**
+        - **2026_09_02/**
+          - SC-3_Facet_Decision_Record.md
         - **Next Conversation_2026_07_30/**
           - SC-3_Facet_Decision_Record.md
           - TSCG_Session_Handover_2026-07-30.md
@@ -1632,6 +1654,7 @@
         - M2_FeedbackLoop_Reclassification_README.md
         - README.md
         - SC-1_FunctionalGrammar_Handover.md
+        - SC-3_M3_Facet_Draft_v2.md
         - TSCG_File_Tree.md
         - TSCG_Session_Handover_2026-07-25.md
       - **WS-10/**
@@ -1649,6 +1672,7 @@
         - worksite.yaml
       - _00_open_cmd_window.bat
       - _open_cmd_window.bat
+      - TSCG_HandOver_FireTriangle.md
       - TSCG_OntologyValidator_Worksite_README.md
       - TSCG_VocabularyConsolidation_Worksite_README.md
       - worksite.yaml
@@ -1661,10 +1685,6 @@
     - CategoryTheory_KnowledgeField_Integration.md
     - Cyclic_Tension_Validation_Analysis.md
     - Domain_M2_Update_Analysis_v15_1_0.md
-    - ENCODING_CORRECTION_REPORT.md
-    - encoding_correspondances.json
-    - ENCODING_CORRESPONDANCES.txt
-    - encoding_correspondances_2026_02_05.json
     - Final_Corrections_Summary.md
     - Fusion_vs_Composition_Correction.md
     - HOWTO_Create_M1_Extension.md
@@ -2030,7 +2050,10 @@
 - LICENSE
 - package-lock.json
 - package.json
+- patch_checkM0_notation.py
+- patch_firetriangle_readme.py
 - README.md
+- rewrite_firetriangle.py
 - serve.js
 - styles.css
 - tscg- github.url
