@@ -13,7 +13,7 @@
     {
       "@id": "m3:GenesisGrammar",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "4.5.0",
+      "owl:versionInfo": "4.6.0",
       "dcterms:created": "2026-01-21",
       "dcterms:modified": "2026-07-22",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
@@ -282,6 +282,11 @@
         "@id": "m3:Genesis"
       },
       "m3:changelog": [
+        {
+          "version": "4.6.0",
+          "date": "2026-09-01",
+          "changes": "SC-3 (WS-0 Structural Cleanup): graved the Facet mechanism + the Audience facet. Added m3:Facet (owl:Class; each individual also a skos:ConceptScheme) and m3:FacetValue (owl:Class; also skos:Concept), with m3:valueOf (value -> axis; subPropertyOf skos:inScheme) and m3:hasFacetValue (carrier -> value; range m3:FacetValue, IRI-only, no domain). Graved the Audience axis (m3:Audience) with values m3:audience.KitArchitect/KitCrafter/KitUser. A facet is a conferred, contingent, Map-perspective classificatory role, orthogonal to the ontologyType backbone (NATURE stays the backbone tree; SC-3 does NOT touch ontologyType). Companion changes: the m0:facet.* apparatus removed from M0_Common; WS-5 axis.py gate. Contract-on-value doctrine; inter-value relations deferred (Decision #3). See SC-3 Facet Decision Record v2.0.0."
+        },
         {
           "version": "4.5.0",
           "date": "2026-07-22",
@@ -1521,6 +1526,84 @@
       "m3:implicationForStructuralComposition": "F-containing M2 structural formulas naturally encode morphic capacity. M2 = ×-products of object-dimensions (static) combined with F (dynamic relational component). This is consistent with existing structural composition — it adds interpretive depth, not contradiction.",
       "m3:riskAssessment": "Low — the amendment is interpretive and additive. All existing M2 structural formulas remain valid. No refactoring of M3_EagleEye.jsonld required.",
       "m3:futureWork": "Formal proof of M3 as fibered category. Expert review of F ∈ Mor(Cat_M3) ∩ Ob(Cat_M3) axiom. Investigation of higher-order morphisms in M3."
+    },
+    {
+      "@id": "m3:Facet",
+      "@type": "owl:Class",
+      "rdfs:label": "Facet",
+      "rdfs:comment": "A classificatory axis (Ranganathan faceted classification, 1933): an orthogonal, non-derivable dimension that files instances without altering the backbone type tree. Each individual 'a m3:Facet' is also a skos:ConceptScheme. Values are m3:FacetValue. Semantically a conferred, contingent, Map-perspective role (anchored on m2:Role Ss|K); distinct from ScoringProperty/FocalProperty."
+    },
+    {
+      "@id": "m3:FacetValue",
+      "@type": "owl:Class",
+      "rdfs:comment": "A value of a facet (the 'focus' in Ranganathan's sense). Also a skos:Concept. Belongs to exactly one axis via m3:valueOf. MAY carry contractual obligations directly as its own properties (SHACL-enforced on any carrier that declares it)."
+    },
+    {
+      "@id": "m3:valueOf",
+      "@type": "owl:ObjectProperty",
+      "rdfs:subPropertyOf": {
+        "@id": "skos:inScheme"
+      },
+      "rdfs:domain": {
+        "@id": "m3:FacetValue"
+      },
+      "rdfs:range": {
+        "@id": "m3:Facet"
+      },
+      "rdfs:comment": "Links a facet value to the axis (m3:Facet individual) it is a value of. Closes any inter-value relation within one axis."
+    },
+    {
+      "@id": "m3:hasFacetValue",
+      "@type": "owl:ObjectProperty",
+      "rdfs:range": {
+        "@id": "m3:FacetValue"
+      },
+      "rdfs:comment": "Declares that this instance carries one or more facet values. Multi-valued. Values MUST be IRIs of registered m3:FacetValue individuals. FORBIDDEN: bare string values. Replaces m0:hasFacet."
+    },
+    {
+      "@id": "m3:Audience",
+      "@type": [
+        "m3:Facet",
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Audience",
+      "rdfs:comment": "AUDIENCE facet: for whom the artifact is produced (read 'for whom', not 'by whom'). Values follow the Kit produce->consume chain — KitArchitect produces for KitCrafter, who produces for KitUser (offset by one along the chain) — but that ordering is documentation only: no relation property is graved (SC-3 Decision #3). Optional facet. Closed value-set."
+    },
+    {
+      "@id": "m3:audience.KitArchitect",
+      "@type": [
+        "m3:FacetValue",
+        "skos:Concept"
+      ],
+      "m3:valueOf": {
+        "@id": "m3:Audience"
+      },
+      "rdfs:label": "KitArchitect",
+      "rdfs:comment": "Models/refactors the ontology architecture (M3/M2/M1)."
+    },
+    {
+      "@id": "m3:audience.KitCrafter",
+      "@type": [
+        "m3:FacetValue",
+        "skos:Concept"
+      ],
+      "m3:valueOf": {
+        "@id": "m3:Audience"
+      },
+      "rdfs:label": "KitCrafter",
+      "rdfs:comment": "Fabricates Kits using an Architect's ontologies."
+    },
+    {
+      "@id": "m3:audience.KitUser",
+      "@type": [
+        "m3:FacetValue",
+        "skos:Concept"
+      ],
+      "m3:valueOf": {
+        "@id": "m3:Audience"
+      },
+      "rdfs:label": "KitUser",
+      "rdfs:comment": "Uses what the Crafter fabricated. Absorbs the former m0:facet.Democratization (novice audience)."
     }
   ]
 }

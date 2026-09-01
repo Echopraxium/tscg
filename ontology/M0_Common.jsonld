@@ -20,7 +20,7 @@
       "rdfs:comment": "Canonical source of truth for all shared properties used across TSCG M0 instances (Poclets, SystemicFrameworks, SymbolicSystemGrammars, TscgTools). Defines the m0: namespace as the unique, stable namespace for cross-instance properties. All M0 instances MUST import this file and declare m0: pointing to this ontology. Instance-local properties use a distinct alias m0.<instanceName>: pointing to the instance file itself.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19",
-      "owl:versionInfo": "1.1.0",
+      "owl:versionInfo": "1.3.0",
       "m3:ontologyType": {
         "@id": "m3:CommonVocabulary"
       },
@@ -31,6 +31,11 @@
       ],
       "m2:changelog": [
         {
+          "version": "1.3.0",
+          "date": "2026-09-01",
+          "changes": "SC-3 (WS-0 Structural Cleanup): removed the entire m0:facet.* apparatus (added in 1.2.0), now superseded by the M3 Facet mechanism (m3:Facet/m3:FacetValue/m3:valueOf/m3:hasFacetValue in M3_GenesisGrammar v4.6.0). Removed: m0:Facet, m0:hasFacet, m0:facet.Democratization (with facetAnchor/facetFormula/facetContractFields), m0:illustratesConcept, m0:RoleGrounding, m0:roleGrounding, m0:roleGrounding.Reused, m0:roleGrounding.Designed. The Democratization facet migrates to m3:audience.KitUser; its contract (illustratesConcept/roleGrounding) is dropped, not carried over. owl:versionInfo corrected from a stale 1.1.0 (the 1.2.0 facet-infra change was never reflected there). See SC-3 Facet Decision Record v2.0.0."
+        },
+        {
           "version": "1.2.0",
           "date": "2026-06-28",
           "changes": "FACET INFRASTRUCTURE: Added orthogonal facet mechanism (faceted classification, Ranganathan). New abstract class m0:Facet + property m0:hasFacet (owl:ObjectProperty). First registered facet: m0:facet.Democratization (anchored on m2:Role Ss|K, perspective map). Contract fields: m0:illustratesConcept (required when facet declared, SHACL-enforced), m0:roleGrounding enum {Reused, Designed} (optional). Facets are orthogonal to m3:ontologyType — applicable to all instance types."
@@ -39,11 +44,6 @@
           "version": "1.1.0",
           "date": "2026-06-19",
           "changes": "ENUMERATION TYPES: spectralClass, focalClass, scoringStatus converted from owl:DatatypeProperty(xsd:string) to owl:ObjectProperty with owl:oneOf enumeration classes. Naming convention: m0:<propertyName>.<ValuePascalCase> (e.g. m0:spectralClass.Coherent). All float score properties now use bare numeric values (no @type annotation needed — rdfs:range declared in ontology). Removed @type:xsd:float annotation requirement."
-        },
-        {
-          "version": "1.0.0",
-          "date": "2026-06-19",
-          "changes": "Initial version. Extracts all shared M0 properties from individual instance files into single canonical source. Defines m0: namespace as M0_Common.jsonld# (replaces phantom M0_Poclet# target). 3 property families: Scoring (ASFID+REVOI+Aggregates), EpistemicGap, FocalScore (Gs stereopsis). Namespace convention: m0: = shared, m0.<instance>: = local."
         }
       ],
       "m0:namespaceConvention": {
@@ -753,114 +753,6 @@
       },
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19"
-    },
-
-    {
-      "@id": "m0:Facet",
-      "@type": "owl:Class",
-      "rdfs:label": "M0 Facet",
-      "rdfs:comment": "Abstract superclass of all orthogonal facet types applicable to M0 instances. A Facet represents a cross-cutting dimension (orthogonal to m3:ontologyType) that instances may declare via m0:hasFacet. Each declared facet imposes contractual constraints on the instance (enforced via SHACL NodeShapes in M0_Instances_Schema.shacl.ttl). Conceptually grounded in faceted classification (Ranganathan, 1933). Semantically: facet values are roles in the BFO sense — externally conferred, contingent, Map-perspective — anchored on m2:Role (Ss | K). Distinct from m0:ScoringProperty (derived quality) and m0:FocalProperty (Gs stereopsis).",
-      "rdfs:subClassOf": {
-        "@id": "m0:InstanceProperty"
-      },
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:created": "2026-06-28"
-    },
-    {
-      "@id": "m0:hasFacet",
-      "@type": "owl:ObjectProperty",
-      "rdfs:label": "has Facet",
-      "rdfs:comment": "Declares that this M0 instance conforms to one or more orthogonal facets. Values MUST be IRIs from registered m0:Facet individuals (e.g. m0:facet.Democratization). Each declared facet imposes contractual obligations enforced by SHACL. Anchored on m2:Role (Ss | K, perspective map): a facet is a role externally conferred by usage context. Multiple values allowed (array). Use @id notation: {'@id': 'm0:facet.Democratization'}. FORBIDDEN: bare string values.",
-      "rdfs:domain": {
-        "@id": "owl:Ontology"
-      },
-      "rdfs:range": {
-        "@id": "m0:Facet"
-      },
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:created": "2026-06-28"
-    },
-    {
-      "@id": "m0:facet.Democratization",
-      "@type": [
-        "owl:NamedIndividual",
-        "m0:Facet"
-      ],
-      "rdfs:label": "Democratization",
-      "rdfs:comment": "Facet: this instance serves a Democratization role — it makes systemic modeling accessible to non-specialists, particularly those working on environmental governance. Grounded on m2:Role (Ss | K): the instance functions as a Symbol carrying Knowledge for a novice audience. Declaring this facet obligates the instance to provide m0:illustratesConcept (SHACL-enforced, minCount 1). Orthogonal to m3:ontologyType — applicable to Poclet, SystemicFramework, SymbolicSystemGrammar, and TscgTool.",
-      "m0:facetAnchor": {
-        "@id": "m2:Role"
-      },
-      "m0:facetFormula": "Ss | K",
-      "m0:facetContractFields": [
-        "m0:illustratesConcept (REQUIRED — minCount 1)",
-        "m0:roleGrounding (OPTIONAL — IRI from m0:RoleGrounding)"
-      ],
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:created": "2026-06-28"
-    },
-    {
-      "@id": "m0:illustratesConcept",
-      "@type": "owl:AnnotationProperty",
-      "rdfs:label": "illustrates Concept",
-      "rdfs:comment": "Declares which systemic concept(s) or principle(s) this instance primarily illustrates for a novice audience. REQUIRED when m0:hasFacet includes m0:facet.Democratization (SHACL-enforced, minCount 1). Values: IRI of an m2:GenericConcept (e.g. {'@id': 'm2:Balance'}) OR a descriptive string for meta-concepts not yet reified in M2 (e.g. 'ASFID completeness', 'Map/Territory duality', 'Localizability primitive L'). Multiple values allowed.",
-      "rdfs:domain": {
-        "@id": "owl:Ontology"
-      },
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:created": "2026-06-28"
-    },
-    {
-      "@id": "m0:RoleGrounding",
-      "@type": "owl:Class",
-      "rdfs:label": "Role Grounding",
-      "rdfs:comment": "Enumeration qualifying how the Democratization facet role is grounded. Reused: instance designed for its primary systemic purpose, proves effective pedagogically (role externally conferred — BFO role). Designed: instance specifically conceived for pedagogical purpose (role teleologically intrinsic — BFO function). Distinction matters for gap analysis: Reused instances are opportunistic assets; Designed instances are deliberate investments in the democratization mission.",
-      "owl:oneOf": [
-        {
-          "@id": "m0:roleGrounding.Reused"
-        },
-        {
-          "@id": "m0:roleGrounding.Designed"
-        }
-      ],
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:created": "2026-06-28"
-    },
-    {
-      "@id": "m0:roleGrounding.Reused",
-      "@type": [
-        "owl:NamedIndividual",
-        "m0:RoleGrounding"
-      ],
-      "rdfs:label": "Reused",
-      "rdfs:comment": "The democratization role is externally conferred by pedagogical usage — instance was designed for its primary systemic purpose and proves effective for teaching non-specialists. Examples: FireTriangle (illustrates ASFID completeness), ExposureTriangle (illustrates m2:Balance).",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:created": "2026-06-28"
-    },
-    {
-      "@id": "m0:roleGrounding.Designed",
-      "@type": [
-        "owl:NamedIndividual",
-        "m0:RoleGrounding"
-      ],
-      "rdfs:label": "Designed",
-      "rdfs:comment": "The democratization role is functionally intrinsic — instance was specifically designed to serve a pedagogical purpose for non-specialists. Example: 2D barcode decoder comparator (designed to illustrate Localizability / L primitive across QR, DataMatrix, MaxiCode).",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:created": "2026-06-28"
-    },
-    {
-      "@id": "m0:roleGrounding",
-      "@type": "owl:ObjectProperty",
-      "rdfs:label": "role Grounding",
-      "rdfs:comment": "Optional qualifier for the Democratization facet. Specifies how the pedagogical role is grounded. Values: m0:roleGrounding.Reused (externally conferred by usage context) or m0:roleGrounding.Designed (teleologically intrinsic by conception). Only meaningful when m0:hasFacet includes m0:facet.Democratization. Use @id notation. Omit if grounding is unclear or irrelevant.",
-      "rdfs:domain": {
-        "@id": "owl:Ontology"
-      },
-      "rdfs:range": {
-        "@id": "m0:RoleGrounding"
-      },
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "dcterms:created": "2026-06-28"
     }
   ]
 }

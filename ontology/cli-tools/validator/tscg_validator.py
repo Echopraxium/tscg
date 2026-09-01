@@ -38,10 +38,11 @@ from typing import Any, Dict, List
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sources import Source, classify_layer  # noqa: E402
 from checks import ctx as ctx_check  # noqa: E402
+from checks import axis as axis_check  # noqa: E402
 
 # Families implemented in this lot. The rest are declared so the report shows the
 # full family roster with an honest "not yet implemented" status.
-_IMPLEMENTED = {"CTX": ctx_check}
+_IMPLEMENTED = {"CTX": ctx_check, "AXIS": axis_check}
 _PLANNED = ["FRB", "DUP", "NOT", "STR"]
 
 _SEV_ORDER = {"ERROR": 0, "WARNING": 1, "INFO": 2}
