@@ -1,3 +1,10 @@
 *.bat text eol=crlf 
 *.md text eol=lf
 *.gif filter=lfs diff=lfs merge=lfs -text
+
+# Ontology & data sources are always LF on every platform. Without this, Windows
+# core.autocrlf rewrites these files LF->CRLF at checkout, producing phantom CRLF
+# that trips check_M1 ENC001 (and the M0 checker) even though the committed bytes
+# are LF. Committed content is unchanged; this only pins the checkout end-of-line.
+*.jsonld text eol=lf
+*.ttl    text eol=lf
