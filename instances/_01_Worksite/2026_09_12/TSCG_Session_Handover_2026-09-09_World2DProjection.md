@@ -46,6 +46,12 @@
 4. **Golden debt (hygiene, NOT ours)** — `run_all_layers` shows `shacl_violations 664 vs golden 680 (-16)`, present on pure HEAD before this lot: `golden_values.json` is stale (16 violations were removed earlier without `--update-golden`). **Do NOT `--update-golden`** just to green the gate — the repo warns a drop can mean "a shape stopped biting". Investigate the antecedent debt separately (SC-6 / a golden-reconciliation pass).
 5. **SC-6 debt (NOT ours)** — `check_M1 --shacl` without `--file` shows **7 SC-1 errors** on M1_CoreConcepts combos (monoidal operator inside combo formulas), plus the wider SHACL debt. All baseline, flagged for SC-6. Our lot adds zero.
 
+6. **Tooling gap — undeclared-term guard (NEW, from this session's lessons)** — TSCG-namespace terms can be *used* without ever being *declared*, and it slips through every gate. Hit twice this lot: `m1:Domain` (implicit class on 22 entries) and `m1:pocletCount`/`pocletExamples` (never declared). Why undetected: the linter's `_check_owl_semantics` only checks `rdfs:domain`/`rdfs:range` of *already-declared* properties — it does not check `@type` values nor predicates; SHACL validates shapes on typed nodes, so a missing *declaration* is invisible to it.
+   **Proposed guard (per layer M0–M3):** collect every `m0:/m1:/m2:/m3:` term appearing as (a) a `@type` object, (b) a predicate, (c) an `rdfs:domain`/`range` / `sh:class` / `sh:path` target; verify each has a declaration (`owl:Class` | `owl:*Property` | `rdf:Property`).
+   - **Cross-layer resolution is mandatory**: check against the **merged graph (layer + imported parents)**, not the file alone — else massive false positives (e.g. `m3:Facet` used in M1 is declared in M3). Exclude external vocabularies (owl/rdfs/skos/dcterms/xsd/rdf).
+   - **Roll out like golden values**: the repo already carries undeclared-term debt → don't hard-fail on the backlog. Measure the baseline, store it in `golden_values.json` as `undeclared_terms`, wire it into `run_all_layers`, gate on **no increase** (new undeclared term = FAIL; a drop = a repair → `--update-golden`). Note: declaring `m1:Domain` this session already reduced this debt by one.
+   - **Where**: extend the linter's `_check_owl_semantics` (it already builds `defined_terms`) and/or a dedicated check invoked by `run_all_layers`. Severity: error, once baselined. A worthwhile standalone session.
+
 ---
 
 ## 3. NEXT — Step 3: model `M0_World2DProjection` (BEFORE the simulation)
