@@ -30,8 +30,8 @@
       "dcterms:description": "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-07-14",
-      "owl:versionInfo": "2.9.1",
+      "dcterms:modified": "2026-09-09",
+      "owl:versionInfo": "2.10.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -255,6 +255,11 @@
       },
       "m2:changelog": [
         {
+          "version": "2.10.0",
+          "date": "2026-09-09",
+          "changes": "Declared two DatatypeProperties for the M1_Domains registry: m1:instanceCount (xsd:integer) and m1:instanceExamples (xsd:string), rdfs:domain m1:Domain. They REPLACE the retired m1:pocletCount / m1:pocletExamples ('poclet' was too narrow — a domain lists instances of several kinds: poclets, TscgTools, SystemicFrameworks, SymbolicSystemGrammars). A new DomainShape in the M1 SHACL grammar validates them and forbids the retired names. Part of the Cartography-domain lot."
+        },
+        {
           "version": "2.9.0",
           "date": "2026-07-17",
           "changes": "SC-6 (partial) — REMOVED the retired D8 property family from all 12 GenericConceptCombos: m1:structuralGrammarFormulaExpanded (13), m1:structuralGrammarFormulaTeX (9), m1:structuralGrammarFormulaRawText (9). A combo has NO monoidal expansion (emergence is non-compositional); the live m1:structuralGrammarFormula (Fm2/Fm1m2 signature) carries all information and was preserved on every node (verified: 0 nodes left without a live formula). 6 of these still held the obsolete tensor-era operator (×⇒ / (x)=>) in their TeX/RawText, now gone. Also REMOVED m1:hasEpistemicGap (12): a scalar δ1 measurement is an M0 quantity (measured on a modelled system), not a property of an abstract combo TYPE — an M0 measurement leaking into M1, flagged in v2.7.0. NOT TOUCHED: the live Fm1m2 signatures of Propagation and CascadeAmplification (domain-less → should be Fm2), a separate SC-6 semantic repair. GOLDEN IMPACT: EXP001 drops 12 → 0 in run_all_layers — a DELIBERATE lowering, apply --update-golden with this reason recorded."
@@ -263,11 +268,6 @@
           "version": "2.8.0",
           "date": "2026-07-14",
           "changes": "SC-1.5 — @context COERCION: added \"rdfs:subClassOf\": {\"@type\": \"@id\"}. All 19 rdfs:subClassOf values were serialised as STRING LITERALS instead of IRIs. Consequences, both silent until now: (1) the Pellet OWL reasoner IGNORED EVERY subClassOf axiom in this file (\"Ignoring subClassOf axiom because the object is not a class\"), so the class hierarchy was INVISIBLE to it and reasoning crashed outright — M1_CoreConcepts was not merely inconsistent, it was UNANALYSABLE; (2) it is the root of the bulk of the pre-existing SHACL violations (\"rdfs:subClassOf must point to m2:DomainConceptCombo\"). M2 and M3 already used {\"@id\": ...} objects, which is why they passed Pellet and this file did not. Also coerced rdfs:domain and rdfs:range, which had the SAME defect: \"rdfs:domain\": \"owl:Ontology\" reached Pellet as an xsd:string and killed the run outright (\"Unknown concept type: literal(owl:Ontology)\"). THREE @context lines fix all of it at once (rdfs:subClassOf, rdfs:domain, rdfs:range) — no data edit, no 500-value migration script. Diagnosed in the 2026-07-03 handover; applied here. ⚠ owl:imports is DELIBERATELY NOT coerced. Coercing it turns the string into a real IRI, which makes Owlready2 try to RESOLVE it over the network — it fetches the raw.githubusercontent.com URL, gets JSON-LD, tries to parse it as N-Triples, and dies. The import has been inert all along; making it live would require a proper local catalog/redirect. Out of scope here: leave it inert, and fix it deliberately when the import graph is actually wired up."
-        },
-        {
-          "version": "2.7.0",
-          "date": "2026-07-12",
-          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo (4 occurrences: Propagation, CascadeAmplification). The class is also RE-DEFINED: a DomainConceptCombo is now defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept. Domain qualification, NOT parent provenance, is the membership criterion. ⚠ CONSEQUENCE — the v1.4.0 'CORRECTION' below is itself ERRONEOUS: reclassifying Propagation and CascadeAmplification Fm2→Fm1m2 'because parent m1:Cascade is M1, not M2 atomic' rests on a misreading of Fm1m2 (it is NOT 'the function for M1 arguments'; it is 'the function with a Domain argument'). Fm2 arguments may legitimately be named concepts from M2_GenericConcepts OR M1_CoreConcepts, so m1:Cascade is a legal Fm2 argument. Fm1m2(Cascade, Duplication, Network) has no Domain and is therefore an Fm2. FLAGGED, NOT FIXED HERE — repair belongs to SC-6. Also flagged by the new SHACL (v1.1.0): m1:structuralGrammarFormulaExpanded is retired (no monoidal expansion — emergence is non-compositional), and the scalar guards (| gain_per_stage > 1, | λ > 0, | range(F_A) << range(F_R)) are M0 measurements leaking into M1. See StructuralGrammar/Functional_Grammar_Model.md."
         }
       ]
     },
@@ -287,6 +287,30 @@
       ],
       "skos:scopeNote": "Property defined at M1 level but applicable to M0 instances (owl:Ontology nodes in M0_*.jsonld files). This is architecturally correct as M1 provides vocabulary for describing M0 instances.",
       "dcterms:created": "2026-04-28",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m1:instanceCount",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Instance Count",
+      "rdfs:comment": "Number of M0 instances (of any kind: poclets, TscgTools, SystemicFrameworks, SymbolicSystemGrammars) registered under a domain in M1_Domains. Renamed from the retired m1:pocletCount (2026-09): 'poclet' was too narrow — a domain lists instances of several kinds.",
+      "rdfs:domain": "m1:Domain",
+      "rdfs:range": "xsd:integer",
+      "skos:definition": "Count of the M0 instances a knowledge domain currently references. Intended to equal the number of m1:instanceExamples entries once the per-domain counters are reconciled (see M1_Domains changelog).",
+      "skos:scopeNote": "Replaces m1:pocletCount. Validated by DomainShape in the M1 SHACL grammar.",
+      "dcterms:created": "2026-09-09",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m1:instanceExamples",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Instance Examples",
+      "rdfs:comment": "List of M0 instance names (of any kind) registered under a domain in M1_Domains. Renamed from the retired m1:pocletExamples (2026-09).",
+      "rdfs:domain": "m1:Domain",
+      "rdfs:range": "xsd:string",
+      "skos:definition": "The concrete M0 instances that exemplify a knowledge domain. Multi-valued (an array of instance identifiers such as 'M0_FireTriangle', 'M0_World2DProjection').",
+      "skos:scopeNote": "Replaces m1:pocletExamples. Validated by DomainShape in the M1 SHACL grammar.",
+      "dcterms:created": "2026-09-09",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
     {

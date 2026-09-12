@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1746 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1751 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **"cli_tools/**
   - **generate_index-html/**
@@ -162,12 +162,6 @@
     - _open_cmd_window.bat
     - migrate_properties.py
     - migrate_properties_README.md
-  - **ontology-linter/**
-    - _00_open_cmd_window.bat
-    - AI_OntologyEngineering_Pitfalls_and_Solutions_README.md
-    - ontology_linter.py
-    - ontology_linter_README.md
-    - Prerequisites_Setup_README.md
   - **owl_reasoning_test/**
     - _open_cmd_window.bat
     - convert_jsonld_to_turtle.py
@@ -331,6 +325,8 @@
     - **2026_09_01/**
       - Handover-SC3-Facet-1sept26.md
       - TSCG_Session_Handover_2026-09-01_Facet-WS0_AntiAliasing.md
+    - **2026_09_12/**
+      - TSCG_Session_Handover_2026-09-09_World2DProjection.md
   - **poclets/**
     - **_00_template/**
       - **src/**
@@ -1602,6 +1598,12 @@
       - shacl_after.txt
     - **check-M2/**
       - M2_MonoidalFormula_Schema_shacl.ttl
+    - **ontology-linter/**
+      - _00_open_cmd_window.bat
+      - AI_OntologyEngineering_Pitfalls_and_Solutions_README.md
+      - ontology_linter.py
+      - ontology_linter_README.md
+      - Prerequisites_Setup_README.md
     - **validator/**
       - **checks/**
         - __init__.py
@@ -1611,6 +1613,7 @@
       - tscg_validator.py
     - _00_open_cmd_window.bat
     - _run_all_layers.bat
+    - gate_report.txt
     - golden_values.json
     - modernize_m0.py
     - modernize_m0_README.md
@@ -1633,6 +1636,7 @@
       - **WS-0/**
         - **2026_09_02/**
           - SC-3_Facet_Decision_Record.md
+          - TSCG_Session_Handover_2026-09-02_SC-3-CLOSED.md
         - **Next Conversation_2026_07_30/**
           - SC-3_Facet_Decision_Record.md
           - TSCG_Session_Handover_2026-07-30.md
@@ -1773,6 +1777,8 @@
       - M1_Biology.jsonld
     - **business_modeling/**
       - M1_BusinessModeling.jsonld
+    - **cartography/**
+      - M1_Cartography.jsonld
     - **chemistry/**
       - M1_Chemistry.jsonld
     - **economics/**
@@ -2033,6 +2039,7 @@
     - __init__.py
   - ARCHITECTURE_GUIDE.md
   - Metaconcepts_List.py
+- "dans le pager (less) \342\200\224 appuie sur q pour en sortir, puis \357\200\272"
 - .gitattributes
 - .gitignore
 - .nojekyll
