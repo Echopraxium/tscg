@@ -16,15 +16,20 @@
       "@id": "M1_Domains.jsonld",
       "@type": "owl:Ontology",
       "rdfs:label": "TSCG Knowledge Domains Registry",
-      "rdfs:comment": "Centralized, evolving registry of knowledge domains identified through TSCG poclet corpus analysis. Each domain entry documents subdomains, related domains, and poclet usage statistics. Domains are M1-level concepts (disciplinary extensions) that bridge M2 transdisciplinary GenericConcepts and M0 concrete poclet instances.",
-      "owl:versionInfo": "1.4.1",
+      "rdfs:comment": "Centralized, evolving registry of knowledge domains identified through TSCG instance corpus analysis. Each domain entry documents subdomains, related domains, and instance usage statistics. Domains are M1-level concepts (disciplinary extensions) that bridge M2 transdisciplinary GenericConcepts and M0 concrete instances.",
+      "owl:versionInfo": "1.5.0",
       "dcterms:created": "2026-04-18",
-      "dcterms:modified": "2026-07-18",
+      "dcterms:modified": "2026-09-09",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m1:changelog": [
+        {
+          "version": "1.5.0",
+          "date": "2026-09-09",
+          "changes": "Added Cartography domain (M1_extensions/cartography/M1_Cartography.jsonld). First domain to declare M1-level facets (cartography:DistortionProperty, cartography:GraticuleGeometry) under the SC-3 m3:Facet mechanism. Related: Geology, Optics, Physics. Instance: M0_World2DProjection (poclet). domainCount: 21->22, totalInstances: 26->27. VOCABULARY REFORM: m1:pocletCount -> m1:instanceCount and m1:pocletExamples -> m1:instanceExamples (22 entries each); 'poclet' was too narrow — a domain lists instances of several kinds (poclets, TscgTools, SystemicFrameworks, SymbolicSystemGrammars). New properties declared in M1_CoreConcepts and guarded by DomainShape in the M1 SHACL."
+        },
         {
           "version": "1.4.1",
           "date": "2026-07-18",
@@ -41,12 +46,12 @@
           "changes": "BASE16 NOTATION UPDATE: 6 M1 extension versions bumped (Chemistry→1.1.1, Economics→1.0.1, Mythology→1.1.1, Optics→1.1.1, Photography→1.1.1, SystemicModeling→1.1.1). S→St indexation in hybrid formulas across corpus."
         }
       ],
-      "m1:domainCount": 21,
-      "m1:totalInstances": 26,
+      "m1:domainCount": 22,
+      "m1:totalInstances": 27,
       "m1:otherInstances": 3,
       "m1:corpusComplete": true,
-      "m1:usageNote": "Domains are referenced in M0 instances via m1:domain property (migrated from m0:domain). Accepts single string ('Biology') or array for multi-domain poclets (['Biology', 'Chemistry']). Subdomains are defined here (M1 level), not in individual M0 instances.",
-      "m1:evolutionPolicy": "This registry evolves as new poclets are analyzed. New domains are added when identified. Subdomains are consolidated from M0 instances and enriched through domain expertise. Version bumps when domains are added/removed or major subdomain restructuring occurs.",
+      "m1:usageNote": "Domains are referenced in M0 instances via m1:domain property (migrated from m0:domain). Accepts single string ('Biology') or array for multi-domain instances (['Biology', 'Chemistry']). Subdomains are defined here (M1 level), not in individual M0 instances.",
+      "m1:evolutionPolicy": "This registry evolves as new instances are analyzed. New domains are added when identified. Subdomains are consolidated from M0 instances and enriched through domain expertise. Version bumps when domains are added/removed or major subdomain restructuring occurs.",
       "owl:imports": []
     },
     {
@@ -83,7 +88,7 @@
           "@id": "m1:domain:Neurobiology"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_AdaptiveImmuneResponse",
         "M0_BloodPressureControl",
         "M0_ButterflyMetamorphosis",
@@ -91,7 +96,7 @@
         "M0_Kidneys",
         "M0_RAAS"
       ],
-      "m1:pocletCount": 6,
+      "m1:instanceCount": 6,
       "m1:ext": "M1_Biology.jsonld"
     },
     {
@@ -115,11 +120,11 @@
           "@id": "m1:domain:SystemsTheory"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_TrophicPyramid"
       ],
-      "m1:pocletCount": 1,
-      "m1:note": "Often paired with Biology domain in multi-domain poclets"
+      "m1:instanceCount": 1,
+      "m1:note": "Often paired with Biology domain in multi-domain instances"
     },
     {
       "@id": "m1:domain:Chemistry",
@@ -148,13 +153,13 @@
           "@id": "m1:domain:Neurobiology"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_FireTriangle",
         "M0_PhaseTransition",
         "M0_ComplexChemicalSynapse",
         "M0_Ptoe"
       ],
-      "m1:pocletCount": 4,
+      "m1:instanceCount": 4,
       "m1:ext": "M1_Chemistry.jsonld",
       "m1:note": "PhaseTransition spans Physical Chemistry and Physics. ComplexChemicalSynapse spans Chemistry and Neurobiology. Ptoe (Periodic Table) demonstrates atomic structure and periodic properties."
     },
@@ -181,11 +186,11 @@
           "@id": "m1:domain:Engineering"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_PhaseTransition",
         "M0_FourStrokeEngine"
       ],
-      "m1:pocletCount": 2,
+      "m1:instanceCount": 2,
       "m1:note": "Thermodynamics subdomain overlaps with Chemistry and Engineering"
     },
     {
@@ -213,11 +218,11 @@
           "@id": "m1:domain:MusicTheory"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_Transistor",
         "M0_VCO"
       ],
-      "m1:pocletCount": 2,
+      "m1:instanceCount": 2,
       "m1:note": "VCO bridges Electronics and Music Theory domains"
     },
     {
@@ -243,11 +248,11 @@
           "@id": "m1:domain:Photography"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_ColorSynthesis",
         "M0_ExposureTriangle"
       ],
-      "m1:pocletCount": 2,
+      "m1:instanceCount": 2,
       "m1:ext": "M1_Optics.jsonld"
     },
     {
@@ -268,10 +273,10 @@
           "@id": "m1:domain:Optics"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_ExposureTriangle"
       ],
-      "m1:pocletCount": 1,
+      "m1:instanceCount": 1,
       "m1:ext": "M1_Photography.jsonld"
     },
     {
@@ -296,11 +301,11 @@
           "@id": "m1:domain:Chemistry"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_FourStrokeEngine",
         "M0_NuclearReactorTypology"
       ],
-      "m1:pocletCount": 2
+      "m1:instanceCount": 2
     },
     {
       "@id": "m1:domain:ComputerScience",
@@ -328,10 +333,10 @@
           "@id": "m1:domain:Physics"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_NakamotoConsensus"
       ],
-      "m1:pocletCount": 1,
+      "m1:instanceCount": 1,
       "m1:note": "NakamotoConsensus spans Distributed Systems, Statistical Physics, and Information Theory"
     },
     {
@@ -356,10 +361,10 @@
           "@id": "m1:domain:SystemsTheory"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_KindlebergerMinsky"
       ],
-      "m1:pocletCount": 1,
+      "m1:instanceCount": 1,
       "m1:ext": "M1_Economics.jsonld"
     },
     {
@@ -384,11 +389,11 @@
           "@id": "m1:domain:Electronics"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_Counterpoint",
         "M0_VCO"
       ],
-      "m1:pocletCount": 2
+      "m1:instanceCount": 2
     },
     {
       "@id": "m1:domain:GameTheory",
@@ -413,10 +418,10 @@
           "@id": "m1:domain:Philosophy"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_MtgColorWheel"
       ],
-      "m1:pocletCount": 1,
+      "m1:instanceCount": 1,
       "m1:note": "Magic: The Gathering color wheel analyzed as cultural artifact with philosophical dimensions"
     },
     {
@@ -443,10 +448,10 @@
           "@id": "m1:domain:Chemistry"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_PlateTectonics"
       ],
-      "m1:pocletCount": 1
+      "m1:instanceCount": 1
     },
     {
       "@id": "m1:domain:Television",
@@ -471,10 +476,10 @@
           "@id": "m1:domain:Optics"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_TVTestPattern"
       ],
-      "m1:pocletCount": 1,
+      "m1:instanceCount": 1,
       "m1:note": "TVTestPattern is a calibration system poclet analyzing broadcast test patterns"
     },
     {
@@ -497,10 +502,10 @@
           "@id": "m1:domain:SystemsTheory"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_TPACK"
       ],
-      "m1:pocletCount": 1,
+      "m1:instanceCount": 1,
       "m1:note": "TPACK: Technological Pedagogical Content Knowledge framework"
     },
     {
@@ -523,10 +528,10 @@
           "@id": "m1:domain:Chemistry"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_ComplexChemicalSynapse"
       ],
-      "m1:pocletCount": 1,
+      "m1:instanceCount": 1,
       "m1:note": "Overlap with Biology domain; ComplexChemicalSynapse spans Neurobiology, Cellular Communication, and Pharmacology"
     },
     {
@@ -556,10 +561,10 @@
           "@id": "m1:domain:Ecology"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_VSM_Metaconcepts"
       ],
-      "m1:pocletCount": 0,
+      "m1:instanceCount": 0,
       "m1:instanceType": "m3:SystemicFramework",
       "m1:note": "VSM is not a poclet but a systemic framework instance. Transdisciplinary by nature."
     },
@@ -588,10 +593,10 @@
           "@id": "m1:domain:Mythology"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_IChing"
       ],
-      "m1:pocletCount": 0,
+      "m1:instanceCount": 0,
       "m1:instanceType": "m3:SymbolicSystemGrammar",
       "m1:note": "I Ching is a symbolic system grammar, not a poclet. Foundation of Chinese cosmology and divination."
     },
@@ -616,10 +621,10 @@
           "@id": "m1:domain:Anthropology"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_Yggdrasil"
       ],
-      "m1:pocletCount": 1,
+      "m1:instanceCount": 1,
       "m1:ext": "M1_Mythology.jsonld",
       "m1:note": "Often analyzed through symbolic system grammars"
     },
@@ -648,10 +653,10 @@
           "@id": "m1:domain:GameTheory"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_NakamotoConsensus"
       ],
-      "m1:pocletCount": 1,
+      "m1:instanceCount": 1,
       "m1:note": "Nakamoto Consensus: proof-of-work distributed consensus mechanism underlying Bitcoin"
     },
     {
@@ -680,14 +685,45 @@
           "@id": "m1:domain:GameTheory"
         }
       ],
-      "m1:pocletExamples": [
+      "m1:instanceExamples": [
         "M0_Bmc"
       ],
       "m1:instanceType": "m3:SystemicFramework",
-      "m1:pocletCount": 0,
+      "m1:instanceCount": 0,
       "m1:systemicFrameworkCount": 1,
       "m1:ext": "M1_extensions/business-modeling/M1_BusinessModeling.jsonld",
       "m1:note": "BMC (Business Model Canvas) is a SystemicFramework instance, not a poclet. M1_BusinessModeling.jsonld provides 9 KFCCs: ValueProposition, CustomerSegment, RevenueStream, CrossSubsidy, PlatformDuality, BusinessModelPattern, StrategicTension, BusinessModelMutation, VerticalIntegration."
+    },
+    {
+      "@id": "m1:domain:Cartography",
+      "@type": "m1:Domain",
+      "rdfs:label": "Cartography",
+      "rdfs:comment": "Discipline of designing, producing and studying maps, including the mathematical projection of the curved Earth onto a plane",
+      "skos:definition": "Science and craft of representing the terrestrial globe (or parts of it) on a flat medium, governed by the unavoidable trade-off between preserved and distorted metric properties",
+      "m1:subdomains": [
+        "Map Projections",
+        "Geodesy",
+        "Geographic Information Systems (GIS)",
+        "Thematic Cartography",
+        "Distortion Analysis"
+      ],
+      "m1:relatedDomains": [
+        {
+          "@id": "m1:domain:Geology"
+        },
+        {
+          "@id": "m1:domain:Optics"
+        },
+        {
+          "@id": "m1:domain:Physics"
+        }
+      ],
+      "m1:instanceExamples": [
+        "M0_World2DProjection"
+      ],
+      "m1:instanceCount": 1,
+      "m1:ext": "M1_extensions/cartography/M1_Cartography.jsonld",
+      "m1:note": "First domain to declare M1-level facets (cartography:DistortionProperty, cartography:GraticuleGeometry) under the SC-3 m3:Facet mechanism."
     }
   ]
 }

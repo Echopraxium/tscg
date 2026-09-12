@@ -562,3 +562,94 @@ m1:NoM0MeasurementInM1Shape
         sh:message "FORBIDDEN (SC-5): m2:hasEpistemicGap (declared IRI of the same delta_1 measurement) must not appear on an M1 combo type either. Epistemic gap is an M0 measurement."
     ] ;
 .
+
+#############################################################################
+# SHAPE 10 : Facet + FacetValue  (SC-3 m3:Facet mechanism, M1-declared)
+# First facets declared outside M3 (Cartography domain, 2026-09-09).
+# Guard-rail: every m3:FacetValue must be typed skos:Concept and point to
+# exactly one m3:Facet via m3:valueOf.
+#############################################################################
+
+m1:FacetShape
+    a sh:NodeShape ;
+    sh:name "FacetShape" ;
+    sh:description "Validates m3:Facet axes declared in M1 extensions (SC-3 mechanism)." ;
+    sh:targetClass m3:Facet ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue skos:ConceptScheme ;
+        sh:severity sh:Violation ;
+        sh:message "REQUIRED: an m3:Facet axis must also be typed skos:ConceptScheme."
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:severity sh:Violation ;
+        sh:message "REQUIRED: m3:Facet must carry an rdfs:label."
+    ] .
+
+m1:FacetValueShape
+    a sh:NodeShape ;
+    sh:name "FacetValueShape" ;
+    sh:description "Validates m3:FacetValue foci declared in M1 extensions. Every value must be typed and belong to exactly one axis." ;
+    sh:targetClass m3:FacetValue ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue skos:Concept ;
+        sh:severity sh:Violation ;
+        sh:message "REQUIRED: an m3:FacetValue must also be typed skos:Concept."
+    ] ;
+    sh:property [
+        sh:path m3:valueOf ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class m3:Facet ;
+        sh:severity sh:Violation ;
+        sh:message "REQUIRED: each m3:FacetValue must declare exactly one m3:valueOf pointing to an m3:Facet."
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:severity sh:Violation ;
+        sh:message "REQUIRED: m3:FacetValue must carry an rdfs:label."
+    ] .
+
+#############################################################################
+# SHAPE 11 : Domain registry entries (M1_Domains)
+# Validates m1:instanceCount / m1:instanceExamples and forbids the retired
+# poclet* vocabulary (renamed 2026-09: a domain lists INSTANCES of several
+# kinds, not only poclets).
+#############################################################################
+
+m1:DomainShape
+    a sh:NodeShape ;
+    sh:name "DomainShape" ;
+    sh:description "Validates m1:Domain registry entries in M1_Domains." ;
+    sh:targetClass m1:Domain ;
+    sh:property [
+        sh:path m1:instanceCount ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0 ;
+        sh:severity sh:Violation ;
+        sh:message "REQUIRED: each m1:Domain must declare exactly one m1:instanceCount (xsd:integer >= 0)."
+    ] ;
+    sh:property [
+        sh:path m1:instanceExamples ;
+        sh:datatype xsd:string ;
+        sh:severity sh:Violation ;
+        sh:message "m1:instanceExamples values must be strings (M0 instance identifiers)."
+    ] ;
+    sh:property [
+        sh:path m1:pocletCount ;
+        sh:maxCount 0 ;
+        sh:severity sh:Violation ;
+        sh:message "RETIRED (2026-09): m1:pocletCount renamed to m1:instanceCount. 'poclet' is too narrow — a domain lists instances of several kinds (poclets, TscgTools, SystemicFrameworks, SymbolicSystemGrammars)."
+    ] ;
+    sh:property [
+        sh:path m1:pocletExamples ;
+        sh:maxCount 0 ;
+        sh:severity sh:Violation ;
+        sh:message "RETIRED (2026-09): m1:pocletExamples renamed to m1:instanceExamples."
+    ] .

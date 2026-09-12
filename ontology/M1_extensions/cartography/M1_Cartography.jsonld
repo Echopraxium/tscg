@@ -1,0 +1,166 @@
+{
+  "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
+    "m3:eagle_eye": "M3_EagleEye.jsonld#",
+    "m3:sphinx_eye": "M3_SphinxEye.jsonld#",
+    "cartography": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/cartography/M1_Cartography.jsonld#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "m1:extension:cartography:Cartography_Domain",
+      "@type": "owl:Ontology",
+      "dcterms:title": "M1 Narratives - Cartography Domain",
+      "dcterms:description": "Domain-specific facets for cartographic map projections. Declares the classification axes by which projections of the terrestrial globe are filed: the distortion property a projection preserves (Map/REVOI side) and the geometry of its graticule (Territory/Structure side). First M1-declared facets under the SC-3 m3:Facet mechanism.",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "dcterms:created": "2026-09-09",
+      "owl:versionInfo": "1.0.0",
+      "m3:ontologyType": {
+        "@id": "m3:DomainExtension"
+      },
+      "m1:domain": "Cartography",
+      "m1:parentLayers": {
+        "M2": "M2_GenericConcepts.jsonld",
+        "M3": [
+          "M3_GenesisGrammar.jsonld (m3:Facet mechanism)"
+        ]
+      },
+      "m1:childInstances": {
+        "M0_instances": [
+          "M0_World2DProjection.jsonld"
+        ]
+      },
+      "m1:changelog": [
+        {
+          "version": "1.0.0",
+          "date": "2026-09-09",
+          "changes": "Initial Cartography domain extension. Declares two M1-level facets under the SC-3 m3:Facet mechanism: cartography:DistortionProperty (Conformal/EqualArea/Equidistant/Compromise — closed epistemic tetra-lemma) and cartography:GraticuleGeometry (Cylindrical/Conic/Azimuthal/Pseudocylindrical — extensible). First facets declared outside M3. Supports the M0_World2DProjection poclet."
+        }
+      ]
+    },
+
+    {
+      "@id": "cartography:DistortionProperty",
+      "@type": [
+        "m3:Facet",
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Distortion Property",
+      "rdfs:comment": "DISTORTION-PROPERTY facet (Map / REVOI side): which metric invariant of the globe a projection chooses to preserve exactly, given that no projection can preserve all of them (Gauss's Theorema Egregium). Metier term: 'distortion property' (ITC Living Textbook) / 'metric property' (map-projections.net). Closed value-set of four (epistemic tetra-lemma). A conferred, contingent, Map-perspective classificatory role. Foci carry non-neutral (geopolitical) weight — see per-value comments."
+    },
+    {
+      "@id": "cartography:distortionProperty.Conformal",
+      "@type": [
+        "m3:FacetValue",
+        "skos:Concept"
+      ],
+      "m3:valueOf": {
+        "@id": "cartography:DistortionProperty"
+      },
+      "rdfs:label": "Conformal",
+      "rdfs:comment": "Preserves local angles / shapes (and therefore bearings) exactly; areas inflate without bound toward the poles. Navigation heritage (rhumb lines are straight). Exemplar: Mercator."
+    },
+    {
+      "@id": "cartography:distortionProperty.EqualArea",
+      "@type": [
+        "m3:FacetValue",
+        "skos:Concept"
+      ],
+      "m3:valueOf": {
+        "@id": "cartography:DistortionProperty"
+      },
+      "rdfs:label": "Equal-area",
+      "rdfs:comment": "Preserves area exactly; local shapes are sheared. Politically championed (Arno Peters, 1970s) as a more equitable representation of the Global South. Exemplar: Gall-Peters, Mollweide."
+    },
+    {
+      "@id": "cartography:distortionProperty.Equidistant",
+      "@type": [
+        "m3:FacetValue",
+        "skos:Concept"
+      ],
+      "m3:valueOf": {
+        "@id": "cartography:DistortionProperty"
+      },
+      "rdfs:label": "Equidistant",
+      "rdfs:comment": "Preserves distance exactly along specific lines only (e.g. from the centre, or along the meridians) — never all distances at once. Exemplar: Azimuthal Equidistant."
+    },
+    {
+      "@id": "cartography:distortionProperty.Compromise",
+      "@type": [
+        "m3:FacetValue",
+        "skos:Concept"
+      ],
+      "m3:valueOf": {
+        "@id": "cartography:DistortionProperty"
+      },
+      "rdfs:label": "Compromise",
+      "rdfs:comment": "Preserves no invariant exactly; distributes distortion to minimise overall visual error rather than zeroing any single one. Exemplar: Robinson, Winkel Tripel, Natural Earth."
+    },
+
+    {
+      "@id": "cartography:GraticuleGeometry",
+      "@type": [
+        "m3:Facet",
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Graticule Geometry",
+      "rdfs:comment": "GRATICULE-GEOMETRY facet (Territory / Structure side): the shape of the meridian/parallel network (the graticule), i.e. the construction family of the projection. Modern rigorous classification 'by the shape of the graticule' (Lapaine & Francula, 2022), which extends cleanly beyond the classical and contested 'developable surface' criterion (that one covers only 3 families). A conferred classificatory role. Extensible value-set (Pseudoconic, Pseudoazimuthal, Polyconic, Circular… added as instances require)."
+    },
+    {
+      "@id": "cartography:graticuleGeometry.Cylindrical",
+      "@type": [
+        "m3:FacetValue",
+        "skos:Concept"
+      ],
+      "m3:valueOf": {
+        "@id": "cartography:GraticuleGeometry"
+      },
+      "rdfs:label": "Cylindrical",
+      "rdfs:comment": "Straight rectangular graticule: vertical equidistant meridians, horizontal parallels, right angles everywhere. Exemplar: Mercator, Gall-Peters."
+    },
+    {
+      "@id": "cartography:graticuleGeometry.Conic",
+      "@type": [
+        "m3:FacetValue",
+        "skos:Concept"
+      ],
+      "m3:valueOf": {
+        "@id": "cartography:GraticuleGeometry"
+      },
+      "rdfs:label": "Conic",
+      "rdfs:comment": "Parallels as concentric arcs, meridians as a converging fan of radii. Exemplar: Albers Equal-area Conic, Lambert Conformal Conic."
+    },
+    {
+      "@id": "cartography:graticuleGeometry.Azimuthal",
+      "@type": [
+        "m3:FacetValue",
+        "skos:Concept"
+      ],
+      "m3:valueOf": {
+        "@id": "cartography:GraticuleGeometry"
+      },
+      "rdfs:label": "Azimuthal",
+      "rdfs:comment": "Polar-style graticule: parallels as concentric circles, meridians as straight radii from the centre. Exemplar: Azimuthal Equidistant, Stereographic."
+    },
+    {
+      "@id": "cartography:graticuleGeometry.Pseudocylindrical",
+      "@type": [
+        "m3:FacetValue",
+        "skos:Concept"
+      ],
+      "m3:valueOf": {
+        "@id": "cartography:GraticuleGeometry"
+      },
+      "rdfs:label": "Pseudocylindrical",
+      "rdfs:comment": "Straight horizontal parallels but curved meridians converging toward the poles. Exemplar: Mollweide, Robinson, Sinusoidal."
+    }
+  ]
+}
