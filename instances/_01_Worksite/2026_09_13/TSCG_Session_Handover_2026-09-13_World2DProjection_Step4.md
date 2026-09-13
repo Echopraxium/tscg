@@ -16,7 +16,7 @@
 
 ## 1. Fresh session state
 
-- **Current HEAD**: `<sha>` — *confirm with `git show HEAD` (this poclet's commit).*
+- **Current HEAD**: `<sha = 9d09e8>` — *confirm with `git show HEAD` (this poclet's commit).*
 - **Committed poclet** at `instances/poclets/World2DProjection/`:
   - `M0_World2DProjection.jsonld` — the model (classification + metadata only; **no projection math**).
   - `M0_World2DProjection_README.md` — incl. the formal Theorema-Egregium proof of the irreducible epistemic gap.
