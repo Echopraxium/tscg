@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1751 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1752 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **"cli_tools/**
   - **generate_index-html/**
@@ -778,6 +778,10 @@
       - M0_Vco.jsonld
       - M0_VCO_README.md
       - VCO_Simulation_README.md
+    - **World2DProjection/**
+      - M0_World2DProjection.jsonld
+      - M0_World2DProjection_analysis.md
+      - M0_World2DProjection_README.md
     - **yggdrasil/**
       - Heimdall_Interface_Constraint_Analysis.md
       - Loki_As_Representation_Transformer.md
@@ -1613,7 +1617,6 @@
       - tscg_validator.py
     - _00_open_cmd_window.bat
     - _run_all_layers.bat
-    - gate_report.txt
     - golden_values.json
     - modernize_m0.py
     - modernize_m0_README.md
@@ -2039,7 +2042,6 @@
     - __init__.py
   - ARCHITECTURE_GUIDE.md
   - Metaconcepts_List.py
-- "dans le pager (less) \342\200\224 appuie sur q pour en sortir, puis \357\200\272"
 - .gitattributes
 - .gitignore
 - .nojekyll
