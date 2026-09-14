@@ -1,0 +1,139 @@
+/* ══════════════════════════════════════════════════════════════
+   World 2D Projection — poclet-specific styles (Round 1)
+   Author: Echopraxium with the collaboration of Claude AI
+   Framework: TSCG
+
+   Loaded AFTER src/tscg-shell.css. Only adds / overrides:
+     • #view-main becomes a vertical stack of two panels
+       (top = 2D Map / p5.js · bottom = 3D Globe / BabylonJS)
+     • the map legend + the diverging-distortion colour grammar
+     • a couple of extra left-panel widgets
+   The shell chrome (header, sidebar, splitter, scores, concepts,
+   diagnostics) is reused unchanged.
+
+   Colour grammar (no collisions):
+     cyan / magenta / grey = area (or shape) distortion — the MAP
+     thick black contour    = selection
+     beige                  = neutral globe — the TERRITORY
+   ══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* poclet accent: cartographic sepia, distinct from the default gold */
+  --accent:     rgba(196,164,132,1);
+  --accent-dim: rgba(196,164,132,0.60);
+  --accent-bg:  rgba(120,96,64,0.80);
+
+  /* distortion palette (outside the ASFID/REVOI dimension colours) */
+  --dist-over:  #d61f9a;   /* magenta — oversized area */
+  --dist-under: #17b6d6;   /* cyan    — undersized area */
+  --dist-neut:  #cfd2d6;   /* light grey — faithful within ±tau */
+
+  /* territory */
+  --globe-beige: #d8c7a2;
+  --globe-bg:    #05070c;
+}
+
+/* ── view-main → two stacked panels ─────────────────────────── */
+#view-main {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.w2p-panel {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* TOP — the Map (p5.js) */
+#panel-map {
+  flex: 1 1 50%;
+  background: #0b0f16;
+  border-bottom: 1px solid rgba(70,110,200,0.22);
+}
+#panel-map canvas { display: block; }
+
+/* BOTTOM — the Territory (BabylonJS globe) */
+#panel-globe {
+  flex: 1 1 50%;
+  background: var(--globe-bg);
+}
+
+/* a small caption pinned top-left of each panel */
+.panel-tag {
+  position: absolute;
+  top: 8px; left: 10px;
+  z-index: 6;
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 10px;
+  background: rgba(6,10,22,0.72);
+  border: 1px solid rgba(70,110,200,0.22);
+  pointer-events: none;
+}
+.panel-tag.map    { color: #e9c9de; }
+.panel-tag.globe  { color: #e6dabb; }
+
+/* ── Map legend (always visible, bottom-left of the map panel) ── */
+#map-legend {
+  position: absolute;
+  left: 10px; bottom: 10px;
+  z-index: 6;
+  background: rgba(6,10,22,0.82);
+  border: 1px solid rgba(70,110,200,0.24);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-family: var(--font);
+  color: var(--text-dim);
+  max-width: 300px;
+  pointer-events: none;
+}
+#map-legend .lg-title {
+  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(200,218,255,0.8); margin-bottom: 6px; font-weight: 700;
+}
+#map-legend .lg-bar {
+  height: 10px; border-radius: 3px; margin: 4px 0 3px;
+  background: linear-gradient(90deg,
+    var(--dist-under) 0%,
+    var(--dist-neut) 50%,
+    var(--dist-over) 100%);
+}
+#map-legend .lg-scale {
+  display: flex; justify-content: space-between;
+  font-size: 9px; color: var(--text-mute);
+}
+#map-legend .lg-note {
+  margin-top: 6px; font-size: 10px; line-height: 1.45;
+  color: rgba(190,205,240,0.72);
+}
+#map-legend .lg-note b { color: #fff; }
+
+/* selection read-out under the map legend title */
+#sel-readout { font-size: 10px; color: rgba(255,255,255,0.85); margin-top: 4px; }
+
+/* ── extra left-panel widgets ───────────────────────────────── */
+.lp-select {
+  width: 100%; background: rgba(6,11,24,0.96);
+  border: 1px solid rgba(100,140,220,0.26); border-radius: 7px;
+  color: rgba(195,215,255,0.92); font-size: 11px; font-family: inherit;
+  padding: 5px 8px; outline: none; appearance: none; -webkit-appearance: none;
+}
+.lp-val {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--accent); float: right;
+}
+
+/* facet chips shown in the Description tab */
+.facet-chip {
+  display: inline-block; font-size: 10px; letter-spacing: .05em;
+  padding: 2px 8px; margin: 2px 4px 2px 0; border-radius: 10px;
+  border: 1px solid rgba(196,164,132,0.35);
+  color: var(--accent); background: rgba(120,96,64,0.14);
+}
+
+/* the canonical gap badge is rendered by our own code; reuse shell classes.
+   just tint the value in sepia so it reads as ours, not the shell default. */
+#scores-host .gap-val { color: var(--accent); }

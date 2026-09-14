@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     World 2D Projection — TSCG Poclet simulation (Round 1: interactivity)
+     Author: Echopraxium with the collaboration of Claude AI
+
+     Territory/Map made interactive:
+       TOP  panel  = 2D projection (p5.js)   — the MAP (distortion choropleth)
+       BOTTOM panel = 3D globe   (BabylonJS) — the TERRITORY (neutral beige)
+
+     The shell chrome (header/sidebar/splitter/scores/concepts/diagnostics)
+     is reused from src/tscg-shell.*; #view-main is re-styled into two stacked
+     panels by src/World2DProjection.css.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Babylon from its CDN, p5 from cdnjs — both allowed below. -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://cdn.babylonjs.com https://cdnjs.cloudflare.com;
+                 script-src  'self' 'unsafe-inline' https://cdn.babylonjs.com https://cdnjs.cloudflare.com;
+                 style-src   'self' 'unsafe-inline';
+                 img-src     'self' data: blob:;
+                 connect-src 'self' http://127.0.0.1:* ws://127.0.0.1:*;">
+  <title>World 2D Projection — TSCG Poclet</title>
+  <link rel="stylesheet" href="src/tscg-shell.css">
+  <link rel="stylesheet" href="src/World2DProjection.css">
+</head>
+<body>
+
+  <!-- ── HEADER ─────────────────────────────────────────────────────────── -->
+  <div id="tscg-header">
+    <a id="home-btn" href="../../../index.html" title="Poclet gallery">⌂</a>
+    <a id="tscg-badge" href="https://github.com/Echopraxium/tscg" target="_blank" rel="noopener">TSCG</a>
+    <span class="hbar-sep">/</span>
+    <span id="page-title">World 2D Projection</span>
+    <div id="header-chips">
+      <span class="hchip type">POCLET</span>
+      <span class="hchip">CARTOGRAPHY</span>
+    </div>
+  </div>
+
+  <!-- ── LAYOUT: left-panel | view-main | splitter | sidebar ────────────── -->
+  <div id="layout">
+
+    <!-- LEFT PANEL — poclet controls -->
+    <div id="left-panel">
+      <div class="lp-section">
+        <div class="lp-title">Projection</div>
+        <div class="lp-field">
+          <select class="lp-select" id="proj-select"></select>
+        </div>
+      </div>
+      <div class="ldiv"></div>
+
+      <div class="lp-section">
+        <div class="lp-title">Distortion</div>
+        <div class="lp-field">
+          <label for="tau-slider">Neutral band τ <span class="lp-val" id="tau-val">0.10</span></label>
+          <input class="lp-input" id="tau-slider" type="range" min="0" max="50" value="10">
+        </div>
+        <div class="lp-field">
+          <label for="hue-select">Hue encodes</label>
+          <select class="lp-select" id="hue-select">
+            <option value="auto">auto (area · shape if equal-area)</option>
+            <option value="area">area distortion</option>
+            <option value="shape">shape distortion (Tissot a/b)</option>
+          </select>
+        </div>
+      </div>
+      <div class="ldiv"></div>
+
+      <div class="lp-section">
+        <div class="lp-title">Graticule</div>
+        <div class="lp-field">
+          <label for="dens-select">Cell size</label>
+          <select class="lp-select" id="dens-select">
+            <option value="30">30°</option>
+            <option value="15" selected>15°</option>
+            <option value="10">10°</option>
+          </select>
+        </div>
+      </div>
+      <div class="ldiv"></div>
+
+      <div class="lp-section">
+        <div class="lp-title">Zone</div>
+        <div class="lp-field">
+          <select class="lp-select" id="zone-select"></select>
+        </div>
+        <div class="lp-row">
+          <button class="lp-btn primary" id="btn-arctic">Arctic ★</button>
+          <button class="lp-btn" id="btn-coast">Coastlines</button>
+        </div>
+      </div>
+      <div class="ldiv"></div>
+
+      <div class="lp-section">
+        <div class="lp-title">Globe (Territory)</div>
+        <div class="lp-row">
+          <button class="lp-btn" id="btn-autorotate">Auto-rotate</button>
+          <button class="lp-btn" id="btn-reset">Reset</button>
+        </div>
+        <div class="lp-field" style="margin-top:8px">
+          <label>Click a continent or polar cap on the globe to select a zone.</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW-MAIN — two stacked panels -->
+    <div id="view-main">
+      <!-- TOP: the Map (p5.js) -->
+      <div class="w2p-panel" id="panel-map">
+        <span class="panel-tag map">Map · 2D projection</span>
+        <div id="map-legend">
+          <div class="lg-title" id="lg-title">Hue = AREA distortion (log r)</div>
+          <div id="sel-readout"></div>
+          <div class="lg-bar"></div>
+          <div class="lg-scale"><span id="lg-lo">undersized</span><span>faithful</span><span id="lg-hi">oversized</span></div>
+          <div class="lg-note" id="lg-note"></div>
+        </div>
+      </div>
+      <!-- BOTTOM: the Territory (BabylonJS globe) -->
+      <div class="w2p-panel" id="panel-globe">
+        <span class="panel-tag globe">Territory · 3D globe</span>
+        <canvas id="canvas-globe"></canvas>
+      </div>
+    </div>
+
+    <!-- SPLITTER (vertical, sidebar) -->
+    <div id="splitter"></div>
+
+    <!-- SIDEBAR with 4 standard tabs -->
+    <div id="sidebar">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="activateTab(0)">Description</button>
+        <button class="tab-btn"        onclick="activateTab(1)">ASFID · REVOI</button>
+        <button class="tab-btn"        onclick="activateTab(2)">Concepts</button>
+        <button class="tab-btn"        onclick="activateTab(3)">README</button>
+      </div>
+      <div class="tab-content">
+
+        <!-- 0 — DESCRIPTION -->
+        <div class="tab-panel active">
+          <h3>World 2D Projection</h3>
+          <p>Projecting the round Earth onto a flat sheet is the <strong>Territory → Map</strong>
+             relation made literal — the single distinction the whole TSCG framework rests on.
+             The globe below is the Territory (read through ASFID); each 2D projection above is a
+             Map (read through REVOI).</p>
+          <p>The poclet classifies five canonical projections along two <em>orthogonal</em>
+             cartographic facets, and proves the irreducible gap between globe and map.</p>
+          <h4>Two facets</h4>
+          <p>
+            <span class="facet-chip">distortionProperty</span> Conformal · EqualArea · Equidistant · Compromise<br>
+            <span class="facet-chip">graticuleGeometry</span> Cylindrical · Conic · Azimuthal · Pseudocylindrical
+          </p>
+          <h4>The five anchors</h4>
+          <ul>
+            <li><strong>Mercator</strong> — Conformal · Cylindrical (angles kept; poles explode)</li>
+            <li><strong>Mollweide</strong> — EqualArea · Pseudocylindrical (areas exact; shapes shear)</li>
+            <li><strong>Azimuthal Equidistant</strong> — Equidistant · Azimuthal (distance from centre exact)</li>
+            <li><strong>Robinson</strong> — Compromise · Pseudocylindrical (nothing exact; looks right)</li>
+            <li><strong>Gall-Peters</strong> — EqualArea · Cylindrical (orthogonality proof)</li>
+          </ul>
+        </div>
+
+        <!-- 1 — SCORES (rendered by the poclet script, canonical δ₁) -->
+        <div class="tab-panel">
+          <h3>Territory &amp; Map</h3>
+          <div id="scores-host"></div>
+        </div>
+
+        <!-- 2 — GENERIC CONCEPTS (rendered by the shell) -->
+        <div class="tab-panel">
+          <h3>GenericConcepts mobilised (11)</h3>
+          <div id="concepts-host"></div>
+        </div>
+
+        <!-- 3 — README -->
+        <div class="tab-panel">
+          <h3>The gap is a theorem</h3>
+          <p><strong>Theorema Egregium (Gauss, 1827).</strong> Gaussian curvature is invariant
+             under any distance-preserving map. The sphere has K = 1/R² &gt; 0; the plane has K = 0.
+             No isometry between them can exist — so <em>every</em> projection must distort.</p>
+          <p>The map can be made excellent along one chosen axis (angle, or area, or distance),
+             yet can never equal the Territory. δ₁ = Liminal is not a defect — it is the lesson.</p>
+          <h4>This simulation (Round 1)</h4>
+          <p>Uses the <em>graticule only</em>: every distortion value is computed exactly from
+             cell geometry (sphere area vs projected area; Tissot for shape). Continents come next.</p>
+          <h4>Source</h4>
+          <p><em>M0_World2DProjection.jsonld / _README.md (HEAD). Snyder 1987; Tissot 1859;
+             Lapaine &amp; Frančula 2022.</em></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BOTTOM BAR ─────────────────────────────────────────────────────── -->
+  <div id="bottom-bar">
+    <button class="bbtn" onclick="exportScreenshot()">Screenshot</button>
+    <button class="bbtn" id="btn-diag">Diagnostics</button>
+    <div id="hint">drag the splitter · click the globe to select a zone</div>
+    <span id="engine-badge">engine: —</span>
+  </div>
+
+  <!-- Diagnostic console -->
+  <div id="diag"></div>
+
+  <!-- ── SCRIPTS ────────────────────────────────────────────────────────── -->
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+  <!-- Shell BEFORE the poclet script — it exposes window.TSCG -->
+  <script src="src/tscg-shell.js"></script>
+  <script src="src/World2DProjection.js"></script>
+</body>
+</html>
