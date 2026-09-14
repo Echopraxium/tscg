@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1752 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1758 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **"cli_tools/**
   - **generate_index-html/**
@@ -327,6 +327,8 @@
       - TSCG_Session_Handover_2026-09-01_Facet-WS0_AntiAliasing.md
     - **2026_09_12/**
       - TSCG_Session_Handover_2026-09-09_World2DProjection.md
+    - **2026_09_13/**
+      - TSCG_Session_Handover_2026-09-13_World2DProjection_Step4.md
   - **poclets/**
     - **_00_template/**
       - **src/**
@@ -779,6 +781,13 @@
       - M0_VCO_README.md
       - VCO_Simulation_README.md
     - **World2DProjection/**
+      - **static/**
+        - **src/**
+          - tscg-shell.css
+          - tscg-shell.js
+          - World2DProjection.css
+          - World2DProjection.js
+        - M0_World2DProjection.html
       - M0_World2DProjection.jsonld
       - M0_World2DProjection_analysis.md
       - M0_World2DProjection_README.md
