@@ -34,6 +34,9 @@
   const M0_EPISTEMIC_GAP = 0.17;
   const M0_SPECTRAL_CLASS = 'Liminal';
 
+  // ── Rendering tunables ──────────────────────────────────────
+  const SEL_CONTOUR_RADIUS = 0.0045;   // globe selection-contour thickness (× globe.R). Item 1 (Round 3).
+
   // ════════════════════════════════════════════════════════════
   // 1. Projections — forward only (lonRad, latRad) -> {x, y}
   // ════════════════════════════════════════════════════════════
@@ -211,6 +214,48 @@
     selection: null   // {kind:'cell',i,j} | {kind:'cont',name} | {kind:'cap',name}
   };
 
+  // ── Geographic zones (countries + states of big countries) — display; selection = Pass C ──
+  const ZONES = (window.W2P_ZONES || []);
+  ZONES.forEach(z => {
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (const r of z.p) for (const q of r) {
+      if (q[0] < x0) x0 = q[0]; if (q[0] > x1) x1 = q[0];
+      if (q[1] < y0) y0 = q[1]; if (q[1] > y1) y1 = q[1];
+    }
+    z.bb = [x0, y0, x1, y1];
+  });
+  function cellAtDeg(latDeg, lonDeg) {
+    const step = state.stepDeg;
+    let i = Math.floor((latDeg + 90) / step), j = Math.floor((lonDeg + 180) / step);
+    i = Math.max(0, Math.min(state.nLat - 2, i));
+    j = Math.max(0, Math.min(state.nLon - 2, j));
+    return i * (state.nLon - 1) + j;
+  }
+  function zoneColour(z) {
+    const mode = effectiveHueMode();
+    const v = cellValue(cellAtDeg(z.c[1], z.c[0]), mode);
+    return mode === 'shape' ? shapeColour(v) : areaColour(v);
+  }
+  function splitRingDeg(ring) {
+    const out = []; let cur = [ring[0]];
+    for (let k = 1; k < ring.length; k++) {
+      if (Math.abs(ring[k][0] - ring[k - 1][0]) > 180) { out.push(cur); cur = [ring[k]]; }
+      else cur.push(ring[k]);
+    }
+    out.push(cur); return out;
+  }
+
+  const LAKES = (window.W2P_LAKES || []);
+  const LAKE_BB = LAKES.map(r => { let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9; for (const q of r){ if(q[0]<x0)x0=q[0]; if(q[0]>x1)x1=q[0]; if(q[1]<y0)y0=q[1]; if(q[1]>y1)y1=q[1]; } return [x0,y0,x1,y1]; });
+  function zoneAt(lonDeg, latDeg) {
+    for (const z of ZONES) { const b = z.bb; if (lonDeg < b[0] || lonDeg > b[2] || latDeg < b[1] || latDeg > b[3]) continue; for (const r of z.p) if (pointInPoly(lonDeg, latDeg, r)) return z; }
+    return null;
+  }
+  function lakeAt(lonDeg, latDeg) {
+    for (let k = 0; k < LAKES.length; k++) { const b = LAKE_BB[k]; if (lonDeg < b[0] || lonDeg > b[2] || latDeg < b[1] || latDeg > b[3]) continue; if (pointInPoly(lonDeg, latDeg, LAKES[k])) return true; }
+    return false;
+  }
+
   function buildGrid() {
     const step = state.stepDeg;
     const latEdges = [], lonEdges = [];
@@ -275,6 +320,8 @@
   const COL_UNDER = [23, 182, 214];
   const AREA_DMAX = Math.log(8);
   const SHAPE_DMAX = Math.log(4);
+  const CHORO_CLASSES = 5;                 // item 3: discrete diverging classes per side (real choropleth, not a gradient)
+  function quantChoro(t) { const u = Math.max(0, Math.min(1, t)); return Math.round(u * CHORO_CLASSES) / CHORO_CLASSES; }
 
   function lerpCol(g, t, tgt) {
     const u = Math.max(0, Math.min(1, t));
@@ -284,13 +331,13 @@
   }
   function areaColour(rNorm) {
     const tau = state.tau;
-    if (rNorm > 1 + tau) return lerpCol(COL_NEUT, (Math.log(rNorm) - Math.log(1 + tau)) / AREA_DMAX, COL_OVER);
-    if (rNorm < 1 - tau) return lerpCol(COL_NEUT, (Math.log(1 - tau) - Math.log(Math.max(1e-6, rNorm))) / AREA_DMAX, COL_UNDER);
+    if (rNorm > 1 + tau) return lerpCol(COL_NEUT, quantChoro((Math.log(rNorm) - Math.log(1 + tau)) / AREA_DMAX), COL_OVER);
+    if (rNorm < 1 - tau) return lerpCol(COL_NEUT, quantChoro((Math.log(1 - tau) - Math.log(Math.max(1e-6, rNorm))) / AREA_DMAX), COL_UNDER);
     return COL_NEUT.slice();
   }
   function shapeColour(ab) {
     const tau = state.tau;
-    if (ab > 1 + tau) return lerpCol(COL_NEUT, (Math.log(ab) - Math.log(1 + tau)) / SHAPE_DMAX, COL_OVER);
+    if (ab > 1 + tau) return lerpCol(COL_NEUT, quantChoro((Math.log(ab) - Math.log(1 + tau)) / SHAPE_DMAX), COL_OVER);
     return COL_NEUT.slice();
   }
 
@@ -335,38 +382,49 @@
         if (v.x < minX) minX = v.x; if (v.x > maxX) maxX = v.x;
         if (v.y < minY) minY = v.y; if (v.y > maxY) maxY = v.y;
       }
-      const bw = (maxX - minX) || 1, bh = (maxY - minY) || 1, m = 28;
+      const bw = (maxX - minX) || 1, bh = (maxY - minY) || 1, m = 10;
       const sc = Math.min((p.width - 2 * m) / bw, (p.height - 2 * m) / bh);
       const ox = (p.width - bw * sc) / 2 - minX * sc;
       const oy = (p.height - bh * sc) / 2 + maxY * sc;
       const SX = (x) => ox + x * sc, SY = (y) => oy - y * sc;
-      const mode = effectiveHueMode();
+      // ocean = the projected map boundary, filled blue (dark canvas stays as letterbox)
+      p.noStroke(); p.fill(38, 78, 132);
+      p.beginShape();
+      for (let j = 0; j < nLon; j++) { const v = vpos(0 * nLon + j); p.vertex(SX(v.x), SY(v.y)); }
+      for (let i = 0; i < nLat; i++) { const v = vpos(i * nLon + (nLon - 1)); p.vertex(SX(v.x), SY(v.y)); }
+      for (let j = nLon - 1; j >= 0; j--) { const v = vpos((nLat - 1) * nLon + j); p.vertex(SX(v.x), SY(v.y)); }
+      for (let i = nLat - 1; i >= 0; i--) { const v = vpos(i * nLon + 0); p.vertex(SX(v.x), SY(v.y)); }
+      p.endShape(p.CLOSE);
 
-      // choropleth cells
-      p.noStroke();
-      let c = 0;
-      for (let i = 0; i < nLat - 1; i++)
-        for (let j = 0; j < nLon - 1; j++) {
-          const a = vpos(i * nLon + j), b = vpos(i * nLon + (j + 1));
-          const d = vpos((i + 1) * nLon + (j + 1)), e = vpos((i + 1) * nLon + j);
-          const col = mode === 'shape' ? shapeColour(cellValue(c, mode)) : areaColour(cellValue(c, mode));
-          p.fill(col[0], col[1], col[2]);
-          p.quad(SX(a.x), SY(a.y), SX(b.x), SY(b.y), SX(d.x), SY(d.y), SX(e.x), SY(e.y));
-          c++;
+      // per-zone choropleth: each country/state filled by its area distortion (true-size)
+      p.strokeWeight(0.5); p.stroke(20, 28, 42, 200);
+      for (const z of ZONES) {
+        const col = zoneColour(z);
+        p.fill(col[0], col[1], col[2]);
+        for (const ring of z.p) for (const seg of splitRingDeg(ring)) {
+          if (seg.length < 3) continue;
+          p.beginShape();
+          for (const q of seg) { const pr = rawProj(q[0] * DEG, q[1] * DEG); p.vertex(SX(pr.x), SY(pr.y)); }
+          p.endShape(p.CLOSE);
         }
+      }
 
-      // graticule
-      p.stroke(30, 40, 60, 150); p.strokeWeight(1); p.noFill();
+      // lakes (blue) over the land fills
+      p.noStroke(); p.fill(38, 78, 132);
+      for (const r of LAKES) for (const seg of splitRingDeg(r)) {
+        if (seg.length < 3) continue;
+        p.beginShape();
+        for (const q of seg) { const pr = rawProj(q[0] * DEG, q[1] * DEG); p.vertex(SX(pr.x), SY(pr.y)); }
+        p.endShape(p.CLOSE);
+      }
+
+      // graticule (light overlay over the fills)
+      p.stroke(30, 40, 60, 90); p.strokeWeight(1); p.noFill();
       for (let i = 0; i < nLat; i++) { p.beginShape(); for (let j = 0; j < nLon; j++) { const v = vpos(i * nLon + j); p.vertex(SX(v.x), SY(v.y)); } p.endShape(); }
       for (let j = 0; j < nLon; j++) { p.beginShape(); for (let i = 0; i < nLat; i++) { const v = vpos(i * nLon + j); p.vertex(SX(v.x), SY(v.y)); } p.endShape(); }
 
       // coastlines (Round 2) — outlines over the choropleth
-      if (state.showCoast) {
-        p.stroke(20, 24, 34, 220); p.strokeWeight(1.4); p.noFill();
-        for (const n of CONTINENT_ORDER) drawRingMap(p, contRad(n), SX, SY, true);
-      }
-
-      // selection highlight (thick black)
+      // selection highlight
       drawSelectionMap(p, SX, SY);
     };
   };
@@ -420,15 +478,27 @@
   }
   function coastLinesGlobe() {
     const lines = [];
-    for (const n of CONTINENT_ORDER) {
-      const pts = CONTINENTS[n].map(q => llToXyz(q[1] * DEG, q[0] * DEG, globe.R * 1.002));
-      pts.push(pts[0]);
-      lines.push(pts);
-    }
-    for (const capName of ['Arctic', 'Antarctic']) {
-      const pts = []; for (let lon = -180; lon <= 180; lon += 10) pts.push(llToXyz(CAPS[capName] * DEG, lon * DEG, globe.R * 1.002)); lines.push(pts);
+    for (const z of ZONES) for (const ring of z.p) {
+      lines.push(ring.map(q => llToXyz(q[1] * DEG, q[0] * DEG, globe.R * 1.002)));
     }
     return lines;
+  }
+
+  const GLOBE_OCEAN = [0.16, 0.33, 0.55], GLOBE_LAND = [0.85, 0.78, 0.63], GLOBE_LAKE = [0.20, 0.40, 0.62];
+  function paintGlobeVertices(sphere) {
+    const pos = sphere.getVerticesData(BABYLON.VertexBuffer.PositionKind);
+    if (!pos) return;
+    const nV = pos.length / 3;
+    const colors = new Float32Array(nV * 4);
+    for (let i = 0; i < nV; i++) {
+      const x = pos[i * 3], y = pos[i * 3 + 1], z = pos[i * 3 + 2];
+      const lat = Math.asin(Math.max(-1, Math.min(1, y / globe.R))) / DEG;
+      const lon = Math.atan2(z, x) / DEG;
+      let c = zoneAt(lon, lat) ? GLOBE_LAND : GLOBE_OCEAN;
+      if (lakeAt(lon, lat)) c = GLOBE_LAKE;
+      colors[i * 4] = c[0]; colors[i * 4 + 1] = c[1]; colors[i * 4 + 2] = c[2]; colors[i * 4 + 3] = 1;
+    }
+    sphere.setVerticesData(BABYLON.VertexBuffer.ColorKind, colors);
   }
 
   function buildGlobe() {
@@ -445,17 +515,18 @@
     const root = new BABYLON.TransformNode('globeRoot', scene);
     root.rotationQuaternion = BABYLON.Quaternion.Identity();
 
-    const sphere = BABYLON.MeshBuilder.CreateSphere('earth', { diameter: globe.R * 2, segments: 48 }, scene);
-    const mat = new BABYLON.StandardMaterial('beige', scene);
-    mat.diffuseColor = new BABYLON.Color3(0.847, 0.780, 0.635);
-    mat.specularColor = new BABYLON.Color3(0.08, 0.08, 0.08);
+    const sphere = BABYLON.MeshBuilder.CreateSphere('earth', { diameter: globe.R * 2, segments: 160 }, scene);
+    paintGlobeVertices(sphere);
+    const mat = new BABYLON.StandardMaterial('earthMat', scene);
+    mat.diffuseColor = new BABYLON.Color3(1, 1, 1);          // let per-vertex ocean/land/lake colours show
+    mat.specularColor = new BABYLON.Color3(0.05, 0.05, 0.05);
     sphere.material = mat; sphere.parent = root;
 
     const grat = BABYLON.MeshBuilder.CreateLineSystem('grat', { lines: graticuleLines() }, scene);
     grat.color = new BABYLON.Color3(0.25, 0.22, 0.16); grat.parent = root;
 
     const coast = BABYLON.MeshBuilder.CreateLineSystem('coast', { lines: coastLinesGlobe() }, scene);
-    coast.color = new BABYLON.Color3(0.32, 0.26, 0.16); coast.parent = root;
+    coast.color = new BABYLON.Color3(0.10, 0.07, 0.04); coast.parent = root;
 
     globe.engine = engine; globe.scene = scene; globe.camera = camera; globe.root = root;
 
@@ -527,8 +598,20 @@
     } else if (s.kind === 'cap') {
       for (let lon = -180; lon <= 180; lon += 6) pts.push(llToXyz(CAPS[s.name] * DEG, lon * DEG, globe.R * 1.005));
     }
-    const sel = BABYLON.MeshBuilder.CreateLines('sel', { points: pts }, globe.scene);
-    sel.color = new BABYLON.Color3(0, 0, 0); sel.parent = globe.root; sel.renderingGroupId = 1;
+    // Item 1 (Round 3): CreateLines/CreateLineSystem render at a fixed 1px in WebGL
+    // (line width is uncontrollable), so the selection contour was too thin. A Tube
+    // gives a real, controllable thickness (radius in world units).
+    if (!globe.selMat) {                            // material built once, not per selection (avoids a leak per click)
+      const m = new BABYLON.StandardMaterial('selMat', globe.scene);
+      m.emissiveColor = new BABYLON.Color3(0, 0, 0);
+      m.disableLighting = true;                     // solid black, independent of scene lighting
+      globe.selMat = m;
+    }
+    const sel = BABYLON.MeshBuilder.CreateTube('sel',
+      { path: pts, radius: globe.R * SEL_CONTOUR_RADIUS, tessellation: 8, cap: BABYLON.Mesh.NO_CAP },
+      globe.scene);
+    sel.material = globe.selMat;
+    sel.parent = globe.root; sel.renderingGroupId = 1;
     globe.selLines = sel;
   }
 
@@ -631,10 +714,10 @@
       note.innerHTML = 'Active projection is <b>equal-area</b>: areas are faithful, so the choropleth ' +
         'switches to <b>shape</b> distortion. Grey = round Tissot circle.';
     } else {
-      title.textContent = 'Hue = AREA distortion (log r)';
+      title.textContent = 'Hue = AREA distortion per zone';
       lo.textContent = 'undersized'; hi.textContent = 'oversized';
-      note.innerHTML = 'Grey = faithful within <b>±τ</b>. Cyan = shrunk, magenta = inflated. ' +
-        'τ is a <b>convention of the Map</b>, not a fact of the Territory.';
+      note.innerHTML = 'Each country/state is tinted by its <b>true-size</b> distortion: ' +
+        'grey = faithful (±τ), cyan = shrunk, magenta = inflated. Oceans in blue.';
     }
   }
 
