@@ -61,7 +61,7 @@ def is_expected(line: str) -> bool:
 
 # Directories to exclude from scan (archives, backups, references)
 EXCLUDE_DIRS = {
-    "Ref", "docs", "sparql", "tools", "_protos", "reboot-kit",
+    "Ref", "docs", "sparql", "ref_tool_links", "_protos", "reboot-kit",
 }
 
 
