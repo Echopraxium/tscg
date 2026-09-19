@@ -86,6 +86,7 @@ M1_FILES = {
     "M1_Domains.jsonld":           "M1_Domains.jsonld",
     "M1_Biology.jsonld":           "M1_extensions/biology/M1_Biology.jsonld",
     "M1_Chemistry.jsonld":         "M1_extensions/chemistry/M1_Chemistry.jsonld",
+    "M1_Cartography.jsonld":       "M1_extensions/cartography/M1_Cartography.jsonld",
     "M1_Economics.jsonld":         "M1_extensions/economics/M1_Economics.jsonld",
     "M1_Education.jsonld":         "M1_extensions/education/M1_Education.jsonld",
     "M1_Electronics.jsonld":       "M1_extensions/electronics/M1_Electronics.jsonld",
