@@ -61,7 +61,7 @@ VERSION = "1.1.0"
 # copies or scratch space; counting them inflates every gauge (a lesson learned
 # the hard way — three manual censuses produced three different numbers).
 EXCLUDED_PATH_MARKERS = (
-    "/_archives/", "/docs/", "/tools/", "_protos", "/static/",
+    "/_archives/", "/docs/", "/ref_tool_links/", "_protos", "/static/",
     "migration_backups", "domain_format_fix", "POCLET_TEMPLATE",
     "_Ref", "/Ref/",
 )

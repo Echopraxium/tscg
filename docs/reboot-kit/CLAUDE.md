@@ -60,7 +60,7 @@ Files: `M3_EagleEye.jsonld` (ASFID), `M3_SphinxEye.jsonld` (REVOI), `M3_GenesisS
 - **Control**: regulation and feedback patterns
 - **Information**: knowledge and representation patterns
 
-The production file is `M2_GenericConcepts.jsonld`; `M2_MetaConcepts_Ref.jsonld` is the reference/backup version. Draft/experimental work lives in `ontology/docs/`.
+The production file is `M2_GenericConcepts.jsonld`. Draft/experimental work lives in `ontology/docs/`.
 
 ### M0: Poclets
 
@@ -453,8 +453,6 @@ Base: `https://raw.githubusercontent.com/echopraxium/tscg/main/`
 
 | File | URI |
 |------|-----|
-| M2_MetaConcepts_Ref.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M2_MetaConcepts_Ref.jsonld` |
-| M2_MetaConcepts_Ref.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M2_MetaConcepts_Ref.ttl` |
 | M3_GenesisSpace_Ref.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M3_GenesisSpace_Ref.jsonld` |
 | M3_GenesisSpace_Ref.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/Ref/M3_GenesisSpace_Ref.ttl` |
 
@@ -471,13 +469,6 @@ Base: `https://raw.githubusercontent.com/echopraxium/tscg/main/`
 | M2_Processor.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_Processor.jsonld` |
 | M2_Processor.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_Processor.ttl` |
 | M2_MetaConcepts_SPARQL_Querie_README.txt | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/sparql/M2_MetaConcepts_SPARQL_Querie_README.txt` |
-
-#### ontology/tools/
-
-| File | URI |
-|------|-----|
-| M2_MetaConcepts_Ref.jsonld | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/tools/M2_MetaConcepts_Ref.jsonld` |
-| M2_MetaConcepts_Ref.ttl | `https://raw.githubusercontent.com/echopraxium/tscg/main/ontology/tools/M2_MetaConcepts_Ref.ttl` |
 
 #### ontology/docs/ — Ontology Documentation & Drafts
 
