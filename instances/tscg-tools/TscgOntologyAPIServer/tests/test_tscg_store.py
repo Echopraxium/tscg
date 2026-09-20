@@ -46,6 +46,19 @@ class TestLoadFile:
         assert 'graph' in r
         assert '://' in r['graph']   # valid absolute IRI
 
+    def test_graph_iri_is_cdn_url_no_doubled_segment(self, empty_store):
+        # Graph IRI must equal the file's raw-CDN URL: 'ontology/' stays single
+        # (no '/ontology/ontology/') and 'instances/' carries no spurious
+        # 'ontology/' prefix. Guards the Aki double-segment regression.
+        ROOT = 'https://raw.githubusercontent.com/Echopraxium/tscg/main/'
+        onto = empty_store._file_to_iri('/repo/tscg/ontology/M3_SphinxEye.jsonld')
+        inst = empty_store._file_to_iri(
+            '/repo/tscg/instances/poclets/FireTriangle/M0_FireTriangle.jsonld')
+        assert onto == ROOT + 'ontology/M3_SphinxEye.jsonld'
+        assert inst == ROOT + 'instances/poclets/FireTriangle/M0_FireTriangle.jsonld'
+        assert '/ontology/ontology/' not in onto
+        assert '/ontology/instances/' not in inst
+
     def test_creates_named_graph(self, empty_store):
         empty_store.load_file(F_M2)
         assert len(empty_store.graph_list()) == 1
