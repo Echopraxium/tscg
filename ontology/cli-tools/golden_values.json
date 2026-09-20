@@ -1,5 +1,5 @@
 {
-  "_measured": "2026-09-19, real repository (--update-golden)",
+  "_measured": "2026-09-20, real repository (--update-golden)",
   "_note": "Reference values, TriskeleVM-style. EXACT match required. A count that DROPS is as suspicious as one that rises: either a deliberate fix (then --update-golden, and the drop is recorded under '_previous'/'_delta') or a validator that stopped biting. A silently shrinking count is the most dangerous signal in this repo — it looks like progress.",
   "M3": {
     "status": "NOT_INSTRUMENTED",
@@ -33,24 +33,39 @@
     },
     "shacl_violations": 664,
     "_previous": {
-      "files": 16,
+      "files": 17,
       "errors": 151,
       "warnings": 3,
-      "shacl_violations": 680
+      "shacl_violations": 664
     },
-    "_delta": {
-      "files": "16 -> 17",
-      "shacl_violations": "680 -> 664"
-    },
+    "_delta": "no change",
     "_delta_reason": "TWO changes captured together (2026-09-19), kept in ONE golden refresh on purpose. (1) shacl_violations 680->664: localised to commit c49386c (2026-08-05, WS-2/CTX-4), which absolutised the m1/m2/m3 @context prefixes (relative -> canonical https IRIs) in 10 M1 extensions. DATA-ONLY, no SHACL shape touched. Proven by measurement: c49386c^ = 680 (== old golden), c49386c = 664, HEAD(c5fdefa) = 664; fed2621 (Cartography SHACL, +91/-0) is count-neutral on the 16 gated files. Belt-and-suspenders (per-message histogram, IRIs neutralised) shows a RECLASSIFICATION, NOT a loosening: -9 'm3:ontologyType must be declared exactly once' false positives removed (the property WAS declared; it now resolves to the canonical m3:); a 17<->17 category swap from 'must use Fm1m2(<Domain>) notation' to 'FORBIDDEN monoidal operator inside a combo formula' (the SAME nodes, now correctly recognised as m2:DomainConceptCombo via a correct rdfs:subClassOf, so the correct SC-1 constraint fires); +1 'well-formed signature'. NET -16 gate units. No shape weakened; the validator bites MORE correctly (26 message-lines removed, 18 added). Legitimate consequence of an IRI-resolution repair. (2) files 16->17: added M1_Cartography.jsonld to check_M1 M1_FILES, closing the coverage debt (it existed on HEAD and was registered in M1_Domains but was never in the gate's hardcoded list). M1_Cartography CONFORMS (0 SHACL violations), so it adds nothing to the count.",
-    "_updated": "2026-09-19"
+    "_updated": "2026-09-20"
   },
   "M0": {
     "status": "INSTRUMENTED",
     "note": "FIRST-CAPTURE BASELINE (run --update-golden to fill the numbers, then REVIEW). This baselines the existing M0 MIGRATION BACKLOG (18 PASS / 25 FAIL of 43): the v1.5 namespace/imports cluster C02/C03/C07/C09 + SHACL C15 (x22) and tensor remnants C12 (x25). It MEASURES the debt, it does not bless it. Lower these ONLY by repairing instances (see the CheckM0 repair campaign), never by loosening a check. Metric mapping: errors = sum of non-SHACL check failures; shacl_violations = C15.",
     "_previous": {},
     "_delta": "no change",
-    "_updated": "2026-09-19"
+    "_updated": "2026-09-20",
+    "files": 43,
+    "errors": 125,
+    "warnings": 0,
+    "shacl_violations": 22,
+    "pass": 18,
+    "fail": 25,
+    "by_code": {
+      "C02": 22,
+      "C03": 22,
+      "C07": 22,
+      "C08": 6,
+      "C09": 22,
+      "C10": 2,
+      "C11": 3,
+      "C12": 25,
+      "C13": 1,
+      "C15": 22
+    }
   },
   "_known_pre_existing_not_counted_here": {
     "SHAPE2_vs_SHAPE3": "~256 of the 502 SHACL violations are a VALIDATOR BUG, not data defects. sh:targetClass follows subclasses, so every extension combo is validated TWICE — by SHAPE 2 (which demands Fm2( ) and SHAPE 3 (which demands Fm1m2( ) — mutually exclusive. No extension combo can satisfy both. SHAPE 2 must exclude the subclass. → SC-5. THIS IS THE REAL GOLDMINE: ~256 violations that describe no defect at all.",
