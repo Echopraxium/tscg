@@ -213,8 +213,31 @@ def run_m0() -> dict | None:
                           env=_utf8_env(), encoding="utf-8", errors="replace")
     out = proc.stdout + proc.stderr
     if "Traceback" in out:
-        return {"_error": "check_m0_instances.py CRASHED.\n" + out[-800:]}
-    return {"_raw_exit": proc.returncode, "_captured": True}
+        return {"_error": "check_m0_instances.py CRASHED — a crashed validator reports "
+                          "no failures, which looks exactly like success.\n" + out[-800:]}
+
+    import re
+    # RESULTS: [OK] 18 PASS  [WN] 0 WARN  [XX] 25 FAIL  (total: 43)
+    m = re.search(r"RESULTS:.*?(\d+)\s+PASS.*?(\d+)\s+WARN.*?(\d+)\s+FAIL.*?total:\s*(\d+)",
+                  out, re.DOTALL)
+    if not m:
+        return {"_error": "could not parse check_m0 RESULTS line — the format changed, "
+                          "or the run produced no summary at all."}
+    n_pass, n_warn, n_fail, files = (int(m.group(i)) for i in (1, 2, 3, 4))
+
+    # Per-check FAIL breakdown:  [C02] m0: = M0_Common#: 22 FAIL(s)
+    by_code = {code: int(n)
+               for code, n in re.findall(r"\[(C\d+)\][^\n]*?:\s*(\d+)\s+FAIL", out)}
+
+    # Mirror M1: SHACL is tracked separately from the structural checks. C15 is the
+    # M0 SHACL check; `errors` is the sum of the NON-SHACL check failures. A crashed
+    # or format-changed checker was already caught above, so zero here means clean.
+    shacl = by_code.get("C15", 0)
+    errors = sum(v for k, v in by_code.items() if k != "C15")
+
+    return {"files": files, "errors": errors, "warnings": n_warn,
+            "shacl_violations": shacl, "pass": n_pass, "fail": n_fail,
+            "by_code": by_code}
 
 
 # ---------------------------------------------------------------------------
