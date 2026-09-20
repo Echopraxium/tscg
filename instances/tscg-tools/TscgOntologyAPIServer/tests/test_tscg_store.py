@@ -171,6 +171,14 @@ class TestLoadPattern:
                                      recursive=False)
         assert r['files_loaded'] == 3
 
+    def test_recursive_discovery_excludes_test_dirs(self, empty_store):
+        # Broad recursive discovery must NOT sweep tests/fixtures into the corpus
+        # (that was the Aki-report coverage gap). An explicit non-recursive load of
+        # the same fixtures still works — see test_finds_all_fixtures above.
+        r = empty_store.load_pattern(str(FIXTURES.parent), ['minimal_*.jsonld'],
+                                     recursive=True)
+        assert r['files_loaded'] == 0
+
     def test_returns_total_triples(self, empty_store):
         r = empty_store.load_pattern(str(FIXTURES), ['minimal_*.jsonld'],
                                      recursive=False)

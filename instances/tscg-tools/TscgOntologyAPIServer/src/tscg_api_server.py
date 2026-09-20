@@ -247,8 +247,16 @@ class TscgStore:
             fname = pattern.split('/')[-1]
             hits  = list(root_p.rglob(fname)) if recursive else list(root_p.glob(pattern))
             for f in hits:
-                if f.suffix == '.jsonld' and _in_active_corpus(str(f)):
-                    seen[str(f.resolve())] = f
+                if f.suffix != '.jsonld' or not _in_active_corpus(str(f)):
+                    continue
+                # A recursive (broad) discovery must not sweep test-fixture dirs into
+                # the production corpus: 'instances/**/*.jsonld' collapses to rglob(
+                # '*.jsonld') here, which otherwise catches tests/fixtures/*. An
+                # explicit non-recursive load trusts its root (the test-suite loading
+                # tests/fixtures/ on purpose), so it stays gated only by the check above.
+                if recursive and '/tests/' in str(f).replace('\\', '/'):
+                    continue
+                seen[str(f.resolve())] = f
 
         results, errors = [], []
         for f in sorted(seen.values()):
