@@ -192,14 +192,21 @@ class TscgStore:
 
     # ── IRI derivation ─────────────────────────────────────────
     def _file_to_iri(self, file_path: str) -> str:
-        """Derive a canonical named-graph IRI from a filesystem path."""
+        """Derive a canonical named-graph IRI = the file's raw-CDN URL.
+
+        BASE_IRI is the ontology *namespace* base ('.../main/ontology/'), but the
+        graph IRI must be the file's real repo path under the raw-CDN *root*
+        ('.../main/'): otherwise 'ontology/…' doubles into '/ontology/ontology/…'
+        and 'instances/…' gains a spurious 'ontology/' prefix.
+        """
         p = Path(file_path).resolve()
+        root_base = BASE_IRI[:-len('ontology/')] if BASE_IRI.endswith('ontology/') else BASE_IRI
         for anchor in ('ontology', 'instances'):
             if anchor in p.parts:
                 idx = list(p.parts).index(anchor)
                 rel = '/'.join(p.parts[idx:])
-                return BASE_IRI + rel
-        return BASE_IRI + p.name
+                return root_base + rel
+        return root_base + p.name
 
     # ── File loading ───────────────────────────────────────────
     def load_file(self, file_path: str) -> dict:
