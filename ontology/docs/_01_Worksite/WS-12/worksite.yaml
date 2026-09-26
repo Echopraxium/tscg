@@ -1,0 +1,32 @@
+  - id: WS-12
+    title: Audience facet population campaign
+    status: scoped
+    priority: 14                 # after WS-11 grammar formalisation; a data campaign, not a correctness gate
+    note: >
+      SC-3 graved the m3:Audience facet (KitArchitect / KitCrafter / KitUser) but left it
+      OPTIONAL (Decision #2, no presence shape) — today only 1 of 55 M0 instances carries it
+      (QRCodeToPocketCity -> KitUser). Populate every M0 instance by a type-default rule,
+      with per-instance override as the "cas particulier":
+        poclet                     -> m3:audience.KitUser
+        TscgTool                   -> m3:audience.KitCrafter + m3:audience.KitArchitect
+        systemic-framework         -> m3:audience.KitCrafter + m3:audience.KitArchitect
+        symbolic-system-grammar    -> m3:audience.KitCrafter + m3:audience.KitArchitect
+      Result: the wiki's audience filter reads m3:hasFacetValue live from HEAD instead of a
+      hand-kept UI taxonomy (head-over-memory applied to the interface). Gates
+      (check-M0/M1/M2, run_all_layers, ontology-linter) are NOT M0 instances -> they get a
+      wiki-page tag (KitArchitect), never a facet value.
+      Does NOT reverse SC-3 Dec #2: the facet stays OPTIONAL in SHACL. "Always filled unless
+      a justified cas particulier" is enforced as a review convention + an advisory validator
+      gauge, NEVER a SHACL presence shape.
+    items:
+      - { id: AUD-gauge, title: "gauge: M0 instances carrying m3:Audience",
+          status: todo, gauge: "AUD-present", current: 1, target: 55,
+          measured_by: "validator/AUD (advisory INFO)" }
+      - { id: AUD-poclets,    title: "43 poclets -> m3:audience.KitUser (1 already done: QRCodeToPocketCity)", status: todo }
+      - { id: AUD-tools,      title: "6 tscg-tools -> KitCrafter + KitArchitect", status: todo }
+      - { id: AUD-frameworks, title: "4 systemic-frameworks (Bmc / Triz / vsm) -> KitCrafter + KitArchitect", status: todo }
+      - { id: AUD-ssg,        title: "2 SSGs (iching / TriskeleToolchain) -> KitCrafter + KitArchitect", status: todo }
+      - { id: AUD-template,   title: "M0 generation template carries the type-default facet", status: todo,
+          note: "M0_INSTANCE_TEMPLATE.jsonld / M0_CONTEXT_TEMPLATE.json: new instances born pre-tagged (cf WS-9 AP-5 logic) so the campaign never recurs for future poclets — this is what keeps 'sauf cas particulier' true without manual work" }
+      - { id: AUD-validator,  title: "advisory AUD check family in the validator", status: todo,
+          note: "count M0 instances missing m3:hasFacetValue as INFO -> makes 'toujours renseignee' measurable (WS-5 gauge culture) WITHOUT a SHACL presence shape, so SC-3 Dec #2 is preserved" }

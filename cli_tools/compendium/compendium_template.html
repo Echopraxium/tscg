@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TSCG Compendium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --paper:#eef1f5;--surface:#ffffff;--ink:#1b2028;--muted:#67707c;--line:#d9dee6;
+  --accent:#238d80;--accent-soft:rgba(35,141,128,.12);--territory:#c0862c;
+  --play:#238d80;--play-bg:rgba(35,141,128,.12);--local:#b06a1a;--local-bg:rgba(176,106,26,.12);
+  --wip:#6b7480;--wip-bg:rgba(107,116,128,.12);
+  --disp:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --body:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0f1319;--surface:#161c24;--ink:#e6eaf0;--muted:#8a94a2;--line:#28303b;
+  --accent:#4fc3b4;--accent-soft:rgba(79,195,180,.14);--territory:#e0a64b;
+  --play:#4fc3b4;--play-bg:rgba(79,195,180,.14);--local:#e0a64b;--local-bg:rgba(224,166,75,.14);
+  --wip:#8a94a2;--wip-bg:rgba(138,148,162,.14);
+}}
+:root[data-theme="dark"]{
+  --paper:#0f1319;--surface:#161c24;--ink:#e6eaf0;--muted:#8a94a2;--line:#28303b;
+  --accent:#4fc3b4;--accent-soft:rgba(79,195,180,.14);--territory:#e0a64b;
+  --play:#4fc3b4;--play-bg:rgba(79,195,180,.14);--local:#e0a64b;--local-bg:rgba(224,166,75,.14);
+  --wip:#8a94a2;--wip-bg:rgba(138,148,162,.14);
+}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:940px;margin:0 auto;padding:clamp(18px,4vw,40px) clamp(14px,4vw,28px) 90px}
+h1{font-family:var(--disp);font-weight:700;font-size:clamp(30px,7vw,46px);letter-spacing:-.02em;margin:0;line-height:1.02}
+.sub{color:var(--muted);max-width:60ch;margin:10px 0 0;font-size:15px}
+.gallerylink{display:inline-block;margin-top:14px;font-family:var(--disp);font-weight:600;font-size:14px;color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:8px 14px;text-decoration:none}
+.gallerylink:hover{background:var(--accent-soft)}
+.lens{margin:22px 0 6px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.lens-top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:12px}
+.lens-label{font-family:var(--disp);font-weight:600;font-size:14px}
+.lens-count{font-family:var(--disp);font-size:13px;color:var(--muted);text-align:right}
+.lens-count b{color:var(--accent);font-size:22px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--paper);border-radius:12px;padding:5px}
+.seg button{font-family:var(--disp);font-weight:600;font-size:14px;cursor:pointer;border:0;border-radius:8px;padding:11px 8px;color:var(--muted);background:transparent;transition:color .15s}
+.seg button .depth{display:block;font-weight:400;font-size:11px;opacity:.8}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--accent);box-shadow:0 1px 0 var(--line),0 2px 8px rgba(0,0,0,.06)}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:18px 0 6px}
+.search{flex:1;min-width:180px}
+.search input{width:100%;font:inherit;font-size:15px;padding:11px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.search input::placeholder{color:var(--muted)}
+.search input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+.themebtn{font:inherit;font-size:18px;line-height:1;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:9px 12px;cursor:pointer}
+.rubrics{display:flex;gap:8px;overflow-x:auto;padding:14px 0 4px;-webkit-overflow-scrolling:touch}
+.rubrics button{white-space:nowrap;font:inherit;font-size:13.5px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:8px 14px}
+.rubrics button .c{color:var(--ink);font-weight:600;margin-left:6px}
+.rubrics button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.rubrics button[aria-pressed="true"] .c{color:var(--accent)}
+.group{margin-top:26px}
+.group h2{font-family:var(--disp);font-weight:600;font-size:13px;color:var(--muted);margin:0 0 4px;display:flex;justify-content:space-between}
+.rows{border-top:1px solid var(--line)}
+.row{border-bottom:1px solid var(--line);padding:13px 4px;display:flex;gap:12px;align-items:baseline}
+.row:hover{background:var(--accent-soft)}
+.row .t{font-weight:600;font-size:15.5px;flex:1;min-width:0}
+.row .p{display:block;color:var(--muted);font-size:12px;font-weight:400;margin-top:2px;word-break:break-all}
+.tags{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.tag{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 7px}
+.tag.draft{color:var(--local);border-color:var(--local);background:var(--local-bg)}
+.eyes{display:flex;gap:3px;flex-shrink:0}
+.eye{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.eye.on{background:var(--accent)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px;margin-top:8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 15px;display:flex;flex-direction:column;gap:8px}
+.card .ct{font-family:var(--disp);font-weight:600;font-size:16px;line-height:1.2}
+.card .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.cat{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 7px}
+.badge{font-family:var(--disp);font-size:11px;font-weight:600;border-radius:6px;padding:2px 8px}
+.badge.playable{color:var(--play);background:var(--play-bg)}
+.badge.local{color:var(--local);background:var(--local-bg)}
+.badge.wip{color:var(--wip);background:var(--wip-bg)}
+.links{display:flex;gap:14px;flex-wrap:wrap;margin-top:2px}
+.links a{font-size:13px;color:var(--accent);font-weight:500}
+.links a:hover{text-decoration:underline}
+.intro{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-top:14px}
+.intro h3{font-family:var(--disp);font-size:19px;margin:0 0 6px}
+.intro p{margin:0 0 10px;font-size:15px}
+.intro .lead{color:var(--muted)}
+.pillar{border-left:3px solid var(--accent);padding-left:14px;margin:16px 0}
+.pillar:nth-of-type(2){border-color:var(--territory)}
+.pillar h4{font-family:var(--disp);font-size:16px;margin:0 0 4px}
+.pillar .note{color:var(--muted);font-weight:400;font-size:13px}
+.stub{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-top:12px}
+.stub h4{font-family:var(--disp);font-size:16px;margin:0 0 6px}
+.stub p{margin:0 0 10px;font-size:14.5px}
+.stub ul{margin:6px 0 12px;padding-left:18px;font-size:14.5px}
+.stub li{margin:4px 0}
+.switch{font:inherit;font-size:13px;font-weight:600;font-family:var(--disp);cursor:pointer;border:1px solid var(--accent);color:var(--accent);background:transparent;border-radius:8px;padding:7px 12px}
+.empty{color:var(--muted);padding:40px 0;text-align:center}
+footer{margin-top:40px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:560px){.lens-top{flex-direction:column;align-items:flex-start;gap:6px}.lens-count{text-align:left}.row{flex-direction:column;gap:6px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>TSCG Compendium</h1>
+    <p class="sub">The systemic construction kit, seen through one lens at a time. Pick your level — the Compendium shows only what concerns you.</p>
+    <a class="gallerylink" href="instances/simulation_gallery.html" target="_blank" rel="noopener">▸ Simulation gallery</a>
+  </header>
+
+  <section class="lens" aria-label="Audience level">
+    <div class="lens-top">
+      <span class="lens-label">Audience lens</span>
+      <span class="lens-count"><b id="nvis">0</b> <span id="ntot"></span></span>
+    </div>
+    <div class="seg" role="group" aria-label="Choose level">
+      <button data-aud="KitUser" aria-pressed="true">KitUser<span class="depth">experiment &amp; play with kits</span></button>
+      <button data-aud="KitCrafter" aria-pressed="false">KitCrafter<span class="depth">design &amp; assemble kits</span></button>
+      <button data-aud="KitArchitect" aria-pressed="false">KitArchitect<span class="depth">architecture, workflows, tools</span></button>
+    </div>
+  </section>
+
+  <div class="controls">
+    <div class="search"><input id="q" type="search" placeholder="Search a title or a path…" autocomplete="off"></div>
+    <button class="themebtn" id="theme" title="Toggle light / dark" aria-label="Toggle theme">◐</button>
+  </div>
+
+  <nav class="rubrics" id="rubrics" aria-label="Sections"></nav>
+  <main id="view"></main>
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const DATA = "@@DATA@@";
+const BLOB="https://github.com/Echopraxium/tscg/blob/main/";
+const TREE="https://github.com/Echopraxium/tscg/tree/main/";
+const UNDERSTAND="Understand the kit";
+const DOC_ORDER=["Epistemology","Guides & templates","Gate tools & tooling","The M3–M0 layers","Project management"];
+const EYE=["KitUser","KitCrafter","KitArchitect"];
+let audience="KitUser", section=UNDERSTAND, query="";
+try{const s=localStorage.getItem("tscg-aud"); if(s&&EYE.includes(s)) audience=s;}catch(e){}
+try{const t=localStorage.getItem("tscg-theme"); if(t) document.documentElement.dataset.theme=t;}catch(e){}
+
+const esc=s=>(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const inAud=x=>x.audience.includes(audience);
+const ql=()=>query.toLowerCase();
+const matchTxt=(...ss)=>!query||ss.some(s=>(s||"").toLowerCase().includes(ql()));
+const eyes=aud=>EYE.map(a=>`<span class="eye ${aud.includes(a)?'on':''}" title="${a}"></span>`).join("");
+
+function counts(){
+  const subs=DATA.subjects.filter(inAud).length;
+  const docs=DATA.docs.filter(inAud).length;
+  return {subs,docs,total:subs+docs};
+}
+function sectionsForAudience(){
+  const out=[UNDERSTAND];
+  if(DATA.subjects.some(inAud)) out.push("Instances & simulations");
+  DOC_ORDER.forEach(s=>{ if(DATA.docs.some(d=>inAud(d)&&d.section===s)) out.push(s); });
+  return out;
+}
+function sectionCount(s){
+  if(s===UNDERSTAND) return "";
+  if(s==="Instances & simulations") return DATA.subjects.filter(inAud).length;
+  return DATA.docs.filter(d=>inAud(d)&&d.section===s).length;
+}
+function renderNav(){
+  const secs=sectionsForAudience();
+  if(!secs.includes(section)) section=UNDERSTAND;
+  const rc=document.getElementById("rubrics");
+  rc.innerHTML=secs.map(s=>{const c=sectionCount(s);
+    return `<button data-sec="${esc(s)}" aria-pressed="${section===s}">${esc(s)}${c!==""?`<span class="c">${c}</span>`:""}</button>`;}).join("");
+  rc.querySelectorAll("button").forEach(b=>b.onclick=()=>{section=b.dataset.sec;render();});
+}
+
+function renderUnderstand(){
+  const play=DATA.subjects.filter(s=>s.mode==="playable").length;
+  return `
+  <div class="intro">
+    <h3>Why TSCG? Breaking down the silos</h3>
+    <p class="lead">Knowledge is split into disciplines that rarely talk to each other, so the same idea often gets discovered again and again under different names: what control engineers call <i>negative feedback</i>, biologists call <i>homeostasis</i>, economists call <i>equilibration</i>, and finance calls <i>mean reversion</i> — several names for one underlying pattern. This fragmentation makes fields reinvent the wheel and miss the structural kinship between them.</p>
+    <p>TSCG's response is <b>desiloification — by translation, not by erasure</b>. It doesn't force fields into one mould, and it asks no one to drop their own vocabulary. It offers a shared layer through which practitioners from many different fields <i>can</i> recognise when they are really describing the same thing. That response rests on three pillars.</p>
+    <div class="pillar"><h4>1 — A systemic Esperanto <span class="note">(a proposal, not a doctrine)</span></h4>
+      <p>Just as Esperanto was invented as a common tongue to reveal what languages share — without replacing any of them — TSCG offers a small common vocabulary for talking about systems across several fields. A campfire, a living cell and a financial bubble look nothing alike on the surface, yet <i>can</i> share deep structural patterns that one shared language brings to light. This is an <b>open, revisable proposal</b> — not an established truth; it sharpens through use and critique.</p></div>
+    <div class="pillar"><h4>2 — Stereopsis: two eyes, one depth <span class="note">(after Korzybski)</span></h4>
+      <p>It begins with Korzybski's principle (1933): <i>the map is not the territory</i> — our representation of a thing is never the thing itself. TSCG turns that single distinction into two eyes you look through at once. The <b>Territory eye</b> asks: <i>what is this system actually doing?</i> The <b>Map eye</b> asks: <i>how well can we represent it?</i> Like stereoscopic glasses that don't change the scene but reveal its relief, holding both views together brings out a <b>depth</b> neither eye sees alone. TSCG sets out neither to prove nor to criticise a system — only to see it in relief.</p></div>
+    <div class="pillar"><h4>3 — LEGO Technic, and the idea of a kit</h4>
+      <p>TSCG is a <b>construction game</b> in the spirit of <b>LEGO Technic</b>, not LEGO Classic: the test isn't whether a model <i>looks right</i> but whether it <i>works</i>. You assemble it from a small set of reusable, validated pieces and check that the mechanism holds together. What you build are <b>scale models</b> — not industrial or research-grade systems, but deliberately simplified <b>reduced models</b> made for <i>learning by doing</i>. This is also where the three levels get their names: a <b>Kit</b>Architect designs the architecture, workflows and tools; a <b>Kit</b>Crafter designs and assembles the kits; and a <b>Kit</b>User experiments and plays with the assembled kits — ${play} of them are playable right now. Playing is immediate; assembling and designing take real practice — each level is a genuine step up.</p></div>
+  </div>
+  <div class="stub"><h4>The two eyes — ASFID, REVOI, and the depth (TKSL)</h4>
+    <p>The <b>Territory eye</b> reads what a system <i>is</i>, along five dimensions — <b>ASFID</b>: <b>A</b>ttractor (what it tends toward), <b>S</b>tructure, <b>F</b>low, <b>I</b>nformation and <b>D</b>ynamics.</p>
+    <p>The <b>Map eye</b> reads how well we can <i>know</i> it — <b>REVOI</b>: <b>R</b>epresentability, <b>E</b>volvability, <b>V</b>erifiability, <b>O</b>bservability and <b>I</b>nteroperability. (The R is <i>Representability</i>, not reproducibility.)</p>
+    <p>When the two eyes fuse, four <i>interface</i> ideas emerge — <b>TKSL</b>: <b>T</b>emporality (when?), <b>K</b>nowledge (raw information turned into meaning), <b>S</b>ymbol (the sign linking a thing to its representation) and <b>L</b>ocalizability (which way the system is heading). This is the stereopsic depth neither eye sees alone.</p>
+    <button class="switch" data-aud="KitCrafter">Switch to KitCrafter for the full grammar →</button></div>
+  <div class="stub"><h4>The Layer Cake — four levels</h4>
+    <p>TSCG is stacked like a four-layer cake, each layer resting on the one below:</p>
+    <ul>
+      <li><b>M3 — Structural Grammar</b>: the assembly rules — the two eyes and how pieces combine.</li>
+      <li><b>M2 — Generic Concepts</b>: the shared vocabulary of reusable pieces (the "systemic Esperanto").</li>
+      <li><b>M1 — Domain Adaptation</b>: how those pieces adapt to a field — biology, electronics, music…</li>
+      <li><b>M0 — Instances</b>: the finished models you actually play with.</li>
+    </ul>
+    <p>As a KitUser you live mostly at <b>M0</b>, the top of the cake; the layers beneath are what make the pieces fit together.</p>
+    <button class="switch" data-aud="KitCrafter">Switch to KitCrafter to see how the layers are built →</button></div>
+  <div class="stub"><h4>Key words: instance, poclet, workflow</h4>
+    <ul>
+      <li><b>Instance</b>: a small, working model of one system, theory or tool, built with TSCG — the M0 layer.</li>
+      <li><b>Poclet</b>: the flagship kind of instance. The name blends <i>PoC</i> (proof of concept) with <i>-let</i> (as in <i>applet</i>): minimal but <i>complete</i> — small by design, yet showing all five ASFID dimensions. It is the KitUser's main playground.</li>
+      <li><b>Workflow</b>: the path from idea to model — Propose → Analyse → Model → Simulate — with a human deciding at every step.</li>
+    </ul>
+    <button class="switch" data-aud="KitCrafter">Switch to KitCrafter to build one →</button></div>
+  <div class="stub"><h4>Under the hood <span style="color:var(--muted);font-weight:400;font-size:13px">(optional — the ideas that make it work)</span></h4>
+    <p>You don't need any of this to play. But if you're curious what drives the kit, here are a few of its guiding ideas — offered honestly as <b>revisable hypotheses</b>, not settled truths:</p>
+    <ul>
+      <li><b>The map is not the territory</b> (Korzybski): a model is never the thing it models — which is why TSCG keeps two eyes.</li>
+      <li><b>A systemic Esperanto</b>: shared patterns <i>can</i> recur across fields — a proposal that earns trust through use, not by decree.</li>
+      <li><b>Two self-imposed safeguards</b>: <i>Narcissus</i> — don't fall in love with a model that only validates itself; and <i>Icarus</i> — don't overclaim, no grand universal claims from thin evidence. TSCG names its own failure modes on purpose.</li>
+      <li><b>Ontological overfitting</b>: the discipline of not inventing a bespoke concept for every case — a pattern earns its place only if it recurs across several fields.</li>
+      <li><b>Credibility by accretion</b>: TSCG doesn't claim proof; its credibility is meant to build slowly, through use and critique.</li>
+    </ul>
+    <p>These are starting points, not the whole story — and taking them in means some reading. The full essays live in the Epistemology section.</p>
+    <button class="switch" data-sec="Epistemology">Read the full essays →</button></div>`;
+}
+
+const MODELBL={playable:"Playable",local:"Local (install)","under-construction":"Under construction"};
+const MODECLS={playable:"playable",local:"local","under-construction":"wip"};
+function subjectCard(s){
+  const links=[];
+  if(s.play) links.push(`<a href="${s.play}" target="_blank" rel="noopener"><b>▸ Play</b></a>`);
+  links.push(`<a href="${BLOB}${encodeURI(s.model)}" target="_blank" rel="noopener">Model</a>`);
+  if(!s.play && s.sim) links.push(`<a href="${BLOB}${encodeURI(s.sim)}" target="_blank" rel="noopener">Simulation</a>`);
+  if(s.readme) links.push(`<a href="${BLOB}${encodeURI(s.readme)}" target="_blank" rel="noopener">Docs</a>`);
+  links.push(`<a href="${TREE}${encodeURI(s.folder)}" target="_blank" rel="noopener">Folder (${s.files})</a>`);
+  return `<div class="card">
+    <div class="ct">${esc(s.title)}</div>
+    <div class="meta"><span class="cat">${esc(s.category)}</span>
+      <span class="badge ${MODECLS[s.mode]}">${MODELBL[s.mode]}</span>
+      <span class="eyes">${eyes(s.audience)}</span></div>
+    <div class="links">${links.join("")}</div></div>`;
+}
+function renderInstances(){
+  let subs=DATA.subjects.filter(inAud).filter(s=>matchTxt(s.title,s.name,s.folder));
+  if(!subs.length) return `<p class="empty">No instances at this level for that search.</p>`;
+  let html="";
+  ["playable","local","under-construction"].forEach(m=>{const g=subs.filter(s=>s.mode===m); if(!g.length) return;
+    html+=`<section class="group"><h2><span>${MODELBL[m]}</span><span>${g.length}</span></h2>
+      <div class="cards">${g.sort((a,b)=>a.title.localeCompare(b.title)).map(subjectCard).join("")}</div></section>`;});
+  return html;
+}
+function docRow(d){
+  const st=d.status==="draft"?`<span class="tag draft">draft</span>`:"";
+  return `<a class="row" href="${BLOB}${encodeURI(d.path)}" target="_blank" rel="noopener">
+    <span class="t">${esc(d.title)}<span class="p">${esc(d.path)}</span></span>
+    <span class="tags"><span class="tag">${esc(d.kind)}</span>${st}<span class="eyes">${eyes(d.audience)}</span></span></a>`;
+}
+function renderDocs(sec){
+  let ds=DATA.docs.filter(d=>inAud(d)&&d.section===sec).filter(d=>matchTxt(d.title,d.path));
+  if(!ds.length) return `<p class="empty">Nothing here at this level for that search.</p>`;
+  ds.sort((a,b)=>a.title.localeCompare(b.title));
+  return `<section class="group"><div class="rows">${ds.map(docRow).join("")}</div></section>`;
+}
+function renderProject(){
+  const wk=DATA.docs.filter(d=>inAud(d)&&d.section==="Project management"&&d.kind!=="housekeeping").filter(d=>matchTxt(d.title,d.path));
+  const hk=DATA.docs.filter(d=>inAud(d)&&d.kind==="housekeeping").filter(d=>matchTxt(d.title,d.path));
+  const wip=DATA.subjects.filter(inAud).filter(s=>s.mode==="under-construction").filter(s=>matchTxt(s.title,s.name));
+  let html="";
+  if(wk.length) html+=`<section class="group"><h2><span>Worksites &amp; handovers</span><span>${wk.length}</span></h2><div class="rows">${wk.sort((a,b)=>a.title.localeCompare(b.title)).map(docRow).join("")}</div></section>`;
+  if(wip.length) html+=`<section class="group"><h2><span>Instances under construction</span><span>${wip.length}</span></h2><div class="cards">${wip.sort((a,b)=>a.title.localeCompare(b.title)).map(subjectCard).join("")}</div></section>`;
+  if(hk.length) html+=`<section class="group"><h2><span>Housekeeping</span><span>${hk.length}</span></h2><div class="rows">${hk.sort((a,b)=>a.title.localeCompare(b.title)).map(docRow).join("")}</div></section>`;
+  return html||`<p class="empty">Nothing here at this level.</p>`;
+}
+
+function render(){
+  const c=counts();
+  document.getElementById("nvis").textContent=c.total;
+  document.getElementById("ntot").textContent=`entries visible · ${c.subs} instances, ${c.docs} docs`;
+  renderNav();
+  const v=document.getElementById("view");
+  if(section===UNDERSTAND) v.innerHTML=renderUnderstand();
+  else if(section==="Instances & simulations") v.innerHTML=renderInstances();
+  else if(section==="Project management") v.innerHTML=renderProject();
+  else v.innerHTML=renderDocs(section);
+  v.querySelectorAll(".switch[data-aud]").forEach(b=>b.onclick=()=>setAudience(b.dataset.aud));
+  v.querySelectorAll(".switch[data-sec]").forEach(b=>b.onclick=()=>{section=b.dataset.sec;render();});
+}
+function setAudience(a){
+  audience=a; try{localStorage.setItem("tscg-aud",a);}catch(e){}
+  document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.aud===a));
+  render();
+}
+document.querySelectorAll(".seg button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.aud===audience);b.onclick=()=>setAudience(b.dataset.aud);});
+document.getElementById("q").oninput=e=>{query=e.target.value;render();};
+document.getElementById("theme").onclick=()=>{
+  const cur=document.documentElement.dataset.theme;
+  const isDark=cur?cur==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+  const next=isDark?"light":"dark";document.documentElement.dataset.theme=next;
+  try{localStorage.setItem("tscg-theme",next);}catch(e){}
+};
+document.getElementById("foot").innerHTML=`${DATA.subjects.length} instances · ${DATA.docs.length} documents · read from HEAD (@tscg + m3:Audience) · MVP preview`;
+render();
+</script>
+</body>
+</html>

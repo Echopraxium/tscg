@@ -294,7 +294,7 @@ tscg/
 │       └── TscgOntologyAPIServer/     # FastAPI REST (stub)
 │
 ├── cli_tools/                         # Python/Node.js utilities
-│   ├── generate_index-html/           # Gallery auto-generator
+│   ├── regenerate_simulation_gallery/ # Gallery auto-generator
 │   ├── migrate_properties/            # Property rename CLI
 │   ├── ontology-linter/               # JSON-LD linting
 │   └── verify_migration/              # Post-migration validation
