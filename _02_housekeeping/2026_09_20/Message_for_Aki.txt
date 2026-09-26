@@ -1,0 +1,28 @@
+Hi Aki,
+
+The residual items from your 2026-08-14 retest (8800 vs fresh 8801) are now fixed and pushed to main. Could you run an independent retest to confirm? Your measurement is what closes this out.
+
+Test against origin/main at commit d22306f, and please mind the two things that skewed the old 8800 run:
+  1. Use a FRESH clone mounted at the repo root — not a --ontology-dir pointing elsewhere (that was the whole 8800/8801 gap).
+  2. Measure on the LOADED store, not a static grep — the double-segment is minted at load time (a static grep read 0 while the store still had 28).
+
+Checks and expected values on d22306f:
+  - duplicate owl:Ontology subject (per governed subject, COUNT(DISTINCT ?g) > 1): 0
+  - graphs whose IRI contains /ontology/ontology/: 0  (was 28 on 8801)
+  - graphs with a spurious /ontology/instances/ prefix: 0
+  - tests/fixtures minimal_*.jsonld in the recursively-loaded corpus: 0
+  - API-server pytest suite: 80 passed
+  - the deployment-mismatch items (PEPITE-001/003/005/011/013, legacy M0_Poclet#): 0 on a correct repo-root mount, as your 8801 already showed
+
+Known and OUT OF SCOPE — please don't flag these as regressions (separate corpus-scope-hygiene lot, not introduced by these fixes):
+  - exercise-sample files under _00_UserGuide/exercises/*/workflow_run_sample/*.jsonld are still loaded into the corpus;
+  - ontology/ scratch/tool dirs (sparql/, TSCG_InstanceGrammar/, InstanceSimulations/, StructuralGrammar/, 'rebuild M2/') too.
+
+For reference, the three fixes on main:
+  - c80625c  PEPITE-RT-008: removed the M2_MetaConcepts_Ref vestiges, renamed tools -> ref_tool_links
+  - 7534bdc  tests/fixtures excluded from recursive corpus discovery
+  - d22306f  graph IRI = raw-CDN URL (removes the /ontology/ontology/ doubling)
+
+Same report format as last time would be perfect. Happy to share the exact SPARQL queries if useful. If anything unexpected turns up, send the raw JSON + queries and we'll re-measure on HEAD.
+
+Thanks!
