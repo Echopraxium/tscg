@@ -1,1 +1,0 @@
-start python color_synthesis_sim.py
