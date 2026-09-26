@@ -1,9 +1,9 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1764 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1779 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **"cli_tools/**
-  - **generate_index-html/**
+  - **regenerate_simulation_gallery/**
     - TSCG \342\200\224 Fire Triangle.url"
 - **"instances/**
   - **poclets/**
@@ -76,6 +76,9 @@
     - **tscg-triskelevm-debug/**
       - SKILL.md
   - settings.local.json
+- **.github/**
+  - **workflows/**
+    - pages.yml
 - **_00_UserGuide/**
   - **exercises/**
     - **BubbleSort/**
@@ -142,22 +145,35 @@
   - **2026_08_23/**
     - README.txt
     - TSCG_HandOver_CheckM0_Campaign.md
+  - **2026_09_19/**
+    - tscg_M0_instrument_run_m0.patch
+    - TSCG_Session_Handover_2026-09-19_Gate_M1_Golden_Closed.md
+  - **2026_09_20/**
+    - _00_open_cmd_window.bat
+    - Message_for_Aki.txt
+    - tscg_graph_iri_cdn_url (1).patch
+    - tscg_graph_iri_cdn_url.patch
+    - TSCG_Session_Handover_2026-09-19_M0_Instrumented_Baselined.md
+    - TSCG_Session_Handover_2026-09-20_Aki_TestReports_Closed.md
+    - tscg_tests_fixtures_scope.patch
+  - **2026_09_23/**
+    - Cleanup_Chantier_2026-09-23.md
+  - **2026_09_27/**
+    - TSCG_Session_Handover_2026-09-27.md
 - **_protos/**
   - README.txt
 - **cli_tools/**
   - **check-corpus-updates/**
     - check-corpus-updates.bat
     - check-corpus-updates.py
+  - **compendium/**
+    - annotate_compendium.py
+    - build_compendium.py
+    - Compendium_Generator_DesignNote.md
+    - compendium_template.html
   - **flexible-graphRAG/**
     - _open_cmd_window.bat
     - bin - Raccourci.lnk
-  - **generate_index-html/**
-    - _Generate_Index-html.bat
-    - _open_cmd_window.bat
-    - apply_fixes.js
-    - Correction_Parsing_GraphZero.md
-    - generate_index.js
-    - README_Modifications.md
   - **migrate_properties/**
     - _open_cmd_window.bat
     - migrate_properties.py
@@ -175,6 +191,13 @@
     - test_reasoning_M3.txt
     - TSCG_OWL_Validation_Session_Summary.md
     - TSCG_Validation_Handoff_M1_M0.md
+  - **regenerate_simulation_gallery/**
+    - _Generate_Index-html.bat
+    - _open_cmd_window.bat
+    - apply_fixes.js
+    - Correction_Parsing_GraphZero.md
+    - generate_index.js
+    - README_Modifications.md
   - **verify_migration/**
     - _open_cmd_window.bat
     - verify_migration.py
@@ -187,6 +210,7 @@
     - _01_Narcissus_and_Icarus_as_Safeguards.md
     - Archetypes_as_CrossCultural_Artifacts.md
     - CredibilityAccretion_Process.md
+    - LayerCake_Models_The_Kit.md
     - LegoTechnic_Modularity.md
     - MultisubjectiveScoreEvaluationProtocol.md
     - OntologicalOverfitting.md
@@ -1468,6 +1492,7 @@
         - conftest.py
         - test_endpoints.py
         - test_expand_iri.py
+        - test_ontology_identity_regression.py
         - test_pepites_regression.py
         - test_tscg_store.py
       - _00_start_server.bat
@@ -1684,6 +1709,8 @@
         - worksite.yaml
       - **WS-11/**
         - worksite.yaml
+      - **WS-12/**
+        - worksite.yaml
       - **WS-3/**
         - M2_Formulas_Review_with_Gs_README.md
       - **WS-5/**
@@ -1834,10 +1861,12 @@
   - **Ref/**
     - M2_GenericConcepts_2026_02_17_17h-00min.jsonld
     - M2_GenericConcepts_2026_02_17_17h-00min.ttl
-    - M2_MetaConcepts_Ref.jsonld
-    - M2_MetaConcepts_Ref.ttl
     - M3_GenesisSpace_Ref.jsonld
     - M3_GenesisSpace_Ref.ttl
+  - **ref_tool_links/**
+    - Best JSON Formatter and JSON Validator- Online JSON Formatter.url
+    - JSONLint - The JSON Validator.url
+    - SPARQL Playground.url
   - **sparql/**
     - _open_cmd_window.bat
     - CountByCategory.sparql
@@ -1865,12 +1894,6 @@
     - TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md
     - TSCG_Mathematical_Legitimacy_Summary.md
     - TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md
-  - **tools/**
-    - Best JSON Formatter and JSON Validator- Online JSON Formatter.url
-    - JSONLint - The JSON Validator.url
-    - M2_MetaConcepts_Ref.jsonld
-    - M2_MetaConcepts_Ref.ttl
-    - SPARQL Playground.url
   - **TSCG_InstanceGrammar/**
     - _00_open_cmd_window.bat
     - _00_start_M0_migration-dry-run.bat

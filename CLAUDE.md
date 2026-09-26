@@ -27,7 +27,7 @@ python src/tscg/rag/query_tscg_rag.py --interactive
 python ontology/sparql/m2_sparql_analysis.py
 
 # Generate gallery index for simulations
-node generate_index.js
+node cli_tools/regenerate_simulation_gallery/generate_index.js
 ```
 
 The Python engine in `src/` is a namespace package (PEP 420). Planned install variants (not yet configured):
@@ -298,7 +298,7 @@ rewrites; **honest negative results** preferred over enthusiastic validation.
 ### Underscore prefix = hidden from the gallery
 
 A leading `_` on a folder is **functional**, not decorative: the poclet-gallery index
-generator (`cli_tools/generate_index-html/`) **skips underscore-prefixed folders**.
+generator (`cli_tools/regenerate_simulation_gallery/`) **skips underscore-prefixed folders**.
 
 | Folder | Meaning |
 |---|---|
@@ -375,7 +375,6 @@ tscg/
 │   ├── papers/                     # Research articles
 │   └── reboot-kit/                 # Smart Prompts, guides
 │
-├── generate_index.js               # Gallery generator
 ├── create_files_URIS.py            # URI generator
 └── CLAUDE.md                       # This file (root scope — see 'Nested CLAUDE.md' above)
 ```
@@ -491,7 +490,7 @@ Creates `db_tscg_rag/` ChromaDB and compresses to `db_tscg_rag.tar.gz`.
 ### Gallery Generation
 
 ```bash
-node generate_index.js
+node cli_tools/regenerate_simulation_gallery/generate_index.js
 ```
 
 Generates `index.html` with interactive gallery of all poclet simulations. Metadata read from `m1core:simulationTitle` (preferred) or `rdfs:label`. Scores searched across all `@graph` nodes. Domain tags from `m1:domain` array in `owl:Ontology` node.

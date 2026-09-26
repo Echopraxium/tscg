@@ -1,0 +1,64 @@
+# .github/workflows/pages.yml
+# Builds the TSCG Compendium (read-only) + the simulation gallery, and deploys to
+# GitHub Pages on push. One-time setup: Settings → Pages → Source = "GitHub Actions".
+#
+# The build reads from HEAD and writes only to dist/ — it never modifies source files.
+# (Annotating the @tscg blocks stays a LOCAL step: annotate_compendium.py --apply,
+#  review the diff, commit. CI must not write back to source.)
+
+name: Build & deploy Compendium
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Public base URL of the site — makes the gallery's sim links absolute.
+# Adjust if you use a custom domain or a different repo name.
+env:
+  SITE_URL: "https://echopraxium.github.io/tscg"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4      # the simulation-gallery generator is Node (no deps)
+        with:
+          node-version: "20"
+
+      - name: Build the Compendium (+ simulation gallery)
+        run: |
+          python cli_tools/compendium/build_compendium.py . \
+            --template cli_tools/compendium/compendium_template.html \
+            --gallery-script cli_tools/regenerate_simulation_gallery/generate_index.js \
+            --site-url "${{ env.SITE_URL }}" \
+            --out dist
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
