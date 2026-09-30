@@ -10,7 +10,7 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m1core": "M1_CoreConcepts.jsonld#",
     "m1chem": "M1_extensions/chemistry/M1_Chemistry.jsonld#",
@@ -22,7 +22,7 @@
       "@id": "m0:PhaseTransition",
       "@type": "owl:Ontology",
       "owl:imports": [
-        "M3_GenesisSpace.jsonld",
+        "M3_GenesisGrammar.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld",
         "M1_extensions/chemistry/M1_Chemistry.jsonld",
@@ -35,11 +35,16 @@
       "rdfs:comment": "TSCG M0 poclet modeling matter phase transitions (Solid, Liquid, Gas) governed by temperature and pressure, with ideal gas law (pV=nRT) formalization and 7 reference substances",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-26",
-      "owl:versionInfo": "1.2.0",
+      "owl:versionInfo": "1.3.0",
 	  "m1:domain": ["Chemistry", "Physics"],
       "m0:primaryPhenomenon": "Discontinuous change of macroscopic state (solid -> liquid -> gas) driven by temperature and pressure, governed by latent heat absorption/release and the Clausius-Clapeyron equation",
       "m0:governingLaw": "Ideal Gas Law: pV = nRT (R = 8.314 J/mol/K)",
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.3.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "Fix: @context m3 prefix and owl:imports pointed to the dead M3_GenesisSpace.jsonld; now M3_GenesisGrammar.jsonld (the live M3 file), so m3:Poclet, m3:ontologyType and m3:changelog resolve to live IRIs. This static/ copy is outside check_m0 scope (not gated)."
+        },
         {
           "owl:versionInfo": "1.2.0",
           "dcterms:date": "2026-09-30",
@@ -49,11 +54,6 @@
           "owl:versionInfo": "1.1.0",
           "dcterms:date": "2026-02-26",
           "adms:versionNotes": "Added TSCG bicephalous synthesis, synergyFormula, M2 candidates (SymmetryBreaking), M1_Physics imports, keyInsights; fixed stateSpace count (3 phases)"
-        },
-        {
-          "owl:versionInfo": "1.1.0",
-          "dcterms:date": "2026-02-26",
-          "adms:versionNotes": "Simplified to 3 phases (solid/liquid/gas) — plasma removed"
         }
       ]
     },

@@ -7,7 +7,7 @@
     "m2": "M2_GenericConcepts.jsonld#",
     "m3eagle": "M3_EagleEye.jsonld#",
     "m3sphinx": "M3_SphinxEye.jsonld#",
-    "m3": "M3_GenesisSpace.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
@@ -25,9 +25,9 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-03-13",
       "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "2.2.0",
+      "owl:versionInfo": "2.3.0",
       "owl:imports": [
-        "M3_GenesisSpace.jsonld",
+        "M3_GenesisGrammar.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld",
         "M1_extensions/biology/M1_Biology.jsonld"
@@ -37,6 +37,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.3.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "Fix: @context m3 prefix and owl:imports pointed to the dead M3_GenesisSpace.jsonld; now M3_GenesisGrammar.jsonld (the live M3 file), with an absolute m3 prefix IRI (a relative prefix value is not resolved against @base), so m3:Poclet, m3:ontologyType and m3:changelog resolve to live IRIs. This static/ copy is outside check_m0 scope (not gated)."
+        },
+        {
           "owl:versionInfo": "2.2.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1e. Changelog container m2:changelog -> m3:changelog (the owl:AnnotationProperty declared in M3_GrammarFoundation); entry keys version/date/changes -> owl:versionInfo / dcterms:date / adms:versionNotes (ADMS accepted, Michel 2026-09-30); prefix adms declared. Previously the whole changelog was dropped on JSON-LD expansion. Header owl:versionInfo (2.0.0) lagged behind its own changelog (2.1.0); this version supersedes both."
@@ -45,11 +50,6 @@
           "owl:versionInfo": "2.1.0",
           "dcterms:date": "2026-04-02",
           "adms:versionNotes": "Added Anthropic Pressure (AP ∈ [0,1]) model: per-level biomass impact formulas B_n(AP), critical threshold AP_crit=0.7 (irreversible cascade), decomposers repositioned as base-level transversal split (vertical bisection of pyramid base). Visualization convention: pyramid base split vertically into Producers (left) + Decomposers (right)."
-        },
-        {
-          "owl:versionInfo": "2.0.0",
-          "dcterms:date": "2026-04-02",
-          "adms:versionNotes": "Added Level 6 — Humanity as supra-trophic super-predator. New pole m0:level_6_humanity with fossil-fuel energy bypass formula. New KnowledgeFieldConceptCombo AnthropogenicDomination (Biology ⊙ (Transducer ⊗ Regulation ⊗ Entropy)). Updated ASFID=0.94, REVOI=0.87, δ=0.07 (OnCriticalLine). Added m2:Transducer, m2:Entropy, m2:Processor as secondary GenericConcepts. poleCount updated to 6."
         }
       ]
     },

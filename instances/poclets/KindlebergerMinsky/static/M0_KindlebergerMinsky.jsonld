@@ -5,7 +5,7 @@
     "m1core": "M1_CoreConcepts.jsonld#",
     "m1econ": "M1_extensions/economics/M1_Economics.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
-    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "dcterms": "http://purl.org/dc/terms/",
@@ -20,11 +20,16 @@
       "@type": "owl:Ontology",
       "rdfs:label": "Kindleberger-Minsky Financial Crisis Cycle",
       "rdfs:comment": "TSCG M0 poclet modeling the Kindleberger-Minsky 5-phase speculative cycle (Displacement → Boom → Euphoria → Distress → Revulsion). Primary M2 patterns: m2:Propagation (panic through interbank network) and m2:Narration (collective belief transformation). Includes simulation markers (date, asset price, transaction volume, dynamics) for 6 historical instances across all 5 phases.",
-      "owl:versionInfo": "1.1.0",
+      "owl:versionInfo": "1.2.0",
       "dcterms:created": "2026-02-28",
       "dcterms:modified": "2026-09-30",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.2.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "Fix: @context m3 prefix and owl:imports pointed to the dead M3_GenesisSpace.jsonld; now M3_GenesisGrammar.jsonld (the live M3 file), so m3:Poclet, m3:ontologyType and m3:changelog resolve to live IRIs. This static/ copy is outside check_m0 scope (not gated)."
+        },
         {
           "owl:versionInfo": "1.1.0",
           "dcterms:date": "2026-09-30",
@@ -40,7 +45,7 @@
         "@id": "m3:Poclet"
       },
       "owl:imports": [
-        "M3_GenesisSpace.jsonld",
+        "M3_GenesisGrammar.jsonld",
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld",
         "M1_extensions/economics/M1_Economics.jsonld"
