@@ -4,7 +4,9 @@
 # Covers: M1_CoreConcepts.jsonld + all M1 Extension files
 # ============================================================================
 # Author : Echopraxium with the collaboration of Claude AI
-# Version: 1.4.0
+# Version: 1.5.0
+# 1.5.0 (WS-1 lot 1d, 2026-09-30): changelog container m2:changelog -> m3:changelog (recommended);
+#   m2:changelog now FORBIDDEN (sh:maxCount 0). Entries: {owl:versionInfo, dcterms:date, adms:versionNotes}.
 # 1.4.0 (SC-1 enforcement fix): SHAPE 9 ComboFormulaShape given dual sh:targetClass
 #        (GenericConceptCombo + DomainConceptCombo). It had only the former with an
 #        "inherited by" comment, so the three SC-1 rules (no monoidal operator in a
@@ -96,11 +98,18 @@ m1:M1OntologyShape
         sh:message "FORBIDDEN: owl:imports references M3_GenesisSpace.jsonld — use M3_GenesisGrammar.jsonld instead."
     ] ;
 
-    # --- m2:changelog must be present for extensions ---
+    # --- m3:changelog recommended (WS-1 lot 1d, 2026-09-30: container moved from m2: to m3:) ---
+    sh:property [
+        sh:path m3:changelog ;
+        sh:minCount 0 ;
+        sh:message "RECOMMENDED: m3:changelog should be present: an array of {owl:versionInfo, dcterms:date, adms:versionNotes} objects, 3 most recent entries."
+    ] ;
+
+    # --- FORBIDDEN: retired m2:changelog container ---
     sh:property [
         sh:path m2:changelog ;
-        sh:minCount 0 ;
-        sh:message "RECOMMENDED: m2:changelog should be present and use array of objects format."
+        sh:maxCount 0 ;
+        sh:message "FORBIDDEN: m2:changelog is retired (WS-1 lot 1d) — use m3:changelog."
     ] ;
 
     # --- FORBIDDEN: GenesisSpace references ---

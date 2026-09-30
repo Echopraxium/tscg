@@ -294,12 +294,23 @@ class M1Checker:
                     fix="Replace with M3_GenesisGrammar.jsonld",
                     auto_fixable=True))
 
-        # m2:changelog format (should be array)
-        changelog = ont.get("m2:changelog")
+        # m3:changelog format (should be array). WS-1 lot 1d (2026-09-30):
+        # the changelog container is m3:changelog (declared in
+        # M3_GrammarFoundation); each entry is
+        # {owl:versionInfo, dcterms:date, adms:versionNotes}.
+        changelog = ont.get("m3:changelog")
         if changelog is not None and not isinstance(changelog, list):
             self.issues.append(Issue("WARNING", "ONT007",
-                "m2:changelog should be an array of objects [{version, date, changes}]",
+                "m3:changelog should be an array of objects "
+                "[{owl:versionInfo, dcterms:date, adms:versionNotes}]",
                 auto_fixable=False))
+
+        # m2:changelog is retired (WS-1 lot 1d): undeclared, layer-specific
+        # duplicate of the transversal m3:changelog.
+        if "m2:changelog" in ont:
+            self.issues.append(Issue("WARNING", "ONT008",
+                "m2:changelog is retired: use m3:changelog",
+                fix="Rename the key to m3:changelog", auto_fixable=True))
 
     def check_generic_concept_combos(self):
         graph = self.data.get("@graph", [])

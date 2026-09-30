@@ -134,7 +134,7 @@ Each instance lives in its own directory under `instances/<type>/<name>/` with d
 - **RDF namespace base**: `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/`
 - **@base convention**: All M0, M1, M2, M3 ontologies use `"@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"` for shorter IRIs
 - **Authorship**: All generated ontology files authored as `"Echopraxium with the collaboration of Claude AI"`
-- **Changelog**: Keep only the 3 most recent entries in `m2:changelog`
+- **Changelog**: `m3:changelog` on the `owl:Ontology` node (never `m2:changelog`, retired 2026-09-30), entries `{owl:versionInfo, dcterms:date, adms:versionNotes}`, newest first; keep the 3 most recent entries (M3 files: up to 7)
 - SPARQL queries are in `ontology/sparql/`
 
 ### Critical Ontology Rules
