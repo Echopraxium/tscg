@@ -4,10 +4,26 @@
 tscg_metrics.py — TSCG corpus metric board (deterministic gauges).
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 1.1.0
+Version: 1.2.0
 Project: TSCG (Transdisciplinary System Construction Game)
 
 CHANGELOG
+    1.2.0 (2026-09-30) — WS-1 lot 1h. Two graph-based gauges (need rdflib;
+        shown as n/a without it, like SC-1 without pyshacl):
+        EXT1_standard_term_undeclared — a real external term (DCMI, SKOS,
+            ADMS, schema.org…) or an OWL 2 built-in annotation property,
+            used as a predicate or as an rdf:type object in the canonical
+            graph, but not declared in the apex M3_GrammarFoundation.
+            Target 0 (reached by lot 1h).
+        EXT2_nonterm_in_standard_namespace — an IRI in a standard
+            namespace that is not a term of it (e.g. the owl:<key>
+            minted by '@vocab': owl#, dcterms:documentation, a datatype
+            used as a class). Target 0 (reached by B1/B2/vestiges).
+        The OWL 2 reserved AXIOM vocabulary (rdf:type, rdfs:subClassOf,
+        owl:imports, owl:Class…) is the language itself and is never
+        counted: OWL 2 Structural Specification §5.1-§5.6 forbid
+        declaring it. Counts are DISTINCT TERMS, measured on the parsed
+        graph (what a reasoner sees), not on the JSON text.
     1.1.0 (2026-07-24) — WS-0/SC-2. Gauge renamed
         NOT1_bare_SI_in_atom_formula -> NOT1_bare_SI_in_monoidal_formula.
         'atom' carried three senses in this corpus: the GENERATOR sense that
@@ -51,7 +67,7 @@ import os
 import re
 import sys
 
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 
 # --------------------------------------------------------------------------
 # Canonical file selection
@@ -287,6 +303,127 @@ def measure(root):
     return M
 
 
+# --------------------------------------------------------------------------
+# EXT — external terms (WS-1 lot 1h). Graph-based: needs rdflib.
+# --------------------------------------------------------------------------
+TSCG_BASE = "https://raw.githubusercontent.com/Echopraxium/tscg/main/"
+APEX_FILE = "M3_GrammarFoundation.jsonld"
+NS_RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+NS_RDFS = "http://www.w3.org/2000/01/rdf-schema#"
+NS_OWL = "http://www.w3.org/2002/07/owl#"
+NS_XSD = "http://www.w3.org/2001/XMLSchema#"
+RESERVED_NS = (NS_RDF, NS_RDFS, NS_OWL, NS_XSD)
+
+# OWL 2 Structural Specification §5.5 — the only reserved IRIs that MAY be
+# declared (as annotation properties). They must be declared in the apex.
+BUILTIN_ANNOTATION = {NS_RDFS + t for t in ("label", "comment", "seeAlso", "isDefinedBy")} | \
+    {NS_OWL + t for t in ("deprecated", "versionInfo", "priorVersion",
+                          "backwardCompatibleWith", "incompatibleWith")}
+
+# The language itself (OWL 2 §5.1-§5.6: MUST NOT be declared). Never counted.
+LANGUAGE_VOCAB = {NS_RDF + t for t in ("type", "first", "rest", "nil", "List")} | \
+    {NS_RDFS + t for t in ("subClassOf", "subPropertyOf", "domain", "range",
+                           "Literal", "Datatype")} | \
+    {NS_OWL + t for t in (
+        "imports", "versionIRI", "inverseOf", "oneOf", "equivalentClass",
+        "equivalentProperty", "disjointWith", "unionOf", "intersectionOf",
+        "complementOf", "sameAs", "differentFrom", "members", "distinctMembers",
+        "propertyChainAxiom", "propertyDisjointWith", "hasKey", "disjointUnionOf",
+        "Thing", "Nothing", "Class", "Ontology", "NamedIndividual",
+        "ObjectProperty", "DatatypeProperty", "AnnotationProperty",
+        "SymmetricProperty", "AsymmetricProperty", "TransitiveProperty",
+        "FunctionalProperty", "InverseFunctionalProperty", "ReflexiveProperty",
+        "IrreflexiveProperty", "Restriction", "AllDisjointClasses",
+        "AllDifferent", "topObjectProperty", "bottomObjectProperty",
+        "topDataProperty", "bottomDataProperty")}
+
+# Restriction vocabulary: language ONLY on a node typed owl:Restriction.
+# (Elsewhere, e.g. a bare 'cardinality' key under '@vocab': owl#, it is a
+# minted non-term and counts in EXT-2.)
+RESTRICTION_VOCAB = {NS_OWL + t for t in (
+    "onProperty", "someValuesFrom", "allValuesFrom", "hasValue", "hasSelf",
+    "cardinality", "minCardinality", "maxCardinality", "qualifiedCardinality",
+    "minQualifiedCardinality", "maxQualifiedCardinality", "onClass",
+    "onDataRange")}
+
+DECLARING_TYPES = {NS_OWL + t for t in (
+    "AnnotationProperty", "ObjectProperty", "DatatypeProperty", "Class")}
+
+
+def measure_ext(root):
+    """EXT-1 / EXT-2 on the parsed canonical graph. Returns a dict."""
+    try:
+        import logging
+        logging.getLogger("rdflib").setLevel(logging.ERROR)
+        from rdflib import Graph, URIRef
+        from rdflib.namespace import RDF, OWL, DCTERMS, SKOS
+    except ImportError:
+        return {"EXT1_standard_term_undeclared": "n/a",
+                "EXT2_nonterm_in_standard_namespace": "n/a"}
+
+    # namespaces whose membership rdflib can verify (closed namespaces)
+    closed = [(str(RDF), RDF), (NS_RDFS, None), (str(OWL), OWL),
+              (str(DCTERMS), DCTERMS), (str(SKOS), SKOS)]
+
+    def is_member(iri):
+        from rdflib.namespace import RDFS as _RDFS
+        for base, ns in closed:
+            if iri.startswith(base):
+                ns = ns if ns is not None else _RDFS
+                try:
+                    ns[iri[len(base):]]
+                    return True
+                except Exception:
+                    return False
+        return True     # membership not verifiable (ADMS, schema.org…)
+
+    declared = set()
+    used = collections.defaultdict(set)          # iri -> files
+    files = sorted(iter_canonical_files(root))
+    parse_failures = 0
+    for path in files:
+        g = Graph()
+        try:
+            g.parse(path, format="json-ld")
+        except Exception:
+            parse_failures += 1
+            continue
+        restrictions = set(g.subjects(RDF.type, OWL.Restriction))
+        name = os.path.basename(path)
+        for s, p, o in g:
+            p = str(p)
+            if not (p in RESTRICTION_VOCAB and s in restrictions):
+                used[p].add(name)
+            if p == str(RDF.type) and isinstance(o, URIRef):
+                used[str(o)].add(name)
+                if name == APEX_FILE and str(o) in DECLARING_TYPES:
+                    declared.add(str(s))
+
+    ext1, ext2 = {}, {}
+    for iri, where in used.items():
+        if iri.startswith(TSCG_BASE):
+            continue
+        if iri.startswith(RESERVED_NS):
+            if iri in LANGUAGE_VOCAB:
+                continue
+            if iri in BUILTIN_ANNOTATION:
+                if iri not in declared:
+                    ext1[iri] = sorted(where)
+                continue
+            ext2[iri] = sorted(where)               # reserved but not usable
+        elif not is_member(iri):
+            ext2[iri] = sorted(where)
+        elif iri not in declared:
+            ext1[iri] = sorted(where)
+    return {
+        "EXT1_standard_term_undeclared": len(ext1),
+        "EXT2_nonterm_in_standard_namespace": len(ext2),
+        "EXT_parse_failures": parse_failures,
+        "EXT1_terms": dict(sorted(ext1.items())),
+        "EXT2_terms": dict(sorted(ext2.items())),
+    }
+
+
 def measure_sc1_combos(root, shacl_path=None):
     """Optional gauge: SC-1 violations on combo signatures (needs pyshacl).
 
@@ -350,6 +487,8 @@ GAUGES = [
     ("DUP", "retired D8 triad",               "DUP1_D8_triad",                  "0"),
     ("NOT", "bare S/I in monoidal formula (SC-2)","NOT1_bare_SI_in_monoidal_formula",   "0"),
     ("STR", "layer inversion",                "STR_layer_inversion",            "0"),
+    ("EXT", "std term undeclared (EXT-1)",    "EXT1_standard_term_undeclared",  "0"),
+    ("EXT", "non-term in std ns (EXT-2)",     "EXT2_nonterm_in_standard_namespace", "0"),
 ]
 
 
@@ -365,7 +504,8 @@ def render(M, baseline=None, sc1=None):
     for family, label, key, target in GAUGES:
         value = M.get(key, 0)
         delta = ""
-        if baseline is not None and key in baseline:
+        if baseline is not None and key in baseline \
+                and isinstance(value, int) and isinstance(baseline[key], int):
             d = value - baseline[key]
             delta = "%+d" % d if d else "="
         out.append("%-5s %-34s %8s %8s %7s" % (family, label, value, target, delta))
@@ -375,6 +515,10 @@ def render(M, baseline=None, sc1=None):
     out.append("-" * 68)
     out.append("bare keys by layer : %s" % M.get("by_layer_bare_keys"))
     out.append("changelog forms    : %s" % M.get("STR_changelog_forms"))
+    if M.get("EXT1_terms"):
+        out.append("EXT-1 undeclared   : %s" % ", ".join(M["EXT1_terms"]))
+    if M.get("EXT_parse_failures"):
+        out.append("EXT parse failures : %d file(s) not parsed" % M["EXT_parse_failures"])
     if sc1 and sc1.get("available") and sc1.get("per_file"):
         worst = sorted(sc1["per_file"].items(), key=lambda kv: -kv[1])[:6]
         out.append("SC-1 worst files   : %s" % ", ".join("%s(%d)" % kv for kv in worst))
@@ -406,6 +550,7 @@ def main():
         return 2
 
     M = measure(root)
+    M.update(measure_ext(root))
     sc1 = measure_sc1_combos(root, args.shacl_path) if args.shacl else None
     if sc1 and sc1.get("available"):
         M["SC1_combo_violations"] = sc1["SC1_combo_violations"]

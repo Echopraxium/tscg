@@ -6,6 +6,7 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
     "adms": "http://www.w3.org/ns/adms#",
+    "schema": "https://schema.org/",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
@@ -20,7 +21,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
       "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "16.28.0",
+      "owl:versionInfo": "16.29.0",
       "owl:imports": [
         "M3_GenesisGrammar.jsonld"
       ],
@@ -28,8 +29,7 @@
         "dcterms:description": "M2 GenericConcepts emerge from structural composition of M3 types. M3 has bicephalous architecture: Eagle Eye (ASFID Territory-Space) for measurement + Sphinx Eye (REVOI Map-Space) for interpretation.",
         "eagleEye": {
           "@id": "m3:eagle_eye:EagleEye",
-          "rdfs:seeAlso": "M3_EagleEye.jsonld",
-          "dcterms:documentation": {
+          "rdfs:seeAlso": {
             "@id": "M3_EagleEye.jsonld",
             "dcterms:format": "application/ld+json",
             "dcterms:type": "Ontology"
@@ -39,8 +39,7 @@
         },
         "sphinxEye": {
           "@id": "m3:sphinx_eye:SphinxEye",
-          "rdfs:seeAlso": "M3_SphinxEye.jsonld",
-          "dcterms:documentation": {
+          "rdfs:seeAlso": {
             "@id": "M3_SphinxEye.jsonld",
             "dcterms:format": "application/ld+json",
             "dcterms:type": "Ontology"
@@ -49,8 +48,7 @@
           "usage": "M2 genericConcepts with bicephalous formulas use REVOI types (R, E, V, O, Im) via | operator"
         }
       },
-      "rdfs:seeAlso": "M2_GenericConcepts_README.md",
-      "dcterms:documentation": {
+      "rdfs:seeAlso": {
         "@id": "M2_GenericConcepts_README.md",
         "dcterms:format": "text/markdown",
         "dcterms:type": "Documentation"
@@ -112,6 +110,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "16.29.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1h (explicit declarations). (1) rdf:value -> schema:value in the {rdfs:label, value} nodes of skos:example lists (9): rdf:value is a reserved OWL 2 IRI that is not a built-in annotation property, so it cannot be declared and kept these nodes outside OWL 2 DL; schema:value ('the value of a property value node') is declared in M3_GrammarFoundation. schema.org accepted as an external vocabulary where it fills a DCMI/SKOS gap (Michel, 2026-09-30); prefix schema declared. (2) m2:dualCounterpart: the non-term owl:symmetricProperty true replaced by the type owl:SymmetricProperty — a reasoner now infers B dualCounterpart A from A dualCounterpart B, as the rdfs:comment intends (Michel, 2026-09-30). (3) dcterms:documentation (not a DCMI term, 3 occurrences) merged into rdfs:seeAlso, which becomes a link {@id, dcterms:format, dcterms:type} instead of a file-name string. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
+        {
           "owl:versionInfo": "16.28.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1g (Family A). Bare keys (dropped on JSON-LD expansion) replaced: alternative_names -> skos:altLabel, comment -> dcterms:description (consistent with lot 1b), note -> skos:note, definition -> skos:definition, label -> rdfs:label, title -> dcterms:title, id -> dcterms:identifier, rationale -> m3:rationale (declared in M3_GrammarFoundation, rdfs:subPropertyOf skos:note). In this file: alternative_names 22, comment 22, rationale 11, definition 6, note 3, label 3. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -120,11 +123,6 @@
           "owl:versionInfo": "16.27.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1f (Family A). Bare key 'name' (declared in no @context, dropped on JSON-LD expansion) replaced by the standard rdfs:label (a human-readable version of the resource's name). Bare 'name' inside legacy 'metadata' blocks left for the vestiges lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md. 40 occurrences (aspect, pole and axis nodes); 1 graph-visible now, 39 under bare parent keys (visible once those are resolved)."
-        },
-        {
-          "owl:versionInfo": "16.26.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m2:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m2:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ],
       "m2:bicephalousStrategy": {
@@ -700,7 +698,10 @@
     },
     {
       "@id": "m2:dualCounterpart",
-      "@type": "owl:ObjectProperty",
+      "@type": [
+        "owl:ObjectProperty",
+        "owl:SymmetricProperty"
+      ],
       "rdfs:label": "dual counterpart",
       "rdfs:comment": "Links two GenericConcepts that are structural duals of each other: they share a common parent genericConcept but differ in their operational polarity. Distinguished from m2:GenericConceptPair: dualCounterpart links two DIFFERENT top-level GenericConcepts (e.g. LALI ↔ ButterflyEffect), whereas a GenericConceptPair encapsulates both poles within a single GenericConcept.",
       "rdfs:domain": {
@@ -709,7 +710,6 @@
       "rdfs:range": {
         "@id": "m2:GenericConcept"
       },
-      "owl:symmetricProperty": true,
       "dcterms:created": "2026-02-24",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
@@ -5634,11 +5634,11 @@
           "role": "Measured cardinality/dimension of value space (Eagle Eye)",
           "measure": "Discrete: |S| (count) | Continuous: measure(S)/Π• (volume÷resolution)",
           "skos:example": [
-            { "rdfs:label": "scalar_discrete", "rdf:value": "Bit: |{0,1}| = 2 → I_t = 1 bit" },
-            { "rdfs:label": "scalar_continuous", "rdf:value": "Temperature [0,100]°C at 0.1°C → I_t ≈ 10 bits" },
-            { "rdfs:label": "vector_discrete", "rdf:value": "RGB: 256³ → I_t = 24 bits" },
-            { "rdfs:label": "symbolic", "rdf:value": "Alphabet 26 letters → I_t ≈ 4.7 bits" },
-            { "rdfs:label": "structuralComposition", "rdf:value": "D → I → F → It = dim(H_D → H_I → H_F)" }
+            { "rdfs:label": "scalar_discrete", "schema:value": "Bit: |{0,1}| = 2 → I_t = 1 bit" },
+            { "rdfs:label": "scalar_continuous", "schema:value": "Temperature [0,100]°C at 0.1°C → I_t ≈ 10 bits" },
+            { "rdfs:label": "vector_discrete", "schema:value": "RGB: 256³ → I_t = 24 bits" },
+            { "rdfs:label": "symbolic", "schema:value": "Alphabet 26 letters → I_t ≈ 4.7 bits" },
+            { "rdfs:label": "structuralComposition", "schema:value": "D → I → F → It = dim(H_D → H_I → H_F)" }
           ]
         },
         "mapComponent": {
@@ -5862,8 +5862,8 @@
         "role": "Measure observable amplification/attenuation in Territory",
         "status": "PRIMARY",
         "skos:example": [
-          { "rdfs:label": "amplification_territory", "rdf:value": "Measured signal gain Vout/Vin = 10 (amplification)" },
-          { "rdfs:label": "attenuation_territory", "rdf:value": "Measured signal loss Vout/Vin = 0.1 (attenuation)" }
+          { "rdfs:label": "amplification_territory", "schema:value": "Measured signal gain Vout/Vin = 10 (amplification)" },
+          { "rdfs:label": "attenuation_territory", "schema:value": "Measured signal loss Vout/Vin = 0.1 (attenuation)" }
         ]
       },
       "m2:sphinxView": {
@@ -5874,8 +5874,8 @@
           "status": "PROPOSITION (validation in progress)"
         },
         "skos:example": [
-          { "rdfs:label": "amplification_map", "rdf:value": "Circuit schematic with amplifier symbol ▲, equations visible" },
-          { "rdfs:label": "attenuation_map", "rdf:value": "Filter diagram with transfer function H(ρ°)" }
+          { "rdfs:label": "amplification_map", "schema:value": "Circuit schematic with amplifier symbol ▲, equations visible" },
+          { "rdfs:label": "attenuation_map", "schema:value": "Filter diagram with transfer function H(ρ°)" }
         ]
       },
       "m2:mathematicalProperties": {

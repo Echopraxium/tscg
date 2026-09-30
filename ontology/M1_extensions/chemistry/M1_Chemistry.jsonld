@@ -12,6 +12,7 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
     "adms": "http://www.w3.org/ns/adms#",
+    "schema": "https://schema.org/",
     "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
@@ -23,7 +24,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-17",
       "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "1.9.0",
+      "owl:versionInfo": "1.10.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -51,6 +52,11 @@
       ],
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.10.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1h (explicit declarations). rdf:value -> schema:value in the {rdfs:label, value} nodes of skos:example lists (5: ignition temperatures, flame colours): rdf:value is a reserved OWL 2 IRI that is not a built-in annotation property, so it cannot be declared and kept these nodes outside OWL 2 DL; schema:value ('the value of a property value node') is declared in M3_GrammarFoundation. schema.org accepted as an external vocabulary where it fills a DCMI/SKOS gap (Michel, 2026-09-30); prefix schema declared. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
+        {
           "owl:versionInfo": "1.9.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1g (Family A). Bare keys (dropped on JSON-LD expansion) replaced: alternative_names -> skos:altLabel, comment -> dcterms:description (consistent with lot 1b), note -> skos:note, definition -> skos:definition, label -> rdfs:label, title -> dcterms:title, id -> dcterms:identifier, rationale -> m3:rationale (declared in M3_GrammarFoundation, rdfs:subPropertyOf skos:note). In this file: note 6. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -59,11 +65,6 @@
           "owl:versionInfo": "1.8.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1f (Family A). Bare key 'name' (declared in no @context, dropped on JSON-LD expansion) replaced by the standard rdfs:label (a human-readable version of the resource's name). Bare 'name' inside legacy 'metadata' blocks left for the vestiges lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md. 9 occurrences, all graph-visible."
-        },
-        {
-          "owl:versionInfo": "1.7.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m2:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m2:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ]
     },
@@ -197,9 +198,9 @@
           "unit": "Kelvin or Celsius",
           "role": "Threshold temperature for self-sustaining combustion",
           "skos:example": [
-            { "rdfs:label": "Wood", "rdf:value": "300°C" },
-            { "rdfs:label": "Gasoline", "rdf:value": "-43°C" },
-            { "rdfs:label": "Methane", "rdf:value": "580°C" }
+            { "rdfs:label": "Wood", "schema:value": "300°C" },
+            { "rdfs:label": "Gasoline", "schema:value": "-43°C" },
+            { "rdfs:label": "Methane", "schema:value": "580°C" }
           ]
         },
         "m1:extension:chemistry:flameStructure": {
@@ -213,8 +214,8 @@
         "m1:extension:chemistry:flameColor": {
           "type": "xsd:string",
           "skos:example": [
-            { "rdfs:label": "Complete combustion", "rdf:value": "Blue (high temp)" },
-            { "rdfs:label": "Incomplete combustion", "rdf:value": "Yellow-orange (soot emission)" }
+            { "rdfs:label": "Complete combustion", "schema:value": "Blue (high temp)" },
+            { "rdfs:label": "Incomplete combustion", "schema:value": "Yellow-orange (soot emission)" }
           ]
         }
       },
