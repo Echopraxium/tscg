@@ -42,7 +42,7 @@ const LOW_VALUE_FILENAMES = new Set([
 
 // JSON-LD fields to skip (metadata-only, no RAG value)
 const SKIP_JSONLD_FIELDS = new Set([
-  'm2:changelog', 'dcterms:creator', 'dcterms:modified', 'dcterms:created',
+  'm3:changelog', 'dcterms:creator', 'dcterms:modified', 'dcterms:created',
   'owl:versionInfo', 'schema:version', 'dcterms:rights', 'dcterms:license',
 ]);
 

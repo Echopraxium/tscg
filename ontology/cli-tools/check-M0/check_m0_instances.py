@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-TSCG M0 Instance Checker — v1.5.1
+TSCG M0 Instance Checker — v1.7.0 (WS-1 lot 1e: changelog container m3:changelog)
 Author: Echopraxium with the collaboration of Claude AI
 Date: 2026-06-26
 
@@ -24,7 +24,7 @@ Checks performed (each reported as PASS / WARN / FAIL):
          (b) "tensorFormula" key absent in nested objects (NakamotoConsensus pattern)
          (c) "U+2297" (tensor-product) operator absent from all formula values
   C13  m3:ontologyType absent from sub-nodes (@graph[1+])
-  C14  m2:changelog <= 3 entries
+  C14  m3:changelog <= 3 entries (m2:changelog retired: FAIL)
   C15  SHACL v1.5 validation (optional — requires pyshacl)
 
 Changes vs v1.5.0:
@@ -342,8 +342,12 @@ class InstanceChecker:
             rep.checks.append(Check("C13","ontologyType only in @graph[0]", PASS))
 
         # ── C14 ───────────────────────────────────────────────────────────────
-        cl = ontology.get("m2:changelog")
-        if isinstance(cl, list):
+        # WS-1 lot 1e (2026-09-30): the changelog container is m3:changelog;
+        # m2:changelog is retired and reported as a FAIL if it reappears.
+        cl = ontology.get("m3:changelog")
+        if "m2:changelog" in ontology:
+            rep.checks.append(Check("C14","changelog <= 3 entries", FAIL, "m2:changelog is retired: use m3:changelog"))
+        elif isinstance(cl, list):
             if len(cl) > 3:
                 rep.checks.append(Check("C14","changelog <= 3 entries", FAIL, f"{len(cl)} entries"))
             else:
@@ -524,7 +528,7 @@ def write_json_report(reports, path):
 # ============================================================================
 
 def main():
-    parser = argparse.ArgumentParser(description="TSCG M0 Instance Checker v1.6.0")
+    parser = argparse.ArgumentParser(description="TSCG M0 Instance Checker v1.7.0")
     parser.add_argument("--instance",    metavar="NAME")
     parser.add_argument("--verbose",     action="store_true")
     parser.add_argument("--scores",      action="store_true")
