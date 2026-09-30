@@ -21,7 +21,7 @@
       "rdfs:comment": "Canonical source of truth for all shared properties used across TSCG M0 instances (Poclets, SystemicFrameworks, SymbolicSystemGrammars, TscgTools). Defines the m0: namespace as the unique, stable namespace for cross-instance properties. All M0 instances MUST import this file and declare m0: pointing to this ontology. Instance-local properties use a distinct alias m0.<instanceName>: pointing to the instance file itself.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19",
-      "owl:versionInfo": "1.4.0",
+      "owl:versionInfo": "1.5.0",
       "m3:ontologyType": {
         "@id": "m3:CommonVocabulary"
       },
@@ -30,7 +30,12 @@
         "M2_GenericConcepts.jsonld",
         "M1_CoreConcepts.jsonld"
       ],
-      "m2:changelog": [
+      "m3:changelog": [
+        {
+          "owl:versionInfo": "1.5.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m2:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m2:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
         {
           "owl:versionInfo": "1.4.0",
           "dcterms:date": "2026-09-30",
@@ -40,11 +45,6 @@
           "owl:versionInfo": "1.3.0",
           "dcterms:date": "2026-09-01",
           "adms:versionNotes": "SC-3 (WS-0 Structural Cleanup): removed the entire m0:facet.* apparatus (added in 1.2.0), now superseded by the M3 Facet mechanism (m3:Facet/m3:FacetValue/m3:valueOf/m3:hasFacetValue in M3_GenesisGrammar v4.6.0). Removed: m0:Facet, m0:hasFacet, m0:facet.Democratization (with facetAnchor/facetFormula/facetContractFields), m0:illustratesConcept, m0:RoleGrounding, m0:roleGrounding, m0:roleGrounding.Reused, m0:roleGrounding.Designed. The Democratization facet migrates to m3:audience.KitUser; its contract (illustratesConcept/roleGrounding) is dropped, not carried over. owl:versionInfo corrected from a stale 1.1.0 (the 1.2.0 facet-infra change was never reflected there). See SC-3 Facet Decision Record v2.0.0."
-        },
-        {
-          "owl:versionInfo": "1.2.0",
-          "dcterms:date": "2026-06-28",
-          "adms:versionNotes": "FACET INFRASTRUCTURE: Added orthogonal facet mechanism (faceted classification, Ranganathan). New abstract class m0:Facet + property m0:hasFacet (owl:ObjectProperty). First registered facet: m0:facet.Democratization (anchored on m2:Role Ss|K, perspective map). Contract fields: m0:illustratesConcept (required when facet declared, SHACL-enforced), m0:roleGrounding enum {Reused, Designed} (optional). Facets are orthogonal to m3:ontologyType — applicable to all instance types."
         }
       ],
       "m0:namespaceConvention": {
