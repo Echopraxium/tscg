@@ -21,7 +21,7 @@
       "dcterms:description": "Domain-specific patterns for photography, camera operation, exposure control, and image quality trade-offs. M1 layer instantiates M2 GenericConcepts into concrete photographic patterns.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "owl:versionInfo": "1.2.0",
+      "owl:versionInfo": "1.3.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -40,8 +40,13 @@
       },
       "m1:extension:photography:patternCount": 10,
       "rdfs:comment": "M1 Photography bridges abstract M2 GenericConcepts to concrete photographic practice. Core patterns include exposure control, compensatory triplets, logarithmic scaling, and image quality trade-offs.",
-      "dcterms:modified": "2026-07-12",
+      "dcterms:modified": "2026-09-30",
       "m2:changelog": [
+        {
+          "version": "1.3.0",
+          "date": "2026-09-30",
+          "changes": "VALUE BOUNDS (companion of M2 16.20.0). Exposure components ISO / Aperture / Shutter Speed: bare key 'range' -> m2:valueRange (facet of m2:ValueSpace, interval notation). Values unchanged. NOT CHANGED, flagged: the three noise regimes keep a bare 'range' ('ISO 50-200', ...) — they are regime labels, not interval bounds. Pre-existing mojibake in imageEffect strings left untouched (separate encoding lot)."
+        },
         {
           "version": "1.2.0",
           "date": "2026-07-12",
@@ -51,11 +56,6 @@
           "version": "1.1.1",
           "date": "2026-05-27",
           "changes": "BASE16 NOTATION: 9 formula(s) updated — S→St in hybrid formulas (containing |). Convention: in hybrid formulas, St (Structure/Territory) to avoid collision with Ss (Symbol/Stereopsic/Gs)."
-        },
-        {
-          "version": "1.1.0",
-          "date": "2026-05-26",
-          "changes": "Namespace migration: m1.ext:photography: → m1:extension:photography:. ORIVE → REVOI. Fm1m2(Photography,...) formulas. KFCC typing. m2:characterizedBy removed."
         }
       ]
     },
@@ -73,19 +73,19 @@
       "m1:extension:photography:components": [
         {
           "parameter": "ISO",
-          "range": "[50, 204800]",
+          "m2:valueRange": "[50, 204800]",
           "unit": "Sensitivity index",
           "imageEffect": "â†‘ISO â†’ â†‘Brightness but â†‘Noise/Grain"
         },
         {
           "parameter": "Aperture",
-          "range": "[f/1.2, f/32]",
+          "m2:valueRange": "[f/1.2, f/32]",
           "unit": "f-number (f/N)",
           "imageEffect": "â†“f-number â†’ â†‘Light but â†“Depth-of-Field"
         },
         {
           "parameter": "Shutter Speed",
-          "range": "[1/8000s, 30s]",
+          "m2:valueRange": "[1/8000s, 30s]",
           "unit": "seconds",
           "imageEffect": "â†‘Time â†’ â†‘Light but â†‘Motion-Blur"
         }
