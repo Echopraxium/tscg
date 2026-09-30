@@ -14,9 +14,9 @@
     {
       "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.5.0",
+      "owl:versionInfo": "2.6.0",
       "dcterms:created": "2026-05-12",
-      "dcterms:modified": "2026-07-22",
+      "dcterms:modified": "2026-09-30",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Grammar Foundation",
       "dcterms:description": "Apex ontology of the TSCG hierarchy — no imports, no dependencies. Defines the Lambek Calculus mathematical foundation (free commutative monoidal categories), the six indexed operators (×, +, |), abstract classes M3Grammar and MonoidalType, the TSCG type system hierarchy (𝕋₀→𝕄₀), and the intersubjective benchmark properties. Imported by M3_EagleEye, M3_SphinxEye, and M3_GenesisGrammar.",
@@ -54,6 +54,11 @@
       },
       "m3:changelog": [
         {
+          "version": "2.6.0",
+          "date": "2026-09-30",
+          "changes": "WS-1 VOCABULARY CONSOLIDATION, lot 1a (Family A). Bare keys 'examples' / 'example' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard skos:example (SKOS documentation property, owl:AnnotationProperty, no domain/range): a list value now yields one skos:example triple per item. 1 list occurrence (3 examples). Side fix: under this file's @vocab (owl#) the bare key had minted the bogus term owl:examples; it is now skos:example. No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
+        {
           "version": "2.5.0",
           "date": "2026-07-22",
           "changes": "CHANGELOG PROPERTY DEFINED: new m3:changelog (owl:AnnotationProperty). The changelog property was used corpus-wide but DECLARED NOWHERE. It is defined here, in the apex ontology, so that every lower layer (M2/M1/M0 — all of which import M3) can use it as a legal downward reference. Also applied to this file: m2:changelog → m3:changelog, fixing both a dependency inversion (M3 referencing M2) and a CTX-1 defect (the 'm2' prefix was undeclared here). KNOWN LIMITS, deferred to the undeclared-terms worksite: (a) changelog entry objects still carry undeclared bare keys (version/date/changes) and remain invisible on expansion; (b) this file still declares @vocab=owl#, so its bare terms — including the legacy metadata.changelog block — expand into the OWL namespace as owl:* properties."
@@ -82,11 +87,6 @@
           "version": "2.1.0",
           "date": "2026-05-20",
           "changes": "OPERATOR MIGRATION: monoidalProduct ⊗ⁱ → ×/+/| (three explicit operators). dualityOperator ^opⁱ → _^/_$ (Gs pole primitives). emergenceOperator ⊗ⁱ⇒ removed (replaced by Fm2/Fm1m2). TypeSystem T2 cleaned."
-        },
-        {
-          "version": "2.0.0",
-          "date": "2026-05-20",
-          "changes": "RENAME: m3:M3Dimension → m3:MonoidalType. MonoidalType class defined."
         }
       ],
       "three_alphabets": {
@@ -286,7 +286,7 @@
           "notation": "𝕋₁ = { τ₁ OP τ₂ OP ... OP τₙ  |  τᵢ ∈ 𝕋₀,  OP ∈ {×, +, |} }",
           "layer": "M2",
           "role": "M2 GenericConcepts — named structural formulas",
-          "examples": [
+          "skos:example": [
             "Process    = D × I × F",
             "Coherence  = A × S × It | R + O",
             "Entropy    = D × F | _$"

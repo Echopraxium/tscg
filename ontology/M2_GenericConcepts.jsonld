@@ -19,7 +19,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
       "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "16.22.0",
+      "owl:versionInfo": "16.23.0",
       "owl:imports": [
         "M3_GenesisGrammar.jsonld"
       ],
@@ -111,6 +111,11 @@
       },
       "m2:changelog": [
         {
+          "version": "16.23.0",
+          "date": "2026-09-30",
+          "changes": "WS-1 VOCABULARY CONSOLIDATION, lot 1a (Family A). Bare keys 'examples' / 'example' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard skos:example (SKOS documentation property, owl:AnnotationProperty, no domain/range): a list value now yields one skos:example triple per item. 98 list occurrences. Object-valued examples (a map keyed by name, whose names were themselves bare keys) converted to a list of named nodes {rdfs:label, rdf:value}, the pattern of M2 16.21.0 hasAttribute. 3 objects: m2:hybridView/territoryComponent, m2:eagleView, m2:sphinxView (the territoryComponent one stays graph-invisible until its bare parent key is resolved). No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
+        {
           "version": "16.22.0",
           "date": "2026-09-30",
           "changes": "POLARITY HYGIENE (cleanup lots A and B). (A) m2:hasPolarity m2:allowedValues extended from [neutral, dual] to the values defined by m2:polarityPrinciple and in use: neutral, dual, ternary, quaternary, pentagonal, nary, hybrid (ternary, nary and hybrid were already used). m2:progress polarity counters recounted from the file: neutral 59 -> 63, hybrid 4 -> 2, ternary added (1); dual 19 and nary 1 unchanged. (B) m2:Polarity m2:formalDefinition: the two constraints written in ket notation (|p⟩, ⟨p|, = I — a Hilbert-space remnant retired by the Structural Grammar reform, and a misuse of the Gt operator ×) restated in plain terms; exclusivity now points to the poles attribute (arity '1'). Restored the '≥' characters lost in Polarity texts (N≥1, N≥2, N≥3) and 'C_N rotational symmetry'. KEPT: 'Quantum ground state |0⟩' (a physics example, not a formalism)."
@@ -119,11 +124,6 @@
           "version": "16.21.0",
           "date": "2026-09-30",
           "changes": "hasAttribute MADE GRAPH-VISIBLE (decision Michel, 2026-09-30). DEFECT: m2:hasAttribute was written as a MAP keyed by attribute name ({\"feedback_polarity\": {...}}); those names are bare keys, dropped by JSON-LD expansion together with their whole subtree, so no attribute node (and none of its @type, m2:cardinality, m2:arity, m2:valueRange) reached the RDF graph — only 13 empty blank nodes did. FIX: the value is now a LIST of attribute nodes named by rdfs:label, content unchanged: [{\"rdfs:label\": \"feedback_polarity\", \"@type\": \"m2:ValueSpace\", ...}]. Converted 15 attributes on 13 concepts in this file (Regulation, Bifurcation, Network, Symmetry, Representation, Process, Trajectory, Threshold, Gradient, Signal, Convergence, Polarity, Amplification). Companion: M1_CoreConcepts 2.12.0 (13 attributes, and m1:hasAttribute unified into m2:hasAttribute). NOT CHANGED, flagged: bare keys INSIDE attribute nodes (e.g. possibleValues items 'value'/'description', m2:examples maps keyed by value) are still dropped — separate VOC lot."
-        },
-        {
-          "version": "16.20.0",
-          "date": "2026-09-30",
-          "changes": "MULTIPLICITY HOMOGENISATION (decision Michel, 2026-09-30). m2:NaryAttribute is now the SOLE carrier of multiplicity, with two facets: m2:cardinality (size of the value/component space, UML multiplicity) and m2:arity (number active at the same time; '1' = exclusive, equal to cardinality = co-present, k = k-of-N). Exclusivity is read from arity, never stored as a flag. DECLARED m2:cardinality, m2:arity, m2:hasAttribute (all three were used but undeclared). MIGRATED in this file: m2:Polarity m2:naryParameter (bare keys N/range/description/commonValues) -> m2:hasAttribute poles = NaryAttribute {cardinality '1..*', arity '1'} (arity from its own definition: 'mutually exclusive poles'); m2:cardinalityMin 1 (x2: Behavior decompositionProperty, Step triggerProperty) -> NaryAttribute {cardinality '1..*'}, arity left unspecified. Companion lots: M1_CoreConcepts 2.11.0 (Processor), M1_Chemistry 1.3.0. OUT OF SCOPE: Fusion/Fission poleMapping 'N:1'/'1:N' (relation cardinality), sparql/M2_Processor.jsonld (vestige), M3_GrammarFoundation arity/cardinality (descriptive). INTEGER RULE: cardinality and arity take non-negative integers only (UML notation, '*' = unbounded); the co-present case is arity equal to cardinality (no 'all' keyword). VALUE BOUNDS: ADDED m2:valueRange (facet of m2:ValueSpace, interval notation, one value per interval so that disjoint intervals are supported); MIGRATED m2:range -> m2:valueRange (Representation spaceCoverage). Companion: M1_Photography 1.3.0. FLAGGED, not changed: hasPolarity allowedValues [neutral, dual]; ket notation in Polarity formalDefinition; attributes nested under hasAttribute as bare-key maps do not reach the RDF graph (pre-existing, all 18 uses); M3_GrammarFoundation epistemicScore bare 'range'."
         }
       ],
       "m2:bicephalousStrategy": {
@@ -1318,7 +1318,7 @@
               "value": "Negative",
               "description": "Stabilizing feedback, reduces deviation from setpoint",
               "formula": "Error reduction: e(t+1) < e(t)",
-              "examples": [
+              "skos:example": [
                 "Thermostat (temperature control)",
                 "RAAS homeostasis (blood pressure regulation)",
                 "Predator-prey regulation",
@@ -1331,7 +1331,7 @@
               "value": "Positive",
               "description": "Reinforcing feedback, amplifies deviation",
               "formula": "Error amplification: e(t+1) > e(t)",
-              "examples": [
+              "skos:example": [
                 "Nuclear chain reaction",
                 "Viral/epidemic spread",
                 "Financial bubble",
@@ -1344,7 +1344,7 @@
               "value": "Mixed",
               "description": "Combination of positive and negative feedback (context-dependent)",
               "formula": "Polarity switches based on state/threshold",
-              "examples": [
+              "skos:example": [
                 "Hysteresis loop (bistability)",
                 "Schmitt trigger",
                 "Gene regulatory network (toggle switch)",
@@ -1367,7 +1367,7 @@
               "abbreviation": "P",
               "description": "Output proportional to current error",
               "formula": "u(t) = Kₚ·e(t)",
-              "examples": [
+              "skos:example": [
                 "Simple thermostat (on when cold, off when hot)",
                 "Spring restoring force (F = -kx)",
                 "Basic voltage regulator",
@@ -1382,7 +1382,7 @@
               "abbreviation": "I",
               "description": "Output proportional to accumulated error over time",
               "formula": "u(t) = Kᵢ·∫e(τ)dτ",
-              "examples": [
+              "skos:example": [
                 "Water tank level control (integral of flow error)",
                 "Position control with zero steady-state error"
               ],
@@ -1395,7 +1395,7 @@
               "abbreviation": "D",
               "description": "Output proportional to rate of change of error",
               "formula": "u(t) = Kd·de/dt",
-              "examples": [
+              "skos:example": [
                 "Damper responding to velocity",
                 "Anticipatory braking (responds to rate of approach)"
               ],
@@ -1408,7 +1408,7 @@
               "abbreviation": "PI",
               "description": "Proportional + Integral control",
               "formula": "u(t) = Kₚ·e(t) + Kᵢ·∫e(τ)dτ",
-              "examples": [
+              "skos:example": [
                 "Temperature control (most thermostats)",
                 "Speed control (motor drives)"
               ],
@@ -1421,7 +1421,7 @@
               "abbreviation": "PD",
               "description": "Proportional + Derivative control",
               "formula": "u(t) = Kₚ·e(t) + Kd·de/dt",
-              "examples": [
+              "skos:example": [
                 "Position control with damping",
                 "Antenna tracking"
               ],
@@ -1434,7 +1434,7 @@
               "abbreviation": "PID",
               "description": "Proportional + Integral + Derivative control (full 3-term)",
               "formula": "u(t) = Kₚ·e(t) + Kᵢ·∫e(τ)dτ + Kd·de/dt",
-              "examples": [
+              "skos:example": [
                 "Industrial process control (>95% of control loops)",
                 "Cruise control (automotive)",
                 "Flight control systems",
@@ -1449,7 +1449,7 @@
               "abbreviation": "On-Off",
               "description": "Binary on/off control (discontinuous)",
               "formula": "u(t) = {U_max if e>0; U_min if e<0}",
-              "examples": [
+              "skos:example": [
                 "Refrigerator compressor (on when warm, off when cold)",
                 "Simple home heating (furnace on/off)",
                 "Relay control"
@@ -1461,7 +1461,7 @@
             {
               "value": "Adaptive",
               "description": "Controller parameters adjust based on system behavior",
-              "examples": [
+              "skos:example": [
                 "Model reference adaptive control (MRAC)",
                 "Self-tuning regulator",
                 "Gain scheduling"
@@ -1474,7 +1474,7 @@
               "value": "Model Predictive",
               "abbreviation": "MPC",
               "description": "Optimizes future trajectory using system model",
-              "examples": [
+              "skos:example": [
                 "Chemical plant optimization",
                 "Autonomous vehicle path planning"
               ],
@@ -1672,7 +1672,7 @@
               "description": "Creation or annihilation of pair of fixed points (one stable, one unstable)",
               "codimension": 1,
               "normal_form": "dx/dt = μ + x²",
-              "examples": [
+              "skos:example": [
                 "Tipping point in climate system (ice-albedo feedback)",
                 "Laser threshold (below: no lasing, above: lasing)",
                 "Catastrophic shift in ecosystem",
@@ -1688,7 +1688,7 @@
               "description": "Exchange of stability between two branches (crossing)",
               "codimension": 1,
               "normal_form": "dx/dt = μx - x²",
-              "examples": [
+              "skos:example": [
                 "Laser threshold (continuous transition)",
                 "Population model (extinction ↔ survival transition)",
                 "Chemical reaction (reactant ↔ product dominance)"
@@ -1707,7 +1707,7 @@
               "codimension": 1,
               "normal_form_supercritical": "dx/dt = μx - x³",
               "normal_form_subcritical": "dx/dt = μx + x³",
-              "examples": [
+              "skos:example": [
                 "Euler buckling (beam under compression: straight ↔ bent)",
                 "Ising ferromagnet (paramagnet ↔ ferromagnet, magnetization up/down)",
                 "Taylor-Couette flow (circular ↔ spiral vortices)",
@@ -1729,7 +1729,7 @@
               "description": "Transition from fixed point to limit cycle (oscillation onset)",
               "codimension": 1,
               "normal_form": "dz/dt = z(μ + iω - |z|²) (complex plane)",
-              "examples": [
+              "skos:example": [
                 "Predator-prey oscillations (Lotka-Volterra: equilibrium → cycles)",
                 "Heart arrhythmia onset (normal rhythm → abnormal oscillation)",
                 "Belousov-Zhabotinsky reaction (static → oscillating)",
@@ -1752,7 +1752,7 @@
               ],
               "description": "Doubling of oscillation period (route to chaos)",
               "codimension": 1,
-              "examples": [
+              "skos:example": [
                 "Logistic map (r increases: period 1 → 2 → 4 → 8 → ... → chaos)",
                 "Dripping faucet (slow drips → alternating intervals → chaotic)",
                 "Forced pendulum (period T → 2T → 4T → chaos)",
@@ -1767,7 +1767,7 @@
               "value": "Homoclinic",
               "description": "Collision of limit cycle with saddle point",
               "codimension": 1,
-              "examples": [
+              "skos:example": [
                 "Shil'nikov chaos (spiral towards saddle)",
                 "Van der Pol oscillator (relaxation oscillations)"
               ],
@@ -1777,7 +1777,7 @@
             {
               "value": "Heteroclinic",
               "description": "Connection between distinct saddle points",
-              "examples": [
+              "skos:example": [
                 "Lorenz attractor (heteroclinic connections)",
                 "Multistable system transitions"
               ],
@@ -1852,7 +1852,7 @@
         "description": "V is the continuous axis unifying all copying phenomena, from perfect replication to complete divergence. Parameterizes the Duplication→Bifurcation transition.",
         "V_high": {
           "label": "Perfect duplication (V → 1)",
-          "examples": [
+          "skos:example": [
             "DNA replication with proofreading (error rate ~10⁻⁹ per base)",
             "Lossless file copy with SHA-256 checksum",
             "Laser stimulated emission (phase-identical photon copy)"
@@ -1860,7 +1860,7 @@
         },
         "V_medium": {
           "label": "Imperfect duplication — mutation, drift (0.3 < V < 0.8)",
-          "examples": [
+          "skos:example": [
             "RNA virus replication (mutation rate ~10⁻⁴ per base)",
             "Cultural transmission with semantic drift",
             "Analog audio tape dub (generation loss)"
@@ -1868,7 +1868,7 @@
         },
         "V_low": {
           "label": "Degenerate duplication → Bifurcation (V → 0)",
-          "examples": [
+          "skos:example": [
             "Sympatric speciation (lineages diverge completely)",
             "Minsky Moment — speculative price diverges from fundamental value"
           ],
@@ -1896,7 +1896,7 @@
         "domains": [
           {
             "domain": "Molecular Biology",
-            "examples": [
+            "skos:example": [
               "DNA replication",
               "RNA transcription",
               "Mitosis"
@@ -1904,7 +1904,7 @@
           },
           {
             "domain": "Computing / Information Theory",
-            "examples": [
+            "skos:example": [
               "File copy",
               "RAID mirroring",
               "Git clone"
@@ -1912,28 +1912,28 @@
           },
           {
             "domain": "Epidemiology / Virology",
-            "examples": [
+            "skos:example": [
               "Viral replication",
               "Bacterial binary fission"
             ]
           },
           {
             "domain": "Physics",
-            "examples": [
+            "skos:example": [
               "Stimulated emission / laser",
               "Phonon replication"
             ]
           },
           {
             "domain": "Social Sciences / Memetics",
-            "examples": [
+            "skos:example": [
               "Cultural transmission",
               "Legal precedent citation"
             ]
           },
           {
             "domain": "Developmental Biology",
-            "examples": [
+            "skos:example": [
               "Stem cell self-renewal",
               "Clonal expansion"
             ]
@@ -2029,7 +2029,7 @@
               ],
               "description": "Degree distribution follows power law P(k) ~ k^(-γ), hubs exist",
               "formula": "P(k) = Ck^(-γ), typically γ ∈ [2, 3]",
-              "examples": [
+              "skos:example": [
                 "Internet (router connectivity)",
                 "World Wide Web (hyperlinks)",
                 "Protein interaction networks",
@@ -2051,7 +2051,7 @@
               ],
               "description": "High clustering + short path length (six degrees of separation)",
               "formula": "L ~ log(N) (small characteristic path length), C >> C_random (high clustering)",
-              "examples": [
+              "skos:example": [
                 "Social networks (friends-of-friends)",
                 "Neural networks (C. elegans connectome)",
                 "Power grid",
@@ -2073,7 +2073,7 @@
               ],
               "description": "Edges placed randomly with probability p",
               "formula": "P(k) ~ Poisson(μ), μ = p(N-1) (degree distribution)",
-              "examples": [
+              "skos:example": [
                 "Random chemical reactions (early universe)",
                 "Random graphs (mathematical model)",
                 "Baseline/null model for network comparison"
@@ -2094,7 +2094,7 @@
                 "Crystal"
               ],
               "description": "Regular spatial arrangement (1D ring, 2D grid, 3D cubic, etc.)",
-              "examples": [
+              "skos:example": [
                 "Crystal lattice (atoms in solid)",
                 "2D image (pixels in grid)",
                 "Cellular automaton (Conway's Life)",
@@ -2116,7 +2116,7 @@
                 "Modular"
               ],
               "description": "Nested modules at multiple scales (self-similar hierarchy)",
-              "examples": [
+              "skos:example": [
                 "Biological taxonomy (kingdom → phylum → class → ...)",
                 "Military/corporate hierarchy",
                 "File system (directory tree)",
@@ -2135,7 +2135,7 @@
             {
               "value": "Star",
               "description": "Central hub connected to all nodes, no edges between periphery",
-              "examples": [
+              "skos:example": [
                 "Client-server architecture",
                 "Hub airport (spoke-and-hub)",
                 "Broadcast network (radio tower → receivers)"
@@ -2153,7 +2153,7 @@
                 "Loop"
               ],
               "description": "Nodes arranged in closed loop (each connects to 2 neighbors)",
-              "examples": [
+              "skos:example": [
                 "Token ring network",
                 "Circular DNA (plasmid)",
                 "Periodic boundary conditions (1D)"
@@ -2173,7 +2173,7 @@
               ],
               "description": "Every node connected to every other node",
               "formula": "Number of edges = N(N-1)/2",
-              "examples": [
+              "skos:example": [
                 "Small group communication (everyone knows everyone)",
                 "Fully connected neural layer",
                 "Mesh network (high redundancy)"
@@ -2242,7 +2242,7 @@
               "description": "Invariance under spatial or temporal translation",
               "group": "Translation group T^n (Abelian)",
               "transformation": "x → x + a (shift by constant vector a)",
-              "examples": [
+              "skos:example": [
                 "Crystal lattice (periodic structure in space)",
                 "Wallpaper patterns (2D periodic tiling)",
                 "Stationary stochastic process (time-translation invariant)",
@@ -2257,7 +2257,7 @@
               "description": "Invariance under rotation around axis",
               "group": "Rotation group SO(n)",
               "transformation": "x → R(θ)·x (rotation by angle θ)",
-              "examples": [
+              "skos:example": [
                 "Snowflake (6-fold rotational symmetry)",
                 "Circle (continuous rotational symmetry SO(2))",
                 "Sphere (full 3D rotational symmetry SO(3))",
@@ -2280,7 +2280,7 @@
               "description": "Invariance under mirror reflection",
               "group": "Reflection group (discrete, Z₂)",
               "transformation": "x → -x (or specific component sign flip)",
-              "examples": [
+              "skos:example": [
                 "Bilateral symmetry (most animals: left-right mirror)",
                 "Palindrome (reads same forwards/backwards)",
                 "Even function f(-x) = f(x)",
@@ -2299,7 +2299,7 @@
               "description": "Invariance under time shift (stationarity)",
               "group": "Time-translation group T",
               "transformation": "t → t + τ (shift in time)",
-              "examples": [
+              "skos:example": [
                 "Steady-state process (properties don't change with time)",
                 "Autonomous dynamical system (no explicit time dependence)",
                 "Periodic signal (f(t) = f(t+T))",
@@ -2319,7 +2319,7 @@
               "description": "Invariance under scaling (dilation)",
               "group": "Scaling group (multiplicative)",
               "transformation": "x → λx (multiply by scale factor λ)",
-              "examples": [
+              "skos:example": [
                 "Fractal (Mandelbrot set, coastline, Brownian motion)",
                 "Power law f(λx) = λ^α f(x)",
                 "Critical phenomena (2nd order phase transitions)",
@@ -2336,7 +2336,7 @@
               "description": "Invariance under local phase rotation (quantum field theory)",
               "group": "Gauge group U(1), SU(2), SU(3), etc.",
               "transformation": "ψ(x) → e^(iα(x)) ψ(x) (local phase)",
-              "examples": [
+              "skos:example": [
                 "Electromagnetic gauge symmetry U(1) (QED)",
                 "Electroweak symmetry SU(2)×U(1)",
                 "Strong force (QCD) SU(3) color symmetry",
@@ -2351,7 +2351,7 @@
               "value": "Permutation",
               "description": "Invariance under particle exchange (identical particles)",
               "group": "Symmetric group Sₙ",
-              "examples": [
+              "skos:example": [
                 "Bosons (symmetric wavefunction)",
                 "Fermions (antisymmetric wavefunction, Pauli exclusion)",
                 "Statistical mechanics (partition function)"
@@ -2361,7 +2361,7 @@
             {
               "value": "Duality",
               "description": "Exchange of strong↔weak coupling, electric↔magnetic",
-              "examples": [
+              "skos:example": [
                 "Electromagnetic duality (E ↔ B)",
                 "S-duality (string theory)",
                 "Kramers-Wannier duality (Ising model)"
@@ -2892,7 +2892,7 @@
               "value": "Continuous",
               "description": "Continuous-time evolution (differential equations)",
               "formula": "dx/dt = f(x,t) or ẋ = f(x)",
-              "examples": [
+              "skos:example": [
                 "Chemical reaction kinetics (RAAS cascade)",
                 "Heat diffusion",
                 "Population growth (Lotka-Volterra)",
@@ -2905,7 +2905,7 @@
               "value": "Discrete",
               "description": "Discrete-time evolution (difference equations)",
               "formula": "x[n+1] = f(x[n]) or x_{k+1} = f(x_k)",
-              "examples": [
+              "skos:example": [
                 "Digital control system",
                 "Generational biological evolution",
                 "Batch chemical process",
@@ -2918,7 +2918,7 @@
               "value": "Hybrid",
               "description": "Mixed continuous and discrete dynamics",
               "formula": "Continuous between events, discrete jumps at events",
-              "examples": [
+              "skos:example": [
                 "Sampled-data control (continuous plant, discrete controller)",
                 "Hybrid automaton",
                 "Event-driven simulation",
@@ -2941,7 +2941,7 @@
               "description": "Process can be reversed, time-symmetric, no entropy increase",
               "thermodynamics": "ΔS_universe = 0 (isentropic)",
               "time_symmetry": "Process looks same forwards and backwards",
-              "examples": [
+              "skos:example": [
                 "Ideal elastic collision (Newton's cradle)",
                 "Reversible chemical reaction at equilibrium (A ⇌ B)",
                 "Adiabatic reversible expansion (ideal gas)",
@@ -2961,7 +2961,7 @@
               "description": "Process cannot be reversed, time-asymmetric, entropy increases",
               "thermodynamics": "ΔS_universe > 0 (entropy production)",
               "time_symmetry": "Process has arrow of time",
-              "examples": [
+              "skos:example": [
                 "Combustion (fuel + O₂ → CO₂ + H₂O + heat)",
                 "Biological aging and development",
                 "Heat diffusion (hot → cold, never spontaneously cold → hot)",
@@ -2982,7 +2982,7 @@
               "value": "Quasi-reversible",
               "description": "Nearly reversible (very slow, close to equilibrium)",
               "thermodynamics": "ΔS_universe ≈ 0 (minimal entropy production)",
-              "examples": [
+              "skos:example": [
                 "Very slow chemical reaction near equilibrium",
                 "Isothermal compression (very slow, with heat reservoir)",
                 "Carnot engine (idealized, quasi-static steps)"
@@ -3062,7 +3062,7 @@
             {
               "value": "Linear",
               "description": "Straight-line trajectory through state space",
-              "examples": [
+              "skos:example": [
                 "Ballistic projectile (parabola in position space, line in phase space)",
                 "Free fall (linear in velocity-time)",
                 "Constant velocity motion",
@@ -3073,7 +3073,7 @@
             {
               "value": "Circular",
               "description": "Closed periodic loop returning to initial state",
-              "examples": [
+              "skos:example": [
                 "Circular orbit (planet, satellite)",
                 "Simple harmonic oscillator (phase space)",
                 "AC current cycle",
@@ -3084,7 +3084,7 @@
             {
               "value": "Elliptical",
               "description": "Closed periodic trajectory with varying radius",
-              "examples": [
+              "skos:example": [
                 "Planetary orbits (Kepler)",
                 "Comet trajectories",
                 "Elliptical phase portraits"
@@ -3094,7 +3094,7 @@
             {
               "value": "Spiral",
               "description": "Helical path converging to or diverging from center",
-              "examples": [
+              "skos:example": [
                 "Damped oscillator (inward spiral to equilibrium)",
                 "Galaxy spiral arms",
                 "Vortex flow",
@@ -3105,7 +3105,7 @@
             {
               "value": "Hyperbolic",
               "description": "Open trajectory approaching asymptote, escaping to infinity",
-              "examples": [
+              "skos:example": [
                 "Comet flyby (escape trajectory)",
                 "Saddle point escape",
                 "Hyperbolic phase portrait"
@@ -3115,7 +3115,7 @@
             {
               "value": "Random",
               "description": "Stochastic trajectory without deterministic pattern",
-              "examples": [
+              "skos:example": [
                 "Brownian motion (particle diffusion)",
                 "Random walk",
                 "Stock price evolution (geometric Brownian motion)",
@@ -3126,7 +3126,7 @@
             {
               "value": "Constrained",
               "description": "Trajectory confined to manifold or subject to holonomic constraints",
-              "examples": [
+              "skos:example": [
                 "Pendulum (constrained to circular arc)",
                 "Bead on wire",
                 "Rolling without slipping (constraint: v = ωr)",
@@ -3137,7 +3137,7 @@
             {
               "value": "Chaotic",
               "description": "Deterministic but sensitive to initial conditions, bounded but non-periodic",
-              "examples": [
+              "skos:example": [
                 "Lorenz attractor (weather/convection)",
                 "Double pendulum",
                 "Three-body problem",
@@ -3148,7 +3148,7 @@
             {
               "value": "Piecewise",
               "description": "Trajectory composed of distinct segments with different characteristics",
-              "examples": [
+              "skos:example": [
                 "Rocket trajectory (powered ascent + coasting + re-entry)",
                 "Biological development (larva → pupa → adult transitions)",
                 "Manufacturing process (discrete stage transitions)"
@@ -3239,7 +3239,7 @@
               "description": "Abrupt transition, near-zero transition width",
               "mathematical_form": "Heaviside step function H(x-x₀) or sgn(x-x₀)",
               "transition_width": "Δx → 0 (infinitesimal)",
-              "examples": [
+              "skos:example": [
                 "Digital logic gate (0V → 5V, sharp at ~2.5V)",
                 "Neuron action potential (all-or-nothing spike)",
                 "Phase transition (1st order: water→ice at 0°C)",
@@ -3261,7 +3261,7 @@
               "description": "Gradual transition over finite range",
               "mathematical_form": "Sigmoid σ(x) = 1/(1+e^(-k(x-x₀))) or tanh, erf",
               "transition_width": "Δx ~ 1/k (controlled by steepness k)",
-              "examples": [
+              "skos:example": [
                 "Fermi-Dirac distribution (electron occupation vs energy)",
                 "Boltzmann probability (state occupation vs energy)",
                 "Dose-response curve (pharmacology)",
@@ -3284,7 +3284,7 @@
               "description": "Different thresholds for up-transition vs down-transition (memory effect)",
               "mathematical_form": "f(x, history) - output depends on past states",
               "transition_width": "Hysteresis loop width Δx = x_up - x_down",
-              "examples": [
+              "skos:example": [
                 "Ferromagnetic material (B-H curve with hysteresis loop)",
                 "Schmitt trigger (electronics: different thresholds up/down)",
                 "Mechanical latch/ratchet",
@@ -3308,7 +3308,7 @@
               "description": "Threshold with probabilistic crossing due to noise",
               "mathematical_form": "P(cross|x) = distribution function with noise σ",
               "transition_width": "Determined by noise amplitude σ",
-              "examples": [
+              "skos:example": [
                 "Ion channel gating (stochastic opening/closing)",
                 "Thermal activation over barrier (Arrhenius, Kramers rate)",
                 "Noisy sensor with detection threshold",
@@ -3554,7 +3554,7 @@
               "value": "Linear",
               "description": "Constant rate of change (straight line)",
               "formula": "f(x) = mx + b, df/dx = m (constant slope)",
-              "examples": [
+              "skos:example": [
                 "Temperature gradient in metal rod (steady-state conduction)",
                 "Concentration gradient (Fick's law diffusion)",
                 "Gravitational potential near Earth surface (g·h)",
@@ -3570,7 +3570,7 @@
               "value": "Exponential",
               "description": "Rate of change proportional to current value (growth/decay)",
               "formula": "f(x) = A·e^(kx), df/dx = k·f(x) (proportional derivative)",
-              "examples": [
+              "skos:example": [
                 "Atmospheric pressure vs altitude (barometric formula)",
                 "Radioactive decay (N(t) = N₀·e^(-λt))",
                 "Population growth (unrestricted Malthusian)",
@@ -3592,7 +3592,7 @@
               ],
               "description": "Smooth transition between two plateaus (saturation at extremes)",
               "formula": "f(x) = L/(1 + e^(-k(x-x₀))) (logistic) or tanh((x-x₀)/w)",
-              "examples": [
+              "skos:example": [
                 "Logistic growth (population with carrying capacity)",
                 "Dose-response curve (pharmacology)",
                 "Fermi-Dirac distribution (electron occupation)",
@@ -3620,7 +3620,7 @@
               ],
               "description": "Abrupt jump from one level to another (discontinuous)",
               "formula": "f(x) = H(x - x₀) = {0 if x<x₀; 1 if x≥x₀} (Heaviside)",
-              "examples": [
+              "skos:example": [
                 "Phase transition (1st order: discontinuous jump at T_c)",
                 "Digital logic threshold (low → high at V_th)",
                 "Piecewise constant function",
@@ -3637,7 +3637,7 @@
               "value": "Power-law",
               "description": "Polynomial scaling f(x) = Ax^n",
               "formula": "f(x) = A·x^n, df/dx = nA·x^(n-1)",
-              "examples": [
+              "skos:example": [
                 "Gravitational/electrostatic potential (∝ 1/r)",
                 "Diffusion profile (∝ x²)",
                 "Fractals (self-similar with D ≠ integer)",
@@ -3655,7 +3655,7 @@
               ],
               "description": "Bell-shaped curve centered at mean",
               "formula": "f(x) = A·exp(-(x-μ)²/(2σ²))",
-              "examples": [
+              "skos:example": [
                 "Normal distribution (statistics)",
                 "Diffusion from point source (heat kernel)",
                 "Beam profile (laser Gaussian beam)",
@@ -3780,7 +3780,7 @@
               "value": "Analog",
               "description": "Continuous-valued signal in both time and amplitude",
               "mathematical_form": "s(t) ∈ ℝ, t ∈ ℝ (continuous everywhere)",
-              "examples": [
+              "skos:example": [
                 "Voltage in analog circuit (V(t) varies smoothly)",
                 "Sound wave (pressure variation)",
                 "Light intensity (photon flux)",
@@ -3799,7 +3799,7 @@
               "value": "Digital",
               "description": "Discrete-valued signal (quantized amplitude), typically discrete-time",
               "mathematical_form": "s[n] ∈ {0, 1, ..., 2^b-1}, n ∈ ℤ (discrete time and value)",
-              "examples": [
+              "skos:example": [
                 "Digital computer data (binary 0/1)",
                 "Digital audio (CD: 16-bit samples at 44.1 kHz)",
                 "Digital image (pixel values 0-255)",
@@ -3823,7 +3823,7 @@
               ],
               "description": "Information encoded in discrete events (timing, not continuous amplitude)",
               "mathematical_form": "Sequence of events {t_i}, signal = Σ_i δ(t - t_i)",
-              "examples": [
+              "skos:example": [
                 "Neuronal action potentials (spike trains)",
                 "Geiger counter (radioactive decay events)",
                 "Customer arrivals (queueing theory)",
@@ -3849,7 +3849,7 @@
                 "Sampled-data"
               ],
               "description": "Combination of analog and digital components",
-              "examples": [
+              "skos:example": [
                 "Sampled-data control (analog plant, digital controller)",
                 "ADC/DAC converters (analog ↔ digital interface)",
                 "Mixed-signal IC (analog front-end + digital backend)",
@@ -4155,7 +4155,7 @@
               "value": "Monotonic",
               "description": "Steady approach without oscillation (overdamped)",
               "formula": "x(t) = x_eq + (x₀ - x_eq)·e^(-t/τ) (exponential decay, no overshoot)",
-              "examples": [
+              "skos:example": [
                 "Exponential decay (RC circuit discharge)",
                 "First-order system step response",
                 "Overdamped spring-mass-damper (ζ > 1)",
@@ -4171,7 +4171,7 @@
               "value": "Oscillatory",
               "description": "Damped oscillation around target (underdamped)",
               "formula": "x(t) = x_eq + A·e^(-ζωₙt)·cos(ωd·t + φ) (decaying sinusoid)",
-              "examples": [
+              "skos:example": [
                 "Underdamped spring-mass system (ζ < 1)",
                 "RLC circuit (underdamped)",
                 "Swinging pendulum (with air resistance)",
@@ -4187,7 +4187,7 @@
               "value": "Critical",
               "description": "Fastest non-oscillatory convergence (critically damped)",
               "formula": "x(t) = x_eq + (x₀ - x_eq)·(1 + t/τ)·e^(-t/τ) (no overshoot, fastest)",
-              "examples": [
+              "skos:example": [
                 "Critically damped shock absorber (car suspension)",
                 "Analog meter needle (galvanometer)",
                 "Door closer (optimal damping)",
@@ -4202,7 +4202,7 @@
               "value": "Undamped Oscillatory",
               "description": "Sustained oscillation without decay (conservative system)",
               "formula": "x(t) = A·cos(ω₀·t + φ) (constant amplitude)",
-              "examples": [
+              "skos:example": [
                 "Ideal pendulum (no friction)",
                 "Ideal LC circuit (no resistance)",
                 "Planetary orbit (Keplerian)",
@@ -4217,7 +4217,7 @@
               "value": "Divergent",
               "description": "Moving away from equilibrium (unstable)",
               "formula": "x(t) = x_eq + (x₀ - x_eq)·e^(+t/τ) (exponential growth)",
-              "examples": [
+              "skos:example": [
                 "Inverted pendulum (uncontrolled)",
                 "Positive feedback system",
                 "Runaway nuclear reaction",
@@ -4796,7 +4796,7 @@
             "I": "Interfaces and binding information between parts",
             "A": "Emergent property of the whole — absent from isolated parts"
           },
-          "examples": [
+          "skos:example": [
             "LEGO bricks (S) + joints (I) → construction with form (A)",
             "H₂ + O (S, I) → H₂O with new chemical properties (A)",
             "R + G + B channels (S, I) → Color percept (A)",
@@ -4812,7 +4812,7 @@
             "I": "Interface/bond information needed to identify parts"
           },
           "note": "Attractor (A) is absent from the Decomposition pole: the emergent property dissolves when the whole is partitioned. This asymmetry — Composition gains A, Decomposition loses A — is what distinguishes Composition from a mere bidirectional Transformation.",
-          "examples": [
+          "skos:example": [
             "Construction → LEGO bricks (structure recovered, form lost)",
             "H₂O → H₂ + O (molecular structure recovered, liquid properties lost)",
             "Color → (R, G, B) triplet (channels recovered, percept lost)",
@@ -5632,13 +5632,13 @@
           "type": "It (Information)",
           "role": "Measured cardinality/dimension of value space (Eagle Eye)",
           "measure": "Discrete: |S| (count) | Continuous: measure(S)/Π• (volume÷resolution)",
-          "examples": {
-            "scalar_discrete": "Bit: |{0,1}| = 2 → I_t = 1 bit",
-            "scalar_continuous": "Temperature [0,100]°C at 0.1°C → I_t ≈ 10 bits",
-            "vector_discrete": "RGB: 256³ → I_t = 24 bits",
-            "symbolic": "Alphabet 26 letters → I_t ≈ 4.7 bits",
-            "structuralComposition": "D → I → F → It = dim(H_D → H_I → H_F)"
-          }
+          "skos:example": [
+            { "rdfs:label": "scalar_discrete", "rdf:value": "Bit: |{0,1}| = 2 → I_t = 1 bit" },
+            { "rdfs:label": "scalar_continuous", "rdf:value": "Temperature [0,100]°C at 0.1°C → I_t ≈ 10 bits" },
+            { "rdfs:label": "vector_discrete", "rdf:value": "RGB: 256³ → I_t = 24 bits" },
+            { "rdfs:label": "symbolic", "rdf:value": "Alphabet 26 letters → I_t ≈ 4.7 bits" },
+            { "rdfs:label": "structuralComposition", "rdf:value": "D → I → F → It = dim(H_D → H_I → H_F)" }
+          ]
         },
         "mapComponent": {
           "basis": "REVOI (partial)",
@@ -5677,7 +5677,7 @@
       "m2:valueSpaceTypes": {
         "scalar": {
           "definition": "Single dimension (1D)",
-          "examples": [
+          "skos:example": [
             "Temperature interval",
             "pH scale",
             "Age in years",
@@ -5688,7 +5688,7 @@
         },
         "vector": {
           "definition": "Multiple dimensions (nD cartesian product)",
-          "examples": [
+          "skos:example": [
             "RGB color [0,255]³",
             "3D position (x,y,z) ∈ ℝ³",
             "Velocity vector"
@@ -5698,7 +5698,7 @@
         },
         "structuralCompositionSpace": {
           "definition": "Structural composition space (as used in TSCG M2 formulas)",
-          "examples": [
+          "skos:example": [
             "Process = D → I → F",
             "Domain = ASFID → REVOI (before SVD)"
           ],
@@ -5706,7 +5706,7 @@
         },
         "symbolic": {
           "definition": "Discrete set without order/metric (pure list)",
-          "examples": [
+          "skos:example": [
             "Alphabet {A-Z}",
             "Amino acids {Ala, Cys, ...}",
             "Magic colors {W,U,B,R,G}",
@@ -5716,7 +5716,7 @@
         },
         "hybrid": {
           "definition": "Mixed discrete + continuous dimensions",
-          "examples": [
+          "skos:example": [
             "Quantum state: Spin{↑, ↓} × Position(ℝ³)",
             "VSM S1: Mode{Active,Standby,Error} × Performance[0,1]"
           ],
@@ -5788,7 +5788,7 @@
           "operation": "Gain > 1",
           "territory": "Ft→, It→ (more flux, more information)",
           "map": "Represented with amplifier symbols (▲, triangle)",
-          "examples": [
+          "skos:example": [
             "Electronic amplifier (voltage/current gain)",
             "Enzymatic cascade (substrate multiplication)",
             "VSM S2 variety amplification (increase Im interoperability)",
@@ -5802,7 +5802,7 @@
           "operation": "0 < Gain < 1",
           "territory": "Ft→, It→ (less flux, less information)",
           "map": "Represented with filter/resistor symbols",
-          "examples": [
+          "skos:example": [
             "Resistor (voltage drop)",
             "Enzyme inhibitor (substrate reduction)",
             "VSM S3 variety attenuation (decrease O observability)",
@@ -5860,10 +5860,10 @@
         "basis": "ASFID",
         "role": "Measure observable amplification/attenuation in Territory",
         "status": "PRIMARY",
-        "examples": {
-          "amplification_territory": "Measured signal gain Vout/Vin = 10 (amplification)",
-          "attenuation_territory": "Measured signal loss Vout/Vin = 0.1 (attenuation)"
-        }
+        "skos:example": [
+          { "rdfs:label": "amplification_territory", "rdf:value": "Measured signal gain Vout/Vin = 10 (amplification)" },
+          { "rdfs:label": "attenuation_territory", "rdf:value": "Measured signal loss Vout/Vin = 0.1 (attenuation)" }
+        ]
       },
       "m2:sphinxView": {
         "formulaPrimary": {
@@ -5872,10 +5872,10 @@
           "role": "Evaluate map representation quality",
           "status": "PROPOSITION (validation in progress)"
         },
-        "examples": {
-          "amplification_map": "Circuit schematic with amplifier symbol ▲, equations visible",
-          "attenuation_map": "Filter diagram with transfer function H(ρ°)"
-        }
+        "skos:example": [
+          { "rdfs:label": "amplification_map", "rdf:value": "Circuit schematic with amplifier symbol ▲, equations visible" },
+          { "rdfs:label": "attenuation_map", "rdf:value": "Filter diagram with transfer function H(ρ°)" }
+        ]
       },
       "m2:mathematicalProperties": {
         "gainFactor": "G = Output / Input",
@@ -5933,7 +5933,7 @@
               "value": "Amplifying",
               "description": "Gain > 1, increase in magnitude",
               "formula": "G > 1",
-              "examples": [
+              "skos:example": [
                 "Op-amp (voltage gain = 100)",
                 "Enzymatic cascade (substrate multiplication)",
                 "VSM S2 variety amplification",
@@ -5946,7 +5946,7 @@
               "value": "Attenuating",
               "description": "0 < Gain < 1, decrease in magnitude",
               "formula": "0 < G < 1",
-              "examples": [
+              "skos:example": [
                 "Resistor network (voltage divider)",
                 "Optical filter (absorption)",
                 "VSM S3 variety attenuation",
@@ -5959,7 +5959,7 @@
               "value": "Unity",
               "description": "Gain = 1, no magnitude change (buffer)",
               "formula": "G = 1",
-              "examples": [
+              "skos:example": [
                 "Buffer amplifier (impedance matching)",
                 "Isolation transformer (1:1 ratio)",
                 "Digital repeater (signal regeneration)"
@@ -6051,7 +6051,7 @@
         "negativeFeedback": {
           "name": "Negative Feedback",
           "comment": "Error-correcting, stabilizing - output opposes deviation from set point",
-          "examples": [
+          "skos:example": [
             "Thermostat",
             "Insulin-glucose regulation",
             "PID controller",
@@ -6061,7 +6061,7 @@
         "positiveFeedback": {
           "name": "Positive Feedback",
           "comment": "Amplifying, self-reinforcing - output amplifies deviation from initial state",
-          "examples": [
+          "skos:example": [
             "Oxytocin in labor",
             "Blood clotting cascade",
             "Compound interest",
@@ -6208,7 +6208,7 @@
         "positiveAspect": {
           "name": "Entropy",
           "comment": "Disorder, uncertainty, irreversibility — ΔS > 0",
-          "examples": [
+          "skos:example": [
             "Heat death",
             "Information erasure",
             "Ecosystem degradation"
@@ -6217,7 +6217,7 @@
         "negativeAspect": {
           "name": "Negentropy",
           "comment": "Order, structure, low uncertainty — ΔS < 0 locally (maintained by external exergy)",
-          "examples": [
+          "skos:example": [
             "Living organisms",
             "Crystals",
             "Blockchain ordered phase"
@@ -6314,7 +6314,7 @@
         "positiveAspect": {
           "name": "Coherence",
           "comment": "Global alignment — θ(x) continuous, A × S × I aligned, R × O confirms it",
-          "examples": [
+          "skos:example": [
             "Laser coherence",
             "Network consensus",
             "Scientific paradigm"
@@ -6323,7 +6323,7 @@
         "negativeAspect": {
           "name": "Incoherence",
           "comment": "Local rupture of continuity — singularity in the order parameter field",
-          "examples": [
+          "skos:example": [
             "Fork in blockchain",
             "Contradiction in logic",
             "Neural desynchronization"
@@ -6450,7 +6450,7 @@
         "positiveAspect": {
           "name": "Potentialization",
           "comment": "F=0 → F_active: mobilization, awakening, activation of reserve",
-          "examples": [
+          "skos:example": [
             "Seed germination",
             "Capital investment",
             "Thread resume",
@@ -6460,7 +6460,7 @@
         "negativeAspect": {
           "name": "F-Depletion",
           "comment": "F_active → F=0: exhaustion, quiescence, suspension of flow",
-          "examples": [
+          "skos:example": [
             "Organism entering hibernation",
             "Capital freeze",
             "Thread suspension",
