@@ -19,7 +19,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
       "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "16.20.0",
+      "owl:versionInfo": "16.21.0",
       "owl:imports": [
         "M3_GenesisGrammar.jsonld"
       ],
@@ -110,6 +110,11 @@
       },
       "m2:changelog": [
         {
+          "version": "16.21.0",
+          "date": "2026-09-30",
+          "changes": "hasAttribute MADE GRAPH-VISIBLE (decision Michel, 2026-09-30). DEFECT: m2:hasAttribute was written as a MAP keyed by attribute name ({\"feedback_polarity\": {...}}); those names are bare keys, dropped by JSON-LD expansion together with their whole subtree, so no attribute node (and none of its @type, m2:cardinality, m2:arity, m2:valueRange) reached the RDF graph — only 13 empty blank nodes did. FIX: the value is now a LIST of attribute nodes named by rdfs:label, content unchanged: [{\"rdfs:label\": \"feedback_polarity\", \"@type\": \"m2:ValueSpace\", ...}]. Converted 15 attributes on 13 concepts in this file (Regulation, Bifurcation, Network, Symmetry, Representation, Process, Trajectory, Threshold, Gradient, Signal, Convergence, Polarity, Amplification). Companion: M1_CoreConcepts 2.12.0 (13 attributes, and m1:hasAttribute unified into m2:hasAttribute). NOT CHANGED, flagged: bare keys INSIDE attribute nodes (e.g. possibleValues items 'value'/'description', m2:examples maps keyed by value) are still dropped — separate VOC lot."
+        },
+        {
           "version": "16.20.0",
           "date": "2026-09-30",
           "changes": "MULTIPLICITY HOMOGENISATION (decision Michel, 2026-09-30). m2:NaryAttribute is now the SOLE carrier of multiplicity, with two facets: m2:cardinality (size of the value/component space, UML multiplicity) and m2:arity (number active at the same time; '1' = exclusive, equal to cardinality = co-present, k = k-of-N). Exclusivity is read from arity, never stored as a flag. DECLARED m2:cardinality, m2:arity, m2:hasAttribute (all three were used but undeclared). MIGRATED in this file: m2:Polarity m2:naryParameter (bare keys N/range/description/commonValues) -> m2:hasAttribute poles = NaryAttribute {cardinality '1..*', arity '1'} (arity from its own definition: 'mutually exclusive poles'); m2:cardinalityMin 1 (x2: Behavior decompositionProperty, Step triggerProperty) -> NaryAttribute {cardinality '1..*'}, arity left unspecified. Companion lots: M1_CoreConcepts 2.11.0 (Processor), M1_Chemistry 1.3.0. OUT OF SCOPE: Fusion/Fission poleMapping 'N:1'/'1:N' (relation cardinality), sparql/M2_Processor.jsonld (vestige), M3_GrammarFoundation arity/cardinality (descriptive). INTEGER RULE: cardinality and arity take non-negative integers only (UML notation, '*' = unbounded); the co-present case is arity equal to cardinality (no 'all' keyword). VALUE BOUNDS: ADDED m2:valueRange (facet of m2:ValueSpace, interval notation, one value per interval so that disjoint intervals are supported); MIGRATED m2:range -> m2:valueRange (Representation spaceCoverage). Companion: M1_Photography 1.3.0. FLAGGED, not changed: hasPolarity allowedValues [neutral, dual]; ket notation in Polarity formalDefinition; attributes nested under hasAttribute as bare-key maps do not reach the RDF graph (pre-existing, all 18 uses); M3_GrammarFoundation epistemicScore bare 'range'."
@@ -118,11 +123,6 @@
           "version": "16.19.0",
           "date": "2026-07-24",
           "changes": "SC-2 STEPS 3-4 — NOTATION REFORM (WS-0/SC-2). Bare monoidal generators S and I are now monoid-subscripted in every monoidal formula, per the convention graved in M3_BicephalousPerspective 1.5.0. MIGRATED 76 values: 58 in Gt segments (S -> St, I -> It) and 18 in Gm segments (I -> Im, operator '+', letters in REVOI). Of the 76, 43 sit on m2:hasStructuralGrammarFormula (gauge NOT-1: 43 -> 0); the other 33 sit in secondary formula fields, migrated so that the file does not DISPLAY the old notation where the graph carries the new one. DELETED 4 fields, all pure artifacts of the retired tensor notation: formulaTeX x2 and m2:expressionTeX x2 (all four carried \\otimes). Guard-before-delete satisfied on both nodes: m2:Composition keeps 'formula' and m2:expression (S x It x A^{p}), m2:FeedbackLoop keeps m2:expression. No information lost. CARVED OUT, deliberately NOT migrated, 9 occurrences recorded in M2_Formulas_Review_with_Gs_Residues.md 1.0.0: 5 m2:sphinxView blocks written in the ASFID alphabet with the Map operator (Behavior, Tropism, Workflow, Step, Action) - a view in the wrong grammar, not a notation defect; 2 indexed generators {S1 x ... x Sn} on m2:Fusion - indexed notation is undefined in M3; 2 prose glosses on vs_Signature. NOT CLOSED by this lot: Symmetry (St) and State (It) are correctly spelled and still single-primitive; m2:Gradient keeps the prose disjunction 'or'. Both are WS-3 items - a green NOT-1 gauge is not closure. Enforced by ontology/cli-tools/check-M2/M2_MonoidalFormula_Schema_shacl.ttl 0.1.0, run via tscg_metrics.py --shacl-path (interim, to be replaced by the WS-5 M2/M3 runner). Triples 2345 -> 2343: exactly the 2 m2:expressionTeX statements; formulaTeX is a bare key and reaches no graph."
-        },
-        {
-          "version": "16.18.1",
-          "date": "2026-07-24",
-          "changes": "PREFIX HYGIENE (WS-2, isolated lot; prerequisite of WS-0/SC-2 step 3). TWO named defects, no other change. (1) CTX-4 — the 'm2' and 'm3' prefixes were RELATIVE. In JSON-LD a relative prefix resolves against @base in IDENTIFIER position but NOT in PREDICATE position, so every m2:/m3: KEY expanded to an unresolved IRI, invisible to SHACL and to any reasoner. Both are now ABSOLUTE: unresolved predicates 174 -> 1. (2) CTX-1 — the 'skos' prefix was USED (skos:definition, 1 occurrence) but never DECLARED; now declared with the value already used identically in M1_CoreConcepts, M1_Domains, M3_BicephalousPerspective, M3_EagleEye and M3_GenesisGrammar. This was the single corpus-wide CTX-1 occurrence: gauge 1 -> 0. VERIFIED: triple count unchanged (2345 -> 2345) — no edge appears or disappears, they only acquire resolvable IRIs; identifiers unchanged (m2:Resilience expanded to the same absolute IRI before and after, via @base), so no cross-file reference breaks. Measured effect: a candidate SHACL shape on m2:hasStructuralGrammarFormula fires on 0 nodes before and 43 after — the same silent-blindness pattern as SHAPE 9. No run_all_layers golden impact (M2 is NOT_INSTRUMENTED). NO formula migrated, NO field removed in this lot."
         }
       ],
       "m2:bicephalousStrategy": {
@@ -593,7 +593,7 @@
       "@id": "m2:hasAttribute",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "has attribute",
-      "rdfs:comment": "Associates a GenericConcept (or combo) with its named, configurable attributes. Each value is typed m2:ValueSpace (a set of possible values) or m2:NaryAttribute (a multiplicity). Used in M2 and, as m1:hasAttribute, in M1_CoreConcepts.",
+      "rdfs:comment": "Associates a GenericConcept (or combo) with its named, configurable attributes. The value is a LIST of attribute nodes, each named by rdfs:label and typed m2:ValueSpace (a set of possible values, optionally bounded by m2:valueRange) or m2:NaryAttribute (a multiplicity: m2:cardinality, m2:arity). Single property for M2 and M1_CoreConcepts (m1:hasAttribute retired in 16.21.0). Form: [{\"rdfs:label\": \"poles\", \"@type\": \"m2:NaryAttribute\", ...}] — never a map keyed by attribute name, whose bare keys are dropped by JSON-LD expansion.",
       "rdfs:domain": {
         "@id": "m2:GenericConcept"
       },
@@ -1301,8 +1301,9 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasAttribute": {
-        "feedback_polarity": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "feedback_polarity",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Polarity of feedback loop: negative (stabilizing), positive (amplifying), or mixed",
@@ -1349,7 +1350,8 @@
           "m2:default": "Negative",
           "m2:usageGuidelines": "Most homeostatic and control systems use Negative feedback. Use Positive for growth/cascade phenomena. Use Mixed for bistable or switching systems."
         },
-        "control_type": {
+        {
+          "rdfs:label": "control_type",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Control law type: how error is processed to generate corrective action",
@@ -1478,7 +1480,7 @@
           "m2:default": "Proportional",
           "m2:usageGuidelines": "PID is the industrial standard for most applications. Use Bang-bang for simple on/off systems (HVAC). Use Adaptive/MPC for complex or time-varying systems. RAAS uses biological equivalent of negative feedback (closest to Proportional)."
         }
-      },
+      ],
       "m3:semanticSignature": "attractor_control + structural_constraints + flow_modulation",
       "m2:hasStructuralGrammarFormula": "A × St × F"
     },
@@ -1648,8 +1650,9 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasAttribute": {
-        "bifurcation_type": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "bifurcation_type",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Classification of bifurcation based on how system structure changes as parameter varies",
@@ -1779,7 +1782,7 @@
           "m2:usageGuidelines": "Saddle-node for catastrophic transitions (tipping points). Hopf for oscillation onset (RAAS pathological oscillations would be Hopf). Pitchfork for symmetry-breaking. Period-doubling for route to chaos.",
           "m2:mathematicalContext": "Bifurcation theory studies how dynamical system structure changes as parameters vary. Codimension indicates number of parameters needed to observe bifurcation generically."
         }
-      },
+      ],
       "m2:distinctionFromRelated": {
         "vs_Duplication": "Duplication (S × I × F × D × V) produces faithful copies (V present (high fidelity)). Bifurcation is the degenerate limit where V absent (fidelity lost): the copying process loses fidelity entirely and the two branches diverge toward distinct attractors. See m2:Duplication fidelitySpectrum.V_low."
       },
@@ -2005,8 +2008,9 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasAttribute": {
-        "topology": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "topology",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Structural pattern of network connectivity (graph topology)",
@@ -2185,7 +2189,7 @@
             "modularity": "Q = strength of division into modules"
           }
         }
-      },
+      ],
       "m3:semanticSignature": "structural_topology + information_routing + flow_distribution",
       "m2:hasStructuralGrammarFormula": "St × It × F"
     },
@@ -2220,8 +2224,9 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasAttribute": {
-        "symmetry_type": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "symmetry_type",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Type of invariance transformation (group structure)",
@@ -2363,7 +2368,7 @@
           "m2:noether_theorem": "Continuous symmetries → conservation laws (Noether). Translation→momentum, Rotation→angular momentum, Time→energy, Gauge→charge.",
           "m2:spontaneous_breaking": "System Lagrangian has symmetry, but ground state doesn't (Higgs mechanism, ferromagnetism)"
         }
-      },
+      ],
       "m3:semanticSignature": "structural_invariance_under_transformation",
       "m2:hasStructuralGrammarFormula": "St"
     },
@@ -2640,8 +2645,9 @@
         }
       },
       "m3:semanticSignature": "information_structure + symbol_mapping + space_coverage_ratio",
-      "m2:hasAttribute": {
-        "spaceCoverage": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "spaceCoverage",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Continuous numeric",
           "m2:valueRange": "[0.0, 1.0]",
@@ -2731,7 +2737,7 @@
             "m2:Scope": "Scope defines the boundary of applicability; RSC measures coverage density within that scope"
           }
         }
-      },
+      ],
       "m2:hasStructuralGrammarFormula": "It × St"
     },
     {
@@ -2869,8 +2875,9 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasAttribute": {
-        "time_discretization": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "time_discretization",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Temporal discretization: continuous-time, discrete-time, or hybrid dynamics",
@@ -2917,7 +2924,8 @@
           "m2:default": "Continuous",
           "m2:usageGuidelines": "Use Continuous for most physical/chemical/biological processes. Use Discrete for digital systems or generational models. Use Hybrid for systems with both smooth dynamics and discrete events."
         },
-        "reversibility": {
+        {
+          "rdfs:label": "reversibility",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Whether process can be reversed (time-symmetry vs irreversibility)",
@@ -2983,7 +2991,7 @@
           "m2:physicalPrinciple": "2nd Law of Thermodynamics: Isolated systems evolve toward maximum entropy (irreversibility is fundamental to nature)",
           "m2:timeArrow": "Irreversibility provides arrow of time: we remember past, not future; aging occurs; heat flows hot→cold"
         }
-      },
+      ],
       "m3:semanticSignature": "temporal_dynamics + flow_transformation",
       "m2:implements": {
         "@id": "m2:Triggerable"
@@ -3038,8 +3046,9 @@
       "dcterms:created": "2026-02-05",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Identified during RAAS analysis when distinguishing between biochemical pathway diagrams (Path on map) and actual blood pressure evolution over time (Trajectory in territory). Resolves Map-Territory confusion in Path genericConcept.",
-      "m2:hasAttribute": {
-        "shape": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "shape",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Topological/geometric shape of trajectory through state space",
@@ -3144,7 +3153,7 @@
           "m2:default": "Linear",
           "m2:usageGuidelines": "Select based on observed or modeled state-space geometry. For RAAS blood pressure: Linear (convergence to setpoint). For oscillating system: Circular or Spiral. For stochastic system: Random."
         }
-      },
+      ],
       "m3:semanticSignature": "attractor_directed + dynamic_path + flow_sequence",
       "m2:implements": {
         "@id": "m2:Observable"
@@ -3207,8 +3216,9 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasAttribute": {
-        "threshold_behavior": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "threshold_behavior",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Sharpness and reversibility characteristics of threshold crossing",
@@ -3316,7 +3326,7 @@
             "Stochastic": "Probabilistic, ensemble, intrinsic noise"
           }
         }
-      },
+      ],
       "m3:semanticSignature": "attractor_boundary + information_criticality",
       "m2:hasStructuralGrammarFormula": "A × It"
     },
@@ -3527,8 +3537,9 @@
         "role": "Measure observable gradient: F × T (temporal gradient of Flow) or I × T (temporal gradient of Information), where T is the Time primitive of Gs (M3_BicephalousPerspective.jsonld)",
         "status": "IMMUTABLE"
       },
-      "m2:hasAttribute": {
-        "gradient_type": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "gradient_type",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Functional form of spatial or parametric variation",
@@ -3650,7 +3661,7 @@
           "m2:default": "Linear",
           "m2:usageGuidelines": "Linear for uniform gradients (diffusion). Exponential for decay/growth processes. Sigmoid for transitions with saturation (dose-response, RAAS receptor saturation). Step for idealized thresholds. RAAS receptor activation: Sigmoid (saturates at high [Ang II], smooth response curve)"
         }
-      },
+      ],
       "m3:semanticSignature": "differential_variation + directional_flow_or_information",
       "m2:implements": {
         "@id": "m2:Observable"
@@ -3752,8 +3763,9 @@
         "role": "Measure observable phenomenon",
         "status": "IMMUTABLE"
       },
-      "m2:hasAttribute": {
-        "signal_type": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "signal_type",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Representation and processing mode of information carrier",
@@ -3851,7 +3863,7 @@
           "m2:default": "Analog",
           "m2:usageGuidelines": "Biological systems (RAAS) are typically Analog (continuous hormone concentrations) or Discrete-event (neuronal spikes). Digital for computer/communications. Hybrid for cyberphysical systems (sensors + digital control). Information Theory: analog_capacity C = B·log₂(1 + SNR) bits/sec (Shannon-Hartley); digital_reliability Error rates < 10^(-12) with coding; event_based_efficiency Only transmit when change occurs (sparse)."
         }
-      },
+      ],
       "m3:semanticSignature": "information_carrier + flow_transmission",
       "m2:hasStructuralGrammarFormula": "It × F"
     },
@@ -4126,8 +4138,9 @@
           "status": "PROPOSITION (validation in progress)"
         }
       },
-      "m2:hasAttribute": {
-        "convergence_pattern": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "convergence_pattern",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Temporal pattern of approach toward attractor or equilibrium point",
@@ -4213,7 +4226,7 @@
           "m2:default": "Monotonic",
           "m2:usageGuidelines": "Most homeostatic biological systems (like RAAS) exhibit Monotonic convergence. Use Oscillatory for systems with inertia/capacitance. Use Critical for optimized control systems. Undamped/Divergent indicate lack of stability."
         }
-      },
+      ],
       "m2:poleMapping": {
         "p=1": {
           "name": "Convergence",
@@ -5020,8 +5033,9 @@
         "m3:eagle_eye:Attractor"
       ],
       "m2:hasPolarity": "nary",
-      "m2:hasAttribute": {
-        "poles": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "poles",
           "@type": "m2:NaryAttribute",
           "m2:cardinality": "1..*",
           "m2:arity": "1",
@@ -5035,7 +5049,7 @@
             "6..*": "Multipolar - Higher-order systems (e.g., Enneagram N=9, Chakras N=7)"
           }
         }
-      },
+      ],
       "m2:hasExample": [
         "Magic Color Wheel (N=5: White-Blue-Black-Red-Green in pentagonal structure)",
         "Political Compass (N=4: Authoritarian-Libertarian Left-Right)",
@@ -5902,8 +5916,9 @@
       "dcterms:created": "2026-01-31",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m2:discoveryContext": "Required for VSM modeling of variety management (S2 amplification, S3 attenuation). Emerges as fundamental dual operation for controlling flow magnitude. Observable in Territory (Ft → D → It: measurable flux, dynamics, information) AND representable in Map (R → O: symbolizable, observable stages). Essential prerequisite for M1_VSM concepts VarietyAmplification and VarietyAttenuation which combine with ValueSpace. Third hybrid genericConcept after Domain and ValueSpace.",
-      "m2:hasAttribute": {
-        "direction": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "direction",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Direction of magnitude change: amplification (gain>1), attenuation (gain<1), or unity (gain=1)",
@@ -5949,7 +5964,7 @@
           "m2:default": "Amplifying",
           "m2:usageGuidelines": "Select based on gain magnitude. Use Amplifying for RAAS enzymatic stages (G>1), Attenuating for inhibitory pathways (G<1)."
         }
-      },
+      ],
       "m3:semanticSignature": "signal_gain + polarity(amplification|attenuation)",
       "m2:hasStructuralGrammarFormula": [
         "F × D × It | R + O | _^",

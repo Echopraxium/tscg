@@ -31,7 +31,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
       "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "2.11.0",
+      "owl:versionInfo": "2.12.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -255,6 +255,11 @@
       },
       "m2:changelog": [
         {
+          "version": "2.12.0",
+          "date": "2026-09-30",
+          "changes": "hasAttribute MADE GRAPH-VISIBLE (companion of M2 16.21.0). m1:hasAttribute (undeclared, 6 uses) unified into m2:hasAttribute, and its value converted from a map keyed by attribute name (bare keys, dropped by JSON-LD expansion) to a LIST of attribute nodes named by rdfs:label. Content unchanged. Converted 13 attributes on 6 concepts: Cascade, Oscillator, Processor, Propagation, Narration, Permeability. Effect: the Oscillator m2:valueRange bounds and the Processor m2:cardinality now reach the RDF graph."
+        },
+        {
           "version": "2.11.0",
           "date": "2026-09-30",
           "changes": "MULTIPLICITY HOMOGENISATION (companion of M2 16.20.0). m1:Processor Input/Output: m2:arity 'variable' (used as a COUNT) -> m2:cardinality '1..*'. Under M2 16.20.0, arity means 'number active at the same time'; the former value was a count, so it moves to cardinality. Arity left unspecified (not stated by the source). Comments updated accordingly. VALUE BOUNDS: added m2:valueRange to Oscillator phase '[0, 2π)' and damping_ratio '[0, inf)' — bounds already stated in their own descriptions (phi in [0, 2pi), zeta >= 0), now machine-readable. FLAGGED, not changed: m1:hasAttribute (6 uses) vs m2:hasAttribute (M2) — same role, two names."
@@ -263,11 +268,6 @@
           "version": "2.10.0",
           "date": "2026-09-09",
           "changes": "Declared two DatatypeProperties for the M1_Domains registry: m1:instanceCount (xsd:integer) and m1:instanceExamples (xsd:string), rdfs:domain m1:Domain. They REPLACE the retired m1:pocletCount / m1:pocletExamples ('poclet' was too narrow — a domain lists instances of several kinds: poclets, TscgTools, SystemicFrameworks, SymbolicSystemGrammars). A new DomainShape in the M1 SHACL grammar validates them and forbids the retired names. Part of the Cartography-domain lot."
-        },
-        {
-          "version": "2.9.0",
-          "date": "2026-07-17",
-          "changes": "SC-6 (partial) — REMOVED the retired D8 property family from all 12 GenericConceptCombos: m1:structuralGrammarFormulaExpanded (13), m1:structuralGrammarFormulaTeX (9), m1:structuralGrammarFormulaRawText (9). A combo has NO monoidal expansion (emergence is non-compositional); the live m1:structuralGrammarFormula (Fm2/Fm1m2 signature) carries all information and was preserved on every node (verified: 0 nodes left without a live formula). 6 of these still held the obsolete tensor-era operator (×⇒ / (x)=>) in their TeX/RawText, now gone. Also REMOVED m1:hasEpistemicGap (12): a scalar δ1 measurement is an M0 quantity (measured on a modelled system), not a property of an abstract combo TYPE — an M0 measurement leaking into M1, flagged in v2.7.0. NOT TOUCHED: the live Fm1m2 signatures of Propagation and CascadeAmplification (domain-less → should be Fm2), a separate SC-6 semantic repair. GOLDEN IMPACT: EXP001 drops 12 → 0 in run_all_layers — a DELIBERATE lowering, apply --update-golden with this reason recorded."
         }
       ]
     },
@@ -563,8 +563,9 @@
       "m1:migrationNote": "Migrated from m2:Cascade (M2 Combo family) to M1_CoreConcepts v2.0.0 — 2026-03-13",
       "dcterms:created": "2026-03-13",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m1:hasAttribute": {
-        "trajectoryShape": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "trajectoryShape",
           "@type": "m2:ValueSpace",
           "m2:reference": "m2:Trajectory/shape",
           "m2:description": "Geometric/topological shape of cascade trajectory through state space",
@@ -582,7 +583,8 @@
           "m2:default": "Linear",
           "m2:usageGuidelines": "Use Linear for monotonic convergence (RAAS). Use Spiral for damped oscillatory approach. Use Piecewise for distinct developmental phases."
         },
-        "amplifying": {
+        {
+          "rdfs:label": "amplifying",
           "@type": "xsd:boolean",
           "m2:description": "Whether cascade includes amplification at stages (gain > 1)",
           "m2:default": false,
@@ -591,7 +593,8 @@
             "false": "Compiler pipeline (transformation without gain), domino chain (gain ≈ 1)"
           }
         },
-        "branching": {
+        {
+          "rdfs:label": "branching",
           "@type": "xsd:boolean",
           "m2:description": "Whether cascade includes branching (one stage → multiple parallel stages)",
           "m2:default": false,
@@ -600,7 +603,7 @@
             "false": "Linear compiler pipeline, simple domino chain"
           }
         }
-      },
+      ],
       "m1:sharedDimensions": {
         "D": "Shared by all three parents - temporal dynamics coupling",
         "F": "Shared by Process and Trajectory - flow coupling"
@@ -712,8 +715,9 @@
       "m1:migrationNote": "Migrated from m2:Oscillator (M2 Combo family) to M1_CoreConcepts v2.0.0 — 2026-03-13",
       "dcterms:created": "2026-03-13",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m1:hasAttribute": {
-        "frequency": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "frequency",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Continuous scalar",
           "m2:description": "Number of complete cycles per unit time. ω = 2π·f (angular frequency). Determines the temporal scale of the oscillation.",
@@ -750,7 +754,8 @@
           ],
           "m2:default": "Acoustic"
         },
-        "amplitude": {
+        {
+          "rdfs:label": "amplitude",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Continuous scalar",
           "m2:description": "Maximum displacement from equilibrium. Encodes energy stored in the oscillation: E ∝ A².",
@@ -793,7 +798,8 @@
           ],
           "m2:default": "Constant"
         },
-        "phase": {
+        {
+          "rdfs:label": "phase",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Continuous scalar",
           "m2:valueRange": "[0, 2π)",
@@ -835,7 +841,8 @@
           ],
           "m2:default": "Arbitrary"
         },
-        "damping_ratio": {
+        {
+          "rdfs:label": "damping_ratio",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Continuous scalar",
           "m2:valueRange": "[0, inf)",
@@ -880,7 +887,7 @@
           "m2:default": "Underdamped",
           "m2:connectionToM2": "damping_ratio bridges Oscillator to m2:Convergence (convergence_pattern='Oscillatory' for 0 < ζ < 1) and to m2:Bifurcation (Hopf bifurcation at the transition where ζ → 0 and a limit cycle emerges)"
         }
-      },
+      ],
       "m1:sharedDimensions": {
         "D": "Shared by Process and Trajectory — temporal dynamics coupling (period T emerges from this contraction)",
         "F": "Shared by Process and Trajectory — flow coupling (energy transfer per cycle)",
@@ -976,8 +983,9 @@
       "m1:migrationNote": "Migrated from m2:Processor (M2 Combo family) to M1_CoreConcepts v2.0.0 — 2026-03-13",
       "dcterms:created": "2026-03-13",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m1:hasAttribute": {
-        "Input": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "Input",
           "@type": "m2:NaryAttribute",
           "m2:cardinality": "1..*",
           "rdfs:comment": "Input channels, streams, or materials processed by the system. Cardinality 1..* (at least one input required for processing). ValueSpace defined in M1 domain extensions or M0 poclets.",
@@ -1000,7 +1008,8 @@
             ]
           }
         },
-        "Output": {
+        {
+          "rdfs:label": "Output",
           "@type": "m2:NaryAttribute",
           "m2:cardinality": "1..*",
           "rdfs:comment": "Output products, results, or signals produced by the system. Cardinality 1..* (at least one output required). ValueSpace defined in M1 domain extensions or M0 poclets.",
@@ -1022,7 +1031,7 @@
             ]
           }
         }
-      }
+      ]
     },
     {
       "@id": "m1:LocalActivationLateralInhibition",
@@ -1329,8 +1338,9 @@
       "m1:migrationNote": "Migrated from m2:Propagation (M2 Combo family) to M1_CoreConcepts v2.0.0 — 2026-03-13",
       "dcterms:created": "2026-03-13",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m1:hasAttribute": {
-        "propagationRegime": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "propagationRegime",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Phase of propagation relative to threshold attractor A",
@@ -1370,7 +1380,7 @@
           ],
           "m2:default": "Supercritical"
         }
-      },
+      ],
       "m1:parentGenericConcepts": [
         {
           "@id": "m2:Cascade",
@@ -1470,8 +1480,9 @@
       "m1:migrationNote": "Migrated from m2:Narration (M2 Combo family) to M1_CoreConcepts v2.0.0 — 2026-03-13",
       "dcterms:created": "2026-03-13",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "m1:hasAttribute": {
-        "narrativeTopology": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "narrativeTopology",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Topological shape of the semantic network transformation",
@@ -1520,7 +1531,8 @@
           ],
           "m2:default": "Linear"
         },
-        "attractorType": {
+        {
+          "rdfs:label": "attractorType",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Nature of the narrative attractor (A) — the resolution toward which the semantic network gravitates",
@@ -1560,7 +1572,7 @@
           ],
           "m2:default": "Resolution"
         }
-      },
+      ],
       "m1:parentGenericConcepts": [
         {
           "@id": "m2:Transformation",
@@ -1725,8 +1737,9 @@
         "permeability": "Open regime — flux passes through (osmosis, open market, cultural receptivity)",
         "impermeability": "Closed regime — flux blocked (waterproofing, capital controls, epistemic silo)"
       },
-      "m1:hasAttribute": {
-        "regime": {
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "regime",
           "@type": "m2:ValueSpace",
           "m2:valueType": "Discrete symbolic",
           "m2:description": "Temporal stability of the permeability state",
@@ -1761,7 +1774,7 @@
           ],
           "m2:default": "Static"
         }
-      },
+      ],
       "m1:perspective": "territory",
       "m1:distinctionFromRelated": {
         "vs_Boundary": "Boundary (S × A) is static — it exists. Permeability is dynamic — it modulates flux through the boundary.",
