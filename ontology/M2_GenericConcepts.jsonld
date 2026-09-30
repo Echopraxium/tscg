@@ -19,7 +19,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
       "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "16.21.0",
+      "owl:versionInfo": "16.22.0",
       "owl:imports": [
         "M3_GenesisGrammar.jsonld"
       ],
@@ -100,15 +100,21 @@
         "m2:genericConceptsDefined": 92,
         "m2:genericConceptsTotal": 92,
         "m2:completionPercentage": 100,
-        "m2:neutralPolarity": 59,
+        "m2:neutralPolarity": 63,
         "m2:dualPolarity": 19,
+        "m2:ternaryPolarity": 1,
         "m2:naryPolarity": 1,
-        "m2:hybridPolarity": 4,
+        "m2:hybridPolarity": 2,
         "totalConcepts": 86,
         "comboConcepts": 4,
         "atomicConcepts": 82
       },
       "m2:changelog": [
+        {
+          "version": "16.22.0",
+          "date": "2026-09-30",
+          "changes": "POLARITY HYGIENE (cleanup lots A and B). (A) m2:hasPolarity m2:allowedValues extended from [neutral, dual] to the values defined by m2:polarityPrinciple and in use: neutral, dual, ternary, quaternary, pentagonal, nary, hybrid (ternary, nary and hybrid were already used). m2:progress polarity counters recounted from the file: neutral 59 -> 63, hybrid 4 -> 2, ternary added (1); dual 19 and nary 1 unchanged. (B) m2:Polarity m2:formalDefinition: the two constraints written in ket notation (|p⟩, ⟨p|, = I — a Hilbert-space remnant retired by the Structural Grammar reform, and a misuse of the Gt operator ×) restated in plain terms; exclusivity now points to the poles attribute (arity '1'). Restored the '≥' characters lost in Polarity texts (N≥1, N≥2, N≥3) and 'C_N rotational symmetry'. KEPT: 'Quantum ground state |0⟩' (a physics example, not a formalism)."
+        },
         {
           "version": "16.21.0",
           "date": "2026-09-30",
@@ -118,11 +124,6 @@
           "version": "16.20.0",
           "date": "2026-09-30",
           "changes": "MULTIPLICITY HOMOGENISATION (decision Michel, 2026-09-30). m2:NaryAttribute is now the SOLE carrier of multiplicity, with two facets: m2:cardinality (size of the value/component space, UML multiplicity) and m2:arity (number active at the same time; '1' = exclusive, equal to cardinality = co-present, k = k-of-N). Exclusivity is read from arity, never stored as a flag. DECLARED m2:cardinality, m2:arity, m2:hasAttribute (all three were used but undeclared). MIGRATED in this file: m2:Polarity m2:naryParameter (bare keys N/range/description/commonValues) -> m2:hasAttribute poles = NaryAttribute {cardinality '1..*', arity '1'} (arity from its own definition: 'mutually exclusive poles'); m2:cardinalityMin 1 (x2: Behavior decompositionProperty, Step triggerProperty) -> NaryAttribute {cardinality '1..*'}, arity left unspecified. Companion lots: M1_CoreConcepts 2.11.0 (Processor), M1_Chemistry 1.3.0. OUT OF SCOPE: Fusion/Fission poleMapping 'N:1'/'1:N' (relation cardinality), sparql/M2_Processor.jsonld (vestige), M3_GrammarFoundation arity/cardinality (descriptive). INTEGER RULE: cardinality and arity take non-negative integers only (UML notation, '*' = unbounded); the co-present case is arity equal to cardinality (no 'all' keyword). VALUE BOUNDS: ADDED m2:valueRange (facet of m2:ValueSpace, interval notation, one value per interval so that disjoint intervals are supported); MIGRATED m2:range -> m2:valueRange (Representation spaceCoverage). Companion: M1_Photography 1.3.0. FLAGGED, not changed: hasPolarity allowedValues [neutral, dual]; ket notation in Polarity formalDefinition; attributes nested under hasAttribute as bare-key maps do not reach the RDF graph (pre-existing, all 18 uses); M3_GrammarFoundation epistemicScore bare 'range'."
-        },
-        {
-          "version": "16.19.0",
-          "date": "2026-07-24",
-          "changes": "SC-2 STEPS 3-4 — NOTATION REFORM (WS-0/SC-2). Bare monoidal generators S and I are now monoid-subscripted in every monoidal formula, per the convention graved in M3_BicephalousPerspective 1.5.0. MIGRATED 76 values: 58 in Gt segments (S -> St, I -> It) and 18 in Gm segments (I -> Im, operator '+', letters in REVOI). Of the 76, 43 sit on m2:hasStructuralGrammarFormula (gauge NOT-1: 43 -> 0); the other 33 sit in secondary formula fields, migrated so that the file does not DISPLAY the old notation where the graph carries the new one. DELETED 4 fields, all pure artifacts of the retired tensor notation: formulaTeX x2 and m2:expressionTeX x2 (all four carried \\otimes). Guard-before-delete satisfied on both nodes: m2:Composition keeps 'formula' and m2:expression (S x It x A^{p}), m2:FeedbackLoop keeps m2:expression. No information lost. CARVED OUT, deliberately NOT migrated, 9 occurrences recorded in M2_Formulas_Review_with_Gs_Residues.md 1.0.0: 5 m2:sphinxView blocks written in the ASFID alphabet with the Map operator (Behavior, Tropism, Workflow, Step, Action) - a view in the wrong grammar, not a notation defect; 2 indexed generators {S1 x ... x Sn} on m2:Fusion - indexed notation is undefined in M3; 2 prose glosses on vs_Signature. NOT CLOSED by this lot: Symmetry (St) and State (It) are correctly spelled and still single-primitive; m2:Gradient keeps the prose disjunction 'or'. Both are WS-3 items - a green NOT-1 gauge is not closure. Enforced by ontology/cli-tools/check-M2/M2_MonoidalFormula_Schema_shacl.ttl 0.1.0, run via tscg_metrics.py --shacl-path (interim, to be replaced by the WS-5 M2/M3 runner). Triples 2345 -> 2343: exactly the 2 m2:expressionTeX statements; formulaTeX is a bare key and reaches no graph."
         }
       ],
       "m2:bicephalousStrategy": {
@@ -434,7 +435,12 @@
       },
       "m2:allowedValues": [
         "neutral",
-        "dual"
+        "dual",
+        "ternary",
+        "quaternary",
+        "pentagonal",
+        "nary",
+        "hybrid"
       ]
     },
     {
@@ -5025,7 +5031,7 @@
         "@id": "m2:GenericConcept"
       },
       "rdfs:label": "Polarity (N-ary)",
-      "rdfs:comment": "Configuration of N distinct, mutually exclusive value poles or orientational axes organized in structured opposition or complementarity. Generalizes binary opposition to N-dimensional value spaces. N {1, 2, 3, 4, 5, ...} where N=1 (neutral/monopolar), N=2 (dual/bipolar), N3 (multipolar).",
+      "rdfs:comment": "Configuration of N distinct, mutually exclusive value poles or orientational axes organized in structured opposition or complementarity. Generalizes binary opposition to N-dimensional value spaces. N {1, 2, 3, 4, 5, ...} where N=1 (neutral/monopolar), N=2 (dual/bipolar), N≥3 (multipolar).",
       "m2:hasFamily": "m2:Structural",
       "m2:hasDominantM3": [
         "m3:eagle_eye:Structure",
@@ -5078,20 +5084,20 @@
       },
       "m2:structuralProperties": {
         "topology": "Can be linear (N=2), triangular (N=3), square (N=4), pentagonal (N=5), or general N-gon",
-        "relationships": "Allied (adjacent poles) vs Enemy (opposite poles) structure common for N3",
-        "symmetry": "Often exhibits Crotational symmetry",
+        "relationships": "Allied (adjacent poles) vs Enemy (opposite poles) structure common for N≥3",
+        "symmetry": "Often exhibits C_N rotational symmetry",
         "dimensionality": "N poles can span N-1 dimensional space (e.g., 3 colors span 2D chromaticity plane)"
       },
       "m2:distinctionFromRelated": {
-        "vs_Opposition": "Opposition is BINARY specific case (N=2); Polarity is GENERAL (any N1)",
+        "vs_Opposition": "Opposition is BINARY specific case (N=2); Polarity is GENERAL (any N≥1)",
         "vs_Spectrum": "Spectrum is CONTINUOUS; Polarity is DISCRETE with finite N poles",
         "vs_Dimension": "Dimension is CONTINUOUS axis; Polarity is DISCRETE pole structure",
-        "vs_Duality": "Duality is N=2 special case; Polarity generalizes to N2"
+        "vs_Duality": "Duality is N=2 special case; Polarity generalizes to N≥2"
       },
       "m2:formalDefinition": {
         "poleSet": "P = {p₁, p₂, ..., pₙ} - Set of N distinct poles",
-        "exclusivityConstraint": "∀j: pⱼ × |pⱼ⟩ = δⱼₖ (mutual exclusivity)",
-        "completenessConstraint": "∑ⱼ |pⱼ⟩⟨pⱼ| = I (spans the relevant domain)",
+        "exclusivityConstraint": "At most one pole is active at any time (mutual exclusivity) — encoded by the poles attribute: m2:hasAttribute poles, m2:arity '1'.",
+        "completenessConstraint": "The N poles jointly cover the relevant domain: every admissible state belongs to exactly one pole.",
         "structureGraph": "G = (P, E) where E encodes allied/enemy relationships",
         "binaryCase": "N=2 reduces to classical dual polarity"
       },
@@ -5114,7 +5120,7 @@
       "m2:historicalNote": {
         "v1-v12": "M2 restricted polarity to neutral (N=1) or dual (N=2), explicitly rejecting N-ary",
         "v13": "Paradigm shift: N-ary polarity adopted based on empirical evidence from multiple domains",
-        "rationale": "Real-world value systems (ethical, political, aesthetic) are naturally N-ary (N3). Binary restriction was theoretical overcaution, not empirical necessity.",
+        "rationale": "Real-world value systems (ethical, political, aesthetic) are naturally N-ary (N≥3). Binary restriction was theoretical overcaution, not empirical necessity.",
         "validation": "Switch and Mode genericConcepts were already implicitly N-ary (N-ary states/modes). Polarity genericConcept makes this explicit."
       },
       "m2:philosophicalImplication": "Most fundamental conceptual frameworks are N-ary (N>2), not binary. Binary thinking (dualism) is common but not universal. Pentagonal structures (N=5) appear repeatedly across cultures (Magic colors, Wu Xing, Platonic solids minus one). Suggests deep cognitive/cultural patterns in how humans organize complexity.",
