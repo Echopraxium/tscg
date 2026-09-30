@@ -14,7 +14,7 @@
     {
       "@id": "m3:GenesisGrammar",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "4.10.0",
+      "owl:versionInfo": "4.11.0",
       "dcterms:created": "2026-01-21",
       "dcterms:modified": "2026-09-30",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
@@ -63,7 +63,7 @@
       },
       "bicephalous_architecture": {
         "dcterms:description": "Dual complementary perspectives forming complete basis",
-        "rationale": "Territory-Map distinction requires both observation (Eagle) and construction (Sphinx)",
+        "m3:rationale": "Territory-Map distinction requires both observation (Eagle) and construction (Sphinx)",
         "eagle_eye": {
           "@id": "m3:eagle_eye:EagleEye",
           "basis": "ASFID",
@@ -284,6 +284,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "4.11.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1g (Family A). Bare keys (dropped on JSON-LD expansion) replaced: alternative_names -> skos:altLabel, comment -> dcterms:description (consistent with lot 1b), note -> skos:note, definition -> skos:definition, label -> rdfs:label, title -> dcterms:title, id -> dcterms:identifier, rationale -> m3:rationale (declared in M3_GrammarFoundation, rdfs:subPropertyOf skos:note). In this file: rationale 4, title 3, id 3. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
+        {
           "owl:versionInfo": "4.10.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1f (Family A). Bare key 'name' (declared in no @context, dropped on JSON-LD expansion) replaced by the standard rdfs:label (a human-readable version of the resource's name). Bare 'name' inside legacy 'metadata' blocks left for the vestiges lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md. 4 occurrences, all under bare parent keys (visible once those are resolved)."
@@ -312,11 +317,6 @@
           "owl:versionInfo": "4.5.0",
           "dcterms:date": "2026-07-22",
           "adms:versionNotes": "LAYERING FIX: m2:changelog → m3:changelog. An M3 file must not reference an M2 property (dependency inversion: M3 is the foundational layer, M2 imports it). Compounding this, the 'm2' prefix was NOT declared in this @context (CTX-1), so the key resolved to an opaque 'm2:' URI scheme instead of the M2 namespace — invisible to any reasoner. m3:changelog is defined in M3_GrammarFoundation v2.5.0. CTX-4 FIX (required for the above to bind): the 'm3' prefix was RELATIVE in this @context. A relative prefix resolves against @base in IDENTIFIER position but NOT in PREDICATE position, so every m3:* PROPERTY in this file expanded to the unresolved IRI 'M3_GenesisGrammar.jsonld#...' while m3:* CLASSES expanded correctly — the file's predicates were silently desynchronised from the rest of M3. Prefix made ABSOLUTE. This is why the 2026-07-18 verification, which compared MonoidalType (an identifier), reported alignment that did not hold for properties."
-        },
-        {
-          "owl:versionInfo": "4.4.0",
-          "dcterms:date": "2026-06-29",
-          "adms:versionNotes": "F AMENDMENT 3 REDUCED: removed the F continuous numeric spectrum (F_crit, F_max, the 0<F<F_crit band, F_total conservation) as a scalar residue inconsistent with m3:MonoidalType (qualitative at M3; magnitude belongs to the M0 ValueSpace as F_score). F activation retained as qualitative latent/active modes via m2:Potentialization poles (_^/_$). Resolves the Amendment 1 vs 3 contradiction. Functor example 'F=0 ground state' relabeled 'F-absent'. Amendments 1 and 2 unchanged; zero downstream impact (no corpus concept references the removed spectrum)."
         }
       ]
     },
@@ -1461,12 +1461,12 @@
       "m3:amendmentType": "additive",
       "m3:targetType": "F (Flow) — Eagle Eye / ASFID",
       "m3:amendment_1": {
-        "id": "F_axiom_relaxation",
-        "title": "F Axiom Relaxed: F structurally optional in ground states",
+        "dcterms:identifier": "F_axiom_relaxation",
+        "dcterms:title": "F Axiom Relaxed: F structurally optional in ground states",
         "status": "DECIDED",
         "before": "F ≠ 0 — F structurally necessary condition for system existence",
         "after": "F structurally optional in boundary/ground states (e.g., vacuum, degenerate systems where F is absent from the structural formula). Replaces numeric F≥0 with qualitative structural optionality.",
-        "rationale": "F=0 represents the lowest degraded energy level of a system, not its absence. Examples: tardigrade cryptobiosis, quantum ground state |0⟩, suspended thread, dormant seed. The old axiom was over-restrictive — it excluded legitimate resting states from TSCG modeling.",
+        "m3:rationale": "F=0 represents the lowest degraded energy level of a system, not its absence. Examples: tardigrade cryptobiosis, quantum ground state |0⟩, suspended thread, dormant seed. The old axiom was over-restrictive — it excluded legitimate resting states from TSCG modeling.",
         "groundState": {
           "rdfs:label": "Stase",
           "m2Formula": "S×A",
@@ -1481,11 +1481,11 @@
         }
       },
       "m3:amendment_2": {
-        "id": "F_morphic_annotation",
-        "title": "F Morphic Capacity: F ∈ Mor(Cat_M3) ∩ Ob(Cat_M3)",
+        "dcterms:identifier": "F_morphic_annotation",
+        "dcterms:title": "F Morphic Capacity: F ∈ Mor(Cat_M3) ∩ Ob(Cat_M3)",
         "status": "DECIDED",
         "formalAxiom": "F ∈ Mor(Cat_M3) ∩ Ob(Cat_M3)",
-        "rationale": "F is the only ASFID types whose definition structurally requires a source AND a target. A flux cannot exist without transport direction. A, S, I, D can describe static states — F is intrinsically relational. This emergent asymmetry was not designed but discovered through analysis.",
+        "m3:rationale": "F is the only ASFID types whose definition structurally requires a source AND a target. A flux cannot exist without transport direction. A, S, I, D can describe static states — F is intrinsically relational. This emergent asymmetry was not designed but discovered through analysis.",
         "consequence_forM2": "Any M2 structural formula containing F is a natural candidate for dual entity/morphism ontological nature. M2 property m2:ontologicalNature='entity_and_morphism' applies to all F-containing structural formulas.",
         "consequence_forF0": "F=0 means no active morphisms: Mor_active(Cat_M3) = ∅. System in Stase (ground state) — valid per Amendment 1.",
         "dimensionRoles": {
@@ -1494,11 +1494,11 @@
         }
       },
       "m3:amendment_3": {
-        "id": "F_activation_modes",
-        "title": "F Activation Modes: latent / active as qualitative pole states (not a numeric spectrum)",
+        "dcterms:identifier": "F_activation_modes",
+        "dcterms:title": "F Activation Modes: latent / active as qualitative pole states (not a numeric spectrum)",
         "status": "REDUCED",
         "supersedes": "F_potential_active_spectrum (v3.9.0) — the continuous numeric spectrum (F_crit, F_max, the 0<F<F_crit band, and F_total conservation) is removed as a scalar residue inconsistent with m3:MonoidalType (qualitative, no metric at M3). Reduced 2026-06-29.",
-        "rationale": "When present, F has two qualitative activation modes — latent and active — connected by the poles of m2:Potentialization (_^ mobilization, _$ depletion). This is NOT a numeric continuum: F is a generator, present or absent in a structural formula (per Amendment 1), and when present it is qualitatively latent or active. Any magnitude ('how much flow') is an M0 instance score (F_score in the M0 ValueSpace), never an M3 axiom — per m3:MonoidalType.",
+        "m3:rationale": "When present, F has two qualitative activation modes — latent and active — connected by the poles of m2:Potentialization (_^ mobilization, _$ depletion). This is NOT a numeric continuum: F is a generator, present or absent in a structural formula (per Amendment 1), and when present it is qualitatively latent or active. Any magnitude ('how much flow') is an M0 instance score (F_score in the M0 ValueSpace), never an M3 axiom — per m3:MonoidalType.",
         "activationModes": {
           "absent": "F omitted from the structural formula — Stase (m2:Stase, S×A); the degenerate case of Amendment 1",
           "latent": "F present but dormant — structural flow capacity not currently transporting",

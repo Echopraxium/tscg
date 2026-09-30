@@ -32,7 +32,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
       "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "2.16.0",
+      "owl:versionInfo": "2.17.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -256,6 +256,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.17.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1g (Family A). Bare keys (dropped on JSON-LD expansion) replaced: alternative_names -> skos:altLabel, comment -> dcterms:description (consistent with lot 1b), note -> skos:note, definition -> skos:definition, label -> rdfs:label, title -> dcterms:title, id -> dcterms:identifier, rationale -> m3:rationale (declared in M3_GrammarFoundation, rdfs:subPropertyOf skos:note). In this file: label 3. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
+        {
           "owl:versionInfo": "2.16.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m2:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m2:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -264,11 +269,6 @@
           "owl:versionInfo": "2.15.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1c (Family A). Changelog entry keys, previously bare and dropped on JSON-LD expansion, replaced by standards: version -> owl:versionInfo, date -> dcterms:date, changes -> adms:versionNotes (ADMS: a description of changes between this version and the previous one). Prefix adms declared in @context: ADMS accepted as an external vocabulary (Michel, 2026-09-30). Changelog entries become graph-visible. Legacy changelog forms (maps keyed by version, metadata blocks) left for a separate lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "2.14.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1b (Family A). Bare key 'description' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard dcterms:description (DCMI: an account of the resource; literal). Chosen over rdfs:comment on semantic grounds (Michel, 2026-09-30). 40 occurrences (36 graph-visible, 4 under a bare parent key). Bare 'description' inside legacy 'metadata' blocks left untouched (separate lot). No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ]
     },
@@ -1881,7 +1881,7 @@
       "m1:triadicStates": {
         "underConstrained": {
           "symbol": "_^",
-          "label": "UnderConstrained",
+          "rdfs:label": "UnderConstrained",
           "semantics": "Insufficient constraints — system too open, vague, loses precision and specificity",
           "skos:example": [
             "ML: underfitting model (too few parameters)",
@@ -1893,7 +1893,7 @@
         },
         "balancedConstraint": {
           "symbol": "_0",
-          "label": "BalancedConstraint  (_^ | _$)",
+          "rdfs:label": "BalancedConstraint  (_^ | _$)",
           "semantics": "Optimal constraint level — system generalizes AND is precise. The qualitative optimum emergent from the tension of both poles.",
           "skos:example": [
             "ML: well-fitted model (good bias-variance tradeoff)",
@@ -1905,7 +1905,7 @@
         },
         "overConstrained": {
           "symbol": "_$",
-          "label": "OverConstrained",
+          "rdfs:label": "OverConstrained",
           "semantics": "Excessive constraints — system too rigid, over-specified, loses generalizability and composability",
           "skos:example": [
             "ML: overfitting model (too many parameters for data)",

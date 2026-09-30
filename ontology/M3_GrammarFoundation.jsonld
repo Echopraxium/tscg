@@ -15,7 +15,7 @@
     {
       "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.8.0",
+      "owl:versionInfo": "2.9.0",
       "dcterms:created": "2026-05-12",
       "dcterms:modified": "2026-09-30",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
@@ -55,6 +55,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.9.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1g (Family A). Bare keys (dropped on JSON-LD expansion) replaced: alternative_names -> skos:altLabel, comment -> dcterms:description (consistent with lot 1b), note -> skos:note, definition -> skos:definition, label -> rdfs:label, title -> dcterms:title, id -> dcterms:identifier, rationale -> m3:rationale (declared in M3_GrammarFoundation, rdfs:subPropertyOf skos:note). In this file: label 4, note 2. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md. NEW: m3:rationale declared (owl:AnnotationProperty, rdfs:subPropertyOf skos:note) — no standard vocabulary offers a rationale/justification property (Michel, 2026-09-30)."
+        },
+        {
           "owl:versionInfo": "2.8.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1c (Family A). Changelog entry keys, previously bare and dropped on JSON-LD expansion, replaced by standards: version -> owl:versionInfo, date -> dcterms:date, changes -> adms:versionNotes (ADMS: a description of changes between this version and the previous one). Prefix adms declared in @context: ADMS accepted as an external vocabulary (Michel, 2026-09-30). Changelog entries become graph-visible. Legacy changelog forms (maps keyed by version, metadata blocks) left for a separate lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md. The m3:changelog declaration records the decision in its skos:note (replaces the former 'pending a decision' wording)."
@@ -83,11 +88,6 @@
           "owl:versionInfo": "2.4.0",
           "dcterms:date": "2026-07-12",
           "adms:versionNotes": "SC-1 FUNCTIONAL GRAMMAR MODEL — M3 correction. ⚠ Fm2 and Fm1m2 were declared MORPHISMS ('Fm2 is a morphism, not a monoidal operator'); they are FUNCTIONS. A morphism/functor must preserve composition; emergence is non-compositional (arguments are COMBINED, not associated). Φ and Ψ remain genuine morphisms — the family is now split, not purged. ⚠ Fm1m2 was defined as 'Fm1m2 : 𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁, crosses the M1/M2 boundary'. THIS WAS THE ROOT ERROR: it propagated into M1_CoreConcepts v1.4.0, which 'corrected' Propagation/CascadeAmplification Fm2→Fm1m2 'because parent m1:Cascade is M1, not M2 atomic'. Fm1m2 is distinguished by DOMAIN QUALIFICATION, not by crossing a layer boundary; an Fm2 argument may legitimately come from M1_CoreConcepts. Corrected signatures: Fm2 : GenericConcept²⁺ → GenericConceptCombo; Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo. The × separating the signature slots is also removed (× is reserved to the Gt monoid and is never overloaded). RENAME: m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. See StructuralGrammar/Functional_Grammar_Model.md."
-        },
-        {
-          "owl:versionInfo": "2.3.0",
-          "dcterms:date": "2026-07-12",
-          "adms:versionNotes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:DomainConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
         }
       ],
       "three_alphabets": {
@@ -153,7 +153,7 @@
         }
       },
       "m2_functions_and_morphisms": {
-        "note": "Φ and Ψ are MORPHISMS (structure-preserving maps between grammars — they compose). Fm2 and Fm1m2 are FUNCTIONS, NOT morphisms and NOT functors: their essence is combination with emergence, which is non-compositional, whereas a morphism/functor must preserve composition. The two families are kept separate on purpose. See StructuralGrammar/Functional_Grammar_Model.md.",
+        "skos:note": "Φ and Ψ are MORPHISMS (structure-preserving maps between grammars — they compose). Fm2 and Fm1m2 are FUNCTIONS, NOT morphisms and NOT functors: their essence is combination with emergence, which is non-compositional, whereas a morphism/functor must preserve composition. The two families are kept separate on purpose. See StructuralGrammar/Functional_Grammar_Model.md.",
         "dcterms:description": "Combination FUNCTIONS at M2/M1 level (Fm2, Fm1m2) alongside the genuine inter-grammar MORPHISMS (Φ, Ψ). Distinct from the monoidal operators ×/+/|, which act at 𝕋₀ on atoms. Fm2/Fm1m2 are functions, not morphisms: emergence is non-compositional.",
         "Fm2": {
           "signature": "Fm2 : GenericConcept²⁺ → GenericConceptCombo",
@@ -250,7 +250,7 @@
       "m3:grammar_foundation:pole_forms": {
         "positive": "_^  — PositivePole — applied as: formula | _^",
         "negative": "_$  — NegativePole — applied as: formula | _$",
-        "note": "Both _^ and _$ are primitives of 𝕋₀(|) — string notations only, not URIs"
+        "skos:note": "Both _^ and _$ are primitives of 𝕋₀(|) — string notations only, not URIs"
       },
       "skos:example": "A × S × It | R + O | _^  = Coherence  (positive pole)\nA × S × It | R + O | _$  = Incoherence  (negative pole)",
       "m3:grammar_foundation:positivePolePrimitive": "_^  — PositivePole — onset/amplifying pole of a GenericConcept pair",
@@ -264,7 +264,7 @@
       "skos:definition": "Four-level type hierarchy derived from 10 primitive types via 3 operators.",
       "m3:grammar_foundation:levels": {
         "T0": {
-          "label": "Primitive Types",
+          "rdfs:label": "Primitive Types",
           "notation": "𝕋₀ = 16 primitives (Base16): {A,St,F,It,D} ∪ {R,E,V,O,Im} ∪ {T,_^,_$,K,Ss,L}  (symbolic — _^ _$ are string notations)",
           "cardinality": 16,
           "layer": "M3",
@@ -283,7 +283,7 @@
           "notation_convention": "In hybrid formulas (containing |), Territory and Map types carry their monoid index: It (Information/Territory), St (Structure/Territory), O (Observability/Map). Pure intra-monoid formulas (A×S×F) and ASFID/REVOI scoring terminology are unaffected."
         },
         "T1": {
-          "label": "Derived Types (Named Product Types)",
+          "rdfs:label": "Derived Types (Named Product Types)",
           "notation": "𝕋₁ = { τ₁ OP τ₂ OP ... OP τₙ  |  τᵢ ∈ 𝕋₀,  OP ∈ {×, +, |} }",
           "layer": "M2",
           "role": "M2 GenericConcepts — named structural formulas",
@@ -294,14 +294,14 @@
           ]
         },
         "T2": {
-          "label": "Compound Types (Emergent Combos)",
+          "rdfs:label": "Compound Types (Emergent Combos)",
           "notation": "𝕋₂ = compositions of 𝕋₁ expressions via ×, +, |",
           "layer": "M1",
           "role": "M1 GenericConceptCombos — emergent compound concepts",
           "dcterms:description": "Higher-order types — complex compositions of 𝕋₁. Emergence operators (Fm2) were defined here but removed (no corpus usage). Composition of GenericConcepts is now expressed via the Fm2 and Fm1m2 FUNCTIONS (not morphisms — emergence is non-compositional)."
         },
         "M0": {
-          "label": "Terms (Proof Terms)",
+          "rdfs:label": "Terms (Proof Terms)",
           "notation": "𝕄₀ = { poclets inhabiting a type τ ∈ 𝕋₁ ∪ 𝕋₂ }",
           "layer": "M0",
           "role": "Instances that prove a system inhabits a conceptual type",
@@ -402,6 +402,17 @@
       "rdfs:comment": "Ordered list of the most recent modifications to an ontology file, newest first. Declared in the apex ontology so that EVERY layer (M3, M2, M1, M0) can annotate its own owl:Ontology node without inverting the layer dependency: M2/M1/M0 all import M3, so m3:changelog is always a legal downward reference, whereas the former m2:changelog forced M3 files to depend on M2. RETENTION POLICY: the 3 most recent entries, except M3 files which keep up to 7 (rollback safety on the foundational layer). Declared as owl:AnnotationProperty rather than owl:DatatypeProperty because a changelog is documentation ABOUT the ontology, not an assertion about a domain entity \u2014 this keeps the corpus inside OWL DL. No rdfs:domain / rdfs:range axiom is asserted for the same reason; the intended domain is the owl:Ontology node.",
       "skos:note": "Aligned IN INTENT with adms:versionNotes (http://www.w3.org/ns/adms#versionNotes \u2014 'a description of changes between this version and the previous version of the Asset'). No rdfs:subPropertyOf axiom is asserted: m3:changelog is the CONTAINER (the ordered list of entries), whereas adms:versionNotes is the change text INSIDE each entry. DECISION (Michel, 2026-09-30, WS-1 lot 1c): ADMS is accepted as an external vocabulary; each entry is a node {owl:versionInfo, dcterms:date, adms:versionNotes}. The standard alternative (each entry as a version resource linked by dcterms:hasVersion) was considered and not retained: m3:changelog keeps its documented ordering, retention policy and annotation status.",
       "dcterms:created": "2026-07-22"
+    },
+    {
+      "@id": "m3:rationale",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "rationale",
+      "rdfs:comment": "The reasoning that justifies a statement, an example or a design decision. Declared in the apex ontology because it is transversal (used in M2 and M3 files): a lower layer referencing m3: is a legal downward reference, whereas an m2: term inside an M3 file would invert the layer dependency.",
+      "rdfs:subPropertyOf": {
+        "@id": "skos:note"
+      },
+      "skos:note": "WS-1 lot 1g (Michel, 2026-09-30): no standard vocabulary (DCMI, SKOS, RDFS, OWL, ADMS, DCAT, schema.org) offers a rationale / justification property; SKOS only has generic notes. m3:rationale keeps the precise meaning while remaining machine-interpretable as a skos:note through rdfs:subPropertyOf (OWL 2 allows annotation-property hierarchies). Argumentation vocabularies such as IBIS model reasoning as a class structure and were judged too heavy for these free-text justifications.",
+      "dcterms:created": "2026-09-30"
     },
     {
       "@id": "m3:grammar_foundation:Fm2",

@@ -20,7 +20,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
       "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "16.27.0",
+      "owl:versionInfo": "16.28.0",
       "owl:imports": [
         "M3_GenesisGrammar.jsonld"
       ],
@@ -112,6 +112,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "16.28.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1g (Family A). Bare keys (dropped on JSON-LD expansion) replaced: alternative_names -> skos:altLabel, comment -> dcterms:description (consistent with lot 1b), note -> skos:note, definition -> skos:definition, label -> rdfs:label, title -> dcterms:title, id -> dcterms:identifier, rationale -> m3:rationale (declared in M3_GrammarFoundation, rdfs:subPropertyOf skos:note). In this file: alternative_names 22, comment 22, rationale 11, definition 6, note 3, label 3. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
+        {
           "owl:versionInfo": "16.27.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1f (Family A). Bare key 'name' (declared in no @context, dropped on JSON-LD expansion) replaced by the standard rdfs:label (a human-readable version of the resource's name). Bare 'name' inside legacy 'metadata' blocks left for the vestiges lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md. 40 occurrences (aspect, pole and axis nodes); 1 graph-visible now, 39 under bare parent keys (visible once those are resolved)."
@@ -120,11 +125,6 @@
           "owl:versionInfo": "16.26.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m2:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m2:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "16.25.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1c (Family A). Changelog entry keys, previously bare and dropped on JSON-LD expansion, replaced by standards: version -> owl:versionInfo, date -> dcterms:date, changes -> adms:versionNotes (ADMS: a description of changes between this version and the previous one). Prefix adms declared in @context: ADMS accepted as an external vocabulary (Michel, 2026-09-30). Changelog entries become graph-visible. Legacy changelog forms (maps keyed by version, metadata blocks) left for a separate lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ],
       "m2:bicephalousStrategy": {
@@ -1250,7 +1250,7 @@
         "@id": "m2:Entropy",
         "relation": "Dissipation is the generative mechanism of Entropy",
         "formula": "Dissipation(F × D) × generates × Entropy(F × It × D)",
-        "note": "I type emerges from accumulation of F × D — not present in Dissipation itself"
+        "skos:note": "I type emerges from accumulation of F × D — not present in Dissipation itself"
       },
       "m2:hasDominantM3": [
         "m3:eagle_eye:Flow",
@@ -1666,7 +1666,7 @@
           "m2:possibleValues": [
             {
               "value": "Saddle-node",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Fold bifurcation",
                 "Tangent bifurcation"
               ],
@@ -1723,7 +1723,7 @@
             },
             {
               "value": "Hopf",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Andronov-Hopf bifurcation",
                 "Poincaré-Andronov-Hopf"
               ],
@@ -1747,7 +1747,7 @@
             },
             {
               "value": "Period-doubling",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Flip bifurcation",
                 "Subharmonic bifurcation"
               ],
@@ -1852,7 +1852,7 @@
       "m2:fidelitySpectrum": {
         "dcterms:description": "V is the continuous axis unifying all copying phenomena, from perfect replication to complete divergence. Parameterizes the Duplication→Bifurcation transition.",
         "V_high": {
-          "label": "Perfect duplication (V → 1)",
+          "rdfs:label": "Perfect duplication (V → 1)",
           "skos:example": [
             "DNA replication with proofreading (error rate ~10⁻⁹ per base)",
             "Lossless file copy with SHA-256 checksum",
@@ -1860,7 +1860,7 @@
           ]
         },
         "V_medium": {
-          "label": "Imperfect duplication — mutation, drift (0.3 < V < 0.8)",
+          "rdfs:label": "Imperfect duplication — mutation, drift (0.3 < V < 0.8)",
           "skos:example": [
             "RNA virus replication (mutation rate ~10⁻⁴ per base)",
             "Cultural transmission with semantic drift",
@@ -1868,7 +1868,7 @@
           ]
         },
         "V_low": {
-          "label": "Degenerate duplication → Bifurcation (V → 0)",
+          "rdfs:label": "Degenerate duplication → Bifurcation (V → 0)",
           "skos:example": [
             "Sympatric speciation (lineages diverge completely)",
             "Minsky Moment — speculative price diverges from fundamental value"
@@ -2024,7 +2024,7 @@
           "m2:possibleValues": [
             {
               "value": "Scale-free",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Power-law",
                 "Preferential attachment"
               ],
@@ -2047,7 +2047,7 @@
             },
             {
               "value": "Small-world",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Watts-Strogatz"
               ],
               "dcterms:description": "High clustering + short path length (six degrees of separation)",
@@ -2068,7 +2068,7 @@
             },
             {
               "value": "Random",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Erdős-Rényi",
                 "Poisson"
               ],
@@ -2089,7 +2089,7 @@
             },
             {
               "value": "Lattice",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Regular",
                 "Grid",
                 "Crystal"
@@ -2111,7 +2111,7 @@
             },
             {
               "value": "Hierarchical",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Tree",
                 "Nested",
                 "Modular"
@@ -2149,7 +2149,7 @@
             },
             {
               "value": "Ring",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Cycle",
                 "Loop"
               ],
@@ -2167,7 +2167,7 @@
             },
             {
               "value": "Fully-connected",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Complete graph",
                 "All-to-all",
                 "Mesh"
@@ -2274,7 +2274,7 @@
             },
             {
               "value": "Reflective",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Mirror symmetry",
                 "Parity"
               ],
@@ -2293,7 +2293,7 @@
             },
             {
               "value": "Temporal",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Time-translation",
                 "Stationarity"
               ],
@@ -2312,7 +2312,7 @@
             },
             {
               "value": "Scale",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Self-similarity",
                 "Scale invariance",
                 "Fractal"
@@ -2577,12 +2577,12 @@
         "compositionAspect": {
           "rdfs:label": "Encoding",
           "granularity": "Composition",
-          "comment": "Source → code"
+          "dcterms:description": "Source → code"
         },
         "decompositionAspect": {
           "rdfs:label": "Decoding",
           "granularity": "Decomposition",
-          "comment": "Code → source"
+          "dcterms:description": "Code → source"
         }
       },
       "m2:hasExample": [
@@ -2668,7 +2668,7 @@
           "m2:specialCase": {
             "value": 1.0,
             "rdfs:label": "Generative Exhaustion",
-            "definition": "Grammar produces exactly the complete target space: no gap, no redundancy. Completeness is structurally guaranteed, not empirically observed.",
+            "skos:definition": "Grammar produces exactly the complete target space: no gap, no redundancy. Completeness is structurally guaranteed, not empirically observed.",
             "signature": "finite_alphabet + deterministic_combination_rules + closed_target_space"
           },
           "m2:examples": [
@@ -2676,55 +2676,55 @@
               "system": "I Ching hexagrams",
               "domain": "Symbolic divination",
               "spaceCoverage": 1.0,
-              "rationale": "64 hexagrams = {Yin,Yang}⁶ = 2⁶ — bijection with all 6-bit binary strings, exhaustive by construction"
+              "m3:rationale": "64 hexagrams = {Yin,Yang}⁶ = 2⁶ — bijection with all 6-bit binary strings, exhaustive by construction"
             },
             {
               "system": "DNA codons",
               "domain": "Molecular biology",
               "spaceCoverage": 1.0,
-              "rationale": "64 codons = 4³ triplets of {A,T,G,C} — complete codon table, no triplet unassigned (including 3 stop codons)"
+              "m3:rationale": "64 codons = 4³ triplets of {A,T,G,C} — complete codon table, no triplet unassigned (including 3 stop codons)"
             },
             {
               "system": "12-tone chromatic scale (equal temperament)",
               "domain": "Music theory",
               "spaceCoverage": 1.0,
-              "rationale": "12 semitones close the octave under cyclic transposition — all 12 keys reachable from any starting pitch"
+              "m3:rationale": "12 semitones close the octave under cyclic transposition — all 12 keys reachable from any starting pitch"
             },
             {
               "system": "NAND gate (Boolean logic)",
               "domain": "Logic / Computer science",
               "spaceCoverage": 1.0,
-              "rationale": "NAND is a functionally complete set — all Boolean functions expressible from NAND alone"
+              "m3:rationale": "NAND is a functionally complete set — all Boolean functions expressible from NAND alone"
             },
             {
               "system": "International Phonetic Alphabet (IPA)",
               "domain": "Linguistics",
               "spaceCoverage": 0.97,
-              "rationale": "~97% of attested human phonemes covered; rare clicks, tones, and marginal sounds remain outside standard IPA"
+              "m3:rationale": "~97% of attested human phonemes covered; rare clicks, tones, and marginal sounds remain outside standard IPA"
             },
             {
               "system": "Unicode 15.0",
               "domain": "Computer science / Writing systems",
               "spaceCoverage": 0.91,
-              "rationale": "149,813 code points / ~165,000 estimated needed — archaeological scripts and rare variants not yet encoded"
+              "m3:rationale": "149,813 code points / ~165,000 estimated needed — archaeological scripts and rare variants not yet encoded"
             },
             {
               "system": "Tarot de Marseille (78 lames)",
               "domain": "Symbolic divination",
               "spaceCoverage": 0.88,
-              "rationale": "Covers major archetypes but some situational nuances lack a direct card; interpretation must interpolate"
+              "m3:rationale": "Covers major archetypes but some situational nuances lack a direct card; interpretation must interpolate"
             },
             {
               "system": "Elder Futhark runes (24)",
               "domain": "Symbolic / Linguistic",
               "spaceCoverage": 0.6,
-              "rationale": "24 runes cover Proto-Germanic phonemes but miss many phonemic distinctions of modern Germanic languages"
+              "m3:rationale": "24 runes cover Proto-Germanic phonemes but miss many phonemic distinctions of modern Germanic languages"
             },
             {
               "system": "ASCII (128 characters)",
               "domain": "Computer science",
               "spaceCoverage": 0.15,
-              "rationale": "128 code points / ~800,000 Unicode — designed for English only, excludes virtually all non-Latin writing systems"
+              "m3:rationale": "128 code points / ~800,000 Unicode — designed for English only, excludes virtually all non-Latin writing systems"
             }
           ],
           "m2:transdisciplinaryValidation": {
@@ -2736,7 +2736,7 @@
               "Linguistics (IPA phoneme coverage)"
             ],
             "validatedDomains": 5,
-            "note": "RSC = 1.0 (Generative Exhaustion) appears independently in symbolic, biological, musical, and logical domains — strong transdisciplinary anchor"
+            "skos:note": "RSC = 1.0 (Generative Exhaustion) appears independently in symbolic, biological, musical, and logical domains — strong transdisciplinary anchor"
           },
           "m2:architecturalNote": "RepresentationSpaceCoverage is a ValueSpace enrichment of m2:Representation (not a standalone M2 genericConcept). It quantifies the completeness aspect of the Map quality. Its special case RSC=1.0 (Generative Exhaustion) replaces the earlier M2 candidate of same name. The continuous range [0,1] subsumes GenerativeExhaustion as a limit case.",
           "m2:relatedAttributes": {
@@ -2816,7 +2816,7 @@
         "basis": "ASFID",
         "role": "Measure observable recurring regularity in Territory",
         "status": "PRIMARY",
-        "comment": "S = structural topology of the motif; I = informational content making it identifiable; A = attractor explaining recurrence (system returns to this configuration)"
+        "dcterms:description": "S = structural topology of the motif; I = informational content making it identifiable; A = attractor explaining recurrence (system returns to this configuration)"
       },
       "m2:sphinxView": {
         "formulaPrimary": {
@@ -2824,7 +2824,7 @@
           "formula": "O + R + Im",
           "role": "Evaluate reusable template quality in Map",
           "status": "PROPOSITION (validation in progress)",
-          "comment": "O = pattern must be perceptible in the model; R = its semantics must be decodable; I = it must be reusable cross-domain (interoperability)"
+          "dcterms:description": "O = pattern must be perceptible in the model; R = its semantics must be decodable; I = it must be reusable cross-domain (interoperability)"
         }
       },
       "m2:distinctionFromRelated": {
@@ -3232,7 +3232,7 @@
           "m2:possibleValues": [
             {
               "value": "Sharp",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Step",
                 "Discontinuous",
                 "Bang-bang"
@@ -3254,7 +3254,7 @@
             },
             {
               "value": "Smooth",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Graded",
                 "Continuous",
                 "Sigmoidal"
@@ -3277,7 +3277,7 @@
             },
             {
               "value": "Hysteretic",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Bistable",
                 "Memory",
                 "Toggle"
@@ -3302,7 +3302,7 @@
             },
             {
               "value": "Stochastic",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Probabilistic",
                 "Noisy"
               ],
@@ -3586,7 +3586,7 @@
             },
             {
               "value": "Sigmoid",
-              "alternative_names": [
+              "skos:altLabel": [
                 "S-curve",
                 "Logistic",
                 "Tanh"
@@ -3614,7 +3614,7 @@
             },
             {
               "value": "Step",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Heaviside",
                 "Threshold",
                 "Discontinuous"
@@ -3650,7 +3650,7 @@
             },
             {
               "value": "Gaussian",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Normal",
                 "Bell curve"
               ],
@@ -3817,7 +3817,7 @@
             },
             {
               "value": "Discrete-event",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Event-driven",
                 "Asynchronous",
                 "Spike"
@@ -3845,7 +3845,7 @@
             },
             {
               "value": "Hybrid",
-              "alternative_names": [
+              "skos:altLabel": [
                 "Mixed-signal",
                 "Sampled-data"
               ],
@@ -3922,11 +3922,11 @@
       "m2:dualAspects": {
         "positiveAspect": {
           "rdfs:label": "Positive Synergy",
-          "comment": "Enhancement (1+1>2)"
+          "dcterms:description": "Enhancement (1+1>2)"
         },
         "negativeAspect": {
           "rdfs:label": "Negative Synergy",
-          "comment": "Inhibition (1+1<2)"
+          "dcterms:description": "Inhibition (1+1<2)"
         }
       },
       "m2:hasExample": [
@@ -3987,12 +3987,12 @@
         "compositionAspect": {
           "rdfs:label": "Fusion",
           "granularity": "Composition",
-          "comment": "Merging entities"
+          "dcterms:description": "Merging entities"
         },
         "decompositionAspect": {
           "rdfs:label": "Fission",
           "granularity": "Decomposition",
-          "comment": "Splitting entities"
+          "dcterms:description": "Splitting entities"
         }
       },
       "m2:hasExample": [
@@ -4055,11 +4055,11 @@
       "m2:dualAspects": {
         "positiveAspect": {
           "rdfs:label": "Activation",
-          "comment": "Enable process"
+          "dcterms:description": "Enable process"
         },
         "negativeAspect": {
           "rdfs:label": "Inhibition",
-          "comment": "Block process"
+          "dcterms:description": "Block process"
         }
       },
       "m2:hasExample": [
@@ -4119,11 +4119,11 @@
       "m2:dualAspects": {
         "convergenceAspect": {
           "rdfs:label": "Convergence",
-          "comment": "Focusing toward attractor"
+          "dcterms:description": "Focusing toward attractor"
         },
         "divergenceAspect": {
           "rdfs:label": "Divergence",
-          "comment": "Dispersing away from repeller"
+          "dcterms:description": "Dispersing away from repeller"
         }
       },
       "m2:hasExample": [
@@ -4812,7 +4812,7 @@
             "S": "Structural inventory of recovered parts",
             "I": "Interface/bond information needed to identify parts"
           },
-          "note": "Attractor (A) is absent from the Decomposition pole: the emergent property dissolves when the whole is partitioned. This asymmetry — Composition gains A, Decomposition loses A — is what distinguishes Composition from a mere bidirectional Transformation.",
+          "skos:note": "Attractor (A) is absent from the Decomposition pole: the emergent property dissolves when the whole is partitioned. This asymmetry — Composition gains A, Decomposition loses A — is what distinguishes Composition from a mere bidirectional Transformation.",
           "skos:example": [
             "Construction → LEGO bricks (structure recovered, form lost)",
             "H₂O → H₂ + O (molecular structure recovered, liquid properties lost)",
@@ -5019,7 +5019,7 @@
         "v2": {
           "date": "2026-02-18",
           "formula": "A × It × F",
-          "rationale": "A=target objective, I=knowledge of options and costs, F=resource allocation flux. Removes redundant A repetitions while preserving semantic intent."
+          "m3:rationale": "A=target objective, I=knowledge of options and costs, F=resource allocation flux. Removes redundant A repetitions while preserving semantic intent."
         }
       },
       "m3:semanticSignature": "attractor_optimization + information_constraint + flow_cost",
@@ -5121,7 +5121,7 @@
       "m2:historicalNote": {
         "v1-v12": "M2 restricted polarity to neutral (N=1) or dual (N=2), explicitly rejecting N-ary",
         "v13": "Paradigm shift: N-ary polarity adopted based on empirical evidence from multiple domains",
-        "rationale": "Real-world value systems (ethical, political, aesthetic) are naturally N-ary (N≥3). Binary restriction was theoretical overcaution, not empirical necessity.",
+        "m3:rationale": "Real-world value systems (ethical, political, aesthetic) are naturally N-ary (N≥3). Binary restriction was theoretical overcaution, not empirical necessity.",
         "validation": "Switch and Mode genericConcepts were already implicitly N-ary (N-ary states/modes). Polarity genericConcept makes this explicit."
       },
       "m2:philosophicalImplication": "Most fundamental conceptual frameworks are N-ary (N>2), not binary. Binary thinking (dualism) is common but not universal. Pentagonal structures (N=5) appear repeatedly across cultures (Magic colors, Wu Xing, Platonic solids minus one). Suggests deep cognitive/cultural patterns in how humans organize complexity.",
@@ -5251,7 +5251,7 @@
         "basis": "ASFID",
         "role": "Measure observable persistence of an entity in Territory",
         "status": "PRIMARY",
-        "comment": "S = structure that persists (the unchanged thread); I = information that makes this entity unique among others; A = attractor toward which the entity returns after perturbation (self-restoration)"
+        "dcterms:description": "S = structure that persists (the unchanged thread); I = information that makes this entity unique among others; A = attractor toward which the entity returns after perturbation (self-restoration)"
       },
       "m2:sphinxView": {
         "formulaPrimary": {
@@ -5259,7 +5259,7 @@
           "formula": "V + E + O",
           "role": "Evaluate identity continuity quality in Map",
           "status": "PROPOSITION (validation in progress)",
-          "comment": "V = can we verify this is still the same entity after change? (Verifiability is the central Map question for Identity); E = can the identity evolve and adapt while remaining itself? (Evolvability captures identity under transformation); O = deduced from V (verification requires observability)"
+          "dcterms:description": "V = can we verify this is still the same entity after change? (Verifiability is the central Map question for Identity); E = can the identity evolve and adapt while remaining itself? (Evolvability captures identity under transformation); O = deduced from V (verification requires observability)"
         }
       },
       "m2:distinctionFromRelated": {
@@ -5677,7 +5677,7 @@
       },
       "m2:valueSpaceTypes": {
         "scalar": {
-          "definition": "Single dimension (1D)",
+          "skos:definition": "Single dimension (1D)",
           "skos:example": [
             "Temperature interval",
             "pH scale",
@@ -5688,7 +5688,7 @@
           "measure_It_continuous": "I_t = log(Δx/ε) where Δx = range, ε = resolution"
         },
         "vector": {
-          "definition": "Multiple dimensions (nD cartesian product)",
+          "skos:definition": "Multiple dimensions (nD cartesian product)",
           "skos:example": [
             "RGB color [0,255]³",
             "3D position (x,y,z) ∈ ℝ³",
@@ -5698,7 +5698,7 @@
           "measure_It_continuous": "It = log₁₀[∏ᵢ (Δxᵢ/εᵢ)]"
         },
         "structuralCompositionSpace": {
-          "definition": "Structural composition space (as used in TSCG M2 formulas)",
+          "skos:definition": "Structural composition space (as used in TSCG M2 formulas)",
           "skos:example": [
             "Process = D → I → F",
             "Domain = ASFID → REVOI (before SVD)"
@@ -5706,7 +5706,7 @@
           "measure_It": "It = log₁₀(number of distinct states in the system state space)"
         },
         "symbolic": {
-          "definition": "Discrete set without order/metric (pure list)",
+          "skos:definition": "Discrete set without order/metric (pure list)",
           "skos:example": [
             "Alphabet {A-Z}",
             "Amino acids {Ala, Cys, ...}",
@@ -5716,7 +5716,7 @@
           "measure_It": "It = log₂(|S|) where |S| = set cardinality"
         },
         "hybrid": {
-          "definition": "Mixed discrete + continuous dimensions",
+          "skos:definition": "Mixed discrete + continuous dimensions",
           "skos:example": [
             "Quantum state: Spin{↑, ↓} × Position(ℝ³)",
             "VSM S1: Mode{Active,Standby,Error} × Performance[0,1]"
@@ -6051,7 +6051,7 @@
       "m2:dualAspects": {
         "negativeFeedback": {
           "rdfs:label": "Negative Feedback",
-          "comment": "Error-correcting, stabilizing - output opposes deviation from set point",
+          "dcterms:description": "Error-correcting, stabilizing - output opposes deviation from set point",
           "skos:example": [
             "Thermostat",
             "Insulin-glucose regulation",
@@ -6061,7 +6061,7 @@
         },
         "positiveFeedback": {
           "rdfs:label": "Positive Feedback",
-          "comment": "Amplifying, self-reinforcing - output amplifies deviation from initial state",
+          "dcterms:description": "Amplifying, self-reinforcing - output amplifies deviation from initial state",
           "skos:example": [
             "Oxytocin in labor",
             "Blood clotting cascade",
@@ -6208,7 +6208,7 @@
       "m2:dualAspects": {
         "positiveAspect": {
           "rdfs:label": "Entropy",
-          "comment": "Disorder, uncertainty, irreversibility — ΔS > 0",
+          "dcterms:description": "Disorder, uncertainty, irreversibility — ΔS > 0",
           "skos:example": [
             "Heat death",
             "Information erasure",
@@ -6217,7 +6217,7 @@
         },
         "negativeAspect": {
           "rdfs:label": "Negentropy",
-          "comment": "Order, structure, low uncertainty — ΔS < 0 locally (maintained by external exergy)",
+          "dcterms:description": "Order, structure, low uncertainty — ΔS < 0 locally (maintained by external exergy)",
           "skos:example": [
             "Living organisms",
             "Crystals",
@@ -6314,7 +6314,7 @@
       "m2:dualAspects": {
         "positiveAspect": {
           "rdfs:label": "Coherence",
-          "comment": "Global alignment — θ(x) continuous, A × S × I aligned, R × O confirms it",
+          "dcterms:description": "Global alignment — θ(x) continuous, A × S × I aligned, R × O confirms it",
           "skos:example": [
             "Laser coherence",
             "Network consensus",
@@ -6323,7 +6323,7 @@
         },
         "negativeAspect": {
           "rdfs:label": "Incoherence",
-          "comment": "Local rupture of continuity — singularity in the order parameter field",
+          "dcterms:description": "Local rupture of continuity — singularity in the order parameter field",
           "skos:example": [
             "Fork in blockchain",
             "Contradiction in logic",
@@ -6450,7 +6450,7 @@
       "m2:dualAspects": {
         "positiveAspect": {
           "rdfs:label": "Potentialization",
-          "comment": "F=0 → F_active: mobilization, awakening, activation of reserve",
+          "dcterms:description": "F=0 → F_active: mobilization, awakening, activation of reserve",
           "skos:example": [
             "Seed germination",
             "Capital investment",
@@ -6460,7 +6460,7 @@
         },
         "negativeAspect": {
           "rdfs:label": "F-Depletion",
-          "comment": "F_active → F=0: exhaustion, quiescence, suspension of flow",
+          "dcterms:description": "F_active → F=0: exhaustion, quiescence, suspension of flow",
           "skos:example": [
             "Organism entering hibernation",
             "Capital freeze",
