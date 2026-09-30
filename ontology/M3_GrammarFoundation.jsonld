@@ -14,7 +14,7 @@
     {
       "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.6.0",
+      "owl:versionInfo": "2.7.0",
       "dcterms:created": "2026-05-12",
       "dcterms:modified": "2026-09-30",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
@@ -54,6 +54,11 @@
       },
       "m3:changelog": [
         {
+          "version": "2.7.0",
+          "date": "2026-09-30",
+          "changes": "WS-1 VOCABULARY CONSOLIDATION, lot 1b (Family A). Bare key 'description' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard dcterms:description (DCMI: an account of the resource; literal). Chosen over rdfs:comment on semantic grounds (Michel, 2026-09-30). 6 occurrences. Side fix: under this file's @vocab (owl#) the bare key had minted the bogus term owl:description (6 triples); it is now dcterms:description. Bare 'description' inside legacy 'metadata' blocks left untouched (separate lot). No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
+        {
           "version": "2.6.0",
           "date": "2026-09-30",
           "changes": "WS-1 VOCABULARY CONSOLIDATION, lot 1a (Family A). Bare keys 'examples' / 'example' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard skos:example (SKOS documentation property, owl:AnnotationProperty, no domain/range): a list value now yields one skos:example triple per item. 1 list occurrence (3 examples). Side fix: under this file's @vocab (owl#) the bare key had minted the bogus term owl:examples; it is now skos:example. No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -82,15 +87,10 @@
           "version": "2.2.0",
           "date": "2026-05-27",
           "changes": "BASE16 EXTENSION: Gs alphabet extended from 3 to 6 primitives. Three new Gs types: K (Knowledge, idx 3), Ss (Symbol/Stereopsic, idx 4), L (Localizability, idx 5). 𝕋₀ cardinality: 13 → 16. TKSL acronym for the 4 nominal Gs primitives. Transcendental questions map: {T: When?, K: What?, Ss: Sign?, L: Converging?}. 5-5-6 asymmetry documented."
-        },
-        {
-          "version": "2.1.0",
-          "date": "2026-05-20",
-          "changes": "OPERATOR MIGRATION: monoidalProduct ⊗ⁱ → ×/+/| (three explicit operators). dualityOperator ^opⁱ → _^/_$ (Gs pole primitives). emergenceOperator ⊗ⁱ⇒ removed (replaced by Fm2/Fm1m2). TypeSystem T2 cleaned."
         }
       ],
       "three_alphabets": {
-        "description": "Three primitive alphabets — one per monoidal operator.",
+        "dcterms:description": "Three primitive alphabets — one per monoidal operator.",
         "territory": {
           "notation": "𝕋₀(×) = {A, S, F, I, D}",
           "grammar": "Territory Grammar Gt — Eagle Eye",
@@ -125,7 +125,7 @@
         }
       },
       "operator_grammar_types": {
-        "description": "× and + are intra-grammar (closed). | is inter-grammar (open). Explained within Lambek framework only.",
+        "dcterms:description": "× and + are intra-grammar (closed). | is inter-grammar (open). Explained within Lambek framework only.",
         "intra_grammar": {
           "territory_product": {
             "operator": "×",
@@ -153,10 +153,10 @@
       },
       "m2_functions_and_morphisms": {
         "note": "Φ and Ψ are MORPHISMS (structure-preserving maps between grammars — they compose). Fm2 and Fm1m2 are FUNCTIONS, NOT morphisms and NOT functors: their essence is combination with emergence, which is non-compositional, whereas a morphism/functor must preserve composition. The two families are kept separate on purpose. See StructuralGrammar/Functional_Grammar_Model.md.",
-        "description": "Combination FUNCTIONS at M2/M1 level (Fm2, Fm1m2) alongside the genuine inter-grammar MORPHISMS (Φ, Ψ). Distinct from the monoidal operators ×/+/|, which act at 𝕋₀ on atoms. Fm2/Fm1m2 are functions, not morphisms: emergence is non-compositional.",
+        "dcterms:description": "Combination FUNCTIONS at M2/M1 level (Fm2, Fm1m2) alongside the genuine inter-grammar MORPHISMS (Φ, Ψ). Distinct from the monoidal operators ×/+/|, which act at 𝕋₀ on atoms. Fm2/Fm1m2 are functions, not morphisms: emergence is non-compositional.",
         "Fm2": {
           "signature": "Fm2 : GenericConcept²⁺ → GenericConceptCombo",
-          "description": "GenericConcept composition. Replaces former ⊗⇒ notation.",
+          "dcterms:description": "GenericConcept composition. Replaces former ⊗⇒ notation.",
           "example_1": "Fm2(Memory, Entropy) = Inertia",
           "example_2": "Fm2(Incoherence, Invariant) = TopologicalDefect",
           "example_3": "Fm2(Process, Step, Trajectory) = PipelineProcess",
@@ -165,7 +165,7 @@
         },
         "Fm1m2": {
           "signature": "Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo",
-          "description": "KnowledgeField + GenericConcept composition.",
+          "dcterms:description": "KnowledgeField + GenericConcept composition.",
           "example_1": "Fm1m2(Biology, Process) = BiologicalProcess",
           "example_2": "Fm1m2(Physics, Coherence) = LaserCoherence",
           "kind": "function (not a morphism, not a functor) — emergence is non-compositional",
@@ -297,7 +297,7 @@
           "notation": "𝕋₂ = compositions of 𝕋₁ expressions via ×, +, |",
           "layer": "M1",
           "role": "M1 GenericConceptCombos — emergent compound concepts",
-          "description": "Higher-order types — complex compositions of 𝕋₁. Emergence operators (Fm2) were defined here but removed (no corpus usage). Composition of GenericConcepts is now expressed via the Fm2 and Fm1m2 FUNCTIONS (not morphisms — emergence is non-compositional)."
+          "dcterms:description": "Higher-order types — complex compositions of 𝕋₁. Emergence operators (Fm2) were defined here but removed (no corpus usage). Composition of GenericConcepts is now expressed via the Fm2 and Fm1m2 FUNCTIONS (not morphisms — emergence is non-compositional)."
         },
         "M0": {
           "label": "Terms (Proof Terms)",

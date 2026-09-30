@@ -12,7 +12,8 @@
 
 | Lot | Line | State | Effect |
 |---|---|---|---|
-| 1a | `examples` / `example` → `skos:example` | DONE 2026-09-30 (Michel approved) | 184 keys renamed (172 lists, 12 strings) + 5 object values converted to named-node lists `{rdfs:label, rdf:value}`; +426 skos:example triples (73 → 499); bogus `owl:examples` (M3_GrammarFoundation, `@vocab owl#`) fixed; 11 conversions stay graph-invisible until their bare parent key is resolved (EagleEye 2, GenesisGrammar 4, M2 `territoryComponent` 5); VOC gauge 4177 → 3974; gate PASS, golden unchanged |
+| 1a | `examples` / `example` → `skos:example` | DONE 2026-09-30 (Michel approved) | 184 keys renamed (172 lists, 12 strings) + 5 object values converted to named-node lists `{rdfs:label, rdf:value}`; +426 skos:example triples (73 → 499); bogus `owl:examples` (M3_GrammarFoundation, `@vocab owl#`) fixed; 11 conversions stay graph-invisible until their bare parent key is resolved (EagleEye 2, GenesisGrammar 4, M2 `territoryComponent` 5); VOC gauge 4177 → 3983 (−203 keys, +9 from the lot's own changelog entries); gate PASS, golden unchanged |
+| 1b | `description` → `dcterms:description` (chosen over `rdfs:comment` on semantic grounds, Michel) | DONE 2026-09-30 | 160 keys renamed (3 inside legacy `metadata` blocks left for a separate lot); +134 dcterms:description triples visible (9 → 143), of which 7 replace bogus `owl:description` (M3 `@vocab owl#`); 26 stay graph-invisible under bare parent keys; VOC gauge 3983 → 3832 (−160 keys, +9 from changelog entries); gate PASS, golden unchanged |
 
 ## Method
 
@@ -121,3 +122,5 @@ the scoping note (`m3:documentation` container).
 - OWL Web Ontology Language Reference — https://www.w3.org/TR/owl-ref/
 - ADMS — https://www.w3.org/TR/vocab-adms/
 - schema.org — https://schema.org/positiveNotes, https://schema.org/unitText
+
+> **Note on the gauge**: each lot adds changelog entries whose own keys (`version`, `date`, `changes`) are still bare — about +9 per lot until the changelog trio line is done. Doing that line early stops the drift.

@@ -31,7 +31,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
       "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "2.13.0",
+      "owl:versionInfo": "2.14.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -41,14 +41,14 @@
         "role": "Domain-specific reusable concepts bridging universal (M2) and particular (M0)"
       },
       "m1:architecturalPrinciple": {
-        "description": "M1 layer uses EXTENSION MECHANISM: M1_CoreConcepts (base) is extended by domain-specific M1 ontologies",
+        "dcterms:description": "M1 layer uses EXTENSION MECHANISM: M1_CoreConcepts (base) is extended by domain-specific M1 ontologies",
         "baseOntology": "M1_CoreConcepts.jsonld (this file) - Generic transdisciplinary concepts",
         "extensionOntologies": "M1_[Domain].jsonld files (specific to disciplines)",
         "importMechanism": "owl:imports from M1_CoreConcepts + domain-specific additions",
         "namespaceStrategy": "Each M1 extension uses m1:extension:<domain>: namespace (e.g. m1:extension:optics:, m1:extension:mythology:)"
       },
       "m1:extensionOntologies": {
-        "description": "Domain-specific M1 ontologies extending M1_CoreConcepts",
+        "dcterms:description": "Domain-specific M1 ontologies extending M1_CoreConcepts",
         "current": [
           {
             "ontology": "M1_Biology.jsonld",
@@ -147,11 +147,11 @@
         ]
       },
       "m1:conceptCategories": {
-        "description": "Generic transdisciplinary concept categories in M1_CoreConcepts (base layer)",
+        "dcterms:description": "Generic transdisciplinary concept categories in M1_CoreConcepts (base layer)",
         "categories": [
           {
             "category": "Generic Mechanisms",
-            "description": "Reusable operational patterns (Oscillator, Amplifier, Filter, Switch)",
+            "dcterms:description": "Reusable operational patterns (Oscillator, Amplifier, Filter, Switch)",
             "skos:example": [
               "Oscillator",
               "Amplifier",
@@ -164,7 +164,7 @@
           },
           {
             "category": "Structural Templates",
-            "description": "Common architectural patterns (Loop, Cascade, Feedback, Hierarchy)",
+            "dcterms:description": "Common architectural patterns (Loop, Cascade, Feedback, Hierarchy)",
             "skos:example": [
               "Loop",
               "Cascade",
@@ -178,7 +178,7 @@
           },
           {
             "category": "Relational Patterns",
-            "description": "Generic relationship types (Competition, Cooperation, Parasitism)",
+            "dcterms:description": "Generic relationship types (Competition, Cooperation, Parasitism)",
             "skos:example": [
               "Competition",
               "Cooperation",
@@ -190,7 +190,7 @@
           },
           {
             "category": "Process Archetypes",
-            "description": "Generic transformational processes (Growth, Decay, Oscillation)",
+            "dcterms:description": "Generic transformational processes (Growth, Decay, Oscillation)",
             "skos:example": [
               "Growth",
               "Decay",
@@ -215,7 +215,7 @@
         "phase4": "Refine boundaries between M1_Core and M1_Domain extensions"
       },
       "m1:conceptDiscoveryProcess": {
-        "description": "How M1 concepts are discovered and validated",
+        "dcterms:description": "How M1 concepts are discovered and validated",
         "steps": [
           "1. Analyze poclets (M0) to identify recurring domain-specific patterns",
           "2. Check if pattern already exists in M2 (universal) - if yes, instantiate directly",
@@ -255,6 +255,11 @@
       },
       "m2:changelog": [
         {
+          "version": "2.14.0",
+          "date": "2026-09-30",
+          "changes": "WS-1 VOCABULARY CONSOLIDATION, lot 1b (Family A). Bare key 'description' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard dcterms:description (DCMI: an account of the resource; literal). Chosen over rdfs:comment on semantic grounds (Michel, 2026-09-30). 40 occurrences (36 graph-visible, 4 under a bare parent key). Bare 'description' inside legacy 'metadata' blocks left untouched (separate lot). No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
+        {
           "version": "2.13.0",
           "date": "2026-09-30",
           "changes": "WS-1 VOCABULARY CONSOLIDATION, lot 1a (Family A). Bare keys 'examples' / 'example' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard skos:example (SKOS documentation property, owl:AnnotationProperty, no domain/range): a list value now yields one skos:example triple per item. 61 list occurrences. No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -263,11 +268,6 @@
           "version": "2.12.0",
           "date": "2026-09-30",
           "changes": "hasAttribute MADE GRAPH-VISIBLE (companion of M2 16.21.0). m1:hasAttribute (undeclared, 6 uses) unified into m2:hasAttribute, and its value converted from a map keyed by attribute name (bare keys, dropped by JSON-LD expansion) to a LIST of attribute nodes named by rdfs:label. Content unchanged. Converted 13 attributes on 6 concepts: Cascade, Oscillator, Processor, Propagation, Narration, Permeability. Effect: the Oscillator m2:valueRange bounds and the Processor m2:cardinality now reach the RDF graph."
-        },
-        {
-          "version": "2.11.0",
-          "date": "2026-09-30",
-          "changes": "MULTIPLICITY HOMOGENISATION (companion of M2 16.20.0). m1:Processor Input/Output: m2:arity 'variable' (used as a COUNT) -> m2:cardinality '1..*'. Under M2 16.20.0, arity means 'number active at the same time'; the former value was a count, so it moves to cardinality. Arity left unspecified (not stated by the source). Comments updated accordingly. VALUE BOUNDS: added m2:valueRange to Oscillator phase '[0, 2π)' and damping_ratio '[0, inf)' — bounds already stated in their own descriptions (phi in [0, 2pi), zeta >= 0), now machine-readable. FLAGGED, not changed: m1:hasAttribute (6 uses) vs m2:hasAttribute (M2) — same role, two names."
         }
       ]
     },
@@ -726,7 +726,7 @@
           "m2:possibleValues": [
             {
               "value": "Infrasonic",
-              "description": "f < 1 Hz — very slow oscillations",
+              "dcterms:description": "f < 1 Hz — very slow oscillations",
               "skos:example": [
                 "Circadian rhythms (~1/86400 Hz)",
                 "Economic cycles",
@@ -735,7 +735,7 @@
             },
             {
               "value": "Acoustic",
-              "description": "1 Hz ≤ f < 20 kHz — human-perceptible range",
+              "dcterms:description": "1 Hz ≤ f < 20 kHz — human-perceptible range",
               "skos:example": [
                 "Pendulum clock (~1 Hz)",
                 "Musical instruments (20–4000 Hz)",
@@ -744,7 +744,7 @@
             },
             {
               "value": "Ultrasonic",
-              "description": "f ≥ 20 kHz — above human hearing",
+              "dcterms:description": "f ≥ 20 kHz — above human hearing",
               "skos:example": [
                 "Ultrasound imaging",
                 "Quartz oscillator (32 768 Hz)",
@@ -763,7 +763,7 @@
           "m2:possibleValues": [
             {
               "value": "Constant",
-              "description": "Undamped — amplitude unchanged over time (ζ = 0)",
+              "dcterms:description": "Undamped — amplitude unchanged over time (ζ = 0)",
               "skos:example": [
                 "Ideal LC circuit",
                 "Ideal pendulum in vacuum"
@@ -771,7 +771,7 @@
             },
             {
               "value": "Decaying",
-              "description": "Damped — amplitude decreases exponentially: A(t) = A₀·e^(-ζ·ω₀·t)",
+              "dcterms:description": "Damped — amplitude decreases exponentially: A(t) = A₀·e^(-ζ·ω₀·t)",
               "skos:example": [
                 "Spring-mass-damper (ζ < 1)",
                 "RLC circuit with resistance",
@@ -780,7 +780,7 @@
             },
             {
               "value": "Growing",
-              "description": "Negative damping — amplitude increases until saturation",
+              "dcterms:description": "Negative damping — amplitude increases until saturation",
               "skos:example": [
                 "Feedback oscillator at startup",
                 "Limit cycle growth (Van der Pol)"
@@ -788,7 +788,7 @@
             },
             {
               "value": "Limit_cycle",
-              "description": "Self-sustained — amplitude stabilises at a fixed value regardless of initial conditions",
+              "dcterms:description": "Self-sustained — amplitude stabilises at a fixed value regardless of initial conditions",
               "skos:example": [
                 "Van der Pol oscillator",
                 "Heartbeat pacemaker cells",
@@ -808,7 +808,7 @@
           "m2:possibleValues": [
             {
               "value": "In_phase",
-              "description": "φ = 0 — oscillators reach their maxima simultaneously",
+              "dcterms:description": "φ = 0 — oscillators reach their maxima simultaneously",
               "skos:example": [
                 "Coupled pendulums (in-phase mode)",
                 "Synchronised fireflies"
@@ -816,7 +816,7 @@
             },
             {
               "value": "Quadrature",
-              "description": "φ = π/2 — one oscillator leads by a quarter cycle",
+              "dcterms:description": "φ = π/2 — one oscillator leads by a quarter cycle",
               "skos:example": [
                 "LC tank circuit (V and I)",
                 "Phase-shift oscillator"
@@ -824,7 +824,7 @@
             },
             {
               "value": "Antiphase",
-              "description": "φ = π — oscillators reach their maxima in alternation",
+              "dcterms:description": "φ = π — oscillators reach their maxima in alternation",
               "skos:example": [
                 "Coupled pendulums (anti-phase mode)",
                 "Push-pull amplifier"
@@ -832,7 +832,7 @@
             },
             {
               "value": "Arbitrary",
-              "description": "φ ∈ (0, 2π) — general phase relationship",
+              "dcterms:description": "φ ∈ (0, 2π) — general phase relationship",
               "skos:example": [
                 "Uncoupled oscillators",
                 "Initial-condition-determined phase"
@@ -851,7 +851,7 @@
           "m2:possibleValues": [
             {
               "value": "Undamped",
-              "description": "ζ = 0 — perpetual oscillation, no energy loss",
+              "dcterms:description": "ζ = 0 — perpetual oscillation, no energy loss",
               "skos:example": [
                 "Ideal pendulum in vacuum",
                 "Ideal LC circuit"
@@ -859,7 +859,7 @@
             },
             {
               "value": "Underdamped",
-              "description": "0 < ζ < 1 — oscillation with exponentially decaying amplitude",
+              "dcterms:description": "0 < ζ < 1 — oscillation with exponentially decaying amplitude",
               "skos:example": [
                 "Car suspension (typical ζ ≈ 0.3)",
                 "Damped tuning fork",
@@ -868,7 +868,7 @@
             },
             {
               "value": "Critically_damped",
-              "description": "ζ = 1 — fastest return to equilibrium without oscillation",
+              "dcterms:description": "ζ = 1 — fastest return to equilibrium without oscillation",
               "skos:example": [
                 "Optimal door closer",
                 "Critically damped galvanometer"
@@ -876,7 +876,7 @@
             },
             {
               "value": "Overdamped",
-              "description": "ζ > 1 — monotonic return to equilibrium, no oscillation",
+              "dcterms:description": "ζ > 1 — monotonic return to equilibrium, no oscillation",
               "skos:example": [
                 "Heavy door closer",
                 "Overdamped RC filter",
@@ -1347,7 +1347,7 @@
           "m2:possibleValues": [
             {
               "value": "SubThreshold",
-              "description": "R₀ < 1 — propagation decays",
+              "dcterms:description": "R₀ < 1 — propagation decays",
               "skos:example": [
                 "Epidemic with R₀<1",
                 "Contained panic"
@@ -1355,14 +1355,14 @@
             },
             {
               "value": "Critical",
-              "description": "R₀ = 1 — endemic equilibrium",
+              "dcterms:description": "R₀ = 1 — endemic equilibrium",
               "skos:example": [
                 "Endemic disease"
               ]
             },
             {
               "value": "Supercritical",
-              "description": "R₀ > 1 — exponential spread",
+              "dcterms:description": "R₀ > 1 — exponential spread",
               "skos:example": [
                 "Epidemic outbreak",
                 "Bank run",
@@ -1371,7 +1371,7 @@
             },
             {
               "value": "Saturated",
-              "description": "Network fully propagated, attractor reached",
+              "dcterms:description": "Network fully propagated, attractor reached",
               "skos:example": [
                 "Herd immunity",
                 "Market bubble peak"
@@ -1489,7 +1489,7 @@
           "m2:possibleValues": [
             {
               "value": "Linear",
-              "description": "Single directed chain A→B→C→Resolution",
+              "dcterms:description": "Single directed chain A→B→C→Resolution",
               "skos:example": [
                 "Hero journey",
                 "Historical chronicle",
@@ -1498,7 +1498,7 @@
             },
             {
               "value": "Branching",
-              "description": "Tree with decision points or parallel threads",
+              "dcterms:description": "Tree with decision points or parallel threads",
               "skos:example": [
                 "Choose-your-own-adventure",
                 "Diagnostic decision tree"
@@ -1506,7 +1506,7 @@
             },
             {
               "value": "Circular",
-              "description": "Attractor is the starting point — narration returns to origin transformed",
+              "dcterms:description": "Attractor is the starting point — narration returns to origin transformed",
               "skos:example": [
                 "Myth of eternal return",
                 "Comedy of errors"
@@ -1514,7 +1514,7 @@
             },
             {
               "value": "Nested",
-              "description": "Narration contains embedded sub-narrations (Imbrication)",
+              "dcterms:description": "Narration contains embedded sub-narrations (Imbrication)",
               "skos:example": [
                 "Arabian Nights",
                 "Flashback structure"
@@ -1522,7 +1522,7 @@
             },
             {
               "value": "Network",
-              "description": "Rhizomatic — no single entry/exit, multiple attractors",
+              "dcterms:description": "Rhizomatic — no single entry/exit, multiple attractors",
               "skos:example": [
                 "Hypertext fiction",
                 "Talmudic commentary"
@@ -1539,7 +1539,7 @@
           "m2:possibleValues": [
             {
               "value": "Resolution",
-              "description": "Stable equilibrium — conflict resolved, question answered",
+              "dcterms:description": "Stable equilibrium — conflict resolved, question answered",
               "skos:example": [
                 "Detective reveals culprit",
                 "Scientific hypothesis confirmed"
@@ -1547,7 +1547,7 @@
             },
             {
               "value": "Transformation",
-              "description": "Protagonist/system qualitatively changed",
+              "dcterms:description": "Protagonist/system qualitatively changed",
               "skos:example": [
                 "Hero's journey completion",
                 "Paradigm shift (Kuhn)"
@@ -1555,7 +1555,7 @@
             },
             {
               "value": "OpenEnded",
-              "description": "Asymptotic — narration approaches but never reaches resolution",
+              "dcterms:description": "Asymptotic — narration approaches but never reaches resolution",
               "skos:example": [
                 "Postmodern novel",
                 "Ongoing research narrative"
@@ -1563,7 +1563,7 @@
             },
             {
               "value": "Collapse",
-              "description": "Negative attractor — convergence toward dissolution",
+              "dcterms:description": "Negative attractor — convergence toward dissolution",
               "skos:example": [
                 "Tragedy (Hamlet)",
                 "Kindleberger-Minsky Revulsion phase"
@@ -1746,7 +1746,7 @@
           "m2:possibleValues": [
             {
               "value": "Static",
-              "description": "Permeability fixed by structure alone",
+              "dcterms:description": "Permeability fixed by structure alone",
               "skos:example": [
                 "Rock (geological porosity)",
                 "Coffee filter",
@@ -1755,7 +1755,7 @@
             },
             {
               "value": "Threshold-dependent",
-              "description": "Permeability switches at a critical flux value",
+              "dcterms:description": "Permeability switches at a critical flux value",
               "skos:example": [
                 "Cell membrane voltage-gated channel",
                 "Dam spillway",
@@ -1764,7 +1764,7 @@
             },
             {
               "value": "History-dependent",
-              "description": "Permeability changes irreversibly with accumulated flux",
+              "dcterms:description": "Permeability changes irreversibly with accumulated flux",
               "skos:example": [
                 "Paper absorbing oil (becomes translucent)",
                 "Soil saturation",
@@ -1916,7 +1916,7 @@
         }
       },
       "m1:ontologicalOverfittingConnection": {
-        "description": "Ontological Overfitting is the instance of OverConstrained (_$) applied to m2:Modelisation. It occurs when a modeller adds one M2 concept per observed phenomenon instead of composing existing concepts — sacrificing E (Evolvability) and V (Verifiability) for local R (Representability).",
+        "dcterms:description": "Ontological Overfitting is the instance of OverConstrained (_$) applied to m2:Modelisation. It occurs when a modeller adds one M2 concept per observed phenomenon instead of composing existing concepts — sacrificing E (Evolvability) and V (Verifiability) for local R (Representability).",
         "antiPattern": "See OntologicalOverfitting.md in CoreHypotheses/",
         "remedy": "Apply tscg-m2-candidate-filter skill: decomposability test + transdisciplinary test + atomicity test"
       },
