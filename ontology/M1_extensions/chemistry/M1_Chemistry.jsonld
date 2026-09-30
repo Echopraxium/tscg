@@ -23,7 +23,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-17",
       "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "1.7.0",
+      "owl:versionInfo": "1.8.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -51,6 +51,11 @@
       ],
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.8.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1f (Family A). Bare key 'name' (declared in no @context, dropped on JSON-LD expansion) replaced by the standard rdfs:label (a human-readable version of the resource's name). Bare 'name' inside legacy 'metadata' blocks left for the vestiges lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md. 9 occurrences, all graph-visible."
+        },
+        {
           "owl:versionInfo": "1.7.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m2:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m2:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -59,11 +64,6 @@
           "owl:versionInfo": "1.6.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1c (Family A). Changelog entry keys, previously bare and dropped on JSON-LD expansion, replaced by standards: version -> owl:versionInfo, date -> dcterms:date, changes -> adms:versionNotes (ADMS: a description of changes between this version and the previous one). Prefix adms declared in @context: ADMS accepted as an external vocabulary (Michel, 2026-09-30). Changelog entries become graph-visible. Legacy changelog forms (maps keyed by version, metadata blocks) left for a separate lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "1.5.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1b (Family A). Bare key 'description' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard dcterms:description (DCMI: an account of the resource; literal). Chosen over rdfs:comment on semantic grounds (Michel, 2026-09-30). 1 occurrence. Bare 'description' inside legacy 'metadata' blocks left untouched (separate lot). No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ]
     },
@@ -148,7 +148,7 @@
       "rdfs:comment": "Exothermic chemical reaction between a fuel and an oxidizer, producing heat, light, and combustion products. Canonical example: Fire Triangle (Fuel + O1‚ + Heat → Flame).",
       "m1:extension:chemistry:requiredComponents": [
         {
-          "name": "Fuel",
+          "rdfs:label": "Fuel",
           "type": "m1:ChemicalSpecies",
           "role": "Energy source (typically hydrocarbon or organic matter)",
           "skos:example": [
@@ -159,7 +159,7 @@
           ]
         },
         {
-          "name": "Oxidizer",
+          "rdfs:label": "Oxidizer",
           "type": "m1:ChemicalSpecies",
           "role": "Electron acceptor (typically O1‚, but can be other oxidizers)",
           "skos:example": [
@@ -170,7 +170,7 @@
           ]
         },
         {
-          "name": "ActivationEnergy",
+          "rdfs:label": "ActivationEnergy",
           "type": "Energy",
           "role": "Initial heat to reach ignition temperature",
           "skos:example": [
@@ -242,19 +242,19 @@
       ],
       "m1:extension:chemistry:subTypes": [
         {
-          "name": "Complete Combustion",
+          "rdfs:label": "Complete Combustion",
           "condition": "Excess O1‚",
           "products": "CO2 + H2O only",
           "efficiency": "High (max energy release)"
         },
         {
-          "name": "Incomplete Combustion",
+          "rdfs:label": "Incomplete Combustion",
           "condition": "Limited O1‚",
           "products": "CO + C (soot) + H2O",
           "efficiency": "Lower (partial oxidation)"
         },
         {
-          "name": "Spontaneous Combustion",
+          "rdfs:label": "Spontaneous Combustion",
           "trigger": "Self-heating (no external ignition)",
           "skos:example": [
             "Hay piles",
@@ -300,19 +300,19 @@
       },
       "m1:extension:chemistry:examples": [
         {
-          "name": "Wood fire",
+          "rdfs:label": "Wood fire",
           "fuel": "Cellulose (C6H10O5)n",
           "products": "CO2 + H2O + Ash",
           "T_ignition": "~300°C"
         },
         {
-          "name": "Methane combustion",
+          "rdfs:label": "Methane combustion",
           "reaction": "CH1„ + 2O1‚ → CO2 + 2H2O",
           "Î”H": "-890 kJ/mol (exothermic)",
           "T_ignition": "580°C"
         },
         {
-          "name": "Candle flame",
+          "rdfs:label": "Candle flame",
           "fuel": "Paraffin wax (C1™H1‚1™1Š1‚)",
           "mechanism": "Wax melts → Wicks → Vaporizes → Burns",
           "selfSustaining": "Yes (heat melts more wax)"

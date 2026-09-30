@@ -20,7 +20,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
       "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "16.26.0",
+      "owl:versionInfo": "16.27.0",
       "owl:imports": [
         "M3_GenesisGrammar.jsonld"
       ],
@@ -112,6 +112,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "16.27.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1f (Family A). Bare key 'name' (declared in no @context, dropped on JSON-LD expansion) replaced by the standard rdfs:label (a human-readable version of the resource's name). Bare 'name' inside legacy 'metadata' blocks left for the vestiges lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md. 40 occurrences (aspect, pole and axis nodes); 1 graph-visible now, 39 under bare parent keys (visible once those are resolved)."
+        },
+        {
           "owl:versionInfo": "16.26.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m2:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m2:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -120,11 +125,6 @@
           "owl:versionInfo": "16.25.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1c (Family A). Changelog entry keys, previously bare and dropped on JSON-LD expansion, replaced by standards: version -> owl:versionInfo, date -> dcterms:date, changes -> adms:versionNotes (ADMS: a description of changes between this version and the previous one). Prefix adms declared in @context: ADMS accepted as an external vocabulary (Michel, 2026-09-30). Changelog entries become graph-visible. Legacy changelog forms (maps keyed by version, metadata blocks) left for a separate lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "16.24.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1b (Family A). Bare key 'description' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard dcterms:description (DCMI: an account of the resource; literal). Chosen over rdfs:comment on semantic grounds (Michel, 2026-09-30). 81 occurrences (80 graph-visible, 1 under a bare parent key). Bare 'description' inside legacy 'metadata' blocks left untouched (separate lot). No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ],
       "m2:bicephalousStrategy": {
@@ -2575,12 +2575,12 @@
       "m2:fullName": "Coding (Encoding / Decoding)",
       "m2:dualAspects": {
         "compositionAspect": {
-          "name": "Encoding",
+          "rdfs:label": "Encoding",
           "granularity": "Composition",
           "comment": "Source → code"
         },
         "decompositionAspect": {
-          "name": "Decoding",
+          "rdfs:label": "Decoding",
           "granularity": "Decomposition",
           "comment": "Code → source"
         }
@@ -2606,12 +2606,12 @@
       "m2:pairType": "DirectionReversal",
       "m2:poleMapping": {
         "pole1": {
-          "name": "Encoding",
+          "rdfs:label": "Encoding",
           "formula": "I_source × I_coded",
           "semantics": "Source information transformed into coded representation (S × D applied forward)"
         },
         "pole2": {
-          "name": "Decoding",
+          "rdfs:label": "Decoding",
           "formula": "I_coded × I_source",
           "semantics": "Coded representation restored to source information (S × D applied in reverse)"
         }
@@ -2667,7 +2667,7 @@
           },
           "m2:specialCase": {
             "value": 1.0,
-            "name": "Generative Exhaustion",
+            "rdfs:label": "Generative Exhaustion",
             "definition": "Grammar produces exactly the complete target space: no gap, no redundancy. Completeness is structurally guaranteed, not empirically observed.",
             "signature": "finite_alphabet + deterministic_combination_rules + closed_target_space"
           },
@@ -3921,11 +3921,11 @@
       "m2:fullName": "Synergy (Positive / Negative)",
       "m2:dualAspects": {
         "positiveAspect": {
-          "name": "Positive Synergy",
+          "rdfs:label": "Positive Synergy",
           "comment": "Enhancement (1+1>2)"
         },
         "negativeAspect": {
-          "name": "Negative Synergy",
+          "rdfs:label": "Negative Synergy",
           "comment": "Inhibition (1+1<2)"
         }
       },
@@ -3950,12 +3950,12 @@
       },
       "m2:poleMapping": {
         "p=0": {
-          "name": "Positive Synergy",
+          "rdfs:label": "Positive Synergy",
           "formula": "+(It × D)",
           "semantics": "Combined effect > sum of parts: 1+1 > 2 (enhancement, amplification)"
         },
         "p=1": {
-          "name": "Negative Synergy",
+          "rdfs:label": "Negative Synergy",
           "formula": "-(It × D)",
           "semantics": "Combined effect < sum of parts: 1+1 < 2 (antagonism, inhibition)"
         }
@@ -3985,12 +3985,12 @@
       "m2:fullName": "Fusion (Fission)",
       "m2:dualAspects": {
         "compositionAspect": {
-          "name": "Fusion",
+          "rdfs:label": "Fusion",
           "granularity": "Composition",
           "comment": "Merging entities"
         },
         "decompositionAspect": {
-          "name": "Fission",
+          "rdfs:label": "Fission",
           "granularity": "Decomposition",
           "comment": "Splitting entities"
         }
@@ -4017,13 +4017,13 @@
       "m2:pairType": "CardinalityReversal",
       "m2:poleMapping": {
         "pole1": {
-          "name": "Fusion",
+          "rdfs:label": "Fusion",
           "formula": "{S₁ × ... × Sₙ} × S",
           "cardinality": "N:1",
           "semantics": "N distinct entities merge into one unified entity (identity lost)"
         },
         "pole2": {
-          "name": "Fission",
+          "rdfs:label": "Fission",
           "formula": "S × {S₁ × ... × Sₙ}",
           "cardinality": "1:N",
           "semantics": "One entity splits into N distinct entities"
@@ -4054,11 +4054,11 @@
       "m2:fullName": "Activation (Inhibition)",
       "m2:dualAspects": {
         "positiveAspect": {
-          "name": "Activation",
+          "rdfs:label": "Activation",
           "comment": "Enable process"
         },
         "negativeAspect": {
-          "name": "Inhibition",
+          "rdfs:label": "Inhibition",
           "comment": "Block process"
         }
       },
@@ -4083,12 +4083,12 @@
       },
       "m2:poleMapping": {
         "p=0": {
-          "name": "Activation",
+          "rdfs:label": "Activation",
           "formula": "+(A × D)",
           "semantics": "Positive gain: enables process, opens pathway"
         },
         "p=1": {
-          "name": "Inhibition",
+          "rdfs:label": "Inhibition",
           "formula": "-(A × D)",
           "semantics": "Negative gain: blocks process, closes pathway"
         }
@@ -4118,11 +4118,11 @@
       "m2:fullName": "Convergence (Divergence)",
       "m2:dualAspects": {
         "convergenceAspect": {
-          "name": "Convergence",
+          "rdfs:label": "Convergence",
           "comment": "Focusing toward attractor"
         },
         "divergenceAspect": {
-          "name": "Divergence",
+          "rdfs:label": "Divergence",
           "comment": "Dispersing away from repeller"
         }
       },
@@ -4236,12 +4236,12 @@
       ],
       "m2:poleMapping": {
         "p=1": {
-          "name": "Convergence",
+          "rdfs:label": "Convergence",
           "formula": "-∇·D",
           "semantics": "Negative divergence: flows/trajectories focus toward attractor"
         },
         "p=0": {
-          "name": "Divergence",
+          "rdfs:label": "Divergence",
           "formula": "∇·D",
           "semantics": "Positive divergence: flows/trajectories disperse away from repeller"
         }
@@ -4789,7 +4789,7 @@
       "m2:hasPolarity": "dual",
       "m2:polaritySemantics": {
         "pole1": {
-          "name": "Composition",
+          "rdfs:label": "Composition",
           "direction": "Bottom-up (parts → whole)",
           "formula": "St × It × A",
           "dimensionSemantics": {
@@ -4805,7 +4805,7 @@
           ]
         },
         "pole2": {
-          "name": "Decomposition",
+          "rdfs:label": "Decomposition",
           "direction": "Top-down (whole → parts)",
           "formula": "St × It",
           "dimensionSemantics": {
@@ -4872,12 +4872,12 @@
       "m2:expression": "St × It × A^{p}",
       "m2:poleMapping": {
         "p=1": {
-          "name": "Composition",
+          "rdfs:label": "Composition",
           "formula": "St × It × A",
           "semantics": "A present: assembly produces emergent property absent from parts alone"
         },
         "p=0": {
-          "name": "Decomposition",
+          "rdfs:label": "Decomposition",
           "formula": "St × It",
           "semantics": "A⁰ = 1 (neutral monoidal unit): emergent property dissolves, parts recovered"
         }
@@ -5784,7 +5784,7 @@
       "m2:fullName": "Amplification / Attenuation",
       "m2:dualAspects": {
         "amplificationAspect": {
-          "name": "Amplification",
+          "rdfs:label": "Amplification",
           "direction": "Increase (↑)",
           "operation": "Gain > 1",
           "territory": "Ft→, It→ (more flux, more information)",
@@ -5798,7 +5798,7 @@
           ]
         },
         "attenuationAspect": {
-          "name": "Attenuation",
+          "rdfs:label": "Attenuation",
           "direction": "Decrease (↓)",
           "operation": "0 < Gain < 1",
           "territory": "Ft→, It→ (less flux, less information)",
@@ -6050,7 +6050,7 @@
       "m2:perspective": "dual",
       "m2:dualAspects": {
         "negativeFeedback": {
-          "name": "Negative Feedback",
+          "rdfs:label": "Negative Feedback",
           "comment": "Error-correcting, stabilizing - output opposes deviation from set point",
           "skos:example": [
             "Thermostat",
@@ -6060,7 +6060,7 @@
           ]
         },
         "positiveFeedback": {
-          "name": "Positive Feedback",
+          "rdfs:label": "Positive Feedback",
           "comment": "Amplifying, self-reinforcing - output amplifies deviation from initial state",
           "skos:example": [
             "Oxytocin in labor",
@@ -6093,12 +6093,12 @@
       "m2:expression": "k · (Process × Alignment × Homeostasis)",
       "m2:poleMapping": {
         "p=1": {
-          "name": "Negative Feedback",
+          "rdfs:label": "Negative Feedback",
           "formula": "-k · (Process × Alignment × Homeostasis)",
           "semantics": "k < 0: output opposes deviation from setpoint — error-correcting, stabilizing"
         },
         "p=0": {
-          "name": "Positive Feedback",
+          "rdfs:label": "Positive Feedback",
           "formula": "+k · (Process × Alignment × Homeostasis)",
           "semantics": "k > 0: output reinforces deviation — self-amplifying, destabilizing"
         }
@@ -6207,7 +6207,7 @@
       "m2:fullName": "Entropy (Negentropy)",
       "m2:dualAspects": {
         "positiveAspect": {
-          "name": "Entropy",
+          "rdfs:label": "Entropy",
           "comment": "Disorder, uncertainty, irreversibility — ΔS > 0",
           "skos:example": [
             "Heat death",
@@ -6216,7 +6216,7 @@
           ]
         },
         "negativeAspect": {
-          "name": "Negentropy",
+          "rdfs:label": "Negentropy",
           "comment": "Order, structure, low uncertainty — ΔS < 0 locally (maintained by external exergy)",
           "skos:example": [
             "Living organisms",
@@ -6313,7 +6313,7 @@
       "m2:perspective": "dual",
       "m2:dualAspects": {
         "positiveAspect": {
-          "name": "Coherence",
+          "rdfs:label": "Coherence",
           "comment": "Global alignment — θ(x) continuous, A × S × I aligned, R × O confirms it",
           "skos:example": [
             "Laser coherence",
@@ -6322,7 +6322,7 @@
           ]
         },
         "negativeAspect": {
-          "name": "Incoherence",
+          "rdfs:label": "Incoherence",
           "comment": "Local rupture of continuity — singularity in the order parameter field",
           "skos:example": [
             "Fork in blockchain",
@@ -6449,7 +6449,7 @@
       "m2:fullName": "Potentialization (F-Depletion)",
       "m2:dualAspects": {
         "positiveAspect": {
-          "name": "Potentialization",
+          "rdfs:label": "Potentialization",
           "comment": "F=0 → F_active: mobilization, awakening, activation of reserve",
           "skos:example": [
             "Seed germination",
@@ -6459,7 +6459,7 @@
           ]
         },
         "negativeAspect": {
-          "name": "F-Depletion",
+          "rdfs:label": "F-Depletion",
           "comment": "F_active → F=0: exhaustion, quiescence, suspension of flow",
           "skos:example": [
             "Organism entering hibernation",
@@ -6731,17 +6731,17 @@
       "m2:triadicStructure": {
         "underPole": {
           "symbol": "_^",
-          "name": "Under-pole",
+          "rdfs:label": "Under-pole",
           "semantics": "Insufficient constraint — system too open, lacks specificity"
         },
         "equilibriumPole": {
           "symbol": "_0",
-          "name": "Equilibrium pole (_^ | _$)",
+          "rdfs:label": "Equilibrium pole (_^ | _$)",
           "semantics": "Optimal calibration — neither excess nor deficit. Qualitatively distinct from both extremes."
         },
         "overPole": {
           "symbol": "_$",
-          "name": "Over-pole",
+          "rdfs:label": "Over-pole",
           "semantics": "Excessive constraint — system too rigid, loses generalizability"
         }
       },
