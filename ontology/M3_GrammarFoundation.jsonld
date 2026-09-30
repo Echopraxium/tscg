@@ -4,6 +4,7 @@
     "@vocab": "http://www.w3.org/2002/07/owl#",
     "dcterms": "http://purl.org/dc/terms/",
     "adms": "http://www.w3.org/ns/adms#",
+    "schema": "https://schema.org/",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
@@ -15,7 +16,7 @@
     {
       "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.9.0",
+      "owl:versionInfo": "2.10.0",
       "dcterms:created": "2026-05-12",
       "dcterms:modified": "2026-09-30",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
@@ -55,6 +56,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.10.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1h: explicit local declarations of every external term used in the canonical corpus (principle, Michel: everything RDF-interpretable, no implicit term). Declared here, in the apex, with OWL type and rdfs:isDefinedBy: 6 OWL 2 built-in annotation properties (rdfs:label, rdfs:comment, rdfs:seeAlso, rdfs:isDefinedBy, owl:versionInfo, owl:deprecated), 10 DCMI terms, 15 SKOS terms (official SKOS typing: ObjectProperty relations, skos:related symmetric, skos:notation DatatypeProperty, AnnotationProperty notes/labels, skos:Concept / skos:ConceptScheme classes, official subPropertyOf links among used terms), adms:versionNotes and schema:value. schema.org ACCEPTED as an external vocabulary where it fills a DCMI/SKOS gap (Michel, 2026-09-30); prefix schema declared. New node m3:grammar_foundation:ExternalVocabularyPolicy records the rules: declare once in the apex, never owl:imports external vocabularies, never declare the OWL 2 reserved axiom vocabulary (OWL 2 Structural Specification §5.1-§5.6 — it would leave OWL 2 DL). Not touched: this file's own @vocab (owl#) bare-key projections, left for B1/B2 and the vestiges lot (counted by the new gauge EXT-2). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
+        {
           "owl:versionInfo": "2.9.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1g (Family A). Bare keys (dropped on JSON-LD expansion) replaced: alternative_names -> skos:altLabel, comment -> dcterms:description (consistent with lot 1b), note -> skos:note, definition -> skos:definition, label -> rdfs:label, title -> dcterms:title, id -> dcterms:identifier, rationale -> m3:rationale (declared in M3_GrammarFoundation, rdfs:subPropertyOf skos:note). In this file: label 4, note 2. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md. NEW: m3:rationale declared (owl:AnnotationProperty, rdfs:subPropertyOf skos:note) — no standard vocabulary offers a rationale/justification property (Michel, 2026-09-30)."
@@ -83,11 +89,6 @@
           "owl:versionInfo": "2.4.1",
           "dcterms:date": "2026-07-18",
           "adms:versionNotes": "@context hygiene fix (CTX): 'm3' prefix made ABSOLUTE (https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#). It was relative and, combined with @vocab=owl#, resolved m3:* terms (incl. MonoidalType) against owl# instead of the M3 namespace — desynchronising this file's IRIs from EagleEye/SphinxEye. @base also repaired (.../main/ -> .../main/ontology/). Data graph unchanged."
-        },
-        {
-          "owl:versionInfo": "2.4.0",
-          "dcterms:date": "2026-07-12",
-          "adms:versionNotes": "SC-1 FUNCTIONAL GRAMMAR MODEL — M3 correction. ⚠ Fm2 and Fm1m2 were declared MORPHISMS ('Fm2 is a morphism, not a monoidal operator'); they are FUNCTIONS. A morphism/functor must preserve composition; emergence is non-compositional (arguments are COMBINED, not associated). Φ and Ψ remain genuine morphisms — the family is now split, not purged. ⚠ Fm1m2 was defined as 'Fm1m2 : 𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁, crosses the M1/M2 boundary'. THIS WAS THE ROOT ERROR: it propagated into M1_CoreConcepts v1.4.0, which 'corrected' Propagation/CascadeAmplification Fm2→Fm1m2 'because parent m1:Cascade is M1, not M2 atomic'. Fm1m2 is distinguished by DOMAIN QUALIFICATION, not by crossing a layer boundary; an Fm2 argument may legitimately come from M1_CoreConcepts. Corrected signatures: Fm2 : GenericConcept²⁺ → GenericConceptCombo; Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo. The × separating the signature slots is also removed (× is reserved to the Gt monoid and is never overloaded). RENAME: m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. See StructuralGrammar/Functional_Grammar_Model.md."
         }
       ],
       "three_alphabets": {
@@ -412,6 +413,320 @@
         "@id": "skos:note"
       },
       "skos:note": "WS-1 lot 1g (Michel, 2026-09-30): no standard vocabulary (DCMI, SKOS, RDFS, OWL, ADMS, DCAT, schema.org) offers a rationale / justification property; SKOS only has generic notes. m3:rationale keeps the precise meaning while remaining machine-interpretable as a skos:note through rdfs:subPropertyOf (OWL 2 allows annotation-property hierarchies). Argumentation vocabularies such as IBIS model reasoning as a class structure and were judged too heavy for these free-text justifications.",
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "m3:grammar_foundation:ExternalVocabularyPolicy",
+      "@type": "owl:NamedIndividual",
+      "rdfs:label": "External vocabulary policy",
+      "rdfs:comment": "How the TSCG corpus uses terms from external vocabularies. RULE 1 — every external term used anywhere in the Layer Cake (M3, M2, M1, M0) is DECLARED ONCE, here in the apex, with its OWL type and rdfs:isDefinedBy pointing to its source vocabulary; lower layers reach these declarations through the intra-Layer-Cake owl:imports chain. RULE 2 — external vocabularies are NEVER brought in by owl:imports: DCMI Terms, ADMS and schema.org type their terms as plain rdf:Property with range/domain axioms (e.g. dcterms:creator range dcterms:Agent) that conflict with the corpus' literal usage, and SKOS defines itself as an OWL Full ontology; importing them would push the corpus out of OWL 2 DL, whereas a local declaration keeps the official IRI (full interoperability) with a DL-safe typing chosen by TSCG. RULE 3 — the OWL 2 reserved vocabulary (IRIs with the rdf:, rdfs:, xsd: and owl: prefixes) is NOT declared, except the built-in annotation properties listed in OWL 2 Structural Specification §5.5 (rdfs:label, rdfs:comment, rdfs:seeAlso, rdfs:isDefinedBy, owl:deprecated, owl:versionInfo, owl:priorVersion, owl:backwardCompatibleWith, owl:incompatibleWith), which are declared below when used. §5.1-§5.6 state that other reserved IRIs MUST NOT identify classes, properties or individuals in an OWL 2 DL ontology: the axiom vocabulary (rdf:type, rdfs:subClassOf, rdfs:subPropertyOf, rdfs:domain, rdfs:range, owl:imports, owl:inverseOf, owl:oneOf, owl:equivalentClass, the owl:Class / owl:*Property / owl:Ontology / owl:NamedIndividual types, …) is the language itself, explicitly defined by the OWL 2 and RDF specifications, not an implicit term. Consequently rdf:value (reserved, not a built-in annotation property) is not used; schema:value is used instead.",
+      "skos:note": "DECISIONS (Michel, 2026-09-30, WS-1 lot 1h). Principle: everything must be interpretable by an RDF parser, no implicit term. D1: built-in annotation properties declared, reserved axiom vocabulary documented here and not declared (declaring it would leave OWL 2 DL and make reasoner results unreliable). D2: SKOS terms keep the typing published in the official SKOS RDF (semantic relations owl:ObjectProperty, skos:related also owl:SymmetricProperty, skos:notation owl:DatatypeProperty, notes and labels owl:AnnotationProperty, skos:Concept / skos:ConceptScheme owl:Class), with the official rdfs:subPropertyOf links restricted to terms the corpus uses; DCMI, ADMS and schema.org terms are owl:AnnotationProperty. D3: schema.org is ACCEPTED as an external vocabulary, used only where it fills a gap left by DCMI and SKOS, each term checked by meaning and typing, never by name. Accepted external vocabularies: DCMI Terms, SKOS, ADMS, schema.org. Measured by tscg_metrics.py gauges EXT-1 (standard term used but undeclared here, target 0) and EXT-2 (non-term in a standard namespace, target 0).",
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "rdfs:label",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "rdfs:comment",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "rdfs:seeAlso",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "rdfs:isDefinedBy",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "owl:versionInfo",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2002/07/owl#"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "owl:deprecated",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2002/07/owl#"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "dcterms:created",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "dcterms:date"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "dcterms:creator",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "dcterms:date",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "dcterms:description",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "dcterms:format",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "dcterms:identifier",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "dcterms:modified",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "dcterms:date"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "dcterms:source",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "dcterms:title",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "dcterms:type",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:prefLabel",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "rdfs:label"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:altLabel",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "rdfs:label"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:note",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:definition",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "skos:note"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:example",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "skos:note"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:scopeNote",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "skos:note"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:changeNote",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "skos:note"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:editorialNote",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "skos:note"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:notation",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:broader",
+      "@type": "owl:ObjectProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:related",
+      "@type": [
+        "owl:ObjectProperty",
+        "owl:SymmetricProperty"
+      ],
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:inScheme",
+      "@type": "owl:ObjectProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:hasTopConcept",
+      "@type": "owl:ObjectProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:topConceptOf",
+      "@type": "owl:ObjectProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "rdfs:subPropertyOf": {
+        "@id": "skos:inScheme"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:Concept",
+      "@type": "owl:Class",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "skos:ConceptScheme",
+      "@type": "owl:Class",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/2004/02/skos/core"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "adms:versionNotes",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "http://www.w3.org/ns/adms"
+      },
+      "dcterms:created": "2026-09-30"
+    },
+    {
+      "@id": "schema:value",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:isDefinedBy": {
+        "@id": "https://schema.org/"
+      },
+      "rdfs:comment": "schema.org: 'The value of a QuantitativeValue (including Observation) or property value node.' Used on the {rdfs:label, schema:value} nodes of skos:example lists (name / value pairs); replaces rdf:value, a reserved IRI that cannot be declared in OWL 2 DL (WS-1 lot 1h).",
       "dcterms:created": "2026-09-30"
     },
     {
