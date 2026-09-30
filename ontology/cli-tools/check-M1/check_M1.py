@@ -749,8 +749,12 @@ class M1Checker:
                     imports = [imports]
                 new_imports = []
                 for imp in imports:
-                    if GENESIS_SPACE in str(imp):
-                        new_imp = str(imp).replace(GENESIS_SPACE, GENESIS_GRAMMAR)
+                    if isinstance(imp, dict) and GENESIS_SPACE in imp.get("@id", ""):
+                        # WS-1 lot 1i: imports are IRIs {"@id": ...}; keep the form
+                        new_imports.append({**imp, "@id": imp["@id"].replace(GENESIS_SPACE, GENESIS_GRAMMAR)})
+                        changed = True
+                    elif isinstance(imp, str) and GENESIS_SPACE in imp:
+                        new_imp = imp.replace(GENESIS_SPACE, GENESIS_GRAMMAR)
                         new_imports.append(new_imp)
                         changed = True
                     else:

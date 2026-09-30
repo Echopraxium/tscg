@@ -4,10 +4,14 @@
 tscg_metrics.py — TSCG corpus metric board (deterministic gauges).
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 1.2.0
+Version: 1.3.0
 Project: TSCG (Transdisciplinary System Construction Game)
 
 CHANGELOG
+    1.3.0 (2026-09-30) — WS-1 lot 1i. New gauge STR_imports_literal: number
+        of owl:imports values written as plain strings. A string is a
+        JSON-LD literal, so no reasoner follows the import; the target
+        form is an IRI {"@id": ...}. Target 0.
     1.2.0 (2026-09-30) — WS-1 lot 1h. Two graph-based gauges (need rdflib;
         shown as n/a without it, like SC-1 without pyshacl):
         EXT1_standard_term_undeclared — a real external term (DCMI, SKOS,
@@ -67,7 +71,7 @@ import os
 import re
 import sys
 
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 
 # --------------------------------------------------------------------------
 # Canonical file selection
@@ -192,6 +196,7 @@ def measure(root):
         # STR — structural / cross-file
         "STR_layer_inversion": 0,
         "STR_changelog_forms": {},
+        "STR_imports_literal": 0,
         # breakdowns
         "by_layer_bare_keys": {},
         "top_bare_keys": {},
@@ -277,6 +282,14 @@ def measure(root):
                     M["VOC_bare_false_friends"] += 1
 
         walk_keys(doc.get("@graph", doc), visit)
+
+        # --- STR — owl:imports written as strings (literals) ---------------
+        def visit_imports(key, value, _depth):
+            if key == "owl:imports":
+                values = value if isinstance(value, list) else [value]
+                M["STR_imports_literal"] += sum(isinstance(v, str) for v in values)
+
+        walk_keys(doc, visit_imports)
 
         # VOC/B1 — prefixed key used but no owl:*Property definition anywhere
         # in this file. (Cross-file definitions are resolved by the validator;
@@ -487,6 +500,7 @@ GAUGES = [
     ("DUP", "retired D8 triad",               "DUP1_D8_triad",                  "0"),
     ("NOT", "bare S/I in monoidal formula (SC-2)","NOT1_bare_SI_in_monoidal_formula",   "0"),
     ("STR", "layer inversion",                "STR_layer_inversion",            "0"),
+    ("STR", "owl:imports as string (1i)",     "STR_imports_literal",            "0"),
     ("EXT", "std term undeclared (EXT-1)",    "EXT1_standard_term_undeclared",  "0"),
     ("EXT", "non-term in std ns (EXT-2)",     "EXT2_nonterm_in_standard_namespace", "0"),
 ]

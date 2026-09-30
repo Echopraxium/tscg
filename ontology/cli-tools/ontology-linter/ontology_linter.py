@@ -234,9 +234,28 @@ class OntologyLinter:
         if imports:
             self.info.append(f"✓ Imports declared: {len(imports)}")
             
-            # Check if imports exist
+            # Check if imports exist. Since WS-1 lot 1i (2026-09-30) imports are
+            # IRIs {"@id": ...}; plain strings (legacy) are still accepted. A
+            # relative IRI resolves against @base (the ontology/ root), an
+            # absolute one against the repository root.
+            repo_prefix = "https://raw.githubusercontent.com/Echopraxium/tscg/main/"
+            here = Path(filepath).resolve()
+            onto_root = here.parent
+            for p in here.parents:
+                if (p / "M2_GenericConcepts.jsonld").exists():
+                    onto_root = p
+                    break
+                if (p / "ontology" / "M2_GenericConcepts.jsonld").exists():
+                    onto_root = p / "ontology"      # file lives outside ontology/ (M0 instance)
+                    break
             for imp in imports:
-                imp_path = filepath.parent / imp
+                if isinstance(imp, dict):
+                    imp = imp.get("@id", "")
+                imp = str(imp)
+                if imp.startswith(repo_prefix):
+                    imp_path = onto_root.parent / imp[len(repo_prefix):]
+                else:
+                    imp_path = onto_root / imp
                 if not imp_path.exists():
                     self.warnings.append(f"Import not found: {imp}")
                 else:

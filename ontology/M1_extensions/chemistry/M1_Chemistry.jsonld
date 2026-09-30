@@ -24,12 +24,12 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-17",
       "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "1.10.0",
+      "owl:versionInfo": "1.11.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "owl:imports": [
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld"
+        { "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld" }
       ],
       "m1:extension:chemistry:domain": "Chemistry",
       "m1:extension:chemistry:functor": "F_instantiate : M2 → M1_Chemistry",
@@ -52,6 +52,11 @@
       ],
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.11.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 1 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
+        {
           "owl:versionInfo": "1.10.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1h (explicit declarations). rdf:value -> schema:value in the {rdfs:label, value} nodes of skos:example lists (5: ignition temperatures, flame colours): rdf:value is a reserved OWL 2 IRI that is not a built-in annotation property, so it cannot be declared and kept these nodes outside OWL 2 DL; schema:value ('the value of a property value node') is declared in M3_GrammarFoundation. schema.org accepted as an external vocabulary where it fills a DCMI/SKOS gap (Michel, 2026-09-30); prefix schema declared. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -60,11 +65,6 @@
           "owl:versionInfo": "1.9.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1g (Family A). Bare keys (dropped on JSON-LD expansion) replaced: alternative_names -> skos:altLabel, comment -> dcterms:description (consistent with lot 1b), note -> skos:note, definition -> skos:definition, label -> rdfs:label, title -> dcterms:title, id -> dcterms:identifier, rationale -> m3:rationale (declared in M3_GrammarFoundation, rdfs:subPropertyOf skos:note). In this file: note 6. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "1.8.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1f (Family A). Bare key 'name' (declared in no @context, dropped on JSON-LD expansion) replaced by the standard rdfs:label (a human-readable version of the resource's name). Bare 'name' inside legacy 'metadata' blocks left for the vestiges lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md. 9 occurrences, all graph-visible."
         }
       ]
     },

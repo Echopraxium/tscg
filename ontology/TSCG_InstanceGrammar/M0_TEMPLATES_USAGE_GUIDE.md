@@ -60,10 +60,11 @@ Si ton poclet utilise des concepts spécifiques à un domaine, ajoute le namespa
 Et dans `owl:imports` :
 ```json
 "owl:imports": [
-  "M3_GenesisSpace.jsonld",
-  "M2_GenericConcepts.jsonld",
-  "M1_CoreConcepts.jsonld",
-  "M1_extensions/biology/M1_Biology.jsonld"
+  { "@id": "M3_GenesisGrammar.jsonld" },
+  { "@id": "M2_GenericConcepts.jsonld" },
+  { "@id": "M1_CoreConcepts.jsonld" },
+  { "@id": "M0_Common.jsonld" },
+  { "@id": "M1_extensions/biology/M1_Biology.jsonld" }
 ]
 ```
 
