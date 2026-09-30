@@ -122,5 +122,7 @@ the scoping note (`m3:documentation` container).
 - OWL Web Ontology Language Reference — https://www.w3.org/TR/owl-ref/
 - ADMS — https://www.w3.org/TR/vocab-adms/
 - schema.org — https://schema.org/positiveNotes, https://schema.org/unitText
+| 1c | changelog entries: `version` → `owl:versionInfo`, `date` → `dcterms:date`, `changes` → `adms:versionNotes` | DONE 2026-09-30 | 246 keys in 82 entries of `m1:`/`m2:`/`m3:changelog` lists (24 files); **ADMS accepted as external vocabulary** (Michel), prefix `adms` declared in the 24 contexts, decision recorded in the `m3:changelog` declaration; all 86 entries now graph-visible (adms:versionNotes 0 → 86); new entries are written in the new form, so the +9-per-lot drift stops; legacy forms (maps keyed by version, `metadata`, `changelogLegacy`, a string entry in M1_Mythology) left for the "vestiges" lot; VOC gauge 3832 → 3586; gate PASS, golden unchanged |
+| 1d | container: `m1:changelog` / `m2:changelog` → `m3:changelog` (declared in M3_GrammarFoundation since 2026-07-22) + tools (check_M1 ONT007, M1 and M0 SHACL) | TODO | option (A), Michel 2026-09-30 |
 
-> **Note on the gauge**: each lot adds changelog entries whose own keys (`version`, `date`, `changes`) are still bare — about +9 per lot until the changelog trio line is done. Doing that line early stops the drift.
+> **Note on the gauge**: each lot adds changelog entries whose own keys (`version`, `date`, `changes`) are still bare — about +9 per lot until the changelog trio line is done (done in lot 1c: the drift has stopped).

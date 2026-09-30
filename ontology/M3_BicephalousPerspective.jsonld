@@ -3,6 +3,7 @@
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
     "@vocab": "http://www.w3.org/2002/07/owl#",
     "dcterms": "http://purl.org/dc/terms/",
+    "adms": "http://www.w3.org/ns/adms#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
@@ -14,7 +15,7 @@
     {
       "@id": "m3:bicephalous:BicephalousPerspective",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "1.6.0",
+      "owl:versionInfo": "1.7.0",
       "dcterms:created": "2026-05-18",
       "dcterms:modified": "2026-09-30",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
@@ -93,39 +94,39 @@
       },
       "m3:changelog": [
         {
-          "version": "1.6.0",
-          "date": "2026-09-30",
-          "changes": "WS-1 VOCABULARY CONSOLIDATION, lot 1b (Family A). Bare key 'description' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard dcterms:description (DCMI: an account of the resource; literal). Chosen over rdfs:comment on semantic grounds (Michel, 2026-09-30). 1 occurrence. Side fix: under this file's @vocab (owl#) the bare key had minted the bogus term owl:description; it is now dcterms:description. Bare 'description' inside legacy 'metadata' blocks left untouched (separate lot). No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+          "owl:versionInfo": "1.7.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1c (Family A). Changelog entry keys, previously bare and dropped on JSON-LD expansion, replaced by standards: version -> owl:versionInfo, date -> dcterms:date, changes -> adms:versionNotes (ADMS: a description of changes between this version and the previous one). Prefix adms declared in @context: ADMS accepted as an external vocabulary (Michel, 2026-09-30). Changelog entries become graph-visible. Legacy changelog forms (maps keyed by version, metadata blocks) left for a separate lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         },
         {
-          "version": "1.5.1",
-          "date": "2026-07-24",
-          "changes": "VOCABULARY FIX (WS-0/SC-2). The rule graved in 1.5.0 used 'atom formula' in the NON-COMBO sense, inside the very layer where M3_GenesisGrammar defines 'atomic' as the GENERATOR sense: 'MonoidalTypes are the atomic, irreducible elements from which all structural formula expressions are built'. Two senses of the same word one file apart. The corpus carries a third, domain sense (atomic radius, M1_Chemistry). REPLACED 'atom formula(s)' by 'monoidal formula(s)' and 'scope: atoms only' by 'scope: monoidal formulas only'. Note the precise reading now available: S and I are MonoidalType GENERATORS and must be monoid-subscripted in every MONOIDAL FORMULA - a formula is not a MonoidalType, it is built from MonoidalTypes. No rule changed, no scope changed: wording only. The matching rename in tscg_metrics.py (NOT1_bare_SI_in_atom_formula -> NOT1_bare_SI_in_monoidal_formula) ships in the same lot; the ban is recorded as a tooling constraint (forbidden_in: metric_names), NOT as a corpus-wide ban - M1_Chemistry's domain prose is legitimate and must not be touched."
+          "owl:versionInfo": "1.6.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1b (Family A). Bare key 'description' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard dcterms:description (DCMI: an account of the resource; literal). Chosen over rdfs:comment on semantic grounds (Michel, 2026-09-30). 1 occurrence. Side fix: under this file's @vocab (owl#) the bare key had minted the bogus term owl:description; it is now dcterms:description. Bare 'description' inside legacy 'metadata' blocks left untouched (separate lot). No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         },
         {
-          "version": "1.5.0",
-          "date": "2026-07-23",
-          "changes": "SC-2 STEP 1 — NOTATION CONVENTION REVISED AT THE SOURCE. m3:notation_disambiguation no longer states the retired hybrid-only rule (S bare in pure-Territory formulas, indexed only in formulas containing |). New rule: S and I are ALWAYS monoid-subscripted in EVERY monoidal formula (St/Ss, It/Im); A/F/D stay bare. Scope is monoidal formulas only — combo signatures take named concepts, not primitives. Rationale: the old rule gave one primitive two spellings depending on its neighbours, which is ambiguous to read and unenforceable mechanically. Also corrected here: the m2:Balance usage example read A × S × F | _0 and is now A × St × F | _0. This closes the contradiction opened by M3_EagleEye 2.10.0 (SC-2 step 2), which already moved typeSymbol S→St and I→It. NEXT: SC-2 step 3 (SHACL FormulaShape forbidding bare S/I in monoidal formulas), then step 4 (43 M2 monoidal formulas, gauge NOT-1 → 0)."
+          "owl:versionInfo": "1.5.1",
+          "dcterms:date": "2026-07-24",
+          "adms:versionNotes": "VOCABULARY FIX (WS-0/SC-2). The rule graved in 1.5.0 used 'atom formula' in the NON-COMBO sense, inside the very layer where M3_GenesisGrammar defines 'atomic' as the GENERATOR sense: 'MonoidalTypes are the atomic, irreducible elements from which all structural formula expressions are built'. Two senses of the same word one file apart. The corpus carries a third, domain sense (atomic radius, M1_Chemistry). REPLACED 'atom formula(s)' by 'monoidal formula(s)' and 'scope: atoms only' by 'scope: monoidal formulas only'. Note the precise reading now available: S and I are MonoidalType GENERATORS and must be monoid-subscripted in every MONOIDAL FORMULA - a formula is not a MonoidalType, it is built from MonoidalTypes. No rule changed, no scope changed: wording only. The matching rename in tscg_metrics.py (NOT1_bare_SI_in_atom_formula -> NOT1_bare_SI_in_monoidal_formula) ships in the same lot; the ban is recorded as a tooling constraint (forbidden_in: metric_names), NOT as a corpus-wide ban - M1_Chemistry's domain prose is legitimate and must not be touched."
         },
         {
-          "version": "1.4.0",
-          "date": "2026-07-22",
-          "changes": "VOC/B1: declared 19 previously-undeclared m3:* documentation properties used in this file (role, semantics, symbol, grammar, visual, usage, derivation, formula_role, independence, analogyInGt, analogyInGs, pairWith, triadicPattern, theoretical_basis, transcendentalQuestion, openQuestion, rejected_names, notation_note, notation_disambiguation) as owl:AnnotationProperty. Declaration only — no usage or data changed. HELD for separate decisions: definition/examples (Family-A standard candidates skos:definition/skos:example), epistemicGap (δ₁ measurement, SC-6 sensitivity). EXCLUDED: typeSymbol/typeIndex (already defined in M3_GenesisGrammar). FLAGGED: pairWith carries a string where an @id is expected (latent reference defect)."
+          "owl:versionInfo": "1.5.0",
+          "dcterms:date": "2026-07-23",
+          "adms:versionNotes": "SC-2 STEP 1 — NOTATION CONVENTION REVISED AT THE SOURCE. m3:notation_disambiguation no longer states the retired hybrid-only rule (S bare in pure-Territory formulas, indexed only in formulas containing |). New rule: S and I are ALWAYS monoid-subscripted in EVERY monoidal formula (St/Ss, It/Im); A/F/D stay bare. Scope is monoidal formulas only — combo signatures take named concepts, not primitives. Rationale: the old rule gave one primitive two spellings depending on its neighbours, which is ambiguous to read and unenforceable mechanically. Also corrected here: the m2:Balance usage example read A × S × F | _0 and is now A × St × F | _0. This closes the contradiction opened by M3_EagleEye 2.10.0 (SC-2 step 2), which already moved typeSymbol S→St and I→It. NEXT: SC-2 step 3 (SHACL FormulaShape forbidding bare S/I in monoidal formulas), then step 4 (43 M2 monoidal formulas, gauge NOT-1 → 0)."
         },
         {
-          "version": "1.3.2",
-          "date": "2026-07-22",
-          "changes": "LAYERING FIX: m2:changelog → m3:changelog. An M3 file must not reference an M2 property (dependency inversion: M3 is the foundational layer, M2 imports it). Compounding this, the 'm2' prefix was NOT declared in this @context (CTX-1), so the key resolved to an opaque 'm2:' URI scheme instead of the M2 namespace — invisible to any reasoner. m3:changelog is defined in M3_GrammarFoundation v2.5.0."
+          "owl:versionInfo": "1.4.0",
+          "dcterms:date": "2026-07-22",
+          "adms:versionNotes": "VOC/B1: declared 19 previously-undeclared m3:* documentation properties used in this file (role, semantics, symbol, grammar, visual, usage, derivation, formula_role, independence, analogyInGt, analogyInGs, pairWith, triadicPattern, theoretical_basis, transcendentalQuestion, openQuestion, rejected_names, notation_note, notation_disambiguation) as owl:AnnotationProperty. Declaration only — no usage or data changed. HELD for separate decisions: definition/examples (Family-A standard candidates skos:definition/skos:example), epistemicGap (δ₁ measurement, SC-6 sensitivity). EXCLUDED: typeSymbol/typeIndex (already defined in M3_GenesisGrammar). FLAGGED: pairWith carries a string where an @id is expected (latent reference defect)."
         },
         {
-          "version": "1.3.1",
-          "date": "2026-07-18",
-          "changes": "@context hygiene fix (CTX): 'm3' prefix made ABSOLUTE (https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#). It was relative and, combined with @vocab=owl#, resolved m3:* terms (incl. MonoidalType) against owl# instead of the M3 namespace — desynchronising this file's IRIs from EagleEye/SphinxEye. Data graph unchanged."
+          "owl:versionInfo": "1.3.2",
+          "dcterms:date": "2026-07-22",
+          "adms:versionNotes": "LAYERING FIX: m2:changelog → m3:changelog. An M3 file must not reference an M2 property (dependency inversion: M3 is the foundational layer, M2 imports it). Compounding this, the 'm2' prefix was NOT declared in this @context (CTX-1), so the key resolved to an opaque 'm2:' URI scheme instead of the M2 namespace — invisible to any reasoner. m3:changelog is defined in M3_GrammarFoundation v2.5.0."
         },
         {
-          "version": "1.3.0",
-          "date": "2026-06-23",
-          "changes": "DERIVED ELEMENT: EquilibriumPole (_0 = _^ | _$) added as m3:DerivedGsElement. Named constant of Gs monoide — not a primitive. Base16 preserved (6 primitives unchanged). Introduced to support m2:TriadicBalance and m2:Balance revision. DerivedGsElement class added."
+          "owl:versionInfo": "1.3.1",
+          "dcterms:date": "2026-07-18",
+          "adms:versionNotes": "@context hygiene fix (CTX): 'm3' prefix made ABSOLUTE (https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#). It was relative and, combined with @vocab=owl#, resolved m3:* terms (incl. MonoidalType) against owl# instead of the M3 namespace — desynchronising this file's IRIs from EagleEye/SphinxEye. Data graph unchanged."
         }
       ]
     },
