@@ -21,8 +21,8 @@
       "dcterms:description": "Domain-specific instantiation of M2 GenericConcepts for chemistry. Defines chemical processes, reactions, substances, and transformations using TSCG M2 GenericConcepts as foundation.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-17",
-      "dcterms:modified": "2026-07-12",
-      "owl:versionInfo": "1.2.0",
+      "dcterms:modified": "2026-09-30",
+      "owl:versionInfo": "1.3.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -50,6 +50,11 @@
       ],
       "m2:changelog": [
         {
+          "version": "1.3.0",
+          "date": "2026-09-30",
+          "changes": "MULTIPLICITY HOMOGENISATION (companion of M2 16.20.0). ChemicalReaction properties reactants/products/catalyst: bare key 'cardinality' -> m2:cardinality, node typed m2:NaryAttribute. Values unchanged (already UML multiplicity: '1..*', '1..*', '0..1'). Arity left unspecified."
+        },
+        {
           "version": "1.2.0",
           "date": "2026-07-12",
           "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
@@ -58,11 +63,6 @@
           "version": "1.1.1",
           "date": "2026-05-27",
           "changes": "BASE16 NOTATION: 5 formula(s) updated — S→St in hybrid formulas (containing |). Convention: in hybrid formulas, St (Structure/Territory) to avoid collision with Ss (Symbol/Stereopsic/Gs)."
-        },
-        {
-          "version": "1.1.0",
-          "date": "2026-04-26",
-          "description": "ENRICHMENT for Ptoe poclet: Added 8 atomic structure concepts (Element, ElectronConfiguration, NobleGas, OrbitalBlock, ChemicalFamily, AtomicProperty, OxidationState, QuantumNumbers). Extends M1_Chemistry scope from chemical reactions to atomic/periodic organization."
         }
       ]
     },
@@ -81,12 +81,14 @@
       "m1:extension:chemistry:properties": {
         "m1:extension:chemistry:reactants": {
           "type": "m1:ChemicalSpecies",
-          "cardinality": "1..*",
+          "@type": "m2:NaryAttribute",
+          "m2:cardinality": "1..*",
           "role": "Input substances consumed"
         },
         "m1:extension:chemistry:products": {
           "type": "m1:ChemicalSpecies",
-          "cardinality": "1..*",
+          "@type": "m2:NaryAttribute",
+          "m2:cardinality": "1..*",
           "role": "Output substances produced"
         },
         "m1:extension:chemistry:energyBalance": {
@@ -100,7 +102,8 @@
         },
         "m1:extension:chemistry:catalyst": {
           "type": "m1:ChemicalSpecies",
-          "cardinality": "0..1",
+          "@type": "m2:NaryAttribute",
+          "m2:cardinality": "0..1",
           "role": "Optional species enabling reaction without being consumed"
         },
         "m1:extension:chemistry:mechanism": {
