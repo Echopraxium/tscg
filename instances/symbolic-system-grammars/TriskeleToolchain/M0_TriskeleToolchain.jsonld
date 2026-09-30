@@ -10,6 +10,7 @@
     "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
+    "adms": "http://www.w3.org/ns/adms#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "m0.triskeleToolchain": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/symbolic-system-grammars/TriskeleToolchain/M0_TriskeleToolchain.jsonld#"
   },
@@ -30,9 +31,9 @@
       "rdfs:comment": "A computation-oriented Symbolic System Grammar grounded in the TSCG M3 Structural Grammar. The 16 monoidal primitives of the three TSCG grammars (Gt/ASFID × 5, Gm/REVOI × 5, Gs/TKSL × 6) form a Base16 encoding alphabet that defines: (1) TriskeleVM — a register-based virtual machine whose ISA encodes 256 opcodes via 16 primitive categories × 16 instructions; (2) TriskeleL — a high-level language grounded in M2 GenericConcept semantics compiled to TriskeleVM bytecode. Proof-of-concept target: running Wolfenstein 3D (and subsequently Doom) via a C compiler targeting TriskeleVM bytecode.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-05-30",
-      "owl:versionInfo": "0.3.0",
+      "owl:versionInfo": "0.4.0",
       "m1:domain": "Virtual machine design, compiler theory, symbolic computation, formal grammars, game engine",
-      "dcterms:modified": "2026-05-30",
+      "dcterms:modified": "2026-09-30",
       "m0:asfidMean": 0.9,
       "m0:revoiMean": 0.864,
       "m0:epistemicGap": 0.0255,
@@ -40,21 +41,21 @@
         "@id": "m0:spectralClass.Coherent"
       },
       "m0:spectralClassNote": "δ₁ = |0.90 − 0.864| / √2 = 0.0255. High S_score (0.95) reflects the rigorous structural specification of ISA, format .tvm and register file. High It_score (0.92) reflects the information-theoretic grounding (Base16 = log₂(16) = 4 bits per symbol). V_score (0.82) is lower than R/E/O because formal verification of the full toolchain is pending (Wolf3D PoC not yet executed). Im_score (0.87) reflects the SDL2/FFI interoperability design — high but not maximal since native bindings are not yet validated.",
-      "m2:changelog": [
+      "m3:changelog": [
         {
-          "version": "0.3.0",
-          "date": "2026-06-26",
-          "changes": "ACTION3: Added m0:focalApplicable=true."
+          "owl:versionInfo": "0.4.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1e. Changelog container m2:changelog -> m3:changelog (the owl:AnnotationProperty declared in M3_GrammarFoundation); entry keys version/date/changes -> owl:versionInfo / dcterms:date / adms:versionNotes (ADMS accepted, Michel 2026-09-30); prefix adms declared. Previously the whole changelog was dropped on JSON-LD expansion."
         },
         {
-          "version": "0.2.0",
-          "date": "2026-05-31",
-          "changes": "ISA mapping revised v0.2.0: A_=Pile+Tas, St_=Types/NOP, F_=FluxExec+coroutines, It_=EtatInfo+events+IRQ, D_=Modification(MOV/LOAD/ADD/AND), E_=AutoTransform+GCadaptatif, L_FAR_CALL=L_(not F_). Mandatory indexed notation St_/It_/Ss_/Im_ throughout. Ss_ = identifiants+constantes predefinies (signe pas valeur). Pole symmetry _^_/_ formalized."
+          "owl:versionInfo": "0.3.0",
+          "dcterms:date": "2026-06-26",
+          "adms:versionNotes": "ACTION3: Added m0:focalApplicable=true."
         },
         {
-          "version": "0.1.0",
-          "date": "2026-05-30",
-          "changes": "Initial release. Full TriskeleToolchain specification: Base16 alphabet, ISA (256 opcodes / 16 categories), .tvm/.tvx binary format, register file (32x64-bit), calling convention, tsk-asm/tsk-dis/tsk-link specs, TSCG annotation sections, ASFID/REVOI analysis, 18 M2 GenericConcepts. PoC target: Wolfenstein 3D -> Doom."
+          "owl:versionInfo": "0.2.0",
+          "dcterms:date": "2026-05-31",
+          "adms:versionNotes": "ISA mapping revised v0.2.0: A_=Pile+Tas, St_=Types/NOP, F_=FluxExec+coroutines, It_=EtatInfo+events+IRQ, D_=Modification(MOV/LOAD/ADD/AND), E_=AutoTransform+GCadaptatif, L_FAR_CALL=L_(not F_). Mandatory indexed notation St_/It_/Ss_/Im_ throughout. Ss_ = identifiants+constantes predefinies (signe pas valeur). Pole symmetry _^_/_ formalized."
         }
       ],
       "m0:grammarSpec": {

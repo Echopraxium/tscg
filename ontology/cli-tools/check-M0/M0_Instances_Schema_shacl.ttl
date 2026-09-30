@@ -9,6 +9,8 @@
 # ============================================
 # CHANGELOG
 # ============================================
+# v1.8 (2026-09-30): WS-1 lot 1e — changelog container m2:changelog -> m3:changelog (recommended);
+#   m2:changelog FORBIDDEN (sh:maxCount 0). Entries {owl:versionInfo, dcterms:date, adms:versionNotes}.
 # v1.7 (2026-09-01): SC-3 — FACET MECHANISM MOVED TO M3
 #   - REMOVED: m0:DemocratizationFacetContractShape, m0:RoleGroundingShape,
 #     m0:ForbidStringRoleGroundingShape (their M0 apparatus is gone from M0_Common v1.3.0).
@@ -226,9 +228,15 @@ m0:TscgInstanceShape
   ] ;
 
   sh:property [
-    sh:path m2:changelog ;
+    sh:path m3:changelog ;
     sh:minCount 0 ;
-    sh:message "m2:changelog is strongly recommended. MUST be array of {version, date, changes} objects. Max 3 entries (rolling). NOT a bare string array."
+    sh:message "m3:changelog is strongly recommended. MUST be an array of {owl:versionInfo, dcterms:date, adms:versionNotes} objects. Max 3 entries (rolling), newest first. NOT a bare string array."
+  ] ;
+
+  sh:property [
+    sh:path m2:changelog ;
+    sh:maxCount 0 ;
+    sh:message "FORBIDDEN: m2:changelog is retired (WS-1 lot 1e, 2026-09-30) — use m3:changelog."
   ] ;
 
   # ===== SCORES — FLAT AT ROOT LEVEL (Option B — v1.3) =====

@@ -210,7 +210,7 @@ ${JSON.stringify(allRoundData, null, 2)}
 - Author: "Echopraxium with the collaboration of Claude AI"
 - Include m0:asfidScore, m0:revoiScore, m0:epistemicGap, m0:spectralClass
 - Reference M1 extensions as: "M1_extensions/domain_name/M1_DomainName.jsonld"
-- Include m2:changelog with max 3 entries (most recent first)
+- Include m3:changelog with max 3 entries (most recent first); each entry is {"owl:versionInfo", "dcterms:date", "adms:versionNotes"}; declare the prefix "adms": "http://www.w3.org/ns/adms#" in @context. Never use m2:changelog (retired).
 - All string values in English
 
 Respond ONLY with the JSON-LD object (no markdown fences, no explanation).

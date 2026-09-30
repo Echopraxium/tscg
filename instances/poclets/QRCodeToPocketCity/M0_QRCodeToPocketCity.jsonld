@@ -10,6 +10,7 @@
     "m3:eagle_eye": "M3_EagleEye.jsonld#",
     "m3:sphinx_eye": "M3_SphinxEye.jsonld#",
     "dcterms": "http://purl.org/dc/terms/",
+    "adms": "http://www.w3.org/ns/adms#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -23,7 +24,7 @@
       "@type": "owl:Ontology",
       "rdfs:label": "QR Code to Pocket City",
       "rdfs:comment": "A QR code is deterministically transformed into a navigable 3D miniature city, under one binding constraint: seen orthographically from directly above, the city must still be a scannable QR code encoding the original payload. The same information therefore carries two simultaneous encodings — one machine-readable, one human-inhabitable — that are required not to conflict. The generative seed acts as the city's identity: same text produces the same city, always.",
-      "owl:versionInfo": "1.1.0",
+      "owl:versionInfo": "1.2.0",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-08-02",
       "owl:imports": [
@@ -64,16 +65,21 @@
       },
       "m0:focalApplicable": false,
       "m0:scoringRationale": "S is highest on the Territory side: the module grid, finder patterns and building geometry are fully determined and inspectable. F is lowest: flow exists (the scanner's reading path, the explorer's traversal) but is not the system's centre of gravity. On the Map side V is exceptionally high because the model is directly falsifiable — point a scanner at the Bird's-eye view and it either decodes the payload or it does not. This is a rare case where a TSCG instance carries its own empirical test.",
-      "m2:changelog": [
+      "m3:changelog": [
         {
-          "version": "1.1.0",
-          "date": "2026-08-28",
-          "changes": "Migrated the Democratization facet to the M3 Facet mechanism (SC-3): m0:hasFacet m0:facet.Democratization -> m3:hasFacetValue m3:audience.KitUser. Dropped m0:roleGrounding and m0:illustratesConcept (contract not carried to KitUser); pedagogical intent now read as targetAudience = KitUser."
+          "owl:versionInfo": "1.2.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1e. Changelog container m2:changelog -> m3:changelog (the owl:AnnotationProperty declared in M3_GrammarFoundation); entry keys version/date/changes -> owl:versionInfo / dcterms:date / adms:versionNotes (ADMS accepted, Michel 2026-09-30); prefix adms declared. Previously the whole changelog was dropped on JSON-LD expansion."
         },
         {
-          "version": "1.0.0",
-          "date": "2026-08-02",
-          "changes": "Initial version. Poclet modelling the deterministic transformation of a QR code into a navigable 3D city under a top-view readability constraint. 12 M2 GenericConcepts mobilized. Carries the Democratization facet with roleGrounding=Designed — first instance designed primarily for pedagogical purpose. Companion BabylonJS simulation in static/."
+          "owl:versionInfo": "1.1.0",
+          "dcterms:date": "2026-08-28",
+          "adms:versionNotes": "Migrated the Democratization facet to the M3 Facet mechanism (SC-3): m0:hasFacet m0:facet.Democratization -> m3:hasFacetValue m3:audience.KitUser. Dropped m0:roleGrounding and m0:illustratesConcept (contract not carried to KitUser); pedagogical intent now read as targetAudience = KitUser."
+        },
+        {
+          "owl:versionInfo": "1.0.0",
+          "dcterms:date": "2026-08-02",
+          "adms:versionNotes": "Initial version. Poclet modelling the deterministic transformation of a QR code into a navigable 3D city under a top-view readability constraint. 12 M2 GenericConcepts mobilized. Carries the Democratization facet with roleGrounding=Designed — first instance designed primarily for pedagogical purpose. Companion BabylonJS simulation in static/."
         }
       ],
       "m0:note": "Candidate for a future m3:ExploratorySpace instance type (navigable artifact with Gs as primary grammar). Typed m3:Poclet pending the ≥3 instances required to admit a new type."

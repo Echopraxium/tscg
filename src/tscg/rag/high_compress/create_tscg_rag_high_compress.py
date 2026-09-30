@@ -88,7 +88,7 @@ LOW_VALUE_FILENAMES = {
 # JSON-LD top-level fields that carry NO semantic value for RAG queries.
 # They inflate segment text without adding meaning.
 _SKIP_JSONLD_TOPLEVEL_FIELDS = {
-    'm2:changelog',
+    'm3:changelog',
     'dcterms:creator',
     'dcterms:modified',
     'dcterms:created',

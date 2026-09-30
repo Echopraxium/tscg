@@ -9,6 +9,7 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "dcterms": "http://purl.org/dc/terms/",
+    "adms": "http://www.w3.org/ns/adms#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
@@ -69,7 +70,7 @@
       "rdfs:comment": "BJT as electronic Processor: Input (base current, collector voltage) → Amplification/Switching → Output (collector current). Minimal complete semiconductor processor demonstrating dual modes (linear amplification vs digital switching). Validates Processor GenericConcept with continuous analog inputs/outputs and transformation via charge carrier control.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-07",
-      "owl:versionInfo": "15.2.1",
+      "owl:versionInfo": "15.3.0",
       "m1:domain": [
         "Electronics",
         "Semiconductor Physics",
@@ -77,14 +78,22 @@
         "Signal Processing",
         "Circuit Theory"
       ],
-      "m2:changelog": [
+      "m3:changelog": [
         {
-          "version": "15.2.1",
-          "date": "2026-06-26",
-          "changes": "ACTION3: Added m0:focalApplicable=true."
+          "owl:versionInfo": "15.3.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1e. Changelog container m2:changelog -> m3:changelog (the owl:AnnotationProperty declared in M3_GrammarFoundation); entry keys version/date/changes -> owl:versionInfo / dcterms:date / adms:versionNotes (ADMS accepted, Michel 2026-09-30); prefix adms declared. Previously the whole changelog was dropped on JSON-LD expansion."
         },
-        "2026-02-24: v15.2.0 — Replaced m0:dualModes with comprehensive m0:operatingModes covering BJT (4 modes: Cutoff, Forward Active, Saturation, Reverse Active) and MOSFET NMOS (3 modes: Cutoff, Triode, Saturation). Added namingConventionNote on BJT/MOSFET Saturation inversion. Added comparativeTable (BJT↔MOSFET mode equivalences). Updated m0:simulation for new device-selector tab (BJT/MOSFET) and mode panel. versionInfo 15.1.0 → 15.2.0.",
-        "2026-02-24: v15.1.0 — Fixed @context URIs to canonical tscg GitHub raw path. Added m0:simulation property documenting transistor_sim.py (I-V characteristic curves, live operating-point display, ASFID/REVOI panels). Added m0:operatingRegionColors for simulation. versionInfo bumped 15.0.0 → 15.1.0."
+        {
+          "owl:versionInfo": "15.2.1",
+          "dcterms:date": "2026-06-26",
+          "adms:versionNotes": "ACTION3: Added m0:focalApplicable=true."
+        },
+        {
+          "owl:versionInfo": "15.2.0",
+          "dcterms:date": "2026-02-24",
+          "adms:versionNotes": "Replaced m0:dualModes with comprehensive m0:operatingModes covering BJT (4 modes: Cutoff, Forward Active, Saturation, Reverse Active) and MOSFET NMOS (3 modes: Cutoff, Triode, Saturation). Added namingConventionNote on BJT/MOSFET Saturation inversion. Added comparativeTable (BJT↔MOSFET mode equivalences). Updated m0:simulation for new device-selector tab (BJT/MOSFET) and mode panel. versionInfo 15.1.0 → 15.2.0."
+        }
       ],
       "m0:simulation": {
         "filename": "transistor_sim.py",
