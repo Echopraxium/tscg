@@ -59,10 +59,10 @@
       "@id": "m0:KindlebergerMinsky",
       "@type": "owl:Ontology",
       "owl:imports": [
-        "M3_GenesisGrammar.jsonld",
-        "M2_GenericConcepts.jsonld",
-        "M1_CoreConcepts.jsonld",
-        "M1_extensions/economics/M1_Economics.jsonld"
+        { "@id": "M3_GenesisGrammar.jsonld" },
+        { "@id": "M2_GenericConcepts.jsonld" },
+        { "@id": "M1_CoreConcepts.jsonld" },
+        { "@id": "M1_extensions/economics/M1_Economics.jsonld" }
       ],
       "m3:ontologyType": {
         "@id": "m3:Poclet"
@@ -71,12 +71,17 @@
       "rdfs:comment": "TSCG M0 poclet modeling the Kindleberger-Minsky 5-phase speculative cycle (Displacement → Boom → Euphoria → Distress → Revulsion). Primary M2 patterns: m2:Propagation (panic through interbank network) and m2:Narration (collective belief transformation). Includes simulation markers (date, asset price, transaction volume, dynamics) for 6 historical instances across all 5 phases.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-28",
-      "owl:versionInfo": "1.1.0",
+      "owl:versionInfo": "1.2.0",
       "m1:domain": [
         "Economics"
       ],
       "dcterms:modified": "2026-09-30",
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.2.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 4 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
         {
           "owl:versionInfo": "1.1.0",
           "dcterms:date": "2026-09-30",
@@ -86,11 +91,6 @@
           "owl:versionInfo": "1.0.1",
           "dcterms:date": "2026-06-26",
           "adms:versionNotes": "ACTION3: Added m0:focalApplicable=true."
-        },
-        {
-          "owl:versionInfo": "1.0.0",
-          "dcterms:date": "2026-02-28",
-          "adms:versionNotes": "Initial version. 5 poles, 6 historical instances with full simulation markers (dateRange, assetPrice, transactionVolume, dynamics). Primary M2: Propagation + Narration. ASFID mean=0.91, REVOI mean=0.82, δΘ=0.09."
         }
       ],
       "m1core:simulationTitle": "Kindleberger-Minsky: Financial Bubble Cycle",

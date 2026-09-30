@@ -153,7 +153,7 @@ class V15Transformer:
         if isinstance(imports, str): imports = [imports]
         if any("M0_Common" in str(i) for i in imports):
             return False
-        imports.insert(0, M0_COMMON_SHORT)
+        imports.insert(0, {"@id": M0_COMMON_SHORT})   # WS-1 lot 1i: IRI, not a string
         ontology["owl:imports"] = imports
         return True
 

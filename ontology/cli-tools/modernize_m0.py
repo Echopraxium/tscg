@@ -119,9 +119,12 @@ def modernize(path: Path):
     # ---- owl:imports absolute + M0_Common ----
     imp = o.get("owl:imports", [])
     if isinstance(imp, str): imp = [imp]
-    imp = [(i if str(i).startswith("http") else f"{BASE}/ontology/{i}") for i in imp]
-    if not any("M0_Common" in str(i) for i in imp):
-        imp.append(f"{BASE}/ontology/M0_Common.jsonld")
+    # WS-1 lot 1i: imports are written as IRIs {"@id": ...}, never as plain
+    # strings (a string is a literal: no reasoner follows it).
+    ids = [(i.get("@id", "") if isinstance(i, dict) else str(i)) for i in imp]
+    imp = [{"@id": (i if i.startswith("http") else f"{BASE}/ontology/{i}")} for i in ids]
+    if not any("M0_Common" in i["@id"] for i in imp):
+        imp.append({"@id": f"{BASE}/ontology/M0_Common.jsonld"})
     if imp: o["owl:imports"] = imp
 
     # ---- v2 fixers on the root node + graph ----

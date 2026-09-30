@@ -60,10 +60,10 @@
       "@id": "instances/symbolic-system-grammars/Iching/M0_IChing.jsonld",
       "@type": "owl:Ontology",
       "owl:imports": [
-        "M3_GenesisGrammar.jsonld",
-        "M2_GenericConcepts.jsonld",
-        "M1_CoreConcepts.jsonld",
-        "M1_extensions/mythology/M1_Mythology.jsonld"
+        { "@id": "M3_GenesisGrammar.jsonld" },
+        { "@id": "M2_GenericConcepts.jsonld" },
+        { "@id": "M1_CoreConcepts.jsonld" },
+        { "@id": "M1_extensions/mythology/M1_Mythology.jsonld" }
       ],
       "m3:ontologyType": {
         "@id": "m3:SymbolicSystemGrammar"
@@ -72,7 +72,7 @@
       "rdfs:comment": "3000-year-old Chinese divination and philosophical system. Minimal binary grammar (2 primitives: Yin/Yang) generates 8 trigram archetypes and 64 hexagrams via systematic stacking. Each hexagram is a unique symbolic signature of a situation with multiple legitimate interpretations. Changing-line mechanism encodes temporal dynamics.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-20",
-      "owl:versionInfo": "1.2.0",
+      "owl:versionInfo": "1.3.0",
       "m1:domain": "Symbolic divination, Chinese cosmology, comparative mythology, decision theory",
       "dcterms:modified": "2026-09-30",
       "A_score": {
@@ -131,6 +131,11 @@
       "m0:spectralClassNote": "δ₁ = |0.85−0.802| / √2 = 0.0339. The intentional V_score=0.50 (symbolic non-falsifiability) is the SSG's defining feature — this is by design, not a modeling error. Despite low V, the overall gap is small because R, Im, and S compensate.",
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.3.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 4 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
+        {
           "owl:versionInfo": "1.2.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1e. Changelog container m2:changelog -> m3:changelog (the owl:AnnotationProperty declared in M3_GrammarFoundation); entry keys version/date/changes -> owl:versionInfo / dcterms:date / adms:versionNotes (ADMS accepted, Michel 2026-09-30); prefix adms declared. Previously the whole changelog was dropped on JSON-LD expansion."
@@ -139,11 +144,6 @@
           "owl:versionInfo": "1.1.1",
           "dcterms:date": "2026-06-26",
           "adms:versionNotes": "ACTION3: Added m0:focalApplicable=true."
-        },
-        {
-          "owl:versionInfo": "1.1.0",
-          "dcterms:date": "2026-02-20",
-          "adms:versionNotes": "SymbolicArbitration reclassified as m2:Observer.validationMode attribute. GenerativeExhaustion reclassified as m2:Representation.spaceCoverage=1.0. GenesisSpace → GenesisGrammar migration. Scores moved to root level."
         }
       ],
       "m0:grammarSpec": {

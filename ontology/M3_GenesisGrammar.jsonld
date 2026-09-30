@@ -14,17 +14,17 @@
     {
       "@id": "m3:GenesisGrammar",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "4.12.0",
+      "owl:versionInfo": "4.13.0",
       "dcterms:created": "2026-01-21",
       "dcterms:modified": "2026-09-30",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Genesis Grammar - Bicephalous Structural Grammar",
       "dcterms:description": "Complete orthogonal basis for the TSCG framework, consisting of two complementary perspectives: Eagle Eye (ASFID) for Territory measurement and Sphinx Eye (REVOI) for Map construction. Integrates Category Theory formalization as mathematical foundation (definitions included in this file) for functors, morphisms, and categorical structure of TSCG layers.",
       "owl:imports": [
-        "M3_GrammarFoundation.jsonld",
-        "M3_EagleEye.jsonld",
-        "M3_SphinxEye.jsonld",
-        "M3_BicephalousPerspective.jsonld"
+        { "@id": "M3_GrammarFoundation.jsonld" },
+        { "@id": "M3_EagleEye.jsonld" },
+        { "@id": "M3_SphinxEye.jsonld" },
+        { "@id": "M3_BicephalousPerspective.jsonld" }
       ],
       "rdfs:label": "Genesis Grammar - Bicephalous Structural Grammar",
       "rdfs:comment": "M3 Genesis Grammar provides the bicephalous structural grammar for TSCG: Territory Grammar Gt (Eagle Eye / ASFID) and Map Grammar Gm (Sphinx Eye / REVOI), connected via natural transformations Φ and Ψ",
@@ -284,6 +284,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "4.13.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 4 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
+        {
           "owl:versionInfo": "4.12.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1h (explicit declarations), non-terms removed (Michel, 2026-09-30). (1) m3:TscgOntologyType: owl:isAbstract (not an OWL term — OWL has no abstract classes) removed; the rdfs:comment already states the class is abstract, so no information is lost. (2) Same node: rdfs:isDefinedBy was the string 'm3:TscgOntologyTypeScheme'; it is now a link to that skos:ConceptScheme. (3) m3:F_CategoryTheoryNote typed owl:NamedIndividual instead of owl:Annotation, a reserved class used only to reify annotations of axioms. SKOS terms used here (skos:Concept, skos:ConceptScheme, skos:broader, skos:related, skos:inScheme, skos:hasTopConcept, skos:topConceptOf, skos:notation…) are now declared in M3_GrammarFoundation with their official SKOS typing. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -312,11 +317,6 @@
           "owl:versionInfo": "4.7.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1a (Family A). Bare keys 'examples' / 'example' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard skos:example (SKOS documentation property, owl:AnnotationProperty, no domain/range): a list value now yields one skos:example triple per item. 6 string occurrences; 2 become graph-visible, 4 stay invisible until their bare parent key is resolved (later WS-1 lot). No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "4.6.0",
-          "dcterms:date": "2026-09-01",
-          "adms:versionNotes": "SC-3 (WS-0 Structural Cleanup): graved the Facet mechanism + the Audience facet. Added m3:Facet (owl:Class; each individual also a skos:ConceptScheme) and m3:FacetValue (owl:Class; also skos:Concept), with m3:valueOf (value -> axis; subPropertyOf skos:inScheme) and m3:hasFacetValue (carrier -> value; range m3:FacetValue, IRI-only, no domain). Graved the Audience axis (m3:Audience) with values m3:audience.KitArchitect/KitCrafter/KitUser. A facet is a conferred, contingent, Map-perspective classificatory role, orthogonal to the ontologyType backbone (NATURE stays the backbone tree; SC-3 does NOT touch ontologyType). Companion changes: the m0:facet.* apparatus removed from M0_Common; WS-5 axis.py gate. Contract-on-value doctrine; inter-value relations deferred (Decision #3). See SC-3 Facet Decision Record v2.0.0."
         }
       ]
     },

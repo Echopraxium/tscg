@@ -231,9 +231,10 @@ The gap measures mismatch between Territory complexity and Map simplicity.
   "dcterms:created": "2026-04-18",
   "m1:domain": ["Domain1", "Domain2"],  // Multi-domain support
   "owl:imports": [
-    "M3_GenesisSpace.jsonld",
-    "M2_GenericConcepts.jsonld",
-    "M1_CoreConcepts.jsonld"
+    { "@id": "M3_GenesisGrammar.jsonld" },
+    { "@id": "M2_GenericConcepts.jsonld" },
+    { "@id": "M1_CoreConcepts.jsonld" },
+    { "@id": "M0_Common.jsonld" }
   ]
 }
 ```
@@ -243,6 +244,7 @@ The gap measures mismatch between Territory complexity and Map simplicity.
 - Use **rdfs:comment**, not dcterms:description
 - Use **owl:versionInfo**, not m0:version
 - Use **m1:domain**, not m0:domain
+- Write each **owl:imports** entry as an IRI `{ "@id": "..." }`, never as a plain string (a string is a literal: no reasoner follows it)
 - Multi-domain: Use array `["Chemistry", "Physics"]`
 
 #### 3.2 ASFID/REVOI Scores
@@ -551,7 +553,7 @@ For interactive p5.js HTML simulations:
 "@context": {
   "m1chem": "M1_extensions/chemistry/M1_Chemistry.jsonld#"
 },
-"owl:imports": ["M1_extensions/chemistry/M1_Chemistry.jsonld"],
+"owl:imports": [{ "@id": "M1_extensions/chemistry/M1_Chemistry.jsonld" }],
 
 // In components:
 "m1chem:Combustion": {...}

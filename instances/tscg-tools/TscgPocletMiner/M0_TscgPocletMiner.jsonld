@@ -21,10 +21,10 @@
       "@id": "instances/tscg-tools/TscgPocletMiner/M0_TscgPocletMiner.jsonld",
       "@type": "owl:Ontology",
       "owl:imports": [
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld",
-        "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld"
+        { "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld" },
+        { "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld" },
+        { "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld" },
+        { "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld" }
       ],
       "m3:ontologyType": {
         "@id": "m3:TscgTool"
@@ -33,7 +33,7 @@
       "rdfs:comment": "TSCG Poclet Miner — Multi-backend LLM tool with on-the-fly RAG for TSCG ontology exploration and poclet generation assistance.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-03-16",
-      "owl:versionInfo": "1.2.0",
+      "owl:versionInfo": "1.3.0",
       "m1:domain": "TSCG",
       "dcterms:modified": "2026-09-30",
       "A_score": {
@@ -84,6 +84,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.3.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 4 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
+        {
           "owl:versionInfo": "1.2.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1e. Changelog container m2:changelog -> m3:changelog (the owl:AnnotationProperty declared in M3_GrammarFoundation); entry keys version/date/changes -> owl:versionInfo / dcterms:date / adms:versionNotes (ADMS accepted, Michel 2026-09-30); prefix adms declared. Previously the whole changelog was dropped on JSON-LD expansion."
@@ -92,11 +97,6 @@
           "owl:versionInfo": "1.1.1",
           "dcterms:date": "2026-06-26",
           "adms:versionNotes": "ACTION3: Added m0:focalApplicable=false."
-        },
-        {
-          "owl:versionInfo": "1.1.0",
-          "dcterms:date": "2026-03-16",
-          "adms:versionNotes": "RAG integration: JS-native @xenova/transformers (all-MiniLM-L6-v2, 384-dim, WASM). Round 2 queries poclet corpus for duplicate detection. Round 5 queries M2 GenericConcepts for concept suggestions."
         }
       ],
       "m0.tscgPocletMiner:scoreJustification": {

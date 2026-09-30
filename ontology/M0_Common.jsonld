@@ -21,16 +21,21 @@
       "rdfs:comment": "Canonical source of truth for all shared properties used across TSCG M0 instances (Poclets, SystemicFrameworks, SymbolicSystemGrammars, TscgTools). Defines the m0: namespace as the unique, stable namespace for cross-instance properties. All M0 instances MUST import this file and declare m0: pointing to this ontology. Instance-local properties use a distinct alias m0.<instanceName>: pointing to the instance file itself.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-06-19",
-      "owl:versionInfo": "1.5.0",
+      "owl:versionInfo": "1.6.0",
       "m3:ontologyType": {
         "@id": "m3:CommonVocabulary"
       },
       "owl:imports": [
-        "M3_GenesisGrammar.jsonld",
-        "M2_GenericConcepts.jsonld",
-        "M1_CoreConcepts.jsonld"
+        { "@id": "M3_GenesisGrammar.jsonld" },
+        { "@id": "M2_GenericConcepts.jsonld" },
+        { "@id": "M1_CoreConcepts.jsonld" }
       ],
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.6.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 3 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+        },
         {
           "owl:versionInfo": "1.5.0",
           "dcterms:date": "2026-09-30",
@@ -40,11 +45,6 @@
           "owl:versionInfo": "1.4.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1c (Family A). Changelog entry keys, previously bare and dropped on JSON-LD expansion, replaced by standards: version -> owl:versionInfo, date -> dcterms:date, changes -> adms:versionNotes (ADMS: a description of changes between this version and the previous one). Prefix adms declared in @context: ADMS accepted as an external vocabulary (Michel, 2026-09-30). Changelog entries become graph-visible. Legacy changelog forms (maps keyed by version, metadata blocks) left for a separate lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "1.3.0",
-          "dcterms:date": "2026-09-01",
-          "adms:versionNotes": "SC-3 (WS-0 Structural Cleanup): removed the entire m0:facet.* apparatus (added in 1.2.0), now superseded by the M3 Facet mechanism (m3:Facet/m3:FacetValue/m3:valueOf/m3:hasFacetValue in M3_GenesisGrammar v4.6.0). Removed: m0:Facet, m0:hasFacet, m0:facet.Democratization (with facetAnchor/facetFormula/facetContractFields), m0:illustratesConcept, m0:RoleGrounding, m0:roleGrounding, m0:roleGrounding.Reused, m0:roleGrounding.Designed. The Democratization facet migrates to m3:audience.KitUser; its contract (illustratesConcept/roleGrounding) is dropped, not carried over. owl:versionInfo corrected from a stale 1.1.0 (the 1.2.0 facet-infra change was never reflected there). See SC-3 Facet Decision Record v2.0.0."
         }
       ],
       "m0:namespaceConvention": {
