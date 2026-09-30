@@ -3,6 +3,7 @@
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
     "@vocab": "http://www.w3.org/2002/07/owl#",
     "dcterms": "http://purl.org/dc/terms/",
+    "adms": "http://www.w3.org/ns/adms#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
@@ -14,7 +15,7 @@
     {
       "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.7.0",
+      "owl:versionInfo": "2.8.0",
       "dcterms:created": "2026-05-12",
       "dcterms:modified": "2026-09-30",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
@@ -54,39 +55,39 @@
       },
       "m3:changelog": [
         {
-          "version": "2.7.0",
-          "date": "2026-09-30",
-          "changes": "WS-1 VOCABULARY CONSOLIDATION, lot 1b (Family A). Bare key 'description' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard dcterms:description (DCMI: an account of the resource; literal). Chosen over rdfs:comment on semantic grounds (Michel, 2026-09-30). 6 occurrences. Side fix: under this file's @vocab (owl#) the bare key had minted the bogus term owl:description (6 triples); it is now dcterms:description. Bare 'description' inside legacy 'metadata' blocks left untouched (separate lot). No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+          "owl:versionInfo": "2.8.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1c (Family A). Changelog entry keys, previously bare and dropped on JSON-LD expansion, replaced by standards: version -> owl:versionInfo, date -> dcterms:date, changes -> adms:versionNotes (ADMS: a description of changes between this version and the previous one). Prefix adms declared in @context: ADMS accepted as an external vocabulary (Michel, 2026-09-30). Changelog entries become graph-visible. Legacy changelog forms (maps keyed by version, metadata blocks) left for a separate lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md. The m3:changelog declaration records the decision in its skos:note (replaces the former 'pending a decision' wording)."
         },
         {
-          "version": "2.6.0",
-          "date": "2026-09-30",
-          "changes": "WS-1 VOCABULARY CONSOLIDATION, lot 1a (Family A). Bare keys 'examples' / 'example' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard skos:example (SKOS documentation property, owl:AnnotationProperty, no domain/range): a list value now yields one skos:example triple per item. 1 list occurrence (3 examples). Side fix: under this file's @vocab (owl#) the bare key had minted the bogus term owl:examples; it is now skos:example. No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
+          "owl:versionInfo": "2.7.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1b (Family A). Bare key 'description' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard dcterms:description (DCMI: an account of the resource; literal). Chosen over rdfs:comment on semantic grounds (Michel, 2026-09-30). 6 occurrences. Side fix: under this file's @vocab (owl#) the bare key had minted the bogus term owl:description (6 triples); it is now dcterms:description. Bare 'description' inside legacy 'metadata' blocks left untouched (separate lot). No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         },
         {
-          "version": "2.5.0",
-          "date": "2026-07-22",
-          "changes": "CHANGELOG PROPERTY DEFINED: new m3:changelog (owl:AnnotationProperty). The changelog property was used corpus-wide but DECLARED NOWHERE. It is defined here, in the apex ontology, so that every lower layer (M2/M1/M0 — all of which import M3) can use it as a legal downward reference. Also applied to this file: m2:changelog → m3:changelog, fixing both a dependency inversion (M3 referencing M2) and a CTX-1 defect (the 'm2' prefix was undeclared here). KNOWN LIMITS, deferred to the undeclared-terms worksite: (a) changelog entry objects still carry undeclared bare keys (version/date/changes) and remain invisible on expansion; (b) this file still declares @vocab=owl#, so its bare terms — including the legacy metadata.changelog block — expand into the OWL namespace as owl:* properties."
+          "owl:versionInfo": "2.6.0",
+          "dcterms:date": "2026-09-30",
+          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1a (Family A). Bare keys 'examples' / 'example' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard skos:example (SKOS documentation property, owl:AnnotationProperty, no domain/range): a list value now yields one skos:example triple per item. 1 list occurrence (3 examples). Side fix: under this file's @vocab (owl#) the bare key had minted the bogus term owl:examples; it is now skos:example. No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         },
         {
-          "version": "2.4.1",
-          "date": "2026-07-18",
-          "changes": "@context hygiene fix (CTX): 'm3' prefix made ABSOLUTE (https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#). It was relative and, combined with @vocab=owl#, resolved m3:* terms (incl. MonoidalType) against owl# instead of the M3 namespace — desynchronising this file's IRIs from EagleEye/SphinxEye. @base also repaired (.../main/ -> .../main/ontology/). Data graph unchanged."
+          "owl:versionInfo": "2.5.0",
+          "dcterms:date": "2026-07-22",
+          "adms:versionNotes": "CHANGELOG PROPERTY DEFINED: new m3:changelog (owl:AnnotationProperty). The changelog property was used corpus-wide but DECLARED NOWHERE. It is defined here, in the apex ontology, so that every lower layer (M2/M1/M0 — all of which import M3) can use it as a legal downward reference. Also applied to this file: m2:changelog → m3:changelog, fixing both a dependency inversion (M3 referencing M2) and a CTX-1 defect (the 'm2' prefix was undeclared here). KNOWN LIMITS, deferred to the undeclared-terms worksite: (a) changelog entry objects still carry undeclared bare keys (version/date/changes) and remain invisible on expansion; (b) this file still declares @vocab=owl#, so its bare terms — including the legacy metadata.changelog block — expand into the OWL namespace as owl:* properties."
         },
         {
-          "version": "2.4.0",
-          "date": "2026-07-12",
-          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL — M3 correction. ⚠ Fm2 and Fm1m2 were declared MORPHISMS ('Fm2 is a morphism, not a monoidal operator'); they are FUNCTIONS. A morphism/functor must preserve composition; emergence is non-compositional (arguments are COMBINED, not associated). Φ and Ψ remain genuine morphisms — the family is now split, not purged. ⚠ Fm1m2 was defined as 'Fm1m2 : 𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁, crosses the M1/M2 boundary'. THIS WAS THE ROOT ERROR: it propagated into M1_CoreConcepts v1.4.0, which 'corrected' Propagation/CascadeAmplification Fm2→Fm1m2 'because parent m1:Cascade is M1, not M2 atomic'. Fm1m2 is distinguished by DOMAIN QUALIFICATION, not by crossing a layer boundary; an Fm2 argument may legitimately come from M1_CoreConcepts. Corrected signatures: Fm2 : GenericConcept²⁺ → GenericConceptCombo; Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo. The × separating the signature slots is also removed (× is reserved to the Gt monoid and is never overloaded). RENAME: m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. See StructuralGrammar/Functional_Grammar_Model.md."
+          "owl:versionInfo": "2.4.1",
+          "dcterms:date": "2026-07-18",
+          "adms:versionNotes": "@context hygiene fix (CTX): 'm3' prefix made ABSOLUTE (https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#). It was relative and, combined with @vocab=owl#, resolved m3:* terms (incl. MonoidalType) against owl# instead of the M3 namespace — desynchronising this file's IRIs from EagleEye/SphinxEye. @base also repaired (.../main/ -> .../main/ontology/). Data graph unchanged."
         },
         {
-          "version": "2.3.0",
-          "date": "2026-07-12",
-          "changes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:DomainConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
+          "owl:versionInfo": "2.4.0",
+          "dcterms:date": "2026-07-12",
+          "adms:versionNotes": "SC-1 FUNCTIONAL GRAMMAR MODEL — M3 correction. ⚠ Fm2 and Fm1m2 were declared MORPHISMS ('Fm2 is a morphism, not a monoidal operator'); they are FUNCTIONS. A morphism/functor must preserve composition; emergence is non-compositional (arguments are COMBINED, not associated). Φ and Ψ remain genuine morphisms — the family is now split, not purged. ⚠ Fm1m2 was defined as 'Fm1m2 : 𝕋₁(M1) × 𝕋₁(M2)ⁿ → 𝕋₁, crosses the M1/M2 boundary'. THIS WAS THE ROOT ERROR: it propagated into M1_CoreConcepts v1.4.0, which 'corrected' Propagation/CascadeAmplification Fm2→Fm1m2 'because parent m1:Cascade is M1, not M2 atomic'. Fm1m2 is distinguished by DOMAIN QUALIFICATION, not by crossing a layer boundary; an Fm2 argument may legitimately come from M1_CoreConcepts. Corrected signatures: Fm2 : GenericConcept²⁺ → GenericConceptCombo; Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo. The × separating the signature slots is also removed (× is reserved to the Gt monoid and is never overloaded). RENAME: m2:KnowledgeFieldConceptCombo → m2:DomainConceptCombo. See StructuralGrammar/Functional_Grammar_Model.md."
         },
         {
-          "version": "2.2.0",
-          "date": "2026-05-27",
-          "changes": "BASE16 EXTENSION: Gs alphabet extended from 3 to 6 primitives. Three new Gs types: K (Knowledge, idx 3), Ss (Symbol/Stereopsic, idx 4), L (Localizability, idx 5). 𝕋₀ cardinality: 13 → 16. TKSL acronym for the 4 nominal Gs primitives. Transcendental questions map: {T: When?, K: What?, Ss: Sign?, L: Converging?}. 5-5-6 asymmetry documented."
+          "owl:versionInfo": "2.3.0",
+          "dcterms:date": "2026-07-12",
+          "adms:versionNotes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:DomainConceptCombo → m2:DomainConceptCombo. The class is also RE-DEFINED: a DomainConceptCombo is defined by its Fm1m2 formula — a hybrid of ≥1 Domain and ≥1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept²⁺ → GenericConceptCombo (≥2 concepts); Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo (≥1 domain AND ≥1 concept). No monoidal formula, no monoidal expansion — emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. Arguments = named concepts from M2_GenericConcepts or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/|. Fm1 does not exist. ⚠ Formulas in this file are FLAGGED by the new SHACL (v1.1.0) and NOT repaired here — repair belongs to SC-6. See StructuralGrammar/Functional_Grammar_Model.md."
         }
       ],
       "three_alphabets": {
@@ -399,7 +400,7 @@
       "@type": "owl:AnnotationProperty",
       "rdfs:label": "changelog",
       "rdfs:comment": "Ordered list of the most recent modifications to an ontology file, newest first. Declared in the apex ontology so that EVERY layer (M3, M2, M1, M0) can annotate its own owl:Ontology node without inverting the layer dependency: M2/M1/M0 all import M3, so m3:changelog is always a legal downward reference, whereas the former m2:changelog forced M3 files to depend on M2. RETENTION POLICY: the 3 most recent entries, except M3 files which keep up to 7 (rollback safety on the foundational layer). Declared as owl:AnnotationProperty rather than owl:DatatypeProperty because a changelog is documentation ABOUT the ontology, not an assertion about a domain entity \u2014 this keeps the corpus inside OWL DL. No rdfs:domain / rdfs:range axiom is asserted for the same reason; the intended domain is the owl:Ontology node.",
-      "skos:note": "Aligned IN INTENT with adms:versionNotes (http://www.w3.org/ns/adms#versionNotes \u2014 'a description of changes between this version and the previous version of the Asset'). No rdfs:subPropertyOf axiom is asserted: the alignment is documentary only, pending a decision on whether the corpus accepts external vocabulary dependencies beyond rdfs/owl/skos/dcterms.",
+      "skos:note": "Aligned IN INTENT with adms:versionNotes (http://www.w3.org/ns/adms#versionNotes \u2014 'a description of changes between this version and the previous version of the Asset'). No rdfs:subPropertyOf axiom is asserted: m3:changelog is the CONTAINER (the ordered list of entries), whereas adms:versionNotes is the change text INSIDE each entry. DECISION (Michel, 2026-09-30, WS-1 lot 1c): ADMS is accepted as an external vocabulary; each entry is a node {owl:versionInfo, dcterms:date, adms:versionNotes}. The standard alternative (each entry as a version resource linked by dcterms:hasVersion) was considered and not retained: m3:changelog keeps its documented ordering, retention policy and annotation status.",
       "dcterms:created": "2026-07-22"
     },
     {
