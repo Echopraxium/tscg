@@ -105,12 +105,43 @@ sets HEAD vs working copy.
    verify by triple counts; expected effect: pyld expands all canonical files. Refine
    the CTX-5 gauge so the 3 valid `{"@type": "@id"}` coercions of M1_CoreConcepts do
    not count. Not in scope: M0 colon-names (WS-10), FireTriangle / template (WS-9).
-3. **Golden notes**: remove hard-coded numbers from the `note` texts.
+3. **Golden notes**: remove hard-coded numbers from the `note` texts (stale: "163",
+   "476", "C12 x25", "18 PASS / 25 FAIL"; and the M3 note claims "M3_Schema.shacl.ttl
+   exists" — it is not in the repository).
 4. Then the M3/M2 checks (document plane first, then structural SHACL).
 
 ---
 
 ## 3. Remaining WS-1 work (after the gate covers the 4 layers)
+
+### Planned order (agreed with Michel, 2026-10-01)
+
+| Conversation | Content |
+|---|---|
+| **n+1** (this HandOver) | Q1–Q4, CTX-5 lot, golden notes, M3/M2 checks + structural SHACL. If time remains: start B1 (safest). |
+| **n+2** | **B1** (declare only) + the **B2 decision** (VOC README §4: data or documentation, the `eagleView` / `sphinxView` block shape, the `m3:role` / bare `role` duplication) + a first B2 lot if decided. |
+| **n+3 and later** | B2 execution in lots: frequent keys first, then the default rule for the long tail. |
+
+Why this order: the M3/M2 checks lock every later B1/B2 lot in the gate.
+
+### Re-measure before B1 / B2 (do not trust these figures)
+
+- **B1 is much smaller than its gauge.** The VOC README names **24** undeclared `m3:*`
+  keys (M3_BicephalousPerspective); the gauge `VOC_prefixed_but_undefined` shows **853**
+  because it is per-file and conservative (it counts a prefixed key not defined *in the
+  same file*, even if defined in the apex or another imported file). Measure B1 with a
+  check that follows `owl:imports` (now possible: imports are IRIs since lot 1i).
+- **B2 figures in the VOC README are from 2026-07-22** (e.g. `role` 308); on HEAD
+  2026-10-01 `role` = 152. Re-measure.
+- **Bare-key gauge vs family C.** The VOC README classes single-letter primitives
+  (`S`, `I`, `D`, `F`, `A`…) as family **C — false positives, to exclude**; the VOC gauge
+  still counts them (~80 occ. as keys on 2026-10-01). Decide whether they are formula
+  values (exclude from the gauge) or primitive → value tables (a B2 pattern), then
+  adjust the gauge — no data change.
+- Concentration (2026-10-01): 1253 distinct keys; top 100 = 51 % of occurrences; 861
+  keys occur once (long tail → the default `m3:documentation` rule of §4).
+
+### Other remaining lines
 
 - **Family A §2 conditional lines**: `unit` → `schema:unitText` (5 M1, approved in
   principle), `value` in `m2:possibleValues` (103), `pros`/`cons`
@@ -119,7 +150,7 @@ sets HEAD vs working copy.
   `supersedes`/`references`, `range` (M1 Photography → `m2:valueRange`).
 - **Vestiges lot**: `metadata` blocks, map-shaped changelogs, `changelogLegacy`,
   M2/GenesisGrammar `v1`/`v2` history.
-- **B1** (853 prefixed-but-undefined) and **B2** (~2 500 native keys: `role`, `status`,
+- **B1** (gauge 853, true size much smaller — see above) and **B2** (~2 500 native keys: `role`, `status`,
   `formula`, `basis`… — needs the data-vs-documentation decision, scoping note §4 of
   the VOC README). The two `@vocab: owl#` files (142 fake `owl:<key>`, gauge EXT-2).
 - **1k (debt)**: align ontology IRIs with document URLs.
