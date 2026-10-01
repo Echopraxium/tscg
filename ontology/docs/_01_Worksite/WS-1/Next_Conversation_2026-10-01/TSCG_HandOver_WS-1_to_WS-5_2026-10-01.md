@@ -141,6 +141,25 @@ Why this order: the M3/M2 checks lock every later B1/B2 lot in the gate.
 - Concentration (2026-10-01): 1253 distinct keys; top 100 = 51 % of occurrences; 861
   keys occur once (long tail → the default `m3:documentation` rule of §4).
 
+### Working rule (Michel, 2026-10-01) — no new bare keys
+
+Bare keys were introduced by earlier LLM generations, silently (JSON-LD drops them
+without any error). From now on:
+- **every lot reports the VOC gauge before → after** (`tscg_metrics.py`), and it must
+  not rise;
+- **every new or modified M0 instance reports 0 bare keys** (check in
+  `tscg-instance-pipeline` 2.2.0, step 3.5 (a));
+- once the M3/M2 checkers exist, the gate locks this (any rise = FAIL).
+
+**Finding (2026-10-01): the M0 instances are outside the VOC gauge.** `tscg_metrics.py`
+measures the canonical scope (`ontology/`) only. Measured separately: **6604 bare keys
+in the 43 M0 instances** (KindlebergerMinsky 1000, CellSignalingModes 467, TPACK 443,
+ExposureTriangle 376, RGB_Additive 267, FireTriangle 262 …; only QRCodeToPocketCity
+has 0). Decide in n+1 or n+2: add an M0 VOC gauge (and freeze it in the gate's M0
+section), and whether M0 bare keys are WS-1, WS-9 (archaeological poclets) or WS-10.
+Also: many instances use `m1.ext:<domain>` (colon-named) while check_m0 C08 documents
+`m1.extensions.<domain>` and does not flag the colon form.
+
 ### Other remaining lines
 
 - **Family A §2 conditional lines**: `unit` → `schema:unitText` (5 M1, approved in

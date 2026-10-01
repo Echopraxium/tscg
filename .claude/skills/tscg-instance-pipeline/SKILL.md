@@ -9,9 +9,16 @@ description: >
   think?" about a known system, or requests an HTML/Electron simulation of a TSCG system.
   Do NOT use for Case Studies or Real World Systems (too complex) — this pipeline is
   reserved for Instances.
-version: 2.1.1
+version: 2.2.0
 ---
 
+<!-- v2.2.0 (2026-10-01) — Vocabulary hygiene (WS-1). ZERO BARE KEYS rule + mandatory
+     bare-key check before delivery (3.3, 3.5); @context example no longer shows
+     colon-named terms (CTX-5) — local namespace m0.<instanceId>: (WS-10); m2:changelog
+     -> m3:changelog with {owl:versionInfo, dcterms:date, adms:versionNotes};
+     owl:imports written as IRIs; SHACL schema path corrected (the TSCG_InstanceGrammar
+     copy was removed); check_m0_instances.py added; FireTriangle flagged as a STRUCTURE
+     reference only (it carries bare keys, WS-9 AP-1). Loads head-over-memory. -->
 <!-- v2.1.1 (2026-08-16) — Fixes on top of v2.1.0:
      path `ontology/TSCG_Grammar/` → `ontology/TSCG_InstanceGrammar/` (old path 404'd)  ·
      corrected self-contradictory dead-vestige line (dead = M3_GenesisSpace, live = M3_GenesisGrammar). -->
@@ -30,6 +37,9 @@ version: 2.1.1
 Each step may contain **human synchronization points** (⏸) that suspend
 the pipeline until Michel's explicit decision to continue.
 
+**Load first, by name: `head-over-memory`.** Every file path, formula, type name,
+version or count used below is read from HEAD, never recited.
+
 > **Notation (current — reformed 2026-08-13).** Structural grammar formulas use
 > three operators only: `×` (Territory / ASFID, monoid **Gt**), `+` (Map / REVOI,
 > monoid **Gm**), `|` (Stereopsis, monoid **Gs**). The operator **`⊗` is
@@ -40,6 +50,25 @@ the pipeline until Michel's explicit decision to continue.
 > **`DomainConceptCombo`** (ex-`KnowledgeFieldConceptCombo`). Always verify any
 > formula, type name or version against **HEAD**, never from memory.
 
+> **Vocabulary rule (WS-1, 2026-10-01) — ZERO BARE KEYS.** A *bare key* is a JSON key
+> declared in no `@context` and carrying no prefix. JSON-LD silently DROPS it on
+> expansion: the file still opens and feeds the simulation, but that content never
+> reaches the RDF graph, so no reasoner and no SHACL shape can see it — and nothing
+> reports an error. Previous generations of this pipeline produced thousands of them
+> (measured 2026-10-01: 6604 in the 43 M0 instances, 3418 in the canonical corpus).
+> Every key you write — **at every nesting depth** — must be one of:
+> 1. a standard term declared in the apex `M3_GrammarFoundation` (`rdfs:`, `owl:`,
+>    `dcterms:`, `skos:`, `adms:`, `schema:` — see its node
+>    `m3:grammar_foundation:ExternalVocabularyPolicy`);
+> 2. a TSCG term of the right layer (`m0:` = `M0_Common.jsonld#`, `m1:`, `m2:`, `m3:`),
+>    checked at HEAD to exist;
+> 3. a **local instance term** under the instance's own prefix `m0.<instanceId>:`
+>    (dot form, WS-10 convention) — for sections and sub-fields specific to this
+>    instance.
+>
+> Never invent a bare key "for documentation". If a field has no home, stop and ask
+> Michel (duo mode). The check of 3.5 must report 0 before delivery.
+
 ---
 
 ## GitHub References (raw URLs)
@@ -47,31 +76,39 @@ the pipeline until Michel's explicit decision to continue.
 Base: `https://raw.githubusercontent.com/Echopraxium/tscg/main/`
 
 **Ontology:**
+- `ontology/M3_GrammarFoundation.jsonld` — apex: external vocabulary declarations and policy
 - `ontology/M3_GenesisGrammar.jsonld` — M3 structural grammar (aggregator)
 - `ontology/M3_EagleEye.jsonld` — ASFID dimensions
 - `ontology/M3_SphinxEye.jsonld` — REVOI dimensions
-- `ontology/M2_GenericConcepts.jsonld` — 58+ GenericConcepts
+- `ontology/M2_GenericConcepts.jsonld` — GenericConcepts (count them at HEAD)
 - `ontology/M1_CoreConcepts.jsonld` — core concepts
 - `ontology/M1_extensions/chemistry/M1_Chemistry.jsonld` — domain extension example
+- `ontology/M0_Common.jsonld` — shared M0 vocabulary (`m0:` scores, gap, …)
 
-**Canonical reference instance:**
-- `instances/poclets/FireTriangle/M0_FireTriangle.jsonld`
-- `instances/poclets/FireTriangle/M0_FireTriangle_README.md`
+**Reference instances (2026-10-01 — re-measure with the 3.5 bare-key check):**
+- **Structure reference** (sections, README, simulation):
+  `instances/poclets/FireTriangle/M0_FireTriangle.jsonld` + `_README.md`.
+  ⚠ Do NOT copy its vocabulary: its top-level sections are correctly prefixed
+  (`m0.fireTriangle:…`) but their sub-fields are bare keys (262), and its `@context`
+  carries archaeological colon-named terms (scheduled re-evaluation: WS-9 AP-1).
+- **Vocabulary reference**: `instances/poclets/QRCodeToPocketCity/M0_QRCodeToPocketCity.jsonld`
+  — the only instance with 0 bare keys at that date (every key prefixed).
 
-**Other existing instances (for comparison):**
-AdaptativeImmuneResponse, BloodPressureControl, ButterflyMetamorphosis,
-CellSignalingModes, ColorSynthesis (RGB/HSL/CMY/CMYK/Federated),
-ComplexChemicalSynapse, ExposureTriangle, FourStrokeEngine, Kidneys,
-KindlebergerMinsky, MtgColorWheel, NuclearReactorsTypology, PhaseTransition,
-Raas, Tpack, Transistor, TrophicPyramid, TvTestPattern, VCO
+**Other existing instances (for comparison):** list them from HEAD
+(`instances/poclets/`, `instances/systemic-frameworks/`,
+`instances/symbolic-system-grammars/`, `instances/tscg-tools/`).
 
 **Reference documentation:**
-- `docs/reboot-kit/M2_FormulasReference_v15.10.0.md`
-- `docs/reboot-kit/SmartPrompts/` (Smart_Prompt_M3_M2_Updated.md if uploaded in session)
+- `docs/reboot-kit/M2_FormulasReference_v15.10.0.md` (verify against M2 at HEAD)
+- `docs/reboot-kit/SmartPrompts/`
 
-**SHACL validation:**
-- `ontology/TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl` — grammar schema
-- `ontology/TSCG_InstanceGrammar/validate_m0_instance.py` — validation script
+**Validation (single source of truth for the M0 SHACL schema):**
+- `ontology/cli-tools/check-M0/M0_Instances_Schema_shacl.ttl` — M0 SHACL schema
+- `ontology/TSCG_InstanceGrammar/validate_m0_instance.py` — single-file SHACL validation
+  (uses the schema above)
+- `ontology/cli-tools/check-M0/check_m0_instances.py` — full M0 checker (C01–C15),
+  `--instance NAME` for one instance
+- `ontology/cli-tools/run_all_layers.py` — the acceptance gate (exact reference values)
 
 **This skill (source of truth in repo):**
 - `.claude/skills/tscg-instance-pipeline/SKILL.md`
@@ -186,52 +223,77 @@ File structure:
 - Identify **new M1 candidates** if necessary
 - Identify if a **new M1 extension** is required or if an existing extension
   should be enriched (e.g., new class in `M1_Chemistry.jsonld`)
+- If a candidate is written into an M1 / M2 file, it follows the same zero-bare-key
+  rule, and the canonical VOC gauge must not rise (see 3.5).
 
 #### 3.3 — M0 JSON-LD Generation
 
-Follow **scrupulously** the FireTriangle pattern as reference template.
+Follow the FireTriangle pattern for the **structure** (sections, order), and the
+**Vocabulary rule** above for every key.
 
-**Mandatory `@context` structure:**
+**`@context` — build it from this shape, verify every IRI at HEAD.** Do not copy an
+existing instance's `@context` blindly: most still carry colon-named terms (e.g.
+QRCodeToPocketCity, otherwise clean, has `m3:eagle_eye`, `m3:sphinx_eye`,
+`m1.ext:electronics`). Required shape:
+
 ```json
 {
   "@context": {
+    "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
+    "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Common.jsonld#",
+    "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
+    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "dcterms": "http://purl.org/dc/terms/",
+    "adms": "http://www.w3.org/ns/adms#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
-    "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
-    "m1:core": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
-    "m1:[domain]": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_extensions/M1_[Domain].jsonld#",
-    "m0:[instance-id]": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/[type]/[InstanceName]/M0_[InstanceName].jsonld#"
+    "m0.<instanceId>": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/<type>/<InstanceName>/M0_<InstanceName>.jsonld#"
   }
 }
 ```
 
-> **Authoritative `@context`:** the block above is a simplified illustration. Copy
-> the real, current `@context` from `instances/poclets/FireTriangle/M0_FireTriangle.jsonld`
-> at HEAD — it includes `"@base"`, a bare `m1` (→ `M1_CoreConcepts.jsonld#`), `m0`
-> (→ `M0_Common.jsonld#`), the `m1.ext:<domain>` extension prefix, and the typed
-> `*_score` terms. (Note: JSON-LD term names containing `:` such as `m1:core` are a
-> known separate hygiene item — do not introduce new ones.)
+- All prefixes **absolute**; `m0:` always resolves to `M0_Common.jsonld#` (WS-10).
+- **No term name containing `:`** in the `@context` (CTX-5: `m1:core`, `m0:instance`,
+  `m3:eagle_eye`, `m1.ext:<domain>`… — strict JSON-LD processors reject some of them,
+  and `m3:eagle_eye` points to the wrong IRI). Local terms use the dot-form prefix
+  `m0.<instanceId>`.
+- **M1 extension prefix**: the dot form `m1.extensions.<domain>` (the form check_m0 C08
+  documents), mapped to **the namespace IRI the M1 extension itself uses** — read it in
+  that extension's `@context` / `@id` at HEAD; never rebuild it from the folder name.
+  The `m1.ext:<domain>` form found in many instances is colon-named: do not copy it
+  (harmonisation: WS-10).
+- Add `schema` (`https://schema.org/`) only if a `schema:` term is used.
 
-**Mandatory JSON-LD sections:**
-1. Metadata (`rdfs:label`, `rdfs:comment`, `dcterms:created`, `dcterms:creator`, `m2:changelog`)
-2. `m3:ontologyType`, `m1:domain`, `completeness`, `minimality`, `pedagogy`, `observer`
-3. `components` (list of components with `asfidContribution` per component)
-4. `process` or main mechanism
-5. `territorySpace` (ASFID / Eagle Eye) with `stateVector` and `norm`
-6. `mapSpace` (REVOI / Sphinx Eye) with `reviStateVector` and `reviNorm`
-7. `epistemicGap` (ΔΘ formula, `deltaVector`, `norm`, interpretation)
-8. `revoi` (detailed analysis of 5 REVOI dimensions with justification)
-9. `GenericConceptsMobilized` (total + `byCategory`)
-10. `validation` (checklist ASFID completeness, GenericConcept coverage, minimality, emergence)
+**Mandatory JSON-LD content (owl:Ontology node):**
+1. Metadata: `rdfs:label`, `rdfs:comment`, `dcterms:created`, `dcterms:creator`,
+   `owl:versionInfo`, and **`m3:changelog`** — a list of entries
+   `{ "owl:versionInfo": …, "dcterms:date": …, "adms:versionNotes": … }`
+   (newest first, 3 kept). `m2:changelog` is FORBIDDEN (check_m0 C14, SHACL).
+2. `owl:imports` as **IRIs**: `[{ "@id": "M3_GenesisGrammar.jsonld" },
+   { "@id": "M2_GenericConcepts.jsonld" }, { "@id": "M1_CoreConcepts.jsonld" },
+   { "@id": "M0_Common.jsonld" }, { "@id": "M1_extensions/<domain>/M1_<Domain>.jsonld" }]`
+   — never plain strings (a string is a literal: nothing is imported).
+3. `m3:ontologyType`, `m1:domain`, and the `m0:` scores / means / epistemic gap as
+   defined in `M0_Common` at HEAD.
+4. Instance sections, each a **local term** with **prefixed sub-fields**:
+   `m0.<instanceId>:completeness`, `…:minimality`, `…:pedagogy`, `…:observer`,
+   `…:components` (with each component's ASFID contribution), `…:process`,
+   `…:territorySpace` (ASFID / Eagle Eye), `…:mapSpace` (REVOI / Sphinx Eye),
+   `…:epistemicGap` (ΔΘ, delta vector, norm, interpretation), `…:revoi`,
+   `…:GenericConceptsMobilized`, `…:validation`.
+   Inside them, reuse a standard term when one fits (`rdfs:label` for a name,
+   `dcterms:description` for a description, `skos:note`, `skos:example`,
+   `schema:unitText` for a unit text…), otherwise a `m0.<instanceId>:` term.
+   ASFID / REVOI letters (`A`, `S`, `F`, `It`, `D`, `R`, `E`, `V`, `O`, `Im`) used as
+   **keys** are bare keys too: use the `m0:` score terms or a prefixed term.
 
 > ⏸ **"Duo analysis" mode** if any blocking occurs at any sub-step
-> (concept not found, tension between dimensions, namespace doubt) —
-> suspend and open discussion with Michel.
+> (concept not found, tension between dimensions, namespace doubt, a field with no
+> declared home) — suspend and open discussion with Michel.
 
 #### 3.4 — README.md Generation
 
@@ -252,52 +314,74 @@ After JSON-LD validation, generate `M0_[InstanceName]_README.md` with:
 ## References
 ```
 
-#### 3.5 — SHACL Grammar Validation
+#### 3.5 — Validation — MANDATORY, all must pass
 
-**CRITICAL STEP**: After generating the M0 JSON-LD file, validate it against
-the TSCG SHACL grammar schema to ensure complete conformance.
+Run from the repository root.
 
-**Validation script location:**
-- `ontology/TSCG_InstanceGrammar/validate_m0_instance.py` (standalone Python script)
-- **Note**: Script must be run from repository root directory
+**(a) Zero bare keys** (this check can fail — exit code 1 — and must report 0):
 
-**Usage:**
-```bash
-# From repository root
-python ontology/TSCG_InstanceGrammar/validate_m0_instance.py instances/[type]/[InstanceName]/M0_[InstanceName].jsonld
-
-# Example
-python ontology/TSCG_InstanceGrammar/validate_m0_instance.py instances/poclets/FireTriangle/M0_FireTriangle.jsonld
+```python
+import json, sys
+from collections import Counter
+doc = json.load(open(sys.argv[1], encoding="utf-8"))
+ctx = doc.get("@context", {}); declared = set(ctx) if isinstance(ctx, dict) else set()
+bare = Counter()
+def walk(n):
+    if isinstance(n, dict):
+        for k, v in n.items():
+            if not k.startswith("@") and ":" not in k and k not in declared:
+                bare[k] += 1
+            walk(v)
+    elif isinstance(n, list):
+        for x in n: walk(x)
+walk(doc.get("@graph", doc))
+print(f"bare keys: {sum(bare.values())}  {dict(bare.most_common(15))}")
+sys.exit(1 if bare else 0)
 ```
 
-**Expected outcome:**
-- ✅ **Validation PASSED**: "Conforms: True" — Continue to Step 4
-- ❌ **Validation FAILED**: SHACL constraint violations detected
+**(b) SHACL:**
+```bash
+python ontology/TSCG_InstanceGrammar/validate_m0_instance.py instances/[type]/[InstanceName]/M0_[InstanceName].jsonld
+```
+
+**(c) M0 checker** (namespaces, imports, changelog, tensor remnants, SHACL):
+```bash
+python ontology/cli-tools/check-M0/check_m0_instances.py --instance [InstanceName]
+```
+
+**(d) If an M1 / M2 file was modified (3.1 / 3.2):** run
+`python ontology/cli-tools/tscg_metrics.py` before and after — the VOC bare-key gauge
+must not rise — and the gate `cd ontology/cli-tools && python run_all_layers.py`
+(a new M0 file also changes the gate's M0 file count: show the moved counts to Michel
+before any `--update-golden`).
+
+**Deliver with the numbers**: bare keys = 0, SHACL result, check_m0 line, and for
+M1/M2 changes the VOC gauge before → after.
 
 **If validation fails:**
-1. Review the SHACL violation report
-2. Identify which constraints were violated:
-   - Missing mandatory properties (rdfs:label, m3:ontologyType, m1:domain, etc.)
-   - Incorrect property values (wrong namespace, wrong type, etc.)
-   - Forbidden properties (dcterms:title, m2:ontologyCategory, etc.)
-   - Incorrect @context URLs (relative instead of absolute)
-3. Fix the JSON-LD file accordingly
-4. Re-run validation until it passes
-
-**Common validation errors and fixes:**
+1. Review the report
+2. Typical causes:
+   - Bare keys (fix: prefix them — standard term, TSCG term, or `m0.<instanceId>:`)
+   - Missing mandatory properties (`rdfs:label`, `m3:ontologyType`, `m1:domain`, …)
+   - Wrong property names or namespaces (`dcterms:title`, `m2:changelog`, …)
+   - Relative or colon-named `@context` entries
+   - `owl:imports` written as strings
+3. Fix the JSON-LD file and re-run until everything passes
 
 | Error | Cause | Fix |
 |-------|-------|-----|
+| "bare keys: N" (N > 0) | unprefixed, undeclared keys | prefix each key (see Vocabulary rule) |
 | "m3:ontologyType MUST be one of..." | Missing or wrong ontologyType | Add `"m3:ontologyType": {"@id": "m3:Poclet"}` |
 | "m1:domain is MANDATORY" | Missing domain property | Add `"m1:domain": "Chemistry"` |
 | "Use rdfs:label instead of dcterms:title" | Wrong property name | Rename `dcterms:title` → `rdfs:label` |
-| "pyshacl cannot resolve relative URLs" | Relative namespace URLs in @context | Replace `"M3_GenesisGrammar.jsonld#"` with full `https://raw.githubusercontent.com/...` |
+| "pyshacl cannot resolve relative URLs" | Relative namespace URLs in @context | Use the full `https://raw.githubusercontent.com/...` IRIs |
 | "owl:Ontology required" | Wrong @type value | Change `"@type": "owl:NamedIndividual"` → `"owl:Ontology"` |
+| m2:changelog present (C14) | old changelog container | `m3:changelog` with `{owl:versionInfo, dcterms:date, adms:versionNotes}` |
 
 > ⏸ **Mandatory sync point if validation fails repeatedly** — discuss structural
 > issues with Michel before continuing.
 
-**Only proceed to Step 4 (Simulation) after successful SHACL validation.**
+**Only proceed to Step 4 (Simulation) after all checks pass.**
 
 ---
 
@@ -360,6 +444,10 @@ The FireTriangle HTML is the **canonical template**. Conform to it for:
 
 > Michel decides the number of rounds and priorities at each iteration. ⏸ after each round.
 
+> Ontology files live next to the instance, never under `static/` (rule of
+> 2026-09-30: no ontology copy under `static/`, except instance data such as a
+> simulation's own data module).
+
 ---
 
 ## File Naming Conventions
@@ -373,7 +461,8 @@ instances/[type]/[InstanceName]/
 ```
 
 `[InstanceName]` is in PascalCase (e.g., `FireTriangle`, `ColorSynthesis`).
-`[type]` is one of: `poclets`, `symbolic-system-grammars`, `systemic-frameworks`
+`[type]`: list the categories under `instances/` at HEAD (e.g. `poclets`,
+`symbolic-system-grammars`, `systemic-frameworks`, `tscg-tools`).
 
 ---
 
@@ -390,10 +479,10 @@ ANALYSIS → analysis.md
 MODELING
   ├─ 3.1 M2 GenericConcepts (existing + candidates)
   ├─ 3.2 M1 DomainConceptCombos (existing + candidates)
-  ├─ 3.3 M0 JSON-LD  ← duo mode if blocking ⏸
+  ├─ 3.3 M0 JSON-LD  ← zero bare keys · duo mode if blocking ⏸
   ├─ 3.4 README.md
-  └─ 3.5 SHACL validation ← MANDATORY, must pass ✅⏸
-       ↓ (only if SHACL validation passes)
+  └─ 3.5 Validation ← MANDATORY: bare keys 0 · SHACL · check_m0 (· VOC/gate if M1/M2) ✅⏸
+       ↓ (only if all checks pass)
 SIMULATION
   └─ First HTML standalone draft
   └─ Iterative rounds (ergonomics / pedagogy / aesthetics) ⏸⏸⏸
@@ -401,41 +490,12 @@ SIMULATION
 
 ---
 
-## Validation Script Requirements
+## Validation tools (reference)
 
-The `validate_m0_instance.py` script (located in `ontology/TSCG_InstanceGrammar/`) must:
-- Accept a single JSON-LD file path as argument
-- Auto-detect the SHACL schema in `ontology/TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl`
-- Allow optional custom schema path via `--schema` argument
-- Use `pyshacl` library for validation
-- Display clear success/failure messages
-- Return exit code 0 for success, 1 for failure
-- Show detailed violation report if validation fails
-
-**Installation requirement:**
-```bash
-pip install pyshacl --break-system-packages
-```
-
-**Script location:**
-```
-ontology/TSCG_InstanceGrammar/
-├── M0_Instances_Schema.shacl.ttl    ← SHACL schema
-└── validate_m0_instance.py          ← validation script
-```
-
-**Example validation output:**
-```
-======================================================================
-TSCG M0 INSTANCE SHACL VALIDATION
-======================================================================
-
-📄 Instance file: instances/poclets/FireTriangle/M0_FireTriangle.jsonld
-📋 Schema file:   ontology/TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl
-
-======================================================================
-
-✅ VALIDATION PASSED - Instance conforms to TSCG SHACL grammar
-
-======================================================================
-```
+- `validate_m0_instance.py` (`ontology/TSCG_InstanceGrammar/`): one JSON-LD file as
+  argument, uses `ontology/cli-tools/check-M0/M0_Instances_Schema_shacl.ttl` (single
+  source of truth; the former `TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl` was
+  removed), optional `--schema`, exit code 0 / 1, violation report on failure.
+- `check_m0_instances.py` (`ontology/cli-tools/check-M0/`): checks C01–C15 on all M0
+  instances or one (`--instance NAME`); its totals feed the gate.
+- Requirement: `pip install --break-system-packages rdflib pyshacl pyld`
