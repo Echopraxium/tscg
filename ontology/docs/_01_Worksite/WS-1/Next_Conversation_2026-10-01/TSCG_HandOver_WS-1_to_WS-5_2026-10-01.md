@@ -2,7 +2,7 @@
 
 **Author**: Echopraxium with the collaboration of Claude AI
 **Date**: 2026-10-01
-**Purpose**: resume cold in a fresh conversation: decide Q1–Q5 of the M3/M2
+**Purpose**: resume cold in a fresh conversation: decide Q1–Q4 of the M3/M2
 instrumentation scoping, then run the CTX-5 lot.
 **Where to put this**: `ontology/docs/_01_Worksite/WS-1/Next_Conversation_2026-10-01/`
 and/or Project Knowledge.
@@ -17,10 +17,11 @@ and/or Project Knowledge.
 
 1. **`head-over-memory`** — authority discipline (HEAD > corpus > memory).
 2. **`tscg-ontology-diagnosis-pipeline`** — every lot below modifies ontologies or the gate.
+   For the SHACL work, also **`tscg-generate-mn-grammars`** (2.0.0).
 3. Then read from HEAD:
    - `ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md` — **the
      working authority for the next step**: two planes, proposed checks D1–D7 / G1–G7
-     with baselines, CTX-5 prerequisite, decisions **Q1–Q5**.
+     with baselines, CTX-5 prerequisite, decisions **Q1–Q4** (Q5 done).
    - `ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md` — Progress table
      (lots 1a–1j DONE, 1k DEBT) and the remaining Family A lines.
    - `ontology/docs/_01_Worksite/WS-0/_00_TSCG_Worksite_Map.md` (WS-5, SC-11) and
@@ -94,10 +95,11 @@ sets HEAD vs working copy.
 
 ## 2. Today's goal
 
-1. **Decide Q1–Q5** of `WS-5_M3M2_Instrumentation_Scoping.md` §6, one at a time.
+1. **Decide Q1–Q4** of `WS-5_M3M2_Instrumentation_Scoping.md` §6, one at a time.
    Recommendations there: Q1 build in the WS-5 engine; Q2 CTX-5 lot first; Q3
-   INSTRUMENTED with frozen backlog; Q4 structural grammar only for v1; Q5 refresh the
-   stale `tscg-generate-mn-grammars` skill.
+   INSTRUMENTED with frozen backlog; Q4 structural grammar only for v1. Q5 is DONE:
+   `tscg-generate-mn-grammars` rewritten as 2.0.0 (2026-10-01) — load it by name for
+   the SHACL work.
 2. **CTX-5 lot (canonical part)**: remove `m3:eagle_eye` / `m3:sphinx_eye` @context
    terms from 15 M1 files (30 terms). Measured graph-neutral (they produce no IRI);
    verify by triple counts; expected effect: pyld expands all canonical files. Refine

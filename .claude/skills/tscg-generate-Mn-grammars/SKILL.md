@@ -1,864 +1,239 @@
 ---
-name: tscg-generate-Mn-grammars
-description: >
-  Generate SHACL grammar schemas for TSCG meta-levels M1, M2, and M3. Each level 
-  has distinct validation requirements based on its architectural role. Use this 
-  skill when Michel mentions "grammaire SHACL pour M1/M2/M3", wants to validate 
-  M1 extensions (Biology, Physics, etc.), needs to validate M2 GenericConcepts 
-  structure, or must update M3 after foundational changes (e.g., structural 
-  grammar migration). The skill presents interactive level selection (M1/M2/M3) 
-  unless explicitly specified, then generates comprehensive SHACL constraints with 
-  absolute URLs, forbidden patterns, and detailed validation messages.
+name: tscg-generate-mn-grammars
+description: Design, generate and validate SHACL grammars for the TSCG layers M3, M2 and M1 from the graph on HEAD, wired into the acceptance gate. Use when Michel says "grammaire SHACL pour M1/M2/M3", "générer la grammaire", or asks for shapes, an M1 extension grammar, or the M3/M2 checkers.
 ---
 
-# TSCG Generate Mn Grammars Skill
+# TSCG Generate Mn Grammars
 
-**Version**: 1.1.0  
-**Author**: Echopraxium with the collaboration of Claude AI  
-**Date**: 2026-05-11  
-**Status**: Production
+**Version**: 2.0.0
+**Author**: Echopraxium with the collaboration of Claude AI
+**Date**: 2026-10-01
+**Status**: Active (supersedes 1.1.0 — see Changelog)
 
 ## Purpose
 
-Generate SHACL grammar schemas for TSCG meta-levels M1, M2, and M3. Each level has distinct validation requirements based on its architectural role in the TSCG framework.
+Produce a SHACL grammar for one TSCG layer (M3, M2, M1 core, or an M1 extension) that
+validates **what the graph on HEAD actually contains**, catches regressions, and can be
+wired into `run_all_layers.py`. A grammar is a measuring instrument: it is worth
+something only if it can fail.
 
-## When to Use This Skill
+## Load first — by name
 
-Use this skill when:
-- Michel mentions "grammaire SHACL pour M1/M2/M3" or "générer la grammaire"
-- Michel asks to "générer la grammaire de M2_GenericConcepts"
-- Michel wants to validate M1 extensions (Biology, Physics, etc.)
-- Michel says "valider M3_GenesisSpace avec SHACL"
-- A new M1 extension is created and needs validation schema
-- M2 GenericConcepts structure changes require grammar updates
-- M3 foundational properties are modified (e.g., structural grammar migration)
+1. **`head-over-memory`** — this skill carries **no** verifiable fact you may reuse
+   unread: file lists, prefixes, class names, property names, counts and versions are
+   read from HEAD every time. Anything written below as an example is a pointer to
+   where the fact lives, not the fact.
+2. **`tscg-ontology-diagnosis-pipeline`** — a grammar change is an ontology-tooling
+   change: same phases, same human gates.
 
-**Interactive Workflow**: The skill will ALWAYS ask the user to select the meta-level (M1, M2, or M3) using interactive buttons, unless the level is explicitly mentioned in the request (e.g., "génère la grammaire SHACL pour M2").
+## Five rules (learned the hard way)
 
-## Prerequisites
-
-**Required Files to Read**:
-1. Target ontology file (e.g., `M2_GenericConcepts.jsonld`, `M3_GenesisSpace.jsonld`)
-2. `/mnt/project/M0_Instances_Schema_shacl.ttl` (reference for TSCG SHACL patterns)
-3. `/mnt/project/Structural_Grammar_Foundation.md` (if working post-migration)
-4. `/mnt/project/M2_FormulasReference_v15_10_0.md` (for M2 formula constraints)
-
-**Context Understanding**:
-- TSCG architectural levels: M3 (meta-ontology) → M2 (generic concepts) → M1 (domain concepts) → M0 (instances)
-- ASFID dimensions: Attractor, Structure, Flow, Information, Dynamics
-- REVOI dimensions: Representable, Evolvable, Verifiable, Observable, Interoperable
-- Namespace policy: `m3:`, `m2:`, `m1:`, `m0:` (NEVER `tscg:`)
-- Base URL: `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/`
-
-## Workflow: 5 Sequential Steps
-
-### STEP 0: Level Selection (Interactive)
-
-**Goal**: Determine which meta-level (M1, M2, or M3) to generate SHACL schema for.
-
-**Actions**:
-
-1. **Present level options to user** using `ask_user_input_v0`:
-   ```
-   Question: "Pour quel niveau méta voulez-vous générer la grammaire SHACL ?"
-   Options:
-   - "M1 - CoreConcepts & Extensions (Domaine)"
-   - "M2 - GenericConcepts (Transdisciplinaire)"
-   - "M3 - GenesisSpace (Méta-Ontologie)"
-   ```
-
-2. **Capture user selection**:
-   - User selects one option
-   - Extract level number (1, 2, or 3) from selection
-   - Store as `target_level` variable for subsequent steps
-
-3. **Determine target files based on level**:
-   - **M1**: `M1_CoreConcepts.jsonld` or specific extension (e.g., `M1_Biology.jsonld`)
-     - If M1 selected, ask if user wants core or specific extension
-   - **M2**: `M2_GenericConcepts.jsonld`
-   - **M3**: `M3_GenesisSpace.jsonld`, `M3_EagleEye.jsonld`, `M3_SphinxEye.jsonld`
-
-**Example Interaction**:
-```
-Claude: "Pour quel niveau méta voulez-vous générer la grammaire SHACL ?"
-[Interactive buttons shown]
-
-Michel: [Clicks "M2 - GenericConcepts (Transdisciplinaire)"]
-
-Claude: "Parfait ! Je vais générer la grammaire SHACL pour M2_GenericConcepts.jsonld."
-[Proceeds to STEP 1]
-```
-
-**Special Case - M1 Extensions**:
-If user selects M1, present follow-up question:
-```
-Question: "Voulez-vous générer la grammaire pour M1_CoreConcepts ou une extension spécifique ?"
-Options:
-- "M1_CoreConcepts (base)"
-- "Extension spécifique (Biology, Physics, Chemistry, etc.)"
-```
-
-If "Extension spécifique" selected, ask for extension name or present list of available extensions.
-
-**Deliverable**: Confirmed target level (1, 2, or 3) and target ontology file(s).
+1. **Catalog, don't invent.** Constraints come from the parsed graph on HEAD plus
+   Michel's decisions. Never write a shape for a property, class or value list that
+   does not exist on HEAD. (v1.x proposed `m2:conceptFamily` with 9 families,
+   `m2:hasM3Origin`, `m2:asfidScores`, `m3:dimensionType`: 0 occurrences on HEAD.)
+2. **SHACL sees only the graph.** A bare JSON key (declared in no `@context`) is
+   dropped on JSON-LD expansion: no shape can see it. "Zero bare keys" is enforced by a
+   document-plane checker (`tscg_metrics.py` VOC gauge / WS-5 engine), never by SHACL.
+   Always report how much of the file is invisible to the grammar.
+3. **Every shape must bite.** A shape whose target matches zero nodes reports
+   CONFORMS while validating nothing (SHAPE 9 enforced only M1_CoreConcepts for months;
+   a relative prefix made SC-2's shape match 0 nodes). For each shape: count its focus
+   nodes (≥ 1) and run a negative test (a mutated copy must violate it).
+4. **Exact reference values, never loosened.** In the gate a count is a thermometer of
+   the debt: it may be non-zero, it may not move by accident. Never weaken a shape to
+   lower a count; lower it by repairing data or fixing a genuine shape bug. A moved
+   count is shown to Michel, explained, and frozen with a written reason in
+   `golden_values.json`.
+5. **Michel decides semantics.** Which properties are required, which values are
+   allowed, what is forbidden: proposals with evidence, his decision, one point at a
+   time.
 
 ---
 
-### STEP 1: Ontology Analysis
+## STEP 0 — Level and targets
 
-**Goal**: Understand the target ontology structure and identify validation requirements.
+If the request does not name the level, ask with the interactive question tool:
+M3 / M2 / M1 core / M1 extension (for an extension, then ask which one, offering the
+list read from HEAD). Then list the target files **from HEAD**, e.g.:
 
-**Actions**:
-1. **Read target ontology file**:
-   - For M3: `M3_GenesisSpace.jsonld`, `M3_EagleEye.jsonld`, `M3_SphinxEye.jsonld`
-   - For M2: `M2_GenericConcepts.jsonld`
-   - For M1: `M1_CoreConcepts.jsonld` + specific extension (e.g., `M1_Biology.jsonld`)
-
-2. **Catalog all properties** used in the ontology:
-   - Standard properties (owl:, rdfs:, dcterms:, skos:, rdf:)
-   - TSCG properties (m3:, m2:, m1:, m0:)
-   - Domain-specific properties (m1bio:, m1chem:, m1optics:, etc.)
-
-3. **Identify structural patterns**:
-   - Required vs optional properties
-   - Cardinality constraints (minCount/maxCount)
-   - Datatype constraints (xsd:string, xsd:float, xsd:date, IRI references)
-   - Value ranges (e.g., ASFID/REVOI scores: 0.0-1.0)
-   - Enum constraints (e.g., m3:ontologyType values)
-
-4. **Document property usage statistics**:
-   ```
-   Property: m2:hasM3Origin
-   Usage: 78/80 GenericConcepts (98%)
-   Type: IRI reference to M3 dimensions
-   Required: YES
-   ```
-
-**Deliverable**: Property catalog with usage statistics and constraints specification.
-
----
-
-### STEP 2: Constraint Design
-
-**Goal**: Design SHACL constraints specific to the target meta-level.
-
-**Level-Specific Considerations**:
-
-#### M3 - GenesisSpace (Meta-Ontology Layer)
-
-**Focus**: Foundational meta-properties and dimensional framework
-
-**Key Constraints**:
-1. **Ontology Type Declaration**:
-   - `m3:ontologyType` values: `m3:Poclet`, `m3:SystemicFramework`, `m3:SymbolicSystemGrammar`, `m3:TransDisclet`, `m3:TscgTool`, `m3:Enigma`
-   - Cardinality: exactly 1
-
-2. **ASFID/REVOI Dimensions**:
-   - Each dimension must be an `owl:ObjectProperty`
-   - Domain/Range constraints
-   - rdfs:label and rdfs:comment mandatory
-
-3. **Structural Grammar Properties** (post-migration):
-   - `hasStructuralGrammarFormula`: IRI or literal
-   - `hasStructuralGrammarFormulaInteroperability`: IRI reference
-   - No tensor-related properties allowed
-
-4. **Namespace Purity**:
-   - Only `m3:` namespace for M3-specific properties
-   - Standard namespaces allowed (owl:, rdfs:, rdf:)
-
-**Example Constraint (M3)**:
-```turtle
-m3:M3DimensionShape
-  a sh:NodeShape ;
-  sh:targetClass owl:ObjectProperty ;
-  sh:property [
-    sh:path rdfs:label ;
-    sh:datatype xsd:string ;
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-    sh:message "M3 dimensions MUST have exactly one rdfs:label"
-  ] ;
-  sh:property [
-    sh:path m3:dimensionType ;
-    sh:in ( m3:ASFID m3:REVOI ) ;
-    sh:minCount 1 ;
-    sh:message "M3 dimensions MUST declare dimensionType as ASFID or REVOI"
-  ] .
-```
-
-#### M2 - GenericConcepts (Transdisciplinary Patterns Layer)
-
-**Focus**: Atomic transdisciplinary concepts and their formulas
-
-**Key Constraints**:
-1. **GenericConcept Structure**:
-   - `@type`: Must include `owl:Class` AND `m2:GenericConcept`
-   - `rdfs:label`: Exactly 1, PascalCase format
-   - `rdfs:comment`: Exactly 1, transdisciplinary definition
-   - `m2:conceptFamily`: One of 9 families (Agent, Boundary, Cycle, Flow, Gradient, Hierarchy, Pattern, Resonance, Transformation)
-
-2. **M3 Origin Reference**:
-   - `m2:hasM3Origin`: IRI reference to M3 dimension(s)
-   - Multiple origins allowed (array format)
-   - Must resolve to valid M3 ASFID or REVOI dimension
-
-3. **Structural Grammar Formulas**:
-   - `hasStructuralGrammarFormula`: Lambek calculus notation
-   - `hasStructuralGrammarFormulaInteroperability`: Cross-domain application patterns
-   - Optional but recommended
-
-4. **ASFID/REVOI Scores**:
-   - Each GenericConcept SHOULD have scores
-   - Format: `m2:asfidScores` / `m2:revoiScores` objects
-   - Each dimension score: 0.0-1.0 range
-
-5. **Forbidden Patterns**:
-   - No `hasTensorFormula` (obsolete, replaced by structural grammar)
-   - No `m1:` properties in M2 (wrong level)
-   - No instance-specific properties (those belong in M0)
-
-**Example Constraint (M2)**:
-```turtle
-m2:GenericConceptShape
-  a sh:NodeShape ;
-  sh:targetClass m2:GenericConcept ;
-  sh:property [
-    sh:path m2:hasM3Origin ;
-    sh:nodeKind sh:IRI ;
-    sh:minCount 1 ;
-    sh:message "Every GenericConcept MUST reference at least one M3 dimension via m2:hasM3Origin"
-  ] ;
-  sh:property [
-    sh:path m2:conceptFamily ;
-    sh:in ( 
-      m2:Agent m2:Boundary m2:Cycle m2:Flow 
-      m2:Gradient m2:Hierarchy m2:Pattern 
-      m2:Resonance m2:Transformation 
-    ) ;
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-    sh:message "GenericConcept MUST belong to exactly one of 9 concept families"
-  ] .
-```
-
-#### M1 - CoreConcepts + Extensions (Domain Layer)
-
-**Focus**: Domain-specific concepts extending M2 GenericConcepts
-
-**Key Constraints**:
-1. **M1 Concept Structure**:
-   - `@type`: Must include `owl:Class`
-   - `rdfs:label`: Domain-specific terminology
-   - `m1:domain`: Reference to domain in M1_Domains.jsonld
-   - `m1:extendsGenericConcept`: IRI reference to M2 GenericConcept
-
-2. **Domain Extension Validation**:
-   - Each M1 extension must declare its domain
-   - Domain must be registered in M1_Domains.jsonld
-   - M1 properties must use appropriate namespace (m1bio:, m1chem:, etc.)
-
-3. **M2 Reference Integrity**:
-   - `m1:extendsGenericConcept` must resolve to valid M2 GenericConcept
-   - Inherited properties from M2 preserved
-   - Domain-specific refinements allowed
-
-4. **Extension-Specific Properties**:
-   - Biology: m1bio:organismType, m1bio:cellularLevel, etc.
-   - Physics: m1phys:physicalQuantity, m1phys:conservationLaw, etc.
-   - Chemistry: m1chem:reactionType, m1chem:bondType, etc.
-
-**Example Constraint (M1)**:
-```turtle
-m1:DomainConceptShape
-  a sh:NodeShape ;
-  sh:targetClass owl:Class ;
-  sh:property [
-    sh:path m1:domain ;
-    sh:datatype xsd:string ;
-    sh:minCount 1 ;
-    sh:message "M1 concepts MUST declare their domain"
-  ] ;
-  sh:property [
-    sh:path m1:extendsGenericConcept ;
-    sh:nodeKind sh:IRI ;
-    sh:minCount 0 ;
-    sh:message "M1 concepts SHOULD reference parent M2 GenericConcept via m1:extendsGenericConcept"
-  ] .
-```
-
----
-
-### STEP 3: SHACL Generation
-
-**Goal**: Generate the actual SHACL .ttl file with comprehensive constraints.
-
-**File Naming Convention**:
-- M3: `M3_GenesisSpace_Schema.shacl.ttl`
-- M2: `M2_GenericConcepts_Schema.shacl.ttl`
-- M1: `M1_CoreConcepts_Schema.shacl.ttl` (or `M1_Biology_Schema.shacl.ttl` for extensions)
-
-**SHACL File Structure**:
-
-```turtle
-# TSCG [Level] - SHACL Schema v1.0
-# Author: Echopraxium with the collaboration of Claude AI
-# Date: YYYY-MM-DD
-# Target: [M3_GenesisSpace.jsonld | M2_GenericConcepts.jsonld | M1_CoreConcepts.jsonld]
-# Status: Production
-
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix m0: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M0_Poclet#> .
-@prefix m1: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#> .
-@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
-@prefix m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#> .
-
-# ============================================
-# NAMESPACE POLICY (CRITICAL)
-# ============================================
-# [Standard namespace documentation from M0 SHACL]
-
-# ============================================
-# [LEVEL-SPECIFIC SHAPES]
-# ============================================
-
-# [Generate shapes based on Step 2 design]
-
-# ============================================
-# FORBIDDEN PATTERNS
-# ============================================
-
-# [Level-specific forbidden patterns]
-
-# ============================================
-# STATISTICS & CHANGELOG
-# ============================================
-# [Property coverage statistics]
-# 
-# CHANGELOG:
-# v1.0 (YYYY-MM-DD): Initial [M1/M2/M3] grammar generation
-#   - [List of constraint categories]
-#   - [Key validation rules]
-```
-
-**Critical Generation Rules**:
-
-1. **Absolute URLs**: All namespace declarations must use absolute URLs (not relative):
-   ```turtle
-   @prefix m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#> .
-   # NOT: @prefix m3: <M3_GenesisSpace.jsonld#> .
-   ```
-
-2. **Property Paths**: Use correct SHACL syntax for nested properties:
-   ```turtle
-   sh:property [
-     sh:path m3:eagle_eye:Attractor ;  # For nested namespace
-     sh:datatype xsd:float ;
-   ] ;
-   ```
-
-3. **sh:in for Enums**: Use proper list syntax:
-   ```turtle
-   sh:in ( m2:Agent m2:Boundary m2:Cycle ) ;
-   ```
-
-4. **SPARQL Constraints**: For complex validations (optional but powerful):
-   ```turtle
-   sh:sparql [
-     a sh:SPARQLConstraint ;
-     sh:message "M2 GenericConcept must have valid M3Origin reference" ;
-     sh:select """
-       PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
-       PREFIX m3: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisSpace.jsonld#>
-       SELECT $this ?origin
-       WHERE {
-         $this m2:hasM3Origin ?origin .
-         FILTER NOT EXISTS { ?origin a owl:ObjectProperty }
-       }
-     """
-   ] .
-   ```
-
-5. **Clear Error Messages**: Each constraint must have informative sh:message:
-   ```turtle
-   sh:message "CRITICAL: M2 GenericConcept MUST have m2:conceptFamily property with one of 9 family values. Current value missing or invalid. Valid families: Agent, Boundary, Cycle, Flow, Gradient, Hierarchy, Pattern, Resonance, Transformation."
-   ```
-
-**Deliverable**: Complete `.shacl.ttl` file ready for validation testing.
-
----
-
-### STEP 4: Validation & Documentation
-
-**Goal**: Validate the generated SHACL schema and document its usage.
-
-**Actions**:
-
-1. **Self-Validation Check**:
-   ```python
-   # Quick syntax check - ensure the .ttl file is valid Turtle
-   from rdflib import Graph
-   
-   g = Graph()
-   try:
-       g.parse("/path/to/Mn_Schema.shacl.ttl", format="turtle")
-       print(f"✓ SHACL schema is valid Turtle syntax ({len(g)} triples)")
-   except Exception as e:
-       print(f"✗ Syntax error: {e}")
-   ```
-
-2. **Test Against Target Ontology** (if pyshacl available):
-   ```python
-   from pyshacl import validate
-   
-   # Load target ontology
-   data_graph = Graph()
-   data_graph.parse("M2_GenericConcepts.jsonld", format="json-ld")
-   
-   # Load SHACL schema
-   shacl_graph = Graph()
-   shacl_graph.parse("M2_GenericConcepts_Schema.shacl.ttl", format="turtle")
-   
-   # Validate
-   conforms, results_graph, results_text = validate(
-       data_graph,
-       shacl_graph=shacl_graph,
-       inference='rdfs',
-       abort_on_first=False
-   )
-   
-   print(f"Validation result: {'✓ CONFORMS' if conforms else '✗ VIOLATIONS'}")
-   print(results_text)
-   ```
-
-3. **Generate Validation Report**:
-   - Count total constraints generated
-   - List constraint categories
-   - Document property coverage (% of properties validated)
-   - Identify any optional vs mandatory distinctions
-
-4. **Create Companion README**:
-   - `Mn_Schema_README.md` explaining:
-     - Purpose of the schema
-     - How to run validation
-     - Interpretation of validation errors
-     - Maintenance guidelines
-
-**Example README Structure**:
-```markdown
-# M2 GenericConcepts SHACL Schema
-
-## Purpose
-Validates the structural and semantic integrity of M2_GenericConcepts.jsonld.
-
-## Usage
-
-### Validation Command
 ```bash
-pyshacl -s M2_GenericConcepts_Schema.shacl.ttl \
-        -f human \
-        M2_GenericConcepts.jsonld
+git fetch origin main && git reset --hard origin/main      # fresh clone = HEAD
+ls ontology/M3_*.jsonld ontology/M2_*.jsonld ontology/M1_*.jsonld
+ls ontology/M1_extensions/*/M1_*.jsonld
 ```
 
-### Expected Output
-- ✓ CONFORMS: All 80 GenericConcepts pass validation
-- ✗ VIOLATIONS: Shows which concepts fail which constraints
+- M3 is several files (apex `M3_GrammarFoundation` + the others). All M3 terms share
+  the `m3:` namespace of `M3_GenesisGrammar.jsonld#` (sub-namespaces are written
+  `m3:eagle_eye:…`, `m3:sphinx_eye:…`) — verify in each file's `@context`.
+- M1 already has a grammar: `ontology/cli-tools/check-M1/M1_Schema_shacl.ttl`,
+  run by `check-M1/check_M1.py --shacl`. For M1, **extend that file** (new numbered
+  shape, version bump, changelog); do not generate a parallel one.
+- Read the worksite state first: `ontology/docs/_01_Worksite/WS-0/_00_TSCG_Worksite_Map.md`
+  (WS-5, SC-11), `worksite.yaml`, and any WS-5 scoping note for M3/M2 instrumentation.
 
-## Constraint Categories
-1. **Structural Constraints** (15 shapes)
-   - @type validation
-   - rdfs:label/comment requirements
-   - m2:conceptFamily membership
+## STEP 1 — Pre-flight: can a grammar see this layer at all?
 
-2. **M3 Reference Integrity** (3 shapes)
-   - m2:hasM3Origin validation
-   - Valid M3 dimension references
+Measure, report, and stop if a blocking item fails. Each one has silently blinded a
+grammar before.
 
-3. **Formula Constraints** (5 shapes)
-   - hasStructuralGrammarFormula syntax
-   - Lambek calculus notation checks
+| Check | Why it blocks | How to measure |
+|---|---|---|
+| `m0..m3` prefixes absolute (`https://…`) | relative prefix ⇒ shapes match 0 nodes | read `@context`; `tscg_metrics.py` CTX-4 |
+| no `@vocab` in the target | bare keys become fake `owl:<key>` / foreign terms | `@context`; gauge EXT-2 |
+| no root object with `@id` + `@graph` | JSON-LD named graph: whole file invisible to pyshacl's default graph | load as `rdflib.Dataset`, compare default vs named triples |
+| `owl:imports` are IRIs | strings are literals; nothing is imported | gauge `STR_imports_literal` |
+| strict JSON-LD expansion works | pyld rejects colon-named `@context` terms (CTX-5) | `pyld.jsonld.expand(...)` |
+| bare-key share | that part of the file is outside the grammar's reach | `tscg_metrics.py` VOC gauge |
 
-4. **Forbidden Patterns** (8 shapes)
-   - No hasTensorFormula (obsolete)
-   - No m1: properties in M2
-   - Namespace purity enforcement
+## STEP 2 — Catalog the graph (evidence for every constraint)
 
-## Maintenance
-- Update when M2 structure changes
-- Re-run validation after M3 migration
-- Keep changelog up to date
+Parse each target with rdflib (as the gate does: `format="json-ld"`, no inference) and
+produce, per class family:
+
+```python
+from rdflib import Graph, RDF, RDFS, Literal, BNode
+from collections import Counter
+g = Graph(); g.parse(path, format="json-ld")
+# 1. how things are typed: rdf:type objects and rdfs:subClassOf objects (with counts)
+# 2. for each class / parent class: its members (typed OR subclassed — read which)
+# 3. for each member set: predicates used, coverage (#members having it),
+#    value kind per predicate (IRI / literal + datatype / blank node), cardinality
+# 4. literals where an IRI is expected (e.g. rdfs:subClassOf "m2:X" written as a string)
 ```
 
-**Deliverable**: Validated SHACL schema + README documenting usage.
+Example of what this yields (2026-10-01, re-measure): M2 GenericConcepts are
+`owl:Class` with `rdfs:subClassOf m2:GenericConcept` (not typed `m2:GenericConcept`);
+the predicates actually present include `m2:hasFamily`, `m2:hasPolarity`,
+`m2:hasStructuralGrammarFormula`, `m2:hasDominantM3`. Coverage is never 100 %:
+the gaps are either debt or legitimate exceptions — Michel decides which.
 
----
+Also record the cross-file facts a single-file SHACL run cannot see (they belong to
+the WS-5 engine or `tscg_metrics.py`, not to SHACL): external terms declared in the
+apex (EXT-1), non-terms in standard namespaces (EXT-2), import targets that exist.
 
-## Level-Specific Validation Examples
+## STEP 3 — Design (present to Michel before writing any Turtle)
 
-### M3 Example Validation
+Present a table: constraint · target · evidence (coverage from STEP 2) · severity
+(`sh:Violation` for rules, `sh:Warning` for recommendations) · expected count on HEAD.
 
-**Test Case**: Validate M3_EagleEye.jsonld ASFID dimensions
+**Structural part — common to every grammar (v1 scope):**
 
-```turtle
-# M3_GenesisSpace_Schema.shacl.ttl excerpt
-m3:ASFIDDimensionShape
-  a sh:NodeShape ;
-  sh:targetNode 
-    m3:eagle_eye:Attractor 
-    m3:eagle_eye:Structure 
-    m3:eagle_eye:Flow 
-    m3:eagle_eye:Information 
-    m3:eagle_eye:Dynamics ;
-  sh:property [
-    sh:path rdf:type ;
-    sh:hasValue owl:ObjectProperty ;
-    sh:minCount 1 ;
-  ] ;
-  sh:property [
-    sh:path rdfs:label ;
-    sh:datatype xsd:string ;
-    sh:pattern "^[A-Z][a-z]+$" ;  # PascalCase
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-  ] ;
-  sh:property [
-    sh:path m3:dimensionIndex ;
-    sh:datatype xsd:integer ;
-    sh:minInclusive 0 ;
-    sh:maxInclusive 4 ;
-    sh:minCount 1 ;
-  ] .
-```
+- `owl:Ontology` header: exactly one node; `owl:versionInfo`, `dcterms:created`,
+  `dcterms:creator`, `rdfs:label`, `m3:ontologyType` (value in
+  `m3:TscgOntologyTypeScheme`), `m3:changelog`.
+- `m3:changelog` entries: `owl:versionInfo`, `dcterms:date`, `adms:versionNotes`;
+  `m2:changelog` forbidden (`sh:maxCount 0`). Retention (3 entries, M3 files 7) is a
+  document-plane check.
+- every declared property / class has `rdfs:label` and `rdfs:comment`.
+- `rdfs:subClassOf`, `owl:imports`, `rdfs:isDefinedBy` objects are IRIs, never literals.
+- forbidden retired formalism (tensor product / ket / `hasTensorFormula`, the D8
+  serialisation triad): read the current list from the existing grammars and
+  `tscg_metrics.py` (FRB, DUP gauges).
+- external vocabularies: follow the apex node
+  `m3:grammar_foundation:ExternalVocabularyPolicy` (declared once in the apex, never
+  imported, reserved axiom vocabulary never declared). Do not restate in shapes what a
+  cross-file check already measures.
 
-**Expected Result**:
-```
-✓ m3:eagle_eye:Attractor validates successfully
-✓ m3:eagle_eye:Structure validates successfully
-✓ m3:eagle_eye:Flow validates successfully
-✓ m3:eagle_eye:Information validates successfully
-✓ m3:eagle_eye:Dynamics validates successfully
-```
+**Layer-specific part — only from catalog evidence + Michel's decision:**
 
-### M2 Example Validation
+- **M3**: ontology-type scheme integrity (`m3:TscgOntologyTypeScheme`, concepts
+  `owl:Class` + `skos:Concept`), the policy node, apex declarations. Never an `m2:`
+  term in an M3 file (layer inversion).
+- **M2**: the GenericConcept families as found in STEP 2; fold in the existing targeted
+  shapes of `check-M2/M2_MonoidalFormula_Schema_shacl.ttl` (SC-2). A semantic M2
+  grammar (SC-11b) waits for WS-1: while many M2 keys are still bare, a graph grammar
+  validates only part of the file and passes.
+- **M1**: combos and their signatures (SC-1: a combo formula is a function signature
+  `Fm2(...)` / `Fm1m2(Domain, ...)`, no monoidal operator inside), domains registered in
+  `M1_Domains.jsonld`. All already in `M1_Schema_shacl.ttl`: extend it.
 
-**Test Case**: Validate GenericConcept "Catalyst" structure
+## STEP 4 — Generate
 
-```turtle
-# M2_GenericConcepts_Schema.shacl.ttl excerpt
-m2:GenericConceptShape
-  a sh:NodeShape ;
-  sh:targetClass m2:GenericConcept ;
-  sh:property [
-    sh:path m2:conceptFamily ;
-    sh:in ( 
-      m2:Agent m2:Boundary m2:Cycle m2:Flow 
-      m2:Gradient m2:Hierarchy m2:Pattern 
-      m2:Resonance m2:Transformation 
-    ) ;
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-    sh:message "GenericConcept MUST belong to exactly one of 9 families"
-  ] ;
-  sh:property [
-    sh:path m2:hasM3Origin ;
-    sh:nodeKind sh:IRI ;
-    sh:minCount 1 ;
-    sh:message "GenericConcept MUST reference at least one M3 dimension"
-  ] .
-```
+- **Location / name**: `ontology/cli-tools/check-Mn/Mn_<Scope>_Schema_shacl.ttl`
+  (underscore before `shacl`: a dot-named file was once never found, and the gate
+  validated nothing while exiting 0). Add a scope qualifier when the grammar is
+  partial (precedent: `M2_MonoidalFormula_Schema_shacl.ttl`), keeping
+  `Mn_Schema_shacl.ttl` for a full grammar.
+- **Header**: what the file covers AND what it does not (bare-key share, cross-file
+  checks left to the engine), version, date, worksite, runner command, changelog.
+- **Prefixes**: copy them from the targets' `@context` on HEAD, absolute only. Today
+  (verify): `m3:` = `…/ontology/M3_GenesisGrammar.jsonld#`, `m2:` =
+  `…/ontology/M2_GenericConcepts.jsonld#`, `m1:` = `…/ontology/M1_CoreConcepts.jsonld#`,
+  `m0:` = `…/ontology/M0_Common.jsonld#`, base
+  `https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/`. Never `tscg:`.
+- **Colon sub-namespaces**: `m3:eagle_eye:typeA` is valid Turtle and SPARQL (a local
+  name may contain `:`) and expands to `…M3_GenesisGrammar.jsonld#eagle_eye:typeA`,
+  the IRI the M3 files use. Never resolve it through an `m3:eagle_eye` `@context` alias
+  (CTX-5): those aliases point to another IRI (WS-2 item CTX-5, to remove).
+- **Shapes**: numbered `# SHAPE n : …` blocks, one concern per shape, an explicit
+  `sh:targetClass` / `sh:targetSubjectsOf` per target (never an "inherited by" comment
+  in place of a real target), `sh:message` on every constraint saying what is wrong and
+  what to do. SPARQL constraints redeclare their prefixes.
+- **Forbidden properties**: `sh:property [ sh:path <p> ; sh:maxCount 0 ; sh:message "FORBIDDEN: …" ]`
+  (precedent: `m2:changelog` in M1/M0) or `sh:not` around a property shape.
 
-**Test Data** (from M2_GenericConcepts.jsonld):
-```json
-{
-  "@id": "m2:Catalyst",
-  "@type": ["owl:Class", "m2:GenericConcept"],
-  "rdfs:label": "Catalyst",
-  "m2:conceptFamily": {"@id": "m2:Agent"},
-  "m2:hasM3Origin": [
-    {"@id": "m3:eagle_eye:Attractor"},
-    {"@id": "m3:eagle_eye:Dynamics"}
-  ]
-}
-```
+## STEP 5 — Validate and wire into the gate
 
-**Expected Result**:
-```
-✓ m2:Catalyst has valid conceptFamily (Agent)
-✓ m2:Catalyst has valid M3 origins (2 dimensions)
-✓ m2:Catalyst conforms to GenericConceptShape
-```
+1. Turtle parses (rdflib); shapes count printed.
+2. For **each shape**: number of focus nodes on the targets (≥ 1, else the shape is
+   blind — fix the target, do not ship it).
+3. Run pyshacl the way the gate does (`inference="none"`; `run_shacl` in
+   `check_M1.py` is the reference). `inference="rdfs"` changes the results: never mix
+   the two.
+4. Negative tests: for each shape, a mutated in-memory copy of a real node must
+   produce the expected violation.
+5. Report: violations per shape and per message, compared with the STEP 3
+   expectations. Unexpected numbers are investigated before anything is frozen.
+6. Gate: M1 counts flow through `check_M1.py`; M3/M2 through the WS-5 runner (see the
+   WS-5 scoping note). First capture with `run_all_layers.py --update-golden`, reviewed
+   number by number with Michel, reason written in `golden_values.json`. Do not put
+   numbers in the golden `note` texts — they go stale; point to the frozen values.
+7. Deliver as one commit / patch (Michel applies with `git am`, runs the gate, pushes).
 
-### M1 Example Validation
+## Deliverables
 
-**Test Case**: Validate M1_Biology extension concept
+- the `.ttl` file (or the new shapes + version bump of an existing one);
+- a short report: targets, shapes, focus-node count per shape, violations per shape,
+  negative tests passed, bare-key share left outside the grammar;
+- golden values updated only with Michel's approval and a written reason;
+- worksite note updated (triage / WS-5 item).
 
-```turtle
-# M1_Biology_Schema.shacl.ttl excerpt
-m1bio:BiologyConceptShape
-  a sh:NodeShape ;
-  sh:targetClass owl:Class ;
-  sh:property [
-    sh:path m1:domain ;
-    sh:hasValue "Biology" ;
-    sh:minCount 1 ;
-    sh:message "M1 Biology concepts MUST have m1:domain = 'Biology'"
-  ] ;
-  sh:property [
-    sh:path m1:extendsGenericConcept ;
-    sh:nodeKind sh:IRI ;
-    sh:minCount 0 ;  # Optional but recommended
-  ] ;
-  sh:property [
-    sh:path m1bio:organismType ;
-    sh:in ( m1bio:Prokaryote m1bio:Eukaryote ) ;
-    sh:minCount 0 ;
-  ] .
-```
+## Integration with other skills
 
-**Test Data** (from M1_Biology.jsonld):
-```json
-{
-  "@id": "m1bio:Enzyme",
-  "@type": "owl:Class",
-  "rdfs:label": "Enzyme",
-  "m1:domain": "Biology",
-  "m1:extendsGenericConcept": {"@id": "m2:Catalyst"},
-  "m1bio:molecularFunction": "Catalysis"
-}
-```
+- `tscg-ontology-diagnosis-pipeline`: this skill is its Phase 3.4 (SHACL) instrument.
+- `tscg-instance-pipeline`: M0 instances are validated by
+  `check-M0/M0_Instances_Schema_shacl.ttl` through `check_m0_instances.py` (C15); new
+  M1 concepts by `M1_Schema_shacl.ttl`.
+- `tscg-tensor-to-structural-grammar-migration`: its forbidden patterns (tensor, ket,
+  Hilbert space) stay forbidden in every grammar.
 
-**Expected Result**:
-```
-✓ m1bio:Enzyme has valid domain (Biology)
-✓ m1bio:Enzyme extends valid M2 concept (Catalyst)
-✓ m1bio:Enzyme conforms to BiologyConceptShape
-```
+## Retired
 
----
-
-## Common Pitfalls & Solutions
-
-### Pitfall 1: Relative URLs in Namespace Declarations
-**Problem**: `@prefix m2: <M2_GenericConcepts.jsonld#> .`  
-**Solution**: Always use absolute URLs:
-```turtle
-@prefix m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
-```
-
-### Pitfall 2: Overly Strict Constraints
-**Problem**: Requiring properties that are actually optional  
-**Solution**: Use `sh:minCount 0` for optional properties, add sh:message explaining when to use them
-
-### Pitfall 3: Missing Forbidden Pattern Checks
-**Problem**: Not catching obsolete properties like `hasTensorFormula`  
-**Solution**: Always include negative constraints with `sh:not`:
-```turtle
-sh:not [
-  sh:property [
-    sh:path m2:hasTensorFormula ;
-    sh:minCount 1
-  ]
-] ;
-sh:message "FORBIDDEN: hasTensorFormula is obsolete. Use hasStructuralGrammarFormula instead."
-```
-
-### Pitfall 4: Incorrect SPARQL Syntax
-**Problem**: SPARQL constraint with wrong namespace prefixes  
-**Solution**: Always redeclare prefixes inside SPARQL SELECT:
-```turtle
-sh:select """
-  PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#>
-  SELECT $this ?prop
-  WHERE { $this ?prop ?value }
-"""
-```
-
----
-
-## Integration with Other Skills
-
-### With `tscg-tensor-to-structural-grammar-migration`
-- **Before migration**: SHACL allows `hasTensorFormula`
-- **After migration**: SHACL forbids `hasTensorFormula`, requires `hasStructuralGrammarFormula`
-- **Update trigger**: Run this skill after Phase 1 (M3 migration) to update M3 SHACL schema
-
-### With `tscg-instance-pipeline`
-- New M0 instances validated against `M0_Instances_Schema.shacl.ttl`
-- New M1 concepts validated against `M1_CoreConcepts_Schema.shacl.ttl`
-- Ensures conformance throughout instance creation pipeline
-
-### With `tscg-create-instance-simulation`
-- Simulation references validated M0 instances
-- SHACL ensures M0 instances have required properties for simulation (domain, scores, etc.)
-
----
-
-## Output Format
-
-For each generated schema, provide:
-
-1. **SHACL .ttl File**: Complete, validated SHACL schema
-2. **Statistics Summary**: 
-   ```
-   M2_GenericConcepts_Schema.shacl.ttl Statistics:
-   - Total shapes: 23
-   - Property constraints: 147
-   - Forbidden patterns: 12
-   - Property coverage: 94% (17/18 M2 properties validated)
-   - Target classes: owl:Class, m2:GenericConcept
-   ```
-
-3. **README Documentation**: Usage guide and maintenance instructions
-
-4. **Validation Report** (if tested):
-   ```
-   Validation against M2_GenericConcepts.jsonld:
-   ✓ 78/80 GenericConcepts conform
-   ✗ 2 violations:
-     - m2:Oscillator: missing m2:hasM3Origin
-     - m2:Feedback: invalid m2:conceptFamily value
-   ```
-
----
-
-## Maintenance Guidelines
-
-### When to Regenerate SHACL Schema
-
-1. **Major M2/M3 Refactoring**: After structural grammar migration, ontologyType additions, etc.
-2. **New M1 Extensions**: When adding M1_Geology.jsonld, create M1_Geology_Schema.shacl.ttl
-3. **Property Additions**: When new TSCG properties are introduced at any level
-4. **Validation Coverage Gaps**: When manual testing reveals unvalidated edge cases
-
-### Version Control
-
-- Track SHACL schema versions alongside ontology versions
-- Example: `M2_GenericConcepts.jsonld v2.1.0` → `M2_GenericConcepts_Schema.shacl.ttl v2.1.0`
-- Keep changelog synchronized with ontology changes
-
----
-
-## Critical Success Factors
-
-✅ **DO**:
-- Read the target ontology FIRST before designing constraints
-- Use absolute URLs for all namespace declarations
-- Test the generated SHACL against the actual ontology
-- Document constraint rationale in sh:message
-- Include both positive (required) and negative (forbidden) constraints
-- Maintain property coverage statistics
-
-❌ **DON'T**:
-- Generate SHACL without analyzing the target ontology structure
-- Use relative URLs in namespace declarations
-- Create overly permissive constraints (defeats validation purpose)
-- Forget to validate the SHACL schema itself (syntax errors)
-- Ignore forbidden patterns (legacy properties must be caught)
-- Leave constraints undocumented (sh:message is mandatory)
-
----
-
-## Skill Completion Checklist
-
-Before marking the skill execution complete, ensure:
-
-- [ ] Level selected interactively (M1/M2/M3) or extracted from explicit request (Step 0)
-- [ ] Target ontology file(s) identified based on level (Step 0)
-- [ ] Target ontology analyzed (Step 1)
-- [ ] Constraints designed for correct meta-level (Step 2)
-- [ ] SHACL .ttl file generated with absolute URLs (Step 3)
-- [ ] SHACL schema validated (syntax check at minimum) (Step 4)
-- [ ] README documentation created (Step 4)
-- [ ] Statistics summary provided (output format)
-- [ ] Integration with migration skill noted (if M3 schema)
-- [ ] Changelog entry added to SHACL file
-
----
-
-## Example Invocations
-
-**Generate M2 SHACL Schema**:
-```
-Michel: "Peux-tu générer la grammaire SHACL pour GenericConcepts ?"
-Claude: [Executes tscg-generate-Mn-grammars skill]
-
-Claude: "Pour quel niveau méta voulez-vous générer la grammaire SHACL ?"
-[Shows interactive buttons: M1 / M2 / M3]
-
-Michel: [Selects "M2 - GenericConcepts (Transdisciplinaire)"]
-
-Claude: "Parfait ! Je vais générer la grammaire SHACL pour M2_GenericConcepts.jsonld."
-→ Reads M2_GenericConcepts.jsonld (STEP 1)
-→ Catalogs 80 GenericConcepts and their properties
-→ Designs constraints for M2 level (conceptFamily, hasM3Origin, etc.) (STEP 2)
-→ Generates M2_GenericConcepts_Schema.shacl.ttl (STEP 3)
-→ Creates M2_Schema_README.md (STEP 4)
-→ Provides statistics summary
-```
-
-**Generate M1 Extension Schema**:
-```
-Michel: "J'ai créé M1_Geology.jsonld, il faut la grammaire SHACL"
-Claude: [Executes tscg-generate-Mn-grammars skill]
-
-Claude: "Pour quel niveau méta voulez-vous générer la grammaire SHACL ?"
-Michel: [Selects "M1 - CoreConcepts & Extensions (Domaine)"]
-
-Claude: "Voulez-vous générer la grammaire pour M1_CoreConcepts ou une extension spécifique ?"
-Michel: [Selects "Extension spécifique"] → "M1_Geology"
-
-Claude: "Je vais générer la grammaire SHACL pour M1_Geology.jsonld."
-→ Reads M1_Geology.jsonld (STEP 1)
-→ Identifies domain-specific properties (m1geo:*) (STEP 2)
-→ Validates M2 concept extensions
-→ Generates M1_Geology_Schema.shacl.ttl (STEP 3)
-→ Tests against M1_Geology.jsonld (STEP 4)
-```
-
-**Update M3 Schema Post-Migration**:
-```
-Michel: "La migration structurelle est finie, il faut mettre à jour le SHACL de M3"
-Claude: [Executes tscg-generate-Mn-grammars skill]
-
-Claude: "Pour quel niveau méta voulez-vous générer la grammaire SHACL ?"
-Michel: [Selects "M3 - GenesisSpace (Méta-Ontologie)"]
-
-Claude: "Je vais générer la grammaire SHACL pour M3_GenesisSpace.jsonld."
-→ Reads updated M3_GenesisSpace.jsonld (with structural grammar properties) (STEP 1)
-→ Adds constraints for hasStructuralGrammarFormula (STEP 2)
-→ Adds forbidden patterns for hasTensorFormula
-→ Generates M3_GenesisSpace_Schema.shacl.ttl v2.0.0 (STEP 3)
-→ Documents migration-related changes in changelog (STEP 4)
-```
-
-**Quick Invocation (Level Known)**:
-```
-Michel: "Génère la grammaire SHACL pour M2"
-Claude: [Executes skill, skips interactive selection since level is explicit]
-→ Proceeds directly to STEP 1 with M2_GenericConcepts.jsonld
-```
-
----
+- `scripts/generate_shacl_schema.py` (1.0.0, 2026-05-11): removed from the repository
+  copy of this skill; if a copy is still present anywhere, **do not run it**. It writes the
+  dead `M3_GenesisSpace.jsonld#` and phantom `M0_Poclet#` prefixes, dot-named output
+  files, and shapes for M2 properties that do not exist on HEAD. Grammars are designed
+  from the STEP 2 catalog instead.
 
 ## Changelog
 
-**v1.1.0 (2026-05-11)**: Interactive level selection
-- **BREAKING CHANGE**: Added STEP 0 for explicit level selection (M1/M2/M3)
-- Uses `ask_user_input_v0` tool for interactive level choice
-- Workflow now 5 steps instead of 4 (0 → 1 → 2 → 3 → 4)
-- Special handling for M1 extensions (core vs specific extension)
-- Updated example invocations to show interactive flow
-- Updated completion checklist
+**v2.0.0 (2026-10-01)** — rewrite after WS-1 lots 1h–1j and the WS-5 M3/M2 scoping.
+- Removed every hard-coded, now-false fact: dead `M3_GenesisSpace`, phantom `M0_Poclet#`
+  prefix, M2 constraints on properties absent from HEAD (`m2:conceptFamily` and its 9
+  families, `m2:hasM3Origin`, `m2:asfidScores` / `m2:revoiScores`, `m3:dimensionType`,
+  `m3:Enigma`), dot-named output files, `/mnt/project/…` prerequisites.
+- Loads `head-over-memory` and `tscg-ontology-diagnosis-pipeline` by name; facts come
+  from HEAD (STEP 0, STEP 2).
+- New STEP 1 pre-flight (absolute prefixes, `@vocab`, named graph, imports as IRIs,
+  strict expansion, bare-key share).
+- Two planes made explicit: SHACL cannot see bare keys.
+- Anti-blindness: focus-node count ≥ 1 and a negative test per shape.
+- Gate integration: exact reference values, never loosen a shape, moved counts shown
+  and justified; validation with `inference="none"` like the gate.
+- M1: extend `M1_Schema_shacl.ttl` instead of generating a parallel file.
+- Bundled script retired.
 
-**v1.0.0 (2026-05-11)**: Initial skill creation
-- Complete 4-step workflow (Analysis → Design → Generation → Validation)
-- Level-specific constraint design (M1, M2, M3)
-- Integration with structural grammar migration
-- Comprehensive examples and pitfall documentation
-- README generation for each schema
-- Statistics tracking and validation reporting
+**v1.1.0 (2026-05-11)**: interactive level selection (STEP 0).
+
+**v1.0.0 (2026-05-11)**: initial skill.
