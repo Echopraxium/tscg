@@ -137,5 +137,6 @@ the gate output would otherwise overstate coverage.*
 **Q5 — Stale skill.** `tscg-generate-mn-grammars` targets the dead `M3_GenesisSpace`
 and proposes M2 constraints that do not exist on HEAD (`m2:conceptFamily` with 9
 families, `m2:hasM3Origin`, `m2:asfidScores`, `m3:dimensionType` — all 0 occurrences,
-measured 2026-10-01). Refresh the skill before generating shapes with it, or write the
-shapes from this note. *Recommendation: refresh the skill as part of this work.*
+measured 2026-10-01). **DONE 2026-10-01** (Michel's request): skill rewritten as 2.0.0
+— catalog-driven from HEAD, pre-flight checks, focus-node count and negative test per
+shape, gate integration; bundled `generate_shacl_schema.py` retired.
