@@ -297,7 +297,9 @@ document.getElementById("theme").onclick=()=>{
   const next=isDark?"light":"dark";document.documentElement.dataset.theme=next;
   try{localStorage.setItem("tscg-theme",next);}catch(e){}
 };
-document.getElementById("foot").innerHTML=`${DATA.subjects.length} instances · ${DATA.docs.length} documents · read from HEAD (@tscg + m3:Audience) · MVP preview`;
+const B=DATA.build||{};
+const buildTxt=B.commit?` · built from <a href="https://github.com/Echopraxium/tscg/commit/${B.commit}">${B.commit.slice(0,7)}</a> on ${B.date}`:"";
+document.getElementById("foot").innerHTML=`${DATA.subjects.length} instances · ${DATA.docs.length} documents · read from HEAD (@tscg + m3:Audience) · MVP preview${buildTxt}`;
 render();
 </script>
 </body>

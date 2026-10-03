@@ -125,9 +125,17 @@ def build_subjects(root, outdir):
             subs.append(s)
     return subs
 
-def build_docs(root):
+def build_docs(root, out=None):
     docs=[]
+    # Skip our own output dir: build_subjects() has already copied the playable
+    # simulation folders into it, and scanning it listed every copied .md a second
+    # time as "dist/..." with dead GitHub links (73 phantom entries — fixed 2026-10-03).
+    skip=None
+    if out:
+        o=os.path.relpath(os.path.abspath(out),os.path.abspath(root)).replace(os.sep,"/")
+        if not o.startswith(".."): skip=o.rstrip("/")+"/"
     for full,rp in ann.rel_paths(root):
+        if skip and rp.startswith(skip): continue
         kind,aud,status=ann.classify(rp)
         if kind in ("__OUT__","__UNCLASSIFIED__","instance"): continue
         sec=section(kind,rp)
@@ -155,6 +163,17 @@ def run_gallery(root, outdir, script, site_url):
     except Exception as e:
         print(f"  [gallery] failed: {e}")
 
+def build_stamp(root):
+    """Commit + UTC date of this build, shown in the footer so a stale page is visible
+    at a glance (added 2026-10-03). CI: GITHUB_SHA; local: git rev-parse HEAD."""
+    import subprocess, datetime
+    sha=os.environ.get("GITHUB_SHA","")
+    if not sha:
+        try: sha=subprocess.check_output(["git","-C",root,"rev-parse","HEAD"],text=True).strip()
+        except Exception: sha=""
+    return {"commit":sha,
+            "date":datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")}
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("root")
@@ -165,8 +184,8 @@ def main():
     a=ap.parse_args()
     os.makedirs(a.out,exist_ok=True)
     subjects=build_subjects(a.root,a.out)
-    docs=build_docs(a.root)
-    data=json.dumps({"subjects":subjects,"docs":docs},ensure_ascii=False)
+    docs=build_docs(a.root,a.out)
+    data=json.dumps({"subjects":subjects,"docs":docs,"build":build_stamp(a.root)},ensure_ascii=False)
     html=read(a.template)
     if '"@@DATA@@"' not in html:
         raise SystemExit("template missing the \"@@DATA@@\" placeholder")
