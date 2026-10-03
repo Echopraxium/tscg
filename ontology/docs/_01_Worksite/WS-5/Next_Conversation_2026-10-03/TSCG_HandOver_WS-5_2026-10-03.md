@@ -32,7 +32,7 @@ bottom-right). Edit the `.dot` files, then run `python render_graph.py`.
 
 ## 1. Fresh session state (at handover — re-verify)
 
-- **HEAD**: `636a46c` on `main`. Confirm with `git log --oneline -5`.
+- **HEAD**: `565009e` on `main`. Confirm with `git log --oneline -8`.
 - **Gate**: `cd ontology/cli-tools && python run_all_layers.py` → `GATE: PASS`.
   M1 151 errors / 1 warning / 688 SHACL; M0 124 / 0 / 22. M3, M2: NOT INSTRUMENTED.
 - **Gauges** (`tscg_metrics.py` 1.4.0): VOC bare keys 3418; CTX-4 0; CTX-5 0; EXT-1 0;
@@ -50,8 +50,11 @@ bottom-right). Edit the `.dot` files, then run `python render_graph.py`.
 | `da47824` | Golden notes without hard-coded counts; `DEFAULT_GOLDEN` marked as a dated fallback |
 | `bef52f0` | `tscg_generate_filetree.py`: non-ASCII path quoting fixed (`core.quotepath=off`, `-z`); FileTree regenerated |
 | `636a46c` | Compendium: worksite/handover rules before "doc" rules (Project management 14 → 42 files); build skips its own `dist/` (73 phantom entries → 0); footer shows build commit + UTC date; duplicate `ontology/HANDOVER_2026-06-19 (1).md` removed |
+| `fbdc8d6` | This HandOver + dependency graph (PNG, `.dot` sources, `render_graph.py`); `.gitignore` no longer ignores `.py` in worksite folders (Michel) |
+| `7bff66a` | Bootstrap: changelog invariant is `m3:changelog` (`m2:changelog` retired 2026-09-30) |
+| `565009e` | `docs/reboot-kit/`: all ontology files removed (stale copies of M2/M3/M0, dead GenesisSpace/MetaConcepts files, a duplicate that broke the RAG build) — Michel: obsolete and a source of errors; its stale auto-loaded `CLAUDE.md` replaced by a pointer to HEAD / Bootstrap / ReferenceCorpus / root `CLAUDE.md` |
 
-Project Knowledge: `TSCG_FileTree.md` replaced by the regenerated version (2026-10-03).
+Project Knowledge (2026-10-03): `TSCG_FileTree.md`, `TSCG_ReferenceCorpus_Bootstrap.md`, `TSCG_ReferenceCorpus.md` and `UserGuide.md` re-copied from HEAD `565009e` (`_00_exercise_template.md`, empty, left as is — the Bootstrap says it should not be in the project).
 
 ### Decisions taken (Michel, 2026-10-03)
 
@@ -64,6 +67,8 @@ Project Knowledge: `TSCG_FileTree.md` replaced by the regenerated version (2026-
   (IRIs change). **Separate lot, linked to lot 1k.** Measured: 308 lines in 11 files
   (M2 237, M3 37). Recorded in the scoping note §4.
 - Patch delivery as before; the gate is run on a fresh clone before sending.
+- `.py` files are versioned in worksite folders (`.jsonld`/`.ttl` copies still ignored).
+- No ontology file under `docs/reboot-kit/` (archive folder; live ontologies only under `ontology/` and `instances/`).
 
 ### Working method that worked today (reuse it)
 
@@ -116,8 +121,13 @@ Re-measure every baseline of the scoping note §3 on HEAD before freezing anythi
 - 7 M0 instances still rejected by pyld (M0 colon-names `m0:x:`, relative aliases such as
   `m1music`) → WS-10.
 - Bare keys merely containing `m1core` (`m1coreRef`, `primaryM1core`…) → B2.
-- Stale docs: `CLAUDE.md` (GenesisSpace, 80 concepts…), simulation skill dead paths
-  (`ontology/TSCG_Grammar/`, `migrate_m1core_to_m1.py`).
+- Stale docs: the repository-root `CLAUDE.md` (GenesisSpace, 80 concepts, tensor formulas…;
+  the `docs/reboot-kit/` one is fixed), simulation skill dead paths (`ontology/TSCG_Grammar/`,
+  `migrate_m1core_to_m1.py`), `docs/reboot-kit/files.txt` (lists removed files).
+- Untracked files on Michel's disk to triage (not in the repo): `instances/_01_Worksite/2026_09_16/`,
+  World2DProjection `static/_docs/` and `W2P_COASTLINE.js`, `ontology/cli-tools/verify_multiplicity_lot.py`,
+  and 4 worksite folders (`OntologyEngineering/`, `WS-0/…2026-09-29/`, `WS-1/…2026-09-30/`,
+  `WS-5/2026_01_10/`) — check for copies of live scripts before adding them.
 - WS-6 note still says the canonical changelog is a nested metadata block (stale since
   lots 1c/1d: `m3:changelog`).
 - C12 (check_m0) scans changelog prose (known over-reach).
