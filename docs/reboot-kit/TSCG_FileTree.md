@@ -1,46 +1,7 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1779 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1767 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
-- **"cli_tools/**
-  - **regenerate_simulation_gallery/**
-    - TSCG \342\200\224 Fire Triangle.url"
-- **"instances/**
-  - **poclets/**
-    - **ButterflyMetamorphosis/**
-      - **_static/**
-        - **docs/**
-          - Esta peque\303\261a oruga tiene una incre\303\255ble transformaci\303\263n - El Dodo - YouTube.url"
-    - **Theremin/**
-      - **_static/**
-        - **docs/**
-          - Carolina talks Theremin - Qu'est-ce qu'un th\303\251r\303\251mine - YouTube.url"
-          - Comment jouer du th\303\251r\303\251mine en 6 minutes\302\240! - YouTube.url"
-  - **symbolic-system-grammars/**
-    - **TriskeleToolchain/**
-      - **crates/**
-        - **triskele-vm-wasm/**
-          - **www/**
-            - TriskeleVM \342\200\224 WASM Interactive.url"
-      - **docs/**
-        - Release 2.30.9 \302\267 libsdl-org-SDL.url"
-        - Releases \302\267 llvm-llvm-project.url"
-        - T\303\251l\303\251chargements de Visual Studio et de VS Code pour Windows, Mac et Linux.url"
-      - **projects/**
-        - **Tests_ZMachine/**
-          - **hello_input/**
-            - TriskeleVM \342\200\224 WASM Interactive.url"
-      - TriskeleVM \342\200\224 WASM Interactive.url"
-  - **systemic-frameworks/**
-    - **Bmc/**
-      - **docs/**
-        - Business Model Canvas- A Strategic Framework for Product Managers \342\200\223 Kaizenko.url"
-  - **tscg-tools/**
-    - **TscgPocletGenerator/**
-      - D\303\251marrage rapide- Installer Google Cloud\302\240CLI \302\240-\302\240 Google Cloud SDK \302\240-\302\240 Google Cloud Documentation.url"
-- **"ontology/**
-  - **docs/**
-    - M2_MetaConcepts_2026_03_04_FixedEncoding_valid\303\251Lint.jsonld"
 - **.claude/**
   - **skills/**
     - **head-over-memory/**
@@ -50,8 +11,6 @@
     - **tscg-create-instance-simulation/**
       - SKILL.md
     - **tscg-generate-Mn-grammars/**
-      - **scripts/**
-        - generate_shacl_schema.py
       - SKILL.md
     - **tscg-instance-pipeline/**
       - README.md
@@ -159,6 +118,7 @@
   - **2026_09_23/**
     - Cleanup_Chantier_2026-09-23.md
   - **2026_09_27/**
+    - Housekeeping_ArchivePurge_2026-09-27.md
     - TSCG_Session_Handover_2026-09-27.md
 - **_protos/**
   - README.txt
@@ -198,6 +158,7 @@
     - Correction_Parsing_GraphZero.md
     - generate_index.js
     - README_Modifications.md
+    - TSCG — Fire Triangle.url
   - **verify_migration/**
     - _open_cmd_window.bat
     - verify_migration.py
@@ -377,6 +338,7 @@
             - Egg to Monarch Butterfly - YouTube.url
             - Monarch Butterfly Metamorphosis time-lapse FYV - YouTube.url
           - _0_Egg_Butterfly- A Life - National Geographic - YouTube.url
+          - Esta pequeña oruga tiene una increíble transformación - El Dodo - YouTube.url
           - The Lifecycle of the Painted Lady Butterfly - YouTube.url
           - Watch This Caterpillar Turn Into A Hawk-Moth - The Dodo - YouTube.url
         - **src/**
@@ -477,7 +439,6 @@
         - _download_sounds.bat
         - _open_cmd_window.bat
         - M0_CounterPoint.html
-        - M0_CounterPoint.jsonld
         - M0_CounterPoint_README.md
         - WebAudioFontPlayer.js
       - M0_Counterpoint.jsonld
@@ -494,7 +455,6 @@
       - **static/**
         - _00_serve_poclet-sim.bat
         - M0_ExposureTriangle.html
-        - M0_ExposureTriangle.jsonld
         - M0_ExposureTriangle_README.md
         - photo_sample.jpg
       - _00_Run.bat
@@ -519,7 +479,6 @@
       - **static/**
         - _00_serve_poclet-sim.bat
         - M0_FourStrokeEngine.html
-        - M0_FourStrokeEngine.jsonld
         - M0_FourStrokeEngine_README.md
       - _open_cmd_window.bat
       - M0_FourStrokeEngine.jsonld
@@ -539,7 +498,6 @@
       - **static/**
         - _00_serve_poclet-sim.bat
         - M0_KindlebergerMinsky.html
-        - M0_KindlebergerMinsky.jsonld
         - M0_KindlebergerMinsky_README.md
       - 6 Financial Bubbles.md
       - KindlebergerMinsky_Simulation_README.md
@@ -562,7 +520,6 @@
       - **static/**
         - _00_serve_poclet-sim.bat
         - M0_MtgColorWheel.html
-        - M0_MtgColorWheel.jsonld
         - M0_MtgColorWheel_README.md
       - M0_MtgColorWheel.jsonld
       - M0_MtgColorWheel_README.md
@@ -570,7 +527,6 @@
       - **static/**
         - _00_serve_poclet-sim.bat
         - M0_NakamotoConsensus.html
-        - M0_NakamotoConsensus.jsonld
         - M0_NakamotoConsensus_README.md
       - A Phenomenological Statistical-Physics Framework for Distributed Consensus- Phase Transitions and Thermodynamic Stability.url
       - M0_NakamotoConsensus.jsonld
@@ -596,7 +552,6 @@
       - **static/**
         - _00_serve_poclet-sim.bat
         - M0_PhaseTransition.html
-        - M0_PhaseTransition.jsonld
         - M0_PhaseTransition_README.md
       - M0_PhaseTransition.jsonld
       - M0_PhaseTransition_README.md
@@ -720,6 +675,8 @@
             - oak-texture.jpg
           - **tutorials/**
             - Theremin Lessons - Introduction - Playing the Major Scale - YouTube.url
+          - Carolina talks Theremin - Qu'est-ce qu'un thérémine - YouTube.url
+          - Comment jouer du thérémine en 6 minutes ! - YouTube.url
           - D-Lev.url
           - Hans Zimmer - Interstellar Theme - Theremin & Voice - Carolina Eyck - YouTube.url
           - Moog-Ether-wave-Pro.png
@@ -777,7 +734,6 @@
       - **static/**
         - _00_serve_poclet-sim.bat
         - M0_TrophicPyramid.html
-        - M0_TrophicPyramid.jsonld
         - M0_TrophicPyramid_README.md
       - _open_cmd_window.bat
       - M0_TrophicPyramid.jsonld
@@ -801,7 +757,6 @@
         - VCO_Simulation.png
       - **static/**
         - M0_VCO.html
-        - M0_Vco.jsonld
         - M0_Vco_README.md
       - M0_Vco.jsonld
       - M0_VCO_README.md
@@ -895,6 +850,7 @@
             - _00_open_cmd_window.bat
             - index.html
             - server.py
+            - TriskeleVM — WASM Interactive.url
             - worker.js
           - _00_open_cmd_window.bat
           - Cargo.lock
@@ -945,6 +901,9 @@
       - **docs/**
         - Getting started - Rust Programming Language.url
         - migration_32_to_64_registers.md
+        - Release 2.30.9 · libsdl-org-SDL.url
+        - Releases · llvm-llvm-project.url
+        - Téléchargements de Visual Studio et de VS Code pour Windows, Mac et Linux.url
       - **lib/**
         - **samples/**
           - dbg_test4.txt
@@ -1263,6 +1222,7 @@
             - hello_input.tob
             - hello_input.tvmx
             - README.txt
+            - TriskeleVM — WASM Interactive.url
           - _00_open_cmd_window.bat
           - README.txt
         - **toolchain-tests/**
@@ -1381,6 +1341,7 @@
       - run_all_tests.py
       - run_pipeline.py
       - test_minimal.wad
+      - TriskeleVM — WASM Interactive.url
       - tsk-libc.tvml
       - update_toolchain.py
     - **TscgFoundationGrammar/**
@@ -1397,6 +1358,7 @@
     - **Bmc/**
       - **docs/**
         - Business Model Canvas Template & Exercise for College Classes - Teaching Entrepreneurship.url
+        - Business Model Canvas- A Strategic Framework for Product Managers – Kaizenko.url
         - BusinessModelOntology_PhD.doc.url
         - etude de limites du BLC plareforme web 2.url
         - osterwalder_phd_bm_ontology.pdf
@@ -1572,6 +1534,7 @@
       - _google_cloud_login.bat
       - _open_cmd_window.bat
       - _open_powershell.bat
+      - Démarrage rapide- Installer Google Cloud CLI  -  Google Cloud SDK  -  Google Cloud Documentation.url
       - M0_TscgPocletGenerator.jsonld
       - M0_TscgPocletGenerator.jsonld.bak
       - M0_TscgPocletGenerator_README.md
@@ -1705,6 +1668,10 @@
         - SC-3_M3_Facet_Draft_v2.md
         - TSCG_File_Tree.md
         - TSCG_Session_Handover_2026-07-25.md
+      - **WS-1/**
+        - **Next_Conversation_2026-10-01/**
+          - TSCG_HandOver_WS-1_to_WS-5_2026-10-01.md
+        - WS-1_FamilyA_Triage.md
       - **WS-10/**
         - worksite.yaml
       - **WS-11/**
@@ -1716,6 +1683,7 @@
       - **WS-5/**
         - worksite.yaml
         - WS-5_LOT1_Report.md
+        - WS-5_M3M2_Instrumentation_Scoping.md
       - **WS-8/**
         - Until_Further_Notice_WorksiteEntry.md
       - **WS-9/**
@@ -1767,6 +1735,7 @@
     - M2_MetaconceptCombo.jsonld
     - M2_MetaConcepts.jsonld
     - M2_MetaConcepts_2026_02_06_encoding_lint_checked.jsonld
+    - M2_MetaConcepts_2026_03_04_FixedEncoding_validéLint.jsonld
     - M2_MetaConcepts_README.md
     - M2_Metaconcepts_v13.jsonld
     - M2_New_5_Metaconcepts.jsonld
@@ -1876,7 +1845,6 @@
     - FindBicephalousComponents.sparql
     - HierarchicalQuery.sparql
     - ListAllExtensions.sparql
-    - M2_Processor.jsonld
     - m2_sparql_analysis.py
     - SPARQL Playground.url
     - SPARQL_README.md
@@ -2088,10 +2056,7 @@
 - _00_open_cmd_window.bat
 - _01_run_OntologyExplorer.bat
 - _serve_index-html.bat
-- after_A.txt
-- after_B.txt
 - baseline_HEAD.json
-- before.txt
 - CLAUDE.md
 - claude_setup.txt
 - index.html
@@ -2099,9 +2064,7 @@
 - package-lock.json
 - package.json
 - patch_checkM0_notation.py
-- patch_firetriangle_readme.py
 - README.md
-- rewrite_firetriangle.py
 - serve.js
 - styles.css
 - tscg- github.url

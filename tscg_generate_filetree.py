@@ -57,12 +57,16 @@ def is_secret_like(fname: str) -> bool:
 
 def list_tracked():
     try:
-        raw = subprocess.check_output(["git", "ls-files"], text=True, encoding="utf-8")
+        # core.quotepath=off + -z: otherwise git wraps non-ASCII paths in quotes with
+        # octal escapes ("…/TSCG \342\200\224 Fire Triangle.url"), which created fake
+        # top-level entries such as `"cli_tools/` in the tree (fixed 2026-10-03).
+        raw = subprocess.check_output(["git", "-c", "core.quotepath=off", "ls-files", "-z"],
+                                      text=True, encoding="utf-8")
     except (subprocess.CalledProcessError, FileNotFoundError) as e:
         print(f"\n❌ Échec de `git ls-files` : {e}")
         print("   Lance ce script depuis la racine du dépôt git.")
         sys.exit(1)
-    return [p for p in raw.splitlines() if p.strip()]
+    return [p for p in raw.split("\0") if p.strip()]
 
 
 def keep_for_tree(path: str) -> bool:
