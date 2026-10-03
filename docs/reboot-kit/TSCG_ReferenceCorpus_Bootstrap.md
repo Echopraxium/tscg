@@ -113,8 +113,10 @@ Atom-level subscripts disambiguate: `St`/`Ss` (Structure vs Symbol),
   (source sometimes writes `ttps` — always read `https`)
 - Short IRIs via `"@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"`
 - M1 extension IRIs in M0 files: `M1_extensions/biology/M1_Biology.jsonld` style
-- `m2:changelog`: keep the **3 most recent** entries — everywhere **except M3**
-  files (up to **7**, rollback safety; documented in the M3 SHACL shape — not a violation)
+- Changelog = `m3:changelog` on the `owl:Ontology` node (`m2:changelog` is **retired**
+  since 2026-09-30), entries `{owl:versionInfo, dcterms:date, adms:versionNotes}`, newest
+  first. Keep the **3 most recent** entries — everywhere **except M3** files (up to **7**,
+  rollback safety; documented in the M3 SHACL shape — not a violation)
 
 **M0 namespace.**
 - `m0:` MUST resolve to `M0_Common.jsonld#` (shared, joinable)
