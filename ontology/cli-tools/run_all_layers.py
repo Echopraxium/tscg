@@ -82,17 +82,20 @@ GOLDEN_FILE = CLI_TOOLS_DIR / "golden_values.json"
 # partial corpus and was WRONG (it lacked BusinessModeling, Music, MapTerritory_Optics).
 # Only the repo counts.
 # ---------------------------------------------------------------------------
+# FALLBACK ONLY: used when golden_values.json is missing. A frozen snapshot dated
+# 2026-07-13 (see "_measured"), NOT the live reference — the live values are in
+# golden_values.json. Its counts are deliberately left as measured that day.
 DEFAULT_GOLDEN = {
     "_measured": "2026-07-13, real repository, after SC-1",
     "M3": {
         "status": "NOT_INSTRUMENTED",
-        "note": "No M3 checker exists. M3_Schema.shacl.ttl was produced 2026-07-03 "
-                "(CONFORMS: True, 13 shapes) but is not wired into a script. TODO.",
+        "note": "No M3 checker exists. An M3_Schema.shacl.ttl dated 2026-07-03 is cited "
+                "by older notes but is NOT in the repository (checked 2026-10-03). TODO (WS-5).",
     },
     "M2": {
         "status": "NOT_INSTRUMENTED",
-        "note": "No M2 checker exists. The tscg-generate-mn-grammars skill can produce "
-                "the SHACL grammar; no runner wraps it yet. TODO.",
+        "note": "No M2 checker exists. TODO (WS-5): see "
+                "ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md.",
     },
     "M1": {
         "status": "INSTRUMENTED",

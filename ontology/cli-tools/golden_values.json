@@ -3,11 +3,11 @@
   "_note": "Reference values, TriskeleVM-style. EXACT match required. A count that DROPS is as suspicious as one that rises: either a deliberate fix (then --update-golden, and the drop is recorded under '_previous'/'_delta') or a validator that stopped biting. A silently shrinking count is the most dangerous signal in this repo — it looks like progress.",
   "M3": {
     "status": "NOT_INSTRUMENTED",
-    "note": "No M3 checker. M3_Schema.shacl.ttl exists (2026-07-03, CONFORMS:True, 13 shapes) but no runner wraps it. An un-instrumented layer is not a passing layer — it is an unmeasured one."
+    "note": "No M3 checker yet (WS-5: engine checks planned — ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md). An M3_Schema.shacl.ttl dated 2026-07-03 is cited by older notes but is NOT in the repository: treat it as lost. An un-instrumented layer is not a passing layer — it is an unmeasured one."
   },
   "M2": {
     "status": "NOT_INSTRUMENTED",
-    "note": "No M2 checker. The tscg-generate-mn-grammars skill can produce the SHACL; no runner yet."
+    "note": "No M2 checker yet (WS-5, same scoping note). The SC-2 shapes in check-M2/M2_MonoidalFormula_Schema_shacl.ttl run only through tscg_metrics --shacl-path, not in this gate."
   },
   "M1": {
     "status": "INSTRUMENTED",
@@ -22,7 +22,7 @@
       "DCC006": 127,
       "DCC008": 1
     },
-    "note": "SC-6 BACKLOG (163 check_M1 errors) + SHACL DEBT (476 violations), both measured on the real repo. Both are EXPECTED to be non-zero. Lower them ONLY by repairing data or by fixing a SHACL bug — never by loosening a shape.",
+    "note": "SC-6 BACKLOG (check_M1 errors) + SHACL DEBT (violations). The frozen values are the counts above; history under _previous / _delta. Both are EXPECTED to be non-zero. Lower them ONLY by repairing data or by fixing a SHACL bug — never by loosening a shape.",
     "breakdown": {
       "DCC006": "monoidal operator inside a signature — the bulk of SC-6",
       "DCC010": "Fm1m2's first argument is not a registered Domain. FOUR PHANTOM DOMAINS: 'Music' (registry says MusicTheory), 'SystemicModeling' (registry says SystemsTheory), 'EnergyGenerators' (absent), 'Cascade' (not a domain at all — that Fm1m2 is an Fm2).",
@@ -47,7 +47,7 @@
   },
   "M0": {
     "status": "INSTRUMENTED",
-    "note": "FIRST-CAPTURE BASELINE (run --update-golden to fill the numbers, then REVIEW). This baselines the existing M0 MIGRATION BACKLOG (18 PASS / 25 FAIL of 43): the v1.5 namespace/imports cluster C02/C03/C07/C09 + SHACL C15 (x22) and tensor remnants C12 (x25). It MEASURES the debt, it does not bless it. Lower these ONLY by repairing instances (see the CheckM0 repair campaign), never by loosening a check. Metric mapping: errors = sum of non-SHACL check failures; shacl_violations = C15.",
+    "note": "MIGRATION BACKLOG, measured not blessed: v1.5 namespace/imports cluster C02/C03/C07/C09, SHACL C15, tensor remnants C12. The frozen values are the counts above; per-instance detail: check_m0_instances.py --json. Lower them ONLY by repairing instances (CheckM0 repair campaign), never by loosening a check. Metric mapping: errors = sum of non-SHACL check failures; shacl_violations = C15.",
     "_previous": {
       "files": 43,
       "errors": 124,
