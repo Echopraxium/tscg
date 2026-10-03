@@ -66,7 +66,7 @@ ls ontology/M1_extensions/*/M1_*.jsonld
 - M3 is several files (apex `M3_GrammarFoundation` + the others). All M3 terms share
   the `m3:` namespace of `M3_GenesisGrammar.jsonld#` (sub-namespaces are written
   `m3:eagle_eye:…`, `m3:sphinx_eye:…`) — verify in each file's `@context`.
-- M1 already has a grammar: `ontology/cli-tools/check-M1/M1_Schema_shacl.ttl`,
+- M1 already has a grammar: `ontology/toolchain/check-M1/M1_Schema_shacl.ttl`,
   run by `check-M1/check_M1.py --shacl`. For M1, **extend that file** (new numbered
   shape, version bump, changelog); do not generate a parallel one.
 - Read the worksite state first: `ontology/docs/_01_Worksite/WS-0/_00_TSCG_Worksite_Map.md`
@@ -150,7 +150,7 @@ Present a table: constraint · target · evidence (coverage from STEP 2) · seve
 
 ## STEP 4 — Generate
 
-- **Location / name**: `ontology/cli-tools/check-Mn/Mn_<Scope>_Schema_shacl.ttl`
+- **Location / name**: `ontology/toolchain/check-Mn/Mn_<Scope>_Schema_shacl.ttl`
   (underscore before `shacl`: a dot-named file was once never found, and the gate
   validated nothing while exiting 0). Add a scope qualifier when the grammar is
   partial (precedent: `M2_MonoidalFormula_Schema_shacl.ttl`), keeping

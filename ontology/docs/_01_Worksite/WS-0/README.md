@@ -1,4 +1,4 @@
-# `ontology/cli-tools/` — TSCG Layer Validation & Migration
+# `ontology/toolchain/` — TSCG Layer Validation & Migration
 
 **Author**: Echopraxium with the collaboration of Claude AI
 **Version**: 1.0.0
@@ -11,7 +11,7 @@ General-purpose repo tooling stays at the root in `cli_tools/`.
 ## File tree
 
 ```
-ontology/cli-tools/
+ontology/toolchain/
 ├── README.md                          ← this file
 ├── tscg_paths.py                      ← shared repo-root resolution (imported by every script)
 ├── run_all_layers.py                  ← THE ACCEPTANCE GATE (M3 → M0)
@@ -38,7 +38,7 @@ ontology/cli-tools/
 ## The acceptance gate
 
 ```bash
-cd ontology/cli-tools
+cd ontology/toolchain
 python run_all_layers.py            # the gate
 python run_all_layers.py -v         # per-code breakdown
 python run_all_layers.py --update-golden   # accept current counts as the new reference
@@ -88,7 +88,7 @@ M0     :  instrumented, golden counts not yet captured
 
 ```bash
 # M1 — validate everything, read-only
-cd ontology/cli-tools/check-M1
+cd ontology/toolchain/check-M1
 python check_M1.py --dry-run
 
 # M1 — validate + SHACL + write a report
@@ -123,7 +123,7 @@ pointed at `E:/`.
 
 `tscg_paths` resolves the root by walking **up** from the script until it finds a directory
 holding **both** `ontology/` and `instances/`. The scripts are therefore **relocatable**:
-they run from `ontology/cli-tools/check-M1/`, from the legacy `cli_tools/check-M1/`, from a
+they run from `ontology/toolchain/check-M1/`, from the legacy `cli_tools/check-M1/`, from a
 CI box or a second clone, unchanged.
 
 ```python

@@ -230,7 +230,7 @@ else:
     print(f"NEXT STEP: RE-VALIDATE")
     print(f"=" * 70)
     print(f"\n   Run RDFS diagnostic to verify fixes:")
-    print(f"   python cli-tools/owl_reasoning_test/rdfs_diagnostic.py")
+    print(f"   python ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py")
     print(f"\n   Expected result: 0 errors (from 172)")
 
 print(f"\n{'=' * 70}\n")

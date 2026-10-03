@@ -517,8 +517,8 @@ BAD   Fm1m2(Music, …)                            'Music' is not a registered D
 ### Enforced by
 
 `M1_Schema_shacl.ttl` v1.1.0 (`ComboFormulaShape`, `NoMonoidalExpansionShape`) and
-`ontology/cli-tools/check-M1/check_M1.py` v2.0.0 (`DCC006`–`DCC010`, `EXP001`).
-Run the gate: `ontology/cli-tools/_run_all_layers.bat`.
+`ontology/toolchain/check-M1/check_M1.py` v2.0.0 (`DCC006`–`DCC010`, `EXP001`).
+Run the gate: `ontology/toolchain/_run_all_layers.bat`.
 
 Full rationale: `StructuralGrammar/Functional_Grammar_Model.md`.
 

@@ -54,22 +54,22 @@ from datetime import datetime
 # CONFIGURATION
 # ============================================================================
 
-# Paths are resolved by tscg_paths (see ontology/cli-tools/tscg_paths.py).
+# Paths are resolved by tscg_paths (see ontology/toolchain/tscg_paths.py).
 # The former hardcoded REPO_ROOT = Path("E:/_00_Michel/...") is gone: the repo
 # root is now discovered by walking UP from this file until a directory holding
 # both ontology/ and instances/ is found. The script is therefore relocatable and
 # machine-independent. Override with the TSCG_REPO_ROOT env var if ever needed.
-# --- bootstrap: tscg_paths lives one level up, in ontology/cli-tools/ ----------
+# --- bootstrap: tscg_paths lives one level up, in ontology/toolchain/ ----------
 import sys as _sys
 from pathlib import Path as _Path
 _sys.path.insert(0, str(_Path(__file__).resolve().parent.parent))
 # ------------------------------------------------------------------------------
 from tscg_paths import (                      # noqa: E402
-    REPO_ROOT, ONTOLOGY_DIR, INSTANCES_ROOT, CLI_TOOLS_DIR,
+    REPO_ROOT, ONTOLOGY_DIR, INSTANCES_ROOT, TOOLCHAIN_DIR,
     BASE_ONTOLOGY, BASE_INSTANCES, INSTANCE_DIRS, find_schema, verify_layout,
 )
 
-SCRIPT_DIR = CLI_TOOLS_DIR
+SCRIPT_DIR = TOOLCHAIN_DIR
 
 DEFAULT_SHACL = find_schema(
     "M0_Instances_Schema_shacl_v1.5.ttl",

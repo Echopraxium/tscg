@@ -201,7 +201,7 @@ REPORT: M2_GenericConcepts.jsonld
 ### Pre-commit Hook
 ```bash
 #!/bin/bash
-python cli-tools/ontology-linter/ontology_linter.py ontology/ --strict
+python toolchain/ontology-linter/ontology_linter.py ontology/ --strict
 ```
 
 ### CI/CD (GitHub Actions)
@@ -209,7 +209,7 @@ python cli-tools/ontology-linter/ontology_linter.py ontology/ --strict
 - name: Lint Ontologies
   run: |
     pip install rdflib
-    python cli-tools/ontology-linter/ontology_linter.py ontology/ --strict
+    python toolchain/ontology-linter/ontology_linter.py ontology/ --strict
 ```
 
 ## Development

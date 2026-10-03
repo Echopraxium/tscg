@@ -1,10 +1,10 @@
 """
-tscg_paths — repository-root resolution for TSCG cli-tools.
+tscg_paths — repository-root resolution for TSCG toolchain.
 
 Author : Echopraxium with the collaboration of Claude AI
 Version: 1.2.0
 Date   : 2026-07-13
-Home   : ontology/cli-tools/tscg_paths.py
+Home   : ontology/toolchain/tscg_paths.py
 
 WHY THIS EXISTS
 ---------------
@@ -20,16 +20,16 @@ sandbox, or a second clone silently operated on the wrong tree — or on nothing
 This module resolves the repository root by walking UP from the script's own
 location until it finds the structural marker of the TSCG repo: a directory that
 contains BOTH `ontology/` and `instances/`. Scripts become relocatable: they work
-from ontology/cli-tools/, from cli_tools/, from a subfolder of either, unchanged.
+from ontology/toolchain/, from cli_tools/, from a subfolder of either, unchanged.
 
 USAGE
 -----
-Scripts live one level down (ontology/cli-tools/check-M0/, .../check-M1/), so they
+Scripts live one level down (ontology/toolchain/check-M0/, .../check-M1/), so they
 bootstrap the import by putting this module's directory on sys.path first:
 
     import sys
     from pathlib import Path
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))   # ontology/cli-tools/
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))   # ontology/toolchain/
 
     from tscg_paths import REPO_ROOT, ONTOLOGY_DIR, INSTANCES_ROOT, find_schema
 
@@ -93,7 +93,10 @@ def find_repo_root(start: Optional[Path] = None) -> Path:
 REPO_ROOT: Path = find_repo_root()
 ONTOLOGY_DIR: Path = REPO_ROOT / "ontology"
 INSTANCES_ROOT: Path = REPO_ROOT / "instances"
-CLI_TOOLS_DIR: Path = Path(__file__).parent.resolve()
+TOOLCHAIN_DIR: Path = Path(__file__).parent.resolve()
+# Back-compat alias (folder renamed ontology/cli-tools -> ontology/toolchain, 2026-10-03).
+# Kept so untracked local scripts that import the old name keep working; do not use in new code.
+CLI_TOOLS_DIR: Path = TOOLCHAIN_DIR
 
 # Canonical base URIs (single source of truth — do not re-declare in scripts).
 BASE_ONTOLOGY = "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/"
@@ -175,7 +178,7 @@ def find_schema(*names: str,
     Locate a SHACL schema, trying each name in each search directory, in order:
 
         1. `script_dir`   — the CALLING script's own folder (a local copy wins)
-        2. CLI_TOOLS_DIR  — ontology/cli-tools/
+        2. TOOLCHAIN_DIR  — ontology/toolchain/
         3. ONTOLOGY_DIR   — ontology/  (where the canonical schemas live)
         4. `extra_dirs`
 
@@ -185,7 +188,7 @@ def find_schema(*names: str,
     validator that cannot find its grammar must not look like a validator that
     passed.
     """
-    search_dirs = [d for d in (script_dir, CLI_TOOLS_DIR, ONTOLOGY_DIR, *extra_dirs) if d]
+    search_dirs = [d for d in (script_dir, TOOLCHAIN_DIR, ONTOLOGY_DIR, *extra_dirs) if d]
     for directory in search_dirs:
         for name in names:
             candidate = Path(directory) / name
@@ -199,7 +202,7 @@ if __name__ == "__main__":
     print(f"  REPO_ROOT      : {REPO_ROOT}")
     print(f"  ONTOLOGY_DIR   : {ONTOLOGY_DIR}")
     print(f"  INSTANCES_ROOT : {INSTANCES_ROOT}")
-    print(f"  CLI_TOOLS_DIR  : {CLI_TOOLS_DIR}")
+    print(f"  TOOLCHAIN_DIR  : {TOOLCHAIN_DIR}")
     print()
     layout = verify_layout()
     if not layout["blocking"] and not layout["optional"]:

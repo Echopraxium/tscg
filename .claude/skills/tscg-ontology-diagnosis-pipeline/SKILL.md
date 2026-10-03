@@ -155,7 +155,7 @@ description: >
 
 **3.1 🛠️ Ontology Linter** - Syntax & TSCG conventions
 ```bash
-python cli-tools/ontology-linter/ontology_linter.py <modified_files> --strict
+python toolchain/ontology-linter/ontology_linter.py <modified_files> --strict
 ```
 **Pass:** No new errors  
 **Fail:** → Fix issues → Retry
@@ -166,7 +166,7 @@ python cli-tools/ontology-linter/ontology_linter.py <modified_files> --strict
 
 **3.2 🛠️ RDFS Diagnostic** ⭐ NEW - OWL modeling errors
 ```bash
-python cli-tools/owl_reasoning_test/rdfs_diagnostic.py
+python ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py
 ```
 **Checks:**
 - Literal values vs URI references (rdfs:subClassOf, domain, range)
@@ -177,13 +177,13 @@ python cli-tools/owl_reasoning_test/rdfs_diagnostic.py
 **Fail:** → Apply automated fixes:
 ```bash
 # Preview fixes
-python cli-tools/owl_reasoning_test/fix_owl_literals.py --dry-run
+python ontology/toolchain/owl_reasoning_test/fix_owl_literals.py --dry-run
 
 # Apply if preview OK
-python cli-tools/owl_reasoning_test/fix_owl_literals.py
+python ontology/toolchain/owl_reasoning_test/fix_owl_literals.py
 
 # Re-validate
-python cli-tools/owl_reasoning_test/rdfs_diagnostic.py
+python ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py
 ```
 
 **Exit gate:** Must pass with 0 errors before 3.3
@@ -192,7 +192,7 @@ python cli-tools/owl_reasoning_test/rdfs_diagnostic.py
 
 **3.3 🛠️ OWL Reasoning** ⭐ NEW - Logical consistency (Pellet)
 ```bash
-python cli-tools/owl_reasoning_test/test_owl_reasoning.py
+python ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py
 ```
 **Checks:**
 - Logical consistency

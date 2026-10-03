@@ -56,14 +56,14 @@ modifiers); `_0` (EquilibriumPole) `= _^ | _$` is a **derived** element, not a p
 
 | Purpose | Path `[✓ HEAD 2026-08-11]` |
 |---|---|
-| Acceptance gate | `ontology/cli-tools/run_all_layers.py` |
-| Golden values | `ontology/cli-tools/golden_values.json` |
-| Metrics gauge | `ontology/cli-tools/tscg_metrics.py` |
-| M1 checker | `ontology/cli-tools/check-M1/check_M1.py` |
-| M1 SHACL | `ontology/cli-tools/check-M1/M1_Schema_shacl.ttl` |
-| M0 SHACL | `ontology/cli-tools/check-M0/M0_Instances_Schema_shacl.ttl` |
+| Acceptance gate | `ontology/toolchain/run_all_layers.py` |
+| Golden values | `ontology/toolchain/golden_values.json` |
+| Metrics gauge | `ontology/toolchain/tscg_metrics.py` |
+| M1 checker | `ontology/toolchain/check-M1/check_M1.py` |
+| M1 SHACL | `ontology/toolchain/check-M1/M1_Schema_shacl.ttl` |
+| M0 SHACL | `ontology/toolchain/check-M0/M0_Instances_Schema_shacl.ttl` |
 
-*Reminder: `check_M1.py` runs from `ontology/cli-tools/`, not the repo root.
+*Reminder: `check_M1.py` runs from `ontology/toolchain/`, not the repo root.
 Watch the separator — the **folder** is `check-M1` (hyphen), the **file** is
 `check_M1.py` (underscore); mixing them gives a 404.*
 
@@ -90,8 +90,10 @@ Some folders are CamelCase (`FireTriangle`, `Triz`), others lowercase (`vsm`,
   session HandOvers (e.g. `WS-0/.../TSCG_Session_Handover_2026-08-11.md`). This is
   where HandOvers are archived.
 - `docs/CoreHypotheses/` — core-hypothesis essays.
-- `cli_tools/` at repo root — **underscore**, root-level tools (linter, reasoning
-  test, migration). Distinct from `ontology/cli-tools/` (**hyphen**), the gate/checker tools.
+- `cli_tools/` at repo root — general-purpose repo tools (compendium, gallery, migration).
+  Distinct from `ontology/toolchain/`, the ontology tools: gate, checkers, metrics,
+  validator engine, linter, OWL reasoning test (renamed from `ontology/cli-tools/` on
+  2026-10-03; `owl_reasoning_test/` moved there from `cli_tools/`).
 
 ---
 

@@ -3,7 +3,7 @@
 **Author**: Echopraxium with the collaboration of Claude AI  
 **Version**: 2.0.0  
 **Date**: 2026-07-12  
-**Location**: `ontology/cli-tools/check-M1/`
+**Location**: `ontology/toolchain/check-M1/`
 
 ---
 
@@ -194,7 +194,7 @@ Issues **not** auto-fixed (require manual intervention):
 ## Directory Structure
 
 ```
-ontology/cli-tools/
+ontology/toolchain/
 ├── tscg_paths.py             ← shared repo-root resolution (no hardcoded path)
 ├── check-M0/
 │   ├── check_m0_instances.py

@@ -404,13 +404,13 @@ pip install owlready2 --force-reinstall
 
 ### 1. Integrate Reasoning into Linter
 
-Update `cli-tools/ontology-linter/ontology_linter.py` to include OWL reasoning as Phase 3.5.
+Update `toolchain/ontology-linter/ontology_linter.py` to include OWL reasoning as Phase 3.5.
 
 ### 2. Validate All TSCG Ontologies
 
 ```bash
 # Run linter with reasoning on all ontologies
-python cli-tools/ontology-linter/ontology_linter.py ontology/ --strict
+python toolchain/ontology-linter/ontology_linter.py ontology/ --strict
 ```
 
 ### 3. Add to CI/CD Pipeline
@@ -424,7 +424,7 @@ python cli-tools/ontology-linter/ontology_linter.py ontology/ --strict
     
 - name: Validate Ontologies
   run: |
-    python cli-tools/ontology-linter/ontology_linter.py ontology/ --strict
+    python toolchain/ontology-linter/ontology_linter.py ontology/ --strict
 ```
 
 ### 4. Use TSCG Ontology Diagnosis Pipeline

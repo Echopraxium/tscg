@@ -4,7 +4,7 @@ check-corpus-updates.py — TSCG Corpus Version Checker
 Compares file versions declared in TSCG_Reference_Corpus.md
 against actual versions found in local repo files.
 
-Location : cli-tools/check-corpus-updates/
+Location : cli_tools/check-corpus-updates/
 Usage    : python check-corpus-updates.py [--verbose] [--json] [--fix-corpus]
 
 Author   : Echopraxium with the collaboration of Claude AI
@@ -19,7 +19,7 @@ from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Optional
 
-# ── Repo root (2 levels up from cli-tools/check-corpus-updates/) ─────────────
+# ── Repo root (2 levels up from cli_tools/check-corpus-updates/) ─────────────
 SCRIPT_DIR = Path(__file__).parent.resolve()
 REPO_ROOT  = SCRIPT_DIR.parent.parent.resolve()
 

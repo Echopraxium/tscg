@@ -239,7 +239,7 @@ If results change → semantic drift detected
 ```yaml
 - name: Validate Ontologies
   run: |
-    python cli-tools/ontology-linter/ontology_linter.py ontology/ --strict
+    python toolchain/ontology-linter/ontology_linter.py ontology/ --strict
     pellet consistency ontology/*.jsonld
     pytest tests/ontology/
 ```

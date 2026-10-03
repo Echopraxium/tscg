@@ -103,12 +103,12 @@ Base: `https://raw.githubusercontent.com/Echopraxium/tscg/main/`
 - `docs/reboot-kit/SmartPrompts/`
 
 **Validation (single source of truth for the M0 SHACL schema):**
-- `ontology/cli-tools/check-M0/M0_Instances_Schema_shacl.ttl` — M0 SHACL schema
+- `ontology/toolchain/check-M0/M0_Instances_Schema_shacl.ttl` — M0 SHACL schema
 - `ontology/TSCG_InstanceGrammar/validate_m0_instance.py` — single-file SHACL validation
   (uses the schema above)
-- `ontology/cli-tools/check-M0/check_m0_instances.py` — full M0 checker (C01–C15),
+- `ontology/toolchain/check-M0/check_m0_instances.py` — full M0 checker (C01–C15),
   `--instance NAME` for one instance
-- `ontology/cli-tools/run_all_layers.py` — the acceptance gate (exact reference values)
+- `ontology/toolchain/run_all_layers.py` — the acceptance gate (exact reference values)
 
 **This skill (source of truth in repo):**
 - `.claude/skills/tscg-instance-pipeline/SKILL.md`
@@ -346,12 +346,12 @@ python ontology/TSCG_InstanceGrammar/validate_m0_instance.py instances/[type]/[I
 
 **(c) M0 checker** (namespaces, imports, changelog, tensor remnants, SHACL):
 ```bash
-python ontology/cli-tools/check-M0/check_m0_instances.py --instance [InstanceName]
+python ontology/toolchain/check-M0/check_m0_instances.py --instance [InstanceName]
 ```
 
 **(d) If an M1 / M2 file was modified (3.1 / 3.2):** run
-`python ontology/cli-tools/tscg_metrics.py` before and after — the VOC bare-key gauge
-must not rise — and the gate `cd ontology/cli-tools && python run_all_layers.py`
+`python ontology/toolchain/tscg_metrics.py` before and after — the VOC bare-key gauge
+must not rise — and the gate `cd ontology/toolchain && python run_all_layers.py`
 (a new M0 file also changes the gate's M0 file count: show the moved counts to Michel
 before any `--update-golden`).
 
@@ -493,9 +493,9 @@ SIMULATION
 ## Validation tools (reference)
 
 - `validate_m0_instance.py` (`ontology/TSCG_InstanceGrammar/`): one JSON-LD file as
-  argument, uses `ontology/cli-tools/check-M0/M0_Instances_Schema_shacl.ttl` (single
+  argument, uses `ontology/toolchain/check-M0/M0_Instances_Schema_shacl.ttl` (single
   source of truth; the former `TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl` was
   removed), optional `--schema`, exit code 0 / 1, violation report on failure.
-- `check_m0_instances.py` (`ontology/cli-tools/check-M0/`): checks C01–C15 on all M0
+- `check_m0_instances.py` (`ontology/toolchain/check-M0/`): checks C01–C15 on all M0
   instances or one (`--instance NAME`); its totals feed the gate.
 - Requirement: `pip install --break-system-packages rdflib pyshacl pyld`

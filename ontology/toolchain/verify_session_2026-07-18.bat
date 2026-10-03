@@ -3,8 +3,8 @@ REM ============================================================================
 REM  verify_session_2026-07-18.bat
 REM  Verifie que les fichiers du working tree correspondent aux livrables du
 REM  zip Claude (session 2026-07-18), via git hash-object (insensible CRLF/LF).
-REM  Place dans ontology/cli-tools/. Lancer depuis la RACINE du repo:
-REM      ontology\cli-tools\verify_session_2026-07-18.bat
+REM  Place dans ontology/toolchain/. Lancer depuis la RACINE du repo:
+REM      ontology\toolchain\verify_session_2026-07-18.bat
 REM  OK   = fichier local identique au livrable  -> ne rien copier
 REM  DIFF = contenu different (version obsolete)  -> recopier depuis le zip
 REM  MISS = fichier absent                        -> copier depuis le zip
@@ -20,7 +20,7 @@ call :check "ontology\M1_CoreConcepts.jsonld" 4822 2e5c
 call :check "ontology\M1_CoreConcepts_README.md" dad4 3dda
 call :check "ontology\M2_GenericConcepts.jsonld" 680d f6a3
 call :check "ontology\M2_GenericConcepts_README.md" e4bc a71f
-call :check "ontology\cli-tools\check-M1\M1_Schema_shacl.ttl" 92e8 dcb5
+call :check "ontology\toolchain\check-M1\M1_Schema_shacl.ttl" 92e8 dcb5
 call :check "ontology\M1_Domains.jsonld" 6ad0 d04c
 call :check "ontology\M1_Domains_README.md" 2424 35a6
 call :check "ontology\M3_BicephalousPerspective.jsonld" 0fc9 1b71

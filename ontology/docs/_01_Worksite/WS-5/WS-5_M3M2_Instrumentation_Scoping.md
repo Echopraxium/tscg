@@ -21,7 +21,7 @@ in the two layers that host the apex.
 
 ## 1. Ownership — already decided by the worksite map
 
-- `_00_TSCG_Worksite_Map.md` (WS-5): `cli-tools/check-M2/` and `check-M3/` are the
+- `_00_TSCG_Worksite_Map.md` (WS-5): `toolchain/check-M2/` and `check-M3/` are the
   intended home of the future checkers; "a runner for an arbitrary shape file is job
   one" (the SHACL pass is hard-wired to check_M1).
 - `check-M2/M2_MonoidalFormula_Schema_shacl.ttl` 0.1.0 (WS-0/SC-2) already holds 2
@@ -32,7 +32,7 @@ in the two layers that host the apex.
 - `M3_Schema.shacl.ttl` (2026-07-03, "CONFORMS: True, 13 shapes") is cited by
   run_all_layers' DEFAULT_GOLDEN note **but is not in the repository** (searched
   2026-10-01). Treat as lost; do not trust the July CONFORMS (SHAPE 9 lesson).
-- The validator engine exists: `cli-tools/validator/tscg_validator.py` (lot 1: CTX
+- The validator engine exists: `toolchain/validator/tscg_validator.py` (lot 1: CTX
   family, `--source local|head|github`, `--layers M3,M2,M1`).
 
 ## 2. Two planes — what each one can see

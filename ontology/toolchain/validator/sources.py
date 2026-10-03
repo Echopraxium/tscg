@@ -3,7 +3,7 @@ sources.py — source switch for TscgOntologyValidator (WS-5, lot 1).
 
 Author : Echopraxium with the collaboration of Claude AI
 Version: 0.1.0
-Home   : ontology/cli-tools/validator/sources.py
+Home   : ontology/toolchain/validator/sources.py
 
 WHY THIS EXISTS
 ---------------
@@ -35,7 +35,7 @@ import urllib.request
 from pathlib import Path
 from typing import List
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # ontology/cli-tools/
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # ontology/toolchain/
 from tscg_paths import REPO_ROOT  # noqa: E402
 
 RAW_BASE = "https://raw.githubusercontent.com/Echopraxium/tscg/main/"

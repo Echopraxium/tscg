@@ -3,7 +3,7 @@
 **Author**: Echopraxium with the collaboration of Claude AI
 **Version**: 1.0.0
 **Date**: 2026-07-23
-**Location**: `ontology/cli-tools/tscg_metrics.py`
+**Location**: `ontology/toolchain/tscg_metrics.py`
 **Project**: TSCG (Transdisciplinary System Construction Game)
 
 ---
@@ -186,20 +186,20 @@ visible.
 
 ```bash
 # from the repo root, on a checkout of git HEAD
-python ontology/cli-tools/tscg_metrics.py
+python ontology/toolchain/tscg_metrics.py
 
 # explicit root
-python ontology/cli-tools/tscg_metrics.py --root ontology
+python ontology/toolchain/tscg_metrics.py --root ontology
 
 # add the SC-1 gauge (needs rdflib + pyshacl)
-python ontology/cli-tools/tscg_metrics.py --shacl
+python ontology/toolchain/tscg_metrics.py --shacl
 
 # machine-readable
-python ontology/cli-tools/tscg_metrics.py --json
+python ontology/toolchain/tscg_metrics.py --json
 
 # snapshot / compare (delta column appears)
-python ontology/cli-tools/tscg_metrics.py --save baseline.json
-python ontology/cli-tools/tscg_metrics.py --baseline baseline.json
+python ontology/toolchain/tscg_metrics.py --save baseline.json
+python ontology/toolchain/tscg_metrics.py --baseline baseline.json
 ```
 
 Dependencies: **none** for the core gauges (standard library only).
