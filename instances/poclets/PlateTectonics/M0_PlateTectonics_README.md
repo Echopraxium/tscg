@@ -68,7 +68,7 @@ trenches; the two rates are coupled through the mantle, so the surface area of t
 stays constant while its crust is entirely renewed. **No single pole contains this cycle.**
 
 > ⚠️ **SC-1 notation note.** `M0_PlateTectonics.jsonld` still stores this as
-> `m0:synergyPrinciple = "Geological ⊙ (m2:Entropy[Negentropy] ⊗ m1core:Accretion ⊗ m2:Transformation)"`.
+> `m0:synergyPrinciple = "Geological ⊙ (m2:Entropy[Negentropy] ⊗ m1:Accretion ⊗ m2:Transformation)"`.
 > `⊙` was the **disciplinary qualification operator** — i.e. `Fm1m2` before it had a name —
 > and `⊗` was the retired tensor product. The data still carries the old form; the purge is
 > **SC-9**. This README states the current model.
@@ -81,7 +81,7 @@ stays constant while its crust is entirely renewed. **No single pole contains th
 |---|---|
 | `m2:Layer` | Lithospheric stratification (crust / lithospheric mantle / asthenosphere) |
 | `m2:Entropy` | **Dual — both poles active at once**: Negentropy at ridges, Entropy export at trenches |
-| `m1core:Accretion` | Seafloor spreading — **the canonical geological validation** of the combo |
+| `m1:Accretion` | Seafloor spreading — **the canonical geological validation** of the combo |
 | `m2:Transformation` | Subduction — oceanic lithosphere returns to the asthenosphere |
 | `m2:Equilibrium` | **Isostasy** — the gravitational attractor of crustal thickness/density |
 | `m2:Convection` | The mantle thermodynamic driver |
@@ -158,8 +158,8 @@ delta = ||ASFID − REVOI|| / √5 ≈ 0.078      spectralClass: OnCriticalLine 
 | Layer | Contribution |
 |---|---|
 | **M1_Geology** | **New extension** — the first TSCG Earth Sciences extension (9 concepts + 1 DomainConceptCombo) |
-| **M1_CoreConcepts** | `m1core:Accretion` — **MidOceanRidge is its canonical geological validation** |
-| **M1_CoreConcepts** | `m1core:Nucleation` — confirmed by the slab partial-melting threshold (arc magma genesis) |
+| **M1_CoreConcepts** | `m1:Accretion` — **MidOceanRidge is its canonical geological validation** |
+| **M1_CoreConcepts** | `m1:Nucleation` — confirmed by the slab partial-melting threshold (arc magma genesis) |
 | **M2** | `m2:Entropy` (dual) — **both poles active simultaneously**; plus `m2:Layer`, `m2:Convection`, `m2:Bifurcation`, `m2:Transformation` confirmed |
 
 ---

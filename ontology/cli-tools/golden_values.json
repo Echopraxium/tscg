@@ -1,5 +1,5 @@
 {
-  "_measured": "2026-10-01, real repository (--update-golden)",
+  "_measured": "2026-10-03, real repository (M1 CTX001 3 -> 1 frozen by hand after review; other layers unchanged)",
   "_note": "Reference values, TriskeleVM-style. EXACT match required. A count that DROPS is as suspicious as one that rises: either a deliberate fix (then --update-golden, and the drop is recorded under '_previous'/'_delta') or a validator that stopped biting. A silently shrinking count is the most dangerous signal in this repo — it looks like progress.",
   "M3": {
     "status": "NOT_INSTRUMENTED",
@@ -13,12 +13,12 @@
     "status": "INSTRUMENTED",
     "files": 17,
     "errors": 151,
-    "warnings": 3,
+    "warnings": 1,
     "by_code": {
       "GCC009": 4,
       "DCC010": 18,
       "DCC009": 1,
-      "CTX001": 3,
+      "CTX001": 1,
       "DCC006": 127,
       "DCC008": 1
     },
@@ -29,20 +29,21 @@
       "EXP001": "retired m1:structuralGrammarFormulaExpanded (D8) — nothing to expand",
       "GCC009/DCC009": "guards appended after the signature. SCALAR guards = M0 measurements leaking into M1 → delete. QUALITATIVE guards (trajectoryShape=Circular) = real semantics → DO NOT DELETE, pending D11/SC-3.",
       "DCC008": "Amplifier: nested parentheses + `Ft`, which is not a TSCG primitive at all",
-      "CTX001": "3 WARNINGS (not errors): M1_Domains lacks the 'm2' key in its @context; M1_BusinessModeling lacks 'm3:eagle_eye' and 'm3:sphinx_eye'. Counted in `warnings: 3`, and therefore in by_code too — by_code counts ALL codes emitted, warnings included. Omitting them from the golden set made the gate fail on a reference that was itself incomplete."
+      "CTX001": "1 WARNING (not an error): M1_Domains lacks the 'm2' key in its @context — a real gap. Counted in `warnings: 1`, and therefore in by_code too — by_code counts ALL codes emitted, warnings included. Until 2026-10-03 CTX001 also REQUIRED the @context terms 'm3:eagle_eye' / 'm3:sphinx_eye' in every extension (2 false positives on M1_BusinessModeling, the one extension that never carried them); since check_M1 1.5.0 it requires 'm3' only."
     },
     "shacl_violations": 688,
     "_previous": {
       "files": 17,
       "errors": 151,
       "warnings": 3,
-      "shacl_violations": 664
+      "shacl_violations": 688
     },
     "_delta": {
-      "shacl_violations": "664 -> 688"
+      "warnings": "3 -> 1",
+      "by_code.CTX001": "3 -> 1"
     },
-    "_delta_reason": "WS-1 lot 1j (2026-10-01): shacl_violations 664 -> 688 (+24) = HIDDEN DEBT REVEALED, not a regression, no shape touched. M1_Physics.jsonld had a root object carrying \"@id\" next to \"@graph\"; JSON-LD reads that as a NAMED graph, so its whole @graph was absent from the default graph that pyshacl validates: the file was 'conformant' only because it was invisible (8 default-graph triples, all from the stale root header). With the root header removed, its 6 domain concept combos become visible and each shows the two violation categories already counted in 13 other M1 extensions: 'rdfs:subClassOf must point to m2:DomainConceptCombo' (the value is a string, not an IRI) and SC-1 'monoidal operator inside a combo formula' (Fm1m2(Physics, A × D × F)). 12 messages = 24 gate lines (Message + Focus Node). Verified by running check_M1.run_shacl on M1_Physics at HEAD (conforms) and in the working copy (12 messages, only these 2 categories). Repairing them belongs to the existing SC-1 / SC-6 backlog, not WS-1. Previous reason (2026-09-19, 680 -> 664 and files 16 -> 17) superseded; see git history.",
-    "_updated": "2026-10-01"
+    "_delta_reason": "WS-2 lot CTX-5 (2026-10-03, approved by Michel after review): warnings 3 -> 1 = FALSE POSITIVES REMOVED, not a repair and not a loosened check. check_M1 <= 1.4.0 required the @context terms 'm3:eagle_eye' / 'm3:sphinx_eye' in every M1 extension; these are compact-IRI term names that do not map to their own expansion (JSON-LD 1.1 §4.1.2): rdflib ignores them, pyld rejects the file, and if honoured they would point to the wrong IRI. The check was therefore enforcing the defect: removing the 30 terms from the 14 extensions made CTX001 jump 3 -> 31. check_M1 1.5.0 drops these two keys from the required list and still requires 'm3' (negative test: removing 'm3' from M1_Biology raises CTX001). The 2 warnings that disappear were the ones asking M1_BusinessModeling to ADD the defective terms; the file itself is untouched by the lot. The remaining warning (M1_Domains lacks 'm2') is real debt. Errors (151) and shacl_violations (688) unchanged.",
+    "_updated": "2026-10-03"
   },
   "M0": {
     "status": "INSTRUMENTED",

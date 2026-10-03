@@ -3,7 +3,6 @@
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
     "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/TrophicPyramid/M0_TrophicPyramid.jsonld#",
     "m1bio": "M1_extensions/biology/M1_Biology.jsonld#",
-    "m1core": "M1_CoreConcepts.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3eagle": "M3_EagleEye.jsonld#",
     "m3sphinx": "M3_SphinxEye.jsonld#",
@@ -74,7 +73,7 @@
       "rdfs:comment": "Ecological trophic pyramid (Lindeman 1942) extended with humanity as supra-trophic super-predator. 6-pole layered model demonstrating StratifiedDissipation: ~90% energy loss at each trophic boundary creates a universal pyramidal biomass structure. Humanity (Level 6) bypasses Lindeman's rule via fossil fuel energy, consuming at all trophic levels simultaneously and exerting meta-regulatory control over the entire pyramid. Introduces two DomainConceptCombos: 'StratifiedDissipation' (Biology ⊙ (Layer ⊗ Dissipation)) and 'AnthropogenicDomination' (Biology ⊙ (Transducer ⊗ Regulation ⊗ Entropy)).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-03-13",
-      "owl:versionInfo": "2.3.0",
+      "owl:versionInfo": "2.4.0",
       "m1:domain": [
         "Ecology",
         "Biology",
@@ -85,6 +84,11 @@
       "dcterms:modified": "2026-09-30",
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.4.0",
+          "dcterms:date": "2026-10-03",
+          "adms:versionNotes": "Retired alias m1core replaced by m1 (Michel, 2026-10-03: a vestige, m1 everywhere): 16 occurrence(s) of the m1core: prefix rewritten as m1:, and the relative @context entry \"m1core\": \"M1_CoreConcepts.jsonld#\" removed (m1 is already declared with its absolute IRI). Effect on the graph: properties that were relative IRIs (a term mapping is never resolved against @base) now expand to the absolute M1_CoreConcepts IRI; no triple added or lost. Tooling already flagged m1core (check_m0 C07, M0 SHACL namespace constraint)."
+        },
+        {
           "owl:versionInfo": "2.3.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 4 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -93,14 +97,9 @@
           "owl:versionInfo": "2.2.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1e. Changelog container m2:changelog -> m3:changelog (the owl:AnnotationProperty declared in M3_GrammarFoundation); entry keys version/date/changes -> owl:versionInfo / dcterms:date / adms:versionNotes (ADMS accepted, Michel 2026-09-30); prefix adms declared. Previously the whole changelog was dropped on JSON-LD expansion."
-        },
-        {
-          "owl:versionInfo": "2.1.0",
-          "dcterms:date": "2026-07-12",
-          "adms:versionNotes": "SC-1 FUNCTIONAL GRAMMAR MODEL. RENAME (hard): m2:KnowledgeFieldConceptCombo -> m2:DomainConceptCombo. A DomainConceptCombo is now defined BY its Fm1m2 formula - a hybrid of >=1 Domain and >=1 GenericConcept (domain qualification), superseding the former 'parents from distinct epistemological domains' criterion. A combo's formula IS the function signature: Fm2 : GenericConcept(2+) -> GenericConceptCombo; Fm1m2 : Domain+, GenericConcept+ -> DomainConceptCombo. No monoidal formula, no monoidal expansion - emergence is non-compositional, so Fm2/Fm1m2 are FUNCTIONS, not functors. See StructuralGrammar/Functional_Grammar_Model.md."
         }
       ],
-      "m1core:simulationTitle": "Trophic Pyramid"
+      "m1:simulationTitle": "Trophic Pyramid"
     },
     {
       "@id": "m0:TrophicPyramidSystem",
@@ -250,22 +249,22 @@
           "@id": "m0:StratifiedDissipation",
           "@type": [
             "owl:NamedIndividual",
-            "m1core:DomainConceptCombo"
+            "m1:DomainConceptCombo"
           ],
           "rdfs:label": "StratifiedDissipation",
           "rdfs:comment": "Biology-specific instantiation of the Layer⊗Dissipation pattern. Energy dissipation that is structured by stable positional strata: at each trophic boundary ~90% of received energy is irreversibly converted to heat, producing the universal pyramidal biomass distribution. The Layer dimension (S⊗I⊗A⊗R) provides the spatial scaffolding; the Dissipation dimension (F⊗D) drives the thermodynamic gradient.",
-          "m1core:knowledgeField": "Biology",
-          "m1core:operator": "⊙ (disciplinary qualification)",
-          "m1core:compiledFormula": "Biology ⊙ (S⊗I⊗A⊗R⊗F⊗D)",
-          "m1core:dominantDimensions": [
+          "m1:knowledgeField": "Biology",
+          "m1:operator": "⊙ (disciplinary qualification)",
+          "m1:compiledFormula": "Biology ⊙ (S⊗I⊗A⊗R⊗F⊗D)",
+          "m1:dominantDimensions": [
             "S",
             "I",
             "A",
             "F",
             "D"
           ],
-          "m1core:empiricalLaw": "Lindeman's 10% rule — η ≈ 0.1 at each trophic boundary",
-          "m1core:validationDomains": [
+          "m1:empiricalLaw": "Lindeman's 10% rule — η ≈ 0.1 at each trophic boundary",
+          "m1:validationDomains": [
             "Terrestrial ecology",
             "Marine ecology",
             "Freshwater ecology",
@@ -277,22 +276,22 @@
           "@id": "m0:AnthropogenicDomination",
           "@type": [
             "owl:NamedIndividual",
-            "m1core:DomainConceptCombo"
+            "m1:DomainConceptCombo"
           ],
           "rdfs:label": "AnthropogenicDomination",
           "rdfs:comment": "Biology-specific instantiation of the Transducer⊗Regulation⊗Entropy pattern. Humanity acts as a meta-transducer converting geological energy (fossil fuels) into ecosystem regulation, consuming at all trophic levels simultaneously and amplifying global entropy through mass extinction, climate forcing, and habitat destruction. Unlike StratifiedDissipation (thermodynamic law), AnthropogenicDomination is a contingent but dominant meta-pattern of the Anthropocene.",
-          "m1core:knowledgeField": "Biology",
-          "m1core:operator": "⊙ (disciplinary qualification)",
-          "m1core:compiledFormula": "Biology ⊙ (F⊗I⊗A⊗S⊗D)",
-          "m1core:dominantDimensions": [
+          "m1:knowledgeField": "Biology",
+          "m1:operator": "⊙ (disciplinary qualification)",
+          "m1:compiledFormula": "Biology ⊙ (F⊗I⊗A⊗S⊗D)",
+          "m1:dominantDimensions": [
             "F",
             "I",
             "A",
             "D"
           ],
-          "m1core:keyMechanism": "Fossil-fuel energy bypass: E_humanity = Σ(f_n × E_n) + E_fossil — humanity's effective energy capture exceeds total natural primary production",
-          "m1core:empiricalData": "HANPP (Human Appropriation of Net Primary Production) ≈ 30-40% of terrestrial NPP; >80% of mammal biomass is livestock or humans",
-          "m1core:validationDomains": [
+          "m1:keyMechanism": "Fossil-fuel energy bypass: E_humanity = Σ(f_n × E_n) + E_fossil — humanity's effective energy capture exceeds total natural primary production",
+          "m1:empiricalData": "HANPP (Human Appropriation of Net Primary Production) ≈ 30-40% of terrestrial NPP; >80% of mammal biomass is livestock or humans",
+          "m1:validationDomains": [
             "Anthropocene ecology",
             "Earth System Science",
             "Conservation biology",

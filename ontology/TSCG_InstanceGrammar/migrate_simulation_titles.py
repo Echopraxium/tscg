@@ -197,10 +197,10 @@ def update_jsonld_with_simulation_title(path: Path, simulation_title: str, dry_r
         data, main_node = load_jsonld(path)
         
         # Add m1:simulationTitle to main node
-        main_node['m1core:simulationTitle'] = simulation_title
+        main_node['m1:simulationTitle'] = simulation_title
         
         if dry_run:
-            print_info(f"[DRY RUN] Would add: m1core:simulationTitle = '{simulation_title}'")
+            print_info(f"[DRY RUN] Would add: m1:simulationTitle = '{simulation_title}'")
             return True
         
         # Write back with UTF-8 encoding and proper JSON formatting
@@ -230,7 +230,7 @@ def prompt_simulation_title(instance: Dict) -> Optional[str]:
         return None
     
     rdfs_label = main_node.get('rdfs:label', instance_name)
-    current_sim_title = main_node.get('m1core:simulationTitle', None)
+    current_sim_title = main_node.get('m1:simulationTitle', None)
     
     print(f"\n{Colors.BOLD}{Colors.OKCYAN}Instance: {instance_name}{Colors.ENDC}")
     print(f"  Type:        {instance['ontology_type']}")
@@ -325,7 +325,7 @@ def main():
                 ):
                     updated_count += 1
                     if not dry_run:
-                        print_success(f"Updated: m1core:simulationTitle = '{simulation_title}'")
+                        print_success(f"Updated: m1:simulationTitle = '{simulation_title}'")
             else:
                 skipped_count += 1
     
