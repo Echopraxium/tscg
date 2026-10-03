@@ -27,6 +27,13 @@ RULES = [
     (r"(^|/)ontology/cli-tools/.*\.(py|ttl)$", "gate", [A]),
     (r"(^|/)cli_tools/",                    "tool",  [A]),
     (r"(^|/)\.claude/skills/",              "skill", [A]),
+    # Worksite / handover rules MUST stay before every "doc" rule: all worksites live
+    # under ontology/docs/_01_Worksite/, so "ontology/docs/.*\.md" used to win and
+    # their notes and HandOvers landed in "doc" instead of Project management
+    # (11 worksite files instead of 39 — fixed 2026-10-03).
+    (r"(^|/)_01_Worksite/",                 "worksite", [A], "draft"),
+    (r"(^|/)worksite\.yaml$",               "worksite", [A], "draft"),
+    (r"(?i)handover.*\.md$",                "handover", [A], "draft"),
     (r"(^|/)ontology/TSCG_InstanceGrammar/.*\.py$", "tool", [A]),
     (r"(^|/)ontology/TSCG_InstanceGrammar/.*\.md$", "doc",  [C,A]),
     (r"(^|/)ontology/StructuralGrammar/.*\.md$", "doc", [A]),
@@ -42,9 +49,6 @@ RULES = [
     (r"(^|/)_00_UserGuide/UserGuide\.md$",  "guide", [U]),
     (r"(^|/)_00_UserGuide/exercises/.*/workflow_run_sample/", "simulation", [U]),
     (r"(^|/)_00_UserGuide/exercises/.*\.md$", "exercise", [U]),
-    (r"(^|/)_01_Worksite/",                 "worksite", [A], "draft"),
-    (r"(^|/)worksite\.yaml$",               "worksite", [A], "draft"),
-    (r"(?i)handover.*\.md$",                "handover", [A], "draft"),
     (r"(^|/)instances/symbolic-system-grammars/.*\.md$", "doc", [U,C,A]),
     (r"(^|/)instances/systemic-frameworks/.*\.md$",      "doc", [C,A]),
     (r"(^|/)instances/.*\.html$",           "simulation", [U]),
