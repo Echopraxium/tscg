@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1761 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1767 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -306,6 +306,8 @@
       - TSCG_Session_Handover_2026-09-13_World2DProjection_Step4.md
     - **2026_09_14/**
       - TSCG_Session_Handover_2026-09-14_World2DProjection_Step4_Rounds1-2.md
+    - **2026_09_16/**
+      - TSCG_Session_Handover_2026-09-16_World2DProjection_ThematicMap.md
   - **poclets/**
     - **_00_template/**
       - **src/**
@@ -1630,6 +1632,8 @@
         - PEPITE_FIXES_Report.md
         - TSCG_REGRESSION_VALIDATION_REPORT.md
     - **_01_Worksite/**
+      - **OntologyEngineering/**
+        - TSCG_HandOver_Article_AI_Delegation_OE_vs_SE_2026-10-01.md
       - **WS-0/**
         - **2026_09_02/**
           - SC-3_Facet_Decision_Record.md
@@ -1643,6 +1647,9 @@
           - TSCG_Session_Handover_2026-08-09.md
         - **Next Conversation_2026_08_11/**
           - TSCG_Session_Handover_2026-08-11.md
+        - **Next_Conversation_2026-09-29/**
+          - TSCG_HandOver_2026-09-29_ShipBuilder.md
+          - TSCG_Session_Handover_2026-09-29_CheckM3_SC-10.md
         - **SC-1/**
           - _00_TSCG_Worksite_Map_SC1-9.md
           - _open_cmd_window.bat
@@ -1659,6 +1666,9 @@
         - TSCG_File_Tree.md
         - TSCG_Session_Handover_2026-07-25.md
       - **WS-1/**
+        - **Next_Conversation_2026-09-30/**
+          - TSCG_HandOver_WS-1_Housekeeping_2026-09-30.md
+          - TSCG_HandOver_WS-1_Lot1h_2026-09-30.md
         - **Next_Conversation_2026-10-01/**
           - TSCG_HandOver_WS-1_to_WS-5_2026-10-01.md
         - WS-1_FamilyA_Triage.md
