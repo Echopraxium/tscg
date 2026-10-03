@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1771 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1761 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -249,7 +249,6 @@
       - TSCG_Smart_Prompt_v16_3_0.md
       - TSCG_Smart_Prompt_v17_0_0.md
     - 00_M3_Cyclops_Correction_Summary.md
-    - 00_M3_Philosophical_Basis_Sketch.jsonld
     - 00_Map_Territory_v1.2_Update_Summary.md
     - 00_TSCG_M3_Bicephalous_Architecture.md
     - 00_TSCG_Map_Territory_Theoretical_Foundation.md
@@ -262,18 +261,9 @@
     - ENCODING_CORRESPONDANCES.txt
     - files.txt
     - HYBRID_FORMULAS_NOTATION_README.md
-    - M0_VSM.jsonld
     - M0_VSM_README.md
-    - M2_FormulasReference_v15.10.0.json
     - M2_FormulasReference_v15.10.0.md
-    - M2_GenericConcepts.jsonld
-    - M2_MetaconceptCombo.jsonld
-    - M2_MetaConcepts.jsonld
     - M2_OntologyCategory_Proposal.md
-    - M2_Pattern_metaconcept.jsonld
-    - M3_EagleEye.jsonld
-    - M3_GenesisSpace.jsonld
-    - M3_SphinxEye.jsonld
     - macros.txt
     - Namespace_Refactoring_Summary.md
     - poclet_terminology.md
