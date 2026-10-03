@@ -4,7 +4,7 @@ tscg_validator.py — TscgOntologyValidator engine (WS-5, lot 1: CTX + source sw
 
 Author : Echopraxium with the collaboration of Claude AI
 Version: 0.1.0
-Home   : ontology/cli-tools/validator/tscg_validator.py
+Home   : ontology/toolchain/validator/tscg_validator.py
 
 Implements the design spec (ontology/docs/_01_Worksite/
 TSCG_OntologyValidator_Worksite_README.md v0.1.0), §8 first target:

@@ -205,7 +205,7 @@ The step table below is kept as the record of what shipped.
 | 5 | M2_GenericConcepts_README — Notation Convention, Takeaways, Statistics | done |
 
 Decisions: D1 76-mechanical (9 -> WS-3); D2 CTX-4 isolated lot; D3 shape at
-`cli-tools/check-M2/M2_MonoidalFormula_Schema_shacl.ttl`; D4 run via
+`toolchain/check-M2/M2_MonoidalFormula_Schema_shacl.ttl`; D4 run via
 `tscg_metrics --shacl-path` (interim -> WS-5 runner); D5 Symmetry/State mechanical
 only; D6 Gradient migrate I, `or` -> WS-3. formulaTeX + m2:expressionTeX deleted.
 "atom" -> "monoidal".
@@ -272,7 +272,7 @@ keys, an order past M1's 11 shapes; hand-writing = a second source of truth).
 - **WS-5 Validator** — Python engine + Electron interface; JSON contract; headless
   rule; decision-capture not reporting; engine-first scope guard; reflexive M0
   status. Report configuration by QUERY is the stated core. **Existing asset**:
-  `cli-tools/README.md` v1.0.0 already documents `tscg_paths.py` (relocatable root),
+  `toolchain/README.md` v1.0.0 already documents `tscg_paths.py` (relocatable root),
   the acceptance-gate philosophy (exact reference values, not pass/fail), the four
   silent SC-1 tooling bugs, and names `check-M2/`/`check-M3/` as the intended home
   for future checkers — where SC-2's shape already sits. The engine grows from here,
@@ -435,12 +435,12 @@ M3/M2/M0 and would be hand-adjudicated without the engine (as SC-3's design was)
   SC-3 detached from the frozen-design group in §2/§4 and marked NOT graved, to grave
   after WS-5. Only SC-2/SC-3 lines re-measured; all other figures untouched.
 - **2.1.0** (2026-07-24) — Reconciled against the on-disk WS-0 content read late in
-  the session (`_01_Facet_as_M3_Principle_ArchitectureNote.md`, `cli-tools/README.md`).
+  the session (`_01_Facet_as_M3_Principle_ArchitectureNote.md`, `toolchain/README.md`).
   Four corrections: (1) SC-6 line now carries the real golden ventilation
   (DCC006=127; M1 total 151, was 163, EXP001=12 retired) instead of the stale
   "114/155"; (2) SC-3 marked partial — D11 is RULED (option+axis+enum = facet),
   A1 recommended, only `hasPolarity` un-graved; (3) WS-5 entry records that
-  `cli-tools/README.md` v1.0.0 already documents the tooling and reserves
+  `toolchain/README.md` v1.0.0 already documents the tooling and reserves
   check-M2/check-M3; (4) backlog gains the stale-"163"-note item and confirms it is
   a display string, not the `publicID=` bug. HEAD golden_values.json (2026-07-23)
   cited as authority for the counts.

@@ -9,7 +9,7 @@ Standalone script to validate a single M0 instance JSON-LD file against the TSCG
 SHACL grammar schema.
 
 Single source of truth: the schema lives ONLY at
-    ontology/cli-tools/check-M0/M0_Instances_Schema_shacl.ttl
+    ontology/toolchain/check-M0/M0_Instances_Schema_shacl.ttl
 (the same file the check-M0 acceptance gate uses). This validator reads that file
 so its SHACL verdict always matches the gate. The former duplicate at
 ontology/TSCG_InstanceGrammar/M0_Instances_Schema.shacl.ttl has been removed.
@@ -30,10 +30,10 @@ import argparse
 
 # The single-source reference schema, resolved relative to THIS script's location
 # (robust to the current working directory). This script lives at
-# ontology/TSCG_InstanceGrammar/ ; the schema lives at ontology/cli-tools/check-M0/.
+# ontology/TSCG_InstanceGrammar/ ; the schema lives at ontology/toolchain/check-M0/.
 REFERENCE_SCHEMA = (
     Path(__file__).resolve().parent.parent
-    / "cli-tools" / "check-M0" / "M0_Instances_Schema_shacl.ttl"
+    / "toolchain" / "check-M0" / "M0_Instances_Schema_shacl.ttl"
 )
 
 
@@ -110,7 +110,7 @@ Examples:
   python validate_m0_instance.py M0_MyPoclet.jsonld --schema custom_schema.ttl
 
 By default the schema is the single-source reference used by the check-M0 gate:
-  ontology/cli-tools/check-M0/M0_Instances_Schema_shacl.ttl
+  ontology/toolchain/check-M0/M0_Instances_Schema_shacl.ttl
         """,
     )
 

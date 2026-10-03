@@ -37,7 +37,7 @@ See `TSCG_Prerequisites_Installation.md` for full setup guide.
 
 ```bash
 # From anywhere in TSCG repository
-python cli-tools/owl_reasoning_test/rdfs_diagnostic.py
+python ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py
 ```
 
 ### What it checks
@@ -84,7 +84,7 @@ Only after **RDFS diagnostic passes** with 0 errors. This tool is strict and wil
 
 ```bash
 # From anywhere in TSCG repository
-python cli-tools/owl_reasoning_test/test_owl_reasoning.py
+python ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py
 ```
 
 ### What it does
@@ -117,7 +117,7 @@ Status: ✅ PASSED
 
 ```bash
 # 1. Run RDFS diagnostic
-python cli-tools/owl_reasoning_test/rdfs_diagnostic.py > rdfs_report.txt
+python ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py > rdfs_report.txt
 
 # 2. Review error report
 # 3. Identify patterns (e.g., 108 subClassOf literals)
@@ -136,7 +136,7 @@ python cli-tools/owl_reasoning_test/rdfs_diagnostic.py > rdfs_report.txt
 
 ```bash
 # Once RDFS passes with 0 errors:
-python cli-tools/owl_reasoning_test/test_owl_reasoning.py
+python ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py
 
 # If OWL reasoning passes → ✅ Ready for production
 ```
@@ -173,11 +173,11 @@ Both tools can be integrated into the TSCG validation pipeline:
 # In tscg-ontology-diagnosis-pipeline (Phase 3: Technical Validation)
 
 # Step 3.1: RDFS Validation
-subprocess.run(["python", "cli-tools/owl_reasoning_test/rdfs_diagnostic.py"])
+subprocess.run(["python", "ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py"])
 
 # Step 3.2: OWL Reasoning (only if RDFS passes)
 if rdfs_passed:
-    subprocess.run(["python", "cli-tools/owl_reasoning_test/test_owl_reasoning.py"])
+    subprocess.run(["python", "ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py"])
 ```
 
 ---

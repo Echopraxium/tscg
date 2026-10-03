@@ -24,7 +24,7 @@ RULES = [
     (r"(^|/)ontology/M3_[^/]*\.jsonld$",    "layer", [A]),
     (r"(^|/)ontology/M2_[^/]*\.jsonld$",    "layer", [A]),
     (r"(^|/)ontology/(M1_|M0_Common)[^/]*\.jsonld$", "layer", [C,A]),
-    (r"(^|/)ontology/cli-tools/.*\.(py|ttl)$", "gate", [A]),
+    (r"(^|/)ontology/toolchain/.*\.(py|ttl)$", "gate", [A]),
     (r"(^|/)cli_tools/",                    "tool",  [A]),
     (r"(^|/)\.claude/skills/",              "skill", [A]),
     # Worksite / handover rules MUST stay before every "doc" rule: all worksites live

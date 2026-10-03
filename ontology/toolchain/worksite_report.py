@@ -4,7 +4,7 @@ worksite_report.py — render the TSCG worksite status table from worksite.yaml.
 
 Author : Echopraxium with the collaboration of Claude AI
 Version: 0.1.0
-Home   : ontology/cli-tools/worksite_report.py
+Home   : ontology/toolchain/worksite_report.py
 
 Reads the structured state layer (ontology/docs/_01_Worksite/worksite.yaml) and
 prints the roadmap table on demand — the "table at any time" the worksite map's

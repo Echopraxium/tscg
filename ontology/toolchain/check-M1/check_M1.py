@@ -5,7 +5,7 @@ check_M1.py — TSCG M1 Layer Validation & Correction Script
 Author  : Echopraxium with the collaboration of Claude AI
 Version : 1.5.0
 Date    : 2026-10-03
-Location: ontology/cli-tools/check-M1/check_M1.py
+Location: ontology/toolchain/check-M1/check_M1.py
 
 Changelog
 ---------
@@ -53,7 +53,7 @@ for _stream in (_sys.stdout, _sys.stderr):
         pass
 # ------------------------------------------------------------------------------
 
-# --- bootstrap: tscg_paths lives one level up, in ontology/cli-tools/ ----------
+# --- bootstrap: tscg_paths lives one level up, in ontology/toolchain/ ----------
 import sys as _sys
 from pathlib import Path as _Path
 _sys.path.insert(0, str(_Path(__file__).resolve().parent.parent))
@@ -940,7 +940,7 @@ def main():
         USE_COLOR = False
 
     # Resolve paths via tscg_paths (repo root discovered by walking up from this
-    # file — no hardcoded absolute path, works from ontology/cli-tools/check-M1/).
+    # file — no hardcoded absolute path, works from ontology/toolchain/check-M1/).
     script_dir = Path(__file__).parent
     # BUGFIX: the script used to look for "M1_Schema.shacl.ttl" (DOT) while the
     # file on disk is "M1_Schema_shacl.ttl" (UNDERSCORE). --shacl therefore never
@@ -965,7 +965,7 @@ def main():
     else:
         # tscg_paths resolves the repo root by walking UP from this file until it
         # finds a directory holding both ontology/ and instances/. That makes the
-        # script relocatable: it works from ontology/cli-tools/check-M1/, from the
+        # script relocatable: it works from ontology/toolchain/check-M1/, from the
         # old cli_tools/check-M1/, or from anywhere else, unchanged.
         candidates = [
             ONTOLOGY_DIR,                             # ← authoritative

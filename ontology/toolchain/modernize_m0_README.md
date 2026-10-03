@@ -1,8 +1,8 @@
 # `modernize_m0.py` — M0 instance modernizer (check-M0, Path B) · v2
 
 **Author:** Echopraxium with the collaboration of Claude AI
-**Location:** `ontology/cli-tools/modernize_m0.py`
-**Companion gate:** `ontology/cli-tools/check-M0/check_m0_instances.py`
+**Location:** `ontology/toolchain/modernize_m0.py`
+**Companion gate:** `ontology/toolchain/check-M0/check_m0_instances.py`
 
 A batch-remediation helper that brings an older, non-conformant `M0_*.jsonld`
 instance toward **check-M0** conformance — **without polluting the shared
@@ -137,14 +137,14 @@ Run from **anywhere** (the schema is resolved relative to the script), passing
 the instance path:
 
 ```bash
-python ontology/cli-tools/modernize_m0.py instances/poclets/PhaseTransition/M0_PhaseTransition.jsonld
+python ontology/toolchain/modernize_m0.py instances/poclets/PhaseTransition/M0_PhaseTransition.jsonld
 ```
 
 It **rewrites the file in place**, then prints its report. Always re-gate after
 (both must be green):
 
 ```bash
-python ontology/cli-tools/check-M0/check_m0_instances.py --instance PhaseTransition
+python ontology/toolchain/check-M0/check_m0_instances.py --instance PhaseTransition
 python ontology/TSCG_InstanceGrammar/validate_m0_instance.py instances/poclets/PhaseTransition/M0_PhaseTransition.jsonld
 ```
 

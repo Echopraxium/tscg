@@ -3,7 +3,7 @@ checks/ctx.py — CTX family: @context / IRI-resolution hygiene.
 
 Author : Echopraxium with the collaboration of Claude AI
 Version: 0.1.0
-Home   : ontology/cli-tools/validator/checks/ctx.py
+Home   : ontology/toolchain/validator/checks/ctx.py
 
 The highest-value family (design spec §2). DETECTION ONLY — every finding may carry
 a proposed_diff, but the validator never writes. All checks are deterministic and

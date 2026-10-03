@@ -1,6 +1,6 @@
 @echo off
 REM =============================================================
-REM TSCG — cli-tools/check-corpus-updates/check-corpus-updates.bat
+REM TSCG — cli_tools/check-corpus-updates/check-corpus-updates.bat
 REM Checks corpus file versions against local repo
 REM
 REM Usage : double-click or run from cmd.exe

@@ -138,19 +138,6 @@
     - _open_cmd_window.bat
     - migrate_properties.py
     - migrate_properties_README.md
-  - **owl_reasoning_test/**
-    - _open_cmd_window.bat
-    - convert_jsonld_to_turtle.py
-    - fix_owl_literals.py
-    - HowTo.txt
-    - owl_reasoning_test.py
-    - owl_reasoning_test_README.md
-    - rdfs_diagnostic.py
-    - test_reasoning_M1_Core.txt
-    - test_reasoning_M2.txt
-    - test_reasoning_M3.txt
-    - TSCG_OWL_Validation_Session_Summary.md
-    - TSCG_Validation_Handoff_M1_M0.md
   - **regenerate_simulation_gallery/**
     - _Generate_Index-html.bat
     - _open_cmd_window.bat
@@ -1584,45 +1571,6 @@
   - QRCode_ExplorationSpaces_README.md
 - **migration_backups/** _(collapsed, 86 entries)_
 - **ontology/**
-  - **cli-tools/**
-    - **check-M0/**
-      - check_m0_instances.py
-      - M0_Instances_Schema_shacl.ttl
-      - migrate_m0_to_v1_5.py
-    - **check-M1/**
-      - _open_cmd_window.bat
-      - after_publicid.txt
-      - check_M1.py
-      - check_M1_README.md
-      - M1_Schema_shacl.ttl
-      - shacl_after.txt
-    - **check-M2/**
-      - M2_MonoidalFormula_Schema_shacl.ttl
-    - **ontology-linter/**
-      - _00_open_cmd_window.bat
-      - AI_OntologyEngineering_Pitfalls_and_Solutions_README.md
-      - ontology_linter.py
-      - ontology_linter_README.md
-      - Prerequisites_Setup_README.md
-    - **validator/**
-      - **checks/**
-        - __init__.py
-        - axis.py
-        - ctx.py
-      - sources.py
-      - tscg_validator.py
-    - _00_open_cmd_window.bat
-    - _run_all_layers.bat
-    - golden_values.json
-    - modernize_m0.py
-    - modernize_m0_README.md
-    - README.md
-    - run_all_layers.py
-    - tscg_metrics.py
-    - tscg_metrics_README.md
-    - tscg_paths.py
-    - verify_session_2026-07-18.bat
-    - worksite_report.py
   - **docs/**
     - **_00_test_reports/**
       - **2026_07_26_regression_KitArchitect-01/**
@@ -1868,6 +1816,58 @@
     - TSCG_IntersubjectiveBenchmark_for_DefeasibleKnowledge_README.md
     - TSCG_Mathematical_Legitimacy_Summary.md
     - TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md
+  - **toolchain/**
+    - **check-M0/**
+      - check_m0_instances.py
+      - M0_Instances_Schema_shacl.ttl
+      - migrate_m0_to_v1_5.py
+    - **check-M1/**
+      - _open_cmd_window.bat
+      - after_publicid.txt
+      - check_M1.py
+      - check_M1_README.md
+      - M1_Schema_shacl.ttl
+      - shacl_after.txt
+    - **check-M2/**
+      - M2_MonoidalFormula_Schema_shacl.ttl
+    - **ontology-linter/**
+      - _00_open_cmd_window.bat
+      - AI_OntologyEngineering_Pitfalls_and_Solutions_README.md
+      - ontology_linter.py
+      - ontology_linter_README.md
+      - Prerequisites_Setup_README.md
+    - **owl_reasoning_test/**
+      - _open_cmd_window.bat
+      - convert_jsonld_to_turtle.py
+      - fix_owl_literals.py
+      - HowTo.txt
+      - owl_reasoning_test.py
+      - owl_reasoning_test_README.md
+      - rdfs_diagnostic.py
+      - test_reasoning_M1_Core.txt
+      - test_reasoning_M2.txt
+      - test_reasoning_M3.txt
+      - TSCG_OWL_Validation_Session_Summary.md
+      - TSCG_Validation_Handoff_M1_M0.md
+    - **validator/**
+      - **checks/**
+        - __init__.py
+        - axis.py
+        - ctx.py
+      - sources.py
+      - tscg_validator.py
+    - _00_open_cmd_window.bat
+    - _run_all_layers.bat
+    - golden_values.json
+    - modernize_m0.py
+    - modernize_m0_README.md
+    - README.md
+    - run_all_layers.py
+    - tscg_metrics.py
+    - tscg_metrics_README.md
+    - tscg_paths.py
+    - verify_session_2026-07-18.bat
+    - worksite_report.py
   - **TSCG_InstanceGrammar/**
     - _00_open_cmd_window.bat
     - _00_start_M0_migration-dry-run.bat

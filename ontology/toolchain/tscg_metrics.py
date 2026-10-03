@@ -483,7 +483,7 @@ def measure_sc1_combos(root, shacl_path=None):
         return {"available": False, "reason": "rdflib/pyshacl not installed"}
 
     if shacl_path is None:
-        shacl_path = os.path.join(root, "cli-tools", "check-M1", "M1_Schema_shacl.ttl")
+        shacl_path = os.path.join(root, "toolchain", "check-M1", "M1_Schema_shacl.ttl")
     if not os.path.exists(shacl_path):
         return {"available": False, "reason": "SHACL not found: %s" % shacl_path}
 

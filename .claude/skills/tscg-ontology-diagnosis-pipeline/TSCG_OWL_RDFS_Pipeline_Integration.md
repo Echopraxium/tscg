@@ -18,7 +18,7 @@ This document describes how to integrate the OWL/RDFS validation tools into the 
 
 ### Location
 
-All tools are in: `cli-tools/owl_reasoning_test/`
+All tools are in: `ontology/toolchain/owl_reasoning_test/`
 
 ---
 
@@ -72,7 +72,7 @@ def run_rdfs_diagnostic(ontology_path):
     print("-" * 70)
     
     result = subprocess.run(
-        ["python", "cli-tools/owl_reasoning_test/rdfs_diagnostic.py"],
+        ["python", "ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py"],
         capture_output=True,
         text=True
     )
@@ -82,7 +82,7 @@ def run_rdfs_diagnostic(ontology_path):
     if result.returncode != 0:
         print("❌ RDFS validation failed!")
         print("   Run fix script:")
-        print(f"   python cli-tools/owl_reasoning_test/fix_owl_literals.py --dry-run")
+        print(f"   python ontology/toolchain/owl_reasoning_test/fix_owl_literals.py --dry-run")
         return False
     
     print("✅ RDFS validation passed")
@@ -118,7 +118,7 @@ def run_owl_reasoning(ontology_path):
     print("-" * 70)
     
     result = subprocess.run(
-        ["python", "cli-tools/owl_reasoning_test/test_owl_reasoning.py"],
+        ["python", "ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py"],
         capture_output=True,
         text=True
     )
@@ -168,9 +168,9 @@ def phase_3_technical_validation(ontology_path):
     if not run_rdfs_diagnostic(ontology_path):
         print("\n⚠️  RDFS errors detected - fix before OWL reasoning")
         print("   Suggested workflow:")
-        print("   1. python cli-tools/owl_reasoning_test/fix_owl_literals.py --dry-run")
+        print("   1. python ontology/toolchain/owl_reasoning_test/fix_owl_literals.py --dry-run")
         print("   2. Review changes")
-        print("   3. python cli-tools/owl_reasoning_test/fix_owl_literals.py")
+        print("   3. python ontology/toolchain/owl_reasoning_test/fix_owl_literals.py")
         print("   4. Re-run validation")
         return False  # GATE: Stop if RDFS fails
     
@@ -206,13 +206,13 @@ When RDFS diagnostic fails:
 
 🔧 Suggested workflow:
    1. Preview fixes:
-      python cli-tools/owl_reasoning_test/fix_owl_literals.py --dry-run
+      python ontology/toolchain/owl_reasoning_test/fix_owl_literals.py --dry-run
    
    2. If preview looks good, apply:
-      python cli-tools/owl_reasoning_test/fix_owl_literals.py
+      python ontology/toolchain/owl_reasoning_test/fix_owl_literals.py
    
    3. Re-run validation:
-      python cli-tools/owl_reasoning_test/rdfs_diagnostic.py
+      python ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py
    
    4. Expected: 0 errors
 
@@ -232,7 +232,7 @@ When OWL reasoning fails:
    3. Look for circular dependencies or contradictory axioms
    4. Consult ontology_linter output for structural issues
 
-📚 See: cli-tools/owl_reasoning_test/README.md
+📚 See: ontology/toolchain/owl_reasoning_test/README.md
 ```
 
 ---
@@ -345,11 +345,11 @@ jobs:
     
     - name: Run RDFS Diagnostic
       run: |
-        python cli-tools/owl_reasoning_test/rdfs_diagnostic.py
+        python ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py
     
     - name: Run OWL Reasoning
       run: |
-        python cli-tools/owl_reasoning_test/test_owl_reasoning.py
+        python ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py
       if: success()  # Only if RDFS passed
 ```
 
@@ -380,20 +380,20 @@ For ontologies >500 classes:
 
 ```bash
 # Test 1: Clean ontology (should pass all)
-python cli-tools/owl_reasoning_test/rdfs_diagnostic.py
-python cli-tools/owl_reasoning_test/test_owl_reasoning.py
+python ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py
+python ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py
 
 # Test 2: Ontology with errors (should fail RDFS, suggest fixes)
 # (Use M2 backup file from before fixes)
-python cli-tools/owl_reasoning_test/rdfs_diagnostic.py \
+python ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py \
   --file ontology/M2_GenericConcepts.backup_20260514_171657.jsonld
 
 # Test 3: Dry-run fix script
-python cli-tools/owl_reasoning_test/fix_owl_literals.py --dry-run
+python ontology/toolchain/owl_reasoning_test/fix_owl_literals.py --dry-run
 
 # Test 4: Apply fixes and re-validate
-python cli-tools/owl_reasoning_test/fix_owl_literals.py
-python cli-tools/owl_reasoning_test/rdfs_diagnostic.py
+python ontology/toolchain/owl_reasoning_test/fix_owl_literals.py
+python ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py
 ```
 
 ---
@@ -482,7 +482,7 @@ Files like `temp_ontology.rdf` are created temporarily and deleted after reasoni
 
 ## References
 
-- **Tools README:** `cli-tools/owl_reasoning_test/README.md`
+- **Tools README:** `ontology/toolchain/owl_reasoning_test/README.md`
 - **Prerequisites:** `TSCG_Prerequisites_Installation.md`
 - **Pipeline Skill:** `tscg-ontology-diagnosis-pipeline-SKILL.md`
 - **Backup file:** `ontology/M2_GenericConcepts.backup_20260514_171657.jsonld`

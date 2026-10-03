@@ -5,7 +5,7 @@ run_all_layers — TSCG ontology acceptance gate (M3 → M0).
 Author : Echopraxium with the collaboration of Claude AI
 Version: 1.1.0
 Date   : 2026-07-13
-Home   : ontology/cli-tools/run_all_layers.py
+Home   : ontology/toolchain/run_all_layers.py
 
 WHY GOLDEN VALUES AND NOT PASS/FAIL
 -----------------------------------
@@ -69,11 +69,11 @@ from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from tscg_paths import REPO_ROOT, ONTOLOGY_DIR, CLI_TOOLS_DIR, verify_layout  # noqa: E402
+from tscg_paths import REPO_ROOT, ONTOLOGY_DIR, TOOLCHAIN_DIR, verify_layout  # noqa: E402
 
 __version__ = "1.3.0"
 
-GOLDEN_FILE = CLI_TOOLS_DIR / "golden_values.json"
+GOLDEN_FILE = TOOLCHAIN_DIR / "golden_values.json"
 
 # ---------------------------------------------------------------------------
 # Reference values — measured on the real repository, 2026-07-13, after SC-1.
@@ -164,7 +164,7 @@ def _utf8_env() -> dict:
 
 def run_m1() -> dict | None:
     """Run check_M1 in dry-run and parse its output. Never let a crash pass as a pass."""
-    script = CLI_TOOLS_DIR / "check-M1" / "check_M1.py"
+    script = TOOLCHAIN_DIR / "check-M1" / "check_M1.py"
     if not script.exists():
         return {"_error": f"check_M1.py not found at {script}"}
 
@@ -208,7 +208,7 @@ def run_m1() -> dict | None:
 
 
 def run_m0() -> dict | None:
-    script = CLI_TOOLS_DIR / "check-M0" / "check_m0_instances.py"
+    script = TOOLCHAIN_DIR / "check-M0" / "check_m0_instances.py"
     if not script.exists():
         return {"_error": f"check_m0_instances.py not found at {script}"}
     proc = subprocess.run([sys.executable, str(script)],

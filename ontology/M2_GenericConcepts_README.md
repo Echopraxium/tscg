@@ -329,7 +329,7 @@ The subscript is chosen by the **segment's operator**, which fixes the grammar:
 (`Fm2`/`Fm1m2`) whose arguments are named concepts, not generators — subscripts do
 not apply there (see *Atoms vs Combos*).
 
-**Enforcement.** `ontology/cli-tools/check-M2/M2_MonoidalFormula_Schema_shacl.ttl`
+**Enforcement.** `ontology/toolchain/check-M2/M2_MonoidalFormula_Schema_shacl.ttl`
 (SHAPE M2-1) rejects a bare `S`/`I` in a monoidal formula; the `NOT-1` gauge in
 `tscg_metrics.py` counts them. Both read **0** at v16.19.0.
 

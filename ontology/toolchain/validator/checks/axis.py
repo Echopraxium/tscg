@@ -3,7 +3,7 @@ checks/axis.py — AXIS family: Facet-mechanism conformance (gates SC-3).
 
 Author : Echopraxium with the collaboration of Claude AI
 Version: 0.1.0
-Home   : ontology/cli-tools/validator/checks/axis.py
+Home   : ontology/toolchain/validator/checks/axis.py
 
 The measuring family for WS-0 / SC-3 (see SC-3 draft v2). It makes the graving of
 the M3 Facet mechanism + the Audience facet FALSIFIABLE: it is RED until M3 carries

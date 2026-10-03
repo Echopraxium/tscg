@@ -28,7 +28,7 @@ from pathlib import Path
 
 BASE = "https://raw.githubusercontent.com/Echopraxium/tscg/main"
 # Schema resolved relative to THIS script's location (works from any CWD, and
-# whether the script lives in ontology/cli-tools/ or elsewhere beside check-M0).
+# whether the script lives in ontology/toolchain/ or elsewhere beside check-M0).
 SCHEMA = Path(__file__).resolve().parent / "check-M0" / "M0_Instances_Schema_shacl.ttl"
 
 def camel(name: str) -> str:
