@@ -4,8 +4,6 @@
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-    "m3:eagle_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_EagleEye.jsonld#",
-    "m3:sphinx_eye": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_SphinxEye.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
@@ -24,7 +22,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-17",
       "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "1.11.0",
+      "owl:versionInfo": "1.12.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -52,6 +50,11 @@
       ],
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.12.0",
+          "dcterms:date": "2026-10-03",
+          "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
+        },
+        {
           "owl:versionInfo": "1.11.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 1 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -60,11 +63,6 @@
           "owl:versionInfo": "1.10.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1h (explicit declarations). rdf:value -> schema:value in the {rdfs:label, value} nodes of skos:example lists (5: ignition temperatures, flame colours): rdf:value is a reserved OWL 2 IRI that is not a built-in annotation property, so it cannot be declared and kept these nodes outside OWL 2 DL; schema:value ('the value of a property value node') is declared in M3_GrammarFoundation. schema.org accepted as an external vocabulary where it fills a DCMI/SKOS gap (Michel, 2026-09-30); prefix schema declared. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "1.9.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1g (Family A). Bare keys (dropped on JSON-LD expansion) replaced: alternative_names -> skos:altLabel, comment -> dcterms:description (consistent with lot 1b), note -> skos:note, definition -> skos:definition, label -> rdfs:label, title -> dcterms:title, id -> dcterms:identifier, rationale -> m3:rationale (declared in M3_GrammarFoundation, rdfs:subPropertyOf skos:note). In this file: note 6. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ]
     },

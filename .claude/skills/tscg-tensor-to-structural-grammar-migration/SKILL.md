@@ -204,19 +204,26 @@ Renames across ALL `.jsonld` files:
     ⊗ is a commutative monoidal product — NOT an algebraic tensor product."
   ```
 
-### 2.3 — M1 Files: @base Factorisation
+### 2.3 — M1 Files: @base and absolute prefixes
 
-All M1 `.jsonld` files must have `@base` present and factorised:
+All M1 `.jsonld` files must have `@base` present, and every namespace prefix
+must map to an **absolute** IRI:
 
 ```json
 "@context": {
   "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
-  "m1core": "M1_CoreConcepts.jsonld#",
-  "m2": "M2_GenericConcepts.jsonld#"
+  "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
+  "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#"
 }
 ```
 
-Namespace prefixes must NOT repeat the base URL. Use relative paths.
+`@base` resolves relative `@id` **values** (node IRIs, `owl:imports` targets). It
+does **not** resolve a term mapping: JSON-LD never applies `@base` to a prefix
+definition. A relative prefix (`"m1": "M1_CoreConcepts.jsonld#"`) leaves every
+`m1:` IRI relative under rdflib and makes pyld (strict JSON-LD 1.1) reject the
+file. Corrected 2026-10-03 (WS-2 lot CTX-5): this section previously prescribed
+relative prefixes — the cause of the relative/dangling IRIs removed in that lot.
+Gauge: `tscg_metrics.py` CTX-4 (relative term IRI), target 0.
 
 ---
 
@@ -257,7 +264,7 @@ Expected: **0 violations**.
 □  M3_SphinxEye.jsonld          — grammar_properties Gm, hilbert_space absent
 □  M3_GenesisGrammar.jsonld     — grammar_foundation, SVD/Hilbert removed
 □  M2_GenericConcepts.jsonld    — hasStructuralFormula, no Hilbert text
-□  All M1 files                 — @base present and factorised
+□  All M1 files                 — @base present, prefixes absolute (CTX-4 = 0)
 □  verify_migration.py          — 0 violations
 □  JSON validation              — all files parse without error
 □  Version numbers              — all modified files bumped
@@ -276,7 +283,7 @@ Expected: **0 violations**.
 5. **Encoding**: always `encoding='utf-8'` in Python. Use `-X utf8` on Windows.
 6. **Changelog max 3 entries** — remove oldest before adding new.
 7. **str_replace** for surgical edits — never rewrite entire files.
-8. **@base factorised** — M1 namespace prefixes must not repeat the base URL.
+8. **Prefixes absolute** — every @context prefix maps to an absolute IRI; `@base` never resolves a term mapping.
 
 ---
 

@@ -437,12 +437,12 @@ EnergyGenerator (abstract, subclass of m2:Processor)
 ```json
 {
   "@graph": [
-    {"@id": "m1core:CriticalityRegime", ...},
-    {"@id": "m1core:SelfSustainingReaction", ...},
-    {"@id": "m1core:ModeratorMechanism", ...},
-    {"@id": "m1core:DualCircuitArchitecture", ...},
-    {"@id": "m1core:PassiveSafety", ...},
-    {"@id": "m1core:CascadeAmplification", ...}
+    {"@id": "m1:CriticalityRegime", ...},
+    {"@id": "m1:SelfSustainingReaction", ...},
+    {"@id": "m1:ModeratorMechanism", ...},
+    {"@id": "m1:DualCircuitArchitecture", ...},
+    {"@id": "m1:PassiveSafety", ...},
+    {"@id": "m1:CascadeAmplification", ...}
   ]
 }
 ```

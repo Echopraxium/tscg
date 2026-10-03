@@ -3,8 +3,6 @@
     "@base": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
-    "m3:eagle_eye": "M3_EagleEye.jsonld#",
-    "m3:sphinx_eye": "M3_SphinxEye.jsonld#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -24,7 +22,7 @@
       "dcterms:description": "Extension of TSCG framework with TRIZ-specific concepts: 40 inventive principles as instances of TrizPrinciple class, plus systematic innovation components. Serves as M1 foundation for innovation-focused SystemicFramework instances.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-04-20",
-      "owl:versionInfo": "1.5.0",
+      "owl:versionInfo": "1.6.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -42,6 +40,11 @@
       ],
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.6.0",
+          "dcterms:date": "2026-10-03",
+          "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
+        },
+        {
           "owl:versionInfo": "1.5.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 2 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -50,11 +53,6 @@
           "owl:versionInfo": "1.4.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m2:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m2:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "1.3.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1c (Family A). Changelog entry keys, previously bare and dropped on JSON-LD expansion, replaced by standards: version -> owl:versionInfo, date -> dcterms:date, changes -> adms:versionNotes (ADMS: a description of changes between this version and the previous one). Prefix adms declared in @context: ADMS accepted as an external vocabulary (Michel, 2026-09-30). Changelog entries become graph-visible. Legacy changelog forms (maps keyed by version, metadata blocks) left for a separate lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ],
       "dcterms:modified": "2026-09-30"

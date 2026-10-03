@@ -3,9 +3,19 @@
 check_M1.py — TSCG M1 Layer Validation & Correction Script
 ===========================================================
 Author  : Echopraxium with the collaboration of Claude AI
-Version : 1.4.0
-Date    : 2026-05-26
-Location: cli_tools/check-M1/check_M1.py
+Version : 1.5.0
+Date    : 2026-10-03
+Location: ontology/cli-tools/check-M1/check_M1.py
+
+Changelog
+---------
+  1.5.0 (2026-10-03) — WS-2 lot CTX-5. CTX001 no longer REQUIRES the @context terms
+      "m3:eagle_eye" / "m3:sphinx_eye" in extension files. Those terms are names in the
+      form of a compact IRI that do not map to their own expansion: rdflib ignores them
+      (0 IRIs produced in the whole corpus), pyld (strict JSON-LD 1.1) rejects the file,
+      and if honoured they would point to the wrong IRI (M3 defines its terms under
+      M3_GenesisGrammar.jsonld#eagle_eye:X). The check was enforcing the defect: removing
+      the 30 terms made CTX001 jump 3 -> 31. "m3" stays required.
 
 Usage
 -----
@@ -115,7 +125,7 @@ M1_FILES = {
     "M1_SystemicModeling.jsonld":  "M1_extensions/systemic_modeling/M1_SystemicModeling.jsonld",
 }
 
-# Core files that don't need m3:eagle_eye / m3:sphinx_eye in @context
+# Core files that don't need the m3 prefix in @context
 M1_CORE_FILES = {"M1_CoreConcepts.jsonld", "M1_Domains.jsonld"}
 
 # ── Issue class ────────────────────────────────────────────────────────────────
@@ -221,8 +231,10 @@ class M1Checker:
 
         # Keys required in ALL M1 files
         base_keys = ["@base", "m1", "m2", "rdf", "rdfs", "owl", "xsd", "dcterms", "skos"]
-        # Keys required only in extension files (which reference M3 dimensions)
-        ext_keys  = ["m3", "m3:eagle_eye", "m3:sphinx_eye"]
+        # Keys required only in extension files (which reference M3 dimensions).
+        # NOT "m3:eagle_eye" / "m3:sphinx_eye": invalid compact-IRI term names (CTX-5),
+        # removed from the corpus 2026-10-03 — see changelog 1.5.0.
+        ext_keys  = ["m3"]
 
         for key in base_keys:
             if key not in ctx:

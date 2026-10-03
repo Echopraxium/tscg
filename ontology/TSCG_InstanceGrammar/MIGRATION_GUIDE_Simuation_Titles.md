@@ -7,9 +7,9 @@
 
 ## Vue d'ensemble
 
-Cette migration ajoute la propriété `m1core:simulationTitle` aux instances TSCG pour séparer :
+Cette migration ajoute la propriété `m1:simulationTitle` aux instances TSCG pour séparer :
 - Le **titre formel** (`rdfs:label`) — nom complet de l'ontologie avec préfixes
-- Le **titre d'affichage** (`m1core:simulationTitle`) — nom court pour la galerie
+- Le **titre d'affichage** (`m1:simulationTitle`) — nom court pour la galerie
 
 ### Exemple
 ```json
@@ -17,7 +17,7 @@ Cette migration ajoute la propriété `m1core:simulationTitle` aux instances TSC
   "@id": "",
   "@type": "owl:Ontology",
   "rdfs:label": "TSCG M0 Trophic Pyramid Poclet",
-  "m1core:simulationTitle": "Trophic Pyramid"
+  "m1:simulationTitle": "Trophic Pyramid"
 }
 ```
 
@@ -30,7 +30,7 @@ Cette migration ajoute la propriété `m1core:simulationTitle` aux instances TSC
 ✅ **Nouvelle propriété OWL ajoutée** :
 ```json
 {
-  "@id": "m1core:simulationTitle",
+  "@id": "m1:simulationTitle",
   "@type": "owl:DatatypeProperty",
   "rdfs:label": "Simulation Title",
   "rdfs:domain": "owl:Ontology",
@@ -42,16 +42,16 @@ Cette migration ajoute la propriété `m1core:simulationTitle` aux instances TSC
 
 ✅ **Fonction `parseJsonld()` mise à jour** :
 ```javascript
-// Extract label from the main node (prefer m1core:simulationTitle, fallback to rdfs:label)
+// Extract label from the main node (prefer m1:simulationTitle, fallback to rdfs:label)
 const label = (
-  mainNode['m1core:simulationTitle'] || 
+  mainNode['m1:simulationTitle'] || 
   (mainNode['rdfs:label'] || '').replace(/\s*\([^)]+\)\s*$/, '').trim()
 ) || '';
 ```
 
 ### 3. `migrate_simulation_titles.py` (nouveau)
 
-✅ **Script de migration interactif** pour ajouter `m1core:simulationTitle` aux instances existantes
+✅ **Script de migration interactif** pour ajouter `m1:simulationTitle` aux instances existantes
 
 ---
 
@@ -85,7 +85,7 @@ Pour chaque instance avec simulation :
 node generate_index.js
 ```
 
-Le script utilisera maintenant `m1core:simulationTitle` si présent, sinon il fallback sur `rdfs:label`.
+Le script utilisera maintenant `m1:simulationTitle` si présent, sinon il fallback sur `rdfs:label`.
 
 ---
 
@@ -128,7 +128,7 @@ Après migration, vérifie que :
 - **Encodage** : Le script Python utilise `ensure_ascii=False` pour préserver UTF-8
 - **Backup** : Considère faire un `git commit` avant la migration
 - **Rollback** : Si problème, `git checkout -- instances/` annule les changements
-- **Compatibilité** : Si `m1core:simulationTitle` est absent, `generate_index.js` utilise `rdfs:label` (rétro-compatible)
+- **Compatibilité** : Si `m1:simulationTitle` est absent, `generate_index.js` utilise `rdfs:label` (rétro-compatible)
 
 ---
 
@@ -138,11 +138,11 @@ Après migration, vérifie que :
 M3_GenesisSpace
     ↓ (defines ontology types)
 M1_CoreConcepts
-    ↓ (defines m1core:simulationTitle property)
+    ↓ (defines m1:simulationTitle property)
 M0_*.jsonld
-    ↓ (uses m1core:simulationTitle for display)
+    ↓ (uses m1:simulationTitle for display)
 generate_index.js
-    → reads m1core:simulationTitle
+    → reads m1:simulationTitle
     → generates index.html
 ```
 

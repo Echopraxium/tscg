@@ -1323,7 +1323,7 @@ M1_EnergyGenerators.jsonld
 │   │   ├── Thermal, Fast
 │   ├── FuelType (enum)
 │   │   ├── Natural_U, Enriched_U235, Plutonium239, Thorium232, MOX
-│   ├── CriticalityControl (m1core:CriticalityRegime)
+│   ├── CriticalityControl (m1:CriticalityRegime)
 │   ├── FissionProcess (m1energy:NuclearProcess)
 │   └── NeutronFlux (m1energy:PhysicalFlow)
 │

@@ -4,8 +4,6 @@
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
-    "m3:eagle_eye": "M3_EagleEye.jsonld#",
-    "m3:sphinx_eye": "M3_SphinxEye.jsonld#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "owl": "http://www.w3.org/2002/07/owl#",
@@ -24,11 +22,16 @@
       "dcterms:description": "Extension of the TSCG framework with physics-specific concepts. Initial focus: thermodynamics and phase transition theory (6 concepts). Each concept is grounded in M2 metaconcepts and applicable across Physics subdomains (thermodynamics, statistical mechanics, materials science, physical chemistry).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-26",
-      "owl:versionInfo": "1.6.0",
+      "owl:versionInfo": "1.7.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.7.0",
+          "dcterms:date": "2026-10-03",
+          "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
+        },
         {
           "owl:versionInfo": "1.6.0",
           "dcterms:date": "2026-09-30",
@@ -38,11 +41,6 @@
           "owl:versionInfo": "1.5.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 4 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "1.4.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m2:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m2:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ],
       "owl:imports": [

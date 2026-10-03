@@ -4,10 +4,23 @@
 tscg_metrics.py — TSCG corpus metric board (deterministic gauges).
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 1.3.0
+Version: 1.4.0
 Project: TSCG (Transdisciplinary System Construction Game)
 
 CHANGELOG
+    1.4.0 (2026-10-03) — WS-5 / WS-2 lot CTX-5. Two gauges redefined (keys
+        kept for baseline compatibility):
+        CTX4_relative_mN_prefix_files — now counts ANY @context term whose
+            IRI mapping (string or {"@id"}) has no scheme, not only m0..m3.
+            JSON-LD never resolves a term mapping against @base: rdflib
+            leaves the IRI relative and pyld rejects the file. Found by
+            'm1core': 'M1_CoreConcepts.jsonld#' (M1_Economics), invisible to
+            the old m0..m3-only test. Target 0.
+        CTX5_term_name_with_colon — a compact-IRI term name now counts only
+            when it does NOT map to its own expansion (JSON-LD 1.1 §4.1.2).
+            Pure type coercions ("rdfs:range": {"@type": "@id"}) and terms
+            whose @id equals prefix-expansion + local name are legal and no
+            longer counted (5 such terms on 2026-10-03). Target 0.
     1.3.0 (2026-09-30) — WS-1 lot 1i. New gauge STR_imports_literal: number
         of owl:imports values written as plain strings. A string is a
         JSON-LD literal, so no reasoner follows the import; the target
@@ -71,7 +84,7 @@ import os
 import re
 import sys
 
-VERSION = "1.3.0"
+VERSION = "1.4.0"
 
 # --------------------------------------------------------------------------
 # Canonical file selection
@@ -131,6 +144,7 @@ D8_TRIAD = (
 
 MONOIDAL_OPERATORS = "\u00d7+|\u2297"          # × + | ⊗
 TENSOR_OP = "\u2297"                            # ⊗ (retired 2026-07-06)
+ABSOLUTE_IRI = re.compile(r"^[A-Za-z][A-Za-z0-9+.-]*:")   # has a scheme
 BARE_SI = re.compile(r"(?<![A-Za-z_])[SI](?![A-Za-z0-9_])")
 
 
@@ -225,11 +239,28 @@ def measure(root):
 
         # --- CTX-4 / CTX-5 (on the @context itself) -----------------------
         for term, value in ctx.items():
-            if term in ("m0", "m1", "m2", "m3"):
-                if isinstance(value, str) and not value.startswith("http"):
-                    M["CTX4_relative_mN_prefix_files"] += 1
-            if ":" in term and not term.startswith("@"):
-                M["CTX5_term_name_with_colon"] += 1
+            if term.startswith("@"):
+                continue
+            iri = value if isinstance(value, str) else (
+                value.get("@id") if isinstance(value, dict) else None)
+            # CTX-4: any term whose IRI mapping is relative (no scheme).
+            # JSON-LD 1.1 never resolves a term mapping against @base: rdflib
+            # leaves it relative, pyld rejects the file.
+            if isinstance(iri, str) and not iri.startswith("@") \
+                    and not ABSOLUTE_IRI.match(iri):
+                M["CTX4_relative_mN_prefix_files"] += 1
+            # CTX-5: a term in the form of a compact IRI is legal only when it
+            # maps to its own expansion (JSON-LD 1.1 §4.1.2): no @id at all
+            # (a type coercion such as "rdfs:range": {"@type": "@id"}), or an
+            # @id equal to prefix-expansion + local name.
+            if ":" in term:
+                prefix, local = term.split(":", 1)
+                expansion = ctx.get(prefix)
+                expansion = expansion if isinstance(expansion, str) else (
+                    expansion.get("@id") if isinstance(expansion, dict) else None)
+                own = (expansion + local) if isinstance(expansion, str) else None
+                if iri is not None and iri != own:
+                    M["CTX5_term_name_with_colon"] += 1
 
         # --- FRB (skip changelog prose: a mention in history is not a defect)
         for line in raw.splitlines():
@@ -493,8 +524,8 @@ GAUGES = [
     ("VOC", "  of which false friends",       "VOC_bare_false_friends",         "-"),
     ("VOC", "prefixed but undefined (B1)",    "VOC_prefixed_but_undefined",     "0"),
     ("CTX", "undeclared prefix (CTX-1)",      "CTX1_undeclared_prefix",         "0"),
-    ("CTX", "relative mN prefix (CTX-4)",     "CTX4_relative_mN_prefix_files",  "0"),
-    ("CTX", "term name with ':' (CTX-5)",     "CTX5_term_name_with_colon",      "0"),
+    ("CTX", "relative term IRI (CTX-4)",      "CTX4_relative_mN_prefix_files",  "0"),
+    ("CTX", "invalid ':' term (CTX-5)",       "CTX5_term_name_with_colon",      "0"),
     ("FRB", "tensor operator (live)",         "FRB1_tensor_operator",           "0"),
     ("FRB", "legacy arrow",                   "FRB2_legacy_arrow",              "0"),
     ("DUP", "retired D8 triad",               "DUP1_D8_triad",                  "0"),

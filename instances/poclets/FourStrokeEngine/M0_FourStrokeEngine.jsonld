@@ -10,7 +10,6 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "m3": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#",
     "m2": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#",
-    "m1core": "M1_CoreConcepts.jsonld#",
     "m0": "https://raw.githubusercontent.com/Echopraxium/tscg/main/instances/poclets/FourStrokeEngine/M0_FourStrokeEngine.jsonld#",
     "m1": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#",
     "A_score": {
@@ -65,7 +64,7 @@
       "rdfs:comment": "Minimal yet complete system representation of the thermodynamic cycle powering internal combustion engines. Demonstrates all 5 ASFID dimensions through 4 sequential strokes and mobilizes 20 M2 GenericConcepts (v15.10.1). Canonical example for cyclic processes and energy transformation.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "owl:versionInfo": "1.3.0",
+      "owl:versionInfo": "1.4.0",
       "m1:domain": "Thermodynamics",
       "rdf:type": {
         "@id": "m3:Poclet"
@@ -260,7 +259,7 @@
             "m0:function": "Converts reciprocating motion to continuous rotation",
             "m0:output": "Rotational kinetic energy (torque × RPM)",
             "m0:revolutions": "2 full rotations per 4-stroke cycle",
-            "m1coreRef": "m1core:Oscillator (crankshaft as cyclic trajectory component)"
+            "m1coreRef": "m1:Oscillator (crankshaft as cyclic trajectory component)"
           },
           {
             "@id": "m0:SparkPlug",
@@ -639,8 +638,8 @@
         "epistemicGap": "δ = 0.132 (SpectralClass: OnCriticalLine — excellent Territory-Map alignment)",
         "transdisciplinaryPattern": "4-phase cycle appears across Cardiology, Economics, Biochemistry, Climatology",
         "m1coreReuse": [
-          "m1core:Oscillator — crankshaft as cyclic trajectory component",
-          "m1core:Processor — engine as input-output transformer (fuel → work)"
+          "m1:Oscillator — crankshaft as cyclic trajectory component",
+          "m1:Processor — engine as input-output transformer (fuel → work)"
         ]
       },
       "dcterms:references": [
@@ -649,9 +648,14 @@
         "Taylor, C. F. (1985). The Internal Combustion Engine in Theory and Practice. MIT Press",
         "SAE International. Engine Technology Standards (J1349, J1995)"
       ],
-      "m1core:simulationTitle": "Four-Stroke Engine",
+      "m1:simulationTitle": "Four-Stroke Engine",
       "m0:focalApplicable": true,
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.4.0",
+          "dcterms:date": "2026-10-03",
+          "adms:versionNotes": "Retired alias m1core replaced by m1 (Michel, 2026-10-03: a vestige, m1 everywhere): 4 occurrence(s) of the m1core: prefix rewritten as m1:, and the relative @context entry \"m1core\": \"M1_CoreConcepts.jsonld#\" removed (m1 is already declared with its absolute IRI). Effect on the graph: properties that were relative IRIs (a term mapping is never resolved against @base) now expand to the absolute M1_CoreConcepts IRI; no triple added or lost. Tooling already flagged m1core (check_m0 C07, M0 SHACL namespace constraint)."
+        },
         {
           "owl:versionInfo": "1.3.0",
           "dcterms:date": "2026-09-30",

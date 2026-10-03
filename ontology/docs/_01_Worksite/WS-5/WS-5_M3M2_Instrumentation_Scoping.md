@@ -2,7 +2,7 @@
 
 **Author**: Echopraxium with the collaboration of Claude AI
 **Date**: 2026-10-01
-**Status**: SCOPING — no file edited. Decisions Q1–Q5 (§6) are Michel's.
+**Status**: DECIDED 2026-10-03 — Q1 (a) engine, Q2 order, Q3 INSTRUMENTED, Q4 structural v1; Q5 done. CTX-5 lot done (§4).
 **Measured on**: HEAD `ac74136` (after WS-1 lots 1h/1i/1j). Every count below is
 session state: re-measure before use (`head-over-memory`).
 
@@ -81,6 +81,19 @@ carries 1368 bare-key occurrences that never reach the graph, so a graph grammar
 validate only part of the file and pass. v1 is a **structural** grammar only.
 
 ## 4. Prerequisite — CTX-5 (canonical part), small lot
+
+> **DONE 2026-10-03** (re-measured on HEAD `9033baf`, baselines §3 unchanged). 30 terms removed
+> from 15 M1 files, graphs isomorphic; pyld expands all 27 canonical files (D7 = 0). A second
+> pyld blocker was found in M1_Economics: the unused relative alias `"m1core"`; on Michel's
+> decision `m1core` was replaced by `m1` everywhere live (10 M0 instances, producers, guides).
+> check_M1 1.5.0 stopped requiring the two terms (it enforced the defect; golden M1 CTX001
+> 3 → 1). tscg_metrics 1.4.0: CTX-4 = any relative term IRI, CTX-5 = invalid colon terms only
+> (gauge refinement below applied). Decisions Q1 (a), Q2, Q3 INSTRUMENTED, Q4: approved.
+>
+> *Decision (Michel, 2026-10-03): the M3 Eye terms will be renamed under their own document
+> namespace, `m3.eagle_eye:` → `M3_EagleEye.jsonld#` and `m3.sphinx_eye:` → `M3_SphinxEye.jsonld#`
+> (option 2, IRIs change). Separate lot, linked to lot 1k (ontology IRIs = document URLs).
+> Measured 2026-10-03: 308 lines in 11 files use `m3:eagle_eye:` / `m3:sphinx_eye:` (M2 237, M3 37).*
 
 `@context` terms containing `:` — in the canonical corpus: `m3:eagle_eye` and
 `m3:sphinx_eye` in 15 M1 files (M1_CoreConcepts + 14 extensions), 30 terms. The CTX-5

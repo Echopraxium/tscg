@@ -227,7 +227,7 @@ The **Four-Stroke Engine** is a validated TSCG poclet demonstrating:
 - ✅ **Transdisciplinary**: 4-phase cycle pattern appears across domains
 - ✅ **Pedagogical**: Universally taught in engineering education
 - ✅ **Framework Validation**: Confirms TSCG applicability to thermodynamic systems
-- ✅ **M1 CoreConcepts reuse**: `m1core:Oscillator` (crankshaft), `m1core:Processor` (engine as transformer)
+- ✅ **M1 CoreConcepts reuse**: `m1:Oscillator` (crankshaft), `m1:Processor` (engine as transformer)
 
 **POCLET STATUS**: ✅ VALIDATED
 

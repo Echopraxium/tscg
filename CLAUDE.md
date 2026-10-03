@@ -493,7 +493,7 @@ Creates `db_tscg_rag/` ChromaDB and compresses to `db_tscg_rag.tar.gz`.
 node cli_tools/regenerate_simulation_gallery/generate_index.js
 ```
 
-Generates `index.html` with interactive gallery of all poclet simulations. Metadata read from `m1core:simulationTitle` (preferred) or `rdfs:label`. Scores searched across all `@graph` nodes. Domain tags from `m1:domain` array in `owl:Ontology` node.
+Generates `index.html` with interactive gallery of all poclet simulations. Metadata read from `m1:simulationTitle` (preferred) or `rdfs:label`. Scores searched across all `@graph` nodes. Domain tags from `m1:domain` array in `owl:Ontology` node.
 
 ## Critical Patterns
 
