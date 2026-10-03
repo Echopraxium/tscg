@@ -1,0 +1,154 @@
+// TSCG — remaining work after 2026-10-03 (HEAD 636a46c) — v2
+// Rows = worksite priority from worksite.yaml (top = first). WS-0 (priority "mixed") in its own column.
+// Edge styles: solid = dependency written in a source; dashed purple = proposed by Claude (to confirm);
+// dotted grey = overlap / feeds.
+// Sources: WS-5 scoping note, HandOver WS-1 -> WS-5 (2026-10-01), worksite.yaml files,
+// decisions of 2026-10-03.
+digraph TSCG_Remaining_v2 {
+  graph [rankdir=TB, fontname="DejaVu Sans", fontsize=24, labelloc=t, labeljust=l,
+         label="TSCG — remaining work, by worksite priority (top = first) — HEAD 636a46c, 2026-10-03\n ",
+         nodesep=0.30, ranksep=0.55, pad=0.4, bgcolor="white", newrank=true, compound=true];
+  node  [shape=box, style="rounded,filled", fontname="DejaVu Sans", fontsize=12,
+         penwidth=1.4, margin="0.16,0.08"];
+  edge  [fontname="DejaVu Sans", fontsize=10, color="#424242", arrowsize=0.8];
+
+  // ================= Row 0 — done today =================
+  subgraph cluster_done {
+    label="Done 2026-10-03"; style="rounded,dashed"; color="#2e7d32"; fontcolor="#2e7d32"; fontsize=14;
+    done_ctx5  [label="CTX-5 + m1core -> m1 (4586b26)\npyld expands 27/27 canonical files", fillcolor="#c8e6c9", color="#2e7d32"];
+    done_notes [label="Golden notes without counts (da47824)", fillcolor="#c8e6c9", color="#2e7d32"];
+    done_tools [label="FileTree fix (bef52f0)\nCompendium: worksites, no dist/, build stamp (636a46c)", fillcolor="#c8e6c9", color="#2e7d32"];
+    done_dec   [label="Decisions Q1-Q4\n(engine, order, INSTRUMENTED, structural v1)", fillcolor="#c8e6c9", color="#2e7d32"];
+  }
+
+  // ================= Row 1 — priority 1: WS-5 =================
+  subgraph cluster_p1 {
+    label="Priority 1 — WS-5 Ontology Validator engine: instrument M3/M2"; style="rounded"; color="#c62828"; fontcolor="#c62828"; fontsize=14;
+    e1 [label="(1) Generic SHACL runner\n\"job one\" (any shape file)", fillcolor="#ffcdd2", color="#c62828"];
+    e2 [label="(2) Document-plane checks D1-D7\nfamilies VOC / STR", fillcolor="#ffcdd2", color="#c62828"];
+    e3 [label="(3) Graph-plane checks G1-G6\n+ SC-2 shapes folded in (G7)", fillcolor="#ffcdd2", color="#c62828"];
+    e4 [label="(4) M3/M2 runner in run_all_layers\nfreeze golden (reviewed)\n=> gate covers the 4 layers", fillcolor="#ef9a9a", color="#b71c1c", penwidth=2.6];
+    canon [label="lot CTX-CANON\nINFO -> ERROR", fillcolor="#ffcdd2", color="#c62828"];
+    frb   [label="lot FRB\n(tensor / ket traces)\nalso feeds WS-9", fillcolor="#ffcdd2", color="#c62828"];
+    dup   [label="lot DUP\n(retired D8 triad)", fillcolor="#ffcdd2", color="#c62828"];
+    nottyp[label="lots NOT, TYP", fillcolor="#ffcdd2", color="#c62828"];
+  }
+
+  // ================= Row 2 — priority 5: WS-1 =================
+  subgraph cluster_p5 {
+    label="Priority 5 — WS-1 Vocabulary consolidation"; style="rounded"; color="#ef6c00"; fontcolor="#ef6c00"; fontsize=14;
+    b1   [label="(5) B1: declare undefined m3:* keys\n(measure following owl:imports)", fillcolor="#ffe0b2", color="#ef6c00"];
+    b2d  [label="(6) B2 DECISION\ndata vs documentation,\neagleView/sphinxView, m3:role vs role", fillcolor="#fff3e0", color="#ef6c00", penwidth=2.4, style="rounded,filled,bold"];
+    b2l  [label="(7) B2 lots\n(frequent keys, then long tail)", fillcolor="#ffe0b2", color="#ef6c00"];
+    vest [label="Vestiges lot\n(metadata blocks, map changelogs)\nbrings D5 (step 2) to 0", fillcolor="#ffe0b2", color="#ef6c00"];
+    vocab[label="2 files @vocab: owl#\n(142 fake owl:<key>)", fillcolor="#ffe0b2", color="#ef6c00"];
+    famA [label="Family A conditional lines\n(unit -> schema:unitText approved...)", fillcolor="#ffe0b2", color="#ef6c00"];
+    m0voc[label="M0 BARE-KEY GAUGE (6604)\nDECISION: WS-1 / WS-9 / WS-10 ?", fillcolor="#fff3e0", color="#ef6c00", penwidth=2.4, style="rounded,filled,bold"];
+    rename [label="Rename M3 Eye terms\nm3.eagle_eye / m3.sphinx_eye\n(decided 2026-10-03; 308 lines)", fillcolor="#ffe0b2", color="#ef6c00", penwidth=2.0];
+    lot1k  [label="Lot 1k (debt)\nontology IRIs = document URLs", fillcolor="#ffe0b2", color="#ef6c00"];
+  }
+
+  // ================= Row 3 — priorities 6-7 =================
+  subgraph cluster_p67 {
+    label="Priorities 6-7 — Michel's semantic decisions (no deadline, not blocking)"; style="rounded"; color="#9e7c00"; fontcolor="#8d6e00"; fontsize=14;
+    ws3 [label="WS-3 Gs monoid review (6)\nregister opened", fillcolor="#fff9c4", color="#b59a00"];
+    ws4 [label="WS-4 GrammarSignature (7)\n4 open decisions, none blocking", fillcolor="#fff9c4", color="#b59a00"];
+  }
+
+  // ================= Row 4 — priorities 10-11 =================
+  subgraph cluster_p1011 {
+    label="Priorities 10-11"; style="rounded"; color="#1565c0"; fontcolor="#1565c0"; fontsize=14;
+    ws6  [label="WS-6 Changelog normalisation (10)", fillcolor="#bbdefb", color="#1565c0"];
+    ws10 [label="WS-10 M0 namespace harmonisation (11)\nNS-1 m0 -> M0_Common (25 -> 0), NS-2 dot form,\nNS-3 imports M0_Common, NS-4 scores", fillcolor="#bbdefb", color="#1565c0"];
+    ws7  [label="WS-7 M3 F-axiom cleanup (11)\ndeferred", fillcolor="#bbdefb", color="#1565c0"];
+    ws8  [label="WS-8 Until Further Notice (11)\ncontinuous", fillcolor="#e3f2fd", color="#1565c0"];
+  }
+
+  // ================= Row 5 — priority 12 =================
+  subgraph cluster_p12 {
+    label="Priority 12"; style="rounded"; color="#6a1b9a"; fontcolor="#6a1b9a"; fontsize=14;
+    ws9 [label="WS-9 Archaeological poclets\nFireTriangle, ColorSynthesis, ExposureTriangle,\nTransistor, generation template", fillcolor="#e1bee7", color="#6a1b9a"];
+  }
+
+  // ================= Row 6 — priority 13 =================
+  subgraph cluster_p13 {
+    label="Priority 13"; style="rounded"; color="#4a148c"; fontcolor="#4a148c"; fontsize=14;
+    ws11 [label="WS-11 Mn grammar formalisation (SC-11b)\nGR-M2 complete, GR-M3-a structural,\nGR-M3-b axioms (defer while M3 evolves)", fillcolor="#d1c4e9", color="#4a148c"];
+  }
+
+  // ================= Row 7 — priority 14 =================
+  subgraph cluster_p14 {
+    label="Priority 14"; style="rounded"; color="#37474f"; fontcolor="#37474f"; fontsize=14;
+    ws12 [label="WS-12 Audience facet population (14)\nm3:Audience on every M0 instance (1 -> 55)\ntype-default rule + template + advisory AUD gauge\nAUD check family lives in the WS-5 engine", fillcolor="#cfd8dc", color="#37474f"];
+  }
+
+  // ================= WS-0 column — priority "mixed" =================
+  subgraph cluster_ws0 {
+    label="WS-0 Structural cleanup (priority: mixed)"; style="rounded"; color="#00695c"; fontcolor="#00695c"; fontsize=14;
+    sc6  [label="SC-6 M1 conformance (named args)\nbulk of the 151 M1 gate errors\nheavy, semantic", fillcolor="#b2dfdb", color="#00695c", penwidth=2.0];
+    sc9  [label="SC-9 tensor purge\n(~13 canonical occ., bulk in M0)", fillcolor="#b2dfdb", color="#00695c"];
+    sc5  [label="SC-5 domain fusion Phase 0\nHIGH risk", fillcolor="#b2dfdb", color="#00695c"];
+    sc10 [label="SC-10 M3 grammar\n(prerequisites met)\noverlaps WS-5 step (3)", fillcolor="#b2dfdb", color="#00695c"];
+    sc11a[label="SC-11a M2 grammar, doc plane\n(ready)\noverlaps WS-5 step (2)", fillcolor="#b2dfdb", color="#00695c"];
+    sc348[label="SC-3 design-decided, SC-4 scoped,\nSC-8 FeedbackLoop, SC-0/SC-7 staged", fillcolor="#e0f2f1", color="#00695c"];
+  }
+
+  // ================= Parked findings (side) =================
+  subgraph cluster_parked {
+    label="Parked findings (no lot yet)"; style="rounded,dashed"; color="#757575"; fontcolor="#616161"; fontsize=14;
+    p1 [label="M1_Domains lacks m2\n(the 1 M1 warning left)\n-> SC-6", fillcolor="#eeeeee", color="#9e9e9e", style="rounded,filled,dashed"];
+    p2 [label="196 rdfs:subClassOf literals\n(M1 SHACL debt)\n-> SC-6", fillcolor="#eeeeee", color="#9e9e9e", style="rounded,filled,dashed"];
+    p3 [label="Dangling m1:Accretion, m1:Nucleation,\nTrophicPyramid combo props\n-> B1", fillcolor="#eeeeee", color="#9e9e9e", style="rounded,filled,dashed"];
+    p4 [label="\"m3:eagle_eye:Flow\" literals in M1\n(term not defined by M3)\n-> WS-9", fillcolor="#eeeeee", color="#9e9e9e", style="rounded,filled,dashed"];
+    p5 [label="Stale docs: CLAUDE.md, simulation-skill\ndead paths", fillcolor="#eeeeee", color="#9e9e9e", style="rounded,filled,dashed"];
+    p6 [label="C12 scans changelog prose\n(known over-reach) -> check_m0", fillcolor="#eeeeee", color="#9e9e9e", style="rounded,filled,dashed"];
+    p7 [label="WS-6 note says canonical changelog =\nnested metadata block (stale since 1c/1d)\n-> WS-6", fillcolor="#eeeeee", color="#9e9e9e", style="rounded,filled,dashed"];
+  }
+
+  // ---------- vertical order of the rows (invisible) ----------
+  done_dec -> e1 [style=invis];
+  e4 -> b1 [style=invis];
+  b2l -> ws3 [style=invis]; ws3 -> ws6 [style=invis]; ws6 -> ws9 [style=invis]; ws9 -> ws11 [style=invis]; ws11 -> ws12 [style=invis];
+  ws4 -> ws10 [style=invis]; ws10 -> ws9 [style=invis];
+  sc6 -> sc9 [style=invis]; sc9 -> sc5 [style=invis]; sc5 -> sc10 [style=invis]; sc10 -> sc11a [style=invis]; sc11a -> sc348 [style=invis];
+  p1 -> p2 [style=invis]; p2 -> p3 [style=invis]; p3 -> p4 [style=invis]; p4 -> p5 [style=invis]; p5 -> p6 [style=invis]; p6 -> p7 [style=invis];
+
+  // ---------- dependencies WRITTEN in a source (solid) ----------
+  done_ctx5 -> e2   [label="unblocks D7\n(scoping §4)"];
+  done_dec  -> e1   [label="Q1 (a): engine"];
+  e1 -> e3          [label="job one\n(worksite map)"];
+  e2 -> e4          [label="doc plane first\n(HandOver)"];
+  e3 -> e4;
+  e4 -> b1          [label="checks lock\nevery B1/B2 lot\n(HandOver)"];
+  b1 -> b2d         [label="planned order"];
+  b2d -> b2l;
+  rename -> lot1k   [dir=both, label="linked\n(decided today)"];
+  canon -> ws10     [label="prerequisite\n(WS-5 yaml)"];
+  ws10 -> ws9       [label="after WS-10\n(WS-9 yaml)"];
+  b2l -> ws11       [label="SC-11b blocked\nby WS-1"];
+  frb -> sc9        [label="makes SC-9\nmeasurable"];
+  dup -> sc5        [label="makes SC-5\nmeasurable"];
+  ws3 -> ws11       [label="GR-M3-b risk:\nM3 still evolving"];
+  ws7 -> ws11;
+  sc9 -> ws11;
+  sc10 -> ws11;
+  m0voc -> ws10     [label="one of the\noptions"];
+  m0voc -> ws9;
+  ws11 -> ws12      [label="after WS-11\n(WS-12 yaml)"];
+
+  // ---------- dependencies PROPOSED by Claude (dashed purple) ----------
+  edge [style=dashed, color="#7b1fa2", fontcolor="#7b1fa2", penwidth=1.6];
+  e4 -> rename      [label="proposed: gate\nlocks M3/M2 first"];
+  e4 -> vest        [label="proposed"];
+  b2d -> vocab      [label="proposed"];
+  e4 -> sc6         [label="proposed: SC-6 repairs\nmeasured by the gate"];
+
+  // ---------- overlap / feeds (dotted grey) ----------
+  edge [style=dotted, color="#9e9e9e", fontcolor="#757575", penwidth=1.3];
+  famA -> b2l;
+
+  { rank=same; done_ctx5; done_notes; done_dec; done_tools; }
+  { rank=same; e1; e2; canon; frb; dup; nottyp; }
+  { rank=same; ws3; ws4; }
+  { rank=same; ws6; ws10; ws7; ws8; }
+}
