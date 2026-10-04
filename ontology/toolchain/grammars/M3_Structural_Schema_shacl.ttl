@@ -1,0 +1,197 @@
+#############################################################################
+# M3_Structural_Schema_shacl.ttl
+#
+# Author  : Echopraxium with the collaboration of Claude AI
+# Version : 0.1.0
+# Date    : 2026-10-05
+# Worksite: WS-5 / step 3 (graph plane, checks G1–G4)
+#
+# SCOPE — READ THIS BEFORE TRUSTING A GREEN RESULT
+#
+# A STRUCTURAL grammar (decision Q4, 2026-10-03): ontology header, term
+# documentation, IRI-valued axioms, changelog entries. It says NOTHING about the
+# meaning of GenericConcepts (formulas, polarity, families): that is the semantic
+# M2 grammar SC-11b, which waits for WS-1.
+#
+# It lives under ontology/toolchain/grammars/ (Michel, 2026-10-05): a grammar is
+# DATA read by the tools, not a script. It is named M3_ because it constrains M3
+# terms (m3:changelog, m3:ontologyType); it is registered for BOTH M3 and M2 in
+# validator/checks/shacl_runner.GRAMMARS.
+#
+# WHAT THIS GRAMMAR CANNOT SEE (stated, not assumed):
+#  - bare JSON keys: dropped on JSON-LD expansion. Measured by the document plane
+#    (validator --doc, check D1): on 2026-10-05, M2 1368 and M3 619 occurrences
+#    are outside this grammar's reach;
+#  - "exactly one owl:Ontology node per file": SHACL cannot count the nodes of a
+#    whole graph -> document plane, check D5;
+#  - cross-file facts (is m3:ontologyType's value in m3:TscgOntologyTypeScheme,
+#    which lives in another file? are standard terms declared in the apex?) ->
+#    validator --ext (G1b, G5, G6).
+#
+# RUNNER
+#   python ontology/toolchain/validator/tscg_validator.py --layers M3,M2 --shacl
+#   (pyshacl, inference="none", one finding per sh:ValidationResult)
+#
+# EXPECTED ON HEAD 3720876 (measured before writing the shapes):
+#   G1 5 (M2 has no rdfs:label; 4 M3 files have no m3:ontologyType), G2 7
+#   (7 M2 properties without rdfs:comment), G3 0, G4 0.
+#
+# DECISIONS (Michel, 2026-10-05):
+#   - a term's label is rdfs:label OR skos:prefLabel (SKOS concepts of
+#     m3:TscgOntologyTypeScheme carry skos:prefLabel);
+#   - changelog dates: FORMAT YYYY-MM-DD, no xsd:date datatype required in v1;
+#   - G2 covers terms in the TSCG namespace only (the standard terms the apex
+#     declares under its ExternalVocabularyPolicy are not TSCG's to document).
+#############################################################################
+
+@prefix sh:      <http://www.w3.org/ns/shacl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix adms:    <http://www.w3.org/ns/adms#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix m3:      <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#> .
+@prefix m2:      <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#> .
+# Shapes get their OWN namespace: a shape is not a term of the ontology it checks.
+@prefix shs:     <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl#> .
+
+
+#############################################################################
+# SHAPE G1 — OntologyHeaderShape
+# Every file's owl:Ontology node carries its identity card. m2:changelog is the
+# retired changelog form (2026-09-30): forbidden, the only one is m3:changelog.
+#############################################################################
+
+shs:OntologyHeaderShape
+    a sh:NodeShape ;
+    sh:targetClass owl:Ontology ;
+    sh:property [
+        sh:path owl:versionInfo ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:Literal ;
+        sh:message "G1: the owl:Ontology node needs exactly one owl:versionInfo (a literal)." ] ;
+    sh:property [
+        sh:path dcterms:created ; sh:minCount 1 ; sh:nodeKind sh:Literal ;
+        sh:message "G1: the owl:Ontology node needs dcterms:created (a literal date)." ] ;
+    sh:property [
+        sh:path dcterms:creator ; sh:minCount 1 ;
+        sh:message "G1: the owl:Ontology node needs dcterms:creator." ] ;
+    sh:property [
+        sh:path rdfs:label ; sh:minCount 1 ;
+        sh:message "G1: the owl:Ontology node needs an rdfs:label." ] ;
+    sh:property [
+        sh:path m3:ontologyType ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ;
+        sh:message "G1: the owl:Ontology node needs exactly one m3:ontologyType, an IRI of a concept of m3:TscgOntologyTypeScheme (membership itself is checked cross-file by validator --ext, G1b)." ] ;
+    sh:property [
+        sh:path m3:changelog ; sh:minCount 1 ;
+        sh:message "G1: the owl:Ontology node needs m3:changelog entries." ] ;
+    sh:property [
+        sh:path m2:changelog ; sh:maxCount 0 ;
+        sh:message "G1 FORBIDDEN: m2:changelog was retired on 2026-09-30. Use m3:changelog." ] ;
+.
+
+
+#############################################################################
+# SHAPE G2 — TermDocumentationShape
+# Every class / property declared in the TSCG namespace has a label (rdfs:label
+# or skos:prefLabel) and an rdfs:comment. SPARQL constraints restrict to the TSCG
+# namespace; full IRIs are written inside the queries (no sh:prefixes needed).
+#############################################################################
+
+shs:TermDocumentationShape
+    a sh:NodeShape ;
+    sh:targetClass owl:Class , rdfs:Class , owl:ObjectProperty , owl:DatatypeProperty ,
+                   owl:AnnotationProperty , rdf:Property ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "G2: TSCG term without a label: add rdfs:label (or skos:prefLabel for a SKOS concept)." ;
+        sh:select """
+            SELECT $this WHERE {
+              FILTER(STRSTARTS(STR($this), "https://raw.githubusercontent.com/Echopraxium/tscg/main/"))
+              FILTER NOT EXISTS { $this <http://www.w3.org/2000/01/rdf-schema#label> ?l }
+              FILTER NOT EXISTS { $this <http://www.w3.org/2004/02/skos/core#prefLabel> ?p }
+            }""" ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "G2: TSCG term without rdfs:comment: say what it means." ;
+        sh:select """
+            SELECT $this WHERE {
+              FILTER(STRSTARTS(STR($this), "https://raw.githubusercontent.com/Echopraxium/tscg/main/"))
+              FILTER NOT EXISTS { $this <http://www.w3.org/2000/01/rdf-schema#comment> ?c }
+            }""" ] ;
+.
+
+
+#############################################################################
+# SHAPE G3a — NoLiteralAxiomObjectShape
+# rdfs:subClassOf / rdfs:domain / rdfs:range point at a class: an IRI, or a blank
+# node (owl:Restriction, owl:unionOf). A string such as "m2:Layer" is a literal:
+# the axiom silently says nothing (M1 carries 196 of them — its own debt).
+# One shape for the three predicates so it bites on every layer.
+#############################################################################
+
+shs:NoLiteralAxiomObjectShape
+    a sh:NodeShape ;
+    sh:targetSubjectsOf rdfs:subClassOf , rdfs:domain , rdfs:range ;
+    sh:property [
+        sh:path rdfs:subClassOf ; sh:nodeKind sh:BlankNodeOrIRI ;
+        sh:message "G3: rdfs:subClassOf value is a literal. Write {\"@id\": \"…\"} (or declare the term with \"@type\": \"@id\")." ] ;
+    sh:property [
+        sh:path rdfs:domain ; sh:nodeKind sh:BlankNodeOrIRI ;
+        sh:message "G3: rdfs:domain value is a literal. Write {\"@id\": \"…\"}." ] ;
+    sh:property [
+        sh:path rdfs:range ; sh:nodeKind sh:BlankNodeOrIRI ;
+        sh:message "G3: rdfs:range value is a literal. Write {\"@id\": \"…\"}." ] ;
+.
+
+
+#############################################################################
+# SHAPE G3b — IriOnlyObjectShape
+# owl:imports and rdfs:isDefinedBy name a DOCUMENT / ontology: an IRI, never a
+# literal (a string imports nothing — lot 1i) nor a blank node.
+#############################################################################
+
+shs:IriOnlyObjectShape
+    a sh:NodeShape ;
+    sh:targetSubjectsOf owl:imports , rdfs:isDefinedBy ;
+    sh:property [
+        sh:path owl:imports ; sh:nodeKind sh:IRI ;
+        sh:message "G3: owl:imports value is not an IRI: a string imports nothing. Write {\"@id\": \"<ontology IRI>\"}." ] ;
+    sh:property [
+        sh:path rdfs:isDefinedBy ; sh:nodeKind sh:IRI ;
+        sh:message "G3: rdfs:isDefinedBy value is not an IRI. Write {\"@id\": \"<ontology IRI>\"}." ] ;
+.
+
+
+#############################################################################
+# SHAPE G4 — ChangelogEntryShape
+# Each m3:changelog entry has exactly the three properties, each once, each a
+# literal; the date is YYYY-MM-DD (format only, decision 2026-10-05). sh:closed
+# rejects any extra property. Retention (7 in M3, 3 elsewhere) is counted by the
+# document plane (D5): SHACL sees no order and no file boundary.
+#############################################################################
+
+shs:ChangelogEntryShape
+    a sh:NodeShape ;
+    sh:targetObjectsOf m3:changelog ;
+    sh:closed true ;
+    sh:property [
+        sh:path owl:versionInfo ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:Literal ;
+        sh:message "G4: a changelog entry needs exactly one owl:versionInfo (literal)." ] ;
+    sh:property [
+        sh:path dcterms:date ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:Literal ;
+        sh:pattern "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" ;
+        sh:message "G4: a changelog entry needs exactly one dcterms:date, written YYYY-MM-DD." ] ;
+    sh:property [
+        sh:path adms:versionNotes ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:Literal ;
+        sh:message "G4: a changelog entry needs exactly one adms:versionNotes (literal)." ] ;
+.
+
+#############################################################################
+# CHANGELOG
+# 0.1.0 (2026-10-05) — File created for WS-5 step 3. Shapes G1 OntologyHeader,
+#   G2 TermDocumentation (SPARQL, TSCG namespace, rdfs:label|skos:prefLabel),
+#   G3a NoLiteralAxiomObject, G3b IriOnlyObject, G4 ChangelogEntry (closed,
+#   date format). Focus nodes >= 1 on M3 and on M2; one negative test per shape
+#   in validator/tests/test_structural_grammar.py.
+#############################################################################

@@ -219,3 +219,43 @@ Notes:
   `M1_extensions/biology/M1_Biology.jsonld#`) and 10 a colon-named term that does
   not expand to itself (CTX-5 pattern). Remote contexts are blocked in this check,
   so none of the 28 is a network artefact. Owner: WS-10.
+
+## 9. Step (3) — graph-plane checks G1–G7: DONE 2026-10-05
+
+Measured on HEAD `3720876`. Engine 0.4.0. One script, `tscg_validator.py`: the
+grammar is a data file, the cross-file checks a module of the same engine.
+
+- **Structural grammar** `ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl`
+  0.1.0 — new folder (Michel, 2026-10-05: grammars are data read by the tools, not
+  scripts; the 3 existing grammars move there in a later lot). Registered for M3 and
+  M2 in `shacl_runner.GRAMMARS`. Shapes: G1 OntologyHeader, G2 TermDocumentation,
+  G3a NoLiteralAxiomObject (`subClassOf`/`domain`/`range`), G3b IriOnlyObject
+  (`imports`/`isDefinedBy`), G4 ChangelogEntry (closed). Every shape has ≥ 1 focus
+  node on M3 AND on M2 (G3 grouped so that `isDefinedBy`, absent from M2, does not
+  leave a blind shape).
+- **EXT family** `validator/checks/ext.py` (`--ext`): G1b ontologyType ∈
+  `m3:TscgOntologyTypeScheme` (11 concepts, read from GenesisGrammar on the same
+  source), G5 = EXT-1, G6 = EXT-2 with the constants imported from tscg_metrics (one
+  definition). Parity on M3,M2,M1: G5 0 / G6 143 = tscg_metrics.
+- 15 negative tests: `validator/tests/test_structural_grammar.py`.
+
+Decisions (Michel, 2026-10-05): label = `rdfs:label` OR `skos:prefLabel`; changelog
+dates checked for FORMAT `YYYY-MM-DD` (no `xsd:date` datatype in v1 — all 38 dates
+are plain literals); G2 covers TSCG-namespace terms only.
+
+| Check | M3 | M2 | Note |
+|---|---|---|---|
+| G1 header | 4 | 1 | M3: no `m3:ontologyType` in Bicephalous, EagleEye, GrammarFoundation, SphinxEye; M2: no `rdfs:label` |
+| G1b ontologyType in scheme | 0 | 0 | 2 values checked (Genesis, GenericConcepts) |
+| G2 label + comment | 3 | 7 | see correction below |
+| G3 axiom objects | 0 | 0 | |
+| G4 changelog entries | 0 | 0 | 35 + 3 entries |
+| G5 EXT-1 | 0 | 0 | |
+| G6 EXT-2 | 142 | 0 | the `owl:<key>` terms of the two `@vocab` files |
+| G7 SC-2 | — | 0 | focus 86 + 2 |
+
+**Correction of the §3 G2 baseline.** "M3 14" was 11 SKOS concepts of
+`m3:TscgOntologyTypeScheme` (they carry `skos:prefLabel`, now accepted) + **3 real
+gaps** in GenesisGrammar with no label at all: `m3:FacetValue`, `m3:hasFacetValue`,
+`m3:valueOf`. The 34 terms of GrammarFoundation without label/comment are the
+standard terms the apex declares (ExternalVocabularyPolicy): out of G2's scope.

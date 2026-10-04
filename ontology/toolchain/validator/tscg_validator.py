@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-tscg_validator.py — TscgOntologyValidator engine (WS-5: CTX, AXIS, DOC D1–D7, generic SHACL runner).
+tscg_validator.py — TscgOntologyValidator engine (WS-5: CTX, AXIS, DOC D1–D7, EXT G1b/G5/G6, generic SHACL runner).
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 0.3.0
+Version: 0.4.0
 Home   : ontology/toolchain/validator/tscg_validator.py
 
 Implements the design spec (ontology/docs/_01_Worksite/
@@ -34,6 +34,12 @@ DOC (0.3.0, WS-5 step 2): --doc runs the document-plane checks D1–D7 of the WS
 scoping note §3.1 (checks/doc.py). D1 findings are one per (file, bare key) with a
 `count`; the summary and the JSON report give OCCURRENCES per check and per layer.
 
+EXT (0.4.0, WS-5 step 3): --ext runs the cross-file graph checks G1b (ontologyType in
+m3:TscgOntologyTypeScheme), G5 (EXT-1) and G6 (EXT-2) — checks/ext.py. The scheme
+host and the apex are always read from the same source, whatever --layers says.
+G1–G4 are SHACL shapes in ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl,
+run by --shacl on M3 and M2.
+
 Exit code: 0 iff no findings of severity ERROR. (Golden integration across all four
 layers arrives with the FRB/DUP/NOT/STR lots; lot 1 reports raw CTX counts and does
 NOT touch golden_values.json.)
@@ -53,12 +59,13 @@ from checks import ctx as ctx_check  # noqa: E402
 from checks import axis as axis_check  # noqa: E402
 from checks import shacl_runner  # noqa: E402
 from checks import doc as doc_check  # noqa: E402
+from checks import ext as ext_check  # noqa: E402
 
 # Families implemented in this lot. The rest are declared so the report shows the
 # full family roster with an honest "not yet implemented" status.
 _IMPLEMENTED = {"CTX": ctx_check, "AXIS": axis_check}
 _PLANNED = ["FRB", "DUP", "NOT", "STR"]
-_VERSION = "0.3.0"
+_VERSION = "0.4.0"
 
 _SEV_ORDER = {"ERROR": 0, "WARNING": 1, "INFO": 2}
 
@@ -115,11 +122,29 @@ def run_doc(source: Source, files: List[str]) -> tuple:
     return findings, {k: dict(sorted(v.items())) for k, v in sorted(per_layer.items())}
 
 
+def run_ext(source: Source, files: List[str]) -> tuple:
+    """Cross-file graph checks G1b/G5/G6. Returns (findings, stats)."""
+    try:
+        scheme = source.read(ext_check.SCHEME_HOST)
+        apex = source.read(ext_check.APEX)
+    except (FileNotFoundError, OSError) as exc:
+        return ([{"id": "EXT-000", "severity": "ERROR", "file": "-", "node": "-",
+                  "message": f"scheme host / apex not readable, EXT NOT run: {exc}"}],
+                {"error": str(exc)})
+    triples = []
+    for rel in files:
+        try:
+            triples.append((rel, source.read(rel), classify_layer(rel)))
+        except (FileNotFoundError, OSError):
+            continue  # already reported as SRC-000
+    return ext_check.run(triples, scheme, apex)
+
+
 def run_shacl(source: Source, files: List[str], layers: List[str],
               shapes: str | None) -> tuple:
     """Run grammar(s) over the selected files. Returns (findings, stats list)."""
     if shapes:
-        plan = [(_resolve_grammar(shapes), files)]
+        plan = [(_resolve_grammar(shapes), files, None)]
     else:
         plan = []
         for layer in layers:
@@ -130,12 +155,12 @@ def run_shacl(source: Source, files: List[str], layers: List[str],
             grammars = shacl_runner.GRAMMARS.get(layer, [])
             if not grammars:
                 # Say it: an unmeasured layer must not look like a clean one.
-                plan.append((None, layer))
+                plan.append((None, layer, layer))
             for g in grammars:
-                plan.append((g, layer_files))
+                plan.append((g, layer_files, layer))
     findings: List[Dict[str, Any]] = []
     stats: List[Dict[str, Any]] = []
-    for grammar, gfiles in plan:
+    for grammar, gfiles, glayer in plan:
         if grammar is None:
             stats.append({"grammar": f"(no grammar registered for {gfiles})",
                           "error": "NOT INSTRUMENTED — nothing was validated"})
@@ -154,7 +179,9 @@ def run_shacl(source: Source, files: List[str], layers: List[str],
             except (FileNotFoundError, OSError) as exc:
                 findings.append({"id": "SRC-000", "severity": "ERROR", "file": rel,
                                  "node": "-", "message": f"cannot read from source: {exc}"})
-        f, s = shacl_runner.run(grammar, gtext, pairs)
+        f, s = shacl_runner.run(grammar, gtext, pairs, glayer)
+        for x in f:
+            x.setdefault("layer", glayer)
         findings.extend(f)
         stats.append(s)
     return findings, stats
@@ -173,7 +200,8 @@ def _tally(findings: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
 def print_human(source_mode: str, files: List[str],
                 findings: List[Dict[str, Any]],
                 shacl_stats: List[Dict[str, Any]] | None = None,
-                doc_stats: Dict[str, Dict[str, int]] | None = None) -> None:
+                doc_stats: Dict[str, Dict[str, int]] | None = None,
+                ext_stats: Dict[str, Any] | None = None) -> None:
     tally = _tally(findings)
     print("=" * 66)
     print(f"  TscgOntologyValidator {_VERSION}  |  source={source_mode}  "
@@ -193,17 +221,28 @@ def print_human(source_mode: str, files: List[str],
         print("         layer " + " ".join(f"{c:>6}" for c in checks))
         for layer, counts in doc_stats.items():
             print(f"         {layer:<5} " + " ".join(f"{counts.get(c, 0):>6}" for c in checks))
+    if ext_stats is not None:
+        if "error" in ext_stats:
+            print(f"  EXT  : NOT RUN ({ext_stats['error']})")
+        else:
+            print(f"  EXT  : cross-file G1b/G5/G6 — scheme {ext_stats['scheme_members']} "
+                  f"concepts, apex declares {ext_stats['apex_declared']} terms, "
+                  f"{ext_stats['ontology_types_checked']} ontologyType value(s) checked")
+            for layer, c in ext_stats["per_layer"].items():
+                print(f"         {layer:<5} G1b {c['G1b']:>4}   G5 {c['G5']:>4}   G6 {c['G6']:>4}")
+            d = ext_stats["distinct_all_layers"]
+            print(f"         all   distinct IRIs: G5 {d['G5']}  G6 {d['G6']}")
     for s in shacl_stats or []:
         if "error" in s:
             print(f"  SHACL: {s['grammar']}  NOT RUN ({s['error']})")
             continue
-        print(f"  SHACL: {s['grammar']}")
+        tag = f"[{s['layer']}] " if s.get("layer") else ""
+        print(f"  SHACL: {tag}{s['grammar']}")
         print(f"         {s['files']} file(s) | {s['results']} result(s) | "
               f"{s['not_run']} not run | {len(s['blind'])} blind shape(s) | "
               f"{s['untargeted_shapes']} untargeted (referenced) shape(s)")
         for shape, n in s["focus"].items():
-            hits = sum(1 for f in findings if f["id"] == "SHACL-V"
-                       and f.get("grammar") == s["grammar"] and f.get("shape") == shape)
+            hits = s.get("by_shape", {}).get(shape, 0)
             flag = "  <-- BLIND" if n == 0 else ""
             print(f"           {shape:<40} focus {n:>5}  results {hits:>5}{flag}")
     print("-" * 66)
@@ -237,6 +276,8 @@ def main(argv: List[str] | None = None) -> int:
                     help="validate a single relpath (overrides --layers)")
     ap.add_argument("--doc", action="store_true",
                     help="also run the document-plane checks D1–D7 (checks/doc.py)")
+    ap.add_argument("--ext", action="store_true",
+                    help="also run the cross-file graph checks G1b/G5/G6 (checks/ext.py)")
     ap.add_argument("--shacl", action="store_true",
                     help="also run the SHACL grammar(s) registered for each selected layer")
     ap.add_argument("--shapes", default=None,
@@ -254,11 +295,15 @@ def main(argv: List[str] | None = None) -> int:
     if args.doc:
         df, doc_stats = run_doc(source, files)
         findings.extend(df)
+    ext_stats = None
+    if args.ext:
+        ef, ext_stats = run_ext(source, files)
+        findings.extend(ef)
     if args.shacl or args.shapes:
         sf, shacl_stats = run_shacl(source, files, layers, args.shapes)
         findings.extend(sf)
 
-    print_human(args.source, files, findings, shacl_stats, doc_stats)
+    print_human(args.source, files, findings, shacl_stats, doc_stats, ext_stats)
 
     if args.report:
         report = {
@@ -266,7 +311,8 @@ def main(argv: List[str] | None = None) -> int:
             "version": _VERSION,
             "source": args.source,
             "authority": args.source in ("head", "github"),
-            "families_implemented": sorted(_IMPLEMENTED) + ["DOC", "SHACL"],
+            "families_implemented": sorted(_IMPLEMENTED) + ["DOC", "EXT", "SHACL"],
+            "ext": ext_stats,
             "doc_occurrences": doc_stats,
             "shacl": shacl_stats,
             "families_planned": _PLANNED,

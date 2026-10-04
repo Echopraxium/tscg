@@ -2,7 +2,7 @@
 checks/shacl_runner.py — generic SHACL runner (WS-5, step 1: "job one").
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 0.1.0
+Version: 0.2.0
 Home   : ontology/toolchain/validator/checks/shacl_runner.py
 
 ONE runner for every layer, parameterised by a grammar (a Turtle shapes file) and the
@@ -40,11 +40,15 @@ import json
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 # Layer -> grammar files (repo-relative). The single place where a grammar is wired.
-# M3: none yet (WS-5 step 3). M2: the 2 targeted SC-2 shapes only — NOT an M2 grammar.
+# M3 and M2 share the STRUCTURAL grammar (WS-5 step 3, G1–G4); M2 also runs the 2
+# targeted SC-2 shapes (G7). Neither is a semantic M2 grammar (SC-11b, after WS-1).
+_STRUCTURAL = "ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl"
 GRAMMARS: Dict[str, List[str]] = {
+    "M3": [_STRUCTURAL],
+    "M2": [_STRUCTURAL,
+           "ontology/toolchain/check-M2/M2_MonoidalFormula_Schema_shacl.ttl"],
     "M1": ["ontology/toolchain/check-M1/M1_Schema_shacl.ttl"],
     "M0": ["ontology/toolchain/check-M0/M0_Instances_Schema_shacl.ttl"],
-    "M2": ["ontology/toolchain/check-M2/M2_MonoidalFormula_Schema_shacl.ttl"],
 }
 
 RAW_BASE = "https://raw.githubusercontent.com/Echopraxium/tscg/main/"
@@ -209,7 +213,8 @@ def run_on_file(grammar: Grammar, relpath: str, text: str) -> List[Dict[str, Any
 
 
 def run(grammar_relpath: str, grammar_text: str,
-        files: Iterable[Tuple[str, str]]) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+        files: Iterable[Tuple[str, str]],
+        layer: Optional[str] = None) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
     """Run one grammar over (relpath, text) pairs.
 
     Returns (findings, stats). stats = {grammar, files, results, focus{shape: n},
@@ -240,10 +245,18 @@ def run(grammar_relpath: str, grammar_text: str,
             f"targeted shape matched 0 focus nodes over {n_files} file(s): it validates "
             f"nothing and would report CONFORMS. Fix its target or retire it."))
 
+    # Per-shape counts belong to THIS run: the same grammar may run once per layer.
+    by_shape: Dict[str, int] = {}
+    for f in findings:
+        if f["id"] == "SHACL-V":
+            by_shape[f.get("shape", "?")] = by_shape.get(f.get("shape", "?"), 0) + 1
+
     stats = {
         "grammar": grammar_relpath,
         "files": n_files,
+        "layer": layer,
         "results": sum(1 for f in findings if f["id"] == "SHACL-V"),
+        "by_shape": dict(sorted(by_shape.items())),
         "not_run": sum(1 for f in findings if f["id"] == "SHACL-000"),
         "focus": {grammar.shape_label(s): n for s, n in sorted(grammar.focus.items())},
         "blind": [grammar.shape_label(s) for s in blind],
