@@ -182,3 +182,40 @@ Findings (no lot yet, Michel to decide):
   M0_Triz_Examples.jsonld` have no `owl:Ontology` node: every M0 shape targets
   `owl:Ontology`, so C15 reports them as passing without validating anything (focus
   41 for 43 files). Also a duplicate file.
+
+## 8. Step (2) — document-plane checks D1–D7: DONE 2026-10-04
+
+Measured on HEAD `c2ac85a`. `validator/checks/doc.py` 0.1.0, engine 0.3.0
+(`tscg_validator.py --doc`), negative tests `validator/tests/test_doc.py` (14/14:
+each check moves by exactly the expected delta on a mutated copy of real data).
+Not wired into the gate yet (step 4): nothing frozen.
+
+**Decision D5(a)** (Michel, 2026-10-04): the only changelog is `m3:changelog` on the
+owl:Ontology node. Any other key containing "changelog" (case-insensitive) is a D5
+finding — this catches the per-concept `m2:changeLog` on `m2:Trade-off`, which a
+case-sensitive "no `m2:changelog`" rule would miss.
+
+| Check | M2 | M3 | vs §3 |
+|---|---|---|---|
+| D1 bare keys (occurrences) | 1368 | 619 | equal |
+| D2 `@vocab` | 0 | 2 | equal |
+| D3 named graph | 0 | 0 | equal |
+| D4 `owl:imports` not an IRI | 0 | 0 | equal |
+| D5 changelog | 1 (`m2:changeLog`) | 4 (`metadata.changelog` in EagleEye, GenesisGrammar, GrammarFoundation, SphinxEye) | precised |
+| D6 layer inversion (keys, `@id`, `@type`) | 0 | 0 | equal |
+| D7 strict pyld expansion (offline) | 0 | 0 | equal |
+
+Notes:
+- All M2/M3 bare keys sit inside `@graph`: tscg_metrics' VOC gauge (which walks
+  `@graph` only) is complete for these layers. The engine walks the whole document.
+- D1 and D5 overlap on the bare `changelog` key of the 4 M3 vestiges (counted in
+  both): D1 measures vocabulary, D5 the changelog rule.
+- D6 counts references, not prose: `m2:` mentions inside `rdfs:comment`, `m3:usage`
+  etc. are not inversions.
+- Informative run on M1/M0 (not in this step's scope, not frozen): D1 M1 1268 / M0
+  6604 (= the M0 bare-key gauge of the 2026-10-03 HandOver); D5 M1 2 / M0 7; **D7
+  M0 28**, not 7 as the 2026-10-03 HandOver said: 18 instances carry a relative IRI
+  in their `@context` ("@context @id value must be an absolute IRI", e.g.
+  `M1_extensions/biology/M1_Biology.jsonld#`) and 10 a colon-named term that does
+  not expand to itself (CTX-5 pattern). Remote contexts are blocked in this check,
+  so none of the 28 is a network artefact. Owner: WS-10.

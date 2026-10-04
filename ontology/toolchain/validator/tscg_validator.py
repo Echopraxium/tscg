@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-tscg_validator.py — TscgOntologyValidator engine (WS-5: CTX, AXIS, generic SHACL runner).
+tscg_validator.py — TscgOntologyValidator engine (WS-5: CTX, AXIS, DOC D1–D7, generic SHACL runner).
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 0.2.0
+Version: 0.3.0
 Home   : ontology/toolchain/validator/tscg_validator.py
 
 Implements the design spec (ontology/docs/_01_Worksite/
@@ -30,6 +30,10 @@ checks/shacl_runner.GRAMMARS; --shapes runs one given grammar on the selected fi
 sh:ValidationResult, focus nodes counted per shape, a 0-focus shape is SHACL-BLIND,
 a missing pyshacl is an ERROR. Opt-in: the default run is unchanged (CTX + AXIS).
 
+DOC (0.3.0, WS-5 step 2): --doc runs the document-plane checks D1–D7 of the WS-5
+scoping note §3.1 (checks/doc.py). D1 findings are one per (file, bare key) with a
+`count`; the summary and the JSON report give OCCURRENCES per check and per layer.
+
 Exit code: 0 iff no findings of severity ERROR. (Golden integration across all four
 layers arrives with the FRB/DUP/NOT/STR lots; lot 1 reports raw CTX counts and does
 NOT touch golden_values.json.)
@@ -48,12 +52,13 @@ from sources import Source, classify_layer  # noqa: E402
 from checks import ctx as ctx_check  # noqa: E402
 from checks import axis as axis_check  # noqa: E402
 from checks import shacl_runner  # noqa: E402
+from checks import doc as doc_check  # noqa: E402
 
 # Families implemented in this lot. The rest are declared so the report shows the
 # full family roster with an honest "not yet implemented" status.
 _IMPLEMENTED = {"CTX": ctx_check, "AXIS": axis_check}
 _PLANNED = ["FRB", "DUP", "NOT", "STR"]
-_VERSION = "0.2.0"
+_VERSION = "0.3.0"
 
 _SEV_ORDER = {"ERROR": 0, "WARNING": 1, "INFO": 2}
 
@@ -90,6 +95,24 @@ def _resolve_grammar(path: str) -> str:
     if p.startswith("ontology/"):
         return p
     return "ontology/toolchain/" + p.lstrip("./")
+
+
+def run_doc(source: Source, files: List[str]) -> tuple:
+    """Document plane D1–D7. Returns (findings, {layer: {check: occurrences}})."""
+    findings: List[Dict[str, Any]] = []
+    per_layer: Dict[str, Dict[str, int]] = {}
+    for rel in files:
+        try:
+            text = source.read(rel)
+        except (FileNotFoundError, OSError):
+            continue  # already reported as SRC-000 by run_validation
+        layer = classify_layer(rel) or "?"
+        f = doc_check.run(rel, text, layer)
+        findings.extend(f)
+        bucket = per_layer.setdefault(layer, {})
+        for cid, n in doc_check.occurrences(f).items():
+            bucket[cid] = bucket.get(cid, 0) + n
+    return findings, {k: dict(sorted(v.items())) for k, v in sorted(per_layer.items())}
 
 
 def run_shacl(source: Source, files: List[str], layers: List[str],
@@ -149,7 +172,8 @@ def _tally(findings: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
 
 def print_human(source_mode: str, files: List[str],
                 findings: List[Dict[str, Any]],
-                shacl_stats: List[Dict[str, Any]] | None = None) -> None:
+                shacl_stats: List[Dict[str, Any]] | None = None,
+                doc_stats: Dict[str, Dict[str, int]] | None = None) -> None:
     tally = _tally(findings)
     print("=" * 66)
     print(f"  TscgOntologyValidator {_VERSION}  |  source={source_mode}  "
@@ -163,6 +187,12 @@ def print_human(source_mode: str, files: List[str],
           f"(+{len(ctx_findings) - len(real_ctx)} INFO/advisory)")
     for fam in _PLANNED:
         print(f"  {fam}  : not yet implemented (later lot)")
+    if doc_stats is not None:
+        checks = [f"D{i}" for i in range(1, 8)]
+        print("  DOC  : document plane D1–D7, occurrences per layer")
+        print("         layer " + " ".join(f"{c:>6}" for c in checks))
+        for layer, counts in doc_stats.items():
+            print(f"         {layer:<5} " + " ".join(f"{counts.get(c, 0):>6}" for c in checks))
     for s in shacl_stats or []:
         if "error" in s:
             print(f"  SHACL: {s['grammar']}  NOT RUN ({s['error']})")
@@ -205,6 +235,8 @@ def main(argv: List[str] | None = None) -> int:
                     help="comma list of layers to scan (default M3,M2,M1)")
     ap.add_argument("--file", default=None,
                     help="validate a single relpath (overrides --layers)")
+    ap.add_argument("--doc", action="store_true",
+                    help="also run the document-plane checks D1–D7 (checks/doc.py)")
     ap.add_argument("--shacl", action="store_true",
                     help="also run the SHACL grammar(s) registered for each selected layer")
     ap.add_argument("--shapes", default=None,
@@ -218,11 +250,15 @@ def main(argv: List[str] | None = None) -> int:
     files = _select_files(source, layers, args.file)
     findings = run_validation(source, files)
     shacl_stats = None
+    doc_stats = None
+    if args.doc:
+        df, doc_stats = run_doc(source, files)
+        findings.extend(df)
     if args.shacl or args.shapes:
         sf, shacl_stats = run_shacl(source, files, layers, args.shapes)
         findings.extend(sf)
 
-    print_human(args.source, files, findings, shacl_stats)
+    print_human(args.source, files, findings, shacl_stats, doc_stats)
 
     if args.report:
         report = {
@@ -230,7 +266,8 @@ def main(argv: List[str] | None = None) -> int:
             "version": _VERSION,
             "source": args.source,
             "authority": args.source in ("head", "github"),
-            "families_implemented": sorted(_IMPLEMENTED) + ["SHACL"],
+            "families_implemented": sorted(_IMPLEMENTED) + ["DOC", "SHACL"],
+            "doc_occurrences": doc_stats,
             "shacl": shacl_stats,
             "families_planned": _PLANNED,
             "files": files,

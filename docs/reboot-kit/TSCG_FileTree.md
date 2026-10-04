@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1769 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1771 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -1854,8 +1854,10 @@
         - __init__.py
         - axis.py
         - ctx.py
+        - doc.py
         - shacl_runner.py
       - **tests/**
+        - test_doc.py
         - test_shacl_runner.py
       - sources.py
       - tscg_validator.py
