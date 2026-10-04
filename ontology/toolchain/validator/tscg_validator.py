@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-tscg_validator.py — TscgOntologyValidator engine (WS-5, lot 1: CTX + source switch).
+tscg_validator.py — TscgOntologyValidator engine (WS-5: CTX, AXIS, generic SHACL runner).
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 0.1.0
+Version: 0.2.0
 Home   : ontology/toolchain/validator/tscg_validator.py
 
 Implements the design spec (ontology/docs/_01_Worksite/
@@ -21,6 +21,14 @@ Usage
   python tscg_validator.py --source github --layers M1
   python tscg_validator.py --report report.json
   python tscg_validator.py --file ontology/M1_CoreConcepts.jsonld
+  python tscg_validator.py --shacl --layers M2          # registered grammar(s) of each layer
+  python tscg_validator.py --shapes check-M3/X.ttl --layers M3   # any grammar, any files
+
+SHACL (0.2.0, WS-5 step 1): --shacl runs the grammar(s) registered per layer in
+checks/shacl_runner.GRAMMARS; --shapes runs one given grammar on the selected files
+(path repo-relative, or relative to ontology/toolchain/). One finding per
+sh:ValidationResult, focus nodes counted per shape, a 0-focus shape is SHACL-BLIND,
+a missing pyshacl is an ERROR. Opt-in: the default run is unchanged (CTX + AXIS).
 
 Exit code: 0 iff no findings of severity ERROR. (Golden integration across all four
 layers arrives with the FRB/DUP/NOT/STR lots; lot 1 reports raw CTX counts and does
@@ -39,11 +47,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sources import Source, classify_layer  # noqa: E402
 from checks import ctx as ctx_check  # noqa: E402
 from checks import axis as axis_check  # noqa: E402
+from checks import shacl_runner  # noqa: E402
 
 # Families implemented in this lot. The rest are declared so the report shows the
 # full family roster with an honest "not yet implemented" status.
 _IMPLEMENTED = {"CTX": ctx_check, "AXIS": axis_check}
 _PLANNED = ["FRB", "DUP", "NOT", "STR"]
+_VERSION = "0.2.0"
 
 _SEV_ORDER = {"ERROR": 0, "WARNING": 1, "INFO": 2}
 
@@ -74,6 +84,59 @@ def run_validation(source: Source, files: List[str]) -> List[Dict[str, Any]]:
     return findings
 
 
+def _resolve_grammar(path: str) -> str:
+    """Accept a repo-relative path, or one relative to ontology/toolchain/."""
+    p = path.replace("\\", "/")
+    if p.startswith("ontology/"):
+        return p
+    return "ontology/toolchain/" + p.lstrip("./")
+
+
+def run_shacl(source: Source, files: List[str], layers: List[str],
+              shapes: str | None) -> tuple:
+    """Run grammar(s) over the selected files. Returns (findings, stats list)."""
+    if shapes:
+        plan = [(_resolve_grammar(shapes), files)]
+    else:
+        plan = []
+        for layer in layers:
+            layer_files = [f for f in files if classify_layer(f) == layer]
+            if not layer_files:
+                # A grammar run on 0 files would call every shape "blind": skip it.
+                continue
+            grammars = shacl_runner.GRAMMARS.get(layer, [])
+            if not grammars:
+                # Say it: an unmeasured layer must not look like a clean one.
+                plan.append((None, layer))
+            for g in grammars:
+                plan.append((g, layer_files))
+    findings: List[Dict[str, Any]] = []
+    stats: List[Dict[str, Any]] = []
+    for grammar, gfiles in plan:
+        if grammar is None:
+            stats.append({"grammar": f"(no grammar registered for {gfiles})",
+                          "error": "NOT INSTRUMENTED — nothing was validated"})
+            continue
+        try:
+            gtext = source.read(grammar)
+        except (FileNotFoundError, OSError) as exc:
+            findings.append({"id": "SHACL-000", "severity": "ERROR", "file": grammar,
+                             "node": "-", "message": f"grammar not readable: {exc}"})
+            stats.append({"grammar": grammar, "error": str(exc)})
+            continue
+        pairs = []
+        for rel in gfiles:
+            try:
+                pairs.append((rel, source.read(rel)))
+            except (FileNotFoundError, OSError) as exc:
+                findings.append({"id": "SRC-000", "severity": "ERROR", "file": rel,
+                                 "node": "-", "message": f"cannot read from source: {exc}"})
+        f, s = shacl_runner.run(grammar, gtext, pairs)
+        findings.extend(f)
+        stats.append(s)
+    return findings, stats
+
+
 def _tally(findings: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
     """Counts per check id and per severity."""
     by_id: Dict[str, int] = {}
@@ -85,10 +148,11 @@ def _tally(findings: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
 
 
 def print_human(source_mode: str, files: List[str],
-                findings: List[Dict[str, Any]]) -> None:
+                findings: List[Dict[str, Any]],
+                shacl_stats: List[Dict[str, Any]] | None = None) -> None:
     tally = _tally(findings)
     print("=" * 66)
-    print(f"  TscgOntologyValidator 0.1.0  |  source={source_mode}  "
+    print(f"  TscgOntologyValidator {_VERSION}  |  source={source_mode}  "
           f"|  {len(files)} file(s)")
     print("=" * 66)
 
@@ -99,6 +163,19 @@ def print_human(source_mode: str, files: List[str],
           f"(+{len(ctx_findings) - len(real_ctx)} INFO/advisory)")
     for fam in _PLANNED:
         print(f"  {fam}  : not yet implemented (later lot)")
+    for s in shacl_stats or []:
+        if "error" in s:
+            print(f"  SHACL: {s['grammar']}  NOT RUN ({s['error']})")
+            continue
+        print(f"  SHACL: {s['grammar']}")
+        print(f"         {s['files']} file(s) | {s['results']} result(s) | "
+              f"{s['not_run']} not run | {len(s['blind'])} blind shape(s) | "
+              f"{s['untargeted_shapes']} untargeted (referenced) shape(s)")
+        for shape, n in s["focus"].items():
+            hits = sum(1 for f in findings if f["id"] == "SHACL-V"
+                       and f.get("grammar") == s["grammar"] and f.get("shape") == shape)
+            flag = "  <-- BLIND" if n == 0 else ""
+            print(f"           {shape:<40} focus {n:>5}  results {hits:>5}{flag}")
     print("-" * 66)
 
     # by check id
@@ -121,13 +198,17 @@ def print_human(source_mode: str, files: List[str],
 
 
 def main(argv: List[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="TSCG ontology validator (lot 1: CTX)")
+    ap = argparse.ArgumentParser(description="TSCG ontology validator (CTX, AXIS, SHACL)")
     ap.add_argument("--source", choices=["local", "head", "github"], default="head",
                     help="where to read the corpus from (default: head = authority)")
     ap.add_argument("--layers", default="M3,M2,M1",
                     help="comma list of layers to scan (default M3,M2,M1)")
     ap.add_argument("--file", default=None,
                     help="validate a single relpath (overrides --layers)")
+    ap.add_argument("--shacl", action="store_true",
+                    help="also run the SHACL grammar(s) registered for each selected layer")
+    ap.add_argument("--shapes", default=None,
+                    help="run THIS grammar (.ttl) on the selected files (implies --shacl)")
     ap.add_argument("--report", default=None,
                     help="write the machine-readable JSON report to this path")
     args = ap.parse_args(argv)
@@ -136,16 +217,21 @@ def main(argv: List[str] | None = None) -> int:
     layers = [x.strip().upper() for x in args.layers.split(",") if x.strip()]
     files = _select_files(source, layers, args.file)
     findings = run_validation(source, files)
+    shacl_stats = None
+    if args.shacl or args.shapes:
+        sf, shacl_stats = run_shacl(source, files, layers, args.shapes)
+        findings.extend(sf)
 
-    print_human(args.source, files, findings)
+    print_human(args.source, files, findings, shacl_stats)
 
     if args.report:
         report = {
             "tool": "TscgOntologyValidator",
-            "version": "0.1.0",
+            "version": _VERSION,
             "source": args.source,
             "authority": args.source in ("head", "github"),
-            "families_implemented": sorted(_IMPLEMENTED),
+            "families_implemented": sorted(_IMPLEMENTED) + ["SHACL"],
+            "shacl": shacl_stats,
             "families_planned": _PLANNED,
             "files": files,
             "tally": _tally(findings),
