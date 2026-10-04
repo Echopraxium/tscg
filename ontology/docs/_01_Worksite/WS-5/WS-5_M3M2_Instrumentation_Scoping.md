@@ -153,3 +153,32 @@ families, `m2:hasM3Origin`, `m2:asfidScores`, `m3:dimensionType` — all 0 occur
 measured 2026-10-01). **DONE 2026-10-01** (Michel's request): skill rewritten as 2.0.0
 — catalog-driven from HEAD, pre-flight checks, focus-node count and negative test per
 shape, gate integration; bundled `generate_shacl_schema.py` retired.
+
+## 7. Step (1) — generic SHACL runner: DONE 2026-10-04
+
+Measured on HEAD `8db41cf`. `validator/checks/shacl_runner.py` 0.1.0, engine 0.2.0
+(`tscg_validator.py --shacl` / `--shapes <ttl>`), negative tests in
+`validator/tests/test_shacl_runner.py` (8/8). The gate is NOT wired yet (step 4):
+golden values untouched, gate PASS unchanged.
+
+- **One runner, grammars as data.** `GRAMMARS` maps a layer to its `.ttl` files
+  (M1, M0, M2-SC-2; M3 none — reported as NOT INSTRUMENTED, never silently skipped).
+- **Parity with the existing checkers**: M1 344 results, file by file equal to
+  check_M1's count / 2 (17/17); M0 22 instances with ≥ 1 result = C15's 22 FAIL.
+  Cross-checks: ComboFormulaShape 138 = SC-1 gauge; DomainConceptComboShape 196 =
+  the 196 `rdfs:subClassOf` literals.
+
+Findings (no lot yet, Michel to decide):
+
+- **check_M1 counts each SHACL violation twice.** `run_shacl` keeps the lines
+  "Message:" and "Focus Node:": the gate's frozen M1 `shacl_violations` (688) is a
+  count of lines, i.e. 344 violations. Consistent over time, wrong unit.
+- **The interim SC-2 runner measured nothing.** `tscg_metrics --shacl --shacl-path
+  check-M2/…` iterates M1 files only and keeps only "(SC-1)" messages: it always
+  printed 0. Run through the new runner, both SC-2 shapes bite on M2 (focus 86 and 2)
+  and find 0 violations — consistent with the document-plane NOT-1 gauge (0).
+- **Two M0 files are invisible to the M0 grammar.** `instances/systemic-frameworks/
+  Triz/M0_Triz_Examples.jsonld` and its copy `instances/tscg-tools/TscgLittleBigBrain/
+  M0_Triz_Examples.jsonld` have no `owl:Ontology` node: every M0 shape targets
+  `owl:Ontology`, so C15 reports them as passing without validating anything (focus
+  41 for 43 files). Also a duplicate file.
