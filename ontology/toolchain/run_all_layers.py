@@ -71,7 +71,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from tscg_paths import REPO_ROOT, ONTOLOGY_DIR, TOOLCHAIN_DIR, verify_layout  # noqa: E402
 
-__version__ = "1.3.0"
+__version__ = "1.4.0"
 
 GOLDEN_FILE = TOOLCHAIN_DIR / "golden_values.json"
 
@@ -205,6 +205,73 @@ def run_m1() -> dict | None:
 
     return {"files": files, "errors": errors, "warnings": warnings,
             "shacl_violations": shacl, "by_code": dict(by_code)}
+
+
+# M3 and M2 are measured by the WS-5 validator engine (one script, all planes):
+# document plane D1–D7 (--doc), cross-file graph checks G1b/G5/G6 (--ext), SHACL
+# grammars registered per layer (--shacl: structural G1–G4, SC-2 G7 on M2).
+# Severity -> gate counters:
+#   errors           = ERROR findings that are not SHACL results (D2–D7, G1b, G5, G6,
+#                      plus any engine fault: SRC-000, D0, EXT-000, SHACL-000)
+#   warnings         = WARNING findings (D1 bare-key occurrences, SHACL-BLIND)
+#   shacl_violations = SHACL-V (one per sh:ValidationResult, never per text line)
+#   by_code          = every non-zero code, SHACL results mapped to their G id; INFO
+#                      advisories are not counted.
+_SHAPE_TO_G = {
+    "OntologyHeaderShape": "G1", "TermDocumentationShape": "G2",
+    "NoLiteralAxiomObjectShape": "G3", "IriOnlyObjectShape": "G3",
+    "ChangelogEntryShape": "G4",
+    "MonoidalFormulaShape": "G7", "NoTeXSerialisationShape": "G7",
+}
+
+
+def run_engine(layer: str) -> dict:
+    """Run the validator engine on ONE layer (working copy). A crash, a missing report
+    or a report without the expected sections is a FAIL, never a pass."""
+    import tempfile
+    script = TOOLCHAIN_DIR / "validator" / "tscg_validator.py"
+    if not script.exists():
+        return {"_error": f"tscg_validator.py not found at {script}"}
+    with tempfile.TemporaryDirectory() as tmp:
+        report = Path(tmp) / f"{layer}.json"
+        proc = subprocess.run(
+            [sys.executable, str(script), "--source", "local", "--layers", layer,
+             "--doc", "--ext", "--shacl", "--report", str(report)],
+            capture_output=True, text=True, cwd=script.parent,
+            env=_utf8_env(), encoding="utf-8", errors="replace")
+        out = proc.stdout + proc.stderr
+        if "Traceback" in out:
+            return {"_error": f"tscg_validator.py CRASHED on {layer} — a crashed validator "
+                              "reports no errors, which looks exactly like success.\n"
+                              + out[-800:]}
+        if not report.exists():
+            return {"_error": f"tscg_validator.py wrote no report for {layer} "
+                              f"(exit {proc.returncode}).\n" + out[-800:]}
+        data = json.loads(report.read_text(encoding="utf-8"))
+
+    if data.get("doc_occurrences") is None or data.get("ext") is None \
+            or not data.get("shacl"):
+        return {"_error": f"engine report for {layer} lacks a DOC / EXT / SHACL section: "
+                          "a plane did not run."}
+    findings = data.get("findings", [])
+    by_code: Counter = Counter()
+    errors = warnings = shacl = 0
+    for f in findings:
+        sev, cid = f.get("severity"), f.get("id", "?")
+        if sev == "INFO":
+            continue
+        n = int(f.get("count", 1))
+        if cid == "SHACL-V":
+            shacl += 1
+            by_code[_SHAPE_TO_G.get(f.get("shape", ""), "SHACL:" + f.get("shape", "?"))] += 1
+            continue
+        by_code[cid] += n
+        if sev == "ERROR":
+            errors += n
+        else:
+            warnings += n
+    return {"files": len(data.get("files", [])), "errors": errors, "warnings": warnings,
+            "shacl_violations": shacl, "by_code": dict(sorted(by_code.items()))}
 
 
 def run_m0() -> dict | None:
@@ -368,7 +435,8 @@ def main() -> int:
         return 2
 
     golden = load_golden()
-    results = {"M1": run_m1(), "M0": run_m0()}
+    results = {"M3": run_engine("M3"), "M2": run_engine("M2"),
+               "M1": run_m1(), "M0": run_m0()}
 
     ok = True
     for layer in ("M3", "M2", "M1", "M0"):
@@ -387,9 +455,16 @@ def main() -> int:
                 new = {k: v for k, v in res.items() if not k.startswith("_")}
                 deltas = {k: f"{old[k]} -> {new[k]}" for k in TRACKED
                           if k in old and k in new and old[k] != new[k]}
+                codes_moved = golden[layer].get("by_code", {}) != new.get("by_code", {})
+                if old and not deltas and not codes_moved:
+                    # Nothing moved: keep this layer's _previous/_delta, which record the
+                    # LAST REAL change. Rewriting them with "no change" erased that history.
+                    continue
+                if not old:
+                    deltas = "first capture"
                 golden[layer].update(new)
-                golden[layer]["_previous"] = old
-                golden[layer]["_delta"] = deltas or "no change"
+                golden[layer]["_previous"] = old or None
+                golden[layer]["_delta"] = deltas or "by_code only"
                 golden[layer]["_updated"] = str(date.today())
                 if deltas:
                     print(f"\n  {C_WARN}[!!] {layer}: {deltas}{C_END}")

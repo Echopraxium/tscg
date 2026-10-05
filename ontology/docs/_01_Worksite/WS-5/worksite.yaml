@@ -18,6 +18,8 @@
           note: "2026-10-04. tscg_validator --doc (engine 0.3.0), 14 negative tests. M3/M2 on HEAD c2ac85a: D1 M2 1368 / M3 619, D2 2, D5 5 (decision D5(a)), D3 D4 D6 D7 0 — equal to the scoping-note baselines. Not frozen yet (step 4)." }
       - { id: step3-GRAPH, title: "graph-plane checks G1–G7 — grammars/M3_Structural_Schema_shacl.ttl + validator/checks/ext.py", status: done,
           note: "2026-10-05. Structural SHACL grammar (G1–G4) registered for M3 and M2 under ontology/toolchain/grammars/ (Michel: grammars are data, one script); EXT family --ext (G1b, G5, G6), engine 0.4.0; 15 negative tests. HEAD 3720876: G1 M3 4 / M2 1, G2 M3 3 / M2 7, G3 0, G4 0, G1b 0, G5 0, G6 M3 142 / M2 0; G7 (SC-2) 0. EXT parity with tscg_metrics on M3,M2,M1: 0 / 143. Not frozen yet (step 4)." }
+      - { id: step4-GATE, title: "M3/M2 wired into run_all_layers (INSTRUMENTED)", status: done,
+          note: "2026-10-06. run_engine(layer) runs tscg_validator --doc --ext --shacl on the working copy and reads its JSON report (crash / no report / missing plane = FAIL). First capture frozen after review with Michel: M3 5 files, errors 148, warnings 619, shacl 7; M2 1 file, errors 1, warnings 1368, shacl 8. Gate bites on a mutation, a missing pyshacl and an engine crash. run_all_layers 1.4.0: --update-golden no longer rewrites an unchanged layer's history." }
       - { id: lot2-FRB, title: "FRB — retired-formalism traces (tensor/ket)", status: todo,
           note: "will make SC-9 measurable" }
       - { id: lot-DUP, title: "DUP — duplicate retired properties", status: todo,
