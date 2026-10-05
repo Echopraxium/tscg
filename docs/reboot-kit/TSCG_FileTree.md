@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1774 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1778 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -1580,6 +1580,9 @@
         - PEPITE_FIXES_Report.md
         - TSCG_REGRESSION_VALIDATION_REPORT.md
     - **_01_Worksite/**
+      - **DebtMap/**
+        - TSCG_DebtMap_2026-10-06_518df42.png
+        - TSCG_DebtMap_2026-10-06_518df42.svg
       - **OntologyEngineering/**
         - TSCG_HandOver_Article_AI_Delegation_OE_vs_SE_2026-10-01.md
       - **WS-0/**
@@ -1644,6 +1647,7 @@
         - worksite.yaml
       - _00_open_cmd_window.bat
       - _open_cmd_window.bat
+      - TSCG_Debt_Overview.md
       - TSCG_HandOver_FireTriangle.md
       - TSCG_OntologyValidator_Worksite_README.md
       - TSCG_VocabularyConsolidation_Worksite_README.md
@@ -1872,6 +1876,7 @@
     - modernize_m0_README.md
     - README.md
     - run_all_layers.py
+    - tscg_debt_map.py
     - tscg_metrics.py
     - tscg_metrics_README.md
     - tscg_paths.py
