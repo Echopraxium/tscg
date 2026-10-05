@@ -2,7 +2,7 @@
 
 **Author**: Echopraxium with the collaboration of Claude AI
 **Date**: 2026-10-01
-**Status**: DECIDED 2026-10-03 — Q1 (a) engine, Q2 order, Q3 INSTRUMENTED, Q4 structural v1; Q5 done. CTX-5 lot done (§4).
+**Status**: DONE 2026-10-06 — M3 and M2 INSTRUMENTED in the gate (§10). Decisions Q1–Q5 applied; CTX-5 lot done (§4).
 **Measured on**: HEAD `ac74136` (after WS-1 lots 1h/1i/1j). Every count below is
 session state: re-measure before use (`head-over-memory`).
 
@@ -259,3 +259,33 @@ are plain literals); G2 covers TSCG-namespace terms only.
 gaps** in GenesisGrammar with no label at all: `m3:FacetValue`, `m3:hasFacetValue`,
 `m3:valueOf`. The 34 terms of GrammarFoundation without label/comment are the
 standard terms the apex declares (ExternalVocabularyPolicy): out of G2's scope.
+
+## 10. Step (4) — M3/M2 in the gate: DONE 2026-10-06
+
+`run_all_layers.py` 1.4.0. `run_engine(layer)` runs
+`validator/tscg_validator.py --source local --layers <L> --doc --ext --shacl --report`
+on the WORKING COPY (like check_M1) and reads the JSON report — never the printed
+text. Same contract as `run_m1()`: a traceback, no report, or a report missing the
+DOC / EXT / SHACL section is a RUNNER FAILED, never a pass.
+
+Counter mapping (also in the golden notes, without numbers):
+`errors` = D2–D7 + G1b/G5/G6 (+ any engine fault code), `warnings` = D1 occurrences
+(+ SHACL-BLIND), `shacl_violations` = SHACL results, `by_code` = every non-zero code,
+SHACL results mapped to their G id. A code absent from the frozen `by_code` that
+appears later fails the gate.
+
+First capture, reviewed number by number with Michel and frozen (HEAD `1344c97`):
+
+| | files | errors | warnings | shacl_violations | by_code |
+|---|---|---|---|---|---|
+| M3 | 5 | 148 | 619 | 7 | D1 619 · D2 2 · D5 4 · G1 4 · G2 3 · G6 142 |
+| M2 | 1 | 1 | 1368 | 8 | D1 1368 · D5 1 · G1 1 · G2 7 |
+
+Negative tests of the gate itself (all FAIL as they must, then PASS once restored):
+a bare key added to M2 (warnings 1369 vs 1368, D1 +1); pyshacl hidden
+(shacl_violations → 0, SHACL-000 +5 / +2); an engine crash (RUNNER FAILED on M3 and M2).
+
+`--update-golden` fix: it used to rewrite `_previous` / `_delta` of EVERY instrumented
+layer, even unchanged ones ("no change"), erasing the record of the last real change.
+An unchanged layer is now left untouched; a new layer is recorded as "first capture".
+M1 / M0 entries verified byte-identical after this capture.
