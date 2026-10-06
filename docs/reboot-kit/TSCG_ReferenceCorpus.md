@@ -1,6 +1,6 @@
 # TSCG — Reference Corpus (Complete)
 
-**Author**: Echopraxium with the collaboration of Claude AI · **Date**: 2026-08-11
+**Author**: Echopraxium with the collaboration of Claude AI · **Date**: 2026-10-06 (routing tables re-verified on HEAD `d0f2db0`; created 2026-08-11)
 
 > **This file is a router, not a content store.** It maps *where authority lives*
 > so that live facts are read from HEAD, never recited from the corpus. It carries
@@ -43,7 +43,7 @@ modifiers); `_0` (EquilibriumPole) `= _^ | _$` is a **derived** element, not a p
 
 ## Layer routing — where each layer's authority lives
 
-| Layer | Path `[✓ HEAD 2026-08-11]` |
+| Layer | Path `[✓ HEAD 2026-10-06]` |
 |---|---|
 | M3 aggregator | `ontology/M3_GenesisGrammar.jsonld` |
 | M3 grammars | `ontology/M3_EagleEye.jsonld`, `M3_SphinxEye.jsonld`, `M3_BicephalousPerspective.jsonld`, `M3_GrammarFoundation.jsonld` |
@@ -54,18 +54,38 @@ modifiers); `_0` (EquilibriumPole) `= _^ | _$` is a **derived** element, not a p
 
 ## Tooling routing
 
-| Purpose | Path `[✓ HEAD 2026-08-11]` |
+| Purpose | Path `[✓ HEAD 2026-10-06]` |
 |---|---|
-| Acceptance gate | `ontology/toolchain/run_all_layers.py` |
+| Prerequisites | `ontology/toolchain/requirements.txt` (`python -m pip install -r …`) |
+| Acceptance gate (M3→M0) | `ontology/toolchain/run_all_layers.py` |
 | Golden values | `ontology/toolchain/golden_values.json` |
+| Validation engine (one script) | `ontology/toolchain/validator/tscg_validator.py` (`--doc --ext --shacl`) |
+| SHACL grammar registry | `ontology/toolchain/validator/checks/shacl_runner.py` (`GRAMMARS`) |
+| Engine checks / tests | `ontology/toolchain/validator/checks/` · `ontology/toolchain/validator/tests/` |
+| M3/M2 structural grammar | `ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl` (new grammars go in `grammars/`) |
+| M2 SC-2 grammar | `ontology/toolchain/check-M2/M2_MonoidalFormula_Schema_shacl.ttl` |
 | Metrics gauge | `ontology/toolchain/tscg_metrics.py` |
 | M1 checker | `ontology/toolchain/check-M1/check_M1.py` |
 | M1 SHACL | `ontology/toolchain/check-M1/M1_Schema_shacl.ttl` |
+| M0 checker | `ontology/toolchain/check-M0/check_m0_instances.py` |
 | M0 SHACL | `ontology/toolchain/check-M0/M0_Instances_Schema_shacl.ttl` |
+| Linter · OWL reasoning | `ontology/toolchain/ontology-linter/` · `ontology/toolchain/owl_reasoning_test/` |
+| LayerCake Health Map generator | `ontology/toolchain/tscg_layercake_health_map.py` |
+| Compendium (incl. tab "LayerCake Health") | `cli_tools/compendium/build_compendium.py` |
 
 *Reminder: `check_M1.py` runs from `ontology/toolchain/`, not the repo root.
 Watch the separator — the **folder** is `check-M1` (hyphen), the **file** is
 `check_M1.py` (underscore); mixing them gives a 404.*
+
+## Debt & worksites routing — `[✓ HEAD 2026-10-06]`
+
+| Purpose | Path |
+|---|---|
+| Technical debt, master level (how measured, by owner, reduction path) | `ontology/docs/_01_Worksite/TSCG_Debt_Overview.md` |
+| LayerCake Health Map snapshots (dated, named after a `main` commit) | `ontology/docs/_01_Worksite/LayerCakeHealthMap/` |
+| Worksite registry | `ontology/docs/_01_Worksite/worksite.yaml` (+ `WS-n/worksite.yaml`) |
+| Worksite map | `ontology/docs/_01_Worksite/WS-0/_00_TSCG_Worksite_Map.md` |
+| Latest HandOver (WS-5) | `ontology/docs/_01_Worksite/WS-5/Next_Conversation_2026-10-06/` |
 
 ## M0 instances routing
 
@@ -84,7 +104,7 @@ Watch the separator — the **folder** is `check-M1` (hyphen), the **file** is
 Some folders are CamelCase (`FireTriangle`, `Triz`), others lowercase (`vsm`,
 `iching`), and a folder's case need not match its file's (`vsm/M0_VSM.jsonld`).
 
-## Other key folders — `[✓ HEAD 2026-08-12]`
+## Other key folders — `[✓ HEAD 2026-10-06]`
 
 - `ontology/docs/_01_Worksite/` — worksite READMEs, `WS-n/` sub-folders, and dated
   session HandOvers (e.g. `WS-0/.../TSCG_Session_Handover_2026-08-11.md`). This is
@@ -92,8 +112,10 @@ Some folders are CamelCase (`FireTriangle`, `Triz`), others lowercase (`vsm`,
 - `docs/CoreHypotheses/` — core-hypothesis essays.
 - `cli_tools/` at repo root — general-purpose repo tools (compendium, gallery, migration).
   Distinct from `ontology/toolchain/`, the ontology tools: gate, checkers, metrics,
-  validator engine, linter, OWL reasoning test (renamed from `ontology/cli-tools/` on
-  2026-10-03; `owl_reasoning_test/` moved there from `cli_tools/`).
+  validator engine, grammars, linter, OWL reasoning test (renamed from
+  `ontology/cli-tools/` on 2026-10-03; `owl_reasoning_test/` moved there from `cli_tools/`).
+- `.claude/skills/` — repository source of the TSCG skills (the provisioned copies are
+  re-provisioned from here).
 
 ---
 
