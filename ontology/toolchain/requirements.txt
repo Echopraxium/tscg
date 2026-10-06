@@ -1,7 +1,9 @@
 # ontology/toolchain/requirements.txt — Python packages of the TSCG acceptance gate
 # (run_all_layers.py), the validator engine (validator/) and the checkers.
 # One list, referenced by the UserGuide, the toolchain README and CI.
-#   pip install -r ontology/toolchain/requirements.txt
+#   python -m pip install -r ontology/toolchain/requirements.txt
+# Use `python -m pip`, not a bare `pip`: with several Pythons installed, `pip` may
+# install into another interpreter than the `python` that runs the gate.
 # A missing package is reported by the gate at start-up and makes it FAIL:
 # a check that cannot run must never look like a check that passed.
 rdflib>=7.0        # JSON-LD / RDF parsing (every graph check)
