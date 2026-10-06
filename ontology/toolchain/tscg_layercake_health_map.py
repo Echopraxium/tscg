@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-tscg_debt_map.py — concentric hexagonal map of the TSCG technical debt (snapshot).
+tscg_layercake_health_map.py — LayerCake Health Map: concentric hexagonal map of the
+TSCG technical debt (snapshot). Renamed from tscg_debt_map.py (Michel, 2026-10-06).
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 0.1.0
+Version: 0.4.0
 Date   : 2026-10-06
-Home   : ontology/toolchain/tscg_debt_map.py
+Home   : ontology/toolchain/tscg_layercake_health_map.py
 
 WHAT IT DRAWS
 -------------
@@ -65,8 +66,8 @@ are read from golden_values.json (the authority), never typed in.
 
 USAGE
 -----
-  python tscg_debt_map.py                      # snapshot into ontology/docs/_01_Worksite/DebtMap/
-  python tscg_debt_map.py --out DIR --no-png
+  python tscg_layercake_health_map.py            # snapshot into ontology/docs/_01_Worksite/LayerCakeHealthMap/
+  python tscg_layercake_health_map.py --out DIR --no-png
 """
 
 from __future__ import annotations
@@ -95,7 +96,7 @@ from checks import doc as doc_check, shacl_runner, ext as ext_check  # noqa: E40
 
 logging.getLogger("rdflib").setLevel(logging.ERROR)
 
-__version__ = "0.3.2"
+__version__ = "0.4.0"
 GREEN, PALE, ORANGE, RED, GREY = "green", "pale", "orange", "red", "grey"
 # Palette (Michel, 2026-10-06): bright orange = bare keys, magenta = other technical debt.
 COLOR = {GREEN: "#3f9e5a", PALE: "#ff8a00", ORANGE: "#c4268f", RED: "#d8322a", GREY: "#b9b9b9"}
@@ -586,9 +587,9 @@ def render(nodes: List[Node], golden: Dict[str, Any], head: str, out_svg: Path,
     # legend + footer
     y0 = W + 10
     out.append(f'<text x="30" y="{y0 + 10:.0f}" font-size="18" font-weight="bold" fill="#2b2a26">'
-               f'TSCG — technical debt map (snapshot)</text>')
+               f'TSCG — LayerCake Health Map (snapshot)</text>')
     out.append(f'<text x="30" y="{y0 + 30:.0f}" font-size="11" fill="#55524b">'
-               f'{datetime.date.today()} · HEAD {head} · tscg_debt_map {__version__} · centre = M3 '
+               f'{datetime.date.today()} · HEAD {head} · tscg_layercake_health_map {__version__} · centre = M3 '
                f'(abstract), periphery = M0 (concrete) · one cell per node (one per instance in M0) · '
                f'hover a cell for its findings, a link for its detail</text>')
     out.append(f'<text x="30" y="{y0 + 76:.0f}" font-size="10.5" fill="#55524b">links: '
@@ -642,8 +643,8 @@ def to_png(svg: Path, png: Path) -> bool:
 
 
 def main(argv: Optional[List[str]] = None) -> int:
-    ap = argparse.ArgumentParser(description="TSCG technical debt map (concentric hex snapshot)")
-    ap.add_argument("--out", default=str(REPO_ROOT / "ontology/docs/_01_Worksite/DebtMap"))
+    ap = argparse.ArgumentParser(description="TSCG LayerCake Health Map (concentric hex snapshot)")
+    ap.add_argument("--out", default=str(REPO_ROOT / "ontology/docs/_01_Worksite/LayerCakeHealthMap"))
     ap.add_argument("--no-png", action="store_true")
     args = ap.parse_args(argv)
 
@@ -668,7 +669,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     golden = json.loads((HERE / "golden_values.json").read_text(encoding="utf-8"))
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    stem = f"TSCG_DebtMap_{datetime.date.today()}_{head}"
+    stem = f"TSCG_LayerCake_Health_Map_{datetime.date.today()}_{head}"
     svg = out / f"{stem}.svg"
     edges = compute_edges(src, by_layer)
     stats = render(nodes, golden, head, svg, edges)
