@@ -9,9 +9,10 @@ description: >
   think?" about a known system, or requests an HTML/Electron simulation of a TSCG system.
   Do NOT use for Case Studies or Real World Systems (too complex) — this pipeline is
   reserved for Instances.
-version: 2.2.0
+version: 2.2.1
 ---
 
+<!-- v2.2.1 (2026-10-06) — requirement line: python -m pip install -r ontology/toolchain/requirements.txt. -->
 <!-- v2.2.0 (2026-10-01) — Vocabulary hygiene (WS-1). ZERO BARE KEYS rule + mandatory
      bare-key check before delivery (3.3, 3.5); @context example no longer shows
      colon-named terms (CTX-5) — local namespace m0.<instanceId>: (WS-10); m2:changelog
@@ -498,4 +499,5 @@ SIMULATION
   removed), optional `--schema`, exit code 0 / 1, violation report on failure.
 - `check_m0_instances.py` (`ontology/toolchain/check-M0/`): checks C01–C15 on all M0
   instances or one (`--instance NAME`); its totals feed the gate.
-- Requirement: `pip install --break-system-packages rdflib pyshacl pyld`
+- Requirement: `python -m pip install -r ontology/toolchain/requirements.txt` (rdflib,
+  pyshacl, pyld). Use `python -m pip`, not a bare `pip` (several Pythons may be installed).
