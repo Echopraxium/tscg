@@ -80,9 +80,9 @@ equivalent. Sign up at [claude.ai](https://claude.ai).
 > Honest note: this is a real cost. It is the one prerequisite you cannot work
 > around today. Everything else in this guide is free and open-source.
 
-### 2.3 Create and configure the **"TSCG Cyclop v0"** project
+### 2.3 Create and configure the **"TSCG Workshop v1"** project
 
-In your Claude account, create a new **Project** named **`TSCG Cyclop v0`**.
+In your Claude account, create a new **Project** named **`TSCG Workshop v1`**.
 This is your dedicated TSCG kitchen inside Claude — it keeps every session
 oriented and stops Claude from drifting or inventing framework facts.
 
@@ -122,9 +122,9 @@ conversation. The exact set is defined in `TSCG_ReferenceCorpus_Bootstrap.md` un
 (The project owner refreshes the one drift-prone resident copy — the File Tree —
 after structural changes. Never your concern as a user.)
 
-> **Why "Cyclop"?** TSCG reads a system through *two eyes* (Territory + Map).
-> A fresh project with no context is one-eyed — it needs the corpus to gain
-> depth perception. Loading the corpus is what turns Cyclop into a proper
+> **Why load the corpus?** TSCG reads a system through *two eyes* (Territory +
+> Map). A fresh project with no context is one-eyed — it needs the corpus to gain
+> depth perception. Loading the corpus is what turns it into a proper
 > stereoscopic reader.
 
 ### 2.4 Verify the setup before your first task
@@ -193,7 +193,7 @@ tends toward, a Structure, a Flow, Information, and Dynamics).
 
 ### Step 2 — Propose it, with documentation
 
-Start a session in `TSCG Cyclop v0` and describe the system in a few sentences,
+Start a session in `TSCG Workshop v1` and describe the system in a few sentences,
 attaching whatever reference material you have (a Wikipedia page, a course note,
 a datasheet — the exercise folders already include a source). Then ask the
 open question the pipeline expects:
@@ -290,7 +290,7 @@ project setup in section 2.
 
 ## 4. Quick reference — your checklist
 
-1. **Setup (once):** clone the repo · get Claude Pro · create & load `TSCG Cyclop v0`.
+1. **Setup (once):** clone the repo · get Claude Pro · create & load `TSCG Workshop v1`.
 2. **Propose** a system with documentation → get a feasibility verdict.
 3. **Analyse** → M2 sufficient or a candidate? existing M1 domain or a new one?
 4. **Model** M0 + README → *pilot every choice* → **must pass SHACL**.
