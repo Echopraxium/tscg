@@ -1,10 +1,11 @@
-# TSCG HandOver — WS-5 critical path done (gate covers M3→M0); next: LayerCake Health tab
+# TSCG HandOver — WS-5 critical path done (gate covers M3→M0); LayerCake Health in the Compendium; next: small debt lots
 
 **Author**: Echopraxium with the collaboration of Claude AI
 **Date**: 2026-10-06
 **Purpose**: resume cold in a fresh conversation. The WS-5 critical path is closed: the
-gate measures the four layers. Next: the Compendium tab "LayerCake Health", then the
-small debt-reduction lots.
+gate measures the four layers, and the LayerCake Health Map is regenerated at every
+Compendium build (tab "LayerCake Health", KitArchitect). Next: the small
+debt-reduction lots.
 **Companion files (same folder)**: `TSCG_RemainingWork.png` (dependency graph, legend
 bottom-right), its Graphviz sources `TSCG_RemainingWork.dot` and `legend.dot`, and
 `render_graph.py` (Graphviz + Pillow). Edit the `.dot` files, then `python render_graph.py`.
@@ -70,7 +71,7 @@ bottom-right), its Graphviz sources `TSCG_RemainingWork.dot` and `legend.dot`, a
 | `7470326` | `requirements.txt`, gate start-up package check (1.4.1), UserGuide setup step + dead `validate_m0_instance.py` path fixed |
 | `a2a6ea8` | `python -m pip` everywhere; gate prints its interpreter (1.4.2) |
 | `ffa6206` | UserGuide: Claude project is **"TSCG Workshop v1"** (was "TSCG Cyclop v0") |
-| *(this lot)* | map renamed **LayerCake Health Map** (`tscg_layercake_health_map.py` 0.4.0, `_01_Worksite/LayerCakeHealthMap/`); snapshot regenerated on `ffa6206`; this HandOver |
+| *(this series)* | map renamed **LayerCake Health Map** (`tscg_layercake_health_map.py` 0.4.0, `_01_Worksite/LayerCakeHealthMap/`), snapshot regenerated on `ffa6206`; this HandOver; **Compendium tab "LayerCake Health"** (map regenerated at every build, `pages.yml` installs `requirements.txt`) |
 
 ### Decisions taken (Michel, 2026-10-03 → 10-06)
 
@@ -93,8 +94,9 @@ bottom-right), its Graphviz sources `TSCG_RemainingWork.dot` and `legend.dot`, a
   keys · **magenta** other technical debt · **red** invisible/misread · grey not
   measured. Generated, never hand-drawn; snapshots dated and named after a HEAD
   commit that is on `main`.
-- **Compendium tab "LayerCake Health"**, generated at build time. Visibility
-  proposed **KitArchitect only** — not explicitly confirmed (§3).
+- **Compendium tab "LayerCake Health"**, regenerated at every build (Michel:
+  "régénérer et afficher dans le Compendium"). Built **KitArchitect only** — the
+  visibility itself is not explicitly confirmed (§3).
 - Claude project name: **TSCG Workshop v1**.
 
 ### Working method that worked (reuse it)
@@ -114,11 +116,12 @@ bottom-right), its Graphviz sources `TSCG_RemainingWork.dot` and `legend.dot`, a
 
 The critical path is red in the graph:
 
-1. **(1) Compendium tab "LayerCake Health"** (KitArchitect only):
-   `build_compendium.py` calls `tscg_layercake_health_map.py --no-png` into `dist/`,
-   the template gets a rubric showing the SVG **inline** (tooltips work); if the
-   generation fails in CI, the tab says "map unavailable: <reason>" — never an empty
-   tab. `pages.yml` installs `requirements.txt` (no Playwright). One patch.
+1. **(1) DONE in this series — Compendium tab "LayerCake Health"**: `build_compendium.py`
+   runs `tscg_layercake_health_map.py --no-png` into a temp dir and publishes
+   `dist/layercake_health_map.svg`; the tab embeds it with an `<object>` (tooltips
+   work); a failed generation shows "map unavailable: <reason>", never an empty tab.
+   **Verify after the push**: the GitHub Action log ("health map: ok") and the tab on
+   https://echopraxium.github.io/tscg with the KitArchitect lens.
 2. **(2) Small safe lots on M3/M2** (~25 points): 5 headers (G1), 5 changelog vestiges
    (D5), 10 labels/comments (G2 — **text by Michel**). Each lowers a frozen counter,
    re-frozen with `--update-golden` and the reason in the commit.

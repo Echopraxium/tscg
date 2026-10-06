@@ -97,6 +97,12 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(30px,7vw,46px);letter
 .stub li{margin:4px 0}
 .switch{font:inherit;font-size:13px;font-weight:600;font-family:var(--disp);cursor:pointer;border:1px solid var(--accent);color:var(--accent);background:transparent;border-radius:8px;padding:7px 12px}
 .empty{color:var(--muted);padding:40px 0;text-align:center}
+.health-intro{color:var(--muted);font-size:14px;max-width:80ch;margin:0 0 14px}
+.health-frame{background:#fbfaf7;border:1px solid var(--line);border-radius:12px;padding:8px;overflow:hidden}
+.health-frame object{display:block;width:100%;height:auto}
+.health-legend{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0 4px;font-size:13px;color:var(--muted)}
+.health-legend span::before{content:"";display:inline-block;width:11px;height:11px;margin-right:6px;vertical-align:-1px;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
+.hl-g::before{background:#3f9e5a}.hl-o::before{background:#ff8a00}.hl-m::before{background:#c4268f}.hl-r::before{background:#d8322a}.hl-x::before{background:#b9b9b9}
 footer{margin-top:40px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
 @media (max-width:560px){.lens-top{flex-direction:column;align-items:flex-start;gap:6px}.lens-count{text-align:left}.row{flex-direction:column;gap:6px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -139,6 +145,7 @@ const TREE="https://github.com/Echopraxium/tscg/tree/main/";
 const UNDERSTAND="Understand the kit";
 const DOC_ORDER=["Epistemology","Guides & templates","Gate tools & tooling","The M3–M0 layers","Project management"];
 const EYE=["KitUser","KitCrafter","KitArchitect"];
+const HEALTH="LayerCake Health";   // KitArchitect only (Michel, 2026-10-06)
 let audience="KitUser", section=UNDERSTAND, query="";
 try{const s=localStorage.getItem("tscg-aud"); if(s&&EYE.includes(s)) audience=s;}catch(e){}
 try{const t=localStorage.getItem("tscg-theme"); if(t) document.documentElement.dataset.theme=t;}catch(e){}
@@ -158,10 +165,11 @@ function sectionsForAudience(){
   const out=[UNDERSTAND];
   if(DATA.subjects.some(inAud)) out.push("Instances & simulations");
   DOC_ORDER.forEach(s=>{ if(DATA.docs.some(d=>inAud(d)&&d.section===s)) out.push(s); });
+  if(audience==="KitArchitect") out.push(HEALTH);
   return out;
 }
 function sectionCount(s){
-  if(s===UNDERSTAND) return "";
+  if(s===UNDERSTAND||s===HEALTH) return "";
   if(s==="Instances & simulations") return DATA.subjects.filter(inAud).length;
   return DATA.docs.filter(d=>inAud(d)&&d.section===s).length;
 }
@@ -271,6 +279,29 @@ function renderProject(){
   return html||`<p class="empty">Nothing here at this level.</p>`;
 }
 
+function renderHealth(){
+  const H=DATA.health||{status:"unavailable",reason:"no health data in this build"};
+  const doc=BLOB+"ontology/docs/_01_Worksite/TSCG_Debt_Overview.md";
+  const snaps=TREE+"ontology/docs/_01_Worksite/LayerCakeHealthMap";
+  const gen=BLOB+"ontology/toolchain/tscg_layercake_health_map.py";
+  if(H.status!=="ok"){
+    return `<div class="intro"><p><b>LayerCake Health Map unavailable in this build.</b></p>
+      <p class="health-intro">${esc(H.reason||"unknown reason")}</p>
+      <p class="health-intro">An absent map is not a healthy one. Dated snapshots: <a href="${snaps}">LayerCakeHealthMap/</a>.</p></div>`;
+  }
+  return `<section class="group"><h2><span>LayerCake Health Map</span><span>regenerated at this build</span></h2>
+    <p class="health-intro">The Layer Cake seen from above: M3 at the centre (abstract), M0 on the periphery (concrete).
+    One hexagon per node, one meta-hexagon per cluster of nodes. Links only where the data carries a relation.
+    <b>Hover a cell or a link</b> for its findings. Measured by the acceptance gate's own instruments — no number is typed by hand.</p>
+    <div class="health-legend"><span class="hl-g">no finding</span><span class="hl-o">bare keys only (WS-1 vocabulary)</span>
+      <span class="hl-m">other technical debt (measured, frozen)</span><span class="hl-r">invisible / misread by the tools</span><span class="hl-x">not measured</span></div>
+    <div class="health-frame"><object type="image/svg+xml" data="${esc(H.svg)}" style="aspect-ratio:${H.width}/${H.height}"
+      aria-label="LayerCake Health Map">LayerCake Health Map (SVG)</object></div>
+    <p class="health-intro">How to read it, debt by owner and the reduction path: <a href="${doc}">TSCG_Debt_Overview.md</a> ·
+      dated snapshots (progress record): <a href="${snaps}">LayerCakeHealthMap/</a> · generator: <a href="${gen}">tscg_layercake_health_map.py</a> ·
+      open the map alone: <a href="${esc(H.svg)}" target="_blank" rel="noopener">${esc(H.svg)}</a></p></section>`;
+}
+
 function render(){
   const c=counts();
   document.getElementById("nvis").textContent=c.total;
@@ -280,6 +311,7 @@ function render(){
   if(section===UNDERSTAND) v.innerHTML=renderUnderstand();
   else if(section==="Instances & simulations") v.innerHTML=renderInstances();
   else if(section==="Project management") v.innerHTML=renderProject();
+  else if(section===HEALTH) v.innerHTML=renderHealth();
   else v.innerHTML=renderDocs(section);
   v.querySelectorAll(".switch[data-aud]").forEach(b=>b.onclick=()=>setAudience(b.dataset.aud));
   v.querySelectorAll(".switch[data-sec]").forEach(b=>b.onclick=()=>{section=b.dataset.sec;render();});
