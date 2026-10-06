@@ -58,14 +58,20 @@ description: >
 
 **Should NOT:** Interpret semantics, understand domain context
 
-**Available Tools:**
-- `ontology_linter.py` - TSCG conventions + syntax
-- `rdfs_diagnostic.py` ⭐ NEW - RDFS/OWL modeling errors
-- `fix_owl_literals.py` ⭐ NEW - Automated OWL fixes
-- `test_owl_reasoning.py` ⭐ NEW - Pellet reasoner (logical consistency)
-- `shacl-validator` - Shape constraints
-- `jena riot` - RDF parsing
-- `sparql` - Query-based tests
+**Available Tools** (all under `ontology/toolchain/`; prerequisites:
+`python -m pip install -r ontology/toolchain/requirements.txt`):
+- `run_all_layers.py` — **the acceptance gate**: exact frozen counts on M3, M2, M1, M0
+  (`golden_values.json`). The final word on every change.
+- `validator/tscg_validator.py` — the validation engine: `--doc` (document plane
+  D1–D7: bare keys, `@vocab`, changelog, strict JSON-LD expansion…), `--ext`
+  (cross-file G1b/G5/G6), `--shacl` (the SHACL grammars registered per layer)
+- `check-M1/check_M1.py`, `check-M0/check_m0_instances.py` — M1 / M0 checkers
+- `ontology-linter/ontology_linter.py` — TSCG conventions + syntax
+- `owl_reasoning_test/rdfs_diagnostic.py` — RDFS/OWL modeling errors
+- `owl_reasoning_test/fix_owl_literals.py` — automated OWL literal fixes
+- `owl_reasoning_test/owl_reasoning_test.py` — reasoner (logical consistency)
+- `tscg_metrics.py` — gauges (VOC, CTX, FRB, DUP, EXT…)
+- `tscg_layercake_health_map.py` — the LayerCake Health Map (where the debt is)
 
 ---
 
@@ -95,23 +101,23 @@ description: >
 **Goal:** Establish baseline state before changes
 
 **Steps:**
-1. 🛠️ **Linter:** Run on current files
+1. 🛠️ **Gate:** the baseline is the frozen reference
    ```bash
-   python ontology_linter.py ontology/ --layer M2 --format markdown --output pre_diagnosis.md
+   cd ontology/toolchain && python run_all_layers.py      # must end with GATE: PASS
    ```
-   **Output:** Baseline issues report
+   **Output:** the exact counts per layer before the change. A change that must
+   lower a count is announced HERE (which counter, by how much, why).
 
-2. 🛠️ **Reasoner:** Check logical consistency
+2. 🛠️ **Engine + linter** on the layer(s) concerned
    ```bash
-   pellet consistency ontology/*.jsonld
+   python ontology/toolchain/validator/tscg_validator.py --layers M2 --doc --ext --shacl --report pre.json
+   python ontology/toolchain/ontology-linter/ontology_linter.py ontology/ --layer M2 --format markdown --output pre_diagnosis.md
    ```
-   **Output:** Current reasoning status
 
-3. 🛠️ **SPARQL Tests:** Run regression suite
+3. 🛠️ **Reasoner:** logical consistency
    ```bash
-   pytest tests/ontology/
+   python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file ontology/M2_GenericConcepts.jsonld
    ```
-   **Output:** Current test results
 
 4. 🤖 **LLM:** Summarize baseline
    - Parse tool outputs
@@ -155,7 +161,7 @@ description: >
 
 **3.1 🛠️ Ontology Linter** - Syntax & TSCG conventions
 ```bash
-python toolchain/ontology-linter/ontology_linter.py <modified_files> --strict
+python ontology/toolchain/ontology-linter/ontology_linter.py <modified_files> --strict
 ```
 **Pass:** No new errors  
 **Fail:** → Fix issues → Retry
@@ -190,9 +196,9 @@ python ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py
 
 ---
 
-**3.3 🛠️ OWL Reasoning** ⭐ NEW - Logical consistency (Pellet)
+**3.3 🛠️ OWL Reasoning** - Logical consistency
 ```bash
-python ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py
+python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file <modified_file>
 ```
 **Checks:**
 - Logical consistency
@@ -208,21 +214,25 @@ python ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py
 
 ---
 
-**3.4 🛠️ SHACL Validation** - Schema compliance (if grammar exists)
+**3.4 🛠️ SHACL + document plane** - the grammars registered for the layer
 ```bash
-shacl validate --shapes ontology/TSCG_Grammar/M*_Schema.ttl --data <modified_file>
+python ontology/toolchain/validator/tscg_validator.py --layers <M3|M2|M1|M0> --doc --ext --shacl
 ```
-**Pass:** All constraints satisfied  
-**Fail:** → Fix violations → Retry
+(M1/M0 are also covered by `check_M1.py --shacl` and `check_m0_instances.py`.)
+**Pass:** no NEW finding compared with Phase 1 (the frozen backlog may remain)  
+**Fail:** → Fix → Retry
 
 ---
 
-**3.5 🛠️ Regression Tests** - SPARQL suite (if applicable)
+**3.5 🛠️ Acceptance gate** - exact frozen counts, the final check
 ```bash
-pytest tests/ontology/
+cd ontology/toolchain && python run_all_layers.py
 ```
-**Pass:** All tests green  
-**Fail:** → Fix regressions → Retry
+**Pass:** `GATE: PASS`  
+**Up** = a new defect → fix it. **Down** = a deliberate repair → show the move to the
+human, then `python run_all_layers.py --update-golden` and write the reason in the
+commit — OR a check that stopped biting → investigate. Never loosen a check to pass.
+If a tool or grammar changed: its negative tests (`ontology/toolchain/validator/tests/`).
 
 ---
 
@@ -439,22 +449,16 @@ python ontology_linter.py ontology/ --format markdown --output report.md
 
 ### Reasoner Configuration
 ```bash
-# Consistency check
-pellet consistency ontology/*.jsonld
-
-# Full reasoning
-pellet realize ontology/*.jsonld
-
-# Explain inconsistency
-pellet explain ontology/M2_GenericConcepts.jsonld
+python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file ontology/M2_GenericConcepts.jsonld
 ```
 
 ### SHACL Configuration
+Grammars are data, registered per layer in
+`ontology/toolchain/validator/checks/shacl_runner.py` (`GRAMMARS`); new grammars live
+in `ontology/toolchain/grammars/` (see `tscg-generate-mn-grammars`).
 ```bash
-# Validate with shapes
-shacl validate \
-  --shapes ontology/TSCG_Grammar/M2_Shapes.ttl \
-  --data ontology/M2_GenericConcepts.jsonld
+python ontology/toolchain/validator/tscg_validator.py --layers M2 --shacl
+python ontology/toolchain/validator/tscg_validator.py --shapes grammars/<file>.ttl --layers M3
 ```
 
 ---
@@ -529,7 +533,7 @@ This skill **orchestrates** other skills:
 
 ### Short Term
 - [ ] Automate Phase 1 (baseline reporting)
-- [ ] Create SHACL shapes for M2/M3
+- [x] Create SHACL shapes for M2/M3 (structural grammar, WS-5, 2026-10-05)
 - [ ] Build SPARQL test suite
 
 ### Medium Term
@@ -601,6 +605,8 @@ This skill **breaks the Ouroboros** by:
 ---
 
 **Status:** Active skill  
-**Version:** 1.0.0  
-**Last Updated:** 2026-05-13  
+**Version:** 1.1.0  
+**Last Updated:** 2026-10-06 (tool paths verified on HEAD: the gate and the validator
+engine added; dead references removed — `test_owl_reasoning.py`, `ontology/TSCG_Grammar/`,
+`tests/ontology/`, `pellet` CLI)  
 **Maintainer:** Michel (Echopraxium)

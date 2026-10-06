@@ -5,10 +5,10 @@ description: Design, generate and validate SHACL grammars for the TSCG layers M3
 
 # TSCG Generate Mn Grammars
 
-**Version**: 2.0.0
+**Version**: 2.1.0
 **Author**: Echopraxium with the collaboration of Claude AI
-**Date**: 2026-10-01
-**Status**: Active (supersedes 1.1.0 — see Changelog)
+**Date**: 2026-10-06
+**Status**: Active (supersedes 2.0.0 — see Changelog)
 
 ## Purpose
 
@@ -66,11 +66,18 @@ ls ontology/M1_extensions/*/M1_*.jsonld
 - M3 is several files (apex `M3_GrammarFoundation` + the others). All M3 terms share
   the `m3:` namespace of `M3_GenesisGrammar.jsonld#` (sub-namespaces are written
   `m3:eagle_eye:…`, `m3:sphinx_eye:…`) — verify in each file's `@context`.
-- M1 already has a grammar: `ontology/toolchain/check-M1/M1_Schema_shacl.ttl`,
-  run by `check-M1/check_M1.py --shacl`. For M1, **extend that file** (new numbered
-  shape, version bump, changelog); do not generate a parallel one.
-- Read the worksite state first: `ontology/docs/_01_Worksite/WS-0/_00_TSCG_Worksite_Map.md`
-  (WS-5, SC-11), `worksite.yaml`, and any WS-5 scoping note for M3/M2 instrumentation.
+- **Existing grammars (read the registry, not this list):** the validator's
+  `ontology/toolchain/validator/checks/shacl_runner.py` → `GRAMMARS` maps each layer
+  to its `.ttl` files. As of 2026-10-06: M3 and M2 share the STRUCTURAL grammar
+  `ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl` (G1–G4); M2 also runs
+  the 2 SC-2 shapes `check-M2/M2_MonoidalFormula_Schema_shacl.ttl` (G7); M1 has
+  `check-M1/M1_Schema_shacl.ttl` (also run by `check_M1.py --shacl`); M0 has
+  `check-M0/M0_Instances_Schema_shacl.ttl` (also run by `check_m0_instances.py`, C15).
+  **Extend the grammar that already covers the target** (new numbered shape, version
+  bump, changelog); do not generate a parallel one.
+- Read the worksite state first: `ontology/docs/_01_Worksite/TSCG_Debt_Overview.md`
+  (debt by owner), `WS-5/WS-5_M3M2_Instrumentation_Scoping.md` §7–§10 (the engine as
+  built), `worksite.yaml`, and the worksite map (WS-5, SC-11).
 
 ## STEP 1 — Pre-flight: can a grammar see this layer at all?
 
@@ -137,24 +144,30 @@ Present a table: constraint · target · evidence (coverage from STEP 2) · seve
 
 **Layer-specific part — only from catalog evidence + Michel's decision:**
 
-- **M3**: ontology-type scheme integrity (`m3:TscgOntologyTypeScheme`, concepts
-  `owl:Class` + `skos:Concept`), the policy node, apex declarations. Never an `m2:`
-  term in an M3 file (layer inversion).
-- **M2**: the GenericConcept families as found in STEP 2; fold in the existing targeted
-  shapes of `check-M2/M2_MonoidalFormula_Schema_shacl.ttl` (SC-2). A semantic M2
-  grammar (SC-11b) waits for WS-1: while many M2 keys are still bare, a graph grammar
-  validates only part of the file and passes.
+- **M3**: the structural part is DONE (G1–G4 in `grammars/M3_Structural_Schema_shacl.ttl`;
+  G1b ontologyType ∈ `m3:TscgOntologyTypeScheme`, G5/G6 external terms: cross-file,
+  `validator/checks/ext.py`). Still open: scheme integrity, the policy node, apex
+  declarations (SC-10). Layer inversion is checked by the document plane (D6).
+- **M2**: structural part DONE (same grammar + SC-2 G7). A semantic M2 grammar
+  (SC-11b: GenericConcept families, formulas, polarity) waits for WS-1: while many M2
+  keys are still bare (D1), a graph grammar validates only part of the file and passes.
 - **M1**: combos and their signatures (SC-1: a combo formula is a function signature
   `Fm2(...)` / `Fm1m2(Domain, ...)`, no monoidal operator inside), domains registered in
   `M1_Domains.jsonld`. All already in `M1_Schema_shacl.ttl`: extend it.
 
 ## STEP 4 — Generate
 
-- **Location / name**: `ontology/toolchain/check-Mn/Mn_<Scope>_Schema_shacl.ttl`
-  (underscore before `shacl`: a dot-named file was once never found, and the gate
-  validated nothing while exiting 0). Add a scope qualifier when the grammar is
-  partial (precedent: `M2_MonoidalFormula_Schema_shacl.ttl`), keeping
-  `Mn_Schema_shacl.ttl` for a full grammar.
+- **Location / name** (decision Michel, 2026-10-05): a grammar is DATA read by the
+  tools, not a script — new grammars go in **`ontology/toolchain/grammars/`**, named
+  `Mn_<Scope>_Schema_shacl.ttl` (underscore before `shacl`: a dot-named file was once
+  never found, and the gate validated nothing while exiting 0). Name it after the
+  layer whose terms it constrains, with a scope qualifier when partial (precedents:
+  `M3_Structural_Schema_shacl.ttl`, `M2_MonoidalFormula_Schema_shacl.ttl`). The three
+  older grammars still live in `check-M1/`, `check-M2/`, `check-M0/` (move planned).
+- **Registration**: add the file to `GRAMMARS` in
+  `validator/checks/shacl_runner.py` for every layer it covers — that is what makes
+  `tscg_validator.py --shacl`, the gate and the LayerCake Health Map run it. One
+  script, grammars as data: never a new `check_Mn.py`.
 - **Header**: what the file covers AND what it does not (bare-key share, cross-file
   checks left to the engine), version, date, worksite, runner command, changelog.
 - **Prefixes**: copy them from the targets' `@context` on HEAD, absolute only. Today
@@ -178,17 +191,23 @@ Present a table: constraint · target · evidence (coverage from STEP 2) · seve
 1. Turtle parses (rdflib); shapes count printed.
 2. For **each shape**: number of focus nodes on the targets (≥ 1, else the shape is
    blind — fix the target, do not ship it).
-3. Run pyshacl the way the gate does (`inference="none"`; `run_shacl` in
-   `check_M1.py` is the reference). `inference="rdfs"` changes the results: never mix
-   the two.
+3. Run it through the engine: `python ontology/toolchain/validator/tscg_validator.py
+   --layers <L> --shacl` (or `--shapes <file.ttl>` before registering). The runner
+   parses with the file's declared `@base`, uses `inference="none"` like the gate, gives
+   ONE finding per `sh:ValidationResult`, prints the focus count per shape and flags a
+   0-focus shape as SHACL-BLIND. `inference="rdfs"` changes the results: never mix.
 4. Negative tests: for each shape, a mutated in-memory copy of a real node must
    produce the expected violation.
 5. Report: violations per shape and per message, compared with the STEP 3
    expectations. Unexpected numbers are investigated before anything is frozen.
-6. Gate: M1 counts flow through `check_M1.py`; M3/M2 through the WS-5 runner (see the
-   WS-5 scoping note). First capture with `run_all_layers.py --update-golden`, reviewed
-   number by number with Michel, reason written in `golden_values.json`. Do not put
-   numbers in the golden `note` texts — they go stale; point to the frozen values.
+6. Gate: M1 counts flow through `check_M1.py`; M3/M2 through `run_engine()` in
+   `run_all_layers.py` (the engine with `--doc --ext --shacl`; SHACL results are mapped
+   to their G id in `_SHAPE_TO_G` — add the new shapes there). A new grammar moves the
+   frozen counts: show the move to Michel, explain it, then `run_all_layers.py
+   --update-golden` (it only rewrites the layers that moved) and write the reason in the
+   commit. Do not put numbers in the golden `note` texts — point to the frozen values.
+   Negative tests go next to the others in `validator/tests/` (precedent:
+   `test_structural_grammar.py`).
 7. Deliver as one commit / patch (Michel applies with `git am`, runs the gate, pushes).
 
 ## Deliverables
@@ -217,6 +236,17 @@ Present a table: constraint · target · evidence (coverage from STEP 2) · seve
   from the STEP 2 catalog instead.
 
 ## Changelog
+
+**v2.1.0 (2026-10-06)** — aligned with WS-5 as built (steps 1–4).
+- New grammars live in `ontology/toolchain/grammars/` (Michel, 2026-10-05) and are
+  registered in `shacl_runner.GRAMMARS`; one script (`tscg_validator.py`), no new
+  `check_Mn.py`.
+- STEP 0 reads the registry instead of a hard-coded list; points to the debt overview
+  and the WS-5 scoping note §7–§10.
+- M3/M2 structural part marked done (G1–G4, G1b/G5/G6, G7); what remains (SC-10, SC-11b).
+- STEP 5: run through the engine (focus counts, SHACL-BLIND), gate via `run_engine()`
+  and `_SHAPE_TO_G`, `--update-golden` rewrites only moved layers, tests in
+  `validator/tests/`.
 
 **v2.0.0 (2026-10-01)** — rewrite after WS-1 lots 1h–1j and the WS-5 M3/M2 scoping.
 - Removed every hard-coded, now-false fact: dead `M3_GenesisSpace`, phantom `M0_Poclet#`

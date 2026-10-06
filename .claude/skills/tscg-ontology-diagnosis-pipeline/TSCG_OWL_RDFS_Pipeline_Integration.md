@@ -14,7 +14,7 @@ This document describes how to integrate the OWL/RDFS validation tools into the 
 
 1. **`rdfs_diagnostic.py`** - RDFS validation & error reporting
 2. **`fix_owl_literals.py`** - Automated corrections with dry-run
-3. **`test_owl_reasoning.py`** - OWL complete reasoning (Pellet)
+3. **`owl_reasoning_test.py`** - OWL complete reasoning (Pellet)
 
 ### Location
 
@@ -118,7 +118,7 @@ def run_owl_reasoning(ontology_path):
     print("-" * 70)
     
     result = subprocess.run(
-        ["python", "ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py"],
+        ["python", "ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py"],
         capture_output=True,
         text=True
     )
@@ -262,7 +262,7 @@ Add to **Phase 3** section:
 - Logical consistency (Pellet)
 - Inconsistency detection
 - Axiom validation
-- **Tool:** `test_owl_reasoning.py`
+- **Tool:** `owl_reasoning_test.py`
 - **Prerequisite:** 3.2 must pass
 
 ### 3.4: SHACL Validation
@@ -349,7 +349,7 @@ jobs:
     
     - name: Run OWL Reasoning
       run: |
-        python ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py
+        python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py
       if: success()  # Only if RDFS passed
 ```
 
@@ -381,7 +381,7 @@ For ontologies >500 classes:
 ```bash
 # Test 1: Clean ontology (should pass all)
 python ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py
-python ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py
+python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py
 
 # Test 2: Ontology with errors (should fail RDFS, suggest fixes)
 # (Use M2 backup file from before fixes)
