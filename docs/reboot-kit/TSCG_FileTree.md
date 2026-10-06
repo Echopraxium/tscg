@@ -1580,9 +1580,9 @@
         - PEPITE_FIXES_Report.md
         - TSCG_REGRESSION_VALIDATION_REPORT.md
     - **_01_Worksite/**
-      - **DebtMap/**
-        - TSCG_DebtMap_2026-10-06_518df42.png
-        - TSCG_DebtMap_2026-10-06_518df42.svg
+      - **LayerCakeHealthMap/**
+        - TSCG_LayerCake_Health_Map_2026-10-06_ffa6206.png
+        - TSCG_LayerCake_Health_Map_2026-10-06_ffa6206.svg
       - **OntologyEngineering/**
         - TSCG_HandOver_Article_AI_Delegation_OE_vs_SE_2026-10-01.md
       - **WS-0/**
@@ -1877,7 +1877,7 @@
     - README.md
     - requirements.txt
     - run_all_layers.py
-    - tscg_debt_map.py
+    - tscg_layercake_health_map.py
     - tscg_metrics.py
     - tscg_metrics_README.md
     - tscg_paths.py
