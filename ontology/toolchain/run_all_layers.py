@@ -71,7 +71,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from tscg_paths import REPO_ROOT, ONTOLOGY_DIR, TOOLCHAIN_DIR, verify_layout  # noqa: E402
 
-__version__ = "1.4.0"
+__version__ = "1.4.1"
 
 GOLDEN_FILE = TOOLCHAIN_DIR / "golden_values.json"
 
@@ -123,6 +123,17 @@ DEFAULT_GOLDEN = {
                 "Run --update-golden once, review the numbers, then trust them.",
     },
 }
+
+
+REQUIRED_PACKAGES = ("rdflib", "pyshacl", "pyld")   # see requirements.txt
+
+
+def missing_packages() -> list:
+    """Python packages the checkers need but cannot import. The gate still runs (the
+    counts then FAIL), but it says WHY first: on 2026-10-06 a missing pyld showed up
+    only as 'D7 +6' — correct, but a riddle. Name the cause, then show the evidence."""
+    import importlib.util
+    return [p for p in REQUIRED_PACKAGES if importlib.util.find_spec(p) is None]
 
 
 def load_golden() -> dict:
@@ -433,6 +444,13 @@ def main() -> int:
         print(f"\n{C_BAD}[!!] A REQUIRED instance compartment is missing — the totals below "
               f"would NOT be comprehensive. Fix the layout before trusting any number.{C_END}")
         return 2
+
+    missing = missing_packages()
+    if missing:
+        print(f"\n{C_BAD}[!!] Missing Python package(s): {', '.join(missing)}.{C_END}")
+        print(f"     Install them:  pip install -r ontology/toolchain/requirements.txt")
+        print(f"     {C_DIM}The gate runs anyway and WILL FAIL: the checks that need these "
+              f"packages report 'not run', never 'passed'.{C_END}")
 
     golden = load_golden()
     results = {"M3": run_engine("M3"), "M2": run_engine("M2"),

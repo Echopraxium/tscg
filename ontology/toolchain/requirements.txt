@@ -1,0 +1,12 @@
+# ontology/toolchain/requirements.txt — Python packages of the TSCG acceptance gate
+# (run_all_layers.py), the validator engine (validator/) and the checkers.
+# One list, referenced by the UserGuide, the toolchain README and CI.
+#   pip install -r ontology/toolchain/requirements.txt
+# A missing package is reported by the gate at start-up and makes it FAIL:
+# a check that cannot run must never look like a check that passed.
+rdflib>=7.0        # JSON-LD / RDF parsing (every graph check)
+pyshacl>=0.25      # SHACL grammars (check_M1 --shacl, check_m0 C15, validator --shacl)
+pyld>=2.0          # strict JSON-LD 1.1 expansion (validator --doc, check D7)
+# Optional — only for the PNG copy of the debt map (tscg_debt_map.py); the SVG
+# needs nothing more. Requires a Chromium: `python -m playwright install chromium`.
+# playwright>=1.40

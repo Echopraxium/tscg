@@ -44,8 +44,28 @@ cd tscg
 ```
 
 This gives you the whole kitchen on your machine: the ontologies under
-`ontology/`, existing poclets under `instances/poclets/`, and the tools under
-`cli_tools/`. You will keep this folder; it is where your finished poclets go.
+`ontology/`, existing poclets under `instances/poclets/`, the ontology tools
+(validators, the acceptance gate) under `ontology/toolchain/`, and general
+repository tools under `cli_tools/`. You will keep this folder; it is where your
+finished poclets go.
+
+Then install the Python packages the validation tools need (you need
+[Python](https://www.python.org/downloads/) 3.8 or later):
+
+```bash
+pip install -r ontology/toolchain/requirements.txt
+```
+
+This installs `rdflib`, `pyshacl` and `pyld`. Check that everything works by
+running the acceptance gate once:
+
+```bash
+cd ontology/toolchain
+python run_all_layers.py
+```
+
+It must end with **`GATE: PASS`**. If a package is missing, the gate names it at
+the top of its output and ends with `GATE: FAIL` — install it and run it again.
 
 ### 2.2 Open a Claude AI **Pro** account
 
@@ -215,7 +235,7 @@ explanations, and reject anything that doesn't match the system as *you*
 understand it. Two ground rules protect you here:
 
 - **The model must pass SHACL validation** before anything else happens. Claude
-  runs `python ontology/TSCG_Grammar/validate_m0_instance.py <path>` and fixes
+  runs `python ontology/TSCG_InstanceGrammar/validate_m0_instance.py <path>` and fixes
   violations until it reports *Conforms: True*. A model that doesn't validate is
   not done.
 - **Semantic decisions are yours.** Claude proposes the *structure*; you own the
