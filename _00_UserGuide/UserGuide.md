@@ -53,10 +53,12 @@ Then install the Python packages the validation tools need (you need
 [Python](https://www.python.org/downloads/) 3.8 or later):
 
 ```bash
-pip install -r ontology/toolchain/requirements.txt
+python -m pip install -r ontology/toolchain/requirements.txt
 ```
 
-This installs `rdflib`, `pyshacl` and `pyld`. Check that everything works by
+This installs `rdflib`, `pyshacl` and `pyld`. Write `python -m pip`, not just
+`pip`: if several versions of Python are installed, a bare `pip` can install into
+a different Python than the one that runs the tools. Check that everything works by
 running the acceptance gate once:
 
 ```bash
@@ -65,7 +67,8 @@ python run_all_layers.py
 ```
 
 It must end with **`GATE: PASS`**. If a package is missing, the gate names it at
-the top of its output and ends with `GATE: FAIL` — install it and run it again.
+the top of its output, together with the exact install command for the Python it
+runs on, and ends with `GATE: FAIL` — install it and run it again.
 
 ### 2.2 Open a Claude AI **Pro** account
 

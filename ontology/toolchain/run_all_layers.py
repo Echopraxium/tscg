@@ -71,7 +71,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from tscg_paths import REPO_ROOT, ONTOLOGY_DIR, TOOLCHAIN_DIR, verify_layout  # noqa: E402
 
-__version__ = "1.4.1"
+__version__ = "1.4.2"
 
 GOLDEN_FILE = TOOLCHAIN_DIR / "golden_values.json"
 
@@ -448,7 +448,12 @@ def main() -> int:
     missing = missing_packages()
     if missing:
         print(f"\n{C_BAD}[!!] Missing Python package(s): {', '.join(missing)}.{C_END}")
-        print(f"     Install them:  pip install -r ontology/toolchain/requirements.txt")
+        # Install with THIS interpreter: a bare `pip` may belong to another Python
+        # (2026-10-06: pip -> Python 3.12, python -> Python 3.14; pyld "already
+        # satisfied" in the wrong one).
+        req = TOOLCHAIN_DIR / "requirements.txt"
+        print(f"     Python running the gate: {sys.executable}")
+        print(f'     Install them for THIS Python:  "{sys.executable}" -m pip install -r "{req}"')
         print(f"     {C_DIM}The gate runs anyway and WILL FAIL: the checks that need these "
               f"packages report 'not run', never 'passed'.{C_END}")
 

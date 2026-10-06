@@ -223,11 +223,13 @@ Rationale: `ontology/StructuralGrammar/Functional_Grammar_Model.md`
 
 ```bash
 python >= 3.8
-pip install -r ontology/toolchain/requirements.txt     # rdflib, pyshacl, pyld
+python -m pip install -r ontology/toolchain/requirements.txt     # rdflib, pyshacl, pyld
 ```
 
 `requirements.txt` is the single list (also used by the UserGuide and CI). None of
 these packages is optional for the gate: since WS-5, M3/M2 are measured by the
 validator engine, which needs `pyld` (strict JSON-LD expansion, check D7) and
 `pyshacl`. A missing package is named by `run_all_layers.py` at start-up, and the
-gate FAILS — a check that cannot run never passes.
+gate FAILS — a check that cannot run never passes. Use `python -m pip`, not a bare
+`pip`: with several Pythons installed, `pip` may serve another interpreter than the
+`python` that runs the gate (the gate prints the interpreter it uses).
