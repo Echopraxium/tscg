@@ -7,7 +7,7 @@ description: >
   or M1_CoreConcepts combo, or whenever a concept is described as "missing" from M2.
   Applies three sequential filter tests: Decomposability, Transdisciplinarity, Atomicity.
   Produces a placement decision: M2 / M1_CoreConcepts / M1_Domain / Rejected.
-  See also: OntologicalOverfitting.md in CoreHypotheses/
+  See also: docs/CoreHypotheses/OntologicalOverfitting.md
 ---
 
 # TSCG M2 Candidate Filter Skill
@@ -18,10 +18,13 @@ Guard against **Ontological Overfitting** when proposing new M2 or M1_CoreConcep
 applied to m2:Modelisation — adding one M2 concept per observed phenomenon,
 sacrificing E (Evolvability) and V (Verifiability) for local R (Representability).
 
-**Architectural reminder** before starting:
+**Load first, by name: `head-over-memory`.** The primitive alphabet, the M2 concept
+count, formulas and property names are read from HEAD, never recited from this skill.
+
+**Architectural reminder** before starting (counts: read them at HEAD):
 ```
-M3  — 16 primitives (Base16)   HARD LIMIT
-M2  — ~80 atomic concepts      GUARDED — this skill is the guard
+M3  — the Base16 primitives    HARD LIMIT
+M2  — atomic concepts          GUARDED — this skill is the guard
 M1  — unlimited combos         SAFETY VALVE — preferred landing zone
 M0  — unlimited instances      OPEN
 ```
@@ -73,8 +76,8 @@ Proposed formula  : <e.g. A × F × D | _0>
 Dimensions used   : <list each and justify>
 ```
 
-**Check**: Does the formula use only Base16 primitives
-`{A, S, F, I, D, R, E, V, O, Im, T, _^, _$, K, Ss, L}` and their products?
+**Check**: Does the formula use only the Base16 primitives (read the alphabet in the
+M3 files at HEAD: Gt `×`, Gm `+`, Gs `|`) and their products? `⊗` is forbidden.
 
 ### 1.3 Related existing M2 concepts
 
@@ -263,6 +266,22 @@ Session date    : <YYYY-MM-DD>
 
 ## STEP 6 — JSON-LD Fiche
 
+> **Vocabulary rule (WS-1, ZERO NEW BARE KEYS).** The templates below show the
+> property NAMES in use at HEAD (checked 2026-10-06), not a licence to copy their
+> nested sub-fields. Existing M2/M1 nodes carry unprefixed sub-keys
+> (`vs_<X>`, `validated`, `actualDomains`, `domains`, `formula`, `contribution`…):
+> they are bare keys, dropped on JSON-LD expansion — frozen debt owned by WS-1, not a
+> pattern. Before writing a fiche:
+> 1. check every property at HEAD in a neighbouring node (do not trust this list);
+> 2. for a nested sub-field, use a declared term (standard term from the apex, or a
+>    TSCG term that exists at HEAD); if none exists, **stop and ask Michel** — never
+>    invent a bare key, never copy one;
+> 3. after the edit, the gate's D1 count for the layer must not rise
+>    (`cd ontology/toolchain && python run_all_layers.py`; the validator
+>    `validator/tscg_validator.py --layers M2 --doc` shows the D1 findings).
+>
+> Write IRIs as IRIs: `{"@id": "m2:X"}`, never the string `"m2:X"`.
+
 ### 6.1 If M2 — add to M2_GenericConcepts.jsonld
 
 Minimum required fields:
@@ -279,14 +298,8 @@ Minimum required fields:
   "m2:isStereopsic": <true|false>,
   "m2:hasPolarity": "<neutral|dual|ternary>",
   "m2:perspective": "<territory|map|dual>",
-  "m2:distinctFrom": {
-    "vs_<RelatedConcept>": "<distinction>"
-  },
-  "m2:transdisciplinaryValidation": {
-    "validated": true,
-    "actualDomains": <n>,
-    "domains": ["<domain 1>", "..."]
-  },
+  "m2:distinctFrom": "<distinctions — sub-keys only with declared terms, see the rule above>",
+  "m2:transdisciplinaryValidation": "<same rule: no bare sub-keys>",
   "m2:hasExample": ["<domain> — <instance>", "..."],
   "dcterms:created": "<YYYY-MM-DD>",
   "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
@@ -295,8 +308,9 @@ Minimum required fields:
 
 Update ontology node:
 - `owl:versionInfo` → bump minor version
-- `m2:changelog` → add entry (max 3 rolling entries)
-- `m2:progress` counters
+- `m3:changelog` → add an entry `{owl:versionInfo, dcterms:date, adms:versionNotes}`
+  (the ONLY changelog, decision D5(a); retention 3). `m2:changelog` is forbidden.
+- `m2:progress` counters (if still present at HEAD)
 
 ### 6.2 If M1_CoreConcepts — add to M1_CoreConcepts.jsonld
 
@@ -306,25 +320,14 @@ Minimum required fields:
 {
   "@id": "m1:<ConceptName>",
   "@type": ["owl:Class", "m2:GenericConceptCombo"],
-  "rdfs:subClassOf": "m2:GenericConceptCombo",
+  "rdfs:subClassOf": {"@id": "m2:GenericConceptCombo"},
   "rdfs:label": "<ConceptName>",
   "rdfs:comment": "<definition>",
-  "m1:comboOf": ["m2:<Parent1>", "m2:<Parent2>"],
+  "m1:comboOf": [{"@id": "m2:<Parent1>"}, {"@id": "m2:<Parent2>"}],
   "m1:structuralGrammarFormula": "Fm2(<Parent1>, <Parent2>)",
-  "m1:structuralGrammarFormulaExpanded": "<expanded formula>",
-  "m1:parentGenericConcepts": [
-    {
-      "@id": "m2:<Parent1>",
-      "formula": "<parent formula>",
-      "contribution": "<what this parent uniquely adds>"
-    }
-  ],
+  "m1:parentGenericConcepts": [{"@id": "m2:<Parent1>"}, {"@id": "m2:<Parent2>"}],
   "m1:emergentProperty": "<what the combo produces that parents don't>",
-  "m1:transdisciplinaryValidation": {
-    "validated": true,
-    "actualDomains": <n>,
-    "domains": ["..."]
-  },
+  "m1:transdisciplinaryValidation": "<no bare sub-keys, see the rule above>",
   "dcterms:created": "<YYYY-MM-DD>",
   "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
 }
@@ -332,8 +335,15 @@ Minimum required fields:
 
 Update ontology node:
 - `owl:versionInfo` → bump minor version
-- `m2:changelog` → add entry (max 3 rolling entries)
+- `m3:changelog` → add an entry `{owl:versionInfo, dcterms:date, adms:versionNotes}`
+  (retention 3). Never `m2:changelog`, never a new `m1:changelog` entry (legacy, D5).
 - `m1:validationStatus` counters
+
+The M1 combo formula is a function signature (`Fm2(...)`, SC-1): no monoidal operator
+inside, and no `…FormulaExpanded` property (it does not exist at HEAD).
+
+Then validate (`tscg-ontology-diagnosis-pipeline`, Phase 3): the gate must PASS, or a
+moved count is shown to Michel before any `--update-golden`.
 
 ---
 
@@ -407,6 +417,9 @@ At the end of each candidate evaluation session, produce a log entry:
 
 ---
 
-*Skill version: 1.0.0 — 2026-06-23*
+*Skill version: 1.1.0 — 2026-10-06 (aligned with HEAD: m3:changelog per D5(a); IRIs as
+`{"@id"}`; zero new bare keys; nonexistent `m1:structuralGrammarFormulaExpanded` removed;
+counts and alphabet read from HEAD; loads head-over-memory).*
+*1.0.0 — 2026-06-23*
 *Author: Echopraxium with the collaboration of Claude AI*
 *Generated from transport phenomena analysis session*
