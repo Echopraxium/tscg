@@ -88,3 +88,16 @@ it is browsable today.
 2. Default audience on first load — KitUser (most inviting) confirmed?
 3. Do KitArchitect-only entries stay hidden from lower levels, or shown greyed
    ("exists, not for you yet")?
+
+## 8. LayerCake Health tab (added 2026-10-06)
+
+A rubric **"LayerCake Health"**, visible to **KitArchitect** only, shows the LayerCake
+Health Map (`ontology/toolchain/tscg_layercake_health_map.py`). Same rule as the rest
+of the Compendium: nothing is stored, the map is **regenerated at every build** from
+the checked-out HEAD (`run_health_map()` → `dist/layercake_health_map.svg`, written via
+a temp dir, never into the source tree) and embedded with an `<object>` so its hover
+tooltips work. If the generation fails, the build still succeeds and the tab says
+**"map unavailable: <reason>"** — an absent map is never presented as a healthy one.
+`pages.yml` installs `ontology/toolchain/requirements.txt` for it (no Playwright: SVG
+only). Dated snapshots stay committed in `ontology/docs/_01_Worksite/LayerCakeHealthMap/`
+as the progress record.

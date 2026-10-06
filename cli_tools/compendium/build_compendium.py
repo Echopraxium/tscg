@@ -163,6 +163,40 @@ def run_gallery(root, outdir, script, site_url):
     except Exception as e:
         print(f"  [gallery] failed: {e}")
 
+HEALTH_SCRIPT = "ontology/toolchain/tscg_layercake_health_map.py"
+HEALTH_FILE = "layercake_health_map.svg"
+
+def run_health_map(root, outdir):
+    """LayerCake Health Map (added 2026-10-06), regenerated at EVERY build from the
+    checked-out HEAD and published as dist/layercake_health_map.svg — the Compendium
+    stores no fact of its own. Written to a temp dir, never into the source tree.
+    A failure never breaks the site and never yields an empty tab: the tab shows
+    'map unavailable' with the reason (same rule as the gate: what did not run is
+    never shown as fine)."""
+    import subprocess, sys, tempfile
+    script = os.path.abspath(os.path.join(root, HEALTH_SCRIPT))
+    if not os.path.exists(script):
+        return {"status": "unavailable", "reason": f"generator not found: {HEALTH_SCRIPT}"}
+    with tempfile.TemporaryDirectory() as tmp:
+        try:
+            proc = subprocess.run([sys.executable, script, "--out", tmp, "--no-png"],
+                                  cwd=os.path.dirname(script), capture_output=True,
+                                  text=True, encoding="utf-8", errors="replace", timeout=900)
+        except Exception as e:
+            return {"status": "unavailable", "reason": f"generator did not run: {e}"}
+        svgs = sorted(glob.glob(os.path.join(tmp, "*.svg")))
+        if proc.returncode != 0 or not svgs:
+            tail = (proc.stdout + proc.stderr).strip().splitlines()[-6:]
+            return {"status": "unavailable",
+                    "reason": f"generator exit {proc.returncode}: " + " | ".join(tail)}
+        svg = svgs[-1]
+        head = read(svg)[:400]
+        m = re.search(r'width="(\d+)" height="(\d+)"', head)
+        shutil.copyfile(svg, os.path.join(outdir, HEALTH_FILE))
+        print(f"  health map: {os.path.join(outdir, HEALTH_FILE)}")
+        return {"status": "ok", "svg": HEALTH_FILE, "snapshot": os.path.basename(svg),
+                "width": int(m.group(1)) if m else 1600, "height": int(m.group(2)) if m else 1700}
+
 def build_stamp(root):
     """Commit + UTC date of this build, shown in the footer so a stale page is visible
     at a glance (added 2026-10-03). CI: GITHUB_SHA; local: git rev-parse HEAD."""
@@ -185,7 +219,8 @@ def main():
     os.makedirs(a.out,exist_ok=True)
     subjects=build_subjects(a.root,a.out)
     docs=build_docs(a.root,a.out)
-    data=json.dumps({"subjects":subjects,"docs":docs,"build":build_stamp(a.root)},ensure_ascii=False)
+    health=run_health_map(a.root,a.out)
+    data=json.dumps({"subjects":subjects,"docs":docs,"build":build_stamp(a.root),"health":health},ensure_ascii=False)
     html=read(a.template)
     if '"@@DATA@@"' not in html:
         raise SystemExit("template missing the \"@@DATA@@\" placeholder")
@@ -197,5 +232,6 @@ def main():
     print(f"built {a.out}/index.html")
     print(f"  subjects: {len(subjects)}  (playable copied & linked: {played})")
     print(f"  docs: {len(docs)}")
+    print(f"  health map: {health.get('status')}" + (f" ({health.get('reason')})" if health.get("reason") else ""))
 
 if __name__=="__main__": main()
