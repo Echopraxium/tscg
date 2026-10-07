@@ -14,9 +14,9 @@
     {
       "@id": "m3:eagle_eye:EagleEye",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.15.0",
+      "owl:versionInfo": "2.16.0",
       "dcterms:created": "2026-01-21",
-      "dcterms:modified": "2026-09-30",
+      "dcterms:modified": "2026-10-06",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:description": "Territory Grammar Gt: free commutative monoidal grammar over primitive types {A, St, F, It, D} (Territory types 𝕋₀(×)). Provides the ontological/empirical perspective on systems-as-territory. Each primitive type instantiates at M0 as an evaluation functor F_x : System → [0,1].",
       "m3:ontologyCategory": {
@@ -36,12 +36,7 @@
         "authors": [
           "Echopraxium with the collaboration of Claude AI"
         ],
-        "description": "ASFID basis for Territory measurement through analytical decomposition",
-        "changelog": {
-          "v2.5.0": "IMPORT UPDATE: owl:imports changed from M3_GenesisSpace.jsonld to M3_GrammarFoundation.jsonld (apex ontology). m3: namespace updated to M3_GenesisGrammar.jsonld. Aligns with new M3 architecture: GrammarFoundation (apex) → EagleEye/SphinxEye → GenesisGrammar.",
-          "v2.4.0": "FORMALISM REFORM: Replaced Hilbert space / orthonormal basis framing with Structural Grammar (Lambek calculus). basis_properties → grammar_properties (Territory Grammar Gt). Removed hilbert_space, orthonormality fields. coupling_with_REVOI reframed: SVD/Sigma removed, Phi/Psi recast as natural transformations. orthogonality_matrix → independence_matrix. See TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md.",
-          "v2.3.0": "REFACTORING: Removed m3:eagle_eye:M3Dimension class (now m3:MonoidalType in GenesisSpace). Removed common properties (symbol, index, examples - now m3:dimensionSymbol, m3:dimensionIndex, m3:dimensionExamples in GenesisSpace). Kept ASFID-specific properties (physicalInterpretation, rangeAnalog, criticalAxiom)."
-        }
+        "description": "ASFID basis for Territory measurement through analytical decomposition"
       },
       "parent_ontology": {
         "@id": "m3:genesis_space:GenesisSpace",
@@ -119,6 +114,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.16.0",
+          "dcterms:date": "2026-10-06",
+          "adms:versionNotes": "WS-5 DEBT LOT (2a), decision D5(a) (Michel, 2026-10-06): removed the legacy 'changelog' object from the 'metadata' block (option i: dropped, not folded). Its entries (v2.5.0, v2.4.0, v2.3.0) predate the m3:changelog entries kept here and remain in git history; folding them would have exceeded the 7-entry M3 window. The only changelog is m3:changelog on the owl:Ontology node."
+        },
+        {
           "owl:versionInfo": "2.15.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 1 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
@@ -147,11 +147,6 @@
           "owl:versionInfo": "2.10.0",
           "dcterms:date": "2026-07-23",
           "adms:versionNotes": "SC-2 STEP 2 — MONOID QUALIFICATION AT THE SOURCE. m3:typeSymbol S \u2192 St (Structure/Territory) and I \u2192 It (Information/Territory), with matching rdfs:label updates and the alphabet listings {A,S,F,I,D} \u2192 {A,St,F,It,D}. ALSO FIXED (same rule, Map side): this file described Sphinx Eye's alphabet as {R,E,V,O,I} \u2014 the fifth REVOI primitive is Im (Interoperability), never a bare I. Corrected to {R,E,V,O,Im}, matching M3_GrammarFoundation and M3_SphinxEye. Rationale (SC-1.2): S and I are the only ASFID letters that collide across monoids (St/Ss, It/Im), so they are ALWAYS monoid-subscripted; A/F/D stay bare. This replaces the former context-dependent rule (bare in pure-Territory formulas, indexed only in hybrid formulas containing |). Class @id values (m3:eagle_eye:typeS / typeI) are UNCHANGED \u2014 only the symbol and its labels move, so no cross-file reference breaks. The half-migrated example formula \"A \u00d7 S \u00d7 It \u00d7 F = Homeostasis\" is completed to \"A \u00d7 St \u00d7 It \u00d7 F\". Historical changelog entries are left untouched (history, not defect). DEPENDENCY: SC-2 step 1 (notation_disambiguation in M3_BicephalousPerspective) must ship WITH this change \u2014 until it does, that file still states the retired hybrid-only rule and the two M3 files contradict each other."
-        },
-        {
-          "owl:versionInfo": "2.9.0",
-          "dcterms:date": "2026-07-22",
-          "adms:versionNotes": "LAYERING FIX: m2:changelog → m3:changelog. An M3 file must not reference an M2 property (dependency inversion: M3 is the foundational layer, M2 imports it). Compounding this, the 'm2' prefix was NOT declared in this @context (CTX-1), so the key resolved to an opaque 'm2:' URI scheme instead of the M2 namespace — invisible to any reasoner. m3:changelog is defined in M3_GrammarFoundation v2.5.0. CTX-4 FIX (required for the above to bind): the 'm3' prefix was RELATIVE in this @context. A relative prefix resolves against @base in IDENTIFIER position but NOT in PREDICATE position, so every m3:* PROPERTY in this file expanded to the unresolved IRI 'M3_GenesisGrammar.jsonld#...' while m3:* CLASSES expanded correctly — the file's predicates were silently desynchronised from the rest of M3. Prefix made ABSOLUTE. This is why the 2026-07-18 verification, which compared MonoidalType (an identifier), reported alignment that did not hold for properties."
         }
       ]
     },
