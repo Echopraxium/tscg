@@ -1,8 +1,8 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.0.1
-**Date**: 2026-10-06
+**Version**: 1.1.0
+**Date**: 2026-10-08
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
 it does not replace the per-worksite notes.
@@ -158,6 +158,11 @@ concept may legitimately stay pure Territory).
 1. **Small safe lots on M3/M2** (~25 points): 5 headers (G1), 5 changelog vestiges
    (D5), 10 labels/comments (G2 — the text is Michel's). Each lowers a counter that
    is re-frozen with a written reason.
+   *Progress (2026-10-08):* lot (2a) — the 4 M3 D5 vestiges dropped (`1346dae`,
+   M3 errors 148 → 141, warnings 619 → 604; the 5th, `m2:changeLog` on
+   `m2:Trade-off`, moved to the G2 text lot because it carries a rationale); lot
+   (2b-M2) — `rdfs:label` on the M2 header (`00f9b49`, M2 shacl 8 → 7). The 4 M3 G1
+   findings need decision **(A)** first (§8.0).
 2. **Decision B2 (WS-1)** — the largest lever: removing the two `@vocab` turns the
    red core green-or-orange at once (D2 2 and G6 142 drop together) and turns the
    M3 bare keys into terms to declare, which the grammar can then see. Prerequisite
@@ -169,8 +174,76 @@ concept may legitimately stay pure Territory).
 5. **Tooling debt**: the `check_M1` double count (documented re-freeze).
 6. **WS-3**: Gs remodelling of M2, followed on the monoidal map.
 
+## 8. Worksites noted 2026-10-08 (Michel) — not yet frozen
+
+Measured on HEAD `00f9b49` (2026-10-08), archives excluded (`*backup*`,
+`ontology/Ref/`). Orientation figures from ad-hoc scans, **not gate counters**:
+each worksite starts by building its gauge (with a negative test), and only then
+freezes a count.
+
+### 8.0 Decision (A) — M3 ontology types (lot in preparation)
+
+`m3:ontologyType`, `m3:TscgOntologyTypeScheme` and its 11 concepts are declared in
+`M3_GenesisGrammar`, which **imports** the four other M3 files. Giving those four a
+`m3:ontologyType` (G1) would make them use a term declared downstream of them — a
+level crossing. Decision (Michel, 2026-10-08):
+
+- **(A)** move these declarations up to the apex `M3_GrammarFoundation` (precedent:
+  `m3:changelog` is already declared there; IRIs unchanged, the `m3:` namespace stays);
+- `M3_GrammarFoundation` → `m3:Genesis`;
+- **three perspectives** of Genesis — Territory (`M3_EagleEye`, Gt), Map
+  (`M3_SphinxEye`, Gm), Stereopsis (`M3_BicephalousPerspective`, Gs) — all typed
+  `m3:GenesisExtension`, whose definition is rewritten accordingly (it still says
+  "Genesis Space" and names only the two Eyes);
+- `M3_BicephalousPerspective` imports `M3_GrammarFoundation` (today it imports nothing).
+
+### 8.1 S5-1 — primitives always suffixed
+
+Rule: the ambiguous letters are always qualified by their monoid —
+Gt **A St F It D**, Gm **R E V O Im**, Gs **T K Ss L** (plus the poles `_^ _$`).
+No bare `S` or `I` anywhere: formulas, alphabet listings, prose.
+
+- Related: **SC-2** "monoid-qualification of atoms" is marked *done* in
+  `worksite.yaml` (gauge NOT-1 = 0, `check_M1`). Yet a scan finds **216** bare
+  `S`/`I` tokens in formula-valued keys, in **23** files (ontology 128, instances 88)
+  — e.g. `M1_CoreConcepts` `S × I × A`, `M1_Electronics` `S × It × D × F` — and the
+  M2 header itself still lists `{A,S,F,I,D}` and `{T}`. **NOT-1 does not bite on
+  every formula key**: a check that stopped biting, to investigate first.
+- Some hits are not primitives (variables `S₁…Sₙ`, colour formulas): the gauge
+  must tell them apart.
+- Owner: SC-2 reopened (or a new SC id), M1/M0 repair after the gauge.
+
+### 8.2 S5-2 — `m1` only, no `m1core`
+
+- In canonical M1 the `@context` side is done (CTX-4/CTX-5, 2026-10-03).
+- Still **109** occurrences in **15** files: 11 M0 poclets (ColorSynthesis,
+  Counterpoint, ExposureTriangle, FireTriangle, FourStrokeEngine, KindlebergerMinsky,
+  MtgColorWheel, NakamotoConsensus, PlateTectonics, Transistor, TrophicPyramid),
+  `M0_Common`, `M2_GenericConcepts`, `M1_Economics`, and
+  `docs/M1_CoreConcepts_NuclearUpdate.jsonld`. Top term `m1core:Accretion`
+  (dangling, already parked → B1).
+- Owner: WS-10 (M0 namespaces) / CheckM0 campaign; M1/M2 hits in a small lot.
+
+### 8.3 S5-3 — no double-colon names
+
+Target form (Michel, 2026-10-08): **`m3:eagle_eye.EagleEye`** — the prefix keeps its
+colon (JSON-LD CURIE), the rest is dot-separated.
+
+- **2 399** occurrences in **42** files (ontology 2 187, instances 212). Largest
+  families: `m1:extension:…`, `m3:eagle_eye:…`, `m0:yggdrasil:…`,
+  `m3:sphinx_eye:…`, `m3:category_theory:…`, `m1:domain:…`,
+  `m3:grammar_foundation:…`.
+- Not covered by CTX-5 (which removed colon-named `@context` terms, not identifiers).
+- The largest of the three, and it renames IRIs: it touches every cross-file
+  reference, the SHACL grammars, the checkers and the Compendium. Plan per family,
+  with the gate and G1b/G5 as the safety net.
+- Owner: new worksite (proposed WS-1 follow-up, naming consistency).
+
 ## Changelog
 
+- **1.1.0 (2026-10-08)** — §8 added: decision (A) on M3 ontology types and three new
+  worksites noted by Michel (S5-1 suffixed primitives, S5-2 `m1core` → `m1`, S5-3
+  double-colon names → `prefix:a.B`); §7.1 progress (lots 2a and 2b-M2).
 - **1.0.1 (2026-10-06)** — map renamed "LayerCake Health Map" (Michel):
   `tscg_layercake_health_map.py`, snapshots in `LayerCakeHealthMap/`. The first snapshot
   carried `518df42`, a local commit that never reached `main` (the pushed equivalent
