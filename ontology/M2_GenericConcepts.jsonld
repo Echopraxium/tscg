@@ -18,11 +18,11 @@
       "@type": "owl:Ontology",
       "dcterms:title": "TSCG M2 GenericConcepts Ontology",
       "rdfs:label": "TSCG M2 GenericConcepts Ontology",
-      "dcterms:description": "Second layer of the TSCG framework. Defines transdisciplinary GenericConcepts emerging from structural composition of M3 primitive types. Uses all three M3 alphabets: 𝕋₀(×)={A,S,F,I,D} (Territory/Eagle Eye), 𝕋₀(+)={R,E,V,O,Im} (Map/Sphinx Eye), 𝕋₀(|)={T} (Stereopsis/Bicephalous Perspective). Introduces m2:isStereopsic flag for GenericConcepts using | or Gs primitives. M2 restricted to patterns valid across ALL knowledge fields without exception.",
+      "dcterms:description": "Second layer of the TSCG Layer Cake: transdisciplinary GenericConcepts, each built by structural composition of M3 primitive types and characterised by its structural formula, family, epistemic gap and polarity. Formulas use the three M3 grammars — Gt (×, Territory), Gm (+, Map) and Gs (|, Stereopsis), whose alphabets are defined in M3 — and m2:isStereopsic flags the GenericConcepts whose formula uses | or a Gs primitive. M2 is restricted to patterns valid across all knowledge fields without exception.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
-      "dcterms:modified": "2026-10-08",
-      "owl:versionInfo": "16.31.0",
+      "dcterms:modified": "2026-10-10",
+      "owl:versionInfo": "16.32.0",
       "owl:imports": [
         { "@id": "M3_GenesisGrammar.jsonld" }
       ],
@@ -54,7 +54,6 @@
         "dcterms:format": "text/markdown",
         "dcterms:type": "Documentation"
       },
-      "rdfs:comment": "M2 layer constructs genericConcepts through structural composition of M3 ASFID types from Eagle Eye (Territory-Space). Bicephalous architecture: Eagle Eye measures phenomena (ASFID), Sphinx Eye interprets models (REVOI proposed). Each genericConcept is characterized by its structural formula, category, epistemic gap, and polarity.",
       "m2:structuralSpace": "𝕋₁(M2) = { τ₁ OP τ₂ OP ... OP τₙ | τᵢ ∈ 𝕋₀, OP ∈ {×, +, |} }",
       "m3:ontologyType": {
         "@id": "m3:GenericConcepts"
@@ -111,6 +110,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "16.32.0",
+          "dcterms:date": "2026-10-10",
+          "adms:versionNotes": "ONE ROLE, ONE PROPERTY — batch 1 (Michel, 2026-10-10): the owl:Ontology header keeps dcterms:description only; the former rdfs:comment, a paraphrase, is merged into it and removed. Fixed on the way: {A,S,F,I,D} and a stale Gs alphabet {T} no longer copied (alphabets are defined in M3); 'Territory-Space', 'REVOI proposed', 'Bicephalous architecture' dropped; 'category' → 'family' (m2:hasFamily)."
+        },
+        {
           "owl:versionInfo": "16.31.0",
           "dcterms:date": "2026-10-08",
           "adms:versionNotes": "WS-5 DEBT LOT (2b-M2), structural grammar G1 (Michel, 2026-10-08): rdfs:label added on the owl:Ontology node, text = the existing dcterms:title. Fixes the only M2 G1 finding."
@@ -119,11 +123,6 @@
           "owl:versionInfo": "16.30.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 1 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "16.29.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1h (explicit declarations). (1) rdf:value -> schema:value in the {rdfs:label, value} nodes of skos:example lists (9): rdf:value is a reserved OWL 2 IRI that is not a built-in annotation property, so it cannot be declared and kept these nodes outside OWL 2 DL; schema:value ('the value of a property value node') is declared in M3_GrammarFoundation. schema.org accepted as an external vocabulary where it fills a DCMI/SKOS gap (Michel, 2026-09-30); prefix schema declared. (2) m2:dualCounterpart: the non-term owl:symmetricProperty true replaced by the type owl:SymmetricProperty — a reasoner now infers B dualCounterpart A from A dualCounterpart B, as the rdfs:comment intends (Michel, 2026-09-30). (3) dcterms:documentation (not a DCMI term, 3 occurrences) merged into rdfs:seeAlso, which becomes a link {@id, dcterms:format, dcterms:type} instead of a file-name string. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ],
       "m2:bicephalousStrategy": {

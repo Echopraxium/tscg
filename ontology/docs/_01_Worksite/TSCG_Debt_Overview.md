@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.4.0
+**Version**: 1.5.0
 **Date**: 2026-10-10
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -322,6 +322,14 @@ Found and fixed on the way:
    `m3:Genesis` (its `rdfs:comment` repeats the `skos:scopeNote`) and
    `m3:GenesisExtension` (its `rdfs:comment` repeats the `skos:definition`) — kept
    for now because G2 requires an `rdfs:comment` on every TSCG class.
+   *Convention approved (Michel, 2026-10-10).* Inventory on `6b79fc5`: 50 nodes cumulate
+   two of the three properties — 5 file headers, 12 SKOS nodes (the 11 ontology types +
+   the scheme), 33 OWL classes / properties / individuals (31 in M3, 2 in M2). They are
+   paraphrases, not copies: each pair is MERGED, node by node, reviewed by Michel.
+   Batches: (1) the 5 headers — **done** (no grammar change; gate unchanged); (2) the
+   12 SKOS nodes, with G2 accepting `skos:definition` + a negative test; (3) the 33 OWL
+   terms, in two or three packets. Merging also removes the hidden debt in the texts
+   (bare S/I, Hilbert-era "ket notation", stale counts).
 
 ### 8.1 S5-1 — primitives always suffixed
 
@@ -337,7 +345,40 @@ No bare `S` or `I` anywhere: formulas, alphabet listings, prose.
   every formula key**: a check that stopped biting, to investigate first.
 - Some hits are not primitives (variables `S₁…Sₙ`, colour formulas): the gauge
   must tell them apart.
+- Also found (2026-10-10): IRIs `m3:eagle_eye:typeS` and `m3:eagle_eye:typeI` (the
+  Gm side already has `m3:sphinx_eye:typeIm`) — a rename, with cross-file references;
+  `functor_role` blocks of `M3_EagleEye` / `M3_SphinxEye` write `F_S`, `F_I`;
+  `m3:typeSymbol` examples "A, S, R, V" and "A × S × F".
 - Owner: SC-2 reopened (or a new SC id), M1/M0 repair after the gauge.
+
+### 8.1b S5-1b — M0 primitive scores (`m0:asfidScores`, `m0:revoiScores`)
+
+Target format (Michel, 2026-10-10): one associative array per grammar, keys suffixed —
+`{"A", "St", "F", "It", "D"}` and `{"R", "E", "V", "O", "Im"}`, values in [0,1].
+
+- Today only **9 of 43** instances carry scores, in **two formats**: `{A, S, F, I, D,
+  mean}` / `{R, E, V, O, I|Im, mean}`, and `{A_score, S_score, F_score, It_score,
+  D_score}` + `*_justification` / `{R_score, E_score, V_score, O_score, It_score}`.
+- **Error, not only a missing suffix**: in 5 instances the Interoperability score
+  (REVOI) is stored under `It_score` — the suffix of Information (ASFID).
+- **Invisible to the graph**: the keys are declared in no `@context` (bare keys,
+  dropped on JSON-LD expansion; part of the M0 bare-key gauge whose owner is still
+  to decide) — SHACL and the reasoner cannot see the scores.
+- Readers to update with the keys: `cli_tools/regenerate_simulation_gallery/
+  generate_index.js`, `src/tscg/simulation-engine/transistor_sim.py`,
+  `complex_chemical_synapse_sim.py`, `ontology/toolchain/check-M0/
+  migrate_m0_to_v1_5.py`, `ontology/toolchain/modernize_m0.py`.
+- Open: drop `mean` (derived, drifts when a score changes)? Where do the
+  justifications live? Declare the keys as terms so that the graph sees the scores?
+- **Status of the scores** (Michel, 2026-10-10, now in the Gt/Gm headers): provisional
+  — stipulated by the TSCG Architects (KitArchitect role), not yet validated outside
+  that role; credibility by accretion (`intersubjectiveBenchmark`,
+  `defeasibilityStatus`); not factual measurements.
+- **Notation `F_x` retired** (Michel, 2026-10-10): the "evaluation functors"
+  F_A … F_Im are only the theoretical name of the score components and are
+  confusable with `Fm2` / `Fm1m2` (which are not functors). Say "primitive score".
+  Still to clean: the `functor_role` blocks, and the `Fm2` definition ("the word
+  'functor' stays reserved for M0 dimensions").
 
 ### 8.2 S5-2 — `m1` only, no `m1core`
 
@@ -367,6 +408,10 @@ colon (JSON-LD CURIE), the rest is dot-separated.
 
 ## Changelog
 
+- **1.5.0 (2026-10-10)** — "one role, one property": convention approved, inventory
+  (50 nodes), batch 1 (5 headers) done; §8.1 S5-1 additions; new §8.1b S5-1b M0
+  primitive scores (two formats, Interoperability stored as `It_score`, invisible to
+  the graph; provisional status; `F_x` notation retired).
 - **1.4.0 (2026-10-10)** — §5 tooling debt: `owl_reasoning_test.py` 2.0.0 (imports
   resolved locally; inconsistency no longer disguised as a Java error).
 - **1.3.0 (2026-10-10)** — §8.0c: lot (A) as shipped (commutative Lambek calculus, Gs
