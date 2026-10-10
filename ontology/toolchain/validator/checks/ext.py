@@ -2,13 +2,14 @@
 checks/ext.py — EXT family: cross-file graph checks G1b, G5, G6 (WS-5, step 3).
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 0.1.0
+Version: 0.2.0
 Home   : ontology/toolchain/validator/checks/ext.py
 
 WHY NOT SHACL
 -------------
 A SHACL run sees one file at a time. These checks compare each file with ANOTHER
-file (the apex M3_GrammarFoundation, or the file hosting m3:TscgOntologyTypeScheme),
+file (the apex M3_GrammarFoundation, which also hosts m3:TscgOntologyTypeScheme
+since 2026-10-08 — decision (A), Debt Overview §8.0),
 so they are written here, in the same engine, run by the same command
 (tscg_validator.py --ext). DETECTION ONLY.
 
@@ -40,11 +41,14 @@ import tscg_metrics as _tm  # noqa: E402  (single definition of the EXT vocabula
 
 from .shacl_runner import public_id  # noqa: E402
 
-SCHEME_HOST = "ontology/M3_GenesisGrammar.jsonld"
+APEX = "ontology/" + _tm.APEX_FILE
+# The scheme is declared in the apex (0.2.0, decision (A) 2026-10-08; was
+# M3_GenesisGrammar). Moving it again without updating this line makes G1b report
+# "0 members" (blind = ERROR), never a silent pass.
+SCHEME_HOST = APEX
 M3_NS = "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M3_GenesisGrammar.jsonld#"
 SCHEME_IRI = M3_NS + "TscgOntologyTypeScheme"
 ONTOLOGY_TYPE = M3_NS + "ontologyType"
-APEX = "ontology/" + _tm.APEX_FILE
 
 
 def _finding(cid: str, severity: str, relpath: str, node: str, message: str,

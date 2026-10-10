@@ -14,9 +14,9 @@
     {
       "@id": "m3:eagle_eye:EagleEye",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.16.0",
+      "owl:versionInfo": "2.17.0",
       "dcterms:created": "2026-01-21",
-      "dcterms:modified": "2026-10-06",
+      "dcterms:modified": "2026-10-08",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:description": "Territory Grammar Gt: free commutative monoidal grammar over primitive types {A, St, F, It, D} (Territory types 𝕋₀(×)). Provides the ontological/empirical perspective on systems-as-territory. Each primitive type instantiates at M0 as an evaluation functor F_x : System → [0,1].",
       "m3:ontologyCategory": {
@@ -26,6 +26,10 @@
         { "@id": "M3_GrammarFoundation.jsonld" }
       ],
       "rdfs:label": "Eagle Eye - Territory Grammar Gt",
+      "m3:ontologyType": {
+        "@id": "m3:GenesisExtension"
+      },
+      "m3:metaphoricLabel": "Eagle Eye",
       "rdfs:comment": "Territory Grammar Gt: free commutative monoidal grammar over primitive types {A,St,F,It,D}. Provides the ontological/empirical perspective on systems-as-territory. At M0, each primitive type instantiates as a structural grammar (qualitative, no numeric scoring at this level). Part of the TSCG bicephalous architecture (Gt + Gm). See TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md.",
       "metadata": {
         "layer": "M3",
@@ -58,7 +62,7 @@
         "functor_role": "F_A, F_S, F_F, F_I, F_D : System → (M0 numeric ValueSpace)  (evaluation morphisms at M0)",
         "perspective": "ontological / empirical",
         "independence": "verified  (no primitive derivable from others)",
-        "mathematical_foundation": "Lambek Calculus / free commutative monoidal categories (Lambek 1958, MacLane 1963)",
+        "mathematical_foundation": "Commutative Lambek calculus / free commutative monoidal categories (Lambek 1958, commutative variant; MacLane 1963)",
         "operator": "× (Territory structural product — intra-ASFID)",
         "neutral_element": "m3:grammar_foundation:EmptyTerritory",
         "neutral_element_label": "Empty Territory (neutral of ×)",
@@ -114,6 +118,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.17.0",
+          "dcterms:date": "2026-10-08",
+          "adms:versionNotes": "WS-5 DEBT LOT (A), decision Michel 2026-10-08 (Debt Overview §8.0): m3:ontologyType m3:GenesisExtension (one of the three perspectives of Genesis) and m3:metaphoricLabel \"Eagle Eye\", both declared in the apex M3_GrammarFoundation. Formalism named precisely (Michel, 2026-10-10): the COMMUTATIVE Lambek calculus — Lambek's 1958 calculus is non-commutative; the three TSCG operators ×, +, | are commutative on the types of their monoid, primitive or derived. Precedence unchanged: × (Gt) > + (Gm) > | (Gs)."
+        },
+        {
           "owl:versionInfo": "2.16.0",
           "dcterms:date": "2026-10-06",
           "adms:versionNotes": "WS-5 DEBT LOT (2a), decision D5(a) (Michel, 2026-10-06): removed the legacy 'changelog' object from the 'metadata' block (option i: dropped, not folded). Its entries (v2.5.0, v2.4.0, v2.3.0) predate the m3:changelog entries kept here and remain in git history; folding them would have exceeded the 7-entry M3 window. The only changelog is m3:changelog on the owl:Ontology node."
@@ -142,11 +151,6 @@
           "owl:versionInfo": "2.11.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1a (Family A). Bare keys 'examples' / 'example' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard skos:example (SKOS documentation property, owl:AnnotationProperty, no domain/range): a list value now yields one skos:example triple per item. 2 string occurrences; both stay graph-invisible until their bare parent key is resolved (later WS-1 lot). No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "2.10.0",
-          "dcterms:date": "2026-07-23",
-          "adms:versionNotes": "SC-2 STEP 2 — MONOID QUALIFICATION AT THE SOURCE. m3:typeSymbol S \u2192 St (Structure/Territory) and I \u2192 It (Information/Territory), with matching rdfs:label updates and the alphabet listings {A,S,F,I,D} \u2192 {A,St,F,It,D}. ALSO FIXED (same rule, Map side): this file described Sphinx Eye's alphabet as {R,E,V,O,I} \u2014 the fifth REVOI primitive is Im (Interoperability), never a bare I. Corrected to {R,E,V,O,Im}, matching M3_GrammarFoundation and M3_SphinxEye. Rationale (SC-1.2): S and I are the only ASFID letters that collide across monoids (St/Ss, It/Im), so they are ALWAYS monoid-subscripted; A/F/D stay bare. This replaces the former context-dependent rule (bare in pure-Territory formulas, indexed only in hybrid formulas containing |). Class @id values (m3:eagle_eye:typeS / typeI) are UNCHANGED \u2014 only the symbol and its labels move, so no cross-file reference breaks. The half-migrated example formula \"A \u00d7 S \u00d7 It \u00d7 F = Homeostasis\" is completed to \"A \u00d7 St \u00d7 It \u00d7 F\". Historical changelog entries are left untouched (history, not defect). DEPENDENCY: SC-2 step 1 (notation_disambiguation in M3_BicephalousPerspective) must ship WITH this change \u2014 until it does, that file still states the retired hybrid-only rule and the two M3 files contradict each other."
         }
       ]
     },

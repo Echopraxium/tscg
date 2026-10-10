@@ -14,9 +14,9 @@
     {
       "@id": "m3:sphinx_eye:SphinxEye",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "3.11.0",
+      "owl:versionInfo": "3.12.0",
       "dcterms:created": "2026-01-21",
-      "dcterms:modified": "2026-10-06",
+      "dcterms:modified": "2026-10-08",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:description": "Map Grammar Gm: free commutative monoidal grammar over primitive types {R, E, V, O, I}. Provides the epistemic/representational perspective on systems-as-map. Each primitive type instantiates at M0 as an evaluation functor F_x : System → [0,1].",
       "m3:ontologyCategory": {
@@ -26,7 +26,11 @@
         { "@id": "M3_GrammarFoundation.jsonld" }
       ],
       "rdfs:label": "Sphinx Eye - Map Grammar Gm",
-      "rdfs:comment": "Map Grammar Gm: free commutative monoidal grammar over primitive types {R,E,V,O,I}. Provides the epistemic/representational perspective on systems-as-map. At M0, each primitive type instantiates as an evaluation functor F_x : System → (M0 ValueSpace). Part of the TSCG bicephalous architecture (Gt + Gm). See TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md.",
+      "m3:ontologyType": {
+        "@id": "m3:GenesisExtension"
+      },
+      "m3:metaphoricLabel": "Sphinx Eye",
+      "rdfs:comment": "Map Grammar Gm: free commutative monoidal grammar over primitive types {R,E,V,O,Im}. Provides the epistemic/representational perspective on systems-as-map. At M0, each primitive type instantiates as an evaluation functor F_x : System → (M0 ValueSpace). Part of the TSCG bicephalous architecture (Gt + Gm). See TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md.",
       "metadata": {
         "layer": "M3",
         "name": "Sphinx Eye - REVOI Basis",
@@ -58,7 +62,7 @@
         "functor_role": "F_R, F_E, F_V, F_O, F_I : System → (M0 numeric ValueSpace)  (evaluation morphisms at M0)",
         "perspective": "epistemic / representational",
         "independence": "verified  (no primitive derivable from others)",
-        "mathematical_foundation": "Lambek Calculus / free commutative monoidal categories (Lambek 1958, MacLane 1963)",
+        "mathematical_foundation": "Commutative Lambek calculus / free commutative monoidal categories (Lambek 1958, commutative variant; MacLane 1963)",
         "operator": "+ (Map structural sum — intra-REVOI)",
         "neutral_element": "m3:grammar_foundation:EmptyMap",
         "neutral_element_label": "Empty Map (neutral of +)",
@@ -93,7 +97,7 @@
         "quadrant": "Synthesis of Model (Map)"
       },
       "independence_matrix": {
-        "dcterms:description": "The 5 primitive types {R,E,V,O,I} are analytically independent — no primitive type is derivable from the others",
+        "dcterms:description": "The 5 primitive types {R,E,V,O,Im} are analytically independent — no primitive type is derivable from the others",
         "verified": "true",
         "skos:note": "Independence here means conceptual non-redundancy, not metric orthogonality. No inner product is defined or required."
       },
@@ -127,6 +131,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "3.12.0",
+          "dcterms:date": "2026-10-08",
+          "adms:versionNotes": "WS-5 DEBT LOT (A), decision Michel 2026-10-08 (Debt Overview §8.0): m3:ontologyType m3:GenesisExtension (one of the three perspectives of Genesis) and m3:metaphoricLabel \"Sphinx Eye\", both declared in the apex M3_GrammarFoundation. Also (S5-1): the alphabet written {R,E,V,O,I} in two texts (header comment, independence note) is now {R,E,V,O,Im} — the I of REVOI is always suffixed. Formalism named precisely (Michel, 2026-10-10): the COMMUTATIVE Lambek calculus — Lambek's 1958 calculus is non-commutative; the three TSCG operators ×, +, | are commutative on the types of their monoid, primitive or derived. Precedence unchanged: × (Gt) > + (Gm) > | (Gs)."
+        },
+        {
           "owl:versionInfo": "3.11.0",
           "dcterms:date": "2026-10-06",
           "adms:versionNotes": "WS-5 DEBT LOT (2a), decision D5(a) (Michel, 2026-10-06): removed the legacy 'changelog' object from the 'metadata' block (option i: dropped, not folded). Its entries (v3.3.0, v3.2.0, v3.1.0) predate the m3:changelog entries kept here and remain in git history; folding them would have exceeded the 7-entry M3 window. The only changelog is m3:changelog on the owl:Ontology node."
@@ -155,11 +164,6 @@
           "owl:versionInfo": "3.6.0",
           "dcterms:date": "2026-07-22",
           "adms:versionNotes": "LAYERING FIX: m2:changelog → m3:changelog. An M3 file must not reference an M2 property (dependency inversion: M3 is the foundational layer, M2 imports it). Compounding this, the 'm2' prefix was NOT declared in this @context (CTX-1), so the key resolved to an opaque 'm2:' URI scheme instead of the M2 namespace — invisible to any reasoner. m3:changelog is defined in M3_GrammarFoundation v2.5.0. CTX-4 FIX (required for the above to bind): the 'm3' prefix was RELATIVE in this @context. A relative prefix resolves against @base in IDENTIFIER position but NOT in PREDICATE position, so every m3:* PROPERTY in this file expanded to the unresolved IRI 'M3_GenesisGrammar.jsonld#...' while m3:* CLASSES expanded correctly — the file's predicates were silently desynchronised from the rest of M3. Prefix made ABSOLUTE. This is why the 2026-07-18 verification, which compared MonoidalType (an identifier), reported alignment that did not hold for properties."
-        },
-        {
-          "owl:versionInfo": "3.5.0",
-          "dcterms:date": "2026-05-18",
-          "adms:versionNotes": "STEREOPSIS: complete_architecture updated to reference Gs as reification of stereopsic synergy."
         }
       ]
     },
