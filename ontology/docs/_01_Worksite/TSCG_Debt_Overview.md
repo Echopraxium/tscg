@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.3.0
+**Version**: 1.4.0
 **Date**: 2026-10-10
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -132,6 +132,12 @@ concept may legitimately stay pure Territory).
   combo of named concepts written with the monoidal operator — what SC-1 forbids;
   SC-8 (FeedbackLoop reclassification).
 - **Tooling debt**:
+  - *fixed 2026-10-10* — `owl_reasoning_test.py` could not reason on any file with
+    `owl:imports` since WS-1 lot 1i made them real IRIs (Owlready2 downloaded raw
+    JSON-LD and failed): only the apex, which imports nothing, could be tested. And a
+    global inconsistency was reported as "Java not installed". 2.0.0 resolves the
+    imports locally (merged graph), separates exit codes (1 inconsistent, 2 input,
+    3 environment) and has a negative test on an inconsistent fixture;
   - `check_M1` counts each SHACL violation twice (lines "Message:" + "Focus Node:");
     fixing it means re-freezing 688 → 344 (a change of unit, to document);
   - `tscg_metrics.py --shacl --shacl-path <M2 grammar>` iterates M1 files only and
@@ -361,6 +367,8 @@ colon (JSON-LD CURIE), the rest is dot-separated.
 
 ## Changelog
 
+- **1.4.0 (2026-10-10)** — §5 tooling debt: `owl_reasoning_test.py` 2.0.0 (imports
+  resolved locally; inconsistency no longer disguised as a Java error).
 - **1.3.0 (2026-10-10)** — §8.0c: lot (A) as shipped (commutative Lambek calculus, Gs
   commutativity contradiction fixed, `expectedCount` removed, first S5-1 repair) and
   the two lots it spawned: rename to `M3_OdinsWisdom`, "one role, one property".
