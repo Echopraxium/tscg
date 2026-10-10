@@ -15,9 +15,9 @@
     {
       "@id": "m3:bicephalous:BicephalousPerspective",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "1.10.0",
+      "owl:versionInfo": "1.11.0",
       "dcterms:created": "2026-05-18",
-      "dcterms:modified": "2026-10-08",
+      "dcterms:modified": "2026-10-10",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "owl:imports": [
         {
@@ -25,13 +25,12 @@
         }
       ],
       "dcterms:title": "TSCG M3 Stereopsis Grammar — Bicephalous Perspective",
-      "dcterms:description": "Reification of the stereopsic synergy between Territory Grammar (Gt / Eagle Eye) and Map Grammar (Gm / Sphinx Eye). Defines the Stereopsis Grammar Gs with operator | and the Base16 Gs alphabet: 6 primitives — T (Temporality), _^ (PositivePole), _$ (NegativePole), K (Knowledge), Ss (Symbol/Stereopsic), L (Localizability). TKSL acronym for the 4 nominal Gs primitives. Each Gs primitive is an irreducible inter-grammar mediator — not derivable from ASFID (Gt) or REVOI (Gm). v1.3.0: EquilibriumPole (_0 = _^ | _$) added as named derived Gs element (m3:DerivedGsElement) — not a primitive, Base16 preserved.",
+      "dcterms:description": "Stereopsis Grammar Gs — the Stereopsis perspective of TSCG (the synergy of Territory and Map; metaphoric name: Odin's Wisdom), reified as a third grammar with operator |. Base16 Gs alphabet: 6 primitives — T (Temporality), _^ (PositivePole), _$ (NegativePole), K (Knowledge), Ss (Symbol/Stereopsic), L (Localizability); TKSL names the 4 nominal ones, the two poles are polarity modifiers. Each Gs primitive is an irreducible inter-grammar mediator, derivable neither from ASFID (Gt) nor from REVOI (Gm). Derived element: EquilibriumPole _0 = _^ | _$ (m3:DerivedGsElement, not a primitive; Base16 preserved).",
       "rdfs:label": "M3 Bicephalous Perspective — Stereopsis Grammar Gs",
       "m3:ontologyType": {
         "@id": "m3:GenesisExtension"
       },
       "m3:metaphoricLabel": "Odin's Wisdom",
-      "rdfs:comment": "Third grammar of the TSCG tricephalous architecture. Gs formalizes what the Eagle Eye and Sphinx Eye produce together — the stereopsic depth born from their binocular fusion. 𝕋₀(|) = {T, _^, _$, K, Ss, L} — 6 primitives. Operator: | (stereopsic fusion, inter-grammar).",
       "grammar_properties": {
         "grammar_name": "Stereopsis Grammar Gs",
         "grammar_type": "free_commutative_monoidal",
@@ -103,6 +102,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.11.0",
+          "dcterms:date": "2026-10-10",
+          "adms:versionNotes": "ONE ROLE, ONE PROPERTY — batch 1 (Michel, 2026-10-10): the owl:Ontology header keeps dcterms:description only; the former rdfs:comment, a paraphrase, is merged into it and removed. Fixed on the way: 'tricephalous architecture' and 'binocular fusion' dropped (three lenses: Stereopsis / Odin's Wisdom); the history note 'v1.3.0: …' moved out of the description."
+        },
+        {
           "owl:versionInfo": "1.10.0",
           "dcterms:date": "2026-10-08",
           "adms:versionNotes": "WS-5 DEBT LOT (A), decision Michel 2026-10-08 (Debt Overview §8.0): m3:ontologyType m3:GenesisExtension (one of the three perspectives of Genesis) and m3:metaphoricLabel \"Odin's Wisdom\", both declared in the apex M3_GrammarFoundation. owl:imports M3_GrammarFoundation added (it imported nothing). Also: Gs declared free_commutative_monoidal (was free_monoidal, which contradicted M3_GrammarFoundation 'All three are associative and commutative'); Formalism named precisely (Michel, 2026-10-10): the COMMUTATIVE Lambek calculus — Lambek's 1958 calculus is non-commutative; the three TSCG operators ×, +, | are commutative on the types of their monoid, primitive or derived. Precedence unchanged: × (Gt) > + (Gm) > | (Gs)."
@@ -131,11 +135,6 @@
           "owl:versionInfo": "1.5.1",
           "dcterms:date": "2026-07-24",
           "adms:versionNotes": "VOCABULARY FIX (WS-0/SC-2). The rule graved in 1.5.0 used 'atom formula' in the NON-COMBO sense, inside the very layer where M3_GenesisGrammar defines 'atomic' as the GENERATOR sense: 'MonoidalTypes are the atomic, irreducible elements from which all structural formula expressions are built'. Two senses of the same word one file apart. The corpus carries a third, domain sense (atomic radius, M1_Chemistry). REPLACED 'atom formula(s)' by 'monoidal formula(s)' and 'scope: atoms only' by 'scope: monoidal formulas only'. Note the precise reading now available: S and I are MonoidalType GENERATORS and must be monoid-subscripted in every MONOIDAL FORMULA - a formula is not a MonoidalType, it is built from MonoidalTypes. No rule changed, no scope changed: wording only. The matching rename in tscg_metrics.py (NOT1_bare_SI_in_atom_formula -> NOT1_bare_SI_in_monoidal_formula) ships in the same lot; the ban is recorded as a tooling constraint (forbidden_in: metric_names), NOT as a corpus-wide ban - M1_Chemistry's domain prose is legitimate and must not be touched."
-        },
-        {
-          "owl:versionInfo": "1.5.0",
-          "dcterms:date": "2026-07-23",
-          "adms:versionNotes": "SC-2 STEP 1 — NOTATION CONVENTION REVISED AT THE SOURCE. m3:notation_disambiguation no longer states the retired hybrid-only rule (S bare in pure-Territory formulas, indexed only in formulas containing |). New rule: S and I are ALWAYS monoid-subscripted in EVERY monoidal formula (St/Ss, It/Im); A/F/D stay bare. Scope is monoidal formulas only — combo signatures take named concepts, not primitives. Rationale: the old rule gave one primitive two spellings depending on its neighbours, which is ambiguous to read and unenforceable mechanically. Also corrected here: the m2:Balance usage example read A × S × F | _0 and is now A × St × F | _0. This closes the contradiction opened by M3_EagleEye 2.10.0 (SC-2 step 2), which already moved typeSymbol S→St and I→It. NEXT: SC-2 step 3 (SHACL FormulaShape forbidding bare S/I in monoidal formulas), then step 4 (43 M2 monoidal formulas, gauge NOT-1 → 0)."
         }
       ]
     },
