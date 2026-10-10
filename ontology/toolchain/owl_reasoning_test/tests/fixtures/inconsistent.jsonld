@@ -1,0 +1,14 @@
+{
+  "@context": {
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "ex": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/toolchain/owl_reasoning_test/tests/fixtures/inconsistent.jsonld#"
+  },
+  "@graph": [
+    { "@id": "ex:Fixture", "@type": "owl:Ontology",
+      "rdfs:comment": "NEGATIVE TEST FIXTURE for owl_reasoning_test.py: deliberately inconsistent (x is an A and a B, A and B are disjoint). Pellet MUST report it." },
+    { "@id": "ex:A", "@type": "owl:Class", "owl:disjointWith": { "@id": "ex:B" } },
+    { "@id": "ex:B", "@type": "owl:Class" },
+    { "@id": "ex:x", "@type": ["owl:NamedIndividual", "ex:A", "ex:B"] }
+  ]
+}

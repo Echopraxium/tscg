@@ -7,7 +7,7 @@ Validation and diagnostic tools for TSCG ontologies using OWL and RDFS reasoning
 Two complementary tools for ontology validation:
 
 1. **`rdfs_diagnostic.py`** - RDFS validation & error reporting (⭐ **Start here**)
-2. **`test_owl_reasoning.py`** - OWL complete reasoning with Pellet
+2. **`owl_reasoning_test.py`** - OWL complete reasoning with Pellet (imports resolved locally)
 
 ## Prerequisites
 
@@ -83,31 +83,48 @@ Only after **RDFS diagnostic passes** with 0 errors. This tool is strict and wil
 ### Usage
 
 ```bash
-# From anywhere in TSCG repository
-python ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py
+# From anywhere in the TSCG repository; --file is relative to the repository root
+python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file ontology/M3_GenesisGrammar.jsonld
+python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file ontology/M2_GenericConcepts.jsonld --isolated
+python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file ontology/M1_CoreConcepts.jsonld --list-imports
 ```
 
-### What it does
+### What it does (2.0.0, 2026-10-10)
 
-1. Loads `ontology/M2_GenericConcepts.jsonld`
-2. Converts JSON-LD → RDF/XML (Owlready2 requirement)
-3. Runs Pellet reasoner (10-30 seconds)
-4. Checks for **logical inconsistencies**
-5. Reports inconsistent classes (if any)
+1. Reads the file (JSON-LD) **and, transitively, its `owl:imports`** from the working
+   copy: an import IRI under `https://raw.githubusercontent.com/Echopraxium/tscg/main/`
+   is read from the matching local file. Everything is merged into one graph and the
+   `owl:imports` triples are removed, so Owlready2 fetches nothing from the web.
+   (Before 2.0.0, Owlready2 downloaded the imports as raw JSON-LD and failed with
+   "NTriples parsing error … line 1": no file with imports could be reasoned.)
+   An import that cannot be resolved locally is an **error**, never skipped.
+   `--isolated` reasons on the file alone; `--list-imports` stops after resolution.
+2. Converts the merged graph to RDF/XML in the system temp directory (Owlready2 requirement)
+3. Runs Pellet (10–30 seconds)
+4. Reports a **global inconsistency** or **unsatisfiable classes** as FAILED
 
-### Expected output (if ontology is clean)
+### Expected output (if the ontology is clean)
 
 ```
-✅ NO INCONSISTENCIES FOUND
-   Ontology is logically consistent!
-
-Status: ✅ PASSED
+Status    : ✅ PASSED — no inconsistency, no unsatisfiable class
 ```
 
 ### Exit codes
 
-- `0` - Ontology consistent
-- `1` - Inconsistencies found or errors
+- `0` — consistent
+- `1` — inconsistent (global inconsistency or unsatisfiable classes)
+- `2` — input error (file not found, JSON-LD not parseable, import not resolvable)
+- `3` — reasoner / environment error (Java, owlready2). Before 2.0.0 a global
+  inconsistency was wrongly reported here, as "Java not installed".
+
+### Tests
+
+```bash
+python -m pytest -q ontology/toolchain/owl_reasoning_test/tests
+```
+
+Import resolution always runs; the negative test (`fixtures/inconsistent.jsonld`, which
+MUST fail) is skipped — never passed — when Java/Pellet cannot run.
 
 ---
 
@@ -136,7 +153,7 @@ python ontology/toolchain/owl_reasoning_test/rdfs_diagnostic.py > rdfs_report.tx
 
 ```bash
 # Once RDFS passes with 0 errors:
-python ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py
+python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file ontology/M2_GenericConcepts.jsonld
 
 # If OWL reasoning passes → ✅ Ready for production
 ```
@@ -177,7 +194,7 @@ subprocess.run(["python", "ontology/toolchain/owl_reasoning_test/rdfs_diagnostic
 
 # Step 3.2: OWL Reasoning (only if RDFS passes)
 if rdfs_passed:
-    subprocess.run(["python", "ontology/toolchain/owl_reasoning_test/test_owl_reasoning.py"])
+    subprocess.run(["python", "ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py", "--file", "ontology/M2_GenericConcepts.jsonld"])
 ```
 
 ---
@@ -207,7 +224,8 @@ if rdfs_passed:
 ## Files in this directory
 
 - **`rdfs_diagnostic.py`** - RDFS validation & error reporting
-- **`test_owl_reasoning.py`** - OWL complete reasoning (Pellet)
+- **`owl_reasoning_test.py`** - OWL complete reasoning (Pellet), imports resolved locally
+- **`tests/`** - pytest suite (import resolution, negative test on an inconsistent fixture)
 - **`README.md`** - This file
 
 ---
