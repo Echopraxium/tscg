@@ -16,14 +16,17 @@
     {
       "@id": "m3:grammar_foundation:GrammarFoundation",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "2.11.0",
+      "owl:versionInfo": "2.12.0",
       "dcterms:created": "2026-05-12",
-      "dcterms:modified": "2026-10-06",
+      "dcterms:modified": "2026-10-08",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Grammar Foundation",
-      "dcterms:description": "Apex ontology of the TSCG hierarchy — no imports, no dependencies. Defines the Lambek Calculus mathematical foundation (free commutative monoidal categories), the six indexed operators (×, +, |), abstract classes M3Grammar and MonoidalType, the TSCG type system hierarchy (𝕋₀→𝕄₀), and the intersubjective benchmark properties. Imported by M3_EagleEye, M3_SphinxEye, and M3_GenesisGrammar.",
+      "dcterms:description": "Apex ontology of the TSCG hierarchy — no imports, no dependencies. Defines the commutative Lambek calculus mathematical foundation (free commutative monoidal categories), the six indexed operators (×, +, |), abstract classes M3Grammar and MonoidalType, the TSCG type system hierarchy (𝕋₀→𝕄₀), and the intersubjective benchmark properties. Imported by M3_EagleEye, M3_SphinxEye, and M3_GenesisGrammar.",
       "rdfs:label": "M3 Grammar Foundation — TSCG Apex Ontology",
-      "rdfs:comment": "Foundational definitions for the TSCG Structural Grammar. Rooted in Lambek Calculus (Lambek 1958) and free commutative monoidal categories (MacLane 1963). The ⊗ operator is a monoidal product — NOT an algebraic tensor product. No metric, no Hilbert space, no scalar multiplication required or assumed.",
+      "m3:ontologyType": {
+        "@id": "m3:Genesis"
+      },
+      "rdfs:comment": "Foundational definitions for the TSCG Structural Grammar. Rooted in the commutative Lambek calculus (Lambek 1958, commutative variant) and free commutative monoidal categories (MacLane 1963). The ⊗ operator is a monoidal product — NOT an algebraic tensor product. No metric, no Hilbert space, no scalar multiplication required or assumed.",
       "metadata": {
         "layer": "M3",
         "name": "Grammar Foundation",
@@ -41,7 +44,7 @@
         ]
       },
       "mathematical_foundation": {
-        "formalism": "Lambek Calculus / Free Commutative Monoidal Categories",
+        "formalism": "Commutative Lambek Calculus / Free Commutative Monoidal Categories",
         "references": [
           "Lambek, J. (1958). The mathematics of sentence structure. American Mathematical Monthly 65(3): 154-170.",
           "MacLane, S. (1963). Natural associativity and commutativity. Rice University Studies.",
@@ -51,6 +54,11 @@
         "see_also": "ontology/StructuralGrammar/TSCG_StructuralGrammar_as_Mathematical_Foundation_README.md"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "2.12.0",
+          "dcterms:date": "2026-10-08",
+          "adms:versionNotes": "WS-5 DEBT LOT (A), decision Michel 2026-10-08 (Debt Overview §8.0): m3:ontologyType, m3:TscgOntologyType, m3:TscgOntologyTypeScheme and its 11 concepts are now DECLARED here, in the apex (moved from M3_GenesisGrammar, which imports the other M3 files: using the property there was a level crossing). IRIs unchanged. Split (option c): the descriptive blocks of SystemicFramework, SymbolicSystemGrammar, TscgTool, TransDisclet (bare keys) stay in M3_GenesisGrammar on the same @id until WS-1/B2 declares them, so that @vocab owl# here does not mint them as owl: terms. Texts of m3:Genesis (2 files) and m3:GenesisExtension (three perspectives: Territory, Map, Stereopsis) rewritten. New m3:metaphoricLabel (annotation). This file typed m3:Genesis. m3:metaphoricLabel values: Eagle Eye, Sphinx Eye, Odin's Wisdom (the three lenses, Debt Overview §8.0b). m3:expectedCount removed from all 11 concepts of the scheme (read by no tool; duplicated the 'Exactly N… Closed set' scope notes) — Michel, 2026-10-10. Formalism named precisely (Michel, 2026-10-10): the COMMUTATIVE Lambek calculus — Lambek's 1958 calculus is non-commutative; the three TSCG operators ×, +, | are commutative on the types of their monoid, primitive or derived. Precedence unchanged: × (Gt) > + (Gm) > | (Gs)."
+        },
         {
           "owl:versionInfo": "2.11.0",
           "dcterms:date": "2026-10-06",
@@ -80,11 +88,6 @@
           "owl:versionInfo": "2.6.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1a (Family A). Bare keys 'examples' / 'example' (declared in no @context, hence dropped on JSON-LD expansion) replaced by the standard skos:example (SKOS documentation property, owl:AnnotationProperty, no domain/range): a list value now yields one skos:example triple per item. 1 list occurrence (3 examples). Side fix: under this file's @vocab (owl#) the bare key had minted the bogus term owl:examples; it is now skos:example. No semantic change: documentation made graph-visible. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "2.5.0",
-          "dcterms:date": "2026-07-22",
-          "adms:versionNotes": "CHANGELOG PROPERTY DEFINED: new m3:changelog (owl:AnnotationProperty). The changelog property was used corpus-wide but DECLARED NOWHERE. It is defined here, in the apex ontology, so that every lower layer (M2/M1/M0 — all of which import M3) can use it as a legal downward reference. Also applied to this file: m2:changelog → m3:changelog, fixing both a dependency inversion (M3 referencing M2) and a CTX-1 defect (the 'm2' prefix was undeclared here). KNOWN LIMITS, deferred to the undeclared-terms worksite: (a) changelog entry objects still carry undeclared bare keys (version/date/changes) and remain invisible on expansion; (b) this file still declares @vocab=owl#, so its bare terms — including the legacy metadata.changelog block — expand into the OWL namespace as owl:* properties."
         }
       ],
       "three_alphabets": {
@@ -123,7 +126,7 @@
         }
       },
       "operator_grammar_types": {
-        "dcterms:description": "× and + are intra-grammar (closed). | is inter-grammar (open). Explained within Lambek framework only.",
+        "dcterms:description": "× and + are intra-grammar (closed). | is inter-grammar (open). Explained within the commutative Lambek framework only.",
         "intra_grammar": {
           "territory_product": {
             "operator": "×",
@@ -396,8 +399,8 @@
       "@id": "m3:changelog",
       "@type": "owl:AnnotationProperty",
       "rdfs:label": "changelog",
-      "rdfs:comment": "Ordered list of the most recent modifications to an ontology file, newest first. Declared in the apex ontology so that EVERY layer (M3, M2, M1, M0) can annotate its own owl:Ontology node without inverting the layer dependency: M2/M1/M0 all import M3, so m3:changelog is always a legal downward reference, whereas the former m2:changelog forced M3 files to depend on M2. RETENTION POLICY: the 3 most recent entries, except M3 files which keep up to 7 (rollback safety on the foundational layer). Declared as owl:AnnotationProperty rather than owl:DatatypeProperty because a changelog is documentation ABOUT the ontology, not an assertion about a domain entity \u2014 this keeps the corpus inside OWL DL. No rdfs:domain / rdfs:range axiom is asserted for the same reason; the intended domain is the owl:Ontology node.",
-      "skos:note": "Aligned IN INTENT with adms:versionNotes (http://www.w3.org/ns/adms#versionNotes \u2014 'a description of changes between this version and the previous version of the Asset'). No rdfs:subPropertyOf axiom is asserted: m3:changelog is the CONTAINER (the ordered list of entries), whereas adms:versionNotes is the change text INSIDE each entry. DECISION (Michel, 2026-09-30, WS-1 lot 1c): ADMS is accepted as an external vocabulary; each entry is a node {owl:versionInfo, dcterms:date, adms:versionNotes}. The standard alternative (each entry as a version resource linked by dcterms:hasVersion) was considered and not retained: m3:changelog keeps its documented ordering, retention policy and annotation status.",
+      "rdfs:comment": "Ordered list of the most recent modifications to an ontology file, newest first. Declared in the apex ontology so that EVERY layer (M3, M2, M1, M0) can annotate its own owl:Ontology node without inverting the layer dependency: M2/M1/M0 all import M3, so m3:changelog is always a legal downward reference, whereas the former m2:changelog forced M3 files to depend on M2. RETENTION POLICY: the 3 most recent entries, except M3 files which keep up to 7 (rollback safety on the foundational layer). Declared as owl:AnnotationProperty rather than owl:DatatypeProperty because a changelog is documentation ABOUT the ontology, not an assertion about a domain entity — this keeps the corpus inside OWL DL. No rdfs:domain / rdfs:range axiom is asserted for the same reason; the intended domain is the owl:Ontology node.",
+      "skos:note": "Aligned IN INTENT with adms:versionNotes (http://www.w3.org/ns/adms#versionNotes — 'a description of changes between this version and the previous version of the Asset'). No rdfs:subPropertyOf axiom is asserted: m3:changelog is the CONTAINER (the ordered list of entries), whereas adms:versionNotes is the change text INSIDE each entry. DECISION (Michel, 2026-09-30, WS-1 lot 1c): ADMS is accepted as an external vocabulary; each entry is a node {owl:versionInfo, dcterms:date, adms:versionNotes}. The standard alternative (each entry as a version resource linked by dcterms:hasVersion) was considered and not retained: m3:changelog keeps its documented ordering, retention policy and annotation status.",
       "dcterms:created": "2026-07-22"
     },
     {
@@ -809,6 +812,544 @@
         "m3:grammar_foundation:definition": "𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)",
         "m3:grammar_foundation:semantics": "Convergent Strabismus — degenerate limit, not a semantic ideal"
       }
+    },
+    {
+      "@id": "m3:ontologyType",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "Ontology Type",
+      "rdfs:comment": "Specifies the architectural type of a TSCG ontology. Value must be an instance of m3:TscgOntologyType (e.g. m3:Poclet, m3:Genesis, m3:DomainExtension). Enables both OWL reasoning (subClassOf hierarchy) and SKOS navigation (ConceptScheme). Renamed from m3:ontologyCategory in v3.3.0.",
+      "skos:definition": "A framework-level architectural property that specifies the position and role of an ontology within the TSCG metamodel hierarchy through reference to a controlled vocabulary defined as a skos:ConceptScheme.",
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "m3:TscgOntologyType"
+      },
+      "dcterms:created": "2026-01-27",
+      "dcterms:modified": "2026-01-27",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "skos:editorialNote": "Defined in M3 (Genesis Space) because it is a foundational metamodel property needed by all layers. M3 has no dependencies, ensuring m3:ontologyCategory is always available without creating circular dependencies.",
+      "skos:changeNote": "v3.3.0: Renamed from m3:ontologyCategory to m3:ontologyType for clarity. Range changed from m3:OntologyCategoryScheme (incorrect — was the ConceptScheme, not a concept) to m3:TscgOntologyType (correct — the abstract class).",
+      "skos:example": [
+        "M3_GenesisGrammar.jsonld uses m3:Genesis",
+        "M2_MetaConcepts.jsonld uses m3:TransdisciplinaryPattern",
+        "M1_Biology.jsonld uses m3:DomainExtension",
+        "M0_Yggdrasil.jsonld uses m3:Poclet"
+      ]
+    },
+    {
+      "@id": "m3:TscgOntologyType",
+      "@type": "owl:Class",
+      "rdfs:label": "TSCG Ontology Type",
+      "rdfs:comment": "Abstract OWL class representing the architectural types of ontologies in the TSCG framework. Each TSCG ontology belongs to exactly one type. Instances (subclasses) are: Genesis, GenesisExtension, GenericConcepts, DomainExtension, SystemicFramework, Poclet, CaseStudy, RealWorldSystem, SymbolicSystemGrammar, TscgTool, TransDisclet. Each type is simultaneously an owl:Class (for OWL reasoning and Protégé class hierarchy) and a skos:Concept (for SKOS vocabulary navigation). Replaces the former m3:OntologyCategoryScheme/m3:OntologyCategoryScheme pattern (v3.3.0).",
+      "rdfs:isDefinedBy": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "dcterms:created": "2026-02-19",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m3:TscgOntologyTypeScheme",
+      "@type": "skos:ConceptScheme",
+      "rdfs:label": "TSCG Ontology Type Scheme",
+      "rdfs:comment": "SKOS controlled vocabulary listing all TSCG ontology types. Each concept in this scheme is simultaneously an owl:Class subClassOf m3:TscgOntologyType (OWL) and a skos:Concept (SKOS). Use m3:ontologyType property (range: m3:TscgOntologyType) to annotate ontologies with their type.",
+      "skos:definition": "A controlled vocabulary defining the eleven architectural types of TSCG ontologies, organized from foundational mathematical basis (Genesis) to concrete real-world instantiations (RealWorldSystem, TransDisclet). Each type serves as both an OWL class (enabling reasoning) and a SKOS concept (enabling vocabulary navigation).",
+      "dcterms:created": "2026-01-27",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "skos:hasTopConcept": [
+        {
+          "@id": "m3:Genesis"
+        },
+        {
+          "@id": "m3:GenesisExtension"
+        },
+        {
+          "@id": "m3:GenericConcepts"
+        },
+        {
+          "@id": "m3:DomainExtension"
+        },
+        {
+          "@id": "m3:SystemicFramework"
+        },
+        {
+          "@id": "m3:Poclet"
+        },
+        {
+          "@id": "m3:CaseStudy"
+        },
+        {
+          "@id": "m3:RealWorldSystem"
+        },
+        {
+          "@id": "m3:SymbolicSystemGrammar"
+        },
+        {
+          "@id": "m3:TscgTool"
+        },
+        {
+          "@id": "m3:TransDisclet"
+        }
+      ],
+      "skos:scopeNote": "This scheme is extensible upon framework revision. Each category represents a fundamental architectural distinction in the TSCG metamodel."
+    },
+    {
+      "@id": "m3:Genesis",
+      "@type": [
+        "owl:Class",
+        "skos:Concept"
+      ],
+      "skos:inScheme": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:prefLabel": "Genesis",
+      "skos:altLabel": [
+        "Foundational Basis",
+        "M3 Layer",
+        "Structural Grammar Basis"
+      ],
+      "skos:definition": "Foundational structural grammar providing the type system of the three grammars (Gt, Gm, Gs) upon which all other TSCG layers are built. Rooted in the commutative Lambek calculus and free commutative monoidal categories.",
+      "rdfs:comment": "M3 layer ontologies holding the foundation and its assembly: M3_GrammarFoundation (the apex: operators, type system, shared vocabulary; imports nothing) and M3_GenesisGrammar (assembles the three grammars Gt, Gm, Gs and their couplings). The three perspectives themselves are m3:GenesisExtension.",
+      "m3:semanticSignature": "structural_grammar_apex + three_perspectives(Gt,Gm,Gs) + commutative_Lambek_calculus_foundation",
+      "skos:notation": "M3",
+      "skos:example": [
+        "M3_GrammarFoundation.jsonld",
+        "M3_GenesisGrammar.jsonld"
+      ],
+      "skos:scopeNote": "Exactly 2 ontologies in this category: M3_GrammarFoundation (apex) and M3_GenesisGrammar (assembly of the three grammars). Closed set.",
+      "m3:layerOrder": 1,
+      "rdfs:subClassOf": {
+        "@id": "m3:TscgOntologyType"
+      }
+    },
+    {
+      "@id": "m3:GenesisExtension",
+      "@type": [
+        "owl:Class",
+        "skos:Concept"
+      ],
+      "skos:inScheme": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:prefLabel": "Genesis Extension",
+      "skos:altLabel": [
+        "M3 Component",
+        "Basis Component"
+      ],
+      "skos:definition": "Component ontologies of Genesis defining its three perspectives: Territory (Gt, ASFID — Eagle Eye), Map (Gm, REVOI — Sphinx Eye) and Stereopsis (Gs, the synergy of Territory and Map — Odin's Wisdom). Each perspective carries one grammar.",
+      "rdfs:comment": "While m3:Genesis holds the grammar foundation and its assembly, m3:GenesisExtension holds its three perspectives, one grammar each (Gt, Gm, Gs). Their metaphoric names are given by m3:metaphoricLabel.",
+      "m3:semanticSignature": "perspective_of_Genesis + single_grammar(Gt|Gm|Gs)",
+      "skos:notation": "M3_Ext",
+      "skos:example": [
+        "M3_EagleEye.jsonld (Territory — Gt, ASFID)",
+        "M3_SphinxEye.jsonld (Map — Gm, REVOI)",
+        "M3_BicephalousPerspective.jsonld (Stereopsis — Gs, TKSL + poles; target name M3_OdinsWisdom)"
+      ],
+      "skos:scopeNote": "Exactly 3 ontologies in this category: M3_EagleEye, M3_SphinxEye, M3_BicephalousPerspective. Closed set.",
+      "m3:layerOrder": 1,
+      "skos:broader": {
+        "@id": "m3:Genesis"
+      },
+      "skos:related": {
+        "@id": "m3:Genesis"
+      },
+      "rdfs:subClassOf": {
+        "@id": "m3:TscgOntologyType"
+      }
+    },
+    {
+      "@id": "m3:GenericConcepts",
+      "@type": [
+        "owl:Class",
+        "skos:Concept"
+      ],
+      "skos:inScheme": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:prefLabel": "GenericConcepts",
+      "skos:altLabel": [
+        "Universal Pattern",
+        "M2 Layer",
+        "Metaconcept",
+        "Structural Formula"
+      ],
+      "skos:definition": "Universal patterns derived as named product types (𝕋₁) from M3 primitive types via structural grammar operators, validated across multiple scientific disciplines.",
+      "rdfs:comment": "M2 layer ontologies containing GenericConcepts — named product types in the TSCG type system. Each concept is expressible as a structural formula combining M3 primitive types (e.g., Homeostasis = A×S×F).",
+      "m3:semanticSignature": "named_product_type(𝕋₁) + domain_agnostic + validated_across_disciplines",
+      "skos:notation": "M2",
+      "skos:example": [
+        "M2_MetaConcepts.jsonld (currently 62 metaconcepts including Step, Node, Homeostasis, etc.)"
+      ],
+      "skos:scopeNote": "Typically 1 ontology containing 72+ metaconcepts. May grow as new transdisciplinary patterns are discovered.",
+      "m3:layerOrder": 2,
+      "skos:broader": {
+        "@id": "m3:Genesis"
+      },
+      "rdfs:subClassOf": {
+        "@id": "m3:TscgOntologyType"
+      }
+    },
+    {
+      "@id": "m3:DomainExtension",
+      "@type": [
+        "owl:Class",
+        "skos:Concept"
+      ],
+      "skos:inScheme": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:prefLabel": "Domain Extension",
+      "skos:altLabel": [
+        "M1 Layer",
+        "Specialized Ontology",
+        "Domain Instance"
+      ],
+      "skos:definition": "Domain-specific ontologies that specialize M2 metaconcepts for particular scientific or professional fields. Each is an instance of the m2:Domain metaconcept with specific 5D structural composition.",
+      "rdfs:comment": "M1 layer ontologies that bridge transdisciplinary metaconcepts (M2) with concrete systems (M0). Examples include Biology, Chemistry, Optics, Photography, Mythology. Each domain has characteristic ASFID|REVOI coupling.",
+      "m3:semanticSignature": "domain_specific + specializes_M2_metaconcepts + bridges_M2_to_M0",
+      "skos:notation": "M1",
+      "skos:example": [
+        "M1_CoreConcepts.jsonld (transdisciplinary foundation)",
+        "M1_Biology.jsonld",
+        "M1_Chemistry.jsonld",
+        "M1_Optics.jsonld",
+        "M1_Photography.jsonld",
+        "M1_Mythology.jsonld"
+      ],
+      "skos:scopeNote": "Open-ended set. New domains can be added as framework expands. Currently ~6 active domain extensions.",
+      "m3:layerOrder": 3,
+      "skos:broader": {
+        "@id": "m3:GenericConcepts"
+      },
+      "rdfs:subClassOf": {
+        "@id": "m3:TscgOntologyType"
+      }
+    },
+    {
+      "@id": "m3:SystemicFramework",
+      "@type": [
+        "owl:Class",
+        "skos:Concept"
+      ],
+      "skos:inScheme": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:prefLabel": "Systemic Framework",
+      "skos:altLabel": [
+        "External Framework Mapping",
+        "Framework Integration",
+        "Theoretical Framework Bridge"
+      ],
+      "skos:definition": "Ontologies that map established systemic/theoretical frameworks (TRIZ, VSD, TPACK, etc.) into TSCG formalism. These provide bridges between TSCG and existing methodologies, enabling cross-framework analysis and integration.",
+      "rdfs:comment": "Systemic Frameworks are existing theories, methodologies, or analytical frameworks that have been formalized within TSCG's ontological structure. They serve as validation of TSCG's expressiveness and enable practitioners to leverage familiar frameworks within TSCG's rigorous formalism.",
+      "skos:notation": "M1_Framework",
+      "skos:example": [
+        "M0_TRIZ.jsonld (Theory of Inventive Problem Solving)",
+        "M0_VSD.jsonld (Value-Sensitive Design)",
+        "M0_TPACK.jsonld (Technological Pedagogical Content Knowledge)",
+        "M0_SystemsThinking.jsonld (General Systems Theory)",
+        "M0_DesignThinking.jsonld (Design Thinking methodology)"
+      ],
+      "skos:scopeNote": "Open-ended set. Any established framework with systemic structure can be mapped. Typically 10-20 major frameworks. Distinct from DomainExtension (which are disciplinary) and from Poclet (which are minimal instances).",
+      "m3:layerOrder": 3,
+      "skos:broader": {
+        "@id": "m3:GenericConcepts"
+      },
+      "skos:related": [
+        {
+          "@id": "m3:DomainExtension"
+        },
+        {
+          "@id": "m3:Poclet"
+        }
+      ],
+      "m3:semanticSignature": "established_methodology + prescriptive + convergent_toward_solution + formalizable_in_TSCG",
+      "rdfs:subClassOf": {
+        "@id": "m3:TscgOntologyType"
+      }
+    },
+    {
+      "@id": "m3:Poclet",
+      "@type": [
+        "owl:Class",
+        "skos:Concept"
+      ],
+      "skos:inScheme": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:prefLabel": "Poclet",
+      "skos:altLabel": [
+        "Proof of Concept",
+        "M0 Layer",
+        "Minimal Complete System",
+        "Validation Instance"
+      ],
+      "skos:definition": "Minimal yet complete system instances that serve the triple role of (1) framework proof-of-concept, (2) M2 metaconcept identification, and (3) M1 core concept population.",
+      "rdfs:comment": "M0 layer ontologies representing concrete, well-understood systems used to validate TSCG framework. Must be minimal (no unnecessary components) yet complete (all ASFID types present). Examples: Fire Triangle, Butterfly Metamorphosis, Four-Stroke Engine.",
+      "m3:semanticSignature": "minimal + complete(all_ASFID_dimensions) + triple_role(validation+M2_discovery+M1_population)",
+      "skos:notation": "M0_Poclet",
+      "skos:example": [
+        "M0_FireTriangle.jsonld",
+        "M0_ExposureTriangle.jsonld",
+        "M0_ButterflyMetamorphosis.jsonld",
+        "M0_FourStrokeEngine.jsonld",
+        "M0_Yggdrasil.jsonld"
+      ],
+      "skos:scopeNote": "Open-ended set. Goal is 20+ poclets spanning 10+ domains. Currently ~16 validated poclets.",
+      "m3:layerOrder": 4,
+      "skos:broader": {
+        "@id": "m3:DomainExtension"
+      },
+      "skos:related": [
+        {
+          "@id": "m3:CaseStudy"
+        },
+        {
+          "@id": "m3:RealWorldSystem"
+        }
+      ],
+      "rdfs:subClassOf": {
+        "@id": "m3:TscgOntologyType"
+      }
+    },
+    {
+      "@id": "m3:CaseStudy",
+      "@type": [
+        "owl:Class",
+        "skos:Concept"
+      ],
+      "skos:inScheme": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:prefLabel": "Case Study",
+      "skos:altLabel": [
+        "M0 Layer",
+        "Educational Example",
+        "Application Demonstration"
+      ],
+      "skos:definition": "M0 ontologies created primarily for educational, illustrative, or exploratory purposes. Unlike Poclets, Case Studies may be incomplete (missing ASFID types) or over-specified (non-minimal).",
+      "rdfs:comment": "Case Studies demonstrate TSCG application without the rigor required of Poclets. They serve pedagogical or experimental roles and may evolve into full Poclets after validation.",
+      "m3:semanticSignature": "pedagogical + may_be_incomplete + evolves_toward_Poclet",
+      "skos:notation": "M0_Case",
+      "skos:example": [
+        "M0_SocialMediaEcosystem.jsonld (hypothetical)",
+        "M0_UrbanTrafficFlow.jsonld (hypothetical)"
+      ],
+      "skos:scopeNote": "Optional category. Not required for framework validation. May grow based on educational needs.",
+      "m3:layerOrder": 4,
+      "skos:broader": {
+        "@id": "m3:DomainExtension"
+      },
+      "skos:related": [
+        {
+          "@id": "m3:Poclet"
+        }
+      ],
+      "rdfs:subClassOf": {
+        "@id": "m3:TscgOntologyType"
+      }
+    },
+    {
+      "@id": "m3:RealWorldSystem",
+      "@type": [
+        "owl:Class",
+        "skos:Concept"
+      ],
+      "skos:inScheme": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:prefLabel": "Real-World System",
+      "skos:altLabel": [
+        "M0 Layer",
+        "Production Application",
+        "Operational Ontology"
+      ],
+      "skos:definition": "M0 ontologies representing actual deployed systems analyzed using TSCG framework. These are not pedagogical examples but real applications with stakeholders.",
+      "rdfs:comment": "Real-World Systems demonstrate TSCG applied to production environments. May be complex (non-minimal) and evolving. Used to validate TSCG scalability beyond simple examples.",
+      "m3:semanticSignature": "deployed_system + complex(non_minimal) + stakeholder_validated",
+      "skos:notation": "M0_Real",
+      "skos:example": [
+        "M0_HospitalERWorkflow.jsonld (hypothetical)",
+        "M0_ManufacturingSupplyChain.jsonld (hypothetical)"
+      ],
+      "skos:scopeNote": "Future category. Not yet populated. Requires TSCG maturity and adoption.",
+      "m3:layerOrder": 4,
+      "skos:broader": {
+        "@id": "m3:DomainExtension"
+      },
+      "skos:related": [
+        {
+          "@id": "m3:Poclet"
+        },
+        {
+          "@id": "m3:CaseStudy"
+        }
+      ],
+      "rdfs:subClassOf": {
+        "@id": "m3:TscgOntologyType"
+      }
+    },
+    {
+      "@id": "m3:SymbolicSystemGrammar",
+      "@type": [
+        "owl:Class",
+        "skos:Concept"
+      ],
+      "skos:inScheme": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:prefLabel": "Symbolic System Grammar",
+      "skos:altLabel": [
+        "Combinatoric Symbolic System",
+        "Interpretive Grammar",
+        "Formal Symbolic Language"
+      ],
+      "skos:definition": "Ontologies representing formal symbolic systems defined by a finite set of primitives and combination rules, whose value lies in the multiplicity of legitimate interpretations they generate. Neither prescriptive nor empirically arbitrated — interpretation is symbolic, cultural, or contextual.",
+      "rdfs:comment": "Symbolic System Grammars are complete symbolic languages with combinatorial structure. Unlike SystemicFrameworks (which converge toward solutions) or Poclets (which validate observable systems), SymbolicSystemGrammars are productive engines of legitimate interpretive diversity. Examples span divination systems, generative alphabets, and musical notation.",
+      "skos:notation": "M3_SystemSymbolicGrammar",
+      "skos:example": [
+        "M0_IChing.jsonld (64 hexagrams from Yin/Yang binary grammar)",
+        "M0_Tarot.jsonld (78 arcanes, positional combination rules)",
+        "M0_AlchemyGame.jsonld (4 elements → 173 compounds by binary combination)",
+        "M0_ChineseGlyphs.jsonld (~200 radicals → ~50,000 sinograms)",
+        "M0_MusicalNotation.jsonld (notes + rhythm rules → infinite interpretations)"
+      ],
+      "skos:scopeNote": "Open-ended set. Any formal symbolic system with finite primitives, explicit combination rules, and multiple legitimate interpretations qualifies. Arbitration is symbolic/cultural/contextual, never purely physical or empirical.",
+      "m3:layerOrder": 3,
+      "m3:semanticSignature": "finite_primitives + combination_rules + multiple_legitimate_interpretations(symbolic_arbitration)",
+      "skos:broader": {
+        "@id": "m3:GenericConcepts"
+      },
+      "skos:related": [
+        {
+          "@id": "m3:SystemicFramework"
+        },
+        {
+          "@id": "m3:Poclet"
+        }
+      ],
+      "rdfs:subClassOf": {
+        "@id": "m3:TscgOntologyType"
+      }
+    },
+    {
+      "@id": "m3:TscgTool",
+      "@type": [
+        "owl:Class",
+        "skos:Concept"
+      ],
+      "skos:inScheme": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:prefLabel": "TSCG Tool",
+      "skos:altLabel": [
+        "Framework Tool",
+        "Ontology Tool",
+        "Meta-Level Application",
+        "Reflexive Tool"
+      ],
+      "skos:definition": "Software tools that operate reflexively ON the TSCG framework itself. Unlike Poclets (which model external systems), TscgTools model and operate on TSCG artifacts: ontologies, GenericConcepts, poclets, formulas. They are M0-level concrete instantiations whose subject matter is the framework.",
+      "rdfs:comment": "TscgTools are meta-level applications: visualizers, explorers, validators, converters, simulators that take TSCG ontologies as input and produce analysis, navigation, or transformation as output. They can themselves be characterized by ASFID/REVOI (as any system), but their primary purpose is operating on the TSCG knowledge graph.",
+      "m3:semanticSignature": "operates_on_tscg_artifacts + reflexive_meta_level + software_tool + framework_self_analysis",
+      "skos:notation": "M0_TscgTool",
+      "skos:example": [
+        "M0_TscgExplorer.jsonld (interactive GenericConcept net visualizer, 3 projection modes)",
+        "M0_TscgValidator.jsonld (ontology consistency checker — planned)",
+        "M0_TscgRagSearch.jsonld (RAG-based semantic search over TSCG — planned)"
+      ],
+      "skos:scopeNote": "Open-ended set. Any software tool whose primary input/subject is TSCG ontological artifacts qualifies. Instantiated at M0 level but typed as TscgTool rather than Poclet.",
+      "m3:layerOrder": 4,
+      "skos:related": [
+        {
+          "@id": "m3:Poclet"
+        },
+        {
+          "@id": "m3:Genesis"
+        }
+      ],
+      "rdfs:subClassOf": {
+        "@id": "m3:TscgOntologyType"
+      }
+    },
+    {
+      "@id": "m3:TransDisclet",
+      "@type": [
+        "owl:Class",
+        "skos:Concept"
+      ],
+      "skos:inScheme": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "m3:TscgOntologyTypeScheme"
+      },
+      "skos:prefLabel": "TransDisclet",
+      "skos:altLabel": [
+        "Transdisciplinary System Instance",
+        "Cross-Domain System",
+        "Multi-Domain Native System"
+      ],
+      "skos:definition": "M0-level ontologies modeling systems that exist natively and autonomously across multiple disciplines simultaneously. Unlike Poclets (which validate a single system in one domain), a TransDisclet captures a system concept whose existence is inherently multi-disciplinary — the same system arises independently in each discipline, not by analogy but by native instantiation.",
+      "rdfs:comment": "A TransDisclet (from 'Transdisciplinary' + diminutive suffix '-let', analogous to 'Poclet') is a minimal yet complete cross-domain system model. The defining criterion is that the system is not merely analogous across domains — it is the SAME system concept natively instantiated in each discipline. Example: Transducer exists natively in Electronics (sensor/actuator), Biology (sensory receptor), Acoustics (microphone/speaker), and Physics (piezoelectric effect).",
+      "m3:semanticSignature": "multi_domain_native + same_system_concept + independent_disciplinary_instantiation + M0_level",
+      "skos:notation": "M0_TransDisclet",
+      "skos:example": [
+        "M0_Transducer.jsonld (Electronics: sensor/actuator; Biology: sensory receptor; Acoustics: microphone/speaker; Physics: piezoelectric effect)",
+        "M0_Oscillator.jsonld (Electronics: LC circuit; Biology: circadian rhythm; Physics: pendulum; Neuroscience: neural oscillation)",
+        "M0_Filter.jsonld (Electronics: RC/LC filter; Biology: kidney glomerulus; Acoustics: resonator; Signal Processing: digital filter)"
+      ],
+      "skos:scopeNote": "Open-ended set. A system qualifies as a TransDisclet when: (1) it exists natively in at least 2 distinct disciplines, (2) the same GenericConcept structure (ASFID) is identifiable in each disciplinary instance, and (3) the cross-domain homology is structural, not merely metaphorical. Stored in instances/transdisclet/ folder.",
+      "m3:layerOrder": 4,
+      "skos:broader": {
+        "@id": "m3:Poclet"
+      },
+      "skos:related": [
+        {
+          "@id": "m3:Poclet"
+        },
+        {
+          "@id": "m3:DomainExtension"
+        }
+      ],
+      "rdfs:subClassOf": {
+        "@id": "m3:TscgOntologyType"
+      }
+    },
+    {
+      "@id": "m3:metaphoricLabel",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "metaphoric label",
+      "rdfs:comment": "The metaphoric name of a TSCG construct, given alongside its technical name (rdfs:label). It belongs to the metaphoric lens, one of the three lenses through which the three perspectives of TSCG can be read (structural grammar: Gt, Gm, Gs; epistemology: Territory, Map, Stereopsis; metaphor: Eagle Eye, Sphinx Eye, Odin's Wisdom). The metaphor is a TSCG interpretation of the Norse myth, not part of it: Odin keeps one eye to see the world (Territory, Eagle Eye) and leaves the other in Mímir's well to see into knowledge (Map, Sphinx Eye); his wisdom, born of both, is the Stereopsis. Declared in the apex so that every layer can use it without a level crossing. Annotation only: no logical effect."
     }
   ]
 }

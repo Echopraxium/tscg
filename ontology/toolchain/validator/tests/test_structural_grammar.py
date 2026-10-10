@@ -30,7 +30,9 @@ SRC = Source("local")
 GRAMMAR = "ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl"
 M2 = "ontology/M2_GenericConcepts.jsonld"
 M3 = "ontology/M3_GenesisGrammar.jsonld"
-LAYER = {M2: "M2", M3: "M3"}
+# the apex hosts m3:TscgOntologyTypeScheme and its concepts since decision (A), 2026-10-08
+APEX3 = "ontology/M3_GrammarFoundation.jsonld"
+LAYER = {M2: "M2", M3: "M3", APEX3: "M3"}
 
 
 def _load(rel):
@@ -91,7 +93,7 @@ def test_g2_missing_comment():
 
 
 def test_g2_skos_prefLabel_is_a_label():
-    assert _delta(M3, lambda d: _node(d, "m3:CaseStudy").pop("skos:prefLabel")) == {"TermDocumentationShape": 1}
+    assert _delta(APEX3, lambda d: _node(d, "m3:CaseStudy").pop("skos:prefLabel")) == {"TermDocumentationShape": 1}
 
 
 def test_g2_external_term_out_of_scope():

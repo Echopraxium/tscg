@@ -3,7 +3,7 @@
 tscg_validator.py — TscgOntologyValidator engine (WS-5: CTX, AXIS, DOC D1–D7, EXT G1b/G5/G6, generic SHACL runner).
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 0.4.0
+Version: 0.4.1
 Home   : ontology/toolchain/validator/tscg_validator.py
 
 Implements the design spec (ontology/docs/_01_Worksite/
@@ -40,6 +40,9 @@ host and the apex are always read from the same source, whatever --layers says.
 G1–G4 are SHACL shapes in ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl,
 run by --shacl on M3 and M2.
 
+0.4.1 (2026-10-08): the scheme host is the apex M3_GrammarFoundation (decision (A):
+m3:TscgOntologyTypeScheme declared there); checks/ext.py 0.2.0.
+
 Exit code: 0 iff no findings of severity ERROR. (Golden integration across all four
 layers arrives with the FRB/DUP/NOT/STR lots; lot 1 reports raw CTX counts and does
 NOT touch golden_values.json.)
@@ -65,7 +68,7 @@ from checks import ext as ext_check  # noqa: E402
 # full family roster with an honest "not yet implemented" status.
 _IMPLEMENTED = {"CTX": ctx_check, "AXIS": axis_check}
 _PLANNED = ["FRB", "DUP", "NOT", "STR"]
-_VERSION = "0.4.0"
+_VERSION = "0.4.1"
 
 _SEV_ORDER = {"ERROR": 0, "WARNING": 1, "INFO": 2}
 

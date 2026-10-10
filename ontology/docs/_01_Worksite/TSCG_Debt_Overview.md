@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.2.0
+**Version**: 1.3.0
 **Date**: 2026-10-10
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -181,7 +181,7 @@ Measured on HEAD `00f9b49` (2026-10-08), archives excluded (`*backup*`,
 each worksite starts by building its gauge (with a negative test), and only then
 freezes a count.
 
-### 8.0 Decision (A) — M3 ontology types (lot in preparation)
+### 8.0 Decision (A) — M3 ontology types (lot (A) done, 2026-10-10)
 
 `m3:ontologyType`, `m3:TscgOntologyTypeScheme` and its 11 concepts are declared in
 `M3_GenesisGrammar`, which **imports** the four other M3 files. Giving those four a
@@ -276,6 +276,47 @@ Also noted for lot (A): `m3:expectedCount` is read by no tool (only the dead
 orthogonal basis… two complementary perspectives", no Gs); `M3_SphinxEye` still lists
 `{R,E,V,O,I}` (bare I → S5-1).
 
+### 8.0c Lot (A) as shipped, and the lots it spawned (Michel, 2026-10-10)
+
+Lot (A) delivered decision (A) plus the texts of §8.0b: `m3:ontologyType`, the
+scheme and its 11 concepts declared in the apex (split, option c); the five M3 files
+typed (GrammarFoundation and GenesisGrammar `m3:Genesis`, the three perspectives
+`m3:GenesisExtension`); `m3:metaphoricLabel` (Eagle Eye, Sphinx Eye, Odin's Wisdom);
+the `M3_GenesisGrammar` header rewritten (Layer Cake, three lenses); G1b reads the
+scheme from the apex (`ext.py` 0.2.0). Gate: M3 G1 4 → 0, shacl_violations 7 → 3.
+Found and fixed on the way:
+
+- **"Lambek calculus" was imprecise**: Lambek's 1958 calculus is non-commutative; the
+  three TSCG operators are commutative on the types of their monoid, primitive or
+  derived → "**commutative Lambek calculus**" in every M3 mention. Precedence
+  unchanged and confirmed: **× (Gt) > + (Gm) > | (Gs)**.
+- **Gs commutativity contradiction**: `M3_BicephalousPerspective` declared Gs
+  `free_monoidal` while `M3_GrammarFoundation` says "All three are associative and
+  commutative" → Gs is `free_commutative_monoidal`.
+- `m3:expectedCount` removed from all 11 concepts (read by no tool).
+- `M3_SphinxEye` `{R,E,V,O,I}` → `{R,E,V,O,Im}` (2 texts; first S5-1 repair).
+
+**Next lots decided** (Michel, 2026-10-10):
+
+1. **Rename lot — `M3_BicephalousPerspective.jsonld` → `M3_OdinsWisdom.jsonld`**,
+   with the prefix `m3:bicephalous:` (IRIs, imports, cross-file references, SHACL,
+   checkers, Compendium) and the ~15 remaining "bicephalous" texts in M3 prose
+   (e.g. `M3_EagleEye` "TSCG Bicephalous Grammar = Gt + Gm", `M3_GenesisGrammar`
+   "Bicephalous Coupling"). To be planned together with S5-3, which renames prefixes.
+2. **"One role, one property" lot** — `dcterms:description`, `skos:definition` and
+   `rdfs:comment` are cumulated on the same nodes (header of `M3_GenesisGrammar`:
+   description + comment; SKOS concepts: definition + comment, the latter forced by
+   G2, which accepts `skos:prefLabel` for a label but not `skos:definition` for a
+   comment). Proposed convention: an ontology file → `dcterms:description` only; a
+   SKOS concept → `skos:definition` (meaning) + `skos:scopeNote` (usage), with G2
+   accepting `skos:definition`; an OWL term → `rdfs:comment`. Touches the grammar
+   (G2) and M3/M2.
+   Already applied in lot (A) where no grammar change is needed: the header of
+   `M3_GenesisGrammar` (`dcterms:description` only). Known cases for the lot:
+   `m3:Genesis` (its `rdfs:comment` repeats the `skos:scopeNote`) and
+   `m3:GenesisExtension` (its `rdfs:comment` repeats the `skos:definition`) — kept
+   for now because G2 requires an `rdfs:comment` on every TSCG class.
+
 ### 8.1 S5-1 — primitives always suffixed
 
 Rule: the ambiguous letters are always qualified by their monoid —
@@ -320,6 +361,9 @@ colon (JSON-LD CURIE), the rest is dot-separated.
 
 ## Changelog
 
+- **1.3.0 (2026-10-10)** — §8.0c: lot (A) as shipped (commutative Lambek calculus, Gs
+  commutativity contradiction fixed, `expectedCount` removed, first S5-1 repair) and
+  the two lots it spawned: rename to `M3_OdinsWisdom`, "one role, one property".
 - **1.2.0 (2026-10-10)** — §8.0b: the three perspectives and their three lenses
   (structural, epistemological, metaphoric). Metaphoric lens: Odin's two eyes (Eagle
   Eye = Territory, Sphinx Eye in Mímir's well = Map), Odin's Wisdom = the product of

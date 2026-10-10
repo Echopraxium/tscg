@@ -15,17 +15,26 @@
     {
       "@id": "m3:bicephalous:BicephalousPerspective",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "1.9.0",
+      "owl:versionInfo": "1.10.0",
       "dcterms:created": "2026-05-18",
-      "dcterms:modified": "2026-09-30",
+      "dcterms:modified": "2026-10-08",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "owl:imports": [
+        {
+          "@id": "M3_GrammarFoundation.jsonld"
+        }
+      ],
       "dcterms:title": "TSCG M3 Stereopsis Grammar — Bicephalous Perspective",
       "dcterms:description": "Reification of the stereopsic synergy between Territory Grammar (Gt / Eagle Eye) and Map Grammar (Gm / Sphinx Eye). Defines the Stereopsis Grammar Gs with operator | and the Base16 Gs alphabet: 6 primitives — T (Temporality), _^ (PositivePole), _$ (NegativePole), K (Knowledge), Ss (Symbol/Stereopsic), L (Localizability). TKSL acronym for the 4 nominal Gs primitives. Each Gs primitive is an irreducible inter-grammar mediator — not derivable from ASFID (Gt) or REVOI (Gm). v1.3.0: EquilibriumPole (_0 = _^ | _$) added as named derived Gs element (m3:DerivedGsElement) — not a primitive, Base16 preserved.",
       "rdfs:label": "M3 Bicephalous Perspective — Stereopsis Grammar Gs",
+      "m3:ontologyType": {
+        "@id": "m3:GenesisExtension"
+      },
+      "m3:metaphoricLabel": "Odin's Wisdom",
       "rdfs:comment": "Third grammar of the TSCG tricephalous architecture. Gs formalizes what the Eagle Eye and Sphinx Eye produce together — the stereopsic depth born from their binocular fusion. 𝕋₀(|) = {T, _^, _$, K, Ss, L} — 6 primitives. Operator: | (stereopsic fusion, inter-grammar).",
       "grammar_properties": {
         "grammar_name": "Stereopsis Grammar Gs",
-        "grammar_type": "free_monoidal",
+        "grammar_type": "free_commutative_monoidal",
         "acronym": "TKSL",
         "acronym_note": "TKSL = T (Temporality), K (Knowledge), Ss (Symbol/Stereopsic), L (Localizability). Poles _^/_$ are polarity modifiers, not nominal primitives.",
         "primitives": [
@@ -43,7 +52,7 @@
         "primitive_role": "Gs type generators — inter-grammar relational types between Territory and Map",
         "perspective": "bicephalous / relational",
         "independence": "verified — T, _^, _$ pre-existing; K, Ss, L independently validated (≥6 unrelated domains each). None of the 6 primitives is derivable from ASFID or REVOI.",
-        "mathematical_foundation": "Lambek Calculus / free monoidal category — third grammar Gs — free extension over {T, _^, _$, K, Ss, L}",
+        "mathematical_foundation": "Commutative Lambek calculus / free commutative monoidal category — third grammar Gs — free extension over {T, _^, _$, K, Ss, L}",
         "operator": "| (Stereopsic fusion — inter-grammar)",
         "neutral_element": "m3:bicephalous:StereopsisEmptySet",
         "neutral_element_label": "Stereopsis Empty Set (neutral of |)",
@@ -71,7 +80,7 @@
         }
       },
       "associativity": {
-        "property": "| is associative: (a | b) | c = a | (b | c)",
+        "property": "| is associative and commutative on Gs types, primitive or derived: (a | b) | c = a | (b | c) and a | b = b | a",
         "consequence": "Parentheses optional for chained |. Left-associative by convention.",
         "pole_pattern_positive": "expr | _^   e.g. A × St × It | R + O | _^  = Coherence",
         "pole_pattern_negative": "expr | _$   e.g. A × St × It | R + O | _$  = Incoherence"
@@ -93,6 +102,11 @@
         "architecture": "TSCG Bicephalous = Gt + Gm — Gs is reification of stereopsic synergy"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.10.0",
+          "dcterms:date": "2026-10-08",
+          "adms:versionNotes": "WS-5 DEBT LOT (A), decision Michel 2026-10-08 (Debt Overview §8.0): m3:ontologyType m3:GenesisExtension (one of the three perspectives of Genesis) and m3:metaphoricLabel \"Odin's Wisdom\", both declared in the apex M3_GrammarFoundation. owl:imports M3_GrammarFoundation added (it imported nothing). Also: Gs declared free_commutative_monoidal (was free_monoidal, which contradicted M3_GrammarFoundation 'All three are associative and commutative'); Formalism named precisely (Michel, 2026-10-10): the COMMUTATIVE Lambek calculus — Lambek's 1958 calculus is non-commutative; the three TSCG operators ×, +, | are commutative on the types of their monoid, primitive or derived. Precedence unchanged: × (Gt) > + (Gm) > | (Gs)."
+        },
         {
           "owl:versionInfo": "1.9.0",
           "dcterms:date": "2026-09-30",
@@ -122,11 +136,6 @@
           "owl:versionInfo": "1.5.0",
           "dcterms:date": "2026-07-23",
           "adms:versionNotes": "SC-2 STEP 1 — NOTATION CONVENTION REVISED AT THE SOURCE. m3:notation_disambiguation no longer states the retired hybrid-only rule (S bare in pure-Territory formulas, indexed only in formulas containing |). New rule: S and I are ALWAYS monoid-subscripted in EVERY monoidal formula (St/Ss, It/Im); A/F/D stay bare. Scope is monoidal formulas only — combo signatures take named concepts, not primitives. Rationale: the old rule gave one primitive two spellings depending on its neighbours, which is ambiguous to read and unenforceable mechanically. Also corrected here: the m2:Balance usage example read A × S × F | _0 and is now A × St × F | _0. This closes the contradiction opened by M3_EagleEye 2.10.0 (SC-2 step 2), which already moved typeSymbol S→St and I→It. NEXT: SC-2 step 3 (SHACL FormulaShape forbidding bare S/I in monoidal formulas), then step 4 (43 M2 monoidal formulas, gauge NOT-1 → 0)."
-        },
-        {
-          "owl:versionInfo": "1.4.0",
-          "dcterms:date": "2026-07-22",
-          "adms:versionNotes": "VOC/B1: declared 19 previously-undeclared m3:* documentation properties used in this file (role, semantics, symbol, grammar, visual, usage, derivation, formula_role, independence, analogyInGt, analogyInGs, pairWith, triadicPattern, theoretical_basis, transcendentalQuestion, openQuestion, rejected_names, notation_note, notation_disambiguation) as owl:AnnotationProperty. Declaration only — no usage or data changed. HELD for separate decisions: definition/examples (Family-A standard candidates skos:definition/skos:example), epistemicGap (δ₁ measurement, SC-6 sensitivity). EXCLUDED: typeSymbol/typeIndex (already defined in M3_GenesisGrammar). FLAGGED: pairWith carries a string where an @id is expected (latent reference defect)."
         }
       ]
     },
