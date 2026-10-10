@@ -1,8 +1,8 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.1.0
-**Date**: 2026-10-08
+**Version**: 1.2.0
+**Date**: 2026-10-10
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
 it does not replace the per-worksite notes.
@@ -197,6 +197,85 @@ level crossing. Decision (Michel, 2026-10-08):
   "Genesis Space" and names only the two Eyes);
 - `M3_BicephalousPerspective` imports `M3_GrammarFoundation` (today it imports nothing).
 
+### 8.0b The three lenses of the three perspectives (Michel, 2026-10-10)
+
+Found while preparing lot (A): the word **"bicephalous" carries two meanings on HEAD**
+— (a) the pair Gt + Gm (`M3_EagleEye` "Bicephalous Grammar = Gt + Gm",
+`M3_GenesisGrammar` "bicephalous structural grammar", and the Bootstrap invariant
+"Bicephalous basis = ASFID + REVOI"); (b) the Stereopsis grammar Gs
+(`M3_BicephalousPerspective`, prefix `m3:bicephalous:`). A founding axiom that was
+not explicit. Clarified by Michel:
+
+TSCG has **three perspectives**, each readable through **three lenses** that name the
+same thing and complement each other:
+
+| Perspective | Structural-grammar lens | Epistemological lens | Metaphoric lens |
+|---|---|---|---|
+| 1 | Gt (`×`) | Territory — what a system *is* | **Eagle Eye** — the eye Odin kept, which sees the world |
+| 2 | Gm (`+`) | Map — how it is *known* | **Sphinx Eye** — the eye left in Mímir's well, which sees into the source of knowledge |
+| 3 | Gs (`\|`) | Stereopsis — the synergy of Territory and Map | **Odin's Wisdom** — what the two eyes produce when they fuse in Odin |
+| couplings | Φ : Gt → Gm, Ψ : Gm → Gt | observation, interpretation | **Synesthesia** — one modality evoking the other, never a perfect translation |
+
+**The metaphoric lens — Odin's two eyes.**
+
+- *What the sources say* (Old Norse: *Völuspá*, *Prose Edda* / *Gylfaginning*): Odin
+  gives one of his eyes as a pledge to drink from Mímir's well (*Mímisbrunnr*), the
+  spring of wisdom; the eye stays hidden in the well. The sources do not name his eyes.
+- *The TSCG reading* (an **interpretation**, not part of the myth; to be presented as
+  such): Odin holds two eyes on two different planes. The kept eye sees the world as
+  it is — the Territory (Eagle Eye). The eye in the well sees into knowledge — the Map
+  (Sphinx Eye). Odin is where the two views fuse; **his wisdom**, which neither eye
+  has alone, is the Stereopsis — hence the name **Odin's Wisdom** (the product of the
+  fusion, not the person).
+- *Why it fits*: (1) one head, two eyes, one place of fusion — true stereopsis;
+  (2) as in binocular depth, the wisdom feeds on the **disparity** between the two
+  eyes: the gap between Territory and Map (epistemic gap δ₁, `M3_GenesisGrammar`) is
+  the source of depth, not a defect; (3) the **sacrifice / wisdom polarity** — to
+  know, Odin gave up seeing the world with both eyes — echoes Korzybski: the map is
+  not the territory, and knowing always costs something of direct seeing.
+- *Synesthesia for Φ and Ψ*: Stereopsis fuses two views of the same sense into a new
+  dimension (depth); synesthesia makes one modality **evoke** another. That is what
+  Φ (Territory evokes a Map: observation) and Ψ (Map evokes a Territory:
+  interpretation) do — translations that are never perfect.
+- *Names considered and set aside for Gs*: "Synesthesia" (describes Φ/Ψ, not the
+  fusion); "RealityMatrix" (film connotation of illusory reality, and "matrix"
+  recalls the retired linear-algebra / tensor framing); "Witness" (a witness reports
+  without adding, while Gs creates irreducible primitives; "observer" already names
+  REVOI's O and Φ; "neutral" is the technical neutral element of each monoid). The
+  witness-consciousness (*sakshi*) may join the documentary echoes.
+- *Why Odin*: closer to Western culture; Eagle Eye and Sphinx Eye stay, being
+  intuitive for a Western audience.
+- *Documentary echoes only*, to illustrate the universality of this duality, with
+  respect for each culture (symbolic references, not technical terms): **Fuxi and
+  Nüwa** (Chinese — two beings whose tails intertwine into one body, often shown
+  holding a set square and a compass) and **Ardhanarishvara** (Indian — Shiva and
+  Shakti in one body, bound by love: the union *is* the synergy).
+- *Superseded reading*: the "bicephalous cyclops" (two heads, one shared body). The
+  word **"bicephalous" is retired as a metaphor**; where it survives in names
+  (`M3_BicephalousPerspective`, prefix `m3:bicephalous:`), a rename is a separate
+  decision (to be weighed with S5-3, which renames prefixes anyway). **Target name
+  (Michel, 2026-10-10): `M3_OdinsWisdom.jsonld`**, following the rule that the
+  perspective files carry the metaphoric name (`M3_EagleEye`, `M3_SphinxEye`).
+
+**Where it must become explicit** (lot (A) and after):
+
+- `M3_GenesisGrammar` description: M3 is the most abstract layer of the Layer Cake
+  M3 → M0 (numbered as in the OMG/UML four-layer metamodel architecture); the three
+  perspectives and their three lenses;
+- `m3:metaphoricLabel` values: Eagle Eye (`M3_EagleEye`), Sphinx Eye (`M3_SphinxEye`),
+  Odin's Wisdom (`M3_BicephalousPerspective`, later `M3_OdinsWisdom`); its `rdfs:comment` points to the metaphoric
+  lens and states that it is an interpretation;
+- the texts of `m3:GenesisExtension` (three perspectives);
+- the Bootstrap invariant "Bicephalous basis" → "three perspectives, three lenses";
+- the full explanation (sources, interpretation, echoes) in a rationale `.md` next to
+  the M3 ontologies, with a 2–3 sentence version in the `M3_GenesisGrammar` comment.
+
+Also noted for lot (A): `m3:expectedCount` is read by no tool (only the dead
+`Ref/M3_GenesisSpace_Ref.ttl`) and duplicates the "Exactly N… Closed set" scope notes
+— proposed for removal; the `M3_GenesisGrammar` description is stale ("complete
+orthogonal basis… two complementary perspectives", no Gs); `M3_SphinxEye` still lists
+`{R,E,V,O,I}` (bare I → S5-1).
+
 ### 8.1 S5-1 — primitives always suffixed
 
 Rule: the ambiguous letters are always qualified by their monoid —
@@ -241,6 +320,12 @@ colon (JSON-LD CURIE), the rest is dot-separated.
 
 ## Changelog
 
+- **1.2.0 (2026-10-10)** — §8.0b: the three perspectives and their three lenses
+  (structural, epistemological, metaphoric). Metaphoric lens: Odin's two eyes (Eagle
+  Eye = Territory, Sphinx Eye in Mímir's well = Map), Odin's Wisdom = the product of
+  the fusion (Stereopsis; target file `M3_OdinsWisdom`), Synesthesia = Φ / Ψ,
+  sacrifice / wisdom polarity; Chinese and Indian documentary echoes;
+  "bicephalous" retired as a metaphor (double meaning found on HEAD).
 - **1.1.0 (2026-10-08)** — §8 added: decision (A) on M3 ontology types and three new
   worksites noted by Michel (S5-1 suffixed primitives, S5-2 `m1core` → `m1`, S5-3
   double-colon names → `prefix:a.B`); §7.1 progress (lots 2a and 2b-M2).
