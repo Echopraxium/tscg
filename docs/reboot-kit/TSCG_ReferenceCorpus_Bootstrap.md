@@ -88,12 +88,20 @@ exercises and ontology facts can't be read.
 
 ## Hard invariants (must never drift)
 
-**Bicephalous basis.**
-`ASFID` (Territory / Eagle Eye — what a system *is*) = Attractor, Structure,
-Flow, Information, Dynamics.
-`REVOI` (Map / Sphinx Eye — how a system is *known*) = **R**epresentability,
-Evolvability, Verifiability, Observability, Interoperability.
-**R is Representability — NEVER Reproducibility.**
+**Three perspectives, three terminology contexts (2026-10-11).**
+M3 has three perspectives, named in three coexisting terminology contexts
+(monoidal / epistemological / metaphoric):
+- `Gt` (×) — Territory, what a system *is* — Eagle Eye:
+  `AStFItD` = Attractor, Structure (`St`), Flow, Information (`It`), Dynamics.
+- `Gm` (+) — Map, how a system is *known* — Sphinx Eye:
+  `REVOIm` = **R**epresentable, Evolvable, Verifiable, Observable, Interoperable (`Im`).
+- `Gs` (|) — Stereopsis, the synergy of Territory and Map — Odin's Wisdom:
+  `TKSsL` + poles; alphabet defined in `M3_OdinsWisdom.jsonld` (read it from HEAD,
+  do not enumerate here).
+S and I exist in several monoids: in prose they are ALWAYS suffixed — `St`/`Ss`,
+`It`/`Im` — and so are the acronyms (`AStFItD`, `REVOIm`, `TKSsL`). Identifiers
+(`m0:asfidScores`, `m2:dominantASFID`…) are not renamed.
+**R is Representable — NEVER Reproducible.** "Bicephalous" is retired as a metaphor.
 
 **Notation (2026-07-06, supersedes all prior).**
 The operator `⊗` must **never** appear in any TSCG file or formula.
@@ -101,7 +109,7 @@ Structural formulas use only:
 - `×` — Territory / ASFID product (monoid **Gt**)
 - `+` — Map / REVOI sum (monoid **Gm**)
 - `|` — Stereopsis (monoid **Gs**; its Base16 alphabet is defined in
-  `M3_BicephalousPerspective.jsonld` — read it from HEAD, do not enumerate here)
+  `M3_OdinsWisdom.jsonld` — read it from HEAD, do not enumerate here)
 
 Atom-level subscripts disambiguate: `St`/`Ss` (Structure vs Symbol),
 `It`/`Im` (Information vs Interoperability).

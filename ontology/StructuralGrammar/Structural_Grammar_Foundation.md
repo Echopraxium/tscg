@@ -35,7 +35,7 @@
 > **v2 Update (2026-05-18):** This document covers two reform phases.
 > Phase 1 (2026-05-11): ⊗ redefined as monoidal product (Lambek), abandoning tensor/Hilbert formalism.
 > Phase 2 (2026-05-18): ⊗ *replaced* by three explicit operators ×, +, | — one per grammar.
-> New: M3_BicephalousPerspective.jsonld, T (Time) as first Gs primitive, intra vs inter-grammar distinction.
+> New: M3_OdinsWisdom.jsonld, T (Time) as first Gs primitive, intra vs inter-grammar distinction.
 
 ---
 
@@ -642,14 +642,14 @@ This reform makes the bicephalous architecture **explicit in the notation itself
 𝕋₀  =  𝕋₀(×) ∪ 𝕋₀(+) ∪ 𝕋₀(|)  =  11 primitives
 ```
 
-### M3_BicephalousPerspective.jsonld — Reification of Stereopsis
+### M3_OdinsWisdom.jsonld — Reification of Stereopsis
 
 A third M3 file is added alongside EagleEye and SphinxEye:
 
 ```
 M3_EagleEye.jsonld              →  Gt, ASFID, ×   (metaphor: Eagle Eye)
 M3_SphinxEye.jsonld             →  Gm, REVOI, +   (metaphor: Sphinx Eye)
-M3_BicephalousPerspective.jsonld →  Gs, {T}, |    (metaphor: Bicephalous Perspective)
+M3_OdinsWisdom.jsonld →  Gs, {T}, |    (metaphor: Bicephalous Perspective)
 ```
 
 **Naming convention:** File names use *metaphorical* terminology

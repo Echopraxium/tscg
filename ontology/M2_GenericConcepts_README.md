@@ -37,7 +37,7 @@ M2 formulas draw from all three M3 alphabets, **16 primitives total (Base16)**:
 **Derived Gs elements (v16.14.0)** — not primitives, Base16 preserved:
 
 ```
-_0  =  _^ | _$   (EquilibriumPole — see M3_BicephalousPerspective v1.3.0)
+_0  =  _^ | _$   (EquilibriumPole — see M3_OdinsWisdom v1.3.0)
 ```
 
 **Notation convention — hybrid formulas (with `|`):**
@@ -442,7 +442,7 @@ ValueSpace: `It | V + O + R + Im`.
 ```
 M3_GrammarFoundation (apex)
          ↓
-M3_EagleEye + M3_SphinxEye + M3_BicephalousPerspective
+M3_EagleEye + M3_SphinxEye + M3_OdinsWisdom
          ↓ all imported by
 M3_GenesisGrammar
          ↓ imported by
@@ -452,7 +452,7 @@ M1_* extensions + M0_* instances
 ```
 
 M2 accesses all M3 primitives (including T from Gs) **transitively**
-via M3_GenesisGrammar — no direct import of M3_BicephalousPerspective needed.
+via M3_GenesisGrammar — no direct import of M3_OdinsWisdom needed.
 
 ---
 
@@ -531,7 +531,7 @@ The new formula emerged from the NakamotoConsensus instance analysis
 
 | Version | Date | Changes |
 |---|---|---|
-| **16.19.0** | 2026-07-24 | **SC-2 STEPS 3-4 — NOTATION REFORM.** Bare monoidal generators `S`/`I` now subscripted in every monoidal formula (`St`/`It`/`Ss`/`Im`), per `M3_BicephalousPerspective` 1.5.1. **MIGRATED 76** values: 58 Gt (`S→St`, `I→It`), 18 Gm (`I→Im`). Of these, 43 on `m2:hasStructuralGrammarFormula` → gauge **NOT-1 43→0**; 33 in secondary formula fields (so the file does not DISPLAY the old notation where the graph carries the new one). **DELETED 4** tensor-era fields: `formulaTeX`×2, `m2:expressionTeX`×2 (all carried `\otimes`); living twin `m2:expression` survives on both nodes in `×` notation. **CARVED OUT 9**, recorded in `M2_Formulas_Review_with_Gs_Residues.md`: 5 `m2:sphinxView` in the ASFID alphabet, 2 indexed generators, 2 prose glosses. **NOT closed**: `Symmetry`/`State` correctly spelled but single-primitive (→ Gs worksite); `Gradient` keeps prose `or`. Enforced by `check-M2/M2_MonoidalFormula_Schema_shacl.ttl` 0.1.0 via `tscg_metrics --shacl-path`. Triples 2345→2343 (the 2 `m2:expressionTeX`). Shipped with a prerequisite CTX fix (16.18.1, isolated lot): `m2`/`m3` prefixes made absolute + `skos` declared, unresolved predicates 174→0. |
+| **16.19.0** | 2026-07-24 | **SC-2 STEPS 3-4 — NOTATION REFORM.** Bare monoidal generators `S`/`I` now subscripted in every monoidal formula (`St`/`It`/`Ss`/`Im`), per `M3_OdinsWisdom` 1.5.1. **MIGRATED 76** values: 58 Gt (`S→St`, `I→It`), 18 Gm (`I→Im`). Of these, 43 on `m2:hasStructuralGrammarFormula` → gauge **NOT-1 43→0**; 33 in secondary formula fields (so the file does not DISPLAY the old notation where the graph carries the new one). **DELETED 4** tensor-era fields: `formulaTeX`×2, `m2:expressionTeX`×2 (all carried `\otimes`); living twin `m2:expression` survives on both nodes in `×` notation. **CARVED OUT 9**, recorded in `M2_Formulas_Review_with_Gs_Residues.md`: 5 `m2:sphinxView` in the ASFID alphabet, 2 indexed generators, 2 prose glosses. **NOT closed**: `Symmetry`/`State` correctly spelled but single-primitive (→ Gs worksite); `Gradient` keeps prose `or`. Enforced by `check-M2/M2_MonoidalFormula_Schema_shacl.ttl` 0.1.0 via `tscg_metrics --shacl-path`. Triples 2345→2343 (the 2 `m2:expressionTeX`). Shipped with a prerequisite CTX fix (16.18.1, isolated lot): `m2`/`m3` prefixes made absolute + `skos` declared, unresolved predicates 174→0. |
 | **16.18.0** | 2026-07-18 | **M2 Formulas Review with Gs** (worksite opening, decision 1.B). REMOVED the `formula` key from all **66** `m2:eagleView` blocks: a **fossil duplicate** of `m2:hasStructuralGrammarFormula` — 38 byte-identical, **28 diverged**, and in every divergent case the canonical was the up-to-date one (e.g. `Layer` canon `St × It × A \| R` vs eagle `S × I × A × R`). **0** nodes had an `eagleView.formula` without a canonical formula → no information lost. Same anti-pattern as the D8 triad retired from M1: one claim stored twice, one copy drifting. Done **before** the SC-2 `St`/`It` migration deliberately — migrating the 43 bare-`S`/`I` formulas first would have widened the divergence from 28 to ~50. **PRESERVED** (surgical): the `eagleView` block itself with its `basis`, `role` (67, ~20 carrying real explanatory content) and `status` keys. **OUT OF SCOPE, still present**: `eagleView.formulaComposition`/`formulaDecomposition` (1 node, same D8 pattern) and the whole `m2:sphinxView` layer (43 blocks split across two key names — `formulaPrimary` 36 / `formula` 7) — separate decisions. See `M2_Formulas_Review_with_Gs_README.md`. |
 | **16.17.0** | 2026-07-13 | FUNCTIONAL GRAMMAR MODEL (SC-1). RENAME (hard): `m2:KnowledgeFieldConceptCombo` → `m2:DomainConceptCombo`, **re-defined** by its `Fm1m2` formula (hybrid ≥1 Domain + ≥1 GenericConcept), superseding the former "parents from distinct epistemological domains" criterion. NEW: `m2:producingFunction` — `Fm2 : GenericConcept²⁺ → GenericConceptCombo`; `Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo`. A combo's formula **is** the function signature: no monoidal formula, **no monoidal expansion** (emergence is non-compositional → functions, not functors). Arguments = named concepts from M2 or M1_CoreConcepts only, comma-juxtaposed, never primitives, never joined by ×/+/\|. `Fm1` does not exist. DEPRECATED: `m2:morphism_emergence` (the root of the tensor-era residue) → superseded by `m2:producingFunction`. PURGED: the `lattice_join` definition, the "union of the parent type sets" clause, and the 4 operator-style `m2:comboFormula`. |
 

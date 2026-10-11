@@ -67,7 +67,7 @@ M3_GenesisGrammar
 
 **Complementary grammars:**
 - M3_EagleEye.jsonld — Territory Grammar Gt (ASFID, ×)
-- M3_BicephalousPerspective.jsonld — Stereopsis Grammar Gs (reification of synergy, |)
+- M3_OdinsWisdom.jsonld — Stereopsis Grammar Gs (reification of synergy, |)
 
 **Complete architecture:**
 ```
@@ -86,7 +86,7 @@ Natural transformation **Ψ** couples Map to Territory:
 ```
 
 The Φ/Ψ enrichment loop between Gm and Gt produces the stereopsic synergy
-formalized in Gs (M3_BicephalousPerspective.jsonld).
+formalized in Gs (M3_OdinsWisdom.jsonld).
 
 ---
 

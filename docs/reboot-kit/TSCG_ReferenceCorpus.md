@@ -33,7 +33,7 @@ the three specialised files**, not the aggregator.
 |---|---|---|---|
 | **Gt** — Territory / Eagle Eye | `ontology/M3_EagleEye.jsonld` | `×` | A, St, F, It, D — ASFID (5) |
 | **Gm** — Map / Sphinx Eye | `ontology/M3_SphinxEye.jsonld` | `+` | R, E, V, O, **Im** — REVOI (5) |
-| **Gs** — Stereopsis | `ontology/M3_BicephalousPerspective.jsonld` | `\|` | T, K, Ss, L, _^, _$ (6) |
+| **Gs** — Stereopsis | `ontology/M3_OdinsWisdom.jsonld` | `\|` | T, K, Ss, L, _^, _$ (6) |
 
 **= 5 + 5 + 6 = 16.** Notes: Gm's 5th is `Im`, never a bare `I` (the `{R,E,V,O,I}`
 form was a corrected defect). Gs's 6 = 4 nominal (TKSL) + 2 poles (`_^`/`_$`, polarity
@@ -46,7 +46,7 @@ modifiers); `_0` (EquilibriumPole) `= _^ | _$` is a **derived** element, not a p
 | Layer | Path `[✓ HEAD 2026-10-06]` |
 |---|---|
 | M3 aggregator | `ontology/M3_GenesisGrammar.jsonld` |
-| M3 grammars | `ontology/M3_EagleEye.jsonld`, `M3_SphinxEye.jsonld`, `M3_BicephalousPerspective.jsonld`, `M3_GrammarFoundation.jsonld` |
+| M3 grammars | `ontology/M3_EagleEye.jsonld`, `M3_SphinxEye.jsonld`, `M3_OdinsWisdom.jsonld`, `M3_GrammarFoundation.jsonld` |
 | M2 | `ontology/M2_GenericConcepts.jsonld` |
 | M1 core | `ontology/M1_CoreConcepts.jsonld` |
 | M1 extensions | `ontology/M1_extensions/<domain>/M1_<Domain>.jsonld` (e.g. `M1_extensions/biology/M1_Biology.jsonld`) |
@@ -134,7 +134,7 @@ What remains in project knowledge after cleanup — durable *rationale*, no live
 
 **Ontology READMEs (rationale kept — read HEAD for structure)**: `M3_GrammarFoundation_README.md`,
 `M2_GenericConcepts_README.md`, `M1_CoreConcepts_README.md`, `M3_GenesisGrammar_README.md`,
-`M3_EagleEye_README.md`, `M3_SphinxEye_README.md`, `M3_BicephalousPerspective_README.md`,
+`M3_EagleEye_README.md`, `M3_SphinxEye_README.md`, `M3_OdinsWisdom_README.md`,
 `tscg_metrics_README.md`.
 
 **Live design note (deferred worksite)**: `_01_Facet_as_M3_Principle_ArchitectureNote.md`.

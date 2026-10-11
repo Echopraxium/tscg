@@ -26,7 +26,7 @@ It sits between M2 (GenericConcepts) and the domain-specific M1 extensions
 M3_GrammarFoundation.jsonld  ─┐
 M3_EagleEye.jsonld           ─┤→  M3_GenesisGrammar.jsonld
 M3_SphinxEye.jsonld          ─┘           ↓ imported by
-M3_BicephalousPerspective.jsonld           ↓
+M3_OdinsWisdom.jsonld           ↓
                                   M2_GenericConcepts.jsonld
                                            ↓ imported by
                                   M1_CoreConcepts.jsonld    ← THIS FILE
@@ -463,7 +463,7 @@ Full rationale: `StructuralGrammar/Functional_Grammar_Model.md`.
 
 - `M2_GenericConcepts.jsonld` — M2 atomic concepts (source of Fm2 parents)
 - `M2_GenericConcepts_README.md` — M2 formulas reference
-- `M3_BicephalousPerspective.jsonld` — DerivedGsElement _0 = _^ | _$
+- `M3_OdinsWisdom.jsonld` — DerivedGsElement _0 = _^ | _$
 - `M1_Domains.jsonld` — Domain registry
 - `docs/CoreHypotheses/OntologicalOverfitting.md` — anti-pattern documentation
 - `skills/tscg-m2-candidate-filter/SKILL.md` — candidate evaluation pipeline

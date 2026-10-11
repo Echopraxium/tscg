@@ -23,7 +23,7 @@ def test_imports_resolved_locally_and_removed():
     names = sorted(f.name for f in merged)
     assert unresolved == []
     assert names == sorted(["M3_GenesisGrammar.jsonld", "M3_GrammarFoundation.jsonld", "M3_EagleEye.jsonld",
-                            "M3_SphinxEye.jsonld", "M3_BicephalousPerspective.jsonld"])
+                            "M3_SphinxEye.jsonld", "M3_OdinsWisdom.jsonld"])
     assert not any(str(p) == ort.OWL_IMPORTS for _, p, _ in g)
 
 

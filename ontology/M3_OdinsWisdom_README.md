@@ -1,4 +1,4 @@
-# M3_BicephalousPerspective.jsonld
+# M3_OdinsWisdom.jsonld
 
 **Version:** 1.5.0
 **Layer:** M3
@@ -67,7 +67,7 @@ A × St × F | _0            =  Balance         (equilibrium — _0 = _^ | _$)
 A × F × D | _0             =  TriadicBalance  (3-state optimum)
 ```
 
-**Neutral element:** `m3:bicephalous:StereopsisEmptySet = EmptyTerritory | EmptyMap`
+**Neutral element:** `m3:odins_wisdom.StereopsisEmptySet = EmptyTerritory | EmptyMap`
 
 ---
 

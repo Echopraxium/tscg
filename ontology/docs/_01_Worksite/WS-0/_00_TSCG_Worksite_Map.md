@@ -125,7 +125,7 @@ Fm1m2 : Domain⁺ , GenericConcept⁺  -> DomainConceptCombo    (subset of Gener
 
 > **Vocabulary note (2026-07-24)**: the 2026-07-11 map said "atom formula", which
 > collides with M3's generator sense of "atomic". SC-2 replaced it by "monoidal
-> formula" in `M3_BicephalousPerspective` 1.5.1 and `tscg_metrics.py` 1.1.0.
+> formula" in `M3_OdinsWisdom` 1.5.1 and `tscg_metrics.py` 1.1.0.
 
 ### 3.3 Facet as an M3 principle (SC-3 — DESIGN DECIDED 2026-07-30, NOT graved)
 
@@ -193,12 +193,12 @@ Status measured at HEAD 2026-07-24; where it differs from 2026-07-11, both shown
 ### SC-2 — COMPLETE (historical detail retained)
 
 All 5 steps done; committed and pushed origin/main per handover 2026-07-25
-(M2_GenericConcepts 16.19.0, M3_BicephalousPerspective 1.5.1, tscg_metrics.py 1.1.0).
+(M2_GenericConcepts 16.19.0, M3_OdinsWisdom 1.5.1, tscg_metrics.py 1.1.0).
 The step table below is kept as the record of what shipped.
 
 | step | content | status |
 |---|---|---|
-| 1 | convention in M3_BicephalousPerspective 1.5.0 (->1.5.1) | done |
+| 1 | convention in M3_OdinsWisdom 1.5.0 (->1.5.1) | done |
 | 2 | typeSymbol S->St, I->It in M3_EagleEye 2.10.0 | done |
 | 3 | SHACL shape forbidding bare S/I in monoidal formulas | produced this session |
 | 4 | migrate formula values | produced this session |
@@ -215,7 +215,7 @@ This session's lots (in outputs/, PENDING gates + HEAD re-verification):
   174->0, triples 2345 unchanged. Commit ISOLATED, first.
 - **Lot B** same 16.19.0 — 76 migrations (58 Gt, 18 Gm), 4 TeX fields deleted
   (triples ->2343), 9 carve-outs to WS-3; M2_MonoidalFormula_Schema_shacl.ttl 0.1.0;
-  M3_BicephalousPerspective 1.5.1; tscg_metrics.py 1.1.0. NOT-1 43->0, SHACL 45->0.
+  M3_OdinsWisdom 1.5.1; tscg_metrics.py 1.1.0. NOT-1 43->0, SHACL 45->0.
 - Confirms old-map SC-2: Balance `A × S × F | _0` -> `A × St × F | _0` DONE; open
   question "does typeSymbol move S->St?" RESOLVED YES (step 2).
 

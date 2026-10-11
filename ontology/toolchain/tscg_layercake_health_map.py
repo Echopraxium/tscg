@@ -14,7 +14,7 @@ The Layer Cake seen from above, as an onion: M3 at the centre, then M2, M1, and 
 on the periphery (radius = layer, centre = abstract, periphery = concrete).
   * one HEX CELL per node (a top-level @graph node; one cell per instance in M0);
   * one META-HEXAGON per cluster of nodes (Michel, 2026-10-06):
-      M3  Eagle Eye (Gt), Sphinx Eye (Gm), Bicephalous (Gs) on three axes 120° apart,
+      M3  Eagle Eye (Gt), Sphinx Eye (Gm), Odin's Wisdom (Gs) on three axes 120° apart,
           Genesis (types / classes / properties) between them, the apex
           Grammar Foundation at the centre;
       M2  one cluster per m2:hasFamily, plus "meta-schema" (classes without family,
@@ -53,7 +53,7 @@ LINKS (0.2.0) — drawn only where the data carries a relation (Michel, 2026-10-
             (@type / rdfs:subClassOf to m2:DomainConceptCombo …) is NOT usage.
   M2 -> M3  a family -> the three Eyes, weighted by the share of Gt / Gm / Gs
             primitives in its formulas (Eagle Eye = Gt, Sphinx Eye = Gm,
-            Bicephalous = Gs) — the monoidal composition (WS-3)
+            Odin's Wisdom = Gs) — the monoidal composition (WS-3)
   Stroke width = weight; hover a link for its detail.
   PLACEMENT (0.3.0): each ring is ordered by the weighted circular mean of the angles
   of what its clusters link to in the ring INSIDE it (barycentre ordering, the
@@ -107,7 +107,7 @@ FILE_RED = {"D2": "@vocab: bare keys become fake standard terms",
 M3_CLUSTER_OF_FILE = {
     "M3_EagleEye.jsonld": "Eagle Eye · Gt",
     "M3_SphinxEye.jsonld": "Sphinx Eye · Gm",
-    "M3_BicephalousPerspective.jsonld": "Bicephalous · Gs",
+    "M3_OdinsWisdom.jsonld": "Odin's Wisdom · Gs",
     "M3_GrammarFoundation.jsonld": "Grammar Foundation (apex)",
 }
 
@@ -328,7 +328,7 @@ USES_KEYS = ("m2:mobilizes", "m1:comboOf", "m1:instantiatesGenericConcept")
 GRAMMAR_ALPHABET = {"Gt": {"A", "St", "F", "It", "D"},
                     "Gm": {"R", "E", "V", "O", "Im"},
                     "Gs": {"T", "K", "Ss", "L", "_^", "_$", "_0"}}
-EYE_OF = {"Gt": "Eagle Eye · Gt", "Gm": "Sphinx Eye · Gm", "Gs": "Bicephalous · Gs"}
+EYE_OF = {"Gt": "Eagle Eye · Gt", "Gm": "Sphinx Eye · Gm", "Gs": "Odin's Wisdom · Gs"}
 
 
 def compute_edges(src: Source, by_layer: Dict[str, List[str]]) -> List[Tuple[tuple, tuple, float, str]]:
@@ -460,7 +460,7 @@ def render(nodes: List[Node], golden: Dict[str, Any], head: str, out_svg: Path,
     placed: List[Tuple[Tuple[str, str], float, float, float]] = []
     # M3: apex at the centre, 6 around it (3 eyes on the 3 axes, Genesis in between)
     m3_order = ["Eagle Eye · Gt", "Genesis · types", "Sphinx Eye · Gm",
-                "Genesis · classes", "Bicephalous · Gs", "Genesis · properties"]
+                "Genesis · classes", "Odin's Wisdom · Gs", "Genesis · properties"]
     m3 = {k[1]: v for k, v in clusters.items() if k[0] == "M3"}
     apex = "Grammar Foundation (apex)"
     r_apex = radius(m3.get(apex, []), "M3")

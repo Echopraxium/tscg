@@ -282,7 +282,7 @@ document.getElementById('btn-m3').addEventListener('click', async (e) => {
     addItem('GrammarFoundation',             ontRoot + '/M3_GrammarFoundation.jsonld')
     addItem('EagleEye  (Gt / ASFID / ×)',    ontRoot + '/M3_EagleEye.jsonld')
     addItem('SphinxEye  (Gm / REVOI / +)',   ontRoot + '/M3_SphinxEye.jsonld')
-    addItem('BicephalousPerspective  (Gs / |)', ontRoot + '/M3_BicephalousPerspective.jsonld')
+    addItem('BicephalousPerspective  (Gs / |)', ontRoot + '/M3_OdinsWisdom.jsonld')
   } else {
     const h = document.createElement('div')
     h.style.cssText = 'padding:10px 16px;color:var(--text-muted);font-size:11px'
@@ -391,7 +391,7 @@ function renderAdjacentLayers (currentLayer, filePath) {
         { name: 'GrammarFoundation',                 file: 'M3_GrammarFoundation.jsonld' },
         { name: 'EagleEye  (Gt / ASFID / ×)',        file: 'M3_EagleEye.jsonld' },
         { name: 'SphinxEye  (Gm / REVOI / +)',       file: 'M3_SphinxEye.jsonld' },
-        { name: 'BicephalousPerspective  (Gs / |)',  file: 'M3_BicephalousPerspective.jsonld' },
+        { name: 'BicephalousPerspective  (Gs / |)',  file: 'M3_OdinsWisdom.jsonld' },
       ]
     },
     M2: {

@@ -199,7 +199,7 @@ function buildSeoHead(poclets, now) {
     'simulation', 'interactive simulation', 'scientific visualization',
     // Architecture layers
     'poclet', 'GenericConcepts', 'M0', 'M1', 'M2', 'M3',
-    'Genesis Space', 'EagleEye', 'SphinxEye', 'bicephalous architecture',
+    'Genesis Grammar', 'EagleEye', 'SphinxEye', 'OdinsWisdom', 'Stereopsis', 'three perspectives',
     // Analysis dimensions
     'ASFID', 'REVOI', 'epistemic gap', 'epistemic distance',
     'Attractor', 'Structure', 'Flow', 'Information', 'Dynamics',

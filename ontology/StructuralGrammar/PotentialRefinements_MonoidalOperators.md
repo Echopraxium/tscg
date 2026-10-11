@@ -622,7 +622,7 @@ illuminating metaphor that:
 | Gradient formula | **Resolved** | `⊗₂F → F × T / I × T` | — |
 | Missing Temporality dimension | **Closed** | No change (F+D sufficient) | — |
 | abs() M0 magnitude extractor | **Open** | None (M0 scope only) | Validate on 2+ poclets |
-| T emergent bicephalous type | **Decided** | M3_BicephalousPerspective.jsonld | Axiom pending |
+| T emergent bicephalous type | **Decided** | M3_OdinsWisdom.jsonld | Axiom pending |
 | Bicephalous alphabet gap | **Decided** | 𝕋₀(\|)={T} declared | Further primitives from corpus |
 | Cell membrane analogy for \| | **Documented** | This section | Poclet Osmosis/Reverse Osmosis |
 
@@ -676,7 +676,7 @@ Documented here for future consideration.
 | Gradient formula | **Resolved** | `F × T / I × T` | — |
 | Missing Temporality dimension | **Closed** | No change | — |
 | abs() M0 magnitude extractor | **Open** | None (M0 scope) | Validate on 2+ poclets |
-| T emergent bicephalous type | **Decided** | M3_BicephalousPerspective.jsonld | — |
+| T emergent bicephalous type | **Decided** | M3_OdinsWisdom.jsonld | — |
 | Bicephalous alphabet gap | **Decided** | 𝕋₀(\|)={T,_^,_$} declared | — |
 | Cell membrane analogy for \| | **Documented** | Three READMEs updated | Poclet Osmosis |
 | Emergence operators ×⇒, +⇒ | **Resolved** | Replaced by Fm2 (M2) and Fm1m2 (M1/M2) morphisms | — |

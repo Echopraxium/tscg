@@ -69,7 +69,7 @@ The highest-value family; today it has the worst coverage.
   *Attested*: `M1_CoreConcepts`, `M1_Domains` use `m3:` with no `m3` prefix →
   `m3:ontologyType` becomes an opaque IRI, invisible to any reasoner/SHACL.
 - **CTX-2** relative prefix + `@vocab` present → resolves against `owl#`.
-  *Attested*: `M3_BicephalousPerspective`, `M3_GrammarFoundation`.
+  *Attested*: `M3_OdinsWisdom`, `M3_GrammarFoundation`.
 - **CTX-3** `@base` malformed (missing `ontology/` segment).
   *Attested*: `M3_GrammarFoundation` (`.../main/` instead of `.../main/ontology/`).
 - **CTX-4** relative prefix depending on `@base` (fragile, resolves today but one
@@ -194,7 +194,7 @@ Snapshot of the live debt as of 2026-07-18, i.e. the tool's first expected repor
 | Family | Finding | Count |
 |---|---|---|
 | CTX-1 | `m3:` prefix undeclared | 2 (`M1_CoreConcepts`, `M1_Domains`) |
-| CTX-2/3 | relative + `@vocab` / bad `@base` | 2 (`M3_BicephalousPerspective`, `M3_GrammarFoundation`) |
+| CTX-2/3 | relative + `@vocab` / bad `@base` | 2 (`M3_OdinsWisdom`, `M3_GrammarFoundation`) |
 | CTX-4 | fragile relative prefix | 14 |
 | CTX-5 | term name contains `:` | ~30 |
 | DUP-1 | residual D8 triad | 8 (`M1_Geology`) |

@@ -96,7 +96,7 @@ Both are **Structural Grammars**. Neither requires a Hilbert space.
 | Mathematical Foundation | Lambek calculus, Curry-Howard, Category Theory, Bridge to Dirac notation |
 | ASFID/REVOI Dimensions | Two roles: types at M2, evaluators at M0 |
 | Epistemic Gap δ₁ | Unchanged — never required Hilbert formalism |
-| Impact on M3 | M3_EagleEye, M3_SphinxEye, M3_BicephalousPerspective |
+| Impact on M3 | M3_EagleEye, M3_SphinxEye, M3_OdinsWisdom |
 | Backward Compatibility | Formula values unchanged — only notation evolved |
 | Migration Guide | ⊗ → ×, +, | — phases and scripts |
 | **Phase 2 (new)** | Three operators, three alphabets, T, intra/inter-grammar |
@@ -111,7 +111,7 @@ Both are **Structural Grammars**. Neither requires a Hilbert space.
 | `M3_GrammarFoundation.jsonld` | Formal ontology — three operators + three alphabets |
 | `M3_EagleEye.jsonld` | Territory Grammar Gt — ASFID, × |
 | `M3_SphinxEye.jsonld` | Map Grammar Gm — REVOI, + |
-| `M3_BicephalousPerspective.jsonld` | Stereopsis Grammar Gs — {T}, \| |
+| `M3_OdinsWisdom.jsonld` | Stereopsis Grammar Gs — {T}, \| |
 | `M3_GenesisGrammar.jsonld` | Bicephalous aggregation — imports all three |
 | `StructuralGrammar_MonoidalOperators_README.md` | Operator reference + intra/inter clarification |
 | `PotentialRefinements_MonoidalOperators.md` | Open questions (T, ∩, abs(), Bicephalous Alphabet) |

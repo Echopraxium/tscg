@@ -74,7 +74,7 @@ M3_GenesisGrammar ← YOU ARE HERE
 M2_GenericConcepts
 ```
 
-**Imports:** M3_GrammarFoundation, M3_EagleEye, M3_SphinxEye, M3_BicephalousPerspective
+**Imports:** M3_GrammarFoundation, M3_EagleEye, M3_SphinxEye, M3_OdinsWisdom
 
 ---
 
@@ -102,7 +102,7 @@ SpectralClass:
 |---|---|---|---|---|
 | Gt (Territory) | M3_EagleEye.jsonld | {A, S, F, I, D} | × | What systems ARE |
 | Gm (Map) | M3_SphinxEye.jsonld | {R, E, V, O, Im} | + | How models QUALIFY |
-| Gs (Stereopsis) | M3_BicephalousPerspective.jsonld | {T, _^, _$} | \| | How they CORRESPOND |
+| Gs (Stereopsis) | M3_OdinsWisdom.jsonld | {T, _^, _$} | \| | How they CORRESPOND |
 
 ---
 

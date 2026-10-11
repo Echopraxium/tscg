@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.7.0
+**Version**: 1.8.0
 **Date**: 2026-10-11
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -216,7 +216,7 @@ level crossing. Decision (Michel, 2026-10-08):
   "Genesis Space" and names only the two Eyes);
 - `M3_BicephalousPerspective` imports `M3_GrammarFoundation` (today it imports nothing).
 
-### 8.0b The three lenses of the three perspectives (Michel, 2026-10-10)
+### 8.0b The three perspectives and their three terminology contexts (Michel, 2026-10-10/11)
 
 Found while preparing lot (A): the word **"bicephalous" carries two meanings on HEAD**
 — (a) the pair Gt + Gm (`M3_EagleEye` "Bicephalous Grammar = Gt + Gm",
@@ -225,17 +225,17 @@ Found while preparing lot (A): the word **"bicephalous" carries two meanings on 
 (`M3_BicephalousPerspective`, prefix `m3:bicephalous:`). A founding axiom that was
 not explicit. Clarified by Michel:
 
-TSCG has **three perspectives**, each readable through **three lenses** that name the
-same thing and complement each other:
+TSCG has **three perspectives**, named in **three coexisting terminology contexts**
+(Michel, 2026-10-11: not views, not lenses — vocabularies that cohabit):
 
-| Perspective | Structural-grammar lens | Epistemological lens | Metaphoric lens |
+| Perspective | Monoidal | Epistemological | Metaphoric |
 |---|---|---|---|
 | 1 | Gt (`×`) | Territory — what a system *is* | **Eagle Eye** — the eye Odin kept, which sees the world |
 | 2 | Gm (`+`) | Map — how it is *known* | **Sphinx Eye** — the eye left in Mímir's well, which sees into the source of knowledge |
 | 3 | Gs (`\|`) | Stereopsis — the synergy of Territory and Map | **Odin's Wisdom** — what the two eyes produce when they fuse in Odin |
 | couplings | Φ : Gt → Gm, Ψ : Gm → Gt | observation, interpretation | **Synesthesia** — one modality evoking the other, never a perfect translation |
 
-**The metaphoric lens — Odin's two eyes.**
+**The metaphoric terminology context — Odin's two eyes.**
 
 - *What the sources say* (Old Norse: *Völuspá*, *Prose Edda* / *Gylfaginning*): Odin
   gives one of his eyes as a pledge to drink from Mímir's well (*Mímisbrunnr*), the
@@ -280,12 +280,12 @@ same thing and complement each other:
 
 - `M3_GenesisGrammar` description: M3 is the most abstract layer of the Layer Cake
   M3 → M0 (numbered as in the OMG/UML four-layer metamodel architecture); the three
-  perspectives and their three lenses;
+  perspectives and their three terminology contexts;
 - `m3:metaphoricLabel` values: Eagle Eye (`M3_EagleEye`), Sphinx Eye (`M3_SphinxEye`),
   Odin's Wisdom (`M3_BicephalousPerspective`, later `M3_OdinsWisdom`); its `rdfs:comment` points to the metaphoric
-  lens and states that it is an interpretation;
+  terminology context and states that it is an interpretation;
 - the texts of `m3:GenesisExtension` (three perspectives);
-- the Bootstrap invariant "Bicephalous basis" → "three perspectives, three lenses";
+- the Bootstrap invariant "Bicephalous basis" → "three perspectives, three terminology contexts" (done in the rename lot R);
 - the full explanation (sources, interpretation, echoes) in a rationale `.md` next to
   the M3 ontologies, with a 2–3 sentence version in the `M3_GenesisGrammar` comment.
 
@@ -301,7 +301,7 @@ Lot (A) delivered decision (A) plus the texts of §8.0b: `m3:ontologyType`, the
 scheme and its 11 concepts declared in the apex (split, option c); the five M3 files
 typed (GrammarFoundation and GenesisGrammar `m3:Genesis`, the three perspectives
 `m3:GenesisExtension`); `m3:metaphoricLabel` (Eagle Eye, Sphinx Eye, Odin's Wisdom);
-the `M3_GenesisGrammar` header rewritten (Layer Cake, three lenses); G1b reads the
+the `M3_GenesisGrammar` header rewritten (Layer Cake, three terminology contexts); G1b reads the
 scheme from the apex (`ext.py` 0.2.0). Gate: M3 G1 4 → 0, shacl_violations 7 → 3.
 Found and fixed on the way:
 
@@ -352,6 +352,19 @@ Found and fixed on the way:
    Poclet), not a SystemicFramework (Michel, 2026-10-11). Merging also removes the hidden debt in the texts
    (bare S/I, Hilbert-era "ket notation", stale counts).
 
+### 8.0d Rename lot R — `M3_BicephalousPerspective` → `M3_OdinsWisdom` (2026-10-11)
+
+Done: file and README renamed; ontology IRI `m3:odins_wisdom.OdinsWisdom`; prefix
+`m3:bicephalous:X` → `m3:odins_wisdom.X` (Michel: no colon inside a namespace path; a
+compact IRI keeps exactly one colon, the prefix separator — `m3.odins_wisdom.typeT`
+would be a relative IRI); the dangling `m3:bicephalous:Time` (M2) → `m3:odins_wisdom.typeT`;
+live references (M3, M2, READMEs, reference corpus, Bootstrap, health map, explorer,
+gallery, reasoner test); the "bicephalous" prose of M3 (18 texts, history kept); "lens" →
+"terminology context"; the Bootstrap invariant rewritten (it still used the pre-v3.0.0
+REVOI names in *-ability*). History (changelogs, dated handovers, `_02_housekeeping`,
+snapshots) untouched. Left for lot **R2**: ~45 "bicephalous" adjectives in M2 (21), M1
+(3) and 14 M0 instances (23).
+
 ### 8.1 S5-1 — primitives always suffixed
 
 Rule: the ambiguous letters are always qualified by their monoid —
@@ -370,6 +383,11 @@ No bare `S` or `I` anywhere: formulas, alphabet listings, prose.
   Gm side already has `m3:sphinx_eye:typeIm`) — a rename, with cross-file references;
   `functor_role` blocks of `M3_EagleEye` / `M3_SphinxEye` write `F_S`, `F_I`;
   `m3:typeSymbol` examples "A, S, R, V" and "A × S × F".
+- **Acronyms too** (Michel, 2026-10-11): `AStFItD`, `REVOIm`, `TKSsL` in prose — S and
+  I exist in several monoids. Measured 2026-10-11 (archives excluded): `ASFID` ≈ 3 260,
+  `REVOI` ≈ 2 250, `TKSL` 85 occurrences. **Prose only**: identifiers are NOT renamed
+  (`m0:asfidScores`, `asfidContribution`, `asfidMean`, `m2:dominantASFID`,
+  `revoiAnalysis`…).
 - Owner: SC-2 reopened (or a new SC id), M1/M0 repair after the gauge.
 
 ### 8.1b S5-1b — M0 primitive scores (`m0:asfidScores`, `m0:revoiScores`)
@@ -441,6 +459,8 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.8.0 (2026-10-11)** — rename lot R (§8.0d); "lens" → "terminology context" (§8.0b);
+  S5-1 extended to acronyms (AStFItD, REVOIm, TKSsL), prose only.
 - **1.7.0 (2026-10-11)** — S5-3 form confirmed (`m3:eagle_eye.X`, `m3:odins_wisdom.X`;
   the 2026-10-03 `m3.eagle_eye:` form superseded); S5-1b overlaps WS-10 NS-4; WS-3 L
   cluster and WS-13 registered (documentation lot of the 2026-10-11 HandOver).
