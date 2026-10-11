@@ -22,12 +22,17 @@
       "dcterms:description": "Extension of TSCG framework with music-specific concepts including polyphony, counterpoint, fugue structure, harmonic relationships, and voice independence. Primary focus on counterpoint as a system of constrained autonomous agents producing emergent coherence.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-03-20",
-      "owl:versionInfo": "1.7.0",
+      "owl:versionInfo": "1.8.0",
       "dcterms:modified": "2026-10-11",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.8.0",
+          "dcterms:date": "2026-10-11",
+          "adms:versionNotes": "WS-1 B2 lot C1b (class/instance separation, follow-up of C1). rdfs:subClassOf values written as plain strings (JSON-LD literals: the property is not @id-coerced in the @context, so these superclass links were absent from the graph) rewritten as IRIs: 10 value(s)."
+        },
         {
           "owl:versionInfo": "1.7.0",
           "dcterms:date": "2026-10-11",
@@ -37,11 +42,6 @@
           "owl:versionInfo": "1.6.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 8 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
-        },
-        {
-          "owl:versionInfo": "1.5.0",
-          "dcterms:date": "2026-10-03",
-          "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
         }
       ],
       "owl:imports": [
@@ -81,7 +81,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Polyphonic Voice",
       "rdfs:comment": "An autonomous melodic agent within a polyphonic texture. Each voice follows its own melodic trajectory while respecting shared harmonic constraints. The voice is the fundamental unit of counterpoint — independent yet bound.",
-      "rdfs:subClassOf": "m1:extension:music:Polyphony",
+      "rdfs:subClassOf": {"@id": "m1:extension:music:Polyphony"},
       "m1:structuralGrammarFormula": "Fm1m2(Music, A × F × It)",
       "m1:extension:music:voiceTypes": {
         "classical": [
@@ -125,7 +125,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Fugue Subject",
       "rdfs:comment": "The primary melodic theme of a fugue. It is announced alone in one voice, then propagated successively through all other voices. The Subject is the information unit whose propagation generates the entire fugal architecture.",
-      "rdfs:subClassOf": "m1:extension:music:MusicalMotif",
+      "rdfs:subClassOf": {"@id": "m1:extension:music:MusicalMotif"},
       "m1:structuralGrammarFormula": "Fm1m2(Music, It × S × F)",
       "m1:extension:music:role": "Structural seed — all fugal development derives from Subject transformations",
       "m1:extension:music:examples": [
@@ -139,7 +139,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Fugue Answer",
       "rdfs:comment": "The transposed restatement of the Fugue Subject, typically appearing a fifth higher (or fourth lower) in the second voice to enter. Creates tonal dialogue with the Subject. Can be 'real' (exact transposition) or 'tonal' (slightly modified to preserve tonal center).",
-      "rdfs:subClassOf": "m1:extension:music:MusicalMotif",
+      "rdfs:subClassOf": {"@id": "m1:extension:music:MusicalMotif"},
       "m1:structuralGrammarFormula": "Fm1m2(Music, It × S × F)",
       "m1:extension:music:types": {
         "real": "Exact transposition of Subject at the fifth",
@@ -151,7 +151,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Countersubject",
       "rdfs:comment": "A secondary melodic line that accompanies the Subject or Answer in another voice during the Exposition. It provides harmonic and rhythmic contrast, and often recurs consistently throughout the fugue. Embodies the principle of autonomous voice independence.",
-      "rdfs:subClassOf": "m1:extension:music:MusicalMotif",
+      "rdfs:subClassOf": {"@id": "m1:extension:music:MusicalMotif"},
       "m1:structuralGrammarFormula": "Fm1m2(Music, S × I × F)",
       "m1:extension:music:compositionalRule": "Must form consonant intervals with Subject on strong beats; dissonances permitted on weak beats as passing tones"
     },
@@ -160,7 +160,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Fugue Exposition",
       "rdfs:comment": "Opening section of a fugue in which all voices enter successively, each announcing the Subject or Answer. The Exposition establishes the full polyphonic texture and introduces all melodic material. Corresponds to system initialization in TSCG terms.",
-      "rdfs:subClassOf": "m1:extension:music:Polyphony",
+      "rdfs:subClassOf": {"@id": "m1:extension:music:Polyphony"},
       "m1:structuralGrammarFormula": "Fm1m2(Music, S × F × It)",
       "m1:extension:music:voiceEntryPattern": "Voice 1: Subject → Voice 2: Answer + Voice 1: Countersubject → Voice 3: Subject + Voices 1-2: free counterpoint → ...",
       "m1:extension:music:completionCriteria": "All N voices have entered; full polyphonic texture established"
@@ -170,7 +170,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Fugue Episode",
       "rdfs:comment": "Transitional passage between Subject entries. Does not present the complete Subject; instead develops motivic fragments through sequences and imitation. Provides dynamic contrast and modulates toward new keys for subsequent Subject entries.",
-      "rdfs:subClassOf": "m1:extension:music:Polyphony",
+      "rdfs:subClassOf": {"@id": "m1:extension:music:Polyphony"},
       "m1:structuralGrammarFormula": "Fm1m2(Music, F × D × I)",
       "m1:extension:music:function": "Tonal navigation — connects Subject entries in different keys; relaxes tension before next entry"
     },
@@ -179,7 +179,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Stretto",
       "rdfs:comment": "Advanced fugal device in which Subject entries in successive voices overlap — a new voice enters with the Subject before the previous voice has finished it. Maximizes polyphonic density and creates climactic intensification. Embodies the extreme compression of the information propagation cycle.",
-      "rdfs:subClassOf": "m1:extension:music:Polyphony",
+      "rdfs:subClassOf": {"@id": "m1:extension:music:Polyphony"},
       "m1:structuralGrammarFormula": "Fm1m2(Music, D × S × F)",
       "m1:extension:music:dramaticRole": "Structural climax technique — typically appears near the end of a fugue to build maximum tension before final resolution",
       "m1:extension:music:constraint": "Requires Subject entries to be harmonically compatible when overlapped — not all subjects permit stretto"
@@ -189,7 +189,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Canon",
       "rdfs:comment": "Strict contrapuntal form in which one voice imitates another at a fixed time interval and pitch interval, using the exact same melodic line. The simplest and most transparent form of imitative counterpoint. A Canon is to counterpoint what a single crystal is to matter: pure, regular, self-similar.",
-      "rdfs:subClassOf": "m1:extension:music:Polyphony",
+      "rdfs:subClassOf": {"@id": "m1:extension:music:Polyphony"},
       "m1:structuralGrammarFormula": "Fm1m2(Music, I × F × S)",
       "m1:extension:music:parameters": {
         "timeInterval": "Delay between voices (e.g., 2 measures in Frère Jacques)",
@@ -299,7 +299,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Fugue",
       "rdfs:comment": "The highest form of imitative counterpoint. A Fugue is a polyphonic composition built on systematic propagation and development of a Subject through all voices. Its formal architecture (Exposition → Episodes → Stretto → Coda) constitutes a complete lifecycle of information through a constrained autonomous multi-agent system.",
-      "rdfs:subClassOf": "m1:extension:music:Polyphony",
+      "rdfs:subClassOf": {"@id": "m1:extension:music:Polyphony"},
       "m1:structuralGrammarFormula": "Fm1m2(Music, S × F × I × D)",
       "m1:extension:music:structure": {
         "exposition": "All voices enter with Subject/Answer",
@@ -332,7 +332,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Jazz Contrapuntal Texture",
       "rdfs:comment": "The improvisational application of contrapuntal principles in jazz. Each improvising voice maintains melodic independence while respecting shared harmonic structure (chord changes). The jazz ensemble approximates a 'living fugue' where the Subject is replaced by the shared harmonic grid and each voice improvises its own 'answer'.",
-      "rdfs:subClassOf": "m1:extension:music:Polyphony",
+      "rdfs:subClassOf": {"@id": "m1:extension:music:Polyphony"},
       "m1:structuralGrammarFormula": "Fm1m2(Music, A × F × I × D)",
       "m1:extension:music:examples": [
         "Miles Davis + Herbie Hancock + Ron Carter + Tony Williams — modal jazz interplay",

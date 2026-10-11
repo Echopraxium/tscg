@@ -21,7 +21,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-04",
       "dcterms:modified": "2026-10-11",
-      "owl:versionInfo": "1.9.0",
+      "owl:versionInfo": "1.10.0",
       "owl:imports": [
         { "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld" },
         { "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld" }
@@ -78,6 +78,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.10.0",
+          "dcterms:date": "2026-10-11",
+          "adms:versionNotes": "WS-1 B2 lot C1b (class/instance separation, follow-up of C1). rdfs:subClassOf values written as plain strings (JSON-LD literals: the property is not @id-coerced in the @context, so these superclass links were absent from the graph) rewritten as IRIs: 11 value(s)."
+        },
+        {
           "owl:versionInfo": "1.9.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:DomainConceptCombo removed from the @type of 11 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:DomainConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
@@ -86,11 +91,6 @@
           "owl:versionInfo": "1.8.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 11 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
-        },
-        {
-          "owl:versionInfo": "1.7.0",
-          "dcterms:date": "2026-10-03",
-          "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
         }
       ]
     },
@@ -154,7 +154,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Supreme Deity",
       "rdfs:comment": "Highest-ranking deity in pantheon. Ruler of gods, cosmic authority, often creator or sky father. Examples: Odin (Norse), Zeus (Greek), Ra (Egyptian), Brahma (Hindu).",
-      "rdfs:subClassOf": "m1:extension:mythology:Deity",
+      "rdfs:subClassOf": {"@id": "m1:extension:mythology:Deity"},
       "skos:note": "Not always omnipotent - supreme within pantheon hierarchy but subject to fate/cosmic law.",
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × S × It × D)"
     },
@@ -163,7 +163,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Major Deity",
       "rdfs:comment": "Significant deity with important cosmic role and widespread worship. Examples: Thor, Athena, Osiris, Vishnu. Not supreme ruler but essential to pantheon function.",
-      "rdfs:subClassOf": "m1:extension:mythology:Deity",
+      "rdfs:subClassOf": {"@id": "m1:extension:mythology:Deity"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × S × It × D)"
     },
     {
@@ -171,7 +171,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Minor Deity",
       "rdfs:comment": "Lesser deity with localized or specific function. Examples: Nymphs, household gods, river deities. Limited cosmic role but still divine.",
-      "rdfs:subClassOf": "m1:extension:mythology:Deity",
+      "rdfs:subClassOf": {"@id": "m1:extension:mythology:Deity"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × S × It)"
     },
     {
@@ -179,7 +179,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Chthonian Deity",
       "rdfs:comment": "Underworld or earth deity. Rules over dead, subterranean forces, or darker aspects of existence. Examples: Hel (Norse), Hades (Greek), Ereshkigal (Mesopotamian).",
-      "rdfs:subClassOf": "m1:extension:mythology:Deity",
+      "rdfs:subClassOf": {"@id": "m1:extension:mythology:Deity"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × D × F)"
     },
     {
@@ -187,7 +187,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Deified Mortal",
       "rdfs:comment": "Human who achieved divine status through exceptional deeds. Examples: Heracles (Greek), Baldr after rebirth (Norse), emperors (Roman). Started mortal but transformed.",
-      "rdfs:subClassOf": "m1:extension:mythology:Deity",
+      "rdfs:subClassOf": {"@id": "m1:extension:mythology:Deity"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × S × It)"
     },
     {
@@ -225,7 +225,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Dragon",
       "rdfs:comment": "Reptilian creature with extraordinary powers. Often guards treasure, hoards knowledge, or embodies chaos. Examples: Nidhogg, Fafnir, Ladon, Smaug.",
-      "rdfs:subClassOf": "m1:extension:mythology:MythicalCreature",
+      "rdfs:subClassOf": {"@id": "m1:extension:mythology:MythicalCreature"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × S × F × D)"
     },
     {
@@ -233,7 +233,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Serpent",
       "rdfs:comment": "Giant snake with cosmic significance. Often world-encircling or primordial chaos force. Examples: Jormungandr, Python, Apep, Vritra.",
-      "rdfs:subClassOf": "m1:extension:mythology:MythicalCreature",
+      "rdfs:subClassOf": {"@id": "m1:extension:mythology:MythicalCreature"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × S × It)"
     },
     {
@@ -241,7 +241,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Monstrous Wolf",
       "rdfs:comment": "Gigantic wolf with supernatural strength. Often represents uncontrollable wild nature. Examples: Fenrir, Garmr.",
-      "rdfs:subClassOf": "m1:extension:mythology:MythicalCreature",
+      "rdfs:subClassOf": {"@id": "m1:extension:mythology:MythicalCreature"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × F × D)"
     },
     {
@@ -249,7 +249,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Hybrid Creature",
       "rdfs:comment": "Combination of multiple animal/human features. Impossible anatomy. Examples: Sleipnir (8 legs), Pegasus (winged horse), Chimera (multiple heads).",
-      "rdfs:subClassOf": "m1:extension:mythology:MythicalCreature",
+      "rdfs:subClassOf": {"@id": "m1:extension:mythology:MythicalCreature"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, S × It × F)"
     },
     {
@@ -257,7 +257,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Giant Beast",
       "rdfs:comment": "Enormous primordial being. Often world-creating or cosmos-structuring. Examples: Ymir (Norse), Titans (Greek), Jotunn.",
-      "rdfs:subClassOf": "m1:extension:mythology:MythicalCreature",
+      "rdfs:subClassOf": {"@id": "m1:extension:mythology:MythicalCreature"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × S × D)"
     },
     {
@@ -265,7 +265,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Magical Bird",
       "rdfs:comment": "Avian with supernatural abilities. Often omniscient observer or messenger. Examples: Eagle at Yggdrasil crown, Phoenix, Garuda, Hugin/Munin.",
-      "rdfs:subClassOf": "m1:extension:mythology:MythicalCreature",
+      "rdfs:subClassOf": {"@id": "m1:extension:mythology:MythicalCreature"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, F × It × A)"
     },
     {
