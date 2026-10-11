@@ -22,12 +22,17 @@
       "dcterms:description": "Extension of the TSCG framework with geology-specific concepts. Covers plate tectonics (lithospheric plates, subduction, mid-ocean ridges, mantle convection), geodynamic equilibria (isostasy), seismotectonics (faults), and orogenic processes. First TSCG domain extension in the Earth Sciences field. Introduces the GeologicalAccretion DomainConceptCombo, linking m1:Accretion to its geological instantiation.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-04-05",
-      "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "1.5.0",
+      "dcterms:modified": "2026-10-11",
+      "owl:versionInfo": "1.6.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.6.0",
+          "dcterms:date": "2026-10-11",
+          "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:DomainConceptCombo removed from the @type of 8 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:DomainConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
+        },
         {
           "owl:versionInfo": "1.5.0",
           "dcterms:date": "2026-10-03",
@@ -37,11 +42,6 @@
           "owl:versionInfo": "1.4.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 3 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "1.3.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m2:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m2:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ],
       "owl:imports": [
@@ -93,10 +93,7 @@
     },
     {
       "@id": "m1:extension:geology:LithosphericPlate",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:subClassOf": {
         "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
@@ -126,10 +123,7 @@
     },
     {
       "@id": "m1:extension:geology:MidOceanRidge",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:subClassOf": {
         "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
@@ -155,10 +149,7 @@
     },
     {
       "@id": "m1:extension:geology:SubductionZone",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:subClassOf": {
         "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
@@ -185,10 +176,7 @@
     },
     {
       "@id": "m1:extension:geology:MantleConvectionCell",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:subClassOf": {
         "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
@@ -218,10 +206,7 @@
     },
     {
       "@id": "m1:extension:geology:IsostasyEquilibrium",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:subClassOf": {
         "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
@@ -246,10 +231,7 @@
     },
     {
       "@id": "m1:extension:geology:SeismicFault",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:subClassOf": {
         "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
@@ -274,10 +256,7 @@
     },
     {
       "@id": "m1:extension:geology:Orogeny",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:subClassOf": {
         "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
@@ -302,10 +281,7 @@
     },
     {
       "@id": "m1:extension:geology:GeologicalAccretion",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:subClassOf": {
         "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },

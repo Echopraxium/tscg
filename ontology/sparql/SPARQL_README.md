@@ -302,12 +302,17 @@ PREFIX m2: <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 ASK {
-  ?processor a m2:GenericConceptCombo ;
+  ?processor rdfs:subClassOf m2:GenericConceptCombo ;
              rdfs:label "Processor" .
 }
 ```
 
 **Résultat attendu** : `true` (Processor est bien un GenericConceptCombo)
+
+> Une combo est une **classe dérivée** (`rdfs:subClassOf`), jamais une instance de la
+> classe combo : `?x a m2:GenericConceptCombo` ne trouve rien depuis le lot C2
+> (2026-10-11, Debt Overview §8.0f), et ce typage est interdit (M1 SHACL SHAPE 12,
+> `check_M1` CMB001).
 
 ---
 

@@ -4,7 +4,13 @@
 # Covers: M1_CoreConcepts.jsonld + all M1 Extension files
 # ============================================================================
 # Author : Echopraxium with the collaboration of Claude AI
-# Version: 1.6.0
+# Version: 1.7.0
+# 1.7.0 (WS-1 B2 lot C2, 2026-10-11): NEW SHAPE 12 NoComboPunningShape FORBIDS typing a combo
+#   as an instance of a combo class (rdf:type m2:GenericConceptCombo / m2:DomainConceptCombo).
+#   Lot C2 removed that typing from the 139 combos: an M1 combo is "@type": "owl:Class" with
+#   rdfs:subClassOf the combo class. SHAPE 2/3 "Pattern" comments updated. The rdf:type branch of
+#   the combo targets (1.6.0) is kept: a punned node stays in reach of the combo contract AND is
+#   flagged by SHAPE 12. Counts unchanged on HEAD (SHAPE 12: 0 violations, focus = all owl:Class).
 # 1.6.0 (WS-1 B2 lot C1, 2026-10-11): combos are DERIVED CLASSES, not instances. Every
 #   combo shape (2, 3, 9, 10, 11) now targets its focus nodes by rdfs:subClassOf
 #   m2:GenericConceptCombo / m2:DomainConceptCombo (sh:SPARQLTarget, pyshacl advanced=True)
@@ -27,7 +33,7 @@
 #        instance). Both were blind spots: only Expanded had a shape, hasEpistemicGap had none.
 # 1.2.0 (SC-5 pre-fix): SHAPE 2 no longer double-validates DomainConceptCombo
 #        (sh:or escape hatch). Removes ~256 spurious violations in merged-corpus runs.
-# Date   : 2026-07-17
+# Date   : 2026-10-11
 # Status : Active
 # ============================================================================
 
@@ -134,14 +140,15 @@ m1:M1OntologyShape
 
 # ============================================================================
 # SHAPE 2 : GenericConceptCombo (M1_CoreConcepts only)
-# Pattern: ["owl:Class", "m2:GenericConceptCombo"]
+# Pattern: "@type": "owl:Class", "rdfs:subClassOf": m2:GenericConceptCombo  (derived class, lot C2;
+#          typing it rdf:type m2:GenericConceptCombo is forbidden by SHAPE 12)
 # Formula: Fm2(...)
 # ============================================================================
 
 m1:GenericConceptComboShape
     a sh:NodeShape ;
     sh:name "GenericConceptComboShape" ;
-    sh:description "Validates GenericConceptCombo instances in M1_CoreConcepts.jsonld ONLY. DomainConceptCombo (extension combos) are a subclass and are validated by SHAPE 3 alone; the sh:or escape branch below prevents the subclass-following sh:targetClass from double-validating them (fixes the ~256 spurious violations, SC-5)." ;
+    sh:description "Validates GenericConceptCombo subclasses (derived classes) in M1_CoreConcepts.jsonld ONLY. DomainConceptCombo (extension combos) are a subclass and are validated by SHAPE 3 alone; the sh:or escape branch below prevents the subclass-following sh:targetClass from double-validating them (fixes the ~256 spurious violations, SC-5)." ;
     sh:target [ a sh:SPARQLTarget ;
         sh:select "SELECT DISTINCT ?this WHERE { { ?this <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#GenericConceptCombo> } UNION { ?this <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#GenericConceptCombo> } }" ] ;
     sh:or (
@@ -182,7 +189,8 @@ m1:GenericConceptComboShape
 
 # ============================================================================
 # SHAPE 3 : DomainConceptCombo (M1 Extensions)          [renamed v1.1.0 — SC-1]
-# Pattern: ["owl:Class", "m2:DomainConceptCombo"]
+# Pattern: "@type": "owl:Class", "rdfs:subClassOf": m2:DomainConceptCombo  (derived class, lot C2;
+#          typing it rdf:type m2:DomainConceptCombo is forbidden by SHAPE 12)
 # Formula: Fm1m2(<Domain>+, <GenericConcept>+)
 # NOTE: the m2:knowledgeField requirement below is a KNOWN PHANTOM (SC-5 fixes it,
 #       replacing it with m2:appliesToDomains). Left untouched on purpose: SC-1
@@ -192,7 +200,7 @@ m1:GenericConceptComboShape
 m1:DomainConceptComboShape
     a sh:NodeShape ;
     sh:name "DomainConceptComboShape" ;
-    sh:description "Validates DomainConceptCombo instances in M1 extension files." ;
+    sh:description "Validates DomainConceptCombo subclasses (derived classes) in M1 extension files." ;
     sh:target [ a sh:SPARQLTarget ;
         sh:select "SELECT DISTINCT ?this WHERE { { ?this <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo> } UNION { ?this <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo> } }" ] ;
 
@@ -671,4 +679,31 @@ m1:DomainShape
         sh:maxCount 0 ;
         sh:severity sh:Violation ;
         sh:message "RETIRED (2026-09): m1:pocletExamples renamed to m1:instanceExamples."
+    ] .
+
+
+# ============================================================================
+# SHAPE 12 : NoComboPunningShape  — a combo is a DERIVED CLASS, never an instance
+#            (WS-1 B2 lot C2, Debt Overview §8.0f — Michel, 2026-10-11)
+# ----------------------------------------------------------------------------
+# Classes live in M2/M1, instances in M0. An M1 combo is declared
+#     "@type": "owl:Class", "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"}
+# and NEVER  "@type": [..., "m2:DomainConceptCombo"]  (that types the class as an
+# INSTANCE of the combo class: OWL punning, the class/instance mixing the reasoner
+# reported). Lot C2 removed that typing from the 139 combos; this shape keeps it out.
+# Targets: every owl:Class (so the shape always has focus nodes and bites on any M1
+# file) plus anything typed by a combo class directly (a punned node without
+# owl:Class is caught too). One violation per offending rdf:type value.
+# ============================================================================
+
+m1:NoComboPunningShape
+    a sh:NodeShape ;
+    sh:name "NoComboPunningShape" ;
+    sh:description "FORBIDS rdf:type m2:GenericConceptCombo / m2:DomainConceptCombo: an M1 combo is a derived class (rdfs:subClassOf), never an instance of the combo class (lot C2)." ;
+    sh:targetClass owl:Class , m2:GenericConceptCombo , m2:DomainConceptCombo ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:not [ sh:in ( m2:GenericConceptCombo m2:DomainConceptCombo ) ] ;
+        sh:severity sh:Violation ;
+        sh:message "FORBIDDEN: a combo class typed as an INSTANCE of a combo class. Remove m2:GenericConceptCombo / m2:DomainConceptCombo from @type (keep \"owl:Class\") and attach it with rdfs:subClassOf {\"@id\": \"m2:...ConceptCombo\"} (lot C2, class/instance separation)."
     ] .
