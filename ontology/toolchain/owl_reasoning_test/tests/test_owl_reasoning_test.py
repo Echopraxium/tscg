@@ -49,3 +49,13 @@ def test_inconsistent_ontology_fails(monkeypatch):
     if rc == 3:
         pytest.skip("reasoner unavailable here (Java/Pellet): environment error, not a pass")
     assert rc == 1, "a deliberately inconsistent ontology must FAIL (exit 1)"
+
+
+def test_self_typed_class_is_a_modelling_fail(monkeypatch):
+    # 2.0.1: a class typed by itself (punning through rdfs:domain) must FAIL (exit 1), not be
+    # misreported as an environment error. Needs Java: skipped (never passed) without it.
+    monkeypatch.chdir(ROOT)
+    rc = ort.main(["--file", FIX + "self_typed_class.jsonld"])
+    if rc == 3:
+        pytest.skip("reasoner unavailable here (Java/Pellet): environment error, not a pass")
+    assert rc == 1, "a class typed by itself must be reported as a modelling FAIL (exit 1)"

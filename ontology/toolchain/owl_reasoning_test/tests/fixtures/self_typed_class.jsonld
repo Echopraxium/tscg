@@ -1,0 +1,16 @@
+{
+  "@context": {
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ex": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/toolchain/owl_reasoning_test/tests/fixtures/self_typed_class.jsonld#"
+  },
+  "@graph": [
+    { "@id": "ex:Fixture", "@type": "owl:Ontology",
+      "rdfs:comment": "NEGATIVE TEST FIXTURE for owl_reasoning_test.py 2.0.1: a data property used ON a class whose rdfs:domain is that same class (the m2:producingFunction defect, 2026-10-11). The class becomes an instance of itself; owl_reasoning_test MUST report a modelling FAIL." },
+    { "@id": "ex:Combo", "@type": "owl:Class",
+      "ex:producedBy": "F : A, B -> Combo" },
+    { "@id": "ex:producedBy", "@type": "owl:DatatypeProperty",
+      "rdfs:domain": { "@id": "ex:Combo" }, "rdfs:range": { "@id": "xsd:string" } }
+  ]
+}

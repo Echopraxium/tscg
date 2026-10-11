@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.8.0
+**Version**: 1.9.0
 **Date**: 2026-10-11
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -95,7 +95,7 @@ no link to M2.
 | M2 | G1 no `rdfs:label` · D5 `m2:changeLog` on `m2:Trade-off` | 1 · 1 | small lot · WS-6 |
 | M1 | DCC006 monoidal operator in a signature | 127 | **SC-6** |
 | M1 | SHACL DomainConceptCombo / ComboFormula | 196 / 138 | M1 SHACL debt · SC-1/SC-6 |
-| M1 | DCC010 phantom domains (Music, SystemicModeling, EnergyGenerators, Cascade) | 18 | SC-5 |
+| M1 | DCC010 phantom domains (Music 8, SystemicModeling 7, EnergyGenerators 1) — *the 2 "Cascade" cases were not domains: fixed 2026-10-11 (Fm2)* | ~~18~~ 16 | SC-5 |
 | M1 | GCC009, DCC009, DCC008, CTX001, 2 other shapes | 17 | SC-6 / B1 |
 | M0 | v1.5 cluster C02/C03/C07/C09 + SHACL RequireM0CommonImport | 22 each | CheckM0 campaign, `migrate_m0_to_v1_5.py` |
 | M0 | SHACL CanonicalNamespace · C12 tensor remnants · others | 30 · 24 · 12 | WS-10 · SC-9 · CheckM0 |
@@ -365,6 +365,28 @@ REVOI names in *-ability*). History (changelogs, dated handovers, `_02_housekeep
 snapshots) untouched. Left for lot **R2**: ~45 "bicephalous" adjectives in M2 (21), M1
 (3) and 14 M0 instances (23).
 
+### 8.0e Lot P — `m2:producingFunction`, Fm2 combos (2026-10-11)
+
+Found when `owl_reasoning_test` 2.0.0 reasoned M2 with its imports for the first time:
+Pellet passed, then Owlready2 failed ("a __bases__ item causes an inheritance cycle").
+Cause: `m2:producingFunction` (a data property, `rdfs:domain m2:GenericConceptCombo`) is
+used ON the classes `m2:GenericConceptCombo` and `m2:DomainConceptCombo` — the class
+became a member of itself (OWL 2 punning). Fixed: it is an `owl:AnnotationProperty`
+(documentation about a class: the signature of Fm2 / Fm1m2), no domain. The tool
+(2.0.1) now reports such a case as a modelling FAIL, with a negative test.
+
+Same lot (Michel's rule: *a combo formula with no M1 domain is an Fm2*):
+`m1:Propagation` and `m1:CascadeAmplification` → `Fm2`, typed
+`m2:GenericConceptCombo` (DCC010 18 → 16; 2 SHACL "knowledgeField required"
+violations gone; the scalar guard of CascadeAmplification stays, relabelled DCC009 →
+GCC009). Found on the way, NOT fixed here:
+- **phantom `m2:Cascade`** (Cascade migrated to M1): still referenced in
+  M1_Electronics, M1_BusinessModeling, M0 Bmc, TrophicPyramid, KindlebergerMinsky
+  (fixed in M1_CoreConcepts) — one more case for lot-NSRESOLVE (with `m2:Interface`,
+  `m2:Boundary`);
+- **formula copies** in `m1:parentGenericConcepts` that drifted from their parents
+  (bare S / I) — same anti-pattern as WS-3 F5; listed in the WS-3 M1_Core scope.
+
 ### 8.1 S5-1 — primitives always suffixed
 
 Rule: the ambiguous letters are always qualified by their monoid —
@@ -459,6 +481,8 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.9.0 (2026-10-11)** — §8.0e lot P (`producingFunction` annotation, Fm2 combos,
+  phantom `m2:Cascade`, drifted formula copies); DCC010 row 18 → 16.
 - **1.8.0 (2026-10-11)** — rename lot R (§8.0d); "lens" → "terminology context" (§8.0b);
   S5-1 extended to acronyms (AStFItD, REVOIm, TKSsL), prose only.
 - **1.7.0 (2026-10-11)** — S5-3 form confirmed (`m3:eagle_eye.X`, `m3:odins_wisdom.X`;

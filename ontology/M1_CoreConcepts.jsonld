@@ -29,8 +29,8 @@
       "dcterms:description": "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "2.19.0",
+      "dcterms:modified": "2026-10-11",
+      "owl:versionInfo": "2.20.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -254,6 +254,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.20.0",
+          "dcterms:date": "2026-10-11",
+          "adms:versionNotes": "m1:Propagation and m1:CascadeAmplification: Fm1m2 → Fm2, typed m2:GenericConceptCombo (was m2:DomainConceptCombo). Rule (Michel, 2026-10-11): a combo formula with no M1 domain is an Fm2 — their first argument, Cascade, is an M1 combo, not a Domain (check_M1 DCC010). Their parent m2:Cascade (dangling: Cascade migrated to M1) → m1:Cascade. The scalar guard of CascadeAmplification (| gain_per_stage > 1) is unchanged (now GCC009, was DCC009)."
+        },
+        {
           "owl:versionInfo": "2.19.0",
           "dcterms:date": "2026-10-03",
           "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
@@ -262,11 +267,6 @@
           "owl:versionInfo": "2.18.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 1 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "2.17.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1g (Family A). Bare keys (dropped on JSON-LD expansion) replaced: alternative_names -> skos:altLabel, comment -> dcterms:description (consistent with lot 1b), note -> skos:note, definition -> skos:definition, label -> rdfs:label, title -> dcterms:title, id -> dcterms:identifier, rationale -> m3:rationale (declared in M3_GrammarFoundation, rdfs:subPropertyOf skos:note). In this file: label 3. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ]
     },
@@ -1266,9 +1266,9 @@
       "@id": "m1:Propagation",
       "@type": [
         "owl:Class",
-        "m2:DomainConceptCombo"
+        "m2:GenericConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:DomainConceptCombo",
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
       "rdfs:label": "Propagation",
       "rdfs:comment": "Branching spread of a faithfully copied entity through a network, where each receiving node becomes a new emitter. Synergistic ternary combination: Cascade (sequential chain mechanics + goal attractor) + Duplication (1→N faithful copying at each node) + Network (topological substrate with compatible nodes). Unique dimensional contributions: A from Cascade (propagation threshold and saturation attractor), V from Duplication (copy fidelity — distinguishes propagation from random diffusion), Im from Network (node compatibility — receivers can become emitters). Distinguished from Cascade (linear, no branching) and from Diffusion (no fidelity, no structured topology). Domain-specific instances: m1:Contagion (biological/social), wave propagation (physics), viral spread (computing).",
       "m1:comboOf": [
@@ -1276,7 +1276,7 @@
         "m2:Duplication",
         "m2:Network"
       ],
-      "m1:structuralGrammarFormula": "Fm1m2(Cascade, Duplication, Network)",
+      "m1:structuralGrammarFormula": "Fm2(Cascade, Duplication, Network)",
       "m1:hasPolarity": "dual",
       "m1:perspective": "dual",
       "m1:transdisciplinaryValidation": {
@@ -1382,7 +1382,7 @@
       ],
       "m1:parentGenericConcepts": [
         {
-          "@id": "m2:Cascade",
+          "@id": "m1:Cascade",
           "formula": "S × I × A × D × F",
           "uniqueContribution": "A (Attractor)",
           "contribution": "Sequential chain mechanics + propagation threshold (R₀=1) and saturation attractor (herd immunity, network saturation)"
@@ -1649,20 +1649,20 @@
       "@id": "m1:CascadeAmplification",
       "@type": [
         "owl:Class",
-        "m2:DomainConceptCombo"
+        "m2:GenericConceptCombo"
       ],
-      "rdfs:subClassOf": "m2:DomainConceptCombo",
+      "rdfs:subClassOf": "m2:GenericConceptCombo",
       "rdfs:label": "CascadeAmplification",
       "rdfs:comment": "Sequential multi-stage process where each stage amplifies the output of the previous, producing exponential cumulative gain. Synergistic binary combination: Cascade (S × I × A × D × F) Fm2² Amplification (Ft × D × It | R + O). Constraint: gain per stage > 1. Emergent property: exponential overall gain G_total = ∏ᵢ gᵢ — absent from Cascade alone (no gain) and Amplification alone (no stage structure).",
       "m1:comboOf": [
         "m1:Cascade",
         "m2:Amplification"
       ],
-      "m1:structuralGrammarFormula": "Fm1m2(Cascade, Amplification) | gain_per_stage > 1",
+      "m1:structuralGrammarFormula": "Fm2(Cascade, Amplification) | gain_per_stage > 1",
       "m1:dimensions": 7,
       "m1:parentGenericConcepts": [
         {
-          "@id": "m2:Cascade",
+          "@id": "m1:Cascade",
           "formula": "S × I × A × D × F",
           "contribution": "Stage-by-stage propagation structure (S, I, A, D, F)"
         },
