@@ -22,12 +22,17 @@
       "dcterms:description": "Extension of the TSCG framework with education-specific concepts including pedagogical strategies, instructional design, technology integration, assessment, and knowledge domain integration (TPACK). All concepts are characterized by M2 GenericConcepts via m2:characterizedBy.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-26",
-      "owl:versionInfo": "1.11.0",
+      "owl:versionInfo": "1.12.0",
       "dcterms:modified": "2026-10-11",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.12.0",
+          "dcterms:date": "2026-10-11",
+          "adms:versionNotes": "WS-1 B2 lot C1b (class/instance separation, follow-up of C1). rdfs:subClassOf values written as plain strings (JSON-LD literals: the property is not @id-coerced in the @context, so these superclass links were absent from the graph) rewritten as IRIs: 10 value(s). Phantom parent m1:KnowledgeField (declared nowhere) re-pointed to m1:Domain on m1:extension:education:Education (Michel, 2026-10-11)."
+        },
         {
           "owl:versionInfo": "1.11.0",
           "dcterms:date": "2026-10-11",
@@ -37,11 +42,6 @@
           "owl:versionInfo": "1.10.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 10 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
-        },
-        {
-          "owl:versionInfo": "1.9.0",
-          "dcterms:date": "2026-10-03",
-          "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
         }
       ],
       "owl:imports": [
@@ -54,7 +54,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Education",
       "rdfs:comment": "KnowledgeField declaration for the Education domain. Enables KnowledgeFieldGenericCombos of the form Education x m2:GenericConcept. Encompasses instructional design, pedagogy, educational technology, learning science, and curriculum development.",
-      "rdfs:subClassOf": "m1:KnowledgeField",
+      "rdfs:subClassOf": {"@id": "m1:Domain"},
       "m1:extension:education:subfields": [
         "Instructional Design",
         "Educational Technology",
@@ -68,7 +68,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:GenericConcept"
+        {"@id": "m2:GenericConcept"}
       ],
       "rdfs:label": "Pedagogical Strategy",
       "rdfs:comment": "A principled approach to organizing learning activities and teacher-student interactions. Specifies HOW instruction is structured to achieve learning goals. Represents an operational pattern that instantiates m2:Behavior and m2:Pattern at the level of classroom practice.",
@@ -100,7 +100,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:GenericConcept"
+        {"@id": "m2:GenericConcept"}
       ],
       "rdfs:label": "Learning Theory",
       "rdfs:comment": "A formal model of how learning occurs - the cognitive, behavioral, or social mechanisms by which knowledge is acquired, retained, and applied. Grounds pedagogical strategy in empirical and theoretical claims about the learner. Characterized by m2:Representation (encodes assumptions about cognition) and m2:Pattern (identifies recurring learning mechanisms).",
@@ -139,7 +139,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:GenericConcept"
+        {"@id": "m2:GenericConcept"}
       ],
       "rdfs:label": "Instructional Design",
       "rdfs:comment": "The systematic process of creating learning experiences and environments. Applies m2:Workflow (structured design process) and m2:Composition (assembling instructional components into coherent units) to the challenge of producing effective instruction. Bridges learning theory and classroom practice.",
@@ -188,7 +188,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:GenericConcept"
+        {"@id": "m2:GenericConcept"}
       ],
       "rdfs:label": "Technology Integration",
       "rdfs:comment": "The embedding of digital tools and platforms into instructional contexts in ways that transform learning experiences. Characterized by m2:Transformation (technology changes what is pedagogically possible), m2:Adaptation (progressive uptake of tools), and m2:Interoperability (compatibility across platforms and pedagogical frameworks). Corresponds directly to TPACK's TK-PK-CK intersections (TCK, TPK).",
@@ -229,7 +229,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:GenericConcept"
+        {"@id": "m2:GenericConcept"}
       ],
       "rdfs:label": "Assessment Strategy",
       "rdfs:comment": "A method for gathering evidence of student learning and providing feedback to inform instruction or certify achievement. Characterized by m2:Signature (capturing a learner's competence state), m2:Observer (positioning the teacher/system as measurement agent), and m2:Threshold (discriminating levels of achievement). Assessment is the primary feedback mechanism in education.",
@@ -290,7 +290,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:GenericConcept"
+        {"@id": "m2:GenericConcept"}
       ],
       "rdfs:label": "Learner Model",
       "rdfs:comment": "A representation of a learner's current knowledge state, skills, prior knowledge, learning preferences, and zone of proximal development. Characterized by m2:State (current competence level), m2:Memory (prior knowledge and experience), and m2:Gradient (the gap between current state and learning goal). Learner models are foundational to differentiated instruction and adaptive learning systems.",
@@ -329,7 +329,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:GenericConcept"
+        {"@id": "m2:GenericConcept"}
       ],
       "rdfs:label": "Curriculum Structure",
       "rdfs:comment": "The organized framework of content, learning objectives, and progressions that define what is taught, in what order, and at what depth across a course or program. Characterized by m2:Hierarchy (scope and sequence across levels), m2:Composition (assembly of units and lessons), and m2:Scope (boundaries of content coverage at each level). Curriculum structure is the top-level organization of Content Knowledge (CK) in TPACK.",
@@ -368,7 +368,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:GenericConcept"
+        {"@id": "m2:GenericConcept"}
       ],
       "rdfs:label": "Scaffolding Mechanism",
       "rdfs:comment": "Temporary instructional support structures that enable learners to accomplish tasks beyond their independent capability, within the Zone of Proximal Development. Scaffolds are progressively faded as learner competence grows. Characterized by m2:Constraint (temporary limitation on problem complexity), m2:Gradient (support levels tuned to the ZPD gradient), and m2:Adaptation (fading strategy as competence develops).",
@@ -409,7 +409,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:GenericConcept"
+        {"@id": "m2:GenericConcept"}
       ],
       "rdfs:label": "Community of Practice",
       "rdfs:comment": "A social learning structure in which practitioners with shared goals and concerns deepen their knowledge and expertise through sustained interaction, sharing of practice, and collective problem-solving. Characterized by m2:Network (distributed learning community), m2:Role (legitimate peripheral participation progression), and m2:Synergy (collective knowledge exceeds individual contributions). Relevant both as a learning theory (Lave & Wenger) and as a professional development model for teachers.",
@@ -445,7 +445,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:GenericConcept"
+        {"@id": "m2:GenericConcept"}
       ],
       "rdfs:label": "Knowledge Integration",
       "rdfs:comment": "The synergistic synthesis of knowledge from multiple distinct domains into a coherent, emergent competence that exceeds the sum of the contributing domains. This concept is the formal TSCG articulation of TPACK's core claim: T x P x C produces something qualitatively new (TPACK) that is not reducible to T+P+C. Characterized by m2:Balance (equilibrium between domains), m2:Trade-off (competing demands under constraints), m2:Synergy (non-additive combination), and m2:Emergence (qualitatively new capability).",

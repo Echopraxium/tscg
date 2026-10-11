@@ -30,7 +30,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
       "dcterms:modified": "2026-10-11",
-      "owl:versionInfo": "2.21.0",
+      "owl:versionInfo": "2.22.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -254,6 +254,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.22.0",
+          "dcterms:date": "2026-10-11",
+          "adms:versionNotes": "WS-1 B2 lot C1b. m1:Domain declared (owl:Class): a disciplinary knowledge domain, replacing the retired m1:KnowledgeField (Michel, 2026-10-11). The registry M1_Domains.jsonld typed its 22 entries m1:Domain while the class was declared nowhere; m1:extension:education:Education was a subclass of the phantom m1:KnowledgeField and is re-pointed to m1:Domain."
+        },
+        {
           "owl:versionInfo": "2.21.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:GenericConceptCombo removed from the @type of 12 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:GenericConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
@@ -262,11 +267,6 @@
           "owl:versionInfo": "2.20.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "m1:Propagation and m1:CascadeAmplification: Fm1m2 → Fm2, typed m2:GenericConceptCombo (was m2:DomainConceptCombo). Rule (Michel, 2026-10-11): a combo formula with no M1 domain is an Fm2 — their first argument, Cascade, is an M1 combo, not a Domain (check_M1 DCC010). Their parent m2:Cascade (dangling: Cascade migrated to M1) → m1:Cascade. The scalar guard of CascadeAmplification (| gain_per_stage > 1) is unchanged (now GCC009, was DCC009)."
-        },
-        {
-          "owl:versionInfo": "2.19.0",
-          "dcterms:date": "2026-10-03",
-          "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
         }
       ]
     },
@@ -333,6 +333,14 @@
       "rdfs:comment": "A pattern specific to a particular domain (e.g., Additive Color Synthesis in optics, Compensatory Triplet in photography). Lives in domain-specific M1 extensions (M1_Optics, M1_Photography, etc.) rather than M1_CoreConcepts.",
       "rdfs:subClassOf": "m1:CoreConcept",
       "m1:note": "Domain patterns extend CoreConcept but are defined in M1_[Domain].jsonld files, not here."
+    },
+    {
+      "@id": "m1:Domain",
+      "@type": "owl:Class",
+      "rdfs:label": "Domain",
+      "rdfs:comment": "A disciplinary knowledge domain (biology, electronics, education, ...) in which M2 GenericConcepts are specialised by an M1 extension. Replaces the retired m1:KnowledgeField (and m2:Domain of M2_MetaConcepts 14.x, removed with the tensor formalism). The domain registry M1_Domains.jsonld lists its individuals (m1:domain:<Name>). Declared 2026-10-11 (lot C1b): the registry had typed its 22 entries m1:Domain while the class was declared nowhere.",
+      "dcterms:created": "2026-10-11",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
     {
       "@id": "m1:GenericMechanism",

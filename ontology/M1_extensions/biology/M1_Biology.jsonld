@@ -22,7 +22,7 @@
       "dcterms:description": "Extension of TSCG framework with biology-specific concepts including cellular communication, signal transduction, homeostasis, and physiological regulation.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "owl:versionInfo": "1.8.0",
+      "owl:versionInfo": "1.9.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -33,6 +33,11 @@
       "dcterms:modified": "2026-10-11",
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.9.0",
+          "dcterms:date": "2026-10-11",
+          "adms:versionNotes": "WS-1 B2 lot C1b (class/instance separation, follow-up of C1). rdfs:subClassOf values written as plain strings (JSON-LD literals: the property is not @id-coerced in the @context, so these superclass links were absent from the graph) rewritten as IRIs: 21 value(s). Phantom parent m1:CommunicationPattern on m1:extension:biology:CellularCommunication left as a string, pending the Protocol candidate (attribute of m2:Workflow, Michel 2026-10-11)."
+        },
+        {
           "owl:versionInfo": "1.8.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:DomainConceptCombo removed from the @type of 1 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:DomainConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
@@ -41,11 +46,6 @@
           "owl:versionInfo": "1.7.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 1 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
-        },
-        {
-          "owl:versionInfo": "1.6.0",
-          "dcterms:date": "2026-10-03",
-          "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
         }
       ]
     },
@@ -83,7 +83,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Autocrine Signaling",
       "rdfs:comment": "Self-signaling pattern where a cell responds to signals it secretes itself. Used for feedback regulation and autonomous cell behavior.",
-      "rdfs:subClassOf": "m1:extension:biology:CellularCommunication",
+      "rdfs:subClassOf": {"@id": "m1:extension:biology:CellularCommunication"},
       "m1:extension:biology:spatialRange": "Intracellular to immediate cell surface (~1-10 µm)",
       "m1:extension:biology:temporalRange": "Milliseconds to seconds",
       "m1:extension:biology:mechanism": "Local concentration gradient around secreting cell",
@@ -98,7 +98,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Paracrine Signaling",
       "rdfs:comment": "Local neighborhood signaling pattern where signals diffuse through extracellular space to affect nearby cells. Coordinates tissue-level activity.",
-      "rdfs:subClassOf": "m1:extension:biology:CellularCommunication",
+      "rdfs:subClassOf": {"@id": "m1:extension:biology:CellularCommunication"},
       "m1:extension:biology:spatialRange": "Local tissue microenvironment (~10 µm - 1 mm)",
       "m1:extension:biology:temporalRange": "Seconds to minutes",
       "m1:extension:biology:mechanism": "Fick's law diffusion through extracellular matrix",
@@ -114,7 +114,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Neuroendocrine Signaling",
       "rdfs:comment": "Hybrid signaling pattern combining neural speed with endocrine range. Neurons secrete hormones into bloodstream for systemic distribution.",
-      "rdfs:subClassOf": "m1:extension:biology:CellularCommunication",
+      "rdfs:subClassOf": {"@id": "m1:extension:biology:CellularCommunication"},
       "m1:extension:biology:spatialRange": "Systemic (entire organism via bloodstream)",
       "m1:extension:biology:temporalRange": "Seconds (neural trigger) â†’ Minutes to hours (hormonal effect)",
       "m1:extension:biology:mechanism": "Neural activation triggers hormone secretion into circulation",
@@ -130,7 +130,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Endocrine Signaling",
       "rdfs:comment": "Systemic signaling pattern where specialized glands secrete hormones into bloodstream for organism-wide coordination. Classic long-range hormonal communication.",
-      "rdfs:subClassOf": "m1:extension:biology:CellularCommunication",
+      "rdfs:subClassOf": {"@id": "m1:extension:biology:CellularCommunication"},
       "m1:extension:biology:spatialRange": "Systemic (entire organism)",
       "m1:extension:biology:temporalRange": "Minutes to hours (hormone half-life dependent)",
       "m1:extension:biology:mechanism": "Convective transport via cardiovascular system",
@@ -152,7 +152,7 @@
         "steroid": "Cortisol, Estrogen, Testosterone (lipophilic)",
         "amino-acid-derived": "Thyroxine, Adrenaline, Melatonin"
       },
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:Receptor",
@@ -163,7 +163,7 @@
         "membrane": "G-protein coupled receptors (GPCRs), Receptor tyrosine kinases (RTKs), Ion channels",
         "intracellular": "Nuclear receptors (steroid hormones), Cytoplasmic receptors"
       },
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:SignalTransduction",
@@ -176,7 +176,7 @@
         "Protein kinase cascades",
         "Gene expression modulation"
       ],
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:Homeostasis",
@@ -190,7 +190,7 @@
         "Calcium concentration (~2.5 mM)",
         "Blood pressure (120/80 mmHg)"
       ],
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:FeedbackLoop",
@@ -201,7 +201,7 @@
         "negative": "Thermostat-like stabilization (insulin-glucose, thyroid hormone)",
         "positive": "Explosive amplification (oxytocin in labor, blood clotting)"
       },
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:DiffusionGradient",
@@ -213,14 +213,14 @@
         "fickSecondLaw": "∂C/∂t = D∇²C (concentration evolution)",
         "diffusionCoefficient": "D ~ 10⁻¹⁰ m²/s for proteins in extracellular matrix"
       },
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:Morphogen",
       "@type": "owl:Class",
       "rdfs:label": "Morphogen",
       "rdfs:comment": "Signaling molecule that forms concentration gradient and specifies cell fate in developing tissue. Position in gradient determines cell identity.",
-      "rdfs:subClassOf": "m1:extension:biology:Hormone",
+      "rdfs:subClassOf": {"@id": "m1:extension:biology:Hormone"},
       "m1:extension:biology:examples": [
         "Hedgehog (vertebrate neural tube patterning)",
         "BMP (bone morphogenetic protein)",
@@ -238,28 +238,28 @@
         "HPG axis (reproduction): GnRH â†’ LH/FSH â†’ Sex steroids",
         "HPT axis (metabolism): TRH â†’ TSH â†’ Thyroid hormones"
       ],
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:Cell",
       "@type": "owl:Class",
       "rdfs:label": "Cell",
       "rdfs:comment": "Fundamental unit of life. Bounded compartment capable of metabolism, growth, and reproduction.",
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:Tissue",
       "@type": "owl:Class",
       "rdfs:label": "Tissue",
       "rdfs:comment": "Organized ensemble of cells performing coordinated function. Level between cell and organ in biological hierarchy.",
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:Organ",
       "@type": "owl:Class",
       "rdfs:label": "Organ",
       "rdfs:comment": "Structural unit composed of multiple tissue types performing specific physiological function.",
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:BloodCirculation",
@@ -271,21 +271,21 @@
         "circulationTime": "~60 seconds complete circuit",
         "pressure": "120/80 mmHg (systolic/diastolic)"
       },
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:Metabolism",
       "@type": "owl:Class",
       "rdfs:label": "Metabolism",
       "rdfs:comment": "Sum of all chemical reactions maintaining life. Includes catabolism (breakdown) and anabolism (synthesis).",
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:GeneExpression",
       "@type": "owl:Class",
       "rdfs:label": "Gene Expression",
       "rdfs:comment": "Process by which genetic information (DNA) is converted to functional product (protein). Central dogma: DNA â†’ RNA â†’ Protein.",
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:Inflammation",
@@ -299,21 +299,21 @@
         "Dolor (pain)",
         "Functio laesa (loss of function)"
       ],
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:Synapse",
       "@type": "owl:Class",
       "rdfs:label": "Synapse",
       "rdfs:comment": "Specialized junction between neurons enabling signal transmission. Can be chemical (neurotransmitter) or electrical (gap junction).",
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     },
     {
       "@id": "m1:extension:biology:ImmuneResponse",
       "@type": "owl:Class",
       "rdfs:label": "Immune Response",
       "rdfs:comment": "Coordinated reaction of immune system to foreign antigens. Involves innate (immediate) and adaptive (specific, memory) components.",
-      "rdfs:subClassOf": "m2:GenericConcept"
+      "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
     }
   ]
 }

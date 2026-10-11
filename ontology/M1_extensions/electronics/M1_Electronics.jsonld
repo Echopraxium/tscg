@@ -22,7 +22,7 @@
       "dcterms:description": "Extension of the TSCG framework with electronics-specific concepts: active components, signal manipulation, oscillator types, modulation, and modular synthesis architecture. Serves as M1 foundation for M0 poclets: VCO, VCF, VCA, LFO, Transistor, etc.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-27",
-      "owl:versionInfo": "1.7.0",
+      "owl:versionInfo": "1.8.0",
       "dcterms:modified": "2026-10-11",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
@@ -53,6 +53,11 @@
       ],
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.8.0",
+          "dcterms:date": "2026-10-11",
+          "adms:versionNotes": "WS-1 B2 lot C1b (class/instance separation, follow-up of C1). rdfs:subClassOf values written as plain strings (JSON-LD literals: the property is not @id-coerced in the @context, so these superclass links were absent from the graph) rewritten as IRIs: 15 value(s). Phantom parent m2:Oscillator (declared nowhere) re-pointed to m1:Oscillator on m1:extension:electronics:ElectronicOscillator (Michel, 2026-10-11). Phantom parent m2:Cascade (declared nowhere) re-pointed to m1:Cascade on m1:extension:electronics:SignalChain (Michel, 2026-10-11). Phantom parent m2:Mode removed from m1:extension:electronics:WaveformMode: the N-ary mode is now an attribute m2:hasAttribute typed m2:ValueSpace with m2:possibleValues (the waveform list), the pattern of m1:Cascade (Michel, 2026-10-11)."
+        },
+        {
           "owl:versionInfo": "1.7.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:DomainConceptCombo removed from the @type of 17 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:DomainConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
@@ -61,11 +66,6 @@
           "owl:versionInfo": "1.6.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 17 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
-        },
-        {
-          "owl:versionInfo": "1.5.0",
-          "dcterms:date": "2026-10-03",
-          "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
         }
       ]
     },
@@ -86,7 +86,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:Component"
+        {"@id": "m2:Component"}
       ],
       "rdfs:label": "Active Component",
       "rdfs:comment": "An electronic component that requires an external power supply and is capable of controlling or amplifying electrical signals. Distinct from passive components (resistors, capacitors, inductors) which only dissipate or store energy. Foundation for all active electronics patterns in M1_Electronics.",
@@ -115,7 +115,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m1:extension:electronics:ActiveComponent"
+        {"@id": "m1:extension:electronics:ActiveComponent"}
       ],
       "rdfs:label": "Amplifier",
       "rdfs:comment": "An active component that increases the power, voltage, or current of a signal. Implements m2:Amplification with a structural component (m2:Component) and a defined gain factor. Gain G = V_out / V_in (voltage amplifier) or I_out / I_in (current amplifier). The VCA (Voltage Controlled Amplifier) is a specialisation where G is controlled by an external signal.",
@@ -140,7 +140,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m1:extension:electronics:SignalProcessor"
+        {"@id": "m1:extension:electronics:SignalProcessor"}
       ],
       "rdfs:label": "Filter",
       "rdfs:comment": "A signal processor that selectively attenuates or passes frequency components of an input signal. Implements m2:Regulation (frequency-domain control) combined with m2:Transformation (spectral shaping). The VCF (Voltage Controlled Filter) is the canonical modular synthesis instantiation.",
@@ -169,7 +169,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m1:extension:electronics:ActiveComponent"
+        {"@id": "m1:extension:electronics:ActiveComponent"}
       ],
       "rdfs:label": "Signal Processor",
       "rdfs:comment": "An active component or circuit that transforms a signal according to a defined transfer function. Generalises over filters, waveshapers, ring modulators, and effects units. Directly instantiates m2:Processor (S × I × D × F × V × R).",
@@ -190,8 +190,8 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m1:extension:electronics:ActiveComponent",
-        "m2:Oscillator"
+        {"@id": "m1:extension:electronics:ActiveComponent"},
+        {"@id": "m1:Oscillator"}
       ],
       "rdfs:label": "Electronic Oscillator",
       "rdfs:comment": "An active electronic circuit that produces a periodic output signal without an external periodic input. Directly instantiates m2:Oscillator ( × ⇒(Component, Process, Trajectory | Circular)). The oscillation frequency is determined by reactive components (L, C) or RC networks. Subclasses: VoltageControlledOscillator (pitch set by CV), FeedbackOscillator (self-sustaining via positive feedback), LFO (sub-audio rate).",
@@ -221,7 +221,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m1:extension:electronics:ElectronicOscillator"
+        {"@id": "m1:extension:electronics:ElectronicOscillator"}
       ],
       "rdfs:label": "Voltage Controlled Oscillator (VCO)",
       "rdfs:comment": "An electronic oscillator whose frequency is determined by an input control voltage following a defined transfer law. In modular synthesis the standard is V/Oct: f(CV) = f₀ × 2^(CV). The archetypal Territory Oscillator in the Eurorack domain. Instantiated as M0 poclet M0_VCO.",
@@ -264,7 +264,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m1:extension:electronics:ElectronicOscillator"
+        {"@id": "m1:extension:electronics:ElectronicOscillator"}
       ],
       "rdfs:label": "Low Frequency Oscillator (LFO)",
       "rdfs:comment": "An electronic oscillator operating below the audio threshold (typically 0.01 Hz – 20 Hz). Used as a modulation source to animate parameters of other modules (pitch vibrato, filter wobble, amplitude tremolo). Implements m2:Oscillator at infrasonic frequency. Distinct from VCO: the LFO output is typically used as a CV signal (modulation), not as audio.",
@@ -295,7 +295,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m1:extension:electronics:ElectronicOscillator"
+        {"@id": "m1:extension:electronics:ElectronicOscillator"}
       ],
       "rdfs:label": "Feedback Oscillator",
       "rdfs:comment": "An oscillator that sustains itself via positive feedback exceeding unity gain at a specific frequency (Barkhausen criterion: |βA| = 1, ∠βA = 0°). Implements m2:Oscillator with m2:FeedbackLoop as the sustaining mechanism. Examples: Wien bridge, phase-shift oscillator, Colpitts. Contrasts with relaxation oscillators (hysteresis-based) and VCOs (external CV-controlled).",
@@ -312,10 +312,7 @@
     {
       "@id": "m1:extension:electronics:WaveformMode",
       "@type": "owl:Class",
-      "rdfs:subClassOf": [
-        {"@id": "m2:DomainConceptCombo"},
-        "m2:Mode"
-      ],
+      "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "rdfs:label": "Waveform Mode",
       "rdfs:comment": "An N-ary operational mode of an electronic oscillator selecting the shape of the periodic output signal. Each waveform has a distinct harmonic spectrum (Fourier decomposition) and therefore a distinct timbre. Directly instantiates m2:Mode (N-ary) in the electronics domain.",
       "m1:structuralGrammarFormula": "Fm1m2(Electronics, I × S)",
@@ -347,6 +344,20 @@
           "formula": "x(t) = square with duty cycle δ ∈ [5%,95%]"
         }
       },
+      "m2:hasAttribute": [
+        {
+          "rdfs:label": "waveform",
+          "@type": "m2:ValueSpace",
+          "m2:description": "Shape of the periodic output signal (N-ary mode, N = 5).",
+          "m2:possibleValues": [
+            "Sine",
+            "Square",
+            "Triangle",
+            "Sawtooth",
+            "Pulse"
+          ]
+        }
+      ],
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
     {
@@ -354,7 +365,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:Signal"
+        {"@id": "m2:Signal"}
       ],
       "rdfs:label": "Audio Signal",
       "rdfs:comment": "A time-varying electrical signal in the audio frequency range (20 Hz – 20 kHz) representing sound information. In Eurorack modular synthesis: ±5V peak, AC coupled. Carries the acoustic information of a synthesized sound between modules. Implements m2:Signal with temporal periodicity (m2:Oscillator output) or aperiodicity (noise, percussion).",
@@ -375,7 +386,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:Signal"
+        {"@id": "m2:Signal"}
       ],
       "rdfs:label": "Control Voltage (CV)",
       "rdfs:comment": "A DC or slowly varying electrical signal used to control a parameter of another module (frequency, amplitude, filter cutoff, etc.). In Eurorack: 0–10V for unipolar or ±5V for bipolar CV. Pitch CV follows V/Oct standard. The CV interface is the fundamental interoperability mechanism of modular synthesis — implements m2:Interoperability in the electronics domain.",
@@ -398,7 +409,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m1:extension:electronics:ControlVoltage"
+        {"@id": "m1:extension:electronics:ControlVoltage"}
       ],
       "rdfs:label": "Pitch CV (V/Oct)",
       "rdfs:comment": "A control voltage following the 1V/Oct standard for pitch control. Maps linearly to a logarithmic frequency scale: each +1V doubles the frequency (one octave). The universally adopted pitch interface in Eurorack modular synthesis. Implements m2:Transformation (voltage domain → frequency domain) via an ExponentialConverter.",
@@ -419,7 +430,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m1:extension:electronics:SignalProcessor"
+        {"@id": "m1:extension:electronics:SignalProcessor"}
       ],
       "rdfs:label": "Exponential Converter",
       "rdfs:comment": "A circuit that converts a linear input voltage into an exponential output current (or voltage), implementing the V/Oct law. Core internal sub-component of every VCO. Uses the exponential I-V characteristic of a bipolar transistor or matched transistor pair (for temperature compensation). Directly instantiates m2:Amplification (exponential gain profile) and m2:Transformation.",
@@ -438,7 +449,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:Signal"
+        {"@id": "m2:Signal"}
       ],
       "rdfs:label": "Modulation Source",
       "rdfs:comment": "Any signal used to animate or vary a parameter of another module over time. LFO, envelope generators, and sequencers are the primary modulation sources in a modular synthesizer. Implements m2:Signal as a carrier of temporal variation information (m2:Process + m2:Information).",
@@ -463,7 +474,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:Component"
+        {"@id": "m2:Component"}
       ],
       "rdfs:label": "Eurorack Module",
       "rdfs:comment": "A self-contained electronic function unit conforming to the Eurorack modular synthesis standard (Doepfer, 1995). Implements m2:Component: bounded structural identity within a modular synthesizer rack, with standardised inputs/outputs (3.5mm jacks, ±12V power, V/Oct pitch, ±5V audio/CV). The synthesis patch is a composition of Eurorack Modules — implements m2:Composable.",
@@ -504,7 +515,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:Cascade"
+        {"@id": "m1:Cascade"}
       ],
       "rdfs:label": "Signal Chain",
       "rdfs:comment": "An ordered sequence of signal processing modules through which an audio signal passes, with each module transforming the signal according to its transfer function. Directly instantiates m2:Cascade ( × ⇒(Process, Step, Trajectory)) in the electronics/modular synthesis domain. The canonical signal chain is: VCO → VCF → VCA → Output.",
@@ -523,7 +534,7 @@
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
-        "m2:Process"
+        {"@id": "m2:Process"}
       ],
       "rdfs:label": "Frequency Modulation (FM)",
       "rdfs:comment": "A modulation technique in which the instantaneous frequency of a carrier oscillator is varied by a modulating signal. At audio-rate modulation frequencies (modulator = VCO), produces complex inharmonic or harmonic spectra (Chowning FM synthesis). At sub-audio rates (modulator = LFO), produces vibrato. Instantiates m2:Process (D × I × F) in the electronics domain.",

@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.11.0
+**Version**: 1.12.0
 **Date**: 2026-10-11
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -387,7 +387,7 @@ GCC009). Found on the way, NOT fixed here:
 - **formula copies** in `m1:parentGenericConcepts` that drifted from their parents
   (bare S / I) — same anti-pattern as WS-3 F5; listed in the WS-3 M1_Core scope.
 
-### 8.0f Class/instance separation — lots C1 and C2 (WS-1 B2, 2026-10-11)
+### 8.0f Class/instance separation — lots C1, C2 and C1b (WS-1 B2, 2026-10-11)
 
 **Principle (Michel, 2026-10-11).** Classes and instances are clearly identified and
 separated: classes live in M2/M1, instances in M0. A combo is a **derived class**
@@ -428,6 +428,39 @@ to m2:DomainConceptCombo" had been flagging it (119 results, counted twice: 238)
   README and toolchain README updated; the principle is a Bootstrap invariant.
 - gate unchanged (M1 149 / 1 / 446), as simulated in C1; `check_M1` output identical.
   `TscgPocletMiner/tools/rebuild_m2_corpus.py` reads M2 only: unaffected.
+
+**Lot C1b (done, 2026-10-11).** The 74 non-combo `rdfs:subClassOf` strings (6 extensions:
+Biology 22, Electronics 18, Education 11, Mythology 11, music 10, EnergyGenerators 2):
+- 69 pointing to a declared parent → IRIs (`m2:GenericConcept` 26, extension-internal parents
+  such as `music:Polyphony`, `mythology:MythicalCreature`, `mythology:Deity`, plus
+  `m2:Signal`, `m2:Component`, `m2:Process`, `m2:Processor`…);
+- the 5 phantom parents, Michel's decisions (2026-10-11):
+  - `electronics:ElectronicOscillator`: `m2:Oscillator` → `m1:Oscillator` (Core);
+  - `electronics:SignalChain`: `m2:Cascade` → `m1:Cascade` (Core; the known phantom, migrated
+    from M2 to M1 on 2026-03-13);
+  - `electronics:WaveformMode`: `subClassOf m2:Mode` removed; the N-ary mode is an attribute
+    `m2:hasAttribute` typed `m2:ValueSpace` with `m2:possibleValues` [Sine, Square, Triangle,
+    Sawtooth, Pulse] — the pattern of `m1:Cascade`;
+  - `education:Education`: `m1:KnowledgeField` (retired) → **`m1:Domain`, now declared in
+    M1_CoreConcepts** (it replaces `m1:KnowledgeField`; `m2:Domain` of M2_MetaConcepts 14.x
+    left with the tensor formalism). `M1_Domains.jsonld` had typed its 22 entries `m1:Domain`
+    while the class was declared nowhere;
+  - `biology:CellularCommunication`: `m1:CommunicationPattern` **left as a string, pending**
+    the **Protocol** candidate (below).
+- gate unchanged (M1 149 / 1 / 446); `check_M1` output identical. 7 files bumped.
+
+**Open after C1b.**
+- **Protocol** (candidate, Michel 2026-10-11): an attribute of `m2:Workflow` to represent the
+  Workflow's use cases in a UML swimlane, i.e. the transitions between the states of a
+  statechart triggered by Events (`m2:Event` exists). Once it exists,
+  `biology:CellularCommunication` is attached to it. Route: `tscg-m2-candidate-filter`
+  (attribute of an existing concept rather than a new GenericConcept?), WS-3.
+- **Education duplicate**: `m1:extension:education:Education` (a class, subclass of
+  `m1:Domain`) and `m1:domain:Education` (an individual of `m1:Domain` in the registry) name
+  the same domain — one is a class, the other an instance: to decide which one stays.
+- **retired parent** of the 3 Education combos (`m1:KnowledgeFieldGenericCombo`): unchanged;
+  with `m1:Domain` replacing `m1:KnowledgeField`, the natural target is
+  `m2:DomainConceptCombo` (raises M1 counts: new focus nodes).
 
 **Found while doing C2 (not fixed).** The validator engine runs pyshacl with
 `advanced=False` (`validator/checks/shacl_runner.py`): the `sh:SPARQLTarget` combo targets
@@ -559,6 +592,10 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.12.0 (2026-10-11)** — §8.0f lot C1b done (69 strings → IRIs, phantoms
+  `m2:Oscillator`/`m2:Cascade` → `m1:Oscillator`/`m1:Cascade`, `m2:Mode` → ValueSpace
+  attribute, `m1:KnowledgeField` → `m1:Domain` declared in Core); Protocol candidate;
+  Education duplicate; gate unchanged.
 - **1.11.0 (2026-10-11)** — §8.0f lot C2 done (combo punning removed from 139 combos and
   forbidden: M1 SHACL SHAPE 12, `check_M1` CMB001; gate unchanged); engine `advanced=False`
   finding; Pellet observations on M1_Chemistry recorded as input for part (a).
