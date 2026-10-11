@@ -1,8 +1,8 @@
 # M2 Formulas Review with Gs — Worksite README
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.0.0
-**Date**: 2026-07-18
+**Version**: 1.1.0
+**Date**: 2026-10-11
 **Status**: OPEN — decisions recorded, execution pending
 **Layer**: M2 (`M2_GenericConcepts.jsonld`, v16.17.0 at time of audit)
 **Pipeline phase**: Phase 0 (change request) + Phase 4 (semantic decisions) of
@@ -205,6 +205,71 @@ and TriadicBalance — an attested pattern, not a new construct.
 **Remaining work when executed**: rewrite `rdfs:comment` (reversibility +
 non-orientation); remove or redo the `sphinxView` (see F4).
 
+### The L cluster — trigger (2026-10-10)
+
+While modernising `Component` for the *Digital-Logic-Sim* poclet candidate, the only way
+to give `m1:Component` an orientation toward the whole's Attractor was through an M2
+parent carrying L (combo arguments are named concepts, never primitives — SC-1). None
+carries L cleanly. Investigation shows L is **misallocated** across M2.
+
+**Attested residue (HEAD `7d2cfb1`).**
+
+`m3:bicephalous:typeL` — label *Localizability*, question *"Converging?"*, definition:
+ordinal discrimination of the convergence direction toward an Attractor by successive
+state comparison (Wiener, Ashby, Conant & Ashby, Powers). `m3:rejected_names` rejects
+*"Origin"* because it *suggests a metric/spatial notion*.
+
+| Concept | Formula at HEAD | L… |
+|---|---|---|
+| `Homeostasis` | `A × St × F \| L` | ✅ M3 sense |
+| `Bifurcation` | `D × F \| L` | ✅ plausible |
+| `Topology`, `Space` | `St \| L` | ❌ spatial reading (rejected by M3) |
+| `Node`, `Capacity` | `St × It \| L` | ❌ spatial reading |
+| `Component` | `St × It \| L` | ❌ — leaves M2 (WS-13) |
+| `Regulation` | `A × St × F` | absent — L *is* cybernetic regulation |
+| `Alignment` | `It × A × St` | absent — "progressively reduce discrepancy" |
+| `Tropism` | `A × St × D × F` | absent — "orientation toward an Attractor" |
+| `Convergence` | `F × D \| _^` / `F × D \| _$` | absent — converge/diverge encoded by poles |
+
+L is present where its **rejected** reading applies and absent where its **definition**
+applies. Michel's hypothesis: L is under-analysed; the name ("Localizability" = place)
+drove the attributions more than the definition (convergence).
+
+### GS-3 — `m2:Convergence` : `F × D | _^ / _$` → `A × F × D | L`
+
+**Status**: DECIDED by Michel (2026-10-10). Execution pending.
+
+**Attested residue.** L's definition is literally "converging vs diverging" — the two
+poles `Convergence` already carries — yet L is absent from its formula. The concept that
+should carry the primitive does not (§7.1 razor: an attested residue, not a "too basic"
+impression).
+
+**Michel's reading (option a).** Convergence integrates the Attractor: the point where
+flows gather plays the role of the Attractor — a lens' focus included. Consistent with
+TSCG usage: an Attractor is not necessarily a goal.
+
+| Component | Role |
+|---|---|
+| `A` | the gathering point (focus, basin) |
+| `F × D` | flows / trajectories that evolve (kept from HEAD) |
+| `\| L` | ordinal discrimination: getting closer or farther |
+
+**Open within GS-3**: do the poles `_^` / `_$` stay (the two values L discriminates) or
+become redundant with L? Collision check (§7.3) to run before execution.
+
+**Remaining work when executed**: rewrite `rdfs:comment` (convergence *toward an
+Attractor*), collision check over M2 + M1 Core + M1 extensions (R3 normalised).
+
+### GS-4 — L is the *sense* of tropism; `Tropism` is a consumer of L
+
+**Status**: PRINCIPLE DECIDED by Michel (2026-10-10). Formula not yet decided.
+
+L is the compass (discriminates direction, implies no movement); `m2:Tropism`
+(`A × St × D × F`, ⊂ `Behavior`) is the walk (behaviour following a gradient). A tropism
+without direction discrimination would be random motion — L appears constitutive.
+Candidate formula: `A × St × D × F | L`. **Michel decides** (rule A: `Tropism ⊂ Behavior`
+already conforms; adding `| L` keeps it conformant).
+
 ---
 
 ## 6. Flagged findings (not decisions — inputs to the review)
@@ -253,6 +318,19 @@ synchronise (treats the symptom) or delete (extinguishes the debt).
 use ASFID letters with the `+` operator (e.g. `Behavior: S + D + F`), which is
 inconsistent with the REVOI-based Map notation. Needs its own pass.
 
+**F7 — L's label contradicts its own definition *(M3 wording — open)*.**
+
+"Localizability" evokes place; M3 itself rejected the spatial reading. Probable root
+cause of the misallocation. A tropism-family label ("Tropicity", "tropic orientation")
+would match the definition — **not "Tropism"**, already an M2 concept (cross-layer
+homonym, cf. WS-13 rule H). M3 change: Michel only.
+
+**F8 — `Ss` label/comment drift *(M3 wording — open)*.**
+
+Label **"Symbol — Stereopsic (Ss)"**, but the comment frames it as answering *"What is
+the sign for?"* (Peirce / Saussure sign theory). The wording led to a misreading during
+the 2026-10-10 session. Harden like F1.
+
 ---
 
 ## 7. Method & discipline
@@ -287,6 +365,13 @@ Not yet examined; listed so the worksite has a work front rather than a wish.
 - The **79 formulas with no Gs component** — systematic pass, concept by concept.
 - `Gradient` (F3) — repair required regardless of the Gs question.
 - The `sphinxView` layer as a whole (F6).
+- **The L work front** (2026-10-10):
+  - **Spatial usages**: `Topology`, `Space` (`St | L`), `Node`, `Capacity` (`St × It | L`) —
+    for each, L justified in the M3 sense, or removed. Per R4 the `Node`/`Capacity`
+    collision is not a defect in itself; examine it only as a signal.
+  - **Absences**: `Regulation`, `Alignment` — add L only where constitutive (§7.1).
+  - **`Bifurcation`**: L carrier, or consumer of `Convergence`?
+  - **Allocation rule for L** to write into the M2 README once the cluster is settled.
 
 ---
 
@@ -294,6 +379,7 @@ Not yet examined; listed so the worksite has a work front rather than a wish.
 
 | Version | Date | Changes |
 |---|---|---|
+| **1.1.0** | 2026-10-11 | L cluster opened (trigger: Digital-Logic-Sim / Component, session 2026-10-10). GS-3 `Convergence = A × F × D \| L` DECIDED; GS-4 principle "L = sense, Tropism = consumer" DECIDED (formula pending). Findings F7 (L label) and F8 (Ss label/comment). Next candidates: spatial usages of L, absences, Bifurcation, allocation rule. Gauge adopted without target (Michel, 2026-10-10): share of M2 formulas using a nominal Gs primitive. Merged from `WS-5/Next_Conversation_2026-10-11/WS-3_Addendum_GS-3_GS-4_L-Cluster.md`. |
 | **1.0.0** | 2026-07-18 | Worksite opened. Baseline measured on M2 v16.17.0 (97 canonical formulas, 18 using Gs). Scope boundary with SC-2 fixed. Attested rules R1–R5 recorded. Decisions GS-1 (`State = It × D \| T`) and GS-2 (`Symmetry = St \| _0`) recorded with justification and collision checks. Findings F1–F6 flagged. |
 
 ---
@@ -309,6 +395,11 @@ Not yet examined; listed so the worksite has a work front rather than a wish.
 | F3 `Gradient` | Repair — open |
 | F4, F6 `sphinxView` | Open |
 | Remaining 79 formulas | Not started |
+| GS-3 `Convergence` | DECIDED — execution pending (poles question open) |
+| GS-4 `Tropism` | PRINCIPLE DECIDED — formula pending |
+| F7 L label, F8 Ss wording | M3 wording repairs — open |
+| L work front (§8) | Open |
+| Gauge: share of formulas using a nominal Gs primitive | ADOPTED, no target (2026-10-10) — measurement to wire |
 
 **Authority reminder**: the only authority is `git show HEAD:<file>`. All figures
 in this document were measured on files supplied during the 2026-07-18 session and
