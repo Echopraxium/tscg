@@ -81,7 +81,7 @@ def parse_corpus(corpus_path: Path) -> list[CorpusEntry]:
     # ── Pattern 1: bullet line  **`filename`** [status] [vX.Y.Z] ─────────────
     # e.g. - **`M3_GenesisGrammar.jsonld`** ✅ v4.2.0
     # e.g. - **`TerritoryMap_Dichotomy.md`** ✅ v16.0+ (2026-05-23)
-    # e.g. - **`M3_BicephalousPerspective.jsonld`** ⚠️ `[ARCHIVED]`
+    # e.g. - **`M3_OdinsWisdom.jsonld`** ⚠️ `[ARCHIVED]`
     bullet_re = re.compile(
         r'^\s*[-*]?\s*\*\*`([^`]+)`\*\*'           # **`filename`**
         r'(?:\s*(✅|⚠️|❌))?'                        # optional status emoji

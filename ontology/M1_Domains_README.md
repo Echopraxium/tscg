@@ -25,7 +25,7 @@ a structured overview of which fields of knowledge have been formalized in TSCG.
 M3_GrammarFoundation.jsonld  ─┐
 M3_EagleEye.jsonld           ─┤→  M3_GenesisGrammar.jsonld
 M3_SphinxEye.jsonld          ─┤           ↓ imported by
-M3_BicephalousPerspective    ─┘  M2_GenericConcepts.jsonld
+M3_OdinsWisdom    ─┘  M2_GenericConcepts.jsonld
                                            ↓ imported by
                                   M1_CoreConcepts.jsonld
                                   M1_Domains.jsonld         ← THIS FILE (peer to CoreConcepts)

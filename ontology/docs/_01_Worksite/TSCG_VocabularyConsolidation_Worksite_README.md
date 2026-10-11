@@ -51,14 +51,14 @@ The rails already exist in the corpus:
 | `m3:layerOrder` (1→4) | `M3_GenesisGrammar` | the 4-layer ordering (Genesis=1, GenericConcepts=2, DomainExtension/SystemicFramework=3, Poclet/CaseStudy=4…) |
 | `derived_layers` node ("foundation_of") | `M3_GenesisGrammar` | the M3→M2 generation interface |
 | `m3:Morphism` family (`hasMorphism`, `morphismSource/Target`) | `M3_GenesisGrammar` | cross-layer morphisms |
-| Territory/Map axis | `M3_BicephalousPerspective` | the Gt/Gm/Gs interface — hosts `role`, `semantics`, `symbol`, `definition`, `examples` |
+| Territory/Map axis | `M3_OdinsWisdom` | the Gt/Gm/Gs interface — hosts `role`, `semantics`, `symbol`, `definition`, `examples` |
 | apex (transversal) | `M3_GrammarFoundation` | properties crossing all 4 layers (e.g. `m3:changelog`, added 2026-07-22) |
 
 **Placement rule derived from the rails:**
 
 1. **Transversal** (meaningful at every layer) → `M3_GrammarFoundation` (apex).
    Precedent: `m3:changelog` (v2.5.0).
-2. **Territory/Map descriptor** (about the Gt/Gm/Gs axis) → `M3_BicephalousPerspective`.
+2. **Territory/Map descriptor** (about the Gt/Gm/Gs axis) → `M3_OdinsWisdom`.
 3. **Layer-interface / morphism / ontology-typing** → `M3_GenesisGrammar`.
 4. **Specific to one lower layer** (e.g. the `eagleView` sub-fields proper to M2
    GenericConcepts) → that layer's canonical file, prefixed accordingly
@@ -114,7 +114,7 @@ A discovery on 2026-07-22 splits B and makes half of it safe/mechanical.
 
 ### B1 — already `m3:`-prefixed but DEFINED NOWHERE (declare only)
 
-`M3_BicephalousPerspective` uses **24 `m3:*` keys, 0 of them declared** as
+`M3_OdinsWisdom` uses **24 `m3:*` keys, 0 of them declared** as
 `owl:*Property`. They already resolve to an IRI (unlike bare keys), so the work is
 **only to add the definition node** — usages are untouched, data unchanged. Exactly
 the `m3:changelog` move, in series. Safe.
@@ -191,7 +191,7 @@ Target when VOC ships: **0 undeclared keys** on canonical files (Family C exclud
 
 1. **Family A** — apply the standard-replacement table (mechanical, after approval).
 2. **B1** — declare the 24 already-prefixed `m3:*` in their owning M3 file
-   (`M3_BicephalousPerspective` for the Territory/Map set), following §1. Safe:
+   (`M3_OdinsWisdom` for the Territory/Map set), following §1. Safe:
    definitions only, no usage change, no data change.
 3. **Michel's per-block decision** on the eagleView/sphinxView shape (§4).
 4. **B2** — execute the decided shape (reify as data, or move under

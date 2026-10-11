@@ -1931,8 +1931,8 @@
   - M1_Domains_README.md ★
   - M2_GenericConcepts.jsonld ★
   - M2_GenericConcepts_README.md ★
-  - M3_BicephalousPerspective.jsonld ★
-  - M3_BicephalousPerspective_README.md ★
+  - M3_OdinsWisdom.jsonld ★
+  - M3_OdinsWisdom_README.md ★
   - M3_EagleEye.jsonld ★
   - M3_EagleEye_README.md ★
   - M3_GenesisGrammar.jsonld ★
