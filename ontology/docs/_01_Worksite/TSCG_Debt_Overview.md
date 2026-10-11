@@ -1,8 +1,8 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.5.0
-**Date**: 2026-10-10
+**Version**: 1.6.0
+**Date**: 2026-10-11
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
 it does not replace the per-worksite notes.
@@ -106,6 +106,12 @@ counts **lines** of the text report, i.e. 344 violations (§5).
 
 ## 4. Modelling debt — WS-3 (Gs monoid review)
 
+> **2026-10-10 (Michel)**: M2 formulas are under-weighted in Gs primitives and
+> over-weighted in Gt/Gm. The WS-3 gauge below is **adopted, without a target** —
+> its evolution is followed (§6 question 3 answered: (a)). **Dependency**: the S5-1
+> gauge (no bare S / I) must exist BEFORE the WS-3 rebalancing rewrites M2
+> formulas, so that the new formulas are checked as they are written.
+
 Not a gate counter: a **semantic** debt, Michel's authority. The Stereopsis monoid
 Gs was introduced after most M2 formulas were written. Measured on HEAD with the
 WS-3 definition (nominal Gs primitives T, K, Ss, L): **18 of 97 formulas** use Gs —
@@ -156,8 +162,7 @@ concept may legitimately stay pure Territory).
    colour family (CMYK/CMY/RGB/HSL_…, ColorSynthesis, MtgColorWheel),
    Counterpoint, ExposureTriangle, FourStrokeEngine, NakamotoConsensus, VSM, and
    the six tscg-tools instances. Expected (domain not yet modelled) or a gap?
-3. WS-3 gauge: adopt "share of M2 formulas using a nominal Gs primitive" as the
-   gauge, without target?
+3. ~~WS-3 gauge~~ — answered 2026-10-10: adopted, without target (§4).
 
 ## 7. Reduction path (by leverage)
 
@@ -327,8 +332,16 @@ Found and fixed on the way:
    the scheme), 33 OWL classes / properties / individuals (31 in M3, 2 in M2). They are
    paraphrases, not copies: each pair is MERGED, node by node, reviewed by Michel.
    Batches: (1) the 5 headers — **done** (no grammar change; gate unchanged); (2) the
-   12 SKOS nodes, with G2 accepting `skos:definition` + a negative test; (3) the 33 OWL
-   terms, in two or three packets. Merging also removes the hidden debt in the texts
+   12 SKOS nodes — **done** (structural grammar 0.2.0: G2 accepts `skos:definition`
+   for a `skos:Concept` only; 3 new tests; gate unchanged); (3) the 33 OWL terms, in
+   two or three packets.
+   Batch 2 also found: 14 of 28 `skos:example` named files that do not exist
+   (invented or renamed: replaced by the real files, `M0_Tarot` removed, instances
+   not yet built marked "(planned)" — future worksites); stale counts in scope
+   notes; a copied formula that had drifted ("Homeostasis = A×S×F", HEAD
+   `A × St × F | L`). Principle kept: **no counts, alphabets or formulas copied
+   into descriptive texts** — they drift. TPACK is a pedagogical method (typed
+   Poclet), not a SystemicFramework (Michel, 2026-10-11). Merging also removes the hidden debt in the texts
    (bare S/I, Hilbert-era "ket notation", stale counts).
 
 ### 8.1 S5-1 — primitives always suffixed
@@ -408,6 +421,9 @@ colon (JSON-LD CURIE), the rest is dot-separated.
 
 ## Changelog
 
+- **1.6.0 (2026-10-11)** — "one role, one property" batch 2 done (12 SKOS nodes,
+  grammar 0.2.0); WS-3 gauge adopted without target, dependency S5-1 → WS-3; §6 q3
+  answered; TPACK not a SystemicFramework.
 - **1.5.0 (2026-10-10)** — "one role, one property": convention approved, inventory
   (50 nodes), batch 1 (5 headers) done; §8.1 S5-1 additions; new §8.1b S5-1b M0
   primitive scores (two formats, Interoperability stored as `It_score`, invisible to
