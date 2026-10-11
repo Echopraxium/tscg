@@ -31,8 +31,8 @@ valid; the C lots below are not drawn yet).
 
 ## 1. Fresh session state (at handover — re-verify)
 
-- **HEAD**: the commit carrying this HandOver, on top of **Lot C1** (on top of
-  `4c27674`). Confirm with `git log --oneline -10`.
+- **HEAD**: the commit carrying this addendum, on top of `f8bf069` (this HandOver) and
+  `932e557` (Lot C1), both pushed 2026-10-11. Confirm with `git log --oneline -10`.
 - **Gate**: `cd ontology/toolchain && python run_all_layers.py` → `GATE: PASS`:
 
   | Layer | files | errors | warnings | shacl_violations |
@@ -46,6 +46,9 @@ valid; the C lots below are not drawn yet).
   machine (Pellet tests skipped in Claude's sandbox: its Java is too old).
 - **Reasoner**: `python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py
   --file ontology/M2_GenericConcepts.jsonld` → PASSED (2.0.1, imports resolved locally).
+  Also PASSED on `ontology/M1_extensions/chemistry/M1_Chemistry.jsonld` after Lot C1
+  (7 files merged, 160 classes): the new `rdfs:subClassOf m2:DomainConceptCombo` hierarchy
+  is consistent. Its "Reparenting" lines are recorded in §2.5.
 - **Push path** unchanged: Claude → `format-patch` → `git am` + gate on a fresh clone →
   Michel `git am`, gate, tests, push. Several pending patches are named `1_…`, `2_…`.
   Untracked folders on Michel's disk can block `git am` (moved to
@@ -105,6 +108,8 @@ valid; the C lots below are not drawn yet).
    record the principle as a Bootstrap invariant. Expected: **counts unchanged**
    (simulated in C1: M1 SHACL 446). Check `instances/tscg-tools/TscgPocletMiner/tools/
    rebuild_m2_corpus.py` (it lists `m2:GenericConceptCombo`) before shipping.
+   **Same lot (Michel, 2026-10-11)**: add the Pellet observations of §2.5 to Debt
+   Overview §8.0f, as input for part (a).
 2. **Lot C1b**: the 74 non-combo `rdfs:subClassOf` strings in 6 extensions → IRIs.
    Exposes phantoms (`m2:Cascade`, `m1:CommunicationPattern`, `m1:KnowledgeField`):
    measure, then route to lot-NSRESOLVE.
@@ -117,6 +122,23 @@ valid; the C lots below are not drawn yet).
    `hasFamily` 88, `hasPolarity` 86, `eagleView` 67, `sphinxView` 43, `isStereopsic`
    39…) → re-declare the documenting ones as `owl:AnnotationProperty`. Check the M2
    SHACL and `rdfs:domain` uses first; run Pellet on M2 after.
+
+5. **Pellet observations on M1_Chemistry + imports** (2026-10-11, inferences, not
+   failures) — class/instance mixing seen by the reasoner, input for part (a):
+   - properties also inferred as individuals (`owl:Thing`): M2 `hasPolarity`,
+     `isStereopsic`, `arity`, `cardinality`, `valueRange`, `positivePole`/`negativePole`,
+     `producingFunction` and `morphism_emergence` (both already annotations),
+     `KnowledgeFieldConceptNote`; M3 `grammar_foundation:*` (`dualityOperator`, `Fm2`,
+     `Fm1m2`, `monoidalProduct`, `intersubjectiveBenchmark`, `defeasibilityStatus`);
+   - M3 primitive types `eagle_eye:typeA/S/F/I/D`, `sphinx_eye:typeR/E/V/O/Im` declared
+     `owl:DatatypeProperty` AND inferred instances of `MonoidalType` (same mix on M3;
+     also the names of the planned `typeS/typeI` renaming);
+   - the 11 M3 ontology types inferred `skos:Concept` (consistent with
+     `m3:TscgOntologyTypeScheme`; they are also individuals of `TscgOntologyType` —
+     check, not necessarily a defect);
+   - 7 M2 concepts inferred `GenericConceptPair` (Activation, Coding, Composition,
+     Convergence, FeedbackLoop, Fusion, Synergy) without being declared so — find the
+     axiom; review with WS-3.
 
 ## 3. Other lots queued (Debt Overview)
 
