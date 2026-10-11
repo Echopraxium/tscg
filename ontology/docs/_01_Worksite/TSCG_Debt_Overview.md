@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.6.0
+**Version**: 1.7.0
 **Date**: 2026-10-11
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -105,6 +105,14 @@ The gate's frozen totals per layer are in `golden_values.json` (`files`, `errors
 counts **lines** of the text report, i.e. 344 violations (§5).
 
 ## 4. Modelling debt — WS-3 (Gs monoid review)
+
+> **2026-10-11**: WS-3 README 1.1.0 — the L cluster (GS-3 `Convergence = A × F × D | L`,
+> GS-4 "L = sense, Tropism = consumer", findings F7 L label, F8 Ss wording). New
+> worksite **WS-13 Structural Core** (Component, Interface, Boundary, Imbrication;
+> `WS-13/WS-13_Phase0_Structural_Core.md`), priority to set — it consumes GS-3 and is
+> measured by the WS-5 lot-NSRESOLVE (phantom `m2:Interface`, `m2:Boundary`) and the
+> future rule A (formula inheritance, 3 failures at HEAD) and rule H (no cross-layer
+> homonym: `m2:Interoperability` vs `Im`, 1) checks.
 
 > **2026-10-10 (Michel)**: M2 formulas are under-weighted in Gs primitives and
 > over-weighted in Gt/Gm. The WS-3 gauge below is **adopted, without a target** —
@@ -366,6 +374,10 @@ No bare `S` or `I` anywhere: formulas, alphabet listings, prose.
 
 ### 8.1b S5-1b — M0 primitive scores (`m0:asfidScores`, `m0:revoiScores`)
 
+> **Overlap (found 2026-10-11)**: WS-10 item NS-4 already plans the scores as a shared
+> vocabulary (`m0:scoreA`…, M0_Common). The key names must be reconciled with the
+> target below before either lot runs.
+
 Target format (Michel, 2026-10-10): one associative array per grammar, keys suffixed —
 `{"A", "St", "F", "It", "D"}` and `{"R", "E", "V", "O", "Im"}`, values in [0,1].
 
@@ -409,6 +421,14 @@ Target format (Michel, 2026-10-10): one associative array per grammar, keys suff
 Target form (Michel, 2026-10-08): **`m3:eagle_eye.EagleEye`** — the prefix keeps its
 colon (JSON-LD CURIE), the rest is dot-separated.
 
+**Form confirmed (Michel, 2026-10-11)** after a contradiction was found: on 2026-10-03
+(WS-5 scoping §4, HandOver 10-03) the Eye terms were to move under their own document
+namespace — `m3.eagle_eye:` → `M3_EagleEye.jsonld#` (IRI = document URL, linked to lot
+1k). **That form is superseded**: the target is `m3:eagle_eye.EagleEye` (prefix `m3:`,
+dotted local part), and the Gs prefix is `m3:odins_wisdom.X` (rename lot R). The M0
+convention `m0.<instance>:Concept` (WS-10 NS-2, Bootstrap invariant) is a different
+form and is not changed by this decision.
+
 - **2 399** occurrences in **42** files (ontology 2 187, instances 212). Largest
   families: `m1:extension:…`, `m3:eagle_eye:…`, `m0:yggdrasil:…`,
   `m3:sphinx_eye:…`, `m3:category_theory:…`, `m1:domain:…`,
@@ -421,6 +441,9 @@ colon (JSON-LD CURIE), the rest is dot-separated.
 
 ## Changelog
 
+- **1.7.0 (2026-10-11)** — S5-3 form confirmed (`m3:eagle_eye.X`, `m3:odins_wisdom.X`;
+  the 2026-10-03 `m3.eagle_eye:` form superseded); S5-1b overlaps WS-10 NS-4; WS-3 L
+  cluster and WS-13 registered (documentation lot of the 2026-10-11 HandOver).
 - **1.6.0 (2026-10-11)** — "one role, one property" batch 2 done (12 SKOS nodes,
   grammar 0.2.0); WS-3 gauge adopted without target, dependency S5-1 → WS-3; §6 q3
   answered; TPACK not a SystemicFramework.
