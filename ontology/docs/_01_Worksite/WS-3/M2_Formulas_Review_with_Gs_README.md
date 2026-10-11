@@ -1,7 +1,7 @@
 # M2 Formulas Review with Gs — Worksite README
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.1.0
+**Version**: 1.2.0
 **Date**: 2026-10-11
 **Status**: OPEN — decisions recorded, execution pending
 **Layer**: M2 (`M2_GenericConcepts.jsonld`, v16.17.0 at time of audit)
@@ -365,6 +365,13 @@ Not yet examined; listed so the worksite has a work front rather than a wish.
 - The **79 formulas with no Gs component** — systematic pass, concept by concept.
 - `Gradient` (F3) — repair required regardless of the Gs question.
 - The `sphinxView` layer as a whole (F6).
+- **Scope extended to the M1_Core combos** (Michel, 2026-10-11): review the `Fm2` /
+  `Fm1m2` combos of `M1_CoreConcepts` as well — which Gs-carrying parents they combine,
+  and whether a combo with no M1 domain is written `Fm2` (rule: "a combo formula with no
+  M1 domain is an Fm2"; first application: `Propagation`, `CascadeAmplification`).
+  Related debt found the same day: the `parentGenericConcepts` entries COPY their
+  parents' formulas, and the copies have drifted (bare S / I, e.g. `m2:Step` copied as
+  `S × I × D`) — the same anti-pattern as F5 (`eagleView.formula`).
 - **The L work front** (2026-10-10):
   - **Spatial usages**: `Topology`, `Space` (`St | L`), `Node`, `Capacity` (`St × It | L`) —
     for each, L justified in the M3 sense, or removed. Per R4 the `Node`/`Capacity`
@@ -379,6 +386,7 @@ Not yet examined; listed so the worksite has a work front rather than a wish.
 
 | Version | Date | Changes |
 |---|---|---|
+| **1.2.0** | 2026-10-11 | Scope extended to the M1_Core combos (Fm2 / Fm1m2), Michel. Rule: a combo with no M1 domain is an Fm2 (Propagation, CascadeAmplification fixed). Drifted formula copies in `parentGenericConcepts` noted. |
 | **1.1.0** | 2026-10-11 | L cluster opened (trigger: Digital-Logic-Sim / Component, session 2026-10-10). GS-3 `Convergence = A × F × D \| L` DECIDED; GS-4 principle "L = sense, Tropism = consumer" DECIDED (formula pending). Findings F7 (L label) and F8 (Ss label/comment). Next candidates: spatial usages of L, absences, Bifurcation, allocation rule. Gauge adopted without target (Michel, 2026-10-10): share of M2 formulas using a nominal Gs primitive. Merged from `WS-5/Next_Conversation_2026-10-11/WS-3_Addendum_GS-3_GS-4_L-Cluster.md`. |
 | **1.0.0** | 2026-07-18 | Worksite opened. Baseline measured on M2 v16.17.0 (97 canonical formulas, 18 using Gs). Scope boundary with SC-2 fixed. Attested rules R1–R5 recorded. Decisions GS-1 (`State = It × D \| T`) and GS-2 (`Symmetry = St \| _0`) recorded with justification and collision checks. Findings F1–F6 flagged. |
 
@@ -399,6 +407,7 @@ Not yet examined; listed so the worksite has a work front rather than a wish.
 | GS-4 `Tropism` | PRINCIPLE DECIDED — formula pending |
 | F7 L label, F8 Ss wording | M3 wording repairs — open |
 | L work front (§8) | Open |
+| M1_Core combos (Fm2 / Fm1m2) review | Open — added 2026-10-11 |
 | Gauge: share of formulas using a nominal Gs primitive | ADOPTED, no target (2026-10-10) — measurement to wire |
 
 **Authority reminder**: the only authority is `git show HEAD:<file>`. All figures

@@ -3,13 +3,21 @@
 owl_reasoning_test.py — OWL reasoning (Pellet via Owlready2) on a TSCG ontology file.
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 2.0.0 (2026-10-10)
+Version: 2.0.1 (2026-10-11)
 Home   : ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py
 
 Usage (from anywhere inside the repository; paths are relative to the repo root):
     python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file ontology/M3_GenesisGrammar.jsonld
     python ... --file ontology/M2_GenericConcepts.jsonld --isolated     # ignore owl:imports
     python ... --file ontology/M3_GenesisGrammar.jsonld --list-imports # resolve imports only, no Java
+
+2.0.1 (2026-10-11)
+- A class TYPED BY ITSELF is reported as a modelling FAIL (exit 1). Found on M2: a data
+  property used ON a class (m2:producingFunction on m2:GenericConceptCombo) with
+  rdfs:domain = that class makes the class an instance of itself (OWL 2 punning). Pellet
+  accepts it, then Owlready2 cannot apply the inferred hierarchy ("TypeError: a __bases__
+  item causes an inheritance cycle"), which 2.0.0 misreported as an environment error.
+  Fix in the data: documentation about a class is an owl:AnnotationProperty.
 
 2.0.0 (2026-10-10)
 - owl:imports are RESOLVED LOCALLY. Since WS-1 lot 1i (2026-09-30) imports are real IRIs;
@@ -103,7 +111,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
 
     print("=" * 70)
-    print("TSCG OWL REASONING — owl_reasoning_test 2.0.0")
+    print("TSCG OWL REASONING — owl_reasoning_test 2.0.1")
     print("=" * 70)
 
     root = find_tscg_root(Path.cwd())
@@ -163,6 +171,16 @@ def main(argv=None):
         except OwlReadyInconsistentOntologyError as e:
             print("\n❌ THE ONTOLOGY IS INCONSISTENT (global inconsistency found by Pellet)")
             print(f"   {e}")
+            print(f"\nStatus: ❌ FAILED — {args.file}")
+            return 1
+        except TypeError as e:
+            if "inheritance cycle" not in str(e):
+                raise
+            print("\n❌ MODELLING DEFECT: Pellet found no inconsistency, but the inferred hierarchy")
+            print("   contains a class that is a member of itself (OWL 2 punning) and Owlready2")
+            print(f"   cannot apply it ({e}).")
+            print("   Typical cause: a property used ON a class whose rdfs:domain is that class.")
+            print("   Documentation about a class must be an owl:AnnotationProperty (no domain).")
             print(f"\nStatus: ❌ FAILED — {args.file}")
             return 1
         except Exception as e:
