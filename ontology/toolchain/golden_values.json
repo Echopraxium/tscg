@@ -69,18 +69,17 @@
       "DCC008": "Amplifier: nested parentheses + `Ft`, which is not a TSCG primitive at all",
       "CTX001": "1 WARNING (not an error): M1_Domains lacks the 'm2' key in its @context — a real gap. Counted in `warnings: 1`, and therefore in by_code too — by_code counts ALL codes emitted, warnings included. Until 2026-10-03 CTX001 also REQUIRED the @context terms 'm3:eagle_eye' / 'm3:sphinx_eye' in every extension (2 false positives on M1_BusinessModeling, the one extension that never carried them); since check_M1 1.5.0 it requires 'm3' only."
     },
-    "shacl_violations": 684,
+    "shacl_violations": 446,
     "_previous": {
       "files": 17,
-      "errors": 151,
+      "errors": 149,
       "warnings": 1,
-      "shacl_violations": 688
+      "shacl_violations": 684
     },
     "_delta": {
-      "errors": "151 -> 149",
-      "shacl_violations": "688 -> 684"
+      "shacl_violations": "684 -> 446"
     },
-    "_delta_reason": "WS-2 lot CTX-5 (2026-10-03, approved by Michel after review): warnings 3 -> 1 = FALSE POSITIVES REMOVED, not a repair and not a loosened check. check_M1 <= 1.4.0 required the @context terms 'm3:eagle_eye' / 'm3:sphinx_eye' in every M1 extension; these are compact-IRI term names that do not map to their own expansion (JSON-LD 1.1 §4.1.2): rdflib ignores them, pyld rejects the file, and if honoured they would point to the wrong IRI. The check was therefore enforcing the defect: removing the 30 terms from the 14 extensions made CTX001 jump 3 -> 31. check_M1 1.5.0 drops these two keys from the required list and still requires 'm3' (negative test: removing 'm3' from M1_Biology raises CTX001). The 2 warnings that disappear were the ones asking M1_BusinessModeling to ADD the defective terms; the file itself is untouched by the lot. The remaining warning (M1_Domains lacks 'm2') is real debt. Errors (151) and shacl_violations (688) unchanged.",
+    "_delta_reason": "WS-1 B2 lot C1 (2026-10-11, approved by Michel after review): shacl_violations 684 -> 446 = DATA REPAIRED, not a loosened check. In 13 M1 extensions rdfs:subClassOf was written as plain strings (JSON-LD literals: the property is not @id-coerced), so 119 combos had no rdfs:subClassOf m2:DomainConceptCombo in the graph; SHAPE 3 'subClassOf must point to m2:DomainConceptCombo' flagged each (119 results, counted twice by check_M1 = 238). The strings are now {\"@id\": ...}. Same lot: the combo shapes (2, 3, 9, 10, 11) and check_M1 GCC*/DCC* select combos by rdfs:subClassOf OR a legacy rdf:type (sh:SPARQLTarget UNION, pyshacl advanced=True) - combos are derived classes, not instances (Michel). Per-shape comparison: every other shape unchanged. Simulated lot C2 (rdf:type removed from the 139 combos): 446, unchanged. Errors (149) and warnings (1) unchanged.",
     "_updated": "2026-10-11"
   },
   "M0": {

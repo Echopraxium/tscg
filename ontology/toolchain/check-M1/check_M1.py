@@ -3,12 +3,16 @@
 check_M1.py — TSCG M1 Layer Validation & Correction Script
 ===========================================================
 Author  : Echopraxium with the collaboration of Claude AI
-Version : 1.5.0
-Date    : 2026-10-03
+Version : 1.6.0
+Date    : 2026-10-11
 Location: ontology/toolchain/check-M1/check_M1.py
 
 Changelog
 ---------
+  1.6.0 (2026-10-11) — WS-1 B2 lot C1. Combos are DERIVED CLASSES, not instances: GCC*/DCC*
+      now select a combo by rdfs:subClassOf m2:GenericConceptCombo / m2:DomainConceptCombo
+      (compact or full IRI), and still by a legacy rdf:type so that no combo leaves their
+      reach. pyshacl runs with advanced=True for the shapes' sh:SPARQLTarget (M1 SHACL 1.6.0).
   1.5.0 (2026-10-03) — WS-2 lot CTX-5. CTX001 no longer REQUIRES the @context terms
       "m3:eagle_eye" / "m3:sphinx_eye" in extension files. Those terms are names in the
       form of a compact IRI that do not map to their own expansion: rdflib ignores them
@@ -129,6 +133,36 @@ M1_FILES = {
 M1_CORE_FILES = {"M1_CoreConcepts.jsonld", "M1_Domains.jsonld"}
 
 # ── Issue class ────────────────────────────────────────────────────────────────
+M2_NS = "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#"
+COMBO_CLASSES = ("GenericConceptCombo", "DomainConceptCombo")
+
+
+def _local_m2(ref):
+    """'m2:X' or the full M2 IRI -> 'X'; anything else -> None."""
+    if isinstance(ref, dict):
+        ref = ref.get("@id")
+    if not isinstance(ref, str):
+        return None
+    if ref.startswith("m2:"):
+        return ref[3:]
+    if ref.startswith(M2_NS):
+        return ref[len(M2_NS):]
+    return None
+
+
+def _combo_marks(node) -> set:
+    """The combo classes a node is attached to, by rdfs:subClassOf (a combo is a DERIVED
+    CLASS) or by a legacy rdf:type (combo punned as an instance, removed in lot C2)."""
+    marks = set()
+    for key in ("rdfs:subClassOf", "@type"):
+        vals = node.get(key, [])
+        for v in (vals if isinstance(vals, list) else [vals]):
+            local = _local_m2(v)
+            if local in COMBO_CLASSES:
+                marks.add(local)
+    return marks
+
+
 class Issue:
     def __init__(self, severity: str, code: str, message: str,
                  fix: Optional[str] = None, auto_fixable: bool = False):
@@ -327,11 +361,9 @@ class M1Checker:
     def check_generic_concept_combos(self):
         graph = self.data.get("@graph", [])
         for node in graph:
-            ntype = node.get("@type", [])
-            if isinstance(ntype, str):
-                ntype = [ntype]
-            # Exact match on type — avoid substring issues
-            if "m2:GenericConceptCombo" not in ntype:
+            # A combo is a DERIVED CLASS (rdfs:subClassOf); a legacy rdf:type is still
+            # looked at so that no combo leaves the check's reach (lot C1).
+            if "GenericConceptCombo" not in _combo_marks(node):
                 continue
             nid = node.get("@id", "?")
 
@@ -384,7 +416,7 @@ class M1Checker:
                     fix="Rename to m2:DomainConceptCombo (SC-1, hard rename, no alias)",
                     auto_fixable=True))
 
-            if "m2:DomainConceptCombo" not in ntype:
+            if "DomainConceptCombo" not in _combo_marks(node):
                 continue
             nid = node.get("@id", "?")
 
@@ -867,6 +899,7 @@ def run_shacl(file_path: Path, shacl_path: Path) -> Tuple[bool, List[str]]:
             shacl_graph=str(shacl_path),
             shacl_graph_format="turtle",
             inference="none",
+            advanced=True,   # sh:SPARQLTarget (combo shapes target by rdfs:subClassOf, lot C1)
         )
         violations = []
         if not conforms:

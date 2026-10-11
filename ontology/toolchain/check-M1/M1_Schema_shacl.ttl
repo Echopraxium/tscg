@@ -4,7 +4,15 @@
 # Covers: M1_CoreConcepts.jsonld + all M1 Extension files
 # ============================================================================
 # Author : Echopraxium with the collaboration of Claude AI
-# Version: 1.5.0
+# Version: 1.6.0
+# 1.6.0 (WS-1 B2 lot C1, 2026-10-11): combos are DERIVED CLASSES, not instances. Every
+#   combo shape (2, 3, 9, 10, 11) now targets its focus nodes by rdfs:subClassOf
+#   m2:GenericConceptCombo / m2:DomainConceptCombo (sh:SPARQLTarget, pyshacl advanced=True)
+#   instead of sh:targetClass, which selects by rdf:type and so depended on the combos being
+#   punned as instances of the combo class. The rdf:type branch is KEPT in the target (UNION)
+#   so that a node still typed as a combo instance remains in reach: no focus node is lost. SHAPE 2's escape hatch likewise tests
+#   rdfs:subClassOf m2:DomainConceptCombo instead of sh:class. Same focus nodes today: the
+#   counts must not move. Lot C2 then removes the instance typing from the data.
 # 1.5.0 (WS-1 lot 1d, 2026-09-30): changelog container m2:changelog -> m3:changelog (recommended);
 #   m2:changelog now FORBIDDEN (sh:maxCount 0). Entries: {owl:versionInfo, dcterms:date, adms:versionNotes}.
 # 1.4.0 (SC-1 enforcement fix): SHAPE 9 ComboFormulaShape given dual sh:targetClass
@@ -134,10 +142,11 @@ m1:GenericConceptComboShape
     a sh:NodeShape ;
     sh:name "GenericConceptComboShape" ;
     sh:description "Validates GenericConceptCombo instances in M1_CoreConcepts.jsonld ONLY. DomainConceptCombo (extension combos) are a subclass and are validated by SHAPE 3 alone; the sh:or escape branch below prevents the subclass-following sh:targetClass from double-validating them (fixes the ~256 spurious violations, SC-5)." ;
-    sh:targetClass m2:GenericConceptCombo ;
+    sh:target [ a sh:SPARQLTarget ;
+        sh:select "SELECT DISTINCT ?this WHERE { { ?this <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#GenericConceptCombo> } UNION { ?this <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#GenericConceptCombo> } }" ] ;
     sh:or (
         # Escape hatch: a DomainConceptCombo is validated by SHAPE 3, NOT here.
-        [ sh:class m2:DomainConceptCombo ]
+        [ sh:property [ sh:path rdfs:subClassOf ; sh:hasValue m2:DomainConceptCombo ; sh:minCount 1 ] ]
         # Genuine (non-domain) GenericConceptCombo contract:
         [
             sh:property [
@@ -184,7 +193,8 @@ m1:DomainConceptComboShape
     a sh:NodeShape ;
     sh:name "DomainConceptComboShape" ;
     sh:description "Validates DomainConceptCombo instances in M1 extension files." ;
-    sh:targetClass m2:DomainConceptCombo ;
+    sh:target [ a sh:SPARQLTarget ;
+        sh:select "SELECT DISTINCT ?this WHERE { { ?this <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo> } UNION { ?this <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo> } }" ] ;
 
     # --- Must also be typed as owl:Class ---
     sh:property [
@@ -452,8 +462,8 @@ m1:ComboFormulaShape
     # 17 violations reported, ZERO from SHAPE 9, despite formulas that plainly
     # violate SC-1 (monoidal operators + bare primitives as arguments).
     # Same Fix-B trap already corrected on SHAPE 10 / SHAPE 11 in v1.3.0.
-    sh:targetClass m2:GenericConceptCombo ;
-    sh:targetClass m2:DomainConceptCombo ;
+    sh:target [ a sh:SPARQLTarget ;
+        sh:select "SELECT DISTINCT ?this WHERE { { ?this <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#GenericConceptCombo> } UNION { ?this <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#GenericConceptCombo> } UNION { ?this <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo> } UNION { ?this <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo> } }" ] ;
 
     # --- FORBIDDEN: monoidal operators inside a signature -------------------
     # x / + / | belong to ATOM formulas only. In a signature they would assert
@@ -506,8 +516,8 @@ m1:NoMonoidalExpansionShape
     a sh:NodeShape ;
     sh:name "NoMonoidalExpansionShape" ;
     sh:description "A combo has no monoidal expansion (emergence is non-compositional). Forbids the whole retired D8 triad: the expansion and its TeX/RawText serialisations." ;
-    sh:targetClass m2:GenericConceptCombo ;
-    sh:targetClass m2:DomainConceptCombo ;   # per-file reach: extension combos are DomainConceptCombo
+    sh:target [ a sh:SPARQLTarget ;
+        sh:select "SELECT DISTINCT ?this WHERE { { ?this <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#GenericConceptCombo> } UNION { ?this <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#GenericConceptCombo> } UNION { ?this <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo> } UNION { ?this <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo> } }" ] ;   # per-file reach: core AND extension combos
 
     sh:property [
         sh:path m1:structuralGrammarFormulaExpanded ;
@@ -554,8 +564,8 @@ m1:NoM0MeasurementInM1Shape
     a sh:NodeShape ;
     sh:name "NoM0MeasurementInM1Shape" ;
     sh:description "An M1 combo TYPE carries no M0 measurement (e.g. epistemic gap delta_1 is measured on a modelled M0 system, not on an abstract type)." ;
-    sh:targetClass m2:GenericConceptCombo ;
-    sh:targetClass m2:DomainConceptCombo ;   # per-file reach: extension combos are DomainConceptCombo
+    sh:target [ a sh:SPARQLTarget ;
+        sh:select "SELECT DISTINCT ?this WHERE { { ?this <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#GenericConceptCombo> } UNION { ?this <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#GenericConceptCombo> } UNION { ?this <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo> } UNION { ?this <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo> } }" ] ;   # per-file reach: core AND extension combos
 
     sh:property [
         sh:path m1:hasEpistemicGap ;

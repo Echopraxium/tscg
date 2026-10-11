@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.9.0
+**Version**: 1.10.0
 **Date**: 2026-10-11
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -387,6 +387,49 @@ GCC009). Found on the way, NOT fixed here:
 - **formula copies** in `m1:parentGenericConcepts` that drifted from their parents
   (bare S / I) — same anti-pattern as WS-3 F5; listed in the WS-3 M1_Core scope.
 
+### 8.0f Class/instance separation — lot C1 (WS-1 B2, 2026-10-11)
+
+**Principle (Michel, 2026-10-11).** Classes and instances are clearly identified and
+separated: classes live in M2/M1, instances in M0. A combo is a **derived class**
+(`rdfs:subClassOf m2:GenericConceptCombo` / `m2:DomainConceptCombo`), never an instance
+of the combo class (`rdf:type`). Documentation about a class is an annotation.
+
+**Measured on HEAD `4c27674`.** 139 M1 combos are punned (`@type [owl:Class,
+m2:…ConceptCombo]`): 12 in M1_CoreConcepts, 127 in 14 extensions. Every M1 combo check
+selected combos by that `rdf:type` (5 SHACL shapes via `sh:targetClass`, GCC*/DCC* in
+`check_M1`). Hidden behind it: in 13 extensions `rdfs:subClassOf` was written as plain
+strings — JSON-LD **literals** (the property is not `@id`-coerced), so 196 superclass
+links were absent from the graph, 119 of them to `m2:DomainConceptCombo`. The punning was
+the only RDF link of those combos to their class; the SHACL shape "subClassOf must point
+to m2:DomainConceptCombo" had been flagging it (119 results, counted twice: 238).
+
+**Lot C1 (this lot).**
+- the 122 combo-parent strings → `{"@id": …}` (119 `m2:DomainConceptCombo` + 3
+  `m1:KnowledgeFieldGenericCombo`, see below); 13 extensions bumped;
+- M1 SHACL 1.6.0: shapes 2, 3, 9, 10, 11 target by `rdfs:subClassOf` **or** a legacy
+  `rdf:type` (`sh:SPARQLTarget`, UNION) — no focus node lost; `check_M1` 1.6.0 likewise,
+  pyshacl `advanced=True`;
+- gate M1 `shacl_violations` 684 → 446 (−238 = exactly the 119 repaired links, every other
+  shape unchanged). Simulated lot C2 (the 139 `rdf:type` removed): 446, unchanged — the
+  new targeting sees the same combos.
+
+**Lot C2 (next).** Remove `m2:…ConceptCombo` from the `@type` of the 139 combos; forbid it
+(one more SHACL/check_M1 rule); update SHAPE 2/3 "Pattern" comments and the SPARQL README
+example 6 (`?x a m2:GenericConceptCombo` → `rdfs:subClassOf`). Record the principle as a
+Bootstrap invariant.
+
+**Found, not fixed (follow-ups).**
+- **C1b** — 74 non-combo `rdfs:subClassOf` strings in 6 extensions (same literal defect;
+  parents such as `m2:GenericConcept`, `m1:extension:music:Polyphony`, and phantoms
+  `m2:Cascade`, `m1:CommunicationPattern`, `m1:KnowledgeField`).
+- **retired parent** — `m1:extension:education:EducationalBalance`, `EducationalTradeOff`,
+  `EducationalSynergy` are `rdfs:subClassOf m1:KnowledgeFieldGenericCombo`, a class retired
+  in February 2026 (now declared nowhere): they are outside every combo check.
+- **(a) M2** — 1110 uses of data/object properties placed on M2 classes (`hasExample`,
+  `hasDominantM3`, `hasStructuralGrammarFormula`, `hasFamily`, `hasPolarity`, `eagleView`,
+  `sphinxView`, `isStereopsic`…): re-declare the documenting ones as
+  `owl:AnnotationProperty`. Separate lot.
+
 ### 8.1 S5-1 — primitives always suffixed
 
 Rule: the ambiguous letters are always qualified by their monoid —
@@ -481,6 +524,9 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.10.0 (2026-10-11)** — §8.0f class/instance separation: principle (Michel), lot C1
+  (combo `subClassOf` strings → IRIs, combo checks retargeted; M1 SHACL 684 → 446), lot C2
+  planned, follow-ups C1b, retired parent `m1:KnowledgeFieldGenericCombo`, M2 part (a).
 - **1.9.0 (2026-10-11)** — §8.0e lot P (`producingFunction` annotation, Fm2 combos,
   phantom `m2:Cascade`, drifted formula copies); DCC010 row 18 → 16.
 - **1.8.0 (2026-10-11)** — rename lot R (§8.0d); "lens" → "terminology context" (§8.0b);

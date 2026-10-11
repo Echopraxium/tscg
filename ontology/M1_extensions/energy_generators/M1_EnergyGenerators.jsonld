@@ -20,8 +20,8 @@
       "dcterms:description": "Domain extension for energy generation systems. Nuclear reactors fully modeled (9 types), fossil/renewable planned.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-10",
-      "dcterms:modified": "2026-09-30",
-      "owl:versionInfo": "1.5.0",
+      "dcterms:modified": "2026-10-11",
+      "owl:versionInfo": "1.6.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -30,6 +30,11 @@
         { "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld" }
       ],
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.6.0",
+          "dcterms:date": "2026-10-11",
+          "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 1 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
+        },
         {
           "owl:versionInfo": "1.5.0",
           "dcterms:date": "2026-10-03",
@@ -76,7 +81,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m1:extension:energy_generators:EnergyGenerator"
       ],
       "rdfs:label": "Nuclear Reactor",
