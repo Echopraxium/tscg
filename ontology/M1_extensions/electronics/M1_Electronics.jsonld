@@ -22,8 +22,8 @@
       "dcterms:description": "Extension of the TSCG framework with electronics-specific concepts: active components, signal manipulation, oscillator types, modulation, and modular synthesis architecture. Serves as M1 foundation for M0 poclets: VCO, VCF, VCA, LFO, Transistor, etc.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-27",
-      "owl:versionInfo": "1.5.0",
-      "dcterms:modified": "2026-09-30",
+      "owl:versionInfo": "1.6.0",
+      "dcterms:modified": "2026-10-11",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -52,6 +52,11 @@
         "v1_0_0"
       ],
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.6.0",
+          "dcterms:date": "2026-10-11",
+          "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 17 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
+        },
         {
           "owl:versionInfo": "1.5.0",
           "dcterms:date": "2026-10-03",
@@ -88,7 +93,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:Component"
       ],
       "rdfs:label": "Active Component",
@@ -120,7 +125,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m1:extension:electronics:ActiveComponent"
       ],
       "rdfs:label": "Amplifier",
@@ -148,7 +153,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m1:extension:electronics:SignalProcessor"
       ],
       "rdfs:label": "Filter",
@@ -180,7 +185,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m1:extension:electronics:ActiveComponent"
       ],
       "rdfs:label": "Signal Processor",
@@ -204,7 +209,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m1:extension:electronics:ActiveComponent",
         "m2:Oscillator"
       ],
@@ -238,7 +243,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m1:extension:electronics:ElectronicOscillator"
       ],
       "rdfs:label": "Voltage Controlled Oscillator (VCO)",
@@ -284,7 +289,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m1:extension:electronics:ElectronicOscillator"
       ],
       "rdfs:label": "Low Frequency Oscillator (LFO)",
@@ -318,7 +323,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m1:extension:electronics:ElectronicOscillator"
       ],
       "rdfs:label": "Feedback Oscillator",
@@ -340,7 +345,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:Mode"
       ],
       "rdfs:label": "Waveform Mode",
@@ -383,7 +388,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:Signal"
       ],
       "rdfs:label": "Audio Signal",
@@ -407,7 +412,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:Signal"
       ],
       "rdfs:label": "Control Voltage (CV)",
@@ -433,7 +438,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m1:extension:electronics:ControlVoltage"
       ],
       "rdfs:label": "Pitch CV (V/Oct)",
@@ -457,7 +462,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m1:extension:electronics:SignalProcessor"
       ],
       "rdfs:label": "Exponential Converter",
@@ -479,7 +484,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:Signal"
       ],
       "rdfs:label": "Modulation Source",
@@ -507,7 +512,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:Component"
       ],
       "rdfs:label": "Eurorack Module",
@@ -551,7 +556,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:Cascade"
       ],
       "rdfs:label": "Signal Chain",
@@ -573,7 +578,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:Process"
       ],
       "rdfs:label": "Frequency Modulation (FM)",

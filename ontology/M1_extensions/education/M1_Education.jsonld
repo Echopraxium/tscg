@@ -22,12 +22,17 @@
       "dcterms:description": "Extension of the TSCG framework with education-specific concepts including pedagogical strategies, instructional design, technology integration, assessment, and knowledge domain integration (TPACK). All concepts are characterized by M2 GenericConcepts via m2:characterizedBy.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-26",
-      "owl:versionInfo": "1.9.0",
-      "dcterms:modified": "2026-09-30",
+      "owl:versionInfo": "1.10.0",
+      "dcterms:modified": "2026-10-11",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.10.0",
+          "dcterms:date": "2026-10-11",
+          "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 10 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
+        },
         {
           "owl:versionInfo": "1.9.0",
           "dcterms:date": "2026-10-03",
@@ -70,7 +75,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:GenericConcept"
       ],
       "rdfs:label": "Pedagogical Strategy",
@@ -105,7 +110,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:GenericConcept"
       ],
       "rdfs:label": "Learning Theory",
@@ -147,7 +152,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:GenericConcept"
       ],
       "rdfs:label": "Instructional Design",
@@ -199,7 +204,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:GenericConcept"
       ],
       "rdfs:label": "Technology Integration",
@@ -243,7 +248,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:GenericConcept"
       ],
       "rdfs:label": "Assessment Strategy",
@@ -307,7 +312,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:GenericConcept"
       ],
       "rdfs:label": "Learner Model",
@@ -349,7 +354,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:GenericConcept"
       ],
       "rdfs:label": "Curriculum Structure",
@@ -391,7 +396,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:GenericConcept"
       ],
       "rdfs:label": "Scaffolding Mechanism",
@@ -435,7 +440,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:GenericConcept"
       ],
       "rdfs:label": "Community of Practice",
@@ -474,7 +479,7 @@
         "m2:DomainConceptCombo"
       ],
       "rdfs:subClassOf": [
-        "m2:DomainConceptCombo",
+        {"@id": "m2:DomainConceptCombo"},
         "m2:GenericConcept"
       ],
       "rdfs:label": "Knowledge Integration",
@@ -501,7 +506,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Educational Balance",
       "rdfs:comment": "KnowledgeFieldGenericCombo: Education x m2:Balance. Captures the domain-specific manifestation of Balance in educational contexts - the T-P-C equilibrium principle central to TPACK, and more broadly any multi-factor equilibrium in instructional design (depth vs. breadth, engagement vs. rigor, individual vs. group, formative vs. summative).",
-      "rdfs:subClassOf": "m1:KnowledgeFieldGenericCombo",
+      "rdfs:subClassOf": {"@id": "m1:KnowledgeFieldGenericCombo"},
       "m1:extension:education:qualificationFormula": "Education ⊙ m2:Balance",
       "m1:extension:education:instances": [
         "T-P-C balance (TPACK sweet spot)",
@@ -517,7 +522,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Educational Trade-off",
       "rdfs:comment": "KnowledgeFieldGenericCombo: Education x m2:Trade-off. Captures the domain-specific manifestation of competing objectives and Pareto constraints in educational design. Teachers cannot simultaneously maximize TK mastery, PK sophistication, CK breadth, time efficiency, and equity - they must navigate trade-offs under real-world constraints.",
-      "rdfs:subClassOf": "m1:KnowledgeFieldGenericCombo",
+      "rdfs:subClassOf": {"@id": "m1:KnowledgeFieldGenericCombo"},
       "m1:extension:education:qualificationFormula": "Education ⊙ m2:Trade-off",
       "m1:extension:education:instances": [
         "TK breadth vs. CK depth (technology exploration takes time from content)",
@@ -534,7 +539,7 @@
       "@type": "owl:Class",
       "rdfs:label": "Educational Synergy",
       "rdfs:comment": "KnowledgeFieldGenericCombo: Education x m2:Synergy. Captures the domain-specific manifestation of non-additive combination in educational contexts. The classic case is TPACK itself: T+P+C combined synergistically yields TPACK, which enables teaching impossible with any single domain alone. Also manifests in collaborative learning (peer x peer > individual) and cross-disciplinary teaching (Science x Art > either alone).",
-      "rdfs:subClassOf": "m1:KnowledgeFieldGenericCombo",
+      "rdfs:subClassOf": {"@id": "m1:KnowledgeFieldGenericCombo"},
       "m1:extension:education:qualificationFormula": "Education ⊙ m2:Synergy",
       "m1:extension:education:instances": [
         "TPACK = TK x PK x CK >> TK + PK + CK (Mishra & Koehler, 2006)",
