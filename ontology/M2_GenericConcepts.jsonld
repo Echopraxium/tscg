@@ -22,7 +22,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
       "dcterms:modified": "2026-10-11",
-      "owl:versionInfo": "16.34.0",
+      "owl:versionInfo": "16.35.0",
       "owl:imports": [
         { "@id": "M3_GenesisGrammar.jsonld" }
       ],
@@ -110,6 +110,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "16.35.0",
+          "dcterms:date": "2026-10-11",
+          "adms:versionNotes": "Lot S (statecharts, Michel 2026-10-11). m2:State is now rdfs:subClassOf m2:Node (still a GenericConcept through Node): the nodes of a statechart are states linked by transitions triggered by m2:Event — groundwork for the Protocol candidate (use cases of an m2:Workflow in a UML swimlane; m1:extension:biology:CellularCommunication to specialise it). Same formula as Node for now: It -> St × It | L (hence m2:isStereopsic true, hasDominantM3 + Structure); family m2:Ontological -> m2:Structural."
+        },
+        {
           "owl:versionInfo": "16.34.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "m2:producingFunction: owl:DatatypeProperty → owl:AnnotationProperty, rdfs:domain removed (Michel, 2026-10-11). It annotates the COMBO CLASS ITSELF with the signature of the function producing its members (Fm2, Fm1m2); as a data property with rdfs:domain m2:GenericConceptCombo it typed m2:GenericConceptCombo and m2:DomainConceptCombo as members of GenericConceptCombo (OWL 2 punning) — Owlready2 inheritance cycle found by owl_reasoning_test 2.0.0 once M2 could be reasoned with its imports. Comment: F_x notation removed."
@@ -118,11 +123,6 @@
           "owl:versionInfo": "16.33.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "RENAME LOT R (Michel, 2026-10-10/11): M3_BicephalousPerspective.jsonld → M3_OdinsWisdom.jsonld; prefix m3:bicephalous:X → m3:odins_wisdom.X (no colon inside a namespace path); 'bicephalous' retired as a metaphor — three perspectives, named in three coexisting terminology contexts (monoidal Gt/Gm/Gs, epistemological Territory/Map/Stereopsis, metaphoric Eagle Eye/Sphinx Eye/Odin's Wisdom); acronyms suffixed in prose (AStFItD, REVOIm, TKSsL). This file: Gs IRIs → m3:odins_wisdom.X (PositivePole, NegativePole…); the dangling m3:bicephalous:Time (hasDominantM3; no such term in M3) → m3:odins_wisdom.typeT (Temporality); references to M3_OdinsWisdom. The ~21 'bicephalous' adjectives of M2 prose are left for lot R2."
-        },
-        {
-          "owl:versionInfo": "16.32.0",
-          "dcterms:date": "2026-10-10",
-          "adms:versionNotes": "ONE ROLE, ONE PROPERTY — batch 1 (Michel, 2026-10-10): the owl:Ontology header keeps dcterms:description only; the former rdfs:comment, a paraphrase, is merged into it and removed. Fixed on the way: {A,S,F,I,D} and a stale Gs alphabet {T} no longer copied (alphabets are defined in M3); 'Territory-Space', 'REVOI proposed', 'Bicephalous architecture' dropped; 'category' → 'family' (m2:hasFamily)."
         }
       ],
       "m2:bicephalousStrategy": {
@@ -3456,12 +3456,13 @@
       "@id": "m2:State",
       "@type": "owl:Class",
       "rdfs:subClassOf": {
-        "@id": "m2:GenericConcept"
+        "@id": "m2:Node"
       },
       "rdfs:label": "State",
       "rdfs:comment": "Instantaneous configuration of system variables.",
-      "m2:hasFamily": "m2:Ontological",
+      "m2:hasFamily": "m2:Structural",
       "m2:hasDominantM3": [
+        "m3:eagle_eye:Structure",
         "m3:eagle_eye:Information"
       ],
       "m2:hasPolarity": "neutral",
@@ -3485,7 +3486,8 @@
           "@id": "m2:Stateful"
         }
       ],
-      "m2:hasStructuralGrammarFormula": "It"
+      "m2:hasStructuralGrammarFormula": "St × It | L",
+      "m2:isStereopsic": true
     },
     {
       "@id": "m2:Substrate",

@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.12.0
+**Version**: 1.13.0
 **Date**: 2026-10-11
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -462,6 +462,35 @@ Biology 22, Electronics 18, Education 11, Mythology 11, music 10, EnergyGenerato
   with `m1:Domain` replacing `m1:KnowledgeField`, the natural target is
   `m2:DomainConceptCombo` (raises M1 counts: new focus nodes).
 
+**Lot S (done, 2026-10-11) — statecharts.** `m2:State` is `rdfs:subClassOf m2:Node` (still a
+GenericConcept through Node; Michel 2026-10-11): states are the nodes of a statechart, linked
+by transitions triggered by `m2:Event`. Same formula as Node for now (`It` → `St × It | L`,
+hence `m2:isStereopsic` true and `hasDominantM3` + Structure); family `m2:Ontological` →
+`m2:Structural`. M2 16.35.0; gate unchanged. Next on this thread: **Protocol** (use cases of an
+`m2:Workflow` in a UML swimlane, on a statechart), then `biology:CellularCommunication`
+specialises it (an M1 class: a subclass, not an instance — instances live in M0).
+
+**SC-5 Domain fusion — decision (Michel, 2026-10-11).** Every M1 extension domain is treated
+like `education:Education`: an `owl:Class`, `rdfs:subClassOf m1:Domain` (declared in
+M1_CoreConcepts since lot C1b; it replaces the obsolete `m1:KnowledgeField`). The obsolete
+`m2:KnowledgeField` / `m1:KnowledgeFieldGenericCombo` were NOT migrated (SC-5 still `todo`):
+- 11 domain nodes in 8 extensions are still `["owl:NamedIndividual", "m2:KnowledgeField"]`
+  (8 NOUN: Biology, BusinessModeling, Economics, Electronics, EnergyGenerators, Geology,
+  Music; 3 ADJECTIVE qualifiers: Strategic, Financial, Geological) — `m2:KnowledgeField` is
+  declared nowhere; 7 extensions have no domain node (cartography, chemistry, mythology,
+  optics, photography, physics, systemic_modeling);
+- M1 SHACL SHAPE 4 targets `m2:KnowledgeField`; SHAPE 3 requires the phantom property
+  `m2:knowledgeField` on every domain combo;
+- the 3 Education combos subclass the obsolete `m1:KnowledgeFieldGenericCombo` → to
+  `m2:DomainConceptCombo` (decided; raises M1 counts);
+- `M1_Domains.jsonld`: 22 registry entries typed `m1:Domain` (individuals), names not aligned
+  with the 15 extensions; `m1:domain:Education` to be removed (only
+  `education:Education` kept); DCC010 reads the registry.
+Open sub-decisions before the lot: the 3 ADJECTIVE qualifiers; domain classes for the 7
+extensions without one; what becomes of the registry entries (with and without an extension)
+and of their data (`m1:instanceCount`, `m1:instanceExamples`, `m1:subdomains`…); DCC010's
+source of domain names.
+
 **Found while doing C2 (not fixed).** The validator engine runs pyshacl with
 `advanced=False` (`validator/checks/shacl_runner.py`): the `sh:SPARQLTarget` combo targets
 introduced in M1 SHACL 1.6.0 are not executed on the engine path (`tscg_validator.py
@@ -592,6 +621,9 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.13.0 (2026-10-11)** — §8.0f lot S done (`m2:State` ⊑ `m2:Node`, formula and family
+  aligned on Node); SC-5 decision recorded (extension domains are subclasses of `m1:Domain`),
+  measured scope and open sub-decisions.
 - **1.12.0 (2026-10-11)** — §8.0f lot C1b done (69 strings → IRIs, phantoms
   `m2:Oscillator`/`m2:Cascade` → `m1:Oscillator`/`m1:Cascade`, `m2:Mode` → ValueSpace
   attribute, `m1:KnowledgeField` → `m1:Domain` declared in Core); Protocol candidate;
