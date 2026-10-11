@@ -22,7 +22,7 @@
       "dcterms:description": "Extension of TSCG framework with TRIZ-specific concepts: 40 inventive principles as instances of TrizPrinciple class, plus systematic innovation components. Serves as M1 foundation for innovation-focused SystemicFramework instances.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-04-20",
-      "owl:versionInfo": "1.7.0",
+      "owl:versionInfo": "1.8.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -40,6 +40,11 @@
       ],
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.8.0",
+          "dcterms:date": "2026-10-11",
+          "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:DomainConceptCombo removed from the @type of 7 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:DomainConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
+        },
+        {
           "owl:versionInfo": "1.7.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 7 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
@@ -48,26 +53,13 @@
           "owl:versionInfo": "1.6.0",
           "dcterms:date": "2026-10-03",
           "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
-        },
-        {
-          "owl:versionInfo": "1.5.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 2 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "1.4.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m2:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m2:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ],
       "dcterms:modified": "2026-10-11"
     },
     {
       "@id": "m1:extension:systemic_modeling:TrizPrinciple",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "TRIZ Inventive Principle",
       "rdfs:comment": "Abstract class representing a TRIZ inventive principle. Each of the 40 principles is an instance of this class, classified by family (Methodological, Transformational, Compositional, Physicochemical, Substitution, Geometric) and linked to parent GenericConceptCombo.",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
@@ -834,10 +826,7 @@
     },
     {
       "@id": "m1:extension:systemic_modeling:SubstitutionPrinciple",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Substitution Principle",
       "rdfs:comment": "Replacement of element with alternative through transformation. Binary: Transformation ⊗ Pattern | substitution_context",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
@@ -855,10 +844,7 @@
     },
     {
       "@id": "m1:extension:systemic_modeling:GeometricPrinciple",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Geometric Principle",
       "rdfs:comment": "Spatial/geometric optimization. Binary: Pattern ⊗ Space | geometric_optimization",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
@@ -876,10 +862,7 @@
     },
     {
       "@id": "m1:extension:systemic_modeling:PhysicochemicalPrinciple",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Physicochemical Principle",
       "rdfs:comment": "Principles based on physical/chemical phenomena. Cross-domain: Physics+Chemistry",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
@@ -906,10 +889,7 @@
     },
     {
       "@id": "m1:extension:systemic_modeling:ContradictionMatrix",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Contradiction Matrix",
       "rdfs:comment": "39×39 matrix mapping technical contradictions to inventive principles",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
@@ -917,10 +897,7 @@
     },
     {
       "@id": "m1:extension:systemic_modeling:InventivityLevel",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Inventivity Level",
       "rdfs:comment": "5-level hierarchy of solution novelty (1=Apparent to 5=Discovery)",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
@@ -928,10 +905,7 @@
     },
     {
       "@id": "m1:extension:systemic_modeling:TechnicalParameter",
-      "@type": [
-        "owl:Class",
-        "m2:DomainConceptCombo"
-      ],
+      "@type": "owl:Class",
       "rdfs:label": "Technical Parameter",
       "rdfs:comment": "39 standard system attributes for contradiction analysis",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},

@@ -107,6 +107,11 @@ Use `--file` to specify an explicit path.
 | ONT006 | ERROR | owl:imports references GenesisSpace (auto-fixed) |
 | ONT007 | WARNING | m2:changelog not array format |
 
+### Class/instance separation (lot C2, 2026-10-11)
+| Code | Severity | Description |
+|---|---|---|
+| CMB001 | ERROR | A combo typed as an **instance** of `m2:GenericConceptCombo` / `m2:DomainConceptCombo` (`@type`). A combo is a derived class: `"@type": "owl:Class"` + `rdfs:subClassOf {"@id": "m2:...ConceptCombo"}` (auto-fix). Same rule: M1 SHACL SHAPE 12 `NoComboPunningShape`. |
+
 ### GenericConceptCombo (M1_CoreConcepts)
 | Code | Severity | Description |
 |---|---|---|
@@ -188,6 +193,11 @@ Issues **not** auto-fixed (require manual intervention):
 | NamespacePurityShape | all | forbids deprecated properties |
 | StructuralGrammarFormulaShape | formula subjects | Fm2/Fm1m2 pattern, no ⊗ |
 | CorePatternShape | `m1:CorePattern` | NamedIndividual, raw formula allowed |
+| NoComboPunningShape (SHAPE 12, 1.7.0) | `owl:Class`, `m2:GenericConceptCombo`, `m2:DomainConceptCombo` | forbids `rdf:type` m2:GenericConceptCombo / m2:DomainConceptCombo (lot C2) |
+
+> The table above predates 1.6.0/1.7.0: since lot C1 the combo shapes target their nodes by
+> `rdfs:subClassOf` (sh:SPARQLTarget), not by `rdf:type`. Read the grammar on HEAD for the
+> current shape list.
 
 ---
 

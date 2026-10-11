@@ -103,6 +103,14 @@ S and I exist in several monoids: in prose they are ALWAYS suffixed — `St`/`Ss
 (`m0:asfidScores`, `m2:dominantASFID`…) are not renamed.
 **R is Representable — NEVER Reproducible.** "Bicephalous" is retired as a metaphor.
 
+**Classes and instances are separated (2026-10-11).**
+Classes live in M2/M1, instances in M0. A combo is a **derived class**:
+`"@type": "owl:Class"` + `rdfs:subClassOf {"@id": "m2:GenericConceptCombo"}` (or
+`m2:DomainConceptCombo`) — **never** typed as an instance of the combo class
+(`"@type": [..., "m2:…ConceptCombo"]` is forbidden: M1 SHACL SHAPE 12, `check_M1` CMB001).
+`rdfs:subClassOf` values are IRIs, never plain strings. Documentation about a class is
+an annotation.
+
 **Notation (2026-07-06, supersedes all prior).**
 The operator `⊗` must **never** appear in any TSCG file or formula.
 Structural formulas use only:

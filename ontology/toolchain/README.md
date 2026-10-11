@@ -187,6 +187,7 @@ monoidal formula and no monoidal expansion**. `×`/`+`/`|` belong to **atoms onl
 | Code | Checks |
 |---|---|
 | `DCC000` | retired class `m2:KnowledgeFieldConceptCombo` → `m2:DomainConceptCombo` (auto-fix) |
+| `CMB001` | **combo typed as an instance** of a combo class: a combo is a derived class (`rdfs:subClassOf`), lot C2 (auto-fix) |
 | `xxx006` | **monoidal operator inside a signature** — the bulk of the SC-6 backlog (109 entries) |
 | `xxx007` | **primitive type as an argument** (`A`, `St`, `F`, `It`, …) — a primitive is a generative *dimension*, not a concept |
 | `xxx008` | wrong arity |

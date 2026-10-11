@@ -3,12 +3,19 @@
 check_M1.py — TSCG M1 Layer Validation & Correction Script
 ===========================================================
 Author  : Echopraxium with the collaboration of Claude AI
-Version : 1.6.0
+Version : 1.7.0
 Date    : 2026-10-11
 Location: ontology/toolchain/check-M1/check_M1.py
 
 Changelog
 ---------
+  1.7.0 (2026-10-11) — WS-1 B2 lot C2. A combo is a DERIVED CLASS, never an instance: NEW
+      ERROR CMB001 when a node's @type contains m2:GenericConceptCombo / m2:DomainConceptCombo
+      (compact or full IRI). Its auto-fix (fix_combo_punning, replaces fix_dcc_subclassof,
+      which keyed on that very typing) removes the combo class from @type and makes sure
+      rdfs:subClassOf carries it as an IRI {"@id": ...}. GCC*/DCC* still look at a legacy
+      rdf:type so that a punned node stays in reach of the combo contract. Same rule in M1
+      SHACL 1.7.0 SHAPE 12. 0 occurrences on HEAD after lot C2: counts unchanged.
   1.6.0 (2026-10-11) — WS-1 B2 lot C1. Combos are DERIVED CLASSES, not instances: GCC*/DCC*
       now select a combo by rdfs:subClassOf m2:GenericConceptCombo / m2:DomainConceptCombo
       (compact or full IRI), and still by a legacy rdf:type so that no combo leaves their
@@ -150,9 +157,17 @@ def _local_m2(ref):
     return None
 
 
+def _punned_combo_types(node) -> list:
+    """The combo classes found in a node's @type (lot C2: forbidden, CMB001)."""
+    vals = node.get("@type", [])
+    return [_local_m2(v) for v in (vals if isinstance(vals, list) else [vals])
+            if _local_m2(v) in COMBO_CLASSES]
+
+
 def _combo_marks(node) -> set:
     """The combo classes a node is attached to, by rdfs:subClassOf (a combo is a DERIVED
-    CLASS) or by a legacy rdf:type (combo punned as an instance, removed in lot C2)."""
+    CLASS) or by a forbidden rdf:type (combo punned as an instance: removed from the corpus
+    in lot C2, flagged by CMB001, still looked at so that no combo leaves the checks' reach)."""
     marks = set()
     for key in ("rdfs:subClassOf", "@type"):
         vals = node.get(key, [])
@@ -391,6 +406,22 @@ class M1Checker:
                     f"GenericConceptCombo formula not Fm2(...): {nid} → {formula[:50]}",
                     auto_fixable=False))
             self._check_signature(nid, formula, "Fm2", "GCC")
+
+    def check_no_combo_punning(self):
+        """CMB001 (lot C2, Debt Overview §8.0f): classes live in M2/M1, instances in M0.
+        An M1 combo is "@type": "owl:Class" + rdfs:subClassOf m2:...ConceptCombo; typing
+        it as an INSTANCE of the combo class (OWL punning) is forbidden."""
+        for node in self.data.get("@graph", []):
+            if not isinstance(node, dict):
+                continue
+            punned = _punned_combo_types(node)
+            if punned:
+                self.issues.append(Issue("ERROR", "CMB001",
+                    f"combo typed as an instance of {', '.join('m2:' + p for p in punned)}: "
+                    f"{node.get('@id', '?')}",
+                    fix="Remove the combo class from @type (keep owl:Class); attach it with "
+                        "rdfs:subClassOf {\"@id\": \"m2:...ConceptCombo\"}",
+                    auto_fixable=True))
 
     def check_dcc_nodes(self):
         """
@@ -756,29 +787,31 @@ class M1Checker:
             self.modified = True
         return changed
 
-    def fix_dcc_subclassof(self):
-        """Add m2:DomainConceptCombo to rdfs:subClassOf of all DomainConceptCombo nodes."""
-        MARKER = "m2:DomainConceptCombo"
-        graph = self.data.get("@graph", [])
+    def fix_combo_punning(self):
+        """CMB001 auto-fix (lot C2): remove the combo class from @type and make sure
+        rdfs:subClassOf carries it as an IRI. Replaces fix_dcc_subclassof (1.6.0), which
+        selected its nodes by that very rdf:type."""
         count = 0
-        for node in graph:
-            ntype = node.get("@type", [])
-            if isinstance(ntype, str): ntype = [ntype]
-            if MARKER not in ntype:
+        for node in self.data.get("@graph", []):
+            if not isinstance(node, dict):
                 continue
-            sub = node.get("rdfs:subClassOf")
-            if sub is None:
-                node["rdfs:subClassOf"] = MARKER
-                count += 1
-            elif isinstance(sub, str):
-                if sub != MARKER:
-                    node["rdfs:subClassOf"] = [MARKER, sub]
-                    count += 1
-            elif isinstance(sub, list):
-                vals = [s.get("@id", s) if isinstance(s, dict) else s for s in sub]
-                if not any("DomainConceptCombo" in str(v) for v in vals):
-                    node["rdfs:subClassOf"] = [MARKER] + sub
-                    count += 1
+            punned = _punned_combo_types(node)
+            if not punned:
+                continue
+            types = node.get("@type", [])
+            types = types if isinstance(types, list) else [types]
+            kept = [v for v in types if _local_m2(v) not in COMBO_CLASSES]
+            if "owl:Class" not in kept:
+                kept.insert(0, "owl:Class")
+            node["@type"] = kept[0] if len(kept) == 1 else kept
+            sub = node.get("rdfs:subClassOf", [])
+            sub = sub if isinstance(sub, list) else [sub]
+            have = {_local_m2(v) for v in sub}
+            for cls in punned:
+                if cls not in have:
+                    sub.insert(0, {"@id": "m2:" + cls})
+            node["rdfs:subClassOf"] = sub[0] if len(sub) == 1 else sub
+            count += 1
         if count:
             self.modified = True
         return count
@@ -830,6 +863,7 @@ class M1Checker:
         self.check_ontology_node()
         self.check_generic_concept_combos()
         self.check_dcc_nodes()
+        self.check_no_combo_punning()
         self.check_no_monoidal_expansion()
         self.check_forbidden_patterns()
         self.check_namespace_convention()
@@ -849,9 +883,10 @@ class M1Checker:
                 fixes_applied.append("@base corrected")
             if self.fix_imports_genesis():
                 fixes_applied.append("owl:imports GenesisSpace → GenesisGrammar")
-            n = self.fix_dcc_subclassof()
+            n = self.fix_combo_punning()
             if n:
-                fixes_applied.append(f"rdfs:subClassOf += m2:DomainConceptCombo ({n} nodes)")
+                fixes_applied.append(f"combo punning removed: @type -> owl:Class, "
+                                     f"rdfs:subClassOf += combo class ({n} nodes)")
 
             for fix_msg in fixes_applied:
                 print(FIX(f"  {fix_msg}"))

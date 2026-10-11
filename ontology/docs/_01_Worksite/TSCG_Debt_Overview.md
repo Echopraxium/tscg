@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.10.0
+**Version**: 1.11.0
 **Date**: 2026-10-11
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -387,7 +387,7 @@ GCC009). Found on the way, NOT fixed here:
 - **formula copies** in `m1:parentGenericConcepts` that drifted from their parents
   (bare S / I) — same anti-pattern as WS-3 F5; listed in the WS-3 M1_Core scope.
 
-### 8.0f Class/instance separation — lot C1 (WS-1 B2, 2026-10-11)
+### 8.0f Class/instance separation — lots C1 and C2 (WS-1 B2, 2026-10-11)
 
 **Principle (Michel, 2026-10-11).** Classes and instances are clearly identified and
 separated: classes live in M2/M1, instances in M0. A combo is a **derived class**
@@ -413,10 +413,45 @@ to m2:DomainConceptCombo" had been flagging it (119 results, counted twice: 238)
   shape unchanged). Simulated lot C2 (the 139 `rdf:type` removed): 446, unchanged — the
   new targeting sees the same combos.
 
-**Lot C2 (next).** Remove `m2:…ConceptCombo` from the `@type` of the 139 combos; forbid it
-(one more SHACL/check_M1 rule); update SHAPE 2/3 "Pattern" comments and the SPARQL README
-example 6 (`?x a m2:GenericConceptCombo` → `rdfs:subClassOf`). Record the principle as a
-Bootstrap invariant.
+**Lot C2 (done, 2026-10-11).**
+- `m2:…ConceptCombo` removed from the `@type` of the 139 combos (12 `m2:GenericConceptCombo`
+  in M1_CoreConcepts, 127 `m2:DomainConceptCombo` in 14 extensions): `"@type": "owl:Class"`
+  alone, the link to the combo class is `rdfs:subClassOf` (an IRI since C1 — in
+  M1_CoreConcepts the `@context` already coerces `rdfs:subClassOf` to `@id`). 15 files
+  bumped, changelogs trimmed to the 3 most recent entries.
+- the punning is now **forbidden**: M1 SHACL 1.7.0 SHAPE 12 `NoComboPunningShape` (targets
+  every `owl:Class` plus anything typed by a combo class, so it always has focus nodes) and
+  `check_M1` 1.7.0 `CMB001` (ERROR, auto-fix `fix_combo_punning`, which replaces
+  `fix_dcc_subclassof` — that fix selected its nodes by the very typing now forbidden).
+  Negative tests: `validator/tests/test_m1_combo_punning.py` (7).
+- SHAPE 2/3 "Pattern" comments, SPARQL README example 6 (`rdfs:subClassOf`), `check_M1`
+  README and toolchain README updated; the principle is a Bootstrap invariant.
+- gate unchanged (M1 149 / 1 / 446), as simulated in C1; `check_M1` output identical.
+  `TscgPocletMiner/tools/rebuild_m2_corpus.py` reads M2 only: unaffected.
+
+**Found while doing C2 (not fixed).** The validator engine runs pyshacl with
+`advanced=False` (`validator/checks/shacl_runner.py`): the `sh:SPARQLTarget` combo targets
+introduced in M1 SHACL 1.6.0 are not executed on the engine path (`tscg_validator.py
+--layers M1 --shacl` reports 2 results where `check_M1 --shacl`, the gate's reference, has
+446). The gate is not affected (M1 counts come from `check_M1`); the engine and the
+LayerCake Health Map are, for M1. Fix = `advanced=True` (per grammar or global) — it moves
+the engine's M1 numbers, so a separate lot.
+
+**Pellet observations on M1_Chemistry + imports (2026-10-11, inferences, not failures).**
+Input for part (a); class/instance mixing seen by the reasoner:
+- properties also inferred as individuals (`owl:Thing`): M2 `hasPolarity`, `isStereopsic`,
+  `arity`, `cardinality`, `valueRange`, `positivePole`/`negativePole`, `producingFunction` and
+  `morphism_emergence` (both already annotations), `KnowledgeFieldConceptNote`; M3
+  `grammar_foundation:*` (`dualityOperator`, `Fm2`, `Fm1m2`, `monoidalProduct`,
+  `intersubjectiveBenchmark`, `defeasibilityStatus`);
+- M3 primitive types `eagle_eye:typeA/S/F/I/D`, `sphinx_eye:typeR/E/V/O/Im` declared
+  `owl:DatatypeProperty` AND inferred instances of `MonoidalType` (same mix on M3; also the
+  names of the planned `typeS`/`typeI` renaming);
+- the 11 M3 ontology types inferred `skos:Concept` (consistent with
+  `m3:TscgOntologyTypeScheme`; they are also individuals of `TscgOntologyType` — to check,
+  not necessarily a defect);
+- 7 M2 concepts inferred `GenericConceptPair` (Activation, Coding, Composition, Convergence,
+  FeedbackLoop, Fusion, Synergy) without being declared so — find the axiom; review with WS-3.
 
 **Found, not fixed (follow-ups).**
 - **C1b** — 74 non-combo `rdfs:subClassOf` strings in 6 extensions (same literal defect;
@@ -524,6 +559,9 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.11.0 (2026-10-11)** — §8.0f lot C2 done (combo punning removed from 139 combos and
+  forbidden: M1 SHACL SHAPE 12, `check_M1` CMB001; gate unchanged); engine `advanced=False`
+  finding; Pellet observations on M1_Chemistry recorded as input for part (a).
 - **1.10.0 (2026-10-11)** — §8.0f class/instance separation: principle (Michel), lot C1
   (combo `subClassOf` strings → IRIs, combo checks retargeted; M1 SHACL 684 → 446), lot C2
   planned, follow-ups C1b, retired parent `m1:KnowledgeFieldGenericCombo`, M2 part (a).
