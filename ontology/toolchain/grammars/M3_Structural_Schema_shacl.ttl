@@ -2,8 +2,8 @@
 # M3_Structural_Schema_shacl.ttl
 #
 # Author  : Echopraxium with the collaboration of Claude AI
-# Version : 0.1.0
-# Date    : 2026-10-05
+# Version : 0.2.0
+# Date    : 2026-10-11
 # Worksite: WS-5 / step 3 (graph plane, checks G1–G4)
 #
 # SCOPE — READ THIS BEFORE TRUSTING A GREEN RESULT
@@ -39,6 +39,10 @@
 # DECISIONS (Michel, 2026-10-05):
 #   - a term's label is rdfs:label OR skos:prefLabel (SKOS concepts of
 #     m3:TscgOntologyTypeScheme carry skos:prefLabel);
+#   - (0.2.0, Michel 2026-10-10, "one role, one property") a term's documentation is
+#     rdfs:comment, EXCEPT for a skos:Concept, documented by skos:definition (no
+#     rdfs:comment repeating it). A plain OWL term with only skos:definition still
+#     fails: for it, the documentation is rdfs:comment.
 #   - changelog dates: FORMAT YYYY-MM-DD, no xsd:date datatype required in v1;
 #   - G2 covers terms in the TSCG namespace only (the standard terms the apex
 #     declares under its ExternalVocabularyPolicy are not TSCG's to document).
@@ -94,7 +98,7 @@ shs:OntologyHeaderShape
 #############################################################################
 # SHAPE G2 — TermDocumentationShape
 # Every class / property declared in the TSCG namespace has a label (rdfs:label
-# or skos:prefLabel) and an rdfs:comment. SPARQL constraints restrict to the TSCG
+# or skos:prefLabel) and an rdfs:comment (a skos:Concept: skos:definition, 0.2.0). SPARQL constraints restrict to the TSCG
 # namespace; full IRIs are written inside the queries (no sh:prefixes needed).
 #############################################################################
 
@@ -113,11 +117,14 @@ shs:TermDocumentationShape
             }""" ] ;
     sh:sparql [
         a sh:SPARQLConstraint ;
-        sh:message "G2: TSCG term without rdfs:comment: say what it means." ;
+        sh:message "G2: TSCG term without rdfs:comment (or, for a skos:Concept, skos:definition): say what it means." ;
         sh:select """
             SELECT $this WHERE {
               FILTER(STRSTARTS(STR($this), "https://raw.githubusercontent.com/Echopraxium/tscg/main/"))
               FILTER NOT EXISTS { $this <http://www.w3.org/2000/01/rdf-schema#comment> ?c }
+              FILTER NOT EXISTS {
+                $this a <http://www.w3.org/2004/02/skos/core#Concept> ;
+                      <http://www.w3.org/2004/02/skos/core#definition> ?d }
             }""" ] ;
 .
 

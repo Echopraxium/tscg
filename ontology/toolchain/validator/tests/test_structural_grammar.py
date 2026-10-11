@@ -96,6 +96,32 @@ def test_g2_skos_prefLabel_is_a_label():
     assert _delta(APEX3, lambda d: _node(d, "m3:CaseStudy").pop("skos:prefLabel")) == {"TermDocumentationShape": 1}
 
 
+def test_g2_skos_definition_documents_a_concept():
+    # 0.2.0: a skos:Concept is documented by skos:definition (no rdfs:comment needed);
+    # without it (and without rdfs:comment) the concept fails.
+    def m(d):
+        n = _node(d, "m3:CaseStudy")
+        assert "rdfs:comment" not in n and "skos:definition" in n
+        n.pop("skos:definition")
+    assert _delta(APEX3, m) == {"TermDocumentationShape": 1}
+
+
+def test_g2_skos_concept_with_comment_only_still_passes():
+    def m(d):
+        n = _node(d, "m3:CaseStudy")
+        n["rdfs:comment"] = n.pop("skos:definition")
+    assert _delta(APEX3, m) == {}
+
+
+def test_g2_plain_owl_class_needs_rdfs_comment_even_with_skos_definition():
+    # the exception is for skos:Concept only: an OWL class keeps rdfs:comment
+    def m(d):
+        n = _node(d, "m3:MonoidalType")
+        assert "skos:Concept" not in str(n.get("@type")) and "skos:definition" in n
+        n.pop("rdfs:comment")
+    assert _delta(M3, m) == {"TermDocumentationShape": 1}
+
+
 def test_g2_external_term_out_of_scope():
     def m(d):
         d["@graph"].append({"@id": "http://example.org/ext#Foo", "@type": "owl:Class"})
