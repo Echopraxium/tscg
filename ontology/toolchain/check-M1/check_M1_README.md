@@ -127,7 +127,7 @@ Use `--file` to specify an explicit path.
 | DCC001/001b | ERROR | Missing `rdfs:subClassOf m2:DomainConceptCombo` |
 | DCC003 | WARNING | Missing `m1:structuralGrammarFormula` |
 | DCC004 | WARNING | Formula not `Fm1m2(...)` |
-| DCC010 | ERROR | **First argument of `Fm1m2` is not a registered Domain** (checked against `M1_Domains.jsonld`) |
+| DCC010 | ERROR | **First argument of `Fm1m2` is not a Domain**: a class descending from `m1:Domain` through `rdfs:subClassOf`, transitively, possibly through several parents — read across `M1_Domains`, `M1_CoreConcepts` and the extensions (1.8.0, SC-5) |
 
 ### Signature rules — shared by Fm2 and Fm1m2 (SC-1)
 | Code | Severity | Description |
@@ -188,7 +188,9 @@ Issues **not** auto-fixed (require manual intervention):
 | M1OntologyShape | `owl:Ontology` | creator, date, versionInfo, m3:ontologyType |
 | GenericConceptComboShape | `m2:GenericConceptCombo` | subClassOf, Fm2() formula |
 | KFConceptComboShape | `m2:KnowledgeFieldConceptCombo` | subClassOf, knowledgeField, Fm1m2() formula |
-| KnowledgeFieldInstanceShape | `m2:KnowledgeField` | NamedIndividual, label |
+| ~~KnowledgeFieldInstanceShape~~ | retired 1.8.0 (SC-5) | — |
+| DomainClassShape (SHAPE 11, 1.8.0) | classes `rdfs:subClassOf+ m1:Domain` | owl:Class, label, relatedDomains IRIs, retired KnowledgeField keys forbidden |
+| NoDomainIndividualShape (SHAPE 13, 1.8.0) | `owl:Class`, `owl:NamedIndividual`, `m1:Domain`, `m2:KnowledgeField` | forbids `rdf:type m1:Domain` / `m2:KnowledgeField` |
 | PlainDomainClassShape | `rdfs:subClassOf` subjects | label mandatory |
 | NamespacePurityShape | all | forbids deprecated properties |
 | StructuralGrammarFormulaShape | formula subjects | Fm2/Fm1m2 pattern, no ⊗ |

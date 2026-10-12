@@ -110,6 +110,11 @@ Classes live in M2/M1, instances in M0. A combo is a **derived class**:
 (`"@type": [..., "m2:…ConceptCombo"]` is forbidden: M1 SHACL SHAPE 12, `check_M1` CMB001).
 `rdfs:subClassOf` values are IRIs, never plain strings. Documentation about a class is
 an annotation.
+A **domain** is a class too (2026-10-12, SC-5): `m1:extension:<ext>:<Name>` (or
+`m1:domain:<Name>` in `M1_Domains`) `rdfs:subClassOf m1:Domain`; a subdomain subclasses one or
+more domains; never `rdf:type m1:Domain` (M1 SHACL SHAPE 13). An M0 instance designates its
+domain by the IRI of a domain class, never a string. What can be inferred (subdomains,
+instance counts) is not stored.
 
 **Notation (2026-07-06, supersedes all prior).**
 The operator `⊗` must **never** appear in any TSCG file or formula.

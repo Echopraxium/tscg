@@ -29,8 +29,8 @@
       "dcterms:description": "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-10-11",
-      "owl:versionInfo": "2.22.0",
+      "dcterms:modified": "2026-10-12",
+      "owl:versionInfo": "2.23.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -254,6 +254,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.23.0",
+          "dcterms:date": "2026-10-12",
+          "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-11/12). m1:Domain comment: a domain is a class (extension domain classes and M1_Domains classes are its subclasses), never an individual; DCC010 reads the hierarchy. NEW m1:relatedDomains declared owl:AnnotationProperty (IRI values: domain classes) — an object property between classes would pun them. NEW m1:domain declared owl:AnnotationProperty (IRI values: domain classes); it replaces the obsolete m2:knowledgeField on M1 classes. Obsolete KnowledgeField vocabulary purged from the live text (Michel, 2026-10-12: there is no KnowledgeField any more, it is Domain)."
+        },
+        {
           "owl:versionInfo": "2.22.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1b. m1:Domain declared (owl:Class): a disciplinary knowledge domain, replacing the retired m1:KnowledgeField (Michel, 2026-10-11). The registry M1_Domains.jsonld typed its 22 entries m1:Domain while the class was declared nowhere; m1:extension:education:Education was a subclass of the phantom m1:KnowledgeField and is re-pointed to m1:Domain."
@@ -262,11 +267,6 @@
           "owl:versionInfo": "2.21.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:GenericConceptCombo removed from the @type of 12 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:GenericConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
-        },
-        {
-          "owl:versionInfo": "2.20.0",
-          "dcterms:date": "2026-10-11",
-          "adms:versionNotes": "m1:Propagation and m1:CascadeAmplification: Fm1m2 → Fm2, typed m2:GenericConceptCombo (was m2:DomainConceptCombo). Rule (Michel, 2026-10-11): a combo formula with no M1 domain is an Fm2 — their first argument, Cascade, is an M1 combo, not a Domain (check_M1 DCC010). Their parent m2:Cascade (dangling: Cascade migrated to M1) → m1:Cascade. The scalar guard of CascadeAmplification (| gain_per_stage > 1) is unchanged (now GCC009, was DCC009)."
         }
       ]
     },
@@ -338,8 +338,24 @@
       "@id": "m1:Domain",
       "@type": "owl:Class",
       "rdfs:label": "Domain",
-      "rdfs:comment": "A disciplinary knowledge domain (biology, electronics, education, ...) in which M2 GenericConcepts are specialised by an M1 extension. Replaces the retired m1:KnowledgeField (and m2:Domain of M2_MetaConcepts 14.x, removed with the tensor formalism). The domain registry M1_Domains.jsonld lists its individuals (m1:domain:<Name>). Declared 2026-10-11 (lot C1b): the registry had typed its 22 entries m1:Domain while the class was declared nowhere.",
+      "rdfs:comment": "A disciplinary knowledge domain (biology, electronics, education, ...) in which M2 GenericConcepts are specialised by an M1 extension. A domain is a CLASS, never an individual (SC-5, 2026-10-12): each M1 extension declares its domain class m1:extension:<ext>:<Name> rdfs:subClassOf m1:Domain; domains without an extension are classes m1:domain:<Name> in M1_Domains.jsonld. A subdomain is a subclass of one or more domains (multiple inheritance = intersection); DCC010 reads the whole hierarchy under m1:Domain. Declared 2026-10-11 (lot C1b).",
       "dcterms:created": "2026-10-11",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m1:domain",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "domain",
+      "rdfs:comment": "The domain(s) a concept or an instance belongs to: IRIs of domain classes (rdfs:subClassOf m1:Domain), never strings. An annotation, so that an M1 class or an M0 individual can point to a domain class without punning it (SC-5, Michel 2026-10-12). Carried by the M1 classes of several extensions; on M0 instances its values are still free strings today (M0 lot pending: Debt Overview 8.0f).",
+      "dcterms:created": "2026-10-12",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+    },
+    {
+      "@id": "m1:relatedDomains",
+      "@type": "owl:AnnotationProperty",
+      "rdfs:label": "related domains",
+      "rdfs:comment": "Non-hierarchical 'see also' link from a domain class to other domain classes (values: IRIs of m1:Domain subclasses). An annotation, not an object property: domains are classes, and an object property between classes would pun them as individuals (SC-5, 2026-10-12). Hierarchy (subdomains) is expressed by rdfs:subClassOf, never by this property.",
+      "dcterms:created": "2026-10-12",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
     {

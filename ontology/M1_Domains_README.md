@@ -1,12 +1,22 @@
 # M1_Domains.jsonld — README
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.4.1
-**Date**: 2026-07-18
+**Version**: 1.5.0
+**Date**: 2026-10-12
 **Layer**: M1 — Domain Registry
 **Status**: Active
 
 ---
+
+> **SC-5 Domain fusion (2026-10-12) — read this first.** Domains are **classes**
+> (`"@type": "owl:Class"`, `rdfs:subClassOf m1:Domain`), never individuals typed `m1:Domain`.
+> Each M1 extension declares its own domain class `m1:extension:<ext>:<Name>`; this registry
+> keeps only the domains **without** an extension, as classes `m1:domain:<Name>`. A subdomain
+> is a subclass of one or more domains. `m1:relatedDomains` is an annotation (IRIs of domain
+> classes). Pending: `m1:subdomains` → subdomain classes (lot SC-5b, then deleted — inferred);
+> `m1:instanceCount` / `m1:instanceExamples` → inferred from the M0 instances' domain IRIs.
+> Sections below that describe individuals, `m1:hasOntologyFile`, `m1:dependsOn` or
+> `m1:developmentStatus` predate this and are not on HEAD. Authority: Debt Overview §8.0f.
 
 ## Overview
 
@@ -182,7 +192,7 @@ Applications can query M1_Domains to discover available extensions:
 ```sparql
 SELECT ?domain ?label ?ontology
 WHERE {
-  ?domain rdf:type m1:Domain ;
+  ?domain rdfs:subClassOf+ m1:Domain ;
           rdfs:label ?label ;
           m1:hasOntologyFile ?ontology .
 }
@@ -206,7 +216,7 @@ Verify which domains are production-ready:
 ```sparql
 SELECT ?domain ?status
 WHERE {
-  ?domain rdf:type m1:Domain ;
+  ?domain rdfs:subClassOf+ m1:Domain ;
           m1:developmentStatus ?status .
   FILTER (?status = "active")
 }

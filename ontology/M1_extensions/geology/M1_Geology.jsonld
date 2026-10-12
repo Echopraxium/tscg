@@ -22,12 +22,17 @@
       "dcterms:description": "Extension of the TSCG framework with geology-specific concepts. Covers plate tectonics (lithospheric plates, subduction, mid-ocean ridges, mantle convection), geodynamic equilibria (isostasy), seismotectonics (faults), and orogenic processes. First TSCG domain extension in the Earth Sciences field. Introduces the GeologicalAccretion DomainConceptCombo, linking m1:Accretion to its geological instantiation.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-04-05",
-      "dcterms:modified": "2026-10-11",
-      "owl:versionInfo": "1.6.0",
+      "dcterms:modified": "2026-10-12",
+      "owl:versionInfo": "1.7.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.7.0",
+          "dcterms:date": "2026-10-12",
+          "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-11/12): domains are classes rdfs:subClassOf m1:Domain, never individuals. m1:extension:geology:Geology -> owl:Class ⊑ m1:Domain; m1:extension:geology:Geological -> owl:Class ⊑ m1:extension:geology:Geology; registry data moved onto m1:extension:geology:Geology. m2:KnowledgeField / m1:KnowledgeFieldGenericCombo are obsolete (declared nowhere); the KnowledgeField-only keys m2:knowledgeFieldRole, m2:derivedFrom (now rdfs:subClassOf) dropped; m2:qualifier text kept as skos:definition. Obsolete KnowledgeField vocabulary purged from the live text (Michel, 2026-10-12: there is no KnowledgeField any more, it is Domain)."
+        },
         {
           "owl:versionInfo": "1.6.0",
           "dcterms:date": "2026-10-11",
@@ -37,11 +42,6 @@
           "owl:versionInfo": "1.5.0",
           "dcterms:date": "2026-10-03",
           "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
-        },
-        {
-          "owl:versionInfo": "1.4.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1i. owl:imports written as plain strings (JSON-LD literals: no reasoner followed them, so this file was reasoned in isolation and the apex declarations of M3_GrammarFoundation were invisible to it) rewritten as IRIs {\"@id\": ...}: 3 import(s). Target = the imported file's document URL, resolved by @base (Michel, 2026-09-30: aligning ontology IRIs with document URLs is recorded as a later lot). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ],
       "owl:imports": [
@@ -52,13 +52,12 @@
     },
     {
       "@id": "m1:extension:geology:Geology",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:KnowledgeField"
-      ],
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
       "rdfs:label": "Geology",
-      "rdfs:comment": "Study of the Earth's solid materials, structures, processes, and history. Encompasses geophysics, geochemistry, mineralogy, petrology, stratigraphy, and geodynamics. As a KnowledgeField, Geology is strongly territory-dominant: physical processes (ASFID) are highly observable and verifiable through seismology, geodesy, and petrological analysis.",
-      "m2:knowledgeFieldRole": "NOUN",
+      "rdfs:comment": "Study of the Earth's solid materials, structures, processes, and history. Encompasses geophysics, geochemistry, mineralogy, petrology, stratigraphy, and geodynamics. As a Domain, Geology is strongly territory-dominant: physical processes (ASFID) are highly observable and verifiable through seismology, geodesy, and petrological analysis.",
       "m2:sigma_mean": 0.84,
       "m2:alignmentAngle": "~22°",
       "m2:maturityLevel": "mature",
@@ -75,21 +74,42 @@
       ],
       "m2:epistemicDepth": "High — processes span 9 orders of magnitude in time (seconds for earthquakes to Ga for Wilson cycles). Direct observation of mantle impossible; inferred from seismic tomography.",
       "dcterms:created": "2026-04-05",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "skos:definition": "Study of solid Earth, rocks, minerals, and the processes that shape the planet",
+      "m1:subdomains": [
+        "Geophysics",
+        "Plate Tectonics",
+        "Geodynamics",
+        "Seismology",
+        "Volcanology",
+        "Paleoclimatology",
+        "Biogeography",
+        "Geohazard Science"
+      ],
+      "m1:relatedDomains": [
+        {
+          "@id": "m1:extension:physics:Physics"
+        },
+        {
+          "@id": "m1:extension:chemistry:Chemistry"
+        }
+      ],
+      "m1:instanceExamples": [
+        "M0_PlateTectonics"
+      ],
+      "m1:instanceCount": 1
     },
     {
       "@id": "m1:extension:geology:Geological",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:KnowledgeField"
-      ],
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:extension:geology:Geology"
+      },
       "rdfs:label": "Geological",
       "rdfs:comment": "Disciplinary qualifier (ADJECTIVE form) for use in DomainConceptCombo patterns. Derived from m1:extension:geology:Geology, qualifying concepts operating within geological time scales, spatial scales (km to 10^4 km), and material domains (rock, mineral, magma, fluid).",
-      "m2:knowledgeFieldRole": "ADJECTIVE",
-      "m2:derivedFrom": "m1:extension:geology:Geology",
-      "m2:qualifier": "Pertaining to Earth materials, geodynamic processes, geological time scales (ka to Ga), and lithospheric to mantle spatial scales",
       "dcterms:created": "2026-04-05",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "skos:definition": "Pertaining to Earth materials, geodynamic processes, geological time scales (ka to Ga), and lithospheric to mantle spatial scales"
     },
     {
       "@id": "m1:extension:geology:LithosphericPlate",
@@ -286,7 +306,7 @@
         "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld#DomainConceptCombo"
       },
       "rdfs:label": "Geological Accretion",
-      "rdfs:comment": "Domain-specific instantiation of m1:Accretion in the geological context: the continuous addition of new solid material (oceanic crust, sediment, or continental fragments) to the boundary of an existing lithospheric structure, driven by mantle convection and governed by thermodynamic Negentropy. The canonical geological example is mid-ocean ridge spreading. A DomainConceptCombo combining the Geological KnowledgeField with the Accretion GenericConceptCombo.",
+      "rdfs:comment": "Domain-specific instantiation of m1:Accretion in the geological context: the continuous addition of new solid material (oceanic crust, sediment, or continental fragments) to the boundary of an existing lithospheric structure, driven by mantle convection and governed by thermodynamic Negentropy. The canonical geological example is mid-ocean ridge spreading. A DomainConceptCombo combining the Geological domain with the Accretion GenericConceptCombo.",
       "m2:genericConceptCombo": {
         "@id": "m1:Accretion"
       },

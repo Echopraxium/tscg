@@ -4,7 +4,14 @@
 # Covers: M1_CoreConcepts.jsonld + all M1 Extension files
 # ============================================================================
 # Author : Echopraxium with the collaboration of Claude AI
-# Version: 1.7.0
+# Version: 1.8.0
+# 1.8.0 (SC-5 Domain fusion, 2026-10-12): domains are CLASSES rdfs:subClassOf m1:Domain, never
+#   individuals (Michel, 2026-10-11/12). SHAPE 3 loses the phantom m2:knowledgeField requirement
+#   (declared nowhere). SHAPE 4 KnowledgeFieldInstanceShape retired (targeted the obsolete
+#   m2:KnowledgeField). SHAPE 11 DomainShape -> DomainClassShape: targets the classes descending
+#   from m1:Domain (sh:SPARQLTarget); instanceCount/instanceExamples OPTIONAL (to be inferred
+#   from M0); relatedDomains must be IRIs; retired KnowledgeField keys forbidden.
+#   NEW SHAPE 13 NoDomainIndividualShape forbids rdf:type m1:Domain / m2:KnowledgeField.
 # 1.7.0 (WS-1 B2 lot C2, 2026-10-11): NEW SHAPE 12 NoComboPunningShape FORBIDS typing a combo
 #   as an instance of a combo class (rdf:type m2:GenericConceptCombo / m2:DomainConceptCombo).
 #   Lot C2 removed that typing from the 139 combos: an M1 combo is "@type": "owl:Class" with
@@ -33,7 +40,7 @@
 #        instance). Both were blind spots: only Expanded had a shape, hasEpistemicGap had none.
 # 1.2.0 (SC-5 pre-fix): SHAPE 2 no longer double-validates DomainConceptCombo
 #        (sh:or escape hatch). Removes ~256 spurious violations in merged-corpus runs.
-# Date   : 2026-10-11
+# Date   : 2026-10-12
 # Status : Active
 # ============================================================================
 
@@ -192,9 +199,7 @@ m1:GenericConceptComboShape
 # Pattern: "@type": "owl:Class", "rdfs:subClassOf": m2:DomainConceptCombo  (derived class, lot C2;
 #          typing it rdf:type m2:DomainConceptCombo is forbidden by SHAPE 12)
 # Formula: Fm1m2(<Domain>+, <GenericConcept>+)
-# NOTE: the m2:knowledgeField requirement below is a KNOWN PHANTOM (SC-5 fixes it,
-#       replacing it with m2:appliesToDomains). Left untouched on purpose: SC-1
-#       renames the combo class only and does not resolve the Domain duplicate.
+# NOTE (1.8.0, SC-5): the phantom m2:knowledgeField requirement has been removed.
 # ============================================================================
 
 m1:DomainConceptComboShape
@@ -220,12 +225,9 @@ m1:DomainConceptComboShape
         sh:message "REQUIRED: rdfs:subClassOf must point to m2:DomainConceptCombo for OWL hierarchy visibility."
     ] ;
 
-    # --- m2:knowledgeField mandatory ---
-    sh:property [
-        sh:path m2:knowledgeField ;
-        sh:minCount 1 ; sh:maxCount 1 ;
-        sh:message "REQUIRED: m2:knowledgeField must reference the domain KnowledgeField instance."
-    ] ;
+    # --- (1.8.0, SC-5) the phantom m2:knowledgeField requirement is REMOVED: the domain of a
+    #     DomainConceptCombo is the first argument of its Fm1m2 signature (checked by check_M1
+    #     DCC010 against the m1:Domain class hierarchy); m2:knowledgeField was declared nowhere.
 
     # --- rdfs:label mandatory ---
     sh:property [
@@ -265,35 +267,10 @@ m1:DomainConceptComboShape
 
 
 # ============================================================================
-# SHAPE 4 : KnowledgeField Instance
-# Pattern: ["owl:NamedIndividual", "m2:KnowledgeField"]
+# SHAPE 4 : (retired 1.8.0, SC-5) KnowledgeFieldInstanceShape targeted m2:KnowledgeField,
+#           an obsolete class declared nowhere. Domains are classes: see SHAPE 11
+#           DomainClassShape and SHAPE 13 NoDomainIndividualShape.
 # ============================================================================
-
-m1:KnowledgeFieldInstanceShape
-    a sh:NodeShape ;
-    sh:name "KnowledgeFieldInstanceShape" ;
-    sh:description "Validates KnowledgeField instances (NOUN/ADJECTIVE forms)." ;
-    sh:targetClass m2:KnowledgeField ;
-
-    sh:property [
-        sh:path rdf:type ;
-        sh:hasValue owl:NamedIndividual ;
-        sh:minCount 1 ;
-        sh:message "REQUIRED: KnowledgeField must also be typed as owl:NamedIndividual."
-    ] ;
-    sh:property [
-        sh:path rdfs:label ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ; sh:maxCount 1 ;
-        sh:message "REQUIRED: KnowledgeField must have rdfs:label."
-    ] ;
-    sh:property [
-        sh:path rdfs:comment ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:message "REQUIRED: KnowledgeField must have rdfs:comment."
-    ] ;
-.
 
 
 # ============================================================================
@@ -642,43 +619,84 @@ m1:FacetValueShape
     ] .
 
 #############################################################################
-# SHAPE 11 : Domain registry entries (M1_Domains)
-# Validates m1:instanceCount / m1:instanceExamples and forbids the retired
-# poclet* vocabulary (renamed 2026-09: a domain lists INSTANCES of several
-# kinds, not only poclets).
+# SHAPE 11 : DomainClassShape — domains are CLASSES (1.8.0, SC-5, Michel 2026-10-11/12)
+# Target: every class descending from m1:Domain through rdfs:subClassOf in the file
+# (extension domain classes, their ADJECTIVE subclasses, M1_Domains classes).
+# m1:instanceCount / m1:instanceExamples are OPTIONAL since 1.8.0: they will be
+# INFERRED from the M0 instances' domain IRIs (decision Michel 2026-10-12), and the
+# new extension domain classes carry none. Retired poclet* vocabulary still forbidden.
 #############################################################################
 
-m1:DomainShape
+m1:DomainClassShape
     a sh:NodeShape ;
-    sh:name "DomainShape" ;
-    sh:description "Validates m1:Domain registry entries in M1_Domains." ;
-    sh:targetClass m1:Domain ;
+    sh:name "DomainClassShape" ;
+    sh:description "Validates domain classes (rdfs:subClassOf+ m1:Domain): an owl:Class with a label; relatedDomains are IRIs; retired KnowledgeField / poclet vocabulary forbidden." ;
+    sh:target [ a sh:SPARQLTarget ;
+        sh:select "SELECT DISTINCT ?this WHERE { ?this <http://www.w3.org/2000/01/rdf-schema#subClassOf>+ <https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld#Domain> }" ] ;
     sh:property [
-        sh:path m1:instanceCount ;
-        sh:datatype xsd:integer ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:minInclusive 0 ;
+        sh:path rdf:type ; sh:hasValue owl:Class ; sh:minCount 1 ;
         sh:severity sh:Violation ;
-        sh:message "REQUIRED: each m1:Domain must declare exactly one m1:instanceCount (xsd:integer >= 0)."
+        sh:message "REQUIRED: a domain is a CLASS: @type owl:Class (SC-5)."
     ] ;
     sh:property [
-        sh:path m1:instanceExamples ;
-        sh:datatype xsd:string ;
+        sh:path rdfs:label ; sh:minCount 1 ;
         sh:severity sh:Violation ;
-        sh:message "m1:instanceExamples values must be strings (M0 instance identifiers)."
+        sh:message "REQUIRED: a domain class must have rdfs:label."
     ] ;
     sh:property [
-        sh:path m1:pocletCount ;
-        sh:maxCount 0 ;
+        sh:path m1:relatedDomains ; sh:nodeKind sh:IRI ;
+        sh:severity sh:Violation ;
+        sh:message "m1:relatedDomains values must be IRIs of domain classes ({@id: ...}), not strings."
+    ] ;
+    sh:property [
+        sh:path m1:instanceCount ; sh:datatype xsd:integer ; sh:maxCount 1 ; sh:minInclusive 0 ;
+        sh:severity sh:Violation ;
+        sh:message "m1:instanceCount, when present, is one xsd:integer >= 0 (to be inferred from M0, then removed)."
+    ] ;
+    sh:property [
+        sh:path m1:instanceExamples ; sh:datatype xsd:string ;
+        sh:severity sh:Violation ;
+        sh:message "m1:instanceExamples values must be strings (M0 instance identifiers; to be inferred from M0, then removed)."
+    ] ;
+    sh:property [
+        sh:path m2:knowledgeFieldRole ; sh:maxCount 0 ;
+        sh:severity sh:Violation ;
+        sh:message "RETIRED (SC-5): m2:knowledgeFieldRole (NOUN/ADJECTIVE). An adjective qualifier is a subclass of its domain."
+    ] ;
+    sh:property [
+        sh:path m2:derivedFrom ; sh:maxCount 0 ;
+        sh:severity sh:Violation ;
+        sh:message "RETIRED (SC-5): m2:derivedFrom on a domain: use rdfs:subClassOf the parent domain."
+    ] ;
+    sh:property [
+        sh:path m1:pocletCount ; sh:maxCount 0 ;
         sh:severity sh:Violation ;
         sh:message "RETIRED (2026-09): m1:pocletCount renamed to m1:instanceCount. 'poclet' is too narrow — a domain lists instances of several kinds (poclets, TscgTools, SystemicFrameworks, SymbolicSystemGrammars)."
     ] ;
     sh:property [
-        sh:path m1:pocletExamples ;
-        sh:maxCount 0 ;
+        sh:path m1:pocletExamples ; sh:maxCount 0 ;
         sh:severity sh:Violation ;
         sh:message "RETIRED (2026-09): m1:pocletExamples renamed to m1:instanceExamples."
+    ] .
+
+
+#############################################################################
+# SHAPE 13 : NoDomainIndividualShape — a domain is never an individual (1.8.0, SC-5)
+# Forbids rdf:type m1:Domain (a domain individual, or a domain class punned as one) and
+# rdf:type m2:KnowledgeField (obsolete, declared nowhere). Also targets every owl:Class
+# and owl:NamedIndividual, so the shape always has focus nodes and bites.
+#############################################################################
+
+m1:NoDomainIndividualShape
+    a sh:NodeShape ;
+    sh:name "NoDomainIndividualShape" ;
+    sh:description "FORBIDS rdf:type m1:Domain and rdf:type m2:KnowledgeField: domains are classes rdfs:subClassOf m1:Domain (SC-5)." ;
+    sh:targetClass owl:Class , owl:NamedIndividual , m1:Domain , m2:KnowledgeField ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:not [ sh:in ( m1:Domain m2:KnowledgeField ) ] ;
+        sh:severity sh:Violation ;
+        sh:message "FORBIDDEN (SC-5): a domain typed as an INDIVIDUAL (rdf:type m1:Domain or the obsolete m2:KnowledgeField). Declare it @type owl:Class with rdfs:subClassOf m1:Domain (or its parent domain)."
     ] .
 
 

@@ -1,5 +1,5 @@
 {
-  "_measured": "2026-10-11, real repository (--update-golden)",
+  "_measured": "2026-10-12, real repository (--update-golden)",
   "_note": "Reference values, TriskeleVM-style. EXACT match required. A count that DROPS is as suspicious as one that rises: either a deliberate fix (then --update-golden, and the drop is recorded under '_previous'/'_delta') or a validator that stopped biting. A silently shrinking count is the most dangerous signal in this repo — it looks like progress.",
   "M3": {
     "status": "INSTRUMENTED",
@@ -51,14 +51,13 @@
   "M1": {
     "status": "INSTRUMENTED",
     "files": 17,
-    "errors": 149,
+    "errors": 133,
     "warnings": 1,
     "by_code": {
       "GCC009": 5,
       "CTX001": 1,
       "DCC006": 127,
-      "DCC008": 1,
-      "DCC010": 16
+      "DCC008": 1
     },
     "note": "SC-6 BACKLOG (check_M1 errors) + SHACL DEBT (violations). The frozen values are the counts above; history under _previous / _delta. Both are EXPECTED to be non-zero. Lower them ONLY by repairing data or by fixing a SHACL bug — never by loosening a shape.",
     "breakdown": {
@@ -69,18 +68,19 @@
       "DCC008": "Amplifier: nested parentheses + `Ft`, which is not a TSCG primitive at all",
       "CTX001": "1 WARNING (not an error): M1_Domains lacks the 'm2' key in its @context — a real gap. Counted in `warnings: 1`, and therefore in by_code too — by_code counts ALL codes emitted, warnings included. Until 2026-10-03 CTX001 also REQUIRED the @context terms 'm3:eagle_eye' / 'm3:sphinx_eye' in every extension (2 false positives on M1_BusinessModeling, the one extension that never carried them); since check_M1 1.5.0 it requires 'm3' only."
     },
-    "shacl_violations": 446,
+    "shacl_violations": 296,
     "_previous": {
       "files": 17,
       "errors": 149,
       "warnings": 1,
-      "shacl_violations": 684
+      "shacl_violations": 446
     },
     "_delta": {
-      "shacl_violations": "684 -> 446"
+      "errors": "149 -> 133",
+      "shacl_violations": "446 -> 296"
     },
     "_delta_reason": "WS-1 B2 lot C1 (2026-10-11, approved by Michel after review): shacl_violations 684 -> 446 = DATA REPAIRED, not a loosened check. In 13 M1 extensions rdfs:subClassOf was written as plain strings (JSON-LD literals: the property is not @id-coerced), so 119 combos had no rdfs:subClassOf m2:DomainConceptCombo in the graph; SHAPE 3 'subClassOf must point to m2:DomainConceptCombo' flagged each (119 results, counted twice by check_M1 = 238). The strings are now {\"@id\": ...}. Same lot: the combo shapes (2, 3, 9, 10, 11) and check_M1 GCC*/DCC* select combos by rdfs:subClassOf OR a legacy rdf:type (sh:SPARQLTarget UNION, pyshacl advanced=True) - combos are derived classes, not instances (Michel). Per-shape comparison: every other shape unchanged. Simulated lot C2 (rdf:type removed from the 139 combos): 446, unchanged. Errors (149) and warnings (1) unchanged.",
-    "_updated": "2026-10-11"
+    "_updated": "2026-10-12"
   },
   "M0": {
     "status": "INSTRUMENTED",

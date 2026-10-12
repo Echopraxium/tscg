@@ -26,7 +26,7 @@ M3  Genesis Space  (ASFID ⊗ REVOI — 10 fundamental dimensions)
 M2  GenericConcepts  (81 universal patterns — m2:Propagation, m2:Narration, m2:Bifurcation…)
  ↓
 M1  M1_Economics.jsonld  ← THIS FILE
-    KnowledgeField: Economics (NOUN) + Financial (ADJECTIVE)
+    Domain: Economics (NOUN) + Financial (ADJECTIVE)
     14 domain concepts across 5 concept families
  ↓
 M0  M0_KindlebergerMinsky.jsonld  (5 poles × 6 historical instances)
@@ -38,11 +38,11 @@ All 14 concepts were identified during the `M0_KindlebergerMinsky` poclet analys
 
 ---
 
-## KnowledgeField
+## Domain
 
 ### `m1econ:Economics` (NOUN)
 
-`Economics` is registered as a `m2:KnowledgeField` NOUN instance — the complete epistemic field.
+`Economics` is registered as a `m1:Domain` NOUN instance — the complete epistemic field.
 
 | Property | Value |
 |----------|-------|
@@ -56,7 +56,7 @@ All 14 concepts were identified during the `M0_KindlebergerMinsky` poclet analys
 
 ### `m1econ:Financial` (ADJECTIVE)
 
-Disciplinary qualifier derived from `m1econ:Economics`, used in `KnowledgeFieldMetaCombo` patterns. Example:
+Disciplinary qualifier derived from `m1econ:Economics`, used in `DomainConceptCombo` patterns. Example:
 
 ```
 Financial ⊙ Propagation  →  m1econ:FinancialContagion
@@ -491,7 +491,7 @@ The M1 Economics instantiation of `m2:Propagation`. Cross-institutional or cross
 
 | Version | Date | Change |
 |---------|------|--------|
-| **v1.0.0** | 2026-02-28 | Initial version. 14 concepts extracted from M0_KindlebergerMinsky poclet. KnowledgeField Economics (NOUN) + Financial (ADJECTIVE). Discovery context: M2 Propagation + Narration + Duplication (M2 v15.9.0). |
+| **v1.0.0** | 2026-02-28 | Initial version. 14 concepts extracted from M0_KindlebergerMinsky poclet. Domain Economics (NOUN) + Financial (ADJECTIVE). Discovery context: M2 Propagation + Narration + Duplication (M2 v15.9.0). |
 
 ---
 
