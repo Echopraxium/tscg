@@ -14,9 +14,9 @@
     {
       "@id": "m3:GenesisGrammar",
       "@type": "owl:Ontology",
-      "owl:versionInfo": "4.16.0",
+      "owl:versionInfo": "4.17.0",
       "dcterms:created": "2026-01-21",
-      "dcterms:modified": "2026-10-11",
+      "dcterms:modified": "2026-10-12",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:title": "TSCG M3 Genesis Grammar — the three perspectives",
       "dcterms:description": "M3 — the most abstract layer of the TSCG Layer Cake (M3 → M0), numbered as in the OMG/UML four-layer metamodel architecture: M3 is the level that every other layer instantiates; M0 holds the concrete instances. This file assembles the structural grammar of TSCG (commutative Lambek calculus): three perspectives, named in three coexisting terminology contexts. Monoidal: Gt (×), Gm (+), Gs (|). Epistemological: Territory (what a system is), Map (how it is known), Stereopsis (their synergy). Metaphoric: Eagle Eye, Sphinx Eye, Odin's Wisdom — in a TSCG interpretation of the Norse myth, Odin keeps one eye to see the world and leaves the other in Mímir's well to see into knowledge; his wisdom, born of both, is the Stereopsis. The couplings Φ : Gt → Gm (observation) and Ψ : Gm → Gt (interpretation) are its Synesthesia: one perspective evokes the other, never perfectly — the map is not the territory. The gap between Territory and Map (epistemic gap δ₁) is not a defect but the source of depth of the Stereopsis, as binocular disparity is for vision. Operators, type system and shared vocabulary are declared in the apex M3_GrammarFoundation.",
@@ -127,7 +127,7 @@
           "Cat_M3_ASFID": "Category of Territory Grammar Gt primitives {A, St, F, It, D} — ASFID (5)",
           "Cat_M3_REVOI": "Category of Map Grammar Gm primitives {R, E, V, O, Im} — REVOI (5)",
           "Cat_M2": "Category of metaconcepts (defined in M2)",
-          "Cat_KnowledgeField": "Category of knowledge fields (defined in M2)",
+          "Cat_Domain": "Category of domains (m1:Domain, defined in M1)",
           "Cat_M3_Gs": "Category of Stereopsis Grammar Gs primitives {T,_^,_$,K,Ss,L} — TKSsL+poles (6) — relational types between Territory and Map — Base16"
         },
         "functors": {
@@ -143,7 +143,7 @@
         },
         "reification": {
           "dcterms:description": "Objects in categories are reifications (concrete instances)",
-          "skos:example": "Chemistry is an object in Cat_KnowledgeField (reification of KnowledgeField category)"
+          "skos:example": "Chemistry is an object in Cat_Domain (reification of the Domain category)"
         },
         "integration_note": "Category Theory definitions integrated directly in this file (not imported)"
       },
@@ -278,6 +278,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "4.17.0",
+          "dcterms:date": "2026-10-12",
+          "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-12: there is no KnowledgeField any more, it is Domain). Category-theory examples: Cat_KnowledgeField -> Cat_Domain (the category of domains, m1:Domain, defined in M1 — not an M2 metaconcept); wording only, no term renamed."
+        },
+        {
           "owl:versionInfo": "4.16.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "RENAME LOT R (Michel, 2026-10-10/11): M3_BicephalousPerspective.jsonld → M3_OdinsWisdom.jsonld; prefix m3:bicephalous:X → m3:odins_wisdom.X (no colon inside a namespace path); 'bicephalous' retired as a metaphor — three perspectives, named in three coexisting terminology contexts (monoidal Gt/Gm/Gs, epistemological Territory/Map/Stereopsis, metaphoric Eagle Eye/Sphinx Eye/Odin's Wisdom); acronyms suffixed in prose (AStFItD, REVOIm, TKSsL). This file: owl:imports M3_OdinsWisdom.jsonld; 'bicephalous' prose rewritten (metadata name/architecture, grammar_foundation, Gs entry, Cat_M3_Gs, derived_layers; key bicephalous_architecture → three_perspectives; m3:CouplingStructure label → 'Synesthesia — Territory/Map Coupling (Natural Transformations Φ, Ψ)'); description: 'three lenses' → 'three coexisting terminology contexts'. evolution_history kept."
@@ -306,11 +311,6 @@
           "owl:versionInfo": "4.11.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1g (Family A). Bare keys (dropped on JSON-LD expansion) replaced: alternative_names -> skos:altLabel, comment -> dcterms:description (consistent with lot 1b), note -> skos:note, definition -> skos:definition, label -> rdfs:label, title -> dcterms:title, id -> dcterms:identifier, rationale -> m3:rationale (declared in M3_GrammarFoundation, rdfs:subPropertyOf skos:note). In this file: rationale 4, title 3, id 3. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "4.10.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1f (Family A). Bare key 'name' (declared in no @context, dropped on JSON-LD expansion) replaced by the standard rdfs:label (a human-readable version of the resource's name). Bare 'name' inside legacy 'metadata' blocks left for the vestiges lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md. 4 occurrences, all under bare parent keys (visible once those are resolved)."
         }
       ]
     },
@@ -507,7 +507,7 @@
       "@id": "m3:MathematicalCategory",
       "@type": "owl:Class",
       "rdfs:label": "Mathematical Category",
-      "rdfs:comment": "A category in the mathematical sense: a collection of objects (Ob(C)) and morphisms (Mor(C)) between them, satisfying identity and associativity axioms. In TSCG: Cat_M3 (ASFID types), Cat_M2 (metaconcepts), Cat_M1 (concepts), Cat_KnowledgeField (Chemistry, Biology, Optics...).",
+      "rdfs:comment": "A category in the mathematical sense: a collection of objects (Ob(C)) and morphisms (Mor(C)) between them, satisfying identity and associativity axioms. In TSCG: Cat_M3 (ASFID types), Cat_M2 (metaconcepts), Cat_M1 (concepts), Cat_Domain (Chemistry, Biology, Optics...).",
       "m3:structure": {
         "objects": "Collection Ob(C) of category objects",
         "morphisms": "Collection Mor(C) of arrows between objects",
@@ -523,7 +523,7 @@
         "Unit law: f∘id_A = f, id_B∘f = f"
       ],
       "m3:tscgExamples": [
-        "Cat_KnowledgeField: Ob = {Chemistry, Biology, Optics...}, Mor = knowledge transfers",
+        "Cat_Domain: Ob = {Chemistry, Biology, Optics...}, Mor = knowledge transfers",
         "Cat_M2: Ob = {Link, Processor, Component...}, Mor = metaconcept inclusions",
         "Cat_M3_ASFID: Ob = {A, S, F, I, D} (Gt primitives), Mor = × structural products",
         "Cat_TSCG: Ob = {M3, M2, M1, M0}, Mor = functors F_×, F_inst"
@@ -533,7 +533,7 @@
       "@id": "m3:CategoryObject",
       "@type": "owl:Class",
       "rdfs:label": "Category Object",
-      "rdfs:comment": "An object within a mathematical category. Objects are the 'things' in a category; morphisms are the 'relationships' between them. In TSCG: Chemistry is an object in Cat_KnowledgeField, Link is an object in Cat_M2, ASFID is an object in Cat_M3.",
+      "rdfs:comment": "An object within a mathematical category. Objects are the 'things' in a category; morphisms are the 'relationships' between them. In TSCG: Chemistry is an object in Cat_Domain, Link is an object in Cat_M2, ASFID is an object in Cat_M3.",
       "m3:formalDefinition": "An element A ∈ Ob(C) for some category C",
       "m3:properties": [
         "Every object has an identity morphism id_A: A → A",
@@ -543,8 +543,8 @@
       ],
       "m3:tscgReification": {
         "dcterms:description": "In TSCG, metaconcepts (M2) are reified as Category Objects when viewed categorically",
-        "skos:example": "KnowledgeField (M2 metaconcept) IS ALSO a mathematical category with Chemistry, Biology... as objects",
-        "doubleRole": "Chemistry is BOTH an object in Cat_KnowledgeField AND potentially a category itself (Cat_Chemistry with subconcepts as objects)"
+        "skos:example": "Domain (m1:Domain, an M1 class) IS ALSO a mathematical category with Chemistry, Biology... as objects",
+        "doubleRole": "Chemistry is BOTH an object in Cat_Domain AND potentially a category itself (Cat_Chemistry with subconcepts as objects)"
       }
     },
     {
@@ -608,8 +608,8 @@
           "skos:example": "F_inst(Link) = ChemicalLink (in Chemistry domain)"
         },
         "F_domain_projection": {
-          "signature": "F_proj: Cat_M1 → Cat_KnowledgeField",
-          "dcterms:description": "Projects M1 concepts onto their parent knowledge field",
+          "signature": "F_proj: Cat_M1 → Cat_Domain",
+          "dcterms:description": "Projects M1 concepts onto their parent knowledge domain",
           "skos:example": "F_proj(ChemicalLink) = Chemistry"
         }
       }
@@ -658,7 +658,7 @@
       "rdfs:range": {
         "@id": "m3:MathematicalCategory"
       },
-      "rdfs:comment": "Relates an object to the category it belongs to. Example: Chemistry belongsToCategory Cat_KnowledgeField."
+      "rdfs:comment": "Relates an object to the category it belongs to. Example: Chemistry belongsToCategory Cat_Domain."
     },
     {
       "@id": "m3:hasMorphism",
@@ -790,7 +790,7 @@
       "rdfs:range": {
         "@id": "xsd:string"
       },
-      "rdfs:comment": "Name of the category (e.g., 'Cat_M2', 'Cat_KnowledgeField')."
+      "rdfs:comment": "Name of the category (e.g., 'Cat_M2', 'Cat_Domain')."
     },
     {
       "@id": "m3:Cat_TSCG",

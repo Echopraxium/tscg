@@ -18,14 +18,19 @@
       "@type": "owl:Ontology",
       "rdfs:label": "TSCG Knowledge Domains Registry",
       "rdfs:comment": "Centralized, evolving registry of knowledge domains identified through TSCG instance corpus analysis. Each domain entry documents subdomains, related domains, and instance usage statistics. Domains are M1-level concepts (disciplinary extensions) that bridge M2 transdisciplinary GenericConcepts and M0 concrete instances.",
-      "owl:versionInfo": "1.7.0",
+      "owl:versionInfo": "1.8.0",
       "dcterms:created": "2026-04-18",
-      "dcterms:modified": "2026-09-30",
+      "dcterms:modified": "2026-10-12",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.8.0",
+          "dcterms:date": "2026-10-12",
+          "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-11/12). Domains are CLASSES, rdfs:subClassOf m1:Domain (declared in M1_CoreConcepts), not individuals typed m1:Domain. The 12 entries that have an M1 extension (Biology, BusinessModeling, Cartography, Chemistry, Economics, Education, Electronics, Geology, Mythology, Optics, Photography, Physics) are removed from this registry: the extension's own domain class (m1:extension:<ext>:<Name>) is the domain, and it now carries the entry's data (comment when the extension's was the obsolete 'Knowledge Field' text, definition, subdomains, relatedDomains, instance data). The other 10 entries (Ecology, Engineering, ComputerScience, MusicTheory, GameTheory, Television, Neurobiology, SystemsTheory, Philosophy, Blockchain) are classes m1:domain:<Name> ⊑ m1:Domain. m1:relatedDomains re-pointed to the extension classes; it is an owl:AnnotationProperty (M1_CoreConcepts). m1:ext dropped (the domain class lives in its extension). Pending (Debt Overview §8.0f): m1:subdomains -> subdomain classes (lot SC-5b, then the property is deleted: inferred by rdfs:subClassOf); m1:instanceCount / m1:instanceExamples / header counts -> inferred from M0 instances once their m1:domain values are domain IRIs (M0 lot). Dangling relatedDomains targets: m1:domain:Mathematics (5), m1:domain:Anthropology (1)."
+        },
         {
           "owl:versionInfo": "1.7.0",
           "dcterms:date": "2026-09-30",
@@ -35,11 +40,6 @@
           "owl:versionInfo": "1.6.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1c (Family A). Changelog entry keys, previously bare and dropped on JSON-LD expansion, replaced by standards: version -> owl:versionInfo, date -> dcterms:date, changes -> adms:versionNotes (ADMS: a description of changes between this version and the previous one). Prefix adms declared in @context: ADMS accepted as an external vocabulary (Michel, 2026-09-30). Changelog entries become graph-visible. Legacy changelog forms (maps keyed by version, metadata blocks) left for a separate lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "1.5.0",
-          "dcterms:date": "2026-09-09",
-          "adms:versionNotes": "Added Cartography domain (M1_extensions/cartography/M1_Cartography.jsonld). First domain to declare M1-level facets (cartography:DistortionProperty, cartography:GraticuleGeometry) under the SC-3 m3:Facet mechanism. Related: Geology, Optics, Physics. Instance: M0_World2DProjection (poclet). domainCount: 21->22, totalInstances: 26->27. VOCABULARY REFORM: m1:pocletCount -> m1:instanceCount and m1:pocletExamples -> m1:instanceExamples (22 entries each); 'poclet' was too narrow — a domain lists instances of several kinds (poclets, TscgTools, SystemicFrameworks, SymbolicSystemGrammars). New properties declared in M1_CoreConcepts and guarded by DomainShape in the M1 SHACL."
         }
       ],
       "m1:domainCount": 22,
@@ -51,53 +51,11 @@
       "owl:imports": []
     },
     {
-      "@id": "m1:domain:Biology",
-      "@type": "m1:Domain",
-      "rdfs:label": "Biology",
-      "rdfs:comment": "Science of living organisms, their structure, function, growth, evolution, and interactions with their environment",
-      "skos:definition": "Study of life and living systems at all scales from molecules to ecosystems",
-      "m1:subdomains": [
-        "Developmental Biology",
-        "Cell Biology",
-        "Physiology",
-        "Endocrinology",
-        "Renal Physiology",
-        "Cardiovascular Physiology",
-        "Nephrology",
-        "Homeostasis",
-        "Immunology",
-        "Neuroscience",
-        "Cellular Communication",
-        "Pharmacology"
-      ],
-      "m1:relatedDomains": [
-        {
-          "@id": "m1:domain:Chemistry"
-        },
-        {
-          "@id": "m1:domain:Physics"
-        },
-        {
-          "@id": "m1:domain:Ecology"
-        },
-        {
-          "@id": "m1:domain:Neurobiology"
-        }
-      ],
-      "m1:instanceExamples": [
-        "M0_AdaptiveImmuneResponse",
-        "M0_BloodPressureControl",
-        "M0_ButterflyMetamorphosis",
-        "M0_CellSignalingModes",
-        "M0_Kidneys",
-        "M0_RAAS"
-      ],
-      "m1:instanceCount": 6,
-      "m1:ext": "M1_Biology.jsonld"
-    },
-    {
       "@id": "m1:domain:Ecology",
-      "@type": "m1:Domain",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
       "rdfs:label": "Ecology",
       "rdfs:comment": "Science of interactions between organisms and their environment, including energy flow and material cycling in ecosystems",
       "skos:definition": "Study of relationships between living organisms and their physical and biological environment",
@@ -110,7 +68,7 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1:domain:Biology"
+          "@id": "m1:extension:biology:Biology"
         },
         {
           "@id": "m1:domain:SystemsTheory"
@@ -123,161 +81,11 @@
       "m1:note": "Often paired with Biology domain in multi-domain instances"
     },
     {
-      "@id": "m1:domain:Chemistry",
-      "@type": "m1:Domain",
-      "rdfs:label": "Chemistry",
-      "rdfs:comment": "Science of matter, its properties, composition, structure, and transformations through chemical reactions",
-      "skos:definition": "Study of substances, their properties, reactions, and energy changes",
-      "m1:subdomains": [
-        "Combustion Chemistry",
-        "Physical Chemistry",
-        "Thermodynamics",
-        "Chemical Kinetics",
-        "Organic Chemistry",
-        "Inorganic Chemistry",
-        "Atomic Structure",
-        "Periodic Properties"
-      ],
-      "m1:relatedDomains": [
-        {
-          "@id": "m1:domain:Physics"
-        },
-        {
-          "@id": "m1:domain:Biology"
-        },
-        {
-          "@id": "m1:domain:Neurobiology"
-        }
-      ],
-      "m1:instanceExamples": [
-        "M0_FireTriangle",
-        "M0_PhaseTransition",
-        "M0_ComplexChemicalSynapse",
-        "M0_Ptoe"
-      ],
-      "m1:instanceCount": 4,
-      "m1:ext": "M1_Chemistry.jsonld",
-      "m1:note": "PhaseTransition spans Physical Chemistry and Physics. ComplexChemicalSynapse spans Chemistry and Neurobiology. Ptoe (Periodic Table) demonstrates atomic structure and periodic properties."
-    },
-    {
-      "@id": "m1:domain:Physics",
-      "@type": "m1:Domain",
-      "rdfs:label": "Physics",
-      "rdfs:comment": "Science of matter, energy, space, time, and their interactions",
-      "skos:definition": "Study of fundamental laws governing the natural world and the behavior of matter and energy",
-      "m1:subdomains": [
-        "Thermodynamics",
-        "Mechanics",
-        "Statistical Physics",
-        "Optics",
-        "Electromagnetism",
-        "Quantum Mechanics",
-        "Acoustics"
-      ],
-      "m1:relatedDomains": [
-        {
-          "@id": "m1:domain:Chemistry"
-        },
-        {
-          "@id": "m1:domain:Engineering"
-        }
-      ],
-      "m1:instanceExamples": [
-        "M0_PhaseTransition",
-        "M0_FourStrokeEngine"
-      ],
-      "m1:instanceCount": 2,
-      "m1:note": "Thermodynamics subdomain overlaps with Chemistry and Engineering"
-    },
-    {
-      "@id": "m1:domain:Electronics",
-      "@type": "m1:Domain",
-      "rdfs:label": "Electronics",
-      "rdfs:comment": "Science and technology of controlling electric current flow and designing electronic circuits and systems",
-      "skos:definition": "Study and application of devices that control electric current through semiconductors, conductors, and vacuum",
-      "m1:subdomains": [
-        "Semiconductor Physics",
-        "Analog Electronics",
-        "Digital Electronics",
-        "Signal Processing",
-        "Circuit Theory",
-        "Modular Synthesis"
-      ],
-      "m1:relatedDomains": [
-        {
-          "@id": "m1:domain:Physics"
-        },
-        {
-          "@id": "m1:domain:Engineering"
-        },
-        {
-          "@id": "m1:domain:MusicTheory"
-        }
-      ],
-      "m1:instanceExamples": [
-        "M0_Transistor",
-        "M0_VCO"
-      ],
-      "m1:instanceCount": 2,
-      "m1:note": "VCO bridges Electronics and Music Theory domains"
-    },
-    {
-      "@id": "m1:domain:Optics",
-      "@type": "m1:Domain",
-      "rdfs:label": "Optics",
-      "rdfs:comment": "Science of light, its properties, behavior, and interactions with matter",
-      "skos:definition": "Study of visible, ultraviolet, and infrared light, including reflection, refraction, diffraction, and color",
-      "m1:subdomains": [
-        "Color Theory",
-        "Color Science",
-        "Photography",
-        "Image Formation",
-        "Computer Graphics",
-        "Photometry",
-        "Spectroscopy"
-      ],
-      "m1:relatedDomains": [
-        {
-          "@id": "m1:domain:Physics"
-        },
-        {
-          "@id": "m1:domain:Photography"
-        }
-      ],
-      "m1:instanceExamples": [
-        "M0_ColorSynthesis",
-        "M0_ExposureTriangle"
-      ],
-      "m1:instanceCount": 2,
-      "m1:ext": "M1_Optics.jsonld"
-    },
-    {
-      "@id": "m1:domain:Photography",
-      "@type": "m1:Domain",
-      "rdfs:label": "Photography",
-      "rdfs:comment": "Art and science of capturing images using light-sensitive materials or sensors",
-      "skos:definition": "Practice and technology of creating images by recording light or electromagnetic radiation",
-      "m1:subdomains": [
-        "Exposure Control",
-        "Image Formation",
-        "Image Sensors",
-        "Composition",
-        "Digital Processing"
-      ],
-      "m1:relatedDomains": [
-        {
-          "@id": "m1:domain:Optics"
-        }
-      ],
-      "m1:instanceExamples": [
-        "M0_ExposureTriangle"
-      ],
-      "m1:instanceCount": 1,
-      "m1:ext": "M1_Photography.jsonld"
-    },
-    {
       "@id": "m1:domain:Engineering",
-      "@type": "m1:Domain",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
       "rdfs:label": "Engineering",
       "rdfs:comment": "Application of scientific principles to design, build, and maintain systems, structures, and devices",
       "skos:definition": "Practical application of mathematics and science to solve real-world problems",
@@ -291,10 +99,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1:domain:Physics"
+          "@id": "m1:extension:physics:Physics"
         },
         {
-          "@id": "m1:domain:Chemistry"
+          "@id": "m1:extension:chemistry:Chemistry"
         }
       ],
       "m1:instanceExamples": [
@@ -305,7 +113,10 @@
     },
     {
       "@id": "m1:domain:ComputerScience",
-      "@type": "m1:Domain",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
       "rdfs:label": "Computer Science",
       "rdfs:comment": "Study of computation, information processing, and the design of computer systems",
       "skos:definition": "Theory, experimentation, and engineering of computational systems and algorithms",
@@ -323,10 +134,10 @@
           "@id": "m1:domain:Mathematics"
         },
         {
-          "@id": "m1:domain:Economics"
+          "@id": "m1:extension:economics:Economics"
         },
         {
-          "@id": "m1:domain:Physics"
+          "@id": "m1:extension:physics:Physics"
         }
       ],
       "m1:instanceExamples": [
@@ -336,36 +147,11 @@
       "m1:note": "NakamotoConsensus spans Distributed Systems, Statistical Physics, and Information Theory"
     },
     {
-      "@id": "m1:domain:Economics",
-      "@type": "m1:Domain",
-      "rdfs:label": "Economics",
-      "rdfs:comment": "Social science studying production, distribution, and consumption of goods and services",
-      "skos:definition": "Study of how societies allocate scarce resources and make decisions about production and consumption",
-      "m1:subdomains": [
-        "Finance",
-        "Financial Economics",
-        "Behavioral Finance",
-        "Macroeconomics",
-        "Systemic Risk",
-        "Market Dynamics"
-      ],
-      "m1:relatedDomains": [
-        {
-          "@id": "m1:domain:Mathematics"
-        },
-        {
-          "@id": "m1:domain:SystemsTheory"
-        }
-      ],
-      "m1:instanceExamples": [
-        "M0_KindlebergerMinsky"
-      ],
-      "m1:instanceCount": 1,
-      "m1:ext": "M1_Economics.jsonld"
-    },
-    {
       "@id": "m1:domain:MusicTheory",
-      "@type": "m1:Domain",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
       "rdfs:label": "Music Theory",
       "rdfs:comment": "Study of practices and possibilities of music, including composition techniques and harmonic structures",
       "skos:definition": "Analytical framework for understanding how music works, including harmony, melody, rhythm, and form",
@@ -382,7 +168,7 @@
           "@id": "m1:domain:Mathematics"
         },
         {
-          "@id": "m1:domain:Electronics"
+          "@id": "m1:extension:electronics:Electronics"
         }
       ],
       "m1:instanceExamples": [
@@ -393,7 +179,10 @@
     },
     {
       "@id": "m1:domain:GameTheory",
-      "@type": "m1:Domain",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
       "rdfs:label": "Game Theory",
       "rdfs:comment": "Mathematical modeling of strategic interactions among rational decision-makers, including trading card games",
       "skos:definition": "Study of strategic decision-making in competitive and cooperative scenarios",
@@ -408,7 +197,7 @@
           "@id": "m1:domain:Mathematics"
         },
         {
-          "@id": "m1:domain:Economics"
+          "@id": "m1:extension:economics:Economics"
         },
         {
           "@id": "m1:domain:Philosophy"
@@ -421,37 +210,11 @@
       "m1:note": "Magic: The Gathering color wheel analyzed as cultural artifact with philosophical dimensions"
     },
     {
-      "@id": "m1:domain:Geology",
-      "@type": "m1:Domain",
-      "rdfs:label": "Geology",
-      "rdfs:comment": "Science of Earth's physical structure, substance, history, and processes",
-      "skos:definition": "Study of solid Earth, rocks, minerals, and the processes that shape the planet",
-      "m1:subdomains": [
-        "Geophysics",
-        "Plate Tectonics",
-        "Geodynamics",
-        "Seismology",
-        "Volcanology",
-        "Paleoclimatology",
-        "Biogeography",
-        "Geohazard Science"
-      ],
-      "m1:relatedDomains": [
-        {
-          "@id": "m1:domain:Physics"
-        },
-        {
-          "@id": "m1:domain:Chemistry"
-        }
-      ],
-      "m1:instanceExamples": [
-        "M0_PlateTectonics"
-      ],
-      "m1:instanceCount": 1
-    },
-    {
       "@id": "m1:domain:Television",
-      "@type": "m1:Domain",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
       "rdfs:label": "Television Engineering",
       "rdfs:comment": "Science and technology of television systems, video signal processing, and broadcasting standards",
       "skos:definition": "Study of electronic systems for capturing, transmitting, and displaying moving images",
@@ -466,10 +229,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1:domain:Electronics"
+          "@id": "m1:extension:electronics:Electronics"
         },
         {
-          "@id": "m1:domain:Optics"
+          "@id": "m1:extension:optics:Optics"
         }
       ],
       "m1:instanceExamples": [
@@ -479,34 +242,11 @@
       "m1:note": "TVTestPattern is a calibration system poclet analyzing broadcast test patterns"
     },
     {
-      "@id": "m1:domain:Education",
-      "@type": "m1:Domain",
-      "rdfs:label": "Education",
-      "rdfs:comment": "Science and practice of teaching, learning, and instructional design",
-      "skos:definition": "Study of methods, theories, and technologies for facilitating learning and knowledge transfer",
-      "m1:subdomains": [
-        "Instructional Design",
-        "Educational Technology",
-        "Pedagogical Content Knowledge",
-        "Technology Integration"
-      ],
-      "m1:relatedDomains": [
-        {
-          "@id": "m1:domain:ComputerScience"
-        },
-        {
-          "@id": "m1:domain:SystemsTheory"
-        }
-      ],
-      "m1:instanceExamples": [
-        "M0_TPACK"
-      ],
-      "m1:instanceCount": 1,
-      "m1:note": "TPACK: Technological Pedagogical Content Knowledge framework"
-    },
-    {
       "@id": "m1:domain:Neurobiology",
-      "@type": "m1:Domain",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
       "rdfs:label": "Neurobiology",
       "rdfs:comment": "Study of the nervous system, neural communication, and brain function",
       "skos:definition": "Biological study of neurons, synapses, and neural circuits underlying behavior and cognition",
@@ -518,10 +258,10 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1:domain:Biology"
+          "@id": "m1:extension:biology:Biology"
         },
         {
-          "@id": "m1:domain:Chemistry"
+          "@id": "m1:extension:chemistry:Chemistry"
         }
       ],
       "m1:instanceExamples": [
@@ -532,7 +272,10 @@
     },
     {
       "@id": "m1:domain:SystemsTheory",
-      "@type": "m1:Domain",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
       "rdfs:label": "Systems Theory",
       "rdfs:comment": "Interdisciplinary study of complex systems, their organization, and emergent properties",
       "skos:definition": "Framework for analyzing interconnected components and their collective behavior",
@@ -545,7 +288,7 @@
       ],
       "m1:relatedDomains": [
         {
-          "@id": "m1:domain:Biology"
+          "@id": "m1:extension:biology:Biology"
         },
         {
           "@id": "m1:domain:Engineering"
@@ -566,7 +309,10 @@
     },
     {
       "@id": "m1:domain:Philosophy",
-      "@type": "m1:Domain",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
       "rdfs:label": "Philosophy",
       "rdfs:comment": "Study of fundamental questions about existence, knowledge, values, reason, and reality",
       "skos:definition": "Critical examination of assumptions, arguments, and concepts underlying human thought and experience",
@@ -586,7 +332,7 @@
           "@id": "m1:domain:Mathematics"
         },
         {
-          "@id": "m1:domain:Mythology"
+          "@id": "m1:extension:mythology:Mythology"
         }
       ],
       "m1:instanceExamples": [
@@ -597,36 +343,11 @@
       "m1:note": "I Ching is a symbolic system grammar, not a poclet. Foundation of Chinese cosmology and divination."
     },
     {
-      "@id": "m1:domain:Mythology",
-      "@type": "m1:Domain",
-      "rdfs:label": "Mythology",
-      "rdfs:comment": "Study of traditional narratives, symbols, and cosmological frameworks across cultures",
-      "skos:definition": "Analysis of mythological systems, their symbolic structures, and cultural significance",
-      "m1:subdomains": [
-        "Norse Mythology",
-        "Comparative Mythology",
-        "Comparative Religion",
-        "Cosmology",
-        "Symbolic Systems"
-      ],
-      "m1:relatedDomains": [
-        {
-          "@id": "m1:domain:Philosophy"
-        },
-        {
-          "@id": "m1:domain:Anthropology"
-        }
-      ],
-      "m1:instanceExamples": [
-        "M0_Yggdrasil"
-      ],
-      "m1:instanceCount": 1,
-      "m1:ext": "M1_Mythology.jsonld",
-      "m1:note": "Often analyzed through symbolic system grammars"
-    },
-    {
       "@id": "m1:domain:Blockchain",
-      "@type": "m1:Domain",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
       "rdfs:label": "Blockchain",
       "rdfs:comment": "Distributed ledger technology and decentralized consensus mechanisms",
       "skos:definition": "Study of cryptographically-secured, decentralized systems for recording transactions and maintaining shared state without central authority",
@@ -643,7 +364,7 @@
           "@id": "m1:domain:ComputerScience"
         },
         {
-          "@id": "m1:domain:Economics"
+          "@id": "m1:extension:economics:Economics"
         },
         {
           "@id": "m1:domain:GameTheory"
@@ -654,72 +375,6 @@
       ],
       "m1:instanceCount": 1,
       "m1:note": "Nakamoto Consensus: proof-of-work distributed consensus mechanism underlying Bitcoin"
-    },
-    {
-      "@id": "m1:domain:BusinessModeling",
-      "@type": "m1:Domain",
-      "rdfs:label": "Business Modeling",
-      "rdfs:comment": "Study of how organizations design, implement, and evolve mechanisms for value creation, delivery, and capture. Covers business model frameworks, strategic canvas tools, platform economics, and business model innovation. Bridges management science, economics, and systems theory.",
-      "skos:definition": "Design and analysis of organizational architectures for sustainable value creation, delivery, and capture",
-      "m1:subdomains": [
-        "Business Model Design",
-        "Strategic Management",
-        "Platform Economics",
-        "Value Proposition Design",
-        "Business Model Innovation",
-        "Revenue Architecture",
-        "Ecosystem Strategy"
-      ],
-      "m1:relatedDomains": [
-        {
-          "@id": "m1:domain:Economics"
-        },
-        {
-          "@id": "m1:domain:SystemsTheory"
-        },
-        {
-          "@id": "m1:domain:GameTheory"
-        }
-      ],
-      "m1:instanceExamples": [
-        "M0_Bmc"
-      ],
-      "m1:instanceType": "m3:SystemicFramework",
-      "m1:instanceCount": 0,
-      "m1:systemicFrameworkCount": 1,
-      "m1:ext": "M1_extensions/business-modeling/M1_BusinessModeling.jsonld",
-      "m1:note": "BMC (Business Model Canvas) is a SystemicFramework instance, not a poclet. M1_BusinessModeling.jsonld provides 9 KFCCs: ValueProposition, CustomerSegment, RevenueStream, CrossSubsidy, PlatformDuality, BusinessModelPattern, StrategicTension, BusinessModelMutation, VerticalIntegration."
-    },
-    {
-      "@id": "m1:domain:Cartography",
-      "@type": "m1:Domain",
-      "rdfs:label": "Cartography",
-      "rdfs:comment": "Discipline of designing, producing and studying maps, including the mathematical projection of the curved Earth onto a plane",
-      "skos:definition": "Science and craft of representing the terrestrial globe (or parts of it) on a flat medium, governed by the unavoidable trade-off between preserved and distorted metric properties",
-      "m1:subdomains": [
-        "Map Projections",
-        "Geodesy",
-        "Geographic Information Systems (GIS)",
-        "Thematic Cartography",
-        "Distortion Analysis"
-      ],
-      "m1:relatedDomains": [
-        {
-          "@id": "m1:domain:Geology"
-        },
-        {
-          "@id": "m1:domain:Optics"
-        },
-        {
-          "@id": "m1:domain:Physics"
-        }
-      ],
-      "m1:instanceExamples": [
-        "M0_World2DProjection"
-      ],
-      "m1:instanceCount": 1,
-      "m1:ext": "M1_extensions/cartography/M1_Cartography.jsonld",
-      "m1:note": "First domain to declare M1-level facets (cartography:DistortionProperty, cartography:GraticuleGeometry) under the SC-3 m3:Facet mechanism."
     }
   ]
 }

@@ -20,8 +20,8 @@
       "dcterms:description": "Domain-specific M1 ontology for mythology, cosmology, and spiritual systems. Defines transdisciplinary patterns (Deity, MythicalCreature, Trickster, Gatekeeper) and mythology-specific concepts reusable across cultures (Norse, Greek, Egyptian, Hindu, etc.). Extends M1_CoreConcepts with domain-bounded but cross-cultural mythology patterns.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-04",
-      "dcterms:modified": "2026-10-11",
-      "owl:versionInfo": "1.10.0",
+      "dcterms:modified": "2026-10-12",
+      "owl:versionInfo": "1.11.0",
       "owl:imports": [
         { "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld" },
         { "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld" }
@@ -78,6 +78,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.11.0",
+          "dcterms:date": "2026-10-12",
+          "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-11/12): domains are classes rdfs:subClassOf m1:Domain, never individuals. m1:extension:mythology:Mythology created ⊑ m1:Domain; registry data moved onto m1:extension:mythology:Mythology. m2:KnowledgeField / m1:KnowledgeFieldGenericCombo are obsolete (declared nowhere); the KnowledgeField-only keys m2:knowledgeFieldRole, m2:derivedFrom (now rdfs:subClassOf) dropped; m2:qualifier text kept as skos:definition. Obsolete KnowledgeField vocabulary purged from the live text (Michel, 2026-10-12: there is no KnowledgeField any more, it is Domain). m2:knowledgeField (obsolete, declared nowhere) renamed m1:domain on 11 class(es): an owl:AnnotationProperty whose value is the IRI of the domain class."
+        },
+        {
           "owl:versionInfo": "1.10.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1b (class/instance separation, follow-up of C1). rdfs:subClassOf values written as plain strings (JSON-LD literals: the property is not @id-coerced in the @context, so these superclass links were absent from the graph) rewritten as IRIs: 11 value(s)."
@@ -86,13 +91,40 @@
           "owl:versionInfo": "1.9.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:DomainConceptCombo removed from the @type of 11 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:DomainConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
-        },
-        {
-          "owl:versionInfo": "1.8.0",
-          "dcterms:date": "2026-10-11",
-          "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 11 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
         }
       ]
+    },
+    {
+      "@id": "m1:extension:mythology:Mythology",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
+      "rdfs:label": "Mythology",
+      "rdfs:comment": "Study of traditional narratives, symbols, and cosmological frameworks across cultures",
+      "dcterms:created": "2026-10-12",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "skos:definition": "Analysis of mythological systems, their symbolic structures, and cultural significance",
+      "m1:subdomains": [
+        "Norse Mythology",
+        "Comparative Mythology",
+        "Comparative Religion",
+        "Cosmology",
+        "Symbolic Systems"
+      ],
+      "m1:relatedDomains": [
+        {
+          "@id": "m1:domain:Philosophy"
+        },
+        {
+          "@id": "m1:domain:Anthropology"
+        }
+      ],
+      "m1:instanceExamples": [
+        "M0_Yggdrasil"
+      ],
+      "m1:instanceCount": 1,
+      "m1:note": "Often analyzed through symbolic system grammars"
     },
     {
       "@id": "m1:extension:mythology:MythologicalEntity",
@@ -108,7 +140,7 @@
         "m1:associatedSymbols - Visual/conceptual symbols"
       ],
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × S × It)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:mythology:Mythology"
       }
     },
@@ -145,7 +177,7 @@
         "vs_CosmicForce": "Deity: personal (has identity, goals). CosmicForce: impersonal (Fate, Karma - principles not persons)."
       },
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × S × It × D)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:mythology:Mythology"
       }
     },
@@ -216,7 +248,7 @@
         "Giants: Ymir (Norse), Titans (Greek), Asuras (Hindu)"
       ],
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × S × F × It)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:mythology:Mythology"
       }
     },
@@ -275,7 +307,7 @@
       "rdfs:comment": "Entity specializing in information transport between realms/entities. Examples: Ratatosk (squirrel), Hermes in animal form, Sleipnir.",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, F × It × A | Im)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:mythology:Mythology"
       }
     },
@@ -286,7 +318,7 @@
       "rdfs:comment": "Entity protecting boundary, treasure, or sacred place. Examples: Cerberus (Hades gate), Sphinx (riddle guardian), Fu Dogs.",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × St × D | V)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:mythology:Mythology"
       }
     },
@@ -298,7 +330,7 @@
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "skos:note": "Borderline cases between Deity and Creature. Often adversaries of gods but possess god-like attributes.",
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × S × D)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:mythology:Mythology"
       }
     },
@@ -310,7 +342,7 @@
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "skos:note": "Often personified but fundamentally impersonal. Operate mechanically rather than through personal will.",
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × F × D)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:mythology:Mythology"
       }
     },
@@ -321,7 +353,7 @@
       "rdfs:comment": "Object with supernatural properties and persistent identity. Often divine weapons, tools, or cosmic structures. Instantiates Identity (persistence) and may have Power. Examples: Mjolnir, Gungnir, Excalibur, Vajra.",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, St × It | R)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:mythology:Mythology"
       }
     },
@@ -332,7 +364,7 @@
       "rdfs:comment": "Location with cosmic significance. Underworlds, paradises, sacred sites, wells. Examples: Valhalla, Hades, Elysium, Urdarbrunnr, Mount Meru.",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × St × It | R)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:mythology:Mythology"
       }
     },
@@ -421,7 +453,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × St × F × It × D | R + V)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:mythology:Mythology"
       }
     },
@@ -514,7 +546,7 @@
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Mythology, A × St × It | V)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:mythology:Mythology"
       }
     }

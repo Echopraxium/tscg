@@ -11,7 +11,7 @@
 ## 🎯 Role
 
 **M1_<Domain>** is the M1-level extension for the **<Domain>** knowledge field.
-It defines domain-specific `KnowledgeFieldConceptCombo` instances reusable across
+It defines domain-specific `DomainConceptCombo` instances reusable across
 `<Domain>` poclets and systemic frameworks.
 
 ---
@@ -25,15 +25,15 @@ m1:extension:<domain>:  →  M1_extensions/<domain>/M1_<Domain>.jsonld#
 All concepts use the `Fm1m2(<Domain>, ...)` formula notation:
 
 ```json
-"@type": ["owl:Class", "m2:KnowledgeFieldConceptCombo"],
-"rdfs:subClassOf": "m2:KnowledgeFieldConceptCombo",
+"@type": ["owl:Class", "m2:DomainConceptCombo"],
+"rdfs:subClassOf": "m2:DomainConceptCombo",
 "m2:knowledgeField": {"@id": "m1:extension:<domain>:<Domain>"},
 "m1:structuralGrammarFormula": "Fm1m2(<Domain>, <ASFID-formula> | <REVOI-formula>)"
 ```
 
 ---
 
-## 🧩 Concepts (<N> KnowledgeFieldConceptCombos)
+## 🧩 Concepts (<N> DomainConceptCombos)
 
 | Concept | Formula | Description |
 |---|---|---|
@@ -45,7 +45,7 @@ All concepts use the `Fm1m2(<Domain>, ...)` formula notation:
 ## 🏗️ Architecture
 
 ```
-m2:KnowledgeFieldConceptCombo   ← M2 (parent class)
+m2:DomainConceptCombo   ← M2 (parent class)
   ↓ rdfs:subClassOf
   m1:extension:<domain>:ConceptA   ← this file
   m1:extension:<domain>:ConceptB
@@ -59,7 +59,7 @@ m2:KnowledgeFieldConceptCombo   ← M2 (parent class)
 
 ## 📚 Key Takeaways
 
-1. All concepts typed as `m2:KnowledgeFieldConceptCombo`
+1. All concepts typed as `m2:DomainConceptCombo`
 2. All formulas use `Fm1m2(<Domain>, ...)` notation
 3. No `m2:characterizedBy`, no `asfidSignature` (deprecated)
 

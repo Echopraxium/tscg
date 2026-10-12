@@ -3,12 +3,17 @@
 check_M1.py — TSCG M1 Layer Validation & Correction Script
 ===========================================================
 Author  : Echopraxium with the collaboration of Claude AI
-Version : 1.7.0
+Version : 1.8.0
 Date    : 2026-10-11
 Location: ontology/toolchain/check-M1/check_M1.py
 
 Changelog
 ---------
+  1.8.0 (2026-10-12) — SC-5 Domain fusion. Domains are CLASSES (rdfs:subClassOf m1:Domain), never
+      individuals: DCC010 now reads every class descending from m1:Domain, transitively, across
+      M1_Domains, M1_CoreConcepts and the extensions (a subdomain may have several parents).
+      Until 1.7.0 it read the individuals of M1_Domains only, so the extension domains Music,
+      EnergyGenerators and SystemicModeling were reported as unregistered (16 DCC010).
   1.7.0 (2026-10-11) — WS-1 B2 lot C2. A combo is a DERIVED CLASS, never an instance: NEW
       ERROR CMB001 when a node's @type contains m2:GenericConceptCombo / m2:DomainConceptCombo
       (compact or full IRI). Its auto-fix (fix_combo_punning, replaces fix_dcc_subclassof,
@@ -210,25 +215,50 @@ class Issue:
 
 _DOMAIN_REGISTRY = None
 
+def _ids(val):
+    vals = val if isinstance(val, list) else [val]
+    return [v.get("@id") if isinstance(v, dict) else v for v in vals if v]
+
+
 def load_domain_registry(ontology_dir):
-    """Names of every Domain declared in M1_Domains.jsonld (lowercased)."""
+    """Names (lowercased local name + rdfs:label) of every DOMAIN CLASS: any class that
+    descends from m1:Domain through rdfs:subClassOf, transitively, across M1_Domains,
+    M1_CoreConcepts and every M1 extension (SC-5, 2026-10-12: domains are classes, never
+    individuals; a subdomain may have several parent domains). Until 1.7.0 this read the
+    individuals of M1_Domains only."""
     global _DOMAIN_REGISTRY
     if _DOMAIN_REGISTRY is not None:
         return _DOMAIN_REGISTRY
-    names = set()
-    path = Path(ontology_dir) / "M1_Domains.jsonld"
-    if path.exists():
+    root = Path(ontology_dir)
+    files = [root / "M1_Domains.jsonld", root / "M1_CoreConcepts.jsonld"]
+    files += sorted((root / "M1_extensions").glob("*/M1_*.jsonld"))
+    parents, labels = {}, {}
+    for path in files:
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
-            for node in data.get("@graph", []):
-                nid = str(node.get("@id", ""))
-                if ":domain:" in nid or ":extension:" in nid:
-                    names.add(nid.rsplit(":", 1)[-1].lower())
-                label = node.get("rdfs:label")
-                if label and ("Domain" in str(node.get("@type", ""))):
-                    names.add(str(label).lower())
         except Exception:
-            pass
+            continue
+        for node in data.get("@graph", []):
+            if not isinstance(node, dict) or "@id" not in node:
+                continue
+            nid = str(node["@id"])
+            parents.setdefault(nid, set()).update(_ids(node.get("rdfs:subClassOf", [])))
+            if node.get("rdfs:label"):
+                labels[nid] = str(node["rdfs:label"])
+
+    def is_domain(nid, seen=()):
+        for p in parents.get(nid, ()):
+            if p == "m1:Domain" or (p not in seen and is_domain(p, seen + (nid,))):
+                return True
+        return False
+
+    names = set()
+    for nid in parents:
+        if is_domain(nid):
+            names.add(nid.rsplit(":", 1)[-1].lower())
+            if nid in labels:
+                names.add(labels[nid].lower())
+                names.add(labels[nid].replace(" ", "").lower())
     _DOMAIN_REGISTRY = names
     return names
 
@@ -570,7 +600,7 @@ class M1Checker:
                             "M3_GrammarFoundation and is the ROOT of this defect; fixed in "
                             "v2.4.0). An Fm2 argument may legitimately come from "
                             "M1_CoreConcepts. A domain-less Fm1m2 is an Fm2. Register the "
-                            "domain in M1_Domains.jsonld, or change the function to Fm2.",
+                            "domain (a class rdfs:subClassOf m1:Domain, in its extension or in M1_Domains), or change the function to Fm2.",
                         auto_fixable=False))
 
         # Arity (D5): Fm2 needs >= 2 concepts; Fm1m2 needs >= 1 domain AND >= 1 concept.

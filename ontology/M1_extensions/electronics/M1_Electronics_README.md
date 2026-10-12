@@ -7,7 +7,7 @@
 
 ## Overview
 
-`M1_Electronics.jsonld` is the **domain-specific M1 extension** for the Electronics domain within the TSCG framework. It provides **18 KnowledgeFieldConcepts** organised in 5 categories, bridging M2 GenericConcepts (universal patterns) and M0 poclets (concrete electronic systems).
+`M1_Electronics.jsonld` is the **domain-specific M1 extension** for the Electronics domain within the TSCG framework. It provides **18 domain concepts** organised in 5 categories, bridging M2 GenericConcepts (universal patterns) and M0 poclets (concrete electronic systems).
 
 It serves as the required M1 foundation for all Electronics poclets, starting with `M0_Transistor.jsonld` and `M0_VCO.jsonld`.
 

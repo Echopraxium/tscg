@@ -20,7 +20,7 @@
       "dcterms:description": "Domain-specific patterns for optics, color theory, photography, and visual perception. M1 layer instantiates M2 GenericConcepts into concrete optical/photographic patterns.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-20",
-      "owl:versionInfo": "1.7.0",
+      "owl:versionInfo": "1.8.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -44,8 +44,13 @@
       },
       "m1:patternCount": 8,
       "rdfs:comment": "M1 layer bridges abstract M2 GenericConcepts to concrete M0 instances. Optics domain demonstrates color synthesis, exposure control, channel multiplexing, and perceptual scaling patterns.",
-      "dcterms:modified": "2026-10-11",
+      "dcterms:modified": "2026-10-12",
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.8.0",
+          "dcterms:date": "2026-10-12",
+          "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-11/12): domains are classes rdfs:subClassOf m1:Domain, never individuals. m1:extension:optics:Optics created ⊑ m1:Domain; registry data moved onto m1:extension:optics:Optics. m2:KnowledgeField / m1:KnowledgeFieldGenericCombo are obsolete (declared nowhere); the KnowledgeField-only keys m2:knowledgeFieldRole, m2:derivedFrom (now rdfs:subClassOf) dropped; m2:qualifier text kept as skos:definition. Obsolete KnowledgeField vocabulary purged from the live text (Michel, 2026-10-12: there is no KnowledgeField any more, it is Domain). m2:knowledgeField (obsolete, declared nowhere) renamed m1:domain on 10 class(es): an owl:AnnotationProperty whose value is the IRI of the domain class."
+        },
         {
           "owl:versionInfo": "1.7.0",
           "dcterms:date": "2026-10-11",
@@ -55,13 +60,42 @@
           "owl:versionInfo": "1.6.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 9 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
-        },
-        {
-          "owl:versionInfo": "1.5.0",
-          "dcterms:date": "2026-10-03",
-          "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
         }
       ]
+    },
+    {
+      "@id": "m1:extension:optics:Optics",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
+      "rdfs:label": "Optics",
+      "rdfs:comment": "Science of light, its properties, behavior, and interactions with matter",
+      "dcterms:created": "2026-10-12",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "skos:definition": "Study of visible, ultraviolet, and infrared light, including reflection, refraction, diffraction, and color",
+      "m1:subdomains": [
+        "Color Theory",
+        "Color Science",
+        "Photography",
+        "Image Formation",
+        "Computer Graphics",
+        "Photometry",
+        "Spectroscopy"
+      ],
+      "m1:relatedDomains": [
+        {
+          "@id": "m1:extension:physics:Physics"
+        },
+        {
+          "@id": "m1:extension:photography:Photography"
+        }
+      ],
+      "m1:instanceExamples": [
+        "M0_ColorSynthesis",
+        "M0_ExposureTriangle"
+      ],
+      "m1:instanceCount": 2
     },
     {
       "@id": "m1:extension:optics:AdditiveColorSynthesis",
@@ -95,7 +129,7 @@
       "m1:validatedPoclets": 2,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Optics, A × St × F × It | R + O)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:optics:Optics"
       }
     },
@@ -133,7 +167,7 @@
       "m1:validatedPoclets": 2,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Optics, A × St × F × It | R + O)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:optics:Optics"
       }
     },
@@ -175,7 +209,7 @@
       "m1:validatedPoclets": 1,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Optics, A × St × It | R)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:optics:Optics"
       }
     },
@@ -213,7 +247,7 @@
       "m1:M0_instance": "M0_ExposureTriangle_Photography.jsonld",
       "m1:validatedPoclets": 1,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:optics:Optics"
       },
       "m1:structuralGrammarFormula": "Fm1m2(Optics, A × It × D | R + O)"
@@ -267,7 +301,7 @@
       ],
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Optics, St × F × It | Im)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:optics:Optics"
       }
     },
@@ -309,7 +343,7 @@
       "m1:M0_instance": "M0_ExposureTriangle_Photography.jsonld",
       "m1:validatedPoclets": 1,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:optics:Optics"
       },
       "m1:structuralGrammarFormula": "Fm1m2(Optics, St × F × It | Im)"
@@ -346,7 +380,7 @@
       "m1:M0_instance": "M0_ColorSynthesis_Federated.jsonld",
       "m1:validatedPoclets": 1,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:optics:Optics"
       },
       "m1:structuralGrammarFormula": "Fm1m2(Optics, St × It × F | R + V)"
@@ -396,7 +430,7 @@
       "m1:M0_instance": "M0_ColorSynthesis_Federated.jsonld",
       "m1:validatedPoclets": 1,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:optics:Optics"
       },
       "m1:structuralGrammarFormula": "Fm1m2(Optics, St × It × A | R + V)"
@@ -421,7 +455,7 @@
       "m1:M0_relevance": "RGB, HSL models use gamma-corrected values, not linear light",
       "m1:validatedPoclets": 0,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:optics:Optics"
       },
       "m1:structuralGrammarFormula": "Fm1m2(Optics, A × It × D | R + O)"

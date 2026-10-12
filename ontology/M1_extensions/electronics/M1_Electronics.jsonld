@@ -22,8 +22,8 @@
       "dcterms:description": "Extension of the TSCG framework with electronics-specific concepts: active components, signal manipulation, oscillator types, modulation, and modular synthesis architecture. Serves as M1 foundation for M0 poclets: VCO, VCF, VCA, LFO, Transistor, etc.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-27",
-      "owl:versionInfo": "1.8.0",
-      "dcterms:modified": "2026-10-11",
+      "owl:versionInfo": "1.9.0",
+      "dcterms:modified": "2026-10-12",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -53,6 +53,11 @@
       ],
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.9.0",
+          "dcterms:date": "2026-10-12",
+          "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-11/12): domains are classes rdfs:subClassOf m1:Domain, never individuals. m1:extension:electronics:Electronics -> owl:Class ⊑ m1:Domain; registry data moved onto m1:extension:electronics:Electronics. m2:KnowledgeField / m1:KnowledgeFieldGenericCombo are obsolete (declared nowhere); the KnowledgeField-only keys m2:knowledgeFieldRole, m2:derivedFrom (now rdfs:subClassOf) dropped; m2:qualifier text kept as skos:definition. Obsolete KnowledgeField vocabulary purged from the live text (Michel, 2026-10-12: there is no KnowledgeField any more, it is Domain)."
+        },
+        {
           "owl:versionInfo": "1.8.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1b (class/instance separation, follow-up of C1). rdfs:subClassOf values written as plain strings (JSON-LD literals: the property is not @id-coerced in the @context, so these superclass links were absent from the graph) rewritten as IRIs: 15 value(s). Phantom parent m2:Oscillator (declared nowhere) re-pointed to m1:Oscillator on m1:extension:electronics:ElectronicOscillator (Michel, 2026-10-11). Phantom parent m2:Cascade (declared nowhere) re-pointed to m1:Cascade on m1:extension:electronics:SignalChain (Michel, 2026-10-11). Phantom parent m2:Mode removed from m1:extension:electronics:WaveformMode: the N-ary mode is now an attribute m2:hasAttribute typed m2:ValueSpace with m2:possibleValues (the waveform list), the pattern of m1:Cascade (Michel, 2026-10-11)."
@@ -61,25 +66,45 @@
           "owl:versionInfo": "1.7.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:DomainConceptCombo removed from the @type of 17 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:DomainConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
-        },
-        {
-          "owl:versionInfo": "1.6.0",
-          "dcterms:date": "2026-10-11",
-          "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 17 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
         }
       ]
     },
     {
       "@id": "m1:extension:electronics:Electronics",
-      "@type": [
-        "owl:NamedIndividual",
-        "m2:KnowledgeField"
-      ],
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
       "rdfs:label": "Electronics",
-      "rdfs:comment": "Electronics as a Knowledge Field for TSCG domain modeling.",
-      "m2:knowledgeFieldRole": "NOUN",
+      "rdfs:comment": "Science and technology of controlling electric current flow and designing electronic circuits and systems",
       "dcterms:created": "2026-05-26",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "skos:definition": "Study and application of devices that control electric current through semiconductors, conductors, and vacuum",
+      "m1:subdomains": [
+        "Semiconductor Physics",
+        "Analog Electronics",
+        "Digital Electronics",
+        "Signal Processing",
+        "Circuit Theory",
+        "Modular Synthesis"
+      ],
+      "m1:relatedDomains": [
+        {
+          "@id": "m1:extension:physics:Physics"
+        },
+        {
+          "@id": "m1:domain:Engineering"
+        },
+        {
+          "@id": "m1:domain:MusicTheory"
+        }
+      ],
+      "m1:instanceExamples": [
+        "M0_Transistor",
+        "M0_VCO"
+      ],
+      "m1:instanceCount": 2,
+      "m1:note": "VCO bridges Electronics and Music Theory domains"
     },
     {
       "@id": "m1:extension:electronics:ActiveComponent",

@@ -1,13 +1,13 @@
 # M1_Education — README
 
 **Framework**: TSCG (Transdisciplinary System Construction Game)  
-**Layer**: M1 (KnowledgeField Extension)  
-**KnowledgeField**: Education  
+**Layer**: M1 (Domain Extension)  
+**Domain**: Education  
 **Version**: 1.0.0  
 **Date**: February 26, 2026  
 **Author**: Echopraxium with the collaboration of Claude AI  
 **Primary Motivation**: `M0_TPACK.jsonld` poclet analysis  
-**Status**: ✅ Initial release — 10 KnowledgeFieldConcepts + 3 KnowledgeFieldGenericCombos
+**Status**: ✅ Initial release — 10 domain concepts + 3 DomainConceptCombos
 
 ---
 
@@ -16,9 +16,9 @@
 1. [Overview](#overview)
 2. [Why an M1_Education Extension?](#why-an-m1_education-extension)
 3. [Architecture](#architecture)
-4. [KnowledgeField Declaration](#knowledgefield-declaration)
-5. [KnowledgeFieldConcepts (10)](#knowledgefieldconcepts-10)
-6. [KnowledgeFieldGenericCombos (3)](#knowledgefieldgenericcombos-3)
+4. [Domain Declaration](#domain-declaration)
+5. [domain concepts (10)](#domain-concepts-10)
+6. [DomainConceptCombos (3)](#domainconceptcombos-3)
 7. [M2 GenericConcept Coverage](#m2-genericconcept-coverage)
 8. [TSCG Architectural Position](#tscg-architectural-position)
 9. [Poclet Traceability](#poclet-traceability)
@@ -30,7 +30,7 @@
 
 ## 🎯 Overview
 
-`M1_Education.jsonld` is the TSCG domain extension for the **Education** KnowledgeField. It provides a vocabulary of 10 education-specific concepts formally grounded in M2 GenericConcepts, plus 3 KnowledgeFieldGenericCombos that specialize universal M2 patterns (Balance, Trade-off, Synergy) for the educational domain.
+`M1_Education.jsonld` is the TSCG domain extension for the **Education** Domain. It provides a vocabulary of 10 education-specific concepts formally grounded in M2 GenericConcepts, plus 3 DomainConceptCombos that specialize universal M2 patterns (Balance, Trade-off, Synergy) for the educational domain.
 
 The extension was motivated by the TPACK poclet (`M0_TPACK.jsonld`), which identified 20 active M2 GenericConcepts in the education domain — the highest transdisciplinary density of any poclet analyzed — warranting a dedicated M1 formalization.
 
@@ -62,18 +62,18 @@ Concepts like `ScaffoldingMechanism` (temporary support tuned to the Zone of Pro
 M2_GenericConcepts.jsonld (74 universal patterns)
         ↓  m2:characterizedBy
 M1_CoreConcepts.jsonld
-  ├── m1:core:KnowledgeField          ← parent of m1:edu:Education
-  ├── m1:core:KnowledgeFieldConcept   ← parent of all 10 concepts below
-  └── m1:core:KnowledgeFieldGenericCombo ← parent of 3 combos below
+  ├── m1:Domain          ← parent of m1:edu:Education
+  ├── m2:GenericConcept   ← parent of all 10 concepts below
+  └── m2:DomainConceptCombo ← parent of 3 combos below
         ↓  instantiates
 M1_Education.jsonld
-  ├── m1:edu:Education                ← KnowledgeField root
-  ├── KnowledgeFieldConcepts (10)
+  ├── m1:edu:Education                ← Domain root
+  ├── domain concepts (10)
   │     PedagogicalStrategy · LearningTheory · InstructionalDesign
   │     TechnologyIntegration · AssessmentStrategy · LearnerModel
   │     CurriculumStructure · ScaffoldingMechanism
   │     CommunityOfPractice · KnowledgeIntegration
-  └── KnowledgeFieldGenericCombos (3)
+  └── DomainConceptCombos (3)
         EducationalBalance · EducationalTradeOff · EducationalSynergy
         ↓  instantiates
 M0_TPACK.jsonld (primary motivation poclet)
@@ -83,20 +83,20 @@ M0_TPACK.jsonld (primary motivation poclet)
 
 ---
 
-## 🎓 KnowledgeField Declaration
+## 🎓 Domain Declaration
 
 ### Education
 
 ```
 @id: m1:edu:Education
-rdfs:subClassOf: m1:core:KnowledgeField
+rdfs:subClassOf: m1:Domain
 ```
 
-Root KnowledgeField for the education domain. Enables KnowledgeFieldGenericCombos of the form `Education ⊙ m2:GenericConcept`. Subfields: Instructional Design · Educational Technology · Learning Science · Curriculum Development · Teacher Education.
+Domain class of the Education extension (`rdfs:subClassOf m1:Domain`). Enables DomainConceptCombos `Fm1m2(Education, GenericConcept…)`. Subfields: Instructional Design · Educational Technology · Learning Science · Curriculum Development · Teacher Education.
 
 ---
 
-## 📚 KnowledgeFieldConcepts (10)
+## 📚 domain concepts (10)
 
 All concepts follow the OWL pattern:
 ```json
@@ -284,7 +284,7 @@ All concepts follow the OWL pattern:
 
 | Element | Definition | TSCG Mapping |
 |---------|-----------|-------------|
-| Domain | Shared identity and area of concern | `m1:core:KnowledgeField` + `m2:Identity` |
+| Domain | Shared identity and area of concern | `m1:Domain` + `m2:Identity` |
 | Community | Network of practitioners | `m2:Network` + `m2:Role` |
 | Practice | Shared repertoire of resources, stories, tools | `m2:Signature` + `m2:Language` |
 
@@ -326,12 +326,12 @@ The strict inequality is the emergence condition. TPACK enables teaching that is
 
 ---
 
-## 🔗 KnowledgeFieldGenericCombos (3)
+## 🔗 DomainConceptCombos (3)
 
-KnowledgeFieldGenericCombos use the **qualification operator ⊙** (not ⊗) to specialize a universal M2 GenericConcept for the Education KnowledgeField:
+DomainConceptCombos specialize a universal M2 GenericConcept for the Education domain; the combo's formula is its signature `Fm1m2(Domain, GenericConcept…)` (SC-1):
 
 ```
-KnowledgeFieldGenericCombo = KnowledgeField ⊙ GenericConcept
+Fm1m2 : Domain⁺, GenericConcept⁺ → DomainConceptCombo
 ```
 
 All three combos are grounded in the TPACK poclet `m0:balancePrinciple`, `m0:tradeoffPrinciple`, and `m0:intersections`.
@@ -341,8 +341,8 @@ All three combos are grounded in the TPACK poclet `m0:balancePrinciple`, `m0:tra
 ### EducationalBalance
 
 ```
-Education ⊙ m2:Balance
-rdfs:subClassOf: m1:core:KnowledgeFieldGenericCombo
+Fm1m2(Education, Balance)
+rdfs:subClassOf: m2:DomainConceptCombo
 m2:characterizedBy: m2:Balance (A⊗S⊗F)
 ```
 
@@ -362,8 +362,8 @@ The domain-specific manifestation of multi-factor equilibrium in educational des
 ### EducationalTradeOff
 
 ```
-Education ⊙ m2:Trade-off
-rdfs:subClassOf: m1:core:KnowledgeFieldGenericCombo
+Fm1m2(Education, Trade-off)
+rdfs:subClassOf: m2:DomainConceptCombo
 m2:characterizedBy: m2:Trade-off (A⊗I⊗F)
 ```
 
@@ -384,8 +384,8 @@ The Pareto constraint structure of educational design: teachers cannot simultane
 ### EducationalSynergy
 
 ```
-Education ⊙ m2:Synergy
-rdfs:subClassOf: m1:core:KnowledgeFieldGenericCombo
+Fm1m2(Education, Synergy)
+rdfs:subClassOf: m2:DomainConceptCombo
 m2:characterizedBy: m2:Synergy (I⊗D)
 ```
 
@@ -404,7 +404,7 @@ The non-additive integration that produces emergent educational outcomes exceedi
 
 ## 📊 M2 GenericConcept Coverage
 
-The 10 KnowledgeFieldConcepts collectively reference **18 distinct M2 GenericConcepts**:
+The 10 domain concepts collectively reference **18 distinct M2 GenericConcepts**:
 
 | M2 GenericConcept | Formula | Referenced by |
 |-------------------|---------|---------------|
@@ -453,7 +453,7 @@ M0_TPACK  ───────────────────────�
          (primary motivation poclet)
 ```
 
-**Relationship with M2**: M1_Education does NOT introduce new M2 concepts. It **instantiates** existing M2 GenericConcepts in the education KnowledgeField using `m2:characterizedBy`. If an education concept appears universal enough (e.g., KnowledgeIntegration in medicine, engineering, science), it should be proposed as a new M2 GenericConcept, not kept in M1.
+**Relationship with M2**: M1_Education does NOT introduce new M2 concepts. It **instantiates** existing M2 GenericConcepts in the education Domain using `m2:characterizedBy`. If an education concept appears universal enough (e.g., KnowledgeIntegration in medicine, engineering, science), it should be proposed as a new M2 GenericConcept, not kept in M1.
 
 **Relationship with M0**: M0 poclets in the education domain (TPACK and future ones) use `m1:edu:` concepts as their structural vocabulary, just as `M0_RAAS.jsonld` uses `m1:biology:` concepts.
 
@@ -461,7 +461,7 @@ M0_TPACK  ───────────────────────�
 
 ## 🔍 Poclet Traceability
 
-Every KnowledgeFieldConcept carries a `m1:edu:pocletEvidence` field linking it to its M0 motivation:
+Every domain concept carries a `m1:edu:pocletEvidence` field linking it to its M0 motivation:
 
 | Concept | pocletEvidence |
 |---------|---------------|
@@ -482,7 +482,7 @@ Every KnowledgeFieldConcept carries a `m1:edu:pocletEvidence` field linking it t
 
 | File | Description |
 |------|-------------|
-| **M1_Education.jsonld** | This ontology — 13 nodes (1 KnowledgeField + 10 KnowledgeFieldConcepts + 3 Combos) |
+| **M1_Education.jsonld** | This ontology — 13 nodes (1 Domain + 10 domain concepts + 3 Combos) |
 | **M1_Education_README.md** | This file |
 | **M0_TPACK.jsonld** | Primary motivation poclet (references `m1:edu:` namespace) |
 | **TPACK_README.md** | TPACK poclet overview (includes M1_Education summary section) |
@@ -506,7 +506,7 @@ Every KnowledgeFieldConcept carries a `m1:edu:pocletEvidence` field linking it t
 | **Flipped Classroom** | LearningPhase, AsynchronousContent, SynchronousApplication |
 | **Universal Design for Learning** | AccessibilityDimension, MultimodalRepresentation |
 
-### Potential new KnowledgeFieldConcepts
+### Potential new domain concepts
 
 | Concept | M2 Basis | Motivation |
 |---------|----------|------------|
@@ -516,13 +516,13 @@ Every KnowledgeFieldConcept carries a `m1:edu:pocletEvidence` field linking it t
 | FeedbackCycle | FeedbackLoop ⊗ Regulation | Assessment-instruction loop formalization |
 | LiteracyDomain | Language ⊗ Code ⊗ Signature | Digital/data/AI literacy as new TK subcategories |
 
-### Potential new KnowledgeFieldGenericCombos
+### Potential new DomainConceptCombos
 
 | Combo | Formula | Domain motivation |
 |-------|---------|-------------------|
-| EducationalEmergence | Education ⊙ m2:Emergence | Emergent curriculum; emergent understanding |
-| EducationalAdaptation | Education ⊙ m2:Adaptation | Adaptive learning systems, differentiated instruction |
-| EducationalFeedbackLoop | Education ⊙ m2:FeedbackLoop | Formative assessment cycle |
+| EducationalEmergence | Fm1m2(Education, Emergence) | Emergent curriculum; emergent understanding |
+| EducationalAdaptation | Fm1m2(Education, Adaptation) | Adaptive learning systems, differentiated instruction |
+| EducationalFeedbackLoop | Fm1m2(Education, FeedbackLoop) | Formative assessment cycle |
 
 ---
 
@@ -556,7 +556,7 @@ Every KnowledgeFieldConcept carries a `m1:edu:pocletEvidence` field linking it t
 ### TSCG Framework
 
 - `M2_GenericConcepts.jsonld` v15.7.0 — 74 GenericConcepts (Balance, Trade-off, Synergy, Emergence, etc.)
-- `M1_CoreConcepts.jsonld` — KnowledgeField, KnowledgeFieldConcept, KnowledgeFieldGenericCombo
+- `M1_CoreConcepts.jsonld` — Domain, domain concept, DomainConceptCombo
 - `M0_TPACK.jsonld` v1.1.0 — Primary motivation poclet (REVOI = 0.94)
 - `TSCG_Smart_Prompt_v15_7_0.md` — Framework conventions and OWL patterns
 

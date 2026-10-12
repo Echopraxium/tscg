@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.13.0
+**Version**: 1.14.0
 **Date**: 2026-10-11
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -491,6 +491,60 @@ extensions without one; what becomes of the registry entries (with and without a
 and of their data (`m1:instanceCount`, `m1:instanceExamples`, `m1:subdomains`…); DCC010's
 source of domain names.
 
+**Lot SC-5 (done, 2026-10-12).** Decisions (Michel, 2026-10-12):
+- the 11 `m2:KnowledgeField` individuals → `owl:Class`: 8 domains ⊑ `m1:Domain`; the 3
+  ADJECTIVE qualifiers ⊑ their noun domain (Strategic ⊑ BusinessModeling, Financial ⊑
+  Economics, Geological ⊑ Geology); `m2:knowledgeFieldRole` / `m2:derivedFrom` dropped
+  (`m2:qualifier` text kept as `skos:definition`);
+- 7 domain classes created (Chemistry, Mythology, Optics, Photography, Physics, Cartography,
+  SystemicModeling); every extension now has its domain class `m1:extension:<ext>:<Name>`;
+- `M1_Domains` 1.8.0: the 12 entries with an extension removed, their data moved onto the
+  extension class (comment only where the extension's was a "Knowledge Field" stub; the
+  richer comments of BusinessModeling, Economics, Geology kept — they still say "As a
+  KnowledgeField": text for Michel); the 10 others are classes `m1:domain:<Name> ⊑ m1:Domain`
+  (Blockchain, ComputerScience, Ecology, Engineering, GameTheory, MusicTheory, Neurobiology,
+  Philosophy, SystemsTheory, Television); `m1:ext` dropped;
+- `m1:relatedDomains` re-pointed to the extension classes, declared `owl:AnnotationProperty`
+  (an object property between classes would pun them); dangling targets
+  `m1:domain:Mathematics` (5), `m1:domain:Anthropology` (1);
+- the 3 Education combos → `m2:DomainConceptCombo`; their `qualificationFormula`
+  "Education ⊙ m2:X" (the KnowledgeField form) → signature `Fm1m2(Education, X)`;
+- **no more KnowledgeField** (Michel, 2026-10-12: "il n'y a plus de KnowledgeField, c'est
+  Domain"): purged from the live ontology text (M1 comments, M2 `characterizedBy` /
+  `NaryAttribute` / header, M3 category-theory examples `Cat_KnowledgeField` → `Cat_Domain`,
+  Fm1m2 description); `m2:KnowledgeFieldConceptNote` removed; the phantom property
+  `m2:knowledgeField` on 52 M1 classes (Chemistry, Mythology, Optics, Photography, Physics) →
+  **`m1:domain`**, declared `owl:AnnotationProperty` in M1_CoreConcepts (IRI of the domain
+  class — the same property M0 instances will use). Kept on purpose: history (changelogs),
+  `m2:DomainConceptCombo m2:supersedes m2:KnowledgeFieldConceptCombo` (record of the SC-1
+  rename), the guards that hunt the old names (DCC000, SHAPE 13). Live layer READMEs reworded
+  (Education, Economics, Electronics, the extension template, Core, M2, M3 GrammarFoundation,
+  toolchain). Not touched: historical docs (`ontology/docs/*KnowledgeField*`, old Smart
+  Prompts, published papers) and tools (`src/`, TscgPocletMiner's `knowledgeFieldCombos`
+  JSON key, CanopyGraphVizProto) — follow-up;
+- `check_M1` 1.8.0 DCC010 reads the whole class hierarchy under `m1:Domain` (transitive,
+  several parents allowed = intersection);
+- M1 SHACL 1.8.0: SHAPE 3 loses the phantom `m2:knowledgeField`; SHAPE 4 retired; SHAPE 11 →
+  `DomainClassShape` (instance data optional, to be inferred); NEW SHAPE 13
+  `NoDomainIndividualShape`. Negative tests: `validator/tests/test_m1_domains.py` (9).
+- **Gate M1 moved** (approved by Michel before `--update-golden`): errors 149 → 133 (DCC010
+  16 → 0: Music, EnergyGenerators, SystemicModeling were unregistered); warnings 1 → 1;
+  shacl_violations 446 → 296 (−150 = the 75 results of the phantom `m2:knowledgeField`
+  requirement of SHAPE 3, counted twice by `check_M1`; the 3 Education combos enter SHAPE 3's
+  reach with a valid `Fm1m2` signature: 0 new result).
+
+**Open after SC-5.**
+- **SC-5b**: `m1:subdomains` (139 strings) → subdomain classes, table validated line by line,
+  then the property is deleted (inferred by `rdfs:subClassOf`).
+- **M0 lot** (rule, Michel 2026-10-12): an M0 instance designates its domain by the IRI of a
+  domain class, never a string; `m1:domain` in 42 instances is free text today ("Optics /
+  Color Science", "TSCG", …) → mapping table, then a check (M0 SHACL / check_m0) with a
+  negative test; then `m1:instanceCount` / `m1:instanceExamples` and the registry header
+  counts are deleted (inferred). `m1:domain` on an individual → annotation with IRI value.
+- name pairs to settle: registry `MusicTheory` vs `music:Music`, `SystemsTheory` vs
+  `systemic_modeling:SystemicModeling` (same domain? subclass?); missing `Mathematics`,
+  `Anthropology`.
+
 **Found while doing C2 (not fixed).** The validator engine runs pyshacl with
 `advanced=False` (`validator/checks/shacl_runner.py`): the `sh:SPARQLTarget` combo targets
 introduced in M1 SHACL 1.6.0 are not executed on the engine path (`tscg_validator.py
@@ -621,6 +675,9 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.14.0 (2026-10-12)** — §8.0f lot SC-5 done (domains are classes ⊑ `m1:Domain`; registry,
+  DCC010, M1 SHACL 1.8.0; KnowledgeField purged, `m2:knowledgeField` → `m1:domain`; gate M1
+  149/1/446 → 133/1/296); open: SC-5b, M0 domain IRIs rule, name pairs, tools/old docs.
 - **1.13.0 (2026-10-11)** — §8.0f lot S done (`m2:State` ⊑ `m2:Node`, formula and family
   aligned on Node); SC-5 decision recorded (extension domains are subclasses of `m1:Domain`),
   measured scope and open sub-decisions.

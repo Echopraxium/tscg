@@ -18,11 +18,11 @@
       "@type": "owl:Ontology",
       "dcterms:title": "TSCG M2 GenericConcepts Ontology",
       "rdfs:label": "TSCG M2 GenericConcepts Ontology",
-      "dcterms:description": "Second layer of the TSCG Layer Cake: transdisciplinary GenericConcepts, each built by structural composition of M3 primitive types and characterised by its structural formula, family, epistemic gap and polarity. Formulas use the three M3 grammars — Gt (×, Territory), Gm (+, Map) and Gs (|, Stereopsis), whose alphabets are defined in M3 — and m2:isStereopsic flags the GenericConcepts whose formula uses | or a Gs primitive. M2 is restricted to patterns valid across all knowledge fields without exception.",
+      "dcterms:description": "Second layer of the TSCG Layer Cake: transdisciplinary GenericConcepts, each built by structural composition of M3 primitive types and characterised by its structural formula, family, epistemic gap and polarity. Formulas use the three M3 grammars — Gt (×, Territory), Gm (+, Map) and Gs (|, Stereopsis), whose alphabets are defined in M3 — and m2:isStereopsic flags the GenericConcepts whose formula uses | or a Gs primitive. M2 is restricted to patterns valid across all knowledge domains without exception.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-14",
-      "dcterms:modified": "2026-10-11",
-      "owl:versionInfo": "16.35.0",
+      "dcterms:modified": "2026-10-12",
+      "owl:versionInfo": "16.36.0",
       "owl:imports": [
         { "@id": "M3_GenesisGrammar.jsonld" }
       ],
@@ -110,6 +110,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "16.36.0",
+          "dcterms:date": "2026-10-12",
+          "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-12: there is no KnowledgeField any more, it is Domain). Obsolete m2:KnowledgeFieldConceptNote removed (it documented KnowledgeField classes that no longer exist); KnowledgeField wording in live comments replaced (domain concept, DomainConceptCombo, knowledge domain). m2:DomainConceptCombo m2:supersedes m2:KnowledgeFieldConceptCombo kept as the record of the SC-1 rename."
+        },
+        {
           "owl:versionInfo": "16.35.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "Lot S (statecharts, Michel 2026-10-11). m2:State is now rdfs:subClassOf m2:Node (still a GenericConcept through Node): the nodes of a statechart are states linked by transitions triggered by m2:Event — groundwork for the Protocol candidate (use cases of an m2:Workflow in a UML swimlane; m1:extension:biology:CellularCommunication to specialise it). Same formula as Node for now: It -> St × It | L (hence m2:isStereopsic true, hasDominantM3 + Structure); family m2:Ontological -> m2:Structural."
@@ -118,11 +123,6 @@
           "owl:versionInfo": "16.34.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "m2:producingFunction: owl:DatatypeProperty → owl:AnnotationProperty, rdfs:domain removed (Michel, 2026-10-11). It annotates the COMBO CLASS ITSELF with the signature of the function producing its members (Fm2, Fm1m2); as a data property with rdfs:domain m2:GenericConceptCombo it typed m2:GenericConceptCombo and m2:DomainConceptCombo as members of GenericConceptCombo (OWL 2 punning) — Owlready2 inheritance cycle found by owl_reasoning_test 2.0.0 once M2 could be reasoned with its imports. Comment: F_x notation removed."
-        },
-        {
-          "owl:versionInfo": "16.33.0",
-          "dcterms:date": "2026-10-11",
-          "adms:versionNotes": "RENAME LOT R (Michel, 2026-10-10/11): M3_BicephalousPerspective.jsonld → M3_OdinsWisdom.jsonld; prefix m3:bicephalous:X → m3:odins_wisdom.X (no colon inside a namespace path); 'bicephalous' retired as a metaphor — three perspectives, named in three coexisting terminology contexts (monoidal Gt/Gm/Gs, epistemological Territory/Map/Stereopsis, metaphoric Eagle Eye/Sphinx Eye/Odin's Wisdom); acronyms suffixed in prose (AStFItD, REVOIm, TKSsL). This file: Gs IRIs → m3:odins_wisdom.X (PositivePole, NegativePole…); the dangling m3:bicephalous:Time (hasDominantM3; no such term in M3) → m3:odins_wisdom.typeT (Temporality); references to M3_OdinsWisdom. The ~21 'bicephalous' adjectives of M2 prose are left for lot R2."
         }
       ],
       "m2:bicephalousStrategy": {
@@ -589,7 +589,7 @@
       "@id": "m2:NaryAttribute",
       "@type": "owl:Class",
       "rdfs:label": "N-ary Attribute",
-      "rdfs:comment": "Descriptor for a ValueSpace attribute of a GenericConcept or GenericConceptCombo. An N-ary attribute has an arity (number of simultaneous values it can hold), a value space specification, and optional constraint notes. Used to define the configurable parameters of composite genericConcepts (e.g. hasKnowledgeField, hasCombinedGenericConcept in KnowledgeFieldGenericCombo).",
+      "rdfs:comment": "Descriptor for a ValueSpace attribute of a GenericConcept or GenericConceptCombo. An N-ary attribute has an arity (number of simultaneous values it can hold), a value space specification, and optional constraint notes. Used to define the configurable parameters of composite genericConcepts (e.g. the domain and the combined GenericConcept of a DomainConceptCombo).",
       "skos:definition": "Multiplicity of a GenericConcept attribute. SOLE CARRIER of multiplicity in TSCG (v16.20.0): replaces the former ad-hoc encodings naryParameter, cardinalityMin, bare 'cardinality' and arity-as-count. Two INTEGER facets, both in UML multiplicity notation (non-negative integers; '*' = unbounded; 'min..max' = bounds): m2:cardinality = how many values/components exist (min/max), m2:arity = how many are ACTIVE AT THE SAME TIME. Exclusivity is read from arity, never stored separately: arity '1' = exclusive (alternative poles, e.g. Polarity); arity equal to cardinality = fully co-present (e.g. codon positions: cardinality '3', arity '3'; variable co-present set: cardinality '1..*', arity '*'); 1 < arity < cardinality = k-of-N (e.g. a 3-note chord among 12 pitch classes: cardinality '12', arity '3'). Absent arity = not specified. Distinct from m2:valueRange (bounds of the VALUES of a ValueSpace, not of their number).",
       "dcterms:created": "2026-02-24",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
@@ -885,22 +885,13 @@
       "@id": "m2:characterizedBy",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "characterized by",
-      "rdfs:comment": "Associates a M1 KnowledgeFieldConcept with the M2 GenericConcept(s) that characterize its systemic structure. Replaces the heterogeneous m2Basis fields (m1:biology:m2Basis, m1:M2_basis, m1core:m2Basis, m1:chemistry:instantiatesGenericConcept) across M1 files with a single normalized ObjectProperty. Semantics: 'this M1 concept EXHIBITS the pattern of / is characterized by this M2 GenericConcept'. Distinct from rdfs:subClassOf (IS-A) — a ChemicalReaction is not IS-A Process in the strict OWL sense across all inferred properties, but IS characterized-by m2:Process.",
+      "rdfs:comment": "Associates an M1 domain concept with the M2 GenericConcept(s) that characterize its systemic structure. Replaces the heterogeneous m2Basis fields (m1:biology:m2Basis, m1:M2_basis, m1core:m2Basis, m1:chemistry:instantiatesGenericConcept) across M1 files with a single normalized ObjectProperty. Semantics: 'this M1 concept EXHIBITS the pattern of / is characterized by this M2 GenericConcept'. Distinct from rdfs:subClassOf (IS-A) — a ChemicalReaction is not IS-A Process in the strict OWL sense across all inferred properties, but IS characterized-by m2:Process.",
       "rdfs:domain": {
         "@id": "owl:Class"
       },
       "rdfs:range": {
         "@id": "m2:GenericConcept"
       },
-      "dcterms:created": "2026-02-24",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
-    },
-    {
-      "@id": "m2:KnowledgeFieldConceptNote",
-      "@type": "owl:AnnotationProperty",
-      "rdfs:label": "KnowledgeField Concept Note",
-      "rdfs:comment": "Annotation documenting that KnowledgeFieldConcept, KnowledgeField, and KnowledgeFieldGenericCombo are defined in M1 (M1_CoreConcepts.jsonld), not in M2. M2 is restricted to universally transdisciplinary GenericConcepts. M1 KnowledgeFieldConcepts are owl:Class nodes with rdfs:subClassOf m2:GenericConcept (direct, no intermediate class) and m2:characterizedBy pointing to their M2 basis GenericConcepts.",
-      "m2:m1Location": "M1_CoreConcepts.jsonld",
       "dcterms:created": "2026-02-24",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI"
     },
@@ -1599,7 +1590,7 @@
       "m2:distinctionFromRelated": {
         "vs_Constraint": "Constraint defines what is PROHIBITED (negative boundary, hard limit). Scope defines what is PERMITTED (positive boundary, domain of validity). Constraint: 'you cannot leave the garden' vs Scope: 'the garden is your playground'.",
         "vs_Boundary": "Boundary is a geometric/topological separation surface. Scope is a domain of applicability/authority (conceptual, not just spatial).",
-        "vs_Domain": "Domain (full ASFID → REVOI hybrid) is an entire knowledge field. Scope is a limited region of validity within a domain.",
+        "vs_Domain": "Domain (full ASFID → REVOI hybrid) is an entire knowledge domain. Scope is a limited region of validity within a domain.",
         "vs_Capacity": "Capacity is maximum structural limit (ceiling). Scope is extent of valid operation (floor plan)."
       },
       "m2:transdisciplinaryValidation": {
@@ -5733,7 +5724,7 @@
       },
       "m2:distinctionFromRelated": {
         "vs_Information": "Information (pure ASFID I) = content only; ValueSpace (It → VORI) = content + epistemic quality of model",
-        "vs_Domain": "Domain (full ASFID → REVOI) = entire knowledge field; ValueSpace (It → VORI partial) = value set of one property",
+        "vs_Domain": "Domain (full ASFID → REVOI) = entire knowledge domain; ValueSpace (It → VORI partial) = value set of one property",
         "vs_Space": "Space (S → I) = pure topology/structure; ValueSpace (It → VORI) = topology + epistemic accessibility",
         "vs_Cardinality": "Cardinality = pure counting |S|; ValueSpace = counting (It) + model quality (VORI)",
         "vs_State": "State (S → A) = configuration at instant t; ValueSpace = all possible configurations (timeless set)"

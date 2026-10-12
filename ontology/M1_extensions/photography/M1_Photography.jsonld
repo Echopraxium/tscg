@@ -20,7 +20,7 @@
       "dcterms:description": "Domain-specific patterns for photography, camera operation, exposure control, and image quality trade-offs. M1 layer instantiates M2 GenericConcepts into concrete photographic patterns.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "owl:versionInfo": "1.9.0",
+      "owl:versionInfo": "1.10.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -39,8 +39,13 @@
       },
       "m1:extension:photography:patternCount": 10,
       "rdfs:comment": "M1 Photography bridges abstract M2 GenericConcepts to concrete photographic practice. Core patterns include exposure control, compensatory triplets, logarithmic scaling, and image quality trade-offs.",
-      "dcterms:modified": "2026-10-11",
+      "dcterms:modified": "2026-10-12",
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.10.0",
+          "dcterms:date": "2026-10-12",
+          "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-11/12): domains are classes rdfs:subClassOf m1:Domain, never individuals. m1:extension:photography:Photography created ⊑ m1:Domain; registry data moved onto m1:extension:photography:Photography. m2:KnowledgeField / m1:KnowledgeFieldGenericCombo are obsolete (declared nowhere); the KnowledgeField-only keys m2:knowledgeFieldRole, m2:derivedFrom (now rdfs:subClassOf) dropped; m2:qualifier text kept as skos:definition. Obsolete KnowledgeField vocabulary purged from the live text (Michel, 2026-10-12: there is no KnowledgeField any more, it is Domain). m2:knowledgeField (obsolete, declared nowhere) renamed m1:domain on 11 class(es): an owl:AnnotationProperty whose value is the IRI of the domain class."
+        },
         {
           "owl:versionInfo": "1.9.0",
           "dcterms:date": "2026-10-11",
@@ -50,13 +55,36 @@
           "owl:versionInfo": "1.8.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 11 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
-        },
-        {
-          "owl:versionInfo": "1.7.0",
-          "dcterms:date": "2026-10-03",
-          "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
         }
       ]
+    },
+    {
+      "@id": "m1:extension:photography:Photography",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
+      "rdfs:label": "Photography",
+      "rdfs:comment": "Art and science of capturing images using light-sensitive materials or sensors",
+      "dcterms:created": "2026-10-12",
+      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
+      "skos:definition": "Practice and technology of creating images by recording light or electromagnetic radiation",
+      "m1:subdomains": [
+        "Exposure Control",
+        "Image Formation",
+        "Image Sensors",
+        "Composition",
+        "Digital Processing"
+      ],
+      "m1:relatedDomains": [
+        {
+          "@id": "m1:extension:optics:Optics"
+        }
+      ],
+      "m1:instanceExamples": [
+        "M0_ExposureTriangle"
+      ],
+      "m1:instanceCount": 1
     },
     {
       "@id": "m1:extension:photography:CompensatoryTriplet",
@@ -106,7 +134,7 @@
       "m1:extension:photography:transdisciplinaryAnalogy": "Fire Triangle (Fuel âŠ— Oâ‚‚ âŠ— Heat â†’ Fire)",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:photography:Photography"
       }
     },
@@ -132,7 +160,7 @@
       "m1:extension:photography:validatedPoclets": 1,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:photography:Photography"
       }
     },
@@ -170,7 +198,7 @@
       "m1:extension:photography:validatedPoclets": 1,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:photography:Photography"
       }
     },
@@ -205,7 +233,7 @@
       "m1:extension:photography:validatedPoclets": 1,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × D × F | O + V)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:photography:Photography"
       }
     },
@@ -247,7 +275,7 @@
       "m1:extension:photography:validatedPoclets": 1,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:photography:Photography"
       }
     },
@@ -275,7 +303,7 @@
       "m1:extension:photography:validatedPoclets": 0,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × D × F | V + O)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:photography:Photography"
       }
     },
@@ -315,7 +343,7 @@
       "m1:extension:photography:validatedPoclets": 1,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:photography:Photography"
       }
     },
@@ -341,7 +369,7 @@
       "m1:extension:photography:validatedPoclets": 0,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:photography:Photography"
       }
     },
@@ -365,7 +393,7 @@
       "m1:extension:photography:validatedPoclets": 0,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:photography:Photography"
       }
     },
@@ -396,7 +424,7 @@
       "m1:extension:photography:validatedPoclets": 0,
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:photography:Photography"
       }
     },
@@ -433,7 +461,7 @@
       ],
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:structuralGrammarFormula": "Fm1m2(Photography, A × St × F × D | V + O)",
-      "m2:knowledgeField": {
+      "m1:domain": {
         "@id": "m1:extension:photography:Photography"
       }
     }
