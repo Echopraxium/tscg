@@ -11,6 +11,30 @@ code. Nothing in this note is implemented yet.
 
 ---
 
+## 0. Evaluation criterion (Michel, 2026-10-14) — read first
+
+TSCG is **not a Grand Unifying Framework**: it is a toolkit for prototyping *model
+mock-ups* ("maquettes de modèle"). The "truth" of the Layer Cake is measured by two
+criteria only:
+
+1. **Internal coherence** — measured by the gate, SHACL and the reasoner. A contradiction
+   is a real error, never a matter of taste.
+2. **Usefulness as a toolkit** — measured by use: can a mock-up be built with these pieces,
+   and can a non-initiate find their way?
+
+Consequences for every decision in this note:
+- Shortcuts, simplifications and interpretations are **legitimate when they serve the
+  toolkit** — but they are **flagged as such**, so a deliberate simplification is never
+  read as a claim about the world.
+- External vocabularies (OpenAlex, Wikidata…) are sources to **reuse**, not authorities on
+  truth: a divergence is fine if coherent and recorded.
+- **Every mechanism must pay for its place by use** (facets, contracts, `m1:hybridOf`,
+  prisms). A construction kit is worth its few well-fitting pieces, not its exhaustiveness.
+  Q10 already applies this to classes.
+- **Usefulness test before implementing SC-5c**: model three existing instances on paper
+  with the full apparatus — e.g. FireTriangle, RGB_Additive, Transistor — and keep only the
+  mechanisms that actually serve.
+
 ## 1. Scope split
 
 - **SC-5b** creates the subdomain classes and their `rdfs:subClassOf` links only, then
