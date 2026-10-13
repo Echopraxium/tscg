@@ -64,7 +64,9 @@
 All KEEP/RELINK lines decided (table column "Michel: decision"); see design note §9–§11:
 OpenAlex adopted as reference (Q14, `skos:closeMatch` added in SC-5b); new parents Vision
 Science, Condensed Matter Physics, plus Mathematics, Game, Card Game, ElectronicMusic;
-Pharmacology Root. **Step 1 below is done**; resume at step 3 (combos sheet), step 4 (open
+Pharmacology Root. **Evaluation criterion** (design note §0): internal coherence (gate) +
+usefulness as a toolkit; shortcuts legitimate but flagged; usefulness test on 3 instances
+before SC-5c. **Step 1 below is done**; resume at step 3 (combos sheet), step 4 (open
 questions), then step 5 (implementation).
 
 ## 3. Next goal — finish the SC-5b review, then implement
