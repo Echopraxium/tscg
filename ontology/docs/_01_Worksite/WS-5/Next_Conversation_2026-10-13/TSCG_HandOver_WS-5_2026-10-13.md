@@ -59,6 +59,14 @@
   `hybridOf`, facets, Scope view = **SC-5c**. `requires` values are noted in the table
   (column "requires → (SC-5c, noted only)").
 
+## 2b. Update 2026-10-14 01:50 — review of the 28 lines COMPLETE
+
+All KEEP/RELINK lines decided (table column "Michel: decision"); see design note §9–§11:
+OpenAlex adopted as reference (Q14, `skos:closeMatch` added in SC-5b); new parents Vision
+Science, Condensed Matter Physics, plus Mathematics, Game, Card Game, ElectronicMusic;
+Pharmacology Root. **Step 1 below is done**; resume at step 3 (combos sheet), step 4 (open
+questions), then step 5 (implementation).
+
 ## 3. Next goal — finish the SC-5b review, then implement
 
 1. **Review the 17 remaining lines** (column "Michel: decision" empty), block by block,

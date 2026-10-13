@@ -197,3 +197,38 @@ Recommendation: OpenAlex as the alignment target for roots and mid-level domains
 subfields); **Wikidata** ("academic discipline" items, `subclass of`) for deeper subdomains,
 plus specialist thesauri where they exist (MeSH, MSC, ACM CCS, PhySH). Every divergence is
 kept only with a written reason.
+
+**Decided (Michel, 2026-10-13)**: OpenAlex is the reference vocabulary for roots and
+mid-level domains. SC-5b adds `skos:closeMatch` (IRI `https://openalex.org/fields/<id>` or
+`https://openalex.org/subfields/<id>`) on the domain classes that have an OpenAlex field or
+subfield. Wikidata for finer levels and the written-reason rule for divergences: SC-5c.
+First recorded divergence: Endocrinology ⊑ Physiology (OpenAlex: siblings).
+
+## 10. Review outcomes of 2026-10-14 (Michel)
+
+- **Color Science ⊑ Vision Science** (new, closeMatch OpenAlex 2809 Sensory Systems),
+  requires Optics, Physiology. Colour is a perception model, not a property of light (cones
+  "resonate"; a dyschromatope sees other colours): Optics is on the Territory side, Color
+  Science on the Map side. Colour spaces and gamut — the RGB / CMY / CMYK / HSL instances —
+  are **`m1:DomainModel` providers of Color Science**: first concrete use case of the
+  contract model (§7.6).
+- **Semiconductor Physics ⊑ Condensed Matter Physics** (new, OpenAlex 3104) ⊑ Physics,
+  requires Quantum Mechanics; Electronic Components ⊑ Electronics requires Semiconductor
+  Physics (SC-5c).
+- **Signal Processing ⊑ Electronics + Computer Science** (OpenAlex 1711), requires
+  **Fourier Transform** — a DomainContract provider (DomainMethod or DomainModel: to
+  settle), belongsToDomain Mathematics.
+- Arbitrariness is accepted (Michel): a classification is a Map, not the Territory. It is
+  made visible (reason per decision, divergence from OpenAlex recorded) and revisable.
+
+## 11. Future work — epistemological prisms (Michel, 2026-10-14)
+
+Idea: an ontology should be *projectable* onto an epistemological prism. Same domain
+classes, several hierarchies: the TSCG prism (our `subClassOf`, the default), the OpenAlex
+or library prism (Dewey/UDC), a disciplinary prism (e.g. Color Science under Optics for a
+physicist), facet prisms (reordering by AbstractionLevel / ModelPurpose). Existing means:
+SKOS — one concept in several `skos:ConceptScheme`, each with its own `skos:broader`,
+held in separate named graphs; "ontology views" in ontology engineering. In TSCG terms a
+projection is a functor (cf. the natural transformation Φ: Gt → Gm of Modelisation in M2).
+Nothing to change in SC-5b: the `skos:closeMatch` alignments are the mapping that makes the
+OpenAlex projection computable. A worksite of its own, beyond SC-5c, when needed.
