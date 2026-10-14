@@ -256,3 +256,46 @@ held in separate named graphs; "ontology views" in ontology engineering. In TSCG
 projection is a functor (cf. the natural transformation Φ: Gt → Gm of Modelisation in M2).
 Nothing to change in SC-5b: the `skos:closeMatch` alignments are the mapping that makes the
 OpenAlex projection computable. A worksite of its own, beyond SC-5c, when needed.
+
+## 12. No stored subdomain lists, at any layer (Michel, 2026-10-14)
+
+- **Deleted, never replaced**: `m1:subdomains` (22 domain classes), the extension-local
+  `m1:extension:physics:subdomains` (6 physics combos — found on HEAD 2026-10-14, it was not
+  in the original SC-5b scope), and in M0 `m0:subdomains` (7 poclets) and `m0.vco:subdomains`
+  (Vco). Subdomains are **inferred** from `rdfs:subClassOf`.
+- What a concept or an instance carries instead: `m1:belongsToDomain` (the most specific
+  domain(s)) and `m1:requires` (domains or DomainContract providers).
+- **Same rule in M0 as in M1**: the M0 checks (`M0_Instances_Schema_shacl.ttl` /
+  `check_m0_instances.py`) enforce what M1 enforces — `belongsToDomain` targets ⊑
+  `m1:Domain`; `requires` targets ⊑ `m1:Domain` or providers of `m1:DomainContract`. As for
+  M1, the check needs the M1 hierarchy, so it lives in the Python checker (the SHACL runner
+  validates one file, without imports).
+- Scheduling: M1 deletions in **SC-5b**; M0 deletions in the **lot M0** (which rewrites
+  each instance's domain anyway). The 22 application fields on the combos are not stored
+  (they may stay as prose in comments).
+- **Decided (Michel, 2026-10-14)**: the six physics combos stay `belongsToDomain` Physics.
+  Their structural formula embeds the domain (`Fm1m2(Physics, …)`): moving them to
+  Thermodynamics would mean rewriting six formulas for little gain (§0 criterion).
+
+## 13. Open questions closed (Michel, 2026-10-14) and lot NS-SEP
+
+- **Q4**: delete `business_modeling:Strategic`, `economics:Financial`, `geology:Geological`
+  in SC-5b — KnowledgeField-era "disciplinary qualifiers (ADJECTIVE form)", referenced by
+  nothing and used by no formula (formulas use the noun: `Fm1m2(Economics, …)`).
+- **Q2**: SystemsTheory and SystemicModeling stay two roots; SystemicModeling requires
+  SystemsTheory (SC-5c).
+- **Q6**: IRI rule kept for SC-5b (current convention). **Q7**: new classes carry
+  `rdfs:label`, `rdfs:subClassOf`, `skos:closeMatch` (OpenAlex) only; definitions later.
+- **Lot NS-SEP (new, right after SC-5b)** — one `:` per CURIE, **one prefix per defining
+  file**, like M0 already does (`m0.vco:`, `m0.bmc:`, `m0.ptoe:`, `m0.triz:`):
+  `m1:domain:SystemsTheory` → `m1.domains:SystemsTheory` (prefix → `M1_Domains.jsonld#`),
+  `m1:extension:physics:Physics` → `m1.physics:Physics` (prefix → `M1_Physics.jsonld#`).
+  **Prefix rule (Michel, 2026-10-14)**: the prefix is the layer + `.` + the defining file's
+  name in lower case (`M1_Domains` → `m1.domains`, `M1_Physics` → `m1.physics`,
+  `M0_Vco` → `m0.vco`). Open: keep `m1` for M1_CoreConcepts or rename it `m1.coreconcepts`.
+  Fixes a hidden defect: today the prefix `m1` → `M1_CoreConcepts.jsonld#`, so these IRIs
+  expand into CoreConcepts although the classes are defined in M1_Domains / the extension
+  files. Measured on HEAD `76e2943`: 45 `m1:domain:X` and 1,536 `m1:extension:<ext>:X`
+  occurrences in 29 files. Mechanical rename by Claude, verified by the gate; SC-5b creates
+  its classes in the current convention so that only one convention exists at any time.
+
