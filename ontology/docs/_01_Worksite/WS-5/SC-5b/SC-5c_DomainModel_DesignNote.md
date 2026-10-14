@@ -298,4 +298,3 @@ OpenAlex projection computable. A worksite of its own, beyond SC-5c, when needed
   files. Measured on HEAD `76e2943`: 45 `m1:domain:X` and 1,536 `m1:extension:<ext>:X`
   occurrences in 29 files. Mechanical rename by Claude, verified by the gate; SC-5b creates
   its classes in the current convention so that only one convention exists at any time.
-
