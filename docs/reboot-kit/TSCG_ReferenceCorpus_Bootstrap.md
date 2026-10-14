@@ -19,6 +19,18 @@ M1  Domain Adaptation    (M1_CoreConcepts.jsonld + M1_extensions/)
 M0  Instances            (poclets, TscgTools, systemic frameworks, SSGs)
 ```
 
+**How it is judged (2026-10-14).** TSCG is **not a Grand Unifying Framework**: it is a
+toolkit for prototyping *model mock-ups*. The Layer Cake is judged by **internal
+coherence** (the gate, SHACL, the reasoner — a contradiction is a real error) and by
+**usefulness as a toolkit** (can a mock-up be built with these pieces?). Shortcuts and
+simplifications are legitimate when they serve the toolkit, **flagged as such**; every
+mechanism must pay for its place by use.
+
+**Reuse before inventing (2026-10-13).** Before modelling a notion, check whether an
+existing vocabulary covers it and align to it (`skos:closeMatch` / `skos:exactMatch`).
+Domains: **OpenAlex** is the reference for roots and mid-level domains; Wikidata and
+specialist thesauri for finer levels. A divergence is kept only with a written reason.
+
 ---
 
 ## Minimal project corpus (to bootstrap a fresh project)
@@ -114,7 +126,8 @@ A **domain** is a class too (2026-10-12, SC-5): `m1:extension:<ext>:<Name>` (or
 `m1:domain:<Name>` in `M1_Domains`) `rdfs:subClassOf m1:Domain`; a subdomain subclasses one or
 more domains; never `rdf:type m1:Domain` (M1 SHACL SHAPE 13). An M0 instance designates its
 domain by the IRI of a domain class, never a string. What can be inferred (subdomains,
-instance counts) is not stored.
+instance counts) is not stored — **no stored subdomain list at any layer** (2026-10-14):
+subdomains are read from `rdfs:subClassOf`.
 
 **Notation (2026-07-06, supersedes all prior).**
 The operator `⊗` must **never** appear in any TSCG file or formula.
