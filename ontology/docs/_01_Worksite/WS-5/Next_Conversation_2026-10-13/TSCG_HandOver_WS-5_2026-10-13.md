@@ -103,6 +103,18 @@ questions), then step 5 (implementation).
   the provider, (3) DomainExpertise = practical skills only, mixin applied or not.
 - SC-5b also cleans `optics:Optics_Domain` (string `m1:domain`).
 
+## 3c. Decided 2026-10-14 evening (design note §12)
+
+- No stored subdomain lists at any layer: delete `m1:subdomains`, `m1:extension:physics:subdomains`
+  (SC-5b) and `m0:subdomains`, `m0.vco:subdomains` (lot M0). Same requires/belongsToDomain
+  rule for M0 as for M1.
+
+## 3d. Closed 2026-10-14 23:45 (design note §12–§13)
+
+- Combos sheet closed: delete `m1:extension:physics:subdomains`; the six combos stay in Physics.
+- Q2, Q4, Q6, Q7 closed. **Preparation of SC-5b is complete → next: implement SC-5b.**
+- New lot **NS-SEP** right after SC-5b: one prefix per defining file (`m1.domains:`, `m1.physics:`…).
+
 ## 4. Unchanged from 2026-10-12
 
 Lot M0 (domain IRIs in 41 M0 files, after SC-5b), Protocol, Part (a) M2, engine
