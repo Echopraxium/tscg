@@ -8,7 +8,8 @@
 **See also**:
 - `docs/CoreHypotheses/TerritoryMap_Dichotomy.md`
 - `docs/CoreHypotheses/SystemicEsperanto.md`
-- `docs/CoreHypotheses/CredibilityAccretion_Process.md` (§ *TSCG Models Itself*)
+- `docs/CoreHypotheses/CredibilityAccretion_Process.md` (§6, *An Internal, Ontology-Driven Architecture*)
+- `docs/CoreHypotheses/ModelSupersession.md` — the epistemological postulate; paradigms as M0 objects
 - `docs/CoreHypotheses/OntologicalOverfitting.md`
 - `ontology/StructuralGrammar/Structural_Grammar_Foundation.md`
 - `ontology/M3_GenesisGrammar.jsonld`, `M2_GenericConcepts.jsonld`, `M1_CoreConcepts.jsonld`
@@ -20,10 +21,18 @@
 The four ontologies of the Layer Cake (M3, M2, M1, M0) are **not a model of
 reality**. Three of them — M3, M2, M1 — are a model of the **toolkit's own
 architecture**: their job is to keep the four layers *coherent* and *articulated*
-with one another. Only **M0** reaches toward a real system — and it does so as a
-*scale model* (a poclet / instance), never as a claim about the world.
+with one another. Only **M0** reaches toward an object outside the kit — a real
+system, or a paradigm (a scientific theory, a myth, a belief system, a fiction) —
+and it does so as a *scale model* (a poclet / instance), never as a claim about
+the world.
 
-In one line: **M3–M2–M1 describe the kit; M0 describes a system with the kit.**
+In one line: **M3–M2–M1 describe the kit; M0 describes a system or a paradigm
+with the kit.**
+
+This follows from TSCG's epistemological stance: every theory of reality rests
+on axioms or dogmas that are not demonstrated — under every Discworld, a Great
+A'Tuin. A maquette may therefore stand in any coherent paradigm, provided it
+declares the criteria it is built on (see `ContextSwitching.md`, §1 and §3.5).
 
 ## 2. Map, Territory — applied to the kit itself
 
@@ -32,7 +41,8 @@ never the thing it represents. This hypothesis applies that same distinction
 **reflexively, to TSCG itself**.
 
 - The **territory** of an M0 instance is a real system (a fire, a market, a
-  cell). M0 is a *map* of that territory — a deliberately reduced one.
+  cell) or a paradigm (geocentrism, Norse mythology, the Discworld). M0 is a
+  *map* of that territory — a deliberately reduced one.
 - But M3, M2 and M1 have **no external territory at all**. Their "territory" is
   the kit. They are the *map of the map*: the rules by which maps are built and
   made to fit together. They answer "how is a piece made, and how does it snap
@@ -108,11 +118,13 @@ coherence of M3–M1 from being mistaken for evidence about the world.
   you are learning an *architecture*, not memorising *facts about reality*.
 - It explains why the layers can be judged by **coherence and articulation**
   (does M2 compose cleanly from M3? does M1 plug into M2 via `Fm1m2`?) while M0
-  is judged by **fit to a real system** — two different standards, one per side
+  is judged by **fit to its object** — a real system, or the internal coherence
+  of a paradigm — two different standards, one per side
   of the map/territory line.
-- It keeps TSCG honest: the same reflexive move that lets *TSCG model itself*
-  (see *Credibility Accretion*, § *TSCG Models Itself*) is bounded here, so that
-  self-modelling is never confused with self-proof.
+- It keeps TSCG honest: TSCG is built on an internal, ontology-driven
+  architecture — the Layer Cake (see *Credibility Accretion*, §6). That coherence
+  is a statement about construction, never a self-proof: TSCG can be neither
+  self-validated nor self-refuted.
 
 ## 6. Relation to the other Core Hypotheses
 

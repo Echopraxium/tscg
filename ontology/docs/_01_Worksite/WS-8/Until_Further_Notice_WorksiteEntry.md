@@ -56,7 +56,8 @@ Two honesties define a good map, and they are the two axes of this worksite:
   audience serves none well — the frog-that-would-be-an-ox of Risk 1.
 - **Revision honesty (time)** — *"accurate until further notice"*: coastlines move,
   networks extend, the map is re-issued. This is the ModelSupersession discipline
-  applied to the framework itself.
+  applied to the framework itself. *(2026-10-17: as an analogy only — TSCG is not a
+  ModelSupersession instance of itself; see §6.)*
 
 *Same figure, two angles: perimeter (for whom / not for whom) and revision (current
 until further notice).*
@@ -157,6 +158,13 @@ correctly addressed when the next addition no longer reduces any attested residu
 
 ## 6. TSCG as a ModelSupersession meta-instance of itself
 
+> **Decision (Michel, 2026-10-17) — EXCLUDED.** TSCG is not a ModelSupersession
+> instance of itself: TSCG can be neither self-validated nor self-refuted, and a
+> supersession is admitted only when the history of culture has recorded it
+> (`docs/CoreHypotheses/ModelSupersession.md`, §2.4 and §9). TSCG's vocation is to
+> be a *revisable proposal* — a toolkit introducing newcomers to systemic
+> modelling. The text below is kept as design history.
+
 If ModelSupersession has been running since **SDAP** (System Design Atomic
 Principles, the first paper), then SDAP → … → v16.x is not a version log but a real
 **Milestone trajectory** in the SC-7 sense: each step *bounds* the previous one
@@ -203,7 +211,7 @@ note's first line, not its footnote.
    - Offer = "a toolkit to explore a systemic approach", output = structured lay-out of
      one's understanding + level-appropriate state of the art, NOT a predictive model
    - Debt-vs-Overfitting razor (from EpistemicResidue) = attested vs fabricated residue
-   - TSCG as ModelSupersession meta-instance of itself (SDAP → v16.x = Milestone trajectory)
+   - ~~TSCG as ModelSupersession meta-instance of itself~~ — EXCLUDED (Michel, 2026-10-17; see §6)
    - GUARD: process-value must still ship falsifiable handles (Risk 2)
    - Admission test before sealing: irreducible vs StereoscopicGlasses / TerritoryMap /
      MultisubjectiveScoreEvaluationProtocol — confirm EXTERNALLY

@@ -10,7 +10,8 @@
 `docs/CoreHypotheses/_01_Narcissus_and_Icarus_as_Safeguards.md`,
 `docs/CoreHypotheses/TerritoryMap_Dichotomy.md`,
 `docs/CoreHypotheses/SystemicEsperanto.md`,
-`ontology/instances/poclets/M0_PlateTectonics.jsonld`
+`docs/CoreHypotheses/ModelSupersession.md` (companion: the paradigm shift *after* the verdict),
+`instances/poclets/PlateTectonics/M0_PlateTectonics.jsonld`
 
 ---
 
@@ -77,6 +78,14 @@ suspect. What it offers is a vocabulary for the four fates a residue can meet �
 the comfort of a verdict for the verdict itself: the epistemic gap δ₁ read *in
 time*, the honest record of how the Map's confidence diverges from the
 Territory's resistance, kept open rather than closed by fiat.
+
+This document stops where the verdict falls. What happens *after* it — when a
+residue has forced a paradigm shift that the history of culture has recorded —
+is the subject of a companion document, `ModelSupersession.md`. The two divide
+one episode by its tense: here the residue is still open; there the shift is
+already on record. Wegener's drift appears in both — as a diamond in the rough
+discarded by the silo specialist (Section 3), and as a refutation later followed
+by a restoration.
 
 ## 2. The Classical Epistemology of Disposal
 

@@ -359,6 +359,8 @@ An honest, no-concessions diagnosis of the project: what it genuinely contribute
 
 > *These are not marketing documents. They are the questions a sceptical reviewer would ask — asked first, from the inside.*
 
+The other documents of that folder build on one another; a suggested reading order is in **[`docs/CoreHypotheses/README.md`](docs/CoreHypotheses/README.md)**.
+
 ---
 
 ## 🤝 Contributing
@@ -388,16 +390,13 @@ TSCG is currently a **single-developer project** (Michel/Echopraxium) with Claud
 
 ---
 
-## 🔄 A Framework That Expects to Be Superseded
+## 🔄 A Revisable Proposal
 
-<!-- TRANSITIONAL / TO VALIDATE — new closing section (ModelSupersession + defeasible knowledge).
-     Keep, cut, or rework after re-reading. -->
+TSCG is a **revisable proposal**: a toolkit introducing newcomers to systemic modelling, not a theory of reality. Every score is an intersubjective judgment, defeasible by better consensus; every Poclet is the best current maquette of its system, not its final word. TSCG can be **neither self-validated nor self-refuted** — that judgment belongs to the people who use it, build with it, and criticise it.
 
-TSCG treats its own results the way it treats any model: as the **state of the art until further notice**. Every score is an intersubjective judgment, defeasible by better consensus; every Poclet is the best current reading of its system, not its final word.
+Its epistemological stance is borrowed from Terry Pratchett's Discworld, a flat world carried on the back of the Great A'Tuin, the cosmic turtle: every theory of reality rests on some axioms or dogmas that are not demonstrated. Accordingly, a TSCG scale model can be built **within any coherent paradigm** — a scientific theory, a mythology, a belief system, a fiction — as long as the maquette declares the criteria it is built on. TSCG never says which paradigm is true — see **[Context Switching](docs/CoreHypotheses/ContextSwitching.md)**.
 
-This is not a rhetorical disclaimer — it is built into the architecture. TSCG includes a formal **`ModelSupersession`** mechanism (M3 ontology type #12) whose job is to record, explicitly and traceably, when one model is superseded by another and *why*. A framework about the gap between Map and Territory has no honest choice but to apply that same discipline to itself: to keep, at all times, a Map of its own obsolescence.
-
-So the corpus you see here is a snapshot. If TSCG is doing its job, some of it should already be on its way to being replaced — and the framework is designed to say so out loud when it happens.
+What TSCG *can* do is lay out how a paradigm stops being held. A candidate instance type, **Model Supersession** — a Core Hypothesis, not yet part of the ontology — builds scale models of paradigm shifts that the history of culture has **already recorded** (geocentrism to heliocentrism, the central dogma bounded by reverse transcriptase, continental drift rejected then restored), without ever adjudicating an open controversy. See **[Model Supersession](docs/CoreHypotheses/ModelSupersession.md)**.
 
 ---
 

@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1784 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1777 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -157,11 +157,14 @@
     - _00_TSCG_as_StereoscopicGlasses.md
     - _01_Narcissus_and_Icarus_as_Safeguards.md
     - Archetypes_as_CrossCultural_Artifacts.md
+    - ContextSwitching.md
     - CredibilityAccretion_Process.md
     - LayerCake_Models_The_Kit.md
     - LegoTechnic_Modularity.md
+    - ModelSupersession.md
     - MultisubjectiveScoreEvaluationProtocol.md
     - OntologicalOverfitting.md
+    - README.md
     - ScoringSystem.md
     - SystemicEsperanto.md
     - TerritoryMap_Dichotomy.md
@@ -1381,41 +1384,6 @@
       - _00_setup.txt
       - tscg_layercake_mcp_server.py
       - tscg_layercake_mcp_server_README.md
-    - **TscgLittleBigBrain/**
-      - **docs/**
-        - _00_TSCG_as_StereoscopicGlasses.md
-        - _01_Narcissus_and_Icarus_as_Safeguards.md
-        - Archetypes_as_CrossCultural_Artifacts.md
-        - CredibilityAccretion_Process.md
-        - LegoTechnic_Modularity.md
-        - MultisubjectiveScoreEvaluationProtocol.md
-        - SystemicEsperanto.md
-        - TerritoryMap_Dichotomy.md
-      - **examples/**
-        - run_benchmark.py
-      - **src/**
-        - __init__.py
-        - auto_learning.py
-        - models.py
-        - trainer.py
-      - **tests/**
-        - __init__.py
-        - test_api_client.py
-        - test_benchmark.py
-      - _00_run.bat
-      - _open_cmd_window.bat
-      - detect_scores.py
-      - diagnostic_scores.py
-      - FileTree.txt
-      - instances_traversal.py
-      - M0_Triz_Examples.jsonld
-      - README.md
-      - requirements.txt
-      - restore_M0_bak.py
-      - scores_migration.py
-      - server.log
-      - test_extract_score.py
-      - TRIZ_vs_TSCG.py
     - **TscgOntologyAPIServer/**
       - **src/**
         - _run_tests.bat
@@ -1614,6 +1582,7 @@
         - README.md
         - SC-1_FunctionalGrammar_Handover.md
         - SC-3_M3_Facet_Draft_v2.md
+        - SC-3b_RealityCheck_ChangeRequest.md
         - TSCG_File_Tree.md
         - TSCG_Session_Handover_2026-07-25.md
       - **WS-1/**
@@ -1629,6 +1598,8 @@
         - worksite.yaml
       - **WS-12/**
         - worksite.yaml
+      - **WS-13/**
+        - WS-13_Phase0_Structural_Core.md
       - **WS-3/**
         - M2_Formulas_Review_with_Gs_README.md
       - **WS-5/**
@@ -1644,6 +1615,23 @@
           - TSCG_HandOver_WS-5_2026-10-06.md
           - TSCG_RemainingWork.dot
           - TSCG_RemainingWork.png
+        - **Next_Conversation_2026-10-11/**
+          - legend.dot
+          - render_graph.py
+          - TSCG_HandOver_WS-5_2026-10-11_complement.md
+          - TSCG_HandOver_WS-5_2026-10-11_session2.md
+          - TSCG_RemainingWork.dot
+          - TSCG_RemainingWork.png
+          - WS-3_Addendum_GS-3_GS-4_L-Cluster.md
+        - **Next_Conversation_2026-10-12/**
+          - TSCG_HandOver_WS-5_2026-10-12.md
+        - **Next_Conversation_2026-10-13/**
+          - TSCG_HandOver_WS-5_2026-10-13.md
+        - **Next_Conversation_2026-10-15/**
+          - TSCG_HandOver_WS-5_2026-10-15.md
+        - **SC-5b/**
+          - SC-5b_Subdomains_Decision_Table.xlsx
+          - SC-5c_DomainModel_DesignNote.md
         - worksite.yaml
         - WS-5_LOT1_Report.md
         - WS-5_M3M2_Instrumentation_Scoping.md
@@ -1849,6 +1837,12 @@
       - ontology_linter_README.md
       - Prerequisites_Setup_README.md
     - **owl_reasoning_test/**
+      - **tests/**
+        - **fixtures/**
+          - bad_import.jsonld
+          - inconsistent.jsonld
+          - self_typed_class.jsonld
+        - test_owl_reasoning_test.py
       - _open_cmd_window.bat
       - convert_jsonld_to_turtle.py
       - fix_owl_literals.py
@@ -1871,6 +1865,8 @@
         - shacl_runner.py
       - **tests/**
         - test_doc.py
+        - test_m1_combo_punning.py
+        - test_m1_domains.py
         - test_shacl_runner.py
         - test_structural_grammar.py
       - sources.py
@@ -1931,14 +1927,14 @@
   - M1_Domains_README.md ★
   - M2_GenericConcepts.jsonld ★
   - M2_GenericConcepts_README.md ★
-  - M3_OdinsWisdom.jsonld ★
-  - M3_OdinsWisdom_README.md ★
   - M3_EagleEye.jsonld ★
   - M3_EagleEye_README.md ★
   - M3_GenesisGrammar.jsonld ★
   - M3_GenesisGrammar_README.md ★
   - M3_GrammarFoundation.jsonld ★
   - M3_GrammarFoundation_README.md ★
+  - M3_OdinsWisdom.jsonld ★
+  - M3_OdinsWisdom_README.md ★
   - M3_SphinxEye.jsonld ★
   - M3_SphinxEye_README.md ★
 - **src/**

@@ -4,8 +4,8 @@
 **Date**: 2026-05-23  
 **Framework**: TSCG (Transdisciplinary System Construction Game) v16.0.0+  
 **Status**: Foundational Concept — philosophical and epistemological grounding  
-**Location**: `docs/CredibilityAccretion_Process.md`  
-**See also**: `docs/MultisubjectiveScoreEvaluationProtocol.md`
+**Location**: `docs/CoreHypotheses/CredibilityAccretion_Process.md`  
+**See also**: `docs/CoreHypotheses/MultisubjectiveScoreEvaluationProtocol.md`
 
 ---
 
@@ -16,7 +16,7 @@
 3. [The Bootstrap Paradox](#3-the-bootstrap-paradox)
 4. [Four Observer Perspectives](#4-four-observer-perspectives)
 5. [The Credibility Accretion Spiral as a TSCG Attractor](#5-the-credibility-accretion-spiral-as-a-tscg-attractor)
-6. [Self-Referential Coherence: TSCG Models Itself](#6-self-referential-coherence-tscg-models-itself)
+6. [An Internal, Ontology-Driven Architecture: The Layer Cake](#6-an-internal-ontology-driven-architecture-the-layer-cake)
 7. [Summary](#7-summary)
 
 ---
@@ -209,30 +209,36 @@ Stable benchmarks   →  TscgPocletMiner auto-identifies centroids
 
 ---
 
-## 6. Self-Referential Coherence: TSCG Models Itself
+## 6. An Internal, Ontology-Driven Architecture: The Layer Cake
 
-The deepest observation is **autopoietic**: the credibility accretion spiral
-is not merely *analogous* to a TSCG Attractor — it *is* one. The
-Multisubjective Score Evaluation Protocol, applied to its own adoption
-process, produces a valid TSCG model of itself.
+An earlier version of this section was titled *"TSCG Models Itself"*. It read the
+credibility accretion spiral as an autopoietic self-model — the protocol, applied to
+its own adoption, producing "a valid TSCG model of itself" — and took that as "a
+signal of genuine structural depth". **That reading is withdrawn.** It slid toward
+self-validation, which TSCG cannot claim: TSCG can be neither self-validated nor
+self-refuted; the judgment of the toolkit belongs to its users and critics.
 
-This self-referential coherence — a framework that can model its own growth
-dynamics using its own conceptual vocabulary — is a property shared by very
-few epistemological frameworks. It is a signal of genuine structural depth,
-not circular reasoning: the model and the modelled process belong to
-different logical levels (the protocol at M3/M2, its adoption dynamics at M0).
+What remains accurate is narrower: **TSCG is built on an internal, ontology-driven
+architecture — the Layer Cake** (`LayerCake_Models_The_Kit.md`). M3, M2 and M1
+describe the kit itself and keep its layers coherent; M0 builds scale models with
+it. Because the vocabulary is the kit's own, it can also be used to *describe*
+processes that concern the kit — such as the accretion spiral above, which can be
+laid out as an attractor-driven dynamics. That description is a maquette like any
+other: coherent by construction, informative as a reading aid, and **evidence of
+nothing** about the kit's value.
 
-This raises an open architectural question:
+This leaves an open question, kept as such:
 
-> Should the Credibility Accretion Process be formalised as a dedicated
-> TSCG instance? Its apparent-impossibility structure (a protocol that
-> derives credibility from the very consensus it must first create) suggests
-> it may qualify as a **`m3:Enigma`** — a system requiring a ternary mediator
-> to resolve the apparent paradox.
+> Should the Credibility Accretion Process be laid out as a dedicated TSCG
+> maquette? Its apparent-impossibility structure — a protocol that derives
+> credibility from the very consensus it must first create — resembles a paradox
+> awaiting a ternary mediator. (A matching instance type, `m3:Enigma`, was once
+> envisaged; it does not exist in the ontology.)
 
-The ternary mediator candidate: **structural coherence** — the property
-visible to early adopters before consensus exists, which initiates the
-accretion without requiring prior credibility.
+The mediator candidate is **structural coherence** — the property visible to early
+adopters before consensus exists, which initiates the accretion without requiring
+prior credibility. If such a maquette is ever built, it is a reading aid, not a
+self-proof.
 
 ---
 
@@ -261,15 +267,15 @@ accretion without requiring prior credibility.
    to be observable and quantifiable — which is what falsifiability
    actually requires.
 
-5. THE ATTRACTOR INSIGHT
-   The credibility accretion process is itself a TSCG Attractor:
+5. THE ATTRACTOR READING
+   The credibility accretion process can be laid out as a TSCG Attractor:
    Structure (protocol) + Flow (adoption) + Dynamics (score evolution)
    converging toward established multisubjective consensus.
 
-6. THE SELF-REFERENTIAL COHERENCE
-   TSCG can model its own credibility growth using its own vocabulary.
-   This autopoietic property is a signal of genuine structural depth —
-   and a potential candidate for a future m3:Enigma instance.
+6. AN INTERNAL, ONTOLOGY-DRIVEN ARCHITECTURE
+   TSCG is built on the Layer Cake; its own vocabulary can describe
+   processes that concern the kit. Such a description is a reading aid,
+   never a self-proof: TSCG can be neither self-validated nor self-refuted.
 ```
 
 ---
