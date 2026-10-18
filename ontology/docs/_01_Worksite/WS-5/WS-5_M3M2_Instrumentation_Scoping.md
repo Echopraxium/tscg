@@ -182,6 +182,8 @@ Findings (no lot yet, Michel to decide):
   M0_Triz_Examples.jsonld` have no `owl:Ontology` node: every M0 shape targets
   `owl:Ontology`, so C15 reports them as passing without validating anything (focus
   41 for 43 files). Also a duplicate file.
+  *(2026-10-18: the duplicate is resolved — `TscgLittleBigBrain` deleted with its
+  copy; the `systemic-frameworks/Triz/` file still lacks an `owl:Ontology` node.)*
 
 ## 8. Step (2) — document-plane checks D1–D7: DONE 2026-10-04
 

@@ -142,6 +142,9 @@ concept may legitimately stay pure Territory).
   (`systemic-frameworks/Triz/`, `tscg-tools/TscgLittleBigBrain/`) have no
   `owl:Ontology` node: every M0 shape misses them and C15 counts them as passing.
   Also a duplicate.
+  *(2026-10-18: the duplicate is resolved — `TscgLittleBigBrain` deleted with its
+  copy. The remaining `systemic-frameworks/Triz/M0_Triz_Examples.jsonld` still has
+  no `owl:Ontology` node.)*
 - **`m2:FeedbackLoop`** formula `m2:Process × m2:Alignment × m2:Homeostasis`: a
   combo of named concepts written with the monoidal operator — what SC-1 forbids;
   SC-8 (FeedbackLoop reclassification).
