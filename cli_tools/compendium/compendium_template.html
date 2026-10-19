@@ -1,62 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>TSCG Compendium</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 <style>
+/* TSCG Compendium — layout: same column as the live Compendium; header → collapsible About → search row → audience lens → editor-style tab bar fused to one document panel.
+   Theme: "Nuit" is the only (default) look — dark tokens on bare :root, no toggle. */
 :root{
-  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
-  --paper:#eef1f5;--surface:#ffffff;--ink:#1b2028;--muted:#67707c;--line:#d9dee6;
-  --accent:#238d80;--accent-soft:rgba(35,141,128,.12);--territory:#c0862c;
-  --play:#238d80;--play-bg:rgba(35,141,128,.12);--local:#b06a1a;--local-bg:rgba(176,106,26,.12);
-  --wip:#6b7480;--wip-bg:rgba(107,116,128,.12);
-  --disp:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
-  --body:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
   --paper:#0f1319;--surface:#161c24;--ink:#e6eaf0;--muted:#8a94a2;--line:#28303b;
   --accent:#4fc3b4;--accent-soft:rgba(79,195,180,.14);--territory:#e0a64b;
   --play:#4fc3b4;--play-bg:rgba(79,195,180,.14);--local:#e0a64b;--local-bg:rgba(224,166,75,.14);
   --wip:#8a94a2;--wip-bg:rgba(138,148,162,.14);
-}}
-:root[data-theme="dark"]{
-  --paper:#0f1319;--surface:#161c24;--ink:#e6eaf0;--muted:#8a94a2;--line:#28303b;
-  --accent:#4fc3b4;--accent-soft:rgba(79,195,180,.14);--territory:#e0a64b;
-  --play:#4fc3b4;--play-bg:rgba(79,195,180,.14);--local:#e0a64b;--local-bg:rgba(224,166,75,.14);
-  --wip:#8a94a2;--wip-bg:rgba(138,148,162,.14);
+  --scroll:#9fe6dd;--scroll-track:rgba(159,230,221,.10);
+  --tabbar:#11161d;--tab:#131920;--tab-hover:#1a212b;
+  --disp:Roboto,"Segoe UI",-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --body:Roboto,"Segoe UI",-apple-system,"Helvetica Neue",Arial,sans-serif;
 }
-*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:940px;margin:0 auto;padding:clamp(18px,4vw,40px) clamp(14px,4vw,28px) 90px}
-h1{font-family:var(--disp);font-weight:700;font-size:clamp(30px,7vw,46px);letter-spacing:-.02em;margin:0;line-height:1.02}
-.sub{color:var(--muted);max-width:60ch;margin:10px 0 0;font-size:15px}
-.gallerylink{display:inline-block;margin-top:14px;font-family:var(--disp);font-weight:600;font-size:14px;color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:8px 14px;text-decoration:none}
-.gallerylink:hover{background:var(--accent-soft)}
-.lens{margin:22px 0 6px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
-.lens-top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:12px}
-.lens-label{font-family:var(--disp);font-weight:600;font-size:14px}
-.lens-count{font-family:var(--disp);font-size:13px;color:var(--muted);text-align:right}
-.lens-count b{color:var(--accent);font-size:22px}
-.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--paper);border-radius:12px;padding:5px}
-.seg button{font-family:var(--disp);font-weight:600;font-size:14px;cursor:pointer;border:0;border-radius:8px;padding:11px 8px;color:var(--muted);background:transparent;transition:color .15s}
-.seg button .depth{display:block;font-weight:400;font-size:11px;opacity:.8}
-.seg button[aria-pressed="true"]{background:var(--surface);color:var(--accent);box-shadow:0 1px 0 var(--line),0 2px 8px rgba(0,0,0,.06)}
-.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:18px 0 6px}
-.search{flex:1;min-width:180px}
-.search input{width:100%;font:inherit;font-size:15px;padding:11px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:940px;margin:0 auto;padding-block:clamp(18px,4vw,40px) 90px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+
+/* ── Header ── */
+h1{text-align:left;font-family:var(--disp);font-weight:700;font-size:clamp(30px,7vw,44px);letter-spacing:-.01em;margin:0;line-height:1.02;text-wrap:balance}
+.def{margin:8px 0 0;padding:0 0 0 .5em;text-align:left;font-family:var(--disp);font-size:clamp(11.22px,1.795vw,13.46px);font-weight:500;color:var(--ink);letter-spacing:.005em}
+.def b{color:var(--accent);font-weight:700}
+/* Title block + logo: the logo takes exactly the height of title + subtitle */
+.brand{display:flex;align-items:stretch;justify-content:space-between;gap:16px}
+.brand-text{min-width:0}
+.logo{position:relative;flex:0 0 auto;aspect-ratio:732/705;max-width:30%;align-self:flex-start;
+  height:calc(clamp(30px,7vw,44px)*1.02 + 8px + clamp(11.22px,1.795vw,13.46px)*1.55)}
+.logo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.about{margin:14px 0 0;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.about summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:12px;user-select:none}
+.about summary::-webkit-details-marker{display:none}
+.about summary:hover{background:var(--tab-hover)}
+.about summary .chev{width:16px;height:16px;color:var(--scroll);flex:0 0 auto;transition:transform .15s}
+.about[open] summary .chev{transform:rotate(90deg)}
+.about summary .st{font-weight:500;font-size:14.5px}
+.about summary .teaser{color:var(--muted);font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.about[open] summary .teaser{display:none}
+.about[open] summary{border-bottom:1px solid var(--line);border-radius:12px 12px 0 0}
+.about-body{max-height:220px;overflow-y:auto;padding:16px 20px 18px;scrollbar-color:var(--scroll) var(--scroll-track)}
+.about-body::-webkit-scrollbar{width:10px}
+.about-body::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:8px}
+.about-body::-webkit-scrollbar-thumb{background:var(--scroll);border-radius:8px;border:2px solid var(--surface)}
+.about-body::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+.about p{margin:0 0 10px;font-size:14.5px;max-width:72ch}
+.about p:last-child{margin-bottom:0}
+.about .lead{color:var(--ink)}
+.about ol{margin:0 0 12px;padding-left:0;list-style:none;display:grid;gap:10px}
+.about li{border-left:3px solid var(--accent);padding-left:12px;font-size:14.5px;max-width:72ch}
+.about li:nth-child(2){border-color:var(--territory)}
+.about li b{display:block;font-weight:500;color:var(--ink)}
+.about li span{color:var(--muted)}
+.about .note{color:var(--muted)}
+.about .not{border-top:1px solid var(--line);padding-top:10px}
+.lens-hint{flex-basis:100%;margin:-2px 0 0;padding:0 6px;font-size:12.5px;color:var(--muted)}
+
+/* ── Search + gallery on one line ── */
+.toprow{display:flex;gap:10px;align-items:stretch;margin:18px 0 0;flex-wrap:wrap}
+.search{flex:1;min-width:200px;position:relative}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted);pointer-events:none}
+.search input{width:100%;height:100%;font:inherit;font-size:15px;padding:10px 14px 10px 36px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
 .search input::placeholder{color:var(--muted)}
 .search input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
-.themebtn{font:inherit;font-size:18px;line-height:1;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:9px 12px;cursor:pointer}
-.rubrics{display:flex;gap:8px;overflow-x:auto;padding:14px 0 4px;-webkit-overflow-scrolling:touch}
-.rubrics button{white-space:nowrap;font:inherit;font-size:13.5px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:8px 14px}
-.rubrics button .c{color:var(--ink);font-weight:600;margin-left:6px}
-.rubrics button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
-.rubrics button[aria-pressed="true"] .c{color:var(--accent)}
+.gallerylink{display:inline-flex;align-items:center;gap:6px;font-family:var(--disp);font-weight:600;font-size:14px;color:var(--accent);border:1px solid var(--accent);border-radius:10px;padding:10px 16px;white-space:nowrap}
+.gallerylink:hover{background:var(--accent-soft)}
+
+/* ── Audience lens (unchanged) ── */
+.lens{margin:18px 0 0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.audbox{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0;padding:4px 6px;border-radius:10px;transition:opacity .15s}
+.lens-label{font-family:var(--disp);font-weight:500;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.selwrap{position:relative}
+.selwrap select{appearance:none;-webkit-appearance:none;font:inherit;font-size:14.5px;font-weight:500;color:var(--accent);background:var(--paper);border:1px solid var(--accent);border-radius:9px;padding:8px 36px 8px 12px;cursor:pointer;max-width:100%}
+.selwrap select option{color:var(--ink);background:var(--surface)}
+.selwrap svg{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--accent);pointer-events:none}
+.lens-count{font-family:var(--disp);font-size:12px;color:var(--muted)}
+.lens-count b{color:var(--accent);font-size:12px;font-weight:500;font-variant-numeric:tabular-nums}
+.termbtn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:14.5px;font-weight:500;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:9px;padding:8px 14px}
+.termbtn svg{width:17px;height:17px;color:var(--territory)}
+.termbtn .c{font-size:11.5px;font-weight:500;color:var(--muted);background:rgba(138,148,162,.12);border-radius:999px;padding:1px 7px;font-variant-numeric:tabular-nums}
+.termbtn:hover{border-color:var(--territory);color:var(--territory)}
+/* Terminology mode: the button is lit in amber, the audience picker steps back */
+.lens.terms .termbtn{background:var(--territory);border-color:var(--territory);color:#1a1307}
+.lens.terms .termbtn svg{color:#1a1307}
+.lens.terms .termbtn .c{background:rgba(0,0,0,.15);color:#1a1307}
+.lens.terms .audbox{opacity:.45}
+.lens.terms .audbox:hover,.lens.terms .audbox:focus-within{opacity:1}
+.lens.terms .selwrap select,.lens.terms .selwrap svg{border-color:var(--line);color:var(--muted)}
+.editor.terms{border-color:rgba(224,166,75,.45)}
+.termbar{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--tabbar);border-bottom:1px solid var(--line);position:relative;padding:0 8px 0 16px;min-height:42px;flex-wrap:wrap}
+.termbar::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--territory)}
+.termtitle{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--territory)}
+.termtitle svg{width:16px;height:16px}
+.backbtn{font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:7px;padding:5px 10px;margin:6px 0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.backbtn:hover{color:var(--accent);border-color:var(--accent)}
+.gloss{display:grid;gap:22px}
+.gloss h2{font-family:var(--disp);font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.gloss dl{margin:0;border-top:1px solid var(--line)}
+.term{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:6px 18px;padding:11px 4px;border-bottom:1px solid var(--line)}
+.term dt{font-weight:500;font-size:15px;min-width:0}
+.term dt .alias{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px}
+.term dd{margin:0;font-size:14.5px;color:var(--muted);min-width:0;max-width:66ch}
+.term dd b{color:var(--ink);font-weight:500}
+.chip{display:inline-block;font-size:11px;font-weight:500;border-radius:5px;padding:1px 6px;margin-left:6px;vertical-align:1px;font-variant-numeric:tabular-nums}
+.chip.gt{color:var(--territory);background:var(--local-bg)}
+.chip.gm{color:var(--accent);background:var(--accent-soft)}
+.chip.gs{color:#b9a3f0;background:rgba(185,163,240,.14)}
+.mono{font-family:ui-monospace,"Cascadia Code",Consolas,monospace;font-size:13px;color:var(--ink)}
+
+/* ── Panel content (sections) ── */
 .group{margin-top:26px}
 .group h2{font-family:var(--disp);font-weight:600;font-size:13px;color:var(--muted);margin:0 0 4px;display:flex;justify-content:space-between}
 .rows{border-top:1px solid var(--line)}
@@ -104,38 +167,134 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(30px,7vw,46px);letter
 .health-legend{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0 4px;font-size:13px;color:var(--muted)}
 .health-legend span::before{content:"";display:inline-block;width:11px;height:11px;margin-right:6px;vertical-align:-1px;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
 .hl-g::before{background:#3f9e5a}.hl-o::before{background:#ff8a00}.hl-m::before{background:#c4268f}.hl-r::before{background:#d8322a}.hl-x::before{background:#b9b9b9}
+/* content sits inside the document panel: no box-in-box */
+.panel .intro{background:transparent;border:0;padding:0;margin-top:0}
+.panel .stub{background:var(--paper)}
+.panel .card{background:var(--paper)}
+.group:first-child{margin-top:0}
+
+/* ── Editor-style tab bar ── */
+.editor{margin-top:22px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.tabbar{display:flex;align-items:stretch;background:var(--tabbar);border-bottom:1px solid var(--line)}
+.navbtn{flex:0 0 auto;width:36px;display:grid;place-items:center;border:0;background:transparent;color:var(--muted);cursor:pointer}
+.navbtn svg{width:16px;height:16px}
+.navbtn:hover:not(:disabled){color:var(--ink);background:var(--tab-hover)}
+.navbtn:disabled{opacity:.3;cursor:default}
+.navbtn.l{border-right:1px solid var(--line)}
+.navbtn.r{border-left:1px solid var(--line)}
+.tabs{flex:1;min-width:0;display:flex;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;display:flex;align-items:center;gap:8px;font:inherit;font-size:13.5px;white-space:nowrap;cursor:pointer;
+  border:0;border-right:1px solid var(--line);background:var(--tab);color:var(--muted);padding:10px 16px 9px;position:relative}
+.tab:hover{color:var(--ink);background:var(--tab-hover)}
+.tab .ico{width:14px;height:14px;flex:0 0 auto;opacity:.7}
+.tab .c{font-family:var(--disp);font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--muted);background:rgba(138,148,162,.12);border-radius:999px;padding:1px 7px}
+.tab[aria-selected="true"]{background:var(--surface);color:var(--ink);margin-bottom:-1px}
+.tab[aria-selected="true"]::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--accent)}
+.tab[aria-selected="true"] .ico{opacity:1;color:var(--accent)}
+.tab[aria-selected="true"] .c{color:var(--accent);background:var(--accent-soft)}
+.tab:focus-visible{outline-offset:-2px}
+.pos{flex:0 0 auto;display:flex;align-items:center;padding:0 10px;font-family:var(--disp);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;border-left:1px solid var(--line)}
+.menuwrap{position:relative;flex:0 0 auto;display:flex}
+.menu{position:absolute;right:6px;top:calc(100% + 4px);z-index:20;min-width:240px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.menu button{display:flex;justify-content:space-between;gap:12px;width:100%;text-align:left;font:inherit;font-size:13.5px;border:0;background:transparent;color:var(--ink);padding:7px 10px;border-radius:6px;cursor:pointer}
+.menu button:hover{background:var(--tab-hover)}
+.menu button[aria-current="true"]{color:var(--accent)}
+.menu .c{color:var(--muted);font-variant-numeric:tabular-nums}
+.crumb{display:flex;align-items:center;gap:6px;padding:9px 18px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line);font-family:var(--disp)}
+.crumb b{color:var(--ink);font-weight:500}
+.panel{padding:20px 22px 24px;min-width:0}
+
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:22px;padding-top:14px;border-top:1px solid var(--line)}
+.pager button{font:inherit;font-size:13px;font-family:var(--disp);font-weight:600;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:8px;padding:7px 12px;max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pager button:hover{color:var(--accent);border-color:var(--accent)}
+.pager button[hidden]{display:none!important}
+.kbd{font-size:11.5px;color:var(--muted);margin-top:10px}
+kbd{font-family:ui-monospace,monospace;font-size:11px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;color:var(--ink)}
 footer{margin-top:40px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
-@media (max-width:560px){.lens-top{flex-direction:column;align-items:flex-start;gap:6px}.lens-count{text-align:left}.row{flex-direction:column;gap:6px}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+footer{margin-top:40px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:560px){
+  .lens{flex-direction:column;align-items:stretch}.termbtn{justify-content:center}
+  .selwrap,.selwrap select{width:100%}
+  .term{grid-template-columns:1fr}
+  .row{flex-direction:column;gap:6px}.pos{display:none}.panel{padding:16px 14px 20px}
+  .gallerylink{flex:1;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){.tabs{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>TSCG Compendium</h1>
-    <p class="sub">The systemic construction kit, seen through one lens at a time. Pick your level — the Compendium shows only what concerns you.</p>
-    <a class="gallerylink" href="instances/simulation_gallery.html" target="_blank" rel="noopener">▸ Simulation gallery</a>
+    <div class="brand">
+      <div class="brand-text">
+      <h1>TSCG Compendium</h1>
+      <p class="def"><b>T</b>ransdisciplinary <b>S</b>ystem <b>C</b>onstruction <b>G</b>ame</p>
+      </div>
+      <div class="logo"><img src="TSCG_Logo.png" alt="TSCG logo: a wireframe cube crossed by magenta paths linking small cyan cubes"></div>
+    </div>
+    <details class="about" id="about" open>
+      <summary><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg><span class="st">About TSCG</span><span class="teaser">Mission · three pillars · not a Grand Unifying Framework · the Layer Cake</span></summary>
+      <div class="about-body" tabindex="0" aria-label="About TSCG">
+      <p class="lead">TSCG's purpose is to provide an introductory-level toolkit to learn, practice and explore systems modeling. Its mission is to help you build <b>scale models</b> of systems: deliberately simplified, working models made for learning by doing. It rests on three pillars.</p>
+      <ol>
+        <li><b>Map / Territory duality</b><span>After Korzybski, the map is not the territory. TSCG reads every system with two eyes at once: the Territory eye (what the system does) and the Map eye (how well we can represent it). Held together, they give a depth neither shows alone.</span></li>
+        <li><b>A systemic Esperanto</b><span>A small shared vocabulary of generic concepts, so that people from different fields can recognise when they describe the same pattern under different names. It translates between disciplines and asks no one to give up their own terms.</span></li>
+        <li><b>A toolkit in the spirit of LEGO Technic</b><span>Models are assembled from a small set of reusable, validated pieces. The test is whether the mechanism works, not whether the model looks right.</span></li>
+      </ol>
+      <p class="not"><b>What TSCG is not.</b> <span class="note">It is not a new Grand Unifying Framework and claims no universal theory. It is judged by its internal coherence and by how useful it is for building model mock-ups.</span></p>
+      <p><b>The Layer Cake.</b> <span class="note">Four levels of ontologies (M3 Structural Grammar, M2 Generic Concepts, M1 Domain Adaptation, M0 Instances) give the kit a coherent, ontology-driven architecture: each layer rests on the one below, and the acceptance gate checks that they fit together.</span></p>
+    </div></details>
   </header>
 
-  <section class="lens" aria-label="Audience level">
-    <div class="lens-top">
-      <span class="lens-label">Audience lens</span>
-      <span class="lens-count"><b id="nvis">0</b> <span id="ntot"></span></span>
-    </div>
-    <div class="seg" role="group" aria-label="Choose level">
-      <button data-aud="KitUser" aria-pressed="true">KitUser<span class="depth">experiment &amp; play with kits</span></button>
-      <button data-aud="KitCrafter" aria-pressed="false">KitCrafter<span class="depth">design &amp; assemble kits</span></button>
-      <button data-aud="KitArchitect" aria-pressed="false">KitArchitect<span class="depth">architecture, workflows, tools</span></button>
-    </div>
-  </section>
-
-  <div class="controls">
-    <div class="search"><input id="q" type="search" placeholder="Search a title or a path…" autocomplete="off"></div>
-    <button class="themebtn" id="theme" title="Toggle light / dark" aria-label="Toggle theme">◐</button>
+  <div class="toprow">
+    <label class="search" for="q">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search a title or a path…" autocomplete="off" aria-label="Search a title or a path">
+    </label>
+    <a class="gallerylink" href="instances/simulation_gallery.html" target="_blank" rel="noopener">▸ Simulation gallery</a>
   </div>
 
-  <nav class="rubrics" id="rubrics" aria-label="Sections"></nav>
-  <main id="view"></main>
+  <section class="lens" id="lens" aria-label="What to read">
+    <div class="audbox" id="audbox">
+      <label class="lens-label" for="aud">Audience</label>
+      <div class="selwrap">
+        <select id="aud">
+          <option value="KitUser">KitUser — experiment &amp; play with kits</option>
+          <option value="KitCrafter">KitCrafter — design &amp; assemble kits</option>
+          <option value="KitArchitect">KitArchitect — architecture, workflows, tools</option>
+        </select>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <span class="lens-count"><b id="nvis">0</b> <span id="ntot"></span></span>
+    </div>
+    <button class="termbtn" id="termbtn" aria-pressed="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/><path d="M9 8h6M9 12h4"/></svg>
+      <span>Terminology</span><span class="c" id="termcount"></span>
+    </button>
+    <p class="lens-hint">Pick your level — the Compendium shows only what concerns you.</p>
+  </section>
+
+  <div class="editor" id="editor">
+    <div class="termbar" id="termbar" hidden>
+      <span class="termtitle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/></svg>Terminology</span>
+      <button class="backbtn" id="backbtn"></button>
+    </div>
+    <div class="tabbar" id="tabbar">
+      <button class="navbtn l" id="prev" title="Previous tab (Ctrl+PageUp)" aria-label="Previous tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+      <div class="tabs" id="tabs" role="tablist" aria-label="Sections"></div>
+      <button class="navbtn r" id="next" title="Next tab (Ctrl+PageDown)" aria-label="Next tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <span class="pos" id="pos"></span>
+      <div class="menuwrap">
+        <button class="navbtn r" id="more" title="All sections" aria-label="All sections" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
+        <div class="menu" id="menu" hidden></div>
+      </div>
+    </div>
+    <div class="crumb" id="crumb"></div>
+    <div class="panel" id="view" role="tabpanel"></div>
+  </div>
+  <p class="kbd">Switch tabs with the arrows, <kbd>←</kbd> <kbd>→</kbd> on the tab bar, or <kbd>Ctrl</kbd>+<kbd>PgUp</kbd> / <kbd>PgDn</kbd>. One section is shown at a time.</p>
+
   <footer id="foot"></footer>
 </div>
 
@@ -147,10 +306,57 @@ const UNDERSTAND="Understand the kit";
 const DOC_ORDER=["Epistemology","Guides & templates","Gate tools & tooling","The M3–M0 layers","Project management"];
 const EYE=["KitUser","KitCrafter","KitArchitect"];
 const HEALTH="LayerCake Health";   // KitArchitect only (Michel, 2026-10-06)
+const ICON={
+  [UNDERSTAND]:'<path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="m2 13 10 5 10-5"/>',
+  "Instances & simulations":'<polygon points="6 4 20 12 6 20 6 4"/>',
+  "Epistemology":'<circle cx="7" cy="12" r="4"/><circle cx="17" cy="12" r="4"/><path d="M11 12h2"/>',
+  "Guides & templates":'<path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h6"/>',
+  "Gate tools & tooling":'<path d="M14 7a4 4 0 1 0-5 5l-6 6 3 3 6-6a4 4 0 0 0 5-5l-2 2-3-1-1-3z"/>',
+  "The M3–M0 layers":'<rect x="4" y="4" width="16" height="4" rx="1"/><rect x="4" y="10" width="16" height="4" rx="1"/><rect x="4" y="16" width="16" height="4" rx="1"/>',
+  "Project management":'<path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/>',
+  [HEALTH]:'<polygon points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5"/>'
+};
+const GT='<span class="chip gt">Gt</span>', GM='<span class="chip gm">Gm</span>', GS='<span class="chip gs">Gs</span>';
+const GLOSSARY=[
+ {group:"Core ideas",terms:[
+  ["Territory / Map","Map / Territory duality","The <b>Territory</b> is what a system is and does; the <b>Map</b> is how we know and represent it. After Korzybski: the map is not the territory. TSCG reads every system through both at once."],
+  ["Stereopsis","","Fusing the Territory and Map readings into one view with depth, like two eyes giving relief. It has its own grammar, Gs."],
+  ["Systemic Esperanto","","The shared vocabulary of generic concepts (layer M2) that lets people from different fields recognise one pattern under several names. A proposal, revisable through use."],
+  ["Scale model","reduced model","A deliberately simplified model that still works. Building scale models is what the toolkit is for."],
+ ]},
+ {group:"The three grammars (layer M3)",terms:[
+  ["Gt · Eagle Eye"+GT,"Territory grammar","Reads what a system <i>is</i>. Its pieces combine with the product operator <span class=\"mono\">×</span>. Alphabet: AStFItD."],
+  ["AStFItD"+GT,"also written ASFID","<b>A</b>ttractor (stable states, equilibria) · <b>St</b>ructure (spatial or topological organisation) · <b>F</b>low (exchange with the environment) · <b>It</b> Information (encoded content that tells one state from another) · <b>D</b>ynamics (capacity to evolve over time)."],
+  ["Gm · Sphinx Eye"+GM,"Map grammar","Reads how a system is <i>known</i>. Its pieces combine with the sum operator <span class=\"mono\">+</span>. Alphabet: REVOIm."],
+  ["REVOIm"+GM,"also written REVOI","<b>R</b>epresentable · <b>E</b>volvable · <b>V</b>erifiable · <b>O</b>bservable · <b>Im</b> Interoperable. The R is Representable, never Reproducible."],
+  ["Gs · Odin's Wisdom"+GS,"Stereopsis grammar","Reads the synergy of Territory and Map. Its operator is <span class=\"mono\">|</span>. Alphabet: TKSsL plus two poles."],
+  ["TKSsL"+GS,"also written TKSL","<b>T</b>emporality (when?) · <b>K</b>nowledge · <b>Ss</b> Symbol · <b>L</b>ocalizability, plus the poles <span class=\"mono\">_^</span> (positive) and <span class=\"mono\">_$</span> (negative). Their fusion <span class=\"mono\">_0</span> is the equilibrium pole, a derived element."],
+  ["Operators × + |","","Territory product, Map sum, Stereopsis. Precedence: <span class=\"mono\">×</span> before <span class=\"mono\">+</span> before <span class=\"mono\">|</span>. Example of a formula: <span class=\"mono\">Balance = A × St × F | _0</span>."],
+  ["St / Ss, It / Im","subscripts","S and I appear in two grammars, so in prose and acronyms they always carry a suffix: <b>St</b> Structure vs <b>Ss</b> Symbol, <b>It</b> Information vs <b>Im</b> Interoperable."],
+ ]},
+ {group:"The Layer Cake",terms:[
+  ["Ontology","","A formal, machine-readable description of concepts and their relations. TSCG ontologies are JSON-LD files, checked by SHACL shapes and an OWL reasoner."],
+  ["Layer Cake","","The four stacked ontology layers, each resting on the one below. Together they give the kit a coherent, ontology-driven architecture."],
+  ["M3 — Structural Grammar","","The assembly rules: the three grammars and how pieces combine."],
+  ["M2 — Generic Concepts","","Reusable concepts that recur across fields, each written as a formula over the M3 alphabets. The systemic Esperanto."],
+  ["M1 — Domain Adaptation","domain, extension","How generic concepts take shape in one field: biology, electronics, music, economics and others."],
+  ["M0 — Instances","","The finished models: poclets, systemic frameworks, symbolic system grammars and TSCG tools."],
+ ]},
+ {group:"The kit",terms:[
+  ["Kit","","A set of validated pieces and the rules for assembling them, in the spirit of LEGO Technic: the model has to work, not just look right."],
+  ["KitUser · KitCrafter · KitArchitect","audiences","Three levels of use. A KitUser experiments and plays with kits; a KitCrafter designs and assembles them; a KitArchitect works on the architecture, workflows and tools."],
+  ["Instance","","A small working model of one system, theory or tool, built with TSCG (layer M0)."],
+  ["Poclet","PoC + -let","The flagship kind of instance: minimal but complete, showing all five Territory dimensions."],
+  ["Simulation","","An interactive view of an instance, usually a single HTML page (p5.js in 2D, BabylonJS in 3D), sometimes a Python or Electron tool."],
+  ["Workflow","instance pipeline","The path from idea to model: Propose → Analyse → Model → Simulate, with a human deciding at each step."],
+  ["Acceptance gate","GATE: PASS","The check run over all four layers before a change is accepted. It must end with GATE: PASS."],
+  ["HEAD","","The latest commit on the main branch of the repository: the only authority for any live fact."],
+ ]},
+];
+const NTERMS=GLOSSARY.reduce((a,g)=>a+g.terms.length,0);
+let mode="tabs";
 let audience="KitUser", section=UNDERSTAND, query="";
 try{const s=localStorage.getItem("tscg-aud"); if(s&&EYE.includes(s)) audience=s;}catch(e){}
-try{const t=localStorage.getItem("tscg-theme"); if(t) document.documentElement.dataset.theme=t;}catch(e){}
-
 const esc=s=>(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const inAud=x=>x.audience.includes(audience);
 const ql=()=>query.toLowerCase();
@@ -174,13 +380,35 @@ function sectionCount(s){
   if(s==="Instances & simulations") return DATA.subjects.filter(inAud).length;
   return DATA.docs.filter(d=>inAud(d)&&d.section===s).length;
 }
-function renderNav(){
-  const secs=sectionsForAudience();
-  if(!secs.includes(section)) section=UNDERSTAND;
-  const rc=document.getElementById("rubrics");
-  rc.innerHTML=secs.map(s=>{const c=sectionCount(s);
-    return `<button data-sec="${esc(s)}" aria-pressed="${section===s}">${esc(s)}${c!==""?`<span class="c">${c}</span>`:""}</button>`;}).join("");
-  rc.querySelectorAll("button").forEach(b=>b.onclick=()=>{section=b.dataset.sec;render();});
+function go(s,focus){section=s;mode="tabs";render(focus);}
+function step(d){if(mode==="terms")return;const secs=sectionsForAudience();const i=secs.indexOf(section)+d;if(i>=0&&i<secs.length) go(secs[i],true);}
+function closeMenu(){document.getElementById("menu").hidden=true;document.getElementById("more").setAttribute("aria-expanded","false");}
+function renderTabs(focus){
+  const secs=sectionsForAudience(); if(!secs.includes(section)) section=UNDERSTAND;
+  const tabs=document.getElementById("tabs");
+  tabs.innerHTML=secs.map(s=>{const c=sectionCount(s);const sel=s===section;
+    return `<button class="tab" role="tab" data-sec="${esc(s)}" aria-selected="${sel}" tabindex="${sel?0:-1}"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">${ICON[s]||""}</svg>${esc(s)}${c!==""?`<span class="c">${c}</span>`:""}</button>`;}).join("");
+  tabs.querySelectorAll(".tab").forEach(b=>b.onclick=()=>go(b.dataset.sec,false));
+  const act=tabs.querySelector('[aria-selected="true"]');
+  act.scrollIntoView({block:"nearest",inline:"nearest"});
+  if(focus) act.focus({preventScroll:true});
+  const i=secs.indexOf(section);
+  document.getElementById("prev").disabled=i===0;
+  document.getElementById("next").disabled=i===secs.length-1;
+  document.getElementById("pos").textContent=`${i+1} / ${secs.length}`;
+  document.getElementById("menu").innerHTML=secs.map(s=>`<button data-sec="${esc(s)}" aria-current="${s===section}"><span>${esc(s)}</span><span class="c">${sectionCount(s)}</span></button>`).join("");
+  document.querySelectorAll("#menu button").forEach(b=>b.onclick=()=>{closeMenu();go(b.dataset.sec,true);});
+  document.getElementById("crumb").innerHTML=`<span>${esc(audience)}</span><span>›</span><b>${esc(section)}</b>`;
+  return {secs,i};
+}
+const plain=s=>s.replace(/<[^>]+>/g,"");
+function renderGlossary(){
+  const html=GLOSSARY.map(g=>{
+    const ts=g.terms.filter(t=>matchTxt(plain(t[0]),t[1],plain(t[2])));
+    if(!ts.length) return "";
+    return `<section><h2>${esc(g.group)}</h2><dl>${ts.map(t=>`<div class="term"><dt>${t[0]}${t[1]?`<span class="alias">${esc(t[1])}</span>`:""}</dt><dd>${t[2]}</dd></div>`).join("")}</dl></section>`;
+  }).join("");
+  return html?`<div class="gloss">${html}</div>`:`<p class="empty">No term matches that search.</p>`;
 }
 
 function renderUnderstand(){
@@ -197,10 +425,10 @@ function renderUnderstand(){
     <div class="pillar"><h4>3 — LEGO Technic, and the idea of a kit</h4>
       <p>TSCG is a <b>construction game</b> in the spirit of <b>LEGO Technic</b>, not LEGO Classic: the test isn't whether a model <i>looks right</i> but whether it <i>works</i>. You assemble it from a small set of reusable, validated pieces and check that the mechanism holds together. What you build are <b>scale models</b> — not industrial or research-grade systems, but deliberately simplified <b>reduced models</b> made for <i>learning by doing</i>. This is also where the three levels get their names: a <b>Kit</b>Architect designs the architecture, workflows and tools; a <b>Kit</b>Crafter designs and assembles the kits; and a <b>Kit</b>User experiments and plays with the assembled kits — ${play} of them are playable right now. Playing is immediate; assembling and designing take real practice — each level is a genuine step up.</p></div>
   </div>
-  <div class="stub"><h4>The two eyes — ASFID, REVOI, and the depth (TKSL)</h4>
-    <p>The <b>Territory eye</b> reads what a system <i>is</i>, along five dimensions — <b>ASFID</b>: <b>A</b>ttractor (what it tends toward), <b>S</b>tructure, <b>F</b>low, <b>I</b>nformation and <b>D</b>ynamics.</p>
-    <p>The <b>Map eye</b> reads how well we can <i>know</i> it — <b>REVOI</b>: <b>R</b>epresentability, <b>E</b>volvability, <b>V</b>erifiability, <b>O</b>bservability and <b>I</b>nteroperability. (The R is <i>Representability</i>, not reproducibility.)</p>
-    <p>When the two eyes fuse, four <i>interface</i> ideas emerge — <b>TKSL</b>: <b>T</b>emporality (when?), <b>K</b>nowledge (raw information turned into meaning), <b>S</b>ymbol (the sign linking a thing to its representation) and <b>L</b>ocalizability (which way the system is heading). This is the stereopsic depth neither eye sees alone.</p>
+  <div class="stub"><h4>The two eyes — AStFItD, REVOIm, and the depth (TKSsL)</h4>
+    <p>The <b>Territory eye</b> reads what a system <i>is</i>, along five dimensions — <b>AStFItD</b>: <b>A</b>ttractor (what it tends toward), <b>St</b>ructure, <b>F</b>low, <b>I</b>nformation (<b>It</b>) and <b>D</b>ynamics.</p>
+    <p>The <b>Map eye</b> reads how well we can <i>know</i> it — <b>REVOIm</b>: <b>R</b>epresentable, <b>E</b>volvable, <b>V</b>erifiable, <b>O</b>bservable and <b>Im</b> Interoperable. (The R is <i>Representable</i>, never Reproducible.)</p>
+    <p>When the two eyes fuse, four <i>interface</i> ideas emerge — <b>TKSsL</b>: <b>T</b>emporality (when?), <b>K</b>nowledge (raw information turned into meaning), <b>Ss</b> Symbol (the sign linking a thing to its representation) and <b>L</b>ocalizability (which way the system is heading), plus two poles, positive and negative. This is the stereopsic depth neither eye sees alone.</p>
     <button class="switch" data-aud="KitCrafter">Switch to KitCrafter for the full grammar →</button></div>
   <div class="stub"><h4>The Layer Cake — four levels</h4>
     <p>TSCG is stacked like a four-layer cake, each layer resting on the one below:</p>
@@ -215,7 +443,7 @@ function renderUnderstand(){
   <div class="stub"><h4>Key words: instance, poclet, workflow</h4>
     <ul>
       <li><b>Instance</b>: a small, working model of one system, theory or tool, built with TSCG — the M0 layer.</li>
-      <li><b>Poclet</b>: the flagship kind of instance. The name blends <i>PoC</i> (proof of concept) with <i>-let</i> (as in <i>applet</i>): minimal but <i>complete</i> — small by design, yet showing all five ASFID dimensions. It is the KitUser's main playground.</li>
+      <li><b>Poclet</b>: the flagship kind of instance. The name blends <i>PoC</i> (proof of concept) with <i>-let</i> (as in <i>applet</i>): minimal but <i>complete</i> — small by design, yet showing all five AStFItD dimensions. It is the KitUser's main playground.</li>
       <li><b>Workflow</b>: the path from idea to model — Propose → Analyse → Model → Simulate — with a human deciding at every step.</li>
     </ul>
     <button class="switch" data-aud="KitCrafter">Switch to KitCrafter to build one →</button></div>
@@ -303,37 +531,79 @@ function renderHealth(){
       open the map alone: <a href="${esc(H.svg)}" target="_blank" rel="noopener">${esc(H.svg)}</a></p></section>`;
 }
 
-function render(){
+function render(focus){
   const c=counts();
   document.getElementById("nvis").textContent=c.total;
-  document.getElementById("ntot").textContent=`entries visible · ${c.subs} instances, ${c.docs} docs`;
-  renderNav();
+  document.getElementById("ntot").textContent=`entries · ${c.subs} instances, ${c.docs} docs`;
+  document.getElementById("aud").value=audience;
+  document.getElementById("termcount").textContent=NTERMS;
+  const terms=mode==="terms";
+  document.getElementById("lens").classList.toggle("terms",terms);
+  document.getElementById("editor").classList.toggle("terms",terms);
+  document.getElementById("termbtn").setAttribute("aria-pressed",String(terms));
+  document.getElementById("termbar").hidden=!terms;
+  document.getElementById("tabbar").hidden=terms;
   const v=document.getElementById("view");
-  if(section===UNDERSTAND) v.innerHTML=renderUnderstand();
-  else if(section==="Instances & simulations") v.innerHTML=renderInstances();
-  else if(section==="Project management") v.innerHTML=renderProject();
-  else if(section===HEALTH) v.innerHTML=renderHealth();
-  else v.innerHTML=renderDocs(section);
+  v.setAttribute("role",terms?"region":"tabpanel");
+  if(terms){
+    closeMenu();
+    document.getElementById("backbtn").textContent=`‹ Back to ${audience} · ${section}`;
+    document.getElementById("crumb").innerHTML=`<span style="color:var(--territory)">Terminology</span><span>›</span><b>${NTERMS} terms · shared by all audiences</b>`;
+    v.innerHTML=renderGlossary();
+    return;
+  }
+  const {secs,i}=renderTabs(focus);
+  let html;
+  if(section===UNDERSTAND) html=renderUnderstand();
+  else if(section==="Instances & simulations") html=renderInstances();
+  else if(section==="Project management") html=renderProject();
+  else if(section===HEALTH) html=renderHealth();
+  else html=renderDocs(section);
+  html+=`<div class="pager"><button id="pp" ${i===0?"hidden":""}>‹ ${esc(secs[i-1]||"")}</button><span></span><button id="pn" ${i===secs.length-1?"hidden":""}>${esc(secs[i+1]||"")} ›</button></div>`;
+  v.innerHTML=html;
+  document.getElementById("pp").onclick=()=>step(-1);
+  document.getElementById("pn").onclick=()=>step(1);
   v.querySelectorAll(".switch[data-aud]").forEach(b=>b.onclick=()=>setAudience(b.dataset.aud));
-  v.querySelectorAll(".switch[data-sec]").forEach(b=>b.onclick=()=>{section=b.dataset.sec;render();});
+  v.querySelectorAll(".switch[data-sec]").forEach(b=>b.onclick=()=>go(b.dataset.sec,false));
 }
 function setAudience(a){
-  audience=a; try{localStorage.setItem("tscg-aud",a);}catch(e){}
-  document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.aud===a));
-  render();
+  audience=a; mode="tabs"; try{localStorage.setItem("tscg-aud",a);}catch(e){}
+  render(false);
 }
-document.querySelectorAll(".seg button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.aud===audience);b.onclick=()=>setAudience(b.dataset.aud);});
-document.getElementById("q").oninput=e=>{query=e.target.value;render();};
-document.getElementById("theme").onclick=()=>{
-  const cur=document.documentElement.dataset.theme;
-  const isDark=cur?cur==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
-  const next=isDark?"light":"dark";document.documentElement.dataset.theme=next;
-  try{localStorage.setItem("tscg-theme",next);}catch(e){}
-};
+document.getElementById("aud").onchange=e=>setAudience(e.target.value);
+const leaveTerms=()=>{if(mode==="terms"){mode="tabs";render(false);}};
+document.getElementById("aud").addEventListener("mousedown",leaveTerms);
+document.getElementById("aud").addEventListener("focus",leaveTerms);
+document.getElementById("termbtn").onclick=()=>{mode=mode==="terms"?"tabs":"terms";render(false);};
+document.getElementById("backbtn").onclick=()=>{mode="tabs";render(false);};
+document.getElementById("more").onclick=e=>{e.stopPropagation();const m=document.getElementById("menu");m.hidden=!m.hidden;document.getElementById("more").setAttribute("aria-expanded",String(!m.hidden));};
+document.addEventListener("click",e=>{if(!e.target.closest(".menuwrap")) closeMenu();});
+document.getElementById("prev").onclick=()=>step(-1);
+document.getElementById("next").onclick=()=>step(1);
+document.getElementById("tabs").addEventListener("keydown",e=>{
+  const s=sectionsForAudience();
+  if(e.key==="ArrowLeft"){e.preventDefault();step(-1);}
+  else if(e.key==="ArrowRight"){e.preventDefault();step(1);}
+  else if(e.key==="Home"){e.preventDefault();go(s[0],true);}
+  else if(e.key==="End"){e.preventDefault();go(s[s.length-1],true);}
+});
+document.addEventListener("keydown",e=>{
+  if(e.ctrlKey&&e.key==="PageUp"){e.preventDefault();step(-1);}
+  else if(e.ctrlKey&&e.key==="PageDown"){e.preventDefault();step(1);}
+  else if(e.key==="Escape") closeMenu();
+});
+document.getElementById("q").oninput=e=>{query=e.target.value;render(false);};
+/* About block: open on the first visit, then remembers the viewer's choice. */
+(function(){const d=document.getElementById("about");let st=null;
+  try{st=localStorage.getItem("tscg-about");}catch(e){}
+  d.open = st===null ? true : st==="open";
+  try{if(st===null) localStorage.setItem("tscg-about","closed");}catch(e){}
+  d.addEventListener("toggle",()=>{try{localStorage.setItem("tscg-about",d.open?"open":"closed");}catch(e){}});
+})();
 const B=DATA.build||{};
 const buildTxt=B.commit?` · built from <a href="https://github.com/Echopraxium/tscg/commit/${B.commit}">${B.commit.slice(0,7)}</a> on ${B.date}`:"";
 document.getElementById("foot").innerHTML=`${DATA.subjects.length} instances · ${DATA.docs.length} documents · read from HEAD (@tscg + m3:Audience) · MVP preview${buildTxt}`;
-render();
+render(false);
 </script>
 </body>
 </html>
