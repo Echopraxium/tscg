@@ -2,6 +2,14 @@
 
 **Status:** draft for review (KitArchitect) · **Author:** Echopraxium with the collaboration of Claude AI
 
+> **Implementation status (2026-10-19).** The build classifies files by the
+> convention **RULES** of `annotate_compendium.py` only; it does not read in-file
+> `@tscg` blocks, and no file on HEAD carries one. Where this note says a value
+> comes "from the `@tscg` block" or "from the `tscg-*` annotation", read "from the
+> RULES". Reading in-file blocks is **deferred**: it pays for itself only once
+> per-file exceptions number in the dozens (a handful are rules today). The design
+> below is kept as written.
+
 ## 1. What it is, and the one rule
 
 The Compendium is a **generated, read-mostly** view of the whole toolkit — not a
@@ -31,7 +39,7 @@ that offset *is* the progressive disclosure.
 
 ```
    HEAD (the repo)
-     ├─ 647 files carrying @tscg blocks   ─┐
+     ├─ files classified by RULES (*)     ─┐
      └─ M0 instances carrying m3:Audience ─┤
                                            ▼
             build step  →  compendium_data.json   (path, title, section, kind, audience[], status)
@@ -42,6 +50,9 @@ that offset *is* the progressive disclosure.
 The build step is two small scripts, both already prototyped:
 `annotate_compendium.py` (writes/refreshes the `@tscg` blocks) and the
 data-collector (walks the blocks + facets → `compendium_data.json`).
+
+(*) As implemented, the data-collector applies the RULES and the facets; the
+`@tscg` blocks are not read (see *Implementation status* at the top).
 
 ## 4. Page structure
 
