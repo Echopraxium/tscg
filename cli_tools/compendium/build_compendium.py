@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """build_compendium.py - READ-ONLY build of the TSCG Compendium static site.
 
-Reads classification from HEAD (via annotate_compendium's convention rules, with
-any in-file @tscg block winning) plus the m3:Audience facet on instances; derives
+Reads classification from HEAD via annotate_compendium's convention RULES (the
+single source: in-file @tscg blocks are NOT read by this build - see the design
+note, "Implementation status") plus the m3:Audience facet on instances; derives
 subjects + run-modes + titles; copies PLAYABLE sims into dist/ (junk excluded) and
 repoints their "Play" link to the Pages-served path; injects the data into the
 HTML template; writes dist/index.html.

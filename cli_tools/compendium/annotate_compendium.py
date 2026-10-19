@@ -2,8 +2,13 @@
 """annotate_compendium.py - semi-automatic Compendium classification.
 kind = what the file IS ; audience = who it is FOR (KitArchitect/KitCrafter/KitUser).
 M0 *.jsonld instances SKIPPED (they carry the real m3:Audience facet).
-Convention does the work; an existing @tscg block wins. dry-run default;
---apply writes the block in-place, idempotently. RULES ordered, first match wins."""
+Convention does the work. RULES ordered, first match wins - and RULES are the
+single source of classification: build_compendium.py reads RULES only, never
+in-file blocks. To change a file's kind / audience / status, add or edit a rule
+(per-file overrides go before the generic rule they refine).
+dry-run default; --apply writes a @tscg block in-place, idempotently, and never
+overwrites an existing one - but such blocks are not read by the build (deferred:
+see Compendium_Generator_DesignNote.md, "Implementation status")."""
 import os, re, csv, argparse
 from collections import Counter, defaultdict
 
