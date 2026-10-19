@@ -209,6 +209,19 @@ def build_stamp(root):
     return {"commit":sha,
             "date":datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")}
 
+# Static assets the template references by a relative path; they live next to the
+# template (cli_tools/compendium/) and must ship in dist/ beside index.html.
+STATIC_ASSETS = ("TSCG_Logo.png",)
+
+def copy_static_assets(template, outdir):
+    src_dir=os.path.dirname(os.path.abspath(template))
+    for name in STATIC_ASSETS:
+        src=os.path.join(src_dir,name)
+        if os.path.isfile(src):
+            shutil.copyfile(src,os.path.join(outdir,name))
+        else:
+            print(f"  warning: static asset {name} not found next to the template ({src_dir})")
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("root")
@@ -227,6 +240,7 @@ def main():
         raise SystemExit("template missing the \"@@DATA@@\" placeholder")
     open(os.path.join(a.out,"index.html"),"w",encoding="utf-8").write(html.replace('"@@DATA@@"',data))
     open(os.path.join(a.out,".nojekyll"),"w").close()
+    copy_static_assets(a.template,a.out)
     gscript=a.gallery_script if os.path.isabs(a.gallery_script) else os.path.join(a.root,a.gallery_script)
     run_gallery(a.root,a.out,gscript,a.site_url)
     played=sum(1 for s in subjects if s.get("play"))
