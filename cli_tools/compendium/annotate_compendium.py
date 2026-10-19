@@ -36,6 +36,8 @@ RULES = [
     # under ontology/docs/_01_Worksite/, so "ontology/docs/.*\.md" used to win and
     # their notes and HandOvers landed in "doc" instead of Project management
     # (11 worksite files instead of 39 — fixed 2026-10-03).
+    # Withdrawn change requests, kept as documented dead ends (before the generic worksite rule).
+    (r"(^|/)_01_Worksite/WS-0/SC-3b_RealityCheck_ChangeRequest\.md$", "worksite", [A], "withdrawn"),
     (r"(^|/)_01_Worksite/",                 "worksite", [A], "draft"),
     (r"(^|/)worksite\.yaml$",               "worksite", [A], "draft"),
     (r"(?i)handover.*\.md$",                "handover", [A], "draft"),
@@ -46,6 +48,9 @@ RULES = [
     (r"(^|/)ontology/M1_extensions/.*\.md$", "doc",  [A]),
     (r"(^|/)ontology/docs/.*\.(md|html)$",  "doc",   [A]),
     (r"(^|/)ontology/sparql/.*\.py$",       "tool",  [A]),
+    # Per-file status overrides MUST stay before the generic CoreHypotheses rule
+    # (first match wins). Candidate / just-added positions are "draft", not "stable".
+    (r"(^|/)docs/CoreHypotheses/(ModelSupersession|ContextSwitching)\.md$", "epistemology", [U,C,A], "draft"),
     (r"(^|/)docs/CoreHypotheses/.*\.md$",   "epistemology", [U,C,A]),
     (r"(^|/)docs/papers/",                  "epistemology", [C,A], "draft"),
     (r"(^|/)docs/methodology/.*\.md$",      "doc",   [C,A]),
