@@ -67,6 +67,7 @@ h1{font-family:var(--disp);font-weight:700;font-size:clamp(30px,7vw,46px);letter
 .tags{display:flex;gap:6px;align-items:center;flex-shrink:0}
 .tag{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 7px}
 .tag.draft{color:var(--local);border-color:var(--local);background:var(--local-bg)}
+.tag.withdrawn{color:var(--muted);border-style:dashed;text-decoration:line-through}
 .eyes{display:flex;gap:3px;flex-shrink:0}
 .eye{width:7px;height:7px;border-radius:50%;background:var(--line)}
 .eye.on{background:var(--accent)}
@@ -257,7 +258,7 @@ function renderInstances(){
   return html;
 }
 function docRow(d){
-  const st=d.status==="draft"?`<span class="tag draft">draft</span>`:"";
+  const st=(d.status==="draft"||d.status==="withdrawn")?`<span class="tag ${d.status}">${d.status}</span>`:"";
   return `<a class="row" href="${BLOB}${encodeURI(d.path)}" target="_blank" rel="noopener">
     <span class="t">${esc(d.title)}<span class="p">${esc(d.path)}</span></span>
     <span class="tags"><span class="tag">${esc(d.kind)}</span>${st}<span class="eyes">${eyes(d.audience)}</span></span></a>`;
