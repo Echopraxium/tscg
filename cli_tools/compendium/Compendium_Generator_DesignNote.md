@@ -123,3 +123,22 @@ linking to its `CRATE.md` label, with the crate status (`sealed`, `open`, `gradu
 as `unlabelled`. The folder is excluded from the general classifier (`annotate_compendium.py`),
 like `_02_housekeeping/`, so crate HandOvers are not mistaken for worksite HandOvers.
 
+## 10. Logical folders in the document tabs (added 2026-10-22)
+
+The document tabs were flat lists (Project management alone held 77 rows). Each
+document now gets a **logical folder**, computed at build time from
+`cli_tools/compendium/compendium_folders.yaml` — a table of ordered rules per tab
+(regex on the repo-relative path → folder, `/` for sub-folders, `{name}` from a named
+group). **Nothing on disk moves.** Folders render as collapsible groups with a count;
+a search opens every folder holding a match; the open/closed state survives
+re-renders. Rule options: `open` (open by default), `newest` (dated paths, newest
+first), `versions` (same file name = versions of one file: newest shown, older folded).
+
+Project management, for instance: registry & maps · sub-worksites (one folder per SC,
+their HandOvers included) · HandOvers per WS · RemainingWork graph versions ·
+worksites per WS · instance worksites · housekeeping · idea crates.
+
+A tab absent from the YAML stays flat; a missing YAML leaves every tab flat (warning);
+a bad regex stops the build with the rule named. PyYAML is listed in
+`ontology/toolchain/requirements.txt`, which `pages.yml` installs.
+

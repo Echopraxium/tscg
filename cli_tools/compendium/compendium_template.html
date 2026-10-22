@@ -177,6 +177,17 @@ h1{text-align:left;font-family:var(--disp);font-weight:700;font-size:clamp(30px,
 .panel .stub{background:var(--paper)}
 .panel .card{background:var(--paper)}
 .group:first-child{margin-top:0}
+.fold{border-bottom:1px solid var(--line)}
+.fold>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px;padding:11px 4px;font-family:var(--disp);font-weight:600;font-size:14.5px}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary::before{content:"▸";color:var(--muted);width:12px;flex:0 0 12px;transition:transform .15s}
+.fold[open]>summary::before{transform:rotate(90deg)}
+.fold>summary>.n{flex:1}
+.fold>summary>.c{color:var(--muted);font-weight:400;font-size:12px;font-variant-numeric:tabular-nums}
+.fold>summary:hover{background:var(--accent-soft)}
+.fold .fold{margin-left:16px}
+.fold>.rows{margin-left:16px}
+.fold.old>summary{font-weight:400;font-size:13px;color:var(--muted)}
 
 /* ── Editor-style tab bar ── */
 .editor{margin-top:22px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
@@ -492,27 +503,59 @@ function renderInstances(){
   return html;
 }
 function docRow(d){
-  const st=(d.status==="draft"||d.status==="withdrawn")?`<span class="tag ${d.status}">${d.status}</span>`:"";
+  const st=d.kind==="crate"?`<span class="tag">${esc(d.status)}</span>`:(d.status==="draft"||d.status==="withdrawn")?`<span class="tag ${d.status}">${d.status}</span>`:"";
   return `<a class="row" href="${BLOB}${encodeURI(d.path)}" target="_blank" rel="noopener">
     <span class="t">${esc(d.title)}<span class="p">${esc(d.path)}</span></span>
     <span class="tags"><span class="tag">${esc(d.kind)}</span>${st}<span class="eyes">${eyes(d.audience)}</span></span></a>`;
 }
+/* Logical folders (compendium_folders.yaml, 2026-10-22): docs carry folder "A/B",
+   frank (rule order) and fopts (open/newest/versions). Open state survives re-renders;
+   a search opens every folder that holds a match. */
+const foldState={};
+const natural=(a,b)=>a.localeCompare(b,undefined,{numeric:true,sensitivity:"base"});
+function folderTree(ds){
+  const root={kids:new Map(),docs:[],opts:new Set()};
+  ds.forEach(d=>{let n=root;
+    (d.folder?d.folder.split("/"):[]).forEach(seg=>{
+      if(!n.kids.has(seg)) n.kids.set(seg,{name:seg,kids:new Map(),docs:[],rank:d.frank,opts:new Set()});
+      n=n.kids.get(seg); n.rank=Math.min(n.rank,d.frank);});
+    n.docs.push(d); (d.fopts||[]).forEach(o=>n.opts.add(o));});
+  return root;
+}
+const treeCount=n=>n.docs.length+[...n.kids.values()].reduce((a,k)=>a+treeCount(k),0);
+const fileName=p=>p.split("/").pop();
+/* newest first = by the latest date written in the path (2026-10-15, 2026_10_15), not by the raw path */
+const dateKey=p=>{const m=[...p.matchAll(/(20\d\d)[-_](\d\d)[-_](\d\d)/g)];return m.length?m.map(x=>x[1]+x[2]+x[3]).sort().pop():"";};
+function leafRows(n){
+  const ds=n.docs.slice();
+  if(n.opts.has("newest")||n.opts.has("versions")) ds.sort((a,b)=>dateKey(b.path).localeCompare(dateKey(a.path))||b.path.localeCompare(a.path));
+  else ds.sort((a,b)=>a.title.localeCompare(b.title));
+  if(!n.opts.has("versions")) return ds.length?`<div class="rows">${ds.map(docRow).join("")}</div>`:"";
+  const byName=new Map(); ds.forEach(d=>{const f=fileName(d.path); if(!byName.has(f)) byName.set(f,[]); byName.get(f).push(d);});
+  return [...byName.values()].map(v=>`<div class="rows">${docRow(v[0])}</div>`+(v.length>1?
+    `<details class="fold old"${query?" open":""}><summary><span class="n">Older versions</span><span class="c">${v.length-1}</span></summary><div class="rows">${v.slice(1).map(docRow).join("")}</div></details>`:"")).join("");
+}
+function foldHtml(n,key){
+  const open=query?true:(key in foldState?foldState[key]:n.opts.has("open"));
+  const kids=[...n.kids.values()].sort((a,b)=>a.rank-b.rank||natural(a.name,b.name));
+  return `<details class="fold" data-k="${esc(key)}"${open?" open":""}><summary><span class="n">${esc(n.name)}</span><span class="c">${treeCount(n)}</span></summary>${kids.map(k=>foldHtml(k,key+"/"+k.name)).join("")}${leafRows(n)}</details>`;
+}
+function docsTreeHtml(sec,ds){
+  const t=folderTree(ds);
+  const top=[...t.kids.values()].sort((a,b)=>a.rank-b.rank||natural(a.name,b.name));
+  return `<section class="group">${leafRows(t)}${top.map(k=>foldHtml(k,sec+"|"+k.name)).join("")}</section>`;
+}
 function renderDocs(sec){
-  let ds=DATA.docs.filter(d=>inAud(d)&&d.section===sec).filter(d=>matchTxt(d.title,d.path));
+  const ds=DATA.docs.filter(d=>inAud(d)&&d.section===sec).filter(d=>matchTxt(d.title,d.path));
   if(!ds.length) return `<p class="empty">Nothing here at this level for that search.</p>`;
-  ds.sort((a,b)=>a.title.localeCompare(b.title));
-  return `<section class="group"><div class="rows">${ds.map(docRow).join("")}</div></section>`;
+  return docsTreeHtml(sec,ds);
 }
 function renderProject(){
-  const wk=DATA.docs.filter(d=>inAud(d)&&d.section==="Project management"&&d.kind!=="housekeeping"&&d.kind!=="crate").filter(d=>matchTxt(d.title,d.path));
-  const hk=DATA.docs.filter(d=>inAud(d)&&d.kind==="housekeeping").filter(d=>matchTxt(d.title,d.path));
-  const cr=DATA.docs.filter(d=>inAud(d)&&d.kind==="crate").filter(d=>matchTxt(d.title,d.path));
+  const ds=DATA.docs.filter(d=>inAud(d)&&d.section==="Project management").filter(d=>matchTxt(d.title,d.path));
   const wip=DATA.subjects.filter(inAud).filter(s=>s.mode==="under-construction").filter(s=>matchTxt(s.title,s.name));
   let html="";
-  if(wk.length) html+=`<section class="group"><h2><span>Worksites &amp; handovers</span><span>${wk.length}</span></h2><div class="rows">${wk.sort((a,b)=>a.title.localeCompare(b.title)).map(docRow).join("")}</div></section>`;
   if(wip.length) html+=`<section class="group"><h2><span>Instances under construction</span><span>${wip.length}</span></h2><div class="cards">${wip.sort((a,b)=>a.title.localeCompare(b.title)).map(subjectCard).join("")}</div></section>`;
-  if(cr.length) html+=`<section class="group"><h2><span>Idea crates (<a href="${TREE}_03_SerendipCrates" target="_blank" rel="noopener">SerendipCrates</a>)</span><span>${cr.length}</span></h2><div class="rows">${cr.sort((a,b)=>a.title.localeCompare(b.title)).map(d=>docRow(d).replace('<span class="tags">',`<span class="tags"><span class="tag">${esc(d.status)}</span>`)).join("")}</div></section>`;
-  if(hk.length) html+=`<section class="group"><h2><span>Housekeeping</span><span>${hk.length}</span></h2><div class="rows">${hk.sort((a,b)=>a.title.localeCompare(b.title)).map(docRow).join("")}</div></section>`;
+  if(ds.length) html+=docsTreeHtml("Project management",ds);
   return html||`<p class="empty">Nothing here at this level.</p>`;
 }
 
@@ -600,6 +643,8 @@ document.addEventListener("keydown",e=>{
   else if(e.ctrlKey&&e.key==="PageDown"){e.preventDefault();step(1);}
   else if(e.key==="Escape") closeMenu();
 });
+document.getElementById("view").addEventListener("toggle",e=>{
+  const d=e.target; if(!query&&d.matches&&d.matches("details.fold[data-k]")) foldState[d.dataset.k]=d.open;},true);
 document.getElementById("q").oninput=e=>{query=e.target.value;render(false);};
 /* About block: open on the first visit, then remembers the viewer's choice. */
 (function(){const d=document.getElementById("about");let st=null;

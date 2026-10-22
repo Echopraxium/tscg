@@ -126,6 +126,43 @@ def build_subjects(root, outdir):
             subs.append(s)
     return subs
 
+FOLDERS_FILE = "compendium_folders.yaml"   # next to the template; logical folders per tab
+
+def load_folder_rules(path):
+    """Logical folders of the document tabs (compendium_folders.yaml, added 2026-10-22).
+    A missing file leaves every tab flat; a bad regex stops the build with the rule named."""
+    if not os.path.isfile(path):
+        print(f"  warning: {path} not found - document tabs stay flat"); return {}
+    try:
+        import yaml
+    except ImportError:
+        raise SystemExit("PyYAML missing: python -m pip install -r ontology/toolchain/requirements.txt")
+    rules=yaml.safe_load(open(path,encoding="utf-8")) or {}
+    for tab,spec in rules.items():
+        for r in (spec or {}).get("rules",[]):
+            try: r["_re"]=re.compile(r["match"])
+            except (re.error,KeyError) as e:
+                raise SystemExit(f"{path}: tab '{tab}', folder '{r.get('folder')}': bad match ({e})")
+    return rules
+
+def assign_folders(docs, rules):
+    """Give each doc a logical folder: first matching rule of its tab wins.
+    'frank' is the rule index, used to order folders as the YAML lists them."""
+    for d in docs:
+        spec=rules.get(d["section"]) or {}
+        rs=spec.get("rules",[])
+        d["folder"]=spec.get("default"); d["frank"]=len(rs)
+        for i,r in enumerate(rs):
+            m=r["_re"].search(d["path"])
+            if m:
+                d["folder"]=r["folder"].format(**{k:(v or "") for k,v in m.groupdict().items()})
+                d["frank"]=i
+                opts=[k for k in ("open","newest","versions") if r.get(k)]
+                if opts: d["fopts"]=opts
+                break
+        if not d["folder"]: d.pop("folder")
+    return docs
+
 def build_docs(root, out=None):
     docs=[]
     # Skip our own output dir: build_subjects() has already copied the playable
@@ -242,6 +279,7 @@ def main():
     os.makedirs(a.out,exist_ok=True)
     subjects=build_subjects(a.root,a.out)
     docs=build_docs(a.root,a.out)
+    assign_folders(docs,load_folder_rules(os.path.join(os.path.dirname(os.path.abspath(a.template)),FOLDERS_FILE)))
     health=run_health_map(a.root,a.out)
     data=json.dumps({"subjects":subjects,"docs":docs,"build":build_stamp(a.root),"health":health},ensure_ascii=False)
     html=read(a.template)
