@@ -387,8 +387,11 @@ function counts(){
 }
 function sectionsForAudience(){
   const out=[UNDERSTAND];
+  // Project management comes 2nd (Michel, 2026-10-22); it only exists for KitArchitect.
+  const PM="Project management", has=s=>DATA.docs.some(d=>inAud(d)&&d.section===s);
+  if(has(PM)) out.push(PM);
   if(DATA.subjects.some(inAud)) out.push("Instances & simulations");
-  DOC_ORDER.forEach(s=>{ if(DATA.docs.some(d=>inAud(d)&&d.section===s)) out.push(s); });
+  DOC_ORDER.forEach(s=>{ if(s!==PM&&has(s)) out.push(s); });
   if(audience==="KitArchitect") out.push(HEALTH);
   return out;
 }
