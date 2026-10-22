@@ -148,6 +148,15 @@ def build_docs(root, out=None):
         rp=os.path.relpath(p,root).replace(os.sep,"/")
         docs.append({"path":rp,"title":(md_h1(p) or fname(rp)),"kind":"housekeeping",
                      "audience":["KitArchitect"],"status":"draft","section":"Project management"})
+    # Idea crates (_03_SerendipCrates/): one row per crate, pointing to its CRATE.md
+    # label; the crate status (sealed/open/graduated/abandoned) is read from the
+    # label's "| **Status** | `...` |" row. Folder README excluded (it is the rules).
+    for p in sorted(glob.glob(os.path.join(root,"_03_SerendipCrates","*","CRATE.md"))):
+        rp=os.path.relpath(p,root).replace(os.sep,"/")
+        m=re.search(r"\*\*Status\*\*\s*\|\s*`([a-z]+)`",open(p,encoding="utf-8").read())
+        docs.append({"path":rp,"title":(md_h1(p) or fname(rp)),"kind":"crate",
+                     "audience":["KitArchitect"],"status":(m.group(1) if m else "unlabelled"),
+                     "section":"Project management"})
     return docs
 
 def run_gallery(root, outdir, script, site_url):
