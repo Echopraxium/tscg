@@ -1,8 +1,8 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.14.0
-**Date**: 2026-10-11
+**Version**: 1.15.0
+**Date**: 2026-10-22
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
 it does not replace the per-worksite notes.
@@ -93,7 +93,7 @@ no link to M2.
 | M3 | G2 no label (`FacetValue`, `hasFacetValue`, `valueOf`) | 3 | small lot (text by Michel) |
 | M2 | G2 no `rdfs:comment` | 7 | small lot (text by Michel) |
 | M2 | G1 no `rdfs:label` · D5 `m2:changeLog` on `m2:Trade-off` | 1 · 1 | small lot · WS-6 |
-| M1 | DCC006 monoidal operator in a signature | 127 | **SC-6** |
+| M1 | DCC006 monoidal operator in a signature | 126 | **SC-6** |
 | M1 | SHACL DomainConceptCombo / ComboFormula | 196 / 138 | M1 SHACL debt · SC-1/SC-6 |
 | M1 | DCC010 phantom domains (Music 8, SystemicModeling 7, EnergyGenerators 1) — *the 2 "Cascade" cases were not domains: fixed 2026-10-11 (Fm2)* | ~~18~~ 16 | SC-5 |
 | M1 | GCC009, DCC009, DCC008, CTX001, 2 other shapes | 17 | SC-6 / B1 |
@@ -536,17 +536,44 @@ source of domain names.
   requirement of SHAPE 3, counted twice by `check_M1`; the 3 Education combos enter SHAPE 3's
   reach with a valid `Fm1m2` signature: 0 new result).
 
-**Open after SC-5.**
-- **SC-5b**: `m1:subdomains` (139 strings) → subdomain classes, table validated line by line,
-  then the property is deleted (inferred by `rdfs:subClassOf`).
+**Lot SC-5b (done, 2026-10-22).** Decision table
+`WS-5/SC-5b/SC-5b_Subdomains_Decision_Table.xlsx` (28/28 decided) + Michel 2026-10-14/15/22.
+- **Created 32 domain classes** (label + `rdfs:subClassOf` + `skos:closeMatch` OpenAlex when
+  known; no definitions — Q7; current IRI convention — Q6): the 26 KEEP lines and the parents
+  Mathematics, Game, Card Game, Vision Science (OpenAlex 2809), Condensed Matter Physics
+  (3104), Electronic Music. Decision Theory ⊑ Mathematics with closeMatch OpenAlex field 18
+  (Michel 2026-10-15). Finance not created (Q10). Geology gets closeMatch OpenAlex field 19.
+- **Relinked**: Blockchain ⊑ ComputerScience, GameTheory ⊑ Mathematics, MusicTheory ⊑ Music,
+  Optics ⊑ Physics. The 5 dangling `relatedDomains` → Mathematics now resolve.
+- **Deleted**: `m1:subdomains` (22 domain classes), the extension-local lists
+  `physics:subdomains` (6 combos, which stay in Physics) and `education:subfields`; the
+  adjective classes `business_modeling:Strategic`, `economics:Financial`,
+  `geology:Geological` (Q4); the string `m1:domain` on `optics:Optics_Domain`. No stored
+  subdomain list remains in M1: subdomains are inferred from `rdfs:subClassOf`.
+- **Rule (Michel, 2026-10-15): a domain and a combo never share a local name.** The domain
+  carries the discipline, the combo the phenomenon or process (test: "we study <combo> in
+  <domain>" must make sense). Applied: the combo `education:InstructionalDesign` becomes
+  `InstructionalDesignProcess` and the IRI goes to the new domain; its signature
+  `Fm1m2(Education, S × D × F)` becomes `Fm1m2(Education, Workflow, Composition)` (the two
+  GenericConcepts its comment names). NS-SEP will put both in the same prefix, where a
+  collision would become invisible.
+- **Gate M1** 133/1/296 → 132/1/294: the one repaired formula (−1 DCC006, −1
+  `ComboFormulaShape` counted twice by `check_M1`); per-shape comparison on the 14 changed
+  files: nothing else moved. Tests `test_m1_domains.py` 0.2.0: fixtures moved from the
+  deleted `Geological` to `biology:Endocrinology` (two hops: ⊑ Physiology ⊑ Biology).
+- **Not run**: the Pellet reasoner (owlready2's bundled Jena needs Java 25; the session VM
+  had Java 21; it fails identically on HEAD). M1 holds no disjointness axiom, so added
+  `subClassOf` links cannot make it inconsistent — to run locally anyway.
+
+**Open after SC-5b.**
+- **Lot NS-SEP** (next): one prefix per defining file (`m1.domains:`, `m1.<ext>:`).
 - **M0 lot** (rule, Michel 2026-10-12): an M0 instance designates its domain by the IRI of a
   domain class, never a string; `m1:domain` in 42 instances is free text today ("Optics /
   Color Science", "TSCG", …) → mapping table, then a check (M0 SHACL / check_m0) with a
   negative test; then `m1:instanceCount` / `m1:instanceExamples` and the registry header
   counts are deleted (inferred). `m1:domain` on an individual → annotation with IRI value.
-- name pairs to settle: registry `MusicTheory` vs `music:Music`, `SystemsTheory` vs
-  `systemic_modeling:SystemicModeling` (same domain? subclass?); missing `Mathematics`,
-  `Anthropology`.
+- name pair to settle: `SystemsTheory` vs `systemic_modeling:SystemicModeling` (Q2: two
+  roots, SystemicModeling requires SystemsTheory — SC-5c); missing `Anthropology`.
 
 **Found while doing C2 (not fixed).** The validator engine runs pyshacl with
 `advanced=False` (`validator/checks/shacl_runner.py`): the `sh:SPARQLTarget` combo targets
@@ -678,6 +705,9 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.15.0 (2026-10-22)** — §8.0f lot SC-5b done (32 domain classes, 4 relinks, stored
+  subdomain lists and 3 adjective classes deleted; rule: a domain and a combo never share a
+  local name; gate M1 133/1/296 → 132/1/294); next: NS-SEP, then the M0 lot.
 - **1.14.0 (2026-10-12)** — §8.0f lot SC-5 done (domains are classes ⊑ `m1:Domain`; registry,
   DCC010, M1 SHACL 1.8.0; KnowledgeField purged, `m2:knowledgeField` → `m1:domain`; gate M1
   149/1/446 → 133/1/296); open: SC-5b, M0 domain IRIs rule, name pairs, tools/old docs.

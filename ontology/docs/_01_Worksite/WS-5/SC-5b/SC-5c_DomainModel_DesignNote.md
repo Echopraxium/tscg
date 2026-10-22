@@ -298,3 +298,15 @@ OpenAlex projection computable. A worksite of its own, beyond SC-5c, when needed
   files. Measured on HEAD `76e2943`: 45 `m1:domain:X` and 1,536 `m1:extension:<ext>:X`
   occurrences in 29 files. Mechanical rename by Claude, verified by the gate; SC-5b creates
   its classes in the current convention so that only one convention exists at any time.
+
+## 14. Decisions taken while implementing SC-5b (Michel, 2026-10-15 / 2026-10-22)
+
+- **Decision Theory** ⊑ Mathematics, with `skos:closeMatch` OpenAlex field 18 (Decision
+  Sciences): the parent follows TSCG's use, the alignment keeps the external field.
+- **A domain and a combo never share a local name.** The domain carries the discipline, the
+  combo the phenomenon or process; test: "we study <combo> in <domain>" must make sense
+  ("we study combustion in chemistry" ✓; "we study instructional design in instructional
+  design" ✗). First case: `education:InstructionalDesign` (combo) → `InstructionalDesignProcess`,
+  the IRI goes to the domain. Matters for NS-SEP: both land in the same prefix `m1.education:`.
+- `education:subfields` is a stored subdomain list like `physics:subdomains` (§12): deleted.
+- Geology gets `skos:closeMatch` OpenAlex field 19.

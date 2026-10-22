@@ -18,14 +18,19 @@
       "@type": "owl:Ontology",
       "rdfs:label": "TSCG Knowledge Domains Registry",
       "rdfs:comment": "Centralized, evolving registry of knowledge domains identified through TSCG instance corpus analysis. Each domain entry documents subdomains, related domains, and instance usage statistics. Domains are M1-level concepts (disciplinary extensions) that bridge M2 transdisciplinary GenericConcepts and M0 concrete instances.",
-      "owl:versionInfo": "1.8.0",
+      "owl:versionInfo": "1.9.0",
       "dcterms:created": "2026-04-18",
-      "dcterms:modified": "2026-10-12",
+      "dcterms:modified": "2026-10-22",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.9.0",
+          "dcterms:date": "2026-10-22",
+          "adms:versionNotes": "SC-5b (Michel, decision table 28/28 + 2026-10-14/15): subdomains become domain classes (rdfs:subClassOf); stored subdomain lists deleted — subdomains are inferred from rdfs:subClassOf. Created 17 domain classes: the parents Mathematics, Game, Card Game, Vision Science (closeMatch OpenAlex 2809) and 13 KEEP lines (Trophodynamics, Population Dynamics, Nuclear Engineering, Consensus Algorithms, Counterpoint, Collectible Card Game, Broadcast Television, Signal Processing, Cybernetics, Decision Theory, Pharmacology, Geophysics, Color Science). Relinked Blockchain ⊑ ComputerScience, GameTheory ⊑ Mathematics, MusicTheory ⊑ Music. m1:subdomains deleted on all registry classes. Q7: label + subClassOf + closeMatch only. Resolves the 5 dangling relatedDomains to Mathematics."
+        },
         {
           "owl:versionInfo": "1.8.0",
           "dcterms:date": "2026-10-12",
@@ -35,11 +40,6 @@
           "owl:versionInfo": "1.7.0",
           "dcterms:date": "2026-09-30",
           "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m1:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m1:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
-        },
-        {
-          "owl:versionInfo": "1.6.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1c (Family A). Changelog entry keys, previously bare and dropped on JSON-LD expansion, replaced by standards: version -> owl:versionInfo, date -> dcterms:date, changes -> adms:versionNotes (ADMS: a description of changes between this version and the previous one). Prefix adms declared in @context: ADMS accepted as an external vocabulary (Michel, 2026-09-30). Changelog entries become graph-visible. Legacy changelog forms (maps keyed by version, metadata blocks) left for a separate lot. Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ],
       "m1:domainCount": 22,
@@ -59,13 +59,6 @@
       "rdfs:label": "Ecology",
       "rdfs:comment": "Science of interactions between organisms and their environment, including energy flow and material cycling in ecosystems",
       "skos:definition": "Study of relationships between living organisms and their physical and biological environment",
-      "m1:subdomains": [
-        "Community Ecology",
-        "Trophodynamics",
-        "Thermodynamics of Ecosystems",
-        "Conservation Biology",
-        "Population Dynamics"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:extension:biology:Biology"
@@ -89,14 +82,6 @@
       "rdfs:label": "Engineering",
       "rdfs:comment": "Application of scientific principles to design, build, and maintain systems, structures, and devices",
       "skos:definition": "Practical application of mathematics and science to solve real-world problems",
-      "m1:subdomains": [
-        "Mechanical Engineering",
-        "Automotive Engineering",
-        "Nuclear Engineering",
-        "Energy Systems",
-        "Industrial Technology",
-        "Thermodynamic Cycles"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:extension:physics:Physics"
@@ -120,15 +105,6 @@
       "rdfs:label": "Computer Science",
       "rdfs:comment": "Study of computation, information processing, and the design of computer systems",
       "skos:definition": "Theory, experimentation, and engineering of computational systems and algorithms",
-      "m1:subdomains": [
-        "Distributed Systems",
-        "Blockchain",
-        "Consensus Algorithms",
-        "Cryptography",
-        "Network Theory",
-        "Information Theory",
-        "Statistical Physics (applied to computing)"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:domain:Mathematics"
@@ -150,19 +126,11 @@
       "@id": "m1:domain:MusicTheory",
       "@type": "owl:Class",
       "rdfs:subClassOf": {
-        "@id": "m1:Domain"
+        "@id": "m1:extension:music:Music"
       },
       "rdfs:label": "Music Theory",
       "rdfs:comment": "Study of practices and possibilities of music, including composition techniques and harmonic structures",
       "skos:definition": "Analytical framework for understanding how music works, including harmony, melody, rhythm, and form",
-      "m1:subdomains": [
-        "Polyphonic Composition",
-        "Counterpoint",
-        "Harmony",
-        "Voice Leading",
-        "Modular Synthesis",
-        "Acoustics"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:domain:Mathematics"
@@ -181,17 +149,11 @@
       "@id": "m1:domain:GameTheory",
       "@type": "owl:Class",
       "rdfs:subClassOf": {
-        "@id": "m1:Domain"
+        "@id": "m1:domain:Mathematics"
       },
       "rdfs:label": "Game Theory",
       "rdfs:comment": "Mathematical modeling of strategic interactions among rational decision-makers, including trading card games",
       "skos:definition": "Study of strategic decision-making in competitive and cooperative scenarios",
-      "m1:subdomains": [
-        "Strategic Games",
-        "Trading Card Games",
-        "Competitive Dynamics",
-        "Resource Management"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:domain:Mathematics"
@@ -218,15 +180,6 @@
       "rdfs:label": "Television Engineering",
       "rdfs:comment": "Science and technology of television systems, video signal processing, and broadcasting standards",
       "skos:definition": "Study of electronic systems for capturing, transmitting, and displaying moving images",
-      "m1:subdomains": [
-        "Analogue Video Engineering",
-        "Broadcast Television",
-        "Broadcast Standards",
-        "Signal Engineering",
-        "Metrology",
-        "Measurement",
-        "Signal Processing"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:extension:electronics:Electronics"
@@ -250,12 +203,6 @@
       "rdfs:label": "Neurobiology",
       "rdfs:comment": "Study of the nervous system, neural communication, and brain function",
       "skos:definition": "Biological study of neurons, synapses, and neural circuits underlying behavior and cognition",
-      "m1:subdomains": [
-        "Cellular Communication",
-        "Synaptic Transmission",
-        "Neuropharmacology",
-        "Neurophysiology"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:extension:biology:Biology"
@@ -279,13 +226,6 @@
       "rdfs:label": "Systems Theory",
       "rdfs:comment": "Interdisciplinary study of complex systems, their organization, and emergent properties",
       "skos:definition": "Framework for analyzing interconnected components and their collective behavior",
-      "m1:subdomains": [
-        "Cybernetics",
-        "Systems Thinking",
-        "Viable System Model",
-        "Complexity Theory",
-        "Network Theory"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:extension:biology:Biology"
@@ -316,17 +256,6 @@
       "rdfs:label": "Philosophy",
       "rdfs:comment": "Study of fundamental questions about existence, knowledge, values, reason, and reality",
       "skos:definition": "Critical examination of assumptions, arguments, and concepts underlying human thought and experience",
-      "m1:subdomains": [
-        "Chinese Philosophy",
-        "Epistemology",
-        "Ontology",
-        "Ethics",
-        "Logic",
-        "Metaphysics",
-        "Decision Theory",
-        "Comparative Mythology",
-        "Symbolic Divination"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:domain:Mathematics"
@@ -346,19 +275,11 @@
       "@id": "m1:domain:Blockchain",
       "@type": "owl:Class",
       "rdfs:subClassOf": {
-        "@id": "m1:Domain"
+        "@id": "m1:domain:ComputerScience"
       },
       "rdfs:label": "Blockchain",
       "rdfs:comment": "Distributed ledger technology and decentralized consensus mechanisms",
       "skos:definition": "Study of cryptographically-secured, decentralized systems for recording transactions and maintaining shared state without central authority",
-      "m1:subdomains": [
-        "Cryptography",
-        "Distributed Systems",
-        "Consensus Algorithms",
-        "Decentralized Networks",
-        "Peer-to-Peer Systems",
-        "Byzantine Fault Tolerance"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:domain:ComputerScience"
@@ -375,6 +296,170 @@
       ],
       "m1:instanceCount": 1,
       "m1:note": "Nakamoto Consensus: proof-of-work distributed consensus mechanism underlying Bitcoin"
+    },
+    {
+      "@id": "m1:domain:Mathematics",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
+      "rdfs:label": "Mathematics"
+    },
+    {
+      "@id": "m1:domain:Game",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
+      "rdfs:label": "Game"
+    },
+    {
+      "@id": "m1:domain:CardGame",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:domain:Game"
+      },
+      "rdfs:label": "Card Game"
+    },
+    {
+      "@id": "m1:domain:CollectibleCardGame",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:domain:CardGame"
+      },
+      "rdfs:label": "Collectible Card Game"
+    },
+    {
+      "@id": "m1:domain:VisionScience",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
+      "rdfs:label": "Vision Science",
+      "skos:closeMatch": {
+        "@id": "https://openalex.org/subfields/2809"
+      }
+    },
+    {
+      "@id": "m1:domain:ColorScience",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:domain:VisionScience"
+      },
+      "rdfs:label": "Color Science"
+    },
+    {
+      "@id": "m1:domain:Trophodynamics",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:domain:Ecology"
+      },
+      "rdfs:label": "Trophodynamics"
+    },
+    {
+      "@id": "m1:domain:PopulationDynamics",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:domain:Ecology"
+      },
+      "rdfs:label": "Population Dynamics"
+    },
+    {
+      "@id": "m1:domain:NuclearEngineering",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:domain:Engineering"
+      },
+      "rdfs:label": "Nuclear Engineering",
+      "skos:closeMatch": {
+        "@id": "https://openalex.org/subfields/2104"
+      }
+    },
+    {
+      "@id": "m1:domain:ConsensusAlgorithms",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:domain:ComputerScience"
+      },
+      "rdfs:label": "Consensus Algorithms"
+    },
+    {
+      "@id": "m1:domain:Counterpoint",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:domain:MusicTheory"
+      },
+      "rdfs:label": "Counterpoint"
+    },
+    {
+      "@id": "m1:domain:BroadcastTelevision",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:domain:Television"
+      },
+      "rdfs:label": "Broadcast Television"
+    },
+    {
+      "@id": "m1:domain:SignalProcessing",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": [
+        {
+          "@id": "m1:extension:electronics:Electronics"
+        },
+        {
+          "@id": "m1:domain:ComputerScience"
+        }
+      ],
+      "rdfs:label": "Signal Processing",
+      "skos:closeMatch": {
+        "@id": "https://openalex.org/subfields/1711"
+      }
+    },
+    {
+      "@id": "m1:domain:Cybernetics",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:domain:SystemsTheory"
+      },
+      "rdfs:label": "Cybernetics"
+    },
+    {
+      "@id": "m1:domain:DecisionTheory",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:domain:Mathematics"
+      },
+      "rdfs:label": "Decision Theory",
+      "skos:closeMatch": {
+        "@id": "https://openalex.org/fields/18"
+      }
+    },
+    {
+      "@id": "m1:domain:Pharmacology",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:Domain"
+      },
+      "rdfs:label": "Pharmacology",
+      "skos:closeMatch": {
+        "@id": "https://openalex.org/subfields/3004"
+      }
+    },
+    {
+      "@id": "m1:domain:Geophysics",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": [
+        {
+          "@id": "m1:extension:geology:Geology"
+        },
+        {
+          "@id": "m1:extension:physics:Physics"
+        }
+      ],
+      "rdfs:label": "Geophysics",
+      "skos:closeMatch": {
+        "@id": "https://openalex.org/subfields/1908"
+      }
     }
   ]
 }

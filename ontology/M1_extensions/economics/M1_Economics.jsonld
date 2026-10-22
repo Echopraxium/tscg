@@ -22,12 +22,17 @@
       "dcterms:description": "Extension of the TSCG framework with economics-specific concepts. Covers the Kindleberger-Minsky speculative cycle (Displacement → Boom → Euphoria → Distress → Revulsion), credit dynamics, leverage, financial contagion, narrative economics, and systemic risk. First TSCG domain extension in the Finance / Economics field.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-28",
-      "dcterms:modified": "2026-10-12",
-      "owl:versionInfo": "1.8.0",
+      "dcterms:modified": "2026-10-22",
+      "owl:versionInfo": "1.9.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.9.0",
+          "dcterms:date": "2026-10-22",
+          "adms:versionNotes": "SC-5b (Michel, decision table 28/28 + 2026-10-14/15): subdomains become domain classes (rdfs:subClassOf); stored subdomain lists deleted — subdomains are inferred from rdfs:subClassOf. m1:subdomains deleted. Q4: class Financial deleted (KnowledgeField-era adjective qualifier, referenced by nothing; Finance is not created — Q10)."
+        },
         {
           "owl:versionInfo": "1.8.0",
           "dcterms:date": "2026-10-12",
@@ -37,11 +42,6 @@
           "owl:versionInfo": "1.7.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:DomainConceptCombo removed from the @type of 14 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:DomainConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
-        },
-        {
-          "owl:versionInfo": "1.6.0",
-          "dcterms:date": "2026-10-11",
-          "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 14 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
         }
       ],
       "owl:imports": [
@@ -76,14 +76,6 @@
       "dcterms:created": "2026-02-28",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "skos:definition": "Study of how societies allocate scarce resources and make decisions about production and consumption",
-      "m1:subdomains": [
-        "Finance",
-        "Financial Economics",
-        "Behavioral Finance",
-        "Macroeconomics",
-        "Systemic Risk",
-        "Market Dynamics"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:domain:Mathematics"
@@ -96,18 +88,6 @@
         "M0_KindlebergerMinsky"
       ],
       "m1:instanceCount": 1
-    },
-    {
-      "@id": "m1:extension:economics:Financial",
-      "@type": "owl:Class",
-      "rdfs:subClassOf": {
-        "@id": "m1:extension:economics:Economics"
-      },
-      "rdfs:label": "Financial",
-      "rdfs:comment": "Disciplinary qualifier (ADJECTIVE form) for use in DomainConceptCombo patterns. Derived from m1:extension:economics:Economics, specialized to financial markets, instruments, and institutions.",
-      "dcterms:created": "2026-02-28",
-      "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
-      "skos:definition": "Pertaining to financial markets, instruments, capital flows, and financial institutions"
     },
     {
       "@id": "m1:extension:economics:ExogenousShock",

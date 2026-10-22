@@ -22,12 +22,17 @@
       "dcterms:description": "Extension of TSCG framework with music-specific concepts including polyphony, counterpoint, fugue structure, harmonic relationships, and voice independence. Primary focus on counterpoint as a system of constrained autonomous agents producing emergent coherence.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-03-20",
-      "owl:versionInfo": "1.9.0",
-      "dcterms:modified": "2026-10-12",
+      "owl:versionInfo": "1.10.0",
+      "dcterms:modified": "2026-10-22",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.10.0",
+          "dcterms:date": "2026-10-22",
+          "adms:versionNotes": "SC-5b (Michel, decision table 28/28 + 2026-10-14/15): subdomains become domain classes (rdfs:subClassOf); stored subdomain lists deleted — subdomains are inferred from rdfs:subClassOf. Created Electronic Music ⊑ Music and Modular Synthesis ⊑ Electronic Music. MusicTheory (M1_Domains) now ⊑ Music."
+        },
         {
           "owl:versionInfo": "1.9.0",
           "dcterms:date": "2026-10-12",
@@ -37,11 +42,6 @@
           "owl:versionInfo": "1.8.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1b (class/instance separation, follow-up of C1). rdfs:subClassOf values written as plain strings (JSON-LD literals: the property is not @id-coerced in the @context, so these superclass links were absent from the graph) rewritten as IRIs: 10 value(s)."
-        },
-        {
-          "owl:versionInfo": "1.7.0",
-          "dcterms:date": "2026-10-11",
-          "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:DomainConceptCombo removed from the @type of 8 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:DomainConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
         }
       ],
       "owl:imports": [
@@ -339,6 +339,22 @@
         "Charles Mingus compositions — written counterpoint meets improvisation"
       ],
       "m1:extension:music:keyDifference": "Baroque counterpoint: rules fully explicit and written. Jazz counterpoint: rules internalized and negotiated in real time between performers."
+    },
+    {
+      "@id": "m1:extension:music:ElectronicMusic",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:extension:music:Music"
+      },
+      "rdfs:label": "Electronic Music"
+    },
+    {
+      "@id": "m1:extension:music:ModularSynthesis",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:extension:music:ElectronicMusic"
+      },
+      "rdfs:label": "Modular Synthesis"
     }
   ]
 }

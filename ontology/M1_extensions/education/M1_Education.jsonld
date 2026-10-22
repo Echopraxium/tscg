@@ -22,12 +22,17 @@
       "dcterms:description": "Extension of the TSCG framework with education-specific concepts including pedagogical strategies, instructional design, technology integration, assessment, and knowledge domain integration (TPACK). All concepts are characterized by M2 GenericConcepts via m2:characterizedBy.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-26",
-      "owl:versionInfo": "1.13.0",
-      "dcterms:modified": "2026-10-12",
+      "owl:versionInfo": "1.14.0",
+      "dcterms:modified": "2026-10-22",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.14.0",
+          "dcterms:date": "2026-10-22",
+          "adms:versionNotes": "SC-5b (Michel, decision table 28/28 + 2026-10-14/15): subdomains become domain classes (rdfs:subClassOf); stored subdomain lists deleted — subdomains are inferred from rdfs:subClassOf. Created Instructional Design and Educational Technology ⊑ Education. The combo that held the IRI InstructionalDesign is renamed InstructionalDesignProcess (Michel 2026-10-15: a domain and a combo never share a local name — the domain carries the discipline, the combo the phenomenon or process); its signature is corrected to Fm1m2(Education, Workflow, Composition) (was a monoidal formula, DCC006). m1:subdomains and the extension-local education:subfields deleted."
+        },
         {
           "owl:versionInfo": "1.13.0",
           "dcterms:date": "2026-10-12",
@@ -37,11 +42,6 @@
           "owl:versionInfo": "1.12.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1b (class/instance separation, follow-up of C1). rdfs:subClassOf values written as plain strings (JSON-LD literals: the property is not @id-coerced in the @context, so these superclass links were absent from the graph) rewritten as IRIs: 10 value(s). Phantom parent m1:KnowledgeField (declared nowhere) re-pointed to m1:Domain on m1:extension:education:Education (Michel, 2026-10-11)."
-        },
-        {
-          "owl:versionInfo": "1.11.0",
-          "dcterms:date": "2026-10-11",
-          "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:DomainConceptCombo removed from the @type of 10 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:DomainConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
         }
       ],
       "owl:imports": [
@@ -57,20 +57,7 @@
       "rdfs:subClassOf": {
         "@id": "m1:Domain"
       },
-      "m1:extension:education:subfields": [
-        "Instructional Design",
-        "Educational Technology",
-        "Learning Science",
-        "Curriculum Development",
-        "Teacher Education"
-      ],
       "skos:definition": "Study of methods, theories, and technologies for facilitating learning and knowledge transfer",
-      "m1:subdomains": [
-        "Instructional Design",
-        "Educational Technology",
-        "Pedagogical Content Knowledge",
-        "Technology Integration"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:domain:ComputerScience"
@@ -157,15 +144,15 @@
       "m1:extension:education:instanceEvidence": "M0_TPACK: PK foundation - Learning theories inform pedagogical choices"
     },
     {
-      "@id": "m1:extension:education:InstructionalDesign",
+      "@id": "m1:extension:education:InstructionalDesignProcess",
       "@type": "owl:Class",
       "rdfs:subClassOf": [
         {"@id": "m2:DomainConceptCombo"},
         {"@id": "m2:GenericConcept"}
       ],
-      "rdfs:label": "Instructional Design",
+      "rdfs:label": "Instructional Design Process",
       "rdfs:comment": "The systematic process of creating learning experiences and environments. Applies m2:Workflow (structured design process) and m2:Composition (assembling instructional components into coherent units) to the challenge of producing effective instruction. Bridges learning theory and classroom practice.",
-      "m1:structuralGrammarFormula": "Fm1m2(Education, S × D × F)",
+      "m1:structuralGrammarFormula": "Fm1m2(Education, Workflow, Composition)",
       "m1:extension:education:asfidBasis": {
         "S": "Hierarchical structure of design phases (Analysis, Design, Development, Implementation, Evaluation)",
         "D": "Iterative design cycles with revision",
@@ -203,7 +190,7 @@
         }
       ],
       "m1:extension:education:alignmentPrinciple": "Constructive alignment: learning objectives, activities, and assessments must be coherent",
-      "m1:extension:education:instanceEvidence": "M0_TPACK: InstructionalDesign is the practice layer where TPACK knowledge is applied"
+      "m1:extension:education:instanceEvidence": "M0_TPACK: the instructional design process is the practice layer where TPACK knowledge is applied"
     },
     {
       "@id": "m1:extension:education:TechnologyIntegration",
@@ -537,6 +524,22 @@
       ],
       "m1:extension:education:emergenceSignature": "Synergy is recognized when the integration enables NEW instructional possibilities absent from any single component",
       "m1:extension:education:instanceEvidence": "M0_TPACK: m0:intersections - PCK, TCK, TPK, TPACK all demonstrate synergistic emergence"
+    },
+    {
+      "@id": "m1:extension:education:InstructionalDesign",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:extension:education:Education"
+      },
+      "rdfs:label": "Instructional Design"
+    },
+    {
+      "@id": "m1:extension:education:EducationalTechnology",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:extension:education:Education"
+      },
+      "rdfs:label": "Educational Technology"
     }
   ]
 }
