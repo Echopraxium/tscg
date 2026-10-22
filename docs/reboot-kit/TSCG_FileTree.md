@@ -294,8 +294,6 @@
     - TscgExplorer_Simulation.png
     - VCO_Simulation.png
   - **_01_Worksite/**
-    - **2026_09_01/**
-      - Handover-SC3-Facet-1sept26.md
     - **2026_09_12/**
       - TSCG_Session_Handover_2026-09-09_World2DProjection.md
     - **2026_09_13/**
@@ -1561,6 +1559,7 @@
         - TSCG_HandOver_Article_AI_Delegation_OE_vs_SE_2026-10-01.md
       - **WS-0/**
         - **2026_09_01/**
+          - Handover-SC3-Facet-1sept26.md
           - TSCG_Session_Handover_2026-09-01_Facet-WS0_AntiAliasing.md
         - **2026_09_02/**
           - SC-3_Facet_Decision_Record.md
