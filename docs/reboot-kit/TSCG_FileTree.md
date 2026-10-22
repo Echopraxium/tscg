@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1777 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1782 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -120,6 +120,11 @@
   - **2026_09_27/**
     - Housekeeping_ArchivePurge_2026-09-27.md
     - TSCG_Session_Handover_2026-09-27.md
+- **_03_SerendipCrates/**
+  - **EpistemologyMaquette/**
+    - CRATE.md
+    - TSCG_HandOver_EpistemologyMaquette_2026-10-22.md
+  - README.md
 - **_protos/**
   - README.txt
 - **cli_tools/**
@@ -129,8 +134,10 @@
   - **compendium/**
     - annotate_compendium.py
     - build_compendium.py
+    - compendium_folders.yaml
     - Compendium_Generator_DesignNote.md
     - compendium_template.html
+    - TSCG_Logo.png
   - **flexible-graphRAG/**
     - _open_cmd_window.bat
     - bin - Raccourci.lnk
@@ -289,7 +296,6 @@
   - **_01_Worksite/**
     - **2026_09_01/**
       - Handover-SC3-Facet-1sept26.md
-      - TSCG_Session_Handover_2026-09-01_Facet-WS0_AntiAliasing.md
     - **2026_09_12/**
       - TSCG_Session_Handover_2026-09-09_World2DProjection.md
     - **2026_09_13/**
@@ -1554,6 +1560,8 @@
       - **OntologyEngineering/**
         - TSCG_HandOver_Article_AI_Delegation_OE_vs_SE_2026-10-01.md
       - **WS-0/**
+        - **2026_09_01/**
+          - TSCG_Session_Handover_2026-09-01_Facet-WS0_AntiAliasing.md
         - **2026_09_02/**
           - SC-3_Facet_Decision_Record.md
           - TSCG_Session_Handover_2026-09-02_SC-3-CLOSED.md
