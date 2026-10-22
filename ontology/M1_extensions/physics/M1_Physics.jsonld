@@ -22,11 +22,16 @@
       "dcterms:description": "Extension of the TSCG framework with physics-specific concepts. Initial focus: thermodynamics and phase transition theory (6 concepts). Each concept is grounded in M2 metaconcepts and applicable across Physics subdomains (thermodynamics, statistical mechanics, materials science, physical chemistry).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-02-26",
-      "owl:versionInfo": "1.10.0",
+      "owl:versionInfo": "1.11.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.11.0",
+          "dcterms:date": "2026-10-22",
+          "adms:versionNotes": "SC-5b (Michel, decision table 28/28 + 2026-10-14/15): subdomains become domain classes (rdfs:subClassOf); stored subdomain lists deleted — subdomains are inferred from rdfs:subClassOf. Created Thermodynamics and Condensed Matter Physics (closeMatch OpenAlex 3104) ⊑ Physics; Semiconductor Physics ⊑ Condensed Matter Physics. m1:subdomains deleted, and the extension-local physics:subdomains deleted on the 6 combos (they stay in domain Physics — §12)."
+        },
         {
           "owl:versionInfo": "1.10.0",
           "dcterms:date": "2026-10-12",
@@ -36,11 +41,6 @@
           "owl:versionInfo": "1.9.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:DomainConceptCombo removed from the @type of 6 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:DomainConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
-        },
-        {
-          "owl:versionInfo": "1.8.0",
-          "dcterms:date": "2026-10-11",
-          "adms:versionNotes": "WS-1 B2 lot C1 (class/instance separation). rdfs:subClassOf values written as plain strings (JSON-LD literals: rdfs:subClassOf is not @id-coerced in the @context) rewritten as IRIs {\"@id\": ...} for the combo parent m2:DomainConceptCombo: 6 value(s). As literals the combos had NO superclass in the graph: their only RDF link to the combo class was the rdf:type punning (combo typed as an instance), which lot C2 removes. Michel, 2026-10-11: combos are derived classes, not instances. Same defect as the owl:imports strings of lot 1i. Other string subClassOf values in this file (non-combo parents) are a recorded follow-up (lot C1b)."
         }
       ],
       "owl:imports": [
@@ -50,7 +50,7 @@
       "skos:scopeNote": "Physics subdomain concepts. v1.0.0 covers Thermodynamics / Phase Transitions. Future planned extensions: Mechanics (Newton, Lagrangian), Electromagnetism (Maxwell), Optics (may integrate with M1_Optics), Quantum Mechanics (Schrodinger, Heisenberg), Statistical Mechanics.",
       "m1:extension:physics:bootstrapSource": "M0_PhaseTransition v1.1.0",
       "m1:extension:physics:conceptCount": 6,
-      "dcterms:modified": "2026-10-12"
+      "dcterms:modified": "2026-10-22"
     },
     {
       "@id": "m1:extension:physics:Physics",
@@ -63,15 +63,6 @@
       "dcterms:created": "2026-10-12",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "skos:definition": "Study of fundamental laws governing the natural world and the behavior of matter and energy",
-      "m1:subdomains": [
-        "Thermodynamics",
-        "Mechanics",
-        "Statistical Physics",
-        "Optics",
-        "Electromagnetism",
-        "Quantum Mechanics",
-        "Acoustics"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:extension:chemistry:Chemistry"
@@ -104,12 +95,6 @@
         "N2: L_vap = 5.57 kJ/mol (198 J/g) at 77.4 K"
       ],
       "m1:extension:physics:tscgRelevance": "LatentHeat is the primary thermodynamic observable that reveals a first-order Switch between Attractor basins. Absence of latent heat marks a second-order (continuous) transition near the CriticalPoint.",
-      "m1:extension:physics:subdomains": [
-        "Thermodynamics",
-        "Calorimetry",
-        "Materials Science",
-        "Meteorology"
-      ],
       "m1:extension:physics:pocletOrigin": "M0_PhaseTransition v1.1.0",
       "m1:extension:physics:measuredBy": "Differential Scanning Calorimetry (DSC); isothermal calorimetry",
       "m1:structuralGrammarFormula": "Fm1m2(Physics, A × D × F)",
@@ -132,11 +117,6 @@
         "Ga: T = 302.9146 K (ITS-90 fixed point), P = 2e-9 Pa (essentially zero)"
       ],
       "m1:extension:physics:tscgRelevance": "Triple Point physically instantiates Polarity(N=3) in a thermodynamic system: it is the unique (T,P) where three Attractor basins are exactly equally stable. The Gibbs phase rule F=0 quantifies the TSCG concept of a fully constrained fixed point.",
-      "m1:extension:physics:subdomains": [
-        "Thermodynamics",
-        "Metrology",
-        "Physical Chemistry"
-      ],
       "m1:extension:physics:pocletOrigin": "M0_PhaseTransition v1.1.0",
       "m1:extension:physics:metrologyNote": "Water triple point defined the Kelvin until 2019 SI redefinition; still used as practical calibration reference",
       "m1:structuralGrammarFormula": "Fm1m2(Physics, A × S × It × D)",
@@ -170,11 +150,6 @@
         "Dry cleaning (SC-CO2 as solvent replacement)"
       ],
       "m1:extension:physics:tscgRelevance": "CriticalPoint is the T,P at which the Switch M2 metaconcept between Liquid and Gas Attractors disappears. It validates CriticalityRegime (M2): below T_c the system is subcritical (Switch possible), at T_c the system is critical (transition topology changes), above T_c the Switch no longer exists.",
-      "m1:extension:physics:subdomains": [
-        "Thermodynamics",
-        "Statistical Mechanics",
-        "Chemical Engineering"
-      ],
       "m1:extension:physics:pocletOrigin": "M0_PhaseTransition v1.1.0",
       "m1:structuralGrammarFormula": "Fm1m2(Physics, A × D × F)",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
@@ -198,11 +173,6 @@
       "m1:extension:physics:landauTheory": "Free energy expanded in powers of order parameter phi: F = F0 + a(T)*phi^2 + b*phi^4 + ... The sign change of a(T) at T_c drives the phase transition. Minimizing F gives equilibrium phi(T).",
       "m1:extension:physics:tscgRelevance": "OrderParameter operationalizes two M2 concepts: (1) it is the ASFID Information dimension signature of each Attractor basin (encodes which phase the system is in); (2) it is the quantitative measure of the SymmetryBreaking M2 candidate — OrderParameter = 0 means high symmetry; OrderParameter > 0 means symmetry has been broken.",
       "m1:extension:physics:symmetryBreakingLink": "At solidification, OrderParameter transitions discontinuously from 0 (liquid: continuous translational symmetry) to > 0 (crystal: discrete lattice periodicity). This is the quantitative fingerprint of the SymmetryBreaking M2 candidate.",
-      "m1:extension:physics:subdomains": [
-        "Statistical Mechanics",
-        "Condensed Matter Physics",
-        "Quantum Field Theory"
-      ],
       "m1:extension:physics:pocletOrigin": "M0_PhaseTransition v1.1.0",
       "m1:structuralGrammarFormula": "Fm1m2(Physics, A × S × It)",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
@@ -227,12 +197,6 @@
         "H2O: negative melting curve slope (ice less dense than water — Solid/Liquid curve slopes LEFT, contrary to most substances)",
         "CO2: triple point at 5.11 atm (cannot exist as liquid at 1 atm — only Solid and Gas accessible at standard pressure)",
         "He-4: phase diagram includes superfluid lambda line (quantum phase transition)"
-      ],
-      "m1:extension:physics:subdomains": [
-        "Thermodynamics",
-        "Materials Science",
-        "Physical Chemistry",
-        "Geology"
       ],
       "m1:extension:physics:pocletOrigin": "M0_PhaseTransition v1.1.0",
       "m1:structuralGrammarFormula": "Fm1m2(Physics, A × D | R)",
@@ -272,19 +236,39 @@
         "Bubble nucleation: cavitation in hydraulic machinery"
       ],
       "m1:extension:physics:tscgRelevance": "Nucleation reveals that the Switch M2 metaconcept has two distinct aspects: (1) the thermodynamic Switch threshold (when it becomes favorable for the new phase to exist — the phase diagram) and (2) the kinetic Switch barrier (when the transition actually occurs — nucleation theory). These are not the same: a system can be thermodynamically past the Threshold but kinetically unable to Switch. This distinction is important for TSCG modeling of irreversible processes.",
-      "m1:extension:physics:subdomains": [
-        "Statistical Mechanics",
-        "Materials Science",
-        "Atmospheric Physics",
-        "Biophysics",
-        "Chemical Engineering"
-      ],
       "m1:extension:physics:pocletOrigin": "M0_PhaseTransition v1.1.0",
       "m1:structuralGrammarFormula": "Fm1m2(Physics, A × D × F)",
       "rdfs:subClassOf": {"@id": "m2:DomainConceptCombo"},
       "m1:domain": {
         "@id": "m1:extension:physics:Physics"
       }
+    },
+    {
+      "@id": "m1:extension:physics:Thermodynamics",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:extension:physics:Physics"
+      },
+      "rdfs:label": "Thermodynamics"
+    },
+    {
+      "@id": "m1:extension:physics:CondensedMatterPhysics",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:extension:physics:Physics"
+      },
+      "rdfs:label": "Condensed Matter Physics",
+      "skos:closeMatch": {
+        "@id": "https://openalex.org/subfields/3104"
+      }
+    },
+    {
+      "@id": "m1:extension:physics:SemiconductorPhysics",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:extension:physics:CondensedMatterPhysics"
+      },
+      "rdfs:label": "Semiconductor Physics"
     }
   ]
 }

@@ -22,7 +22,7 @@
       "dcterms:description": "Extension of TSCG framework with biology-specific concepts including cellular communication, signal transduction, homeostasis, and physiological regulation.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "owl:versionInfo": "1.10.0",
+      "owl:versionInfo": "1.11.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -30,8 +30,13 @@
         { "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M1_CoreConcepts.jsonld" },
         { "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld" }
       ],
-      "dcterms:modified": "2026-10-12",
+      "dcterms:modified": "2026-10-22",
       "m3:changelog": [
+        {
+          "owl:versionInfo": "1.11.0",
+          "dcterms:date": "2026-10-22",
+          "adms:versionNotes": "SC-5b (Michel, decision table 28/28 + 2026-10-14/15): subdomains become domain classes (rdfs:subClassOf); stored subdomain lists deleted — subdomains are inferred from rdfs:subClassOf. Created Developmental Biology, Cell Biology, Physiology ⊑ Biology; Endocrinology ⊑ Physiology (deliberate divergence from OpenAlex, where it is a sibling). m1:subdomains deleted."
+        },
         {
           "owl:versionInfo": "1.10.0",
           "dcterms:date": "2026-10-12",
@@ -41,11 +46,6 @@
           "owl:versionInfo": "1.9.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1b (class/instance separation, follow-up of C1). rdfs:subClassOf values written as plain strings (JSON-LD literals: the property is not @id-coerced in the @context, so these superclass links were absent from the graph) rewritten as IRIs: 21 value(s). Phantom parent m1:CommunicationPattern on m1:extension:biology:CellularCommunication left as a string, pending the Protocol candidate (attribute of m2:Workflow, Michel 2026-10-11)."
-        },
-        {
-          "owl:versionInfo": "1.8.0",
-          "dcterms:date": "2026-10-11",
-          "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:DomainConceptCombo removed from the @type of 1 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:DomainConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
         }
       ]
     },
@@ -60,20 +60,6 @@
       "dcterms:created": "2026-05-26",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "skos:definition": "Study of life and living systems at all scales from molecules to ecosystems",
-      "m1:subdomains": [
-        "Developmental Biology",
-        "Cell Biology",
-        "Physiology",
-        "Endocrinology",
-        "Renal Physiology",
-        "Cardiovascular Physiology",
-        "Nephrology",
-        "Homeostasis",
-        "Immunology",
-        "Neuroscience",
-        "Cellular Communication",
-        "Pharmacology"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:extension:chemistry:Chemistry"
@@ -351,6 +337,50 @@
       "rdfs:label": "Immune Response",
       "rdfs:comment": "Coordinated reaction of immune system to foreign antigens. Involves innate (immediate) and adaptive (specific, memory) components.",
       "rdfs:subClassOf": {"@id": "m2:GenericConcept"}
+    },
+    {
+      "@id": "m1:extension:biology:DevelopmentalBiology",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:extension:biology:Biology"
+      },
+      "rdfs:label": "Developmental Biology",
+      "skos:closeMatch": {
+        "@id": "https://openalex.org/subfields/1309"
+      }
+    },
+    {
+      "@id": "m1:extension:biology:CellBiology",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:extension:biology:Biology"
+      },
+      "rdfs:label": "Cell Biology",
+      "skos:closeMatch": {
+        "@id": "https://openalex.org/subfields/1307"
+      }
+    },
+    {
+      "@id": "m1:extension:biology:Physiology",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:extension:biology:Biology"
+      },
+      "rdfs:label": "Physiology",
+      "skos:closeMatch": {
+        "@id": "https://openalex.org/subfields/1314"
+      }
+    },
+    {
+      "@id": "m1:extension:biology:Endocrinology",
+      "@type": "owl:Class",
+      "rdfs:subClassOf": {
+        "@id": "m1:extension:biology:Physiology"
+      },
+      "rdfs:label": "Endocrinology",
+      "skos:closeMatch": {
+        "@id": "https://openalex.org/subfields/1310"
+      }
     }
   ]
 }

@@ -3,7 +3,7 @@
 test_m1_domains.py — negative tests for SC-5 (domains are classes, Michel 2026-10-11/12).
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 0.1.0
+Version: 0.2.0  (SC-5b, 2026-10-15: fixtures moved from geology:Geological — deleted, Q4 — to biology:Endocrinology, a two-hop subdomain)
 Home   : ontology/toolchain/validator/tests/test_m1_domains.py
 
 A domain is an owl:Class rdfs:subClassOf m1:Domain (or of a parent domain), never an
@@ -33,6 +33,7 @@ check_M1 = base.check_M1
 REPO = base.REPO
 REGISTRY = REPO / "ontology" / "M1_Domains.jsonld"
 GEOLOGY = REPO / "ontology" / "M1_extensions" / "geology" / "M1_Geology.jsonld"
+BIOLOGY = REPO / "ontology" / "M1_extensions" / "biology" / "M1_Biology.jsonld"
 
 
 def _node(d, nid):
@@ -45,7 +46,7 @@ def _delta(path, mutate):
 
 # -- SHAPE 11 / 13 on HEAD -----------------------------------------------------------
 def test_domain_shapes_clean_on_head():
-    for path in (REGISTRY, GEOLOGY):
+    for path in (REGISTRY, GEOLOGY, BIOLOGY):
         counts, _g = base._shapes(path, base._load(path))
         assert counts.get("DomainClassShape", 0) == 0, (path.name, counts)
         assert counts.get("NoDomainIndividualShape", 0) == 0, (path.name, counts)
@@ -60,9 +61,9 @@ def test_shape13_domain_class_punned_as_individual():
 
 def test_shape13_obsolete_knowledgefield_individual():
     def m(d):
-        n = _node(d, "m1:extension:geology:Geological")
+        n = _node(d, "m1:extension:biology:Endocrinology")
         n["@type"] = ["owl:Class", "m2:KnowledgeField"]
-    assert _delta(GEOLOGY, m) == {"NoDomainIndividualShape": 1}
+    assert _delta(BIOLOGY, m) == {"NoDomainIndividualShape": 1}
 
 
 # -- SHAPE 11 ---------------------------------------------------------------------------
@@ -79,10 +80,11 @@ def test_shape11_related_domain_as_string():
 
 
 def test_shape11_retired_knowledgefield_role_on_adjective_subdomain():
-    # Geological is a subclass of Geology: reached through rdfs:subClassOf+ (transitive)
+    # Endocrinology ⊑ Physiology ⊑ Biology: reached through rdfs:subClassOf+ (two hops)
+    # (was Geological, deleted in SC-5b — Q4)
     def m(d):
-        _node(d, "m1:extension:geology:Geological")["m2:knowledgeFieldRole"] = "ADJECTIVE"
-    assert _delta(GEOLOGY, m) == {"DomainClassShape": 1}
+        _node(d, "m1:extension:biology:Endocrinology")["m2:knowledgeFieldRole"] = "ADJECTIVE"
+    assert _delta(BIOLOGY, m) == {"DomainClassShape": 1}
 
 
 # -- check_M1 DCC010 --------------------------------------------------------------------
@@ -97,8 +99,9 @@ def _registry(ontology_dir):
 def test_dcc010_reads_the_class_hierarchy_on_head():
     names = _registry(REPO / "ontology")
     # extension domain classes (Music / EnergyGenerators / SystemicModeling were missed
-    # until 1.7.0), an adjective subdomain, a registry class
-    for n in ("music", "energygenerators", "systemicmodeling", "geological", "ecology"):
+    # until 1.7.0), a two-hop extension subdomain, a registry class, a registry subdomain
+    for n in ("music", "energygenerators", "systemicmodeling", "endocrinology", "ecology",
+              "trophodynamics"):
         assert n in names, n
     for n in ("cascade", "oscillator", "domain"):          # not domains
         assert n not in names, n
@@ -130,7 +133,7 @@ def test_dcc010_flags_a_domainless_fm1m2():
     check_M1._DOMAIN_REGISTRY = None
     try:
         c._check_signature("m1:test:X", "Fm1m2(Cascade, Duplication, Network)", "Fm1m2", "DCC")
-        c._check_signature("m1:test:Y", "Fm1m2(Geological, Duplication)", "Fm1m2", "DCC")
+        c._check_signature("m1:test:Y", "Fm1m2(Endocrinology, Duplication)", "Fm1m2", "DCC")
     finally:
         check_M1._DOMAIN_REGISTRY = None
     dcc010 = [i.message for i in c.issues if i.code == "DCC010"]

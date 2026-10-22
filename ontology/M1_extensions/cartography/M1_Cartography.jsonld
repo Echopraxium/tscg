@@ -21,7 +21,7 @@
       "dcterms:description": "Domain-specific facets for cartographic map projections. Declares the classification axes by which projections of the terrestrial globe are filed: the distortion property a projection preserves (Map/REVOI side) and the geometry of its graticule (Territory/Structure side). First M1-declared facets under the SC-3 m3:Facet mechanism.",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-09-09",
-      "owl:versionInfo": "1.4.0",
+      "owl:versionInfo": "1.5.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -39,6 +39,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "1.5.0",
+          "dcterms:date": "2026-10-22",
+          "adms:versionNotes": "SC-5b (Michel, decision table 28/28 + 2026-10-14/15): subdomains become domain classes (rdfs:subClassOf); stored subdomain lists deleted — subdomains are inferred from rdfs:subClassOf. m1:subdomains deleted."
+        },
+        {
           "owl:versionInfo": "1.4.0",
           "dcterms:date": "2026-10-12",
           "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-11/12): domains are classes rdfs:subClassOf m1:Domain, never individuals. m1:extension:cartography:Cartography created ⊑ m1:Domain; registry data moved onto m1:extension:cartography:Cartography. m2:KnowledgeField / m1:KnowledgeFieldGenericCombo are obsolete (declared nowhere); the KnowledgeField-only keys m2:knowledgeFieldRole, m2:derivedFrom (now rdfs:subClassOf) dropped; m2:qualifier text kept as skos:definition. Obsolete KnowledgeField vocabulary purged from the live text (Michel, 2026-10-12: there is no KnowledgeField any more, it is Domain). m2:knowledgeField (obsolete, declared nowhere) renamed m1:domain on 1 class(es): an owl:AnnotationProperty whose value is the IRI of the domain class."
@@ -47,11 +52,6 @@
           "owl:versionInfo": "1.3.0",
           "dcterms:date": "2026-10-03",
           "adms:versionNotes": "WS-2 lot CTX-5 (WS-5 prerequisite). Removed the @context terms \"m3:eagle_eye\" and \"m3:sphinx_eye\": term names in the form of a compact IRI that do not map to their own expansion (JSON-LD 1.1 §4.1.2). rdflib ignored them (no IRI produced anywhere in the corpus), strict JSON-LD 1.1 processors (pyld) rejected the file, and if honoured they would have pointed to the wrong IRI (M3 defines its terms under M3_GenesisGrammar.jsonld#eagle_eye:X). Graph unchanged (isomorphic to the previous version). Scoping: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md §4."
-        },
-        {
-          "owl:versionInfo": "1.2.0",
-          "dcterms:date": "2026-09-30",
-          "adms:versionNotes": "WS-1 VOCABULARY CONSOLIDATION, lot 1d. Changelog container m1:changelog -> m3:changelog, the owl:AnnotationProperty declared in M3_GrammarFoundation since 2026-07-22 (transversal apex property; a lower layer referencing m3: is a legal downward reference). m1:changelog was declared nowhere. Decision (Michel, 2026-09-30): no m2:changelog left anywhere (M0 instances follow in lot 1e). Triage: ontology/docs/_01_Worksite/WS-1/WS-1_FamilyA_Triage.md."
         }
       ]
     },
@@ -66,13 +66,6 @@
       "dcterms:created": "2026-10-12",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "skos:definition": "Science and craft of representing the terrestrial globe (or parts of it) on a flat medium, governed by the unavoidable trade-off between preserved and distorted metric properties",
-      "m1:subdomains": [
-        "Map Projections",
-        "Geodesy",
-        "Geographic Information Systems (GIS)",
-        "Thematic Cartography",
-        "Distortion Analysis"
-      ],
       "m1:relatedDomains": [
         {
           "@id": "m1:extension:geology:Geology"
