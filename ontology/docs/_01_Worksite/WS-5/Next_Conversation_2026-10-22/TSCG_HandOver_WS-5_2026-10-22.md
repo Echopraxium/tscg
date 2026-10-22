@@ -29,9 +29,9 @@ for "what next"; keep it for the SC-5b scope) and, through it, the 2026-10-12 Ha
   subdomains become domain classes; gate M1 133/1/296 -> 132/1/294"), on top of `6f7cd5a`.
 - **Gate**: `GATE: PASS` with M1 132 / 1 / 294 (`--update-golden` done in the SC-5b commit,
   reason written under `M1._delta_reason`).
-- **Not run in the session**: the Pellet reasoner (owlready2's bundled Jena needs Java 25;
-  the VM had Java 21; it fails identically on HEAD). SC-5b only adds `subClassOf` links and
-  M1 has no disjointness axiom — still to run locally once.
+- **Pellet reasoner**: PASSED on the 6 key SC-5b files (M1_Domains, Biology, Physics,
+  Education, Optics, music), run locally by Michel 2026-10-22 (needs Java 25 — the session
+  VM had 21, so it could not run there). SC-5b is fully validated.
 
 ## 2. Next goal — lot NS-SEP (diagnosis pipeline, one lot, mechanical)
 
