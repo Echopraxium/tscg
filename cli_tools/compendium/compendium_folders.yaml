@@ -1,0 +1,130 @@
+# compendium_folders.yaml — logical folders of the Compendium document tabs
+#
+# Author: Echopraxium with the collaboration of Claude AI
+# Created: 2026-10-22
+#
+# Nothing on disk moves: these folders exist only in the Compendium page.
+# Read by build_compendium.py at every build (needs PyYAML, listed in
+# ontology/toolchain/requirements.txt).
+#
+# One block per tab (the tab name exactly as shown in the Compendium).
+#   rules     evaluated in order; the FIRST rule whose `match` (a Python regex,
+#             searched in the repo-relative path) fits gives the folder.
+#   folder    folder path; "/" nests a sub-folder. {name} is replaced by the
+#             regex named group (?P<name>...) of the same rule.
+#   open      true = folder shown open by default (otherwise closed).
+#   newest    true = rows sorted by path, newest first (dated paths), not by title.
+#   versions  true = files sharing a file name are versions of one file: the
+#             newest is shown, the older ones are folded under "Older versions".
+#   default   folder for documents no rule matched (omit = top level, no folder).
+#
+# Folders are shown in the order of their first rule; sub-folders sort by name
+# (numbers in natural order: SC-1, SC-3, SC-10).
+# A tab not listed here stays flat, as before.
+
+"Project management":
+  default: "Other"
+  rules:
+    - folder: "Registry & maps"
+      match: '^ontology/docs/_01_Worksite/((?![^/]*(?i:hand_?over))[^/]+|WS-0/_00_TSCG_Worksite_Map\.md)$'
+      open: true
+    # A sub-worksite wins over everything below: its HandOvers go with it.
+    # (?<![A-Za-z]) keeps "TSCG" from matching; "SC3" and "SC-3b" both match.
+    - folder: "Sub-worksites/SC-{sc}"
+      match: '(?<![A-Za-z])SC-?(?P<sc>\d+[a-z]?)(?![0-9])'
+    - folder: "HandOvers/WS-{ws}"
+      match: '(?i)/WS-(?P<ws>\d+)/.*hand_?over'
+      newest: true
+    - folder: "RemainingWork graph"
+      match: '/render_graph\.py$'
+      versions: true
+    - folder: "Worksites/WS-{ws}"
+      match: '/WS-(?P<ws>\d+)/'
+    - folder: "Housekeeping"
+      match: '^_02_housekeeping/'
+      newest: true
+    - folder: "Instance worksites"
+      match: '^instances/(_01_Worksite/|.*/HANDOVER)'
+      newest: true
+    - folder: "HandOvers/Other"
+      match: '(?i)hand_?over'
+      newest: true
+    - folder: "Idea crates (SerendipCrates)"
+      match: '^_03_SerendipCrates/'
+      open: true
+
+"Guides & templates":
+  default: "Repository root"
+  rules:
+    - folder: "User Guide"
+      match: '^_00_UserGuide/UserGuide\.md$'
+      open: true
+    - folder: "User Guide/Exercises"
+      match: '^_00_UserGuide/exercises/'
+    - folder: "Reboot kit/Smart Prompt versions"
+      match: '^docs/reboot-kit/SmartPrompts/'
+    - folder: "Reboot kit"
+      match: '^docs/reboot-kit/'
+    - folder: "Methodology"
+      match: '^docs/methodology/'
+    - folder: "Poclets/{name}"
+      match: '^instances/poclets/(?P<name>[^/]+)/'
+    - folder: "Systemic frameworks/{name}"
+      match: '^instances/systemic-frameworks/(?P<name>[^/]+)/'
+    - folder: "Symbolic system grammars/{name}"
+      match: '^instances/symbolic-system-grammars/(?P<name>[^/]+)/'
+    - folder: "TSCG tools/{name}"
+      match: '^instances/tscg-tools/(?P<name>[^/]+)/'
+
+"The M3–M0 layers":
+  default: "Other"
+  rules:
+    - folder: "Layer READMEs (live)"
+      match: '^ontology/M[0-3]_[^/]*README\.md$'
+      open: true
+    - folder: "Structural grammar"
+      match: '^ontology/StructuralGrammar/'
+    - folder: "M1 extensions"
+      match: '^ontology/M1_extensions/'
+    - folder: "Instance grammar (M0)"
+      match: '^ontology/TSCG_InstanceGrammar/'
+    - folder: "Instance simulations"
+      match: '^ontology/InstanceSimulations/'
+    - folder: "Toolchain notes"
+      match: '^ontology/toolchain/'
+    - folder: "Test reports"
+      match: '^ontology/docs/_00_test_reports/'
+    - folder: "Historical notes"
+      match: '^ontology/docs/'
+
+"Gate tools & tooling":
+  default: "Root scripts"
+  rules:
+    - folder: "Validator engine"
+      match: '^ontology/toolchain/validator/'
+    - folder: "OWL reasoning test"
+      match: '^ontology/toolchain/owl_reasoning_test/'
+    - folder: "Ontology linter"
+      match: '^ontology/toolchain/ontology-linter/'
+    - folder: "Acceptance gate & checkers"
+      match: '^ontology/toolchain/'
+      open: true
+    - folder: "Skills/{name}"
+      match: '^\.claude/skills/(?P<name>[^/]+)/'
+    - folder: "Instance grammar tools"
+      match: '^ontology/TSCG_InstanceGrammar/'
+    - folder: "Repository tools/{name}"
+      match: '^cli_tools/(?P<name>[^/]+)/'
+    - folder: "TSCG tools"
+      match: '^instances/tscg-tools/'
+
+"Epistemology":
+  default: "Other"
+  rules:
+    - folder: "Core Hypotheses"
+      match: '^docs/CoreHypotheses/'
+      open: true
+    - folder: "Preprints"
+      match: '^docs/papers/preprints/'
+    - folder: "Paper inputs"
+      match: '^docs/papers/inputs/'
