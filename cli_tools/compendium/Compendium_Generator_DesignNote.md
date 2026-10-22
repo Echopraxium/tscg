@@ -112,3 +112,14 @@ tooltips work. If the generation fails, the build still succeeds and the tab say
 `pages.yml` installs `ontology/toolchain/requirements.txt` for it (no Playwright: SVG
 only). Dated snapshots stay committed in `ontology/docs/_01_Worksite/LayerCakeHealthMap/`
 as the progress record.
+
+## 9. Idea crates (added 2026-10-22)
+
+The **Project management** rubric (KitArchitect only) gains a group **"Idea crates
+(SerendipCrates)"**, listing the crates of `_03_SerendipCrates/` — project ideas set
+aside before any formalisation (rules in that folder's `README.md`). One row per crate,
+linking to its `CRATE.md` label, with the crate status (`sealed`, `open`, `graduated`,
+`abandoned`) read from the label at every build. A crate without a readable status shows
+as `unlabelled`. The folder is excluded from the general classifier (`annotate_compendium.py`),
+like `_02_housekeeping/`, so crate HandOvers are not mistaken for worksite HandOvers.
+

@@ -504,12 +504,14 @@ function renderDocs(sec){
   return `<section class="group"><div class="rows">${ds.map(docRow).join("")}</div></section>`;
 }
 function renderProject(){
-  const wk=DATA.docs.filter(d=>inAud(d)&&d.section==="Project management"&&d.kind!=="housekeeping").filter(d=>matchTxt(d.title,d.path));
+  const wk=DATA.docs.filter(d=>inAud(d)&&d.section==="Project management"&&d.kind!=="housekeeping"&&d.kind!=="crate").filter(d=>matchTxt(d.title,d.path));
   const hk=DATA.docs.filter(d=>inAud(d)&&d.kind==="housekeeping").filter(d=>matchTxt(d.title,d.path));
+  const cr=DATA.docs.filter(d=>inAud(d)&&d.kind==="crate").filter(d=>matchTxt(d.title,d.path));
   const wip=DATA.subjects.filter(inAud).filter(s=>s.mode==="under-construction").filter(s=>matchTxt(s.title,s.name));
   let html="";
   if(wk.length) html+=`<section class="group"><h2><span>Worksites &amp; handovers</span><span>${wk.length}</span></h2><div class="rows">${wk.sort((a,b)=>a.title.localeCompare(b.title)).map(docRow).join("")}</div></section>`;
   if(wip.length) html+=`<section class="group"><h2><span>Instances under construction</span><span>${wip.length}</span></h2><div class="cards">${wip.sort((a,b)=>a.title.localeCompare(b.title)).map(subjectCard).join("")}</div></section>`;
+  if(cr.length) html+=`<section class="group"><h2><span>Idea crates (<a href="${TREE}_03_SerendipCrates" target="_blank" rel="noopener">SerendipCrates</a>)</span><span>${cr.length}</span></h2><div class="rows">${cr.sort((a,b)=>a.title.localeCompare(b.title)).map(d=>docRow(d).replace('<span class="tags">',`<span class="tags"><span class="tag">${esc(d.status)}</span>`)).join("")}</div></section>`;
   if(hk.length) html+=`<section class="group"><h2><span>Housekeeping</span><span>${hk.length}</span></h2><div class="rows">${hk.sort((a,b)=>a.title.localeCompare(b.title)).map(docRow).join("")}</div></section>`;
   return html||`<p class="empty">Nothing here at this level.</p>`;
 }

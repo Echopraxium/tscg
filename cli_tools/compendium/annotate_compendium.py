@@ -17,7 +17,7 @@ A, C, U = "KitArchitect", "KitCrafter", "KitUser"
 OUT = [
     r"(^|/)\.git/", r"(^|/)node_modules/", r"(^|/)migration_backups/",
     r"(^|/)domain_format_fix_backups/", r"(^|/)_archives/",
-    r"(^|/)_02_housekeeping/", r"(^|/)_sim/", r"(^|/)src/tscg/",
+    r"(^|/)_02_housekeeping/", r"(^|/)_03_SerendipCrates/", r"(^|/)_sim/", r"(^|/)src/tscg/",
     r"(^|/)projects/Doom-Generic/", r"(^|/)crates/",
     r"\.(rs|c|h|ll|tasm|inc|o|a)$",
     r"\.(url|bat|lnk|png|jpe?g|gif|mid|sf2|pdf|docx?|ico|nt|oxg|tvm[xl]|tob|wad|zip|pptx)$",
