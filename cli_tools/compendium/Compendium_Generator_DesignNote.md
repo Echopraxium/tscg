@@ -142,3 +142,5 @@ A tab absent from the YAML stays flat; a missing YAML leaves every tab flat (war
 a bad regex stops the build with the rule named. PyYAML is listed in
 `ontology/toolchain/requirements.txt`, which `pages.yml` installs.
 
+
+Tab order (2026-10-22): **Project management** is the 2nd tab, right after "Understand the kit" (KitArchitect only).

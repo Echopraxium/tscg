@@ -43,8 +43,18 @@
     - folder: "Housekeeping"
       match: '^_02_housekeeping/'
       newest: true
+    # Instance worksites: one sub-folder per instance when the instance can be read
+    # from the path (its own folder, or its name in a dated _01_Worksite HandOver).
+    # Dated HandOvers carry no instance field: list the instance names to recognise
+    # in the second rule, separated by | — e.g. (?P<name>World2DProjection|Theremin).
+    - folder: "Instance worksites/{name}"
+      match: '^instances/[^_/][^/]*/(?P<name>[^/]+)/.*HANDOVER'
+      newest: true
+    - folder: "Instance worksites/{name}"
+      match: '^instances/_01_Worksite/.*_(?P<name>World2DProjection)'
+      newest: true
     - folder: "Instance worksites"
-      match: '^instances/(_01_Worksite/|.*/HANDOVER)'
+      match: '^instances/_01_Worksite/'
       newest: true
     - folder: "HandOvers/Other"
       match: '(?i)hand_?over'
