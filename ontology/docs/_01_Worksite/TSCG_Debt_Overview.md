@@ -561,9 +561,8 @@ source of domain names.
   `ComboFormulaShape` counted twice by `check_M1`); per-shape comparison on the 14 changed
   files: nothing else moved. Tests `test_m1_domains.py` 0.2.0: fixtures moved from the
   deleted `Geological` to `biology:Endocrinology` (two hops: ⊑ Physiology ⊑ Biology).
-- **Not run**: the Pellet reasoner (owlready2's bundled Jena needs Java 25; the session VM
-  had Java 21; it fails identically on HEAD). M1 holds no disjointness axiom, so added
-  `subClassOf` links cannot make it inconsistent — to run locally anyway.
+- **Pellet reasoner**: PASSED on the 6 key files (M1_Domains, Biology, Physics, Education,
+  Optics, music), run locally by Michel 2026-10-22 (needs Java 25).
 
 **Open after SC-5b.**
 - **Lot NS-SEP** (next): one prefix per defining file (`m1.domains:`, `m1.<ext>:`).
