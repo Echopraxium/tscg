@@ -9,7 +9,7 @@
 | **Main risks** | Ontological Overfitting; Narcissus/Icarus; tautological Grand Unifying Framework (the M3 grammar is itself an epistemological stance); selection bias in which reception history is followed |
 | **Possible destination** | M0 instance, category `m3:SystemicFramework` (checked on HEAD 2026-10-22: "established methodologies (TRIZ, VSD)") |
 | **Next step** | Michel's two pending decisions (below), then pipeline step 2 (Analysis). No `.jsonld` before then |
-| **Contents** | `TSCG_HandOver_EpistemologyMaquette_2026-10-22.md` · `Note_InvariantsWithoutMetric_2026-10-22.md` · `EpistemicPivot_Draft.md` |
+| **Contents** | `TSCG_HandOver_EpistemologyMaquette_2026-10-22.md` · `Note_InvariantsWithoutMetric_2026-10-22.md` |
 
 ---
 
@@ -110,7 +110,7 @@ becomes a crate only when Michel opens it, with a possible destination and a fai
 | Bachelard — epistemological obstacles and breaks | §6 below | External subject, and a possible adversary of the utility seed |
 | Pragmatism ennobled by cybernetics (Michel, 2026-10-23) | §6 below | Black box, good regulator; tension with Bachelard |
 | Form as a reference frame — knots, π with a string, Möbius strip (Michel, 2026-10-23) | `Note_InvariantsWithoutMetric_2026-10-22.md` §9–10 | Structural invariants survive the imprecision of the hand; boundary objects. Beware of epistemic dogfooding |
-| "Epistemic pivot" (first named "epistemic interface") — one object, many modes of access (Michel, 2026-10-23) | `Note_InvariantsWithoutMetric_2026-10-22.md` §11 | Parents: boundary object, trading zone, epistemic thing. REVOI fit flagged as dogfooding risk; out-of-sample test on Star & Griesemer's case. Draft written in Core Hypothesis form: `EpistemicPivot_Draft.md` (graduates only once paid by use). Renamed after a name collision (Marin, *Topoi*, 2024) |
+| "Epistemic pivot" (first named "epistemic interface") — one object, many modes of access (Michel, 2026-10-23) | `Note_InvariantsWithoutMetric_2026-10-22.md` §11 | Parents: boundary object, trading zone, epistemic thing. REVOI fit flagged as dogfooding risk; out-of-sample test on Star & Griesemer's case. **Graduated (seed only) 2026-10-23** → `docs/CoreHypotheses/EpistemicPivot.md`, section "Exploratory" (Michel's decision; no innovation claimed, sources cited; still to be paid by use). Renamed after a name collision (Marin, *Topoi*, 2024) |
 
 ## 6. Seed notes (2026-10-23)
 
