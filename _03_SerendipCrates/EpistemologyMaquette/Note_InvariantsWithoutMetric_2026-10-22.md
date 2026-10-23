@@ -120,3 +120,104 @@ distortion with surviving invariants. Read them before using them.
 
 `Structural_Grammar_Foundation.md`: the header declares `⊗` retired, but several body
 passages still describe it as kept. The header is authoritative. Reported, not fixed.
+
+## 9. Addendum 2026-10-23 — Form as a reference frame (Michel)
+
+**Proposal.** The "reference frame" between paradigms may be **form and its structure**,
+made concrete by hand, without theory: the art of knots, π by unrolling a string along a
+circle, the Möbius strip made from a paper band. These are pragmatic, eloquent,
+pedagogical illustrations of topology and geometry.
+
+**What makes it strong — structural invariants survive the imprecision of the hand;
+measures do not.**
+
+- π with a string gives roughly 3.1, depending on care; no string shows that π is
+  irrational. (Precision: with radius 1 the unrolled string measures 2π; a diameter of 1
+  gives π.)
+- A loosely tied trefoil is still a trefoil; however it is pulled, as long as the rope is
+  not cut, it never becomes an unknot or a figure-eight.
+- A Möbius strip made with crumpled paper and crooked tape still has one side and one
+  edge.
+
+This is §3 of this note made tangible: the structure survives a clumsy gesture; the
+metric does not. A child can check it.
+
+**The hand discovers before theory.** Cutting a Möbius strip along its middle gives one
+loop twice as long, not two — almost nobody predicts it, anybody can observe it
+(`ContextSwitching.md` §8, rediscovery over recitation; Plato's *Meno*, the square drawn
+in the sand). History adds a fitting case: mathematical knot theory grew out of an
+abandoned physical model — Kelvin's vortex atom (1867). Tait compiled knot tables to
+classify atoms; the vortex atom disappeared, the tables remained. A refuted paradigm left
+an invariant behind.
+
+**Bachelard need not object.** His suspicion targets *first* experience, the one that
+goes without saying. A Möbius strip is a *constructed* experience. His own phrase
+(*Le Nouvel Esprit scientifique*, 1934; PUF ed. 2013, p. 17): « les instruments ne sont
+que des théories matérialisées » — here, topology materialised in paper. Verified
+2026-10-23.
+
+**A candidate answer to "what is the c of epistemology?"** The knot exists for the
+sailor, in Inca quipus, in myth (the Gordian knot) and for the mathematician — each reads
+it by its own criteria, all point at the same object. S. L. Star & J. R. Griesemer (1989)
+called this a **boundary object**: plastic enough to serve each community's needs, robust
+enough to keep its identity across them. Not a universal constant, but **shared objects
+that different contexts can agree to point at**.
+
+**Limit.** The object is concrete; its *reading* is not. Seeing two deformed knots as
+"the same" already requires the criterion "the rope is not cut" (ambient isotopy). A
+child who has not adopted it sees two different tangles. A form becomes a reference
+frame only once its **equivalence criterion is declared** — Klein again: an invariant
+exists only relative to a chosen group of transformations. Form does not remove the
+turtle; it makes it visible and manipulable.
+
+## 10. Caution — epistemic dogfooding (Michel, 2026-10-23)
+
+**Beware of epistemic dogfooding**: using TSCG to confirm TSCG. The form-as-reference
+idea aligns remarkably well with what TSCG already is (a construction kit, maquettes, a
+pedagogical vocation) — and so did almost every idea in this crate's sessions. That
+convergence is an alarm signal, not a confirmation (criterion 5 of `CRATE.md`; TSCG can
+be neither self-validated nor self-refuted, `ModelSupersession.md`). Every seed here is
+to be tested out-of-sample and judged by others, never by the kit itself.
+
+## 11. Addendum 2026-10-23 — "Epistemic interface", renamed "epistemic pivot" (Michel)
+
+> **Renamed.** The term below was first named *epistemic interface*; after a name
+> collision (Marin, *Topoi*, 2024) Michel renamed it **epistemic pivot**. The text keeps
+> the first wording as a record; the current draft is `EpistemicPivot_Draft.md`.
+
+**Proposal.** One object, many ways to **build** it, **observe** it, **experiment** with
+it, and **transmit** the knowledge of it. Could such an object be called an *epistemic
+interface*? The structure is a star: the object at the centre, modes of knowing plugged
+into it. In the software sense, an interface is the surface where two systems exchange;
+one object can expose several interfaces without changing. The knot exposes one to the
+sailor (tying it), to the topologist (classifying it), to the child (handling it), to the
+storyteller (the Gordian knot).
+
+**Close parents — they do not say quite the same thing.**
+
+| Concept | Centred on |
+|---|---|
+| **Boundary object** — S. L. Star & J. R. Griesemer, "Institutional Ecology, 'Translations' and Boundary Objects", *Social Studies of Science* (1989) | the **communities** that share an object while each reads it its own way |
+| **Trading zone** — P. Galison, *Image and Logic* (1997) | the **common language** (pidgin, then creole) that scientific subcultures build to exchange around an object |
+| **Epistemic thing** — H.-J. Rheinberger, *Toward a History of Epistemic Things* (1997) | the object **still under investigation**, its nature open, as opposed to the stabilised technical object |
+
+Literature search (2026-10-23): the term is used by L. Marin (*Topoi*, 2024) in a
+different sense — an interface *between epistemic environments*. See
+`EpistemicPivot_Draft.md` §3 (name history).
+
+**What the term could add.** The parents are organised around *communities* or the
+*status* of the object. "Epistemic interface" would be organised around **modes of
+access** — build, observe, experiment, transmit — and the question of **what each mode
+preserves or loses** (the string around the circle transmits π as a gesture, not its
+irrationality).
+
+**Dogfooding risk, named up front.** The four verbs fall almost exactly on REVOI:
+build → `R`, observe → `O`, experiment → `V`, transmit → `Im`. That is the too-easy fit
+§10 warns against: REVOI was designed to describe how a system is known, so it is no
+surprise that it fits a list of ways of knowing. This is **not** a confirmation.
+
+**Out-of-sample test.** Take a boundary object studied **by others** — e.g. the specimens
+of Berkeley's Museum of Vertebrate Zoology in Star & Griesemer (1989) — and check whether
+the modes of access they describe can be sorted into REVOI **without forcing**. If some
+mode has no home, or several modes collapse into one dimension, the correspondence is
+partial and must be declared as such.
