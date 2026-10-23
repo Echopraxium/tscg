@@ -65,6 +65,7 @@ criteria begins. 7 can be read without 12; 12 reads better after 7.
 | # | Document | Introduces | Assumes |
 |---|---|---|---|
 | 14 | `Archetypes_as_CrossCultural_Artifacts.md` | Jungian archetypes as a source of structural hypotheses | 3, 4, 9, 10 |
+| 15 | `EpistemicPivot.md` | One object, many ways in: modes of access and readers' prisms around a fixed object; what is invariant, what each mode loses; where the regress stops. A rediscovery and synthesis of published ideas, no innovation claimed | 3, 4, 7 |
 
 ---
 
@@ -76,4 +77,4 @@ that is a sign it introduces a notion the others now depend on — say so here.
 
 Numbers are positions in this table, not file names: files are never renamed to follow
 the order. Each document is to carry an **`Assumes:`** line in its header, pointing back here
-(done so far for `ContextSwitching.md` and `ModelSupersession.md`).
+(done so far for `ContextSwitching.md`, `ModelSupersession.md` and `EpistemicPivot.md`).

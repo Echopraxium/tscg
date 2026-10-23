@@ -183,7 +183,7 @@ to be tested out-of-sample and judged by others, never by the kit itself.
 
 > **Renamed.** The term below was first named *epistemic interface*; after a name
 > collision (Marin, *Topoi*, 2024) Michel renamed it **epistemic pivot**. The text keeps
-> the first wording as a record; the current draft is `EpistemicPivot_Draft.md`.
+> the first wording as a record; the current text is `docs/CoreHypotheses/EpistemicPivot.md`.
 
 **Proposal.** One object, many ways to **build** it, **observe** it, **experiment** with
 it, and **transmit** the knowledge of it. Could such an object be called an *epistemic
@@ -203,7 +203,7 @@ storyteller (the Gordian knot).
 
 Literature search (2026-10-23): the term is used by L. Marin (*Topoi*, 2024) in a
 different sense — an interface *between epistemic environments*. See
-`EpistemicPivot_Draft.md` §3 (name history).
+`docs/CoreHypotheses/EpistemicPivot.md` §3 (name history).
 
 **What the term could add.** The parents are organised around *communities* or the
 *status* of the object. "Epistemic interface" would be organised around **modes of
