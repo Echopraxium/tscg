@@ -112,6 +112,22 @@ becomes a crate only when Michel opens it, with a possible destination and a fai
 | Form as a reference frame — knots, π with a string, Möbius strip (Michel, 2026-10-23) | `Note_InvariantsWithoutMetric_2026-10-22.md` §9–10 | Structural invariants survive the imprecision of the hand; boundary objects. Beware of epistemic dogfooding |
 | "Epistemic pivot" (first named "epistemic interface") — one object, many modes of access (Michel, 2026-10-23) | `Note_InvariantsWithoutMetric_2026-10-22.md` §11 | Parents: boundary object, trading zone, epistemic thing. REVOI fit flagged as dogfooding risk; out-of-sample test on Star & Griesemer's case. **Graduated (seed only) 2026-10-23** → `docs/CoreHypotheses/EpistemicPivot.md`, section "Exploratory" (Michel's decision; no innovation claimed, sources cited; still to be paid by use). Renamed after a name collision (Marin, *Topoi*, 2024) |
 
+## 5b. Candidate pivots (Michel, 2026-10-23)
+
+Pointers only; each becomes work only when Michel opens it. Roles decided for the
+Epistemic Pivot are recorded in `docs/CoreHypotheses/EpistemicPivot.md` §8b.
+
+| Candidate | What it would test | Risk |
+|---|---|---|
+| Paper folding / origami | Invariants checkable by hand (Maekawa, Kawasaki); folding beyond ruler and compass (Huzita–Hatori axioms); an authority corrected by hand (B. Gallivan, 12 folds, 2002) | Low; good maquette candidate. Facts to verify |
+| Bread, cheese, fermented drinks | Can a pivot be a **process** rather than an object (each loaf is singular)? Practice long before Pasteur: the black box (Ashby) vs Bachelard | Large scope |
+| Dances around the human body | Where the pivot stops: gravity and balance give verdicts; meaning does not. Labanotation as a symbolic mode | Boundary case rather than test |
+| Sign languages | An invariant across modalities (sound / gesture); institution wrong then corrected (Milan 1880; W. Stokoe, 1960); Nicaraguan Sign Language | Large and sensitive: must be modelled on the Deaf community's own criteria |
+| Echolocation / sonar | Pivot = the cave; prisms = bat, dolphin, submarine, human echolocators | High mirror risk: the bat is TSCG's own metaphor |
+| Knots | Asymmetry: the hand proves sameness, an invariant proves difference (tricolourability); the Perko pair (1974) | Good maquette; facts to verify |
+| Oksapmin body-part counting | Where is the pivot? | **Quarantined** (see `EpistemicPivot.md` §8b) |
+| Lozenge tiling read as cubes | Does a pivot always decide? Can a Map prove a fact about the pivot (the calissons)? | **Chosen as the challenge** — pre-registered in `EpistemicPivot.md` §8b |
+
 ## 6. Seed notes (2026-10-23)
 
 **Utility as adequacy of a map to a need.** A bat keeps not one map of "the" cave but

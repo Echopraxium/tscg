@@ -186,6 +186,14 @@ without being legitimate.**
   "Noumène et microphysique", 1931–32, repr. in *Études*, Vrin, 1970) — his
   *phénoménotechnique*. Verified 2026-10-23 via secondary sources citing the page.
 
+**TSCG is not a pivot** (2026-10-23). A pivot returns the same public verdict to anyone
+through a gesture; TSCG returns no verdict — it offers readings. It is rather **a set of
+prisms** (its own names say so: Eagle Eye, Sphinx Eye, stereoscopic glasses) and **a
+workshop where pivots can be made**: a TSCG maquette can become a pivot when it returns a
+public verdict (a simulation anyone can run, with the same result). Calling TSCG itself a
+pivot would be epistemic dogfooding — the new notion validating the kit that produced it
+(`ModelSupersession.md`: TSCG can be neither self-validated nor self-refuted).
+
 ## 5. Dogfooding Risk — Named Up Front
 
 The four modes fall almost exactly on REVOI: build → `R`, observe → `O`,
@@ -215,6 +223,51 @@ claim in this document rests on that fit.
 | `Archetypes_as_CrossCultural_Artifacts.md` | One pattern read across cultures; a substrate reached via dreams, myths, cross-domain analysis | A **concrete, manipulable** object, and the explicit question of **loss per mode**; not a cultural pattern |
 | `ContextSwitching.md` | Coherence relative to criteria; switching between contexts | The switch localised on **one object**, with the invariant and the loss made checkable |
 | `The_Epistemic_Residue.md` | What a perspective leaves out | The residue **per mode of access** on a single object |
+
+## 7b. Boundary — A Gradient of Publicness (2026-10-23)
+
+A notion that excludes nothing explains nothing ("applicable to everything, therefore to
+nothing" — `ModelSupersession.md` §8.1). The cases below, most proposed by Michel, give the
+notion a boundary. They do not sort into two boxes; they form a **gradient**, ordered by
+**what, exactly, returns a public verdict**.
+
+| Case | Object or content | What is public |
+|---|---|---|
+| Möbius strip | public | everything: the gesture and the result |
+| Optical illusion (Müller-Lyer, Adelson's checker shadow) | public figure; a largely shared experience | the measurement (a ruler, a masking sheet) — and the illusion itself, which most people share |
+| Taste — e.g. PTC | the molecule is public; the experience is private and varies (genetic sensitivity to PTC bitterness, found by A. Fox, 1931) | the substance; never the taste |
+| Absolute pitch | the frequency is public; the note *name* is a convention (A = 440 Hz is a standard) | the capacity, tested with a tuner |
+| Synaesthesia | idiosyncratic content (A is red for one, blue for another) | consistency over years; visual pop-out tests |
+| Lucid dream | entirely private content | a channel built by protocol (agreed eye movements; two-way exchanges with dreamers) |
+| Wittgenstein's "beetle in a box" (*Philosophical Investigations* §293) | private | nothing |
+| A banknote's value; very large infinities | institutional / not realisable | the object does not answer |
+
+**What the gradient teaches.**
+
+- **The notion applies to the object, never to the experience of it.** Taste shows the
+  cut most clearly: the molecule is a pivot, the taste is not.
+- **A pivot is defined by the possibility of a public verdict, not by the absence of
+  privacy.** Private experiences can gain public verdicts on *capacities* (absolute
+  pitch, synaesthesia, lucid dreaming) through protocols; never on their *content*.
+- **Beware the false absolute.** Absolute pitch feels immediate and "absolute", yet it
+  anchors on a convention: ask whether what *seems* invariant survives a change of
+  convention (the frequency and the melody do; the note name does not). Melody itself is
+  the invariant under transposition — relative pitch, shared by most listeners.
+- **The middle of the gradient is context-dependent, like grey.** In Adelson's checker
+  shadow, two squares of the same grey look light and dark depending on their
+  surroundings; a photometer gives them the same luminance. Measured luminance is a
+  pivot; perceived lightness is not. Instead of asking "pivot or not?", declare what
+  returns the verdict — the object, a capacity, a protocol channel, or nothing.
+- **The optical illusion is a pivot that makes the prism visible.** One does not only see
+  the object; one *sees oneself seeing* — and keeps seeing the segments unequal after the
+  ruler has spoken. That is δ₁ made tangible. Cross-cultural nuance: susceptibility to
+  Müller-Lyer varies between populations (M. H. Segall, D. T. Campbell &
+  M. J. Herskovits, 1966 — the "carpentered world" hypothesis; discussed by J. Henrich
+  et al., "The weirdest people in the world?", 2010). The measurement is the pivot; the
+  intensity of the illusion depends on the prism.
+
+Dates and attributions in this section are to be checked against their sources before
+any wider use.
 
 ## 8. Where the Regress Stops
 
@@ -247,25 +300,84 @@ someone's word. That is the most that can honestly be claimed.
 ## 8b. Paid by Use — Pending
 
 This document sits in "Exploratory" until at least one of these is done and passes; it
-would then move to "The epistemological ground", after `ContextSwitching.md`:
+would then move to "The epistemological ground", after `ContextSwitching.md`.
 
-1. **A maquette.** A minimal M0 instance (e.g. the Möbius strip) built through the four
-   modes, showing something a prose description blurs — the anti-decorative test of
-   `ModelSupersession.md` §8.
-2. **An out-of-sample test.** Take a boundary object studied **by others** — the
-   specimens of Berkeley's Museum of Vertebrate Zoology in Star & Griesemer (1989), or the
-   science-centre exhibits of Trybulec & Iłowiecka-Tańska (2025) — and check whether its
-   modes of access can be described with the three questions of Section 1 **without
-   forcing**, and whether the REVOI fit survives or breaks.
+**Roles (decided 2026-10-23).**
 
-If neither passes, the document says so here, and stays exploratory or is withdrawn
-with its reason (the open drawer).
+1. **Maquette — the optical illusion.** It shows the notion at work with the lowest floor
+   and makes the prism visible. It is **not** a test: it was used to shape the notion
+   during the session that named it, so it can only confirm (a backtest on training
+   data). It replaces the Möbius strip, kept as a secondary example.
+2. **Challenge — a hexagon tiled with lozenges** (the "tumbling blocks" pattern, read as
+   cubes). Pre-registered below. It can fail, and its outcome is not known in advance.
+3. **Quarantined — Oksapmin body-part counting** (G. B. Saxe, *Developmental Psychology*
+   18(4), 1982; Saxe & Esmonde, *South Pacific Journal of Psychology* 15, 2004). Its
+   strength was that the pivot is unknown (the body? the number? the counted
+   collection?), but every declarable choice leads to a dead end: the counted collection
+   passes trivially; the number makes the outcome depend on an open controversy —
+   K. A. Overmann (*Frontiers in Psychology*, 2021: counting devices actively structure
+   number concepts) vs number-sense accounts — which TSCG does not adjudicate
+   (`ModelSupersession.md`, Bin 3); the body is the instrument, not the object. Access is
+   also only through a researcher's account. Kept as an open question (Section 9).
+
+**Protocol — without TSCG first, then with TSCG.**
+
+1. Analyse the case with the notion's own elements only (the three questions, the
+   readers' prisms, the public verdict), in plain language, readable by someone who has
+   never heard of TSCG.
+2. Then model it with TSCG, as a poclet.
+3. Compare. If the TSCG version adds nothing, it is decorative. If the analysis **fails
+   without TSCG and passes with it**, that is suspicious: the kit is producing the
+   result. The only good outcome: the analysis holds without TSCG, and TSCG adds
+   something that can be named.
+
+**Pre-registration — written 2026-10-23, before any analysis.**
+
+- **Case.** A regular hexagon tiled with lozenges of three orientations (the image Michel
+  shared: blue, red and ochre lozenges, read as cubes). Three readings: a flat tiling,
+  cubes in relief, hollow cubes; plus a grouping ambiguity (which three lozenges form
+  "one" cube). The viewer can bias the switch by intention, but cannot fully command it.
+  Domains on HEAD: `m1:domain:VisionScience`, `m1:domain:Mathematics`. Category: Poclet.
+  Scope kept tight: one hexagon, not tilings in general.
+- **Declared pivot.** The flat tiling (measurable lozenges).
+- **Declared prediction.** The pivot returns a public verdict that does **not** decide
+  between the relief readings: it certifies that several readings exist and that one can
+  switch between them. The relief readings are Maps.
+- **Result that threatens the prediction, declared now.** *The problem of the calissons*
+  (G. David & C. Tomei, *American Mathematical Monthly*, May 1989): in any lozenge tiling
+  of a regular hexagon, each of the three orientations occurs equally often; the
+  classical "proof without words" reads the tiling **as a stack of cubes**. A reading
+  declared to be a Map would then prove a fact about the declared pivot. If so, the
+  pivot / reading distinction must be revised (is the pivot the flat tiling, the cube
+  stack, or the structure they share?).
+- **Failure criteria.**
+  1. *Access depends on a third party*: naive viewers do not discover the other readings
+     unless told (to check: Girgus, Rock & Egatz, 1977). The notion would have to admit
+     that a pivot may need a guide.
+  2. *A verdict decides after all*: a measure or cue settles the readings — then it is an
+     illusion, and "certified plurality" is not needed.
+  3. *Map proves Territory*: the calisson argument holds as stated above.
+  4. *Decorative*: nothing beyond Wittgenstein's seeing-as and Kuhn's gestalt switch.
+  5. *Mirror / dogfooding*: two attractors, Stereopsis or REVOI imposed by construction
+     rather than taken from vision-science accounts of bistable perception.
+  6. *Tested, not protected*: if one never holds two readings at once, the claim of
+     `ContextSwitching.md` §7.2 (the lucid dreamer "holds two contexts at once") must be
+     nuanced in writing, not hidden.
+
+If neither the maquette nor the challenge passes, the document says so here, and stays
+exploratory or is withdrawn with its reason (the open drawer).
 
 ## 9. The Shore
 
 - Is "mode of access" one category, or several (gesture, perception, instrument, sign)?
 - Are the four modes complete? Is *contemplating*, *narrating* or *playing* a fifth?
 - How is the independence of two modes argued (Wimsatt's condition)?
+- **How is the pivot identified when it is not obvious?** With the strip, the knot or the
+  tiling, the pivot is in hand. The Oksapmin case (8b) shows it is not always so, and that
+  the choice can decide the outcome. What is the notion worth when that choice is open?
+- **Does a pivot always decide?** Ambiguous figures suggest a second kind of verdict:
+  certifying a plurality of legitimate readings rather than settling between them.
+  Pending the challenge (8b).
 - **Name.** "Epistemic pivot" (Michel, 2026-10-23). Search record: web, PhilPapers /
   PhilArchive, Springer; extended searches across museum studies, design, archaeology,
   science education, anthropology, interdisciplinarity. No established use of
@@ -283,7 +395,16 @@ W. C. Wimsatt, "Robustness, Reliability, and Overdetermination" (1981). M. I. Er
 Instruction* (1966). S. Papert, *Mindstorms: Children, Computers, and Powerful Ideas* (1980). M. Resnick — "low floor, high ceiling, wide walls". M. Trybulec & I. Iłowiecka-Tańska, *Foundations of Science* 30 (2025). L. Malafouris, *How Things Shape the Mind* (2013). L. Marin, *Topoi* 43(5) (2024). N. K. Denzin, *The Research Act* (1970). J. C. Greene, V. J. Caracelli & W. F. Graham, "Toward a Conceptual Framework for Mixed-Method Evaluation Designs", *Educational Evaluation and Policy Analysis* 11(3) (1989). S. Ainsworth, "DeFT: A Conceptual Framework for Considering Learning
 with Multiple Representations", *Learning and Instruction* 16 (2006). J. Perrin, *Les
 Atomes* (1913). G. Bachelard, *Le Nouvel Esprit scientifique* (1934). F. Klein,
-*Erlanger Programm* (1872). Plato, *Meno*. H. Albert, *Traktat über kritische Vernunft* (1968). Sextus Empiricus, *Outlines of Pyrrhonism* (Agrippa's modes). L. Wittgenstein, *On Certainty* (1969), §§204, 341.
+*Erlanger Programm* (1872). Plato, *Meno*. H. Albert, *Traktat über kritische Vernunft* (1968). Sextus Empiricus, *Outlines of Pyrrhonism* (Agrippa's modes). L. Wittgenstein, *On Certainty* (1969), §§204, 341; *Philosophical Investigations* (1953),
+§293 and Part II §xi. T. S. Kuhn, *The Structure of Scientific Revolutions* (1962),
+ch. X. G. David & C. Tomei, "The Problem of the Calissons", *American Mathematical
+Monthly* (May 1989). G. B. Saxe, *Developmental Psychology* 18(4) (1982); G. B. Saxe &
+I. Esmonde, *South Pacific Journal of Psychology* 15 (2004). K. A. Overmann,
+"Finger-Counting and Numerical Structure", *Frontiers in Psychology* 12 (2021).
+M. H. Segall, D. T. Campbell & M. J. Herskovits, *The Influence of Culture on Visual
+Perception* (1966). J. Henrich, S. J. Heine & A. Norenzayan, "The weirdest people in the
+world?", *Behavioral and Brain Sciences* (2010). E. H. Adelson, the checker shadow
+illusion (1995).
 
 **TSCG internal.** `docs/CoreHypotheses/README.md`; `TerritoryMap_Dichotomy.md`;
 `SystemicEsperanto.md`; `ContextSwitching.md`; `The_Epistemic_Residue.md`;
