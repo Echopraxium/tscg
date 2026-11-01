@@ -2,8 +2,8 @@
 # M3_Structural_Schema_shacl.ttl
 #
 # Author  : Echopraxium with the collaboration of Claude AI
-# Version : 0.2.0
-# Date    : 2026-10-11
+# Version : 0.3.0
+# Date    : 2026-11-01
 # Worksite: WS-5 / step 3 (graph plane, checks G1–G4)
 #
 # SCOPE — READ THIS BEFORE TRUSTING A GREEN RESULT
@@ -46,6 +46,14 @@
 #   - changelog dates: FORMAT YYYY-MM-DD, no xsd:date datatype required in v1;
 #   - G2 covers terms in the TSCG namespace only (the standard terms the apex
 #     declares under its ExternalVocabularyPolicy are not TSCG's to document).
+#   - (0.3.0, Michel 2026-11-01, lot K0 follow-up, "no dust under the rug") a
+#     HOLLOW rdfs:comment does not document a term: blank, identical to the term's
+#     label, shorter than 3 words, or a placeholder (TODO / TBD / FIXME / XXX /
+#     "..." / "…" / N/A). Without this, a bare key could be "repaired" (D1 down,
+#     G8 not up) by declaring a property with a token comment. Measured on HEAD
+#     c2fedf3 before writing it: 0 hollow comments in M3 and M2 (shortest existing
+#     comment: 3 words) — the constraint moves no frozen count, it guards the
+#     future. Same shape, same G2 id.
 #############################################################################
 
 @prefix sh:      <http://www.w3.org/ns/shacl#> .
@@ -125,6 +133,24 @@ shs:TermDocumentationShape
               FILTER NOT EXISTS {
                 $this a <http://www.w3.org/2004/02/skos/core#Concept> ;
                       <http://www.w3.org/2004/02/skos/core#definition> ?d }
+            }""" ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "G2: hollow rdfs:comment (blank, identical to the label, under 3 words, or a placeholder such as TODO/TBD/…): write what the term means." ;
+        sh:select """
+            SELECT DISTINCT $this WHERE {
+              FILTER(STRSTARTS(STR($this), "https://raw.githubusercontent.com/Echopraxium/tscg/main/"))
+              $this <http://www.w3.org/2000/01/rdf-schema#comment> ?c .
+              BIND(LCASE(REPLACE(STR(?c), "^\\\\s+|\\\\s+$", "")) AS ?n)
+              FILTER(
+                ?n = ""
+                || REGEX(?n, "^(todo|tbd|fixme|xxx|n/a)\\\\b")
+                || REGEX(?n, "^[.…\\\\s-]*$")
+                || !REGEX(?n, "\\\\S+\\\\s+\\\\S+\\\\s+\\\\S+")
+                || EXISTS {
+                     $this <http://www.w3.org/2000/01/rdf-schema#label> ?l .
+                     FILTER(LCASE(REPLACE(STR(?l), "^\\\\s+|\\\\s+$", "")) = ?n) }
+              )
             }""" ] ;
 .
 

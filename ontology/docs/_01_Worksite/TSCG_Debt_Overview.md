@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.16.0
+**Version**: 1.16.1
 **Date**: 2026-11-01
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -653,6 +653,18 @@ map it to an existing property, or declare it as a property (label + type) in th
 that owns it. NS-SEP (renaming ~1,400 IRIs) is now also guarded by G8: a rename that
 breaks a declaration/use pair shows up as +G8.
 
+**Follow-up (2026-11-01, Michel: close risk n°1 now).** Declaring a key with a token
+comment would silence G8 without documenting anything — the debt under another rug. The
+structural grammar `grammars/M3_Structural_Schema_shacl.ttl` 0.3.0 adds to G2
+(TermDocumentationShape, M3 + M2) a **hollow-comment** constraint: blank, identical to the
+label, under 3 words, or a placeholder (TODO/TBD/FIXME/XXX/N/A/"…"). Measured on HEAD
+`c2fedf3` first: 0 hollow comments in M3/M2 (shortest: 3 words) — no frozen count moves; a
+pure guard. 5 negative tests (test_structural_grammar 0.3.0, 28/28), including the risk
+itself: a key declared with comment "TODO" → G8 unchanged, G2 +1, the gate fails.
+**Not covered yet: M1 and M0** (G2 is registered for M3/M2 only): before any lot that
+declares properties there (e.g. `m1:structuralGrammarFormula`), register the same guard
+for those layers.
+
 **Next (lot K1, the first reduction).** `m2:eagleView` / `m2:sphinxView`: 423 bare keys
 (31 % of M2; eagleView 209, sphinxView 214) in four repeated keys — `basis` (always "ASFID" under eagleView), `status`
 ("IMMUTABLE" 58 of 67), `role` ("Measure observable phenomenon" 30×), `formula` — inside the values of two
@@ -753,6 +765,8 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.16.1 (2026-11-01)** — §8.0g follow-up: G2 refuses hollow comments (grammar 0.3.0),
+  no count moved; M1/M0 not covered yet.
 - **1.16.0 (2026-11-01)** — §8.0g lot K0: G8 phantom predicates (engine + gate + Health Map),
   M1/M0 engine plane frozen (D1, D7, G5, G8…); rule "every term used is declared" in the
   Bootstrap; gate M3 errors 141 → 209, M2 1 → 169 (G8, no data changed); next: K1, NS-SEP.

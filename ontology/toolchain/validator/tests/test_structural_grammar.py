@@ -4,7 +4,7 @@ test_structural_grammar.py — negative tests for G1–G4 (structural SHACL gram
 and G1b/G5/G6/G8 (EXT family). WS-5 step 3; G8 lot K0 (2026-11-01).
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 0.2.0
+Version: 0.3.0
 Home   : ontology/toolchain/validator/tests/test_structural_grammar.py
 
 Each test mutates a real file (working copy) IN MEMORY and asserts the exact move
@@ -91,6 +91,45 @@ def test_g1_ontology_type_literal():
 # -- G2 ---------------------------------------------------------------------------
 def test_g2_missing_comment():
     assert _delta(M3, lambda d: _first_class(d).pop("rdfs:comment")) == {"TermDocumentationShape": 1}
+
+
+def _with_comment(text):
+    return lambda d: _first_class(d).__setitem__("rdfs:comment", text)
+
+
+def test_g2_hollow_comment_placeholder():
+    assert _delta(M3, _with_comment("TODO")) == {"TermDocumentationShape": 1}
+    assert _delta(M3, _with_comment("tbd: describe later")) == {"TermDocumentationShape": 1}
+    assert _delta(M3, _with_comment("…")) == {"TermDocumentationShape": 1}
+
+
+def test_g2_hollow_comment_blank_or_short():
+    assert _delta(M3, _with_comment("   ")) == {"TermDocumentationShape": 1}
+    assert _delta(M3, _with_comment("A property.")) == {"TermDocumentationShape": 1}
+
+
+def test_g2_hollow_comment_repeats_label():
+    def m(d):
+        n = _first_class(d)
+        n["rdfs:label"] = "Very Long Label Here"
+        n["rdfs:comment"] = "  very long label here "
+    assert _delta(M3, m) == {"TermDocumentationShape": 1}
+
+
+def test_g2_three_word_comment_is_not_hollow():
+    assert _delta(M3, _with_comment("Invariance under transformation.")) == {}
+
+
+def test_g2_and_g8_declaring_a_key_with_a_token_comment_fails():
+    # the K0 risk n°1: silence G8 by declaring the key as a property with a token
+    # comment -> G8 does not move (declared), but G2 rises: the gate still fails.
+    def m(d):
+        d["@context"]["k0ProbeKey"] = "m2:k0ProbeKey"
+        _first_class(d)["k0ProbeKey"] = "x"
+        d["@graph"].append({"@id": "m2:k0ProbeKey", "@type": "owl:AnnotationProperty",
+                            "rdfs:label": "k0 probe key", "rdfs:comment": "TODO"})
+    assert _ext_delta(M2, m) == {}
+    assert _delta(M2, m) == {"TermDocumentationShape": 1}
 
 
 def test_g2_skos_prefLabel_is_a_label():

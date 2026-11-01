@@ -58,10 +58,12 @@ formula"; the data holds mostly `formulaPrimary` alone — a doc/data drift to s
    value profile above, and the options **delete** (redundant / derivable — e.g. `basis`
    under eagleView is implied by the property itself), **map** (to an existing property —
    check HEAD first, e.g. whether a formula property already exists in M2), **declare**
-   (owl property + `rdfs:label` in M2, with a `@context` entry). Michel decides each line;
-   Claude never invents a meaning.
-3. Phase 2: apply. Phase 3: gate — **D1 must drop by exactly the planned number, G8 must not
-   rise** (a declared key is declared in M2 itself, so it is not a phantom). Show the move,
+   (owl property + `rdfs:label` + an `rdfs:comment` **written or approved by Michel**, in
+   M2, with a `@context` entry). Michel decides each line; Claude never invents a meaning.
+   Guard: G2 (grammar 0.3.0) refuses a hollow comment — blank, = label, < 3 words, TODO/
+   TBD/… — so a token declaration fails the gate (G2 +1) even though G8 does not move.
+3. Phase 2: apply. Phase 3: gate — **D1 must drop by exactly the planned number, G8 and
+   G2 must not rise** (a declared key is declared in M2 itself, so it is not a phantom). Show the move,
    `--update-golden`, reason written.
 
 ## 3. Then, in order
@@ -80,6 +82,8 @@ formula"; the data holds mostly `formulaPrimary` alone — a doc/data drift to s
 - **Correction recorded in this commit**: K0's Debt Overview §8.0g and the K0 commit message
   listed `m2:eagleView` among the phantom predicates — wrong: it is declared. §8.0g is
   corrected; the commit message (pushed) stays as is.
+- G2's hollow-comment guard covers M3/M2 only: register it for M1/M0 before any lot that
+  declares properties there.
 - `check_M1` counts every SHACL result twice (unchanged, its own lot).
 - Worksite map `WS-0/_00_TSCG_Worksite_Map.md` still uses "SC-5b" for "SHACL-hardening".
 
