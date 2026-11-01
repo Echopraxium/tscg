@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1782 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1788 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -123,6 +123,7 @@
 - **_03_SerendipCrates/**
   - **EpistemologyMaquette/**
     - CRATE.md
+    - Note_InvariantsWithoutMetric_2026-10-22.md
     - TSCG_HandOver_EpistemologyMaquette_2026-10-22.md
   - README.md
 - **_protos/**
@@ -166,6 +167,7 @@
     - Archetypes_as_CrossCultural_Artifacts.md
     - ContextSwitching.md
     - CredibilityAccretion_Process.md
+    - EpistemicPivot.md
     - LayerCake_Models_The_Kit.md
     - LegoTechnic_Modularity.md
     - ModelSupersession.md
@@ -1555,6 +1557,8 @@
       - **LayerCakeHealthMap/**
         - TSCG_LayerCake_Health_Map_2026-10-06_ffa6206.png
         - TSCG_LayerCake_Health_Map_2026-10-06_ffa6206.svg
+        - TSCG_LayerCake_Health_Map_2026-11-01_K0.png
+        - TSCG_LayerCake_Health_Map_2026-11-01_K0.svg
       - **OntologyEngineering/**
         - TSCG_HandOver_Article_AI_Delegation_OE_vs_SE_2026-10-01.md
       - **WS-0/**
@@ -1636,6 +1640,10 @@
           - TSCG_HandOver_WS-5_2026-10-13.md
         - **Next_Conversation_2026-10-15/**
           - TSCG_HandOver_WS-5_2026-10-15.md
+        - **Next_Conversation_2026-10-22/**
+          - TSCG_HandOver_WS-5_2026-10-22.md
+        - **Next_Conversation_2026-11-01/**
+          - TSCG_HandOver_WS-5_2026-11-01.md
         - **SC-5b/**
           - SC-5b_Subdomains_Decision_Table.xlsx
           - SC-5c_DomainModel_DesignNote.md
