@@ -68,3 +68,68 @@ removing it is an ontology change (gate + reasoner); three analyses belong next 
 instances (Yggdrasil ×2, VSM).
 
 Gate: not concerned (it reads no file of `ontology/docs`).
+
+---
+
+# Round 2 (2026-11-01) — the 69 remaining files
+
+**Method** (Michel, 2026-11-01): one file at a time, in the conversation, for the 15 files
+that needed his judgement (6 "À DÉCIDER" + 9 "to confirm"), each re-verified on HEAD
+`796583a` (title, date, citing lines `file:line`, retired-vocabulary markers, options);
+then the 53 with no live reference in five thematic lots. Decisions are in the yellow
+column of `OntologyDocs_Cleanup_Triage.xlsx` (column I: why and which lines).
+
+## Result — `ontology/docs/` (outside `_00_test_reports`, `_01_Worksite`) now holds 2 files
+
+| Commit | Content |
+|---|---|
+| 1/5 | 55 removals, no live citation (dead M3; MetaConcept-era JSON-LD fragments; tensor formula tables and ORIVE notes; version/delivery summaries; old M2/M1 analyses and guides; `M3_Philosophical_Eye.jsonld`; `M2_FormulasReference_v15.10.0.json`) |
+| 2/5 | 7 removals + their live citations (Poclet_Analysis_Methodology, TSCG_Architectural_Extensions, M2_KnowledgeField_README, M2_Scope_Metaconcept_Proposal, TSCG_Documentation_Index, ValueSpace_Enrichment_Final_Report, ontology_analysis) — rule chosen by Michel: no dead reference left behind, even in `docs/reboot-kit/` |
+| 3/5 | 2 removals of unmerged M1 patches (NuclearUpdate, M1_CoreConcepts_updated) + Debt Overview 1.16.2: the M0 references they alone defined are recorded for lot M0 |
+| 4/5 | 3 moves next to their instance (Yggdrasil ×2, VSM) + Debt Overview 1.16.3: the retired vocabulary of instance docs measured |
+| 5/5 | this note, the table, `TSCG_FileTree.md` regenerated |
+
+**Kept**: `OntologyModeling_Guidelines.md` (live, cited by `M3_GrammarFoundation` and the
+ReferenceCorpus). **Still in place, decided**: `TSCG_M1_Architecture.md` — remove, but in a
+separate ontology lot, because `M1_CoreConcepts.jsonld:208` cites it (`rdfs:seeAlso`, a plain
+string): repoint to `{"@id": …/ontology/M1_CoreConcepts_README.md}`, M1 changelog, gate,
+reasoner run by Michel.
+
+## Findings worth keeping
+
+- **Dangling M0 references** (Debt Overview §5): `M0_NuclearReactorsTypology` and
+  `M0_PhaseTransition` (CriticalityRegime, SelfSustainingReaction…), `M0_Yggdrasil`
+  (CatastrophicBifurcation) point at M1 concepts declared nowhere; the only definitions were
+  the two unmerged patches. Owner: lot M0.
+- **Broken links repaired by removal**: `CLAUDE.md` and `README.md` pointed at
+  `docs/methodology/Poclet_Analysis_Methodology.md` (never existed); the live VSM README at
+  `M2_Scope_GenericConcept_Proposal.md` (never existed).
+- **Moves are not repairs**: the three moved analyses keep their `⊗`. Measured for all
+  instance docs (Debt Overview §5): 75 of 140 `.md`, 1605 markers, 1347 `⊗`. No counter moved.
+- **Effects**: the RAG builder no longer tags this material as authoritative ontology
+  documentation; the Compendium's "M3–M0 layers → Historical notes" folder drops from ~70
+  documents to 2.
+- Not touched on purpose: `ontology/Ref/` (archive), archived Smart Prompts, `index.html`
+  (embedded copy of a README, refreshed by the gallery generator), dated reports and
+  journals whose lines narrate what existed (`_000_TSCG_Context_Files.md`,
+  `M1_NAMESPACE_AUDIT_REPORT.md`, `Session_VSM_Capacity_Evaluation.md`, `docs/papers/inputs/`).
+
+Gate: `GATE: PASS` before and after (it reads no file of `ontology/docs`, only `*.jsonld`).
+Reasoner: no ontology file changed. Nothing lost: `git show <commit>^:<path>`.
+
+## Next worksite — `docs/reboot-kit/` housekeeping
+
+Michel (2026-11-01): debt partly left by the era before lazy loading (copies placed there
+to be loaded into Project Knowledge). Found during round 2:
+- `tscg-instance-pipeline` SKILL.md:103 and `TSCG_InstanceGrammar/DEPLOYMENT_GUIDE.md:205`
+  point at `docs/reboot-kit/M2_FormulasReference_v15.10.0.md` — a tensor formula table
+  (214 `⊗`). The skill is re-provisioned from the repo: fix the source, then re-provision.
+- `CLAUDE.md` (Instance Development list, URI table) points at the reboot-kit copies of
+  `HYBRID_FORMULAS_NOTATION_README.md`, `TSCG_ValueSpace_User_Guide.md`,
+  `TSCG_ValueSpace_Quick_Reference.md`; `CLAUDE.md` itself is stale (Debt Overview §5).
+- Old copies: `M0_VSM_README.md`, `Cascade_Modeling_README.md`,
+  `Namespace_Refactoring_Summary.md`, `Amplification_Integration_Summary (1).md`,
+  `ValueSpace_Integration_Summary.md`, the `00_*` bicephalous / Map-Territory summaries,
+  `TO_DO.txt`.
+- Same era elsewhere: `docs/methodology/Bicephalous_Integration_Guide.md` (cited by the
+  AdaptativeImmuneResponse README:292), `docs/M2_MetaConcepts_README.md`.

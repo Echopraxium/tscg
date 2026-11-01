@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1769 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1707 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -120,6 +120,9 @@
   - **2026_09_27/**
     - Housekeeping_ArchivePurge_2026-09-27.md
     - TSCG_Session_Handover_2026-09-27.md
+  - **2026_11_01/**
+    - Housekeeping_OntologyDocs_2026-11-01.md
+    - OntologyDocs_Cleanup_Triage.xlsx
 - **_03_SerendipCrates/**
   - **EpistemologyMaquette/**
     - CRATE.md
@@ -766,11 +769,13 @@
       - M0_World2DProjection_analysis.md
       - M0_World2DProjection_README.md
     - **yggdrasil/**
+      - CatastrophicBifurcation_M1_Analysis.md
       - Heimdall_Interface_Constraint_Analysis.md
       - Loki_As_Representation_Transformer.md
       - M0_Yggdrasil.jsonld
       - M0_Yggdrasil_README.md
       - M0_Yggdrasil_README.pdf
+      - M1_Mythology_Core_Concepts.md
       - Yggdrasil_7_vs_9_Analysis.md
       - Yggdrasil_Discussion_Points.md
       - Yggdrasil_Reformulation_Analysis.md
@@ -1380,6 +1385,7 @@
     - **vsm/**
       - **_sim/** _(collapsed, 2 entries)_
       - M0_VSM.jsonld
+      - M0_VSM_Prerequisites_Analysis.md
       - M0_VSM_README.md
       - M0_VSM_README.pdf
       - M0_VSM_README_Metaconcepts.md
@@ -1661,75 +1667,8 @@
       - TSCG_OntologyValidator_Worksite_README.md
       - TSCG_VocabularyConsolidation_Worksite_README.md
       - worksite.yaml
-    - Amplification_Integration_Summary.md
-    - Bicephalous_Integration_Guide.md
-    - Bicephalous_Refactoring_Summary.md
-    - Cascade_Modeling_README.md
-    - CatastrophicBifurcation_M1_Analysis.md
-    - CategoryTheory_KnowledgeField_Integration (1).md
-    - CategoryTheory_KnowledgeField_Integration.md
-    - Cyclic_Tension_Validation_Analysis.md
-    - Final_Corrections_Summary.md
-    - Fusion_vs_Composition_Correction.md
-    - HOWTO_Create_M1_Extension.md
-    - HYBRID_FORMULAS_NOTATION_README (1).md
-    - M0_VSM_Prerequisites_Analysis.md
-    - M1_CoreConcepts_NuclearUpdate.jsonld
-    - M1_CoreConcepts_updated.jsonld
-    - M1_CoreConcepts_v1.2.0_Summary.md
-    - M1_Extensions_Summary.md
-    - M1_Mythology_Core_Concepts.md
-    - M2_Architecture_Specification_v9.1.0.md
-    - M2_Behavioral_Sequential_Metaconcepts_README.md
-    - M2_Behavioral_Visual_Guide.md
-    - M2_Calibration_FormulasRef_entry.json
-    - M2_Candidates_Analysis_Layer_Switch_Mode (1).md
-    - M2_Coherence_Analysis.md
-    - M2_Component_Channel_Addition_Summary.md
-    - M2_Dual_ORIVE_Proposals.md
-    - M2_FormulasReference.json
-    - M2_FormulasReference_v15.10.0.json
-    - M2_FormulasReference_v15.10.0.md
-    - M2_Generation_Summary.md
-    - m2_Imbrication_entry.jsonld
-    - M2_Imbrication_README.md
-    - M2_KnowledgeField_KnowledgeFieldMetaCombo_v15_2_0.jsonld
-    - M2_KnowledgeField_README.md
-    - M2_MetaconceptCombo.jsonld
-    - M2_MetaConcepts_README.md
-    - M2_Metaconcepts_v13.jsonld
-    - M2_New_5_Metaconcepts.jsonld
-    - M2_OntologyCategory_Proposal (1).md
-    - m2_Oscillator_snippet.jsonld
-    - M2_Pattern_metaconcept.jsonld
-    - M2_Scope_Metaconcept_Proposal.md
-    - M3_CategoryTheory_v1_0_0.jsonld
-    - M3_EagleEye_Update_Analysis_v15_1_0.md
-    - M3_Genesis_Space_README.md
-    - M3_GenesisSpace_CategoryTheory_Integration.md
-    - M3_GenesisSpace_CategoryTheory_Integration_Complete.md
-    - M3_GenesisSpace_OptionA_Complete.md
-    - M3_GenesisSpace_v3_1_0_Changes_Summary.md
-    - M3_Philosophical_Eye.jsonld
-    - M3_SystemicFramework_Category_Documentation.md
-    - ontology_analysis.md
     - OntologyModeling_Guidelines.md
-    - ORIVE_Official_Reference_CORRECT.md
-    - Poclet_Analysis_Methodology.md
-    - TSCG_Architectural_Extensions.md
-    - TSCG_Documentation_Index.md
-    - TSCG_Formula_Encoding_Solution.md
-    - TSCG_Formula_Properties_Specification.jsonld
     - TSCG_M1_Architecture.md
-    - TSCG_Nary_Polarity_Paradigm_Shift.md
-    - TSCG_Update_v12_Summary.md
-    - TSCG_v14_3_0_Summary.md
-    - TSCG_v15_1_0_Final_Classification.md
-    - TSCG_v15_1_0_Integration_Report.md
-    - TSCG_ValueSpace_Quick_Reference.md
-    - TSCG_ValueSpace_User_Guide.md
-    - ValueSpace_Enrichment_Final_Report.md
-    - ValueSpace_Integration_Summary.md
   - **InstanceSimulations/**
     - M0_InstanceSimulation_UXControls.jsonld
     - M0_InstanceSimulation_UXControls_README.md
