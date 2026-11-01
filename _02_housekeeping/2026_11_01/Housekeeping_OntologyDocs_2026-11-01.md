@@ -58,6 +58,13 @@ delete), 9 cited only by documents that are obsolete themselves (proposal: delet
 remove the citing line), 6 to decide (`Poclet_Analysis_Methodology.md`,
 `TSCG_Architectural_Extensions.md`, `TSCG_M1_Architecture.md`, the two analyses cited by
 the Yggdrasil README, the VSM prerequisites analysis), 1 to keep
-(`OntologyModeling_Guidelines.md`). Resume from the table: fill the yellow column.
+(`OntologyModeling_Guidelines.md`). Resume from the table: fill the yellow column. The 15 rows whose proposal said "to
+confirm / to verify / to decide" were verified on 2026-11-01 — column J gives the exact
+citing line (file:line) and a revised proposal. Notable: the live links in `CLAUDE.md` and
+`README.md` to `docs/methodology/Poclet_Analysis_Methodology.md` are BROKEN (that path never
+existed; the only copy is in `ontology/docs`) — moving it there would repair them;
+`TSCG_M1_Architecture.md` is cited by an ontology (`M1_CoreConcepts.jsonld` rdfs:seeAlso), so
+removing it is an ontology change (gate + reasoner); three analyses belong next to their
+instances (Yggdrasil ×2, VSM).
 
 Gate: not concerned (it reads no file of `ontology/docs`).
