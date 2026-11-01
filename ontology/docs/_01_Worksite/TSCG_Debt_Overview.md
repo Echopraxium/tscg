@@ -621,7 +621,10 @@ reveal more of it if needed*. D1 counts a key only when it has no `:` and is not
 `m2:role` was declared nowhere — a **phantom predicate**, counted by no tool. Measured on
 HEAD `ea165ca`: only **165 properties** are declared in the whole M3–M1 stack; among the
 phantoms are central properties — `m1:structuralGrammarFormula` (15 M1 files, constrained by
-several SHACL shapes), `m2:perspective`, `m2:possibleValues`, `m2:eagleView`, `m2:mobilizes`.
+several SHACL shapes), `m2:perspective`, `m2:possibleValues`, `m2:mobilizes`.
+*(Correction 2026-11-01: an earlier wording of this paragraph, and the K0 commit message,
+also listed `m2:eagleView` — it is declared (`owl:ObjectProperty`); only the keys INSIDE its
+values are bare.)*
 And M1/M0 were gated only by `check_M1` / `check_m0`, which never see the document plane:
 their bare keys (and, in M0, 28 files a strict JSON-LD processor rejects) could grow unseen.
 
@@ -651,9 +654,9 @@ that owns it. NS-SEP (renaming ~1,400 IRIs) is now also guarded by G8: a rename 
 breaks a declaration/use pair shows up as +G8.
 
 **Next (lot K1, the first reduction).** `m2:eagleView` / `m2:sphinxView`: 423 bare keys
-(31 % of M2) in four repeated keys — `basis` (always "ASFID" under eagleView), `status`
-("IMMUTABLE" 58 of 67), `role` ("Measure observable phenomenon" 30×), `formula` — plus
-the two phantom predicates themselves. Decision table per key for Michel. Then
+(31 % of M2; eagleView 209, sphinxView 214) in four repeated keys — `basis` (always "ASFID" under eagleView), `status`
+("IMMUTABLE" 58 of 67), `role` ("Measure observable phenomenon" 30×), `formula` — inside the values of two
+DECLARED properties. Decision table per key for Michel. Then
 `m2:possibleValues` (404 bare keys).
 
 ### 8.1 S5-1 — primitives always suffixed
