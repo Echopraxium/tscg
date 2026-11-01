@@ -137,7 +137,10 @@ A bare key (D1: declared in no `@context`) is dropped on JSON-LD expansion; a ke
 in `@context` but declared nowhere is a **phantom predicate** (G8). Both are debt, and
 both are frozen in the gate for every layer. A bare key is repaired ONLY in one of three
 ways: **delete** it (redundant or derivable), **map** it to an existing property
-(`rdfs:comment`, `dcterms:…`, an existing TSCG property), or **declare** it for real.
+(`rdfs:comment`, `dcterms:…`, an existing TSCG property), or **declare** it for real —
+property type + `rdfs:label` + an `rdfs:comment` that says what it means, written or
+approved by Michel. A **hollow** comment (blank, repeating the label, under 3 words, or a
+placeholder such as TODO/TBD/…) is not a declaration (structural grammar G2, M3/M2).
 A `@context` entry alone is not a repair: D1 falls, G8 rises, the gate fails. More
 generally: **never lower a counter by moving the debt to a place no tool counts** — when
 a lot reveals hidden debt, the counts go UP, and that is progress.
