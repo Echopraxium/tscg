@@ -71,7 +71,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from tscg_paths import REPO_ROOT, ONTOLOGY_DIR, TOOLCHAIN_DIR, verify_layout  # noqa: E402
 
-__version__ = "1.4.2"
+__version__ = "1.5.0"   # 2026-11-01 lot K0: engine plane frozen for M1/M0; G8
 
 GOLDEN_FILE = TOOLCHAIN_DIR / "golden_values.json"
 
@@ -236,9 +236,10 @@ _SHAPE_TO_G = {
 }
 
 
-def run_engine(layer: str) -> dict:
+def run_engine(layer: str, shacl: bool = True) -> dict:
     """Run the validator engine on ONE layer (working copy). A crash, a missing report
-    or a report without the expected sections is a FAIL, never a pass."""
+    or a report without the expected sections is a FAIL, never a pass. shacl=False is
+    the M1/M0 'engine' section (lot K0): their SHACL is counted by check_M1/check_m0."""
     import tempfile
     script = TOOLCHAIN_DIR / "validator" / "tscg_validator.py"
     if not script.exists():
@@ -247,7 +248,7 @@ def run_engine(layer: str) -> dict:
         report = Path(tmp) / f"{layer}.json"
         proc = subprocess.run(
             [sys.executable, str(script), "--source", "local", "--layers", layer,
-             "--doc", "--ext", "--shacl", "--report", str(report)],
+             "--doc", "--ext"] + (["--shacl"] if shacl else []) + ["--report", str(report)],
             capture_output=True, text=True, cwd=script.parent,
             env=_utf8_env(), encoding="utf-8", errors="replace")
         out = proc.stdout + proc.stderr
@@ -261,10 +262,13 @@ def run_engine(layer: str) -> dict:
         data = json.loads(report.read_text(encoding="utf-8"))
 
     if data.get("doc_occurrences") is None or data.get("ext") is None \
-            or not data.get("shacl"):
+            or (shacl and not data.get("shacl")):
         return {"_error": f"engine report for {layer} lacks a DOC / EXT / SHACL section: "
                           "a plane did not run."}
     findings = data.get("findings", [])
+    if data["ext"].get("g8_declared_properties") is None:
+        return {"_error": f"engine report for {layer}: G8 did not run (no declaration "
+                          "corpus) — a check that did not run reports nothing."}
     by_code: Counter = Counter()
     errors = warnings = shacl = 0
     for f in findings:
@@ -416,6 +420,25 @@ def compare(layer: str, actual: dict, golden: dict, verbose: bool) -> bool:
         if exp_codes != got_codes:
             ok = False
 
+    eng_got = actual.get("engine")
+    if eng_got is not None:
+        eng_exp = g.get("engine")
+        print(f"\n  engine plane (doc + ext, lot K0) {'code':<9} {'got':>6} {'golden':>7}")
+        if eng_exp is None:
+            print(f"  {C_BAD}[{M_BAD}] engine section NOT FROZEN yet: measured but no "
+                  f"reference — review the counts, then --update-golden.{C_END}")
+            ok = False
+        exp_c = (eng_exp or {}).get("by_code", {})
+        got_c = eng_got.get("by_code", {})
+        for code in sorted(set(exp_c) | set(got_c)):
+            e, a = exp_c.get(code, 0), got_c.get(code, 0)
+            if e == a and eng_exp is not None:
+                print(f"  {C_OK}[{M_OK}]{C_END} {'':<31} {code:<9} {a:>6} {e:>7}")
+            else:
+                print(f"  {C_BAD}[{M_BAD}]{C_END} {'':<31} {code:<9} {a:>6} {e:>7}"
+                      + (f"   <-- MISMATCH ({a - e:+d})" if eng_exp is not None else ""))
+                ok = False
+
     if g.get("note"):
         print(f"\n  {C_DIM}{g['note']}{C_END}")
     return ok
@@ -460,6 +483,18 @@ def main() -> int:
     golden = load_golden()
     results = {"M3": run_engine("M3"), "M2": run_engine("M2"),
                "M1": run_m1(), "M0": run_m0()}
+    # Lot K0 (2026-11-01): M1 and M0 are counted by their own checkers, which never
+    # see the document plane (D1 bare keys, D7 strict JSON-LD) nor the cross-file
+    # graph checks (G5/G6, G8 phantom predicates). Freeze the engine's view of them
+    # as a SEPARATE section, so the existing counters keep their meaning.
+    for layer in ("M1", "M0"):
+        res = results.get(layer)
+        if res and "_error" not in res:
+            eng = run_engine(layer, shacl=False)
+            if "_error" in eng:
+                results[layer] = eng
+            else:
+                res["engine"] = {k: eng[k] for k in ("errors", "warnings", "by_code")}
 
     ok = True
     for layer in ("M3", "M2", "M1", "M0"):
@@ -479,6 +514,14 @@ def main() -> int:
                 deltas = {k: f"{old[k]} -> {new[k]}" for k in TRACKED
                           if k in old and k in new and old[k] != new[k]}
                 codes_moved = golden[layer].get("by_code", {}) != new.get("by_code", {})
+                old_eng = golden[layer].get("engine") or {}
+                new_eng = new.get("engine") or {}
+                if new_eng and old_eng.get("by_code") != new_eng.get("by_code"):
+                    oc, nc = old_eng.get("by_code", {}), new_eng.get("by_code", {})
+                    for c in sorted(set(oc) | set(nc)):
+                        if oc.get(c, 0) != nc.get(c, 0):
+                            deltas[f"engine.{c}"] = (f"{oc.get(c, 0)} -> {nc.get(c, 0)}"
+                                                     if old_eng else f"first capture {nc[c]}")
                 if old and not deltas and not codes_moved:
                     # Nothing moved: keep this layer's _previous/_delta, which record the
                     # LAST REAL change. Rewriting them with "no change" erased that history.

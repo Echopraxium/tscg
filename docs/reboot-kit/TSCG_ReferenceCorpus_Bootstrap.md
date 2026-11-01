@@ -129,6 +129,19 @@ domain by the IRI of a domain class, never a string. What can be inferred (subdo
 instance counts) is not stored — **no stored subdomain list at any layer** (2026-10-14):
 subdomains are read from `rdfs:subClassOf`.
 
+**Every term used is declared — no hidden vocabulary debt (2026-11-01, lot K0).**
+OWL 2: an entity's type comes from its declaration. Every predicate in a TSCG namespace
+is declared **as a property** (`owl:AnnotationProperty` / `owl:DatatypeProperty` /
+`owl:ObjectProperty` / `rdf:Property`, with an `rdfs:label`) in the file that owns it.
+A bare key (D1: declared in no `@context`) is dropped on JSON-LD expansion; a key mapped
+in `@context` but declared nowhere is a **phantom predicate** (G8). Both are debt, and
+both are frozen in the gate for every layer. A bare key is repaired ONLY in one of three
+ways: **delete** it (redundant or derivable), **map** it to an existing property
+(`rdfs:comment`, `dcterms:…`, an existing TSCG property), or **declare** it for real.
+A `@context` entry alone is not a repair: D1 falls, G8 rises, the gate fails. More
+generally: **never lower a counter by moving the debt to a place no tool counts** — when
+a lot reveals hidden debt, the counts go UP, and that is progress.
+
 **Notation (2026-07-06, supersedes all prior).**
 The operator `⊗` must **never** appear in any TSCG file or formula.
 Structural formulas use only:

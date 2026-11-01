@@ -4,8 +4,8 @@ tscg_layercake_health_map.py — LayerCake Health Map: concentric hexagonal map 
 TSCG technical debt (snapshot). Renamed from tscg_debt_map.py (Michel, 2026-10-06).
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 0.4.0
-Date   : 2026-10-06
+Version: 0.5.0  (2026-11-01, lot K0: G8 phantom predicates coloured on the nodes that use them, all layers)
+Date   : 2026-11-01
 Home   : ontology/toolchain/tscg_layercake_health_map.py
 
 WHAT IT DRAWS
@@ -96,7 +96,7 @@ from checks import doc as doc_check, shacl_runner, ext as ext_check  # noqa: E40
 
 logging.getLogger("rdflib").setLevel(logging.ERROR)
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"
 GREEN, PALE, ORANGE, RED, GREY = "green", "pale", "orange", "red", "grey"
 # Palette (Michel, 2026-10-06): bright orange = bare keys, magenta = other technical debt.
 COLOR = {GREEN: "#3f9e5a", PALE: "#ff8a00", ORANGE: "#c4268f", RED: "#d8322a", GREY: "#b9b9b9"}
@@ -249,16 +249,30 @@ def collect_ontology_layer(src: Source, layer: str, files: List[str]) -> List[No
             if target is not None:
                 target.findings.append(f"SHACL {f.get('shape', '?')}: {f['message'][:90]}")
 
-    # EXT (G1b, G5). G6 is the consequence of @vocab (D2) and already makes the file red.
-    if layer in ("M3", "M2"):
-        triples = [(rel, src.read(rel), layer) for rel in files]
-        ef, _ = ext_check.run(triples, src.read(ext_check.SCHEME_HOST), src.read(ext_check.APEX))
-        for f in ef:
-            if f["id"] in ("G1b",):
-                t = by_iri.get(f["node"])
+    # EXT (G1b, G8). G6 is the consequence of @vocab (D2) and already makes the file red.
+    # G8 (lot K0, 2026-11-01): every node that uses a phantom predicate (nested objects
+    # included) carries the finding — a debt the gate counts must show on the map too.
+    triples = [(rel, src.read(rel), layer) for rel in files]
+    ef, _ = ext_check.run(triples, src.read(ext_check.SCHEME_HOST), src.read(ext_check.APEX),
+                          declaration_corpus(src))
+    for f in ef:
+        if f["id"] == "G1b":
+            t = by_iri.get(f["node"])
+            if t:
+                t.findings.append(f"G1b: {f['message'][:90]}")
+        elif f["id"] == "G8":
+            short = f["node"].rsplit("/", 1)[-1]
+            for subj in f.get("subjects", []):
+                t = by_iri.get(subj)
                 if t:
-                    t.findings.append(f"G1b: {f['message'][:90]}")
+                    t.findings.append(f"G8 phantom predicate {short}")
     return nodes
+
+
+def declaration_corpus(src: Source) -> list:
+    """The G8 declaration corpus, built exactly as the engine builds it."""
+    return [(r, src.read(r)) for r in src.manifest()
+            if classify_layer(r) in ("M3", "M2", "M1") or r == "ontology/M0_Common.jsonld"]
 
 
 def attach_check_m1(nodes: List[Node]) -> None:
@@ -296,6 +310,7 @@ def collect_m0(src: Source, files: List[str]) -> List[Node]:
         for r in json.loads(tmp.read_text(encoding="utf-8")).get("instances", []):
             reports[Path(r["path"]).name] = r
     nodes: List[Node] = []
+    decl = declaration_corpus(src)
     for rel in files:
         fname = rel.rsplit("/", 1)[-1]
         parts = rel.split("/")
@@ -311,6 +326,14 @@ def collect_m0(src: Source, files: List[str]) -> List[Node]:
                 n.file_red.append("no owl:Ontology node: invisible to its grammar")
         except Exception:
             n.file_red.append("not parseable JSON")
+        try:
+            ef, _ = ext_check.run([(rel, text, "M0")], src.read(ext_check.SCHEME_HOST),
+                                  src.read(ext_check.APEX), decl)
+            g8 = sum(1 for f in ef if f["id"] == "G8")
+            if g8:
+                n.findings.append(f"G8 phantom predicates x{g8}")
+        except Exception as exc:
+            n.findings.append(f"EXT not run: {exc}")
         r = reports.get(fname)
         if r is None:
             n.findings.append("not reported by check_m0_instances (not measured)")

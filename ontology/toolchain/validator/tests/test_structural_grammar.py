@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 test_structural_grammar.py — negative tests for G1–G4 (structural SHACL grammar)
-and G1b/G5/G6 (EXT family). WS-5 step 3.
+and G1b/G5/G6/G8 (EXT family). WS-5 step 3; G8 lot K0 (2026-11-01).
 
 Author : Echopraxium with the collaboration of Claude AI
-Version: 0.1.0
+Version: 0.2.0
 Home   : ontology/toolchain/validator/tests/test_structural_grammar.py
 
 Each test mutates a real file (working copy) IN MEMORY and asserts the exact move
@@ -24,7 +24,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 from sources import Source  # noqa: E402
-from checks import shacl_runner, ext  # noqa: E402
+from checks import shacl_runner, ext, doc  # noqa: E402
+from sources import classify_layer  # noqa: E402
 
 SRC = Source("local")
 GRAMMAR = "ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl"
@@ -156,10 +157,22 @@ def test_g4_closed_extra_property():
 
 
 # -- EXT: G1b, G5, G6 -----------------------------------------------------------------
-def _ext(rel, d, scheme=None):
+_DECL = None
+
+
+def _decl():
+    """The G8 declaration corpus, built as the engine builds it (tscg_validator.run_ext)."""
+    global _DECL
+    if _DECL is None:
+        _DECL = [(r, SRC.read(r)) for r in SRC.manifest()
+                 if classify_layer(r) in ("M3", "M2", "M1") or r == "ontology/M0_Common.jsonld"]
+    return _DECL
+
+
+def _ext(rel, d, scheme=None, decl=None):
     f, s = ext.run([(rel, json.dumps(d, ensure_ascii=False), LAYER[rel])],
                    scheme if scheme is not None else SRC.read(ext.SCHEME_HOST),
-                   SRC.read(ext.APEX))
+                   SRC.read(ext.APEX), decl if decl is not None else _decl())
     return f, s
 
 
@@ -169,7 +182,8 @@ def _ext_delta(rel, mutate):
     mutate(mut)
     a = _ext(rel, base)[1]["per_layer"][LAYER[rel]]
     b = _ext(rel, mut)[1]["per_layer"][LAYER[rel]]
-    return {k: b[k] - a[k] for k in a if a[k] != b[k]}
+    return {k: b.get(k, 0) - a.get(k, 0) for k in set(a) | set(b)
+            if a.get(k, 0) != b.get(k, 0)}
 
 
 def test_g1b_type_not_in_scheme():
@@ -190,6 +204,53 @@ def test_g5_undeclared_standard_term():
 
 def test_g6_nonterm_in_owl_namespace():
     assert _ext_delta(M2, lambda d: _first_class(d).__setitem__("owl:notATerm", "x")) == {"G6": 1}
+
+
+# -- G8 phantom predicates (lot K0) --------------------------------------------------
+_TERM = "k0ProbeKey"
+_IRI = "m2:k0ProbeKey"
+
+
+def _with_context_term(d):
+    d["@context"][_TERM] = _IRI
+    _first_class(d)[_TERM] = "x"
+
+
+def test_g8_context_only_term_is_phantom():
+    # the escape hatch of D1: a bare key "repaired" by a @context entry alone
+    assert _ext_delta(M2, _with_context_term) == {"G8": 1}
+
+
+def test_g8_bare_key_is_d1_not_g8():
+    # the same key without the @context entry: dropped on expansion -> D1, not G8
+    def m(d):
+        _first_class(d)[_TERM] = "x"
+    base, mut = _load(M2), _load(M2)
+    m(mut)
+    d1 = lambda x: doc.occurrences(doc.run(M2, json.dumps(x, ensure_ascii=False), "M2")).get("D1", 0)
+    assert d1(mut) - d1(base) == 1
+    assert _ext_delta(M2, m) == {}
+
+
+def test_g8_declared_property_is_not_phantom():
+    def m(d):
+        _with_context_term(d)
+        d["@graph"].append({"@id": _IRI, "@type": "owl:AnnotationProperty",
+                            "rdfs:label": "k0 probe"})
+    assert _ext_delta(M2, m) == {}
+
+
+def test_g8_class_typed_predicate_is_still_phantom():
+    # declared, but not AS A PROPERTY (OWL 2: the declaration gives the entity's type)
+    def m(d):
+        _with_context_term(d)
+        d["@graph"].append({"@id": _IRI, "@type": "owl:Class", "rdfs:label": "k0 probe"})
+    assert _ext_delta(M2, m) == {"G8": 1}
+
+
+def test_g8_empty_corpus_is_blind_error():
+    f, _s = _ext(M2, _load(M2), decl=[])
+    assert any(x["id"] == "G8" and "blind" in x["message"] for x in f), f
 
 
 def main() -> int:
