@@ -9,7 +9,9 @@ description: >
   (linter/reasoner/SHACL), semantic validation, and documentation. Use this skill
   EVERY TIME you modify TSCG ontologies to ensure systematic validation and prevent
   semantic drift. Includes decision trees, validation checklists, and concrete
-  scenarios (property renaming, architectural changes, notation cleanup, migrations).
+  scenarios (property renaming, architectural changes, notation cleanup, migrations,
+  bare-key reduction) and the debt-honesty rule: never lower a counter by moving the
+  debt where no tool counts (D1 down => G8 not up).
 ---
 
 # TSCG Ontology Diagnosis & Validation Pipeline
@@ -61,17 +63,45 @@ description: >
 **Available Tools** (all under `ontology/toolchain/`; prerequisites:
 `python -m pip install -r ontology/toolchain/requirements.txt`):
 - `run_all_layers.py` — **the acceptance gate**: exact frozen counts on M3, M2, M1, M0
-  (`golden_values.json`). The final word on every change.
+  (`golden_values.json`), plus, for M1 and M0, a separate `engine` section (document plane
+  + cross-file checks, lot K0). The final word on every change.
 - `validator/tscg_validator.py` — the validation engine: `--doc` (document plane
   D1–D7: bare keys, `@vocab`, changelog, strict JSON-LD expansion…), `--ext`
-  (cross-file G1b/G5/G6), `--shacl` (the SHACL grammars registered per layer)
+  (cross-file G1b/G5/G6 and **G8 phantom predicates**: a TSCG predicate used but declared
+  as a property nowhere), `--shacl` (the SHACL grammars registered per layer)
 - `check-M1/check_M1.py`, `check-M0/check_m0_instances.py` — M1 / M0 checkers
 - `ontology-linter/ontology_linter.py` — TSCG conventions + syntax
 - `owl_reasoning_test/rdfs_diagnostic.py` — RDFS/OWL modeling errors
 - `owl_reasoning_test/fix_owl_literals.py` — automated OWL literal fixes
-- `owl_reasoning_test/owl_reasoning_test.py` — reasoner (logical consistency)
+- `owl_reasoning_test/owl_reasoning_test.py` — reasoner (logical consistency; owlready2's
+  bundled Jena needs Java 25)
 - `tscg_metrics.py` — gauges (VOC, CTX, FRB, DUP, EXT…)
 - `tscg_layercake_health_map.py` — the LayerCake Health Map (where the debt is)
+
+---
+
+## The debt-honesty rule (Michel, 2026-11-01)
+
+**Never lower a counter by moving the debt to a place no tool counts.** A repair is a
+repair only if the debt disappears; if it merely changes form, the matching counter must
+rise, and the gate must see it. When a lot reveals hidden debt, the counts go UP — that is
+progress, not regression (freeze it with a written reason).
+
+The reference case, vocabulary debt (OWL 2: an entity's type comes from its declaration):
+- a **bare key** (D1, declared in no `@context`) is dropped on JSON-LD expansion;
+- a key mapped in `@context` but declared as a property nowhere is a **phantom
+  predicate** (G8);
+- a bare key is repaired ONLY by **deleting** it (redundant / derivable), **mapping** it to
+  an existing property (`rdfs:comment`, `dcterms:…`, an existing TSCG property), or
+  **declaring** it for real (property type + `rdfs:label`, in the file that owns it);
+- **D1 down ⇒ G8 must not go up.** A `@context` entry alone is not a repair.
+
+The same reflex applies to any check: before celebrating a drop, ask "did the defect
+disappear, or did it move out of the instrument's sight?" If a defect class is not
+measured, measure it first (instrumentation lot), then reduce it.
+
+The rule lives on HEAD in `docs/reboot-kit/TSCG_ReferenceCorpus_Bootstrap.md` (hard
+invariants) — read it there; this section is the operational reminder.
 
 ---
 
@@ -144,6 +174,7 @@ description: >
 2. 🤖 **LLM:** Self-check
    - Review changes against requirements
    - Check for obvious errors
+   - Apply the debt-honesty rule: no repair that only moves a defect out of sight
    - Prepare summary
 
 3. 👤 **Human:** Quick review (optional)
@@ -208,7 +239,9 @@ python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file <modif
 **Pass:** No inconsistencies found  
 **Fail:** → Review Pellet output → Fix logical issues → Retry
 
-**Note:** "Reparenting" warnings are normal (Pellet optimizing hierarchy)
+**Note:** "Reparenting" warnings are normal (Pellet optimizing hierarchy). An
+`UnsupportedClassVersionError … class file version 69.0` is an environment fault (Java
+older than 25), not an ontology result: report "not run", never "passed".
 
 **Exit gate:** Must pass before 3.4
 
@@ -229,9 +262,12 @@ python ontology/toolchain/validator/tscg_validator.py --layers <M3|M2|M1|M0> --d
 cd ontology/toolchain && python run_all_layers.py
 ```
 **Pass:** `GATE: PASS`  
-**Up** = a new defect → fix it. **Down** = a deliberate repair → show the move to the
-human, then `python run_all_layers.py --update-golden` and write the reason in the
-commit — OR a check that stopped biting → investigate. Never loosen a check to pass.
+**Up** = a new defect → fix it — OR a lot that deliberately reveals hidden debt (a new
+check): show the move, freeze it with `--update-golden`, write why. **Down** = a
+deliberate repair → check it against the debt-honesty rule (did the defect disappear, or
+did another counter have to rise — e.g. D1 down with G8 up?), show the move to the human,
+then `python run_all_layers.py --update-golden` and write the reason in the commit — OR a
+check that stopped biting → investigate. Never loosen a check to pass.
 If a tool or grammar changed: its negative tests (`ontology/toolchain/validator/tests/`).
 
 ---
@@ -308,7 +344,7 @@ If a tool or grammar changed: its negative tests (`ontology/toolchain/validator/
 | 0 | 👤 | "Rename all tensor properties to structural grammar" |
 | 1 | 🛠️ | Baseline linter report |
 | 2 | 🤖 | Execute systematic renaming |
-| 3 | 🛠️ | Linter + Reasoner validation |
+| 3 | 🛠️ | Linter + Reasoner validation (G8 must not rise: a rename that breaks a declaration/use pair shows up as +G8) |
 | 4 | 👤 | Semantic approval |
 | 5 | 🤖 | Update docs, present files |
 
@@ -374,6 +410,23 @@ If a tool or grammar changed: its negative tests (`ontology/toolchain/validator/
 
 ---
 
+### Scenario 5: Bare-key reduction (vocabulary debt)
+**Example:** the bare keys of `m2:eagleView` (lot K1)
+
+| Phase | Agent | Action |
+|-------|-------|--------|
+| 0 | 👤 | "Reduce the bare keys of X" |
+| 1 | 🛠️ | Baseline D1 and G8 for the layer(s) |
+| 2 | 🤖 | Decision table per key: delete / map / declare — **ASK HUMAN** for each key's meaning |
+| 4 | 👤 | Decide each key |
+| 2 | 🤖 | Apply; every declared key gets a property type + `rdfs:label` in the owning file |
+| 3 | 🛠️ | Gate: D1 down, **G8 not up** |
+| 5 | 🤖 | Freeze with reason, document |
+
+**Risk:** Medium (semantic: the meaning of each key is Michel's call)
+
+---
+
 ## Decision Trees
 
 ### When LLM Should Ask Human
@@ -409,6 +462,8 @@ Syntax error        → Linter
 Structural problem  → Linter
 Logic inconsistency → Reasoner
 Constraint violation→ SHACL
+Undeclared term     → validator --ext (G5 standard, G8 TSCG)
+Bare key            → validator --doc (D1)
 Regression          → SPARQL tests
 Semantic ambiguity  → Human
 ```
@@ -422,6 +477,7 @@ Semantic ambiguity  → Human
 - [ ] 🛠️ Reasoner passes (consistent)
 - [ ] 🛠️ SHACL validates (if applicable)
 - [ ] 🛠️ Tests pass (no regressions)
+- [ ] 🛠️ Every counter that dropped was checked against the debt-honesty rule (D1 down ⇒ G8 not up)
 - [ ] 🤖 Documentation updated
 - [ ] 👤 Human semantic approval
 - [ ] 👤 Commit message reviewed
@@ -512,6 +568,11 @@ This skill **orchestrates** other skills:
 - LLM validates its own work without tools
 - **FIX:** Phase 3 uses independent tools
 
+❌ **Masking debt by relocation**
+- Adding `"role": "m2:role"` to a `@context` so that D1 drops, while `m2:role` is declared nowhere
+- Any change that makes a counter fall by moving the defect where no instrument looks
+- **FIX:** the debt-honesty rule — delete / map / declare; measure the hidden form first (G8 exists for this)
+
 ---
 
 ## Success Metrics
@@ -525,6 +586,7 @@ This skill **orchestrates** other skills:
 ### Quality Metrics
 - **Ontology consistency:** Reasoner always passes
 - **Convention compliance:** Linter warnings decreasing
+- **Vocabulary debt:** D1 and G8 decreasing together, never one at the other's expense
 - **Test coverage:** % of ontology covered by SPARQL tests
 
 ---
@@ -534,6 +596,7 @@ This skill **orchestrates** other skills:
 ### Short Term
 - [ ] Automate Phase 1 (baseline reporting)
 - [x] Create SHACL shapes for M2/M3 (structural grammar, WS-5, 2026-10-05)
+- [x] Phantom-predicate check G8 + M1/M0 engine plane in the gate (lot K0, 2026-11-01)
 - [ ] Build SPARQL test suite
 
 ### Medium Term
@@ -599,14 +662,16 @@ This skill **breaks the Ouroboros** by:
 2. ✅ Formal validation gates (Phase 3)
 3. ✅ Human semantic authority (Phase 4)
 4. ✅ Systematic workflow (Phases 0-5)
+5. ✅ Debt honesty: a counter falls only when the defect disappears
 
 **Use this skill EVERY TIME you modify TSCG ontologies.**
 
 ---
 
 **Status:** Active skill  
-**Version:** 1.1.0  
-**Last Updated:** 2026-10-06 (tool paths verified on HEAD: the gate and the validator
-engine added; dead references removed — `test_owl_reasoning.py`, `ontology/TSCG_Grammar/`,
-`tests/ontology/`, `pellet` CLI)  
+**Version:** 1.2.0
+
+**Last Updated:** 2026-11-01 (lot K0: debt-honesty rule, G8 phantom predicates, M1/M0
+engine section of the gate, Scenario 5 bare-key reduction, Java 25 note for the reasoner)
+
 **Maintainer:** Michel (Echopraxium)
