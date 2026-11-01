@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.16.2
+**Version**: 1.16.3
 **Date**: 2026-11-01
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -182,6 +182,18 @@ concept may legitimately stay pure Territory).
   Lot M0 decides, per concept, declare in M1 (meaning written or approved by Michel),
   repoint to an existing concept, or drop the reference. Never repaired by a token
   declaration.
+- **Retired vocabulary in the narrative docs of the instances** (measured 2026-11-01, no
+  owner yet, no instrument counts it). Markdown files under `instances/` that still use the
+  retired notation and vocabulary (`⊗`, tensor, KnowledgeField, MetaConcept, GenesisSpace,
+  Bicephalous, ORIVE; case-insensitive count): **75 of 140** tracked `.md`, **1605**
+  markers, of which **1347 `⊗`** in 61 files. Includes the three analyses moved there from
+  `ontology/docs` by the housekeeping round 2 (Michel's decision: an analysis of one
+  instance lives next to it, outside the "authoritative ontology documentation" scope of the
+  RAG and the "M3–M0 layers" tab of the Compendium): `yggdrasil/M1_Mythology_Core_Concepts.md`
+  (28), `yggdrasil/CatastrophicBifurcation_M1_Analysis.md` (14),
+  `vsm/M0_VSM_Prerequisites_Analysis.md` (39) = 81 markers. The move lowers no counter (none
+  measured either place); it is written here so the debt stays visible. Measuring it
+  (e.g. a `⊗` count over `.md` in the health map) is a possible instrumentation lot.
 
 ## 6. Questions for Michel
 
@@ -785,6 +797,9 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.16.3 (2026-11-01)** — §5: retired vocabulary in the narrative docs of the instances
+  measured (75/140 `.md`, 1605 markers, 1347 `⊗`), including the 3 analyses moved from
+  `ontology/docs`. No count moved.
 - **1.16.2 (2026-11-01)** — §5: M0 references to M1 concepts declared nowhere (found by the
   ontology/docs housekeeping round 2), routed to lot M0; §8.2: the docs copy of
   NuclearUpdate removed (14 files). No count moved.
