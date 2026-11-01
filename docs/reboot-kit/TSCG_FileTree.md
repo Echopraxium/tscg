@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1788 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1769 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -1669,13 +1669,11 @@
     - CategoryTheory_KnowledgeField_Integration (1).md
     - CategoryTheory_KnowledgeField_Integration.md
     - Cyclic_Tension_Validation_Analysis.md
-    - Domain_M2_Update_Analysis_v15_1_0.md
     - Final_Corrections_Summary.md
     - Fusion_vs_Composition_Correction.md
     - HOWTO_Create_M1_Extension.md
     - HYBRID_FORMULAS_NOTATION_README (1).md
     - M0_VSM_Prerequisites_Analysis.md
-    - M1_CoreConcepts.jsonld
     - M1_CoreConcepts_NuclearUpdate.jsonld
     - M1_CoreConcepts_updated.jsonld
     - M1_CoreConcepts_v1.2.0_Summary.md
@@ -1693,16 +1691,11 @@
     - M2_FormulasReference_v15.10.0.json
     - M2_FormulasReference_v15.10.0.md
     - M2_Generation_Summary.md
-    - M2_GenericConcepts_README.md
     - m2_Imbrication_entry.jsonld
     - M2_Imbrication_README.md
-    - M2_KnowledgeField_Integration_Summary.md
     - M2_KnowledgeField_KnowledgeFieldMetaCombo_v15_2_0.jsonld
     - M2_KnowledgeField_README.md
     - M2_MetaconceptCombo.jsonld
-    - M2_MetaConcepts.jsonld
-    - M2_MetaConcepts_2026_02_06_encoding_lint_checked.jsonld
-    - M2_MetaConcepts_2026_03_04_FixedEncoding_validéLint.jsonld
     - M2_MetaConcepts_README.md
     - M2_Metaconcepts_v13.jsonld
     - M2_New_5_Metaconcepts.jsonld
@@ -1718,35 +1711,23 @@
     - M3_GenesisSpace_OptionA_Complete.md
     - M3_GenesisSpace_v3_1_0_Changes_Summary.md
     - M3_Philosophical_Eye.jsonld
-    - M3_SphinxEye_ORIVE_Correction_v2.2.0.md
     - M3_SystemicFramework_Category_Documentation.md
-    - M3_TransdisciplinaryMetaConcepts_Renaming.md
-    - MetaconceptCombo_corrected.json
-    - MetaconceptPair_README.md
-    - Namespace_Collision_Fix_Summary.md
-    - Namespace_Refactoring_Summary.md
     - ontology_analysis.md
     - OntologyModeling_Guidelines.md
     - ORIVE_Official_Reference_CORRECT.md
     - Poclet_Analysis_Methodology.md
-    - README_v13_Delivery.md
-    - TSCG-M3_Ontology_Documentation.md
     - TSCG_Architectural_Extensions.md
     - TSCG_Documentation_Index.md
     - TSCG_Formula_Encoding_Solution.md
     - TSCG_Formula_Properties_Specification.jsonld
     - TSCG_M1_Architecture.md
-    - TSCG_M2_MetaConcepts_README.md
     - TSCG_Nary_Polarity_Paradigm_Shift.md
-    - TSCG_Smart_Prompt_v15_7_0.md
     - TSCG_Update_v12_Summary.md
     - TSCG_v14_3_0_Summary.md
     - TSCG_v15_1_0_Final_Classification.md
     - TSCG_v15_1_0_Integration_Report.md
     - TSCG_ValueSpace_Quick_Reference.md
     - TSCG_ValueSpace_User_Guide.md
-    - UPDATE_SUMMARY_v14_3_1.md
-    - UserManual.html
     - ValueSpace_Enrichment_Final_Report.md
     - ValueSpace_Integration_Summary.md
   - **InstanceSimulations/**
