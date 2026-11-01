@@ -71,7 +71,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from tscg_paths import REPO_ROOT, ONTOLOGY_DIR, TOOLCHAIN_DIR, verify_layout  # noqa: E402
 
-__version__ = "1.5.0"   # 2026-11-01 lot K0: engine plane frozen for M1/M0; G8
+__version__ = "1.6.0"   # 2026-11-01: reasoner reminder for Michel (1.5.0: K0 engine plane, G8)
 
 GOLDEN_FILE = TOOLCHAIN_DIR / "golden_values.json"
 
@@ -444,6 +444,49 @@ def compare(layer: str, actual: dict, golden: dict, verbose: bool) -> bool:
     return ok
 
 
+def changed_ontology_files() -> list | None:
+    """Governed ontology files changed since the upstream branch (origin/main): the
+    commits not pushed yet + the working copy. None when git cannot tell."""
+    def git(*a):
+        p = subprocess.run(["git", *a], cwd=REPO_ROOT, capture_output=True, text=True,
+                           encoding="utf-8", errors="replace")
+        return p.stdout.strip() if p.returncode == 0 else None
+    base = git("merge-base", "HEAD", "origin/main") or git("rev-parse", "HEAD")
+    if not base:
+        return None
+    out = git("diff", "--name-only", base)
+    if out is None:
+        return None
+    import re
+    gov = re.compile(r"^(ontology/M[0-3]_[^/]+\.jsonld|ontology/M1_extensions/[^/]+/M1_[^/]+\.jsonld"
+                     r"|instances/.+/M0_[^/]+\.jsonld)$")
+    return sorted({p for p in out.splitlines() if gov.match(p) and (REPO_ROOT / p).exists()})
+
+
+def reasoner_reminder() -> None:
+    """Michel, 2026-11-01: the gate must ASK him to run the reasoner himself. The OWL
+    reasoner (owlready2's bundled Jena) needs Java 25 and does not run everywhere — in
+    particular not in Claude's cloud VM — so it is not a gate counter; it is a step a
+    human runs and reports. This reminder never changes the gate's verdict."""
+    files = changed_ontology_files()
+    print("\n" + "-" * 62)
+    if files is None:
+        print(f"  {C_WARN}REASONER — could not tell which ontology files changed (git). "
+              f"Michel: if this lot touched an ontology file, run the reasoner on it.{C_END}")
+    elif not files:
+        print(f"  {C_DIM}REASONER — no ontology file changed since origin/main: nothing "
+              f"to reason.{C_END}")
+    else:
+        print(f"  {C_WARN}REASONER — Michel, please run it yourself before pushing "
+              f"({len(files)} ontology file(s) changed since origin/main):{C_END}")
+        for p in files:
+            print(f"     python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file {p}")
+        print(f"  {C_DIM}   Expected: consistent, no unsatisfiable class. Report the result in "
+              f"the conversation. 'UnsupportedClassVersionError … 69.0' = Java older than 25 "
+              f"(environment, not ontology): not run, never 'passed'.{C_END}")
+    print("-" * 62)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="TSCG ontology acceptance gate (M3 → M0)")
     ap.add_argument("--verbose", "-v", action="store_true", help="per-code breakdown")
@@ -538,12 +581,14 @@ def main() -> int:
                           f"in the commit message.{C_END}")
         golden["_measured"] = f"{date.today()}, real repository (--update-golden)"
         save_golden(golden)
+        reasoner_reminder()
         print(f"\n{C_WARN}[!!] Golden values REWRITTEN → {GOLDEN_FILE}{C_END}")
         print(f"   {C_DIM}The previous values are kept under '_previous'. Commit this file: "
               f"a lowered reference must be a reviewable, deliberate act — never a side "
               f"effect.{C_END}")
         return 0
 
+    reasoner_reminder()
     print("\n" + "=" * 62)
     if ok:
         print(f"  {C_OK}GATE: PASS{C_END} — counts match the reference.")

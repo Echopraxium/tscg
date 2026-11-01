@@ -243,7 +243,16 @@ python ontology/toolchain/owl_reasoning_test/owl_reasoning_test.py --file <modif
 `UnsupportedClassVersionError … class file version 69.0` is an environment fault (Java
 older than 25), not an ontology result: report "not run", never "passed".
 
-**Exit gate:** Must pass before 3.4
+**Who runs it — Michel (2026-11-01).** The reasoner needs Java 25 and does not run in
+Claude's cloud VM. Whenever a lot changes an ontology file (M3/M2/M1, M1 extensions, M0
+instances), Claude **asks Michel to run the reasoner himself** on each changed file —
+giving the exact commands — and **waits for his result** before declaring the lot done
+or proposing the push. The gate (`run_all_layers.py` ≥ 1.6.0) prints the same request
+at the end of every run, listing the ontology files changed since `origin/main`. Record
+the result (PASSED / not run + reason) in the Debt Overview or the HandOver. A lot that
+changes no ontology file (tooling, docs) needs no reasoner run — say so explicitly.
+
+**Exit gate:** Must pass before 3.4 (for Michel's run: before the push)
 
 ---
 
@@ -474,7 +483,7 @@ Semantic ambiguity  → Human
 
 ### Pre-Commit Checklist
 - [ ] 🛠️ Linter passes (no new errors)
-- [ ] 🛠️ Reasoner passes (consistent)
+- [ ] 🛠️ Reasoner passes (consistent) — run by Michel on every changed ontology file, result reported
 - [ ] 🛠️ SHACL validates (if applicable)
 - [ ] 🛠️ Tests pass (no regressions)
 - [ ] 🛠️ Every counter that dropped was checked against the debt-honesty rule (D1 down ⇒ G8 not up)
@@ -669,9 +678,10 @@ This skill **breaks the Ouroboros** by:
 ---
 
 **Status:** Active skill  
-**Version:** 1.2.0
+**Version:** 1.3.0
 
-**Last Updated:** 2026-11-01 (lot K0: debt-honesty rule, G8 phantom predicates, M1/M0
-engine section of the gate, Scenario 5 bare-key reduction, Java 25 note for the reasoner)
+**Last Updated:** 2026-11-01 (1.3.0: Michel runs the reasoner himself, Claude asks and
+waits, the gate reminds; 1.2.0: debt-honesty rule, G8 phantom predicates, M1/M0 engine
+section of the gate, Scenario 5 bare-key reduction, Java 25 note for the reasoner)
 
 **Maintainer:** Michel (Echopraxium)
