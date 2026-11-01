@@ -260,8 +260,6 @@ Reference documents for TSCG development workflows:
 - **`TSCG_ValueSpace_Quick_Reference.md`** — Cheat sheet for all 13 ValueSpace attributes
 
 ### Ontology Management
-- **`Domain_M2_Update_Analysis_v15_1_0.md`** — M2 update analysis methodology
-- **`MetaconceptPair_README.md`** — MetaconceptPair pattern documentation
 - **`M2_KnowledgeField_README.md`** — KnowledgeField concept organization
 
 ### Simulation Development
