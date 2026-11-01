@@ -1,4 +1,4 @@
-# TSCG HandOver — WS-5, 2026-11-01: K0 done → lot K1 (first real bare-key reduction)
+# TSCG HandOver — WS-5, 2026-11-01: finish the ontology/docs cleanup → then lot K1
 
 **Author**: Echopraxium with the collaboration of Claude AI
 **Date**: 2026-11-01
@@ -10,11 +10,49 @@ for "what next"; still the reference for lot NS-SEP, which moves to §3).
 
 ---
 
+## FIRST — finish the `ontology/docs/` cleanup (housekeeping, round 2)
+
+Before K1, Michel wants the rest of the cleanup done. Round 1 (commit "Housekeeping
+ontology/docs round 1", on HEAD) removed 19 files he decided. **69 files remain
+undecided.** Why it matters: the RAG builder (`src/tscg/rag/create_tscg_rag.py` and its
+high-compress twin) tags every file under `ontology/docs` as *authoritative ontology
+documentation*, and the Compendium publishes them — obsolete vocabulary (tensor/⊗,
+KnowledgeField, MetaConcept, GenesisSpace, ORIVE…) is served as authority.
+
+- **Read first**: `_02_housekeeping/2026_11_01/Housekeeping_OntologyDocs_2026-11-01.md`
+  (method, what was removed, what remains) and the table
+  `_02_housekeeping/2026_11_01/OntologyDocs_Cleanup_Triage.xlsx` (yellow column = Michel's
+  decision; empty = undecided).
+- **Remaining (re-measure on HEAD)**: 53 with no live reference (proposal: delete),
+  9 cited only by documents that are obsolete themselves (proposal: delete + remove the
+  citing line), 6 to decide (`Poclet_Analysis_Methodology.md` — cited by CLAUDE.md, README,
+  ReferenceCorpus, index.html and two instance READMEs but full of retired vocabulary;
+  `TSCG_Architectural_Extensions.md` — cited by the ReferenceCorpus;
+  `TSCG_M1_Architecture.md` — cited by M1_CoreConcepts; `M1_Mythology_Core_Concepts.md` and
+  `CatastrophicBifurcation_M1_Analysis.md` — cited by the Yggdrasil README;
+  `M0_VSM_Prerequisites_Analysis.md` — cited by the VSM session note), 1 to keep
+  (`OntologyModeling_Guidelines.md`, live, cited by the M3 apex).
+- **Method** (same as 2026-09-27 and round 1): Michel fills the table → Claude removes the
+  decided files in one commit per group, fixes every LIVE line that cites a removed file
+  (never the archive snapshot `ontology/Ref/`), checks name collisions (a live file with the
+  same name elsewhere is not affected), appends a "round 2" section to the trace note,
+  updates the table in `_02_housekeeping/2026_11_01/`, regenerates `TSCG_FileTree.md`, and —
+  after Michel's push — updates `TSCG_FileTree.md` in the Project itself. Nothing is lost:
+  `git show <commit>^:<path>`.
+- **Not concerned**: the gate (reads no file of `ontology/docs`), the reasoner (no ontology
+  file changes).
+- **Next to look at, once `ontology/docs` is clean**: `docs/reboot-kit/` holds copies and
+  summaries of the same era (e.g. `Cascade_Modeling_README.md`,
+  `Namespace_Refactoring_Summary.md`, `Amplification_Integration_Summary (1).md`).
+
+---
+
 ## 0. Load first — by name
 
 1. **`head-over-memory`** — authority discipline (HEAD > corpus > memory).
-2. **`tscg-ontology-diagnosis-pipeline`** (1.2.0) — K1 changes M2 data; read its
-   **debt-honesty rule** and **Scenario 5 (bare-key reduction)**.
+2. **`tscg-ontology-diagnosis-pipeline`** (1.3.0) — K1 changes M2 data; read its
+   **debt-honesty rule**, **Scenario 5 (bare-key reduction)** and Phase 3.3 (Michel runs
+   the reasoner; Claude asks and waits).
 3. Then read from HEAD:
    - `docs/reboot-kit/TSCG_ReferenceCorpus_Bootstrap.md` — hard invariant "Every term used
      is declared".
@@ -26,8 +64,15 @@ for "what next"; still the reference for lot NS-SEP, which moves to §3).
 
 ## 1. Fresh session state (at handover — re-verify)
 
-- **HEAD**: the commit carrying this HandOver, on top of `b502c47` (skill 1.2.0 repo copy)
-  and `ff049bc` (lot K0).
+- **HEAD**: the commit carrying this HandOver update, on top of `df5947d` (housekeeping
+  round 1); before it: skill 1.3.0, gate 1.6.0 (reasoner reminder), grammar G2 0.3.0
+  (hollow comments), lot K0.
+- **Reasoner baseline for K1** (Michel, 2026-11-01, Windows, Java 25):
+  `M2_GenericConcepts.jsonld` (+ 5 M3 imports) **PASSED** — no inconsistency, no
+  unsatisfiable class. Noted, not blocking: "Reparenting … => owl.Thing" on several M2/M3
+  properties (`valueRange`, `hasPolarity`, `arity`, `Fm2`, `Fm1m2`…) and the M3 monoidal
+  types (`eagle_eye:typeS`…) typed both `owl:DatatypeProperty` and `MonoidalType` — likely
+  punning; a candidate for a future role-separation lot.
 - **Gate**: `GATE: PASS` on Linux and on Michel's Windows machine; the 5 engine test suites
   pass (61/61). M2: files 1, errors 169 (of which G8 168), warnings 1368 (= D1), SHACL 7.
 - **K0 recap**: G8 (phantom TSCG predicates) in the engine and the gate; M1/M0 `engine`
