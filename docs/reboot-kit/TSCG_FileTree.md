@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1706 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1707 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -1650,6 +1650,7 @@
           - TSCG_HandOver_WS-5_2026-10-22.md
         - **Next_Conversation_2026-11-01/**
           - TSCG_HandOver_WS-5_2026-11-01.md
+          - TSCG_HandOver_WS-5_2026-11-01_session2.md
         - **SC-5b/**
           - SC-5b_Subdomains_Decision_Table.xlsx
           - SC-5c_DomainModel_DesignNote.md
