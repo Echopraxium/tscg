@@ -29,8 +29,8 @@
       "dcterms:description": "Third layer of the TSCG framework. Defines reusable transdisciplinary concepts that instantiate M2 metaconcepts into domain-bounded but cross-applicable patterns. M1_CoreConcepts serves as base ontology extended by domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.).",
       "dcterms:creator": "Echopraxium with the collaboration of Claude AI",
       "dcterms:created": "2026-01-22",
-      "dcterms:modified": "2026-10-12",
-      "owl:versionInfo": "2.23.0",
+      "dcterms:modified": "2026-11-01",
+      "owl:versionInfo": "2.24.0",
       "m3:ontologyType": {
         "@id": "m3:DomainExtension"
       },
@@ -205,7 +205,9 @@
       "owl:imports": [
         { "@id": "https://raw.githubusercontent.com/Echopraxium/tscg/main/ontology/M2_GenericConcepts.jsonld" }
       ],
-      "rdfs:seeAlso": "https://github.com/Echopraxium/tscg/blob/main/ontology/docs/TSCG_M1_Architecture.md",
+      "rdfs:seeAlso": {
+        "@id": "M1_CoreConcepts_README.md"
+      },
       "rdfs:comment": "M1_CoreConcepts is the BASE ontology for M1 layer. It contains generic transdisciplinary concepts applicable across multiple domains. Domain-specific M1 ontologies (M1_Optics, M1_Photography, M1_Mythology, etc.) import M1_CoreConcepts and add specialized patterns. This architecture allows: (1) Sharing common concepts, (2) Domain specialization, (3) Modular extension, (4) Clear namespace separation.",
       "m1:developmentStrategy": {
         "phase1": "Populate M1_CoreConcepts with generic mechanisms (Oscillator, Filter, etc.)",
@@ -254,6 +256,11 @@
       },
       "m3:changelog": [
         {
+          "owl:versionInfo": "2.24.0",
+          "dcterms:date": "2026-11-01",
+          "adms:versionNotes": "ontology/docs housekeeping round 2 (Michel, 2026-11-01). rdfs:seeAlso of the ontology node repointed from the obsolete ontology/docs/TSCG_M1_Architecture.md (January design note, now removed) to the live M1_CoreConcepts_README.md, and written as an IRI ({\"@id\": ...}, resolved against @base) instead of a plain string, as in M2_GenericConcepts. No class or property changed."
+        },
+        {
           "owl:versionInfo": "2.23.0",
           "dcterms:date": "2026-10-12",
           "adms:versionNotes": "SC-5 Domain fusion (Michel, 2026-10-11/12). m1:Domain comment: a domain is a class (extension domain classes and M1_Domains classes are its subclasses), never an individual; DCC010 reads the hierarchy. NEW m1:relatedDomains declared owl:AnnotationProperty (IRI values: domain classes) — an object property between classes would pun them. NEW m1:domain declared owl:AnnotationProperty (IRI values: domain classes); it replaces the obsolete m2:knowledgeField on M1 classes. Obsolete KnowledgeField vocabulary purged from the live text (Michel, 2026-10-12: there is no KnowledgeField any more, it is Domain)."
@@ -262,11 +269,6 @@
           "owl:versionInfo": "2.22.0",
           "dcterms:date": "2026-10-11",
           "adms:versionNotes": "WS-1 B2 lot C1b. m1:Domain declared (owl:Class): a disciplinary knowledge domain, replacing the retired m1:KnowledgeField (Michel, 2026-10-11). The registry M1_Domains.jsonld typed its 22 entries m1:Domain while the class was declared nowhere; m1:extension:education:Education was a subclass of the phantom m1:KnowledgeField and is re-pointed to m1:Domain."
-        },
-        {
-          "owl:versionInfo": "2.21.0",
-          "dcterms:date": "2026-10-11",
-          "adms:versionNotes": "WS-1 B2 lot C2 (class/instance separation). m2:GenericConceptCombo removed from the @type of 12 combo(s): a combo is a DERIVED CLASS (rdfs:subClassOf m2:GenericConceptCombo, an IRI since lot C1), never an instance of the combo class (Michel, 2026-10-11). @type is now owl:Class alone. Typing a combo as an instance of a combo class is forbidden from now on (M1 SHACL 1.7.0 SHAPE 12 NoComboPunningShape, check_M1 1.7.0 CMB001)."
         }
       ]
     },

@@ -117,6 +117,16 @@ reasoner run by Michel.
 Gate: `GATE: PASS` before and after (it reads no file of `ontology/docs`, only `*.jsonld`).
 Reasoner: no ontology file changed. Nothing lost: `git show <commit>^:<path>`.
 
+## Round 2 — follow-up ontology lot: `TSCG_M1_Architecture.md` (2026-11-01)
+
+Done as decided: `M1_CoreConcepts.jsonld` 2.24.0 — the `rdfs:seeAlso` of its ontology node
+now points at the live README, written as an IRI (`{"@id": "M1_CoreConcepts_README.md"}`,
+resolved against `@base`, as in `M2_GenericConcepts`) instead of a plain string to the
+January note; the note is removed. No class or property changed. Gate: `GATE: PASS`, counts
+identical. Reasoner: run by Michel on `M1_CoreConcepts.jsonld` (result reported in the
+conversation before the push). `ontology/docs/` (outside `_00_test_reports`,
+`_01_Worksite`) now holds one file: `OntologyModeling_Guidelines.md`.
+
 ## Next worksite — `docs/reboot-kit/` housekeeping
 
 Michel (2026-11-01): debt partly left by the era before lazy loading (copies placed there
