@@ -11,7 +11,7 @@ description: >
   semantic drift. Includes decision trees, validation checklists, and concrete
   scenarios (property renaming, architectural changes, notation cleanup, migrations,
   bare-key reduction) and the debt-honesty rule: never lower a counter by moving the
-  debt where no tool counts (D1 down => G8 not up).
+  debt where no tool counts (D1 down => G8 and G2 not up).
 ---
 
 # TSCG Ontology Diagnosis & Validation Pipeline
@@ -32,6 +32,7 @@ description: >
 - Approve/reject structural changes
 - Resolve ambiguous cases
 - Make final go/no-go decisions
+- Run the OWL reasoner on changed ontology files (Java 25, his machine) and report the result
 
 **Should NOT:** Execute repetitive technical tasks, manual renaming, boilerplate
 
@@ -64,7 +65,9 @@ description: >
 `python -m pip install -r ontology/toolchain/requirements.txt`):
 - `run_all_layers.py` — **the acceptance gate**: exact frozen counts on M3, M2, M1, M0
   (`golden_values.json`), plus, for M1 and M0, a separate `engine` section (document plane
-  + cross-file checks, lot K0). The final word on every change.
+  + cross-file checks, lot K0). The final word on every change. Since 1.6.0 it ends with a
+  REASONER block asking Michel to run the reasoner on the ontology files changed since
+  `origin/main`.
 - `validator/tscg_validator.py` — the validation engine: `--doc` (document plane
   D1–D7: bare keys, `@vocab`, changelog, strict JSON-LD expansion…), `--ext`
   (cross-file G1b/G5/G6 and **G8 phantom predicates**: a TSCG predicate used but declared
@@ -93,8 +96,12 @@ The reference case, vocabulary debt (OWL 2: an entity's type comes from its decl
   predicate** (G8);
 - a bare key is repaired ONLY by **deleting** it (redundant / derivable), **mapping** it to
   an existing property (`rdfs:comment`, `dcterms:…`, an existing TSCG property), or
-  **declaring** it for real (property type + `rdfs:label`, in the file that owns it);
-- **D1 down ⇒ G8 must not go up.** A `@context` entry alone is not a repair.
+  **declaring** it for real (property type + `rdfs:label` + an `rdfs:comment` that says
+  what it means, written or approved by Michel, in the file that owns it);
+- **D1 down ⇒ G8 must not go up**, and **G2 must not go up** either: G2 (structural grammar,
+  M3/M2) refuses a hollow comment — blank, identical to the label, under 3 words, or a
+  placeholder (TODO/TBD/…). A `@context` entry alone is not a repair; a token declaration
+  is not one either.
 
 The same reflex applies to any check: before celebrating a drop, ask "did the defect
 disappear, or did it move out of the instrument's sight?" If a defect class is not
@@ -425,11 +432,11 @@ If a tool or grammar changed: its negative tests (`ontology/toolchain/validator/
 | Phase | Agent | Action |
 |-------|-------|--------|
 | 0 | 👤 | "Reduce the bare keys of X" |
-| 1 | 🛠️ | Baseline D1 and G8 for the layer(s) |
+| 1 | 🛠️ | Baseline D1, G8 and G2 for the layer(s) |
 | 2 | 🤖 | Decision table per key: delete / map / declare — **ASK HUMAN** for each key's meaning |
-| 4 | 👤 | Decide each key |
-| 2 | 🤖 | Apply; every declared key gets a property type + `rdfs:label` in the owning file |
-| 3 | 🛠️ | Gate: D1 down, **G8 not up** |
+| 4 | 👤 | Decide each key; write or approve the `rdfs:comment` of every declared property |
+| 2 | 🤖 | Apply; every declared key gets a property type + `rdfs:label` + that comment in the owning file |
+| 3 | 🛠️ | Gate: D1 down, **G8 and G2 not up**; Michel runs the reasoner on the changed files |
 | 5 | 🤖 | Freeze with reason, document |
 
 **Risk:** Medium (semantic: the meaning of each key is Michel's call)
@@ -469,10 +476,11 @@ Issue Type          → Tool
 ──────────────────────────────────
 Syntax error        → Linter
 Structural problem  → Linter
-Logic inconsistency → Reasoner
+Logic inconsistency → Reasoner (run by Michel)
 Constraint violation→ SHACL
 Undeclared term     → validator --ext (G5 standard, G8 TSCG)
 Bare key            → validator --doc (D1)
+Hollow documentation→ SHACL G2 (M3/M2)
 Regression          → SPARQL tests
 Semantic ambiguity  → Human
 ```
@@ -486,7 +494,7 @@ Semantic ambiguity  → Human
 - [ ] 🛠️ Reasoner passes (consistent) — run by Michel on every changed ontology file, result reported
 - [ ] 🛠️ SHACL validates (if applicable)
 - [ ] 🛠️ Tests pass (no regressions)
-- [ ] 🛠️ Every counter that dropped was checked against the debt-honesty rule (D1 down ⇒ G8 not up)
+- [ ] 🛠️ Every counter that dropped was checked against the debt-honesty rule (D1 down ⇒ G8 and G2 not up)
 - [ ] 🤖 Documentation updated
 - [ ] 👤 Human semantic approval
 - [ ] 👤 Commit message reviewed
@@ -547,7 +555,7 @@ This skill **orchestrates** other skills:
 | 0 | ✅ | ✅ | - | Change request clear |
 | 1 | ✅ | ✅ | ✅ | Baseline documented |
 | 2 | - | ✅ | - | Change implemented |
-| 3 | - | ✅ | ✅ | All tools pass |
+| 3 | ✅ | ✅ | ✅ | All tools pass; reasoner result reported by Michel |
 | 4 | ✅ | ✅ | - | Human approves semantics |
 | 5 | ✅ | ✅ | - | Docs complete, ready to commit |
 
@@ -567,7 +575,8 @@ This skill **orchestrates** other skills:
 
 ❌ **Skipping formal validation**
 - Commit without running reasoner
-- **FIX:** Phase 3 is mandatory
+- Declaring a lot done while the reasoner was "not run" in the VM
+- **FIX:** Phase 3 is mandatory; ask Michel to run the reasoner and wait for his result
 
 ❌ **Tools interpreting semantics**
 - Linter flags "tensor" as error vs warning
@@ -579,8 +588,9 @@ This skill **orchestrates** other skills:
 
 ❌ **Masking debt by relocation**
 - Adding `"role": "m2:role"` to a `@context` so that D1 drops, while `m2:role` is declared nowhere
+- Declaring the key with a token comment ("TODO") to silence G8
 - Any change that makes a counter fall by moving the defect where no instrument looks
-- **FIX:** the debt-honesty rule — delete / map / declare; measure the hidden form first (G8 exists for this)
+- **FIX:** the debt-honesty rule — delete / map / declare with a real comment; measure the hidden form first (G8, G2)
 
 ---
 
@@ -606,6 +616,8 @@ This skill **orchestrates** other skills:
 - [ ] Automate Phase 1 (baseline reporting)
 - [x] Create SHACL shapes for M2/M3 (structural grammar, WS-5, 2026-10-05)
 - [x] Phantom-predicate check G8 + M1/M0 engine plane in the gate (lot K0, 2026-11-01)
+- [x] G2 refuses hollow comments; gate asks Michel to run the reasoner (2026-11-01)
+- [ ] G2 hollow-comment guard for M1/M0
 - [ ] Build SPARQL test suite
 
 ### Medium Term
@@ -639,8 +651,9 @@ hasStructuralGrammarFormulaRawText across all M2"
           → 84 replacements made
 [Phase 3] 🛠️ Validating...
           → Linter: PASS
-          → Reasoner: PASS
-[Phase 4] 👤 Awaiting your semantic approval...
+          → Gate: PASS
+          → Reasoner: Michel, please run it on M2_GenericConcepts.jsonld (command…)
+[Phase 4] 👤 Awaiting your reasoner result and semantic approval...
 ```
 
 ### Example 2: Human catches improvisation
@@ -677,11 +690,13 @@ This skill **breaks the Ouroboros** by:
 
 ---
 
-**Status:** Active skill  
+**Status:** Active skill
+
 **Version:** 1.3.0
 
 **Last Updated:** 2026-11-01 (1.3.0: Michel runs the reasoner himself, Claude asks and
-waits, the gate reminds; 1.2.0: debt-honesty rule, G8 phantom predicates, M1/M0 engine
-section of the gate, Scenario 5 bare-key reduction, Java 25 note for the reasoner)
+waits, the gate reminds; G2 hollow comments in the debt-honesty rule; 1.2.0:
+debt-honesty rule, G8 phantom predicates, M1/M0 engine section of the gate, Scenario 5
+bare-key reduction, Java 25 note for the reasoner)
 
 **Maintainer:** Michel (Echopraxium)
