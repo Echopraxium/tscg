@@ -1,7 +1,7 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.16.1
+**Version**: 1.16.2
 **Date**: 2026-11-01
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
@@ -165,6 +165,23 @@ concept may legitimately stay pure Territory).
   - `golden_values.json` → `_known_pre_existing_not_counted_here` still quotes July
     figures (502, ~256, ~77): stale;
   - repository-root `CLAUDE.md` is stale (GenesisSpace, tensor formulas…).
+- **M0 references to M1 concepts declared nowhere** (found by the ontology/docs
+  housekeeping round 2, 2026-11-01; owner: lot M0). Two patch files of February that were
+  never merged held the only written definitions; they were removed from `ontology/docs`
+  (Michel's decision) — the references were already dangling, so no count moves:
+  - `M0_NuclearReactorsTypology.jsonld` uses `m1:CriticalityRegime`,
+    `m1:SelfSustainingReaction` (and lists `ModeratorMechanism`, `DualCircuitArchitecture`,
+    `PassiveSafety` as strings); `M0_PhaseTransition.jsonld` uses `m2:CriticalityRegime`.
+    Former definitions: `git show 796583a:ontology/docs/M1_CoreConcepts_NuclearUpdate.jsonld`
+    (only `CascadeAmplification` of its 6 concepts reached `M1_CoreConcepts`).
+  - `M0_Yggdrasil.jsonld` uses `m1:CatastrophicBifurcation` (l. 95, and
+    `m0:instantiatesM1Concept` l. 757). Former definition:
+    `git show 796583a:ontology/docs/M1_CoreConcepts_updated.jsonld`; the placement analysis
+    now sits next to the instance (`yggdrasil/CatastrophicBifurcation_M1_Analysis.md`).
+    HEAD has `m2:Bifurcation`.
+  Lot M0 decides, per concept, declare in M1 (meaning written or approved by Michel),
+  repoint to an existing concept, or drop the reference. Never repaired by a token
+  declaration.
 
 ## 6. Questions for Michel
 
@@ -738,6 +755,9 @@ Target format (Michel, 2026-10-10): one associative array per grammar, keys suff
   `M0_Common`, `M2_GenericConcepts`, `M1_Economics`, and
   `docs/M1_CoreConcepts_NuclearUpdate.jsonld`. Top term `m1core:Accretion`
   (dangling, already parked → B1).
+  *(2026-11-01: `docs/M1_CoreConcepts_NuclearUpdate.jsonld` removed by the ontology/docs
+  housekeeping round 2 — 14 files remain; the 109 count included it and is a dated
+  snapshot, not re-measured here. The gate never read that file: no frozen count moves.)*
 - Owner: WS-10 (M0 namespaces) / CheckM0 campaign; M1/M2 hits in a small lot.
 
 ### 8.3 S5-3 — no double-colon names
@@ -765,6 +785,9 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.16.2 (2026-11-01)** — §5: M0 references to M1 concepts declared nowhere (found by the
+  ontology/docs housekeeping round 2), routed to lot M0; §8.2: the docs copy of
+  NuclearUpdate removed (14 files). No count moved.
 - **1.16.1 (2026-11-01)** — §8.0g follow-up: G2 refuses hollow comments (grammar 0.3.0),
   no count moved; M1/M0 not covered yet.
 - **1.16.0 (2026-11-01)** — §8.0g lot K0: G8 phantom predicates (engine + gate + Health Map),
