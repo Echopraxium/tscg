@@ -949,9 +949,6 @@ Kidneys maintain homeostasis of:
 3. **M1_Biology.jsonld** (v1.0.0)
    - Biological domain concepts
 
-4. **Poclet_Analysis_Methodology.md**
-   - Systematic poclet analysis approach
-
 ---
 
 ## Appendix: Quantitative Summary

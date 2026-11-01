@@ -493,8 +493,7 @@ Every domain concept carries a `m1:edu:pocletEvidence` field linking it to its M
 
 ### Immediate
 
-1. ⏳ Register `m1:edu:` namespace in `TSCG_Documentation_Index.md`
-2. ⏳ Add `M1_Education` to `TSCG_File_Tree.md`
+1. ⏳ Add `M1_Education` to `TSCG_File_Tree.md`
 
 ### New poclets motivating M1_Education expansion
 

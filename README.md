@@ -336,7 +336,6 @@ AI-powered corpus analysis — multi-backend LLM (Gemini Free Tier default | Oll
 ## 📚 Essential Documentation
 
 - **[User Guide](_00_UserGuide/UserGuide.md)** — *Start here.* The complete hands-on journey for newcomers: install the repo, set up Claude, and build your first Poclet or TscgTool, with worked exercises under [`_00_UserGuide/exercises/`](_00_UserGuide/exercises/)
-- **[Poclet Analysis Methodology](docs/methodology/Poclet_Analysis_Methodology.md)** — How to create a grammatically-consistent instance
 - **[M3 Bicephalous Architecture](ontology/docs/M3_OdinsWisdom_README.md)** — Philosophical foundation
 - **[Structural Grammar Foundation](ontology/docs/Structural_Grammar_Foundation.md)** — Lambek calculus formalism
 - **[Scoring System](docs/CoreHypotheses/ScoringSystem.md)** — δ₁, δ₂/EFS, TKSL primitives, spectral & focal classes

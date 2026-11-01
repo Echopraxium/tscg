@@ -834,9 +834,7 @@ If ALL G_i < 1 → amplifying: false (attenuating)
 ## References
 
 - **M2_MetaConcepts.jsonld** (v14.5.0): Full Cascade definition
-- **TSCG_Architectural_Extensions.md**: N-ary MetaconceptCombo theory
 - **TSCG_ValueSpace_User_Guide.md**: Attribute usage
-- **Poclet_Analysis_Methodology.md**: Discovery process
 
 ---
 
