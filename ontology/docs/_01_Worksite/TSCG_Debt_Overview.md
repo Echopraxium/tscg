@@ -1,8 +1,8 @@
 # TSCG — Technical debt overview (master level)
 
 **Author**: Echopraxium with the collaboration of Claude AI
-**Version**: 1.15.0
-**Date**: 2026-10-22
+**Version**: 1.16.0
+**Date**: 2026-11-01
 **Level**: master — above the worksites, next to `worksite.yaml` and the worksite map
 (`WS-0/_00_TSCG_Worksite_Map.md`). It routes each debt to the worksite that owns it;
 it does not replace the per-worksite notes.
@@ -87,6 +87,9 @@ no link to M2.
 | Layer | Defect | Snapshot | Owner |
 |---|---|---|---|
 | all | D1 bare keys (occurrences) | M3 619 · M2 1368 · M1 1268 · M0 6604 | **WS-1** (VOC), decision B2 |
+| all | G8 phantom TSCG predicates (distinct; frozen 2026-11-01, lot K0 — §8.0g) | M3 68 · M2 168 · M1 397 · M0 1162 | **WS-1** (VOC) |
+| M0 | D7 rejected by a strict JSON-LD 1.1 processor (frozen 2026-11-01, lot K0) | 28 of 42 | M0 lot / CheckM0 campaign |
+| M0 | G5 standard terms not declared in the apex (frozen 2026-11-01, lot K0) | 129 | M0 lot |
 | M3 | D2 `@vocab` · G6 fake `owl:` terms | 2 files · 142 | WS-1, after B2 |
 | M3 | D5 legacy `metadata.changelog` | 4 | WS-6 (vestiges lot) |
 | M3 | G1 no `m3:ontologyType` | 4 | small lot |
@@ -610,6 +613,49 @@ Input for part (a); class/instance mixing seen by the reasoner:
   `sphinxView`, `isStereopsic`…): re-declare the documenting ones as
   `owl:AnnotationProperty`. Separate lot.
 
+### 8.0g Lot K0 — the vocabulary debt made visible (2026-11-01)
+
+**Why.** Michel, 2026-11-01: lower the number of bare keys *without masking the debt —
+reveal more of it if needed*. D1 counts a key only when it has no `:` and is not a
+`@context` term; so adding `"role": "m2:role"` to a `@context` made a D1 vanish while
+`m2:role` was declared nowhere — a **phantom predicate**, counted by no tool. Measured on
+HEAD `ea165ca`: only **165 properties** are declared in the whole M3–M1 stack; among the
+phantoms are central properties — `m1:structuralGrammarFormula` (15 M1 files, constrained by
+several SHACL shapes), `m2:perspective`, `m2:possibleValues`, `m2:eagleView`, `m2:mobilizes`.
+And M1/M0 were gated only by `check_M1` / `check_m0`, which never see the document plane:
+their bare keys (and, in M0, 28 files a strict JSON-LD processor rejects) could grow unseen.
+
+**What (no data changed).**
+- **G8** in the EXT family (`checks/ext.py` 0.3.0, engine 0.5.0): a TSCG-namespace
+  predicate used in a file's expanded graph but typed **as a property** in no file of the
+  declaration corpus (every governed M3/M2/M1 file + `M0_Common`, whatever `--layers`
+  says) nor in the file itself. ERROR; one finding per (layer, predicate), counted as
+  DISTINCT predicates (one declaration repairs all uses), `triples` and owning `subjects`
+  in the report. Blind (empty corpus) = ERROR. 5 negative tests, including the escape
+  hatch itself (same key: bare → D1; `@context` only → G8; declared as a property → 0;
+  declared as a class → still G8).
+- **Gate** (`run_all_layers` 1.5.0): M3/M2 errors include G8 (141 → 209, 1 → 169). M1 and
+  M0 gain a separate **`engine` section** (doc + ext, no SHACL), compared exactly — the
+  historical counters keep their meaning. First capture: M1 D1 1268, G8 397, D5 2, G5 1,
+  G6 1; M0 D1 6364, G8 1162, D7 28, G5 129, CTX-5 42, AXIS-2 10, D5 6, CTX-1 1, G6 1. The
+  gate fails on an unfrozen section; a mutation (a `@context`-only key in M1_music) moves
+  M1 engine G8 397 → 398.
+- **Health Map** 0.5.0: G8 colours every node that uses a phantom predicate (nested
+  objects resolved to their owning node), on all layers. Green cells: M2 52 → 26, M1 167 →
+  76, M0 6 → 0 — the debt was there, it is now on the map.
+- **Rule** in the Bootstrap hard invariants ("Every term used is declared").
+
+**Repair rule from now on.** A D1 repair is valid only if G8 does not rise: delete the key,
+map it to an existing property, or declare it as a property (label + type) in the file
+that owns it. NS-SEP (renaming ~1,400 IRIs) is now also guarded by G8: a rename that
+breaks a declaration/use pair shows up as +G8.
+
+**Next (lot K1, the first reduction).** `m2:eagleView` / `m2:sphinxView`: 423 bare keys
+(31 % of M2) in four repeated keys — `basis` (always "ASFID" under eagleView), `status`
+("IMMUTABLE" 58 of 67), `role` ("Measure observable phenomenon" 30×), `formula` — plus
+the two phantom predicates themselves. Decision table per key for Michel. Then
+`m2:possibleValues` (404 bare keys).
+
 ### 8.1 S5-1 — primitives always suffixed
 
 Rule: the ambiguous letters are always qualified by their monoid —
@@ -704,6 +750,9 @@ form and is not changed by this decision.
 
 ## Changelog
 
+- **1.16.0 (2026-11-01)** — §8.0g lot K0: G8 phantom predicates (engine + gate + Health Map),
+  M1/M0 engine plane frozen (D1, D7, G5, G8…); rule "every term used is declared" in the
+  Bootstrap; gate M3 errors 141 → 209, M2 1 → 169 (G8, no data changed); next: K1, NS-SEP.
 - **1.15.0 (2026-10-22)** — §8.0f lot SC-5b done (32 domain classes, 4 relinks, stored
   subdomain lists and 3 adjective classes deleted; rule: a domain and a combo never share a
   local name; gate M1 133/1/296 → 132/1/294); next: NS-SEP, then the M0 lot.

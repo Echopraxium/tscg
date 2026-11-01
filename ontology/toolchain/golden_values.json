@@ -1,52 +1,56 @@
 {
-  "_measured": "2026-10-22, real repository (--update-golden)",
+  "_measured": "2026-11-01, real repository (--update-golden)",
   "_note": "Reference values, TriskeleVM-style. EXACT match required. A count that DROPS is as suspicious as one that rises: either a deliberate fix (then --update-golden, and the drop is recorded under '_previous'/'_delta') or a validator that stopped biting. A silently shrinking count is the most dangerous signal in this repo — it looks like progress.",
   "M3": {
     "status": "INSTRUMENTED",
-    "note": "Measured by the WS-5 validator engine (validator/tscg_validator.py --doc --ext --shacl, working copy). errors = document-plane D2–D7 + cross-file G1b/G5/G6; warnings = D1 bare-key OCCURRENCES (the WS-1 VOC backlog, invisible to any graph check); shacl_violations = structural grammar ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl (G1–G4), one per sh:ValidationResult. by_code gives every non-zero code: a NEW code (an engine fault, a blind shape, a missing pyshacl/pyld) fails the gate. COVERAGE: structural only (decision Q4) — no semantic grammar of M3 primitives / grammars yet. The frozen values are the counts above; history under _previous / _delta. Lower them ONLY by repairing data, never by loosening a check. Definitions: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md.",
+    "note": "Measured by the WS-5 validator engine (validator/tscg_validator.py --doc --ext --shacl, working copy). errors = document-plane D2–D7 + cross-file G1b/G5/G6/G8 (G8 = phantom TSCG predicates, lot K0, one per distinct predicate); warnings = D1 bare-key OCCURRENCES (the WS-1 VOC backlog, invisible to any graph check); shacl_violations = structural grammar ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl (G1–G4), one per sh:ValidationResult. by_code gives every non-zero code: a NEW code (an engine fault, a blind shape, a missing pyshacl/pyld) fails the gate. COVERAGE: structural only (decision Q4) — no semantic grammar of M3 primitives / grammars yet. The frozen values are the counts above; history under _previous / _delta. Lower them ONLY by repairing data, never by loosening a check. Definitions: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md.",
     "files": 5,
-    "errors": 141,
+    "errors": 209,
     "warnings": 604,
     "shacl_violations": 3,
     "by_code": {
       "D1": 604,
       "D2": 2,
       "G2": 3,
-      "G6": 139
+      "G6": 139,
+      "G8": 68
     },
     "_previous": {
       "files": 5,
       "errors": 141,
       "warnings": 604,
-      "shacl_violations": 7
+      "shacl_violations": 3
     },
     "_delta": {
-      "shacl_violations": "7 -> 3"
+      "errors": "141 -> 209"
     },
-    "_updated": "2026-10-10"
+    "_updated": "2026-11-01",
+    "_delta_reason": "Lot K0 (2026-11-01, Michel: reveal the vocabulary debt, never mask it): the engine gains G8 — a TSCG-namespace predicate used in the expanded graph but declared AS A PROPERTY nowhere (OWL 2: an entity's type comes from its declaration). It closes the escape hatch of D1: a bare key 'fixed' by a @context entry alone becomes a G8. M3 errors 141 -> 209 = +68 G8 (first measurement, no data changed)."
   },
   "M2": {
     "status": "INSTRUMENTED",
-    "note": "Measured by the WS-5 validator engine (validator/tscg_validator.py --doc --ext --shacl, working copy). errors = document-plane D2–D7 + cross-file G1b/G5/G6; warnings = D1 bare-key OCCURRENCES (the WS-1 VOC backlog, invisible to any graph check); shacl_violations = structural grammar ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl (G1–G4) + the 2 SC-2 monoidal-formula shapes (G7), one per sh:ValidationResult. by_code gives every non-zero code: a NEW code (an engine fault, a blind shape, a missing pyshacl/pyld) fails the gate. COVERAGE: structural only (decision Q4) — no semantic grammar of GenericConcepts (SC-11b, after WS-1) yet. The frozen values are the counts above; history under _previous / _delta. Lower them ONLY by repairing data, never by loosening a check. Definitions: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md.",
+    "note": "Measured by the WS-5 validator engine (validator/tscg_validator.py --doc --ext --shacl, working copy). errors = document-plane D2–D7 + cross-file G1b/G5/G6/G8 (G8 = phantom TSCG predicates, lot K0, one per distinct predicate); warnings = D1 bare-key OCCURRENCES (the WS-1 VOC backlog, invisible to any graph check); shacl_violations = structural grammar ontology/toolchain/grammars/M3_Structural_Schema_shacl.ttl (G1–G4) + the 2 SC-2 monoidal-formula shapes (G7), one per sh:ValidationResult. by_code gives every non-zero code: a NEW code (an engine fault, a blind shape, a missing pyshacl/pyld) fails the gate. COVERAGE: structural only (decision Q4) — no semantic grammar of GenericConcepts (SC-11b, after WS-1) yet. The frozen values are the counts above; history under _previous / _delta. Lower them ONLY by repairing data, never by loosening a check. Definitions: ontology/docs/_01_Worksite/WS-5/WS-5_M3M2_Instrumentation_Scoping.md.",
     "files": 1,
-    "errors": 1,
+    "errors": 169,
     "warnings": 1368,
     "shacl_violations": 7,
     "by_code": {
       "D1": 1368,
       "D5": 1,
-      "G2": 7
+      "G2": 7,
+      "G8": 168
     },
     "_previous": {
       "files": 1,
       "errors": 1,
       "warnings": 1368,
-      "shacl_violations": 8
+      "shacl_violations": 7
     },
     "_delta": {
-      "shacl_violations": "8 -> 7"
+      "errors": "1 -> 169"
     },
-    "_updated": "2026-10-08"
+    "_updated": "2026-11-01",
+    "_delta_reason": "Lot K0 (2026-11-01, Michel: reveal the vocabulary debt, never mask it): the engine gains G8 — a TSCG-namespace predicate used in the expanded graph but declared AS A PROPERTY nowhere (OWL 2: an entity's type comes from its declaration). It closes the escape hatch of D1: a bare key 'fixed' by a @context entry alone becomes a G8. M2 errors 1 -> 169 = +168 G8 (first measurement, no data changed)."
   },
   "M1": {
     "status": "INSTRUMENTED",
@@ -71,31 +75,56 @@
     "shacl_violations": 294,
     "_previous": {
       "files": 17,
-      "errors": 133,
+      "errors": 132,
       "warnings": 1,
-      "shacl_violations": 296
+      "shacl_violations": 294
     },
     "_delta": {
-      "errors": "133 -> 132",
-      "shacl_violations": "296 -> 294"
+      "engine.D1": "first capture 1268",
+      "engine.D5": "first capture 2",
+      "engine.G5": "first capture 1",
+      "engine.G6": "first capture 1",
+      "engine.G8": "first capture 397"
     },
-    "_delta_reason": "Lot SC-5b (2026-10-22, approved by Michel after review): errors 133 -> 132 and shacl_violations 296 -> 294 = DATA REPAIRED, not a loosened check. One combo formula repaired: m1:extension:education:InstructionalDesign (renamed InstructionalDesignProcess, so that the new domain class Instructional Design takes the discipline's name) had the monoidal signature Fm1m2(Education, S × D × F); it is now Fm1m2(Education, Workflow, Composition), the two GenericConcepts its own comment names. That removes one DCC006 (check_M1) and one ComboFormulaShape result (counted twice by check_M1 = 2). Per-file, per-shape comparison against HEAD 6f7cd5a over the 14 changed M1 files: every other shape unchanged. SC-5b also created 32 domain classes, relinked 4, deleted the stored subdomain lists and 3 adjective classes: no count moved for them.",
-    "_updated": "2026-10-22"
+    "_updated": "2026-11-01",
+    "engine": {
+      "errors": 401,
+      "warnings": 1268,
+      "by_code": {
+        "D1": 1268,
+        "D5": 2,
+        "G5": 1,
+        "G6": 1,
+        "G8": 397
+      }
+    },
+    "_delta_reason_engine": "Lot K0 (2026-11-01, Michel: reveal the vocabulary debt, never mask it): the engine gains G8 — a TSCG-namespace predicate used in the expanded graph but declared AS A PROPERTY nowhere (OWL 2: an entity's type comes from its declaration). It closes the escape hatch of D1: a bare key 'fixed' by a @context entry alone becomes a G8. M1 and M0 were counted only by check_M1/check_m0, which never see the document plane nor the cross-file checks: their engine view (doc + ext, no SHACL) is now frozen as a SEPARATE 'engine' section — the historical counters keep their meaning. First capture M1: D1 1268, D5 2, G5 1, G6 1, G8 397.",
+    "engine_note": "Lot K0: the validator engine's view of this layer (tscg_validator.py --doc --ext, no SHACL — this layer's SHACL is counted by its own checker above). by_code compared EXACTLY. D1 = bare-key OCCURRENCES; G8 = DISTINCT phantom predicates. A D1 repair is valid only if G8 does not rise (declare the key as a property, map it to an existing one, or delete it).",
+    "_delta_reason_previous_SC-5b": "Lot SC-5b (2026-10-22, approved by Michel after review): errors 133 -> 132 and shacl_violations 296 -> 294 = DATA REPAIRED, not a loosened check. One combo formula repaired: m1:extension:education:InstructionalDesign (renamed InstructionalDesignProcess, so that the new domain class Instructional Design takes the discipline's name) had the monoidal signature Fm1m2(Education, S × D × F); it is now Fm1m2(Education, Workflow, Composition), the two GenericConcepts its own comment names. That removes one DCC006 (check_M1) and one ComboFormulaShape result (counted twice by check_M1 = 2). Per-file, per-shape comparison against HEAD 6f7cd5a over the 14 changed M1 files: every other shape unchanged. SC-5b also created 32 domain classes, relinked 4, deleted the stored subdomain lists and 3 adjective classes: no count moved for them.",
+    "_delta_reason": "Lot K0 (2026-11-01): see _delta_reason_engine — the historical counters did not move."
   },
   "M0": {
     "status": "INSTRUMENTED",
     "note": "MIGRATION BACKLOG, measured not blessed: v1.5 namespace/imports cluster C02/C03/C07/C09, SHACL C15, tensor remnants C12. The frozen values are the counts above; per-instance detail: check_m0_instances.py --json. Lower them ONLY by repairing instances (CheckM0 repair campaign), never by loosening a check. Metric mapping: errors = sum of non-SHACL check failures; shacl_violations = C15.",
     "_previous": {
-      "files": 43,
+      "files": 42,
       "errors": 124,
       "warnings": 0,
       "shacl_violations": 22
     },
     "_delta": {
-      "files": "43 -> 42"
+      "engine.AXIS-2": "first capture 10",
+      "engine.CTX-1": "first capture 1",
+      "engine.CTX-5": "first capture 42",
+      "engine.D1": "first capture 6364",
+      "engine.D5": "first capture 6",
+      "engine.D7": "first capture 28",
+      "engine.G5": "first capture 129",
+      "engine.G6": "first capture 1",
+      "engine.G8": "first capture 1162"
     },
     "_delta_reason": "WS-1 lot 1i (2026-09-30): C12 25 -> 24, a FALSE POSITIVE removed, not a formula repair. M0_VSM's only U+2297 was inside its OLDEST changelog entry ('⊗⇒ notation used internally', history prose). Adding the lot-1i entry rotated that entry out under the 3-entry retention policy, so C12 (which scans every string of @graph, changelog prose included) no longer fires on VSM. No check loosened; tscg_metrics.py already excludes changelog prose from its tensor gauge for the same reason ('a mention in history is not a defect'). Scanning changelog prose in C12 remains a known over-reach, to be decided separately.",
-    "_updated": "2026-10-19",
+    "_updated": "2026-11-01",
     "files": 42,
     "errors": 124,
     "warnings": 0,
@@ -113,7 +142,24 @@
       "C12": 24,
       "C13": 1,
       "C15": 22
-    }
+    },
+    "engine": {
+      "errors": 1337,
+      "warnings": 6406,
+      "by_code": {
+        "AXIS-2": 10,
+        "CTX-1": 1,
+        "CTX-5": 42,
+        "D1": 6364,
+        "D5": 6,
+        "D7": 28,
+        "G5": 129,
+        "G6": 1,
+        "G8": 1162
+      }
+    },
+    "_delta_reason_engine": "Lot K0 (2026-11-01, Michel: reveal the vocabulary debt, never mask it): the engine gains G8 — a TSCG-namespace predicate used in the expanded graph but declared AS A PROPERTY nowhere (OWL 2: an entity's type comes from its declaration). It closes the escape hatch of D1: a bare key 'fixed' by a @context entry alone becomes a G8. First capture M0 engine section: D1 6364, D7 28 (28 of 42 instances rejected by a strict JSON-LD 1.1 processor — rdflib reads them leniently), G5 129, G8 1162, D5 6, AXIS-2 10, CTX-1 1, CTX-5 42, G6 1.",
+    "engine_note": "Lot K0: the validator engine's view of this layer (tscg_validator.py --doc --ext, no SHACL — this layer's SHACL is counted by its own checker above). by_code compared EXACTLY. D1 = bare-key OCCURRENCES; G8 = DISTINCT phantom predicates. A D1 repair is valid only if G8 does not rise (declare the key as a property, map it to an existing one, or delete it)."
   },
   "_known_pre_existing_not_counted_here": {
     "SHAPE2_vs_SHAPE3": "~256 of the 502 SHACL violations are a VALIDATOR BUG, not data defects. sh:targetClass follows subclasses, so every extension combo is validated TWICE — by SHAPE 2 (which demands Fm2( ) and SHAPE 3 (which demands Fm1m2( ) — mutually exclusive. No extension combo can satisfy both. SHAPE 2 must exclude the subclass. → SC-5. THIS IS THE REAL GOLDMINE: ~256 violations that describe no defect at all.",

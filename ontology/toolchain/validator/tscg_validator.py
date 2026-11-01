@@ -68,7 +68,7 @@ from checks import ext as ext_check  # noqa: E402
 # full family roster with an honest "not yet implemented" status.
 _IMPLEMENTED = {"CTX": ctx_check, "AXIS": axis_check}
 _PLANNED = ["FRB", "DUP", "NOT", "STR"]
-_VERSION = "0.4.1"
+_VERSION = "0.5.0"
 
 _SEV_ORDER = {"ERROR": 0, "WARNING": 1, "INFO": 2}
 
@@ -140,7 +140,16 @@ def run_ext(source: Source, files: List[str]) -> tuple:
             triples.append((rel, source.read(rel), classify_layer(rel)))
         except (FileNotFoundError, OSError):
             continue  # already reported as SRC-000
-    return ext_check.run(triples, scheme, apex)
+    # G8 declaration corpus: every governed M3/M2/M1 file + M0_Common, whatever
+    # --layers says (a phantom is judged against the whole stack, not the selection).
+    decl = []
+    for rel in source.manifest():
+        if classify_layer(rel) in ("M3", "M2", "M1") or rel == "ontology/M0_Common.jsonld":
+            try:
+                decl.append((rel, source.read(rel)))
+            except (FileNotFoundError, OSError):
+                continue
+    return ext_check.run(triples, scheme, apex, decl)
 
 
 def run_shacl(source: Source, files: List[str], layers: List[str],
@@ -280,7 +289,7 @@ def main(argv: List[str] | None = None) -> int:
     ap.add_argument("--doc", action="store_true",
                     help="also run the document-plane checks D1–D7 (checks/doc.py)")
     ap.add_argument("--ext", action="store_true",
-                    help="also run the cross-file graph checks G1b/G5/G6 (checks/ext.py)")
+                    help="also run the cross-file graph checks G1b/G5/G6/G8 (checks/ext.py)")
     ap.add_argument("--shacl", action="store_true",
                     help="also run the SHACL grammar(s) registered for each selected layer")
     ap.add_argument("--shapes", default=None,
