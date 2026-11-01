@@ -439,7 +439,6 @@ This validates VSM as both scientifically grounded (Territory) and methodologica
 
 ### TSCG Documentation
 - M2_MetaConcepts.jsonld v14.3.3 (includes Scope metaconcept)
-- M2_Scope_Metaconcept_Proposal.md (Scope design rationale)
 - TSCG_Smart_Prompt_v14_3_0.md (Framework overview)
 - MetaconceptCombo pattern documentation (M2)
 

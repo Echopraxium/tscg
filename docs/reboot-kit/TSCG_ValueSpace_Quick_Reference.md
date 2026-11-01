@@ -308,7 +308,6 @@ Before finalizing your instantiation:
 
 - **Full ontology**: M2_MetaConcepts.jsonld (v14.4.0)
 - **User guide**: TSCG_ValueSpace_User_Guide.md
-- **Final report**: ValueSpace_Enrichment_Final_Report.md
 
 ---
 

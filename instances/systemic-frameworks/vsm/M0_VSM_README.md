@@ -439,7 +439,6 @@ This validates VSM as both scientifically grounded (Territory) and methodologica
 
 ### TSCG Documentation
 - M2_GenericConcepts.jsonld v14.3.3 (includes Scope GenericConcept)
-- M2_Scope_GenericConcept_Proposal.md (Scope design rationale)
 - TSCG_Smart_Prompt_v14_3_0.md (Framework overview)
 - GenericConceptCombo pattern documentation (M2)
 

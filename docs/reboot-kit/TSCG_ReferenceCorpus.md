@@ -119,13 +119,13 @@ Some folders are CamelCase (`FireTriangle`, `Triz`), others lowercase (`vsm`,
 
 ---
 
-## Durable corpus index (the 27 kept `.md`)
+## Durable corpus index (the 25 kept `.md`)
 
 What remains in project knowledge after cleanup — durable *rationale*, no live structure.
 
 **Foundations & method**: `Structural_Grammar_Foundation.md` (+ its 2 READMEs),
 `Functional_Grammar_Model.md`, `OntologyModeling_Guidelines.md`, `OntologicalOverfitting.md`,
-`Poclet_Analysis_Methodology.md`, `poclet_terminology.md`, `TSCG_Architectural_Extensions.md`.
+`poclet_terminology.md`.
 
 **Epistemology & philosophy**: `TerritoryMap_Dichotomy.md`, `_00_TSCG_as_StereoscopicGlasses.md`,
 `_01_Narcissus_and_Icarus_as_Safeguards.md`, `CredibilityAccretion_Process.md`,

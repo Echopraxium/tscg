@@ -254,13 +254,9 @@ Reference documents for TSCG development workflows:
 - **`Structural_Grammar_Foundation.md`** — Lambek calculus foundation (replaces tensor product interpretation)
 
 ### Instance Development
-- **`Poclet_Analysis_Methodology.md`** — Step-by-step poclet analysis heuristic
 - **`HYBRID_FORMULAS_NOTATION_README.md`** — Formula encoding conventions (It/Im, REVOI standard)
 - **`TSCG_ValueSpace_User_Guide.md`** — How to use ValueSpace attributes in instantiations
 - **`TSCG_ValueSpace_Quick_Reference.md`** — Cheat sheet for all 13 ValueSpace attributes
-
-### Ontology Management
-- **`M2_KnowledgeField_README.md`** — KnowledgeField concept organization
 
 ### Simulation Development
 - **`tscg-create-instance-simulation` skill** — 4-step BabylonJS simulation pipeline
@@ -429,7 +425,6 @@ Full poclet corpus (23+ validated instances) spans chemistry, physics, biology, 
 |----------|-----|
 | TSCG Smart Prompt v16.0.0 | `https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/TSCG_Smart_Prompt_v16_0_0.md` |
 | Architecture Guide | `https://raw.githubusercontent.com/Echopraxium/tscg/main/src/ARCHITECTURE_GUIDE.md` |
-| Poclet Analysis Methodology | `https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/methodology/Poclet_Analysis_Methodology.md` |
 | ValueSpace User Guide | `https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/TSCG_ValueSpace_User_Guide.md` |
 | Hybrid Formulas Notation | `https://raw.githubusercontent.com/Echopraxium/tscg/main/docs/reboot-kit/HYBRID_FORMULAS_NOTATION_README.md` |
 

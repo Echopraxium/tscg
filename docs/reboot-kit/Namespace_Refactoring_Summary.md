@@ -296,7 +296,6 @@ Les 4 extensions de domaine M1 ont été créées et corrigées :
 ## 📚 Références
 
 ### Documents Concernés
-- `ontology_analysis.md` - Analyse initiale des problèmes
 - `TSCG_File_Tree.md` - Structure complète du projet
 - `Bicephalous_Integration_Guide.md` - Guide d'intégration M3
 
