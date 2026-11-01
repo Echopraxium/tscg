@@ -22,7 +22,8 @@ KnowledgeField, MetaConcept, GenesisSpace, ORIVE…) is served as authority.
 - **Read first**: `_02_housekeeping/2026_11_01/Housekeeping_OntologyDocs_2026-11-01.md`
   (method, what was removed, what remains) and the table
   `_02_housekeeping/2026_11_01/OntologyDocs_Cleanup_Triage.xlsx` (yellow column = Michel's
-  decision; empty = undecided).
+  decision; empty = undecided; column J = Claude's verification of the 15 rows that needed
+  one: exact citing line and revised proposal).
 - **Remaining (re-measure on HEAD)**: 53 with no live reference (proposal: delete),
   9 cited only by documents that are obsolete themselves (proposal: delete + remove the
   citing line), 6 to decide (`Poclet_Analysis_Methodology.md` — cited by CLAUDE.md, README,
@@ -32,7 +33,16 @@ KnowledgeField, MetaConcept, GenesisSpace, ORIVE…) is served as authority.
   `CatastrophicBifurcation_M1_Analysis.md` — cited by the Yggdrasil README;
   `M0_VSM_Prerequisites_Analysis.md` — cited by the VSM session note), 1 to keep
   (`OntologyModeling_Guidelines.md`, live, cited by the M3 apex).
-- **Method** (same as 2026-09-27 and round 1): Michel fills the table → Claude removes the
+- **How Michel wants to decide (2026-11-01): ONE FILE AT A TIME, in the conversation** —
+  not by filling the table beforehand. For each undecided file, Claude presents, briefly:
+  what it is (title / first lines, date), who cites it (column J of the table gives the
+  verified `file:line` for 15 of them; re-check on HEAD), the retired-vocabulary markers,
+  and its proposal (delete / delete + remove the citing line / move / keep). Michel
+  answers; Claude records the decision in the table's yellow column, then moves to the
+  next file. Start with the 6 "À DÉCIDER" and the 9 "to confirm" rows (they need his
+  judgement), then the 53 with no live reference (they can go faster, in small batches if
+  Michel says so).
+- **Then execute** (same method as 2026-09-27 and round 1): Claude removes / moves the
   decided files in one commit per group, fixes every LIVE line that cites a removed file
   (never the archive snapshot `ontology/Ref/`), checks name collisions (a live file with the
   same name elsewhere is not affected), appends a "round 2" section to the trace note,
