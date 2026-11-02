@@ -61,7 +61,11 @@ data-collector (walks the blocks + facets → `compendium_data.json`).
   The lens is the hero because progressive disclosure is the core idea.
 - **Rubric rail:** the six sections as filters, each with a live count that
   responds to the lens.
-- **Search:** by title / path.
+- **Search:** across every view (each tab + Terminology): titles, paths, terms and visible
+  page text, matched at the start of a word (case-insensitive). Occurrences are highlighted;
+  the search box shows "i / N" with previous/next (Enter / Shift+Enter) and moves between
+  views; if the current view has none, it jumps to the first view that has one. Tab badges
+  show the occurrences per view. No full-text index of document contents (titles and paths only).
 - **Entry rows:** title (links to the file on HEAD), path, `kind` + `status`,
   and a compact who-can-see indicator. Not identical cards — a scannable list.
 
