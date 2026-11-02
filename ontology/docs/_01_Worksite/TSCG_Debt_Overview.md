@@ -164,7 +164,9 @@ concept may legitimately stay pure Territory).
     keeps only "(SC-1)" messages: it never measured M2 (the engine now does);
   - `golden_values.json` → `_known_pre_existing_not_counted_here` still quotes July
     figures (502, ~256, ~77): stale;
-  - repository-root `CLAUDE.md` is stale (GenesisSpace, tensor formulas…).
+  - ~~repository-root `CLAUDE.md` is stale (GenesisSpace, tensor formulas…)~~ — done
+    2026-11-02: rewritten as a thin guide (rules and pointers to the Smart Prompt and the
+    ReferenceCorpus, no framework content); old version via `git show <commit>^:CLAUDE.md`.
 - **M0 references to M1 concepts declared nowhere** (found by the ontology/docs
   housekeeping round 2, 2026-11-01; owner: lot M0). Two patch files of February that were
   never merged held the only written definitions; they were removed from `ontology/docs`
