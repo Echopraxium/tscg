@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1707 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1704 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -123,6 +123,9 @@
   - **2026_11_01/**
     - Housekeeping_OntologyDocs_2026-11-01.md
     - OntologyDocs_Cleanup_Triage.xlsx
+  - **2026_11_03/**
+    - Housekeeping_RebootKit_2026-11-03.md
+    - RebootKit_Cleanup_Triage.xlsx
 - **_03_SerendipCrates/**
   - **EpistemologyMaquette/**
     - CRATE.md
@@ -250,10 +253,6 @@
       - TSCG_Smart_Prompt_v16_2_0.md
       - TSCG_Smart_Prompt_v16_3_0.md
       - TSCG_Smart_Prompt_v17_0_0.md
-    - 00_M3_Cyclops_Correction_Summary.md
-    - 00_Map_Territory_v1.2_Update_Summary.md
-    - 00_TSCG_M3_Bicephalous_Architecture.md
-    - 00_TSCG_Map_Territory_Theoretical_Foundation.md
     - _000_TSCG_Context_Files.md
     - Amplification_Integration_Summary (1).md
     - Cascade_Modeling_README.md
@@ -276,7 +275,6 @@
     - TSCG_ReferenceCorpus_Bootstrap.md
     - TSCG_Session_README_2026-03-23.md
     - TSCG_SmartPrompt.md
-    - TSCG_Validation_Handoff_M1_M0.md
     - TSCG_ValueSpace_Quick_Reference.md
     - TSCG_ValueSpace_User_Guide.md
     - ValueSpace_Integration_Summary.md
