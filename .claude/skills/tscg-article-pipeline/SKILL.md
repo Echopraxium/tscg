@@ -27,10 +27,12 @@ La conversation est en **Français** ; tous les fichiers générés sont en **An
 
 ### Article en cours
 ```
-docs/papers/preprints/TSCG_Research_Paper_Draft_v3.md   ← version actuelle (v3.0, TSCG v15.1.0)
-docs/papers/preprints/new draft specification.txt        ← spécifications d'une future version
-docs/papers/preprints/HAL Guidelines.md                 ← contraintes de soumission HAL
-docs/papers/preprints/TSCG_HAL_Additions_v1.md          ← sections déjà préparées pour HAL
+docs/papers/preprints/TSCG_Research_Paper_Draft_v<N>.md  ← le draft de plus haut numéro sur HEAD
+                                                            (lister le dossier, ne pas réciter)
+docs/papers/preprints/previous/                          ← versions antérieures
+docs/papers/preprints/HAL/HAL Guidelines.md              ← contraintes de soumission HAL
+docs/papers/preprints/HAL/TSCG_HAL_Additions_v1.md       ← sections déjà préparées pour HAL
+docs/papers/preprints/Zenodo/                            ← dépôt Zenodo
 ```
 
 ### Matières premières (sources à exploiter)
@@ -49,14 +51,20 @@ docs/papers/inputs/
 
 ontology/docs/              ← inventorier en début de session (contenu à confirmer)
 ```
+⚠ Ces matières premières sont **historiques** (époques bicéphale, tensorielle, M2 v7/v8) :
+à exploiter comme histoire du projet, jamais comme description du framework actuel.
 
-### Contexte framework (source de vérité)
+### Contexte framework (source de vérité = HEAD)
 ```
-docs/reboot-kit/TSCG_Smart_Prompt_v15_10_1.md     ← version courante du framework
-TSCG_Session_README_2026-03-23.md                 ← dernières découvertes (M2 v15.11.0 candidats)
-ontology/M2_GenericConcepts.jsonld                 ← 75 GenericConcepts atomiques v15.10.1
+docs/reboot-kit/TSCG_SmartPrompt.md                ← chargeur de session vivant
+docs/reboot-kit/TSCG_ReferenceCorpus_Bootstrap.md  ← invariants durs (notation, namespaces)
+docs/reboot-kit/TSCG_ReferenceCorpus.md            ← quel fichier fait autorité sur quoi
+ontology/M2_GenericConcepts.jsonld                 ← GenericConcepts (version et nombre : lire sur HEAD)
 ontology/M1_CoreConcepts.jsonld                    ← combos + KnowledgeFieldConceptCombo
+ontology/docs/_01_Worksite/                        ← état des chantiers (Debt Overview)
 ```
+Les anciens Smart Prompts (`docs/reboot-kit/SmartPrompts/`) et
+`docs/reboot-kit/TSCG_Session_README_2026-03-23.md` sont de l'histoire, pas une source de vérité.
 
 ---
 
@@ -100,7 +108,7 @@ Format obligatoire :
 
 ## Métadonnées
 - Version article : vX.Y (TSCG vA.B.C)
-- Version framework cible : TSCG v15.10.1
+- Version framework cible : [lue sur HEAD — M2/M1 `owl:versionInfo`]
 - Date audit : [date]
 
 ## Écarts identifiés
@@ -142,7 +150,7 @@ Définir le plan de travail section par section avec les sources à exploiter po
 # Plan de mise à jour — Article TSCG v[X]
 
 ## Stratégie : [Mise à jour ciblée | Réécriture | Nouveau papier]
-## Version cible : v[X.Y] (TSCG v15.10.1)
+## Version cible : v[X.Y] (TSCG [version lue sur HEAD])
 ## Cible de soumission : [HAL | Zenodo | Autre]
 
 ## Sections à produire (ordre de rédaction)
@@ -159,7 +167,7 @@ Définir le plan de travail section par section avec les sources à exploiter po
 | 7 | Discussion / Limitations | Nouveau | Session README, HAL Additions | Moyen |
 | 8 | References | À compléter | Ranaora & Yii 2026 | Faible |
 | A | Appendix A (Poclet catalog) | À étendre 14→21+ | File Tree, Smart Prompt | Moyen |
-| B | Appendix B (Human-AI) | À mettre à jour | Smart Prompt v15.10.1 | Faible |
+| B | Appendix B (Human-AI) | À mettre à jour | Smart Prompt vivant (`TSCG_SmartPrompt.md`) | Faible |
 
 ## Ordre de génération suggéré
 [liste ordonnée selon dépendances logiques]
@@ -195,6 +203,11 @@ Watchdog terminologique : actif
 
 ### Sections à traitement spécial
 
+> ⚠ **Plan historique** — les consignes ci-dessous ont été écrites pour le passage du
+> draft v3 au v4 (époque tensorielle `⊗`, M3 bicéphale, chiffres v15.10.1). Elles ne
+> décrivent pas le framework actuel : formules, comptes et noms se lisent sur HEAD. À
+> réviser avec Michel avant la prochaine version de l'article.
+
 #### Abstract
 - Mettre à jour : 14 poclets → 21+, ~58 GenericConcepts → 75 atomiques
 - Ajouter KnowledgeFieldConceptCombo (absent en v3.0)
@@ -226,7 +239,8 @@ Watchdog terminologique : actif
   NakamotoConsensus, MtgColorWheel, VCO, PhaseTransition, ExposureTriangle
 
 #### Appendix B (Human-AI Collaboration)
-- B.2 : Smart Prompt → `TSCG_Smart_Prompt_v15_10_1.md`
+- B.2 : Smart Prompt → le chargeur vivant `docs/reboot-kit/TSCG_SmartPrompt.md`
+  (version lue sur HEAD) ; citer une version archivée seulement pour l'historique
 - B.5 : simulations → mentionner HTML standalone (Electron + navigateur)
 - Envisager B.8 : Skills system (si pertinent pour le public cible)
 
@@ -247,7 +261,7 @@ Watchdog terminologique : actif
 
 ### Cohérence des chiffres
 [ ] Nombre de poclets cohérent (Abstract = §corpus = Appendix A)
-[ ] Nombre de GenericConcepts cohérent (75 atomiques en v15.10.1)
+[ ] Nombre de GenericConcepts cohérent avec `M2_GenericConcepts.jsonld` sur HEAD (compté, pas récité)
 [ ] Version framework cohérente partout
 [ ] DOI Zenodo à jour
 
@@ -281,7 +295,7 @@ Watchdog terminologique : actif
 Authors: Echopraxium with the collaboration of Claude AI
 Date: [mois] [année]
 Version: [X.Y]
-Framework Version: TSCG v15.10.1
+Framework Version: TSCG [version lue sur HEAD]
 DOI (Prior Work): [mettre à jour si nouvelle version Zenodo]
 ```
 
@@ -290,7 +304,7 @@ DOI (Prior Work): [mettre à jour si nouvelle version Zenodo]
 ## Changelog
 
 ### v[X.Y] — [date]
-- Updated to TSCG framework v15.10.1
+- Updated to TSCG framework [version lue sur HEAD]
 - Extended poclet catalog: 14 → [N] poclets
 - M2: 75 atomic GenericConcepts (9 families)
 - M3: F axiom relaxed (F ≥ 0), F_morphic annotation

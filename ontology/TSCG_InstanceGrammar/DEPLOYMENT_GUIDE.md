@@ -201,9 +201,9 @@ pip install pyshacl --break-system-packages
 
 ## 📚 Related Documentation
 
-- **SHACL Schema:** `ontology/TSCG_Grammar/M0_Instances_Schema.shacl.ttl`
-- **M2 Formulas Reference:** `docs/reboot-kit/M2_FormulasReference_v15.10.0.md`
-- **Smart Prompt:** `docs/reboot-kit/SmartPrompts/Smart_Prompt_M3_M2_Updated.md`
+- **SHACL Schema:** `ontology/toolchain/check-M0/M0_Instances_Schema_shacl.ttl`
+- **M2 concepts and formulas:** `ontology/M2_GenericConcepts.jsonld` (read on HEAD)
+- **Smart Prompt:** `docs/reboot-kit/TSCG_SmartPrompt.md` (the live session loader)
 - **Reference Instance:** `instances/poclets/FireTriangle/M0_FireTriangle.jsonld`
 
 ---
