@@ -9,9 +9,12 @@ description: >
   think?" about a known system, or requests an HTML/Electron simulation of a TSCG system.
   Do NOT use for Case Studies or Real World Systems (too complex) — this pipeline is
   reserved for Instances.
-version: 2.2.1
+version: 2.2.2
 ---
 
+<!-- v2.2.2 (2026-11-03) — Reference documentation no longer points at
+     docs/reboot-kit/M2_FormulasReference_v15.10.0.md (tensor-era table) or SmartPrompts/:
+     M2/M1 on HEAD, the ReferenceCorpus and OntologyModeling_Guidelines instead. -->
 <!-- v2.2.1 (2026-10-06) — requirement line: python -m pip install -r ontology/toolchain/requirements.txt. -->
 <!-- v2.2.0 (2026-10-01) — Vocabulary hygiene (WS-1). ZERO BARE KEYS rule + mandatory
      bare-key check before delivery (3.3, 3.5); @context example no longer shows
@@ -99,9 +102,14 @@ Base: `https://raw.githubusercontent.com/Echopraxium/tscg/main/`
 (`instances/poclets/`, `instances/systemic-frameworks/`,
 `instances/symbolic-system-grammars/`, `instances/tscg-tools/`).
 
-**Reference documentation:**
-- `docs/reboot-kit/M2_FormulasReference_v15.10.0.md` (verify against M2 at HEAD)
-- `docs/reboot-kit/SmartPrompts/`
+**Reference documentation (read on HEAD, never from a copy):**
+- `ontology/M2_GenericConcepts.jsonld` and `ontology/M1_CoreConcepts.jsonld` — the
+  GenericConcepts, combos and their formulas, as committed.
+- `docs/reboot-kit/TSCG_ReferenceCorpus_Bootstrap.md` — notation and hard invariants;
+  `docs/reboot-kit/TSCG_ReferenceCorpus.md` — which file owns which authority.
+- `ontology/docs/OntologyModeling_Guidelines.md` — modeling guidance.
+- Not an authority: `docs/reboot-kit/M2_FormulasReference_v15.10.0.md` (a tensor-era
+  formula table) and `docs/reboot-kit/SmartPrompts/` (archived loaders) are history.
 
 **Validation (single source of truth for the M0 SHACL schema):**
 - `ontology/toolchain/check-M0/M0_Instances_Schema_shacl.ttl` — M0 SHACL schema
