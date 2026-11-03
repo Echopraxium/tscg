@@ -28,3 +28,20 @@ Byte-for-byte copies; the originals stay where they are. No live citer of the co
   `00_TSCG_M3_Bicephalous_Architecture.md`, `00_TSCG_Map_Territory_Theoretical_Foundation.md`
   → originals in `docs/papers/inputs/` (historical raw material for the article, untouched).
 - `TSCG_Validation_Handoff_M1_M0.md` → original in `ontology/toolchain/owl_reasoning_test/`.
+
+### Lot 2 — tensor era, no live citer (14) — removed
+Summaries and references of retired eras (`⊗` products, MetaConcepts, M2 v11–v14). Remaining
+mentions are only in `files.txt` (lot 4), archived Smart Prompts, archives, or the files
+themselves.
+- `docs/reboot-kit/`: `Amplification_Integration_Summary (1).md`,
+  `ValueSpace_Integration_Summary.md`, `Namespace_Refactoring_Summary.md`,
+  `Domain_Hybrid_Tensor_Product_5D_README.md`, `HYBRID_FORMULAS_NOTATION_README.md`,
+  `Session_Summary_TSCG_v14.2.0.md`, `M0_VSM_README.md` (an old copy, different from the
+  live `instances/systemic-frameworks/vsm/M0_VSM_README.md`, which is authoritative),
+  `M2_OntologyCategory_Proposal.md` (proposed `m2:ontologyCategory`, since forbidden).
+- `docs/`: `M2_MetaConcepts_README.md`, `TSCG_M2_Category_Taxonomy.md`,
+  `TSCG_Session_Complete_Summary.md`, `TSCG_Update_v11_Summary.md`.
+- `docs/methodology/`: `M2_Completeness_and_3D_Visualization_Strategy.md`,
+  `M2_Component_Addition.jsonld` (an ontology fragment outside the gate's scope).
+- Debt recorded (Debt Overview §5, tooling): `tscg_migration.py` writes
+  `docs/M2_MetaConcepts_README.md`; running it would recreate the retired document.

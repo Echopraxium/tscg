@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1704 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1690 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -186,8 +186,6 @@
     - The_Epistemic_Residue.md
   - **methodology/**
     - Bicephalous_Integration_Guide.md
-    - M2_Completeness_and_3D_Visualization_Strategy.md
-    - M2_Component_Addition.jsonld
     - Standard_Referencing_Pattern.md
   - **Orchestration/**
     - Multi-Conversation_Orchestration_Guide.md
@@ -254,21 +252,14 @@
       - TSCG_Smart_Prompt_v16_3_0.md
       - TSCG_Smart_Prompt_v17_0_0.md
     - _000_TSCG_Context_Files.md
-    - Amplification_Integration_Summary (1).md
     - Cascade_Modeling_README.md
     - check_encoding_issues.py
     - CLAUDE.md
-    - Domain_Hybrid_Tensor_Product_5D_README.md
     - ENCODING_CORRESPONDANCES.txt
     - files.txt
-    - HYBRID_FORMULAS_NOTATION_README.md
-    - M0_VSM_README.md
     - M2_FormulasReference_v15.10.0.md
-    - M2_OntologyCategory_Proposal.md
     - macros.txt
-    - Namespace_Refactoring_Summary.md
     - poclet_terminology.md
-    - Session_Summary_TSCG_v14.2.0.md
     - TO_DO.txt
     - TSCG_FileTree.md
     - TSCG_ReferenceCorpus.md
@@ -277,11 +268,6 @@
     - TSCG_SmartPrompt.md
     - TSCG_ValueSpace_Quick_Reference.md
     - TSCG_ValueSpace_User_Guide.md
-    - ValueSpace_Integration_Summary.md
-  - M2_MetaConcepts_README.md
-  - TSCG_M2_Category_Taxonomy.md
-  - TSCG_Session_Complete_Summary.md
-  - TSCG_Update_v11_Summary.md
 - **domain_format_fix_backups/** _(collapsed, 5 entries)_
 - **instances/**
   - **_00_simulation gallery/**

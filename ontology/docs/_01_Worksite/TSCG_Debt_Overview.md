@@ -166,7 +166,11 @@ concept may legitimately stay pure Territory).
     figures (502, ~256, ~77): stale;
   - ~~repository-root `CLAUDE.md` is stale (GenesisSpace, tensor formulas…)~~ — done
     2026-11-02: rewritten as a thin guide (rules and pointers to the Smart Prompt and the
-    ReferenceCorpus, no framework content); old version via `git show <commit>^:CLAUDE.md`.
+    ReferenceCorpus, no framework content); old version via `git show <commit>^:CLAUDE.md`;
+  - `src/tscg/ontology_tools/migration/tscg_migration.py` is a migration tool of the
+    MetaConcepts era: it writes `docs/M2_MetaConcepts_README.md` (removed 2026-11-03,
+    housekeeping reboot-kit lot 2), so running it would recreate a retired document.
+    Not run by the gate or any pipeline; decide: retire the tool or mark it historical.
 - **M0 references to M1 concepts declared nowhere** (found by the ontology/docs
   housekeeping round 2, 2026-11-01; owner: lot M0). Two patch files of February that were
   never merged held the only written definitions; they were removed from `ontology/docs`
