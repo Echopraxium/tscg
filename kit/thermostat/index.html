@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TSCG Atelier — Thermostat</title>
+<meta name="description" content="Atelier interactif TSCG : construire pas à pas la simulation d'une pièce chauffée par un radiateur à thermostat bilame.">
+<!--
+  TSCG Kit — Thermostat workshop (prototype)
+  Author: Echopraxium with the collaboration of Claude AI
+  Single self-contained file: no server, no build step, no external dependency.
+  UI strings are French (first testers); code and comments are English.
+  Structure:
+    1. PIECES      — the piece library (type, ports, parameters, behaviour)
+    2. SIMULATION  — fixed-step model (1 step = 1 simulated minute)
+    3. EDITOR      — SVG node editor (drag, connect typed ports, select, delete)
+    4. TUTORIAL    — steps as data (unlock, goal, progress check, takeaway)
+    5. PANELS      — chart, parameters, session log export
+-->
+<style>
+:root{
+  --bg:#f6f5f1; --panel:#ffffff; --ink:#1d1d1b; --quiet:#6b6a64; --rule:#dedbd2;
+  --grid:#e9e6de; --node:#ffffff; --node-head:#efece4; --accent:#2f6fde;
+  --flux:#d9822b; --info:#2f6fde; --good:#2e8b57; --bad:#c0392b; --band:rgba(46,139,87,.12);
+  --shadow:0 1px 2px rgba(0,0,0,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16171a; --panel:#1f2024; --ink:#ecebe6; --quiet:#a3a29b; --rule:#33343a;
+    --grid:#24252a; --node:#25262b; --node-head:#2e3036; --accent:#6c9cf0;
+    --flux:#f0a050; --info:#6c9cf0; --good:#5cc08a; --bad:#e2685a; --band:rgba(92,192,138,.14);
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16171a; --panel:#1f2024; --ink:#ecebe6; --quiet:#a3a29b; --rule:#33343a;
+  --grid:#24252a; --node:#25262b; --node-head:#2e3036; --accent:#6c9cf0;
+  --flux:#f0a050; --info:#6c9cf0; --good:#5cc08a; --bad:#e2685a; --band:rgba(92,192,138,.14);
+  --shadow:none;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--rule);background:var(--panel)}
+header h1{font-size:16px;margin:0;font-weight:650}
+header .sub{color:var(--quiet);font-size:13px}
+header .spacer{flex:1}
+button{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:6px 10px;cursor:pointer}
+button:hover:not(:disabled){border-color:var(--accent)}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+main{display:grid;grid-template-columns:170px 1fr 340px;height:calc(100% - 53px)}
+#palette{border-right:1px solid var(--rule);padding:12px;overflow:auto;background:var(--panel)}
+#palette h2,#side h2{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--quiet);margin:4px 0 8px}
+.piece-btn{display:block;width:100%;text-align:left;margin-bottom:8px;padding:8px 10px}
+.piece-btn small{display:block;color:var(--quiet);font-size:11.5px}
+.legend{margin-top:16px;font-size:12px;color:var(--quiet)}
+.legend span{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+#stage{position:relative;overflow:hidden;background-color:var(--bg);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px}
+#svg{width:100%;height:100%;display:block;touch-action:none;user-select:none}
+#toast{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);background:var(--panel);border:1px solid var(--rule);
+  border-radius:8px;padding:8px 12px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;box-shadow:var(--shadow)}
+#toast.show{opacity:1}
+#transport{position:absolute;left:16px;top:12px;display:flex;gap:6px;align-items:center;background:var(--panel);
+  border:1px solid var(--rule);border-radius:10px;padding:6px 8px;box-shadow:var(--shadow)}
+#clock{font-variant-numeric:tabular-nums;color:var(--quiet);margin-left:6px;font-size:13px;min-width:92px}
+#side{border-left:1px solid var(--rule);overflow:auto;background:var(--panel);padding:12px 14px}
+.card{border:1px solid var(--rule);border-radius:10px;padding:12px;margin-bottom:12px}
+.card h3{margin:0 0 6px;font-size:15px}
+.goal{margin:0 0 8px}
+.hint{color:var(--quiet);font-size:13px;margin:6px 0 0}
+.progress{height:6px;background:var(--grid);border-radius:4px;overflow:hidden;margin-top:10px}
+.progress>div{height:100%;width:0;background:var(--good);transition:width .2s}
+.status{font-size:12.5px;color:var(--quiet);margin-top:6px;min-height:18px}
+.takeaway{border-left:3px solid var(--good);padding:6px 10px;margin-top:10px;background:var(--band);border-radius:0 6px 6px 0}
+.hood{border-left:3px solid var(--accent);padding:6px 10px;margin-top:8px;font-size:13px;color:var(--quiet)}
+.choices{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+#chart{width:100%;height:180px;display:block}
+.params label{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:6px 0;font-size:13px}
+.params input{width:84px;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--rule);border-radius:6px;padding:4px 6px}
+.row{display:flex;gap:6px;flex-wrap:wrap}
+.muted{color:var(--quiet);font-size:12.5px}
+/* SVG */
+.node-body{fill:var(--node);stroke:var(--rule);stroke-width:1.25}
+.node.selected .node-body{stroke:var(--accent);stroke-width:2}
+.node-head{fill:var(--node-head)}
+.node-title{fill:var(--ink);font-weight:650;font-size:13.5px}
+.node-gen{fill:var(--quiet);font-size:11px}
+.port-label{fill:var(--quiet);font-size:11.5px}
+.node-value{fill:var(--ink);font-size:13px;font-variant-numeric:tabular-nums}
+.port{stroke:var(--node);stroke-width:2;cursor:crosshair}
+.port.flux{fill:var(--flux)} .port.info{fill:var(--info)}
+.wire{fill:none;stroke-width:2.5;cursor:pointer}
+.wire.flux{stroke:var(--flux)} .wire.info{stroke:var(--info);stroke-dasharray:6 5}
+.wire.flux.active{stroke-dasharray:10 6;animation:flow .8s linear infinite}
+.wire.selected{stroke-width:4}
+.wire-hit{fill:none;stroke:transparent;stroke-width:14;cursor:pointer}
+@keyframes flow{to{stroke-dashoffset:-16}}
+.switch{cursor:pointer}
+.switch rect{stroke:var(--rule);stroke-width:1.25}
+.switch.on rect{fill:var(--flux);stroke:var(--flux)}
+.switch.off rect{fill:var(--grid)}
+.switch text{font-size:12px;fill:var(--ink)}
+.switch.disabled{cursor:default;opacity:.55}
+.lamp.on{fill:var(--flux)} .lamp.off{fill:var(--grid);stroke:var(--rule)}
+@media (max-width: 900px){
+  main{grid-template-columns:1fr;grid-template-rows:auto 460px auto;height:auto}
+  #palette{border-right:none;border-bottom:1px solid var(--rule)}
+  #palette .list{display:flex;gap:8px;flex-wrap:wrap}
+  .piece-btn{width:auto}
+  #side{border-left:none;border-top:1px solid var(--rule)}
+  header .sub{display:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Atelier TSCG — Thermostat</h1>
+  <span class="sub">Construis la simulation, pièce par pièce</span>
+  <span class="spacer"></span>
+  <button id="btnHood" title="Afficher les noms génériques des pièces">Sous le capot</button>
+  <button id="btnFree" title="Débloquer toutes les pièces et quitter le tutoriel">Mode libre</button>
+  <button id="btnExport" title="Télécharger un journal de la session (pour les tests)">Exporter ma session</button>
+</header>
+<main>
+  <aside id="palette">
+    <h2>Pièces</h2>
+    <div class="list" id="pieceList"></div>
+    <div class="legend">
+      <div><span style="background:var(--flux)"></span>flux (chaleur)</div>
+      <div><span style="background:var(--info)"></span>information</div>
+      <p>Tire un fil d'une sortie (à droite d'une pièce) vers une entrée (à gauche) de même couleur.</p>
+      <p>Clique une pièce ou un fil puis <kbd>Suppr</kbd> pour l'enlever.</p>
+    </div>
+  </aside>
+  <section id="stage">
+    <svg id="svg" aria-label="Atelier : pièces et fils"></svg>
+    <div id="transport">
+      <button id="btnPlay" class="primary" title="Lancer / mettre en pause le temps">▶ Lancer</button>
+      <button id="btnSpeed" title="Vitesse du temps">×1</button>
+      <button id="btnReset" title="Remettre l'horloge à zéro et les températures à leur valeur initiale">↺</button>
+      <span id="clock">0 h 00</span>
+    </div>
+    <div id="toast"></div>
+  </section>
+  <aside id="side">
+    <div class="card" id="stepCard"></div>
+    <div class="card">
+      <h2>Températures</h2>
+      <canvas id="chart"></canvas>
+      <div class="muted" id="chartLegend"></div>
+    </div>
+    <div class="card" id="paramCard">
+      <h2>Réglages</h2>
+      <div class="params" id="params"><p class="muted">Clique une pièce pour voir ses réglages.</p></div>
+    </div>
+  </aside>
+</main>
+<script>
+"use strict";
+/* ===================================================================
+   1. PIECES — the library. `generic` is the TSCG name shown only
+      "under the hood". Ports: kind 'flux' (heat, kW) or 'info'.
+   =================================================================== */
+const PIECES = {
+  room: { name: "Pièce", generic: "Storage", role: "storage", color: "#d9822b",
+    blurb: "accumule la chaleur",
+    inputs:  [{ id: "in",   label: "chaleur reçue",  kind: "flux", multi: true }],
+    outputs: [{ id: "out",  label: "chaleur perdue", kind: "flux" },
+              { id: "temp", label: "température",    kind: "info" }],
+    params: { C:  { label: "Capacité (kWh/°C)", v: 0.5, step: 0.1, min: 0.05 },
+              k:  { label: "Fuite (kW/°C)",     v: 0.1, step: 0.05, min: 0 },
+              T0: { label: "Temp. initiale (°C)", v: 20, step: 1 } } },
+  wall: { name: "Mur", generic: "Sink", role: "sink",
+    blurb: "laisse filer la chaleur dehors",
+    inputs:  [{ id: "in", label: "pertes", kind: "flux", multi: true }],
+    outputs: [],
+    params: { Text: { label: "Temp. extérieure (°C)", v: 5, step: 1 } } },
+  heater: { name: "Chauffage", generic: "Source", role: "source",
+    blurb: "produit de la chaleur",
+    inputs:  [{ id: "cmd",  label: "commande", kind: "info" }],
+    outputs: [{ id: "heat", label: "chaleur",  kind: "flux" }],
+    params: { P: { label: "Puissance (kW)", v: 2.5, step: 0.5, min: 0 } } },
+  bimetal: { name: "Bilame", generic: "Threshold (hystérésis)", role: "threshold",
+    blurb: "se courbe avec la chaleur",
+    inputs:  [{ id: "temp", label: "température", kind: "info" }],
+    outputs: [{ id: "cmd",  label: "commande",    kind: "info" }],
+    params: { set: { label: "Consigne (°C)",   v: 20, step: 0.5 },
+              h:   { label: "Hystérésis (°C)", v: 1,  step: 0.25, min: 0 } } },
+  radiator: { name: "Radiateur", generic: "Storage", role: "storage", color: "#c0392b",
+    blurb: "masse qui stocke puis rend la chaleur",
+    inputs:  [{ id: "in",   label: "chaleur reçue", kind: "flux", multi: true }],
+    outputs: [{ id: "out",  label: "chaleur rendue", kind: "flux" },
+              { id: "temp", label: "température",   kind: "info" }],
+    params: { C:  { label: "Masse (kWh/°C)",      v: 0.3, step: 0.1, min: 0.05 },
+              k:  { label: "Échange (kW/°C)",     v: 0.5, step: 0.05, min: 0 },
+              T0: { label: "Temp. initiale (°C)", v: 20, step: 1 } } }
+};
+const ORDER = ["room", "wall", "heater", "bimetal", "radiator"];
+// Where each piece lands when added: heat flows left to right, control sits below.
+const HOME = { heater: { x: 64, y: 90 }, radiator: { x: 64, y: 330 }, room: { x: 320, y: 90 },
+               wall: { x: 576, y: 90 }, bimetal: { x: 320, y: 300 } };
+
+/* ===================================================================
+   STATE
+   =================================================================== */
+const S = {
+  nodes: [], wires: [], nextId: 1,
+  minutes: 0, running: false, speed: 1, hood: false, free: false,
+  step: 0, unlocked: new Set(), selected: null, history: [],
+  log: [], t0: Date.now(), prediction: null, done: false
+};
+const STEP_MIN = 1;               // one simulation step = 1 simulated minute
+const DT_H = STEP_MIN / 60;       // in hours
+const MIN_PER_SEC = 5;            // ×1 speed: 1 real second = 5 simulated minutes
+const SPEEDS = [0.5, 1, 4];
+
+function log(type, detail) { S.log.push({ t: +((Date.now() - S.t0) / 1000).toFixed(1), sim: S.minutes, type, detail }); }
+const byId = id => S.nodes.find(n => n.id === id);
+const nodesOf = type => S.nodes.filter(n => n.type === type);
+const wiresFrom = (id, port) => S.wires.filter(w => w.from.node === id && (!port || w.from.port === port));
+const wiresTo = (id, port) => S.wires.filter(w => w.to.node === id && (!port || w.to.port === port));
+
+/* ===================================================================
+   2. SIMULATION — Newton cooling between storages, bang-bang bimetal.
+   =================================================================== */
+function resetNodeState(n) {
+  const p = PIECES[n.type];
+  if (p.role === "storage") n.s = { T: n.p.T0 };
+  if (p.role === "source") n.s = { u: 0, manual: n.s ? n.s.manual : 0 };
+  if (p.role === "threshold") n.s = { u: 1, x: null };
+  if (p.role === "sink") n.s = {};
+}
+function infoValue(nodeId, port) {          // value arriving on an info input, or null
+  const w = wiresTo(nodeId, port)[0];
+  if (!w) return null;
+  const src = byId(w.from.node);
+  if (PIECES[src.type].role === "storage") return src.s.T;
+  if (PIECES[src.type].role === "threshold") return src.s.x === null ? 0 : src.s.u;
+  return null;
+}
+function simStep() {
+  // information first: thresholds read, sources obey
+  for (const n of S.nodes) {
+    const r = PIECES[n.type].role;
+    if (r === "threshold") {
+      const x = infoValue(n.id, "temp");
+      n.s.x = x;
+      if (x !== null) {
+        if (x < n.p.set - n.p.h / 2) n.s.u = 1;
+        else if (x > n.p.set + n.p.h / 2) n.s.u = 0;
+      }
+    }
+  }
+  for (const n of S.nodes) {
+    if (PIECES[n.type].role !== "source") continue;
+    const cmd = infoValue(n.id, "cmd");
+    n.s.u = cmd === null ? n.s.manual : (cmd >= 0.5 ? 1 : 0);
+  }
+  // flux
+  const net = new Map();
+  for (const w of S.wires) {
+    if (w.kind !== "flux") continue;
+    const a = byId(w.from.node), b = byId(w.to.node);
+    const ra = PIECES[a.type].role, rb = PIECES[b.type].role;
+    let p = 0;
+    if (ra === "source") p = a.s.u * a.p.P / Math.max(1, wiresFrom(a.id, "heat").length);
+    else if (ra === "storage") {
+      const target = rb === "storage" ? b.s.T : rb === "sink" ? b.p.Text : null;
+      if (target !== null) p = a.p.k * (a.s.T - target);
+    }
+    w.power = p;
+    if (ra === "storage") net.set(a.id, (net.get(a.id) || 0) - p);
+    if (rb === "storage") net.set(b.id, (net.get(b.id) || 0) + p);
+  }
+  for (const n of S.nodes) if (PIECES[n.type].role === "storage") n.s.T += DT_H * (net.get(n.id) || 0) / n.p.C;
+  S.minutes += STEP_MIN;
+  const snap = { m: S.minutes, T: {}, u: {} };
+  for (const n of S.nodes) {
+    const r = PIECES[n.type].role;
+    if (r === "storage") snap.T[n.id] = n.s.T;
+    if (r === "source") snap.u[n.id] = n.s.u;
+  }
+  S.history.push(snap);
+  if (S.history.length > 900) S.history.shift();
+  tutorialTick();
+}
+
+/* ===================================================================
+   3. EDITOR — SVG node graph
+   =================================================================== */
+const svg = document.getElementById("svg");
+const NS = "http://www.w3.org/2000/svg";
+const NW = 196, HEAD = 34, ROW = 24;
+function el(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function nodeHeight(n) {
+  const p = PIECES[n.type];
+  const rows = Math.max(p.inputs.length, p.outputs.length, 1);
+  return HEAD + 10 + rows * ROW + (p.role === "source" ? 40 : 30);
+}
+function portPos(n, port, side) {
+  const p = PIECES[n.type];
+  const list = side === "in" ? p.inputs : p.outputs;
+  const i = list.findIndex(q => q.id === port);
+  return { x: n.x + (side === "in" ? 0 : NW), y: n.y + HEAD + 18 + i * ROW };
+}
+// Forward wires are smooth curves. A wire that must go back to the left is routed
+// around: out to the right, down to a lane under both pieces, across, and back up.
+function wirePath(a, b, na, nb, k = 0) {
+  if (b.x >= a.x + 40 || !na || !nb) {
+    const dx = Math.max(50, Math.abs(b.x - a.x) / 2);
+    return `M${a.x} ${a.y} C${a.x + dx} ${a.y} ${b.x - dx} ${b.y} ${b.x} ${b.y}`;
+  }
+  const lane = Math.max(na.y + nodeHeight(na), nb.y + nodeHeight(nb)) + 22 + 14 * k, r = 10;
+  const xr = a.x + 24 + 10 * k, xl = Math.max(6 + 4 * k, b.x - 24 - 10 * k);   // k separates parallel return wires
+  return `M${a.x} ${a.y} H${xr - r} Q${xr} ${a.y} ${xr} ${a.y + r} V${lane - r} Q${xr} ${lane} ${xr - r} ${lane}` +
+         ` H${xl + r} Q${xl} ${lane} ${xl} ${lane - r} V${b.y + r} Q${xl} ${b.y} ${xl + r} ${b.y} H${b.x}`;
+}
+let liveRefs = [];
+function render() {
+  svg.textContent = "";
+  liveRefs = [];
+  const gW = el("g", {}, svg), gN = el("g", {}, svg);
+  let back = 0;
+  for (const w of S.wires) {
+    const na = byId(w.from.node), nb = byId(w.to.node);
+    const a = portPos(na, w.from.port, "out"), b = portPos(nb, w.to.port, "in");
+    const d = wirePath(a, b, na, nb, b.x < a.x + 40 ? back++ : 0);
+    const path = el("path", { d, class: `wire ${w.kind}${S.selected === "w" + w.id ? " selected" : ""}` }, gW);
+    const hit = el("path", { d, class: "wire-hit" }, gW);
+    hit.addEventListener("pointerdown", e => { e.stopPropagation(); select("w" + w.id); });
+    liveRefs.push({ wire: w, path });
+  }
+  for (const n of S.nodes) {
+    const p = PIECES[n.type], h = nodeHeight(n);
+    const g = el("g", { class: "node" + (S.selected === "n" + n.id ? " selected" : ""), transform: `translate(${n.x},${n.y})` }, gN);
+    el("rect", { class: "node-body", width: NW, height: h, rx: 10 }, g);
+    const head = el("path", { class: "node-head", d: `M0 10 Q0 0 10 0 H${NW - 10} Q${NW} 0 ${NW} 10 V${HEAD} H0 Z` }, g);
+    const title = el("text", { class: "node-title", x: 12, y: S.hood ? 16 : 22 }, g); title.textContent = p.name;
+    if (S.hood) { const t = el("text", { class: "node-gen", x: 12, y: 29 }, g); t.textContent = p.generic; }
+    for (const part of [head, title]) part.style.cursor = "grab";
+    head.addEventListener("pointerdown", e => startDrag(e, n));
+    title.addEventListener("pointerdown", e => startDrag(e, n));
+    g.addEventListener("pointerdown", e => { if (!e.defaultPrevented) select("n" + n.id); });
+    p.inputs.forEach((q, i) => {
+      const y = HEAD + 18 + i * ROW;
+      el("circle", { class: `port ${q.kind}`, cx: 0, cy: y, r: 7, "data-node": n.id, "data-port": q.id, "data-side": "in" }, g);
+      const t = el("text", { class: "port-label", x: 12, y: y + 4 }, g); t.textContent = q.label;
+    });
+    p.outputs.forEach((q, i) => {
+      const y = HEAD + 18 + i * ROW;
+      const c = el("circle", { class: `port ${q.kind}`, cx: NW, cy: y, r: 7, "data-node": n.id, "data-port": q.id, "data-side": "out" }, g);
+      c.addEventListener("pointerdown", e => startWire(e, n, q));
+      const t = el("text", { class: "port-label", x: NW - 12, y: y + 4, "text-anchor": "end" }, g); t.textContent = q.label;
+    });
+    const rows = Math.max(p.inputs.length, p.outputs.length, 1);
+    const vy = HEAD + 10 + rows * ROW + 14;
+    const val = el("text", { class: "node-value", x: 12, y: vy }, g);
+    let sw = null, lamp = null;
+    if (p.role === "source") {
+      sw = el("g", { class: "switch", transform: `translate(${NW - 92},${vy - 15})` }, g);
+      el("rect", { width: 80, height: 24, rx: 12 }, sw);
+      const st = el("text", { x: 40, y: 16, "text-anchor": "middle" }, sw);
+      sw.addEventListener("pointerdown", e => { e.stopPropagation(); toggleManual(n); });
+      sw._label = st;
+    }
+    if (p.role === "threshold") lamp = el("circle", { class: "lamp", cx: NW - 22, cy: vy - 4, r: 7 }, g);
+    liveRefs.push({ node: n, val, sw, lamp });
+  }
+  if (dragWire) { dragWire.path = el("path", { class: `wire ${dragWire.kind}`, d: "" }, svg); dragWire.path.style.pointerEvents = "none"; }
+  updateLive();
+}
+function updateLive() {
+  for (const r of liveRefs) {
+    if (r.wire) { r.path.classList.toggle("active", r.wire.kind === "flux" && S.running && Math.abs(r.wire.power || 0) > 0.01); continue; }
+    const n = r.node, role = PIECES[n.type].role;
+    if (role === "storage") r.val.textContent = n.s.T.toFixed(1) + " °C";
+    if (role === "sink") r.val.textContent = "dehors : " + n.p.Text + " °C";
+    if (role === "source") {
+      const auto = wiresTo(n.id, "cmd").length > 0;
+      r.val.textContent = n.s.u ? "chauffe" : "à l'arrêt";
+      r.sw.setAttribute("class", "switch " + ((auto ? n.s.u : n.s.manual) ? "on" : "off") + (auto ? " disabled" : ""));
+      r.sw._label.textContent = auto ? "auto" : (n.s.manual ? "marche" : "arrêt");
+    }
+    if (role === "threshold") {
+      r.val.textContent = n.s.x === null ? "non relié" : (n.s.u ? "contact fermé" : "contact ouvert");
+      r.lamp.setAttribute("class", "lamp " + (n.s.x !== null && n.s.u ? "on" : "off"));
+    }
+  }
+  document.getElementById("clock").textContent = fmtClock(S.minutes);
+}
+const fmtClock = m => `${Math.floor(m / 60)} h ${String(Math.round(m % 60)).padStart(2, "0")}`;
+
+function svgPoint(e) { const r = svg.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+let drag = null, dragWire = null;
+function startDrag(e, n) {
+  e.preventDefault(); e.stopPropagation(); select("n" + n.id, true);
+  const p = svgPoint(e); drag = { n, dx: p.x - n.x, dy: p.y - n.y };
+}
+function startWire(e, n, q) {
+  e.preventDefault(); e.stopPropagation();
+  dragWire = { from: { node: n.id, port: q.id }, kind: q.kind };
+  render();
+}
+window.addEventListener("pointermove", e => {
+  if (drag) {
+    const p = svgPoint(e), r = svg.getBoundingClientRect();
+    drag.n.x = Math.max(4, Math.min(r.width - NW - 4, p.x - drag.dx));
+    drag.n.y = Math.max(56, Math.min(r.height - 40, p.y - drag.dy));
+    render();
+  } else if (dragWire && dragWire.path) {
+    const a = portPos(byId(dragWire.from.node), dragWire.from.port, "out");
+    dragWire.path.setAttribute("d", wirePath(a, svgPoint(e)));
+  }
+});
+window.addEventListener("pointerup", e => {
+  if (drag) { drag = null; return; }
+  if (!dragWire) return;
+  const target = document.elementFromPoint(e.clientX, e.clientY);
+  const dw = dragWire; dragWire = null;
+  if (target && target.dataset && target.dataset.side === "in") connect(dw, +target.dataset.node, target.dataset.port);
+  render();
+});
+function connect(dw, toNode, toPort) {
+  const to = byId(toNode), q = PIECES[to.type].inputs.find(x => x.id === toPort);
+  if (toNode === dw.from.node) return reject("Une pièce ne se branche pas sur elle-même.");
+  if (q.kind !== dw.kind) return reject(dw.kind === "flux"
+    ? "De la chaleur ne peut pas entrer dans une prise d'information."
+    : "Une information ne peut pas entrer dans une prise de chaleur.");
+  if (S.wires.some(w => w.from.node === dw.from.node && w.from.port === dw.from.port && w.to.node === toNode && w.to.port === toPort)) return;
+  if (!q.multi) S.wires = S.wires.filter(w => !(w.to.node === toNode && w.to.port === toPort));
+  const w = { id: S.nextId++, from: dw.from, to: { node: toNode, port: toPort }, kind: dw.kind, power: 0 };
+  S.wires.push(w);
+  log("wire_add", `${byId(w.from.node).type}.${w.from.port} -> ${to.type}.${toPort}`);
+  render(); tutorialCheckStructure();
+}
+function reject(msg) { toast(msg); log("wire_reject", msg); }
+function addNode(type) {
+  const r = svg.getBoundingClientRect();
+  const home = HOME[type] || { x: 40, y: 80 };
+  const n = { id: S.nextId++, type, x: home.x, y: home.y, p: {} };
+  while (S.nodes.some(m => Math.abs(m.x - n.x) < 30 && Math.abs(m.y - n.y) < 30)) { n.x += 30; n.y += 30; }
+  n.x = Math.max(8, Math.min(n.x, r.width - NW - 8));
+  for (const k in PIECES[type].params) n.p[k] = PIECES[type].params[k].v;
+  resetNodeState(n);
+  S.nodes.push(n);
+  log("node_add", type);
+  select("n" + n.id, true);
+  tutorialCheckStructure();
+}
+function deleteSelected() {
+  if (!S.selected) return;
+  const id = +S.selected.slice(1);
+  if (S.selected[0] === "n") {
+    log("node_delete", byId(id).type);
+    S.nodes = S.nodes.filter(n => n.id !== id);
+    S.wires = S.wires.filter(w => w.from.node !== id && w.to.node !== id);
+  } else { log("wire_delete", id); S.wires = S.wires.filter(w => w.id !== id); }
+  S.selected = null; render(); renderParams(); tutorialCheckStructure();
+}
+function select(key, quiet) { S.selected = key; render(); renderParams(); }
+function toggleManual(n) {
+  if (wiresTo(n.id, "cmd").length) { toast("Ce chauffage obéit à sa commande : l'interrupteur est désactivé."); return; }
+  n.s.manual = n.s.manual ? 0 : 1; n.s.u = n.s.manual;
+  log("manual_toggle", n.s.manual ? "on" : "off");
+  updateLive();
+}
+svg.addEventListener("pointerdown", e => { if (e.target === svg) { S.selected = null; render(); renderParams(); } });
+window.addEventListener("keydown", e => {
+  if ((e.key === "Delete" || e.key === "Backspace") && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); deleteSelected(); }
+  if (e.key === " " && !/INPUT|TEXTAREA|BUTTON/.test(document.activeElement.tagName)) { e.preventDefault(); togglePlay(); }
+});
+let toastTimer = null;
+function toast(msg) { const t = document.getElementById("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 2600); }
+
+/* ===================================================================
+   4. TUTORIAL — steps as data. `progress()` returns 0..1 each sim
+      step; `need()` returns a message while the structure is missing.
+   =================================================================== */
+const firstRoom = () => nodesOf("room")[0];
+const linked = (fromType, fromPort, toType, toPort) => S.wires.some(w =>
+  byId(w.from.node).type === fromType && w.from.port === fromPort && byId(w.to.node).type === toType && w.to.port === toPort);
+const inBand = () => { const r = firstRoom(); return r && r.s.T >= 19 && r.s.T <= 21; };
+const STEPS = [
+  { id: "room", unlock: ["room"], title: "1 · Une pièce",
+    goal: "Pose une <b>Pièce</b> dans l'atelier, puis lance le temps avec ▶.",
+    hint: "Observe son thermomètre pendant une heure.",
+    need: () => firstRoom() ? null : "Il manque une Pièce.",
+    duration: 60, counts: () => true,
+    takeaway: "La température ne bouge pas. Un stock ne change que si quelque chose y entre ou en sort.",
+    hood: "Pièce = <b>Storage</b> : elle accumule une quantité (ici, de la chaleur)." },
+  { id: "wall", unlock: ["wall"], title: "2 · Le mur et l'hiver",
+    goal: "Dehors, il fait 5 °C. Pose un <b>Mur</b> et relie la sortie <i>chaleur perdue</i> de la Pièce à l'entrée du Mur. Puis laisse passer 6 heures.",
+    predict: { q: "Avant de lancer : à ton avis, où sera la température dans 6 heures ?",
+      choices: ["Toujours vers 20 °C", "Elle descend, mais reste au-dessus de 5 °C", "Elle tombe à 5 °C ou moins"] },
+    need: () => !firstRoom() ? "Il manque une Pièce." : !linked("room", "out", "wall", "in") ? "Relie la Pièce au Mur." : null,
+    duration: 360, counts: () => true,
+    takeaway: "La température descend vers 5 °C, de plus en plus lentement. Sans chauffage, le système tend vers l'extérieur : c'est son point d'attraction.",
+    hood: "Mur = <b>Sink</b> : la sortie du système. Le point vers lequel tout tend s'appelle un <b>attracteur</b>." },
+  { id: "manual", unlock: ["heater"], title: "3 · Chauffer à la main",
+    enter: () => { for (const n of S.nodes) if (PIECES[n.type].role === "storage") n.s.T = 17; },
+    goal: "La pièce est retombée à 17 °C. Pose un <b>Chauffage</b>, relie sa <i>chaleur</i> à la Pièce, et garde la pièce <b>entre 19 et 21 °C pendant 2 heures</b> en cliquant sur son interrupteur.",
+    hint: "La bande verte du graphique montre la zone à tenir.",
+    need: () => !firstRoom() ? "Il manque une Pièce." : !linked("room", "out", "wall", "in") ? "Garde la Pièce reliée au Mur." :
+      !linked("heater", "heat", "room", "in") ? "Relie le Chauffage à la Pièce." :
+      S.wires.some(w => byId(w.to.node).type === "heater" && w.to.port === "cmd") ? "Pour cette étape, c'est toi qui commandes : pas de fil sur la commande." : null,
+    duration: 120, counts: inBand, consecutive: true,
+    takeaway: "Réguler à la main, c'est épuisant : il faut surveiller sans cesse. On rêverait d'un objet qui le ferait à notre place…",
+    hood: "Chauffage = <b>Source</b> : l'entrée d'énergie du système." },
+  { id: "loop", unlock: ["bimetal"], title: "4 · Fermer la boucle",
+    goal: "Pose un <b>Bilame</b>. Relie la <i>température</i> de la Pièce au Bilame, puis la <i>commande</i> du Bilame au Chauffage. Ensuite, ne touche plus à rien : <b>2 heures entre 19 et 21 °C</b>.",
+    hint: "Le bilame se courbe quand il chauffe et ouvre le contact au-dessus de la consigne.",
+    need: () => !firstRoom() ? "Il manque une Pièce." : !linked("heater", "heat", "room", "in") ? "Relie le Chauffage à la Pièce." :
+      !linked("room", "temp", "bimetal", "temp") ? "Relie la température de la Pièce au Bilame." :
+      !linked("bimetal", "cmd", "heater", "cmd") ? "Relie la commande du Bilame au Chauffage." : null,
+    duration: 120, counts: inBand, consecutive: true,
+    takeaway: "Tu viens de construire une <b>boucle de rétroaction négative</b> : elle se corrige toute seule. Regarde le graphique : la température ne tient jamais exactement la consigne, elle dessine des dents de scie.",
+    hood: "Bilame = <b>Threshold</b> avec hystérésis. Le fil qui revient de la Pièce au Chauffage forme une <b>Feedback Loop</b> : ce n'est pas une pièce, c'est un câblage." }
+];
+let tut = { counter: 0, finished: false };
+function enterStep(i) {
+  S.step = i; tut = { counter: 0, finished: false };
+  const st = STEPS[i];
+  if (st) { st.unlock.forEach(u => S.unlocked.add(u)); if (st.enter) st.enter(); log("step_enter", st.id); }
+  renderPalette(); renderStep(); render();
+}
+function tutorialTick() {
+  if (S.free || S.done) return;
+  const st = STEPS[S.step];
+  if (!st || tut.finished) return;
+  if (st.need()) { tut.counter = 0; return; }
+  if (st.counts()) tut.counter++; else if (st.consecutive) tut.counter = 0;
+  if (tut.counter >= st.duration) { tut.finished = true; log("step_done", st.id); renderStep(); }
+}
+function tutorialCheckStructure() { renderStep(); }
+function renderStep() {
+  const card = document.getElementById("stepCard");
+  if (S.free) {
+    card.innerHTML = `<h3>Atelier libre</h3><p class="goal">Toutes les pièces sont débloquées. Essaie d'intercaler un <b>Radiateur</b> entre le Chauffage et la Pièce, puis compare les deux courbes : lequel réagit en premier quand le contact s'ouvre ?</p>
+      <p class="hint">Autres idées : ouvre la fenêtre en baissant la température extérieure, élargis l'hystérésis du bilame, ajoute une seconde pièce.</p>
+      ${S.hood ? `<div class="hood">Les mêmes pièces modélisent la glycémie (insuline = commande), un réfrigérateur, la chasse d'eau à flotteur ou le réapprovisionnement d'un stock.</div>` : ""}
+      <div class="row" style="margin-top:10px"><button id="btnBackTut">Reprendre le tutoriel</button></div>`;
+    document.getElementById("btnBackTut").onclick = () => {
+      S.free = false; document.getElementById("btnFree").classList.remove("on"); log("mode_tutorial", "");
+      if (S.done) { S.done = false; enterStep(0); } else enterStep(S.step);
+    };
+    return;
+  }
+  if (S.done) {
+    card.innerHTML = `<h3>Bravo : la boucle tourne seule</h3>
+      <p class="goal">Ce n'était pas vraiment un radiateur : c'était une <b>boucle de rétroaction</b>. Les mêmes pièces, avec d'autres noms, décrivent :</p>
+      <ul><li>la glycémie (sucre = stock, insuline = commande)</li><li>un réfrigérateur</li><li>la chasse d'eau à flotteur</li><li>le seuil de réapprovisionnement d'un stock</li></ul>
+      <p class="hint">Nouvelle pièce débloquée dans l'atelier libre : le <b>Radiateur</b>.</p>
+      <div class="row"><button class="primary" id="btnGoFree">Ouvrir l'atelier libre</button></div>`;
+    document.getElementById("btnGoFree").onclick = goFree;
+    return;
+  }
+  const st = STEPS[S.step], need = st.need();
+  const pct = Math.min(100, Math.round(100 * tut.counter / st.duration));
+  let html = `<h3>${st.title}</h3><p class="goal">${st.goal}</p>`;
+  if (st.predict && S.prediction === null) {
+    html += `<p class="hint">${st.predict.q}</p><div class="choices">` +
+      st.predict.choices.map((c, i) => `<button data-choice="${i}">${c}</button>`).join("") + `</div>`;
+  } else if (st.predict) {
+    html += `<p class="hint">Ta prédiction : « ${st.predict.choices[S.prediction]} ».</p>`;
+  }
+  if (st.hint && !tut.finished) html += `<p class="hint">${st.hint}</p>`;
+  html += `<div class="progress"><div style="width:${tut.finished ? 100 : pct}%"></div></div>`;
+  html += `<div class="status" id="stepStatus">${tut.finished ? "Étape réussie." : need ? need : (S.running ? "En cours…" : "Lance le temps avec ▶.")}</div>`;
+  if (tut.finished) {
+    html += `<div class="takeaway">${st.takeaway}</div>`;
+    if (S.hood) html += `<div class="hood">${st.hood}</div>`;
+    html += `<div class="row" style="margin-top:10px"><button class="primary" id="btnNext">${S.step + 1 < STEPS.length ? "Étape suivante" : "Terminer"}</button></div>`;
+  }
+  card.innerHTML = html;
+  card.querySelectorAll("[data-choice]").forEach(b => b.onclick = () => { S.prediction = +b.dataset.choice; log("predict", st.predict.choices[S.prediction]); renderStep(); });
+  const nx = document.getElementById("btnNext");
+  if (nx) nx.onclick = () => { if (S.step + 1 < STEPS.length) enterStep(S.step + 1); else { S.done = true; S.unlocked.add("radiator"); log("tutorial_done", ""); renderPalette(); renderStep(); } };
+}
+function refreshStepStatus() {           // cheap per-frame update of progress bar + status line
+  if (S.free || S.done) return;
+  const st = STEPS[S.step]; if (!st || tut.finished) return;
+  const bar = document.querySelector("#stepCard .progress>div"), status = document.getElementById("stepStatus");
+  if (!bar || !status) return;
+  bar.style.width = Math.min(100, Math.round(100 * tut.counter / st.duration)) + "%";
+  const need = st.need();
+  status.textContent = need ? need : (S.running ? (st.consecutive && !st.counts() ? "Hors de la zone 19–21 °C : le compteur repart de zéro." : "En cours… " + fmtClock(tut.counter) + " / " + fmtClock(st.duration)) : "Lance le temps avec ▶.");
+}
+function goFree() {
+  S.free = true; ORDER.forEach(t => S.unlocked.add(t));
+  document.getElementById("btnFree").classList.add("on");
+  log("mode_free", ""); renderPalette(); renderStep();
+}
+
+/* ===================================================================
+   5. PANELS — palette, parameters, chart, transport, export
+   =================================================================== */
+function renderPalette() {
+  const list = document.getElementById("pieceList"); list.textContent = "";
+  for (const t of ORDER) {
+    const p = PIECES[t], open = S.unlocked.has(t);
+    const b = document.createElement("button");
+    b.className = "piece-btn"; b.disabled = !open;
+    b.innerHTML = `${p.name}<small>${open ? (S.hood ? p.generic : p.blurb) : "verrouillée"}</small>`;
+    b.onclick = () => addNode(t);
+    list.appendChild(b);
+  }
+}
+function renderParams() {
+  const box = document.getElementById("params");
+  if (!S.selected) { box.innerHTML = `<p class="muted">Clique une pièce pour voir ses réglages.</p>`; return; }
+  if (S.selected[0] === "w") { box.innerHTML = `<p class="muted">Fil sélectionné.</p><button id="btnDel">Supprimer le fil</button>`; document.getElementById("btnDel").onclick = deleteSelected; return; }
+  const n = byId(+S.selected.slice(1)); if (!n) return;
+  const p = PIECES[n.type];
+  box.innerHTML = `<p><b>${p.name}</b>${S.hood ? ` <span class="muted">· ${p.generic}</span>` : ""}</p>` +
+    Object.entries(p.params).map(([k, d]) => `<label>${d.label}<input type="number" data-k="${k}" step="${d.step}" ${d.min !== undefined ? `min="${d.min}"` : ""} value="${n.p[k]}"></label>`).join("") +
+    `<div class="row" style="margin-top:8px"><button id="btnDel">Supprimer la pièce</button></div>`;
+  box.querySelectorAll("input").forEach(inp => inp.onchange = () => {
+    const d = p.params[inp.dataset.k]; let v = parseFloat(inp.value);
+    if (!isFinite(v)) v = d.v; if (d.min !== undefined) v = Math.max(d.min, v);
+    n.p[inp.dataset.k] = v; inp.value = v; log("param", `${n.type}.${inp.dataset.k}=${v}`); render();
+  });
+  document.getElementById("btnDel").onclick = deleteSelected;
+}
+const chart = document.getElementById("chart");
+function drawChart() {
+  const dpr = window.devicePixelRatio || 1, w = chart.clientWidth, h = chart.clientHeight;
+  if (chart.width !== w * dpr) { chart.width = w * dpr; chart.height = h * dpr; }
+  const c = chart.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, w, h);
+  const css = getComputedStyle(document.documentElement), v = n => css.getPropertyValue(n).trim();
+  const L = 30, R = 6, T = 6, B = 26, pw = w - L - R, ph = h - T - B;
+  const span = 480, m1 = Math.max(span, S.minutes), m0 = m1 - span;
+  const X = m => L + (m - m0) / span * pw, Y = t => T + (1 - (t - 0) / 32) * ph;
+  c.font = "11px system-ui, sans-serif"; c.fillStyle = v("--quiet"); c.strokeStyle = v("--grid"); c.lineWidth = 1;
+  for (let t = 0; t <= 30; t += 10) { c.beginPath(); c.moveTo(L, Y(t)); c.lineTo(w - R, Y(t)); c.stroke(); c.fillText(t + "°", 2, Y(t) + 4); }
+  for (let m = Math.ceil(m0 / 120) * 120; m <= m1; m += 120) c.fillText(Math.round(m / 60) + " h", X(m) - 8, h - 2);
+  if (S.unlocked.has("heater") || S.free) { c.fillStyle = v("--band"); c.fillRect(L, Y(21), pw, Y(19) - Y(21)); }
+  const storages = S.nodes.filter(n => PIECES[n.type].role === "storage");
+  const legend = [];
+  storages.forEach((n, i) => {
+    const col = n.type === "room" ? v("--flux") : v("--bad");
+    c.strokeStyle = col; c.lineWidth = n.type === "room" ? 2 : 1.5; c.beginPath(); let started = false;
+    for (const s of S.history) { if (s.m < m0 || !(n.id in s.T)) continue; const x = X(s.m), y = Y(s.T[n.id]); if (!started) { c.moveTo(x, y); started = true; } else c.lineTo(x, y); }
+    c.stroke(); legend.push(`<span style="color:${col}">■</span> ${PIECES[n.type].name}${storages.filter(m => m.type === n.type).length > 1 ? " " + (i + 1) : ""}`);
+  });
+  const heater = nodesOf("heater")[0];
+  if (heater) {
+    c.fillStyle = v("--flux"); c.globalAlpha = .55;
+    for (const s of S.history) if (s.m >= m0 && s.u[heater.id]) c.fillRect(X(s.m - 1), h - B + 3, Math.max(1, pw / span), 4);
+    c.globalAlpha = 1; legend.push(`<span style="color:${v("--flux")};opacity:.6">▬</span> chauffage en marche`);
+  }
+  document.getElementById("chartLegend").innerHTML = legend.join(" &nbsp; ");
+}
+function togglePlay() {
+  S.running = !S.running;
+  const b = document.getElementById("btnPlay"); b.textContent = S.running ? "⏸ Pause" : "▶ Lancer";
+  log(S.running ? "play" : "pause", ""); renderStep();
+}
+document.getElementById("btnPlay").onclick = togglePlay;
+document.getElementById("btnSpeed").onclick = e => {
+  S.speed = SPEEDS[(SPEEDS.indexOf(S.speed) + 1) % SPEEDS.length]; e.target.textContent = "×" + S.speed; log("speed", S.speed);
+};
+document.getElementById("btnReset").onclick = () => {
+  S.minutes = 0; S.history = []; S.nodes.forEach(resetNodeState); tut.counter = 0;
+  if (!S.free && !S.done && STEPS[S.step].enter) STEPS[S.step].enter();
+  log("reset", ""); render(); renderStep();
+};
+document.getElementById("btnHood").onclick = e => {
+  S.hood = !S.hood; e.target.classList.toggle("on", S.hood); log("hood", S.hood);
+  render(); renderPalette(); renderStep(); renderParams();
+};
+document.getElementById("btnFree").onclick = () => { if (!S.free) goFree(); };
+document.getElementById("btnExport").onclick = () => {
+  const data = { tool: "TSCG Kit — Thermostat workshop", version: "0.1.0", exported: new Date().toISOString(),
+    step: S.free ? "free" : S.done ? "done" : STEPS[S.step].id, prediction: S.prediction,
+    graph: { nodes: S.nodes.map(n => ({ id: n.id, type: n.type, p: n.p })), wires: S.wires.map(w => ({ from: w.from, to: w.to })) },
+    log: S.log };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = "tscg-thermostat-session-" + new Date().toISOString().slice(0, 16).replace(/[:T]/g, "-") + ".json";
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  log("export", "");
+};
+
+/* main loop: accumulate real time, run whole simulation steps */
+let last = performance.now(), acc = 0, chartT = 0;
+function frame(now) {
+  const dt = Math.min(0.25, (now - last) / 1000); last = now;
+  if (S.running) {
+    acc += dt * MIN_PER_SEC * S.speed;
+    let guard = 0;
+    while (acc >= STEP_MIN && guard++ < 400) { simStep(); acc -= STEP_MIN; }
+    if (tut.finished && document.getElementById("btnNext") === null && !S.free && !S.done) renderStep();
+  }
+  updateLive(); refreshStepStatus();
+  if (now - chartT > 100) { drawChart(); chartT = now; }
+  requestAnimationFrame(frame);
+}
+window.TSCG = { S, addNode, connect, simStep, enterStep, STEPS, byId, goFree };   // test hook
+enterStep(0);
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
