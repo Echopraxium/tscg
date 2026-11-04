@@ -896,7 +896,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  *     need(app) -> null | {msg, tab},           structure still missing
  *     check(app, mem) -> {p, done, status},     called once per simulated minute
  *     predict?:{q, choices}, takeaway, hood }
- * The final card asks open questions; answers go into the session export.
+ * The final card may ask optional open questions (answers go into the export);
+ * by default it asks nothing and leaves the discovery to the user.
  * Author: Echopraxium with the collaboration of Claude AI
  */
 (function (K) {
@@ -981,7 +982,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     renderFinal() {
       const S = this.app.S, F = this.W.final, h = this.host;
       let html = `<div class="tu-head"><h3>${F.title}</h3></div><div class="tu-goal">${F.text}</div>`;
-      if (!S.answers) {
+      if (!F.questions || !F.questions.length) {          // default: no questions, let the user discover
+        html += (S.hood && F.hood ? `<div class="tu-hood">${F.hood}</div>` : "") +
+          `<div class="tu-row"><button class="primary tu-free">Ouvrir l'atelier libre</button></div>`;
+      } else if (!S.answers) {
         html += F.questions.map((q, k) => `<label class="tu-ask">${q}<textarea data-q="${k}" rows="2" placeholder="Ta réponse, en quelques mots…"></textarea></label>`).join("") +
           `<div class="tu-row"><button class="primary tu-save">Enregistrer mes réponses</button><button class="tu-skip">Passer</button></div>`;
       } else {
@@ -1033,7 +1037,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.2.0";
+  const VERSION = "0.2.1";
   const STEP_MIN = 1;          // one simulation step = 1 simulated minute
   const MIN_PER_SEC = 5;       // at ×1, 1 real second = 5 simulated minutes
   const SPEEDS = [1, 4, 0.5];
@@ -1305,11 +1309,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     final: {
       title: "La boucle tourne seule",
       unlock: { pieces: ["radiator"], instruments: ["radiatorTemp", "outsideTemp"] },
-      text: "Ce n'était pas vraiment un radiateur : c'était une <b>boucle de rétroaction</b>. Avec d'autres noms, les mêmes pièces décrivent la glycémie (le sucre est la réserve, l'insuline la commande), un réfrigérateur, la chasse d'eau à flotteur, ou le seuil de réapprovisionnement d'un stock.<br><br>Deux questions avant de continuer (tes réponses restent dans ton fichier de session) :",
-      questions: [
-        "Pendant que la fenêtre était ouverte, qu'as-tu remarqué dans la Maquette que le Panneau ne t'indiquait pas ?",
-        "Et dans une vraie maison, qu'est-ce que cette maquette oublie ?"
-      ],
+      text: "Ce n'était pas vraiment un radiateur : c'était une <b>boucle de rétroaction</b>. Avec d'autres noms, les mêmes pièces décrivent la glycémie (le sucre est la réserve, l'insuline la commande), un réfrigérateur, la chasse d'eau à flotteur, ou le seuil de réapprovisionnement d'un stock.",
+      questions: [],
       hood: "Le Panneau est une <b>Carte</b> : il ne montre que ce que ses instruments mesurent. La Maquette joue le rôle du <b>Territoire</b>. L'écart entre les deux, c'est ce qu'un modèle ne voit pas."
     },
 

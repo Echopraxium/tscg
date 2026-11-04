@@ -123,11 +123,8 @@
     final: {
       title: "La boucle tourne seule",
       unlock: { pieces: ["radiator"], instruments: ["radiatorTemp", "outsideTemp"] },
-      text: "Ce n'était pas vraiment un radiateur : c'était une <b>boucle de rétroaction</b>. Avec d'autres noms, les mêmes pièces décrivent la glycémie (le sucre est la réserve, l'insuline la commande), un réfrigérateur, la chasse d'eau à flotteur, ou le seuil de réapprovisionnement d'un stock.<br><br>Deux questions avant de continuer (tes réponses restent dans ton fichier de session) :",
-      questions: [
-        "Pendant que la fenêtre était ouverte, qu'as-tu remarqué dans la Maquette que le Panneau ne t'indiquait pas ?",
-        "Et dans une vraie maison, qu'est-ce que cette maquette oublie ?"
-      ],
+      text: "Ce n'était pas vraiment un radiateur : c'était une <b>boucle de rétroaction</b>. Avec d'autres noms, les mêmes pièces décrivent la glycémie (le sucre est la réserve, l'insuline la commande), un réfrigérateur, la chasse d'eau à flotteur, ou le seuil de réapprovisionnement d'un stock.",
+      questions: [],
       hood: "Le Panneau est une <b>Carte</b> : il ne montre que ce que ses instruments mesurent. La Maquette joue le rôle du <b>Territoire</b>. L'écart entre les deux, c'est ce qu'un modèle ne voit pas."
     },
 
