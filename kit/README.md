@@ -4,31 +4,70 @@
 
 The Kit is the entry door to TSCG for curious newcomers. Each workshop is a single,
 self-contained HTML page: open it in a browser, no install, no account, no AI needed.
-You build a small simulation piece by piece in a node editor, guided by an optional
-tutorial, and discover a systemic idea by watching it move.
+You build a small simulation piece by piece, guided by an optional tutorial, and
+discover a systemic idea by watching it move.
 
 | Workshop | What you build | What you discover |
 |---|---|---|
-| [`thermostat/`](thermostat/index.html) | a room heated by a radiator with a bimetal thermostat | negative feedback, attractor, overshoot, hysteresis trade-off |
+| [`thermostat/`](thermostat/index.html) | a room heated by a radiator with a bimetal thermostat | negative feedback, attractor, homeostasis, what instruments do not show |
 
-Online: `https://echopraxium.github.io/tscg/kit/thermostat/` (copied into the site by
-`cli_tools/compendium/build_compendium.py`).
+Online: `https://echopraxium.github.io/tscg/kit/thermostat/`
 
-## Design rules
+## One interface for every workshop
 
-- **Build before you read.** Each tutorial step unlocks one piece and is validated by
-  the simulation itself, not by a "next" button.
-- **System words first.** Pieces are named after the system (Room, Wall, Heater,
-  Bimetal). Their generic TSCG names (Storage, Sink, Source, Threshold) appear only
-  with the "under the hood" toggle. No scores, no monoidal notation.
-- **Repairable and extensible.** Tutorial steps are data (`STEPS` in the page); the
-  piece library (`PIECES`) is shared by all workshops.
+```
+┌──────────────────────────────┬─────────────────────────┐
+│ tutorial banner              │ Maquette  (2D, no number)│
+├──────────────────────────────┤                         │
+│ [ Panneau | Synoptique ]     │                         │
+│  Panneau : instruments       ├─────────────────────────┤
+│  Synoptique : pieces + wires │ Courbes                 │
+└──────────────────────────────┴─────────────────────────┘
+```
+
+- **Synoptique** — the logic: generic pieces wired by typed ports (orange = flux,
+  blue = information). The graph is the single source of truth.
+- **Panneau** — the instruments: gauges, sliders, toggles, lamps on a grid. Every
+  instrument keeps one side fixed (lamp 2×2, toggle 3×2, gauge and slider 2×n), so
+  the panel packs like Tetris. Instruments only read or write the graph.
+- **Maquette** — the system itself, drawn without any number. You can act on it
+  directly (open the window).
+
+The Map/Territory distinction is **never stated** during the tutorial: the Panneau
+shows only what its instruments measure, the Maquette shows the rest. The final card
+asks two open questions; the answers go into the session export. If testers describe
+the gap themselves, the idea has been learned by use — that is the proof of concept.
+"Sous le capot" reveals the generic names (Storage, Sink, Source, Threshold) and, after
+the questions, the Map/Territory reading.
+
+## Code layout
+
+| Path | Role |
+|---|---|
+| `lib/sim.js` | generic kinds, Model (graph + fixed-step simulation + bindings) |
+| `lib/synoptic.js` | SVG node editor |
+| `lib/panel.js` | grid of instruments |
+| `lib/chart.js` | curves |
+| `lib/tutorial.js` | step runner (steps are data) |
+| `lib/app.js` | shared shell: layout, clock, free mode, export |
+| `lib/tscg-kit.css` | shared styles, light and dark |
+| `<workshop>/workshop.js` | skins, instruments, steps, final questions, Maquette drawing |
+| `<workshop>/index.src.html` | source page (works directly, classic scripts) |
+| `<workshop>/index.html` | **generated** single file |
+| `tools/bundle.js` | inlines CSS and scripts: `node kit/tools/bundle.js kit/thermostat/index.src.html` |
+
+The GitHub Pages build (`cli_tools/compendium/build_compendium.py`) copies `kit/` and
+re-bundles every workshop, so the published page always matches the sources.
+
+**Formats are provisional (v0).** The workshop definition and the export
+(`state.graph`, `state.panel`) will be frozen only after a second workshop (Larsen) has
+used the same libraries.
 
 ## Testing with users
 
-The **"Exporter ma session"** button downloads a JSON log (steps reached, wiring
-attempts, rejected connections, prediction, timings). Ask testers to think aloud while
-they play, and to send that file afterwards.
+Ask testers to think aloud while they play, without helping them, then to click
+**"Exporter ma session"** and send the JSON file (steps reached, wiring attempts,
+rejected connections, panel actions, prediction, answers to the final questions).
 
-Status: **prototype 0.1.0** — tutorial steps 1–4 and a free mode. UI in French for the
-first testers.
+Status: **prototype 0.2.0** — 5 tutorial steps and a free mode. UI in French for the
+first testers. Desktop first; usable but cramped on a phone.
