@@ -4,7 +4,8 @@
  *     need(app) -> null | {msg, tab},           structure still missing
  *     check(app, mem) -> {p, done, status},     called once per simulated minute
  *     predict?:{q, choices}, takeaway, hood }
- * The final card asks open questions; answers go into the session export.
+ * The final card may ask optional open questions (answers go into the export);
+ * by default it asks nothing and leaves the discovery to the user.
  * Author: Echopraxium with the collaboration of Claude AI
  */
 (function (K) {
@@ -89,7 +90,10 @@
     renderFinal() {
       const S = this.app.S, F = this.W.final, h = this.host;
       let html = `<div class="tu-head"><h3>${F.title}</h3></div><div class="tu-goal">${F.text}</div>`;
-      if (!S.answers) {
+      if (!F.questions || !F.questions.length) {          // default: no questions, let the user discover
+        html += (S.hood && F.hood ? `<div class="tu-hood">${F.hood}</div>` : "") +
+          `<div class="tu-row"><button class="primary tu-free">Ouvrir l'atelier libre</button></div>`;
+      } else if (!S.answers) {
         html += F.questions.map((q, k) => `<label class="tu-ask">${q}<textarea data-q="${k}" rows="2" placeholder="Ta réponse, en quelques mots…"></textarea></label>`).join("") +
           `<div class="tu-row"><button class="primary tu-save">Enregistrer mes réponses</button><button class="tu-skip">Passer</button></div>`;
       } else {

@@ -33,12 +33,13 @@ Online: `https://echopraxium.github.io/tscg/kit/thermostat/`
 - **Maquette** — the system itself, drawn without any number. You can act on it
   directly (open the window).
 
-The Map/Territory distinction is **never stated** during the tutorial: the Panneau
-shows only what its instruments measure, the Maquette shows the rest. The final card
-asks two open questions; the answers go into the session export. If testers describe
-the gap themselves, the idea has been learned by use — that is the proof of concept.
-"Sous le capot" reveals the generic names (Storage, Sink, Source, Threshold) and, after
-the questions, the Map/Territory reading.
+The Map/Territory distinction is **never stated**: the Panneau shows only what its
+instruments measure, the Maquette shows the rest, and the player rediscovers the gap by
+playing. Nothing asks about it. Whether it is noticed is observed during think-aloud
+tests — that is the proof of concept. "Sous le capot" reveals the generic names
+(Storage, Sink, Source, Threshold) and, at the end, that the gap has a name, for those
+who go further into the onion. Learning by doing first; the theory, later, names what
+was already understood.
 
 ## Code layout
 
@@ -67,7 +68,8 @@ used the same libraries.
 
 Ask testers to think aloud while they play, without helping them, then to click
 **"Exporter ma session"** and send the JSON file (steps reached, wiring attempts,
-rejected connections, panel actions, prediction, answers to the final questions).
+rejected connections, panel actions, prediction). Note what they say spontaneously
+about the Maquette and the Panneau.
 
-Status: **prototype 0.2.0** — 5 tutorial steps and a free mode. UI in French for the
+Status: **prototype 0.2.1** — 5 tutorial steps and a free mode. UI in French for the
 first testers. Desktop first; usable but cramped on a phone.

@@ -8,7 +8,7 @@
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.2.0";
+  const VERSION = "0.2.1";
   const STEP_MIN = 1;          // one simulation step = 1 simulated minute
   const MIN_PER_SEC = 5;       // at ×1, 1 real second = 5 simulated minutes
   const SPEEDS = [1, 4, 0.5];
