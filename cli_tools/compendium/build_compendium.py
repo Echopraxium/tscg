@@ -279,6 +279,14 @@ def copy_kit(root, outdir):
     dst=os.path.join(outdir,KIT_DIR)
     if os.path.exists(dst): shutil.rmtree(dst)
     shutil.copytree(src,dst,ignore=COPY_IGNORE)
+    # Re-bundle each workshop from its sources, so the published single file is never stale.
+    import subprocess
+    node=shutil.which("node"); bundler=os.path.join(root,KIT_DIR,"tools","bundle.js")
+    for ws in sorted(os.listdir(dst)):
+        page=os.path.join(dst,ws,"index.src.html")
+        if node and os.path.isfile(bundler) and os.path.isfile(page):
+            r=subprocess.run([node,bundler,page,os.path.join(dst,ws,"index.html")],capture_output=True,text=True)
+            if r.returncode: print(f"  warning: kit bundle failed for {ws}: {r.stderr.strip()}")
     return sum(1 for d in os.listdir(dst) if os.path.isfile(os.path.join(dst,d,"index.html")))
 
 def main():
