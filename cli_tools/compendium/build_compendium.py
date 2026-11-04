@@ -268,6 +268,19 @@ def copy_static_assets(template, outdir):
         else:
             print(f"  warning: static asset {name} not found next to the template ({src_dir})")
 
+# The TSCG Kit (entry-level, guided workshops) lives in <root>/kit/. It holds no M0
+# instance, so build_subjects() never sees it: it is copied as-is into dist/kit/,
+# and served at <SITE_URL>/kit/<workshop>/ (e.g. kit/thermostat/).
+KIT_DIR = "kit"
+
+def copy_kit(root, outdir):
+    src=os.path.join(root,KIT_DIR)
+    if not os.path.isdir(src): return 0
+    dst=os.path.join(outdir,KIT_DIR)
+    if os.path.exists(dst): shutil.rmtree(dst)
+    shutil.copytree(src,dst,ignore=COPY_IGNORE)
+    return sum(1 for d in os.listdir(dst) if os.path.isfile(os.path.join(dst,d,"index.html")))
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("root")
@@ -290,10 +303,12 @@ def main():
     copy_static_assets(a.template,a.out)
     gscript=a.gallery_script if os.path.isabs(a.gallery_script) else os.path.join(a.root,a.gallery_script)
     run_gallery(a.root,a.out,gscript,a.site_url)
+    kits=copy_kit(a.root,a.out)
     played=sum(1 for s in subjects if s.get("play"))
     print(f"built {a.out}/index.html")
     print(f"  subjects: {len(subjects)}  (playable copied & linked: {played})")
     print(f"  docs: {len(docs)}")
+    print(f"  kit workshops copied: {kits}")
     print(f"  health map: {health.get('status')}" + (f" ({health.get('reason')})" if health.get("reason") else ""))
 
 if __name__=="__main__": main()
