@@ -15,9 +15,14 @@
     title: "Atelier TSCG — Thermostat",
     pageTitle: "TSCG Atelier — Thermostat",
     fluxLabel: "flux (chaleur)",
-    perturbLabel: "fenêtre ouverte",
-    chartRange: [0, 32],
-    band: [19, 21],
+    chart: {
+      range: [0, 32], tickY: 10, span: 8, tick: 2, label: t => t + " h",
+      band: [19, 21], showBand: app => app.S.free || app.S.pieces.has("heater"),
+      strips: [
+        { label: "chauffage en marche", color: "--flux", on: (p, m) => { const h = m.first("heater"); return !!(h && p.u[h.id]); } },
+        { label: "fenêtre ouverte", color: "--info", on: p => p.open }
+      ]
+    },
     order: ["room", "wall", "heater", "bimetal", "radiator"],
     // where each piece lands: heat flows left to right, control sits below
     home: { heater: { x: 16, y: 24 }, radiator: { x: 16, y: 250 }, room: { x: 236, y: 24 }, wall: { x: 456, y: 24 }, bimetal: { x: 236, y: 220 } },
@@ -114,7 +119,7 @@
           if (open) { mem.n = 0; return { p: 0.4 * Math.min(1, mem.open / 10), done: false, status: mem.open < 10 ? "Fenêtre ouverte…" : "Tu peux refermer la fenêtre (clic dans la Maquette)." }; }
           if (mem.open < 10) return { p: 0.4 * mem.open / 10, done: false, status: mem.open ? "Rouvre-la encore un peu : au moins 10 minutes en tout." : "Clique sur la fenêtre, dans la Maquette à droite." };
           const ok = inBand(app); mem.n = ok ? (mem.n || 0) + 1 : 0;
-          return { p: 0.4 + 0.6 * Math.min(1, mem.n / 60), done: mem.n >= 60, status: ok ? `Retour au calme… ${K.fmtClock(mem.n)} / 1 h 00` : "Le chauffage remonte la pièce…" };
+          return { p: 0.4 + 0.6 * Math.min(1, mem.n / 60), done: mem.n >= 60, status: ok ? `Retour au calme… ${app.fmtSteps(mem.n)} / 1 h 00` : "Le chauffage remonte la pièce…" };
         },
         takeaway: "Le choc est encaissé : sans personne, la pièce revient d'elle-même entre 19 et 21 °C.",
         hood: "C'est l'<b>homéostasie</b> : un système qui revient vers son état de consigne après une perturbation." }

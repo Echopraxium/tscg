@@ -43,6 +43,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
 /* ---- shell */
 .k-header{display:flex;align-items:center;gap:8px;padding:0 14px;height:52px;border-bottom:1px solid var(--rule);background:var(--panel)}
+.k-home{color:var(--quiet);text-decoration:none;font-size:18px;padding:2px 6px;border-radius:6px}
+.k-home:hover{color:var(--accent);background:var(--grid)}
 .k-header h1{font-size:16px;margin:0 8px 0 0;font-weight:650;white-space:nowrap}
 .k-transport{display:flex;gap:6px;align-items:center}
 .k-clock{font-variant-numeric:tabular-nums;color:var(--quiet);font-size:13px;min-width:64px;margin-left:4px}
@@ -186,6 +188,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  * Generic pieces and the fixed-step simulation.
  * The graph (nodes + wires) is the single source of truth: the Panneau and the
  * Maquette only read it (and write parameters through bindings).
+ * Time is in the workshop's own unit (hours, seconds…): model.step(dt).
  * Author: Echopraxium with the collaboration of Claude AI
  */
 (function (K) {
@@ -194,19 +197,30 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
   // Behaviour lives in the generic kind; a workshop gives each piece a "skin"
   // (name, port labels, parameters) on top of one of these kinds.
   const KINDS = {
-    storage:   { inputs:  [{ id: "in", kind: "flux", multi: true }],
-                 outputs: [{ id: "out", kind: "flux" }, { id: "level", kind: "info" }] },
-    sink:      { inputs:  [{ id: "in", kind: "flux", multi: true }], outputs: [] },
-    source:    { inputs:  [{ id: "cmd", kind: "info" }], outputs: [{ id: "flow", kind: "flux" }] },
-    threshold: { inputs:  [{ id: "x", kind: "info" }],   outputs: [{ id: "u", kind: "info" }] }
+    storage:    { inputs:  [{ id: "in", kind: "flux", multi: true }],
+                  outputs: [{ id: "out", kind: "flux" }, { id: "level", kind: "info" }] },
+    sink:       { inputs:  [{ id: "in", kind: "flux", multi: true }], outputs: [] },
+    source:     { inputs:  [{ id: "cmd", kind: "info" }], outputs: [{ id: "flow", kind: "flux" }] },
+    threshold:  { inputs:  [{ id: "x", kind: "info" }], outputs: [{ id: "u", kind: "info" }] },
+    amplify:    { inputs:  [{ id: "x", kind: "info" }], outputs: [{ id: "y", kind: "info" }] },
+    transducer: { inputs:  [{ id: "x", kind: "info" }], outputs: [{ id: "flow", kind: "flux" }] },
+    gradient:   { inputs:  [{ id: "a", kind: "info", multi: true }, { id: "b", kind: "info" }], outputs: [{ id: "d", kind: "info" }] },
+    clock:      { inputs:  [], outputs: [{ id: "out", kind: "info" }] }
   };
-  const GENERIC = { storage: "Storage", sink: "Sink", source: "Source", threshold: "Threshold (hystérésis)" };
+  const GENERIC = { storage: "Storage", sink: "Sink", source: "Source", threshold: "Threshold (hystérésis)",
+                    amplify: "Amplification", transducer: "Transducer", gradient: "Gradient (écart)", clock: "Clock (rythme)" };
+  const INFO_ORDER = ["clock", "gradient", "amplify", "threshold"];
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const noise = a => a ? a * (Math.random() * 2 - 1) : 0;
+  // repeatable pseudo-random number in [0,1) for day i (irregular days)
+  const hash01 = i => { const s = Math.sin(i * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
 
   class Model {
     constructor(skins) {
       this.skins = skins;
       this.nodes = []; this.wires = []; this.nextId = 1;
-      this.minutes = 0; this.history = [];
+      this.t = 0; this.steps = 0; this.history = [];
+      this.env = { night: false };
       this.listeners = new Set();
     }
     on(fn) { this.listeners.add(fn); }
@@ -261,40 +275,91 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     }
 
     resetNode(n) {
-      const k = this.kindOf(n);
+      const k = this.kindOf(n), keep = n.s || {};
       if (k === "storage") n.s = { x: n.p.x0 };
-      else if (k === "source") n.s = { u: 0, manual: n.s ? n.s.manual : 0 };
+      else if (k === "source") n.s = { u: 0, manual: keep.manual || 0 };
       else if (k === "threshold") n.s = { u: 1, x: null };
-      else n.s = { open: n.s ? n.s.open : false };
+      else if (k === "amplify") n.s = { y: 0, sat: 0 };
+      else if (k === "transducer") n.s = { flow: 0, att: keep.att === undefined ? 1 : keep.att };
+      else if (k === "gradient") n.s = { d: 0, a: null };
+      else if (k === "clock") n.s = { v: null, day: false };
+      else n.s = { open: !!keep.open };
     }
-    resetAll() { this.minutes = 0; this.history = []; this.nodes.forEach(n => this.resetNode(n)); }
+    resetAll() { this.t = 0; this.steps = 0; this.history = []; this.nodes.forEach(n => this.resetNode(n)); this.evalInfo(); }
 
-    // Value arriving on an information input, or null when nothing is plugged in.
-    infoIn(n, port) {
-      const w = this.wiresTo(n.id, port)[0];
-      if (!w) return null;
-      const src = this.byId(w.from.node), k = this.kindOf(src);
+    // The value a node presents on its information output (null = nothing to say).
+    infoOut(src) {
+      const k = this.kindOf(src);
       if (k === "storage") return src.s.x;
       if (k === "threshold") return src.s.x === null ? 0 : src.s.u;
+      if (k === "amplify") return src.s.y;
+      if (k === "gradient") return src.s.d;
+      if (k === "clock") return src.s.v;
+      return null;
+    }
+    // Value arriving on an information input. A multi input takes the first source that
+    // speaks; sources whose skin says `fallback` speak only when no other one does.
+    infoIn(n, port) {
+      const ws = this.wiresTo(n.id, port);
+      if (!ws.length) return null;
+      const srcs = ws.map(w => this.byId(w.from.node));
+      const ordered = srcs.filter(s => !this.skins[s.type].fallback).concat(srcs.filter(s => this.skins[s.type].fallback));
+      for (const s of ordered) { const v = this.infoOut(s); if (v !== null && v !== undefined) return v; }
       return null;
     }
 
-    // One step of dtMin simulated minutes: Newton exchange between storages,
-    // bang-bang thresholds with hysteresis, sources on/off.
-    step(dtMin) {
-      const dtH = dtMin / 60;
-      for (const n of this.nodes) {
-        if (this.kindOf(n) !== "threshold") continue;
-        const x = this.infoIn(n, "x"); n.s.x = x;
-        if (x !== null) {
-          if (x < n.p.set - n.p.h / 2) n.s.u = 1;
-          else if (x > n.p.set + n.p.h / 2) n.s.u = 0;
+    clockValue(n) {
+      const s = this.skins[n.type], t = this.t;
+      if (s.mode === "fixed") return { v: n.p.angle, day: true };
+      const day = Math.floor(t / 24), h = t - day * 24;
+      if (s.mode === "sun") {
+        const L = clamp(12 + (n.p.irr || 0) * (hash01(day) * 2 - 1) * 6, 4, 20);
+        const rise = 12 - L / 2, set = 12 + L / 2;
+        return h >= rise && h < set ? { v: -90 + 180 * (h - rise) / L, day: true } : { v: null, day: false };
+      }
+      if (s.mode === "night") {          // an internal rhythm on a fixed 24 h schedule: speaks from p.from to p.to (hours)
+        const from = n.p.from === undefined ? 18 : n.p.from, to = n.p.to === undefined ? 6 : n.p.to;
+        const on = from < to ? (h >= from && h < to) : (h >= from || h < to);
+        return { v: on ? n.p.angle : null, day: !on };
+      }
+      return { v: null, day: false };
+    }
+    evalInfo() {
+      for (let pass = 0; pass < 3; pass++) {
+        for (const kind of INFO_ORDER) for (const n of this.nodes) {
+          if (this.kindOf(n) !== kind) continue;
+          if (kind === "clock") Object.assign(n.s, this.clockValue(n));
+          else if (kind === "gradient") {
+            const a = this.infoIn(n, "a"), b = this.infoIn(n, "b");
+            n.s.a = a;
+            if (pass === 2) n.s.d = a === null || b === null ? 0 : a - b + noise(n.p.noise);
+            else n.s.d = a === null || b === null ? 0 : a - b;
+          } else if (kind === "amplify") {
+            const x = this.infoIn(n, "x") || 0, raw = n.p.gain * x;
+            n.s.y = clamp(raw, -n.p.max, n.p.max); n.s.sat = Math.abs(raw) >= n.p.max ? 1 : 0;
+          } else if (kind === "threshold" && pass === 2) {
+            const x = this.infoIn(n, "x"); n.s.x = x;
+            if (x !== null) {
+              if (x < n.p.set - n.p.h / 2) n.s.u = 1;
+              else if (x > n.p.set + n.p.h / 2) n.s.u = 0;
+            }
+          }
         }
       }
+      const sun = this.nodes.find(n => this.kindOf(n) === "clock" && this.skins[n.type].mode === "sun");
+      this.env.night = sun ? !sun.s.day : false;
+    }
+
+    // One step of dt (workshop time unit).
+    step(dt) {
+      this.evalInfo();
       for (const n of this.nodes) {
-        if (this.kindOf(n) !== "source") continue;
-        const cmd = this.infoIn(n, "cmd");
-        n.s.u = cmd === null ? n.s.manual : (cmd >= 0.5 ? 1 : 0);
+        const k = this.kindOf(n);
+        if (k === "source") { const cmd = this.infoIn(n, "cmd"); n.s.u = cmd === null ? n.s.manual : (cmd >= 0.5 ? 1 : 0); }
+        if (k === "transducer") {
+          const x = this.infoIn(n, "x") || 0;
+          n.s.flow = clamp(n.p.k * n.s.att * x, -n.p.max, n.p.max) + noise(n.p.noise);
+        }
       }
       const net = new Map();
       for (const w of this.wires) {
@@ -303,6 +368,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         const ka = this.kindOf(a), kb = this.kindOf(b);
         let p = 0;
         if (ka === "source") p = a.s.u * a.p.P / Math.max(1, this.wiresFrom(a.id, "flow").length);
+        else if (ka === "transducer") p = a.s.flow / Math.max(1, this.wiresFrom(a.id, "flow").length);
         else if (ka === "storage") {
           const target = kb === "storage" ? b.s.x : kb === "sink" ? b.p.level : null;
           const g = a.p.k + (kb === "sink" && b.s.open ? (b.p.kOpen || 0) : 0);
@@ -312,20 +378,29 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         if (ka === "storage") net.set(a.id, (net.get(a.id) || 0) - p);
         if (kb === "storage") net.set(b.id, (net.get(b.id) || 0) + p);
       }
-      for (const n of this.nodes) if (this.kindOf(n) === "storage") n.s.x += dtH * (net.get(n.id) || 0) / n.p.C;
-      this.minutes += dtMin;
-      const snap = { m: this.minutes, x: {}, u: {}, open: false };
+      for (const n of this.nodes) {
+        if (this.kindOf(n) !== "storage") continue;
+        n.s.x += dt * ((net.get(n.id) || 0) + (n.p.base || 0)) / n.p.C;
+        if (n.p.decay) n.s.x /= 1 + dt * n.p.decay;          // implicit: steady state = inflow / decay
+        if (n.p.lo !== undefined) n.s.x = Math.max(n.p.lo, n.s.x);
+        if (n.p.hi !== undefined) n.s.x = Math.min(n.p.hi, n.s.x);
+      }
+      this.t += dt; this.steps++;
+      this.evalInfo();
+      const snap = { t: this.t, v: {}, u: {}, open: false, night: this.env.night };
       for (const n of this.nodes) {
         const k = this.kindOf(n);
-        if (k === "storage") snap.x[n.id] = n.s.x;
         if (k === "source") snap.u[n.id] = n.s.u;
-        if (k === "sink" && n.s.open) snap.open = true;
+        else if (k === "sink") { if (n.s.open) snap.open = true; }
+        else if (k === "transducer") snap.v[n.id] = n.s.flow;
+        else snap.v[n.id] = this.infoOut(n);
+        if (k === "amplify") snap.u[n.id] = n.s.sat;
       }
       this.history.push(snap);
-      if (this.history.length > 1440) this.history.shift();
+      if (this.history.length > 2000) this.history.shift();
     }
 
-    // ---- bindings, used by the Panneau: {piece, get:"level"|"u"} | {piece, set:"manual"} | {piece, param}
+    // ---- bindings, used by the Panneau: {piece, get} | {piece, set:"manual"} | {piece, param}
     isAuto(bind) {
       const n = this.first(bind.piece);
       return !!(n && bind.set === "manual" && this.wiresTo(n.id, "cmd").length);
@@ -335,6 +410,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       if (!n) return null;
       if (bind.get === "level") return n.s.x;
       if (bind.get === "u") return n.s.x === null ? null : n.s.u;
+      if (bind.get) { const v = n.s[bind.get]; return v === undefined ? null : (typeof v === "boolean" ? (v ? 1 : 0) : v); }
       if (bind.set === "manual") return this.isAuto(bind) ? n.s.u : n.s.manual;
       if (bind.param) return n.p[bind.param];
       return null;
@@ -367,6 +443,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
   K.GENERIC = GENERIC;
   K.Model = Model;
   K.fmtClock = m => `${Math.floor(m / 60)} h ${String(Math.round(m % 60)).padStart(2, "0")}`;
+  // default workshop clock: hours, one step = one minute
+  K.CLOCK_HOURS = { dt: 1 / 60, stepsPerSec: 5, fmt: t => K.fmtClock(Math.round(t * 60)), fmtSteps: n => K.fmtClock(n) };
 })(window.TSCGKit = window.TSCGKit || {});
 
 </script>
@@ -472,13 +550,13 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         m.ports(n, "in").forEach((q, i) => {
           const y = HEAD + 18 + i * ROW;
           el("circle", { class: `port ${q.kind}`, cx: 0, cy: y, r: 7, "data-node": n.id, "data-port": q.id, "data-side": "in" }, g);
-          el("text", { class: "port-label", x: 12, y: y + 4 }, g).textContent = (s.ports || {})[q.id] || q.id;
+          el("text", { class: "port-label", x: 12, y: y + 4 }, g).textContent = (s.ports || {})[q.id] !== undefined ? s.ports[q.id] : q.id;
         });
         m.ports(n, "out").forEach((q, i) => {
           const y = HEAD + 18 + i * ROW;
           const c = el("circle", { class: `port ${q.kind}`, cx: NW, cy: y, r: 7, "data-node": n.id, "data-port": q.id, "data-side": "out" }, g);
           c.addEventListener("pointerdown", e => this.startWire(e, n, q));
-          el("text", { class: "port-label", x: NW - 12, y: y + 4, "text-anchor": "end" }, g).textContent = (s.ports || {})[q.id] || q.id;
+          el("text", { class: "port-label", x: NW - 12, y: y + 4, "text-anchor": "end" }, g).textContent = (s.ports || {})[q.id] !== undefined ? s.ports[q.id] : q.id;
         });
         const rows = Math.max(m.ports(n, "in").length, m.ports(n, "out").length, 1);
         const val = el("text", { class: "node-value", x: 12, y: HEAD + 10 + rows * ROW + 14 }, g);
@@ -493,10 +571,15 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
     describe(n) {
       const s = this.skin(n), k = this.m.kindOf(n);
+      if (s.describe) return s.describe(n, this.m);
       if (k === "storage") return n.s.x.toFixed(1) + " " + (s.unit || "");
       if (k === "sink") return (s.levelText || "niveau") + " : " + n.p.level + " " + (s.unit || "");
       if (k === "source") return n.s.u ? (s.onText || "marche") : (s.offText || "arrêt");
       if (k === "threshold") return n.s.x === null ? "non relié" : (n.s.u ? (s.onText || "fermé") : (s.offText || "ouvert"));
+      if (k === "amplify") return (n.s.sat ? "saturé · " : "") + "sortie " + n.s.y.toFixed(1);
+      if (k === "transducer") return n.s.flow.toFixed(1) + " " + (s.unit || "");
+      if (k === "gradient") return n.s.a === null ? "rien à viser" : "écart " + n.s.d.toFixed(0) + " " + (s.unit || "");
+      if (k === "clock") return n.s.v === null ? (s.offText || "—") : (s.onText || "") + " " + n.s.v.toFixed(0) + " " + (s.unit || "");
       return "";
     }
     update(running) {
@@ -568,7 +651,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       const n = this.m.byId(+this.selected.slice(1)); if (!n) return;
       const s = this.skin(n), ps = s.params || {};
       box.innerHTML = `<b>${s.name}</b>${this.o.hood() ? ` <span class="k-muted">· ${K.GENERIC[s.kind]}</span>` : ""}` +
-        Object.entries(ps).map(([k, d]) => `<label>${d.label}<input type="number" data-k="${k}" step="${d.step}"${d.min !== undefined ? ` min="${d.min}"` : ""}${d.max !== undefined ? ` max="${d.max}"` : ""} value="${n.p[k]}"></label>`).join("") +
+        Object.entries(ps).filter(([k, d]) => !d.hidden).map(([k, d]) => `<label>${d.label}<input type="number" data-k="${k}" step="${d.step}"${d.min !== undefined ? ` min="${d.min}"` : ""}${d.max !== undefined ? ` max="${d.max}"` : ""} value="${n.p[k]}"></label>`).join("") +
         `<button class="sy-del">Supprimer la pièce</button>`;
       box.querySelectorAll("input").forEach(inp => inp.onchange = () => {
         const d = ps[inp.dataset.k]; let v = parseFloat(inp.value);
@@ -733,6 +816,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
     frac(d, v) { return Math.max(0, Math.min(1, (v - d.range[0]) / (d.range[1] - d.range[0]))); }
     setBar(bar, c, a, b) {               // a..b as fractions of the track
+      if (b < a) { const t = a; a = b; b = t; }
       if (c.orient === "v") { bar.style.bottom = (a * 100) + "%"; bar.style.height = ((b - a) * 100) + "%"; bar.style.left = "0"; bar.style.right = "0"; }
       else { bar.style.left = (a * 100) + "%"; bar.style.width = ((b - a) * 100) + "%"; bar.style.top = "0"; bar.style.bottom = "0"; }
     }
@@ -743,15 +827,16 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         r.node.classList.toggle("off", off);
         r.node.title = off ? `${d.label} — ${this.o.skins[d.bind.piece].name} absent(e) du Synoptique` : d.label;
         if (r.fill) {
-          const f = off ? 0 : this.frac(d, v);
-          this.setBar(r.fill, c, 0, f);
-          r.val.textContent = off ? "—" : `${v.toFixed(d.step && d.step < 1 ? 1 : 0)} ${d.unit || ""}`;
+          const f = off ? 0 : this.frac(d, v), base = d.center !== undefined ? this.frac(d, d.center) : 0;
+          this.setBar(r.fill, c, off ? base : base, off ? base : f);
+          const dec = d.decimals !== undefined ? d.decimals : (d.step && d.step < 1 ? 1 : 0);
+          r.val.textContent = off ? "—" : (d.format ? d.format(v) : `${v.toFixed(dec)} ${d.unit || ""}`);
           if (r.knob) { if (c.orient === "v") { r.knob.style.left = "50%"; r.knob.style.top = ((1 - f) * 100) + "%"; } else { r.knob.style.top = "50%"; r.knob.style.left = (f * 100) + "%"; } }
         }
         if (r.sw) {
           const auto = this.m.isAuto(d.bind);
           r.sw.classList.toggle("on", !off && !!v); r.sw.classList.toggle("auto", auto);
-          r.swTxt.textContent = off ? "—" : auto ? "auto" : (v ? "marche" : "arrêt");
+          r.swTxt.textContent = off ? "—" : auto ? "auto" : (v ? (d.onText || "marche") : (d.offText || "arrêt"));
         }
         if (r.lamp) r.lamp.classList.toggle("on", !off && !!v);
       }
@@ -829,14 +914,18 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 <script>
 /* ../lib/chart.js */
 /* TSCG Kit — chart.js
- * Curves of every storage level over the last hours, read from the Model history.
- * Optional target band, source on/off strip and perturbation strip.
+ * Curves read from the Model history (one point per simulation step).
+ * Configured by the workshop (W.chart):
+ *   range:[lo,hi], tickY, span, tick, label(t)   axes, in the workshop's time unit
+ *   band:[a,b], showBand(app)                    optional target zone
+ *   series:[{piece, label, color}]               default: every storage
+ *   strips:[{label, color, on(snap, model), shade}]  on/off bars under the curves,
+ *                                                    or full-height shading (shade:true)
  * Author: Echopraxium with the collaboration of Claude AI
  */
 (function (K) {
   "use strict";
   class Chart {
-    // o: { range:[lo,hi], band:[a,b], showBand(), legendEl, perturbLabel }
     constructor(canvas, model, o) { this.c = canvas; this.m = model; this.o = o; }
     draw() {
       const cv = this.c, m = this.m, o = this.o;
@@ -845,42 +934,53 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       if (cv.width !== Math.round(w * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
       const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, w, h);
       const css = getComputedStyle(document.documentElement), v = n => css.getPropertyValue(n).trim();
-      const [lo, hi] = o.range || [0, 32];
-      const L = 32, R = 8, T = 6, B = 30, pw = w - L - R, ph = h - T - B;
-      const span = 480, m1 = Math.max(span, m.minutes), m0 = m1 - span;
-      const X = t => L + (t - m0) / span * pw, Y = val => T + (1 - (val - lo) / (hi - lo)) * ph;
-      c.font = "11px system-ui, sans-serif"; c.lineWidth = 1;
-      for (let t = Math.ceil(lo / 10) * 10; t <= hi; t += 10) {
-        c.strokeStyle = v("--grid"); c.beginPath(); c.moveTo(L, Y(t)); c.lineTo(w - R, Y(t)); c.stroke();
-        c.fillStyle = v("--quiet"); c.fillText(t + "°", 2, Y(t) + 4);
+      const col = x => (x || "").startsWith("--") ? v(x) : x;
+      const [lo, hi] = o.range || [0, 32], tickY = o.tickY || 10;
+      const strips = (o.strips || []).filter(s => !s.shade), shades = (o.strips || []).filter(s => s.shade);
+      const L = 34, R = 8, T = 6, B = 22 + 7 * strips.length, pw = w - L - R, ph = h - T - B;
+      const span = o.span || 8, t1 = Math.max(span, m.t), t0 = t1 - span;
+      const X = t => L + (t - t0) / span * pw, Y = val => T + (1 - (clampV(val) - lo) / (hi - lo)) * ph;
+      function clampV(val) { return Math.max(lo, Math.min(hi, val)); }
+      const hist = m.history.filter(s => s.t >= t0);
+      const bw = Math.max(1, pw / Math.max(1, span / (this.o.app ? this.o.app.clock.dt : 1)));
+      for (const s of shades) {                    // full-height shading (e.g. night)
+        c.fillStyle = col(s.color); c.globalAlpha = .14;
+        for (const p of hist) if (s.on(p, m)) c.fillRect(X(p.t) - bw, T, bw + 0.5, ph);
+        c.globalAlpha = 1;
       }
-      for (let t = Math.ceil(m0 / 120) * 120; t <= m1; t += 120) { c.fillStyle = v("--quiet"); c.fillText(Math.round(t / 60) + " h", X(t) - 8, h - 2); }
-      if (o.band && o.showBand()) { c.fillStyle = v("--band"); c.fillRect(L, Y(o.band[1]), pw, Y(o.band[0]) - Y(o.band[1])); }
+      c.font = "11px system-ui, sans-serif"; c.lineWidth = 1;
+      for (let y = Math.ceil(lo / tickY) * tickY; y <= hi; y += tickY) {
+        c.strokeStyle = v("--grid"); c.beginPath(); c.moveTo(L, Y(y)); c.lineTo(w - R, Y(y)); c.stroke();
+        c.fillStyle = v("--quiet"); c.fillText(String(y), 2, Y(y) + 4);
+      }
+      const tick = o.tick || 2, label = o.label || (t => t + " h");
+      for (let t = Math.ceil(t0 / tick - 1e-9) * tick; t <= t1 + 1e-9; t += tick) { c.fillStyle = v("--quiet"); c.fillText(label(+t.toFixed(6)), X(t) - 8, h - 2); }
+      if (o.band && (!o.showBand || o.showBand(o.app))) { c.fillStyle = v("--band"); c.fillRect(L, Y(o.band[1]), pw, Y(o.band[0]) - Y(o.band[1])); }
       const legend = [];
-      const storages = m.nodes.filter(n => m.kindOf(n) === "storage");
-      for (const n of storages) {
-        const col = m.skins[n.type].color || v("--flux");
-        c.strokeStyle = col; c.lineWidth = 2; c.beginPath(); let on = false;
-        for (const s of m.history) {
-          if (s.m < m0 || !(n.id in s.x)) { on = false; continue; }
-          const x = X(s.m), y = Y(Math.max(lo, Math.min(hi, s.x[n.id])));
+      const series = o.series
+        ? o.series.map(s => ({ node: m.first(s.piece), label: s.label, color: col(s.color) })).filter(s => s.node)
+        : m.nodes.filter(n => m.kindOf(n) === "storage").map(n => ({ node: n, label: m.skins[n.type].name, color: m.skins[n.type].color || v("--flux") }));
+      for (const s of series) {
+        const id = s.node.id;
+        c.strokeStyle = s.color; c.lineWidth = 2; c.beginPath(); let on = false;
+        for (const p of hist) {
+          const val = p.v[id];
+          if (val === null || val === undefined) { on = false; continue; }
+          const x = X(p.t), y = Y(val);
           if (!on) { c.moveTo(x, y); on = true; } else c.lineTo(x, y);
         }
         c.stroke();
-        legend.push(`<span style="color:${col}">■</span> ${m.skins[n.type].name}`);
+        legend.push(`<span style="color:${s.color}">■</span> ${s.label || m.skins[s.node.type].name}`);
       }
-      const src = m.nodes.find(n => m.kindOf(n) === "source");
-      const bw = Math.max(1, pw / span);
-      if (src) {
-        c.fillStyle = v("--flux"); c.globalAlpha = .55;
-        for (const s of m.history) if (s.m >= m0 && s.u[src.id]) c.fillRect(X(s.m - 1), h - B + 4, bw, 4);
-        c.globalAlpha = 1; legend.push(`<span style="color:${v("--flux")};opacity:.6">▬</span> ${m.skins[src.type].name} en marche`);
-      }
-      if (m.history.some(s => s.open)) {
-        c.fillStyle = v("--info"); c.globalAlpha = .55;
-        for (const s of m.history) if (s.m >= m0 && s.open) c.fillRect(X(s.m - 1), h - B + 10, bw, 4);
-        c.globalAlpha = 1; legend.push(`<span style="color:${v("--info")};opacity:.6">▬</span> ${o.perturbLabel || "perturbation"}`);
-      }
+      strips.forEach((s, i) => {
+        const y = h - B + 4 + 7 * i;
+        c.fillStyle = col(s.color); c.globalAlpha = .6;
+        let any = false;
+        for (const p of hist) if (s.on(p, m)) { any = true; c.fillRect(X(p.t) - bw, y, bw + 0.5, 4); }
+        c.globalAlpha = 1;
+        if (any || m.history.some(p => s.on(p, m))) legend.push(`<span style="color:${col(s.color)};opacity:.7">▬</span> ${s.label}`);
+      });
+      for (const s of shades) if (m.history.some(p => s.on(p, m))) legend.push(`<span style="color:${col(s.color)};opacity:.5">█</span> ${s.label}`);
       if (o.legendEl) o.legendEl.innerHTML = legend.join(" &nbsp; ");
     }
   }
@@ -902,15 +1002,14 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  */
 (function (K) {
   "use strict";
-  const fmt = m => K.fmtClock(m);
-  // check helpers
-  K.elapse = minutes => (app, mem) => {
+  // check helpers; durations are counted in simulation steps
+  K.elapse = steps => (app, mem) => {
     mem.n = (mem.n || 0) + 1;
-    return { p: mem.n / minutes, done: mem.n >= minutes, status: `En cours… ${fmt(mem.n)} / ${fmt(minutes)}` };
+    return { p: mem.n / steps, done: mem.n >= steps, status: `En cours… ${app.fmtSteps(mem.n)} / ${app.fmtSteps(steps)}` };
   };
-  K.hold = (minutes, pred, offMsg) => (app, mem) => {
+  K.hold = (steps, pred, offMsg) => (app, mem) => {
     const ok = pred(app); mem.n = ok ? (mem.n || 0) + 1 : 0;
-    return { p: mem.n / minutes, done: mem.n >= minutes, status: ok ? `En cours… ${fmt(mem.n)} / ${fmt(minutes)}` : offMsg };
+    return { p: mem.n / steps, done: mem.n >= steps, status: ok ? `En cours… ${app.fmtSteps(mem.n)} / ${app.fmtSteps(steps)}` : offMsg };
   };
   const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
 
@@ -938,7 +1037,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       if (this.mode !== "steps" || this.finished) return null;
       return this.steps[this.i].need(this.app);
     }
-    waitingPrediction() { const st = this.steps[this.i]; return this.mode === "steps" && st.predict && this.app.S.prediction === null; }
+    waitingPrediction() { const st = this.steps[this.i]; return this.mode === "steps" && st.predict && this.app.S.predictions[st.id] === undefined; }
     tick() {
       if (this.mode !== "steps" || this.finished) return;
       if (this.need()) { this.mem = {}; this.res = null; return; }
@@ -960,9 +1059,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       const st = this.steps[this.i], n = this.steps.length;
       let html = `<div class="tu-head"><span class="tu-no">Étape ${this.i + 1} / ${n}</span><h3>${st.title}</h3></div><div class="tu-goal">${st.goal}</div>`;
       if (st.predict) {
-        if (S.prediction === null) html += `<div class="tu-q">${st.predict.q}</div><div class="tu-choices">` +
+        const pk = S.predictions[st.id];
+        if (pk === undefined) html += `<div class="tu-q">${st.predict.q}</div><div class="tu-choices">` +
           st.predict.choices.map((c, k) => `<button data-choice="${k}">${c}</button>`).join("") + `</div>`;
-        else html += `<div class="tu-hint">Ta prédiction : « ${st.predict.choices[S.prediction]} ».</div>`;
+        else html += `<div class="tu-hint">Ton pari : « ${st.predict.choices[pk]} ».</div>`;
       }
       if (st.hint && !this.finished) html += `<div class="tu-hint">${st.hint}</div>`;
       html += `<div class="tu-progress"><div></div></div><div class="tu-status-row"><span class="tu-status"></span><button class="tu-goto" hidden></button></div>`;
@@ -973,7 +1073,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       }
       h.innerHTML = html;
       h.querySelectorAll("[data-choice]").forEach(b => b.onclick = () => {
-        S.prediction = +b.dataset.choice; this.app.log("predict", st.predict.choices[S.prediction]); this.render();
+        S.predictions[st.id] = +b.dataset.choice; this.app.log("predict", `${st.id}: ${st.predict.choices[+b.dataset.choice]}`); this.render();
       });
       const nx = h.querySelector(".tu-next");
       if (nx) nx.onclick = () => { if (this.i + 1 < n) this.start(this.i + 1); else { this.mode = "final"; this.app.S.done = true; this.app.log("tutorial_done", ""); this.app.unlock(this.W.final.unlock || {}); this.render(); } };
@@ -1037,21 +1137,22 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.2.1";
-  const STEP_MIN = 1;          // one simulation step = 1 simulated minute
-  const MIN_PER_SEC = 5;       // at ×1, 1 real second = 5 simulated minutes
+  const VERSION = "0.3.0";
   const SPEEDS = [1, 4, 0.5];
 
   K.start = function (W) {
+    // the workshop's clock: model time per step, steps per real second at ×1, formatting
+    const CLK = Object.assign({}, K.CLOCK_HOURS, W.clock || {});
     document.title = W.pageTitle || document.title;
     document.body.innerHTML =
       `<header class="k-header">
+         <a class="k-home" href="${W.homeUrl || "../index.html"}" title="Tous les ateliers">←</a>
          <h1>${W.title}</h1>
          <div class="k-transport">
            <button id="kPlay" class="primary" title="Lancer / mettre en pause (barre d'espace)">▶ Lancer</button>
            <button id="kSpeed" title="Vitesse du temps">×1</button>
            <button id="kReset" title="Remettre l'horloge à zéro">↺</button>
-           <span id="kClock" class="k-clock">0 h 00</span>
+           <span id="kClock" class="k-clock"></span>
          </div>
          <span class="k-spacer"></span>
          <button id="kHood" title="Montrer les noms génériques des pièces">Sous le capot</button>
@@ -1080,14 +1181,14 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
     const S = { running: false, speed: 1, hood: false, free: false, tab: "synoptic",
                 pieces: new Set(), instruments: new Set(), log: [], t0: Date.now(),
-                prediction: null, answers: null, done: false };
+                predictions: {}, answers: null, done: false };
     const model = new K.Model(W.skins);
-    const log = (type, detail) => S.log.push({ t: +((Date.now() - S.t0) / 1000).toFixed(1), sim: model.minutes, type, detail: detail === undefined ? "" : detail });
+    const log = (type, detail) => S.log.push({ t: +((Date.now() - S.t0) / 1000).toFixed(1), sim: +model.t.toFixed(3), type, detail: detail === undefined ? "" : detail });
     model.on(log);
     let toastTimer = null;
     const toast = msg => { const t = $("#kToast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 2800); };
 
-    const app = { S, model, log, toast, W };
+    const app = { S, model, log, toast, W, clock: CLK, fmtSteps: CLK.fmtSteps };
     const changed = () => { app.panel.renderToolbar(); app.panel.update(); app.tutorial.refresh(); };
     app.synoptic = new K.Synoptic($('[data-pane="synoptic"]'), model, {
       order: W.order, home: W.home, fluxLabel: W.fluxLabel,
@@ -1095,9 +1196,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     app.panel = new K.Panel($('[data-pane="panel"]'), model, {
       instruments: W.instruments, skins: W.skins,
       isUnlocked: k => (S.free || S.instruments.has(k)), toast, log, onChange: () => app.tutorial.refresh() });
-    app.view = W.view($("#kView"), model, { log, toast, hood: () => S.hood });
-    app.chart = new K.Chart($("#kChart"), model, { range: W.chartRange, band: W.band, showBand: () => S.free || S.pieces.has("heater"),
-      legendEl: $("#kLegend"), perturbLabel: W.perturbLabel });
+    app.view = W.view($("#kView"), model, { log, toast, hood: () => S.hood, running: () => S.running });
+    app.chart = new K.Chart($("#kChart"), model, Object.assign({}, W.chart, { legendEl: $("#kLegend"), app }));
 
     app.running = () => S.running;
     app.unlock = u => {
@@ -1139,7 +1239,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       const t = app.tutorial;
       const data = { tool: "TSCG Kit", workshop: W.id, version: VERSION, exported: new Date().toISOString(),
         progress: S.free ? "free" : t.mode === "final" ? "done" : t.steps[t.i].id,
-        prediction: S.prediction === null ? null : W.steps.find(s => s.predict).predict.choices[S.prediction],
+        predictions: Object.fromEntries(Object.entries(S.predictions).map(([id, k]) => [id, W.steps.find(s => s.id === id).predict.choices[k]])),
         answers: S.answers,
         state: { graph: model.serialize(), panel: app.panel.serialize() },
         log: S.log };
@@ -1156,21 +1256,22 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       if (e.key === " " && !typing && document.activeElement.tagName !== "BUTTON") { e.preventDefault(); setPlay(!S.running); }
     });
 
-    // ---- main loop: accumulate real time, run whole simulated minutes
+    // ---- main loop: accumulate real time, run whole simulation steps
     let last = performance.now(), acc = 0, chartT = 0;
     function frame(now) {
       const dt = Math.min(0.25, (now - last) / 1000); last = now;
       if (S.running) {
-        acc += dt * MIN_PER_SEC * S.speed;
+        acc += dt * CLK.stepsPerSec * S.speed;
         let guard = 0;
-        while (acc >= STEP_MIN && guard++ < 400) { model.step(STEP_MIN); app.tutorial.tick(); acc -= STEP_MIN; }
+        while (acc >= 1 && guard++ < 600) { model.step(CLK.dt); app.tutorial.tick(); acc -= 1; }
       }
       app.synoptic.update(S.running); app.panel.update(); app.view.update(S.running); app.tutorial.refresh();
-      $("#kClock").textContent = K.fmtClock(model.minutes);
+      $("#kClock").textContent = CLK.fmt(model.t);
       if (now - chartT > 120) { app.chart.draw(); chartT = now; }
       requestAnimationFrame(frame);
     }
 
+    app.step = n => { for (let i = 0; i < n; i++) { model.step(CLK.dt); app.tutorial.tick(); } };   // for tests
     app.synoptic.renderParams();
     app.goTab("synoptic");
     app.tutorial.start(0);
@@ -1201,9 +1302,14 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     title: "Atelier TSCG — Thermostat",
     pageTitle: "TSCG Atelier — Thermostat",
     fluxLabel: "flux (chaleur)",
-    perturbLabel: "fenêtre ouverte",
-    chartRange: [0, 32],
-    band: [19, 21],
+    chart: {
+      range: [0, 32], tickY: 10, span: 8, tick: 2, label: t => t + " h",
+      band: [19, 21], showBand: app => app.S.free || app.S.pieces.has("heater"),
+      strips: [
+        { label: "chauffage en marche", color: "--flux", on: (p, m) => { const h = m.first("heater"); return !!(h && p.u[h.id]); } },
+        { label: "fenêtre ouverte", color: "--info", on: p => p.open }
+      ]
+    },
     order: ["room", "wall", "heater", "bimetal", "radiator"],
     // where each piece lands: heat flows left to right, control sits below
     home: { heater: { x: 16, y: 24 }, radiator: { x: 16, y: 250 }, room: { x: 236, y: 24 }, wall: { x: 456, y: 24 }, bimetal: { x: 236, y: 220 } },
@@ -1300,7 +1406,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
           if (open) { mem.n = 0; return { p: 0.4 * Math.min(1, mem.open / 10), done: false, status: mem.open < 10 ? "Fenêtre ouverte…" : "Tu peux refermer la fenêtre (clic dans la Maquette)." }; }
           if (mem.open < 10) return { p: 0.4 * mem.open / 10, done: false, status: mem.open ? "Rouvre-la encore un peu : au moins 10 minutes en tout." : "Clique sur la fenêtre, dans la Maquette à droite." };
           const ok = inBand(app); mem.n = ok ? (mem.n || 0) + 1 : 0;
-          return { p: 0.4 + 0.6 * Math.min(1, mem.n / 60), done: mem.n >= 60, status: ok ? `Retour au calme… ${K.fmtClock(mem.n)} / 1 h 00` : "Le chauffage remonte la pièce…" };
+          return { p: 0.4 + 0.6 * Math.min(1, mem.n / 60), done: mem.n >= 60, status: ok ? `Retour au calme… ${app.fmtSteps(mem.n)} / 1 h 00` : "Le chauffage remonte la pièce…" };
         },
         takeaway: "Le choc est encaissé : sans personne, la pièce revient d'elle-même entre 19 et 21 °C.",
         hood: "C'est l'<b>homéostasie</b> : un système qui revient vers son état de consigne après une perturbation." }

@@ -7,11 +7,16 @@ self-contained HTML page: open it in a browser, no install, no account, no AI ne
 You build a small simulation piece by piece, guided by an optional tutorial, and
 discover a systemic idea by watching it move.
 
-| Workshop | What you build | What you discover |
-|---|---|---|
-| [`thermostat/`](thermostat/index.html) | a room heated by a radiator with a bimetal thermostat | negative feedback, attractor, homeostasis, what instruments do not show |
+Start from the home page [`index.html`](index.html) and play the workshops in order: each one
+adds one idea and reuses pieces from the previous one.
 
-Online: `https://echopraxium.github.io/tscg/kit/thermostat/`
+| # | Workshop | What you build | What you discover | New generic pieces |
+|---|---|---|---|---|
+| 1 | [`thermostat/`](thermostat/index.html) | a room heated by a radiator with a bimetal thermostat | a loop that corrects (negative feedback), attractor, homeostasis | Storage, Sink, Source, Threshold |
+| 2 | [`larsen/`](larsen/index.html) | a room with a voice, an amplifier and a loudspeaker | a loop that reinforces (positive feedback), a threshold born from the wiring | Amplification, Transducer |
+| 3 | [`tournesol/`](tournesol/index.html) | a young sunflower, a lamp, the sun and an internal clock | a loop that tracks a moving target, anticipation, domain of validity | Gradient, Clock |
+
+Online: `https://echopraxium.github.io/tscg/kit/`
 
 ## One interface for every workshop
 
@@ -45,14 +50,14 @@ was already understood.
 
 | Path | Role |
 |---|---|
-| `lib/sim.js` | generic kinds, Model (graph + fixed-step simulation + bindings) |
+| `lib/sim.js` | generic kinds (storage, sink, source, threshold, amplify, transducer, gradient, clock), Model (graph + fixed-step simulation + bindings) |
 | `lib/synoptic.js` | SVG node editor |
 | `lib/panel.js` | grid of instruments |
-| `lib/chart.js` | curves |
+| `lib/chart.js` | curves, configured per workshop (`W.chart`: axes, series, strips) |
 | `lib/tutorial.js` | step runner (steps are data) |
 | `lib/app.js` | shared shell: layout, clock, free mode, export |
 | `lib/tscg-kit.css` | shared styles, light and dark |
-| `<workshop>/workshop.js` | skins, instruments, steps, final questions, Maquette drawing |
+| `<workshop>/workshop.js` | clock (time unit), skins, instruments, chart, steps, final card, Maquette drawing |
 | `<workshop>/index.src.html` | source page (works directly, classic scripts) |
 | `<workshop>/index.html` | **generated** single file |
 | `tools/bundle.js` | inlines CSS and scripts: `node kit/tools/bundle.js kit/thermostat/index.src.html` |
@@ -60,16 +65,16 @@ was already understood.
 The GitHub Pages build (`cli_tools/compendium/build_compendium.py`) copies `kit/` and
 re-bundles every workshop, so the published page always matches the sources.
 
-**Formats are provisional (v0).** The workshop definition and the export
-(`state.graph`, `state.panel`) will be frozen only after a second workshop (Larsen) has
-used the same libraries.
+**Formats are still provisional (v0).** Three workshops now share the libraries; the
+workshop definition and the export (`state.graph`, `state.panel`, `predictions`) can be
+frozen once the first user tests have been folded in.
 
 ## Testing with users
 
 Ask testers to think aloud while they play, without helping them, then to click
 **"Exporter ma session"** and send the JSON file (steps reached, wiring attempts,
-rejected connections, panel actions, prediction). Note what they say spontaneously
+rejected connections, panel actions, bets). Note what they say spontaneously
 about the Maquette and the Panneau.
 
-Status: **prototype 0.2.1** — 5 tutorial steps and a free mode. UI in French for the
+Status: **prototype 0.3.0** — three workshops, each with a guided tutorial and a free mode. UI in French for the
 first testers. Desktop first; usable but cramped on a phone.

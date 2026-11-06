@@ -10,15 +10,14 @@
  */
 (function (K) {
   "use strict";
-  const fmt = m => K.fmtClock(m);
-  // check helpers
-  K.elapse = minutes => (app, mem) => {
+  // check helpers; durations are counted in simulation steps
+  K.elapse = steps => (app, mem) => {
     mem.n = (mem.n || 0) + 1;
-    return { p: mem.n / minutes, done: mem.n >= minutes, status: `En cours… ${fmt(mem.n)} / ${fmt(minutes)}` };
+    return { p: mem.n / steps, done: mem.n >= steps, status: `En cours… ${app.fmtSteps(mem.n)} / ${app.fmtSteps(steps)}` };
   };
-  K.hold = (minutes, pred, offMsg) => (app, mem) => {
+  K.hold = (steps, pred, offMsg) => (app, mem) => {
     const ok = pred(app); mem.n = ok ? (mem.n || 0) + 1 : 0;
-    return { p: mem.n / minutes, done: mem.n >= minutes, status: ok ? `En cours… ${fmt(mem.n)} / ${fmt(minutes)}` : offMsg };
+    return { p: mem.n / steps, done: mem.n >= steps, status: ok ? `En cours… ${app.fmtSteps(mem.n)} / ${app.fmtSteps(steps)}` : offMsg };
   };
   const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
 
@@ -46,7 +45,7 @@
       if (this.mode !== "steps" || this.finished) return null;
       return this.steps[this.i].need(this.app);
     }
-    waitingPrediction() { const st = this.steps[this.i]; return this.mode === "steps" && st.predict && this.app.S.prediction === null; }
+    waitingPrediction() { const st = this.steps[this.i]; return this.mode === "steps" && st.predict && this.app.S.predictions[st.id] === undefined; }
     tick() {
       if (this.mode !== "steps" || this.finished) return;
       if (this.need()) { this.mem = {}; this.res = null; return; }
@@ -68,9 +67,10 @@
       const st = this.steps[this.i], n = this.steps.length;
       let html = `<div class="tu-head"><span class="tu-no">Étape ${this.i + 1} / ${n}</span><h3>${st.title}</h3></div><div class="tu-goal">${st.goal}</div>`;
       if (st.predict) {
-        if (S.prediction === null) html += `<div class="tu-q">${st.predict.q}</div><div class="tu-choices">` +
+        const pk = S.predictions[st.id];
+        if (pk === undefined) html += `<div class="tu-q">${st.predict.q}</div><div class="tu-choices">` +
           st.predict.choices.map((c, k) => `<button data-choice="${k}">${c}</button>`).join("") + `</div>`;
-        else html += `<div class="tu-hint">Ta prédiction : « ${st.predict.choices[S.prediction]} ».</div>`;
+        else html += `<div class="tu-hint">Ton pari : « ${st.predict.choices[pk]} ».</div>`;
       }
       if (st.hint && !this.finished) html += `<div class="tu-hint">${st.hint}</div>`;
       html += `<div class="tu-progress"><div></div></div><div class="tu-status-row"><span class="tu-status"></span><button class="tu-goto" hidden></button></div>`;
@@ -81,7 +81,7 @@
       }
       h.innerHTML = html;
       h.querySelectorAll("[data-choice]").forEach(b => b.onclick = () => {
-        S.prediction = +b.dataset.choice; this.app.log("predict", st.predict.choices[S.prediction]); this.render();
+        S.predictions[st.id] = +b.dataset.choice; this.app.log("predict", `${st.id}: ${st.predict.choices[+b.dataset.choice]}`); this.render();
       });
       const nx = h.querySelector(".tu-next");
       if (nx) nx.onclick = () => { if (this.i + 1 < n) this.start(this.i + 1); else { this.mode = "final"; this.app.S.done = true; this.app.log("tutorial_done", ""); this.app.unlock(this.W.final.unlock || {}); this.render(); } };

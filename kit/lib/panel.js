@@ -144,6 +144,7 @@
 
     frac(d, v) { return Math.max(0, Math.min(1, (v - d.range[0]) / (d.range[1] - d.range[0]))); }
     setBar(bar, c, a, b) {               // a..b as fractions of the track
+      if (b < a) { const t = a; a = b; b = t; }
       if (c.orient === "v") { bar.style.bottom = (a * 100) + "%"; bar.style.height = ((b - a) * 100) + "%"; bar.style.left = "0"; bar.style.right = "0"; }
       else { bar.style.left = (a * 100) + "%"; bar.style.width = ((b - a) * 100) + "%"; bar.style.top = "0"; bar.style.bottom = "0"; }
     }
@@ -154,15 +155,16 @@
         r.node.classList.toggle("off", off);
         r.node.title = off ? `${d.label} — ${this.o.skins[d.bind.piece].name} absent(e) du Synoptique` : d.label;
         if (r.fill) {
-          const f = off ? 0 : this.frac(d, v);
-          this.setBar(r.fill, c, 0, f);
-          r.val.textContent = off ? "—" : `${v.toFixed(d.step && d.step < 1 ? 1 : 0)} ${d.unit || ""}`;
+          const f = off ? 0 : this.frac(d, v), base = d.center !== undefined ? this.frac(d, d.center) : 0;
+          this.setBar(r.fill, c, off ? base : base, off ? base : f);
+          const dec = d.decimals !== undefined ? d.decimals : (d.step && d.step < 1 ? 1 : 0);
+          r.val.textContent = off ? "—" : (d.format ? d.format(v) : `${v.toFixed(dec)} ${d.unit || ""}`);
           if (r.knob) { if (c.orient === "v") { r.knob.style.left = "50%"; r.knob.style.top = ((1 - f) * 100) + "%"; } else { r.knob.style.top = "50%"; r.knob.style.left = (f * 100) + "%"; } }
         }
         if (r.sw) {
           const auto = this.m.isAuto(d.bind);
           r.sw.classList.toggle("on", !off && !!v); r.sw.classList.toggle("auto", auto);
-          r.swTxt.textContent = off ? "—" : auto ? "auto" : (v ? "marche" : "arrêt");
+          r.swTxt.textContent = off ? "—" : auto ? "auto" : (v ? (d.onText || "marche") : (d.offText || "arrêt"));
         }
         if (r.lamp) r.lamp.classList.toggle("on", !off && !!v);
       }

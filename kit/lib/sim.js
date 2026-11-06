@@ -2,6 +2,7 @@
  * Generic pieces and the fixed-step simulation.
  * The graph (nodes + wires) is the single source of truth: the Panneau and the
  * Maquette only read it (and write parameters through bindings).
+ * Time is in the workshop's own unit (hours, seconds…): model.step(dt).
  * Author: Echopraxium with the collaboration of Claude AI
  */
 (function (K) {
@@ -10,19 +11,30 @@
   // Behaviour lives in the generic kind; a workshop gives each piece a "skin"
   // (name, port labels, parameters) on top of one of these kinds.
   const KINDS = {
-    storage:   { inputs:  [{ id: "in", kind: "flux", multi: true }],
-                 outputs: [{ id: "out", kind: "flux" }, { id: "level", kind: "info" }] },
-    sink:      { inputs:  [{ id: "in", kind: "flux", multi: true }], outputs: [] },
-    source:    { inputs:  [{ id: "cmd", kind: "info" }], outputs: [{ id: "flow", kind: "flux" }] },
-    threshold: { inputs:  [{ id: "x", kind: "info" }],   outputs: [{ id: "u", kind: "info" }] }
+    storage:    { inputs:  [{ id: "in", kind: "flux", multi: true }],
+                  outputs: [{ id: "out", kind: "flux" }, { id: "level", kind: "info" }] },
+    sink:       { inputs:  [{ id: "in", kind: "flux", multi: true }], outputs: [] },
+    source:     { inputs:  [{ id: "cmd", kind: "info" }], outputs: [{ id: "flow", kind: "flux" }] },
+    threshold:  { inputs:  [{ id: "x", kind: "info" }], outputs: [{ id: "u", kind: "info" }] },
+    amplify:    { inputs:  [{ id: "x", kind: "info" }], outputs: [{ id: "y", kind: "info" }] },
+    transducer: { inputs:  [{ id: "x", kind: "info" }], outputs: [{ id: "flow", kind: "flux" }] },
+    gradient:   { inputs:  [{ id: "a", kind: "info", multi: true }, { id: "b", kind: "info" }], outputs: [{ id: "d", kind: "info" }] },
+    clock:      { inputs:  [], outputs: [{ id: "out", kind: "info" }] }
   };
-  const GENERIC = { storage: "Storage", sink: "Sink", source: "Source", threshold: "Threshold (hystérésis)" };
+  const GENERIC = { storage: "Storage", sink: "Sink", source: "Source", threshold: "Threshold (hystérésis)",
+                    amplify: "Amplification", transducer: "Transducer", gradient: "Gradient (écart)", clock: "Clock (rythme)" };
+  const INFO_ORDER = ["clock", "gradient", "amplify", "threshold"];
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const noise = a => a ? a * (Math.random() * 2 - 1) : 0;
+  // repeatable pseudo-random number in [0,1) for day i (irregular days)
+  const hash01 = i => { const s = Math.sin(i * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
 
   class Model {
     constructor(skins) {
       this.skins = skins;
       this.nodes = []; this.wires = []; this.nextId = 1;
-      this.minutes = 0; this.history = [];
+      this.t = 0; this.steps = 0; this.history = [];
+      this.env = { night: false };
       this.listeners = new Set();
     }
     on(fn) { this.listeners.add(fn); }
@@ -77,40 +89,91 @@
     }
 
     resetNode(n) {
-      const k = this.kindOf(n);
+      const k = this.kindOf(n), keep = n.s || {};
       if (k === "storage") n.s = { x: n.p.x0 };
-      else if (k === "source") n.s = { u: 0, manual: n.s ? n.s.manual : 0 };
+      else if (k === "source") n.s = { u: 0, manual: keep.manual || 0 };
       else if (k === "threshold") n.s = { u: 1, x: null };
-      else n.s = { open: n.s ? n.s.open : false };
+      else if (k === "amplify") n.s = { y: 0, sat: 0 };
+      else if (k === "transducer") n.s = { flow: 0, att: keep.att === undefined ? 1 : keep.att };
+      else if (k === "gradient") n.s = { d: 0, a: null };
+      else if (k === "clock") n.s = { v: null, day: false };
+      else n.s = { open: !!keep.open };
     }
-    resetAll() { this.minutes = 0; this.history = []; this.nodes.forEach(n => this.resetNode(n)); }
+    resetAll() { this.t = 0; this.steps = 0; this.history = []; this.nodes.forEach(n => this.resetNode(n)); this.evalInfo(); }
 
-    // Value arriving on an information input, or null when nothing is plugged in.
-    infoIn(n, port) {
-      const w = this.wiresTo(n.id, port)[0];
-      if (!w) return null;
-      const src = this.byId(w.from.node), k = this.kindOf(src);
+    // The value a node presents on its information output (null = nothing to say).
+    infoOut(src) {
+      const k = this.kindOf(src);
       if (k === "storage") return src.s.x;
       if (k === "threshold") return src.s.x === null ? 0 : src.s.u;
+      if (k === "amplify") return src.s.y;
+      if (k === "gradient") return src.s.d;
+      if (k === "clock") return src.s.v;
+      return null;
+    }
+    // Value arriving on an information input. A multi input takes the first source that
+    // speaks; sources whose skin says `fallback` speak only when no other one does.
+    infoIn(n, port) {
+      const ws = this.wiresTo(n.id, port);
+      if (!ws.length) return null;
+      const srcs = ws.map(w => this.byId(w.from.node));
+      const ordered = srcs.filter(s => !this.skins[s.type].fallback).concat(srcs.filter(s => this.skins[s.type].fallback));
+      for (const s of ordered) { const v = this.infoOut(s); if (v !== null && v !== undefined) return v; }
       return null;
     }
 
-    // One step of dtMin simulated minutes: Newton exchange between storages,
-    // bang-bang thresholds with hysteresis, sources on/off.
-    step(dtMin) {
-      const dtH = dtMin / 60;
-      for (const n of this.nodes) {
-        if (this.kindOf(n) !== "threshold") continue;
-        const x = this.infoIn(n, "x"); n.s.x = x;
-        if (x !== null) {
-          if (x < n.p.set - n.p.h / 2) n.s.u = 1;
-          else if (x > n.p.set + n.p.h / 2) n.s.u = 0;
+    clockValue(n) {
+      const s = this.skins[n.type], t = this.t;
+      if (s.mode === "fixed") return { v: n.p.angle, day: true };
+      const day = Math.floor(t / 24), h = t - day * 24;
+      if (s.mode === "sun") {
+        const L = clamp(12 + (n.p.irr || 0) * (hash01(day) * 2 - 1) * 6, 4, 20);
+        const rise = 12 - L / 2, set = 12 + L / 2;
+        return h >= rise && h < set ? { v: -90 + 180 * (h - rise) / L, day: true } : { v: null, day: false };
+      }
+      if (s.mode === "night") {          // an internal rhythm on a fixed 24 h schedule: speaks from p.from to p.to (hours)
+        const from = n.p.from === undefined ? 18 : n.p.from, to = n.p.to === undefined ? 6 : n.p.to;
+        const on = from < to ? (h >= from && h < to) : (h >= from || h < to);
+        return { v: on ? n.p.angle : null, day: !on };
+      }
+      return { v: null, day: false };
+    }
+    evalInfo() {
+      for (let pass = 0; pass < 3; pass++) {
+        for (const kind of INFO_ORDER) for (const n of this.nodes) {
+          if (this.kindOf(n) !== kind) continue;
+          if (kind === "clock") Object.assign(n.s, this.clockValue(n));
+          else if (kind === "gradient") {
+            const a = this.infoIn(n, "a"), b = this.infoIn(n, "b");
+            n.s.a = a;
+            if (pass === 2) n.s.d = a === null || b === null ? 0 : a - b + noise(n.p.noise);
+            else n.s.d = a === null || b === null ? 0 : a - b;
+          } else if (kind === "amplify") {
+            const x = this.infoIn(n, "x") || 0, raw = n.p.gain * x;
+            n.s.y = clamp(raw, -n.p.max, n.p.max); n.s.sat = Math.abs(raw) >= n.p.max ? 1 : 0;
+          } else if (kind === "threshold" && pass === 2) {
+            const x = this.infoIn(n, "x"); n.s.x = x;
+            if (x !== null) {
+              if (x < n.p.set - n.p.h / 2) n.s.u = 1;
+              else if (x > n.p.set + n.p.h / 2) n.s.u = 0;
+            }
+          }
         }
       }
+      const sun = this.nodes.find(n => this.kindOf(n) === "clock" && this.skins[n.type].mode === "sun");
+      this.env.night = sun ? !sun.s.day : false;
+    }
+
+    // One step of dt (workshop time unit).
+    step(dt) {
+      this.evalInfo();
       for (const n of this.nodes) {
-        if (this.kindOf(n) !== "source") continue;
-        const cmd = this.infoIn(n, "cmd");
-        n.s.u = cmd === null ? n.s.manual : (cmd >= 0.5 ? 1 : 0);
+        const k = this.kindOf(n);
+        if (k === "source") { const cmd = this.infoIn(n, "cmd"); n.s.u = cmd === null ? n.s.manual : (cmd >= 0.5 ? 1 : 0); }
+        if (k === "transducer") {
+          const x = this.infoIn(n, "x") || 0;
+          n.s.flow = clamp(n.p.k * n.s.att * x, -n.p.max, n.p.max) + noise(n.p.noise);
+        }
       }
       const net = new Map();
       for (const w of this.wires) {
@@ -119,6 +182,7 @@
         const ka = this.kindOf(a), kb = this.kindOf(b);
         let p = 0;
         if (ka === "source") p = a.s.u * a.p.P / Math.max(1, this.wiresFrom(a.id, "flow").length);
+        else if (ka === "transducer") p = a.s.flow / Math.max(1, this.wiresFrom(a.id, "flow").length);
         else if (ka === "storage") {
           const target = kb === "storage" ? b.s.x : kb === "sink" ? b.p.level : null;
           const g = a.p.k + (kb === "sink" && b.s.open ? (b.p.kOpen || 0) : 0);
@@ -128,20 +192,29 @@
         if (ka === "storage") net.set(a.id, (net.get(a.id) || 0) - p);
         if (kb === "storage") net.set(b.id, (net.get(b.id) || 0) + p);
       }
-      for (const n of this.nodes) if (this.kindOf(n) === "storage") n.s.x += dtH * (net.get(n.id) || 0) / n.p.C;
-      this.minutes += dtMin;
-      const snap = { m: this.minutes, x: {}, u: {}, open: false };
+      for (const n of this.nodes) {
+        if (this.kindOf(n) !== "storage") continue;
+        n.s.x += dt * ((net.get(n.id) || 0) + (n.p.base || 0)) / n.p.C;
+        if (n.p.decay) n.s.x /= 1 + dt * n.p.decay;          // implicit: steady state = inflow / decay
+        if (n.p.lo !== undefined) n.s.x = Math.max(n.p.lo, n.s.x);
+        if (n.p.hi !== undefined) n.s.x = Math.min(n.p.hi, n.s.x);
+      }
+      this.t += dt; this.steps++;
+      this.evalInfo();
+      const snap = { t: this.t, v: {}, u: {}, open: false, night: this.env.night };
       for (const n of this.nodes) {
         const k = this.kindOf(n);
-        if (k === "storage") snap.x[n.id] = n.s.x;
         if (k === "source") snap.u[n.id] = n.s.u;
-        if (k === "sink" && n.s.open) snap.open = true;
+        else if (k === "sink") { if (n.s.open) snap.open = true; }
+        else if (k === "transducer") snap.v[n.id] = n.s.flow;
+        else snap.v[n.id] = this.infoOut(n);
+        if (k === "amplify") snap.u[n.id] = n.s.sat;
       }
       this.history.push(snap);
-      if (this.history.length > 1440) this.history.shift();
+      if (this.history.length > 2000) this.history.shift();
     }
 
-    // ---- bindings, used by the Panneau: {piece, get:"level"|"u"} | {piece, set:"manual"} | {piece, param}
+    // ---- bindings, used by the Panneau: {piece, get} | {piece, set:"manual"} | {piece, param}
     isAuto(bind) {
       const n = this.first(bind.piece);
       return !!(n && bind.set === "manual" && this.wiresTo(n.id, "cmd").length);
@@ -151,6 +224,7 @@
       if (!n) return null;
       if (bind.get === "level") return n.s.x;
       if (bind.get === "u") return n.s.x === null ? null : n.s.u;
+      if (bind.get) { const v = n.s[bind.get]; return v === undefined ? null : (typeof v === "boolean" ? (v ? 1 : 0) : v); }
       if (bind.set === "manual") return this.isAuto(bind) ? n.s.u : n.s.manual;
       if (bind.param) return n.p[bind.param];
       return null;
@@ -183,4 +257,6 @@
   K.GENERIC = GENERIC;
   K.Model = Model;
   K.fmtClock = m => `${Math.floor(m / 60)} h ${String(Math.round(m % 60)).padStart(2, "0")}`;
+  // default workshop clock: hours, one step = one minute
+  K.CLOCK_HOURS = { dt: 1 / 60, stepsPerSec: 5, fmt: t => K.fmtClock(Math.round(t * 60)), fmtSteps: n => K.fmtClock(n) };
 })(window.TSCGKit = window.TSCGKit || {});
