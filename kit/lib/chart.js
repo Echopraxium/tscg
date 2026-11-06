@@ -1,12 +1,16 @@
 /* TSCG Kit — chart.js
- * Curves of every storage level over the last hours, read from the Model history.
- * Optional target band, source on/off strip and perturbation strip.
+ * Curves read from the Model history (one point per simulation step).
+ * Configured by the workshop (W.chart):
+ *   range:[lo,hi], tickY, span, tick, label(t)   axes, in the workshop's time unit
+ *   band:[a,b], showBand(app)                    optional target zone
+ *   series:[{piece, label, color}]               default: every storage
+ *   strips:[{label, color, on(snap, model), shade}]  on/off bars under the curves,
+ *                                                    or full-height shading (shade:true)
  * Author: Echopraxium with the collaboration of Claude AI
  */
 (function (K) {
   "use strict";
   class Chart {
-    // o: { range:[lo,hi], band:[a,b], showBand(), legendEl, perturbLabel }
     constructor(canvas, model, o) { this.c = canvas; this.m = model; this.o = o; }
     draw() {
       const cv = this.c, m = this.m, o = this.o;
@@ -15,42 +19,53 @@
       if (cv.width !== Math.round(w * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
       const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, w, h);
       const css = getComputedStyle(document.documentElement), v = n => css.getPropertyValue(n).trim();
-      const [lo, hi] = o.range || [0, 32];
-      const L = 32, R = 8, T = 6, B = 30, pw = w - L - R, ph = h - T - B;
-      const span = 480, m1 = Math.max(span, m.minutes), m0 = m1 - span;
-      const X = t => L + (t - m0) / span * pw, Y = val => T + (1 - (val - lo) / (hi - lo)) * ph;
-      c.font = "11px system-ui, sans-serif"; c.lineWidth = 1;
-      for (let t = Math.ceil(lo / 10) * 10; t <= hi; t += 10) {
-        c.strokeStyle = v("--grid"); c.beginPath(); c.moveTo(L, Y(t)); c.lineTo(w - R, Y(t)); c.stroke();
-        c.fillStyle = v("--quiet"); c.fillText(t + "°", 2, Y(t) + 4);
+      const col = x => (x || "").startsWith("--") ? v(x) : x;
+      const [lo, hi] = o.range || [0, 32], tickY = o.tickY || 10;
+      const strips = (o.strips || []).filter(s => !s.shade), shades = (o.strips || []).filter(s => s.shade);
+      const L = 34, R = 8, T = 6, B = 22 + 7 * strips.length, pw = w - L - R, ph = h - T - B;
+      const span = o.span || 8, t1 = Math.max(span, m.t), t0 = t1 - span;
+      const X = t => L + (t - t0) / span * pw, Y = val => T + (1 - (clampV(val) - lo) / (hi - lo)) * ph;
+      function clampV(val) { return Math.max(lo, Math.min(hi, val)); }
+      const hist = m.history.filter(s => s.t >= t0);
+      const bw = Math.max(1, pw / Math.max(1, span / (this.o.app ? this.o.app.clock.dt : 1)));
+      for (const s of shades) {                    // full-height shading (e.g. night)
+        c.fillStyle = col(s.color); c.globalAlpha = .14;
+        for (const p of hist) if (s.on(p, m)) c.fillRect(X(p.t) - bw, T, bw + 0.5, ph);
+        c.globalAlpha = 1;
       }
-      for (let t = Math.ceil(m0 / 120) * 120; t <= m1; t += 120) { c.fillStyle = v("--quiet"); c.fillText(Math.round(t / 60) + " h", X(t) - 8, h - 2); }
-      if (o.band && o.showBand()) { c.fillStyle = v("--band"); c.fillRect(L, Y(o.band[1]), pw, Y(o.band[0]) - Y(o.band[1])); }
+      c.font = "11px system-ui, sans-serif"; c.lineWidth = 1;
+      for (let y = Math.ceil(lo / tickY) * tickY; y <= hi; y += tickY) {
+        c.strokeStyle = v("--grid"); c.beginPath(); c.moveTo(L, Y(y)); c.lineTo(w - R, Y(y)); c.stroke();
+        c.fillStyle = v("--quiet"); c.fillText(String(y), 2, Y(y) + 4);
+      }
+      const tick = o.tick || 2, label = o.label || (t => t + " h");
+      for (let t = Math.ceil(t0 / tick - 1e-9) * tick; t <= t1 + 1e-9; t += tick) { c.fillStyle = v("--quiet"); c.fillText(label(+t.toFixed(6)), X(t) - 8, h - 2); }
+      if (o.band && (!o.showBand || o.showBand(o.app))) { c.fillStyle = v("--band"); c.fillRect(L, Y(o.band[1]), pw, Y(o.band[0]) - Y(o.band[1])); }
       const legend = [];
-      const storages = m.nodes.filter(n => m.kindOf(n) === "storage");
-      for (const n of storages) {
-        const col = m.skins[n.type].color || v("--flux");
-        c.strokeStyle = col; c.lineWidth = 2; c.beginPath(); let on = false;
-        for (const s of m.history) {
-          if (s.m < m0 || !(n.id in s.x)) { on = false; continue; }
-          const x = X(s.m), y = Y(Math.max(lo, Math.min(hi, s.x[n.id])));
+      const series = o.series
+        ? o.series.map(s => ({ node: m.first(s.piece), label: s.label, color: col(s.color) })).filter(s => s.node)
+        : m.nodes.filter(n => m.kindOf(n) === "storage").map(n => ({ node: n, label: m.skins[n.type].name, color: m.skins[n.type].color || v("--flux") }));
+      for (const s of series) {
+        const id = s.node.id;
+        c.strokeStyle = s.color; c.lineWidth = 2; c.beginPath(); let on = false;
+        for (const p of hist) {
+          const val = p.v[id];
+          if (val === null || val === undefined) { on = false; continue; }
+          const x = X(p.t), y = Y(val);
           if (!on) { c.moveTo(x, y); on = true; } else c.lineTo(x, y);
         }
         c.stroke();
-        legend.push(`<span style="color:${col}">■</span> ${m.skins[n.type].name}`);
+        legend.push(`<span style="color:${s.color}">■</span> ${s.label || m.skins[s.node.type].name}`);
       }
-      const src = m.nodes.find(n => m.kindOf(n) === "source");
-      const bw = Math.max(1, pw / span);
-      if (src) {
-        c.fillStyle = v("--flux"); c.globalAlpha = .55;
-        for (const s of m.history) if (s.m >= m0 && s.u[src.id]) c.fillRect(X(s.m - 1), h - B + 4, bw, 4);
-        c.globalAlpha = 1; legend.push(`<span style="color:${v("--flux")};opacity:.6">▬</span> ${m.skins[src.type].name} en marche`);
-      }
-      if (m.history.some(s => s.open)) {
-        c.fillStyle = v("--info"); c.globalAlpha = .55;
-        for (const s of m.history) if (s.m >= m0 && s.open) c.fillRect(X(s.m - 1), h - B + 10, bw, 4);
-        c.globalAlpha = 1; legend.push(`<span style="color:${v("--info")};opacity:.6">▬</span> ${o.perturbLabel || "perturbation"}`);
-      }
+      strips.forEach((s, i) => {
+        const y = h - B + 4 + 7 * i;
+        c.fillStyle = col(s.color); c.globalAlpha = .6;
+        let any = false;
+        for (const p of hist) if (s.on(p, m)) { any = true; c.fillRect(X(p.t) - bw, y, bw + 0.5, 4); }
+        c.globalAlpha = 1;
+        if (any || m.history.some(p => s.on(p, m))) legend.push(`<span style="color:${col(s.color)};opacity:.7">▬</span> ${s.label}`);
+      });
+      for (const s of shades) if (m.history.some(p => s.on(p, m))) legend.push(`<span style="color:${col(s.color)};opacity:.5">█</span> ${s.label}`);
       if (o.legendEl) o.legendEl.innerHTML = legend.join(" &nbsp; ");
     }
   }

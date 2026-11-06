@@ -8,21 +8,22 @@
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.2.1";
-  const STEP_MIN = 1;          // one simulation step = 1 simulated minute
-  const MIN_PER_SEC = 5;       // at ×1, 1 real second = 5 simulated minutes
+  const VERSION = "0.3.0";
   const SPEEDS = [1, 4, 0.5];
 
   K.start = function (W) {
+    // the workshop's clock: model time per step, steps per real second at ×1, formatting
+    const CLK = Object.assign({}, K.CLOCK_HOURS, W.clock || {});
     document.title = W.pageTitle || document.title;
     document.body.innerHTML =
       `<header class="k-header">
+         <a class="k-home" href="${W.homeUrl || "../index.html"}" title="Tous les ateliers">←</a>
          <h1>${W.title}</h1>
          <div class="k-transport">
            <button id="kPlay" class="primary" title="Lancer / mettre en pause (barre d'espace)">▶ Lancer</button>
            <button id="kSpeed" title="Vitesse du temps">×1</button>
            <button id="kReset" title="Remettre l'horloge à zéro">↺</button>
-           <span id="kClock" class="k-clock">0 h 00</span>
+           <span id="kClock" class="k-clock"></span>
          </div>
          <span class="k-spacer"></span>
          <button id="kHood" title="Montrer les noms génériques des pièces">Sous le capot</button>
@@ -51,14 +52,14 @@
 
     const S = { running: false, speed: 1, hood: false, free: false, tab: "synoptic",
                 pieces: new Set(), instruments: new Set(), log: [], t0: Date.now(),
-                prediction: null, answers: null, done: false };
+                predictions: {}, answers: null, done: false };
     const model = new K.Model(W.skins);
-    const log = (type, detail) => S.log.push({ t: +((Date.now() - S.t0) / 1000).toFixed(1), sim: model.minutes, type, detail: detail === undefined ? "" : detail });
+    const log = (type, detail) => S.log.push({ t: +((Date.now() - S.t0) / 1000).toFixed(1), sim: +model.t.toFixed(3), type, detail: detail === undefined ? "" : detail });
     model.on(log);
     let toastTimer = null;
     const toast = msg => { const t = $("#kToast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 2800); };
 
-    const app = { S, model, log, toast, W };
+    const app = { S, model, log, toast, W, clock: CLK, fmtSteps: CLK.fmtSteps };
     const changed = () => { app.panel.renderToolbar(); app.panel.update(); app.tutorial.refresh(); };
     app.synoptic = new K.Synoptic($('[data-pane="synoptic"]'), model, {
       order: W.order, home: W.home, fluxLabel: W.fluxLabel,
@@ -66,9 +67,8 @@
     app.panel = new K.Panel($('[data-pane="panel"]'), model, {
       instruments: W.instruments, skins: W.skins,
       isUnlocked: k => (S.free || S.instruments.has(k)), toast, log, onChange: () => app.tutorial.refresh() });
-    app.view = W.view($("#kView"), model, { log, toast, hood: () => S.hood });
-    app.chart = new K.Chart($("#kChart"), model, { range: W.chartRange, band: W.band, showBand: () => S.free || S.pieces.has("heater"),
-      legendEl: $("#kLegend"), perturbLabel: W.perturbLabel });
+    app.view = W.view($("#kView"), model, { log, toast, hood: () => S.hood, running: () => S.running });
+    app.chart = new K.Chart($("#kChart"), model, Object.assign({}, W.chart, { legendEl: $("#kLegend"), app }));
 
     app.running = () => S.running;
     app.unlock = u => {
@@ -110,7 +110,7 @@
       const t = app.tutorial;
       const data = { tool: "TSCG Kit", workshop: W.id, version: VERSION, exported: new Date().toISOString(),
         progress: S.free ? "free" : t.mode === "final" ? "done" : t.steps[t.i].id,
-        prediction: S.prediction === null ? null : W.steps.find(s => s.predict).predict.choices[S.prediction],
+        predictions: Object.fromEntries(Object.entries(S.predictions).map(([id, k]) => [id, W.steps.find(s => s.id === id).predict.choices[k]])),
         answers: S.answers,
         state: { graph: model.serialize(), panel: app.panel.serialize() },
         log: S.log };
@@ -127,21 +127,22 @@
       if (e.key === " " && !typing && document.activeElement.tagName !== "BUTTON") { e.preventDefault(); setPlay(!S.running); }
     });
 
-    // ---- main loop: accumulate real time, run whole simulated minutes
+    // ---- main loop: accumulate real time, run whole simulation steps
     let last = performance.now(), acc = 0, chartT = 0;
     function frame(now) {
       const dt = Math.min(0.25, (now - last) / 1000); last = now;
       if (S.running) {
-        acc += dt * MIN_PER_SEC * S.speed;
+        acc += dt * CLK.stepsPerSec * S.speed;
         let guard = 0;
-        while (acc >= STEP_MIN && guard++ < 400) { model.step(STEP_MIN); app.tutorial.tick(); acc -= STEP_MIN; }
+        while (acc >= 1 && guard++ < 600) { model.step(CLK.dt); app.tutorial.tick(); acc -= 1; }
       }
       app.synoptic.update(S.running); app.panel.update(); app.view.update(S.running); app.tutorial.refresh();
-      $("#kClock").textContent = K.fmtClock(model.minutes);
+      $("#kClock").textContent = CLK.fmt(model.t);
       if (now - chartT > 120) { app.chart.draw(); chartT = now; }
       requestAnimationFrame(frame);
     }
 
+    app.step = n => { for (let i = 0; i < n; i++) { model.step(CLK.dt); app.tutorial.tick(); } };   // for tests
     app.synoptic.renderParams();
     app.goTab("synoptic");
     app.tutorial.start(0);

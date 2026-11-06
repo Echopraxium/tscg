@@ -98,13 +98,13 @@
         m.ports(n, "in").forEach((q, i) => {
           const y = HEAD + 18 + i * ROW;
           el("circle", { class: `port ${q.kind}`, cx: 0, cy: y, r: 7, "data-node": n.id, "data-port": q.id, "data-side": "in" }, g);
-          el("text", { class: "port-label", x: 12, y: y + 4 }, g).textContent = (s.ports || {})[q.id] || q.id;
+          el("text", { class: "port-label", x: 12, y: y + 4 }, g).textContent = (s.ports || {})[q.id] !== undefined ? s.ports[q.id] : q.id;
         });
         m.ports(n, "out").forEach((q, i) => {
           const y = HEAD + 18 + i * ROW;
           const c = el("circle", { class: `port ${q.kind}`, cx: NW, cy: y, r: 7, "data-node": n.id, "data-port": q.id, "data-side": "out" }, g);
           c.addEventListener("pointerdown", e => this.startWire(e, n, q));
-          el("text", { class: "port-label", x: NW - 12, y: y + 4, "text-anchor": "end" }, g).textContent = (s.ports || {})[q.id] || q.id;
+          el("text", { class: "port-label", x: NW - 12, y: y + 4, "text-anchor": "end" }, g).textContent = (s.ports || {})[q.id] !== undefined ? s.ports[q.id] : q.id;
         });
         const rows = Math.max(m.ports(n, "in").length, m.ports(n, "out").length, 1);
         const val = el("text", { class: "node-value", x: 12, y: HEAD + 10 + rows * ROW + 14 }, g);
@@ -119,10 +119,15 @@
 
     describe(n) {
       const s = this.skin(n), k = this.m.kindOf(n);
+      if (s.describe) return s.describe(n, this.m);
       if (k === "storage") return n.s.x.toFixed(1) + " " + (s.unit || "");
       if (k === "sink") return (s.levelText || "niveau") + " : " + n.p.level + " " + (s.unit || "");
       if (k === "source") return n.s.u ? (s.onText || "marche") : (s.offText || "arrêt");
       if (k === "threshold") return n.s.x === null ? "non relié" : (n.s.u ? (s.onText || "fermé") : (s.offText || "ouvert"));
+      if (k === "amplify") return (n.s.sat ? "saturé · " : "") + "sortie " + n.s.y.toFixed(1);
+      if (k === "transducer") return n.s.flow.toFixed(1) + " " + (s.unit || "");
+      if (k === "gradient") return n.s.a === null ? "rien à viser" : "écart " + n.s.d.toFixed(0) + " " + (s.unit || "");
+      if (k === "clock") return n.s.v === null ? (s.offText || "—") : (s.onText || "") + " " + n.s.v.toFixed(0) + " " + (s.unit || "");
       return "";
     }
     update(running) {
@@ -194,7 +199,7 @@
       const n = this.m.byId(+this.selected.slice(1)); if (!n) return;
       const s = this.skin(n), ps = s.params || {};
       box.innerHTML = `<b>${s.name}</b>${this.o.hood() ? ` <span class="k-muted">· ${K.GENERIC[s.kind]}</span>` : ""}` +
-        Object.entries(ps).map(([k, d]) => `<label>${d.label}<input type="number" data-k="${k}" step="${d.step}"${d.min !== undefined ? ` min="${d.min}"` : ""}${d.max !== undefined ? ` max="${d.max}"` : ""} value="${n.p[k]}"></label>`).join("") +
+        Object.entries(ps).filter(([k, d]) => !d.hidden).map(([k, d]) => `<label>${d.label}<input type="number" data-k="${k}" step="${d.step}"${d.min !== undefined ? ` min="${d.min}"` : ""}${d.max !== undefined ? ` max="${d.max}"` : ""} value="${n.p[k]}"></label>`).join("") +
         `<button class="sy-del">Supprimer la pièce</button>`;
       box.querySelectorAll("input").forEach(inp => inp.onchange = () => {
         const d = ps[inp.dataset.k]; let v = parseFloat(inp.value);
