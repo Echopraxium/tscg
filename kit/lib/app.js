@@ -10,7 +10,7 @@
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.7.0";
+  const VERSION = "0.8.0";
   const SPEEDS = [0.25, 0.5, 1, 2, 4, 8, 16];
   const LAYOUT_KEY = "tscg-kit-layout";
   const build = factory => factory((en, fr) => (K.lang === "fr" ? fr : en));

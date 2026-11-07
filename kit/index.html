@@ -4,101 +4,162 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TSCG Kit</title>
-<meta name="description" content="Four workshops to build, yourself, scale models of systems that move: Thermostat, Larsen, Sunflower, Drinking bird.">
-<!-- TSCG Kit home page (English / French). Author: Echopraxium with the collaboration of Claude AI -->
+<meta name="description" content="Workshops to build, yourself, scale models of systems that move. They all start from the Thermostat of a studio flat and branch out from there.">
+<!-- TSCG Kit home page (English / French): the map of scenarios.
+     The map is drawn from the `meta` each workshop declares (workshop.js, no library needed);
+     the scenarios still to build are declared below (PLANNED).
+     Author: Echopraxium with the collaboration of Claude AI -->
 <style>
-:root{--bg:#f6f5f1;--panel:#fff;--ink:#1d1d1b;--quiet:#6b6a64;--rule:#dedbd2;--accent:#2f6fde;--flux:#d9822b}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16171a;--panel:#1f2024;--ink:#ecebe6;--quiet:#a3a29b;--rule:#33343a;--accent:#6c9cf0;--flux:#f0a050}}
-:root[data-theme="dark"]{--bg:#16171a;--panel:#1f2024;--ink:#ecebe6;--quiet:#a3a29b;--rule:#33343a;--accent:#6c9cf0;--flux:#f0a050}
+:root{--bg:#f6f5f1;--panel:#fff;--ink:#1d1d1b;--quiet:#6b6a64;--rule:#dedbd2;--accent:#2f6fde;--flux:#d9822b;--line:#b7b2a6}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16171a;--panel:#1f2024;--ink:#ecebe6;--quiet:#a3a29b;--rule:#33343a;--accent:#6c9cf0;--flux:#f0a050;--line:#55565c}}
+:root[data-theme="dark"]{--bg:#16171a;--panel:#1f2024;--ink:#ecebe6;--quiet:#a3a29b;--rule:#33343a;--accent:#6c9cf0;--flux:#f0a050;--line:#55565c}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-main{max-width:920px;margin:0 auto;padding:36px 16px 56px}
+main{max-width:980px;margin:0 auto;padding:36px 16px 56px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
 h1{font-size:28px;margin:0 0 6px}
 .tools{display:flex;gap:8px}
-#theme{font:inherit;font-size:16px;line-height:1;color:var(--ink);background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:5px 10px;cursor:pointer}
-#theme:hover{border-color:var(--accent)}
-#lang{font:inherit;font-weight:600;color:var(--ink);background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:5px 12px;cursor:pointer}
-#lang:hover{border-color:var(--accent)}
-.lead{color:var(--quiet);margin:0 0 28px;max-width:640px}
-.list{display:grid;gap:14px}
-a.card{display:grid;grid-template-columns:52px 1fr auto;gap:16px;align-items:center;text-decoration:none;color:inherit;
-  background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:16px 18px}
+.tools button{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:5px 12px;cursor:pointer}
+#lang{font-weight:600}#theme{font-size:16px;line-height:1;padding:5px 10px}
+.tools button:hover{border-color:var(--accent)}
+.lead{color:var(--quiet);margin:0 0 26px;max-width:680px}
+.map{position:relative;display:grid;grid-template-columns:1fr 72px 1fr;grid-template-rows:auto auto auto;row-gap:22px;align-items:center}
+.map svg.links{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.card{position:relative;display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start;text-decoration:none;color:inherit;
+  background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;z-index:1}
 a.card:hover{border-color:var(--accent)}
-.num{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:18px;border:2px solid var(--flux);color:var(--flux)}
-.card h2{margin:0 0 2px;font-size:18px}
-.card p{margin:0;color:var(--quiet);font-size:14px}
-.card .idea{color:var(--ink);font-size:14px;margin-top:4px}
-.go{color:var(--accent);font-weight:600;white-space:nowrap}
-.note{margin-top:28px;color:var(--quiet);font-size:13.5px;max-width:640px}
-@media (max-width:560px){a.card{grid-template-columns:44px 1fr}.go{display:none}}
+.card.pivot{border:2px solid var(--accent)}
+.card.planned{border-style:dashed;background:transparent;color:var(--quiet)}
+.ico{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--flux);color:var(--flux)}
+.card.planned .ico{border-color:var(--line);color:var(--quiet)}
+.ico svg{width:22px;height:22px}
+.card h2{margin:0 0 2px;font-size:17px}
+.card p{margin:0;color:var(--quiet);font-size:13.5px}
+.card .idea{color:var(--ink);font-size:13.5px;margin-top:4px}
+.card.planned .idea{color:var(--quiet)}
+.card .change{margin-top:6px;font-size:12.5px;color:var(--quiet);font-style:italic}
+.card .tag{display:inline-block;margin-top:6px;font-size:12px;font-weight:600;color:var(--accent)}
+.card.planned .tag{color:var(--quiet)}
+.c-left{grid-column:1}.c-right{grid-column:3}
+.axis{font-size:12px;fill:var(--quiet)}
+.note{margin-top:28px;color:var(--quiet);font-size:13.5px;max-width:680px}
+@media (max-width:700px){.map{grid-template-columns:1fr}.c-left,.c-right{grid-column:1!important;grid-row:auto!important}.map svg.links{display:none}
+  .card.pivot{order:-1}.card.planned{order:1}}
 </style>
 </head>
 <body>
 <main>
   <div class="top"><h1>TSCG Kit</h1><div class="tools"><button id="lang"></button><button id="theme"></button></div></div>
-  <p class="lead" data-en="Four workshops to build, yourself, piece by piece, a scale model of a system that moves. Nothing to install, no account: it all happens in this page. Follow them in order: each one adds an idea and reuses pieces from the previous one."
-                  data-fr="Quatre ateliers pour construire soi-même, pièce par pièce, une maquette de système qui bouge. Rien à installer, aucun compte : tout se passe dans cette page. Suis-les dans l'ordre, chacun ajoute une idée et réutilise des pièces du précédent."></p>
-  <div class="list">
-    <a class="card" data-ws="thermostat">
-      <span class="num">1</span>
-      <span><h2>Thermostat</h2><p data-en="A room, a wall, a heater, a bimetal." data-fr="Une pièce, un mur, un chauffage, un bilame."></p>
-        <p class="idea" data-en="A loop that corrects: the room regulates itself." data-fr="Une boucle qui corrige : la pièce se règle toute seule."></p></span>
-      <span class="go" data-en="Start →" data-fr="Commencer →"></span>
-    </a>
-    <a class="card" data-ws="larsen">
-      <span class="num">2</span>
-      <span><h2>Larsen</h2><p data-en="A room, a voice, an amp, a loudspeaker." data-fr="Une salle, une voix, un ampli, un haut-parleur."></p>
-        <p class="idea" data-en="A loop that reinforces: beyond a threshold, everything runs away." data-fr="Une boucle qui renforce : au-delà d'un seuil, tout s'emballe."></p></span>
-      <span class="go" data-en="Start →" data-fr="Commencer →"></span>
-    </a>
-    <a class="card" data-ws="tournesol">
-      <span class="num">3</span>
-      <span><h2 data-en="Sunflower" data-fr="Tournesol"></h2><p data-en="A plant, a lamp, the sun, a clock." data-fr="Une plante, une lampe, le soleil, une horloge."></p>
-        <p class="idea" data-en="A loop that pursues: following a moving target, and anticipating." data-fr="Une boucle qui poursuit : suivre une cible qui bouge, et anticiper."></p></span>
-      <span class="go" data-en="Start →" data-fr="Commencer →"></span>
-    </a>
-    <a class="card" data-ws="oiseau">
-      <span class="num">4</span>
-      <span><h2 data-en="Drinking bird" data-fr="Oiseau buveur"></h2><p data-en="A head, an evaporation, a tilt, a return." data-fr="Une tête, une évaporation, une bascule, un retour."></p>
-        <p class="idea" data-en="A loop that never settles: it goes back and forth, forever." data-fr="Une boucle qui ne se pose jamais : elle va et vient, sans fin."></p></span>
-      <span class="go" data-en="Start →" data-fr="Commencer →"></span>
-    </a>
-  </div>
+  <p class="lead" data-en="Workshops to build, yourself, piece by piece, a scale model of a system that moves. Nothing to install, no account: it all happens in this page. Start with the Thermostat of a studio flat; each other workshop starts from it and changes one thing."
+                  data-fr="Des ateliers pour construire soi-même, pièce par pièce, une maquette de système qui bouge. Rien à installer, aucun compte : tout se passe dans cette page. Commence par le Thermostat d'un studio ; chaque autre atelier part de lui et change une seule chose."></p>
+  <div class="map" id="map"></div>
   <p class="note" data-en="Each workshop has a guided tutorial and a free mode. The “Export my session” button downloads a small log of your game, useful if you take part in the tests."
                   data-fr="Chaque atelier a un tutoriel guidé et un mode libre. Le bouton « Exporter ma session » télécharge un petit journal de ta partie, utile si tu participes aux tests."></p>
 </main>
+<script src="lib/icons.js"></script>
+<script src="thermostat/workshop.js"></script>
+<script src="larsen/workshop.js"></script>
+<script src="oiseau/workshop.js"></script>
+<script src="tournesol/workshop.js"></script>
 <script>
 (function () {
   "use strict";
+  var K = window.TSCGKit || {}, WS = K.workshops || {};
+  // scenarios still to build: same shape as a workshop's meta (dir "up" = zoom out, "down" = zoom in)
+  var PLANNED = {
+    maison: { planned: true, icon: "room", name: { en: "The house", fr: "La maison" },
+      what: { en: "Two floors: kitchen and living room downstairs, three bedrooms upstairs.", fr: "Deux étages : cuisine et salon en bas, trois chambres en haut." },
+      concept: { en: "Dividing by use is not dividing by behaviour.", fr: "Découper par usage, ce n'est pas découper par comportement." },
+      articulation: { from: "thermostat", dir: "up", change: { en: "the space is divided", fr: "l'espace se découpe" } } },
+    interieur: { planned: true, icon: "thermostat", name: { en: "Inside the thermostat", fr: "L'intérieur du thermostat" },
+      what: { en: "A sensor, a comparison with the set point, a snap contact.", fr: "Un capteur, une comparaison avec la consigne, un contact à rupture brusque." },
+      concept: { en: "A simple block was already a small machine.", fr: "Un bloc simple était déjà une petite machine." },
+      articulation: { from: "thermostat", dir: "down", change: { en: "the box opens", fr: "la boîte s'ouvre" } } }
+  };
   var KEY = "tscg-kit-lang", THEME = "tscg-kit-theme", lang = "en", theme = "dark";
   try { var t = localStorage.getItem(THEME); if (t === "light" || t === "dark") theme = t; } catch (e) { /* storage blocked */ }
+  try { var q = new URLSearchParams(location.search).get("lang"); if (q === "en" || q === "fr") lang = q; else { var s = localStorage.getItem(KEY); if (s === "en" || s === "fr") lang = s; } } catch (e) { /* storage blocked */ }
+  var tr = function (o) { return o ? (o[lang] || o.en) : ""; };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var icon = function (n) { return K.iconSvg ? K.iconSvg(n, "") : ""; };
+
+  // the scenarios, from their declarations
+  function scenarios() {
+    var all = [];
+    Object.keys(WS).forEach(function (id) { if (WS[id].meta) all.push({ id: id, m: WS[id].meta }); });
+    Object.keys(PLANNED).forEach(function (id) { all.push({ id: id, m: PLANNED[id] }); });
+    return all;
+  }
+  function card(sc, cls) {
+    var m = sc.m, a = m.articulation, tag = m.planned ? (lang === "fr" ? "À venir" : "Coming") : (lang === "fr" ? "Commencer →" : "Start →");
+    var inner = '<span class="ico">' + icon(m.icon) + '</span><span><h2>' + esc(tr(m.name)) + '</h2><p>' + esc(tr(m.what)) + '</p>' +
+      '<p class="idea">' + esc(tr(m.concept)) + '</p>' +
+      (a ? '<p class="change">' + (lang === "fr" ? "Ce qui change : " : "What changes: ") + esc(tr(a.change)) + '</p>' : '') +
+      '<span class="tag">' + tag + '</span></span>';
+    var c = m.pivot ? " pivot" : m.planned ? " planned" : "";
+    return m.planned ? '<div class="card' + c + ' ' + cls + '" data-id="' + sc.id + '">' + inner + '</div>'
+                     : '<a class="card' + c + ' ' + cls + '" data-id="' + sc.id + '" data-ws="' + sc.id + '" href="' + sc.id + '/index.html?lang=' + lang + '">' + inner + '</a>';
+  }
+  function render() {
+    var all = scenarios(), map = document.getElementById("map");
+    var pivot = all.filter(function (s) { return s.m.pivot; })[0];
+    var up = all.filter(function (s) { return s.m.articulation && s.m.articulation.dir === "up"; });
+    var down = all.filter(function (s) { return s.m.articulation && s.m.articulation.dir === "down"; });
+    var side = all.filter(function (s) { return s.m.articulation && s.m.articulation.dir === "lateral"; });
+    var rows = Math.max(3, side.length), mid = Math.ceil(rows / 2);
+    var html = '<svg class="links" aria-hidden="true"></svg>';
+    up.forEach(function (s) { html += card(s, 'c-left" style="grid-row:1'); });
+    if (pivot) html += card(pivot, 'c-left" style="grid-row:' + mid);
+    down.forEach(function (s) { html += card(s, 'c-left" style="grid-row:' + rows); });
+    side.forEach(function (s, i) { html += card(s, 'c-right" style="grid-row:' + (i + 1)); });
+    map.innerHTML = html;
+    links();
+  }
+  // connectors: the pivot to each scenario, drawn from the cards' positions
+  function links() {
+    var map = document.getElementById("map"), svg = map.querySelector("svg.links"), P = map.querySelector(".card.pivot");
+    if (!svg || !P || getComputedStyle(svg).display === "none") return;
+    var R = map.getBoundingClientRect(), b = function (el) { var r = el.getBoundingClientRect(); return { l: r.left - R.left, r: r.right - R.left, t: r.top - R.top, b: r.bottom - R.top, cy: (r.top + r.bottom) / 2 - R.top, cx: (r.left + r.right) / 2 - R.left }; };
+    var p = b(P), out = "", mx = p.r + 36;
+    out += '<defs><marker id="hm-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--line)"/></marker></defs>';
+    map.querySelectorAll(".card.c-right").forEach(function (el) {
+      var c = b(el), dash = el.classList.contains("planned") ? ' stroke-dasharray="5 4"' : '';
+      out += '<path d="M' + p.r + ' ' + p.cy + ' H' + mx + ' V' + c.cy + ' H' + (c.l - 2) + '" fill="none" stroke="var(--line)" stroke-width="1.5"' + dash + ' marker-end="url(#hm-arrow)"/>';
+    });
+    map.querySelectorAll(".card.c-left:not(.pivot)").forEach(function (el) {
+      var c = b(el), upward = c.b < p.t, y1 = upward ? p.t : p.b, y2 = upward ? c.b + 2 : c.t - 2;
+      out += '<path d="M' + p.cx + ' ' + y1 + ' V' + y2 + '" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#hm-arrow)"/>';
+      out += '<text class="axis" x="' + (p.cx + 8) + '" y="' + ((y1 + y2) / 2 + 4) + '">' +
+        (upward ? (lang === "fr" ? "dézoom" : "zoom out") : (lang === "fr" ? "zoom" : "zoom in")) + '</text>';
+    });
+    svg.innerHTML = out;
+  }
+
   function applyTheme() {
     document.documentElement.setAttribute("data-theme", theme);
     var b = document.getElementById("theme");
     b.textContent = theme === "dark" ? "☀" : "☾";
     b.title = lang === "fr" ? "Thème clair / sombre" : "Light / dark theme";
   }
+  function apply() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-en]").forEach(function (e) { e.textContent = e.getAttribute("data-" + lang); });
+    var b = document.getElementById("lang");
+    b.textContent = lang === "fr" ? "EN" : "FR";
+    b.title = lang === "fr" ? "Switch to English" : "Passer en français";
+    applyTheme(); render();
+  }
   document.getElementById("theme").onclick = function () {
     theme = theme === "dark" ? "light" : "dark";
     try { localStorage.setItem(THEME, theme); } catch (e) { /* storage blocked */ }
     applyTheme();
   };
-  try { var q = new URLSearchParams(location.search).get("lang"); if (q === "en" || q === "fr") lang = q; else { var s = localStorage.getItem(KEY); if (s === "en" || s === "fr") lang = s; } } catch (e) { /* storage blocked */ }
-  function apply() {
-    document.documentElement.lang = lang;
-    document.querySelectorAll("[data-en]").forEach(function (e) { e.textContent = e.getAttribute("data-" + lang); });
-    document.querySelectorAll("a[data-ws]").forEach(function (a) { a.href = a.getAttribute("data-ws") + "/index.html?lang=" + lang; });
-    var b = document.getElementById("lang");
-    b.textContent = lang === "fr" ? "EN" : "FR";
-    b.title = lang === "fr" ? "Switch to English" : "Passer en français";
-    applyTheme();
-  }
   document.getElementById("lang").onclick = function () {
     lang = lang === "fr" ? "en" : "fr";
     try { localStorage.setItem(KEY, lang); } catch (e) { /* storage blocked */ }
     apply();
   };
+  window.addEventListener("resize", links);
   apply();
 })();
 </script>

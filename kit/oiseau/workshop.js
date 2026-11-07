@@ -334,5 +334,13 @@
   };
   };
 
+  // Place on the map of scenarios: an articulation from the pivot (read by the home page, without the libraries)
+  factory.meta = { icon: "bird",
+    name: { en: "Drinking bird", fr: "Oiseau buveur" },
+    what: { en: "A head, an evaporation, a tilt, a return.", fr: "Une tête, une évaporation, une bascule, un retour." },
+    concept: { en: "A loop that never settles: it goes back and forth, forever.", fr: "Une boucle qui ne se pose jamais : elle va et vient, sans fin." },
+    articulation: { from: "thermostat", dir: "lateral",
+      carried: { en: "the sawtooth of the thermostat's curve", fr: "la dent de scie de la courbe du thermostat" },
+      change: { en: "no more resting point", fr: "plus de point de repos" } } };
   (K.workshops = K.workshops || {}).oiseau = factory;
 })(window.TSCGKit = window.TSCGKit || {});

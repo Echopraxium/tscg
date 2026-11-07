@@ -38,8 +38,15 @@
       this.host.querySelector(".pn-tb-label").textContent = K.t("pn_add");
       this.empty.textContent = K.t("pn_empty");
     }
-    def(c) { return this.o.instruments[c.inst]; }
-    has(key) { return this.controls.some(c => c.inst === key); }
+    // an instrument on the panel aims at one block (c.node); its labels name that block when several share a type
+    def(c) {
+      const d = this.o.instruments[c.inst], n = c.node != null ? this.m.byId(c.node) : null;
+      if (!n) return d;
+      const many = this.m.all(n.type).length > 1;
+      return Object.assign({}, d, { bind: Object.assign({}, d.bind, { node: c.node }),
+        label: many ? `${d.label} · ${this.m.label(n)}` : d.label, short: many ? `${d.short} ${n.num}` : d.short });
+    }
+    has(key, node) { return this.controls.some(c => c.inst === key && (node === undefined || c.node === node)); }
     cols() { return Math.max(8, Math.floor(this.grid.clientWidth / U)); }
 
     renderToolbar() {
@@ -48,15 +55,18 @@
       for (const key in this.o.instruments) {
         if (!this.o.isUnlocked(key)) continue;
         any = true;
-        const d = this.o.instruments[key], piece = this.o.skins[d.bind.piece];
-        const present = this.has(key), avail = !!this.m.first(d.bind.piece);
-        const b = document.createElement("button");
-        b.className = "pn-add"; b.dataset.inst = key;
-        b.innerHTML = `<span class="pn-ico">${ICON[d.type]}</span>${d.label}`;
-        b.disabled = present || !avail;
-        b.title = present ? K.t("pn_present") : !avail ? K.t("pn_need", piece.name) : K.t("pn_addtip");
-        b.onclick = () => this.add(key);
-        this.tb.appendChild(b);
+        const d = this.o.instruments[key], piece = this.o.skins[d.bind.piece], blocks = this.m.all(d.bind.piece);
+        // one button per block when several blocks of that type are in the Synoptic
+        for (const n of blocks.length ? blocks : [null]) {
+          const many = blocks.length > 1, present = many ? this.has(key, n.id) : this.has(key), avail = !!n;
+          const b = document.createElement("button");
+          b.className = "pn-add"; b.dataset.inst = key; if (n) b.dataset.node = n.id;
+          b.innerHTML = `<span class="pn-ico">${ICON[d.type]}</span>${d.label}${many ? ` · ${this.m.label(n)}` : ""}`;
+          b.disabled = present || !avail;
+          b.title = present ? K.t("pn_present") : !avail ? K.t("pn_need", piece.name) : K.t("pn_addtip");
+          b.onclick = () => this.add(key, n && n.id);
+          this.tb.appendChild(b);
+        }
       }
       if (!any) this.tb.innerHTML = `<span class="k-muted">${K.t("pn_none")}</span>`;
     }
@@ -74,9 +84,10 @@
       for (let y = 0; y < 400; y++) for (let x = 0; x + f.w <= this.cols(); x++) if (this.fits(c, x, y, f)) return { x, y };
       return { x: 0, y: 0 };
     }
-    add(key) {
+    add(key, node) {
       const d = this.o.instruments[key], df = DEFAULTS[d.type];
-      const c = { id: this.nextId++, inst: key, type: d.type, orient: d.orient || df.orient, len: d.len || df.len, x: 0, y: 0 };
+      if (node == null) { const n = this.m.first(d.bind.piece); node = n ? n.id : null; }
+      const c = { id: this.nextId++, inst: key, node, type: d.type, orient: d.orient || df.orient, len: d.len || df.len, x: 0, y: 0 };
       Object.assign(c, this.firstFree(c, foot(c)));
       this.controls.push(c);
       this.o.log("panel_add", key);
@@ -124,7 +135,7 @@
         (resizable(c) ? `<button class="pn-rot" title="${K.t("pn_rotate")}">⟳</button>` : "") +
         `<button class="pn-del" title="${K.t("pn_remove")}">×</button></span></div><div class="pn-body"></div>` +
         (resizable(c) ? `<div class="pn-resize" title="${K.t("pn_stretch")}"></div>` : "");
-      const body = node.querySelector(".pn-body"), refs = { node };
+      const body = node.querySelector(".pn-body"), refs = { node, label: node.querySelector(".pn-label") };
       if (c.type === "gauge" || c.type === "slider") {
         body.innerHTML = `<div class="pn-track">${d.zone ? `<div class="pn-zone"></div>` : ""}<div class="pn-fill"></div>${c.type === "slider" ? `<div class="pn-knob"></div>` : ""}</div><span class="pn-val"></span>`;
         refs.track = body.querySelector(".pn-track"); refs.fill = body.querySelector(".pn-fill");
@@ -160,6 +171,7 @@
         const d = this.def(c), v = this.m.read(d.bind), off = v === null;
         r.node.classList.toggle("off", off);
         r.node.title = off ? K.t("pn_absent", d.label, this.o.skins[d.bind.piece].name) : d.label;
+        r.label.textContent = d.short;
         if (r.fill) {
           const f = off ? 0 : this.frac(d, v), base = d.center !== undefined ? this.frac(d, d.center) : 0;
           this.setBar(r.fill, c, off ? base : base, off ? base : f);

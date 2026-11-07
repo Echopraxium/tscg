@@ -266,5 +266,13 @@
   };
   };
 
+  // Place on the map of scenarios: an articulation from the pivot (read by the home page, without the libraries)
+  factory.meta = { icon: "speaker",
+    name: { en: "Larsen", fr: "Larsen" },
+    what: { en: "A room, a voice, an amp, a loudspeaker.", fr: "Une salle, une voix, un ampli, un haut-parleur." },
+    concept: { en: "A loop that reinforces: beyond a threshold, everything runs away.", fr: "Une boucle qui renforce : au-delà d'un seuil, tout s'emballe." },
+    articulation: { from: "thermostat", dir: "lateral",
+      carried: { en: "the loop", fr: "la boucle" },
+      change: { en: "the loop changes sign", fr: "la boucle change de signe" } } };
   (K.workshops = K.workshops || {}).larsen = factory;
 })(window.TSCGKit = window.TSCGKit || {});

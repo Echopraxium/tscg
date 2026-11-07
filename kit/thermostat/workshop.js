@@ -66,10 +66,10 @@
     },
 
     steps: [
-      { id: "room", title: L("A room", "Une pièce"),
+      { id: "room", title: L("A studio flat", "Un studio"),
         unlock: { pieces: ["room"], instruments: ["roomTemp"] },
-        goal: L("In the <b>Synoptic</b>, place a <b>Room</b>. Then, in the <b>Panel</b>, add its thermometer. Finally, start the time with ▶ and watch for an hour.",
-                "Dans le <b>Synoptique</b>, pose une <b>Pièce</b>. Puis, dans le <b>Panneau</b>, ajoute son thermomètre. Enfin, lance le temps avec ▶ et observe pendant une heure."),
+        goal: L("You live in a studio flat: one single room where you cook, sit and sleep. In the <b>Synoptic</b>, place a <b>Room</b>. Then, in the <b>Panel</b>, add its thermometer. Finally, start the time with ▶ and watch for an hour.",
+                "Tu habites un studio, un F1 : une seule pièce où l'on cuisine, s'assoit et dort. Dans le <b>Synoptique</b>, pose une <b>Pièce</b>. Puis, dans le <b>Panneau</b>, ajoute son thermomètre. Enfin, lance le temps avec ▶ et observe pendant une heure."),
         need: app => !app.model.first("room") ? syn(L("Place a Room in the Synoptic.", "Pose une Pièce dans le Synoptique.")) :
                      !app.panel.has("roomTemp") ? pan(L("Add the room thermometer in the Panel.", "Ajoute le thermomètre de la pièce dans le Panneau.")) : null,
         check: K.elapse(60),
@@ -175,8 +175,30 @@
   <g id="mqSnow" fill="#ffffff" opacity=".9">${Array.from({ length: 26 }, (_, i) => `<circle cx="${(i * 67) % 430 + 6}" cy="${(i * 37) % 250 + 6}" r="${1.4 + (i % 3) * .5}"/>`).join("")}</g>
   <rect id="mqGround" x="0" y="262" width="440" height="38" rx="0"/>
   <g id="mqHouse">
-    <path d="M40 76 L220 18 L400 76 Z" fill="#9b6b4f"/>
+    <rect x="44" y="60" width="352" height="16" rx="2" fill="#8d8478"/>
+    <rect x="52" y="52" width="336" height="8" rx="2" fill="#a59c8f"/>
     <rect id="mqAir" x="60" y="76" width="320" height="186"/>
+    <g id="mqStudio" opacity=".92">
+      <!-- a studio flat (F1): one single space for cooking, sitting and sleeping -->
+      <line x1="250" y1="76" x2="250" y2="92" stroke="#6e6a60" stroke-width="1.2"/>
+      <path d="M240 92 H260 L266 104 H234 Z" fill="#d9b45a" stroke="#8a7440" stroke-width="1"/>
+      <rect x="136" y="88" width="44" height="26" rx="2" fill="#cfc5b3" stroke="#8a857a" stroke-width="1"/>
+      <line x1="158" y1="88" x2="158" y2="114" stroke="#8a857a" stroke-width="1"/>
+      <rect x="136" y="214" width="58" height="48" fill="#c9bca6" stroke="#8a857a" stroke-width="1"/>
+      <rect x="133" y="210" width="64" height="6" rx="1.5" fill="#6e6a60"/>
+      <ellipse cx="150" cy="209" rx="7" ry="1.6" fill="#3a3833"/><ellipse cx="168" cy="209" rx="7" ry="1.6" fill="#3a3833"/>
+      <line x1="165" y1="222" x2="165" y2="256" stroke="#8a857a" stroke-width="1"/><circle cx="160" cy="236" r="1.4" fill="#6e6a60"/><circle cx="170" cy="236" r="1.4" fill="#6e6a60"/>
+      <rect x="204" y="222" width="76" height="22" rx="6" fill="#6f8f7a"/>
+      <rect x="208" y="240" width="68" height="14" rx="4" fill="#7fa08a"/>
+      <rect x="200" y="232" width="10" height="26" rx="4" fill="#5f7d69"/><rect x="274" y="232" width="10" height="26" rx="4" fill="#5f7d69"/>
+      <line x1="206" y1="258" x2="206" y2="262" stroke="#4a4842" stroke-width="2"/><line x1="278" y1="258" x2="278" y2="262" stroke="#4a4842" stroke-width="2"/>
+      <rect x="292" y="212" width="6" height="50" rx="2" fill="#8a6a4f"/>
+      <rect x="296" y="240" width="76" height="14" rx="2" fill="#8a6a4f"/>
+      <rect x="298" y="230" width="72" height="12" rx="4" fill="#ece7dc"/>
+      <rect x="318" y="228" width="54" height="14" rx="4" fill="#7f9cc2"/>
+      <rect x="300" y="224" width="18" height="9" rx="4" fill="#f6f3ec" stroke="#cfc7b6" stroke-width=".8"/>
+      <rect x="196" y="258" width="100" height="4" rx="2" fill="#b0636a" opacity=".55"/>
+    </g>
     <g clip-path="url(#mqRoomClip)">
       <ellipse id="mqPlume" cx="104" cy="150" rx="90" ry="110" fill="url(#mqWarm)"/>
       <ellipse id="mqFloor" cx="190" cy="258" rx="130" ry="34" fill="url(#mqCool)"/>
@@ -245,7 +267,7 @@
           const now = performance.now(), dtR = Math.min(0.1, (now - lastT) / 1000); lastT = now;
           const room = model.first("room"), wall = model.first("wall"), heater = model.first("heater"),
                 stat = model.first("bimetal"), rad = model.first("radiator");
-          host.querySelector("svg").setAttribute("aria-label", K.L("Scale model: a heated room, in cross-section", "Maquette : une pièce chauffée vue en coupe"));
+          host.querySelector("svg").setAttribute("aria-label", K.L("Scale model: a heated studio flat (one single room), in cross-section", "Maquette : un studio chauffé (une seule pièce, un F1) vu en coupe"));
           $("mqEmpty").textContent = K.L("Empty scale model: place a Room in the Synoptic.", "Maquette vide : pose une Pièce dans le Synoptique.");
           $("mqEmpty").style.display = room ? "none" : "";
           $("mqHouse").style.display = room ? "" : "none";
@@ -301,5 +323,10 @@
   };
   };
 
+  // Place on the map of scenarios (read by the home page, without the libraries)
+  factory.meta = { pivot: true, icon: "thermostat",
+    name: { en: "Thermostat", fr: "Thermostat" },
+    what: { en: "A studio flat, a wall, a heater, a thermostat.", fr: "Un studio (F1), un mur, un chauffage, un thermostat." },
+    concept: { en: "A loop that corrects: the room regulates itself.", fr: "Une boucle qui corrige : la pièce se règle toute seule." } };
   (K.workshops = K.workshops || {}).thermostat = factory;
 })(window.TSCGKit = window.TSCGKit || {});
