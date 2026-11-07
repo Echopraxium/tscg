@@ -16,7 +16,8 @@
       const cv = this.c, m = this.m, o = this.o;
       const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
       if (!w || !h) return;
-      if (cv.width !== Math.round(w * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+      // resize the bitmap whenever the box changes (width OR height), or stale pixels stay visible
+      if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
       const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, w, h);
       const css = getComputedStyle(document.documentElement), v = n => css.getPropertyValue(n).trim();
       const col = x => (x || "").startsWith("--") ? v(x) : x;

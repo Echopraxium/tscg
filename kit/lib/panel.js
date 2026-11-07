@@ -9,7 +9,7 @@
  */
 (function (K) {
   "use strict";
-  const U = 36;                                   // grid unit, px
+  const U = 32;                                   // grid unit, px
   const LEN_MIN = 3, LEN_MAX = 10;
   const DEFAULTS = { gauge: { orient: "v", len: 5 }, slider: { orient: "h", len: 5 }, toggle: { orient: "h", len: 0 }, lamp: { orient: "h", len: 0 } };
   const ICON = { gauge: "▮", slider: "⎯●", toggle: "⏻", lamp: "●" };
@@ -25,12 +25,18 @@
     constructor(host, model, o) {
       this.m = model; this.o = o; this.controls = []; this.nextId = 1; this.els = new Map();
       host.innerHTML =
-        `<div class="pn-toolbar"><span class="pn-tb-label">Ajouter un instrument :</span><span class="pn-tb-list"></span></div>
-         <div class="pn-scroll"><div class="pn-grid"><div class="pn-empty">Le panneau est vide. Ajoute un instrument avec les boutons ci-dessus.</div></div></div>`;
+        `<div class="pn-toolbar"><span class="pn-tb-label"></span><span class="pn-tb-list"></span></div>
+         <div class="pn-scroll"><div class="pn-grid"><div class="pn-empty"></div></div></div>`;
+      this.host = host;
       this.tb = host.querySelector(".pn-tb-list");
       this.grid = host.querySelector(".pn-grid");
       this.empty = host.querySelector(".pn-empty");
       this.grid.style.setProperty("--u", U + "px");
+      this.relabel();
+    }
+    relabel() {
+      this.host.querySelector(".pn-tb-label").textContent = K.t("pn_add");
+      this.empty.textContent = K.t("pn_empty");
     }
     def(c) { return this.o.instruments[c.inst]; }
     has(key) { return this.controls.some(c => c.inst === key); }
@@ -48,11 +54,11 @@
         b.className = "pn-add"; b.dataset.inst = key;
         b.innerHTML = `<span class="pn-ico">${ICON[d.type]}</span>${d.label}`;
         b.disabled = present || !avail;
-        b.title = present ? "Déjà sur le panneau" : !avail ? `Pose d'abord un(e) ${piece.name} dans le Synoptique` : "Ajouter au panneau";
+        b.title = present ? K.t("pn_present") : !avail ? K.t("pn_need", piece.name) : K.t("pn_addtip");
         b.onclick = () => this.add(key);
         this.tb.appendChild(b);
       }
-      if (!any) this.tb.innerHTML = `<span class="k-muted">aucun pour l'instant</span>`;
+      if (!any) this.tb.innerHTML = `<span class="k-muted">${K.t("pn_none")}</span>`;
     }
 
     fits(c, x, y, f) {
@@ -115,9 +121,9 @@
       node.title = d.label;
       node.innerHTML =
         `<div class="pn-head"><span class="pn-label">${d.short}</span><span class="pn-tools">` +
-        (resizable(c) ? `<button class="pn-rot" title="Pivoter">⟳</button>` : "") +
-        `<button class="pn-del" title="Retirer du panneau">×</button></span></div><div class="pn-body"></div>` +
-        (resizable(c) ? `<div class="pn-resize" title="Étirer"></div>` : "");
+        (resizable(c) ? `<button class="pn-rot" title="${K.t("pn_rotate")}">⟳</button>` : "") +
+        `<button class="pn-del" title="${K.t("pn_remove")}">×</button></span></div><div class="pn-body"></div>` +
+        (resizable(c) ? `<div class="pn-resize" title="${K.t("pn_stretch")}"></div>` : "");
       const body = node.querySelector(".pn-body"), refs = { node };
       if (c.type === "gauge" || c.type === "slider") {
         body.innerHTML = `<div class="pn-track">${d.zone ? `<div class="pn-zone"></div>` : ""}<div class="pn-fill"></div>${c.type === "slider" ? `<div class="pn-knob"></div>` : ""}</div><span class="pn-val"></span>`;
@@ -153,7 +159,7 @@
         const r = this.els.get(c.id); if (!r) continue;
         const d = this.def(c), v = this.m.read(d.bind), off = v === null;
         r.node.classList.toggle("off", off);
-        r.node.title = off ? `${d.label} — ${this.o.skins[d.bind.piece].name} absent(e) du Synoptique` : d.label;
+        r.node.title = off ? K.t("pn_absent", d.label, this.o.skins[d.bind.piece].name) : d.label;
         if (r.fill) {
           const f = off ? 0 : this.frac(d, v), base = d.center !== undefined ? this.frac(d, d.center) : 0;
           this.setBar(r.fill, c, off ? base : base, off ? base : f);
@@ -164,7 +170,7 @@
         if (r.sw) {
           const auto = this.m.isAuto(d.bind);
           r.sw.classList.toggle("on", !off && !!v); r.sw.classList.toggle("auto", auto);
-          r.swTxt.textContent = off ? "—" : auto ? "auto" : (v ? (d.onText || "marche") : (d.offText || "arrêt"));
+          r.swTxt.textContent = off ? "—" : auto ? K.t("pn_auto") : (v ? (d.onText || K.t("pn_on")) : (d.offText || K.t("pn_off")));
         }
         if (r.lamp) r.lamp.classList.toggle("on", !off && !!v);
       }
@@ -173,7 +179,7 @@
     flip(c) {
       const d = this.def(c);
       if (this.m.read(d.bind) === null) return;
-      if (this.m.isAuto(d.bind)) { this.o.toast("Cette commande est maintenant pilotée par un fil du Synoptique : l'interrupteur est en automatique."); return; }
+      if (this.m.isAuto(d.bind)) { this.o.toast(K.t("pn_isauto")); return; }
       this.m.write(d.bind, this.m.read(d.bind) ? 0 : 1);
       this.o.log("panel_toggle", `${c.inst}=${this.m.read(d.bind)}`);
       this.update();
@@ -211,7 +217,7 @@
         window.removeEventListener("pointermove", move);
         if (cand && (cand.x !== c.x || cand.y !== c.y)) {
           if (this.fits(c, cand.x, cand.y, foot(c))) { c.x = cand.x; c.y = cand.y; this.o.log("panel_move", `${c.inst}@${c.x},${c.y}`); }
-          else this.o.toast("Pas de place ici : les instruments ne se chevauchent pas.");
+          else this.o.toast(K.t("pn_nospace"));
         }
         this.render();
       };

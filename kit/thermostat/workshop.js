@@ -1,147 +1,166 @@
 /* TSCG Kit — Thermostat workshop definition
  * Pieces (skins over generic kinds), panel instruments, tutorial steps and the
- * 2D Maquette. The Maquette shows no number at all: numbers live on the Panneau.
+ * 2D scale model. The scale model shows no number at all: numbers live on the Panel.
+ * The definition is a factory: L(english, french) picks every text.
  * Author: Echopraxium with the collaboration of Claude AI
  */
 (function (K) {
   "use strict";
   const inBand = app => { const r = app.model.first("room"); return !!r && r.s.x >= 19 && r.s.x <= 21; };
-  const OUT_OF_BAND = "Hors de la zone 19–21 °C : le compteur repart de zéro.";
   const syn = msg => ({ msg, tab: "synoptic" });
   const pan = msg => ({ msg, tab: "panel" });
 
-  const W = {
+  const factory = L => {
+    const OUT_OF_BAND = L("Outside the 19–21 °C zone: the counter restarts from zero.", "Hors de la zone 19–21 °C : le compteur repart de zéro.");
+    return {
     id: "thermostat",
-    title: "Atelier TSCG — Thermostat",
-    pageTitle: "TSCG Atelier — Thermostat",
-    fluxLabel: "flux (chaleur)",
+    title: L("TSCG Workshop — Thermostat", "Atelier TSCG — Thermostat"),
+    pageTitle: L("TSCG Workshop — Thermostat", "TSCG Atelier — Thermostat"),
+    fluxLabel: L("flux (heat)", "flux (chaleur)"),
     chart: {
       range: [0, 32], tickY: 10, span: 8, tick: 2, label: t => t + " h",
       band: [19, 21], showBand: app => app.S.free || app.S.pieces.has("heater"),
       strips: [
-        { label: "chauffage en marche", color: "--flux", on: (p, m) => { const h = m.first("heater"); return !!(h && p.u[h.id]); } },
-        { label: "fenêtre ouverte", color: "--info", on: p => p.open }
+        { label: L("heater on", "chauffage en marche"), color: "--flux", on: (p, m) => { const h = m.first("heater"); return !!(h && p.u[h.id]); } },
+        { label: L("window open", "fenêtre ouverte"), color: "--info", on: p => p.open }
       ]
     },
     order: ["room", "wall", "heater", "bimetal", "radiator"],
     // where each piece lands: heat flows left to right, control sits below
-    home: { heater: { x: 16, y: 24 }, radiator: { x: 16, y: 250 }, room: { x: 236, y: 24 }, wall: { x: 456, y: 24 }, bimetal: { x: 236, y: 220 } },
+    home: { heater: { x: 16, y: 20 }, radiator: { x: 16, y: 220 }, room: { x: 206, y: 20 }, wall: { x: 396, y: 20 }, bimetal: { x: 206, y: 180 } },
 
     skins: {
-      room: { kind: "storage", name: "Pièce", blurb: "accumule la chaleur", unit: "°C", color: "#d9822b",
-        ports: { in: "chaleur reçue", out: "pertes", level: "température" },
-        params: { C: { label: "Capacité (kWh/°C)", v: 0.5, step: 0.1, min: 0.05, max: 5 },
-                  k: { label: "Fuite (kW/°C)", v: 0.1, step: 0.05, min: 0, max: 2 },
-                  x0: { label: "Temp. initiale (°C)", v: 20, step: 1, min: -10, max: 40 } } },
-      wall: { kind: "sink", name: "Mur", blurb: "laisse filer la chaleur dehors", unit: "°C", levelText: "dehors",
-        ports: { in: "pertes" },
-        params: { level: { label: "Temp. extérieure (°C)", v: 5, step: 1, min: -20, max: 30 },
-                  kOpen: { label: "Fuite fenêtre ouverte (kW/°C)", v: 0.6, step: 0.1, min: 0, max: 5 } } },
-      heater: { kind: "source", name: "Chauffage", blurb: "produit de la chaleur", onText: "chauffe", offText: "à l'arrêt",
-        ports: { cmd: "commande", flow: "chaleur" },
-        params: { P: { label: "Puissance (kW)", v: 2.5, step: 0.5, min: 0, max: 10 } } },
-      bimetal: { kind: "threshold", name: "Bilame", blurb: "se courbe avec la chaleur", onText: "contact fermé", offText: "contact ouvert",
-        ports: { x: "température", u: "commande" },
-        params: { set: { label: "Consigne (°C)", v: 20, step: 0.5, min: 5, max: 30 },
-                  h: { label: "Hystérésis (°C)", v: 1, step: 0.25, min: 0, max: 5 } } },
-      radiator: { kind: "storage", name: "Radiateur", blurb: "masse qui stocke puis rend la chaleur", unit: "°C", color: "#c0392b",
-        ports: { in: "chaleur reçue", out: "rendue", level: "température" },
-        params: { C: { label: "Masse (kWh/°C)", v: 0.3, step: 0.1, min: 0.05, max: 5 },
-                  k: { label: "Échange (kW/°C)", v: 0.5, step: 0.05, min: 0, max: 3 },
-                  x0: { label: "Temp. initiale (°C)", v: 20, step: 1, min: -10, max: 80 } } }
+      room: { kind: "storage", name: L("Room", "Pièce"), blurb: L("stores heat", "accumule la chaleur"), unit: "°C", color: "#d9822b",
+        ports: { in: L("heat in", "chaleur reçue"), out: L("losses", "pertes"), level: L("temperature", "température") },
+        params: { C: { label: L("Capacity (kWh/°C)", "Capacité (kWh/°C)"), v: 0.5, step: 0.1, min: 0.05, max: 5 },
+                  k: { label: L("Leak (kW/°C)", "Fuite (kW/°C)"), v: 0.1, step: 0.05, min: 0, max: 2 },
+                  x0: { label: L("Start temp. (°C)", "Temp. initiale (°C)"), v: 20, step: 1, min: -10, max: 40 } } },
+      wall: { kind: "sink", name: L("Wall", "Mur"), blurb: L("lets heat escape outside", "laisse filer la chaleur dehors"), unit: "°C", levelText: L("outside", "dehors"),
+        ports: { in: L("losses", "pertes") },
+        params: { level: { label: L("Outside temp. (°C)", "Temp. extérieure (°C)"), v: 5, step: 1, min: -20, max: 30 },
+                  kOpen: { label: L("Open-window leak (kW/°C)", "Fuite fenêtre ouverte (kW/°C)"), v: 0.6, step: 0.1, min: 0, max: 5 } } },
+      heater: { kind: "source", name: L("Heater", "Chauffage"), blurb: L("produces heat", "produit de la chaleur"), onText: L("heating", "chauffe"), offText: L("off", "à l'arrêt"),
+        ports: { cmd: L("command", "commande"), flow: L("heat", "chaleur") },
+        params: { P: { label: L("Power (kW)", "Puissance (kW)"), v: 2.5, step: 0.5, min: 0, max: 10 } } },
+      bimetal: { kind: "threshold", name: L("Bimetal", "Bilame"), blurb: L("bends with heat", "se courbe avec la chaleur"), onText: L("contact closed", "contact fermé"), offText: L("contact open", "contact ouvert"),
+        ports: { x: L("temperature", "température"), u: L("command", "commande") },
+        params: { set: { label: L("Set point (°C)", "Consigne (°C)"), v: 20, step: 0.5, min: 5, max: 30 },
+                  h: { label: L("Hysteresis (°C)", "Hystérésis (°C)"), v: 1, step: 0.25, min: 0, max: 5 } } },
+      radiator: { kind: "storage", name: L("Radiator", "Radiateur"), blurb: L("a mass that stores heat, then gives it back", "masse qui stocke puis rend la chaleur"), unit: "°C", color: "#c0392b",
+        ports: { in: L("heat in", "chaleur reçue"), out: L("gives", "rendue"), level: L("temperature", "température") },
+        params: { C: { label: L("Mass (kWh/°C)", "Masse (kWh/°C)"), v: 0.3, step: 0.1, min: 0.05, max: 5 },
+                  k: { label: L("Exchange (kW/°C)", "Échange (kW/°C)"), v: 0.5, step: 0.05, min: 0, max: 3 },
+                  x0: { label: L("Start temp. (°C)", "Temp. initiale (°C)"), v: 20, step: 1, min: -10, max: 80 } } }
     },
 
     instruments: {
-      roomTemp:     { type: "gauge",  label: "Thermomètre de la pièce", short: "Pièce", bind: { piece: "room", get: "level" }, range: [0, 30], step: 0.1, unit: "°C", zone: [19, 21] },
-      heaterSwitch: { type: "toggle", label: "Interrupteur du chauffage", short: "Chauffage", bind: { piece: "heater", set: "manual" } },
-      bimetalLamp:  { type: "lamp",   label: "Témoin du bilame (contact fermé)", short: "Contact", bind: { piece: "bimetal", get: "u" } },
-      setpoint:     { type: "slider", label: "Consigne du bilame", short: "Consigne", bind: { piece: "bimetal", param: "set" }, range: [10, 28], step: 0.5, unit: "°C" },
-      radiatorTemp: { type: "gauge",  label: "Thermomètre du radiateur", short: "Radiateur", bind: { piece: "radiator", get: "level" }, range: [0, 60], step: 0.1, unit: "°C" },
-      outsideTemp:  { type: "slider", label: "Température extérieure", short: "Dehors", bind: { piece: "wall", param: "level" }, range: [-15, 25], step: 1, unit: "°C" }
+      roomTemp:     { type: "gauge",  label: L("Room thermometer", "Thermomètre de la pièce"), short: L("Room", "Pièce"), bind: { piece: "room", get: "level" }, range: [0, 30], step: 0.1, unit: "°C", zone: [19, 21] },
+      heaterSwitch: { type: "toggle", label: L("Heater switch", "Interrupteur du chauffage"), short: L("Heater", "Chauffage"), bind: { piece: "heater", set: "manual" } },
+      bimetalLamp:  { type: "lamp",   label: L("Bimetal light (contact closed)", "Témoin du bilame (contact fermé)"), short: L("Contact", "Contact"), bind: { piece: "bimetal", get: "u" } },
+      setpoint:     { type: "slider", label: L("Bimetal set point", "Consigne du bilame"), short: L("Set point", "Consigne"), bind: { piece: "bimetal", param: "set" }, range: [10, 28], step: 0.5, unit: "°C" },
+      radiatorTemp: { type: "gauge",  label: L("Radiator thermometer", "Thermomètre du radiateur"), short: L("Radiator", "Radiateur"), bind: { piece: "radiator", get: "level" }, range: [0, 60], step: 0.1, unit: "°C" },
+      outsideTemp:  { type: "slider", label: L("Outside temperature", "Température extérieure"), short: L("Outside", "Dehors"), bind: { piece: "wall", param: "level" }, range: [-15, 25], step: 1, unit: "°C" }
     },
 
     steps: [
-      { id: "room", title: "Une pièce",
+      { id: "room", title: L("A room", "Une pièce"),
         unlock: { pieces: ["room"], instruments: ["roomTemp"] },
-        goal: "Dans le <b>Synoptique</b>, pose une <b>Pièce</b>. Puis, dans le <b>Panneau</b>, ajoute son thermomètre. Enfin, lance le temps avec ▶ et observe pendant une heure.",
-        need: app => !app.model.first("room") ? syn("Pose une Pièce dans le Synoptique.") :
-                     !app.panel.has("roomTemp") ? pan("Ajoute le thermomètre de la pièce dans le Panneau.") : null,
+        goal: L("In the <b>Synoptic</b>, place a <b>Room</b>. Then, in the <b>Panel</b>, add its thermometer. Finally, start the time with ▶ and watch for an hour.",
+                "Dans le <b>Synoptique</b>, pose une <b>Pièce</b>. Puis, dans le <b>Panneau</b>, ajoute son thermomètre. Enfin, lance le temps avec ▶ et observe pendant une heure."),
+        need: app => !app.model.first("room") ? syn(L("Place a Room in the Synoptic.", "Pose une Pièce dans le Synoptique.")) :
+                     !app.panel.has("roomTemp") ? pan(L("Add the room thermometer in the Panel.", "Ajoute le thermomètre de la pièce dans le Panneau.")) : null,
         check: K.elapse(60),
-        takeaway: "La température ne bouge pas. Une réserve de chaleur ne change que si quelque chose y entre ou en sort.",
-        hood: "Pièce = <b>Storage</b> : elle accumule une quantité (ici, de la chaleur)." },
+        takeaway: L("The temperature does not move. A store of heat only changes when something flows in or out.",
+                    "La température ne bouge pas. Une réserve de chaleur ne change que si quelque chose y entre ou en sort."),
+        hood: L("Room = <b>Storage</b>: it accumulates a quantity (here, heat).", "Pièce = <b>Storage</b> : elle accumule une quantité (ici, de la chaleur).") },
 
-      { id: "wall", title: "Le mur et l'hiver",
+      { id: "wall", title: L("The wall and winter", "Le mur et l'hiver"),
         unlock: { pieces: ["wall"] },
-        goal: "Dehors, il fait froid. Pose un <b>Mur</b> et relie la sortie <i>pertes</i> de la Pièce à l'entrée du Mur. Puis laisse passer 6 heures.",
-        predict: { q: "Avant de lancer : à ton avis, où sera la température dans 6 heures ?",
-                   choices: ["Toujours vers 20 °C", "Elle descend, mais reste au-dessus de 5 °C", "Elle tombe à 5 °C ou moins"] },
-        hint: "Astuce : le bouton ×1 en haut accélère le temps.",
-        need: app => !app.model.first("room") ? syn("Il manque la Pièce.") :
-                     !app.model.linked("room", "out", "wall", "in") ? syn("Relie la Pièce au Mur dans le Synoptique.") : null,
+        goal: L("Outside, it is cold. Place a <b>Wall</b> and wire the Room's <i>losses</i> output to the Wall's input. Then let 6 hours go by.",
+                "Dehors, il fait froid. Pose un <b>Mur</b> et relie la sortie <i>pertes</i> de la Pièce à l'entrée du Mur. Puis laisse passer 6 heures."),
+        predict: { q: L("Before you start: where do you think the temperature will be in 6 hours?", "Avant de lancer : à ton avis, où sera la température dans 6 heures ?"),
+                   choices: [L("Still around 20 °C", "Toujours vers 20 °C"), L("Lower, but still above 5 °C", "Elle descend, mais reste au-dessus de 5 °C"), L("Down to 5 °C or less", "Elle tombe à 5 °C ou moins")] },
+        hint: L("Tip: the ×1 button at the top speeds up time.", "Astuce : le bouton ×1 en haut accélère le temps."),
+        need: app => !app.model.first("room") ? syn(L("The Room is missing.", "Il manque la Pièce.")) :
+                     !app.model.linked("room", "out", "wall", "in") ? syn(L("Wire the Room to the Wall in the Synoptic.", "Relie la Pièce au Mur dans le Synoptique.")) : null,
         check: K.elapse(360),
-        takeaway: "La température descend vers celle du dehors, de plus en plus lentement. Sans chauffage, c'est là que la pièce finit toujours.",
-        hood: "Mur = <b>Sink</b> : la sortie du système. L'état vers lequel tout tend s'appelle un <b>attracteur</b>." },
+        takeaway: L("The temperature falls towards the outside one, more and more slowly. Without heating, that is where the room always ends up.",
+                    "La température descend vers celle du dehors, de plus en plus lentement. Sans chauffage, c'est là que la pièce finit toujours."),
+        hood: L("Wall = <b>Sink</b>: the exit of the system. The state everything tends to is called an <b>attractor</b>.",
+                "Mur = <b>Sink</b> : la sortie du système. L'état vers lequel tout tend s'appelle un <b>attracteur</b>.") },
 
-      { id: "manual", title: "Chauffer à la main",
+      { id: "manual", title: L("Heating by hand", "Chauffer à la main"),
         unlock: { pieces: ["heater"], instruments: ["heaterSwitch"] },
         enter: app => { const r = app.model.first("room"); if (r) r.s.x = 17; },
-        goal: "La pièce est retombée à 17 °C. Pose un <b>Chauffage</b>, relie sa <i>chaleur</i> à la Pièce, ajoute son <b>interrupteur</b> au Panneau, et garde la pièce <b>entre 19 et 21 °C pendant 2 heures</b>.",
-        hint: "La zone verte du thermomètre montre où tenir.",
-        need: app => !app.model.first("room") ? syn("Il manque la Pièce.") :
-                     !app.model.linked("room", "out", "wall", "in") ? syn("Garde la Pièce reliée au Mur.") :
-                     !app.model.linked("heater", "flow", "room", "in") ? syn("Relie le Chauffage à la Pièce dans le Synoptique.") :
-                     app.model.wiresTo(app.model.first("heater").id, "cmd").length ? syn("Pour cette étape, c'est toi qui commandes : retire le fil branché sur la commande.") :
-                     !app.panel.has("heaterSwitch") ? pan("Ajoute l'interrupteur du chauffage dans le Panneau.") : null,
+        goal: L("The room has dropped to 17 °C. Place a <b>Heater</b>, wire its <i>heat</i> to the Room, add its <b>switch</b> to the Panel, and keep the room <b>between 19 and 21 °C for 2 hours</b>.",
+                "La pièce est retombée à 17 °C. Pose un <b>Chauffage</b>, relie sa <i>chaleur</i> à la Pièce, ajoute son <b>interrupteur</b> au Panneau, et garde la pièce <b>entre 19 et 21 °C pendant 2 heures</b>."),
+        hint: L("The green zone of the thermometer shows where to stay.", "La zone verte du thermomètre montre où tenir."),
+        need: app => !app.model.first("room") ? syn(L("The Room is missing.", "Il manque la Pièce.")) :
+                     !app.model.linked("room", "out", "wall", "in") ? syn(L("Keep the Room wired to the Wall.", "Garde la Pièce reliée au Mur.")) :
+                     !app.model.linked("heater", "flow", "room", "in") ? syn(L("Wire the Heater to the Room in the Synoptic.", "Relie le Chauffage à la Pièce dans le Synoptique.")) :
+                     app.model.wiresTo(app.model.first("heater").id, "cmd").length ? syn(L("In this step you are in command: remove the wire plugged into the command.", "Pour cette étape, c'est toi qui commandes : retire le fil branché sur la commande.")) :
+                     !app.panel.has("heaterSwitch") ? pan(L("Add the heater switch in the Panel.", "Ajoute l'interrupteur du chauffage dans le Panneau.")) : null,
         check: K.hold(120, inBand, OUT_OF_BAND),
-        takeaway: "Réguler à la main, c'est épuisant : il faut surveiller sans arrêt. On rêverait d'un objet qui le ferait à notre place…",
-        hood: "Chauffage = <b>Source</b> : l'entrée d'énergie du système." },
+        takeaway: L("Regulating by hand is exhausting: you have to watch all the time. If only an object could do it for us…",
+                    "Réguler à la main, c'est épuisant : il faut surveiller sans arrêt. On rêverait d'un objet qui le ferait à notre place…"),
+        hood: L("Heater = <b>Source</b>: the energy input of the system.", "Chauffage = <b>Source</b> : l'entrée d'énergie du système.") },
 
-      { id: "loop", title: "Fermer la boucle",
+      { id: "loop", title: L("Closing the loop", "Fermer la boucle"),
         unlock: { pieces: ["bimetal"], instruments: ["bimetalLamp", "setpoint"] },
-        goal: "Pose un <b>Bilame</b>. Relie la <i>température</i> de la Pièce au Bilame, puis la <i>commande</i> du Bilame au Chauffage. Ajoute le <b>témoin</b> du bilame au Panneau. Ensuite, ne touche plus à rien : <b>2 heures entre 19 et 21 °C</b>.",
-        hint: "Regarde le bilame dans la Maquette pendant que le temps passe.",
-        need: app => !app.model.first("room") ? syn("Il manque la Pièce.") :
-                     !app.model.linked("heater", "flow", "room", "in") ? syn("Relie le Chauffage à la Pièce.") :
-                     !app.model.linked("room", "level", "bimetal", "x") ? syn("Relie la température de la Pièce au Bilame.") :
-                     !app.model.linked("bimetal", "u", "heater", "cmd") ? syn("Relie la commande du Bilame au Chauffage.") :
-                     !app.panel.has("bimetalLamp") ? pan("Ajoute le témoin du bilame dans le Panneau.") : null,
+        goal: L("Place a <b>Bimetal</b>. Wire the Room's <i>temperature</i> to the Bimetal, then the Bimetal's <i>command</i> to the Heater. Add the bimetal <b>light</b> to the Panel. Then hands off: <b>2 hours between 19 and 21 °C</b>.",
+                "Pose un <b>Bilame</b>. Relie la <i>température</i> de la Pièce au Bilame, puis la <i>commande</i> du Bilame au Chauffage. Ajoute le <b>témoin</b> du bilame au Panneau. Ensuite, ne touche plus à rien : <b>2 heures entre 19 et 21 °C</b>."),
+        hint: L("Watch the bimetal in the scale model while time goes by.", "Regarde le bilame dans la Maquette pendant que le temps passe."),
+        need: app => !app.model.first("room") ? syn(L("The Room is missing.", "Il manque la Pièce.")) :
+                     !app.model.linked("heater", "flow", "room", "in") ? syn(L("Wire the Heater to the Room.", "Relie le Chauffage à la Pièce.")) :
+                     !app.model.linked("room", "level", "bimetal", "x") ? syn(L("Wire the Room's temperature to the Bimetal.", "Relie la température de la Pièce au Bilame.")) :
+                     !app.model.linked("bimetal", "u", "heater", "cmd") ? syn(L("Wire the Bimetal's command to the Heater.", "Relie la commande du Bilame au Chauffage.")) :
+                     !app.panel.has("bimetalLamp") ? pan(L("Add the bimetal light in the Panel.", "Ajoute le témoin du bilame dans le Panneau.")) : null,
         check: K.hold(120, inBand, OUT_OF_BAND),
-        takeaway: "La pièce se règle toute seule. Mais regarde : la température n'est jamais exactement à 20 °C, elle monte et descend sans cesse autour.",
-        hood: "Bilame = <b>Threshold</b> avec hystérésis. Le fil qui revient de la Pièce vers le Chauffage forme une <b>Feedback Loop</b> négative : ce n'est pas une pièce, c'est un câblage." },
+        takeaway: L("The room regulates itself. But look: the temperature is never exactly 20 °C, it keeps going up and down around it.",
+                    "La pièce se règle toute seule. Mais regarde : la température n'est jamais exactement à 20 °C, elle monte et descend sans cesse autour."),
+        hood: L("Bimetal = <b>Threshold</b> with hysteresis. The wire coming back from the Room to the Heater forms a negative <b>Feedback Loop</b>: it is not a piece, it is a wiring.",
+                "Bilame = <b>Threshold</b> avec hystérésis. Le fil qui revient de la Pièce vers le Chauffage forme une <b>Feedback Loop</b> négative : ce n'est pas une pièce, c'est un câblage.") },
 
-      { id: "window", title: "Un coup de froid",
-        goal: "Dans la <b>Maquette</b>, clique sur la fenêtre pour l'ouvrir. Laisse-la ouverte au moins 10 minutes, puis referme-la.",
-        hint: "Pendant ce temps, regarde aussi bien la Maquette que le Panneau.",
-        need: app => !app.model.linked("bimetal", "u", "heater", "cmd") ? syn("Garde la boucle fermée (Bilame → Chauffage).") : null,
+      { id: "window", title: L("A cold snap", "Un coup de froid"),
+        goal: L("In the <b>scale model</b>, click the window to open it. Leave it open for at least 10 minutes, then close it.",
+                "Dans la <b>Maquette</b>, clique sur la fenêtre pour l'ouvrir. Laisse-la ouverte au moins 10 minutes, puis referme-la."),
+        hint: L("Meanwhile, watch the scale model as well as the Panel.", "Pendant ce temps, regarde aussi bien la Maquette que le Panneau."),
+        need: app => !app.model.linked("bimetal", "u", "heater", "cmd") ? syn(L("Keep the loop closed (Bimetal → Heater).", "Garde la boucle fermée (Bilame → Chauffage).")) : null,
         check: (app, mem) => {
           const wall = app.model.first("wall"), open = !!(wall && wall.s.open);
           mem.open = (mem.open || 0) + (open ? 1 : 0);
-          if (open) { mem.n = 0; return { p: 0.4 * Math.min(1, mem.open / 10), done: false, status: mem.open < 10 ? "Fenêtre ouverte…" : "Tu peux refermer la fenêtre (clic dans la Maquette)." }; }
-          if (mem.open < 10) return { p: 0.4 * mem.open / 10, done: false, status: mem.open ? "Rouvre-la encore un peu : au moins 10 minutes en tout." : "Clique sur la fenêtre, dans la Maquette à droite." };
+          if (open) { mem.n = 0; return { p: 0.4 * Math.min(1, mem.open / 10), done: false, status: mem.open < 10 ? L("Window open…", "Fenêtre ouverte…") : L("You can close the window (click in the scale model).", "Tu peux refermer la fenêtre (clic dans la Maquette).") }; }
+          if (mem.open < 10) return { p: 0.4 * mem.open / 10, done: false, status: mem.open ? L("Open it a little longer: at least 10 minutes in all.", "Rouvre-la encore un peu : au moins 10 minutes en tout.") : L("Click the window, in the scale model on the right.", "Clique sur la fenêtre, dans la Maquette à droite.") };
           const ok = inBand(app); mem.n = ok ? (mem.n || 0) + 1 : 0;
-          return { p: 0.4 + 0.6 * Math.min(1, mem.n / 60), done: mem.n >= 60, status: ok ? `Retour au calme… ${app.fmtSteps(mem.n)} / 1 h 00` : "Le chauffage remonte la pièce…" };
+          return { p: 0.4 + 0.6 * Math.min(1, mem.n / 60), done: mem.n >= 60, status: ok ? L("Back to calm… ", "Retour au calme… ") + `${app.fmtSteps(mem.n)} / 1 h 00` : L("The heater brings the room back up…", "Le chauffage remonte la pièce…") };
         },
-        takeaway: "Le choc est encaissé : sans personne, la pièce revient d'elle-même entre 19 et 21 °C.",
-        hood: "C'est l'<b>homéostasie</b> : un système qui revient vers son état de consigne après une perturbation." }
+        takeaway: L("The shock is absorbed: with nobody around, the room comes back by itself between 19 and 21 °C.",
+                    "Le choc est encaissé : sans personne, la pièce revient d'elle-même entre 19 et 21 °C."),
+        hood: L("This is <b>homeostasis</b>: a system that returns to its set point after a disturbance.",
+                "C'est l'<b>homéostasie</b> : un système qui revient vers son état de consigne après une perturbation.") }
     ],
 
     final: {
-      title: "La boucle tourne seule",
+      title: L("The loop runs by itself", "La boucle tourne seule"),
       unlock: { pieces: ["radiator"], instruments: ["radiatorTemp", "outsideTemp"] },
-      text: "Ce n'était pas vraiment un radiateur : c'était une <b>boucle de rétroaction</b>. Avec d'autres noms, les mêmes pièces décrivent la glycémie (le sucre est la réserve, l'insuline la commande), un réfrigérateur, la chasse d'eau à flotteur, ou le seuil de réapprovisionnement d'un stock.",
+      text: L("It was not really about a radiator: it was a <b>feedback loop</b>. With other names, the same pieces describe blood sugar (sugar is the store, insulin the command), a fridge, a float-valve toilet cistern, or the reorder point of a stock.",
+              "Ce n'était pas vraiment un radiateur : c'était une <b>boucle de rétroaction</b>. Avec d'autres noms, les mêmes pièces décrivent la glycémie (le sucre est la réserve, l'insuline la commande), un réfrigérateur, la chasse d'eau à flotteur, ou le seuil de réapprovisionnement d'un stock."),
       questions: [],
-      hood: "Le Panneau est une <b>Carte</b> : il ne montre que ce que ses instruments mesurent. La Maquette joue le rôle du <b>Territoire</b>. L'écart entre les deux, c'est ce qu'un modèle ne voit pas."
+      hood: L("The Panel is a <b>Map</b>: it only shows what its instruments measure. The scale model plays the part of the <b>Territory</b>. The gap between the two is what a model does not see.",
+              "Le Panneau est une <b>Carte</b> : il ne montre que ce que ses instruments mesurent. La Maquette joue le rôle du <b>Territoire</b>. L'écart entre les deux, c'est ce qu'un modèle ne voit pas.")
     },
 
     free: {
-      text: "Toutes les pièces et tous les instruments sont débloqués. Essaie d'intercaler un <b>Radiateur</b> entre le Chauffage et la Pièce, et mets son thermomètre sur le Panneau : lequel réagit en premier quand le contact s'ouvre ? Tu peux aussi rendre l'hiver plus rude, élargir l'hystérésis du bilame, ou étirer et pivoter les instruments.",
-      hood: "Pièces génériques utilisées : Storage, Sink, Source, Threshold. Les mêmes servent dans les autres ateliers."
+      text: L("Every piece and instrument is unlocked. Try putting a <b>Radiator</b> between the Heater and the Room, and put its thermometer on the Panel: which one reacts first when the contact opens? You can also make winter harsher, widen the bimetal's hysteresis, or stretch and rotate the instruments.",
+              "Toutes les pièces et tous les instruments sont débloqués. Essaie d'intercaler un <b>Radiateur</b> entre le Chauffage et la Pièce, et mets son thermomètre sur le Panneau : lequel réagit en premier quand le contact s'ouvre ? Tu peux aussi rendre l'hiver plus rude, élargir l'hystérésis du bilame, ou étirer et pivoter les instruments."),
+      hood: L("Generic pieces used: Storage, Sink, Source, Threshold. The same ones serve in the other workshops.",
+              "Pièces génériques utilisées : Storage, Sink, Source, Threshold. Les mêmes servent dans les autres ateliers.")
     },
 
-    // ---------------------------------------------------------------- Maquette
+    // ---------------------------------------------------------------- scale model
     view: function (host, model, api) {
       host.innerHTML = `
-<svg viewBox="0 0 440 300" role="img" aria-label="Maquette : une pièce chauffée vue en coupe" preserveAspectRatio="xMidYMid meet">
+<svg viewBox="0 0 440 300" role="img" preserveAspectRatio="xMidYMid meet">
   <rect id="mqSky" x="0" y="0" width="440" height="300" rx="12"/>
   <g id="mqSnow" fill="#ffffff" opacity=".9">${Array.from({ length: 26 }, (_, i) => `<circle cx="${(i * 67) % 430 + 6}" cy="${(i * 37) % 250 + 6}" r="${1.4 + (i % 3) * .5}"/>`).join("")}</g>
   <rect id="mqGround" x="0" y="262" width="440" height="38" rx="0"/>
@@ -154,7 +173,7 @@
       <rect x="368" y="118" width="34" height="84" fill="transparent"/>
       <rect id="mqWinHole" x="380" y="124" width="10" height="72"/>
       <rect id="mqWinGlass" x="380" y="124" width="10" height="72" fill="#cfe7f7" stroke="#7d8a94" stroke-width="1.5"/>
-      <rect id="mqWinLeaf" x="390" y="124" width="22" height="6" fill="#cfe7f7" stroke="#7d8a94" stroke-width="1.5" transform="rotate(0 390 124)"/>
+      <rect id="mqWinLeaf" x="390" y="124" width="22" height="6" fill="#cfe7f7" stroke="#7d8a94" stroke-width="1.5"/>
       <g id="mqDraft" stroke="#3f7fd6" stroke-width="2" fill="none" stroke-linecap="round">
         <path d="M402 140 q-10 4 -22 0 t-24 0"/><path d="M402 160 q-10 4 -22 0 t-30 0"/><path d="M402 180 q-10 4 -22 0 t-24 0"/>
       </g>
@@ -175,7 +194,7 @@
       <path id="mqStrip2" fill="none" stroke-width="2" stroke-linecap="round"/>
     </g>
   </g>
-  <text id="mqEmpty" class="mq-note" x="220" y="150" text-anchor="middle">Maquette vide : pose une Pièce dans le Synoptique.</text>
+  <text id="mqEmpty" class="mq-note" x="220" y="150" text-anchor="middle"></text>
 </svg>`;
       const $ = id => host.querySelector("#" + id);
       const disp = { heat: 0, strip: 1, waves: 0 };
@@ -195,7 +214,7 @@
 
       $("mqWindow").addEventListener("click", () => {
         const wall = model.first("wall");
-        if (!wall) { api.toast("Il n'y a pas encore de dehors : pose un Mur dans le Synoptique."); return; }
+        if (!wall) { api.toast(K.L("There is no outside yet: place a Wall in the Synoptic.", "Il n'y a pas encore de dehors : pose un Mur dans le Synoptique.")); return; }
         wall.s.open = !wall.s.open;
         api.log("window", wall.s.open ? "open" : "closed");
       });
@@ -204,6 +223,8 @@
         update() {
           const room = model.first("room"), wall = model.first("wall"), heater = model.first("heater"),
                 bim = model.first("bimetal"), rad = model.first("radiator");
+          host.querySelector("svg").setAttribute("aria-label", K.L("Scale model: a heated room, in cross-section", "Maquette : une pièce chauffée vue en coupe"));
+          $("mqEmpty").textContent = K.L("Empty scale model: place a Room in the Synoptic.", "Maquette vide : pose une Pièce dans le Synoptique.");
           $("mqEmpty").style.display = room ? "none" : "";
           $("mqHouse").style.display = room ? "" : "none";
           const outside = wall ? wall.p.level : 15;
@@ -246,6 +267,7 @@
       };
     }
   };
+  };
 
-  (K.workshops = K.workshops || {}).thermostat = W;
+  (K.workshops = K.workshops || {}).thermostat = factory;
 })(window.TSCGKit = window.TSCGKit || {});

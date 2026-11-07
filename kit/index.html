@@ -1,19 +1,22 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TSCG Kit</title>
-<meta name="description" content="Trois ateliers pour construire soi-même des maquettes de systèmes qui bougent : Thermostat, Larsen, Tournesol.">
-<!-- TSCG Kit home page. Author: Echopraxium with the collaboration of Claude AI -->
+<meta name="description" content="Three workshops to build, yourself, scale models of systems that move: Thermostat, Larsen, Sunflower.">
+<!-- TSCG Kit home page (English / French). Author: Echopraxium with the collaboration of Claude AI -->
 <style>
-:root{--bg:#f6f5f1;--panel:#fff;--ink:#1d1d1b;--quiet:#6b6a64;--rule:#dedbd2;--accent:#2f6fde;--flux:#d9822b;--info:#2f6fde}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16171a;--panel:#1f2024;--ink:#ecebe6;--quiet:#a3a29b;--rule:#33343a;--accent:#6c9cf0;--flux:#f0a050;--info:#6c9cf0}}
-:root[data-theme="dark"]{--bg:#16171a;--panel:#1f2024;--ink:#ecebe6;--quiet:#a3a29b;--rule:#33343a;--accent:#6c9cf0;--flux:#f0a050;--info:#6c9cf0}
+:root{--bg:#f6f5f1;--panel:#fff;--ink:#1d1d1b;--quiet:#6b6a64;--rule:#dedbd2;--accent:#2f6fde;--flux:#d9822b}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#16171a;--panel:#1f2024;--ink:#ecebe6;--quiet:#a3a29b;--rule:#33343a;--accent:#6c9cf0;--flux:#f0a050}}
+:root[data-theme="dark"]{--bg:#16171a;--panel:#1f2024;--ink:#ecebe6;--quiet:#a3a29b;--rule:#33343a;--accent:#6c9cf0;--flux:#f0a050}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-main{max-width:920px;margin:0 auto;padding:40px 16px 56px}
+main{max-width:920px;margin:0 auto;padding:36px 16px 56px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
 h1{font-size:28px;margin:0 0 6px}
+#lang{font:inherit;font-weight:600;color:var(--ink);background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:5px 12px;cursor:pointer}
+#lang:hover{border-color:var(--accent)}
 .lead{color:var(--quiet);margin:0 0 28px;max-width:640px}
 .list{display:grid;gap:14px}
 a.card{display:grid;grid-template-columns:52px 1fr auto;gap:16px;align-items:center;text-decoration:none;color:inherit;
@@ -30,26 +33,52 @@ a.card:hover{border-color:var(--accent)}
 </head>
 <body>
 <main>
-  <h1>TSCG Kit</h1>
-  <p class="lead">Trois ateliers pour construire soi-même, pièce par pièce, une maquette de système qui bouge. Rien à installer, aucun compte : tout se passe dans cette page. Suis-les dans l'ordre, chacun ajoute une idée et réutilise des pièces du précédent.</p>
+  <div class="top"><h1>TSCG Kit</h1><button id="lang"></button></div>
+  <p class="lead" data-en="Three workshops to build, yourself, piece by piece, a scale model of a system that moves. Nothing to install, no account: it all happens in this page. Follow them in order: each one adds an idea and reuses pieces from the previous one."
+                  data-fr="Trois ateliers pour construire soi-même, pièce par pièce, une maquette de système qui bouge. Rien à installer, aucun compte : tout se passe dans cette page. Suis-les dans l'ordre, chacun ajoute une idée et réutilise des pièces du précédent."></p>
   <div class="list">
-    <a class="card" href="thermostat/index.html">
+    <a class="card" data-ws="thermostat">
       <span class="num">1</span>
-      <span><h2>Thermostat</h2><p>Une pièce, un mur, un chauffage, un bilame.</p><p class="idea">Une boucle qui corrige : la pièce se règle toute seule.</p></span>
-      <span class="go">Commencer →</span>
+      <span><h2>Thermostat</h2><p data-en="A room, a wall, a heater, a bimetal." data-fr="Une pièce, un mur, un chauffage, un bilame."></p>
+        <p class="idea" data-en="A loop that corrects: the room regulates itself." data-fr="Une boucle qui corrige : la pièce se règle toute seule."></p></span>
+      <span class="go" data-en="Start →" data-fr="Commencer →"></span>
     </a>
-    <a class="card" href="larsen/index.html">
+    <a class="card" data-ws="larsen">
       <span class="num">2</span>
-      <span><h2>Larsen</h2><p>Une salle, une voix, un ampli, un haut-parleur.</p><p class="idea">Une boucle qui renforce : au-delà d'un seuil, tout s'emballe.</p></span>
-      <span class="go">Commencer →</span>
+      <span><h2>Larsen</h2><p data-en="A room, a voice, an amp, a loudspeaker." data-fr="Une salle, une voix, un ampli, un haut-parleur."></p>
+        <p class="idea" data-en="A loop that reinforces: beyond a threshold, everything runs away." data-fr="Une boucle qui renforce : au-delà d'un seuil, tout s'emballe."></p></span>
+      <span class="go" data-en="Start →" data-fr="Commencer →"></span>
     </a>
-    <a class="card" href="tournesol/index.html">
+    <a class="card" data-ws="tournesol">
       <span class="num">3</span>
-      <span><h2>Tournesol</h2><p>Une plante, une lampe, le soleil, une horloge.</p><p class="idea">Une boucle qui poursuit : suivre une cible qui bouge, et anticiper.</p></span>
-      <span class="go">Commencer →</span>
+      <span><h2 data-en="Sunflower" data-fr="Tournesol"></h2><p data-en="A plant, a lamp, the sun, a clock." data-fr="Une plante, une lampe, le soleil, une horloge."></p>
+        <p class="idea" data-en="A loop that pursues: following a moving target, and anticipating." data-fr="Une boucle qui poursuit : suivre une cible qui bouge, et anticiper."></p></span>
+      <span class="go" data-en="Start →" data-fr="Commencer →"></span>
     </a>
   </div>
-  <p class="note">Chaque atelier a un tutoriel guidé et un mode libre. Le bouton « Exporter ma session » télécharge un petit journal de ta partie, utile si tu participes aux tests.</p>
+  <p class="note" data-en="Each workshop has a guided tutorial and a free mode. The “Export my session” button downloads a small log of your game, useful if you take part in the tests."
+                  data-fr="Chaque atelier a un tutoriel guidé et un mode libre. Le bouton « Exporter ma session » télécharge un petit journal de ta partie, utile si tu participes aux tests."></p>
 </main>
+<script>
+(function () {
+  "use strict";
+  var KEY = "tscg-kit-lang", lang = "en";
+  try { var q = new URLSearchParams(location.search).get("lang"); if (q === "en" || q === "fr") lang = q; else { var s = localStorage.getItem(KEY); if (s === "en" || s === "fr") lang = s; } } catch (e) { /* storage blocked */ }
+  function apply() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-en]").forEach(function (e) { e.textContent = e.getAttribute("data-" + lang); });
+    document.querySelectorAll("a[data-ws]").forEach(function (a) { a.href = a.getAttribute("data-ws") + "/index.html?lang=" + lang; });
+    var b = document.getElementById("lang");
+    b.textContent = lang === "fr" ? "EN" : "FR";
+    b.title = lang === "fr" ? "Switch to English" : "Passer en français";
+  }
+  document.getElementById("lang").onclick = function () {
+    lang = lang === "fr" ? "en" : "fr";
+    try { localStorage.setItem(KEY, lang); } catch (e) { /* storage blocked */ }
+    apply();
+  };
+  apply();
+})();
+</script>
 </body>
 </html>
