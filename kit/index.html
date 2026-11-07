@@ -15,6 +15,9 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-app
 main{max-width:920px;margin:0 auto;padding:36px 16px 56px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
 h1{font-size:28px;margin:0 0 6px}
+.tools{display:flex;gap:8px}
+#theme{font:inherit;font-size:16px;line-height:1;color:var(--ink);background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:5px 10px;cursor:pointer}
+#theme:hover{border-color:var(--accent)}
 #lang{font:inherit;font-weight:600;color:var(--ink);background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:5px 12px;cursor:pointer}
 #lang:hover{border-color:var(--accent)}
 .lead{color:var(--quiet);margin:0 0 28px;max-width:640px}
@@ -33,7 +36,7 @@ a.card:hover{border-color:var(--accent)}
 </head>
 <body>
 <main>
-  <div class="top"><h1>TSCG Kit</h1><button id="lang"></button></div>
+  <div class="top"><h1>TSCG Kit</h1><div class="tools"><button id="lang"></button><button id="theme"></button></div></div>
   <p class="lead" data-en="Three workshops to build, yourself, piece by piece, a scale model of a system that moves. Nothing to install, no account: it all happens in this page. Follow them in order: each one adds an idea and reuses pieces from the previous one."
                   data-fr="Trois ateliers pour construire soi-même, pièce par pièce, une maquette de système qui bouge. Rien à installer, aucun compte : tout se passe dans cette page. Suis-les dans l'ordre, chacun ajoute une idée et réutilise des pièces du précédent."></p>
   <div class="list">
@@ -62,7 +65,19 @@ a.card:hover{border-color:var(--accent)}
 <script>
 (function () {
   "use strict";
-  var KEY = "tscg-kit-lang", lang = "en";
+  var KEY = "tscg-kit-lang", THEME = "tscg-kit-theme", lang = "en", theme = "dark";
+  try { var t = localStorage.getItem(THEME); if (t === "light" || t === "dark") theme = t; } catch (e) { /* storage blocked */ }
+  function applyTheme() {
+    document.documentElement.setAttribute("data-theme", theme);
+    var b = document.getElementById("theme");
+    b.textContent = theme === "dark" ? "☀" : "☾";
+    b.title = lang === "fr" ? "Thème clair / sombre" : "Light / dark theme";
+  }
+  document.getElementById("theme").onclick = function () {
+    theme = theme === "dark" ? "light" : "dark";
+    try { localStorage.setItem(THEME, theme); } catch (e) { /* storage blocked */ }
+    applyTheme();
+  };
   try { var q = new URLSearchParams(location.search).get("lang"); if (q === "en" || q === "fr") lang = q; else { var s = localStorage.getItem(KEY); if (s === "en" || s === "fr") lang = s; } } catch (e) { /* storage blocked */ }
   function apply() {
     document.documentElement.lang = lang;
@@ -71,6 +86,7 @@ a.card:hover{border-color:var(--accent)}
     var b = document.getElementById("lang");
     b.textContent = lang === "fr" ? "EN" : "FR";
     b.title = lang === "fr" ? "Switch to English" : "Passer en français";
+    applyTheme();
   }
   document.getElementById("lang").onclick = function () {
     lang = lang === "fr" ? "en" : "fr";
