@@ -23,6 +23,7 @@
       this.selected = null; this.drag = null; this.dragWire = null; this.live = [];
       host.innerHTML =
         `<div class="sy-palette"><h2 class="k-h2 sy-h"></h2><div class="sy-list"></div>
+           <div class="sy-info" aria-live="polite"></div>
            <div class="sy-legend"><div><i style="background:var(--flux)"></i><span class="sy-lflux"></span></div>
            <div><i style="background:var(--info)"></i><span class="sy-linfo"></span></div>
            <p class="sy-help"></p></div></div>
@@ -30,6 +31,7 @@
       this.host = host;
       this.svg = host.querySelector(".sy-svg");
       this.list = host.querySelector(".sy-list");
+      this.info = host.querySelector(".sy-info");
       this.params = host.querySelector(".sy-params");
       this.svg.addEventListener("pointerdown", e => { if (e.target === this.svg) this.select(null); });
       window.addEventListener("pointermove", e => this.onMove(e));
@@ -41,6 +43,15 @@
       q(".sy-h").textContent = K.t("pieces"); q(".sy-lflux").textContent = this.o.fluxLabel() || "flux";
       q(".sy-linfo").textContent = K.t("info"); q(".sy-help").textContent = K.t("wire_help");
       this.svg.setAttribute("aria-label", K.t("syn_aria"));
+      this.showInfo(null);
+    }
+    // the small panel under the palette: what the hovered block does
+    showInfo(t) {
+      if (!t) { this.info.innerHTML = `<span class="k-muted">${K.t("pal_hint")}</span>`; return; }
+      const s = this.m.skins[t], open = this.o.isUnlocked(t);
+      this.info.innerHTML = `<div class="sy-info-h">${K.iconSvg(K.iconOf(s), "k-icon")}<b>${s.name}</b></div><p>${s.blurb}</p>` +
+        (this.o.hood() ? `<p class="k-muted">${K.generic(s.kind)}</p>` : "") +
+        (open ? "" : `<p class="k-muted">${K.t("locked_info")}</p>`);
     }
     skin(n) { return this.m.skins[n.type]; }
     nodeHeight(n) {
@@ -71,8 +82,12 @@
         const s = this.m.skins[t], open = this.o.isUnlocked(t);
         const b = document.createElement("button");
         b.className = "sy-piece"; b.disabled = !open; b.dataset.piece = t;
-        b.innerHTML = `${s.name}<small>${open ? (this.o.hood() ? K.generic(s.kind) : s.blurb) : K.t("locked")}</small>`;
+        b.innerHTML = `${K.iconSvg(K.iconOf(s), "k-icon")}<span>${s.name}</span>`;
+        b.title = open ? s.blurb : K.t("locked");
         b.onclick = () => this.add(t);
+        b.addEventListener("mouseenter", () => this.showInfo(t));
+        b.addEventListener("focus", () => this.showInfo(t));
+        b.addEventListener("mouseleave", () => this.showInfo(null));
         this.list.appendChild(b);
       }
     }
@@ -89,7 +104,15 @@
         const path = el("path", { d, class: `wire ${w.kind}${this.selected === "w" + w.id ? " selected" : ""}` }, gW);
         const hit = el("path", { d, class: "wire-hit" }, gW);
         hit.addEventListener("pointerdown", e => { e.stopPropagation(); this.select("w" + w.id); });
-        this.live.push({ wire: w, path });
+        // chevrons travelling along the wire show which way it flows (shown while time runs)
+        let len = 200; try { len = path.getTotalLength() || 200; } catch (e) { /* hidden tab */ }
+        const chev = el("g", { class: `chev ${w.kind}` }, gW), dur = Math.max(1.1, len / 70);
+        const motions = [0, 1, 2].map(k => {
+          const c = el("path", { d: "M-3.5 -4 L2.5 0 L-3.5 4" }, chev);
+          return el("animateMotion", { dur: dur.toFixed(2) + "s", repeatCount: "indefinite", rotate: "auto", path: d,
+            begin: (-k * dur / 3).toFixed(2) + "s", keyPoints: "0;1", keyTimes: "0;1", calcMode: "linear" }, c);
+        });
+        this.live.push({ wire: w, path, chev, motions, dir: 1 });
       }
       for (const n of m.nodes) {
         const s = this.skin(n), h = this.nodeHeight(n), hood = this.o.hood();
@@ -99,8 +122,9 @@
         const g = el("g", { class: "node-inner" + anim }, outer);
         el("rect", { class: "node-body", width: NW, height: h, rx: 8 }, g);
         const head = el("path", { class: "node-head", d: `M0 8 Q0 0 8 0 H${NW - 8} Q${NW} 0 ${NW} 8 V${HEAD} H0 Z` }, g);
-        const title = el("text", { class: "node-title", x: 10, y: hood ? 13 : 18 }, g); title.textContent = s.name;
-        if (hood) el("text", { class: "node-gen", x: 10, y: 24 }, g).textContent = K.generic(s.kind);
+        el("path", { class: "node-icon", d: K.iconPath(K.iconOf(s)), transform: "translate(8 6) scale(0.667)" }, g);
+        const title = el("text", { class: "node-title", x: 29, y: hood ? 13 : 18 }, g); title.textContent = s.name;
+        if (hood) el("text", { class: "node-gen", x: 29, y: 24 }, g).textContent = K.generic(s.kind);
         for (const part of [head, title]) { part.style.cursor = "grab"; part.addEventListener("pointerdown", e => this.startDrag(e, n)); }
         outer.addEventListener("pointerdown", e => { if (!e.defaultPrevented) this.select("n" + n.id); });
         m.ports(n, "in").forEach((q, i) => {
@@ -142,7 +166,14 @@
     }
     update(running) {
       for (const r of this.live) {
-        if (r.wire) { r.path.classList.toggle("active", r.wire.kind === "flux" && running && Math.abs(r.wire.power || 0) > 0.01); continue; }
+        if (r.wire) {
+          const w = r.wire, src = this.m.byId(w.from.node);
+          const on = running && (w.kind === "flux" ? Math.abs(w.power || 0) > 0.01 : !!src && this.m.infoOut(src) !== null);
+          r.chev.style.display = on ? "" : "none";
+          const dir = w.kind === "flux" && (w.power || 0) < 0 ? -1 : 1;     // heat can flow backwards between two stores
+          if (dir !== r.dir) { r.dir = dir; r.motions.forEach(a => a.setAttribute("keyPoints", dir > 0 ? "0;1" : "1;0")); }
+          continue;
+        }
         r.val.textContent = this.describe(r.node);
       }
     }

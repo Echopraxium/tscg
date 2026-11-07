@@ -31,27 +31,27 @@
             ecart: { x: 206, y: 20 }, croissance: { x: 396, y: 20 }, plante: { x: 396, y: 170 } },
 
     skins: {
-      plante: { kind: "storage", name: L("Plant", "Plante"), blurb: L("its orientation changes as it grows", "son orientation change en poussant"),
+      plante: { kind: "storage", icon: "plant", name: L("Plant", "Plante"), blurb: L("its orientation changes as it grows", "son orientation change en poussant"),
         ports: { in: L("rotation", "rotation"), out: "", level: L("orientation", "orientation") },
         describe: n => dir(n.s.x),
         params: { C: { v: 1, hidden: true }, k: { v: 0, hidden: true }, x0: { label: L("Start orientation (°)", "Orientation de départ (°)"), v: 0, step: 10, min: -90, max: 90 },
                   lo: { v: -110, hidden: true }, hi: { v: 110, hidden: true } } },
-      lampe: { kind: "clock", mode: "fixed", name: L("Lamp", "Lampe"), blurb: L("a light that does not move", "une lumière qui ne bouge pas"),
+      lampe: { kind: "clock", icon: "lamp", mode: "fixed", name: L("Lamp", "Lampe"), blurb: L("a light that does not move", "une lumière qui ne bouge pas"),
         ports: { out: L("light", "lumière") }, describe: n => L("shines from ", "éclaire depuis ") + dir(n.p.angle),
         params: { angle: { label: L("Direction (°, −90 = east)", "Direction (°, −90 = est)"), v: 50, step: 10, min: -90, max: 90 } } },
-      soleil: { kind: "clock", mode: "sun", name: L("Sun", "Soleil"), blurb: L("crosses the sky from east to west", "traverse le ciel d'est en ouest"),
+      soleil: { kind: "clock", icon: "sun", mode: "sun", name: L("Sun", "Soleil"), blurb: L("crosses the sky from east to west", "traverse le ciel d'est en ouest"),
         ports: { out: L("light", "lumière") }, describe: n => n.s.v === null ? L("night", "nuit") : dir(n.s.v),
         params: { irr: { label: L("Irregular days", "Irrégularité des jours"), v: 0, step: 0.1, min: 0, max: 1 } } },
-      horloge: { kind: "clock", mode: "night", fallback: true, name: L("Clock", "Horloge"), blurb: L("an inner 24-hour rhythm", "un rythme intérieur de 24 h"),
+      horloge: { kind: "clock", icon: "clock", mode: "night", fallback: true, name: L("Clock", "Horloge"), blurb: L("an inner 24-hour rhythm", "un rythme intérieur de 24 h"),
         ports: { out: L("night call", "rappel nocturne") }, describe: n => n.s.v === null ? L("silent", "se tait") : L("calls back east", "rappelle vers l'est"),
         params: { angle: { label: L("Morning direction (°)", "Direction du matin (°)"), v: -90, step: 10, min: -90, max: 90 },
                   from: { label: L("Wakes at (h)", "Se réveille à (h)"), v: 1, step: 1, min: 0, max: 23 },
                   to: { label: L("Falls silent at (h)", "Se tait à (h)"), v: 6, step: 1, min: 0, max: 23 } } },
-      ecart: { kind: "gradient", name: L("Gap", "Écart"), blurb: L("compares light and orientation", "compare la lumière et l'orientation"),
+      ecart: { kind: "gradient", icon: "gap", name: L("Gap", "Écart"), blurb: L("compares light and orientation", "compare la lumière et l'orientation"),
         ports: { a: L("light (target)", "lumière (cible)"), b: L("orientation", "orientation"), d: L("gap", "écart") },
         describe: n => n.s.a === null ? L("nothing to aim at", "rien à viser") : L("gap ", "écart ") + Math.round(n.s.d) + "°",
         params: { noise: { label: L("Perception noise (°)", "Bruit de perception (°)"), v: 0, step: 5, min: 0, max: 90 } } },
-      croissance: { kind: "transducer", name: L("Growth", "Croissance"), blurb: L("grows more on one side than the other", "pousse plus d'un côté que de l'autre"),
+      croissance: { kind: "transducer", icon: "growth", name: L("Growth", "Croissance"), blurb: L("grows more on one side than the other", "pousse plus d'un côté que de l'autre"),
         ports: { x: L("gap", "écart"), flow: L("rotation", "rotation") },
         describe: n => L("turns ", "tourne ") + Math.round(n.s.flow) + "°/h",
         params: { k: { label: L("Reactivity (/h)", "Réactivité (/h)"), v: 0.8, step: 0.1, min: 0, max: 4 },
@@ -180,70 +180,144 @@
     },
 
     // ---------------------------------------------------------------- scale model
+    // A young sunflower in a pot. Outdoors: a sky that goes from day to night (sun with
+    // rays, hills, twinkling stars, a crescent moon). Indoors (lamp only): a lit room.
     view: function (host, model, api) {
+      const rnd = (i, k) => { const s = Math.sin(i * 91.7 + k * 47.3) * 43758.5453; return s - Math.floor(s); };
+      const stars = Array.from({ length: 70 }, (_, i) => ({ x: 6 + rnd(i, 1) * 428, y: 6 + rnd(i, 2) * 175, r: 0.5 + rnd(i, 3) * 1.4, w: 1 + rnd(i, 4) * 3, ph: rnd(i, 5) * 6.28 }));
+      const seeds = Array.from({ length: 120 }, (_, i) => { const a = i * 2.39996, r = 1.25 * Math.sqrt(i); return `<circle cx="${(r * Math.cos(a)).toFixed(2)}" cy="${(r * Math.sin(a)).toFixed(2)}" r="${(0.55 + i / 400).toFixed(2)}"/>`; }).join("");
+      const petals = (n, len, wid, rot, cls) => Array.from({ length: n }, (_, i) =>
+        `<path class="${cls}" transform="rotate(${(i * 360 / n + rot).toFixed(1)})" d="M0 -12 C${wid} -${12 + len * 0.35} ${wid * 0.7} -${12 + len * 0.85} 0 -${12 + len} C-${wid * 0.7} -${12 + len * 0.85} -${wid} -${12 + len * 0.35} 0 -12 Z"/>`).join("");
+      const grass = Array.from({ length: 90 }, (_, i) => { const x = i * 4.9 + rnd(i, 7) * 3, h = 4 + rnd(i, 8) * 7; return `M${x.toFixed(1)} 252 q${(rnd(i, 9) * 4 - 2).toFixed(1)} -${(h / 2).toFixed(1)} ${(rnd(i, 6) * 3 - 1.5).toFixed(1)} -${h.toFixed(1)}`; }).join(" ");
       host.innerHTML = `
 <svg viewBox="0 0 440 300" role="img" preserveAspectRatio="xMidYMid meet">
-  <defs><clipPath id="tsClip"><rect x="0" y="0" width="440" height="300" rx="12"/></clipPath></defs>
+  <defs>
+    <clipPath id="tsClip"><rect x="0" y="0" width="440" height="300" rx="12"/></clipPath>
+    <linearGradient id="tsDay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f8ee0"/><stop offset="1" stop-color="#cfe9f8"/></linearGradient>
+    <linearGradient id="tsNight" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070b24"/><stop offset=".7" stop-color="#1b1a45"/><stop offset="1" stop-color="#3a2a55"/></linearGradient>
+    <linearGradient id="tsDusk" x1="0" y1="0" x2="0" y2="1"><stop offset=".35" stop-color="#ff9a4d" stop-opacity="0"/><stop offset="1" stop-color="#ff8a3d" stop-opacity=".85"/></linearGradient>
+    <radialGradient id="tsSunGlow"><stop offset="0" stop-color="#fff6c2" stop-opacity=".95"/><stop offset=".35" stop-color="#ffd34d" stop-opacity=".55"/><stop offset="1" stop-color="#ffd34d" stop-opacity="0"/></radialGradient>
+    <radialGradient id="tsLampGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff1b0" stop-opacity=".85"/><stop offset="1" stop-color="#fff1b0" stop-opacity="0"/></radialGradient>
+    <linearGradient id="tsGrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fae4f"/><stop offset="1" stop-color="#3f7a33"/></linearGradient>
+    <linearGradient id="tsPetal" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e48a12"/><stop offset=".55" stop-color="#f7c22b"/><stop offset="1" stop-color="#ffe066"/></linearGradient>
+    <radialGradient id="tsDiscGrad"><stop offset="0" stop-color="#3b2312"/><stop offset=".75" stop-color="#5a3518"/><stop offset="1" stop-color="#7a4a1e"/></radialGradient>
+    <linearGradient id="tsStemGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f6b2a"/><stop offset=".5" stop-color="#5a9e45"/><stop offset="1" stop-color="#2f6b2a"/></linearGradient>
+    <linearGradient id="tsPot" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9a4f2b"/><stop offset=".45" stop-color="#c86b3c"/><stop offset="1" stop-color="#8a4326"/></linearGradient>
+    <filter id="tsBlur" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+    <mask id="tsMoonMask"><rect x="300" y="20" width="60" height="60" fill="#fff"/><circle cx="337" cy="45" r="13" fill="#000"/></mask>
+  </defs>
   <g clip-path="url(#tsClip)">
-    <rect id="tsSky" x="0" y="0" width="440" height="300"/>
-    <g id="tsStars" fill="#ffffff">${Array.from({ length: 30 }, (_, i) => `<circle cx="${(i * 71) % 430 + 5}" cy="${(i * 43) % 170 + 6}" r="${1 + (i % 3) * .4}"/>`).join("")}</g>
-    <path d="M40 240 A 180 165 0 0 1 400 240" fill="none" stroke="#ffffff" stroke-opacity=".25" stroke-dasharray="3 6"/>
-    <g id="tsSun"><circle r="16" fill="#ffd34d"/><circle r="24" fill="#ffd34d" opacity=".25"/></g>
+    <g id="tsOutdoor">
+      <rect x="0" y="0" width="440" height="300" fill="url(#tsDay)"/>
+      <rect id="tsNightSky" x="0" y="0" width="440" height="300" fill="url(#tsNight)"/>
+      <rect id="tsDuskSky" x="0" y="0" width="440" height="300" fill="url(#tsDusk)"/>
+      <ellipse id="tsMilky" cx="230" cy="80" rx="240" ry="26" fill="#c9c3ff" opacity=".12" filter="url(#tsBlur)" transform="rotate(-14 230 80)"/>
+      <g id="tsStars" fill="#ffffff">${stars.map((s, i) => `<circle data-i="${i}" cx="${s.x.toFixed(1)}" cy="${s.y.toFixed(1)}" r="${s.r.toFixed(2)}"/>`).join("")}</g>
+      <circle id="tsMoon" cx="328" cy="48" r="14" fill="#f3efd9" mask="url(#tsMoonMask)"/>
+      <path d="M40 240 A 180 165 0 0 1 400 240" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-dasharray="3 6"/>
+      <g id="tsSun">
+        <circle r="46" fill="url(#tsSunGlow)"/>
+        <g id="tsRays" stroke="#ffd34d" stroke-width="2.2" stroke-linecap="round">${Array.from({ length: 12 }, (_, i) => `<line x1="0" y1="-22" x2="0" y2="-30" transform="rotate(${i * 30})"/>`).join("")}</g>
+        <circle r="15" fill="#ffe27a" stroke="#ffc93a" stroke-width="2"/>
+      </g>
+      <path id="tsHill2" d="M0 236 C60 214 120 222 180 232 C250 244 310 214 440 226 V300 H0 Z"/>
+      <path id="tsHill1" d="M0 246 C80 236 150 242 220 247 C300 252 370 238 440 244 V300 H0 Z"/>
+    </g>
+    <g id="tsIndoor">
+      <rect x="0" y="0" width="440" height="300" fill="#e8dfcc"/>
+            <rect x="0" y="246" width="440" height="54" fill="#b79c7a"/>
+      <line x1="0" y1="246" x2="440" y2="246" stroke="#9b8162" stroke-width="2"/>
+      <circle id="tsLampGlowSpot" r="120" fill="url(#tsLampGlow)"/>
+    </g>
     <g id="tsLamp">
-      <line x1="0" y1="0" x2="0" y2="-60" stroke="#6e6a60" stroke-width="3" transform="translate(0 70)"/>
-      <path d="M-18 -6 L18 -6 L10 10 L-10 10 Z" fill="#c9a24a" stroke="#6e6a60"/>
-      <circle cx="0" cy="12" r="7" fill="#fff2a8"/>
+      <line x1="0" y1="12" x2="0" y2="96" stroke="#6e6a60" stroke-width="3"/>
+      <ellipse cx="0" cy="98" rx="16" ry="4" fill="#6e6a60"/>
+      <path d="M-20 -8 L20 -8 L12 12 L-12 12 Z" fill="#c9a24a" stroke="#6e6a60" stroke-width="1.5"/>
+      <circle cx="0" cy="13" r="6" fill="#fff6c8"/>
     </g>
-    <rect id="tsGround" x="0" y="246" width="440" height="54"/>
-    <text id="tsEast" class="mq-note" x="24" y="290" style="fill:#2f2d27"></text>
-    <text id="tsWest" class="mq-note" x="416" y="290" text-anchor="end" style="fill:#2f2d27"></text>
+    <rect id="tsGround" x="0" y="250" width="440" height="50" fill="url(#tsGrass)"/>
+    <path id="tsGrassBlades" d="${grass}" stroke="#4f8f3c" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <text id="tsEast" class="mq-note" x="18" y="291"></text>
+    <text id="tsWest" class="mq-note" x="422" y="291" text-anchor="end"></text>
     <g id="tsPlant">
-      <path id="tsStem" fill="none" stroke="#3f7d3a" stroke-width="5" stroke-linecap="round"/>
-      <path id="tsLeaf1" fill="#4f9a47"/><path id="tsLeaf2" fill="#4f9a47"/>
-      <g id="tsHead"><ellipse id="tsPetals" fill="#f2c230"/><ellipse id="tsDisc" fill="#6b4423"/></g>
-      <path d="M196 246 L244 246 L238 282 L202 282 Z" fill="#b5653b" stroke="#7e4428"/>
+      <path id="tsStem" fill="none" stroke="url(#tsStemGrad)" stroke-width="6" stroke-linecap="round"/>
+      <g id="tsLeafL"><path d="M0 0 C-10 -12 -34 -14 -44 -4 C-34 6 -12 8 0 0 Z" fill="#4e9a3f" stroke="#2f6b2a" stroke-width="1"/><path d="M0 0 C-14 -4 -28 -5 -40 -4" stroke="#2f6b2a" stroke-width="1" fill="none"/></g>
+      <g id="tsLeafR"><path d="M0 0 C10 -12 34 -16 46 -6 C36 5 12 8 0 0 Z" fill="#58a646" stroke="#2f6b2a" stroke-width="1"/><path d="M0 0 C14 -5 30 -6 42 -6" stroke="#2f6b2a" stroke-width="1" fill="none"/></g>
+      <g id="tsHead">
+        <g id="tsHeadInner">
+          <g fill="#3f7d32">${Array.from({ length: 10 }, (_, i) => `<path transform="rotate(${i * 36 + 18})" d="M0 -10 L4 -26 L0 -22 L-4 -26 Z"/>`).join("")}</g>
+          <g fill="url(#tsPetal)" stroke="#d98b12" stroke-width=".6">${petals(16, 24, 7, 11, "pb")}</g>
+          <g fill="url(#tsPetal)" stroke="#d98b12" stroke-width=".6">${petals(16, 22, 6.5, 0, "pf")}</g>
+          <circle r="15" fill="url(#tsDiscGrad)" stroke="#3b2312" stroke-width="1"/>
+          <g fill="#2a170a">${seeds}</g>
+        </g>
+      </g>
+      <path d="M190 252 H250 L244 288 Q220 293 196 288 Z" fill="url(#tsPot)" stroke="#6e3a1f" stroke-width="1.2"/>
+      <rect x="186" y="246" width="68" height="9" rx="2.5" fill="#c46a3a" stroke="#6e3a1f" stroke-width="1.2"/>
+      <ellipse cx="220" cy="248" rx="30" ry="3.2" fill="#3a2516"/>
     </g>
-    <text id="tsEmpty" class="mq-note" x="220" y="150" text-anchor="middle" style="fill:#2f2d27"></text>
+    <text id="tsEmpty" class="mq-note" x="220" y="150" text-anchor="middle"></text>
   </g>
 </svg>`;
       const $ = id => host.querySelector("#" + id);
       const mix = (a, b, t) => `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(",")})`;
-      let head = 0;
+      const starEls = [...host.querySelectorAll("#tsStars circle")];
+      let head = 0, rays = 0, last = performance.now();
       const sunPos = az => { const f = (az + 90) / 180; return { x: 40 + 360 * f, y: 240 - 165 * Math.sin(Math.PI * f) }; };
 
       return {
-        update() {
+        update(running) {
+          const now = performance.now(), dtR = Math.min(0.1, (now - last) / 1000); last = now;
           const plant = model.first("plante"), sun = model.first("soleil"), lamp = model.first("lampe");
-          host.querySelector("svg").setAttribute("aria-label", K.L("Scale model: a potted plant, the sky and the light", "Maquette : une plante en pot, le ciel et la lumière"));
+          host.querySelector("svg").setAttribute("aria-label", K.L("Scale model: a young sunflower in a pot, the sky and the light", "Maquette : un jeune tournesol en pot, le ciel et la lumière"));
           $("tsEast").textContent = K.L("East", "Est"); $("tsWest").textContent = K.L("West", "Ouest");
           $("tsEmpty").textContent = K.L("Place a Plant in the Synoptic.", "Pose une Plante dans le Synoptique.");
-          const outdoor = !!sun, night = model.env.night;
+          const outdoor = !!sun;
           let daylight = 1;
-          if (outdoor && sun.s.v !== null) daylight = Math.min(1, Math.sin(Math.PI * (sun.s.v + 90) / 180) * 2 + 0.2);
-          if (outdoor && sun.s.v === null) daylight = 0;
-          $("tsSky").setAttribute("fill", outdoor ? mix([22, 28, 54], [150, 196, 235], daylight) : "#e9e3d6");
-          const ink = outdoor && daylight < 0.4 ? "#d8d5cc" : "#2f2d27";      // compass words stay readable at night
+          if (outdoor) daylight = sun.s.v === null ? 0 : Math.min(1, Math.sin(Math.PI * (sun.s.v + 90) / 180) * 2.2 + 0.15);
+          $("tsOutdoor").style.display = outdoor ? "" : "none";
+          $("tsIndoor").style.display = outdoor ? "none" : "";
+          if (outdoor) {
+            const night = 1 - daylight;
+            $("tsNightSky").setAttribute("opacity", night.toFixed(3));
+            $("tsDuskSky").setAttribute("opacity", (daylight > 0 && daylight < 0.85 ? Math.sin(Math.PI * daylight / 0.85) * 0.8 : 0).toFixed(3));
+            $("tsMilky").setAttribute("opacity", (0.14 * night).toFixed(3));
+            const t = now / 1000;
+            starEls.forEach((el, i) => { const s = stars[i]; el.setAttribute("opacity", (night * (0.55 + 0.45 * Math.sin(t * s.w + s.ph))).toFixed(2)); });
+            $("tsMoon").setAttribute("opacity", (night * 0.95).toFixed(2));
+            $("tsHill2").setAttribute("fill", mix([28, 40, 50], [128, 170, 120], daylight));
+            $("tsHill1").setAttribute("fill", mix([22, 34, 30], [98, 150, 86], daylight));
+            $("tsSun").style.display = sun.s.v !== null ? "" : "none";
+            if (sun.s.v !== null) {
+              const p = sunPos(sun.s.v);
+              if (running) rays = (rays + dtR * 8) % 360;
+              $("tsSun").setAttribute("transform", `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`);
+              $("tsRays").setAttribute("transform", `rotate(${rays.toFixed(1)})`);
+            }
+          }
+          $("tsGround").setAttribute("opacity", outdoor ? (0.35 + 0.65 * daylight).toFixed(2) : "0");
+          $("tsGrassBlades").style.display = outdoor ? "" : "none";
+          const ink = outdoor && daylight < 0.4 ? "#d8d5cc" : "#2f2d27";
           $("tsEast").style.fill = ink; $("tsWest").style.fill = ink;
-          $("tsStars").style.display = outdoor && night ? "" : "none";
-          $("tsGround").setAttribute("fill", outdoor ? mix([38, 52, 34], [122, 160, 92], daylight) : "#b9ad98");
-          $("tsSun").style.display = outdoor && sun.s.v !== null ? "" : "none";
-          if (outdoor && sun.s.v !== null) { const p = sunPos(sun.s.v); $("tsSun").setAttribute("transform", `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`); }
           $("tsLamp").style.display = lamp ? "" : "none";
-          if (lamp) { const p = sunPos(lamp.p.angle); $("tsLamp").setAttribute("transform", `translate(${p.x.toFixed(1)} ${(p.y + 30).toFixed(1)})`); }
+          if (lamp) {
+            const p = sunPos(lamp.p.angle);
+            $("tsLamp").setAttribute("transform", `translate(${p.x.toFixed(1)} ${(p.y + 30).toFixed(1)}) scale(${outdoor ? 0.8 : 1})`);
+            $("tsLampGlowSpot").setAttribute("cx", p.x.toFixed(1)); $("tsLampGlowSpot").setAttribute("cy", (p.y + 45).toFixed(1));
+          }
           $("tsEmpty").style.display = plant ? "none" : "";
           $("tsPlant").style.display = plant ? "" : "none";
+          $("tsPlant").style.filter = outdoor && daylight < 0.95 ? `brightness(${(0.42 + 0.58 * daylight).toFixed(2)}) saturate(${(0.55 + 0.45 * daylight).toFixed(2)})` : "";
           if (!plant) return;
           head += (plant.s.x - head) * 0.25;
           const a = Math.max(-100, Math.min(100, head)) / 90;          // −1 east … +1 west
-          const hx = 220 + 58 * a, hy = 112 + 18 * Math.abs(a);
-          $("tsStem").setAttribute("d", `M220 246 C220 200 ${220 + 20 * a} ${170} ${hx.toFixed(1)} ${hy.toFixed(1)}`);
-          $("tsLeaf1").setAttribute("d", `M220 214 q-26 -10 -34 4 q14 10 34 -4 z`);
-          $("tsLeaf2").setAttribute("d", `M220 196 q26 -12 34 2 q-14 10 -34 -2 z`);
-          const rx = 30 - 14 * Math.min(1, Math.abs(a));              // the face turns away from us
-          $("tsHead").setAttribute("transform", `translate(${hx.toFixed(1)} ${hy.toFixed(1)}) rotate(${(a * 18).toFixed(1)})`);
-          $("tsPetals").setAttribute("rx", (rx + 9).toFixed(1)); $("tsPetals").setAttribute("ry", "38");
-          $("tsDisc").setAttribute("rx", rx.toFixed(1)); $("tsDisc").setAttribute("ry", "26");
-          $("tsDisc").setAttribute("cx", (6 * a).toFixed(1));
+          const hx = 220 + 52 * a, hy = 108 + 14 * Math.abs(a);
+          $("tsStem").setAttribute("d", `M220 248 C221 205 ${(220 + 26 * a).toFixed(1)} 168 ${hx.toFixed(1)} ${(hy + 8).toFixed(1)}`);
+          $("tsLeafL").setAttribute("transform", `translate(${(220.5 + 4 * a).toFixed(1)} 214) rotate(${(-8 + 6 * a).toFixed(1)})`);
+          $("tsLeafR").setAttribute("transform", `translate(${(221 + 10 * a).toFixed(1)} 190) rotate(${(6 + 6 * a).toFixed(1)})`);
+          const sx = 1 - 0.62 * Math.min(1, Math.abs(a));              // the face turns away from us
+          $("tsHead").setAttribute("transform", `translate(${hx.toFixed(1)} ${hy.toFixed(1)}) rotate(${(a * 16).toFixed(1)})`);
+          $("tsHeadInner").setAttribute("transform", `scale(${sx.toFixed(3)} 1)`);
         }
       };
     }

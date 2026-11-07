@@ -42,7 +42,12 @@ Online: `https://echopraxium.github.io/tscg/kit/`
 
 The compartments are resizable with the splitters (double-click resets; the layout is
 remembered per browser). The ▼ ▲ arrows change the speed and show how much simulated time
-one real second covers (e.g. “12 s = 1 h”).
+one real second covers (e.g. “12 s = 1 h”). While time runs, chevrons travel along every
+wire in the direction of the flow (they reverse when a flux goes negative, and stop when
+nothing flows). Every block has an icon, shown left of its name in the palette and in the
+top-left corner of the block in the Synoptic; hovering a block in the palette opens a small
+information panel. The theme is dark by default (☀ / ☾ switches, remembered per browser),
+and the house button, top left, goes back to the list of workshops.
 
 The Map/Territory distinction is **never stated**: the Panneau shows only what its
 instruments measure, the Maquette shows the rest, and the player rediscovers the gap by
@@ -56,9 +61,10 @@ was already understood.
 
 | Path | Role |
 |---|---|
-| `lib/i18n.js` | language (English default, French), shared interface strings |
+| `lib/i18n.js` | language (English default, French), theme (dark default, light), shared interface strings |
+| `lib/icons.js` | line icons for blocks (`icon:` in a skin, generic kind as fallback) |
 | `lib/sim.js` | generic kinds (storage, sink, source, threshold, amplify, transducer, gradient, clock), Model (graph + fixed-step simulation + bindings) |
-| `lib/synoptic.js` | SVG node editor |
+| `lib/synoptic.js` | SVG node editor (palette + info panel, icons, animated flow chevrons) |
 | `lib/panel.js` | grid of instruments |
 | `lib/chart.js` | curves, configured per workshop (`W.chart`: axes, series, strips) |
 | `lib/tutorial.js` | step runner (steps are data) |
@@ -83,7 +89,7 @@ Ask testers to think aloud while they play, without helping them, then to click
 rejected connections, panel actions, bets). Note what they say spontaneously
 about the Maquette and the Panneau.
 
-Status: **prototype 0.5.0** — three workshops, each with a guided tutorial and a free mode. UI in English and French. Desktop first; usable but cramped on a phone.
+Status: **prototype 0.6.0** — three workshops, each with a guided tutorial and a free mode. UI in English and French. Desktop first; usable but cramped on a phone.
 
 ## Languages
 

@@ -10,7 +10,7 @@
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.5.0";
+  const VERSION = "0.6.0";
   const SPEEDS = [0.25, 0.5, 1, 2, 4, 8, 16];
   const LAYOUT_KEY = "tscg-kit-layout";
   const build = factory => factory((en, fr) => (K.lang === "fr" ? fr : en));
@@ -22,7 +22,7 @@
     document.documentElement.lang = K.lang;
     document.body.innerHTML =
       `<header class="k-header">
-         <a class="k-home" id="kHome" data-tip="home_tip">←</a>
+         <a class="k-home" id="kHome" data-tip="home_tip"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 L12 3.8 L21 11 M5.5 9.5 V20 H18.5 V9.5 M10 20 V14.5 H14 V20"/></svg></a>
          <h1 id="kTitle"></h1>
          <div class="k-transport">
            <button id="kPlay" class="primary" data-tip="play_tip"></button>
@@ -37,6 +37,7 @@
          <button id="kFree" data-t="free" data-tip="free_tip"></button>
          <button id="kExport" data-t="export" data-tip="export_tip"></button>
          <button id="kLang" class="k-lang" data-t="lang_btn" data-tip="lang_tip"></button>
+         <button id="kTheme" class="k-theme" data-tip="theme_tip"></button>
        </header>
        <main class="k-main">
          <section class="k-left">
@@ -188,6 +189,9 @@
     };
     $("#kFree").onclick = () => { if (!S.free) app.goFree(); };
     $("#kLang").onclick = () => app.setLang(K.lang === "fr" ? "en" : "fr");
+    const themeIcon = () => { $("#kTheme").textContent = K.theme === "dark" ? "☀" : "☾"; };
+    $("#kTheme").onclick = () => { K.setTheme(K.theme === "dark" ? "light" : "dark"); themeIcon(); log("theme", K.theme); app.synoptic.render(); app.chart.draw(); };
+    themeIcon();
     $("#kExport").onclick = () => {
       const t = app.tutorial, Wn = app.W;
       const data = { tool: "TSCG Kit", workshop: Wn.id, version: VERSION, lang: K.lang, exported: new Date().toISOString(),

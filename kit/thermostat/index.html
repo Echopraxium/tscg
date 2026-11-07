@@ -45,6 +45,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .k-header{display:flex;align-items:center;gap:6px;padding:0 12px;height:44px;border-bottom:1px solid var(--rule);background:var(--panel)}
 .k-home{color:var(--quiet);text-decoration:none;font-size:18px;padding:2px 6px;border-radius:6px}
 .k-lang{font-weight:600;min-width:38px}
+.k-theme{min-width:34px;font-size:14px;line-height:1}
+.k-home{display:inline-flex;align-items:center}
 .k-home:hover{color:var(--accent);background:var(--grid)}
 .k-header h1{font-size:14.5px;margin:0 6px 0 0;font-weight:650;white-space:nowrap}
 .k-transport{display:flex;gap:6px;align-items:center}
@@ -105,8 +107,14 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
 /* ---- synoptic */
 .sy-palette{width:128px;flex:none;border-right:1px solid var(--rule);padding:8px;overflow:auto;background:var(--panel)}
-.sy-piece{display:block;width:100%;text-align:left;margin-bottom:6px;padding:4px 8px;font-size:12.5px}
-.sy-piece small{display:block;color:var(--quiet);font-size:10.5px;line-height:1.3}
+.sy-piece{display:flex;align-items:center;gap:7px;width:100%;text-align:left;margin-bottom:4px;padding:3px 7px;font-size:12.5px;line-height:1.25}
+.sy-piece .k-icon{width:17px;height:17px;flex:none;color:var(--accent)}
+.sy-piece:disabled .k-icon{color:var(--quiet)}
+.sy-info{margin-top:8px;border:1px solid var(--rule);border-radius:8px;padding:6px 8px;font-size:11.5px;background:var(--bg);min-height:56px}
+.sy-info p{margin:4px 0 0;line-height:1.35}
+.sy-info-h{display:flex;align-items:center;gap:6px}
+.sy-info-h .k-icon{width:16px;height:16px;color:var(--accent)}
+.k-icon{display:inline-block;vertical-align:middle}
 .sy-legend{margin-top:10px;font-size:11px;color:var(--quiet)}
 .sy-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
 .sy-stage{flex:1;position:relative;overflow:hidden;min-width:0;background-color:var(--bg);
@@ -125,6 +133,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .node-body{fill:var(--node);stroke:var(--rule);stroke-width:1.25}
 .node.selected .node-body{stroke:var(--accent);stroke-width:2}
 .node-head{fill:var(--node-head)}
+.node-icon{fill:none;stroke:var(--accent);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.chev path{fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.chev.flux path{stroke:var(--flux)} .chev.info path{stroke:var(--info)}
+.chev{filter:drop-shadow(0 0 1px var(--node))}
 .node-title{fill:var(--ink);font-weight:650;font-size:12.5px}
 .node-gen{fill:var(--quiet);font-size:10px}
 .port-label{fill:var(--quiet);font-size:10.5px}
@@ -223,6 +235,13 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
   K.setLang = l => { K.lang = l; try { localStorage.setItem(KEY, l); } catch (e) { /* storage blocked */ } document.documentElement.lang = l; };
   K.L = (en, fr) => (K.lang === "fr" ? fr : en);
 
+  // Theme: dark by default, light on demand; remembered per browser (same key as the home page)
+  const THEME = "tscg-kit-theme";
+  K.theme = (() => { try { const s = localStorage.getItem(THEME); if (s === "light" || s === "dark") return s; } catch (e) { /* storage blocked */ } return "dark"; })();
+  K.applyTheme = () => { document.documentElement.dataset.theme = K.theme; };
+  K.setTheme = th => { K.theme = th; try { localStorage.setItem(THEME, th); } catch (e) { /* storage blocked */ } K.applyTheme(); };
+  K.applyTheme();
+
   const T = {
     en: {
       pieces: "Blocks", info: "information", locked: "locked",
@@ -252,6 +271,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       free: "Free mode", free_tip: "Unlock every block and leave the tutorial",
       export: "Export my session", export_tip: "Download the session log (for user tests)",
       tab_panel: "Panel", tab_syn: "Synoptic", maquette: "Scale model", curves: "Curves",
+      pal_hint: "Hover a block to read what it does.", locked_info: "Unlocked later in the tutorial.",
+      theme_tip: "Light / dark theme",
       speed_down: "Slower", speed_up: "Faster", speed_label: "Real time ↔ simulated time",
       home_tip: "All workshops", lang_btn: "FR", lang_tip: "Passer en français",
       g_threshold: "Threshold (hysteresis)", g_gradient: "Gradient (gap)", g_clock: "Clock (rhythm)"
@@ -284,6 +305,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       free: "Mode libre", free_tip: "Débloquer tous les blocs et quitter le tutoriel",
       export: "Exporter ma session", export_tip: "Télécharger le journal de la session (pour les tests)",
       tab_panel: "Panneau", tab_syn: "Synoptique", maquette: "Maquette", curves: "Courbes",
+      pal_hint: "Survole un bloc pour savoir ce qu'il fait.", locked_info: "Débloqué plus tard dans le tutoriel.",
+      theme_tip: "Thème clair / sombre",
       speed_down: "Plus lent", speed_up: "Plus rapide", speed_label: "Temps réel ↔ temps simulé",
       home_tip: "Tous les ateliers", lang_btn: "EN", lang_tip: "Switch to English",
       g_threshold: "Threshold (hystérésis)", g_gradient: "Gradient (écart)", g_clock: "Clock (rythme)"
@@ -297,6 +320,53 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
   // generic piece names, shown "under the hood"
   K.generic = kind => ({ storage: "Storage", sink: "Sink", source: "Source", amplify: "Amplification", transducer: "Transducer",
                          threshold: K.t("g_threshold"), gradient: K.t("g_gradient"), clock: K.t("g_clock") }[kind] || kind);
+})(window.TSCGKit = window.TSCGKit || {});
+
+</script>
+<script>
+/* ../lib/icons.js */
+/* TSCG Kit — icons.js
+ * Line icons for blocks (24×24, stroke = currentColor). A skin names its icon with
+ * `icon: "<name>"`; without one, the generic kind gives a fallback.
+ * - K.iconSvg(name, cls)   HTML <svg> string (palette, panel)
+ * - K.iconPath(name)       the path data alone (drawn inside the Synoptic SVG)
+ * Author: Echopraxium with the collaboration of Claude AI
+ */
+(function (K) {
+  "use strict";
+  const P = {
+    // thermostat workshop
+    room: "M3 11 L12 4 L21 11 M5 9.5 V20 H19 V9.5 M10 20 V15 H14 V20",
+    wall: "M3 5 H21 V19 H3 Z M3 9.7 H21 M3 14.3 H21 M9 5 V9.7 M15 5 V9.7 M6 9.7 V14.3 M12 9.7 V14.3 M18 9.7 V14.3 M9 14.3 V19 M15 14.3 V19",
+    heater: "M12 3 C15.5 7 17.5 9.5 17.5 13.5 A5.5 5.5 0 0 1 6.5 13.5 C6.5 10.5 8.5 9 9.8 7 C10.8 9 11.8 10 12 3 Z M12 20 C10.3 20 9.5 18.8 9.5 17.5 C9.5 16 10.7 15.2 12 13.5 C13.3 15.2 14.5 16 14.5 17.5 C14.5 18.8 13.7 20 12 20 Z",
+    thermostat: "M5 3 H19 A1 1 0 0 1 20 4 V20 A1 1 0 0 1 19 21 H5 A1 1 0 0 1 4 20 V4 A1 1 0 0 1 5 3 Z M12 7 A4 4 0 1 1 11.99 7 M12 11 L14.5 8.8 M9 18 H15",
+    radiator: "M6 5 V19 M10 5 V19 M14 5 V19 M18 5 V19 M4 8 H20 M4 16 H20 M5 21 V19 M19 21 V19",
+    // larsen workshop
+    hall: "M3 20 H21 M5 20 V9 M19 20 V9 M3 9 L12 4 L21 9 M9 20 V14 H15 V20 M8 11.5 H8.01 M16 11.5 H16.01",
+    voice: "M8 9 A3 3 0 1 1 7.99 9 M2.5 20 C3 15.5 13 15.5 13.5 20 M16 7.5 Q18 10.5 16 13.5 M18.8 5 Q22.5 10.5 18.8 16",
+    amp: "M5 4.5 L19.5 12 L5 19.5 Z M1.5 12 H5 M19.5 12 H22.5 M8 12 H12 M10 10 V14",
+    speaker: "M3.5 9 H7.5 L12.5 5 V19 L7.5 15 H3.5 Z M15.5 9 Q17.5 12 15.5 15 M18.2 6.5 Q22 12 18.2 17.5",
+    // sunflower workshop
+    plant: "M12 21 V11 M12 14 C12 9 8.5 7 4 7 C4 11 7 14 12 14 M12 11.5 C12 7.5 15 5.5 20 5.5 C20 9.5 17 11.5 12 11.5 M8 21 H16",
+    lamp: "M8.5 3.5 H15.5 L19 10.5 H5 Z M12 10.5 V19 M8 20.5 H16 M12 13 L12 13.01",
+    sun: "M12 8 A4 4 0 1 1 11.99 8 M12 2 V4.5 M12 19.5 V22 M2 12 H4.5 M19.5 12 H22 M4.9 4.9 L6.7 6.7 M17.3 17.3 L19.1 19.1 M4.9 19.1 L6.7 17.3 M17.3 6.7 L19.1 4.9",
+    clock: "M12 3 A9 9 0 1 1 11.99 3 M12 7 V12 L15.5 14",
+    gap: "M12 4 L20.5 19.5 H3.5 Z M12 10 V14 M12 16.8 V16.81",
+    growth: "M4 20 C10 20 14 16.5 16 6.5 M12.3 8.5 L16 5.2 L19.5 8.8",
+    // generic fallbacks
+    storage: "M5 6 C5 4.3 19 4.3 19 6 V18 C19 19.7 5 19.7 5 18 Z M5 6 C5 7.7 19 7.7 19 6 M5 12 C5 13.7 19 13.7 19 12",
+    sink: "M4 5 H20 L14 13 V19 H10 V13 Z",
+    source: "M12 3 V14 M7.5 9.5 L12 14 L16.5 9.5 M5 20 H19",
+    threshold: "M3 18 H10 V6 H21",
+    amplify: "M5 4.5 L19.5 12 L5 19.5 Z",
+    transducer: "M3 12 H8 M16 12 H21 M8 7 H16 V17 H8 Z M10 12 L14 12",
+    gradient: "M12 4 L20.5 19.5 H3.5 Z"
+  };
+  K.ICONS = P;
+  K.iconPath = name => P[name] || P.storage;
+  K.iconSvg = (name, cls) =>
+    `<svg class="${cls || "k-icon"}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${K.iconPath(name)}"/></svg>`;
+  K.iconOf = skin => skin.icon || skin.kind;
 })(window.TSCGKit = window.TSCGKit || {});
 
 </script>
@@ -593,6 +663,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       this.selected = null; this.drag = null; this.dragWire = null; this.live = [];
       host.innerHTML =
         `<div class="sy-palette"><h2 class="k-h2 sy-h"></h2><div class="sy-list"></div>
+           <div class="sy-info" aria-live="polite"></div>
            <div class="sy-legend"><div><i style="background:var(--flux)"></i><span class="sy-lflux"></span></div>
            <div><i style="background:var(--info)"></i><span class="sy-linfo"></span></div>
            <p class="sy-help"></p></div></div>
@@ -600,6 +671,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       this.host = host;
       this.svg = host.querySelector(".sy-svg");
       this.list = host.querySelector(".sy-list");
+      this.info = host.querySelector(".sy-info");
       this.params = host.querySelector(".sy-params");
       this.svg.addEventListener("pointerdown", e => { if (e.target === this.svg) this.select(null); });
       window.addEventListener("pointermove", e => this.onMove(e));
@@ -611,6 +683,15 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       q(".sy-h").textContent = K.t("pieces"); q(".sy-lflux").textContent = this.o.fluxLabel() || "flux";
       q(".sy-linfo").textContent = K.t("info"); q(".sy-help").textContent = K.t("wire_help");
       this.svg.setAttribute("aria-label", K.t("syn_aria"));
+      this.showInfo(null);
+    }
+    // the small panel under the palette: what the hovered block does
+    showInfo(t) {
+      if (!t) { this.info.innerHTML = `<span class="k-muted">${K.t("pal_hint")}</span>`; return; }
+      const s = this.m.skins[t], open = this.o.isUnlocked(t);
+      this.info.innerHTML = `<div class="sy-info-h">${K.iconSvg(K.iconOf(s), "k-icon")}<b>${s.name}</b></div><p>${s.blurb}</p>` +
+        (this.o.hood() ? `<p class="k-muted">${K.generic(s.kind)}</p>` : "") +
+        (open ? "" : `<p class="k-muted">${K.t("locked_info")}</p>`);
     }
     skin(n) { return this.m.skins[n.type]; }
     nodeHeight(n) {
@@ -641,8 +722,12 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         const s = this.m.skins[t], open = this.o.isUnlocked(t);
         const b = document.createElement("button");
         b.className = "sy-piece"; b.disabled = !open; b.dataset.piece = t;
-        b.innerHTML = `${s.name}<small>${open ? (this.o.hood() ? K.generic(s.kind) : s.blurb) : K.t("locked")}</small>`;
+        b.innerHTML = `${K.iconSvg(K.iconOf(s), "k-icon")}<span>${s.name}</span>`;
+        b.title = open ? s.blurb : K.t("locked");
         b.onclick = () => this.add(t);
+        b.addEventListener("mouseenter", () => this.showInfo(t));
+        b.addEventListener("focus", () => this.showInfo(t));
+        b.addEventListener("mouseleave", () => this.showInfo(null));
         this.list.appendChild(b);
       }
     }
@@ -659,7 +744,15 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         const path = el("path", { d, class: `wire ${w.kind}${this.selected === "w" + w.id ? " selected" : ""}` }, gW);
         const hit = el("path", { d, class: "wire-hit" }, gW);
         hit.addEventListener("pointerdown", e => { e.stopPropagation(); this.select("w" + w.id); });
-        this.live.push({ wire: w, path });
+        // chevrons travelling along the wire show which way it flows (shown while time runs)
+        let len = 200; try { len = path.getTotalLength() || 200; } catch (e) { /* hidden tab */ }
+        const chev = el("g", { class: `chev ${w.kind}` }, gW), dur = Math.max(1.1, len / 70);
+        const motions = [0, 1, 2].map(k => {
+          const c = el("path", { d: "M-3.5 -4 L2.5 0 L-3.5 4" }, chev);
+          return el("animateMotion", { dur: dur.toFixed(2) + "s", repeatCount: "indefinite", rotate: "auto", path: d,
+            begin: (-k * dur / 3).toFixed(2) + "s", keyPoints: "0;1", keyTimes: "0;1", calcMode: "linear" }, c);
+        });
+        this.live.push({ wire: w, path, chev, motions, dir: 1 });
       }
       for (const n of m.nodes) {
         const s = this.skin(n), h = this.nodeHeight(n), hood = this.o.hood();
@@ -669,8 +762,9 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         const g = el("g", { class: "node-inner" + anim }, outer);
         el("rect", { class: "node-body", width: NW, height: h, rx: 8 }, g);
         const head = el("path", { class: "node-head", d: `M0 8 Q0 0 8 0 H${NW - 8} Q${NW} 0 ${NW} 8 V${HEAD} H0 Z` }, g);
-        const title = el("text", { class: "node-title", x: 10, y: hood ? 13 : 18 }, g); title.textContent = s.name;
-        if (hood) el("text", { class: "node-gen", x: 10, y: 24 }, g).textContent = K.generic(s.kind);
+        el("path", { class: "node-icon", d: K.iconPath(K.iconOf(s)), transform: "translate(8 6) scale(0.667)" }, g);
+        const title = el("text", { class: "node-title", x: 29, y: hood ? 13 : 18 }, g); title.textContent = s.name;
+        if (hood) el("text", { class: "node-gen", x: 29, y: 24 }, g).textContent = K.generic(s.kind);
         for (const part of [head, title]) { part.style.cursor = "grab"; part.addEventListener("pointerdown", e => this.startDrag(e, n)); }
         outer.addEventListener("pointerdown", e => { if (!e.defaultPrevented) this.select("n" + n.id); });
         m.ports(n, "in").forEach((q, i) => {
@@ -712,7 +806,14 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     }
     update(running) {
       for (const r of this.live) {
-        if (r.wire) { r.path.classList.toggle("active", r.wire.kind === "flux" && running && Math.abs(r.wire.power || 0) > 0.01); continue; }
+        if (r.wire) {
+          const w = r.wire, src = this.m.byId(w.from.node);
+          const on = running && (w.kind === "flux" ? Math.abs(w.power || 0) > 0.01 : !!src && this.m.infoOut(src) !== null);
+          r.chev.style.display = on ? "" : "none";
+          const dir = w.kind === "flux" && (w.power || 0) < 0 ? -1 : 1;     // heat can flow backwards between two stores
+          if (dir !== r.dir) { r.dir = dir; r.motions.forEach(a => a.setAttribute("keyPoints", dir > 0 ? "0;1" : "1;0")); }
+          continue;
+        }
         r.val.textContent = this.describe(r.node);
       }
     }
@@ -1292,7 +1393,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.5.0";
+  const VERSION = "0.6.0";
   const SPEEDS = [0.25, 0.5, 1, 2, 4, 8, 16];
   const LAYOUT_KEY = "tscg-kit-layout";
   const build = factory => factory((en, fr) => (K.lang === "fr" ? fr : en));
@@ -1304,7 +1405,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     document.documentElement.lang = K.lang;
     document.body.innerHTML =
       `<header class="k-header">
-         <a class="k-home" id="kHome" data-tip="home_tip">←</a>
+         <a class="k-home" id="kHome" data-tip="home_tip"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 L12 3.8 L21 11 M5.5 9.5 V20 H18.5 V9.5 M10 20 V14.5 H14 V20"/></svg></a>
          <h1 id="kTitle"></h1>
          <div class="k-transport">
            <button id="kPlay" class="primary" data-tip="play_tip"></button>
@@ -1319,6 +1420,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
          <button id="kFree" data-t="free" data-tip="free_tip"></button>
          <button id="kExport" data-t="export" data-tip="export_tip"></button>
          <button id="kLang" class="k-lang" data-t="lang_btn" data-tip="lang_tip"></button>
+         <button id="kTheme" class="k-theme" data-tip="theme_tip"></button>
        </header>
        <main class="k-main">
          <section class="k-left">
@@ -1470,6 +1572,9 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     };
     $("#kFree").onclick = () => { if (!S.free) app.goFree(); };
     $("#kLang").onclick = () => app.setLang(K.lang === "fr" ? "en" : "fr");
+    const themeIcon = () => { $("#kTheme").textContent = K.theme === "dark" ? "☀" : "☾"; };
+    $("#kTheme").onclick = () => { K.setTheme(K.theme === "dark" ? "light" : "dark"); themeIcon(); log("theme", K.theme); app.synoptic.render(); app.chart.draw(); };
+    themeIcon();
     $("#kExport").onclick = () => {
       const t = app.tutorial, Wn = app.W;
       const data = { tool: "TSCG Kit", workshop: Wn.id, version: VERSION, lang: K.lang, exported: new Date().toISOString(),
@@ -1557,23 +1662,23 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     home: { heater: { x: 16, y: 20 }, radiator: { x: 16, y: 220 }, room: { x: 206, y: 20 }, wall: { x: 396, y: 20 }, bimetal: { x: 206, y: 180 } },
 
     skins: {
-      room: { kind: "storage", name: L("Room", "Pièce"), blurb: L("stores heat", "accumule la chaleur"), unit: "°C", color: "#d9822b",
+      room: { kind: "storage", icon: "room", name: L("Room", "Pièce"), blurb: L("stores heat", "accumule la chaleur"), unit: "°C", color: "#d9822b",
         ports: { in: L("heat in", "chaleur reçue"), out: L("losses", "pertes"), level: L("temperature", "température") },
         params: { C: { label: L("Capacity (kWh/°C)", "Capacité (kWh/°C)"), v: 0.5, step: 0.1, min: 0.05, max: 5 },
                   k: { label: L("Leak (kW/°C)", "Fuite (kW/°C)"), v: 0.1, step: 0.05, min: 0, max: 2 },
                   x0: { label: L("Start temp. (°C)", "Temp. initiale (°C)"), v: 20, step: 1, min: -10, max: 40 } } },
-      wall: { kind: "sink", name: L("Wall", "Mur"), blurb: L("lets heat escape outside", "laisse filer la chaleur dehors"), unit: "°C", levelText: L("outside", "dehors"),
+      wall: { kind: "sink", icon: "wall", name: L("Wall", "Mur"), blurb: L("lets heat escape outside", "laisse filer la chaleur dehors"), unit: "°C", levelText: L("outside", "dehors"),
         ports: { in: L("losses", "pertes") },
         params: { level: { label: L("Outside temp. (°C)", "Temp. extérieure (°C)"), v: 5, step: 1, min: -20, max: 30 },
                   kOpen: { label: L("Open-window leak (kW/°C)", "Fuite fenêtre ouverte (kW/°C)"), v: 0.6, step: 0.1, min: 0, max: 5 } } },
-      heater: { kind: "source", name: L("Heater", "Chauffage"), blurb: L("produces heat", "produit de la chaleur"), onText: L("heating", "chauffe"), offText: L("off", "à l'arrêt"),
+      heater: { kind: "source", icon: "heater", name: L("Heater", "Chauffage"), blurb: L("produces heat", "produit de la chaleur"), onText: L("heating", "chauffe"), offText: L("off", "à l'arrêt"),
         ports: { cmd: L("command", "commande"), flow: L("heat", "chaleur") },
         params: { P: { label: L("Power (kW)", "Puissance (kW)"), v: 2.5, step: 0.5, min: 0, max: 10 } } },
-      bimetal: { kind: "threshold", name: "Thermostat", blurb: L("turns the heating on below the set point", "allume le chauffage sous la consigne"), onText: L("asks for heat", "demande de la chaleur"), offText: L("idle", "au repos"),
+      bimetal: { kind: "threshold", icon: "thermostat", name: "Thermostat", blurb: L("turns the heating on below the set point", "allume le chauffage sous la consigne"), onText: L("asks for heat", "demande de la chaleur"), offText: L("idle", "au repos"),
         ports: { x: L("temperature", "température"), u: L("command", "commande") },
         params: { set: { label: L("Set point (°C)", "Consigne (°C)"), v: 20, step: 0.5, min: 5, max: 30 },
                   h: { label: L("Hysteresis (°C)", "Hystérésis (°C)"), v: 1, step: 0.25, min: 0, max: 5 } } },
-      radiator: { kind: "storage", name: L("Radiator", "Radiateur"), blurb: L("a mass that stores heat, then gives it back", "masse qui stocke puis rend la chaleur"), unit: "°C", color: "#c0392b",
+      radiator: { kind: "storage", icon: "radiator", name: L("Radiator", "Radiateur"), blurb: L("a mass that stores heat, then gives it back", "masse qui stocke puis rend la chaleur"), unit: "°C", color: "#c0392b",
         ports: { in: L("heat in", "chaleur reçue"), out: L("gives", "rendue"), level: L("temperature", "température") },
         params: { C: { label: L("Mass (kWh/°C)", "Masse (kWh/°C)"), v: 0.3, step: 0.1, min: 0.05, max: 5 },
                   k: { label: L("Exchange (kW/°C)", "Échange (kW/°C)"), v: 0.5, step: 0.05, min: 0, max: 3 },
