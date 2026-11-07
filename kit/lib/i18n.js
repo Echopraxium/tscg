@@ -54,8 +54,8 @@
       free: "Free mode", free_tip: "Unlock every block and leave the tutorial",
       export: "Export my session", export_tip: "Download the session log (for user tests)",
       tab_panel: "Panel", tab_syn: "Synoptic", maquette: "Scale model", curves: "Curves",
-      pal_hint: "Hover a block to read what it does.", locked_info: "Unlocked later in the tutorial.",
-      theme_tip: "Light / dark theme",
+      pal_hint: "Hover or click a block to read what it does.", locked_info: "Unlocked later in the tutorial.",
+      theme_tip: "Light / dark theme", info_box: "About this block",
       speed_down: "Slower", speed_up: "Faster", speed_label: "Real time ↔ simulated time",
       home_tip: "All workshops", lang_btn: "FR", lang_tip: "Passer en français",
       g_threshold: "Threshold (hysteresis)", g_gradient: "Gradient (gap)", g_clock: "Clock (rhythm)"
@@ -88,8 +88,8 @@
       free: "Mode libre", free_tip: "Débloquer tous les blocs et quitter le tutoriel",
       export: "Exporter ma session", export_tip: "Télécharger le journal de la session (pour les tests)",
       tab_panel: "Panneau", tab_syn: "Synoptique", maquette: "Maquette", curves: "Courbes",
-      pal_hint: "Survole un bloc pour savoir ce qu'il fait.", locked_info: "Débloqué plus tard dans le tutoriel.",
-      theme_tip: "Thème clair / sombre",
+      pal_hint: "Survole ou clique un bloc pour savoir ce qu'il fait.", locked_info: "Débloqué plus tard dans le tutoriel.",
+      theme_tip: "Thème clair / sombre", info_box: "À propos du bloc",
       speed_down: "Plus lent", speed_up: "Plus rapide", speed_label: "Temps réel ↔ temps simulé",
       home_tip: "Tous les ateliers", lang_btn: "EN", lang_tip: "Switch to English",
       g_threshold: "Threshold (hystérésis)", g_gradient: "Gradient (écart)", g_clock: "Clock (rythme)"

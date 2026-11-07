@@ -106,11 +106,14 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .tu-ask textarea{display:block;width:100%;margin-top:4px;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--rule);border-radius:6px;padding:6px 8px;resize:vertical}
 
 /* ---- synoptic */
-.sy-palette{width:128px;flex:none;border-right:1px solid var(--rule);padding:8px;overflow:auto;background:var(--panel)}
+.sy-palette{width:136px;flex:none;border-right:1px solid var(--rule);display:flex;flex-direction:column;background:var(--panel);min-height:0}
+.sy-blocks{flex:1;overflow:auto;padding:8px;min-height:0}
+.sy-infobox{flex:none;border-top:1px solid var(--rule);padding:7px 8px 9px;background:var(--bg);min-height:118px;max-height:45%;overflow:auto}
+.sy-infobox .k-h2{margin-bottom:4px}
 .sy-piece{display:flex;align-items:center;gap:7px;width:100%;text-align:left;margin-bottom:4px;padding:3px 7px;font-size:12.5px;line-height:1.25}
 .sy-piece .k-icon{width:17px;height:17px;flex:none;color:var(--accent)}
 .sy-piece:disabled .k-icon{color:var(--quiet)}
-.sy-info{margin-top:8px;border:1px solid var(--rule);border-radius:8px;padding:6px 8px;font-size:11.5px;background:var(--bg);min-height:56px}
+.sy-info{font-size:11.5px}
 .sy-info p{margin:4px 0 0;line-height:1.35}
 .sy-info-h{display:flex;align-items:center;gap:6px}
 .sy-info-h .k-icon{width:16px;height:16px;color:var(--accent)}
@@ -271,8 +274,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       free: "Free mode", free_tip: "Unlock every block and leave the tutorial",
       export: "Export my session", export_tip: "Download the session log (for user tests)",
       tab_panel: "Panel", tab_syn: "Synoptic", maquette: "Scale model", curves: "Curves",
-      pal_hint: "Hover a block to read what it does.", locked_info: "Unlocked later in the tutorial.",
-      theme_tip: "Light / dark theme",
+      pal_hint: "Hover or click a block to read what it does.", locked_info: "Unlocked later in the tutorial.",
+      theme_tip: "Light / dark theme", info_box: "About this block",
       speed_down: "Slower", speed_up: "Faster", speed_label: "Real time ↔ simulated time",
       home_tip: "All workshops", lang_btn: "FR", lang_tip: "Passer en français",
       g_threshold: "Threshold (hysteresis)", g_gradient: "Gradient (gap)", g_clock: "Clock (rhythm)"
@@ -305,8 +308,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       free: "Mode libre", free_tip: "Débloquer tous les blocs et quitter le tutoriel",
       export: "Exporter ma session", export_tip: "Télécharger le journal de la session (pour les tests)",
       tab_panel: "Panneau", tab_syn: "Synoptique", maquette: "Maquette", curves: "Courbes",
-      pal_hint: "Survole un bloc pour savoir ce qu'il fait.", locked_info: "Débloqué plus tard dans le tutoriel.",
-      theme_tip: "Thème clair / sombre",
+      pal_hint: "Survole ou clique un bloc pour savoir ce qu'il fait.", locked_info: "Débloqué plus tard dans le tutoriel.",
+      theme_tip: "Thème clair / sombre", info_box: "À propos du bloc",
       speed_down: "Plus lent", speed_up: "Plus rapide", speed_label: "Temps réel ↔ temps simulé",
       home_tip: "Tous les ateliers", lang_btn: "EN", lang_tip: "Switch to English",
       g_threshold: "Threshold (hystérésis)", g_gradient: "Gradient (écart)", g_clock: "Clock (rythme)"
@@ -353,6 +356,14 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     clock: "M12 3 A9 9 0 1 1 11.99 3 M12 7 V12 L15.5 14",
     gap: "M12 4 L20.5 19.5 H3.5 Z M12 10 V14 M12 16.8 V16.81",
     growth: "M4 20 C10 20 14 16.5 16 6.5 M12.3 8.5 L16 5.2 L19.5 8.8",
+    // drinking-bird workshop
+    bird: "M9 4.5 A3 3 0 1 1 8.99 4.5 M11.8 7 L16 7.8 L11.7 8.6 M9 10.5 V16 M9 20.5 A3.2 3.2 0 1 1 9.01 20.5 M9 13 L5 21 M9 13 L13 21",
+    head: "M4 12 A6 6 0 1 0 16 12 A6 6 0 1 0 4 12 M16 11 L21.5 12.5 L15.8 14 M8.5 10.5 H8.51",
+    evap: "M12 21 C9 21 7.5 19 7.5 17 C7.5 14.5 12 10.5 12 10.5 C12 10.5 16.5 14.5 16.5 17 C16.5 19 15 21 12 21 Z M8 7 Q9.5 5.5 8 4 M12 7 Q13.5 5.5 12 4 M16 7 Q17.5 5.5 16 4",
+    tilt: "M3 15 L21 7 M12 11 L8.5 20 H15.5 Z",
+    drain: "M9 3 V13 M15 3 V13 M12 8 V20 M8.5 16.5 L12 20 L15.5 16.5",
+    felt: "M5 15 A7 7 0 0 1 19 15 Z M7 19 H17 M8 11 L6.8 9 M12 9 V6.8 M16 11 L17.2 9",
+    glass: "M6 4 H18 L16.5 20 H7.5 Z M7 10 H17",
     // generic fallbacks
     storage: "M5 6 C5 4.3 19 4.3 19 6 V18 C19 19.7 5 19.7 5 18 Z M5 6 C5 7.7 19 7.7 19 6 M5 12 C5 13.7 19 13.7 19 12",
     sink: "M4 5 H20 L14 13 V19 H10 V13 Z",
@@ -384,10 +395,12 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
   // Behaviour lives in the generic kind; a workshop gives each piece a "skin"
   // (name, port labels, parameters) on top of one of these kinds.
+  // An `optional` port only exists on a skin that names it in its `ports`
+  // (e.g. a Sink opened by a command: a drain, a valve).
   const KINDS = {
     storage:    { inputs:  [{ id: "in", kind: "flux", multi: true }],
                   outputs: [{ id: "out", kind: "flux" }, { id: "level", kind: "info" }] },
-    sink:       { inputs:  [{ id: "in", kind: "flux", multi: true }], outputs: [] },
+    sink:       { inputs:  [{ id: "in", kind: "flux", multi: true }, { id: "cmd", kind: "info", optional: true }], outputs: [] },
     source:     { inputs:  [{ id: "cmd", kind: "info" }], outputs: [{ id: "flow", kind: "flux" }] },
     threshold:  { inputs:  [{ id: "x", kind: "info" }], outputs: [{ id: "u", kind: "info" }] },
     amplify:    { inputs:  [{ id: "x", kind: "info" }], outputs: [{ id: "y", kind: "info" }] },
@@ -415,7 +428,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     emit(type, detail) { for (const fn of this.listeners) fn(type, detail); }
 
     kindOf(n) { return this.skins[n.type].kind; }
-    ports(n, side) { return KINDS[this.kindOf(n)][side === "in" ? "inputs" : "outputs"]; }
+    ports(n, side) {
+      const s = this.skins[n.type], all = KINDS[s.kind][side === "in" ? "inputs" : "outputs"];
+      return all.filter(q => !q.optional || (s.ports && q.id in s.ports));
+    }
     byId(id) { return this.nodes.find(n => n.id === id); }
     first(type) { return this.nodes.find(n => n.type === type); }
     wiresTo(id, port) { return this.wires.filter(w => w.to.node === id && (!port || w.to.port === port)); }
@@ -465,8 +481,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     resetNode(n) {
       const k = this.kindOf(n), keep = n.s || {};
       if (k === "storage") n.s = { x: n.p.x0 };
-      else if (k === "source") n.s = { u: 0, manual: keep.manual || 0 };
-      else if (k === "threshold") n.s = { u: 1, x: null };
+      else if (k === "source") n.s = { u: 0, manual: keep.manual !== undefined ? keep.manual : (this.skins[n.type].on ? 1 : 0) };
+      else if (k === "threshold") n.s = { u: this.skins[n.type].above ? 0 : 1, x: null };
       else if (k === "amplify") n.s = { y: 0, sat: 0 };
       else if (k === "transducer") n.s = { flow: 0, att: keep.att === undefined ? 1 : keep.att };
       else if (k === "gradient") n.s = { d: 0, a: null };
@@ -527,9 +543,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
             n.s.y = clamp(raw, -n.p.max, n.p.max); n.s.sat = Math.abs(raw) >= n.p.max ? 1 : 0;
           } else if (kind === "threshold" && pass === 2) {
             const x = this.infoIn(n, "x"); n.s.x = x;
-            if (x !== null) {
-              if (x < n.p.set - n.p.h / 2) n.s.u = 1;
-              else if (x > n.p.set + n.p.h / 2) n.s.u = 0;
+            if (x !== null) {                // u = 1 below the band (or above it, for a skin with `above`)
+              const up = !!this.skins[n.type].above;
+              if (x < n.p.set - n.p.h / 2) n.s.u = up ? 0 : 1;
+              else if (x > n.p.set + n.p.h / 2) n.s.u = up ? 1 : 0;
             }
           }
         }
@@ -544,6 +561,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       for (const n of this.nodes) {
         const k = this.kindOf(n);
         if (k === "source") { const cmd = this.infoIn(n, "cmd"); n.s.u = cmd === null ? n.s.manual : (cmd >= 0.5 ? 1 : 0); }
+        if (k === "sink" && this.wiresTo(n.id, "cmd").length) { const cmd = this.infoIn(n, "cmd"); n.s.open = cmd !== null && cmd >= 0.5; }
         if (k === "transducer") {
           const x = this.infoIn(n, "x") || 0;
           n.s.flow = clamp(n.p.k * n.s.att * x, -n.p.max, n.p.max) + noise(n.p.noise);
@@ -662,11 +680,12 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       this.m = model; this.o = o;
       this.selected = null; this.drag = null; this.dragWire = null; this.live = [];
       host.innerHTML =
-        `<div class="sy-palette"><h2 class="k-h2 sy-h"></h2><div class="sy-list"></div>
-           <div class="sy-info" aria-live="polite"></div>
-           <div class="sy-legend"><div><i style="background:var(--flux)"></i><span class="sy-lflux"></span></div>
-           <div><i style="background:var(--info)"></i><span class="sy-linfo"></span></div>
-           <p class="sy-help"></p></div></div>
+        `<div class="sy-palette">
+           <div class="sy-blocks"><h2 class="k-h2 sy-h"></h2><div class="sy-list"></div>
+             <div class="sy-legend"><div><i style="background:var(--flux)"></i><span class="sy-lflux"></span></div>
+             <div><i style="background:var(--info)"></i><span class="sy-linfo"></span></div>
+             <p class="sy-help"></p></div></div>
+           <div class="sy-infobox"><h2 class="k-h2 sy-ih"></h2><div class="sy-info" aria-live="polite"></div></div></div>
          <div class="sy-stage"><svg class="sy-svg"></svg><div class="sy-params"></div></div>`;
       this.host = host;
       this.svg = host.querySelector(".sy-svg");
@@ -682,12 +701,14 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       const q = s => this.host.querySelector(s);
       q(".sy-h").textContent = K.t("pieces"); q(".sy-lflux").textContent = this.o.fluxLabel() || "flux";
       q(".sy-linfo").textContent = K.t("info"); q(".sy-help").textContent = K.t("wire_help");
+      q(".sy-ih").textContent = K.t("info_box");
       this.svg.setAttribute("aria-label", K.t("syn_aria"));
-      this.showInfo(null);
+      this.showInfo(this.infoType || null);
     }
-    // the small panel under the palette: what the hovered block does
+    // the compartment under the blocks: what the hovered (or last hovered / selected) block does
     showInfo(t) {
-      if (!t) { this.info.innerHTML = `<span class="k-muted">${K.t("pal_hint")}</span>`; return; }
+      this.infoType = t;
+      if (!t || !this.m.skins[t]) { this.info.innerHTML = `<span class="k-muted">${K.t("pal_hint")}</span>`; return; }
       const s = this.m.skins[t], open = this.o.isUnlocked(t);
       this.info.innerHTML = `<div class="sy-info-h">${K.iconSvg(K.iconOf(s), "k-icon")}<b>${s.name}</b></div><p>${s.blurb}</p>` +
         (this.o.hood() ? `<p class="k-muted">${K.generic(s.kind)}</p>` : "") +
@@ -727,7 +748,6 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         b.onclick = () => this.add(t);
         b.addEventListener("mouseenter", () => this.showInfo(t));
         b.addEventListener("focus", () => this.showInfo(t));
-        b.addEventListener("mouseleave", () => this.showInfo(null));
         this.list.appendChild(b);
       }
     }
@@ -876,7 +896,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       if (this.selected[0] === "n") this.m.removeNode(id); else this.m.removeWire(id);
       this.selected = null; this.render(); this.renderParams(); this.o.onChange();
     }
-    select(key) { this.selected = key; this.render(); this.renderParams(); }
+    select(key) {
+      this.selected = key; this.render(); this.renderParams();
+      if (key && key[0] !== "w") { const n = this.m.byId(+key.slice(1)); if (n) this.showInfo(n.type); }
+    }
 
     renderParams() {
       const box = this.params;
@@ -1159,7 +1182,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  *   range:[lo,hi], tickY, span, tick, label(t)   axes, in the workshop's time unit
  *   band:[a,b], showBand(app)                    optional target zone
  *   series:[{piece, label, color, unit, decimals, fmt}]   default: every storage
- *   lines:[{piece, param, label, color, unit}]   dashed horizontal line at a parameter (e.g. set point)
+ *   lines:[{piece, param | value(node), label, color, unit}]   dashed horizontal line at a parameter (e.g. set point)
  *   the legend shows the current value of every series and line
  *   strips:[{label, color, on(snap, model), shade}]  on/off bars under the curves,
  *                                                    or full-height shading (shade:true)
@@ -1207,7 +1230,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       const lineLegend = [];
       for (const ln of (o.lines || [])) {                 // dashed reference lines (set point…)
         const n = m.first(ln.piece); if (!n) continue;
-        const val = n.p[ln.param], c2 = col(ln.color || "--good");
+        const val = ln.value ? ln.value(n) : n.p[ln.param], c2 = col(ln.color || "--good");
         c.save(); c.strokeStyle = c2; c.lineWidth = 1.5; c.setLineDash([6, 4]);
         c.beginPath(); c.moveTo(L, Y(val)); c.lineTo(w - R, Y(val)); c.stroke(); c.restore();
         lineLegend.push(`<span style="color:${c2}">┄</span> ${ln.label} <b>${show(ln, val)}</b>`);
@@ -1393,7 +1416,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.6.0";
+  const VERSION = "0.7.0";
   const SPEEDS = [0.25, 0.5, 1, 2, 4, 8, 16];
   const LAYOUT_KEY = "tscg-kit-layout";
   const build = factory => factory((en, fr) => (K.lang === "fr" ? fr : en));

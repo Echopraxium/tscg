@@ -4,7 +4,7 @@
  *   range:[lo,hi], tickY, span, tick, label(t)   axes, in the workshop's time unit
  *   band:[a,b], showBand(app)                    optional target zone
  *   series:[{piece, label, color, unit, decimals, fmt}]   default: every storage
- *   lines:[{piece, param, label, color, unit}]   dashed horizontal line at a parameter (e.g. set point)
+ *   lines:[{piece, param | value(node), label, color, unit}]   dashed horizontal line at a parameter (e.g. set point)
  *   the legend shows the current value of every series and line
  *   strips:[{label, color, on(snap, model), shade}]  on/off bars under the curves,
  *                                                    or full-height shading (shade:true)
@@ -52,7 +52,7 @@
       const lineLegend = [];
       for (const ln of (o.lines || [])) {                 // dashed reference lines (set point…)
         const n = m.first(ln.piece); if (!n) continue;
-        const val = n.p[ln.param], c2 = col(ln.color || "--good");
+        const val = ln.value ? ln.value(n) : n.p[ln.param], c2 = col(ln.color || "--good");
         c.save(); c.strokeStyle = c2; c.lineWidth = 1.5; c.setLineDash([6, 4]);
         c.beginPath(); c.moveTo(L, Y(val)); c.lineTo(w - R, Y(val)); c.stroke(); c.restore();
         lineLegend.push(`<span style="color:${c2}">┄</span> ${ln.label} <b>${show(ln, val)}</b>`);
