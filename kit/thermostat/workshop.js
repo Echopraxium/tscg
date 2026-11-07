@@ -171,9 +171,9 @@
     <radialGradient id="mqWarm" cx="0.5" cy="0.6" r="0.5"><stop offset="0" stop-color="#f08a3c" stop-opacity=".75"/><stop offset="1" stop-color="#f08a3c" stop-opacity="0"/></radialGradient>
     <radialGradient id="mqCool" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#4a8fe0" stop-opacity=".6"/><stop offset="1" stop-color="#4a8fe0" stop-opacity="0"/></radialGradient>
   </defs>
-  <rect id="mqSky" x="0" y="0" width="440" height="300" rx="12"/>
-  <g id="mqSnow" fill="#ffffff" opacity=".9">${Array.from({ length: 26 }, (_, i) => `<circle cx="${(i * 67) % 430 + 6}" cy="${(i * 37) % 250 + 6}" r="${1.4 + (i % 3) * .5}"/>`).join("")}</g>
-  <rect id="mqGround" x="0" y="262" width="440" height="38" rx="0"/>
+  <rect id="mqSky" x="-1500" width="3440" y="-1500" height="1800"/>
+  <g id="mqSnow" fill="#ffffff" opacity=".9">${Array.from({ length: 80 }, (_, i) => `<circle cx="${(i * 67) % 1300 - 430}" cy="${(i * 37) % 330 - 70}" r="${1.4 + (i % 3) * .5}"/>`).join("")}</g>
+  <rect id="mqGround" x="-1500" width="3440" y="262" height="1500"/>
   <g id="mqHouse">
     <rect x="44" y="60" width="352" height="16" rx="2" fill="#8d8478"/>
     <rect x="52" y="52" width="336" height="8" rx="2" fill="#a59c8f"/>

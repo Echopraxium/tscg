@@ -10,7 +10,7 @@
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.9.1";
+  const VERSION = "0.9.2";
   const SPEEDS = [0.25, 0.5, 1, 2, 4, 8, 16];
   const LAYOUT_KEY = "tscg-kit-layout";
   const build = factory => factory((en, fr) => (K.lang === "fr" ? fr : en));
@@ -132,6 +132,19 @@
       c.title = K.t("tool_clear"); c.disabled = !model.nodes.length && !app.panel.controls.length;
       if (clearArmed && Date.now() - clearArmed > 3000) { clearArmed = 0; c.classList.remove("armed"); }
     };
+    // the scale model fills its compartment: the drawing keeps its proportions (it is centred,
+    // never stretched) and the viewBox grows to the compartment's shape, so the scene's
+    // background runs to the edges with an equal margin on the four sides
+    const fitView = () => {
+      const host = $("#kView"), svg = host && host.querySelector("svg"); if (!svg) return;
+      const r = host.getBoundingClientRect(); if (!r.width || !r.height) return;
+      const key = Math.round(r.width) + "x" + Math.round(r.height); if (svg.dataset.fit === key) return;
+      svg.dataset.fit = key;
+      const [bx, by, bw, bh] = (svg.dataset.base || (svg.dataset.base = svg.getAttribute("viewBox"))).split(/[\s,]+/).map(Number);
+      const s = Math.min(r.width / bw, r.height / bh), vw = r.width / s, vh = r.height / s;
+      svg.setAttribute("viewBox", `${(bx - (vw - bw) / 2).toFixed(1)} ${(by - (vh - bh) / 2).toFixed(1)} ${vw.toFixed(1)} ${vh.toFixed(1)}`);
+    };
+    app.fitView = fitView;
     app.curvesHint = on => { const b = document.querySelector('.k-rtab[data-rtab="curves"]'); if (b) b.classList.toggle("attn", on && S.rtab !== "curves"); };
     app.goFree = () => {
       S.free = true; $("#kFree").classList.add("on");
@@ -258,7 +271,7 @@
         let guard = 0;
         while (acc >= 1 && guard++ < 600) { model.step(CLK.dt); app.tutorial.tick(); acc -= 1; }
       }
-      app.synoptic.update(S.running); app.panel.update(); app.view.update(S.running); app.tutorial.refresh(); app.updateTools();
+      app.synoptic.update(S.running); app.panel.update(); app.view.update(S.running); fitView(); app.tutorial.refresh(); app.updateTools();
       $("#kClock").textContent = CLK.fmt(model.t);
       if (now - chartT > 120) { app.chart.draw(); chartT = now; }
       requestAnimationFrame(frame);

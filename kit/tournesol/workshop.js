@@ -185,21 +185,21 @@
     // rays, hills, twinkling stars, a crescent moon). Indoors (lamp only): a lit room.
     view: function (host, model, api) {
       const rnd = (i, k) => { const s = Math.sin(i * 91.7 + k * 47.3) * 43758.5453; return s - Math.floor(s); };
-      const stars = Array.from({ length: 70 }, (_, i) => ({ x: 6 + rnd(i, 1) * 428, y: 6 + rnd(i, 2) * 175, r: 0.5 + rnd(i, 3) * 1.4, w: 1 + rnd(i, 4) * 3, ph: rnd(i, 5) * 6.28 }));
+      const stars = Array.from({ length: 190 }, (_, i) => ({ x: -420 + rnd(i, 1) * 1280, y: -90 + rnd(i, 2) * 270, r: 0.5 + rnd(i, 3) * 1.4, w: 1 + rnd(i, 4) * 3, ph: rnd(i, 5) * 6.28 }));
       const seeds = Array.from({ length: 120 }, (_, i) => { const a = i * 2.39996, r = 1.25 * Math.sqrt(i); return `<circle cx="${(r * Math.cos(a)).toFixed(2)}" cy="${(r * Math.sin(a)).toFixed(2)}" r="${(0.55 + i / 400).toFixed(2)}"/>`; }).join("");
       const petals = (n, len, wid, rot, cls) => Array.from({ length: n }, (_, i) =>
         `<path class="${cls}" transform="rotate(${(i * 360 / n + rot).toFixed(1)})" d="M0 -12 C${wid} -${12 + len * 0.35} ${wid * 0.7} -${12 + len * 0.85} 0 -${12 + len} C-${wid * 0.7} -${12 + len * 0.85} -${wid} -${12 + len * 0.35} 0 -12 Z"/>`).join("");
-      const grass = Array.from({ length: 90 }, (_, i) => { const x = i * 4.9 + rnd(i, 7) * 3, h = 4 + rnd(i, 8) * 7; return `M${x.toFixed(1)} 252 q${(rnd(i, 9) * 4 - 2).toFixed(1)} -${(h / 2).toFixed(1)} ${(rnd(i, 6) * 3 - 1.5).toFixed(1)} -${h.toFixed(1)}`; }).join(" ");
+      const grass = Array.from({ length: 330 }, (_, i) => { const x = (i - 120) * 4.9 + rnd(i, 7) * 3, h = 4 + rnd(i, 8) * 7; return `M${x.toFixed(1)} 252 q${(rnd(i, 9) * 4 - 2).toFixed(1)} -${(h / 2).toFixed(1)} ${(rnd(i, 6) * 3 - 1.5).toFixed(1)} -${h.toFixed(1)}`; }).join(" ");
       host.innerHTML = `
 <svg viewBox="0 0 440 300" role="img" preserveAspectRatio="xMidYMid meet">
   <defs>
-    <clipPath id="tsClip"><rect x="0" y="0" width="440" height="300" rx="12"/></clipPath>
-    <linearGradient id="tsDay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f8ee0"/><stop offset="1" stop-color="#cfe9f8"/></linearGradient>
-    <linearGradient id="tsNight" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070b24"/><stop offset=".7" stop-color="#1b1a45"/><stop offset="1" stop-color="#3a2a55"/></linearGradient>
-    <linearGradient id="tsDusk" x1="0" y1="0" x2="0" y2="1"><stop offset=".35" stop-color="#ff9a4d" stop-opacity="0"/><stop offset="1" stop-color="#ff8a3d" stop-opacity=".85"/></linearGradient>
+    <clipPath id="tsClip"><rect x="-1500" width="3440" y="-1500" height="3300"/></clipPath>
+    <linearGradient id="tsDay" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="300"><stop offset="0" stop-color="#3f8ee0"/><stop offset="1" stop-color="#cfe9f8"/></linearGradient>
+    <linearGradient id="tsNight" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="300"><stop offset="0" stop-color="#070b24"/><stop offset=".7" stop-color="#1b1a45"/><stop offset="1" stop-color="#3a2a55"/></linearGradient>
+    <linearGradient id="tsDusk" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="300"><stop offset=".35" stop-color="#ff9a4d" stop-opacity="0"/><stop offset="1" stop-color="#ff8a3d" stop-opacity=".85"/></linearGradient>
     <radialGradient id="tsSunGlow"><stop offset="0" stop-color="#fff6c2" stop-opacity=".95"/><stop offset=".35" stop-color="#ffd34d" stop-opacity=".55"/><stop offset="1" stop-color="#ffd34d" stop-opacity="0"/></radialGradient>
     <radialGradient id="tsLampGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff1b0" stop-opacity=".85"/><stop offset="1" stop-color="#fff1b0" stop-opacity="0"/></radialGradient>
-    <linearGradient id="tsGrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fae4f"/><stop offset="1" stop-color="#3f7a33"/></linearGradient>
+    <linearGradient id="tsGrass" gradientUnits="userSpaceOnUse" x1="0" y1="250" x2="0" y2="300"><stop offset="0" stop-color="#6fae4f"/><stop offset="1" stop-color="#3f7a33"/></linearGradient>
     <linearGradient id="tsPetal" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e48a12"/><stop offset=".55" stop-color="#f7c22b"/><stop offset="1" stop-color="#ffe066"/></linearGradient>
     <radialGradient id="tsDiscGrad"><stop offset="0" stop-color="#3b2312"/><stop offset=".75" stop-color="#5a3518"/><stop offset="1" stop-color="#7a4a1e"/></radialGradient>
     <linearGradient id="tsStemGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f6b2a"/><stop offset=".5" stop-color="#5a9e45"/><stop offset="1" stop-color="#2f6b2a"/></linearGradient>
@@ -209,9 +209,9 @@
   </defs>
   <g clip-path="url(#tsClip)">
     <g id="tsOutdoor">
-      <rect x="0" y="0" width="440" height="300" fill="url(#tsDay)"/>
-      <rect id="tsNightSky" x="0" y="0" width="440" height="300" fill="url(#tsNight)"/>
-      <rect id="tsDuskSky" x="0" y="0" width="440" height="300" fill="url(#tsDusk)"/>
+      <rect x="-1500" width="3440" y="-1500" height="1800" fill="url(#tsDay)"/>
+      <rect id="tsNightSky" x="-1500" width="3440" y="-1500" height="1800" fill="url(#tsNight)"/>
+      <rect id="tsDuskSky" x="-1500" width="3440" y="-1500" height="1800" fill="url(#tsDusk)"/>
       <ellipse id="tsMilky" cx="230" cy="80" rx="240" ry="26" fill="#c9c3ff" opacity=".12" filter="url(#tsBlur)" transform="rotate(-14 230 80)"/>
       <g id="tsStars" fill="#ffffff">${stars.map((s, i) => `<circle data-i="${i}" cx="${s.x.toFixed(1)}" cy="${s.y.toFixed(1)}" r="${s.r.toFixed(2)}"/>`).join("")}</g>
       <circle id="tsMoon" cx="328" cy="48" r="14" fill="#f3efd9" mask="url(#tsMoonMask)"/>
@@ -221,13 +221,13 @@
         <g id="tsRays" stroke="#ffd34d" stroke-width="2.2" stroke-linecap="round">${Array.from({ length: 12 }, (_, i) => `<line x1="0" y1="-22" x2="0" y2="-30" transform="rotate(${i * 30})"/>`).join("")}</g>
         <circle r="15" fill="#ffe27a" stroke="#ffc93a" stroke-width="2"/>
       </g>
-      <path id="tsHill2" d="M0 236 C60 214 120 222 180 232 C250 244 310 214 440 226 V300 H0 Z"/>
-      <path id="tsHill1" d="M0 246 C80 236 150 242 220 247 C300 252 370 238 440 244 V300 H0 Z"/>
+      <path id="tsHill2" d="M-1500 236 H0 C60 214 120 222 180 232 C250 244 310 214 440 226 H1940 V1800 H-1500 Z"/>
+      <path id="tsHill1" d="M-1500 246 H0 C80 236 150 242 220 247 C300 252 370 238 440 244 H1940 V1800 H-1500 Z"/>
     </g>
     <g id="tsIndoor">
-      <rect x="0" y="0" width="440" height="300" fill="#e8dfcc"/>
-            <rect x="0" y="246" width="440" height="54" fill="#b79c7a"/>
-      <line x1="0" y1="246" x2="440" y2="246" stroke="#9b8162" stroke-width="2"/>
+      <rect x="-1500" width="3440" y="-1500" height="1800" fill="#e8dfcc"/>
+            <rect x="-1500" width="3440" y="246" height="1500" fill="#b79c7a"/>
+      <line x1="-1500" y1="246" x2="1940" y2="246" stroke="#9b8162" stroke-width="2"/>
       <circle id="tsLampGlowSpot" r="120" fill="url(#tsLampGlow)"/>
     </g>
     <g id="tsLamp">
@@ -236,7 +236,7 @@
       <path d="M-20 -8 L20 -8 L12 12 L-12 12 Z" fill="#c9a24a" stroke="#6e6a60" stroke-width="1.5"/>
       <circle cx="0" cy="13" r="6" fill="#fff6c8"/>
     </g>
-    <rect id="tsGround" x="0" y="250" width="440" height="50" fill="url(#tsGrass)"/>
+    <rect id="tsGround" x="-1500" width="3440" y="250" height="1500" fill="url(#tsGrass)"/>
     <path id="tsGrassBlades" d="${grass}" stroke="#4f8f3c" stroke-width="1.2" fill="none" stroke-linecap="round"/>
     <text id="tsEast" class="mq-note" x="18" y="291"></text>
     <text id="tsWest" class="mq-note" x="422" y="291" text-anchor="end"></text>
