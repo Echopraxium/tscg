@@ -10,10 +10,12 @@
 
   // Behaviour lives in the generic kind; a workshop gives each piece a "skin"
   // (name, port labels, parameters) on top of one of these kinds.
+  // An `optional` port only exists on a skin that names it in its `ports`
+  // (e.g. a Sink opened by a command: a drain, a valve).
   const KINDS = {
     storage:    { inputs:  [{ id: "in", kind: "flux", multi: true }],
                   outputs: [{ id: "out", kind: "flux" }, { id: "level", kind: "info" }] },
-    sink:       { inputs:  [{ id: "in", kind: "flux", multi: true }], outputs: [] },
+    sink:       { inputs:  [{ id: "in", kind: "flux", multi: true }, { id: "cmd", kind: "info", optional: true }], outputs: [] },
     source:     { inputs:  [{ id: "cmd", kind: "info" }], outputs: [{ id: "flow", kind: "flux" }] },
     threshold:  { inputs:  [{ id: "x", kind: "info" }], outputs: [{ id: "u", kind: "info" }] },
     amplify:    { inputs:  [{ id: "x", kind: "info" }], outputs: [{ id: "y", kind: "info" }] },
@@ -41,7 +43,10 @@
     emit(type, detail) { for (const fn of this.listeners) fn(type, detail); }
 
     kindOf(n) { return this.skins[n.type].kind; }
-    ports(n, side) { return KINDS[this.kindOf(n)][side === "in" ? "inputs" : "outputs"]; }
+    ports(n, side) {
+      const s = this.skins[n.type], all = KINDS[s.kind][side === "in" ? "inputs" : "outputs"];
+      return all.filter(q => !q.optional || (s.ports && q.id in s.ports));
+    }
     byId(id) { return this.nodes.find(n => n.id === id); }
     first(type) { return this.nodes.find(n => n.type === type); }
     wiresTo(id, port) { return this.wires.filter(w => w.to.node === id && (!port || w.to.port === port)); }
@@ -91,8 +96,8 @@
     resetNode(n) {
       const k = this.kindOf(n), keep = n.s || {};
       if (k === "storage") n.s = { x: n.p.x0 };
-      else if (k === "source") n.s = { u: 0, manual: keep.manual || 0 };
-      else if (k === "threshold") n.s = { u: 1, x: null };
+      else if (k === "source") n.s = { u: 0, manual: keep.manual !== undefined ? keep.manual : (this.skins[n.type].on ? 1 : 0) };
+      else if (k === "threshold") n.s = { u: this.skins[n.type].above ? 0 : 1, x: null };
       else if (k === "amplify") n.s = { y: 0, sat: 0 };
       else if (k === "transducer") n.s = { flow: 0, att: keep.att === undefined ? 1 : keep.att };
       else if (k === "gradient") n.s = { d: 0, a: null };
@@ -153,9 +158,10 @@
             n.s.y = clamp(raw, -n.p.max, n.p.max); n.s.sat = Math.abs(raw) >= n.p.max ? 1 : 0;
           } else if (kind === "threshold" && pass === 2) {
             const x = this.infoIn(n, "x"); n.s.x = x;
-            if (x !== null) {
-              if (x < n.p.set - n.p.h / 2) n.s.u = 1;
-              else if (x > n.p.set + n.p.h / 2) n.s.u = 0;
+            if (x !== null) {                // u = 1 below the band (or above it, for a skin with `above`)
+              const up = !!this.skins[n.type].above;
+              if (x < n.p.set - n.p.h / 2) n.s.u = up ? 0 : 1;
+              else if (x > n.p.set + n.p.h / 2) n.s.u = up ? 1 : 0;
             }
           }
         }
@@ -170,6 +176,7 @@
       for (const n of this.nodes) {
         const k = this.kindOf(n);
         if (k === "source") { const cmd = this.infoIn(n, "cmd"); n.s.u = cmd === null ? n.s.manual : (cmd >= 0.5 ? 1 : 0); }
+        if (k === "sink" && this.wiresTo(n.id, "cmd").length) { const cmd = this.infoIn(n, "cmd"); n.s.open = cmd !== null && cmd >= 0.5; }
         if (k === "transducer") {
           const x = this.infoIn(n, "x") || 0;
           n.s.flow = clamp(n.p.k * n.s.att * x, -n.p.max, n.p.max) + noise(n.p.noise);

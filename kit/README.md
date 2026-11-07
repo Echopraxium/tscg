@@ -15,6 +15,7 @@ adds one idea and reuses pieces from the previous one.
 | 1 | [`thermostat/`](thermostat/index.html) | a room heated by a radiator with a wall thermostat | a loop that corrects (negative feedback), attractor, homeostasis | Storage, Sink, Source, Threshold |
 | 2 | [`larsen/`](larsen/index.html) | a room with a voice, an amplifier and a loudspeaker | a loop that reinforces (positive feedback), a threshold born from the wiring | Amplification, Transducer |
 | 3 | [`tournesol/`](tournesol/index.html) | a young sunflower, a lamp, the sun and an internal clock | a loop that tracks a moving target, anticipation, domain of validity | Gradient, Clock |
+| 4 | [`oiseau/`](oiseau/index.html) | a drinking bird: head, evaporation, tilt, return, felt, glass of water | a loop with no resting place: a relaxation oscillator; the energy comes from outside (dry air) | none: the Thermostat's pieces (a Sink opened by a command, a Threshold that tips above) |
 
 Online: `https://echopraxium.github.io/tscg/kit/`
 
@@ -46,7 +47,8 @@ one real second covers (e.g. “12 s = 1 h”). While time runs, chevrons travel
 wire in the direction of the flow (they reverse when a flux goes negative, and stop when
 nothing flows). Every block has an icon, shown left of its name in the palette and in the
 top-left corner of the block in the Synoptic; hovering a block in the palette opens a small
-information panel. The theme is dark by default (☀ / ☾ switches, remembered per browser),
+information compartment at the bottom of the palette (it keeps the last hovered
+or selected block). The theme is dark by default (☀ / ☾ switches, remembered per browser),
 and the house button, top left, goes back to the list of workshops.
 
 The Map/Territory distinction is **never stated**: the Panneau shows only what its
@@ -63,7 +65,7 @@ was already understood.
 |---|---|
 | `lib/i18n.js` | language (English default, French), theme (dark default, light), shared interface strings |
 | `lib/icons.js` | line icons for blocks (`icon:` in a skin, generic kind as fallback) |
-| `lib/sim.js` | generic kinds (storage, sink, source, threshold, amplify, transducer, gradient, clock), Model (graph + fixed-step simulation + bindings) |
+| `lib/sim.js` | generic kinds (storage, sink, source, threshold, amplify, transducer, gradient, clock), Model (graph + fixed-step simulation + bindings). Skin options: optional ports (a Sink with a `cmd` input exists only if its skin names it), `above` (a Threshold that switches on above its band), `on` (a Source on by default) |
 | `lib/synoptic.js` | SVG node editor (palette + info panel, icons, animated flow chevrons) |
 | `lib/panel.js` | grid of instruments |
 | `lib/chart.js` | curves, configured per workshop (`W.chart`: axes, series, strips) |
@@ -78,7 +80,7 @@ was already understood.
 The GitHub Pages build (`cli_tools/compendium/build_compendium.py`) copies `kit/` and
 re-bundles every workshop, so the published page always matches the sources.
 
-**Formats are still provisional (v0).** Three workshops now share the libraries; the
+**Formats are still provisional (v0).** Four workshops now share the libraries; the
 workshop definition and the export (`state.graph`, `state.panel`, `predictions`) can be
 frozen once the first user tests have been folded in.
 
@@ -89,7 +91,7 @@ Ask testers to think aloud while they play, without helping them, then to click
 rejected connections, panel actions, bets). Note what they say spontaneously
 about the Maquette and the Panneau.
 
-Status: **prototype 0.6.0** — three workshops, each with a guided tutorial and a free mode. UI in English and French. Desktop first; usable but cramped on a phone.
+Status: **prototype 0.7.0** — four workshops, each with a guided tutorial and a free mode. UI in English and French. Desktop first; usable but cramped on a phone.
 
 ## Languages
 

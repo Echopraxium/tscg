@@ -22,11 +22,12 @@
       this.m = model; this.o = o;
       this.selected = null; this.drag = null; this.dragWire = null; this.live = [];
       host.innerHTML =
-        `<div class="sy-palette"><h2 class="k-h2 sy-h"></h2><div class="sy-list"></div>
-           <div class="sy-info" aria-live="polite"></div>
-           <div class="sy-legend"><div><i style="background:var(--flux)"></i><span class="sy-lflux"></span></div>
-           <div><i style="background:var(--info)"></i><span class="sy-linfo"></span></div>
-           <p class="sy-help"></p></div></div>
+        `<div class="sy-palette">
+           <div class="sy-blocks"><h2 class="k-h2 sy-h"></h2><div class="sy-list"></div>
+             <div class="sy-legend"><div><i style="background:var(--flux)"></i><span class="sy-lflux"></span></div>
+             <div><i style="background:var(--info)"></i><span class="sy-linfo"></span></div>
+             <p class="sy-help"></p></div></div>
+           <div class="sy-infobox"><h2 class="k-h2 sy-ih"></h2><div class="sy-info" aria-live="polite"></div></div></div>
          <div class="sy-stage"><svg class="sy-svg"></svg><div class="sy-params"></div></div>`;
       this.host = host;
       this.svg = host.querySelector(".sy-svg");
@@ -42,12 +43,14 @@
       const q = s => this.host.querySelector(s);
       q(".sy-h").textContent = K.t("pieces"); q(".sy-lflux").textContent = this.o.fluxLabel() || "flux";
       q(".sy-linfo").textContent = K.t("info"); q(".sy-help").textContent = K.t("wire_help");
+      q(".sy-ih").textContent = K.t("info_box");
       this.svg.setAttribute("aria-label", K.t("syn_aria"));
-      this.showInfo(null);
+      this.showInfo(this.infoType || null);
     }
-    // the small panel under the palette: what the hovered block does
+    // the compartment under the blocks: what the hovered (or last hovered / selected) block does
     showInfo(t) {
-      if (!t) { this.info.innerHTML = `<span class="k-muted">${K.t("pal_hint")}</span>`; return; }
+      this.infoType = t;
+      if (!t || !this.m.skins[t]) { this.info.innerHTML = `<span class="k-muted">${K.t("pal_hint")}</span>`; return; }
       const s = this.m.skins[t], open = this.o.isUnlocked(t);
       this.info.innerHTML = `<div class="sy-info-h">${K.iconSvg(K.iconOf(s), "k-icon")}<b>${s.name}</b></div><p>${s.blurb}</p>` +
         (this.o.hood() ? `<p class="k-muted">${K.generic(s.kind)}</p>` : "") +
@@ -87,7 +90,6 @@
         b.onclick = () => this.add(t);
         b.addEventListener("mouseenter", () => this.showInfo(t));
         b.addEventListener("focus", () => this.showInfo(t));
-        b.addEventListener("mouseleave", () => this.showInfo(null));
         this.list.appendChild(b);
       }
     }
@@ -236,7 +238,10 @@
       if (this.selected[0] === "n") this.m.removeNode(id); else this.m.removeWire(id);
       this.selected = null; this.render(); this.renderParams(); this.o.onChange();
     }
-    select(key) { this.selected = key; this.render(); this.renderParams(); }
+    select(key) {
+      this.selected = key; this.render(); this.renderParams();
+      if (key && key[0] !== "w") { const n = this.m.byId(+key.slice(1)); if (n) this.showInfo(n.type); }
+    }
 
     renderParams() {
       const box = this.params;
