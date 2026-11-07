@@ -22,7 +22,8 @@
     title: L("TSCG Workshop — Larsen", "Atelier TSCG — Larsen"),
     pageTitle: L("TSCG Workshop — Larsen", "TSCG Atelier — Larsen"),
     fluxLabel: L("flux (sound)", "flux (son)"),
-    clock: { dt: 0.01, stepsPerSec: 25, fmt: t => t.toFixed(1) + " s", fmtSteps: n => (n * 0.01).toFixed(1) + " s" },
+    clock: { dt: 0.01, stepsPerSec: 25, fmt: t => t.toFixed(1) + " s", fmtSteps: n => (n * 0.01).toFixed(1) + " s",
+             speedLabel: (spr, LL) => spr < 1 ? LL("slow motion ×", "ralenti ×") + Math.round(1 / spr * 10) / 10 : "×" + Math.round(spr * 10) / 10 },
     order: ["salle", "voix", "ampli", "hp"],
     home: { voix: { x: 16, y: 20 }, salle: { x: 206, y: 20 }, ampli: { x: 396, y: 170 }, hp: { x: 16, y: 170 } },
 
@@ -56,7 +57,7 @@
 
     chart: {
       range: [0, 100], tickY: 25, span: 4, tick: 1, label: t => t + " s",
-      series: [{ piece: "salle", label: L("Level in the room", "Niveau dans la salle"), color: "--flux" }],
+      series: [{ piece: "salle", label: L("Level in the room", "Niveau dans la salle"), color: "--flux", decimals: 0 }],
       strips: [
         { label: L("voice", "voix"), color: "--info", on: (p, m) => { const v = m.first("voix"); return !!(v && p.u[v.id]); } },
         { label: L("amp saturated", "ampli saturé"), color: "--bad", on: (p, m) => { const a = m.first("ampli"); return !!(a && p.u[a.id]); } }
@@ -126,8 +127,8 @@
         },
         takeaway: L("Beyond a certain volume, the loop sustains itself: no need to speak any more, the slightest noise is enough to start it. Only the amp's ceiling stops it. That is the Larsen effect.",
                     "Au-delà d'un certain volume, la boucle s'entretient d'elle-même : plus besoin de parler, le moindre bruit suffit à la lancer. Seul le plafond de l'ampli l'arrête. C'est l'effet Larsen."),
-        hood: L("The threshold is when one round trip gives back as much as it receives (loop gain = 1). There is no “threshold” piece: it is born from the wiring.",
-                "Le seuil, c'est quand un tour de boucle rend autant qu'il reçoit (gain de boucle = 1). Il n'y a pas de pièce « seuil » : il naît du câblage.") },
+        hood: L("The threshold is when one round trip gives back as much as it receives (loop gain = 1). There is no “threshold” block: it is born from the wiring.",
+                "Le seuil, c'est quand un tour de boucle rend autant qu'il reçoit (gain de boucle = 1). Il n'y a pas de bloc « seuil » : il naît du câblage.") },
 
       { id: "distance", title: L("Moving the mic away", "Éloigner le micro"),
         goal: L("Leave the volume above the threshold. In the <b>scale model</b>, click the <b>mic</b> to move it away from the loudspeaker. Does the howl stop?",
@@ -144,8 +145,8 @@
                     speaking(app) ? L("Fall silent to listen.", "Tais-toi pour écouter.") :
                     ok ? L("Calm returns… ", "Le calme revient… ") + `${app.fmtSteps(mem.n)} / 1.0 s` : L("Still howling: turn the volume down a little if needed.", "Ça siffle encore : baisse un peu le volume si besoin.") };
         },
-        takeaway: L("The howl dies out without touching the volume. The threshold does not depend on a single piece but on the whole round trip, including the distance between mic and loudspeaker, which the Panel does not control.",
-                    "Le sifflement s'éteint sans toucher au volume. Le seuil ne dépend pas d'une seule pièce mais de tout le tour de boucle, y compris de la distance entre le micro et le haut-parleur, que le Panneau ne règle pas."),
+        takeaway: L("The howl dies out without touching the volume. The threshold does not depend on a single block but on the whole round trip, including the distance between mic and loudspeaker, which the Panel does not control.",
+                    "Le sifflement s'éteint sans toucher au volume. Le seuil ne dépend pas d'un seul bloc mais de tout le tour de boucle, y compris de la distance entre le micro et le haut-parleur, que le Panneau ne règle pas."),
         hood: L("Loop gain = volume × efficiency × mic/loudspeaker coupling. The same volume can be tame or explosive depending on the rest of the circuit.",
                 "Gain de boucle = volume × rendement × couplage micro/haut-parleur. Le même volume peut être sage ou explosif selon le reste du circuit.") }
     ],
@@ -160,9 +161,9 @@
     },
 
     free: {
-      text: L("Every piece is unlocked. Try: does a more absorbent room (less reverberation) take more volume? What happens with a higher amp ceiling? Can you trigger the Larsen without ever speaking, with ambient noise alone?",
-              "Toutes les pièces sont débloquées. Essaie : une salle plus absorbante (moins de réverbération) supporte-t-elle plus de volume ? Que se passe-t-il si le plafond de l'ampli est plus haut ? Peux-tu provoquer le Larsen sans jamais parler, avec le seul bruit ambiant ?"),
-      hood: L("Generic pieces used: Storage, Source, Amplification, Transducer.", "Pièces génériques utilisées : Storage, Source, Amplification, Transducer.")
+      text: L("Every block is unlocked. Try: does a more absorbent room (less reverberation) take more volume? What happens with a higher amp ceiling? Can you trigger the Larsen without ever speaking, with ambient noise alone?",
+              "Tous les blocs sont débloqués. Essaie : une salle plus absorbante (moins de réverbération) supporte-t-elle plus de volume ? Que se passe-t-il si le plafond de l'ampli est plus haut ? Peux-tu provoquer le Larsen sans jamais parler, avec le seul bruit ambiant ?"),
+      hood: L("Generic blocks used: Storage, Source, Amplification, Transducer.", "Blocs génériques utilisés : Storage, Source, Amplification, Transducer.")
     },
 
     // ---------------------------------------------------------------- scale model

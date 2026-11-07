@@ -50,7 +50,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .k-transport{display:flex;gap:6px;align-items:center}
 .k-clock{font-variant-numeric:tabular-nums;color:var(--quiet);font-size:13px;min-width:64px;margin-left:4px}
 .k-spacer{flex:1}
-.k-main{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(340px,1fr);height:calc(100% - 44px)}
+.k-main{display:grid;grid-template-columns:minmax(0,1.35fr) 6px minmax(300px,1fr);height:calc(100% - 44px)}
 .k-left{display:flex;flex-direction:column;min-width:0;min-height:0;border-right:1px solid var(--rule)}
 .k-right{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--panel)}
 .k-banner{padding:10px 14px;border-bottom:1px solid var(--rule);background:var(--panel);max-height:46%;overflow:auto;flex:none}
@@ -69,6 +69,17 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .k-curves{flex:1 1 auto;min-height:190px;display:flex;flex-direction:column;padding:8px 14px 10px;border-top:1px solid var(--rule)}
 #kChart{width:100%;flex:1;min-height:140px;display:block}
 .k-legend{color:var(--quiet);font-size:12px;min-height:16px}
+.k-legend b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600}
+.k-split{background:var(--rule);position:relative;z-index:3;touch-action:none}
+.k-split:hover,.k-split.on{background:var(--accent)}
+.k-split-v{cursor:col-resize}
+.k-split-h{cursor:row-resize;height:5px;flex:none}
+.k-right.sized .k-maquette{flex:1 1 0}
+.k-right.sized .k-view{flex:1}
+.k-right.sized .k-view svg{height:100%;max-height:none}
+.k-right.sized .k-curves{flex:none}
+.k-speed{font-variant-numeric:tabular-nums;color:var(--quiet);font-size:12px;min-width:78px;text-align:center;white-space:nowrap}
+.k-arrow{padding:3px 7px;font-size:11px;line-height:1}
 .k-toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--panel);border:1px solid var(--rule);
   border-radius:8px;padding:8px 12px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;box-shadow:0 2px 10px rgba(0,0,0,.12);z-index:20;max-width:90vw}
 .k-toast.show{opacity:1}
@@ -105,6 +116,12 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
   padding:5px 8px;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;font-size:12px;box-shadow:var(--shadow)}
 .sy-params label{display:flex;gap:6px;align-items:center}
 .sy-params input{width:62px;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--rule);border-radius:6px;padding:3px 6px}
+.node-inner{transform-box:fill-box;transform-origin:center}
+.node-inner.dragging{transform:scale(1.04);filter:drop-shadow(0 8px 12px rgba(0,0,0,.28));cursor:grabbing}
+.node-inner.dropped{animation:k-drop .35s ease-out}
+.node-inner.appear{animation:k-appear .4s ease-out}
+@keyframes k-drop{0%{transform:scale(1.04)}55%{transform:scale(.97)}100%{transform:scale(1)}}
+@keyframes k-appear{0%{transform:scale(.55);opacity:0}70%{transform:scale(1.06);opacity:1}100%{transform:scale(1)}}
 .node-body{fill:var(--node);stroke:var(--rule);stroke-width:1.25}
 .node.selected .node-body{stroke:var(--accent);stroke-width:2}
 .node-head{fill:var(--node-head)}
@@ -171,6 +188,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .mq-note{font:12px system-ui,sans-serif;fill:#5c5a52}
 
 @media (max-width: 900px){
+  .k-split{display:none}
   .k-main{grid-template-columns:1fr;height:auto}
   .k-left{border-right:none}
   .k-panes{height:520px;flex:none}
@@ -207,14 +225,14 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
   const T = {
     en: {
-      pieces: "Pieces", info: "information", locked: "locked",
-      wire_help: "Drag a wire from an output (right side of a piece) to an input (left side) of the same colour.",
+      pieces: "Blocks", info: "information", locked: "locked",
+      wire_help: "Drag a wire from an output (right side of a block) to an input (left side) of the same colour.",
       syn_aria: "Synoptic: pieces and wires",
-      rej_self: "A piece cannot be wired to itself.",
+      rej_self: "A block cannot be wired to itself.",
       rej_flux: "A flux (orange) only plugs into a flux input.",
       rej_info: "Information (blue) only plugs into an information input.",
-      params_hint: "Click a piece to adjust it. Press Delete to remove a piece or a wire.",
-      wire_selected: "Wire selected.", del_wire: "Delete the wire", del_piece: "Delete the piece",
+      params_hint: "Click a block to adjust it. Press Delete to remove a block or a wire.",
+      wire_selected: "Wire selected.", del_wire: "Delete the wire", del_piece: "Delete the block",
       d_level: "level", d_on: "on", d_off: "off", d_unlinked: "not linked", d_closed: "closed", d_open: "open",
       d_sat: "saturated · ", d_out: "output", d_notarget: "nothing to aim at", d_gap: "gap",
       pn_add: "Add an instrument:", pn_empty: "The panel is empty. Add an instrument with the buttons above.",
@@ -230,22 +248,23 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       tu_ph: "Your answer, in a few words…", tu_save: "Save my answers", tu_skip: "Skip",
       tu_thanks: "Thank you! Your answers will be in the “Export my session” file.",
       play: "▶ Start", pause: "⏸ Pause", play_tip: "Start / pause (space bar)", speed_tip: "Speed of time", reset_tip: "Reset the clock",
-      hood: "Under the hood", hood_tip: "Show the generic names of the pieces",
-      free: "Free mode", free_tip: "Unlock every piece and leave the tutorial",
+      hood: "Under the hood", hood_tip: "Show the generic names of the blocks",
+      free: "Free mode", free_tip: "Unlock every block and leave the tutorial",
       export: "Export my session", export_tip: "Download the session log (for user tests)",
       tab_panel: "Panel", tab_syn: "Synoptic", maquette: "Scale model", curves: "Curves",
+      speed_down: "Slower", speed_up: "Faster", speed_label: "Real time ↔ simulated time",
       home_tip: "All workshops", lang_btn: "FR", lang_tip: "Passer en français",
       g_threshold: "Threshold (hysteresis)", g_gradient: "Gradient (gap)", g_clock: "Clock (rhythm)"
     },
     fr: {
-      pieces: "Pièces", info: "information", locked: "verrouillée",
-      wire_help: "Tire un fil d'une sortie (à droite d'une pièce) vers une entrée (à gauche) de la même couleur.",
+      pieces: "Blocs", info: "information", locked: "verrouillée",
+      wire_help: "Tire un fil d'une sortie (à droite d'un bloc) vers une entrée (à gauche) de la même couleur.",
       syn_aria: "Synoptique : pièces et fils",
-      rej_self: "Une pièce ne se branche pas sur elle-même.",
+      rej_self: "Un bloc ne se branche pas sur lui-même.",
       rej_flux: "Un flux (orange) ne se branche que sur une entrée de flux.",
       rej_info: "Une information (bleu) ne se branche que sur une entrée d'information.",
-      params_hint: "Clique une pièce pour la régler. Touche Suppr pour enlever une pièce ou un fil.",
-      wire_selected: "Fil sélectionné.", del_wire: "Supprimer le fil", del_piece: "Supprimer la pièce",
+      params_hint: "Clique un bloc pour le régler. Touche Suppr pour enlever un bloc ou un fil.",
+      wire_selected: "Fil sélectionné.", del_wire: "Supprimer le fil", del_piece: "Supprimer le bloc",
       d_level: "niveau", d_on: "marche", d_off: "arrêt", d_unlinked: "non relié", d_closed: "fermé", d_open: "ouvert",
       d_sat: "saturé · ", d_out: "sortie", d_notarget: "rien à viser", d_gap: "écart",
       pn_add: "Ajouter un instrument :", pn_empty: "Le panneau est vide. Ajoute un instrument avec les boutons ci-dessus.",
@@ -261,10 +280,11 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       tu_ph: "Ta réponse, en quelques mots…", tu_save: "Enregistrer mes réponses", tu_skip: "Passer",
       tu_thanks: "Merci ! Tes réponses seront dans le fichier « Exporter ma session ».",
       play: "▶ Lancer", pause: "⏸ Pause", play_tip: "Lancer / mettre en pause (barre d'espace)", speed_tip: "Vitesse du temps", reset_tip: "Remettre l'horloge à zéro",
-      hood: "Sous le capot", hood_tip: "Montrer les noms génériques des pièces",
-      free: "Mode libre", free_tip: "Débloquer toutes les pièces et quitter le tutoriel",
+      hood: "Sous le capot", hood_tip: "Montrer les noms génériques des blocs",
+      free: "Mode libre", free_tip: "Débloquer tous les blocs et quitter le tutoriel",
       export: "Exporter ma session", export_tip: "Télécharger le journal de la session (pour les tests)",
       tab_panel: "Panneau", tab_syn: "Synoptique", maquette: "Maquette", curves: "Courbes",
+      speed_down: "Plus lent", speed_up: "Plus rapide", speed_label: "Temps réel ↔ temps simulé",
       home_tip: "Tous les ateliers", lang_btn: "EN", lang_tip: "Switch to English",
       g_threshold: "Threshold (hystérésis)", g_gradient: "Gradient (écart)", g_clock: "Clock (rythme)"
     }
@@ -643,13 +663,16 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       }
       for (const n of m.nodes) {
         const s = this.skin(n), h = this.nodeHeight(n), hood = this.o.hood();
-        const g = el("g", { class: "node" + (this.selected === "n" + n.id ? " selected" : ""), transform: `translate(${n.x},${n.y})`, "data-node": n.id }, gN);
+        const outer = el("g", { class: "node" + (this.selected === "n" + n.id ? " selected" : ""), transform: `translate(${n.x},${n.y})`, "data-node": n.id }, gN);
+        // inner group carries the animations (lift while dragged, settle on drop, pop when added)
+        const anim = this.drag && this.drag.n === n ? " dragging" : this.dropped === n.id ? " dropped" : this.appeared === n.id ? " appear" : "";
+        const g = el("g", { class: "node-inner" + anim }, outer);
         el("rect", { class: "node-body", width: NW, height: h, rx: 8 }, g);
         const head = el("path", { class: "node-head", d: `M0 8 Q0 0 8 0 H${NW - 8} Q${NW} 0 ${NW} 8 V${HEAD} H0 Z` }, g);
         const title = el("text", { class: "node-title", x: 10, y: hood ? 13 : 18 }, g); title.textContent = s.name;
         if (hood) el("text", { class: "node-gen", x: 10, y: 24 }, g).textContent = K.generic(s.kind);
         for (const part of [head, title]) { part.style.cursor = "grab"; part.addEventListener("pointerdown", e => this.startDrag(e, n)); }
-        g.addEventListener("pointerdown", e => { if (!e.defaultPrevented) this.select("n" + n.id); });
+        outer.addEventListener("pointerdown", e => { if (!e.defaultPrevented) this.select("n" + n.id); });
         m.ports(n, "in").forEach((q, i) => {
           const y = HEAD + PY + i * ROW;
           el("circle", { class: `port ${q.kind}`, cx: 0, cy: y, r: 6, "data-node": n.id, "data-port": q.id, "data-side": "in" }, g);
@@ -665,6 +688,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         const val = el("text", { class: "node-value", x: 10, y: HEAD + 8 + rows * ROW + 12 }, g);
         this.live.push({ node: n, val });
       }
+      // an appear / drop animation plays once, on the render that follows the event
+      this.appeared = null; this.dropped = null;
       if (this.dragWire) {
         this.dragWire.path = el("path", { class: `wire ${this.dragWire.kind}`, d: "" }, svg);
         this.dragWire.path.style.pointerEvents = "none";
@@ -714,7 +739,11 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       }
     }
     onUp(e) {
-      if (this.drag) { this.drag = null; return; }
+      if (this.drag) {
+        const n = this.drag.n; this.drag = null;
+        this.dropped = n.id; this.render();
+        return;
+      }
       if (!this.dragWire) return;
       const dw = this.dragWire; this.dragWire = null;
       const t = document.elementFromPoint(e.clientX, e.clientY);
@@ -736,6 +765,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       while (this.m.nodes.some(n => Math.abs(n.x - x) < 30 && Math.abs(n.y - y) < 30)) { x += 30; y += 30; }
       if (r.width) x = Math.max(8, Math.min(x, r.width - NW - 8));
       const n = this.m.addNode(type, x, y);
+      this.appeared = n.id;
       this.select("n" + n.id); this.o.onChange();
       return n;
     }
@@ -1027,7 +1057,9 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  * Configured by the workshop (W.chart):
  *   range:[lo,hi], tickY, span, tick, label(t)   axes, in the workshop's time unit
  *   band:[a,b], showBand(app)                    optional target zone
- *   series:[{piece, label, color}]               default: every storage
+ *   series:[{piece, label, color, unit, decimals, fmt}]   default: every storage
+ *   lines:[{piece, param, label, color, unit}]   dashed horizontal line at a parameter (e.g. set point)
+ *   the legend shows the current value of every series and line
  *   strips:[{label, color, on(snap, model), shade}]  on/off bars under the curves,
  *                                                    or full-height shading (shade:true)
  * Author: Echopraxium with the collaboration of Claude AI
@@ -1068,8 +1100,17 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       if (o.band && (!o.showBand || o.showBand(o.app))) { c.fillStyle = v("--band"); c.fillRect(L, Y(o.band[1]), pw, Y(o.band[0]) - Y(o.band[1])); }
       const legend = [];
       const series = o.series
-        ? o.series.map(s => ({ node: m.first(s.piece), label: s.label, color: col(s.color) })).filter(s => s.node)
-        : m.nodes.filter(n => m.kindOf(n) === "storage").map(n => ({ node: n, label: m.skins[n.type].name, color: m.skins[n.type].color || v("--flux") }));
+        ? o.series.map(s => Object.assign({}, s, { node: m.first(s.piece), color: col(s.color) })).filter(s => s.node)
+        : m.nodes.filter(n => m.kindOf(n) === "storage").map(n => ({ node: n, label: m.skins[n.type].name, color: m.skins[n.type].color || v("--flux"), unit: m.skins[n.type].unit }));
+      const show = (s, val) => val === null || val === undefined ? "—" : s.fmt ? s.fmt(val) : val.toFixed(s.decimals !== undefined ? s.decimals : 1) + (s.unit ? " " + s.unit : "");
+      const lineLegend = [];
+      for (const ln of (o.lines || [])) {                 // dashed reference lines (set point…)
+        const n = m.first(ln.piece); if (!n) continue;
+        const val = n.p[ln.param], c2 = col(ln.color || "--good");
+        c.save(); c.strokeStyle = c2; c.lineWidth = 1.5; c.setLineDash([6, 4]);
+        c.beginPath(); c.moveTo(L, Y(val)); c.lineTo(w - R, Y(val)); c.stroke(); c.restore();
+        lineLegend.push(`<span style="color:${c2}">┄</span> ${ln.label} <b>${show(ln, val)}</b>`);
+      }
       for (const s of series) {
         const id = s.node.id;
         c.strokeStyle = s.color; c.lineWidth = 2; c.beginPath(); let on = false;
@@ -1080,8 +1121,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
           if (!on) { c.moveTo(x, y); on = true; } else c.lineTo(x, y);
         }
         c.stroke();
-        legend.push(`<span style="color:${s.color}">■</span> ${s.label || m.skins[s.node.type].name}`);
+        const last = hist.length ? hist[hist.length - 1].v[id] : m.infoOut(s.node);
+        legend.push(`<span style="color:${s.color}">■</span> ${s.label || m.skins[s.node.type].name} <b>${show(s, last)}</b>`);
       }
+      legend.push(...lineLegend);
       strips.forEach((s, i) => {
         const y = h - B + 4 + 7 * i;
         c.fillStyle = col(s.color); c.globalAlpha = .6;
@@ -1249,8 +1292,9 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.4.0";
-  const SPEEDS = [1, 4, 0.5];
+  const VERSION = "0.5.0";
+  const SPEEDS = [0.25, 0.5, 1, 2, 4, 8, 16];
+  const LAYOUT_KEY = "tscg-kit-layout";
   const build = factory => factory((en, fr) => (K.lang === "fr" ? fr : en));
 
   K.start = function (factory) {
@@ -1264,7 +1308,9 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
          <h1 id="kTitle"></h1>
          <div class="k-transport">
            <button id="kPlay" class="primary" data-tip="play_tip"></button>
-           <button id="kSpeed" data-tip="speed_tip">×1</button>
+           <button id="kSlow" class="k-arrow" data-tip="speed_down">▼</button>
+           <span id="kSpeed" class="k-speed" data-tip="speed_label"></span>
+           <button id="kFast" class="k-arrow" data-tip="speed_up">▲</button>
            <button id="kReset" data-tip="reset_tip">↺</button>
            <span id="kClock" class="k-clock"></span>
          </div>
@@ -1277,6 +1323,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
        <main class="k-main">
          <section class="k-left">
            <div class="k-banner" id="kBanner" aria-live="polite"></div>
+           <div class="k-split k-split-h" id="kSplitBanner"></div>
            <div class="k-tabs" role="tablist">
              <button class="k-tab" role="tab" data-tab="panel" data-t="tab_panel"></button>
              <button class="k-tab" role="tab" data-tab="synoptic" data-t="tab_syn"></button>
@@ -1286,8 +1333,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
              <div class="k-pane k-pane-synoptic" data-pane="synoptic"></div>
            </div>
          </section>
+         <div class="k-split k-split-v" id="kSplitCols"></div>
          <section class="k-right">
            <div class="k-maquette"><h2 class="k-h2" data-t="maquette"></h2><div class="k-view" id="kView"></div></div>
+           <div class="k-split k-split-h" id="kSplitRight"></div>
            <div class="k-curves"><h2 class="k-h2" data-t="curves"></h2><canvas id="kChart"></canvas><div class="k-legend" id="kLegend"></div></div>
          </section>
        </main>
@@ -1349,6 +1398,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       document.querySelectorAll("[data-t]").forEach(e => { e.textContent = K.t(e.dataset.t); });
       document.querySelectorAll("[data-tip]").forEach(e => { e.title = K.t(e.dataset.tip); });
       playLabel();
+      $("#kSpeed").textContent = app.speedText ? app.speedText() : "";
     }
     // Switching language rebuilds the workshop texts; the graph, the panel, the clock and
     // the tutorial progress are kept.
@@ -1371,7 +1421,48 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     // ---- header controls
     const setPlay = on => { S.running = on; playLabel(); log(on ? "play" : "pause", ""); app.tutorial.refresh(); };
     $("#kPlay").onclick = () => setPlay(!S.running);
-    $("#kSpeed").onclick = e => { S.speed = SPEEDS[(SPEEDS.indexOf(S.speed) + 1) % SPEEDS.length]; e.target.textContent = "×" + S.speed; log("speed", S.speed); };
+    // speed: arrows step through SPEEDS; the label says how much simulated time one real second covers
+    const num = v => (Math.round(v * 10) / 10).toString();
+    const speedText = () => {
+      const spr = CLK.stepsPerSec * S.speed * CLK.dt;          // model units per real second
+      if (CLK.speedLabel) return CLK.speedLabel(spr, K.L);
+      const r = 1 / spr;                                       // real seconds per simulated hour
+      return r >= 1 ? `${num(r)} s = 1 h` : `1 s = ${num(spr)} h`;
+    };
+    const setSpeed = d => {
+      const i = Math.max(0, Math.min(SPEEDS.length - 1, SPEEDS.indexOf(S.speed) + d));
+      S.speed = SPEEDS[i]; $("#kSpeed").textContent = speedText(); log("speed", S.speed);
+      $("#kSlow").disabled = i === 0; $("#kFast").disabled = i === SPEEDS.length - 1;
+    };
+    app.speedText = speedText;
+    $("#kSlow").onclick = () => setSpeed(-1);
+    $("#kFast").onclick = () => setSpeed(+1);
+
+    // ---- splitters: drag to resize the compartments (double-click resets); remembered per browser
+    const main = $(".k-main"), left = $(".k-left"), right = $(".k-right"), banner = $("#kBanner"), curves = $(".k-curves");
+    const layout = (() => { try { return JSON.parse(localStorage.getItem(LAYOUT_KEY)) || {}; } catch (e) { return {}; } })();
+    const applyLayout = () => {
+      main.style.gridTemplateColumns = layout.cols ? `${layout.cols}px 6px minmax(300px,1fr)` : "";
+      if (layout.banner) { banner.style.height = layout.banner + "px"; banner.style.maxHeight = "none"; } else { banner.style.height = ""; banner.style.maxHeight = ""; }
+      right.classList.toggle("sized", !!layout.curves);
+      curves.style.height = layout.curves ? layout.curves + "px" : "";
+    };
+    const saveLayout = () => { try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout)); } catch (e) { /* storage blocked */ } };
+    const relayout = () => { app.synoptic.render(); app.panel.render(); app.chart.draw(); };
+    function splitter(el, key, compute) {
+      el.addEventListener("pointerdown", e => {
+        e.preventDefault(); el.setPointerCapture(e.pointerId); el.classList.add("on");
+        const move = ev => { layout[key] = Math.round(compute(ev)); applyLayout(); app.chart.draw(); };
+        el.addEventListener("pointermove", move);
+        el.addEventListener("pointerup", () => { el.removeEventListener("pointermove", move); el.classList.remove("on"); saveLayout(); relayout(); log("layout", key); }, { once: true });
+      });
+      el.addEventListener("dblclick", () => { delete layout[key]; applyLayout(); saveLayout(); relayout(); });
+    }
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    splitter($("#kSplitCols"), "cols", ev => { const r = main.getBoundingClientRect(); return clamp(ev.clientX - r.left, 380, r.width - 306); });
+    splitter($("#kSplitBanner"), "banner", ev => { const r = left.getBoundingClientRect(); return clamp(ev.clientY - r.top, 60, r.height - 180); });
+    splitter($("#kSplitRight"), "curves", ev => { const r = right.getBoundingClientRect(); return clamp(r.bottom - ev.clientY, 130, r.height - 140); });
+    applyLayout();
     $("#kReset").onclick = () => { model.resetAll(); app.tutorial.restartCurrent(); log("reset", ""); app.synoptic.render(); };
     $("#kHood").onclick = e => {
       S.hood = !S.hood; e.target.classList.toggle("on", S.hood); log("hood", S.hood);
@@ -1415,6 +1506,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       requestAnimationFrame(frame);
     }
 
+    setSpeed(0);
     app.step = n => { for (let i = 0; i < n; i++) { model.step(CLK.dt); app.tutorial.tick(); } };   // for tests
     relabel();
     app.synoptic.renderParams();
@@ -1502,9 +1594,9 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
     chart: {
       range: [-100, 100], tickY: 50, span: 72, tick: 12, label: t => (t % 24 === 0 ? L("d", "j") + (t / 24 + 1) : (t % 24) + " h"),
-      series: [{ piece: "plante", label: L("Plant orientation", "Orientation de la plante"), color: "--flux" },
-               { piece: "soleil", label: L("Sun direction", "Direction du soleil"), color: "#d4a017" },
-               { piece: "lampe", label: L("Lamp direction", "Direction de la lampe"), color: "#d4a017" }],
+      series: [{ piece: "plante", label: L("Plant orientation", "Orientation de la plante"), color: "--flux", fmt: dir },
+               { piece: "soleil", label: L("Sun direction", "Direction du soleil"), color: "#d4a017", fmt: dir },
+               { piece: "lampe", label: L("Lamp direction", "Direction de la lampe"), color: "#d4a017", fmt: dir }],
       strips: [
         { label: L("night", "nuit"), color: "--info", shade: true, on: p => p.night },
         { label: L("clock active", "horloge active"), color: "--accent", on: (p, m) => { const h = m.first("horloge"); return !!(h && p.v[h.id] !== null && p.v[h.id] !== undefined); } }
@@ -1518,7 +1610,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
                 "Dans le <b>Synoptique</b>, pose une <b>Plante</b>, une <b>Lampe</b>, un <b>Écart</b> et une <b>Croissance</b>. Relie la <i>lumière</i> de la Lampe et l'<i>orientation</i> de la Plante à l'Écart, l'Écart à la Croissance, et la <i>rotation</i> de la Croissance à la Plante. Ajoute la <b>boussole</b> au Panneau, puis lance le temps."),
         hint: L("Four wires in all: two into the Gap, one into the Growth, one into the Plant.", "Quatre fils en tout : deux vers l'Écart, un vers la Croissance, un vers la Plante."),
         need: app => { const m = app.model;
-          return !m.first("plante") || !m.first("lampe") || !m.first("ecart") || !m.first("croissance") ? syn(L("Place the four pieces: Plant, Lamp, Gap, Growth.", "Pose les quatre pièces : Plante, Lampe, Écart, Croissance.")) :
+          return !m.first("plante") || !m.first("lampe") || !m.first("ecart") || !m.first("croissance") ? syn(L("Place the four blocks: Plant, Lamp, Gap, Growth.", "Pose les quatre blocs : Plante, Lampe, Écart, Croissance.")) :
                  !m.linked("lampe", "out", "ecart", "a") ? syn(L("Wire the Lamp's light to the Gap (“light” input).", "Relie la lumière de la Lampe à l'Écart (entrée « lumière »).")) :
                  !m.linked("plante", "level", "ecart", "b") ? syn(L("Wire the Plant's orientation to the Gap.", "Relie l'orientation de la Plante à l'Écart.")) :
                  !m.linked("ecart", "d", "croissance", "x") ? syn(L("Wire the Gap to the Growth.", "Relie l'Écart à la Croissance.")) :
@@ -1600,13 +1692,13 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       text: L("Regulating towards a fixed set point (the thermostat) and pursuing a moving target (the sunflower) are the same negative loop. It also serves the eye following a ball, the autopilot holding a heading, the antenna tracking a satellite. And when the target is predictable, a clock lets you anticipate.",
               "Réguler vers une consigne fixe (le thermostat) et poursuivre une cible qui bouge (le tournesol), c'est la même boucle négative. Elle sert aussi à l'œil qui suit une balle, au pilote automatique qui garde un cap, à l'antenne qui suit un satellite. Et quand la cible est prévisible, une horloge permet d'anticiper."),
       questions: [],
-      hood: L("Generic pieces used: Storage, Gradient, Transducer, Clock. Transducer was already in Larsen.",
-              "Pièces génériques utilisées : Storage, Gradient, Transducer, Clock. Transducer était déjà dans Larsen.")
+      hood: L("Generic blocks used: Storage, Gradient, Transducer, Clock. Transducer was already in Larsen.",
+              "Blocs génériques utilisés : Storage, Gradient, Transducer, Clock. Transducer était déjà dans Larsen.")
     },
 
     free: {
-      text: L("Every piece and slider is unlocked. Try: does a very reactive plant follow better, or does it start shaking with noise? Put the Lamp back next to the Sun: which one wins? How much noise before the plant wanders at random?",
-              "Toutes les pièces et tous les curseurs sont débloqués. Essaie : une plante très réactive suit-elle mieux, ou se met-elle à trembler avec du bruit ? Remets la Lampe à côté du Soleil : qui l'emporte ? Jusqu'où peut aller le bruit avant que la plante erre au hasard ?"),
+      text: L("Every block and slider is unlocked. Try: does a very reactive plant follow better, or does it start shaking with noise? Put the Lamp back next to the Sun: which one wins? How much noise before the plant wanders at random?",
+              "Tous les blocs et tous les curseurs sont débloqués. Essaie : une plante très réactive suit-elle mieux, ou se met-elle à trembler avec du bruit ? Remets la Lampe à côté du Soleil : qui l'emporte ? Jusqu'où peut aller le bruit avant que la plante erre au hasard ?"),
       hood: L("The same assembly, with other names: a tracking antenna, an eye, a cruise control.",
               "Le même assemblage, avec d'autres noms : une antenne de poursuite, un œil, un régulateur de vitesse.")
     },

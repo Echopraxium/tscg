@@ -10,8 +10,9 @@
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.4.0";
-  const SPEEDS = [1, 4, 0.5];
+  const VERSION = "0.5.0";
+  const SPEEDS = [0.25, 0.5, 1, 2, 4, 8, 16];
+  const LAYOUT_KEY = "tscg-kit-layout";
   const build = factory => factory((en, fr) => (K.lang === "fr" ? fr : en));
 
   K.start = function (factory) {
@@ -25,7 +26,9 @@
          <h1 id="kTitle"></h1>
          <div class="k-transport">
            <button id="kPlay" class="primary" data-tip="play_tip"></button>
-           <button id="kSpeed" data-tip="speed_tip">×1</button>
+           <button id="kSlow" class="k-arrow" data-tip="speed_down">▼</button>
+           <span id="kSpeed" class="k-speed" data-tip="speed_label"></span>
+           <button id="kFast" class="k-arrow" data-tip="speed_up">▲</button>
            <button id="kReset" data-tip="reset_tip">↺</button>
            <span id="kClock" class="k-clock"></span>
          </div>
@@ -38,6 +41,7 @@
        <main class="k-main">
          <section class="k-left">
            <div class="k-banner" id="kBanner" aria-live="polite"></div>
+           <div class="k-split k-split-h" id="kSplitBanner"></div>
            <div class="k-tabs" role="tablist">
              <button class="k-tab" role="tab" data-tab="panel" data-t="tab_panel"></button>
              <button class="k-tab" role="tab" data-tab="synoptic" data-t="tab_syn"></button>
@@ -47,8 +51,10 @@
              <div class="k-pane k-pane-synoptic" data-pane="synoptic"></div>
            </div>
          </section>
+         <div class="k-split k-split-v" id="kSplitCols"></div>
          <section class="k-right">
            <div class="k-maquette"><h2 class="k-h2" data-t="maquette"></h2><div class="k-view" id="kView"></div></div>
+           <div class="k-split k-split-h" id="kSplitRight"></div>
            <div class="k-curves"><h2 class="k-h2" data-t="curves"></h2><canvas id="kChart"></canvas><div class="k-legend" id="kLegend"></div></div>
          </section>
        </main>
@@ -110,6 +116,7 @@
       document.querySelectorAll("[data-t]").forEach(e => { e.textContent = K.t(e.dataset.t); });
       document.querySelectorAll("[data-tip]").forEach(e => { e.title = K.t(e.dataset.tip); });
       playLabel();
+      $("#kSpeed").textContent = app.speedText ? app.speedText() : "";
     }
     // Switching language rebuilds the workshop texts; the graph, the panel, the clock and
     // the tutorial progress are kept.
@@ -132,7 +139,48 @@
     // ---- header controls
     const setPlay = on => { S.running = on; playLabel(); log(on ? "play" : "pause", ""); app.tutorial.refresh(); };
     $("#kPlay").onclick = () => setPlay(!S.running);
-    $("#kSpeed").onclick = e => { S.speed = SPEEDS[(SPEEDS.indexOf(S.speed) + 1) % SPEEDS.length]; e.target.textContent = "×" + S.speed; log("speed", S.speed); };
+    // speed: arrows step through SPEEDS; the label says how much simulated time one real second covers
+    const num = v => (Math.round(v * 10) / 10).toString();
+    const speedText = () => {
+      const spr = CLK.stepsPerSec * S.speed * CLK.dt;          // model units per real second
+      if (CLK.speedLabel) return CLK.speedLabel(spr, K.L);
+      const r = 1 / spr;                                       // real seconds per simulated hour
+      return r >= 1 ? `${num(r)} s = 1 h` : `1 s = ${num(spr)} h`;
+    };
+    const setSpeed = d => {
+      const i = Math.max(0, Math.min(SPEEDS.length - 1, SPEEDS.indexOf(S.speed) + d));
+      S.speed = SPEEDS[i]; $("#kSpeed").textContent = speedText(); log("speed", S.speed);
+      $("#kSlow").disabled = i === 0; $("#kFast").disabled = i === SPEEDS.length - 1;
+    };
+    app.speedText = speedText;
+    $("#kSlow").onclick = () => setSpeed(-1);
+    $("#kFast").onclick = () => setSpeed(+1);
+
+    // ---- splitters: drag to resize the compartments (double-click resets); remembered per browser
+    const main = $(".k-main"), left = $(".k-left"), right = $(".k-right"), banner = $("#kBanner"), curves = $(".k-curves");
+    const layout = (() => { try { return JSON.parse(localStorage.getItem(LAYOUT_KEY)) || {}; } catch (e) { return {}; } })();
+    const applyLayout = () => {
+      main.style.gridTemplateColumns = layout.cols ? `${layout.cols}px 6px minmax(300px,1fr)` : "";
+      if (layout.banner) { banner.style.height = layout.banner + "px"; banner.style.maxHeight = "none"; } else { banner.style.height = ""; banner.style.maxHeight = ""; }
+      right.classList.toggle("sized", !!layout.curves);
+      curves.style.height = layout.curves ? layout.curves + "px" : "";
+    };
+    const saveLayout = () => { try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout)); } catch (e) { /* storage blocked */ } };
+    const relayout = () => { app.synoptic.render(); app.panel.render(); app.chart.draw(); };
+    function splitter(el, key, compute) {
+      el.addEventListener("pointerdown", e => {
+        e.preventDefault(); el.setPointerCapture(e.pointerId); el.classList.add("on");
+        const move = ev => { layout[key] = Math.round(compute(ev)); applyLayout(); app.chart.draw(); };
+        el.addEventListener("pointermove", move);
+        el.addEventListener("pointerup", () => { el.removeEventListener("pointermove", move); el.classList.remove("on"); saveLayout(); relayout(); log("layout", key); }, { once: true });
+      });
+      el.addEventListener("dblclick", () => { delete layout[key]; applyLayout(); saveLayout(); relayout(); });
+    }
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    splitter($("#kSplitCols"), "cols", ev => { const r = main.getBoundingClientRect(); return clamp(ev.clientX - r.left, 380, r.width - 306); });
+    splitter($("#kSplitBanner"), "banner", ev => { const r = left.getBoundingClientRect(); return clamp(ev.clientY - r.top, 60, r.height - 180); });
+    splitter($("#kSplitRight"), "curves", ev => { const r = right.getBoundingClientRect(); return clamp(r.bottom - ev.clientY, 130, r.height - 140); });
+    applyLayout();
     $("#kReset").onclick = () => { model.resetAll(); app.tutorial.restartCurrent(); log("reset", ""); app.synoptic.render(); };
     $("#kHood").onclick = e => {
       S.hood = !S.hood; e.target.classList.toggle("on", S.hood); log("hood", S.hood);
@@ -176,6 +224,7 @@
       requestAnimationFrame(frame);
     }
 
+    setSpeed(0);
     app.step = n => { for (let i = 0; i < n; i++) { model.step(CLK.dt); app.tutorial.tick(); } };   // for tests
     relabel();
     app.synoptic.renderParams();

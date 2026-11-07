@@ -20,6 +20,9 @@
     chart: {
       range: [0, 32], tickY: 10, span: 8, tick: 2, label: t => t + " h",
       band: [19, 21], showBand: app => app.S.free || app.S.pieces.has("heater"),
+      series: [{ piece: "room", label: L("Room", "Pièce"), color: "#d9822b", unit: "°C" },
+               { piece: "radiator", label: L("Radiator", "Radiateur"), color: "#c0392b", unit: "°C" }],
+      lines: [{ piece: "bimetal", param: "set", label: L("Set point", "Consigne"), color: "--good", unit: "°C" }],
       strips: [
         { label: L("heater on", "chauffage en marche"), color: "--flux", on: (p, m) => { const h = m.first("heater"); return !!(h && p.u[h.id]); } },
         { label: L("window open", "fenêtre ouverte"), color: "--info", on: p => p.open }
@@ -42,7 +45,7 @@
       heater: { kind: "source", name: L("Heater", "Chauffage"), blurb: L("produces heat", "produit de la chaleur"), onText: L("heating", "chauffe"), offText: L("off", "à l'arrêt"),
         ports: { cmd: L("command", "commande"), flow: L("heat", "chaleur") },
         params: { P: { label: L("Power (kW)", "Puissance (kW)"), v: 2.5, step: 0.5, min: 0, max: 10 } } },
-      bimetal: { kind: "threshold", name: L("Bimetal", "Bilame"), blurb: L("bends with heat", "se courbe avec la chaleur"), onText: L("contact closed", "contact fermé"), offText: L("contact open", "contact ouvert"),
+      bimetal: { kind: "threshold", name: "Thermostat", blurb: L("turns the heating on below the set point", "allume le chauffage sous la consigne"), onText: L("asks for heat", "demande de la chaleur"), offText: L("idle", "au repos"),
         ports: { x: L("temperature", "température"), u: L("command", "commande") },
         params: { set: { label: L("Set point (°C)", "Consigne (°C)"), v: 20, step: 0.5, min: 5, max: 30 },
                   h: { label: L("Hysteresis (°C)", "Hystérésis (°C)"), v: 1, step: 0.25, min: 0, max: 5 } } },
@@ -56,8 +59,8 @@
     instruments: {
       roomTemp:     { type: "gauge",  label: L("Room thermometer", "Thermomètre de la pièce"), short: L("Room", "Pièce"), bind: { piece: "room", get: "level" }, range: [0, 30], step: 0.1, unit: "°C", zone: [19, 21] },
       heaterSwitch: { type: "toggle", label: L("Heater switch", "Interrupteur du chauffage"), short: L("Heater", "Chauffage"), bind: { piece: "heater", set: "manual" } },
-      bimetalLamp:  { type: "lamp",   label: L("Bimetal light (contact closed)", "Témoin du bilame (contact fermé)"), short: L("Contact", "Contact"), bind: { piece: "bimetal", get: "u" } },
-      setpoint:     { type: "slider", label: L("Bimetal set point", "Consigne du bilame"), short: L("Set point", "Consigne"), bind: { piece: "bimetal", param: "set" }, range: [10, 28], step: 0.5, unit: "°C" },
+      bimetalLamp:  { type: "lamp",   label: L("Thermostat light (heating requested)", "Témoin du thermostat (chauffe demandée)"), short: L("Heat", "Chauffe"), bind: { piece: "bimetal", get: "u" } },
+      setpoint:     { type: "slider", label: L("Thermostat set point", "Consigne du thermostat"), short: L("Set point", "Consigne"), bind: { piece: "bimetal", param: "set" }, range: [10, 28], step: 0.5, unit: "°C" },
       radiatorTemp: { type: "gauge",  label: L("Radiator thermometer", "Thermomètre du radiateur"), short: L("Radiator", "Radiateur"), bind: { piece: "radiator", get: "level" }, range: [0, 60], step: 0.1, unit: "°C" },
       outsideTemp:  { type: "slider", label: L("Outside temperature", "Température extérieure"), short: L("Outside", "Dehors"), bind: { piece: "wall", param: "level" }, range: [-15, 25], step: 1, unit: "°C" }
     },
@@ -107,25 +110,25 @@
 
       { id: "loop", title: L("Closing the loop", "Fermer la boucle"),
         unlock: { pieces: ["bimetal"], instruments: ["bimetalLamp", "setpoint"] },
-        goal: L("Place a <b>Bimetal</b>. Wire the Room's <i>temperature</i> to the Bimetal, then the Bimetal's <i>command</i> to the Heater. Add the bimetal <b>light</b> to the Panel. Then hands off: <b>2 hours between 19 and 21 °C</b>.",
-                "Pose un <b>Bilame</b>. Relie la <i>température</i> de la Pièce au Bilame, puis la <i>commande</i> du Bilame au Chauffage. Ajoute le <b>témoin</b> du bilame au Panneau. Ensuite, ne touche plus à rien : <b>2 heures entre 19 et 21 °C</b>."),
-        hint: L("Watch the bimetal in the scale model while time goes by.", "Regarde le bilame dans la Maquette pendant que le temps passe."),
+        goal: L("Place a <b>Thermostat</b>. Wire the Room's <i>temperature</i> to the Thermostat, then the Thermostat's <i>command</i> to the Heater. Add the thermostat <b>light</b> to the Panel. Then hands off: <b>2 hours between 19 and 21 °C</b>.",
+                "Pose un <b>Thermostat</b>. Relie la <i>température</i> de la Pièce au Thermostat, puis la <i>commande</i> du Thermostat au Chauffage. Ajoute le <b>témoin</b> du thermostat au Panneau. Ensuite, ne touche plus à rien : <b>2 heures entre 19 et 21 °C</b>."),
+        hint: L("Watch the thermostat on the wall of the scale model while time goes by.", "Regarde le thermostat au mur de la Maquette pendant que le temps passe."),
         need: app => !app.model.first("room") ? syn(L("The Room is missing.", "Il manque la Pièce.")) :
                      !app.model.linked("heater", "flow", "room", "in") ? syn(L("Wire the Heater to the Room.", "Relie le Chauffage à la Pièce.")) :
-                     !app.model.linked("room", "level", "bimetal", "x") ? syn(L("Wire the Room's temperature to the Bimetal.", "Relie la température de la Pièce au Bilame.")) :
-                     !app.model.linked("bimetal", "u", "heater", "cmd") ? syn(L("Wire the Bimetal's command to the Heater.", "Relie la commande du Bilame au Chauffage.")) :
-                     !app.panel.has("bimetalLamp") ? pan(L("Add the bimetal light in the Panel.", "Ajoute le témoin du bilame dans le Panneau.")) : null,
+                     !app.model.linked("room", "level", "bimetal", "x") ? syn(L("Wire the Room's temperature to the Thermostat.", "Relie la température de la Pièce au Thermostat.")) :
+                     !app.model.linked("bimetal", "u", "heater", "cmd") ? syn(L("Wire the Thermostat's command to the Heater.", "Relie la commande du Thermostat au Chauffage.")) :
+                     !app.panel.has("bimetalLamp") ? pan(L("Add the thermostat light in the Panel.", "Ajoute le témoin du thermostat dans le Panneau.")) : null,
         check: K.hold(120, inBand, OUT_OF_BAND),
         takeaway: L("The room regulates itself. But look: the temperature is never exactly 20 °C, it keeps going up and down around it.",
                     "La pièce se règle toute seule. Mais regarde : la température n'est jamais exactement à 20 °C, elle monte et descend sans cesse autour."),
-        hood: L("Bimetal = <b>Threshold</b> with hysteresis. The wire coming back from the Room to the Heater forms a negative <b>Feedback Loop</b>: it is not a piece, it is a wiring.",
-                "Bilame = <b>Threshold</b> avec hystérésis. Le fil qui revient de la Pièce vers le Chauffage forme une <b>Feedback Loop</b> négative : ce n'est pas une pièce, c'est un câblage.") },
+        hood: L("Thermostat = <b>Threshold</b> with hysteresis. Old thermostats use a bimetal strip that bends with heat, newer ones an electronic sensor: the block is the same. The wire coming back from the Room to the Heater forms a negative <b>Feedback Loop</b>: it is not a block, it is a wiring.",
+                "Thermostat = <b>Threshold</b> avec hystérésis. Les anciens thermostats utilisent un bilame qui se courbe avec la chaleur, les récents un capteur électronique : le bloc est le même. Le fil qui revient de la Pièce vers le Chauffage forme une <b>Feedback Loop</b> négative : ce n'est pas un bloc, c'est un câblage.") },
 
       { id: "window", title: L("A cold snap", "Un coup de froid"),
         goal: L("In the <b>scale model</b>, click the window to open it. Leave it open for at least 10 minutes, then close it.",
                 "Dans la <b>Maquette</b>, clique sur la fenêtre pour l'ouvrir. Laisse-la ouverte au moins 10 minutes, puis referme-la."),
         hint: L("Meanwhile, watch the scale model as well as the Panel.", "Pendant ce temps, regarde aussi bien la Maquette que le Panneau."),
-        need: app => !app.model.linked("bimetal", "u", "heater", "cmd") ? syn(L("Keep the loop closed (Bimetal → Heater).", "Garde la boucle fermée (Bilame → Chauffage).")) : null,
+        need: app => !app.model.linked("bimetal", "u", "heater", "cmd") ? syn(L("Keep the loop closed (Thermostat → Heater).", "Garde la boucle fermée (Thermostat → Chauffage).")) : null,
         check: (app, mem) => {
           const wall = app.model.first("wall"), open = !!(wall && wall.s.open);
           mem.open = (mem.open || 0) + (open ? 1 : 0);
@@ -151,22 +154,34 @@
     },
 
     free: {
-      text: L("Every piece and instrument is unlocked. Try putting a <b>Radiator</b> between the Heater and the Room, and put its thermometer on the Panel: which one reacts first when the contact opens? You can also make winter harsher, widen the bimetal's hysteresis, or stretch and rotate the instruments.",
-              "Toutes les pièces et tous les instruments sont débloqués. Essaie d'intercaler un <b>Radiateur</b> entre le Chauffage et la Pièce, et mets son thermomètre sur le Panneau : lequel réagit en premier quand le contact s'ouvre ? Tu peux aussi rendre l'hiver plus rude, élargir l'hystérésis du bilame, ou étirer et pivoter les instruments."),
-      hood: L("Generic pieces used: Storage, Sink, Source, Threshold. The same ones serve in the other workshops.",
-              "Pièces génériques utilisées : Storage, Sink, Source, Threshold. Les mêmes servent dans les autres ateliers.")
+      text: L("Every block and instrument is unlocked. Try putting a <b>Radiator</b> between the Heater and the Room, and put its thermometer on the Panel: which one reacts first when the thermostat stops asking for heat? You can also make winter harsher, widen the thermostat's hysteresis, or stretch and rotate the instruments.",
+              "Tous les blocs et tous les instruments sont débloqués. Essaie d'intercaler un <b>Radiateur</b> entre le Chauffage et la Pièce, et mets son thermomètre sur le Panneau : lequel réagit en premier quand le thermostat cesse de demander de la chaleur ? Tu peux aussi rendre l'hiver plus rude, élargir l'hystérésis du thermostat, ou étirer et pivoter les instruments."),
+      hood: L("Generic blocks used: Storage, Sink, Source, Threshold. The same ones serve in the other workshops.",
+              "Blocs génériques utilisés : Storage, Sink, Source, Threshold. Les mêmes servent dans les autres ateliers.")
     },
 
     // ---------------------------------------------------------------- scale model
+    // A room in cross-section. The wall thermostat and the thermometer are real objects
+    // hanging in the room; the Panel stays the remote instrument.
     view: function (host, model, api) {
       host.innerHTML = `
 <svg viewBox="0 0 440 300" role="img" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <clipPath id="mqRoomClip"><rect x="60" y="76" width="320" height="186"/></clipPath>
+    <radialGradient id="mqWarm" cx="0.5" cy="0.6" r="0.5"><stop offset="0" stop-color="#f08a3c" stop-opacity=".75"/><stop offset="1" stop-color="#f08a3c" stop-opacity="0"/></radialGradient>
+    <radialGradient id="mqCool" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#4a8fe0" stop-opacity=".6"/><stop offset="1" stop-color="#4a8fe0" stop-opacity="0"/></radialGradient>
+  </defs>
   <rect id="mqSky" x="0" y="0" width="440" height="300" rx="12"/>
   <g id="mqSnow" fill="#ffffff" opacity=".9">${Array.from({ length: 26 }, (_, i) => `<circle cx="${(i * 67) % 430 + 6}" cy="${(i * 37) % 250 + 6}" r="${1.4 + (i % 3) * .5}"/>`).join("")}</g>
   <rect id="mqGround" x="0" y="262" width="440" height="38" rx="0"/>
   <g id="mqHouse">
     <path d="M40 76 L220 18 L400 76 Z" fill="#9b6b4f"/>
     <rect id="mqAir" x="60" y="76" width="320" height="186"/>
+    <g clip-path="url(#mqRoomClip)">
+      <ellipse id="mqPlume" cx="104" cy="150" rx="90" ry="110" fill="url(#mqWarm)"/>
+      <ellipse id="mqFloor" cx="190" cy="258" rx="130" ry="34" fill="url(#mqCool)"/>
+      <ellipse id="mqDraftAir" cx="372" cy="160" rx="70" ry="80" fill="url(#mqCool)"/>
+    </g>
     <rect id="mqWalls" x="55" y="76" width="330" height="186" fill="none" stroke-width="10"/>
     <line x1="50" y1="262" x2="390" y2="262" stroke="#6e6a60" stroke-width="3"/>
     <g id="mqWindow" class="mq-click">
@@ -181,23 +196,28 @@
     <g id="mqHeat">
       <rect id="mqRadBody" x="74" y="180" width="54" height="66" rx="5" stroke="#6e6a60" stroke-width="1.5"/>
       ${[0, 1, 2, 3, 4].map(i => `<line x1="${84 + i * 9}" y1="186" x2="${84 + i * 9}" y2="240" stroke="#6e6a60" stroke-width="1" opacity=".5"/>`).join("")}
-      <g id="mqWaves" stroke="#e07b39" stroke-width="2" fill="none" stroke-linecap="round">
-        <path d="M86 172 q4 -8 0 -16 t0 -16"/><path d="M101 172 q4 -8 0 -16 t0 -16"/><path d="M116 172 q4 -8 0 -16 t0 -16"/>
+      <g id="mqWaves" stroke="#e07b39" stroke-width="2.2" fill="none" stroke-linecap="round">
+        ${[0, 1, 2, 3, 4, 5].map(i => `<path class="mqWave" data-i="${i}"/>`).join("")}
       </g>
     </g>
-    <path id="mqCable" d="M208 136 V150 H140 V200 H128" fill="none" stroke="#6e6a60" stroke-width="1.5" stroke-dasharray="3 3"/>
-    <g id="mqBim">
-      <rect x="186" y="96" width="56" height="40" rx="5" fill="#f4f2ec" stroke="#6e6a60" stroke-width="1.5"/>
-      <circle cx="194" cy="126" r="3" fill="#6e6a60"/>
-      <circle id="mqContact" cx="232" cy="110" r="3.5"/>
-      <path id="mqStrip" fill="none" stroke-width="4" stroke-linecap="round"/>
-      <path id="mqStrip2" fill="none" stroke-width="2" stroke-linecap="round"/>
+    <path id="mqCable" d="M210 140 V156 H140 V200 H128" fill="none" stroke="#6e6a60" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <g id="mqStat">
+      <rect x="186" y="98" width="48" height="42" rx="5" fill="#f7f6f2" stroke="#6e6a60" stroke-width="1.5"/>
+      <text id="mqSet" x="194" y="116" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#2f2d27"></text>
+      <rect x="215" y="122" width="12" height="12" rx="1.5" fill="#ffffff" stroke="#6e6a60" stroke-width="1.2"/>
+      <rect id="mqStatLed" x="217.5" y="124.5" width="7" height="7"/>
+    </g>
+    <g id="mqThermo">
+      <rect x="300" y="104" width="10" height="92" rx="5" fill="#ffffff" stroke="#6e6a60" stroke-width="1.3"/>
+      <circle cx="305" cy="202" r="8" fill="#d23b2b" stroke="#6e6a60" stroke-width="1.3"/>
+      <rect id="mqMercury" x="302.5" width="5" fill="#d23b2b"/>
+      ${[0, 10, 20, 30].map(t => `<line x1="311" x2="316" y1="${190 - t * 2.8}" y2="${190 - t * 2.8}" stroke="#6e6a60" stroke-width="1"/><text x="318" y="${193 - t * 2.8}" font-family="system-ui,sans-serif" font-size="8.5" fill="#5c5a52">${t}</text>`).join("")}
     </g>
   </g>
   <text id="mqEmpty" class="mq-note" x="220" y="150" text-anchor="middle"></text>
 </svg>`;
       const $ = id => host.querySelector("#" + id);
-      const disp = { heat: 0, strip: 1, waves: 0 };
+      const disp = { heat: 0, waves: 0, mercury: 20, draft: 0 };
       const ease = (k, target, f = 0.12) => { disp[k] += (target - disp[k]) * f; return disp[k]; };
       const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
       const hex = c => `rgb(${c[0]},${c[1]},${c[2]})`;
@@ -211,6 +231,7 @@
       const AIR = [[0, [120, 160, 214]], [12, [178, 205, 232]], [19, [241, 234, 215]], [23, [246, 214, 168]], [30, [238, 150, 90]]];
       const METAL = [[0, [200, 205, 210]], [25, [214, 208, 198]], [40, [240, 160, 110]], [60, [220, 70, 40]]];
       const SKY_COLD = [[-15, [150, 170, 196]], [5, [184, 204, 226]], [25, [196, 226, 245]]];
+      let phase = 0, lastT = performance.now();
 
       $("mqWindow").addEventListener("click", () => {
         const wall = model.first("wall");
@@ -220,9 +241,10 @@
       });
 
       return {
-        update() {
+        update(running) {
+          const now = performance.now(), dtR = Math.min(0.1, (now - lastT) / 1000); lastT = now;
           const room = model.first("room"), wall = model.first("wall"), heater = model.first("heater"),
-                bim = model.first("bimetal"), rad = model.first("radiator");
+                stat = model.first("bimetal"), rad = model.first("radiator");
           host.querySelector("svg").setAttribute("aria-label", K.L("Scale model: a heated room, in cross-section", "Maquette : une pièce chauffée vue en coupe"));
           $("mqEmpty").textContent = K.L("Empty scale model: place a Room in the Synoptic.", "Maquette vide : pose une Pièce dans le Synoptique.");
           $("mqEmpty").style.display = room ? "none" : "";
@@ -242,27 +264,37 @@
           $("mqWinGlass").style.display = open ? "none" : "";
           $("mqWinLeaf").style.display = open ? "" : "none";
           $("mqDraft").style.display = open ? "" : "none";
-          // heater / radiator: glows with its own temperature, or with the on/off state
+          $("mqDraftAir").setAttribute("opacity", ease("draft", open ? 1 : 0, 0.08).toFixed(2));
+          // heater / radiator: glows with its own temperature (or on/off), warm air rises, cool air returns along the floor
           $("mqHeat").style.display = heater ? "" : "none";
+          let toRoom = 0;
           if (heater) {
             const hot = rad ? Math.max(0, Math.min(1, (rad.s.x - 20) / 12)) : ease("heat", heater.s.u, 0.08);
             $("mqRadBody").setAttribute("fill", ramp(METAL, 20 + hot * 40));
-            const toRoom = rad ? Math.max(0, rad.p.k * (rad.s.x - room.s.x)) / Math.max(0.5, heater.p.P) : (model.linked("heater", "flow", "room", "in") ? disp.heat : 0);
-            $("mqWaves").setAttribute("opacity", ease("waves", Math.min(1, toRoom), 0.1).toFixed(2));
+            toRoom = rad ? Math.max(0, rad.p.k * (rad.s.x - room.s.x)) / Math.max(0.5, heater.p.P) : (model.linked("heater", "flow", "room", "in") ? disp.heat : 0);
           }
-          // bimetal: the strip curls away from the contact when it gets warm
-          $("mqBim").style.display = bim ? "" : "none";
-          const looped = bim && heater && model.linked("bimetal", "u", "heater", "cmd");
+          const w = ease("waves", Math.min(1, toRoom), 0.08);
+          $("mqPlume").setAttribute("opacity", w.toFixed(2));
+          $("mqFloor").setAttribute("opacity", (0.8 * w).toFixed(2));
+          if (running) phase = (phase + dtR * 0.55) % 1;          // waves rise only while time runs
+          host.querySelectorAll(".mqWave").forEach(p => {
+            const i = +p.dataset.i, f = (phase + i / 6) % 1, x = 86 + (i % 3) * 15 + Math.sin((f + i) * 6.28) * 2;
+            const y = 174 - 70 * f;
+            p.setAttribute("d", `M${x.toFixed(1)} ${y.toFixed(1)} q4 -5 0 -10 t0 -10`);
+            p.setAttribute("opacity", (w * Math.sin(Math.PI * f) * 0.95).toFixed(2));
+          });
+          // wall thermostat: shows its set point; the square turns red while it asks for heat
+          $("mqStat").style.display = stat ? "" : "none";
+          const looped = stat && heater && model.linked("bimetal", "u", "heater", "cmd");
           $("mqCable").style.display = looped ? "" : "none";
-          if (bim) {
-            const closed = bim.s.x === null ? 1 : bim.s.u;
-            const s = ease("strip", closed, 0.1);
-            const ex = 230 - 3 * (1 - s), ey = 112 - 14 * (1 - s), cy = 120 - 12 * (1 - s);
-            const d = `M194 126 Q212 ${cy} ${ex} ${ey}`;
-            $("mqStrip").setAttribute("d", d); $("mqStrip").setAttribute("stroke", "#b87333");
-            $("mqStrip2").setAttribute("d", d); $("mqStrip2").setAttribute("stroke", "#c9ccd1");
-            $("mqContact").setAttribute("fill", s > 0.9 && looped ? "#e07b39" : "#9a968c");
+          if (stat) {
+            $("mqSet").textContent = (Math.round(stat.p.set * 2) / 2).toString().replace(".", K.L(".", ",")) + " °C";
+            $("mqStatLed").setAttribute("fill", stat.s.x !== null && stat.s.u ? "#e0302a" : "#222222");
           }
+          // thermometer on the wall: a liquid column, read like a real one
+          const tm = ease("mercury", Math.max(-2, Math.min(32, room.s.x)), 0.2);
+          const top = 190 - tm * 2.8;
+          $("mqMercury").setAttribute("y", top.toFixed(1)); $("mqMercury").setAttribute("height", Math.max(0, 200 - top).toFixed(1));
         }
       };
     }
