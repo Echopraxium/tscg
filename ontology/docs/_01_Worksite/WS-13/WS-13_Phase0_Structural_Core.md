@@ -12,6 +12,7 @@ was folded into WS-3 as GS-3 / GS-4) — to register in `worksite.yaml`
 **Test bench**: *Digital-Logic-Sim* (github.com/SebLague/Digital-Logic-Sim, MIT), scope
 "NAND → SR latch"; second bench for state: the *Rubik's Cube* exercise
 **Pipeline**: `tscg-ontology-diagnosis-pipeline` (Phases 0 → 5) + `tscg-m2-candidate-filter`
+**Amended by**: [Addendum A — Interface as an M1 combo](WS-13_Phase0_Addendum_A_Interface.md) (2026-11-07): revises D5, D6, L1; closes Q1
 
 ---
 
@@ -63,6 +64,8 @@ exactly the concepts below — and revealed defects in all of them.
   `m2:ConceptContract` (meta-level capability) in an explicit distinction.
 - **D6 — `m2:Interoperability` is removed and renamed `m2:Interface`.** No alias, no
   deprecated node. Repairs F4 at once.
+  *Revised by Addendum A (DA1, DA2): `m2:Interoperability` is removed, not renamed;
+  `m1:Interface = Fm2(Boundary, Mediator, Code)`.*
 - **D7 — Rule H (no cross-layer homonym)**: no M2 class may carry the label of an M3
   primitive — to become a gate check. Scan at HEAD: `Interoperability` was the only case.
 - **D8 — Imbrication = homothetic case** of the composite Component (children isomorphic
@@ -136,5 +139,6 @@ rule A and rule H checks live with negative tests, Phase 4 semantic approval by 
 
 | Version | Date | Changes |
 |---|---|---|
+| 1.2.0 | 2026-11-07 | Pointer to Addendum A (Interface as an M1 combo: D5, D6, L1 revised, Q1 closed). Body of v1.1.0 unchanged. |
 | 1.1.0 | 2026-10-11 | Renumbered WS-14 → WS-13 (L audit folded into WS-3 GS-3/GS-4). F7 reframed per WS-3 R4 (collisions are signals). Lots L0–L6 ordered against WS-1/3/5/9/10/11 and SC-6. Ss finding moved to WS-3 F8. |
 | 1.0.0 | 2026-10-10 | Draft (as WS-14). |
