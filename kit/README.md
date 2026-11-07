@@ -12,7 +12,7 @@ adds one idea and reuses pieces from the previous one.
 
 | # | Workshop | What you build | What you discover | New generic pieces |
 |---|---|---|---|---|
-| 1 | [`thermostat/`](thermostat/index.html) | a room heated by a radiator with a bimetal thermostat | a loop that corrects (negative feedback), attractor, homeostasis | Storage, Sink, Source, Threshold |
+| 1 | [`thermostat/`](thermostat/index.html) | a room heated by a radiator with a wall thermostat | a loop that corrects (negative feedback), attractor, homeostasis | Storage, Sink, Source, Threshold |
 | 2 | [`larsen/`](larsen/index.html) | a room with a voice, an amplifier and a loudspeaker | a loop that reinforces (positive feedback), a threshold born from the wiring | Amplification, Transducer |
 | 3 | [`tournesol/`](tournesol/index.html) | a young sunflower, a lamp, the sun and an internal clock | a loop that tracks a moving target, anticipation, domain of validity | Gradient, Clock |
 
@@ -35,8 +35,14 @@ Online: `https://echopraxium.github.io/tscg/kit/`
 - **Panneau** — the instruments: gauges, sliders, toggles, lamps on a grid. Every
   instrument keeps one side fixed (lamp 2×2, toggle 3×2, gauge and slider 2×n), so
   the panel packs like Tetris. Instruments only read or write the graph.
-- **Maquette** — the system itself, drawn without any number. You can act on it
-  directly (open the window).
+- **Maquette** (scale model) — the system itself. You can act on it directly (open the
+  window, move the microphone). Instruments that physically hang in the room (a wall
+  thermostat, a thermometer) are drawn there as real objects; the Panel stays the remote
+  instrument, and the Maquette still shows what it does not (radiator heat, cold draught).
+
+The compartments are resizable with the splitters (double-click resets; the layout is
+remembered per browser). The ▼ ▲ arrows change the speed and show how much simulated time
+one real second covers (e.g. “12 s = 1 h”).
 
 The Map/Territory distinction is **never stated**: the Panneau shows only what its
 instruments measure, the Maquette shows the rest, and the player rediscovers the gap by
@@ -77,7 +83,7 @@ Ask testers to think aloud while they play, without helping them, then to click
 rejected connections, panel actions, bets). Note what they say spontaneously
 about the Maquette and the Panneau.
 
-Status: **prototype 0.4.0** — three workshops, each with a guided tutorial and a free mode. UI in English and French. Desktop first; usable but cramped on a phone.
+Status: **prototype 0.5.0** — three workshops, each with a guided tutorial and a free mode. UI in English and French. Desktop first; usable but cramped on a phone.
 
 ## Languages
 

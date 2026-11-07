@@ -93,13 +93,16 @@
       }
       for (const n of m.nodes) {
         const s = this.skin(n), h = this.nodeHeight(n), hood = this.o.hood();
-        const g = el("g", { class: "node" + (this.selected === "n" + n.id ? " selected" : ""), transform: `translate(${n.x},${n.y})`, "data-node": n.id }, gN);
+        const outer = el("g", { class: "node" + (this.selected === "n" + n.id ? " selected" : ""), transform: `translate(${n.x},${n.y})`, "data-node": n.id }, gN);
+        // inner group carries the animations (lift while dragged, settle on drop, pop when added)
+        const anim = this.drag && this.drag.n === n ? " dragging" : this.dropped === n.id ? " dropped" : this.appeared === n.id ? " appear" : "";
+        const g = el("g", { class: "node-inner" + anim }, outer);
         el("rect", { class: "node-body", width: NW, height: h, rx: 8 }, g);
         const head = el("path", { class: "node-head", d: `M0 8 Q0 0 8 0 H${NW - 8} Q${NW} 0 ${NW} 8 V${HEAD} H0 Z` }, g);
         const title = el("text", { class: "node-title", x: 10, y: hood ? 13 : 18 }, g); title.textContent = s.name;
         if (hood) el("text", { class: "node-gen", x: 10, y: 24 }, g).textContent = K.generic(s.kind);
         for (const part of [head, title]) { part.style.cursor = "grab"; part.addEventListener("pointerdown", e => this.startDrag(e, n)); }
-        g.addEventListener("pointerdown", e => { if (!e.defaultPrevented) this.select("n" + n.id); });
+        outer.addEventListener("pointerdown", e => { if (!e.defaultPrevented) this.select("n" + n.id); });
         m.ports(n, "in").forEach((q, i) => {
           const y = HEAD + PY + i * ROW;
           el("circle", { class: `port ${q.kind}`, cx: 0, cy: y, r: 6, "data-node": n.id, "data-port": q.id, "data-side": "in" }, g);
@@ -115,6 +118,8 @@
         const val = el("text", { class: "node-value", x: 10, y: HEAD + 8 + rows * ROW + 12 }, g);
         this.live.push({ node: n, val });
       }
+      // an appear / drop animation plays once, on the render that follows the event
+      this.appeared = null; this.dropped = null;
       if (this.dragWire) {
         this.dragWire.path = el("path", { class: `wire ${this.dragWire.kind}`, d: "" }, svg);
         this.dragWire.path.style.pointerEvents = "none";
@@ -164,7 +169,11 @@
       }
     }
     onUp(e) {
-      if (this.drag) { this.drag = null; return; }
+      if (this.drag) {
+        const n = this.drag.n; this.drag = null;
+        this.dropped = n.id; this.render();
+        return;
+      }
       if (!this.dragWire) return;
       const dw = this.dragWire; this.dragWire = null;
       const t = document.elementFromPoint(e.clientX, e.clientY);
@@ -186,6 +195,7 @@
       while (this.m.nodes.some(n => Math.abs(n.x - x) < 30 && Math.abs(n.y - y) < 30)) { x += 30; y += 30; }
       if (r.width) x = Math.max(8, Math.min(x, r.width - NW - 8));
       const n = this.m.addNode(type, x, y);
+      this.appeared = n.id;
       this.select("n" + n.id); this.o.onChange();
       return n;
     }

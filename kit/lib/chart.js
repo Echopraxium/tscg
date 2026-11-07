@@ -3,7 +3,9 @@
  * Configured by the workshop (W.chart):
  *   range:[lo,hi], tickY, span, tick, label(t)   axes, in the workshop's time unit
  *   band:[a,b], showBand(app)                    optional target zone
- *   series:[{piece, label, color}]               default: every storage
+ *   series:[{piece, label, color, unit, decimals, fmt}]   default: every storage
+ *   lines:[{piece, param, label, color, unit}]   dashed horizontal line at a parameter (e.g. set point)
+ *   the legend shows the current value of every series and line
  *   strips:[{label, color, on(snap, model), shade}]  on/off bars under the curves,
  *                                                    or full-height shading (shade:true)
  * Author: Echopraxium with the collaboration of Claude AI
@@ -44,8 +46,17 @@
       if (o.band && (!o.showBand || o.showBand(o.app))) { c.fillStyle = v("--band"); c.fillRect(L, Y(o.band[1]), pw, Y(o.band[0]) - Y(o.band[1])); }
       const legend = [];
       const series = o.series
-        ? o.series.map(s => ({ node: m.first(s.piece), label: s.label, color: col(s.color) })).filter(s => s.node)
-        : m.nodes.filter(n => m.kindOf(n) === "storage").map(n => ({ node: n, label: m.skins[n.type].name, color: m.skins[n.type].color || v("--flux") }));
+        ? o.series.map(s => Object.assign({}, s, { node: m.first(s.piece), color: col(s.color) })).filter(s => s.node)
+        : m.nodes.filter(n => m.kindOf(n) === "storage").map(n => ({ node: n, label: m.skins[n.type].name, color: m.skins[n.type].color || v("--flux"), unit: m.skins[n.type].unit }));
+      const show = (s, val) => val === null || val === undefined ? "—" : s.fmt ? s.fmt(val) : val.toFixed(s.decimals !== undefined ? s.decimals : 1) + (s.unit ? " " + s.unit : "");
+      const lineLegend = [];
+      for (const ln of (o.lines || [])) {                 // dashed reference lines (set point…)
+        const n = m.first(ln.piece); if (!n) continue;
+        const val = n.p[ln.param], c2 = col(ln.color || "--good");
+        c.save(); c.strokeStyle = c2; c.lineWidth = 1.5; c.setLineDash([6, 4]);
+        c.beginPath(); c.moveTo(L, Y(val)); c.lineTo(w - R, Y(val)); c.stroke(); c.restore();
+        lineLegend.push(`<span style="color:${c2}">┄</span> ${ln.label} <b>${show(ln, val)}</b>`);
+      }
       for (const s of series) {
         const id = s.node.id;
         c.strokeStyle = s.color; c.lineWidth = 2; c.beginPath(); let on = false;
@@ -56,8 +67,10 @@
           if (!on) { c.moveTo(x, y); on = true; } else c.lineTo(x, y);
         }
         c.stroke();
-        legend.push(`<span style="color:${s.color}">■</span> ${s.label || m.skins[s.node.type].name}`);
+        const last = hist.length ? hist[hist.length - 1].v[id] : m.infoOut(s.node);
+        legend.push(`<span style="color:${s.color}">■</span> ${s.label || m.skins[s.node.type].name} <b>${show(s, last)}</b>`);
       }
+      legend.push(...lineLegend);
       strips.forEach((s, i) => {
         const y = h - B + 4 + 7 * i;
         c.fillStyle = col(s.color); c.globalAlpha = .6;

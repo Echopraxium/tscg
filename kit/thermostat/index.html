@@ -50,7 +50,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .k-transport{display:flex;gap:6px;align-items:center}
 .k-clock{font-variant-numeric:tabular-nums;color:var(--quiet);font-size:13px;min-width:64px;margin-left:4px}
 .k-spacer{flex:1}
-.k-main{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(340px,1fr);height:calc(100% - 44px)}
+.k-main{display:grid;grid-template-columns:minmax(0,1.35fr) 6px minmax(300px,1fr);height:calc(100% - 44px)}
 .k-left{display:flex;flex-direction:column;min-width:0;min-height:0;border-right:1px solid var(--rule)}
 .k-right{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--panel)}
 .k-banner{padding:10px 14px;border-bottom:1px solid var(--rule);background:var(--panel);max-height:46%;overflow:auto;flex:none}
@@ -69,6 +69,17 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .k-curves{flex:1 1 auto;min-height:190px;display:flex;flex-direction:column;padding:8px 14px 10px;border-top:1px solid var(--rule)}
 #kChart{width:100%;flex:1;min-height:140px;display:block}
 .k-legend{color:var(--quiet);font-size:12px;min-height:16px}
+.k-legend b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600}
+.k-split{background:var(--rule);position:relative;z-index:3;touch-action:none}
+.k-split:hover,.k-split.on{background:var(--accent)}
+.k-split-v{cursor:col-resize}
+.k-split-h{cursor:row-resize;height:5px;flex:none}
+.k-right.sized .k-maquette{flex:1 1 0}
+.k-right.sized .k-view{flex:1}
+.k-right.sized .k-view svg{height:100%;max-height:none}
+.k-right.sized .k-curves{flex:none}
+.k-speed{font-variant-numeric:tabular-nums;color:var(--quiet);font-size:12px;min-width:78px;text-align:center;white-space:nowrap}
+.k-arrow{padding:3px 7px;font-size:11px;line-height:1}
 .k-toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--panel);border:1px solid var(--rule);
   border-radius:8px;padding:8px 12px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;box-shadow:0 2px 10px rgba(0,0,0,.12);z-index:20;max-width:90vw}
 .k-toast.show{opacity:1}
@@ -105,6 +116,12 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
   padding:5px 8px;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;font-size:12px;box-shadow:var(--shadow)}
 .sy-params label{display:flex;gap:6px;align-items:center}
 .sy-params input{width:62px;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--rule);border-radius:6px;padding:3px 6px}
+.node-inner{transform-box:fill-box;transform-origin:center}
+.node-inner.dragging{transform:scale(1.04);filter:drop-shadow(0 8px 12px rgba(0,0,0,.28));cursor:grabbing}
+.node-inner.dropped{animation:k-drop .35s ease-out}
+.node-inner.appear{animation:k-appear .4s ease-out}
+@keyframes k-drop{0%{transform:scale(1.04)}55%{transform:scale(.97)}100%{transform:scale(1)}}
+@keyframes k-appear{0%{transform:scale(.55);opacity:0}70%{transform:scale(1.06);opacity:1}100%{transform:scale(1)}}
 .node-body{fill:var(--node);stroke:var(--rule);stroke-width:1.25}
 .node.selected .node-body{stroke:var(--accent);stroke-width:2}
 .node-head{fill:var(--node-head)}
@@ -171,6 +188,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .mq-note{font:12px system-ui,sans-serif;fill:#5c5a52}
 
 @media (max-width: 900px){
+  .k-split{display:none}
   .k-main{grid-template-columns:1fr;height:auto}
   .k-left{border-right:none}
   .k-panes{height:520px;flex:none}
@@ -207,14 +225,14 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
   const T = {
     en: {
-      pieces: "Pieces", info: "information", locked: "locked",
-      wire_help: "Drag a wire from an output (right side of a piece) to an input (left side) of the same colour.",
+      pieces: "Blocks", info: "information", locked: "locked",
+      wire_help: "Drag a wire from an output (right side of a block) to an input (left side) of the same colour.",
       syn_aria: "Synoptic: pieces and wires",
-      rej_self: "A piece cannot be wired to itself.",
+      rej_self: "A block cannot be wired to itself.",
       rej_flux: "A flux (orange) only plugs into a flux input.",
       rej_info: "Information (blue) only plugs into an information input.",
-      params_hint: "Click a piece to adjust it. Press Delete to remove a piece or a wire.",
-      wire_selected: "Wire selected.", del_wire: "Delete the wire", del_piece: "Delete the piece",
+      params_hint: "Click a block to adjust it. Press Delete to remove a block or a wire.",
+      wire_selected: "Wire selected.", del_wire: "Delete the wire", del_piece: "Delete the block",
       d_level: "level", d_on: "on", d_off: "off", d_unlinked: "not linked", d_closed: "closed", d_open: "open",
       d_sat: "saturated · ", d_out: "output", d_notarget: "nothing to aim at", d_gap: "gap",
       pn_add: "Add an instrument:", pn_empty: "The panel is empty. Add an instrument with the buttons above.",
@@ -230,22 +248,23 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       tu_ph: "Your answer, in a few words…", tu_save: "Save my answers", tu_skip: "Skip",
       tu_thanks: "Thank you! Your answers will be in the “Export my session” file.",
       play: "▶ Start", pause: "⏸ Pause", play_tip: "Start / pause (space bar)", speed_tip: "Speed of time", reset_tip: "Reset the clock",
-      hood: "Under the hood", hood_tip: "Show the generic names of the pieces",
-      free: "Free mode", free_tip: "Unlock every piece and leave the tutorial",
+      hood: "Under the hood", hood_tip: "Show the generic names of the blocks",
+      free: "Free mode", free_tip: "Unlock every block and leave the tutorial",
       export: "Export my session", export_tip: "Download the session log (for user tests)",
       tab_panel: "Panel", tab_syn: "Synoptic", maquette: "Scale model", curves: "Curves",
+      speed_down: "Slower", speed_up: "Faster", speed_label: "Real time ↔ simulated time",
       home_tip: "All workshops", lang_btn: "FR", lang_tip: "Passer en français",
       g_threshold: "Threshold (hysteresis)", g_gradient: "Gradient (gap)", g_clock: "Clock (rhythm)"
     },
     fr: {
-      pieces: "Pièces", info: "information", locked: "verrouillée",
-      wire_help: "Tire un fil d'une sortie (à droite d'une pièce) vers une entrée (à gauche) de la même couleur.",
+      pieces: "Blocs", info: "information", locked: "verrouillée",
+      wire_help: "Tire un fil d'une sortie (à droite d'un bloc) vers une entrée (à gauche) de la même couleur.",
       syn_aria: "Synoptique : pièces et fils",
-      rej_self: "Une pièce ne se branche pas sur elle-même.",
+      rej_self: "Un bloc ne se branche pas sur lui-même.",
       rej_flux: "Un flux (orange) ne se branche que sur une entrée de flux.",
       rej_info: "Une information (bleu) ne se branche que sur une entrée d'information.",
-      params_hint: "Clique une pièce pour la régler. Touche Suppr pour enlever une pièce ou un fil.",
-      wire_selected: "Fil sélectionné.", del_wire: "Supprimer le fil", del_piece: "Supprimer la pièce",
+      params_hint: "Clique un bloc pour le régler. Touche Suppr pour enlever un bloc ou un fil.",
+      wire_selected: "Fil sélectionné.", del_wire: "Supprimer le fil", del_piece: "Supprimer le bloc",
       d_level: "niveau", d_on: "marche", d_off: "arrêt", d_unlinked: "non relié", d_closed: "fermé", d_open: "ouvert",
       d_sat: "saturé · ", d_out: "sortie", d_notarget: "rien à viser", d_gap: "écart",
       pn_add: "Ajouter un instrument :", pn_empty: "Le panneau est vide. Ajoute un instrument avec les boutons ci-dessus.",
@@ -261,10 +280,11 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       tu_ph: "Ta réponse, en quelques mots…", tu_save: "Enregistrer mes réponses", tu_skip: "Passer",
       tu_thanks: "Merci ! Tes réponses seront dans le fichier « Exporter ma session ».",
       play: "▶ Lancer", pause: "⏸ Pause", play_tip: "Lancer / mettre en pause (barre d'espace)", speed_tip: "Vitesse du temps", reset_tip: "Remettre l'horloge à zéro",
-      hood: "Sous le capot", hood_tip: "Montrer les noms génériques des pièces",
-      free: "Mode libre", free_tip: "Débloquer toutes les pièces et quitter le tutoriel",
+      hood: "Sous le capot", hood_tip: "Montrer les noms génériques des blocs",
+      free: "Mode libre", free_tip: "Débloquer tous les blocs et quitter le tutoriel",
       export: "Exporter ma session", export_tip: "Télécharger le journal de la session (pour les tests)",
       tab_panel: "Panneau", tab_syn: "Synoptique", maquette: "Maquette", curves: "Courbes",
+      speed_down: "Plus lent", speed_up: "Plus rapide", speed_label: "Temps réel ↔ temps simulé",
       home_tip: "Tous les ateliers", lang_btn: "EN", lang_tip: "Switch to English",
       g_threshold: "Threshold (hystérésis)", g_gradient: "Gradient (écart)", g_clock: "Clock (rythme)"
     }
@@ -643,13 +663,16 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       }
       for (const n of m.nodes) {
         const s = this.skin(n), h = this.nodeHeight(n), hood = this.o.hood();
-        const g = el("g", { class: "node" + (this.selected === "n" + n.id ? " selected" : ""), transform: `translate(${n.x},${n.y})`, "data-node": n.id }, gN);
+        const outer = el("g", { class: "node" + (this.selected === "n" + n.id ? " selected" : ""), transform: `translate(${n.x},${n.y})`, "data-node": n.id }, gN);
+        // inner group carries the animations (lift while dragged, settle on drop, pop when added)
+        const anim = this.drag && this.drag.n === n ? " dragging" : this.dropped === n.id ? " dropped" : this.appeared === n.id ? " appear" : "";
+        const g = el("g", { class: "node-inner" + anim }, outer);
         el("rect", { class: "node-body", width: NW, height: h, rx: 8 }, g);
         const head = el("path", { class: "node-head", d: `M0 8 Q0 0 8 0 H${NW - 8} Q${NW} 0 ${NW} 8 V${HEAD} H0 Z` }, g);
         const title = el("text", { class: "node-title", x: 10, y: hood ? 13 : 18 }, g); title.textContent = s.name;
         if (hood) el("text", { class: "node-gen", x: 10, y: 24 }, g).textContent = K.generic(s.kind);
         for (const part of [head, title]) { part.style.cursor = "grab"; part.addEventListener("pointerdown", e => this.startDrag(e, n)); }
-        g.addEventListener("pointerdown", e => { if (!e.defaultPrevented) this.select("n" + n.id); });
+        outer.addEventListener("pointerdown", e => { if (!e.defaultPrevented) this.select("n" + n.id); });
         m.ports(n, "in").forEach((q, i) => {
           const y = HEAD + PY + i * ROW;
           el("circle", { class: `port ${q.kind}`, cx: 0, cy: y, r: 6, "data-node": n.id, "data-port": q.id, "data-side": "in" }, g);
@@ -665,6 +688,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         const val = el("text", { class: "node-value", x: 10, y: HEAD + 8 + rows * ROW + 12 }, g);
         this.live.push({ node: n, val });
       }
+      // an appear / drop animation plays once, on the render that follows the event
+      this.appeared = null; this.dropped = null;
       if (this.dragWire) {
         this.dragWire.path = el("path", { class: `wire ${this.dragWire.kind}`, d: "" }, svg);
         this.dragWire.path.style.pointerEvents = "none";
@@ -714,7 +739,11 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       }
     }
     onUp(e) {
-      if (this.drag) { this.drag = null; return; }
+      if (this.drag) {
+        const n = this.drag.n; this.drag = null;
+        this.dropped = n.id; this.render();
+        return;
+      }
       if (!this.dragWire) return;
       const dw = this.dragWire; this.dragWire = null;
       const t = document.elementFromPoint(e.clientX, e.clientY);
@@ -736,6 +765,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       while (this.m.nodes.some(n => Math.abs(n.x - x) < 30 && Math.abs(n.y - y) < 30)) { x += 30; y += 30; }
       if (r.width) x = Math.max(8, Math.min(x, r.width - NW - 8));
       const n = this.m.addNode(type, x, y);
+      this.appeared = n.id;
       this.select("n" + n.id); this.o.onChange();
       return n;
     }
@@ -1027,7 +1057,9 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  * Configured by the workshop (W.chart):
  *   range:[lo,hi], tickY, span, tick, label(t)   axes, in the workshop's time unit
  *   band:[a,b], showBand(app)                    optional target zone
- *   series:[{piece, label, color}]               default: every storage
+ *   series:[{piece, label, color, unit, decimals, fmt}]   default: every storage
+ *   lines:[{piece, param, label, color, unit}]   dashed horizontal line at a parameter (e.g. set point)
+ *   the legend shows the current value of every series and line
  *   strips:[{label, color, on(snap, model), shade}]  on/off bars under the curves,
  *                                                    or full-height shading (shade:true)
  * Author: Echopraxium with the collaboration of Claude AI
@@ -1068,8 +1100,17 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       if (o.band && (!o.showBand || o.showBand(o.app))) { c.fillStyle = v("--band"); c.fillRect(L, Y(o.band[1]), pw, Y(o.band[0]) - Y(o.band[1])); }
       const legend = [];
       const series = o.series
-        ? o.series.map(s => ({ node: m.first(s.piece), label: s.label, color: col(s.color) })).filter(s => s.node)
-        : m.nodes.filter(n => m.kindOf(n) === "storage").map(n => ({ node: n, label: m.skins[n.type].name, color: m.skins[n.type].color || v("--flux") }));
+        ? o.series.map(s => Object.assign({}, s, { node: m.first(s.piece), color: col(s.color) })).filter(s => s.node)
+        : m.nodes.filter(n => m.kindOf(n) === "storage").map(n => ({ node: n, label: m.skins[n.type].name, color: m.skins[n.type].color || v("--flux"), unit: m.skins[n.type].unit }));
+      const show = (s, val) => val === null || val === undefined ? "—" : s.fmt ? s.fmt(val) : val.toFixed(s.decimals !== undefined ? s.decimals : 1) + (s.unit ? " " + s.unit : "");
+      const lineLegend = [];
+      for (const ln of (o.lines || [])) {                 // dashed reference lines (set point…)
+        const n = m.first(ln.piece); if (!n) continue;
+        const val = n.p[ln.param], c2 = col(ln.color || "--good");
+        c.save(); c.strokeStyle = c2; c.lineWidth = 1.5; c.setLineDash([6, 4]);
+        c.beginPath(); c.moveTo(L, Y(val)); c.lineTo(w - R, Y(val)); c.stroke(); c.restore();
+        lineLegend.push(`<span style="color:${c2}">┄</span> ${ln.label} <b>${show(ln, val)}</b>`);
+      }
       for (const s of series) {
         const id = s.node.id;
         c.strokeStyle = s.color; c.lineWidth = 2; c.beginPath(); let on = false;
@@ -1080,8 +1121,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
           if (!on) { c.moveTo(x, y); on = true; } else c.lineTo(x, y);
         }
         c.stroke();
-        legend.push(`<span style="color:${s.color}">■</span> ${s.label || m.skins[s.node.type].name}`);
+        const last = hist.length ? hist[hist.length - 1].v[id] : m.infoOut(s.node);
+        legend.push(`<span style="color:${s.color}">■</span> ${s.label || m.skins[s.node.type].name} <b>${show(s, last)}</b>`);
       }
+      legend.push(...lineLegend);
       strips.forEach((s, i) => {
         const y = h - B + 4 + 7 * i;
         c.fillStyle = col(s.color); c.globalAlpha = .6;
@@ -1249,8 +1292,9 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.4.0";
-  const SPEEDS = [1, 4, 0.5];
+  const VERSION = "0.5.0";
+  const SPEEDS = [0.25, 0.5, 1, 2, 4, 8, 16];
+  const LAYOUT_KEY = "tscg-kit-layout";
   const build = factory => factory((en, fr) => (K.lang === "fr" ? fr : en));
 
   K.start = function (factory) {
@@ -1264,7 +1308,9 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
          <h1 id="kTitle"></h1>
          <div class="k-transport">
            <button id="kPlay" class="primary" data-tip="play_tip"></button>
-           <button id="kSpeed" data-tip="speed_tip">×1</button>
+           <button id="kSlow" class="k-arrow" data-tip="speed_down">▼</button>
+           <span id="kSpeed" class="k-speed" data-tip="speed_label"></span>
+           <button id="kFast" class="k-arrow" data-tip="speed_up">▲</button>
            <button id="kReset" data-tip="reset_tip">↺</button>
            <span id="kClock" class="k-clock"></span>
          </div>
@@ -1277,6 +1323,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
        <main class="k-main">
          <section class="k-left">
            <div class="k-banner" id="kBanner" aria-live="polite"></div>
+           <div class="k-split k-split-h" id="kSplitBanner"></div>
            <div class="k-tabs" role="tablist">
              <button class="k-tab" role="tab" data-tab="panel" data-t="tab_panel"></button>
              <button class="k-tab" role="tab" data-tab="synoptic" data-t="tab_syn"></button>
@@ -1286,8 +1333,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
              <div class="k-pane k-pane-synoptic" data-pane="synoptic"></div>
            </div>
          </section>
+         <div class="k-split k-split-v" id="kSplitCols"></div>
          <section class="k-right">
            <div class="k-maquette"><h2 class="k-h2" data-t="maquette"></h2><div class="k-view" id="kView"></div></div>
+           <div class="k-split k-split-h" id="kSplitRight"></div>
            <div class="k-curves"><h2 class="k-h2" data-t="curves"></h2><canvas id="kChart"></canvas><div class="k-legend" id="kLegend"></div></div>
          </section>
        </main>
@@ -1349,6 +1398,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       document.querySelectorAll("[data-t]").forEach(e => { e.textContent = K.t(e.dataset.t); });
       document.querySelectorAll("[data-tip]").forEach(e => { e.title = K.t(e.dataset.tip); });
       playLabel();
+      $("#kSpeed").textContent = app.speedText ? app.speedText() : "";
     }
     // Switching language rebuilds the workshop texts; the graph, the panel, the clock and
     // the tutorial progress are kept.
@@ -1371,7 +1421,48 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     // ---- header controls
     const setPlay = on => { S.running = on; playLabel(); log(on ? "play" : "pause", ""); app.tutorial.refresh(); };
     $("#kPlay").onclick = () => setPlay(!S.running);
-    $("#kSpeed").onclick = e => { S.speed = SPEEDS[(SPEEDS.indexOf(S.speed) + 1) % SPEEDS.length]; e.target.textContent = "×" + S.speed; log("speed", S.speed); };
+    // speed: arrows step through SPEEDS; the label says how much simulated time one real second covers
+    const num = v => (Math.round(v * 10) / 10).toString();
+    const speedText = () => {
+      const spr = CLK.stepsPerSec * S.speed * CLK.dt;          // model units per real second
+      if (CLK.speedLabel) return CLK.speedLabel(spr, K.L);
+      const r = 1 / spr;                                       // real seconds per simulated hour
+      return r >= 1 ? `${num(r)} s = 1 h` : `1 s = ${num(spr)} h`;
+    };
+    const setSpeed = d => {
+      const i = Math.max(0, Math.min(SPEEDS.length - 1, SPEEDS.indexOf(S.speed) + d));
+      S.speed = SPEEDS[i]; $("#kSpeed").textContent = speedText(); log("speed", S.speed);
+      $("#kSlow").disabled = i === 0; $("#kFast").disabled = i === SPEEDS.length - 1;
+    };
+    app.speedText = speedText;
+    $("#kSlow").onclick = () => setSpeed(-1);
+    $("#kFast").onclick = () => setSpeed(+1);
+
+    // ---- splitters: drag to resize the compartments (double-click resets); remembered per browser
+    const main = $(".k-main"), left = $(".k-left"), right = $(".k-right"), banner = $("#kBanner"), curves = $(".k-curves");
+    const layout = (() => { try { return JSON.parse(localStorage.getItem(LAYOUT_KEY)) || {}; } catch (e) { return {}; } })();
+    const applyLayout = () => {
+      main.style.gridTemplateColumns = layout.cols ? `${layout.cols}px 6px minmax(300px,1fr)` : "";
+      if (layout.banner) { banner.style.height = layout.banner + "px"; banner.style.maxHeight = "none"; } else { banner.style.height = ""; banner.style.maxHeight = ""; }
+      right.classList.toggle("sized", !!layout.curves);
+      curves.style.height = layout.curves ? layout.curves + "px" : "";
+    };
+    const saveLayout = () => { try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout)); } catch (e) { /* storage blocked */ } };
+    const relayout = () => { app.synoptic.render(); app.panel.render(); app.chart.draw(); };
+    function splitter(el, key, compute) {
+      el.addEventListener("pointerdown", e => {
+        e.preventDefault(); el.setPointerCapture(e.pointerId); el.classList.add("on");
+        const move = ev => { layout[key] = Math.round(compute(ev)); applyLayout(); app.chart.draw(); };
+        el.addEventListener("pointermove", move);
+        el.addEventListener("pointerup", () => { el.removeEventListener("pointermove", move); el.classList.remove("on"); saveLayout(); relayout(); log("layout", key); }, { once: true });
+      });
+      el.addEventListener("dblclick", () => { delete layout[key]; applyLayout(); saveLayout(); relayout(); });
+    }
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    splitter($("#kSplitCols"), "cols", ev => { const r = main.getBoundingClientRect(); return clamp(ev.clientX - r.left, 380, r.width - 306); });
+    splitter($("#kSplitBanner"), "banner", ev => { const r = left.getBoundingClientRect(); return clamp(ev.clientY - r.top, 60, r.height - 180); });
+    splitter($("#kSplitRight"), "curves", ev => { const r = right.getBoundingClientRect(); return clamp(r.bottom - ev.clientY, 130, r.height - 140); });
+    applyLayout();
     $("#kReset").onclick = () => { model.resetAll(); app.tutorial.restartCurrent(); log("reset", ""); app.synoptic.render(); };
     $("#kHood").onclick = e => {
       S.hood = !S.hood; e.target.classList.toggle("on", S.hood); log("hood", S.hood);
@@ -1415,6 +1506,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       requestAnimationFrame(frame);
     }
 
+    setSpeed(0);
     app.step = n => { for (let i = 0; i < n; i++) { model.step(CLK.dt); app.tutorial.tick(); } };   // for tests
     relabel();
     app.synoptic.renderParams();
@@ -1452,6 +1544,9 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     chart: {
       range: [0, 32], tickY: 10, span: 8, tick: 2, label: t => t + " h",
       band: [19, 21], showBand: app => app.S.free || app.S.pieces.has("heater"),
+      series: [{ piece: "room", label: L("Room", "Pièce"), color: "#d9822b", unit: "°C" },
+               { piece: "radiator", label: L("Radiator", "Radiateur"), color: "#c0392b", unit: "°C" }],
+      lines: [{ piece: "bimetal", param: "set", label: L("Set point", "Consigne"), color: "--good", unit: "°C" }],
       strips: [
         { label: L("heater on", "chauffage en marche"), color: "--flux", on: (p, m) => { const h = m.first("heater"); return !!(h && p.u[h.id]); } },
         { label: L("window open", "fenêtre ouverte"), color: "--info", on: p => p.open }
@@ -1474,7 +1569,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       heater: { kind: "source", name: L("Heater", "Chauffage"), blurb: L("produces heat", "produit de la chaleur"), onText: L("heating", "chauffe"), offText: L("off", "à l'arrêt"),
         ports: { cmd: L("command", "commande"), flow: L("heat", "chaleur") },
         params: { P: { label: L("Power (kW)", "Puissance (kW)"), v: 2.5, step: 0.5, min: 0, max: 10 } } },
-      bimetal: { kind: "threshold", name: L("Bimetal", "Bilame"), blurb: L("bends with heat", "se courbe avec la chaleur"), onText: L("contact closed", "contact fermé"), offText: L("contact open", "contact ouvert"),
+      bimetal: { kind: "threshold", name: "Thermostat", blurb: L("turns the heating on below the set point", "allume le chauffage sous la consigne"), onText: L("asks for heat", "demande de la chaleur"), offText: L("idle", "au repos"),
         ports: { x: L("temperature", "température"), u: L("command", "commande") },
         params: { set: { label: L("Set point (°C)", "Consigne (°C)"), v: 20, step: 0.5, min: 5, max: 30 },
                   h: { label: L("Hysteresis (°C)", "Hystérésis (°C)"), v: 1, step: 0.25, min: 0, max: 5 } } },
@@ -1488,8 +1583,8 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     instruments: {
       roomTemp:     { type: "gauge",  label: L("Room thermometer", "Thermomètre de la pièce"), short: L("Room", "Pièce"), bind: { piece: "room", get: "level" }, range: [0, 30], step: 0.1, unit: "°C", zone: [19, 21] },
       heaterSwitch: { type: "toggle", label: L("Heater switch", "Interrupteur du chauffage"), short: L("Heater", "Chauffage"), bind: { piece: "heater", set: "manual" } },
-      bimetalLamp:  { type: "lamp",   label: L("Bimetal light (contact closed)", "Témoin du bilame (contact fermé)"), short: L("Contact", "Contact"), bind: { piece: "bimetal", get: "u" } },
-      setpoint:     { type: "slider", label: L("Bimetal set point", "Consigne du bilame"), short: L("Set point", "Consigne"), bind: { piece: "bimetal", param: "set" }, range: [10, 28], step: 0.5, unit: "°C" },
+      bimetalLamp:  { type: "lamp",   label: L("Thermostat light (heating requested)", "Témoin du thermostat (chauffe demandée)"), short: L("Heat", "Chauffe"), bind: { piece: "bimetal", get: "u" } },
+      setpoint:     { type: "slider", label: L("Thermostat set point", "Consigne du thermostat"), short: L("Set point", "Consigne"), bind: { piece: "bimetal", param: "set" }, range: [10, 28], step: 0.5, unit: "°C" },
       radiatorTemp: { type: "gauge",  label: L("Radiator thermometer", "Thermomètre du radiateur"), short: L("Radiator", "Radiateur"), bind: { piece: "radiator", get: "level" }, range: [0, 60], step: 0.1, unit: "°C" },
       outsideTemp:  { type: "slider", label: L("Outside temperature", "Température extérieure"), short: L("Outside", "Dehors"), bind: { piece: "wall", param: "level" }, range: [-15, 25], step: 1, unit: "°C" }
     },
@@ -1539,25 +1634,25 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
       { id: "loop", title: L("Closing the loop", "Fermer la boucle"),
         unlock: { pieces: ["bimetal"], instruments: ["bimetalLamp", "setpoint"] },
-        goal: L("Place a <b>Bimetal</b>. Wire the Room's <i>temperature</i> to the Bimetal, then the Bimetal's <i>command</i> to the Heater. Add the bimetal <b>light</b> to the Panel. Then hands off: <b>2 hours between 19 and 21 °C</b>.",
-                "Pose un <b>Bilame</b>. Relie la <i>température</i> de la Pièce au Bilame, puis la <i>commande</i> du Bilame au Chauffage. Ajoute le <b>témoin</b> du bilame au Panneau. Ensuite, ne touche plus à rien : <b>2 heures entre 19 et 21 °C</b>."),
-        hint: L("Watch the bimetal in the scale model while time goes by.", "Regarde le bilame dans la Maquette pendant que le temps passe."),
+        goal: L("Place a <b>Thermostat</b>. Wire the Room's <i>temperature</i> to the Thermostat, then the Thermostat's <i>command</i> to the Heater. Add the thermostat <b>light</b> to the Panel. Then hands off: <b>2 hours between 19 and 21 °C</b>.",
+                "Pose un <b>Thermostat</b>. Relie la <i>température</i> de la Pièce au Thermostat, puis la <i>commande</i> du Thermostat au Chauffage. Ajoute le <b>témoin</b> du thermostat au Panneau. Ensuite, ne touche plus à rien : <b>2 heures entre 19 et 21 °C</b>."),
+        hint: L("Watch the thermostat on the wall of the scale model while time goes by.", "Regarde le thermostat au mur de la Maquette pendant que le temps passe."),
         need: app => !app.model.first("room") ? syn(L("The Room is missing.", "Il manque la Pièce.")) :
                      !app.model.linked("heater", "flow", "room", "in") ? syn(L("Wire the Heater to the Room.", "Relie le Chauffage à la Pièce.")) :
-                     !app.model.linked("room", "level", "bimetal", "x") ? syn(L("Wire the Room's temperature to the Bimetal.", "Relie la température de la Pièce au Bilame.")) :
-                     !app.model.linked("bimetal", "u", "heater", "cmd") ? syn(L("Wire the Bimetal's command to the Heater.", "Relie la commande du Bilame au Chauffage.")) :
-                     !app.panel.has("bimetalLamp") ? pan(L("Add the bimetal light in the Panel.", "Ajoute le témoin du bilame dans le Panneau.")) : null,
+                     !app.model.linked("room", "level", "bimetal", "x") ? syn(L("Wire the Room's temperature to the Thermostat.", "Relie la température de la Pièce au Thermostat.")) :
+                     !app.model.linked("bimetal", "u", "heater", "cmd") ? syn(L("Wire the Thermostat's command to the Heater.", "Relie la commande du Thermostat au Chauffage.")) :
+                     !app.panel.has("bimetalLamp") ? pan(L("Add the thermostat light in the Panel.", "Ajoute le témoin du thermostat dans le Panneau.")) : null,
         check: K.hold(120, inBand, OUT_OF_BAND),
         takeaway: L("The room regulates itself. But look: the temperature is never exactly 20 °C, it keeps going up and down around it.",
                     "La pièce se règle toute seule. Mais regarde : la température n'est jamais exactement à 20 °C, elle monte et descend sans cesse autour."),
-        hood: L("Bimetal = <b>Threshold</b> with hysteresis. The wire coming back from the Room to the Heater forms a negative <b>Feedback Loop</b>: it is not a piece, it is a wiring.",
-                "Bilame = <b>Threshold</b> avec hystérésis. Le fil qui revient de la Pièce vers le Chauffage forme une <b>Feedback Loop</b> négative : ce n'est pas une pièce, c'est un câblage.") },
+        hood: L("Thermostat = <b>Threshold</b> with hysteresis. Old thermostats use a bimetal strip that bends with heat, newer ones an electronic sensor: the block is the same. The wire coming back from the Room to the Heater forms a negative <b>Feedback Loop</b>: it is not a block, it is a wiring.",
+                "Thermostat = <b>Threshold</b> avec hystérésis. Les anciens thermostats utilisent un bilame qui se courbe avec la chaleur, les récents un capteur électronique : le bloc est le même. Le fil qui revient de la Pièce vers le Chauffage forme une <b>Feedback Loop</b> négative : ce n'est pas un bloc, c'est un câblage.") },
 
       { id: "window", title: L("A cold snap", "Un coup de froid"),
         goal: L("In the <b>scale model</b>, click the window to open it. Leave it open for at least 10 minutes, then close it.",
                 "Dans la <b>Maquette</b>, clique sur la fenêtre pour l'ouvrir. Laisse-la ouverte au moins 10 minutes, puis referme-la."),
         hint: L("Meanwhile, watch the scale model as well as the Panel.", "Pendant ce temps, regarde aussi bien la Maquette que le Panneau."),
-        need: app => !app.model.linked("bimetal", "u", "heater", "cmd") ? syn(L("Keep the loop closed (Bimetal → Heater).", "Garde la boucle fermée (Bilame → Chauffage).")) : null,
+        need: app => !app.model.linked("bimetal", "u", "heater", "cmd") ? syn(L("Keep the loop closed (Thermostat → Heater).", "Garde la boucle fermée (Thermostat → Chauffage).")) : null,
         check: (app, mem) => {
           const wall = app.model.first("wall"), open = !!(wall && wall.s.open);
           mem.open = (mem.open || 0) + (open ? 1 : 0);
@@ -1583,22 +1678,34 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     },
 
     free: {
-      text: L("Every piece and instrument is unlocked. Try putting a <b>Radiator</b> between the Heater and the Room, and put its thermometer on the Panel: which one reacts first when the contact opens? You can also make winter harsher, widen the bimetal's hysteresis, or stretch and rotate the instruments.",
-              "Toutes les pièces et tous les instruments sont débloqués. Essaie d'intercaler un <b>Radiateur</b> entre le Chauffage et la Pièce, et mets son thermomètre sur le Panneau : lequel réagit en premier quand le contact s'ouvre ? Tu peux aussi rendre l'hiver plus rude, élargir l'hystérésis du bilame, ou étirer et pivoter les instruments."),
-      hood: L("Generic pieces used: Storage, Sink, Source, Threshold. The same ones serve in the other workshops.",
-              "Pièces génériques utilisées : Storage, Sink, Source, Threshold. Les mêmes servent dans les autres ateliers.")
+      text: L("Every block and instrument is unlocked. Try putting a <b>Radiator</b> between the Heater and the Room, and put its thermometer on the Panel: which one reacts first when the thermostat stops asking for heat? You can also make winter harsher, widen the thermostat's hysteresis, or stretch and rotate the instruments.",
+              "Tous les blocs et tous les instruments sont débloqués. Essaie d'intercaler un <b>Radiateur</b> entre le Chauffage et la Pièce, et mets son thermomètre sur le Panneau : lequel réagit en premier quand le thermostat cesse de demander de la chaleur ? Tu peux aussi rendre l'hiver plus rude, élargir l'hystérésis du thermostat, ou étirer et pivoter les instruments."),
+      hood: L("Generic blocks used: Storage, Sink, Source, Threshold. The same ones serve in the other workshops.",
+              "Blocs génériques utilisés : Storage, Sink, Source, Threshold. Les mêmes servent dans les autres ateliers.")
     },
 
     // ---------------------------------------------------------------- scale model
+    // A room in cross-section. The wall thermostat and the thermometer are real objects
+    // hanging in the room; the Panel stays the remote instrument.
     view: function (host, model, api) {
       host.innerHTML = `
 <svg viewBox="0 0 440 300" role="img" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <clipPath id="mqRoomClip"><rect x="60" y="76" width="320" height="186"/></clipPath>
+    <radialGradient id="mqWarm" cx="0.5" cy="0.6" r="0.5"><stop offset="0" stop-color="#f08a3c" stop-opacity=".75"/><stop offset="1" stop-color="#f08a3c" stop-opacity="0"/></radialGradient>
+    <radialGradient id="mqCool" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#4a8fe0" stop-opacity=".6"/><stop offset="1" stop-color="#4a8fe0" stop-opacity="0"/></radialGradient>
+  </defs>
   <rect id="mqSky" x="0" y="0" width="440" height="300" rx="12"/>
   <g id="mqSnow" fill="#ffffff" opacity=".9">${Array.from({ length: 26 }, (_, i) => `<circle cx="${(i * 67) % 430 + 6}" cy="${(i * 37) % 250 + 6}" r="${1.4 + (i % 3) * .5}"/>`).join("")}</g>
   <rect id="mqGround" x="0" y="262" width="440" height="38" rx="0"/>
   <g id="mqHouse">
     <path d="M40 76 L220 18 L400 76 Z" fill="#9b6b4f"/>
     <rect id="mqAir" x="60" y="76" width="320" height="186"/>
+    <g clip-path="url(#mqRoomClip)">
+      <ellipse id="mqPlume" cx="104" cy="150" rx="90" ry="110" fill="url(#mqWarm)"/>
+      <ellipse id="mqFloor" cx="190" cy="258" rx="130" ry="34" fill="url(#mqCool)"/>
+      <ellipse id="mqDraftAir" cx="372" cy="160" rx="70" ry="80" fill="url(#mqCool)"/>
+    </g>
     <rect id="mqWalls" x="55" y="76" width="330" height="186" fill="none" stroke-width="10"/>
     <line x1="50" y1="262" x2="390" y2="262" stroke="#6e6a60" stroke-width="3"/>
     <g id="mqWindow" class="mq-click">
@@ -1613,23 +1720,28 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     <g id="mqHeat">
       <rect id="mqRadBody" x="74" y="180" width="54" height="66" rx="5" stroke="#6e6a60" stroke-width="1.5"/>
       ${[0, 1, 2, 3, 4].map(i => `<line x1="${84 + i * 9}" y1="186" x2="${84 + i * 9}" y2="240" stroke="#6e6a60" stroke-width="1" opacity=".5"/>`).join("")}
-      <g id="mqWaves" stroke="#e07b39" stroke-width="2" fill="none" stroke-linecap="round">
-        <path d="M86 172 q4 -8 0 -16 t0 -16"/><path d="M101 172 q4 -8 0 -16 t0 -16"/><path d="M116 172 q4 -8 0 -16 t0 -16"/>
+      <g id="mqWaves" stroke="#e07b39" stroke-width="2.2" fill="none" stroke-linecap="round">
+        ${[0, 1, 2, 3, 4, 5].map(i => `<path class="mqWave" data-i="${i}"/>`).join("")}
       </g>
     </g>
-    <path id="mqCable" d="M208 136 V150 H140 V200 H128" fill="none" stroke="#6e6a60" stroke-width="1.5" stroke-dasharray="3 3"/>
-    <g id="mqBim">
-      <rect x="186" y="96" width="56" height="40" rx="5" fill="#f4f2ec" stroke="#6e6a60" stroke-width="1.5"/>
-      <circle cx="194" cy="126" r="3" fill="#6e6a60"/>
-      <circle id="mqContact" cx="232" cy="110" r="3.5"/>
-      <path id="mqStrip" fill="none" stroke-width="4" stroke-linecap="round"/>
-      <path id="mqStrip2" fill="none" stroke-width="2" stroke-linecap="round"/>
+    <path id="mqCable" d="M210 140 V156 H140 V200 H128" fill="none" stroke="#6e6a60" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <g id="mqStat">
+      <rect x="186" y="98" width="48" height="42" rx="5" fill="#f7f6f2" stroke="#6e6a60" stroke-width="1.5"/>
+      <text id="mqSet" x="194" y="116" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#2f2d27"></text>
+      <rect x="215" y="122" width="12" height="12" rx="1.5" fill="#ffffff" stroke="#6e6a60" stroke-width="1.2"/>
+      <rect id="mqStatLed" x="217.5" y="124.5" width="7" height="7"/>
+    </g>
+    <g id="mqThermo">
+      <rect x="300" y="104" width="10" height="92" rx="5" fill="#ffffff" stroke="#6e6a60" stroke-width="1.3"/>
+      <circle cx="305" cy="202" r="8" fill="#d23b2b" stroke="#6e6a60" stroke-width="1.3"/>
+      <rect id="mqMercury" x="302.5" width="5" fill="#d23b2b"/>
+      ${[0, 10, 20, 30].map(t => `<line x1="311" x2="316" y1="${190 - t * 2.8}" y2="${190 - t * 2.8}" stroke="#6e6a60" stroke-width="1"/><text x="318" y="${193 - t * 2.8}" font-family="system-ui,sans-serif" font-size="8.5" fill="#5c5a52">${t}</text>`).join("")}
     </g>
   </g>
   <text id="mqEmpty" class="mq-note" x="220" y="150" text-anchor="middle"></text>
 </svg>`;
       const $ = id => host.querySelector("#" + id);
-      const disp = { heat: 0, strip: 1, waves: 0 };
+      const disp = { heat: 0, waves: 0, mercury: 20, draft: 0 };
       const ease = (k, target, f = 0.12) => { disp[k] += (target - disp[k]) * f; return disp[k]; };
       const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
       const hex = c => `rgb(${c[0]},${c[1]},${c[2]})`;
@@ -1643,6 +1755,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       const AIR = [[0, [120, 160, 214]], [12, [178, 205, 232]], [19, [241, 234, 215]], [23, [246, 214, 168]], [30, [238, 150, 90]]];
       const METAL = [[0, [200, 205, 210]], [25, [214, 208, 198]], [40, [240, 160, 110]], [60, [220, 70, 40]]];
       const SKY_COLD = [[-15, [150, 170, 196]], [5, [184, 204, 226]], [25, [196, 226, 245]]];
+      let phase = 0, lastT = performance.now();
 
       $("mqWindow").addEventListener("click", () => {
         const wall = model.first("wall");
@@ -1652,9 +1765,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       });
 
       return {
-        update() {
+        update(running) {
+          const now = performance.now(), dtR = Math.min(0.1, (now - lastT) / 1000); lastT = now;
           const room = model.first("room"), wall = model.first("wall"), heater = model.first("heater"),
-                bim = model.first("bimetal"), rad = model.first("radiator");
+                stat = model.first("bimetal"), rad = model.first("radiator");
           host.querySelector("svg").setAttribute("aria-label", K.L("Scale model: a heated room, in cross-section", "Maquette : une pièce chauffée vue en coupe"));
           $("mqEmpty").textContent = K.L("Empty scale model: place a Room in the Synoptic.", "Maquette vide : pose une Pièce dans le Synoptique.");
           $("mqEmpty").style.display = room ? "none" : "";
@@ -1674,27 +1788,37 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
           $("mqWinGlass").style.display = open ? "none" : "";
           $("mqWinLeaf").style.display = open ? "" : "none";
           $("mqDraft").style.display = open ? "" : "none";
-          // heater / radiator: glows with its own temperature, or with the on/off state
+          $("mqDraftAir").setAttribute("opacity", ease("draft", open ? 1 : 0, 0.08).toFixed(2));
+          // heater / radiator: glows with its own temperature (or on/off), warm air rises, cool air returns along the floor
           $("mqHeat").style.display = heater ? "" : "none";
+          let toRoom = 0;
           if (heater) {
             const hot = rad ? Math.max(0, Math.min(1, (rad.s.x - 20) / 12)) : ease("heat", heater.s.u, 0.08);
             $("mqRadBody").setAttribute("fill", ramp(METAL, 20 + hot * 40));
-            const toRoom = rad ? Math.max(0, rad.p.k * (rad.s.x - room.s.x)) / Math.max(0.5, heater.p.P) : (model.linked("heater", "flow", "room", "in") ? disp.heat : 0);
-            $("mqWaves").setAttribute("opacity", ease("waves", Math.min(1, toRoom), 0.1).toFixed(2));
+            toRoom = rad ? Math.max(0, rad.p.k * (rad.s.x - room.s.x)) / Math.max(0.5, heater.p.P) : (model.linked("heater", "flow", "room", "in") ? disp.heat : 0);
           }
-          // bimetal: the strip curls away from the contact when it gets warm
-          $("mqBim").style.display = bim ? "" : "none";
-          const looped = bim && heater && model.linked("bimetal", "u", "heater", "cmd");
+          const w = ease("waves", Math.min(1, toRoom), 0.08);
+          $("mqPlume").setAttribute("opacity", w.toFixed(2));
+          $("mqFloor").setAttribute("opacity", (0.8 * w).toFixed(2));
+          if (running) phase = (phase + dtR * 0.55) % 1;          // waves rise only while time runs
+          host.querySelectorAll(".mqWave").forEach(p => {
+            const i = +p.dataset.i, f = (phase + i / 6) % 1, x = 86 + (i % 3) * 15 + Math.sin((f + i) * 6.28) * 2;
+            const y = 174 - 70 * f;
+            p.setAttribute("d", `M${x.toFixed(1)} ${y.toFixed(1)} q4 -5 0 -10 t0 -10`);
+            p.setAttribute("opacity", (w * Math.sin(Math.PI * f) * 0.95).toFixed(2));
+          });
+          // wall thermostat: shows its set point; the square turns red while it asks for heat
+          $("mqStat").style.display = stat ? "" : "none";
+          const looped = stat && heater && model.linked("bimetal", "u", "heater", "cmd");
           $("mqCable").style.display = looped ? "" : "none";
-          if (bim) {
-            const closed = bim.s.x === null ? 1 : bim.s.u;
-            const s = ease("strip", closed, 0.1);
-            const ex = 230 - 3 * (1 - s), ey = 112 - 14 * (1 - s), cy = 120 - 12 * (1 - s);
-            const d = `M194 126 Q212 ${cy} ${ex} ${ey}`;
-            $("mqStrip").setAttribute("d", d); $("mqStrip").setAttribute("stroke", "#b87333");
-            $("mqStrip2").setAttribute("d", d); $("mqStrip2").setAttribute("stroke", "#c9ccd1");
-            $("mqContact").setAttribute("fill", s > 0.9 && looped ? "#e07b39" : "#9a968c");
+          if (stat) {
+            $("mqSet").textContent = (Math.round(stat.p.set * 2) / 2).toString().replace(".", K.L(".", ",")) + " °C";
+            $("mqStatLed").setAttribute("fill", stat.s.x !== null && stat.s.u ? "#e0302a" : "#222222");
           }
+          // thermometer on the wall: a liquid column, read like a real one
+          const tm = ease("mercury", Math.max(-2, Math.min(32, room.s.x)), 0.2);
+          const top = 190 - tm * 2.8;
+          $("mqMercury").setAttribute("y", top.toFixed(1)); $("mqMercury").setAttribute("height", Math.max(0, 200 - top).toFixed(1));
         }
       };
     }

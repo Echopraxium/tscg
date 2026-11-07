@@ -70,9 +70,9 @@
 
     chart: {
       range: [-100, 100], tickY: 50, span: 72, tick: 12, label: t => (t % 24 === 0 ? L("d", "j") + (t / 24 + 1) : (t % 24) + " h"),
-      series: [{ piece: "plante", label: L("Plant orientation", "Orientation de la plante"), color: "--flux" },
-               { piece: "soleil", label: L("Sun direction", "Direction du soleil"), color: "#d4a017" },
-               { piece: "lampe", label: L("Lamp direction", "Direction de la lampe"), color: "#d4a017" }],
+      series: [{ piece: "plante", label: L("Plant orientation", "Orientation de la plante"), color: "--flux", fmt: dir },
+               { piece: "soleil", label: L("Sun direction", "Direction du soleil"), color: "#d4a017", fmt: dir },
+               { piece: "lampe", label: L("Lamp direction", "Direction de la lampe"), color: "#d4a017", fmt: dir }],
       strips: [
         { label: L("night", "nuit"), color: "--info", shade: true, on: p => p.night },
         { label: L("clock active", "horloge active"), color: "--accent", on: (p, m) => { const h = m.first("horloge"); return !!(h && p.v[h.id] !== null && p.v[h.id] !== undefined); } }
@@ -86,7 +86,7 @@
                 "Dans le <b>Synoptique</b>, pose une <b>Plante</b>, une <b>Lampe</b>, un <b>Écart</b> et une <b>Croissance</b>. Relie la <i>lumière</i> de la Lampe et l'<i>orientation</i> de la Plante à l'Écart, l'Écart à la Croissance, et la <i>rotation</i> de la Croissance à la Plante. Ajoute la <b>boussole</b> au Panneau, puis lance le temps."),
         hint: L("Four wires in all: two into the Gap, one into the Growth, one into the Plant.", "Quatre fils en tout : deux vers l'Écart, un vers la Croissance, un vers la Plante."),
         need: app => { const m = app.model;
-          return !m.first("plante") || !m.first("lampe") || !m.first("ecart") || !m.first("croissance") ? syn(L("Place the four pieces: Plant, Lamp, Gap, Growth.", "Pose les quatre pièces : Plante, Lampe, Écart, Croissance.")) :
+          return !m.first("plante") || !m.first("lampe") || !m.first("ecart") || !m.first("croissance") ? syn(L("Place the four blocks: Plant, Lamp, Gap, Growth.", "Pose les quatre blocs : Plante, Lampe, Écart, Croissance.")) :
                  !m.linked("lampe", "out", "ecart", "a") ? syn(L("Wire the Lamp's light to the Gap (“light” input).", "Relie la lumière de la Lampe à l'Écart (entrée « lumière »).")) :
                  !m.linked("plante", "level", "ecart", "b") ? syn(L("Wire the Plant's orientation to the Gap.", "Relie l'orientation de la Plante à l'Écart.")) :
                  !m.linked("ecart", "d", "croissance", "x") ? syn(L("Wire the Gap to the Growth.", "Relie l'Écart à la Croissance.")) :
@@ -168,13 +168,13 @@
       text: L("Regulating towards a fixed set point (the thermostat) and pursuing a moving target (the sunflower) are the same negative loop. It also serves the eye following a ball, the autopilot holding a heading, the antenna tracking a satellite. And when the target is predictable, a clock lets you anticipate.",
               "Réguler vers une consigne fixe (le thermostat) et poursuivre une cible qui bouge (le tournesol), c'est la même boucle négative. Elle sert aussi à l'œil qui suit une balle, au pilote automatique qui garde un cap, à l'antenne qui suit un satellite. Et quand la cible est prévisible, une horloge permet d'anticiper."),
       questions: [],
-      hood: L("Generic pieces used: Storage, Gradient, Transducer, Clock. Transducer was already in Larsen.",
-              "Pièces génériques utilisées : Storage, Gradient, Transducer, Clock. Transducer était déjà dans Larsen.")
+      hood: L("Generic blocks used: Storage, Gradient, Transducer, Clock. Transducer was already in Larsen.",
+              "Blocs génériques utilisés : Storage, Gradient, Transducer, Clock. Transducer était déjà dans Larsen.")
     },
 
     free: {
-      text: L("Every piece and slider is unlocked. Try: does a very reactive plant follow better, or does it start shaking with noise? Put the Lamp back next to the Sun: which one wins? How much noise before the plant wanders at random?",
-              "Toutes les pièces et tous les curseurs sont débloqués. Essaie : une plante très réactive suit-elle mieux, ou se met-elle à trembler avec du bruit ? Remets la Lampe à côté du Soleil : qui l'emporte ? Jusqu'où peut aller le bruit avant que la plante erre au hasard ?"),
+      text: L("Every block and slider is unlocked. Try: does a very reactive plant follow better, or does it start shaking with noise? Put the Lamp back next to the Sun: which one wins? How much noise before the plant wanders at random?",
+              "Tous les blocs et tous les curseurs sont débloqués. Essaie : une plante très réactive suit-elle mieux, ou se met-elle à trembler avec du bruit ? Remets la Lampe à côté du Soleil : qui l'emporte ? Jusqu'où peut aller le bruit avant que la plante erre au hasard ?"),
       hood: L("The same assembly, with other names: a tracking antenna, an eye, a cruise control.",
               "Le même assemblage, avec d'autres noms : une antenne de poursuite, un œil, un régulateur de vitesse.")
     },
