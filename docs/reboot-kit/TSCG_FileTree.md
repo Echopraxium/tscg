@@ -1,6 +1,6 @@
 # TSCG — Repository File Tree
 
-*Generated from `git ls-files` (1690 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (1720 tracked files). Directory-level map; backup / `node_modules` / `_sim` / cache folders are collapsed to a count. ★ = live authority file, i.e. the canonical layer ontology under `ontology/` (read it from HEAD). Regenerate with `tscg_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -126,6 +126,8 @@
   - **2026_11_03/**
     - Housekeeping_RebootKit_2026-11-03.md
     - RebootKit_Cleanup_Triage.xlsx
+  - **2026_11_07/**
+    - TSCG_Session_Handover_2026-11-07_Kit_Frictions.md
 - **_03_SerendipCrates/**
   - **EpistemologyMaquette/**
     - CRATE.md
@@ -670,6 +672,16 @@
         - _00_serve_poclet-sim.bat
         - M0_Theremin_Prototype.html
         - README.md
+    - **Thermostat/**
+      - **static/**
+        - **src/**
+          - index.src.html
+          - workshop.js
+        - _00_serve_poclet-sim.bat
+        - M0_Thermostat.html
+      - M0_Thermostat.jsonld
+      - M0_Thermostat_analysis.md
+      - M0_Thermostat_README.md
     - **tpack/**
       - _00_Run_Simulation.bat
       - _00_setup_notes.txt
@@ -1533,6 +1545,33 @@
   - 2DBarcode_PedagogicalPoclet_DemocratizationFacet_README.md
   - _open_cmd_window.bat
   - QRCode_ExplorationSpaces_README.md
+- **kit/**
+  - **larsen/**
+    - index.html
+    - index.src.html
+    - workshop.js
+  - **lib/**
+    - app.js
+    - chart.js
+    - i18n.js
+    - icons.js
+    - panel.js
+    - sim.js
+    - synoptic.js
+    - tscg-kit.css
+    - tutorial.js
+  - **oiseau/**
+    - index.html
+    - index.src.html
+    - workshop.js
+  - **tools/**
+    - bundle.js
+  - **tournesol/**
+    - index.html
+    - index.src.html
+    - workshop.js
+  - index.html
+  - README.md
 - **migration_backups/** _(collapsed, 86 entries)_
 - **ontology/**
   - **docs/**
@@ -1600,6 +1639,7 @@
       - **WS-12/**
         - worksite.yaml
       - **WS-13/**
+        - WS-13_Phase0_Addendum_A_Interface.md
         - WS-13_Phase0_Structural_Core.md
       - **WS-3/**
         - M2_Formulas_Review_with_Gs_README.md
