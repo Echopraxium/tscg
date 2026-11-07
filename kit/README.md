@@ -45,8 +45,16 @@ Online: `https://echopraxium.github.io/tscg/kit/`
   thermostat, a thermometer) are drawn there as real objects; the Panel stays the remote
   instrument, and the Maquette still shows what it does not (radiator heat, cold draught).
 
-The compartments are resizable with the splitters (double-click resets; the layout is
-remembered per browser). The ▼ ▲ arrows change the speed and show how much simulated time
+Layout: the top row holds the tutorial (left) and the **Maquette / Courbes** compartment (right,
+two tabs); the bottom row, full width, holds the **Synoptique / Panneau** tabs. The two
+splitters resize the rows and the top columns (double-click resets; the layout is
+remembered per browser). The Synoptic can be zoomed (− / + / 100 % / fit buttons, or
+Ctrl + wheel): a page cannot change the browser's own zoom, so the zoom is the Synoptic's.
+Connectors are triangles straddling the block's border, pointing the way the flow goes
+(into the block on an input, out of it on an output; a port both input and output would be
+a diamond). A return wire runs through the gap between two blocks when one is above the
+other. The time axis of the curves is labelled in s / min / h / days / months
+(`W.chart.unit` = seconds per time unit), with a line at every midnight. The ▼ ▲ arrows change the speed and show how much simulated time
 one real second covers (e.g. “12 s = 1 h”). While time runs, chevrons travel along every
 wire in the direction of the flow (they reverse when a flux goes negative, and stop when
 nothing flows). Every block has an icon, shown left of its name in the palette and in the
@@ -110,7 +118,7 @@ Ask testers to think aloud while they play, without helping them, then to click
 rejected connections, panel actions, bets). Note what they say spontaneously
 about the Maquette and the Panneau.
 
-Status: **prototype 0.8.0** — four workshops, each with a guided tutorial and a free mode. UI in English and French. Desktop first; usable but cramped on a phone.
+Status: **prototype 0.9.0** — four workshops, each with a guided tutorial and a free mode. UI in English and French. Desktop first; usable but cramped on a phone.
 
 ## Languages
 

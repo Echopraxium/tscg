@@ -56,7 +56,7 @@
     },
 
     chart: {
-      range: [0, 100], tickY: 25, span: 4, tick: 1, label: t => t + " s",
+      range: [0, 100], tickY: 25, span: 4, unit: 1,
       series: [{ piece: "salle", label: L("Level in the room", "Niveau dans la salle"), color: "--flux", decimals: 0 }],
       strips: [
         { label: L("voice", "voix"), color: "--info", on: (p, m) => { const v = m.first("voix"); return !!(v && p.u[v.id]); } },

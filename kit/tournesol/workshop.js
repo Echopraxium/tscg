@@ -69,7 +69,7 @@
     },
 
     chart: {
-      range: [-100, 100], tickY: 50, span: 72, tick: 12, label: t => (t % 24 === 0 ? L("d", "j") + (t / 24 + 1) : (t % 24) + " h"),
+      range: [-100, 100], tickY: 50, span: 72, unit: 3600,
       series: [{ piece: "plante", label: L("Plant orientation", "Orientation de la plante"), color: "--flux", fmt: dir },
                { piece: "soleil", label: L("Sun direction", "Direction du soleil"), color: "#d4a017", fmt: dir },
                { piece: "lampe", label: L("Lamp direction", "Direction de la lampe"), color: "#d4a017", fmt: dir }],
@@ -151,6 +151,7 @@
                    choices: [L("Yes, just as well", "Oui, toujours aussi bien"), L("By day yes, but some mornings it will not be ready", "Le jour oui, mais certains matins elle sera mal préparée"), L("No, it gets completely lost", "Non, elle se perd complètement")] },
         goal: L("Add the <b>irregular days</b> slider to the Panel and push it past the middle. Let three days go by while watching the scale model and the curves.",
                 "Ajoute le curseur d'<b>irrégularité des jours</b> au Panneau et pousse-le au-delà de la moitié. Laisse passer trois jours en regardant la Maquette et les courbes."),
+        curves: true,
         hint: L("You can also add the noise slider, and look for the point where the plant starts to wander.", "Tu peux aussi ajouter le curseur de bruit, et chercher à partir d'où la plante erre."),
         need: app => { const m = app.model, s = m.first("soleil");
           return !s || !m.linked("soleil", "out", "ecart", "a") || !coreWired(m) ? syn(L("Keep the Sun and the loop wired.", "Garde le Soleil et la boucle reliés.")) :

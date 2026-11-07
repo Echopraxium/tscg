@@ -56,6 +56,7 @@
       tab_panel: "Panel", tab_syn: "Synoptic", maquette: "Scale model", curves: "Curves",
       pal_hint: "Hover or click a block to read what it does.", locked_info: "Unlocked later in the tutorial.",
       theme_tip: "Light / dark theme", info_box: "About this block",
+      zoom_out: "Zoom out (Ctrl + wheel)", zoom_in: "Zoom in (Ctrl + wheel)", zoom_reset: "Back to 100 %", zoom_fit: "Show every block",
       speed_down: "Slower", speed_up: "Faster", speed_label: "Real time ↔ simulated time",
       home_tip: "All workshops", lang_btn: "FR", lang_tip: "Passer en français",
       g_threshold: "Threshold (hysteresis)", g_gradient: "Gradient (gap)", g_clock: "Clock (rhythm)"
@@ -90,6 +91,7 @@
       tab_panel: "Panneau", tab_syn: "Synoptique", maquette: "Maquette", curves: "Courbes",
       pal_hint: "Survole ou clique un bloc pour savoir ce qu'il fait.", locked_info: "Débloqué plus tard dans le tutoriel.",
       theme_tip: "Thème clair / sombre", info_box: "À propos du bloc",
+      zoom_out: "Dézoomer (Ctrl + molette)", zoom_in: "Zoomer (Ctrl + molette)", zoom_reset: "Revenir à 100 %", zoom_fit: "Afficher tous les blocs",
       speed_down: "Plus lent", speed_up: "Plus rapide", speed_label: "Temps réel ↔ temps simulé",
       home_tip: "Tous les ateliers", lang_btn: "EN", lang_tip: "Switch to English",
       g_threshold: "Threshold (hystérésis)", g_gradient: "Gradient (écart)", g_clock: "Clock (rythme)"

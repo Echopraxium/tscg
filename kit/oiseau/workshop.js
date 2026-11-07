@@ -79,7 +79,7 @@
     },
 
     chart: {
-      range: [0, 100], tickY: 25, span: 120, tick: 20, label: t => t + " s",
+      range: [0, 100], tickY: 25, span: 120, unit: 1,
       series: [{ piece: "tete", label: L("Liquid in the head", "Liquide dans la tête"), color: "#c0392b", unit: "%", decimals: 0 }],
       lines: [{ piece: "bascule", value: n => n.p.set + n.p.h / 2, label: L("tips at", "bascule à"), color: "--bad", unit: "%", decimals: 0 },
               { piece: "bascule", value: n => n.p.set - n.p.h / 2, label: L("straightens at", "se redresse à"), color: "--good", unit: "%", decimals: 0 }],
@@ -135,6 +135,7 @@
                    choices: [L("Drink once, then stay upright", "Boire une fois, puis rester debout"), L("Settle half-leaning", "Se stabiliser à moitié penché"), L("Drink again and again", "Boire encore et encore")] },
         goal: L("Place a <b>Return</b>. Wire the Head's <i>back down</i> output to it, and the Tilt's <i>tipped</i> output to the Return's <i>opening</i>. Let the bird drink <b>4 times</b>.",
                 "Pose un <b>Retour</b>. Relie-lui la sortie <i>redescente</i> de la Tête, et la sortie <i>penché</i> de la Bascule à l'<i>ouverture</i> du Retour. Laisse l'oiseau boire <b>4 fois</b>."),
+        curves: true,
         hint: L("Look at the curve: between which two lines does the level travel?", "Regarde la courbe : entre quelles deux lignes le niveau voyage-t-il ?"),
         need: app => { const m = app.model;
           return !m.linked("evap", "flow", "tete", "in") ? syn(KEEP_HEAD) : !m.linked("tete", "level", "bascule", "x") ? syn(KEEP_TILT) :
