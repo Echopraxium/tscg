@@ -434,6 +434,14 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     }
     byId(id) { return this.nodes.find(n => n.id === id); }
     first(type) { return this.nodes.find(n => n.type === type); }
+    all(type) { return this.nodes.filter(n => n.type === type); }
+    // the block a binding aims at: a precise block when it names one ({node: id}), else the first of its type
+    target(bind) { return bind.node != null ? this.byId(bind.node) : this.first(bind.piece); }
+    // display name of a block: its skin name, numbered when several blocks share it ("Room 2")
+    label(n) {
+      const name = this.skins[n.type].name;
+      return this.all(n.type).length > 1 ? `${name} ${n.num || 1}` : name;
+    }
     wiresTo(id, port) { return this.wires.filter(w => w.to.node === id && (!port || w.to.port === port)); }
     wiresFrom(id, port) { return this.wires.filter(w => w.from.node === id && (!port || w.from.port === port)); }
     linked(fromType, fromPort, toType, toPort) {
@@ -442,7 +450,9 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     }
 
     addNode(type, x, y) {
-      const n = { id: this.nextId++, type, x, y, p: {} };
+      const used = new Set(this.all(type).map(o => o.num));
+      let num = 1; while (used.has(num)) num++;
+      const n = { id: this.nextId++, type, num, x, y, p: {} };
       const ps = this.skins[type].params || {};
       for (const k in ps) n.p[k] = ps[k].v;
       this.resetNode(n);
@@ -607,12 +617,13 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     }
 
     // ---- bindings, used by the Panneau: {piece, get} | {piece, set:"manual"} | {piece, param}
+    //      + an optional {node: id} to aim at one precise block among several of the same type
     isAuto(bind) {
-      const n = this.first(bind.piece);
+      const n = this.target(bind);
       return !!(n && bind.set === "manual" && this.wiresTo(n.id, "cmd").length);
     }
     read(bind) {
-      const n = this.first(bind.piece);
+      const n = this.target(bind);
       if (!n) return null;
       if (bind.get === "level") return n.s.x;
       if (bind.get === "u") return n.s.x === null ? null : n.s.u;
@@ -622,7 +633,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       return null;
     }
     write(bind, v) {
-      const n = this.first(bind.piece);
+      const n = this.target(bind);
       if (!n) return false;
       if (bind.set === "manual") {
         if (this.isAuto(bind)) return false;
@@ -783,7 +794,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         el("rect", { class: "node-body", width: NW, height: h, rx: 8 }, g);
         const head = el("path", { class: "node-head", d: `M0 8 Q0 0 8 0 H${NW - 8} Q${NW} 0 ${NW} 8 V${HEAD} H0 Z` }, g);
         el("path", { class: "node-icon", d: K.iconPath(K.iconOf(s)), transform: "translate(8 6) scale(0.667)" }, g);
-        const title = el("text", { class: "node-title", x: 29, y: hood ? 13 : 18 }, g); title.textContent = s.name;
+        const title = el("text", { class: "node-title", x: 29, y: hood ? 13 : 18 }, g); title.textContent = this.m.label(n);
         if (hood) el("text", { class: "node-gen", x: 29, y: 24 }, g).textContent = K.generic(s.kind);
         for (const part of [head, title]) { part.style.cursor = "grab"; part.addEventListener("pointerdown", e => this.startDrag(e, n)); }
         outer.addEventListener("pointerdown", e => { if (!e.defaultPrevented) this.select("n" + n.id); });
@@ -907,7 +918,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       if (this.selected[0] === "w") { box.innerHTML = `<span>${K.t("wire_selected")}</span><button class="sy-del">${K.t("del_wire")}</button>`; box.querySelector(".sy-del").onclick = () => this.deleteSelected(); return; }
       const n = this.m.byId(+this.selected.slice(1)); if (!n) return;
       const s = this.skin(n), ps = s.params || {};
-      box.innerHTML = `<b>${s.name}</b>${this.o.hood() ? ` <span class="k-muted">· ${K.generic(s.kind)}</span>` : ""}` +
+      box.innerHTML = `<b>${this.m.label(n)}</b>${this.o.hood() ? ` <span class="k-muted">· ${K.generic(s.kind)}</span>` : ""}` +
         Object.entries(ps).filter(([k, d]) => !d.hidden).map(([k, d]) => `<label>${d.label}<input type="number" data-k="${k}" step="${d.step}"${d.min !== undefined ? ` min="${d.min}"` : ""}${d.max !== undefined ? ` max="${d.max}"` : ""} value="${n.p[k]}"></label>`).join("") +
         `<button class="sy-del">${K.t("del_piece")}</button>`;
       box.querySelectorAll("input").forEach(inp => inp.onchange = () => {
@@ -967,8 +978,15 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       this.host.querySelector(".pn-tb-label").textContent = K.t("pn_add");
       this.empty.textContent = K.t("pn_empty");
     }
-    def(c) { return this.o.instruments[c.inst]; }
-    has(key) { return this.controls.some(c => c.inst === key); }
+    // an instrument on the panel aims at one block (c.node); its labels name that block when several share a type
+    def(c) {
+      const d = this.o.instruments[c.inst], n = c.node != null ? this.m.byId(c.node) : null;
+      if (!n) return d;
+      const many = this.m.all(n.type).length > 1;
+      return Object.assign({}, d, { bind: Object.assign({}, d.bind, { node: c.node }),
+        label: many ? `${d.label} · ${this.m.label(n)}` : d.label, short: many ? `${d.short} ${n.num}` : d.short });
+    }
+    has(key, node) { return this.controls.some(c => c.inst === key && (node === undefined || c.node === node)); }
     cols() { return Math.max(8, Math.floor(this.grid.clientWidth / U)); }
 
     renderToolbar() {
@@ -977,15 +995,18 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       for (const key in this.o.instruments) {
         if (!this.o.isUnlocked(key)) continue;
         any = true;
-        const d = this.o.instruments[key], piece = this.o.skins[d.bind.piece];
-        const present = this.has(key), avail = !!this.m.first(d.bind.piece);
-        const b = document.createElement("button");
-        b.className = "pn-add"; b.dataset.inst = key;
-        b.innerHTML = `<span class="pn-ico">${ICON[d.type]}</span>${d.label}`;
-        b.disabled = present || !avail;
-        b.title = present ? K.t("pn_present") : !avail ? K.t("pn_need", piece.name) : K.t("pn_addtip");
-        b.onclick = () => this.add(key);
-        this.tb.appendChild(b);
+        const d = this.o.instruments[key], piece = this.o.skins[d.bind.piece], blocks = this.m.all(d.bind.piece);
+        // one button per block when several blocks of that type are in the Synoptic
+        for (const n of blocks.length ? blocks : [null]) {
+          const many = blocks.length > 1, present = many ? this.has(key, n.id) : this.has(key), avail = !!n;
+          const b = document.createElement("button");
+          b.className = "pn-add"; b.dataset.inst = key; if (n) b.dataset.node = n.id;
+          b.innerHTML = `<span class="pn-ico">${ICON[d.type]}</span>${d.label}${many ? ` · ${this.m.label(n)}` : ""}`;
+          b.disabled = present || !avail;
+          b.title = present ? K.t("pn_present") : !avail ? K.t("pn_need", piece.name) : K.t("pn_addtip");
+          b.onclick = () => this.add(key, n && n.id);
+          this.tb.appendChild(b);
+        }
       }
       if (!any) this.tb.innerHTML = `<span class="k-muted">${K.t("pn_none")}</span>`;
     }
@@ -1003,9 +1024,10 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
       for (let y = 0; y < 400; y++) for (let x = 0; x + f.w <= this.cols(); x++) if (this.fits(c, x, y, f)) return { x, y };
       return { x: 0, y: 0 };
     }
-    add(key) {
+    add(key, node) {
       const d = this.o.instruments[key], df = DEFAULTS[d.type];
-      const c = { id: this.nextId++, inst: key, type: d.type, orient: d.orient || df.orient, len: d.len || df.len, x: 0, y: 0 };
+      if (node == null) { const n = this.m.first(d.bind.piece); node = n ? n.id : null; }
+      const c = { id: this.nextId++, inst: key, node, type: d.type, orient: d.orient || df.orient, len: d.len || df.len, x: 0, y: 0 };
       Object.assign(c, this.firstFree(c, foot(c)));
       this.controls.push(c);
       this.o.log("panel_add", key);
@@ -1053,7 +1075,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         (resizable(c) ? `<button class="pn-rot" title="${K.t("pn_rotate")}">⟳</button>` : "") +
         `<button class="pn-del" title="${K.t("pn_remove")}">×</button></span></div><div class="pn-body"></div>` +
         (resizable(c) ? `<div class="pn-resize" title="${K.t("pn_stretch")}"></div>` : "");
-      const body = node.querySelector(".pn-body"), refs = { node };
+      const body = node.querySelector(".pn-body"), refs = { node, label: node.querySelector(".pn-label") };
       if (c.type === "gauge" || c.type === "slider") {
         body.innerHTML = `<div class="pn-track">${d.zone ? `<div class="pn-zone"></div>` : ""}<div class="pn-fill"></div>${c.type === "slider" ? `<div class="pn-knob"></div>` : ""}</div><span class="pn-val"></span>`;
         refs.track = body.querySelector(".pn-track"); refs.fill = body.querySelector(".pn-fill");
@@ -1089,6 +1111,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
         const d = this.def(c), v = this.m.read(d.bind), off = v === null;
         r.node.classList.toggle("off", off);
         r.node.title = off ? K.t("pn_absent", d.label, this.o.skins[d.bind.piece].name) : d.label;
+        r.label.textContent = d.short;
         if (r.fill) {
           const f = off ? 0 : this.frac(d, v), base = d.center !== undefined ? this.frac(d, d.center) : 0;
           this.setBar(r.fill, c, off ? base : base, off ? base : f);
@@ -1416,7 +1439,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.7.0";
+  const VERSION = "0.8.0";
   const SPEEDS = [0.25, 0.5, 1, 2, 4, 8, 16];
   const LAYOUT_KEY = "tscg-kit-layout";
   const build = factory => factory((en, fr) => (K.lang === "fr" ? fr : en));
@@ -1986,6 +2009,14 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
   };
   };
 
+  // Place on the map of scenarios: an articulation from the pivot (read by the home page, without the libraries)
+  factory.meta = { icon: "bird",
+    name: { en: "Drinking bird", fr: "Oiseau buveur" },
+    what: { en: "A head, an evaporation, a tilt, a return.", fr: "Une tête, une évaporation, une bascule, un retour." },
+    concept: { en: "A loop that never settles: it goes back and forth, forever.", fr: "Une boucle qui ne se pose jamais : elle va et vient, sans fin." },
+    articulation: { from: "thermostat", dir: "lateral",
+      carried: { en: "the sawtooth of the thermostat's curve", fr: "la dent de scie de la courbe du thermostat" },
+      change: { en: "no more resting point", fr: "plus de point de repos" } } };
   (K.workshops = K.workshops || {}).oiseau = factory;
 })(window.TSCGKit = window.TSCGKit || {});
 

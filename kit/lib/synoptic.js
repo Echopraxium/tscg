@@ -125,7 +125,7 @@
         el("rect", { class: "node-body", width: NW, height: h, rx: 8 }, g);
         const head = el("path", { class: "node-head", d: `M0 8 Q0 0 8 0 H${NW - 8} Q${NW} 0 ${NW} 8 V${HEAD} H0 Z` }, g);
         el("path", { class: "node-icon", d: K.iconPath(K.iconOf(s)), transform: "translate(8 6) scale(0.667)" }, g);
-        const title = el("text", { class: "node-title", x: 29, y: hood ? 13 : 18 }, g); title.textContent = s.name;
+        const title = el("text", { class: "node-title", x: 29, y: hood ? 13 : 18 }, g); title.textContent = this.m.label(n);
         if (hood) el("text", { class: "node-gen", x: 29, y: 24 }, g).textContent = K.generic(s.kind);
         for (const part of [head, title]) { part.style.cursor = "grab"; part.addEventListener("pointerdown", e => this.startDrag(e, n)); }
         outer.addEventListener("pointerdown", e => { if (!e.defaultPrevented) this.select("n" + n.id); });
@@ -249,7 +249,7 @@
       if (this.selected[0] === "w") { box.innerHTML = `<span>${K.t("wire_selected")}</span><button class="sy-del">${K.t("del_wire")}</button>`; box.querySelector(".sy-del").onclick = () => this.deleteSelected(); return; }
       const n = this.m.byId(+this.selected.slice(1)); if (!n) return;
       const s = this.skin(n), ps = s.params || {};
-      box.innerHTML = `<b>${s.name}</b>${this.o.hood() ? ` <span class="k-muted">· ${K.generic(s.kind)}</span>` : ""}` +
+      box.innerHTML = `<b>${this.m.label(n)}</b>${this.o.hood() ? ` <span class="k-muted">· ${K.generic(s.kind)}</span>` : ""}` +
         Object.entries(ps).filter(([k, d]) => !d.hidden).map(([k, d]) => `<label>${d.label}<input type="number" data-k="${k}" step="${d.step}"${d.min !== undefined ? ` min="${d.min}"` : ""}${d.max !== undefined ? ` max="${d.max}"` : ""} value="${n.p[k]}"></label>`).join("") +
         `<button class="sy-del">${K.t("del_piece")}</button>`;
       box.querySelectorAll("input").forEach(inp => inp.onchange = () => {

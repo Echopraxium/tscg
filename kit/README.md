@@ -7,12 +7,16 @@ self-contained HTML page: open it in a browser, no install, no account, no AI ne
 You build a small simulation piece by piece, guided by an optional tutorial, and
 discover a systemic idea by watching it move.
 
-Start from the home page [`index.html`](index.html) and play the workshops in order: each one
-adds one idea and reuses pieces from the previous one.
+Start from the home page [`index.html`](index.html): it is a **map of scenarios**. The Thermostat
+of a studio flat (F1) is the pivot; every other scenario starts from it through an
+*articulation* that carries something over and changes one thing. *Lateral* articulations stay
+at the same scale (Larsen, Drinking bird, Sunflower); *vertical* ones change scale (zoom out
+to the house, zoom in to the inside of the thermostat; both still to build). The design is in
+the document "TSCG Kit — Articulation des scénarios".
 
 | # | Workshop | What you build | What you discover | New generic pieces |
 |---|---|---|---|---|
-| 1 | [`thermostat/`](thermostat/index.html) | a room heated by a radiator with a wall thermostat | a loop that corrects (negative feedback), attractor, homeostasis | Storage, Sink, Source, Threshold |
+| 1 | [`thermostat/`](thermostat/index.html) | a studio flat (F1) heated by a radiator with a wall thermostat | a loop that corrects (negative feedback), attractor, homeostasis | Storage, Sink, Source, Threshold |
 | 2 | [`larsen/`](larsen/index.html) | a room with a voice, an amplifier and a loudspeaker | a loop that reinforces (positive feedback), a threshold born from the wiring | Amplification, Transducer |
 | 3 | [`tournesol/`](tournesol/index.html) | a young sunflower, a lamp, the sun and an internal clock | a loop that tracks a moving target, anticipation, domain of validity | Gradient, Clock |
 | 4 | [`oiseau/`](oiseau/index.html) | a drinking bird: head, evaporation, tilt, return, felt, glass of water | a loop with no resting place: a relaxation oscillator; the energy comes from outside (dry air) | none: the Thermostat's pieces (a Sink opened by a command, a Threshold that tips above) |
@@ -84,6 +88,21 @@ re-bundles every workshop, so the published page always matches the sources.
 workshop definition and the export (`state.graph`, `state.panel`, `predictions`) can be
 frozen once the first user tests have been folded in.
 
+## Map of scenarios
+
+Each `workshop.js` sets `factory.meta` next to its factory: name, one-line description, the
+idea, an icon, and for every scenario but the pivot an `articulation`
+(`from`, `dir`: `lateral` | `up` | `down`, `carried`, `change`, all EN/FR). The home page loads
+the four `workshop.js` files (no library needed besides `lib/icons.js`) and draws the map from
+these declarations; scenarios still to build are declared in the home page (`PLANNED`).
+
+## Several blocks of the same type
+
+Blocks of a type are numbered when there is more than one ("Room 2", `n.num`, stable).
+A panel instrument aims at one block (`{node: id}` in its binding, `Model.target(bind)`); when
+several blocks share a type, the panel toolbar offers one button per block. Curves and scale
+models still follow the first block of a type.
+
 ## Testing with users
 
 Ask testers to think aloud while they play, without helping them, then to click
@@ -91,7 +110,7 @@ Ask testers to think aloud while they play, without helping them, then to click
 rejected connections, panel actions, bets). Note what they say spontaneously
 about the Maquette and the Panneau.
 
-Status: **prototype 0.7.0** — four workshops, each with a guided tutorial and a free mode. UI in English and French. Desktop first; usable but cramped on a phone.
+Status: **prototype 0.8.0** — four workshops, each with a guided tutorial and a free mode. UI in English and French. Desktop first; usable but cramped on a phone.
 
 ## Languages
 

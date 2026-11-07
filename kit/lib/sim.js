@@ -49,6 +49,14 @@
     }
     byId(id) { return this.nodes.find(n => n.id === id); }
     first(type) { return this.nodes.find(n => n.type === type); }
+    all(type) { return this.nodes.filter(n => n.type === type); }
+    // the block a binding aims at: a precise block when it names one ({node: id}), else the first of its type
+    target(bind) { return bind.node != null ? this.byId(bind.node) : this.first(bind.piece); }
+    // display name of a block: its skin name, numbered when several blocks share it ("Room 2")
+    label(n) {
+      const name = this.skins[n.type].name;
+      return this.all(n.type).length > 1 ? `${name} ${n.num || 1}` : name;
+    }
     wiresTo(id, port) { return this.wires.filter(w => w.to.node === id && (!port || w.to.port === port)); }
     wiresFrom(id, port) { return this.wires.filter(w => w.from.node === id && (!port || w.from.port === port)); }
     linked(fromType, fromPort, toType, toPort) {
@@ -57,7 +65,9 @@
     }
 
     addNode(type, x, y) {
-      const n = { id: this.nextId++, type, x, y, p: {} };
+      const used = new Set(this.all(type).map(o => o.num));
+      let num = 1; while (used.has(num)) num++;
+      const n = { id: this.nextId++, type, num, x, y, p: {} };
       const ps = this.skins[type].params || {};
       for (const k in ps) n.p[k] = ps[k].v;
       this.resetNode(n);
@@ -222,12 +232,13 @@
     }
 
     // ---- bindings, used by the Panneau: {piece, get} | {piece, set:"manual"} | {piece, param}
+    //      + an optional {node: id} to aim at one precise block among several of the same type
     isAuto(bind) {
-      const n = this.first(bind.piece);
+      const n = this.target(bind);
       return !!(n && bind.set === "manual" && this.wiresTo(n.id, "cmd").length);
     }
     read(bind) {
-      const n = this.first(bind.piece);
+      const n = this.target(bind);
       if (!n) return null;
       if (bind.get === "level") return n.s.x;
       if (bind.get === "u") return n.s.x === null ? null : n.s.u;
@@ -237,7 +248,7 @@
       return null;
     }
     write(bind, v) {
-      const n = this.first(bind.piece);
+      const n = this.target(bind);
       if (!n) return false;
       if (bind.set === "manual") {
         if (this.isAuto(bind)) return false;

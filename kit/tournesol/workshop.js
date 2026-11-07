@@ -324,5 +324,13 @@
   };
   };
 
+  // Place on the map of scenarios: an articulation from the pivot (read by the home page, without the libraries)
+  factory.meta = { icon: "sun",
+    name: { en: "Sunflower", fr: "Tournesol" },
+    what: { en: "A plant, a lamp, the sun, a clock.", fr: "Une plante, une lampe, le soleil, une horloge." },
+    concept: { en: "A loop that pursues: following a moving target, and anticipating.", fr: "Une boucle qui poursuit : suivre une cible qui bouge, et anticiper." },
+    articulation: { from: "thermostat", dir: "lateral",
+      carried: { en: "the set point", fr: "la consigne" },
+      change: { en: "the set point moves", fr: "la consigne bouge" } } };
   (K.workshops = K.workshops || {}).tournesol = factory;
 })(window.TSCGKit = window.TSCGKit || {});
