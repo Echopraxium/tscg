@@ -288,6 +288,7 @@
       this.select("n" + n.id); this.o.onChange();
       return n;
     }
+    clear() { for (const n of [...this.m.nodes]) this.m.removeNode(n.id); this.selected = null; this.render(); this.renderParams(); this.o.onChange(); }
     deleteSelected() {
       if (!this.selected) return;
       const id = +this.selected.slice(1);
