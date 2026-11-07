@@ -57,7 +57,7 @@ a.card:hover{border-color:var(--accent)}
                   data-fr="Chaque atelier a un tutoriel guidé et un mode libre. Le bouton « Exporter ma session » télécharge un petit journal de ta partie, utile si tu participes aux tests."></p>
 </main>
 <script src="lib/icons.js"></script>
-<script src="thermostat/workshop.js"></script>
+<script src="../instances/poclets/Thermostat/static/src/workshop.js"></script>
 <script src="larsen/workshop.js"></script>
 <script src="oiseau/workshop.js"></script>
 <script src="tournesol/workshop.js"></script>
@@ -98,7 +98,7 @@ a.card:hover{border-color:var(--accent)}
       '<span class="tag">' + tag + '</span></span>';
     var c = m.pivot ? " pivot" : m.planned ? " planned" : "";
     return m.planned ? '<div class="card' + c + ' ' + cls + '" data-id="' + sc.id + '">' + inner + '</div>'
-                     : '<a class="card' + c + ' ' + cls + '" data-id="' + sc.id + '" data-ws="' + sc.id + '" href="' + sc.id + '/index.html?lang=' + lang + '">' + inner + '</a>';
+                     : '<a class="card' + c + ' ' + cls + '" data-id="' + sc.id + '" data-ws="' + sc.id + '" href="' + (m.page || sc.id + '/index.html') + '?lang=' + lang + '">' + inner + '</a>';
   }
   function render() {
     var all = scenarios(), map = document.getElementById("map");

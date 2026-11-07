@@ -90,6 +90,17 @@ def find_sim(folder, name):
         return s
     return sorted(cands,key=score,reverse=True)[0]
 
+def rebundle_kit_page(root, src_dir, dst_dir, name):
+    """A poclet whose simulation is a TSCG Kit workshop keeps its sources in static/src/
+    (index.src.html + workshop.js, shared libraries in kit/lib/). Re-bundle the published
+    single file static/M0_<Name>.html from them, so it is never stale (added 2026-11-07)."""
+    import subprocess
+    page=os.path.join(src_dir,"static","src","index.src.html")
+    node=shutil.which("node"); bundler=os.path.join(root,KIT_DIR,"tools","bundle.js")
+    if not (node and os.path.isfile(page) and os.path.isfile(bundler)): return
+    r=subprocess.run([node,bundler,page,os.path.join(dst_dir,"static",f"M0_{name}.html")],capture_output=True,text=True)
+    if r.returncode: print(f"  warning: kit bundle failed for poclet {name}: {r.stderr.strip()}")
+
 def build_subjects(root, outdir):
     subs=[]
     for cat in DEF:
@@ -120,6 +131,7 @@ def build_subjects(root, outdir):
                     dst=os.path.join(outdir,reldir)
                     if os.path.exists(dst): shutil.rmtree(dst)
                     shutil.copytree(d,dst,ignore=COPY_IGNORE)
+                    rebundle_kit_page(root,d,dst,name)
                     play=reldir+"/"+os.path.relpath(canon,d).replace(os.sep,"/")
                     if os.path.exists(os.path.join(outdir,play)):
                         s["play"]=play

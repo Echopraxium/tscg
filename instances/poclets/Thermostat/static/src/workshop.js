@@ -14,6 +14,7 @@
     const OUT_OF_BAND = L("Outside the 19–21 °C zone: the counter restarts from zero.", "Hors de la zone 19–21 °C : le compteur repart de zéro.");
     return {
     id: "thermostat",
+    homeUrl: "../../../../kit/index.html",          // this page lives in instances/poclets/Thermostat/static/
     title: L("TSCG Workshop — Thermostat", "Atelier TSCG — Thermostat"),
     pageTitle: L("TSCG Workshop — Thermostat", "TSCG Atelier — Thermostat"),
     fluxLabel: L("flux (heat)", "flux (chaleur)"),
@@ -325,6 +326,7 @@
 
   // Place on the map of scenarios (read by the home page, without the libraries)
   factory.meta = { pivot: true, icon: "thermostat",
+    page: "../instances/poclets/Thermostat/static/M0_Thermostat.html",   // relative to kit/ (validated: now a poclet)
     name: { en: "Thermostat", fr: "Thermostat" },
     what: { en: "A studio flat, a wall, a heater, a thermostat.", fr: "Un studio (F1), un mur, un chauffage, un thermostat." },
     concept: { en: "A loop that corrects: the room regulates itself.", fr: "Une boucle qui corrige : la pièce se règle toute seule." } };

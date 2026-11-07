@@ -6,8 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TSCG Workshop — Thermostat</title>
 <meta name="description" content="Interactive TSCG workshop: build, step by step, the simulation of a room heated by a radiator with a bimetal thermostat.">
+<!-- Source page of the Thermostat poclet's simulation (a TSCG Kit workshop).
+     Works as is (classic scripts load from file:// too); the shared libraries live in kit/lib/.
+     The single-file page is generated, from the repository root:
+       node kit/tools/bundle.js instances/poclets/Thermostat/static/src/index.src.html instances/poclets/Thermostat/static/M0_Thermostat.html -->
 <style>
-/* ../lib/tscg-kit.css */
+/* ../../../../../kit/lib/tscg-kit.css */
 /* TSCG Kit — shared stylesheet for every workshop
  * Author: Echopraxium with the collaboration of Claude AI */
 :root{
@@ -231,7 +235,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 </head>
 <body>
 <script>
-/* ../lib/i18n.js */
+/* ../../../../../kit/lib/i18n.js */
 /* TSCG Kit — i18n.js
  * Language of the Kit: English by default, French on demand.
  * - K.lang          current language ("en" | "fr"), from ?lang=, then the saved choice
@@ -349,7 +353,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
 </script>
 <script>
-/* ../lib/icons.js */
+/* ../../../../../kit/lib/icons.js */
 /* TSCG Kit — icons.js
  * Line icons for blocks (24×24, stroke = currentColor). A skin names its icon with
  * `icon: "<name>"`; without one, the generic kind gives a fallback.
@@ -408,7 +412,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
 </script>
 <script>
-/* ../lib/sim.js */
+/* ../../../../../kit/lib/sim.js */
 /* TSCG Kit — sim.js
  * Generic pieces and the fixed-step simulation.
  * The graph (nodes + wires) is the single source of truth: the Panneau and the
@@ -692,7 +696,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
 </script>
 <script>
-/* ../lib/synoptic.js */
+/* ../../../../../kit/lib/synoptic.js */
 /* TSCG Kit — synoptic.js
  * The Synoptique: an SVG node editor over the Model. Pieces are added from a
  * palette, moved by their title bar, and wired from an output (right) to an
@@ -1020,7 +1024,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
 </script>
 <script>
-/* ../lib/panel.js */
+/* ../../../../../kit/lib/panel.js */
 /* TSCG Kit — panel.js
  * The Panneau: instruments laid out on a grid, LEGO-style. Every instrument
  * keeps one side fixed so the panel packs like Tetris:
@@ -1300,7 +1304,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
 </script>
 <script>
-/* ../lib/chart.js */
+/* ../../../../../kit/lib/chart.js */
 /* TSCG Kit — chart.js
  * Curves read from the Model history (one point per simulation step).
  * Configured by the workshop (W.chart):
@@ -1424,7 +1428,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
 </script>
 <script>
-/* ../lib/tutorial.js */
+/* ../../../../../kit/lib/tutorial.js */
 /* TSCG Kit — tutorial.js
  * Runs a workshop's steps as data. Each step:
  *   { id, title, goal, hint?, unlock:{pieces, instruments}, enter?(app),
@@ -1563,7 +1567,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
 </script>
 <script>
-/* ../lib/app.js */
+/* ../../../../../kit/lib/app.js */
 /* TSCG Kit — app.js
  * The workshop shell, identical for every workshop:
  *   top row    : tutorial banner (left) | tabs [Scale model | Curves] (right)
@@ -1875,6 +1879,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
     const OUT_OF_BAND = L("Outside the 19–21 °C zone: the counter restarts from zero.", "Hors de la zone 19–21 °C : le compteur repart de zéro.");
     return {
     id: "thermostat",
+    homeUrl: "../../../../kit/index.html",          // this page lives in instances/poclets/Thermostat/static/
     title: L("TSCG Workshop — Thermostat", "Atelier TSCG — Thermostat"),
     pageTitle: L("TSCG Workshop — Thermostat", "TSCG Atelier — Thermostat"),
     fluxLabel: L("flux (heat)", "flux (chaleur)"),
@@ -2186,6 +2191,7 @@ button.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
   // Place on the map of scenarios (read by the home page, without the libraries)
   factory.meta = { pivot: true, icon: "thermostat",
+    page: "../instances/poclets/Thermostat/static/M0_Thermostat.html",   // relative to kit/ (validated: now a poclet)
     name: { en: "Thermostat", fr: "Thermostat" },
     what: { en: "A studio flat, a wall, a heater, a thermostat.", fr: "Un studio (F1), un mur, un chauffage, un thermostat." },
     concept: { en: "A loop that corrects: the room regulates itself.", fr: "Une boucle qui corrige : la pièce se règle toute seule." } };

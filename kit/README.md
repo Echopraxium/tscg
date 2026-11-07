@@ -16,7 +16,7 @@ the document "TSCG Kit — Articulation des scénarios".
 
 | # | Workshop | What you build | What you discover | New generic pieces |
 |---|---|---|---|---|
-| 1 | [`thermostat/`](thermostat/index.html) | a studio flat (F1) heated by a radiator with a wall thermostat | a loop that corrects (negative feedback), attractor, homeostasis | Storage, Sink, Source, Threshold |
+| 1 | [Thermostat poclet](../instances/poclets/Thermostat/static/M0_Thermostat.html) (validated) | a studio flat (F1) heated by a radiator with a wall thermostat | a loop that corrects (negative feedback), attractor, homeostasis | Storage, Sink, Source, Threshold |
 | 2 | [`larsen/`](larsen/index.html) | a room with a voice, an amplifier and a loudspeaker | a loop that reinforces (positive feedback), a threshold born from the wiring | Amplification, Transducer |
 | 3 | [`tournesol/`](tournesol/index.html) | a young sunflower, a lamp, the sun and an internal clock | a loop that tracks a moving target, anticipation, domain of validity | Gradient, Clock |
 | 4 | [`oiseau/`](oiseau/index.html) | a drinking bird: head, evaporation, tilt, return, felt, glass of water | a loop with no resting place: a relaxation oscillator; the energy comes from outside (dry air) | none: the Thermostat's pieces (a Sink opened by a command, a Threshold that tips above) |
@@ -75,6 +75,18 @@ tests — that is the proof of concept. "Sous le capot" reveals the generic name
 who go further into the onion. Learning by doing first; the theory, later, names what
 was already understood.
 
+## The Kit is a test airlock
+
+A workshop is developed and played under `kit/<id>/`. Once it has gone through the
+instance pipeline (proposition, analysis, M0 JSON-LD, README, validation), it moves to
+`instances/poclets/<Name>/`: its M0 model, README and analysis sit in the poclet folder,
+and its page becomes the poclet's simulation, in `static/` (the simulation gallery and the
+Compendium pick it up there). The sources stay editable in `static/src/` (`index.src.html`,
+`workshop.js`, still using `kit/lib/`); the published `static/M0_<Name>.html` is the
+bundle, re-bundled by the Compendium build. The workshop's `homeUrl` points back to the
+Kit home page, which stays in `kit/`. First validated workshop: **Thermostat**
+(2026-11-07); Larsen, Drinking bird and Sunflower are still in the airlock.
+
 ## Code layout
 
 | Path | Role |
@@ -91,7 +103,7 @@ was already understood.
 | `<workshop>/workshop.js` | clock (time unit), skins, instruments, chart, steps, final card, Maquette drawing |
 | `<workshop>/index.src.html` | source page (works directly, classic scripts) |
 | `<workshop>/index.html` | **generated** single file |
-| `tools/bundle.js` | inlines CSS and scripts: `node kit/tools/bundle.js kit/thermostat/index.src.html` |
+| `tools/bundle.js` | inlines CSS and scripts: `node kit/tools/bundle.js kit/larsen/index.src.html` (a poclet page: give the output path, e.g. `static/M0_Thermostat.html`) |
 
 The GitHub Pages build (`cli_tools/compendium/build_compendium.py`) copies `kit/` and
 re-bundles every workshop, so the published page always matches the sources.
