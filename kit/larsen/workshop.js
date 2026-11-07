@@ -172,9 +172,9 @@
         `<path class="${cls}" data-i="${i}" d="M${cx} ${cy - 14 - i * 12} A ${16 + i * 12} ${16 + i * 12} 0 0 0 ${cx} ${cy + 14 + i * 12}" fill="none" stroke-width="2.5" stroke-linecap="round"/>`).join("");
       host.innerHTML = `
 <svg viewBox="0 0 440 300" role="img" preserveAspectRatio="xMidYMid meet">
-  <rect x="0" y="0" width="440" height="300" rx="12" fill="#2b2a33"/>
-  <rect id="lxAir" x="16" y="16" width="408" height="236" rx="8"/>
-  <rect x="16" y="252" width="408" height="32" fill="#5a4636"/>
+  <rect x="-1500" width="3440" y="-1500" height="3300" fill="#2b2a33"/>
+  <rect id="lxAir" x="-1500" y="-1500" width="3440" height="1752"/>
+  <rect x="-1500" y="252" width="3440" height="1500" fill="#5a4636"/>
   <g id="lxPerson">
     <circle cx="70" cy="150" r="13" fill="#e9c9a6"/>
     <path d="M52 252 V190 Q52 172 70 172 Q88 172 88 190 V252 Z" fill="#4f6d8f"/>

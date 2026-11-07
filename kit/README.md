@@ -40,7 +40,9 @@ Online: `https://echopraxium.github.io/tscg/kit/`
 - **Panneau** — the instruments: gauges, sliders, toggles, lamps on a grid. Every
   instrument keeps one side fixed (lamp 2×2, toggle 3×2, gauge and slider 2×n), so
   the panel packs like Tetris. Instruments only read or write the graph.
-- **Maquette** (scale model) — the system itself. You can act on it directly (open the
+- **Maquette** (scale model) — the system itself. The drawing fills its compartment with an
+  equal margin on the four sides: the scene keeps its proportions, only its background (sky,
+  wall, ground) extends to the edges (`app.fitView`: the viewBox follows the compartment). You can act on it directly (open the
   window, move the microphone). Instruments that physically hang in the room (a wall
   thermostat, a thermometer) are drawn there as real objects; the Panel stays the remote
   instrument, and the Maquette still shows what it does not (radiator heat, cold draught).
@@ -120,7 +122,7 @@ Ask testers to think aloud while they play, without helping them, then to click
 rejected connections, panel actions, bets). Note what they say spontaneously
 about the Maquette and the Panneau.
 
-Status: **prototype 0.9.1** — four workshops, each with a guided tutorial and a free mode. UI in English and French. Desktop first; usable but cramped on a phone.
+Status: **prototype 0.9.2** — four workshops, each with a guided tutorial and a free mode. UI in English and French. Desktop first; usable but cramped on a phone.
 
 ## Languages
 

@@ -228,20 +228,20 @@
       host.innerHTML = `
 <svg viewBox="0 0 440 300" role="img" preserveAspectRatio="xMidYMid meet">
   <defs>
-    <clipPath id="obClip"><rect x="0" y="0" width="440" height="300" rx="12"/></clipPath>
-    <linearGradient id="obWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9e3d6"/><stop offset="1" stop-color="#d9d0bf"/></linearGradient>
-    <linearGradient id="obTable" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a0714a"/><stop offset="1" stop-color="#7a5235"/></linearGradient>
+    <clipPath id="obClip"><rect x="-1500" width="3440" y="-1500" height="3300"/></clipPath>
+    <linearGradient id="obWall" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="262"><stop offset="0" stop-color="#e9e3d6"/><stop offset="1" stop-color="#d9d0bf"/></linearGradient>
+    <linearGradient id="obTable" gradientUnits="userSpaceOnUse" x1="0" y1="262" x2="0" y2="300"><stop offset="0" stop-color="#a0714a"/><stop offset="1" stop-color="#7a5235"/></linearGradient>
     <linearGradient id="obGlassTube" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity=".25"/><stop offset=".35" stop-color="#ffffff" stop-opacity=".7"/><stop offset="1" stop-color="#ffffff" stop-opacity=".15"/></linearGradient>
     <radialGradient id="obBulb" cx=".35" cy=".35" r=".7"><stop offset="0" stop-color="#ffffff" stop-opacity=".75"/><stop offset="1" stop-color="#ffffff" stop-opacity=".12"/></radialGradient>
     <clipPath id="obBulbClip"><circle cx="0" cy="62" r="25"/></clipPath>
     <clipPath id="obHeadClip"><circle cx="0" cy="-100" r="16"/></clipPath>
   </defs>
   <g clip-path="url(#obClip)">
-    <rect x="0" y="0" width="440" height="300" fill="url(#obWall)"/>
-    <rect id="obHaze" x="0" y="0" width="440" height="300" fill="#9fb3c8" opacity="0"/>
-    <g opacity=".5" stroke="#cfc5b1" stroke-width="1">${Array.from({ length: 9 }, (_, i) => `<line x1="${i * 55}" y1="0" x2="${i * 55}" y2="262"/>`).join("")}</g>
-    <rect x="0" y="262" width="440" height="38" fill="url(#obTable)"/>
-    <line x1="0" y1="262" x2="440" y2="262" stroke="#5e3e27" stroke-width="2"/>
+    <rect x="-1500" width="3440" y="-1500" height="1800" fill="url(#obWall)"/>
+    <rect id="obHaze" x="-1500" width="3440" y="-1500" height="3300" fill="#9fb3c8" opacity="0"/>
+    <g opacity=".5" stroke="#cfc5b1" stroke-width="1">${Array.from({ length: 41 }, (_, i) => `<line x1="${(i - 16) * 55}" y1="-1500" x2="${(i - 16) * 55}" y2="262"/>`).join("")}</g>
+    <rect x="-1500" width="3440" y="262" height="1500" fill="url(#obTable)"/>
+    <line x1="-1500" y1="262" x2="1940" y2="262" stroke="#5e3e27" stroke-width="2"/>
     <g id="obBird">
       <g id="obStand">
         <path d="M${PX} ${PY} L${PX - 27} 262 M${PX} ${PY} L${PX + 27} 262" stroke="#7d8790" stroke-width="3.5" stroke-linecap="round"/>
