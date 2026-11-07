@@ -24,6 +24,8 @@
     // o: { instruments, skins, isUnlocked(key), toast(msg), log(type, detail), onChange() }
     constructor(host, model, o) {
       this.m = model; this.o = o; this.controls = []; this.nextId = 1; this.els = new Map();
+      this.selected = null;                       // id of the selected instrument (for the eraser / Delete key)
+      this.snap = (() => { try { return localStorage.getItem("tscg-kit-snap") !== "off"; } catch (e) { return true; } })();
       host.innerHTML =
         `<div class="pn-toolbar"><span class="pn-tb-label"></span><span class="pn-tb-list"></span></div>
          <div class="pn-scroll"><div class="pn-grid"><div class="pn-empty"></div></div></div>`;
@@ -94,7 +96,20 @@
       this.render(); this.o.onChange();
       return c;
     }
+    // snap to the grid: on, instruments sit on whole cells; off, they move by a quarter of a cell
+    setSnap(on) {
+      this.snap = on;
+      try { localStorage.setItem("tscg-kit-snap", on ? "on" : "off"); } catch (e) { /* storage blocked */ }
+      if (on) for (const c of this.controls) {               // back on the grid wherever there is room
+        const x = Math.round(c.x), y = Math.round(c.y);
+        if (this.fits(c, x, y, foot(c))) { c.x = x; c.y = y; }
+      }
+      this.o.log("panel_snap", on); this.render();
+    }
+    clear() { this.controls = []; this.selected = null; this.render(); this.o.onChange(); }
+    deleteSelected() { const c = this.controls.find(o => o.id === this.selected); if (c) this.remove(c); }
     remove(c) {
+      if (this.selected === c.id) this.selected = null;
       this.controls = this.controls.filter(o => o !== c);
       this.o.log("panel_remove", c.inst);
       this.render(); this.o.onChange();
@@ -127,7 +142,7 @@
     make(c) {
       const d = this.def(c);
       const node = document.createElement("div");
-      node.className = `pn-ctl pn-${c.type} ${c.orient}`;
+      node.className = `pn-ctl pn-${c.type} ${c.orient}${this.selected === c.id ? " sel" : ""}`;
       node.dataset.inst = c.inst;
       node.title = d.label;
       node.innerHTML =
@@ -150,6 +165,9 @@
         body.innerHTML = `<span class="pn-bulb"></span>`;
         refs.lamp = body.querySelector(".pn-bulb");
       }
+      node.addEventListener("pointerdown", () => {
+        this.selected = c.id; this.grid.querySelectorAll(".pn-ctl").forEach(n => n.classList.toggle("sel", n === node));
+      });
       node.querySelector(".pn-head").addEventListener("pointerdown", e => { if (!e.target.closest("button")) this.startMove(e, c, node); });
       node.querySelector(".pn-del").addEventListener("click", () => this.remove(c));
       const rot = node.querySelector(".pn-rot"); if (rot) rot.addEventListener("click", () => this.rotate(c));
@@ -220,7 +238,8 @@
       let cand = null;
       node.classList.add("dragging");
       const move = ev => {
-        const x = Math.round((ev.clientX - r.left - ox) / U), y = Math.round((ev.clientY - r.top - oy) / U);
+        const q = this.snap ? 1 : 4;              // grid cells, or quarters of a cell
+        const x = Math.round((ev.clientX - r.left - ox) / U * q) / q, y = Math.round((ev.clientY - r.top - oy) / U * q) / q;
         cand = { x, y };
         this.place(node, c, Math.max(0, x), Math.max(0, y));
         node.classList.toggle("bad", !this.fits(c, x, y, foot(c)));

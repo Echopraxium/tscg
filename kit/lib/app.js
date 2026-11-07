@@ -10,7 +10,7 @@
  */
 (function (K) {
   "use strict";
-  const VERSION = "0.9.0";
+  const VERSION = "0.9.1";
   const SPEEDS = [0.25, 0.5, 1, 2, 4, 8, 16];
   const LAYOUT_KEY = "tscg-kit-layout";
   const build = factory => factory((en, fr) => (K.lang === "fr" ? fr : en));
@@ -57,6 +57,12 @@
            <div class="k-tabs" role="tablist">
              <button class="k-tab" role="tab" data-tab="synoptic" data-t="tab_syn"></button>
              <button class="k-tab" role="tab" data-tab="panel" data-t="tab_panel"></button>
+             <div class="k-tools" role="toolbar" data-tipl="tools">
+               <button id="kToolClear" class="k-tool">${K.iconSvg("clearall", "k-ticon")}</button>
+               <button id="kToolErase" class="k-tool">${K.iconSvg("eraser", "k-ticon")}</button>
+               <span class="k-tsep"></span>
+               <button id="kToolSnap" class="k-tool" aria-pressed="true">${K.iconSvg("grid", "k-ticon")}</button>
+             </div>
            </div>
            <div class="k-panes">
              <div class="k-pane k-pane-panel" data-pane="panel"></div>
@@ -108,6 +114,23 @@
       document.querySelectorAll(".k-rpane").forEach(p => p.classList.toggle("active", p.dataset.rpane === tab));
       if (tab === "curves") app.chart.draw();
       log("rtab", tab);
+    };
+    // ---- toolbar of the bottom tabs: clear everything (two clicks), erase the selection, snap (Panel)
+    let clearArmed = 0;
+    $("#kToolClear").onclick = () => {
+      if (Date.now() - clearArmed > 3000) { clearArmed = Date.now(); $("#kToolClear").classList.add("armed"); toast(K.t("tool_clear_confirm")); return; }
+      clearArmed = 0; $("#kToolClear").classList.remove("armed");
+      app.synoptic.clear(); app.panel.clear(); log("clear_all", ""); app.tutorial.refresh();
+    };
+    $("#kToolErase").onclick = () => { if (S.tab === "synoptic") app.synoptic.deleteSelected(); else app.panel.deleteSelected(); };
+    $("#kToolSnap").onclick = () => app.panel.setSnap(!app.panel.snap);
+    app.updateTools = () => {
+      const syn = S.tab === "synoptic", e = $("#kToolErase"), sn = $("#kToolSnap"), c = $("#kToolClear");
+      e.disabled = syn ? !app.synoptic.selected : !app.panel.controls.some(x => x.id === app.panel.selected);
+      e.title = K.t(syn ? "tool_erase" : "tool_erase_pn");
+      sn.hidden = syn; $(".k-tsep").hidden = syn; sn.classList.toggle("on", app.panel.snap); sn.setAttribute("aria-pressed", app.panel.snap); sn.title = K.t("tool_snap");
+      c.title = K.t("tool_clear"); c.disabled = !model.nodes.length && !app.panel.controls.length;
+      if (clearArmed && Date.now() - clearArmed > 3000) { clearArmed = 0; c.classList.remove("armed"); }
     };
     app.curvesHint = on => { const b = document.querySelector('.k-rtab[data-rtab="curves"]'); if (b) b.classList.toggle("attn", on && S.rtab !== "curves"); };
     app.goFree = () => {
@@ -222,7 +245,7 @@
     document.querySelectorAll(".k-rtab").forEach(b => b.onclick = () => app.goRTab(b.dataset.rtab));
     window.addEventListener("keydown", e => {
       const typing = /INPUT|TEXTAREA/.test(document.activeElement.tagName);
-      if ((e.key === "Delete" || e.key === "Backspace") && !typing && S.tab === "synoptic") { e.preventDefault(); app.synoptic.deleteSelected(); }
+      if ((e.key === "Delete" || e.key === "Backspace") && !typing) { e.preventDefault(); if (S.tab === "synoptic") app.synoptic.deleteSelected(); else app.panel.deleteSelected(); }
       if (e.key === " " && !typing && document.activeElement.tagName !== "BUTTON") { e.preventDefault(); setPlay(!S.running); }
     });
 
@@ -235,7 +258,7 @@
         let guard = 0;
         while (acc >= 1 && guard++ < 600) { model.step(CLK.dt); app.tutorial.tick(); acc -= 1; }
       }
-      app.synoptic.update(S.running); app.panel.update(); app.view.update(S.running); app.tutorial.refresh();
+      app.synoptic.update(S.running); app.panel.update(); app.view.update(S.running); app.tutorial.refresh(); app.updateTools();
       $("#kClock").textContent = CLK.fmt(model.t);
       if (now - chartT > 120) { app.chart.draw(); chartT = now; }
       requestAnimationFrame(frame);
