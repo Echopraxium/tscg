@@ -7,12 +7,8 @@
 (function (K) {
   "use strict";
   const NS = "http://www.w3.org/2000/svg";
-  const NW = 176, HEAD = 34, ROW = 24;
-  const REJECT = {
-    self: "Une pièce ne se branche pas sur elle-même.",
-    flux_to_info: "Un flux (orange) ne se branche que sur une entrée de flux.",
-    info_to_flux: "Une information (bleu) ne se branche que sur une entrée d'information."
-  };
+  const NW = 150, HEAD = 28, ROW = 20, PY = 15;      // compact nodes
+  const REJECT = { self: "rej_self", flux_to_info: "rej_flux", info_to_flux: "rej_info" };
   function el(tag, attrs, parent) {
     const e = document.createElementNS(NS, tag);
     for (const k in attrs) e.setAttribute(k, attrs[k]);
@@ -21,16 +17,16 @@
   }
 
   class Synoptic {
-    // o: { order, home, fluxLabel, isUnlocked(type), hood(), toast(msg), onChange() }
+    // o: { order, home, fluxLabel(), isUnlocked(type), hood(), toast(msg), onChange() }
     constructor(host, model, o) {
       this.m = model; this.o = o;
       this.selected = null; this.drag = null; this.dragWire = null; this.live = [];
       host.innerHTML =
-        `<div class="sy-palette"><h2 class="k-h2">Pièces</h2><div class="sy-list"></div>
-           <div class="sy-legend"><div><i style="background:var(--flux)"></i>${o.fluxLabel || "flux"}</div>
-           <div><i style="background:var(--info)"></i>information</div>
-           <p>Tire un fil d'une sortie (à droite d'une pièce) vers une entrée (à gauche) de la même couleur.</p></div></div>
-         <div class="sy-stage"><svg class="sy-svg" aria-label="Synoptique : pièces et fils"></svg><div class="sy-params"></div></div>`;
+        `<div class="sy-palette"><h2 class="k-h2 sy-h"></h2><div class="sy-list"></div>
+           <div class="sy-legend"><div><i style="background:var(--flux)"></i><span class="sy-lflux"></span></div>
+           <div><i style="background:var(--info)"></i><span class="sy-linfo"></span></div>
+           <p class="sy-help"></p></div></div>
+         <div class="sy-stage"><svg class="sy-svg"></svg><div class="sy-params"></div></div>`;
       this.host = host;
       this.svg = host.querySelector(".sy-svg");
       this.list = host.querySelector(".sy-list");
@@ -38,24 +34,33 @@
       this.svg.addEventListener("pointerdown", e => { if (e.target === this.svg) this.select(null); });
       window.addEventListener("pointermove", e => this.onMove(e));
       window.addEventListener("pointerup", e => this.onUp(e));
+      this.relabel();
+    }
+    relabel() {                         // static strings (language switch)
+      const q = s => this.host.querySelector(s);
+      q(".sy-h").textContent = K.t("pieces"); q(".sy-lflux").textContent = this.o.fluxLabel() || "flux";
+      q(".sy-linfo").textContent = K.t("info"); q(".sy-help").textContent = K.t("wire_help");
+      this.svg.setAttribute("aria-label", K.t("syn_aria"));
     }
     skin(n) { return this.m.skins[n.type]; }
     nodeHeight(n) {
       const rows = Math.max(this.m.ports(n, "in").length, this.m.ports(n, "out").length, 1);
-      return HEAD + 10 + rows * ROW + 30;
+      return HEAD + 8 + rows * ROW + 24;
     }
     portPos(n, port, side) {
       const i = this.m.ports(n, side).findIndex(q => q.id === port);
-      return { x: n.x + (side === "in" ? 0 : NW), y: n.y + HEAD + 18 + i * ROW };
+      return { x: n.x + (side === "in" ? 0 : NW), y: n.y + HEAD + PY + i * ROW };
     }
-    // Forward wires are curves; a wire going back to the left is routed below both pieces.
+    // A wire whose target is not clearly to the left is a smooth curve (also for a target
+    // above or below in a nearby column); only a real return wire is routed under the pieces.
+    isBack(a, b) { return b.x < a.x - 30; }
     wirePath(a, b, na, nb, k) {
-      if (b.x >= a.x + 12 || !na || !nb) {
-        const dx = Math.max(50, Math.abs(b.x - a.x) / 2);
+      if (!this.isBack(a, b) || !na || !nb) {
+        const dx = Math.max(40, Math.abs(b.x - a.x) / 2, Math.min(90, Math.abs(b.y - a.y) / 3));
         return `M${a.x} ${a.y} C${a.x + dx} ${a.y} ${b.x - dx} ${b.y} ${b.x} ${b.y}`;
       }
-      const lane = Math.max(na.y + this.nodeHeight(na), nb.y + this.nodeHeight(nb)) + 22 + 14 * k, r = 10;
-      const xr = a.x + 24 + 10 * k, xl = Math.max(6 + 4 * k, b.x - 24 - 10 * k);
+      const lane = Math.max(na.y + this.nodeHeight(na), nb.y + this.nodeHeight(nb)) + 18 + 12 * k, r = 8;
+      const xr = a.x + 20 + 9 * k, xl = Math.max(6 + 4 * k, b.x - 20 - 9 * k);
       return `M${a.x} ${a.y} H${xr - r} Q${xr} ${a.y} ${xr} ${a.y + r} V${lane - r} Q${xr} ${lane} ${xr - r} ${lane}` +
              ` H${xl + r} Q${xl} ${lane} ${xl} ${lane - r} V${b.y + r} Q${xl} ${b.y} ${xl + r} ${b.y} H${b.x}`;
     }
@@ -66,7 +71,7 @@
         const s = this.m.skins[t], open = this.o.isUnlocked(t);
         const b = document.createElement("button");
         b.className = "sy-piece"; b.disabled = !open; b.dataset.piece = t;
-        b.innerHTML = `${s.name}<small>${open ? (this.o.hood() ? K.GENERIC[s.kind] : s.blurb) : "verrouillée"}</small>`;
+        b.innerHTML = `${s.name}<small>${open ? (this.o.hood() ? K.generic(s.kind) : s.blurb) : K.t("locked")}</small>`;
         b.onclick = () => this.add(t);
         this.list.appendChild(b);
       }
@@ -80,7 +85,7 @@
       for (const w of m.wires) {
         const na = m.byId(w.from.node), nb = m.byId(w.to.node);
         const a = this.portPos(na, w.from.port, "out"), b = this.portPos(nb, w.to.port, "in");
-        const d = this.wirePath(a, b, na, nb, b.x < a.x + 12 ? back++ : 0);
+        const d = this.wirePath(a, b, na, nb, this.isBack(a, b) ? back++ : 0);
         const path = el("path", { d, class: `wire ${w.kind}${this.selected === "w" + w.id ? " selected" : ""}` }, gW);
         const hit = el("path", { d, class: "wire-hit" }, gW);
         hit.addEventListener("pointerdown", e => { e.stopPropagation(); this.select("w" + w.id); });
@@ -89,25 +94,25 @@
       for (const n of m.nodes) {
         const s = this.skin(n), h = this.nodeHeight(n), hood = this.o.hood();
         const g = el("g", { class: "node" + (this.selected === "n" + n.id ? " selected" : ""), transform: `translate(${n.x},${n.y})`, "data-node": n.id }, gN);
-        el("rect", { class: "node-body", width: NW, height: h, rx: 10 }, g);
-        const head = el("path", { class: "node-head", d: `M0 10 Q0 0 10 0 H${NW - 10} Q${NW} 0 ${NW} 10 V${HEAD} H0 Z` }, g);
-        const title = el("text", { class: "node-title", x: 12, y: hood ? 16 : 22 }, g); title.textContent = s.name;
-        if (hood) el("text", { class: "node-gen", x: 12, y: 29 }, g).textContent = K.GENERIC[s.kind];
+        el("rect", { class: "node-body", width: NW, height: h, rx: 8 }, g);
+        const head = el("path", { class: "node-head", d: `M0 8 Q0 0 8 0 H${NW - 8} Q${NW} 0 ${NW} 8 V${HEAD} H0 Z` }, g);
+        const title = el("text", { class: "node-title", x: 10, y: hood ? 13 : 18 }, g); title.textContent = s.name;
+        if (hood) el("text", { class: "node-gen", x: 10, y: 24 }, g).textContent = K.generic(s.kind);
         for (const part of [head, title]) { part.style.cursor = "grab"; part.addEventListener("pointerdown", e => this.startDrag(e, n)); }
         g.addEventListener("pointerdown", e => { if (!e.defaultPrevented) this.select("n" + n.id); });
         m.ports(n, "in").forEach((q, i) => {
-          const y = HEAD + 18 + i * ROW;
-          el("circle", { class: `port ${q.kind}`, cx: 0, cy: y, r: 7, "data-node": n.id, "data-port": q.id, "data-side": "in" }, g);
-          el("text", { class: "port-label", x: 12, y: y + 4 }, g).textContent = (s.ports || {})[q.id] !== undefined ? s.ports[q.id] : q.id;
+          const y = HEAD + PY + i * ROW;
+          el("circle", { class: `port ${q.kind}`, cx: 0, cy: y, r: 6, "data-node": n.id, "data-port": q.id, "data-side": "in" }, g);
+          el("text", { class: "port-label", x: 10, y: y + 3.5 }, g).textContent = (s.ports || {})[q.id] !== undefined ? s.ports[q.id] : q.id;
         });
         m.ports(n, "out").forEach((q, i) => {
-          const y = HEAD + 18 + i * ROW;
-          const c = el("circle", { class: `port ${q.kind}`, cx: NW, cy: y, r: 7, "data-node": n.id, "data-port": q.id, "data-side": "out" }, g);
+          const y = HEAD + PY + i * ROW;
+          const c = el("circle", { class: `port ${q.kind}`, cx: NW, cy: y, r: 6, "data-node": n.id, "data-port": q.id, "data-side": "out" }, g);
           c.addEventListener("pointerdown", e => this.startWire(e, n, q));
-          el("text", { class: "port-label", x: NW - 12, y: y + 4, "text-anchor": "end" }, g).textContent = (s.ports || {})[q.id] !== undefined ? s.ports[q.id] : q.id;
+          el("text", { class: "port-label", x: NW - 10, y: y + 3.5, "text-anchor": "end" }, g).textContent = (s.ports || {})[q.id] !== undefined ? s.ports[q.id] : q.id;
         });
         const rows = Math.max(m.ports(n, "in").length, m.ports(n, "out").length, 1);
-        const val = el("text", { class: "node-value", x: 12, y: HEAD + 10 + rows * ROW + 14 }, g);
+        const val = el("text", { class: "node-value", x: 10, y: HEAD + 8 + rows * ROW + 12 }, g);
         this.live.push({ node: n, val });
       }
       if (this.dragWire) {
@@ -121,12 +126,12 @@
       const s = this.skin(n), k = this.m.kindOf(n);
       if (s.describe) return s.describe(n, this.m);
       if (k === "storage") return n.s.x.toFixed(1) + " " + (s.unit || "");
-      if (k === "sink") return (s.levelText || "niveau") + " : " + n.p.level + " " + (s.unit || "");
-      if (k === "source") return n.s.u ? (s.onText || "marche") : (s.offText || "arrêt");
-      if (k === "threshold") return n.s.x === null ? "non relié" : (n.s.u ? (s.onText || "fermé") : (s.offText || "ouvert"));
-      if (k === "amplify") return (n.s.sat ? "saturé · " : "") + "sortie " + n.s.y.toFixed(1);
+      if (k === "sink") return (s.levelText || K.t("d_level")) + K.L(": ", " : ") + n.p.level + " " + (s.unit || "");
+      if (k === "source") return n.s.u ? (s.onText || K.t("d_on")) : (s.offText || K.t("d_off"));
+      if (k === "threshold") return n.s.x === null ? K.t("d_unlinked") : (n.s.u ? (s.onText || K.t("d_closed")) : (s.offText || K.t("d_open")));
+      if (k === "amplify") return (n.s.sat ? K.t("d_sat") : "") + K.t("d_out") + " " + n.s.y.toFixed(1);
       if (k === "transducer") return n.s.flow.toFixed(1) + " " + (s.unit || "");
-      if (k === "gradient") return n.s.a === null ? "rien à viser" : "écart " + n.s.d.toFixed(0) + " " + (s.unit || "");
+      if (k === "gradient") return n.s.a === null ? K.t("d_notarget") : K.t("d_gap") + " " + n.s.d.toFixed(0) + " " + (s.unit || "");
       if (k === "clock") return n.s.v === null ? (s.offText || "—") : (s.onText || "") + " " + n.s.v.toFixed(0) + " " + (s.unit || "");
       return "";
     }
@@ -168,7 +173,7 @@
     }
     connect(from, to) {
       const r = this.m.connect(from, to);
-      if (!r.ok && REJECT[r.reason]) { this.o.toast(REJECT[r.reason]); this.m.emit("wire_reject", r.reason); }
+      if (!r.ok && REJECT[r.reason]) { this.o.toast(K.t(REJECT[r.reason])); this.m.emit("wire_reject", r.reason); }
       this.render(); this.o.onChange();
       return r;
     }
@@ -194,13 +199,13 @@
 
     renderParams() {
       const box = this.params;
-      if (!this.selected) { box.innerHTML = `<span class="k-muted">Clique une pièce pour la régler. Touche Suppr pour enlever une pièce ou un fil.</span>`; return; }
-      if (this.selected[0] === "w") { box.innerHTML = `<span>Fil sélectionné.</span><button class="sy-del">Supprimer le fil</button>`; box.querySelector(".sy-del").onclick = () => this.deleteSelected(); return; }
+      if (!this.selected) { box.innerHTML = `<span class="k-muted">${K.t("params_hint")}</span>`; return; }
+      if (this.selected[0] === "w") { box.innerHTML = `<span>${K.t("wire_selected")}</span><button class="sy-del">${K.t("del_wire")}</button>`; box.querySelector(".sy-del").onclick = () => this.deleteSelected(); return; }
       const n = this.m.byId(+this.selected.slice(1)); if (!n) return;
       const s = this.skin(n), ps = s.params || {};
-      box.innerHTML = `<b>${s.name}</b>${this.o.hood() ? ` <span class="k-muted">· ${K.GENERIC[s.kind]}</span>` : ""}` +
+      box.innerHTML = `<b>${s.name}</b>${this.o.hood() ? ` <span class="k-muted">· ${K.generic(s.kind)}</span>` : ""}` +
         Object.entries(ps).filter(([k, d]) => !d.hidden).map(([k, d]) => `<label>${d.label}<input type="number" data-k="${k}" step="${d.step}"${d.min !== undefined ? ` min="${d.min}"` : ""}${d.max !== undefined ? ` max="${d.max}"` : ""} value="${n.p[k]}"></label>`).join("") +
-        `<button class="sy-del">Supprimer la pièce</button>`;
+        `<button class="sy-del">${K.t("del_piece")}</button>`;
       box.querySelectorAll("input").forEach(inp => inp.onchange = () => {
         const d = ps[inp.dataset.k]; let v = parseFloat(inp.value);
         if (!isFinite(v)) v = d.v;

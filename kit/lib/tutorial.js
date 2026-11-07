@@ -13,11 +13,11 @@
   // check helpers; durations are counted in simulation steps
   K.elapse = steps => (app, mem) => {
     mem.n = (mem.n || 0) + 1;
-    return { p: mem.n / steps, done: mem.n >= steps, status: `En cours… ${app.fmtSteps(mem.n)} / ${app.fmtSteps(steps)}` };
+    return { p: mem.n / steps, done: mem.n >= steps, status: K.t("tu_runningof", app.fmtSteps(mem.n), app.fmtSteps(steps)) };
   };
   K.hold = (steps, pred, offMsg) => (app, mem) => {
     const ok = pred(app); mem.n = ok ? (mem.n || 0) + 1 : 0;
-    return { p: mem.n / steps, done: mem.n >= steps, status: ok ? `En cours… ${app.fmtSteps(mem.n)} / ${app.fmtSteps(steps)}` : offMsg };
+    return { p: mem.n / steps, done: mem.n >= steps, status: ok ? K.t("tu_runningof", app.fmtSteps(mem.n), app.fmtSteps(steps)) : offMsg };
   };
   const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
 
@@ -57,27 +57,27 @@
     render() {
       const S = this.app.S, h = this.host;
       if (this.mode === "free") {
-        h.innerHTML = `<div class="tu-head"><h3>Atelier libre</h3></div><div class="tu-goal">${this.W.free.text}</div>` +
+        h.innerHTML = `<div class="tu-head"><h3>${K.t("tu_free")}</h3></div><div class="tu-goal">${this.W.free.text}</div>` +
           (S.hood && this.W.free.hood ? `<div class="tu-hood">${this.W.free.hood}</div>` : "") +
-          `<div class="tu-row"><button class="tu-back">Reprendre le tutoriel</button></div>`;
+          `<div class="tu-row"><button class="tu-back">${K.t("tu_back")}</button></div>`;
         h.querySelector(".tu-back").onclick = () => this.app.backToTutorial();
         return;
       }
       if (this.mode === "final") return this.renderFinal();
       const st = this.steps[this.i], n = this.steps.length;
-      let html = `<div class="tu-head"><span class="tu-no">Étape ${this.i + 1} / ${n}</span><h3>${st.title}</h3></div><div class="tu-goal">${st.goal}</div>`;
+      let html = `<div class="tu-head"><span class="tu-no">${K.t("tu_step", this.i + 1, n)}</span><h3>${st.title}</h3></div><div class="tu-goal">${st.goal}</div>`;
       if (st.predict) {
         const pk = S.predictions[st.id];
         if (pk === undefined) html += `<div class="tu-q">${st.predict.q}</div><div class="tu-choices">` +
           st.predict.choices.map((c, k) => `<button data-choice="${k}">${c}</button>`).join("") + `</div>`;
-        else html += `<div class="tu-hint">Ton pari : « ${st.predict.choices[pk]} ».</div>`;
+        else html += `<div class="tu-hint">${K.t("tu_bet", st.predict.choices[pk])}</div>`;
       }
       if (st.hint && !this.finished) html += `<div class="tu-hint">${st.hint}</div>`;
       html += `<div class="tu-progress"><div></div></div><div class="tu-status-row"><span class="tu-status"></span><button class="tu-goto" hidden></button></div>`;
       if (this.finished) {
         html += `<div class="tu-takeaway">${st.takeaway}</div>`;
         if (S.hood && st.hood) html += `<div class="tu-hood">${st.hood}</div>`;
-        html += `<div class="tu-row"><button class="primary tu-next">${this.i + 1 < n ? "Étape suivante" : "Terminer"}</button></div>`;
+        html += `<div class="tu-row"><button class="primary tu-next">${this.i + 1 < n ? K.t("tu_next") : K.t("tu_finish")}</button></div>`;
       }
       h.innerHTML = html;
       h.querySelectorAll("[data-choice]").forEach(b => b.onclick = () => {
@@ -92,14 +92,14 @@
       let html = `<div class="tu-head"><h3>${F.title}</h3></div><div class="tu-goal">${F.text}</div>`;
       if (!F.questions || !F.questions.length) {          // default: no questions, let the user discover
         html += (S.hood && F.hood ? `<div class="tu-hood">${F.hood}</div>` : "") +
-          `<div class="tu-row"><button class="primary tu-free">Ouvrir l'atelier libre</button></div>`;
+          `<div class="tu-row"><button class="primary tu-free">${K.t("tu_openfree")}</button></div>`;
       } else if (!S.answers) {
-        html += F.questions.map((q, k) => `<label class="tu-ask">${q}<textarea data-q="${k}" rows="2" placeholder="Ta réponse, en quelques mots…"></textarea></label>`).join("") +
-          `<div class="tu-row"><button class="primary tu-save">Enregistrer mes réponses</button><button class="tu-skip">Passer</button></div>`;
+        html += F.questions.map((q, k) => `<label class="tu-ask">${q}<textarea data-q="${k}" rows="2" placeholder="${K.t("tu_ph")}"></textarea></label>`).join("") +
+          `<div class="tu-row"><button class="primary tu-save">${K.t("tu_save")}</button><button class="tu-skip">${K.t("tu_skip")}</button></div>`;
       } else {
-        html += `<div class="tu-takeaway">Merci ! Tes réponses seront dans le fichier « Exporter ma session ».</div>` +
+        html += `<div class="tu-takeaway">${K.t("tu_thanks")}</div>` +
           (S.hood && F.hood ? `<div class="tu-hood">${F.hood}</div>` : "") +
-          `<div class="tu-row"><button class="primary tu-free">Ouvrir l'atelier libre</button></div>`;
+          `<div class="tu-row"><button class="primary tu-free">${K.t("tu_openfree")}</button></div>`;
       }
       h.innerHTML = html;
       const save = h.querySelector(".tu-save");
@@ -118,15 +118,15 @@
       const nd = this.need();
       this.app.attention(nd && nd.tab ? nd.tab : null);
       if (!bar || !status) return;
-      if (this.finished) { bar.style.width = "100%"; status.textContent = "Étape réussie."; go.hidden = true; return; }
+      if (this.finished) { bar.style.width = "100%"; status.textContent = K.t("tu_done"); go.hidden = true; return; }
       bar.style.width = Math.min(100, Math.round(100 * ((this.res && this.res.p) || 0))) + "%";
       if (nd) status.textContent = nd.msg;
-      else if (this.waitingPrediction()) status.textContent = "Réponds d'abord à la question ci-dessus.";
-      else if (!this.app.running()) status.textContent = "Lance le temps avec ▶ (en haut).";
-      else status.textContent = this.res ? this.res.status : "En cours…";
+      else if (this.waitingPrediction()) status.textContent = K.t("tu_answer");
+      else if (!this.app.running()) status.textContent = K.t("tu_play");
+      else status.textContent = this.res ? this.res.status : K.t("tu_running");
       const want = nd && nd.tab && nd.tab !== this.app.S.tab ? nd.tab : null;
       go.hidden = !want;
-      if (want) { go.textContent = want === "panel" ? "Aller au Panneau →" : "Aller au Synoptique →"; go.onclick = () => this.app.goTab(want); }
+      if (want) { go.textContent = want === "panel" ? K.t("tu_gopanel") : K.t("tu_gosyn"); go.onclick = () => this.app.goTab(want); }
     }
   }
   K.Tutorial = Tutorial;

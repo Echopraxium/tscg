@@ -50,6 +50,7 @@ was already understood.
 
 | Path | Role |
 |---|---|
+| `lib/i18n.js` | language (English default, French), shared interface strings |
 | `lib/sim.js` | generic kinds (storage, sink, source, threshold, amplify, transducer, gradient, clock), Model (graph + fixed-step simulation + bindings) |
 | `lib/synoptic.js` | SVG node editor |
 | `lib/panel.js` | grid of instruments |
@@ -76,5 +77,15 @@ Ask testers to think aloud while they play, without helping them, then to click
 rejected connections, panel actions, bets). Note what they say spontaneously
 about the Maquette and the Panneau.
 
-Status: **prototype 0.3.0** — three workshops, each with a guided tutorial and a free mode. UI in French for the
-first testers. Desktop first; usable but cramped on a phone.
+Status: **prototype 0.4.0** — three workshops, each with a guided tutorial and a free mode. UI in English and French. Desktop first; usable but cramped on a phone.
+
+## Languages
+
+English by default, French with the **FR / EN** button (top right of every page, and on the
+home page). The choice is remembered by the browser and passed in the URL (`?lang=fr`).
+Switching keeps the graph, the panel, the clock and the tutorial progress.
+
+- Shared interface strings: `lib/i18n.js` (`K.t(key)`).
+- Workshop texts: each `workshop.js` is a factory `L => ({ ... })` where every text is
+  written `L("English", "Français")`; the shell rebuilds the texts on a switch.
+- Scale-model drawings use `K.L(en, fr)` at draw time.
